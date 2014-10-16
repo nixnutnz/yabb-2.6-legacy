@@ -764,10 +764,9 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
           s/{yabb spam_question_id}/$spam_question_id/gsm;
             $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/gsm;
             }
-            $my_isreply .= q~<table><tr><td>~;
-            $my_isreply .= qq~$verification_field~;
-            $my_isreply .= qq~$verification_question_field~;
-            $my_isreply .= q~</td></tr></table>~;
+            $my_isreply .= $my_spamchk;
+            $my_isreply =~ s/{yabb verification_field}/$verification_field/sm;
+            $my_isreply =~ s/{yabb verification_question_field}/$verification_question_field/sm;
         }
         if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
             $my_isreply .= qq~
@@ -808,7 +807,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     if ( $showadded == 2 ) {
         while ( $SmilieURL[$i] ) {
             if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
-            else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+            else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = $SmilieCode[$i];
             $tmpcode =~ s/\&quot;/"+'"'+"/gsm;    # "'

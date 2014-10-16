@@ -987,7 +987,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     if ( $SmilieURL[$i] =~ /\//ism ) {
                         $tmpurl = $SmilieURL[$i];
                     }
-                    else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+                    else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
                     $smilie_url_array .= qq~"$tmpurl", ~;
                     $tmpcode = $SmilieCode[$i];
                     $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;

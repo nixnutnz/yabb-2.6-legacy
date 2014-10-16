@@ -1447,7 +1447,7 @@ sub SpamQuestion {
     chomp $spam_question_rand;
     ( $spam_question_id, $spam_question, undef, $spam_questions_case, $spam_image ) =
       split /\|/xsm, $spam_question_rand;
-    $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$defaultimagesdir/Spam_Img/$spam_image" alt="" /></div>~ : q{};
+    $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$imagesdir/Spam_Img/$spam_image" alt="" /></div>~ : q{};
     return;
 }
 

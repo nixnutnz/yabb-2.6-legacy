@@ -49,7 +49,7 @@ sub ManageBoardNotify {
             $bb{$theboard} = 1;
             ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
             UserAccount($user);
-		}
+        }
     }
     elsif ( $todo eq 'update' ) {
         if ( exists $theboard{$user} ) {

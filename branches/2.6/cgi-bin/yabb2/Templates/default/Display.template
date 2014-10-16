@@ -515,4 +515,29 @@ $visel_1b = q~</td>~;
 $visel_2a = q~<td class="droppages pages">~;
 $visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
 $visel_4 = q~</tr></table>~;
+
+$gtalk = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang" style="overflow-x:hidden;overflow-y:hidden">
+<head>
+    <title>$display_txt{'google'}</title>
+    {yabb style}
+    <style type="text/css">
+    body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
+    .g_user { height:58px; margin-bottom:2em}
+    </style>
+</head>
+<body class="windowbg2">
+    <table class="bordercolor pad_4px cs_thin">
+        <tr>
+            <td class="titlebg h_22px">
+                <img src="$gtalk" width="16" height="14" alt="" title="" /> $display_txt{'google'}
+            </td>
+        </tr><tr>
+            <td class="windowbg g_user">
+                <img src="$gtalk" width="16" height="14" alt="{yabb gname}" title="{yabb gname}" /> {yabb gtalkuser}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>~;
 1;

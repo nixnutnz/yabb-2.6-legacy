@@ -1531,4 +1531,16 @@ $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10p
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
 $rna = 'Remote Server not available.';
 
+## email settings test ##
+$admin_txt{'355b'} = 'Test webmaster e-mail settings on Save';
+$admin_txt{'testemail'} = q~Test E-mail~;
+$admin_txt{'testsubject'} = q~YaBB e-mail settings test~,
+
+$admin_txt{'testmessage'} = qq~Hi $mbname Webmaster!
+
+This is a test of your $mbname Forum's e-mail settings.
+
+Thanks for using YaBB!~;
+$admin_txt{'mailfrom'} = qq~"$mbname E-Mail Test" <$webmaster_email>~;
+
 1;

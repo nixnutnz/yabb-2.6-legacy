@@ -4,7 +4,7 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
+# Version:        YaBB 2.6.2                                                  #
 # Packaged:       September 1, 2014                                           #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
@@ -16,9 +16,9 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.2';
 
-$advancedtabspmver = 'YaBB 2.6.1 $Revision$';
+$advancedtabspmver = 'YaBB 2.6.2 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub AddNewTab {
@@ -172,37 +172,16 @@ qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
 
 sub EditTab {
     get_micon();
+    GetTexttab();
     $tabsave  = $micon{'tabsave'};
     $tabdel   = $micon{'tabdel'};
-    $tabstyle = q~ class="tabstyle"~;
+    %edittab= ();
+    my @tablist = qw(home help search ml eventcal birthdaylist admin revalidatesession login register guestpm mycenter logout);
 
-    $edittab{'home'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'103'}$tabfill</span>~;
-    $edittab{'help'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'119'}$tabfill</span>~;
-    $edittab{'search'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'182'}$tabfill</span>~;
-    $edittab{'ml'} = qq~<span $tabstyle>$tabfill$img_txt{'331'}$tabfill</span>~;
-    $edittab{'eventcal'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'eventcal'}$tabfill</span>~;
-    $edittab{'birthdaylist'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'birthdaylist'}$tabfill</span>~;
-    $edittab{'admin'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'2'}$tabfill</span>~;
-    $edittab{'revalidatesession'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'34a'}$tabfill</span>~;
-    $edittab{'login'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'34'}$tabfill</span>~;
-    $edittab{'register'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'97'}$tabfill</span>~;
-    $edittab{'guestpm'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'pmadmin'}$tabfill</span>~;
-    $edittab{'mycenter'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'mycenter'}$tabfill</span>~;
-    $edittab{'logout'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'108'}$tabfill</span>~;
-
-    GetTexttab();
+## Mod hook ##
+    for (@tablist) {
+        $edittab{$_} = qq~<span class="tabstyle">$tabfill$texttab{$_}$tabfill</span>~;
+    }
 
     my $selsize   = 0;
     my $isexttabs = 0;

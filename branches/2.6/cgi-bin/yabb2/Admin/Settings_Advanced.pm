@@ -229,6 +229,12 @@ qq~<input type="text" name="webmaster_email" id="webmaster_email" size="35" valu
                 name     => 'webmaster_email',
                 validate => 'text',
             },
+            {
+                description =>
+                  qq~<label for="email_test">$admin_txt{'355b'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="email_test" id="email_test" value="1" />~,
+            },
 
             # New Member Notification
             { header => $admin_txt{'366'}, },
@@ -767,7 +773,7 @@ sub SaveSettings {
     $settings{'pmAttachExt'} =~ s/[^\ A-Za-z0-9_]//gsm;
     @pmAttachExt = split /\s+/xsm, $settings{'pmAttachExt'};
 
-   SaveSettingsTo('Settings.pm', %settings);
+    SaveSettingsTo('Settings.pm', %settings);
     return;
 }
 

@@ -1889,41 +1889,18 @@ qq~<a href="$scripturl?$thevirboard$next">$display_txt{'767'}</a>~;
 }
 
 sub SetGtalk {
-    $gtalkstyle =
-qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />~;
-    $gtalkstyle =~ s/$usestyle\///gxsm;
     my $gtalkname = $INFO{'gtalkname'};
+    my $gtalkstyle = qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
     if ( !${ $uid . $gtalkname }{'password'} ) { LoadUser($gtalkname); }
     $gtalkuser = ${ $uid . $gtalkname }{'gtalk'};
 
     print qq~Content-type: text/html\n\n~
       or croak "$croak{'print'} page content";
-    print
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang" style="overflow-x:hidden;overflow-y:hidden">
-<head>
-<title>$display_txt{'google'}</title>
-$gtalkstyle
-<style type="text/css">
-body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
-.g_user { height:58px; margin-bottom:2em}
-</style>
-</head>
-<body class="windowbg2">
-<table class="bordercolor pad_4px cs_thin">
-    <tr>
-        <td class="titlebg h_22px">
-            <img src="$gtalk" width="16" height="14" alt="" title="" /> $display_txt{'google'}
-        </td>
-    </tr><tr>
-        <td class="windowbg g_user">
-            <img src="$gtalk" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser
-        </td>
-    </tr>
-</table>
-</body>
-</html>
-~ or croak "$croak{'print'} page";
+    $setgtalk = $gtalk;
+    $setgtalk =~ s/{yabb style}/$gtalkstyle/sm; 
+    $setgtalk =~ s/{yabb gname}/${ $uid . $gtalkname }{'realname'}/gsm; 
+    $setgtalk =~ s/{yabb gtalkuser}/$gtalkuser/gsm; 
+    print $setgtalk or croak "$croak{'print'} page";
     return;
 }
 

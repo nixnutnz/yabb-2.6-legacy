@@ -28,7 +28,7 @@ sub SmiliePut {
     $i                 = 0;
     while ( $SmilieURL[$i] ) {
         if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-        else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+        else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
         if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
             $moresmilieslist .= q~<br />~;
         }
@@ -101,7 +101,7 @@ sub SmilieIndex {
             }
             else { $smiliescolor = $my_smiliebg_b; }
             if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-            else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+            else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
 
             $smilieslist .= $my_smilie_window_td;
             $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;

@@ -932,10 +932,9 @@ qq~<span class="small"> $cal_icon{'eventmoreadd'} <a href="$scripturl?action=eve
 qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
             }
             if ( $ShowEventAddLink2 || $ShowBirthdaysLink2 ) {
-                $event_link = qq~    <tr><td class="windowbg2" colspan="2">
-                $ShowBirthdaysLink2
-                $ShowEventAddLink2
-                </td></tr>~;
+                $event_link = $myevent_link;
+                $event_link =~ s/{yabb ShowBirthdaysLink2}/$ShowBirthdaysLink2/sm;
+                $event_link =~ s/{yabb ShowEventAddLink2}/$ShowEventAddLink2/sm;
             }
             $yymain .= $mycalout_showevent;
             $yymain =~ s/{yabb mycalout_top}/$mycalout_top/sm;

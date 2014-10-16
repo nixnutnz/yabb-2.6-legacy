@@ -221,6 +221,12 @@ $my_FA_browse = qq~<tr>{yabb my_ispreview}
         </td>
     </tr>\n~;
 
+$my_spamchk = qq~<table style="width:auto; margin-left:0"><tr><td>
+{yabb verification_field}
+{yabb verification_question_field}
+</td></tr></table>~;
+
+
 $myshow_ispreview = qq~<tr>
         <td class="windowbg" style="color: #FF0000; font-weight: bold;">$fatxt{'7a'}</td>
     </tr>~;

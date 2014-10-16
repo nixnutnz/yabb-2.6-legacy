@@ -310,6 +310,18 @@ sub isselected {
     return \q{};
 }
 
+sub email_test {
+    require Sources::Mailer;
+    $testmessage = $admin_txt{'testmessage'};
+#    $testmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/xsm;
+    sendmail(
+        $webmaster_email,
+        $admin_txt{'testsubject'},
+        $testmessage,
+        $admin_txt{'mailfrom'}
+    );
+}
+
 # Regexes. Will be used like this: $var =~ /^(?:$regexes{'a'}|$regexes{'b'}|$regexes{'c'})$/ || die;
 my %regexes = (
     boolean =>
@@ -709,7 +721,7 @@ $member_groups
 \$fix_attach_img_size = $fix_attach_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_brd_img_width = $max_brd_img_width;                           # Set maximum pixel width to which the Board Images are resized, 0 disables this limit
 \$max_brd_img_height = $max_brd_img_height;                          # Set maximum pixel height to which the Board Images are resized, 0 disables this limit
-\$fix_brd_img_size = $fix_brd_img_size; 
+\$fix_brd_img_size = $fix_brd_img_size;
 \$img_greybox = $img_greybox;           # Set to 0 to disable "greybox" (each image is shown in a new window)
                             # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                             # Set to 2 to enable the attachment and post image "greybox" => attachment images: (all images/page), post images: (one image/page)
@@ -1066,6 +1078,9 @@ EOF
     }
 
     WriteSettingsTo( "$vardir/$file", $setfile );
+    if ( $FORM{'email_test'} == 1 ) {
+        email_test();
+    }
     return;
 }
 
