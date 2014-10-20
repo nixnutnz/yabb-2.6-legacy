@@ -65,7 +65,7 @@ sub mainMenu {
     }
     elsif ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
     elsif ( $action ne q{} ) {
-        for my $i ( 0 .. $#{ $acting[0] } ) {
+        foreach my $i ( 0 .. 28 ) {
             my $img0 = $acting[0]->[$i];
             my $img1 = $acting[1]->[$i];
             if ( $action eq $img0 ) {
@@ -218,7 +218,8 @@ qq~<li id="edittab"><span$seledittab><a href="$scripturl?action=edittab" title="
 
 sub GetTabtxt {
     $tab_lang = $language ? $language : $lang;
-    if ( fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" ) ) {
+    if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
+        fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" );
         @tabtext = <TABTXT>;
         fclose(TABTXT);
         chomp @tabtext;
@@ -228,7 +229,8 @@ sub GetTabtxt {
             }
         }
     }
-    elsif ( fopen( TABTXT, "$langdir/English/tabtext.txt" ) ) {
+    elsif ( -e "$langdir/English/tabtext.txt" ) {
+        fopen( TABTXT, "$langdir/English/tabtext.txt" );
         @tabtext = <TABTXT>;
         fclose(TABTXT);
         chomp @tabtext;
@@ -237,10 +239,12 @@ sub GetTabtxt {
                 %tabtxt = map { /(.*)\t(.*)/xsm } $_;
             }
         }
-        fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-        print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
-          or croak "$croak{'print'} TABTXT";
-        fclose(TABTXT);
+        if ( -e "$langdir/$tab_lang/Main.lng" ) {
+            fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
+            print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
+              or croak "$croak{'print'} TABTXT";
+            fclose(TABTXT);
+        }
     }
     return;
 }
