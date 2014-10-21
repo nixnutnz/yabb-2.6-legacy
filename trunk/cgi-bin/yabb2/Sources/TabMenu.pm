@@ -234,25 +234,13 @@ sub GetTabtxt {
     $tab_lang = $language ? $language : $lang;
     if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
         fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" );
-        @tabtext = <TABTXT>;
+        %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
-        chomp @tabtext;
-        for ( @tabtext ) {
-            if ( $_ ne q{} ) {
-                %tabtxt = map { /(.*)\t(.*)/xsm } $_;
-            }
-        }
     }
     elsif ( -e "$langdir/English/tabtext.txt" ) {
         fopen( TABTXT, "$langdir/English/tabtext.txt" );
-        @tabtext = <TABTXT>;
+        %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
-        chomp @tabtext;
-        for ( @tabtext ) {
-            if ( $_ ne q{} ) {
-                %tabtxt = map { /(.*)\t(.*)/xsm } $_;
-            }
-        }
         if ( -e "$langdir/$tab_lang/Main.lng" ) {
             fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
             print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
