@@ -971,7 +971,7 @@ sub MakeTools {
         </ul>
     </div>
     ~
-      : qq~<div class="post_tools_a">$load_con{'actionslock'}</a></td><td class="center bottom" style="padding:0px; width:0"></td>~;
+      : qq~<div class="post_tools_a">$load_con{'actionslock'}</div></td><td class="center bottom" style="padding:0px; width:0">~;
     $tools_template =~ s/{yabb actionlock}/$maintxt{'64'}/gsm;
 
     return $tools_template;
