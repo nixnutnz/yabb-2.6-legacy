@@ -172,37 +172,16 @@ qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
 
 sub EditTab {
     get_micon();
+    GetTexttab();
     $tabsave  = $micon{'tabsave'};
     $tabdel   = $micon{'tabdel'};
-    $tabstyle = q~ class="tabstyle"~;
-
-    $edittab{'home'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'103'}$tabfill</span>~;
-    $edittab{'help'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'119'}$tabfill</span>~;
-    $edittab{'search'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'182'}$tabfill</span>~;
-    $edittab{'ml'} = qq~<span $tabstyle>$tabfill$img_txt{'331'}$tabfill</span>~;
-    $edittab{'eventcal'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'eventcal'}$tabfill</span>~;
-    $edittab{'birthdaylist'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'birthdaylist'}$tabfill</span>~;
-    $edittab{'admin'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'2'}$tabfill</span>~;
-    $edittab{'revalidatesession'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'34a'}$tabfill</span>~;
-    $edittab{'login'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'34'}$tabfill</span>~;
-    $edittab{'register'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'97'}$tabfill</span>~;
-    $edittab{'guestpm'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'pmadmin'}$tabfill</span>~;
-    $edittab{'mycenter'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'mycenter'}$tabfill</span>~;
-    $edittab{'logout'} =
-      qq~<span $tabstyle>$tabfill$img_txt{'108'}$tabfill</span>~;
-
-    GetTexttab();
+    %edittab= ();
+    my @tablist = qw(home help search ml eventcal birthdaylist admin revalidatesession login register guestpm mycenter logout);
+## Mod hook tablist ##
+## End Mod hook tablist ##
+    for (@tablist) {
+        $edittab{$_} = qq~<span class="tabstyle">$tabfill$texttab{$_}$tabfill</span>~;
+    }
 
     my $selsize   = 0;
     my $isexttabs = 0;
@@ -402,7 +381,8 @@ sub GetTexttab {
     $texttab{'guestpm'}           = $img_txt{'pmadmin'};
     $texttab{'mycenter'}          = $img_txt{'mycenter'};
     $texttab{'logout'}            = $img_txt{'108'};
-
+## Mod Hook GetTextTab ##
+## End Mod Hook GetTextTab ##
     if ( !$tab_lang ) { GetTabtxt(); }
     foreach ( keys %tabtxt ) { $texttab{$_} = $tabtxt{$_}; }
     return;

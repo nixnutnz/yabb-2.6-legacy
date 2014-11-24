@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{yabb xml_lang}" lang="{yabb xml_lang}">
 <head>
-<!-- YaBB 2.6.1. $Revision$ -->
+<!-- YaBB 2.6.1 $Revision$ -->
     <meta http-equiv="Content-Type" content="text/html; charset={yabb mycharset}" />
     <title>{yabb title}</title>
     {yabb style}
@@ -33,7 +33,7 @@
             <tr>
                 <td class="small h_23px" style="padding-left:1%"><div id="yabbclock">{yabb time}</div></td>
                 <td class="small">{yabb langChooser}</td>
-                <td class="right vtop">{yabb searchbox}
+                <td class="right vtop"><div class="yabb_searchbox">{yabb searchbox}</div>
                     <div class="yabb_rss">{yabb rss}</div>
                 </td>
             </tr>
@@ -52,7 +52,7 @@
                 </td>
             </tr><tr>
                 <td class="vtop h_60px">&nbsp;</td>
-                <td class="small vtop">{yabb news}
+                <td class="small vtop">{yabb newstitle} <span id="newsdiv"></span>
                 </td>
             </tr>
         </table>
@@ -141,5 +141,6 @@ if (screen.width > 1024) {
 }
 </script>
 <script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
+{yabb news}
 </body>
 </html>

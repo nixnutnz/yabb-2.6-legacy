@@ -689,7 +689,7 @@ sub ipban_update {
             @banned = split /\|/xsm, $i;
             for my $j ( 0 .. 3 ) {
                 if ( $banned[4] eq $timeban[$j] ) {
-                    $tmb = $banned[2] + ( $bandays[$j] * 86_400 );
+                    $tmb = $banned[2] + ( $bandays[$j] * 86400 );
                 }
             }
             if ( $banned eq $banned[1] && ( $banned[4] eq 'p' || $tmb > $time ) ) {

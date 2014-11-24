@@ -102,30 +102,20 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
-                <td class="catbg padd-cell" colspan="2">
-         <span class="small">$item->{'header'}</span>
-       </td>
+                <td class="catbg padd-cell" colspan="2"><span class="small">$item->{'header'}</span></td>
      </tr>~;
             }
             elsif ( $item->{'two_rows'} && $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 padd-cell" colspan="2">
-         $item->{'description'}
-       </td>
+                <td class="windowbg2 padd-cell" colspan="2">$item->{'description'}</td>
             </tr><tr>
-                <td class="windowbg2 padd-cell" colspan="2">
-         $item->{'input_html'}
-       </td>
+                <td class="windowbg2 padd-cell" colspan="2">$item->{'input_html'}</td>
      </tr>~;
             }
             elsif ( $item->{'input_html'} ) {
                 $yymain .= qq~<tr>
-                <td class="windowbg2 vtop padd-cell">
-         $item->{'description'}
-       </td>
-                <td class="windowbg2 vtop padd-cell">
-         $item->{'input_html'}
-       </td>
+                <td class="windowbg2 vtop padd-cell">$item->{'description'}</td>
+                <td class="windowbg2 vtop padd-cell">$item->{'input_html'}</td>
      </tr>~;
             }
 
@@ -198,7 +188,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
                 $requirejs{$require} .=
                   qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
             }
-            $dependicies .= qq~     checkDependent("$require");\n~;
+            $dependicies .= qq~        checkDependent("$require");\n~;
         }
         $dependicies .= qq~ }
     document.getElementsByName("$ritem")[0].onclick = handleDependent_$ritem;
@@ -226,9 +216,9 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
   <script type="text/javascript">
     function getElementsByClass(searchClass,node,tag) {
         var classElements = new Array();
-        if ( node == null )
+        if ( node === null || node === undefined )
             node = document;
-        if ( tag == null )
+        if ( tag === null || tag === undefined )
             tag = '*';
         var els = node.getElementsByTagName(tag);
         var elsLen = els.length;
@@ -672,10 +662,10 @@ $member_groups
 \$max_log_days_old = $max_log_days_old; # If an entry in the user's log is older than ... days remove it
 
 \$maxsteps = $maxsteps;                     # Number of steps to take to change from start color to endcolor
-\$stepdelay = $stepdelay;                   # Time in miliseconds of a single step
+\$stepdelay = $stepdelay;                   # Time in milliseconds of a single step
 \$fadelinks = $fadelinks;                   # Fade links as well as text?
 
-\$defaultusertxt = "\Q$defaultusertxt\E";   # The dafault usertext visible in users posts
+\$defaultusertxt = "\Q$defaultusertxt\E";   # The default user text visible in users posts
 \$timeout = $timeout;                       # Minimum time between 2 postings from the same IP
 \$HotTopic = $HotTopic;                     # Number of posts needed in a topic for it to be classed as "Hot"
 \$VeryHotTopic = $VeryHotTopic;             # Number of posts needed in a topic for it to be classed as "Very Hot"
@@ -717,7 +707,7 @@ $member_groups
 \$fix_attach_img_size = $fix_attach_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
 \$max_brd_img_width = $max_brd_img_width;                           # Set maximum pixel width to which the Board Images are resized, 0 disables this limit
 \$max_brd_img_height = $max_brd_img_height;                          # Set maximum pixel height to which the Board Images are resized, 0 disables this limit
-\$fix_brd_img_size = $fix_brd_img_size; 
+\$fix_brd_img_size = $fix_brd_img_size;
 \$img_greybox = $img_greybox;           # Set to 0 to disable "greybox" (each image is shown in a new window)
                             # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                             # Set to 2 to enable the attachment and post image "greybox" => attachment images: (all images/page), post images: (one image/page)
@@ -730,9 +720,11 @@ $member_groups
 $ext_prof_fields
 );                      # Settings of the extended profiles fields.
 
-########## Event Calendar ##########
+######################################################################
+# Event Calendar                                                     #
+######################################################################
 
-# Standard Calendar Setting
+########## Standard Calendar Setting ##########
 \$Show_EventCal = $Show_EventCal;
 \$Show_EventButton = $Show_EventButton;
 \$Show_EventBirthdays = $Show_EventBirthdays;
@@ -752,14 +744,14 @@ $ext_prof_fields
 \$DisplayCalEvents = $DisplayCalEvents;
 \$DisplayEvents = $DisplayEvents;
 
-# Birthdaylist Setting
+########## Birthdaylist Setting ##########
 \$Show_BirthdaysList = $Show_BirthdaysList;
 \$Show_BirthdayButton = $Show_BirthdayButton;
 \$Show_BirthdayDate = $Show_BirthdayDate;
 \$Show_BdColorLinks = $Show_BdColorLinks;
 \$Show_BdStarsign = $Show_BdStarsign;
 
-# Social Bookmarks settings
+########## Social Bookmarks settings ##########
 \$en_bookmarks   = $en_bookmarks;  # Enable Social Bookmarks
 \$bm_subcut = $bm_subcut; # Maximum characters in subject
 \$bm_boards = "\Q$bm_boards\E"; # Select the boards which Social Bookmarks will be shown in
@@ -847,8 +839,6 @@ $ext_prof_fields
 \$showallgroups = $showallgroups;
 \$OnlineLogTime = $OnlineLogTime;       # Time in minutes before Users are removed from the Online Log
 \$lastonlineinlink = $lastonlineinlink;     # Show "Last online X days and XX:XX:XX hours ago." to all members == 1
-
-\$maxadminlog = $maxadminlog;               #Maximum number of entries stored in adminlog.txt (oldest entries deleted).
 
 ########## Polls ##########
 
@@ -948,6 +938,8 @@ $ext_prof_fields
 \$elenable = $elenable;             # allow for error logging
 \$elrotate = $elrotate;             # Allow for log rotation
 
+\$maxadminlog = $maxadminlog;               #Maximum number of entries stored in adminlog.txt (oldest entries deleted).
+
 ########## Advanced Tabs ##########
 \$addtab_on = $addtab_on;               # show advanced tabs on Forum (For admin only.)
 \@AdvancedTabs = ($AdvancedTabs);       # Advanced Tabs order and infos
@@ -970,10 +962,8 @@ $ext_prof_fields
 \$showinbox = "$showinbox";         # showinbox
 \$removenormalsmilies = "$removenormalsmilies"; # removenormalsmilies
 
-
-
 ###############################################################################
-# Security Settings (old SecSettings.txt)                                     #
+# Security Settings                                                           #
 ###############################################################################
 
 \$regcheck = $regcheck;             # Set to 1 if you want to enable automatic flood protection enabled
@@ -996,9 +986,7 @@ $ext_prof_fields
 \$show_online_ip_gmod = $show_online_ip_gmod;   # Set to 1 to show online IP's to global moderators.
 \$show_online_ip_fmod = $show_online_ip_fmod;   # Set to 1 to show online IP's to yabb moderators.
 \$ipLookup = $ipLookup;                        # Set to 1 to enable IP Lookup.
-\$masterkey = "\Q$masterkey\E";         # Seed for encryption of captcha's
-
-
+\$masterkey = "\Q$masterkey\E";         # Seed for encryption of captchas
 
 ###############################################################################
 # Guardian Settings (old Guardian.banned and Guardian.settings)               #
@@ -1040,8 +1028,6 @@ $ext_prof_fields
 \$clike_notify = $clike_notify;
 \$script_notify = $script_notify;
 
-
-
 ###############################################################################
 # Banning Settings Time bans                                                  #
 ###############################################################################
@@ -1062,6 +1048,9 @@ $ext_prof_fields
 \$lastbackup = $lastbackup;
 \$backupsettingsloaded = $backupsettingsloaded;
 
+###############################################################################
+# Mod Settings                                                                #
+###############################################################################
 1;
 EOF
     }

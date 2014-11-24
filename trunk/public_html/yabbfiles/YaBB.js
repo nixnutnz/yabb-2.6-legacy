@@ -15,7 +15,7 @@
 //YaBB 2.6.1 $Revision$
 
 // DocClick object for registering multiple document.onclick events
-DocClick = new Array();
+var DocClick = new Array();
 
 var ev;
 var addQuote;
@@ -34,13 +34,13 @@ document.onclick = DocClicked;
 // Resize the pop up box and its iframe
 function ResizeIFrame(height) {
     var winheight = window.innerHeight === undefined ? document.documentElement.clientHeight : window.innerHeight;
+    var imagealert = document.getElementById("ImageAlert");
     if (height + 28 > winheight - 22) {
         height = winheight - 50;
     }
     document.getElementById("ImageAlertIFrame").height = height + "px";
     document.getElementById("ImageAlertLoad").style.display = "none";
-    var imagealert = document.getElementById("ImageAlert");
-    imagealert.style.marginTop = parseInt(-(height + 20) / 2) + "px";
+    imagealert.style.marginTop = parseInt(-(height + 20) / 2, 10) + "px";
 }
 
 function IFrameShrink() {
@@ -48,7 +48,7 @@ function IFrameShrink() {
 }
 
 // Caps Lock and Not Allowed Characters detection
-function capsLock(eve,ident){
+function capsLock(eve, ident) {
     var keyCode = eve.keyCode ? eve.keyCode : eve.which;
     var shiftKey = eve.shiftKey ? eve.shiftKey : ((keyCode == 16) ? true : false);
 
@@ -61,8 +61,7 @@ function capsLock(eve,ident){
 
         // check for Not Allowed Characters
         character = String.fromCharCode(keyCode);
-        if (((keyCode > 31 && keyCode < 127) || keyCode > 159) &&
-            /[^\s\w!@#$%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/.test(character)) {
+        if (((keyCode > 31 && keyCode < 127) || keyCode > 159) && (/[^\s\w!@#$%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/.test)(character)) {
             document.getElementById(ident + '_char').style.display = 'block';
             document.getElementById(ident + '_character').childNodes[0].nodeValue = character;
         } else {
@@ -71,13 +70,13 @@ function capsLock(eve,ident){
     }
 }
 
-
 // scroll fix for IE
-window.onload = function() {
+window.onload = function () {
     if (document.all) {
         var codeFix = document.all.tags("div");
-        for (var codeI = 0; codeI < codeFix.length; codeI++) {
-            if (codeFix[codeI].className == "scroll" && (codeFix[codeI].scrollWidth > codeFix[codeI].clientWidth || codeFix[codeI].clientWidth == 0))
+        var codeI;
+        for (codeI = 0; codeI < codeFix.length; codeI++) {
+            if (codeFix[codeI].className == "scroll" && (codeFix[codeI].scrollWidth > codeFix[codeI].clientWidth || codeFix[codeI].clientWidth === 0))
             codeFix[codeI].style.height = (codeFix[codeI].clientHeight + 34) + "px";
         }
     }
@@ -165,7 +164,7 @@ function quoteSelection(quote_name, quote_topic_id, quote_msg_id, quote_date, qu
 
 function contains(node, container) {
     while (node) {
-        if (node === container) return true;
+        if (node == container) return true;
         node = node.parentNode;
     }
     return false;
@@ -277,7 +276,7 @@ function get_selection(msg_id, qinfo) {
         ctext = ctext.replace(/<span class="sh_(.+?)">(.+?)<\/span>/ig,"$2");
         ctype = ctype.replace(/ sh_sourceCode/,"");
         ctype = ctype.replace(/sh_(.+)/, " $1");
-        if(ctype == 'code') ctype = "";
+        if (ctype == 'code') ctype = "";
         var codeubb = "[code" + ctype + "]" + ctext + "[/code]";
         str = str.replace(/<pre(.*?)class="(.+?)"[^>]*?>(.+?)<\/pre>/i, codeubb);
     }
@@ -379,7 +378,7 @@ function resize_images() {
             continue;
         }
 
-        if (document.images[tmp_image_name].complete == false) {
+        if (document.images[tmp_image_name].complete === false) {
             tmp_array[tmp_array.length] = tmp_image_name;
             // The following is needed since Opera does not load/show
             // style.display='none' images if they are not already in cache.
@@ -402,12 +401,12 @@ function resize_images() {
             continue;
         }
 
-        if (maxwidth != 0 && tmpwidth > maxwidth) {
+        if (maxwidth !== 0 && tmpwidth > maxwidth) {
             tmpheight = tmpheight * maxwidth / tmpwidth;
             tmpwidth  = maxwidth;
         }
 
-        if (maxheight != 0 && tmpheight > maxheight) {
+        if (maxheight !== 0 && tmpheight > maxheight) {
             tmpwidth  = tmpwidth * maxheight / tmpheight;
             tmpheight = maxheight;
         }
@@ -445,7 +444,7 @@ function resize_brd_images(img) {
             img.style.display = 'inline';
         }
 
-        if (img.complete == false) {
+        if (img.complete === false) {
             // The following is needed since Opera does not load/show
             // style.display='none' images if they are not already in cache.
             if (/Opera/i.test(navigator.userAgent)) {
@@ -461,12 +460,12 @@ function resize_brd_images(img) {
         var tmpwidth  = img.width  || tmp_image.width;
         var tmpheight = img.height || tmp_image.height;
 
-        if (maxwidth != 0 && tmpwidth > maxwidth) {
+        if (maxwidth !== 0 && tmpwidth > maxwidth) {
             tmpheight = tmpheight * maxwidth / tmpwidth;
             tmpwidth  = maxwidth;
         }
 
-        if (maxheight != 0 && tmpheight > maxheight) {
+        if (maxheight !== 0 && tmpheight > maxheight) {
             tmpwidth  = tmpwidth * maxheight / tmpheight;
             tmpheight = maxheight;
         }
@@ -508,18 +507,18 @@ function changecontent() {
     if (index >= fcontent.length) index = 0;
 
     if (DOM2) {
-        document.getElementById("fscroller").style.color="rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
-        document.getElementById("fscroller").innerHTML=begintag+fcontent[index]+closetag;
+        document.getElementById("newsdiv").style.color="rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
+        document.getElementById("newsdiv").innerHTML=begintag+fcontent[index]+closetag;
         if (fadelinks) linkcolorchange(1);
         colorfadeup(1);
     } else if (ie4) {
-        document.all.fscroller.innerHTML=begintag+fcontent[index]+closetag;
+        document.all.news.innerHTML=begintag+fcontent[index]+closetag;
     }
     index++;
 }
 
 function linkcolorchange(step) {
-    var obj = document.getElementById("fscroller").getElementsByTagName("A");
+    var obj = document.getElementById("newsdiv").getElementsByTagName("A");
     if (obj.length > 0) {
         for (i = 0; i < obj.length; i++) {
             obj[i].style.color=getstepcolor(step);
@@ -529,13 +528,13 @@ function linkcolorchange(step) {
 
 function colorfadeup(step) {
     if (step <= maxsteps) {
-        document.getElementById("fscroller").style.color = getstepcolor(step);
+        document.getElementById("newsdiv").style.color = getstepcolor(step);
         if (fadelinks) linkcolorchange(step);
         step++;
         fadecounter = setTimeout("colorfadeup("+step+")", stepdelay);
     } else {
         clearTimeout(fadecounter);
-        document.getElementById("fscroller").style.color = "rgb("+endcolor[0]+", "+endcolor[1]+", "+endcolor[2]+")";
+        document.getElementById("newsdiv").style.color = "rgb("+endcolor[0]+", "+endcolor[1]+", "+endcolor[2]+")";
         setTimeout("colorfadedown("+maxsteps+")", delay);
     }
 }
@@ -543,12 +542,12 @@ function colorfadeup(step) {
 function colorfadedown(step) {
     if (step > 1) {
         step--;
-        document.getElementById("fscroller").style.color = getstepcolor(step);
+        document.getElementById("newsdiv").style.color = getstepcolor(step);
         if (fadelinks) linkcolorchange(step);
         fadecounter = setTimeout("colorfadedown("+step+")", stepdelay);
     } else {
         clearTimeout(fadecounter);
-        document.getElementById("fscroller").style.color = "rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
+        document.getElementById("newsdiv").style.color = "rgb("+startcolor[0]+", "+startcolor[1]+", "+startcolor[2]+")";
         setTimeout("changecontent()", delay / 2);
     }
 }
@@ -567,7 +566,7 @@ function getstepcolor(step) {
 
 // Dynamic clock
 function WriteClock(Element_Id,s1,s2) {
-    if (OurTime == 0) return;
+    if (OurTime === 0) return;
 
     returnTime = Clock(s2);
 
@@ -613,21 +612,21 @@ var skydobject = {
         document.onmousedown = this.skydeKnap
         document.onmouseup = function(){
             this.skydNu = 0;
-            document.getElementById('messagewidth').value = parseInt(document.getElementById('message').style.width);
-            document.getElementById('messageheight').value = parseInt(document.getElementById('message').style.height);
+            document.getElementById('messagewidth').value = parseInt(document.getElementById('message').style.width, 10);
+            document.getElementById('messageheight').value = parseInt(document.getElementById('message').style.height, 10);
         }
     },
     changeSize:function(deleEnh, knapId) {
         if (knapId == "dragImg1") {
-            newwidth = oldwidth+parseInt(deleEnh);
+            newwidth = oldwidth+parseInt(deleEnh, 10);
             newdragwidth = olddragwidth+parseInt(deleEnh);
             document.getElementById('message').style.width = newwidth+'px';
             document.getElementById('dragbgh').style.width = newdragwidth+'px';
             document.getElementById('dragImg2').style.width = newdragwidth+'px';
         }
         if (knapId == "dragImg2") {
-            newheight = oldheight+parseInt(deleEnh);
-            newdragheight = olddragheight+parseInt(deleEnh);
+            newheight = oldheight+parseInt(deleEnh, 10);
+            newdragheight = olddragheight+parseInt(deleEnh, 10);
             document.getElementById('message').style.height = newheight+'px';
             document.getElementById('dragbgw').style.height = newdragheight+'px';
             document.getElementById('dragImg1').style.height = newdragheight+'px';
@@ -639,17 +638,17 @@ var skydobject = {
         var evtobj = window.event ? window.event : e;
         if (this.skydNu == 1) {
             sizestop = f_clientWidth()
-            maxstop = parseInt(((sizestop*66)/100)-427);
+            maxstop = parseInt(((sizestop*66)/100)-427, 10);
             if (maxstop > 413) maxstop = 413;
             if (maxstop < 60) maxstop = 60;
 
-            glX = parseInt(this.targetobj.style.left);
+            glX = parseInt(this.targetobj.style.left, 10);
             this.targetobj.style.left = this.temp2 + evtobj.clientX - this.x + "px";
-            nyX = parseInt(this.temp2 + evtobj.clientX - this.x);
+            nyX = parseInt(this.temp2 + evtobj.clientX - this.x, 10);
             if (nyX > glX) retning = "vn"; else retning = "hj";
             if (nyX < 1 && retning == "hj") { this.targetobj.style.left = 0 + "px"; nyX = 0; retning = "vn"; }
             if (nyX > maxstop && retning == "vn") { this.targetobj.style.left = maxstop + "px"; nyX = maxstop; retning = "hj"; }
-            delEnh = parseInt(nyX);
+            delEnh = parseInt(nyX, 10);
             var knapObj = this.targetobj.id;
             skydobject.changeSize(delEnh, knapObj);
             return false;
@@ -657,11 +656,11 @@ var skydobject = {
         if (this.skydNu == 2) {
             glY = parseInt(this.targetobj.style.top);
             this.targetobj.style.top = this.temp3 + evtobj.clientY - this.y + "px";
-            nyY = parseInt(this.temp3 + evtobj.clientY - this.y);
+            nyY = parseInt(this.temp3 + evtobj.clientY - this.y, 10);
             if (nyY > glY) retning = "vn"; else retning = "hj";
             if (nyY < 1 && retning == "hj") { this.targetobj.style.top = 0 + "px"; nyY = 0; retning = "vn"; }
             if (nyY > 270 && retning == "vn") { this.targetobj.style.top = 270 + "px"; nyY = 270; retning = "hj"; }
-            delEnh = parseInt(nyY);
+            delEnh = parseInt(nyY, 10);
             var knapObj = this.targetobj.id;
             skydobject.changeSize(delEnh, knapObj);
             return false;
@@ -674,9 +673,9 @@ var skydobject = {
             if (this.targetobj.id == "dragImg1") this.skydNu = 1;
             if (this.targetobj.id == "dragImg2") this.skydNu = 2;
             this.knapObj = this.targetobj;
-            if (isNaN(parseInt(this.targetobj.style.left))) this.targetobj.style.left = 0;
-            if (isNaN(parseInt(this.targetobj.style.top))) this.targetobj.style.top = 0;
-            this.temp2 = parseInt(this.targetobj.style.left);
+            if (isNaN(parseInt(this.targetobj.style.left, 10))) this.targetobj.style.left = 0;
+            if (isNaN(parseInt(this.targetobj.style.top, 10))) this.targetobj.style.top = 0;
+            this.temp2 = parseInt(this.targetobj.style.left, 10);
             this.temp3 = parseInt(this.targetobj.style.top);
             this.x = evtobj.clientX;
             this.y = evtobj.clientY;
@@ -702,8 +701,8 @@ function f_filterResults(n_win, n_docel, n_body) {
 
 function sizetext(sizefact) {
     orgsize = orgsize + sizefact;
-    if(orgsize < 6) orgsize = 6;
-    if(orgsize > 16) orgsize = 16;
+    if (orgsize < 6) orgsize = 6;
+    if (orgsize > 16) orgsize = 16;
     document.getElementById('message').style.fontSize = orgsize+'pt';
     document.getElementById('txtsize').value = orgsize;
 }

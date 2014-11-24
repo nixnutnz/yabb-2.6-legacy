@@ -17,7 +17,6 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.1';
 
 $modlistpmver = 'YaBB 2.6.1 $Revision$';
-my ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ListMods {
@@ -26,7 +25,7 @@ sub ListMods {
     # You need to list your mod in this file for full compliance.
     # Add it in the following way:
     #        $my_mod = "Name of Mod|Author|Description|Version|Date Released";
-    #        push (@installed_mods, "$my_mod");
+    #        push @installed_mods, $my_mod;
     # It is recommended that you do a "add before" on the end boardmod tag
     # This preserves the installation order.
 

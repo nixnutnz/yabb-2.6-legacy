@@ -93,7 +93,7 @@ sub sendmail {
                 push @arg, Port => $port;
                 if ($authuser) { push @arg, User => "$authuser" ;}
                 if ($authpass) { push @arg, Password => "$authpass" ;}
-                        $smtp = Net::SMTP::TLS->new(@arg) || croak "Unable to create Net::SMTP::TLS object. Server: '$smtp_server', port '$port'\n\n" . $OS_ERROR;
+                $smtp = Net::SMTP::TLS->new(@arg) || croak "Unable to create Net::SMTP::TLS object. Server: '$smtp_server', port '$port'\n\n" . $OS_ERROR;
             ^;
         }
         if ($EVAL_ERROR) {
@@ -103,7 +103,7 @@ sub sendmail {
 
         eval q^
             $smtp->mail($from);
-                  foreach (split /, /sm, $to) { $smtp->to($_); }
+            foreach (split /, /sm, $to) { $smtp->to($_); }
             $smtp->data();
             $smtp->datasend("To: $toheader\r\n");
             $smtp->datasend("From: $fromheader\r\n");

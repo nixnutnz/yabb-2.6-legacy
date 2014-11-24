@@ -735,7 +735,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
         </script>~;
             }
             else {
-                for my $i ( 0 .. ( @options - 1 ) ) {
+                for my $i ( 0 .. $#options ) {
                     if ( !$options[$i] ) { next; }
 
                     # Display Poll Results
@@ -746,13 +746,12 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
                         $pollpercent = sprintf '%.1f', $pollpercent;
                         $pollbar = int(150 * $votes[$i] / $maxvote);
                     }
-                    $pollbar .= 'px';
-                    $poll_hasvoted .= qq~
-    <div style="clear: both; height: 18px; vertical-align: middle;">
-        <div style="float: left; width: 50%; text-align: right;">$options[$i]&nbsp;&nbsp;&nbsp;&nbsp;</div>
-        <div style="float: left; text-align: left; width: $pollbar; height: 10px; background-color: $slicecolor[$i]; border: 1px outset $slicecolor[$i];"></div>
-        <div class="small" style="float: left; text-align: left;">&nbsp;&nbsp;$votes[$i] ($pollpercent%)</div>
-    </div>~;
+                    $poll_hasvoted .= $mypoll_hasvoted;
+                    $poll_hasvoted =~ s/{yabb optionsi}/$options[$i]/gsm;
+                    $poll_hasvoted =~ s/{yabb pollbar}/$pollbar/gsm;
+                    $poll_hasvoted =~ s/{yabb slicecolori}/$slicecolor[$i]/gsm;
+                    $poll_hasvoted =~ s/{yabb votesi}/$votes[$i]/gsm;
+                    $poll_hasvoted =~ s/{yabb pollpercent}/$pollpercent/gsm;
                 }
             }
         }
@@ -791,9 +790,9 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
     }
     if (!$poll_locked && $poll_end) {
         my $x = $poll_end - $date;
-        my $days  = int( $x / 86_400 );
-        my $hours = int( ( $x - ( $days * 86_400 ) ) / 3600 );
-        my $min   = int( ( $x - ( $days * 86_400 ) - ( $hours * 3600 ) ) / 60 );
+        my $days  = int( $x / 86400 );
+        my $hours = int( ( $x - ( $days * 86400 ) ) / 3600 );
+        my $min   = int( ( $x - ( $days * 86400 ) - ( $hours * 3600 ) ) / 60 );
         $poll_end = "$post_polltxt{'100'} ";
         if ($days) {
             $poll_end .= "$days $post_polltxt{'100a'}"

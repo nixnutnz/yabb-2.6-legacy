@@ -125,12 +125,7 @@ sub yymain {
             require Admin::AdminSubList;
             if ( $director{$action} ) {
                 my @act = split /&/xsm, $director{$action};
-#                if ( $action =~ /^ext_/xsm ) {
-#                    require "$sourcedir/$act[0]";
-#                }
-#                else {
-                    require "$admindir/$act[0]";
-#                }
+                require "$admindir/$act[0]";
                 &{ $act[1] };
             }
             else {
@@ -270,7 +265,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "|$admintxt{'a5_title'}|$admintxt{'a5_label'} - $admintxt{'34'}|a5",
         "modskin|$admintxt{'a5_sub1'}|$admintxt{'a5_label1'}|",
         "modcss|$admintxt{'a5_sub2'}|$admintxt{'a5_label2'}|",
-        "modtemp|$admintxt{'a5_sub3'}|$admintxt{'a5_label3'}|",
+#        "modtemp|$admintxt{'a5_sub3'}|$admintxt{'a5_label3'}|",
     );
 
     @member_controls = (

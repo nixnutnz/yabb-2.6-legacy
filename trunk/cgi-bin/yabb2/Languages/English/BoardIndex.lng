@@ -62,6 +62,7 @@ $boardindexlngver = 'YaBB 2.6.1 $Revision$';
 '524' => 'In',
 '525' => 'By',
 '526' => 'Redirected Hits',
+'643' => 'Up',
 '685' => 'Info Center',
 '791' => 'View the',
 '792' => 'most recent posts',

@@ -36,12 +36,13 @@ sub AddModerators {
     *get_subboards = sub {
         my @x = @_;
         $indent += 2;
+        $modsel     = q{};
         foreach my $board (@x) {
             my $dash;
             if ( $indent > 2 ) { $dash = q{-}; }
 
             ( $boardname, $boardperms, $boardview ) =
-              split /\|/xsm, $board{"$board"};
+              split /\|/xsm, $board{$board};
             if (   ${ $uid . $board }{'ann'} == 1
                 || ${ $uid . $board }{'rbin'} == 1
                 || $boardname =~ m/http:\/\//xsm )
@@ -49,6 +50,12 @@ sub AddModerators {
                 next;
             }
             ToChars($boardname);
+            $moderators = ${ $uid . $board }{'mods'};
+            my @BoardModerators = split /, ?/sm, $moderators;
+            $modsel = q{};
+            foreach my $thisMod (@BoardModerators) {
+                if ( $thisMod eq $user ) { $modsel = q~ selected="selected"~; }
+            }
             $addbdmod .=
                 qq~<option value="$board"$modsel>~
               . ( '&nbsp;' x $indent )
@@ -66,14 +73,6 @@ sub AddModerators {
         ( $catname, undef, undef, undef ) = split /\|/xsm, $catinfo{"$catid"};
         ToChars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
-        foreach my $board (@bdlist) {
-            $modsel     = q{};
-            $moderators = ${ $uid . $board }{'mods'};
-            my @BoardModerators = split /, ?/sm, $moderators;
-            foreach my $thisMod (@BoardModerators) {
-                if ( $thisMod eq $user ) { $modsel = q~selected="selected"~; }
-            }
-        }
         my $indent = -2;
         get_subboards(@bdlist);
     }
@@ -96,7 +95,7 @@ sub AddModerators2 {
     for my $boardline (@boardcntr) {
         $boardline =~ s/[\r\n]//gsm;
         my @newline = split /\|/xsm, $boardline;
-        my @bdmodlist = split /, /sm, $newbrd[4];
+        my @bdmodlist = split /, /sm, $newline[4];
         chomp @bdmodlist;
         $newline[4]  = q{};
         $bdi       = 0;

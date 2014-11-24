@@ -119,7 +119,7 @@ sub Favorites {
     # Begin printing the message index for current board.
     $counter = $start;
     getlog();
-    my $dmax = $date - ( $max_log_days_old * 86_400 );
+    my $dmax = $date - ( $max_log_days_old * 86400 );
     foreach (@threads) {
         (
             $mnum,     $msub,      $mname, $memail, $mdate,
@@ -592,7 +592,7 @@ sub IsFav {
 
     my $addfav = $img{'addfav'};
     my $remfav = $img{'remfav'};
-    if ($threadtools) {
+    if ($useThreadtools) {
         $addfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
         $remfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
     }
@@ -629,7 +629,7 @@ sub IsFav1 {
 
     my $addfav = $img{'addfav'};
     my $remfav = $img{'remfav'};
-    if ($threadtools) {
+    if ($useThreadtools) {
         $addfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
         $remfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
     }

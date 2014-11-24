@@ -194,7 +194,6 @@ $show_questions
 }
 
 sub SpamQuestions2 {
-
     is_admin_or_gmod();
 
     $en_spam_questions   = $FORM{'en_spam_questions'}   || '0';
@@ -212,7 +211,6 @@ sub SpamQuestions2 {
 }
 
 sub SpamQuestionsAdd {
-
     is_admin_or_gmod();
 
     $spam_question = $FORM{'spam_question'};
@@ -243,7 +241,6 @@ sub SpamQuestionsAdd {
 }
 
 sub SpamQuestionsEdit {
-
     is_admin_or_gmod();
 
     $id = $FORM{'spam_question_id'};
@@ -315,7 +312,6 @@ sub SpamQuestionsEdit {
 }
 
 sub SpamQuestionsEdit2 {
-
     is_admin_or_gmod();
 
     $spam_question_id = $FORM{'spam_question_id'};
@@ -369,7 +365,6 @@ sub SpamQuestionsEdit2 {
 }
 
 sub SpamQuestionsDelete {
-
     is_admin_or_gmod();
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )

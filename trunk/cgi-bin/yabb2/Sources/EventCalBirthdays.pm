@@ -127,14 +127,12 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     my $sortiert = $INFO{'sort'} || $FORM{'sort'};
     my $letter   = lc $INFO{'letter'} || lc $FORM{'letter'};
     $vmonth = $INFO{'vmonth'} || $FORM{'vmonth'};
-
-
     # Begin Letter
 
     if ( !$sortiert ) { $sortiert = 'sortdate'; }
     my @abcde = ( 'a' .. 'z' );
     my $letter_s = qq~
-<form method="post" action="$scripturl?action=birthdaylist" name="birthdaylist">
+<form method="post" action="$scripturl?action=birthdaylist">
     <select size="1" name="letter" onchange="submit()" class="small" style="vertical-align: middle;">
         <option value="">&nbsp;</option>
         <option value="other">$var_cal{'other'}</option>~;
@@ -243,8 +241,9 @@ qq~    </select>
     }
     undef %memberinf;
 
+    $viewbirthdays = q{};
     if ( !@birthmembers1 ) {
-        $viewbirthdays .= $mybdlist_notbmember;
+        $viewbirthdays = $mybdlist_notbmember;
     }
     else {
         foreach my $user_name (@birthmembers1) {
@@ -319,25 +318,14 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
         $cal_info_header =~ s/{yabb vmonth}/$myvmnthin/gsm;
     }
 
-    $yymain .= $mybdlist_calgoto;
-    $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
-
     if ($bd_today) {
         $bd_today =~ s/, $//sm;
-        $yymain .= qq~
-<span class="u">$var_cal{'calbirthdaytoday'}:</span><br /><br />
+        $my_bdtoday = qq~
+        <br /><br /><span class="u">$var_cal{'calbirthdaytoday'}:</span><br /><br />
 $bd_today
 <br /><br />
 ~;
     }
-    $yymain .= $mybdlist_sort;
-    $yymain =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
-    $yymain =~ s/{yabb cal_col}/$cal_col/gsm;
-    $yymain =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
-    $yymain =~ s/{yabb class_sortuser}/$class_sortuser/sm;
-    $yymain =~ s/{yabb class_sortage}/$class_sortage/sm;
-    $yymain =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
-    $yymain =~ s/{yabb class_sortdate}/$class_sortdate/sm;
 
     if ( $calsplit > 0 && @birthmembers1 >= $calsplit ) {
         for my $i ( 1 .. 12 ) {
@@ -352,19 +340,16 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
         $bdmonths = $mybd_months;
         $bdmonths =~ s/{yabb bdmonthlink}/$bdmonthlinks/gsm;
     }
-    $yymain .= $bdmonths;
 
     for my $i ( a .. z ) {
-        $yymain .=
+        $my_alpha_a .=
             $mybdlist_alpha_a
           . $i
           . q~" style="text-decoration:none;">~
           . uc($i)
           . $mybdlist_alpha_b;
-        $yabbmain =~ s/{yabb sortiert}/$sortiert/sm;
+        $my_alpha_a =~ s/{yabb sortiert}/$sortiert/sm;
     }
-    $yymain .= $mybdlist_alpha_c;
-    $yabbmain =~ s/{yabb viewbirthdays}/$viewbirthdays/sm;
 
     for my $j ( 1 .. 12 ) {
         if ( $calsplit > 0 &&  @birthmembers1 >= $calsplit && $vmonth eq $mont[$j] )
@@ -575,7 +560,20 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
 
         }
     }
+    $yymain .= $mybdlist_calgoto;
+    $yymain .= $my_alpha_a;
+    $yymain .= $viewbirthdays;
+    $yymain .= $bdmonths;
     $yymain .= $yyvmon;
+    $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
+    $yymain =~ s/{yabb cal_colspan}/$cal_colspan/gsm;
+    $yymain =~ s/{yabb my_bdtoday}/$my_bdtoday/gsm;
+    $yymain =~ s/{yabb cal_col}/$cal_col/gsm;
+    $yymain =~ s/{yabb cal_col_star_sort}/$cal_col_star_sort/gsm;
+    $yymain =~ s/{yabb class_sortuser}/$class_sortuser/sm;
+    $yymain =~ s/{yabb class_sortage}/$class_sortage/sm;
+    $yymain =~ s/{yabb class_sortstarsign}/$class_sortstarsign/sm;
+    $yymain =~ s/{yabb class_sortdate}/$class_sortdate/sm;
 
     if ( $no_bd_found == 1 && ( $calsplit == 0 || @birthmembers1 <= $calsplit ) ) {
         $yymain .= $mybdlist_nobd;

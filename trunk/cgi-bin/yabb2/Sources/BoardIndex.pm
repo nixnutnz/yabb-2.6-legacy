@@ -299,7 +299,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
     BoardTotals( 'load', @loadboards );
     getlog();
-    my $dmax = $date - ( $max_log_days_old * 86_400 );
+    my $dmax = $date - ( $max_log_days_old * 86400 );
 
 # if loading subboard list by ajax we don't need this (Ajax showcasepoll load does not work, assume this is mistake. DAR)
 
@@ -1379,7 +1379,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var boardNames = [$template_boardnames];
     var boardOpen = "";
     var subboardOpen = "";
-    var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" />';
+    var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" alt="$boardindex_txt{'643'}" />';
     var openbutton = "$imagesdir/$brd_dropdown";
     var closebutton = "$imagesdir/$brd_dropup";
     var opensubbutton = "$imagesdir/$sub_arrow_dn";
@@ -1789,7 +1789,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
                         var boardNames = [$template_boardnames];
                         var boardOpen = "";
                         var subboardOpen = "";
-                        var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" />';
+                        var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" alt="$boardindex_txt{'643'}" />';
                         var openbutton = "$imagesdir/$brd_dropdown";
                         var closebutton = "$imagesdir/$brd_dropup";
                         var loadimg = "$imagesdir/$brd_loadbar";

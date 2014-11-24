@@ -15,7 +15,6 @@
 #                and added to YaBB core in Version 2.5.4/2.6.0                #
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
 ###############################################################################
-
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.1';
 

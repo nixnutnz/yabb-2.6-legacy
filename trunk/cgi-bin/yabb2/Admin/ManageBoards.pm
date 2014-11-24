@@ -48,13 +48,13 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
             var something_checked = false;
             for (i=0; i<where.elements.length; i++){
                 if(where.elements[i].type == "checkbox"){
-                    if(where.elements[i].checked == true){
+                    if(where.elements[i].checked === true){
                         something_checked = true;
                     }
                 }
             }
-            if(something_checked == true){
-                if (where.baction[1].checked == false){
+            if(something_checked === true){
+                if (where.baction[1].checked === false){
                     return true;
                 }
                 if (confirm("$admin_txt{'617'}")) {
@@ -547,7 +547,7 @@ function removeUser(oElement) {
 // this function forces all users listed in moderators to be selected for processing
 function selectNames(total) {
     for(var x = 1; x <= total; x++) {
-    var oList = document.getElementById('moderators'+x)
+    var oList = document.getElementById('moderators'+x);
     for (var i = 0; i < oList.options.length; i++)
         {oList.options[i].selected = true;}
     }
@@ -558,7 +558,7 @@ function copyNames(num) {
     copyValues = new Array();
     var oList = document.getElementById('moderators'+num).options;
     for (var i = 0; i < oList.length; i++) {
-        if(oList[i].selected == true) {
+        if(oList[i].selected === true) {
             copyList[copyList.length] = oList[i].text;
             copyValues[copyValues.length] = oList[i].value;
         }
@@ -569,7 +569,7 @@ function pasteNames(num,total) {
     var found = false;
     var oList = null;
     var which = 0;
-    if(copyList.length != 0) {
+    if(copyList.length !== 0) {
         for(var x = 0; x < total; x++) {
             which = num + x;
             oList = document.getElementById('moderators'+which).options;
@@ -581,7 +581,7 @@ function pasteNames(num,total) {
                         break;
                     }
                 }
-                if(found == false) {
+                if(found === false) {
                     if(navigator.appName=="Microsoft Internet Explorer") {
                         document.getElementById('moderators'+which).add(new Option(copyList[e],copyValues[e]));
                     } else {
@@ -1086,7 +1086,7 @@ function checkann(acheck, awho) {
     var adisuncheck = acheck;
     for (var i = istart; i <= numboards; i++) {
         if(i != awho) {
-            if(document.getElementById('rbin'+i).checked == true) {
+            if(document.getElementById('rbin'+i).checked === true) {
                 adischeck = true;
                 document.getElementById('ann'+i).disabled = true;
             }
@@ -1095,7 +1095,7 @@ function checkann(acheck, awho) {
             }
         }
     }
-    if(document.getElementById('ann'+awho).checked == true) {
+    if(document.getElementById('ann'+awho).checked === true) {
         adischeck = true;
         document.forms["boardsadd"].elements['topicperms'+awho].selectedIndex = -1;
         document.forms["boardsadd"].elements['topicperms'+awho].options[0].selected = true;
@@ -1114,14 +1114,14 @@ function checkbin(bcheck, bwho) {
     var bdisuncheck = bcheck;
     for (var i = istart; i <= numboards; i++) {
         if(i != bwho) {
-            if(document.getElementById('ann'+i).checked == true) {
+            if(document.getElementById('ann'+i).checked === true) {
                 bdischeck = true;
                 document.getElementById('rbin'+i).disabled = true;
             }
             else document.getElementById('rbin'+i).disabled = bcheck;
         }
     }
-    if(document.getElementById('rbin'+bwho).checked == true) bdischeck = true;
+    if(document.getElementById('rbin'+bwho).checked === true) bdischeck = true;
     document.getElementById('ann'+bwho).disabled = bdischeck;
     document.getElementById('pic'+bwho).disabled = bdisuncheck;
     if(annexist == '1') document.getElementById('ann'+bwho).disabled = true;

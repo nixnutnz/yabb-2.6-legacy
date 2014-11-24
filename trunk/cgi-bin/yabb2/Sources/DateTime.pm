@@ -25,7 +25,7 @@ $datetimepmver = 'YaBB 2.6.1 $Revision$';
 @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
 
 sub calcdifference {    # Input: $date1 $date2
-    $result = int( $date2 / 86_400 ) - int( $date1 / 86_400 );
+    $result = int( $date2 / 86400 ) - int( $date1 / 86400 );
     return $result;
 }
 
@@ -479,7 +479,7 @@ sub time_4 {
     my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute, $lower ) = @_;
     $ampm = $newhour > 11 ? 'pm' : 'am';
     $newhour2 = $newhour % 12 || 12;
-	if ( !@months_m ) { @months_m = @months; }
+    if ( !@months_m ) { @months_m = @months; }
     if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif ( $lower ) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
     else             { $newmonth2 = $months[ $newmonth - 1 ]; }

@@ -821,12 +821,12 @@ qq~ <span class="small">(<a href="$scripturl?action=imcb;rid=$messageid;receiver
 #  posting the IM
 sub IMPost {
     if ( ( $INFO{'bmess'} || $FORM{'isBMess'} ) eq 'yes' ) { $sendBMess = 1; }
+    ##  guests not allowed
+    if ($iamguest) { fatal_error('im_members_only'); }
     ##  if user is not a FA/gmod and has a postcount below the threshold
     if ( !$staff && ${ $uid . $username }{'postcount'} < $numposts ) {
         fatal_error('im_low_postcount');
     }
-    ##  guests not allowed
-    if ($iamguest) { fatal_error('im_members_only'); }
     my ( $mdate, $mip, $mmessage );
     ##  if the IM has a number assigned already, open the right IM file
     if ( $INFO{'id'} ne q{} ) {
@@ -873,7 +873,7 @@ sub IMPost {
             if ( $INFO{'quote'} ) {
 
                 # swap out brs and spaces
-                $message =~ s/<br.*?>/\n/gism;
+                $message =~ s/<br.*?>/\n/igsm;
                 $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
                 if ( !$nestedquotes ) {
                     $message =~
@@ -1068,7 +1068,7 @@ sub drawPMbox {
                 my (
                     undef, $mfrom,      $mto,  undef, undef,
                     undef, undef,       undef, undef, undef,
-                    undef, $messStatus, undef
+                    undef, $messStatus, undef,
                 ) = split /\|/xsm, $checkbcm;
                 if ( $mfrom eq $username || BroadMessageView($mto) ) {
                     if ( $INFO{'sort'} ne 'gpdate'
@@ -1439,7 +1439,7 @@ function insert_user (oElement,username,userid) {
             ~;
         }
         elsif ( $view eq 'pm' ) {
-			$allowAttachIM ||= 0;
+            $allowAttachIM ||= 0;
             $allowGroups = GroupPerms( $allowAttachIM, $pmAttachGroups );
             if ( $allowAttachIM && $allowGroups ) {
                 $MCGlobalFormStart .=
@@ -1515,7 +1515,7 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
         }
 
         $mctitle = $mycenter_txt{'welcometxt'};
-        #################################
+
         $myprofileblock =~ s/{yabb userlink}/$link{$username}/gsm;
         $myprofileblock =~ s/{yabb memberinfo}/$memberinfo/gsm;
         $myprofileblock =~ s/{yabb stars}/$memberstar{$username}/gsm;
@@ -1528,11 +1528,11 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
         $myprofileblock =~ s/{yabb location}/$userlocation/gsm;
         $myprofileblock =~
           s/{yabb gender}/${$uid.$username}{'gender'}/gsm;
-        $myprofileblock =~ 
-          s/{yabb zodiac}/${$uid.$username}{'zodiac'}/gsm;
+        $myprofileblock =~ s/{yabb zodiac}/${$uid.$username}{'zodiac'}/gsm;
         $myprofileblock =~ s/{yabb age}/$template_age/gsm;
         $myprofileblock =~ s/{yabb regdate}/$template_regdate/gsm;
-        ################################
+
+## Mod Hook myprofileblock ##
         $myprofileblock =~ s/{yabb .+?}//gsm;
 
         if ($buddyListEnabled) {
@@ -1860,7 +1860,7 @@ sub drawPMView {
             my $oldestDate = ( split /\|/xsm, $dimmessages[-1] )[6];
             $groupByDate = 1;
             ## work out the span of days - today less oldest message, in days
-            $dateSpan = int( ( $date - $oldestDate ) / 86_400 );    # in days
+            $dateSpan = int( ( $date - $oldestDate ) / 86400 );    # in days
             $latestPM = ( ( $date - $topMDate ) / 3600 );           # in hours
         }
         ## if sort is grouped, extra block is added per group
@@ -1916,7 +1916,7 @@ sub drawPMView {
                 $musernamecc,  $musernamebcc, $msub,
                 $mdate,        $immessage,    $mpmessageid,
                 $mreplyno,     $mips,         $messStatus,
-                $messageFlags, $storeFolder,  $messageAttachment
+                $messageFlags, $storeFolder,  $messageAttachment,
             ) = split /\|/xsm, $dimmessages[$counter];
             ## if we are viewing  one of the storage folders, filter out the
             ##  PMs that do not match
@@ -2244,12 +2244,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
             if ( $sortBy eq 'gpdate' ) {
                 $uselegend = q{};
                 if (   $latestDateSet
-                    && ( $date - $mdate ) / 86_400 > 1
+                    && ( $date - $mdate ) / 86400 > 1
                     && $counter > $counterCheck )
                 {
                     $latestDateSet = 0;
                     if ($lastWeekSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 7 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 7 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'oneweek';
@@ -2257,12 +2257,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $lastWeekSet
-                    && ( $date - $mdate ) / 86_400 > 7
+                    && ( $date - $mdate ) / 86400 > 7
                     && $counter > $counterCheck )
                 {
                     $lastWeekSet = 0;
                     if ($twoWeeksSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 14 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 14 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'twoweeks';
@@ -2270,12 +2270,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $twoWeeksSet
-                    && ( $date - $mdate ) / 86_400 > 14
+                    && ( $date - $mdate ) / 86400 > 14
                     && $counter > $counterCheck )
                 {
                     $twoWeeksSet = 0;
                     if ($threeWeeksSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 21 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 21 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'threeweeks';
@@ -2283,12 +2283,12 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $threeWeeksSet
-                    && ( $date - $mdate ) / 86_400 > 21
+                    && ( $date - $mdate ) / 86400 > 21
                     && $counter > $counterCheck )
                 {
                     $threeWeeksSet = 0;
                     if ($monthSet) {
-                        if ( ( $date - $mdate ) / 86_400 <= 31 ) {
+                        if ( ( $date - $mdate ) / 86400 <= 31 ) {
                             $counterCheck = $counter;
                         }
                         $uselegend = 'fourweeks';
@@ -2296,7 +2296,7 @@ qq~<span class="small"><a href="$scripturl?action=imshow;id=$messageid;caller=2"
                 }
 
                 if (   $monthSet
-                    && ( $date - $mdate ) / 86_400 > 31
+                    && ( $date - $mdate ) / 86400 > 31
                     && $counter > $counterCheck )
                 {
                     $monthSet = 0;

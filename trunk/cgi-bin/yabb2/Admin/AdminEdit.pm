@@ -51,6 +51,7 @@ sub GmodSettings {
             $counter++;
         }
     }
+    @actfound = sort @actfound;
     $column  = int( $counter / 2 );
     $counter = 0;
     $aa      = 0;

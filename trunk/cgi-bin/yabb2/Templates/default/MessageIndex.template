@@ -11,9 +11,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$messageindextemver = 'YaBB 2.6.1 $Revision$';
 
-LoadLanguage("BoardIndex");
+LoadLanguage('BoardIndex');
 
 # When thread tools is turned off, these two lists will be combined to display the buttons in the order shown
 # When thread tools is on $outside_threadtools will show buttons normally, while the handle list will show in the thread tools' dropdown
@@ -25,7 +25,7 @@ $my_ttsep = $menusep;
 
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
-if($threadtools) {
+if($useThreadtools) {
     $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
     $threadhandelstyle2 = qq~ class="post_tools center" style="width:10em"~;
 }
@@ -34,6 +34,7 @@ else {
     $threadhandelstyle2 = qq~ class="right"~;
 }
 $bdpicExt = 'png';
+$brdpicwidth = ($max_brd_img_width || 50) + 20;
 $hoveron = 'tpon.gif';
 $hoveroff = 'tpoff.gif';
 $brd_notify_img = 'notify.gif';
@@ -56,11 +57,11 @@ if (!$messagelist) {
     else {
         $messageindex_template .= qq~<!-- Board Description start --><!-- Default Board Graphics courtesy of http://www.shapes4free.com/ -->
             <table class="bordercolor pad_4px cs_thin" style="margin-bottom: 15px;">
-				<colgroup>
-                    <col style="width:6%" />
-                    <col style="width:78%" />
+                <colgroup>
+                    <col style="width:${brdpicwidth}px" />
+                    <col style="width:auto" />
                     <col style="width:16%" />
-				</colgroup>
+                </colgroup>
                 <tr>
                     <td class="windowbg center">{yabb bdpicture}</td>
                     <td class="windowbg">{yabb board}

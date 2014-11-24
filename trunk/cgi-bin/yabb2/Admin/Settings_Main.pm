@@ -218,9 +218,10 @@ my $googiehtml = qq~<input type="checkbox" name="enable_spell_check" id="enable_
 }
 # googiespell end
 
-# List of settings
 $qcksearchtype ||= 'allwords';
 $qckage    = defined $qckage ? $qckage : 31;
+
+# List of settings
 
 @settings = (
 {

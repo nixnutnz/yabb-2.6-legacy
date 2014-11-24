@@ -938,10 +938,9 @@ qq~<span class="small"> $cal_icon{'eventmoreadd'} <a href="$scripturl?action=eve
 qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
             }
             if ( $ShowEventAddLink2 || $ShowBirthdaysLink2 ) {
-                $event_link = qq~    <tr><td class="windowbg2" colspan="2">
-                $ShowBirthdaysLink2
-                $ShowEventAddLink2
-                </td></tr>~;
+                $event_link = $myevent_link;
+                $event_link =~ s/{yabb ShowBirthdaysLink2}/$ShowBirthdaysLink2/sm;
+                $event_link =~ s/{yabb ShowEventAddLink2}/$ShowEventAddLink2/sm;
             }
             $yymain .= $mycalout_showevent;
             $yymain =~ s/{yabb mycalout_top}/$mycalout_top/sm;
@@ -1183,7 +1182,7 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
     $DisplayEvents ||= 0;
     if ( $DisplayEvents > 0 ) {
         ( undef, undef, undef, $d_cal, $m_cal, $y_cal, undef, undef, undef ) =
-          gmtime( $daterechnug + ( 86_400 * $DisplayEvents ) );
+          gmtime( $daterechnug + ( 86400 * $DisplayEvents ) );
         $m_cal++;
         $y_cal += 1900;
         $caleventbegin = "$year" . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;

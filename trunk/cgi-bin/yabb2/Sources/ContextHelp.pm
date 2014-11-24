@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
-# for his contibution to the YaBB community                                   #
+# for his contribution to the YaBB community                                  #
 ###############################################################################
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);

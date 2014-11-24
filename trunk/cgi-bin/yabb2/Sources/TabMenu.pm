@@ -53,6 +53,8 @@ sub mainMenu {
             'guestpm'
         ],
     );
+## Mod hook 1 ##
+
     if ( $action eq 'addtab' && $iamadmin ) {
         require Sources::AdvancedTabs;
         AddNewTab();
@@ -63,7 +65,7 @@ sub mainMenu {
     }
     elsif ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
     elsif ( $action ne q{} ) {
-        foreach my $i ( 0 .. 28 ) {
+        for my $i ( 0 .. $#{ $acting[0] } ) {
             my $img0 = $acting[0]->[$i];
             my $img1 = $acting[1]->[$i];
             if ( $action eq $img0 ) {
@@ -76,52 +78,41 @@ sub mainMenu {
         $tmpaction = 'home';
     }
 
-    $tab{'home'} =
-qq~                        <li><span |><a href="$scripturl" title = "$img_txt{'103'}">$img_txt{'103'}</a></span></li>\n~;
-    $tab{'help'} =
-qq~                        <li><span |><a href="$scripturl?action=help" title = "$img_txt{'119'}" class="help">$img_txt{'119'}</a></span></li>\n~;
-    if ( $maxsearchdisplay > -1 && $advsearchaccess eq 'granted' ) {
-        $tab{'search'} =
-qq~                        <li><span |><a href="$scripturl?action=search" title = "$img_txt{'182'}">$img_txt{'182'}</a></span></li>\n~;
-    }
+    my $tabhtml_l = q~                        <li><span|><a href=~;
+    my $tabhtml_r = qq~</span></li>\n~;
+    $tab{'home'} = qq~$tabhtml_l"$scripturl" title="$img_txt{'103'}">$img_txt{'103'}</a>$tabhtml_r~;
+    $tab{'help'} = qq~$tabhtml_l"$scripturl?action=help" title="$img_txt{'119'}" class="help">$img_txt{'119'}</a>$tabhtml_r~;
 
-    # EventCal START
+    if ( $maxsearchdisplay > -1 && $advsearchaccess eq 'granted' ) {
+        $tab{'search'} = qq~$tabhtml_l"$scripturl?action=search" title="$img_txt{'182'}">$img_txt{'182'}</a>$tabhtml_r~;
+    }
     if ( $Show_EventButton == 2 || ( !$iamguest && $Show_EventButton == 1 ) ) {
-        $tab{'eventcal'} =
-qq~                        <li><span |><a href="$scripturl?action=eventcal;calshow=1" title = "$img_txt{'eventcal'}">$img_txt{'eventcal'}</a></span></li>\n~;
+        $tab{'eventcal'} = qq~$tabhtml_l"$scripturl?action=eventcal;calshow=1" title="$img_txt{'eventcal'}">$img_txt{'eventcal'}</a>$tabhtml_r~;
     }
     if ( $Show_BirthdayButton == 2
         || ( !$iamguest && $Show_BirthdayButton == 1 ) )
     {
-        $tab{'birthdaylist'} =
-qq~                        <li><span |><a href="$scripturl?action=birthdaylist" title = "$img_txt{'birthdaylist'}">$img_txt{'birthdaylist'}</a></span></li>\n~;
+        $tab{'birthdaylist'} = qq~$tabhtml_l"$scripturl?action=birthdaylist" title="$img_txt{'birthdaylist'}">$img_txt{'birthdaylist'}</a>$tabhtml_r~;
     }
-
-    # EventCal END
-
     if (   !$ML_Allowed
         || ( $ML_Allowed == 1 && !$iamguest )
         || ( $ML_Allowed == 2 && $staff )
         || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
         || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
     {
-        $tab{'ml'} =
-qq~                        <li><span |><a href="$scripturl?action=ml" title = "$img_txt{'331'}">$img_txt{'331'}</a></span></li>\n~;
+        $tab{'ml'} = qq~$tabhtml_l"$scripturl?action=ml" title="$img_txt{'331'}">$img_txt{'331'}</a>$tabhtml_r~;
     }
     if ($iamadmin) {
         if   ($do_scramble_id) { $user = cloak($username); }
         else                   { $user = $username; }
-
-        $tab{'admin'} =
-qq~                        <li><span |><a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>\n~;
+        $tab{'admin'} = qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
     }
     if ($iamgmod) {
         get_gmod();
         if ($allow_gmod_admin) {
             if   ($do_scramble_id) { $user = cloak($username); }
             else                   { $user = $username; }
-            $tab{'admin'} =
-qq~                        <li><span |><a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title = "$img_txt{'2'}">$img_txt{'2'}</a></span></li>\n~;
+            $tab{'admin'} = qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
         }
     }
     if ( $sessionvalid == 0 && !$iamguest ) {
@@ -135,8 +126,7 @@ qq~                        <li><span |><a href="$boardurl/AdminIndex.$yyaext?act
             $sesredir =~ s/;/x3B/gxsm;
             $sesredir = qq~;sesredir=$sesredir~;
         }
-        $tab{'revalidatesession'} =
-qq~                        <li><span |><a href="$scripturl?action=revalidatesession$sesredir" title = "$img_txt{'34a'}">$img_txt{'34a'}</a></span></li>\n~;
+        $tab{'revalidatesession'} = qq~$tabhtml_l"$scripturl?action=revalidatesession$sesredir" title="$img_txt{'34a'}">$img_txt{'34a'}</a>$tabhtml_r~;
     }
     if ($iamguest) {
         my $sesredir;
@@ -146,36 +136,33 @@ qq~                        <li><span |><a href="$scripturl?action=revalidatesess
             $sesredir =~ s/;/x3B/gxsm;
             $sesredir = qq~;sesredir=$sesredir~;
         }
-        $tab{'login'} = q~                        <li><span |><a href="~
+        $tab{'login'} = qq~$tabhtml_l"~
           . (
             $loginform
             ? "javascript:if(jumptologin>1)alert('$maintxt{'35'}');jumptologin++;window.scrollTo(0,10000);document.loginform.username.focus();"
             : "$scripturl?action=login$sesredir"
-          ) . qq~" title = "$img_txt{'34'}">$img_txt{'34'}</a></span></li>\n~;
+          ) . qq~" title="$img_txt{'34'}">$img_txt{'34'}</a>$tabhtml_r~;
         if ($regtype) {
-            $tab{'register'} =
-qq~                        <li><span |><a href="$scripturl?action=register" title = "$img_txt{'97'}">$img_txt{'97'}</a></span></li>\n~;
+            $tab{'register'} = qq~$tabhtml_l"$scripturl?action=register" title="$img_txt{'97'}">$img_txt{'97'}</a>$tabhtml_r~;
         }
         if ( $PMenableGuestButton && $PM_level > 0 && $PMenableBm_level > 0 ) {
-            $tab{'guestpm'} =
-qq~                        <li><span |><a href="$scripturl?action=guestpm" title = "$img_txt{'pmadmin'}">$img_txt{'pmadmin'}</a></span></li>\n~;
+            $tab{'guestpm'} = qq~$tabhtml_l"$scripturl?action=guestpm" title="$img_txt{'pmadmin'}">$img_txt{'pmadmin'}</a>$tabhtml_r~;
         }
     }
     else {
-        $tab{'mycenter'} =
-qq~                        <li><span |><a href="$scripturl?action=mycenter" title = "$img_txt{'mycenter'}">$img_txt{'mycenter'}</a></span></li>\n~;
-        $tab{'logout'} =
-qq~                        <li><span |><a href="$scripturl?action=logout" title = "$img_txt{'108'}">$img_txt{'108'}</a></span></li>\n~;
+        $tab{'mycenter'} = qq~$tabhtml_l"$scripturl?action=mycenter" title="$img_txt{'mycenter'}">$img_txt{'mycenter'}</a>$tabhtml_r~;
+        $tab{'logout'} = qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}</a>$tabhtml_r~;
     }
 
-    $yytabmenu = qq~                   <ul>\n~;
+
+    $yytabmenu = qq~<ul>\n~;
     # Advanced Tabs starts here
-    for my $i ( 0 .. ( @AdvancedTabs - 1 ) ) {
-        if ( $AdvancedTabs[$i] =~ /\|/xsm ) {
+    for my $i ( 0 .. $#AdvancedTabs ) {
+        if ( $AdvancedTabs[$i] =~ /[|]/xsm ) {
             my (
                 $tab_key,    $tmptab_url, $isaction, $username_req,
                 $tab_access, $tab_newwin, $exttab_url
-            ) = split /\|/xsm, $AdvancedTabs[$i];
+            ) = split /[|]/xsm, $AdvancedTabs[$i];
             if (   !$tab_access
                 || ( $tab_access < 2 && !$iamguest )
                 || ( $tab_access < 3 && $iamgmod )
@@ -200,7 +187,7 @@ qq~                        <li><span |><a href="$scripturl?action=logout" title 
                     ? q~ class="selected"~
                     : q{}
                   )
-                  . qq~><a href="$tab_url"$newwin title = "$tabtxt{$tab_key}">$tabtxt{$tab_key}</a></span></li>\n~;
+                  . qq~><a href="$tab_url"$newwin title="$tabtxt{$tab_key}">$tabtxt{$tab_key}</a>$tabhtml_r~;
             }
         }
         elsif ( $tab{ $AdvancedTabs[$i] } ) {
@@ -217,15 +204,50 @@ qq~                        <li><span |><a href="$scripturl?action=logout" title 
 
     if ( $iamadmin && $addtab_on == 1 ) {
         my ( $seladdtab, $seledittab );
-        if    ( $action eq 'addtab' )  { $seladdtab  = q~class="selected"~; }
-        elsif ( $action eq 'edittab' ) { $seledittab = q~class="selected"~; }
+        if    ( $action eq 'addtab' )  { $seladdtab  = q~ class="selected"~; }
+        elsif ( $action eq 'edittab' ) { $seledittab = q~ class="selected"~; }
         $yytabadd =
-qq~<ul class="advtabs"><li id="addtab"><span $seladdtab><a href="$scripturl?action=addtab" title="$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a></span></li>\n~;
+qq~<ul class="advtabs"><li id="addtab"><span$seladdtab><a href="$scripturl?action=addtab" title="$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a>$tabhtml_r~;
         $yytabadd .=
-qq~<li id="edittab"><span $seledittab><a href="$scripturl?action=edittab" title="$tabmenu_txt{'edittab'}">$micon{'tabedit'}</a></span></li>\n</ul>~;
+qq~<li id="edittab"><span$seledittab><a href="$scripturl?action=edittab" title="$tabmenu_txt{'edittab'}">$micon{'tabedit'}</a></span></li>\n</ul>~;
     }
     else {
         $yytabadd = q~&nbsp;~;
+    }
+    return;
+}
+
+sub GetTabtxt2 {
+    $tab_lang = $language ? $language : $lang;
+    if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
+        fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" );
+        @tabtext = <TABTXT>;
+        fclose(TABTXT);
+        chomp @tabtext;
+        for ( @tabtext ) {
+            if ( $_ ne q{} ) {
+                ($key, $val ) = split /\t/xsm, $_;
+                $tabtxt{$key} = $val;
+            }
+        }
+    }
+    elsif ( -e "$langdir/English/tabtext.txt" ) {
+        fopen( TABTXT, "$langdir/English/tabtext.txt" );
+        @tabtext = <TABTXT>;
+        fclose(TABTXT);
+        chomp @tabtext;
+        for ( @tabtext ) {
+            if ( $_ ne q{} ) {
+                ($key, $val ) = split /\t/xsm, $_;
+                $tabtxt{$key} = $val;
+            }
+        }
+        if ( -e "$langdir/$tab_lang/Main.lng" ) {
+            fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
+            print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
+              or croak "$croak{'print'} TABTXT";
+            fclose(TABTXT);
+        }
     }
     return;
 }
@@ -236,6 +258,9 @@ sub GetTabtxt {
         fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" );
         %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
+        for (keys %tabtxt) {
+			chomp $tabtxt{$_}
+		}
     }
     elsif ( -e "$langdir/English/tabtext.txt" ) {
         fopen( TABTXT, "$langdir/English/tabtext.txt" );

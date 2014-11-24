@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$searchtemver = 'YaBB 2.6.1 $Revision$';
 
 $search_img = 'search.png';
 

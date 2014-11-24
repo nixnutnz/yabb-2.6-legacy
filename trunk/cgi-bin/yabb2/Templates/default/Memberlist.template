@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$memberlisttemver = 'YaBB 2.6.1 $Revision$';
 
 get_micon();
 $letterclass = 'catbg a';
@@ -36,7 +36,7 @@ $my_memberlist_main = qq~
             </tr>
         </table>
         <table class="bordercolor pad_3px cs_thin" style="margin-top:-3px; padding-top:0">
-			<colgroup>
+            <colgroup>
                 {yabb col_userpic}
                 <col style="width:auto" />
                 <col span="2" style="width:4%" />
@@ -44,7 +44,7 @@ $my_memberlist_main = qq~
                 <col style="width:5%" />
                 <col style="width:18%" />
                 <col style="width:auto" />
-			</colgroup>
+            </colgroup>
 ~;
 
 
@@ -100,7 +100,7 @@ $my_memberlist_bottom = qq~
                 </td>
             </tr>
         </table>
-        ~;
+~;
 
 $ext_memberlist_tableheader = qq~<td class="catbg center">{yabb ext_fieldname}</td>\n~;
 
@@ -234,7 +234,7 @@ $my_usersel_inst = qq~<tr>
     </table>
     </form>
     {yabb pageindexjs}
-        ~;
+~;
 
 $my_tableHeader = qq~<tr>
             <td class="titlebg">
@@ -283,6 +283,6 @@ $my_quickSearch = qq~
     </table>
     </div>
     <div id="response" style="display:none"> </div>
-    ~;
+~;
 
 1;

@@ -98,9 +98,9 @@ sub Display {
           ? int( $yyuserlog{$mnum} )
           : int $yyuserlog{"$currentboard--mark"};
         $dlp =
-            $dlp > $date - ( $max_log_days_old * 86_400 )
+            $dlp > $date - ( $max_log_days_old * 86400 )
           ? $dlp
-          : $date - ( $max_log_days_old * 86_400 );
+          : $date - ( $max_log_days_old * 86400 );
 
         if ( !ref $thread_arrayref{$mnum} ) {
             fopen( MNUM, "$datadir/$mnum.txt" );
@@ -117,14 +117,14 @@ sub Display {
     }
 
     # Post and Thread Tools
-    if ($threadtools) {
+    if ($useThreadtools) {
         LoadTools(
             2,           'addfav',     'remfav',     'addpoll',
             'reply',     'add_notify', 'del_notify', 'print',
             'sendtopic', 'markunread'
         );
     }
-    if ($posttools) {
+    if ($usePosttools) {
         LoadTools( 1, 'delete', 'admin_split', 'mquote', 'quote', 'modify',
             'printp', 'alertmod' );
     }
@@ -572,7 +572,7 @@ qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03
     if ( !$iamguest ) {
         my $addnotlink = $img{'add_notify'};
         my $remnotlink = $img{'del_notify'};
-        if ($threadtools) {
+        if ($useThreadtools) {
             $addnotlink =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
             $remnotlink =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
         }
@@ -724,11 +724,11 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
       ? qq~$menusep<a href="javascript:sendtopicmail($sendtopicmail);">$img{'sendtopic'}</a>~
       : q{};
     $template_print =
-qq~$menusep<a href="$scripturl?action=print;num=$viewnum" target="_blank">$img{'print'}</a>~;
+qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$viewnum','printwindow'))">$img{'print'}</a>~;
     if ($has_poll) {
         require Sources::Poll;
         display_poll($viewnum);
-        $template_pollmain = qq~$pollmain<br />~;
+        $template_pollmain = $pollmain;
     }
 
     # Load background color list.
@@ -1300,8 +1300,8 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
                 $template_modify = q{};
             }
             $postnum = $counter + 1;
-            $template_print_post =
-qq~$menusep<a href="$scripturl?action=print;num=$viewnum;post=$postnum" target="_blank">$img{'printp'}</a>~;
+                $template_print_post =
+qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$viewnum;post=$postnum','printwindow'))">$img{'printp'}</a>~;
 
             if (   $counter > 0
                 && ($staff)
@@ -1367,7 +1367,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
             $usernamelink = qq~<a id="new"></a>$usernamelink~;
         }
 
-        $tool_sep = $posttools ? '|||' : q{};
+        $tool_sep = $usePosttools ? '|||' : q{};
 
         $posthandelblock =~ s/{yabb markquote}/$template_markquote$tool_sep/gsm;
         $posthandelblock =~ s/{yabb quote}/$template_quote$tool_sep/gsm;
@@ -1384,7 +1384,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         my $psepcn = 0;
         for (@psetmenusep) {
             if ($_ ) {
-               if ( !$posttools ) { $postout[$psepcn] = "$_$my_ttsep";}
+               if ( !$usePosttools ) { $postout[$psepcn] = "$_$my_ttsep";}
                else  { $postout[$psepcn] = "$my_ttsep$_"; }
             }
             else  { $postout[$psepcn] = q{} }
@@ -1400,7 +1400,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $outside_posttools_tmp =~ s/{yabb print_post}/$postout[6]/gsm;
         $outside_posttools_tmp =~ s/\Q$my_ttsep//ixsm;
 
-        if ( !$posttools ) {
+        if ( !$usePosttools ) {
             $posthandelblock       = $outside_posttools_tmp . $posthandelblock;
             $outside_posttools_tmp = q{};
         }
@@ -1412,7 +1412,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         }
 
         # Post and Thread Tools
-        if ($posttools) {
+        if ($usePosttools) {
             $posthandelblock =
               MakeTools( $counter, $maintxt{'63'}, $posthandelblock );
         }
@@ -1430,6 +1430,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $contactblock =~ s/{yabb twitter}/$twitterad/gsm;
         $contactblock =~ s/{yabb youtube}/$youtubead/gsm;
         $contactblock =~ s/{yabb addbuddy}/$addbuddy/gsm;
+## Mod Hook Contactblock ##
         $contactblock =~ s/\Q$menusep//ixsm;
 
         $outblock =~ s/{yabb images}/$imagesdir/gsm;
@@ -1458,6 +1459,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $outblock =~ s/{yabb regdate}/$template_regdate/gsm;
         $outblock =~ s/{yabb ext_prof}/$template_ext_prof/gsm;
         $outblock =~ s/{yabb postinfo}/$template_postinfo/gsm;
+## Mod Hook Outbox ##
         if ( !$hideusertext ) {
             $outblock =~
               s/{yabb usertext}/${$uid.$musername}{'usertext'}/gsm;
@@ -1626,7 +1628,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
       . qq~" alt="" /> $msubthread</a>~
       : $msubthread;
 
-    $tool_sep = $threadtools ? '|||' : q{};
+    $tool_sep = $useThreadtools ? '|||' : q{};
 
     $threadhandellist =~ s/{yabb markunread}/$mark_unread$tool_sep/gsm;
     $threadhandellist =~ s/{yabb reply}/$replybutton$tool_sep/gsm;
@@ -1655,7 +1657,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     my $sepcn = 0;
     for (@threadin) {
         if ($_ ) {
-           if ( !$threadtools ) { $threadout[$sepcn] = "$_$menusep";}
+           if ( !$useThreadtools ) { $threadout[$sepcn] = "$_$menusep";}
            else  { $threadout[$sepcn] = "$menusep$_"; }
         }
         else  { $threadout[$sepcn] = q{}; }
@@ -1673,7 +1675,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         $outside_threadtools =~ s/\Q$menusep//ixsm;
     }
 
-    if ( !$threadtools ) {
+    if ( !$useThreadtools ) {
         $threadhandellist    = $outside_threadtools . $threadhandellist;
         $threadhandellist2   = $outside_threadtools . $threadhandellist2;
         $outside_threadtools = q{};
@@ -1686,7 +1688,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     }
 
     # Thread Tools #
-    if ($threadtools) {
+    if ($useThreadtools) {
         $threadhandellist2 =
           MakeTools( 'bottom', $maintxt{'62'}, $threadhandellist2 );
         $threadhandellist =
@@ -1895,41 +1897,21 @@ qq~<a href="$scripturl?$thevirboard$next">$display_txt{'767'}</a>~;
 }
 
 sub SetGtalk {
-    $gtalkstyle =
-qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />~;
-    $gtalkstyle =~ s/$usestyle\///gxsm;
     my $gtalkname = $INFO{'gtalkname'};
+    my $gtalkstyle = qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
     if ( !${ $uid . $gtalkname }{'password'} ) { LoadUser($gtalkname); }
     $gtalkuser = ${ $uid . $gtalkname }{'gtalk'};
 
     print qq~Content-type: text/html\n\n~
       or croak "$croak{'print'} page content";
-    print
-qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang" style="overflow-x:hidden;overflow-y:hidden">
-<head>
-<title>$display_txt{'google'}</title>
-$gtalkstyle
-<style type="text/css">
-body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
-.g_user { height:58px; margin-bottom:2em}
-</style>
-</head>
-<body class="windowbg2">
-<table class="bordercolor pad_4px cs_thin">
-    <tr>
-        <td class="titlebg h_22px">
-            <img src="$gtalk" width="16" height="14" alt="" title="" /> $display_txt{'google'}
-        </td>
-    </tr><tr>
-        <td class="windowbg g_user">
-            <img src="$gtalk" width="16" height="14" alt="${$uid.$gtalkname}{'realname'}" title="${$uid.$gtalkname}{'realname'}" /> $gtalkuser
-        </td>
-    </tr>
-</table>
-</body>
-</html>
-~ or croak "$croak{'print'} page";
+    $setgtalk = $gtalk;
+    $setgtalk =~ s/{yabb xml_lang}/$abbr_lang/sm;
+    $setgtalk =~ s/{yabb mycharset}/$yymycharset/sm;
+    $setgtalk =~ s/{yabb style}/$gtalkstyle/sm;
+    $setgtalk =~ s/{yabb gname}/${ $uid . $gtalkname }{'realname'}/gsm;
+    $setgtalk =~ s/{yabb gtalkuser}/$gtalkuser/gsm;
+
+    print $setgtalk or croak "$croak{'print'} page";
     return;
 }
 

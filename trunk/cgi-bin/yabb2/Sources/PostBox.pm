@@ -908,7 +908,7 @@ sub ubbc_boxlist {
     my $w = 0;
     for my $i ( sort keys %list ) {
         my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
-        $boxlist .= qq~<span class="ubbcbutton ubbcbuttonback"><img src='$imagesdir/UBBC/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
+        $boxlist .= qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
         $w++
     }
     $boxlist_w = $w * 24;

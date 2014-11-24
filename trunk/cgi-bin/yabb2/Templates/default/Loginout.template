@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$loginouttemver = 'YaBB 2.6.1 $Revision$';
 
 $myborder =
 q~<div class="bordercolor" style="width: 100%; margin-bottom: 8px; margin-left: auto; margin-right: auto;">~;
@@ -36,20 +36,20 @@ $mysharedlogc = q~<tr>
 $mysharedlog_top = qq~
 $myborder
 <table class="tabtitle tabtitle-text" style="margin-top:10px">
-	<colgroup>
+    <colgroup>
         <col style="width:1%" />
         <col style="width:99%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td>&nbsp;</td>
         <td>$loginout_txt{'34'}</td>
     </tr>
 </table>
 <table class="bordercolor pad_4px cs_thin">
-	<colgroup>
+    <colgroup>
         <col style="width:6%" />
         <col style="width:94%" />
-	</colgroup>
+    </colgroup>
     <tr>
         <td class="windowbg center"><img src="$imagesdir/login.png" alt="" /></td>
         <td class="windowbg2 center">~;

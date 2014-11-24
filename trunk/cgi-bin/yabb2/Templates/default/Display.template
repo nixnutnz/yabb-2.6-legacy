@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$displaytemver = 'YaBB 2.6.1 $Revision$';
 
 $disp_qquname = 'qquname.gif';
 $disp_arrow_dn = 'arrow_down.gif';
@@ -31,8 +31,8 @@ $threadhandellist2 = qq~
     {yabb notify2}{yabb favorite2}{yabb sendtopic}{yabb print}{yabb markunread}
 ~;
 
-if($threadtools) {
-    $threadhandelstyle = qq~ class="post_tools center" style="width:100px;"~;
+if($useThreadtools) {
+    $threadhandelstyle = q~ class="post_tools center" style="width:100px"~;
     $my_fixed = q~ style="table-layout: fixed;"~;
 } else {
     $threadhandelstyle = qq~ style="text-align:right"~;
@@ -150,7 +150,7 @@ $posthandellist = qq~
     {yabb modalert}{yabb print_post}{yabb modify}{yabb split}{yabb delete}
 ~;
 
-if($posttools) {
+if($usePosttools) {
     $posthandelstyle = qq~ class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle"~;
     $posthandeladmin = qq~<div style="float:right; vertical-align:bottom; height:100%;">{yabb admin}</div>~;
     $postcol= 3;
@@ -237,7 +237,7 @@ $messageblock = qq~
                     </div>
                 </td>
             </tr><tr>
-                <td class="{yabb css} bottom" style="background-color: #D7DBEA;">
+                <td class="{yabb css} bottom post-userinfo">
                     <span onclick="toTop(0)" class="cursor"><img src="$top_img" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></span>
                 </td>
                 <td class="{yabb css} bottom dividertop" colspan="$postcol">
@@ -298,7 +298,10 @@ $mydisp_topicview =  qq~    <tr>
             </td>
         </tr>~;
 
-$mydisp_modify_message = qq~
+$mydisp_topicview = qq~
+    <div class="titlebg padd_4px">$display_txt{'644'} ({yabb topviewers}): {yabb template_viewers}</div>~;
+
+$mydisp_modify_message = q~
 ~;
 
 $mymove_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -516,4 +519,30 @@ $visel_1b = q~</td>~;
 $visel_2a = q~<td class="droppages pages">~;
 $visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
 $visel_4 = q~</tr></table>~;
+
+$gtalk = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$abbr_lang" lang="$abbr_lang">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=$yymycharset" />
+    <title>$display_txt{'google'}</title>
+    {yabb style}
+    <style type="text/css">
+    body {margin: 0px; padding: 0px; overflow-x:hidden;overflow-y:hidden;}
+    .g_user { height:58px; margin-bottom:2em}
+    </style>
+</head>
+<body class="windowbg2">
+    <table class="bordercolor pad_4px cs_thin">
+        <tr>
+            <td class="titlebg h_22px">
+                <img src="$gtalk" width="16" height="14" alt="" title="" /> $display_txt{'google'}
+            </td>
+        </tr><tr>
+            <td class="windowbg g_user">
+                <img src="$gtalk" width="16" height="14" alt="{yabb gname}" title="{yabb gname}" /> {yabb gtalkuser}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>~;
 1;

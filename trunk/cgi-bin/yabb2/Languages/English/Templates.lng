@@ -15,8 +15,8 @@
 $templateslngver = 'YaBB 2.6.1 $Revision$';
 
 %templ_txt=(
-'1' => 'Style Sheet',
-'2' => 'Header',
+'1' => 'Template Style Sheet',
+'2' => 'Template Header',
 '3' => 'Board Index',
 '4' => 'Message Index',
 '5' => 'Post Display',
@@ -26,8 +26,8 @@ $templateslngver = 'YaBB 2.6.1 $Revision$';
 '5d' => 'Profile',
 '5e' => 'Memberlist',
 '6' => 'Template Configuration',
-'7' => 'Here you can combine elements from different template-set and preview the result.',
-'8' => 'Images',
+'7' => 'Here you can combine elements from different template-sets and preview the result.',
+'8' => 'Template Images',
 '9' => 'Preview',
 '10' => 'Templates',
 '11' => 'Configuration',
@@ -36,7 +36,7 @@ $templateslngver = 'YaBB 2.6.1 $Revision$';
 '14' => 'Delete',
 '15' => 'Are you sure you want to delete',
 '18' => 'Elements',
-'19' => 'Here you can change the colors of the background, borders and text as well as the font face and text size for the main elements of your forum.',
+'19' => 'Here you can change the colors of the background, borders and text as well as the font family and text size for the main elements of your forum.',
 '20' => 'Element',
 '21' => 'Backgr.',
 '22' => 'Font',
@@ -110,7 +110,7 @@ $templateslngver = 'YaBB 2.6.1 $Revision$';
 'moveicon2' => 'Icon Position (horizontal)',
 'iconspace' => 'Icon-Text space',
 'movetext' => 'Text Position (vertical)',
-'noedit' => qq~For security reasons you are not allowed to edit the default template or default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename then choose that new file as your default stylesheet in <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a>~,
+'noedit' => qq~You are not allowed to edit the default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename. You can then choose this new stylesheet as the stylesheet for the default skin from the <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a> screen.~,
 );
 
 1;

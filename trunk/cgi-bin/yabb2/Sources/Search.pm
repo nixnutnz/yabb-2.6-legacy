@@ -301,7 +301,7 @@ sub plushSearch2 {
     spam_protection();
 
     my $maxage = $FORM{'age'}
-      || ( int( ( $date - stringtotime($forumstart) ) / 86_400 ) + 1 );
+      || ( int( ( $date - stringtotime($forumstart) ) / 86400 ) + 1 );
 
     my $display = $FORM{'numberreturned'} || $maxsearchdisplay;
     if ( $maxage  =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }
@@ -369,8 +369,8 @@ sub plushSearch2 {
     my $maxtime =
       $date +
       ( 3600 * ${ $uid . $username }{'timeoffset'} ) -
-      ( $maxage * 86_400 );
-    my $oldestfound = 9_999_999_999;
+      ( $maxage * 86400 );
+    my $oldestfound = 9999999999;
 
     get_forum_master();
     foreach my $catid (@categoryorder) {

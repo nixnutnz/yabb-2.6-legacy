@@ -660,7 +660,7 @@ function Response() {
         var temp = new Array();
         temp = document.getElementById("response").innerHTML.split(",");
         for (var i = 0; i < temp.length; i++) {
-            if ((i % 2) == 0) { list[first][list[first].length] = temp[i]; }
+            if ((i % 2) === 0) { list[first][list[first].length] = temp[i]; }
             else { list2[first][list2[first].length] = temp[i]; }
         }
         if (list[first] == "") { list[first] = new Array(); }
@@ -674,7 +674,7 @@ function ListNames(names,ids) {
         for (var i = 0; i < names.length; i++) {
             browserAdd(names[i],ids[i]);
         }
-        if (select.options.length == 0) { browserAdd(noresults,""); }
+        if (select.options.length === 0) { browserAdd(noresults,""); }
 }
 
 function browserAdd(name,value) {

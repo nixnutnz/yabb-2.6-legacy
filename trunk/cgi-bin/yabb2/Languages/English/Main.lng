@@ -152,6 +152,7 @@ $abbr_lang = 'en-us';
 'go_to_board' => 'Go to the Board Index',
 'searchimg' => 'Posts no more than',
 'searchimg2' => 'days old',
+'searchimg3' => 'All Posts',
 'collapse' => 'collapse',
 'UTC' => '(UTC)',
 'maint' => 'Remove this file if your board is in maintenance for no reason.',
@@ -265,7 +266,7 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 'admin_alert_act_one' => '</b> Pre-Registered Member that is',
 'admin_alert_act_more' => '</b> Pre-Registered Members that are',
 'admin_alert_act_end' => ' not yet validated.',
-'admin_alert_act_end_more' => ' not yet validated.', ## For languages that need a different end line on more then one user
+'admin_alert_act_end_more' => ' not yet validated.', ## For languages that need a different end line on more than one user
 'no_masterkey'=> '<div class="editbg">No Masterkey was set in the Security Settings/Validation Image section of the Admin Center<br />Now using default value which is less safe.</div>',
 );
 

@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$mycentertemver = 'YaBB 2.6.1 $Revision$';
 get_micon();
 $IM_callback = 'imcallback.gif';
 $IM_answered = 'answered.gif';
@@ -298,7 +298,7 @@ $my_markall = qq~{yabb MCPmMenu_strtot}<tr>
 
 $my_newfolder = qq~<tr>
                 <td colspan="3">
-                    <hr  class="hr" />
+                    <hr class="hr" />
                     <form action="$scripturl?action=newpmfolder" method="post" name="newpmfolder" id="newpmfolder" enctype="application/x-www-form-urlencoded" style="display:inline;" onsubmit="return submitproc()" accept-charset="$yymycharset">
                     <label for="newfolder">$inmes_imtxt{'newstorefolder'}</label><br />
                     <input type="text" name="newfolder" id="newfolder" size="15" value="$mc_folders{'foldername'}" onfocus="txtInFields(this, '$mc_folders{'foldername'}');" onblur="txtInFields(this, '$mc_folders{'foldername'}')" />

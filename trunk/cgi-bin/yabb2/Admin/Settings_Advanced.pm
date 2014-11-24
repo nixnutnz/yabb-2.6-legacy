@@ -767,7 +767,7 @@ sub SaveSettings {
     $settings{'pmAttachExt'} =~ s/[^\ A-Za-z0-9_]//gsm;
     @pmAttachExt = split /\s+/xsm, $settings{'pmAttachExt'};
 
-   SaveSettingsTo('Settings.pm', %settings);
+    SaveSettingsTo('Settings.pm', %settings);
     return;
 }
 

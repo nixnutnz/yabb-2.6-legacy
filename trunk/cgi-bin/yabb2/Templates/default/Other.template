@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$othertemver = 'YaBB 2.6.1 $Revision$';
 
 $my_session = 'session.png';
 
@@ -144,7 +144,7 @@ $my_sessions = qq~
         </td>
     </tr><tr>
         <td class="catbg center" style="padding: 8px;" colspan="2">
-            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" /> 
+            <input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" />
         </td>
     </tr>
 </table>
@@ -161,7 +161,6 @@ $my_smiliebg_a = q~windowbg2~;
 $my_smiliebg_b = q~windowbg~;
 #in the event you want a banner for the smilies header #
 $my_banner = 'banner.gif';
-
 
 $smilie_window_a =
 qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

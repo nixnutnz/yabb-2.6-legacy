@@ -1212,8 +1212,9 @@ sub WhatTemplate {
         }
     }
     (
-        $usestyle,   $useimages,  $usehead,     $useboard,
-        $usemessage, $usedisplay, $usemycenter, $UseMenuType
+        $usestyle,       $useimages,  $usehead,     $useboard,
+        $usemessage,     $usedisplay, $usemycenter, $UseMenuType,
+        $useThreadtools, $usePosttools
     ) = split /\|/xsm, $templateset{$template};
 
     if ( !-e "$htmldir/Templates/Forum/$usestyle.css" ) {
@@ -1234,6 +1235,8 @@ sub WhatTemplate {
     }
 
     if ( $UseMenuType eq q{} ) { $UseMenuType = $MenuType; }
+    if ( $useThreadtools eq q{} ) { $useThreadtools = $threadtools; }
+    if ( $usePosttools eq q{} ) { $usePosttools = $posttools; }
 
     if ( -d "$htmldir/Templates/Forum/$useimages" ) {
         $imagesdir = "$yyhtml_root/Templates/Forum/$useimages";
@@ -1241,27 +1244,7 @@ sub WhatTemplate {
     else { $imagesdir = "$yyhtml_root/Templates/Forum/default"; }
     $defaultimagesdir = "$yyhtml_root/Templates/Forum/default";
 
-    $cssbuttons = 0;
-    fopen( CSS, "$yyhtml_root/Templates/Forum/$usestyle.css" );
-    @thecss = <CSS>;
-    fclose(CSS);
-    foreach my $style_sgl (@thecss) {
-        $style_sgl =~ s/[\n\r]//gsm;
-        $style_sgl =~ s/\A\s*//gsm;
-        $style_sgl =~ s/\s*\Z//gsm;
-        $style_sgl =~ s/\t//gsm;
-        $stylestr .= qq~$style_sgl ~;
-    }
-    $stylestr =~ s/\s{2,}/ /gsm;
-    if (   $stylestr =~ /\.buttonleft/sm
-        && $stylestr =~ /\.buttonright/sm
-        && $stylestr =~ /\.buttonimage/sm
-        && $stylestr =~ /\.buttontext/sm )
-    {
-        $cssbuttons = 1;
-    }
     $extpagstyle =~ s/$usestyle\///gxsm;
-    $cssbuttons = 1;
     return;
 }
 

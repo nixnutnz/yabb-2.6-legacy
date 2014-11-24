@@ -28,7 +28,7 @@ undef $guest_media_disallowed;
   qw( admin_rem admin_move_split_splice admin_lock hide admin_sticky admin_del );
 $my_moding = q{};
 foreach (@my_modimglist) {
-    $modimg = SetImage( $_, $MenuType );
+    $modimg = SetImage( $_, $UseMenuType );
     $mymoding .= qq~$menusep$modimg~;
 }
 $mymoding =~ s/\Q$menusep//ism;

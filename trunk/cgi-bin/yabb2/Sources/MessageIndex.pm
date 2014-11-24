@@ -114,7 +114,7 @@ sub MessageIndex {
     }
 
     # Thread Tools
-    if ($threadtools) {
+    if ($useThreadtools) {
         LoadTools( 0, 'newthread', 'createpoll', 'notify', 'markboardread' );
     }
 
@@ -699,7 +699,7 @@ qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$message
     # Begin printing the message index for current board.
     $counter = $start;
     dumplog($currentboard);    # Mark current board as seen
-    my $dmax = $date - ( $max_log_days_old * 86_400 );
+    my $dmax = $date - ( $max_log_days_old * 86400 );
     foreach (@threads) {
         (
             $mnum,     $msub,      $mname, $memail, $mdate,
@@ -838,7 +838,7 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
             if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
             elsif ( !$iamguest
                 && $max_log_days_old
-                && $mdate > $date - ( $max_log_days_old * 86_400 ) )
+                && $mdate > $date - ( $max_log_days_old * 86400 ) )
             {
                 if ( $dlp < $createpoll_date ) {
                     $micon = qq~$micon{'polliconnew'}~;
@@ -1453,7 +1453,6 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
             $messageindex_template =~ s/{yabb description}//gsm;
         }
     }
-    $bdpicfld = q{};
     $bdpic = qq~$imagesdir/boards.$bdpicExt~;
     fopen( BRDPIC, "<$boardsdir/brdpics.db" );
     my @brdpics = <BRDPIC>;
@@ -1465,11 +1464,8 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
             if ( $brdpic =~ /\//ism ) {
                 $bdpic = $brdpic;
             }
-            else {
-                if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" ) {
-                    $bdpic = qq~$imagesdir/Boards/$brdpic~;
-                }
-                else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
+            elsif ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" ) {
+                $bdpic = qq~$imagesdir/Boards/$brdpic~;
             }
         }
     }
@@ -1559,7 +1555,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     }
     ### Board Rules End ###
 
-    $tool_sep = $threadtools ? q{|||} : q{};
+    $tool_sep = $useThreadtools ? q{|||} : q{};
 
     $topichandellist =~
       s/{yabb notify button}/$notify_board$tool_sep/gsm;
@@ -1574,7 +1570,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     my $sepcn = 0;
     for (@threadin) {
         if ($_ ) {
-           if ( !$threadtools ) { $threadout[$sepcn] = "$_$my_ttsep";}
+           if ( !$useThreadtools ) { $threadout[$sepcn] = "$_$my_ttsep";}
            else  { $threadout[$sepcn] = "$my_ttsep$_"; }
         }
         else  { $threadout[$sepcn] = q{}; }
@@ -1589,11 +1585,12 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/{yabb new post button}/$threadout[2]/gsm;
     $outside_threadtools =~
       s/{yabb new poll button}/$threadout[3]/gsm;
+## Mod Hook outside_threadtools ##
     if ( $my_ttsep ne q{ } ) {
         $outside_threadtools =~ s/\Q$my_ttsep//ixsm;
     }
 
-    if ( !$threadtools ) {
+    if ( !$useThreadtools ) {
         if ( $menusep ne q{ } ) {
             $outside_threadtools =~ s/\Q$menusep//ixsm;
         }
@@ -1608,11 +1605,10 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     $topichandellist2 = $topichandellist;
 
     # Thread Tools #
-    if ($threadtools) {
+    if ($useThreadtools) {
         $dropid = q{};
         if ($messagelist) { $dropid = $INFO{'board'}; }
-        $topichandellist2 =
-          MakeTools( "bottom$dropid", $maintxt{'62'}, $topichandellist2 );
+        $topichandellist2 = MakeTools( "bottom$dropid", $maintxt{'62'}, $topichandellist2 );
         $topichandellist = MakeTools( "top$dropid", $maintxt{'62'}, $topichandellist );
     }
 

@@ -416,6 +416,7 @@ qq~<img src="$micon_bg{'email'}" alt="$img_txt{'69'}" title="~
         $yymain =~ s/{yabb bar}/$Bar/sm;
         $yymain =~ s/{yabb postcount}/$yypostcount/sm;
         $yymain =~ s/{yabb dr_regdate}/$dr_regdate/sm;
+## Mod Hook ##
     }
     return $yymain;
 }

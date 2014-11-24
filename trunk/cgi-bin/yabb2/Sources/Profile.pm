@@ -423,6 +423,7 @@ $myprofile_edit~;
     $showProfile =~ s/{yabb showageshow}/$my_showageshow/sm;
     $showProfile =~ s/{yabb user_location}/${$uid.$user}{'location'}/sm;
     $showProfile =~ s/{yabb my_show_ext_prof}/$my_show_ext_prof/sm;
+## Mod Hook showProfile1 ##
 
     if (   $sessions == 1
         && $sessionvalid == 1
@@ -3011,7 +3012,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
 
     if ( $string_curdate < $forumstart ) { $string_curdate = $forumstart }
 
-    $member_for_days = int( ( $string_curdate - $string_regdate ) / 86_400 );
+    $member_for_days = int( ( $string_curdate - $string_regdate ) / 86400 );
 
     if   ( $member_for_days < 1 ) { $tmpmember_for_days = 1; }
     else                          { $tmpmember_for_days = $member_for_days; }
@@ -3345,6 +3346,7 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
     $showProfile =~ s/{yabb my_banning}/$my_banning/sm;
     $showProfile =~ s/{yabb my_reminder}/$my_reminder/sm;
     $showProfile =~ s/{yabb my_recent}/$my_recent/sm;
+## Mod Hook showProfile2 ##
 
     $yytitle = $profile_txt{'92u'};
     $yytitle =~ s/USER/${$uid.$user}{'realname'}/gsm;

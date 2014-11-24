@@ -241,4 +241,5 @@ $errorlngver = 'YaBB 2.6.1 $Revision$';
 'newpostdep_gmod'       => 'Sorry, Global Mods cannot modify Post-dependent users because the Maintenance->"Rebuild Memberlist" must be run after and that function is only available in Maintenance Mode, so it would deny your login.',
 );
 
+
 1;

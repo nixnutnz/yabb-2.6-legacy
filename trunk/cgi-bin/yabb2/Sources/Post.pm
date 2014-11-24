@@ -124,7 +124,7 @@ sub Post {
         $pollthread = 2;
         $t_title    = $post_polltxt{'2a'};
     }
-    elsif ( $INFO{'title'} eq 'PostReply' ) {
+    elsif ( $INFO{'title'} eq 'PostReply' || $INFO{'num'} ) {
         $postthread = 2;
         $t_title    = $display_txt{'116'};
     }
@@ -213,6 +213,13 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]\[/qu
                 LoadLanguage('Error');
                 alertbox( $error_txt{'quote_too_long'} );
                 $message = substr( $message, 0, $maxlengthofquote ) . q{...};
+                my @c = $message =~ m/\[code\]/gxsm;
+                my $countc = @c;
+                my @d = $message =~ m~\[/code\]~gxsm;
+                my $countd = @d;
+                if ($countc > $countd ) {
+                    $message = $message . q~[/code]~;
+                }
             }
             undef $mess_len;
             $message =
@@ -725,9 +732,9 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
                 $poll_end_min = 1;
             }
             else {
-                $poll_end_days = int( $x / 86_400 );
+                $poll_end_days = int( $x / 86400 );
                 $poll_end_min =
-                  int( ( $x - ( $poll_end_days * 86_400 ) ) / 60 );
+                  int( ( $x - ( $poll_end_days * 86400 ) ) / 60 );
             }
         }
 
@@ -1065,7 +1072,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             || ( $showsmdir == 3 && $showadded != 2 ) )
         {
             if ($removenormalsmilies) {
-                $my_smilies = $mypost_smilies_b;
+                $my_smilies = $mypost_smilies;
             }
             $my_smilies .=
               qq~<a href="javascript: smiliewin();">$post_smiltxt{'1'}</a>\n~;
@@ -1364,8 +1371,8 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
     $yymain .= $my_pollsection;
     $yymain .= $my_postsection;
     if ( $postid eq 'Poll' && $action eq 'modify') {
-		$yymain .= $mypoll_tablefix;
-	}
+        $yymain .= $mypoll_tablefix;
+    }
     $yymain .= $my_post_submit;
     $yymain .= $my_spdpost;
     $yymain .= $mypost_formend;
@@ -1668,7 +1675,7 @@ sub Post2 {
         if ( !$poll_end_min || $poll_end_min =~ /\D/xsm ) {
             $poll_end_min = q{};
         }
-        if ($poll_end_days) { $poll_end = $poll_end_days * 86_400; }
+        if ($poll_end_days) { $poll_end = $poll_end_days * 86400; }
         if ($poll_end_min) { $poll_end += $poll_end_min * 60; }
         if ($poll_end)     { $poll_end += $date; }
 

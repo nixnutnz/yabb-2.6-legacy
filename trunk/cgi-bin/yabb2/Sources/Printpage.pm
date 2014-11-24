@@ -87,14 +87,6 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 </style>
 <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript">
-
-function printPage() {
-    if (window.print) {
-        agree = confirm('$maintxt{773}');
-        if (agree) window.print();
-    }
-}
-
 var imgdisplay = 'none';
 function do_images() {
     for (var i = 0; i < document.images.length; i++) {
@@ -111,8 +103,7 @@ function do_images() {
 
 </script>
 </head>
-
-<body onload="printPage()">
+<body>
 
 <table style="width:96%; margin-top:10px">
     <tr>
@@ -465,7 +456,8 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
         </td>
     </tr>
 </table>
-<br />~;
+<form><p class="no-print" style="text-align:center"><input class="no-print" type="button" value=" $maintxt{'printpage'} " onclick="window.print();" /></p></form>
+~;
 
     $output .= qq~
 <table class="pad_10px" style="width:96%">
@@ -549,14 +541,6 @@ qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3
 </style>
 <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript">
-
-function printPage() {
-    if (window.print) {
-        agree = confirm('$maintxt{773}');
-        if (agree) window.print();
-    }
-}
-
 var imgdisplay = 'none';
 var urldisplay = 'inline';
 function do_images() {
@@ -580,8 +564,7 @@ function do_images() {
 
 </script>
 </head>
-
-<body onload="printPage()">
+<body>
 
 <table style="width:96%; margin-top:10px">
     <tr>
@@ -719,10 +702,12 @@ s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
         </td>
     </tr>
 </table>
-<br />~;
+<br />
+~;
     }
 
     $output .= qq~
+<form><p class="no-print" style="text-align:center"><input class="no-print" type="button" value=" $maintxt{'printpage'} " onclick="window.print();" /></p></form>
 <table class="pad_10px" style="width:96%">
     <tr>
         <td class="center" style="font-family: arial, sans-serif; font-size: 10px;">

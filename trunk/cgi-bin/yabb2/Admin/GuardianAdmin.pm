@@ -465,10 +465,10 @@ sub update_htaccess {
         }
         fclose(HTA);
     }
-	elsif ( $action eq 'add' ) {
-		push @denies, @values;
-		update_htaccess( 'save', @denies );
-	}
+    elsif ( $action eq 'add' ) {
+        push @denies, @values;
+        update_htaccess( 'save', @denies );
+    }
     return;
 }
 

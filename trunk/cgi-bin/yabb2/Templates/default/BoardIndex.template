@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# $Revision$
+$boardindextemver = 'YaBB 2.6.1 $Revision$';
 
 $boardhandellist = qq~
     {yabb expand}{yabb collapse}{yabb markallread}

@@ -256,6 +256,7 @@ sub Split_Splice {
     $output =~ s/{yabb threadlist}/$threadlist/sm;
     $output =~ s/{yabb my_output}/$my_output/sm;
     $output =~ s/{yabb my_checked}/$my_checked/sm;
+    $output =~ s/{yabb size1}/$size1/sm;
 
     print_output_header();
     print_HTML_output_and_finish();

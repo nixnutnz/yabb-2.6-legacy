@@ -185,9 +185,11 @@ sub sharedLogin {
             $sharedlog =~ s/{yabb sharedLogin_text}/$sharedLogin_text/sm;
         }
         $sharedlog .= $mysharedlogc;
+        $sharedbot = $myborder_bottom;
     }
     else {
         $sharedlog = $mysharedlog_top;
+        $sharedbot = $mysharedbot;
     }
     if ($maintenance) { $hide_passlink = ' style="visibility: hidden;"' }
     if ( $maintenance || !$regtype ) {
@@ -196,7 +198,8 @@ sub sharedLogin {
     $sharedlog .= qq~
             <form id="loginform" name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yymycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
-    $mysharedlog_bodya~;
+    $mysharedlog_bodya
+    $sharedbot~;
     $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
     $sharedlog =~ s/{yabb hide_reglink}/$hide_reglink/gsm;
     $sharedlog =~ s/{yabb hide_passlink}/$hide_passlink/gsm;

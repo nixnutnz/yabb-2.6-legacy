@@ -532,8 +532,11 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     $yysearchbox = q{};
     if ( !$iamguest || $guestaccess != 0 ) {
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
+            my $blurb = qq~$maintxt{'searchimg'} $qckage $maintxt{'searchimg2'}~;
+            if ( $qckage == 0 ) {
+                $blurb = qq~$maintxt{'searchimg3'}~;
+            }
             $yysearchbox = qq~
-                    <div class="yabb_searchbox">
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yymycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />
@@ -543,8 +546,8 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                         <input type="hidden" name="oneperthread" value="1" />
                         <input type="hidden" name="searchboards" value="!all" />
                         <input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
-                        <input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'}  $qckage $maintxt{'searchimg2'}" title="$maintxt{'searchimg'} $qckage $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
-                    </form></div>
+                        <input type="image" src="$imagesdir/search.png" alt="$blurb" title="$blurb" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+                    </form>
 ~;
         }
     }
@@ -554,8 +557,8 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         fclose(NEWS);
         chomp @newsmessages;
         my $startnews = int rand @newsmessages;
-        my $newstitle = qq~<b>$maintxt{'102'}:</b>~;
-        $newstitle =~ s/'/\\'/gxsm;
+        $yynewstitle = qq~<b>$maintxt{'102'}:</b>~;
+        $yynewstitle =~ s/'/\\'/gxsm;
         $guest_media_disallowed = 0;
         $newswrap               = 40;
 
@@ -602,13 +605,13 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                             return thiscolor;
                         }
                     }
-
-                    if (ie4 || DOM2) document.write('$newstitle<div class="windowbg2" id="fadestylebak" style="display: none;"><div class="newsfader" id="fadestyle" style="display: none;"> </div></div>');
-
+                    if (ie4 || DOM2) var news = ('<span class="windowbg2" id="fadestylebak" style="display: none;"><span class="newsfader" id="fadestyle" style="display: none;"> </span></span>');
+                    var div = document.getElementById("newsdiv");
+                    div.innerHTML = news;
                     if (document.getElementById('fadestyle').currentStyle) {
                         tcolor = document.getElementById('fadestyle').currentStyle['color'];
                         bcolor = document.getElementById('fadestyle').currentStyle['backgroundColor'];
-                        fntsize = document.getElementById('fadestyle').currentStyle['fontSize'];
+                        nfntsize = document.getElementById('fadestyle').currentStyle['fontSize'];
                         fntstyle = document.getElementById('fadestyle').currentStyle['fontStyle'];
                         fntweight = document.getElementById('fadestyle').currentStyle['fontWeight'];
                         fntfamily = document.getElementById('fadestyle').currentStyle['fontFamily'];
@@ -617,7 +620,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                     else if (window.getComputedStyle) {
                         tcolor = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('color');
                         bcolor = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('background-color');
-                        fntsize = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-size');
+                        nfntsize = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-size');
                         fntstyle = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-style');
                         fntweight = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-weight');
                         fntfamily = window.getComputedStyle(document.getElementById('fadestyle'), null).getPropertyValue('font-family');
@@ -651,11 +654,16 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                 wrap2();
                 $message =~ s/"/\\"/gxsm;
                 ToChars($message);
-                $yynews .= qq~                  fcontent[$j] = "$message";\n~;
+                $message =~ s/\'/&#39;/xsm;
+                $yynews .= qq~                  fcontent[$j] = '$message';\n~;
             }
             $img_greybox = $greybox;
             $yynews .= q~
-                    if (DOM2) document.write('<div style="font-size: ' + fntsize + '\\; font-weight: ' + fntweight + '\\; font-style: ' + fntstyle + '\\; font-family: ' + fntfamily + '\\; text-decoration: ' + txtdecoration + '\\;" id="fscroller"></div>');
+                        document.getElementById("newsdiv").style.fontSize=nfntsize;
+                        document.getElementById("newsdiv").style.fontWeight=fntweight;
+                        document.getElementById("newsdiv").style.fontStyle=fntstyle;
+                        document.getElementById("newsdiv").style.fontFamily=fntfamily;
+                        document.getElementById("newsdiv").style.textDecoration=txtdecoration;
 
                     if (window.addEventListener)
                         window.addEventListener("load", changecontent, false);
@@ -676,7 +684,13 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             }
             wrap2();
             ToChars($message);
-            $yynews = $message;
+            $message =~ s/\'/&#39;/xsm;
+            $yynews = qq~
+            <script type="text/javascript">
+                if (ie4 || DOM2) var news = '$message';
+                var div = document.getElementById("newsdiv");
+                div.innerHTML = news;
+            </script>~;
         }
         $newswrap = 0;
     }
@@ -715,7 +729,7 @@ s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/>\n  
     # in a very strict way. (error 406)
     # Take the comments out of the following two lines if you had this problem.
     # $output =~ s/($scripturl\?)([^'"]+)/ $1 . URL_modify($2) /eg;
-    # sub URL_modify { my $x = shift; $x =~ s/;/&/g; $x; }
+    # sub URL_modify { my $x = shift; $x =~ s/;/&amp;/g; $x; }
     # End of workaround
 
     if ( !$copyright ) {
@@ -3217,7 +3231,6 @@ sub BoardPasswCheck {
 }
 
 sub UploadFile {
-
     my ( $file_upload, $file_directory, $file_extensions, $file_size, $directory_limit ) = @_;
     $file_directory = qq~$htmldir/$file_directory~;
 
