@@ -2597,8 +2597,14 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                     enable_yabbc();
                     DoUBBC();
                 }
-                $yynews = $message;
-            }
+                $message =~ s/\'/&#39;/xsm;
+                $yynews = qq~
+            <script type="text/javascript">
+                if (ie4 || DOM2) var news = '$message';
+                var div = document.getElementById("newsdiv");
+                div.innerHTML = news;
+            </script>~;
+           }
         }
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
