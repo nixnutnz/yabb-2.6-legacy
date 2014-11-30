@@ -50,50 +50,24 @@ $contexthelplngver = 'YaBB 2.6.1 $Revision$';
 'left' => "Left align text:<br /><br />Select the text:<br />[SELECT]This text<br />is left aligned[/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[left]This text<br />is left aligned[/left]<br /><br /><b>Result:</b><br />[LEFT]This text<br />is left aligned[/LEFT]",
 'center' => "Center text:<br /><br />Select the text:<br />[SELECT]This text<br />is centered[/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[center]This text<br />is centered[/center]<br /><br /><b>Result:</b><br />[CENTER]This text<br />is centered[/CENTER]",
 'right' => "Right align text:<br /><br />Select the text:<br />[SELECT]This text<br />is right aligned[/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[right]This text<br />is right aligned[/right]<br /><br /><b>Result:</b><br />[RIGHT]This text<br />is right aligned[/RIGHT]",
-'noparse' => "No Parse:<br /><br />Select the YaBBC Code:<br />[SELECT][table][tr][td]This table will not be parsed[/td][/tr][/table][/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[noparse][table][tr][td]This table will not be parsed[/td][/tr][/table][/noparse]<br /><br /><b>Result:</b><br />[table][tr][td]This table will not be parsed[/td][/tr][/table]");
+'noparse' => "No Parse:<br /><br />Select the YaBBC Code:<br />[SELECT][table][tr][td]This table will not be parsed[/td][/tr][/table][/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[noparse][table][tr][td]This table will not be parsed[/td][/tr][/table][/noparse]<br /><br /><b>Result:</b><br />[table][tr][td]This table will not be parsed[/td][/tr][/table]",
+);
 
+## Mod Hook Contextxt ##
 
-
-#####################################################################
-#                   JS Variables for Context Help                   #
-#                 Not to be changed for translation                 #
-#####################################################################
-
-### Variables for Post/Reply page and Send PM page:
+$contextlst = q{};
+while( ($key, $value) = each %contextxt ) {
+    if ( $key eq 'clicktip' ) {
+        $contextlst .= qq~'contexttip', '$contextxt{'clicktip'}',\n~;
+    }
+    else {
+        $contextlst .= qq~'$key', '$value',\n~;
+    }
+}
+$contextlst =~ s/\,\n\Z//xsm;
 
 $contextpost = qq~
-var contexthash = new Hash(
-'contexttip', '$contextxt{'clicktip'}',
-'url', '$contextxt{'url'}',
-'ftp', '$contextxt{'ftp'}',
-'img', '$contextxt{'image'}',
-'email2', '$contextxt{'email2'}',
-'media', '$contextxt{'media'}',
-'table', '$contextxt{'table'}',
-'tr', '$contextxt{'tr'}',
-'td', '$contextxt{'td'}',
-'hr', '$contextxt{'hr'}',
-'tele', '$contextxt{'teletype'}',
-'code', '$contextxt{'code'}',
-'quote2', '$contextxt{'quote2'}',
-'edit', '$contextxt{'edit'}',
-'sup', '$contextxt{'sup'}',
-'sub', '$contextxt{'sub'}',
-'list', '$contextxt{'list'}',
-'me', '$contextxt{'me'}',
-'move', '$contextxt{'move'}',
-'timestamp', '$contextxt{'timestamp'}',
-'bold', '$contextxt{'bold'}',
-'italicize', '$contextxt{'italicize'}',
-'underline', '$contextxt{'underline'}',
-'strike', '$contextxt{'strike'}',
-'highlight', '$contextxt{'highlight'}',
-'palette1', '$contextxt{'palette1'}',
-'pre', '$contextxt{'pre'}',
-'left', '$contextxt{'left'}',
-'center', '$contextxt{'center'}',
-'right', '$contextxt{'right'}',
-'noparse', '$contextxt{'noparse'}');
+var contexthash = new Hash($contextlst);
 ~;
 
 1;

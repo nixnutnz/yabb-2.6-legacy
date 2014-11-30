@@ -107,4 +107,5 @@ $messageindexlngver = 'YaBB 2.6.1 $Revision$';
 'image_tp' => 'IMAGE',
 'media_tp' => 'MEDIA',
 );
+
 1;
