@@ -1,10 +1,10 @@
 ###############################################################################
 # ExtendedProfiles.pm                                                         #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -15,9 +15,9 @@
 # Michael Prager. Last modification by him: 15.11.07                          #
 # Added to the YaBB default code on 07. September 2008                        #
 ###############################################################################
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$extendedprofilespmver = 'YaBB 2.6.1 $Revision$';
+$extendedprofilespmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');

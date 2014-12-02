@@ -1,11 +1,11 @@
 ###############################################################################
 # Ban.pm                                                                      #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -15,9 +15,9 @@
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local;
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$banpmver = 'YaBB 2.6.1 $Revision$';
+$banpmver = 'YaBB 2.6.11 $Revision$';
 
 #the ban list in the Admin Center
 sub ipban {

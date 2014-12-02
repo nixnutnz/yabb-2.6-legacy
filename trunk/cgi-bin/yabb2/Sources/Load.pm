@@ -1,11 +1,11 @@
 ###############################################################################
 # Load.pm                                                                     #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$loadpmver = 'YaBB 2.6.1 $Revision$';
+$loadpmver = 'YaBB 2.6.11 $Revision$';
 
 sub LoadBoardControl {
     $binboard = q{};
@@ -1401,7 +1401,7 @@ sub update_IMS {
 
     fopen( UPDATE_IMS, ">$memberdir/$builduser.ims", 1 )
       or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
-    print {UPDATE_IMS} qq~### UserIMS YaBB 2.6.1 Version ###\n\n~
+    print {UPDATE_IMS} qq~### UserIMS YaBB 2.6.11 Version ###\n\n~
       or croak "$croak{'print'} update IMS";
     for my $cnt ( 0 .. ( @tag - 1 ) ) {
         print {UPDATE_IMS} qq~'$tag[$cnt]',"${$builduser}{$tag[$cnt]}"\n~

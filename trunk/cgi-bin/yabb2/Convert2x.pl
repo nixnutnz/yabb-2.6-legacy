@@ -4,12 +4,12 @@
 # $Source: /Convert2x.pl $
 ###############################################################################
 # Convert2x.pl                                                                #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                  #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -22,9 +22,9 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$convert2xplver = 'YaBB 2.6.1 $Revision$';
+$convert2xplver = 'YaBB 2.6.11 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -91,20 +91,20 @@ if ( -e "$vardir/Setup.lock" ) {
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
                     Make sure your YaBB 2.6.1 installation is running and that it has all the correct folder paths and URLs.<br />
-                    Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.6.1.<br /><br />
-                    <b>If</b> your YaBB 2x forum is located on the same server as your YaBB 2.6.1 installation:
+                    Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.6.11.<br /><br />
+                    <b>If</b> your YaBB 2x forum is located on the same server as your YaBB 2.6.11 installation:
                     <ol>
                         <li>Insert the path to your YaBB 2x forum in the input field below</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
-                    <b>Else</b> if your YaBB 2x forum is located on a different server than your YaBB 2.6.1 installation or if you do not know the path to your YaBB 2x forum:
+                    <b>Else</b> if your YaBB 2x forum is located on a different server than your YaBB 2.6.11 installation or if you do not know the path to your YaBB 2x forum:
                     <ol>
                         <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 2x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.1 installation, and chmod them 755.</li>
                         <li>Click on the 'Continue' button</li>
@@ -182,7 +182,7 @@ EOF
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -228,7 +228,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -366,7 +366,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -432,7 +432,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -503,7 +503,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="titlebg" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="titlebg" colspan="2">YaBB 2.6.11 Converter</td>
        </tr><tr>
            <td class="windowbg center">
                <img src="$imagesdir/thread.gif" alt="" />
@@ -574,7 +574,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -661,7 +661,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -701,7 +701,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
                 - Attachment Functions => Rebuild Attachments<br /></span>
                 <br />
                 <br />
-                You may now login to your forum. Enjoy using YaBB 2.6.1!
+                You may now login to your forum. Enjoy using YaBB 2.6.11!
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
@@ -717,8 +717,8 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
         CreateConvLock();
     }
 
-    $yyim    = 'You are running the YaBB 2.6.1 Converter.';
-    $yytitle = 'YaBB 2.6.1 Converter';
+    $yyim    = 'You are running the YaBB 2.6.11 Converter.';
+    $yytitle = 'YaBB 2.6.11 Converter';
     SetupTemplate();
 }
 
@@ -1357,7 +1357,7 @@ sub Convert_Settings {
     }
 
     if ( $mypl == 1 ) {
-        $settings_file_version = "YaBB 2.6.1";
+        $settings_file_version = 'YaBB 2.6.11';
         if ( $enable_notifications eq q{} ) {
             $enable_notifications = $enable_notification ? 3 : 0;
         }
@@ -1434,7 +1434,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
         <col style="width:5%" />
         <tr>
             <td class="titlebg" colspan="2">
-                YaBB 2.6.1 Setup
+                YaBB 2.6.11 Setup
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -1456,8 +1456,8 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
 </div>
       ~;
 
-    $yyim    = 'YaBB 2.6.1 Convert2x Utility has already been run.';
-    $yytitle = 'YaBB 2.6.1 Convert2x Utility';
+    $yyim    = 'YaBB 2.6.11 Convert2x Utility has already been run.';
+    $yytitle = 'YaBB 2.6.11 Convert2x Utility';
     SetupTemplate();
     return;
 }
@@ -1480,7 +1480,7 @@ sub CreateConvLock {
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.6.1';
+    $YaBBversion = 'YaBB 2.6.11';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -1574,8 +1574,8 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.6.1 Convertor Error.';
-    $yytitle = 'YaBB 2.6.1 Convertor Error.';
+    $yyim    = 'YaBB 2.6.11 Convertor Error.';
+    $yytitle = 'YaBB 2.6.11 Convertor Error.';
 
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
@@ -1592,7 +1592,7 @@ sub SimpleOutput {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>YaBB 2.6.1 Setup</title>
+<title>YaBB 2.6.11 Setup</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>

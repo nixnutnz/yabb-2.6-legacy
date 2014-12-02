@@ -4,12 +4,12 @@
 # $Source: /Convert.pl $
 ###############################################################################
 # Convert.pl                                                                  #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -21,9 +21,9 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$convertplver = 'YaBB 2.6.1 $Revision$';
+$convertplver = 'YaBB 2.6.11 $Revision$';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -118,23 +118,23 @@ if ( -e "$vardir/Setup.lock" ) {
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    Make sure your YaBB 2.6.1 installation is running and that it has all the correct folder paths and URLs.<br />
-                    Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.6.1.<br /><br />
-                    <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.6.1 installation:
+                    Make sure your YaBB 2.6.11 installation is running and that it has all the correct folder paths and URLs.<br />
+                    Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.6.11.<br /><br />
+                    <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.6.11 installation:
                     <ol>
                         <li>Insert the path to your YaBB 1 Gold - SP 1.x forum in the input field below</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
-                    <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.6.1 installation or if you do not know the path to your SP 1.x forum:
+                    <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.6.11 installation or if you do not know the path to your SP 1.x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.1 installation, and chmod them 755.</li>
-                        <li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.6.1 installation, and CHMOD it 644.</li>
+                        <li>Copy all files in the /Boards, /Members, and /Messages folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.11 installation, and chmod them 755.</li>
+                        <li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.6.11 installation, and CHMOD it 644.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <div style="width: 100%; text-align: center;">
@@ -210,7 +210,7 @@ EOF
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -257,7 +257,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -368,7 +368,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -449,7 +449,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -518,7 +518,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -591,7 +591,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
        </tr><tr>
            <td class="windowbg center">
                <img src="$imagesdir/thread.gif" alt="" />
@@ -666,7 +666,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -750,7 +750,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -828,7 +828,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -934,12 +934,12 @@ EOF
             print {FORUMTOTALS} "announcements|0|0|N/A|N/A||||\n"
               or croak 'cannot print FORUMTOTALS';
             $firstmstime = time();
-            print {FORUMTOTALS} "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.1 forum!|xx|0|\n"
+            print {FORUMTOTALS} "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.11 forum!|xx|0|\n"
               or croak 'cannot print FORUMTOTALS';
             fclose(FORUMTOTALS);
             fopen ( FIRSTMS, ">$datadir/$firstmstime.txt");
             my $initmail = 'webmaster@mysite.com';
-            print {FIRSTMS} qq~Welcome to your New YaBB 2.6.1 Forum!|Administrator|$initmail|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.1 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.<br /><br />And if you are in need of feature changes or new YaBB features, check out <a href="www.yabbforumsoftware.com">YaBBForumSoftware.com</a>. ||||\n~;
+            print {FIRSTMS} qq~Welcome to your New YaBB 2.6.11 Forum!|Administrator|$initmail|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.11 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.<br /><br />And if you are in need of feature changes or new YaBB features, check out <a href="www.yabbforumsoftware.com">YaBBForumSoftware.com</a>. ||||\n~;
             fclose(FIRSTMS);
             fopen (FIRSTMSC, ">$datadir/$firstmstime.ctb");
             $msgdat = timeformat( $firstmstime, 1, 'rfc' );
@@ -994,7 +994,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1036,7 +1036,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
                 - Attachment Functions => Rebuild Attachments<br /></span>
                 <br />
                 <br />
-                You may now log in to your forum. If your old forum had Extended Profiles installed, you should turn on Extended Profiles in Admin Center -&gt; Forum Settings -&gt; Members and run the Extended Profiles converter from Admin Center -&gt; Profile Fields. Enjoy using YaBB 2.6.1!
+                You may now log in to your forum. If your old forum had Extended Profiles installed, you should turn on Extended Profiles in Admin Center -&gt; Forum Settings -&gt; Members and run the Extended Profiles converter from Admin Center -&gt; Profile Fields. Enjoy using YaBB 2.6.11!
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
@@ -1094,7 +1094,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1196,8 +1196,8 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
             ~;
     }
 
-    $yyim    = 'You are running the YaBB 2.6.1 Converter.';
-    $yytitle = 'YaBB 2.6.1 Converter';
+    $yyim    = 'You are running the YaBB 2.6.11 Converter.';
+    $yytitle = 'YaBB 2.6.11 Converter';
     SetupTemplate();
 }
 
@@ -1966,7 +1966,7 @@ qq{general|general||This is the board for General Discussions.<br /><i>The board
                   || setup_fatal_error(
                     "$maintext_23 $convboardsdir/general.txt: ", 1 );
                 print {BOARDFILE}
-qq{1378046604|Welcome to your new YaBB 2.6.1 forum!|Administrator|webmaster\@yoursite.com|1378046604|0|admin|xx|0\n}
+qq{1378046604|Welcome to your new YaBB 2.6.11 forum!|Administrator|webmaster\@yoursite.com|1378046604|0|admin|xx|0\n}
                   or croak 'cannot print BOARDFILE';
                 fclose(BOARDFILE);
             }
@@ -2856,7 +2856,7 @@ sub conv_stringtotime {
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.6.1';
+    $YaBBversion = 'YaBB 2.6.11';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -2957,7 +2957,7 @@ sub FoundConvLock {
     <div class="bordercolor borderbox">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="ttabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="ttabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
@@ -2979,8 +2979,8 @@ sub FoundConvLock {
     </div>
       ~;
 
-    $yyim    = 'YaBB 2.6.1 Converter has already been run.';
-    $yytitle = 'YaBB 2.6.1 Converter';
+    $yyim    = 'YaBB 2.6.11 Converter has already been run.';
+    $yytitle = 'YaBB 2.6.11 Converter';
     SetupTemplate();
     return;
 }
@@ -3007,8 +3007,8 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.6.1 Convertor Error.';
-    $yytitle = 'YaBB 2.6.1 Convertor Error.';
+    $yyim    = 'YaBB 2.6.11 Convertor Error.';
+    $yytitle = 'YaBB 2.6.11 Convertor Error.';
 
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
@@ -3025,7 +3025,7 @@ sub SimpleOutput {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>YaBB 2.6.1 Setup</title>
+<title>YaBB 2.6.11 Setup</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 </head>
 <body>
@@ -3203,7 +3203,7 @@ sub SetInstall2 {
     $cookiepassword = qq~Y2Pass-$rancook~;
     $forumstart = timetostring($INFO{'firstforum'});
 
-    $settings_file_version = 'YaBB 2.6.1';
+    $settings_file_version = 'YaBB 2.6.11';
     if ($enable_notifications eq q{}) { $enable_notifications = $enable_notification ? 3 : 0; }
     $lang                  = $oldlang || 'English';
     $webmaster_email       = $oldemail || 'webmaster@mysite.com';

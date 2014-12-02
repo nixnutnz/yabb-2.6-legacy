@@ -1,11 +1,11 @@
 ###############################################################################
 # EventCal.pm                                                                 #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -17,9 +17,9 @@
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$eventcalpmver = 'YaBB 2.6.1 $Revision$';
+$eventcalpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');

@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.6.1 $Revision$';
+$adminlngver = 'YaBB 2.6.11 $Revision$';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -828,7 +828,7 @@ $abbr_lang = 'en-us';
 
 'a9_title' => 'BoardMod Mods',
 'a9_label' => 'BoardMod Mods Section',
-'conv' => 'To convert 1x or 2x files to 2.6.1',
+'conv' => 'To convert 1x or 2x files to 2.6.11',
 'conv2' => qq~<b><a href="$boardurl/Setup.pl">Go to Setup/Convert</a></b>~,
 'bookmarks' => 'Social Bookmarks', # Social Bookmarks
 'bookmarks1' => 'Social Bookmark Settings', # Social Bookmarks

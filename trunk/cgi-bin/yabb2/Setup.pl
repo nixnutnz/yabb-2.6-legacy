@@ -4,12 +4,12 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                  #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -21,9 +21,9 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$setupplver = 'YaBB 2.6.1 $Revision$';
+$setupplver = 'YaBB 2.6.11 $Revision$';
 $yymycharset  = 'UTF-8';
 
 # conversion will stop after $max_process_time
@@ -714,8 +714,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014  YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -1078,7 +1078,7 @@ EOF
           || setup_fatal_error( "$maintext_23 $varsdir/news.txt: ", 1 );
         print {NEWSFILE} "Welcome to our forum.\n"
           or croak 'cannot print news.txt';
-        print {NEWSFILE} "We've upgraded to YaBB 2.6.1!\n"
+        print {NEWSFILE} "We've upgraded to YaBB 2.6.11!\n"
           or croak 'cannot print news.txt';
         print {NEWSFILE}
           "Visit [url=http://www.yabbforum.com]YaBB[/url] today \;\)\n"
@@ -1171,8 +1171,8 @@ sub checkmodules {
 </form>
 ~;
 
-    $yyim    = 'You are running YaBB 2.6.1 Setup.';
-    $yytitle = 'YaBB 2.6.1 Setup';
+    $yyim    = 'You are running YaBB 2.6.11 Setup.';
+    $yytitle = 'YaBB 2.6.11 Setup';
     SetupTemplate();
     return;
 }
@@ -1211,7 +1211,7 @@ sub SetInstall {
     <table class="border-space pad-cell">
         <tr>
             <td class="windowbg">
-                Here you can set some of the default settings for your new YaBB 2.6.1 forum.<br />
+                Here you can set some of the default settings for your new YaBB 2.6.11 forum.<br />
                 After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
             </td>
         </tr><tr>
@@ -1281,21 +1281,21 @@ sub SetInstall {
 </form>
 ~;
 
-    $yyim    = 'You are running YaBB 2.6.1 Setup.';
-    $yytitle = 'YaBB 2.6.1 Setup';
+    $yyim    = 'You are running YaBB 2.6.11 Setup.';
+    $yytitle = 'YaBB 2.6.11 Setup';
     SetupTemplate();
     return;
 }
 
 sub SetInstall2 {
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
-        $settings_file_version = 'YaBB 2.6.1';
+        $settings_file_version = 'YaBB 2.6.11';
         $yymycharset             = $FORM{'defaultencoding'} || 'UTF-8' ;
         $maintenance           = 1;
         $rememberbackup        = 0;
         $guestaccess           = 1;
         $mbname                = $FORM{'mbname'} || 'My Perl YaBB Forum';
-        $mbname =~ s/\"/\'/gxsm;    #'" make my syntax checker happy;
+        $mbname =~ s/\"/\'/gxsm;
         $forumstart            = timetostring( int time );
         $Cookie_Length         = 1;
         $regtype               = 3;
@@ -1383,7 +1383,7 @@ sub SetInstall2 {
         $ClickLogTime           = 100;
         $max_log_days_old       = 90;
         $fadertime              = 1000;
-        $defaultusertxt         = 'I Love YaBB 2.6.1!';
+        $defaultusertxt         = 'I Love YaBB 2.6.11!';
         $timeout                = 5;
         $HotTopic               = 10;
         $VeryHotTopic           = 25;
@@ -1467,8 +1467,8 @@ sub SetInstall2 {
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014  YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -1986,7 +1986,7 @@ EOF
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.6.1';
+    $YaBBversion = 'YaBB 2.6.11';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -2058,13 +2058,13 @@ sub CheckInstall {
         ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
           split /\|/xsm, $boardstot;
         if ( $brdname eq 'general') {
-            print {FORUMTOTALS} "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.1 forum!|xx|0|\n" or croak 'cannot print FORUMTOTALS';
+            print {FORUMTOTALS} "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.11 forum!|xx|0|\n" or croak 'cannot print FORUMTOTALS';
         }
         else { print {FORUMTOTALS} qq~$boardstot\n~; }
     }
     fclose(FORUMTOTALS);
     fopen ( FIRSTMS, ">$datadir/$firstmstime.txt");
-    print {FIRSTMS} qq~Welcome to your New YaBB 2.6.1 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.1 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.<br /><br />And if you are in need of feature changes or new YaBB features, check out http://www.yabbforumsoftware.com . ||||\n~;
+    print {FIRSTMS} qq~Welcome to your New YaBB 2.6.11 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.11 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.<br /><br />And if you are in need of feature changes or new YaBB features, check out http://www.yabbforumsoftware.com and http://http://www.yabbforum.com/cgi-bin/boardmod/YaBB.pl . ||||\n~;
     fclose(FIRSTMS);
     require Sources::DateTime;
     fopen (FIRSTMSC, ">$datadir/$firstmstime.ctb");
@@ -2383,7 +2383,7 @@ sub CheckInstall {
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
-      Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.6.1 forum.<br />Or to convert a 1x or 2x Forum to 2.6.1
+      Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.6.11 forum.<br />Or to convert a 1x or 2x Forum to 2.6.11
             </td>
         </tr>~;
     }
@@ -2410,8 +2410,8 @@ sub CheckInstall {
       </table>
 </div>
       ~;
-    $yyim    = 'You are running YaBB 2.6.1 Setup.';
-    $yytitle = 'YaBB 2.6.1 Setup';
+    $yyim    = 'You are running YaBB 2.6.11 Setup.';
+    $yytitle = 'YaBB 2.6.11 Setup';
     SetupTemplate();
     return;
 }
@@ -2474,8 +2474,8 @@ sub setup_fatal_error {
 </table>
 <p style="text-align:center"><a href="javascript:history.go(-1)">Back</a></p>
 ~;
-      $yyim    = "YaBB 2.6.1 Setup Error.";
-      $yytitle = "YaBB 2.6.1 Setup Error.";
+      $yyim    = "YaBB 2.6.11 Setup Error.";
+      $yytitle = "YaBB 2.6.11 Setup Error.";
 
       if (!-e "$vardir/Settings.pm") { SimpleOutput(); }
 
@@ -2492,7 +2492,7 @@ sub SimpleOutput {
 <html lang='en-US'>
 <head>
     <meta charset="utf-8">
-    <title>YaBB 2.6.1 Setup</title>
+    <title>YaBB 2.6.11 Setup</title>
     <style type="text/css">
         html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px; background-color:#eee}
         div#folderfind { margin:1em auto; padding:0 1em}
@@ -2669,7 +2669,7 @@ sub FoundSetupLock {
     if ( -e "$vardir/Converter.lock" ) {
         $conv = q{};
         $conv2 =
-qq~The 1x to 2.6.1 Converter has already been run.<br />To run the Converter again, remove the file "$vardir/Converter.lock," then re-visit this page.~;
+qq~The 1x to 2.6.11 Converter has already been run.<br />To run the Converter again, remove the file "$vardir/Converter.lock," then re-visit this page.~;
 
     }
     else {
@@ -2698,7 +2698,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
     <table class="tabtitle">
         <tr>
             <td style="padding-left:1%; text-shadow: 1px 1px 1px #2d2d2d;">
-                YaBB 2.6.1 Setup
+                YaBB 2.6.11 Setup
             </td>
         </tr>
     </table>
@@ -2730,8 +2730,8 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
 </div>
       ~;
 
-    $yyim    = 'YaBB 2.6.1 Setup has already been run.';
-    $yytitle = 'YaBB 2.6.1 Setup';
+    $yyim    = 'YaBB 2.6.11 Setup has already been run.';
+    $yytitle = 'YaBB 2.6.11 Setup';
     template();
     return;
 }

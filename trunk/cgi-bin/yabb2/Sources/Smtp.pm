@@ -1,11 +1,11 @@
 ###############################################################################
 # Smtp.pm                                                                     #
-# $Date: 09.01.14 $                                                           #
+# $Date: 12.02.14 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       September 1, 2014                                           #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -13,9 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use English '-no_match_vars';
-our $VERSION = '2.6.1';
+our $VERSION = '2.6.11';
 
-$smtppmver = 'YaBB 2.6.1 $Revision$';
+$smtppmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 eval q{
