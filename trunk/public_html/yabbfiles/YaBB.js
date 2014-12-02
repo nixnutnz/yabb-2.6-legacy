@@ -707,3 +707,18 @@ function sizetext(sizefact) {
     document.getElementById('txtsize').value = orgsize;
 }
 // Size of message box, characters in message box END
+
+function Hash() {
+    this.length = 0;
+    this.items = new Array();
+    for (var i = 0; i < arguments.length; i += 2) {
+        if (typeof(arguments[i + 1]) != 'undefined') {
+            this.items[arguments[i]] = arguments[i + 1];
+            this.length++;
+        }
+    }
+
+    this.getItem = function(in_key) {
+        return this.items[in_key];
+    };
+}

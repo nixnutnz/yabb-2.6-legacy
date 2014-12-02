@@ -75,7 +75,7 @@ LoadLanguage('Micon');
 'admin_rem' => qq~$imagesdir/admin_rem.gif~,
 'alert' => qq~$imagesdir/alert.png~,
 'angry' => qq~$imagesdir/angry.gif~,
-'announcementlock' => qq~$imagesdir/announcementlock.gif~,
+'announcement' => qq~$imagesdir/announcement.gif~,
 'announcementlock' => qq~$imagesdir/announcementlock.gif~,
 'boardrss' => qq~$imagesdir/boardrss.png~,
 'buddylist' => qq~$imagesdir/buddylist.gif~,
@@ -269,46 +269,33 @@ $newload = qq~
 #####################################################################
 #                   JS Variables for IMPost, Post                   #
 #####################################################################
-
+@jsPostlist = qw( xx exclamation thumbup thumbdown question lamp smiley angry cheesy grin sad wink );
+$jsPostlist = q{};
+for (@jsPostlist) {
+        $jsPostlist .= qq~'$_', '$micon_bg{$_}',\n~;
+}
+$jsPostlist =~ s/\,\n\Z//xsm;
 $jsPost = qq~
-var jsPost = new Hash(
-'xx', '$micon_bg{'xx'}',
-'exclamation', '$micon_bg{'exclamation'}',
-'thumbup', '$micon_bg{'thumbup'}',
-'thumbdown', '$micon_bg{'thumbdown'}',
-'question', '$micon_bg{'question'}',
-'lamp', '$micon_bg{'lamp'}',
-'smiley', '$micon_bg{'smiley'}',
-'angry', '$micon_bg{'angry'}',
-'cheesy', '$micon_bg{'cheesy'}',
-'grin', '$micon_bg{'grin'}',
-'sad', '$micon_bg{'sad'}',
-'wink', '$micon_bg{'wink'}'
-);
+var jsPost = new Hash($jsPostlist);
 ~;
 
+@jsPstatlist = qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread thread);
+for (@jsPstatlist) {
+        $jsPstatlist .= qq~'$_', '$micon_bg{$_}',\n~;
+}
+$jsPstatlist =~ s/\,\n\Z//xsm;
 $jsPstat = qq~
-var jsPstat = new Hash(
-'thread', '$micon_bg{'thread'}',
-'hide', '$micon_bg{'hide'}',
-'locked', '$micon_bg{'locked'}',
-'sticky', '$micon_bg{'sticky'}',
-'announcement', '$micon_bg{'announcement'}',
-'stickylock', '$micon_bg{'stickylock'}',
-'hidesticky', '$micon_bg{'hidesticky'}',
-'hidelock', '$micon_bg{'hidelock'}',
-'hidestickylock', '$micon_bg{'hidestickylock'}',
-'announcementlock', '$micon_bg{'announcementlock'}',
-'veryhotthread', '$micon_bg{'veryhotthread'}',
-'hotthread', '$micon_bg{'hotthread'}',
-'thread', '$micon_bg{'thread'}');
+var jsPstat = new Hash($jsPstatlist);
 ~;
 
+@jsIMlist = qw( standard confidential urgent );
+$jsIMlist = q{};
+for (@jsIMlist) {
+        $jsIMlist .= qq~'$_', '$micon_bg{$_}',\n~;
+}
+$jsIMlist =~ s/\,\n\Z//xsm;
 $jsIM = qq~
-var jsIM = new Hash(
-'standard', '$micon_bg{'standard'}',
-'confidential', '$micon_bg{'confidential'}',
-'urgent', '$micon_bg{'urgent'}');
+var jsIM = new Hash($jsIMlist);
 ~;
 
 $my_sep = q{ };

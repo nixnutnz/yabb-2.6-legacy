@@ -53,21 +53,4 @@ $contexthelplngver = 'YaBB 2.6.1 $Revision$';
 'noparse' => "No Parse:<br /><br />Select the YaBBC Code:<br />[SELECT][table][tr][td]This table will not be parsed[/td][/tr][/table][/SELECT]<br /><br />Click on the \"[TITLE]\" button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[noparse][table][tr][td]This table will not be parsed[/td][/tr][/table][/noparse]<br /><br /><b>Result:</b><br />[table][tr][td]This table will not be parsed[/td][/tr][/table]",
 );
 
-## Mod Hook Contextxt ##
-
-$contextlst = q{};
-while( ($key, $value) = each %contextxt ) {
-    if ( $key eq 'clicktip' ) {
-        $contextlst .= qq~'contexttip', '$contextxt{'clicktip'}',\n~;
-    }
-    else {
-        $contextlst .= qq~'$key', '$value',\n~;
-    }
-}
-$contextlst =~ s/\,\n\Z//xsm;
-
-$contextpost = qq~
-var contexthash = new Hash($contextlst);
-~;
-
 1;

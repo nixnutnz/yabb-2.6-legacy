@@ -31,13 +31,13 @@ sub BoardTotals {
             @lines = <FORUMTOTALS>;
             fclose(FORUMTOTALS);
             chomp @lines;
-            foreach my $updateboard (@updateboards) {
-                foreach my $line (@lines) {
+            foreach $updateboard (@updateboards) {
+                foreach $line (@lines) {
                     @boardvars = split /\|/xsm, $line;
                     if ( $boardvars[0] eq $updateboard
                         && exists $board{ $boardvars[0] } )
                     {
-                        for my $cnt ( 1 .. ( @tags - 1 ) ) {
+                        for my $cnt ( 1 .. $#tags ) {
                             ${ $uid . $updateboard }{ $tags[$cnt] } =
                               $boardvars[$cnt];
                         }
@@ -51,13 +51,13 @@ sub BoardTotals {
               or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
             fclose( FORUMTOTALS );
-            for my $line ( 0 .. ( @lines - 1 ) ) {
+            for $line ( 0 .. ( $#lines ) ) {
                 @boardvars = split /\|/xsm, $lines[$line];
                 if ( exists $board{ $boardvars[0] } ) {
                     if ( $boardvars[0] eq $updateboards[0] ) {
                         $lines[$line] = "$updateboards[0]|";
                         chomp $boardvars[9];
-                        for my $cnt ( 1 .. ( @tags - 1 ) ) {
+                        for my $cnt ( 1 .. $#tags ) {
                             if (
                                 exists(
                                     ${ $uid . $boardvars[0] }{ $tags[$cnt] }
@@ -300,9 +300,6 @@ sub MessageTotals {
     }
     return;
 }
-
-# NOBODY expects the Spanish Inquisition!
-# - Monty Python
 
 #### USER AND MEMBERSHIP MANAGEMENT ####
 
@@ -629,8 +626,8 @@ sub keygen {
     else                   { return $randid; }
 }
 
-### Sticky Shimmy Shuffle mod by astro-pilot ##
-#added to core on February 22, 2013 ##
+## Sticky Shimmy Shuffle by astro-pilot ##
+## added to core on February 22, 2013 ##
 sub Rearrange_Sticky {
     my ( $i, $upstky, $downstky, $stkynum, $stky, @stickies, $oldboard );
     $board     = $INFO{'board'};
@@ -688,6 +685,6 @@ sub Rearrange_Sticky {
     redirectexit();
     return;
 }
-###End Sticky Shimmy Shuffle mod
+## End Sticky Shimmy Shuffle ##
 
 1;

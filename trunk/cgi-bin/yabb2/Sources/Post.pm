@@ -587,20 +587,6 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
     if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
 
         $my_modalert = qq~
-    function Hash() {
-        this.length = 0;
-        this.items = new Array();
-        for (var i = 0; i < arguments.length; i += 2) {
-            if (typeof(arguments[i + 1]) != 'undefined') {
-                this.items[arguments[i]] = arguments[i + 1];
-                this.length++;
-            }
-        }
-
-        this.getItem = function(in_key) {
-            return this.items[in_key];
-        };
-    }
     function showimage() {
         $jsPost
         var icon_set = document.postmodify.icon.options[document.postmodify.icon.selectedIndex].value;

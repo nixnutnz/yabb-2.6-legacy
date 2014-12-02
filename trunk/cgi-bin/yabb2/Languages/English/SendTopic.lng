@@ -35,7 +35,7 @@ $sendtopiclngver = 'YaBB 2.6.1 $Revision$';
 'error_verification_question' => 'You must answer the verification question.',
 );
 
-%floodtxt=(
+%floodtxt = (
 '1' => 'Your Verification Code is',
 '3' => 'Verification Code',
 'casewarning' => 'Please type the characters that appear in the image. The characters must be typed in the same order, and they are case-sensitive.',

@@ -105,7 +105,7 @@ sub RebuildMessageIndex {
             else {
 
                 # &MessageTotals("load", $thread) not used here
-                # for upgraders form 2-2.1 to the actual version.
+                # for upgraders from 2-2.1 to the actual version.
                 fopen( CTB, "$datadir/$thread.ctb", 1 );
                 my @ctb = <CTB>;
                 fclose(CTB);
@@ -272,6 +272,49 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
         }
     }
     if ($save_moved) { save_moved_file(); }
+
+## New forum.totals rebuild ##
+    my @newtots = ();
+    my @myline1 = ();
+    while( ($key, $value) = each %board ) {
+        $ftotals = 0;
+        fopen ( TOTALS, "<$boardsdir/$key.txt" );
+        my @ftotals = <TOTALS>;
+        fclose(TOTALS);
+        chomp @ftotals;
+        $ftotals = @ftotals;
+        if ( !$ftotals ) {
+            $msgtot = 0;
+            $myline1[4] = 'N/A';
+            $myline1[0] = q{};
+            $myline1[5] = q{};
+            $myline1[7]= q{};
+            $mesg[0] = q{};
+            $messby = 'N/A';
+            $msgts = 0;
+        }
+        else {
+            @myline1 = split /[|]/xsm, $ftotals[0];
+            $msgtot = 0;
+            $msgts = $myline1[8];
+            for (@ftotals) {
+                @totalsvars = split /[|]/xsm, $_;
+                $msgtot += $totalsvars[5] + 1;
+            }
+            fopen ( TOTALSN, "<$datadir/$myline1[0].txt" );
+            my @ftotalsn = <TOTALSN>;
+            fclose(TOTALSN);
+            @mesg =  split /[|]/xsm, $ftotalsn[-1];
+            $messby = $myline1[6];
+            if ( $messby eq 'Guest') {
+                $messby = $myline1[2];
+            }
+        }
+        push @newtots, qq~$key|$ftotals|$msgtot|$myline1[4]|$messby|$myline1[0]|$myline1[5]|$mesg[0]|$myline1[7]|$msgts\n~;
+    }
+    fopen ( NTOTALS, ">$boardsdir/forum.totals" );
+    print {NTOTALS} @newtots;
+    fclose(NTOTALS);
 
     automaintenance('off');
     $yymain .= qq~<b>$admin_txt{'507'}</b>~;
@@ -867,7 +910,7 @@ sub RebuildNotifications {
 
     # Set up the multi-step action
     my $begin_time = time;
-
+    my (%members, $sumuser, $sumbo, $sumthr, $sumtotal, $start_time, $exitloop);
     require Sources::Notify;
 
     if (   -e "$memberdir/NotificationsRebuild.txt.rebuild"
@@ -876,16 +919,16 @@ sub RebuildNotifications {
         fopen( MEMBNOTIF, "$memberdir/NotificationsRebuild.txt.rebuild" )
           || fatal_error( 'cannot_open',
             "$memberdir/NotificationsRebuild.txt.rebuild", 1 );
-        my %members = map {/(.*)\t(.*)/xsm} <MEMBNOTIF>;
+        %members = map {/(.*)\t(.*)/xsm} <MEMBNOTIF>;
         fclose(MEMBNOTIF);
 
         fopen( CALCNOTIF, "$vardir/NotificationsCalc.txt.rebuild" )
           || fatal_error( 'cannot_open',
             "$vardir/NotificationsCalc.txt.rebuild", 1 );
-        my $start_time = <CALCNOTIF>;
-        my $sumuser    = <CALCNOTIF>;
-        my $sumbo      = <CALCNOTIF>;
-        my $sumthr     = <CALCNOTIF>;
+        $start_time = <CALCNOTIF>;
+        $sumuser    = <CALCNOTIF>;
+        $sumbo      = <CALCNOTIF>;
+        $sumthr     = <CALCNOTIF>;
         fclose(CALCNOTIF);
         chomp $start_time;
         chomp $sumuser;
@@ -938,7 +981,6 @@ sub RebuildNotifications {
     }
 
     # Loop through each -rest- board-mail
-    my ( $exitloop );
     while (@bmaildir) {
 
         # board name

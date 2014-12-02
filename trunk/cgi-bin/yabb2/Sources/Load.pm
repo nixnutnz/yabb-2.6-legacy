@@ -1214,7 +1214,7 @@ sub WhatTemplate {
     (
         $usestyle,       $useimages,  $usehead,     $useboard,
         $usemessage,     $usedisplay, $usemycenter, $UseMenuType,
-        $useThreadtools, $usePosttools
+        $useThreadtools, $usePosttools,
     ) = split /\|/xsm, $templateset{$template};
 
     if ( !-e "$htmldir/Templates/Forum/$usestyle.css" ) {

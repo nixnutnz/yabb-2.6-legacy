@@ -102,7 +102,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
-                <td class="catbg padd-cell" colspan="2"><span class="small">$item->{'header'}</span></td>
+         <td class="catbg padd-cell" colspan="2"><span class="small">$item->{'header'}</span></td>
      </tr>~;
             }
             elsif ( $item->{'two_rows'} && $item->{'input_html'} ) {

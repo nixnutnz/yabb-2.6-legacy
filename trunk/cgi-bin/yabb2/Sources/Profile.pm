@@ -1022,6 +1022,8 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
     $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
 
+## Mod Hook showProfile_options ##
+
     if ( !$view ) {
         $yymain .= $showProfile;
         template();
@@ -1444,6 +1446,8 @@ qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</text
     $showProfile =~ s/{yabb userlastim}/$userlastim/sm;
     $showProfile =~ s/{yabb my_extprofile}/$my_extprofile/sm;
     $showProfile =~ s/{yabb sid_expires}/$expiretxt/sm;
+
+## Mod Hook showProfile_admin ##
 
     if ( !$view ) {
         $yymain .= $showProfile;

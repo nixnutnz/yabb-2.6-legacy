@@ -14,7 +14,7 @@
 
 $templateslngver = 'YaBB 2.6.1 $Revision$';
 
-%templ_txt=(
+%templ_txt = (
 '1' => 'Template Style Sheet',
 '2' => 'Template Header',
 '3' => 'Board Index',
@@ -116,5 +116,7 @@ $templateslngver = 'YaBB 2.6.1 $Revision$';
 'movetext' => 'Text Position (vertical)',
 'noedit' => qq~You are not allowed to edit the default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename. You can then choose this new stylesheet as the stylesheet for the default skin from the <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a> screen.~,
 );
+
+$templ_txt{'tabtitle_txt'} = 'Board Index Title Text (.tabtitle-text)';
 
 1;

@@ -154,6 +154,7 @@ sub mainMenu {
         $tab{'logout'} = qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}</a>$tabhtml_r~;
     }
 
+## Tab Mod Hook ##
 
     $yytabmenu = qq~<ul>\n~;
     # Advanced Tabs starts here

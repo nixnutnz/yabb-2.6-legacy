@@ -26,28 +26,23 @@ sub ContextScript {
     my ($inp) = @_;
     LoadLanguage('ContextHelp');
 
-    my $contextmain;
-    if ( $inp eq 'post' ) { $contextmain = $contextpost; }
+    $contextlst = q{};
+    while( ($key, $value) = each %contextxt ) {
+        if ( $key eq 'clicktip' ) {
+            $contextlst .= qq~'contexttip', '$contextxt{'clicktip'}',\n~;
+            }
+        else {
+            $contextlst .= qq~'$key', '$value',\n~;
+        }
+    }
+    $contextlst =~ s/\,\n\Z//xsm;
 
-    undef %contextxt;
+    my $contextmain = qq~
+var contexthash = new Hash($contextlst);
+~;
 
     $ctmain .= qq~
     <script type="text/javascript">
-    function Hash() {
-        this.length = 0;
-        this.items = new Array();
-        for (var i = 0; i < arguments.length; i += 2) {
-            if (typeof(arguments[i + 1]) != 'undefined') {
-                this.items[arguments[i]] = arguments[i + 1];
-                this.length++;
-            }
-        }
-
-        this.getItem = function(in_key) {
-            return this.items[in_key];
-        };
-    }
-
     $contextmain
     </script>
     <div id="contexthlp" class="windowbg contexthlp" style="display: none;">
