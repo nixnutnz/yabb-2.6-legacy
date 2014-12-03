@@ -150,7 +150,7 @@ $fntopts
                  </div>
             </div>
             <div style="float:left; height:22px; padding-left: 1px; padding-right: 1px; width:23px;">
-                <span class="ubbcbutton ubbcbuttonback"><img src="$imagesdir/UBBC/palette1.png" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" /></span>
+                <span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/palette1.png" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" /></span>
             </div>
             <div style="float:left; width:${txtalgn_w}px">
             $txtalgn
