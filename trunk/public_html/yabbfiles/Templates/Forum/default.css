@@ -1307,7 +1307,7 @@ span.ubbcbutton {
 }
 
 .ubbcbuttonback {
-	background-image: url(./default/UBBC/ubbc2.png);
+    background-image: url(../../UBBCbuttons/ubbc2.png);
 }
 
 .tt { font-family: Courier, monospace; }
