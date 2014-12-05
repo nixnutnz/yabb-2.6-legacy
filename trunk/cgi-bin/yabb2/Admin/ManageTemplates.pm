@@ -2935,7 +2935,7 @@ function ConvShowcolor(color) {
         if(thistask == "templ") previewColor(newcolor);
 }
 </script>
-        ~;
+~;
     $yytitle     = $templ_txt{'1'};
     $action_area = 'modcss';
     AdminTemplate();

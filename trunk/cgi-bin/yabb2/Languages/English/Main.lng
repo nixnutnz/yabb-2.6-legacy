@@ -156,6 +156,7 @@ $abbr_lang = 'en-us';
 'collapse' => 'collapse',
 'UTC' => '(UTC)',
 'maint' => 'Remove this file if your board is in maintenance for no reason.',
+'printpage' => 'Print this page',
 );
 
 %load_txt = (

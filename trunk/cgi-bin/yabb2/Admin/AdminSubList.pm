@@ -175,6 +175,7 @@ $adminsublistpmver = 'YaBB 2.6.11 $Revision$';
 'view_regentry' => 'RegistrationLog.pm&view_registration',
 'view_reglog' => 'RegistrationLog.pm&view_reglog',
 'viewmembers' => 'ViewMembers.pm&Ml',
+'blockip' => 'ErrorLog.pm&blockip',
 );
 
 1;
