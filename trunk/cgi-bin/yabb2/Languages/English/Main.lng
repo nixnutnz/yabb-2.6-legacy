@@ -286,5 +286,4 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 timetostring($date);
 $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
 
-
 1;

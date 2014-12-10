@@ -1367,7 +1367,7 @@ sub Convert_Settings {
     ( undef, $rancook ) = split /\-/xsm, $cookieusername;
     $cookietsort         = isempty( $cookietsort,         qq~Y2tsort-$rancook~ );
     $cookieview          = isempty( $cookieview,          qq~Y2view-$rancook~ );
-    $cookieviewtime      = isempty( $cookieviewtime,      525_600 );
+    $cookieviewtime      = isempty( $cookieviewtime,      525600 );
     $MaxIMMessLen        = isempty( $MaxIMMessLen,        2000 );
     $AdMaxIMMessLen      = isempty( $AdMaxIMMessLen,      3000 );
     $MaxCalMessLen       = isempty( $MaxCalMessLen,       200 );
@@ -1385,6 +1385,7 @@ sub Convert_Settings {
     $max_brd_img_height    = isempty( $max_brd_img_height,    50 );
     $enabletz              = isempty( $enabletz,              0 );
     $default_tz            = isempty( $default_tz,            'UTC' );
+    $screenlogin           = isempty( $screenlogin,           1);
     $gzcomp = fileno $GZIP ? 1 : 0;
 
     $ip_banlist           = q{};
@@ -1423,7 +1424,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
     else {
         $fixa =
           q~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="Convert2x.pl" method="post" style="display: inline;">
+                <form action="Convert2x.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Fix 2.0-2.5 files" />
                 </form>~;
     }
@@ -1701,7 +1702,13 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
                     enable_yabbc();
                     DoUBBC();
                 }
-                $yynews = $message;
+                $message =~ s/\'/&#39;/xsm;
+                $yynews = qq~
+            <script type="text/javascript">
+                if (ie4 || DOM2) var news = '$message';
+                var div = document.getElementById("newsdiv");
+                div.innerHTML = news;
+            </script>~;
             }
         }
         $yyurl = $scripturl;

@@ -410,7 +410,7 @@ sub googie {
     $googie = qq~
             <script type="text/javascript">
             GOOGIE_DEFAULT_LANG = '$userdefaultlang';
-            var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.pl?lang=");
+            var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.$yyext?lang=");
             googie1.lang_chck_spell = '$spell_check{'chck_spell'}';
             googie1.lang_revert = '$spell_check{'revert'}';
             googie1.lang_close = '$spell_check{'close'}';

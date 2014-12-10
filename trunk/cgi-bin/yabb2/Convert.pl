@@ -3126,7 +3126,13 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                     enable_yabbc();
                     DoUBBC();
                 }
-                $yynews = $message;
+                $message =~ s/\'/&#39;/xsm;
+                $yynews = qq~
+            <script type="text/javascript">
+                if (ie4 || DOM2) var news = '$message';
+                var div = document.getElementById("newsdiv");
+                div.innerHTML = news;
+            </script>~;
             }
         }
         $yyurl = $scripturl;
@@ -3209,7 +3215,7 @@ sub SetInstall2 {
     $webmaster_email       = $oldemail || 'webmaster@mysite.com';
     $timeselected          = $oldtime || 0;
     $timeoffset            = $oldoffset || 0;
-    $cookieviewtime        = 525_600;
+    $cookieviewtime        = 525600;
     $MaxIMMessLen          = 2000;
     $AdMaxIMMessLen        = 3000;
     $MaxCalMessLen         = 200;
@@ -3238,6 +3244,7 @@ sub SetInstall2 {
     $show_online_ip_fmod  = 1;
     $ipLookup             = 1;
     $bm_subcut            = 50;
+    $screenlogin          = 1;
     if ( -e '/bin/gzip' && open $GZIP, '|gzip -f' ) {
         $gzcomp = 1;
     }

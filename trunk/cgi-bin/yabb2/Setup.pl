@@ -1940,8 +1940,6 @@ sub SetInstall2 {
 \$clike_notify = 1;
 \$script_notify = 1;
 
-
-
 ###############################################################################
 # Banning Settings  Moved to banlist.txt New timed ban settings              #
 ###############################################################################
@@ -2674,8 +2672,8 @@ qq~The 1x to 2.6.11 Converter has already been run.<br />To run the Converter ag
     }
     else {
         $conv =
-          q~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="Convert.pl" method="post" style="display: inline;">
+          qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <form action="Convert.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Convert 1x files" />
                 </form>~;
     }
@@ -2687,8 +2685,8 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
     }
     else {
         $fixa =
-          q~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="Convert2x.pl" method="post" style="display: inline;">
+          qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <form action="Convert2x.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Convert 2x files" />
                 </form>~;
 }
