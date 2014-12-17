@@ -108,7 +108,7 @@ $myprofile_edit = qq~<table class="cs_thin pad_4px">
     </tr>
     <tr class="windowbg">
        <td><label for="birthday"><b>$profile_txt{'563'}:</b>{yabb editAgeTxt}</label></td>
-       <td><span class="small">{yabb bdaysel}</span></td>
+       <td><span class="small">{yabb bdaysel}{yabb require_bd}</span></td>
     </tr>{yabb showageshow}
     <tr class="windowbg">
         <td><label for="location"><b>$profile_txt{'227'}: </b></label></td>
@@ -403,7 +403,7 @@ $my_tz_select = qq~    </tr><tr class="windowbg">
         </td>~;
 
 $myprofile_notify = qq~<tr class="windowbg">
-        <td class="vtop"><label for="onlinealert"><b>$profile_txt{'onlinealert'}:</b></label></td>
+        <td class="vtop"><b>$profile_txt{'onlinealert'}:</b></td>
         <td>{yabb my_notify_a} {yabb my_notify_b}</td>
     </tr>~;
 
