@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$eventcalbirthdayspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$eventcalbirthdayspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -109,7 +109,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     <form action="$scripturl?action=eventcal;calshow=1;calgotobox=1" method="post">
     <span class="small"><b>$var_cal{'calsubmit'}</b></span>~;
 
-    if ( $mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2 )
+    if ( $mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2  || $mytimeselected == 8 )
     {
         $calgotobox .= $boxdays . $boxmonths;
     }
@@ -294,7 +294,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
 
     for my $i ( 1 .. 12 ) {
         if ( $no_bd[$i] == 0 ) {
-            $no_birthday_found[$i] .= qq~&#8226; $var_cal{"$calmont[$i]"} ~;
+            $no_birthday_found[$i] .= qq~&bull; $var_cal{"$calmont[$i]"} ~;
             $no_bd_found = 1;
         }
         else {

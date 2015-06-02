@@ -15,7 +15,7 @@
 our $VERSION = '2.6.11';
 use CGI::Carp qw(fatalsToBrowser);
 
-$modifymessagepmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$modifymessagepmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$post_txt_loaded ) {
@@ -474,7 +474,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
     my $mess_len = $message;
     $mess_len =~ s/[\r\n ]//igsm;
-    $mess_len =~ s/&#\d{3,}?\;/X/igxsm;
+    $mess_len =~ s/&\x23\d{3,}?\;/X/igxsm;
     if ( length($mess_len) > $MaxMessLen ) {
         require Sources::Post;
         Preview($post_txt{'536'} . q{ }
@@ -565,8 +565,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
 
     my ( $file, $fixfile, @filelist, @newfilelist, $fixext );
-    $allowattach ||= 0;
-	if ( $allowattach > 0 ) {
+
     for my $y ( 1 .. $allowattach ) {
         if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
         if ( $file
@@ -574,10 +573,20 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
           )
         {
             $fixfile = $file;
-            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/sm;
-            $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gsm;
+            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gsm;
+            if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/gsm )
+            {
+                    # Transliteration
+                my $x = 0;
+                foreach ( @uploadtranlist )
+                {
+                    $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
+                    $x++;
+                }
 
-            # replace all inappropriate with the "_" character.
+              # END Transliteration. Thanks to "Velocity" for this contribution.
+                $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gsm;
+            }
 
             # replace . with _ in the filename except for the extension
             my $fixname = $fixfile;
@@ -633,7 +642,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
             if ($match) {
                 if (
-                    $allowattach < 1
+                    !$allowattach
                     || ( ( $allowguestattach != 0 || $username eq 'Guest' )
                         && $allowguestattach != 1 )
                   )
@@ -662,7 +671,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                       . " KB) $fatxt{'21b'} "
                       . $limit );
             }
-			$dirlimit ||= 0;
+            $dirlimit ||= 0;
             if ($dirlimit > 0) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
@@ -773,7 +782,6 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
     print {FILE} @{ $thread_arrayref{$threadid} }
       or croak "$croak{'print'} FILE";
     fclose(FILE);
-	}
 
     if ( $postid == 0 || $staff ) {
 

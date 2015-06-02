@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.11';
 
-$searchpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$searchpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Search');
@@ -1031,7 +1031,7 @@ sub pmsearch {
         $mdate = timeformat($mdate);
 
         Highlight( \$msub, \$message, \@search, 0 );
-        if ( $enable_ubbc && $message !~ /#nosmileys/isgm ) { MakeSmileys(); }
+        if ( $enable_ubbc && $message !~ /\x23nosmileys/isgm ) { MakeSmileys(); }
 
         $message = Censor($message);
         $msub    = Censor($msub);

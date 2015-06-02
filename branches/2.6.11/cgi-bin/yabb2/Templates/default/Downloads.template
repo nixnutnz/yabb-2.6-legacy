@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$downloadstemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$downloadstemver = 'YaBB 2.6.11 $Revision$';
 
 
 $downloads_top = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -95,11 +95,11 @@ $downloads_att_c = qq~<tr>
           {yabb att_admin_b}
         <td class="catbg" colspan="7">
             <table>
-				<colgroup>
+                <colgroup>
                     <col style="width:33%" />
                     <col style="width:34%" />
                     <col style="width:33%" />
-				</colgroup>
+                </colgroup>
                 <tr>
                     <td class="small">
            {yabb att_admin_c}
@@ -136,14 +136,12 @@ $downloads_att_out_a = qq~
         </td>
     </tr><tr>~;
 
-$downloads_tbl_end = qq~</td>
+$downloads_tbl_end = q~
     </tr>
     {yabb viewattachments}
 </table>~;
 
-$my_att_sort_a = qq~<td onclick="location.href='$scripturl?action=viewdownloads;thread={yabb thread};sort=~;
-$my_att_sort_b = qq~</td>
-        <td onclick="location.href='$scripturl?action=viewdownloads;thread={yabb thread};sort=~;
-$my_att_sort_c = qq~style="border: 0; border-style: outset; cursor: pointer; text-align:center"><a href="$scripturl?action=viewdownloads;thread={yabb thread};sort=~;
+$my_att_sort = qq~
+        <td onclick="location.href='$scripturl?action=viewdownloads;thread={yabb thread};sort={yabb attsort}'" class="{yabb attclass}" style="border: 0; border-style: outset; cursor: pointer; text-align:center"><a href="$scripturl?action=viewdownloads;thread={yabb thread};sort={yabb attsort}"><b>{yabb atttext}</b></a></td>~;
 
 1;

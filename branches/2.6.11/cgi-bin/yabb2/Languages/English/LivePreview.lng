@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 # Mod created by Carsten Dalgaard                                             #
 #                and added to YaBB core in Version 2.5.4                      #
-# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     #
 ###############################################################################
 
 $livepreviewlngver = 'YaBB 2.6.11 $Revision: 1611 $';

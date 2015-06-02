@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$membergroupspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$membergroupspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";
@@ -260,30 +260,30 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
 
 sub hextoname {
     ($colorname) = @_;
-    $colorname =~ s/aqua|#00FFFF/$amgtxt{'56'}/ism;
-    $colorname =~ s/black|#000000/$amgtxt{'57'}/ism;
-    $colorname =~ s/blue|#0000FF/$amgtxt{'58'}/ism;
-    $colorname =~ s/fuchsia|#FF00FF/$amgtxt{'59'}/ism;
-    $colorname =~ s/gray|#808080/$amgtxt{'60'}/ism;
-    $colorname =~ s/green|#008000/$amgtxt{'61'}/ism;
-    $colorname =~ s/lime|#00FF00/$amgtxt{'62'}/ism;
-    $colorname =~ s/maroon|#800000/$amgtxt{'63'}/ism;
-    $colorname =~ s/navy|#000080/$amgtxt{'64'}/ism;
-    $colorname =~ s/olive|#808000/$amgtxt{'65'}/ism;
-    $colorname =~ s/purple|#800080/$amgtxt{'66'}/ism;
-    $colorname =~ s/red|#FF0000/$amgtxt{'67'}/ism;
-    $colorname =~ s/silver|#C0C0C0/$amgtxt{'68'}/ism;
-    $colorname =~ s/teal|#008080/$amgtxt{'69'}/ism;
-    $colorname =~ s/white|#FFFFFF/$amgtxt{'70'}/ism;
-    $colorname =~ s/yellow|#FFFF00/$amgtxt{'71'}/ism;
-    $colorname =~ s/#DEB887/$amgtxt{'75'}/ism;
-    $colorname =~ s/#FFD700/$amgtxt{'76'}/ism;
-    $colorname =~ s/#FFA500/$amgtxt{'77'}/ism;
-    $colorname =~ s/#A0522D/$amgtxt{'78'}/ism;
-    $colorname =~ s/#87CEEB/$amgtxt{'79'}/ism;
-    $colorname =~ s/#6A5ACD/$amgtxt{'80'}/ism;
-    $colorname =~ s/#4682B4/$amgtxt{'81'}/ism;
-    $colorname =~ s/#9ACD32/$amgtxt{'82'}/ism;
+    $colorname =~ s/aqua|\x2300FFFF/$amgtxt{'56'}/ism;
+    $colorname =~ s/black|\x23000000/$amgtxt{'57'}/ism;
+    $colorname =~ s/blue|\x230000FF/$amgtxt{'58'}/ism;
+    $colorname =~ s/fuchsia|\x23FF00FF/$amgtxt{'59'}/ism;
+    $colorname =~ s/gray|\x23808080/$amgtxt{'60'}/ism;
+    $colorname =~ s/green|\x23008000/$amgtxt{'61'}/ism;
+    $colorname =~ s/lime|\x2300FF00/$amgtxt{'62'}/ism;
+    $colorname =~ s/maroon|\x23800000/$amgtxt{'63'}/ism;
+    $colorname =~ s/navy|\x23000080/$amgtxt{'64'}/ism;
+    $colorname =~ s/olive|\x23808000/$amgtxt{'65'}/ism;
+    $colorname =~ s/purple|\x23800080/$amgtxt{'66'}/ism;
+    $colorname =~ s/red|\x23FF0000/$amgtxt{'67'}/ism;
+    $colorname =~ s/silver|\x23C0C0C0/$amgtxt{'68'}/ism;
+    $colorname =~ s/teal|\x23008080/$amgtxt{'69'}/ism;
+    $colorname =~ s/white|\x23FFFFFF/$amgtxt{'70'}/ism;
+    $colorname =~ s/yellow|\x23FFFF00/$amgtxt{'71'}/ism;
+    $colorname =~ s/\x23DEB887/$amgtxt{'75'}/ism;
+    $colorname =~ s/\x23FFD700/$amgtxt{'76'}/ism;
+    $colorname =~ s/\x23FFA500/$amgtxt{'77'}/ism;
+    $colorname =~ s/\x23A0522D/$amgtxt{'78'}/ism;
+    $colorname =~ s/\x2387CEEB/$amgtxt{'79'}/ism;
+    $colorname =~ s/\x236A5ACD/$amgtxt{'80'}/ism;
+    $colorname =~ s/\x234682B4/$amgtxt{'81'}/ism;
+    $colorname =~ s/\x239ACD32/$amgtxt{'82'}/ism;
     return $colorname;
 }
 
@@ -547,7 +547,7 @@ function viscolor(v) {
 }
 
 function previewColor(color) {
-    color = color.replace(/#/, '');
+    color = color.replace(/\x23/, '');
     document.getElementById('color2').value = color;
     viscolor(color);
 }
@@ -598,10 +598,9 @@ sub editAddGroup2 {
     if ( !$FORM{'title'} ) { fatal_error('no_group_name'); }
     $name = $FORM{'title'};
 
-    $name =~ s/&amp;/&/gsm;
-    $name =~ s/'/&#39;/gxsm;     #' make my syntax checker happy;
-    $name =~ s/,/&#44;/gxsm;
-    $name =~ s/\|/&#124;/gxsm;
+    $name =~ s/\x27/&\x2339;/gxsm;
+    $name =~ s/,/&\x2344;/gxsm;
+    $name =~ s/\|/&\x23124;/gxsm;
     $lcname = lc $name;
 
     if ( $FORM{'starsadmin'} eq 'other' ) {

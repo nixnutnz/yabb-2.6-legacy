@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$templateslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+$templateslngver = 'YaBB 2.6.11 $Revision$';
 
 %templ_txt = (
 '1' => 'Template Style Sheet',
@@ -36,7 +36,7 @@ $templateslngver = 'YaBB 2.6.11 $Revision: 1611 $';
 '14' => 'Delete',
 '15' => 'Are you sure you want to delete',
 '18' => 'Elements',
-'19' => 'Here you can change the colors of the background, borders and text as well as the font family and text size for the main elements of your forum.',
+'19' => 'Here you can change the colors of the background, borders and text as well as the font family and text size for the main elements of your forum.<br /><b>Note</b>: If an element attribute such as font has no choices available, that attribute has not been set for that element in the stylesheet.',
 '20' => 'Element',
 '21' => 'Backgr.',
 '22' => 'Font',
@@ -104,6 +104,7 @@ $templateslngver = 'YaBB 2.6.11 $Revision: 1611 $';
 '84' => 'This is your News messages (if news enabled)',
 'tabtitle' => 'Board Index Title (.tabtitle)',
 'tabtitlea' => 'Board Index Title link (.tabtitle a)',
+'tabtitle_txt' => 'Board Index Title Text (.tabtitle-text)',
 'userinfo' => 'Post User-Info',
 'tabmenu' => 'Tabmenu',
 'forum' => 'Forum',
@@ -115,8 +116,8 @@ $templateslngver = 'YaBB 2.6.11 $Revision: 1611 $';
 'iconspace' => 'Icon-Text space',
 'movetext' => 'Text Position (vertical)',
 'noedit' => qq~You are not allowed to edit the default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename. You can then choose this new stylesheet as the stylesheet for the default skin from the <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a> screen.~,
+'edit_files' => 'Go to Edit Template Files',
+'configure' => 'Go to Configure Templates',
 );
-
-$templ_txt{'tabtitle_txt'} = 'Board Index Title Text (.tabtitle-text)';
 
 1;

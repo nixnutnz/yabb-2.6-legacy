@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$helpcentrepmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$helpcentrepmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');
@@ -264,12 +264,12 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem
 
     sub codehlp {
         my ($hcode) = @_;
-        if ( $hcode !~ /&\S*;/xsm ) { $hcode =~ s/;/&#059;/gxsm; }
+        if ( $hcode !~ /&\S*;/xsm ) { $hcode =~ s/;/&\x23059;/gxsm; }
         $hcode =~ s/([\(\)\-\:\\\/\?\!\]\[\.\^])/$hpkillhash{$1}/gxsm;
         $hcode =~
-          s/(&#91\;.+?&#93\;)/<span style="color: #ff0000;">$1<\/span>/isgm;
+s/(&\x2391\;.+?&\x2393\;)/<span class="important">$1<\/span>/isgm;
         $hcode =~
-s/(&#91\;&#47\;.+?&#93\;)/<span style="color: #ff0000;">$1<\/span>/isgm;
+s/(&\x2391\;&\x2347\;.+?&\x2393\;)/<span class="important">$1<\/span>/isgm;
         return $hcode;
     }
 }

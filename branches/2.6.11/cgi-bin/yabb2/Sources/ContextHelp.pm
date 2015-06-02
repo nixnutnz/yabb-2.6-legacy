@@ -19,7 +19,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$contexthelppmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$contexthelppmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ContextScript {
@@ -30,7 +30,7 @@ sub ContextScript {
     while( ($key, $value) = each %contextxt ) {
         if ( $key eq 'clicktip' ) {
             $contextlst .= qq~'contexttip', '$contextxt{'clicktip'}',\n~;
-            }
+        }
         else {
             $contextlst .= qq~'$key', '$value',\n~;
         }

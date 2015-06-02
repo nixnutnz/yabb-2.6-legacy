@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.11';
 
-$boardindexpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$boardindexpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
@@ -813,7 +813,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 chomp @brdpics;
                 for (@brdpics) {
                     my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-                    if ( $brdnm eq $curboard && $usestyle eq $style ) {
+                    if ( $brdnm eq $curboard && $template eq $style ) {
                         if ( $brdpic =~ /\//ism ) {
                             $bdpic = $brdpic;
                             last;
@@ -1094,6 +1094,7 @@ qq~ $childcnt{$childbd} $boardindex_txt{'72'}~;
                             $bdd          = q{};
                             $my_bddescr   = ${ $uid . $childbd }{'description'};
                             my @bname = split /<br \/>/sm, $my_bddescr;
+                            ToChars($bname[0]);
                             $boardname = qq~$scripturl\?action\=showexternal;exboard\=$childbd~;
                             $tmp_sublinks =~ s/{yabb boardurl}/$boardname/gsm;
                             $tmp_sublinks =~ s/{yabb new}/$new/gsm;
@@ -1209,7 +1210,7 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
                     $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;
                     $templateblock =~ s/{yabb messagedropdown}/$messagedropdown/gsm;
-
+                    ToChars($boardname);
                     $templateblock =~ s/{yabb boardanchor}/$boardanchor/gsm;
                     $templateblock =~ s/{yabb new}/$new/gsm;
                     $templateblock =~ s/{yabb boardrss}/$rss_boardlink/gsm;
@@ -1243,6 +1244,8 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                     }
                     $boardname =
                       qq~$scripturl\?action\=showexternal;exboard\=$curboard~;
+                    ToChars($bname[0]);
+                    ToChars($bdd);
                     $my_blankext = q{--};
                     $templateblock =~ s/{yabb boardurl}/$boardname/gsm;
                     $templateblock =~ s/{yabb boardpic}/$bdpic/gsm;
@@ -1374,7 +1377,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $template_catnames =~ s/,\Z//xsm;
     $template_boardnames =~ s/,\Z//xsm;
     $yymain .= qq~
-<script type="text/javascript">
+<script type="text/javascript">//<![CDATA[
     var catNames = [$template_catnames];
     var boardNames = [$template_boardnames];
     var boardOpen = "";
@@ -1397,7 +1400,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var brd_img_idw = $brd_img_idw;
     var brd_img_idh = $brd_img_idh;
     var fix_brd_size = $fix_brd_img_size;
-</script>~;
+//]]></script>~;
 
     # don't show info center, login, etc. if we're calling from sub boards
     if ( !$subboard_sel ) {
@@ -1784,7 +1787,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         elsif ($subboard_sel) {
             if ($brd_count) {
                 $boardindex_template = qq~
-                        <script type="text/javascript">
+                    <script type="text/javascript">//<![CDATA[
                         var catNames = [$template_catnames];
                         var boardNames = [$template_boardnames];
                         var boardOpen = "";
@@ -1799,7 +1802,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
                         var insertindex;
                         var insertcat;
                         var prev_subcount;
-                        </script>
+                        //]]></script>
                         $boardindex_template
 ~;
             }

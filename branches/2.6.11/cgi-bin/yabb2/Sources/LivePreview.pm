@@ -18,8 +18,9 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$livepreviewpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$livepreviewpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
+
 use URI::Escape;
 if ( $yymycharset ne 'UTF-8' ) {
     use Encode;
@@ -41,7 +42,7 @@ sub DoLiveMessage {
          $message = decode_utf8($message);
     }
     $message =~ s/\[ch8203\]//igsm;
-    $message =~ s/\&#8203;//igsm;
+    $message =~ s/\&\x238203;//igsm;
     FromChars($message);
     ToHTML($message);
     my $mess = $message;
@@ -107,7 +108,7 @@ sub DoLiveIM {
         $message = decode_utf8($message);
     }
     $message =~ s/\[ch8203\]//igsm;
-    $message =~ s/\&#8203;//igsm;
+    $message =~ s/\&\x238203;//igsm;
     FromChars($message);
     ToHTML($message);
     my $mess = $message;
@@ -184,7 +185,7 @@ sub DoLiveCal {
     }
     $message =~ s/\r//gxsm;
     $message =~ s/\[ch8203\]//igsm;
-    $message =~ s/\&#8203;//igsm;
+    $message =~ s/\&\x238203;//igsm;
     FromChars($message);
     ToHTML($message);
     my $mess = $message;

@@ -17,7 +17,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.11';
 
-our $settings_mainpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+our $settings_mainpmver = 'YaBB 2.6.11 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -1682,11 +1682,11 @@ sub SaveSettings {
 
     # Fix guestaccess
     $settings{'guestaccess'} = !$settings{'guestaccess'} || 0;
-    $settings{'imtext'} =~ s/\r(?=\n*)//gsm;
-    $settings{'imtext'} =~ s~\n~<br />~gsm;
+    $settings{'imtext'} =~ s/\r(?=\n*)//gxsm;
+    $settings{'imtext'} =~ s~\n~<br />~gxsm;
 
     # Fix $pwstrengthmeter_common
-    $settings{'pwstrengthmeter_common'} =~ s/'//gsm; #' make my syntax checker happy;
+    $settings{'pwstrengthmeter_common'} =~ s/\x27//gxsm;
     if (($settings{'set_subjectMaxLength'} < 10 && $settings{'set_subjectMaxLength'} != 0) || $settings{'set_subjectMaxLength'} > 255) { fatal_error('invalid_value', "set_subjectMaxLength ($admin_txt{'498a'})"); }
 
     # Convert unwanted tags in Board Name

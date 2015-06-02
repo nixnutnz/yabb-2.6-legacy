@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$securitypmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$securitypmver = 'YaBB 2.6.11 $Revision$';
 
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.
@@ -81,7 +81,7 @@ if ( $currentboard ne q{} ) {
         fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt" );
     }
     ( $boardname, $boardperms, $boardview ) =
-      split /\|/xsm, $board{"$currentboard"};
+      split /\|/xsm, $board{$currentboard};
     my $access = AccessCheck( $currentboard, q{}, $boardperms );
     if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {
         fatal_error('no_access');
@@ -89,7 +89,7 @@ if ( $currentboard ne q{} ) {
 
     # Determine what category we are in.
     $catid = ${ $uid . $currentboard }{'cat'};
-    ( $cat, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
+    ( $cat, $catperms ) = split /\|/xsm, $catinfo{$catid};
     $cataccess = CatAccess($catperms);
     if ( $annboard eq q{} || $currentboard ne $annboard ) {
         if ( !$cataccess ) { fatal_error('no_access'); }
@@ -297,7 +297,7 @@ sub check_banlist {
         *time_ban = sub {
             for my $i ( 0 .. 3 ) {
                 if ( $banned[4] eq $timeban[$i] ) {
-                    $tmb = $banned[2] + ( $bandays[$i] * 84_600 );
+                    $tmb = $banned[2] + ( $bandays[$i] * 84600 );
                 }
             }
             return $tmb;
@@ -569,7 +569,7 @@ sub CatAccess {
             if ( $element eq $_ ) { $access = 1; last; }
         }
         if ( $element eq 'Moderator'
-            && ( $iamgmod || exists $moderators{$username} ) )
+            && ( $iamgmod || $iamfmod || exists $moderators{$username} ) )
         {
             $access = 1;
         }
@@ -652,15 +652,27 @@ sub ipban_update {
         fclose(BAN);
 
     if ( $unban == 1 ) {
-            fopen( BAN2, ">$vardir/banlist.txt" )
-              or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-            foreach my $i (@myban) {
-                @banned = split /\|/xsm, $i;
+        fopen( BAN2, ">$vardir/banlist.txt" )
+          or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        foreach my $i (@myban) {
+            @banned = split /\|/xsm, $i;
             if (   $ban eq $banned[1]
                 || $ban_email eq $banned[1]
                 || $ban_mem   eq $banned[1] )
             {
                 $un_ban = q~~;
+                if ( $banned[4] eq 'p' ) {
+                    LoadUser($user);
+                    @ubanned =  split /[|]/xsm, ${ $uid . $user }{'banned'};
+                    if ( $ban_email ) {
+                        $ubanned[0] = 0;
+                    }
+                    if ( $ban_mem ) {
+                        $ubanned[1] = 0;
+                    }
+                    ${ $uid . $user }{'banned'} = qq~$ubanned[0]|$ubanned[1]~;
+                    UserAccount( $user, 'update' );
+                }
             }
             else {
                 $un_ban =

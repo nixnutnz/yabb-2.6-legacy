@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mypoststemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$mypoststemver = 'YaBB 2.6.11 $Revision$';
 
 ##Favorites
 
@@ -146,7 +146,7 @@ $subfooterbar = qq~<tr>
                 </tr>~;
 
 ##############################################################################################
-## Notifications                     #
+## Notifications                                                                             #
 
 $brd_notify_img = 'notify.gif';
 $brdimg_new = 'on.png';
@@ -177,6 +177,7 @@ $my_boardnote = qq~
     <table class="pad_4px cs_thin" style="margin-bottom: 10px;">
         <colgroup>
             <col style="width:65%" />
+            <col style="width:35%" />
         </colgroup>
         {yabb my_showNotifications_b}
     </table>
@@ -193,6 +194,7 @@ $my_boardnote = qq~
     <table class="pad_4px cs_thin">
         <colgroup>
             <col style="85%" />
+            <col style="15%" />
         </colgroup>
         {yabb my_showNotifications_t}
     </table>

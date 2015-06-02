@@ -31,7 +31,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.11';
 
-$captchapmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$captchapmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $OUTPUT_AUTOFLUSH = 1;
@@ -216,7 +216,7 @@ sub captcha {
 .......
 .......
 ~;
-    $ci{'\''} = qq~ #'make my syntax check happy;
+    $ci{'\x27'} = qq~
 .......
 ...X...
 ...X...

@@ -17,7 +17,8 @@ use CGI qw(:standard);
 use Time::Local;
 our $VERSION = '2.6.11';
 
-$banpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$banpmver = 'YaBB 2.6.11 $Revision$';
+if ( $action eq 'detailedversion' ) { return 1; }
 
 #the ban list in the Admin Center
 sub ipban {
@@ -40,25 +41,24 @@ sub ipban {
 
         if ( $banned[4] eq 'p' ) {
             $timeb =
-"$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Permanent";
+qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'p_ban'}~;
         }
         elsif ( $banned[4] ne 'p' && $tmb < $today ) {
             $timeb =
-"$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Expired";
+qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expired'}~;
         }
         else {
             $tma = timeformat($tmb,1);
             $timeb =
-qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Expires on: $tma~;
+qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expireon'}: $tma~;
         }
         return $timeb;
     };
-
+    my $ii = 0;
+    my $ee = 0;
+    my $uu = 0;
     for my $i (@banlist) {
         chomp $i;
-        my $ii = 0;
-        my $ee = 0;
-        my $uu = 0;
         @banned = split /\|/xsm, $i;
         if ( $banned[0] eq 'I' ) {
             $ban_i    = $banned[1];
@@ -106,19 +106,6 @@ qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Expires on: $tma~;
             </tr>
         </table>
     </div>
-    <div class="bordercolor rightboxdiv">
-        <table class="border-space pad-cell" style="margin-bottom: .5em;">
-            <tr>
-                <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-            </tr><tr>
-                <td class="catbg center">
-                    <input type="submit" value="$admin_txt{'10'}" class="button" />
-                </td>
-            </tr>
-        </table>
-    </div>
-    </form>
-    <form action="$adminurl?action=ipban2" method="post">
     <div class="bordercolor borderstyle rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
@@ -134,19 +121,6 @@ qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Expires on: $tma~;
             </tr>
         </table>
     </div>
-    <div class="bordercolor rightboxdiv">
-    <table class="border-space pad-cell" style="margin-bottom: .5em;">
-        <tr>
-            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-        </tr><tr>
-            <td class="catbg center">
-                <input type="submit" value="$admin_txt{'10'}" class="button" />
-            </td>
-        </tr>
-    </table>
-    </div>
-    </form>
-    <form action="$adminurl?action=ipban2" method="post">
     <div class="bordercolor borderstyle rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
@@ -245,50 +219,38 @@ qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - Expires on: $tma~;
     return;
 }
 
-#Admin center ban save
+#Admin center ban change
 sub ipban2 {
     is_admin_or_gmod_or_fmod();
     my $ban_u = $FORM{'uban'};
     my $ban_e = $FORM{'eban'};
     my $ban_i = $FORM{'iban'};
 
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-    my @myban = <BAN>;
-    chomp @myban;
-    fclose(BAN);
-
-    fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
-    my @banned_u = split /\, /sm, $ban_u;
+    my @myban = ();
+    my @banned_u = split /\,/xsm, $ban_u;
     chomp @banned_u;
-    my @banned_e = split /\, /sm, $ban_e;
+    my @banned_e = split /\,/xsm, $ban_e;
     chomp @banned_e;
-    my @banned_i = split /\, /sm, $ban_i;
+    my @banned_i = split /\,/xsm, $ban_i;
     chomp @banned_i;
+    push @myban, @banned_u, @banned_e, @banned_i;
     my %seen   = ();
     my @allban = ();
 
-    *banning = sub {
-        my @in = @_;
-        foreach my $item (@in) { $seen{$item} = 1 }
+    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    my @oldban = <BAN>;
+    fclose(BAN);
+    chomp @oldban;
 
-        foreach my $item (@myban) {
-            if ( !$seen{$item} ) {
-                push @allban, $item;
-            }
+    for my $item(@myban) { $seen{$item} = 1 }
+    for my $i(@oldban) {
+        if ( !$seen{$i} ) {
+            push @allban, $i;
         }
-    };
-
-    if ($ban_i) {
-        banning(@banned_i);
-    }
-    if ($ban_u) {
-        banning(@banned_u);
-    }
-    if ($ban_e) {
-        banning(@banned_e);
     }
 
-    foreach my $j (@allban) {
+    fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    for my $j (@allban) {
         print {BAN2} qq~$j\n~ or croak "$croak{'print'} UNBAN";
     }
     fclose(BAN2);
@@ -314,7 +276,7 @@ sub ipban_add {
     *time_ban = sub {
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
-                $tmb = $banned[2] + ( $bandays[$i] * 86_400 );
+                $tmb = $banned[2] + ( $bandays[$i] * 86400 );
             }
        }
        return $tmb;
@@ -355,14 +317,14 @@ sub ban_clean {
     my $time    = time;
     fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
     my @myban = <BAN>;
-    chomp @myban;
     fclose(BAN);
+    chomp @myban;
     fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
 
     *time_ban = sub {
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
-                $tmb = $banned[2] + ( $bandays[$i] * 86_400 );
+                $tmb = $banned[2] + ( $bandays[$i] * 86400 );
             }
         }
     };
@@ -404,22 +366,18 @@ sub banlog {
         $year   = $tm->year + 1900;
         $mon    = $tm->mon + 1;
         $day    = $tm->mday;
-        if ( $use_guardian && $use_htaccess ) {
-            @banned_ip = ();
-            if ( $banned[1] =~ m/\(/sm ) {
-                @banned_ip = split /\(/xsm,$banned[1];
-                $banned_ip[1] =~ s/\)//xsm;
-                if ($banned_ip[0]) {
-                    $banned_ip[0] = qq~ ( $banned_ip[0] )~;
-                }
-                else {$banned_ip[0] = q~~;}
+        @banned_ip = ();
+        if ( $banned[1] =~ m/\(/sm ) {
+            @banned_ip = split /\(/xsm,$banned[1];
+            $banned_ip[1] =~ s/\)//xsm;
+            if ($banned_ip[0]) {
+                $banned_ip[0] = qq~ ( $banned_ip[0] )~;
             }
-            else {$banned_ip[1] = $banned[1];}
-            $banlog .=  qq~<li>$banned_ip[1]$banned_ip[0] - on $mon/$day/$year (<a href="$adminurl?action=guardian_block;ip=$banned_ip[1];return=ipban" onclick="return confirm('$admin_txt{'ipblock_confirm'}$banned_ip[1]');">$admin_txt{'ipblock'}</a>)</li>\n~;
+            else {$banned_ip[0] = q~~;}
         }
-        else {
-        $banlog .=  qq~<li>$banned[1] on $mon/$day/$year</li>\n~;
-        }
+        else {$banned_ip[1] = $banned[1];}
+        $ipBlock = ( $use_guardian && $use_htaccess ) ? qq~<a href="$adminurl?action=guardian_block;ip=$banned_ip[1];return=ipban" onclick="return confirm('$admin_txt{'ipblock_confirm'}$banned_ip[1]');">$admin_txt{'ipblock'}</a>~ : qq~<a href="$adminurl?action=blockip;ip=$banned_ip[1];return=ipban" onclick="return confirm('$admin_txt{'ipblock_confirm'}$banned_ip[1]');">$admin_txt{'ipblock2'}</a>~;
+        $banlog .=  qq~<li>$banned_ip[1]$banned_ip[0] - on $mon/$day/$year ($ipBlock)</li>\n~;
     }
     return $banlog;
 }
@@ -444,7 +402,7 @@ sub ipban_err {
     *time_ban = sub {
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
-                $tmb = $banned[2] + ( $bandays[$i] * 84_600 );
+                $tmb = $banned[2] + ( $bandays[$i] * 84600 );
             }
         }
         return $tmb;
@@ -470,4 +428,5 @@ sub ipban_err {
     redirectexit();
     return;
 }
+
 1;

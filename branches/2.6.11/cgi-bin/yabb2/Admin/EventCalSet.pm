@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$eventcalsetpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$eventcalsetpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -464,7 +464,7 @@ sub eventcal_save {
     if ( $FORM{'AdMaxCalMessLen'}    eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498f'}"); }
     # Set 1 or 0 if box was checked or not
     map { ${$_} = $FORM{$_} ? 1 : 0; }
-          qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks Show_BdStarsign};
+          qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks Show_BdStarsign Show_caltoday};
 
 # If empty fields are submitted, set them to default-values to save yabb from crashing
         $DisplayEvents = $FORM{'DisplayEvents'};

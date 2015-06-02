@@ -8,7 +8,7 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                  #
+# Version:        YaBB 2.6.11                                                 #
 # Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
@@ -24,7 +24,7 @@ use English qw(-no_match_vars);
 
 our $VERSION = '2.6.11';
 
-$convert2xplver = 'YaBB 2.6.11 $Revision: 1617 $';
+$convert2xplver = 'YaBB 2.6.11 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -97,7 +97,7 @@ if ( -e "$vardir/Setup.lock" ) {
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    Make sure your YaBB 2.6.1 installation is running and that it has all the correct folder paths and URLs.<br />
+                    Make sure your YaBB 2.6.11 installation is running and that it has all the correct folder paths and URLs.<br />
                     Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.6.11.<br /><br />
                     <b>If</b> your YaBB 2x forum is located on the same server as your YaBB 2.6.11 installation:
                     <ol>
@@ -106,7 +106,7 @@ if ( -e "$vardir/Setup.lock" ) {
                     </ol>
                     <b>Else</b> if your YaBB 2x forum is located on a different server than your YaBB 2.6.11 installation or if you do not know the path to your YaBB 2x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 2x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.1 installation, and chmod them 755.</li>
+                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 2x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.11 installation, and chmod them 755.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <div style="width: 100%; text-align: center;">
@@ -291,7 +291,7 @@ EOF
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.6.1 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.6.11 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -1385,7 +1385,7 @@ sub Convert_Settings {
     $max_brd_img_height    = isempty( $max_brd_img_height,    50 );
     $enabletz              = isempty( $enabletz,              0 );
     $default_tz            = isempty( $default_tz,            'UTC' );
-    $screenlogin           = isempty( $screenlogin,           1);
+    $screenlogin           = isempty( $screenlogin,           1 );
     $gzcomp = fileno $GZIP ? 1 : 0;
 
     $ip_banlist           = q{};
@@ -1686,7 +1686,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
                         enable_yabbc();
                         DoUBBC();
                     }
-                    $message =~ s/"/\\"/gxsm;
+                    $message =~ s/\x22/\\\x22/gxsm;
                     $yynews .= qq~
                                     fcontent[$j] = "$message";\n
                               ~;
@@ -1702,7 +1702,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
                     enable_yabbc();
                     DoUBBC();
                 }
-                $message =~ s/\'/&#39;/xsm;
+                $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
             <script type="text/javascript">
                 if (ie4 || DOM2) var news = '$message';
@@ -1714,12 +1714,12 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
-        $curline =~ s/img src\=\"$imagesdir\/(.+?)\"/SetupImgLoc($1)/eisgm;  #";
+        $curline =~ s/img src\=\x22$imagesdir\/(.+?)\x22/SetupImgLoc($1)/eisgm;
         $output .= $curline;
     }
     if ( $yycopyin == 0 ) {
         $output =
-q~<h1 style="text-align:center"><b>Sorry, the copyright tag &#123;yabb copyright&#125; must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     if ( fileno $GZIP ) {
         $OUTPUT_AUTOFLUSH = 1;

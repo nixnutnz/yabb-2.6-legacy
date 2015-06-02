@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.11';
 
-$dosmiliespmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$dosmiliespmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Main');
@@ -36,10 +36,10 @@ sub SmiliePut {
 qq~<img src="$tmpurl" class="moresmiles" alt="$SmilieDescription[$i]" onclick="javascript:MoreSmilies($i)" />$SmilieLinebreak[$i]\n~;
         $smilie_url_array .= qq~"$tmpurl", ~;
         $tmpcode = $SmilieCode[$i];
-        $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;    #'; to keep my text editor happy;
+        $tmpcode =~ s/\&quot;/\x22/gxsm;
         FromHTML($tmpcode);
-        $tmpcode =~ s/&#36;/\$/gxsm;
-        $tmpcode =~ s/&#64;/\@/gxsm;
+        $tmpcode =~ s/&\x2336;/\$/gxsm;
+        $tmpcode =~ s/&\x2364;/\@/gxsm;
         $more_smilie_array .= qq~" $tmpcode", ~;
         $i++;
     }
@@ -113,10 +113,10 @@ sub SmilieIndex {
 
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = $SmilieCode[$i];
-            $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;    #';
+            $tmpcode =~ s/\&quot;/\x22/gxsm;
             FromHTML($tmpcode);
-            $tmpcode =~ s/&#36;/\$/gxsm;
-            $tmpcode =~ s/&#64;/\@/gxsm;
+            $tmpcode =~ s/&\x2336;/\$/gxsm;
+            $tmpcode =~ s/&\x2364;/\@/gxsm;
             $more_smilie_array .= qq~" $tmpcode", ~;
             $i++;
         }

@@ -18,7 +18,7 @@ no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$mycenterpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$mycenterpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('InstantMessage');
@@ -202,7 +202,7 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
             doshowims();
         }
         ## posting the message or draft
-        elsif ( $action eq 'imsend2' || $FORM{'draft'} ) {
+        elsif ( $action eq 'imsend2' ) {
             $IM_box = $inmes_txt{'148'};
             if ( $INFO{'forward'} == 1 ) { $IM_box = $inmes_txt{'forward'}; }
             if ( $INFO{'reply'} )        { $IM_box = $inmes_txt{'replymess'}; }
@@ -1439,24 +1439,21 @@ function insert_user (oElement,username,userid) {
             ~;
         }
         elsif ( $view eq 'pm' ) {
+            my $entype = q{};
+            my $snames = q{};
+
             $allowAttachIM ||= 0;
             $allowGroups = GroupPerms( $allowAttachIM, $pmAttachGroups );
             if ( $allowAttachIM && $allowGroups ) {
-                $MCGlobalFormStart .=
-qq~<form action="$scripturl?action=$destination" method="post" name="postmodify" id="postmodify" enctype="multipart/form-data" onsubmit="~;
+                $entype = "multipart/form-data";
             }
             else {
-                $MCGlobalFormStart .=
-qq~<form action="$scripturl?action=$destination" method="post" name="postmodify" id="postmodify" enctype="application/x-www-form-urlencoded" onsubmit="~;
+                $entype = "application/x-www-form-urlencoded";
             }
             if ( !${ $uid . $toshow }{'realname'} ) {
-                $MCGlobalFormStart .= q~selectNames(); ~;
+                $snames = q~selectNames(); ~;
             }
-            $MCGlobalFormStart .=
-q~if(!checkForm(this)) { return false; } else { return submitproc(); }">~;
-
-            #" extra;
-
+            $MCGlobalFormStart .= qq~<form action="$scripturl?action=$destination" method="post" name="postmodify" id="postmodify" enctype="multipart/form-data" onsubmit="${snames}if(!checkForm(this)) { return false; } else { return submitproc(); }">~;
         }
     }
     else {
@@ -2741,7 +2738,7 @@ qq~<img src="$imagesdir/$IM_code1" alt="$inmes_imtxt{'84'}" title="$inmes_imtxt{
                 $immessage = qq~$quoteimg$codeimg $immessage~;
                 $immessage = Censor($immessage);
 
-                if ( $immessage !~ s/#nosmileys//isgm ) {
+                if ( $immessage !~ s/\x23nosmileys//isgm ) {
                     $message = $immessage;
                     enable_yabbc();
                     MakeSmileys();

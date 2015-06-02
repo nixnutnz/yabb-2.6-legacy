@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$downloadspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$downloadspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_template('Downloads');
@@ -292,52 +292,59 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
 
     $output .= $att_out_admin_a;
     $output =~ s/{yabb fatxt45}/$fatxt{'45'}/gsm;
-    $output .=
-        $my_att_sort_a
-      . ( $sort == 7 ? -7 : 7 )
-      . qq~';" class="$class_sortattach" ~
-      . $my_att_sort_c
-      . ( $sort == 7 ? -7 : 7 )
-      . qq~"><b>$fatxt{'40'}</b></a>~
-      . $my_att_sort_b
-      . ( $sort == 100 ? -100 : 100 )
-      . qq~';" class="$class_sorttype" ~
-      . $my_att_sort_c
-      . ( $sort == 100 ? -100 : 100 )
-      . qq~"><b>$fatxt{'40a'}</b></a>~
-      . $my_att_sort_b
-      . ( $sort == -5 ? 5 : -5 )
-      . qq~';" class="$class_sortsize" ~
-      . $my_att_sort_c
-      . ( $sort == -5 ? 5 : -5 )
-      . qq~"><b>$fatxt{'41'}</b></a>~
-      . $my_att_sort_b
-      . ( $sort == -6 ? 6 : -6 )
-      . qq~';" class="$class_sortdate" ~
-      . $my_att_sort_c
-      . ( $sort == -6 ? 6 : -6 )
-      . qq~"><b>$fatxt{'43'}</b></a>~
-      . $my_att_sort_b
-      . ( $sort == -8 ? 8 : -8 )
-      . qq~';" class="$class_sorcount" ~
-      . $my_att_sort_c
-      . ( $sort == -8 ? 8 : -8 )
-      . qq~"><b>$fatxt{'41a'}</b></a>~
-      . $my_att_sort_b
-      . ( $sort == 1 ? -1 : 1 )
-      . qq~';" class="$class_sortsubj" ~
-      . $my_att_sort_c
-      . ( $sort == 1 ? -1 : 1 )
-      . qq~"><b>$fatxt{'44'}</b></a>~
-      . $my_att_sort_b
-      . ( $sort == 3 ? -3 : 3 )
-      . qq~';" class="$class_sortuser" ~
-      . $my_att_sort_c
-      . ( $sort == 3 ? -3 : 3 )
-      . qq~"><b>$fatxt{'42'}</b></a>~
-      . $downloads_tbl_end;
+    my $att_text;
 
-    #"';
+    $rsort = ( $sort == 7 ? -7 : 7 );
+    $att_text = $my_att_sort;
+    $att_text =~ s/{yabb attsort}/$rsort/gsm;
+    $att_text =~ s/{yabb attclass}/$class_sortattach/gsm;
+    $att_text =~ s/{yabb atttext}/$fatxt{'40'}/gsm;
+    $output .= $att_text;
+ 
+    $rsort = ( $sort == 100 ? -100 : 100 );
+    $att_text = $my_att_sort;
+    $att_text =~ s/{yabb attsort}/$rsort/gsm;
+    $att_text =~ s/{yabb attclass}/$class_sorttype/gsm;
+    $att_text =~ s/{yabb atttext}/$fatxt{'40a'}/gsm;
+    $output .= $att_text;
+
+    $rsort = ( $sort == 5 ? -5 : 5 );
+    $att_text = $my_att_sort;
+    $att_text =~ s/{yabb attsort}/$rsort/gsm;
+    $att_text =~ s/{yabb attclass}/$class_sortsize/gsm;
+    $att_text =~ s/{yabb atttext}/$fatxt{'41'}/gsm;
+    $output .= $att_text;
+
+    $rsort = ( $sort == -6 ? 6 : -6 );
+    $att_text = $my_att_sort;
+    $att_text =~ s/{yabb attsort}/$rsort/gsm;
+    $att_text =~ s/{yabb attclass}/$class_sortdate/gsm;
+    $att_text =~ s/{yabb atttext}/$fatxt{'43'}/gsm;
+    $output .= $att_text;
+
+    $rsort = ( $sort == -8 ? 8 : -8 );
+    $att_text = $my_att_sort;
+    $att_text =~ s/{yabb attsort}/$rsort/gsm;
+    $att_text =~ s/{yabb attclass}/$class_sorcount/gsm;
+    $att_text =~ s/{yabb atttext}/$fatxt{'41a'}/gsm;
+    $output .= $att_text;
+
+    $rsort = ( $sort == 1 ? -1 : 1 );
+    $att_text = $my_att_sort;
+    $att_text =~ s/{yabb attsort}/$rsort/gsm;
+    $att_text =~ s/{yabb attclass}/$class_sortsubj/gsm;
+    $att_text =~ s/{yabb atttext}/$fatxt{'44'}/gsm;
+    $output .= $att_text;
+
+    $rsort = ( $sort == 3 ? -3 : 3 );
+    $att_text = $my_att_sort;
+    $att_text =~ s/{yabb attsort}/$rsort/gsm;
+    $att_text =~ s/{yabb attclass}/$class_sortuser/gsm;
+    $att_text =~ s/{yabb atttext}/$fatxt{'42'}/gsm;
+    $output .= $att_text;
+
+    $output .= $downloads_tbl_end;
+
     $output =~ s/{yabb thread}/$thread/gsm;
     $output =~ s/{yabb viewattachments}/$viewattachments/gsm;
 

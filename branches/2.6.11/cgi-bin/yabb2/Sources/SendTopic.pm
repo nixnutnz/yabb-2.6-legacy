@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.11';
 
-$sendtopicpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$sendtopicpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
@@ -126,7 +126,7 @@ sub SendTopic {
     $yymain =~ s/{yabb topic}/$topic/sm;
 
     $yytitle =
-"$sendtopic_txt{'707'}&nbsp; &#171; $subject &#187; &nbsp;$sendtopic_txt{'708'}";
+"$sendtopic_txt{'707'}&nbsp; &laquo; $subject &raquo; &nbsp;$sendtopic_txt{'708'}";
     $yynavigation = qq~&rsaquo; $sendtopic_txt{'707'}~;
     template();
     return;
@@ -198,7 +198,7 @@ sub SendTopic2 {
     if ( $spam_questions_gp && $iamguest && -e "$langdir/$language/spam.questions" ) {
         SpamQuestionCheck( $FORM{'verification_question'},
             $FORM{'verification_question_id'} );
-    } 
+    }
     if ( !ref $thread_arrayref{$topic} ) {
         fopen( FILE, "$datadir/$topic.txt" )
           or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );

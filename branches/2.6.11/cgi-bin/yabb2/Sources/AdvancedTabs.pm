@@ -18,7 +18,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$advancedtabspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$advancedtabspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub AddNewTab {
@@ -77,7 +77,7 @@ sub AddNewTab2 {
     if ($iamadmin) {
         my $tabtext = $FORM{'tabtext'};
         my $taburl  = $FORM{'taburl'};
-        $taburl =~ s/"/\%22/gxsm;    #";
+        $taburl =~ s/\x22/\%22/gxsm;
         my $tabwin         = $FORM{'tabwin'} ? 1 : 0;
         my $tabview        = $FORM{'showto'};
         my $tabafter       = $FORM{'addafter'};

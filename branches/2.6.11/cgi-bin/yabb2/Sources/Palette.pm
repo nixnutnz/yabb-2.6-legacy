@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$palettepmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$palettepmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ColorPicker {
@@ -60,7 +60,7 @@ function Pickshowcolor(color) {
         newcolor = color;
     }
     if(picktask == "post") {
-        passcolor=newcolor.replace(/#/, "");
+        passcolor=newcolor.replace(/\x23/, "");
         if(document.getElementById("defpal1").checked) {
             opener.document.getElementById("defaultpal1").style.backgroundColor=newcolor;
             location.href='$scripturl?action=palette;palnr=1;palcolor=' + passcolor + ';task=$picktask';

@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$calendartemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$calendartemver = 'YaBB 2.6.11 $Revision$';
 
 $cal_day = q~ class="titlebg center minical_border"~;
 $cal_days = q~ class="windowbg2 center minical_border"~;
@@ -42,7 +42,7 @@ $mycalout_gottobox = qq~
         </colgroup>
         <tr>
             <td style="padding-left:1%">
-                <!--<img src="$yyhtml_root/Templates/Forum/default/$cal_eventcal" alt="" /> --> $var_cal{'caltitle'}
+                $var_cal{'caltitle'}
             </td>
             <td class="right" style="padding-right:1%">
                 {yabb calgotobox}
@@ -157,8 +157,8 @@ $mycalout_addevent = qq~
         </td>
    </tr>
 </table>
-   {yabb my_postsection_ajx}
-<table class="bordercolor" style="table-layout: fixed;">
+{yabb my_postsection_ajx}
+<table class="bordercolor fixed">
     <colgroup>
         <col style="width:160px" />
         <col style="width:auto" />
@@ -353,24 +353,24 @@ $my_outstring = q~<table style="width:90%; margin-left:0">~;
 $mycal_outstring_bday = qq~<tr>
         <td class="vtop small">
             {yabb my_cal_icon} {yabb cdate} <b>$var_cal{'calbirthday'}</b>
-            <br /> {yabb eventbduserlink} {yabb greet}
-            <hr class="hr2" />
+            {yabb eventbduserlink} {yabb greet}
+            <hr class="hr" />
         </td>
     </tr>~;
 
 $mycal_outstring_private = qq~<tr>
         <td class="vtop small">
             {yabb my_cal_icon} {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
-            <br />{yabb cevent}
-            <hr class="hr2" />
+            {yabb cevent}
+            <hr class="hr" />
         </td>
     </tr>~;
 
 $mycal_outstring = qq~<tr>
         <td class="vtop small">
             {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
-                <br />{yabb cevent}
-            <hr class="hr2" />
+                {yabb cevent}
+            <hr class="hr" />
         </td>
     </tr>~;
 
@@ -391,10 +391,10 @@ $mycal_liveprev = qq~
         </colgroup>
          <tr>
             <td class="windowbg vtop" colspan="2">
-                <span class="small">{yabb my_cal_private} {yabb my_cal_icon} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}</span><hr class="hr" />
+                <span class="small">{yabb my_cal_private} {yabb my_cal_icon} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}</span><hr class="hr2" />
                <div class="message" style="width: 100%; overflow: auto;">
                  {yabb message}
-                 <hr class="hr2" />
+                 <hr class="hr" />
                 </div>
             </td>
         </tr>

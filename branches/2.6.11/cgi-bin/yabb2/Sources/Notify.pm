@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$notifypmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$notifypmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Notify');
@@ -319,9 +319,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
     $curbrd = @oldnote;
- #   if ( !$maxtnote ) { $maxtnote = 10; }
 
- #   $note_brd = qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $maxtnote $notify_txt{'78'}~;
     $curbrd = NumberFormat($curbrd);
 
     # Show Javascript for 'check all' notifications
@@ -429,7 +427,7 @@ sub NotificationAlert {
     ## run through boards list
     foreach my $myboard (@bmaildir) {    # board name from file name
         if ( !-e "$boardsdir/$myboard.txt" )
-        {                             # remove from user board_notifications
+        {                                # remove from user board_notifications
             ManageBoardNotify( 'delete', $myboard, $username );
             next;
         }
@@ -477,20 +475,20 @@ sub NotificationAlert {
             if ( eval { require Variables::Movedthreads; 1 } ) {
                 next
                   if !exists $moved_file{$mythread} || !$moved_file{$mythread};
-            my $newthread;
-            while ( exists $moved_file{$mythread} ) {
-                $mythread  = $moved_file{$mythread};
+                my $newthread;
+                while ( exists $moved_file{$mythread} ) {
+                    $mythread = $moved_file{$mythread};
                     if ( !exists $moved_file{$mythread}
                         && -e "$datadir/$mythread.txt" )
                     {
                         $newthread = $mythread;
                     }
-            }
-            next if !$newthread;
+                }
+                next if !$newthread;
                 ManageThreadNotify( 'add', $newthread, $username,
-                ${ $uid . $username }{'language'},
-                1, 1 );
-        }
+                    ${ $uid . $username }{'language'},
+                    1, 1 );
+            }
         }
 
         ## load threads hash

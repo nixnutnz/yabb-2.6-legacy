@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.6.11 $Revision: 1617 $';
+$adminlngver = 'YaBB 2.6.11 $Revision$';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -588,6 +588,9 @@ $abbr_lang = 'en-us';
 'imp_email_check' => 'Enable improved e-mail checking?<br /><span class="small">Checks if the e-mail domain exists, if the user is known on the given SMTP server, if the smtp server(s) are online and valid, and if the users mailbox is full. Also adds a second e-mail field to the registration page for verification.<br />Note that this setting requires Net::DNS to be installed on your server.</span>',
 'zodiac' => 'Show Zodiac Signs in Profile displays?',
 'no_imp_email_check' => q~<br /><span class="important">Improved email check not available. Needs Net::DNS</span>~,
+'p_ban' => 'Permanent',
+'expired' => 'Expired',
+'expireon' => 'Expires on',
 );
 
 %floodtxt = (
@@ -1109,7 +1112,7 @@ $abbr_lang = 'en-us';
 '1' => 'Referrer Security',
 '1a' => 'Command Explanation:',
 '2' => 'Select Board Actions (<i>action=...</i> in the URL) which are allowed from outside your own board domain name.<br />"Activate Referrer Security Checking?" must be checked in <i>Security Center</i> =&gt; <i>Security Settings</i> =&gt; <i>General</i> for it to work.',
-'3' => "These commands are derived from $sourcedir/SubList.pl<br />Hover over the Question Mark to see the command explanation",
+'3' => "These commands are derived from $sourcedir/SubList.pm<br />Hover over the Question Mark to see the command explanation",
 '4' => 'Save Settings',
 '8' => 'Activate Referrer Security Checking?<br /><span class="small">Fine tuning can be done in <i>Security Center</i> =&gt; <i>Referrer Security</i></span>',
 );
@@ -1124,9 +1127,9 @@ $abbr_lang = 'en-us';
 );
 
 %versiontxt = (
-'1' => 'Either your browser doesn&#39;t support JavaScript or you need to enable it to allow the versioncheck to work.',
+'1' => q~Either your browser doesn't support JavaScript or you need to enable it to allow the versioncheck to work.~,
 '2' => '<b><span style="color:red">There is a new release version available.</span></b><br />If you would like to download ',
-'3' => ', please go to <a href="http://www.yabbforum.com/downloads.php" onclick="target=&#39;_blank&#39;;">http://www.yabbforum.com/downloads.php</a>.',
+'3' => qq~, please go to <a href="$yabb_dnloads">$yabb_dnloads</a>.~,
 '4' => 'YOUR version:',
 '5' => 'Latest RELEASE version:',
 '6' => 'You are running the latest release version.',

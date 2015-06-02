@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.11';
 
-$yabbcpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$yabbcpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -31,7 +31,7 @@ sub MakeSmileys {
     $message =~ s~(\W|^)\[smil(ie|ey)=(\S+?\.(gif|jpg|png|bmp))\]~$1<img class="smil" data-rel="\[smil$2=$3\]" src="$yyhtml_root/Smilies/$3" alt="$post_txt{'287'}" title="$post_txt{'287'}" />~gism;
     $message =~ s~(\W|^);-?\)~$1<img class="smil" data-rel=";&#45;&#41;" src="$defaultimagesdir/wink.gif" alt="$post_txt{'292'}" title="$post_txt{'292'}" />~gsm;
     $message =~ s~(\W|^);D~$1<img class="smil" data-rel=";D" src="$defaultimagesdir/grin.gif" alt="$post_txt{'293'}" title="$post_txt{'293'}" />~gsm;
-    $message =~ s~(\W|^):'\(~$1<img class="smil" data-rel="&#58;'&#40;" src="$defaultimagesdir/cry.gif" alt="$post_txt{'530'}" title="$post_txt{'530'}" />~gsm;
+    $message =~ s~(\W|^):\x27\(~$1<img class="smil" data-rel="&#58;\x27&#40;" src="$defaultimagesdir/cry.gif" alt="$post_txt{'530'}" title="$post_txt{'530'}" />~gsm;
     $message =~ s~(\W|^):-/~$1<img class="smil" data-rel="&#58;&#45;/" src="$defaultimagesdir/undecided.gif" alt="$post_txt{'528'}" title="$post_txt{'528'}" />~gsm;
     $message =~ s~(\W|^):-X~$1<img class="smil" data-rel="&#58;&#45;X" src="$defaultimagesdir/lipsrsealed.gif" alt="$post_txt{'527'}" title="$post_txt{'527'}" />~gsm;
     $message =~ s~(\W|^):-\[~$1<img class="smil" data-rel="&#58;&#45;\[" src="$defaultimagesdir/embarassed.gif" alt="$post_txt{'526'}" title="$post_txt{'526'}" />~gsm;
@@ -54,8 +54,8 @@ sub MakeSmileys {
         if ( $SmilieURL[$count] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$count]; }
         else { $tmpurl = qq~$imagesdir/$SmilieURL[$count]~; }
         $tmpcode = $SmilieCode[$count];
-        $tmpcode =~ s/&#36;/\$/gxsm;
-        $tmpcode =~ s/&#64;/\@/gxsm;
+        $tmpcode =~ s/&\x2336;/\$/gxsm;
+        $tmpcode =~ s/&\x2364;/\@/gxsm;
         $message =~ s/\Q$tmpcode\E/<img class="smil" data-rel="$SmilieCode[$count]" src="$tmpurl" alt="$SmilieDescription[$count]" title="$SmilieDescription[$count]" \/>/gsm;
         $count++;
     }
@@ -222,7 +222,7 @@ s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b
             }
         }
         ToChars($code);
-        if ( $code !~ /&\S*;/gsm ) { $code =~ s/;/&#059;/gsm; }
+        if ( $code !~ /&\S*;/gsm ) { $code =~ s/;/&\x23059;/gsm; }
         $code =~ s/([\(\)\-\:\\\/\?\!\]\[\.\^\.D])/$killhash{$1}/gxsm;
         $code =~ s/\&\#91\;highlight\&\#93\;(.*?)\&\#91\;\&\#47\;highlight\&\#93\;/<span class="highlight">$1<\/span>/isgxsm;
         $_ = $post_txt{'602'};
@@ -300,7 +300,7 @@ sub imagemsg {
     $attribut =~ s/(.*?)alt=(.+?)(\s\S+=|\Z)/ altconv($1,$2,$3)/eisgxm;
     foreach ( split / +/sm, $attribut ) {
         my ( $key, $value ) = split /=/sm, $_;
-        $value =~ s/["']//gxsm;    #" make my text editor happy;
+        $value =~ s/[\x22\x27]//gxsm;
         $parameter{$key} = $value;
     }
 
@@ -353,7 +353,7 @@ sub imagemsg {
 sub DoUBBC {
     my ($image_type) = @_;
     $ycsscounter = 2;
-    if ( $ns eq 'NS' || $message =~ s/#nosmileys//isgm ) { return $message; }
+    if ( $ns eq 'NS' || $message =~ s/\x23nosmileys//isgm ) { return $message; }
     if ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) { $message = parseimgflash($message); }
     $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eisgm;
     $message =~ s/\[reason\](.+?)\[\/reason\]//igsm;
@@ -429,8 +429,7 @@ s/\[fixed\](.*?)\[\/fixed\]/<span style="display:inline; font-family: Courier Ne
     $message =~ s/\[hr\]\n/<hr class="hr_s" \/>/gsm;
     $message =~ s/\[hr\]/<hr class="hr_s" \/>/gsm;
     $message =~ s/\[br\]/\n/igsm;
-    $message =~
-s/\s$YaBBversion\s/ \<a style\=\"font-weight: bold;\" href\=\"http\:\/\/www\.yabbforum\.com\/downloads\.php\"\>$YaBBversion Forum Software\<\/a\> /gxsm;
+#    $message =~ s/\s$YaBBversion\s/ \<a style\=\"font-weight: bold;\" href\=\"http\:\/\/www\.yabbforum\.com\/downloads\.php\"\>$YaBBversion Forum Software\<\/a\> /gxsm;
 
     $message =~
 s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span><!--highlight-->/isgm;
@@ -438,13 +437,14 @@ s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span><!--highli
     $message =~
       s/\[url=\s*(.+?)\s*\]\s*(.+?)\s*\[\/url\]/format_url2($1, $2)/eisgm;
     $message =~ s/\[url\]\s*(\S+?)\s*\[\/url\]/format_url3($1)/eisgm;
+    $message =~ s/(dereferer\;url\=http\:\/\/.*?)\x23(\S+?\")/$1;anch=$2/isgm;
 
     if ($autolinkurls) {
         $message =~ s/\[url\]\s*([^\[]+)\s*\[\/url\]/[url]$1\[\/url]/gsm;
         $message =~ s/\[link\]\s*([^\[]+)\s*\[\/link\]/[link]$1\[\/link]/gsm;
         $message =~ s/\[news\](\S+?)\[\/news\]/<a href="$1">$1<\/a>/isgm;
         $message =~ s/\[gopher\](\S+?)\[\/gopher\]/<a href="$1">$1<\/a>/isgm;
-        $message =~ s/&quot;&gt;/">/gxsm;                                     #"
+        $message =~ s/&quot;&gt;/\x22>/gxsm;
         $message =~ s/(\[\*\])/ $1/gsm;
         $message =~ s/(\[\/list\])/ $1/gsm;
         $message =~ s/(\[\/td\])/ $1/gsm;
@@ -478,7 +478,6 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
         $message =~ s/\[ftp\]\s*(ftp:\/\/)?(.+?)\s*\[\/ftp\]/<a href="ftp:\/\/$2">$1$2<\/a>/isgm;
     }
 
-    $message =~ s/(dereferer\;url\=http\:\/\/.*?)#(\S+?\")/$1;anch=$2/isgm;
     $message =~ s/\[email\]\s*(\S+?\@\S+?)\s*\[\/email\]/<a href="mailto:$1">$1<\/a>/isgm;
     $message =~ s/\[email=\s*(\S+?\@\S+?)\](.*?)\[\/email\]/<a href="mailto:$1">$2<\/a>/isgm;
 

@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.11';
 
-$adminpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$adminpmver = 'YaBB 2.6.11 $Revision$';
 LoadLanguage('Credits');
 
 get_template('AdminCentre');
@@ -705,8 +705,8 @@ sub DeleteMultiMembers {
     $count = 0;
 
     if ( $FORM{'button'} == 1 && $FORM{'emailtext'} ne q{} ) {
-        $FORM{'emailsubject'} =~ s/\|/&#124/gsm;
-        $FORM{'emailtext'} =~ s/\|/&#124/gsm;
+        $FORM{'emailsubject'} =~ s/\|/&verbar;/gsm;
+        $FORM{'emailtext'} =~ s/\|/&verbar;/gsm;
         $FORM{'emailtext'} =~ s/\r(?=\n*)//gxsm;
         $mailline =
           qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
@@ -948,7 +948,7 @@ sub Refcontrol {
 
     foreach my $scriptline (@scriptlines) {
         chomp $scriptline;
-        if ( substr( $scriptline, 0, 1 ) eq q{'} ) {    #';
+        if ( substr( $scriptline, 0, 1 ) eq q{\x27} ) {
             if ( $scriptline =~ /\'(.*?)\'/xsm ) {
                 $actionfound = $1;
                 push @actfound, $actionfound;
@@ -967,7 +967,7 @@ sub Refcontrol {
                 last;
             }
         }
-        $refexpl_txt{$actfound} =~ s/"/'/gxsm;    # '" XHTML Validation
+        $refexpl_txt{$actfound} =~ s/\x22/\x27/gxsm;    # XHTML Validation
         $dismenu .=
 qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<label for="$actfound"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $refexpl_txt{$actfound}" title="$reftxt{'1a'} $refexpl_txt{$actfound}" /> $actfound</label><br />\n~;
         $counter++;
@@ -1031,7 +1031,7 @@ sub Refcontrol2 {
     $counter   = 0;
     foreach my $scriptline (@scriptlines) {
         chomp $scriptline;
-        if ( substr( $scriptline, 0, 1 ) eq q{'} ) {    #';
+        if ( substr( $scriptline, 0, 1 ) eq q{\x27} ) {
             if ( $scriptline =~ /\'(.*?)\'/xsm ) {
                 $actionfound = $1;
                 push @actfound, $actionfound;
@@ -1149,8 +1149,6 @@ sub AddMember2 {
         $value =~ s/[\n\r]//gxsm;
         $member{$key} = $value;
     }
-
-    #    $member{'regusername'} =~ s/\s/_/gsm;
 
     # Make sure users can't register with banned details
     banning( $member{'regusername'}, $member{'email'}, 1 );

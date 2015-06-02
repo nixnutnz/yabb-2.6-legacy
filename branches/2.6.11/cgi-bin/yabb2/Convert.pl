@@ -1414,7 +1414,7 @@ s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")
 
     if ( $settings[5] ) {
         $settings[5] =~ s/&&/&amp;&amp;/gxsm;
-        $settings[5] =~ s/\"/&quot;/gxsm;       #";
+        $settings[5] =~ s/\x22/&quot;/gxsm;
         $settings[5] =~ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
         $settings[5] =~ s/<br>/<br \/>/igsm;
     }
@@ -1549,7 +1549,7 @@ s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")
 
     if ( $settings[5] ) {
         $settings[5] =~ s/&&/&amp;&amp;/gxsm;
-        $settings[5] =~ s/\"/&quot;/gxsm;       #";
+        $settings[5] =~ s/\x22/&quot;/gxsm;
         $settings[5] =~
 s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
         $settings[5] =~ s/<br>/<br \/>/igxsm;
@@ -1629,17 +1629,17 @@ qq~$MemStat[$i]|$MemStarNum[$i]|$MemStarPic[$i]|$MemTypeCol[$i]|0|0|0|0|0|0~;
     }
     foreach my $key ( keys %Group ) {
         $value = $Group{$key};
-        $value =~ s/'/&#39;/gxsm;    #';
+        $value =~ s/\x27/&\x2339;/gxsm;
         $Group{$key} = $value;
     }
     foreach my $key ( keys %NoPost ) {
         $value = $NoPost{$key};
-        $value =~ s/'/&#39;/gxsm;    #';
+        $value =~ s/\x27/&\x2339;/gxsm;
         $NoPost{$key} = $value;
     }
     foreach my $key ( keys %Post ) {
         $value = $Post{$key};
-        $value =~ s/'/&#39;/gxsm;    #';
+        $value =~ s/\x27/&\x2339;/gxsm;
         $Post{$key} = $value;
     }
 
@@ -3110,7 +3110,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                         enable_yabbc();
                         DoUBBC();
                     }
-                    $message =~ s/"/\\"/gxsm;
+                    $message =~ s/\x22/\\\x22/gxsm;
                     $yynews .= qq~
                                     fcontent[$j] = "$message";\n
                               ~;
@@ -3126,7 +3126,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                     enable_yabbc();
                     DoUBBC();
                 }
-                $message =~ s/\'/&#39;/xsm;
+                $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
             <script type="text/javascript">
                 if (ie4 || DOM2) var news = '$message';

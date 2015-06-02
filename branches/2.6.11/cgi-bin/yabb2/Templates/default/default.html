@@ -2,12 +2,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{yabb xml_lang}" lang="{yabb xml_lang}">
 <head>
-<!-- YaBB 2.6.11 $Revision: 1611 $ -->
+<!-- YaBB 2.6.11 $Revision$ -->
     <meta http-equiv="Content-Type" content="text/html; charset={yabb mycharset}" />
     <title>{yabb title}</title>
+    <meta name="description" content="Web Forum: {yabb title}" />
     {yabb style}
     <script type="text/javascript" src="{yabb html_root}/YaBB.js"></script>
-    <script type="text/javascript" src="{yabb html_root}/cache.js"></script>
     <script type="text/javascript">
         {yabb javascript}
         {yabb javascripta}
@@ -40,19 +40,17 @@
         </table>
         <table id="header" class="pad_4px">
             <colgroup>
-                <col style="width:1%" />
                 <col style="width:auto" />
                 <col style="width:460px" />
             </colgroup>
             <tr>
-                <td class="vtop h_40px">&nbsp;</td>
-                <td>{yabb uname}<br />{yabb im}{yabb admin_alert}</td>
+                <td class="h_40px" style="padding-left:1%">{yabb uname}
+                    <br />{yabb im}{yabb admin_alert}</td>
                 <td class="right" rowspan="2">
                     <a href="http://www.yabbforum.com"><img src="{yabb images}/yabblogo_26.png" alt="YaBB - Yet another Bulletin Board" title="YaBB - Yet another Bulletin Board" /></a>
                 </td>
             </tr><tr>
-                <td class="vtop h_60px">&nbsp;</td>
-                <td class="small vtop">{yabb newstitle} <span id="newsdiv"></span>
+                <td class="small vtop" style="padding-left:1%">{yabb newstitle} <span id="newsdiv"></span>
                 </td>
             </tr>
         </table>
@@ -64,7 +62,7 @@
             </colgroup>
             <tr>
                 <td class="tabmenu">
-                    {yabb tabmenu}
+{yabb tabmenu}
                     <div class="navmenu" id="navmen" style="display: none;">
                         <img src="{yabb images}/back_to_top.png" id="navtotop" alt="{yabb fixtop}" title="{yabb fixtop}" onclick="toTop(0)" class="cursor" style="margin-top:5px;" />
                     </div>

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$postlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+$postlngver = 'YaBB 2.6.11 $Revision$';
 
 %post_txt = (
 '10' => 'Save',
@@ -168,6 +168,7 @@ $postlngver = 'YaBB 2.6.11 $Revision: 1611 $';
 'verification_question_desc' => 'Please answer the above verification question.',
 'verification_question_case' => 'Answers are case-sensitive.',
 'noparse' => 'No Parse',
+'palette' => 'Change Text Color',
 );
 
 %npf_txt=(

@@ -16,7 +16,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$newsettingspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$newsettingspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -204,9 +204,9 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
 <div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
     <table class="border-space pad-cell">
         <tr>
-            <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$admin_txt{'10'}</b></td>
+            <td class="titlebg">$admin_img{'prefimg'} <b>$admin_txt{'10'}</b></td>
         </tr><tr>
-            <td class="catbg center" colspan="2">
+            <td class="catbg center">
                 <input class="button" type="submit" value="$admin_txt{'10'}" />
             </td>
         </tr>

@@ -15,13 +15,11 @@
 # use strict;
 our $VERSION = '2.6.11';
 
-$viewmemberspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$viewmemberspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MemberList');
-
 is_admin_or_gmod();
-
 my ( $sortmode, $sortorder, $spages );
 
 $MembersPerPage = $TopAmmount;
@@ -445,7 +443,7 @@ qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~;
         $yymain .= qq~<tr>
         <td class="windowbg">$link{$user}</td>~;
 
-        if ( $user eq 'admin' ) {
+        if ( $user eq 'admin' || ( $iamgmod && ( ${ $uid . $user }{'position'} eq 'Administrator' || $gmod_access{'deletemultimembers'} ne 'on') ) ) {
             $addel = q~&nbsp;~;
         }
         else {
@@ -755,7 +753,9 @@ sub buildPages {
             </tr>);
     }
 
-    $sel_box = qq~
+    $selbox = q{};
+    if ( $iamadmin || ($iamgmod && $gmod_access{'deletemultimembers'} eq 'on' ) ) {
+        $sel_box = qq~
             <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
                 <colgroup>
                     <col style="width: 95%" />
@@ -811,6 +811,7 @@ sub buildPages {
             }
         }
         </script>~;
+    }
 
     $numbegin = ( $start + 1 );
     $numend   = ( $start + $MembersPerPage );
@@ -834,6 +835,19 @@ sub buildPages {
     $TableHeader~;
     }
     else {
+        $gmodsubmit = q{};
+        if ( $iamadmin || ($iamgmod && $gmod_access{'deletemultimembers'} eq 'on' ) ) {
+            $gmodsubmit = qq~    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'delete'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <div class="small"><label for="del_mail">$amv_txt{'45'}:</label> <input type="checkbox" name="del_mail" id="del_mail" value="1" /></div>
+                <input type="submit" value="$amv_txt{'15'}" onclick="javascript:window.document.adv_memberview.button.value = '2'; return confirm('$amv_txt{'20'}')" class="button" />
+            </td>
+         </tr>
+    </table>~;
+        }
         $yymain .= qq~<tr>
         <td class="catbg" colspan="9">
             <div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
@@ -844,16 +858,7 @@ sub buildPages {
        $sel_box
     </div>
     <div class="bordercolor rightboxdiv">
-    <table class="border-space pad-cell">
-        <tr>
-            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'delete'}</th>
-        </tr><tr>
-            <td class="catbg center">
-                <div class="small"><label for="del_mail">$amv_txt{'45'}:</label> <input type="checkbox" name="del_mail" id="del_mail" value="1" /></div>
-                <input type="submit" value="$amv_txt{'15'}" onclick="javascript:window.document.adv_memberview.button.value = '2'; return confirm('$amv_txt{'20'}')" class="button" />
-            </td>
-         </tr>
-    </table>
+$gmodsubmit
     </div>
     </form>~;
     }

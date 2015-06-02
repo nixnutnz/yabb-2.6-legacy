@@ -11,9 +11,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$registertemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$registertemver = 'YaBB 2.6.11 $Revision$';
 
-$myreg_req = q~ <span style="color:#ff0000; font-weight:700">*</span> ~;
+$myreg_req = q~ <span class="important">*</span> ~;
 
 if ( $FORM{'reglanguage'} ) {
     $language = $FORM{'reglanguage'};

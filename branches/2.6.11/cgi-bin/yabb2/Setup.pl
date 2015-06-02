@@ -23,7 +23,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.11';
 
-$setupplver = 'YaBB 2.6.11 $Revision: 1619 $';
+$setupplver = 'YaBB 2.6.11 $Revision$';
 $yymycharset  = 'UTF-8';
 
 # conversion will stop after $max_process_time
@@ -1290,12 +1290,12 @@ sub SetInstall {
 sub SetInstall2 {
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
         $settings_file_version = 'YaBB 2.6.11';
-        $yymycharset             = $FORM{'defaultencoding'} || 'UTF-8' ;
+        $yymycharset           = $FORM{'defaultencoding'} || 'UTF-8' ;
         $maintenance           = 1;
         $rememberbackup        = 0;
         $guestaccess           = 1;
         $mbname                = $FORM{'mbname'} || 'My Perl YaBB Forum';
-        $mbname =~ s/\"/\'/gxsm;
+        $mbname =~ s/\x22/\x27/gxsm;
         $forumstart            = timetostring( int time );
         $Cookie_Length         = 1;
         $regtype               = 3;
@@ -2062,7 +2062,7 @@ sub CheckInstall {
     }
     fclose(FORUMTOTALS);
     fopen ( FIRSTMS, ">$datadir/$firstmstime.txt");
-    print {FIRSTMS} qq~Welcome to your New YaBB 2.6.11 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.11 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~; 
+    print {FIRSTMS} qq~Welcome to your New YaBB 2.6.11 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.11 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~;
     fclose(FIRSTMS);
     require Sources::DateTime;
     fopen (FIRSTMSC, ">$datadir/$firstmstime.ctb");
@@ -2579,7 +2579,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                         enable_yabbc();
                         DoUBBC();
                         }
-                    $message =~ s/"/\\"/gsm;
+                    $message =~ s/\x22/\\\x22/gsm;
                     $yynews .= qq~
                                     fcontent[$j] = "$message";\n
                               ~;
@@ -2595,7 +2595,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                     enable_yabbc();
                     DoUBBC();
                 }
-                $message =~ s/\'/&#39;/xsm;
+                $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
             <script type="text/javascript">
                 if (ie4 || DOM2) var news = '$message';
@@ -2633,8 +2633,8 @@ sub nicely_aligned_file {
     my $setfile = shift;
     $setfile =~ s/=\s+;/= 0;/gsm;
     $setfile =~
-s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
-    $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
+s/(.+;)[ \t]+(\x23.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
+    $setfile =~ s/\t+(\x23.+$)/$filler$1/gsm;
 
 
     *cut_comment = sub {    # line break of too long comments
@@ -2733,4 +2733,5 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
     template();
     return;
 }
+
 1;

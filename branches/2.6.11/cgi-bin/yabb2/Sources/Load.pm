@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$loadpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$loadpmver = 'YaBB 2.6.11 $Revision$';
 
 sub LoadBoardControl {
     $binboard = q{};
@@ -177,9 +177,9 @@ sub LoadCensorList {
                 }
                 push @censored, [ $tmpa, $tmpb, $tmpc ];
             }
+            fclose(CENSOR);
         }
     }
-    fclose(CENSOR);
     return;
 }
 
@@ -367,7 +367,6 @@ sub is_moderator_b {
                 get_forum_master();
                 ( $boardname, $boardperms, $boardview ) =
                   split /\|/xsm, $board{$i};
-
                 $mybrds .= qq~$boardname<br />~;
                 return 1;
             }
@@ -1138,59 +1137,6 @@ sub UpdateCookie {
     return;
 }
 
-sub LoadAccess {
-    $yesaccesses .= "$load_txt{'805'} $load_txt{'806'} $load_txt{'808'}<br />";
-    $noaccesses = q{};
-
-    # Reply Check
-    my $rcaccess = AccessCheck( $currentboard, 2 ) || 0;
-    if ( $rcaccess eq 'granted' ) {
-        $yesaccesses .=
-          "$load_txt{'805'} $load_txt{'806'} $load_txt{'809'}<br />";
-    }
-    else {
-        $noaccesses .=
-          "$load_txt{'805'} $load_txt{'807'} $load_txt{'809'}<br />";
-    }
-
-    # Topic Check
-    my $tcaccess = AccessCheck( $currentboard, 1 ) || 0;
-    if ( $tcaccess eq 'granted' ) {
-        $yesaccesses .=
-          "$load_txt{'805'} $load_txt{'806'} $load_txt{'810'}<br />";
-    }
-    else {
-        $noaccesses .=
-          "$load_txt{'805'} $load_txt{'807'} $load_txt{'810'}<br />";
-    }
-
-    # Poll Check
-    my $access = AccessCheck( $currentboard, 3 ) || 0;
-    if ( $access eq 'granted' ) {
-        $yesaccesses .=
-          "$load_txt{'805'} $load_txt{'806'} $load_txt{'811'}<br />";
-    }
-    else {
-        $noaccesses .=
-          "$load_txt{'805'} $load_txt{'807'} $load_txt{'811'}<br />";
-    }
-
-    # Zero Post Check
-    if ( $username ne 'Guest' ) {
-        if ( $INFO{'zeropost'} != 1 && $rcaccess eq 'granted' ) {
-            $yesaccesses .=
-              "$load_txt{'805'} $load_txt{'806'} $load_txt{'812'}<br />";
-        }
-        else {
-            $noaccesses .=
-              "$load_txt{'805'} $load_txt{'807'} $load_txt{'812'}<br />";
-        }
-    }
-
-    $accesses = qq~$yesaccesses<br />$noaccesses~;
-    return $accesses;
-}
-
 sub WhatTemplate {
     $found = 0;
     while ( ( $curtemplate, $value ) = each %templateset ) {
@@ -1421,7 +1367,7 @@ sub load_IMS {
         fclose(IMSFILE);
     }
 
-    if ( $ims[0] =~ /###/xsm ) {
+    if ( $ims[0] =~ /\x23\x23\x23/xsm ) {
         foreach (@ims) {
             if ( $_ =~ /'(.*?)',"(.*?)"/xsm ) { ${$builduser}{$1} = $2; }
         }

@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.11';
 
-$datetimepmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$datetimepmver = 'YaBB 2.6.11 $Revision$';
 
 @days_rfc = qw( Sun Mon Tue Wed Thu Fri Sat );
     # for RFC compliant feed time
@@ -599,6 +599,23 @@ sub IsLeap {
    return 1 if $year % 100;
    return 0 if $year % 400;
    return 1;
+}
+
+sub ctbtime {
+    my (
+        $newsecond, $newminute,  $newhour,    $newday, $newmonth,
+        $newyear,   $newweekday, $newyearday, $newoff
+    ) = gmtime( $date );
+    $newyear += 1900;
+    $shortday = $days_rfc[$newweekday];
+    $shortmon = $months_rfc[$newmonth];
+    $newhour   = sprintf '%02d', $newhour;
+    $newminute = sprintf '%02d', $newminute;
+    $newsecond = sprintf '%02d', $newsecond;
+    $newmin = $newhour . q{:} . $newminute . q{:} . $newsecond;
+    $newtime = qq~$shortday, $newday $shortmon $newyear $newmin UTC~;
+
+    return $newtime;
 }
 
 1;

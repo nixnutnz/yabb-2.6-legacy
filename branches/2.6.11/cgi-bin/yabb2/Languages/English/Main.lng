@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mainlngver = 'YaBB 2.6.11 $Revision: 1617 $';
+$mainlngver = 'YaBB 2.6.11 $Revision$';
 
 $abbr_lang = 'en-us';
 
@@ -20,6 +20,8 @@ $abbr_lang = 'en-us';
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
 @months_m = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'); #list for lower case months if needed.
 @days_short = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat'); # for smtp
+@uploadtranlist = qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ);
+@ISO_8859_1 =     qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
 
 %maintxt = (
 'w3c_lngcode' => 'en-us',
@@ -146,7 +148,7 @@ $abbr_lang = 'en-us';
 'freeuserspace' => 'Free Host space available:',
 'freediskspace' => 'Free Disk space available:',
 'redirect' => 'Redirect',
-'redirecttext' => 'If you see this message, it means that the redirection didn&#39;t work.',
+'redirecttext' => q~If you see this message, it means that the redirection didn't work.~,
 'redirectlink' => 'Click here',
 'noscript' => 'You must enable JavaScript to get full functionality for this forum.',
 'go_to_board' => 'Go to the Board Index',
@@ -169,7 +171,7 @@ $abbr_lang = 'en-us';
 'nonew' => 'and no new messages.',
 '231' => 'Gender',
 'female' => 'Female',
-'male' => 'Male', 
+'male' => 'Male',
 '471' => 'message',
 '616' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
 '616a' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
@@ -284,6 +286,6 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 );
 
 timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~;
 
 1;

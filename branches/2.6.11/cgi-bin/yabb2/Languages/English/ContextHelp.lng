@@ -15,9 +15,9 @@
 # for his contribution to the YaBB community                                  #
 ###############################################################################
 
-$contexthelplngver = 'YaBB 2.6.11 $Revision: 1611 $';
+$contexthelplngver = 'YaBB 2.6.11 $Revision$';
 
-### Do not translate uppercase words in sharp brackets
+### Do not translate uppercase words in sharp brackets ([])
 
 %contextxt = (
 'clicktip' => "Right Click for help",

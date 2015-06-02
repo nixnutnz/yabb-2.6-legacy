@@ -51,7 +51,6 @@ sub GmodSettings {
             $counter++;
         }
     }
-    @actfound = sort @actfound;
     $column  = int( $counter / 2 );
     $counter = 0;
     $aa      = 0;
@@ -113,7 +112,7 @@ qq~\n<input type="checkbox" name="$actfound" id="$actfound"$checked />&nbsp;<lab
         </table>
     </div>
 </form>
-<script type="text/javascript">
+<script type="text/javascript">//<![CDATA[
 function depend(value) {
       if (value) {
             document.getElementById('allow_gmod_aprofile').disabled = false;
@@ -122,7 +121,7 @@ function depend(value) {
             document.getElementById('allow_gmod_aprofile').disabled = true;
       }
 }
-</script>
+//]]></script>
 
 ~;
     $yytitle     = "$gmod_settings{'1'}";
@@ -1035,16 +1034,14 @@ q~                                                                              
 \$htmldir = "$htmldir";                         # Base Path for all public-html files and folders
 \$facesdir = "$facesdir";                       # Base Path for all avatar files
 \$uploaddir = "$uploaddir";                     # Base Path for all attachment files
-\$uploaddir = "$uploaddir";                     # Base Path for post attachment files
 \$pmuploaddir = "$pmuploaddir";                 # Base Path for pm attachment files
-\$modimgdir = "$modimgdir";                       # Base Path for all mod images
+\$modimgdir = "$modimgdir";                     # Base Path for all mod images
 
 ########## URLs ##########
 
-\$yyhtml_root = "$yyhtml_root";                       # Base URL for all html/css files and folders
+\$yyhtml_root = "$yyhtml_root";                 # Base URL for all html/css files and folders
 \$facesurl = "$facesurl";                       # Base URL for all avatar files
 \$uploadurl = "$uploadurl";                     # Base URL for all attachment files
-\$uploadurl = "$uploadurl";                     # Base URL for post attachment files
 \$pmuploadurl = "$pmuploadurl";                 # Base URL for pm attachment files
 \$modimgurl = "$modimgurl";                     # Base URL for all mod images
 

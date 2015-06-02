@@ -24,7 +24,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$addmoderatorspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$addmoderatorspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('AddModerators');
@@ -187,10 +187,10 @@ function copy_option(to_select) {
         my $thisModname = ${ $uid . $thisMod }{'realname'};
         if ( !$thisModname ) { $thisModname = $thisMod; }
         if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        if ( $thisMod eq q{} ) { $modmbr .= q{};}
+        if ( $thisMod eq q{} ) { $modmbr .= q{                <option value="" disabled="disabled">--</option>};}
         else {
             $modmbr .=
-qq~<option value="$thisMod" selected="selected">$thisModname</option>~;
+qq~                <option value="$thisMod" selected="selected">$thisModname</option>~;
             $modmbrcnt++;
         }
     }

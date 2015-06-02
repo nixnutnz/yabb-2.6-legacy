@@ -676,7 +676,7 @@ var skydobject = {
             if (isNaN(parseInt(this.targetobj.style.left, 10))) this.targetobj.style.left = 0;
             if (isNaN(parseInt(this.targetobj.style.top, 10))) this.targetobj.style.top = 0;
             this.temp2 = parseInt(this.targetobj.style.left, 10);
-            this.temp3 = parseInt(this.targetobj.style.top);
+            this.temp3 = parseInt(this.targetobj.style.top, 10);
             this.x = evtobj.clientX;
             this.y = evtobj.clientY;
             if (evtobj.preventDefault) evtobj.preventDefault();

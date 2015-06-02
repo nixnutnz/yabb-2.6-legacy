@@ -15,8 +15,9 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$printpagepmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$printpagepmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
+
 get_micon();
 
 sub Print_IM {
@@ -742,7 +743,7 @@ sub codemsg {
         q{]}  => '&#93;',
         q{^}  => '&#94;',
     );
-    if ( $code !~ /&\S*;/xsm ) { $code =~ s/;/&#059;/gxsm; }
+    if ( $code !~ /&\S*;/xsm ) { $code =~ s/;/&\x23059;/gxsm; }
     $code =~ s/([\(\)\-\:\\\/\?\!\]\[\.\^])/$killhash{$1}/gxsm;
     $_ =
 q~<br /><b>Code:</b><br /><table class="cs_thin" style="width:90%"><tr><td><table class="padd_2px"><tr><td><span style="font-family:courier; font-size:80%">CODE</span></td></tr></table></td></tr></table>~;
@@ -826,7 +827,7 @@ s/\[fixed\](.*?)\[\/fixed\]/<span style="font-family: Courier New;">$1<\/span>/i
 
     $threadpost =~ s/\[\[/\{\{/gxsm;
     $threadpost =~ s/\]\]/\}\}/gxsm;
-    $threadpost =~ s/\|/\&#124;/gxsm;
+    $threadpost =~ s/\|/\&verbar;/gxsm;
     $threadpost =~
       s/\[hr\]\n/<hr style="width:40%; text-align:left" class="hr" \/>/gsm;
     $threadpost =~
@@ -845,7 +846,7 @@ s/\[fixed\](.*?)\[\/fixed\]/<span style="font-family: Courier New;">$1<\/span>/i
           s/\[link\]\s*([^\[]+)\s*\[\/link\]/[link]$1\[\/link]/gxsm;
         $threadpost =~ s/\[news\](\S+?)\[\/news\]/<a href="$1">$1<\/a>/isgm;
         $threadpost =~ s/\[gopher\](\S+?)\[\/gopher\]/<a href="$1">$1<\/a>/isgm;
-        $threadpost =~ s/&quot;&gt;/">/gxsm;                  #"
+        $threadpost =~ s/&quot;&gt;/\x22>/gxsm;
         $threadpost =~ s/(\[\*\])/ $1/gsm;
         $threadpost =~ s/(\[\/list\])/ $1/gsm;
         $threadpost =~ s/(\[\/tr\])/ $1/gsm;
@@ -1050,7 +1051,7 @@ sub imagemsg {    # out of YaBBC.pm -> sub imagemsg {
     $attribut =~ s/(\s|$char_160)+/ /gsm;
     foreach ( split / +/sm, $attribut ) {
         my ( $key, $value ) = split /=/xsm, $_;
-        $value =~ s/["']//gxsm;    #'" make my syntax checker happy;
+        $value =~ s/[\x22\x27]//gxsm;
         $parameter{$key} = $value;
     }
 

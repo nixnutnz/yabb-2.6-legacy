@@ -24,8 +24,9 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$menupmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$menupmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
+
 get_micon();
 
 sub SetMenu {

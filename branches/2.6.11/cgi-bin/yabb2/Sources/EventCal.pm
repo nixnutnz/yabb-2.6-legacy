@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
 our $VERSION = '2.6.11';
 
-$eventcalpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$eventcalpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -81,6 +81,19 @@ for $i (@add_cal_icon) {
     $jsCal_txt .= qq~,\n'$i_a', '$i_b'~;
 }
 $jsCal_txt .= qq~);\n~;
+
+my $mytimeselected =
+      ( $forum_default || !${ $uid . $username }{'timeselect'} )
+      ? $timeselected
+      : ${ $uid . $username }{'timeselect'};
+
+my $timeord = 0;
+if (   $mytimeselected == 8
+    || $mytimeselected == 6
+    || $mytimeselected == 3
+    || $mytimeselected == 2 ) {
+    $timeord = 1;
+}
 
 sub eventcal {
     my ( $ssicalmode, $ssicaldisplay ) = @_;
@@ -291,7 +304,6 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
     my $boxdays =
 qq~ <label for="calday"><span class="small">$var_cal{'calday'}</span></label>
     <select class="input" name="calday" id="calday">
-    <option value="0">---</option>
         $boxdays_inner
         </select>~;
     my $smonths = qq~ <label for="selmon">$var_cal{'calmonth'}</label>
@@ -1516,6 +1528,7 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
         $outstring =~ s/{yabb cal_eventinfo}/$cal_icon{'eventinfo'}/sm;
     }
 
+    if ( $action eq 'eventcal' && !$INFO{'calshow'} ) {$INFO{'calshow'} = 1;}
     if ( $DisplayCalEvents || $INFO{'calshow'} ) {
         $cal_display_calevent = qq~
                 <b>$event_index</b><br />
@@ -1639,9 +1652,8 @@ sub add_cal {
         $calmessage = $FORM{'message'};
         $calmessage =~ s/\|//gxsm;
         $calmessage =~ s/\cM//gxsm;
-        $calmessage =~ s/\:\`\(/\:\'\(/gxsm;
+        $calmessage =~ s/\:\`\(/\:\x27\(/gxsm;
 
-        #' make my syntax checker happy;
         $calmessage =~ s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
         $calmessage =~ s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
         $calmessage =~

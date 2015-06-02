@@ -18,7 +18,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.11';
 
-our $modulecheckerpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+our $modulecheckerpmver = 'YaBB 2.6.11 $Revision$';
 our ( $action, $yymain, %modulecheck );
 if ( $action eq 'detailedversion' ) { return 1; }
 
@@ -73,7 +73,11 @@ foreach my $module ( @modules ) {
         }
     }
 }
+
 my $perlver = $];
+if ( $perlver gt '5.009' ) {
+    $perlver = $^V;
+}
 
 if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~

@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.11';
 
-$mediacenterpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$mediacenterpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub embed {
@@ -375,7 +375,7 @@ $embed_flash = q~
         <param name="movie" value="_media_" />
         <param name="loop" value="_loop_" />
         <param name="quality" value="high" />
-        <param name="bgcolor" value="#FFFFFF" />
+        <param name="background-color" value="#FFFFFF" />
         <embed src="_media_" width="_width_" height="_height_" loop="_loop_" bgcolor="#FFFFFF" quality="high" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
     </object>
 ~;
@@ -404,7 +404,7 @@ $embed_flv = qq~
     <embed src="$yyhtml_root/mediaplayer.swf" allowfullscreen="true" allowscriptaccess="always" width="_width_" height="_height_" flashvars="&file=_media_&height=_height_&width=_width_&autostart=_autostart_" />~;
 
 $iframe_thenutz = q~
-    <script type="text/javascript">var host=document.location;document.write("<iframe src=\"http://www.thenutz.tv/embed.php?video_id=_media_&host=" + host + "\" frameborder=\"0\" height=\"326\" width=\"400\" scrolling=\"No\"></iframe>");</script>
+    <script type="text/javascript">var host=document.location;document.write("<iframe src='http://www.thenutz.tv/embed.php?video_id=_media_&host=" + host + "' frameborder='0' height='326' width='400' scrolling='No'></iframe>");</script>
 ~;
 
 1;

@@ -9,3 +9,5 @@ Messages/movedthreads.cgi has been renamed and moved to Variables/Movedthreads.p
 
 NOTE: Old templates will not have all the necessary function calls and variables needed for the new functions - use the new templates and modify them.
 NOTE: The graphics have been redone and many renamed. Among those graphics that have been renamed are the Group Membership stars. The new default Group Membership stars are .png files. If you are importing settings from an earlier version of YaBB you will need to either import your old stars OR assign the new Group Membership stars to your Member Groups in the Group Membership section of the Admin Center.
+
+IMPORTANT: The code in this section of the SVN is to keep track of and test bug fixes for the 2.6.11 release.

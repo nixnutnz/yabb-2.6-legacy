@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$guardianadminpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$guardianadminpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Guardian');
@@ -108,26 +108,12 @@ sub setup_guardian {
                     <label for="use_htaccess">$guardian_txt{'use_htaccess'}
                     <input type="checkbox" name="use_htaccess" id="use_htaccess" value="1"$htaccess_checked onmouseup="remove_htaccess();" /><br />$guardian_txt{'use_htaccess_support'}</label>
                 </div>
-                <script type="text/javascript">
-            var old_htaccess = '';
-            function remove_htaccess() {
-                if (document.getElementById("use_htaccess").checked) {
-                    old_htaccess = document.getElementById("access_denied").value;
-                    document.getElementById("access_denied").value = '';
-                    document.getElementById("access_denied").disabled = "disabled";
-                } else {
-                    document.getElementById("access_denied").value = old_htaccess;
-                    document.getElementById("access_denied").disabled = "";
-                }
-            }
-                </script>
+##Code removed##
                 <div class="setting-cell3">
                     <label for="access_denied">$guardian_txt{'htaccess_list'}</label>
                 </div>
                 <div class="setting-cell4">
-                    <textarea cols="40" rows="8" name="access_denied" id="access_denied" style="width:98%"~
-      . ( $use_htaccess ? q{} : ' disabled="disabled"' )
-      . qq~>$acc_denied</textarea>
+                    <textarea cols="40" rows="8" name="access_denied" id="access_denied" style="width:98%">$acc_denied</textarea>
                 </div>
             </td>
         </tr>
@@ -476,7 +462,6 @@ sub guardian_block {
     is_admin_or_gmod();
 
     if ( $use_guardian && $use_htaccess ) {
-        require Sources::Guardian;
         my $blockIP = $INFO{'ip'};
         update_htaccess( 'add', $blockIP );
         $yySetLocation = qq~$adminurl?action=$INFO{'return'}~;

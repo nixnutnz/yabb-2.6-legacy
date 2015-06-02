@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$micondefver = 'YaBB 2.6.11 $Revision: 1611 $';
+$micondefver = 'YaBB 2.6.11 $Revision$';
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
@@ -217,7 +217,7 @@ LoadLanguage('Micon');
 );
 
 %newload = (
-'new_mess' => qq~<span class='NewLinks' style='background-image: url($imagesdir/new-l.png); height:11px; display: inline-block; vertical-align:middle; padding: 0 0 0 2px; background-position: left bottom; background-repeat: no-repeat;'><span style='background-image: url($imagesdir/new-r.png); height:11px; display: inline-block; vertical-align:baseline; padding: 0 2px 0 0; background-position: right top; background-repeat: no-repeat;'><span style='background-image: url($imagesdir/new-c.png); color:#fff; font-size:8px; height:11px; display: inline-block; vertical-align:top; padding: 0 2px' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
+'new_mess' => qq~<span class='NewLinks'><span class='newlinks'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
 'brd_new' => 'on.png',
 'brd_old' => 'off.png',
 'sub_brd_new' => 'on_sub.png',
@@ -252,7 +252,7 @@ LoadLanguage('Micon');
 );
 
 $newload = qq~
-        <script type="text/javascript">
+        <script type="text/javascript">//<![CDATA[
         var new_mess = "$newload{'new_mess'}";
         var brd_new = "$newload{'brd_new'}";
         var brd_old = "$newload{'brd_old'}";
@@ -264,7 +264,7 @@ $newload = qq~
         var imopen2 = "$newload{'imopen2'}";
         var imclose = "$newload{'imclose'}";
         var imclose2 = "$newload{'imclose2'}";
-        </script>~;
+        //]]></script>~;
 
 #####################################################################
 #                   JS Variables for IMPost, Post                   #
@@ -279,7 +279,7 @@ $jsPost = qq~
 var jsPost = new Hash($jsPostlist);
 ~;
 
-@jsPstatlist = qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread thread);
+@jsPstatlist = qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread);
 for (@jsPstatlist) {
         $jsPstatlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }

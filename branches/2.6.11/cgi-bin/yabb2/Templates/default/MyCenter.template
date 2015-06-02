@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mycentertemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$mycentertemver = 'YaBB 2.6.11 $Revision$';
 get_micon();
 $IM_callback = 'imcallback.gif';
 $IM_answered = 'answered.gif';
@@ -138,7 +138,9 @@ $my_MCProfMenu = qq~
                 <span class="nav bold"><a href="$scripturl?{yabb thisLink_c}">$profile_txt{'819'}</a></span>
                 <br />
                 <span class="nav bold"><a href="$scripturl?{yabb thisLink_d}">$profile_txt{'818'}</a></span>
-                <br />{yabb my_buddylink}{yabb my_IMpref}{yabb my_adminlink}
+                <br />{yabb my_buddylink}
+                {yabb my_IMpref}
+                {yabb my_adminlink}
             </td>
         </tr>
     </table>
@@ -410,7 +412,9 @@ $my_PMview = qq~<tr>
     </tr>~;
 
 $my_BM_mess = qq~{yabb MCContent_stk}{yabb MCContent_stk_i}{yabb MCContent_lgnd}<tr>
-        <td class="{yabb class_PM_list}">{yabb BCnew}{yabb messageIcon}{yabb messIcon}<a href="$scripturl?action={yabb actString};caller={yabb callerid};id={yabb messageid}">{yabb msub}</a>{yabb attachIcon}</td>
+        <td class="{yabb class_PM_list}">{yabb BCnew}
+        {yabb messageIcon}
+        {yabb messIcon}<a href="$scripturl?action={yabb actString};caller={yabb callerid};id={yabb messageid}">{yabb msub}</a>{yabb attachIcon}</td>
         <td class="{yabb class_PM_list}">~;
 
 $my_dimmessages = q~<tr>
@@ -442,6 +446,5 @@ $my_buddiesCurrentStatus_a = qq~<tr class="{yabb css}">
             <td class="center">{yabb buddyemail}</td>
             <td class="center">{yabb buddywww}</td>
         </tr>~;
-
 
 1;

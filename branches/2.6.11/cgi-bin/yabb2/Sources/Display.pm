@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$displaypmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$displaypmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
@@ -259,15 +259,13 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
     if ( ( !$iamguest || $enable_guestposting )
         && AccessCheck( $currentboard, 2 ) eq 'granted' )
     {
-        $replybutton = q~<a href="~
-          . (
+        my $tmplink = (
             $enable_quickreply && $enable_quickjump
             ? 'javascript:document.postmodify.message.focus();'
             : qq~$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;title=PostReply~
-          );
-        $bypassReplyButton = $replybutton
-          . qq~" onclick="return confirm('$display_txt{'posttolocked'}');">$img{'reply'}</a>~;
-        $replybutton .= qq~">$img{'reply'}</a>~;   #" make my text-editor happy;
+        );
+        $replybutton = qq~<a href="$tmplink">$img{'reply'}</a>~;
+        $bypassReplyButton = qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">$img{'reply'}</a>~;
     }
 
     $threadclass = 'thread';
@@ -937,9 +935,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$mlmb}">$format_
                 $mlmb = $display_txt{'470'};
             }
             $lastmodified =
-                qq~&#171; <i>$display_txt{'211'}: ~
+                qq~&\x23171; <i>$display_txt{'211'}: ~
               . timeformat($mlm,0,0,0,1)
-              . qq~ $display_txt{'525'} $mlmb</i> &#187;~;
+              . qq~ $display_txt{'525'} $mlmb</i> &\x23187;~;
         }
 
         if ($ipLookup) {
@@ -1218,7 +1216,7 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
         if ( $mstate !~ /l/ism ) {
             if ($replybutton) {
                 my $quote_mname = $displayname;
-                $quote_mname =~ s/'/\\'/gxsm;
+                $quote_mname =~ s/\x27/\\\x27/gxsm;
                 if (   $enable_quickreply
                     && $enable_quoteuser
                     && ( !$iamguest || $enable_guestposting ) )
@@ -1232,7 +1230,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                 {
                     if ($enable_quickreply) {
                         $quote_mname = $useraccount{$musername};
-                        $quote_mname =~ s/'/\\'/gxsm;
+                        $quote_mname =~ s/\x27/\\\x27/gxsm;
                         if ($enable_markquote) {
                             my $quoteinfo;
                             my $quotesmess = $postmessage;
@@ -1261,7 +1259,7 @@ qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$coun
 s/(<(br|p).*?>){0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\](<(br|p).*?>){0,1}/<br \/>/igsm;
                                 }
                                 $quickmessage =~ s/<(br|p).*?>/\\r\\n/igxsm;
-                                $quickmessage =~ s/'/\\'/gxsm;
+                                $quickmessage =~ s/\x27/\\\x27/gxsm;
                                 $template_quote .=
 qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,'$quickmessage'))">$img{'quote'}</a>~;
                             }
@@ -1576,6 +1574,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             $bm_subject =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/segm;
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
             $bm_url =~ s/{title}/$bm_subject/gxsm;
+            $bm_url =~ s/&/&amp;/gxsm;
             $show_bookmarks .=
 qq~<a href="$bm_url" rel="nofollow" target="_blank"><img src="$yyhtml_root/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></a>\n~;
         }
@@ -1594,23 +1593,27 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
     # Template it
 
     $yynavback =
-qq~$tabsep <a href="$scripturl">&#171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
+qq~$tabsep <a href="$scripturl">&\x23171; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
 
     $boardtree   = q{};
     $parentboard = $currentboard;
     while ($parentboard) {
         my ( $pboardname, undef, undef ) = split /\|/xsm,
-          $board{"$parentboard"};
+          $board{$parentboard};
         ToChars($pboardname);
-        if ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard} ) {
-            $pboardname =
+        $pboardlink = $pboardname;
+        if ( $parentboard eq 'announcements' && !$iamadmin && !$iamgmod && !$iamfmod ) {
+            $pboardlink = qq~<b>$pboardname</b>~;
+        }
+        elsif ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard} ) {
+            $pboardlink =
 qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
         }
         else {
-            $pboardname =
+            $pboardlink =
 qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboardname</b></a>~;
         }
-        $boardtree   = qq~ &rsaquo; $pboardname$boardtree~;
+        $boardtree   = qq~ &rsaquo; $pboardlink$boardtree~;
         $parentboard = ${ $uid . $parentboard }{'parent'};
     }
 
@@ -1713,8 +1716,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
     $display_template =~ s/{yabb next}/$nextlink/gsm;
     $display_template =~ s/{yabb pageindex top}/$pageindex1/gsm;
     $display_template =~ s/{yabb pageindex bottom}/$pageindex2/gsm;
-    $display_template =~
-      s/{yabb bookmarks}/$bookmarks/gsm;    # Social Bookmarks
+    $display_template =~ s/{yabb bookmarks}/$bookmarks/gsm;
 
     $display_template =~
       s/{yabb outsidethreadtools}/$outside_threadtools/gsm;
@@ -1757,7 +1759,7 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
 
     $yymain .= qq~
     $display_template
-    <script type="text/javascript">
+    <script type="text/javascript">//<![CDATA[
     function uncheckAllBut(counter) {
         for (var i = 0; i < document.forms["multidel"].length; ++i) {
             if (document.forms["multidel"].elements[i].type == "checkbox") document.forms["multidel"].elements[i].checked = false;
@@ -1803,7 +1805,7 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     $yymain .= qq~
     $pageindexjs
     function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
-    </script>
+    //]]></script>
     ~;
 
 ## gb_css spot

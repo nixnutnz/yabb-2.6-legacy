@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$othertemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$othertemver = 'YaBB 2.6.11 $Revision$';
 
 $my_session = 'session.png';
 
@@ -88,7 +88,6 @@ $myselectmods_b  =qq~<tr>
             <td class="windowbg">
                 <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 340px;">
                 {yabb modmbr}
-                <option value="" disabled="disabled">--</option>
                 </select>
             </td>
         </tr>

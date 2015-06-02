@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$loginouttemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$loginouttemver = 'YaBB 2.6.11 $Revision$';
 
 $myborder =
 q~<div class="bordercolor" style="width: 100%; margin-bottom: 8px; margin-left: auto; margin-right: auto;">~;
@@ -54,8 +54,9 @@ $myborder
         <td class="windowbg center"><img src="$imagesdir/login.png" alt="" /></td>
         <td class="windowbg2 center">~;
 
-    $mylogintxt = $loginout_txt{'35'};
-    if ( $screenlogin ) { $mylogintxt = $loginout_txt{'35b'}; }
+$mylogintxt = $loginout_txt{'35'};
+if ( $screenlogin ) { $mylogintxt = $loginout_txt{'35b'}; }
+
 $mysharedlog_bodya = qq~
                 <div style="width: 600px;">
                     <span style="float: left; text-align: left; margin-right:15px;">

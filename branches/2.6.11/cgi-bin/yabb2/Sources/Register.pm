@@ -19,8 +19,9 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.11';
 
-$registerpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$registerpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
+
 if ( !$iamguest
     && ( !$admin && $action ne 'activate' && $action ne 'admin_descision' ) )
 {
@@ -107,7 +108,7 @@ sub Register {
             $aedomains .=
               ( $_ =~ m/\@/xsm )
               ? qq~<option value="$_">$_</option>~
-              : qq~<option value="\@$_">&#64;$_</option>~;
+              : qq~<option value="\@$_">&commat;$_</option>~;
         }
         $aedomains .= $myaedomains_b;
     }
@@ -192,7 +193,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $yymain .= $myregister_endrow;
     }
 
-    if ($gender_on_reg == 1 ) {
+    if ( $gender_on_reg ) {
         my $editGenderTxt;
         my $nongen_opt = q{};
         if ( $editGenderLimit == 1 ) {
@@ -985,8 +986,8 @@ sub Register2 {
         if   ($do_scramble_id) { $cryptuser = cloak($reguser); }
         else                   { $cryptuser = $reguser; }
 
-        if ($emailpassword) { $regpass = $member{'passwrd1'}; }
-        else { $regpass = encode_password( $member{'passwrd1'} ); }
+        $regpass = $member{'passwrd1'};
+
         fopen( INACT, ">>$memberdir/memberlist.inactive", 1 );
         print {INACT}
           "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n"

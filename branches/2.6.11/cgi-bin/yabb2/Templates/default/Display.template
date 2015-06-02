@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$displaytemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$displaytemver = 'YaBB 2.6.11 $Revision$';
 
 $disp_qquname = 'qquname.gif';
 $disp_arrow_dn = 'arrow_down.gif';
@@ -32,7 +32,7 @@ $threadhandellist2 = qq~
 ~;
 
 if($useThreadtools) {
-    $threadhandelstyle = q~ class="post_tools center" style="width:100px"~;
+    $threadhandelstyle = q~ class="post_tools center" style="width:100px;"~;
     $my_fixed = q~ style="table-layout: fixed;"~;
 } else {
     $threadhandelstyle = qq~ style="text-align:right"~;
@@ -422,7 +422,7 @@ $mysend_top = qq~
     <tr>
         <td style="padding-left:20px">
             <img src="$micon_bg{'email'}" alt="" />
-            <b>$sendtopic_txt{'707'}&nbsp; &#171; {yabb subject} &#187; &nbsp;$sendtopic_txt{'708'}</b>
+            <b>$sendtopic_txt{'707'}&nbsp; &laquo; {yabb subject} &raquo; &nbsp;$sendtopic_txt{'708'}</b>
         </td>
     </tr>
 </table>

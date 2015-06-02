@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$rsspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$rsspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Change the error routine for here.
@@ -39,15 +39,12 @@ sub RSS_board {
     ### Arguments:
     # board: the board to load from. Defaults to all boards.
     # showauthor: show the author or not? Defaults to false.
-    # topics: Number of topics to show. Defaults to 5.
+    # topics: Number of topics to show. Defaults to 10.
     ###
 
-    # Local variables
-    my ( $board, $topics );    # Variables for settings
-
     # Settings
-    $board = $INFO{'board'};
-    $topics = $INFO{'topics'} || $rss_limit || 10;
+    my $board = $INFO{'board'};
+    my $topics = $INFO{'topics'} || $rss_limit || 10;
     if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
 
     ### Security check ###
@@ -86,7 +83,7 @@ sub RSS_board {
     chomp @threadlist;
 
     my $i = 0;
-    foreach (@threadlist) {
+    for (@threadlist) {
         (
             $mnum,     $msub,      $mname, $memail, $mdate,
             $mreplies, $musername, $micon, $mstate, $ns
@@ -99,10 +96,11 @@ sub RSS_board {
         # Does it need to be returned as a 304?
         if ( $i == 0 ) {    # Do this for the first request only
             $cachedate = RFC822Date($mdate);
-            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq qq~"$cachedate"~
+            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate
                 || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
             {
                 Send304NotModified();
+
                 # Comment this out to test with caching disabled
             }
         }
@@ -182,8 +180,9 @@ sub RSS_board {
                 }
                 else {
                     $yymain .=
-                        q~           <author>~
-                      . RSSDescriptionTrim("$rssemail (${$uid.$musername}{'realname'})")
+                      q~           <author>~
+                      . RSSDescriptionTrim(
+                        "$rssemail (${$uid.$musername}{'realname'})")
                       . qq~</author>\n~;
                 }
             }
@@ -217,7 +216,7 @@ sub RSS_board {
         # Finish up the item
         $yymain .= q~       </item>
 ~;
-		$yymain =~ s/data-rel/rel/gsm;
+        $yymain =~ s/data-rel/rel/gsm;
         $i++;    # Increment
     }
 
@@ -234,15 +233,14 @@ sub RSS_board {
 sub RSS_recent {
     ### Arguments:
     # catselect: use a specific category instead of the whole forum (optional)
-    # topics: Number of topics to show. Defaults to 5.
+    # topics: Number of topics to show. Defaults to 10.
     ###
 
     # Local variables
-    my ($topics);    # Variables for settings
-    my ( @threadlist, $i );    # Variables for the messages
+    my @threadlist = ();
 
     # Settings
-    $topics = $INFO{'topics'} || $rss_limit || 10;
+    my $topics = $INFO{'topics'} || $rss_limit || 10;
     if ( $rss_limit && $topics > $rss_limit ) { $topics = $rss_limit; }
 
     $yytitle = "$topics $maintxt{'214b'}";
@@ -254,66 +252,71 @@ sub RSS_recent {
 
     # Find the latest $topics post times in all boards that we have access to
     # and add them to a giant array
-    foreach my $catid (@categoryorder) {
-        my $boardlist = $cat{$catid};
+    for my $catid (@categoryorder) {
 
-        my @bdlist = split /\,/xsm, $boardlist;
+        my @bdlist = split /\,/xsm, $cat{$catid};
         my ( $catname, $catperms ) = split /\|/xsm, $catinfo{$catid};
         my $cataccess = CatAccess($catperms);
         if ( !$cataccess ) { next; }
 
         if ( $INFO{'catselect'} ) {
             $yytitle = $catname;
-            $mydesc = $catname;
+            $mydesc  = $catname;
         }
 
-        foreach my $curboard (@bdlist) {
-            ( $boardname{$curboard}, $boardperms, $boardview ) = split /\|/xsm,
-              $board{$curboard};
+        *get_subboards = sub {
+            my @brd = @_;
+            for my $brd (@brd) {
+                ( $boardname{$brd}, $boardperms, $boardview ) = split /\|/xsm,
+                  $board{$brd};
 
-            my $access = AccessCheck( $curboard, q{}, $boardperms );
-            if ( !$iamadmin && $access ne 'granted' ) { next; }
-            if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-                my $cookiename = "$cookiepassword$curboard$username";
-                my $crypass    = ${ $uid . $curboard }{'brdpassw'};
-                if ( !$staff && $yyCookies{$cookiename} ne $crypass ) { next; }
-            }
+                my $access = AccessCheck( $brd, q{}, $boardperms );
+                if ( !$iamadmin && $access ne 'granted' ) { next; }
+                if ( ${ $uid . $brd }{'brdpasswr'} ) {
+                    my $cookiename = "$cookiepassword$brd$username";
+                    my $crypass    = ${ $uid . $brd }{'brdpassw'};
+                    if ( !$staff && $yyCookies{$cookiename} ne $crypass ) {
+                        next;
+                    }
+                }
 
-            fopen( BOARD, "$boardsdir/$curboard.txt" )
-              || RSS_error( 'cannot_open', "$boardsdir/$curboard.txt", 1 );
-            for my $i ( 0 .. ( $topics - 1 ) ) {
-                my ( $buffer, $mnum, $mdate, $mstate );
+                fopen( BOARD, "$boardsdir/$brd.txt" )
+                  || RSS_error( 'cannot_open', "$boardsdir/$brd.txt", 1 );
+                for my $i ( 0 .. ( $topics - 1 ) ) {
+                    my $buffer = <BOARD>;
+                    if ( !$buffer ) { last; }
+                    chomp $buffer;
 
-                $buffer = <BOARD>;
-                if ( !$buffer ) { last; }
-                chomp $buffer;
+                    my (
+                        $mnum, undef, undef, undef, $mdate,
+                        undef, undef, undef, $mstate
+                    ) = split /\|/xsm, $buffer;
+                    if ( $rss_message == 2 ) {
+                        $mdate = $mnum;
+                    }    # Sort by topic creation if requested.
+                    $mdate = sprintf '%010d', $mdate;
 
-                (
-                    $mnum, undef, undef, undef, $mdate,
-                    undef, undef, undef, $mstate
-                ) = split /\|/xsm, $buffer;
-                $mdate = sprintf '%010d', $mdate;
-                if ( $rss_message == 2 ) {
-                    $mdate = $mnum;
-                }    # Sort by topic creation if requested.
-
-                # Check if it's hidden. If so, don't show it
-                if ( $mstate =~ /h/sm && !$iamadmin && !$iamgmod ) { next; }
+                    # Check if it's hidden. If so, don't show it
+                    if ( $mstate =~ /h/sm && !$iamadmin && !$iamgmod ) { next; }
 
      # Add it to an array, using $mdate as the first value so we can easily sort
-                push @threadlist, "$mdate|$curboard|$buffer";
-            }
-            fclose(BOARD);
+                    push @threadlist, "$mdate|$brd|$buffer";
+                }
+                fclose(BOARD);
 
-            # Clean out the extra entries in the threadlist
-            @threadlist = reverse sort @threadlist;
-            $threadcount = @threadlist;
-            if ( $threadcount < $topics ) { $topics = $threadcount; }
-            @threadlist = @threadlist[ 0 .. $topics - 1 ];
+                if ( $subboard{$brd} ) {
+                    get_subboards( split /\|/xsm, $subboard{$brd} );
+               }
+            }
+        };
+        for my $curbrd (@bdlist) {
+            get_subboards($curbrd);
         }
     }
+    @threadlist = reverse sort @threadlist;
 
-    for my $i ( 0 .. ( @threadlist - 1 ) ) {
+    for my $i ( 0 .. $#threadlist ) {
+        if ( $i == ( $topics - 1 ) ) { last; }
 
         # Opening item stuff
         (
@@ -333,7 +336,7 @@ sub RSS_recent {
         # Does it need to be returned as a 304?
         if ( $i == 0 ) {    # Do this for the first request only
             $cachedate = RFC822Date($mdate);
-            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq qq~"$cachedate"~
+            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate
                 || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
             {
                 Send304NotModified();
@@ -401,9 +404,7 @@ sub RSS_recent {
         }
 
         if ($showauthor) {
-
-# The spec really wants us to include their email.
-# That's not advisable for us (spambots anyone?). So we skip author if the email hidden flag is on for that user.
+            # The spec really wants us to include their email.
             if ( -e "$memberdir/$musername.vars" ) {
                 LoadUser($musername);
                 if ( !${ $uid . $musername }{'hidemail'} ) {
@@ -415,8 +416,9 @@ sub RSS_recent {
                 }
                 else {
                     $yymain .=
-                        q~           <author>~
-                      . RSSDescriptionTrim("$rssemail (${$uid.$musername}{'realname'})")
+                      q~           <author>~
+                      . RSSDescriptionTrim(
+                        "$rssemail (${$uid.$musername}{'realname'})")
                       . qq~</author>\n~;
                 }
             }
@@ -449,11 +451,11 @@ sub RSS_recent {
 
         $yymain .= qq~      </item>\n
 ~;
-		$yymain =~ s/data-rel/rel/gsm;
+        $yymain =~ s/data-rel/rel/gsm;
     }
 
     ToChars($boardname);
-    $yydesc  = ${ $uid . $curboard }{'description'};
+    $yydesc = ${ $uid . $curboard }{'description'};
 
     RSS_template();
     return;
@@ -476,14 +478,15 @@ sub RSS_template {    # print RSS output
 #my $docs = "       <docs>http://$perm_domain</docs>\n" if $perm_domain;
 
     my $mainlink = $scripturl;
-    my $tit = "$yytitle - $mbname";
-    if ( $INFO{'board'} )     { $mainlink .= "?board=$INFO{'board'}";
+    my $tit      = "$yytitle - $mbname";
+    if ( $INFO{'board'} ) {
+        $mainlink .= "?board=$INFO{'board'}";
         $descr = ( $boardname ? "$boardname - " : q{} ) . $mbname;
     }
-    elsif ( $INFO{'catselect'} ) { $mainlink .= "?catselect=$INFO{'catselect'}";
-        $descr =  qq{$mydesc - $mbname};
+    elsif ( $INFO{'catselect'} ) {
+        $mainlink .= "?catselect=$INFO{'catselect'}";
+        $descr = qq{$mydesc - $mbname};
     }
-
 
     FromHTML($tit);
     FromHTML($descr);
@@ -496,7 +499,8 @@ sub RSS_template {    # print RSS output
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <atom:link href="$scripturl?action=$INFO{'action'}~
-      . ( $INFO{'board'} ? ";board=$INFO{'board'}" : q{} ) . ( $INFO{'catselect'} ? ";catselect=$INFO{'catselect'}" : q{} )
+      . ( $INFO{'board'}     ? ";board=$INFO{'board'}"         : q{} )
+      . ( $INFO{'catselect'} ? ";catselect=$INFO{'catselect'}" : q{} )
       . q~" rel="self" type="application/rss+xml" />
         <title>~ . RSSDescriptionTrim($tit) . q~</title>
         <link>~ . RSSDescriptionTrim($mainlink) . q~</link>
@@ -578,17 +582,17 @@ sub RFC822Date {
 sub RSSDescriptionTrim {    # This formats the RSS
     my @x = @_;
 
-    $x[0] =~ s/ (class|style)\s*=\s*["'].+?['"]//gsm;
+    $x[0] =~ s/ (class|style)\s*=\s*[\x22\x27].+?[\x27\x22]//gsm;
 
-    $x[0] =~ s/&/&#38;/gsm;
-    $x[0] =~ s/"/&#34;/gsm;      #";
-    $x[0] =~ s/'/&#39;/gsm;      #';
-    $x[0] =~ s/  / &#160;/gsm;
-    $x[0] =~ s/</&#60;/gsm;
-    $x[0] =~ s/>/&#62;/gsm;
-    $x[0] =~ s/\|/&#124;/gsm;
-    $x[0] =~ s/\{/&#123;/gsm;
-    $x[0] =~ s/\}/&#125;/gsm;
+    $x[0] =~ s/&/&\x2338;/gsm;
+    $x[0] =~ s/\x22/&\x2334;/gsm;
+    $x[0] =~ s/\x27/&\x2339;/gsm;
+    $x[0] =~ s/  / &\x23160;/gsm;
+    $x[0] =~ s/</&\x2360;/gsm;
+    $x[0] =~ s/>/&\x2362;/gsm;
+    $x[0] =~ s/\|/&\x23124;/gsm;
+    $x[0] =~ s/\{/&\x23123;/gsm;
+    $x[0] =~ s/\}/&\x23125;/gsm;
 
     return $x[0];
 }
@@ -633,7 +637,7 @@ sub shellaccess {
     $gzcomp = 0;         # Disable gzip so we can talk clearly
 
     # Map %arguments to %INFO
-    foreach my $var (qw(action board catselect topics)) {
+    for my $var (qw(action board catselect topics)) {
         $INFO{$var} = $arguments{$var};
     }
 

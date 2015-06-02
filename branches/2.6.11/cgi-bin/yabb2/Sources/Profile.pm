@@ -19,7 +19,7 @@ use English qw(-no_match_vars);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$profilepmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$profilepmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');
@@ -1283,8 +1283,10 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     if ( $iamadmin ) {
         for ( @grps ) {
             @memstat = split /\|/xsm, $Group{$_};
-            $my_group .=
+            if ( $_ ne 'Moderator' ) {
+                $my_group .=
 qq~\n                        <option value="$_">$memstat[0]</option>~;
+            }
         }
     }
 
@@ -2142,14 +2144,10 @@ sub ModifyProfileOptions2 {
         if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
         {    # replace all inappropriate characters
                 # Transliteration
-            my @ISO_8859_1 =
-              qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
             my $x = 0;
-            foreach (
-                qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)
-              )
+            foreach ( @uploadtranlist )
             {
-                $fixfile =~ s/$_/$ISO_8859_1[$x]/igxsm;
+                $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
                 $x++;
             }
 
@@ -3791,4 +3789,5 @@ sub isselected {
     return \' selected="selected"' if $inp;
     return \q{};
 }
+
 1;

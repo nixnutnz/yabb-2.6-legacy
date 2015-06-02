@@ -18,7 +18,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$guardianpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$guardianpmver = 'YaBB 2.6.11 $Revision$';
 
 $not_from   = qq~$webmaster_email~;
 $not_to     = qq~$webmaster_email~;
@@ -57,7 +57,7 @@ sub guard {
     {
         if ($disallow_proxy_notify) {
             LoadLanguage('Guardian');
-			$abuse_time = timeformat($date, 1, 'rfc', 1);
+            $abuse_time = timeformat($date, 1, 'rfc', 1);
             $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'}~;
             $not_body =
@@ -114,7 +114,7 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
             chomp $_;
             if ( $streferer =~ m/$_/xsm && $_ ne q{} ) {
                 LoadLanguage('Guardian');
-				$abuse_time = timeformat($date, 1, 'rfc', 1);
+                $abuse_time = timeformat($date, 1, 'rfc', 1);
                 if ($referer_notify) {
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'referer_abuse'} $guardian_txt{'abuse'}~;
@@ -160,7 +160,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             if ( $agent =~ m/$_/xsm && $_ ne q{} ) {
                 if ($harvester_notify) {
                     LoadLanguage('Guardian');
-					$abuse_time = timeformat($date, 1, 'rfc', 1);
+                    $abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'harvester_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -205,7 +205,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             if ( $method =~ m/$_/xsm && $_ ne q{} ) {
                 if ($request_notify) {
                     LoadLanguage('Guardian');
-					$abuse_time = timeformat($date, 1, 'rfc', 1);
+                    $abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'request_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -257,7 +257,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             if ( $temp_query =~ m/$_/xsm && $_ ne q{} ) {
                 if ($string_notify) {
                     LoadLanguage('Guardian');
-					$abuse_time = timeformat($date, 1, 'rfc', 1);
+                    $abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'string_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -302,7 +302,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
         {
             if ($union_notify) {
                 LoadLanguage('Guardian');
-				$abuse_time = timeformat($date, 1, 'rfc', 1);
+                $abuse_time = timeformat($date, 1, 'rfc', 1);
                 $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'union_abuse'} $guardian_txt{'abuse'}~;
                 $not_body =
@@ -337,7 +337,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
         if ( $querystring =~ m/\/\*/xsm ) {
             if ($clike_notify) {
                 LoadLanguage('Guardian');
-				$abuse_time = timeformat($date, 1, 'rfc', 1);
+                $abuse_time = timeformat($date, 1, 'rfc', 1);
                 $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'clike_abuse'} $guardian_txt{'abuse'}~;
                 $not_body =
@@ -373,19 +373,19 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             $secvalue = lc $secvalue;
             str_replace( '%3c', '<', $secvalue );
             str_replace( '%3e', '>', $secvalue );
-            if (   ( $secvalue =~ m/<[^>]script*\"?[^>]*>/xsm )
-                || ( $secvalue =~ m/<[^>]*object*\"?[^>]*>/xsm )
-                || ( $secvalue =~ m/<[^>]*iframe*\"?[^>]*>/xsm )
-                || ( $secvalue =~ m/<[^>]*applet*\"?[^>]*>/xsm )
-                || ( $secvalue =~ m/<[^>]*meta*\"?[^>]*>/xsm )
-                || ( $secvalue =~ m/<[^>]*style*\"?[^>]*>/xsm )
-                || ( $secvalue =~ m/<[^>]*form*\"?[^>]*>/xsm )
-                || ( $secvalue =~ m/\([^>]*\"?[^)]*\)/xsm )
-                || ( $secvalue =~ m/\"/xsm ) )
-            {    #";
+            if (   ( $secvalue =~ m/<[^>]script*\x22?[^>]*>/xsm )
+                || ( $secvalue =~ m/<[^>]*object*\x22?[^>]*>/xsm )
+                || ( $secvalue =~ m/<[^>]*iframe*\x22?[^>]*>/xsm )
+                || ( $secvalue =~ m/<[^>]*applet*\x22?[^>]*>/xsm )
+                || ( $secvalue =~ m/<[^>]*meta*\x22?[^>]*>/xsm )
+                || ( $secvalue =~ m/<[^>]*style*\x22?[^>]*>/xsm )
+                || ( $secvalue =~ m/<[^>]*form*\x22?[^>]*>/xsm )
+                || ( $secvalue =~ m/\([^>]*\x22?[^)]*\)/xsm )
+                || ( $secvalue =~ m/\x22/xsm ) )
+            {
                 if ($script_notify) {
                     LoadLanguage('Guardian');
-					$abuse_time = timeformat($date, 1, 'rfc', 1);
+                    $abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'script_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -438,7 +438,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             {
                 if ($script_notify) {
                     LoadLanguage('Guardian');
-					$abuse_time = timeformat($date, 1, 'rfc', 1);
+                    $abuse_time = timeformat($date, 1, 'rfc', 1);
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'script_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
@@ -656,7 +656,7 @@ sub update_htaccess {
     foreach (@htlines) {
         chomp $_;
         if ( $_ eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $_ !~ m/#/xsm && $_ ne q{} ) {
+        if ( $start == 0 && $_ !~ m/\x23/xsm && $_ ne q{} ) {
             push @htout, "$_\n";
         }
         if ( $_ eq $htfooter ) { $start = 0; }
@@ -667,7 +667,7 @@ sub update_htaccess {
     if ( $use_htaccess && $action eq 'add' ) {
         fopen( HTA, '>.htaccess' );
         print {HTA} '# Last modified by The Guardian: '
-          . timeformat( $date, 1 )
+          . ctbtime( $date, 1 )
           . " #\n\n"
           or croak "$croak{'print'} HTA";
         print {HTA} @htout or croak "$croak{'print'} HTA";

@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$mailmemberspmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$mailmemberspmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($iamguest) { fatal_error('no_access'); }
@@ -235,8 +235,8 @@ sub Mailing2 {
     if ( !$FORM{'mailsend'} && !$FORM{'convert'} ) { fatal_error('no_access'); }
     @convlist = ();
     if ( $FORM{'mailsend'} && $FORM{'emailtext'} ne q{} ) {
-        $FORM{'emailsubject'} =~ s/\|/&#124;/gsm;
-        $FORM{'emailtext'}    =~ s/\|/&#124;/gsm;
+        $FORM{'emailsubject'} =~ s/\|/&\x23124;/gsm;
+        $FORM{'emailtext'}    =~ s/\|/&\x23124;/gsm;
         $FORM{'emailtext'}    =~ s/\r//gsm;
         $mailline =
           qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
@@ -275,7 +275,7 @@ sub Mailing2 {
             sendmail( $mememail, $emailsubject, $emailtext );
         }
         elsif ( $mailit && $FORM{'convert'} ) {
-            if ( $memrealname =~ /&#(\d{3,}?)\;/igxsm ) { $memrealname = $user; }
+            if ( $memrealname =~ /&\x23(\d{3,}?)\;/igxsm ) { $memrealname = $user; }
             $convlist[$i] = qq~$memrealname\;$mememail\n~;
             $i++;
         }
@@ -691,22 +691,22 @@ function showMailmemb(thesubject, thetext, thetime) {
 }
 
 sub ToJS {
-    $_[0] =~ s/;/&#059;/gsm;
-    $_[0] =~ s/\!/&#33;/gsm;
-    $_[0] =~ s/\(/&#40;/gsm;
-    $_[0] =~ s/\)/&#41;/gsm;
-    $_[0] =~ s/\-/&#45;/gsm;
-    $_[0] =~ s/\./&#46;/gsm;
-    $_[0] =~ s/\:/&#58;/gsm;
-    $_[0] =~ s/\?/&#63;/gsm;
-    $_[0] =~ s/\[/&#91;/gsm;
-    $_[0] =~ s~\\~&#92;&#92;~gsm;
-    $_[0] =~ s/\]/&#93;/gsm;
-    $_[0] =~ s/\^/&#94;/gsm;
-    $_[0] =~ s/\"/&#34;/gsm;
-    $_[0] =~ s/\'/&#96;/gsm;
-    $_[0] =~ s/\</&#60;/gsm;
-    $_[0] =~ s/\>/&#62;/gsm;
+    $_[0] =~ s/;/&\x23059;/gsm;
+    $_[0] =~ s/\!/&\x2333;/gsm;
+    $_[0] =~ s/\(/&\x2340;/gsm;
+    $_[0] =~ s/\)/&\x2341;/gsm;
+    $_[0] =~ s/\-/&\x2345;/gsm;
+    $_[0] =~ s/\./&\x2346;/gsm;
+    $_[0] =~ s/\:/&\x2358;/gsm;
+    $_[0] =~ s/\?/&\x2363;/gsm;
+    $_[0] =~ s/\[/&\x2391;/gsm;
+    $_[0] =~ s~\\~&\x2392;&\x2392;~gsm;
+    $_[0] =~ s/\]/&\x2393;/gsm;
+    $_[0] =~ s/\^/&\x2394;/gsm;
+    $_[0] =~ s/\x22/&\x2334;/gsm;
+    $_[0] =~ s/\x27/&\x2396;/gsm;
+    $_[0] =~ s/\</&\x2360;/gsm;
+    $_[0] =~ s/\>/&\x2362;/gsm;
 }
 
 1;

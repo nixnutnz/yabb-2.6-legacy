@@ -17,8 +17,9 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$postboxpmver = 'YaBB 2.6.11 $Revision: 1617 $';
+$postboxpmver = 'YaBB 2.6.11 $Revision$';
 if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
+
 get_micon();
 
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
@@ -149,8 +150,8 @@ $fntopts
                     <span id="defaultpal6" class="deftpal" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                  </div>
             </div>
-            <div style="float:left; height:22px; padding-left: 1px; padding-right: 1px; width:23px;">
-                <span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/palette1.png" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" /></span>
+            <div style="float:left; height:22px; padding-left: 1px; padding-right: 1px; width: 23px;">
+                <span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/palette1.png" class="cursor vtop" onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;' onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="$post_txt{'palette'}" /></span>
             </div>
             <div style="float:left; width:${txtalgn_w}px">
             $txtalgn
@@ -399,7 +400,7 @@ sub googiea {
 qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="text/css" />
 <script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
 <script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
-    if ( $img_greybox == 0 ) {
+    if ( !$img_greybox || $action eq 'guestpm' ) {
         $googiea .= qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
     }
     return $googiea;

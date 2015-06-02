@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$messageindextemver = 'YaBB 2.6.11 $Revision: 1611 $';
+$messageindextemver = 'YaBB 2.6.11 $Revision$';
 
 LoadLanguage('BoardIndex');
 
@@ -25,7 +25,7 @@ $my_ttsep = $menusep;
 
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
-if($useThreadtools) {
+if($useThreadtools == 1) {
     $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
     $threadhandelstyle2 = qq~ class="post_tools center" style="width:10em"~;
 }
@@ -243,7 +243,11 @@ $threadbar = qq~<tr class="{yabb altthdcolor}">
                     <td class="center">{yabb threadpic}</td>
                     <td class="center">{yabb icon}</td>
                     <td>
-                        <div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}
+                        <div style="float: left; width: 95%;">
+                            {yabb favorite}
+                            {yabb new}
+                            {yabb poll}
+                            {yabb subjectlink}
                             <br /><span class="small">$messageindex_txt{'527'} {yabb starttime} $messageindex_txt{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span>
                         </div>
                         <div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
