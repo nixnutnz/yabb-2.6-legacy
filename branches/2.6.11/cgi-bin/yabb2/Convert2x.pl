@@ -1399,6 +1399,7 @@ sub Convert_Settings {
     $show_online_ip_fmod  = isempty( $show_online_ip_fmod, 1 );
     $ipLookup             = isempty( $ipLookup, 1 );
     $bm_subcut            = isempty( $bm_subcut, 50 );
+    @AdvancedTabs = qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');

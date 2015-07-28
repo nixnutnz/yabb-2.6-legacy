@@ -176,7 +176,7 @@ qq~$days_short[$smtpwday], $smtpmday $months2[$smtpmon] $smtpyear $smtphour\:$sm
     send_line("From: $fromheader\r\n");
     send_line("X-Mailer: YaBB SMTP\r\n");
     send_line("Subject: $smtp_subject\r\n");
-    send_line("Content-Type: text/plain\; charset=$smtp_charset\r\n\r\n");
+    send_line("Content-Type: text/html\; charset=$smtp_charset\r\n\r\n");
     send_line("$smtp_message");
     send_line("\r\n.\r\n");
 
@@ -288,12 +288,12 @@ sub say_hello ($) {
     my ($hello_host) = @_;
     my ( $feat, $param );
 
-    #send RFC2821 compliant identifyer
+    #send RFC2821 compliant identifier
     send_line("EHLO $hello_host\r\n");
     ( $code, $text, $more ) = get_line();
     if ( $code != 250 ) {
 
-        #try sending an old RFC281 compliant identifyer (older Exchange servers)
+        #try sending an old RFC281 compliant identifier (older Exchange servers)
         send_line("HELO $hello_host\r\n");
     }
     ( $code, $text, $more ) = get_line();

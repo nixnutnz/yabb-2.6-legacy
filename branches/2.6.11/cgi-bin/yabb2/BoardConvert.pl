@@ -57,12 +57,13 @@ sub convcontrol {
 open(FORUMCONTROL, '<', "$boardsdir/forum.control") or croak 'cannot_open forum.control';
 my @boardcontrols = <FORUMCONTROL>;
 close(FORUMCONTROL);
+chomp @boardcontrols;
 
 foreach my $boardline (@boardcontrols) {
-	$boardline =~ s/[\r\n]//g; # Built in chomp
+    $boardline =~ s/[\r\n]//g; # Built in chomp
         (undef, $cntboard ) = split /\|/xsm, $boardline;
-	## create a global boards array
-	push(@allboards, $cntboard);
+    ## create a global boards array
+    push(@allboards, $cntboard);
 }
 
 LoadBoardControl();
@@ -72,7 +73,7 @@ foreach my $cntboard (@allboards) {
     print {BOARDCONV} qq~\%$cntboard = (\n~;
     foreach (keys %{ $uid . $cntboard } ) {
         print {BOARDCONV} "'$_' => '${ $uid . $cntboard }{$_}',\n";
-    } 
+    }
         print {BOARDCONV} qq~);\n~;
 }
 close(BOARDCONV);
