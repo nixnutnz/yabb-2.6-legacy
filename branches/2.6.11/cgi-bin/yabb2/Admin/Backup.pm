@@ -214,7 +214,7 @@ qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
         </tr>~;
 
     my $label_id;
-    foreach my $module (qw(Compress::Zlib Compress::Bzip2)) {
+    foreach my $module (qw(Compress::Zlib IO::Compress::Bzip2)) {
         $label_id++;
         $input =
 qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklist{$module}~;
