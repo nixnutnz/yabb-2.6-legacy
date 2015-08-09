@@ -23,7 +23,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.11';
 
-$convertplver = 'YaBB 2.6.11 $Revision: 1619 $';
+$convertplver = 'YaBB 2.6.11 $Revision$';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script

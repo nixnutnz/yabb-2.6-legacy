@@ -1290,7 +1290,7 @@ sub SetInstall {
 sub SetInstall2 {
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
         $settings_file_version = 'YaBB 2.6.11';
-        $yymycharset           = $FORM{'defaultencoding'} || 'UTF-8' ;
+        $yymycharset           = $FORM{'defaultencoding'} || 'UTF-8';
         $maintenance           = 1;
         $rememberbackup        = 0;
         $guestaccess           = 1;

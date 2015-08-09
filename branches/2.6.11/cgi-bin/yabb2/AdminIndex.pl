@@ -23,7 +23,7 @@ our $VERSION = '2.6.11';
 
 ### Version Info ###
 $YaBBversion     = 'YaBB 2.6.11';
-$adminindexplver = 'YaBB 2.6.11 $Revision: 1611 $';
+$adminindexplver = 'YaBB 2.6.11 $Revision$';
 
 # Make sure the module path is present
 push @INC, './Modules';
@@ -265,7 +265,6 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "|$admintxt{'a5_title'}|$admintxt{'a5_label'} - $admintxt{'34'}|a5",
         "modskin|$admintxt{'a5_sub1'}|$admintxt{'a5_label1'}|",
         "modcss|$admintxt{'a5_sub2'}|$admintxt{'a5_label2'}|",
-#        "modtemp|$admintxt{'a5_sub3'}|$admintxt{'a5_label3'}|",
     );
 
     @member_controls = (

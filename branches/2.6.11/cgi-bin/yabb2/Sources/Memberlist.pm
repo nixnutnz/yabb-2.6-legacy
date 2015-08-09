@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$memberlistpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$memberlistpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $ML_Allowed ) { fatal_error('no_access'); }
@@ -483,11 +483,11 @@ qq~<img src="$micon_bg{'xx'}" alt="" /> $ml_txt{'139'}: ~;
                 }
                 if ( $startpage > 0 ) {
                     $pagetxtindex =
-qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember">1</a>&nbsp;...&nbsp;~;
+qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember"><span class="small">1</span></a>&nbsp;...&nbsp;~;
                 }
                 if ( $startpage == $MembersPerPage ) {
                     $pagetxtindex =
-qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember">1</a>&nbsp;~;
+qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember"><span class="small">1</span></a>&nbsp;~;
                 }
                 foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
                     if ( $counter % $MembersPerPage == 0 ) {
