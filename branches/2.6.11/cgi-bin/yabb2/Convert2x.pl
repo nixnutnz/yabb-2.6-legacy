@@ -908,7 +908,7 @@ sub ConvertMembers {
         push @memlist, $regmember;
     }
     my @xtn = qw(vars msg ims imstore log outbox rlog imdraft pre wait);
-    for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) ) {
+    for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) {
         ( $user, undef ) = split /\t/xsm, $memlist[$i];
 
         if (   !-e "$convmemberdir/$user.vars"
