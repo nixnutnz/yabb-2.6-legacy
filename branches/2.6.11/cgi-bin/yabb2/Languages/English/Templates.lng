@@ -118,6 +118,8 @@ $templateslngver = 'YaBB 2.6.11 $Revision$';
 'noedit' => qq~You are not allowed to edit the default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename. You can then choose this new stylesheet as the stylesheet for the default skin from the <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a> screen.~,
 'edit_files' => 'Go to Edit Template Files',
 'configure' => 'Go to Configure Templates',
+'527' => q~Enable Template Post Tools?~,
+'528' => q~Enable Template Topic Tools?~,
 );
 
 1;

@@ -584,72 +584,6 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
             }
 
         # Moved this out of for loop. Gets the latest data for sub boards
-        *find_latest_data = sub {
-            my ( $parentbd, @children ) = @_;
-            $childcnt{$parentbd}    = 0;
-            $sub_new_cnt{$parentbd} = 0;
-            foreach my $childbd (@children) {
-
-# make recursive call first so we can get latest post data working from bottom up.
-                if ( $subboard{$childbd} ) {
-                    find_latest_data( $childbd, split /\|/xsm,
-                        $subboard{$childbd} );
-                }
-
-                # don't check sub board if its lastposttime is N/A
-                if ( ${ $uid . $childbd }{'lastposttime'} ne
-                    $boardindex_txt{'470'} )
-                {
-
-                  # update parent board last data if this child's is more recent
-                    if ( $lastpostrealtime{$childbd} >
-                        $lastpostrealtime{$parentbd} )
-                    {
-                        $lastposttime{$parentbd} = $lastposttime{$childbd};
-                        $lastpostrealtime{$parentbd} =
-                          $lastpostrealtime{$childbd};
-                        ${ $uid . $parentbd }{'lastposttime'} =
-                          ${ $uid . $childbd }{'lastposttime'};
-                        ${ $uid . $parentbd }{'lastposter'} =
-                          ${ $uid . $childbd }{'lastposter'};
-                        ${ $uid . $parentbd }{'lastpostid'} =
-                          ${ $uid . $childbd }{'lastpostid'};
-                        ${ $uid . $parentbd }{'lastreply'} =
-                          ${ $uid . $childbd }{'lastreply'};
-                        ${ $uid . $parentbd }{'lastsubject'} =
-                          ${ $uid . $childbd }{'lastsubject'};
-                        ${ $uid . $parentbd }{'lasticon'} =
-                          ${ $uid . $childbd }{'lasticon'};
-                        ${ $uid . $parentbd }{'lasttopicstate'} =
-                          ${ $uid . $childbd }{'lasttopicstate'};
-                    }
-                }
-
-                # Add to totals
-                ${ $uid . $parentbd }{'threadcount'} +=
-                  ${ $uid . $childbd }{'threadcount'};
-                ${ $uid . $parentbd }{'messagecount'} +=
-                  ${ $uid . $childbd }{'messagecount'};
-
-      # but if it's a parent board that can't be posted in, don't add to totals.
-                if ( $subboard{$childbd} && !${ $uid . $childbd }{'canpost'} ) {
-                    ${ $uid . $parentbd }{'threadcount'} -=
-                      ${ $uid . $childbd }{'threadcount'};
-                    ${ $uid . $parentbd }{'messagecount'} -=
-                      ${ $uid . $childbd }{'messagecount'};
-                }
-                if ( $new_icon{$childbd} ) {
-
-                    # parent board gets new status if child has something new
-                    $new_icon{$parentbd} = $new_icon{$childbd};
-
-                    # count sub boards with new posts
-                    $sub_new_cnt{$parentbd}++;
-                }
-
-                $childcnt{$parentbd}++;
-            }
-        };
 # loop through any collapsed boards to find new posts in it and change the image to match
 # Now shows this whether minimized or not, for Javascript hiding/showing. (Unilat)
             if ( $INFO{'catselect'} eq q{} ) {
@@ -2031,4 +1965,70 @@ sub RedirectExternalShow {
     }
 }
 
+sub         find_latest_data  {
+            my ( $parentbd, @children ) = @_;
+            $childcnt{$parentbd}    = 0;
+            $sub_new_cnt{$parentbd} = 0;
+            foreach my $childbd (@children) {
+
+# make recursive call first so we can get latest post data working from bottom up.
+                if ( $subboard{$childbd} ) {
+                    find_latest_data( $childbd, split /\|/xsm,
+                        $subboard{$childbd} );
+                }
+
+                # don't check sub board if its lastposttime is N/A
+                if ( ${ $uid . $childbd }{'lastposttime'} ne
+                    $boardindex_txt{'470'} )
+                {
+
+                  # update parent board last data if this child's is more recent
+                    if ( $lastpostrealtime{$childbd} >
+                        $lastpostrealtime{$parentbd} )
+                    {
+                        $lastposttime{$parentbd} = $lastposttime{$childbd};
+                        $lastpostrealtime{$parentbd} =
+                          $lastpostrealtime{$childbd};
+                        ${ $uid . $parentbd }{'lastposttime'} =
+                          ${ $uid . $childbd }{'lastposttime'};
+                        ${ $uid . $parentbd }{'lastposter'} =
+                          ${ $uid . $childbd }{'lastposter'};
+                        ${ $uid . $parentbd }{'lastpostid'} =
+                          ${ $uid . $childbd }{'lastpostid'};
+                        ${ $uid . $parentbd }{'lastreply'} =
+                          ${ $uid . $childbd }{'lastreply'};
+                        ${ $uid . $parentbd }{'lastsubject'} =
+                          ${ $uid . $childbd }{'lastsubject'};
+                        ${ $uid . $parentbd }{'lasticon'} =
+                          ${ $uid . $childbd }{'lasticon'};
+                        ${ $uid . $parentbd }{'lasttopicstate'} =
+                          ${ $uid . $childbd }{'lasttopicstate'};
+                    }
+                }
+
+                # Add to totals
+                ${ $uid . $parentbd }{'threadcount'} +=
+                  ${ $uid . $childbd }{'threadcount'};
+                ${ $uid . $parentbd }{'messagecount'} +=
+                  ${ $uid . $childbd }{'messagecount'};
+
+      # but if it's a parent board that can't be posted in, don't add to totals.
+                if ( $subboard{$childbd} && !${ $uid . $childbd }{'canpost'} ) {
+                    ${ $uid . $parentbd }{'threadcount'} -=
+                      ${ $uid . $childbd }{'threadcount'};
+                    ${ $uid . $parentbd }{'messagecount'} -=
+                      ${ $uid . $childbd }{'messagecount'};
+                }
+                if ( $new_icon{$childbd} ) {
+
+                    # parent board gets new status if child has something new
+                    $new_icon{$parentbd} = $new_icon{$childbd};
+
+                    # count sub boards with new posts
+                    $sub_new_cnt{$parentbd}++;
+                }
+
+                $childcnt{$parentbd}++;
+            }
+        };
 1;
