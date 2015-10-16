@@ -311,7 +311,7 @@ qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/c
     }
 
     if ( !$cachebehaviour ) {
-        $yysyntax_js .= qq~    <meta http-equiv="cache-control" content="no-cache" />\n    <meta http-equiv="pragma" content="no-cache">~;
+        $yysyntax_js .= qq~    <meta http-equiv="cache-control" content="no-cache" />\n    <meta http-equiv="pragma" content="no-cache" />~;
     }
 
     $yystyle =
@@ -565,7 +565,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         fclose(NEWS);
         chomp @newsmessages;
         my $startnews = int rand @newsmessages;
-        $yynewstitle = qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
+        $yynewstitle = qq~<b>$maintxt{'102'}:</b>~;
         $yynewstitle =~ s/\x27/\\\x27/gxsm;
         $guest_media_disallowed = 0;
         $newswrap               = 40;
