@@ -165,7 +165,9 @@ $mycalout_addevent = qq~
     </colgroup>
     <tr>
         <td class="windowbg2" colspan="2">
+            <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
         {yabb messageblock}
+            </div>
             <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0; display: none;"></div>
         </td>
     </tr><tr>
@@ -195,12 +197,6 @@ $mycalout_addevent = qq~
             {yabb mycalout_calicon}
             <img src="{yabb caliconimg}" id="calicons" name="calicons" style="margin:0 26px" alt="" />
         </td>
-    </tr><tr>
-        <td class="windowbg2" colspan="2">
-            <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
-                <div id="saveframe" class="prevwin" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;"></div>
-           </div>
-       </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
             {yabb mycalout_cthelp}

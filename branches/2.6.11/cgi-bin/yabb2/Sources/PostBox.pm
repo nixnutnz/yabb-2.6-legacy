@@ -61,9 +61,9 @@ sub postbox {
         'd' => "right.png|right()|$post_txt{'446'}",
     );
 
-    my %mods = (
-    );
+    my %mods = ();
     ## Mod Hook for UBBC ##
+
     ( $mods, $mods_w )           = ubbc_modlist(%mods);
     ( $boxlist1, $boxlist1_w )   = ubbc_boxlist(%boxlist1);
     ( $textdecor, $textdecor_w ) = ubbc_boxlist(%textdecor);
@@ -150,7 +150,7 @@ $fntopts
                     <span id="defaultpal6" class="deftpal" style="background-color: $pallist[5];" onclick="ConvShowcolor(this.style.backgroundColor)">&nbsp;</span>
                  </div>
             </div>
-            <div style="float:left; height:22px; padding-left: 1px; padding-right: 1px; width: 23px;">
+            <div style="float:left; height:22px; padding-left: 1px; padding-right: 1px; width:23px;">
                 <span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/palette1.png" class="cursor vtop" onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;' onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="$post_txt{'palette'}" /></span>
             </div>
             <div style="float:left; width:${txtalgn_w}px">
@@ -769,6 +769,7 @@ function autoPreview() {
         }
     };
     var nscheck = 0;
+    var isprev = 1;
     if(document.getElementById("ns").checked) nscheck = 1;~;
     if ( $my_ajxcall ne 'ajxcal' ) {
         $x .= q~
@@ -792,7 +793,7 @@ function autoPreview() {
         $x .= qq~
     var tmusername = encodeURIComponent('$displayname');
     sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-    var parameters = "subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue;
+    var parameters = "subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&isprev="+isprev;
     pstHttp.open("POST", url, true);
     pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     pstHttp.send(parameters);~;
@@ -805,7 +806,7 @@ function autoPreview() {
     var cal_icon_txt = encodeURIComponent(document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value);
     var cal_type = encodeURIComponent(document.postmodify.caltype.options[document.postmodify.caltype.selectedIndex].value);
     var tmusername = encodeURIComponent('$displayname');
-    var parameters = "&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&cal_mon="+calmonvalue+"&cal_day="+caldayvalue+"&cal_year="+calyearvalue+"&icon_txt="+cal_icon_txt+"&cal_type="+cal_type;
+    var parameters = "&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&cal_mon="+calmonvalue+"&cal_day="+caldayvalue+"&cal_year="+calyearvalue+"&icon_txt="+cal_icon_txt+"&cal_type="+cal_type+"&isprev="+isprev;
     pstHttp.open("POST", url, true);
     pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     pstHttp.send(parameters);~;
@@ -813,7 +814,7 @@ function autoPreview() {
     elsif ( $my_ajxcall eq 'ajximmessage' ) {
         $x .= q~
                 var iconvalue = encodeURIComponent(document.getElementById("iconholder").value);
-                var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue;
+                var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue+"&isprev="+isprev;
                 pstHttp.open("POST", url, true);
                 pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 pstHttp.send(parameters);~;
