@@ -383,7 +383,7 @@ sub ShowClickLog {
         $i++;
     }
 
-    for my $i ( 0 .. ( @iplist - 1 ) ) { $iplist{ $iplist[$i] }++; }
+    for my $i ( 0 .. $#iplist ) { $iplist{ $iplist[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %iplist ) {
         $newiplist[$i] = [ $key, $val ];
@@ -391,7 +391,7 @@ sub ShowClickLog {
     }
     $totalclick = @iplist;
     $totalip    = @newiplist;
-    for my $i ( 0 .. ( @newiplist - 1 ) ) {
+    for my $i ( 0 .. $#newiplist ) {
         my $lookupIP =
           ($ipLookup)
           ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[0]">$newiplist[$i]->[0]</a>~
@@ -422,54 +422,54 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUse
         }
     }
 
-    for my $i ( 0 .. ( @browser - 1 ) ) { $browser{ $browser[$i] }++; }
+    for my $i ( 0 .. $#browser ) { $browser{ $browser[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %browser ) {
         $newbrowser[$i] = [ $key, $val ];
         $i++;
     }
     $totalbrow = @newbrowser;
-    for my $i ( 0 .. ( @newbrowser .. 1 ) ) {
+    for my $i ( 0 .. $#newbrowser ) {
         if ( $newbrowser[$i]->[0] =~ /\S+/xsm ) {
             $browserlist .=
 qq~$newbrowser[$i]->[0] &nbsp;<span class="important">(<i>$newbrowser[$i]->[1]</i>)</span><br />~;
         }
     }
 
-    for my $i ( 0 .. ( @os - 1 ) ) { $os{ $os[$i] }++; }
+    for my $i ( 0 .. $#os ) { $os{ $os[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %os ) {
         $newoslist[$i] = [ $key, $val ];
         $i++;
     }
     $totalos = @newoslist;
-    for my $i ( 0 .. ( @newoslist - 1 ) ) {
+    for my $i ( 0 .. $#newoslist ) {
         if ( $newoslist[$i]->[0] =~ /\S+/xsm ) {
             $oslist .=
 qq~$newoslist[$i]->[0] &nbsp;<span class="important">(<i>$newoslist[$i]->[1]</i>)</span><br />~;
         }
     }
 
-    for my $i ( 0 .. ( @to - 1 ) ) { $to{ $to[$i] }++; }
+    for my $i ( 0 .. $#to ) { $to{ $to[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %to ) {
         $newtolist[$i] = [ $key, $val ];
         $i++;
     }
-    for my $i ( 0 .. ( @newtolist - 1 ) ) {
+    for my $i ( 0 ..  $#newtolist ) {
         if ( $newtolist[$i]->[0] =~ /\S+/xsm ) {
             $scriptcalls .=
 qq~<a href="$newtolist[$i]->[0]" target="_blank">$newtolist[$i]->[0]</a>&nbsp;<span class="important">(<i>$newtolist[$i]->[1]</i>)</span><br />~;
         }
     }
 
-    for my $i ( 0 .. ( @from - 1 ) ) { $from{ $from[$i] }++; }
+    for my $i ( 0 .. $#from ) { $from{ $from[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %from ) {
         $newfromlist[$i] = [ $key, $val ];
         $i++;
     }
-    for my $i ( 0 .. ( @newfromlist - 1 ) ) {
+    for my $i ( 0 .. $#newfromlist ) {
         if (   $newfromlist[$i]->[0] =~ /\S+/xsm
             && $newfromlist[$i]->[0] !~ m{$boardurl}ism )
         {
@@ -631,11 +631,11 @@ sub DeleteOldMessages {
     foreach my $catid (@categoryorder) {
         $boardlist = $cat{$catid};
         @bdlist = split /\,/xsm, $boardlist;
-        ( $catname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
+        ( $catname, $catperms ) = split /\|/xsm, $catinfo{$catid};
 
         foreach my $curboard (@bdlist) {
             ( $boardname, $boardperms, $boardview ) =
-              split /\|/xsm, $board{"$curboard"};
+              split /\|/xsm, $board{$curboard};
             if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
                 $selectname = $curboard . 'check';
                 $yymain .= qq~
@@ -935,28 +935,21 @@ sub Refcontrol {
     is_admin_or_gmod();
     LoadLanguage('RefControl');
 
-    fopen( FILE, "$sourcedir/SubList.pm" );
-    @scriptlines = <FILE>;
-    fclose(FILE);
+    require Sources::SubList;
 
     fopen( FILE, "$vardir/allowed.txt" );
     @allowed = <FILE>;
     fclose(FILE);
 
-    $startread = 0;
     $counter   = 0;
 
-    foreach my $scriptline (@scriptlines) {
-        chomp $scriptline;
-        if ( substr( $scriptline, 0, 1 ) eq q{\x27} ) {
-            if ( $scriptline =~ /\'(.*?)\'/xsm ) {
-                $actionfound = $1;
-                push @actfound, $actionfound;
+    for my $key ( keys %director) {
+        push @actfound, $key;
                 $counter++;
             }
-        }
-    }
-    $column  = int( $counter / 3 );
+
+    @actfound = sort @actfound;
+    $column  = int( $counter / 3 ) - 1;
     $counter = 0;
     foreach my $actfound (@actfound) {
         $selected = q{};
@@ -1023,24 +1016,15 @@ qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<labe
 sub Refcontrol2 {
     is_admin_or_gmod();
 
-    fopen( FILE, "$sourcedir/SubList.pm" );
-    @scriptlines = <FILE>;
-    fclose(FILE);
+    require Sources::SubList;
 
-    $startread = 0;
     $counter   = 0;
-    foreach my $scriptline (@scriptlines) {
-        chomp $scriptline;
-        if ( substr( $scriptline, 0, 1 ) eq q{\x27} ) {
-            if ( $scriptline =~ /\'(.*?)\'/xsm ) {
-                $actionfound = $1;
-                push @actfound, $actionfound;
+    for my $key ( keys %director) {
+        push @actfound, $key;
                 $counter++;
             }
-        }
-    }
 
-    foreach my $actfound (@actfound) {
+    for my $actfound (@actfound) {
         if ( $FORM{$actfound} ) { push @outfile, "$actfound\n"; }
     }
 
