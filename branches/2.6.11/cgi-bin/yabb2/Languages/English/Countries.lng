@@ -15,7 +15,7 @@
 $countrieslngver = 'YaBB 2.6.11 $Revision: 1611 $';
 
 #NOTE: DO NOT translate the left hand items.
-#This version corresponds with DateTime version 1.65.
+#This version corresponds with DateTime version 1.85.
 
 %countrytime_txt = (
 'Asia/Kabul' => q~Afghanistan - Kabul~,

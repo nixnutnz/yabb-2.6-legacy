@@ -1113,7 +1113,6 @@ sub AddMember {
 </form>
 <script type="text/javascript">
         document.creator.regusername.focus();
-        //function
 </script>~;
 
     $yytitle     = "$register_txt{'97'}";
