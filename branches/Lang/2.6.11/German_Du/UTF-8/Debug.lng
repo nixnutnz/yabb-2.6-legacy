@@ -1,0 +1,59 @@
+###############################################################################
+# Debug.lng (Debugging text definitions)                                      #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_dudebuglngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dudebuglngmods = ();
+if(@german_dudebuglngmods){
+    $german_dudebuglngmods = 1;
+}
+if ( $action eq 'detailedversion' && $language ne 'German_Du' ) { return 1; }
+
+%debug_txt = (
+'getpairs' => 'eingehende GET Paare',
+'postpairs' => 'eingehende POST Paare',
+'name' => 'Name',
+'value' => 'Wert',
+'opened' => 'geöffnet',
+'closed' => 'geschlossene Dateien und ',
+'equal' => 'Dateien. (sollten gleiche Zahlen sein)',
+'nohires' => 'Dein Server hat vermutlich nicht',
+'nomodule' => 'installiert oder das lokale Modul wird hier nicht unterstützt',
+'pagespeed' => 'Seite geladen in',
+'loaded' => 'Sekunden',
+'debugging' => 'Debugging-Information',
+'benchmarking' => 'Benchmarking',
+'ipaddress' => 'Deine IP-Adresse ist',
+'browser' => 'Dein Browser-Agent',
+'trace' => 'Debug-Parameter',
+'check' => 'Dateiüberprüfung auf Öffnen/Schliessen',
+'filehandles' => 'Dateihandlung/Dateien geöffnet',
+'filehandleslegend' => 'öffnen des DATEIHANDLES (Zeit) &nbsp; &nbsp; <i>MODUS</i>DateiPfadName &nbsp; &nbsp; schließen des DATEIHANDLES (Zeit)<br />[Namensraum (package), SkriptPfadName, Zeile]',
+'filesloaded' => 'Dateien geladen von',
+'process_scalars' => 'Prozess Skalare',
+'process_num' => 'Prozessnummer dieses laufenden Prozesses',
+'process_file' => 'Bei diesem Prozess ausgeführte Datei',
+'process_time' => 'Startzeit des Prozesses',
+'process_interpreter' => 'Diesen Prozess ausführender Interpreter',
+'perl_version' => 'Perl Version',
+'server_load' => 'CPU Auslastung',
+'server_load_ago' => 'Durchschnittliche Serverlast vor',
+'minute' => 'Minuten',
+'supported' => 'Nicht unterstützt',
+);
+
+1;

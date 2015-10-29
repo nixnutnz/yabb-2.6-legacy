@@ -1,0 +1,65 @@
+###############################################################################
+# ContextHelp.lng                                                             #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2.Dezember 2014                                               #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+# Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
+# for his contribution to the YaBB community                                  #
+###############################################################################
+
+$german_ducontexthelplngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_ducontexthelplngmods = ();
+if(@german_ducontexthelplngmods){
+    $german_ducontexthelplngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+### Do not translate uppercase words in sharp brackets
+
+%contextxt = (
+'clicktip' => "Rechter Mausklick für Hilfe",
+'url' => "Einfügen eines Links:<br /><br />Schreibe Deinen Link und markiere diesen: [SELECT]http://www.yabbforum.com[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url]http://www.yabbforum.com[/url]<hr />Füge einen Link mit \"Text\" hinzu:<br /><br />Schreibe den Link <u>und</u> den Text und markiere das danach: [SELECT]http://www.yabbforum.com YaBB Forum[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url=http://www.yabbforum.com]YaBB Forum[/url]<hr /><b>Ergebnis:</b> <br />Es wird entweder nur der Link angezeigt, oder wenn Du Link und Text eingegeben hast, nur der Text angezeigt. Beides kann man anklicken, es öffnet sich ein neues Fenster, in dem der angegebene Link geöffnet wird.",
+'ftp' => "Einfügen eines FTP-Links:<br /><br />Schreibe die FTP-Adresse und markiere diese: [SELECT]ftp://ftpdom[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [ftp]ftp://ftpdom[/ftp]",
+'image' => "Bild einfügen:<br /><br />Schreibe den Link zum Bild: [SELECT]http://imagedirectory/image.gif[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [img]http://imagedirectory/image.gif[/img]",
+'email2' => "Füge eine eMail-Adresse ein:<br /><br />Markiere die eMail-Adresse: [SELECT]myname\@domain.com[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [email]myname\@domain.com[/email]<hr />Einfügen eines Textes mit Link zum Mail:<br /><br />Schreibe eine Mailadresse <u>und</u> den Text: [SELECT]meinname\@domain.de Mail me[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [email=myname\@domain.com]Mail me[/email]",
+'media' => "Media-Datei einfügen: <br /><br />Schreibe den Link zu Deiner Media-Datei: [SELECT]http://www.your-domain.com/yabbchelp.swf[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [media]http://www.your-domain.com/yabbchelp.swf[/media]",
+'table' => "Tabelle einfügen:<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [table][tr][td][/td][/tr][/table]<hr />Füge einen Text oder ein Bild in die Tabelle ein:<br /><br />Schreibe einen Text oder einen Link zu einem Bild: [SELECT]Hallo Welt[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [table][tr][td]Hallo Welt[/td][/tr][/table]",
+'tr' => "Einfügen einer Tabellen-Zeile:<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [tr][/tr]",
+'td' => "Einfügen einer Tabellen-Spalte:<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [td][/td]",
+'hr' => "Horizontale Linie einfügen:<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [hr]",
+'teletype' => "Text im Fernschreibstil:<br /><br />Schreibe den Text: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [tt]Hallo Welt[/tt] bla bla<br /><br /><b>Ergebnis:</b> bla bla <tt>Hallo Welt</tt> bla bla",
+'code' => "Code einfügen:<br /><br />Schreibe den Code:<br /><br />[SELECT]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hallo Welt&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br /><br />[code]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hallo Welt&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/code]<br /><br /><b>Ergebnis:</b><br /><br /><b>Code:</b>[CODE]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hallo Welt&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/CODE]",
+'quote2' => "Ein Zitat in einer Box darstellen:<br /><br />Schreibe das Zitat: [SELECT]To be or not to be...[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [quote]To be or not to be...[/quote]<br /><br /><b>Ergebnis:</b><br /><br /><b>Quote:</b>[QUOTE]To be or not to be...[/QUOTE]",
+'edit' => "Eine nachträgliche Änderung des Textes in einer Box darstellen:<br /><br />Schreibe den neuen Text: [SELECT]Dieses ist eine Änderung.[/SELECT]<br /><br />Klicke auf den  \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [edit]Dieses ist eine Änderung.[/edit]<br /><br /><b>Ergebnis:</b><br /><br /><b>Edited:</b>[EDIT]Dieses ist eine Änderung.[/EDIT]",
+'sup' => "Text hochgestellt darstellen:<br /><br />Schreibe den Text: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [sup]Hallo Welt[/sup] bla bla<br /><br /><b>Ergebnis:</b> bla bla <sup>Hallo Welt</sup> bla bla",
+'sub' => "Text tiefgestellt darstellen:<br /><br />Schreibe den Text: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [sub]Hallo Welt[/sub] bla bla<br /><br /><b>Ergebnis:</b> bla bla <sub>Hallo Welt</sub> bla bla",
+'list' => "Liste einfügen:<br /><br />Schreibe eine Listen-Punkt: [SELECT]Listenpunkt 1[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br /><br />[list][*]Listenpunkt 1<br />[/list]<br /><br />Um mehr Listenpunkte zu erhalten musst Du die Listen-Kommandos ([*]) manuell einfügen:<br /><br />[list][*]Listenpunkt 1<br />[*]Listenpunkt 2<br />[*]Listenpunkt 3<br />[/list]<br /><br /><b>Ergebnis:</b><ul><li>Listenpunkt 1</li><li>Listenpunkt 2</li><li>Listenpunkt 3</li></ul>Du kannst mehrere Listenebenen erstellen, wenn Du unterhalb einer Liste eine weitere erstellst:<br /><br />[list][*]Listenpunkt 1<br />[*]Listenpunkt 2[list][*]Unterlistenpunkt 1<br />[*]Unterlistenpunkt 2<br />[/list][*]Listenpunkt 3<br />[/list]<br /><br /><b>Ergebnis:</b><ul><li>Listenpunkt 1</li><li>Listenpunkt 2<ul><li>Unterlistenpunkt 1</li><li>Unterlistenpunkt 2</li></ul></li><li>Listenpunkt 3</li></ul><hr />Die [olist][*][/olist] YaBBC Kommandos funktionieren genauso wie [list][*][/list] Kommandos, erstellen aber eine Liste mit Zahlen anstatt der Punkte. (es gibt keinen Button zum Einfügen des [olist] Kommandos, bitte einfach manuell eingeben).",
+'me' => "Deinen Namen darstellen:<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> /me sagt Hallo Welt<br /><br /><b>Ergebnis:</b> [ME] sagt Hallo Welt<br />",
+'move' => "Eine Laufschrift (von rechts nach links) einfügen:<br /><br />Klicke auf den  \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> Bewege die Welt [move]Hallo Welt[/move]<br /><br /><b>Ergebnis:</b><br />Bewege die Welt [MOVE]Hallo Welt[/MOVE]",
+'timestamp' => "Zeitstempel einfügen:<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [timestamp=1121602762]<br /><br />Dieses Kommando fügt einen Zeitstempel entsprechend der Zeiteinstellungen im Profil des Lesers ein\.",
+'bold' => "Text fett darstellen:<br /><br />Schreibe einen Text und markiere entsprechend: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [b]Hallo Welt[/b] bla bla<br /><br /><b>Ergebnis:</b> bla bla <b>Hallo Welt</b> bla bla",
+'italicize' => "Text kursiv darstellen:<br /><br />Schreibe einen Text und markiere entsprechend: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [i]Hallo Welt[/i] bla bla<br /><br /><b>Ergebnis:</b> bla bla <i>Hallo Welt</i> bla bla",
+'underline' => "Text unterstreichen:<br /><br />Schreibe einen Text und markiere entsprechend: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [u]Hallo Welt[/u] bla bla<br /><br /><b>Ergebnis:</b> bla bla <u>Hallo Welt</u> bla bla",
+'strike' => "Text durchgestrichen darstellen:<br /><br />Schreibe einen Text und markiere entsprechend: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [s]Hallo Welt[/s] bla bla<br /><br /><b>Ergebnis:</b> bla bla <s>Hallo Welt</s> bla bla",
+'highlight' => "Text farblich hervorheben:<br /><br />Schreibe einen Text und markiere entsprechend: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [highlight]Hallo Welt[/highlight] bla bla<br /><br /><b>Ergebnis:</b> bla bla [HIGHLIGHT]Hallo Welt[/HIGHLIGHT] bla bla",
+'palette1' => "Textfarbe ändern:<br /><br />Schreibe einen Text und markiere entsprechend: bla bla [SELECT]Hallo Welt[/SELECT] bla bla<br /><br />Klicke auf den \"[TITLE]\" -Button [BUTTON] und wähle eine der 228 vorhandenen Farben aus oder erstelle eine Farbe mit den Reglern\.<br /><br /><b>YaBBC Code:</b> bla bla [color=#ff0000]Hallo Welt[/color] bla bla<br /><br /><b>Ergebnis:</b> bla bla [RED]Hallo Welt[/RED] bla bla",
+'pre' => "Formatierten Text darstellen:<br /><br />Schreibe einen Text und markiere entsprechend: [SELECT]Der &nbsp\;Text ist &nbsp\; &nbsp\;formatiert[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b>[pre]Der &nbsp\;Text ist &nbsp\; &nbsp\;formatiert[/pre]<br /><br /><b>Ergebnis:</b>[PRE]Der  Text ist    formatiert[/PRE]",
+'left' => "Linksbündiger Text:<br /><br />Schreibe einen Text und markiere entsprechend:<br />[SELECT]Dieser Text<br />ist linksbündig[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[left]Dieser Text<br />ist linksbündig[/left]<br /><br /><b>Ergebnis:</b><br />[LEFT]Dieser Text<br />ist linksbündig[/LEFT]",
+'center' => "Zentrierter Text:<br /><br />Schreibe den Text und markiere entsprechend:<br />[SELECT]Dieser Text<br />ist zentriert[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[center]Dieser Text<br />ist zentriert[/center]<br /><br /><b>Ergebnis:</b><br />[CENTER]Dieser Text<br />ist zentriert[/CENTER]",
+'right' => "Rechtsbündiger Text:<br /><br />Schreibe einen Text und markiere entsprechend:<br />[SELECT]Dieser Text<br />ist rechtsbündig[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[right]Dieser Text<br />ist rechtsbündig[/right]<br /><br /><b>Ergebnis:</b><br />[RIGHT]Dieser Text<br />ist rechtsbündig[/RIGHT]",
+'noparse' => "Keine Syntaxanalyse:<br /><br />Wähle die YaBBC Code:<br />[SELECT][table][tr][td]Diese Tabelle wird nicht analysiert werden[/td][/tr][/table][/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[noparse][table][tr][td]Diese Tabelle wird nicht analysiert werden[/td][/tr][/table][/noparse]<br /><br /><b>Ergebnis:</b><br />[table][tr][td]Diese Tabelle wird nicht analysiert werden[/td][/tr][/table]",
+);
+
+1;

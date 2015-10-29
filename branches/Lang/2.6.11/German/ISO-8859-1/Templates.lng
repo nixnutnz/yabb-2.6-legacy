@@ -1,0 +1,130 @@
+###############################################################################
+# Templates.lng                                                               #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germantemplateslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@germantemplateslngmods = ();
+if(@germantemplateslngmods){
+    $germantemplateslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%templ_txt=(
+'1' => 'Style Sheet',
+'2' => 'Kopf / Header',
+'3' => 'Forenindex',
+'4' => 'Themen/Message-Index',
+'5' => 'Beitrag anzeigen',
+'5a' => 'Suchen',
+'5b' => 'Kalender',
+'5c' => 'Beitrag',
+'5d' => 'Profil',
+'5e' => 'Mitgliederliste',
+'6' => 'Template-Konfiguration',
+'7' => 'Hier können Sie Elemente der verschiedenen Templates kombinieren und die Ergebnisse durch einen Klick auf Vorschau ansehen.',
+'8' => 'Bilder',
+'9' => 'Vorschau',
+'10' => 'Templates',
+'11' => 'Konfiguration',
+'12' => 'Speichern unter',
+'13' => 'Speichern',
+'14' => 'Löschen',
+'15' => 'Sind Sie sicher, dass Sie folgendes Template löschen wollen?',
+'18' => 'Elemente',
+'19' => 'Hier können Sie die Schrift, Rahmen- und Hintergrundfarben, sowie die Schriftarten und -größen von den wesentlichen Elementen Ihres Forums ändern.',
+'20' => 'Element',
+'21' => 'Hintergrund',
+'22' => 'Schrift',
+'23' => 'Rahmen',
+'24' => 'Ändern',
+'25' => 'Body',
+'26' => 'Container',
+'26b' => 'Kopfzeile',
+'26c' => 'Kopfzeile-Link',
+'27' => 'Separator',
+'28' => 'Rahmenfarbe',
+'29' => 'Waagerechter Balken',
+'30' => 'Titelleiste (.titlebg)',
+'30a' => 'Titelleiste - Link (.titlebg a)',
+'31' => 'Kategorienleiste (.catbg)',
+'31a' => 'Kategorienleiste - Link (.catbg a)',
+'32' => 'Fenster 1 (.windowbg)',
+'33' => 'Fenster 2 (.windowbg2)',
+'34' => 'Textfeld/Taste',
+'34a' => 'Textfeld (Input)',
+'34b' => 'Taste (Input)',
+'35' => 'Textbox (Textarea)',
+'36' => 'Auswahlbox (select)',
+'37' => 'Zitat',
+'38' => 'Code',
+'39' => 'Hervorgehoben',
+'40' => 'Dies ist ',
+'41' => 'Farbe',
+'42' => 'Schrift',
+'43' => 'Durchgezogen',
+'44' => 'Gestrichelt',
+'45' => 'Gepunkted',
+'46' => 'Doppelt',
+'47' => 'Kerbe',
+'48' => 'Kante',
+'49' => 'Eingelassen',
+'50' => 'Ausgelassen',
+'51' => 'Style Sheet bearbeiten',
+'52' => 'Templates bearbeiten',
+'53' => 'Das ist ein Zitat',
+'54' => 'Das ist ein Code',
+'55' => 'Das wurde geändert',
+'56' => 'Das wurde hervorgehoben',
+'64' => 'Container (#container)',
+'65' => 'Nachrichten Text (.message)',
+'66' => 'Nachrichten Link (.message a)',
+'67' => 'Kontrollzentrum',
+'68' => 'News',
+'69' => 'Hallo,',
+'70' => 'Sie haben',
+'71' => 'Nachrichten',
+'72' => 'Test-Kategorie',
+'73' => 'Test-Forum',
+'74' => 'Name der Moderatoren',
+'74a' => 'Moderatorgruppen',
+'75' => 'Test-Thema',
+'76' => 'Betreff des Themas',
+'77' => 'Template-Test-Forum',
+'78' => 'Template_Test_Forum',
+'79' => 'Das ist die Forenbeschreibung',
+'80' => 'Link zum letzten Thema',
+'81' => 'Kategoriename - Link',
+'82' => 'Link zum letzten Beitrag',
+'83' => 'Das ist der Betreff - Link',
+'84' => 'Dies ist Ihre News-Nachricht (wenn News aktiviert)',
+'tabtitle' => 'Forum Index Titel (.tabtitle)',
+'tabtitlea' => 'Forum Index Titel Link (.tabtitle a)',
+'userinfo' => 'Beitrag Benutzer-Info',
+'tabtitle_txt' => 'Board Index Title Text (.tabtitle-text)',
+'tabmenu' => 'Tabmenü',
+'forum' => 'Forum',
+'admincenter' => 'Admin-Center',
+'buttontext' => 'CSS Buttons',
+'buttondescription' => 'Hier können Sie die Icon`s, den Text und die Hintergrundgrafik innerhalb der Buttons ändern.',
+'moveicon1' => 'Icon-Position (vertical)',
+'moveicon2' => 'Icon-Position (horizontal)',
+'iconspace' => 'Icon-Text-Space',
+'movetext' => 'Text-Position (vertical)',
+'noedit' => qq~Aus Sicherheitsgründen ist es nicht erlaubt, das default-Template oder den default-Stylesheet zu bearbeiten, mit Ausnahme durch direktes Bearbeiten des Quelltextes.<br />Um Änderungen in diesem Template vorzunehmen, speichern Sie Ihre Arbeit mit einem neuen Dateinamen und wählen Sie dann die neue Datei als Standard-Stylesheet. <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template-Konfiguration</a>~,
+);
+
+1;

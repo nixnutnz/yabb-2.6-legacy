@@ -1,0 +1,71 @@
+###############################################################################
+# LogInOut.lng (LogInOut text definitions)                                    #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germanloginoutlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@germanloginoutlngmods = ();
+if(@germanloginoutlngmods){
+    $germanloginoutlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%loginout_txt = (
+'34' => 'Einloggen',
+'35' => 'Benutzer-ID oder eMail-Adresse',
+'35a' => 'Benutzer-ID oder eMail-Adressenfeld.',
+'35b' => 'Benutzer-ID, angezeigter Name oder eMail-Adresse',
+'36' => 'Passwort',
+'36b' => 'Passwort zurücksetzen',
+'130' => "Mit freundlichen Gruß,\nDas $mbname Team",
+'130a' => "Diese Anfrage stammt von einem Besucher von $mbname. Wenn Sie keine Anfrage zum zurücksetzen Ihres Passworts geschickt haben, dann können Sie diese eMail ignorieren. Ansonsten klicken Sie hier um Ihr Passwort zurück zu setzen: ",
+'192' => 'eMail erfolgreich versandt an:',
+'193' => 'Zurück',
+'194' => 'Erinnerung',
+'241' => 'Feld.',
+'315' => 'Passwort vergessen?',
+'339' => 'Senden',
+'669' => 'Passwort vergessen',
+'711' => 'Sehr geehrter',
+'753' => 'Wollen Sie sich registrieren?',
+'837' => 'Die Benutzer-ID beachtet Groß-/und Kleinschreibung.',
+'capslock' => 'Die Feststelltaste ist angeschaltet.',
+'wrong_char' => 'Dieses Zeichen im Passwort ist ungültig',
+'error_user_info' => 'Sie müssen Ihre Benutzer-ID oder eMail-Adresse eingeben.',
+'no_user_info_exists' => 'Die Benutzer-ID oder eMail-Adresse, die Sie eingegeben haben, existieren nicht in diesem Forum.',
+'verification_question_desc' => 'Bitte beantworten Sie die oben genannte Überprüfungsfrage.',
+'verification_question_case' => 'Antworten sind Groß-und Kleinschreibung.',
+'error_verification' => 'Der Verifizierungscode fehlt.',
+'error_verification_question' => 'Sie müssen die Verifizierungsfrage beantworten.',
+'keeps' => 'Angemeldet bleiben',
+);
+
+%floodtxt = (
+'1' => 'Ihr Validierungscode ist',
+'3' => 'Validierungscode',
+'casewarning' => 'Geben Sie bitte den Text genau so ein, wie auf dem Bild dargestellt. Beachten Sie dabei bitte die Groß- und Kleinschreibung.',
+'casewarning_1' => 'Geben Sie bitte den Text genau so ein, wie auf dem Bild dargestellt,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">ohne die ersten',
+'casewarning_3' => '<br /><span style="font-weight: bold;">ohne die letzten',
+'casewarning_4' => 'und letzte',
+'casewarning_5' => 'Zeichen.</span><br />Die Zeichen müssen in der gleichen Reihenfolge eingegeben werden,<br />und sie sind Groß-und Kleinschreibung.',
+);
+
+%prereg_txt=(
+'5' => 'Ihr Account ist aktiviert. Sie können sich jetzt mit Ihrer Benutzer-ID und Ihrem Passwort einloggen.',
+);
+
+1;

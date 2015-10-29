@@ -1,0 +1,55 @@
+###############################################################################
+# TabMenu.lng (TabMenu text definitions)                                      #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germantabmenulngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@germantabmenulngmods = ();
+if(@germantabmenulngmods){
+    $germantabmenulngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%tabmenu_txt=(
+'texterr' => 'Das Textfeld ist leer.',
+'tabext' => 'Es existiert bereits ein Tab für die gleiche Aktion oder mit dem gleichen Namen.',
+'tabfront' => 'Front',
+'taburl' => 'URL',
+'tabwin' => 'Neues Fenster',
+'edittab' => 'Tabs bearbeiten',
+'tabdel' => 'Diesen Tab löschen',
+'viewgm' => 'GMod +',
+'viewadm' => 'Admin',
+'tabtext' => 'Text',
+'taberr' => 'Benötigte Information fehlt:',
+'addtab' => 'Hinzufügen',
+'savetab' => 'Text sichern',
+'reordertab' => 'Tabs neu sortieren:',
+'tableft' => '&lt;',
+'tabright' => '&gt;',
+'edittext1' => 'Oben sehen Sie die Tabs, wie sie erscheinen werden. Wenn Sie einen oder mehrere Tabs hinzugefügt haben, können Sie den Text nun direkt in den Tabs bearbeiten. Klicken Sie dann den',
+'edittext2' => 'Icon um den Text zu sichern. Sie können auch den Text löschen, wenn Sie den',
+'edittext3' => 'Icon klicken.',
+'reordertext' => 'Auf der rechten Seite ist eine Liste aller Tabs, deren Position verändert werden kann. Wählen Sie den zu sortierenden Tab aus und klicken Sie auf den "&lt;" oder "&gt;" Button, um den Tab in die gewünschte Richtung zu schieben.',
+'urlerr' => 'Es ist keine URL angegeben.',
+'viewmem' => 'Mitglieder +',
+'viewall' => 'Gäste +',
+'newtab' => 'Einen Tab hinzufügen',
+'tabinsert' => 'Anfügen hinter',
+'tabview' => 'Sichtbar für',
+);
+
+1;

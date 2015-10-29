@@ -1,0 +1,76 @@
+###############################################################################
+# Poll.lng (Poll text definitions)                                            #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_dupolllngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dupolllngmods = ();
+if(@german_dupolllngmods){
+    $german_dupolllngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%polltxt = (
+'4' => 'Umfrage/Frage',
+'6' => 'Frage',
+'7' => 'Antwortoption',
+'15' => 'Umfrage',
+'16' => 'Frage',
+'17' => 'Stimmen insgesamt',
+'18' => 'Stimme abgeben',
+'19' => 'Ergebnisse zeigen',
+'20' => 'Öffnen',
+'21' => 'Schließen',
+'22' => '*** Die Umfrage ist beendet ***',
+'23' => 'Details der Umfrage:',
+'24' => 'Stimme(n)',
+'25' => 'Niemand hat für diese Option gestimmt.',
+'26' => 'Ergebnisse verstecken:',
+'27' => 'Löschen',
+'30' => 'IP Adresse',
+'31' => 'Datum der Stimmabgabe',
+'32' => 'Stimmrecht für Gäste:',
+'33' => 'Ergebnis zeigen',
+'35' => 'Name',
+'39' => 'Ändern',
+'40' => 'Die Umfrage/Frage',
+'41' => 'Es befindet sich ein ungültiges Zeichen in Deiner Frage. Bitte versuche es erneut.',
+'42' => 'Details der Umfrage',
+'43' => 'Stimme zurücknehmen',
+'44' => 'Bist Du sicher, dass Du diese Umfrage löschen willst?',
+'45' => 'Begonnen von',
+'45a' => 'Zuletzt geändert von',
+'46' => 'am',
+'47' => 'Danke für Deine Stimme in dieser Umfrage.',
+'48' => 'Die Ergebnisse bleiben versteckt, bis alle Stimmen gezählt sind.',
+'49' => 'Stimmen löschen',
+'53' => '*** Niemand außer Dir kann die Ergebnisse sehen, bis die Umfrage geschlossen wird ***',
+'54' => 'Wähle diese Option, wenn auch Gäste abstimmen dürfen.',
+'55' => 'Wähle diese Option, wenn die Ergebnisse versteckt bleiben sollen, bis die Umfrage geschlossen ist.',
+'56' => 'Wähle diese Option, wenn in Deiner Umfrage mehrere Optionen gleichzeitig gewählt werden dürfen.',
+'57' => 'Kommentar zur Umfrage',
+'58' => 'Mehrfach-Wahl',
+'59' => 'Umfragekommentar',
+'64' => 'Du wähltest am',
+'65' => 'Deine Entscheidung war',
+'66' => 'Deine Entscheidungen waren',
+'showcased' => 'Derzeit angezeigte Übersichtsumfrage',
+'setshowcased' => 'Als Übersichts-Umfrage?',
+'showcaserem' => 'Übersichtsumfrage entfernen?',
+'confirm' => 'Bist Du sicher, dass diese Umfrage auf der Startseite angezeigt werden soll?\\nEine andere Umfrage ist derzeit aktiv und wird angezeigt.', # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
+);
+
+1;

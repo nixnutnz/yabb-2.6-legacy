@@ -1,0 +1,84 @@
+###############################################################################
+# GModPrivileges.lng (Global Mod Access Privileges text definitions)          #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_dugmodprivilegeslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dugmodprivilegeslngmods = ();
+if(@german_dugmodprivilegeslngmods){
+    $german_dugmodprivilegeslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%gmod_settings = (
+'1' => 'Privilegien für Globale Moderatoren',
+'2' => 'Globalen Moderatoren den Zugriff auf das Admin-Center erlauben?',
+'3' => 'Globalen Moderatoren das Ändern von Benutzerprofilen erlauben?',
+'3a' => 'Globalen Moderatoren den Zugriff auf die Admin-Einstellungen in Benutzerprofilen erlauben?',
+'4' => 'Wähle, welche Aktionen <i>(action= in den URL\'s)</i> Globale Moderatoren ausführen dürfen.',
+);
+
+
+%gmodprivexpl_txt = (
+'ext_admin' => 'Erlaube Erweiterte Profile zu bearbeiten',
+'main' => 'Erlaube Einstellungen für das Forum zu bearbeiten',
+'advanced' => 'Erlaube Erweiterte Einstellungen zu bearbeiten',
+'editbots' => 'Erlaube Suchmaschinen Identifizierungen zu bearbeiten',
+'news' => 'Erlaube Forum News zu bearbeiten',
+'smilies' => 'Erlaube Smiley Einstellungen zu bearbeiten',
+'setcensor' => 'Erlaube Zensierte Wörter zu bearbeiten',
+'modagreement' => 'Erlaube Registrierungs-Vereinbarung zu bearbeiten',
+'eventcal_set' => 'Erlaube Eventkalender zu bearbeiten',
+'bookmarks' => 'Erlaube Social Bookmarks zu bearbeiten',
+'referer_control' => 'Erlaube Referer Sicherheit zu bearbeiten',
+'security' => 'Erlaube Sicherheit Einstellungen zu bearbeiten',
+'setup_guardian' => 'Erlaube The Guardian Einstellungen zu bearbeiten',
+'antispam' => 'Erlaube Anti-Spam Einstellungen zu bearbeiten',
+'spam_questions' => 'Erlaube Anti-Spam-Frage(n) zu bearbeiten',
+'honeypot' => 'Erlaube Honeypot zu bearbeiten',
+'managecats' => 'Erlaube Kategorien zu verwalten',
+'manageboards' => 'Erlaube Foren zu verwalten',
+'helpadmin' => 'Erlaube Hilfe/FAQ Dateien zu bearbeiten',
+'editemailtemplates' => 'Erlaube eMail-Nachrichten zu bearbeiten',
+'addmember' => 'Erlaube neue Mitglieder hinzufügen',
+'viewmembers' => 'Erlaube Mitglieder anzuzeigen',
+'deletemultimembers' => 'Erlaube Mitglieder anzuzeigen/zu löschen',
+'modmemgr' => 'Erlaube Mitgliedergruppen zu bearbeiten',
+'mailing' => 'Erlaube eMail an Mitglieder/Mitgliedergruppen zu schreiben',
+'ipban' => 'Erlaube Bann-Liste zu bearbeiten',
+'setreserve' => 'Erlaube Reservierte Namen festzulegen',
+'modskin' => 'Erlaube Template Configuration zu bearbeiten',
+'modcss' => 'Erlaube Style Sheet zu bearbeiten',
+'modtemp' => 'Erlaube Templates zu bearbeiten',
+'clean_log' => 'Erlaube Log für aktuell online-Benutzer zurück zusetzen',
+'boardrecount' => 'Erlaube Themen- und Beitragsanzahl neu zuberechnen',
+'rebuildmesindex' => 'Erlaube Themen-Index neu aufzubauen',
+'membershiprecount' => 'Erlaube Mitgliederanzahl neu zuberechnen',
+'rebuildmemhist' => 'Erlaube Mitgliederhistorie neu aufzubauen',
+'rebuildmemlist' => 'Erlaube Mitgliederliste neu aufzubauen',
+'rebuildnotifications' => 'Erlaube Benachrichtigungsdateien neu aufzubauen',
+'deleteoldthreads' => 'Erlaube alte Themen zu löschen',
+'manageattachments' => 'Erlaube Dateianhänge zu verwalten',
+'detailedversion' => 'Erlaube Detailierter Versionscheck zu sehen',
+'stats' => 'Erlaube Forum Statistik zu sehen',
+'showclicks' => 'Erlaube Forum Log zu sehen',
+'errorlog' => 'Erlaube Fehler Log zu sehen',
+'view_reglog' => 'Erlaube Registrierungs Log zu sehen',
+'modlist' => 'Erlaube alle installierten Mods zu sehen',
+'backupsettings' => 'Ermöglicht den Zugriff auf das Backup-Center',
+);
+
+1;

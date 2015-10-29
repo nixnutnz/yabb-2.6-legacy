@@ -1,0 +1,120 @@
+###############################################################################
+# Micon.lng (Image text/images definitions)                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       2. Dezember 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$german_dumiconlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dumiconlngmods = ();
+if(@german_dumiconlngmods){
+    $german_dumiconlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+if (!$language){$language = $lang;}
+
+%img_txt_m =(
+'70' => 'Meine Favoriten',
+);
+
+%img_polltxt_m = (
+'44' => 'Umfrage',
+'45' => 'Neue Umfrage',
+'46' => 'Umfrage geschlossen',
+);
+
+%messageindex_txt_m = (
+'302' => 'Neu',
+'303' => 'Gehe zum ersten ungelesenen Beitrag',
+'454' => 'Heisses Thema (Mehr als',
+'454a' => 'Antworten)',
+'455' => 'Sehr heißes Thema (Mehr als',
+'456' => 'Geschlossenes Thema',
+'457' => 'Normales Thema',
+'458' => 'Verstecktes Thema',
+'459' => 'Verstecktes und angepinntes Thema',
+'460' => 'Verstecktes und geschlossenes Thema',
+'461' => 'Verstecktes, angepinntes und geschlossenes Thema',
+'779' => 'Angepinntes Thema',
+'779a' => 'Globale Ankündigung',
+'779b' => 'Globale Ankündigung geschlossen',
+'780' => 'Angepinntes und geschlossenes Thema',
+'781' => 'Angepinnt',
+'845' => 'Verschobenes Thema',
+);
+
+%messageindex_sort_m = (
+'sort_az' => "Sortieren (A-Z)",
+'sort_za' => "Sortieren (Z-A)",
+'sort_min' => "Sortieren (minimale Antworten)",
+'sort_max' => "Sortieren (maximale Antworten)",
+'sort_last' => "Sortieren (neue Antworten)",
+'sort_first' => "Sortieren (alte Antworten)",
+);
+
+%im_message_status_m = (
+'confidential' => 'Vertraulich',
+'urgent' => 'Dringend!',
+'standard' => 'Standard',
+'alertmod' => 'Alamiere Moderator.',
+'guestpm' => 'PN von Gast',
+'guestpmreply' => 'Antworte auf PN von Gast',
+);
+
+%tabmenu_txt_m = (
+'edittab' => 'Editiere Tabs',
+'tabdel' => 'Lösche diesen Tab',
+'savetab' => 'Speichere Text',
+'newtab' => 'Tab hinzufügen',
+);
+
+%maintxt_m = (
+'900pd' => 'Zugriffspasswort für dieses Board',
+);
+
+%var_cal_m = (
+'calbirthday' => 'Geburtstag',
+'calprivate' => 'Privat',
+'caldel' => 'Löschen',
+'caledit' => 'Event editieren',
+'calsave' => 'Event speichern',
+'getaddevent' => 'Neuen Event hinzufügen',
+'eventinfo' => 'Event',
+'eventannounce' => 'Ankündigung',
+'eventholiday' => 'Feiertag',
+'eventnote' => 'Ausrufezeichen',
+'eventparty' => 'Party',
+'eventcelebration' => 'Feier',
+'eventsport' => 'Sport',
+'eventmedia' => 'Medien (TV)',
+'eventmeeting' => 'Sitzung',
+);
+
+%mess_icon_txt = (
+'281' => 'Standard',
+'282' => 'Thumbs Up',
+'283' => 'Thumbs Down',
+'284' => 'Exclamation Point',
+'285' => 'Question Mark',
+'286' => 'Lamp',
+'287' => 'Smiley',
+'288' => 'Angry',
+'289' => 'Cheesy',
+'290' => 'Laugh',
+'291' => 'Sad',
+'292' => 'Wink',
+'293' => 'Grin',
+'294' => 'Shocked',
+'295' => 'Cool',
+'296' => 'Huh',
+);
+
+1;

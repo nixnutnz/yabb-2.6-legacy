@@ -1,0 +1,83 @@
+###############################################################################
+# MyCenter.lng (My Center text definitions)                                   #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_dumycenterlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dumycenterlngmods = ();
+if(@german_dumycenterlngmods){
+    $german_dumycenterlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+## LEAVE USERLABEL intact. Move within the string for correct language syntax!
+
+%mycenter_txt = (
+'welcometxt' => "USERLABEL\'s Kontrollzentrum",
+'buddylisttitle' => 'Deine Freunde',
+'buddylistnone' => 'Deine Freundesliste ist leer',
+'buddydeleted' => 'Dieser Freundeseintrag wurde gelöscht. Der Name ist nicht mehr verfügbar.',
+'hiddenemail' => 'Versteckte eMail-Adresse',
+'currentsettings' => 'Deine gegenwärtigen Einstellungen:',
+'onoffstatus' => 'Online/Offline Status:',
+'onoffstatuson' => 'Online/Offline',
+'onoffstatusaway' => 'Abwesend',
+'view' => 'Überblick',
+'stealth' => 'Geistmodus:',
+'stealth_off' => 'Geistmodus aus',
+'stealth_on' => 'Geistmodus an',
+'posts' => 'Beiträge',
+'location' => 'Standort',
+'mylastposts' => 'Zeige meine 5 letzten Beiträge',
+);
+
+%display_txt = (
+'139' => 'Seiten',
+);
+
+%mc_menus = (
+'messages' => 'Nachrichten',
+'profile' => 'Profil',
+'posts' => 'Beiträge',
+);
+
+%pm_search = (
+'all' => 'Alle',
+'justthis' => 'Nur diesen Ordner',
+'byuser' => 'Benutzername',
+'desc' => 'Meine PN durchsuchen nach:',
+'search' => 'suche',
+);
+
+%mc_folders = (
+'foldername' => 'Ordnername',
+);
+
+%my_favs = (
+'70' => 'Betreff',
+'109' => 'Gestartet von',
+'110' => 'Antworten',
+'301' => 'Aufrufe',
+'330' => 'Themen',
+'21' => 'Beiträge',
+'22' => 'Letzter Beitrag',
+'525' => 'Von',
+'526' => 'von',
+'527' => 'Gestartet',
+'737' => 'Alle überprüfen',
+);
+
+1;

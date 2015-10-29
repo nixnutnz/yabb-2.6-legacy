@@ -1,0 +1,97 @@
+###############################################################################
+# Search.lng (Search text definitions)                                        #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_dusearchlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dusearchlngmods = ();
+if(@german_dusearchlngmods){
+    $german_dusearchlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%search_txt = (
+'1' => 'Beiträge aus der/dem/den letzten...',
+'2' => 'Woche',
+'3' => 'Monat',
+'4' => '3 Monaten',
+'5' => 'Jahr',
+'6' => '(Alle Beiträge)',
+'30' => 'am',
+'70' => 'Betreff',
+'72' => 'Nachricht',
+'73' => 'IP-Adresse',
+'105' => 'Beitrag',
+'107' => 'um',
+'109' => 'Begonnen von',
+'166' => 'Suchergebnisse',
+'167' => 'Ende der Ergebnisse',
+'170' => 'Leider keine Treffer.',
+'171' => 'Zurück zur Suchmaske.',
+'182' => 'Suchen',
+'183' => 'Suchparameter festlegen',
+'186' => 'Suche in Themen, die von diesem Mitglied begonnen wurden',
+'187' => 'Suche nach Beirägen, die von diesem Mitglied geschrieben wurden',
+'189' => 'In folgenden Foren suchen',
+'190' => ' Bitte halte die [STRG]- oder Umschalttaste gedrückt, um mehrere zu selektieren.',
+'191' => 'Wieviele Ergebnisse anzeigen?',
+'191a' => 'Nur ein Ergebnis pro Thema zeigen?',
+'191b' => "Maximal erlaubte Ergebnisse: $maxsearchdisplay",
+'191x' => "Es ist Dir erlaubt, maximal $maxsearchdisplay Resulate anzeigen zu lassen. Bitte ändere Deine Werte.",
+'236' => 'Zurück',
+'237' => 'zum Forenindex.',
+'343' => 'Übereinstimmung aller Wörter',
+'344' => 'Übereinstimmung eines Wortes',
+'345' => 'Übereinstimmung als Phrase',
+'345a' => 'Übereinstimmung als Wortteil',
+'346' => 'Suche nach Beiträgen von allen Mitgliedern',
+'525' => 'von',
+'572' => 'Suche nach Beiträgen von Gästen',
+'573' => 'Folgende Felder in die Suche einbeziehen',
+'574' => 'Zeit seit dem letzten Beitrag',
+'575' => 'Min.',
+'576' => 'Max.',
+'577' => 'Irgendeinem Autor',
+'578' => 'Stunden',
+'579' => 'Tage',
+'582' => 'Suche nach',
+'583' => 'Von Mitglied',
+'737' => 'Alle auswählen',
+'pmfrom' => 'Von', ## neu
+'pmto' => 'An',
+'pmcc' => 'CC',
+'pmbcc' => 'BCC',
+'pmgroup' => 'Gruppe',
+'searchme' => 'Eigene Beiträge suchen',
+'casesensitiv' => 'Gross-/Kleinschreibung',
+'searchyabbtags' => 'Auch in den YaBBCode-tags suchen <span class="small">(in den eckigen Klammern wie diesen [...]. Braucht viel Zeit.)</span>',
+);
+
+%pmboxes_txt = (
+'in' => 'Eingang',
+'inbox' => 'Posteingang',
+'out' => 'Ausgang',
+'outbox' => 'Gesendete Nachrichten',
+'store' => 'Archiv',
+);
+
+%searchselector_txt = (
+'select' => 'Auswählen',
+'remove' =>  'Entfernen',
+'removeconfirm' => 'Bist Du sicher, dass Du den Mitgliedsnamen entfernen willst?',
+);
+
+1;

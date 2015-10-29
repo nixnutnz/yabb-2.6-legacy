@@ -1,0 +1,58 @@
+###############################################################################
+# SendTopic.lng (SendTopic text definitions)                                  #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germansendtopiclngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@germansendtopiclngmods = ();
+if(@germansendtopiclngmods){
+    $germansendtopiclngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%sendtopic_txt = (
+'118' => 'Thema',
+'241' => 'Feld.',
+'318' => 'Von',
+'335' => 'Ihr Name',
+'336' => 'Ihre eMail-Adresse',
+'339' => 'Senden',
+'707' => 'Thema versenden',
+'708' => 'an einen Freund!',
+'717' => 'Name des Empfängers',
+'718' => 'eMail-Adresse des Empfängers',
+'error_sender_name' => 'Sie müssen ihren Namen eingeben.',
+'error_sender_email' => 'Sie müssen ihre eMail-Adresse eingeben.',
+'error_recipient_name' => 'Sie müssen den Namen des Empfängers eingeben.',
+'error_recipient_email' => 'Sie müssen die eMail-Adresse des Empfängers eingeben.',
+'error_verification' => 'Der Validierungscode fehlt.',
+'verification_question_desc' => 'Bitte beantworten Sie die oben genannte Überprüfungsfrage.',
+'verification_question_case' => 'Antworten sind Groß-und Kleinschreibung.',
+'error_verification_question' => 'Sie müssen die Überprüfungsfrage beantworten.',
+);
+
+%floodtxt = (
+'1' => 'Ihr Validierungscode lautet',
+'3' => 'Validierungscode',
+'casewarning' => 'Geben Sie bitte den Text genau so ein, wie auf dem Bild dargestellt. Beachten Sie dabei bitte die Groß- und Kleinschreibung.',
+'casewarning_1' => 'Geben Sie bitte den Text genau so ein, wie auf dem Bild dargestellt,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">ohne die ersten',
+'casewarning_3' => '<br /><span style="font-weight: bold;">ohne die letzten',
+'casewarning_4' => 'und letzte',
+'casewarning_5' => 'Zeichen.</span><br />Die Zeichen müssen in der gleichen Reihenfolge eingegeben werden,<br />und sie sind Groß-und Kleinschreibung.',
+);
+
+1;

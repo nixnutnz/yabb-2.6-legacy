@@ -1,0 +1,133 @@
+###############################################################################
+# Menu.lng (Image text/images definitions)                                    #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germanmenulngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@germanmenulngmods = ();
+if(@germanmenulngmods){
+    $germanmenulngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+if (!$language){$language = $lang;}
+
+%img_txt = (
+'2' => 'Admin-Center',
+'27' => 'Profil zeigen',
+'31' => 'Löschen',
+'33' => 'Neues Thema beginnen',
+'34' => 'Einloggen',
+'34a' => 'Sessionupdate',
+'54' => 'Löschen',
+'55' => 'Gewählte löschen',
+'63' => 'Moderatoren',
+'66' => 'Ändern',
+'69' => 'eMail',
+'70' => 'Meine Favoriten',
+'71' => 'Zu Favoriten hinzufügen',
+'72' => 'Aus den Favoriten löschen',
+'79' => 'Profil bearbeiten',
+'97' => 'Registrieren',
+'102' => qq~<img src="$imagesdir/back_to_top.png" alt="Top" title="Nach oben" />~,
+'102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="Bottom" title="Nach unten" />~,
+'103' => 'Übersicht',
+'104' => 'Sperren/Öffnen',
+'105' => 'Letzter Beitrag',
+'108' => 'Ausloggen',
+'119' => 'Hilfe',
+'121' => 'Löschen',
+'131' => 'Bei Antwort benachrichtigen',
+'131a' => 'Themen-Benachrichtigung hinzufügen',
+'131d' => 'Themen-Benachrichtigung löschen',
+'132' => 'Veschieben',
+'144' => 'PN',
+'144a' => 'Persönliche Nachricht',
+'145' => 'Zitieren',
+'145q' => 'Markieren &amp; Zitieren',
+'146' => 'Antworten',
+'182' => 'Suchen',
+'300' => 'Themen als gelesen markieren',
+'316' => 'Posteingang',
+'320' => 'Gesendete Nachrichten',
+'321' => 'Neue Nachricht',
+'323' => 'Einstellungen',
+'331' => 'Mitglieder',
+'418' => 'Benachrichtigungen',
+'452' => 'ALLE Beiträge als gelesen markieren',
+'465' => 'Drucken',
+'465a' => 'Beitrag drucken',
+'467' => 'Profil',
+'515' => 'Homepage',
+'707' => 'Thema versenden',
+'781' => 'Sticky',
+'620' => 'Teilen',
+'621' => 'Verschieben, Teilen &amp; Verbinden',
+'620a' => 'Teilen - dieses Thema teilen, dabei gewählten Beitrag als Ersten eines neuen Themas verwenden',
+'621a' => 'Fenster öffnen um Thema zu verschieben, zu teilen und zu verbinden.',
+'622' => 'Verstecken',
+'623' => 'Einklappen',
+'624' => 'Ausklappen',
+'625' => 'Zu Favoriten hinzufügen',
+'626' => 'Aus meinen Favoriten löschen',
+'627' => 'Thema als ungelesen markieren',
+'mycenter' => 'Kontrollzentrum',
+'addbuddy' => 'Zu meiner Freundesliste hinzufügen',
+'pmadmin' => 'PN an Administrator',
+'alertmod' => 'Diesen Beitrag einem Foren-Moderator melden!',
+'alertmodtext' => 'Moderator melden',
+'forward' => 'Weiterleiten',
+'sendpm' => 'Nachricht senden',
+'sendbmess' => 'Broadcast-Nachricht senden',
+'aim' => 'AIM',
+'facebook' => 'Facebook',
+'gtalk' => 'GTalk',
+'icq' => 'ICQ',
+'msn' => 'MSN',
+'myspace' => 'MySpace',
+'skype' => 'Skype/VoIP',
+'yim' => 'YIM',
+'twitter' => 'Twitter',
+'youtube' => 'YouTube',
+'birthdaylist' => 'Geburtstagsliste',
+'eventcal' => 'Kalender',
+'to_top' => 'Zum Seitenanfang',
+);
+
+%img_polltxt = (
+'1' => 'Umfrage starten',
+'2' => 'Umfrage hinzufügen',
+'20' => 'Öffnen',
+'21' => 'Schließen',
+'27' => 'Löschen',
+'33' => 'Ergebnis zeigen',
+'33a' => 'Thema anzeigen',
+'39' => 'Ändern',
+'43' => 'Stimme zurücknehmen',
+'44' => 'Umfrage',
+'45' => 'Neue Umfrage',
+'46' => 'Umfrage geschlossen',
+);
+
+%img_imtxt = (
+'42' => 'Freundesliste',
+'46' => 'Archiv',
+);
+
+require Sources::Menu;
+SetMenu();
+
+1;

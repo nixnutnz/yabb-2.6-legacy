@@ -1,0 +1,96 @@
+###############################################################################
+# Display.lng (Display text definitions)                                      #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germandisplaylngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@germandisplaylngmods = ();
+if(@germandisplaylngmods){
+    $germandisplaylngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%display_txt = (
+'10' => 'Permalink für diesen Artikel',
+'19' => 'Seitenindex umschalten',
+'21' => 'Beiträge',
+'24' => '(Kein Betreff)',
+'28' => 'Gast',
+'29' => 'Autor',
+'30' => 'am',
+'63' => 'Moderatoren',
+'63a' => 'Moderatorengruppen',
+'116' => 'Beitrag beantworten',
+'118' => 'Thema',
+'139' => 'Seiten',
+'146' => 'Antwort',
+'146n' => 'Mitgliedsname in Schnelle-Antwort-Box einfügen?',
+'162' => 'Sind Sie sicher, dass Sie dieses Thema löschen wollen?',
+'rempost' => 'Sind Sie sicher, dass Sie diesen Beitrag löschen wollen?',
+'211' => 'Zuletzt geändert',
+'211a' => 'Grund',
+'298' => 'Moderator',
+'298a' => 'Moderatorgruppe',
+'470' => 'N/V',
+'470a' => '<i>Ex-Mitglied</i>',
+'511' => 'IP gespeichert',
+'525' => 'von',
+'526' => 'Zu Favoriten hinzufügen',
+'527' => 'Aus Favoriten entfernen',
+'528' => 'Ausgeführt',
+'529' => 'Benachrichtigung hinzufügen',
+'530' => 'Benachrichtigung entfernen',
+'641' => 'Gelesen:',
+'642' => 'mal',
+'643' => 'Zum Seitenanfang',
+'644' => 'Mitglieder, die dieses Thema betrachten',
+'645' => 'antworten',
+'646' => 'Mitglieder, die auf dieses Thema antworten',
+'739' => 'Sind Sie sicher, dass Sie diesen Beitrag löschen wollen?',
+'739a' => 'Lösche diesen Beitrag',
+'766' => 'Kein Thema',
+'767' => 'Nächstes Thema',
+'768' => 'Vorheriges Thema',
+'769' => 'Flash-Standort',
+'888' => 'Thema durchblättern',
+'999' => 'Foren-Ankündigung',
+'posttolocked' => 'Warnung: Sie sind im Begriff einen Beitrag in einem geschlossenen Thema zu hinterlassen. Klicken Sie [OK] um fortzufahren oder [Abbrechen] um abzubrechen und zum Thema zurückzukehren.',
+'modifyinlocked' => 'Warnung: Sie sind im Begriff einen Beitrag in einem geschlossenen Thema zu ändern. Klicken Sie [OK] um fortzufahren oder [Abbrechen] um abzubrechen und zum Thema zurückzukehren.',
+'isbuddy' => 'in meiner Freundesliste.',
+'split_confirm' => 'Sind Sie sicher, dass Sie die Beiträge teilen wollen?',
+'alertmod_confirm' => 'Sind Sie sicher, dass Sie diesen Beitrag einem Moderator melden wollen?',
+'reverse' => 'Klicken Sie hier, wenn Sie die Reihenfolge der Beiträge umkehren wollen.',
+'sendtopicemail' => 'Klicken Sie auf [OK] wenn Sie möchten, dass die eMail über Ihr eMail Programm verschickt werden soll. Andernfalls wird die Forum eMail Funktion genutzt.',
+'location' => 'Standort',
+'age' => 'Alter',
+'regdate' => 'Mitglied seit: ',
+'mylastposts' => 'Zeige meine letzten 5 Beiträge',
+'lastposts' => 'Zeige die letzten 5 Beiträge von ',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+'upt' => '&#710;',
+'guest_message' => 'Besucher-Nachricht',
+'guest_message_block' => qq~Hallo Besucher,<br><br>sorry, aber Sie haben die Menge an Themen, die Sie berechtigt sind als Gast zu besichtigen, überschritten. Um möglichst viele Themen anzuzeigen wie Sie möchten und von vielen weiteren Features zu profitieren, warum <a href="$scripturl?action=register" style="font-weight: bold;">registrieren sie sich nicht bei uns?</a>. Die Registration ist leicht und dauert nur ein paar Minuten.<br><br>Sie sind bei uns bereits Mitglied, dann können sie sich <a href="$scripturl?action=login" style="font-weight: bold;">hier einloggen</a> um diese Nachricht zu stoppen.<br><br>Vielen Dank!<br><br>The $mbname Team~,
+'guest_message_warn' => qq~Hallo Besucher,<br><br>wie es aussieht, genießen sie das Lesen in unserem Forum. Also warum <a href="$scripturl?action=register" style="font-weight: bold;">registrieren sie sich nicht bei uns,</a> um diese Nachricht zu stoppen und profitieren von den vielen weiteren Features? Die Registrierung ist einfach und dauert nur ein paar Minuten.<br><br>Wenn Sie bereits Mitglied bei uns sind, dann <a href="$scripturl?action=login" style="font-weight: bold;">klicken sie hier zum einloggen.</a><br><br>Vielen Dank!<br><br>The $mbname Team~,
+'bookmarks' => 'Bookmarks', # Social Bookmarks
+'google' => 'Google Hangout',
+);
+
+%zodiac_txt = (   #YaBB Zodiac
+'sign' => 'Sternzeichen',
+);
+
+1;

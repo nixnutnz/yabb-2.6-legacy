@@ -1,0 +1,52 @@
+###############################################################################
+# Sessions.lng (Sessions text definitions)                                    #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_dusessionslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dusessionslngmods = ();
+if(@german_dusessionslngmods){
+    $german_dusessionslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%session_txt = (
+'1' => 'Session ID\'s aktivieren?',
+'2' => 'Dies schützt die administrativen Funktionen durch die Verwendung eines dreiteiligen Sessionschlüssel, basierend auf der IP-Adresse',
+'3' => "Deine Session ist abgelaufen, da Du das Forum jetzt mit einer anderen IP-Adresse besuchst ($user_ip)",
+'4' => 'Um Deine Anmeldeinformationen zu überprüfen, beantworte die folgende Frage mit der Antwort, die Du in Deinem Profil angegeben habst.',
+'6' => 'Du hast Dich nicht ausweisen können und wurdest ausgeloggt.',
+'8' => 'Suche Dir einen Frage aus, mit der Du dich ausweisen kannst',
+'9' => 'Zum Bestätigen Deines Adminstatus wird eine Sicherheitsfrage benötigt. Suche Dir bitte eine Frage aus und gib die Antwort ein.',
+'9a' => 'Wenn Du zum Ausweisen Dein Passwort verwenden willst, kannst Du das Feld leer lassen.',
+'10' => 'Du hast in Deinem Profil keine Frage ausgewählt<br />deswegen kannst Du dich nur mit deinem Passwort ausweisen.',
+);
+
+%sesquest_txt = (
+'password' => 'Mein Passwort als Ausweis verwenden',
+'1' => 'Mein Lieblingstier ist ein(e)',
+'2' => 'Der Name meines Lieblingstieres ist',
+'3' => 'Meine Telefonnummer ist',
+'4' => 'Mein Geburtstag ist',
+'5' => 'Mein bester Freund ist',
+'6' => 'Ich bin verliebt in',
+'7' => 'Die Person, die ich am wenigsten mag, ist',
+'8' => 'Meine Postleitzahl ist',
+'9' => 'Mein Lieblingssport ist',
+'10' => 'Mein Lieblingsgetänk ist',
+);
+
+1;

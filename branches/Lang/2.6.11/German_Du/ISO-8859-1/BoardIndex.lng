@@ -1,0 +1,120 @@
+###############################################################################
+# BoardIndex.lng (BoardIndex text definitions)                                #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_duboardindexlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_duboardindexlngmods = ();
+if(@german_duboardindexlngmods){
+    $german_duboardindexlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%boardindex_txt = (
+'18' => 'Index',
+'20' => 'Forumname',
+'21' => 'Beitr&auml;ge',
+'21l' => 'Beitr&auml;ge',
+'22' => 'Letzter Beitrag',
+'34' => 'Einloggen',
+'63' => 'Moderatoren',
+'63a' => 'Moderatorgruppen',
+'64'  => 'Unterforen',
+'65'  => 'Unterforen in',
+'66'  => 'Unterforum',
+'67'  => 'Dieses Forum enthält neue Beiträge.',
+'68'  => 'Dieses Forum enthält keine neuen Beiträge.',
+'69'  => 'von der',
+'70'  => 'Unterforen enthalten neue Beiträge.',
+'71'  => 'Unterforum enthält neue Beiträge.',
+'72'  => 'Unterforum enthält keine neuen Beiträge.',
+'141' => 'Gäste',
+'142' => 'Mitglieder',
+'bviews' => 'Betrachter',
+'143' => 'Suchmaschinen',
+'158' => 'Benutzer online',
+'200' => 'Forum-Statistiken',
+'201' => 'Das neueste Mitglied ist &#32;',
+'235' => 'Neuester Beitrag',
+'236' => 'Der neueste Beitrag ist',
+'298' => 'Moderator',
+'298a' => 'Moderatorgruppe',
+'315' => 'Passwort vergessen?',
+'316' => 'Posteingang',
+'320' => 'Gesendete Nachrichten',
+'330' => 'Themen',
+'330l' => 'Themen',
+'333' => 'Neue Beiträge',
+'334' => 'Keine neuen Beiträge',
+'470' => 'N/A',
+'470a' => '<i>Ex-Mitglied</i>',
+'487' => 'Wir haben insgesamt',
+'488' => 'registrierte Mitglieder',
+'489' => 'Unsere Mitglieder schrieben',
+'490' => 'in',
+'500' => 'Alle Beiträge als gelesen markieren?', # inside JavaScript!
+'500a' => 'Ausgeführt', # inside JavaScript!
+'500b' => 'Alle Themen als gelesen markieren?', # inside JavaScript!
+'524' => 'In',
+'525' => 'Von',
+'526' => 'Weitergeleitet Hits',
+'643' => 'Aktuell',
+'685' => 'Info-Center',
+'791' => 'Die',
+'792' => 'neuesten Beiträge',
+'792a' => 'neueste Themen',
+'793' => 'anzeigen.',
+'795' => 'Du hast',
+'796' => 'Privatnachrichten',
+'797' => 'Anzeigen',
+'800' => 'Die größte Anzahl gleichzeitig anwesender Benutzer war',
+'801' => 'Die größte Anzahl gleichzeitig anwesender Mitglieder war',
+'802' => 'Die größte Anzahl gleichzeitig anwesender Gäste war',
+'803' => 'Die größte Anzahl gleichzeitig anwesender Suchmaschinen war',
+'no_ip' => 'Keine IP gespeichert',
+'guest_ip' => 'IP\'s von Gästen',
+'recenttopic' => '10 neueste Themen',
+);
+
+%boardindex_imtxt = (
+'11' => 'Du hast',
+'12' => 'Nachrichten in Deinem',
+'14' => 'Neue Nachrichten:',
+'15' => '.\nWillst Du zum Posteingang',
+'16' => 'welches die Speicherbegrenzung von',
+'18' => 'Nachrichten überstieg',
+'19' => 'Die ältesten',
+'20' => 'Nachrichten wurden automatisch gelöscht.\n\nWillst Du jetzt zu Deinen Kurznachrichten',
+'21' => '?',
+'24' => 'von denen',
+'25' => 'neu ist',
+'26' => 'neu sind',
+'46' => 'Archiv',
+'47' => 'sie',
+'48' => 'die Nachricht',
+'50' => 'Neue Broadcast Personal-Nachrichten.',
+'51' => '\nWillst Du zum Broadcast-Nachrichten-Eingang?',
+'50a' => 'Neue Warnmeldungen:',
+);
+
+%boardindex_exptxt = (
+'1' => 'Ausklappen',
+'2' => 'Einklappen',
+'5' => 'Diese Kategorie enthält <b>neue</b> Beiträge.',
+'6' => 'Diese Kategorie enthält keine neuen Beiträge.',
+);
+
+1;

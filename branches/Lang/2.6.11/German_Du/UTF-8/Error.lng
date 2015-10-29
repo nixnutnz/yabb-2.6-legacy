@@ -1,0 +1,255 @@
+﻿###############################################################################
+# Error.lng (Error text definitions)                                          #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_duerrorlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_duerrorlngmods = ();
+if(@german_duerrorlngmods){
+    $german_duerrorlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%error_txt = (
+## General Errors ##
+'error_occurred'        => "Ein Fehler ist aufgetreten!",
+'untrapped'             => "Nicht abgefangene Fehler",
+'cannot_open'           => "Kann nicht geöffnet werden:",
+'cannot_open_dir'       => "Ordner kann nicht geöffnet werden",
+'cannot_open_language'  => "Benötigte Sprachdatei konnte nicht gefunden werden. Bitte informiere den Administrator über dieses Problem.",
+'cannot_delete'         => "Kann nicht gelöscht werden",
+'not_completed'         => "Ein Fehler ist aufgetreten, die Aktion konnte leider nicht beendet werden.",
+'not_logged_in'         => "Um diese Aktion auszuführen, muss Du eingeloggt sein. Wenn Du noch keinen Account hast, registriere dich bitte.",
+'logged_in_already'     => "Du bist bereits mit folgendem Benutzernamen eingeloggt: ",
+'no_access'             => "Du bist nicht berechtigt, diesen Bereich zu betreten.",
+'not_found'             => "Die Information, auf die Du versuchst zuzugreifen, ist für Dich nicht verfügbar.",
+'not_allowed'           => "Du bist nicht berechtigt, diese Aktion auszuführen",
+'only_numbers_allowed'  => "Dieses Feld akzeptiert nur Zahlen von 0-9",
+'user_not_exist'        => "Benutzer existiert nicht",
+'members_only'          => "Sorry, Dieser Service ist nur für Mitglieder!",
+'email_no_access'       => "Sorry, Du bist nicht berechtigt, die eMail dieses Benutzers zu sehen",
+'no_subject'            => "Die Betreffzeile ist nicht wie erforderlich ausgefüllt.",
+'no_message'            => "Die Textbox wurde nicht wie erforderlich ausgefüllt.",
+'no_recipient'          => "Das Empfängerfeld wurde nicht wie erforderlich ausgefüllt.",
+'no_email'              => "Das eMailfeld ist nicht wie erforderlich ausgefüllt.",
+'no_name'               => "Das Namensfeld wurde nicht wie erforderlich ausgefüllt.",
+'no_ip'                 => "IP wurde nicht gefunden, ändere bitte \$user_ip in $lang",
+'no_username'           => "Du muss einen Benutzernamen eintragen.",
+'no_password'           => "Das Passwortfeld ist leer",
+'no_action'             => "Es wurde kein Vorgang gewählt, aber",
+'no_info'               => "Keine Info spezifiziert in der Url",
+'password_mismatch'     => "Passwörter sind nicht identisch!",
+'bad_credentials'       => "Benutzername / Passwort stimmen nicht. <br />Entweder existiert der Benutzername nicht, oder Du hast ein falsches Passwort verwendet.",
+'invalid_character'     => "Ein ungültiges Zeichen ist im",
+'invalid_email'         => "Bitte gebe eine gültige eMail-Adresse an.",
+'invalid_picture'       => "Ungültige Eingabe für das Forenbild.",
+'no_secret_answer'      => "Du muss eine Antwort zu der Frage angeben",
+'no_verification_code'       => "Der Validierungscode wurde nicht wie erforderlich ausgefüllt.",
+'wrong_verification_code'    => "Der Validierungscode ist nicht identisch mit der auf dem Bildschirm dargestellten Grafik. Bitte gehe zurück, lade die Seite neu (Drücke F5 bei den meisten Browsern) und versuch es noch einmal.",
+'invalid_verification_code'  => "Validierungscode enthält ungültiges Zeichen. Nur a-z und 0-9 sind gültig",
+'form_spoofing'         => "<b>ALARM!!</b> Formular-Manipulation entdeckt! Mißbrauch ist von IP-Adresse:",
+'post_flooding'         => "Die letzte POST-Anfrage mit Deiner IP-Adresse erfolgte vor weniger als",
+'denial_of_service'     => "Bei der letzten POST Anfrage wurde eine Fehler Meldung ausgegeben: ",
+'speed_alert'           => "Dieses schnelle Posting wird als Spamming betrachtet, Du bist gewarnt!<br />Du hast nur noch <b>$spam_hits_left_count</b> weitere Versuch(en), danach wirst Du als Spammer gebannt!",
+'tsc_alert'             => "Eines der Formularfelder enthält Text der als SPAM betrachtet wird, Du bist gewarnt!<br />Du hast nur noch <b>$spam_hits_left_count</b> weitere Versuch(e), danach wirst Du als Spammer gebannt!",
+'speedpostban'          => "Du bist momentan in diesem Forum durch mögliches Spammen verbannt!<br />Nach <b>$detention_left</b> Sekunde(n) wird Deine Verbannung automatisch aufgehoben!",
+'truncation_error'      => "Stelle bitte sicher, dass Du in Deiner Settings.pl 'fake truncation' eingeschaltet hast<br />\$faketruncation = 1;<br />Could not truncate file",
+'referer_violation'     => "Die folgende Aktion ist von einer fremden Domain aus nicht zugänglich!<br /> Aktion ist: ",
+'egg'                   => "Selbstzerstörungsreihenfolge gestartet !!<br />",
+'domain_not_allowed'    => "Du kannst Dich nicht registrieren, als Gast schreiben oder die eMail Adresse ändern, wenn sie von einer dieser Domains stammt:",
+'module_missing'        => "Benötigte Module oder Funktionen sind auf diesem Server nicht installiert!",
+'low_diskspace'         => "Der verfügbare Disk/Host Speicherplatz ist zu gering. Das Forum wurde in den Wartungsmodus versetzt, um Datenverluste zu vermeiden. Bitte informiere den Administrator über diesen Fehler!",
+'invalid_key'           => "Masterkey ist ungültig!<br />Dieser sollte eine Textfolge zwischen 8 und 24 Zeichen sein!",
+'wrong_pass'            => 'Das eingegebene Passwort ist nicht korrekt',
+'corrupt_member_file'   => "Die Mitglieder Datei ist beschädigt. Bitte informiere den Andministrator über diesen Fehler!",
+'no_admin_passwrd'      => "Du mußt das richtige Admin-PASSWORT angeben, um in das Admin-Center zu gelangen.",
+'default_password'      => qq~Du bist immer noch mit dem Standard-Passwort, mit dem Du YaBB eingerichtet habst, angemeldet. Bitte logge Dich in Dein <a href="$scripturl?action=myprofile;username=$username"> Benutzerprofil</a> ein und ändere Dein Kennwort, um es etwas sicherer zu machen.~,
+'missingvars'           => 'Etwas Schlimmes ist passiert. Bitte informiere den Administrator dieses Forums von dem, was Du tatest, als dieser Fehler aufgetreten ist.',
+
+## BoardIndex ##
+'collapse_no_member'        => " Nur Mitlieder können Kategorien ein- bzw. ausklappen!",
+'collapse_invalid_state'    => "Der gewählte Status ist ungültig. Bitte gehe zurück und versuche es nochmal",
+'collapse_no_usercat'       => " Deine Kategorieeinstellungen wurden nicht gefunden. Bitte aktualisiere die Übersicht (zurück und dann F5).\nWenn Du diese Nachricht erneut erhälst, informiere bitte den Administrator.",
+
+## Guardian ##
+'proxy_reason'          => "Proxyzugang zu diesem Forum ist verboten!",
+'referer_reason'        => "Zugang zum Forum ist von dieser URL aus verboten!",
+'harvester_reason'      => "Dieser Harvester hat keinen Zutritt zum Forum!",
+'request_reason'        => "Die vorgenommene Request Methode ist hier nicht erlaubt!",
+'string_reason'         => "Deine URL enthält Worte, die hier untersagt sind!",
+'clike_reason'          => "Ein CLIKE hack ist auf dieser Seite nutzlos, da wir kein MySQL einsetzen!",
+'union_reason'          => "Ein UNION hack ist auf dieser Seite nutzlos, da wir kein MySQL einsetzen!",
+'script_reason'         => "Das einfügen von Skript/Code ist nicht erlaubt!",
+
+## InstantMessage ##
+'im_deleted'            => "Die Nachricht wurde schon vom Empfänger gelesen und wurde nicht gelöscht!",
+'im_deleted_multi'      => "Wenigstens ein Empfänger hat die Nachricht schon gelesen, deshalb wurde keine der Nachrichten gelöscht!",
+'im_members_only'       => "Privatnachrichten sind nur für Mitglieder",
+'im_low_postcount'      => "Du darfst Privatnachrichten erst verwenden, wenn Du mindestens $numposts Beiträge geschrieben hast!",
+'im_spam_alert'         => "Du hast versucht eine private Mitteilung an zu viele Mitglieder zu verschicken. Dies wird als mögliches Spamming interpretiert.",
+'im_bad_users'          => "Der/Die folgende(n) Benutzer konnte(n) nicht angeschrieben werden.<br />Entweder sind die Benutzernamen ungültig, oder die Empfänger haben Dich auf der Ignorieren-Liste:",
+'cannot_find_draftmess' => "Entwurfsnachricht kann nicht gefunden werden.",
+'im_folder_exists'      => "Ein Ordner mit diesem Namen existiert schon.",
+
+## LogInOut ##
+'not_activated'         => "Dein Account ist noch nicht aktiviert<br />Bitte aktiviere ihn, indem Du auf den Link klickst, den Du in der zugesandten Mail findest!",
+'time_out'              => "Du hast Deinen Account nicht wie erforderlich innerhalb $preregspan Stunden aktiviert!<br />Deswegen wurde Deine Registrierungsanfrage gelöscht.<br />Bitte registriere Dich neu!",
+'wrong_code'            => "Dein Aktivierungscode ist falsch!",
+'admin_login_only'      => "Derzeit kann sich nur der Administrator einloggen, da sich das Forum vorübergehend im Wartungsmodus befindet.<br />Bitte versuche es später nochmals. Danke!",
+'wrong_id'              => "Du hast eine ungültige ID eingegeben. Bitte versuche es erneut.",
+
+## Mailer ##
+'net_fatal'             => "Net::SMTP fatal error",
+'smtp_error'            => "SMTP Fehler",
+'smtp_unavail'          => "SMTP Verbindung konnte nicht hergestellt werden",
+
+## Post/ModifyMessage/Poll ##
+'topic_locked'          => "Das Thema ist geschlossen, Du bist nicht berechtigt, Beiträge zu schreiben oder zu ändern.",
+'time_locked'           => "Der Webmaster hat ein Zeitlimit von ",
+'change_not_allowed'    => "Du bist nicht berechtigt, diesen Beitrag zu ändern",
+'delete_not_allowed'    => "Du bist nicht berechtigt, diesen Beitrag zu löschen!",
+'split_splice_not_allowed'      => "Du bist nicht berechtigt, dieses Thema zu splitten oder mit einem anderen zu verbinden.",
+'no_perm_post'          => "Du hast keine Berechtigung neue Beiträge in diesem Forum zu schreiben",
+'no_perm_reply'         => "Du hast keine Berechtigung in diesem Forum auf Beiträge zu antworten",
+'no_perm_poll'          => "Du hast keine Berechtigung Abstimmungen in diesem Forum zu starten",
+'no_perm_att'           => "Du hast keine Berechtigung in diesem Forum Dateien anzuhängen",
+'no_board_slash'        => "Das Boardfeld akzeptiert kein / in der URL",
+'no_cat_slash'          => "Das Kategoriefeld akzeptiert kein / in der URL",
+'no_board_backslash'    => "Das Boardfeld akzeptiert kein \\ in der URL",
+'no_cat_backslash'      => "Das Kategoriefeld akzeptiert kein \\ in der URL",
+'no_board_topic'        => "Das Thema existiert nicht in diesem Forum.",
+'bad_postnumber'        => "SCHLECHTE Beitragsnummer",
+'file_overwrite'        => "Auf dem Server gibt es bereits eine Datei mit diesem Namen. Benenne Deine Datei bitte anders, bevor Du sie anhängst.",
+'file_not_open'         => "Datei konnte auf dem Server nicht geöffnet werden, kontrolliere bitte die Pfade und Rechte (chmod)",
+'invalid_format'        => "Ungültiges Dateiformat. Erlaubte Dateitypen:",
+'file_too_big'          => "Die Datei ist etwa zu groß. ",
+'dir_full'              => "Die Datei ist für das vorgesehene Verzeichnis zu groß, und zwar um etwa. ",
+'file_not_uploaded'     => "Datei konnte nicht hochgeladen werden",
+'useless_post'          => "Nur Leerzeichen und leere Zeilen sind kein sinnvoller Beitrag!",
+'no_question'           => "Bitte gebe eine Frage ein.",
+'no_options'            => "Bitte gebe mindestens 2 Antwortoptionen.",
+'poll_not_found'        => "Die Umfrage konnte nicht gefunden werden",
+'no_vote_option'        => "Bitte wähle eine Antwortoption, bevor Du Deine Stimme abgibst!",
+'locked_poll_no_delete' => "Die Umfrage ist geschlossen, Deine Stimme kann nicht zurückgenommen werden",
+'locked_poll_no_count'  => "Die Umfrage ist geschlossen, Deine Stimme konnte nicht mehr gezählt werden",
+'ip_guest_used'         => "Ein Gast hat unter dieser IP schon abgestimmt",
+'ip_member_used'        => "Ein Mitglied hat unter dieser IP schon abgestimmt",
+'voted_already'         => "Du hast in dieser Umfrage schon abgestimmt",
+'guest_taken'           => "Der Benutzername oder eMail-Adresse werden bereits von einem Mitglied verwendet.<br />Konflikter Name oder eMail: ",
+'quote_too_long'        => "Die Nachricht, die Du zu zitieren versucht hast, ist zu lang. Bitte kürze sie.",
+'no_links_allowed'      => "Sorry, Du bist nicht berechtigt, Signatur zu erstellen oder Beitrag zu schreiben, die aktive Links zu Webseiten oder Bildern enthalten, bevor Du nicht mindestens $minlinkpost normale Beiträge geschrieben hast.",
+'no_siglinks_allowed'   => "Sorry, Du bist nicht berechtigt, Signatur zu erstellen oder Beitrag zu schreiben, die aktive Links zu Webseiten oder Bildern enthalten, bevor Du nicht mindestens $minlinksig normale Nachricht geschrieben hast.",
+'attach_name_blocked'   => "Der Name des Anhangs enthält ein Wort, das nicht in diesem Forum erlaubt ist.",
+'attach_file_blocked'   => "Sorry, aber Du kannst leider keinen Anhang mit diesen Dateinamen hochladen.",
+
+## MoveTopic ##
+'move_not_allowed'      => "Du bist nicht berechtigt, Beiträge zu verschieben...",
+
+## Profile ##
+'invalid_password'      => "Ungültiges Passwort.<br /> Du hast ein falsches Passwort eingegeben.",
+'no_user_slash'         => "Das Namensfeld akzeptiert kein / im Text",
+'no_user_backslash'         => "Das Namensfeld akzeptiert kein \\ im Text",
+'not_allowed_profile_change'    => "Du bist nicht berechtigt, das Profil dieser Person zu ändern.",
+'no_profile_exists'         => "Der Benutzer, dessen Profil Du sehen willst, existiert nicht!",
+'current_password_wrong'    => "Du hast ein falsches Passwort eingegeben",
+'no_admin_password'         => "Zum Ändern dieses Profils muss Du das richtige Administrator-Passwort eingeben.",
+'password_is_userid'        => "Aus Sicherheitsgründen kannst Du Deinen Benutzernamen nicht gleichzeitig als Passwort verwenden.",
+'name_is_userid'        => "Aus Sicherheitsgründen kannst Du Deinen angezeigten Name, nicht als Deinen Benutzernamen haben.",
+'name_taken'            => "Dieser Name wird schon von einem anderen Mitglied verwendet.",
+'name_censored'         => "Du hast ein oder mehrere zensierte Wörter bei Ihrem angezeigten Namen verwendet. Bitte gehe zurück und ändere Deinen angezeigten Namen. Das Wort oder die Wörter, die das Problem verursachten, sind:",
+'name_too_long'         => "Bitte kürze den gewählten Benutzernamen. Er ist zu lang.",
+'invalid_birthdate'         => "Ungültige Angabe in einer oder mehrerern der Geburtstagsfelder.",
+'not_allowed_gender_edit'   => "Du bist nicht berechtigt, Dein Geschlecht zu ändern.",
+'not_allowed_birthdate_change'  => "Du bist nicht berechtigt, Dein Geburtsdatum zu ändern",
+'id_reserved'           => "Der von Dir gewählte Benutzername enthält einen reservierten Namen. Bitte wähle einen anderen Namen. Reserviert ist: ",
+'name_reserved'         => "Der Name, den Du als angezeigten Namen verwenden möchtest, ist ein reservierter Name und kann nicht benutzt werden. Bitte wähle einen anderen Namen. Reserviert ist: ",
+'cannot_kill_admin'     => "Aus Sicherheitsgründen kann der Account mit dem Benutzernamen 'admin' nicht gelöscht werden.",
+'email_taken'           => "Die eMail Adresse wird schon von einem anderen registrierten Mitglied verwendet! Sollte es sich hier um einen Irrtum handeln, gehe bitte zur Login-Seite und lasse über \"Passwort vergessen?\" Dein Passwort zuschicken.",
+'invalid_template'      => "Der Begriff ist als Template nicht gültig.",
+'invalid_language'      => "Der Begriff ist als Sprache nicht gültig.",
+'invalid_time_offset'   => "Die Zeitzone besteht aus einem +/- Zeichen, gefolgt von einem numerischen Wert!",
+'invalid_postcount'     => "Das Feld \"Anzahl der Beiträge\" darf nur Zahlen enthalten.",
+'cannot_regroup_admin'  => "Der Webmaster mit Benutzernamen 'admin' kann keiner anderen Mitgliedergruppe zugeordnet werden!",
+'session_time_out'      => "Profilsession abgelaufen.",
+
+## Register ##
+'email_mismatch'        => "Deine eMail-Adressen stimmen nicht überein.",
+'registration_disabled'     => "Die Registrierungoption ist in diesem Forum deaktiviert.",
+'no_registration_logged_in' => "Du kannst dich nicht registrieren, wenn Du eingeloggt bist.",
+'banned'            => "Verbannungsbenachrichtigung.",
+'system_prohibited_id'      => "Benutzer-ID vom System verboten",
+'id_alfa_only'          => "Der Benutzername darf nur Zahlen und Buchstaben beinhalten (z.B. yabber69)",
+'id_taken'          => "Der von Dir gewählte Benutzername ist schon vergeben.",
+'id_to_long'            => "Bitte kürze den gewählten Benutzername, er ist zu lang.",
+'realname_to_long'      => "Bitte kürze den gewählten Anzeigename, er ist zu lang.",
+'email_to_long'         => "Bitte kürze Deine eMail, er ist zu lang.",
+'already_preregged'         => "Dieser Benutzer ist bereits vorregistriert!",
+'email_already_preregged'   => "Diese eMail-Adresse ist bereits vorregistriert!",
+'already_activated'         => "Dieser Benutzer wurde bereits aktiviert!",
+'prereg_expired'        => "Dieser Benutzer ist nicht vorregistriert, oder die erlaubte Zeitspanne von $preregspan Stunden ist abgelaufen!",
+'prereg_wait'           => "Dein Benutzerkonto ist noch nicht genehmigt worden. Bitte habe Geduld.",
+'no_regagree'           => "Du kannst dich nicht registrieren, wenn Du nicht zuvor die Nutzungsbedingungen akzeptiert hast.",
+'no_reg_reason'         => "Du muss einen Grund für die Registrierung angeben, anderfalls kann die Registrierung nicht bearbeitet werden.",
+'no_verification_question'      => "Du hast keine Antwort auf die Überprüfungsfrage. Gehe bitte zurück und versuche es erneut.",
+'wrong_verification_question'   => "Die Überprüfungsfrage ist falsch. Gehe bitte zurück und versuche es erneut.",
+'censor1'                       => "Der von Dir gewählte Nutzername enthält ein Wort, das in diesem Forum verboten ist:",
+'censor2'                       => "Die eMail, die Du gewählt hast, enthält ein Wort, das in diesem Forum verboten ist:",
+'censor3'                       => "Der angezeigte Name, den Du gewählt hast, ist ein Wort, das in diesem Forum verboten ist:",
+'bad_bot'                       => "Uups - wir dienen nicht Deiner Art hier.",
+
+## Search ##
+'search_disabled'       => "Die Suchfunktion ist abgeschaltet",
+'result_too_high'       => "Die erbetene Anzahl an Beiträgen ist größer als das vom System zulässige Maximum",
+'no_search'             => "Du muss einen Suchbegriff eingeben!",
+'no_search_slashes'     => "Das Suchfeld akzeptiert kein / oder \\ im Text",
+
+## SendTopic ##
+'no_board_send'         => "Das Forum fehlt in der Anfrage.",
+'no_topic_send'         => "Das Thema fehlt in der Anfrage.",
+'sendname_too_long'     => "Bitte kürze Deinen Namen, er ist zu lang.",
+
+## Admin Stuff ##
+'announcement_defined'  => "Es darf nur ein Forum für globale Ankündigungen geben",
+'recycle_bin_defined'   => "Es darf nur ein Forum als Papierkorb definiert werden",
+'board_defined'         => "Ein Forum mit der ID existiert schon!",
+'cat_defined'           => "Es gibt bereits eine Kategorie mit dieser ID",
+'no_delete_default'     => "Aus Sicherheitsgründen darfst Du das 'default'Template weder löschen noch ändern.",
+'invalid_template'      => "Kein gültiger Template-Name!",
+'no_group_name'         => "Bitte gebe einen Namen ein",
+'no_post_number'        => "Bitte gebe eine Nummer ein",
+'invalid_post_number'   => "Ungültige Beitragszahl",
+'double_group'          => "Der gewählte Gruppenname existiert schon:",
+'double_count'          => "Du kannst keine zwei beitragsabhängige Gruppen mit der gleichen minimum Beitragsanzahl erstellen.",
+'no_groupname_change'   => "Du kannst den Namen einer beitragsunabhängigen Gruppe nicht ändern.",
+'invalid_value'         => "Du hast einen ungültigen Wert für dieses Element eingetragen: ",
+
+## Permalinking ##
+'no_board_found'        => "Das Forum, worauf Du Dich bezogst, scheint nicht (mehr) zu existieren.",
+'no_topic_found'        => "Das Thema, worauf Du Dich bezogst, scheint nicht (mehr) zu existieren.",
+
+## buddy list ##
+'self_buddy'            => "Du kannst Dich nicht selbst zu Deiner Freundesliste hinzufügen - Du Egoist!",
+
+## advanced tabs ##
+'tabext'                => 'Ein Tab für die gleiche Aktion oder mit dem gleichen Namen existiert schon!!',
+
+## MemberGroups ##
+'newpostdep_gmod'       => 'Sorry, Global-Moderatoren können keine Benutzer ändern, die einer beitragsabhängigen Gruppe angehören, weil im Bereich der Wartungsfunktionen der Punkt->"Mitgliederliste neuaufbauen" durchlaufen werden muss. Diese Funktion steht nur im Wartungsmodus zur Verfügung, da sonst ein Login nicht möglich ist.',
+);
+
+$error_txt{'no_group_exists'} = 'Die Mitgliedergruppe, die Du ansehen möchtest, existiert nicht.';
+
+1;

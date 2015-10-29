@@ -1,0 +1,70 @@
+###############################################################################
+# UserSelect.lng (UserSelect text definitions)                                #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_duuserselectlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_duuserselectlngmods = ();
+if(@german_duuserselectlngmods){
+    $german_duuserselectlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%usersel_txt = (
+'addselected' => 'Gewählte hinzufügen',
+'instruct' => 'Doppel-Klick auf ein Mitglied oder wähle ein oder mehrere Mitglieder aus der Liste und klicke auf den \'Gewählte hinzufügen\' Button, um die von Dir ausgewählten Mitglieder der',
+'instruct0' => 'Trage den ersten Buchstaben des neuen Moderators in das Feld oben ein, führe dann einen Doppel-Klick auf ein Mitglied oder wähle ein oder mehrere Mitglieder aus der Liste und klicke auf den \'Gewählte hinzufügen\' Button, um die von Dir ausgewählten Mitglieder der',
+'instruct1' => 'Doppel-Klick auf ein Mitglied oder wähle ein Mitglied aus der Liste und klicke auf den \'Gewählte hinzufügen\' Button, um die von Dir ausgewählten Namen',
+'instruct2' => 'Mitglied(er) nach Name oder eMail finden:',
+'instruct3' => 'Im oberen Suchfeld kannst Du ein Wildcard Zeichen (nur einen *) in Deiner Suchzeichenkette benutzen.',
+'instruct4' => 'Mitgliedergruppen auswählen',
+'wildcardinfo' => '* als Platzhalter möglich',
+'searchresult' => 'Suchergebnis:',
+'nofound' => 'Sorry - keine Treffer gefunden für',
+'pmpagetitle' => 'PN Empfänger auswählen',
+'grouppagetitle' => 'BC Empfänger Gruppen auswählen',
+'modpagetitle' => 'Moderatoren auswählen',
+'buddypagetitle' => 'Deine Freunde auswählen',
+'ignorepagetitle' => 'Mitglied(er) auswählen, um zu ignorieren',
+'searchpagetitle' => 'Mitglied auswählen, das zu suchen ist',
+'pageclose' => 'Schliessen',
+'recentlist' => 'Neue Liste',
+'alllist' => 'Mitgliederliste',
+'gobutton' => 'Los',
+'reciepientlist' => 'Empfängerliste hinzuzufügen.',
+'moderatorlist' => 'Moderatorliste hinzuzufügen.',
+'buddylist' => 'Freundesliste hinzuzufügen.',
+'groups' => 'Mitgliedergruppen',
+'ignorelist' => 'PN Ignorieren-Liste hinzuzufügen.',
+'searchlist' => 'in das Suchfeld \'Von Mitglied\' hinzuzufügen.',
+'pmto' => 'An',
+'pmcc' => 'Cc',
+'pmbcc' => 'Bcc',
+'allsearch' => 'Alle',
+'bmallmembers' => 'Alle Forenmitglieder',
+'bmadmins' => 'Administratoren',
+'bmgmods' => 'Global-Moderatoren',
+'bmfmods' => 'Forum-Moderatoren',
+'bmmods' => 'Alle Board-Moderatoren / Moderatorgruppen',
+'pages' => 'Seiten',
+'of' => 'von',
+'noentries' => 'Keine Einträge mit diesem Anfangsbuchstaben.',
+'other' => 'Andere',
+'noresults' => 'Keine Ergebnisse',
+'qsearch' => 'Mitgliedersuche ',
+);
+
+1;

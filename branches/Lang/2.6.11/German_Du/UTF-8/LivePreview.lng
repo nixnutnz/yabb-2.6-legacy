@@ -1,0 +1,41 @@
+###############################################################################
+# LivePreview.lng                                                             #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       2. Dezember 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+# Mod created by Carsten Dalgaard                                             #
+#                and added to YaBB core in Version 2.5.4                      #
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
+###############################################################################
+
+$german_dulivepreviewlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_dulivepreviewlngmods = ();
+if(@german_dulivepreviewlngmods){
+    $german_dulivepreviewlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%livepreview_txt = (
+'info_missing' => 'Fehlende oder falsche Information:',
+'name_empty' => 'Das Namensfeld ist nicht ausgefüllt.',
+'long_name' => 'Bitte kürze Deinen Namen, er ist zu lang',
+'mail_empty' => 'Das eMail-Feld ist nicht ausgefüllt.',
+'valid_mail' => 'Bitte gebe eine gültige eMail-Adresse ein.',
+'veri_code' => 'Das Verifizierungs-Feld ist nicht ausgefüllt.',
+'veri_quest' => 'Die Verifizierungs-Frage ist nicht ausgfüllt',
+'subj_empty' => 'Das Betreff-Feld ist nicht ausgefüllt.',
+'mess_empty' => 'Das Nachrichtentext-Feld ist leer.',
+'subj_allcaps' => 'Es scheint, dass Du versuchst, zu viel Großbuchstaben in das Feld Betreff zu schreiben. Dies ist gegen die Forenregeln.',
+'mess_allcaps' => 'Es scheint, dass Du versuchst, zu viel Großbuchstaben in das Feld Nachrichtentext zu schreiben. Dies ist gegen die Forenregeln.',
+'pm_recipient' => 'Du mußt das Empfänger-Feld ausfüllen!',
+'no_links'     => "Du bist nicht berechtigt, Links zu setzen, bevor Du nicht mindestens $minlinkpost Beiträge hast.",
+);
+
+1;

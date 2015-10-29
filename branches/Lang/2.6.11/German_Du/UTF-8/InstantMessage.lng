@@ -1,0 +1,196 @@
+###############################################################################
+# InstantMessage.lng (InstantMessage text definitions)                        #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_duinstantmessagelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_duinstantmessagelngmods = ();
+if(@german_duinstantmessagelngmods){
+    $german_duinstantmessagelngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%inmes_txt = (
+'21' => 'Beiträge',
+'30' => 'am',
+'remove' => 'Löschen',
+'70' => 'Betreff',
+'118' => 'Thema',
+'143' => 'PN-Nachrichtenindex',
+'144' => 'Privatnachricht',
+'145' => 'Zitieren',
+'146' => 'Antworten',
+'147' => 'Weiterleiten',
+'sendmess' => 'Nachricht senden',
+'sendbroadmess' => 'Broadcastnachricht senden',
+'151' => 'Keine Nachrichten...',
+'190' => 'Alle',
+'inbox' => 'Posteingang',
+'outbox' => 'Gesendete Nachrichten',
+'draft' => 'Entwürfe',
+'storage' => 'Archiv',
+'folder' => 'Ordner',
+'317' => 'Datum',
+'318' => 'Von',
+'320' => 'Diese Nachricht nach dem Senden nicht im Ordner "Gesendete Nachrichten" speichern.',
+'321' => 'Beachten Sie, dass Anhänge zusammen mit Nachrichten im Ordner "Gesendete Nachrichten" so gelöscht werden. Wenn Sie Dateien beifügen, gilt die obengenannte Auswahl nicht.',
+'datesave' => 'Datum gespeichert' ,
+'forward' => 'Nachricht weiterleiten',
+'replymess' => 'Auf Nachricht antworten',
+'error' => 'Fehler',
+'selectrecent' => 'Von neue Privatnachrichten auswählen oder hinzufügen:<br />Doppel-Klick, um kopieren zu \'An\'',
+'selectgroups' => 'Von Mitgliedergruppen auswählen oder hinzufügen:<br />Doppel-Klick, um kopieren zu \'An\'',
+'allmembers' => 'alle Mitglieder',
+'324' => 'An',
+'325' => 'Cc',
+'326' => 'Bcc',
+'327' => 'Gruppe',
+'bmallmembers' => 'Alle Forum-Mitglieder',
+'bmadmins' => 'Administratoren',
+'bmgmods' => 'Global Moderatoren',
+'bmymods' => 'Forum Moderatoren',
+'bmmods' => 'Alle Board Moderatoren / Moderatorgruppen',
+'470' => 'N/V',
+'500' => 'Alle Nachrichten als gelesen markieren', # inside JavaScript!
+'500a' => 'Ausgeführt', # inside JavaScript!
+'507' => 'Vorschau',
+'511' => 'IP gespeichert',
+'preview' => 'Text Vorschau',
+'savedraft' => 'Als Entwurf speichern',
+'536' => 'Dein Beitrag ist um',
+'537' => 'Zeichen zu lang. Bitte kürze Deine Nachricht',
+'737' => 'Alle markieren',
+'739' => 'Bist Du sicher, dass Du diese Nachricht löschen willst?',
+'761' => 'Der Benutzer ',
+'762' => 'akzeptiert keine PN.',
+'763' => 'und',
+'764' => 'Als gelesen markieren',
+'765' => 'PN-Einstellungen',
+'766' => 'Benutzer existiert nicht',
+'767' => '(Kein Betreff)',
+'770' => 'Bist Du sicher, dass Du diese PN löschen willst?',
+'770a' => '\n\nBeachte, dass irgendwelche Dateien, die Du dieser Nachricht beigefügt hast, auch gelöscht werden.',
+'770b' => '\n\nBeachte, dass irgendwelche Dateien, die Du den ausgewählten Nachrichten beigefügt hast, auch gelöscht werden.',
+'delmultipms' => 'Bist Du sicher, dass Du diese PN´s löschen willst?',
+'773' => 'Gesendet',
+'774' => 'Ablegen',
+'775' => 'Neue Nachricht',
+'775a' => 'Neue Broadcast-Nachricht',
+'storeor' => 'oder',
+'storein' => 'im',
+'777' => 'Nachricht(en) REMOVE', #do not remove or translate any CAPITAL text
+'status' => 'Nachrichtenstatus',
+'addfolder' => 'hinzufügen',
+'foldererror' => 'Feld,',
+'messages' => 'Meine Privatnachrichten',
+'center' => 'Mein Center',
+'profile' => 'Mein Profil',
+'favs' => 'Meine Favoriten',
+'notify' => 'Meine Benachrichtigungen',
+'viewprofile' => 'Mein Profil anzeigen',
+'viewnotify' => 'Meine Benachrichtigungen anzeigen',
+'viewfavs' => 'Meine Favoriten anzeigen',
+'viewrecentposts' => 'Meine letzten',
+'viewrecentposts2' => ' Beiträge anzeigen',
+'goviewrecent' => 'LOS!',
+'broadcast' => 'Broadcast-Nachrichten',
+'alert' => 'Warnmeldungen',
+'new' => 'neu',
+'delete' => 'Löschen',
+'clickto1' => 'Klicke hier, um zu wählen',
+'clickto2' => '', # used for other languages
+'torecepients' => 'Empfänger',
+'togroups' => 'Gruppe(n)',
+'usercp' => 'Kontrollzentrum',
+'attach_1' => 'Diese Nachricht enthält',
+'attach_2' => 'Anhänge',
+'attach_3' => 'Anhang',
+);
+
+%inmes_imtxt = (
+'01' => 'von',
+'07' => 'Dies ist eine neue Nachricht.',
+'08' => 'Du hast diese Nachricht beantwortet.',
+'09' => 'Diese Nachricht wurde gelesen.',
+'13' => 'Du hast',
+'19' => 'Nachrichten in Deinem',
+'status' => 'Status',
+'39' => 'Keine PN',
+'40' => 'Vorherige PN',
+'41' => 'Nächste PN',
+'42' => 'Zeige alle PNs \'An\' und \'Von\'',
+'49' => 'An Mitgliedergruppen senden:',
+'store' => 'Ablegen',
+'60' => 'Online',
+'61' => 'Offline',
+'67' => 'Gebrauch',
+'69' => 'Zitat wurde gelöscht',
+'73' => 'Willst Du die Nachricht wirklich beim Empfänger löschen?',
+'83' => 'Zurückrufen',
+'84' => 'Code wurde gelöscht',
+'callallback' => 'Alle zurückrufen',
+'outread' => 'Diese Nachricht ist vom Empfänger geöffnet worden!',
+'callback' => 'Diese Nachricht wurde zurückgerufen und deshalb von dem Empfänger nicht gelesen!',
+'outmulticallback' => 'Diese Nachricht wurde zurückgerufen und deshalb von den Empfängern nicht gelesen!',
+'outsomemulticallback' => 'Diese Nachricht wurde von einigen Empfängern zurückgerufen, deshalb wurde sie von manchen gelesen und von anderen nicht!',
+'outnotread' => 'Diese Nachricht ist noch nicht vom Empfänger geöffnet worden!',
+'inread' => 'Du hast diese Nachricht geöffnet',
+'innotread' => 'Du hast diese Nachricht noch nicht geöffnet ',
+'outmultinotread' => 'Diese Nachricht ist noch nicht von jedem Empfänger geöffnet worden!',
+'outmultiread' => 'Diese Nachricht ist von den Empfängern geöffnet worden!',
+'outmultisomeread' => 'Diese Nachricht ist von einem oder mehreren Empfängern geöffnet worden!',
+'multicallback' => 'Nachricht öffnen um zurückzurufen!',
+'newstorefolder' => 'Neuer Ordner:',
+);
+
+## message status
+%im_message_status = (
+'confidential' => 'Vertraulich',
+'urgent' => 'Dringend!',
+'standard' => 'Standard',
+'alertmod' => 'Moderator melden.',
+'guestpm' => 'PN von Gast',
+'guestpmreply' => 'Antwort auf PN von Gast',
+);
+
+##  names for default storage folders
+%im_folders_txt = (
+'in' => 'Eingang',
+'out' => 'Ausgang',
+);
+
+## sorted views
+%im_sorted = (
+'latest' => 'Letzte Nachrichten',
+'oneweek' => 'Letzte Woche',
+'twoweeks' => 'Vor zwei Wochen',
+'threeweeks' => 'Vor drei Wochen',
+'fourweeks' => 'Vor vier Wochen',
+'older' => 'Vor mehr als einen Monat',
+'important' => 'Wichtige Nachrichten',
+'standart' => 'Nachrichten',
+);
+
+%guest_reply = (
+'guesttext' => 'Diese Funktion erlaubt Dir, auf die Nachricht des Gastes zu antworten.  Es wird zu seiner/ihrer eMail-Adresse geschickt. Bitte verwende keine Smilies oder BB Code, da sie nicht verarbeitet werden.', #new
+'origmess' => '----- Original Nachricht -----',
+'from' => 'Von',
+'to' => 'An',
+'sent' => 'Gesendet',
+'subject' => 'Betreff',
+);
+
+1;

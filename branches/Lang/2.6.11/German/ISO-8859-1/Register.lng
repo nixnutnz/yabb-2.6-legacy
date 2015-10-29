@@ -1,0 +1,230 @@
+###############################################################################
+# Register.lng (Register text definitions)                                    #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germanregisterlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@germanregisterlngmods = ();
+if(@germanregisterlngmods){
+    $germanregisterlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%register_txt = (
+'4' => 'Aus Sicherheitsgründen ist es nicht ratsam, dass Ihr angezeigter Name gleich der Benutzer-ID ist.',
+'23' => 'Kann nicht geöffnet werden:',
+'34' => 'Login',
+'35' => 'Benutzername',
+'36' => 'Passwort',
+'38' => 'Anzeigename',
+'69' => 'eMail',
+'70' => 'Überprüfe eMail',
+'81' => 'Passwort',
+'82' => 'Passwort wiederholen',
+'91' => 'Das Passwortfeld ist leer',
+'95' => "Mit der Registrierung sind Sie Mitglied im '<i>$mbname</i>' Forum,<br/> und haben Login-Zugriff auf <i>$boardurl/$yyexec.$yyext</i>",
+'97' => 'Registrieren',
+'97a' => 'Markierte Felder mit ',
+'97b' => 'sind bei der Registrierung erforderlich.',
+'98' => 'Wählen Sie eine Benutzer-ID',
+'98a' => 'Wählen Sie einen angezeigten Name',
+'101' => 'Wählen Sie eine Sprache',
+'110' => 'Diese Benutzer-ID ',
+'111' => 'Dieser angezeigte Name ',
+'112' => 'Diese eMail-Adresse ',
+'113' => ' ist bereits registriert.',
+'114' => ' ist verf&uuml;gbar!',
+'115' => ' ist reserviert.',
+'209' => 'I love YaBB 2.6.0!',
+'213' => q~Passwörter sind nicht identisch.~,
+'241' => 'Feld. Gültige Zeichen sind Buchstaben (A-Z, a-z), Zahlen (0-9), Leerzeichen und ( _ ! @ # $ % ^ & * ( ) + | ` ~ - = \ : ; \' " , . / ? [ ] { } )',
+'241r' => 'Feld. Gültige Zeichen sind Buchstaben (A-Z, a-z), Zahlen (0-9), Leerzeichen und ( + - . @ _ )',
+'241re' => 'Feld. Gültige Zeichen sind Buchstaben, Zahlen, Leerzeichen und ( [ ] # % + , - | . : = ? @ ^ _ )',
+'241e' => 'Feld. Gültige Zeichen sind Buchstaben (A-Z, a-z), Zahlen (0-9), und ( + - _ . @ )',
+'241ea' => '<br />Gültige Zeichen sind Buchstaben (A-Z, a-z), Zahlen (0-9), and ( + - _ . @ )',
+'241n' => 'kann nicht alles Zahlen sein.',
+'241a' => 'Feld!',
+'245' => 'Registrierung war erfolgreich',
+'430' => ', Sie sind in diesem Forum gebannt',
+'431' => 'Sie sind jetzt ein Mitglied dieses Forums.',
+'517' => 'Notwendige Informationen',
+'520' => 'Wird zur internen Identifikation (Login-ID) benötigt.<br />Verwenden Sie bitte nicht nur Zahlen.',
+'521' => 'Aus Sicherheitsgründen ist es nicht erlaubt, den angezeigten Namen als Ihre Benutzer-ID zu benutzen.<br />Es ist ratsam, keinen Namen zu wählen, der auch wie Ihre Kennung aussieht.',
+'585' => 'Ich stimme zu',
+'586' => 'Ich stimme nicht zu',
+'678' => 'Sorry',
+'679' => 'Es muss eine gültige eMail-Adresse sein.',
+'703' => 'Danke, dass Sie sich registriert haben. Sie werden gleich eine eMail mit Ihrem Passwort erhalten. Das Passwort können Sie nach dem Einloggen in Ihrem Profil ändern.',
+'704' => qq~<b>Sie können <a href="$scripturl?action=login">zur Anmeldung weitergehen</a>, sobald Sie Ihre eMail überprüft haben.</b>~,
+'721' => 'eMail-Adresse verstecken?',
+'730' => 'Die eMail-Adresse',
+'731' => 'wird bereits von einem registrierten Mitglied verwendet. Falls hier ein Fehler vorliegt, können Sie sich auf der Loginseite über den Link \'Passwort vergessen\' Ihr Passwort zuschicken lassen.',
+'764a' => 'Nutzungsbedingungen',
+'765' => 'Treten Sie der Mitgliedergruppe',
+'765a' => 'Mitgliedergruppe hinzufügen',
+'766' => 'Sie können der Mitgliedergruppe nur bei der Registrierung beitreten.',
+'767' => 'Sie können der Mitgliedergruppe bei der Registrierung beitreten oder danach in den Profiloptionen editieren.',
+'767a' => ' Steuerungs- oder Apple-Taste gedrückt halten und klicken Sie um mehrere Gruppen auszuwählen.',
+'768' => 'Erfordert, dass der angezeigte Name und Benutzername der Mitglieder verschieden sind?',
+'770' => 'Soll bei der Registrierung nach dem Geburtstag gefragt werden?',
+'771' => 'Nein',
+'772' => 'Ja, aber die Eingabe ist freiwillig',
+'773' => 'Ja, die Antwort ist zwingend um sich registrieren zu können',
+'birthday' => 'Geburtstag',
+'birthday_a' => '(<label for="birth_month">MM</label>/<label for="birth_day">TT</label>/<label for="birth_year">JJJJ</label>)',
+'birthday_b' => '(<label for="birth_day">TT</label>/<label for="birth_month">MM</label>/<label for="birth_year">JJJJ</label>)',
+'birthday_c' => 'Beachten Sie, dass Sie Ihr Geburtsdatum nicht ändern können, nachdem Sie gespeichert haben.',
+'gender' => 'Geschlecht',
+'gender_male' => 'Männlich',
+'gender_female' => 'Weiblich',
+'gender_reg' => q~Soll bei der Registrierung nach dem Geschlecht gefragt werden?~,
+'gender_reg_req' => 'Erforderlich',
+'gender_edit' => 'Beachten Sie, dass Sie Ihr Geschlecht nicht ändern können, nachdem Sie gespeichert haben.',
+'capslock' => 'Die Feststelltaste ist angeschaltet.',
+'wrong_char' => 'Dieses Zeichen im Passwort ist ungültig',
+'error_min_reg_time' => 'Ihre Registrierung ist aus Sicherheitsgründen blockiert worden. Gehen Sie bitte zurück und versuchen Sie es noch einmal.',
+'verification_question_desc' => 'Bitte beantworten Sie die oben genannte Überprüfungsfrage.',
+'verification_question_case' => 'Antworten sind Groß-und Kleinschreibung.',
+# the following error_ variables are inside JavaScript!
+'error_username' => 'Sie müssen eine Benutzer-ID eintragen.',
+'error_numname' => 'Sie können keine Benutzer-ID erstellen, die nur aus Zahlen besteht.',
+'error_usernameispass' => 'Aus Sicherheitsgründen können Sie Ihre Benutzer-ID oder Ihren angezeigten Namen nicht als Passwort verwenden.',
+'error_realname' => 'Sie müssen einen Namen eintragen, der angezeigt wird.',
+'error_name_cannot_be_userid' => 'Die Benutzer-ID und der angezeigte Name dürfen </b>nicht</b> identisch sein.',
+'error_email' => 'Sie müssen Ihre eMail Adresse eintragen.',
+'error_birth_day' => 'Sie müssen Ihren Geburtstags TAG (TT) in dem Format mit zwei Zahlen zwischen 01 und 31 eintragen.',
+'error_birth_month' => 'Sie müssen Ihren Geburtstags MONAT (MM) in dem Format mit zwei Zahlen zwischen 01 und 12 eintragen.',
+'error_birth_year' => 'Sie müssen Ihren Geburtstags JAHR (JJJJ) in dem Format mit vier Zahlen eingeben.',
+'error_birth_year_real' => 'Ihr Geburtstagsjahr ist nicht realistisch.',
+'error_pass1' => 'Sie müssen ein Passwort eintragen und es bestätigen.',
+'error_pass2' => 'Ihr Passwort ist nicht identisch mit dem bestätigten Passwort.',
+'error_verification' => 'Der Verifizierungs Code ist nicht vorhanden.',
+'error_reason' => 'Sie müssen mindestens einen Grund für die Registrierung in unserem Forum angeben.',
+'error_agree' => 'Sie müssen die \\"Nutzungsbedingungen\\" akzeptieren, bevor Sie sich registrieren können.',
+'error_gender' => 'Sie müssen Ihr Geschlecht auswählen',
+'error_verification_question' => 'Sie müssen die Überprüfungsfrage beantworten.',
+'error_email2' => 'Überprüfen Sie Ihre eMail- Adresse',
+'error_email3' => 'Ihre eMail-Adressen sind nicht identisch.',
+);
+
+%pwstrengthmeter_txt = (
+'1' => 'Unsicheres Passwort!',
+'2' => 'Zu kurz',
+'3' => 'Sehr schwach',
+'4' => 'Schwach',
+'5' => 'Mittel',
+'6' => 'Stark',
+'7' => 'Sehr stark',
+'8' => 'Lang genug!',
+);
+
+%floodtxt = (
+'1' => 'Ihr Validierungscode ist',
+'3' => 'Validierungscode',
+'casewarning' => 'Geben Sie bitte den Text genau so ein,<br />wie auf dem Bild dargestellt wird.<br />Beachten Sie dabei bitte die Groß- und Kleinschreibung.',
+'casewarning_1' => 'Geben Sie bitte den Text genau so ein, wie auf dem Bild dargestellt,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">ohne die ersten',
+'casewarning_3' => '<br /><span style="font-weight: bold;">ohne die letzten',
+'casewarning_4' => 'und letzte',
+'casewarning_5' => 'Zeichen.</span><br />Die Zeichen müssen in der gleichen Reihenfolge eingegeben werden,<br />und sie sind Groß-und Kleinschreibung.',
+);
+
+%prereg_txt = (
+'1' => "Ihr Account wurde noch nicht aktiviert!<br />Bitte aktivieren Sie ihn innerhalb von $preregspan Stunden, indem Sie auf den Link klicken, der Ihnen per eMail zugeschickt wurde.",
+'1a' => 'Vorregistrierung abgeschlossen',
+'1b' => 'eMail-Aktivierung vollendet, auf Freischaltung warten',
+'2' => 'Dies ist der Aktivierungscode für Ihren Account:',
+'3' => "Sie wurden im $mbname erfolgreich vorregistriert.\nBitte aktivieren Sie Ihren Account innerhalb von $preregspan Stunden!",
+'4' => 'Bitte klicken Sie auf den folgenden Link, um Ihren Account zu aktivieren',
+'5' => 'Ihr Account ist jetzt aktiviert',
+'5a' => ' und Sie sich können jetzt einloggen',
+'5b' => '.',
+'6' => "Sie haben Ihren Account nicht wie erforderlich innerhalb von $preregspan Stunden aktiviert!<br />Folglich wurde Ihre Vorregistrierung gelöscht<br /> Bitte registrieren Sie sich erneut.",
+'7' => 'Vorregistrierung und Accountaktivierung nutzen',
+'8' => 'Vorregistrierungs- und Aktivierungsprotokoll zeigen',
+'9' => 'Vorregistrierungs- und Aktivierungsprotokoll leeren',
+'10' => 'Ihr Aktivierungscode ist falsch.',
+'11' => 'Max. Zeitspanne für Benutzer zum Aktivieren des Accounts (in Stunden)',
+'12' => 'Vorregistrierte Benutzer löschen',
+'13' => 'Ihr Account muss noch vom Administrator bestätigt werden.<br />Sobald die angegebenen Daten überprüft wurden, erhalten Sie eine eMail.',
+'14' => "Dieser Benutzer ist nicht vorregistriert, oder die erlaubte Zeitspanne von $preregspan Stunden ist abgelaufen.",
+'15' => "Die erlaubte Zeitspanne zum Aktivieren von $preregspan Stunden ist abgelaufen.",
+'15a' => 'Registrierungs Protokoll zeigen',
+'16' => "Max. $RegReasonSymbols Zeichen. Noch verfügbar: ",
+'approved' => 'Ihr Antrag ist genehmigt worden für',
+'regreason' => 'Bitte teilen Sie uns Ihren Grund (bzw. mehrere Gründe) für die Registrierung in diesem Forum mit',
+'reason_exp' => ' Diese Information wird vom Forum-Personal verwendet, um Ihre Registrierung hier zu überprüfen.',
+'action' => 'Aktion',
+'del' => 'Sofort löschen',
+'reject' => 'Sofort ablehnen',
+'act' => 'Sofort aktivieren',
+'apr' => 'Sofort freischalten',
+'view' => 'Profil zeigen und entscheiden',
+'regen' => 'Regenerieren',
+'by' => 'von',
+'apr_id' => 'Registrierte Benutzer-ID',
+'apr_name' => 'Gewählter angezeigter Name',
+'apr_email_invalid' => 'Nicht aktivierte eMail Adresse',
+'apr_email_valid' => 'Aktivierte eMail Adresse',
+'apr_language' => 'Gewählte Sprache',
+'apr_ip' => 'Kommt von IP-Adresse',
+'apr_reason' => 'Grund der Registrierung',
+'apr_admin_reason_title' => 'Personal Kommentar',
+'apr_admin_reason' => 'Optionaler Kommentar zur Ablehnung',
+'apr_admin_approve' => 'Mitgliedschaft freischalten',
+'apr_admin_reject' => 'Mitgliedschaft ablehnen',
+'apr_admin_validate' => 'Account aktivieren',
+'apr_admin_delete' => 'Account löschen',
+'17' => 'Datum und Zeit',
+'18' => 'Status',
+'19' => 'Vorregistrierte Benutzer-ID',
+'20' => 'Dies ist das Eintragsprotokoll (wenn Vorregistrierung mit der eMail-Aktivierung, &amp; Aktivierung der Mitgliedschaft durch den Admin ist ausgewählt) der vorregistrierten Benutzer.<br />Bislang nicht aktivierte Accounts können hier gelöscht, abgelehnt, angeschaut, freigeschaltet und aktiviert werden.',
+'N' => 'Nicht aktiviert',
+'A' => 'Aktiviert',
+'T' => 'Löschen wegen abgelaufener Zeit',
+'E' => 'Fehler im Aktivierungscode',
+'D' => 'Gelöscht',
+'AR' => 'Abgelehnt',
+'AA' => 'Freigeschaltet',
+'W' => 'Aktiviert und auf Freischaltung warten',
+'LD' => 'Keine Einträge im Protokoll',
+'email_taken' => 'Die folgende eMail-Adresse wird schon von einem registrierten Mitglied verwendet:',
+);
+
+%fruittxt = (
+'1' => 'Bitte klicken Sie auf',
+'2' => 'den Apfel',
+'3' => 'die Bananen',
+'4' => 'die Trauben',
+'5' => 'die Erdbeere',
+'6' => 'Check fehlerhaft!',
+);
+
+%mail_check = (
+'address' => 'Die eingegebe eMail-Adresse:',
+'invalid' => 'ist ungültig.',
+'reason' => 'Der Fehler ist:',
+'0' => 'Prüfung erfolgreich.',
+'1' => 'Falscher Syntax in der eMail-Adresse.',
+'2' => 'Maildomain in der eMail-Adresse des genannten ist unbekannt.',
+'3' => 'Es gab einen Timeout während der DNS Kontrollen.',
+'4' => 'Benutzer ist unbekannt auf dem SMTP-Server.',
+'5' => 'Es gab einen Timeout während des SMTP-Checks.',
+'6' => 'Alle SMTP-Server, die für die eMail-Domain gefunden wurden, sind während der SMTP-Prüfung unerreichbar...',
+'7' => 'Mailbox ist vorübergehend voll, aber wahrscheinlich ein gültiger Benutzername.',
+);
+
+1;

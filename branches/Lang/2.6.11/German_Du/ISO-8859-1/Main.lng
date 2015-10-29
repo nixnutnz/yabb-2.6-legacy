@@ -1,0 +1,306 @@
+###############################################################################
+# Main.lng (General text definitions)                                         #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     21. Dezember 2014                                             #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_dumainlngver = 'YaBB 2.6.11 $Revision: 1617 $';
+@german_dumainlngmods = ();
+if(@german_dumainlngmods){
+    $german_dumainlngmods = 1;
+}
+if ( $action eq 'detailedversion' && $language ne 'German_Du' ) { return 1; }
+
+$yycharset= 'ISO-8859-1';
+$abbr_lang = 'de-de';
+
+@days = ('Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag');
+@months = ('Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember');
+@months_m = ('Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'); #list for lower case months if needed.
+@days_short = ('So','Mo','Di','Mi','Do','Fr','Sa'); # for smtp
+
+%maintxt = (
+'w3c_lngcode' => 'de-de',
+'error_description' => 'Systeminformation',
+'error_location' => '<b>Script</b>',
+'error_line' => '<b>Line</b>',
+'error_subroutine' => '<b>Subroutine</b>',
+'error_verbose' => '<b>Verbose</b>',
+'board' => 'Forum',
+'cat' => 'Kategorie',
+'0' => 'PN senden an',
+'1' => 'eMail senden an',
+'2' => '',
+'3' => '\'s Profil ansehen',
+'4' => 'Zur Freundesliste',
+'5' => 'hinzufügen',
+'6' => 'Mein Profil ansehen',
+'10' => 'Zuletzt Online vor',
+'11' => 'Tagen und',
+'12' => 'Stunden',
+'13' => 'Hat sich seit der Registrierung nicht angemeldet',
+'22' => 'Letzter Beitrag',
+'23' => 'Konnte nicht geöffnet werden.',
+'27' => 'Profil zeigen',
+'28' => 'Gast',
+'30' => 'am',
+'30a' => 'schrieb am',
+'30b' => q{}, #placeholder for non-English strings needed in that spot
+'31' => 'Zitat',
+'32' => 'Los',
+'34' => 'Einloggen',
+'35' => 'Du kannst dich ganz unten auf dieser Seite anmelden.',
+'40a' => 'Multimedia-Dateien können in RSS Feeds nicht angezeigt werden.',
+'41' => '(Du musst Dich',
+'42' => 'oder',
+'42a' => 'um Multimediadateien oder Links zu sehen).',
+'60' => 'Online',
+'61' => 'Offline',
+'62' => 'Themen-Werkzeuge',
+'63' => 'Beitrags-Werkzeuge',
+'64' => 'Es sind keine Aktionen durchzuführen.',
+'away' => 'Abwesend',
+'70' => 'Betreff',
+'97' => 'Registrieren',
+'102' => 'News',
+'107' => 'um',
+'109' => 'Begonnen von',
+'114' => 'Administrations-Login',
+'125' => 'Benachrichtigung',
+'126' => 'Willst Du per eMail benachrichtigt werden, wenn jemand auf diesen Beitrag antwortet?',
+'132' => 'Verschieben',
+'133' => 'Verschieben nach',
+'155' => 'Wartungsmodus',
+'156' => 'Das Forum ist derzeit im Wartungsmodus.',
+'157' => 'Das Forum ist derzeit im Wartungsmodus. Bitte versuche es später wieder. Danke.',
+'160' => 'Dieses',
+'160a' => 'Thema',
+'160b' => 'wurde verschoben nach',
+'160c' => 'Der Inhalt dieses Themas wurde verschoben in',
+'160d' => 'dieses Thema',
+'160e' => 'Vom Thema abweichende Antworten wurden in',
+'160f' => ' verschoben',
+'161' => 'Dieses Thema wurde in dieses Forum von',
+'161a' => 'Die letzten',
+'161b' => 'Beiträge wurde in dieses Thema von',
+'163' => 'Ja',
+'164' => 'Nein',
+'170' => 'Sorry, keine Ergebnisse gefunden',
+'171' => 'Kein Bild innerhalb von 30 Sekunden gefunden! Vorgang abgebrochen!', # Inside JavaScript!
+'193' => 'Zurück',
+'195' => 'Beitrag begonnen von',
+'196' => 'Titel',
+'197' => 'Beitrag von',
+'199' => 'Beitrag nicht gefunden',
+'213' => 'Letzte Beiträge des Benutzers',
+'214' => 'Neueste Beiträge',
+'214b' => 'neueste Themen',
+'215' => 'Neueste Themen',
+'236' => 'Zurück',
+'237' => 'zum Forumsindex.',
+'247m' => 'Guten Morgen',
+'247a' => 'Guten Tag',
+'247e' => 'Guten Abend',
+'247bday' => 'Alles Gute zum Geburtstag',
+'248' => 'Willkommen',
+'249' => 'Bitte',
+'316' => 'Posteingang',
+'317' => 'Datum',
+'318' => 'Von',
+'320' => 'Gesendete Nachrichten',
+'324' => 'An',
+'377' => 'oder',
+'409' => 'Die letzte POST-Anfrage mit Deiner IP Adresse erfolgte vor weniger als',
+'410' => 'Sekunden und wurde verhindert, um das Forum vor Überlastung zuschützen. Bitte versuche es später noch einmal.',
+'418' => 'Benachrichtigung',
+'470' => 'N/V',
+'470a' => '<i>Ex-Mitglied</i>',
+'525' => 'von',
+'609' => q~Aus Sicherheitsgründen musst Du bei YaBB grundsätzlich absolute Pfade angeben. Das \'../\' (übergeordneter Ordner) Symbol ist ungültig. Bitte starte die Setup.pl erneut und ändere die Pfade entsprechend.~,
+'633' => 'Warnung.',
+'634' => 'Nur registrierte Mitglieder haben Zutritt zu diesem Forum.',
+'635' => 'Bitte logge Dich unten ein oder klicke',
+'636' => '-hier-',
+'637' => "um einen Account im $mbname zu registrieren.",
+'668' => 'Seite drucken',
+'668a' => 'Beitrag drucken',
+'669a' => 'Bilder verstecken',
+'669b' => 'Bilder anzeigen',
+'758' => 'Verschoben',
+'769' => 'Heute',
+'769a'=> 'Gestern',
+'769al'=> 'gestern',
+'769b'=> 'Morgen',
+'773' => 'Willst Du die Seite jetzt drucken?',
+'900b' => 'Zurück',
+'900s' => 'Senden',
+'900pw' => 'Gebe das Passwort ein für',
+'900pd' => 'Forum-Zugriffspasswort',
+'900pe' => 'Bitte gib ein Passwort ein.',
+'900pg' => qq~Forum-Zugriffspasswort nur für Mitglieder. Bitte <a href="$scripturl?action=register" style="font-weight: bold;">registrieren Sie sich bei uns</a> oder <a href="$scripturl?action=login" style="font-weight: bold;">loggen Sie sich ein</a>.~,
+'900pr' => 'Privat',
+'dst' => '<sup>*</sup>',
+'rssfeed' => 'RSS Feed',
+'freeuserspace' => 'Kostenloser Host-Platz verfügbar:',
+'freediskspace' => 'Kostenloser Disk-Platz verfügbar:',
+'redirect' => 'Weiterleitung',
+'redirecttext' => 'Wenn Du diese Nachricht siehst, bedeutet das, dass die Weiterleitung nicht funktioniert.',
+'redirectlink' => 'Klicke hier',
+'noscript' => 'JavaScript muss aktiviert sein, damit der volle Funktionsumfang des Forum genutzt werden kann.',
+'go_to_board' => 'Gehe zum Board Index',
+'searchimg' => 'Beiträge nicht mehr als',
+'searchimg2' => 'Tage alt',
+'searchimg3' => 'Alle Beiträge',
+'collapse' => 'einklappen',
+'UTC' => '(UTC)',
+'maint' => 'Entferne diese Datei, wenn Dein Board ohne Grund im Wartungsmodus ist.',
+'printpage' => 'Drucke die Seite',
+);
+
+%load_txt = (
+'152' => 'Du hast',
+'153' => 'Nachrichten',
+'154' => 'sind neu.',
+'154b' => 'Neue Nachrichten.',
+'155' => 'ist neu.',
+'155b' => 'Neue Nachricht.',
+'nonew' => 'und keine neuen Nachrichten.',
+'231' => 'Geschlecht',
+'female' => 'weiblich',
+'male' => 'männlich',
+'471' => 'Nachricht',
+'616' => qq~Achtung, das Forum ist im <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
+'616a' => qq~Achtung, das Forum ist im <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
+'617' => 'Erinnerung: Das letzte Backup wurde erstellt am:',
+'773' => "IP wurde nicht gefunden, bitte ändere \$user_ip in \$lang/Main.lng",
+'805' => 'Du',
+'806' => '<b>kannst</b> hier:',
+'807' => 'kannst hier <b>nicht</b>:',
+'808' => 'Themen lesen.',
+'809' => 'Themen beantworten.',
+'810' => 'Neue Themen beginnen.',
+'811' => 'Umfragen starten.',
+'812' => 'Die Zahl Deiner Beiträge erhöhen.',
+'813' => 'Dateien anhängen.',
+);
+
+%load_imtxt = (
+'46' => 'Archiv',
+'71' => 'Ausdruck von Deinem',
+);
+
+%security_txt = (
+'430' => ', Du bist in diesem Forum gebannt',
+'678' => 'Sorry',
+);
+
+%reftxt = (
+'1' => 'Zugriffe von fremden Webseiten',
+'2' => 'Wähle die Aktionen, die von fremden Webseiten aus zugänglich sein sollen',
+'3' => "(Die Kommandos sind der $sourcedir/SubList.pl entnommen)",
+'4' => 'Einstellungen speichern',
+'6' => 'Externe Domain:',
+'7' => 'Deine Domain:',
+);
+
+%dereftxt = (
+'1' => 'Du wirst weitergeleitet... einen Moment bitte.',
+);
+
+%timelocktxt = (
+'02' => ' Tag(en) zum Ändern der Beiträge gesetzt. Der Beitrag wird nicht geändert.',
+'02a' => ' Tag(en) zum Löschen der Beiträge gesetzt. Der Beitrag wird nicht gelöscht.',
+);
+
+%smiltxt = (
+'1' => 'Mehr Smileys',
+'21' => 'Klicke auf den Smiley, den Du einfügen willst:',
+);
+
+%timetxt = (
+'1' => '<sup>st</sup>',
+'2' => '<sup>nd</sup>',
+'3' => '<sup>rd</sup>',
+'4' => '<sup>th</sup>',
+);
+
+
+
+
+
+
+
+
+
+%pidtxt = (
+'01' => 'alle',
+'02' => 'Klicke hier zur vorherige Seite - Doppelklick zur ersten Seite.',
+'03' => 'Klicke hier zur nächste Seite - Doppelklick zur letzten Seite.',
+);
+
+##  jump menu
+%jumpto_txt = (
+'to' => 'Foren Sprung &raquo;',
+'mess' => ' &raquo; Meine Nachrichten',
+'fav' => ' &raquo; Meine Favoriten',
+'note' => ' &raquo; Meine Benachrichtigungen',
+);
+
+## guest language selector
+%guest_txt = (
+'sellanguage' => 'Sprache wählen',
+'changelanguage' => 'Sprache wechseln',
+);
+
+## recent lists
+%recent_txt = (
+'recenttopic' => ' &raquo; 10 neueste Themen',
+'recentposts' => ' &raquo; 10 neueste Beiträge',
+);
+
+## pm to eMail forward
+$forwardedpm = qq~Diese Alarmierung wurde als eMail weitergeleitet~;
+
+%reg_txt = (
+'reason' => 'Gebe bitte einen Grund für die Registrierung an',
+'reason_exp' => 'Die Information wird nur temporär für die Überprüfung verwendet. Sie wird nicht dauerhaft gespeichert.',
+'admin_alert_start_one' => 'Es gibt <b>',
+'admin_alert_start_more' => 'Es gibt <b>',
+'admin_alert_one' => '</b> Vorregistrierung',
+'admin_alert_more' => '</b> Vorregistrierungen',
+'admin_alert_end' => ' die auf Freischaltung wartet.',
+'admin_alert_end_more' => ' die auf Freischaltung warten.',
+'admin_alert_act_one' => '</b> vorregistriertes Mitglied, das',
+'admin_alert_act_more' => '</b> vorregistrierte Mitglieder, die',
+'admin_alert_act_end' => ' nicht validiert wurde.',
+'admin_alert_act_end_more' => ' nicht validiert wurden.',
+'no_masterkey'=> '<div class="editbg">Es wurde kein Masterkey in den Einstellungen für Sicherheit und Validierungsbild festgelegt.<br />Es wird ein Standartwert benutzt, der jedoch weniger sicher ist!!</div>',
+);
+
+%lookup_txt = (
+'01' => 'Lookup',
+'02' => 'auf einem Whois-Server:',
+'iplookup' => 'IP Lookup',
+);
+
+%croak = (
+'open' => 'Kann nicht öffnen',
+'close' => 'Kann nicht schließen',
+'print' => 'Kann nicht drucken',
+);
+timetostring($date);
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. Alle Rechte vorbehalten.~;
+
+1;

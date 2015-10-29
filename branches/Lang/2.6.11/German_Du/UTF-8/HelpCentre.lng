@@ -1,0 +1,43 @@
+###############################################################################
+# HelpCentre.lng (Language Strings for the Help Centre                        #
+###############################################################################
+# German/Du - Translation by Pyragony                                         #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:     2. Dezember 2014                                              #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_duhelpcentrelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@german_duhelpcentrelngmods = ();
+if(@german_duhelpcentrelngmods){
+    $german_duhelpcentrelngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%helptxt = (
+'1' => "Hilfebereich",
+'2' => "Inhalte",
+'3' => "Hilfe für Benutzer",
+'4' => "Hilfe für Moderatoren",
+'5' => "Hilfe für Global-Moderatoren",
+'6' => "Hilfe für den Administrator",
+'7' => "Hilfecenter bearbeiten",
+'8' => "erledigt.",
+'9' => "Hilfe benutzerspezifisch anzeigen (Benutzergruppe beachten)",
+'10' => "Hier kannst Du die Hilfedateien verwalten, die Deinen Benutzern unter dem Menüpunkt Hilfe angezeigt werden. In den Feldern auf der linken Seite siehst Du die verfügbaren Hilfebereiche. Du kannst sie markieren und bearbeiten, oder zu den Feldern auf der rechten Seite hinzufügen, indem Du sie markierst und auf den Pfeil klickst. Sie werden dann im Hilfebereich sichtbar.",
+'643' => 'Zurück zum Anfang',
+'769' => "Flashlocation",
+'7a' => '     Bereichstitel',
+'7b' => 'Unterbereichstitel',
+);
+
+1;
