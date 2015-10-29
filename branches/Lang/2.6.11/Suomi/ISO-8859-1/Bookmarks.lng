@@ -1,0 +1,45 @@
+###############################################################################
+# Bookmarks.lng (Social Bookmarks text definitions)                           #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomibookmarkslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomibookmarkslngmods = ();
+if(@suomibookmarkslngmods){
+    $suomibookmarkslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%bookmark_txt = (
+'01' => 'Kuva',
+'02' => 'Otsikko',
+'03' => 'J‰rjestys',
+'05' => 'Oletko varma, ett‰ haluat poistaa t‰m‰n kirjanmerkin?',
+'08' => 'T‰ll‰ hetkell‰ ei ole yht‰‰n sosiaalista kirjanmerkki‰.',
+'09' => 'Sosiaalisten kirjanmerkkien asetukset',
+'10' => 'Ota k‰yttˆˆn kirjanmerkit?',
+'11' => 'Valitse alueet, joissa kirjanmerkit n‰ytet‰‰n:<br /><span class="small">- Jos yht‰‰n aluetta ei ole valittuna, n‰ytet‰‰n kaikkilla alueilla.<br />- K‰yt‰ Ctrl-, Shift- tai Apple-n‰pp‰int‰ valitaksesi/poistaaksesi valinnan alueilta.</span>',
+'12' => 'Sosiaaliset kirjanmerkit',
+'13' => 'Lis‰‰ uusi kirjanmerkki',
+'14' => 'URL',
+'15' => 'Lis‰‰ kirjanmerkki',
+'16' => 'Muokkaa kirjanmerkki‰',
+'17' => 'Peruuta',
+'18' => '- T‰m‰ on kirjanmerkkisivuston otsikko.',
+'19' => '- Sallitut tiedostotyypit: png jpg jpeg gif<br />- Suurin tiedostokoko: 250kt',
+'20' => '- T‰m‰ on kirjanmerkkisivuston linkki.<br />- K‰yt‰ {url} sivun URL:n kohdalla ja {title} sivun otsikon kohdalla.',
+'21' => '- T‰m‰ on j‰rjestys, jossa kirjanmerkit n‰ytet‰‰n.<br />- Pienemm‰t numerot n‰ytet‰‰n ensin.',
+'22' => 'Aiheen maksimipituus',
+);
+
+1;
+ 

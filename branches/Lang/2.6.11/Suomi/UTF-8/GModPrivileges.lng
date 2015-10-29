@@ -1,0 +1,79 @@
+###############################################################################
+# GModPrivileges.lng (Global Mod Access Privileges text definitions)          #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomigmodprivilegeslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomigmodprivilegeslngmods = ();
+if(@suomigmodprivilegeslngmods){
+    $suomigmodprivilegeslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%gmod_settings=(
+'1' => 'Yleisvalvojan pääsyoikeudet',
+'2' => 'Salli yleisvalvojan pääsy ylläpitoon?',
+'3' => 'Salli yleisvalvojan muokata käyttäjäprofiileja?',
+'3a' => 'Salli yleisvalvojan pääsy ylläpidon tekemiin muutoksiin käyttäjäprofiileissa?',
+'4' => 'Valitse mitkä toiminnot ovat<i>(action= osoiterivillä)</i> yleisvalvojalle sallittuja',
+);
+
+%gmodprivexpl_txt = (
+'ext_admin' => 'Salli laajennettujen profiilien muokkaus',
+'main' => 'Salli foorumin asetusten säätäminen',#'Allow to edit Forum Preferences and Settings'
+'advanced' => 'Salli Edistyneiden asetusten säätäminen',#'Allow to edit Advanced Settings'
+'editbots' => 'Salli hakukone tunnisteiden muokkaaminen',#'Allow to edit Search Engine Identifiers'
+'news' => 'Salli Foorumin uutisten muokkaaminen',#'Allow to edit Forum News'
+'smilies' => 'Salli hymiöiden lisääminen',#'Allow to add More Smilies'
+'setcensor' => 'Salli sensuroitujen sanojen asettaminen',#'Allow to set Censored Words'
+'modagreement' => 'Salli Rekisteröitymissopimuksen muokkaaminen',#'Allow to edit Registration Agreement'
+'eventcal_set' => 'Salli Tapahtumakalenterin muokkaus',
+'bookmarks' => 'Salli Sosiaalisten Kirjanmerkkien muokkaus', 
+'referer_control' => 'Salli muokata Referrer Security',#'Allow to edit Referrer Security'
+'security' => 'Salli tietoturva asetusten muuttaminen',# 'Allow to edit Security Settings'
+'setup_guardian' => 'Salli muokata Guardian Settings',#'Allow to edit Guardian Settings'
+'antispam' => 'Salli Anti-spam-asetusten muuttaminen',#'Allow to edit Antispam Settings '
+'spam_questions' => 'Salli Anti-spam-kysymysten muuttaminen',
+'honeypot' => 'Salli Honeypotin muuttaminen', 
+'managecats' => 'Salli Kategorioiden muokkaaminen',#'Allow to manage Categories'
+'manageboards' => 'Salli Alueiden muokkaaminen',#'Allow to manage Boards'
+'helpadmin' => 'Salli Ohjeiden muokkaaminen',#'Allow to edit Help Center Entries'
+'editemailtemplates' => 'Salli sähköpostiasetusten muokkaaminen',#'Allow to edit Email Messages'
+'addmember' => 'Salli käyttäjien lisääminen ja käyttäjätietojen katsominen',#'Allow to View and Add Members'
+'viewmembers' => 'Salli käyttäjätietojen katsominen',#'Allow to View Members'
+'deletemultimembers' => 'Salli käyttäjien poistaminen ja käyttäjätietojen katsominen',#'Allow to View and Delete Members'
+'modmemgr' => 'Salli käyttäjäryhmien hallinta',#'Allow to edit Member Groups'
+'mailing' => 'Salli sähköpostin lähettäminen Käyttäjille/Käyttäjäryhmille',#'Allow to Email Your Members/Membergroups'
+'ipban' => 'Salli IP-bannilistan muokkaaminen',#'Allow to edit Ban List'
+'setreserve' => 'Salli varattujen nimien asettaminen',#'Allow to set Reserved Names'
+'modskin' => 'Salli sivupohja-asetusten muokkaaminen',#'Allow to edit Template Configuration'
+'modcss' => 'Salli tyylien muokkaaminen',#'Allow to edit Style Sheet'
+'modtemp' => 'Salli sivupohjan muokkaaminen',#'Allow to edit Templates'
+'clean_log' => 'Salli Käyttäjän Online lokin tyhjentäminen',#'Allow to Clean Users Online Log'
+'boardrecount' => 'Salli Alueiden uudelleenlaskeminen',#'Allow to Recount Board Totals'
+'rebuildmesindex' => 'Salli viestilistauksen uudelleenrakentaminen',#'Allow to Rebuild Message Index'
+'membershiprecount' => 'Salli jäsenmäärän uudelleenlaskeminen',#'Allow to Recount Membership'
+'rebuildmemhist' => 'Salli käyttäjähistorian uudelleenrakentaminen',#'Allow to Rebuild Members History'
+'rebuildmemlist' => 'Salli jäsenlistan uudelleenrakentaminen',#'Allow to Rebuild Members List'
+'rebuildnotifications' => 'Salli Muistutustiedostojen uudelleenrakentaminen',
+'deleteoldthreads' => 'Salli vanhojen viestiketjujen poistaminen',#'Allow to Remove Old Threads'
+'manageattachments' => 'Salli liitetiedostojen hallinta',#'Allow to administrate File Attachments'
+'detailedversion' => 'Salli yksityiskohtaisen versiotarkistuksen katsominen',#'Allow to View Detailed Version Check'
+'stats' => 'Salli foorumin tilastojen tarkastelu',#'Allow to View Forum Statistics'
+'showclicks' => 'Salli foorumin käyttöhistorian tarkastelu',#'Allow to View forum access log'
+'errorlog' => 'Salli virhelokin tarkastelu',#'Allow to View Error Log'
+'view_reglog' => 'Salli rekisteröintilokin tarkastelu, esirekisteröityneiden käyttäjien hyväksyminen tai hylkääminen',#'Allow to View Registration Log, approve or reject preregistered Members'
+'modlist' => 'Salli asennettujen Modien tarkastelu',#'Allow to View All Installed Mods'
+'backupsettings' => 'Salli pääsy Varmuuskopiointikeskukseen',
+);
+
+1;

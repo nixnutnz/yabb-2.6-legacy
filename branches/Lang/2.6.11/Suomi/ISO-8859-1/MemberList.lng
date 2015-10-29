@@ -1,0 +1,52 @@
+###############################################################################
+# MemberList.lng (Member List text definitions)                               #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomimemberlistlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomimemberlistlngmods = ();
+if(@suomimemberlistlngmods){
+    $suomimemberlistlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%ml_txt = (
+'1' => 'J‰rjestys:',
+'2' => 'Etsi!',
+'3' => 'Katsot',
+'4' => 'J‰senten',
+'19' => 'Vaihda sivun indeksi‰',
+'21' => 'Viestit',
+'34' => 'Avatar',
+'35' => 'Nimi',
+'87' => 'Asema',
+'96' => 'Kotisivu',
+'139' => 'Sivuja',
+'233' => 'Rekisterˆitymisp‰iv‰m‰‰r‰',
+'234' => 'Rekisterˆitymisp‰iv‰',
+'307' => 's‰hkˆposti',
+'308' => 'Piiloitettu s‰hkˆposti',
+'309' => '/',
+'312' => 'Katsot j‰seni‰ nimen perusteella',
+'313' => '',
+'314' => 'Katsot j‰seni‰ viestien lukum‰‰r‰n perusteella',
+'331' => 'J‰senet',
+'759' => 'Valitse kirjain.',
+'760' => 'T‰lle kirjaimelle ei ole merkintˆj‰.',
+'800' => 'Muut',
+'801' => 'Etsi j‰sen',
+'802' => 'Valitettavasti ei yht‰‰n osumaa haulle',
+'dr_warning' => '* Tili vanhempi kuin foorumi - ole hyv‰ ja tarkista foorumin aloitusp‰iv‰m‰‰r‰:',
+'dr_warnurl' => 't‰‰ll‰',
+);
+
+1;

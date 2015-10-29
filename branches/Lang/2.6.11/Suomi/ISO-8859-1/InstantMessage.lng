@@ -1,0 +1,192 @@
+###############################################################################
+# InstantMessage.lng (InstantMessage text definitions)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomiinstantmessagelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomiinstantmessagelngmods = ();
+if(@suomiinstantmessagelngmods){
+    $suomiinstantmessagelngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%inmes_txt = (
+'21' => 'Viestejä',
+'30' => ',',
+'remove' => 'Poista',
+'70' => 'Aihe',
+'118' => 'Aihe',
+'143' => 'yksityisviestikeskus',
+'144' => 'yksityisviestit',
+'145' => 'Lainaa',
+'146' => 'Vastaa',
+'147' => 'Välitä',
+'sendmess' => 'Lähetä viesti',
+'sendbroadmess' => 'Lähetä yleiskutsuviesti',
+'151' => 'Ei viestejä...',
+'190' => 'Kaikki',
+'inbox' => 'Saapuneet',
+'outbox' => 'Lähetetyt',
+'draft' => 'Keskeneräiset',
+'storage' => 'Varasto',
+'folder' => 'hakemisto',
+'317' => 'Päiväys',
+'318' => 'Lähettäjä',
+'320' => 'Älä tallenna kopiota tästä viestistä Lähetetyt-hakemistoon.',
+'321' => 'Huomaa, että liitteet poistetaan viestien mukana, joten jos liität tiedostoja Lähetetyt-kansiossa, ylläoleva valinta ei päde.',
+'datesave' => 'Tallennuspäivämäärä',
+'forward' => 'Lähetä edelleen',
+'replymess' => 'Vastaa viestiin',
+'error' => 'Virhe',
+'selectrecent' => 'valitse tai lisää viimeisimmistä yksityisviesteistä:<br />kaksoisklikkaa kopioidaksesi \'to\'',
+'selectgroups' => 'valitse tai lisää jäsenryhmistä:<br />kaksoisklikkaa kopioidaksesi \'to\'',
+'allmembers' => 'kaikki jäsenet',
+'324' => 'Vastaanottaja',
+'325' => 'CC',
+'326' => 'BCC',
+'327' => 'Ryhmä',
+'bmallmembers' => 'Kaikki foorumin jäsenet',
+'bmadmins' => 'Ylläpitäjät',
+'bmgmods' => 'Yleisvalvojat',
+'bmymods' => 'Foorumin valvojat',
+'bmmods' => 'Kaikki alueen valvojat / valvojaryhmät',
+'470' => 'Ei tiedossa',
+'500' => 'Merkitse kaikki viestit luetuiksi', # inside JavaScript!
+'500a' => 'Valmis', # inside JavaScript!
+'507' => 'Esikatsele',
+'511' => 'IP kirjattu',
+'preview' => 'Esikatsele teksti',
+'savedraft' => 'Tallenna keskeneräisenä',
+'536' => 'Viestisi koko ylitti sallitun',
+'537' => 'merkillä. Ole hyvä ja lyhennä viestiäsi',
+'737' => 'Valitse kaikki',
+'739' => 'Haluatko varmasti poistaa tämän viestin?',
+'761' => 'Käyttäjä',
+'762' => 'ei ota vastaan pikaviestejä',
+'763' => 'ja',
+'764' => 'Merkitse luetuksi',
+'765' => 'Yksityisviestiasetukset',
+'766' => 'Käyttäjää ei ole',
+'767' => '(Ei otsikkoa)',
+'770' => 'Oletko varma että haluat poistaa tämän yksityisviestin?',
+'770a' => '\n\nHuomaa, että kaikki viestiin liitetyt tiedostot poistetaan myös.',
+'770b' => '\n\nHuomaa, että kaikki valittuihin viesteihin liitetyt tiedostot poistetaan myös.',
+'delmultipms' => 'Oletko varma että haluat poistaa nämä yksityisviestit?',
+'773' => 'Lähetetty',
+'774' => 'Varastoi',
+'775' => 'Uusi viesti',
+'775a' => 'Uusi yleiskutsuviesti',
+'storeor' => 'tai',
+'storein' => '',
+'777' => 'REMOVE viestejä', #do not remove or translate any CAPITAL text
+'status' => 'Viestin tila',
+'addfolder' => 'Lisää',
+'foldererror' => 'kenttä!',
+'messages' => 'Henkilökohtaiset viestini',
+'center' => 'Hallintapaneeli',
+'profile' => 'Profiili',
+'favs' => 'Suosikit',
+'notify' => 'ilmoitukset',
+'viewprofile' => 'Katso profiilini',
+'viewnotify' => 'Katso ilmoitukseni',
+'viewfavs' => 'Katso suosikkini',
+'viewrecentposts' => 'Katso viimeisimmät',
+'viewrecentposts2' => 'viestini',
+'goviewrecent' => 'Mene!',
+'broadcast' => 'Yleisviestit',
+'alert' => 'Varoitusviestit',
+'new' => 'uusi',
+'delete' => 'Poista',
+'clickto1' => 'Klikkaa valitaksesi vastaanottaja(t)',
+'clickto2' => '', # used for other languages
+'torecepients' => 'vastaanottaja(t)',
+'togroups' => 'ryhmä(t)',
+'usercp' => 'Hallintapaneeli', 
+'attach_1' => 'Tämä viesti sisältää',
+'attach_2' => 'liitettä',
+'attach_3' => 'liitteen',
+);
+
+%inmes_imtxt = (
+'01' => 'viestiä sallitun määrän ollessa',
+'07' => 'Tämä on uusi viesti!',
+'08' => 'Olet vastannut tähän viestiin!',
+'09' => 'Tämä viesti on luettu!',
+'13' => 'Sinulla on',
+'19' => 'saapuneiden osalta!',
+'status' => 'Tila',
+'39' => 'Ei viestejä',
+'40' => 'Edellinen viesti',
+'41' => 'Seuraava viesti',
+'42' => 'Näytä kaikki lähetetyt ja vastaanotetut yksityisviestit käyttäjältä',
+'49' => 'Lähetä seuraaville käyttäjäryhmille:',
+'store' => 'Varastoi',
+'60' => 'Paikalla',
+'61' => 'Poissa',
+'67' => 'Käyttö',
+'69' => 'Lainausta käytetty luvatta',
+'73' => 'Haluatko varmasti peruuttaa kyseisen viestin?',
+'83' => 'Peruuta',
+'84' => 'Luvaton koodin käyttö',
+'callallback' => 'Peru kaikki lähetykset',
+'outread' => 'Vastaanottaja on avannut viestin!',
+'callback' => 'Tämä viesti peruttiin joten kukaan vastaanottaja ei ehtinyt lukea viestiä!',
+'outmulticallback' => 'Tämä viesti peruttiin joten kukaan vastaanottaja ei ehtinyt lukea viestiä!',
+'outsomemulticallback' => 'Tämä viesti peruttiin joiltakin käyttäjiltä, joten osa vastaanottajista on ehtinyt lukea viestin!',
+'outnotread' => 'Vastaanottaja ei vielä ole avannut viestiä!',
+'inread' => 'Olet avannut tämän viestin',
+'innotread' => 'Et vielä ole avannut tätä viestiä ',
+'outmultinotread' => 'Yksikään vastaanottaja ei vielä ole avannut tätä viestiä!',
+'outmultiread' => 'Vastaanottajat ovat avanneet tämän viestin!',
+'outmultisomeread' => 'Yksi tai useampi vastaanottaja on avannut tämän viestin!',
+'multicallback' => 'Avaa viesti peruaksesi sen lähetys!',
+'newstorefolder' => 'Lisää uusi tallennushakemisto',
+);
+
+## message status
+%im_message_status = (
+'confidential' => 'Salainen',
+'urgent' => 'Kiireinen!',
+'standard' => 'Normaali',
+'alertmod' => 'Varoita moderaattoria!',
+'guestpm' => 'Yksityisviesti vieraalta',
+'guestpmreply' => 'Vastaa vieraalta saatuun yksityisviestiin',
+);
+
+##  names for default storage folders
+%im_folders_txt	= (
+'in' => 'Sisään',
+'out' => 'Ulos',
+);
+
+## sorted views
+%im_sorted = (
+'latest' => 'Viimeisimmät viestit',
+'oneweek' => 'Viime viikolla',
+'twoweeks' => 'Kaksi viikkoa sitten',
+'threeweeks' => 'Kolme viikkoa sitten',
+'fourweeks' => 'Neljä viikkoa sitten',
+'older' => 'Yli kuukausi sitten',
+'important' => 'Tärkeät viestit',
+'standart' => 'Viestit',
+);
+
+%guest_reply = (
+'guesttext' => 'Tämä toiminto sallii sinun vastata vieraalta saatuun viestiin. Se lähetetään hänen sähköpostiosoitteeseen. Älä käytä hymiöitä tai BB-koodia, sillä sitä ei tulkita sähköpostiviestiin',
+'origmess' => '----- Alkuperäinen viesti -----',
+'from' => 'Keneltä',
+'to' => 'Kenelle',
+'sent' => 'Lähetetty',
+'subject' => 'Aihe',
+);
+
+1;

@@ -1,0 +1,72 @@
+###############################################################################
+# Poll.lng (Poll text definitions)                                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$suomipolllngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomipolllngmods = ();
+if(@suomipolllngmods){
+    $suomipolllngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%polltxt = (
+'4' => 'Kysymys',
+'6' => 'Kysymys',
+'7' => 'Valinnat',
+'15' => 'ƒ‰nestys',
+'16' => 'Kysymys',
+'17' => 'ƒ‰nim‰‰r‰',
+'18' => 'L‰het‰',
+'19' => 'Katso tuloksia',
+'20' => 'Avaa',
+'21' => 'Sulje',
+'22' => '*** T‰m‰ ‰‰nestys on p‰‰ttynyt ***',
+'23' => 'ƒ‰nestyksen tiedot:',
+'24' => 'ƒ‰nt‰',
+'25' => 'T‰t‰ vaihtoehtoa ei ‰‰nestetty.',
+'26' => 'Piilota tulokset:',
+'27' => 'Poista',
+'30' => 'IP-osoite',
+'31' => 'P‰ivi‰ ‰‰nestyksest‰',
+'32' => 'Salli vieraiden ‰‰nest‰minen:',
+'33' => 'Selaa ‰‰nestyksi‰',
+'35' => 'Nimi',
+'39' => 'Muokkaa',
+'40' => 'ƒ‰nestyskysymys',
+'41' => 'ƒ‰nestyskysymyksess‰ on kielletty merkki. Yrit‰ uudelleen.',
+'42' => 'ƒ‰nestyksen tiedot',
+'43' => 'Poista ‰‰ni',
+'44' => 'Haluatko varmasti poistaa t‰m‰ ‰‰nestyksen?',
+'45' => 'Tekij‰',
+'45a' => 'Viimeisin muokkaaja',
+'46' => 'on',
+'47' => 'Kiitos osallistumisesta.',
+'48' => 'Tulokset pysyv‰t salaisina kunnes kaikki ‰‰net on laskettu.',
+'49' => 'Poista ‰‰net',
+'53' => '*** Muut eiv‰t pysty katsomaan tuloksia ennen ‰‰nestyksen sulkemista ***',
+'54' => 'Valitse t‰m‰ jos haluat antaa vieraille mahdollisuuden ‰‰nest‰‰.',
+'55' => 'Valitse t‰m‰ jos haluat piiloittaa tulokset ennen ‰‰nestyksen sulkemista.',
+'56' => 'Valitse t‰m‰ jos haluat antaa mahdollisuuden valita useamman kuin yhden vaihtoehton.',
+'57' => 'ƒ‰nestyskommentti',
+'58' => 'Monivalinta',
+'59' => 'ƒ‰nestyskommentti',
+'64' => 'ƒ‰nesi',
+'65' => 'Valintasi oli',
+'66' => 'ƒ‰nestysvaihtoehdot olivat',
+'showcased' => 'T‰ll‰ hetkell‰ nostettu esille',
+'setshowcased' => 'Nosta ‰‰nestys etusivulle?',
+'showcaserem' => 'Poista ‰‰nestys etusivulta?',
+'confirm' => 'Haluatko varmasti nostaa t‰m‰n ‰‰nestyksen etusivulle?\\nToinen ‰‰nestys on jo etusivulla!', # Test before changing! It's inside a javascript. Do not use " or ' inside parenteses.
+);
+
+1;

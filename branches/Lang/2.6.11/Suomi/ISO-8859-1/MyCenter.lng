@@ -1,0 +1,79 @@
+###############################################################################
+# MyCenter.lng (My Center text definitions)                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomimycenterlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomimycenterlngmods = ();
+if(@suomimycenterlngmods){
+    $suomimycenterlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+## LEAVE USERLABEL intact. Move within the string for correct language syntax!
+
+%mycenter_txt = (
+'welcometxt' => "Käyttäjän USERLABEL Hallintapaneeli",
+'buddylisttitle' => 'Kaverisi',
+'buddylistnone' => 'Kaverilistasi on tyhjä',
+'buddydeleted' => 'Tämä kaveri on poistettu. Nimeä ei ole enää saatavilla!',
+'hiddenemail' => 'Piiloitettu sähköpostiosoite',
+'currentsettings' => 'Nykyiset asetuksesi:',
+'onoffstatus' => 'Online/Offline-tila:', 
+'onoffstatuson' => 'Online/Offline',
+'onoffstatusaway' => 'Poissa',
+'view' => 'Katso',
+'stealth' => 'Stealth:',
+'stealth_off' => 'Stealth-asetus pois',
+'stealth_on' => 'Stealth-asetus päällä',
+'posts' => 'Viestit',
+'location' => 'Sijainti', 
+'mylastposts' => 'Näytä 5 viimeisintä viestiäni',
+);
+
+%display_txt = (
+'139' => 'Sivut',
+);
+
+%mc_menus = (
+'messages' => 'Viestit',
+'profile' => 'Profiili',
+'posts' => 'Ilmoitukset',
+);
+
+%pm_search = (
+'all' => 'kaikki',
+'justthis' => 'ainoastaan tämä hakemisto',
+'byuser' => 'käyttäjänimellä',
+'desc' => 'Etsi yksityisviestejäni',
+'search' => 'Etsi',
+);
+
+%mc_folders = (
+'foldername' => 'Hakemiston nimi',
+);
+
+%my_favs = (
+'70' => 'Aihe',
+'109' => 'Aloittaja',
+'110' => 'Vastauksia',
+'301' => 'Näyttöjä',
+'330' => 'Aiheita',
+'21' => 'Viestejä',
+'22' => 'Viimeisin viesti',
+'525' => 'Kirjoittaja',
+'526' => '', #'by',
+'527' => 'Aiheen aloitti',
+'737' => 'Valitse kaikki',
+);
+
+1;

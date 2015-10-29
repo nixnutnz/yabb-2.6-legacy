@@ -1,0 +1,41 @@
+###############################################################################
+# LivePreview.lng                                                             #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+# Mod created by Carsten Dalgaard                                             #
+#                and added to YaBB core in Version 2.5.4                      #
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
+###############################################################################
+
+$suomilivepreviewlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomilivepreviewlngmods = ();
+if(@suomilivepreviewlngmods){
+    $suomilivepreviewlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%livepreview_txt = (
+'info_missing' => 'Puuttuva tai väärä tieto:',
+'name_empty' => 'Nimi-kenttää ei ole täytetty.',
+'long_name' => 'Ole hyvä ja lyhennä nimeäsi. Se on liian pitkä',
+'mail_empty' => 'Sähköpostikenttää ei ole täytetty.',
+'valid_mail' => 'Ole hyvä ja kirjoita kelvollinen sähköpostiosoite.',
+'veri_code' => 'Tarkistus-kenttää ei ole täytetty.',
+'veri_quest' => 'Tarkistuskysymys-kentää ei ole täytetty.',
+'subj_empty' => 'Aihe-kenttää ei ole täytetty.',
+'mess_empty' => 'Viesti-kenttä on tyhjä.',
+'subj_allcaps' => 'Näyttää siltä, että yrität kirjoittaa ISOILLA KIRJAIMILLA Aihe-kentässä. Tämä on kielletty foorumin säännöissä.',
+'mess_allcaps' => 'Näyttää siltä, että yrität kirjoittaa ISOILLA KIRJAIMILLA Viesti-kentässä. Tämä on kielletty foorumin säännöissä.',
+'pm_recipient' => 'Sinun täytyy täyttää Vastaanottaja-kenttä.',
+'no_links'     => "Sinä et voi käyttää linkkejä, ennen kuin olet kirjoittanut $minlinkpost viestiä.",
+);
+
+1;

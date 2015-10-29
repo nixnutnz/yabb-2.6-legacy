@@ -1,0 +1,126 @@
+###############################################################################
+# Templates.lng                                                               #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomitemplateslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomitemplateslngmods = ();
+if(@suomitemplateslngmods){
+    $suomitemplateslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%templ_txt=(
+'1' => 'Foorumipohjan tyylisivu',
+'2' => 'Foorumipohjan yläosa',
+'3' => 'Foorumin etusivu',
+'4' => 'Aihelueen etusivu',
+'5' => 'Viestiketjut',
+'5a' => 'Etsi',
+'5b' => 'Kalenteri',
+'5c' => 'Viestien kirjoitus',
+'5d' => 'Profiili',
+'5e' => 'Käyttäjäluettelo',
+'6' => 'Foorumipohjan muokkaus',
+'7' => 'Täällä voit yhdistellä elementtejä eri foorumipohjista ja esikatsella lopputulosta.',
+'8' => 'Foorumipohjan kuvat',
+'9' => 'Esikatselu',
+'10' => 'Foorumipohjat',
+'11' => 'Asetukset',
+'12' => 'Tallenna nimellä',
+'13' => 'Tallenna',
+'14' => 'Poista',
+'15' => 'Haluatko varmasti poistaa',
+'18' => 'Elementit',
+'19' => 'Tässä kohtaa voit muuttaa foorumisi taustaväriä sekä reunojen ja tekstien värin, ja foorumisi pääelementtien kirjasinperheen ja tekstin koon.',
+'20' => 'Elementti',
+'21' => 'Tausta',
+'22' => 'Kirjasin',
+'23' => 'Reuna',
+'24' => 'Muokkaa',
+'25' => 'Sivun runko',
+'26' => 'Foorumin runko (#container)',
+'26b' => 'Yläosa',
+'26c' => 'Yläosan linkki',
+'27' => 'Erotin',
+'28' => 'Elementin reunan väri',
+'29' => 'Vaakaviiva',
+'30' => 'Otsikkopalkki (.titlebg)',
+'30a' => 'Otsikkopalkin linkki (.titlebg a)',
+'31' => 'Kategoriapalkki (.catbg)',
+'31a' => 'Kategoriapalkin linkki (.catbg a)',
+'32' => 'Ikkuna 1 (.windowbg)',
+'33' => 'Ikkuna 2 (.windowbg2)',
+'34' => 'Tekstikenttä/painike',
+'34a' => 'Tekstin syöttökenttä',
+'34b' => 'Painike',
+'35' => 'Viestikenttä',
+'36' => 'Valinta',
+'37' => 'Lainaus',
+'38' => 'Koodi',
+'39' => 'Korostus',
+'40' => 'Tämä on ',
+'41' => 'Väri',
+'42' => 'Kirjasin',
+'43' => 'Kiinteä',
+'44' => 'Katkoviiva',
+'45' => 'Pisteviiva',
+'46' => 'Kaksoisviiva',
+'47' => 'Syvennetty',
+'48' => 'Kohoviiva',
+'49' => 'Sisäreuna',
+'50' => 'Ulkoreuna',
+'51' => 'Muokkaa tyylitiedostoa',
+'52' => 'Muokkaa pohjasivuja',
+'53' => 'Tämä on lainaus',
+'54' => 'Tämä on koodia',
+'55' => 'Tämä on muokkaus',
+'56' => 'Tämä on tekstin korostus',
+'64' => 'Foorumin runko (#container)',
+'65' => 'Viestin teksti (.message)',
+'66' => 'Viestissä oleva linkki (.message a)',
+'67' => 'Hallintapaneeli (User CP)',
+'68' => 'Uutiset',
+'69' => 'Hei,',
+'70' => 'sinulla on',
+'71' => 'viestejä',
+'72' => 'Testikategoria',
+'73' => 'Testialue',
+'74' => 'Mod Nimet',
+'74a' => 'Mod Ryhmät',
+'75' => 'Testiaihe',
+'76' => 'Aiheen otsikko',
+'77' => 'Foorumipohjan testialue',
+'78' => 'Ulkoasun testialue',
+'79' => 'Tämä on alueen kuvaus',
+'80' => 'Linkki viimeiseen aiheeseen',
+'81' => 'Kategorian nimilinkki',
+'82' => 'Linkki viimeiseen viestiin',
+'83' => 'Tämä on aihelinkki',
+'84' => 'Tässä ovat uutiset (mikäli käytössä)',
+'tabtitle' => 'Aihealueen otsikko (.tabtitle)',
+'tabtitlea' => 'Aihealueen otsikon linkki (.tabtitle a)',
+'tabtitle_txt' => 'Aihealueen otsikon teksti (.tabtitle-text)',
+'userinfo' => 'Viestien käyttäjätiedot',
+'tabmenu' => 'Välilehtivalikko',
+'forum' => 'Foorumi',
+'admincenter' => 'Ylläpitokeskus',
+'buttontext' => 'CSS-painikkeet',
+'buttondescription' => 'Täällä voit vaihtaa ikonien ja tekstin paikan painikkeiden sisällä ja taustan grafiikan painikkeelle.',
+'moveicon1' => 'Ikonin sijainti (pysty)',
+'moveicon2' => 'Ikonin sijainti (vaaka)',
+'iconspace' => 'Ikoni-Teksti-väli',
+'movetext' => 'Tekstin sijainti (vaaka)',
+'noedit' => qq~Turvallisuussyistä et voi muokata oletustyyliä paitsi muokkamalla käsin lähdetiedostoa.<br />Tehdääksesi muutoksia tästä näytöstä: tallenna työsi uudelle nimelle. Voit sitten valita tämän uuden tyylin oletusulkonäön tyyliksi <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Tyylipohjan asetukset</a>-näytössä~,
+);
+
+1;

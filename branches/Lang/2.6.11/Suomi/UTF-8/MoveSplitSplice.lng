@@ -1,0 +1,67 @@
+###############################################################################
+# MoveSplitSplice.lng (Move, Split and Splice text definitions)               #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomimovesplitsplicelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomimovesplitsplicelngmods = ();
+if(@suomimovesplitsplicelngmods){
+    $suomimovesplitsplicelngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%sstxt=(
+'1' => 'Siirrä, jaa ja liitä',
+'2' => 'Jaa viestit',
+'3' => 'Viestit',
+'4' => 'Poistu',
+'5' => 'Liitä kohteeseen',
+'6' => 'Kategoria',
+'7' => 'Aihealue',
+'8' => 'Aihe',
+'9' => 'Uusi aiheen otsikko',
+'10' => 'Sijainti',
+'11' => "'Siirretty/Jaettu...' Info",
+'12' => 'Jätä alkuperäiset viestit',
+'13' => 'Älä jätä mitään',
+'14' => 'Valitse siirrettävät viestit nykyisestä aiheesta:',
+'14a' => 'Pidä pohjassa SHIFT tai CTRL valitaksesi useampia viestejä.',
+'15' => 'Valitse siirrettävän viestin tilalle jätettävä ilmoitus halutessasi.<br />Jos haluat siirtää &raquo;&raquo; Kaikki viestit &laquo;&laquo; ilmoitus jätetään joka tapauksessa.',
+'15a' => 'Lisää uusi viesti siirrettyjen viestien taakse, joka sisältää tietoja mistä ne tulivat ja kuka siirsi ne.',
+'16' => 'Valitse kategoria, johon valitut viestit siirretään.',
+'17' => 'Valitse aihealue, johon valitut viestit siirretään.',
+'18' => 'Valitse aihe, johon valitut viestit siirretään.',
+'19' => 'Valitse kohta, johon valitut viestit liitetään. <br />Viestit liitetään valitun kohdan alapuolelle.',
+'20' => 'Anna uuden aiheen otsikko.<br />Jätä kenttä tyhjäksi, jos haluat käyttää ensimmäisen valitun viestin otsikkoa.',
+'21' => 'VS:',
+'22' => 'Sinun tulee osoittaa kategoria.',
+'22a' => 'Sinun tulee osoittaa aihealue.',
+'22b' => 'Sinun tulee osoittaa',
+'23' => 'siirrettävä viesti.',
+'24' => 'Lähetä',
+'25' => 'Tyhjennä',
+'26' => '&raquo;&raquo; Kaikki viestit &laquo;&laquo;',
+'27' => 'Tässä alueessa ei voi kirjoittaa viestejä tai tähän alueeseen ei saisi siirtää viestejä.',
+'28' => '&raquo;&raquo; Kategoriat &laquo;&laquo;',
+'29' => '&raquo;&raquo; Aihealueet &laquo;&laquo;',
+'30' => '&raquo;&raquo; Uusi aihe &laquo;&laquo;',
+'31' => '&raquo;&raquo; Aiheen loppu &laquo;&laquo;',
+'32' => '&raquo;&raquo; Aiheen alku &laquo;&laquo;',
+
+'40' => 'Vastaa',
+'41' => 'Aiheen aloitus',
+
+'50' => 'Palaa takaisin ja uudelleenlataa sivu tai et voi lähettää.',
+'51' => 'Kahden kyselyn liittäminen ei ole mahdollista.',
+);
+
+1;

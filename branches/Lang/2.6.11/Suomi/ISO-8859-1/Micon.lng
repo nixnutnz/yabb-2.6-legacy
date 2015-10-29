@@ -1,0 +1,120 @@
+###############################################################################
+# Micon.lng (Image text/images definitions)                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomimiconlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomimiconlngmods = ();
+if(@suomimiconlngmods){
+    $suomimiconlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+if (!$language){$language = $lang;}
+
+%img_txt_m =(
+'70' => 'Omat suosikit',
+);
+
+%img_polltxt_m = (
+'44' => 'Äänestys',
+'45' => 'Uusi äänestys',
+'46' => 'Äänestys suljettu',
+);
+
+%messageindex_txt_m = (
+'302' => 'Uusi',
+'303' => 'Siirry ensimmäiseen lukemattomaan viestiin',
+'454' => 'Kuuma aihe (Enemmän kuin',
+'454a' => 'vastausta)',
+'455' => 'Erittäin kuuma aihe (Enemmän kuin',
+'456' => 'Lukittu aihe',
+'457' => 'Normaali aihe',
+'458' => 'Piilotettu aihe',
+'459' => 'Piilotettu tärkeä aihe',
+'460' => 'Piilotettu lukittu aihe',
+'461' => 'Piilotettu tärkeä lukittu aihe',
+'779' => 'Tärkeä aihe',
+'779a' => 'Yleisilmoitus',
+'779b' => 'Lukittu yleisilmoitus',
+'780' => 'Tärkeä lukittu aihe',
+'781' => 'Tärkeä',
+'845' => 'Siirretty aihe',
+);
+
+%messageindex_sort_m = (
+'sort_az' => "Lajittele (A-Z)",
+'sort_za' => "Lajittele (Z-A)",
+'sort_min' => "Lajittele (vähiten vastauksia)",
+'sort_max' => "Lajittele (eniten vastauksia)",
+'sort_last' => "Lajittele (uusin vastaus)",
+'sort_first' => "Lajittele (vanhin vastaus)",
+);
+
+%im_message_status_m = (
+'confidential' => 'Salainen',
+'urgent' => 'Kiireinen!',
+'standard' => 'Normaali',
+'alertmod' => 'Varoita moderaattoria!',
+'guestpm' => 'Yksityisviesti vieraalta',
+'guestpmreply' => 'Vastaa vieraalta saatuun yksityisviestiin',
+);
+
+%tabmenu_txt_m = (
+'edittab' => 'Muokkaa välilehteä',
+'tabdel' => 'Poista tämä välilehti',
+'savetab' => 'Tallenna teksti',
+'newtab' => 'Lisää välilehti',
+);
+
+%maintxt_m = (
+'900pd' => 'Salasanasuojattu alue',
+);
+
+%var_cal_m = (
+'calbirthday' => 'Syntymäpäivä',
+'calprivate' => 'Yksityinen',
+'caldel' => 'Poista',
+'caledit' => 'Muokkaa tapahtumaa',
+'calsave' => 'Tallenna tapahtuma',
+'getaddevent' => 'Lisää uusi tapahtuma',
+'eventinfo' => 'Tapahtuma',
+'eventannounce' => 'Ilmoitus',
+'eventholiday' => 'Juhlapäivä',
+'eventnote' => 'Huomautus',
+'eventparty' => 'Juhla',
+'eventcelebration' => 'Juhlinta',
+'eventsport' => 'Urheilu',
+'eventmedia' => 'Media (TV)',
+'eventmeeting' => 'Tapaaminen',
+);
+
+%mess_icon_txt = (
+'281' => 'Standardi',
+'282' => 'Peukalo ylös',
+'283' => 'Peukalo alas',
+'284' => 'Huutomerkki',
+'285' => 'Kysymysmerkki',
+'286' => 'Lamppu',
+'287' => 'Hymiö',
+'288' => 'Vihainen',
+'289' => 'Kliseinen',
+'290' => 'Naurava',
+'291' => 'Surullinen',
+'292' => 'Silmänisku',
+'293' => 'Virnistys',
+'294' => 'Järkyttynyt',
+'295' => 'Mahtava',
+'296' => 'Täh',
+);
+
+1;

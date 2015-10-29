@@ -1,0 +1,60 @@
+###############################################################################
+# Smtp.lng (Smtp server text definitions)                                     #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomismtplngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomismtplngmods = ();
+if(@suomismtplngmods){
+    $suomismtplngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%smtp_txt = (
+'1' => "PALVELINVIRHE: $smtpaddr ei löydetty!",
+'2' => 'PALVELINVIRHE: Socket yhteyttä ei voitu luoda !',
+'3' => "PALVELINVIRHE: Ei voitu yhdistää osoitteeseen $smtpaddr portissa $port !",
+'4' => 'PALVELINVIRHE: Vastaanottaja- kenttä on tyhjä !',
+'5' => 'Postipalvelimen yhteysloki:',
+'no_to' => '\'To\' muuttuja (vastaanottajan osoite) on tyhjä, mutta sitä tarvitaan SMTP protokollassa',
+'no_from' => '\'From\' muuttuja (lähettäjän osoite) on tyhjä, mutta sitä tarvitaan SMTP protokollassa',
+'211' => 'Järjestelmän tila tai ohjevastaus',
+'214' => 'Ohjeviesti',
+'220' => '<domain> Yhteys käyttövalmiina',
+'221' => '<domain> Yhteys sulkee tiedonsiirtokanavaa',
+'250' => 'Haluttu postitoiminto suoritettu',
+'251' => 'Käyttäjä ei paikallinen: lähetetään eteenpäin <forward-path>',
+'354' => 'Aloita viestin syöttö: lopeta <CRLF>.<CRLF>',
+'421' => '<domain> Yhteys ei saatavilla',
+'432' => 'Yhteyssalasana vaadittu',
+'450' => 'Haluttua postitoiminto ei suoritettu: postilaatikko ei saatavilla',
+'451' => 'Haluttu toiminto peruttu: paikallinen virhe käsittelyssä',
+'452' => 'Haluttua toimintoa ei suoritettu: järjestelmässä ei tarpeeksi tilaa',
+'454' => 'Väliaikainen autentikoinnin epäonnistuminen',
+'500' => 'Syntaksivirhe, komentoa ei tunneta',
+'501' => 'Vastaanottajatieto ei kelpaa. Rele vaatii SMTP AUTH',
+'502' => 'Komentoa ei toteutettu',
+'503' => 'Väärä komentosarja',
+'504' => 'Komentoparametria tai autentikointia ei toteutettu',
+'530' => 'Autentikointi vaadittu',
+'534' => 'Autentikointimekanismi on liian heikko',
+'538' => 'Salaus vaadittu haluttuun autentikointimekanismiin',
+'535' => 'Autentikointi epäonnistui',
+'550' => 'Haluttua toimintoa ei suoritettu: postilaatikko tai käyttäjä ei ole saatavilla',
+'551' => 'Käyttäjä ei ole paikallinen: Ole hyvä ja yritä <forward-path>',
+'552' => 'Haluttu postitoiminto peruttu: Postitilin koon ylitys',
+'553' => 'Haluttua toimintoa ei suoritettu: postitilin nimi ei ole sallittu',
+'554' => 'Tapahtuma epäonnistui',
+'555' => 'Jäsen',
+);
+
+1;

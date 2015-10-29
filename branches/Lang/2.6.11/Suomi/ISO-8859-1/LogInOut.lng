@@ -1,0 +1,67 @@
+###############################################################################
+# LogInOut.lng (LogInOut text definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomiloginoutlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+@suomiloginoutlngmods = ();
+if(@suomiloginoutlngmods){
+    $suomiloginoutlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%loginout_txt = (
+'34' => 'Kirjaudu',
+'35' => 'K‰ytt‰j‰tunnus tai s‰hkˆpostiosoite',
+'35a' => 'k‰ytt‰j‰tunnus- tai s‰hkˆpostiosoitekent‰ss‰.',
+'35b' => 'K‰ytt‰j‰tunnus, n‰yttˆnimi tai s‰hkˆpostiosoite',
+'36' => 'Salasana',
+'36b' => 'Salasanan nollaus',
+'130' => "Terveisin, $mbname yll‰pito",
+'130a' => "T‰m‰ muistutus pyydettiin foorumilta $mbname. Mik‰li et pyyt‰nyt salasanasi nollausta poista t‰m‰ viesti. Muussa tapauksessa siirry t‰nne nollataksesi salasanasi: ",
+'192' => 'S‰hkˆposti on l‰hetetty osoitteeseen',
+'193' => 'Takaisin',
+'194' => 'muistutus',
+'241' => 'kent‰ss‰!',
+'315' => 'Unohtuiko salasana?',
+'339' => 'L‰het‰',
+'669' => 'Salasanamuistutin',
+'711' => 'Hyv‰',
+'753' => 'Tarvitseeko rekisterˆity‰?',
+'837' => 'K‰ytt‰j‰tunnuksesi on merkkikoon huomioiva.',
+'capslock' => 'Caps lock on p‰‰ll‰.',
+'wrong_char' => 'T‰m‰ merkki salasanassa ei kelpaa',
+'error_user_info' => 'Sinun t‰ytyy t‰ytt‰‰ k‰ytt‰j‰nimi tai s‰hkˆpostiosoite.',
+'no_user_info_exists' => 'K‰ytt‰j‰nimi tai s‰hkˆpostiosoite, jonka annoit, ei ole olemassa t‰ll‰ foorumilla.', 
+'verification_question_desc' => 'Ole hyv‰ ja vastaa yll‰olevaan tarkistuskysymykseen.',
+'verification_question_case' => 'Vastauksissa kirjainkoolla on merkityst‰.',
+'error_verification' => 'Tarkistuskoodi puuttuu.',
+'error_verification_question' => 'Sinun t‰ytyy vastata tarkistuskysymykseen.',
+'keeps' => 'Pid‰ minut kirjautuneena',
+);
+
+%floodtxt=(
+'1' => 'Varmistuskoodisi on',
+'3' => 'Varmistuskoodi',
+'casewarning' => 'Ole hyv‰ ja kirjoita t‰sm‰lleen sama teksti kuin kuvassa. Kirjainkoolla on merkityst‰.',
+'casewarning_1' => 'Ole hyv‰ ja kirjoita t‰sm‰lleen sama teksti kuin kuvassa,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">ilman ensimm‰ist‰',
+'casewarning_3' => '<br /><span style="font-weight: bold;">ilman viimeist‰',
+'casewarning_4' => 'ja viimeist‰',
+'casewarning_5' => 'merkki‰.</span><br />Merkit t‰ytyy kirjoittaa samassa j‰rjestyksess‰,<br />ja kirjainkoolla on merkityst‰.',
+);
+
+%prereg_txt=(
+'5' => 'K‰ytt‰j‰tunnuksesi on nyt aktivoitu ja voit kirjautua sis‰‰n!',
+);
+
+1;
