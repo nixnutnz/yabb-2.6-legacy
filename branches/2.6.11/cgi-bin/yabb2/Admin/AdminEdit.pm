@@ -498,11 +498,12 @@ sub ModifyAgreement2 {
     fclose(AGREE);
 
     $FORM{'agreement'} =~ s/\n/<br \/>\n/gsm;
-    fopen( HELPAGREE,
-        ">$helpfile/$agreementlanguage/User/user00_agreement.help" );
-    $my_regtitle = $register_txt{'764a'};
-    $my_regtitle =~ s/ /_/gsm;
-    print {HELPAGREE} qq^\$SectionName = "$my_regtitle";
+    if ( -e "$helpfile/$agreementlanguage/User/user00_agreement.help" ) {
+        fopen( HELPAGREE,
+            ">$helpfile/$agreementlanguage/User/user00_agreement.help" );
+        $my_regtitle = $register_txt{'764a'};
+        $my_regtitle =~ s/ /_/gsm;
+        print {HELPAGREE} qq^\$SectionName = "$my_regtitle";
 
 ### Section 1
 #############################################
@@ -512,7 +513,8 @@ sub ModifyAgreement2 {
 
 
 1;^ or croak "$croak{'print'} HELPAGREE";
-    fclose(HELPAGREE);
+        fclose(HELPAGREE);
+    }
 
     $yySetLocation =
       $FORM{'destination'}
