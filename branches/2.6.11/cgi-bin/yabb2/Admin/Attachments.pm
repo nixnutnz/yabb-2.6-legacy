@@ -614,6 +614,7 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
     </tr><tr class="att_h_b">~;
         $rsort = ( $sort == 7 ? -7 : 7 );
         $yymain .= qq~
+        <td class="$class_sortattach center att"><b>$fatxt{'6c'}</b></td>
         <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sortattach center att">
             <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'40'}</b></a>
         </td>~;
