@@ -1,0 +1,44 @@
+###############################################################################
+# Debug.lng (Debugging text definitions)                                      #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$dutchdebuglngver = 'YaBB 2.6.11 $Revision: 1611 $';
+if ( $action eq 'detailedversion' && $language ne 'Dutch' ) { return 1; }
+
+%debug_txt = (
+'getpairs' => 'inkomende GET paren',
+'postpairs' => 'inkomende POST paren',
+'name' => 'naam',
+'value' => 'waarde',
+'opened' => 'Geopend',
+'closed' => 'Gesloten bestanden en ',
+'equal' => 'Bestanden. (moeten gelijke aantallen zijn)',
+'nohires' => 'Je server heeft waarschijnlijk niet',
+'nomodule' => 'geinstalleerd of de lokale module ervoor wordt niet ondersteund',
+'pagespeed' => 'Pagina geladen in',
+'loaded' => 'seconden',
+'debugging' => 'Foutopsporing (Debugging) Informatie',
+'benchmarking' => 'benchmarking',
+'ipaddress' => 'Je IP adres is',
+'browser' => 'Je Browser Agent',
+'trace' => 'debug tracer',
+'check' => 'Bestands Controle op Open/Sluiten',
+'filehandles' => 'Bestands afhandeling/Bestanden geopend',
+'filehandleslegend' => 'Bestands afhandeling (tijd) &nbsp; &nbsp; <i>MODE</i>bestandspadnaam &nbsp; &nbsp; sluiten BESTANDSAFHANDELING (tijd)<br />[package, scriptpathname, line]',
+'filesloaded' => 'Bestanden geladen van',
+);
+
+1;

@@ -1,0 +1,78 @@
+###############################################################################
+# GModPrivileges.lng (Global Mod Access Privileges text definitions)          #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$dutchgmodprivilegeslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%gmod_settings=(
+'1' => 'Privileges voor Global Moderatoren',
+'2' => 'Global Moderatoren toegang tot het Admin Center geven?',
+'3' => 'Globale Moderatoren toegang geven tot het bewerken van Gebruikersprofielen?',
+'3a' => 'Globale Moderatoren toegang geven tot Admin bewerkingen voor Gebruikersprofielen?',
+'4' => 'Selecteer welke acties <i>(action= in URLs)</i> Globale Moderatoren bevoegt zijn te ondernemen',
+);
+
+%gmodprivexpl_txt = (
+'ext_admin' => 'Sta toe uitgebreide profielen te bewerken',
+'main' => 'Sta toe om Forum voorkeuren en instellingen te bewerken',
+'advanced' => 'Sta toe geavanceerde instellingen te bewerken',
+'editbots' => 'Sta toe Zoekamchine identificeringen te bewerken',
+'news' => 'Sta toe Forum nieuws te bewerken',
+'smilies' => 'Sta toe Smilies toe te voegen',
+'setcensor' => 'Sta toe gecensureerde woorden in te stellen',
+'modagreement' => 'Sta toe de Registratie overeenkomst te bewerken',
+'eventcal_set' => 'Sta toe de Evenementen Kalender te bewerken',
+'bookmarks' => 'Sta toe Sociale Bladwijzer te bewerken', 
+'referer_control' => 'Sta toe Referer beveiliging te bewerken',
+'security' => 'Sta toe om beveiligingsinstellingen te bewerken',
+'setup_guardian' => 'Sta toe om Guardian instellingen te bewerken',
+'antispam' => 'Sta toe de Anti-spam instellingen te bewerken',
+'spam_questions' => 'Sta toe de Anti-spam vragen te bewerken',
+'honeypot' => 'Sta toe de Honeypot te bewerken', 
+'managecats' => 'Sta toe Categorieën te beheren',
+'manageboards' => 'Sta toe Boards te beheren',
+'helpadmin' => 'Sta toe Help Centrum posten te bewerken',
+'editemailtemplates' => 'Sta toe e-mailberichten te bewerken',
+'addmember' => 'Sta toe Leden toe te voegen',
+'viewmembers' => 'Sta toe Leden te bekijken',
+'deletemultimembers' => 'Sta toe leden te bekijken en te verwijderen',
+'modmemgr' => 'Sta toe leden groepen te bewerken',
+'mailing' => 'Sta toe leden/ledengroepen een e-mail te sturen',
+'ipban' => 'Sta toe Banlijst te bewerken',
+'setreserve' => 'Sta toe gereserveerde namen in te stellen',
+'modskin' => 'Sta toe Template Configuratie te bewerken',
+'modcss' => 'Sta toe Style Sheet te bewerken',
+'modtemp' => 'Sta toe Templates te bewerken',
+'clean_log' => 'Sta toe gebruikers Online log op te schonen',
+'boardrecount' => 'Sta toe Board totalen te hertellen',
+'rebuildmesindex' => 'Sta wederopbouw van Berichten index toe',
+'membershiprecount' => 'Sta toe Lidmaatschap te hertellen',
+'rebuildmemhist' => 'Sta de wederopbouw van leden geschiedenis toe',
+'rebuildmemlist' => 'Sta wederopbouw Ledenlijst toe',
+'rebuildnotifications' => 'Sta de wederopbouw van Notificatie files toe',
+'deleteoldthreads' => 'Sta de verwijdering van oude discussies toe',
+'manageattachments' => 'Sta het beheren van bestandsbijlagen toe',
+'detailedversion' => 'Sta het bekijken van een gedetailleerde versie controle toe',
+'stats' => 'Sta het bekijken van Forum statistieken toe',
+'showclicks' => 'Sta bekijken logboek forum toegang toe',
+'errorlog' => 'Sta bekijken Error log toe',
+'view_reglog' => 'Sta toe om registratie Log te bekijken, en gepreregistreerde leden goed- of af te keuren',
+'modlist' => 'Sta toe alle geïnstalleerde Mods te bekijken',
+'backupsettings' => 'Sta toegang toe tot het Backup Centrum',
+);
+
+1;

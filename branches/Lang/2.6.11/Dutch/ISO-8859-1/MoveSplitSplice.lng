@@ -1,0 +1,66 @@
+###############################################################################
+# MoveSplitSplice.lng (Move, Split and Splice text definitions)               #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$dutchmovesplitsplicelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%sstxt=(
+'1' => 'Verplaatsen, splitsen &amp; verbinden',
+'2' => 'Bijdrage Splitsen',
+'3' => 'Bijdrage',
+'4' => 'Behouden',
+'5' => 'Verbinden met',
+'6' => 'Categorie',
+'7' => 'Board',
+'8' => 'Topic',
+'9' => 'Titel nieuwe Topic invoeren',
+'10' => 'Positie',
+'11' => "'Verplaatst/Verbonden met...' Info",
+'12' => 'Ooorspronkelijke bijdrage behouden',
+'13' => 'Geen indicatie', 
+'14' => 'Selecteer hier welke berichten verplaatst of verbonden moeten worden:',
+'14a' => 'Houdt de toets SHIFT of CTRL ingedrukt terwijl u klikt om meerdere berichten te selecteren.',
+'15' => 'Kies wat er in plaats van de bijdrage achtergelaten moet worden.<br />Als u wilt verplaatsen &raquo;&raquo; Alle Bijdragen &laquo;&laquo;, wordt in ieder geval een notitie achtergelaten.',
+'15a' => 'Een nieuwe Bijdrage achter de verplaatste bijdrage, bevat de info van waar ze kwamen en wie hen verplaatste.',
+'16' => 'Selecteer naar welke categorie de geselecteerde bijdrage verplaatst moeten worden.',
+'17' => 'Selecteer naar welk board de geselecteerde bijdrage verplaatst moeten worden.',
+'18' => 'Selecteer naar welke Topic de geselecteerde bijdragen verplaatst moeten worden.',
+'19' => 'Selecteer de positie, om de geselecteerde bijdrage te verbinden.<br />De Bijdragen worden geplaatst onder de aangegeven positie.',
+'20' => 'Voer het onderwerp van de nieuwe topic hier in.<br />Laat dit vak leeg als u het onderwerp wilt gebruiken van de eerste geselecteerde bijdrage.',
+'21' => 'Re:',
+'22' => 'U moet een categorie aanwijzen.',
+'22a' => 'U moet minstens een board aanwijzen.',
+'22b' => 'U moet minstens een',
+'23' => 'Bijdrage uitkiezen om te kunnen verplaatsen.',
+'24' => 'Uitvoeren',
+'25' => 'Terugzetten',
+'26' => '&raquo;&raquo; Alle Bijdragen &laquo;&laquo;',
+'27' => 'In dit board kan niet gepost worden en er zouden geen bijdragen naar verplaatst moeten worden.',
+'28' => '&raquo;&raquo; Categoriën &laquo;&laquo;',
+'29' => '&raquo;&raquo; Boards &laquo;&laquo;',
+'30' => '&raquo;&raquo; Nieuwe Topic &laquo;&laquo;',
+'31' => '&raquo;&raquo; Topic Einde &laquo;&laquo;',
+'32' => '&raquo;&raquo; Topic Begin &laquo;&laquo;',
+
+'40' => 'Reageer',
+'41' => 'Topic Start',
+
+'50' => 'Ga terug en herlaad deze pagina eerst, of u bent niet in staat uit te voeren.',
+'51' => 'Het is niet toegestaan twee Peilingen te verbinden.',
+);
+
+1;

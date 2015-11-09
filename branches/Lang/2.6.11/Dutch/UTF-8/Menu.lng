@@ -1,0 +1,128 @@
+###############################################################################
+# Menu.lng (Menu text/images definitions)                                     #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$dutchmenulngver = 'YaBB 2.6.11 $Revision: 1611 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+
+if (!$language){$language = $lang;}
+
+%img_txt =(
+'2' => 'Admin-centrum',
+'27' => 'Profiel tonen',
+'31' => 'Verwijder',
+'33' => 'Start nieuwe topic',
+'34' => 'Log in',
+'34a' => 'Sessie Update',
+'54' => 'Verwijder',
+'55' => 'Verwijder Selectie',
+'63' => 'Moderatoren',
+'66' => 'Veranderen',
+'69' => 'E-mail',
+'70' => 'Mijn Favorieten',
+'71' => 'Voeg toe aan Favorieten',
+'72' => 'Verwijder uit Favorieten',
+'79' => 'Profiel bewerken',
+'97' => 'Registreren',
+'102' => qq~<img src="$imagesdir/back_to_top.png" alt="Top" title="naar Boven" />~,
+'102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="Bottom" title="naar Beneden" />~,
+'103' => 'Board Index',
+'104' => 'Vergrendel/Ontgrendel',
+'105' => 'Laatste Bericht',
+'108' => 'Uitloggen',
+'119' => 'Help',
+'121' => 'Verwijder',
+'131' => 'Bericht Notificatie',
+'131a' => 'Voeg Topic Notificatie toe',
+'131d' => 'Veerwijder Topic Notificatie',
+'132' => 'Verplaats',
+'144' => 'PB',
+'144a' => 'Persoonlijk Bericht',
+'145' => 'Citaat',
+'145q' => 'Markeer &amp; Citaat',
+'146' => 'Antwoorden',
+'182' => 'Zoeken',
+'300' => 'Markeer Topics als gelezen',
+'316' => 'Postvak in',
+'320' => 'Postvak uit',
+'321' => 'Nieuwe boodschap',
+'323' => 'Instellingen',
+'331' => 'Leden',
+'418' => 'Notificaties',
+'452' => 'Markeer Alle Posts als gelezen',
+'465' => 'Print',
+'465a' => 'Print Post',
+'467' => 'Profiel',
+'515' => 'WWW',
+'707' => 'Verstuur Topic',
+'781' => 'Sticky',
+'620' => 'Splitsen',
+'621' => 'Verplaats, Splitsen &amp; Verbinden',
+'620a' => 'Splits dit onderwerp beginnend met dit bericht als het eerste bericht in een nieuw onderwerp, gevolgd door de andere posts tot de laatste post toegevoegd is aan deze draad.',
+'621a' => 'Open venster om topics te verplaatsen, te splitsen en verbinden.',
+'622' => 'Verberg',
+'623' => 'Samenvouwen',
+'624' => 'Uitvouwen',
+'625' => 'Voeg toe aan mijn Favorieten',
+'626' => 'Uit mijn Favorieten verwijderen',
+'627' => 'Markeer als ongelezen',
+'mycenter' => "Gebruikerscentrum",
+'addbuddy' => 'Aan mijn Vriendenlijst toevoegen',
+'pmadmin' => 'Verstuur bericht naar Admin',
+'alertmod' => 'Waarschuw Board Moderator over deze Post',
+'alertmodtext' => 'Rapporteer Post',
+'forward' => 'Naar voren',
+'sendpm' => 'Verstuur boodschap',
+'sendbmess' => 'Verstuur broadcast bericht',
+'aim' => 'AIM',
+'facebook' => 'Facebook',
+'gtalk' => 'GTalk',
+'icq' => 'ICQ',
+'msn' => 'MSN',
+'myspace' => 'MySpace',
+'skype' => 'Skype/VoIP',
+'yim' => 'YIM',
+'twitter' => 'Twitter',
+'youtube' => 'YouTube',
+'birthdaylist' => 'Verjaardag lijst',
+'eventcal' => 'Kalender',
+'to_top' => 'Naar top van de pagina', 
+);
+
+%img_polltxt = (
+'1' => 'Creëer  Peiling',
+'2' => 'Voeg Peiling toe',
+'20' => 'Open',
+'21' => 'Sluit',
+'27' => 'Verplaats',
+'33' => 'Bekijk stemmen',
+'33a' => 'Bekijk Topic',
+'39' => 'Aanpassen',
+'43' => 'Verwijder stem',
+'44' => 'Peiling',
+'45' => 'Nieuwe Peiling',
+'46' => 'Peiling gesloten',
+);
+
+%img_imtxt = (
+'42' => 'Vriendenlijst',
+'46' => 'Opslag',
+);
+
+require Sources::Menu;
+SetMenu();
+
+1;

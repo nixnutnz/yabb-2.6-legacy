@@ -1,0 +1,38 @@
+###############################################################################
+# HelpCentre.lng (Language Strings for the Help Centre                        #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$dutchhelpcentrelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%helptxt = (
+'1' => "Help Sectie",
+'2' => "Inhoud",
+'3' => "Hulp voor gebruikers",
+'4' => "Hulp voor moderatoren",
+'5' => "Hulp voor global mderatoren",
+'6' => "Hulp voor administrator",
+'7' => "Bewerk Help Centrum Berichten",
+'8' => "Klaar.",
+'9' => "Gebruikers Rechten",
+'10' => "Hier kunt u de help secties bewerken, toevoegen, verwijderen of herschikken getoond aan de gebruikers in het help-systeem. In de linker velden ziet u de beschikbare help-gedeelten. U kunt hen markeren en bewerken of hen aan de rechter velden toevoegen door markering en te klikken op de pijl om hen zichtbaar te maken in het help-systeem.",
+'643' => 'Terug naar het begin',
+'769' => "Flash locatie",
+'7a' => '    Sectie Titel',
+'7b' => 'Sub-sectie Titel',
+);
+
+1;

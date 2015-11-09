@@ -1,0 +1,59 @@
+###############################################################################
+# Smtp.lng (Smtp server text definitions)                                     #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.6.11                                                   #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$dutchsmtplngver = 'YaBB 2.6.11 $Revision: 1611 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%smtp_txt = (
+'1' => "SERVER ERROR:Kan $smtpaddr niet vinden",
+'2' => 'SERVER ERROR: Kan een socketverbinding niet openen',
+'3' => "SERVER ERROR: Kon geen verbinding maken met $smtpaddr op poort $port",
+'4' => 'SYSTEM ERROR: Het ontvangersadres is leeg',
+'5' => 'Mail Server communicatie log:',
+'no_to' => 'De \'Naar\' variabele (adres van de geadresseerde) is leeg en is nodig in het SMTP protocol',
+'no_from' => 'De \'Van\' variable (adres van afzender) is leeg en is nodig in the SMTP protocol',
+'211' => 'Systeem status, of systeem help antwoord',
+'214' => 'Help-boodschap',
+'220' => '<domein> Service gereed',
+'221' => '<domein> Service sluit transmissie kanaal',
+'250' => 'De aangevraagde mail actie is voltooid',
+'251' => 'Gebruiker niet lokaal: wordt omgeleid naar <forward-path>',
+'354' => 'Begin met mail invoer: eindig met <CRLF>.<CRLF>',
+'421' => '<domein> Service niet beschikbaar',
+'432' => 'Een wachtwoord transitie is nodig',
+'450' => 'Aangevraagde mail actie niet uitgevoerd: mailbox niet beschikbaar',
+'451' => 'Aangevraagde actie afgebroken: lokale fout tijdens bewerking',
+'452' => 'Aangevraagde actie afgebroken: onvoldoende opslagruimte',
+'454' => 'Tijdelijke verificatie mislukt',
+'500' => 'Syntax fout, commando niet herkend',
+'501' => 'Ongeldig e-mailadres. Relay vereist SMTP AUTH',
+'502' => 'Commando niet geïmplementeerd',
+'503' => 'Ongeldige commandosequentie',
+'504' => 'Opdracht parameter of autorisatie type niet geïmplementeerd',
+'530' => 'Verificatie vereist',
+'534' => 'Verificatie mechanisme is te zwak',
+'538' => 'Codering benodigd voor gevraagd verificatie mechanisme',
+'535' => 'Verificatie mislukt',
+'550' => 'Gevraagde actie niet uitgevoerd: mailbox of gebruiker niet beschikbaar',
+'551' => 'Gebruiker niet lokaal: alstublieft probeer <forward-path>',
+'552' => 'Gevraagde mail actie afgebroken: opslag toewijzing overschreden',
+'553' => 'Gevraagde actie niet uitgevoerd: mailbox naam is niet toegestaan',
+'554' => 'Transactie mislukt',
+'555' => 'Lid',
+);
+
+1;

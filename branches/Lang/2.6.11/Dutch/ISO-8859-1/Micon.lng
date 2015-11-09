@@ -1,0 +1,119 @@
+###############################################################################
+# Micon.lng (Image text/images definitions)                                   #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$dutchmiconlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+
+if (!$language){$language = $lang;}
+
+%img_txt_m =(
+'70' => 'Mijn Favorieten',
+);
+
+%img_polltxt_m = (
+'44' => 'Peiling',
+'45' => 'Nieuwe Peiling',
+'46' => 'Peiling gesloten',
+);
+
+%messageindex_txt_m = (
+'302' => 'Nieuw',
+'303' => 'Ga naar eerste ongelezen bijdraget',
+'454' => 'Hot Topic (Meer dan',
+'454a' => 'Reacties)',
+'455' => 'Zeer Hot Topic (Meer dan',
+'456' => 'Gesloten Topic',
+'457' => 'Normaal Topic',
+'458' => 'Verborgen Topic',
+'459' => 'Verborgen Sticky Topic',
+'460' => 'Verborgen Gesloten Topic',
+'461' => 'Verborgen Gesloten Sticky Topic',
+'779' => 'Sticky Topic',
+'779a' => 'Globale Aankondiging',
+'779b' => 'Global Aankondiging gesloten',
+'780' => 'Gesloten Sticky  Topic',
+'781' => 'Sticky',
+'845' => 'Verplaatst Topic',
+);
+
+%messageindex_sort_m = (
+'sort_az' => "Sorteer (A-Z)",
+'sort_za' => "Sorteer (Z-A)",
+'sort_min' => "Sorteer (minimaal antwoord)",
+'sort_max' => "Sorteer (maximaal antwoord)",
+'sort_last' => "Sorteer (nieuw antwoord)",
+'sort_first' => "Sorteer (oud antwoord)",
+);
+
+%im_message_status_m = (
+'confidential' => 'Vertrouwelijk',
+'urgent' => 'Urgent!',
+'standard' => 'Standaard',
+'alertmod' => 'Alarmeer Moderator.',
+'guestpm' => 'PM van Gast',
+'guestpmreply' => 'Reageer op PM van Gast',
+);
+
+%tabmenu_txt_m = (
+'edittab' => 'Bewerk Tabbladen',
+'tabdel' => 'Verwijder dit Tabblad',
+'savetab' => 'Sla tekst op',
+'newtab' => 'Voeg een tabblad toe',
+);
+
+%maintxt_m = (
+'900pd' => 'Wachtwoord toegang board',
+);
+
+%var_cal_m = (
+'calbirthday' => 'Verjaardig',
+'calprivate' => 'Privé',
+'caldel' => 'Verwijder',
+'caledit' => 'Bewerk Evenement',
+'calsave' => 'Bewaar Evenement',
+'getaddevent' => 'Voeg nieuw Evenement toe',
+'eventinfo' => 'Evenement',
+'eventannounce' => 'Aankondiging',
+'eventholiday' => 'Feestdag',
+'eventnote' => 'Uitroep',
+'eventparty' => 'Party',
+'eventcelebration' => 'Viering',
+'eventsport' => 'Sport',
+'eventmedia' => 'Media (TV)',
+'eventmeeting' => 'Vergadering',
+);
+
+%mess_icon_txt = (
+'281' => 'Standaard',
+'282' => 'Duim Op',
+'283' => 'Duim Neer',
+'284' => 'Uitroepteken',
+'285' => 'Vraagteken',
+'286' => 'Lamp',
+'287' => 'Smiley',
+'288' => 'Boos',
+'289' => 'Chees',
+'290' => 'Lach',
+'291' => 'Verdrietig',
+'292' => 'Knipoog',
+'293' => 'Grijns',
+'294' => 'Shocked',
+'295' => 'Cool',
+'296' => 'Huh',
+);
+
+1;
