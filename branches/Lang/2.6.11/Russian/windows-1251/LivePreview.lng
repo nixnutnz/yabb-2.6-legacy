@@ -1,0 +1,41 @@
+###############################################################################
+# LivePreview.lng                                                             #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+# Mod created by Carsten Dalgaard                                             #
+#                and added to YaBB core in Version 2.5.4                      #
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
+###############################################################################
+
+$russianlivepreviewlngver = 'YaBB 2.6.11 $Revision: 1416 $';
+@russianlivepreviewlngmods = ();
+if(@russianlivepreviewlngmods){
+    $russianlivepreviewlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%livepreview_txt = (
+'info_missing' => 'Пропущенная или некорректная информация:',
+'name_empty' => 'В поле Имя не заполнено.',
+'long_name' => 'Пожалуйста, сократить ваше имя. Это очень долго',
+'mail_empty' => 'Поле Е-mail не заполнена.',
+'valid_mail' => 'Пожалуйста, введите правильный e-mail почты.',
+'veri_code' => 'Контрольная поле не заполнено.',
+'veri_quest' => 'Поле Проверка Вопрос не заполнены.',
+'subj_empty' => 'Отсутствует Заголовок.',
+'mess_empty' => 'Отсутствует Сообщение.',
+'subj_allcaps' => 'Похоже, что вы пытаетесь писать, используя заглавными буквами в поле Тема. Это против правил форума.',
+'mess_allcaps' => 'Похоже, что вы пытаетесь писать, используя заглавными буквами в поле Сообщение. Это против правил форума.',
+'pm_recipient' => 'Вы должны заполнить в поле получателя.',
+'no_links'     => "Вы не можете включать ссылки, пока вы не создали $minlinkpost сообщения.",
+);
+
+1;

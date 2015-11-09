@@ -1,0 +1,39 @@
+###############################################################################
+# HelpCentre.lng (Language Strings for the Help Centre                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$russianhelpcentrelngver = 'YaBB 2.6.11 $Revision: 1416 $';
+@russianhelpcentrelngmods = ();
+if(@russianhelpcentrelngmods){
+    $russianhelpcentrelngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%helptxt = (
+'1' => 'Разделы Справки',
+'2' => 'Содержание',
+'3' => 'Для Пользователя',
+'4' => 'Для Модератора',
+'5' => 'Для Координатора',
+'6' => 'Для Администратора',
+'7' => 'Редактирование элементов Справочной Системы',
+'8' => 'Готово!',
+'9' => 'Раздельный доступ к Справочной Системе',
+'10' => 'Здесь Вы можете редактировать, добавлять, удалять или пересортировывать разделы Справочной Системы, которые будут показываться пользователям. С левой стороны Вы видите доступные разделы помощи. Выделив какой-либо раздел справки, Вы можете отредактировать его или добавить к отображаемым разделам, щелкнув на кнопке со стрелкой.',
+'643' => 'Back to top',
+'769' => "Flash location",
+'7a' => '    Section Title',
+'7b' => 'Sub-section Title',
+);
+
+1;

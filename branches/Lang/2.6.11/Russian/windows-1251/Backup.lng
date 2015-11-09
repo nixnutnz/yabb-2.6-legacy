@@ -1,0 +1,199 @@
+###############################################################################
+# Backup.lng                                                                  #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$russianbackuplngver = 'YaBB 2.6.11 $Revision: 1416 $';
+@russianbackuplngmods = ();
+if(@russianbackuplngmods){
+    $russianbackuplngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+$script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+($support_env_path = $script_root) =~ s~/\w+\.pl~~;
+
+%backup_txt = (
+'1' => 'Резервное копирование',
+'2' => 'Вы не сохранили настройки функции Резервного копирования данных форума! Вы должны сделать это перед тем как архивировать данные форума.',
+'3' => 'Выберите директорию для хранения резервных копий.<br /><span class="small">Примечание: YaBB будет использовать актуальные пути, прописанные в файле &quot;Paths.pl&quot;.</span>',
+'4' => 'Директории YaBB',
+'5' => 'Выбрать все/Сбросить все',
+'6' => '<span class="small">Если Вы выберите все доступные пункты, Вы получите полную копию Вашего форума (рекомендуется).</span>',
+'path1' => 'Path to Tar and Zip:',
+'path2' => 'Path to gzip and bzip2 (also sets path to gzip in Advanced Settings):',
+'path3' => 'Fill in the paths <b>only</b> if YaBB cannot automatically find Tar, Zip, gzip, and bzip2. Otherwise, leave the above spaces blank.',
+
+# Begin description of directories
+# We don't translate directory names like Boards/.
+'7' => '(содержит список всех Категорий и Разделов форума)',
+'8' => '(содержит все сообщения и все темы)',
+'9' => '(содержит все профили участников)',
+'10' => 'и стили оформления', # This one comes right after "Templates/ "
+'10a' => '(содержит все шаблоны оформления форума за исключением графики)',
+'11' => '(содержат все языковые файлы форума)',
+'12' => '(содержит настройки форума)',
+'and' => 'и', # Odd name, yes, but could be useful in more than one place
+'13' => 'и другие файлы с исходными кодами (содержит файлы исходных кодов движка YaBB)',
+'14' => '(содержит изображения и стилевые настройки Вашего форума)',
+'14a' => '-- (contains user-uploaded files: attachments and avatars)',
+
+# Begin the backup method selection
+'15' => 'Способ создания резервной копии',
+
+# Don't translate command names (such as /bin/tar) or 'tar'.
+'16' => 'Лучший метод для создания архива это Tar (с компрессией) или Zip.<br />Используйте Archive::Tar (с Compress::Zlib или Compress::Bzip2) или Archive::Zip методы лишь в крайнем случае.<br />Методы архивирования bzip2 или Bzip2 дают наименьший размер файла, но работают слишком долго.<br /><span style="color: red;"><b>Примечание:</b><br /></span>Некоторые серверы не поддерживают работу с большими архивами. В этом случае Вы можете увидеть ошибку типа "Internal server error" или просто пустую страницу. Выберите другой метод архивирования и попробуйте снова. Если это не помогает, уменьшите количесво директорий YaBB для архивирования.',
+'17' => 'Файл tar без сжатия',
+'18' => '(сжатие Tar)',
+'19' => 'Директория для хранения Резервных копий',
+'19a' => 'Предупреждать об устаревании Резервных копий',
+'19b' => 'Предупредить меня об устаревании Резервных копий через',
+'19c' => 'дней. (0 - для отключения предупреждения).',
+'19d' => 'Tage. Tragen Sie 0 ein oder lasse das Feld leer, um die Benachrichtigung zu deaktivieren.',
+'20' => 'Сохранить настройки',
+
+# Begin run backup area
+'21' => 'Создание Резервной копии',
+'22' => 'Нажмите на кнопку ниже для запуска процесса создания Резерной копии форума. Она будет создана в директории',
+'23' => ', которая была определена Вами ранее.',
+'24' => 'Во время создания Резервной копии Ваш форум будет переведен в режим Технического Обслуживания.<br /><br />Если Вы создаете Резервную копию для больших форумов, то это может привести к большому времени ожидания ответа от сервера! Подождите около 5 минут. Если ничего не происходит, следуйте советам, изложенным в Примечании в пункте &quot;Способ создания резервной копии&quot;.<br /><br />После создания первой Резервной копии данных Вы можете выбрать какой метод архивирования использовать далее. Вы можете снова создать полную резервную копию или заархивировать только те файлы, которые были изменены с момента последней архивации. После повторного сохранения настроек Резервного копирования будет создаваться полная копия архива. Проверка файлов, измененных с момента создания последней резервной копии происходит за <i>секунды</i> для Tar, Archive::Tar и Archive::Zip и за <i>дни</i> для Zip.',
+'25' => 'Создать Резервную копию',
+'25a' => 'Создать Резервную копию только для файлов, измененных после',
+
+# Default backup maintaince mode text. Used only if there's no maintaince mode text set in Forum Settings and none set to run it.
+# '26' => '', Not used
+
+# Text used for the actual backup output
+'27' => 'Заархивировано',
+
+# Text used in the support subroutines
+'28' => 'Не могу загрузить модуль',
+'29' => 'Невозможно протестировать метод архивирования',
+'30' => 'Невозможно найти метод архивирования',
+'31' => 'не может быть использовано',
+'32' => 'Код ошибки:',
+
+# Text used for timing the backup
+'33' => 'Резервная копия создана за',
+'34' => 'секунд',
+
+# Begin manage backups area
+'35' => 'Управление Резервными копиями',
+'36' => 'Резервные копии форума доступны в ',
+'37' => 'Вы можете:<ul><li>Загрузить резервную копию (ЗАГРУЗИТЬ)</li><li>Отправить Резервную копию по E-mail на адрес',
+'37a' => ' (E-MAIL)</li><li>Сделать архив Резевной копии (АРХИВ)</li><li>Сделать архив Резевной копии содержащий изменения произошедшие в файлах с момента создания архива (НОВЫЕ)</li><li>Восстановить форум из Резервной копии (ВОССТАНОВИТЬ)</li><li>Удалить Резервную копию (УДАЛИТЬ)</li></ul>',
+'38' => 'Резервные копии не найдены',
+
+'39' => 'Модуль',
+'40' => 'Команда',
+'41' => 'не доступна на этом сервере.',
+'42' => 'Невозможно произвести запись в',
+'43' => 'Проверьте правильность установки пути и прав доступа.',
+
+'44' => 'Невозможно изменить директории на',
+'45' => 'Файл резервной копии поврежден!',
+'46' => 'Невозможно прочитать из',
+'47' => 'Вы уверены, что хотите удалить',
+'48' => '? Это действие не может быть отменено.',
+'49' => 'Да, я уверен(-а)',
+'50' => 'Нет, не удалять',
+'51' => 'Невозможно удалить',
+'52' => 'E-MAIL',
+'53' => 'УДАЛИТЬ',
+'54' => 'Вы уверены, что хотите отправить по E-mail',
+'55' => 'Размер вложенного файла будет',
+'56' => 'Да, отправить вложение на',
+'57' => 'Нет, не отправлять вложение, но прислать ссылку на файл.',
+'58' => 'Нет, не отправлять. Загрузить файл.',
+'59' => 'Нет, не отправлять.',
+'60' => 'ЗАГРУЗИТЬ',
+'61' => 'АРХИВ',
+'62' => 'НОВЫЕ',
+'62a' => 'INC',
+'63' => 'ВОССТАНОВИТЬ',
+
+'70' => 'Дата сохранения',
+'71' => 'Размер',
+'72' => 'Содержимое архива (сохраненные директории)',
+'73' => 'Тип',
+'74' => 'Функции',
+
+# Loop stuff to prevent running into server time out
+'90' => q~Если Вы хотите остановить процесс создания резервной копии дерните за <a href="javascript:stoptick();">СТОП-КРАН</a>.~,
+'91' => 'Создается Резевная копия данных форума - подождите пожалуйста!<br />Если Вы хотите остановить этот процесс, нажмите на надпись СТОП-КРАН до момента появления предупредительного сообщения на следующей странице.',
+
+# Recover stuff
+'100' => 'Recover Backup',
+'101' => '<b>The automated recovery feature is recommended ONLY for the following directories:<br /><i>Boards</i>, <i>Members</i>, <i>Messages</i>, <i>Variables</i>, and <i>yabbfiles/Attachments and yabbfiles/avatars/UserAvatars</i>.<br /><br />Recovered files may not have proper ownership or permissions, and you may therefore experience file access problems. If this occurs, you should recover all other files by downloading the archive file from the previous page, then uploading the backed up files via FTP from your computer.</b><br /><br />Are you sure that you want to recover the following directory(s)?',
+'102' => 'from the archive file:',
+'103' => 'from',
+'104' => 'If yes, then',
+'105' => "If checked, files from the archive will be restored directly to their original (live) directories. This will overwrite the existing files in these directories and restore deleted files, if necessary. However, files created after the backup date (which are therefore not part of the archive) will not be deleted or modified. Directories that you want to recover must be set to CHMOD X[2|3|6|7]X before recovery, i.e. they must have at least 'group' write permission. Examples: CHMOD 775 or 765. If you have moved any directories from their previous locations since this backup archive was created, this method will probably fail - if this is the case, leave this box unchecked.<br />If unchecked, files recovered from the archive will be stored in a new \"recovered\" directory within your Archive Destination Directory, with the actual timestamp appended; for example:<br /><tt>$backupdir/recovered_$date</tt>  -- (the timestamp is merely an example).",
+'106' => 'You must set the permissions for the recovered files in the following directories. Depending on your server configuration, the recovered files may be owned by the server daemon user. If that is the case, you may not be able to change the permissions afterwards. To ensure that you can modify and/or delete your files after recovery, the "group" permissions must be 6 or 7; do not use a lower number. The owners permissions must also be 6 or 7.<br /><br />If you are uncertain about any of the above, do not use this automated recovery feature, and instead download the archive file manually (from the previous page) and restore the files via FTP from your computer.',
+'107' => 'Files and Directories',
+'108' => 'Permissions<br />(CHMOD)<br />Owner|Group|All',
+'110' => 'This permission can\\\'t be set below', # Used in JavaScript!
+'111' => 'This permission can\\\'t be set higher than 7.', # Used in JavaScript!
+'112' => 'Only numbers are allowed.', # Used in JavaScript!
+'114' => '(all files)',
+'115' => 'All',
+'116' => 'files',
+'120' => 'If new directories are created, set them to',
+'125' => 'No, return to the YaBB Backup page',
+'126' => q~Yes, I'm ready - Recover Now.~,
+'130' => '<b><u>Output:</u><br /><br />If the CHMOD was successful, the first character will be <i>1</i>; if it is <i>0</i>, the CHMOD failed.</b><br />If the CHMOD failed, the most common problem is that one or more directories were not set to <i>group</i> write permission.',
+'131' => '<b>Now check the CHMODs again with your FTP program, just to be sure &nbsp; ;-)</b>',
+'132' => 'Back to YaBB Backup main page',
+
+# Begin e-mail stuff.
+'mailsubject' => "YaBB 2 Backup from $mbname",
+'mailfrom' => qq~"YaBB 2 Backup Mailer" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
+'mailsuccess' => 'Sent e-mail successfully.',
+'mailfail' => 'Sending e-mail failed. See the error message in the info e-mail you will receive.',
+);
+
+# The actual messages are here.
+# Don't translate WORDS IN ALL CAPITALS from here to the end of the file
+$backup_txt{'mailmessage1'} = qq~Доброго времени суток, USERNAME
+
+Резервная копия данных форума FILENAME должна быть прикреплена к этому письму.
+
+Если это не так, посетите следующую ссылку, чтобы загрузить файл вручную:
+LINK
+
+Спасибо за использование форума на движке YaBB!
+~;
+
+$backup_txt{'mailmessage2'} = qq~
+Приветствую Вас, USERNAME
+
+Посетите следующую ссылку, чтобы загрузить файл FILENAME с резервной копией данных форума вручную:
+LINK.
+
+Спасибо за использование форума на движке YaBB!~;
+$backup_txt{'mailmessage3'} = qq~Hi USERNAME!
+
+Sending the e-mail with the attached backup failed.
+
+But, you can visit LINK to manually download the backup FILENAME.
+
+The system provided the following info related to the sending error:
+"SYSTEMINFO"
+
+You must have MIME::Lite installed on your server to get backups by e-mail; you may also need other modules (see the info above). Ask your server administrator to install the module(s) on your server.  You can find further help on installing modules at: http://codex.yabbforum.com/YaBB.pl?num=1225217016
+
+Thanks for using YaBB!~;
+
+1;

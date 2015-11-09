@@ -1,0 +1,45 @@
+###############################################################################
+# Debug.lng (Debugging text definitions)                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.1                                                  #
+# Packaged:       December 2, 2014                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$russiandebuglngver = 'YaBB 2.6.11 $Revision: 1416 $';
+@russiandebuglngmods = ();
+if(@russiandebuglngmods){
+    $russiandebuglngmods = 1;
+}
+if ( $action eq 'detailedversion' && $language ne 'Russian' ) { return 1; }
+
+%debug_txt = (
+'getpairs' => 'Входящие GET пары',
+'postpairs' => 'Входящие POST пары',
+'name' => 'Имя',
+'value' => 'Значение',
+'opened' => 'Было открыто',
+'closed' => 'файлов и закрыто ',
+'equal' => 'файлов. (должно быть равное число файлов)',
+'nohires' => 'Вероятно Ваш сервер не имеет установленного ',
+'nomodule' => 'или не поддерживает данный локальный модуль.',
+'pagespeed' => 'Страница сгенерирована за',
+'loaded' => 'секунд',
+'debugging' => 'Отладочная информация',
+'benchmarking' => 'Скоростные показатели',
+'ipaddress' => 'Ваш IP адрес:',
+'browser' => 'Ваш браузер:',
+'trace' => 'проверка взаимосвязей',
+'check' => 'Проверка файлов на Открытие/Закрытие',
+'filehandles' => 'Открытые файлы:',
+'filehandleslegend' => 'открыт FILEHANDLE (time) &nbsp; &nbsp; <i>MODE</i> filepathname &nbsp; &nbsp; закрыт FILEHANDLE (time)<br />[package, scriptpathname, line]',
+'filesloaded' => 'Файл загружен за',
+);
+
+1;

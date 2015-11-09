@@ -1,3 +1,5 @@
-The some of YaBB 2.6.11 language files have 2 versions - UTF-8 for brand new forums and ISO-8859-1 for older forums pre-existing member and messages already using ISO-1189-1 or other encoding.
+Some of YaBB 2.6.11 language files have 2 versions - UTF-8 for brand new forums and ISO-8859-1 (or other encoding/character sets) for older forums with pre-existing member and message files already using ISO-1189-1 or other encoding. (Russian has a 'windows-1251' character set instead of the ISO-8859-1 encoding.) 
 
-Instructions: Choose which encoding you need and copy those files into their proper place in the yabb2/Languages folder. For example file in 'German/UTF-8' will go into yabb2/Languages/German, not yabb2/Languages/German/UTF-8
+Instructions: Choose which encoding or character set you need and copy those files into their proper place in the yabb2/Languages folder. For example file in 'German/UTF-8' will go into yabb2/Languages/German, NOT yabb2/Languages/German/UTF-8
+
+IMPORTANT: Some of the translations are still very rough and some language packs still use English in the text. If you have suggestions to improve the translations or you have translated the English sections for your forum, please post your suggestions/translations at YaBBForum.com. Your help in improving the language packs will be greatly appreciated.
