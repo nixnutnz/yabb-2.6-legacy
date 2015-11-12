@@ -1,0 +1,31 @@
+###############################################################################
+#     AddModerators.lng                                                       #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$menulngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%addmod_txt = (
+'addmod_title' => q~Moderador~,
+'addmod_text' => q~Aquí puede asignar el miembro como Moderador a cualquier / todos los tableros. Mantenga pulsada la tecla Ctrl o Mayús (tecla Apple en Mac) y haga clic para seleccionar más de planchar.~,
+'addmod_all' => q~Seleccionar todo.~,
+'addmod_save' => q~Guardar~,
+'remove' => q~¿Seguro que desea eliminar el elemento de la lista?~,
+'modpagetitle' => q~Seleccione Moderadores~,
+'instructions' => q~Haga doble clic para eliminar un nombre de la lista~,
+'modsearch' => q~Añadir / Eliminar Moderadores~,
+'addselected' => q~Agregar seleccionados~,
+'pageclose' => q~Cerrar~,
+'instruct' => q~Escriba los primeros caracteres del nombre del nuevo moderador, a continuación, seleccione uno o más nombres en la lista y haga clic en "Agregar seleccionados".~,
+'noresults' => q~Sin resultados~,
+);
+
+1;

@@ -1,0 +1,290 @@
+###############################################################################
+# Main.lng (General text definitions)                                         #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$mainlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+$yycharset = 'ISO-8859-1';
+$abbr_lang = 'es-es';
+
+@days = ('Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado');
+@months = ('Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic');
+@days_short = ('Dom','Lun','Mar','Mie','Jue','Vie','Sab'); # for smtp
+@uploadtranlist = qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ);
+@ISO_8859_1 =     qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
+
+%maintxt = (
+'w3c_lngcode' => 'es-es',
+'error_description' => '<b>Error</b>',
+'error_location' => '<b>Script</b>',
+'error_line' => '<b>Línea</b>',
+'error_subroutine' => '<b>Subrutina</b>',
+'error_verbose' => '<b>Detallado</b>',
+'board' => 'Tablón',
+'cat' => 'Categoría',
+'0' => 'Enviar MP a',
+'1' => 'Enviar correo electrónico a',
+'2' => 'Ver',
+'3' => ' Perfil',
+'4' => 'Añadir',
+'5' => 'a lista de Amigos',
+'6' => 'Ver mi Perfil',
+'10' => 'Última conexión hace',
+'11' => 'días y',
+'12' => 'horas',
+'13' => 'Has not logged in since registering',
+'22' => 'Último mensaje',
+'23' => 'Imposible de abrir',
+'27' => 'Ver perfil',
+'28' => 'Invitado',
+'30' => 'el',
+'30a' => 'escribio en',
+'30b' => q{}, #placeholder for non-English strings needed in that spot
+'31' => 'Citar',
+'32' => 'Ir',
+'34' => 'Entra',
+'35' => '¡Puedes entrar en la parte inferior de esta página!',
+'40a' => 'La visualización Multimedia no está diponible para RSS.',
+'41' => 'Necesitas',
+'42' => 'o',
+'42a' => 'para ver archivos multimedia y enlaces)',
+'60' => 'Conectado',
+'61' => 'Desconectado',
+'62' => 'Topic Tools',
+'63' => 'Post Tools',
+'64' => 'There are no actions to perform.',
+'away' => 'Ausente',
+'70' => 'Título',
+'97' => 'Regístrate',
+'102' => 'Noticias',
+'107' => 'a las',
+'109' => 'Iniciado por',
+'114' => 'Entrada sólo Administración',
+'125' => 'Notificar',
+'126' => '¿Deseas recibir una notificación por email si alguien responde a este Tema?',
+'132' => 'Mover',
+'133' => 'Mover a',
+'155' => 'Modo mantenimiento',
+'156' => '¡El foro está en Modo Mantenimiento!',
+'157' => 'El foro está en Modo Mantenimiento. Por favor, vuelve más tarde. Gracias!',
+'160' => 'Este Tema ha sido movido a',
+'160a' => 'El contenido del tema ha sido movido a',
+'160b' => 'este tema',
+'160c' => 'Las repuestas Off topic se han movido a',
+'160d' => '.',
+'160e' => 'Off-Topic replies have been moved to',
+'160f' => '.',
+'161' => 'Este tema ha sido movido aquí desde',
+'161a' => 'El útimo',
+'161b' => 'Mensajes fueron movidos aquí desde',
+'163' => 'Sí',
+'164' => 'No',
+'170' => 'No se han encontrado coincidencias con búsqueda',
+'171' => '¡No se ha encontrado una imagen en 30 segundos! ¡Abandonamos!', # Inside JavaScript!
+'193' => 'Atrás',
+'195' => 'Mensaje iniciado por',
+'196' => 'Título',
+'197' => 'Publicado por',
+'199' => 'Mensaje no encontrado',
+'213' => 'Últimos Mensajes de Usuarios',
+'214' => 'Mensajes recientes',
+'214b' => 'temas más recientes',
+'215' => 'Recent Topics',
+'236' => 'Volver',
+'237' => 'al del tablón índice.',
+'247m' => 'Buenos días',
+'247a' => 'Buenas tardes',
+'247e' => 'Buenas tardes',
+'247bday' => 'Feliz Cumpleaños',
+'248' => 'Bienvenido,',
+'249' => 'Por favor',
+'316' => 'Bandeja de entrada',
+'317' => 'Fecha',
+'318' => 'De',
+'320' => 'Bandeja de salida',
+'324' => 'Para',
+'377' => 'o',
+'409' => 'Tu último Mensaje recibido de tu IP llego hace menos de',
+'410' => 'segundos, Ha sido bloqueado para evitar sobrecargar el foro. Por favor, intentalo más tarde.',
+'418' => 'Notificación',
+'470' => 'N/A',
+'470a' => '<i>Ex-miembro</i>',
+'525' => 'por',
+'609' => 'Por seguridad, YaBB requiere el uso de paths (caminos de directorio) absolutos. El símbolo "../" (directorio padre) es ilegal. Por favor ejecuta Setup.pl otra vez y modifica las referencias relativas a directorios "../" por absolutas.',
+'633' => '¡Aviso!',
+'634' => 'Sólo los usuarios registrados pueden acceder a este foro.',
+'635' => 'Por favor, entra abajo o haz click',
+'636' => '-aquí-',
+'637' => 'para registrar una cuenta con $mbname.',
+'668' => 'Imprimir página',
+'668a' => 'Imprimir Mensaje',
+'669a' => 'Ocultar Imágenes',
+'669b' => 'Mostrar Imágenes',
+'758' => 'Movido',
+'769' => 'Hoy',
+'769a'=> 'Ayer',
+'769al'=> 'ayer',
+'769b'=> 'mañana',
+'773' => '¿Seguro que deseas imprimir esta página?',
+'900b' => 'Back',
+'900s' => 'Submit',
+'900pw' => 'Enter Password for',
+'900pd' => 'Password Access Board',
+'900pe' => 'Please enter a password.',
+'900pg' => qq~Password Access Boards are for Members only. Please <a href="$scripturl?action=register" style="font-weight: bold;">register an account with us</a> or <a href="$scripturl?action=login" style="font-weight: bold;">login</a>.~,
+'900pr' => 'Private',
+'dst' => '<sup>*</sup>',
+'rssfeed' => 'RSS',
+'freeuserspace' => 'Espacio de Hospedaje disponible:',
+'freediskspace' => 'Espacio Libre en Disco disponible:',
+'redirect' => 'Redireccionar',
+'redirecttext' => 'Si puedes ver este mensaje, significa que el redireccionamiento no funciona.',
+'redirectlink' => 'Pulsa aquí',
+'noscript' => 'Debes tener activado el Javascript para obtener la plena funcionalidad de este foro.',
+'go_to_board' => 'Vaya al índice del foro',
+'searchimg' => 'Mensajes no más dedías de edad',
+'searchimg2' => 'días de edad',
+'searchimg3' => 'Todos los mensajes',
+'collapse' => 'derrumbarse',
+'UTC' => '(UTC)',
+'maint' => 'Eliminar este archivo si su tarjeta está en mantenimiento por ninguna razón.',
+'printpage' => 'imprime esta página',
+);
+
+%load_txt = (
+'152' => 'tienes',
+'153' => 'mensajes',
+'154' => 'nuevos',
+'154b' => 'nuevos mensajes.',
+'155' => 'nuevo',
+'155b' => 'mensaje nuevo.',
+'nonew' => 'y no hay nuevos mensajes.',
+'231' => 'Género',
+'female' => 'Mujer',
+'male' => 'Masculino',
+'471' => 'mensaje',
+'616' => qq~Recuerda, el foro está en <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Modo Mantenimiento'</a>.~,
+'616a' => qq~Recuerda, el foro está en <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Modo Mantenimiento'</a>.~,
+'617' => 'Recuerda, la última copia de seguridad es de:',
+'773' => 'IP no encontrada, por favor cambia la \$user_ip en $lang',
+'805' => 'Tu',
+'806' => '<b>puedes</b>',
+'807' => '<b>no puedes</b>',
+'808' => 'ver temas.',
+'809' => 'responder temas.',
+'810' => 'publicar temas.',
+'811' => 'crear encuestas.',
+'812' => 'publicar temas hacia tu cuenta.',
+'813' => 'post Attachments in this Board.',
+);
+
+%load_imtxt = (
+'46' => 'Almacén',
+'71' => 'Impreso para ti',
+);
+
+%security_txt = (
+'430' => ', tienes prohibido usar este foro',
+'678' => 'Lo sentimos',
+);
+
+%reftxt=(
+'1' => 'Referer Seguridad',
+'2' => 'Selecciona las opciones del tablón permitidas desde fuera del dominio',
+'3' => '(Esos comandos se derivan de $sourcedir/SubList.pl)',
+'4' => 'Guardar Configuración',
+'6' => 'Dominio Referer:',
+'7' => 'Tu Dominio:',
+);
+
+%dereftxt =(
+'1' => 'Estás siendo redirigido. Un momento por favor...',
+);
+
+%timelocktxt=(
+'02' => ' día(s) para modificar mensajes.  Este mensaje no puede ser modificado.',
+'02a' => ' día(s) para borrar mensajes.  Este mensaje no puede ser borrado.',
+);
+
+%smiltxt = (
+'1' => 'Más emoticonos',
+'21' => 'Click en el emoticono pata insertar en el mensaje:',
+);
+
+%timetxt = (
+'1' => 'ro',
+'2' => 'do',
+'3' => 'ro',
+'4' => 'to',
+);
+
+
+%pidtxt = (
+'01' => 'todos',
+'02' => 'Click para página anterior - doble click para la primera.',
+'03' => 'Click para página siguiente - doble click para la última.',
+);
+
+##  jump menu
+%jumpto_txt = (
+'to' => 'Ir a &raquo;',
+'mess' => ' &raquo; mis mensajes',
+'fav' => ' &raquo; mis favoritos',
+'note' => ' &raquo; mis notificaciones',
+);
+
+## guest language selector
+%guest_txt =(
+'sellanguage' => 'Elije Idioma',
+'changelanguage' => 'Cambia Idioma',
+);
+
+## recent lists
+%recent_txt = (
+'recenttopic' => ' &raquo; 10 temas más recientes',
+'recentposts' => ' &raquo; 10 mensajes más recientes',
+);
+
+## pm to email forward
+$forwardedpm = qq~Esta alerta fue reenviada por correo electrónico~;
+
+%reg_txt = (
+'reason' => 'Por favor, indica la razón para registrarte en este foro',
+'reason_exp' => 'Esta información no será guardada, es para evaluar tu solicitud.',
+'admin_alert_start_one' => '<br /><div class="editbg">Hay <b>',
+'admin_alert_start_more' => '<br /><div class="editbg">Hay <b>',
+'admin_alert_one' => '</b> registro validado',
+'admin_alert_more' => '</b> registros validados',
+'admin_alert_end' => ' esperando aprobación</div>',
+'admin_alert_end_more' => ' esperando aprobación</div>', ## For languages that need a different end line on more then one user
+'admin_alert_act_one' => '</b> pre-registro que es',
+'admin_alert_act_more' => '</b> pre-registros que están',
+'admin_alert_act_end' => ' sin validar aún</div>',
+'admin_alert_act_end_more' => ' sin validar aún</div>', ## For languages that need a different end line on more then one user
+'no_masterkey'=> '<div class="editbg">No se definió ninguna Clave Maestra en las Configuraciones de Seguridad / Validation de Imagen del Centro de Administración<br />Actualmente, se usa el valor por defecto lo que es menos seguro.</div>',
+);
+%lookup_txt = (
+'01' => 'Lookup',
+'02' => 'on a Whois server:',
+'iplookup' => 'IP Lookup',
+);
+
+%croak = (
+'open' => 'No puedo abrir',
+'close' => 'No se puede cerrar',
+'print' => 'No se puede imprimir',
+);
+
+timetostring($date);
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
+
+1;

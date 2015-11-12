@@ -1,0 +1,45 @@
+###############################################################################
+# TabMenu.lng (TabMenu text definitions)                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$tabmenulngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%tabmenu_txt=(
+'texterr' => '¡¡El campo de Texto está vacío!!',
+'tabext' => '¡¡Ya existe una etiqueta para la misma acción o con el mismo nombre!!',
+'tabfront' => 'Frente',
+'taburl' => 'URL',
+'tabwin' => 'Nueva ventana',
+'edittab' => 'Editar etiquetas',
+'tabdel' => 'Borrar esta etiqueta',
+'viewgm' => 'Mod.Global +',
+'viewadm' => 'Admin',
+'tabtext' => 'Texto',
+'taberr' => 'Información requerida perdida:',
+'addtab' => 'Añadir',
+'savetab' => 'Grabar Texto',
+'reordertab' => 'Reordenar etiquetas:',
+'tableft' => '&lt;',
+'tabright' => '&gt;',
+'edittext1' => 'Encima puedes ver las etiquetas y la manera en la que aparecerán si todas fueran visibles a la vez. Si has añadido una o más etiquetas ahora tienes la opción de editar el texto directamente dentro de la etiqueta y después pulsar el',
+'edittext2' => 'icono para grabar el nuevo texto o puedes borrar la etiqueta pulsando en el',
+'edittext3' => 'icono.',
+'reordertext' => 'En la parte derecha tienes una lista de todas tus etiquetas permitiéndote cambiar el orden de aparición en el menú de etiquetas. Selecciona la etiqueta que quieres mover y pulsa en el botón "&lt;" o "&gt;" para mover la etiqueta en la dirección deseada.',
+'urlerr' => '¡¡El campo de URL está vacío!!',
+'viewmem' => 'Miembros +',
+'viewall' => 'Invitados +',
+'newtab' => 'Añadir etiqueta',
+'tabinsert' => 'Añadir después',
+'tabview' => 'Visible para',
+);
+
+1;

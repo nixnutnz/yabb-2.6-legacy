@@ -1,0 +1,46 @@
+###############################################################################
+# MemberList.lng (Member List text definitions)                               #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$memberlistlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%ml_txt = (
+'1' => 'Ordenar por:',
+'2' => '¡IR!',
+'3' => 'Viendo el',
+'4' => 'Miembros Por',
+'19' => 'Índice de Páginas (Si/No)',
+'21' => 'Mensajes',
+'34' => 'Avatar',
+'35' => 'Nombre',
+'87' => 'Posición',
+'96' => 'Sitio Web',
+'139' => 'Páginas',
+'233' => 'Fecha de Registro',
+'234' => 'Fecha Reg.',
+'307' => 'correo electrónico',
+'308' => 'Hidden E-mail',
+'309' => 'de',
+'312' => 'Viendo Miembros por letra',
+'313' => 'Viendo el',
+'314' => 'Miembros por número de mensajes',
+'331' => 'Miembros',
+'759' => 'Selecciona la letra.',
+'760' => 'No hay entras para esta letra.',
+'800' => 'Otros',
+'801' => 'Buscar Miembro',
+'802' => 'Lo sentimos - no se han encontrado resultados para',
+'dr_warning' => '* Cuenta mayores de Foro - por favor verificar Foro Fecha de Inicio:',
+'dr_warnurl' => 'aquí',
+);
+
+1;

@@ -1,0 +1,86 @@
+###############################################################################
+# Display.lng (Display text definitions)                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$displaylngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%display_txt = (
+'10' => 'Permalink para este artículo',
+'19' => 'Índice de páginas (Si/No)',
+'21' => 'Mensajes',
+'24' => '(Sin asunto)',
+'28' => 'Invitado',
+'29' => 'Autor',
+'30' => 'el',
+'63' => 'Moderadores',
+'63a' => 'Grupo de Moderadores',
+'116' => 'Responder',
+'118' => 'Tema',
+'139' => 'Páginas',
+'146' => 'Respuesta',
+'146n' => 'Pegar el nombre de usuario en la ventana de Respuesta Rápida',
+'162' => '¿Estas seguro de querer borrar este tema?',
+'rempost' => '¿Estas seguro de querer borrar este tema?',
+'211' => 'Última modificación',
+'211a' => 'Razón',
+'298' => 'Moderador',
+'298a' => 'Grupo de Moderadores',
+'470' => 'N/A',
+'470a' => '<i>Ex-miembro</i>',
+'511' => 'IP Registrada',
+'525' => 'por',
+'526' => 'Agregando Favorito',
+'527' => 'Borrando Favorito',
+'528' => 'Completo',
+'529' => 'Añadiendo Notificación',
+'530' => 'Borrando Notidicación',
+'641' => 'Leído',
+'642' => 'veces',
+'643' => 'Subir al inicio',
+'644' => 'Usuarios viendo este tema',
+'645' => 'respondiendo',
+'646' => 'Usuarios respondiendo este tema',
+'739' => '¿Estas seguro de querer borrar este mensaje?',
+'739a' => 'Borrar esta entrada',
+'766' => 'Sin temas',
+'767' => 'Tema Siguiente',
+'768' => 'Tema Anterior',
+'769' => 'Ubicación de Flash',
+'888' => 'Hojeando temas',
+'999' => 'Anuncio del Tablón',
+'posttolocked' => '¡Aviso: se va a enviar a un tema bloqueado! [OK] para confirmar [Cancelar] para volver',
+'modifyinlocked' => '¡Aviso: se va a modificar un tema bloqueado! [OK] para confirmar [Cancelar] para volver',
+'isbuddy' => '¡En mi lista de amigos!',
+'split_confirm' => '¿Estás seguro de que quieres dividir los mensajes?',
+'alertmod_confirm' => '¿Estás seguro de alertar al moderador sobre este mensaje?',
+'reverse' => 'Pulsa aquí para cambiar el orden de los temas que se muestran.',
+'sendtopicemail' => '[OK] si quieres mandar el Email a través de tu programa de Email, en caso contrario será usado el programa de Email del foro.',
+'location' => 'Localización', 
+'age' => 'Años',
+'regdate' => 'Registrado: ', 
+'mylastposts' => 'Ver mis últimos 5 mensajes',
+'lastposts' => 'Ver los 5 últimos posts de ',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+'upt' => '&#710;',
+'guest_message' => 'Mensaje Invitado', 
+'guest_message_block' => qq~Hola Invitado, <br> Lo sentimos, pero ha excedido la cantidad de temas que se pueden ver como invitado. Para ver tantos temas como desee y beneficiarse de muchas más características, ¿por qué no <a href="$scripturl?action=register" style="font-weight: bold;"> registrar una cuenta con nosotros </a>. El registro es fácil y sólo te llevará unos minutos <br> Si ya tiene una cuenta con nosotros, entonces usted puede <a href="$scripturl?action=login" style="font-weight: bold;">login aquí</a> para dejar de ver este mensaje <br> Gracias, <br> The $mbname Team~,
+'guest_message_warn' => qq~Hola Invitado, <BR> Parece que usted está disfrutando de la lectura de nuestro foro, así que ¿por qué no <a href="$scripturl?action=register" style="font-weight: bold;"> registro una cuenta con nosotros </a> para dejar de ver este mensaje y se benefician de muchas más características. El registro es fácil y sólo te llevará unos minutos <br> Si ya tiene una cuenta con nosotros, entonces <a href="$scripturl?action=login" style="font-weight: bold;"> haga clic aquí para iniciar sesión.</a> <br> Gracias, <br>The $mbname Team~, 
+'bookmarks' => 'Marcadores', # Social Bookmarks
+'google' => 'Google Hangout',
+);
+
+%zodiac_txt = (   #YaBB Zodiac
+'sign' => 'signo del zodiaco',
+);
+
+1;

@@ -1,0 +1,35 @@
+###############################################################################
+# LivePreview.lng                                                             #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+# Mod created by Carsten Dalgaard                                             #
+#                and added to YaBB core in Version 2.5.4                      #
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
+###############################################################################
+
+$livepreviewlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%livepreview_txt = (
+'info_missing' => 'Información faltante o incorrecta:',
+'name_empty' => 'El campo Nombre no está completada.',
+'long_name' => 'Por favor, acortar su nombre. Es muy largo.',
+'mail_empty' => 'El campo de correo electrónico no es llenado.',
+'valid_mail' => 'Por favor, introduce una dirección de correo electrónico válida.',
+'veri_code' => 'El campo Verificación no se llena.',
+'veri_quest' => 'El campo Verificación pregunta no se llena.',
+'subj_empty' => 'El campo Asunto no está completada.',
+'mess_empty' => 'El campo Mensaje está vacía.',
+'subj_allcaps' => 'Parece que usted está tratando de escribir con mayúsculas en el campo Asunto. Esto va en contra de las reglas del foro.',
+'mess_allcaps' => 'Parece que usted está tratando de escribir con mayúsculas en el campo Mensaje. Esto va en contra de las reglas del foro.',
+'pm_recipient' => 'Debe rellenar el campo de destinatario.',
+'no_links'     => "No se le permite incluir enlaces hasta que haya creado puestos $minlinkpost.",
+);
+
+1;

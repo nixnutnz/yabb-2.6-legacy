@@ -1,0 +1,39 @@
+###############################################################################
+# Debug.lng (Debugging text definitions)                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$debuglngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%debug_txt = (
+'getpairs' => 'pares GET de entrada',
+'postpairs' => 'pares POST de entrada',
+'name' => 'nombre',
+'value' => 'valor',
+'opened' => 'Abierto',
+'closed' => 'archivos y Cerrado ',
+'equal' => 'archivos. (debe ser el mismo número)',
+'nohires' => 'Tu servidor probablemente no tiene',
+'nomodule' => 'instalado o no soporta el módulo para esto',
+'pagespeed' => 'Completado dentro de',
+'loaded' => 'segundos, Cargando ',
+'debugging' => 'Información de depuración',
+'benchmarking' => 'benchmarking (comparativa)',
+'ipaddress' => 'Tu dirección IP es',
+'browser' => 'Tu \'Browser Agent\':',
+'trace' => 'indicador de depuración (debug tracer)',
+'check' => 'Comprobar fichero al Abrir/Cerrar',
+'filehandles' => 'Filehandle/Archivos Abiertos:',
+'filehandleslegend' => 'FILEHANDLE abierto (tiempo) &nbsp; &nbsp; <i>MODO</i>nombrederutadearchivo &nbsp; &nbsp; FILEHANDLE cerrado (tiempo)<br />[package, scriptpathname, line]',
+'filesloaded' => 'Archivos cargados por',
+);
+
+1;

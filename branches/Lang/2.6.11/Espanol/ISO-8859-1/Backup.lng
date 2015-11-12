@@ -1,0 +1,192 @@
+###############################################################################
+# Backup.lng                                                                  #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$backuplngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+$script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+($support_env_path = $script_root) =~ s~/\w+\.pl~~;
+
+%backup_txt = (
+'1', 'Backup YaBB',
+'2', '¡No has grabado la configuración del Backup! Debes hacerlo antes de que puedas realizar una copia de seguridad de tu foro.',
+'3', 'Elije los directorios para la copia de seguridad. Nota: Los directorios de YaBB usarán la misma ruta que la de Paths.pl',
+'4', 'Directorios de YaBB',
+'5', 'Marcar/Desmarcar todo',
+'6', 'Si seleccionas todas las opciones, tendrás una copia completa de tu foro (recomendable).<br />Pero esto puede causar problemas de recuperación en foros muy grandes. En ese caso es mejor realizar una copia de seguridad para todos los directorios más o menos estáticos y copias de seguridad separadas para Subforos, Miembros y directorios de Mensajes',
+'path1' => 'Camino a Tar y Zip:',
+'path2' => 'Camino a gzip y bzip2 (También establece camino a gzip en Configuración avanzada):',
+'path3' => 'Rellene los caminos <b>Sólo </b> si YaBB no puede encontrar automáticamente TAR, ZIP, gzip y bzip2. De lo contrario, deje los espacios en blanco por encima.',
+
+# Begin description of directories
+# We don't translate directory names like Boards/.
+'7', '(contiene el diseño de las tablas (boards) y las categorías)',
+'8', '(contiene todos los mensajes y temas)',
+'9', '(contiene todos los perfiles de los miembros)',
+'10', 'y hojas de estilo', # This one comes right after "Templates/ "
+'10a', '(contiene todas las plantillas de ficheros excepto para las imágenes)',
+'11', '(contiene todo el texto usado en YaBB)',
+'12', '(contiene las configuraciones usadas en YaBB)',
+'and', 'y', # Odd name, yes, but could be useful in more then one place
+'13', 'y otro código fuente (contiene el código fuente de YaBB)',
+'14', '(contiene las imágenes y las hojas de estilo del foro, sin los directorios en la próxima línea)',
+'14a', '(contiene todos los ficheros subidos por los usuarios)',
+
+# Begin the backup method selection
+'15', 'Método de Backup',
+
+# Don't translate command names (such as /bin/tar) or 'tar'.
+'16', 'La primera elección debe ser usar Tar (con compresión) o Zip.<br />Usar métodos Archive::Tar (con Compress::Zlib o Compress::Bzip2) o Archive::Zip como última opción.<br />bzip2 o Bzip2 hace que las copias de seguridad sean más pequeñas pero tarda mucho.<br /><span style="color: red;"><b>Note:</b><br /></span> Algunos servidores no soportan copias de seguridad grandes. En ese caso se mostrará un mensaje de error como "Error interno de servidor" o simplmente una página en blanco. En ese caso utiliza otro método de copia de seguridad. Si eso no ayuda, inténtalo seleccionando menos directorios YaBB.',
+'17', 'Sin compresión tar',
+'18', '(para compresión Tar)',
+'19', 'Directorio destino para las copias de seguridad',
+'19a', 'Ruta completa, por favor, no ./Backups',
+'19b', 'Alertar sobre antiguas copias de seguridad',
+'19c', 'Alertar si la última copia de seguridad es más antigua que',
+'19d', 'días. Introduce cero o nada para deshabilitar la alerta.',
+'20', 'Grabar configuración',
+
+# Begin run backup area
+'21', 'Ejecutar copia de seguridad',
+'22', 'Pulsa el botón que aparece más abajo para arrancar la copia de seguridad. Aparecerá en',
+'23', ', el cual está fijado encima.',
+'24', 'Durante la copia de seguridad, tu foro permanecerá en el modo de mantenimiento.<br /><br />Si realizas la copia de foros muy grandes, puede tardar algo en darte una respuesta. Espera para dicha respuesta al menos 5 minutos. Si no ocurre nada, ten en cuenta la NOTA que aparece debajo en \'Método de backup\'.<br /><br />Después de arrancar tu primera copia de seguridad puedes seleccionar si la próxima copia de seguridad será completa de nuevo o sólo una copia de los ficheros que hayan cambiado desde entonces. Después de grabar la configuración de copia de seguridad de nuevo, tendrás que arrancar una nueva copia de seguridad primero. La comprobación del tiempo de grabación del último fichero estará lista en <i>segundos</i> por Tar, Archive::Tar y Archive::Zip y en <i>días</i> by Zip.',
+'25', 'Ejecutar copia de seguridad',
+'25a', 'Ejecutar copia de seguridad sólo para los ficheros más recientes de',
+
+# Not used
+# '26', '', Not used
+
+# Text used for the actual backup output
+'27', 'Copiado',
+
+# Text used in the support subroutines
+'28', 'No se puede cargar el módulo',
+'29', 'Imposible comprobar el métido de copia de seguridad',
+'30', 'Imposible encontrar el método de compresión',
+'31', 'no puede ser usado',
+'32', 'Código de error:',
+
+# Text used for timing the backup
+'33', 'La copia de seguridad tardó: ',
+'34', 'segundos',
+
+# Begin manage backups area
+'35', 'Administrar copias de seguridad',
+'36', 'Copias de seguridad disponibles en',
+'37', 'Puedes:<ul><li>Bajarte la copia de seguridad (DOWNLOAD)</li><li>;Mandar la copia de seguridad por email a',
+'37a', ' (EMAIL)</li><li>Hacer una copia de seguridad con las mismas configuraciones que esta copia de seguridad (BACKUP)</li><li>Hacer una copia de seguridad con las mismas configuraciones que esta copia de seguridad pero sólo para los ficheros que han cambiado desde esa copia de seguridad (NUEVOS)</li><li>Recuperar esta copia de seguridad si es soportada (RECUPERAR)</li><li>Borrar la copia de seguridad (ELIMINAR)</li></ul>',
+'38', 'No se ha encontrado ninguna copia de seguridad',
+
+'39', 'El módulo',
+'40', 'El comando',
+'41', 'no está disponible en este servidor.',
+'42', 'No se puede escribir en',
+'43', 'Comprueba tus permisos y rutas de directorio.',
+
+'44', 'No es posible cambiar directorios a',
+'45', '¡Fichero de copia de seguridad inválido!',
+'46', 'Imposible leer desde',
+'47', '¿Estás seguro de que quieres borrar?',
+'48', '? Esta acción no se puede deshacer.',
+'49', 'Sí, estoy seguro',
+'50', 'No, no borres',
+'51', 'No es posible borrar',
+'52', 'EMAIL',
+'53', 'BORRAR',
+'54', 'Estás seguro de querer mandar este email',
+'55', 'El tamaño del fichero adjunto será',
+'56', 'Sí, manda el fichero adjunto a',
+'57', 'No, no mandes el fichero adjunto, sólo el link.',
+'58', 'No,no mandes el email. Bájalo en lugar de mandarlo.',
+'59', 'No, no mandes el email. Vuelve a copia de seguridad de YaBB.',
+'60', 'BAJAR',
+'61', 'BACKUP',
+'62', 'NUEVOS',
+'62a' => 'INC',
+'63', 'RECUPERAR',
+
+'70', 'Grabar fecha',
+'71', 'Tamaño',
+'72', 'Contenido de copia de seguridad (directorios grabados)',
+'73', 'Tipo',
+'74', 'Funciones',
+
+# Loop stuff to prevent running into server time out
+'90' => q~Si quieres <a href="javascript:stoptick();">PARAR la copia de seguridad pulsa aquí</a>.~,
+'91' => '¡Copia de seguridad en progreso - por favor espera!<br />Si quieres parar, pulsa en PARAR, pulsa en PARAR antes de que aparezca el mensaje rojo de nuevo en la próxima página.',
+
+# Recover stuff
+'100' => 'Recuperar copia de seguridad',
+'101' => '<b>Recomendamos recuperar SOLO los siguientes directorios con esta opción de recuperación:<br /><i>Foros</i>, <i>Miembros</i>, <i>Mensajes</i>, <i>Variables</i> y <i>yabbfiles/Attachments y yabbfiles/avatars/UserAvatars</i>.<br /><br />Debido a cambios de propiedades durante la recuperación puede (no necesariamente) redundar en problemas de gestión de archivos. Por tanto recupera todos los demás archivos subiéndolos via FTP desde tu ordenador local, después de bajarte el fichero de copia de seguridad desde la última página.</b><br /><br />¿Estás seguro de querer recuperar las siguiente(s) carpeta(s)?',
+'102' => 'con el fichero de copia de seguridad:',
+'103' => 'desde',
+'104' => 'Sí',
+'105' => "Marca esto para restaurar los ficheros en sus carpetas originales. Esto sobreescribirá todos los ficheros existentes en esas carpetas y creará nuevos ficheros en ellas si fueron borrados antes. Pero no se borrarán los ficheros que fueron creados entre la copia de seguridad y ahora. Los directorios que quieres recuperar deben estar como CHMOD X[2|3|6|7]X antes de la recuperación. Esto significa que deben tener al menos permiso de 'Group'-write. Ejemplo: CHMOD 775 o 765. Si has movido los ficheros desde que este fichero de copia de seguridad fue creado, es muy posible que este método falle. En ese caso no marques esta opción.<br />Si no marcas esta opción los ficheros serán guardados dentro de una nueva carpeta con la marca temporal actual como nombre en la carpeta de copia de seguridad:<br /><tt>$backupdir/$date</tt> (el nuevo nobre de la carpeta que ponemos aquí es sólo un ejemplo).",
+'106' => 'Debes fijar el CHMOD para los ficheros recuperados en los siguientes directorios. Como los archivos serán restaurados por el servidor, el servidor será el nuevo propietario de los archivos recuperados. Por lo tanto, en algunos servidores no serás capaz de cambiar el CHMOD a posteriori.<br />Para prevenir esto el servidor no te permite modificar o incluso eliminar tus ficheros, los derechos para el "Grupo" no pueden fijarse por debajo de 6. Los derechos de los propietarios tampoco pueden fijarse por debajo de 6.',
+'107' => 'Directorios',
+'108' => 'permisos<br />(CHMOD)<br />Propietario|Grupo|Todos',
+'110' => 'Este permiso no puede ser fijado por debajo de', # Used in JavaScript!!!
+'111' => 'Este permiso no puede fijarse tan alto. Máximo permitido es 7.', # Used in JavaScript!!!
+'112' => '¡Sólo se permiten números!', # Used in JavaScript!!!
+'114' => 'todos los ficheros',
+'115' => 'Todos',
+'116' => 'ficheros',
+'120' => 'Si son creados nuevos directorios, fijarlos a',
+'125' => 'No, vuelve a la página principal de copia de seguridad',
+'126' => 'Recuperar',
+'130' => '<b><u>Salida:</u><br /><br />Si la configuración de CHMOD se aplicó correctamente puedes verlo en el primer caracter. Si es <i>1</i> está correcto, si es <i>0</i> no.</b><br />Si no está correcto usualmente es debido a que el directorio no se dejó con permiso de <i>Group</i>-write.',
+'131' => '<b>Comprueba los CHMODs de nuevo en tu programa de FTP, sólo para asegurarte &nbsp; ;-)</b>',
+'132' => 'Volver a la página principal de copia de seguridad de YaBB',
+
+# Begin email stuff.
+'mailsubject', "Copia de seguridad de YaBB 2 desde $mbname",
+'mailfrom', qq~"Envío de emails de copia de seguridad de YaBB 2" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!!!
+'mailsuccess', 'Sending email succeeded!',
+'mailfail', '¡Fallo de envío de email! Mira el mensaje de error en el email de información que recibirás.',
+);
+
+# The actual messages are here.
+# Don't translate WORDS IN ALL CAPITIALS from here to the end of the file
+$backup_txt{'mailmessage1'} = qq~Hi USERNAME!
+
+La copia de seguridad FILENAME debe estar como adjunta a este mensaje.
+
+En caso contrario puedes visitar LINK para bajarla manualmente.
+
+
+Gracias por usar YaBB!~;
+
+$backup_txt{'mailmessage2'} = qq~Hi USERNAME!
+
+Puedes visitar LINK para bajar la copia de seguridad FILENAME.
+
+
+Gracias por usar YaBB!~;
+
+$backup_txt{'mailmessage3'} = qq~Hi USERNAME!
+
+Fallo en el envío del email con el fichero adjunto de copia de seguridad.
+
+Pero puedes visitar LINK para bajar la copia de seguridad FILENAME.
+
+Información proporcionado por el sistema en relación al problema de envío:
+"SYSTEMINFO"
+
+Necesitas MIME::Lite , y posiblemente otros módulos (mira la información que aparece más abajo), instalado en tu servidor para poder recibir las copias de seguridad por email. Pide a tu administrador que te instale los módulos en el servidor. Puedes encontrar más información sobre la instalación de los módulos aquí: http://codex.yabbforum.com/YaBB.pl?num=1225217016
+
+Gracias por usar YaBB!~;
+
+1;

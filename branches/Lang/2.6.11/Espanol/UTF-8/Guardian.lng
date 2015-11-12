@@ -1,0 +1,73 @@
+###############################################################################
+# Guardian.lng (Guardian text definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$guardianlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%guardian_txt = (
+'main' => 'El Guardián;',
+'admin' => 'El Guardián; Administrador',
+'setup' => 'El Guardián; Configuración',
+'title' => 'Bienvenido a "El Guardián;", tu barrera anti-intrusos.',
+'description' => 'Con "El Guardián;" puedes bloquear intrusos a varios niveles, redundando en una mejor seguridad y menos riesgo de piratería.',
+'notify' => '¿Quieres notificación por email de cada intento detectado?',
+'general' => 'Configuraciones Globales y de Servidor',
+'use_guardian' => '¿Usar El Guardián para proteger tu foro?',
+'use_htaccess' => '¿Activar .htaccess para añadir bloques de IP a nivel de servidor?<br /><span class="small"><i>(sólo funciona si tu servidor lo soporta)</i></span>',
+'htaccess_support' => '<span class="small"><i>(sólo funciona si tu servidor lo soporta)</i></span>',
+'use_htaccess_support' => '<span class="small"><i>(Only works if your server supports /.htaccess files.)</i></span>',
+'htaccess_add' => '¿Añadir automáticamente el abuso de direcciones IP a .htaccess?<br /><span class="small"><i>(sólo funciona si tu servidor lo soporta)</i></span>',
+'htaccess_added' => 'Añadido el abuso de direcciones IP al fichero .htaccess. (Puedes borrarlo de la lista manualmente desde la Administración del Guardián)',
+'proxy' => 'Bloqueo de Proxy',
+'referer' => 'Bloqueo de Referer',
+'harvester' => 'Bloqueo de Cosechadora (Harvester)',
+'request' => 'Método de la Petición de Bloqueo',
+'string' => 'Bloqueo de Cadena de Entorno',
+'clike' => 'Bloqueo de CLIKE',
+'union' => 'Bloqueo de UNION',
+'script' => 'Bloqueo de Secuencias de Comando (scripting)',
+'proxy_on' => '¿Denegar acceso a través de servidores proxy?',
+'referer_on' => '¿Activar el bloqueo de referer?',
+'harvester_on' => '¿Activar el bloqueo de cosechadora (harvester)?',
+'request_on' => '¿Activar el bloqueo de Método de Petición (Request Method)?',
+'string_on' => '¿Activar \'palabras malsonantes\' en el bloqueo de entorno de url?',
+'clike_on' => '¿Activar bloqueo de CLIKE (sólo MySQL)?',
+'union_on' => '¿Activar bloqueo de UNION (sólo MySQL)?',
+'script_on' => '¿Activar bloqueo de secuencia de comandos (scripting)?',
+'proxy_abuse' => 'Acceso Proxy',
+'referer_abuse' => 'Referer',
+'harvester_abuse' => 'Cosechadora (Harvester)',
+'request_abuse' => 'Método de Petición (Request Method)',
+'string_abuse' => 'Cadena Errónea en URL',
+'clike_abuse' => 'CLIKE',
+'union_abuse' => 'UNION',
+'script_abuse' => 'Secuencia de Comandos (Scripting)',
+'abuse' => 'Detectado Abuso!',
+'abuse_user' => 'Abuso de ID de usuario (Nombre Real)',
+'abuse_ip' => 'Detectado Abuso desde IP',
+'abuse_referer' => 'Referer Bloqueado',
+'abuse_string' => 'Palabra Bloqueada',
+'abuse_environment' => 'Cadena de Entorno',
+'abuse_form_environment' => 'Secuencia de comandos (script) bloqueada en formulario de datos',
+'abuse_url_environment' => 'Secuencia de comandos (script) bloqueada en datos de Url',
+'abuse_harvester' => 'Cosechadora (Harvester) Bloqueada',
+'abuse_request' => 'Método de Petición (Request Metod) Bloqueado',
+'white_list' => 'Entra las IPs, los id de usuarios o las cadenas de identificación que quieres validar (lista blanca)?<br /><i>(total o parcial, uno por línea)</i>',
+'referer_list' => 'Entra las url de referrer que quieres bloqueadas<br /><i>(url total o parcial, una por línea)</i>',
+'harvester_list' => 'Entra las cadenas de texto de la agente cosechadora (harvester agent strings) que quieres bloquear<br /><i>(agente de cadena de caracteres total o parcial, uno por línea)</i>',
+'request_list' => 'Entra los Métodos de Petición que quieres bloquear<br /><i>(total o parcial, uno por línea)</i><br /><br /><b><u>¡ATENCION!</u><br />¡NUNCA BLOQUEES POST y GET!<br />¡Inutilizará tu foro!</b>',
+'string_list' => 'Entra las \'palabras malsonantes\' que quieres bloquear<br /><i>(cadena de texto total o parcial, una por línea)</i>',
+'htaccess_list' => 'Entra las direcciones IP o los dominios que quieres bloquear a nivel de servidor<br /><span class="small"><i>(* permitidos comodines, uno por línea)</i></span>',
+'save' => 'Grabar Cambios del Guardian',
+);
+
+1;

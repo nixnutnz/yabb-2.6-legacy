@@ -1,0 +1,39 @@
+###############################################################################
+# Bookmarks.lng (Social Bookmarks text definitions)                           #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$bookmarkslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%bookmark_txt = (
+'01' => 'Imagen',
+'02' => 'Título',
+'03' => 'Orden',
+'05' => '¿Seguro que quieres borrar este Marcador?',
+'08' => 'En este momento hay Marcadores sociales.',
+'09' => 'Marcadores sociales Configuración',
+'10' => 'Habilitar Marcadores sociales?',
+'11' => 'Seleccione las Juntas que se mostrará Marcadores en:<br /><span class="small">- Si no se seleccionan tablas a continuación se activará todas las placas<br />- Usar Ctrl, Shift o Apple para seleccionar / anule la selección de tablas.</span>',
+'12' => 'Marcadores sociales',
+'13' => 'Añadir un nuevo Marcador',
+'14' => 'URL',
+'15' => 'Añadir Marcador',
+'16' => 'Editar marcador',
+'17' => 'cancelar',
+'18' => '- Este es el título de la página marcador.',
+'19' => '- Animales tipos de archivo: png gif jpg jpeg <br /> - Max. tamaño de archivo: 250KB',
+'20' => '- Este es el enlace al sitio marcador <br /> -. Uso {url} para la URL de la página y {title} por el título de la página.',
+'21' => '- Este es el orden que se mostrarán los marcadores en <br /> -. Los números más bajos se mostrarán en primer lugar.',
+'22' => 'Caracteres máximos en tema',
+);
+
+1;
+ 

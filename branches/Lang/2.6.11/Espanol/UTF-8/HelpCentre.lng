@@ -1,0 +1,33 @@
+###############################################################################
+# HelpCentre.lng (Language Strings for the Help Centre                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$helpcentrelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%helptxt = (
+'1' => 'Sección de Ayuda',
+'2' => 'Contenidos',
+'3' => 'Ayuda al usuario',
+'4' => 'Ayuda al moderador',
+'5' => 'Ayuda al moderador global',
+'6' => 'Ayuda al administrador',
+'7' => 'Editar entradas del centro de ayuda',
+'8' => '¡Hecho!',
+'9' => 'Usar los Permisos',
+'10' => 'Aquí es donde puedes editar, borrar o reordenar las secciones de ayuda mostradas a los usuarios en la ayuda. En los archivos de la izquierda puedes ver las secciones de ayuda disponibles. Puedes marcar y editar o añadir a los archivos de la derecha haciendo click en la flecha para hacerlas visibles en el sistema de ayuda.',
+'643' => 'Volver arriba',
+'769' => 'Ubicación de Flash',
+'7a' => '    Sección Título',
+'7b' => 'Subsección Título',
+);
+
+1;

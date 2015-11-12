@@ -1,0 +1,400 @@
+###############################################################################
+# Email.lng (Email templating and text declarations)                          #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+## Distributed by: http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$espanolemaillngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+$emailcharset = 'ISO-8859-1';
+
+%yabbtagdesc = (
+# Constant tags
+'scripturl', "La URL para YaBB. Ejemplo: $scripturl",
+'adminurl', "La URL para YaBB Centro de administración. Ejemplo: $adminurl",
+'mbname', "El nombre de este foro. Ejemplo: $mbname",
+
+# New Member related
+'userip', "La dirección IP del usuario.",
+'useremail', "El correo electrónico del usuario.",
+
+# User-related
+'username', "El ID de usuario del usuario.",
+'displayname', "El nombre de la pantalla del usuario.",
+'cryptusername', "El ID de usuario del usuario, con capa para su uso en una URL.",
+'reviewer', "El nombre de la pantalla del Admin/GMod revisión de registros.",
+
+# Topic/PM-related
+'sender', "The sender of the PM.",
+'num', "The number of the Topic (for URL purposes)",
+'start', "The number of the Message in the Topic (for URL purposes)",
+'tmessage' => "Text of the new Topic",
+'tauthor' => "Name of the Author",
+
+# Registration/Password
+'activationcode', "The Activation Code sent in a Register Email.",
+'remindercode', "The code sent in a Reminder Email.",
+'preregspan', "The time allowed before the Pre-Registration expires. Current value: $preregspan",
+'reason', "Admin reason behind a decision made on a registering User while in register with Admin Approval mode",
+
+# Sending a Topic
+'toname', "The name of the person receiving a Topic.",
+
+# PMs
+'sendto', "Recipient of this PM.",
+'email', "Email from User.",
+'date', "The date the PM was sent.",
+'subject', "The subject of the Message or PM.",
+'message', "The text of the PM.",
+);
+
+# Pre registration subject lines
+%mailreg_txt=(
+'apr_result_activate' => 'Información de activación para',
+'apr_result_validate' => 'Validación de registro para',
+'apr_result_info' => 'Información de registro para',
+'apr_result_wait' => 'Pendiente de registro para',
+'apr_result_reject' => 'Registro rechazado para',
+'apr_result_approved' => 'Registro aprobado para',
+'new_member_info' => "¡Registro de Nuevo Miembro!",
+);
+
+$yabbtags{'preregemail'} = qq~displayname preregspan cryptusername activationcode~;
+$emaildesc{'preregemail'} = qq~Email de Registro que se manda al usar los Códigos de Pre-registro~;
+$preregemail = qq~Bienvenido, {yabb displayname}!
+Aquí tienes el código de validación para tu cuenta {yabb displayname}.
+
+Te has pre-registrado correctamente en {yabb mbname}.
+Por favor, valida tu cuenta dentro de las próximas {yabb preregspan} horas.
+
+Por favor, haz click sobre el link de debajo para activar tu cuenta de usuario
+
+{yabb scripturl}?action=activate&username={yabb cryptusername}&activationkey={yabb activationcode}
+
+Si el link no te funciona (o bien si usas AOL o un programa de Email basado en formato de navegador), copia el link e introdúcelo en la barra de direcciones de tu navegador.
+
+Bienvenido,
+El equipo de {yabb mbname} ~;
+
+$yabbtags{'approveregemail'} = qq~username displayname~;
+$emaildesc{'approveregemail'} = qq~El Email pendiente de aprobación cuando no se manda una contraseña o un código de Pre-Registro~;
+$approveregemail = qq~¡Hola, {yabb displayname}!
+
+Tu solicitud con el nombre de usuario: "{yabb username}" está pendiente de aprobación por parte de la administración de {yabb mbname}.
+
+Puede llevar cierto tiempo ya que hasta los administradores duermen de vez en cuando, así que, por favor, ten un poco de paciencia (normalmente se revisa todo cada 24/48 horas).
+Se te mandará una notificación en cuanto tu solicitud sea revisada.
+
+Un saludo,
+El quipo de {yabb mbname} ~;
+
+$yabbtags{'instantapprovedemail'} = qq~username displayname reviewer~;
+$emaildesc{'instantapprovedemail'} = qq~Email de Aprobación Instantánea cuando no se manda una contraseña o un código de pre-registro.~;
+$instantapprovedemail = qq~¡Hola, {yabb displayname}!
+
+Enhorabuena y Bienvenido.
+
+Tu solicitud de registro ha sido aprobada por {yabb reviewer} desde la Administración de {yabb mbname}.
+
+Puedes entrar usando tu nombre ({yabb displayname}), tu email, o tu nombre de usuario ({yabb username}).
+
+Una vez hayas entrado en el foro puedes cambiar tu contraseña entrando en el Panel de Control de tu usuario. Pulsa sobre la etiqueta de Perfil en la parte superior de {yabb mbname} en la página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitarás introducir tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'pwinstantapprovedemail'} = qq~username displayname reviewer password~;
+$emaildesc{'pwinstantapprovedemail'} = qq~Email de Aprobación Instantánea cuando una contraseña~;
+$pwinstantapprovedemail = qq~¡Hola, {yabb displayname}!
+
+Enhorabuena y bienvenido.
+
+Tu solicitud de registro ha sido aprobada por el {yabb reviewer} de la administración de {yabb mbname}.
+
+Puedes entrar usando tu nombre ({yabb displayname}), tu email, o tu nombre de usuario ({yabb username}).
+Tu contraseña actual es : {yabb password}
+
+Puedes cambiar tu contraseña una vez hayas entrado yendo al Panel de Control de tu usuario. Pulsa la pestaña de Perfil de la parte superior de {yabb mbname} página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitarás entrar tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'instantrejectedemail'} = qq~username displayname reviewer~;
+$emaildesc{'instantrejectedemail'} = qq~Mensaje instantáneo cuando no se manda una contraseña o un código de pre-registro~;
+$instantrejectedemail = qq~¡Hola, {yabb displayname}!
+
+Sentimos informarle que tu solicitud de alta ha sido rechazado por {yabb reviewer} de la administración de {yabb mbname}.
+No se han dado razones específicas pero, en la mayoría de los casos, es debido a causa de sus credenciales o bien a causa de la razón del alta.
+
+Si crees que tu alta ha sido rechazada por error, puedes volver a intentar darte de alta usando otras credenciales para que sean examinadas.
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'reviewapprovedemail'} = qq~username displayname reviewer~;
+$emaildesc{'reviewapprovedemail'} = qq~El Email de aprobación cuando no se manda una contraseña o un código de pre-registro~;
+$reviewapprovedemail = qq~¡Hola, {yabb displayname}!
+
+Enhorabuena y bienvenido.
+
+Tu solicitud de registro ha sido revisada y aprobada por el {yabb reviewer} de la administración de {yabb mbname}.
+El {yabb reviewer} ha dado el siguiente motivo para ello:
+
+{yabb reason} 
+
+Puedes entrar con tu nombre ({yabb displayname}), dirección de email, o nombre de usuario ({yabb username}).
+
+Puedes cambiar tu contraseña una vez hayas entrado yendo a la página de Panel de Control de tu usuario. Pulsa sobre la etiqueta de Perfil en la parte superior de {yabb mbname} página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitas entrar tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'pwreviewapprovedemail'} = qq~username displayname reviewer password~;
+$emaildesc{'pwreviewapprovedemail'} = qq~El email de revisión aprovada cuando se manda una contraseña~;
+$pwreviewapprovedemail = qq~¡Hola, {yabb displayname}!
+
+Enhorabuena y bienvenido.
+
+Tu solicitud de registro ha sido revisada y aprobada por {yabb reviewer} de la administración de {yabb mbname}.
+El {yabb reviewer} ha dado la siguiente razón:
+
+{yabb reason} 
+
+Puedes entrar usando tu nombre ({yabb displayname}), tu dirección de email, o tu nombre de usuario ({yabb username}).
+Tu contraseña actual es : {yabb password}
+
+Puedes cambiar tu contraseña una vez hayas entrado yendo a la página de Panel de Control de tu usuario. Pulsa sobre la etiqueta de Perfil en la parte superior de {yabb mbname} página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitas entrar tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'reviewrejectedemail'} = qq~username displayname reviewer reason~;
+$emaildesc{'reviewrejectedemail'} = qq~El email de revisión declinada cuando no se manda una contraseña o un código de pre-registro~;
+$reviewrejectedemail = qq~¡Hola, {yabb displayname}!
+
+Sentimos informarte que tu solicitud de alta ha sido revisada y denegada por el {yabb reviewer} de la administración de {yabb mbname}.
+El {yabb reviewer} ha dado la siguiente razón:
+
+{yabb reason} 
+
+Si crees que tu alta ha sido rechazada por error, puedes volver a intentar darte de alta usando otras credenciales para que sean examinadas.
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'passwordregemail'} = qq~username password displayname~;
+$emaildesc{'passwordregemail'} = qq~El Email de registro cuando se da al usuario una contraseña aleatoria~;
+$passwordregemail = qq~¡Hola, {yabb displayname}!
+
+Tu Nombre de Usuario es {yabb username}, y tu contraseña es {yabb password}.
+
+Puedes entrar usando tu nombre ({yabb displayname}), tu dirección de correo electrónico, o tu nombre de usuario ({yabb username}).
+
+Puedes cambiar tu contraseña una vez hayas entrado yendo a la página de Panel de Control de tu usuario. Pulsa sobre la etiqueta de Perfil en la parte superior de {yabb mbname} página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitarás introducir tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'welcomeregemail'} = qq~username password displayname~;
+$emaildesc{'welcomeregemail'} = qq~El email de registro cuando no se manda una contraseña o un código de pre-registro~;
+$welcomeregemail = qq~¡Hola, {yabb displayname}!
+
+Tu nombre de usuario es {yabb username}, y tu contraseña es {yabb password}.
+
+Puedes entrar usando tu nombre ({yabb displayname}), tu dirección de correo electrónico, o tu nombre de usuario ({yabb username}).
+
+Puedes cambiar tu contraseña una vez hayas entrado yendo a la página de Panel de Control de tu usuario. Pulsa sobre la etiqueta de Perfil en la parte superior de {yabb mbname} página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitarás introducir tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'activatedpassregemail'} = qq~username password displayname~;
+$emaildesc{'activatedpassregemail'} = qq~El email resultado de la activación de registro (enviando una contraseña)~;
+$activatedpassregemail = qq~¡Hola, {yabb displayname}!
+
+Tu nombre de usuario es {yabb username}, y tu contraseña es {yabb password}.
+
+Puedes entrar usando tu nombre ({yabb displayname}), tu dirección de correo electrónico, o tu nombre de usuario ({yabb username}).
+
+Puedes cambiar tu contraseña una vez hayas entrado yendo a la página de Panel de Control de tu usuario. Pulsa sobre la etiqueta de Perfil en la parte superior de {yabb mbname} página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitarás introducir tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'activatedwelcomeregemail'} = qq~username password displayname~;
+$emaildesc{'activatedwelcomeregemail'} = qq~Email resultado de la activación del registro (sin mandar contraseña)~;
+$activatedwelcomeregemail = qq~¡Bienvenido, {yabb displayname}!
+
+Tu nombre de usuario es {yabb username}, y tu contraseña es {yabb password}.
+
+Puedes entrar usando tu nombre ({yabb displayname}), tu dirección de correo electrónico, o tu nombre de usuario ({yabb username}).
+
+Puedes cambiar tu contraseña una vez hayas entrado yendo a la página de Panel de Control de tu usuario. Pulsa sobre la etiqueta de Perfil en la parte superior de {yabb mbname} página principal: {yabb scripturl} y pulsa sobre Editar Perfil (necesitarás introducir tu contraseña como medida de seguridad).
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'newmemberemail'} = qq~displayname username userip useremail~;
+$emaildesc{'newmemberemail'} = qq~Notificación a nuevo miembro por email a Admin~;
+$newmemberemail = qq~¡Un nuevo miembro se ha registrado en el foro!
+
+Nombre con el que se mostrará: {yabb displayname}
+Nombre de usuario: {yabb username}
+Dirección IP: {yabb userip}
+Correo electrónico del usuario: {yabb useremail}
+
+Para verificar el registro y el perfil del nuevo miembro por favor entra en tu foro y pulsa en el siguiente enlace.
+{yabb adminurl}?action=view_reglog
+
+Si el enlace no funciona (o si usas AOL o un programa de correo electrónico basado en un navegador), copia el enlace e insertalo en la barra de direcciones de tu navegador Web y confirma con Intro.
+
+Para examinar el perfil del nuevo miembro por favor entra en el foro.
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'passwordreminderemail'} = qq~displayname mbname remindercode cryptusername~;
+$emaildesc{'passwordreminderemail'} = qq~Correo electrónico para recordar contraseña~;
+$passwordreminderemail = qq~Apreciado {yabb displayname},
+
+Este email ha sido solicitado por un visitante de {yabb mbname}. Si no solicitaste resetear tu contraseña por favor ignora este correo electrónico.
+
+En caso contrario, ve aquí para resetear tu contraseña: {yabb scripturl}?action=resetpass&ID={yabb remindercode}&user={yabb cryptusername}
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'boardnewtopicnotificationemail'} = qq~num subject~;
+$emaildesc{'boardnewtopicnotificationemail'} = qq~Correo electrónico de notificación (Board-Level, New Topic)~;
+$boardnewtopicnotificationemail = qq~Un nuevo mensaje, "{yabb subject}", ha sido publicado.
+
+Para visualizarlo {yabb scripturl}?num={yabb num}
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'boardnotificationemail'} = qq~num start subject~;
+$emaildesc{'boardnotificationemail'} = qq~Correo electrónico de Notificación (Board-Level, Existing Topic)~;
+$boardnotificationemail = qq~Una respuesta, "{yabb subject}", ha sido publicada.
+
+Para visualizarla {yabb scripturl}?num={yabb num}/{yabb start}
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'topicnotificationemail'} = qq~num subject start~;
+$emaildesc{'topicnotificationemail'} = qq~Correo electrónico de Notificación (Topic-Level)~;
+$topicnotificationemail = qq~Una respuesta, "{yabb subject}", ha sido publicada.
+
+Para visualizarla {yabb scripturl}?num={yabb num}/{yabb start}
+
+No se te mandarán más notificaciones automáticas hasta que revises el mensaje de tu interés.
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'profilenewpasswordemail'} = qq~displayname password~;
+$emaildesc{'profilenewpasswordemail'} = qq~Correo electrónico de perfil para mandar una nueva contraseña cuando la existente haya cambiado~;
+$profilenewpasswordemail = qq~Apreciado {yabb displayname},
+
+Tu contraseña ha sido cambiada. La neuva es {yabb password}.
+
+Puedes cambiarla después de entrar en el foro yendo a la página de Perfil.
+
+Un saludo,
+El equipo de {yabb mbname}~;
+
+$yabbtags{'sendtopicemail'} = qq~toname subject displayname num~;
+$emaildesc{'sendtopicemail'} = qq~Correo electrónico para mandar un mensaje~;
+$sendtopicemail = qq~Apreciado {yabb toname},
+
+Me gustaría que comprobases el siguiente mensaje, "{yabb subject}" , en {yabb mbname}. Para verlo, pulsa sobre el siguiente enlace:
+
+{yabb scripturl}?num={yabb num}
+
+Gracias,
+{yabb displayname}~;
+
+$yabbtags{'privatemessagenotificationemail'} = qq~sender subject message~;
+$emaildesc{'privatemessagenotificationemail'} = qq~Correo electrónico de notificación de mensaje privado~;
+$privatemessagenotificationemail = qq~
+{yabb sender} te ha mandado un mensaje privado.
+
+Título: {yabb subject}
+Mensaje: {yabb message}
+
+Este mensaje también está en tu bandeja de entrada de tus mensajes personales de {yabb mbname}\: {yabb scripturl}~;
+
+## for online alert pms. 
+%online_alert = (
+newnotify => "¡Aviso de nuevo mensaje!",
+replynotify => "¡Aviso de respuesta!",
+);
+
+
+
+$yabbtags{'replyguestmail'} = qq~sender email sendto date subject message~;
+$emaildesc{'replyguestmail'} = qq~El PM Responder Invitado a Admin Email~;
+$replyguestmail = qq~Apreciado {yabb sender},
+
+
+
+Un saludo,
+El equipo de {yabb mbname}
+{yabb scripturl}
+
+-----------------------------
+----- Original Message -----
+De: "{yabb sender}" <{yabb email}>
+A: "{yabb sendto}", <{yabb scripturl}>
+Enviado: {yabb date}
+Asunto: {yabb subject}
+
+{yabb message}
+~;
+
+
+$yabbtags{'deleteduseremail'} = qq~displayname~;
+$emaildesc{'deleteduseremail'} = qq~Correo electrónico de notificación de usuario borrado~;
+$deletedusersybject = qq~Cuenta borrada~;
+$deleteduseremail = qq~¡Hola, {yabb displayname}!
+
+Tu cuenta de {yabb mbname} ya no está activa y ha sido borrada.
+
+Un saludo,
+El equipo de {yabb mbname}
+{yabb scripturl}
+~;
+
+$yabbtags{'banneduseremail'} = q~screen name~;
+$emaildesc{'banneduseremail'} = q~El Banned Usuario Notificación por correo electrónico~;
+$bannedusersybject = q~Su cuenta prohibido en~;
+$banneduseremail = q~¡Hola, {yabb displayname}!
+
+Se le ha prohibido {yabb mbname} {yabb ban_time} por {yabb banner}{yabb ban_reason}.
+
+Un saludo,
+El equipo de {yabb mbname}
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+~;
+
+$yabbtags{'suspendeduseremail'} = q~screen name~;
+$emaildesc{'suspendeduseremail'} = q~El Usuario Suspendido Notificación por correo electrónico~;
+$suspendusersybject = q~Su cuenta suspendida en~;
+$suspendeduseremail = q~¡Hola, {yabb displayname}!
+
+Su cuenta en {yabb mbname} ha sido suspendido {yabb ban_time} por {yabb banner}{yabb ban_reason}.
+
+Un saludo,
+El equipo de {yabb mbname} team
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+~;
+
+1;

@@ -1,0 +1,56 @@
+###############################################################################
+# Notify.lng (Notify text definitions)                                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$notifylngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%notify_txt = (
+'118' => 'Notificación de Tema',
+'119' => '¡No hay temas marcados para notificación!',
+'120' => 'por',
+'121' => 'Restaurar',
+'122' => 'Serás notificado por email de las respuestas en los siguientes temas.',
+'123' => 'Marcar para <b><i>desactivar</i></b> la Notificación de este tema',
+'124' => 'Actualizar Notificaciones',
+'125' => 'Notificar',
+'126' => 'Recibir por email notificaciones de las respuestas de este Tablón.',
+'127' => 'Respuesta al Tema',
+'132' => 'Sólo Temas Nuevos',
+'133' => 'Todos los Mensajes nuevos',
+'134' => 'Borrar',
+'135' => 'Tablón',
+'136' => 'Notificación de Tablón',
+'137' => 'Cambia o borra las Notificaciones del Tablón.',
+'138' => 'Cambiar',
+'139' => '¡No hay tablones marcados para notificación!',
+'140' => 'Tema',
+'144' => 'Marcar todos',
+'145' => 'Nuevo Mensaje Personal',
+'200' => 'Tienes',
+'201' => 'nuevos',
+'202' => 'y',
+'203' => '¿Quieres ver tus Notificaciones?',
+'205' => 'Notificaciones del Foro',
+'206' => 'Notificaciones de Tema',
+'333' => 'Nuevos Mensajes',
+'334' => 'Sin Nuevos Mensajes',
+'335' => 'Nuevos',
+'lastpost' => 'último mensaje',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+'75' => 'Esta es su selección Junta Notificación.',
+'76' => 'Ahora tiene',
+'77' => 'de',
+'78' => 'Juntas máximo permitido de notificación.',
+);
+
+1;

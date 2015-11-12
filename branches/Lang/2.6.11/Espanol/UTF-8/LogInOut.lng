@@ -1,0 +1,61 @@
+###############################################################################
+# LogInOut.lng (LogInOut text definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$loginoutlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%loginout_txt = (
+'34' => 'Entrar',
+'35' => 'ID de usuario o dirección de correo electrónico',
+'35a' => 'ID de usuario o campo de dirección de correo electrónico.',
+'35b' => 'ID de usuario, nombre de usuario o dirección de correo electrónico',
+'36' => 'Contraseña',
+'36b' => 'Restablecimiento de contraseña',
+'130' => 'Saludos,\nEl equipo de $mbname',
+'130a' => 'Ir aquí para restaurar contraseña: ',
+'192' => 'Email enviado con exito a:',
+'193' => 'Volver',
+'194' => 'recordatorio',
+'241' => '¡campo!',
+'315' => '¿Olvidaste tu contraseña?',
+'339' => 'Enviar',
+'669' => 'Recordar Contraseña',
+'711' => 'Hola',
+'753' => 'Necesitas registrarte',
+'837' => 'Tu nombre de usuario es sensible a mayúsculas y minúsculas.',
+'capslock' => 'Bloq Mayús está activado.',
+'wrong_char' => 'Este carácter de la contraseña no es válida',
+'error_user_info' => 'Usted debe insertar su nombre de usuario o dirección de correo electrónico.',
+'no_user_info_exists' => 'La dirección de ID de usuario o correo electrónico que has introducido no existe en este foro.', 
+'verification_question_desc' => 'Por favor, responda la pregunta de verificación de arriba.',
+'verification_question_case' => 'Las respuestas están entre mayúsculas y minúsculas.',
+'error_verification' => 'El código de verificación no se encuentra.',
+'error_verification_question' => 'Usted debe responder a la pregunta de verificación.',
+'keeps' => 'Mantenme conectado',
+);
+
+%floodtxt = (
+'1' => 'Tu código de verificación es',
+'3' => 'Código de verificación',
+'casewarning' => 'Teclealo exactamente como aparece en la imagen. En el mismo orden y ten encuenta que mayúsculas y minúsculas son distintas.',
+'casewarning_1' => 'Por favor escriba los caracteres exactamente como aparecen en la imagen,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">sin que los primeros',
+'casewarning_3' => '<br /><span style="font-weight: bold;">sin los últimos',
+'casewarning_4' => 'y los últimos',
+'casewarning_5' => 'caracteres.</span><br />Los personajes deben ser escritos en el mismo orden,<br />y son mayúsculas y minúsculas.',
+);
+
+%prereg_txt=(
+'5' => '¡Tu cuenta ha sido activada y ya puedes participar!',
+);
+
+1;

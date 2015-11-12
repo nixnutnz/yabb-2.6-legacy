@@ -1,0 +1,110 @@
+###############################################################################
+# MessageIndex.lng (MessageIndex text definitions)                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$messageindexlngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%messageindex_txt = (
+'2' => 'Admin',
+'3' => 'Este tema contiene',
+'4' => 'Adjuntos',
+'5' => 'Adjunto',
+'10' => 'Permalink para este artículo',
+'15' => 'Encuesta',
+'18' => 'Índice',
+'19' => 'Índice de Páginas (Si/No)',
+'22' => 'Último mensaje',
+'31' => 'Borrar',
+'54' => 'Borrar',
+'63' => 'Moderadores',
+'63a' => 'Grupo de moderadores',
+'70' => 'Asunto',
+'71' => 'Icono del mensaje',
+'75' => 'Esta es tu selección de Temas Favoritos.',
+'76' => 'Ahora tiene',
+'77' => 'temas de',
+'78' => 'como máximo permitido',
+'104' => 'Bloquear/Desbloquear',
+'109' => 'Iniciado',
+'110' => 'Resp.',
+'132' => 'Mover',
+'133' => 'Mover a',
+'139' => 'Páginas',
+'162' => '\¿Estas seguro de querer borrar este tema\?',
+'199' => 'Haga doble clic en esta casilla de verificación para obtener más información sobre su función.', # don't use " inside!
+'200' => 'Pulsa \\\'OK\\\' para incluir un nuevo mensaje al final del tema que ha sido movido. Este mensaje mostrará la información concerniente a de dónde viene el tema y quién lo ha movido.\\nClick \\\'Cancelar\\\' para moverlo sin incluir un nuevo mensaje.\\n\\nClick \\\'¡IR!\\\' cuando sea devuelto a la pantalla.', # inside JavaScript!
+'251' => 'Acceso rápido',
+'298' => 'Moderador',
+'298a' => 'Grupo de moderadores',
+'301' => 'Visto',
+'302' => 'Nuevos',
+'303' => 'Go to first unread post',
+'454' => 'Tema Popular (Más de',
+'454a' => 'Respuestas)',
+'455' => 'Tema Muy Popular (Más de',
+'456' => 'Tema Bloqueado',
+'457' => 'Tema Normal',
+'458' => 'Tema Oculto',
+'459' => 'Tema Oculto y Engomado',
+'460' => 'Tema Oculto Bloqueado',
+'461' => 'Tema Oculto Bloqueado y Engomado',
+'462' => '¡IR!',
+'470' => 'N/A',
+'470a' => '<i>Ex-miembro</i>',
+'500' => 'Marcando todos los Hilos como Leídos', # inside JavaScript!
+'500a' => 'Completo', # inside JavaScript!
+'525' => 'Por',
+'526' => 'por',
+'527' => 'Iniciado',
+'737' => 'Marcar todo',
+'779' => 'Tema Engomado',
+'779a' => 'Aviso Global',
+'779b' => 'Anuncio Global Cerrado',
+'780' => 'Tema Engomado Bloqueado',
+'781' => 'Engomar',
+'837' => 'Permisos del foro',
+'840' => 'No se han encontrado favoritos',
+'841' => 'No se han encontrado mensajes',
+'842' => 'Borrar los Favoritos seleccionados',
+'843' => 'RSS Feed para este tablón',
+'844' => 'Ocultar',
+'845' => 'Tema Movido',
+'903' => 'Cerrar ventana',
+'collruletext' => 'Reglamento del Consejo Colapsar',
+'nopost' => 'Esta tarjeta no puede ser publicado y no hay mensajes se puede mover en ella.',
+'move_up' => 'Ascender',
+'move_down' => 'Mover hacia abajo', 
+);
+
+%messageindex_sort = (
+'sort_az' => "Sort (A-Z)",
+'sort_za' => "Sort (Z-A)",
+'sort_min' => "Sort (min answer)",
+'sort_max' => "Sort (max answer)",
+'sort_last' => "Sort (new answer)",
+'sort_first' => "Sort (old answer)",
+);
+
+%messageindex_stickygrp = (
+'1' => 'Temas Importantes',
+'2' => 'Temas del Tablón',
+);
+
+%messageindex_tp = (
+'enabletp' => 'Enable Topic Preview',
+'disabletp' => 'Disable Topic Preview',
+'code_tp' => 'CODE',
+'image_tp' => 'IMAGE',
+'media_tp' => 'MEDIA',
+);
+
+1;

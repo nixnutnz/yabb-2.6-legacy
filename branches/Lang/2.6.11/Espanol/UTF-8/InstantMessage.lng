@@ -1,0 +1,186 @@
+###############################################################################
+# InstantMessage.lng (InstantMessage text definitions)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$instantmessagelngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%inmes_txt = (
+'21' => 'Mensajes',
+'30' => 'el',
+'remove' => 'Borrar',
+'70' => 'Asunto',
+'118' => 'Tema',
+'143' => 'Índice MP',
+'144' => 'Mensaje Personal',
+'145' => 'Citar',
+'146' => 'Responder',
+'147' => 'Reenviar',
+'sendmess' => 'Enviar mensaje',
+'sendbroadmess' => 'Enviar mensaje de difusión',
+'151' => 'No hay mensajes...',
+'190' => 'Todos',
+'inbox' => 'Bandeja de Entrada',
+'outbox' => 'Enviados',
+'draft' => 'Borrador',
+'storage' => 'Almacén',
+'folder' => 'Carpeta',
+'317' => 'Fecha',
+'318' => 'De',
+'320' => 'No guardar una copia de este mensaje en la carpeta de enviados después de mandarlo.',
+'321' => 'Tenga en cuenta que los archivos adjuntos se eliminan junto con mensajes en su buzón de enviados, así que si usted está adjuntando archivos de la opción anterior no se aplican.',
+'datesave' => 'Guardado el',
+'forward' => 'Reenviar mensaje',
+'replymess' => 'Responder al mensaje',
+'error' => 'Error',
+'selectrecent' => 'seleccionar o añadir de Mensajes Personales recientes:<br />doble click para copiar en \'para\'',
+'selectgroups' => 'seleccionar o añadir de grupos:<br />doble click para copiar en \'para\'',
+'allmembers' => 'todos los miembros',
+'324' => '',
+'325' => 'CC',
+'326' => 'BCC',
+'327' => 'Grupo',
+'bmallmembers' => 'Todos los miembros del foro',
+'bmadmins' => 'Administradores',
+'bmgmods' => 'Moderadores Globales',
+'bmymods' => 'Moderadores Fora',
+'bmmods' => 'Todos los moderadores de tablones y grupos',
+'470' => 'N/A',
+'500' => 'Marcar todos los mensajes como leídos', # inside JavaScript!
+'500a' => 'Completado', # inside JavaScript!
+'507' => 'Previsualizar',
+'511' => 'IP Registrada',
+'preview' => 'Previsualizar texto',
+'savedraft' => 'Guardar como borrador',
+'536' => 'Tu mensaje es muy largo por pasar de',
+'537' => 'caracteres. Por favor, redúcelo',
+'737' => 'Marcar todo',
+'739' => '¿Seguro que quieres borrar este mensaje?',
+'761' => 'El usuario ',
+'762' => 'no acepta Mensajes Personales',
+'763' => 'y',
+'764' => 'Marcar como leído',
+'765' => 'Preferencias Mensajes Personales',
+'766' => 'El usuario no existe',
+'767' => '(Sin Asunto)',
+'770' => '¿Seguro que quieres borrar este mensaje?',
+'770a' => '\n\nTenga en cuenta que también se eliminarán todos los archivos que has adjuntos a este mensaje.', #in javascript
+'770b' => '\n\nTenga en cuenta que también se eliminarán todos los archivos que has adjuntos a los mensajes seleccionados.', #in javascript
+'delmultipms' => '¿Seguro que quieres borrar todos estos mensajes?',
+'773' => 'Enviar',
+'774' => 'Almacenar',
+'775' => 'Nuevo mensaje',
+'775a' => 'Nuevo mensaje de difusión',
+'storeor' => 'o',
+'storein' => 'en',
+'777' => 'REMOVE borrar mensaje(s)', #do not remove or translate any CAPITAL text
+'status' => 'Status del mensaje',
+'addfolder' => 'añadir',
+'foldererror' => 'campo!',
+'messages' => 'Mis mensajes personales',
+'center' => 'Mi centro',
+'profile' => 'Mi perfil',
+'favs' => 'Mis favoritos',
+'notify' => 'Mis notificaciones',
+'viewprofile' => 'Ver mi Perfil',
+'viewnotify' => 'Ver mis Notificaciones',
+'viewfavs' => 'Ver mis Favoritos',
+'viewrecentposts' => 'Ver mis últimos',
+'viewrecentposts2' => 'mensajes',
+'goviewrecent' => '¡IR!',
+'broadcast' => 'Enviar mensajes',
+'alert' => 'Los mensajes de alerta',
+'new' => 'nuevo',
+'delete' => 'Borrar',
+'clickto1' => 'Pulsa aquí para seleccionar',
+'clickto2' => '', # used for other languages
+'torecepients' => 'Destinatario(s)',
+'togroups' => 'Para grupo(s)',
+'usercp' => 'User CP', 
+'attach_1' => 'Este mensaje contiene',
+'attach_2' => 'archivos adjuntos',
+'attach_3' => 'adjunto archivo',
+);
+
+%inmes_imtxt = (
+'01' => 'fuera de',
+'07' => '¡Este es un mensaje nuevo!',
+'08' => '¡Has contestado a este mensaje!',
+'09' => '¡Este mensaje fue leído!',
+'13' => 'Tienes',
+'19' => 'mensajes en tu',
+'status' => 'Estatus',
+'39' => 'Sin mensajes',
+'40' => 'MP anterior',
+'41' => 'MP siguiente',
+'42' => 'Mostrar todos los MPs desde y hasta',
+'49' => 'Enviar a Grupo:',
+'store' => 'Almacenar',
+'60' => 'Conectado',
+'61' => 'Desconectado',
+'67' => 'Uso',
+'69' => 'Cita Ripped out',
+'73' => '¿Quieres borrar este mensaje de tu carpeta?',
+'83' => 'Deshacer',
+'84' => 'Código Ripped out',
+'callallback' => 'Deshacer todo',
+'outread' => 'Este mensaje ha sido leído por el destinatario',
+'callback' => 'Este mensaje fue llamado de vuelta y, por lo tanto, no fue visto por el destinatario.',
+'outmulticallback' => 'Este mensaje fue llamado de vuelta y, por lo tanto, no fue visto por los destinatarios.',
+'outsomemulticallback' => 'Este mensaje fue llamado de vuelta. No obstante fue visto por algunos destinatarios y no fue visto por otros.',
+'outnotread' => 'Este mensaje no ha sido leído por el destinatario aún',
+'inread' => 'han abierto este mensaje',
+'innotread' => 'no han abierto este mensaje aún ',
+'outmultinotread' => 'Este mensaje no ha sido abierto por ningún destinatario todavía.',
+'outmultiread' => 'Este mensaje ha sido leído por los destinatarios',
+'outmultisomeread' => 'Este mensaje ha sido leído por uno o más destinatarios',
+'multicallback' => 'Abrir mensaje to Call Back!',
+'newstorefolder' => 'Añadir nueva carpeta de almacén',
+);
+
+## message status
+%im_message_status = (
+'confidential' => 'Confidencial',
+'urgent' => '¡Urgente!',
+'standard' => 'Normal',
+'alertmod' => '¡Alerta al Moderador!',
+'guestpm' => 'PM de Invitado',
+'guestpmreply' => 'Responder a PM de Invitado',
+);
+
+##  names for default storage folders
+%im_folders_txt	= (
+'in' => 'Entrada',
+'out' => 'Salida',
+);
+
+## sorted views
+%im_sorted = (
+'latest' => 'Último mensaje',
+'oneweek' => 'Última semana',
+'twoweeks' => 'Dos semanas atrás',
+'threeweeks' => 'Tres semanas atrás',
+'fourweeks' => 'Cuatro semanas atrás',
+'older' => 'Mas de un mes atrás',
+'important' => 'Mensaje Importante',
+'standart' => 'Mensajes',
+);
+
+%guest_reply = (
+'guesttext' => 'Esta función te permite responder a mensajes de invitados. Se envia por correo electrónico. Por favor, no utilices Smilies o código BB\HTML ya que no se procesará.',
+'origmess' => '----- Mensaje original -----',
+'from' => 'De',
+'to' => 'Para',
+'sent' => 'Enviado',
+'subject' => 'Asunto',
+);
+
+1;

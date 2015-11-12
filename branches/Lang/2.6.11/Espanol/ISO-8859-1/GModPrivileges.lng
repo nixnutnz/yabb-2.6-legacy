@@ -1,0 +1,73 @@
+###############################################################################
+# GModPrivileges.lng (Global Mod Access Privileges text definitions)          #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$gmodprivilegeslngver = 'YaBB 2.6.11 $Revision: 1611 $';
+
+%gmod_settings=(
+'1' => 'Privilegios de Acceso de Moderador Global',
+'2' => '¿Permitir a los Moderadores Globales el Acceso al Centro de Administración?',
+'3' => '¿Permitir a los Moderadores Globales el Acceso a la edición de los Perfiles de Usuario?',
+'3a' => '¿Permitir a los Moderadores Globales el Acceso a Edición de Admib para los Perfiles de Usuario?',
+'4' => '¡Selecciona a qué acciones tienen permitido acceder los Moderadores Globales <i>(acción= en URLs)</i>',
+);
+
+%gmodprivexpl_txt = (
+'ext_admin' => 'Permitir editar Perfiles extendidas',
+'main' => 'Permite editar las Preferencias y Configuraciones del Foro',
+'advanced' => 'Permite editar las Configuraciones Avanzadas',
+'editbots' => 'Permite editar los Identificadores de los Motores de Búsqueda',
+'news' => 'Permite editar las Noticias del Foro',
+'smilies' => 'Permite añadir Más Emoticonos',
+'setcensor' => 'Permite configurar las Palabras Censuradas',
+'modagreement' => 'Permite editar el Acuerdo de Registro',
+'eventcal_set' => 'Permitir editar Calendario de Eventos',
+'bookmarks' => 'Permitir editar Marcadores sociales', 
+'referer_control' => 'Permite editar la Seguridad de Referrer',
+'security' => 'Permite editar la Configuración de Seguridad',
+'setup_guardian' => 'Permite editar la Configuración del Guardián',
+'antispam' => 'Permite editar la Configuración de Antispam',
+'spam_questions' => 'Permitir editar Preguntas anti-spam',
+'honeypot' => 'Permitir editar Honeypot', 
+'managecats' => 'Permite gestionar las Categorías',
+'manageboards' => 'Permite gestionar los Foros',
+'helpadmin' => 'Permite editar las Entradas del Centro de Ayuda',
+'editemailtemplates' => 'Permite editar los Mensajes de Correo Electrónico',
+'addmember' => 'Permite Ver y Añadir Miembros',
+'viewmembers' => 'Permite Ver Miembros',
+'deletemultimembers' => 'Permite Ver y Borrar Miembros',
+'modmemgr' => 'Permite editar Grupos de Miembros',
+'mailing' => 'Permite mandar correos electrónicos a tus Miembros/Grupos de Miembros',
+'ipban' => 'Permite editar la lista de usuarios Baneados',
+'setreserve' => 'Permite configurar Nombres Reservados',
+'modskin' => 'Permite editar la Configuración de Plantilla',
+'modcss' => 'Permite editar la Hoja de Estilo',
+'modtemp' => 'Permite editar Plantillas',
+'clean_log' => 'Permite Limpiar Usuarios del Fichero (log) de Conectados',
+'boardrecount' => 'Permite Recontar los Totales del Foro',
+'rebuildmesindex' => 'Permite Reconstruir los Índices de los Mensajes',
+'membershiprecount' => 'Permite Recontar los Usuarios',
+'rebuildmemhist' => 'Permite Reconstruir el Historial de los Miembros',
+'rebuildmemlist' => 'Permite Reconstruir la Lista de Miembros',
+'rebuildnotifications' => 'Dejar Reconstruir Notificaciones Archivos',
+'deleteoldthreads' => 'Permite Borrar los Hilos Antiguos',
+'manageattachments' => 'Permite administrar los Ficheros Adjuntos',
+'detailedversion' => 'Permite Ver un Chequeo Detallado de la Versión',
+'stats' => 'Permite Ver las Estadísticas del Foro',
+'showclicks' => 'Permite Ver el fichero (log) de acceso del foro',
+'errorlog' => 'Permite Ver el Fichero (log) de Error',
+'view_reglog' => 'Permite Ver el Fichero (log) de Registro y aprobar o rechazar Miembros pre-registrados',
+'modlist' => 'Permite Ver Todos los Mods Instalados',
+'backupsettings' => 'Permitir el acceso al Centro de copia de seguridad',
+);
+
+1;
