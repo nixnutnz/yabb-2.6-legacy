@@ -1492,6 +1492,13 @@ sub SpamQuestionCheck {
 
 sub CountChars {
     $convertstr =~ s/&\x2332;/ /gsm;    # why? where? (deti)
+	#length does not always function properly with UTF-8 - convert UTF-8 to internal Perl utf8
+    if ( $yymycharset eq 'UTF-8' ) {
+        require utf8;
+        require Encode;
+        Encode->import( decode_utf8, encode_utf8 );
+        $convertstr = decode_utf8($convertstr);
+    }
 
     $cliped = 0;
     my ( $string, $curstring, $stinglength, $teststring );
@@ -1562,7 +1569,10 @@ sub CountChars {
 
     # eliminate spaces, broken HTML-characters or special characters at the end
     $convertstr =~ s/(\[(ch\d*)?|&[a-z]*| +)$//sm;
-    return;
+    if ( $yymycharset eq 'UTF-8' ) {
+      $convertstr = encode_utf8($convertstr);
+    }
+    return $convertstr;
 }
 
 sub WrapChars {
@@ -2140,13 +2150,14 @@ sub WriteLog {
     fopen( LOG, "<$vardir/log.txt" );
     @logentries = <LOG>;    # Global variable
     fclose( LOG );
+    chomp @logentries;
     foreach (@logentries) {
         ( $name, $logtime, undef ) = split /\|/xsm, $_, 3;
         if ( $name ne $user_ip && $name ne $field && $logtime >= $onlinetime ) {
-            push @new_log, $_;
+            push @new_log, "$_\n";
         }
     }
-   fopen( LOG, ">$vardir/log.txt" );
+    fopen( LOG, ">$vardir/log.txt" );
     print {LOG} (
 "$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|"
           . (
@@ -2169,14 +2180,17 @@ sub WriteLog {
         fopen( LOG, "<$vardir/clicklog.txt", 1 );
         @new_log = <LOG>;
         fclose( LOG );
-        fopen( LOG, ">$vardir/clicklog.txt", 1 );
-        print {LOG} "$field|$date|$ENV{'REQUEST_URI'}|"
+        my $newlog = "$field|$date|$ENV{'REQUEST_URI'}|"
           . (
             $ENV{'HTTP_REFERER'} =~ m/$boardurl/ism
             ? q{}
             : $ENV{'HTTP_REFERER'}
           )
-          . "|$ENV{'HTTP_USER_AGENT'}\n"
+          . "|$ENV{'HTTP_USER_AGENT'}|$user_ip\n";
+        $newlog =~ s/\x0//gsm;
+        $newlog =~ s/^[x20-\x7E]+$//gsm;
+        fopen( LOG, ">$vardir/clicklog.txt", 1 );
+        print {LOG} $newlog
           or croak "$croak{'print'} LOG";
         foreach (@new_log) {
             if ( ( split /\|/xsm, $_, 3 )[1] >= $onlinetime ) {
