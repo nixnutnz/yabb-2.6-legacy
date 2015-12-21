@@ -373,28 +373,4 @@ El equipo de {yabb mbname}
 {yabb scripturl}
 ~;
 
-$yabbtags{'banneduseremail'} = q~screen name~;
-$emaildesc{'banneduseremail'} = q~El Banned Usuario Notificación por correo electrónico~;
-$bannedusersybject = q~Su cuenta prohibido en~;
-$banneduseremail = q~¡Hola, {yabb displayname}!
-
-Se le ha prohibido {yabb mbname} {yabb ban_time} por {yabb banner}{yabb ban_reason}.
-
-Un saludo,
-El equipo de {yabb mbname}
-<a href="{yabb scripturl}">{yabb scripturl}</a>
-~;
-
-$yabbtags{'suspendeduseremail'} = q~screen name~;
-$emaildesc{'suspendeduseremail'} = q~El Usuario Suspendido Notificación por correo electrónico~;
-$suspendusersybject = q~Su cuenta suspendida en~;
-$suspendeduseremail = q~¡Hola, {yabb displayname}!
-
-Su cuenta en {yabb mbname} ha sido suspendido {yabb ban_time} por {yabb banner}{yabb ban_reason}.
-
-Un saludo,
-El equipo de {yabb mbname} team
-<a href="{yabb scripturl}">{yabb scripturl}</a>
-~;
-
 1;
