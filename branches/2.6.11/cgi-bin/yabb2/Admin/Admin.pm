@@ -357,13 +357,65 @@ sub ShowClickLog {
     @log = <LOG>;
     fclose(LOG);
 
-    $i = 0;
-    foreach my $curentry (@log) {
-        ( $iplist[$i], $date, $to[$i], $from[$i], $info[$i] ) =
-          split /\|/xsm, $curentry;
-        $i++;
+    chomp @log;
+
+    foreach my $i (0 .. $#log) {
+        $log[$i] =~ s/\x0//gsm;
+        $log[$i] =~ s/^[x20-\x7E]+$//gsm;
+        ( $iplist[$i], $date, $to[$i], $from[$i], $info[$i], $ip[$i] ) =
+          split /\|/xsm, $log[$i];
+    }
+ 
+    for my $i ( 0 .. $#iplist ) {
+        $iplist{ $iplist[$i] }++;
     }
     $i = 0;
+    while ( ( $key, $val ) = each %iplist ) {
+        $newiplist[$i] = [ $key, $val ];
+        $i++;
+    }
+    for my $i ( 0 .. $#iplist ) {
+        for $j ( 0 .. $#newiplist ) {
+            if ( $newiplist[$j]->[0] eq $iplist[$i] ) {
+                push @{$newiplist[$j]}, $ip[$i];
+            }
+        }
+    }
+    $totalclick = @iplist;
+    $totalip    = @newiplist;
+    for my $i ( 0 .. $#newiplist ) {
+        my $lookupIP =
+          ($ipLookup)
+          ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[0]">$newiplist[$i]->[0]</a>~
+          : qq~$newiplist[$i]->[0]~;
+        if (
+            $newiplist[$i]->[0] =~ /\S+/sm
+            && ( $newiplist[$i]->[0] =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm || $newiplist[$i]->[0] =~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm || !LoadUser($newiplist[$i]->[0], 'vars' ) )
+            )
+        {
+            $guestiplist .=
+qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
+        }
+        else {
+            LoadUser( $newiplist[$i]->[0], 'vars' );
+            if ($do_scramble_id) {
+                $cloakedUserName = cloak( $newiplist[$i]->[0] );
+            }
+            else { $cloakedUserName = $newiplist[$i]->[0]; }
+            my $displayUserName = $newiplist[$i]->[0];
+            if (
+                ${ $uid . $displayUserName }{'realname'}
+                && ( ${ $uid . $displayUserName }{'realname'} ne
+                    $newiplist[$i]->[0] )
+              )
+            {
+                $displayUserName = ${ $uid . $displayUserName }{'realname'};
+            }
+            $useriplist .=
+qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> (<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>)<br />~;
+        }
+    }
+
     foreach my $curentry (@info) {
         if ( $curentry !~ /\s\(Win/ism || $curentry !~ /\s\(mac/sm ) {
             $curentry =~ s/\s\((compatible;\s)*/ - /igsm;
@@ -381,45 +433,6 @@ sub ShowClickLog {
         }
         $os[$i] =~ s/\)//gxsm;
         $i++;
-    }
-
-    for my $i ( 0 .. $#iplist ) { $iplist{ $iplist[$i] }++; }
-    $i = 0;
-    while ( ( $key, $val ) = each %iplist ) {
-        $newiplist[$i] = [ $key, $val ];
-        $i++;
-    }
-    $totalclick = @iplist;
-    $totalip    = @newiplist;
-    for my $i ( 0 .. $#newiplist ) {
-        my $lookupIP =
-          ($ipLookup)
-          ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[0]">$newiplist[$i]->[0]</a>~
-          : qq~$newiplist[$i]->[0]~;
-        if (   $newiplist[$i]->[0] =~ /\S+/sm
-            && $newiplist[$i]->[0] =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm )
-        {
-            $guestiplist .=
-qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
-        }
-        else {
-            LoadUser( $newiplist[$i]->[0] );
-            if ($do_scramble_id) {
-                $cloakedUserName = cloak( $newiplist[$i]->[0] );
-            }
-            else { $cloakedUserName = $newiplist[$i]->[0]; }
-            my $displayUserName = $newiplist[$i]->[0];
-            if (
-                ${ $uid . $displayUserName }{'realname'}
-                && ( ${ $uid . $displayUserName }{'realname'} ne
-                    $newiplist[$i]->[0] )
-              )
-            {
-                $displayUserName = ${ $uid . $displayUserName }{'realname'};
-            }
-            $useriplist .=
-qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
-        }
     }
 
     for my $i ( 0 .. $#browser ) { $browser{ $browser[$i] }++; }
@@ -663,15 +676,15 @@ sub DeleteOldMessages {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'31'}</th>
-    </tr><tr>
-        <td class="catbg center">
-             <input type="submit" value="$admin_txt{'31'}" class="button" />
-        </td>
-    </tr>
-</table>
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'31'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'31'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
 </form>~;
 
@@ -685,7 +698,7 @@ sub DeleteMultiMembers {
 
     automaintenance('on');
 
-    my ( $count, $currentmem, @userslist );
+    my @userslist = ();
     chomp $FORM{'button'};
     chomp $FORM{'emailsubject'};
     chomp $FORM{'emailtext'};
@@ -702,7 +715,7 @@ sub DeleteMultiMembers {
     fopen( FILE, "$memberdir/memberlist.txt" );
     @memnum = <FILE>;
     fclose(FILE);
-    $count = 0;
+    my $count = 0;
 
     if ( $FORM{'button'} == 1 && $FORM{'emailtext'} ne q{} ) {
         $FORM{'emailsubject'} =~ s/\|/&verbar;/gsm;
@@ -716,7 +729,7 @@ sub DeleteMultiMembers {
     my $templanguage = $language;
 
     while ( @memnum >= $count ) {
-        $currentmem = $FORM{"member$count"};
+        my $currentmem = $FORM{"member$count"};
         if ( exists $FORM{"member$count"} ) {
             if ( -e "$memberdir/$currentmem.vars" ) {    # Bypass dead entries.
                 LoadUser($currentmem);
@@ -946,9 +959,8 @@ sub Refcontrol {
     for my $key ( keys %director) {
         push @actfound, $key;
                 $counter++;
-            }
+    }
 
-    @actfound = sort @actfound;
     $column  = int( $counter / 3 ) - 1;
     $counter = 0;
     foreach my $actfound (@actfound) {
@@ -1022,7 +1034,7 @@ sub Refcontrol2 {
     for my $key ( keys %director) {
         push @actfound, $key;
                 $counter++;
-            }
+    }
 
     for my $actfound (@actfound) {
         if ( $FORM{$actfound} ) { push @outfile, "$actfound\n"; }
@@ -1046,48 +1058,51 @@ sub AddMember {
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
 <form action="$adminurl?action=addmember2" method="post" name="creator" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
-<table class="border-space pad-cell" style="margin-bottom: .5em;">
-    <colgroup>
-        <col style="width: 30%" />
-        <col style="width: 70%" />
-    </colgroup>
-    <tr>
-        <td colspan="2" class="titlebg">
-            $admin_img{'register'}<b> $admintxt{'17a'}</b>
-        </td>
-    </tr><tr>
-        <td class="windowbg"><label for="regusername"><b>$register_txt{'98'}:</b></label></td>
-        <td class="windowbg2"><input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" maxlength="18" /><input type="hidden" name="_session_id_" id="_session_id_" value="$sessionid" /><input type="hidden" name="regdate" id="regdate" value="$regdate" /><div id="useravailability"></div></td>
-    </tr><tr>
-        <td class="windowbg"><label for="regrealname"><b>$register_txt{'98a'}:</b></label></td>
-        <td class="windowbg2"><input type="text" name="regrealname" id="regrealname" onchange="checkAvail('$scripturl',this.value,'display')" size="30" maxlength="30" /><div id="displayavailability"></div></td>
-    </tr><tr>
-        <td class="windowbg"><label for="email"><b>$register_txt{'69'}:</b></label></td>
-        <td class="windowbg2"><input type="text" maxlength="100" name="email" id="email" onchange="checkAvail('$scripturl',this.value,'email')" size="50" /><div id="emailavailability"></div></td>
-    </tr>~;
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <colgroup>
+            <col style="width: 30%" />
+            <col style="width: 70%" />
+        </colgroup>
+        <tr>
+            <td colspan="2" class="titlebg">
+                $admin_img{'register'}<b> $admintxt{'17a'}</b>
+            </td>
+        </tr><tr>
+            <td class="windowbg"><label for="regusername"><b>$register_txt{'98'}:</b></label></td>
+            <td class="windowbg2"><input type="text" name="regusername" id="regusername" onchange="checkAvail('$scripturl',this.value,'user')" size="30" maxlength="18" /><input type="hidden" name="_session_id_" id="_session_id_" value="$sessionid" /><input type="hidden" name="regdate" id="regdate" value="$regdate" /><div id="useravailability"></div></td>
+        </tr><tr>
+            <td class="windowbg"><label for="regrealname"><b>$register_txt{'98a'}:</b></label></td>
+            <td class="windowbg2"><input type="text" name="regrealname" id="regrealname" onchange="checkAvail('$scripturl',this.value,'display')" size="30" maxlength="30" /><div id="displayavailability"></div></td>
+        </tr><tr>
+            <td class="windowbg"><label for="email"><b>$register_txt{'69'}:</b></label></td>
+            <td class="windowbg2"><input type="text" maxlength="100" name="email" id="email" onchange="checkAvail('$scripturl',this.value,'email')" size="50" /><div id="emailavailability"></div></td>
+        </tr>~;
     if ( $allow_hide_email == 1 ) {
         $yymain .= qq~<tr>
-        <td class="windowbg"><label for="hideemail"><b>$register_txt{'721'}</b></label></td>
-        <td class="windowbg2"><input type="checkbox" name="hideemail" id="hideemail" value="1" checked="checked" /></td>
-    </tr>~;
+            <td class="windowbg"><label for="hideemail"><b>$register_txt{'721'}</b></label></td>
+            <td class="windowbg2"><input type="checkbox" name="hideemail" id="hideemail" value="1" checked="checked" /></td>
+        </tr>~;
     }
 
     # Language selector
     $yymain .= qq~<tr>
-        <td class="windowbg"><label for="userlang"><b>$register_txt{'101'}</b></label></td>
-        <td class="windowbg2"><select name="userlang" id="userlang">~;
+            <td class="windowbg"><label for="userlang"><b>$register_txt{'101'}</b></label></td>
+            <td class="windowbg2">
+                <select name="userlang" id="userlang">~;
     opendir LNGDIR, $langdir;
     foreach ( sort { lc($a) cmp lc $b } readdir LNGDIR ) {
         if ( -e "$langdir/$_/Main.lng" ) {
             $yymain .=
-                qq~<option value="$_"~
+                qq~                    <option value="$_"~
               . ( $_ eq $language ? ' selected="selected"' : q{} )
               . qq~>$_</option>~;
         }
     }
     closedir LNGDIR;
-    $yymain .= q~</select></td>
-    </tr>~;
+    $yymain .= q~
+                </select>
+            </td>
+        </tr>~;
 
     if ( !$emailpassword ) {
         $yymain .= password_check();
@@ -1097,22 +1112,23 @@ sub AddMember {
         $yymain =~ s/{yabb reg_wrongchar}/$register_txt{'wrong_char'}/gsm;
     }
 
-    $yymain .= qq~</table>
+    $yymain .= qq~
+    </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="border-space pad-cell">
-    <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-    </tr><tr>
-        <td class="catbg center">
-             <input type="submit" value="$register_txt{'97'}" class="button" />
-        </td>
-    </tr>
-</table>
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$register_txt{'97'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
 </form>
 <script type="text/javascript">
-        document.creator.regusername.focus();
+    document.creator.regusername.focus();
 </script>~;
 
     $yytitle     = "$register_txt{'97'}";
@@ -1201,7 +1217,6 @@ sub AddMember2 {
         $_ = int rand 65;
         $_ =~ tr/0123456789/lkjhgfdaut/;
         $member{'passwrd1'} .= $_;
-
     }
     else {
         if ( $member{'passwrd1'} ne $member{'passwrd2'} ) {
@@ -1264,7 +1279,7 @@ sub AddMember2 {
       || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
-    for my $aa ( 0 .. ( @reservecfg - 1 ) ) {
+    for my $aa ( 0 .. $#reservecfg ) {
         chomp $reservecfg[$aa];
     }
     $matchword = $reservecfg[0] eq 'checked';

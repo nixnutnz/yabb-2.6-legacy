@@ -23,7 +23,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 use URI::Escape;
 if ( $yymycharset ne 'UTF-8' ) {
-    use Encode;
+    require Encode;
+    Encode->import( decode_utf8, encode_utf8  );
 }
 LoadCensorList();
 guard();

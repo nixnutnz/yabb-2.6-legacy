@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$spellcheckerplver = 'YaBB 2.6.11 $Revision: 1611 $';
+$spellcheckerplver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 use LWP::UserAgent;
@@ -28,13 +28,12 @@ $reqXML = q{};
 
 read STDIN, $reqXML, $ENV{'CONTENT_LENGTH'};
 
-$url = "http://orangoo.com/newnox?lang=$ENV{'QUERY_STRING'}";
-$res =
-  $ua->request( POST $url, Content_Type => 'text/xml', Content => $reqXML );
+my $url = "https://www.google.com/tbproxy/spell?$ENV{QUERY_STRING}";
+my $res =
+  $ua->request(POST $url, Content_Type => 'text/xml', Content => $reqXML);
 
-croak "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/sm;
+print "Content-Type: text/xml\n\n";
+print $res->{_content};
 
-print "Content-Type: text/xml\n\n" or croak "$croak{'print'} content-type";
-print $res->{_content} or croak "$croak{'print'} speller";
 
 1;

@@ -3,7 +3,7 @@ $SectionName = "YaBB_Terminology";
 ### Section 1
 #############################################
 $SectionSub1 = "Glossary";
-$SectionBody1 = qq~YaBB has many descriptive terms that refer to its component parts, different page views, and visible items. This section is provided as a glossary to help users learn the correct terminology for their forums.
+$SectionBody1 = q~YaBB has many descriptive terms that refer to its component parts, different page views, and visible items. This section is provided as a glossary to help users learn the correct terminology for their forums.
 
 <dl>
     <dt class="help_dd"><b>A</b></dt>
@@ -58,7 +58,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
     <dt><b>Forum</b></dt>
     <dd>This is your entire installation of YaBB.</dd>
     <dt><b>Forum Log</b></dt>
-    <dd>This is a log available to the Administrator that records information about each "click" made in your forum. This gives the Administrator information on what browser types and versions are being used, users versus guests, referring pages, and more.</dd>
+    <dd>This is a log available to the Administrator that records information about each &#8220;click&#8221; made in your forum. This gives the Administrator information on what browser types and versions are being used, users versus guests, referring pages, and more.</dd>
     <dt><b>Forum logo</b></dt>
     <dd>This is the image that displays on the top of your forum's pages. The standard logo that comes with the forum software has the YaBB logo with a version number. You can change the forum's logo with any image you choose &#40;see Admin Help - Help Topic Index - How Do I... for instructions&#41;.</dd>
     <dt><b>Forum News</b></dt>
@@ -137,7 +137,7 @@ $SectionBody1 = qq~YaBB has many descriptive terms that refer to its component p
 </dl><dl>
     <dt class="help_dd"><b>S</b></dt>
     <dt><b>Screen Name</b></dt>
-    <dd>This is the user's "public" name, the name that displays above their avatar picture to the left of the Post Window and in the Member List. A user may change this name by editing the Screen Name in their Profile.</dd>
+    <dd>This is the user's &#8220;public&#8221; name, the name that displays above their avatar picture to the left of the Post Window and in the Member List. A user may change this name by editing the Screen Name in their Profile.</dd>
     <dt><b>Search</b></dt>
     <dd>This feature allows a user to search through the forum for information in posts or posts by users. Several options are listed on the Search page.</dd>
     <dt class="help_dd"><b><span class="underline">User Tip:</span></b> For general searches, use the option "Any Poster" in the selection box at the bottom of the "By User" sections.</dt>

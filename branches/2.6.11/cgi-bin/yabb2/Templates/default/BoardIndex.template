@@ -128,7 +128,7 @@ $boardindex_template .= qq~
                 <col style="width:auto" />
             </colgroup>
             <tr>
-                <td class="windowbg info-center center">
+                <td class="windowbg info-center center"{yabb row_resize}>
                     <img src="$imagesdir/$brd_online" alt="" />
                 </td>
                 <td class="windowbg2 info-center">

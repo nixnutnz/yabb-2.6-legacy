@@ -54,6 +54,7 @@ qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expireon'}: $
         }
         return $timeb;
     };
+
     my $ii = 0;
     my $ee = 0;
     my $uu = 0;
@@ -106,6 +107,7 @@ qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expireon'}: $
             </tr>
         </table>
     </div>
+# code removed #
     <div class="bordercolor borderstyle rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>
@@ -121,6 +123,7 @@ qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expireon'}: $
             </tr>
         </table>
     </div>
+#code removed 2 #
     <div class="bordercolor borderstyle rightboxdiv">
         <table class="border-space pad-cell" style="margin-bottom: .5em;">
             <tr>

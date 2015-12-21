@@ -292,12 +292,6 @@ $myrecent_mess = qq~
                 <a href="$scripturl?board=$board;action=post;num={yabb tnum}/{yabb c}#{yabb c};title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num={yabb tnum};quote={yabb c};title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
             </td>~;
 
-$mydisp_topicview =  qq~    <tr>
-            <td class="windowbg">
-                $display_txt{'644'} ({yabb topviewers}): {yabb template_viewers}
-            </td>
-        </tr>~;
-
 $mydisp_topicview = qq~
     <div class="titlebg padd_4px">$display_txt{'644'} ({yabb topviewers}): {yabb template_viewers}</div>~;
 

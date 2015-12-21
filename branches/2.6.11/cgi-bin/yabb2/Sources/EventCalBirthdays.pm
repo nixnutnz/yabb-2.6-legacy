@@ -43,7 +43,10 @@ sub birthdaylist {
     if ( $actualmon < 10 ) { $actualmon = "0$actualmon"; }
     if ( $actualday < 10 ) { $actualday = "0$actualday"; }
 
-    timeformat($date);    # get only correct $mytimeselected
+    my $mytimeselected =
+      ( $forum_default || !${ $uid . $username }{'timeselect'} )
+      ? $timeselected
+      : ${ $uid . $username }{'timeselect'};
 
     # GoTo begin
 
@@ -109,7 +112,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     <form action="$scripturl?action=eventcal;calshow=1;calgotobox=1" method="post">
     <span class="small"><b>$var_cal{'calsubmit'}</b></span>~;
 
-    if ( $mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2  || $mytimeselected == 8 )
+    if ( $mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2 || $mytimeselected == 8 )
     {
         $calgotobox .= $boxdays . $boxmonths;
     }

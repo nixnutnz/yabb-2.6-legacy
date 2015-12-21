@@ -981,6 +981,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
                 {    # replace all inappropriate characters
                         # Transliteration
+## Arrays moved to Main.lng ##
                     my $x = 0;
                     foreach ( @uploadtranlist )
                     {

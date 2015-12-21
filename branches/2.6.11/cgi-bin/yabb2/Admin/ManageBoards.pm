@@ -147,7 +147,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
             my $indent = -3;
             @tmplt = ();
 
-            for my $curtemplate ( sort keys %templateset ) {
+            for my $curtemplate ( sort keys %templateset ){
                 @templatelst = split /\|/xsm, $templateset{$curtemplate};
                 push @tmplt, $curtemplate;
             }
@@ -231,11 +231,12 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                         $edit_txt =~ s/{(.*?)}/$1/gxsm;
                     }
 
-                    $yymain .= qq~
-                <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em; margin-left: ${indent}%; width: ${tmpwidth}%">
+                    $yymain .= q~
+                <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em; margin-left:~
+                      . $indent . q~%; width:~ . $tmpwidth . q~%">
                     <colgroup>
-                        <col style="width: ${tmpwidth2}%" />
-                        <col style="width: ${tmpwidth3}%" />
+                        <col style="width: ~ . $tmpwidth2 . q~%" />
+                        <col style="width: ~ . $tmpwidth3 . qq~%" />
                         <col style="width: 5%" />
                     </colgroup>
                     <tr>
@@ -932,7 +933,7 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
 
         my $drawndirs = q{};
         @tmplt = ();
-        for my $curtemplate ( sort keys %templateset ) {
+        for my $curtemplate ( sort keys %templateset ){
             @templatelst = split /\|/xsm, $templateset{$curtemplate};
             $drawndirs .= qq~<option value="$curtemplate">$curtemplate</option>\n~;
             push @tmplt, $curtemplate;
@@ -1283,7 +1284,7 @@ sub AddBoards2 {
         }
         elsif ( $FORM{"mypic$i"} ne q{} ) {
             $newpic = $FORM{"mypic$i"};
-            if ( $newpic !~ m{^[0-9a-zA-Z_\.\x23\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm )
+            if ( $newpic !~ m{^[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm )
             {
                 fatal_error('invalid_picture');
             }

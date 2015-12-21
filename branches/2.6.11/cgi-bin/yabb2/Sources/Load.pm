@@ -1137,6 +1137,8 @@ sub UpdateCookie {
     return;
 }
 
+## LoadAccess not called here - removed ##
+
 sub WhatTemplate {
     $found = 0;
     while ( ( $curtemplate, $value ) = each %templateset ) {

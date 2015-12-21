@@ -199,6 +199,7 @@ $mycalout_addevent = qq~
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
+<!-- moved code //-->
             {yabb mycalout_cthelp}
             {yabb mycalout_post2}
         </td>
@@ -349,24 +350,24 @@ $my_outstring = q~<table style="width:90%; margin-left:0">~;
 $mycal_outstring_bday = qq~<tr>
         <td class="vtop small">
             {yabb my_cal_icon} {yabb cdate} <b>$var_cal{'calbirthday'}</b>
-            {yabb eventbduserlink} {yabb greet}
-            <hr class="hr" />
+            <br /> {yabb eventbduserlink} {yabb greet}
+            <hr class="hr2" />
         </td>
     </tr>~;
 
 $mycal_outstring_private = qq~<tr>
         <td class="vtop small">
             {yabb my_cal_icon} {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
-            {yabb cevent}
-            <hr class="hr" />
+            <br />{yabb cevent}
+            <hr class="hr2" />
         </td>
     </tr>~;
 
 $mycal_outstring = qq~<tr>
         <td class="vtop small">
             {yabb my_cal_icon_ev} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}
-                {yabb cevent}
-            <hr class="hr" />
+                <br />{yabb cevent}
+            <hr class="hr2" />
         </td>
     </tr>~;
 
@@ -387,10 +388,10 @@ $mycal_liveprev = qq~
         </colgroup>
          <tr>
             <td class="windowbg vtop" colspan="2">
-                <span class="small">{yabb my_cal_private} {yabb my_cal_icon} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}</span><hr class="hr2" />
+                <span class="small">{yabb my_cal_private} {yabb my_cal_icon} {yabb cdate} <b>{yabb icon_text}</b> {yabb eventuserlink}</span><hr class="hr" />
                <div class="message" style="width: 100%; overflow: auto;">
                  {yabb message}
-                 <hr class="hr" />
+                 <hr class="hr2" />
                 </div>
             </td>
         </tr>

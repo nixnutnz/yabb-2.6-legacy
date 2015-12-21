@@ -326,10 +326,32 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     ( $board_notify, $thread_notify ) = NotificationAlert();
     my ( $num, $new );
+    getlog();
+    my $dmax = $date - ( $max_log_days_old * 86400 );
 
     # Board notifications
     foreach ( keys %{$board_notify} ) {    # boardname, boardnotifytype , new
         $num++;
+        if ( $subboard{$_} ) {
+            @brd = split /\|/xsm, $subboard{$_};
+            for my $i (@brd) {
+                if (
+                       $max_log_days_old
+                    && int( ${ $uid . $i }{'lastposttime'} )
+                    && (
+                        (
+                            !$yyuserlog{$i}
+                            && ${ $uid . $i }{'lastposttime'} > $dmax
+                        )
+                        || (   $yyuserlog{$i} > $dmax
+                            && $yyuserlog{$i} < ${ $uid . $i }{'lastposttime'} )
+                    )
+                  )
+                {
+                    ${ $$board_notify{$_} }[2] = 1;
+                }
+            }
+        }
 
         my ( $selected1, $selected2 );
         if ( ${ $$board_notify{$_} }[1] == 1 ) {    # new topics

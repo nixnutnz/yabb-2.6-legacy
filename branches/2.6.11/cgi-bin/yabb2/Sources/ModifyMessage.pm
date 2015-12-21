@@ -665,8 +665,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             $limit ||= 0;
             if ( $limit > 0 && $filesize > ( 1024 * $limit ) ) {
                 foreach (@newfilelist) { unlink "$uploaddir/$_"; }
-                require Sources::Post;
-                Preview("$fatxt{'21'} $fixfile ("
+                fatal_error( q{},
+                        "$fatxt{'21'} $fixfile ("
                       . int( $filesize / 1024 )
                       . " KB) $fatxt{'21b'} "
                       . $limit );
@@ -676,8 +676,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
                     foreach (@newfilelist) { unlink "$uploaddir/$_"; }
-                    require Sources::Post;
-                    Preview(
+                    fatal_error(
+                        q{},
                         "$fatxt{'22'} $fixfile ("
                           . (
                             int( $filesize / 1024 ) -

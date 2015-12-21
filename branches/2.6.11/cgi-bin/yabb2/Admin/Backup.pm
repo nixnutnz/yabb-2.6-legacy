@@ -22,7 +22,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.11';
 
-$backuppmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$backuppmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
@@ -1049,14 +1049,14 @@ sub downloadbackup {
       or croak "$croak{'print'} Content-Type";
 
     # open in binmode
-    fopen( READ, $filename )
+    open( READ, $filename )
       || fatal_error( q{}, "$backup_txt{46} $filename", 1 );
     binmode READ;
 
     # stream it out
     binmode STDOUT;
     while (<READ>) { print; }
-    fclose(READ);
+    close(READ);
     return;
 }
 

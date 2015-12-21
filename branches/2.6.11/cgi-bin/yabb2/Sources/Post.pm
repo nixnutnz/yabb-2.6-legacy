@@ -1808,7 +1808,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                           . " KB) $fatxt{'22b'}"
                     );
                 }
-            } 
+            }
 
  # create a new file on the server using the formatted ( new instance ) filename
             if ( fopen( NEWFILE, ">$uploaddir/$fixfile" ) ) {
@@ -2209,7 +2209,7 @@ sub NewNotify {
     $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
     $thismessage =~ s/\[.*?\]//g;
     $thismessage =~ s/<(br|p).*?>/\n/ig;
-    $thismessage =~ s/<.*?>//g;
+    $thismessage =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~gxsm;
     FromHTML($thismessage);
     $thismessage =~ s/>/&gt;/gsm;
     $thismessage =~ s/</&lt;/gsm;
@@ -2266,16 +2266,16 @@ sub ReplyNotify {
 
     my $thisauthor = ${ $uid . $username }{'realname'} || $maintxt{'28'};
     my $thismessage = $message;
-    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/g;
-    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~ig;
-    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~ig;
-    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
-    $thismessage =~ s/\[.*?\]//g;
-    $thismessage =~ s/<(br|p).*?>/\n/ig;
-    $thismessage =~ s/<.*?>//g;
+    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/gsm;
+    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~igxsm;
+    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~igxsm;
+    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~igxsm;
+    $thismessage =~ s/\[.*?\]//gxsm;
+    $thismessage =~ s/<(br|p).*?>/\n/igxsm;
+    $thismessaged =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~igsxm;
     FromHTML($thismessage);
-    $thismessage =~ s/>/&gt;/gsm;
-    $thismessage =~ s/</&lt;/gsm;
+    $thismessage =~ s/>/&gt;/gxsm;
+    $thismessage =~ s/</&lt;/gxsm;
     my $boardname;
     ( $boardname, undef ) = split /\|/xsm, $board{$currentboard}, 2;
     ToChars($boardname);

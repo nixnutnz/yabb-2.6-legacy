@@ -146,7 +146,7 @@ $subfooterbar = qq~<tr>
                 </tr>~;
 
 ##############################################################################################
-## Notifications                                                                             #
+## Notifications                     #
 
 $brd_notify_img = 'notify.gif';
 $brdimg_new = 'on.png';

@@ -614,6 +614,7 @@ function do_images() {
         }
         ( $threadtitle, undef ) = Split_Splice_Move( $threadtitle, 0 );
         ( $threadpost,  undef ) = Split_Splice_Move( $threadpost,  $num );
+
         do_print();
 
         $output .= qq~
@@ -660,7 +661,7 @@ function do_images() {
                       : "$micon_bg{'paperclip'}";
                 }
                 my $filesize = -s "$uploaddir/$_";
-                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : isempty( $fatxt{'41c'}, $fatxt{'41a'} ); 
+                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
                 if ($filesize) {
                     if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
@@ -683,7 +684,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $scr
 qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
                       . (
                         exists $attach_count{$_}
-                        ? qq~ | $attach_count{$_} $download_txt ~ 
+                        ? qq~ | $attach_count{$_} $download_txt ~
                         : q{}
                       ) . q~)</div>~;
                 }

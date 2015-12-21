@@ -471,7 +471,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
                 return false;
             }
         }
-		var regcheck = $regcheck;
+        var regcheck = $regcheck;
         if (regcheck > 0 && document.creator.verification.value === '') {
             alert("$register_txt{'error_verification'}");
             document.creator.verification.focus();
@@ -765,7 +765,7 @@ sub Register2 {
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
 
-    for my $aa ( 0 .. ( @reservecfg - 1 ) ) {
+    for my $aa ( 0 .. $#reservecfg ) {
         chomp $reservecfg[$aa];
     }
     $matchword = $reservecfg[0] eq 'checked';

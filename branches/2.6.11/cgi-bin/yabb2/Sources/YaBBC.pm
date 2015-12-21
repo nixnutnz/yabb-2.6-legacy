@@ -256,7 +256,7 @@ qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.
         }
 
         $code =
-qq~<pre class="$insclass" id="code$codecnt" style="margin: 0px; width: 90%; $height overflow: scroll;">$code\[code_br][code_br]</pre>~;
+qq~<pre class="$insclass" id="code$codecnt">$code\[code_br][code_br]</pre>~;
         $_ =~ s/XSELECTX/$prselect/gxsm;
         $_ =~ s/XLANGX/$prclass/gxsm;
         $_ =~ s/CODE/$code/gxsm;
@@ -375,7 +375,7 @@ sub DoUBBC {
     $message =~ s/\[b\](.*?)\[\/b\]/<b>$1<\/b>/isgm;
     $message =~ s/\[i\](.*?)\[\/i\]/<i>$1<\/i>/isgm;
     $message =~
-      s/\[u\](.*?)\[\/u\]/<span class="u">$1<\/span><!--underline-->/isgm;
+      s/\[u\](.*?)\[\/u\]/<span class="under">$1<\/span><!--underline-->/isgm;
     $message =~
 s/\[s\](.*?)\[\/s\]/<span style="text-decoration: line-through">$1<\/span><!--linethrough-->/isgm;
     $message =~ s/\[glb\](.*?)\[\/glb\]/<div class="glb">$1<\/div>/isgm;
@@ -429,7 +429,7 @@ s/\[fixed\](.*?)\[\/fixed\]/<span style="display:inline; font-family: Courier Ne
     $message =~ s/\[hr\]\n/<hr class="hr_s" \/>/gsm;
     $message =~ s/\[hr\]/<hr class="hr_s" \/>/gsm;
     $message =~ s/\[br\]/\n/igsm;
-#    $message =~ s/\s$YaBBversion\s/ \<a style\=\"font-weight: bold;\" href\=\"http\:\/\/www\.yabbforum\.com\/downloads\.php\"\>$YaBBversion Forum Software\<\/a\> /gxsm;
+## code moved ##
 
     $message =~
 s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span><!--highlight-->/isgm;
@@ -478,6 +478,7 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
         $message =~ s/\[ftp\]\s*(ftp:\/\/)?(.+?)\s*\[\/ftp\]/<a href="ftp:\/\/$2">$1$2<\/a>/isgm;
     }
 
+## code moved ##
     $message =~ s/\[email\]\s*(\S+?\@\S+?)\s*\[\/email\]/<a href="mailto:$1">$1<\/a>/isgm;
     $message =~ s/\[email=\s*(\S+?\@\S+?)\](.*?)\[\/email\]/<a href="mailto:$1">$2<\/a>/isgm;
 

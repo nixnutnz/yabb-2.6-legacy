@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$errorlogpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$errorlogpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ErrorLog {
@@ -28,9 +28,9 @@ sub ErrorLog {
     $errorcount = @errors;
     $date2      = $date;
     $mytest = 0;
-    for my $i ( 0 .. ( $#errors ) ) {
+    for my $i ( 0 .. $#errors ) {
         my @tmpArray = split /\|/xsm, $errors[$i];
-        if ( $tmpArray[0] eq q{} || $tmpArray[0] =~ /[a-z]/igsm || $tmpArray[1] eq q{} || $tmpArray[1] =~ /[a-z]/igsm ) { next; }
+        if ( $tmpArray[0] eq q{} || $tmpArray[0] =~ /\D/igsm || $tmpArray[1] eq q{} || $tmpArray[1] =~ /\D/igsm ) { next; }
         else {
             $date1 = $tmpArray[1];
             calcdifference();
@@ -169,6 +169,9 @@ function uncheckAll() {
         $sortlist[$bb] =~ s/\[b\]/<b>/gxsm;
         $sortlist[$bb] =~ s/\[\/b\]/<\/b>/gxsm;
         $sortlist[$bb] =~ s/\[br \/\]/<br \/>/gsm;
+        $sortlist[$bb] =~ s/\$/&dollar;/gsm;
+        $sortlist[$bb] =~ s/\@/&commat;/gsm;
+        $sortlist[$bb] =~ s/\%/&percnt;/gsm;
         my (
             $tmp_datecmp,      $tmp_id,    $tmp_date,
             $tmp_userip,       $tmp_error, $tmp_action,

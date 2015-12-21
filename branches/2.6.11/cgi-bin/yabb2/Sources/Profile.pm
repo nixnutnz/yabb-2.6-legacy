@@ -1686,6 +1686,7 @@ sub ModifyProfile2 {
             && ( lc $member{'name'} ne lc $member{'username'} )
           )
         {
+            ToChars($member{'name'});
             fatal_error( 'name_taken', "($member{'name'})" );
         }
 

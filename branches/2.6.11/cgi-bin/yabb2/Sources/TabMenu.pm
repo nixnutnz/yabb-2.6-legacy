@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.11';
 
-$tabmenupmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$tabmenupmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('TabMenu');
@@ -260,8 +260,8 @@ sub GetTabtxt {
         %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
         for (keys %tabtxt) {
-			chomp $tabtxt{$_}
-		}
+            chomp $tabtxt{$_}
+        }
     }
     elsif ( -e "$langdir/English/tabtext.txt" ) {
         fopen( TABTXT, "$langdir/English/tabtext.txt" );

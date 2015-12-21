@@ -322,7 +322,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     $yystyle .= $yyinlinestyle;
 
     if ( $action eq 'register' || $action eq 'guestpm' || $action eq 'modalert' || $action eq 'post' || $action eq 'imsend' || ( $action eq 'eventcal' && $INFO{'addnew'} == 1 ) ) {
-        $yystyle .= '<meta name ="robots" content="noindex, nofollow">';
+        $yystyle .= '<meta name ="robots" content="noindex, nofollow" />';
     }
 
     # Carsten's 'backtotop';
@@ -565,7 +565,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         fclose(NEWS);
         chomp @newsmessages;
         my $startnews = int rand @newsmessages;
-        $yynewstitle = qq~<b>$maintxt{'102'}:</b>~;
+        $yynewstitle = qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
         $yynewstitle =~ s/\x27/\\\x27/gxsm;
         $guest_media_disallowed = 0;
         $newswrap               = 40;
@@ -1453,7 +1453,7 @@ sub SpamQuestion {
     chomp $spam_question_rand;
     ( $spam_question_id, $spam_question, undef, $spam_questions_case, $spam_image ) =
       split /\|/xsm, $spam_question_rand;
-    $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$defaultimagesdir/Spam_Img/$spam_image" alt="" /></div>~ : q{};
+    $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$imagesdir/Spam_Img/$spam_image" alt="" /></div>~ : q{};
     return;
 }
 
@@ -1492,7 +1492,7 @@ sub SpamQuestionCheck {
 
 sub CountChars {
     $convertstr =~ s/&\x2332;/ /gsm;    # why? where? (deti)
-	#length does not always function properly with UTF-8 - convert UTF-8 to internal Perl utf8
+    #length does not always function properly with UTF-8 - convert UTF-8 to internal Perl utf8
     if ( $yymycharset eq 'UTF-8' ) {
         require utf8;
         require Encode;
@@ -2157,9 +2157,13 @@ sub WriteLog {
             push @new_log, "$_\n";
         }
     }
+    my $hostin = qq~$user_host#$ENV{'HTTP_USER_AGENT'}~;
+    $hostin =~ s/\x0//gsm;
+    $hostin =~ s/\x7C//gsm;
+    $hostin =~ s/^[x20-\x7E]+$//gsm;
     fopen( LOG, ">$vardir/log.txt" );
     print {LOG} (
-"$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|"
+"$field|$date|$user_ip|$hostin|$username|$currentboard|"
           . (
             ( !$action && $INFO{'num'} && $currentboard )
             ? 'display'
@@ -2180,13 +2184,17 @@ sub WriteLog {
         fopen( LOG, "<$vardir/clicklog.txt", 1 );
         @new_log = <LOG>;
         fclose( LOG );
+        my $hostin = $ENV{'HTTP_USER_AGENT'};
+        $hostin =~ s/\x7C//gsm;
+        my $httprefer = $ENV{'HTTP_REFERER'};
+        $httprefer =~ s/\x7C//gsm;
         my $newlog = "$field|$date|$ENV{'REQUEST_URI'}|"
           . (
-            $ENV{'HTTP_REFERER'} =~ m/$boardurl/ism
+            $httprefer =~ m/$boardurl/ism
             ? q{}
-            : $ENV{'HTTP_REFERER'}
+            : $httprefer
           )
-          . "|$ENV{'HTTP_USER_AGENT'}|$user_ip\n";
+          . "|$hostin|$user_ip\n";
         $newlog =~ s/\x0//gsm;
         $newlog =~ s/^[x20-\x7E]+$//gsm;
         fopen( LOG, ">$vardir/clicklog.txt", 1 );
@@ -2282,8 +2290,9 @@ sub referer_check {
             if ( $action eq $allow ) { $goodaction = 1; last; }
         }
         if ( !$goodaction ) {
+            LoadLanguage('RefControl');
             fatal_error( 'referer_violation',
-"$action<br />$reftxt{'7'} $referencedomain<br />$reftxt{'6'} $refererdomain"
+"$action ($refer_txt{$action})<br />$reftxt{'7'} $referencedomain<br />$reftxt{'6'} $refererdomain"
             );
         }
     }
@@ -3049,7 +3058,7 @@ sub sizefont {
     if    ( !$fontsizemin )         { $fontsizemin = 6; }
     if    ( $tsize < $fontsizemin ) { $tsize       = $fontsizemin; }
     elsif ( $tsize > $fontsizemax ) { $tsize       = $fontsizemax; }
-    return qq~<span style="font-size: $tsize\pt;">$ttext</span><!--size-->~;
+    return qq~<span style="font-size: ${tsize}pt;">$ttext</span><!--size-->~;
 }
 
 sub regex_1 {
@@ -3264,23 +3273,22 @@ sub UploadFile {
        {    # replace all inappropriate characters
             # Transliteration
             my $x = 0;
-            foreach ( @uploadtranlist )
-            {
-            $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
-            $x++;
+            foreach ( @uploadtranlist ) {
+                $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
+                $x++;
             }
 
             # END Transliteration. Thanks to "Velocity" for this contribution.
+            # replace . with _ in the filename except for the extension
             $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gxsm;
         }
 
-        # replace . with _ in the filename except for the extension
         my $fixname = $fixfile;
         if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
             $fixext = $2;
         }
 
-        $spamdetected = spamcheck("$fixname");
+        $spamdetected = spamcheck($fixname);
         if ( !$staff ) {
             if ( $spamdetected == 1 ) {
                 ${ $uid . $username }{'spamcount'}++;

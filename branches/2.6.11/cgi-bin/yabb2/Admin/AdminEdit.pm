@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.11';
 
-$admineditpmver = 'YaBB 2.6.11 $Revision: 1611 $';
+$admineditpmver = 'YaBB 2.6.11 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -135,38 +135,38 @@ sub EditBots {
     my ($line);
     $yymain .= qq~
 <form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
-    <div class="bordercolor rightboxdiv">
-        <table class="border-space pad-cell" style="margin-bottom: .5em;">
-            <tr>
-                <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'18'}</b></td>
-            </tr><tr>
-                <td class="windowbg2">
-                    <div class="pad-more small">$admin_txt{'19'}</div>
-                </td>
-            </tr><tr>
-                <td class="windowbg2 center">
-                    <div class="pad-more">
-                        <textarea cols="70" rows="35" name="bots" style="width:98%">~;
+<div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <tr>
+            <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'18'}</b></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div class="pad-more small">$admin_txt{'19'}</div>
+            </td>
+        </tr><tr>
+            <td class="windowbg2 center">
+                <div class="pad-more">
+                    <textarea cols="70" rows="35" name="bots" style="width:98%">~;
     fopen( BOTS, "$vardir/bots.hosts" );
     while ( $line = <BOTS> ) { chomp $line; $yymain .= qq~$line\n~; }
     fclose(BOTS);
     $yymain .= qq~</textarea>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="bordercolor rightboxdiv">
-        <table class="border-space pad-cell">
-            <tr>
-                <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-            </tr><tr>
-                <td class="catbg center">
-                    <input class="button" type="submit" value="$admin_txt{'10'}" />
-                </td>
-            </tr>
-        </table>
-    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input class="button" type="submit" value="$admin_txt{'10'}" />
+            </td>
+        </tr>
+    </table>
+</div>
 </form>
 ~;
     $yytitle     = "$admin_txt{'18'}";
@@ -242,40 +242,40 @@ sub SetCensor {
     </table>
 </div>
 <form action="$adminurl?action=setcensor2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
-    <div class="bordercolor rightboxdiv">
-        <table class="border-space" style="margin-bottom: .5em;">
-            <tr>
-                <td class="windowbg2">
-                    <div class="pad-more">
-                        <label for="censored">$admin_txt{'136'}</label>
-                    </div>
-                </td>
-            </tr><tr>
-                <td class="windowbg2 center">
-                    <div class="pad-more">
-                        <input type="hidden" name="censorlanguage" value="$censorlanguage" />
-                        <textarea rows="35" cols="15" name="censored" id="censored" style="width:90%">~;
+<div class="bordercolor rightboxdiv">
+    <table class="border-space" style="margin-bottom: .5em;">
+        <tr>
+            <td class="windowbg2">
+                <div class="pad-more">
+                    <label for="censored">$admin_txt{'136'}</label>
+                </div>
+            </td>
+        </tr><tr>
+            <td class="windowbg2 center">
+                <div class="pad-more">
+                    <input type="hidden" name="censorlanguage" value="$censorlanguage" />
+                    <textarea rows="35" cols="15" name="censored" id="censored" style="width:90%">~;
     foreach my $i (@censored) {
         if ( !$i || $i !~ m/.+[\=~].+/sm ) { next; }
         $yymain .= "$i\n";
     }
     $yymain .= qq~</textarea>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="bordercolor rightboxdiv">
-        <table class="border-space pad-cell">
-            <tr>
-                <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-            </tr><tr>
-                <td class="catbg center">
-                    <input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
-                </td>
-            </tr>
-        </table>
-    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'} $censorlanguage" class="button" />
+            </td>
+        </tr>
+    </table>
+</div>
 </form>
 ~;
     $yytitle     = "$admin_txt{'135'}";
@@ -316,13 +316,13 @@ sub SetReserve {
     fopen( RESERVECFG, "$vardir/reservecfg.txt" );
     my @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
-    for my $i ( 0 .. ( @reservecfg - 1 ) ) {
+    for my $i ( 0 .. $#reservecfg ) {
         chomp $reservecfg[$i];
         if ( $reservecfg[$i] ) { $reservecheck[$i] = q~ checked="checked"~; }
     }
     $yymain .= qq~
 <form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
-    <div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiv">
     <table class="border-space" style="margin-bottom: .5em;">
         <tr>
            <td class="titlebg">$admin_img{'profile'} <b>$admin_txt{'341'}</b></td>
@@ -355,15 +355,15 @@ sub SetReserve {
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
-<table class="border-space pad-cell">
-    <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-    </tr><tr>
-        <td class="catbg center">
-            <input type="submit" value="$admin_txt{'10'}" class="button" />
-        </td>
-    </tr>
-</table>
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'}" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
 </form>
 ~;
@@ -427,7 +427,7 @@ sub ModifyAgreement {
     }
     fclose(AGREE);
     $yymain .= qq~
- <div class="bordercolor rightboxdiv">
+<div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: -1px;">
         <tr>
             <td class="titlebg">$admin_img{'xx'} <b>$admin_txt{'764'}</b></td>
@@ -456,9 +456,9 @@ sub ModifyAgreement {
         <tr>
             <td class="windowbg2 center">
                 <div class="pad-more">
-                <input type="hidden" name="destination" value="$INFO{'destination'}" />
-                <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
-                <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea>
+                    <input type="hidden" name="destination" value="$INFO{'destination'}" />
+                    <input type="hidden" name="agreementlanguage" value="$agreementlanguage" />
+                    <textarea rows="35" cols="95" name="agreement" id="agreement" style="width:95%">$fullagreement</textarea>
                 </div>
             </td>
         </tr>
@@ -466,14 +466,14 @@ sub ModifyAgreement {
 </div>
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
-    <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-    </tr><tr>
-        <td class="catbg center">
-            <input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" />
-        </td>
-    </tr>
-</table>
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admin_txt{'10'} $agreementlanguage" class="button" />
+            </td>
+        </tr>
+    </table>
 </div>
 </form>
 ~;
@@ -787,182 +787,182 @@ sub EditPaths {
     </table>
 </div>
 <form action="$adminurl?action=editpaths2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
-    <div class="bordercolor rightboxdiv">
-        <table class="border-space pad-cell" style="margin-bottom: .5em;">
-            <tr>
-                <td class="titlebg">
-                    $admin_img{'prefimg'}&nbsp;<b>$edit_paths_txt{'1'}</b>
-                </td>
-            </tr><tr>
-                <td class="catbg"><span class="small">$edit_paths_txt{'2'}</span></td>
-            </tr><tr>
-                <td class="windowbg2">
-                    <div class="setting-cell">
-                        <label for="boarddir">$edit_paths_txt{'4'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="boarddir" id="boarddir" size="50" value="$boarddir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
+<div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
+        <tr>
+            <td class="titlebg">
+                $admin_img{'prefimg'}&nbsp;<b>$edit_paths_txt{'1'}</b>
+            </td>
+        </tr><tr>
+            <td class="catbg"><span class="small">$edit_paths_txt{'2'}</span></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div class="setting-cell">
+                    <label for="boarddir">$edit_paths_txt{'4'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="boarddir" id="boarddir" size="50" value="$boarddir" />
+                </div>
+                <br />
+                <div class="setting-cell">
                         <label for="admindir">$edit_paths_txt{'9'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="admindir" id="admindir" size="50" value="$admindir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="boardsdir">$edit_paths_txt{'5'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="boardsdir" id="boardsdir" size="50" value="$boardsdir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="helpfile">$edit_paths_txt{'12'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="helpfile" id="helpfile" size="50" value="$helpfile" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="langdir">$edit_paths_txt{'11'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="langdir" id="langdir" size="50" value="$langdir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="memberdir">$edit_paths_txt{'7'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="memberdir" id="memberdir" size="50" value="$memberdir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="datadir">$edit_paths_txt{'6'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="datadir" id="datadir" size="50" value="$datadir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="sourcedir">$edit_paths_txt{'8'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="sourcedir" id="sourcedir" size="50" value="$sourcedir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="templatesdir">$edit_paths_txt{'13'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="templatesdir" id="templatesdir" size="50" value="$templatesdir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="vardir">$edit_paths_txt{'10'}</label>
-                    </div>
-                    <div class="setting-cell2" style="margin-bottom:.5em">
-                        <input type="text" name="vardir" id="vardir" size="50" value="$vardir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="htmldir">$edit_paths_txt{'16'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="htmldir" id="htmldir" size="50" value="$htmldir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="uploaddir">$edit_paths_txt{'20'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="uploaddir" id="uploaddir" size="50" value="$uploaddir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="pmuploaddir">$edit_paths_txt{'20a'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="pmuploaddir" id="pmuploaddir" size="50" value="$pmuploaddir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="facesdir">$edit_paths_txt{'17'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="facesdir" id="facesdir" size="50" value="$facesdir" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="modimgdir">$edit_paths_txt{'19'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="modimgdir" id="modimgdir" size="50" value="$modimgdir" />
-                    </div>
-                </td>
-            </tr><tr>
-                <td class="catbg"><span class="small">$edit_paths_txt{'21'}</span></td>
-            </tr><tr>
-                <td class="windowbg2">
-                    <div class="setting-cell">
-                        <label for="boardurl">$edit_paths_txt{'3'}</label>
-                    </div>
-                    <div class="setting-cell2"  style="margin-bottom:.5em">
-                        <input type="text" name="boardurl" id="boardurl" size="50" value="$boardurl" />
-                    </div>
-                    <div class="setting-cell">
-                        <label for="yyhtml_root">$edit_paths_txt{'28'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="yyhtml_root" id="yyhtml_root" size="50" value="$yyhtml_root" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="uploadurl">$edit_paths_txt{'32'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="uploadurl" id="uploadurl" size="50" value="$uploadurl" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="pmuploadurl">$edit_paths_txt{'32a'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="pmuploadurl" id="pmuploadurl" size="50" value="$pmuploadurl" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="facesurl">$edit_paths_txt{'29'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="facesurl" id="facesurl" size="50" value="$facesurl" />
-                    </div>
-                    <br />
-                    <div class="setting-cell">
-                        <label for="modimgurl">$edit_paths_txt{'31'}</label>
-                    </div>
-                    <div class="setting-cell2">
-                        <input type="text" name="modimgurl" id="modimgurl" size="50" value="$modimgurl" />
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="bordercolor rightboxdiv">
-        <table class="border-space pad-cell">
-            <tr>
-                <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
-            </tr><tr>
-                <td class="catbg center">
-                    <input type="hidden" name="lastsaved" value="${$uid.$username}{'realname'}" />
-                    <input type="hidden" name="lastdate" value="$date" />
-                    <input class="button" type="submit" value="$admin_txt{'10'}" />
-                </td>
-            </tr>
-        </table>
-    </div>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="admindir" id="admindir" size="50" value="$admindir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="boardsdir">$edit_paths_txt{'5'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="boardsdir" id="boardsdir" size="50" value="$boardsdir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="helpfile">$edit_paths_txt{'12'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="helpfile" id="helpfile" size="50" value="$helpfile" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="langdir">$edit_paths_txt{'11'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="langdir" id="langdir" size="50" value="$langdir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="memberdir">$edit_paths_txt{'7'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="memberdir" id="memberdir" size="50" value="$memberdir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="datadir">$edit_paths_txt{'6'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="datadir" id="datadir" size="50" value="$datadir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="sourcedir">$edit_paths_txt{'8'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="sourcedir" id="sourcedir" size="50" value="$sourcedir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="templatesdir">$edit_paths_txt{'13'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="templatesdir" id="templatesdir" size="50" value="$templatesdir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="vardir">$edit_paths_txt{'10'}</label>
+                </div>
+                <div class="setting-cell2" style="margin-bottom:.5em">
+                     <input type="text" name="vardir" id="vardir" size="50" value="$vardir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="htmldir">$edit_paths_txt{'16'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="htmldir" id="htmldir" size="50" value="$htmldir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="uploaddir">$edit_paths_txt{'20'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="uploaddir" id="uploaddir" size="50" value="$uploaddir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="pmuploaddir">$edit_paths_txt{'20a'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="pmuploaddir" id="pmuploaddir" size="50" value="$pmuploaddir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="facesdir">$edit_paths_txt{'17'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="facesdir" id="facesdir" size="50" value="$facesdir" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="modimgdir">$edit_paths_txt{'19'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="modimgdir" id="modimgdir" size="50" value="$modimgdir" />
+                </div>
+            </td>
+        </tr><tr>
+            <td class="catbg"><span class="small">$edit_paths_txt{'21'}</span></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div class="setting-cell">
+                    <label for="boardurl">$edit_paths_txt{'3'}</label>
+                </div>
+                <div class="setting-cell2"  style="margin-bottom:.5em">
+                    <input type="text" name="boardurl" id="boardurl" size="50" value="$boardurl" />
+                </div>
+                <div class="setting-cell">
+                    <label for="yyhtml_root">$edit_paths_txt{'28'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="yyhtml_root" id="yyhtml_root" size="50" value="$yyhtml_root" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="uploadurl">$edit_paths_txt{'32'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="uploadurl" id="uploadurl" size="50" value="$uploadurl" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="pmuploadurl">$edit_paths_txt{'32a'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="pmuploadurl" id="pmuploadurl" size="50" value="$pmuploadurl" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="facesurl">$edit_paths_txt{'29'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="facesurl" id="facesurl" size="50" value="$facesurl" />
+                </div>
+                <br />
+                <div class="setting-cell">
+                    <label for="modimgurl">$edit_paths_txt{'31'}</label>
+                </div>
+                <div class="setting-cell2">
+                    <input type="text" name="modimgurl" id="modimgurl" size="50" value="$modimgurl" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell">
+        <tr>
+            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="hidden" name="lastsaved" value="${$uid.$username}{'realname'}" />
+                <input type="hidden" name="lastdate" value="$date" />
+                <input class="button" type="submit" value="$admin_txt{'10'}" />
+            </td>
+        </tr>
+    </table>
+</div>
 </form>
 ~;
     $yytitle     = "$edit_paths_txt{'1'}";

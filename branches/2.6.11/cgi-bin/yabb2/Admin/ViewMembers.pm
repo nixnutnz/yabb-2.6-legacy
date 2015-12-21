@@ -837,7 +837,8 @@ sub buildPages {
     else {
         $gmodsubmit = q{};
         if ( $iamadmin || ($iamgmod && $gmod_access{'deletemultimembers'} eq 'on' ) ) {
-            $gmodsubmit = qq~    <table class="border-space pad-cell">
+            $gmodsubmit = qq~    <div class="bordercolor rightboxdiv">
+        <table class="border-space pad-cell">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'delete'}</th>
         </tr><tr>
@@ -846,8 +847,10 @@ sub buildPages {
                 <input type="submit" value="$amv_txt{'15'}" onclick="javascript:window.document.adv_memberview.button.value = '2'; return confirm('$amv_txt{'20'}')" class="button" />
             </td>
          </tr>
-    </table>~;
+    </table>
+    </div>~;
         }
+
         $yymain .= qq~<tr>
         <td class="catbg" colspan="9">
             <div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
@@ -856,10 +859,11 @@ sub buildPages {
         </tr>
        </table>
        $sel_box
-    </div>
-    <div class="bordercolor rightboxdiv">
-$gmodsubmit
-    </div>
+    </div>~;
+    if ( $isgood == 1 ) {
+        $yymain .= $gmodsubmit;
+    }
+    $yymain .= q~
     </form>~;
     }
     return;
@@ -1019,12 +1023,14 @@ sub FindMembers {
             $numshown++;
             $i++;
         }
+    $isgood = 1;
     }
     else {
         $yymain .= qq~
             <tr>
-                  <td class="windowbg2" colspan="7"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
+                  <td class="windowbg2" colspan="9"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
             </tr>~;
+        $isgood = 0;
     }
     undef @findmemlist;
     undef %memberinf;

@@ -33,7 +33,6 @@ require Sources::Post;
 get_micon();
 get_template('Calendar');
 
-
 if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
     $i = 0;
     while ( $CalIconURL[$i] ) {
@@ -329,17 +328,14 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     </select>~;
 
     my $addevdate;
-    if (   $mytimeselected == 8
-        || $mytimeselected == 6
-        || $mytimeselected == 3
-        || $mytimeselected == 2 )
+    if ( $timeord == 1 )
     {
-        $addevdate     .= $sdays . $smonths;
-        $calgotobox_dm .= $boxdays . $boxmonths;
+        $addevdate     = $sdays . $smonths;
+        $calgotobox_dm = $boxdays . $boxmonths;
     }
     else {
-        $addevdate     .= $smonths . $sdays;
-        $calgotobox_dm .= $boxmonths . $boxdays;
+        $addevdate     = $smonths . $sdays;
+        $calgotobox_dm = $boxmonths . $boxdays;
     }
     $addevdate .= $syears;
     my $calgotobox = qq~
@@ -1257,9 +1253,11 @@ qq~$var_cal{'calcoming'} $var_cal{'calsubtitle'} ($DisplayEvents $var_cal{'calda
                 }
                 $convertstr = $cevent;
                 $convertcut = $CalShortEvent;
-                CountChars();
+                if ( $CalShortEvent > 0 && length($cevent) > $CalShortEvent ) {
+                    CountChars();
+                }
                 $cevent = $convertstr;
-                if ($cliped) { $cevent .= ' ...'; }
+                if ($cliped) { $cevent .= q~ ...~; }
                 $cevent .=
 qq~<br /><br /><a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><span style="color:#FF6600">$var_cal{'calmore'}</span> $cal_icon{'eventmore'}</a>~;
 
@@ -1520,8 +1518,7 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     $cal_displayssi =~ s/{yabb weekdays}/$weekdays/sm;
     $cal_displayssi =~ s/{yabb cal_out}/$cal_out/sm;
 
-    my $cal_display_show;
-    $cal_display_show = $mycalout_goto_main;
+    my $cal_display_show = $mycalout_goto_main;
 
     if ( $outstring !~ /$yyhtml_root\//xsm ) {
         $outstring = $my_out_a;
@@ -1536,8 +1533,6 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     }
 
     if ($Allow_Event_Imput) {
-
-        #        $cal_allow = $mycal_td_tr;
         $cal_allow = q~~;
 
         if ( $INFO{'addnew'} == 1 ) {

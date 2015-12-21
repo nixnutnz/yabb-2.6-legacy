@@ -82,7 +82,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 $bot_count{$is_a_bot}++;
             }
             elsif ($name) {
-                if ( LoadUser($name) ) {
+                if ( $name !~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm && $name !~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm && LoadUser($name, 'vars') ) {
                     if ( $name eq $username ) { $user_in_log = 1; }
                     elsif ( ${ $uid . $name }{'lastonline'} < $lastonline ) {
                         next;
@@ -107,7 +107,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     }
                 }
                 else {
-                    if ( $name eq $user_ip ) { $guest_in_log = 1; }
+                    if ( !LoadUser($name, 'vars') || $name eq $user_ip ) { $guest_in_log = 1; }
                     $guests++;
                     $bvusers{$boardv}++;
                     if (   ( $iamadmin && $show_online_ip_admin )
@@ -135,7 +135,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 }
             }
         }
-        elsif ( $iamguest && !$iambot && !$guest_in_log ) {
+        elsif ( $iamguest && !$is_a_bot && !$guest_in_log ) {
             $guests++;
             $bvusers{$boardv}++;
         }
@@ -175,14 +175,14 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /\|/xsm, $_, 7;
             if ($name) {
-                if ( LoadUser($name) ) {
+                if ( $name !~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm && $name !~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm && LoadUser($name, 'vars') ) {
                     if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
                         $bvusers{$boardv}++;
                     }
                 }
                 else {
-                    if ( $name eq $user_ip ) { $guest_in_log = 1; }
+                    if ( !LoadUser($name, 'vars' ) || $name eq $user_ip ) { $guest_in_log = 1; }
                     $guests++;
                     $bvusers{$boardv}++;
                 }
@@ -1965,7 +1965,7 @@ sub RedirectExternalShow {
     }
 }
 
-sub         find_latest_data  {
+sub find_latest_data  {
             my ( $parentbd, @children ) = @_;
             $childcnt{$parentbd}    = 0;
             $sub_new_cnt{$parentbd} = 0;
@@ -2031,4 +2031,5 @@ sub         find_latest_data  {
                 $childcnt{$parentbd}++;
             }
         };
+
 1;
