@@ -161,3 +161,7 @@ table.pad-cell th,
     height: 20px;
     text-shadow: 1px 1px 1px #2d2d2d;
 }
+
+.yabb_searchbox {
+    display:none;
+}

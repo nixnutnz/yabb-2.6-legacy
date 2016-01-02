@@ -13,5 +13,4 @@ $SectionBody1 = q~<p>YaBB is one of the world's leading providers of free, Perl-
 ~;
 #############################################
 
-
 1;

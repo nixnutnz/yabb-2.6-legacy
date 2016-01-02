@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local;
@@ -356,7 +356,6 @@ sub ShowClickLog {
     fopen( LOG, "$vardir/clicklog.txt" );
     @log = <LOG>;
     fclose(LOG);
-
     chomp @log;
 
     foreach my $i (0 .. $#log) {
@@ -369,6 +368,7 @@ sub ShowClickLog {
     for my $i ( 0 .. $#iplist ) {
         $iplist{ $iplist[$i] }++;
     }
+
     $i = 0;
     while ( ( $key, $val ) = each %iplist ) {
         $newiplist[$i] = [ $key, $val ];
@@ -411,6 +411,7 @@ qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br
             {
                 $displayUserName = ${ $uid . $displayUserName }{'realname'};
             }
+
             $useriplist .=
 qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> (<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>)<br />~;
         }
@@ -958,7 +959,7 @@ sub Refcontrol {
 
     for my $key ( keys %director) {
         push @actfound, $key;
-                $counter++;
+        $counter++;
     }
 
     $column  = int( $counter / 3 ) - 1;

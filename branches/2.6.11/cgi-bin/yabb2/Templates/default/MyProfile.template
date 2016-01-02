@@ -347,10 +347,10 @@ $myprofile_show_avatar_a = qq~
                         source = document.getElementsByName('userpicpersonal')[0].value;
                         if (!source || source == 'http{yabb av_s://') source = "$facesurl/$my_blank_avatar";
                     }
-                    document.images.avatar_img_resize_1.style.display = 'none';
-                    document.images.avatar_img_resize_1.width = '';
-                    document.images.avatar_img_resize_1.height = '';
-                    document.images.avatar_img_resize_1.src = source;
+                    document.images.icons.style.display = 'none';
+                    document.images.icons.width = '';
+                    document.images.icons.height = '';
+                    document.images.icons.src = source;
                     resize_time = 2;
                     img_resize_names = new Array ('avatar_img_resize_1');
                     resize_images();
@@ -358,7 +358,7 @@ $myprofile_show_avatar_a = qq~
             </script>
             <select name="userpic" id="userpic" size="6" onchange="showimage(1);">
             {yabb images}
-            </select>&nbsp;&nbsp;<img src="{yabb av_pic}" id="avatar_img_resize" alt="{yabb av_alt}" style="margin:0 15px; vertical-align:bottom" /><br />
+            </select>&nbsp;&nbsp;<img src="{yabb av_pic}" id="icons" name="avatar_img_resize" alt="{yabb av_alt}" style="display:none; margin:0 15px; vertical-align:bottom" /><br />
             <br />
             <input type="checkbox" name="userpicpersonalcheck" id="userpicpersonalcheck" {yabb checked} onclick="if(this.checked==false){UserPicUrl=document.getElementsByName('userpicpersonal')[0].value;document.getElementsByName('userpicpersonal')[0].value='http{yabb av_s}://';}else{document.getElementsByName('userpicpersonal')[0].value=UserPicUrl;}showimage(2);" />&nbsp;<input type="text" name="userpicpersonal" size="40" value="{yabb av_tmp}" onkeyup="document.getElementsByName('userpicpersonalcheck')[0].checked=true;showimage(2);" /> {yabb my_up_avatar_b}
         </td>

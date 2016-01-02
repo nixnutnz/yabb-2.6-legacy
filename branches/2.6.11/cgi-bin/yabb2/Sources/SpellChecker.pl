@@ -28,12 +28,13 @@ $reqXML = q{};
 
 read STDIN, $reqXML, $ENV{'CONTENT_LENGTH'};
 
-my $url = "https://www.google.com/tbproxy/spell?$ENV{QUERY_STRING}";
-my $res =
+$url = "http://orangoo.com/newnox?lang=$ENV{'QUERY_STRING'}";
+$res =
   $ua->request(POST $url, Content_Type => 'text/xml', Content => $reqXML);
 
-print "Content-Type: text/xml\n\n";
-print $res->{_content};
+croak "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/sm;
 
+print "Content-Type: text/xml\n\n" or croak "$croak{'print'} content-type";
+print $res->{_content} or croak "$croak{'print'} speller";
 
 1;

@@ -264,22 +264,25 @@ sub FormatUserName {
 }
 
 sub LoadUser {
-    my ( $user, $userextension ) = @_;
+    my ( $user, $userextension, $tst ) = @_;
     return 1 if exists ${ $uid . $user }{'realname'};
     return 0 if $user eq q{} || $user eq 'Guest';
 
-    if ( !$userextension ) { $userextension = 'vars'; }
+    if ( !$userextension ) {
     if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
         $userextension = 'pre';
     }
     elsif ( $regtype == 1 && -e "$memberdir/$user.wait" ) {
         $userextension = 'wait';
     }
+        else { $userextension = 'vars';}
+    }
 
-    if ( -e "$memberdir/$user.$userextension" ) {
+    if ( !-e "$memberdir/$user.$userextension" ) { return 0; }   # user not found
+    else {
         if ( $user ne $username ) {
             fopen( LOADUSER, "$memberdir/$user.$userextension" )
-              or fatal_error( 'cannot_open', "$memberdir/$user.$userextension",
+              or fatal_error( 'cannot_open', "$memberdir/$user.$userextension load 2 $tst",
                 1 );
             my @settings = <LOADUSER>;
             fclose(LOADUSER);
@@ -292,10 +295,10 @@ sub LoadUser {
         else {
             fopen( LOADUSER, "<$memberdir/$user.$userextension" )
               or fatal_error( 'cannot_open',
-                "$memberdir/$user.$userextension load 1", 1 );
+                "$memberdir/$user.$userextension load 1 $tst", 1 );
             my @settings = <LOADUSER>;
             fclose(LOADUSER);
-            for my $i ( 0 .. ( @settings - 1 ) ) {
+            for my $i ( 0 .. $#settings ) {
                 if ( $settings[$i] =~ /'(.*?)',"(.*?)"/xsm ) {
                     ${ $uid . $user }{$1} = $2;
                     if (   $1 eq 'lastonline'
@@ -310,7 +313,7 @@ sub LoadUser {
             if ( scalar @settings != 0 ) {
                 fopen( LOADUSER, ">$memberdir/$user.$userextension" )
                   or fatal_error( 'cannot_open',
-                    "$memberdir/$user.$userextension load2", 1 );
+                    "$memberdir/$user.$userextension load 3 $tst", 1 );
                 print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
                 fclose(LOADUSER);
             }
@@ -326,8 +329,6 @@ sub LoadUser {
 
         return 1;
     }
-
-    return 0;    # user not found
 }
 
 sub is_moderator {
@@ -1136,8 +1137,6 @@ sub UpdateCookie {
     }
     return;
 }
-
-## LoadAccess not called here - removed ##
 
 sub WhatTemplate {
     $found = 0;

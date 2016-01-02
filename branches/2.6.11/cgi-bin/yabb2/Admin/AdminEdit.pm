@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 our $VERSION = '2.6.11';
 
 $admineditpmver = 'YaBB 2.6.11 $Revision$';
@@ -541,8 +541,8 @@ sub GmodSettings2 {
 
     my $filler =
 q~                                                                               ~;
-    my $setfile = << "EOF";
-### Gmod Related Setttings ###
+    my $setfile = <<EOF;
+### Gmod Related Settings ###
 
 \$allow_gmod_admin = "$FORM{'allow_gmod_admin'}"; #
 \$allow_gmod_profile = "$FORM{'allow_gmod_profile'}"; #

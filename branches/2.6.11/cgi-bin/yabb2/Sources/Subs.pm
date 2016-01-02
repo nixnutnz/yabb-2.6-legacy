@@ -310,10 +310,6 @@ qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/c
         }
     }
 
-    if ( !$cachebehaviour ) {
-        $yysyntax_js .= qq~    <meta http-equiv="cache-control" content="no-cache" />\n    <meta http-equiv="pragma" content="no-cache" />~;
-    }
-
     $yystyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
     $yystyle =~ s/$usestyle\///gxsm;
@@ -741,7 +737,7 @@ s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/>\n  
 
     if ( !$copyright ) {
         $output =
-q~<h1 class="center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+qq~<h1 class="center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
 
     print_HTML_output_and_finish();
@@ -2136,6 +2132,7 @@ sub WriteLog {
     # 'Reverse DNS lookup timeout causes slow page loads'
     # (http://www.yabbforum.com/community/YaBB.pl?num=1199991357)
     # Search Engine identification and display will be turned off
+
     my $user_host =
       ( gethostbyaddr pack( 'C4', split /\./xsm, $user_ip ), 2 )[0];
 
@@ -2159,6 +2156,8 @@ sub WriteLog {
     }
     my $hostin = qq~$user_host#$ENV{'HTTP_USER_AGENT'}~;
     $hostin =~ s/\x0//gsm;
+    $hostin =~ s/chr(32)//gsms;
+    $hostin =~ s/\s+//gxms;
     $hostin =~ s/\x7C//gsm;
     $hostin =~ s/^[x20-\x7E]+$//gsm;
     fopen( LOG, ">$vardir/log.txt" );
@@ -2194,11 +2193,13 @@ sub WriteLog {
             ? q{}
             : $httprefer
           )
-          . "|$hostin|$user_ip\n";
+          . "|$hostin|$user_ip";
         $newlog =~ s/\x0//gsm;
+        $newlog =~ s/chr(32)//gsms;
+        $newlog =~ s/\s+//gxms;
         $newlog =~ s/^[x20-\x7E]+$//gsm;
         fopen( LOG, ">$vardir/clicklog.txt", 1 );
-        print {LOG} $newlog
+        print {LOG} "$newlog\n"
           or croak "$croak{'print'} LOG";
         foreach (@new_log) {
             if ( ( split /\|/xsm, $_, 3 )[1] >= $onlinetime ) {
@@ -2290,9 +2291,8 @@ sub referer_check {
             if ( $action eq $allow ) { $goodaction = 1; last; }
         }
         if ( !$goodaction ) {
-            LoadLanguage('RefControl');
             fatal_error( 'referer_violation',
-"$action ($refer_txt{$action})<br />$reftxt{'7'} $referencedomain<br />$reftxt{'6'} $refererdomain"
+"$action<br />$reftxt{'7'} $referencedomain<br />$reftxt{'6'} $refererdomain"
             );
         }
     }

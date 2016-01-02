@@ -57,11 +57,10 @@ sub convcontrol {
 open(FORUMCONTROL, '<', "$boardsdir/forum.control") or croak 'cannot_open forum.control';
 my @boardcontrols = <FORUMCONTROL>;
 close(FORUMCONTROL);
-chomp @boardcontrols;
 
 foreach my $boardline (@boardcontrols) {
     $boardline =~ s/[\r\n]//g; # Built in chomp
-        (undef, $cntboard ) = split /\|/xsm, $boardline;
+        (undef, $cntboard ) = split /[|]/xsm, $boardline;
     ## create a global boards array
     push(@allboards, $cntboard);
 }

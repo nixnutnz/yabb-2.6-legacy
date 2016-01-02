@@ -199,7 +199,6 @@ $mycalout_addevent = qq~
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
-<!-- moved code //-->
             {yabb mycalout_cthelp}
             {yabb mycalout_post2}
         </td>
