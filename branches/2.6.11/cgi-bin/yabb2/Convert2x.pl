@@ -135,8 +135,6 @@ if ( -e "$vardir/Setup.lock" ) {
                         </tr><tr>
                             <td><label for="convvardir"><b>Path to your YaBB 2x Variables: </b></label></td>
                             <td><input type="text" name="convvardir" value="" size="50" /></td>
-                        </tr><tr>
-                            <td colspan="2"><label for="convertlang"><b>Do you need to convert your files to UTF-8?</b></label> <input type="checkbox" name="convertlang" value="1" /></td>
                         </tr>
                     </table>
                 </td>
@@ -194,8 +192,6 @@ INTRO
 
         if ( !-d "$convvardir" ) {
             setup_fatal_error( "Directory: $convvardir", 1 );
-        }
-
         }
 
         my $setfile = <<EOF;
