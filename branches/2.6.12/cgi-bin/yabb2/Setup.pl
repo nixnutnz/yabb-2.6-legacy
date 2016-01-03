@@ -1133,7 +1133,7 @@ sub checkmodules {
 
     $yymain .= qq~
 <form action="$set_cgi?action=setinstall" method="post">
-<p class="none"><strong>If this page is on a white background, go back and check your path settings - the url for yabbfiles is configured wrong.</strong></p>~;
+<p class="none"><strong>If this page is on a white background, go back and check your path settings - the url for yabbfiles is configured wrong or yabbfiles/Templates/Forum/default.css is missing.</strong></p>~;
 
     require Admin::ModuleChecker;
     $yymain =~ s/float: left; |<\/div>$//gsm;

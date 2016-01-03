@@ -135,8 +135,6 @@ if ( -e "$vardir/Setup.lock" ) {
                         </tr><tr>
                             <td><label for="convvardir"><b>Path to your YaBB 2x Variables: </b></label></td>
                             <td><input type="text" name="convvardir" value="" size="50" /></td>
-                        </tr><tr>
-                            <td colspan="2"><label for="convertlang"><b>Do you need to convert your files to UTF-8?</b></label> <input type="checkbox" name="convertlang" value="1" /></td>
                         </tr>
                     </table>
                 </td>
@@ -194,8 +192,6 @@ INTRO
 
         if ( !-d "$convvardir" ) {
             setup_fatal_error( "Directory: $convvardir", 1 );
-        }
-
         }
 
         my $setfile = <<EOF;
@@ -1345,7 +1341,7 @@ sub MoveVariables {
         'ban_log.txt',             'bots.hosts',
         'email_domain_filter.txt', 'eventcal.db',
         'eventcalbday.db',         'flood.txt',
-        'gmodsettings.txt',        'modlist.txt',
+        'gmodsettings.txt',        
         'mostlog.txt',             'Movedthreads.pm',
         'oldestmes.txt',           'pm.attachments',
         'registration.log',        'reserve.txt',
@@ -1403,10 +1399,21 @@ qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$event
 
 sub Convert_Settings {
     $ret = 0;
-    if ( -e "$convvardir/Settings.pl" ) {
+	my $setset = 0;
+    my $setfile = "$convvardir/Settings.pm";
+    if ( $convertdir ne './Convert' && -e "$convertdir/Settings.pl" ) {
+        $setfile = "$convertdir/Settings.pl";
+		$setset = 1;
+    }
+    elsif ( -e "$convvardir/Settings.pl" ) {
+        $setfile = "$convvardir/Settings.pl";
+		$setset = 1;
+	}
+
+    if ( $setset == 1 ) {
         require Time::gmtime;
         $time = time;
-        require "$convvardir/Settings.pl";
+        require $setfile;
         if ($ip_banlist) {
             @i_ban = ( split /,/xsm, $ip_banlist );
             chomp @i_ban;
@@ -1442,7 +1449,7 @@ sub Convert_Settings {
         }
         $mypl = 1;
     }
-    elsif ( -e "$convvardir/Settings.pm" ) {
+    elsif ( !$setset && -e "$convvardir/Settings.pm" ) {
         require "$convvardir/Settings.pm";
     }
 
@@ -1495,6 +1502,8 @@ sub Convert_Settings {
     $bm_subcut            = isempty( $bm_subcut, 50 );
     @AdvancedTabs =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
+    %templateset = ( 'Forum default' => "default|default|default|default|default|default|default|",);
+    $default_template      = 'Forum default';
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
@@ -1686,8 +1695,8 @@ sub SimpleOutput {
     print_output_header();
 
     print qq~
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en-us">
 <head>
     <title>YaBB 2.6.12 Setup</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
