@@ -1341,7 +1341,7 @@ sub MoveVariables {
         'ban_log.txt',             'bots.hosts',
         'email_domain_filter.txt', 'eventcal.db',
         'eventcalbday.db',         'flood.txt',
-        'gmodsettings.txt',        
+        'gmodsettings.txt',
         'mostlog.txt',             'Movedthreads.pm',
         'oldestmes.txt',           'pm.attachments',
         'registration.log',        'reserve.txt',
@@ -1399,16 +1399,16 @@ qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$event
 
 sub Convert_Settings {
     $ret = 0;
-	my $setset = 0;
+    my $setset = 0;
     my $setfile = "$convvardir/Settings.pm";
     if ( $convertdir ne './Convert' && -e "$convertdir/Settings.pl" ) {
         $setfile = "$convertdir/Settings.pl";
-		$setset = 1;
+        $setset = 1;
     }
     elsif ( -e "$convvardir/Settings.pl" ) {
         $setfile = "$convvardir/Settings.pl";
-		$setset = 1;
-	}
+        $setset = 1;
+    }
 
     if ( $setset == 1 ) {
         require Time::gmtime;
@@ -1466,8 +1466,8 @@ sub Convert_Settings {
     }
 
     ( undef, $rancook ) = split /\-/xsm, $cookieusername;
-    $cookietsort      = isempty( $cookietsort,      qq~Y2tsort-$rancook~ );
-    $cookieview       = isempty( $cookieview,       qq~Y2view-$rancook~ );
+    $cookietsort      = qq~Y2tsort-$rancook~;
+    $cookieview       = qq~Y2view-$rancook~;
     $cookieviewtime   = isempty( $cookieviewtime,   525600 );
     $MaxIMMessLen     = isempty( $MaxIMMessLen,     2000 );
     $AdMaxIMMessLen   = isempty( $AdMaxIMMessLen,   3000 );

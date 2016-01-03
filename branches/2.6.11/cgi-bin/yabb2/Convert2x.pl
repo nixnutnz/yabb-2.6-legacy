@@ -1455,8 +1455,8 @@ sub Convert_Settings {
     }
 
     ( undef, $rancook ) = split /\-/xsm, $cookieusername;
-    $cookietsort      = isempty( $cookietsort,      qq~Y2tsort-$rancook~ );
-    $cookieview       = isempty( $cookieview,       qq~Y2view-$rancook~ );
+    $cookietsort      = qq~Y2tsort-$rancook~;
+    $cookieview       = qq~Y2view-$rancook~;
     $cookieviewtime   = isempty( $cookieviewtime,   525600 );
     $MaxIMMessLen     = isempty( $MaxIMMessLen,     2000 );
     $AdMaxIMMessLen   = isempty( $AdMaxIMMessLen,   3000 );
