@@ -19,7 +19,7 @@ use English qw(-no_match_vars);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$profilepmver = 'YaBB 2.6.12 $Revision: 1643 $';
+$profilepmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');

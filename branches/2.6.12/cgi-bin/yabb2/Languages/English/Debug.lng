@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$debuglngver = 'YaBB 2.6.12 $Revision: 1643 $';
+$debuglngver = 'YaBB 2.6.12 $Revision$';
 
 %debug_txt = (
 'getpairs' => 'incoming GET pairs',

@@ -15,7 +15,7 @@
 # use strict;
 our $VERSION = '2.6.12';
 
-our $settings_maintenancepmver = 'YaBB 2.6.12 $Revision: 1611 $';
+our $settings_maintenancepmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # List of settings

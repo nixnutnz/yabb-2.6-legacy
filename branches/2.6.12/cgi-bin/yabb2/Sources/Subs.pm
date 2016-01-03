@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$subspmver = 'YaBB 2.6.12 $Revision: 1645 $';
+$subspmver = 'YaBB 2.6.12 $Revision$';
 
 use subs 'exit';
 

@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$boardindexpmver = 'YaBB 2.6.12 $Revision: 1645 $';
+$boardindexpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');

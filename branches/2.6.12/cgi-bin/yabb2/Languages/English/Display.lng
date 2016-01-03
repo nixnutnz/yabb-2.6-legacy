@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$displaylngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$displaylngver = 'YaBB 2.6.12 $Revision$';
 
 %display_txt = (
 '10' => 'Permalink for this article',

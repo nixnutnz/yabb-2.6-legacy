@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerlngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$registerlngver = 'YaBB 2.6.12 $Revision$';
 
 %register_txt = (
 '4' => 'For security reasons, it&#39;s advisable to have your screen name not the same as your login ID.',

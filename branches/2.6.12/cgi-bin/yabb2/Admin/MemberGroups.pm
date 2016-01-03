@@ -15,7 +15,7 @@
 use Carp;
 our $VERSION = '2.6.12';
 
-$membergroupspmver = 'YaBB 2.6.12 $Revision: 1621 $';
+$membergroupspmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";

@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.12';
 
-$userselectpmver = 'YaBB 2.6.12 $Revision: 1611 $';
+$userselectpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $INFO{'toid'} ne 'userspec' && $action ne 'checkavail' ) {

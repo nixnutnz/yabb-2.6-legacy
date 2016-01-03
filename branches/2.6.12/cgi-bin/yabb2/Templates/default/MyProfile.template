@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$myprofiletemver = 'YaBB 2.6.12 $Revision: 1645 $';
+$myprofiletemver = 'YaBB 2.6.12 $Revision$';
 
 $my_bdaycake = 'bdaycake.png';
 $my_aim = 'aim.gif';

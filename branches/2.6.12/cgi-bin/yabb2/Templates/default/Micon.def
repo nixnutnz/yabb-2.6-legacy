@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$defaultmicondefver = 'YaBB 2.6.12 $Revision: 1643 $';
+$defaultmicondefver = 'YaBB 2.6.12 $Revision$';
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';

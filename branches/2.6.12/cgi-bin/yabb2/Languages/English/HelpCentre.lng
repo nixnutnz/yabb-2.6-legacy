@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$helpcentrelngver = 'YaBB 2.6.12 $Revision: 1643 $';
+$helpcentrelngver = 'YaBB 2.6.12 $Revision$';
 
 %helptxt = (
 '1' => "Help Section",

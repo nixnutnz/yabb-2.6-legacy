@@ -15,7 +15,7 @@
 use Carp;
 our $VERSION = '2.6.12';
 
-$settings_bookmarkspmver = 'YaBB 2.6.12 $Revision: 1611 $';
+$settings_bookmarkspmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Bookmarks');

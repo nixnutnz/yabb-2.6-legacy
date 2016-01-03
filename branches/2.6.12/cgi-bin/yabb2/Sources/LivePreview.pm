@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$livepreviewpmver = 'YaBB 2.6.12 $Revision: 1643 $';
+$livepreviewpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 use URI::Escape;

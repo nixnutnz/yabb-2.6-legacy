@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$loadpmver = 'YaBB 2.6.12 $Revision: 1645 $';
+$loadpmver = 'YaBB 2.6.12 $Revision$';
 
 sub LoadBoardControl {
     $binboard = q{};

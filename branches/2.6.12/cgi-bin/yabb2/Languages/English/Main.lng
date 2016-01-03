@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$mainlngver = 'YaBB 2.6.12 $Revision: 1628 $';
+$mainlngver = 'YaBB 2.6.12 $Revision$';
 
 $abbr_lang = 'en-us';
 

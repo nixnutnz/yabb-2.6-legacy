@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
 # from YaBB3.0 build 100 #
-$recentpmver = 'YaBB 2.6.12 $Revision: 1611 $';
+$recentpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Sub RecentTopics shows all the most recently posted topics

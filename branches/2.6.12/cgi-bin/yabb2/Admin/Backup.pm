@@ -22,7 +22,7 @@ use Carp;
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$backuppmver = 'YaBB 2.6.12 $Revision: 1643 $';
+$backuppmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places

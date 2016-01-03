@@ -14,7 +14,7 @@
 ###############################################################################
 
 our $VERSION = '2.6.12';
-$adminsublistpmver = 'YaBB 2.6.12 $Revision: 1615 $';
+$adminsublistpmver = 'YaBB 2.6.12 $Revision$';
 
 %director = (
 'addboard' => 'ManageBoards.pm&AddBoards',

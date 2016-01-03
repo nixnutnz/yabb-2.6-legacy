@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.6.12 $Revision: 1621 $';
+$adminlngver = 'YaBB 2.6.12 $Revision$';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');

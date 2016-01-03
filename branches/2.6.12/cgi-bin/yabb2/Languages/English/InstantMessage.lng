@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$instantmessagelngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$instantmessagelngver = 'YaBB 2.6.12 $Revision$';
 
 %inmes_txt = (
 '21' => 'Posts',

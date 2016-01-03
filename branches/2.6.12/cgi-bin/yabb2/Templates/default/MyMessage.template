@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mymessagetemver = 'YaBB 2.6.12 $Revision: 1621 $';
+$mymessagetemver = 'YaBB 2.6.12 $Revision$';
 
 $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};

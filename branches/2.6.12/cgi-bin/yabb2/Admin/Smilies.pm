@@ -15,7 +15,7 @@
 # use strict;
 our $VERSION = '2.6.12';
 
-our $smiliespmver = 'YaBB 2.6.12 $Revision: 1621 $';
+our $smiliespmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";

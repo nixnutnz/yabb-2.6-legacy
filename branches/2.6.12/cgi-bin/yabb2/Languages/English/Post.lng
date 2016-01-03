@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$postlngver = 'YaBB 2.6.12 $Revision: 1621 $';
+$postlngver = 'YaBB 2.6.12 $Revision$';
 
 %post_txt = (
 '10' => 'Save',

@@ -23,7 +23,7 @@ use Carp;
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$convertplver = 'YaBB 2.6.12 $Revision: 1645 $';
+$convertplver = 'YaBB 2.6.12 $Revision$';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script

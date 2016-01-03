@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$messageindextemver = 'YaBB 2.6.12 $Revision: 1621 $';
+$messageindextemver = 'YaBB 2.6.12 $Revision$';
 
 LoadLanguage('BoardIndex');
 

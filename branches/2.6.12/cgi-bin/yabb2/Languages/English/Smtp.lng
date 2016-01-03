@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$smtplngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$smtplngver = 'YaBB 2.6.12 $Revision$';
 
 %smtp_txt = (
 '1' => "SERVER ERROR:Could not find $smtpaddr",

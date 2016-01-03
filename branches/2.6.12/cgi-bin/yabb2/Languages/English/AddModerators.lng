@@ -15,7 +15,7 @@
 # Released: January 28, 2013, Copyright 2013 Carsten Dalgaard                 #
 ###############################################################################
 
-$addmoderatorslngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$addmoderatorslngver = 'YaBB 2.6.12 $Revision$';
 
 %addmod_txt = (
 'addmod_title' => q~Moderator~,

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$gmodprivilegeslngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$gmodprivilegeslngver = 'YaBB 2.6.12 $Revision$';
 
 %gmod_settings=(
 '1' => 'Global Mod Access Privileges',

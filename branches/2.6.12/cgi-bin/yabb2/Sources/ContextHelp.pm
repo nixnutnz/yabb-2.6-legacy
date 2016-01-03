@@ -19,7 +19,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$contexthelppmver = 'YaBB 2.6.12 $Revision: 1643 $';
+$contexthelppmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ContextScript {

@@ -16,7 +16,7 @@ use Carp;
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$settings_advancedpmver = 'YaBB 2.6.12 $Revision: 1611 $';
+$settings_advancedpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $uploaddiriscorrect = qq~<span class="important">$admin_txt{'164'}</span>~;

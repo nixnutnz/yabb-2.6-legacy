@@ -18,7 +18,7 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.12';
 
-$datetimepmver = 'YaBB 2.6.12 $Revision: 1621 $';
+$datetimepmver = 'YaBB 2.6.12 $Revision$';
 
 @days_rfc = qw( Sun Mon Tue Wed Thu Fri Sat );
     # for RFC compliant feed time

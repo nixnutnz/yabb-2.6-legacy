@@ -1,7 +1,7 @@
 #!/usr/bin/perl --
 # $Id: YaBB Main$
 # $HeadURL: YaBB $
-# $Revision: 1625 $
+# $Revision$
 # $Source: /YaBB.pl $
 ###############################################################################
 # YaBB.pl                                                                     #
@@ -25,7 +25,7 @@ our $VERSION = '2.6.12';
 
 ### Version Info ###
 $YaBBversion = 'YaBB 2.6.12';
-$yabbplver   = 'YaBB 2.6.12 $Revision: 1625 $';
+$yabbplver   = 'YaBB 2.6.12 $Revision$';
 
 if ( $action eq 'detailedversion' ) { return 1; }
 

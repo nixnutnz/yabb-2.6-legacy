@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$boardindexlngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$boardindexlngver = 'YaBB 2.6.12 $Revision$';
 
 %boardindex_txt = (
 '18' => 'Index',

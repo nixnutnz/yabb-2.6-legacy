@@ -31,7 +31,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$captchapmver = 'YaBB 2.6.12 $Revision: 1621 $';
+$captchapmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $OUTPUT_AUTOFLUSH = 1;

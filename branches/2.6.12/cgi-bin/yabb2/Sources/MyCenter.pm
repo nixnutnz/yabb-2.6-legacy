@@ -18,7 +18,7 @@ no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$mycenterpmver = 'YaBB 2.6.12 $Revision: 1621 $';
+$mycenterpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('InstantMessage');

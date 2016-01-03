@@ -17,7 +17,7 @@ use Carp;
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 1621 $';
+our $settings_mainpmver = 'YaBB 2.6.12 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements

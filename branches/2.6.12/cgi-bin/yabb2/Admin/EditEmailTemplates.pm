@@ -16,7 +16,7 @@ use Carp;
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$editemailtemplatespmver = 'YaBB 2.6.12 $Revision: 1611 $';
+$editemailtemplatespmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub editemailtemplates {

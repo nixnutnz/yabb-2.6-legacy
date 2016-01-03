@@ -23,7 +23,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$setupplver  = 'YaBB 2.6.12 $Revision: 1645 $';
+$setupplver  = 'YaBB 2.6.12 $Revision$';
 $yymycharset = 'UTF-8';
 
 # conversion will stop after $max_process_time

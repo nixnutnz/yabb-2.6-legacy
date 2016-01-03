@@ -16,7 +16,7 @@
 use Carp;
 our $VERSION = '2.6.12';
 
-$newsettingspmver = 'YaBB 2.6.12 $Revision: 1621 $';
+$newsettingspmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.

@@ -18,7 +18,7 @@ use Carp;
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-our $modulecheckerpmver = 'YaBB 2.6.12 $Revision: 1632 $';
+our $modulecheckerpmver = 'YaBB 2.6.12 $Revision$';
 our ( $action, $yymain, %modulecheck );
 if ( $action eq 'detailedversion' ) { return 1; }
 

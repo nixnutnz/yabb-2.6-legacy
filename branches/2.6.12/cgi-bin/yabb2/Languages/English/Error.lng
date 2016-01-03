@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$errorlngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$errorlngver = 'YaBB 2.6.12 $Revision$';
 
 %error_txt = (
 ## General Errors ##

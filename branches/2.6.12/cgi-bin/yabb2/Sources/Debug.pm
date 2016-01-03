@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.12';
 
-$debugpmver = 'YaBB 2.6.12 $Revision: 1621 $';
+$debugpmver = 'YaBB 2.6.12 $Revision$';
 
 sub Debug {
     if ( $debug == 1 || ( $debug == 2 && ( $iamadmin || $iamgmod ) ) || $debug == 3 ) {

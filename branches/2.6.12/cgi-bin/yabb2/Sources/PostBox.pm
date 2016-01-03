@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$postboxpmver = 'YaBB 2.6.12 $Revision: 1643 $';
+$postboxpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();

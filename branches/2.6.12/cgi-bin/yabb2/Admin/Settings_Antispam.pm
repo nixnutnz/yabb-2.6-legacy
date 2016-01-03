@@ -17,7 +17,7 @@ use Carp;
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$settings_antispampmver = 'YaBB 2.6.12 $Revision: 1611 $';
+$settings_antispampmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 

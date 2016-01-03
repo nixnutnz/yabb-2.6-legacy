@@ -15,7 +15,7 @@
 use Carp;
 our $VERSION = '2.6.12';
 
-$errorlogpmver = 'YaBB 2.6.12 $Revision: 1643 $';
+$errorlogpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ErrorLog {

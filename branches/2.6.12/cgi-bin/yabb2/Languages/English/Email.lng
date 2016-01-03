@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$emaillngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$emaillngver = 'YaBB 2.6.12 $Revision$';
 
 %yabbtagdesc = (
 # Constant tags

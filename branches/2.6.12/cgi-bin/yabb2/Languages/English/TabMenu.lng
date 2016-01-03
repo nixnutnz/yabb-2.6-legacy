@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$tabmenulngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$tabmenulngver = 'YaBB 2.6.12 $Revision$';
 
 %tabmenu_txt=(
 'texterr' => 'The Text field is empty.',

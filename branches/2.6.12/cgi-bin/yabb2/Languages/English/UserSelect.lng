@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$userselectlngver = 'YaBB 2.6.12 $Revision: 1611 $';
+$userselectlngver = 'YaBB 2.6.12 $Revision$';
 
 %usersel_txt = (
 'addselected' => 'Add Selected',

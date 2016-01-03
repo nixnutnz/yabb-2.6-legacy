@@ -15,7 +15,7 @@
 use Carp;
 our $VERSION = '2.6.12';
 
-$honeypotpmver = 'YaBB 2.6.12 $Revision: 1611 $';
+$honeypotpmver = 'YaBB 2.6.12 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $honey_language = $FORM{'honey_language'} || $INFO{'honey_language'} || $lang;
