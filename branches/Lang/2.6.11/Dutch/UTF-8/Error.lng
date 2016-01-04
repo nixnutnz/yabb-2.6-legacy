@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 # Error.lng (Error text definitions)                                          #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -185,6 +185,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'registration_disabled'       => q~De registratie optie is uitgeschakeld op dit forum.~,
 'no_registration_logged_in'   => q~U kunt niet registreren als u al bent ingelogd.~,
 'banned'               => q~Banning Notificatie.~,
+'suspend'              => q~Schorsing Notificatie.~,
 'system_prohibited_id'    => q~Gebruikersnaam verboden door het systeem~,
 'id_alfa_only'         => q~Gebruikersnaam mag alleen cijfers en letters bevatten (voorbeeld: yabber69)~,
 'id_taken'             => q~De gebruikersnaam dat u probeert te registreren bestaat al.~,

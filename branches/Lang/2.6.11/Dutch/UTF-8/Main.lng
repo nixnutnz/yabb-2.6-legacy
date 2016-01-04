@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 # Main.lng (General text definitions)                                         #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -25,6 +25,8 @@ $abbr_lang = 'nl-nl';
 @months = ('Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec');
 @months_m = ('Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'); #list for lower case months if needed.
 @days_short = ('Zon','Maa','Din','Woe','Don','Vrij','Zat'); # for smtp
+@uploadtranlist = qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ);
+@ISO_8859_1 =     qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
 
 %maintxt = (
 'w3c_lngcode' => 'nl-nl',
@@ -137,7 +139,10 @@ $abbr_lang = 'nl-nl';
 '769' => 'Vandaag',
 '769a'=> 'Gisteren',
 '769al'=> 'gisteren',
+'769l' => '', #lowercase date support - multi-language support.;
 '769b'=> 'Morgen',
+'770' => '', #month suffix for January 1 - multi-language support.
+'770a' => '', #month suffix for 1. January - multi-language support.
 '773' => 'Wilt u deze pagina nu printen?',
 '900b' => 'Terug',
 '900s' => 'Verzend',

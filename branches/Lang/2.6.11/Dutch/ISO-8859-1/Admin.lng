@@ -1363,6 +1363,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Carp' => q~Gebruikt voor het verzenden van e-mails via "YaBB SMTP Engine" en server ernstige waarschuwingen geeft.~,
 'bytes' => q~Gebruikt voor het verzenden van e-mails via "YaBB SMTP Engine".<br />Deze module is alleen nodig als u uw e-mails wilt verzenden via de "YaBB SMTP Engine". Anders heeft u deze module niet nodig.~,
 'integer' => q~Gebruikt voor het verzenden van e-mails via "YaBB SMTP Engine".<br />Deze module is alleen nodig als u uw e-mails wilt verzenden via de "YaBB SMTP Engine". Anders heeft u deze module niet nodig.~,
+'DateTime' => q~Required by DateTime::TimeZone.<br />Deze module is nodig als u forum/gebruiker timezones ingesteld wilt hebben op iets anders dan UTC.~,
 'DateTime::TimeZone' => q~Gebruikt om gebruikers en forum tijdzone verschuivingen gebasseerd op de gebruikers werkelijke tijdzone.<br />Deze module is nodig als u forum/gebruiker timezones ingesteld wilt hebben op iets anders dan UTC.<br /><span class="important">Deze Module moet worden bijgewerkt omdat het tijd gevoelige tijdzonegegevens bevat.~,
 'DateTime::TimeZone2' => q~<br /><span class="important">Deze Module moet worden bijgewerkt omdat het tijd gevoelige tijdzonegegevens bevat. Controleer met uw server host om er zeker van te zijn dat deze module de huidige houdt.</span><br /><b>Uw versie</b>:~,
 'URI::Escape' => q~Gebruikt door Post/Bericht Preview-functie.<br />Deze module is van essentieel belang. Zonder dat werkt de Preview-functie niet.~,
@@ -1529,10 +1530,9 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'print' => q~Kan niet printen~,
 );
 
-#timetostring($date);
+timetostring($date);
 $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$YaBBversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. Alle rechten voorbehouden.</span>~;
 $iFrameSupport = 'Sorry, om het laatste nieuws te zien, moet u een browser gebruiken die iframes ondersteund';
 $rna = 'Externe Server niet beschikbaar.';
-
 
 1;

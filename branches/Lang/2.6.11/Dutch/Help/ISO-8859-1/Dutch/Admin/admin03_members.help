@@ -1,0 +1,158 @@
+###############################################################################
+# admin03_members.help                                                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11 and higher                                      #
+# Released:       November 9, 2015                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-and newer YaBB (www.yabbforum.com) - All Rights Reserved.#
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+#                                                                             #
+# Help File Translation: Pieszyce, and others.                                #
+###############################################################################
+$SectionName = "Beheer_Gebruikers";
+
+### Section 1
+#############################################
+$SectionSub1 = "Toegang_tot_Gebruikers_Beheer";
+$SectionBody1 = qq~<p>Omdat YaBB gebouwd is om een aktieve geeenschap van gebruikers te faciliteren, heeft het een aantal krachtige gereedschappen die beheerders assisteert in het gebruikers beheer. Om bij deze gereedschappen te komen moet u zijn ingelogd als beheerder en toegang hebben tot uw "Admin Center". Eenmaal daar, zoekt u naar de 6e sectie omlaag in het linker menu met als titel "Leden Instellingen".</p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$SectionSub2 = "Handmatig_een_Gebruiker_Toevoegen";
+$SectionBody2 = qq~<p>Het kan soms handig zijn voor een Administrator om een nieuw gebruikers account te maken. Dat kan bijvoorbeeld handig zijn bij leden die zelf, door diverse instellingen of uiteenlopende redenen, zelf geen lid mogen of kunnen worden.</p>
+<p>Vanuit dit Leden Instellingen menu klikt u op de eerste link met de titel "Voeg Lid Toe". Op de nieuwe pagina krijgt u een simpel registratie formuier dat u kunt gebruiken om een nieuwe gebruiker toe te voegen zonder dat u daarvoor eerst hoeft uit te loggen van het forum. Vul dit formulier in met de naam voor het nieuwe lid, het wachtwoord en het E_mail adres dat moet worden gebruikt.</p>
+~;
+#############################################
+
+### Section 3
+#############################################
+$SectionSub1 = "Verbannen_van_Leden";
+$SectionBody1 = qq~<p>2.6.0  geeft Global Moderators en Forum Moderators nieuwe aanvullende mogelijkheden: U kunt gebruikers verbannen die Forum regels overtreden, storend zijn of het Forum spammen.</p>
+<p>Om te beginnen een lid te verbannen, ga naar het Profiel van het lid. Deze pagina zal u drie methoden geven om een lid te verbannen:</p>
+<ol>
+	<li>door IP adres</li>
+	<li>door E-mail adres</li>
+	<li>door Gebruikers ID</li>
+</ol>
+<p><b><span class="underline">Verbannen van een lid van de Ban Utiliteit</span></b></p>
+<ul>
+	<li><b>IP Adres</b>
+		<ul>
+			<li>De laatste 3 IP-adressen van het lid worden vermeld op hun profielpagina. U heeft  de mogelijkheid te klikken op een van de IP-adressen vermeld op een pagina waar u kunt kiezen welke IP opzoek-service u wilt gebruiken om te bepalen waar in de wereld de gekozen IP zich bevind. Dit kan nuttig zijn bij het bepalen van zijn als het lid eigenlijk een spammer is of gewoon storend. U heeft ook de mogelijkheid van een ban op dat IP-adres voor &#233;&#233;n dag, &#233;&#233;n week, &#233;&#233;n maand of permanent.</li>
+		</ul>
+	</li>
+	<li><b>E-mail Adres</b>
+		<ul>
+			<li>Deze tweede methode staat u toe te voorkomen dat iemand met behulp van dat specifieke e-mail adres (bijvoorbeeld bad@user.com) kan registreren of inloggen. Als bij IP bannen, heeft u de optie  van een ban op dat E-mailadress voor &#233;&#233;n dag, &#233;&#233;n week, &#233;&#233;n maand of permanent.</li>
+		</ul>
+	</li>
+	<li><b>User ID</b>
+		<ul>
+			<li>Ten slotte is de eenvoudigste manier om een gebruiker te bannen is door hun gebruikers-ID. Merk op dat dit <i>niet</i> hun schermnaam is. U heeft ook de mogelijkheid van een ban op die Gebruikersnaam voor &#233;&#233;n dag, &#233;&#233;n week, &#233;&#233;n maand of permanent.</li>
+		</ul>
+	</li>
+</ul>
+<h4>Verbannen van een Lid van hun Profiel</h4>
+<p class="help_attn">Verbannen van hun profiel geeft de Admin (of een ander geautoriseerd persoon) de optie het lid te verbannen voor een bepaalde perioden, gevend een reden voor de ban op en de verzending van een e-mail met de mededeling van de ban.</p>
+<ul>
+    <li><b>IP Adres</b>
+        <ul>
+            <li>Bannen op IP-adres zal voorkomen dat iemand uw board betreed als hun IP-adres hier wordt weergegeven.</li>
+        </ul>
+        <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> U kunt alleen IP's bannen die vermeld worden in het profiel van het lid.</p> </li>
+    <li><b>E-mail Adres</b>
+        <ul>
+            <li>Deze methode staat u toe te voorkomen dat iemand met behulp van een specifiek e-mailadres (voorbeeld: slecht&#64;gebruiker.com) kan registreren of inloggen.</li>
+        </ul>
+    </li>
+    <li><b>Gebruiker ID</b>
+        <ul>
+            <li>Let op dit is <i>niet</i> hun scherm naam.</li>
+        </ul>
+    </li>
+</ul> 
+~;
+#############################################
+
+### Section 4
+#############################################
+$SectionSub4 = "Leden_groepen";
+$SectionBody4 = qq~<p>Ledengroepen geeft u de mogelijkheid om leden onder te brengen in een speciaal voor hen geldende groep of om ze in te delen in speciale classificaties. deze groepen kunnen dan worden gebruikt om speciale priviléges en/of toegang te verlenen of simpelweg omdat u het leuk vind. Als u een groep wilt cre&#235;ren, ga dan naar uw Admin Center en zoek de sectie getiteld "Leden Instellingen" zoals hierboven is omschreven en klik dan op "Ledengroepen".</p>
+<p>Deze nieuwe pagina toont u de drie groep types</p>
+<ol>
+    <li>De eerste zijn Systeem/Statische groepen. Deze kunnen hernoemd worden door te klikken op de "wijzig" button voor elke groep, maar, vanwege het specifieke belangrijke systeemgebruik, <i>kunnen ze niet worden verwijderd</i>.
+	<li>De tweede groep <b>Post onafhankelijke Ledengroepen</b> worden door een beheerder of een global moderator aan een lid gekoppeld en zorgen er voor dat de berichten van betreffende gebruiker niet meetelt in de totalen lijst.</li>
+    <li>De derde groep. Echter, is gebaseerd  hoeveel berichten een gebruiker heeft geplaatst. YaBB zal deze automatisch toewijzen wanneer een gebruiker een vooraf ingesteld aantal geplaatste berichten heeft bereikt.</li>
+</ol>
+<h4>Cre&#235;r en nieuwe Leden Groep</h4>
+<p>Om eem nieuwe groep toe te voegen, klik je op de link "Voeg Groep Toe" naast "Post onafhankelijke Ledengroepen" of "Post afhankelijke Ledengroepen". Hierdoor wordt er een nieuwe pagina geopend met een formulier om de groepen toe te voegen.</p>
+<ul>
+    <li><b>Naam:</b>
+		<ul>
+            <li>Dit is de naam die iedereen te zien zal krijgen.</li>
+        </ul>
+    </li>
+    <li><b># Sterren:</b>
+        <ul>
+            <li>Hoeveel sterren moet deze groep hebben?</li>
+        </ul>
+    </li>
+    <li><b>Ster Type:</b>
+        <ul>
+            <li>Kies het standaard ster type vanuit de drop down keuze lijst, of geef het pad op naar een eigen ster (afbeelding).
+                <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> Als u een ouder forum hebt geïmporteerd naar 2.6.0 / 2.6.1, zullen uw oude standaard sterren niet verschijnen omdat 2.6.0 gebruik maakt van verschillende sterren graphics met verschillende extensies. Wilt u de oude sterren of aangepaste versies gebruiken, zorg ervoor om ze naar de map te kopiëren die uw template graphics bevat. Dit zal zeer waarschijnlijk "yabbfiles/Templates/Forum/default" zijn. Anders gewoon nieuwe ster graphics uit de keuzelijst kiezen.</p></li>
+        </ul>
+    </li>
+    <li><b>Kleur:</b>
+        <ul>
+            <li>Dit geeft de groep een speciale kleurbehandeling. Laat leeg voor geen kleur, of kies een kleur op kleur naam, door hex waarde (geldige bereik is 000000 (6 nullen) naar FFFFFF), of met behulp van de Palette tool om een aangepaste kleur te kiezen.</li>
+        </ul>
+    </li> 
+<li><b>Post onafhankelijke Ledengroep:</b>
+        <ul>
+            <li>Kies deze groep als u wilt dat dit een groep is die <b>NIet</b> meegeteld wordt in de totaallijst.</li>
+        </ul>
+    </li>
+    <li><b>Publiek?</b>
+        <ul>
+            <li>Schakel dit vakje in als u wilt dat de naam van deze groep wordt getoond aan alle leden en een groep kleur bar toont in de gebruikershandleiding online gedeelte van de Board Index.</li>
+        </ul>
+    </li>
+    <li><b>Post afhankelijke Ledengroep</b>
+        <ul>
+            <li>Selecteer dit, als u wilt dat gebruikers automatisch worden toegewezen aan deze groep gebaseerd op Post Count. Voer dan het minimum aantal berichten in die nodig zijn om een lid van deze groep te worden.</li>
+        </ul>
+        <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> YaBB wordt geleverd met een Post afhankelijke Leden Groep genaamd "Nieuwe leden" dat een minimum bericht telling heeft  van <b> -1 </b>. Dit is in de plaats automatisch nieuwe registrerende leden tot een groep toe te wijzen. Een nieuwe lid begint met een Post count van -1, dus als je <i>deze groep delete </i> of <i> verander de minimale Post count </i>, zullen je nieuwe leden niet in staat zijn om aan te Posten of PBs totdat u ze handmatig in een groep zet. U mag de naam van de groep, de sterren, of kleuren bewerken zonder dat dit effect heeft op nieuwe leden.</p>
+        <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> Een goede manier om uw YaBB forum aan te passen is om namen toe te wijzen aan uw Post afhankelijke groepen die betrekking hebben op uw forum niche.</p>
+    </li>
+</ul>
+~; 
+#############################################
+
+### Section 5
+#############################################
+$SectionSub5 = "Global_Moderator_Privileges";
+$SectionBody5 = qq~<p>YaBB geeft je de mogelijkheid om te selecteren wat administratieve functies u wenst toe te vertrouwen aan uw Global Moderators. U kunt deze toegangsrechten kiezen in het Admin Centrum  onder Algemene Instellingen in het Global Moderator toegang onderdeel. Door het bewegen van uw muis over elke actie optie geeft u een korte beschrijving van wat elke optie toestaat. Uw Global Moderator zout een duidelijk inzicht moeten hebben in wat voor niveaus toegang u aan ze gegeven heeft, en niemand kan dat beter communiceren dan u, de Administrator, het besprekend met hen.</p>
+<p>De meest belangrijke opties worden genoemd als drie mogelijkheden bovenaan de pagina. Merk op dat de toegang tot het Admin Centrum niet noodzakelijk betekent dat uw Global Moderators alle items kunnen controleren die u kunt zien in de Admin Centrum. Als u deze toegang toestaat, kunt u de Global Moderator machtigingen aanpassen in de actie lijst onderaan.</p>
+<p>Kiezen voor het bewerken van het Profiel (maar niet de Admin Edits) zal de Global Moderator toestaan om wachtwoorden te wijzigen, e-mailadressen, en alle andere opties in het profiel van de gebruiker (behalve Admin Edits). <b> Opmerking: </b> Global Moderators kunnen niet enig Administrator Profiel bewerken of wijzigen.</p>
+<p>Kiezen voor de Admin Bewerk optie zal Global Moderators toestaan een gebruiker’s Post count, positie, en leden  groep (en) te veranderen. <b>Opmerking:</b> Global Moderators kunnen niet Administrator Admin Bewerkingen, bewerken of wijzigen, noch kunnen zij andere gebruikers "promoveren" tot Global Moderatoren of Forum Administratoren.</p>
+<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> In de meeste gevallen, acties die u NIET selecteerde voor de Global Moderator zullen niet eens zichtbaar zijn voor hen in het Admin Centrum; dit is echter <i>niet altijd het geval </i>. Bijvoorbeeld, als je het toelaat Global Moderators leden zien, maar niet leden verwijderen, zal het scherm waar ze leden bekijken ook vakjes tonen en een knop om leden te verwijderen, maar deze zullen niet voor hen werken. Als de Global Moderator pogingen onderneemt om zonder  toestemming leden te verwijderen, zal dit resulteren in een foutmelding. Een Global Moderator kan denken dat er iets niet goed werkt, dat dit een fout of bug is, maar dat is het niet. Het programma volgt het niveau van de machtigingen die u hen verstrekte.</p>
+<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> Sommige acties zijn afhankelijk van welk niveau van profiel bewerken aan de globale Moderator is verleend. Toegang tot zulke dingen als PM Attachments downloaden YaBB back-ups zijn afhankelijk van wat men in de Admin bewerkingen optie heeft aangevinkt.</p>
+<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> In de meeste gevallen, zullen acities die u niet selecteert voor de globale Moderator zelfs niet zichtbaar zijn voor hen in het Admin Center; echter dit is <i>niet altijd het geval</i>.</p>
+~;
+#############################################
+
+### Section 6
+#############################################
+$SectionSub6 = "Forum_Moderator";
+$SectionBody6 = q~<p>Nieuw in Yabb 2.6is de "Forum Moderator". Dit is een positie met meer globale voorrechten dan Board Moderator en minder dan globale Moderator. De Forum Moderator heeft automatisch gematigde privileges voor <strong>alle</strong> voor leden toegankelijk boards, maar heeft geen toegang tot Admin functies met uitzondering van verbannen en ontbannen van leden van ledenprofielen.</p>
+~;
+#############################################
+
+1;

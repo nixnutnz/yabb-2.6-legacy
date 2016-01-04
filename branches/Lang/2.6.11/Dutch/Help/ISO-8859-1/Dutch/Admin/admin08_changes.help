@@ -1,0 +1,329 @@
+###############################################################################
+# admin05_templates.help                                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11 and higher                                      #
+# Released:       November 9, 2015                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-and newer YaBB (www.yabbforum.com) - All Rights Reserved.#
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+#                                                                             #
+# Help File Translation: Pieszyce, and others.                                #
+###############################################################################
+$SectionName = "Diverse_zaken";
+
+### Section 1
+#############################################
+$SectionSub1 = "Algemene_opmerkingen";
+$SectionBody1 = qq~<p>YaBB is een 'levend document'. Het verandert in de tijd. Functies worden toegevoegd, en soms verwijderd, zoals YaBB evolueert.</p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$SectionSub2 = "Functies_in_YaBB_2.2_en_latere_versies";
+$SectionBody2 = qq~<p>In het maken van YaBB 2.2, hebben we een revisie gedaan aan verschillende secties van het admin centrum.
+    <br />Aangezien het aantal functies groter is geworden, hebben we sommigen van hen een beetje gehergroepeerd en sommige functies van plaats gewijzigd.
+    <br />Dit zijn enkele functies in YaBB 2.2 die natuurlijk wat aanpassing nodig hadden op het admin-niveau. Deze toevoegingen zijn als volgt.</p>
+<ul>
+    <li><b>RSS</b>
+        <br />Iedereen kan nu gebruik maken van RSS (Really Simple Syndication, zie <a href="http://en.wikipedia.org/wiki/RSS" title="RSS on Wikipedia" target="_blank"> dit artikel in Wikipedia </ a >) om het laatste nieuws van je forum te trekken in een extern document of naar een browser.
+    </li>
+    <li><b>Permalinks</b>
+        <br />Om forum URI's een beetje meer 'normaal' te laten lijken, kunt u uw forum instellen om permalinks te gebruiken.
+        <br />Wees voorzichtig bij het toepassen van de instellingen, zelfs de kleinste fouten kan uw forum onbruikbaar maken!
+    </li>
+    <li><b>Aparte zoekmachines van gewone gebruikers</b>
+        <br />Om een beetje nauwkeuriger beeld van je forum bezoekers te krijgen, kunt u zoekmachines spiders scheiden van de gewone gasten.
+    </li>
+    <li><b>E-mail Templating</b>
+        <br />Wanneer u de 'systeem e-mails' meer passend wilt maken aan uw behoeften, hoeft u niet meer te vechten met de broncode, maar gewoon gebruik te maken van het 'E-mailberichten' templating gereedschap.
+    </li>
+    <li><b>Anti-spam gereedschap</b>
+        <br />Aangezien spam van plan is hier te blijven, hebben we sterker gereedschappen tegen het nodig en nu hebben we er een.
+        <br />Stel uw voorkeur spam regels in om een waarschuwing te activeren (en eventueel een verbod) op basis van ongewenste post inhoud, specificeer bepaalde omstandigheden van het detachering proces en houd Viagra verkopers weg.
+    </li>
+    <li><b>Captcha</b>
+        <br />Om het een beetje moeilijker te maken voor kwaadaardige bots uw forum te betreden, gebruik de captcha (visuele bevestiging, zie <a href="http://en.wikipedia.org/wiki/Captcha" title="Captcha in Wikipedia" target="_blank">this article in Wikipedia</a>, maar wees voorzichtig, het is mogelijk dat sommige menselijke gebruikers het moeilijk vinden om te gebruiken.
+    </li>
+    <li><b>Broadcast berichten</b>
+        <br />Communiceer met uw forum medewerkers met Broadcast berichten en stuur berichten op groepsniveau (moderatoren, moderator groepen, forum moderatoren, globale moderatoren en admins).
+    </li>
+</ul>
+<p>Dan zijn er enkele kleinere toevoegingen in de forum instellingen en in 'Referrer security', die hier niet nader toegelicht zullen worden, maar kunnen nuttig blijken voor u om door te gaan.</p>
+~;
+#############################################
+
+### Section 3
+#############################################
+$SectionSub3 = "Nieuwe_functies_in_YaBB_2.3";
+$SectionBody3 = qq~<p>Dit zijn een aantal compleet nieuwe functies voor YaBB 2.3 die werden toegevoegd op veler verzoek van de gebruikers. Deze toevoegingen zijn:</p>
+<ul>
+    <li><b>Omgekeerde Post in topic geavanceerde editie</b>
+        <br />Staat de Admin toe de standaard post volgorde te kiezen (oudste na nieuwste of nieuwste na de oudste). De Admin kan ook een instelling in het Admin Center aanzetten dat wel / niet toestaat dat de individuele gebruiker hun eigen post volgorde kiezen. Indien toegestaan, kan elke gebruiker de volgorde van de berichten wijzigen door ofwel klikken op de naam van de topic pagina’s en/of in te stellen in hun eigen Profiel/opties pagina.
+    </li>
+    <li><b>Top van de  Pagina knop</b>
+        <br />Voegt een knop toe aan de onderste balk van elke pagina die u terug brengt naar de "Top van de pagina".
+    </li>
+    <li><b>Cirkeldiagrammen voor Peilingen</b>
+        <br />Staat gebruikers toe de peilingresultaten te zien als een staaf- of een taartdiagram door te klikken op de juiste knop voor het weergave van peiling resultaten.
+    </li>
+    <li><b>Snel antwoord geavanceerde editie</b>
+        <br />Dit stelt gebruikers in staat om een antwoord of een nieuwe post snel te posten. Het geeft ook veel nieuwe citeren functies.
+        <br />Admin kan:
+        <ul>
+            <li>Inschakelen/uitschakelen van de Snelle Post Box</li>
+            <li>Inschakelen/uitschakelen van de Snelle antwoord Box</li>
+            <li>Inschakelen/uitschakelen Markeer & Citeer</li>
+            <li>Inschakelen/uitschakelen Gebruikerscitaat</li>
+            <li>Inschakelen/uitschakelen Spring naar Snelle Post/Reageer Box als gebruiker klikt op <b>Start nieuw onderwerp</b>, <b>Beantwoorden</b> of <b>Citaat knop</b></li>
+            <li>Stel maximale lengte in voor citaat</li>
+        </ul>
+    </li>
+    <li><b>Voorgeselecteerde Smileys</b>
+        <br />Staat de Admin toe om te selecteren welke Smiley in het Uitgebreide Smiley blok naast het Post en PM vensters worden getoond.
+    </li>
+    <li><b>Vitrine Peiling</b>
+        <br />Staat het toe een peiling door Admins/GMods gekozen te laten zien aan de bovenkant van de Board Index.
+    </li>
+    <li><b>YaBB Backup</b>
+        <br />Admins kunnen snel back-ups van het forum maken in een van 8 verschillende formats, met of zonder compressie. Back-ups kunnen worden opgeslagen in een nieuwe YaBB/backups directory, en kunnen worden gedownload, e-mailed, of verwijderd. Admin kunnen volledige back-ups (alle mappen), gedeeltelijke backups (sommige directories), of alleen bestanden nieuwer dan de laatste back-up selecteren. Beschikt ook over een instelbaar alert om de Admin te vertellen als back-up ouder is dan <i>X</i> dagen.
+    </li>
+    <li><b>Categorie Afbeeldingen</b>
+        <br />Staat de Admin toe een afbeelding te gebruiken samen met de categorie namen.
+    </li>
+    <li><b>Afbeelding vergroten/verkleinen en Greybox</b>
+        <br />Admins kunnen beperkingen instellen op de maximale beeldgrootte voor avatar afbeeldingen, geposte afbeeldingen, gekoppelde afbeeldingen, en handtekening afbeeldingen. Grotere afbeeldingen worden "gekrompen" om binnen de maximale gestelde grenzen te passen. 
+		<br />Bijgevoegde foto's en afbeeldingen in berichten kunnen  op een licht doorschijnend oppervlak worden getoond in plaats daarvan in een nieuw venster.  De Administrator kan kiezen tussen een weergave en een galerie stijl weergave voor bijgevoegde afbeeldingen.
+        <p class="help_attn"><span class="underline"><b>OPMERKING:</b></span> Een afbeelding hoger dan hij breed is zal beperkt worden door de maximale hoogte en de breedte proportioneel te passen die minder dan de maximale breedte zal zijn. Een afbeelding die breder dan hoger is wordt beperkt door de maximale breedte en de hoogte zal proportioneel aangepast worden die minder is dan de maximale hoogte.</p>
+    </li>
+    <li><b>Multi-Bijlagen</b>
+        <br />Admins kunnen kiezen hoeveel en wat voor soort bestanden een gebruiker kan koppelen aan een post. Een download teller voor elke bijgevoegd bestand is ook voorzien. Bestanden die gekoppeld zijn zullen een pictogram tonen symboliserend elk type bestand voor de meest voorkomende bestandstypen.
+        <p class="help_attn_strong"><span class="underline"><b>WAARSCHUWING:</b></span> Sommige bestandstypen kunnen risico’s vormen voor het forum of de gebruiker die ze download, omdat ze gebruikt kunnen worden om kwaadaardige code te bevatten. Deze omvatten maar zijn niet beperkt tot:</p>
+        <ul>
+            <li class="help_attn_strong">MS Excel-bestanden (.xls) die kwaadaardige code in macro's kunnen bevatten</li>
+            <li class="help_attn_strong">MS PowerPoint-bestanden (PPT) die schadelijke scripts kunnen bevatten</li>
+            <li class="help_attn_strong">HTML-bestanden (.htm, .html), die een aantal exploits kunnen bevatten</li>
+        </ul>
+        <p class="help_attn_strong">Geen van deze soorten zijn standaard toegestaan. De Admin kan hen toestaan, maar wees gewaarschuwd - het is riskant. HTML-bestanden kunnen geüpload zijn als tekstbestanden (.txt) die volkomen veilig zijn. Laat de gebruiker die het download het terugveranderen naar HTML en risico tot uw forum vermijden. Doe wat onderzoek en zorg ervoor dat het nodig is voordat u nieuwe bestandstypen toestaat.</p>
+    </li>
+    <li><b>Gebruiker Avatar Upload</b>
+        <br />Admins kunnen ervoor kiezen om gebruikers in staat te stellen om hun eigen avatar afbeelding te uploaden. Bestanden worden geïdentificeerd met de gebruikers-ID in de bestandsnaam voor het eenvoudig sorteren. Gebruikers hebben alleen toegang tot hun eigen afbeelding.
+    </li>
+    <li><b>Geavanceerd Splitsen en verbinden</b>
+        <br />Staat u toe enkele berichten, geselecteerde berichten, of alle berichten te verplaatsen naar een nieuwe topic of in een andere post in elk board waar u toegang toe heeft. U kunt kiezen om de post te verplaatsen of te kopiëren, en kiezen of wel/niet een bericht achter te laten.
+    </li>
+    <li><b>Geavanceerd Openen/Sluiten</b>
+        <br />Staat toe dat categorieën in de board index kunnen worden in- of uitklapt zonder het herladen van de pagina's. Vereist dat AJAX door de browser wordt ondersteund.
+    </li>
+    <li><b>Uitgebreide Profielen</b>
+        <br />Staat de Admin toe extra velden aan het gebruikersprofiel toe te voegen. De Admin heeft vele mogelijkheden met deze velden, zoals ze een verplichte vermelding tijdens de registratie, waardoor ze zichtbaar worden voor iedereen of alleen bepaalde groepen, gebruikers toestaand om ze te bewerken, of het toevoegen van de velden aan de ledenlijst.
+    </li>
+    <li><b>E-Mail Notificaties aan de Admin voor Nieuwe Leden Registratie</b>
+        <br />Staat de Admin toe de optie te selecteren om e-mail te ontvangen van Nieuwe Registrerende leden. Het staat de Admin ook toe het webmaster e-mail adres te gebruiken of ere en van zijn keuze in te voeren.
+    </li>
+    <li><b>Spellingscontrole</b>
+        <br />Staat de Adnmin toe een spellingcontrole in te schakelen om de spelling controle in berichten en in persoonlijke berichten mogelijk te maken.
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 4
+#############################################
+$SectionSub4 = "Neuwe_Functies_in_YaBB_2.5.2";
+$SectionBody4 = qq~<p>Dit zijn een aantal compleet nieuwe functies in YaBB 2.5.2 die zijn toegevoegd door de populaire vraag van gebruikers. Deze toevoegingen zijn:</p>
+<ul>
+    <li><b>Extra_Anti-Spam_Maatregelen</b>
+        <ul>
+            <li><b>SpamFruits</b>
+                <br />Een van de meest populaire van de YaBB’s anti-spam maatregelen, SpamFruits vereist dat de registrant de juiste afbeelding selecteert.
+            </li>
+            <li><b>Anti-Spam Vraag</b>
+                <br />Dit zorgt er voor dat de registrant een willekeurige vraag moet beantwoorden uit een databank met vragen die de Admin de mogelijkheid geeft hen te bewerken. Dit is een afschrikmiddel tegen Spam registraties. Meer anti-spam maatregelen kunnen gevonden worden  op: <a href="http://www.boardmod.org/yabb2/YaBB.pl?catselect=mods_y2" target="_blank">www.boardmod.org/yabb2/YaBB.pl?catselect=mods_y2</a>
+            </li>
+            <li><b>Minimum aantal posts een lid moet hebben voordat links en afbeeldingen geplaatst kunnen worden</b>
+                <br />De Admin kan het minimum aantal posten instellen dat nodig is om links en/of afbeeldingen in berichten, handtekeningen en gebruikersprofielen te plaatsen Dit is om te voorkomen dat spammers registreren en onmiddellijk links en afbeeldingen posten.
+            </li>
+            <li><b>Geen e-mail op geweigerde lidmaatschap optie</b>
+                <br />Admin heeft nu de mogelijkheid om al dan niet de standaard 'lidmaatschap geweigerd' e-mail te verzenden bij het gebruik van de Admin Goedkeuring voor lidmaatschappen en het verwijderen van een registratie van het Registratie log scherm. Waarom gebruik maken van uw bandbreedte door het verzenden afwijzing berichten aan e-mailadressen die waarschijnlijk toch nep zijn?
+            </li>
+        </ul>
+    </li>
+    <li><b>Lidmaatschap Delete Slot</b>
+        <br />Admin heeft nu de mogelijkheid van toestaan (of niet toe te staan) aan leden om hun eigen accounts te verwijderen. In niet toestaan aan de leden om hun eigen profiel te verwijderen, heeft de Admin de tijd om de redenen voor het vertrek van het lid te ontdekken en onderhoudt ook de tools die de Admin nodig kan hebben om spam berichten gemakkelijk te verwijderen, ban het lid om ze te weerhouden van het registreren onder dezelfde referenties, etc., afhankelijk van de situatie en de behoeften van het forum.
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 5
+#############################################
+$SectionSub5 = "Nieuwe_functies_in_YaBB_2.6.0";
+$SectionBody5 = qq~<p>Dit zijn een aantal compleet nieuwe functies tot YaBB 2.6.0 die zijn toegevoegd door de populaire vraag van gebruikers. Deze toevoegingen zijn onder andere:</p>
+<ul>
+    <li><b>Subboards</b>
+        <br />YaBB ondersteunt nu subboards. Naar de Admin's keuze, kunnen de boards met subboards berichten bevatten of gewoon subboards. Ook nieuw: Boards en Subboard berichten indexen kunnen worden bekeken in de board index.
+    </li>
+    <li><b>Board Regels</b>
+        <br />Admin kunnen specifieke regels creëren voor individuele boards gebruik makend van html codering.
+    </li>
+    <li><b>Wachtwoord beschermde boards</b>
+        <br />De Admin kan specifieke boards met een wachtwoord beveiligen. Wachtwoord beveiligde boards kunnen alleen bekeken worden door leden die ook het wachtwoord hebben.
+    </li>
+    <li><b>Externe-link Boards</b>
+        <br />De Admin kan boards creëren die eigenlijk links naar andere plaatsen zijn. YaBB houdt bij hoe vaak de link gebruikers omleidt naar het doel van de link.
+    </li>
+    <li><b>Evenementen Kalender</b>
+        <br />Sta leden (en, indien toegestaan, gasten) toe om gebeurtenissen op de kalender te plaatsen.
+        <br />De kalender kan ook verjaardagen tonen van de leden, en geeft de Admin de mogelijkheid voor het maken van een aparte pagina voor Leden verjaardagen.
+		<br />De Admin kan ook het aantal leden instellen dat op elke pagina van het de verjaardag lijst getoond zal worden.
+    </li>
+    <li><b>Zelfs meer Anti-Spam Maatregelen</b>
+        <br /><b>Verbeterde Captcha</b> Staat de Admin toe om tekens te selecteren die voor en/of na de reguliere captcha geplaatst worden met instructies om de gast of registrant om die tekens heen te leiden bij het invoeren van de captcha ter verificatie.
+    </li>
+    <li><b>Forum moderator en toevoegen Moderator van board</b>
+        <br />Een nieuwe stafmedewerkers positie tussen de Global moderator, die veel administratieve rechten kan hebben en een Board moderator die verantwoordelijk is voor één of meer individuele boards. Een forum moderator heeft Moderator permissies over alle niet-staf boards, alsook de mogelijkheid om te bannen en ont-bannen van leden. Ook nieuw is de mogelijkheid voor een Admin om moderators en moderator groepen toe te voegen aan een board uit het board zelf, evenals de mogelijkheid om een lid toe te wijzen aan de board  Moderator positie van de Admin bewerken sectie van hun leden profiel.
+    </li>
+    <li><b>Ban met tijd instelling</b>
+        <br />Dit staat de Admin, Global Moderatoren, en Forum Moderatoren toe te bannen, voor een dag, een week, een maand, of permanent. De Adnin kan ook een ban op IP-adressen instellen vanuit het errorlog, IP-adressen check door middel van IP Lookup evenals IP-adressen toevoegen aan de Guardian ban lijst vanuit het errorlog en vanuit de Banlog (die toegang pogingen logt door verbannen gebruikers).
+    </li>
+    <li><b>Ajax Live Preview</b>
+        <br />Een verbeterde versie van Live Preview voor het posten van berichten, Kalender evenementen en persoonlijke berichten, Ajax Live Preview laat zien hoe de post eruit moet zien als het eenmaal is geplaatst.
+    </li>
+    <li><b>Extra Templates</b>
+        <br />Bijna alle html code is uit de bron-code genomen en geplaatst in template bestanden voor gemakkelijke aanpassing door de Admin.
+    </li>
+    <li><b>CSS knoppen</b>
+        <br />In plaats van het moeten hebben van knoppensets die specifiek zijn voor elke taal, worden de verschillende knoppen nu gemaakt met behulp van pictogrammen en css op een door de Admin geselecteerde achtergrond. Alle knoppen zijn gemaakt 'on-the-fly' van een enkel definitie bestand (menu.def) in de 'Templates' map zodat elke 'skin' zijn eigen set van knoppen kan hebben simpelweg door het veranderen van de pictogram en de taal in de <i> menu.def </i> file.
+    </li>
+    <li><b>Icon/pictogram definities</b>
+        <br />In plaats van hard-gecodeerd in de broncode, worden de namen van de grafische afbeeldingen opgeslagen als variabelen in de templates terwijl de icoon afbeeldingsnamen worden opgeslagen in een icoon definitie bestand (micon.def) in de map 'Templates' zodat elke 'skin' zijn eigen set van iconen en graphics kan hebben.
+    </li>
+    <li><span class="anchor" id="time"></span><b>Liggings gebaseerde Tijdzones met automatische zomertijd tijd</b>
+        <br />De Admin kan kiezen of gebruikers de mogelijkheid hebben om hun eigen tijdzone te kiezen. Als de Admin ervoor kiest de gebruiker de keuze niet toe te staan, zullen alle  weergegeven tijden op het forum de Forum standaard Time Zone zijn.
+        <ul>
+            <li>Voor volledige functionaliteit is het nodig de Perl Modules <strong> DateTime </strong> en <strong>DateTime :: TimeZone </strong> op de host server te installeren naast al hun benodigde afhankelijkheden. Neem contact op met uw hosting service om ervoor te zorgen dat je ze hebt of dat ze voor ub geïnstalleerd kunnen worden. Als de modules zijn geïnstalleerd:
+                <ul>
+                    <li>De Admin kan kiezen voor een forum Standaard tijdzone op basis van het Land / Plaats van het Forum of gebruik van UTC/GMT tijd. Als een tijdzone op basis van Land/Stad wordt gekozen, zal YaBB automatisch aanpassen aan de zomertijd voor die tijdzone.</li>
+                    <li>Als gebruikers de mogelijkheid hebben om hun eigen tijdzone te kiezen, zal de aan hun weergegeven tijd zich ook automatisch aanpassen aan de zomertijd op basis van de gekozen locatie.</li>
+                </ul>
+            </li>
+            <li>Als de benodigde Perl Modules <b>not</b> zijn geïnstallerd|:
+                <ul>
+                    <li>Kan de Admin kiezen uit 'UPC' of 'lokaal' voor de Forum Standaard Tijd Zone.</li>
+                    <li>Als de Admin een 'time offset' wil gebruiken (hoeveel uren en minuten Forum tijd benodigd zijn voor UTC / GMT), moet de tijdzone moet worden ingesteld op 'lokaal' en de Time Offset handmatig instellen.</li>
+                    <li>Als gebruikers de optie hebben om hun eigen tijdzone te kiezen, zal Standaard Forum Tijdzone aan hen beschikbaar zijn alleen het Forum standaard Time Zone is 'lokaal', anders zal hun enige keus UTC zijn.</li>
+                    <li>De optie Zomertijd zal alleen goed werken als de host server’s 'lokale tijd' <strong> niet </strong> UTC/GMT is en de host servers data voor Zomertijd overeenkomen met de tijdzone waarin het Forum is. Neem contact op met uw hosting service om dit uit te vinden.</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 6
+#############################################
+$SectionSub6 = "Licentie_-_YaBB_Publieke_Licentie_(YPL)";
+$SectionBody6 = qq~
+<h2>YaBB Publieke Licentie (YPL)</h2>
+<p>Hieronder is de licentie die YaBB voor de software heeft aangenomen. Het verklaart uw verlengde rechten en beperkingen van de YaBB forum software. Wij vragen in feite dat u het copyright intact laat en ten allen tijde zichtbaar aan de onderkant van uw forum op alle pagina’s. Als u de volgende licentie wilt breken of verwijderen van de auteursrechten, kunt u een onderzoek doen door een bezoek te brengen aan de volgende URL: <a href="http://www.yabbforum.com/licenses.php">http://www.yabbforum.com/licenses.php</a>.</p>
+<ul>
+    <li><b>Version 1.0</b>, Aangenomen Op 17 april 2001</li>
+    <li><b>Version 2.0</b>, Aangenomen Op 13 april 2004</li>
+    <li><b>Version 2.1</b>, Aangenomen Op 7 september 2005</li>
+    <li><b>Version 2.2</b>, Aangenomen Op 8 november 2007</li>
+    <li><b>Version 2.2.1</b>, Aangenomen Op 5 maart 2008</li>
+    <li><b>Version 2.2.2</b>, Aangenomen op 5 juni 2008</li>
+    <li><b>Version 2.2.3</b>, Aangenomen op 12 juli 2008</li>
+    <li><b>Version 2.3</b>, Aangenomen Op 12 oktober 2008</li>
+    <li><b>Version 2.3.1</b>, Aangenomen Op 4 januari 2009</li>
+    <li><b>Version 2.4</b>, Aangenomen Op 12 april 2009</li>
+    <li><b>Version 2.5 Anniversary Edition</b>, Aangenomen Op 4 juli 2010</li>
+    <li><b>Version 2.5.2</b>, Aangenomen Op 21 oktober 2012</li>
+    <li><b>Version 2.5.4 RC1</b>, Aangenomen Op 1 september 2013</li>
+    <li><b>Version 2.6.0</b>, Aangenomen Op 20 februari 2014</li>
+</ul>
+<h4>Definities</h4>
+<p><b>Jij:</b>  Dit is u, als u verspreiden overweegt, wijzigen of gebruik maken van dit pakket.</p>
+<p><b>Programma:</b> This refers to the YaBB source files that comprise the Perl program and derivatives of that program.</p>
+<p><b>Pakket:</b> Dit verwijst naar de YaBB bronbestanden die het Perl programma en derivaten van dat programma omvat</p>
+<p><b>Standaard Versie:</b> Dit verwijst naar een dergelijk pakket als het niet veranderd is of is aangepast aan de wensen van YaBB zoals hieronder gespecificeerd.</p>
+<p><b>Distributie kosten:</b> Dit is een vergoeding in rekening brengen voor het verstrekken van een kopie van dit pakket aan een andere partij.</p>
+<p><b>Vrij beschikbaar:</b> Dit betekent dat geen kosten aangerekend voor het recht om het pakket te gebruiken, hoewel er kosten betrokken kunnen zijn bij de behandeling van het. Het betekent ook dat de ontvangers van het pakket het kunnen verspreiden onder dezelfde voorwaarden zoals ze het ontvingen.</p>
+<p><b>Licentie:</b> Dit is het document dat u momenteel aan het lezen bent (YaBB's Publieke Licentie).</p>
+<p><b>Illegale Acties:</b> Elke actie die illegaal is in het land waar u woont, de websites in het land die YaBB gebruiken zijn gehost, en het land waar bezoeker van deze websites in woont.</p>
+<h4>Inleiding</h4>
+<p>De licenties voor de meeste software zijn ontworpen om uw vrijheid om te delen en te wijzigen weg te nemen. Daarentegen is deze Licentie bedoeld om uw vrijheid om het delen en veranderen van gratis software te garanderen -- om ervoor te zorgen dat de software gratis is voor alle gebruikers. </p>
+<p>Wanneer we spreken van vrije software, hebben we het over vrijheid, niet prijs. <i>Onze YaBB Public Licentie is ontworpen om ervoor te zorgen dat je de vrijheid hebt om kopieën van vrije software te verspreiden (en kosten te vragen voor een dienst als u wilt), dat u de broncode ontvangt of kunt krijgen als u dat wilt, dat u de software kunt veranderen of stukken te gebruiken in nieuwe gratis programma's; en dat u weet dat u deze dingen doen.</i></p>
+<p>Om uw rechten te beschermen, moeten we beperkingen maken die iemand verbieden om u deze rechten te ontzeggen of u te vragen om de rechten op te geven. Deze beperkingen vertalen naar bepaalde verantwoordelijkheden voor u als u kopieën van de software te verspreidt, of als u het wijzigt. Bijvoorbeeld, als u kopieën van een dergelijk programma verspreidt, gratis of tegen een vergoeding, moet u de ontvangers alle rechten geven die U hebt. U moet ervoor zorgen dat ook zij de broncode ontvangen of kunnen krijgen, en u moet hen deze voorwaarden tonen zodat ze hun rechten kennen. </p>
+<p>We beschermen uw rechten met twee stappen: (1) het auteursrecht van de software, en (2) we bieden u deze licentie die u wettelijke toestemming geeft om te kopiëren, verspreiden en/of de software aan te passen. </p>
+<p>Ook voor iedere auteur’s bescherming en die van ons, willen we er zeker van zijn dat iedereen begrijpt dat er geen garantie is voor deze vrije software. <i>Als de software wordt aangepast door iemand anders en doorgegeven, willen we de ontvangers laten weten, dat wat ze hebben, niet de originele is, zodat eventuele problemen geintroduceerd door anderen niet de reputatie van de oorspronkelijke auteurs zal beschadigen'.</i></p>
+<h4>Voorwaarden voor gebruik</h4>
+<p>U mag YaBB alleen downloaden en gebruiken als u akkoord gaat met de volgende items:</p>
+<ol>
+    <li>U zult deze licentie intact houden met uw YaBB Pakket.</li>
+    <li>U Gaat akkoord met deze hele licentie.</li>
+    <li>U laat de YaBB copyright zichtbaar op uw geïnstalleerde forum zoals ze in de originele verpakking werd geplaatst. Deze regel is niet van toepassing als u een aparte licentie hebt gekocht om de auteursrechten te verwijderen of doet aan herverdeling van het pakket en hebben andere regels in deze licentie gevolgd om het te verwijderen.</li>
+    <li>Je gebruikt YaBB niet voor illegale acties, noch toestaan dat zij die een kopie van uw exemplaar van YaBB gebruiken om illegale acties met YaBB uit te voeren. Dit omvat, maar is niet beperkt tot: het gebruik van een YaBB forum om laster tegen een andere persoon of groep te plaatsen, met behulp van een YaBB forum "hacks en cracks" te plaatsen voor software, of met behulp van een YaBB forum een misdrijf of een terroristische daad te plotten. <i> YaBB is niet bedoeld of in licentie gegeven voor illegale doeleinden. </i> Als u verdachte acties vindt, meld deze dan naar de juiste instanties of de webhost van de gewraakte website.</li>
+</ol>
+<h4>Voorwaarden voor kopiëren, distributie en wijziging</h4>
+<p>0. Deze licentie is van toepassing op elk programma of ander werk dat een notie bevat van de copyright houder die zegt dat onder de voorwaarden van deze YaBB Publieke Licentie verspreid mag worden. </p>
+<p>Activiteiten anders dan gebruik, kopiëren, verspreiden en wijzigen zijn niet gedekt door deze licentie; ze zijn buiten haar toepassingsgebied. De handeling van het runnen van het programma is niet beperkt, en de uitvoer van het Programma is enkel gedekt als de inhoud een werk gebaseerd is op het pakket (onafhankelijk van het hebben gedaan door het programma uit te voeren). Of dit waar is hangt af van wat het programma doet. </p>
+<p>1. U kunt kopiëren en distribueren letterlijk kopieën van de broncode van het pakket zoals u het ontvangen hebt, in elk medium, op voorwaarde dat u dat opvallend en op correcte wijze publiceert op elke kopie hiervan een mededeling over de auteursrechten en de afwijzing van garantie; Houdt alle kennisgevingen intact die verwijzen naar deze YaBB Publieke Licentie en de afwezigheid van enige garantie; en geef alle andere ontvangers van het pakket een kopie van deze licentie, samen met het pakket. </p>
+<p>U mag een vergoeding vragen voor de fysieke daad van het afleveren van een kopie, en u kunt op uw optie garantie bescherming bieden in ruil voor een vergoeding. Als de overdracht van een kopie plaatsvindt voor een vergoeding, moet een soort van wijziging van het oorspronkelijke programma zijn gemaakt of een dienst moet zijn toegevoegd aan het programma, anders dan de handeling van de overdracht zelf f. </p>
+<p>2. U mag uw kopie of kopieën van het pakket of een deel daarvan wijzigen, dus een werk vormen dat gebaseerd is op het pakket, en kopiëren en distribueren dergelijke aanpassingen of werken onder de voorwaarden van Sectie 1 hierboven, op voorwaarde dat u ook aan al deze voorwaarden voldoet: </p>
+<ul style="list-style:none;">
+    <li> a) U moet ervoor zorgen dat de gewijzigde bestanden duidelijk vermelden dat u de bestanden en wijzigde samen met de datum van elke verandering.</li>
+    <li> b) U moet veroorzaken dat elk werk dat u te verspreid of publiceert, die geheel of gedeeltelijk bevat of is afgeleid van het pakket of een deel daarvan, een licentie heeft als geheel en kostenloos aan alle derde partijen onder de voorwaarden van de licentie.</li>
+    <li> c) Als het gewijzigde programma normaal gesproken opdrachten interactief leest wanneer het draait, moet u het veroorzaken, wanneer het begint te lopen voor een dergelijk interactieve gebruik in de meest gewone manier, afdrukken of een aankondiging met inbegrip van een passende copyright informatie weergeven.</li>
+</ul>
+<p>Deze vereisten gelden voor het gewijzigde werk als een geheel. Als identificeerbare secties van dat werk niet afgeleid zijn van het pakket en redelijk kan worden beschouwd als onafhankelijke en afzonderlijke werken op zich, dan is deze licentie en de voorwaarden niet van toepassing op die delen als u ze als afzonderlijke werken distribueert. Maar als je dezelfde secties verdeelt als deel van een geheel dat een werk is gebaseerd op het pakket, moet de distributie van het geheel onder de voorwaarden van deze licentie gebeuren, en zo elk deel ongeacht wie het schreef. </p>
+<p>Het is dus niet de bedoeling van deze sectie om rechten te eisen of uw rechten te betwisten van werk volledig geschreven door u; Integendeel, de bedoeling is het recht om controle uit te oefenen op de distributie van afgeleide of collectieve werken gebaseerd op het pakket.. </p>
+<p>Daarnaast, de bundeling van een werk niet gebaseerd op het pakket met het Programma (of met een werk gebaseerd op het Programma) op een volume van een opslag- of distributiemedium brengt het andere werk niet onder het toepassingsgebied van deze licentie.</p>
+<p>3. U mag niet kopiëren, wijzigen, sublicentie geven of het pakket verspreiden behalve zoals uitdrukkelijk vermeld in deze licentie. Elke andere poging te kopiëren, wijzigen, in sublicentie te geven of het pakket te verspreiden is ongeldig, en zal automatisch uw rechten onder deze licentie beëindigen. Echter, partijen die kopieën of rechten ontvangen hebben, van u onder deze licentie zullen hun licenties niet beëindigd hebben zolang deze partijen in volledige overeenstemming blijven. </p>
+<p>4. U bent niet verplicht deze licentieovereenkomst te accepteren, aangezien u deze niet hebt ondertekend. Echter, niets anders geeft u toestemming het pakket te wijzigen of te verspreiden of de afgeleide werken. Deze acties zijn wettelijk verboden als u deze licentie niet accepteert. Daarom, door wijzigen of verdelen van het pakket (of een werk gebaseerd op het pakket), geeft u uw aanvaarding aan van deze licentie om dit te doen, en al zijn voorwaarden en bepalingen voor het kopiëren, verspreiden of wijzigen van het pakket of werken op basis van het. </p>
+<p>5. Elke keer dat u het pakket (of een werk gebaseerd op het pakket) her-distribueert, krijgt de ontvanger automatisch een licentie van de originele licentiegever om te kopiëren, distribueren of wijzigen van het pakket onderworpen aan deze voorwaarden en condities. U mag geen verdere beperkingen opleggen aan de uitoefening van de hierin verleende rechten van de ontvangers. U bent niet verantwoordelijk voor het afdwingen van de naleving door derde partijen bij deze Licentie. </p>
+<p>6. Indien, als gevolg van een rechterlijke uitspraak of een beschuldiging van inbreuk op het octrooi of om een andere reden (niet beperkt tot patent kwesties), voorwaarden zijn opgelegd (door rechterlijk bevel, overeenkomst of anderszins) die de voorwaarden van deze licentie tegenspreken, vrijwaren zij u niet van de voorwaarden van deze licentie. Als u niet kunt distribueren om tegelijkertijd te voldoen aan uw verplichtingen uit hoofde van deze licentie en eventuele andere relevante verplichtingen, dan als consequente mag u het pakket helemaal niet distribueren. Bijvoorbeeld, als een patent licentie royalty-vrije herverdeling van het pakket niet zou toestaan door al diegenen die van direct of indirect kopieën ontvingen, dan zou de enige manier zijn om te voldoen aan zowel het als deze licentie u geheel te onthouden van distributie van het pakket. </p>
+<p>Als enig deel van deze sectie ongeldig of onuitvoerbaar is gehouden onder bepaalde omstandigheden, de balans van de sectie is bedoeld om toe te passen, en de sectie als geheel is bedoeld om toe te passen in andere omstandigheden. </p>
+<p>Het is niet de bedoeling van deze sectie u te bewegen inbreuk te maken op octrooien of andere eigendomsvorderingen of dergelijke claims te bestrijden; deze sectie bevat het enige doel van de bescherming van de integriteit van het distributiestelsel van vrije software, die wordt geïmplementeerd door openbare licentie praktijken. Veel mensen hebben royale bijdragen geleverd aan het brede scala van software gedistribueerd via dat systeem in vertrouwen op de consistente toepassing van dat systeem; het is aan de auteur/donor om te beslissen of hij of zij bereid is software te distribueren via een ander systeem en een licentiehouder kan die keuze niet opleggen. </p>
+<p>Deze sectie is bedoeld om grondig duidelijk te maken wat wordt verondersteld een gevolg van de rest van deze licentie te zijn. </p>
+<p>7. Als de distributie en/of gebruik van het pakket zijn beperkt in bepaalde landen, door patenten of auteursrechtelijk beschermde interfaces, kan de oorspronkelijke auteursrechthouder die het pakket onder deze licentie plaatst een expliciete geografische beperking toevoegen met uitzondering van die landen, zodat distributie slechts is toegestaan in of tussen landen niet zijn uitgesloten. In een dergelijk geval bevat deze licentie de beperking als geschreven in het body van deze licentie. </p>
+<p>8. YaBB kan van tijd tot tijd herziene en/of nieuwe versies van de YaBB Publieke Licentie publiceren. Zulke nieuwe versies zullen gelijkaardig zijn en in geest van de huidige versie, maar kunnen verschillen in detail om nieuwe problemen of zorgen aan te pakken. </p>
+<p>Elke versie krijgt een onderscheidende versienummer. Als het pakket een versienummer geeft van deze licentie die van toepassing is en "een latere versie", hebt u de mogelijkheid van het volgen van de bepalingen en voorwaarden van die versie of van enige latere versie gepubliceerd door YaBB. Als het pakket geen versienummer van deze licentie specificeert, kunt u elke versie kiezen die ooit gepubliceerd is door YaBB. </p>
+<p>9. Als u onderdelen van het pakket wenst op te nemen in andere vrije programma's waarvan distributie voorwaarden verschillend zijn, schrijf naar de auteur en vraag om toestemming. Voor software welke copyright kent door YaBB, schrijf naar YaBB; We maken soms uitzonderingen hiervoor. Onze beslissing zal worden geleid door de twee doelstellingen van het behoud van de vrije status van alle derivaten van onze vrije software en ter bevordering van het delen en hergebruiken van software in het algemeen.</p>
+<p>10. Omdat het pakket kosteloos is gelicentieerd, is er geen garantie voor het pakket, voor zover toegestaan door toepasselijk recht. Behalve wanneer schriftelijk anders vermeld, leveren de auteursrechthouders en/of andere partijen het pakket "zoals het is" zonder garantie van welke aard, hetzij expliciet of impliciet, inclusief, maar niet beperkt tot, de impliciete garanties van verkoopbaarheid en geschiktheid voor een bepaald doel. Het volledige risico met betrekking tot de kwaliteit en de prestaties van het pakket is met u. Zou het pakket te kort schieten, Ga er van uit dat u wordt veronderstelt de kosten te dekken van alle noodzakelijke onderhoud, reparatie of correctie. </p>
+<p>11. In geen geval, tenzij vereist door de toepasselijke wetgeving of schriftelijk overeengekomen, zal elke auteursrechthebbende, of enige andere partij die het pakket kan wijzigen en/of distribueren zoals boven toegestaan, tegenover u aansprakelijk zijn voor schade, met inbegrip van eventuele algemene, speciale, incidentele of indirecte schade voortkomend uit het gebruik of de onmogelijkheid tot gebruik van het pakket (inclusief maar niet beperkt tot verlies van gegevens of dat gegevens onjuist wordt weergegeven of verliezen door u of derden of een falen van onderdelen van dit pakket om te werken met andere programma's), zelfs indien dergelijke houder of een andere partij geadviseerd is over de mogelijkheid van dergelijke schade.</p>
+<h4>Hoe deze voorwaarden toepassen op uw nieuwe programma 's</h4>
+<p> Als u een nieuw programma ontwikkelt en u wilt het, het grootste mogelijke gebruik voor het publiek laten zijn, de beste manier om dit te bereiken is vrije software die iedereen kan verspreiden en wijzigen onder deze voorwaarden. </p>
+<p>Om dit te doen, bevestigt u de volgende kennisgevingen aan het programma. Het is het veiligst om ze aan het begin van elk bronbestand te hechten voor het meest effectief overbrengen van de uitsluiting van garantie; en elk bestand zou op zijn minst de "auteursrecht" lijn en een verwijzing hebben naar waar de volledige boodschap gevonden kan worden. </p>
+<p>Zorg voor een regel om de naam van het programma te geven en een idee van wat het doet. </p>
+<p>Copyright (C) yyyy naam van de auteur </p>
+<p>--<br />
+Dit programma is vrije software; u kunt herdistribueren en/of onder de voorwaarden van de YaBB Publieke Licentie (YPL) wijzigen zoals gepubliceerd door de Free Software Foundation, gewijzigd door YaBB; ofwel deze versie 2.6.0 van de Licentie, of (naar keuze) een latere versie.<br />
+-- <br />
+Dit programma wordt verspreid in de hoop dat het nuttig zal zijn, maar ZONDER ENIGE GARANTIE; zonder zelfs de impliciete garantie van VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de YaBB Publieke Licentie voor meer informatie.<br />
+-- <br />
+U moet een kopie van de YaBB Publieke Licentie hebben ontvangen samen met dit programma; zo niet, schrijf dan naar YaBB.<br />
+-- <br /> </p>
+<p>Ook toegevoegde informatie over hoe u contact kunt opnemen via elektronische en papieren post. </p>
+<p>Deze YaBB Publieke Licentie staat niet toe dat uw programma in eigendomsmatige programma’s verwerkt wordt. Als uw programma een subroutine bibliotheek is, kunt u overwegen het nuttiger beschouwen om private toepassingen te koppelen met de bibliotheek. Als dit is wat u wilt doen is, gebruik dan de GNU Library General Public License in plaats van deze licentie.</p>
+<h4>Samenvatting van uw rechten met deze Software</h4>
+<p>1. U kunt dit pakket gratis gebruiken, en het pakket, dat alle broncode bevat, zal beschikbaar zijn voor u op elk gewenst moment. </p>
+<p>2. U mag dit pakket niet verkopen als niets veranderd is en het is gedistribueerd door u op dezelfde manier die in de originele verpakking werd uitgedeeld aan u. </p>
+<p>3. U kunt dit pakket verkopen als u het volgende hebt gedaan:</p>
+<ul>
+    <li>U heeft items of code gewijzigd in dit pakket en correct becommentarieerd wat en wanneer de wijzigingen plaatsvonden.</li>
+    <li>Als het pakket niet gewijzigd is (of als het is), voegt u een service in zoals installatie met dit pakket.</li>
+    <li>U een kopie van deze oorspronkelijke YaBB Publieke Licentie hebt bijgesloten bij uw product en de juiste auteursrechtvermeldingen hebt toegepast.</li>
+    <li>U beschikbaar hebt gemaakt de broncode en alle andere materialen die beschikbaar waren toen u dit pakket ontving voor het publiek en dit materiaal hebt rondgedeeld aan de originele auteurs van dit product.</li>
+</ul>
+<p>4. U mag de YaBB software niet gebruiken voor illegale acties. Dergelijk gebruik zal deze licentie en uw exemplaar van YaBB nietig achten. Yabb kan niet verantwoordelijk worden gehouden voor zulke gebruik.</p>
+~;
+###########################################
+
+1;

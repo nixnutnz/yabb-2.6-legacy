@@ -1,0 +1,32 @@
+﻿###############################################################################
+# 001.help                                                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11 and higher                                      #
+# Released:       November 9, 2015                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-and newer YaBB (www.yabbforum.com) - All Rights Reserved.#
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+#                                                                             #
+# Help File Translation: Pieszyce, and others.                                #
+###############################################################################
+$SectionName = "Administratoren_Help_Centrum";
+
+### Section 1
+#############################################
+$SectionSub1 = "Introduktie";
+$SectionBody1 = qq~<p> Zoals u weet, is YaBB een fantastische community platform. Eenvoudig te installeren; eenvoudig te beheren. Het is de perfecte oplossing voor het laten groeien en onderhouden van een goede, proactieve relatie met uw gebruikers basis.Deze Help sectie zal u helpen enkele van de vele nieuwe en krachtige functies te begrijpen die u nu binnen handbereik heeft.</p>
+<p>Voor meer informatie, bezoek alstublieft <a href="http://www.yabbforum.com/codex/" target="_blank"><b>De YaBB Codex</b></a>.
+<br />Voor ondersteuning en probleemoplossing, bezoek alstublieft <a href="http://www.yabbforum.com/community/" target="_blank"><b>YaBB's Support Gemeenschap</b></a></p>
+<p>Gelieve te verwijzen naar de YaBB Terminologie / woordenlijst in de Gebruiker Help over de verschillende paginaweergaven beschreven in de onderstaande secties.</p>
+<p>De volgende afbeeldingen van het Moderator Menu worden geleverd voor verwijzing.</p>
+<p>{yabb mymoding}</p>
+<p>Je kan het menu aan de linkerzijde gebruiken om snel naar elk onderwerp hieronder te springen.</p>
+<p>U kunt de <img src="{top_img}" alt="Back to Top" title="Back to Top" /> button aan de onderkant rechts van elke Help sectie gebruiken om terug te keren naar de top van de Moderator Help-pagina</p> 
+~;
+#############################################
+
+1;

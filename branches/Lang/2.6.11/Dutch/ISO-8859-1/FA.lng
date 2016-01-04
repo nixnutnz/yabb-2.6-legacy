@@ -93,6 +93,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '41' => 'Bestandsgrootte',
 '41a' => 'Downloads',
 '41b' => 'Download',
+'41c' => '', #lowercase - multi-language support.
 '42' => 'Gepost door',
 '42a' => 'Gekoppeld door',
 '43' => 'Datum',

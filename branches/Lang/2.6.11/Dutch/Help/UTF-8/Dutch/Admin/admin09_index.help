@@ -1,0 +1,106 @@
+﻿###############################################################################
+# admin007_index.help                                                         #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11 and higher                                      #
+# Released:       November 9, 2015                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-and newer YaBB (www.yabbforum.com) - All Rights Reserved.#
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+#                                                                             #
+# Help File Translation: Pieszyce, and others.                                #
+###############################################################################
+$SectionName = "Help_Topic_Index";
+
+### Section 1
+#############################################
+$SectionSub1 = "Help_Topic_Index_Intro";
+$SectionBody1 = qq~<p>De Help topic index kan u helpen uw YaBB functies snel te leren en u te helpen met het vinden van hulp topic’s in de YaBB Codex.</p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$SectionSub2 = "Hoe_naar_Topics";
+$SectionBody2 = qq~<p>Deze beantwoorden veel gestelde vragen door de nieuwe forum Administratoren over hoe de online functies gebruikt moeten worden.</p>
+<p><b>Hoe......</b></p>
+<ul>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217217800" target="_blank">Een nieuw board toe te voegen</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217217419" target="_blank">Een nieuwe Categorie toe tevoegen</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217294882" target="_blank">Een Moderator aan te maken</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217400265" target="_blank">Een Global Moderator aan te maken</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217819051" target="_blank">Een nieuwe post-afhankelijk Leden Groep aan te maken</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218345096" target="_blank">Een nieuwe post-onafhankelijk Leden Groep aan te maken</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217819515" target="_blank">Verplaats ik een gebruiker naar een andere post-afhankelijk Leden Groep</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218429222" target="_blank">Verplaats ik een gebruiker naar een andere post-onafhankelijk Leden Groep</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217261075" target="_blank">Schakel de zoek functie uit</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217258547" target="_blank">Gebruik de registratie opties</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218776684" target="_blank">Verander het Forum Logo</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217706934" target="_blank">Gebruik uw eigen afbeelding als een Avatar</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=templates" target="_blank">Werk ik met Templates</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=templates" target="_blank">Verander de kleuren in Grey Box functies</a></li>
+</ul>
+~;
+#############################################
+
+### Section 3
+#############################################
+$SectionSub3 = "Wat_Te_Doen_Topics";
+$SectionBody3 = qq~<p>Deze beantwoorden veel gestelde vragen van nieuwe forum Administratoren over wat gedaan moet worden als er problemen of fouten worden aangetroffen.</p>
+<p><b>WAT MOET IK DOEN ALS...</b></p>
+<ul>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=errors" target="_blank">Ik krijg een serverfout?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217258342" target="_blank">Ik Admin login problemen heb?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1202251271" target="_blank">Sommige leden als Ex-leden verschijnen?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1192485451" target="_blank">Ik een Forum Foutmelding krijg?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1212249372" target="_blank">Mijn forum traag laadt?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217258894" target="_blank">Mijn forum is gesloten in onderhoud modus?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218835928" target="_blank">Mijn forum graphics niet correct worden weergegeven?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217951488" target="_blank">Ik geen knop voor het Admin Centrum zie?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217810041" target="_blank">Ik weet niet zeker of mijn paden correct zijn (standaard installatie)?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190671650" target="_blank">Ik weet niet zeker of mijn paden correct zijn (cPanel installatie)?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190669204" target="_blank">Ik heb meer hulp met de paden nodig?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190674425" target="_blank">Ik moet mijn forum te verplaatsen?</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218648482" target="_blank">Nieuwe gebruikers registeren, maar kunnen niet plaatsen?</a></li>
+</ul>
+~;
+#############################################
+
+### Section 4
+#############################################
+$SectionSub4 = "Wijzigen_van_uw_Forum";
+$SectionBody4 = qq~<p>Dit gedeelte bevat informatie over het wijzigen van uw forum. Alvorens een wijziging te maken, zou u een back-up van uw forum moeten maken in het geval er iets misgaat. Merk ook op dat terwijl sommige basisinformatie over het BoardMod- programma bedoeld is voor YaBB gebruikers, het YaBB Team geen ondersteuning biedt voor het BoardMod- programma of een van de MODS of Templates die daar beschikbaar zijn Als u ondersteuningsvragen hebt over deze producten, moet u ze richten aan hen op het <a href="http://www.boardmod.org" target="_blank">BoardMOD</a> web site.</p>
+<p><b>Modificatie Informatie Links</b></p>
+<ul>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=lng_1" target="_blank">Toevoegen van een andere Taal</a></li>
+    <li><a href="http://www.yabbforum.com/community/YaBB.pl?board=languagepack" target="_blank">Taal pakket ondersteuning</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=modification" target="_blank">Het maken van kleine aanpassingen aan uw forum</a></li>
+    <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190677475" target="_blank">Het gebruik van het BoardMOD programma</a></li>
+</ul>
+~;
+#############################################
+
+### Section 5
+#############################################
+$SectionSub5 = "Het_krijgen_van_ondersteuning van_YaBB";
+$SectionBody5 = qq~Deze sectie bevat een aantal adviezen om u te helpen eventuele problemen opgelost te krijgen en zo snel mogelijk een verzoek om steun te posten op <a href="http://www.yabbforum.com/community/YaBB.pl" target="_blank">YaBB Support Forum</a>.
+<p><b>Hoe krijg ik ondersteuning van YaBB</b></p>
+<ul>
+    <li class="help_attn_strong">Post nooit uw Forum Admin inloggegevens of uw FTP gegevens in een post. Als dat soort privé-informatie nodig is om u te helpen het probleem op te lossen, zal een personeelslid verzoeken u ze in een persoonlijk bericht (PM) te sturen.</li>
+    <li>Voordat u post, kijk eerst op de <a href="http://www.yabbforum.com/codex/" target="_blank">YaBB Codex</a> (het is doorzoekbaar) en doe een zoekopdracht op het support forum om te kijken of uw probleem al eerder is beantwoord. Probeer een paar verschillende zoektermen.</li>
+    <li>Gelieve uw verzoek in de juiste bord te posten. Ze zijn allemaal geïdentificeerd in de beschrijvingen bord. Als u niet zeker bent, maak gebruik van het Algemeen gebruik en Feature Problemen board.</li>
+    <li>Niet plaatsen in de "Bugs" boards. Als u vermoedt dat u een bug heeft, post het in een van de ondersteuning boards samen met welke stappen er nodig zijn om te zien of de fout te reproduceren is. Als het inderdaad een bug is, zal een Support Team lid het voor u verplaatsen naar het Bugs board.</li>
+    <li>Er is waardevolle informatie in de stickied berichten aan de bovenkant van elke steun board. Gelieve ze te lezen.</li>
+    <li>Begin alstublieft uw eigen onderwerp, en spring svp niet in aan het eind van andermans verzoek om ondersteuning. U kunt dezelfde symptomen hebben, maar niet altijd dezelfde fix, dus het is het best om uw verzoek gescheiden te houden.</li>
+    <li>NOOIT kruis-posten. Dat betekent vermeldt uw probleem in één topic, dan herhaal het in een ander topic of board. Het Support Team leest ze allemaal, en u zult geen sneller antwoord krijgen door ze twee keer zoveel te geven om te lezen.</li>
+    <li>Kenmerken, bestanden en opties variëren met verschillende versies. Zo ook de antwoorden. Zorg bij de eerste post met verzoek tot ondersteuning, dat u aangeeft welke versie u gebruikt. Andere informatie die helpt is, op wat voor soort server u draait (Unix, Windows, enz.), Is het een gehoste account of uw eigen server thuis, en is het forum op enige manier gewijzigd?</li>
+    <li>Wees specifiek! "Mijn auto werkt niet" zal uw monteur niet helpen hem te repareren. Noch zal het helpen te zeggen dat uw forum niet werkt. Vertel ons wat niet werkt, welke stappen of situatie nodig is om te zien welke fout of probleem dat u ervaart. Wie wordt beïnvloed: Alle gebruikers? Sommige gebruikers? Eén gebruiker?</li>
+    <li>Het belangrijkste is, wees geduldig. Sommige problemen duren langer dan anderen om ze te achterhalen. Terwijl u misschien denkt dat er niemand is om u te antwoorden, kan het support team op zoek zijn naar code of om te proberen om uw fout op hun eigen forum te dupliceren. De meeste vragen worden binnen een dag of zo beantwoord, maar vergeet niet de Support Team-leden hebben banen, gezinnen en eigen levens.</li>
+</ul>
+~;
+#############################################
+
+1;

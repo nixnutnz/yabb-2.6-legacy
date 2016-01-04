@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 # Micon.lng (Image text/images definitions)                                   #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -32,7 +32,7 @@ if (!$language){$language = $lang;}
 
 %messageindex_txt_m = (
 '302' => 'Nieuw',
-'303' => 'Ga naar eerste ongelezen bijdraget',
+'303' => 'Ga naar eerste ongelezen bijdrage',
 '454' => 'Hot Topic (Meer dan',
 '454a' => 'Reacties)',
 '455' => 'Zeer Hot Topic (Meer dan',

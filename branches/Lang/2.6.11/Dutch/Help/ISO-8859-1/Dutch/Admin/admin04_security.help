@@ -1,0 +1,100 @@
+###############################################################################
+# admin04_security.help                                                       #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.11 and higher                                      #
+# Released:       November 9, 2015                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-and newer YaBB (www.yabbforum.com) - All Rights Reserved.#
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+#                                                                             #
+# Help File Translation: Pieszyce, and others.                                #
+###############################################################################
+$SectionName = "Beveiliging";
+
+### Section 1
+#############################################
+$SectionSub1 = "Beveiliging_Intro";
+$SectionBody1 = qq~<p>YaBB is zeer veilig tegen alle soorten aanvallers. De vele ingebouwde functies van YaBB bieden veiligheid voor uw forum tegen aanvallen. Realiseer je echter dat veel van deze beveiligingsfuncties instelbaar zijn, dus als je ze niet inschakelt, kan dart risico's opleveren. Voorbeelden van dit zouden zijn het niet gebruiken van tenminste &#233:&#233:n van de Validatie maatregelen voor registraties, of het gasten toestaan te posten zonder Validatie Afbeelding of Validatie vraag controle.</p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$SectionSub2 = "Sessions";
+$SectionBody2 = qq~<p><b>Sessies</b> zijn een YaBB functie ontworpen om administratieve functies te beschermen. Als sessies worden ingeschakeld in het Admin Center, zullen teamleden worden verplicht om opnieuw hun sessie te valideren wanneer hun netwerkverbinding het IP-adres verandert.</p>
+<p>Om opnieuw te valideren uw sessie, klikt u op "Update Sessie" op de YaBB hoofdmenu aan de bovenkant van het forum. Als deze koppeling niet aanwezig is, dan hoeft uw sessie niet bijgewerkt te worden.</p>
+<p>Bij standaard, vraagt het u om uw wachtwoord opnieuw te valideren. Dat kan in uw profiel worden gewijzigd worden, onder de rubriek "Profiel bewerken", in de buurt van de onderkant van de lijst met instellingen.</p>
+<p>Om te controleren of sessies zijn ingeschakeld, gaan in het Admin Center / Security Center / Security Instellingen en kijk onder het tabblad "Algemeen". Sessies worden ingeschakeld als het vakje aan de rechterkant van "Activeren sessie-id" is aangevinkt.</p>
+~; 
+#############################################
+
+### Section 3
+#############################################
+$SectionSub3 = "Stealth_Mode";
+$SectionBody3 = qq~<p><b>Stealth Mode</b> is een YaBB functie ontworpen om Administratoren, Global Moderatoren, of beide de mogelijkheid te geven om de activiteit op het forum discreet te controleren zonder dat ze "gezien" worden. Wanneer deze optie is geselecteerd, wordt de Administratoren en Global Moderatoren "Online" status verborgen voor alle andere Lid Groepen en Gasten.</p>
+<p>Deze optie is ingeschakeld door het vakje in het tabblad "personeel" in het Admin Center / Forum Configuratie / Forum Instellingen te activeren.</p>
+~; 
+#############################################
+
+### Section 4
+#############################################
+$SectionSub4 = "Versleutelen_gebruikersnamen";
+$SectionBody4 = qq~<p>Deze functie is bedoeld om de veiligheid te verbeteren doordat Forum Administratoren de mogelijkheid hebben om de gebruiker's <span class="underline">log in</span> naam te verbergen in de link naar hun profile. Dit is de link die verschijnt waar de muiscursor over een zijn <span class="underline">Getoonde</span> Naam wordt geplaatst.</p>
+<ul>
+    <li><span class="underline"><b>Optie uitgeschakelt:</b></span> Wanneer deze optie is uitgeschakelt, zal de link  eindigen met "username = (gebruiker login-ID)"</li>
+    <li><span class="underline"><b>Optie ingeschakelt:</b></span> Wanneer deze optie is ingeschakelt, zal de link eindigen met "username = (encrypted nummer)"</li>
+</ul>
+<p>Het kan worden uitgeschakeld door het vinkje weg te halen in het vakje "Versleutel gebruikers-ID's" in het Admin Center/Security Center/SecurityInstellingen onder het tabblad "Algemeen".</p>
+~;
+#############################################
+
+### Section 5
+#############################################
+$SectionSub5 = "Administratieve_functies_-_Global_Moderator_toegang";
+$SectionBody5 = q~<p>Het Forum Admin kan kiezen welke administratieve functies de globale Moderators kunnen beheersen. Het Forum Admin kan de oegang tot het Admin Center volledig beperken, of kan toestaan dat globale Moderators controle hebben via een selectie lijst met functies. Deze omvatten items zoals het bewerken van gebruikersprofielen, leden toevoegen, leden verwijderen, bewerken van het Forum Nieuws, wijzigen van beveiligingsinstellingen voor forum, forum back-ups en nog veel meer.</p>
+~; 
+#############################################
+
+### Section 6
+#############################################
+$SectionSub6 = "Activeer_Referral_Beveiliging_controle";
+$SectionBody6 = qq~<p>Deze functie is ontworpen om de veiligheid te verbeteren door Forum Administratoren toe te staan de mogelijkheid  te selecteren welke acties zijn toegestaan in een URL buiten de domeinnaam van het forum. Wanneer ingeschakeld, staat dit de Administrator toe toegestane acties individueel te selecteren in de lijst in de sectie Admin Center/Security Centrum/Referrer Beveiliging.</p>
+<p>Deze optie is ingeschakeld door het selecteren van de "Activeer Referral beveiliging controle" box in het tabblad "Algemeen" gevonden in het Admin Centrum/Beveiliging Centrum/Beveiliging Instellingen.</p>
+~;
+#############################################
+
+### Section 7
+#############################################
+$SectionSub7 = "Toon_IP_in_Board_Index";
+$SectionBody7 = qq~<p>Deze functie geeft Forum Administratoren de mogelijkheid om het IP-nummer van iemand die ingelogd is of een bezoek aan het forum brengt te bekijken. Deze optie toont het IP-adres van een gast of gebruiker in de rechterbenedenhoek van elke post en geeft ook toegang tot de IP-Lookup faciliteit als deze geactiveerd is.</p>
+<p>Deze optie kan worden ingeschakeld voor Forum Administratoren, Global Moderatoren, Forum Moderators of alle drie.</p>
+<p>Deze optie is ingeschakeld door het selecteren van de juiste vakjes in het tabblad "Algemeen" in het Admin Centrum/Beveiliging Centrum/beveiligingsinstellingen.</p>
+<h4>Schakel IPLookup in</h4>
+<p>waardoor deze die in staat om IP-adressen te bekijken ook de mogelijkheid hebben de gegevens te bekijken van een IP-adres op een van de Whois-servers.</p>
+<h4>IP Lookup WhoIs Servers</h4>
+<p>Hier kunt u Whois-servers toevoegen of verwijderen die worden gebruikt door het hulpprogramma IP Lookup. Gebruik \{ip\} in de URL om het werkelijke IP-adres te vervangen, en scheidt de titel en de URL met een pijp symbool '|'. Voorbeeld: <i>MyLookupSite|mylookupsite.com?ip=\{ip\}</i></p>
+~;
+#############################################
+
+### Section 8
+#############################################
+$SectionSub8 = "Spam_Protectie_-_Enter_Procent";
+$SectionBody8 = qq~<p>Deze functie is bedoeld om spam te beperken door het instellen van een limiet aan hoeveel andere leden van een gebruiker een persoonlijk bericht kunnen sturen op een bepaald moment. Het nummer dat u invoert vertegenwoordigt <b>de maximale <span class="underline">percent</span> van het totale aantal Leden</b> Een gebruiker kan eenmaal een PB sturen.</p>
+<p>Deze optie is ingeschakeld door het invoeren van een gewenst percentage in het juiste vakje in het tabblad "Persoonlijke berichten" in de sectie Admin Centrum/Forum Configuratie/Forum Instellingen.</p>
+~;
+#############################################
+
+### Section 9
+#############################################
+$SectionSub9 = "Andere_Anti-spam_maatregelen";
+$SectionBody9 = qq~YaBB 2.6.0 heeft extra functies voor het helpen met je strijd tegen  spam registraties. Twee van dergelijke kenmerken zijn de honeypot en SpamFruits die beide in- of uitgeschakeld kunnen worden vanuit het Admin Centrum/Beveiliging Centrum/Anti-Spam-instellingen. Honeypot is een 'passieve' spambot catcher die spambots vangt als ze een registratie veld invullen dat gezien kan worden door spambots, maar niet door mensen met een browser. SpamFruits werken door te eisen dat een muis beweegt om de juiste foto te kiezen. Een andere effectieve anti-spam tool is Anti-Spam vraag vinden in de Admin Centrum/beveiliging Centrum/Anti-Spam vraag.
+<p>Deze optie moet worden ingeschakeld en het is ten zeerste aanbevolen dat u vragen gebruikt die unieke niche van uw forum weerspiegeling gebruiken. Probeer geen vragen te gebruiken, waarvan de antwoorden eenvoudig zijn op te zoeken op Google.</p>
+<p><b>Validatie Afbeelding</b> heeft ook nieuwe functies: U kunt nu tekens specificeren opgeven die zullen verschijnen voor en/of na de willekeurig gegenereerde Validatie Afbeelding revenge. Deze personages zien eruit als een deel van de validatie Afbeelding maar gebruikers worden geïnstrueerd om ze te negeren bij invullen van de validatie tekstvak Image.</p>
+~;
+#############################################
+
+1;
