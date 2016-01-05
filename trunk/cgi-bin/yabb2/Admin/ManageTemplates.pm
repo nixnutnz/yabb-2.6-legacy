@@ -1,21 +1,21 @@
 ###############################################################################
 # ManageTemplates.pm                                                          #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+use Carp;
+our $VERSION = '2.6.12';
 
-$managetemplatespmver = 'YaBB 2.6.11 $Revision$';
+$managetemplatespmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
@@ -80,16 +80,11 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
     }
 
     fopen( TMPL, "$templatesdir/$templatefile" );
-    while ( $line = <TMPL> ) {
-        $line =~ s/[\r\n]//gxsm;
-        $line =~ s/&nbsp;/&#38;nbsp;/gxsm;
-        $line =~ s/&amp;/&#38;amp;/gxsm;
-        $line =~ s/^\s+//gsm;
-        $line =~ s/\s+$//gsm;
-        FromHTML($line);
-        $fulltemplate .= qq~$line\n~;
-    }
+    my $line = join '',<TMPL>;
     fclose(TMPL);
+    for my $x( 0 .. ( length($line) - 1 ) ){
+        $fulltemplate .= "&#" . sprintf("%03d",ord((substr($line,$x,1)))) . ";";
+    }
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -147,15 +142,15 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 
 sub ModifyTemplate2 {
     is_admin_or_gmod();
+    if   ( $FORM{'filename'} ) { $templatefile = $FORM{'filename'}; }
+    else                       { $templatefile = 'default.html'; }
     $FORM{'template'} =~ tr/\r//d;
     $FORM{'template'} =~ s/\A\n//xsm;
     $FORM{'template'} =~ s/\n\Z//xsm;
-    if   ( $FORM{'filename'} ) { $templatefile = $FORM{'filename'}; }
-    else                       { $templatefile = 'default.html'; }
     fopen( TMPL, ">$templatesdir/$templatefile" );
-
-    print {TMPL} "$FORM{'template'}\n" or croak "$croak{'print'} TMPL";
+    print {TMPL} "$FORM{'template'}" or croak "$croak{'print'} TMPL";
     fclose(TMPL);
+
     $yySetLocation = qq~$adminurl?action=modtemp;templatefile=$templatefile~;
     redirectexit();
     return;
@@ -257,14 +252,16 @@ sub ModifySkin {
     $forumcss = q{};
     $imgdirs  = q{};
     foreach my $file ( sort @styles ) {
-        ( $name, $ext ) = split /\./xsm, $file;
-        $selected = q{};
-        if ( $ext eq 'css' ) {
-            if ( $file eq $cssfile ) {
-                $selected = q~ selected="selected"~;
-                $viewcss  = $name;
+        if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
+            ( $name, $ext, $bak ) = split /\./xsm, $file;
+            $selected = q{};
+            if ( !$bak && $ext eq 'css' ) {
+                if ( $file eq $cssfile ) {
+                    $selected = q~ selected="selected"~;
+                    $viewcss  = $name;
+                }
+                $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
             }
-            $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
         }
         if ( -d "$htmldir/Templates/Forum/$file"
             && $file =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}xsm )
@@ -404,8 +401,9 @@ s/img src\=\"$imagesdir\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eisg
     $tempuim   = qq~$templ_txt{'70'} <a id="ims">0 $templ_txt{'71'}</a>.~;
     $temptime  = timeformat( $date, 1 );
     my $tempsearchbox =
-qq~<form><input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" /><input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" /></form>
+qq~<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" /><input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
 ~;
+    my $tempsearchform = q~<form>~;
     $altbrdcolor = q~windowbg2~;
     $boardtable = q~id="General"~;
     $templatejump  = 1;
@@ -425,6 +423,8 @@ qq~<form><input type="text" name="search" size="16" id="search1" value="$img_txt
     $fulltemplate =~ s/({|<)yabb boardlink(}|>)/$tempforumurl/gsm;
     $fulltemplate =~ s/({|<)yabb navigation(}|>)//gsm;
     $fulltemplate =~ s/({|<)yabb searchbox(}|>)/$tempsearchbox/gsm;
+    $fulltemplate =~ s/({|<)yabb searchform(}|>)/<form>/gsm;
+    $fulltemplate =~ s/({|<)yabb searchformend(}|>)/<\/form>/gsm;
     $fulltemplate =~ s/({|<)yabb im(}|>)/$tempuim/gsm;
     $fulltemplate =~ s/({|<)yabb time(}|>)/$temptime/gsm;
     $fulltemplate =~ s/({|<)yabb langChooser(}|>)//gsm;
@@ -1448,13 +1448,15 @@ sub ModifyStyle {
 
     $forumcss = qq~<option value="" disabled="disabled">--</option>\n~;
     foreach my $file ( sort @styles ) {
-        ( $name, $ext ) = split /\./xsm, $file;
-        $selected = q{};
-        if ( $ext eq 'css' ) {
-            if ( $file eq $cssfile && !$admincs ) {
-                $selected = q~ selected="selected"~;
+        if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
+            ( $name, $ext, $bak ) = split /\./xsm, $file;
+            $selected = q{};
+            if ( !$bak && $ext eq 'css' ) {
+                if ( $file eq $cssfile && !$admincs ) {
+                    $selected = q~ selected="selected"~;
+                }
+                $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
             }
-            $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
         }
     }
 
@@ -1463,9 +1465,9 @@ sub ModifyStyle {
     closedir TMPLDIR;
     $admincss = qq~<option value="" disabled="disabled">--</option>\n~;
     foreach my $file ( sort @astyles ) {
-        ( $name, $ext ) = split /\./xsm, $file;
+        ( $name, $ext, $bak ) = split /\./xsm, $file;
         $selected = q{};
-        if ( $ext eq 'css' ) {
+        if ( !$bak && $ext eq 'css' ) {
             if ( $file eq $cssfile && $admincs ) {
                 $selected = q~ selected="selected"~;
             }

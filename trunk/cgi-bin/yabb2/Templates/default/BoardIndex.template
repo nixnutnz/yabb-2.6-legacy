@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$boardindextemver = 'YaBB 2.6.11 $Revision$';
+$boardindextemver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 $boardhandellist = qq~
     {yabb expand}{yabb collapse}{yabb markallread}
@@ -104,10 +104,10 @@ $boardindex_template .= qq~
                 </td>
                 <td class="windowbg2 info-center center vtop">
                     <div class="small" style="float: left; width: 90%; text-align: left;">
-                    $boardindex_txt{'800'} <b>{yabb mostusers}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostusersdate}.<br />
-                    $boardindex_txt{'801'} <b>{yabb mostmembers}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostmembersdate}.<br />
-                    $boardindex_txt{'802'} <b>{yabb mostguests}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostguestsdate}.<br />
-                    $boardindex_txt{'803'} <b>{yabb mostbots}</b>$maintxt{'30b'} $maintxt{'30'} {yabb mostbotsdate}.
+                    $boardindex_txt{'800'} <b>{yabb mostusers}</b> $maintxt{'30b'} $maintxt{'30'} {yabb mostusersdate}.<br />
+                    $boardindex_txt{'801'} <b>{yabb mostmembers}</b> $maintxt{'30b'} $maintxt{'30'} {yabb mostmembersdate}.<br />
+                    $boardindex_txt{'802'} <b>{yabb mostguests}</b> $maintxt{'30b'} $maintxt{'30'} {yabb mostguestsdate}.<br />
+                    $boardindex_txt{'803'} <b>{yabb mostbots}</b> $maintxt{'30b'} $maintxt{'30'} {yabb mostbotsdate}.
                     </div>
                 </td>
             </tr>
@@ -128,7 +128,7 @@ $boardindex_template .= qq~
                 <col style="width:auto" />
             </colgroup>
             <tr>
-                <td class="windowbg info-center center">
+                <td class="windowbg info-center center"{yabb row_resize}>
                     <img src="$imagesdir/$brd_online" alt="" />
                 </td>
                 <td class="windowbg2 info-center">
@@ -152,7 +152,7 @@ $boardindex_template .= qq~
     {yabb sharedlogin}
 <!-- Info Center block end -->
         {yabb new_load}
-        ~;
+~;
 }
 
 ## Category header ##
@@ -257,7 +257,7 @@ $nopost_boardblock = qq~<tr>
                     <a href="{yabb boardurl}">{yabb boardpic}</a>
                 </td>
                 <td class="{yabb altbrdcolor}" colspan="4">
-                    {yabb new} <a name="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
+                    {yabb new} <a id="{yabb boardanchor}" href="{yabb boardurl}"><b>{yabb boardname}</b></a><br />
                     {yabb boarddesc}
                     <br />
                     <div class="small" style="display: inline-block; margin-top:5px">{yabb subboardlist}</div>

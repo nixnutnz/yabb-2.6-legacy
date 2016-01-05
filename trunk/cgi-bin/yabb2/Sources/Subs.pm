@@ -1,14 +1,14 @@
 ###############################################################################
 # Subs.pm                                                                     #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -17,9 +17,9 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$subspmver = 'YaBB 2.6.11 $Revision$';
+$subspmver = 'YaBB 2.6.12 $Revision: 1654 $';
 
 use subs 'exit';
 
@@ -317,6 +317,10 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     $yystyle .= $yygreyboxstyle;
     $yystyle .= $yyinlinestyle;
 
+    if ( $action eq 'register' || $action eq 'guestpm' || $action eq 'modalert' || $action eq 'post' || $action eq 'imsend' || ( $action eq 'eventcal' && $INFO{'addnew'} == 1 ) ) {
+        $yystyle .= '<meta name ="robots" content="noindex, nofollow" />';
+    }
+
     # Carsten's 'backtotop';
     if ( !$yynavback ) { $yynavback .= q~ ~; }
     $yynavback .=
@@ -509,7 +513,7 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
                   . "$notify_txt{'201'}  $notify_txt{'206'} ($th_num)"
                 : q{}
               );
-            if ( ${ $uid . $username }{'onlinealert'} and $boardindex_template )
+            if ( ${ $uid . $username }{'onlinealert'} && $boardindex_template )
             {
                 $yyadmin_alert =
 qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a>.$yyadmin_alert~;
@@ -536,7 +540,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             if ( $qckage == 0 ) {
                 $blurb = qq~$maintxt{'searchimg3'}~;
             }
-            $yysearchbox = qq~
+            $yysearchbox = qq~<div class="yabb_searchbox">
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yymycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />
@@ -548,6 +552,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                         <input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
                         <input type="image" src="$imagesdir/search.png" alt="$blurb" title="$blurb" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
                     </form>
+                    </div>
 ~;
         }
     }
@@ -557,15 +562,15 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
         fclose(NEWS);
         chomp @newsmessages;
         my $startnews = int rand @newsmessages;
-        $yynewstitle = qq~<b>$maintxt{'102'}:</b>~;
-        $yynewstitle =~ s/'/\\'/gxsm;
+        $yynewstitle = qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
+        $yynewstitle =~ s/\x27/\\\x27/gxsm;
         $guest_media_disallowed = 0;
         $newswrap               = 40;
 
         if ($shownewsfader) {
             $fadedelay = $maxsteps * $stepdelay;
             $yynews .= qq~
-            <script type="text/javascript">
+            <script type="text/javascript">//<![CDATA[
                     var index = $startnews;
                     var maxsteps = "$maxsteps";
                     var stepdelay = "$stepdelay";
@@ -636,7 +641,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                             bcolor = window.getComputedStyle(document.getElementById('fadestylebak'), null).getPropertyValue('background-color');
                         }
                     }
-                    txtdecoration = txtdecoration.replace(/\'/g, ""); //';
+                    txtdecoration = txtdecoration.replace(/\x27/g, "");
                     var endcolor = convProp(tcolor);
                     var startcolor = convProp(bcolor);~;
             my $greybox = $img_greybox;
@@ -652,9 +657,9 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                       s/ style="display:none"/ style="display:block"/gsm;
                 }
                 wrap2();
-                $message =~ s/"/\\"/gxsm;
+                $message =~ s/\x22/\\\x22/gxsm;
                 ToChars($message);
-                $message =~ s/\'/&#39;/xsm;
+                $message =~ s/\x27/&\x2339;/xsm;
                 $yynews .= qq~                  fcontent[$j] = '$message';\n~;
             }
             $img_greybox = $greybox;
@@ -671,7 +676,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                         window.attachEvent("onload", changecontent);
                     else if (document.getElementById)
                         window.onload = changecontent;
-            </script>
+            //]]></script>
         ~;
         }
         else {
@@ -684,7 +689,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             }
             wrap2();
             ToChars($message);
-            $message =~ s/\'/&#39;/xsm;
+            $message =~ s/\x27/&\x2339;/xsm;
             $yynews = qq~
             <script type="text/javascript">
                 if (ie4 || DOM2) var news = '$message';
@@ -707,8 +712,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     $yyurl = $scripturl;
     my $copyright = $output =~ m/{yabb\ copyright}/xsm ? 1 : 0;
 
-    # new and old tag template style decoding - the (<|{) and (}|>) must remain for it to work.
-    while ( $output =~ s/(<|{)yabb\s+(\w+)(}|>)/${"yy$2"}/gxsm ) { }
+    while ( $output =~ s/({)yabb\s+(\w+)(})/${"yy$2"}/gxsm ) { }
 
     # check if image exists, otherwise use the default template image
     if ( $imagesdir ne $defaultimagesdir ) {
@@ -734,7 +738,7 @@ s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/>\n  
 
     if ( !$copyright ) {
         $output =
-q~<h1 class="center"><b>Sorry, the copyright tag &#123;yabb copyright&#125; must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+qq~<h1 class="center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
 
     print_HTML_output_and_finish();
@@ -1044,7 +1048,7 @@ sub readform {
           $ENV{QUERY_STRING},
           $urlstart + 4,
           length( $ENV{QUERY_STRING} ) - $urlstart + 3;
-        $INFO{'url'} =~ s/\;anch\=/#/gxsm;
+        $INFO{'url'} =~ s/\;anch\=/\x23/gxsm;
         $testenv = q{};
     }
     else {
@@ -1053,7 +1057,7 @@ sub readform {
         if ( $testenv && $debug ) {
             LoadLanguage('Debug');
             $getpairs =
-qq~<br /><span class="underline">$debug_txt{'getpairs'}:</span><br />~;
+qq~<br /><span class="under">$debug_txt{'getpairs'}:</span><br />~;
         }
     }
 
@@ -1075,7 +1079,7 @@ qq~<br /><span class="underline">$debug_txt{'getpairs'}:</span><br />~;
         if ($debug) {
             LoadLanguage('Debug');
             $getpairs .=
-qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
+qq~<br /><span class="under">$debug_txt{'postpairs'}:</span><br />~;
         }
         if ( $ENV{CONTENT_TYPE} =~ /multipart\/form-data/xsm ) {
             require CGI;
@@ -1103,20 +1107,20 @@ qq~<br /><span class="underline">$debug_txt{'postpairs'}:</span><br />~;
                 && $ENV{'QUERY_STRING'} =~ /action=(post|modify)2\b/xsm )
             {
                 $CGI::POST_MAX = int( 1024 * $limit * $allowattach );
-                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }    # *
+                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }
             }
             elsif ( $allowAttachIM > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(imsend|imsend2)\b/xsm )
             {
                 $CGI::POST_MAX = int( 1024 * $pmFileLimit * $allowAttachIM );
-                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }    # *
+                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }
             }
             elsif ( $upload_useravatar
                 && $ENV{'QUERY_STRING'} =~ /action=profileOptions2\b/xsm )
             {
                 $avatar_limit ||= 0;
                 $CGI::POST_MAX = int( 1024 * $avatar_limit );
-                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }    # *
+                if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }
             }
             else {
 
@@ -1151,7 +1155,6 @@ qq~[$debug_txt{'name'}-&gt;]$name=@value\[&lt;-$debug_txt{'value'}]<br />~;
     }
     $action = $INFO{'action'} || $FORM{'action'};
 
-    # Formsession checking moved to YaBB.pl to fix a bug.
     if (   $INFO{'username'}
         && $do_scramble_id
         && $action ne 'view_regentry'
@@ -1253,7 +1256,7 @@ sub dumplog {
 
 ## standard jump to menu
 sub jumpto {
-    ## jump links to messages/favourites/notifications.
+    ## jump links to messages/favorites/notifications.
     my $action = 'action=jump';
     my $onchange =
 qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$scripturl?' + this.options[this.selectedIndex].value;"~;
@@ -1366,7 +1369,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                       ? qq~    <option value="board=$board" class="forumcurrentboard">&nbsp;~
                       . ( '&nbsp;' x $indent )
                       . ( $dash x ( $indent / 2 ) )
-                      . qq~ $boardname &#171;&#171;</option>\n~
+                      . qq~ $boardname &\x23171;&\x23171;</option>\n~
                       : qq~    <option selected="selected" value="board=$board" class="forumcurrentboard">&raquo;&raquo; $boardname</option>\n~;
                 }
                 elsif ( !${ $uid . $board }{'canpost'} && $subboard{$board} ) {
@@ -1447,7 +1450,7 @@ sub SpamQuestion {
     chomp $spam_question_rand;
     ( $spam_question_id, $spam_question, undef, $spam_questions_case, $spam_image ) =
       split /\|/xsm, $spam_question_rand;
-    $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$defaultimagesdir/Spam_Img/$spam_image" alt="" /></div>~ : q{};
+    $spam_image = $spam_image ? qq~<div style="margin-top: .5em;"><img src="$imagesdir/Spam_Img/$spam_image" alt="" /></div>~ : q{};
     return;
 }
 
@@ -1485,7 +1488,14 @@ sub SpamQuestionCheck {
 }
 
 sub CountChars {
-    $convertstr =~ s/&#32;/ /gsm;    # why? where? (deti)
+    $convertstr =~ s/&\x2332;/ /gsm;    # why? where? (deti)
+    #length does not always function properly with UTF-8 - convert UTF-8 to internal Perl utf8
+    if ( $yymycharset eq 'UTF-8' ) {
+        require utf8;
+        require Encode;
+        Encode->import( decode_utf8, encode_utf8 );
+        $convertstr = decode_utf8($convertstr);
+    }
 
     $cliped = 0;
     my ( $string, $curstring, $stinglength, $teststring );
@@ -1556,7 +1566,10 @@ sub CountChars {
 
     # eliminate spaces, broken HTML-characters or special characters at the end
     $convertstr =~ s/(\[(ch\d*)?|&[a-z]*| +)$//sm;
-    return;
+    if ( $yymycharset eq 'UTF-8' ) {
+      $convertstr = encode_utf8($convertstr);
+    }
+    return $convertstr;
 }
 
 sub WrapChars {
@@ -1568,7 +1581,7 @@ sub WrapChars {
         $length  = 0;
         $curword = q{};
         while ( $char ne q{} ) {
-            if    ( $char =~ s/^(&#?[a-z\d]+;)//ism ) { $curword .= $1; }
+            if    ( $char =~ s/^(&\x23?[a-z\d]+;)//ism ) { $curword .= $1; }
             elsif ( $char =~ s/^(.)//sm )             { $curword .= $1; }
             $length++;
             if ( $length >= $wrapcut ) {
@@ -1607,9 +1620,8 @@ sub uri_escape {    # usage: $safe = uri_escape( $string )
     }
 
     # Default unsafe characters. RFC 2732 ^(uric - reserved)
-    $text =~ s/([^A-Za-z0-9\-_.!~*'()])/ $escapes{$1} || $1 /gesm;
+    $text =~ s/([^A-Za-z0-9\-_.!~*\x27()])/ $escapes{$1} || $1 /gesm;
 
-    #'; to keep my text editor happy;
     return $text;
 }
 
@@ -1644,10 +1656,10 @@ sub enc_eMail {
         $subject = uri_escape($subject);
         $body = uri_escape($body);
         $subbody = "?subject=$subject&body=$body";
-        $subbody =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
+        $subbody =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
     }
     $titlesp = $title;
-    $titlesp =~ s/(((<.+?>)|&#\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
+    $titlesp =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
     if ($src || $yymycharset eq 'UTF-8') {$titlesp = $title;}
 
     return qq~<script type='text/javascript'>\nSpamInator('$titlesp',"$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;",'$subbody');\n</script>~;
@@ -1672,7 +1684,7 @@ sub generate_code {
 sub FromChars {
     ( $_[0] ) = @_;
     ## This cannot be localized or unpacked ##
-    $_[0] =~ s/&#(\d{3,});/ $1>127 ? "[ch$1]" : $& /egism;
+    $_[0] =~ s/&\x23(\d{3,});/ $1>127 ? "[ch$1]" : $& /egism;
 
     return $_[0];
 }
@@ -1680,7 +1692,7 @@ sub FromChars {
 sub ToChars {
     ( $_[0] ) = @_;
     ## This cannot be localized or unpacked ##
-    $_[0] =~ s/\[ch(\d{3,})\]/ $1>127 ? "\&#$1;" : q{} /egism;
+    $_[0] =~ s/\[ch(\d{3,})\]/ $1>127 ? "\&\x23$1;" : q{} /egism;
     return $_[0];
 }
 
@@ -1688,27 +1700,27 @@ sub ToHTML {
     ( $_[0] ) = @_;
     ## This cannot be localized or unpacked - damages smilies ##
     $_[0] =~ s/&/&amp;/gsm;
-    $_[0] =~ s/\}/\&#125;/gsm;
-    $_[0] =~ s/\{/\&#123;/gsm;
-    $_[0] =~ s/\|/&#124;/gsm;
+    $_[0] =~ s/\}/\&\x23125;/gsm;
+    $_[0] =~ s/\{/\&\x23123;/gsm;
+    $_[0] =~ s/\|/&\x23124;/gsm;
     $_[0] =~ s/>/&gt;/gsm;
     $_[0] =~ s/</&lt;/gsm;
     $_[0] =~ s/   /&nbsp; &nbsp;/gsm;
     $_[0] =~ s/  /&nbsp; /gsm;
-    $_[0] =~ s/"/&quot;/gsm;            #" make my syntax checker happy;
+    $_[0] =~ s/\x22/&quot;/gsm;
     return $_[0];
 }
 
 sub FromHTML {
     ( $_[0] ) = @_;
     ## This cannot be localized or unpacked ##
-    $_[0] =~ s/&quot;/"/gsm;            #" make my syntax checker happy;
+    $_[0] =~ s/&quot;/\x22/gsm;
     $_[0] =~ s/&nbsp;/ /gsm;
     $_[0] =~ s/&lt;/</gsm;
     $_[0] =~ s/&gt;/>/gsm;
-    $_[0] =~ s/&#124;/\|/gsm;
-    $_[0] =~ s/&#123;/\{/gsm;
-    $_[0] =~ s/&#125;/\}/gsm;
+    $_[0] =~ s/&\x23124;/\|/gsm;
+    $_[0] =~ s/&\x23123;/\{/gsm;
+    $_[0] =~ s/&\x23125;/\}/gsm;
     $_[0] =~ s/&amp;/&/gsm;
     return $_[0];
 }
@@ -1800,7 +1812,7 @@ sub elimnests {
 
 sub unwrap {
     my ( $codelang, $unwrapped ) = @_;
-    $unwrapped =~ s/<yabbwrap>//gxsm;
+    $unwrapped =~ s/{yabbwrap}//gxsm;
     $unwrapped = qq~\[code$codelang\]$unwrapped\[\/code\]~;
     return $unwrapped;
 }
@@ -1813,12 +1825,12 @@ sub wrap {
     $message =~ s/((\[ch\d{3,}?\]){$linewrap})/$1\n/igsm;
 
     FromHTML($message);
-    $message =~ s/[\n\r]/ <yabbbr> /gsm;
+    $message =~ s/[\n\r]/ {yabbbr} /gsm;
     my @words = split /\s/xsm, $message;
     $message = q{};
     foreach my $cur (@words) {
         if (   $cur !~ m{www\.(\S+?)\.}xsm
-            && $cur !~ m{[ht|f]tp://}xsm
+            && $cur !~ m/[ht|f]tp[s]{0,1}:\/\//xsm
             && $cur !~ m{\[\S*\]}xsm
             && $cur !~ m{\[\S*\s?\S*?\]}xsm
             && $cur !~ m{\[\/\S*\]}xsm )
@@ -1835,10 +1847,10 @@ sub wrap {
             $cur = q{};
             foreach my $splitcur (@splitword) {
                 if (   $splitcur !~ m{www\.(\S+?)\.}xsm
-                    && $splitcur !~ m{[ht|f]tp://}xsm
+                    && $splitcur !~ m/[ht|f]tp[s]{0,1}:\/\//xsm
                     && $splitcur !~ m{\[\S*\]}xsm )
                 {
-                    $splitcur =~ s/(\S{$linewrap})/$1<yabbwrap>/gism;
+                    $splitcur =~ s/(\S{$linewrap})/$1{yabbwrap}/gism;
                 }
                 $cur .= $splitcur;
             }
@@ -1846,8 +1858,8 @@ sub wrap {
         $message .= "$cur ";
     }
     $message =~ s/\[code((?:\s*).*?)\](.*?)\[\/code\]/unwrap($1,$2)/eisgm;
-    $message =~ s/ <yabbbr> /\n/gsm;
-    $message =~ s/<yabbwrap>/\n/gsm;
+    $message =~ s/ {yabbbr} /\n/gsm;
+    $message =~ s/{yabbwrap}/\n/gsm;
 
     ToHTML($message);
     $message =~ s/\[tab\]/ &nbsp; &nbsp; &nbsp;/igsm;
@@ -2121,6 +2133,7 @@ sub WriteLog {
     # 'Reverse DNS lookup timeout causes slow page loads'
     # (http://www.yabbforum.com/community/YaBB.pl?num=1199991357)
     # Search Engine identification and display will be turned off
+
     my $user_host =
       ( gethostbyaddr pack( 'C4', split /\./xsm, $user_ip ), 2 )[0];
 
@@ -2135,15 +2148,22 @@ sub WriteLog {
     fopen( LOG, "<$vardir/log.txt" );
     @logentries = <LOG>;    # Global variable
     fclose( LOG );
+    chomp @logentries;
     foreach (@logentries) {
         ( $name, $logtime, undef ) = split /\|/xsm, $_, 3;
         if ( $name ne $user_ip && $name ne $field && $logtime >= $onlinetime ) {
-            push @new_log, $_;
+            push @new_log, "$_\n";
         }
     }
-   fopen( LOG, ">$vardir/log.txt" );
+    my $hostin = qq~$user_host#$ENV{'HTTP_USER_AGENT'}~;
+    $hostin =~ s/\x0//gsm;
+    $hostin =~ s/chr(32)//gsms;
+    $hostin =~ s/\s+//gxms;
+    $hostin =~ s/\x7C//gsm;
+    $hostin =~ s/^[x20-\x7E]+$//gsm;
+    fopen( LOG, ">$vardir/log.txt" );
     print {LOG} (
-"$field|$date|$user_ip|$user_host#$ENV{'HTTP_USER_AGENT'}|$username|$currentboard|"
+"$field|$date|$user_ip|$hostin|$username|$currentboard|"
           . (
             ( !$action && $INFO{'num'} && $currentboard )
             ? 'display'
@@ -2164,14 +2184,23 @@ sub WriteLog {
         fopen( LOG, "<$vardir/clicklog.txt", 1 );
         @new_log = <LOG>;
         fclose( LOG );
-        fopen( LOG, ">$vardir/clicklog.txt", 1 );
-        print {LOG} "$field|$date|$ENV{'REQUEST_URI'}|"
+        my $hostin = $ENV{'HTTP_USER_AGENT'};
+        $hostin =~ s/\x7C//gsm;
+        my $httprefer = $ENV{'HTTP_REFERER'};
+        $httprefer =~ s/\x7C//gsm;
+        my $newlog = "$field|$date|$ENV{'REQUEST_URI'}|"
           . (
-            $ENV{'HTTP_REFERER'} =~ m/$boardurl/ism
+            $httprefer =~ m/$boardurl/ism
             ? q{}
-            : $ENV{'HTTP_REFERER'}
+            : $httprefer
           )
-          . "|$ENV{'HTTP_USER_AGENT'}\n"
+          . "|$hostin|$user_ip";
+        $newlog =~ s/\x0//gsm;
+        $newlog =~ s/chr(32)//gsms;
+        $newlog =~ s/\s+//gxms;
+        $newlog =~ s/^[x20-\x7E]+$//gsm;
+        fopen( LOG, ">$vardir/clicklog.txt", 1 );
+        print {LOG} "$newlog\n"
           or croak "$croak{'print'} LOG";
         foreach (@new_log) {
             if ( ( split /\|/xsm, $_, 3 )[1] >= $onlinetime ) {
@@ -2565,7 +2594,7 @@ sub ManageMemberinfo {
         if ($usergrp)  { $memposition = $usergrp; }
         if ($usercnt)  { $memposts    = $usercnt; }
         if ($useraddgrp) {
-            if ( $useraddgrp =~ /###blank###/sm ) { $useraddgrp = q{}; }
+            if ( $useraddgrp =~ /\x23\x23\x23blank\x23\x23\x23/sm ) { $useraddgrp = q{}; }
             $memaddgrp = $useraddgrp;
         }
         $memberinf{$user} =
@@ -2997,8 +3026,8 @@ m{(.*?)(\.|\.\)|\)\.|\!|\!\)|\)\!|\,|\)\,|\)|\;|\&quot\;|\&quot\;\.|\.\&quot\;|\
     }
     my $realurl = $txturl;
     $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igsm;
-    $txturl =~ s/\[/&#91;/gsm;
-    $txturl =~ s/\]/&#93;/gsm;
+    $txturl =~ s/\[/&\x2391;/gsm;
+    $txturl =~ s/\]/&\x2393;/gsm;
     $txturl =~ s/\<.+?\>//igsm;
     my $formaturl = qq~$txtfirst\[url\=$txturl\]$realurl\[\/url\]$lasttxt~;
     return $formaturl;
@@ -3016,8 +3045,8 @@ sub format_url3 {
     my ($txturl) = @_;
     my $txtlink = $txturl;
     $txturl =~ s/(\[highlight\]|\[\/highlight\]|\[edit\]|\[\/edit\])//igsm;
-    $txturl =~ s/\[/&#91;/gsm;
-    $txturl =~ s/\]/&#93;/gsm;
+    $txturl =~ s/\[/&\x2391;/gsm;
+    $txturl =~ s/\]/&\x2393;/gsm;
     $txturl =~ s/\<.+?\>//igsm;
     my $formaturl = qq~\[url\=$txturl\]$txtlink\[\/url\]~;
     return $formaturl;
@@ -3030,7 +3059,7 @@ sub sizefont {
     if    ( !$fontsizemin )         { $fontsizemin = 6; }
     if    ( $tsize < $fontsizemin ) { $tsize       = $fontsizemin; }
     elsif ( $tsize > $fontsizemax ) { $tsize       = $fontsizemax; }
-    return qq~<span style="font-size: $tsize\pt;">$ttext</span><!--size-->~;
+    return qq~<span style="font-size: ${tsize}pt;">$ttext</span><!--size-->~;
 }
 
 sub regex_1 {
@@ -3244,28 +3273,23 @@ sub UploadFile {
         if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
        {    # replace all inappropriate characters
             # Transliteration
-            my @ISO_8859_1 =
-              qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
             my $x = 0;
-            foreach (
-              qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)
-            )
-            {
-            $fixfile =~ s/$_/$ISO_8859_1[$x]/igxsm;
-            $x++;
+            foreach ( @uploadtranlist ) {
+                $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
+                $x++;
             }
 
             # END Transliteration. Thanks to "Velocity" for this contribution.
+            # replace . with _ in the filename except for the extension
             $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gxsm;
         }
 
-        # replace . with _ in the filename except for the extension
         my $fixname = $fixfile;
         if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
             $fixext = $2;
         }
 
-        $spamdetected = spamcheck("$fixname");
+        $spamdetected = spamcheck($fixname);
         if ( !$staff ) {
             if ( $spamdetected == 1 ) {
                 ${ $uid . $username }{'spamcount'}++;

@@ -3,7 +3,7 @@ $SectionName = "Getting_started";
 ### Section 1
 #############################################
 $SectionSub1 = "Register_an_Account";
-$SectionBody1 = qq~<p>Since this forum is powered by YaBB, registering an account is so simple; you'll be chatting in no time!</p>
+$SectionBody1 = q~<p>Since this forum is powered by YaBB, registering an account is so simple; you'll be chatting in no time!</p>
 <p><b>Step 1:</b> In the menu above, you will see items titled &#8220;Board Index&#8221;, &#8220;Help&#8221;, &#8220;Login&#8221;, &#8220;Register&#8221;, etc. Click on &#8220;Register&#8221;.</p>
 <p><b>Step 2:</b> On this new page, you will see a form where you can choose your user ID and screen name, password &#40;if the administrator allows&#41;, and enter your e-mail address.  Fill in the boxes with your information.</p>
 <p><b>Step 3:</b> If enabled by the Administrator, you may need to fill in the characters presented in the Verification Code &#40;CAPTCHA&#41; box according to the instructions on the screen.</p>
@@ -19,7 +19,7 @@ $SectionBody1 = qq~<p>Since this forum is powered by YaBB, registering an accoun
 ### Section 2
 #############################################
 $SectionSub2 = "Log_Into_Your_Account";
-$SectionBody2 = qq~<p>Now that you've registered an account, it's time to sign in.</p>
+$SectionBody2 = q~<p>Now that you've registered an account, it's time to sign in.</p>
 <p><b>Step 1:</b> In the menu above, you will see items titled &#8220;Board Index&#8221;, &#8220;Help&#8221;, &#8220;Login&#8221;, &#8220;Register&#8221;, etc. Click on &#8220;Login&#8221;.</p>
 <p><b>Step 2:</b> On this new page (or in the form at the bottom of the page), you will see several options.</p>
 <ul>
@@ -38,14 +38,14 @@ $SectionBody2 = qq~<p>Now that you've registered an account, it's time to sign i
 ### Section 3
 #############################################
 $SectionSub3 = "Log_Out_of_Your_Account";
-$SectionBody3 = qq~<p>When you are done posting, it is a good idea to log out of your account so others using your computer will not have access to your information. To do this, find the menu item titled &#8220;Logout&#8221;. Once you click this button, YaBB will log you out of the forum. You must log in again if you wish to post or access member-only functions.</p>
+$SectionBody3 = q~<p>When you are done posting, it is a good idea to log out of your account so others using your computer will not have access to your information. To do this, find the menu item titled &#8220;Logout&#8221;. Once you click this button, YaBB will log you out of the forum. You must log in again if you wish to post or access member-only functions.</p>
 ~;
 #############################################
 
 ### Section 4
 #############################################
 $SectionSub4 = "Forgotten_Password";
-$SectionBody4 = qq~<p>If you have forgotten your password, YaBB can allow you to reset it.</p>
+$SectionBody4 = q~<p>If you have forgotten your password, YaBB can allow you to reset it.</p>
 <p><b>Step 1</b> In the menu above, you will see items titled &#8220;Board Index&#8221;, &#8220;Login&#8221;, &#8220;Register&#8221;, etc. Click on &#8220;Login&#8221;.</p>
 <p><b>Step 2</b> On this new page, you will see a link titled &#8220;Forgot Password&#8221;. Click this link.</p>
 <p><b>Step 3</b> A new page will load with at least one box. In the box labeled &#8220;User ID or e-mail address&#8221; enter the user ID or the e-mail address you registered with. Other boxes (depending on which validation forms the Forum Administrator has chosen to activate) are to confirm that the form is not being used by a spambot or an automated system.</p>

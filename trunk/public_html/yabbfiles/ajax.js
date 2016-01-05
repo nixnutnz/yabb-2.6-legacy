@@ -3,16 +3,16 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 2.6.11                                                #
-//# Packaged:       December 2, 2014                                           #
+//# Version:        YaBB 2.6.12                                                #
+//# Packaged:       January 5, 2016                                            #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
-//# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.    #
+//# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 2.6.11 $Revision$
+//YaBB 2.6.12 $Revision: 1611 $
 
 var xmlHttp = null;
 var browser = '';
@@ -728,16 +728,14 @@ function GetXmlHttpObject() {
     try { // test if ajax is supported
         if (typeof( new XMLHttpRequest() ) == 'object') {
             xmlHttp = new XMLHttpRequest();
-        } else if (typeof( new ActiveXObject("MSXML2.XMLHttp.6.0") ) == 'object') {
-            xmlHttp = new ActiveXObject("MSXML2.XMLHttp.6.0");
-        } else if (typeof( new ActiveXObject("MSXML2.XMLHttp.3.0") ) == 'object') {
-            xmlHttp = new ActiveXObject("MSXML2.XMLHttp.3.0");
-        } else if (typeof( new ActiveXObject("MSXML2.XMLHttp") ) == 'object') {
-            xmlHttp = new ActiveXObject("MSXML2.XMLHttp");
+        } else if (typeof( new ActiveXObject("Msxml2.XMLHTTP.6.0") ) == 'object') {
+            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP.6.0");
+        } else if (typeof( new ActiveXObject("Msxml2.XMLHTTP.3.0") ) == 'object') {
+            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP.3.0");
+        } else if (typeof( new ActiveXObject("Msxml2.XMLHTTP") ) == 'object') {
+            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
         } else if (typeof( new ActiveXObject("Microsoft.XMLHTTP") ) == 'object') {
             xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
     } catch (e) { }
-} 
-
-
+}

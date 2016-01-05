@@ -2,22 +2,22 @@
 
 ###############################################################################
 # BoardConvert.pl                                                             #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$boardconvertplver = 'YaBB 2.6.11 $Revision$';
+$boardconvertplver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -59,10 +59,10 @@ my @boardcontrols = <FORUMCONTROL>;
 close(FORUMCONTROL);
 
 foreach my $boardline (@boardcontrols) {
-	$boardline =~ s/[\r\n]//g; # Built in chomp
-        (undef, $cntboard ) = split /\|/xsm, $boardline;
-	## create a global boards array
-	push(@allboards, $cntboard);
+    $boardline =~ s/[\r\n]//g; # Built in chomp
+        (undef, $cntboard ) = split /[|]/xsm, $boardline;
+    ## create a global boards array
+    push(@allboards, $cntboard);
 }
 
 LoadBoardControl();
@@ -72,7 +72,7 @@ foreach my $cntboard (@allboards) {
     print {BOARDCONV} qq~\%$cntboard = (\n~;
     foreach (keys %{ $uid . $cntboard } ) {
         print {BOARDCONV} "'$_' => '${ $uid . $cntboard }{$_}',\n";
-    } 
+    }
         print {BOARDCONV} qq~);\n~;
 }
 close(BOARDCONV);
@@ -96,7 +96,7 @@ sub SimpleOutput {
 <html lang='en-US'>
 <head>
     <meta charset="utf-8">
-    <title>YaBB 2.6.11 Forum Control Exporter Utility</title>
+    <title>YaBB 2.6.12 Forum Control Exporter Utility</title>
     <style type="text/css">
         html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px; background-color:#eee}
     </style>

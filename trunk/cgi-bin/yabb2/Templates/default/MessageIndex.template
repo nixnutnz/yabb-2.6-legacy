@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$messageindextemver = 'YaBB 2.6.11 $Revision$';
+$messageindextemver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 LoadLanguage('BoardIndex');
 
@@ -25,7 +25,7 @@ $my_ttsep = $menusep;
 
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
-if($useThreadtools) {
+if($useThreadtools == 1) {
     $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
     $threadhandelstyle2 = qq~ class="post_tools center" style="width:10em"~;
 }
@@ -243,7 +243,11 @@ $threadbar = qq~<tr class="{yabb altthdcolor}">
                     <td class="center">{yabb threadpic}</td>
                     <td class="center">{yabb icon}</td>
                     <td>
-                        <div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}
+                        <div style="float: left; width: 95%;">
+                            {yabb favorite}
+                            {yabb new}
+                            {yabb poll}
+                            {yabb subjectlink}
                             <br /><span class="small">$messageindex_txt{'527'} {yabb starttime} $messageindex_txt{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span>
                         </div>
                         <div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>

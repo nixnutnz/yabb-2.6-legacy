@@ -1,21 +1,21 @@
 ###############################################################################
 # Load.pm                                                                     #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$loadpmver = 'YaBB 2.6.11 $Revision$';
+$loadpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 sub LoadBoardControl {
     $binboard = q{};
@@ -177,9 +177,9 @@ sub LoadCensorList {
                 }
                 push @censored, [ $tmpa, $tmpb, $tmpc ];
             }
+            fclose(CENSOR);
         }
     }
-    fclose(CENSOR);
     return;
 }
 
@@ -264,22 +264,25 @@ sub FormatUserName {
 }
 
 sub LoadUser {
-    my ( $user, $userextension ) = @_;
+    my ( $user, $userextension, $tst ) = @_;
     return 1 if exists ${ $uid . $user }{'realname'};
     return 0 if $user eq q{} || $user eq 'Guest';
 
-    if ( !$userextension ) { $userextension = 'vars'; }
+    if ( !$userextension ) {
     if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
         $userextension = 'pre';
     }
     elsif ( $regtype == 1 && -e "$memberdir/$user.wait" ) {
         $userextension = 'wait';
     }
+        else { $userextension = 'vars';}
+    }
 
-    if ( -e "$memberdir/$user.$userextension" ) {
+    if ( !-e "$memberdir/$user.$userextension" ) { return 0; }   # user not found
+    else {
         if ( $user ne $username ) {
             fopen( LOADUSER, "$memberdir/$user.$userextension" )
-              or fatal_error( 'cannot_open', "$memberdir/$user.$userextension",
+              or fatal_error( 'cannot_open', "$memberdir/$user.$userextension load 2 $tst",
                 1 );
             my @settings = <LOADUSER>;
             fclose(LOADUSER);
@@ -292,10 +295,10 @@ sub LoadUser {
         else {
             fopen( LOADUSER, "<$memberdir/$user.$userextension" )
               or fatal_error( 'cannot_open',
-                "$memberdir/$user.$userextension load 1", 1 );
+                "$memberdir/$user.$userextension load 1 $tst", 1 );
             my @settings = <LOADUSER>;
             fclose(LOADUSER);
-            for my $i ( 0 .. ( @settings - 1 ) ) {
+            for my $i ( 0 .. $#settings ) {
                 if ( $settings[$i] =~ /'(.*?)',"(.*?)"/xsm ) {
                     ${ $uid . $user }{$1} = $2;
                     if (   $1 eq 'lastonline'
@@ -310,7 +313,7 @@ sub LoadUser {
             if ( scalar @settings != 0 ) {
                 fopen( LOADUSER, ">$memberdir/$user.$userextension" )
                   or fatal_error( 'cannot_open',
-                    "$memberdir/$user.$userextension load2", 1 );
+                    "$memberdir/$user.$userextension load 3 $tst", 1 );
                 print {LOADUSER} @settings or croak "$croak{'print'} LOADUSER";
                 fclose(LOADUSER);
             }
@@ -326,8 +329,6 @@ sub LoadUser {
 
         return 1;
     }
-
-    return 0;    # user not found
 }
 
 sub is_moderator {
@@ -367,7 +368,6 @@ sub is_moderator_b {
                 get_forum_master();
                 ( $boardname, $boardperms, $boardview ) =
                   split /\|/xsm, $board{$i};
-
                 $mybrds .= qq~$boardname<br />~;
                 return 1;
             }
@@ -1138,59 +1138,6 @@ sub UpdateCookie {
     return;
 }
 
-sub LoadAccess {
-    $yesaccesses .= "$load_txt{'805'} $load_txt{'806'} $load_txt{'808'}<br />";
-    $noaccesses = q{};
-
-    # Reply Check
-    my $rcaccess = AccessCheck( $currentboard, 2 ) || 0;
-    if ( $rcaccess eq 'granted' ) {
-        $yesaccesses .=
-          "$load_txt{'805'} $load_txt{'806'} $load_txt{'809'}<br />";
-    }
-    else {
-        $noaccesses .=
-          "$load_txt{'805'} $load_txt{'807'} $load_txt{'809'}<br />";
-    }
-
-    # Topic Check
-    my $tcaccess = AccessCheck( $currentboard, 1 ) || 0;
-    if ( $tcaccess eq 'granted' ) {
-        $yesaccesses .=
-          "$load_txt{'805'} $load_txt{'806'} $load_txt{'810'}<br />";
-    }
-    else {
-        $noaccesses .=
-          "$load_txt{'805'} $load_txt{'807'} $load_txt{'810'}<br />";
-    }
-
-    # Poll Check
-    my $access = AccessCheck( $currentboard, 3 ) || 0;
-    if ( $access eq 'granted' ) {
-        $yesaccesses .=
-          "$load_txt{'805'} $load_txt{'806'} $load_txt{'811'}<br />";
-    }
-    else {
-        $noaccesses .=
-          "$load_txt{'805'} $load_txt{'807'} $load_txt{'811'}<br />";
-    }
-
-    # Zero Post Check
-    if ( $username ne 'Guest' ) {
-        if ( $INFO{'zeropost'} != 1 && $rcaccess eq 'granted' ) {
-            $yesaccesses .=
-              "$load_txt{'805'} $load_txt{'806'} $load_txt{'812'}<br />";
-        }
-        else {
-            $noaccesses .=
-              "$load_txt{'805'} $load_txt{'807'} $load_txt{'812'}<br />";
-        }
-    }
-
-    $accesses = qq~$yesaccesses<br />$noaccesses~;
-    return $accesses;
-}
-
 sub WhatTemplate {
     $found = 0;
     while ( ( $curtemplate, $value ) = each %templateset ) {
@@ -1401,7 +1348,7 @@ sub update_IMS {
 
     fopen( UPDATE_IMS, ">$memberdir/$builduser.ims", 1 )
       or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
-    print {UPDATE_IMS} qq~### UserIMS YaBB 2.6.11 Version ###\n\n~
+    print {UPDATE_IMS} qq~### UserIMS YaBB 2.6.12 Version ###\n\n~
       or croak "$croak{'print'} update IMS";
     for my $cnt ( 0 .. ( @tag - 1 ) ) {
         print {UPDATE_IMS} qq~'$tag[$cnt]',"${$builduser}{$tag[$cnt]}"\n~
@@ -1421,7 +1368,7 @@ sub load_IMS {
         fclose(IMSFILE);
     }
 
-    if ( $ims[0] =~ /###/xsm ) {
+    if ( $ims[0] =~ /\x23\x23\x23/xsm ) {
         foreach (@ims) {
             if ( $_ =~ /'(.*?)',"(.*?)"/xsm ) { ${$builduser}{$1} = $2; }
         }

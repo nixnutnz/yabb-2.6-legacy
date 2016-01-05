@@ -1,21 +1,21 @@
 ###############################################################################
 # Attachments.pm                                                              #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+use Carp;
+our $VERSION = '2.6.12';
 
-$attachmentspmver = 'YaBB 2.6.11 $Revision$';
+$attachmentspmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Attachments {
@@ -543,7 +543,7 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
             }
             my $amfna = $amfn;
             if ( length($amfn) > 30 ) {
-                $amfna = substr( $amthreadsub, 0, 30 ) . q{...};
+                $amfna = substr( $amfna, 0, 30 ) . q{...};
             }
             $viewattachments .= qq~<tr>
             <td class="windowbg2 center"><input type="checkbox" name="del_$amthreadid" value="$amfn" /></td>
@@ -581,6 +581,8 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
     my $class_sortsubj   = $sort =~ /2/sm   ? 'catbg' : 'windowbg';
     my $class_sortuser   = $sort =~ /3/sm   ? 'catbg' : 'windowbg';
 
+    my $rsort;
+
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell">
@@ -609,43 +611,43 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
         <div class="small" style="float: left; text-align: left;">$fatxt{'28'} $max $numshow</div>
         $pageindex
         </td>
-    </tr><tr class="att_h_b">
-        <td class="windowbg center"><b>$fatxt{'45'}</b></td>
-        <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 7 ? -7 : 7 )
-      . qq~';" class="$class_sortattach center att"><a href="$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 7 ? -7 : 7 )
-      . qq~"><b>$fatxt{'40'}</b></a></td>
-        <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 100 ? -100 : 100 )
-      . qq~';" class="$class_sorttype center att"><a href="$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 100 ? -100 : 100 )
-      . qq~"><b>$fatxt{'40a'}</b></a></td>
-        <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 5 ? -5 : 5 )
-      . qq~';" class="$class_sortsize center att"><a href="$adminurl?action=manageattachments2;sort=~
-      . ( $sort == -5 ? 5 : -5 )
-      . qq~"><b>$fatxt{'41'}</b></a></td>
-        <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 6 ? -6 : 6 )
-      . qq~';" class="$class_sortdate center att"><a href="$adminurl?action=manageattachments2;sort=~
-      . ( $sort == -6 ? 6 : -6 )
-      . qq~"><b>$fatxt{'43'}</b></a></td>
-        <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 8 ? -8 : 8 )
-      . qq~';" class="$class_sorcount center att"><a href="$adminurl?action=manageattachments2;sort=~
-      . ( $sort == -8 ? 8 : -8 )
-      . qq~"><b>$fatxt{'41a'}</b></a></td>
-        <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 2 ? -2 : 2 )
-      . qq~';" class="$class_sortsubj center att"><a href="$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 2 ? -2 : 2 )
-      . qq~"><b>$fatxt{'44'}</b></a></td>
-        <td onclick="location.href='$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 3 ? -3 : 3 )
-      . qq~';" class="$class_sortuser center att"><a href="$adminurl?action=manageattachments2;sort=~
-      . ( $sort == 3 ? -3 : 3 )
-      . qq~"><b>$fatxt{'42'}</b></a></td>
+    </tr><tr class="att_h_b">~;
+        $rsort = ( $sort == 7 ? -7 : 7 );
+        $yymain .= qq~
+        <td class="$class_sortattach center att"><b>$fatxt{'6c'}</b></td>
+        <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sortattach center att">
+            <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'40'}</b></a>
+        </td>~;
+        $rsort = ( $sort == 100 ? -100 : 100 );
+        $yymain .= qq~
+        <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sorttype center att">
+            <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'40a'}</b></a>
+        </td>~;
+        $rsort = ( $sort == 5 ? -5 : 5 );
+        $yymain .= qq~
+        <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sortsize center att">
+            <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'41'}</b></a>
+        </td>~;
+        $rsort = ( $sort == 6 ? -6 : 6 );
+        $yymain .= qq~
+        <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sortdate center att">
+            <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'43'}</b></a>
+        </td>~;
+        $rsort = ( $sort == 8 ? -8 : 8 );
+        $yymain .= qq~
+        <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sorcount center att">
+            <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'41a'}</b></a>
+        </td>~;
+        $rsort = ( $sort == 2 ? -2 : 2 );
+        $yymain .= qq~
+        <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sortsubj center att">
+            <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'44'}</b></a>
+        </td>~;
+        $rsort = ( $sort == 3 ? -3 : 3 );
+        $yymain .= qq~
+        <td onclick="location.href='$adminurl?action=manageattachments2;sort=$rsort';" class="$class_sortuser center att">
+            <a href="$adminurl?action=manageattachments2;sort=$rsort"><b>$fatxt{'42'}</b></a>
+        </td>
     </tr>
     $viewattachments
 </table>
@@ -1399,7 +1401,7 @@ sub RemovePMAttachments {
           split /\|/xsm, $_;
         $del_filename{$afilename}++;
     }
-    for my $i ( 0 .. ( @pmAttachments - 1 ) ) {
+    for my $i ( 0 .. $#pmAttachments ) {
         (
             $athreadnum, undef, undef, $afilename, undef, undef
         ) = split /\|/xsm, $pmAttachments[$i];

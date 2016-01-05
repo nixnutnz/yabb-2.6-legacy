@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$myprofiletemver = 'YaBB 2.6.11 $Revision$';
+$myprofiletemver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 $my_bdaycake = 'bdaycake.png';
 $my_aim = 'aim.gif';
@@ -93,7 +93,8 @@ $myprofile_edit = qq~<table class="cs_thin pad_4px">
     </tr>{yabb my_passchk}
     <tr class="windowbg">
         <td><label for="name"><b>$profile_txt{68}: </b>
-            <br />{yabb my_name_not}</td>
+            <br />{yabb my_name_not}
+        </td>
         <td>
              <input type="text" maxlength="30" onchange="checkAvail('$scripturl',this.value,'display')" name="name" id="name" size="30" value="{yabb user}" /><div id="displayavailability"></div>
         </td>
@@ -107,7 +108,7 @@ $myprofile_edit = qq~<table class="cs_thin pad_4px">
         </td>
     </tr>
     <tr class="windowbg">
-       <td><label for="birthday"><b>$profile_txt{'563'}:</b>{yabb editAgeTxt}</label></td>
+       <td><label for="birthday"><b>$profile_txt{'563'}:{yabb require_bd}</b>{yabb editAgeTxt}</label></td>
        <td><span class="small">{yabb bdaysel}{yabb require_bd}</span></td>
     </tr>{yabb showageshow}
     <tr class="windowbg">

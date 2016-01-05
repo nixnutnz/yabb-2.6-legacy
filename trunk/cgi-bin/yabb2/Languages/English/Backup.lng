@@ -3,16 +3,16 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$backuplngver = 'YaBB 2.6.11 $Revision$';
+$backuplngver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 $script_root = $ENV{'SCRIPT_FILENAME'};
 if( ! $script_root ) {
@@ -63,7 +63,7 @@ if( ! $script_root ) {
 '21' => 'Run Backup',
 '22' => 'Click the button below to run a backup. Backups are stored in the Archive Destination Directory (',
 '23' => '), set above.',
-'24' => '<span style="color: red;">During backup, your forum will automatically be put into Maintenance Mode.<br /><br /><b>Note:</b></span> For backups of very large forums, it may take a while until the page refreshes - be prepared to wait at least 5 minutes. If you experience a timeout or nothing happens after 5 minutes, consider the <span style="color:red;">NOTE</span> above in &#39;Backup Method&#39; regarding large backup files.<br /><br />After running at least one regular backup, you may select whether subsequent backups are full (all files in the directories checked above) or incremental (only those files which have changed since the last backup). If you change (and save) any of the settings above, the next backup <i>must</i> be a full backup. For incremental backups, the time interval for determining changed files is measured in <i>seconds</i> for Tar, Archive::Tar and Archive::Zip but in <i>days</i> for Zip.',
+'24' => '<span class="important">During backup, your forum will automatically be put into Maintenance Mode.<br /><br /><b>Note:</b></span> For backups of very large forums, it may take a while until the page refreshes - be prepared to wait at least 5 minutes. If you experience a timeout or nothing happens after 5 minutes, consider the <span style="color:red;">NOTE</span> above in &#39;Backup Method&#39; regarding large backup files.<br /><br />After running at least one regular backup, you may select whether subsequent backups are full (all files in the directories checked above) or incremental (only those files which have changed since the last backup). If you change (and save) any of the settings above, the next backup <i>must</i> be a full backup. For incremental backups, the time interval for determining changed files is measured in <i>seconds</i> for Tar, Archive::Tar and Archive::Zip but in <i>days</i> for Zip.',
 '25' => 'Run Full Backup - all files in selected directories',
 '25a' => 'Run Incremental Backup - only files changed/created since',
 

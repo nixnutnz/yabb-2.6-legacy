@@ -1,23 +1,23 @@
 ###############################################################################
 # Settings_Main.pm                                                            #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
+# Version:        YaBB 2.6.12                                                 #
 # Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 use English qw(-no_match_vars);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-our $settings_mainpmver = 'YaBB 2.6.11 $Revision$';
+our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -1682,11 +1682,11 @@ sub SaveSettings {
 
     # Fix guestaccess
     $settings{'guestaccess'} = !$settings{'guestaccess'} || 0;
-    $settings{'imtext'} =~ s/\r(?=\n*)//gsm;
-    $settings{'imtext'} =~ s~\n~<br />~gsm;
+    $settings{'imtext'} =~ s/\r(?=\n*)//gxsm;
+    $settings{'imtext'} =~ s~\n~<br />~gxsm;
 
     # Fix $pwstrengthmeter_common
-    $settings{'pwstrengthmeter_common'} =~ s/'//gsm; #' make my syntax checker happy;
+    $settings{'pwstrengthmeter_common'} =~ s/\x27//gxsm;
     if (($settings{'set_subjectMaxLength'} < 10 && $settings{'set_subjectMaxLength'} != 0) || $settings{'set_subjectMaxLength'} > 255) { fatal_error('invalid_value', "set_subjectMaxLength ($admin_txt{'498a'})"); }
 
     # Convert unwanted tags in Board Name

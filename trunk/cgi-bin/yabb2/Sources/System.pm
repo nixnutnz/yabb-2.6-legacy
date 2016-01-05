@@ -1,21 +1,21 @@
 ###############################################################################
 # System.pm                                                                   #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$systempmver = 'YaBB 2.6.11 $Revision$';
+$systempmver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 sub BoardTotals {
     my ( $job, @updateboards ) = @_;
@@ -266,22 +266,7 @@ sub MessageTotals {
 
     ## trap writing false ctb files on forged num= actions ##
     if ( -e "$datadir/$updatethread.txt" ) {
-        my $format = 'SDT, DD MM YYYY HH:mm:ss zzz';    # The format
-                                                        # Save their old format
-        my $timeformat = ${ $uid . $username }{'timeformat'};
-        my $timeselect = ${ $uid . $username }{'timeselect'};
-
-        # Override their settings
-        ${ $uid . $username }{'timeformat'} = $format;
-        ${ $uid . $username }{'timeselect'} = 7;
-
-        # Do the work
-        my $newtime = timeformat( $date, 1, 'rfc' );
-
-        # And restore their settings
-        ${ $uid . $username }{'timeformat'} = $timeformat;
-        ${ $uid . $username }{'timeselect'} = $timeselect;
-
+        my $newtime = ctbtime();
         ${$updatethread}{'repliers'} = join q{,}, @repliers;
 
 # Changes here on @tag must also be done in Post.pm -> sub Post2 -> my @tag = ...
@@ -292,7 +277,7 @@ sub MessageTotals {
         print {UPDATE_CTB}
           qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n~
           or croak "$croak{'print'} UPDATE_CTB";
-        for my $cnt ( 0 .. ( @tag - 1 ) ) {
+        for my $cnt ( 0 .. $#tag ) {
             print {UPDATE_CTB} qq~'$tag[$cnt]',"${$updatethread}{$tag[$cnt]}"\n~
               or croak "$croak{'print'} UPDATE_CTB";
         }

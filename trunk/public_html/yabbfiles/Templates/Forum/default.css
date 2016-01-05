@@ -1,14 +1,14 @@
 /*--------------------------------------------------------*/
-/*           YaBB 2014                                    */
+/*           YaBB 2016                                    */
 /*--------------------------------------------------------*/
 /*   Created by: YaBB http://www.yabbforum.com            */
 /*--------------------------------------------------------*/
 /*  You may adapt elements of this CSS in your own        */
 /*  projects, but please give credit to yabbforum.com.    */
 /*--------------------------------------------------------*/
-/*  This is the css file for YaBB 2.6.1 default Template  */
+/*  This is the css file for YaBB 2.6.12 default Template */
 /*--------------------------------------------------------*/
-/* $Revision$                                      */
+/* $Revision: 1613 $                                      */
 
 body {
     background-color: #eee;
@@ -42,7 +42,7 @@ a:focus, input:focus, textarea:focus, select:focus { outline: 0 none; }
     background-color: #4378ae;
 }
 
-#header a { color:#2d2d2d; }
+#header a { color: #2d2d2d; }
 
 #header .highlight a { color: #3b5998; }
 
@@ -138,8 +138,9 @@ table.cs_thin {
     border-collapse: separate;
     border-spacing: 1px;
 }
- table.fixed {
-    table-layout:fixed;
+
+table.fixed {
+    table-layout: fixed;
 }
 
 #maincontainer {
@@ -185,7 +186,9 @@ table.cs_thin {
     font-size: 12px;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: url(./default/tabtitle.png) repeat-x top #3673b3;
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
@@ -201,7 +204,9 @@ table.cs_thin {
     font-size: 12px;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: url(./default/tabtitle.png) repeat-x top #3673b3;
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle-bottom {
@@ -213,7 +218,9 @@ table.cs_thin {
     font-size: 12px;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: url(./default/tabtitle.png) repeat-x top #3673b3;
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
@@ -312,7 +319,6 @@ table.cs_thin {
 .tabmenu span, .mctabmenu span {
     float: left;
     height: 25px;
-    background-color: #2d2d2d;
     margin: 0;
     border: 0;
     padding: 0;
@@ -368,7 +374,7 @@ table.cs_thin {
 }
 
 .newsfader {
-    background-color:#fefefe;
+    background-color: #fefefe;
     color: #304b58;
     font-size: 10px;
     font-style: normal;
@@ -778,8 +784,8 @@ tr.search .imgcatbg:hover, tr.search .imgwindowbg:hover { color: #2d2d2d; }
 }
 
 .boardcontainer {
-    background-color:#bbb;
-    border:0;
+    background-color: #bbb;
+    border: 0;
 }
 
 .displaycontainer {
@@ -951,8 +957,8 @@ div.left99 {
 }
 
 div.left440 {
-    float:left;
-    width:440px;
+    float: left;
+    width: 440px;
 }
 
 div.boxlist1 {
@@ -1027,11 +1033,11 @@ table.pad_10px td, .padd_10px { padding: 10px; }
 
 .h_50px { height: 50px; }
 
-.h_60px { height :60px; }
+.h_60px { height : 60px; }
 
 .h_70px { height: 70px; }
 
-.h_80px { height:80px; }
+.h_80px { height: 80px; }
 
 /*For the ajax rotating gif popup.  The width established below must match the width in ajax.js*/
 #ImageAlert {
@@ -1061,7 +1067,9 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     font-size: 12px;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: url(./default/tabtitle.png) repeat-x top #1f6eb6;
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
     height: 25%;
     line-height: 2em;
     text-align: center;
@@ -1303,7 +1311,7 @@ span.ubbcbutton {
     font-size: 18px;
     vertical-align: top;
     display: inline-block;
-	float:left;
+    float: left;
 }
 
 .ubbcbuttonback {
@@ -1316,7 +1324,9 @@ span.ubbcbutton {
 
 /* Post and Thread Tools */
 .windowbg td.post_tools {
-    background: #3673b3 url(./default/tabtitle.png) repeat-x;
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
     height: 100%;
     border-top: 0;
     border-bottom: 0;
@@ -1328,7 +1338,9 @@ span.ubbcbutton {
 }
 
 .windowbg2 td.post_tools,.tabtitle td.post_tools,.tabtitle-bottom td.post_tools {
-    background: #3673b3 url(./default/tabtitle.png) repeat-x;
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
     height: 100%;
     border-top: 0;
     border-bottom: 0;
@@ -1378,11 +1390,11 @@ span.ubbcbutton {
 
 .post_tools_a a:hover {
     color: #bbb;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .post_tools_menu li:hover {
-    background-color:#eee;
+    background-color: #eee;
     color: #2d2d2d;
 }
 
@@ -1527,7 +1539,7 @@ span.ubbcbutton {
 
 .cal_row2 { height: 26px; }
 
-/* ---- Don't style some input fields: Quick search, palette, remaining characters, Postbox font face and size ---- */
+/* ---- Do not style some input fields: Quick search, palette, remaining characters, Postbox font face and size ---- */
 .yabb_searchbox input,input[name="viewcode"] {
     background-color: transparent !important;
     border: 0 !important;
@@ -1536,7 +1548,7 @@ span.ubbcbutton {
 
 input[name*="msgCL"],input[name="txtsize"] { background-color: transparent !important; }
 
-select[name="fontface"],select[name="fontsize"] { padding:0 !important; }
+select[name="fontface"],select[name="fontsize"] { padding: 0 !important; }
 
 .zodiac {
     font-size: 18px;
@@ -1685,12 +1697,12 @@ h4.help {
 }
 
 .attbox {
-    float:left;
-    margin:8px;
+    float: left;
+    margin: 8px;
     display: inline;
 }
 
-.attbox_b { margin:8px; }
+.attbox_b { margin: 8px; }
 
 .att_hr {
     margin: 5px 0;
@@ -1979,7 +1991,9 @@ h4.help {
     font-size: 12px;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: url(./default/tabtitle.png) repeat-x top #1f6eb6;
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
@@ -2040,4 +2054,29 @@ h4.help {
 
 .mar-bot { margin-bottom: 1em;}
 
-.off-color { color:#ccc;}
+.off-color { color: #ccc;}
+
+span.newlinks {
+    height: 11px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: -webkit-linear-gradient(top, #569dce, #3673b3);
+    background: -moz-linear-gradient(top, #569dce, #3673b3);
+    background: linear-gradient(#569dce, #3673b3);
+}
+
+span.newlinks_c {
+    color: #fff;
+    font-size: 8px;
+    height: 11px;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 4px;
+}
+
+.important {
+    color: #ff0000; font-weight: 700;
+}

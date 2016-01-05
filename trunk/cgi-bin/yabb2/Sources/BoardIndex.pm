@@ -1,14 +1,14 @@
 ###############################################################################
 # BoardIndex.pm                                                               #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -17,9 +17,9 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$boardindexpmver = 'YaBB 2.6.11 $Revision$';
+$boardindexpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
@@ -82,7 +82,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 $bot_count{$is_a_bot}++;
             }
             elsif ($name) {
-                if ( LoadUser($name) ) {
+                if ( $name !~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm && $name !~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm && LoadUser($name, 'vars', 'brd1') ) {
                     if ( $name eq $username ) { $user_in_log = 1; }
                     elsif ( ${ $uid . $name }{'lastonline'} < $lastonline ) {
                         next;
@@ -107,7 +107,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     }
                 }
                 else {
-                    if ( $name eq $user_ip ) { $guest_in_log = 1; }
+                    if ( !LoadUser($name, 'vars', 'brd2') || $name eq $user_ip ) { $guest_in_log = 1; }
                     $guests++;
                     $bvusers{$boardv}++;
                     if (   ( $iamadmin && $show_online_ip_admin )
@@ -175,14 +175,14 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /\|/xsm, $_, 7;
             if ($name) {
-                if ( LoadUser($name) ) {
+                if ( $name !~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm && $name !~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm && LoadUser($name, 'vars') ) {
                     if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
                         $bvusers{$boardv}++;
                     }
                 }
                 else {
-                    if ( $name eq $user_ip ) { $guest_in_log = 1; }
+                    if ( !LoadUser($name, 'vars' ) || $name eq $user_ip ) { $guest_in_log = 1; }
                     $guests++;
                     $bvusers{$boardv}++;
                 }
@@ -583,6 +583,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','$catid','$imagesdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">~;
             }
 
+        # Moved this out of for loop. Gets the latest data for sub boards
 # loop through any collapsed boards to find new posts in it and change the image to match
 # Now shows this whether minimized or not, for Javascript hiding/showing. (Unilat)
             if ( $INFO{'catselect'} eq q{} ) {
@@ -590,6 +591,9 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                     my $testcat;
                     ( $testcat, $curboard ) = split /\|/xsm, $boardinfo;
                     if ( $testcat ne $catid ) { next; }
+                    else { find_latest_data( $curboard, split /\|/xsm,
+                        $subboard{$curboard} );
+                    }
 
 # as we fill the vars based on all boards we need to skip any cat already shown before
                     if ( $new_icon{$curboard} ) {
@@ -706,73 +710,6 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
 
         my $alternateboardcolor = 0;
 
-        # Moved this out of for loop. Gets the latest data for sub boards
-        *find_latest_data = sub {
-            my ( $parentbd, @children ) = @_;
-            $childcnt{$parentbd}    = 0;
-            $sub_new_cnt{$parentbd} = 0;
-            foreach my $childbd (@children) {
-
-# make recursive call first so we can get latest post data working from bottom up.
-                if ( $subboard{$childbd} ) {
-                    find_latest_data( $childbd, split /\|/xsm,
-                        $subboard{$childbd} );
-                }
-
-                # don't check sub board if its lastposttime is N/A
-                if ( ${ $uid . $childbd }{'lastposttime'} ne
-                    $boardindex_txt{'470'} )
-                {
-
-                  # update parent board last data if this child's is more recent
-                    if ( $lastpostrealtime{$childbd} >
-                        $lastpostrealtime{$parentbd} )
-                    {
-                        $lastposttime{$parentbd} = $lastposttime{$childbd};
-                        $lastpostrealtime{$parentbd} =
-                          $lastpostrealtime{$childbd};
-                        ${ $uid . $parentbd }{'lastposttime'} =
-                          ${ $uid . $childbd }{'lastposttime'};
-                        ${ $uid . $parentbd }{'lastposter'} =
-                          ${ $uid . $childbd }{'lastposter'};
-                        ${ $uid . $parentbd }{'lastpostid'} =
-                          ${ $uid . $childbd }{'lastpostid'};
-                        ${ $uid . $parentbd }{'lastreply'} =
-                          ${ $uid . $childbd }{'lastreply'};
-                        ${ $uid . $parentbd }{'lastsubject'} =
-                          ${ $uid . $childbd }{'lastsubject'};
-                        ${ $uid . $parentbd }{'lasticon'} =
-                          ${ $uid . $childbd }{'lasticon'};
-                        ${ $uid . $parentbd }{'lasttopicstate'} =
-                          ${ $uid . $childbd }{'lasttopicstate'};
-                    }
-                }
-
-                # Add to totals
-                ${ $uid . $parentbd }{'threadcount'} +=
-                  ${ $uid . $childbd }{'threadcount'};
-                ${ $uid . $parentbd }{'messagecount'} +=
-                  ${ $uid . $childbd }{'messagecount'};
-
-      # but if it's a parent board that can't be posted in, don't add to totals.
-                if ( $subboard{$childbd} && !${ $uid . $childbd }{'canpost'} ) {
-                    ${ $uid . $parentbd }{'threadcount'} -=
-                      ${ $uid . $childbd }{'threadcount'};
-                    ${ $uid . $parentbd }{'messagecount'} -=
-                      ${ $uid . $childbd }{'messagecount'};
-                }
-                if ( $new_icon{$childbd} ) {
-
-                    # parent board gets new status if child has something new
-                    $new_icon{$parentbd} = $new_icon{$childbd};
-
-                    # count sub boards with new posts
-                    $sub_new_cnt{$parentbd}++;
-                }
-
-                $childcnt{$parentbd}++;
-            }
-        };
         if (  !$INFO{'oldcollapse'}
             || $catcol{$catid}
             || $INFO{'catselect'} ne q{}
@@ -813,7 +750,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 chomp @brdpics;
                 for (@brdpics) {
                     my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-                    if ( $brdnm eq $curboard && $usestyle eq $style ) {
+                    if ( $brdnm eq $curboard && $template eq $style ) {
                         if ( $brdpic =~ /\//ism ) {
                             $bdpic = $brdpic;
                             last;
@@ -905,7 +842,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 }
                 elsif ( $new_icon{$curboard} ) {
                     my ( undef, $boardperms, $boardview ) =
-                      split /\|/xsm, $board{"$curboard"};
+                      split /\|/xsm, $board{$curboard};
                     if ( AccessCheck( $curboard, q{}, $boardperms ) eq
                         'granted' )
                     {
@@ -1094,6 +1031,7 @@ qq~ $childcnt{$childbd} $boardindex_txt{'72'}~;
                             $bdd          = q{};
                             $my_bddescr   = ${ $uid . $childbd }{'description'};
                             my @bname = split /<br \/>/sm, $my_bddescr;
+                            ToChars($bname[0]);
                             $boardname = qq~$scripturl\?action\=showexternal;exboard\=$childbd~;
                             $tmp_sublinks =~ s/{yabb boardurl}/$boardname/gsm;
                             $tmp_sublinks =~ s/{yabb new}/$new/gsm;
@@ -1209,7 +1147,7 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                 if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
                     $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;
                     $templateblock =~ s/{yabb messagedropdown}/$messagedropdown/gsm;
-
+                    ToChars($boardname);
                     $templateblock =~ s/{yabb boardanchor}/$boardanchor/gsm;
                     $templateblock =~ s/{yabb new}/$new/gsm;
                     $templateblock =~ s/{yabb boardrss}/$rss_boardlink/gsm;
@@ -1243,6 +1181,8 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                     }
                     $boardname =
                       qq~$scripturl\?action\=showexternal;exboard\=$curboard~;
+                    ToChars($bname[0]);
+                    ToChars($bdd);
                     $my_blankext = q{--};
                     $templateblock =~ s/{yabb boardurl}/$boardname/gsm;
                     $templateblock =~ s/{yabb boardpic}/$bdpic/gsm;
@@ -1374,7 +1314,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $template_catnames =~ s/,\Z//xsm;
     $template_boardnames =~ s/,\Z//xsm;
     $yymain .= qq~
-<script type="text/javascript">
+<script type="text/javascript">//<![CDATA[
     var catNames = [$template_catnames];
     var boardNames = [$template_boardnames];
     var boardOpen = "";
@@ -1397,7 +1337,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     var brd_img_idw = $brd_img_idw;
     var brd_img_idh = $brd_img_idh;
     var fix_brd_size = $fix_brd_img_size;
-</script>~;
+//]]></script>~;
 
     # don't show info center, login, etc. if we're calling from sub boards
     if ( !$subboard_sel ) {
@@ -1784,7 +1724,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         elsif ($subboard_sel) {
             if ($brd_count) {
                 $boardindex_template = qq~
-                        <script type="text/javascript">
+                    <script type="text/javascript">//<![CDATA[
                         var catNames = [$template_catnames];
                         var boardNames = [$template_boardnames];
                         var boardOpen = "";
@@ -1799,7 +1739,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
                         var insertindex;
                         var insertcat;
                         var prev_subcount;
-                        </script>
+                        //]]></script>
                         $boardindex_template
 ~;
             }
@@ -2024,5 +1964,72 @@ sub RedirectExternalShow {
         return $excount;
     }
 }
+
+sub find_latest_data  {
+            my ( $parentbd, @children ) = @_;
+            $childcnt{$parentbd}    = 0;
+            $sub_new_cnt{$parentbd} = 0;
+            foreach my $childbd (@children) {
+
+# make recursive call first so we can get latest post data working from bottom up.
+                if ( $subboard{$childbd} ) {
+                    find_latest_data( $childbd, split /\|/xsm,
+                        $subboard{$childbd} );
+                }
+
+                # don't check sub board if its lastposttime is N/A
+                if ( ${ $uid . $childbd }{'lastposttime'} ne
+                    $boardindex_txt{'470'} )
+                {
+
+                  # update parent board last data if this child's is more recent
+                    if ( $lastpostrealtime{$childbd} >
+                        $lastpostrealtime{$parentbd} )
+                    {
+                        $lastposttime{$parentbd} = $lastposttime{$childbd};
+                        $lastpostrealtime{$parentbd} =
+                          $lastpostrealtime{$childbd};
+                        ${ $uid . $parentbd }{'lastposttime'} =
+                          ${ $uid . $childbd }{'lastposttime'};
+                        ${ $uid . $parentbd }{'lastposter'} =
+                          ${ $uid . $childbd }{'lastposter'};
+                        ${ $uid . $parentbd }{'lastpostid'} =
+                          ${ $uid . $childbd }{'lastpostid'};
+                        ${ $uid . $parentbd }{'lastreply'} =
+                          ${ $uid . $childbd }{'lastreply'};
+                        ${ $uid . $parentbd }{'lastsubject'} =
+                          ${ $uid . $childbd }{'lastsubject'};
+                        ${ $uid . $parentbd }{'lasticon'} =
+                          ${ $uid . $childbd }{'lasticon'};
+                        ${ $uid . $parentbd }{'lasttopicstate'} =
+                          ${ $uid . $childbd }{'lasttopicstate'};
+                    }
+                }
+
+                # Add to totals
+                ${ $uid . $parentbd }{'threadcount'} +=
+                  ${ $uid . $childbd }{'threadcount'};
+                ${ $uid . $parentbd }{'messagecount'} +=
+                  ${ $uid . $childbd }{'messagecount'};
+
+      # but if it's a parent board that can't be posted in, don't add to totals.
+                if ( $subboard{$childbd} && !${ $uid . $childbd }{'canpost'} ) {
+                    ${ $uid . $parentbd }{'threadcount'} -=
+                      ${ $uid . $childbd }{'threadcount'};
+                    ${ $uid . $parentbd }{'messagecount'} -=
+                      ${ $uid . $childbd }{'messagecount'};
+                }
+                if ( $new_icon{$childbd} ) {
+
+                    # parent board gets new status if child has something new
+                    $new_icon{$parentbd} = $new_icon{$childbd};
+
+                    # count sub boards with new posts
+                    $sub_new_cnt{$parentbd}++;
+                }
+
+                $childcnt{$parentbd}++;
+            }
+        };
 
 1;

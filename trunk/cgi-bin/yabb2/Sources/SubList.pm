@@ -1,20 +1,20 @@
 ###############################################################################
 # SubList.pm                                                                  #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$sublistpmver = 'YaBB 2.6.11 $Revision$';
+$sublistpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ($action eq 'detailedversion') { return 1; }
 
 %director = (

@@ -4,15 +4,15 @@
 # $Source: /Setup.pl $
 ###############################################################################
 # Setup.pl                                                                    #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -21,10 +21,10 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$setupplver = 'YaBB 2.6.11 $Revision$';
-$yymycharset  = 'UTF-8';
+$setupplver  = 'YaBB 2.6.12 $Revision: 1654 $';
+$yymycharset = 'UTF-8';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -44,11 +44,11 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
 
 ### Requirements and Errors ###
 my $script_root = $ENV{'SCRIPT_FILENAME'};
-if( ! $script_root ) {
-        $script_root = $ENV{'PATH_TRANSLATED'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
 }
 $script_root =~ s/\\/\//gxsm;
-$script_root =~ s/\/Setup\.(pl|cgi)//igxsm;
+$script_root =~ s/\/Setup[.](pl|cgi)//igxsm;
 
 if    ( -e './Paths.pm' )            { require Paths; }
 elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
@@ -88,7 +88,7 @@ $yytabmenu = q~&nbsp;~;
 
 if ( -e "$vardir/Setup.lock" ) {
     FoundSetupLock();
-        }
+}
 #############################################
 # Setup starts here                         #
 #############################################
@@ -101,22 +101,20 @@ if ( !$action ) {
     $rand_cook_sort = "Y2tsort-$rand_integer";
     $rand_cook_view = "Y2view-$rand_integer";
 
-    fopen( COOKFILE, ">$vardir/cook.txt" )
+    my $cookfile =
+qq~$rand_cook_user\n$rand_cook_pass\n$rand_cook_sess\n$rand_cook_sort\n$rand_cook_view\n~;
+    open $COOKFILE, '>', "$vardir/cook.txt"
       || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
-    print {COOKFILE} "$rand_cook_user\n" or croak 'cannot print cook.txt';
-    print {COOKFILE} "$rand_cook_pass\n" or croak 'cannot print cook.txt';
-    print {COOKFILE} "$rand_cook_sess\n" or croak 'cannot print cook.txt';
-    print {COOKFILE} "$rand_cook_sort\n" or croak 'cannot print cook.txt';
-    print {COOKFILE} "$rand_cook_view\n" or croak 'cannot print cook.txt';
-    fclose(COOKFILE);
+    print {$COOKFILE} $cookfile or croak 'cannot print cook.txt';
+    close $COOKFILE or croak 'cannot close cook.txt';
 
     adminlogin();
 }
 
-fopen( COOKFILE, "$vardir/cook.txt" )
+open $COOKFILE, '<', "$vardir/cook.txt"
   || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
-@cookinfo = <COOKFILE>;
-fclose(COOKFILE);
+@cookinfo = <$COOKFILE>;
+close $COOKFILE or croak 'cannot close cook.txt';
 chomp @cookinfo;
 
 $cookieusername     = "$cookinfo[0]";
@@ -147,9 +145,9 @@ SimpleOutput();
 #############################################
 
 sub adminlogin {
-    open LICENSE, '< license.txt' or croak 'cannot load License.';
-    my $license = do { local $/; <LICENSE>; };
-    close LICENSE or croak 'cannot close License';
+    open $LICENSE, '<', 'license.txt' or croak 'cannot load License.';
+    my $license = do { local $/; <$LICENSE>; };
+    close $LICENSE or croak 'cannot close License';
 
     $yymain .= qq~
     <div id="license" style="width:50em; height:40em; overflow:auto; margin:2em auto 0 auto; border:thin #000 solid; padding:1em; background-color:#fff">$license</div>
@@ -190,7 +188,7 @@ sub adminlogin2 {
     }
     else {
         setup_fatal_error(
-qq~Setup Error: Could not find the admin data file in $memberdir! Please check your access rights.~
+qq~Setup Error: Could not find the admin data file in $memberdir. Please check your access rights.~
         );
     }
 
@@ -204,9 +202,9 @@ qq~Setup Error: Could not find the admin data file in $memberdir! Please check y
     chomp ${ $uid . $username }{'session'};
 
 # check if forum.control can be open (needed in &LoadBoardControl used by &LoadUserSettings)
-    fopen( FORUMCONTROL, "$boardsdir/forum.control" )
+    open $FORUMCONTROL, '<', "$boardsdir/forum.control"
       || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
-    fclose(FORUMCONTROL);
+    close $FORUMCONTROL or croak 'cannot close forum.control';
 
     UpdateCookie(
         'write',     "$username",
@@ -217,7 +215,7 @@ qq~Setup Error: Could not find the admin data file in $memberdir! Please check y
     $yymain .= qq~
     <form action="$set_cgi?action=setup1" method="post">
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
-        You are now logged in, <i>${$uid.$username}{'realname'}</i>!<br />Click 'Continue Set Up' to proceed with the Setup.
+        You are now logged in, <i>${$uid.$username}{'realname'}</i>.<br />Click 'Continue Set Up' to proceed with the Setup.
         <p><input type="submit" value="Continue Set Up" /></p>
     </div>
     </form>
@@ -231,7 +229,7 @@ sub autoconfig {
     LoadUserSettings();
     if ( !$iamadmin ) {
         setup_fatal_error(
-q~Setup Error: You have no access rights to this function. Only user "admin" has if logged in!~
+q~Setup Error: You have no access rights to this function. Only user "admin" has this right, if logged in.~
         );
     }
 
@@ -318,7 +316,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
         opendir HTMLDIR, $fnd_htmldir;
         @tcontents = readdir HTMLDIR;
         closedir HTMLDIR;
-        foreach my $tname (@tcontents) {
+        for my $tname (@tcontents) {
             if ( lc($tname) eq 'avatars' && -d "$fnd_htmldir/$tname" ) {
                 $fnd_facesdir = "$fnd_htmldir/$tname";
                 $fnd_facesurl = "$fnd_html_root/$tname";
@@ -370,8 +368,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
         $htmldir      = $fnd_htmldir;
         $uploaddir    = $fnd_uploaddir;
         $uploadurl    = $fnd_uploadurl;
-        $pmuploaddir    = $fnd_pmuploaddir;
-        $pmuploadurl    = $fnd_pmuploadurl;
+        $pmuploaddir  = $fnd_pmuploaddir;
+        $pmuploadurl  = $fnd_pmuploadurl;
         $yyhtml_root  = $fnd_html_root;
         $datadir      = $fnd_datadir;
         $boardsdir    = $fnd_boardsdir;
@@ -383,8 +381,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
         $helpfile     = $fnd_helpfile;
         $templatesdir = $fnd_templatesdir;
 
-        $facesdir = $fnd_facesdir;
-        $facesurl = $fnd_facesurl;
+        $facesdir  = $fnd_facesdir;
+        $facesurl  = $fnd_facesurl;
         $modimgdir = $fnd_modimgdir;
         $modimgurl = $fnd_modimgurl;
     }
@@ -397,11 +395,11 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
         $support_env_path = $ENV{'PATH_TRANSLATED'};
     }
 
-    # Remove Setupl.pl and cgi - and also nph- for buggy IIS.
+    # Remove Setup.pl and cgi - and also nph- for buggy IIS.
     $support_env_path =~ s/(nph-)?Setup.(pl|cgi)//igsm;
     $support_env_path =~ s/\/\Z//xsm;
 
-    # replace \'s with /'s for Windows Servers
+    # replace \ with / for Windows Servers
     $support_env_path =~ s/\\/\//gxsm;
 
     # Generate Screen
@@ -679,7 +677,7 @@ sub save_paths {
     LoadUserSettings();
     if ( !$iamadmin ) {
         setup_fatal_error(
-q~Setup Error: You have no access rights to this function. Only user "admin" has if logged in!~
+q~Setup Error: You have no access rights to this function. Only user "admin" has rights, if logged in.~
         );
     }
 
@@ -690,8 +688,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     $htmldir      = $FORM{'htmldir'};
     $uploaddir    = $FORM{'uploaddir'};
     $uploadurl    = $FORM{'uploadurl'};
-    $pmuploaddir    = $FORM{'pmuploaddir'};
-    $pmuploadurl    = $FORM{'pmuploadurl'};
+    $pmuploaddir  = $FORM{'pmuploaddir'};
+    $pmuploadurl  = $FORM{'pmuploadurl'};
     $yyhtml_root  = $FORM{'html_root'};
     $datadir      = $FORM{'datadir'};
     $boardsdir    = $FORM{'boardsdir'};
@@ -703,10 +701,10 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     $helpfile     = $FORM{'helpfile'};
     $templatesdir = $FORM{'templatesdir'};
 
-    $facesdir = $FORM{'facesdir'};
-    $facesurl = $FORM{'facesurl'};
-    $modimgdir    = $FORM{'modimgdir'};
-    $modimgurl    = $FORM{'modimgurl'};
+    $facesdir  = $FORM{'facesdir'};
+    $facesurl  = $FORM{'facesurl'};
+    $modimgdir = $FORM{'modimgdir'};
+    $modimgurl = $FORM{'modimgurl'};
 
     my $setfile = << "EOF";
 ###############################################################################
@@ -714,11 +712,11 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
+# Version:        YaBB 2.6.12                                                 #
 # Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014  YaBB (www.yabbforum.com) - All Rights Reserved.    #
+# Copyright (c) 2000-2016  YaBB (www.yabbforum.com) - All Rights Reserved.    #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -756,11 +754,11 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 1;
 EOF
 
-    fopen( FILE, '>./Paths.pm' )
+    open $FILE, '>', './Paths.pm'
       || setup_fatal_error( "$maintext_23 ./Paths.pm: ", 1 );
-    print {FILE} nicely_aligned_file($setfile)
+    print {$FILE} nicely_aligned_file($setfile)
       or croak 'cannot print nicely aligned Paths.pm';
-    fclose(FILE);
+    close $FILE or croak 'cannot close Paths.pm';
 
     if ( -e "$vardir/Paths.pm" ) { unlink "$vardir/Paths.pm"; }
 
@@ -790,78 +788,80 @@ sub VarInstall {
 
     if ( !-d "$varsdir" ) { $no_vardir = 1; return 1; }
 
-    if ( !-e "$varsdir/adminlog.txt" ) {
-        fopen( ADMLOGFILE, ">$varsdir/adminlog.txt" )
-          || setup_fatal_error( "$maintext_23 $varsdir/adminlog.txt: ", 1 );
-        print {ADMLOGFILE} q{} or croak 'cannot print ADMLOGFILE';
-        fclose(ADMLOGFILE);
+    if ( !-e "$varsdir/adminlog_new.txt" ) {
+        open $ADMLOGFILE, '>', "$varsdir/adminlog_new.txt"
+          || setup_fatal_error( "$maintext_23 $varsdir/adminlog_new.txt: ", 1 );
+        print {$ADMLOGFILE} q{} or croak 'cannot print ADMLOGFILE';
+        close $ADMLOGFILE or croak 'cannot close adminlog_new.txt';
     }
 
     if ( !-e "$varsdir/allowed.txt" ) {
-        fopen( ALLOWFILE, ">$varsdir/allowed.txt" )
+        my $allowed = q~login
+logout
+display
+messageindex
+pages
+profile
+register
+resetpass
+viewprofile
+~;
+        open $ALLOWFILE, '>', "$varsdir/allowed.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/allowed.txt: ", 1 );
-        print {ALLOWFILE} "login\n"        or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} "logout\n"       or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} "display\n"      or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} "messageindex\n" or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} "pages\n"        or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} "profile\n"      or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} "register\n"     or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} "resetpass\n"    or croak 'cannot print ALLOWFILE';
-        print {ALLOWFILE} 'viewprofile'    or croak 'cannot print ALLOWFILE';
-        fclose(ALLOWFILE);
+        print {$ALLOWFILE} $allowed or croak 'cannot print ALLOWFILE';
+        close $ALLOWFILE or croak 'cannot close ALLOWFILE';
     }
 
     if ( !-e "$varsdir/attachments.txt" ) {
-        fopen( ATTFILE, ">$varsdir/attachments.txt" )
+        open $ATTFILE, '>', "$varsdir/attachments.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/attachments.txt: ", 1 );
-        print {ATTFILE} q{} or croak 'cannot print ATTFILE';
-        fclose(ATTFILE);
+        print {$ATTFILE} q{} or croak 'cannot print ATTFILE';
+        close $ATTFILE or croak 'cannot print ATTFILE';
     }
     if ( !-e "$varsdir/pm.attachments" ) {
-        fopen( PMATTFILE, ">$varsdir/pm.attachments" )
+        open $PMATTFILE, '>', "$varsdir/pm.attachments"
           || setup_fatal_error( "$maintext_23 $varsdir/pm.attachments: ", 1 );
-        print {PMATTFILE} q{} or croak 'cannot print PMATTFILE';
-        fclose(PMATTFILE);
+        print {$PMATTFILE} q{} or croak 'cannot print PMATTFILE';
+        close $PMATTFILE or croak 'cannot close PMATTFILE';
     }
 
     if ( !-e "$varsdir/ban_log.txt" ) {
-        fopen( BANFILE, ">$varsdir/ban_log.txt" )
+        open $BANFILE, '>', "$varsdir/ban_log.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/ban_log.txt: ", 1 );
-        print {BANFILE} q{} or croak 'cannot print ban_log.txt';
-        fclose(BANFILE);
+        print {$BANFILE} q{} or croak 'cannot print ban_log.txt';
+        close $BANFILE or croak 'cannot close ban_log.txt';
     }
 
     if ( !-e "$varsdir/banlist.txt" ) {
-        fopen( BANLIST, ">$varsdir/banlist.txt" )
+        open $BANLIST, '>', "$varsdir/banlist.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/banlist.txt: ", 1 );
-        print {BANLIST} q{} or croak 'cannot print banlist.txt';
-        fclose(BANLIST);
+        print {$BANLIST} q{} or croak 'cannot print banlist.txt';
+        close $BANLIST or croak 'cannot close banlist.txt';
     }
     if ( !-e "$varsdir/clicklog.txt" ) {
-        fopen( CLICKFILE, ">$varsdir/clicklog.txt" )
+        open $CLICKFILE, '>', "$varsdir/clicklog.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/clicklog.txt: ", 1 );
-        print {CLICKFILE} q{} or croak 'cannot print clicklog.txt';
-        fclose(CLICKFILE);
+        print {$CLICKFILE} q{} or croak 'cannot print clicklog.txt';
+        close $CLICKFILE or croak 'cannot close clicklog.txt';
     }
 
     if ( !-e "$varsdir/errorlog.txt" ) {
-        fopen( ERRORFILE, ">$varsdir/errorlog.txt" )
+        open $ERRORFILE, '>', "$varsdir/errorlog.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/errorlog.txt: ", 1 );
-        print {ERRORFILE} q{} or croak 'cannot print errorlog.txt';
-        fclose(ERRORFILE);
+        print {$ERRORFILE} q{} or croak 'cannot print errorlog.txt';
+        close $ERRORFILE or croak 'cannot close errorlog.txt';
     }
 
     if ( !-e "$varsdir/flood.txt" ) {
-        fopen( FLOODFILE, ">$varsdir/flood.txt" )
+        open $FLOODFILE, '>', "$varsdir/flood.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/flood.txt: ", 1 );
-        print {FLOODFILE} '255.255.255.255|1119313741'
+        print {$FLOODFILE} '255.255.255.255|1119313741'
           or croak 'cannot print flood.txt';
-        fclose(FLOODFILE);
+        close $FLOODFILE or croak 'cannot close flood.txt';
     }
 
     if ( !-e "$varsdir/gmodsettings.txt" ) {
-        my $setfile = << "EOF";
+        my $setfile = <<EOF;
 ### Gmod Related Setttings ###
 
 \$allow_gmod_admin = "on"; #
@@ -1051,83 +1051,78 @@ editbots2 => "",
 1;
 EOF
 
-        fopen( SETTING, ">$varsdir/gmodsettings.txt" )
+        open $SETTING, '>', "$varsdir/gmodsettings.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/gmodsettings.txt: ", 1 );
-        print {SETTING} nicely_aligned_file($setfile)
+        print {$SETTING} nicely_aligned_file($setfile)
           or croak 'cannot print gmodsetting.txt';
-        fclose(SETTING);
+        close $SETTING or croak 'cannot close gmodsetting.txt';
     }
 
     if ( !-e "$varsdir/log.txt" ) {
-        fopen( LOGFILE, ">$varsdir/log.txt" )
+        open $LOGFILE, '>', "$varsdir/log.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/log.txt: ", 1 );
-        print {LOGFILE} 'admin|1105634411|127.0.0.1|'
+        print {$LOGFILE} 'admin|1105634411|127.0.0.1|'
           or croak 'cannot print log.txt';
-        fclose(LOGFILE);
-    }
-
-    if ( !-e "$varsdir/modlist.txt" ) {
-        fopen( MODSFILE, ">$varsdir/modlist.txt" )
-          || setup_fatal_error( "$maintext_23 $varsdir/modlist.txt: ", 1 );
-        print {MODSFILE} "admin\n" or croak 'cannot print modlist.txt';
-        fclose(MODSFILE);
+        close $LOGFILE or croak 'cannot close log.txt';
     }
 
     if ( !-e "$varsdir/news.txt" ) {
-        fopen( NEWSFILE, ">$varsdir/news.txt" )
+        my $news = <<NEWS;
+We've upgraded to YaBB 2.6.12!
+Visit [url=http://www.yabbforum.com]YaBB[/url] today ;)
+Signup for free on our forum and benefit from new features!
+Latest info can be found on the [url=http://www.yabbforum.com/community/]YaBB Chat and Support Community[/url].
+NEWS
+        open $NEWSFILE, '>', "$varsdir/news.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/news.txt: ", 1 );
-        print {NEWSFILE} "Welcome to our forum.\n"
-          or croak 'cannot print news.txt';
-        print {NEWSFILE} "We've upgraded to YaBB 2.6.11!\n"
-          or croak 'cannot print news.txt';
-        print {NEWSFILE}
-          "Visit [url=http://www.yabbforum.com]YaBB[/url] today \;\)\n"
-          or croak 'cannot print news.txt';
-        print {NEWSFILE}
-          "Signup for free on our forum and benefit from new features!\n"
-          or croak 'cannot print news.txt';
-        print {NEWSFILE}
-"Latest info can be found on the [url=http://www.yabbforum.com/community/]YaBB Chat and Support Community[/url].\n"
-          or croak 'cannot print news.txt';
-        fclose(NEWSFILE);
+        print {$NEWSFILE} $news or croak 'cannot print news.txt';
+        close $NEWSFILE or croak 'cannot close news.txt';
     }
 
     if ( !-e "$varsdir/oldestmes.txt" ) {
-        fopen( OLDFILE, ">$varsdir/oldestmes.txt" )
+        open $OLDFILE, '>', "$varsdir/oldestmes.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/oldestmes.txt: ", 1 );
-        print {OLDFILE} "1\n" or croak 'cannot print oldestmes.txt';
-        fclose(OLDFILE);
+        print {$OLDFILE} "1\n" or croak 'cannot print oldestmes.txt';
+        close $OLDFILE or croak 'cannot close oldestmes.txt';
     }
 
     if ( !-e "$varsdir/registration.log" ) {
-        fopen( REGLOG, ">$varsdir/registration.log" )
+        open $REGLOG, '>', "$varsdir/registration.log"
           || setup_fatal_error( "$maintext_23 $varsdir/registration.log: ", 1 );
-        print {REGLOG} q{} or croak 'cannot print registration.log';
-        fclose(REGLOG);
+        print {$REGLOG} q{} or croak 'cannot print registration.log';
+        close $REGLOG or croak 'cannot close registration.log';
     }
 
     if ( !-e "$varsdir/reserve.txt" ) {
-        fopen( RESERVEFILE, ">$varsdir/reserve.txt" )
+        my $reserve = <<RES;
+yabb
+YaBBadmin
+administrator
+admin
+y2
+xnull
+yabb2
+XIMinc
+yabbforum
+RES
+        open $RESERVEFILE, '>', "$varsdir/reserve.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/reserve.txt: ", 1 );
-        print {RESERVEFILE} "yabb\n"      or croak 'cannot print reserve.txt';
-        print {RESERVEFILE} "YaBBadmin\n" or croak 'cannot print reserve.txt';
-        print {RESERVEFILE} "administrator\n"
-          or croak 'cannot print reserve.txt';
-        print {RESERVEFILE} "admin\n"     or croak 'cannot print reserve.txt';
-        print {RESERVEFILE} "y2\n"        or croak 'cannot print reserve.txt';
-        print {RESERVEFILE} "yabb2\n"     or croak 'cannot print reserve.txt';
-        print {RESERVEFILE} "yabbforum\n" or croak 'cannot print reserve.txt';
-        fclose(RESERVEFILE);
+        print {$RESERVEFILE} $reserve or croak 'cannot print reserve.txt';
+        close $RESERVEFILE or croak 'cannot print reserve.txt';
     }
 
     if ( !-e "$varsdir/reservecfg.txt" ) {
-        fopen( RESERVEFILE, ">$varsdir/reservecfg.txt" )
+        my $reschk = <<RES;
+checked
+
+checked
+checked
+
+RES
+        open $RESERVEFILE, '>', "$varsdir/reservecfg.txt"
           || setup_fatal_error( "$maintext_23 $varsdir/reservecfg.txt: ", 1 );
-        print {RESERVEFILE} "checked\n" or croak 'cannot print reservecfg.txt';
-        print {RESERVEFILE} "\n"        or croak 'cannot print reservecfg.txt';
-        print {RESERVEFILE} "checked\n" or croak 'cannot print reservecfg.txt';
-        print {RESERVEFILE} "checked\n" or croak 'cannot print reservecfg.txt';
-        fclose(RESERVEFILE);
+        print {$RESERVEFILE} $reschk or croak 'cannot print reservecfg.txt';
+        close $RESERVEFILE or croak 'cannot close reservecfg.txt';
     }
     return;
 }
@@ -1137,7 +1132,8 @@ sub checkmodules {
     tempstarter();
 
     $yymain .= qq~
-<form action="$set_cgi?action=setinstall" method="post">~;
+<form action="$set_cgi?action=setinstall" method="post">
+<p class="none"><strong>If this page is on a white background, go back and check your path settings - the url for yabbfiles is configured wrong or yabbfiles/Templates/Forum/default.css is missing.</strong></p>~;
 
     require Admin::ModuleChecker;
     $yymain =~ s/float: left; |<\/div>$//gsm;
@@ -1171,8 +1167,8 @@ sub checkmodules {
 </form>
 ~;
 
-    $yyim    = 'You are running YaBB 2.6.11 Setup.';
-    $yytitle = 'YaBB 2.6.11 Setup';
+    $yyim    = 'You are running YaBB 2.6.12 Setup.';
+    $yytitle = 'YaBB 2.6.12 Setup';
     SetupTemplate();
     return;
 }
@@ -1211,7 +1207,7 @@ sub SetInstall {
     <table class="border-space pad-cell">
         <tr>
             <td class="windowbg">
-                Here you can set some of the default settings for your new YaBB 2.6.11 forum.<br />
+                Here you can set some of the default settings for your new YaBB 2.6.12 forum.<br />
                 After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
             </td>
         </tr><tr>
@@ -1239,7 +1235,7 @@ sub SetInstall {
                 <br style="clear:both" />
                 <div class="div45">
                     <label for="defaultencoding">Default Forum Character Encoding
-                    <br /><span class="small"><b>Note</b>: If you are going to import an older English Language forum choose 'ISO-8859-1'.</span></label>
+                    <br /><span class="small"><b>Note</b>: If you are going to import an older forum choose 'ISO-8859-1'.</span></label>
                 </div>
                 <div class="div55">
                     <select name="defaultencoding" id="defaultencoding" size="1">
@@ -1281,21 +1277,21 @@ sub SetInstall {
 </form>
 ~;
 
-    $yyim    = 'You are running YaBB 2.6.11 Setup.';
-    $yytitle = 'YaBB 2.6.11 Setup';
+    $yyim    = 'You are running YaBB 2.6.12 Setup.';
+    $yytitle = 'YaBB 2.6.12 Setup';
     SetupTemplate();
     return;
 }
 
 sub SetInstall2 {
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
-        $settings_file_version = 'YaBB 2.6.11';
-        $yymycharset             = $FORM{'defaultencoding'} || 'UTF-8' ;
+        $settings_file_version = 'YaBB 2.6.12';
+        $yymycharset           = $FORM{'defaultencoding'} || 'UTF-8';
         $maintenance           = 1;
         $rememberbackup        = 0;
         $guestaccess           = 1;
         $mbname                = $FORM{'mbname'} || 'My Perl YaBB Forum';
-        $mbname =~ s/\"/\'/gxsm;
+        $mbname =~ s/\x22/\x27/gxsm;
         $forumstart            = timetostring( int time );
         $Cookie_Length         = 1;
         $regtype               = 3;
@@ -1383,7 +1379,7 @@ sub SetInstall2 {
         $ClickLogTime           = 100;
         $max_log_days_old       = 90;
         $fadertime              = 1000;
-        $defaultusertxt         = 'I Love YaBB 2.6.11!';
+        $defaultusertxt         = 'I Love YaBB 2.6.12!';
         $timeout                = 5;
         $HotTopic               = 10;
         $VeryHotTopic           = 25;
@@ -1405,9 +1401,9 @@ sub SetInstall2 {
         $max_attach_img_width   = 200;
         $max_attach_img_height  = 0;
         $fix_attach_img_size    = 0;
-        $max_brd_img_width   = 50;
-        $max_brd_img_height  = 50;
-        $fix_brd_img_size    = 0;
+        $max_brd_img_width      = 50;
+        $max_brd_img_height     = 50;
+        $fix_brd_img_size       = 0;
         $img_greybox            = 1;
         $extendedprofiles       = 0;
         $enable_freespace_check = 0;
@@ -1431,24 +1427,24 @@ sub SetInstall2 {
         $faketruncation = 0;
         $debug          = 0;
 
-        $checkallcaps         = 0;
-        $set_subjectMaxLength = 50;
-        $honeypot             = 1;
-        $speedpostdetection   = 1;
-        $spd_detention_time   = 300;
-        $min_post_speed       = 2;
-        $post_speed_count     = 3;
-        $minlinkpost          = 0;
-        $minlinksig           = 0;
-        $minlinkweb           = 0;
-        $showsearchboxnum     = 31;
-        $showregdate          = 1;
-        $enableguestsearch    = 1;
+        $checkallcaps           = 0;
+        $set_subjectMaxLength   = 50;
+        $honeypot               = 1;
+        $speedpostdetection     = 1;
+        $spd_detention_time     = 300;
+        $min_post_speed         = 2;
+        $post_speed_count       = 3;
+        $minlinkpost            = 0;
+        $minlinksig             = 0;
+        $minlinkweb             = 0;
+        $showsearchboxnum       = 31;
+        $showregdate            = 1;
+        $enableguestsearch      = 1;
         $enableguestquicksearch = 1;
-        $maxsteps             = 40;
-        $stepdelay            = 75;
-        $fadelinks            = 0;
-        $cookieviewtime = 525_600;
+        $maxsteps               = 40;
+        $stepdelay              = 75;
+        $fadelinks              = 0;
+        $cookieviewtime         = 525_600;
 
         # Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
@@ -1461,17 +1457,17 @@ sub SetInstall2 {
         $fadertime  = 1000;
     }
 
-    my $setfile = << "EOF";
+    my $setfile = <<EOF;
 ###############################################################################
 # Settings.pm                                                                 #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
+# Version:        YaBB 2.6.12                                                 #
 # Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014  YaBB (www.yabbforum.com) - All Rights Reserved.    #
+# Copyright (c) 2000-2016  YaBB (www.yabbforum.com) - All Rights Reserved.    #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -1968,13 +1964,14 @@ EOF
     fclose(SETTING);
     if ( $action eq 'setinstall2' ) {
         LoadUser('admin');
-        ${ $uid . 'admin' }{'email'} = $webmaster_email;
+        ${ $uid . 'admin' }{'email'}      = $webmaster_email;
         ${ $uid . 'admin' }{'regdate'}    = timetostring($date);
         ${ $uid . 'admin' }{'regtime'}    = $date;
         ${ $uid . 'admin' }{'timeselect'} = $timeselected;
         ${ $uid . 'admin' }{'language'}   = $lang;
         UserAccount( 'admin', 'update' );
-        ManageMemberinfo( 'update', 'admin', 'Administrator', $webmaster_email,'Forum Administrator' );
+        ManageMemberinfo( 'update', 'admin', 'Administrator', $webmaster_email,
+            'Forum Administrator' );
         $yySetLocation = qq~$set_cgi?action=setup3~;
         redirectexit();
     }
@@ -1984,7 +1981,7 @@ EOF
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.6.11';
+    $YaBBversion = 'YaBB 2.6.12';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -2033,15 +2030,15 @@ sub CheckInstall {
     if ( !-e "$boardsdir/forum.totals" ) { $brd_missing .= q~forum.totals, ~; }
     else {
         $brd_created .= q~forum.totals, ~;
-        fopen( FORUMTOT, "$boardsdir/forum.totals" )
+        open $FORUMTOT, '<', "$boardsdir/forum.totals"
           || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
-        @totboards = <FORUMTOT>;
-        fclose(FORUMTOT);
+        @totboards = <$FORUMTOT>;
+        close $FORUMTOT or croak 'cannot close forum.totals';
     }
-    foreach my $boardstot (@totboards) {
+    for my $boardstot (@totboards) {
         chomp $boardstot;
         ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
-          split /\|/xsm, $boardstot, 7;
+          split /[|]/xsm, $boardstot, 7;
         if ( !-e "$boardsdir/$brdname.txt" ) {
             $brd_missing .= qq~$brdname.txt, ~;
         }
@@ -2050,24 +2047,31 @@ sub CheckInstall {
     }
     $brd_missing =~ s/, $//sm;
     $brd_created =~ s/, $//sm;
-    fopen( FORUMTOTALS, ">$boardsdir/forum.totals" ) || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
+    my $brdprint = q{};
     for my $boardstot (@totboards) {
         chomp $boardstot;
         ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
-          split /\|/xsm, $boardstot;
-        if ( $brdname eq 'general') {
-            print {FORUMTOTALS} "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.11 forum!|xx|0|\n" or croak 'cannot print FORUMTOTALS';
+          split /[|]/xsm, $boardstot;
+        if ( $brdname eq 'general' ) {
+            $brdprint .=
+"general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.6.12 forum!|xx|0|\n"
+              or croak 'cannot print FORUMTOTALS';
         }
-        else { print {FORUMTOTALS} qq~$boardstot\n~; }
+        else { $brdprint .= qq~$boardstot\n~; }
     }
-    fclose(FORUMTOTALS);
-    fopen ( FIRSTMS, ">$datadir/$firstmstime.txt");
-    print {FIRSTMS} qq~Welcome to your New YaBB 2.6.11 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.11 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~; 
-    fclose(FIRSTMS);
+    open $FORUMTOTALS, '>', "$boardsdir/forum.totals"
+      || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
+    print {$FORUMTOTALS} $brdprint or croak 'cannot print forum.totals';
+    close $FORUMTOTALS or croak 'cannot close forum.totals';
+
+    open $FIRSTMS, '>', "$datadir/$firstmstime.txt"
+      or croak "cannot open $datadir/$firstmstime.txt";
+    print {$FIRSTMS}
+qq~Welcome to your New YaBB 2.6.12 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.6.12 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~;
+    close $FIRSTMS or croak "cannot close $datadir/$firstmstime.txt";
     require Sources::DateTime;
-    fopen (FIRSTMSC, ">$datadir/$firstmstime.ctb");
     $msgdat = timeformat( $firstmstime, 1, 'rfc' );
-    print {FIRSTMSC} qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
+    my $frstctb = qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
 
 'board',"general"
 'replies',"0"
@@ -2076,10 +2080,16 @@ sub CheckInstall {
 'lastpostdate',"$firstmstime"
 'threadstatus',"0"
 'repliers',"$firstmstime|admin|0"~;
-    fclose (FIRSTMSC);
-    fopen ( FIRSTBRD, ">>$boardsdir/general.txt");
-    print {FIRSTBRD} qq~$firstmstime|Welcome to your New YaBB 2.6 Forum!|Administrator|$webmaster_email|$firstmstime|0|admin|xx|0\n~;
-    fclose (FIRSTBRD);
+    open $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
+      or croak "cannot open $datadir/$firstmstime.ctb";
+    print {$FIRSTMSC} $frstctb
+      or croak "cannot print $datadir/$firstmstime.ctb";
+    close $FIRSTMSC or croak "cannot close $datadir/$firstmstime.ctb";
+
+    open $FIRSTBRD, '>>', "$boardsdir/general.txt";
+    print {$FIRSTBRD}
+qq~$firstmstime|Welcome to your New YaBB 2.6 Forum!|Administrator|$webmaster_email|$firstmstime|0|admin|xx|0\n~;
+    close $FIRSTBRD or croak "cannot close general.txt";
 
     $mem_missing = q{};
     $mem_created = q{};
@@ -2104,15 +2114,15 @@ sub CheckInstall {
     $msg_created = q{};
 
     if ( -e "$boardsdir/forum.totals" ) {
-        fopen( FORUMTOT, "$boardsdir/forum.totals" )
+        open $FORUMTOT, '<', "$boardsdir/forum.totals"
           || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
-        @totboards = <FORUMTOT>;
-        fclose(FORUMTOT);
+        @totboards = <$FORUMTOT>;
+        close $FORUMTOT or croak 'cannot close forum.totals';
     }
-    foreach my $boardstot (@totboards) {
+    for my $boardstot (@totboards) {
         chomp $boardstot;
         ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
-          split /\|/xsm, $boardstot, 7;
+          split /[|]/xsm, $boardstot, 7;
         next if !$msgname;
         if ( !-e "$datadir/$msgname.ctb" ) {
             $msg_missing .= qq~$msgname.ctb, ~;
@@ -2128,14 +2138,16 @@ sub CheckInstall {
 
     $var_missing = q{};
     $var_created = q{};
-    if   ( !-e "$vardir/adminlog.txt" ) { $var_missing .= q~adminlog.txt, ~; }
-    else                                { $var_created .= q~adminlog.txt, ~; }
+    if   ( !-e "$vardir/adminlog_new.txt" ) { $var_missing .= q~adminlog_new.txt, ~; }
+    else                                { $var_created .= q~adminlog_new.txt, ~; }
     if   ( !-e "$vardir/allowed.txt" ) { $var_missing .= q~allowed.txt, ~; }
     else                               { $var_created .= q~allowed.txt, ~; }
-    if   ( !-e "$vardir/attachments.txt" ) { $var_missing .= q~attachments.txt, ~; }
-    else                                   { $var_created .= q~attachments.txt, ~; }
-    if   ( !-e "$vardir/pm.attachments" ) { $var_missing .= q~pm.attachments, ~; }
-    else                                  { $var_created .= q~attachments.txt, ~; }
+    if ( !-e "$vardir/attachments.txt" ) {
+        $var_missing .= q~attachments.txt, ~;
+    }
+    else { $var_created .= q~attachments.txt, ~; }
+    if ( !-e "$vardir/pm.attachments" ) { $var_missing .= q~pm.attachments, ~; }
+    else { $var_created .= q~attachments.txt, ~; }
     if   ( !-e "$vardir/ban_log.txt" ) { $var_missing .= q~ban_log.txt, ~; }
     else                               { $var_created .= q~ban_log.txt, ~; }
     if   ( !-e "$vardir/banlist.txt" ) { $var_missing .= q~banlist.txt, ~; }
@@ -2153,8 +2165,6 @@ sub CheckInstall {
     else { $var_created .= q~gmodsettings.txt, ~; }
     if   ( !-e "$vardir/log.txt" ) { $var_missing .= q~log.txt, ~; }
     else                           { $var_created .= q~log.txt, ~; }
-    if   ( !-e "$vardir/modlist.txt" ) { $var_missing .= q~modlist.txt, ~; }
-    else                               { $var_created .= q~modlist.txt, ~; }
     if   ( !-e "$vardir/news.txt" ) { $var_missing .= q~news.txt, ~; }
     else                            { $var_created .= q~news.txt, ~; }
     if   ( !-e "$vardir/oldestmes.txt" ) { $var_missing .= q~oldestmes.txt, ~; }
@@ -2184,24 +2194,19 @@ sub CheckInstall {
         <col style="width:6%" />
         <col style="width:94%" />
         <tr>
-            <td class="catbg" colspan="2">
-      ~;
+            <td class="catbg" colspan="2">~;
     if ($no_brddir) {
         $install_error = 1;
-        $yymain .= qq~
-      A problem has occurred in the /Boards folder!
-            </td>
+        $yymain .= qq~A problem has occurred in the /Boards folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">No /Boards folder available!</td>
+            <td class="windowbg2">No /Boards folder available.</td>
         </tr>~;
     }
     else {
         if ($brd_missing) {
             $install_error = 1;
-            $yymain .= qq~
-      A problem has occurred in the /Boards folder!
-            </td>
+            $yymain .= qq~A problem has occurred in the /Boards folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
             <td class="windowbg2">
@@ -2212,65 +2217,45 @@ sub CheckInstall {
         }
         if ($brd_created) {
             if ( !$brd_missing ) {
-                $yymain .= q~
-      Successfully checked the /Boards folder!
-            </td>
+                $yymain .= q~Successfully checked the /Boards folder.</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center">
       <img src="$imagesdir/check.png" alt="" />
             </td>
-            <td class="windowbg2">
-                <b>Installed: </b>
-                <br />$brd_created
-            </td>
+            <td class="windowbg2"><b>Installed: </b><br />$brd_created</td>
         </tr>~;
         }
     }
     $yymain .= q~<tr>
-            <td class="catbg" colspan="2">
-      ~;
+            <td class="catbg" colspan="2">~;
 
     if ($no_memdir) {
         $install_error = 1;
-        $yymain .= qq~
-      A Problem has occurred in the /Members folder!
-            </td>
+        $yymain .= qq~A Problem has occurred in the /Members folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">
-      No /Members folder available!
-            </td>
+            <td class="windowbg2">No /Members folder available.</td>
         </tr>~;
     }
     else {
         if ($mem_missing) {
             $install_error = 1;
-            $yymain .= qq~
-      A problem has occurred in the /Members folder!
-            </td>
+            $yymain .= qq~A problem has occurred in the /Members folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">
-                <b>Missing: </b>
-                <br />$mem_missing
-            </td>
+            <td class="windowbg2"><b>Missing: </b><br />$mem_missing</td>
         </tr>~;
         }
         if ($mem_created) {
             if ( !$mem_missing ) {
-                $yymain .= q~
-      Successfully checked the /Members folder!
-            </td>
+                $yymain .= q~Successfully checked the /Members folder.</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
-            <td class="windowbg2">
-                <b>Installed: </b>
-                <br />$mem_created
-            </td>
+            <td class="windowbg2"><b>Installed: </b><br />$mem_created</td>
         </tr>~;
         }
     }
@@ -2279,109 +2264,77 @@ sub CheckInstall {
 
     if ($no_mesdir) {
         $install_error = 1;
-        $yymain .= qq~
-      A problem has occurred in the /Messages folder!
-            </td>
+        $yymain .= qq~A problem has occurred in the /Messages folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">
-      No /Messages folder available!
-            </td>
+            <td class="windowbg2">No /Messages folder available.</td>
         </tr>~;
     }
     else {
         if ($msg_missing) {
             $install_error = 1;
-            $yymain .= qq~
-      A problem has occurred in the /Messages folder!
-            </td>
+            $yymain .= qq~A problem has occurred in the /Messages folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">
-                <b>Missing: </b>
-                <br />$msg_missing
-            </td>
+            <td class="windowbg2"><b>Missing: </b><br />$msg_missing</td>
         </tr>~;
         }
         if ($msg_created) {
             if ( !$msg_missing ) {
-                $yymain .= q~
-      Successfully checked the /Messages folder!
-            </td>
+                $yymain .= q~Successfully checked the /Messages folder.</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
-            <td class="windowbg2">
-                <b>Installed: </b>
-                <br />$msg_created
-            </td>
+            <td class="windowbg2"><b>Installed: </b><br />$msg_created</td>
         </tr>~;
         }
     }
     $yymain .= q~<tr>
-            <td class="catbg" colspan="2">
-      ~;
+            <td class="catbg" colspan="2">~;
     if ($no_vardir) {
         $install_error = 1;
-        $yymain .= qq~
-      A problem has occurred in the /Variables folder!
-            </td>
+        $yymain .= qq~A problem has occurred in the /Variables folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">
-      No /Variables folder available!
-           </td>
+            <td class="windowbg2">No /Variables folder available.</td>
         </tr>~;
     }
     else {
         if ($var_missing) {
             $install_error = 1;
-            $yymain .= qq~
-      A problem has occurred in the /Variables folder!
-            </td>
+            $yymain .= qq~A problem has occurred in the /Variables folder.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">
-                <b>Missing: </b>
-                <br />$var_missing
-            </td>
+            <td class="windowbg2"><b>Missing: </b><br />$var_missing</td>
         </tr>~;
         }
         if ($var_created) {
             if ( !$var_missing ) {
-                $yymain .= q~
-      Successfully checked the /Variables folder!
-            </td>
+                $yymain .= q~Successfully checked the /Variables folder.</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
-            <td class="windowbg2">
-                <b>Installed: </b>
-                <br />$var_created
-            </td>
+            <td class="windowbg2"><b>Installed: </b><br />$var_created</td>
         </tr>~;
         }
     }
 
     $yymain .= q~<tr>
-            <td class="catbg" colspan="2">
-                ~;
+            <td class="catbg" colspan="2">~;
 
     if ($set_missing) {
         $install_error = 1;
-        $yymain .= q~A problem has occurred while creating Settings.pm!
-            </td>
+        $yymain .= q~A problem has occurred while creating Settings.pm.</td>
         </tr>~;
     }
     if ($set_created) {
-        $yymain .= qq~Successfully checked Settings.pm!
-            </td>
+        $yymain .= qq~Successfully checked Settings.pm.</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
-      Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.6.11 forum.<br />Or to convert a 1x or 2x Forum to 2.6.11
+                Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.6.12 forum.<br />Or to convert a 1x or 2x Forum to 2.6.12
             </td>
         </tr>~;
     }
@@ -2390,9 +2343,9 @@ sub CheckInstall {
 
         $yymain .= qq~<tr>
             <td class="catbg center" colspan="2">
-      <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
+            <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
             <input type="submit" value="Continue" />
-      </form>
+            </form>
             <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center</p>
             </td>
         </tr>~;
@@ -2400,7 +2353,7 @@ sub CheckInstall {
     else {
         $yymain .= q~<tr>
             <td class="titlebg" colspan="2">
-                <div class="div98"><b>One or more errors occurred while checking the system files. The problems must be solved before you may continue.</b></div>
+                <div class="div98"><b>One or more errors occurred while checking the system files. The problems must be solved before you can continue.</b></div>
             </td>
         </tr>~;
     }
@@ -2408,8 +2361,8 @@ sub CheckInstall {
       </table>
 </div>
       ~;
-    $yyim    = 'You are running YaBB 2.6.11 Setup.';
-    $yytitle = 'YaBB 2.6.11 Setup';
+    $yyim    = 'You are running YaBB 2.6.12 Setup.';
+    $yytitle = 'YaBB 2.6.12 Setup';
     SetupTemplate();
     return;
 }
@@ -2427,17 +2380,15 @@ sub ready {
 }
 
 sub CreateSetupLock {
-    fopen( 'LOCKFILE', ">$vardir/Setup.lock" )
+    my $lock = <<LOCK;
+This is a lockfile for the Setup Utility.
+It prevents it being run again after it has been run once.
+Delete this file if you want to run the Setup Utility again.
+LOCK
+    open $LOCKFILE, '>', "$vardir/Setup.lock"
       || setup_fatal_error( "$maintext_23 $vardir/Setup.lock: ", 1 );
-    print {LOCKFILE} qq~This is a lockfile for the Setup Utility.\n~
-      or croak 'cannot print to Setup.lock';
-    print {LOCKFILE}
-      qq~It prevents it being run again after it has been run once.\n~
-      or croak 'cannot print to Setup.lock';
-    print {LOCKFILE}
-      q~Delete this file if you want to run the Setup Utility again.~
-      or croak 'cannot print to Setup.lock';
-    fclose('LOCKFILE');
+    print {$LOCKFILE} $lock or croak 'cannot print to Setup.lock';
+    close $LOCKFILE or croak 'cannot close Setup.lock';
     return;
 }
 
@@ -2450,19 +2401,19 @@ sub SetupImgLoc {
 }
 
 sub setup_fatal_error {
-      my $e = $_[0];
-      my $v = $_[1];
-      $e .= "\n";
-      if ($v) { $e .= $! . "\n"; }
+    my $e = $_[0];
+    my $v = $_[1];
+    $e .= "\n";
+    if ($v) { $e .= $OS_ERROR . "\n"; }
 
-      $yymenu = qq~Boards & Categories | ~;
-      $yymenu .= qq~Members | ~;
-      $yymenu .= qq~Messages | ~;
-      $yymenu .= qq~Date & Time | ~;
-      $yymenu .= qq~Clean Up | ~;
-      $yymenu .= qq~Login~;
+    $yymenu = qq~Boards & Categories | ~;
+    $yymenu .= qq~Members | ~;
+    $yymenu .= qq~Messages | ~;
+    $yymenu .= qq~Date & Time | ~;
+    $yymenu .= qq~Clean Up | ~;
+    $yymenu .= qq~Login~;
 
-      $yymain .= qq~
+    $yymain .= qq~
 <table class="bordercolor center border-space pad-cell" width="80%" >
     <tr>
         <td class="titlebg text1"><b>An Error Has Occurred!</b></td>
@@ -2472,13 +2423,13 @@ sub setup_fatal_error {
 </table>
 <p style="text-align:center"><a href="javascript:history.go(-1)">Back</a></p>
 ~;
-      $yyim    = "YaBB 2.6.11 Setup Error.";
-      $yytitle = "YaBB 2.6.11 Setup Error.";
+    $yyim    = "YaBB 2.6.12 Setup Error.";
+    $yytitle = "YaBB 2.6.12 Setup Error.";
 
-      if (!-e "$vardir/Settings.pm") { SimpleOutput(); }
+    if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
-      tempstarter();
-      SetupTemplate();
+    tempstarter();
+    SetupTemplate();
 }
 
 sub SimpleOutput {
@@ -2490,7 +2441,7 @@ sub SimpleOutput {
 <html lang='en-US'>
 <head>
     <meta charset="utf-8">
-    <title>YaBB 2.6.11 Setup</title>
+    <title>YaBB 2.6.12 Setup</title>
     <style type="text/css">
         html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px; background-color:#eee}
         div#folderfind { margin:1em auto; padding:0 1em}
@@ -2542,50 +2493,50 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
         @newsmessages = <NEWS>;
         fclose(NEWS);
     }
-    for my $i ( 0 .. ( @yytemplate - 1 ) ) {
+    for my $i ( 0 .. $#yytemplate ) {
         $curline = $yytemplate[$i];
-        if ( !$yycopyin && $curline =~ m/{yabb copyright}/sm )
-        {
+        if ( !$yycopyin && $curline =~ m/{yabb copyright}/sm ) {
             $yycopyin = 1;
         }
         if ( $curline =~ m/{yabb newstitle}/sm && $enable_news ) {
-            $yynewstitle = qq~<b>$maintxt{'102'}:</b> ~;
+            $yynewstitle =
+              qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
         }
-        if ( $curline =~ m/{yabb news}/sm && $enable_news ) {
+        if ( $curline =~ m/{yabb\ news}/xsm && $enable_news ) {
             srand;
             if ( $shownewsfader == 1 ) {
 
                 $fadedelay = ( $maxsteps * $stepdelay );
                 $yynews .= qq~
-                        <script type="text/javascript">
-                                    var maxsteps = "$maxsteps";
-                                    var stepdelay = "$stepdelay";
-                                    var fadelinks = $fadelinks;
-                                    var delay = "$fadedelay";
-                                    var bcolor = "$color{'faderbg'}";
-                                    var tcolor = "$color{'fadertext'}";
-                                    var fcontent = new Array();
-                                    var begintag = "";
-                        ~;
-                fopen( NEWS, "$vardir/news.txt" );
-                @newsmessages = <NEWS>;
-                fclose(NEWS);
-                for my $j ( 0 .. ( @newsmessages - 1 ) ) {
-                    $newsmessages[$j] =~ s/\n|\r//gsm;
+                    <script type="text/javascript">
+                        var maxsteps = "$maxsteps";
+                        var stepdelay = "$stepdelay";
+                        var fadelinks = $fadelinks;
+                        var delay = "$fadedelay";
+                        var bcolor = "$color{'faderbg'}";
+                        var tcolor = "$color{'fadertext'}";
+                        var fcontent = new Array();
+                        var begintag = "";
+                    ~;
+                open $NEWS, '<', "$vardir/news.txt" or croak 'cannot open NEWS';
+                @newsmessages = <$NEWS>;
+                close $NEWS or croak 'cannot close NEWS';
+                for my $j ( 0 .. $#newsmessages ) {
+                    $newsmessages[$j] =~ s/\n|\r//gxsm;
                     if ( $newsmessages[$j] eq q{} ) { next; }
                     if ( $i != 0 ) { $yymain .= qq~\n~; }
                     $message = $newsmessages[$j];
                     if ($enable_ubbc) {
                         enable_yabbc();
                         DoUBBC();
-                        }
-                    $message =~ s/"/\\"/gsm;
+                    }
+                    $message =~ s/\x22/\\\x22/gxsm;
                     $yynews .= qq~
                                     fcontent[$j] = "$message";\n
                               ~;
                 }
                 $yynews .= q~
-                                    var closetag = '';
+                            var closetag = '';
                         </script>
                         ~;
             }
@@ -2595,14 +2546,14 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                     enable_yabbc();
                     DoUBBC();
                 }
-                $message =~ s/\'/&#39;/xsm;
+                $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
             <script type="text/javascript">
                 if (ie4 || DOM2) var news = '$message';
                 var div = document.getElementById("newsdiv");
                 div.innerHTML = news;
             </script>~;
-           }
+            }
         }
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
@@ -2612,7 +2563,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     }
     if ( $yycopyin == 0 ) {
         $output =
-q~<h1 style="text-align:center"><b>Sorry, the copyright tag &#123;yabb copyright&#125; must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     if ( fileno GZIP ) {
         $OUTPUT_AUTOFLUSH = 1;
@@ -2633,14 +2584,13 @@ sub nicely_aligned_file {
     my $setfile = shift;
     $setfile =~ s/=\s+;/= 0;/gsm;
     $setfile =~
-s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
-    $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
-
+s/(.+;)[ \t]+(\x23.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
+    $setfile =~ s/\t+(\x23.+$)/$filler$1/gsm;
 
     *cut_comment = sub {    # line break of too long comments
         my @x = @_;
         my ( $comment, $length ) =
-          ( q{}, 120 );    # 120 Col is the max width of page
+          ( q{}, 120 );     # 120 Col is the max width of page
         my $var_length = length $x[0];
         while ( $length < $var_length ) { $length += 120; }
         foreach ( split / +/sm, $x[1] ) {
@@ -2661,13 +2611,11 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 sub FoundSetupLock {
     tempstarter();
     $scripturl = "$boardurl/YaBB.$yyext";
-    require Sources::TabMenu;
 
-    #    $formsession = cloak("$mbname$username");
     if ( -e "$vardir/Converter.lock" ) {
         $conv = q{};
         $conv2 =
-qq~The 1x to 2.6.11 Converter has already been run.<br />To run the Converter again, remove the file "$vardir/Converter.lock," then re-visit this page.~;
+qq~The 1x to 2.6.12 Converter has already been run.<br />To run the Converter again, remove the file "$vardir/Converter.lock," then re-visit this page.~;
 
     }
     else {
@@ -2677,7 +2625,7 @@ qq~The 1x to 2.6.11 Converter has already been run.<br />To run the Converter ag
                     <input type="submit" value="Convert 1x files" />
                 </form>~;
     }
-    if ( -e "$vardir/FixFile.lock" ) {
+    if ( -e "$vardir/Convert2x.lock" ) {
         $fixa = q{};
         $fixa2 =
 qq~The 2x Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/Convert2x.lock," then re-visit this page.~;
@@ -2689,14 +2637,14 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
                 <form action="Convert2x.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Convert 2x files" />
                 </form>~;
-}
+    }
 
     $yymain = qq~
 <div class="bordercolor borderbox">
     <table class="tabtitle">
         <tr>
             <td style="padding-left:1%; text-shadow: 1px 1px 1px #2d2d2d;">
-                YaBB 2.6.11 Setup
+                YaBB 2.6.12 Setup
             </td>
         </tr>
     </table>
@@ -2718,7 +2666,6 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
             <td class="catbg center"  style="padding: 4px" colspan="2">
                 <form action="$boardurl/YaBB.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to your Forum" />
-<!--                  <input type="hidden" name="formsession" value="$formsession" />-->
                 </form>
                 $conv
                 $fixa
@@ -2728,9 +2675,10 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
 </div>
       ~;
 
-    $yyim    = 'YaBB 2.6.11 Setup has already been run.';
-    $yytitle = 'YaBB 2.6.11 Setup';
+    $yyim    = 'YaBB 2.6.12 Setup has already been run.';
+    $yytitle = 'YaBB 2.6.12 Setup';
     template();
     return;
 }
+
 1;

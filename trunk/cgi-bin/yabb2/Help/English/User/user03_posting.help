@@ -3,7 +3,7 @@ $SectionName = "Posting";
 ### Section 1
 #############################################
 $SectionSub1 = "Starting_a_Topic";
-$SectionBody1 = qq~After you have registered an account, you will have the ability to start new topics. To do so, navigate to a category you would like to begin a conversation in. Make sure that this is the correct category for the subject of your post. Once you're inside this category, search for a link or button titled &#8220;Start New Topic&#8221; and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics.
+$SectionBody1 = q~After you have registered an account, you will have the ability to start new topics. To do so, navigate to a category you would like to begin a conversation in. Make sure that this is the correct category for the subject of your post. Once you're inside this category, search for a link or button titled &#8220;Start New Topic&#8221; and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics.
 <p>This will present you with a new page where you can begin to type your post, or take you to a form at the bottom of the page. Below you will find a description of the items on this page.</p>
 <h4 class="help">Preview:</h4>
 <p>This gives you a view of what your message will look like once it's posted.</p>
@@ -26,7 +26,7 @@ $SectionBody1 = qq~After you have registered an account, you will have the abili
 ### Section 2
 #############################################
 $SectionSub2 = "Replying_to_a_Post";
-$SectionBody2 = qq~<p>In addition to posting new topics, you can also reply to existing posts or topics quickly and easily. When you find a topic you would like to comment on, look for the button or link titled &#8220;Reply&#8221; or &#8220;Quote&#8221;. Using &#8220;Reply&#8221; will take you to a post page much like the one described above. Quote does exactly the same thing, however, it will add what another user has said to your post in a special box like you see below.</p>
+$SectionBody2 = q~<p>In addition to posting new topics, you can also reply to existing posts or topics quickly and easily. When you find a topic you would like to comment on, look for the button or link titled &#8220;Reply&#8221; or &#8220;Quote&#8221;. Using &#8220;Reply&#8221; will take you to a post page much like the one described above. Quote does exactly the same thing, however, it will add what another user has said to your post in a special box like you see below.</p>
 [yabbc][quote]This is a quote[/quote][/yabbc]
 ~;
 #############################################
@@ -35,15 +35,22 @@ $SectionBody2 = qq~<p>In addition to posting new topics, you can also reply to e
 ### Section 3
 #############################################
 $SectionSub3 = "Posting_a_Poll";
-$SectionBody3 = qq~<p>If you have a question you would like to ask this community, YaBB gives you the ability to create a poll along with your topic. This is a fantastic way to get a good idea of what this community feels about your question. To post a poll, find the button titled &#8220;Start New Poll&#8221; from the category view and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics. On this special post page, type in your question and options in the respectively labeled box, then fill out your message as described above.</p>
+$SectionBody3 = q~<p>If you have a question you would like to ask this community, YaBB gives you the ability to create a poll along with your topic. This is a fantastic way to get a good idea of what this community feels about your question. To post a poll, find the button titled &#8220;Start New Poll&#8221; from the category view and click it. The exact location of this button will vary depending on which template is being used, but it is often near the top of the list of topics. On this special post page, type in your question and options in the respectively labeled box, then fill out your message as described above.</p>
+~;
+#############################################
+
+### Section 4
+#############################################
+$SectionSub4 = "Posting_an_Event";
+$SectionBody4 = q~<p>If the Event Calendar has been activated and the Admin allows it, members and even guests can add notices for special events, holidays, meetings, and reminders to the Event Calendar. The Event Calendar Event posting section has many of the same features found in Posting to a Topic. You can add smilies and use YaBBC to format your Event post. Then you can preview it to see what it will look like once it's posted.</p>
 ~;
 #############################################
 
 
-### Section 4
+### Section 5
 #############################################
-$SectionSub4 = "YaBBC_Reference";
-$SectionBody4 = qq~<p>For security reasons standard HTML code cannot be used in posts. Instead YaBB allows the use of YaBBC (YaBB Code) for formatting. YaBBC is similar to HTML, but safe and standardized for bulletin board use. To use, you can either click on the YaBBC button of your choice on all post pages or manually type them in. Below is a listing of each tag and its function.</p>
+$SectionSub5 = "YaBBC_Reference";
+$SectionBody5 = qq~<p>For security reasons standard HTML code cannot be used in posts. Instead YaBB allows the use of YaBBC (YaBB Code) for formatting. YaBBC is similar to HTML, but safe and standardized for bulletin board use. To use, you can either click on the YaBBC button of your choice on all post pages or manually type them in. Below is a listing of each tag and its function.</p>
 <h4 class="help">What is YaBBC?</h4>
 <p>YaBBC is a set of tags based on the HTML language. It allow you to add formatting to your messages in the same way as HTML does, but have a simpler syntax and will never break the layout of the pages you are viewing.
 Most YaBBC tags can be wrapped around text, by first <span class="highlight">highlighting</span> the text, and then clicking on the YaBBC button with the desired formatting.</p>

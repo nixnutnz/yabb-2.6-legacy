@@ -1,14 +1,14 @@
 ###############################################################################
 # Register.pm                                                                 #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -17,10 +17,11 @@
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$registerpmver = 'YaBB 2.6.11 $Revision$';
+$registerpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
+
 if ( !$iamguest
     && ( !$admin && $action ne 'activate' && $action ne 'admin_descision' ) )
 {
@@ -107,7 +108,7 @@ sub Register {
             $aedomains .=
               ( $_ =~ m/\@/xsm )
               ? qq~<option value="$_">$_</option>~
-              : qq~<option value="\@$_">&#64;$_</option>~;
+              : qq~<option value="\@$_">&commat;$_</option>~;
         }
         $aedomains .= $myaedomains_b;
     }
@@ -192,7 +193,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $yymain .= $myregister_endrow;
     }
 
-    if ($gender_on_reg == 1 ) {
+    if ( $gender_on_reg ) {
         my $editGenderTxt;
         my $nongen_opt = q{};
         if ( $editGenderLimit == 1 ) {
@@ -470,7 +471,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
                 return false;
             }
         }
-		var regcheck = $regcheck;
+        var regcheck = $regcheck;
         if (regcheck > 0 && document.creator.verification.value === '') {
             alert("$register_txt{'error_verification'}");
             document.creator.verification.focus();
@@ -764,7 +765,7 @@ sub Register2 {
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
 
-    for my $aa ( 0 .. ( @reservecfg - 1 ) ) {
+    for my $aa ( 0 .. $#reservecfg ) {
         chomp $reservecfg[$aa];
     }
     $matchword = $reservecfg[0] eq 'checked';
@@ -985,8 +986,8 @@ sub Register2 {
         if   ($do_scramble_id) { $cryptuser = cloak($reguser); }
         else                   { $cryptuser = $reguser; }
 
-        if ($emailpassword) { $regpass = $member{'passwrd1'}; }
-        else { $regpass = encode_password( $member{'passwrd1'} ); }
+        $regpass = $member{'passwrd1'};
+
         fopen( INACT, ">>$memberdir/memberlist.inactive", 1 );
         print {INACT}
           "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n"

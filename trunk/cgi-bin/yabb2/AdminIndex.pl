@@ -4,26 +4,26 @@
 # $Source: /AdminIndex.pl $
 ###############################################################################
 # AdminIndex.pl                                                               #
-# $Date: 12.02.14                                                             #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
 ### Version Info ###
-$YaBBversion     = 'YaBB 2.6.11';
-$adminindexplver = 'YaBB 2.6.11 $Revision$';
+$YaBBversion     = 'YaBB 2.6.12';
+$adminindexplver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 # Make sure the module path is present
 push @INC, './Modules';
@@ -265,7 +265,6 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "|$admintxt{'a5_title'}|$admintxt{'a5_label'} - $admintxt{'34'}|a5",
         "modskin|$admintxt{'a5_sub1'}|$admintxt{'a5_label1'}|",
         "modcss|$admintxt{'a5_sub2'}|$admintxt{'a5_label2'}|",
-#        "modtemp|$admintxt{'a5_sub3'}|$admintxt{'a5_label3'}|",
     );
 
     @member_controls = (

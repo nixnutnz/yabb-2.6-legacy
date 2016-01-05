@@ -1,24 +1,25 @@
 ###############################################################################
 # PostBox.pm                                                                  #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$postboxpmver = 'YaBB 2.6.11 $Revision$';
-if ( defined $actions && $action eq 'detailedversion' ) { return 1; }
+$postboxpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+
 get_micon();
 
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
@@ -60,9 +61,9 @@ sub postbox {
         'd' => "right.png|right()|$post_txt{'446'}",
     );
 
-    my %mods = (
-    );
+    my %mods = ();
     ## Mod Hook for UBBC ##
+
     ( $mods, $mods_w )           = ubbc_modlist(%mods);
     ( $boxlist1, $boxlist1_w )   = ubbc_boxlist(%boxlist1);
     ( $textdecor, $textdecor_w ) = ubbc_boxlist(%textdecor);
@@ -150,7 +151,7 @@ $fntopts
                  </div>
             </div>
             <div style="float:left; height:22px; padding-left: 1px; padding-right: 1px; width:23px;">
-                <span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/palette1.png" class="cursor" onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" /></span>
+                <span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/palette1.png" class="cursor vtop" onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;' onclick="window.open('$scripturl?action=palette;task=post', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="$post_txt{'palette'}" /></span>
             </div>
             <div style="float:left; width:${txtalgn_w}px">
             $txtalgn
@@ -399,7 +400,7 @@ sub googiea {
 qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="text/css" />
 <script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
 <script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
-    if ( $img_greybox == 0 ) {
+    if ( !$img_greybox || $action eq 'guestpm' ) {
         $googiea .= qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
     }
     return $googiea;
@@ -768,6 +769,7 @@ function autoPreview() {
         }
     };
     var nscheck = 0;
+    var isprev = 1;
     if(document.getElementById("ns").checked) nscheck = 1;~;
     if ( $my_ajxcall ne 'ajxcal' ) {
         $x .= q~
@@ -791,7 +793,7 @@ function autoPreview() {
         $x .= qq~
     var tmusername = encodeURIComponent('$displayname');
     sessvalue = encodeURIComponent(document.postmodify.formsession.value);
-    var parameters = "subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue;
+    var parameters = "subject="+subjvalue+"&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&isprev="+isprev;
     pstHttp.open("POST", url, true);
     pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     pstHttp.send(parameters);~;
@@ -804,7 +806,7 @@ function autoPreview() {
     var cal_icon_txt = encodeURIComponent(document.postmodify.calicon.options[document.postmodify.calicon.selectedIndex].value);
     var cal_type = encodeURIComponent(document.postmodify.caltype.options[document.postmodify.caltype.selectedIndex].value);
     var tmusername = encodeURIComponent('$displayname');
-    var parameters = "&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&cal_mon="+calmonvalue+"&cal_day="+caldayvalue+"&cal_year="+calyearvalue+"&icon_txt="+cal_icon_txt+"&cal_type="+cal_type;
+    var parameters = "&message="+messvalue+"&musername="+tmusername+"&nschecked="+nscheck+"&formsession="+sessvalue+"&guestname="+namevalue+"&cal_mon="+calmonvalue+"&cal_day="+caldayvalue+"&cal_year="+calyearvalue+"&icon_txt="+cal_icon_txt+"&cal_type="+cal_type+"&isprev="+isprev;
     pstHttp.open("POST", url, true);
     pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     pstHttp.send(parameters);~;
@@ -812,7 +814,7 @@ function autoPreview() {
     elsif ( $my_ajxcall eq 'ajximmessage' ) {
         $x .= q~
                 var iconvalue = encodeURIComponent(document.getElementById("iconholder").value);
-                var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue;
+                var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue+"&isprev="+isprev;
                 pstHttp.open("POST", url, true);
                 pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 pstHttp.send(parameters);~;

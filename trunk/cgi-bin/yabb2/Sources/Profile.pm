@@ -1,14 +1,14 @@
 ###############################################################################
 # Profile.pm                                                                  #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -17,9 +17,9 @@
 no warnings qw(uninitialized once redefine);
 use English qw(-no_match_vars);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$profilepmver = 'YaBB 2.6.11 $Revision$';
+$profilepmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');
@@ -1283,8 +1283,10 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     if ( $iamadmin ) {
         for ( @grps ) {
             @memstat = split /\|/xsm, $Group{$_};
-            $my_group .=
+            if ( $_ ne 'Moderator' ) {
+                $my_group .=
 qq~\n                        <option value="$_">$memstat[0]</option>~;
+            }
         }
     }
 
@@ -1684,6 +1686,7 @@ sub ModifyProfile2 {
             && ( lc $member{'name'} ne lc $member{'username'} )
           )
         {
+            ToChars($member{'name'});
             fatal_error( 'name_taken', "($member{'name'})" );
         }
 
@@ -2142,14 +2145,10 @@ sub ModifyProfileOptions2 {
         if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
         {    # replace all inappropriate characters
                 # Transliteration
-            my @ISO_8859_1 =
-              qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
             my $x = 0;
-            foreach (
-                qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)
-              )
+            foreach ( @uploadtranlist )
             {
-                $fixfile =~ s/$_/$ISO_8859_1[$x]/igxsm;
+                $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
                 $x++;
             }
 
@@ -3791,4 +3790,5 @@ sub isselected {
     return \' selected="selected"' if $inp;
     return \q{};
 }
+
 1;

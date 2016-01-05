@@ -1,14 +1,14 @@
 ###############################################################################
 # EventCalBirthdays.pm                                                        #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -16,9 +16,9 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$eventcalbirthdayspmver = 'YaBB 2.6.11 $Revision$';
+$eventcalbirthdayspmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -43,7 +43,10 @@ sub birthdaylist {
     if ( $actualmon < 10 ) { $actualmon = "0$actualmon"; }
     if ( $actualday < 10 ) { $actualday = "0$actualday"; }
 
-    timeformat($date);    # get only correct $mytimeselected
+    my $mytimeselected =
+      ( $forum_default || !${ $uid . $username }{'timeselect'} )
+      ? $timeselected
+      : ${ $uid . $username }{'timeselect'};
 
     # GoTo begin
 
@@ -109,7 +112,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     <form action="$scripturl?action=eventcal;calshow=1;calgotobox=1" method="post">
     <span class="small"><b>$var_cal{'calsubmit'}</b></span>~;
 
-    if ( $mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2 )
+    if ( $mytimeselected == 6 || $mytimeselected == 3 || $mytimeselected == 2 || $mytimeselected == 8 )
     {
         $calgotobox .= $boxdays . $boxmonths;
     }
@@ -294,7 +297,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
 
     for my $i ( 1 .. 12 ) {
         if ( $no_bd[$i] == 0 ) {
-            $no_birthday_found[$i] .= qq~&#8226; $var_cal{"$calmont[$i]"} ~;
+            $no_birthday_found[$i] .= qq~&bull; $var_cal{"$calmont[$i]"} ~;
             $no_bd_found = 1;
         }
         else {

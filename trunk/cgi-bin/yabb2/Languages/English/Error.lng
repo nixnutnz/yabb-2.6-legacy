@@ -3,16 +3,16 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$errorlngver = 'YaBB 2.6.11 $Revision$';
+$errorlngver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 %error_txt = (
 ## General Errors ##
@@ -48,14 +48,14 @@ $errorlngver = 'YaBB 2.6.11 $Revision$';
 'invalid_email'        => "Please enter a valid e-mail address.",
 'invalid_picture'      => "Invalid Board Picture Input.",
 'no_secret_answer'     => "You need to fill out an answer to the question asked",
-'no_verification_code' => "The Verification code was not filled out. It is required.", 
+'no_verification_code' => "The Verification code was not filled out. It is required.",
 'wrong_verification_code'    => "The Verification code was not the same as the image presented on screen, please go back, refresh (hit F5 on most browsers) and try again.",
-'invalid_verification_code'  => "Verification code contains invalid characters. Only a-z and 0-9 are valid", 
+'invalid_verification_code'  => "Verification code contains invalid characters. Only a-z and 0-9 are valid",
 'form_spoofing'        => "<b>ALERT</b> Form Spoofing Detected coming from IP address:",
 'post_flooding'        => "The last POST request from your IP was less than",
 'denial_of_service'    => "The last POST request created an error message: ",
 'speed_alert'          => "Posting this fast is considered spamming.<br />You are only allowed <b>$spam_hits_left_count</b> more attempt(s) after which you will be banned as spammer.",
-'tsc_alert'            => "One of the form fields contains text which is considered spam.<br />You are only allowed <b>$spam_hits_left_count</b> more attempt(s) after which you will be banned as a spammer.", 
+'tsc_alert'            => "One of the form fields contains text which is considered spam.<br />You are only allowed <b>$spam_hits_left_count</b> more attempt(s) after which you will be banned as a spammer.",
 'speedpostban'         => "You are currently banned from posting due to possible spamming.<br />After <b>$detention_left</b> second(s) your ban will automatically be lifted.",
 'truncation_error'     => "Please make sure you have 'fake truncation' turned on in your Settings.pm file.<br />\$faketruncation = 1;<br />Could not truncate file",
 'referer_violation'    => "This action is not allowed from an outside domain. <br />Action is: ",
@@ -64,11 +64,11 @@ $errorlngver = 'YaBB 2.6.11 $Revision$';
 'module_missing'       => "Module(s) or functionality needed not installed on this server.",
 'low_diskspace'        => "The available disk/hostspace is low. The forum was put to maintenance to avoid file corruption. Please notify the administrator of this error.",
 'invalid_key'          => "Masterkey is invalid.<br />This should be a text string between 8 and 24 characters long.",
-'wrong_pass'            => 'The password you entered is not correct', 
+'wrong_pass'           => 'The password you entered is not correct',
 'corrupt_member_file'  => "The member data file is corrupt. Please notify the administrator of this error.",
-'no_admin_passwrd'    => "You need to fill in the correct administrator password to enter the Admin Center.",
-'default_password'    => qq~You are still using the YaBB Setup default password. Please login to your <a href="$scripturl?action=myprofile;username=$username">User profile</a> and change your password to something more secure.~,
-'missingvars'         => 'Something bad has happened. Please inform the Admin of this forum of what you were doing when this error occurred.',
+'no_admin_passwrd'     => "You need to fill in the correct administrator password to enter the Admin Center.",
+'default_password'     => qq~You are still using the YaBB Setup default password. Please login to your <a href="$scripturl?action=myprofile;username=$username">User profile</a> and change your password to something more secure.~,
+'missingvars'          => 'Something bad has happened. Please inform the Admin of this forum of what you were doing when this error occurred.',
 
 ## BoardIndex ##
 'collapse_no_member'   => "You must be a member to use the collapsible/expandable categories.",
@@ -136,15 +136,15 @@ $errorlngver = 'YaBB 2.6.11 $Revision$';
 'no_vote_option'       => "Please select an option to vote for before voting.",
 'locked_poll_no_delete'    => "This poll is locked so your vote could not be removed",
 'locked_poll_no_count'     => "This poll is locked so your vote could not be counted",
-'ip_guest_used'            => "A guest has already used this IP address to register their vote",
+'ip_guest_used'        => "A guest has already used this IP address to register their vote",
 'ip_member_used'       => "A member has already used this IP address to register their vote",
 'voted_already'        => "You have already voted in this poll",
 'guest_taken'          => "The user ID or e-mail address given is already taken by a member.<br />Conflicting name or e-mail: ",
 'quote_too_long'       => "The text you have tried to quote is too long. Please shorten it.",
 'no_links_allowed'     => "Sorry, you are not allowed to post messages containing active links to websites or images before you have posted $minlinkpost normal messages.",
 'no_siglinks_allowed'  => "Sorry, you are not allowed to create a signature containing active links to websites or images before you have posted $minlinksig normal messages.",
-'attach_name_blocked'         => "Your attachment name contains a word which is not allowed on this forum.",
-'attach_file_blocked'         => "Sorry, you cannot upload an attachment with that file name.",
+'attach_name_blocked'  => "Your attachment name contains a word which is not allowed on this forum.",
+'attach_file_blocked'  => "Sorry, you cannot upload an attachment with that file name.",
 
 ## MoveTopic ##
 'move_not_allowed'     => "You are not allowed to move topics...",

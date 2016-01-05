@@ -1,27 +1,25 @@
 ###############################################################################
 # ViewMembers.pm                                                              #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$viewmemberspmver = 'YaBB 2.6.11 $Revision$';
+$viewmemberspmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MemberList');
-
 is_admin_or_gmod();
-
 my ( $sortmode, $sortorder, $spages );
 
 $MembersPerPage = $TopAmmount;
@@ -445,7 +443,7 @@ qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~;
         $yymain .= qq~<tr>
         <td class="windowbg">$link{$user}</td>~;
 
-        if ( $user eq 'admin' ) {
+        if ( $user eq 'admin' || ( $iamgmod && ( ${ $uid . $user }{'position'} eq 'Administrator' || $gmod_access{'deletemultimembers'} ne 'on') ) ) {
             $addel = q~&nbsp;~;
         }
         else {
@@ -755,7 +753,9 @@ sub buildPages {
             </tr>);
     }
 
-    $sel_box = qq~
+    $selbox = q{};
+    if ( $iamadmin || ($iamgmod && $gmod_access{'deletemultimembers'} eq 'on' ) ) {
+        $sel_box = qq~
             <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
                 <colgroup>
                     <col style="width: 95%" />
@@ -811,6 +811,7 @@ sub buildPages {
             }
         }
         </script>~;
+    }
 
     $numbegin = ( $start + 1 );
     $numend   = ( $start + $MembersPerPage );
@@ -834,17 +835,10 @@ sub buildPages {
     $TableHeader~;
     }
     else {
-        $yymain .= qq~<tr>
-        <td class="catbg" colspan="9">
-            <div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
-            $pageindexjs
-            </td>
-        </tr>
-       </table>
-       $sel_box
-    </div>
-    <div class="bordercolor rightboxdiv">
-    <table class="border-space pad-cell">
+        $gmodsubmit = q{};
+        if ( $iamadmin || ($iamgmod && $gmod_access{'deletemultimembers'} eq 'on' ) ) {
+            $gmodsubmit = qq~    <div class="bordercolor rightboxdiv">
+        <table class="border-space pad-cell">
         <tr>
             <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'delete'}</th>
         </tr><tr>
@@ -854,7 +848,22 @@ sub buildPages {
             </td>
          </tr>
     </table>
-    </div>
+    </div>~;
+        }
+
+        $yymain .= qq~<tr>
+        <td class="catbg" colspan="9">
+            <div style="float: left; width: 50%; text-align: left;">$pageindex2</div>
+            $pageindexjs
+            </td>
+        </tr>
+       </table>
+       $sel_box
+    </div>~;
+    if ( $isgood == 1 ) {
+        $yymain .= $gmodsubmit;
+    }
+    $yymain .= q~
     </form>~;
     }
     return;
@@ -1014,12 +1023,14 @@ sub FindMembers {
             $numshown++;
             $i++;
         }
+    $isgood = 1;
     }
     else {
         $yymain .= qq~
             <tr>
-                  <td class="windowbg2" colspan="7"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
+                  <td class="windowbg2" colspan="9"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
             </tr>~;
+        $isgood = 0;
     }
     undef @findmemlist;
     undef %memberinf;

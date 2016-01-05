@@ -1,21 +1,21 @@
 ###############################################################################
 # ModifyMessage.pm                                                            #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 use CGI::Carp qw(fatalsToBrowser);
 
-$modifymessagepmver = 'YaBB 2.6.11 $Revision$';
+$modifymessagepmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$post_txt_loaded ) {
@@ -474,7 +474,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
     my $mess_len = $message;
     $mess_len =~ s/[\r\n ]//igsm;
-    $mess_len =~ s/&#\d{3,}?\;/X/igxsm;
+    $mess_len =~ s/&\x23\d{3,}?\;/X/igxsm;
     if ( length($mess_len) > $MaxMessLen ) {
         require Sources::Post;
         Preview($post_txt{'536'} . q{ }
@@ -565,8 +565,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
 
     my ( $file, $fixfile, @filelist, @newfilelist, $fixext );
-    $allowattach ||= 0;
-	if ( $allowattach > 0 ) {
+
     for my $y ( 1 .. $allowattach ) {
         if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
         if ( $file
@@ -574,10 +573,20 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
           )
         {
             $fixfile = $file;
-            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/sm;
-            $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gsm;
+            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gsm;
+            if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/gsm )
+            {
+                    # Transliteration
+                my $x = 0;
+                foreach ( @uploadtranlist )
+                {
+                    $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
+                    $x++;
+                }
 
-            # replace all inappropriate with the "_" character.
+              # END Transliteration. Thanks to "Velocity" for this contribution.
+                $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gsm;
+            }
 
             # replace . with _ in the filename except for the extension
             my $fixname = $fixfile;
@@ -633,7 +642,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
             if ($match) {
                 if (
-                    $allowattach < 1
+                    !$allowattach
                     || ( ( $allowguestattach != 0 || $username eq 'Guest' )
                         && $allowguestattach != 1 )
                   )
@@ -656,19 +665,19 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             $limit ||= 0;
             if ( $limit > 0 && $filesize > ( 1024 * $limit ) ) {
                 foreach (@newfilelist) { unlink "$uploaddir/$_"; }
-                require Sources::Post;
-                Preview("$fatxt{'21'} $fixfile ("
+                fatal_error( q{},
+                        "$fatxt{'21'} $fixfile ("
                       . int( $filesize / 1024 )
                       . " KB) $fatxt{'21b'} "
                       . $limit );
             }
-			$dirlimit ||= 0;
+            $dirlimit ||= 0;
             if ($dirlimit > 0) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
                     foreach (@newfilelist) { unlink "$uploaddir/$_"; }
-                    require Sources::Post;
-                    Preview(
+                    fatal_error(
+                        q{},
                         "$fatxt{'22'} $fixfile ("
                           . (
                             int( $filesize / 1024 ) -
@@ -773,7 +782,6 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
     print {FILE} @{ $thread_arrayref{$threadid} }
       or croak "$croak{'print'} FILE";
     fclose(FILE);
-	}
 
     if ( $postid == 0 || $staff ) {
 

@@ -291,7 +291,7 @@ function sh_extractTagsFromNodeList(nodeList, result) {
     case 1:
       if (node.nodeName.toLowerCase() === 'br') {
         var terminator;
-        if (/MSIE/.test(navigator.userAgent)) {
+        if (/MSIE/.test(navigator.userAgent) || /Trident/.test(navigator.userAgent)) {
           terminator = '\r';
         }
         else {

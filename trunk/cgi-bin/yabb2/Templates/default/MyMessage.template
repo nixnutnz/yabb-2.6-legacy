@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mymessagetemver = 'YaBB 2.6.11 $Revision$';
+$mymessagetemver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};
@@ -24,7 +24,7 @@ $us_winhight_to = 345;
 
 ## IM show - single post
 $myIM_show = qq~
-<table class="bordercolor cs_thin pad_1px" style="table-layout: fixed">
+<table class="bordercolor cs_thin pad_1px fixed">
     <tr>
         <td class="windowbg vtop" colspan="2">
             <div style="width: 99%; padding: 2px; margin: 2px;">
@@ -138,7 +138,7 @@ $my_imsend_IM = qq~{yabb my_gimsend} {yabb my_send}<tr>
                         <select name="status" id="status" tabindex="2" size="3" onchange="showtpstatus();{yabb onchange_text2}">
 {yabb iconopts}
                         </select>
-                        <img src="{yabb pmicon_img}" name="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'{yabb pmicon}'}" title="$im_message_status{'{yabb pmicon}'}" />
+                        <img src="{yabb pmicon_img}" id="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'{yabb pmicon}'}" title="$im_message_status{'{yabb pmicon}'}" />
                         <input type="hidden" id="iconholder" value="{yabb pmicon}" />
                     </td>
                 </tr>
@@ -250,7 +250,7 @@ $my_savedraft = qq~<tr>
         </td>
     </tr>~;
 
-$myIM_liveprev_b = qq~<table class="bordercolor cs_thin pad_1px" style="table-layout: fixed">
+$myIM_liveprev_b = qq~<table class="bordercolor cs_thin pad_1px fixed">
     <tr>
         <td class="windowbg2 vtop" colspan="2">
             <div style="width: 99%; padding: 2px; margin: 2px;">

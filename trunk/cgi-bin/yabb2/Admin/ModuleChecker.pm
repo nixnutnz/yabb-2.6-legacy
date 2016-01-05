@@ -1,24 +1,24 @@
 ###############################################################################
 # ModuleChecker.pm                                                            #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
 #use warnings;
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 use English qw(-no_match_vars);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-our $modulecheckerpmver = 'YaBB 2.6.11 $Revision$';
+our $modulecheckerpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 our ( $action, $yymain, %modulecheck );
 if ( $action eq 'detailedversion' ) { return 1; }
 
@@ -29,7 +29,9 @@ if ( !$script_root ) {
 
 my ( $checker_output, $i );
 
-my @modules = qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTP::TLS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape);
+my @modules = qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTP::TLS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape);
+
+@modules = sort @modules;
 
 foreach my $module ( @modules ) {
     eval "require $module;";
@@ -73,7 +75,11 @@ foreach my $module ( @modules ) {
         }
     }
 }
+
 my $perlver = $];
+if ( $perlver gt '5.009' ) {
+    $perlver = $^V;
+}
 
 if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~

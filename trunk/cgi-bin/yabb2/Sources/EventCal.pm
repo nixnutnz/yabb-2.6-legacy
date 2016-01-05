@@ -1,14 +1,14 @@
 ###############################################################################
 # EventCal.pm                                                                 #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -17,9 +17,9 @@
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$eventcalpmver = 'YaBB 2.6.11 $Revision$';
+$eventcalpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -32,7 +32,6 @@ require Sources::Post;
 
 get_micon();
 get_template('Calendar');
-
 
 if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
     $i = 0;
@@ -81,6 +80,19 @@ for $i (@add_cal_icon) {
     $jsCal_txt .= qq~,\n'$i_a', '$i_b'~;
 }
 $jsCal_txt .= qq~);\n~;
+
+my $mytimeselected =
+      ( $forum_default || !${ $uid . $username }{'timeselect'} )
+      ? $timeselected
+      : ${ $uid . $username }{'timeselect'};
+
+my $timeord = 0;
+if (   $mytimeselected == 8
+    || $mytimeselected == 6
+    || $mytimeselected == 3
+    || $mytimeselected == 2 ) {
+    $timeord = 1;
+}
 
 sub eventcal {
     my ( $ssicalmode, $ssicaldisplay ) = @_;
@@ -291,7 +303,6 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
     my $boxdays =
 qq~ <label for="calday"><span class="small">$var_cal{'calday'}</span></label>
     <select class="input" name="calday" id="calday">
-    <option value="0">---</option>
         $boxdays_inner
         </select>~;
     my $smonths = qq~ <label for="selmon">$var_cal{'calmonth'}</label>
@@ -317,17 +328,14 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     </select>~;
 
     my $addevdate;
-    if (   $mytimeselected == 8
-        || $mytimeselected == 6
-        || $mytimeselected == 3
-        || $mytimeselected == 2 )
+    if ( $timeord == 1 )
     {
-        $addevdate     .= $sdays . $smonths;
-        $calgotobox_dm .= $boxdays . $boxmonths;
+        $addevdate     = $sdays . $smonths;
+        $calgotobox_dm = $boxdays . $boxmonths;
     }
     else {
-        $addevdate     .= $smonths . $sdays;
-        $calgotobox_dm .= $boxmonths . $boxdays;
+        $addevdate     = $smonths . $sdays;
+        $calgotobox_dm = $boxmonths . $boxdays;
     }
     $addevdate .= $syears;
     my $calgotobox = qq~
@@ -1245,9 +1253,11 @@ qq~$var_cal{'calcoming'} $var_cal{'calsubtitle'} ($DisplayEvents $var_cal{'calda
                 }
                 $convertstr = $cevent;
                 $convertcut = $CalShortEvent;
-                CountChars();
+                if ( $CalShortEvent > 0 && length($cevent) > $CalShortEvent ) {
+                    CountChars();
+                }
                 $cevent = $convertstr;
-                if ($cliped) { $cevent .= ' ...'; }
+                if ($cliped) { $cevent .= q~ ...~; }
                 $cevent .=
 qq~<br /><br /><a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;calid=$ctime;showthisdate=1" title="$var_cal{'calshowevent'}"><span style="color:#FF6600">$var_cal{'calmore'}</span> $cal_icon{'eventmore'}</a>~;
 
@@ -1508,14 +1518,14 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     $cal_displayssi =~ s/{yabb weekdays}/$weekdays/sm;
     $cal_displayssi =~ s/{yabb cal_out}/$cal_out/sm;
 
-    my $cal_display_show;
-    $cal_display_show = $mycalout_goto_main;
+    my $cal_display_show = $mycalout_goto_main;
 
     if ( $outstring !~ /$yyhtml_root\//xsm ) {
         $outstring = $my_out_a;
         $outstring =~ s/{yabb cal_eventinfo}/$cal_icon{'eventinfo'}/sm;
     }
 
+    if ( $action eq 'eventcal' && !$INFO{'calshow'} ) {$INFO{'calshow'} = 1;}
     if ( $DisplayCalEvents || $INFO{'calshow'} ) {
         $cal_display_calevent = qq~
                 <b>$event_index</b><br />
@@ -1523,8 +1533,6 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     }
 
     if ($Allow_Event_Imput) {
-
-        #        $cal_allow = $mycal_td_tr;
         $cal_allow = q~~;
 
         if ( $INFO{'addnew'} == 1 ) {
@@ -1639,9 +1647,8 @@ sub add_cal {
         $calmessage = $FORM{'message'};
         $calmessage =~ s/\|//gxsm;
         $calmessage =~ s/\cM//gxsm;
-        $calmessage =~ s/\:\`\(/\:\'\(/gxsm;
+        $calmessage =~ s/\:\`\(/\:\x27\(/gxsm;
 
-        #' make my syntax checker happy;
         $calmessage =~ s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
         $calmessage =~ s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
         $calmessage =~

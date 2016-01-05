@@ -1,21 +1,21 @@
 ###############################################################################
 # Notify.pm                                                                   #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$notifypmver = 'YaBB 2.6.11 $Revision$';
+$notifypmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Notify');
@@ -319,19 +319,39 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     my @oldnote = split /,/xsm, ${ $uid . $username }{'board_notifications'};
     $curbrd = @oldnote;
- #   if ( !$maxtnote ) { $maxtnote = 10; }
 
- #   $note_brd = qq~<br />$notify_txt{'75'}<br />$notify_txt{'76'} $curbrd $notify_txt{'77'} $maxtnote $notify_txt{'78'}~;
     $curbrd = NumberFormat($curbrd);
 
     # Show Javascript for 'check all' notifications
 
     ( $board_notify, $thread_notify ) = NotificationAlert();
     my ( $num, $new );
+    getlog();
+    my $dmax = $date - ( $max_log_days_old * 86400 );
 
     # Board notifications
     foreach ( keys %{$board_notify} ) {    # boardname, boardnotifytype , new
         $num++;
+        if ( $subboard{$_} ) {
+            @brd = split /\|/xsm, $subboard{$_};
+            for my $i (@brd) {
+                if (
+                       $max_log_days_old
+                    && int( ${ $uid . $i }{'lastposttime'} )
+                    && (
+                        (
+                            !$yyuserlog{$i}
+                            && ${ $uid . $i }{'lastposttime'} > $dmax
+                        )
+                        || (   $yyuserlog{$i} > $dmax
+                            && $yyuserlog{$i} < ${ $uid . $i }{'lastposttime'} )
+                    )
+                  )
+                {
+                    ${ $$board_notify{$_} }[2] = 1;
+                }
+            }
+        }
 
         my ( $selected1, $selected2 );
         if ( ${ $$board_notify{$_} }[1] == 1 ) {    # new topics
@@ -429,7 +449,7 @@ sub NotificationAlert {
     ## run through boards list
     foreach my $myboard (@bmaildir) {    # board name from file name
         if ( !-e "$boardsdir/$myboard.txt" )
-        {                             # remove from user board_notifications
+        {                                # remove from user board_notifications
             ManageBoardNotify( 'delete', $myboard, $username );
             next;
         }
@@ -477,20 +497,20 @@ sub NotificationAlert {
             if ( eval { require Variables::Movedthreads; 1 } ) {
                 next
                   if !exists $moved_file{$mythread} || !$moved_file{$mythread};
-            my $newthread;
-            while ( exists $moved_file{$mythread} ) {
-                $mythread  = $moved_file{$mythread};
+                my $newthread;
+                while ( exists $moved_file{$mythread} ) {
+                    $mythread = $moved_file{$mythread};
                     if ( !exists $moved_file{$mythread}
                         && -e "$datadir/$mythread.txt" )
                     {
                         $newthread = $mythread;
                     }
-            }
-            next if !$newthread;
+                }
+                next if !$newthread;
                 ManageThreadNotify( 'add', $newthread, $username,
-                ${ $uid . $username }{'language'},
-                1, 1 );
-        }
+                    ${ $uid . $username }{'language'},
+                    1, 1 );
+            }
         }
 
         ## load threads hash

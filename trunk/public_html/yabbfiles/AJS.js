@@ -1,5 +1,7 @@
 /*
 Last Modified: 29/04/07 18:44:48
+YaBB Modified: 05/1/2106
+//YaBB 2.6.12 $Revision: 1611 $
 
 AJS JavaScript library
     A very small library with a lot of functionality

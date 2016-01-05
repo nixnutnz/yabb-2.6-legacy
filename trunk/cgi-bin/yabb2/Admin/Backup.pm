@@ -1,14 +1,14 @@
 ###############################################################################
 # Backup.pm                                                                   #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -18,11 +18,11 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once redefine);
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 use English '-no_match_vars';
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$backuppmver = 'YaBB 2.6.11 $Revision$';
+$backuppmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
@@ -214,7 +214,7 @@ qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
         </tr>~;
 
     my $label_id;
-    foreach my $module (qw(Compress::Zlib Compress::Bzip2)) {
+    foreach my $module (qw(Compress::Zlib IO::Compress::Bzip2)) {
         $label_id++;
         $input =
 qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklist{$module}~;
@@ -1049,14 +1049,14 @@ sub downloadbackup {
       or croak "$croak{'print'} Content-Type";
 
     # open in binmode
-    fopen( READ, $filename )
+    open( READ, $filename )
       || fatal_error( q{}, "$backup_txt{46} $filename", 1 );
     binmode READ;
 
     # stream it out
     binmode STDOUT;
     while (<READ>) { print; }
-    fclose(READ);
+    close(READ);
     return;
 }
 

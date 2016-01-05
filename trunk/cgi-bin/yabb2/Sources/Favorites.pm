@@ -1,14 +1,14 @@
 ###############################################################################
 # Favorites.pm                                                                #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -16,9 +16,9 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$favoritespmver = 'YaBB 2.6.11 $Revision$';
+$favoritespmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Favorites {
@@ -310,7 +310,7 @@ qq~ <a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>~;
                 : ( $mreplies - $i ) . q{#} . ( $mreplies - $i )
               ) . qq~">$endpage</a>~;
             $pages =
-qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#187;</span>~;
+qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
 
         }
         elsif ( $mreplies + 1 > $maxmessagedisplay ) {
@@ -326,7 +326,7 @@ qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages $pagesall &#
             }
             $pages =~ s/\n\Z//xsm;
             $pages =
-qq~<br /><span class="small">&#171; $messageindex_txt{'139'} $pages &#187;</span>~;
+qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages &raquo;</span>~;
         }
 
         $views      = ${$mnum}{'views'};
@@ -422,7 +422,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         $treplies += $mreplies + 1;
     }
 
-    # Put a "no messages" message if no threads exisit:
+    # Put a "no messages" message if no threads exist:
     if ( !$tmptempbar ) {
         $tmptempbar = $no_favs;
     }
@@ -449,8 +449,6 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
 qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multiremfav" method="post" style="display: inline">~;
     $formend =
       qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
-
-    LoadAccess();
 
     $adminselector = qq~
     <input type="submit" value="$messageindex_txt{'842'}" class="button small" />

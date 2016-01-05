@@ -1,14 +1,14 @@
 ###############################################################################
 # AddModerators.pm                                                            #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 #-----------------------------------------------------------------------------#
@@ -22,9 +22,9 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$addmoderatorspmver = 'YaBB 2.6.11 $Revision$';
+$addmoderatorspmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('AddModerators');
@@ -187,10 +187,10 @@ function copy_option(to_select) {
         my $thisModname = ${ $uid . $thisMod }{'realname'};
         if ( !$thisModname ) { $thisModname = $thisMod; }
         if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        if ( $thisMod eq q{} ) { $modmbr .= q{};}
+        if ( $thisMod eq q{} ) { $modmbr .= q{                <option value="" disabled="disabled">--</option>};}
         else {
             $modmbr .=
-qq~<option value="$thisMod" selected="selected">$thisModname</option>~;
+qq~                <option value="$thisMod" selected="selected">$thisModname</option>~;
             $modmbrcnt++;
         }
     }

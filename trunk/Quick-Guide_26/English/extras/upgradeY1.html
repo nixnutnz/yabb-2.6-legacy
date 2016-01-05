@@ -43,9 +43,9 @@
             <ol>
                 <li>Before doing anything - in your YaBB 1 Gold forum, go to your Admin Center and run the forum maintenance utilities to make sure everything is up to date.</li>
                 <li><b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.6 installation:
-                    <ul><li>Insert the path to your YaBB 1 Gold - SP 1.x forum in the input field on the Converters start page - and go to point 4.</li></ul>
+                    <ul><li>Insert the path to your YaBB 1 Gold - SP 1.x forum and the Boards, Members, Messages, and Variables folders in the input fields on the Converter's start page - and go to point 4.</li></ul>
                     <br />
-                    <b>Else</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.6 installation or if you don't know the path to your SP 1.x forum:
+                    <b>OR</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.6 installation or if you don't know the path to your SP 1.x forum:
                     <ul>
                         <li>You must upload the /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders from the YaBB 2.6 zip package and CHMOD them 755.
                             <ul class="st3">
@@ -64,7 +64,7 @@
                 <li>The Converter will show the steps required to proceed. Make sure you have a backup of your existing YaBB 1.x data in a safe place!</li>
                 <li>You can now follow the on-screen instructions provided by the Converter. It will step you through its 5 steps by having you click the next step's link when it is time.</li>
                 <li>After converting you should be ready to login using your <b>old</b> log in and password and test your new forum. Load YaBB.pl as shown in the previous setup stages (e.x. http://www.example.com/cgi-bin/yabb2/YaBB.pl). Again, modify this URL to fit your specific website and YaBB installation location. (Note: for security reasons YaBB 2.6 only accepts User ID or e-mail as log in credentials.)</li>
-                <li>Once you are satisfied that your old forum has been imported properly, you should delete the Converter backup files using the Admin Center 'Delete backup files' utility - this will also remove the setup and converter utility files.</li>
+                <li>Once you are satisfied that your old forum has been imported properly, you should delete the Converter backup files using the Admin Center 'Delete backup files' utility - this will also remove the setup and converter utility files. <strong>Note</strong>: this function only removes the files in the 'yabb2/Convert' folder. If the files you used for conversion were in your old installation, they will <strong>not</strong> be removed.</li>
                 <li>YaBB 2.6 has many new features and settings so be sure to go over each section of the Admin Center and customize the settings to your forum - also make sure to turn on the anti-spam features and create custom questions in Anti-spam Question.</li>
             </ol>
         </div>

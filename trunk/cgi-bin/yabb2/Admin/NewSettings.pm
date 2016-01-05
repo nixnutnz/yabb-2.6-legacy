@@ -1,22 +1,22 @@
 ###############################################################################
 # NewSettings.pm                                                              #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+use Carp;
+our $VERSION = '2.6.12';
 
-$newsettingspmver = 'YaBB 2.6.11 $Revision$';
+$newsettingspmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -204,9 +204,9 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
 <div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
     <table class="border-space pad-cell">
         <tr>
-            <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$admin_txt{'10'}</b></td>
+            <td class="titlebg">$admin_img{'prefimg'} <b>$admin_txt{'10'}</b></td>
         </tr><tr>
-            <td class="catbg center" colspan="2">
+            <td class="catbg center">
                 <input class="button" type="submit" value="$admin_txt{'10'}" />
             </td>
         </tr>
@@ -474,11 +474,11 @@ sub SaveSettingsTo {
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014  YaBB (www.yabbforum.com) - All Rights Reserved.    #
+# Copyright (c) 2000-2016  YaBB (www.yabbforum.com) - All Rights Reserved.    #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################

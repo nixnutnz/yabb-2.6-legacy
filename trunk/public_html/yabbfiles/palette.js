@@ -3,16 +3,16 @@
 //##############################################################################
 //# YaBB: Yet another Bulletin Board                                           #
 //# Open-Source Community Software for Webmasters                              #
-//# Version:        YaBB 2.6.11                                                #
-//# Packaged:       December 2, 2014                                           #
+//# Version:        YaBB 2.6.12                                                #
+//# Packaged:       January 5, 2016                                            #
 //# Distributed by: http://www.yabbforum.com                                   #
 //# ===========================================================================#
-//# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.    #
+//# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.    #
 //# Software by:  The YaBB Development Team                                    #
 //#               with assistance from the YaBB community.                     #
 //##############################################################################
 
-//YaBB 2.6.11 $Revision$
+//YaBB 2.6.12 $Revision: 1611 $
 
 var op = ( navigator.userAgent.indexOf( 'Opera' ) != -1 );
 var konq = ( navigator.userAgent.indexOf( 'Konqueror' ) != -1 );

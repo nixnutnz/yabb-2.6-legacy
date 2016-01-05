@@ -1,21 +1,21 @@
 ###############################################################################
 # Smilies.pm                                                                  #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-our $smiliespmver = 'YaBB 2.6.11 $Revision$';
+our $smiliespmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";
@@ -131,7 +131,7 @@ sub SmiliePanel {
             <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor(color) {
-                color = color.replace(/#/, '');
+                color = color.replace(/\x23/, '');
                 document.getElementById('popback_color').style.background = '#' + color;
                 document.getElementsByName("popback")[0].value = color;
             }
@@ -144,7 +144,7 @@ sub SmiliePanel {
             <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor_0(color) {
-                color = color.replace(/#/, '');
+                color = color.replace(/\x23/, '');
                 document.getElementById('poptext_color').style.background = '#' + color;
                 document.getElementsByName("poptext")[0].value = color;
             }
@@ -341,13 +341,13 @@ sub AddSmilies {
             push @SmilieURL, $FORM{"smimg[$temp_a]"};
 
             ToHTML( $FORM{"scd[$temp_a]"} );
-            $FORM{"scd[$temp_a]"} =~ s/\$/&#36;/gxsm;
-            $FORM{"scd[$temp_a]"} =~ s/\@/&#64;/gxsm;
+            $FORM{"scd[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
+            $FORM{"scd[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
             push @SmilieCode, $FORM{"scd[$temp_a]"};
 
             ToHTML( $FORM{"sdescr[$temp_a]"} );
-            $FORM{"sdescr[$temp_a]"} =~ s/\$/&#36;/gxsm;
-            $FORM{"sdescr[$temp_a]"} =~ s/\@/&#64;/gxsm;
+            $FORM{"sdescr[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
+            $FORM{"sdescr[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
             push @SmilieDescription, $FORM{"sdescr[$temp_a]"};
 
             push @SmilieLinebreak, ( $FORM{"smbox[$temp_a]"} ? '<br />' : q{} );

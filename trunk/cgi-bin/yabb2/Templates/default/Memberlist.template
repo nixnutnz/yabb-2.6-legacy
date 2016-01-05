@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$memberlisttemver = 'YaBB 2.6.11 $Revision$';
+$memberlisttemver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 get_micon();
 $letterclass = 'catbg a';
@@ -186,7 +186,7 @@ $my_usersel_tem = qq~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//
         var to_length = to_array.length;
         for(i = 0; i < document.getElementById(from_select).options.length; i++) {
             tmp_array[document.getElementById(from_select).options[i].text] = document.getElementById(from_select).options[i].value;
-            if(document.getElementById(from_select).options[i].selected && document.getElementById(from_select).options[i].value != "") {
+            if(document.getElementById(from_select).options[i].selected && document.getElementById(from_select).options[i].value !== "") {
                 to_array[to_length] = document.getElementById(from_select).options[i].text;
                 to_length++;
             }
@@ -213,7 +213,7 @@ $my_bcc_radio = qq~<div class="small" style="float: left; width: 50%; padding-bo
 ~;
 
 $my_usersel = qq~
-    <table class="bordercolor pad_3px cs_thin" style="table-layout: fixed; width:464px;">
+    <table class="bordercolor pad_3px cs_thin fixed" style="width:464px;">
         {yabb TableHeader}
         <tr>
             <td class="catbg">
@@ -246,20 +246,20 @@ $my_tableHeader = qq~<tr>
         </tr>
     </table>
     <form method="post" action="" name="selectuser">
-    <table class="bordercolor pad_3px cs_thin" style="width:464px; height: 275px; table-layout: fixed">
+    <table class="bordercolor pad_3px cs_thin fixed" style="width:464px; height: 275px;">
         <tr>
             <td class="catbg center">{yabb not_groups_b}
             </td>
         </tr>{yabb TableHeader_lt}~;
 
-$my_tableHeader_lt = qq~<tr>
+$my_tableHeader_lt = q~<tr>
             <td class="titlebg">{yabb LetterLinks}</td>
         </tr>~;
 
 $my_quickSearch = qq~
     <script type="text/javascript">document.getElementById("select_body").className = "select_body_qsearch";</script>
     <div class="bordercolor" style="width:300px">
-    <table class="pad_3px cs_thin" style="width:300px">
+    <table class="pad_3px cs_thin">
         <tr>
             <td class="titlebg"><label for="letter">$usersel_txt{'qsearch'}</label></td>
         </tr><tr>
@@ -269,7 +269,7 @@ $my_quickSearch = qq~
             </td>
         </tr><tr>
             <td class="windowbg">
-                <select name="rec_list" multiple="multiple" id="rec_list" size="10" style="width: 290px; font-size: 11px;" ondblclick="copy_option('{yabb to_id}')"><option></option></select>
+                <select name="rec_list" multiple="multiple" id="rec_list" size="10" style="width: 290px; font-size: 11px;" ondblclick="copy_option('{yabb to_id}')"><option value="">--</option></select>
             </td>
         </tr><tr>
             <td class="windowbg">

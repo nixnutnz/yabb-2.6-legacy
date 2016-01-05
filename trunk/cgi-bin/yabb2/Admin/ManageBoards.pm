@@ -1,21 +1,21 @@
 ###############################################################################
 # ManageBoards.pm                                                             #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+use Carp;
+our $VERSION = '2.6.12';
 
-$manageboardspmver = 'YaBB 2.6.11 $Revision$';
+$manageboardspmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
@@ -145,7 +145,14 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                 </table>~;
         if ( $INFO{'action'} ne 'managecats' ) {
             my $indent = -3;
+            @tmplt = ();
 
+            for my $curtemplate ( sort keys %templateset ){
+                @templatelst = split /\|/xsm, $templateset{$curtemplate};
+                push @tmplt, $curtemplate;
+            }
+            my $tmpwidth2 = 90 - $indent;
+            my $tmpwidth3 = 5;
             # recursive loop to display all sub boards
 
             *show_boards = sub {
@@ -154,7 +161,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                 for my $curboard (@brdlist) {
                     ( $boardname, $boardperms, $boardview ) =
                       split /\|/xsm, $board{$curboard};
-                    $boardname =~ s/\&quot\;/&#34;/gxsm;
+                    $boardname =~ s/\&quot\;/&\x2334;/gxsm;
                     ToChars($boardname);
                     $descr = ${ $uid . $curboard }{'description'};
                     $descr =~ s/\<br \/>/\n/gsm;
@@ -165,22 +172,34 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                     chomp @brdpics;
                     for (@brdpics) {
                         my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-                        if ( $brdnm eq $curboard && $style eq $usestyle ) {
-                            if ( $brdpic =~ /\//ixsm ) {
-                                $bicon = qq~ <img src="$brdpic" id="brd_img_resize" alt="" /> ~;
-                            }
-                            else {
-                                $bicon = qq~<img src="$yyhtml_root/Templates/Forum/$style/Boards/$brdpic" id="brd_img_resize" alt="$boardname" />~;
+                        if ( $brdnm eq $curboard ) {
+                            for my $x ( 0 .. $#tmplt ) {
+                                if ( $style eq $tmplt[$x] ) {
+                                    if ( $brdpic =~ /\//ixsm ) {
+                                        $bicon .= qq~$style: <img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                                    }
+                                    else {
+                                        @mytempst = split /\|/xsm, $templateset{$style};
+                                        $myimgfolder = $mytempst[1];
+                                        $bicon .= qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                                    }
+                                    $tmpwidth2 = 80 - $indent;
+                                    $tmpwidth3 = 15;
+                                }
                             }
                         }
                     }
                     if ( ${ $uid . $curboard }{'ann'} == 1 ) {
                         $bicon =
 qq~ <img src="$imagesdir/ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
+                        $tmpwidth2 = 90 - $indent;
+                        $tmpwidth3 = 5;
                     }
                     if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
                         $bicon =
 qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
+                        $tmpwidth2 = 90 - $indent;
+                        $tmpwidth3 = 5;
                     }
                     $convertstr = $descr;
                     if ( $convertstr !~ /<.+?>/xsm )
@@ -193,7 +212,6 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                     if ($cliped) { $descr .= q{...}; }
 
                     my $tmpwidth  = 100 - $indent;
-                    my $tmpwidth2 = 90 - $indent;
 
                     my @children = split /\|/xsm, $subboard{$curboard};
 
@@ -217,8 +235,9 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                 <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em; margin-left:~
                       . $indent . q~%; width:~ . $tmpwidth . q~%">
                     <colgroup>
-                        <col style="width:~ . $tmpwidth2 . qq~%" />
-                        <col span="2" style="width: 5%" />
+                        <col style="width: ~ . $tmpwidth2 . q~%" />
+                        <col style="width: ~ . $tmpwidth3 . qq~%" />
+                        <col style="width: 5%" />
                     </colgroup>
                     <tr>
                         <td class="windowbg2">
@@ -726,7 +745,6 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
         ( $boardname, $boardperms, $boardview ) = split /\|/xsm, $board{"$id"};
         ToChars($boardname);
         if ( $INFO{'action'} eq 'boardscreen' ) { $boardtext = $boardname; }
-        $boardpic    = ${ $uid . $editboards[$i] }{'pic'};
         $description = ${ $uid . $editboards[$i] }{'description'};
         $description =~ s/<br \/>/\n/gsm;
         ToChars($description);
@@ -914,37 +932,38 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
         }
 
         my $drawndirs = q{};
-        for my $curtemplate ( sort { $templateset{$a} cmp $templateset{$b} } keys %templateset ) {
+        @tmplt = ();
+        for my $curtemplate ( sort keys %templateset ){
             @templatelst = split /\|/xsm, $templateset{$curtemplate};
-            $drawndirs .= qq~<option value="$templatelst[1]">$curtemplate</option>\n~;
-            push @tmplt, $templatelst[1];
+            $drawndirs .= qq~<option value="$curtemplate">$curtemplate</option>\n~;
+            push @tmplt, $curtemplate;
         }
 
         my $boardpic_value = q{};
         my $brdpic_addr = q{};
         my $brdpic_loc  = q{};
         my $mystyle = q{};
-        if ( $boardpic ) {
-            fopen( BRDPIC, "<$boardsdir/brdpics.db" );
-            my @brdpics = <BRDPIC>;
-            fclose( BRDPIC);
-            chomp @brdpics;
-            for (@brdpics) {
-                my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-
-                if ( $brdnm eq $editboards[$i] ) {
-                    for ( @tmplt ) {
-                        if ($style eq $_) {
-                            $mystyle = $style;
-                            if ( $brdpic =~ /\//ixsm ) {
-                                $brdpic_addr = qq~$brdpic~;
-                            }
-                            else {
-                                $brdpic_addr = qq~$yyhtml_root/Templates/Forum/$style/Boards/$brdpic~;
-                            }
+        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+        my @brdpics = <BRDPIC>;
+        fclose( BRDPIC);
+        chomp @brdpics;
+        for (@brdpics) {
+            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+            if ( $brdnm eq $editboards[$i] ) {
+                for my $x ( 0 .. $#tmplt ) {
+                    if ( $style eq $tmplt[$x] ) {
+                        $mystyle = $style;
+                        if ( $brdpic =~ /\/\//ixsm ) {
+                            $brdpic_addr = qq~$brdpic~;
                         }
+                        else {
+                            @mytempst = split /\|/xsm, $templateset{$style};
+                            $myimgfolder = $mytempst[1];
+                            $brdpic_addr = qq~$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic~;
+                        }
+                        $lbl = 'del_pic' . $i . '_' . $x;
+                        $boardpic_value .= qq~               <div class="small bold"><input type="checkbox" name="$lbl" id="$lbl" value="$brdnm|$style|$brdpic" /><label for="$lbl">$admin_txt{'64b4'}</label><br />$admin_txt{'current_img'}: <a href="$brdpic_addr" target="_blank">$mystyle - $brdpic</a> <img src="$brdpic_addr" id="brd_img_resize" alt="board_pic" /> </div>~;
                     }
-                    $boardpic_value .= qq~               <div class="small bold"><input type="checkbox" name="del_pic$i" id="del_pic$i" value="$brdnm|$style|$brdpic" /><label for="del_pic$i">$admin_txt{'64b4'}</label><br />$admin_txt{'current_img'}: <a href="$brdpic_addr" target="_blank">$mystyle - $brdpic</a> <img src="$brdpic_addr" id="brd_img_resize" alt="board_pic" /> </div>~;
                 }
             }
         }
@@ -1252,13 +1271,15 @@ sub AddBoards2 {
         my $newpic = q{};
         if ( $FORM{"pic$i"} ne q{} ) {
             $newpic = $FORM{"pic$i"};
-            $FORM{"pic$i"} = UploadFile("pic$i", qq~Templates/Forum/$FORM{"templt$i"}/Boards~, 'png jpg jpeg gif', '250', '0');
+            @mytempst = split /\|/xsm, $templateset{$FORM{"templt$i"}};
+            $myimgfolder = $mytempst[1];
+            $FORM{"pic$i"} = UploadFile("pic$i", qq~Templates/Forum/$myimgfolder/Boards~, 'png jpg jpeg gif', '250', '0');
             fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
             print {BRDPIC} qq~$id|$FORM{"templt$i"}|$newpic\n~;
             fclose(BRDPIC);
 
             if ( $FORM{"cur_pic$i"} ne q{} ) {
-                unlink qq~$htmldir/Templates/Forum/$FORM{"templt$i"}/Boards/$FORM{"cur_pic$i"}~;
+                unlink qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
             }
         }
         elsif ( $FORM{"mypic$i"} ne q{} ) {
@@ -1278,17 +1299,21 @@ sub AddBoards2 {
             $FORM{"pic$i"} = $FORM{"cur_pic$i"};
         }
 
-        if ( $FORM{"del_pic$i"} ) {
-            my @pklst = split /[|]/xsm, $FORM{"del_pic$i"};
-            if ( $pklst[2] !~ /[ht|f]tp[s]{0,1}:\/\//xsm ) {
-                unlink qq~$htmldir/Templates/Forum/$pklst[1]/Boards/$pklst[2]~;;
+        $templx = scalar keys %templateset;
+        for my $x ( 0 .. $templx ) {
+            $lbl = 'del_pic' . $i . '_' . $x;
+            if ( $FORM{"$lbl"} ) {
+                my @pklst = split /[|]/xsm, $FORM{"$lbl"};
+                if ( $pklst[2] !~ /[ht|f]tp[s]{0,1}:\/\//xsm ) {
+                    unlink qq~$htmldir/Templates/Forum/$pklst[1]/Boards/$pklst[2]~;
+                }
                 fopen( BRDPIC, "<$boardsdir/brdpics.db" );
                 @piclist = <BRDPIC>;
                 fclose(BRDPIC);
                 chomp @piclist;
                 fopen( BRDPIC2, ">$boardsdir/brdpics.db" );
                 for ( @piclist) {
-                    if ( $_ ne $FORM{"del_pic$i"} ) {
+                    if ( $_ ne $FORM{"$lbl"} ) {
                         print {BRDPIC2} qq~$_\n~;
                     }
                     else { print {BRDPIC2} q{};
@@ -1524,7 +1549,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         push @boardcontrol,
 qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderatorgroups$i"}|$FORM{"topicperms$i"}|$FORM{"replyperms$i"}|$FORM{"pollperms$i"}|$FORM{"zero$i"}|$FORM{"membergroups$i"}|$FORM{"ann$i"}|$FORM{"rbin$i"}|$FORM{"att$i"}|$FORM{"minage$i"}|$FORM{"maxage$i"}|$FORM{"gender$i"}|$FORM{"canpost$i"}|$FORM{"parent$i"}|$FORM{"rules$i"}|$brulestitle|$brulesdesc|$FORM{"rulescollapse$i"}|$FORM{"paswwr$i"}|$encryptopass|$FORM{"brdrss$i"}|$modhook\n~;
         push @changes, $id;
-        $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br />~;
+        $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a>~;
     }
 
     # do the saving here, after all new boards passed the tests (fatal_error)

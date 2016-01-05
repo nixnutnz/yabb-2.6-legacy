@@ -1,14 +1,14 @@
 ###############################################################################
 # InstantMessage.pm                                                           #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -16,10 +16,11 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$instantmessagepmver = 'YaBB 2.6.11 $Revision$';
+$instantmessagepmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
+
 require Sources::PostBox;
 require Sources::SpamCheck;
 LoadLanguage('FA');
@@ -515,8 +516,8 @@ qq~             <img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascr
                 $tmpcode =~ s/\&quot;/"+'"'+"/gsm;
 
                 FromHTML($tmpcode);
-                $tmpcode =~ s/&#36;/\$/gxsm;
-                $tmpcode =~ s/&#64;/\@/gxsm;
+                $tmpcode =~ s/&\x2336;/\$/gxsm;
+                $tmpcode =~ s/&\x2364;/\@/gxsm;
                 $more_smilie_array .= qq~" $tmpcode", ~;
                 $i++;
             }
@@ -775,8 +776,8 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             $tmpcode = $SmilieCode[$i];
             $tmpcode =~ s/\&quot;/"+'"'+"/gsm;    # "'
             FromHTML($tmpcode);
-            $tmpcode =~ s/&#36;/\$/gxsm;
-            $tmpcode =~ s/&#64;/\@/gxsm;
+            $tmpcode =~ s/&\x2336;/\$/gxsm;
+            $tmpcode =~ s/&\x2364;/\@/gxsm;
             $smilie_code_array .= qq~" $tmpcode", ~;
             $i++;
         }
@@ -980,12 +981,9 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
                 {    # replace all inappropriate characters
                         # Transliteration
-                    my @ISO_8859_1 =
-                      qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
+## Arrays moved to Main.lng ##
                     my $x = 0;
-                    foreach (
-                        qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)
-                      )
+                    foreach ( @uploadtranlist )
                     {
                         $fixfile =~ s/$_/$ISO_8859_1[$x]/igxsm;
                         $x++;

@@ -1,14 +1,14 @@
 ###############################################################################
 # ContextHelp.pm                                                              #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -17,9 +17,9 @@
 ###############################################################################
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$contexthelppmver = 'YaBB 2.6.11 $Revision$';
+$contexthelppmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ContextScript {
@@ -30,7 +30,7 @@ sub ContextScript {
     while( ($key, $value) = each %contextxt ) {
         if ( $key eq 'clicktip' ) {
             $contextlst .= qq~'contexttip', '$contextxt{'clicktip'}',\n~;
-            }
+        }
         else {
             $contextlst .= qq~'$key', '$value',\n~;
         }
@@ -81,15 +81,15 @@ var contexthash = new Hash($contextlst);
         contexthelp = contexthelp.replace(/\\[TITLE\\]/g, contitle);
         contexthelp = contexthelp.replace(/\\[BUTTON\\]/g, contextimage);
         contexthelp = contexthelp.replace(/\\[SELECT\\](.*?)\\[\\/SELECT\\]/g, '<span style=\"color: white\; background-color: darkblue\">\$1</span>');
-        contexthelp = contexthelp.replace(/\\[CODE\\](.*?)\\[\\/CODE\\]/g, '<pre class=\"code\" style=\"margin: 0px\; width: 90%\; overflow: scroll\;\">\$1</pre>');
-        contexthelp = contexthelp.replace(/\\[QUOTE\\](.*?)\\[\\/QUOTE\\]/g, '<div class=\"quote\" style=\"width: 90%\">\$1</div>');
+        contexthelp = contexthelp.replace(/\\[CODE\\](.*?)\\[\\/CODE\\]/g, '<pre class=\"code\">\$1</pre>');
+        contexthelp = contexthelp.replace(/\\[QUOTE\\](.*?)\\[\\/QUOTE\\]/g, '<div class=\"quote\">\$1</div>');
         contexthelp = contexthelp.replace(/\\[EDIT\\](.*?)\\[\\/EDIT\\]/g, '<div class=\"editbg\" style=\"overflow: auto\">\$1</div>');
         contexthelp = contexthelp.replace(/\\[ME\\]\\s(.*)/g, '<span style=\"color: #FF0000\"><i>\\* $displayname \$1</i></span>');
         contexthelp = contexthelp.replace(/\\[MOVE\\](.*?)\\[\\/MOVE\\]/g, '<marquee>\$1</marquee>');
         contexthelp = contexthelp.replace(/\\[HIGHLIGHT\\](.*?)\\[\\/HIGHLIGHT\\]/g, '<span class=\"highlight\">\$1</span>');
         contexthelp = contexthelp.replace(/\\[PRE\\](.*?)\\[\\/PRE\\]/g, '<pre>\$1</pre>');
-        contexthelp = contexthelp.replace(/\\[LEFT\\](.*?)\\[\\/LEFT\\]/g, '<div style=\"text-align: left\">\$1</div>');
-        contexthelp = contexthelp.replace(/\\[CENTER\\](.*?)\\[\\/CENTER\\]/g, '<center>\$1</center>');
+        contexthelp = contexthelp.replace(/\\[LEFT\\](.*?)\\[\\/LEFT\\]/g, '<div style=\"text-align: left;\">\$1</div>');
+        contexthelp = contexthelp.replace(/\\[CENTER\\](.*?)\\[\\/CENTER\\]/g, '<div style=\"text-align:center;\">\$1</div>');
         contexthelp = contexthelp.replace(/\\[RIGHT\\](.*?)\\[\\/RIGHT\\]/g, '<div style=\"text-align: right\">\$1</div>');
         contexthelp = contexthelp.replace(/\\[RED\\](.*?)\\[\\/RED\\]/g, '<span style=\"color: #FF0000\">\$1</span>');
         document.getElementById("contexttitle").innerHTML = contextimage + ' ' + contitle;

@@ -1,21 +1,21 @@
 ###############################################################################
 # Smtp.pm                                                                     #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use English '-no_match_vars';
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$smtppmver = 'YaBB 2.6.11 $Revision$';
+$smtppmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 eval q{
@@ -176,7 +176,7 @@ qq~$days_short[$smtpwday], $smtpmday $months2[$smtpmon] $smtpyear $smtphour\:$sm
     send_line("From: $fromheader\r\n");
     send_line("X-Mailer: YaBB SMTP\r\n");
     send_line("Subject: $smtp_subject\r\n");
-    send_line("Content-Type: text/plain\; charset=$smtp_charset\r\n\r\n");
+    send_line("Content-Type: text/html\; charset=$smtp_charset\r\n\r\n");
     send_line("$smtp_message");
     send_line("\r\n.\r\n");
 
@@ -288,12 +288,12 @@ sub say_hello ($) {
     my ($hello_host) = @_;
     my ( $feat, $param );
 
-    #send RFC2821 compliant identifyer
+    #send RFC2821 compliant identifier
     send_line("EHLO $hello_host\r\n");
     ( $code, $text, $more ) = get_line();
     if ( $code != 250 ) {
 
-        #try sending an old RFC281 compliant identifyer (older Exchange servers)
+        #try sending an old RFC281 compliant identifier (older Exchange servers)
         send_line("HELO $hello_host\r\n");
     }
     ( $code, $text, $more ) = get_line();

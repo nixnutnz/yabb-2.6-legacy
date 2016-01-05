@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$posttemver = 'YaBB 2.6.11 $Revision$';
+$posttemver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};
@@ -25,7 +25,8 @@ $palwidth = 308;
 $palhight = 302;
 
 ## Post Top
-$mypost_title = qq~{yabb my_topper}<table class="tabtitle">
+$mypost_title = qq~{yabb my_topper}
+<table class="tabtitle">
     <tr>
         <td style="padding-left:1%">
             <img src="{yabb icon_img}" alt="" /> {yabb yytitle}
@@ -38,7 +39,7 @@ $mypost_title = qq~{yabb my_topper}<table class="tabtitle">
 $mypost_topview = qq~<table class="pad_3px">
     <tr>
         <td class="windowbg">
-            $display_txt{'646'} ({yabb topviewers}): {yabb template_viewers}
+            $post_txt{'646'} ({yabb topviewers}): {yabb template_viewers}
         </td>
     </tr>
 </table>~;
@@ -50,7 +51,11 @@ $mypost_postblock = qq~
         <col style="width: 23%" />
         <col style="width: auto" />
     </colgroup>
-    {yabb my_prevmain}{yabb name_field}{yabb email_field}{yabb verification_field}{yabb verification_question_field}
+    {yabb my_prevmain}
+    {yabb name_field}
+    {yabb email_field}
+    {yabb verification_field}
+    {yabb verification_question_field}
     <tr class="windowbg">
         <td colspan="{yabb guestcol}">
             <div style="height:16px;">
@@ -73,7 +78,8 @@ $mypost_postblock = qq~
         </div>
        </td>
     </tr>
-        {yabb my_t_status}{yabb extra}
+        {yabb my_t_status}
+        {yabb extra}
     <tr>
         <td class="windowbg2">
             <label for="subject"><b>$post_txt{'70'}:</b></label>
@@ -91,7 +97,14 @@ $mypost_postblock = qq~
             {yabb my_postsec_b}
         </td>
     </tr><tr>
-        <td class="windowbg2 vtop">{yabb my_googie}{yabb mypost_smilie_array}{yabb my_post_feata}{yabb my_post_smilies}{yabb my_feat5}{yabb my_is_prev}{yabb notification}{yabb favoriteadd}
+        <td class="windowbg2 vtop">{yabb my_googie}
+{yabb mypost_smilie_array}
+{yabb my_post_feata}
+{yabb my_post_smilies}
+{yabb my_feat5}
+{yabb my_is_prev}
+{yabb notification}
+{yabb favoriteadd}
         <tr id="feature_status_7" class="windowbg">
         <td>
             <label for="ns"><b>$post_txt{'276'}:</b></label>
@@ -167,7 +180,7 @@ $mypost_submit = qq~<tr>
 
 $mypost_smiley1 = qq~
         <table class="smiley_top" style="width:124px"><tr>
-            <td class="center"><span class="small"><b>$post_smiltxt{'1'}</b></span></td></td></table>
+            <td class="center"><span class="small"><b>$post_smiltxt{'1'}</b></span></td></tr></table>
             <table class="pad_2px cs_thin smiley_box"><tr><td class="center vtop h_20px">
             <select name="smiliextra_list" onchange="document.images.smiliextra_image.src= smilieurl[document.postmodify.smiliextra_list.value]" style="width:114px; font-size:7pt;">
             {yabb smilieslist}
@@ -544,7 +557,7 @@ $mypost_liveprev = qq~
                 </div>
             </td>
         </tr><tr>
-             <td class="{yabb css} bottom" style="background-color: #D7DBEA;">
+             <td class="{yabb css} bottom post-userinfo">
                 <span onclick="toTop(0)" class="cursor"><img src="$imagesdir/back_to_top.png" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></span>
             </td>
             <td class="{yabb css} bottom dividertop" colspan="2">

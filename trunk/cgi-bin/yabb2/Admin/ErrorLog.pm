@@ -1,21 +1,21 @@
 ###############################################################################
 # ErrorLog.pm                                                                 #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+use Carp;
+our $VERSION = '2.6.12';
 
-$errorlogpmver = 'YaBB 2.6.11 $Revision$';
+$errorlogpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ErrorLog {
@@ -28,9 +28,9 @@ sub ErrorLog {
     $errorcount = @errors;
     $date2      = $date;
     $mytest = 0;
-    for my $i ( 0 .. ( $#errors ) ) {
+    for my $i ( 0 .. $#errors ) {
         my @tmpArray = split /\|/xsm, $errors[$i];
-        if ( $tmpArray[0] eq q{} || $tmpArray[0] =~ /[a-z]/igsm || $tmpArray[1] eq q{} || $tmpArray[1] =~ /[a-z]/igsm ) { next; }
+        if ( $tmpArray[0] eq q{} || $tmpArray[0] =~ /\D/igsm || $tmpArray[1] eq q{} || $tmpArray[1] =~ /\D/igsm ) { next; }
         else {
             $date1 = $tmpArray[1];
             calcdifference();
@@ -169,6 +169,9 @@ function uncheckAll() {
         $sortlist[$bb] =~ s/\[b\]/<b>/gxsm;
         $sortlist[$bb] =~ s/\[\/b\]/<\/b>/gxsm;
         $sortlist[$bb] =~ s/\[br \/\]/<br \/>/gsm;
+        $sortlist[$bb] =~ s/\$/&dollar;/gsm;
+        $sortlist[$bb] =~ s/\@/&commat;/gsm;
+        $sortlist[$bb] =~ s/\%/&percnt;/gsm;
         my (
             $tmp_datecmp,      $tmp_id,    $tmp_date,
             $tmp_userip,       $tmp_error, $tmp_action,

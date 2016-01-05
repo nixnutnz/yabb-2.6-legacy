@@ -3,16 +3,16 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$falngver = 'YaBB 2.6.11 $Revision$',
+$falngver = 'YaBB 2.6.12 $Revision: 1651 $',
 
 %fatxt = (
 '1' => 'Attachment deleted',
@@ -75,8 +75,8 @@ $falngver = 'YaBB 2.6.11 $Revision$',
 '33' => 'Remove Attachments larger than',
 '33a' => 'Remove PM Attachments larger than',
 '34' => 'Remove Attachments older than number of days:',
-'35' => 'Remove Attachment larger than',
-'35a' => 'Remove PM Attachment larger than',
+'35' => 'Remove Attachments larger than',
+'35a' => 'Remove PM Attachments larger than',
 '36' => 'Administrate File Attachments',
 '37' => 'Administrate Post Attachments : View Log',
 '37a' => 'Administrate PM Attachments : View Log',

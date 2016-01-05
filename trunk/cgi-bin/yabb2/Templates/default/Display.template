@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
+# Version:        YaBB 2.6.12                                                 #
 # Packaged:       December 2, 2014                                            #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$displaytemver = 'YaBB 2.6.11 $Revision$';
+$displaytemver = 'YaBB 2.6.12 $Revision: 1651 $';
 
 $disp_qquname = 'qquname.gif';
 $disp_arrow_dn = 'arrow_down.gif';
@@ -32,7 +32,7 @@ $threadhandellist2 = qq~
 ~;
 
 if($useThreadtools) {
-    $threadhandelstyle = q~ class="post_tools center" style="width:100px"~;
+    $threadhandelstyle = q~ class="post_tools center" style="width:100px;"~;
     $my_fixed = q~ style="table-layout: fixed;"~;
 } else {
     $threadhandelstyle = qq~ style="text-align:right"~;
@@ -292,12 +292,6 @@ $myrecent_mess = qq~
                 <a href="$scripturl?board=$board;action=post;num={yabb tnum}/{yabb c}#{yabb c};title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num={yabb tnum};quote={yabb c};title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
             </td>~;
 
-$mydisp_topicview =  qq~    <tr>
-            <td class="windowbg">
-                $display_txt{'644'} ({yabb topviewers}): {yabb template_viewers}
-            </td>
-        </tr>~;
-
 $mydisp_topicview = qq~
     <div class="titlebg padd_4px">$display_txt{'644'} ({yabb topviewers}): {yabb template_viewers}</div>~;
 
@@ -422,7 +416,7 @@ $mysend_top = qq~
     <tr>
         <td style="padding-left:20px">
             <img src="$micon_bg{'email'}" alt="" />
-            <b>$sendtopic_txt{'707'}&nbsp; &#171; {yabb subject} &#187; &nbsp;$sendtopic_txt{'708'}</b>
+            <b>$sendtopic_txt{'707'}&nbsp; &laquo; {yabb subject} &raquo; &nbsp;$sendtopic_txt{'708'}</b>
         </td>
     </tr>
 </table>

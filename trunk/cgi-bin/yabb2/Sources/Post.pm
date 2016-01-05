@@ -1,14 +1,14 @@
 ###############################################################################
 # Post.pm                                                                     #
-# $Date: 12.02.14 $                                                           #
+# $Date: 01.05.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.11                                                 #
-# Packaged:       December 2, 2014                                            #
+# Version:        YaBB 2.6.12                                                 #
+# Packaged:       January 5, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -16,9 +16,9 @@
 # use warnings;
 # no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.11';
+our $VERSION = '2.6.12';
 
-$postpmver = 'YaBB 2.6.11 $Revision$';
+$postpmver = 'YaBB 2.6.12 $Revision: 1651 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -207,7 +207,7 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]\[/qu
             my $mess_len = $message;
             ToChars($mess_len);
             $mess_len =~ s/[\r\n ]//igsm;
-            $mess_len =~ s/&#\d{3,}?\;/X/igxsm;
+            $mess_len =~ s/&\x23\d{3,}?\;/X/igxsm;
 
             if ( length $mess_len >= $maxlengthofquote ) {
                 LoadLanguage('Error');
@@ -287,9 +287,9 @@ sub Postpage {
           )
         {
             $tmplastmodified =
-                qq~&#171; <i>$display_txt{'211'}: ~
+                qq~&laquo; <i>$display_txt{'211'}: ~
               . timeformat($date,0,0,0,1)
-              . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
+              . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &raquo;~;
         }
         $tmpmusername = $thismusername;
     }
@@ -531,12 +531,11 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
             $moresmilieslist .=
 qq~             <img src="$tmpurl" class="bottom pointer" alt="$SmilieDescription[$i]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i]\n~;
             $tmpcode = $SmilieCode[$i];
-            $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
+            $tmpcode =~ s/\&quot;/\x22/gxsm;
 
-            #" Adding that because if not it screws up my syntax view'
             FromHTML($tmpcode);
-            $tmpcode =~ s/&#36;/\$/gxsm;
-            $tmpcode =~ s/&#64;/\@/gxsm;
+            $tmpcode =~ s/&\x2336;/\$/gxsm;
+            $tmpcode =~ s/&\x2364;/\@/gxsm;
             $more_smilie_array .= qq~" $tmpcode", ~;
             $i++;
         }
@@ -815,9 +814,9 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
                   )
                 {
                     $tmplastmodified =
-qq~<div class="small" style="float: right; width: 100%; text-align: right; margin-top: 5px;">&#171; <i>$display_txt{'211'}: ~
+qq~<div class="small" style="float: right; width: 100%; text-align: right; margin-top: 5px;">&laquo; <i>$display_txt{'211'}: ~
                       . timeformat($date,0,0,0,1)
-                      . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187; &nbsp;</div>~;
+                      . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &raquo; &nbsp;</div>~;
                 }
             }
             else {
@@ -983,10 +982,10 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
                     $smilie_url_array .= qq~"$tmpurl", ~;
                     $tmpcode = $SmilieCode[$i];
-                    $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
+                    $tmpcode =~ s/\&quot;/\x22/gxsm;
                     FromHTML($tmpcode);
-                    $tmpcode =~ s/&#36;/\$/gxsm;
-                    $tmpcode =~ s/&#64;/\@/gxsm;
+                    $tmpcode =~ s/&\x2336;/\$/gxsm;
+                    $tmpcode =~ s/&\x2364;/\@/gxsm;
                     $smilie_code_array .= qq~" $tmpcode", ~;
                     $i++;
                 }
@@ -1190,7 +1189,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
 
         # /File Attachment's Browse Box Code
 
-        ### Return To mod start ###
+        ### Return To start ###
         my ($return_to);
         my $rts =
             $FORM{'return_to'}
@@ -1304,9 +1303,9 @@ showtpstatus();
           )
         {
             $tmplastmodified =
-                qq~&#171; <i>$display_txt{'211'}: ~
+                qq~&laquo; <i>$display_txt{'211'}: ~
               . timeformat($date,0,0,0,1)
-              . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &#187;~;
+              . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &raquo;~;
         }
         $tmpmusername = $thismusername;
     }
@@ -1705,22 +1704,16 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
                 {    # replace all inappropriate characters
                     # Transliteration
-                my @ISO_8859_1 =
-                  qw(A B V G D E JO ZH Z I J K L M N O P R S T U F H C CH SH SHH _ Y _ JE JU JA a b v g d e jo zh z i j k l m n o p r s t u f h c ch sh shh _ y _ je ju ja);
                 my $x = 0;
-                foreach (
-                    qw(À Á Â Ã Ä Å ¨ Æ Ç È É Ê Ë Ì Í Î Ï Ð Ñ Ò Ó Ô Õ Ö × Ø Ù Ú Û Ü Ý Þ ß à á â ã ä å ¸ æ ç è é ê ë ì í î ï ð ñ ò ó ô õ ö ÷ ø ù ú û ü ý þ ÿ)
-                  )
+                foreach ( @uploadtranlist )
                 {
-                    $fixfile =~ s/$_/$ISO_8859_1[$x]/igxsm;
+                    $fixfile =~ s/$_/$ISO_8859_1[$x]/gxsm;
                     $x++;
                 }
 
               # END Transliteration. Thanks to "Velocity" for this contribution.
                 $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gxsm;
             }
-
-            # replace . with _ in the filename except for the extension
             my $fixname = $fixfile;
             if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
                 $fixext = $2;
@@ -1782,6 +1775,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             }
             else {
                 foreach (@filelist) { unlink "$uploaddir/$_"; }
+                fatal_error( q{}, "$fixfile $fatxt{'20'} @ext" );
             }
 
             my ( $size, $buffer, $filesize, $file_buffer );
@@ -1790,15 +1784,30 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 $file_buffer .= $buffer;
             }
             $limit ||= 0;
-            if ( $limit > 0  && $filesize > ( 1024 * $limit ) ) {
+            if ( $limit > 0 && $filesize > ( 1024 * $limit ) ) {
                 foreach (@filelist) { unlink "$uploaddir/$_"; }
+                fatal_error( q{},
+                        "$fatxt{'21'} $fixfile ("
+                      . int( $filesize / 1024 )
+                      . " KB) $fatxt{'21b'} "
+                      . $limit );
             }
             $dirlimit ||= 0;
-            if ($dirlimit > 0) {
+            if ( $dirlimit > 0 ) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
                     foreach (@filelist) { unlink "$uploaddir/$_"; }
-                 }
+                    fatal_error(
+                        q{},
+                        "$fatxt{'22'} $fixfile ("
+                          . (
+                            int( $filesize / 1024 ) -
+                              $dirlimit +
+                              int( $dirsize / 1024 )
+                          )
+                          . " KB) $fatxt{'22b'}"
+                    );
+                }
             }
 
  # create a new file on the server using the formatted ( new instance ) filename
@@ -1957,28 +1966,12 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
               $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus";
         }    # Leave the status as is if the user isn't allowed to change it
 
-        # Get the right timeformat for the .ctb file
-        # First save the user time format
-        my $timeformat = ${ $uid . $username }{'timeformat'};
-        my $timeselect = ${ $uid . $username }{'timeselect'};
-
-        # Override user settings
-        ${ $uid . $username }{'timeformat'} =
-          'SDT, DD MM YYYY HH:mm:ss zzz';    # The .ctb time format
-        ${ $uid . $username }{'timeselect'} = 7;
-
-        # Get the time for the .ctb
-        my $newtime = timeformat( $date, 1, 'rfc' );
-
-        # Now restore the user settings
-        ${ $uid . $username }{'timeformat'} = $timeformat;
-        ${ $uid . $username }{'timeselect'} = $timeselect;
-
 # First load the current .ctb info but don't close the file before saving the changed data
 # or you can get wrong .ctb files if two users save at the exact same moment.
 # Therefore we can't use &MessageTotals("load", $threadid); here.
 # File locking should be enabled in AdminCenter!
 # Changes here on @tag must also be done in System.pm -> sub MessageTotals -> my @tag = ...
+        my $newtime = ctbtime();
         my @tag =
           qw(board replies views lastposter lastpostdate threadstatus repliers);
         fopen( UPDATE_CTB, "+<$datadir/$threadid.ctb", 1 )
@@ -2216,8 +2209,10 @@ sub NewNotify {
     $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
     $thismessage =~ s/\[.*?\]//g;
     $thismessage =~ s/<(br|p).*?>/\n/ig;
-    $thismessage =~ s/<.*?>//g;
+    $thismessage =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~gxsm;
     FromHTML($thismessage);
+    $thismessage =~ s/>/&gt;/gsm;
+    $thismessage =~ s/</&lt;/gsm;
     my $boardname;
     ( $boardname, undef ) = split /\|/xsm, $board{$currentboard}, 2;
     ToChars($boardname);
@@ -2271,14 +2266,16 @@ sub ReplyNotify {
 
     my $thisauthor = ${ $uid . $username }{'realname'} || $maintxt{'28'};
     my $thismessage = $message;
-    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/g;
-    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~ig;
-    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~ig;
-    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
-    $thismessage =~ s/\[.*?\]//g;
-    $thismessage =~ s/<(br|p).*?>/\n/ig;
-    $thismessage =~ s/<.*?>//g;
+    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/gsm;
+    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~igxsm;
+    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~igxsm;
+    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~igxsm;
+    $thismessage =~ s/\[.*?\]//gxsm;
+    $thismessage =~ s/<(br|p).*?>/\n/igxsm;
+    $thismessaged =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~igsxm;
     FromHTML($thismessage);
+    $thismessage =~ s/>/&gt;/gxsm;
+    $thismessage =~ s/</&lt;/gxsm;
     my $boardname;
     ( $boardname, undef ) = split /\|/xsm, $board{$currentboard}, 2;
     ToChars($boardname);
@@ -2455,9 +2452,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}">$for
 
             my $quickmessage = $message;
             $quickmessage =~ s/<(br|p).*?>/\\r\\n/igsm;
-            $quickmessage =~ s/'/\\'/gxsm;
+            $quickmessage =~ s/\x27/\\\x27/gxsm;
             my $quote_mname = $useraccount{$tempname};
-            $quote_mname =~ s/'/\\'/gxsm;
+            $quote_mname =~ s/\x27/\\\x27/gxsm;
             my $quote_msg_id =
               $tsreverse == 1
               ? ( @messages - $amounter - 1 )
@@ -2629,7 +2626,7 @@ sub sendGuestPM2 {
     # Check Message Length Precisely
     my $mess_len = $message;
     $mess_len =~ s/[\r\n ]//igsm;
-    $mess_len =~ s/&#\d{3,}?\;/X/igxsm;
+    $mess_len =~ s/&\x23\d{3,}?\;/X/igxsm;
 
     undef $mess_len;
 

@@ -1,3 +1,4 @@
+//YaBB 2.6.12 $Revision: 1611 $
 AJS.fx={_shades:{0:"ffffff",1:"ffffee",2:"ffffdd",3:"ffffcc",4:"ffffbb",5:"ffffaa",6:"ffff99"},highlight:function(_1,_2){
 var _3=new AJS.fx.Base();
 _3.elm=AJS.$(_1);
