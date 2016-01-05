@@ -2611,7 +2611,6 @@ s/(.+;)[ \t]+(\x23.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) .
 sub FoundSetupLock {
     tempstarter();
     $scripturl = "$boardurl/YaBB.$yyext";
-    require Sources::TabMenu;
 
     if ( -e "$vardir/Converter.lock" ) {
         $conv = q{};

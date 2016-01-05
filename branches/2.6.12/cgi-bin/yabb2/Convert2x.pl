@@ -104,13 +104,14 @@ if ( -e "$vardir/Setup.lock" ) {
                 <td class="windowbg2 fontbigger">
                     Make sure your YaBB 2.6.12 installation is running and that it has all the correct folder paths and URLs.
                     <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
-                    <br />Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.6.20.<br />
-                    <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.6.20 installation:
+                    <br />Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.6.12.<br />
+                    <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.6.12 installation:
                     <ol>
                         <li>Insert the paths to your YaBB 2x forum folders in the input fields below - do <strong>not</strong> include trailing slash (/)</li>
+                        <li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
-                    <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.6.20 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
+                    <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.6.12 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
                     <ol>
                         <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.6.12 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
                         <li>Click on the 'Continue' button</li>
@@ -122,19 +123,19 @@ if ( -e "$vardir/Setup.lock" ) {
                         </colgroup>
                         <tr>
                             <td><label for="convertdir"><b>Path to your YaBB 2x folders: </b></label></td>
-                            <td><input type="text" name="convertdir" value="" size="50" onchange="setconvdir()" /></td>
+                            <td><input type="text" name="convertdir" value="./Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
                             <td><label for="convboardsdir"><b>Path to your YaBB 2x Boards: </b></label></td>
-                            <td><input type="text" name="convboardsdir" value="" size="50" /></td>
+                            <td><input type="text" name="convboardsdir" value="./Convert/Boards" size="50" /></td>
                         </tr><tr>
                             <td><label for="convmemberdir"><b>Path to your YaBB 2x Members: </b></label></td>
-                            <td><input type="text" name="convmemberdir" value="" size="50" /></td>
+                            <td><input type="text" name="convmemberdir" value="./Convert/Members" size="50" /></td>
                         </tr><tr>
                             <td><label for="convdatadir"><b>Path to your YaBB 2x Messages: </b></label></td>
-                            <td><input type="text" name="convdatadir" value="" size="50" /></td>
+                            <td><input type="text" name="convdatadir" value="./Convert/Messages" size="50" /></td>
                         </tr><tr>
                             <td><label for="convvardir"><b>Path to your YaBB 2x Variables: </b></label></td>
-                            <td><input type="text" name="convvardir" value="" size="50" /></td>
+                            <td><input type="text" name="convvardir" value="./Convert/Variables" size="50" /></td>
                         </tr>
                     </table>
                 </td>
@@ -585,7 +586,7 @@ MEMBERS1
                Conversion has taken <i>~
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
                <br />
-                <p id="memcontinued">Click on 'Clean Up' in the menu to continue.<br />
+                <p id="memcontinued">Click on 'Variables' in the menu to continue.<br />
                     If you do not do that the script will continue by itself in 5 minutes.</p>
             </td>
         </tr>
@@ -735,7 +736,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
                 $ConvDone
                 <div class="convdone">Message Import.</div>
                 $ConvDone
-                <div class="convdone">Clean Up.</div>
+                <div class="convdone">Variables &amp;Clean Up.</div>
                 $ConvDone
             </td>
         </tr><tr>
@@ -1633,7 +1634,7 @@ sub tabmenushow {    # used by the converter
     $NavLink2 =
       qq~$tabsep<span>$tabfill Boards &amp; Categories $tabfill</span>~;
     $NavLink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
-    $NavLink5 = qq~$tabsep<span>$tabfill Clean Up $tabfill</span>~;
+    $NavLink5 = qq~$tabsep<span>$tabfill Variables $tabfill</span>~;
     $NavLink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
 
     $NavLink1a =
@@ -1643,7 +1644,7 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" s
     $NavLink3a =
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
     $NavLink5a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Variables $tabfill</a></span>~;
     $NavLink6a =
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
 
@@ -1667,7 +1668,7 @@ sub setup_fatal_error {
     $yymenu = q~Boards &amp; Categories | ~;
     $yymenu .= q~Members | ~;
     $yymenu .= q~Messages | ~;
-    $yymenu .= q~Clean Up | ~;
+    $yymenu .= q~Variables | ~;
     $yymenu .= q~Login~;
 
     $yymain .= qq~

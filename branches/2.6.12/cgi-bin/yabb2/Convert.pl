@@ -130,11 +130,12 @@ if ( -e "$vardir/Setup.lock" ) {
                     <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.6.12 installation:
                     <ol>
                         <li>Insert the path to your YaBB 1 Gold - SP 1.x forum and the paths to /Boards, /Members, /Messages, and /Variables in the input fields below.</li>
+                        <li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li>
                         <li>Click on the 'Continue' button.</li>
                     </ol>
                     <b>OR</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.6.12 installation or if you do not know the path to your SP 1.x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.12 installation, and chmod them 755.</li>
+                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.6.12 installation, and chmod them 755. In this case the Path to your YaBB 1x folders is './Convert'.</li>
                         <li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.6.12 installation, and CHMOD it 644.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
@@ -145,18 +146,19 @@ if ( -e "$vardir/Setup.lock" ) {
                         </colgroup>
                         <tr>
                             <td><label for="convertdir"><b>Path to your YaBB 1 Gold - SP 1.x files: </b></label></td>
-                            <td><input type="text" name="convertdir" value="" size="50" onchange="setconvdir()" /></td>
+                            <td><input type="text" name="convertdir" value="./Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
                             <td><label for="convboardsdir"><b>Path to your YaBB 1 Gold - SP 1.x Boards: </b></label></td>
-                            <td><input type="text" name="convboardsdir" value="" size="50" /></td>
+                            <td><input type="text" name="convboardsdir" value="./Convert/Boards" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convmemberdir"><b>Path to your YaBB 1 Gold - SP 1.x Members: </b></label></td><td><input type="text" name="convmemberdir" value="" size="50" /></td>
+                            <td><label for="convmemberdir"><b>Path to your YaBB 1 Gold - SP 1.x Members: </b></label></td>
+                            <td><input type="text" name="convmemberdir" value="./Convert/Members" size="50" /></td>
                         </tr><tr>
                             <td><label for="convdatadir"><b>Path to your YaBB 1 Gold - SP 1.x Messages: </b></label></td>
-                            <td><input type="text" name="convdatadir" value="" size="50" /></td>
+                            <td><input type="text" name="convdatadir" value="./Convert/Messages" size="50" /></td>
                         </tr><tr>
                             <td><label for="convvardir"><b>Path to your YaBB 1 Gold - SP 1.x Variables: </b><label></td>
-                            <td><input type="text" name="convvardir" value="" size="50" /></td>
+                            <td><input type="text" name="convvardir" value="./Convert/Variables" size="50" /></td>
                         </tr>
                     </table>
                     <br />

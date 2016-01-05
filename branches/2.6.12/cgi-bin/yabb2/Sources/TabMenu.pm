@@ -115,7 +115,7 @@ sub mainMenu {
             $tab{'admin'} = qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
         }
     }
-    if ( $sessionvalid == 0 && !$iamguest ) {
+    if ( $sessionvalid == 0 && !$iamguest && !$INFO{'set'}) {
         my $sesredir;
         if (   $testenv
             && $action ne 'revalidatesession'

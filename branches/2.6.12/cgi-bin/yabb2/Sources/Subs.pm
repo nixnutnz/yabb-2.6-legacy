@@ -540,7 +540,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             if ( $qckage == 0 ) {
                 $blurb = qq~$maintxt{'searchimg3'}~;
             }
-            $yysearchbox = qq~
+            $yysearchbox = qq~<div class="yabb_searchbox">
                     <form action="$scripturl?action=search2" method="post" accept-charset="$yymycharset">
                         <input type="hidden" name="searchtype" value="$qcksearchtype" />
                         <input type="hidden" name="userkind" value="any" />
@@ -552,6 +552,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                         <input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" />
                         <input type="image" src="$imagesdir/search.png" alt="$blurb" title="$blurb" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
                     </form>
+                    </div>
 ~;
         }
     }

@@ -165,7 +165,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                 </td>
             </tr><tr>
                 <td class="catbg center small">
-                    YaBB 2.6.12
+                    YaBB 2.6
                 </td>
             </tr><tr>
                 <td class="windowbg2">
