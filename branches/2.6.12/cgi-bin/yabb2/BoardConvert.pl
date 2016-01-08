@@ -66,7 +66,7 @@ chomp @boardcontrols;
 my @allboards = ();
 foreach my $boardline (@boardcontrols) {
     $boardline =~ s/[\r\n]//g; # Built in chomp
-        (undef, $cntboard ) = split /\|/xsm, $boardline;
+        (undef, $cntboard ) = split /[|]/xsm, $boardline;
     ## create a global boards array
     push(@allboards, $cntboard);
 }

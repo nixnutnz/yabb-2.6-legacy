@@ -1392,8 +1392,8 @@ sub Convert_Settings {
     $ret = 0;
     my $setset = 0;
     my $setfile = "$convvardir/Settings.pm";
-    if ( $convertdir ne './Convert' && -e "$convertdir/Settings.$yyext" ) {
-        $setfile = "$convertdir/Settings.$yyext";
+    if ( $convertdir ne './Convert' && -e "Settings.$yyext" ) {
+        $setfile = "Settings.$yyext";
         $setset = 1;
     }
     elsif ( -e "$convvardir/Settings.$yyext" ) {
