@@ -1,8 +1,6 @@
 MANIFEST
 readmeFIRST.txt   - 2003 bytes - updated Sat Jan  2 07:24:01 2016
 VERSION.txt   - 38 bytes - updated Sat Jan  2 07:16:05 2016
-cgi-bin/checksum.pl   - 3865 bytes - updated Sat Jan  2 09:09:28 2016 - MD5 checksum = 8689f2a7075882e7c521466e042b207c
-cgi-bin/yabb_manifest.pl   - 5795 bytes - updated Wed Nov 19 07:12:30 2014 - MD5 checksum = 87def84f64e6ffba8090fcdc7eaec070
 Quick-Guide_26/Quick-Guide.html   - 855 bytes - updated Thu Feb 20 19:33:26 2014 - MD5 checksum = e8449e14b9ebf2a6a94e3fc8c8d744df
 Quick-Guide_26/style.css   - 4655 bytes - updated Fri Oct  4 07:33:38 2013 - MD5 checksum = 20dc9614887a69adc942e65605b4a292
 cgi-bin/yabb2/AdminIndex.pl   - 15495 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 89f8e73b05d4a2c0fbcd8f79d00dbfc8
