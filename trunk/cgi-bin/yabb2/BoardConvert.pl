@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$boardconvertplver = 'YaBB 2.6.12 $Revision: 1651 $';
+$boardconvertplver = 'YaBB 2.6.12 $Revision: 1660 $';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -41,9 +41,14 @@ else                   { $yyext = 'pl'; }
 if   ($boardurl) { $set_cgi = "$boardurl/BoardConvert.$yyext"; }
 else             { $set_cgi = "BoardConvert.$yyext"; }
 
-require "Paths.pl";
-require "$sourcedir/Subs.pl";
-require "$sourcedir/Load.pl";
+my $nxt = $yyext;
+if ( -e './Paths.pm' ) {
+    require Paths;
+    $nxt = 'pm';
+}
+else { require "Paths.$yyext";}
+require "$sourcedir/Subs.$nxt";
+require "$sourcedir/Load.$nxt";
 
 if ( !$action ) {
     adminlogin();
@@ -57,7 +62,8 @@ sub convcontrol {
 open(FORUMCONTROL, '<', "$boardsdir/forum.control") or croak 'cannot_open forum.control';
 my @boardcontrols = <FORUMCONTROL>;
 close(FORUMCONTROL);
-
+chomp @boardcontrols;
+my @allboards = ();
 foreach my $boardline (@boardcontrols) {
     $boardline =~ s/[\r\n]//g; # Built in chomp
         (undef, $cntboard ) = split /[|]/xsm, $boardline;
@@ -65,21 +71,28 @@ foreach my $boardline (@boardcontrols) {
     push(@allboards, $cntboard);
 }
 
+my %seen = ();
+my @mybrds = grep { !$seen{$_} ++ } @allboards;
 LoadBoardControl();
-
-open (BOARDCONV, '>',"$vardir/boardconv.txt");
-foreach my $cntboard (@allboards) {
-    print {BOARDCONV} qq~\%$cntboard = (\n~;
+my $allboards = join q~', '~, @mybrds;
+my $newbrds = qq{\@allboards = ('$allboards');\n};
+foreach my $cntboard (@mybrds) {
+    $newbrds .= qq~\%{$cntboard} = (\n~;
     foreach (keys %{ $uid . $cntboard } ) {
-        print {BOARDCONV} "'$_' => '${ $uid . $cntboard }{$_}',\n";
+        $newbrds .= qq{'$_' => q~${ $uid . $cntboard }{$_}~,\n};
     }
-        print {BOARDCONV} qq~);\n~;
+        $newbrds .= qq~);\n~;
 }
-close(BOARDCONV);
+$newbrds .= qq~\n1;\n~;
+$newbrds =~ s/-/FIX/gxsm;
+open $BOARDCONV, '>',"$vardir/boardconv.txt";
+print {$BOARDCONV} $newbrds;
+close $BOARDCONV;
 
     $yymain .= qq~
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
         Export of '$boardsdir/forum.control' settings to '$vardir/boardconv.txt' done.
+        <p><a href="$boardurl/YaBB.$yyext">Return to YaBB</a></p>
     </div>
 ~;
 
