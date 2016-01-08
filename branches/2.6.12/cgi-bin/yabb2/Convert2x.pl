@@ -19,7 +19,7 @@
 # use strict;
 # use warnings;
 no warnings qw(uninitialized once redefine);
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 use English qw(-no_match_vars);
 
 our $VERSION = '2.6.12';
@@ -1036,7 +1036,7 @@ sub ConvertMembers {
 # Board + Category Conversion ##
 
 sub MoveBoards {
-    my @brdlst = ( 'forum.master', 'forum.totals', 'forum.control', );
+    my @brdlst = ( 'forum.master', 'forum.totals', );
     for my $newbrd (@brdlst) {
         open $OLDBRD, '<', "$convboardsdir/$newbrd"
           or croak 'cannot open OLDBRD';
@@ -1047,7 +1047,7 @@ sub MoveBoards {
         print {$NEWBRD} @brdinfo or croak 'cannot print NEWBRD';
         close $NEWBRD or croak 'cannot close NEWBRD';
     }
-    require "$boardsdir/forum.master";
+    require "$convboardsdir/forum.master";
     @boards    = sort keys %board;
     @subboards = sort keys %subboard;
     my @brdtype = qw(txt mail exhits);
@@ -1081,8 +1081,22 @@ sub MoveBoards {
 }
 
 sub FixControl {
+    my $newboard = q{};
+    my $brdpix = q{};
     if ( -e qq~$convvardir/boardconv.txt~ ) {
         require qq~$convvardir/boardconv.txt~;
+        for my $x (@allboards) {
+            ${$x}{'mypic'} = q{};
+            if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
+#            $cat, $board, $pic, $description, $mods, $modgroups, $topicperms,  $replyperms,   $pollperms, $zero, $membergroups, $ann, $rbin, $attperms, $minageperms, $maxageperms, $genderperms,  $canpost, $parent, $rules, $rulestitle, $rulesdesc, $rulescollapse, $brdpasswr, $brdpassw, $bdrss,
+			$newboard .=
+qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}|\n~;
+            if ( ${$x}{'pic'} ) {
+                $brdpix .= qq~$x|default|${$x}{'pic'}\n~;
+            }
+        }
+    }
+    else {
         open $OLDFORUMCONTROL, '<', "$convboardsdir/forum.control"
           || setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ",
             1 );
@@ -1090,46 +1104,27 @@ sub FixControl {
         close $OLDFORUMCONTROL or croak 'cannot close OLDFORMCONTROL';
         chomp @oldboardcontrols;
         foreach (@oldboardcontrols) {
-            my ( $old, $oldboard ) = split /[|]/xsm, $_;
-            push @oldboard, $oldboard;
-        }
-        my $j        = 0;
-        my @newboard = ();
-        foreach my $x (@oldboard) {
-            ${$x}{'mypic'} = q{};
-            if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
-
-#$cat|$board|$pic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$bdrss
-            $newboard[$j] =
-qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}\n~;
-            if ( ${$x}{'pic'} ) {
-                $brdpix = qq~$x|default|${$x}{'pic'}\n~;
-                open $BRDPIC, '>>', "$boardsdir/brdpics.db"
-                  or croak 'cannot open BRDIC';
-                print {$BRDPIC} $brdpix
-                  or croak 'cannot print BRDPIC';
-                close $BRDPIC or croak 'cannot close BRDPIC';
+            my ( $cat,$oldboard,$pic,$description,$mods,$modgroups,$topicperms,$replyperms,$pollperms,$zero,$membergroups,$ann,$rbin,$attperms,$minageperms,$maxageperms,$genderperms,$canpost,$parent,$rules,$rulestitle,$rulesdesc,$rulescollapse,$brdpasswr,$brdpassw,$bdrss ) = split /[|]/xsm, $_;
+            my $mypic = q{};
+            if ( $pic ) { $mypic = 'y'; }
+            $newboard .=
+qq~$cat|$board|$mypic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss|\n~;
+            if ( $pic ) {
+                $brdpix .= qq~$board|default|$pic\n~;
             }
-            $j++;
-        }
+         }
+    }
+    $newboard =~ s/FIX/-/gxsm;
+    $brdpix =~ s/FIX/-/gxsm;
         open $FORUMCONTROL, '>', "$boardsdir/forum.control"
           or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
-        print {$FORUMCONTROL} @newboard
+    print {$FORUMCONTROL} $newboard
           or croak 'cannot print FORUMCONTROL';
         close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
-    }
-    else {
-        open $OLDFORUMCONTROL, '<', "$convboardsdir/forum.control"
-          or
-          setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
-        @oldboardcontrols = <$OLDFORUMCONTROL>;
-        close $OLDFORUMCONTROL or croak 'cannot close OLDFORMCONTROL';
-        open $FORUMCONTROL, '>', "$boardsdir/forum.control"
-          or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
-        print {$FORUMCONTROL} @oldboardcontrols
-          or croak 'cannot print FORUMCONTROL';
-        close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
-    }
+    open $BRDPIC, '>', "$boardsdir/brdpics.db" or croak 'cannot open BRDIC';
+    print {$BRDPIC} $brdpix or croak 'cannot print BRDPIC';
+    close $BRDPIC or croak 'cannot close BRDPIC';
+
     return;
 }
 
@@ -1169,12 +1164,7 @@ sub FixNopost {
             }
             for my $j ( 0 .. $#boardcontrols ) {
                 (
-                    $cntcat,         $cntboard,        $cntpic,
-                    $cntdescription, $cntmods,         $cntmodgroups,
-                    $cnttopicperms,  $cntreplyperms,   $cntpollperms,
-                    $cntzero,        $cntmembergroups, $cntann,
-                    $cntrbin,        $cntattperms,     $cntminageperms,
-                    $cntmaxageperms, $cntgenderperms,  $cntbrdrss
+                    $cat,$oldboard,$pic,$description,$mods,$modgroups,$topicperms,$replyperms,$pollperms,$zero,$membergroups,$ann,$rbin,$attperms,$minageperms,$maxageperms,$genderperms,$canpost,$parent,$rules,$rulestitle,$rulesdesc,$rulescollapse,$brdpasswr,$brdpassw,$bdrss
                 ) = split /[|]/xsm, $boardcontrols[$j];
 
                 $newmodgroups = q{};
@@ -1206,7 +1196,7 @@ sub FixNopost {
                 $newpollperms =~ s/, $//sm;
 
                 $boardcontrols[$j] =
-qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicperms|$newreplyperms|$newpollperms|$cntzero|$cntmembergroups|$cntann|$cntrbin|$cntattperms|$cntminageperms|$cntmaxageperms|$cntgenderperms|$brdrss\n~;
+qq~$cat|$oldboard|$pic|$description|$mods|$newmodgroups|$newtopicperms|$newreplyperms|$newpollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss|\n~;
             }
         }
 
@@ -1402,12 +1392,12 @@ sub Convert_Settings {
     $ret = 0;
     my $setset = 0;
     my $setfile = "$convvardir/Settings.pm";
-    if ( $convertdir ne './Convert' && -e "$convertdir/Settings.pl" ) {
-        $setfile = "$convertdir/Settings.pl";
+    if ( $convertdir ne './Convert' && -e "$convertdir/Settings.$yyext" ) {
+        $setfile = "$convertdir/Settings.$yyext";
         $setset = 1;
     }
-    elsif ( -e "$convvardir/Settings.pl" ) {
-        $setfile = "$convvardir/Settings.pl";
+    elsif ( -e "$convvardir/Settings.$yyext" ) {
+        $setfile = "$convvardir/Settings.$yyext";
         $setset = 1;
     }
 
@@ -1464,6 +1454,13 @@ sub Convert_Settings {
             $enable_notifications = $enable_notification ? 3 : 0;
         }
         if ( !$imspan || $imspam eq 'off' ) { $imspam = 0; }
+    }
+    if ( -e "$convvardir/membergroups.txt" ) {
+        require "$convvardir/membergroups.txt";
+        for (keys %NoPost) {
+            if ( $NoPost{$_} ) { push @new_nopostorder, $_; }
+		}
+        @nopostorder = @new_nopostorder;
     }
 
     ( undef, $rancook ) = split /\-/xsm, $cookieusername;
@@ -1760,7 +1757,8 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
             $yycopyin = 1;
         }
         if ( $curline =~ m/{yabb\ newstitle}/xsm && $enable_news ) {
-            $yynewstitle = qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
+            $yynewstitle =
+              qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
         }
         if ( $curline =~ m/{yabb\ news}/xsm && $enable_news ) {
             srand;
