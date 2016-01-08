@@ -3333,8 +3333,8 @@ sub SetInstall2 {
     $ret = 0;
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
-    if ( $convertdir ne './Convert' && -e "$convertdir/Settings.pl" ) {
-        require "$convertdir/Settings.pl";
+    if ( $convertdir ne './Convert' && -e "Settings.pl" ) {
+        require "Settings.pl";
         $oldname   = $mbname;
         $oldemail  = $webmaster_email;
         $oldlang   = $language;
