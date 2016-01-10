@@ -1,0 +1,76 @@
+###############################################################################
+# RefControl.lng (Referer Control text definitions)                           #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.20                                                 #
+# Packaged:       December 31, 2015                                           #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$englishrefcontrollngver = 'YaBB 2.6.20 $Revision$';
+@englishrefcontrollngmods = ();
+if(@englishrefcontrollngmods){
+    $englishrefcontrollngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%refer_settings = (
+'gen' => q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
+'refer_controls' => q~General~,
+'refer_mods' => q~Mods~,
+);
+
+%refexpl_txt = (
+'birthdaylist' => q~View Birthday List~,
+'display' => q~Display a message in a thread~,
+'downloadfile' => q~Download a Attachment File~,
+'eventcal' => q~View Event Calendar~,
+'get_cal_ssi' => q~Allow Cal in other pages~,
+'help' => q~Show forum Help page~,
+'login' => q~Log In entry screen~,
+'logout' => q~Log Out~,
+'messageindex' => q~Display Message index~,
+'ml' => q~Show Memberlist~,
+'mycenter' => q~Show main page in MyCenter~,
+'recent' => q~Show recent posts~,
+'recenttopics' => q~Show all the most recently posted topics~,
+'register' => q~Enter New User Registration entry screen~,
+'reminder' => q~Enter "Forgot my Password" entry screen~,
+'RSSboard' => q~View the recent topics on a board through the RSS feed~,
+'RSSrecent' => q~View the recent topics on the whole forum or a category through the RSS feed~,
+'search' => q~Enter the search screen~,
+'viewdownloads' => q~View Downloads~,
+'viewprofile' => q~View a User Profile~,
+);
+
+%refer_txt = (
+'birthdaylist' => q~View Birthday List~,
+'display' =>  q~Display Threads~,
+'downloadfile' =>  q~Download Attachment~,
+'eventcal' => q~View Event Calendar~,
+'get_cal_ssi' => q~Allow Calendar in other pages~,
+'help' =>  q~Show Help~,
+'login' =>  q~Log In screen~,
+'logout' =>  q~Log Out~,
+'messageindex' =>  q~Display Message index~,
+'ml' =>  q~Show Memberlist~,
+'mycenter' =>  q~MyCenter main page~,
+'recent' =>  q~Show recent posts~,
+'recenttopics' =>  q~Show recent topics~,
+'register' =>  q~Registration~,
+'reminder' =>  q~Password reset~,
+'RSSboard' =>  q~RSS Board~,
+'RSSrecent' =>  q~RSS Recent Topics~,
+'search' =>  q~Search Screen~,
+'viewdownloads' =>  q~View Downloads~,
+'viewprofile' =>  q~View a User Profile~,
+);
+
+## Mod Hook ##
+
+1;

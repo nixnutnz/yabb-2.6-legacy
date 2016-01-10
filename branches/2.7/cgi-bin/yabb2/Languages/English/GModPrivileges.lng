@@ -1,0 +1,160 @@
+###############################################################################
+# GModPrivileges.lng (Global Mod Access Privileges text definitions)          #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$englishgmodprivilegeslngver = 'YaBB 2.7.00 $Revision$';
+@englishgmodprivilegeslngmods = ();
+if (@englishgmodprivilegeslngmods) {
+    $englishgmodprivilegeslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%gmod_settings = (
+'1' => q~Global Mod Access Privileges~,
+'2' => q~Allow Global Moderators Access to the Admin Center?~,
+'3' => q~Allow Global Moderators Access to edit User Profiles?~,
+'3a' => q~Allow Global Moderators Access to Admin Edits for User Profiles?~,
+'4' => q~Select which actions Global Moderators are allowed to access~,
+'gmodmember_controls' => q~Member Controls~,
+'gmodforumsettings' => q~Forum Configuration~,
+'gmodmaintence_controls' => q~Maintenance Controls~,
+'gmodgeneral_controls' => q~General Controls~,
+'gmodforum_layout' => q~Forum Layout~,
+'gmodforum_stats' => q~Forum Stats~,
+'gmodboardmod_mods' => q~BoardMod Mods~,
+'gmodsecurity_settings' => q~Security Center~,
+'gmodforum_controls' => q~Forum Controls~,
+);
+
+%gmodprivexpl_txt = (
+'ext_admin' => q~Allow to edit Extended Profiles~,
+'main' => q~Allow to edit Forum Preferences and Settings~,
+'advanced' => q~Allow to edit Advanced Settings~,
+'editbots' => q~Allow to edit Search Engine Identifiers~,
+'news' => q~Allow to edit Forum News~,
+'smilies' => q~Allow to add More Smilies~,
+'setcensor' => q~Allow to set Censored Words~,
+'modagreement' => q~Allow to edit Registration Agreement~,
+'eventcal_set' => q~Allow to edit Event Calendar~,
+'bookmarks' => q~Allow to edit Social Bookmarks~,
+'referer_control' => q~Allow to edit Referrer Security~,
+'security' => q~Allow to edit Security Settings~,
+'setup_guardian' => q~Allow to edit Guardian Settings~,
+'antispam' => q~Allow to edit Anti-spam Settings~,
+'spam_questions' => q~Allow to edit Anti-spam Questions~,
+'honeypot' => q~Allow to edit Honeypot~,
+'managecats' => q~Allow to manage Categories~,
+'manageboards' => q~Allow to manage Boards~,
+'helpadmin' => q~Allow to edit Help Center Entries~,
+'editemailtemplates' => q~Allow to edit e-mail Messages~,
+'addmember' => q~Allow to View and Add Members~,
+'viewmembers' => q~Allow to View Members~,
+'deletemultimembers' => q~Allow to View and Delete Members~,
+'modmemgr' => q~Allow to edit Member Groups~,
+'mailing' => q~Allow to e-mail Your Members/Membergroups~,
+'ipban' => q~Allow to edit Ban List~,
+'setreserve' => q~Allow to set Reserved Names~,
+'modskin' => q~Allow to edit Template Configuration~,
+'modcss' => q~Allow to edit Style Sheet~,
+'modtemp' => q~Allow to edit Templates~,
+'clean_log' => q~Allow to Clean Users Online Log~,
+'boardrecount' => q~Allow to Recount Board Totals~,
+'rebuildmesindex' => q~Allow to Rebuild Message Index~,
+'membershiprecount' => q~Allow to Recount Membership~,
+'rebuildmemhist' => q~Allow to Rebuild Members History~,
+'rebuildmemlist' => q~Allow to Rebuild Members List~,
+'rebuildnotifications' => q~Allow to Rebuild Notifications Files~,
+'deleteoldthreads' => q~Allow to Remove Old Threads~,
+'manageattachments' => q~Allow to administrate File Attachments~,
+'managepmattachments' => q~Allow to administrate PM File Attachments~,
+'detailedversion' => q~Allow to View Detailed Version Check~,
+'stats' => q~Allow to View Forum Statistics~,
+'showclicks' => q~Allow to View forum access log~,
+'errorlog' => q~Allow to View Error Log~,
+'view_reglog' => q~Allow to View Registration Log, approve or reject preregistered Members~,
+'modlist' => q~Allow to View All Installed Mods~,
+'backupsettings' => q~Allow access to the Backup Center~,
+'backup' => q~Allow access to the Backup Center~,
+'emailbackup' => q~Allow to e-mail backup to webmaster~,
+);
+
+%gmod_settings = (
+'1' => q~Global Mod Access Privileges~,
+'2' => q~Allow Global Moderators Access to the Admin Center?~,
+'3' => q~Allow Global Moderators Access to edit User Profiles?~,
+'3a' => q~Allow Global Moderators Access to Admin Edits for User Profiles?~,
+'4' => q~Select which actions <em>(action= in URLs)</em> Global Moderators are allowed to access~,
+'gmodmember_controls' => q~Member Controls~,
+'gmodforumsettings' => q~Forum Configuration~,
+'gmodmaintence_controls' => q~Maintenance Controls~,
+'gmodgeneral_controls' => q~General Controls~,
+'gmodforum_layout' => q~Forum Layout~,
+'gmodforum_stats' => q~Forum Stats~,
+'gmodboardmod_mods' => q~BoardMod Mods~,
+'gmodsecurity_settings' => q~Security Center~,
+'gmodforum_controls' => q~Forum Controls~,
+);
+
+%gmodpriv_txt = (
+'ext_admin' => q~Extended Profiles~,
+'main' => q~Forum Settings~,
+'advanced' => q~Advanced Settings~,
+'editbots' => q~Search Engines~,
+'news' => q~Forum News~,
+'smilies' => q~Smilies~,
+'setcensor' => q~Censored Words~,
+'modagreement' => q~Registration Agreement~,
+'eventcal_set' => q~Event Calendar~,
+'bookmarks' => q~Social Bookmarks~,
+'referer_control' => q~Referrer Security~,
+'security' => q~Security Settings~,
+'setup_guardian' => q~Guardian Settings~,
+'antispam' => q~Anti-spam Settings~,
+'spam_questions' => q~Anti-spam Questions~,
+'honeypot' => q~Honeypot~,
+'managecats' => q~Categories~,
+'manageboards' => q~Boards~,
+'helpadmin' => q~Help Center Entries~,
+'editemailtemplates' => q~E-mail Messages~,
+'addmember' => q~Add Members~,
+'viewmembers' => q~View Members~,
+'deletemultimembers' => q~Delete Members~,
+'modmemgr' => q~Member Groups~,
+'mailing' => q~E-mail Members~,
+'ipban' => q~Ban Utilities~,
+'setreserve' => q~Reserved Names~,
+'modskin' => q~Template Configuration~,
+'modcss' => q~Style Sheet~,
+'modtemp' => q~Templates~,
+'clean_log' => q~Clean Users Online Log~,
+'boardrecount' => q~Recount Board Totals~,
+'rebuildmesindex' => q~Rebuild Message Index~,
+'membershiprecount' => q~Recount Membership~,
+'rebuildmemhist' => q~Rebuild Members History~,
+'rebuildmemlist' => q~Rebuild Members List~,
+'rebuildnotifications' => q~Rebuild Notifications Files~,
+'deleteoldthreads' => q~Remove Old Threads~,
+'manageattachments' => q~File Attachments~,
+'managepmattachments' => q~PM File Attachments~,
+'detailedversion' => q~Detailed Version Check~,
+'stats' => q~Forum Statistics~,
+'showclicks' => q~Forum Access Log~,
+'errorlog' => q~Error Log~,
+'view_reglog' => q~Registration Log~,
+'modlist' => q~Installed Mods~,
+'backupsettings' => q~Backup Center~,
+'backup' => q~Backup Center~,
+'emailbackup' => q~E-mail Backup~,
+);
+
+1;

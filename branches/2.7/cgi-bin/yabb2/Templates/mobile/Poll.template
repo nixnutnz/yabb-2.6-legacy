@@ -1,0 +1,112 @@
+###############################################################################
+# mobile.Poll.template                                                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.20                                                 #
+# Packaged:       December 31, 2015                                           #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+$mobilepolltemver = 'YaBB 2.6.20 $Revision$';
+@mobilepollmods = ();
+if (@mobilepollmods) {
+    $mobilepollmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+$poll_bar = qq~<span class="ubbcbutton ubbcbuttonback vtop"><img src="$imagesdir/bars.png" alt="bars" /></span>~;
+$poll_pie = qq~<span class="ubbcbutton ubbcbuttonback vtop"><img src="$imagesdir/pie.png" alt="pie" /></span>~;
+$cat_col = $newload{'brd_col'};
+$cat_exp = $newload{'brd_exp'};
+
+$mypoll_details = qq~
+<br />
+<form action="$scripturl?action=undovote;num={yabb pollnum}{yabb start}" method="post" style="display: inline;">
+<input type="hidden" name="multidel" value="1" />
+    <div class="windowbg2 padd_8px">
+        <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom">$img{'pollicon'} <b>$polltxt{'42'}</b></div>
+        <div class="windowbg2" style="padding:1em 1%"><b>$polltxt{'16'}:</b> {yabb poll_question}</div>
+        <table class="pad_4px cs_thin">
+            <tr>
+                <td class="catbg center"><b>&nbsp;</b></td>
+                <td class="catbg center"><b>$polltxt{'35'}</b></td>
+                <td class="catbg center"><b>$polltxt{'30'}</b></td>
+                <td class="catbg center"><b>$polltxt{'31'}</b></td>
+                <td class="catbg center"><b>$polltxt{'24'}</b></td>
+            </tr>{yabb my_IP}
+            <tr>
+                <td class="catbg center" colspan="5"><input type="submit" value="$polltxt{'49'}" class="button" /></td>
+            </tr>
+        </table>
+    </div>
+</form>~;
+
+$mypoll_IP = qq~</tr>
+            <td class="windowbg2 center"><input type="checkbox" name="{yabb id}" value="1" /></td>
+            <td class="windowbg2">{yabb voters_name}</td>
+            <td class="windowbg2 center">{yabb lookupIP}</td>
+            <td class="windowbg2 center">{yabb vote_date}</td>
+            <td class="windowbg2">{yabb voted}</td>
+        <tr>~;
+
+$mypoll_display = qq~
+<form name="removepoll" action="$scripturl?action=modify2;d=1" method="post" style="display: inline">
+    <input type="hidden" name="thread" value="{yabb pollnum}" />
+    <input type="hidden" name="id" value="Poll" />
+</form>
+<form name="poll" method="post" action="$scripturl?action=vote;num={yabb pollnum}{yabb scp}" style="display: inline;">
+    <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom">{yabb poll_coll} $polltxt{'15'} {yabb boardpoll}</div>
+    <div class="catbg vtop padd_4px">
+        <div style="float: left; width: 50%; text-align: left; line-height:18px; vertical-align:middle">
+            {yabb poll_icon} <b>$polltxt{'16'}</b>: {yabb poll_question}
+        </div>
+        <div style="float: left; width: 50%; text-align: right;">
+            <span class="small">{yabb lockpoll}{yabb modifypoll}{yabb deletepoll}</span>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div id="polldiv" style="width: 100%; display: {yabb scdivdisp}; margin-bottom:.5em">
+        <div class="windowbg padd_4px" style="height:23px">{yabb poll_notlocked}</div>
+        <div class="windowbg2 center padd_4px">
+            {yabb endedtext}
+            <div class="windowbg2" id="piestyle" style="width: 100%;">
+                <br />{yabb pollhidden} {yabb poll_hasvoted}<br />
+            </div>
+            <div class="windowbg2">
+                <br />{yabb footer}
+            </div>
+            {yabb my_pollcomment}
+            <div class="windowbg2 padd_4px" style="height:22px">
+                <div class="small vtop" style="float: right; width: 25%; text-align: right; height:22px">
+                    {yabb viewthread}{yabb deletevote}{yabb displayvoters}
+                </div>
+                <div class="small" style="overflow:hidden; text-align: left; height:22px">
+                    {yabb poll_end}{yabb displaydate}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>~;
+
+$mypoll_ended = qq~<span style="color: #FF0000;"><b>$polltxt{'53'}</b></span>~;
+
+$mypoll_locked = qq~<span style="color: #FF0000;"><b>$polltxt{'22'}</b></span>~;
+
+$mypoll_hasvoted = q~
+    <div class="clear" style="height: 18px; vertical-align: middle; width:400px; margin: 0 auto;">
+        <div style="float: left; width: 25%; text-align: right;">{yabb optionsi}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div style="float: left; text-align: left; width: {yabb pollbar}px; height: 10px; background-color: {yabb slicecolori}; border: 1px outset {yabb slicecolori};"></div>
+        <div class="small" style="float: left; text-align: left;">&nbsp;&nbsp;{yabb votesi} ({yabb pollpercent}%)</div>
+    </div>~;
+
+$mypoll_notlocked = qq~
+           <div style="float: right; width: 55px; text-align: right; margin-right:4px">
+                <a href="$scripturl?num=$viewnum" style="margin:right:2em;">$poll_bar</a><a href="$scripturl?num=$viewnum;view=pie">$poll_pie</a>
+           </div>
+~;
+
+1;

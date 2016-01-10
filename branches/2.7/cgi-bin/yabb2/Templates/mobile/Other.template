@@ -1,0 +1,453 @@
+###############################################################################
+# mobile.Other.template                                                       #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.6.20                                                 #
+# Packaged:       December 31, 2015                                           #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+$mobileothertemver = 'YaBB 2.6.20 $Revision$';
+@mobileothermods = ();
+if (@mobileothermods) {
+    $mobileothermods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+$my_session = 'session.png';
+
+## IPlookup ##
+$my_ipdiv = qq~
+<div style="width:50em; margin: 0 auto">
+    <div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$micon_bg{'ip'}" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</div>
+    <div class="windowbg2 padd_4px">
+        <span style="font-weight: bold; margin-bottom: 10px;">$lookup_txt{'01'} {yabb ip} $lookup_txt{'02'}</span>
+        <div class="windowbg2 padd_4px">{yabb lookuplink} </div>
+    </div>
+    <p class="center"><a href="javascript:history.go(-1);">$maintxt{'193'}</a></p>
+</div>~;
+
+## AddModerators
+$myshowProfile = qq~<tr class="windowbg">
+        <td><label for="addmod"><strong>$addmod_txt{'addmod_title'}: </strong><br /><span class="small">$addmod_txt{'addmod_text'}</span></label></td>
+        <td>
+            <select name="addmod" id="addmod" multiple="multiple" onchange="selectnum();">
+            {yabb addbdmod}
+            </select>
+            <input type="checkbox" name="selAll" id="selAll" onclick="if (this.checked) selectAll(true); else selectAll(false);" /> <label for="selAll"><span class="small">$addmod_txt{'addmod_all'}</span></label>
+            <script type="text/javascript">
+            function selectAll(_v) {
+                for(var i=0; i < document.creator.addmod.length; i++)
+                document.creator.addmod[i].selected = _v;
+            }
+
+            function selectnum() {
+                document.creator.selAll.checked = true;
+                for(var i=0; i < document.creator.addmod.length; i++) {
+                    if (! document.creator.addmod[i].selected) { document.creator.selAll.checked = false; }
+                }
+            }
+            </script>
+        </td>
+    </tr>~;
+
+$myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px; width: 350px; border: 0; z-index: 100002;">
+    <div id="modsettings" style="position: absolute; top: 0; left: 0; width: 350px; padding: 1px; color: #000; background-color: #808080; display: none;">
+    <form action="$scripturl?action=modsearch2;toboard={yabb to_board}" method="post" name="moderatoradd" id="moderatoradd"  accept-charset="$yymycharset">
+    <div class="bordercolor" style="width:350px">
+    <table class="cs_thin pad_3px" style="width:350px">
+        <tr>
+            <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <span class="small">$addmod_txt{'instruct'}</span>
+            </td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:300px" /></div>
+                <div style="float:right"><img src="$imagesdir/mozilla_gray.gif" id="load" alt="" /></div>
+            </td>
+        </tr><tr>
+            <td class="windowbg">
+                <select name="rec_list" multiple="multiple" id="rec_list" size="6" style="width: 340px; font-size: 11px;" ondblclick="copy_option('moderators')"><option disabled="disabled" value="">--</option></select>
+            </td>
+        </tr><tr>
+            <td class="windowbg">
+                <input type="button" class="button" onclick="copy_option('moderators')" value="$addmod_txt{'addselected'}" style="width: 340px;" />
+            </td>
+        </tr>~;
+
+$myselectmods_b  =qq~<tr>
+            <td class="windowbg2"><span class="small"><strong>{yabb addmod_list}</strong></span></td>
+        </tr><tr>
+            <td class="windowbg">
+                <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 340px;">
+                {yabb modmbr}
+                </select>
+            </td>
+        </tr>
+        ~;
+
+$myselectmods_c = qq~<tr>
+            <td class="windowbg2"><span class="small"><strong>{yabb addgrp_list}</strong></span></td>
+        </tr><tr>
+            <td class="windowbg">
+                <select multiple="multiple" name="moderatorgroups" id="moderatorgroups" size="4" style="width: 340px;">
+                {yabb modgrp}
+                </select>
+            </td>
+        </tr>~;
+
+$myselectmods_d = qq~<tr>
+            <td class="windowbg">
+                <input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 170px;" />
+            </td>
+        </tr>
+    </table>
+    </div>
+    </form>
+    <div id="response" style="display:none"> </div>
+    </div>
+</div>~;
+
+## Sessions
+
+$my_sessions = qq~
+<br /><br />
+<form action="$scripturl?action=revalidatesession2" method="post" name="sesform" accept-charset="$yymycharset">
+<div class="bordercolor" style="padding: 1px; margin-left: auto; margin-right: auto;">
+	<div class="tabtitle padd_3px"><img src="$imagesdir/$my_session" alt="" /><strong>$img_txt{'34a'}</strong></div>
+	<div class="windowbg padd_3px">
+        {yabb sesstext3}
+		<br />
+		<br />{yabb sesstext4} {yabb sesremark}
+        <br /><label for="sesanswer"><strong>{yabb sesquestion}:</strong></label>
+		<br /><input type="{yabb sestype}" name="sesanswer" id="sesanswer" size="20" tabindex="1" />
+            <input type="hidden" name="sredir" value="{yabb sesredir}" />
+	</div>
+	<div class="catbg center" style="padding: 8px;"><input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" /></div>
+</div>
+</form>
+<script type="text/javascript">
+    document.sesform.sesanswer.focus();
+</script>
+~;
+
+## Smilies
+
+$my_smiliebg_a = q~windowbg2~;
+$my_smiliebg_b = q~windowbg~;
+#in the event you want a banner for the smilies header #
+$my_banner = 'banner.gif';
+
+$smilie_window_a =
+qq~<!DOCTYPE html>
+<html lang="$abbr_lang">
+<head>
+<!-- YaBB 2.6.2 $Revision$ -->
+    <meta charset=$yymycharset">
+    <title>$smiltxt{'1'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <style type="text/css">
+    .moresmiles {vertical-align:bottom; cursor:pointer;}
+    </style>
+<script type="text/javascript">
+function AddText(text) {
+    if (window.opener && !window.opener.closed) {
+        if (opener.document.postmodify.message.createTextRange && opener.document.postmodify.message.caretPos) {
+            var caretPos = opener.document.postmodify.message.caretPos;
+            caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ?
+            text + ' ' : text;
+        } else if (opener.document.postmodify.message.setSelectionRange) {
+            var selectionStart = opener.document.postmodify.message.selectionStart;
+            var selectionEnd = opener.document.postmodify.message.selectionEnd;
+            var replaceString = text + opener.document.postmodify.message.value.substring(selectionStart, selectionEnd);
+            opener.document.postmodify.message.value = opener.document.postmodify.message.value.substring(0, selectionStart) + replaceString + opener.document.postmodify.message.value.substring(selectionEnd);
+            opener.document.postmodify.message.setSelectionRange(selectionStart + text.length, selectionEnd + text.length);
+        } else {
+            opener.document.postmodify.message.value += text;
+        }
+    opener.autoPreview();
+    }
+}
+opener.autoPreview();
+moresmiliecode = new Array({yabb more_smilie_array})
+
+function MoreSmilies(i) {
+    AddTxt=moresmiliecode[i];
+    AddText(AddTxt);
+}
+</script>
+</head>
+<body style="background: #{yabb popback}; min-width:400px;">
+<p style="color:#{yabb poptext}; text-align:center">$smiltxt{'21'}</p>
+{yabb my_output}
+{yabb evenmoresmilies}
+</body>
+</html>
+~;
+
+$smilie_window_advanced =
+qq~<!DOCTYPE html>
+<html lang="$abbr_lang">
+<head>
+    <meta charset=$yymycharset">
+    <title>$smiltxt{'1'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+<script type="text/javascript">
+function AddText(text) {
+    if (window.opener && !window.opener.closed) {
+        if (opener.document.postmodify.message.createTextRange && opener.document.postmodify.message.caretPos) {
+            var caretPos = opener.document.postmodify.message.caretPos;
+            caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ?
+            text + ' ' : text;
+        } else if (opener.document.postmodify.message.setSelectionRange) {
+            var selectionStart = opener.document.postmodify.message.selectionStart;
+            var selectionEnd = opener.document.postmodify.message.selectionEnd;
+            var replaceString = text + opener.document.postmodify.message.value.substring(selectionStart, selectionEnd);
+            opener.document.postmodify.message.value = opener.document.postmodify.message.value.substring(0, selectionStart) + replaceString + opener.document.postmodify.message.value.substring(selectionEnd);
+            opener.document.postmodify.message.setSelectionRange(selectionStart + text.length, selectionEnd + text.length);
+        } else {
+            opener.document.postmodify.message.value += text;
+        }
+    }
+}
+
+moresmiliecode = new Array({yabb more_smilie_array})
+function MoreSmilies(i) {
+    AddTxt=moresmiliecode[i];
+    AddText(AddTxt);
+}
+</script>
+</head>
+<body style="background: #{yabb popback}; min-width:400px;">
+    <table class="bordercolor pad_4px cs_thin">
+{yabb smiliesheader}
+      <tr>
+{yabb smilieslist}
+      </tr>
+    </table>
+</body>
+</html>~;
+
+$my_smilie_window_td = qq~
+        <td class="center h_60px {yabb smiliescolor}"><img src="{yabb tmpurl}" alt="" onclick='javascript:MoreSmilies({yabb i})' class='cursor' /><br /><span style="font-size:xx-small; color:#{yabb poptext}">{yabb SmilieDescription}</span></td>~;
+
+$my_smilie_window_td_line = qq~
+        <td class="center h_60px {yabb smiliescolor}"><img src="$yyhtml_root/Smilies/{yabb line}" alt="" onclick="javascript:MoreSmilies({yabb i})" style="cursor:pointer" />
+            <br /><span style="font-size: xx-small; color:#{yabb poptext}">{yabb line}</span>
+        </td>~;
+
+$my_smilie_window_blnk = qq~
+        <td class="center h_60px {yabb smiliescolor}">&nbsp;</td>\n~;
+
+$my_smilie_banner_header = qq~<tr>
+        <td class="center" style="background-color:#{yabb popback}" colspan="4">
+            <img src="$yyhtml_root/Smilies/$my_banner" alt="" />
+        </td>
+    </tr>~;
+
+$my_smilie_header = qq~<tr>
+        <td class="center" colspan="4"><strong><span class="small">$smiltxt{'21'}</span></strong></td>
+    </tr>~;
+
+$my_smilie_window_tr = qq~
+    </tr><tr>~;
+
+
+## Error
+
+$my_show_error = qq~
+<div class="system-body">
+    <div class="system-info" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'error_description'}</div>
+    <div class="system-info-body">{yabb errormessage}</div>
+</div>
+<p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
+~;
+
+## Guest Profile link interrupt
+
+$my_profile_int = qq~
+<div class="system-body">
+    <div class="system-info" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'members_only'}</div>
+    <div class="system-info-body">$maintxt{'reg_please'}</div>
+</div>
+<p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
+~;
+
+## PrintPage ##
+
+$showurl = q{};
+if ( $showprinturl == 1 ) {
+    $showurl = qq~<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span><br />~;
+}
+
+$myprint_im = qq~<!DOCTYPE html>
+<html lang="$abbr_lang">
+<head>
+    <meta charset=$yymycharset">
+    <title>{yabb printtitle}</title>
+    <meta name="robots" content="noindex,noarchive" />
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <style type="text/css" media="print">
+        .no-print { display: none; }
+    </style>
+    <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+    <script type="text/javascript">
+        var imgdisplay = 'none';
+        function do_images() {
+            for (var i = 0; i < document.images.length; i++) {
+                document.images[i].style.display = imgdisplay;
+        }
+        if (imgdisplay == 'none') {
+            imgdisplay = 'inline';
+            document.getElementById("Hide_Image").value = "$maintxt{'669b'}";
+        } else {
+            imgdisplay = 'none';
+            document.getElementById("Hide_Image").value = "$maintxt{'669a'}";
+        }
+    }
+    </script>
+</head>
+<body id="print">
+<table style="width:96%; margin-top:10px">
+    <tr>
+        <td class="vtop">
+            <span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
+        </td>
+        <td class="right vtop">
+            <input type="button" id="Hide_Image" value="$maintxt{'669a'}" class="no-print" onclick="do_images();" />
+        </td>
+    </tr><tr>
+        <td class="vtop" colspan="2">
+            $showurl
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $inmes_txt{'usercp'} {yabb boxtitle} {yabb storetitle} $inmes_txt{'30'} {yabb printDate}</span>
+            <br />
+            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller=$INFO{'caller'};id=$INFO{'id'}</span>
+        </td>
+    </tr>
+</table>
+<br />
+<table class="cs_10px" style="border: 1px solid #000000; width:96%">
+    <tr>
+        <td style="font-family: arial, sans-serif; font-size: 12px;">
+            <div>{yabb threadtitle}</div>
+            <div>{yabb threadDate}</div>
+            {yabb totitle}
+            {yabb fromtitle}
+            {yabb totitlecc}
+            {yabb totitlebcc}
+            <hr />
+            <span style="font-family: arial, sans-serif; font-size: 12px;">
+            {yabb threadpost}
+            </span>
+            {yabb pmAttachments}
+        </td>
+    </tr>
+</table>
+<form>
+    <p class="no-print center"><input class="no-print" type="button" value=" $maintxt{'printpage'} " onclick="window.print();" /></p>
+</form>
+<table class="pad_10px" style="width:96%">
+    <tr>
+        <td class="center">
+            <span style="font-family: arial, sans-serif; font-size: 10px;">
+            $yycopyright
+            </span>
+        </td>
+    </tr>
+</table>
+</body>
+</html>~;
+
+$myprint = qq~<!DOCTYPE html>
+<html lang="$abbr_lang">
+<head>
+    <meta charset="$yymycharset">
+    <title>{yabb pagetitle}</title>
+    <meta name="robots" content="noindex,noarchive" />
+    <link rel="canonical" href="$scripturl?num={yabb num}" />
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <style type="text/css" media="print">
+        .no-print { display: none; }
+    </style>
+    <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
+    <script type="text/javascript">
+        var imgdisplay = 'none';
+        var urldisplay = 'inline';
+        function do_images() {
+            for (var i = 0; i < document.images.length; i++) {
+                if (document.images[i].align != 'bottom') {
+                    document.images[i].style.display = imgdisplay;
+                    imageid = document.images[i].id;
+                    if (imageid) document.getElementById('url' + imageid).style.display = urldisplay;
+                }
+            }
+            if (imgdisplay == 'none') {
+                imgdisplay = 'inline';
+                urldisplay = 'none';
+                document.getElementById("Hide_Image").value = "$maintxt{'669b'}";
+            } else {
+                imgdisplay = 'none';
+                urldisplay = 'inline';
+                document.getElementById("Hide_Image").value = "$maintxt{'669a'}";
+            }
+        }
+    </script>
+</head>
+<body id="print">
+<table style="width:96%; margin-top:10px">
+    <tr>
+        <td class="vtop">
+            <span style="font-family: arial, sans-serif; font-size: 18px; font-weight: bold;">$mbname</span>
+        </td>
+        <td class="right vtop">
+            <input type="button" id="Hide_Image" value="$maintxt{'669a'}" class="no-print" onclick="do_images();" />
+        </td>
+    </tr><tr>
+        <td class="vtop" colspan="2">
+            $showurl
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$cat &gt;&gt; $boardname &gt;&gt; {yabb messagetitle}</span>
+            <br />
+            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?num={yabb num}</span>
+            <br />
+            <hr  />
+            <span style="font-family: arial, sans-serif; font-size: 14px; font-weight: bold;">$maintxt{'195'} {yabb startedby} $maintxt{'30'} {yabb startedon}</span>
+        </td>
+    </tr>
+</table>
+<br />
+{yabb printthread}
+<br />
+<form>
+    <p class="no-print center"><input class="no-print" type="button" value=" $maintxt{'printpage'} " onclick="window.print();" /></p>
+</form>
+<table class="pad_10px" style="width:96%">
+    <tr>
+        <td class="center" style="font-family: arial, sans-serif; font-size: 10px;">
+            $yycopyright
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+~;
+
+$mythread = qq~<table class="pad_10px" style="border: 1px solid #000000; width:96%">
+    <tr>
+        <td style="font-family: arial, sans-serif; font-size: 12px;">
+            $maintxt{'196'}: <strong>{yabb threadtitle}</strong><br />
+            $maintxt{'197'} <strong>{yabb threadposter}</strong> $maintxt{'30'} <strong>{yabb threaddate}</strong>
+            <hr />
+            <div style="font-family: arial, sans-serif; font-size: 12px;">
+            {yabb threadpost}{yabb attach}
+            </div>
+        </td>
+    </tr>
+</table>~;
+
+1;

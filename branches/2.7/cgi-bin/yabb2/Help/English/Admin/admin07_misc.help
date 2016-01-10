@@ -1,0 +1,88 @@
+$englishadmin_admin07_mischelpver = 'YaBB 2.6.11 $Revision: 1626 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$SectionName = "Other_Settings";
+
+### Section 1
+#############################################
+$SectionSub1 = "Event_Calendar";
+$SectionBody1 = q~<p>YaBB 2.6 boasts the addition of an Event Calendar where members and staff can post holidays, special events, and meetings. In order to set up the Event Calendar, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Event Calendar&#8221;.</p>
+<ul>
+    <li><b>Standard Settings</b>
+        <br />Here the Admin can choose who (if anyone) sees the Event Calendar, who (if anyone) sees the Event Calendar link in the tabbed menu, whether or not member birthdays are displayed and other basic options.
+    </li>
+    <li><b>Event Settings</b>
+        <br />This section allows the Admin to choose how events will be displayed in the 'mini calendar' and in the event list.
+    </li>
+    <li><b>Access Settings</b>
+        <br />This section allows the Admin to choose which groups and/or individuals can post new events. There is also checkbox that, when checked, will activate automatic removal of expired events from the Event Calendar database when new events are added.
+    </li>
+    <li><b>Birthday List Settings</b>
+        <br />This sections allows the Admin to choose who (if anyone) is allowed to see a list of all members who have their birth date saved in their User Profile.
+    </li>
+    <li><strong>Rebuild Birthday List</strong>
+        <br />This button rebuilds the list of member birthdays in the event it's gotten corrupted.
+    </li>
+    <li><strong>Delete Old Events</strong>
+        <br />This button removes expired events from the event database. (<span class="help_attn important"><strong>Caution</strong>, this action is not reversible.</span>)
+    </li>
+    <li><strong>Calendar Event-Icon Settings</strong>
+        <br />Here you can upload and manage additional icons to customize your Event Calendar.
+    </li>
+</ul>
+<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> If 'Allow User to hide age in Profile and Message View and hide age and birth year in Calendar?' is checked in &#8220;Forum Settings -> Members&#8221;, Members can choose to hide their age. In that event, only the Member's birth month and day will be shown.</p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$SectionSub2 = "Smiley_Options";
+$SectionBody2 = q~<p>In order to set up the Smiley Options, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Smiley Options&#8221;.</p>
+<ul>
+    <li><b>Smiley Options</b>
+        <br />This section allows the Admin to manage the smilies (emoticons) for use in posts, personal messages, and calendar events.
+        <br /><strong>Remove the Smiley Block</strong>
+        <br />When checked, no smilies appear beneath the text-input box on any posting page.
+        <br /><strong>Detached Smiley Pop-up Style</strong>
+        <br />'Simple' arranges the smilies in the pop-up box in rows. 'Advanced' arranges the smilies in a table format.
+        <br /><strong>Show Added Smilies</strong> and <strong>Smilies Directory Contents</strong>
+        <br />Select where added smilies and entire contents of the Smilies Directory by choosing from their respective drop down selections.
+        <br /><strong>Show Added/Extra Smilies</strong>
+        <br />Select the <em>radiobutton</em> to the right of this to disable showing extra smilies in the Smiley Block. Otherwise, choose which extra smilies you want in the Smiley Block by selecting the <em>radiobutton</em> associated with each smiley you want displayed.
+    </li>
+    <li><strong>Added Smilies</strong>
+        <br />This is a list of smilies that have been added to the default Smilies list. Smilies can be added in the &#8220;Add Smilies&#8221; section. You can choose a file to be uploaded, set a smiley code and a description for it like the default smilies in the Smiley Block. You can upload several new smilies at once. Click the 'Save Settings' button to finish adding your new smilies.
+        <br />Allowed file types are png, jpg, jpeg, and gif. Smiley files are limited to a maximum of 100kb in size.
+    </li>
+    <li><strong>Smilies Directory Contents</strong>
+        <br />This is a list of all smiley files in the Smilies folder in the &#8220;yabbfiles&#8221; folder. (This location may vary depending on your YaBB installation.
+        <br />Files can be added to this section by directly adding files to this folder. Allowed file types are png, jpg, jpeg, and gif. Smiley files should be no more that 100kb in size.
+    </li>
+</ul>
+~;
+
+#############################################
+### Section 3
+#############################################
+$SectionSub3 = "Social_Bookmarks";
+$SectionBody3 = q~<p>Social Bookmarks allows members and visitors to easily share items on your forum by sharing Bookmarked items in their social media pages.</p>
+<p>In order to edit the Social Bookmarks Settings, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Social Bookmarks&#8221;.</p>
+<ul>
+    <li><b>Social Bookmarks Settings</b>
+        <br />Here you can enable Social Bookmarks and choose which Boards will show Social Bookmarks in their topics.
+    </li>
+    <li><strong>Social Bookmarks</strong>
+        <br />This section lists your current Social Bookmarks and shows the associated icon and sort order marker. You can edit the listing or delete it.
+    </li>
+    <li><strong>Add a New Bookmark</strong>
+        <br />Here you can add new Social Bookmarks for your forum.
+        <ul>
+            <li><em>Title</em>: the text that will show when a user mouses-over the Bookmark icon.</li>
+            <li><em>Image</em>: upload the icon for the new Bookmark.</li>
+            <li><em>URL</em>: The URL of the Social Bookmark site. (For Google the URL looks like &#8220;http://www.google.com/bookmarks/mark?op=edit&amp;output=popup&amp;bkmk=<span style="background-color:yellow">{url}</span>&amp;title=<span style="background-color:yellow">{title}</span>&#8221;</li>
+            <li><em>Order</em>: If you want the new Bookmark to be displayed between two previous Bookmarks, assign the new Bookmark a number between the ones assigned to the other Bookmarks. (For example, you want you new Bookmark to appear just before Google [40], assign '39' as the order marker for your new Bookmark.)</li>
+        </ul>
+    </li>
+</ul>
+~;
+
+1;

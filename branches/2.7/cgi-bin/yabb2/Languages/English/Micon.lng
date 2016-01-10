@@ -1,0 +1,121 @@
+###############################################################################
+# Micon.lng (Image text/images definitions)                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$englishmiconlngver = 'YaBB 2.7.00 $Revision$';
+@englishmiconlngmods = ();
+if (@englishmiconlngmods) {
+    $englishmiconlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+
+if (!$language){$language = $lang;}
+
+%img_txt_m =(
+'70' => q~My Favorites~,
+);
+
+%img_polltxt_m = (
+'44' => q~Poll~,
+'45' => q~New Poll~,
+'46' => q~Poll closed~,
+);
+
+%messageindex_txt_m = (
+'302' => q~New~,
+'303' => q~Go to first unread post~,
+'454' => q~Hot Topic (More than~,
+'454a' => q~Replies)~,
+'455' => q~Very Hot Topic (More than~,
+'456' => q~Locked Topic~,
+'457' => q~Normal Topic~,
+'458' => q~Hidden Topic~,
+'459' => q~Hidden Sticky Topic~,
+'460' => q~Hidden Locked Topic~,
+'461' => q~Hidden Sticky Locked Topic~,
+'779' => q~Sticky Topic~,
+'779a' => q~Global Announcement~,
+'779b' => q~Locked Global Announcement~,
+'780' => q~Sticky Locked Topic~,
+'781' => q~Sticky~,
+'845' => q~Moved Topic~,
+);
+
+%messageindex_sort_m = (
+'sort_az' => q~Sort (A-Z)~,
+'sort_za' => q~Sort (Z-A)~,
+'sort_min' => q~Sort (min answer)~,
+'sort_max' => q~Sort (max answer)~,
+'sort_last' => q~Sort (new answer)~,
+'sort_first' => q~Sort (old answer)~,
+);
+
+%im_message_status_m = (
+'confidential' => q~Confidential~,
+'urgent' => q~Urgent!~,
+'standard' => q~Standard~,
+'alertmod' => q~Alert Moderator.~,
+'guestpm' => q~PM from Guest~,
+'guestpmreply' => q~Reply to PM from Guest~,
+);
+
+%tabmenu_txt_m = (
+'edittab' => q~Edit tabs~,
+'tabdel' => q~Delete this tab~,
+'savetab' => q~Save Text~,
+'newtab' => q~Add a tab~,
+);
+
+%maintxt_m = (
+'900pd' => q~Password Access Board~,
+);
+
+%var_cal_m = (
+'calbirthday' => q~Birthday~,
+'calprivate' => q~Private~,
+'caldel' => q~Delete~,
+'caledit' => q~Edit Event~,
+'calsave' => q~Save Event~,
+'getaddevent' => q~Add a new Event~,
+'eventinfo' => q~Event~,
+'eventannounce' => q~Announcement~,
+'eventholiday' => q~Holiday~,
+'eventnote' => q~Exclamation~,
+'eventparty' => q~Party~,
+'eventcelebration' => q~Celebration~,
+'eventsport' => q~Sport~,
+'eventmedia' => q~Media (TV)~,
+'eventmeeting' => q~Meeting~,
+);
+
+%mess_icon_txt = (
+'281' => q~Standard~,
+'282' => q~Thumbs Up~,
+'283' => q~Thumbs Down~,
+'284' => q~Exclamation Mark~,
+'285' => q~Question Mark~,
+'286' => q~Lamp~,
+'287' => q~Smiley~,
+'288' => q~Angry~,
+'289' => q~Cheesy~,
+'290' => q~Laugh~,
+'291' => q~Sad~,
+'292' => q~Wink~,
+'293' => q~Grin~,
+'294' => q~Shocked~,
+'295' => q~Cool~,
+'296' => q~Huh~,
+);
+
+1;

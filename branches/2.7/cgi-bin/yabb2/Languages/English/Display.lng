@@ -1,0 +1,92 @@
+###############################################################################
+# Display.lng (Display text definitions)                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$englishdisplaylngver = 'YaBB 2.7.00 $Revision$';
+@englishdisplaylngmods = ();
+if (@englishdisplaylngmods) {
+    $englishdisplaylngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%display_txt = (
+'10' => q~Permalink for this article~,
+'19' => q~Page Index Toggle~,
+'21' => q~Posts~,
+'24' => q~(No subject)~,
+'28' => q~Guest~,
+'29' => q~Author~,
+'30' => q~on~,
+'63' => q~Moderators~,
+'63a' => q~Moderator Groups~,
+'116' => q~Post Reply~,
+'118' => q~Topic~,
+'139' => q~Pages~,
+'146' => q~Reply~,
+'146n' => q~Paste Member Name in Quick Reply Box~,
+'162' => q~Are you sure you want to remove this topic?~,
+'rempost' => q~Are you sure you want to remove this post?~,
+'211' => q~Last Edit~,
+'211a' => q~Reason~,
+'298' => q~Moderator~,
+'298a' => q~Moderator Group~,
+'470' => q~N/A~,
+'470a' => q~<em>Ex Member</em>~,
+'511' => q~IP Logged~,
+'525' => q~by~,
+'526' => q~Adding Favorite~,
+'527' => q~Removing Favorite~,
+'528' => q~Complete~,
+'529' => q~Adding Notification~,
+'530' => q~Removing Notification~,
+'641' => q~Read~,
+'642' => q~times~,
+'643' => q~Back to top~,
+'644' => q~Members viewing this topic~,
+'645' => q~replying~,
+'646' => q~Members replying to this topic~,
+'739' => q~Are you sure you want to delete this post?~,
+'739a' => q~Delete this post~,
+'766' => q~No Topic~,
+'767' => q~Next Topic~,
+'768' => q~Previous Topic~,
+'769' => q~Flash Location~,
+'888' => q~Browsing Topic~,
+'999' => q~Board Announcement~,
+'posttolocked' => q~Warning: You are about to post to a locked thread. Click [OK] to confirm this or [Cancel] to return to the thread.~,
+'modifyinlocked' => q~Warning: You are about to modify a locked thread. Click [OK] to confirm this or [Cancel] to return to the thread.~,
+'isbuddy' => q~In my Buddy List.~,
+'split_confirm' => q~Are you sure you want to split this topic?~,
+'alertmod_confirm' => q~Are you sure you want to alert moderator about this post?~,
+'reverse' => q~Click here if you want to change the order topics are shown in.~,
+'sendtopicemail' => q~Click [OK] if you want to send the e-mail through your e-mail program, otherwise the forum\'s e-mail program will be used.~, ## in javascript
+'location' => q~Location~,
+'age' => q~Age~,
+'regdate' => q~Joined: ~,
+'mylastposts' => q~View my last 5 posts~,
+'lastposts' => q~View the last 5 posts by ~,
+'lft' => qq~&lsaquo;~,
+'rgt' => qq~&rsaquo;~,
+'upt' => q~&#710;~,
+'guest_message' => q~Guest Message~,
+'guest_message_block' => qq~Hi there Guest,<br><br>Sorry, but you have exceeded the amount of topics that you are allowed to view as a guest. To view as many topics as you like and to benefit from many more features, why don't you <a href="$scripturl?action=register" style="font-weight: bold;">register an account with us</a>. Registration is easy and will only take you a few minutes.<br><br>If you already have an account with us, then you can <a href="$scripturl?action=login" style="font-weight: bold;">login here</a> to stop seeing this message.<br><br>Thank you,<br><br>The $mbname Team~,
+'guest_message_warn' => qq~Hi there Guest,<br><br>It looks like you are enjoying reading our forum, so why don't you <a href="$scripturl?action=register" style="font-weight: bold;">register an account with us</a> to stop seeing this message and benefit from many more features. Registration is easy and will only take you a few minutes.<br><br>If you already have an account with us, then <a href="$scripturl?action=login" style="font-weight: bold;">click here to log in.</a><br><br>Thank you,<br><br>The $mbname Team~,
+'bookmarks' => q~Bookmarks~, # Social Bookmarks
+'google' => q~Google Hangout~,
+);
+
+%zodiac_txt = (   #YaBB Zodiac
+'sign' => q~Zodiac sign~,
+);
+
+1;

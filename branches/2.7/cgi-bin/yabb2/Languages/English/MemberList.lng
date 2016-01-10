@@ -1,0 +1,52 @@
+###############################################################################
+# MemberList.lng (Member List text definitions)                               #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$englishmemberlistlngver = 'YaBB 2.7.00 $Revision$';
+@englishmemberlistlngmods = ();
+if (@englishmemberlistlngmods) {
+    $englishmemberlistlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%ml_txt = (
+'1' => q~Sort by:~,
+'2' => q~GO!~,
+'3' => q~Viewing The~,
+'4' => q~Members By~,
+'19' => q~Page Index toggle~,
+'21' => q~Posts~,
+'34' => q~Avatar~,
+'35' => q~Name~,
+'87' => q~Position~,
+'96' => q~Website~,
+'139' => q~Pages~,
+'233' => q~Date Registered~,
+'234' => q~Reg. Date~,
+'307' => q~e-mail~,
+'308' => q~Hidden E-mail~,
+'309' => q~of~,
+'312' => q~Viewing Members By Letter~,
+'313' => q~Viewing The~,
+'314' => q~Members By Number of Posts~,
+'331' => q~Members~,
+'759' => q~Please select a letter.~,
+'760' => q~There are no entries available for this letter.~,
+'800' => q~Other~,
+'801' => q~Search by Name or E-mail~,
+'802' => q~Sorry - no matches found for~,
+'dr_warning' => q~* Account older than Forum - please verify Forum Start Date:~,
+'dr_warnurl' => q~Here~,
+);
+
+1;

@@ -1,0 +1,116 @@
+###############################################################################
+# BoardIndex.lng (BoardIndex text definitions)                                #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$englishboardindexlngver = 'YaBB 2.7.00 $Revision$';
+@englishboardindexlngmods = ();
+if (@englishboardindexlngmods) {
+    $englishboardindexlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%boardindex_txt = (
+'18' => q~Index~,
+'20' => q~Forum Name~,
+'21' => q~Posts~,
+'21l' => q~posts~,
+'22' => q~Last Post~,
+'34' => q~Login~,
+'63' => q~Moderators~,
+'63a' => q~Moderator Groups~,
+'64'  => q~Sub-Boards~,
+'65'  => q~Sub-Boards in~,
+'66'  => q~Sub-Board~,
+'67'  => q~This board contains new posts.~,
+'68'  => q~This board has no new posts.~,
+'69'  => q~of the~,
+'70'  => q~sub-boards contain new posts.~,
+'71'  => q~sub-board contains new posts.~,
+'72'  => q~sub-board has no new posts.~,
+'141' => q~Guests~,
+'142' => q~Members~,
+'bviews' => q~Viewing~,
+'143' => q~Search Engines~,
+'158' => q~Users Online~,
+'200' => q~Forum Statistics~,
+'201' => q~The newest member is~,
+'235' => q~Last Post~,
+'236' => q~The most recent post is~,
+'298' => q~Moderator~,
+'298a' => q~Moderator Group~,
+'315' => q~Forgot password?~,
+'316' => q~Inbox~,
+'320' => q~Sent Box~,
+'330' => q~Topics~,
+'330l' => q~topics~,
+'333' => q~New Posts~,
+'334' => q~No New Posts~,
+'470' => q~N/A~,
+'470a' => q~<em>Ex-Member</em>~,
+'487' => q~There are a total of~,
+'488' => q~registered members~,
+'489' => q~The forum contains a total of~,
+'490' => q~within~,
+'500' => q~Marking all Posts as read~, # inside JavaScript!
+'500a' => q~Complete~, # inside JavaScript!
+'500b' => q~Marking all Topics as Read~, # inside JavaScript!
+'524' => q~In~,
+'525' => q~By~,
+'526' => q~Redirected Hits~,
+'643' => q~Up~,
+'685' => q~Info Center~,
+'791' => q~View the~,
+'792' => q~most recent posts~,
+'792a' => q~most recent topics~,
+'793' => q~on the forum.~,
+'795' => q~You have~,
+'796' => q~Personal Messages~,
+'797' => q~View~,
+'800' => q~The most users ever online was~,
+'801' => q~The most members ever online was~,
+'802' => q~The most guests ever online was~,
+'803' => q~The most search engines ever online was~,
+'no_ip' => q~No IP Logged~,
+'guest_ip' => q~Guest IPs~,
+'recenttopic' => q~10 most recent topics~,
+);
+
+%boardindex_imtxt = (
+'11' => q~You had~,
+'12' => q~messages in your PM~,
+'14' => q~New messages:~,
+'15' => q~.\nWould you like to view your PM Inbox~,
+'16' => q~which exceeded the storage limit of~,
+'18' => q~messages~,
+'19' => q~The oldest~,
+'20' => q~messages were automatically deleted.\n\nDo you want to view your PM~,
+'21' => q~now?~,
+'24' => q~of which~,
+'25' => q~is new~,
+'26' => q~are new~,
+'46' => q~Storage~,
+'47' => q~them~,
+'48' => q~the message~,
+'50' => q~New Broadcast Personal Messages.~,
+'51' => q~\nWould you like to view the Broadcast PM box~,
+'50a' => q~New Alert Messages:~,
+);
+
+%boardindex_exptxt = (
+'1' => q~Expand~,
+'2' => q~Collapse~,
+'5' => q~This category contains <strong>new</strong> posts.~,
+'6' => q~This category contains no new posts.~,
+);
+
+1;

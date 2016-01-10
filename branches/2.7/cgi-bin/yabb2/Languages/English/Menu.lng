@@ -1,0 +1,129 @@
+###############################################################################
+# Menu.lng (Image text/images definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$englishmenulngver = 'YaBB 2.7.00 $Revision$';
+@englishmenulngmods = ();
+if (@englishmenulngmods) {
+    $englishmenulngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+if (!$language){$language = $lang;}
+
+%img_txt =(
+'2' => q~Admin~,
+'27' => q~View Profile~,
+'31' => q~Remove~,
+'33' => q~Start new topic~,
+'34' => q~Login~,
+'34a' => q~Update Session~,
+'54' => q~Remove~,
+'55' => q~Remove Selected~,
+'63' => q~Moderators~,
+'66' => q~Modify~,
+'69' => q~E-mail~,
+'70' => q~My Favorites~,
+'71' => q~Add to Favorites~,
+'72' => q~Remove from Favorites~,
+'79' => q~Edit Profile~,
+'97' => q~Register~,
+'102' => qq~<img src="$imagesdir/back_to_top.png" alt="Top" title="to Top" />~,
+'102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="Bottom" title="to Bottom" />~,
+'103' => q~Board Index~,
+'104' => q~Lock/Unlock~,
+'105' => q~Last Post~,
+'108' => q~Logout~,
+'119' => q~Help~,
+'121' => q~Remove~,
+'131' => q~Notify of replies~,
+'131a' => q~Add Topic Notification~,
+'131d' => q~Delete Topic Notification~,
+'132' => q~Move~,
+'144' => q~PM~,
+'144a' => q~Personal Message~,
+'145' => q~Quote~,
+'145q' => q~Mark &amp; Quote~,
+'146' => q~Reply~,
+'182' => q~Search~,
+'300' => q~Mark Topics as Read~,
+'316' => q~Inbox~,
+'320' => q~Sent box~,
+'321' => q~New Message~,
+'323' => q~Preferences~,
+'331' => q~Members~,
+'418' => q~Notification~,
+'452' => q~Mark All Posts as Read~,
+'465' => q~Print~,
+'465a' => q~Print Post~,
+'467' => q~Profile~,
+'515' => q~WWW~,
+'707' => q~Send Topic~,
+'781' => q~Sticky~,
+'620' => q~Split~,
+'621' => q~Move, Split &amp; Splice~,
+'620a' => q~Split this topic starting with this message as the first message in a new topic, followed by the other posts until the last post added to this thread.~,
+'621a' => q~Open window to Move, Split or Splice topics.~,
+'622' => q~Hide~,
+'623' => q~Collapse~,
+'624' => q~Expand~,
+'625' => q~Add to My Favorites~,
+'626' => q~Remove from My Favorites~,
+'627' => q~Mark as Unread~,
+'mycenter' =>  qq~User CP~,
+'addbuddy' => q~Add to My Buddy List~,
+'pmadmin' => q~Send message to Admin(s)~,
+'alertmod' => q~Alert Board Moderator about this Post~,
+'alertmodtext' => q~Report Post~,
+'forward' => q~Forward~,
+'sendpm' => q~Send message~,
+'sendbmess' => q~Send broadcast message~,
+'aim' => q~AIM~,
+'facebook' => q~Facebook~,
+'gtalk' => q~GTalk~,
+'icq' => q~ICQ~,
+'msn' => q~MSN~,
+'myspace' => q~MySpace~,
+'skype' => q~Skype/VoIP~,
+'yim' => q~YIM~,
+'twitter' => q~Twitter~,
+'youtube' => q~YouTube~,
+'birthdaylist' => q~Birthday List~,
+'eventcal' => q~Calendar~,
+'to_top' => q~To Top of Page~,
+);
+
+%img_polltxt = (
+'1' => q~Create Poll~,
+'2' => q~Add Poll~,
+'20' => q~Open~,
+'21' => q~Close~,
+'27' => q~Remove~,
+'33' => q~View Votes~,
+'33a' => q~View Topic~,
+'39' => q~Modify~,
+'43' => q~Remove Vote~,
+'44' => q~Poll~,
+'45' => q~New Poll~,
+'46' => q~Poll closed~,
+);
+
+%img_imtxt = (
+'42' => q~Buddylist~,
+'46' => q~Storage~,
+);
+
+require Sources::Menu;
+SetMenu();
+
+1;
