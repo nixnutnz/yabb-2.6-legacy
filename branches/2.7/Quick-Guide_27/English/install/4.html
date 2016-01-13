@@ -27,10 +27,10 @@
                 <li><a href="../install/2.html">Step 2 - Uploading</a></li>
                 <li><a href="../install/3.html">Step 3 - CHMOD</a></li>
                 <li><a href="../install/setup.html">Step 4 - Setting Up</a></li>
-                <li><span><a href="../extras/index.html">Converting</a></span></li>
-                <li><a href="../extras/upgradeY1.html">Upgrading YaBB 1</a></li>
-                <li><a href="../extras/upgradeY2.html">Upgrading YaBB 2.x</a></li>
-                <li><a href="../extras/troubleshooting.html">Troubleshooting</a></li>
+                <li><span><a href="../convert/index.html">Converting</a></span></li>
+                <li><a href="../convert/upgradeY1.html">Upgrading YaBB 1</a></li>
+                <li><a href="../convert/upgradeY2.html">Upgrading YaBB 2.x</a></li>
+                <li><a href="../convert/troubleshooting.html">Troubleshooting</a></li>
                 <li><span>Other</span></li>
                 <li><a href="../info/license.html">License</a></li>
                 <li><a href="../info/credits.html">Credits</a></li>
@@ -44,15 +44,15 @@
             <p>------- NON cgi-bin section ---------</p>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII) </span> public_html/yabbfiles/*.js</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>) </span> public_html/yabbfiles/*.swf</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII) </span> public_html/yabbfiles/*.js</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>) </span> public_html/yabbfiles/*.swf</li>
                 </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Attachments</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/avatars</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>) </span> public_html/yabbfiles/avatars/* (<b>all files</b>)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>) </span> public_html/yabbfiles/avatars/* (<b>all files</b>)</li>
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/avatars/UserAvatars</li>
                 <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>) </span> public_html/yabbfiles/avatars/UserAvatars/* (all other files if they exist)</li>
             </ul>
@@ -67,13 +67,13 @@
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/googiespell</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/googiespell/* (6 graphic files:  5 .gif, 1 .png)</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span>  public_html/yabbfiles/googiespell/* (3 .js files, 1 .css file and the GPL.txt)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/googiespell/* (6 graphic files:  5 .gif, 1 .png)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII)</span>  public_html/yabbfiles/googiespell/* (3 .js files, 1 .css file and the GPL.txt)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/greybox</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/greybox/* (6 graphic files:  6 .gif)</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span>  public_html/yabbfiles/greybox/* (1 .js file, 1 .html file and 1 .css file)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/greybox/* (6 graphic files:  6 .gif)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII)</span>  public_html/yabbfiles/greybox/* (1 .js file, 1 .html file and 1 .css file)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/ModImages</li>
@@ -83,12 +83,12 @@
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/shjs</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span>  public_html/yabbfiles/shjs/* (10 .js files)</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span> public_html/yabbfiles/shjs/styles/* (1 .css file)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII)</span>  public_html/yabbfiles/shjs/* (10 .js files)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in ASCII)</span> public_html/yabbfiles/shjs/styles/* (1 .css file)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Smilies</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/Smilies/* (all files)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/Smilies/* (all files)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Templates</li>
@@ -100,13 +100,25 @@
                 <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/Templates/Admin/default/* (all files)</li>
             </ul>
             <ul class="st3">
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Templates/Forum</li>
+                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Templates/Forum</li>
                 <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span> public_html/yabbfiles/Templates/Forum/default.css</li>
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Templates/Forum/default</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/Templates/Forum/default/* (all files)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/Templates/Forum/default/* (all files)</li>
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Templates/Forum/default/Boards</li>
+                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span><span class="ascii"> (in ASCII)</span> public_html/yabbfiles/Templates/Forum/default.css</li>
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Templates/Forum/mobile</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/Templates/Forum/mobile/* (all files)</li>
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/Templates/Forum/mobile/Boards</li>
+            </ul>
+           <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/UBBCbuttons</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span><span class="ascii"> (in <b>Binary</b>)</span> public_html/yabbfiles/UBBCbuttons/* (all files)</li>
+            </ul>
+            <ul class="st3">
+                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> public_html/yabbfiles/YaBMod</li>
             </ul>
             <p><b> ------- CGI-BIN Section (Transfer all files in ASCII) ---------</b></p>
-            <p><b>All index.html and .htaccess files in the following folders<br />can be set to -rw-rw-rw- (CHMOD 666) for security reasons!</b></p>
+            <p><b>All index.html and .htaccess files in the following folders<br />should be set to -rw-r--r-- (CHMOD 644) for security reasons!</b></p>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2</li>
                 <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/AdminIndex.pl</li>
@@ -120,8 +132,8 @@
                 <li><span class="chmod">-rwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/YaBB.pl</li>
             </ul>
             <ul class="st3">
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Admin</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> cgi-bin/yabb2/Admin/* (all files)</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Admin</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 666)</span> cgi-bin/yabb2/Admin/* (all files)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Backups</li>
@@ -132,15 +144,11 @@
                 <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> cgi-bin/yabb2/Boards/* (all files)</li>
             </ul>
             <ul class="st3">
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Boards</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> cgi-bin/yabb2/Boards/* (all files)</li>
-            </ul>
-            <ul class="st3">
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Convert</li>
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Convert/Boards</li>
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Convert/Members</li>
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Convert/Messages</li>
-                <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Convert/Variables</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Convert</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Convert/Boards</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Convert/Members</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Convert/Messages</li>
+                <li><span class="chmod">drwxr-xr-x (CHMOD 755)</span> cgi-bin/yabb2/Convert/Variables</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/ConvertLang</li>
@@ -194,16 +202,16 @@
                 </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Modules/Digest</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> cgi-bin/yabb2/Modules/Digest/* (all files)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> cgi-bin/yabb2/Modules/Digest/* (all files)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Modules/Email</li>
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Modules/Email/Date</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> cgi-bin/yabb2/Modules/Email/Date/* (all files)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> cgi-bin/yabb2/Modules/Email/Date/* (all files)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Modules/MIME</li>
-                <li><span class="chmod">-rw-rw-rw- (CHMOD 666)</span> cgi-bin/yabb2/Modules/MIME/* (all files)</li>
+                <li><span class="chmod">-rw-r--r-- (CHMOD 644)</span> cgi-bin/yabb2/Modules/MIME/* (all files)</li>
             </ul>
             <ul class="st3">
                 <li><span class="chmod">drwxrwxrwx (CHMOD 777)</span> cgi-bin/yabb2/Sources</li>

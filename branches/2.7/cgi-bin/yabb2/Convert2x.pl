@@ -139,7 +139,7 @@ if ( -e "$vardir/Setup.lock" ) {
                             <td><input type="text" name="convvardir" value="./Convert/Variables" size="50" /></td>
                         </tr>
                     </table>
-                    <b>Do you need to convert your files to UTF-8?</b> (If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.)  <input type="checkbox" name="convertlang" value="1" />
+                    <b>Do you need to convert your files to UTF-8?</b> (If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.)  <input type="checkbox" name="convertlang" checked="checked" value="1" />
                 </td>
             </tr><tr>
                 <td class="catbg center" colspan="2">

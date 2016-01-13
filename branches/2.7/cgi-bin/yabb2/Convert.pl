@@ -129,7 +129,7 @@ if ( -e "$vardir/Setup.lock" ) {
                 <td class="windowbg2 fontbigger">
                     Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs.<br />
                     Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.7.00.<br /><br />
-                    <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server as your YaBB 2.7.00 installation:
+                    <b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server/cgi-bin as your YaBB 2.7.00 installation:
                     <ol>
                         <li>Insert the path to your YaBB 1 Gold - SP 1.x forum and the paths to /Boards, /Members, /Messages, and /Variables in the input fields below.</li>
                         <li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li>
@@ -163,7 +163,7 @@ if ( -e "$vardir/Setup.lock" ) {
                             <td><input type="text" name="convvardir" value="./Convert/Variables" size="50" /></td>
                         </tr>
                     </table>
-                    <b>Do you need to convert your files to UTF-8?</b> (Unless you had a custom Language pack installed that had a 'UTF-8' character encoding, you will need to convert to UTF-8.)  <input type="checkbox" name="convertlang" value="1" />
+                    <b>Do you need to convert your files to UTF-8?</b> (Unless you had a custom Language pack installed that had a 'UTF-8' character encoding, you will need to convert to UTF-8.)  <input type="checkbox" name="convertlang"  checked="checked" value="1" />
                 </td>
             </tr><tr>
                 <td class="catbg center" colspan="2">

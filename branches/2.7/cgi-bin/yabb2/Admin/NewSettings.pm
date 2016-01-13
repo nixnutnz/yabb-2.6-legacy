@@ -410,13 +410,13 @@ sub SaveSettingsTo {
         ${$key} = delete $settings{$key};
     }
     my @lngs = ('English');
-    push @lngs, 'Russian';
+    ## add Language pack ##
     for (@lngs) {
         if ( ${$_ . '_maintenancetext'} ) {
             fopen(MAINT, ">$langdir/$_/maintenancetext.txt");
             print {MAINT} ${$_ . '_maintenancetext'} or croak "$croak{'print'} MAINT";
-        fclose(MAINT); 
-	}
+            fclose(MAINT); 
+        }
     }
 
     if ( $codemaxchars > 15 ) { $codemaxchars = 15; }
@@ -490,7 +490,7 @@ sub SaveSettingsTo {
 
         $smtp_server =~ s/^\s+|\s+$//gxsm;
 
-        $setfile = << "EOF";
+        $setfile = <<EOF;
 ###############################################################################
 # Settings.pm                                                                 #
 ###############################################################################
@@ -521,7 +521,7 @@ sub SaveSettingsTo {
 
 \$mbname = '$mbname';                   # The name of your YaBB forum
 \$forumstart = '$forumstart';           # The start date of your YaBB Forum
-\$Cookie_Length = $Cookie_Length;           # Default minutes to set login cookies to stay for
+\$Cookie_Length = $Cookie_Length;           # Default time to set login cookies to stay for
 \$cookieusername = '$cookieusername';   # Name of the username cookie
 \$cookiepassword = '$cookiepassword';   # Name of the password cookie
 \$cookiesession_name = '$cookiesession_name';   # Name of the Session cookie

@@ -1459,11 +1459,12 @@ sub Convert_Settings {
         require "$convvardir/membergroups.txt";
         for (keys %NoPost) {
             if ( $NoPost{$_} ) { push @new_nopostorder, $_; }
-		}
+        }
         @nopostorder = @new_nopostorder;
     }
 
     ( undef, $rancook ) = split /\-/xsm, $cookieusername;
+    $yymycharset     = 'ISO-8859-1';
     $cookietsort      = qq~Y2tsort-$rancook~;
     $cookieview       = qq~Y2view-$rancook~;
     $cookieviewtime   = isempty( $cookieviewtime,   525600 );

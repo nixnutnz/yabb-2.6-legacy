@@ -2272,7 +2272,7 @@ sub ReplyNotify {
     $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~igxsm;
     $thismessage =~ s/\[.*?\]//gxsm;
     $thismessage =~ s/<(br|p).*?>/\n/igxsm;
-    $thismessaged =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~igsxm;
+    $thismessage =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~igsxm;
     FromHTML($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
