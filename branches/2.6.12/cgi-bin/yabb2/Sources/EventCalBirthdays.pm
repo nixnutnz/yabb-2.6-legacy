@@ -324,7 +324,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
     if ($bd_today) {
         $bd_today =~ s/, $//sm;
         $my_bdtoday = qq~
-        <br /><br /><span class="u">$var_cal{'calbirthdaytoday'}:</span><br /><br />
+        <br /><br /><span class="under">$var_cal{'calbirthdaytoday'}:</span><br /><br />
 $bd_today
 <br /><br />
 ~;
@@ -344,7 +344,7 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
         $bdmonths =~ s/{yabb bdmonthlink}/$bdmonthlinks/gsm;
     }
 
-    for my $i ( a .. z ) {
+    for my $i ( 'a' .. 'z' ) {
         $my_alpha_a .=
             $mybdlist_alpha_a
           . $i
@@ -440,7 +440,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
                 if ( $letter ) {
                     $searchbdname = $user_bdrealname;
                     $searchbdname = isempty( $searchbdname, $user_bdname );
-                    if ( $searchbdname =~ /^$letter/i ) { $showviewbd = 1; }
+                    if ( $searchbdname =~ /^$letter/ixsm || ( $letter eq 'other' && $searchbdname =~ m/^[^a-z]/ixsm )) { $showviewbd = 1; }
                 }
                 else {
                     $showviewbd = 1;
@@ -513,7 +513,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user_bdname}" r
                         if ($letter) {
                             $searchbdname = $user_bdrealname;
                             $searchbdname = isempty( $searchbdname, $user_bdname );
-                            if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
+                            if ( $searchbdname =~ /^$letter/ixsm || ( $letter eq 'other' && $searchbdname =~ m/^[^a-z]/ixsm )) { $showviewbd = 1; }
                         }
                         else {
                             $showviewbd = 1;
