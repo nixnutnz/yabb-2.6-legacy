@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $favoritespmver = 'YaBB 2.7.00 $Revision$';
@@ -108,9 +108,9 @@ sub Favorites {
     LoadCensorList();
 
     my %attachments;
-    my $att_length = -s "$vardir/attachments.txt";
-    if ( ( -s "$vardir/attachments.txt" ) > 5 ) {
-        fopen( ATM, "$vardir/attachments.txt" );
+    my $att_length = -s 'Variables/attachments.db';
+    if ( ( -s 'Variables/attachments.db' ) > 5 ) {
+        fopen( ATM, '<Variables/attachments.db');
         while (<ATM>) {
             $attachments{ ( split /[|]/xsm, $_, 2 )[0] }++;
         }

@@ -18,7 +18,7 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 use Module::Load;
 our $VERSION = '2.7.00';
@@ -617,10 +617,10 @@ sub backupsettings2 {
         fopen( SETTINGS, "$vardir/Settings.pm" );
         @settings = <SETTINGS>;
         fclose(SETTINGS);
-        for my $i ( 0 .. ( @settings - 1 ) ) {
+        for my $i ( 0 .. $#settings ) {
             if ( $settings[$i] =~ /\$rememberbackup = \d+;/sm ) {
                 if ( !$rememberbackup ) { $rememberbackup = 0; }
-                $rememberbackup *= 86_400;    # days in seconds
+                $rememberbackup *= 86400;    # days in seconds
                 $settings[$i] =~
 s/\$rememberbackup = \d+;/\$rememberbackup = $rememberbackup;/sm;
             }

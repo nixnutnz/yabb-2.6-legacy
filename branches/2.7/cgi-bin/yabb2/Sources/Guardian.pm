@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $guardianpmver = 'YaBB 2.7.00 $Revision$';

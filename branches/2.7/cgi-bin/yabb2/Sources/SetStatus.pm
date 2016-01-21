@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $setstatuspmver = 'YaBB 2.7.00 $Revision$';
@@ -40,7 +40,7 @@ sub SetStatus {
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <BOARDFILE>;
 	fclose( BOARDFILE );
-    for my $line ( 0 .. ( @boardfile - 1 ) ) {
+    for my $line ( 0 .. $#boardfile ) {
         if ( $boardfile[$line] =~ m/\A$threadid\|/xsm ) {
             my (
                 $mnum,     $msub,      $mname, $memail, $mdate,

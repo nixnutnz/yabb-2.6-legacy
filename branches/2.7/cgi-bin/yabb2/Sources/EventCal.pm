@@ -15,7 +15,7 @@
 # use strict;
 #use warnings;
 #no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
 our $VERSION = '2.7.00';
 
@@ -818,7 +818,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                     $cico, $cnonam, $ctyp2, $ns,   $g
                 ) = split /[|]/xsm, $cal_events;
                 if ( !$Show_ColorLinks ) {
-                    $memrealname = ( split /[|]/xsm, $memberinf{$cnam}, 2 )[0];
+                    $memrealname = $memberinf{$cnam}[0];
                 }
                 if ( $cdat =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
                     ( $dd_year, $dd_mon, $dd_day ) = ( $1, $2, $3 );
@@ -831,7 +831,6 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                 $edit_event   = q{};
                 $icon_text    = $var_cal{$cico};
                 $cal_icon     = $cal_icon{$cico};
-#                if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
 
                 if ( $ns eq 'NS' ) {
                     $message = q~[noparse]~ . $ceve . q~[/noparse]~;
@@ -982,7 +981,7 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
                     $cico, $cnonam, $ctyp2, $ns,   $g
                 ) = split /[|]/xsm, $cal_events;
                 if ( !$Show_ColorLinks ) {
-                    $memrealname = ( split /[|]/xsm, $memberinf{$cnam}, 2 )[0];
+                    $memrealname = $memberinf{$cnam}[0];
                 }
                 if ( $cico eq q{} ) { $cico = 'eventinfo'; }
                 if ( $cdat =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
@@ -1205,7 +1204,7 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
             $cicon, $cnoname, $ctype2, $ns,    $g
         ) = split /[|]/xsm, $cal_events;
         if ( !$Show_ColorLinks ) {
-            $memrealname = ( split /[|]/xsm, $memberinf{$cname}, 2 )[0];
+            $memrealname = $memberinf{$cname}[0];
         }
         if ( $cdate =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
             ( $cyear, $cmon, $cday ) = ( $1, $2, $3 );
@@ -1670,7 +1669,7 @@ sub add_cal {
         my @calinput = <EVENTFILE>;
         fclose(EVENTFILE);
         if ( $FORM{'editid'} ) {
-            for my $i ( 0 .. ( @calinput - 1 ) ) {
+            for my $i ( 0 .. $#calinput ) {
                 chomp $calinput[$i];
                 (
                     $c_date,  $c_type,  $c_name, $c_time,
@@ -1731,7 +1730,7 @@ sub del_old_events {
     fopen( EVENTFILE, "$vardir/eventcal.db" );
     my @calinput = <EVENTFILE>;
     fclose(EVENTFILE);
-    for my $i ( 0 .. ( @calinput - 1 ) ) {
+    for my $i ( 0 .. $#calinput ) {
         ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef ) =
           split /[|]/xsm, $calinput[$i];
         chop $c_type2;

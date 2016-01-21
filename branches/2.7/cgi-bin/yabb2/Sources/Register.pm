@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
@@ -101,14 +101,10 @@ sub Register {
 
     if ( !$langopt ) { guestLangSel(); }
 
-    if ( -e "$vardir/email_domain_filter.txt" ) {
-        require "$vardir/email_domain_filter.txt";
-    }
-    if ($adomains) {
-        @domains = split /\,/xsm, $adomains;
+    if (@adomains) {
         $aedomains = $myaedomains_a;
         $aedomains =~ s/{yabb tmpregemail}/$tmpregemail/sm;
-        for (@domains) {
+        for (@adomains) {
             $aedomains .=
               ( $_ =~ m/\@/xsm )
               ? qq~<option value="$_">$_</option>~
@@ -951,15 +947,15 @@ sub Register2 {
         my ( @reglist, @x );
 
         # If a pre-registration list exists load it
-        if ( -e "$memberdir/memberlist.inactive" ) {
-            fopen( INACT, "$memberdir/memberlist.inactive" );
+        if ( -e "Variables/meminactive.db" ) {
+            fopen( INACT, "<Variables/meminactive.db" );
             @reglist = <INACT>;
             fclose(INACT);
         }
 
         # If a approve-registration list exists load it too
-        if ( -e "$memberdir/memberlist.approve" ) {
-            fopen( APPROVE, "$memberdir/memberlist.approve" );
+        if ( -e "Variables/memapprove.db" ) {
+            fopen( APPROVE, "<Variables/memapprove.db" );
             push @reglist, <APPROVE>;
             fclose(APPROVE);
         }
@@ -991,7 +987,7 @@ sub Register2 {
 
         $regpass = $member{'passwrd1'};
 
-        fopen( INACT, ">>$memberdir/memberlist.inactive", 1 );
+        fopen( INACT, ">>$memberdir/meminactive.db", 1 );
         print {INACT}
           "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n"
           or croak "$croak{'print'} INACT";
@@ -1139,13 +1135,12 @@ sub user_activation {
     if ( ( $regtype != 1 && !-e "$memberdir/$reguser.pre" ) || ( $regtype == 1 && !-e "$memberdir/$reguser.pre" && !-e "$memberdir/$reguser.wait" ) ) { fatal_error('prereg_expired'); }
     elsif ( $regtype == 1 && -e "$memberdir/$reguser.wait" ) { fatal_error('prereg_wait'); }
     # If a pre-registration list exists load it
-    if ( -e "$memberdir/memberlist.inactive" ) {
-        fopen( INACT, "$memberdir/memberlist.inactive" );
+    if ( -e "Variables/meminactive.db" ) {
+        fopen( INACT, "<Variables/meminactive.db" );
         @reglist = <INACT>;
         fclose(INACT);
     }
     else {
-
         # add entry to registration log
         fopen( REGLOG, ">>$vardir/registration.log", 1 );
         print {REGLOG} "$date|E|$reguser||$user_ip\n"
@@ -1153,8 +1148,8 @@ sub user_activation {
         fclose(REGLOG);
         fatal_error('prereg_expired');
     }
-    if ( $regtype == 1 && -e "$memberdir/memberlist.approve" ) {
-        fopen( APR, "$memberdir/memberlist.approve" );
+    if ( $regtype == 1 && -e "Variables/memapprove.db" ) {
+        fopen( APR, "<Variables/memapprove.db" );
         @aprlist = <APR>;
         fclose(APR);
     }
@@ -1322,13 +1317,13 @@ sub user_activation {
     if ($changed) {
 
         # if changed write new inactive list
-        fopen( INACT, ">$memberdir/memberlist.inactive" );
+        fopen( INACT, ">Variables/meminactive.db" );
         print {INACT} @chnglist or croak "$croak{'print'} INACT";
         fclose(INACT);
 
         # update approval user list
         if ( $regtype == 1 ) {
-            fopen( APR, ">$memberdir/memberlist.approve" );
+            fopen( APR, ">Variables/memapprove.db" );
             print {APR} @aprlist or croak "$croak{'print'} APR";
             fclose(APR);
         }
@@ -1336,7 +1331,7 @@ sub user_activation {
     else {
 
         # add entry to registration log
-        fopen( REGLOG, ">>$vardir/registration.log", 1 );
+        fopen( REGLOG, ">>Variables/registration.log", 1 );
         print {REGLOG} "$date|E|$reguser|$user_ip\n"
           or croak "$croak{'print'} REGLOG";
         fclose(REGLOG);

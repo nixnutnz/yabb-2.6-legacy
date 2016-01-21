@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $errorlogpmver = 'YaBB 2.7.00 $Revision$';
@@ -26,13 +26,13 @@ sub ErrorLog {
     is_admin_or_gmod();
     $yytitle    = "$errorlog{'1'}";
     $errorcount = 0;
-    fopen( ERRORFILE, "$vardir/errorlog.txt" );
+    fopen( ERRORFILE, "<$vardir/errorlog.log" );
     @errors = <ERRORFILE>;
     fclose(ERRORFILE);
     $errorcount = @errors;
     $date2      = $date;
     $mytest = 0;
-    for my $i ( 0 .. ( $#errors ) ) {
+    for my $i ( 0 .. $#errors ) {
         my @tmpArray = split /[|]/xsm, $errors[$i];
         if ( $tmpArray[0] eq q{} || $tmpArray[0] =~ /\D/igsm || $tmpArray[1] eq q{} || $tmpArray[1] =~ /\D/igsm ) { next; }
         else {
@@ -320,8 +320,8 @@ q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="b
 
 sub CleanErrorLog {
     is_admin_or_gmod();
-    if ( -e ("$vardir/errorlog.txt") ) {
-        unlink "$vardir/errorlog.txt" or croak qq~$!~;
+    if ( -e ("$vardir/errorlog.log") ) {
+        unlink "$vardir/errorlog.log" or croak qq~$!~;
     }
     $yySetLocation = qq~$adminurl?action=errorlog~;
     redirectexit();
@@ -333,11 +333,11 @@ sub DeleteError {
     my ( $sortmode, $sortorder );
     chomp $FORM{'button'};
     if ( $FORM{'button'} ne '4' ) { fatal_error('no_access'); }
-    fopen( FILE, "$vardir/errorlog.txt" );
+    fopen( FILE, "$vardir/errorlog.log" );
     @errors = <FILE>;
     fclose(FILE);
-    unlink "$vardir/errorlog.txt";
-    fopen( FILE, ">>$vardir/errorlog.txt" );
+    unlink "$vardir/errorlog.log";
+    fopen( FILE, ">>$vardir/errorlog.log" );
 
     for my $line (@errors) {
         chomp $line;

@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $downloadspmver = 'YaBB 2.7.00 $Revision$';
@@ -49,8 +49,8 @@ sub DownloadView {
     my ( %attachinput, $viewattachments );
     map { $attachinput{$_} = 1; } @attachinput;
 
-    fopen( AML, "$vardir/attachments.txt" )
-      or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+    fopen( AML, "$vardir/attachments.db" )
+      or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
     @attachinput =
       grep { $_ =~ /$thread\|.+\|(.+)\|\d+\s+/xsm && exists $attachinput{$1} }
       <AML>;
@@ -371,8 +371,8 @@ sub DownloadFileCouter {
         fatal_error( q{}, "$maintxt{'23'} $dfile$maintxt{'23a'}" );
     }
 
-    fopen( ATM, "<$vardir/attachments.txt", 1 )
-      or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+    fopen( ATM, '<Variables/attachments.db', 1 )
+      or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
     my @attachments = <ATM>;
     fclose( ATM );
 
@@ -380,8 +380,8 @@ sub DownloadFileCouter {
         $attachments[$i] =~
 s/(.+\|)(.+)\|(\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
-    fopen( ATM, ">$vardir/attachments.txt", 1 )
-      or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+    fopen( ATM, '>Variables/attachments.db', 1 )
+      or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
     print {ATM} @attachments or croak "$croak{'print'} ATM";
     fclose(ATM);
 

@@ -16,7 +16,7 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use English qw(-no_match_vars);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $profilepmver = 'YaBB 2.7.00 $Revision$';
@@ -1656,27 +1656,13 @@ sub ModifyProfile2 {
 
         ToHTML( $member{'name'} );
         if ( $user ne 'admin' ) {
-
             # Check to see if name is reserved
-            fopen( FILE, "$vardir/reservecfg.txt" )
-              or fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
-            my @reservecfg = <FILE>;
-            fclose(FILE);
-            chomp @reservecfg;
-            my $matchword = $reservecfg[0] eq 'checked';
-            my $matchcase = $reservecfg[1] eq 'checked';
-            my $matchname = $reservecfg[3] eq 'checked';
             my $namecheck =
-                $matchcase eq 'checked'
+                $matchcase
               ? $member{'name'}
               : lc $member{'name'};
 
-            fopen( FILE, "$vardir/reserve.txt" )
-              or fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
-            my @reserve = <FILE>;
-            fclose(FILE);
             for my $reserved (@reserve) {
-                chomp $reserved;
                 my $reservecheck = $matchcase ? $reserved : lc $reserved;
                 if ($matchname) {
                     if ($matchword) {
@@ -1707,8 +1693,8 @@ sub ModifyProfile2 {
         }
 
         # rewrite attachments.txt with new username
-        fopen( ATM, "<$vardir/attachments.txt", 1 )
-          or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+        fopen( ATM, '<Variables/attachments.db', 1 )
+          or fatal_error( 'cannot_open', 'Variables/attachments.db' );
         my @attachments = <ATM>;
         fclose(ATM);
 
@@ -1716,8 +1702,8 @@ sub ModifyProfile2 {
             $attachments[$i] =~
 s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /esm;
         }
-        fopen( ATM, ">$vardir/attachments.txt", 1 )
-          or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+        fopen( ATM, '>Variables/attachments.db', 1 )
+          or fatal_error( 'cannot_open', 'Variables/attachments.db' );
         print {ATM} @attachments or croak "$croak{'print'} ATM";
         fclose(ATM);
 
@@ -1842,8 +1828,8 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
             unlink "$facesdir/UserAvatars/$1";
         }
 
-        fopen( PMATTACH, "<$vardir/pm.attachments" )
-          or fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
+        fopen( PMATTACH, '<Variables/pmattachments.db' )
+          or fatal_error( 'cannot_open', 'Variables/pmattachments.db', 1 );
         @pmattach = <PMATTACH>;
         fclose(PMATTACH);
 
@@ -3257,7 +3243,7 @@ qq~<a href="javascript:void(window.open('$scripturl?action=ban_page_a;ban_memnam
         $ip_ban_options = q{};
         if ( ${ $uid . $user }{'lastips'} ) {
             @ip_ban = split /[|]/xsm, ${ $uid . $user }{'lastips'};
-            for my $ip ( 0 .. ( @ip_ban - 1 ) ) {
+            for my $ip ( 0 .. $#ip_ban ) {
                 if ( check_banlist( q{}, "$ip_ban[$ip]", q{} ) ) {
                     $banlink[$ip] =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'905a'}$ip_ban[$ip]');">$profile_txt{'905'}</a> ]</span>~;
@@ -3284,7 +3270,7 @@ qq~<a href="javascript:void(window.open('$scripturl?action=ban_page_a;ban=$ip_ba
                       ($ipLookup)
                       ? qq~<a href="$scripturl?action=iplookup;ip=$ip_ban[$i]">$ip_ban[$i]</a>~
                       : qq~$ip_ban[$i]~;
-                    $ip_ban_options .= qq~$lookupIP<br />$banlink[$i]<br />~;
+                    $ip_ban_options .= qq~$lookupIP$banlink[$i]<br />~;
                 }
             }
         }

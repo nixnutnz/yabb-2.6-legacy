@@ -16,7 +16,7 @@
 # for his contribution to the YaBB community                                  #
 ###############################################################################
 no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $contexthelppmver = 'YaBB 2.7.00 $Revision$';

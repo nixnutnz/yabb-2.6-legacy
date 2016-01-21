@@ -137,18 +137,16 @@ sub MLByLetter {
     $letter = lc $INFO{'letter'};
     $i      = 0;
     ManageMemberinfo('load');
-    for my $membername (
-        sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
-        keys %memberinf
-      )
-    {
-        ( $memrealname, $mememail, undef, undef ) =
-          split /[|]/xsm, $memberinf{$membername};
+    for my $i ( keys %memberinf) {
+        $namehash{$memberinf{$i}[0]} = [$i, $memberinf{$i}[1]];
+    }
+    @namehash = sort {lc $a cmp lc $b} keys %namehash;
+    for my $listname ( @namehash ){
+        $memrealname = $listname;
+        $membername = $namehash{$listname}[0];
+        $mememail = $namehash{$listname}[1];
         if ($letter) {
-            $SearchName = lc( substr $memrealname, 0, 1 );
-            if ( $SearchName eq $letter ) { $ToShow[$i] = $membername; $i++; }
-            elsif ( $letter eq 'other'
-                && ( ( $SearchName lt 'a' ) || ( $SearchName gt 'z' ) ) )
+            if ( $memrealname =~ m/^$letter/ixsm || ( $letter eq 'other' && $memrealname =~ m/^[^a-z]/ixsm ))
             {
                 $ToShow[$i] = $membername;
                 $i++;
@@ -160,6 +158,7 @@ sub MLByLetter {
         }
     }
     undef %memberinf;
+    undef %namehash;
 
     $memcount = @ToShow;
     if ( !$memcount && $letter ) {
@@ -296,21 +295,19 @@ sub MLPosition {
 }
 
 sub MLDate {
-    fopen( MEMBERLISTREAD, "$memberdir/memberlist.txt" );
-    @tempmemlist = <MEMBERLISTREAD>;
-    fclose(MEMBERLISTREAD);
-    if ( $FORM{'reversed'} || $INFO{'reversed'} ) {
-        @tempmemlist = reverse @tempmemlist;
+    require "$memberdir/memberlist.txt";
+    while (($key, $value) = each %memberlist) {
+        $hash2{$value}=$key;
     }
+    @buffer = sort keys %hash2;    
 
-    $memcount = @tempmemlist;
+    $memcount = keys %hash2;
     buildIndex();
     buildPages(1);
     $bb = $start;
 
     while ( $numshown < $MembersPerPage ) {
-        ( $membername, undef ) = split /\t/xsm, $tempmemlist[$bb], 2;
-        showRows($membername);
+        showRows(($hash2{$buffer[$bb]}));
         $numshown++;
         $bb++;
     }

@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $settings_bookmarkspmver = 'YaBB 2.7.00 $Revision$';
@@ -25,7 +25,6 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('Bookmarks');
 
 sub Bookmarks {
-
     is_admin_or_gmod();
 
     if ($en_bookmarks) { $chk_bookmarks = q~ checked="checked"~; }
@@ -81,12 +80,6 @@ sub Bookmarks {
         my $indent = -2;
         get_subboards(@bdlist);
     }
-
-    fopen( BMARKS, "<$vardir/Bookmarks.txt" )
-      || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
-    @bookmarks = <BMARKS>;
-    fclose(BMARKS);
-    chomp @bookmarks;
 
     $total_bookmarks = @bookmarks || 0;
 
@@ -259,11 +252,12 @@ sub AddBookmark {
 
     $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0');
 
-    fopen( BMARKS, ">>$vardir/Bookmarks.txt" )
-      || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
-    print {BMARKS} "$bm_order|$bm_title|$bm_image|$bm_url|$date\n"
-      or croak "$croak{'print'} BookMark";
-    fclose(BMARKS);
+    my $newbook = qq~$bm_order|$bm_title|$bm_image|$bm_url|$date~;
+    push @bookmarks, $newbook;
+    $settings{'bookmarks'} = q{'} . join( q{', '}, @bookmarks ) . q{'};
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
 
     if ( $action eq 'bookmarks_add' ) {
         $yySetLocation = qq~$adminurl?action=bookmarks~;
@@ -273,32 +267,25 @@ sub AddBookmark {
 }
 
 sub DeleteBookmark {
-
     is_admin_or_gmod();
 
-    fopen( BMARKS, "<$vardir/Bookmarks.txt" )
-      || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
-    @bookmarks = <BMARKS>;
-    fclose(BMARKS);
-
-    fopen( BMARKS, ">$vardir/Bookmarks.txt" )
-      || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
-    print {BMARKS} grep { !/$FORM{'bookmark_id'}/xsm } @bookmarks
-      or croak "$croak{'print'} BookMark";
-    fclose(BMARKS);
-
+    my @newbook = ();
     for my $bookmark (@bookmarks) {
         chomp $bookmark;
         if ( $bookmark =~ /$FORM{'bookmark_id'}/xsm ) {
             $bm_delete = $bookmark;
-            last;
         }
+        else { push @newbook, $bookmark;}
     }
     ( undef, undef, $bm_image, undef, undef ) = split /[|]/xsm,
       $bm_delete;
 
     unlink "$htmldir/Bookmarks/$bm_image";
 
+    $settings{'bookmarks'} = q{'} . join( q{', '}, @newbook ) . q{'};
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
     if ( $action eq 'bookmarks_delete' ) {
         $yySetLocation = qq~$adminurl?action=bookmarks~;
         redirectexit();
@@ -307,16 +294,10 @@ sub DeleteBookmark {
 }
 
 sub EditBookmark {
-
     is_admin_or_gmod();
 
     $id = $FORM{'bookmark_id'};
-    my $bm_edit = {};
-
-    fopen( BMARKS, "<$vardir/Bookmarks.txt" )
-      || fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
-    @bookmarks = <BMARKS>;
-    fclose(BMARKS);
+    my $bm_edit = q{};
 
     for my $bookmark (@bookmarks) {
         chomp $bookmark;
@@ -374,7 +355,6 @@ sub EditBookmark {
 }
 
 sub EditBookmark2 {
-
     is_admin_or_gmod();
 
     $bm_order = $FORM{'bm_order'};
@@ -400,19 +380,13 @@ sub EditBookmark2 {
         $bm_image = $bm_cur_image;
     }
 
-    fopen( BMARKS, "<$vardir/Bookmarks.txt" )
-      || fatal_error( 'cannot_open', "$vardir/bookmarks.txt", 1 );
-    @bookmarks = <BMARKS>;
-    fclose(BMARKS);
-
     @bookmark = grep { !/$bm_id/xsm } @bookmarks;
-    push @bookmark, "$bm_order|$bm_title|$bm_image|$bm_url|$bm_id";
-    $bookmark = join q{}, @bookmark;
+    push @bookmark, qq~$bm_order|$bm_title|$bm_image|$bm_url|$bm_id~;
 
-    fopen( BMARKS, ">$vardir/Bookmarks.txt" )
-      || fatal_error( 'cannot_open', "$vardir/bookmarks.txt", 1 );
-    print {BMARKS} "$bookmark\n" or croak "$croak{'print'} BookMark";
-    fclose(BMARKS);
+    $settings{'bookmarks'} = q{'} . join( q{', '}, @bookmark ) . q{'};
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
 
     if ( $action eq 'bookmarks_edit2' ) {
         $yySetLocation = qq~$adminurl?action=bookmarks~;

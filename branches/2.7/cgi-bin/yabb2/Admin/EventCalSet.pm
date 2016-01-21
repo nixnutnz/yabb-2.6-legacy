@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $eventcalsetpmver = 'YaBB 2.7.00 $Revision$';
@@ -381,7 +381,7 @@ sub EventCalSet2 {
     if ( $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
         unlink "$vardir/eventcalbday.db";
 
-        fopen( FILE, "$memberdir/memberlist.txt" );
+        fopen( FILE, "<Variables/Memberlist.pm" );
         @birthmembers = <FILE>;
         fclose(FILE);
         fopen( FILE, ">$vardir/eventcalbday.db" );
@@ -529,7 +529,7 @@ sub del_old_events {
     fopen( EVENTFILE, "$vardir/eventcal.db" );
     my @calinput = <EVENTFILE>;
     fclose(EVENTFILE);
-    for my $i ( 0 .. ( @calinput - 1 ) ) {
+    for my $i ( 0 .. $#calinput ) {
         ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef ) =
           split /[|]/xsm, $calinput[$i];
         chop $c_type2;

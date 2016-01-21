@@ -14,7 +14,7 @@
 ###############################################################################
 #use warnings;
 #no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $postboxpmver = 'YaBB 2.7.00 $Revision$';
@@ -183,14 +183,14 @@ sub postbox2 {
     if ( $pheight > 400 ) { $pheight  = 400; }
     if ( $pheight < 130 ) { $pheight  = 130; }
     if ( $pwidth > 600 )  { $pwidth   = 600; }
-    if ( $pwidth < 448 )  { $pwidth   = 448; }
+    if ( $pwidth < 468 )  { $pwidth   = 468; }
     $mtextsize  = $textsize . '%';
     $mheight    = $pheight . 'px';
     $mwidth     = $pwidth . 'px';
     $dheight    = ( $pheight + 12 ) . 'px';
     $dwidth     = ( $pwidth + 12 ) . 'px';
-    $jsdragwpos = $pwidth - 448;
-    $dragwpos   = ( $pwidth - 448 ) . 'px';
+    $jsdragwpos = $pwidth - 480;
+    $dragwpos   = ( $pwidth - 480 ) . 'px';
     $jsdraghpos = $pheight - 130;
     $draghpos   = ( $pheight - 130 ) . 'px';
     if ( $INFO{'edit_cal_even'} ) { $message = q~{yabb calevent}~; }

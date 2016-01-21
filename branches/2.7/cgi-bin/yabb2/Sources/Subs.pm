@@ -14,8 +14,8 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
-use Carp;
+#no warnings qw(uninitialized once redefine);
+use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 use utf8;
 our $VERSION = '2.7.00';
@@ -582,8 +582,8 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
 ~;
         }
     }
-    if ( $enable_news && ( -s "$vardir/news.txt" ) > 5 ) {
-        fopen( NEWS, "$vardir/news.txt" );
+    if ( $enable_news && ( -s "$langdir/$language/news.txt" ) > 5 ) {
+        fopen( NEWS, "$langdir/$language/news.txt" );
         my @newsmessages = <NEWS>;
         fclose(NEWS);
         chomp @newsmessages;
@@ -672,7 +672,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                     var startcolor = convProp(bcolor);~;
             my $greybox = $img_greybox;
             $img_greybox = 0;
-            for my $j ( 0 .. ( @newsmessages - 1 ) ) {
+            for my $j ( 0 .. $#newsmessages ) {
                 $message = $newsmessages[$j];
                 wrap();
                 if ($enable_ubbc) {
@@ -738,7 +738,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     $yyurl = $scripturl;
     my $copyright = $output =~ m/{yabb\ copyright}/xsm ? 1 : 0;
 
-    while ( $output =~ s/({)yabb\s+(\w+)(})/${"yy$2"}/gxsm ) { }
+    while ( $output =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm ) { }
 
     # check if image exists, otherwise use the default template image
     if ( $imagesdir ne $defaultimagesdir ) {
@@ -984,7 +984,7 @@ sub fatal_error_logging {
     ToHTML($currentboard);
 
     $tmperror =~ s/\n//igsm;
-    fopen( ERRORLOG, "<$vardir/errorlog.txt" );
+    fopen( ERRORLOG, "<$vardir/errorlog.log" );
     my @errorlog = <ERRORLOG>;
     fclose( ERRORLOG );
     chomp @errorlog;
@@ -1021,7 +1021,7 @@ sub fatal_error_logging {
           int(time)
           . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$username|$FORM{'passwrd'}\n";
     }
-    fopen( ERRORLOG, ">$vardir/errorlog.txt" );
+    fopen( ERRORLOG, ">$vardir/errorlog.log" );
     for (@errorlog) {
         chomp;
         if ( $_ ne q{} ) {
@@ -1107,7 +1107,7 @@ qq~<br /><span class="under">$debug_txt{'getpairs'}:</span><br />~;
         ( $dummy,  $IISver )  = split /\//xsm, $ENV{'SERVER_SOFTWARE'};
         ( $IISver, $IISverM ) = split /./xsm,  $IISver;
         if ( int($IISver) < 6 && int($IISverM) < 1 ) {
-            eval { use CGI qw(:standard) };
+            eval { require CGI };
         }
     }
     if ( $ENV{REQUEST_METHOD} eq 'POST' ) {
@@ -1445,8 +1445,8 @@ sub spam_protection {
     return if !$timeout || $iamadmin;
     my ( $flood_ip, $flood_time, $flood, @floodcontrol );
 
-    if ( -e "$vardir/flood.txt" ) {
-        fopen( FLOOD, "$vardir/flood.txt" );
+    if ( -e "$vardir/flood.log" ) {
+        fopen( FLOOD, "<$vardir/flood.log" );
         push @floodcontrol, "$user_ip|$date\n";
         while (<FLOOD>) {
             chomp $_;
@@ -1468,7 +1468,7 @@ sub spam_protection {
             fatal_error( 'post_flooding', "$timeout $maintxt{'410'}" );
         }
     }
-    fopen( FLOOD, ">$vardir/flood.txt", 1 );
+    fopen( FLOOD, ">$vardir/flood.log", 1 );
     print {FLOOD} @floodcontrol or croak "$croak{'print'} FLOOD";
     fclose(FLOOD);
     return;
@@ -1934,7 +1934,7 @@ s/<a href=(\S*?)(\s[^>]*)?>(\S*?)<\/a>/ my ($mes,$out,$i) = ($3,q{},1); { while 
 }
 
 sub MembershipGet {
-    if ( fopen( FILEMEMGET, "$memberdir/members.ttl" ) ) {
+    if ( fopen( FILEMEMGET, "<Variables/memttl.db" ) ) {
         $_ = <FILEMEMGET>;
         chomp;
         fclose(FILEMEMGET);
@@ -2218,7 +2218,7 @@ sub WriteLog {
         else              { return; }
     }
 
-    fopen( LOG, "<$vardir/log.txt" );
+    fopen( LOG, "<$vardir/user.log" );
     @logentries = <LOG>;    # Global variable
     fclose( LOG );
     chomp @logentries;
@@ -2230,9 +2230,11 @@ sub WriteLog {
     }
     my $hostin = qq~$user_host#$ENV{'HTTP_USER_AGENT'}~;
     $hostin =~ s/\x0//gsm;
+    $hostin =~ s/chr(32)//gsms;
+    $hostin =~ s/\s+//gxms;
     $hostin =~ s/\x7C//gsm;
     $hostin =~ s/^[x20-\x7E]+$//gsm;
-    fopen( LOG, ">$vardir/log.txt" );
+    fopen( LOG, ">$vardir/user.log" );
     print {LOG} (
 "$field|$date|$user_ip|$hostin|$username|$currentboard|"
           . (
@@ -2247,18 +2249,22 @@ sub WriteLog {
           )
           . "|$INFO{'username'}|$curnum\n",
         @new_log
-    ) or croak qq~$croak{'print'} log.txt~;
+    ) or croak qq~$croak{'print'} user.log~;
     fclose(LOG);
 
     if ( !$action && $enableclicklog == 1 ) {
         $onlinetime = $date - ( $ClickLogTime * 60 );
-        fopen( LOG, "<$vardir/clicklog.txt", 1 );
+        fopen( LOG, "<$vardir/clicklog.log", 1 );
         @new_log = <LOG>;
         fclose( LOG );
         my $hostin = $ENV{'HTTP_USER_AGENT'};
+        $hostin =~ s/\x0//gsm;
         $hostin =~ s/\x7C//gsm;
+        $hostin =~ s/^[x21-\x7E]+$//gsm;
         my $httprefer = $ENV{'HTTP_REFERER'};
+        $httprefer =~ s/\x0//gsm;
         $httprefer =~ s/\x7C//gsm;
+        $httprefer =~ s/^[x21-\x7E]+$//gsm;
         my $newlog = "$field|$date|$ENV{'REQUEST_URI'}|"
           . (
             $httprefer =~ m/$boardurl/ism
@@ -2267,8 +2273,10 @@ sub WriteLog {
           )
           . "|$hostin|$user_ip\n";
         $newlog =~ s/\x0//gsm;
+        $newlog =~ s/chr(32)//gsms;
+        $newlog =~ s/\s+//gxms;
         $newlog =~ s/^[x20-\x7E]+$//gsm;
-        fopen( LOG, ">$vardir/clicklog.txt", 1 );
+        fopen( LOG, ">$vardir/clicklog.log", 1 );
         print {LOG} $newlog
           or croak "$croak{'print'} LOG";
         for (@new_log) {
@@ -2283,13 +2291,13 @@ sub WriteLog {
 
 sub RemoveUserOnline {
     my $user = shift;
-    fopen( LOG, "<$vardir/log.txt", 1 );
+    fopen( LOG, "<$vardir/user.log", 1 );
     @logentries = <LOG>;    # Global variable
     fclose( LOG );
-    fopen( LOG, ">$vardir/log.txt", 1 );
+    fopen( LOG, ">$vardir/user.log", 1 );
     if ($user) {
         my $x = -1;
-        for my $i ( 0 .. ( @logentries - 1 ) ) {
+        for my $i ( 0 .. $#logentries ) {
             if ( ( split /[|]/xsm, $logentries[$i], 2 )[0] ne $user ) {
                 print {LOG} $logentries[$i] or croak "$croak{'print'} LOG";
             }
@@ -2459,26 +2467,25 @@ sub Recent_Save {
         unlink "$memberdir/$who_to_save.rlog";
         return;
     }
+    my $recent = map { "$_\t" . join( q{,}, @{ $recent{$_} } ) . "\n" }
+      keys %recent;
     fopen( RLOG, ">$memberdir/$who_to_save.rlog" );
-    print {RLOG} map { "$_\t" . join( q{,}, @{ $recent{$_} } ) . "\n" }
-      keys %recent
-      or croak "$croak{'print'} RLOG";
+    print {RLOG} $recent or croak "$croak{'print'} RLOG";
     fclose(RLOG);
     return;
 }
 
 sub save_moved_file {
-
-   # This sub saves the hash for the moved files: key == old id, value == new id
-    fopen( MOVEDFILE, ">$vardir/Movedthreads.pm" )
-      or fatal_error( 'cannot_open', "$vardir/Movedthreads.pm", 1 );
-    print {MOVEDFILE} '%moved_file = ('
+    my $moved = '%moved_file = ('
       . join( q{,},
         map { qq~"$_","$moved_file{$_}"~ }
           grep { ( $_ > 0 && $moved_file{$_} > 0 && $_ != $moved_file{$_} ) }
           keys %moved_file )
-      . ");\n1;"
-      or croak "$croak{'print'} MOVEDFILE";
+      . ");\n1;";
+   # This sub saves the hash for the moved files: key == old id, value == new id
+    fopen( MOVEDFILE, ">$vardir/Movedthreads.pm" )
+      or fatal_error( 'cannot_open', "$vardir/Movedthreads.pm", 1 );
+    print {MOVEDFILE} $moved or croak "$croak{'print'} MOVEDFILE";
     fclose(MOVEDFILE);
     return;
 }
@@ -2499,28 +2506,16 @@ sub Write_ForumMaster {
     while ( ( $key, $value ) = each %catinfo ) {
         my ( $catname, $therest ) = split /[|]/xsm, $value, 2;
 
-        #$catname =~ s/\&(?!amp;)/\&amp;$1/g;
-        # We can rely on the admin scripts to properly encode when needed.
         $value = "$catname|$therest";
-
-        # Escape membergroups with a $ in them
         $value =~ s/\$/\\\$/gxsm;
-
-        # Strip membergroups with a ~ from them
         $value =~ s/\~//gxsm;
         $newforum .= qq~\$catinfo{'$key'} = qq\~$value\~;\n~;
     }
     while ( ( $key, $value ) = each %board ) {
         my ( $boardname, $therest ) = split /[|]/xsm, $value, 2;
 
-        #$boardname =~ s/\&(?!amp;)/\&amp;$1/g;
-        # We can rely on the admin scripts to properly encode when needed.
         $value = "$boardname|$therest";
-
-        # Escape membergroups with a $ in them
         $value =~ s/\$/\\\$/gxsm;
-
-        # Strip membergroups with a ~ from them
         $value =~ s/\~//gxsm;
         $newforum .= qq~\$board{'$key'} = qq\~$value\~;\n~;
     }
@@ -2599,9 +2594,7 @@ sub ManageMemberlist {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        fopen( MEMBLIST, "$memberdir/memberlist.txt" );
-        %memberlist = map { /(.*)\t(.*)/m } <MEMBLIST>;
-        fclose(MEMBLIST);
+        require Variables::Memberlist;
     }
     if ( $todo eq 'add' ) {
         $memberlist{$user} = "$userreg";
@@ -2625,8 +2618,8 @@ sub ManageMemberlist {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        fopen( MEMBLIST, ">$memberdir/memberlist.txt" );
-        print {MEMBLIST} map { "$_\t$memberlist{$_}\n" }
+        fopen( MEMBLIST, ">Variables/Memberlist.pm" );
+        print {MEMBLIST} map { "\$memberlist{'$_'} = '$memberlist{$_}';\n" }
           sort { $memberlist{$a} <=> $memberlist{$b} } keys %memberlist
           or croak "$croak{'print'} MEMBLIST";
         fclose(MEMBLIST);
@@ -2635,7 +2628,7 @@ sub ManageMemberlist {
     return;
 }
 
-## deal with basic member data in memberinfo.txt
+## deal with basic member data in Memberinfo.pm
 sub ManageMemberinfo {
     my ( $todo, $user, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp ) =
       @_;
@@ -2645,25 +2638,20 @@ sub ManageMemberinfo {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        fopen( MEMBINFO, "$memberdir/memberinfo.txt" );
-        @membinfo = <MEMBINFO>;
-        chomp @membinfo;
-        %memberinf = map { /(.*)\t(.*)/xsm } @membinfo;
-        fclose(MEMBINFO);
-        fopen ( ADMINLST, "$vardir/adminlst.txt" );
+        require Variables::Memberinfo;
+        fopen ( ADMINLST, "$vardir/adminlst.db" );
         @adminlst = <ADMINLST>;
         fclose(ADMINLST);
         chomp @adminlst;
     }
     if ( $todo eq 'add' ) {
-        $memberinf{$user} = "$userdisp|$usermail|$usergrp|$usercnt|$useraddgrp";
+        $memberinf{$user} = qq~$userdisp|$usermail|$usergrp|$usercnt|$useraddgrp~;
         if ( $usergrp eq 'Administrator' || ( $usergrp eq 'Global Moderator' && $gmod_access{'backup'} ) ) {
             push @adminlst, $user;
         }
     }
     elsif ( $todo eq 'update' ) {
-        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
-          split /[|]/xsm, $memberinf{$user};
+        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) = split  /[|]/xsm, $memberinf{$user};
         if ($userreg)  { $regdate     = $userreg; }
         if ($userdisp) { $memrealname = $userdisp; }
         if ($usermail) { $mememail    = $usermail; }
@@ -2673,8 +2661,7 @@ sub ManageMemberinfo {
             if ( $useraddgrp =~ /\x23\x23\x23blank\x23\x23\x23/sm ) { $useraddgrp = q{}; }
             $memaddgrp = $useraddgrp;
         }
-        $memberinf{$user} =
-          "$memrealname|$mememail|$memposition|$memposts|$memaddgrp";
+        $memberinf{$user} = qq~$memrealname|$mememail|$memposition|$memposts|$memaddgrp~;
         for (@adminlst) {
             if ( $_ eq $user && ( $memposition ne 'Administrator' && ( $memposition ne 'Global Moderator' || !$gmod_access{'backup'} ) ) ) {
                 $_ eq q{};
@@ -2700,12 +2687,13 @@ sub ManageMemberinfo {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        fopen( MEMBINFO, ">$memberdir/memberinfo.txt" );
-        print {MEMBINFO} map { "$_\t$memberinf{$_}\n" } keys %memberinf
+        
+        fopen( MEMBINFO, ">Variables/Memberinfo.pm" );
+        print {MEMBINFO} map { "\$memberinf{'$_'} = '$memberinf{$_}';\n" } keys %memberinf
           or croak "$croak{'print'} MEMBINFO";
         fclose(MEMBINFO);
         undef %memberinf;
-        fopen ( ADMINLST, ">$vardir/adminlst.txt" );
+        fopen ( ADMINLST, ">$vardir/adminlst.db" );
         print {ADMINLST} join "\n", @adminlst or croak "$croak{'print'} ADMINLST";
         fclose(ADMINLST);
     }
@@ -2809,7 +2797,7 @@ sub decloak {
     return $user;
 }
 
-# run through the log.txt and return the online/offline/away string near by the username
+# run through the user.log and return the online/offline/away string near by the username
 my %users_online;
 
 sub userOnLineStatus {
@@ -3108,8 +3096,8 @@ sub get_break {
 }
 
 sub get_gmod {
-    if ( $iamgmod && -e "$vardir/gmodsettings.txt" ) {
-        require "$vardir/gmodsettings.txt";
+    if ( $iamgmod ) {
+        require Variables::Gmodset;
     }
     return;
 }
@@ -3120,7 +3108,7 @@ sub enable_yabbc {
     }
     return;
 }
-## moved from YaBBC.pm and Printpage.pl DAR 2/7/2012 ##
+## moved from YaBBC and Printpage DAR 2/7/2012 ##
 sub format_url {
     my ( $txtfirst, $txturl ) = @_;
     my $lasttxt = q{};

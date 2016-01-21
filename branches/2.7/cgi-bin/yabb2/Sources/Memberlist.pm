@@ -15,7 +15,7 @@
 # use strict;
 #use warnings;
 #no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $memberlistpmver = 'YaBB 2.7.00 $Revision$';
@@ -133,18 +133,17 @@ sub MLByLetter {
     $letter = lc $INFO{'letter'};
     $i      = 0;
     ManageMemberinfo('load');
-    for my $membername (
-        sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
-        keys %memberinf
-      )
-    {
-        ( $memrealname, $mememail, undef, undef ) =
-          split /[|]/xsm, $memberinf{$membername};
+    %namehash = ();
+    for my $i ( keys %memberinf) {
+        $namehash{$memberinf{$i}[0]} = [$i, $memberinf{$i}[1]];
+    }
+    @namehash = sort {lc $a cmp lc $b} keys %namehash;
+    for my $listname ( @namehash ){
+        $memrealname = $listname;
+        $membername = $namehash{$listname}[0];
+        $mememail = $namehash{$listname}[1];
         if ($letter) {
-            $SearchName = lc( substr $memrealname, 0, 1 );
-            if ( $SearchName eq $letter ) { $ToShow[$i] = $membername; $i++; }
-            elsif ( $letter eq 'other'
-                && ( ( $SearchName lt 'a' ) || ( $SearchName gt 'z' ) ) )
+            if ( $memrealname =~ /^$letter/ixsm || ( $letter eq 'other' && $memrealname =~ m/^[^a-z]/ixsm ))
             {
                 $ToShow[$i] = $membername;
                 $i++;
@@ -156,6 +155,7 @@ sub MLByLetter {
         }
     }
     undef %memberinf;
+    undef %namehash;
     $memcount = @ToShow;
     if ( !$memcount && $letter ) {
         $pageindex1 =
@@ -226,7 +226,7 @@ sub MLPosition {
     ManageMemberinfo('load');
 
     my %nopostorder;
-    for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+    for my $i ( 0 .. $#nopostorder ) {
         $nopostorder{ $nopostorder[$i] } = $i;
     }
 
@@ -287,21 +287,16 @@ sub MLDate {
     ( $memcount, undef ) = MembershipGet();
     buildIndex();
     buildPages(1);
-    fopen( MEMBERLISTREAD, "$memberdir/memberlist.txt" );
-    $counter = 0;
-    while ( $counter < $start && ( $buffer = <MEMBERLISTREAD> ) ) {
-        $counter++;
+    require Variables::Memberlist; 
+    $buffer = keys %memberlist;
+    while (($key, $value) = each %memberlist) {
+        $hash2{$value}=$key;
     }
-    for my $counter ( 0 .. ( $MembersPerPage - 1 ) ) {
-        if ( $buffer = <MEMBERLISTREAD> ) {
-            chomp $buffer;
-            if ($buffer) {
-                ( $membername, undef ) = split /\t/xsm, $buffer, 2;
-                showRows($membername);
-            }
-        }
+    @buffer = sort keys %hash2;
+
+    for my $counter ( $start .. ( $start + $MembersPerPage - 1 ) ) {
+        showRows($hash2{$buffer[$counter]});
     }
-    fclose(MEMBERLISTREAD);
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'233'} $numshow";
     template();
@@ -497,7 +492,7 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmembe
                     if ( $counter % $MembersPerPage == 0 ) {
                         $pagetxtindex .=
                           $start == $counter
-                          ? qq~<b>[$tmpa]</b>&nbsp;~
+                          ? qq~<span class="small">[$tmpa]&nbsp;</span>~
                           : qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$counter$findmember"><span class="small">$tmpa</span></a>&nbsp;~;
                         $tmpa++;
                     }

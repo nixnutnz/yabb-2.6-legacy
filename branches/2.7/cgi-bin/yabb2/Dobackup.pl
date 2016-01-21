@@ -18,7 +18,7 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local;
 use English '-no_match_vars';
@@ -52,7 +52,7 @@ my $runbackup       = $q->param('action');
 
 $YaBBversion     = 'YaBB 2.7.00';
 
-open my $ALIST, '<', "$vardir/adminlst.txt" or croak 'cannot find adminlist';
+open my $ALIST, '<', "$vardir/adminlst.db" or croak 'cannot find adminlist';
 my @alist = <$ALIST>;
 close $ALIST or croak 'cannot close adminlist';
 chomp @alist;

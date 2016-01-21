@@ -46,9 +46,9 @@ a:focus, input:focus, textarea:focus, select:focus { outline: 0 none; }
     width:99%;
 }
 
-.headerrow       { display: table-row; }
-.headertl {padding:4px; min-height:5em; line-height:1.5em; text-align:left; vertical-align:middle; display: table-cell;}
-.logor { text-align:right; vertical-align:middle; display: table-cell;}
+.headerrow  { display: table-row;}
+.headertl {padding:4px; min-height:5em; line-height:1.5em; text-align:left; vertical-align:middle; display: table-cell; width:100%}
+.logor { text-align:right; vertical-align:middle; display: table-cell; width:100%}
 
 #header a { color:#2d2d2d; }
 
@@ -244,23 +244,20 @@ table.fixed {
 }
 
 .menutop {
-    height: 25px;
     background-color: #6499d0 ;
     font-weight: bold;
     text-align: left;
     color: #2d2d2d;
-    padding-bottom:3px;
 }
 
 .mainbottom {
-    height: 25px;
     width: 100%;
     background-color: #2d2d2d;
     font-weight: bold;
     font-size: 83%;
     color: #bbb;
     margin-top: 10px;
-    padding-top: 1em;
+    padding: .5em 0 .5em 0;
     vertical-align: middle;
     text-align: left;
 }
@@ -944,7 +941,7 @@ div#bullets {
 }
 
 #fontsize {
-   font-size: 75%;
+    font-size: 75%;
     margin-left: 1px;
     margin-right: 2px;
     margin-top: 2px;
@@ -979,7 +976,7 @@ div.boxlist1 {
 div.chrwarn {
     float: left;
     text-align: left;
-    width: 315px;
+    width: 353px;
 }
 
 div.chrsize {

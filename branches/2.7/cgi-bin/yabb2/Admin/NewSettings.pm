@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $newsettingspmver = 'YaBB 2.7.00 $Revision$';
@@ -409,15 +409,20 @@ sub SaveSettingsTo {
     for my $key ( keys %settings ) {
         ${$key} = delete $settings{$key};
     }
-    my @lngs = ('English');
-    ## add Language pack ##
     for (@lngs) {
         if ( ${$_ . '_maintenancetext'} ) {
             fopen(MAINT, ">$langdir/$_/maintenancetext.txt");
             print {MAINT} ${$_ . '_maintenancetext'} or croak "$croak{'print'} MAINT";
-            fclose(MAINT); 
+            fclose(MAINT);
+        }
+        if (${$_ . '_news'} ) {
+            fopen( NEWS, ">$langdir/$_/news.txt", 1 ) || fatal_error( 'cannot_open', "$vardir/news.txt", 1 );
+            print {NEWS} ${$_ . '_news'} or croak "$croak{'print'} NEWS";
+            fclose(NEWS);
         }
     }
+
+    $mylng = q{'} . join( qq~', '~, @lngs ) . q{'};
 
     if ( $codemaxchars > 15 ) { $codemaxchars = 15; }
     my $setfile;
@@ -425,15 +430,28 @@ sub SaveSettingsTo {
         $fadertext       ||= $color{'fadertext'};
         $faderbackground ||= $color{'faderbg'};
 
-        my $templateset = join q{},
-          map { qq~'$_' => "$templateset{$_}",\n~; } keys %templateset;
-
+        my $templateset = join q{}, map { qq~'$_' => "$templateset{$_}",\n~; } keys %templateset;
+        if (!$iplookup) {
+            $iplookup = join q{}, map { qq~'$_' => "$iplookup{$_}",\n~; } keys %iplookup;
+        }
         if (@ext_prof_order) {
             $ext_prof_order = q{"} . join( q{","}, @ext_prof_order ) . q{"};
         }
         if (@ext_prof_fields) {
             $ext_prof_fields =
               q{"} . join( qq~",\n"~, @ext_prof_fields ) . q{"};
+        }
+        if (!$adomains && $adomains[0] ) {
+            $adomains = q{'} . join( q~', '~, @adomains ) . q{'};
+        }
+        if (!$bdomains && $bdomains[0] ) {
+        $bdomains = q{'} . join( q~', '~, @bdomains ) . q{'};
+        }
+        if ( !$reserve && $reserve[0] ) {
+            $reserve = q{'} . join( q~', '~, @reserve ) . q{'};
+        }
+        if ( !$spamrules && $spamrules[0] ) {
+            $spamrules = q{'} . join( q~', '~, @spamrules ) . q{'};
         }
 
         my $member_groups = "# Static Member Groups\n";
@@ -470,7 +488,7 @@ sub SaveSettingsTo {
             }
         }
 
-        my $AdvancedTabs = q{"} . join( q{","}, @AdvancedTabs ) . q{"};
+        my $AdvancedTabs = q{'} . join( q{','}, @AdvancedTabs ) . q{'};
 
         if (@SmilieURL) {
             $SmilieURL = q{"} . join( q{","}, @SmilieURL ) . q{"};
@@ -485,6 +503,8 @@ sub SaveSettingsTo {
         if (@SmilieLinebreak) {
             $SmilieLinebreak = q{"} . join( q{","}, @SmilieLinebreak ) . q{"};
         }
+        if (!$bookmarks) { $bookmarks = q{'} . join( q{', '}, @bookmarks ) . q{'}; }
+
 
         my $backup_paths = join q{ }, @backup_paths;
 
@@ -513,6 +533,7 @@ sub SaveSettingsTo {
 \$yymycharset = 'UTF-8';                 # character encoding now 'UTF-8' only;
 
 \%templateset = ($templateset);             # Forum templates settings
+\@lngs = ($mylng);                          #installed languages;
 
 \$maintenance = $maintenance;               # Set to 1 to enable Maintenance mode
 \$rememberbackup = $rememberbackup;         # seconds past since last backup until alert is displayed
@@ -565,6 +586,14 @@ sub SaveSettingsTo {
 \$mailtype = $mailtype;                     # Mail program to use: 0 = sendmail, 1 = SMTP, 2 = Net::SMTP, 3 = Net::SMTP::TLS
 
 \$UseHelp_Perms = $UseHelp_Perms;           # Help Center: 1 == use permissions, 0 == don't use permissions
+
+\@adomains = ($adomains);              #email domains - allowed
+\@bdomains = ($bdomains);              #email domains - denied
+\$matchword = $matchword;              #registration reserved word settings
+\$matchcase = $matchcase;
+\$matchuser = $matchuser;
+\$matchname = $matchname;
+\@reserve = ($reserve);
 
 ########## MemberGroups ##########
 
@@ -674,6 +703,7 @@ $member_groups
 \$spd_detention_time = $spd_detention_time; # Time in seconds before a speedposting ban is lifted again
 \$min_post_speed = $min_post_speed;         # Minimum time in seconds between entering a post form and submitting a post
 \$error_spd = $error_spd;                   # Minimum time in seconds between error log entries from the same IP address.
+\@spamrules = ($spamrules);                 #Spam rules
 \$minlinkpost = $minlinkpost;               # Minimum amount of posts a member needs to post links and images
 \$minlinksig = $minlinksig;                 # Minimum amount of posts a member needs to create links and images in signature
 \$minlinkweb = $minlinkweb;                 # Minimum amount of posts a member needs to link to a website in their profile
@@ -781,6 +811,7 @@ $ext_prof_fields
 \$en_bookmarks   = $en_bookmarks;  # Enable Social Bookmarks
 \$bm_subcut = $bm_subcut; # Maximum characters in subject
 \$bm_boards = '$bm_boards'; # Select the boards which Social Bookmarks will be shown in
+\@bookmarks = ($bookmarks); #bookmarks
 
 ########## File Settings ##########
 
@@ -803,6 +834,7 @@ $ext_prof_fields
                             # 0 to disable, 1 to enable.
 
 \$debug = $debug;               # If set to 1 debug info is added to the template. Tag in template is {yabb debug}
+\$maxdays = $maxdays;            #maximum thread age for RemoveOldPosts
 
 ########## Search Settings ##########
 \$enableguestsearch = $enableguestsearch;       # Set to 1 to enable guests access to advanced search.
@@ -834,7 +866,7 @@ $ext_prof_fields
 \$showauthor = $showauthor;         # Show author name
 \$rssemail = '$rssemail';             # default email if author email not shown
 \$showdate = $showdate;             # Show post date
-\$getreversedns = $getreversedns;          #Set to 1 to get ReverseDNS lookup for log.txt and clicklog.txt
+\$getreversedns = $getreversedns;          #Set to 1 to get ReverseDNS lookup for user.log and clicklog.log
 
 ########## New Member Notification Settings ##########
 
@@ -944,9 +976,11 @@ $ext_prof_fields
 ########## File Attachment Settings ##########
 
 \$limit = $limit;               # Set to the maximum number of kilobytes an attachment can be. Set to 0 to disable the file size check.
+\$maxsizeattach = $maxsizeattach;                               # Set remove large attachments. Set to 0 to disable.
+\$maxdaysattach = $maxdaysattach;                               # Set remove old attachments. Set to 0 to disable.
 \$dirlimit = $dirlimit;             # Set to the maximum number of kilobytes the attachment directory can hold. Set to 0 to disable the directory size check.
 \$overwrite = $overwrite;           # Set to 0 to auto rename attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
-\@ext = qw(@ext);               # The allowed file extensions for file attachements. Variable should be set in the form of "jpg bmp gif" and so on.
+\@ext = qw(@ext);               # The allowed file extensions for file attachments. Variable should be set in the form of "jpg bmp gif" and so on.
 \$checkext = $checkext;             # Set to 1 to enable file extension checking, set to 0 to allow all file types to be uploaded
 \$amdisplaypics = $amdisplaypics;       # Set to 1 to display attached pictures in posts, set to 0 to only show a link to them.
 \$allowattach = $allowattach;           # Set to the number of maximum files attaching a post, set to 0 to disable file attaching.
@@ -955,8 +989,10 @@ $ext_prof_fields
 \$pmAttachGroups = '$pmAttachGroups';   # Member groups allowed to send pm attachments, '' == all members
 \$pmDisplayPics = $pmDisplayPics;           # Set to 1 to display attached pictures in personal messages, set to 0 to only show a link to them.
 \$pmCheckExt = $pmCheckExt;                 # Set to 1 to enable file extension checking on pm attachments, set to 0 to allow all file types to be uploaded
-\@pmAttachExt = qw(@pmAttachExt);           # The allowed file extensions for pm file attachements. Variable should be set in the form of "jpg bmp gif" and so on.
+\@pmAttachExt = qw(@pmAttachExt);           # The allowed file extensions for pm file attachments. Variable should be set in the form of "jpg bmp gif" and so on.
 \$pmFileLimit = $pmFileLimit;               # Set to the maximum number of kilobytes a pm attachment can be. Set to 0 to disable the file size check.
+\$pmMaxSizeAttach = $pmMaxSizeAttach;                             # Set remove large pmattachments. Set to 0 to disable.
+\$pmMaxDaysAttach = $pmMaxDaysAttach;                             # Set remove old pmattachments. Set to 0 to disable.
 \$pmDirLimit = $pmDirLimit;                 # Set to the maximum number of kilobytes the pm attachment directory can hold. Set to 0 to disable the directory size check.
 \$pmFileOverwrite = $pmFileOverwrite;       # Set to 0 to auto rename pm attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
 
@@ -966,7 +1002,7 @@ $ext_prof_fields
 \$elenable = $elenable;             # allow for error logging
 \$elrotate = $elrotate;             # Allow for log rotation
 
-\$maxadminlog = $maxadminlog;               #Maximum number of entries stored in adminlog.txt (oldest entries deleted).
+\$maxadminlog = $maxadminlog;               #Maximum number of entries stored in adminlog.log (oldest entries deleted).
 
 ########## Advanced Tabs ##########
 \$addtab_on = $addtab_on;               # show advanced tabs on Forum (For admin only.)
@@ -987,7 +1023,7 @@ $ext_prof_fields
 \$winheight = $winheight;         # winheight
 \$popback = $popback;             # popback
 \$poptext = '$poptext';             # poptext
-\$showinbox = $showinbox;         # showinbox
+\$showinbox = '$showinbox';         # showinbox
 \$removenormalsmilies = $removenormalsmilies; # removenormalsmilies
 
 ###############################################################################
@@ -1015,6 +1051,8 @@ $ext_prof_fields
 \$show_online_ip_fmod = $show_online_ip_fmod;   # Set to 1 to show online IP's to yabb moderators.
 \$ipLookup = $ipLookup;                        # Set to 1 to enable IP Lookup.
 \$masterkey = '$masterkey';         # Seed for encryption of captchas
+
+\%iplookup = ($iplookup);           #IPlookup url list
 
 ###############################################################################
 # Guardian Settings (old Guardian.banned and Guardian.settings)               #

@@ -211,8 +211,8 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
                 keys %memberinf
               )
             {
-                ( $memrealname, $mememail, undef ) =
-                  split /[|]/xsm, $memberinf{$membername}, 3;
+                $memrealname = $memberinf{$membername}[0];
+                $mememail = $memberinf{$membername}[1];
                 ## do not find own name - unless for search or board mods!
                 if ( $to_id !~ /moderators\d/xsm && $to_id !~ /userspec/sm ) {
                     if (   $memrealname =~ /$LookFor/igxsm
@@ -314,8 +314,8 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
                     next if $UserPM_Level{$membername} != 4;
                 }
             }
-            ( $memrealname, $mememail, undef ) =
-              split /[|]/xsm, $memberinf{$membername}, 3;
+            $memrealname = $memberinf{$membername}[0];
+            $mememail = $memberinf{$membername}[1];
             if ($letter) {
                 $SearchName = lc( substr $memrealname, 0, 1 );
                 if (
@@ -666,7 +666,7 @@ sub buildPages {
     if ( $to_id ne 'groups' ) {
         $not_groups = qq~
             <form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;" accept-charset="$yymycharset">
-                <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="txtInFields(this, '$usersel_txt{'wildcardinfo'}');" onblur="txtInFields(this, '$usersel_txt{'wildcardinfo'}')" class="wildcard" /> 
+                <input type="text" name="member" id="member" value="$usersel_txt{'wildcardinfo'}" onfocus="txtInFields(this, '$usersel_txt{'wildcardinfo'}');" onblur="txtInFields(this, '$usersel_txt{'wildcardinfo'}')" class="wildcard" />
                 <input type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
             </form>~;
     }
@@ -850,7 +850,7 @@ sub doquicksearch {
         keys %memberinf
       )
     {
-        my ( $realname, undef ) = split /[|]/xsm, $memberinf{$membername}, 2;
+        my $realname = $memberinf{$membername}[0];
         if ( $realname =~ /^$INFO{'letter'}/ixsm ) {
             push @matches, $realname, $membername;
         }
@@ -866,24 +866,7 @@ sub doquicksearch {
 sub checkUserAvail {
     LoadLanguage('Register');
     my $taken = 'false';
-
-    fopen( RESERVE, "$vardir/reserve.txt" )
-      or fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
-    @reserve = <RESERVE>;
-    fclose(RESERVE);
-    fopen( RESERVECFG, "$vardir/reservecfg.txt" )
-      or fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
-    @reservecfg = <RESERVECFG>;
-    fclose(RESERVECFG);
-
-    for my $i ( 0 .. ( @reservecfg - 1 ) ) {
-        chomp $reservecfg[$i];
-    }
-    $matchword = $reservecfg[0] eq 'checked';
-    $matchcase = $reservecfg[1] eq 'checked';
-    $matchuser = $reservecfg[2] eq 'checked';
-    $matchname = $reservecfg[3] eq 'checked';
-    $namecheck = $matchcase eq 'checked' ? $INFO{'user'} : lc $INFO{'user'};
+    $namecheck = $matchcase ? $INFO{'user'} : lc $INFO{'user'};
     $realnamecheck =
       $matchcase eq 'checked' ? $INFO{'display'} : lc $INFO{'display'};
 

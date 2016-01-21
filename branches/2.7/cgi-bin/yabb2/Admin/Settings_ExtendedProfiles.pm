@@ -1124,7 +1124,7 @@ sub ext_admin_convert_fixgroupnames {
       ( shift, 0 );
 
     @groups = split /\s*\,\s*/xsm, $input;
-    for my $j ( 0 .. ( @groups - 1 ) ) {
+    for my $j ( 0 .. $#groups ) {
 
         # if groupname is in old format
         if (   $groups[$j] ne 'Administrator'
@@ -1232,7 +1232,7 @@ sub ext_admin_convert {
     chomp @ext_prof_fields;
 
     #check if used membergroups still exist + convert to YaBB new format
-    for my $i ( 0 .. ( @ext_prof_fields - 1 ) ) {
+    for my $i ( 0 .. $#ext_prof_fields ) {
         my @field = split /[|]/xsm, $ext_prof_fields[$i];
         $field[8]  = ext_admin_convert_fixgroupnames( $field[8] );
         $field[11] = ext_admin_convert_fixgroupnames( $field[11] );

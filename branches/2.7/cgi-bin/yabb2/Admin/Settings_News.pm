@@ -24,14 +24,8 @@ if (@settings_newspmmods) {
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Load the news from news.txt
-fopen( NEWS, "$vardir/news.txt" )
-  || fatal_error( 'cannot_open', "$vardir/news.txt", 1 );
-$yabbnews = do { local $INPUT_RECORD_SEPARATOR = undef; <NEWS> };
-fclose(NEWS);
 
 # ToHTML, in case they have some crazy HTML in it like </textarea>
-ToHTML($yabbnews);
-ToChars($yabbnews);
 
 # List of settings
 @settings = (
@@ -98,34 +92,33 @@ qq~<input type="checkbox" name="fadelinks" id="fadelinks" value="1" ${ischecked(
         id    => 'editnews',
         items => [
             { header => $admin_txt{'7'}, },
-            {
-                two_rows => 1,    # Use to rows to display this item
-                description => qq~<label for="news">$admin_txt{'670'}</label>~,
-                input_html =>
-qq~<textarea cols="80" rows="35" name="news" id="news" style="width: 99%">$yabbnews</textarea>~,
-                name       => 'news',
-                validate   => 'null,fulltext',
-                depends_on => ['enable_news'],
-            },
         ],
     }
 );
 
+for (@lngs) {
+    if ( -e "$langdir/$_/news.txt") {
+        fopen(NEWS, "<$langdir/$_/news.txt");
+        ${$_ . '_news'} = do { local $INPUT_RECORD_SEPARATOR = undef; <NEWS> };
+        fclose(NEWS);
+    }
+    else {${$_ . '_news'} = q{};}
+    $lbl = $_ . '_news';
+    ToHTML(${$lbl});
+    ToChars(${$lbl});
+
+    push @{ $settings[1]{items} }, { two_rows => 1, description => qq~<label for="$lbl">$admin_txt{'670'} <strong>$_</strong></label>~, input_html => qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl}</textarea>~, name => "$lbl", validate   => 'null,fulltext', depends_on => ['enable_news'],};
+}
+
 # Routine to save them
 sub SaveSettings {
     my %settings = @_;
-
-    $settings{'news'} =~ tr/\r//d;
-    chomp $settings{'news'};
-    FromChars( $settings{'news'} );
-
-    # news.txt stuff
-    fopen( NEWS, ">$vardir/news.txt", 1 )
-      || fatal_error( 'cannot_open', "$vardir/news.txt", 1 );
-    print {NEWS} $settings{'news'}
-      or croak "$croak{'print'} NEWS";    # Remove it from the hash
-    fclose(NEWS);
-    delete $settings{'news'};
+    for (@lngs) {
+        $lbl = $_ . '_news';
+        $settings{$lbl} =~ tr/\r//d;
+        chomp $settings{$lbl};
+        FromChars( $settings{$lbl} );
+	}
 
     # Settings.pm stuff
     SaveSettingsTo( 'Settings.pm', %settings );

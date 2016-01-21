@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $rsspmver = 'YaBB 2.7.00 $Revision$';
@@ -606,9 +606,9 @@ sub RSSDescriptionTrim {    # This formats the RSS
 sub shellaccess {
 
     # Parse the arguments
-    my ( $i, %arguments );
+    my (%arguments );
 
-    for my $i ( 0 .. ( @ARGV - 1 ) ) {
+    for my $i ( 0 .. $#ARGV ) {
         if ( $ARGV[$i] =~ /\A\-/sm ) {
             my ( $option, $value );
             $option = $ARGV[$i];

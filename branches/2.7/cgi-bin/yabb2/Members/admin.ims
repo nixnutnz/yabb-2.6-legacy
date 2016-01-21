@@ -1,6 +1,14 @@
-$mnum = 0;
-$imnewcount = 0;
-$moutnum = 0;
-$storenum = 0;
+### UserIMS YaBB 2.7.00 Version admin ###
+
+%ims = (
+'PMmnum' => "0",
+'PMimnewcount' => "0",
+'PMmoutnum' => "0",
+'PMstorenum' => "0",
+'PMdraftnum' => "0",
+'PMfolders' => "",
+'PMfoldersCount' => "",
+'PMbcRead' => "",
+);
 
 1;

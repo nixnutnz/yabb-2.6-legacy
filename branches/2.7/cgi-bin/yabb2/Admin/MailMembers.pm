@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $mailmemberspmver = 'YaBB 2.7.00 $Revision$';
@@ -251,8 +251,7 @@ sub Mailing2 {
     $i = 0;
     my ( $emailsubject, $emailtext );
     for my $user ( keys %memberinf ) {
-        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
-          split /[|]/xsm, $memberinf{$user};
+        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) = $memberinf{$user};
         FromHTML($memrealname);
 
         if ( $FORM{'mailsend'} && $FORM{'emailtext'} ne q{} ) {

@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
@@ -26,20 +26,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 
 # TSC
-if ( -e "$vardir/spamrules.txt" ) {
-    fopen( SPAM, "$vardir/spamrules.txt" )
-      || fatal_error( 'cannot_open', 'spamrules.txt', 1 );
-
-    $spamlist = do { local $INPUT_RECORD_SEPARATOR = undef; <SPAM> };
-    fclose(SPAM);
-}
+$spamlist = join "\n", @spamrules;
 
 # Email Domain Filter
-if ( -e "$vardir/email_domain_filter.txt" ) {
-    require "$vardir/email_domain_filter.txt";
-}
-$adomains =~ s/,/\n/gsxm;
-$bdomains =~ s/,/\n/gxsm;
+
+$adomains = join "\n", @adomains;
+$bdomains = join "\n", @bdomains;
 
 if ($min_reg_time eq q{}) {$min_reg_time = 15 ;}
 
@@ -195,27 +187,35 @@ sub SaveSettings {
 
     # TSC
     $settings{'spamrules'} =~ s/\r(?=\n*)//gxsm;
-    fopen( SPAM, ">$vardir/spamrules.txt" );
-    print {SPAM} delete $settings{'spamrules'} or croak "$croak{'print'} SPAM";
-    fclose(SPAM);
+    my @spamr = split /\n/xsm, $settings{'spamrules'};
+    $spamr = join q~', '~, @spamr;
+    $settings{'spamrules'} = qq~'$spamr'~;
 
     # email domain filter
-    my @domains =
-      ( delete $settings{'adomains'}, delete $settings{'bdomains'} );
-    for (@domains) {
-        s/\n/,/gxsm;
-        s/\s+//gxsm;
-        s/(^,+|,+$)//gxsm;
-        s/,+/,/gxsm;
-        s/\@/\\@/gxsm;
-    }
-    fopen( FILE, ">$vardir/email_domain_filter.txt" );
-    print {FILE} qq~\$adomains = "$domains[0]";\n~ or croak "$croak{'print'} emain_domain";
-    print {FILE} qq~\$bdomains = "$domains[1]";\n~ or croak "$croak{'print'} email_domain";
-    print {FILE} q~1;~                             or croak "$croak{'print'} email_domain";
-    fclose(FILE);
 
-    # Settings.pm
+    my $adomains = $settings{'adomains'};
+    my $bdomains = $settings{'bdomains'};
+    *cleandomain = sub {
+        my($x) = @_;
+        $x =~ s/\n/,/gxsm;
+        $x =~ s/\s+//gxsm;
+        $x =~ s/(^,+|,+$)//gxsm;
+        $x =~ s/,+/,/gxsm;
+        $x =~ s/\@/\\@/gxsm;
+        return $x };
+    if ( $adomains ) {
+        $adomains = cleandomain($adomains);
+        @adomains = split /,/, $adomains;
+        $adomains = join q~', '~, @adomains;
+        $settings{'adomains'} = qq~'$adomains'~;
+    }
+    if ( $bdomains ) {
+        $bdomains = cleandomain($bdomains);
+        @bdomains = split /,/, $bdomains;
+        $bdomains = join q~', '~, @bdomains;
+        $settings{'bdomains'} = qq~'$bdomains'~;
+    }
+
     SaveSettingsTo( 'Settings.pm', %settings );
     return;
 }

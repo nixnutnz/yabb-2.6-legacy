@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
@@ -140,7 +140,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 }
             }
         }
-        elsif ( $iamguest && !$iambot && !$guest_in_log ) {
+        elsif ( $iamguest && !$is_a_bot && !$guest_in_log ) {
             $guests++;
             $bvusers{$boardv}++;
         }
@@ -1352,8 +1352,8 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
 
         $totalusers = $numusers + $guests;
 
-        if ( !-e ("$vardir/mostlog.txt") ) {
-            fopen( MOSTUSERS, ">$vardir/mostlog.txt" );
+        if ( !-e ("$vardir/mostlog.log") ) {
+            fopen( MOSTUSERS, ">$vardir/mostlog.log" );
             print {MOSTUSERS} "$numusers|$date\n"
               or croak "$croak{'print'} MOSTUSERS";
             print {MOSTUSERS} "$guests|$date\n"
@@ -1364,7 +1364,7 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
               or croak "$croak{'print'} MOSTUSERS";
             fclose(MOSTUSERS);
         }
-        fopen( MOSTUSERS, "$vardir/mostlog.txt" );
+        fopen( MOSTUSERS, "<$vardir/mostlog.log" );
         @mostentries = <MOSTUSERS>;
         fclose(MOSTUSERS);
         ( $mostmemb,  $datememb )  = split /[|]/xsm, $mostentries[0];
@@ -1390,7 +1390,7 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
             || $numbots > $mostbots
             || $totalusers > $mostusers )
         {
-            fopen( MOSTUSERS, ">$vardir/mostlog.txt" );
+            fopen( MOSTUSERS, ">$vardir/mostlog.log" );
             if ( $numusers > $mostmemb ) {
                 $mostmemb = $numusers;
                 $datememb = $date;
@@ -1762,18 +1762,8 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$
 }
 
 sub GetBotlist {
-    if ( -e "$vardir/bots.hosts" ) {
-        fopen( BOTS, "$vardir/bots.hosts" )
-          or fatal_error( 'cannot_open', "$vardir/bots.hosts", 1 );
-        my @botlist = <BOTS>;
-        fclose(BOTS);
-        chomp @botlist;
-        for (@botlist) {
-            if ( $_ =~ /(.*?)\|(.*)/xsm ) {
-                push @all_bots, $1;
-                $bot_name{$1} = $2;
-            }
-        }
+    if ( -e "Variables/BotsHosts.pm" ) {
+        require Variables::BotsHosts;
     }
     return;
 }
@@ -1967,7 +1957,7 @@ sub RedirectExternalShow {
     }
 }
 
-sub         find_latest_data  {
+sub find_latest_data  {
             my ( $parentbd, @children ) = @_;
             $childcnt{$parentbd}    = 0;
             $sub_new_cnt{$parentbd} = 0;

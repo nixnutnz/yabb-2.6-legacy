@@ -1,6 +1,6 @@
 ###############################################################################
 # DetailedVersion.pm                                                          #
-# $Date: 6.01.16 $                                                           #
+# $Date: 6.01.16 $                                                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local;
@@ -25,7 +25,7 @@ $detailedversionpmver = 'YaBB 2.7.00 $Revision$';
 if (@detailedversionpmmods) {
     $detailedversionpmmods = 1;
 }
-$versionchk = $yabb_update . '/versioncheck.js';
+
 $versionimg = 'http://www.yabbforum.com/images/version/versioncheck.gif';
 
 sub ver_detail {

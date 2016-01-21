@@ -371,16 +371,16 @@ sub MemberIndex {
             ${ $uid . $user }{'postcount'}
         );
 
-        fopen( TTL, "$memberdir/members.ttl" )
-          or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
+        fopen( TTL, "<Variables/memttl.db" )
+          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
         $buffer = <TTL>;
         fclose(TTL);
 
         ( $membershiptotal, undef ) = split /[|]/xsm, $buffer;
         $membershiptotal++;
 
-        fopen( TTL, ">$memberdir/members.ttl" )
-          or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
+        fopen( TTL, ">Variables/memttl.db" )
+          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
         print {TTL} qq~$membershiptotal|$user~ or croak "$croak{'print'} TTL";
         fclose(TTL);
         return 0;
@@ -393,17 +393,20 @@ sub MemberIndex {
         require Sources::Notify;
         removeNotifications($user);
 
-        fopen( MEMLIST, "$memberdir/memberlist.txt" )
-          or fatal_error( 'cannot_open', "$memberdir/memberlist.txt", 1 );
-        @memberlt = <MEMLIST>;
-        fclose(MEMLIST);
+        require Variables::Memberlist;
 
-        my $membershiptotal = @memberlt;
-        my ( $lastuser, undef ) = split /\t/xsm, $memberlt[-1], 2;
+        my $membershiptotal = keys %memberlist;
+        while (($key, $value) = each %memberlist) {
+           $hash2{$value}=$key;
+        }
+        my @nkey = sort keys %hash2;
+        my $latestmember = $hash2{$nkey[-1]};
+        undef %hash2;
+        undef @nkey;
 
-        fopen( TTL, ">$memberdir/members.ttl" )
-          or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
-        print {TTL} qq~$membershiptotal|$lastuser~
+        fopen( TTL, ">Variables/memttl.db" )
+          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
+        print {TTL} qq~$membershiptotal|$latestmember~
           or croak "$croak{'print'} TTL";
         fclose(TTL);
         return 0;
@@ -450,24 +453,26 @@ sub MemberPostGroup {
 }
 
 sub MembershipCountTotal {
-    fopen( MEMBERLISTREAD, "$memberdir/memberlist.txt" )
-      or fatal_error( 'cannot_open', "$memberdir/memberlist.txt", 1 );
-    my @num = <MEMBERLISTREAD>;
-    fclose(MEMBERLISTREAD);
-    ( $latestmember, $meminfo ) = split /\t/xsm, $num[-1];
-    my $membertotal = @num;
-    undef @num;
+    require Variables::Memberlist;
+    $membertotal = keys %memberlist;
+    
+    while (($key, $value) = each %memberlist) {
+       $hash2{$value}=$key;
+    }
+    my @nkey = sort keys %hash2;
+    my $latestmember = $hash2{$nkey[-1]};
+    undef %hash2;
+    undef @nkey;
 
-    fopen( MEMTTL, ">$memberdir/members.ttl" )
-      or fatal_error( 'cannot_open', "$memberdir/members.ttl", 1 );
+    fopen( MEMTTL, ">Variables/memttl.db" )
+      or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
     print {MEMTTL} qq~$membertotal|$latestmember~
       or croak "$croak{'print'} MEMTTL";
     fclose(MEMTTL);
 
     if (wantarray) {
         ManageMemberinfo('load');
-        ( $latestrealname, undef ) =
-          split /[|]/xsm, $memberinf{$latestmember}, 2;
+        $latestrealname = $memberinf{$latestmember}[0];
         undef %memberinf;
         return ( $membertotal, $latestmember, $latestrealname );
     }
@@ -531,7 +536,7 @@ qq~<div class="editbg">$reg_txt{'admin_alert_start_more'} $preregged_waiting $re
 sub activation_check {
     my ( $changed, $regtime, $regmember );
     my $timespan = $preregspan * 3600;
-    fopen( INACT, "$memberdir/memberlist.inactive" );
+    fopen( INACT, "<Variables/meminactive.db" );
     my @actlist = <INACT>;
     fclose(INACT);
 
@@ -558,7 +563,7 @@ sub activation_check {
     if ($changed) {
 
         # re-open inactive list for update if changed
-        fopen( INACT, ">$memberdir/memberlist.inactive", 1 );
+        fopen( INACT, ">Variables/meminactive.db", 1 );
         print {INACT} @outlist or croak "$croak{'print'} INACT";
         fclose(INACT);
     }

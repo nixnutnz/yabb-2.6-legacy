@@ -22,6 +22,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 use Encode qw(decode encode);
+use Encode::Guess;
 our $VERSION = '2.7.00';
 
 my $convertlangplver = 'YaBB 2.7.00 $Revision$';
@@ -36,9 +37,9 @@ our (
     $password,         $yycopyin,    $yyuname,      $yypath
 );
 my (
-    $convdone,  $convnotdone,   $navlink1,  $navlink2,
-    $navlink3,  $navlink5,      $navlink6,  $navlink1a,
-    $navlink2a, $navlink3a,     $navlink5a, $navlink6a,
+    $convdone,  $convnotdone, $navlink1,  $navlink2,
+    $navlink3,  $navlink5,    $navlink6,  $navlink1a,
+    $navlink2a, $navlink3a,   $navlink5a, $navlink6a,
     $yySetLocation,
 );
 my $yyiis = 0;
@@ -68,13 +69,6 @@ $script_root =~ s/\/ConvertLang\.(pl|cgi)//igxsm;
 
 require Paths;
 
-my $boardsdir  = './Boards';
-my $memberdir  = './Members';
-my $vardir     = './Variables';
-my $datadir    = './Messages';
-my $convertdir = './ConvertLang';
-my $lang       = 'ISO-8859-1';
-
 my $thisscript = "$ENV{'SCRIPT_NAME'}";
 my $yyext      = 'pl';
 our $yyexec      = 'YaBB';
@@ -84,6 +78,9 @@ my $set_cgi = "Convert2x.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
 my $scripturl = "$boardurl/$yyexec.$yyext";
 
+my $lang       = 'ISO-8859-1';
+my $convertlang = './ConvertLang';
+
 # Make sure the module path is present
 push @INC, './Modules';
 
@@ -92,6 +89,8 @@ require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
 require Variables::Settings;
+my $upfrom = $FORM{'upfrom'};
+
 $gzcomp = 0;
 my $maintext_23 = 'Unable to open';
 #############################################
@@ -106,12 +105,13 @@ if ( -e "$vardir/Setup.lock" ) {
 
     tempstarter();
     tabmenushow();
+    FixLang();
 
     if ( !$action ) {
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
-if ($upfrom) {
-    $langtxt = <<TXT;
+        if ( $upfrom == 1 ) {
+            $langtxt = <<TXT;
                     <p>Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). <strong>Encoding</strong>: If your Forum had a windows-1251 Language Pack installed, choose that encoding. Otherwise, choose ISO-8859-1. Messages in non-Western Languages, such as Chinese and Arabic, were saved as HTML Entities and should not be damaged by conversion from ISO-8859-1.
                         <br /><b>Language:</b>
                         <br /><select name="lang">
@@ -119,9 +119,9 @@ if ($upfrom) {
                             <option value="CP1251">windows-1251 (Cyrillic)</option>
                         </select>
 TXT
-}
-else {
-    $langtxt = <<TXT;
+        }
+        else {
+            $langtxt = <<TXT;
                     <p>Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). <strong>Majority encoding</strong>: If your Forum had a windows-1251 Language Pack installed, choose the encoding that reflects the <strong>majority</strong> of the posts in your forum. The <strong>Minority encoding</strong> will be the other available choice. Messages in non-Western Languages, such as Chinese and Arabic, were saved as HTML Entities and should not be damaged by conversion from ISO-8859-1.)
                         <br /><b>Majority language:</b>
                         <br /><select name="lang">
@@ -143,9 +143,9 @@ else {
                         <br /><textarea name="langmin" cols="20" rows="2" /></textarea>
                     </p>
 TXT
-}
+        }
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <form action="$set_cgi?action=prepare" method="post">
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
@@ -210,7 +210,8 @@ $langtxt
 1;
 EOF
         open my $SETTING, '>', 'Variables/LangSettings.txt'
-          or setup_fatal_error( "$maintext_23 Variables/LangSettings.txt: ", 1 );
+          or
+          setup_fatal_error( "$maintext_23 Variables/LangSettings.txt: ", 1 );
         print {$SETTING} $langfile
           or croak 'cannot print SETTING';
         close $SETTING
@@ -219,7 +220,7 @@ EOF
         $yytabmenu = $navlink1a . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
         <table class="cs_thin pad_4px">
             <col style="width:5%" />
             <tr>
@@ -230,10 +231,10 @@ EOF
                 </td>
                 <td class="windowbg2" style="font-size:11px">
                     <ul>
-                        <li>Members info found in: <b>$convertdir/Members</b></li>
-                        <li>Board and Category info found in: <b>$convertdir/Boards</b></li>
-                        <li>Messages info found in: <b>$convertdir/Messages</b></li>
-                        <li>Variables info found in: <b>$convertdir/Variables</b></li>
+                        <li>Members info found in: <b>$convertlang/Members</b></li>
+                        <li>Board and Category info found in: <b>$convertlang/Boards</b></li>
+                        <li>Messages info found in: <b>$convertlang/Messages</b></li>
+                        <li>Variables info found in: <b>$convertlang/Variables</b></li>
                     </ul>
                 </td>
             </tr><tr>
@@ -266,7 +267,7 @@ EOF
         $yytabmenu = $navlink1 . $navlink2a . $navlink3 . $navlink5 . $navlink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
@@ -329,7 +330,7 @@ EOF
         my $mwidth =
           int( ( ( $INFO{'mstart1'} ) / 2 ) / $INFO{'mtotal'} * 100 );
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
@@ -403,7 +404,7 @@ EOF
         $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
@@ -469,7 +470,7 @@ EOF
         my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
@@ -540,7 +541,7 @@ EOF
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
@@ -611,7 +612,7 @@ EOF
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <col style="width:5%" />
         <tr>
@@ -694,7 +695,7 @@ EOF
         $formsession = cloak("$mbname$username");
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <tr>
             <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
@@ -768,65 +769,70 @@ sub PrepareConv {
 
 sub ConvertMembers {
     my %minmems = ();
-    if ( -e 'Variables/memconv.txt') {
-    require 'Variables/memconv.txt';
-	}
-	else {
-		open my $MLST, '<', "$convertdir/Members/memberlist.txt";
-			my @mlst = <$MLST>;
-		close $MLST;
-		for my $j (@mlst) {
-			my($nm, undef) = split /\t/sm, $j;
-            $minmems{$nm} = 0;
+    if ( -e 'Variables/memconv.txt' ) {
+        require 'Variables/memconv.txt';
+    }
+    else {
+        require "$convertlang/Variables/Memberlist.pm";
+        @mlst = keys %memberlist;
+        for my $j (@mlst) {
+            $minmems{$j} = 0;
         }
-	}
+    }
     my @memlist = keys %minmems;
 
-    my @base = ('memberlist.txt', 'broadcast.messages', 'memberlist.approve', 'memberlist.inactive', 'members.ttl');
-    for my $file (@base) {
-		if ( -e "$convertdir/Members/$file" ) {
-        open $MEMDIR, '<', "$convertdir/Members/$file" or setup_fatal_error( "$maintext_23 $convertdir/Members/$file: ", 1 );
+    if ( -e "$convertlang/Members/broadcast.messages" ) {
+        open $MEMDIR, '<', "$convertlang/Members/broadcast.messages"
+          or setup_fatal_error( "$maintext_23 $convertlang/Members/broadcast.messages: ",
+            1 );
         my $memfile = do { local ($INPUT_RECORD_SEPARATOR); <$MEMDIR> };
         close $MEMDIR or croak 'cannot close MEMDIR';
-        $memfile = encode('utf8', decode($lang, $memfile));
-        open $NMEMFILE, '>', "$memberdir/$file"
-          or setup_fatal_error( "$maintext_23 $memberdir/$file:", 1 );
+        $memfile = encode( 'utf8', decode( $lang, $memfile ) );
+        open $NMEMFILE, '>', "$memberdir/broadcast.messages"
+          or setup_fatal_error( "$maintext_23 $memberdir/broadcast.messages:", 1 );
         print {$NMEMFILE} $memfile or croak 'cannot print NMEMFILE';
         close $NMEMFILE or croak 'cannot close $NMEMFILE';
     }
-	}
 
-    open $MEMDIR, '<', "$convertdir/Members/memberinfo.txt" or setup_fatal_error( "$maintext_23 $convertdir/Members/memberinfo.txt: ", 1 );
-    my @memfile = <$MEMDIR>;
-    close $MEMDIR or croak 'cannot close MEMDIR';
-    chomp @memfile;
+    require "$convertlang/Variables/Memberinfo.pm";
     my $meminfo = q{};
-    for my $i ( @memfile) {
-        my ($user, $userinfo) = split /\t/sm, $i;
+    @memfile = keys %memberinf;
+    for my $user (@memfile) {
         if ( $minmems{$user} == 1 ) {
             $langua = 'CP1251';
         }
-        else { $langua = 'ISO-8859-1';}
-        $userinfo = encode('utf8', decode($langua, $userinfo));
-        $meminfo .= qq~$user\t$userinfo\n~;
+        else { $langua = 'ISO-8859-1'; }
+        my @meminf = split /[|]/xsm, $memberinf{$user};
+        encode( 'utf8', decode( $langua, $meminf[0] ) );
+        encode( 'utf8', decode( $langua, $meminf[1] ) );
+        $userinfo = qq~'$meminf[0]|$meminf[1]|$meminf[2]|$meminf[3]|$meminf[4]|'~;
+        $meminfo .= qq~\$memberinf{'$user'} = $userinfo;\n~;
     }
-    open $NMEMFILE, '>', "$memberdir/memberinfo.txt" or setup_fatal_error( "$maintext_23 $memberdir/memberinfo.txt:", 1 );
+    open $NMEMFILE, '>', "Variables/Memberinfo.pm"
+      or setup_fatal_error( "$maintext_23 Variables/Memberinfo.pm:", 1 );
     print {$NMEMFILE} $meminfo or croak "cannot print NMEMFILE";
     close $NMEMFILE or croak "cannot close $NMEMFILE";
 
-    my @xtn = qw(vars msg ims imstore log outbox rlog imdraft pre wait);
+    my @xtn = qw(vars msg ims imstore log outbox rlog imdraft pre wait lst);
     for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) {
         for my $cnt (@xtn) {
-            if ( -e "$convertdir/Members/$memlist[$i].$cnt" ) {
-                open  $FILEUSER, '<', "$convertdir/Members/$memlist[$i].$cnt" or setup_fatal_error( "$maintext_23 $convertdir/Members/$memlist[$i].$cnt: ", 1 );
-                my $fileuser = do { local ($INPUT_RECORD_SEPARATOR); <$FILEUSER> };
+            if ( -e "$convertlang/Members/$memlist[$i].$cnt" ) {
+                open $FILEUSER, '<',
+                  "$convertlang/Members/$memlist[$i].$cnt"
+                  or setup_fatal_error(
+                    "$maintext_23 $convertlang/Members/$memlist[$i].$cnt: ", 1 );
+                my $fileuser =
+                  do { local ($INPUT_RECORD_SEPARATOR); <$FILEUSER> };
                 close($FILEUSER);
-                if ( $minmems{$memlist[$i]} == 1 ) {
+                if ( $minmems{ $memlist[$i] } == 1 ) {
                     $langua = 'CP1251';
                 }
-                else { $langua = 'ISO-8859-1';}
-                $fileuser = encode('utf8', decode($langua, $fileuser));
-                open $FILEUSERB, ">$memberdir/$memlist[$i].$cnt" or setup_fatal_error( "$maintext_23 $memberdir/$memlist[$i].$cnt: ", 1 );
+                else { $langua = 'ISO-8859-1'; }
+                $fileuser = encode( 'utf8', decode( $langua, $fileuser ) );
+                open $FILEUSERB,
+                  ">$memberdir/$memlist[$i].$cnt"
+                  or setup_fatal_error(
+                    "$maintext_23 $memberdir/$memlist[$i].$cnt: ", 1 );
                 print {$FILEUSERB} $fileuser or croak "cannot print $FILEUSERB";
                 close $FILEUSERB or croak "cannot close $FILEUSERB";
             }
@@ -850,20 +856,20 @@ sub ConvertMembers {
 
 sub MoveBoards {
     require 'Variables/LangSettings.txt';
-    require "$convertdir/Boards/forum.master";
+    require "$convertlang/Boards/forum.master";
     my @boards    = sort keys %board;
     my @subboards = sort keys %subboard;
     push( @boards, @subboards );
     if ( scalar @minbrds > 0 ) {
-        $brdinfo = qq~\$mloaded = 1;\n~;
+        $brdinfo  = qq~\$mloaded = 1;\n~;
         @catorder = undupe(@categoryorder);
         $brdinfo .= qq~\@categoryorder = qw(@catorder);\n~;
         my ( $key, $value );
         while ( ( $key, $value ) = each %cat ) {
-            %seen = ();
+            %seen   = ();
             @catval = split /\,/xsm, $value;
-            @unique = grep { !$seen{$_} ++ } @catval;
-            $val2 = join ',', @unique;
+            @unique = grep { !$seen{$_}++ } @catval;
+            $val2   = join ',', @unique;
 
             $brdinfo .= qq~\$cat{'$key'} = qq\~$val2\~;\n~;
         }
@@ -881,11 +887,11 @@ sub MoveBoards {
             if ( $langvala[-1] != 1 ) {
                 $lingua = $lang;
             }
-            else { $lingua = $lang2;}
-            if ($lingua eq 'ISO-8859-1' ) {
+            else { $lingua = $lang2; }
+            if ( $lingua eq 'ISO-8859-1' ) {
                 $value = ansi($value);
             }
-            Encode::from_to($value, $lingua, 'utf-8');
+            Encode::from_to( $value, $lingua, 'utf-8' );
             @langvala = split /[|]/xsm, $value;
             pop @langvala;
             $value = join '|', @langvala;
@@ -896,7 +902,7 @@ sub MoveBoards {
             $value = "$boardname|$therest|0";
             for (@minbrds) {
                 if ( $key eq $_ ) {
-                 $value = "$boardname|$therest|1";
+                    $value = "$boardname|$therest|1";
                 }
             }
             $value =~ s/\$/\\\$/gxsm;
@@ -905,11 +911,11 @@ sub MoveBoards {
             if ( $langvalb[-1] != 1 ) {
                 $lingua = $lang;
             }
-            else { $lingua = $lang2;}
-            if ($lingua eq 'ISO-8859-1' ) {
+            else { $lingua = $lang2; }
+            if ( $lingua eq 'ISO-8859-1' ) {
                 $value = ansi($value);
             }
-            Encode::from_to($value, $lingua, 'utf-8');
+            Encode::from_to( $value, $lingua, 'utf-8' );
             @langvalb = split /[|]/xsm, $value;
             pop @langvalb;
             $value = join '|', @langvalb;
@@ -921,11 +927,12 @@ sub MoveBoards {
             }
         }
         $brdinfo .= qq~\n1;~;
-        open my $NEWBRD, '>', "$boardsdir/forum.master" or croak 'cannot close NEWBRD';
+        open my $NEWBRD, '>', "$boardsdir/forum.master"
+          or croak 'cannot close NEWBRD';
         print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
         close $NEWBRD or croak 'cannot close NEWBRD';
 
-        open my $OLDBRD, '<', "$convertdir/Boards/forum.totals"
+        open my $OLDBRD, '<', "$convertlang/Boards/forum.totals"
           or croak 'cannot open OLDBRD';
         @brdinfo = <$OLDBRD>;
         close $OLDBRD or croak 'cannot close OLDBRD';
@@ -951,13 +958,13 @@ sub MoveBoards {
                 if ( $lang2 eq 'ISO-8859-1' ) {
                     $brdline2 = ansi($brdline2);
                 }
-                Encode::from_to($brdline2, $lang2, 'utf-8'); # or whatever
+                Encode::from_to( $brdline2, $lang2, 'utf-8' );    # or whatever
             }
             else {
                 if ( $lang eq 'ISO-8859-1' ) {
                     $brdline2 = ansi($brdline2);
                 }
-                Encode::from_to($brdline2, $lang, 'utf-8');
+                Encode::from_to( $brdline2, $lang, 'utf-8' );
             }
             push @brdinfo2, "$brdline2\n";
         }
@@ -966,7 +973,7 @@ sub MoveBoards {
         print {$NEWBRD} @brdinfo2 or croak 'cannot print NEWBRD';
         close $NEWBRD or croak 'cannot close NEWBRD';
 
-        open my $OLDCON, '<', "$convertdir/Boards/forum.control"
+        open my $OLDCON, '<', "$convertlang/Boards/forum.control"
           or croak 'cannot open OLDCON';
         @brdcon = <$OLDCON>;
         close $OLDCON or croak 'cannot close OLDCON';
@@ -992,7 +999,8 @@ sub MoveBoards {
             if ( $linga2 eq 'ISO-8859-1' ) {
                 $brdconline2 = ansi($brdconline2);
             }
-            Encode::from_to($brdconline2, $linga2, 'utf-8');
+            my $decoder = guess_encoding($brdconline2);
+            Encode::from_to( $brdconline2, $decoder, 'utf-8' );
             push @brdcon2, $brdconline2;
         }
         open my $NEWCON, '>', "$boardsdir/forum.control"
@@ -1001,21 +1009,21 @@ sub MoveBoards {
         close $NEWCON or croak 'cannot close NEWCON';
     }
     else {
-        my @brdlst = ( 'forum.master','forum.totals', 'forum.control', );
+        my @brdlst = ( 'forum.master', 'forum.totals', 'forum.control', );
         for my $newbrd (@brdlst) {
-            open my $OLDBRD, '<', "$convertdir/Boards/$newbrd"
+            open my $OLDBRD, '<', "$convertlang/Boards/$newbrd"
               or croak 'cannot open OLDBRD';
             my $brdinfo = do { local ($INPUT_RECORD_SEPARATOR); <$OLDBRD> };
             close $OLDBRD or croak 'cannot close OLDBRD';
-
+ 
             if ( $lang eq 'ISO-8859-1' ) {
                 $brdinfo = ansi($brdinfo);
             }
-
-            Encode::from_to($brdinfo, $lang, 'utf-8');
+            my $decoder = guess_encoding($brdinfo);
+            Encode::from_to( $brdinfo, $decoder, 'utf-8' );
             open my $NEWBRD, '>', "$boardsdir/$newbrd"
               or croak 'cannot close NEWBRD';
-            print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
+            print {$NEWBRD} "$brdinfo/n$flag" or croak 'cannot print NEWBRD';
             close $NEWBRD or croak 'cannot close NEWBRD';
         }
     }
@@ -1023,13 +1031,14 @@ sub MoveBoards {
     my $lingua  = $lang;
     for my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
         for my $ext (@brdtype) {
-            if ( -e "$convertdir/Boards/$boards[$i].$ext" ) {
+            if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
                 for (@minbrds) {
                     if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
                 }
-                open my $BOARDFILE, '<', "$convertdir/Boards/$boards[$i].$ext"
+                open my $BOARDFILE, '<',
+                  "$convertlang/Boards/$boards[$i].$ext"
                   or setup_fatal_error(
-                    "$maintext_23 $convertdir/Boards/$boards[$i].ext: ", 1 );
+                    "$maintext_23 $convertlang/Boards/$boards[$i].ext: ", 1 );
                 my $brdinfo =
                   do { local ($INPUT_RECORD_SEPARATOR); <$BOARDFILE> };
                 close $BOARDFILE
@@ -1038,7 +1047,7 @@ sub MoveBoards {
                 if ( $lingua eq 'ISO-8859-1' ) {
                     $brdinfo = ansi($brdinfo);
                 }
-                Encode::from_to($brdinfo, $lingua, 'utf-8');
+                Encode::from_to( $brdinfo, $lingua, 'utf-8' );
                 open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                   or croak 'cannot open NEWBRD';
                 print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
@@ -1081,19 +1090,19 @@ sub MoveMessages {
         chomp @brdmessageline;
         my $totalmess = @brdmessageline;
         for (@minbrds) {
-            if ( $boardname eq $_ ) { $lingua = $lang2; }
-            else {$lingua = $lang;}
+            if   ( $boardname eq $_ ) { $lingua = $lang2; }
+            else                      { $lingua = $lang; }
         }
 
         for my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
             my @thread = split /[|]/xsm, $brdmessageline[$tops];
             my $thread = $thread[0];
             for my $ext (@threadext) {
-                if ( -e "$convertdir/Messages/$thread.$ext" ) {
+                if ( -e "$convertlang/Messages/$thread.$ext" ) {
                     open my $MSGFILE, "<",
-                      "$convertdir/Messages/$thread.$ext"
+                      "$convertlang/Messages/$thread.$ext"
                       or setup_fatal_error(
-                        "$maintext_23 $convertdir/Messages/$thread.$ext: ", 1 );
+                        "$maintext_23 $convertlang/Messages/$thread.$ext: ", 1 );
                     my $messagelines =
                       do { local ($INPUT_RECORD_SEPARATOR); <$MSGFILE> };
                     close $MSGFILE
@@ -1103,7 +1112,7 @@ sub MoveMessages {
                         $messagelines = ansi($messagelines);
                     }
 
-                    Encode::from_to($messagelines, $lingua, 'utf-8');
+                    Encode::from_to( $messagelines, $lingua, 'utf-8' );
                     open my $NMSGFILE, '>',
                       "$datadir/$thread.$ext"
                       or
@@ -1151,7 +1160,7 @@ sub MoveMessages {
 
 sub MoveVariables {
     require q~Variables/LangSettings.txt~;
-    opendir $BDIR, "$convertdir/Variables";
+    opendir $BDIR, "$convertlang/Variables";
     @varlist = readdir $BDIR;
     closedir $BDIR;
 
@@ -1161,15 +1170,17 @@ sub MoveVariables {
             && $file ne q{.}
             && $file ne q{..} )
         {
-            if ($file ne 'LangSettings.txt' ) {
-                open my $OLDVAR, '<', "$convertdir/Variables/$file" or croak 'cannot close OLDVAR';
+            if ( $file ne 'LangSettings.txt' && $file ne 'Memberinfo.pm' && $file ne 'Memberlist.pm' ) {
+                open my $OLDVAR, '<', "$convertlang/Variables/$file"
+                  or croak 'cannot close OLDVAR';
                 my $oldvar = do { local ($INPUT_RECORD_SEPARATOR); <$OLDVAR> };
                 close $OLDVAR or croak 'cannot close OLDVAR';
                 if ( $lang eq 'ISO-8859-1' ) {
                     $oldvar = ansi($oldvar);
                 }
-                Encode::from_to($oldvar, $lang, 'utf-8');
-                open my $NEWVAR, '>', "$vardir/$file" or croak 'cannot open NEWVAR';
+                Encode::from_to( $oldvar, $lang, 'utf-8' );
+                open my $NEWVAR, '>', "$vardir/$file"
+                  or croak 'cannot open NEWVAR';
                 print {$NEWVAR} $oldvar or croak "cannot print $vardir/$file";
                 close $NEWVAR or croak 'cannot close NEWVAR';
             }
@@ -1448,4 +1459,123 @@ sub ansi {
     return $line;
 }
 
+sub FixLang {
+    open $FILE, '>',
+      "$convertlang/Boards/dummy.testfile"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Boards is not set correctly! Cannot write this directory!",
+        1
+      );
+    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
+    close $FILE;
+    opendir $BDIR,
+      "$convertlang/Boards"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Boards is not set correctly! Cannot read this directory! ",
+        1
+      );
+    @boardlist = grep -f "$convertlang/Boards/$_", readdir $BDIR;
+    closedir $BDIR;
+
+    open $FILE, '>',
+      "$convertlang/Members/dummy.testfile"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Members is not set correctly! Cannot write this directory!",
+        1
+      );
+    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
+    close $FILE;
+    opendir $MBDIR,
+      "$convertlang/Members"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Members is not set correctly! Cannot read this directory! ",
+        1
+      );
+    @memblist = grep -f "$convertlang/Members/$_", readdir $MBDIR;
+    closedir $MBDIR;
+
+    open $FILE, '>',
+      "$convertlang/Messages/dummy.testfile"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Messages is not set correctly! Cannot write this directory!",
+        1
+      );
+    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
+    close $FILE;
+    opendir $MSDIR,
+      "$convertlang/Messages"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Messages is not set correctly! Cannot read this directory! ",
+        1
+      );
+    @msglist = grep -f "$convertlang/Messages/$_", readdir $MSDIR;
+    closedir $MSDIR;
+
+    open $FILE, '>',
+      "$convertlang/Variables/dummy.testfile"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Variables is not set correctly! Cannot write this directory!",
+        1
+      );
+    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
+    close $FILE;
+    opendir $VDIR,
+      "$convertlang/Variables"
+      or setup_fatal_error(
+"The CHMOD of the $convertlang/Variables is not set correctly! Cannot read this directory! ",
+        1
+      );
+    @varlist = grep -f "$convertlang/Variables/$_", readdir $VDIR;
+    closedir $VDIR;
+
+    for my $file (@boardlist) {
+        unlink "$convertlang/Boards/$file";
+    }
+    for my $file (@memblist) {
+        unlink "$convertlang/Members/$file";
+    }
+    for my $file (@msglist) {
+        unlink "$convertlang/Messages/$file";
+    }
+    for my $file (@varlist) {
+        unlink "$convertlang/Variables/$file";
+    }
+
+    require File::Copy;
+    File::Copy->import(copy);
+    opendir $BDIR, "$boardsdir"
+      or setup_fatal_error( "Cannot open $boardsdir! ", 1 );
+    @bdlist = grep -f "$boardsdir/$_", readdir $BDIR;
+    closedir $BDIR;
+    for (@bdlist) {
+        copy( "$boardsdir/$_", "$convertlang/Boards/$_" )
+          or croak "Cannot copy $_";
+    }
+    opendir $MSDIR, "$datadir"
+      or setup_fatal_error( "Cannot open $datadir! ", 1 );
+    @mslist = grep -f "$datadir/$_", readdir $MSDIR;
+    closedir $MSDIR;
+    for (@mslist) {
+        copy( "$datadir/$_", "$convertlang/Messages/$_" )
+          or croak "Cannot copy $_";
+    }
+    opendir $MDIR, "$memberdir"
+      or setup_fatal_error( "Cannot open $memberdir! ", 1 );
+    @mlist = grep -f "$memberdir/$_", readdir $MDIR;
+    closedir $MDIR;
+    for (@mlist) {
+        copy( "$memberdir/$_", "$convertlang/Members/$_" )
+          or croak "Cannot copy $_";
+    }
+    opendir $VDIR, "$vardir"
+      or setup_fatal_error( "Cannot open $vardir! ", 1 );
+    @varlist = grep -f "$vardir/$_", readdir $VDIR;
+    closedir $VDIR;
+    for (@varlist) {
+        copy( "$vardir/$_", "$convertlang/Variables/$_" )
+          or croak "Cannot copy $_";
+    }
+
+    return;
+}
 1;

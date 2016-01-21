@@ -15,7 +15,7 @@
 # use strict;
 #use warnings;
 #no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $instantmessagepmver = 'YaBB 2.7.00 $Revision$';
@@ -660,7 +660,6 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
             <div id="attform_b_$y" class="att_rgt~
                       . ( $y > 1 ? q~_b~ : q{} ) . qq~">
                 <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
-                        <span style="font-size:x-small">
                 <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
                 <input type="hidden" name="w_fileuser$y" value="$pmAttachUser" />
                 <select id="w_file$y" name="w_file$y" size="1">
@@ -668,7 +667,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
                 <option value="attachdel">$fatxt{'6e'}</option>
                 <option value="attachnew">$fatxt{'6b'}</option>
                 </select>&nbsp;$fatxt{'40'}: <a href="$pmuploadurl/$files[$y-1]" target="_blank">$files[$y-1]</a>
-                        </span>~;
+~;
                 }
                 else {
                     $my_att_FA .= qq~
@@ -998,10 +997,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     }
 
     undef @multiple;
-    fopen( MEMLIST, "$memberdir/memberlist.txt" );
-    my @memberlist = <MEMLIST>;
-    my $allmems    = @memberlist;
-    fclose(MEMLIST);
+    require Variables::Memberlist;
+    my $allmems = keys %memberlist;
 
     ProcIMrecs();
 
@@ -1208,8 +1205,8 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $fixfile    = join q{,}, @filelist;
         $logFixfile = join q{,}, @logfilelist;
         if (@filelist) {
-            fopen( PMATTACHLOG, ">>$vardir/pm.attachments" )
-              or fatal_error( 'cannot_open', "$vardir/pm.attachments" );
+            fopen( PMATTACHLOG, '>>Variables/pmattachments.db' )
+              or fatal_error( 'cannot_open', 'Variables/pmattachments.db' );
             for my $logFixfile (@logfilelist) {
                 print {PMATTACHLOG}
 qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'realname'}|$username\n~

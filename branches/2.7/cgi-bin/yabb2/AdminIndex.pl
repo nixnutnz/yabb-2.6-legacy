@@ -121,7 +121,7 @@ sub yymain {
     }
 
     if ($iamgmod) {
-        require "$vardir/gmodsettings.txt";
+        require Variables::Gmodset;
         if ( !$allow_gmod_admin ) {
             $yySetLocation = qq~$scripturl~;
             redirectexit();
@@ -230,7 +230,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     $adminimages = qq~$yyhtml_root/Templates/Admin/$admin_template~;
     $adminimages =~ s/$admin_template\///gxsm;
     require "$templatesdir/$admin_template/AdminCentre.template";
-    require "$vardir/gmodsettings.txt";
+    require Variables::Gmodset;
 
     @forum_settings = (
         "|$admintxt{'a1_title'}|$admintxt{'a1_label'} - $admintxt{'34'}|a1",
@@ -407,14 +407,14 @@ s/img src\=\&quot\;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . AdmImgLoc2($1) 
 }
 
 sub TrackAdminLogins {
-    if ( -e "$vardir/adminlog_new.txt" ) {
-        fopen( ADMINLOG, "$vardir/adminlog_new.txt" );
+    if ( -e "$vardir/adminlog.log" ) {
+        fopen( ADMINLOG, "$vardir/adminlog.log" );
         @adminlog = <ADMINLOG>;
         fclose(ADMINLOG);
         @adminlog = reverse sort @adminlog;
     }
     $maxadminlog = $maxadminlog || 5;
-    fopen( ADMINLOG, ">$vardir/adminlog_new.txt" );
+    fopen( ADMINLOG, ">$vardir/adminlog.log" );
     print {ADMINLOG} qq~$date|$username|$user_ip\n~
       or croak 'cannot print ADMINLOG';
     for my $i ( 0 .. ( $maxadminlog - 2 ) ) {

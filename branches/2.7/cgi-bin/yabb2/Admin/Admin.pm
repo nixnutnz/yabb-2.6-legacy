@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local;
@@ -138,7 +138,7 @@ sub DeleteLangConverterFiles {
 }
 
 sub GetLastLogins {
-    fopen( ADMINLOG, "$vardir/adminlog_new.txt" );
+    fopen( ADMINLOG, "$vardir/adminlog.log" );
     @adminlog = <ADMINLOG>;
     fclose(ADMINLOG);
     @adminlog = reverse sort @adminlog;
@@ -198,7 +198,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
 
     if ($enableclicklog) {
         my (@log);
-        fopen( LOG, "$vardir/clicklog.txt" );
+        fopen( LOG, "$vardir/clicklog.log" );
         @log = <LOG>;
         fclose(LOG);
         $yyclicks    = @log;
@@ -212,7 +212,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
         $yyclicklink = q{};
     }
     my (@elog);
-    fopen( ELOG, "$vardir/errorlog.txt" );
+    fopen( ELOG, "$vardir/errorlog.log" );
     @elog = <ELOG>;
     fclose(ELOG);
     $errorslog = @elog;
@@ -399,18 +399,27 @@ sub ShowClickLog {
     if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; }
     else                   { $logtimetext = $admin_txt{'698a'}; }
 
-    fopen( LOG, "$vardir/clicklog.txt" );
+    fopen( LOG, "$vardir/clicklog.log" );
     @log = <LOG>;
     fclose(LOG);
     chomp @log;
 
     for my $i (0 .. $#log) {
-        $log[$i] =~ s/\x0//gsm;
-        $log[$i] =~ s/^[x20-\x7E]+$//gsm;
-        ( $iplist[$i], $date, $to[$i], $from[$i], $info[$i], $ip[$i] ) =
-          split /[|]/xsm, $log[$i];
+        $log[$i]  =~ s/chr(32)//gxms;
+        $log[$i]  =~ s/\s+//gsm;
+        $log[$i] =~ s/^[x21-\x7E]+$//gsm;
+        @newlog = split /[|]/xsm, $log[$i];
+        if ($#newlog != 5 ) { next;}
+        else {
+            $iplist[$i] = $newlog[0];
+            $date = $newlog[1];
+            $to[$i] = $newlog[2];
+            $from[$i] = $newlog[3];
+            $info[$i] = $newlog[4];
+            $ip[$i] = $newlog[5];
+        }
     }
- 
+
     for my $i ( 0 .. $#iplist ) {
         $iplist{ $iplist[$i] }++;
     }
@@ -420,10 +429,10 @@ sub ShowClickLog {
         $newiplist[$i] = [ $key, $val ];
         $i++;
     }
-    for my $i ( 0 .. $#iplist ) {
+    for my $k ( 0 .. $#iplist ) {
         for $j ( 0 .. $#newiplist ) {
-            if ( $newiplist[$j]->[0] eq $iplist[$i] ) {
-                push @{$newiplist[$j]}, $ip[$i];
+            if ( $newiplist[$j]->[0] eq $iplist[$k] ) {
+                push @{$newiplist[$j]}, $ip[$k], $iplist[$i] ;
             }
         }
     }
@@ -432,34 +441,29 @@ sub ShowClickLog {
     for my $i ( 0 .. $#newiplist ) {
         my $lookupIP =
           ($ipLookup)
-          ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[0]">$newiplist[$i]->[0]</a>~
-          : qq~$newiplist[$i]->[0]~;
-        if (
-            $newiplist[$i]->[0] =~ /\S+/sm
-            && ( $newiplist[$i]->[0] =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm || $newiplist[$i]->[0] =~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm || !LoadUser($newiplist[$i]->[0], 'vars' ) )
-            )
-        {
-            $guestiplist .=
-qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
-        }
-        else {
-            LoadUser( $newiplist[$i]->[0], 'vars' );
+          ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>~
+          : qq~$newiplist[$i]->[2]~;
+        my $lstuser = $newiplist[$i]->[0];
+        if ( $lstuser ne $newiplist[$i]->[2] && -e "$memberdir/$lstuser.vars" ) {
+            LoadUser( $lstuser, 'vars' );
             if ($do_scramble_id) {
-                $cloakedUserName = cloak( $newiplist[$i]->[0] );
+                $cloakedUserName = cloak( $lstuser );
             }
-            else { $cloakedUserName = $newiplist[$i]->[0]; }
-            my $displayUserName = $newiplist[$i]->[0];
+            else { $cloakedUserName = $lstuser; }
+            my $displayUserName = $lstuser;
             if (
                 ${ $uid . $displayUserName }{'realname'}
-                && ( ${ $uid . $displayUserName }{'realname'} ne
-                    $newiplist[$i]->[0] )
-              )
+                && ( ${ $uid . $displayUserName }{'realname'} ne $lstuser )
+            )
             {
                 $displayUserName = ${ $uid . $displayUserName }{'realname'};
             }
-
             $useriplist .=
-qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> (<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>)<br />~;
+qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> ($lookupIP)<br />~;
+            }
+        elsif ( $newiplist[$i]->[2] ) {
+            $guestiplist .=
+qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
         }
     }
 
@@ -662,10 +666,6 @@ qq~$message&nbsp;<span class="important">(<i>$newfromlist[$i]->[1]</i>)</span><b
 sub DeleteOldMessages {
     is_admin_or_gmod();
 
-    fopen( DELETEOLDMESSAGE, "$vardir/oldestmes.txt" );
-    $maxdays = <DELETEOLDMESSAGE>;
-    fclose(DELETEOLDMESSAGE);
-
     $yytitle = "$aduptxt{'04'}";
     $yymain .= qq~
 <form action="$adminurl?action=removeoldthreads" method="post">
@@ -759,7 +759,7 @@ sub DeleteMultiMembers {
         require Sources::Mailer;
     }
 
-    fopen( FILE, "$memberdir/memberlist.txt" );
+    fopen( FILE, "Variables/Memberlist.pm" );
     @memnum = <FILE>;
     fclose(FILE);
     my $count = 0;
@@ -853,13 +853,7 @@ sub Refcontrol {
 
     require Variables::Referer;
     @refergeneral = ( 'refer_controls', 'messageindex', 'display', 'recent', 'recenttopics', 'RSSboard', 'RSSrecent', 'eventcal', 'get_cal_ssi', 'birthdaylist', 'downloadfile', 'viewdownloads', 'help', 'login', 'ml', 'mycenter', 'viewprofile', 'register', 'reminder', 'search', );
-    @refermods = ('refer_mods');
-    push @refermods, 'awards';
-    push @refermods, 'donate';
-    push @refermods, 'downloadmods';
-    push @refermods, 'recenttopicsmem';
-    push @refermods, 'yabbnews';
-    push @refermods, 'yabbupdate';
+    @refermods = ( 'refer_mods');
     ## refershow Mod Hooks
 
     $refexpl_txt{$actfound} =~ s/\x22/\x27/gxsm;
@@ -913,7 +907,6 @@ sub Refcontrol {
 
 sub Refcontrol2 {
     is_admin_or_gmod();
-
     require Variables::Referer;
 
     for my $key ( keys %referallow) {
@@ -925,7 +918,7 @@ sub Refcontrol2 {
         else {$actlist .= $actlist{$actfound} = q~''~; }
     }
 
-    my $setfile = << "EOF";
+    my $setfile = <<EOF;
 # Referrer Control #
 
 \%referallow = (
@@ -967,19 +960,21 @@ EOF
 sub showrefer {
     my @x = @_;
     my %referset = ();
-    my $dismenu = qq~<div class="windowbg padd-cell"><b>$refer_settings{$x[0]}</b></div>
-    <ul style="margin-top:0">~;
-    for my $i( 1 .. $#x ) {
-        if ( $x[$i] eq q{} ) { next; }
-        $key = $x[$i];
-        $value = $referallow{$key};
-        $checked = q{};
-        $referset{$key} = $value;
-        if ( $referset{$key} eq 'on' ) { $checked = ' checked="checked"'; }
-        $dismenu .=
+    my $dismenu = qq~<div class="windowbg padd-cell"><b>$refer_settings{$x[0]}</b></div>~;
+    if ( $#x > 0 ) {
+        $dismenu .= q~    <ul style="margin-top:0">~;
+        for my $i( 1 .. $#x ) {
+            if ( $x[$i] eq q{} ) { next; }
+            $key = $x[$i];
+            $value = $referallow{$key};
+            $checked = q{};
+            $referset{$key} = $value;
+            if ( $referset{$key} eq 'on' ) { $checked = ' checked="checked"'; }
+            $dismenu .=
 qq~\n        <li style="list-style:none"><input type="checkbox" name="$key" id="$key"$checked />&nbsp;<label for="$key"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $refexpl_txt{$key}" title="$reftxt{'1a'} $refexpl_txt{$key}" />$refer_txt{$key}</label></li>\n~;
+        }
+        $dismenu .= q~    </ul>~;
     }
-    $dismenu .= q~    </ul>~;
     return $dismenu;
 }
 
@@ -1205,32 +1200,16 @@ sub AddMember2 {
         fatal_error('name_is_userid');
     }
 
-    fopen( RESERVE, "$vardir/reserve.txt" )
-      || fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
-    @reserve = <RESERVE>;
-    fclose(RESERVE);
-    fopen( RESERVECFG, "$vardir/reservecfg.txt" )
-      || fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
-    @reservecfg = <RESERVECFG>;
-    fclose(RESERVECFG);
-    for my $aa ( 0 .. $#reservecfg ) {
-        chomp $reservecfg[$aa];
-    }
-    $matchword = $reservecfg[0] eq 'checked';
-    $matchcase = $reservecfg[1] eq 'checked';
-    $matchuser = $reservecfg[2] eq 'checked';
-    $matchname = $reservecfg[3] eq 'checked';
     $namecheck =
-        $matchcase eq 'checked'
+        $matchcase
       ? $member{'regusername'}
       : lc $member{'regusername'};
     $realnamecheck =
-        $matchcase eq 'checked'
+        $matchcase
       ? $member{'regrealname'}
       : lc $member{'regrealname'};
 
     for my $reserved (@reserve) {
-        chomp $reserved;
         $reservecheck = $matchcase ? $reserved : lc $reserved;
         if ($matchuser) {
             if ($matchword) {

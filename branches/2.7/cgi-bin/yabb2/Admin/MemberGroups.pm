@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $membergroupspmver = 'YaBB 2.7.00 $Revision$';
@@ -659,7 +659,7 @@ sub editAddGroup2 {
             elsif ( $type eq 'NP' ) {
                 if ( $element != $noposts || $postdepend eq 'Yes' ) {
                     delete $NoPost{$element};
-                    for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+                    for my $i ( 0 .. $#nopostorder ) {
                         if ( $nopostorder[$i] == $element ) {
                             splice @nopostorder, $i, 1;
                             last;
@@ -751,7 +751,7 @@ sub editAddGroup2 {
             $NoPost{$noposts} =
 "$name|$FORM{'numstars'}|$star|$color|$viewpublic|$view|$topics|$reply|$polls|$attach|$additional";
             my $isinorder;
-            for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+            for my $i ( 0 .. $#nopostorder ) {
                 if (   $NoPost{ $nopostorder[$i] }
                     && $nopostorder[$i] == $noposts )
                 {
@@ -910,7 +910,7 @@ sub reorderGroups2 {
     my $moveitem = $FORM{'ordergroups'};
 
     if ($moveitem) {
-        for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+        for my $i ( 0 .. $#nopostorder ) {
             if (
                 $nopostorder[$i] == $moveitem
                 && (   ( $FORM{'moveup'} && $i > 0 && $i <= $#nopostorder )

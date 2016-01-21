@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $manageboardspmver = 'YaBB 2.7.00 $Revision$';
@@ -342,9 +342,9 @@ sub BoardScreen {
         };
         recursive_boards(@catboards);
 
-        for my $z ( 0 .. ( @theboards - 1 ) ) {
+        for my $z ( 0 .. $#theboards ) {
             my $found = 0;
-            for my $j ( 0 .. ( @editboards - 1 ) ) {
+            for my $j ( 0 .. $#editboards ) {
                 if ( $editboards[$j] eq $theboards[$z] ) {
                     $editbrd[$i] = $theboards[$z];
                     $found = 1;
@@ -448,7 +448,7 @@ sub DeleteBoards {
             unlink "$datadir/$id\.poll";
             unlink "$datadir/$id\.polled";
         }
-        for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
+        for my $cnt ( 0 .. $#oldcontrols ) {
             my $oldboard;
             ( undef, $oldboard, undef ) = split /[|]/xsm, $oldcontrols[$cnt], 3;
             $yydebug .= "$cnt   $oldboard \n";
@@ -464,11 +464,11 @@ sub DeleteBoards {
         unlink "$boardsdir/$board.poster";
         unlink "$boardsdir/$board.mail";
 
-        fopen( ATM, "+<$vardir/attachments.txt", 1 );
+        fopen( ATM, '+<Variables/attachments.db', 1 );
         seek ATM, 0, 0;
         my @buffer = <ATM>;
         my ( $amcurrentboard, $amfn );
-        for my $aa ( 0 .. ( @buffer - 1 ) ) {
+        for my $aa ( 0 .. $#buffer ) {
             (
                 undef, undef,           undef,
                 undef, $amcurrentboard, undef,
@@ -489,7 +489,7 @@ sub DeleteBoards {
 
     # Update parents for subboards that had a parent deleted.
     if (@del_updateparent) {
-        for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
+        for my $cnt ( 0 .. $#oldcontrols ) {
             @newbrd = split /[|]/xsm, $oldcontrols[$cnt];
             for my $changedboard (@del_updateparent) {
                 if ( $changedboard eq $oldboard ) {
@@ -1481,7 +1481,7 @@ sub AddBoards2 {
                 if ( $FORM{"ann$i"}
                     && ( split /[|]/xsm, $boardtomodify[0] )[8] !~ /a/ism )
                 {
-                    for my $x ( 0 .. ( @boardtomodify - 1 ) ) {
+                    for my $x ( 0 .. $#boardtomodify ) {
                         $boardtomodify[$x] =~
 s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                     }
@@ -1491,7 +1491,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                 {
                     *take_a_off =
                       sub { my $y = shift; $y =~ s/a//gsm; return $y; };
-                    for my $x ( 0 .. ( @boardtomodify - 1 ) ) {
+                    for my $x ( 0 .. $#boardtomodify ) {
                         $boardtomodify[$x] =~
                           s/(.*\|)(.*)/ $1 . take_a_off($2) /exsm;
                     }
@@ -1585,7 +1585,7 @@ qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderato
     my $oldboard;
 
     # Update categories for subboards that got changed.
-    for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
+    for my $cnt ( 0 .. $#oldcontrols ) {
         ( undef, $oldboard, undef ) = split /[|]/xsm, $oldcontrols[$cnt], 3;
         for my $changedboard (@updatecats) {
             if ( $changedboard eq $oldboard ) {
@@ -1596,7 +1596,7 @@ qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderato
         }
     }
 
-    for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
+    for my $cnt ( 0 .. $#oldcontrols ) {
         ( undef, $oldboard, undef ) = split /[|]/xsm, $oldcontrols[$cnt], 3;
         for my $changedboard (@changes) {
             if ( $changedboard eq $oldboard ) {
@@ -1855,7 +1855,7 @@ sub ReorderBoards2 {
     if ($moveitem) {
         if ( $FORM{'moveup'} || $FORM{'movedown'} ) {
             if ( $FORM{'moveup'} ) {
-                for my $i ( 0 .. ( @itemorder - 1 ) ) {
+                for my $i ( 0 .. $#itemorder ) {
                     if ( $itemorder[$i] eq $moveitem && $i > 0 ) {
                         $j             = $i - 1;
                         $itemorder[$i] = $itemorder[$j];
@@ -1865,7 +1865,7 @@ sub ReorderBoards2 {
                 }
             }
             elsif ( $FORM{'movedown'} ) {
-                for my $i ( 0 .. ( @itemorder - 1 ) ) {
+                for my $i ( 0 .. $#itemorder ) {
                     if ( $itemorder[$i] eq $moveitem && $i < $#itemorder ) {
                         $j             = $i + 1;
                         $itemorder[$i] = $itemorder[$j];
@@ -1986,7 +1986,7 @@ sub ReorderBoards2 {
         fopen( FORUMCONTROL, "+<$boardsdir/forum.control" );
         seek FORUMCONTROL, 0, 0;
         my @oldcontrols = <FORUMCONTROL>;
-        for my $cnt ( 0 .. ( @oldcontrols - 1 ) ) {
+        for my $cnt ( 0 .. $#oldcontrols ) {
             my @newbrd  = split /[|]/xsm, $oldcontrols[$cnt];
             if ( $moveitem eq $oldboard ) {
                 $newbrd[0] = ${$uid.$moveitem}{'cat'};

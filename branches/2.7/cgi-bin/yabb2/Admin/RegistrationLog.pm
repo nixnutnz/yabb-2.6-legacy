@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
@@ -36,13 +36,13 @@ sub view_reglog {
         fclose(LOGFILE);
         @logentries = reverse @logentries;
 
-        fopen( FILE, "$memberdir/memberlist.txt" );
+        fopen( FILE, "Variables/Memberlist.pm" );
         @memberlist = <FILE>;
         fclose(FILE);
 
         # If a pre-registration list exists load it
-        if ( -e "$memberdir/memberlist.inactive" ) {
-            fopen( INACT, "$memberdir/memberlist.inactive" );
+        if ( -e "Variables/meminactive.db" ) {
+            fopen( INACT, "Variables/meminactive.db" );
             @reglist = <INACT>;
             fclose(INACT);
         }
@@ -284,7 +284,7 @@ sub kill_registration {
     my $deluser = $inp || $INFO{'username'};
     if ($do_scramble_id) { $deluser = decloak($deluser); }
 
-    fopen( INFILE, "$memberdir/memberlist.inactive" );
+    fopen( INFILE, "<Variables/meminactive.db" );
     @actlist = <INFILE>;
     fclose(INFILE);
 
@@ -311,7 +311,7 @@ sub kill_registration {
     if ($changed) {
 
         # re-open inactive list for update if changed
-        fopen( OUTFILE, ">$memberdir/memberlist.inactive", 1 );
+        fopen( OUTFILE, ">Variables/meminactive.db", 1 );
         print {OUTFILE} @outlist or croak "$croak{'print'} OUTFILE";
         fclose(OUTFILE);
     }
@@ -488,8 +488,8 @@ sub reject_registration {
 
     if ($do_scramble_id)  { $deluser      = decloak($deluser); }
 
-    if ( -e "$memberdir/memberlist.approve" && $regtype == 1 ) {
-        fopen( APR, "$memberdir/memberlist.approve" );
+    if ( -e "Variables/memapprove.db" && $regtype == 1 ) {
+        fopen( APR, "<Variables/memapprove.db" );
         @aprlist = <APR>;
         fclose(APR);
     }
@@ -546,7 +546,7 @@ sub reject_registration {
         }
 
         # update approval user list
-        fopen( APR, ">$memberdir/memberlist.approve" );
+        fopen( APR, ">Variables/memapprove.db" );
         print {APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose(APR);
 
@@ -570,7 +570,7 @@ sub approve_registration {
     if ($do_scramble_id)  { $apruser      = decloak($apruser); }
 
     ## load the list with waiting approvals ##
-    fopen( APR, "$memberdir/memberlist.approve" );
+    fopen( APR, "<$memberdir/memapprove.db" );
     @aprlist = <APR>;
     fclose(APR);
 
@@ -604,7 +604,7 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         MemberIndex( 'add', $apruser );
 
         # update approval user list
-        fopen( APR, ">$memberdir/memberlist.approve" );
+        fopen( APR, ">Variables/memapprove.db" );
         print {APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose(APR);
 

@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 # from YaBB3.0 build 100 #

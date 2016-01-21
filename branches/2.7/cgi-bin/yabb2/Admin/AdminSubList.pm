@@ -110,6 +110,8 @@ if (@adminsublistpmmods) {
 'mailing3' => 'MailMembers.pm&Mailing3',
 'mailinggrps' => 'MailMembers.pm&MailingMembers',
 'mailmultimembers' => 'Admin.pm&DeleteMultiMembers',
+#'maintenance' => 'Settings_Maintenance.pm&Maintenance',
+#'maintenance2' => 'Settings_Maintenance.pm&Maintenance2',
 'manageattachments' => 'Attachments.pm&Attachments',
 'manageattachments2' => 'Attachments.pm&Attachments2',
 'manageboards' => 'ManageBoards.pm&ManageBoards',

@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $iplookuppmver = 'YaBB 2.7.00 $Revision$';
@@ -33,15 +33,13 @@ get_template('Other');
 sub IPLookup {
     $ip = $INFO{'ip'};
     my $lookuplink = q{};
-    fopen( IPLOOKUP, "<$vardir/iplookup.urls" )
-      or fatal_error( 'cannot_open', "$vardir/iplookup.urls", 1 );
-    @iplookup_urls = <IPLOOKUP>;
-    fclose(IPLOOKUP);
-    chomp @iplookup_urls;
+    @iplookup_urls = keys %iplookup;
 
     for my $i (@iplookup_urls) {
-        my ( $iplookup_name, $iplookup_url ) = split /[|]/xsm, $i;
+        $iplookup_name = $i;
+        $iplookup_name =~ s/_/ /xsm;
         $iplookup_name = Censor($iplookup_name);
+        $iplookup_url =  $iplookup{$i};
         $iplookup_url =~ s/{ip}/$ip/gxsm;
         $iplookup_url =~ s/^\s+//gsm;
         $iplookup_url =~ s/\s+$//gsm;

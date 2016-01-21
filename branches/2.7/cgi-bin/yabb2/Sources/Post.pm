@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use Fcntl ':flock';
 our $VERSION = '2.7.00';
 
@@ -1122,15 +1122,14 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                       . qq~"><strong>$fatxt{'6'} $y:</strong></div>
             <div id="attform_b_$y" class="att_rgt~
                       . ( $y > 1 ? q~_b~ : q{} ) . qq~">
-                <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
-                    <span style="font-size:x-small">
+                        <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
                         <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
                         <select id="w_file$y" name="w_file$y" size="1">
-                        <option value="attachdel">$fatxt{'6c'}</option>
-                        <option value="attachnew">$fatxt{'6b'}</option>
-                        <option value="attachold" selected="selected">$fatxt{'6a'}</option>
+                            <option value="attachdel">$fatxt{'6c'}</option>
+                            <option value="attachnew">$fatxt{'6b'}</option>
+                            <option value="attachold" selected="selected">$fatxt{'6a'}</option>
                         </select>&nbsp;$fatxt{'40'}: <a href="$uploadurl/$files[$y-1]" target="_blank">$files[$y-1]</a>
-                    </span></div>~;
+                    </div>~;
                 }
                 else {
                     $my_att_a = qq~
@@ -1931,8 +1930,8 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
         fclose(FILE);
 
         if (@filelist) {
-            fopen( AMP, ">>$vardir/attachments.txt" )
-              or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+            fopen( AMP, '>>Variables/attachments.db' )
+              or fatal_error( 'cannot_open', 'Variables/attachments.db' );
             for my $fixfile (@filelist) {
                 print {AMP}
 qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
@@ -2049,8 +2048,8 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
         fclose(THREADFILE);
 
         if (@filelist) {
-            fopen( AMP, ">>$vardir/attachments.txt" )
-              or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+            fopen( AMP, '>>Variables/attachments.db' )
+              or fatal_error( 'cannot_open', 'Variables/attachments.db' );
             for my $fixfile (@filelist) {
                 print {AMP}
 qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
@@ -2230,8 +2229,7 @@ sub NewNotify {
             if (   ${ $uid . $curuser }{'notify_me'} == 1
                 || ${ $uid . $curuser }{'notify_me'} == 3 )
             {
-                ( undef, $curmail, undef ) =
-                  split /[|]/xsm, $memberinf{$curuser}, 3;
+                $curmail = $memberinf{$curuser}[1];
                 sendmail(
                     $curmail,
                     "$notifysubjects{$curlang}{'136'}: $thissubject",
@@ -2296,8 +2294,7 @@ sub ReplyNotify {
                 if (   ${ $uid . $curuser }{'notify_me'} == 1
                     || ${ $uid . $curuser }{'notify_me'} == 3 )
                 {
-                    ( undef, $curmail, undef ) =
-                      split /[|]/xsm, $memberinf{$curuser}, 3;
+                    $curmail = $memberinf{$curuser}[1];
                     sendmail(
                         $curmail,
                         "$notifysubjects{$curlang}{'136'}: $thissubject",
@@ -2340,8 +2337,7 @@ sub ReplyNotify {
                 if (   ${ $uid . $curuser }{'notify_me'} == 1
                     || ${ $uid . $curuser }{'notify_me'} == 3 )
                 {
-                    ( undef, $curmail, undef ) =
-                      split /[|]/xsm, $memberinf{$curuser}, 3;
+                    $curmail = $memberinf{$curuser}[1];
                     sendmail(
                         $curmail,
                         "$notifysubjects{$curlang}{'118'}: $thissubject",
@@ -2961,7 +2957,7 @@ sub modAlert2 {
         else {
             if ( !%memberinf ) { ManageMemberinfo('load'); }
           MANAGEINFO: for ( keys %memberinf ) {
-                for ( split /,/xsm, ( split /[|]/xsm, $memberinf{$_} )[4] ) {
+                for ( split /,/xsm, $memberinf{$_}[4] ) {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) {
                         $x = 1;
                         last MANAGEINFO;
@@ -3011,7 +3007,7 @@ sub modAlert2 {
             elsif ( $PMenableBm_level && $x ) {
                 if ( !%memberinf ) { ManageMemberinfo('load'); }
                 for ( split /,/xsm,
-                    ( split /[|]/xsm, $memberinf{$toBoardMod} )[4] )
+                    ( $memberinf{$toBoardMod} )[4] )
                 {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) { next MANAGEMODS; }
                 }

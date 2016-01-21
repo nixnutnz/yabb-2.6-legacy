@@ -100,12 +100,17 @@ if ( !$action ) {
     $rand_cook_sess = "Y2Sess-$rand_integer";
     $rand_cook_sort = "Y2tsort-$rand_integer";
     $rand_cook_view = "Y2view-$rand_integer";
+    my $cooks = <<EOF;
+$rand_cook_user
+$rand_cook_pass
+$rand_cook_sess
+$rand_cook_sort
+$rand_cook_view
+EOF
 
-    my $cookfile =
-qq~$rand_cook_user\n$rand_cook_pass\n$rand_cook_sess\n$rand_cook_sort\n$rand_cook_view\n~;
     open $COOKFILE, '>', "$vardir/cook.txt"
       || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
-    print {$COOKFILE} $cookfile or croak 'cannot print cook.txt';
+    print {$COOKFILE} $cooks or croak 'cannot print cook.txt';
     close $COOKFILE or croak 'cannot close cook.txt';
 
     adminlogin();
@@ -788,84 +793,105 @@ sub VarInstall {
 
     if ( !-d "$varsdir" ) { $no_vardir = 1; return 1; }
 
-    if ( !-e "$varsdir/adminlog_new.txt" ) {
-        open $ADMLOGFILE, '>', "$varsdir/adminlog_new.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/adminlog_new.txt: ", 1 );
+    if ( !-e "$varsdir/adminlog.log" ) {
+        open $ADMLOGFILE, '>', "$varsdir/adminlog.log"
+          || setup_fatal_error( "$maintext_23 $varsdir/adminlog.log: ", 1 );
         print {$ADMLOGFILE} q{} or croak 'cannot print ADMLOGFILE';
-        close $ADMLOGFILE or croak 'cannot close adminlog_new.txt';
+        close $ADMLOGFILE or croak 'cannot close adminlog.log';
     }
 
-    if ( !-e "$varsdir/allowed.txt" ) {
-        my $allowed = q~login
-logout
-display
-messageindex
-pages
-profile
-register
-resetpass
-viewprofile
-~;
-        open $ALLOWFILE, '>', "$varsdir/allowed.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/allowed.txt: ", 1 );
+    if ( !-e "$varsdir/Referer.pm" ) {
+        my $allowed = <<EOF;
+# Referrer Control #
+
+%referallow = (
+'RSSboard' => 'on',
+'RSSrecent' => 'on',
+'birthdaylist' => '',
+'display' => 'on',
+'downloadfile' => 'on',
+'eventcal' => 'on',
+'get_cal_ssi' => '',
+'help' => '',
+'login' => '',
+'logout' => '',
+'messageindex' => 'on',
+'ml' => '',
+'mycenter' => '',
+'recent' => 'on',
+'recenttopics' => 'on',
+'register' => 'on',
+'reminder' => '',
+'search' => '',
+'viewdownloads' => 'on',
+'viewprofile' => '',
+);
+
+## MOD Hook ##
+1;
+EOF
+        open $ALLOWFILE, '>', "$varsdir/Referer.pm"
+          || setup_fatal_error( "$maintext_23 $varsdir/Referer.pm: ", 1 );
         print {$ALLOWFILE} $allowed or croak 'cannot print ALLOWFILE';
         close $ALLOWFILE or croak 'cannot close ALLOWFILE';
     }
 
-    if ( !-e "$varsdir/attachments.txt" ) {
-        open $ATTFILE, '>', "$varsdir/attachments.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/attachments.txt: ", 1 );
+    if ( !-e "$varsdir/attachments.db" ) {
+        open $ATTFILE, '>', "$varsdir/attachments.db"
+          || setup_fatal_error( "$maintext_23 $varsdir/attachments.db: ", 1 );
         print {$ATTFILE} q{} or croak 'cannot print ATTFILE';
         close $ATTFILE or croak 'cannot print ATTFILE';
     }
     if ( !-e "$varsdir/pm.attachments" ) {
-        open $PMATTFILE, '>', "$varsdir/pm.attachments"
-          || setup_fatal_error( "$maintext_23 $varsdir/pm.attachments: ", 1 );
+        open $PMATTFILE, '>', "$varsdir/pmattachments.db"
+          || setup_fatal_error( "$maintext_23 $varsdir/pmattachments.db: ", 1 );
         print {$PMATTFILE} q{} or croak 'cannot print PMATTFILE';
         close $PMATTFILE or croak 'cannot close PMATTFILE';
     }
 
-    if ( !-e "$varsdir/ban_log.txt" ) {
-        open $BANFILE, '>', "$varsdir/ban_log.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/ban_log.txt: ", 1 );
-        print {$BANFILE} q{} or croak 'cannot print ban_log.txt';
-        close $BANFILE or croak 'cannot close ban_log.txt';
+    if ( !-e "$varsdir/ban.log" ) {
+        open $BANFILE, '>', "$varsdir/ban.log"
+          || setup_fatal_error( "$maintext_23 $varsdir/ban.log: ", 1 );
+        print {$BANFILE} q{} or croak 'cannot print ban.log';
+        close $BANFILE or croak 'cannot close ban.log';
     }
 
-    if ( !-e "$varsdir/banlist.txt" ) {
-        open $BANLIST, '>', "$varsdir/banlist.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/banlist.txt: ", 1 );
-        print {$BANLIST} q{} or croak 'cannot print banlist.txt';
-        close $BANLIST or croak 'cannot close banlist.txt';
+    if ( !-e "$varsdir/banlist.db" ) {
+        open $BANLIST, '>', "$varsdir/banlist.db"
+          || setup_fatal_error( "$maintext_23 $varsdir/banlist.db: ", 1 );
+        print {$BANLIST} q{} or croak 'cannot print banlist.db';
+        close $BANLIST or croak 'cannot close banlist.db';
     }
-    if ( !-e "$varsdir/clicklog.txt" ) {
-        open $CLICKFILE, '>', "$varsdir/clicklog.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/clicklog.txt: ", 1 );
-        print {$CLICKFILE} q{} or croak 'cannot print clicklog.txt';
-        close $CLICKFILE or croak 'cannot close clicklog.txt';
-    }
-
-    if ( !-e "$varsdir/errorlog.txt" ) {
-        open $ERRORFILE, '>', "$varsdir/errorlog.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/errorlog.txt: ", 1 );
-        print {$ERRORFILE} q{} or croak 'cannot print errorlog.txt';
-        close $ERRORFILE or croak 'cannot close errorlog.txt';
+    if ( !-e "$varsdir/clicklog.log" ) {
+        open $CLICKFILE, '>', "$varsdir/clicklog.log"
+          || setup_fatal_error( "$maintext_23 $varsdir/clicklog.log: ", 1 );
+        print {$CLICKFILE} q{} or croak 'cannot print clicklog.log';
+        close $CLICKFILE or croak 'cannot close clicklog.log';
     }
 
-    if ( !-e "$varsdir/flood.txt" ) {
-        open $FLOODFILE, '>', "$varsdir/flood.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/flood.txt: ", 1 );
+    if ( !-e "$varsdir/errorlog.log" ) {
+        open $ERRORFILE, '>', "$varsdir/errorlog.log"
+          || setup_fatal_error( "$maintext_23 $varsdir/errorlog.log: ", 1 );
+        print {$ERRORFILE} q{} or croak 'cannot print errorlog.log';
+        close $ERRORFILE or croak 'cannot close errorlog.log';
+    }
+
+    if ( !-e "$varsdir/flood.log" ) {
+        open $FLOODFILE, '>', "$varsdir/flood.log"
+          || setup_fatal_error( "$maintext_23 $varsdir/flood.log: ", 1 );
         print {$FLOODFILE} '255.255.255.255|1119313741'
-          or croak 'cannot print flood.txt';
-        close $FLOODFILE or croak 'cannot close flood.txt';
+          or croak 'cannot print flood.log';
+        close $FLOODFILE or croak 'cannot close flood.log';
     }
 
-    if ( !-e "$varsdir/gmodsettings.txt" ) {
+    if ( !-e "$varsdir/Gmodset.pm" ) {
         my $setfile = <<EOF;
 ### Gmod Related Setttings ###
 
-\$allow_gmod_admin = "on"; #
-\$gmod_newfile = "on"; #
+\$allow_gmod_admin = "on";
+\$gmod_newfile = "on";
+\$allow_gmod_aprofile = '';
+\$gmod_newfile = 'on';
 
 ### Areas Gmods can Access ###
 
@@ -1051,40 +1077,19 @@ editbots2 => "",
 1;
 EOF
 
-        open $SETTING, '>', "$varsdir/gmodsettings.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/gmodsettings.txt: ", 1 );
-        print {$SETTING} nicely_aligned_file($setfile)
+        open $SETTING, '>', "$varsdir/Gmodset.pm"
+          || setup_fatal_error( "$maintext_23 $varsdir/Gmodset.pm: ", 1 );
+        print {$SETTING} $setfile
           or croak 'cannot print gmodsetting.txt';
-        close $SETTING or croak 'cannot close gmodsetting.txt';
+        close $SETTING or croak 'cannot close Gmodset.pm';
     }
 
-    if ( !-e "$varsdir/log.txt" ) {
-        open $LOGFILE, '>', "$varsdir/log.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/log.txt: ", 1 );
+    if ( !-e "$varsdir/user.log" ) {
+        open $LOGFILE, '>', "$varsdir/user.log"
+          || setup_fatal_error( "$maintext_23 $varsdir/user.log: ", 1 );
         print {$LOGFILE} 'admin|1105634411|127.0.0.1|'
-          or croak 'cannot print log.txt';
-        close $LOGFILE or croak 'cannot close log.txt';
-    }
-
-    if ( !-e "$varsdir/news.txt" ) {
-        my $news = <<NEWS;
-Welcome to our Forum.
-We've upgraded to YaBB 2.7.00!
-Visit [url=http://www.yabbforum.com]YaBB[/url] today ;)
-Signup for free on our forum and benefit from new features!
-Latest info can be found on the [url=http://www.yabbforum.com/community/]YaBB Chat and Support Community[/url].
-NEWS
-        open $NEWSFILE, '>', "$varsdir/news.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/news.txt: ", 1 );
-        print {$NEWSFILE} $news or croak 'cannot print news.txt';
-        close $NEWSFILE or croak 'cannot close news.txt';
-    }
-
-    if ( !-e "$varsdir/oldestmes.txt" ) {
-        open $OLDFILE, '>', "$varsdir/oldestmes.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/oldestmes.txt: ", 1 );
-        print {$OLDFILE} "1\n" or croak 'cannot print oldestmes.txt';
-        close $OLDFILE or croak 'cannot close oldestmes.txt';
+          or croak 'cannot print user.log';
+        close $LOGFILE or croak 'cannot close user.log';
     }
 
     if ( !-e "$varsdir/registration.log" ) {
@@ -1094,37 +1099,6 @@ NEWS
         close $REGLOG or croak 'cannot close registration.log';
     }
 
-    if ( !-e "$varsdir/reserve.txt" ) {
-        my $reserve = <<RES;
-yabb
-YaBBadmin
-administrator
-admin
-y2
-xnull
-yabb2
-XIMinc
-yabbforum
-RES
-        open $RESERVEFILE, '>', "$varsdir/reserve.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/reserve.txt: ", 1 );
-        print {$RESERVEFILE} $reserve or croak 'cannot print reserve.txt';
-        close $RESERVEFILE or croak 'cannot print reserve.txt';
-    }
-
-    if ( !-e "$varsdir/reservecfg.txt" ) {
-        my $reschk = <<RES;
-checked
-
-checked
-checked
-
-RES
-        open $RESERVEFILE, '>', "$varsdir/reservecfg.txt"
-          || setup_fatal_error( "$maintext_23 $varsdir/reservecfg.txt: ", 1 );
-        print {$RESERVEFILE} $reschk or croak 'cannot print reservecfg.txt';
-        close $RESERVEFILE or croak 'cannot close reservecfg.txt';
-    }
     return;
 }
 
@@ -1199,7 +1173,7 @@ sub SetInstall {
 
     $yymain .= qq~
 <form action="$set_cgi?action=setinstall2" method="post">
-<div class="bordercolor borderbox">
+<div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="tabtitle">
         <tr>
             <td style="padding-left:1%">System Setup</td>
@@ -1468,7 +1442,9 @@ sub SetInstall2 {
 \%templateset = (
 'Forum default' => "default|default|default|default|default|default|default|0|0|0|0",
 'Mobile' => "mobile|mobile|mobile|mobile|mobile|mobile|mobile|0|0|0|1",
-);  
+);
+
+\@lngs = ('English');                   #installed languages; 
 
 \$maintenance = $maintenance;                       # Set to 1 to enable Maintenance mode
 \$rememberbackup = $rememberbackup;                 # seconds past since last backup until alert is displayed
@@ -1517,6 +1493,14 @@ sub SetInstall2 {
 \$mailtype = $mailtype;                             # Mail program to use: 0 = sendmail, 1 = SMTP, 2 = Net::SMTP, 3 = Net::SMTP::TLS
 
 \$UseHelp_Perms = 1;                                # Help Center: 1 == use permissions, 0 == do not use permissions
+
+\@adomains = ('');                                 #email domains - allowed
+\@bdomains = ('netzero.com', 'cashdeals.com'); #email domains - denied
+\$matchword = 1;                                   #registration reserved word settings
+\$matchcase = 0;
+\$matchuser = 1;
+\$matchname = 1;
+\@reserve = ('yabb', 'YaBBadmin', 'administrator', 'admin', 'y2', 'yabb2', 'yabbforum');
 
 ########## MemberGroups ##########
 
@@ -1614,6 +1598,8 @@ sub SetInstall2 {
 \$speedpostdetection = $speedpostdetection;         # Set to 1 to detect speedposters and delay their spam actions
 \$spd_detention_time = $spd_detention_time;         # Time in seconds before a speedposting ban is lifted again
 \$min_post_speed = $min_post_speed;                 # Minimum time in seconds between entering a post form and submitting a post
+\$error_spd = 10;                                  # Minimum time in seconds between error log entries from the same IP address.
+\@spamrules = ('10~;p(.?)rn', '3=;sell', '2~;Ugg', '10=;'); #Spam rules
 \$minlinkpost = $minlinkpost;                       # Minimum amount of posts a member needs to post links and images
 \$minlinksig = $minlinksig;                         # Minimum amount of posts a member needs to create links and images in signature
 \$minlinkweb = $minlinkweb;
@@ -1697,6 +1683,13 @@ sub SetInstall2 {
 \$DisplayEvents = 0;
 \$CalShortEvent = 0;
 \$bm_subcut = $bm_subcut;
+
+########## Social Bookmarks settings ##########
+\$en_bookmarks   = 0;                              # Enable Social Bookmarks
+\$bm_subcut = 50;                                  # Maximum characters in subject
+\$bm_boards = '';                           # Select the boards which Social Bookmarks will be shown in
+\@bookmarks = ('10|del.icio.us|delicious.png|http://del.icio.us/post?v=4&amp;noui&amp;jump=close&amp;url={url}&amp;title={title}|1298959562', '20|Digg|digg.png|http://digg.com/submit?phase=2&amp;url={url}&amp;title={title}|1298959262', '30|Facebook|facebook.png|http://www.facebook.com/sharer/sharer.php?u={url}&amp;t={title}|1298955803', '40|Google|google.png|http://www.google.com/bookmarks/mark?op=edit&amp;output=popup&amp;bkmk={url}&amp;title={title}|1298955918', '50|Google+|google+.png|https://plus.google.com/share?url={url}|1375144273', '70|reddit|reddit.png|http://reddit.com/submit?url={url}&amp;title={title}|1298959598', '80|StumbleUpon|stumbleupon.png|http://www.stumbleupon.com/submit?url={url}&amp;title={title}|1299003650', '90|Twitter|twitter.png|http://twitter.com/home?status={title}%20-%20{url}|1298959653', '100|Yahoo|yahoo.png|http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&amp;title={title}|1299003740', '60|LinkedIn|linkedin.png|http://www.linkedin.com/shareArticle?mini=true&url={url}&title={title}&ro=false|1298959786'); #bookmarks
+
 ########## File Locking ##########
 \$checkspace = 0;                                                # Set to 1 to enable any freespace checking (should remain disabled on Windows/IIS servers)
 \$enable_freespace_check = $enable_freespace_check; # Enable the free disk space check on every pageview?
@@ -1890,7 +1883,13 @@ sub SetInstall2 {
 \$show_online_ip_fmod = 1;                  # Set to 1 to show online IP's to forum moderators.
 \$masterkey = '$masterkey';                 # Seed for encryption of captcha's
 \$ipLookup = 1;                             # Set to 1 to enable IP Lookup.
-
+\%iplookup = ('ARIN' => "whois.arin.net/rest/nets;q={ip}?showDetails=true&showARIN=false&ext=netref2",
+'LACNIC' => "lacnic.net/cgi-bin/lacnic/whois?query={ip}",
+'Test' => "https://apps.db.ripe.net/search/query.html?searchtext={ip}",
+'APNIC' => "wq.apnic.net/apnic-bin/whois.pl?searchtext={ip}",
+'AfriNIC' => "www.afrinic.net/cgi-bin/whois?searchtext={ip}",
+'RIPE_NCC' => "https://apps.db.ripe.net/search/query.html?searchtext={ip}",
+);                                                #IPlookup url list
 
 ###############################################################################
 # Guardian Settings (old Guardian.banned and Guardian.settings)               #
@@ -2089,16 +2088,7 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
     else                                 { $mem_created .= q~admin.outbox, ~; }
     if   ( !-e "$memberdir/admin.vars" ) { $mem_missing .= q~admin.vars, ~; }
     else                                 { $mem_created .= q~admin.vars, ~; }
-    if ( !-e "$memberdir/memberlist.txt" ) {
-        $mem_missing .= q~memberlist.txt, ~;
-    }
-    else { $mem_created .= q~memberlist.txt, ~; }
-    if ( !-e "$memberdir/memberinfo.txt" ) {
-        $mem_missing .= q~memberinfo.txt, ~;
-    }
-    else { $mem_created .= q~memberinfo.txt, ~; }
-    if   ( !-e "$memberdir/members.ttl" ) { $mem_missing .= q~members.ttl~; }
-    else                                  { $mem_created .= q~members.ttl~; }
+ 
     $mem_missing =~ s/, $//sm;
     $mem_created =~ s/, $//sm;
 
@@ -2130,53 +2120,52 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
 
     $var_missing = q{};
     $var_created = q{};
-    if   ( !-e "$vardir/adminlog_new.txt" ) { $var_missing .= q~adminlog_new.txt, ~; }
-    else                                { $var_created .= q~adminlog_new.txt, ~; }
-    if   ( !-e "$vardir/allowed.txt" ) { $var_missing .= q~allowed.txt, ~; }
-    else                               { $var_created .= q~allowed.txt, ~; }
-    if ( !-e "$vardir/attachments.txt" ) {
-        $var_missing .= q~attachments.txt, ~;
+    if ( !-e "$vardir/Memberlist.pm" ) {
+        $var_missing .= q~Memberlist.pm, ~;
     }
-    else                                   { $var_created .= q~attachments.txt, ~; }
-    if   ( !-e "$vardir/pm.attachments" ) { $var_missing .= q~pm.attachments, ~; }
-    else                                  { $var_created .= q~attachments.txt, ~; }
-    if   ( !-e "$vardir/ban_log.txt" ) { $var_missing .= q~ban_log.txt, ~; }
-    else                               { $var_created .= q~ban_log.txt, ~; }
-    if   ( !-e "$vardir/banlist.txt" ) { $var_missing .= q~banlist.txt, ~; }
-    else                               { $var_created .= q~banlist.txt, ~; }
-    if   ( !-e "$vardir/clicklog.txt" ) { $var_missing .= q~clicklog.txt, ~; }
-    else                                { $var_created .= q~clicklog.txt, ~; }
-    if   ( !-e "$vardir/errorlog.txt" ) { $var_missing .= q~errorlog.txt, ~; }
-    else                                { $var_created .= q~errorlog.txt, ~; }
-    if   ( !-e "$vardir/flood.txt" ) { $var_missing .= q~flood.txt, ~; }
-    else                             { $var_created .= q~flood.txt, ~; }
+    else { $var_created .= q~Memberlist.pm, ~; }
+    if ( !-e "$vardir/Memberinfo.pm" ) {
+        $var_missing .= q~Memberinfo.pm, ~;
+    }
+    else { $var_created .= q~Memberinfo.pm, ~; }
+    if   ( !-e "$vardir/memttl.db" ) { $var_missing .= q~memttl.db~; }
+    else                                  { $var_created .= q~memttl.db~; }
+    if   ( !-e "$vardir/adminlog.log" ) { $var_missing .= q~adminlog.log, ~; }
+    else                                { $var_created .= q~adminlog.log, ~; }
+    if ( !-e "$vardir/attachments.db" ) {
+        $var_missing .= q~attachments.db, ~;
+    }
+    else                                   { $var_created .= q~attachments.db, ~; }
+    if   ( !-e "$vardir/pmattachments.db" ) { $var_missing .= q~pmattachments.db, ~; }
+    else                                  { $var_created .= q~pmattachments.db, ~; }
+    if   ( !-e "$vardir/ban.log" ) { $var_missing .= q~ban.log, ~; }
+    else                               { $var_created .= q~ban.log, ~; }
+    if   ( !-e "$vardir/banlist.db" ) { $var_missing .= q~banlist.db, ~; }
+    else                               { $var_created .= q~banlist.db, ~; }
+    if   ( !-e "$vardir/clicklog.log" ) { $var_missing .= q~clicklog.log, ~; }
+    else                                { $var_created .= q~clicklog.log, ~; }
+    if   ( !-e "$vardir/errorlog.log" ) { $var_missing .= q~errorlog.log, ~; }
+    else                                { $var_created .= q~errorlog.log, ~; }
+    if   ( !-e "$vardir/flood.log" ) { $var_missing .= q~flood.log, ~; }
+    else                             { $var_created .= q~flood.log, ~; }
 
-    if ( !-e "$vardir/gmodsettings.txt" ) {
-        $var_missing .= q~gmodsettings.txt, ~;
+    if ( !-e "$vardir/Gmodset.pm" ) {
+        $var_missing .= q~Gmodset.pm, ~;
     }
-    else { $var_created .= q~gmodsettings.txt, ~; }
-    if   ( !-e "$vardir/log.txt" ) { $var_missing .= q~log.txt, ~; }
-    else                           { $var_created .= q~log.txt, ~; }
-    if   ( !-e "$vardir/news.txt" ) { $var_missing .= q~news.txt, ~; }
-    else                            { $var_created .= q~news.txt, ~; }
-    if   ( !-e "$vardir/oldestmes.txt" ) { $var_missing .= q~oldestmes.txt, ~; }
-    else                                 { $var_created .= q~oldestmes.txt, ~; }
+    else { $var_created .= q~Gmodset.pm, ~; }
+    if   ( !-e "$vardir/user.log" ) { $var_missing .= q~user.log, ~; }
+    else                           { $var_created .= q~user.log, ~; }
 
     if ( !-e "$vardir/registration.log" ) {
         $var_missing .= q~registration.log, ~;
     }
     else { $var_created .= q~registration.log, ~; }
-    if   ( !-e "$vardir/reserve.txt" ) { $var_missing .= q~reserve.txt, ~; }
-    else                               { $var_created .= q~reserve.txt, ~; }
-    if ( !-e "$vardir/reservecfg.txt" ) {
-        $var_missing .= q~reservecfg.txt, ~;
-    }
-    else { $var_created .= q~reservecfg.txt, ~; }
+
     $var_missing =~ s/, $//sm;
     $var_created =~ s/, $//sm;
 
     $yymain .= q~
-    <table class="tabtitle">
+    <table class="tabtitle" style="margin-top:.5em">
         <tr>
              <td class="shadow" style="padding-left:1%">Checking System Files</td>
         </tr>
@@ -2326,7 +2315,7 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
             <td class="windowbg2">
-                Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.6.12 forum.<br />Or to convert a 1x or 2x Forum to 2.6.12
+                Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.7.00 forum.<br />Or to convert a 1x or 2x Forum to 2.7.00
             </td>
         </tr>~;
     }
@@ -2481,9 +2470,9 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
       $iamguest ? q{} : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
 
     if ($enable_news) {
-        fopen( NEWS, "$vardir/news.txt" );
-        @newsmessages = <NEWS>;
-        fclose(NEWS);
+        open $NEWS, '<', 'Languages/English/news.txt';
+        @newsmessages = <$NEWS>;
+        close $NEWS;
     }
     for my $i ( 0 .. $#yytemplate ) {
         $curline = $yytemplate[$i];

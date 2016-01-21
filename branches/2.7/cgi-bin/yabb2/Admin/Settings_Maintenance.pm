@@ -22,16 +22,6 @@ if (@settings_maintenancepmmods) {
 }
 if ( $action eq 'detailedversion' ) { return 1; }
 
-my @lngs = ('English');
-push @lngs, 'Russian';
-for (@lngs) {
-    if ( -e "$langdir/$_/maintenancetext.txt") {
-        fopen(MAINTTXT, "<$langdir/$_/maintenancetext.txt");
-        ${$_ . '_maintenancetext'} = <MAINTTXT>;
-	    fclose(MAINTTXT);
-	}
-    else {${$_ . '_maintenancetext'} = q{};}
-}
 # List of settings
 @settings = (
 
@@ -48,25 +38,22 @@ qq~<input type="checkbox" name="maintenance" id="maintenance" value="1" ${ischec
                 name     => 'maintenance',
                 validate => 'boolean',
             },
-            {
-                description =>
-qq~<label for="English_maintenancetext">$admin_txt{'348Text'} - English</label>~,
-                input_html =>
-qq~<textarea cols="30" rows="5" name="English_maintenancetext" id="English_maintenancetext" style="width: 98%">$English_maintenancetext</textarea>~,
-                name     => "English_maintenancetext",
-                validate => 'fulltext,null',
-            },
-            {
-                description =>
-qq~<label for="Russian_maintenancetext">$admin_txt{'348Text'} - Russian</label>~,
-                input_html =>
-qq~<textarea cols="30" rows="5" name="Russian_maintenancetext" id="Russian_maintenancetext" style="width: 98%">$Russian_maintenancetext</textarea>~,
-                name     => "Russian_maintenancetext",
-                validate => 'fulltext,null',
-            },
         ],
     }
 );
+
+for (@lngs) {
+    if ( -e "$langdir/$_/maintenancetext.txt") {
+        fopen(MAINTTXT, "<$langdir/$_/maintenancetext.txt");
+        ${$_ . '_maintenancetext'} = <MAINTTXT>;
+        fclose(MAINTTXT);
+    }
+    else {${$_ . '_maintenancetext'} = q{};}
+    $lbl = $_ . '_maintenancetext';
+
+    push @{ $settings[0]{items} }, { description => qq~<label for="$lbl">$admin_txt{'348Text'} - $_</label>~, input_html => qq~<textarea cols="30" rows="5" name="$lbl" id="$lbl" style="width: 98%">${$lbl}</textarea>~, name     => "$lbl", validate => 'fulltext,null', };
+}
+
 
 # Routine to save them
 sub SaveSettings {

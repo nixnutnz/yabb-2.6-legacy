@@ -15,7 +15,7 @@
 # use strict;
 #use warnings;
 #no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $eventcalbirthdayspmver = 'YaBB 2.7.00 $Revision$';
@@ -137,21 +137,6 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     # Begin Letter
 
     if ( !$sortiert ) { $sortiert = 'sortdate'; }
-    my @abcde = ( 'a' .. 'z' );
-    my $letter_s = qq~
-<form method="post" action="$scripturl?action=birthdaylist">
-    <select size="1" name="letter" onchange="submit()" class="small" style="vertical-align: middle;">
-        <option value="">&nbsp;</option>
-        <option value="other">$var_cal{'other'}</option>~;
-    for my $i ( 0 .. $#abcde ) {
-        $letter_s .= qq~        <option value="$abcde[$i]"$sel>$abcde[$i]</option>\n~;
-    }
-    $letter_s .=
-qq~    </select>
-    <input type="hidden" name="vmonth" value="$vmonth" />
-    <input type="hidden" name="sort" value="sortuser" />
-    <input type="submit" style="display:none" />
-</form>~;
 
     ${"class_$sortiert"}     = ' class="selected-bg center"';
     ${"styleletter_$letter"} = ' class="catbg center"';
@@ -219,7 +204,7 @@ qq~    </select>
         ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $user_bdhide )
           = split /[|]/xsm, $user_name;
 
-        $memrealname = ( split /[|]/xsm, $memberinf{$user_bdname}, 2 )[0];
+        $memrealname = $memberinf{$user_bdname}[0];
 
         if (
             ( $user_bdmon < $actualmon )
@@ -322,7 +307,7 @@ qq~    </select>
     if ($bd_today) {
         $bd_today =~ s/, $//sm;
         $my_bdtoday = qq~
-        <br /><br /><span class="u">$var_cal{'calbirthdaytoday'}:</span><br /><br />
+        <br /><br /><span class="under">$var_cal{'calbirthdaytoday'}:</span><br /><br />
 $bd_today
 <br /><br />
 ~;
@@ -341,16 +326,23 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
         $bdmonths = $mybd_months;
         $bdmonths =~ s/{yabb bdmonthlink}/$bdmonthlinks/gsm;
     }
-
-    for my $i ( a .. z ) {
+    $mybdlist_alpha_a = qq~<a href="$boardurl/YaBB.pl?action=birthdaylist;sort=sortuser;letter=~;
+    $my_alpha_a = q{};
+    for my $i ( 'a' .. 'z' ) {
         $my_alpha_a .=
             $mybdlist_alpha_a
           . $i
           . q~" style="text-decoration:none;">~
           . uc($i)
-          . $mybdlist_alpha_b;
-        $my_alpha_a =~ s/{yabb sortiert}/$sortiert/sm;
+          . q~</a> &nbsp~;
     }
+    $my_alpha_a .=
+            $mybdlist_alpha_a
+          . 'other'
+          . q~" style="text-decoration:none;">~
+          . $var_cal{'other'}
+          . q~</a>~;    
+    $my_alpha_a =~ s/{yabb sortiert}/$sortiert/sm;
 
     for my $j ( 1 .. 12 ) {
         if ( $calsplit > 0 &&  @birthmembers1 >= $calsplit && $vmonth eq $mont[$j] )
@@ -426,7 +418,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
             $yyvmon =~ s/{yabb cal_info_header}/$cal_info_header/sm;
             $yyvmon =~ s/{yabb pagecall}/\;newstart=$pgstart/gsm;
             $yyvmon =~ s/{yabb page}/$pageindex/gsm;
-            $yyvmon =~ s/{yabb input_letters}/$letter_s/sm;
+            $yyvmon =~ s/{yabb input_letters}//sm;
 
             for my $user_name (@birthmembers2) {
                 chomp $user_name;
@@ -438,7 +430,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
                 if ( $letter ) {
                     $searchbdname = $user_bdrealname;
                     $searchbdname = isempty( $searchbdname, $user_bdname );
-                    if ( $searchbdname =~ /^$letter/i ) { $showviewbd = 1; }
+                    if ( $searchbdname =~ /^$letter/ixsm || ( $letter eq 'other' && $searchbdname =~ m/^[^a-z]/ixsm )) { $showviewbd = 1; }
                 }
                 else {
                     $showviewbd = 1;
@@ -492,7 +484,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
                 $yyvmon =~ s/{yabb calmont}/$var_cal{$calmont[$j]}/sm;
                 $yyvmon =~ s/{yabb countmont}/$countmont[$j]/sm;
                 $yyvmon =~ s/{yabb cal_info_header}/$cal_info_header/sm;
-                $yyvmon =~ s/{yabb input_letters}/$letter_s/sm;
+                $yyvmon =~ s/{yabb input_letters}//sm;
                 $montview = q{};
                 for my $user_name ( sort { &{$sortiert}( $a, $b ); } @birthmembers1) {
                     chomp $user_name;
@@ -505,7 +497,7 @@ qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
                         if ($letter) {
                             $searchbdname = $user_bdrealname;
                             $searchbdname = isempty( $searchbdname, $user_bdname );
-                            if ( $searchbdname =~ /^$letter/ism ) { $showviewbd = 1; }
+                            if ( $searchbdname =~ /^$letter/ixsm || ( $letter eq 'other' && $searchbdname =~ m/^[^a-z]/ixsm )) { $showviewbd = 1; }
                         }
                         else {
                             $showviewbd = 1;

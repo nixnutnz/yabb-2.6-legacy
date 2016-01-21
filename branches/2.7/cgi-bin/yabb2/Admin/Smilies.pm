@@ -374,7 +374,7 @@ sub SmilieMove {
     is_admin_or_gmod();
 
     if ( exists $INFO{'index'} ) {
-        for my $i ( 0 .. ( @SmilieURL - 1 ) ) {
+        for my $i ( 0 .. $#SmilieURL ) {
             if (
                 $i == $INFO{'index'}
                 && (   ( $INFO{'movedown'} && $i >= 0 && $i < $#SmilieURL )

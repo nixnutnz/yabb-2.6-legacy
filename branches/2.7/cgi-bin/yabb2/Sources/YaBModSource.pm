@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 
 $yabmodsourcepmver = 'YaBB 2.7.00 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }

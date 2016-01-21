@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $admineditpmver = 'YaBB 2.7.00 $Revision$';
@@ -26,7 +26,12 @@ LoadLanguage('Register');
 
 sub EditBots {
     is_admin_or_gmod();
-    my ($line);
+    my $line = q{};
+    require Variables::BotsHosts;
+    my @line = sort keys %botname;
+    for (@line) {
+        $line .= qq~$_|$botname{$_}\n~;
+    }
     $yymain .= qq~
 <form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
@@ -40,11 +45,7 @@ sub EditBots {
         </tr><tr>
             <td class="windowbg2 center">
                 <div class="pad-more">
-                    <textarea cols="70" rows="35" name="bots" style="width:98%">~;
-    fopen( BOTS, "$vardir/bots.hosts" );
-    while ( $line = <BOTS> ) { chomp $line; $yymain .= qq~$line\n~; }
-    fclose(BOTS);
-    $yymain .= qq~</textarea>
+                    <textarea cols="70" rows="35" name="bots" style="width:98%">$line</textarea>
                 </div>
             </td>
         </tr>
@@ -71,12 +72,16 @@ sub EditBots {
 
 sub EditBots2 {
     is_admin_or_gmod();
+    @mybots = split /[\n\r]+/xsm, $FORM{'bots'};
 
-    fopen( BOTS, ">$vardir/bots.hosts", 1 );
-    print {BOTS} map { "$_\n"; }
-      sort { ( split /[|]/xsm, $a )[1] cmp( split /[|]/xsm, $b )[1] }
-      split /[\n\r]+/xsm, $FORM{'bots'}
-      or croak "$croak{'print'} BOTS";
+    $newbots = qq~%botname = (\n~;
+    for ( sort @mybots) {
+        my @newbots = split /[|]/, $_;
+        $newbots .= qq~'$newbots[0]' => '$newbots[1]',\n~;
+    }
+    $newbots .= qq~);\n\n1;\n~;
+    fopen( BOTS, '>Variables/BotsHosts.pm', 1 );
+    print {BOTS} $newbots or croak "$croak{'print'} BOTS";
     fclose(BOTS);
 
     $yySetLocation = qq~$adminurl?action=editbots~;
@@ -204,16 +209,11 @@ sub SetCensor2 {    # don't use &FromChars() here!!!
 
 sub SetReserve {
     is_admin_or_gmod();
-    fopen( RESERVE, "$vardir/reserve.txt" );
-    my @reserved = <RESERVE>;
-    fclose(RESERVE);
-    fopen( RESERVECFG, "$vardir/reservecfg.txt" );
-    my @reservecfg = <RESERVECFG>;
-    fclose(RESERVECFG);
-    for my $i ( 0 .. $#reservecfg ) {
-        chomp $reservecfg[$i];
-        if ( $reservecfg[$i] ) { $reservecheck[$i] = q~ checked="checked"~; }
-    }
+    if ( $matchword ) { $reservecheck[0] = q~ checked="checked"~; }
+    if ( $matchcase ) { $reservecheck[1] = q~ checked="checked"~; }
+    if ( $matchuser ) { $reservecheck[2] = q~ checked="checked"~; }
+    if ( $matchname ) { $reservecheck[3] = q~ checked="checked"~; }
+
     $yymain .= qq~
 <form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
@@ -228,9 +228,8 @@ sub SetReserve {
             <td class="windowbg2"><div class="pad-more">
                 $admin_txt{'342'}
                 <p class="center"><textarea cols="40" rows="35" name="reserved" style="width:95%">~;
-    for my $i (@reserved) {
+    for my $i (@reserve) {
         chomp $i;
-        $i =~ s/\t//gxsm;
         if ( $i !~ m{\A[\S|\s]*[\n\r]*\Z}sm ) { next; }
         $yymain .= "$i\n";
     }
@@ -269,23 +268,27 @@ sub SetReserve {
 
 sub SetReserve2 {
     is_admin_or_gmod();
-    $FORM{'reserved'} =~ tr/\r//d;
-    $FORM{'reserved'} =~ s/\A[\s\n]+//xsm;
-    $FORM{'reserved'} =~ s/[\s\n]+\Z//xsm;
-    $FORM{'reserved'} =~ s/\n\s*\n/\n/gxsm;
-    fopen( RESERVE, ">$vardir/reserve.txt", 1 );
-    my $matchword = $FORM{'matchword'} eq 'checked' ? 'checked' : q{};
-    my $matchcase = $FORM{'matchcase'} eq 'checked' ? 'checked' : q{};
-    my $matchuser = $FORM{'matchuser'} eq 'checked' ? 'checked' : q{};
-    my $matchname = $FORM{'matchname'} eq 'checked' ? 'checked' : q{};
-    print {RESERVE} $FORM{'reserved'} or croak "$croak{'print'} RESERVE";
-    fclose(RESERVE);
-    fopen( RESERVECFG, "+>$vardir/reservecfg.txt" );
-    print {RESERVECFG} "$matchword\n" or croak "$croak{'print'} RESERVECFG";
-    print {RESERVECFG} "$matchcase\n" or croak "$croak{'print'} RESERVECFG";
-    print {RESERVECFG} "$matchuser\n" or croak "$croak{'print'} RESERVECFG";
-    print {RESERVECFG} "$matchname\n" or croak "$croak{'print'} RESERVECFG";
-    fclose(RESERVECFG);
+    $matchword = $FORM{'matchword'} eq 'checked' ? 1 : 0;
+    $matchcase = $FORM{'matchcase'} eq 'checked' ? 1 : 0;
+    $matchuser = $FORM{'matchuser'} eq 'checked' ? 1 : 0;
+    $matchname = $FORM{'matchname'} eq 'checked' ? 1 : 0;
+
+    $settings{'matchword'} = $matchword;
+    $settings{'matchcase'} = $matchcase;
+    $settings{'$matchuser'} = $matchuser;
+    $settings{'matchname'} = $matchname;
+
+    $reserved = $FORM{'reserved'};
+    $reserved =~ tr/\r//d;
+    $reserved =~ s/\A[\s\n]+//xsm;
+    $reserved =~ s/[\s\n]+\Z//xsm;
+    $reserved =~ s/\n\s*\n/\n/gxsm;
+    @reserved = split /\n/xsm, $reserved;
+    $reserve = join q~', '~, @reserved;
+    $settings{'reserve'} = qq~'$reserve'~;
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
     $yySetLocation = qq~$adminurl?action=setreserve~;
     redirectexit();
     return;
@@ -424,11 +427,10 @@ sub ModifyAgreement2 {
 
 sub GmodSettings {
     is_admin();
-
     LoadLanguage('GModPrivileges');
 
-    if ( !-e ("$vardir/gmodsettings.txt") ) { GmodSettings2(); }
-    require "$vardir/gmodsettings.txt";
+    if ( !-e ("$vardir/Gmodset.pm") ) { GmodSettings2(); }
+    require Variables::Gmodset;
 
     if ( $gmod_newfile eq q{} ) { GmodSettings2(); }
 
@@ -560,7 +562,6 @@ qq~\n        <li style="list-style:none"><input type="checkbox" name="$key" id="
 sub GmodSettings2 {
     is_admin();
 
-    # modstyle is set the same as modcss as modcss is useless without it.
     @pagelist = qw(main advanced news security antispam);
     for my $i ( @pagelist) {
         if ( $FORM{$i} eq 'on' ){
@@ -569,11 +570,11 @@ sub GmodSettings2 {
     }
 
     if ( $FORM{'allow_gmod_aprofile'} eq 'on' ) {
-        $seepmattach = qq~'managepmattachments' => "$FORM{'managepmattachments'}",~;
-        $emailbackup = qq~'emailbackup' => "$FORM{'emailbackup'}",~;
+        $seepmattach = qq~managepmattachments => '$FORM{'managepmattachments'}',~;
+        $emailbackup = qq~emailbackup => '$FORM{'emailbackup'}',~;
     }
     if ( $FORM{'allow_gmod_aprofile'} eq 'on' || ( $FORM{'allow_gmod_profile'} eq 'on' && $self_del_user == 1 ) ) {
-        $deletemulti = qq~'deletemultimembers' => "$FORM{'deletemultimembers'}",~;
+        $deletemulti = qq~deletemultimembers => '$FORM{'deletemultimembers'}',~;
     }
     if ( $FORM{'deletemultimembers'} eq 'on' || $FORM{'addmember'} eq 'on' ) {
         $FORM{'viewmembers'} = 'on';
@@ -587,215 +588,210 @@ sub GmodSettings2 {
 
     my $filler =
 q~                                                                               ~;
-    my $setfile = << "EOF";
+    my $setfile = <<EOF;
 ### Gmod Related Settings ###
 
-\$allow_gmod_admin = "$FORM{'allow_gmod_admin'}";
-\$allow_gmod_profile = "$FORM{'allow_gmod_profile'}";
-\$allow_gmod_aprofile = "$FORM{'allow_gmod_aprofile'}";
-\$gmod_newfile = 'on'; #
+\$allow_gmod_admin = '$FORM{'allow_gmod_admin'}';
+\$allow_gmod_profile = '$FORM{'allow_gmod_profile'}';
+\$allow_gmod_aprofile = '$FORM{'allow_gmod_aprofile'}';
+\$gmod_newfile = 'on';
 
 ### Areas Gmods can Access ###
 
 %gmod_access = (
-'ext_admin' =>"$FORM{'ext_admin'}",
+ext_admin => '$FORM{'ext_admin'}',
 
-'newsettings;page=main' =>"$FORM{'main'}",
-'newsettings;page=advanced' => "$FORM{'advanced'}",
-'editbots' =>"$FORM{'editbots'}",
+'newsettings;page=main' => '$FORM{'main'}',
+'newsettings;page=advanced' => '$FORM{'advanced'}',
+editbots => '$FORM{'editbots'}',
 
-'newsettings;page=news' =>"$FORM{'news'}",
-'smilies' =>"$FORM{'smilies'}",
-'setcensor' =>"$FORM{'setcensor'}",
-'modagreement' =>"$FORM{'modagreement'}",
-'eventcal_set' =>"$FORM{'eventcal_set'}",
-'bookmarks' =>"$FORM{'bookmarks'}",
+'newsettings;page=news' => '$FORM{'news'}',
+smilies => '$FORM{'smilies'}',
+setcensor => '$FORM{'setcensor'}',
+modagreement => '$FORM{'modagreement'}',
+eventcal_set => '$FORM{'eventcal_set'}',
+bookmarks => '$FORM{'bookmarks'}',
 
-'referer_control' =>"$FORM{'referer_control'}",
-'newsettings;page=security' =>"$FORM{'security'}",
-'setup_guardian' =>"$FORM{'setup_guardian'}",
-'newsettings;page=antispam' =>"$FORM{'antispam'}",
-'spam_questions' =>"$FORM{'spam_questions'}",
-'honeypot' =>"$FORM{'honeypot'}",
-'managecats' =>"$FORM{'managecats'}",
-'manageboards' =>"$FORM{'manageboards'}",
-'helpadmin' =>"$FORM{'helpadmin'}",
-'editemailtemplates' =>"$FORM{'editemailtemplates'}",
+referer_control => '$FORM{'referer_control'}',
+'newsettings;page=security' => '$FORM{'security'}',
+setup_guardian => '$FORM{'setup_guardian'}',
+'newsettings;page=antispam' => '$FORM{'antispam'}',
+spam_questions => '$FORM{'spam_questions'}',
+honeypot => '$FORM{'honeypot'}',
+managecats => '$FORM{'managecats'}',
+manageboards => '$FORM{'manageboards'}',
+helpadmin => '$FORM{'helpadmin'}',
+editemailtemplates => '$FORM{'editemailtemplates'}',
 
-'addmember' =>"$FORM{'addmember'}",
-'viewmembers' =>"$FORM{'viewmembers'}",
+addmember => '$FORM{'addmember'}',
+viewmembers => '$FORM{'viewmembers'}',
 $deletemulti
-'modmemgr' =>"$FORM{'modmemgr'}",
-'mailing' =>"$FORM{'mailing'}",
-'ipban' =>"$FORM{'ipban'}",
-'ipban2' => "$FORM{'ipban'}",
-'ban_clean' => "$FORM{'ipban'}",
-'setreserve' =>"$FORM{'setreserve'}",
+modmemgr => '$FORM{'modmemgr'}',
+mailing => '$FORM{'mailing'}',
+ipban => '$FORM{'ipban'}',
+ipban2 => '$FORM{'ipban'}',
+ban_clean => '$FORM{'ipban'}',
+setreserve => '$FORM{'setreserve'}',
 
-'modskin' =>"$FORM{'modskin'}",
-'modcss' =>"$FORM{'modcss'}",
-'modtemp' =>"$FORM{'modtemp'}",
+modskin => '$FORM{'modskin'}',
+modcss => '$FORM{'modcss'}',
+modtemp => '$FORM{'modtemp'}',
 
-'clean_log' =>"$FORM{'clean_log'}",
-'boardrecount' =>"$FORM{'boardrecount'}",
-'rebuildmesindex' =>"$FORM{'rebuildmesindex'}",
-'membershiprecount' =>"$FORM{'membershiprecount'}",
-'rebuildmemlist' =>"$FORM{'rebuildmemlist'}",
-'rebuildmemhist' =>"$FORM{'rebuildmemhist'}",
-'rebuildnotifications' =>"$FORM{'rebuildnotifications'}",
-'deleteoldthreads' =>"$FORM{'deleteoldthreads'}",
-'manageattachments' =>"$FORM{'manageattachments'}",
+clean_log => '$FORM{'clean_log'}',
+boardrecount => '$FORM{'boardrecount'}',
+rebuildmesindex => '$FORM{'rebuildmesindex'}',
+membershiprecount => '$FORM{'membershiprecount'}',
+rebuildmemlist => '$FORM{'rebuildmemlist'}',
+rebuildmemhist => '$FORM{'rebuildmemhist'}',
+rebuildnotifications => '$FORM{'rebuildnotifications'}',
+deleteoldthreads => '$FORM{'deleteoldthreads'}',
+manageattachments => '$FORM{'manageattachments'}',
 $seepmattach
-'backup' =>"$FORM{'backup'}",
+backup => '$FORM{'backup'}',
 $emailbackup
 
-'detailedversion' =>"$FORM{'detailedversion'}",
-'stats' =>"$FORM{'stats'}",
-'showclicks' =>"$FORM{'showclicks'}",
-'errorlog' =>"$FORM{'errorlog'}",
+detailedversion => '$FORM{'detailedversion'}',
+stats => '$FORM{'stats'}',
+showclicks => '$FORM{'showclicks'}',
+errorlog => '$FORM{'errorlog'}',
 
-'view_reglog' =>"$FORM{'view_reglog'}",
+view_reglog => '$FORM{'view_reglog'}',
 
-'modlist' =>"$FORM{'modlist'}",
+modlist => '$FORM{'modlist'}',
 );
 
 %gmod_access2 = (
-admin => "$FORM{'allow_gmod_admin'}",
+admin => '$FORM{'allow_gmod_admin'}',
 
 newsettings => [@mynewsettings],
 newsettings2 => [@mynewsettings],
-eventcal_set2 => "$FORM{'eventcal_set'}",
-eventcal_set3 => "$FORM{'eventcal_set'}",
-bookmarks2 => "$FORM{'bookmarks'}",
-bookmarks_add => "$FORM{'bookmarks'}",
-bookmarks_add2 => "$FORM{'bookmarks'}",
-bookmarks_edit => "$FORM{'bookmarks'}",
-bookmarks_edit2 => "$FORM{'bookmarks'}",
-bookmarks_delete => "$FORM{'bookmarks'}",
-bookmarks_delete2 => "$FORM{'bookmarks'}",
-spam_questions2 => "$FORM{'spam_questions'}",
-spam_questions_add => "$FORM{'spam_questions'}",
-spam_questions_add2 => "$FORM{'spam_questions'}",
-spam_questions_edit => "$FORM{'spam_questions'}",
-spam_questions_edit2 => "$FORM{'spam_questions'}",
-spam_questions_delete => "$FORM{'spam_questions'}",
-spam_questions_delete2 => "$FORM{'spam_questions'}",
-honeypot2 => "$FORM{'honeypot'}",
-honeypot_add => "$FORM{'honeypot'}",
-honeypot_add2 => "$FORM{'honeypot'}",
-honeypot_edit => "$FORM{'honeypot'}",
-honeypot_edit2 => "$FORM{'honeypot'}",
-honeypot_delete => "$FORM{'honeypot'}",
-honeypot_delete2 => "$FORM{'honeypot'}",
-deleteattachment => "$FORM{'manageattachments'}",
-manageattachments2 => "$FORM{'manageattachments'}",
-removeoldattachments => "$FORM{'manageattachments'}",
-removebigattachments => "$FORM{'manageattachments'}",
-rebuildattach => "$FORM{'manageattachments'}",
-remghostattach => "$FORM{'manageattachments'}",
-deletepmattachment => "$FORM{'managepmattachments'}",
-managepmattachments2 => "$FORM{'managepmattachments'}",
-removepmoldattachments => "$FORM{'managepmattachments'}",
-removepmbigattachments => "$FORM{'managepmattachments'}",
-rebuildpmattach => "$FORM{'managepmattachments'}",
-remghostpmattach => "$FORM{'managepmattachments'}",
+eventcal_set2 => '$FORM{'eventcal_set'}',
+eventcal_set3 => '$FORM{'eventcal_set'}',
+bookmarks2 => '$FORM{'bookmarks'}',
+bookmarks_add => '$FORM{'bookmarks'}',
+bookmarks_add2 => '$FORM{'bookmarks'}',
+bookmarks_edit => '$FORM{'bookmarks'}',
+bookmarks_edit2 => '$FORM{'bookmarks'}',
+bookmarks_delete => '$FORM{'bookmarks'}',
+bookmarks_delete2 => '$FORM{'bookmarks'}',
+spam_questions2 => '$FORM{'spam_questions'}',
+spam_questions_add => '$FORM{'spam_questions'}',
+spam_questions_add2 => '$FORM{'spam_questions'}',
+spam_questions_edit => '$FORM{'spam_questions'}',
+spam_questions_edit2 => '$FORM{'spam_questions'}',
+spam_questions_delete => '$FORM{'spam_questions'}',
+spam_questions_delete2 => '$FORM{'spam_questions'}',
+honeypot2 => '$FORM{'honeypot'}',
+honeypot_add => '$FORM{'honeypot'}',
+honeypot_add2 => '$FORM{'honeypot'}',
+honeypot_edit => '$FORM{'honeypot'}',
+honeypot_edit2 => '$FORM{'honeypot'}',
+honeypot_delete => '$FORM{'honeypot'}',
+honeypot_delete2 => '$FORM{'honeypot'}',
+deleteattachment => '$FORM{'manageattachments'}',
+manageattachments2 => '$FORM{'manageattachments'}',
+removeoldattachments => '$FORM{'manageattachments'}',
+removebigattachments => '$FORM{'manageattachments'}',
+rebuildattach => '$FORM{'manageattachments'}',
+remghostattach => '$FORM{'manageattachments'}',
+deletepmattachment => '$FORM{'managepmattachments'}',
+managepmattachments2 => '$FORM{'managepmattachments'}',
+removepmoldattachments => '$FORM{'managepmattachments'}',
+removepmbigattachments => '$FORM{'managepmattachments'}',
+rebuildpmattach => '$FORM{'managepmattachments'}',
+remghostpmattach => '$FORM{'managepmattachments'}',
 
-profile => "$FORM{'allow_gmod_profile'}",
-profile2 => "$FORM{'allow_gmod_profile'}",
-profileAdmin => "$FORM{'allow_gmod_aprofile'}",
-profileAdmin2 => "$FORM{'allow_gmod_aprofile'}",
-profileContacts => "$FORM{'allow_gmod_profile'}",
-profileContacts2 => "$FORM{'allow_gmod_profile'}",
-profileIM => "$FORM{'allow_gmod_profile'}",
-profileIM2 => "$FORM{'allow_gmod_profile'}",
-profileOptions => "$FORM{'allow_gmod_profile'}",
-profileOptions2 => "$FORM{'allow_gmod_profile'}",
+profile => '$FORM{'allow_gmod_profile'}',
+profile2 => '$FORM{'allow_gmod_profile'}',
+profileAdmin => '$FORM{'allow_gmod_aprofile'}',
+profileAdmin2 => '$FORM{'allow_gmod_aprofile'}',
+profileContacts => '$FORM{'allow_gmod_profile'}',
+profileContacts2 => '$FORM{'allow_gmod_profile'}',
+profileIM => '$FORM{'allow_gmod_profile'}',
+profileIM2 => '$FORM{'allow_gmod_profile'}',
+profileOptions => '$FORM{'allow_gmod_profile'}',
+profileOptions2 => '$FORM{'allow_gmod_profile'}',
 
-ext_edit => "$FORM{'ext_admin'}",
-ext_edit2 => "$FORM{'ext_admin'}",
-ext_create => "$FORM{'ext_admin'}",
-ext_reorder => "$FORM{'ext_admin'}",
-ext_convert => "$FORM{'ext_admin'}",
+ext_edit => '$FORM{'ext_admin'}',
+ext_edit2 => '$FORM{'ext_admin'}',
+ext_create => '$FORM{'ext_admin'}',
+ext_reorder => '$FORM{'ext_admin'}',
+ext_convert => '$FORM{'ext_admin'}',
 
-myprofileAdmin => "$FORM{'allow_gmod_aprofile'}",
-myprofileAdmin2 => "$FORM{'allow_gmod_aprofile'}",
+myprofileAdmin => '$FORM{'allow_gmod_aprofile'}',
+myprofileAdmin2 => '$FORM{'allow_gmod_aprofile'}',
 
-delgroup => "$FORM{'modmemgr'}",
-editgroup => "$FORM{'modmemgr'}",
-editAddGroup2 => "$FORM{'modmemgr'}",
-modmemgr2 => "$FORM{'modmemgr'}",
-assigned => "$FORM{'modmemgr'}",
-assigned2 => "$FORM{'modmemgr'}",
+delgroup => '$FORM{'modmemgr'}',
+editgroup => '$FORM{'modmemgr'}',
+editAddGroup2 => '$FORM{'modmemgr'}',
+modmemgr2 => '$FORM{'modmemgr'}',
+assigned => '$FORM{'modmemgr'}',
+assigned2 => '$FORM{'modmemgr'}',
 
-reordercats => "$FORM{'managecats'}",
-reordercats2 => "$FORM{'managecats'}",
-modifycatorder => "$FORM{'managecats'}",
-modifycat => "$FORM{'managecats'}",
-createcat => "$FORM{'managecats'}",
-catscreen => "$FORM{'managecats'}",
-addcat => "$FORM{'managecats'}",
-addcat2 => "$FORM{'managecats'}",
+reordercats => '$FORM{'managecats'}',
+reordercats2 => '$FORM{'managecats'}',
+modifycatorder => '$FORM{'managecats'}',
+modifycat => '$FORM{'managecats'}',
+createcat => '$FORM{'managecats'}',
+catscreen => '$FORM{'managecats'}',
+addcat => '$FORM{'managecats'}',
+addcat2 => '$FORM{'managecats'}',
 
-modskin => "$FORM{'modskin'}",
-modskin2 => "$FORM{'modskin'}",
-modcss => "$FORM{'modcss'}",
-modcss2 => "$FORM{'modcss'}",
-modstyle => "$FORM{'modcss'}",
-modstyle2 => "$FORM{'modcss'}",
-modtemplate2 => "$FORM{'modtemp'}",
-modtemp2 => "$FORM{'modtemp'}",
+modskin => '$FORM{'modskin'}',
+modskin2 => '$FORM{'modskin'}',
+modcss => '$FORM{'modcss'}',
+modcss2 => '$FORM{'modcss'}',
+modstyle => '$FORM{'modcss'}',
+modstyle2 => '$FORM{'modcss'}',
+modtemplate2 => '$FORM{'modtemp'}',
+modtemp2 => '$FORM{'modtemp'}',
 
-modifyboard => "$FORM{'manageboards'}",
-addboard => "$FORM{'manageboards'}",
-addboard2 => "$FORM{'manageboards'}",
-reorderboards => "$FORM{'manageboards'}",
-reorderboards2 => "$FORM{'manageboards'}",
-boardscreen => "$FORM{'manageboards'}",
+modifyboard => '$FORM{'manageboards'}',
+addboard => '$FORM{'manageboards'}',
+addboard2 => '$FORM{'manageboards'}',
+reorderboards => '$FORM{'manageboards'}',
+reorderboards2 => '$FORM{'manageboards'}',
+boardscreen => '$FORM{'manageboards'}',
 
-smilieput => "$FORM{'smilies'}",
-smilieindex => "$FORM{'smilies'}",
-smiliemove => "$FORM{'smilies'}",
-addsmilies => "$FORM{'smilies'}",
+smilieput => '$FORM{'smilies'}',
+smilieindex => '$FORM{'smilies'}',
+smiliemove => '$FORM{'smilies'}',
+addsmilies => '$FORM{'smilies'}',
 
-addmember => "$FORM{'addmember'}",
-addmember2 => "$FORM{'addmember'}",
-ml => "$FORM{'viewmembers'}",
-deletemultimembers => "$FORM{'deletemultimembers'}",
+addmember => '$FORM{'addmember'}',
+addmember2 => '$FORM{'addmember'}',
+ml => '$FORM{'viewmembers'}',
+deletemultimembers => '$FORM{'deletemultimembers'}',
 
-mailmultimembers => "$FORM{'mailing'}",
-mailing2 => "$FORM{'mailing'}",
+mailmultimembers => '$FORM{'mailing'}',
+mailing2 => '$FORM{'mailing'}',
 
-activate => "$FORM{'view_reglog'}",
-admin_descision => "$FORM{'view_reglog'}",
-apr_regentry => "$FORM{'view_reglog'}",
-del_regentry => "$FORM{'view_reglog'}",
-rej_regentry => "$FORM{'view_reglog'}",
-view_regentry => "$FORM{'view_reglog'}",
-clean_reglog => "$FORM{'view_reglog'}",
+activate => '$FORM{'view_reglog'}',
+admin_descision => '$FORM{'view_reglog'}',
+apr_regentry => '$FORM{'view_reglog'}',
+del_regentry => '$FORM{'view_reglog'}',
+rej_regentry => '$FORM{'view_reglog'}',
+view_regentry => '$FORM{'view_reglog'}',
+clean_reglog => '$FORM{'view_reglog'}',
 
-cleanerrorlog => "$FORM{'errorlog'}",
-deleteerror => "$FORM{'errorlog'}",
+cleanerrorlog => '$FORM{'errorlog'}',
+deleteerror => '$FORM{'errorlog'}',
 
-modagreement2 => "$FORM{'modagreement'}",
-advsettings2 => "$FORM{'advsettings'}",
-referer_control2 => "$FORM{'referer_control'}",
-removeoldthreads => "$FORM{'deleteoldthreads'}",
-ipban2 => "$FORM{'ipban'}",
-setcensor2 => "$FORM{'setcensor'}",
-setreserve2 => "$FORM{'setreserve'}",
+modagreement2 => '$FORM{'modagreement'}',
+advsettings2 => '$FORM{'advsettings'}',
+referer_control2 => '$FORM{'referer_control'}',
+removeoldthreads => '$FORM{'deleteoldthreads'}',
+ipban2 => '$FORM{'ipban'}',
+setcensor2 => '$FORM{'setcensor'}',
+setreserve2 => '$FORM{'setreserve'}',
 
-editbots2 => "$FORM{'editbots'}",
+editbots2 => '$FORM{'editbots'}',
 );
 
 1;
 EOF
 
-    $setfile =~
-      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gesm;
-    $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gesm;
-    $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gesm;
-
-    fopen( MODACCESS, ">$vardir/gmodsettings.txt" );
+    fopen( MODACCESS, ">$vardir/Gmodset.pm" );
     print {MODACCESS} $setfile or croak "$croak{'print'} MODACCESS";
     fclose(MODACCESS);
 

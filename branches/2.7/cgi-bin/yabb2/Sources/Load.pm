@@ -1354,14 +1354,14 @@ sub update_IMS {
     my @tag =
       qw(PMmnum PMimnewcount PMmoutnum PMstorenum PMdraftnum PMfolders PMfoldersCount PMbcRead);
 
+    my $updateims = qq~### UserIMS YaBB 2.7.00 Version $builduser ###\n\n%ims = (\n~;
+    for my $cnt ( 0 .. $#tag ) {
+        $updateims .= qq~'$tag[$cnt]' => "${$builduser}{$tag[$cnt]}",\n~;
+    }
+    $updateims .= qq~);\n\n1;\n~;
     fopen( UPDATE_IMS, ">$memberdir/$builduser.ims", 1 )
       or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
-    print {UPDATE_IMS} qq~### UserIMS YaBB 2.7.00 Version ###\n\n~
-      or croak "$croak{'print'} update IMS";
-    for my $cnt ( 0 .. $#tag ) {
-        print {UPDATE_IMS} qq~'$tag[$cnt]',"${$builduser}{$tag[$cnt]}"\n~
-          or croak "$croak{'print'} update IMS";
-    }
+    print {UPDATE_IMS} $updateims or croak "$croak{'print'} update IMS";
     fclose(UPDATE_IMS);
     return;
 }
@@ -1370,16 +1370,8 @@ sub load_IMS {
     my $builduser = shift;
     my @ims;
     if ( -e "$memberdir/$builduser.ims" ) {
-        fopen( IMSFILE, "$memberdir/$builduser.ims" )
-          or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
-        @ims = <IMSFILE>;
-        fclose(IMSFILE);
-    }
-
-    if ( $ims[0] =~ /\x23\x23\x23/xsm ) {
-        for (@ims) {
-            if ( $_ =~ /'(.*?)',"(.*?)"/xsm ) { ${$builduser}{$1} = $2; }
-        }
+        require "$memberdir/$builduser.ims";
+        %{$builduser} = %ims;
     }
     else {
         buildIMS( $builduser, q{} );

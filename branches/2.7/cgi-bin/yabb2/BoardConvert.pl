@@ -1,5 +1,4 @@
 #!/usr/bin/perl --
-
 ###############################################################################
 # BoardConvert.pl                                                             #
 # $Date: 06.01.16 $                                                           #
@@ -14,7 +13,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $boardconvertplver = 'YaBB 2.7.00 $Revision$';
@@ -30,8 +29,8 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
 
 ### Requirements and Errors ###
 my $script_root = $ENV{'SCRIPT_FILENAME'};
-if( ! $script_root ) {
-        $script_root = $ENV{'PATH_TRANSLATED'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
 }
 $script_root =~ s/\\/\//gxsm;
 $script_root =~ s/\/BoardConvert\.(pl|cgi)//igxsm;
@@ -41,52 +40,64 @@ else                   { $yyext = 'pl'; }
 if   ($boardurl) { $set_cgi = "$boardurl/BoardConvert.$yyext"; }
 else             { $set_cgi = "BoardConvert.$yyext"; }
 
-require "Paths.pl";
-require "$sourcedir/Subs.pl";
-require "$sourcedir/Load.pl";
+my $nxt = $yyext;
+if ( -e './Paths.pm' ) {
+    require Paths;
+    $nxt = 'pm';
+}
+else { require "Paths.$yyext"; }
+require "$sourcedir/Subs.$nxt";
+require "$sourcedir/Load.$nxt";
 
 if ( !$action ) {
     adminlogin();
 }
 
 if    ( $action eq 'adminlogin2' ) { adminlogin2(); }
-elsif ( $action eq 'convbrd') {    convcontrol(); }
+elsif ( $action eq 'convbrd' )     { convcontrol(); }
 
 sub convcontrol {
-
-open(FORUMCONTROL, '<', "$boardsdir/forum.control") or croak 'cannot_open forum.control';
-my @boardcontrols = <FORUMCONTROL>;
-close(FORUMCONTROL);
-chomp @boardcontrols;
-
-foreach my $boardline (@boardcontrols) {
-    $boardline =~ s/[\r\n]//g; # Built in chomp
-        (undef, $cntboard ) = split /\|/xsm, $boardline;
-    ## create a global boards array
-    push(@allboards, $cntboard);
-}
-
-LoadBoardControl();
-
-open (BOARDCONV, '>',"$vardir/boardconv.txt");
-foreach my $cntboard (@allboards) {
-    print {BOARDCONV} qq~\%$cntboard = (\n~;
-    foreach (keys %{ $uid . $cntboard } ) {
-        print {BOARDCONV} "'$_' => '${ $uid . $cntboard }{$_}',\n";
+    open $FORUMCONTROL, '<', "$boardsdir/forum.control"
+      or croak 'cannot_open forum.control';
+    my @boardcontrols = <$FORUMCONTROL>;
+    close $FORUMCONTROL;
+    chomp @boardcontrols;
+    my @allboards = ();
+    for my $boardline (@boardcontrols) {
+        $boardline =~ s/[\r\n]//g;    # Built in chomp
+        ( undef, $cntboard ) = split /\|/xsm, $boardline;
+        ## create a global boards array
+        push( @allboards, $cntboard );
     }
-        print {BOARDCONV} qq~);\n~;
-}
-close(BOARDCONV);
+
+    my %seen = ();
+    my @mybrds = grep { !$seen{$_}++ } @allboards;
+    LoadBoardControl();
+    my $allboards = join q~', '~, @mybrds;
+    my $newbrds = qq{\@allboards = ('$allboards');\n};
+    for my $cntboard (@mybrds) {
+        $newbrds .= qq~\%{$cntboard} = (\n~;
+        foreach ( keys %{ $uid . $cntboard } ) {
+            $newbrds .= qq{'$_' => q~${ $uid . $cntboard }{$_}~,\n};
+        }
+        $newbrds .= qq~);\n\n~;
+    }
+    $newbrds .= qq~\n1;\n~;
+    $newbrds =~ s/-/FIX/gxsm;
+
+    open $BOARDCONV, '>', "$vardir/boardconv.txt";
+    print {$BOARDCONV} $newbrds;
+    close $BOARDCONV;
 
     $yymain .= qq~
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
         Export of '$boardsdir/forum.control' settings to '$vardir/boardconv.txt' done.
+        <p><a href="$boardurl/YaBB.$yyext">Return to YaBB</a></p>
     </div>
 ~;
 
     return SimpleOutput();
 }
-
 
 sub SimpleOutput {
     $gzcomp = 0;

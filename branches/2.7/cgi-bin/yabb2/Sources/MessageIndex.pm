@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 no warnings qw(uninitialized once);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $messageindexpmver = 'YaBB 2.7.00 $Revision$';
@@ -166,10 +166,10 @@ qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex
     *starter = sub {
         if ( exists $user_info{ $_[0] } ) { return $user_info{ $_[0] }; }
         if ( !exists $memberinf{ $_[0] } ) {
-            return lc( ( split /[|]/xsm, $_[1], 4 )[2] );
+            return lc( $_[1][2] );
         }
         $user_info{ $_[0] } =
-          lc( ( split /[|]/xsm, $memberinf{ $_[0] }, 2 )[0] );
+          lc ( $memberinf{ $_[0] }[0] );
     };
 
     if ( $tsort == 1 ) {
@@ -319,13 +319,13 @@ qq~<a href="$scripturl?board=$currentboard/0"><span class="small">1</span></a>&n
                     if ($messagelist) {
                         $pagetxtindex .=
                           $start == $counter
-                          ? qq~<b>[$tmpa]</b>&nbsp;~
+                          ? qq~[$tmpa]&nbsp;~
                           : qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/$counter;messagelist=1','$yyhtml_root','$currentboard', 1)"><span class="small">$tmpa</span></a>&nbsp;~;
                     }
                     else {
                         $pagetxtindex .=
                           $start == $counter
-                          ? qq~<b>[$tmpa]</b>&nbsp;~
+                          ? qq~[$tmpa]&nbsp;~
                           : qq~<a href="$scripturl?board=$currentboard/$counter"><span class="small">$tmpa</span></a>&nbsp;~;
                     }
                     $tmpa++;
@@ -508,8 +508,8 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     chomp @threads;
 
     my %attachments;
-    if ( ( -s "$vardir/attachments.txt" ) > 5 ) {
-        fopen( ATM, "$vardir/attachments.txt" );
+    if ( ( -s 'Variables/attachments.db' ) > 5 ) {
+        fopen( ATM, '<Variables/attachments.db' );
         while (<ATM>) {
             $attachments{ ( split /[|]/xsm, $_, 2 )[0] }++;
         }
@@ -898,7 +898,7 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
             $pages =
                 qq~ <a href="$scripturl?num=$mnum/~
               . ( !$ttsreverse ? '0#0' : "$mreplies#$mreplies" )
-              . q~"><span class="small">1</span></a>~;
+              . q~">1</a>~;
             $pages .= qq~ <a href="$scripturl?num=$mnum/~
               . (
                 !$ttsreverse
@@ -920,19 +920,19 @@ qq~ <a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>~;
                 !$ttsreverse
                 ? "$tmpb#$tmpb"
                 : ( $mreplies - $tmpb ) . q{\x23} . ( $mreplies - $tmpb )
-              ) . qq~"><span class="small">$tmpa</span></a>~;
+              ) . qq~">$tmpa</a>~;
             $pages .= qq~ <a href="$scripturl?num=$mnum/~
               . (
                 !$ttsreverse
                 ? "$j#$j"
                 : ( $mreplies - $j ) . q{#} . ( $mreplies - $j )
-              ) . qq~"><span class="small">$k</span></a>~;
+              ) . qq~">$k</a>~;
             $pages .= qq~ <a href="$scripturl?num=$mnum/~
               . (
                 !$ttsreverse
                 ? "$i#$i"
                 : ( $mreplies - $i ) . q{#} . ( $mreplies - $i )
-              ) . qq~"><span class="small">$endpage</span></a>~;
+              ) . qq~">$endpage</a>~;
             $pages =
 qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
         }
@@ -945,7 +945,7 @@ qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &
                         !$ttsreverse
                         ? "$tmpb#$tmpb"
                         : ( $mreplies - $tmpb ) . q{\x23} . ( $mreplies - $tmpb )
-                      ) . qq~"><span class="small">$tmpa</span></a>\n~;
+                      ) . qq~">$tmpa</a>\n~;
                     ++$tmpa;
                 }
             }

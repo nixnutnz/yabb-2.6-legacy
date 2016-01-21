@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $attachmentspmver = 'YaBB 2.7.00 $Revision$';
@@ -25,7 +25,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 sub Attachments {
     is_admin_or_gmod();
 
-    fopen( AMS, "$vardir/attachments.txt" );
+    fopen( AMS, '<Variables/attachments.db' );
     my @attachments = <AMS>;
     fclose(AMS);
 
@@ -42,23 +42,7 @@ sub Attachments {
         $remaining_space = NumberFormat( ( $dirlimit - $attachment_space ) ) . ' KB';
     }
 
-    fopen( FILE, "$vardir/oldestattach.txt" );
-    $maxdaysattach = <FILE>;
-    fclose(FILE);
-
-    fopen( FILE, "$vardir/oldestpmattach.txt" );
-    $pmMaxDaysAttach = <FILE>;
-    fclose(FILE);
-
-    fopen( FILE, "$vardir/maxattachsize.txt" );
-    $maxsizeattach = <FILE>;
-    fclose(FILE);
-
-    fopen( FILE, "$vardir/maxpmattachsize.txt" );
-    $pmMaxSizeAttach = <FILE>;
-    fclose(FILE);
-
-    fopen( PMATTACHLOG, "$vardir/pm.attachments" );
+    fopen( PMATTACHLOG, '<Variables/pmattachments.db' );
     my @pmAttachments = <PMATTACHLOG>;
     fclose(PMATTACHLOG);
 
@@ -156,7 +140,7 @@ sub Attachments {
             </form>
         </td>
     </tr>~;
-        require "$vardir/gmodsettings.txt";
+        require Variables::Gmodset;
         if ( $iamgmod  && ($gmod_access{'managepmattachments'} ne 'on' && $gmod_access2{'managepmattachments2'} ne 'on') || $allow_gmod_aprofile ne 'on' ) {
             $yymain .= q{};
         }
@@ -228,7 +212,7 @@ sub RemoveOldAttachments {
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
 
-    fopen( AML, "$vardir/attachments.txt" );
+    fopen( AML, '<Variables/attachments.db' );
     my @attachmentstxt = <AML>;
     fclose(AML);
 
@@ -240,8 +224,8 @@ sub RemoveOldAttachments {
 
     my $info;
     if ( !@attachments ) {
-        fopen( ATT, ">$vardir/attachments.txt" )
-          || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+        fopen( ATT, '>Variables/attachments.db' )
+          || fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
         print {ATT} q{} or croak "$croak{'print'} ATT";
         fclose(ATT);
 
@@ -251,11 +235,11 @@ sub RemoveOldAttachments {
         if ( !exists $INFO{'next'} ) { unlink "$vardir/rem_old_attach.tmp"; }
 
         my %rem_attachments;
-        for my $aa ( ( $INFO{'next'} || 0 ) .. ( @attachments - 1 ) ) {
+        for my $aa ( ( $INFO{'next'} || 0 ) .. $#attachments ) {
 
             # -M => Script start time minus file modification time, in days.
             my $age = sprintf '%.2f', -M "$uploaddir/$attachments[$aa]";
-            if ( $age <= $maxdaysattach ) {
+            if ( $maxdaysattach > 0 && $age <= $maxdaysattach ) {
 
                 # If the attachment is not too old
                 $info .= qq~<br />$attachments[$aa] = $age $admin_txt{'122'}.~;
@@ -294,15 +278,14 @@ qq~$adminurl?action=removeoldattachments;maxdaysattach=$maxdaysattach;next=~
 
     fopen( FILE, "$vardir/rem_old_attach.tmp" );
 
-    #    $yymain .= join( q{}, <FILE> ) . $info;
     $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <FILE> }
       . $info;
     fclose(FILE);
     unlink "$vardir/rem_old_attach.tmp";
 
-    fopen( FILE, ">$vardir/oldestattach.txt" );
-    print {FILE} $maxdaysattach or croak "$croak{'print'} oldestattach";
-    fclose(FILE);
+    $settings{'maxdaysattach'} = $maxdaysattach || 0;
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
 
     $yytitle     = "$fatxt{'34'} $maxdaysattach";
     $action_area = 'removeoldattachments';
@@ -328,7 +311,7 @@ sub RemoveBigAttachments {
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
 
-    fopen( FILE, "$vardir/attachments.txt" );
+    fopen( FILE, '<Variables/attachments.db' );
     @attachmentstxt = <FILE>;
     fclose(FILE);
 
@@ -340,8 +323,8 @@ sub RemoveBigAttachments {
 
     my $info;
     if ( !@attachments ) {
-        fopen( ATT, ">$vardir/attachments.txt" )
-          || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+        fopen( ATT, '>Variables/attachments.db' )
+          || fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
         print {ATT} q{} or croak "$croak{'print'} ATT";
         fclose(ATT);
 
@@ -351,10 +334,10 @@ sub RemoveBigAttachments {
         if ( !exists $INFO{'next'} ) { unlink "$vardir/rem_big_attach.tmp"; }
 
         my (%rem_attachments);
-        for my $aa ( ( $INFO{'next'} || 0 ) .. ( @attachments - 1 ) ) {
+        for my $aa ( ( $INFO{'next'} || 0 ) .. $#attachments ) {
             my $size = sprintf '%.2f',
               ( ( -s "$uploaddir/$attachments[$aa]" ) / 1024 );
-            if ( $size <= $maxsizeattach ) {
+            if ( $maxsizeattach > 0 && $size <= $maxsizeattach ) {
 
                 # If the attachment is not too big
                 $info .= qq~<br />$attachments[$aa] = $size KB~;
@@ -391,15 +374,15 @@ qq~$adminurl?action=removebigattachments;maxsizeattach=$maxsizeattach;next=~
 
     fopen( FILE, "$vardir/rem_big_attach.tmp" );
 
-    #    $yymain .= join( q{}, <FILE> ) . $info;
     $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <FILE> }
       . $info;
     fclose(FILE);
     unlink "$vardir/rem_big_attach.tmp";
 
-    fopen( FILE, ">$vardir/maxattachsize.txt" );
-    print {FILE} $maxsizeattach or croak "$croak{'print'} FILE";
-    fclose(FILE);
+    $settings{'maxsizeattach'} = $maxsizeattach || 0;
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
 
     automaintenance('off');
 
@@ -412,7 +395,7 @@ qq~$adminurl?action=removebigattachments;maxsizeattach=$maxsizeattach;next=~
 sub Attachments2 {
     is_admin_or_gmod();
 
-    fopen( AML, "$vardir/attachments.txt" );
+    fopen( AML, '<Variables/attachments.db' );
     my @attachinput = <AML>;
     fclose(AML);
     my $max = @attachinput;
@@ -717,7 +700,7 @@ sub FullRebuildAttachents {
     $time_to_jump = time() + $max_process_time;
 
     # Get the board list from the forum.master file
-    require "$boardsdir/forum.master";
+    get_forum_master();
     @boardlist = sort keys %board;
 
     # Find the current board:
@@ -725,9 +708,9 @@ sub FullRebuildAttachents {
 
     # store all downloadcounts in variable
     my %attachments;
-    if ( ( -s "$vardir/attachments.txt" ) > 5 ) {
+    if ( ( -s 'Variables/attachments.db' ) > 5 ) {
         my ( $atfile, $atcount );
-        fopen( ATM, "$vardir/attachments.txt" );
+        fopen( ATM, '<Variables/attachments.db' );
         while (<ATM>) {
             (
                 undef, undef, undef,   undef, undef,
@@ -746,7 +729,7 @@ sub FullRebuildAttachents {
 
     my ( $topicnum, @newattachments, $mreplies, $msub, $mname, $mdate, $mfn,
         $nexttopic );
-    for my $i ( $INFO{'topicnum'} .. ( @topiclist - 1 ) ) {
+    for my $i ( $INFO{'topicnum'} .. $#topiclist ) {
         ( $topicnum, undef ) = split /[|]/xsm, $topiclist[$i], 2;
         fopen( TOPIC, "$datadir/$topicnum.txt" );
         my @topic = <TOPIC>;
@@ -790,11 +773,11 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
 
     my $numleft = @boardlist - $INFO{'boardnum'};
     if ( $numleft == 0 ) {
-        fopen( NEWATM, "$vardir/newattachments.tmp" );
+        fopen( NEWATM, '<Variables/attachments.db' );
         @newattachments = <NEWATM>;
         fclose(NEWATM);
 
-        fopen( ATM, ">$vardir/attachments.txt" );
+        fopen( ATM, '>Variables/attachments.db' );
         print {ATM}
           sort { ( split /[|]/xsm, $a )[6] <=> ( split /[|]/xsm, $b )[6] }
             @newattachments
@@ -843,7 +826,7 @@ sub RemoveGhostAttach {
 
     $yymain .= qq~<b>$fatxt{'62'}</b><br /><br />~;
 
-    fopen( ATM, "$vardir/attachments.txt" );
+    fopen( ATM, '<Variables/attachments.db' );
     my @attachmentstxt = <ATM>;
     fclose(ATM);
 
@@ -881,8 +864,8 @@ sub RemoveAttachments
 
     if ( !%{$ThreadHashref} ) { return $count; }
 
-    fopen( ATM, "+<$vardir/attachments.txt", 1 )
-      || fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+    fopen( ATM, '+<Variables/attachments.db', 1 )
+      || fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
     seek ATM, 0, 0;
     my @attachments = <ATM>;
     truncate ATM, 0;
@@ -893,7 +876,7 @@ sub RemoveAttachments
           split /[|]/xsm, $_;
         $del_filename{$afilename}++;
     }
-    for my $i ( 0 .. ( @attachments - 1 ) ) {
+    for my $i ( 0 .. $#attachments ) {
         (
             $athreadnum, undef, undef,      undef, undef,
             undef,       undef, $afilename, undef
@@ -929,7 +912,7 @@ sub RemoveAttachments
 sub PMAttachments2 {
     is_admin_or_gmod();
 
-    fopen( PMATTACHLOG, "$vardir/pm.attachments" );
+    fopen( PMATTACHLOG, '<Variables/pmattachments.db' );
     my @pmAttachInput = <PMATTACHLOG>;
     fclose(PMATTACHLOG);
     my $max = @pmAttachInput;
@@ -1210,7 +1193,7 @@ sub RemoveOldPMAttachments {
     my @pmAttachments = sort grep { /\w+$/xsm } readdir PMATTACHDIR;
     closedir PMATTACHDIR;
 
-    fopen( PMATTACHLOG, "$vardir/pm.attachments" );
+    fopen( PMATTACHLOG, '<Variables/pmattachments.db' );
     my @pmAttachmentstxt = <PMATTACHLOG>;
     fclose(PMATTACHLOG);
 
@@ -1222,8 +1205,8 @@ sub RemoveOldPMAttachments {
 
     my $info;
     if ( !@pmAttachments ) {
-        fopen( PMATTACHLOG, ">$vardir/pm.attachments" )
-          || fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
+        fopen( PMATTACHLOG, '>Variables/pmattachments.db' )
+          || fatal_error( 'cannot_open', 'Variables/pmattachments.db', 1 );
         print {PMATTACHLOG} q{} or croak "$croak{'print'} ATT";
         fclose(PMATTACHLOG);
 
@@ -1233,11 +1216,11 @@ sub RemoveOldPMAttachments {
         if ( !exists $INFO{'next'} ) { unlink "$vardir/rem_old_pm_attach.tmp"; }
 
         my %rem_attachments;
-        for my $aa ( ( $INFO{'next'} || 0 ) .. ( @pmAttachments - 1 ) ) {
+        for my $aa ( ( $INFO{'next'} || 0 ) .. $#pmAttachments ) {
 
             # -M => Script start time minus file modification time, in days.
             my $age = sprintf '%.2f', -M "$pmuploaddir/$pmAttachments[$aa]";
-            if ( $age <= $pmMaxDaysAttach ) {
+            if ( $pmMaxDaysAttach > 0 && $age <= $pmMaxDaysAttach ) {
 
                 # If the attachment is not too old
                 $info .= qq~<br />$pmAttachments[$aa] = $age $admin_txt{'122'}.~;
@@ -1276,15 +1259,14 @@ qq~$adminurl?action=removeoldpmattachments;pmmaxdaysattach=$pmMaxDaysAttach;next
 
     fopen( FILE, "$vardir/rem_old_pm_attach.tmp" );
 
-    #    $yymain .= join( q{}, <FILE> ) . $info;
     $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <FILE> }
       . $info;
     fclose(FILE);
     unlink "$vardir/rem_old_pm_attach.tmp";
 
-    fopen( FILE, ">$vardir/oldestpmattach.txt" );
-    print {FILE} $pmMaxDaysAttach or croak "$croak{'print'} FILE";
-    fclose(FILE);
+    $settings{'pmMaxDaysAttach'} = $pmMaxDaysAttach || 0;
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
 
     $yytitle     = "$fatxt{'34a'} $pmMaxDaysAttach";
     $action_area = 'removeoldpmattachments';
@@ -1310,7 +1292,7 @@ sub RemoveBigPMAttachments {
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
 
-    fopen( FILE, "$vardir/pm.attachments" );
+    fopen( FILE, '<Variables/pmattachments.db' );
     @pmAttachmentstxt = <FILE>;
     fclose(FILE);
 
@@ -1322,8 +1304,8 @@ sub RemoveBigPMAttachments {
 
     my $info;
     if ( !@attachments ) {
-        fopen( ATT, ">$vardir/pm.attachments" )
-          || fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
+        fopen( ATT, '>Variables/pmattachments.db' )
+          || fatal_error( 'cannot_open', 'Variables/pmattachments.db', 1 );
         print {ATT} q{} or croak "$croak{'print'} ATT";
         fclose(ATT);
 
@@ -1333,10 +1315,10 @@ sub RemoveBigPMAttachments {
         if ( !exists $INFO{'next'} ) { unlink "$vardir/rem_big_pm_attach.tmp"; }
 
         my (%rem_attachments);
-        for my $aa ( ( $INFO{'next'} || 0 ) .. ( @attachments - 1 ) ) {
+        for my $aa ( ( $INFO{'next'} || 0 ) .. $#attachments ) {
             my $size = sprintf '%.2f',
               ( ( -s "$pmuploaddir/$attachments[$aa]" ) / 1024 );
-            if ( $size <= $pmmaxsizeattach ) {
+            if ( $pmmaxsizeattach > 0 && $size <= $pmmaxsizeattach ) {
 
                 # If the attachment is not too big
                 $info .= qq~<br />$attachments[$aa] = $size KB~;
@@ -1379,9 +1361,10 @@ qq~$adminurl?action=removebigpmattachments;pmmaxsizeattach=$pmmaxsizeattach;next
     fclose(FILE);
     unlink "$vardir/rem_big_pm_attach.tmp";
 
-    fopen( FILE, ">$vardir/maxpmattachsize.txt" );
-    print {FILE} $pmmaxsizeattach or croak "$croak{'print'} FILE";
-    fclose(FILE);
+    $settings{'pmmaxsizeattach'} = $pmmaxsizeattach;
+
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
 
     automaintenance('off');
 
@@ -1400,8 +1383,8 @@ sub RemovePMAttachments {
 
     if ( !%{$ThreadHashref} ) { return $count; }
 
-    fopen( ATM, "+<$vardir/pm.attachments", 1 )
-      || fatal_error( 'cannot_open', "$vardir/pm.attachments", 1 );
+    fopen( ATM, '+<Variables/pmattachments.db', 1 )
+      || fatal_error( 'cannot_open', 'Variables/pmattachments.db', 1 );
     seek ATM, 0, 0;
     my @pmAttachments = <ATM>;
     truncate ATM, 0;
@@ -1450,7 +1433,7 @@ sub FullRebuildPMAttachments {
 
     automaintenance('on');
 
-    fopen( ATM, "$vardir/pm.attachments" );
+    fopen( ATM, '<Variables/pmattachments.db' );
     @pm_attach = <ATM>;
     fclose(ATM);
     for my $pmattach ( @pm_attach ) {
@@ -1473,7 +1456,7 @@ sub FullRebuildPMAttachments {
     @newattachments = <NEWATM>;
     fclose(NEWATM);
 
-    fopen( ATM, ">$vardir/pm.attachments" );
+    fopen( ATM, '>Variables/pmattachments.db' );
     print {ATM}  @newattachments  or croak "$croak{'print'} ATM";
     fclose(ATM);
     unlink "$vardir/newpmattachments.tmp";
@@ -1490,7 +1473,7 @@ sub RemoveGhostPMAttach {
 
     $yymain .= qq~<b>$fatxt{'62a'}</b><br /><br />~;
 
-    fopen( ATM, "$vardir/pm.attachments" );
+    fopen( ATM, '<Variables/pmattachments.db' );
     my @attachmentstxt = <ATM>;
     fclose(ATM);
 

@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $printpagepmver = 'YaBB 2.7.00 $Revision$';
@@ -488,7 +488,7 @@ sub Print {
             # store all downloadcounts in variable
             if ( !%attach_count ) {
                 my ( $atfile, $atcount );
-                fopen( ATM, "$vardir/attachments.txt" );
+                fopen( ATM, '<Variables/attachments.db' );
                 while (<ATM>) {
                     (
                         undef, undef, undef,   undef, undef,

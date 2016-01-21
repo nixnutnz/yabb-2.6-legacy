@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $movesplitsplicepmver = 'YaBB 2.7.00 $Revision$';
@@ -930,8 +930,8 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
     }
     if ($attachments) {
         my ( @newattachments, %attachments );
-        fopen( ATM, "<$vardir/attachments.txt", 1 )
-          or fatal_error( 'cannot_open', "$vardir/attachments.txt", 1 );
+        fopen( ATM, '<Variables/attachments.db', 1 )
+          or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
         my @attach = <ATM>;
         fclose(ATM);
         for (@attach) {
@@ -986,8 +986,8 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
             }
             $mreplies++;
         }
-        fopen( FATM, ">$vardir/attachments.txt" )
-          or fatal_error( 'cannot_open', "$vardir/attachments.txt" );
+        fopen( FATM, '>Variables/attachments.db' )
+          or fatal_error( 'cannot_open', 'Variables/attachments.db' );
             print {FATM}
             sort { ( split /[|]/xsm, $a, 8 )[6] <=> ( split /[|]/xsm, $b, 8 )[6] }
             @newattachments or croak "$croak{'print'} ATM";

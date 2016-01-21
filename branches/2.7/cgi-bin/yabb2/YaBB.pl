@@ -112,8 +112,8 @@ $yyfreespace =
     : q{}
   );
 
-if ( -e "$vardir/gmodsettings.txt" && $iamgmod ) {
-    require "$vardir/gmodsettings.txt";
+if ( $iamgmod ) {
+    require Variables::Gmodset;
 }
 if ( !$masterkey ) {
     if (
@@ -160,8 +160,8 @@ guard();
 if ($referersecurity) { referer_check(); }
 
 if ( $regtype == 1 || $regtype == 2 ) {
-    $inactive = -s "$memberdir/memberlist.inactive";
-    $approve = -s "$memberdir/memberlist.approve";
+    $inactive = -s "Variables/meminactive.db";
+    $approve = -s "Variables/memapprove.db";
     if ( $inactive > 2 ) {
         RegApprovalCheck();
         activation_check();

@@ -25,16 +25,15 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('Sessions');
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
-if ( -e "$vardir/iplookup.urls" ) {
-    fopen( IPLOOKUP, "$vardir/iplookup.urls" ) || fatal_error( 'cannot_open', 'iplookup.urls', 1 );
-    while (<IPLOOKUP>) {
-        chomp;
-        $iplookup_urls .= qq~$_\n~;
-        if ( $iplookup_urls !~ /&(.*amp;)/gsm ) {
-            $iplookup_urls =~ s/&/&amp;/gxsm;
-        }
+my @iplookup_urls = sort keys %iplookup;
+$iplookup_urls = q{};
+for $i (@iplookup_urls) {
+    if ( $iplookup{$i} !~ /&(.*amp;)/gsm ) {
+        $iplookup{$i} =~ s/&/&amp;/gxsm;
     }
-    fclose(IPLOOKUP);
+    $j = $i;
+    $i =~ s/\ /_/xsm;
+    $iplookup_urls .= qq~$i|$iplookup{$j}\n~;
 }
 
 if ($regcheck) {
@@ -286,16 +285,16 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
 # Routine to save them
 sub SaveSettings {
     my %settings = @_;
-
+    my $newset = q{};
     for my $iplookup_url ( split /\s+/sm, $settings{'iplookup_urls'} ) {
         if ( $iplookup_url =~ /:\/\//xsm && $iplookup_url !~ /http(s|):\/\//xsm ) {
             fatal_error('invalid_value', $iplookup_url . $admin_txt{'iplookup_protocols'});
         }
+        @ipset = split /[|]/xsm, $iplookup_url;
+        $ipset[0] =~ s/\ /_/xsm;
+        $newset .= qq~'$ipset[0]' => '$ipset[1]',\n~;
     }
-
-    fopen( IPLOOKUP, ">$vardir/iplookup.urls" );
-    print {IPLOOKUP} $settings{'iplookup_urls'} or croak "$croak{'print'} IPLOOKUP";
-    fclose(IPLOOKUP);
+    $settings{'iplookup'} = $newset;
 
     if (   length $settings{'masterkey'} < 8
         || length $settings{'masterkey'} > 24 )

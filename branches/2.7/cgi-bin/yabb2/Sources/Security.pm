@@ -15,7 +15,7 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $securitypmver = 'YaBB 2.7.00 $Revision$';
@@ -172,7 +172,7 @@ sub is_admin_or_gmod {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
 
     if ( $iamgmod && $action ne q{} ) {
-        require "$vardir/gmodsettings.txt";
+        require Variables::Gmodset;
         $page = $INFO{'page'};
         my @pages = @{$gmod_access2{'newsettings'}};
         my @pagesb = @{$gmod_access2{'newsettings2'}};
@@ -189,7 +189,7 @@ sub is_admin_or_gmod_or_fmod {
     if ( !$iamadmin && !$iamgmod && !$iamfmod ) { fatal_error('no_access'); }
 
     if ( $iamgmod && $action ne q{} ) {
-        require "$vardir/gmodsettings.txt";
+        require Variables::Gmodset;
         if (   $gmod_access{"$action"} ne 'on'
             && $gmod_access2{"$action"} ne 'on' )
         {
@@ -213,7 +213,7 @@ sub banning {
             fatal_error( 'banned',
                 "$register_txt{'678'}$register_txt{'430'}!" );
         }
-        fopen( LOG, ">>$vardir/ban_log.txt" );
+        fopen( LOG, ">>$vardir/ban.log" );
         print {LOG} "$date|$bantry\n" or croak "$croak{'print'} LOG";
         fclose(LOG);
         ($banner, undef ) = split /\ \(/xsm, $banned[3];
@@ -246,8 +246,8 @@ sub banning {
         }
         return $tmb;
     };
-    fopen( BAN, "<$vardir/banlist.txt" )
-      or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN, "<$vardir/banlist.db" )
+      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     @banlist = <BAN>;
     for my $i (@banlist) {
         chomp $i;
@@ -290,8 +290,7 @@ sub check_banlist {
 
     my ( $e_ban, $ip_ban, $u_ban ) = @_;
     my $ban_rtn;
-    if ( !-e "$vardir/banlist.txt" ) {
-
+    if ( !-e "$vardir/banlist.db" ) {
         if ( $e_ban && $email_banlist ) {
             for ( split /,/xsm, $email_banlist ) {
                 if ( $_ eq $e_ban ) { $ban_rtn .= 'E'; last; }
@@ -309,8 +308,8 @@ sub check_banlist {
         }
     }
     else {
-        fopen( BAN, "$vardir/banlist.txt" )
-          or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN, "$vardir/banlist.db" )
+          or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
         @banlist = <BAN>;
         fclose(BAN);
         chomp @banlist;
@@ -604,26 +603,20 @@ sub CatAccess {
 sub email_domain_check {
     ### Based upon Distilled Email Domains mod by AstroPilot ###
     my ($checkdomain) = @_;
-    if ($checkdomain) {
-        if ( -e "$vardir/email_domain_filter.txt" ) {
-            require "$vardir/email_domain_filter.txt";
-        }
-        if ($bdomains) {
-            for ( split /,/xsm, $bdomains ) {
-                $my_x = $_;
-                if    ( $_ !~ /\@/xsm )  { $_ = "\@$_"; }
-                elsif ( $_ !~ /^\./xsm ) { $_ = ".$_"; }
-                @my_ch   = split /\./xsm, $my_x;
-                @my_ch_e = split /\./xsm, $checkdomain;
-                if ( $checkdomain =~ m/$_/ism
+    if (@bdomains) {
+        for ( @bdomains ) {
+            $my_x = $_;
+            if    ( $_ !~ /\@/xsm )  { $_ = "\@$_"; }
+            elsif ( $_ !~ /^\./xsm ) { $_ = ".$_"; }
+            @my_ch   = split /\./xsm, $my_x;
+            @my_ch_e = split /\./xsm, $checkdomain;
+            if ( $checkdomain =~ m/$_/ism
                     || ( $my_ch[0] eq q{} && $my_ch[-1] eq $my_ch_e[-1] ) )
-                {
-                    fatal_error( 'domain_not_allowed', "$_" );
-                }
+            {
+                fatal_error( 'domain_not_allowed', "$_" );
             }
         }
     }
-    ### Distilled Email Domains mod end ###
     return;
 }
 
@@ -666,15 +659,15 @@ sub ipban_update {
         $ihave = 0;
         $ehave = 0;
         $uhave = 0;
-        fopen( BAN, "<$vardir/banlist.txt" )
-          or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN, "<$vardir/banlist.db" )
+          or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
         my @myban = <BAN>;
         chomp @myban;
         fclose(BAN);
 
     if ( $unban == 1 ) {
-        fopen( BAN2, ">$vardir/banlist.txt" )
-          or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN2, ">$vardir/banlist.db" )
+          or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
         for my $i (@myban) {
             @banned = split /[|]/xsm, $i;
             if (   $ban eq $banned[1]
@@ -734,7 +727,7 @@ sub ipban_update {
             $add_ban =
               qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~;
         }
-        fopen( BAN2, ">>$vardir/banlist.txt" ) or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN2, ">>$vardir/banlist.db" ) or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
         print {BAN2} $add_ban or croak "$croak{'print'} BAN2";
         fclose(BAN2);
     }
@@ -808,8 +801,8 @@ sub ban_page_b {
         $ihave = 0;
         $ehave = 0;
         $uhave = 0;
-        fopen( BAN, "<$vardir/banlist.txt" )
-          or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN, "<$vardir/banlist.db" )
+          or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
         my @myban = <BAN>;
         chomp @myban;
         fclose(BAN);
@@ -901,7 +894,7 @@ sub ban_page_b {
                     $message, q{}, $emailcharset
                 );
             }
-        fopen( BAN2, ">>$vardir/banlist.txt" ) or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN2, ">>$vardir/banlist.db" ) or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
         print {BAN2} $add_ban or croak "$croak{'print'} BAN2";
         fclose(BAN2);
     }

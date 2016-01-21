@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
@@ -39,13 +39,13 @@ sub checkspace {
 
         # error trapping if output fails. The word byte should be in the line
         if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/xsm ) {
-            $FreeBytes = $3 - 100_000;
+            $FreeBytes = $3 - 100000;
         }    # 100000 bytes reserve
-        if ( $FreeBytes >= 1_073_741_824 ) {
+        if ( $FreeBytes >= 1073741824 ) {
             $yyfreespace =
               sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 * 1024 ) ) . ' GB';
         }
-        elsif ( $FreeBytes >= 1_048_576 ) {
+        elsif ( $FreeBytes >= 1048576 ) {
             $yyfreespace =
               sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 ) ) . ' MB';
         }
@@ -81,7 +81,7 @@ sub checkspace {
           isselected( $i == $enable_quota
               || ( $ds && $quota[$i] =~ /^$ds/sm ) );
         $quota_select .= q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
-        for my $i ( 2 .. ( @quota - 1 ) ) {
+        for my $i ( 2 .. $#quota ) {
             $quota[$i] =~ s/^ +//sm;
             $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
             $quota_select .=

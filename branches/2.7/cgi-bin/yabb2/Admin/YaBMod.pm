@@ -1,6 +1,6 @@
 ###############################################################################
 # YaBMod.pm - Yet another BoardMod                                            #
-# $Date: 06.01.16 $                                                           #                                                           #
+# $Date: 06.01.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -15,7 +15,7 @@
 # use strict;
 #use warnings;
 #no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 $yabmodpmver = 'YaBMod.pm 0.6 Alpha for YaBB 2.7.00';
@@ -1109,7 +1109,7 @@ sub YaBMuploadmod {
 
         #Download zip or mod file with the Modul LWP::Simple
         #if ( !$use_wget ) {
-        eval {use LWP::Simple;};
+        eval {require LWP::Simple;};
 
         $rc = getstore( $mod_url, $place_this_mod );
         $yymain .= qq~LWP::Simple $yabmtxt{'11'} ($rc)<br />~;

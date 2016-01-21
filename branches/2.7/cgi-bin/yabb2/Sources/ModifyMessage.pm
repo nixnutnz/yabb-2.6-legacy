@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.7.00';
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 
 $modifymessagepmver = 'YaBB 2.7.00 $Revision$';
 @modifymessagepmmods = ();
@@ -564,7 +564,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     else                          { $useredit_ip = "$mip $user_ip"; }
 
     my ( @attachments, %post_attach, %del_filename );
-    fopen( ATM, "+<$vardir/attachments.txt" );
+    fopen( ATM, "+<$vardir/attachments.db" );
     seek ATM, 0, 0;
     while (<ATM>) {
         if ( $_ =~ /^(\d+)\|(\d+)\|.+\|(.+)\|\d+\s+/sm ) {
@@ -778,7 +778,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
         }
     }
 
-    # Print attachments.txt
+    # Print attachments.db
     truncate ATM, 0;
     seek ATM, 0, 0;
     print {ATM} sort { ( split /[|]/xsm, $a )[6] <=> ( split /[|]/xsm, $b )[6] }

@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $maintenancepmver = 'YaBB 2.7.00 $Revision$';
@@ -28,7 +28,7 @@ sub RebuildMessageIndex {
     # Set up the multi-step action
     $time_to_jump = time() + $max_process_time;
 
-    require "$boardsdir/forum.master";
+    get_forum_master();
 
     my %rebuildboards;
     if ( !$INFO{'rebuild'} ) {
@@ -388,7 +388,7 @@ sub AdminBoardRecount {
         @topiclist = sort grep { /^\d+\.txt$/xsm } readdir TXT;
         closedir TXT;
 
-        for my $i ( $topicnum .. ( @topiclist - 1 ) ) {
+        for my $i ( $topicnum .. $#topiclist ) {
             ( $filename, undef ) = split /\./xsm, $topiclist[$i];
 
             fopen( MSG, "$datadir/$filename.txt" );
@@ -459,7 +459,7 @@ sub AdminBoardRecount {
     }
 
     # Get the board list from the forum.master file
-    require "$boardsdir/forum.master";
+    get_forum_master();
     for ( keys %board ) { BoardCountTotals($_); }
 
     $yymain .= qq~<b>$admin_txt{'503'}</b>~;
@@ -540,7 +540,7 @@ sub RebuildMemList {
 
     # Loop through each -rest- member
     my @adminlst = ();
-    require "$vardir/gmodsettings.txt";
+    require Variables::Gmodset;
     while (@contents) {
         my $member = pop @contents;
         chomp $member;
@@ -588,7 +588,7 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
     fopen( MEMBERLIST, ">>$memberdir/memberlist.txt.rebuild" )
       || fatal_error( 'cannot_open', "$memberdir/memberlist.txt.rebuild", 1 );
     for ( keys %memberlist ) {
-        print {MEMBERLIST} "$_\t$memberlist{$_}\n"
+        print {MEMBERLIST} "\$memberlist{'$_'} = '$memberlist{$_}';\n"
           or croak "$croak{'print'} MEMBERLIST";
     }
     fclose(MEMBERLIST);
@@ -596,14 +596,15 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
     fopen( MEMBERINFO, ">>$memberdir/memberinfo.txt.rebuild" )
       || fatal_error( 'cannot_open', "$memberdir/memberinfo.txt.rebuild", 1 );
     for ( keys %memberinf ) {
-        print {MEMBERINFO} "$_\t$memberinf{$_}\n"
+        print {MEMBERINFO} "\$memberinf{'$_'} = '$memberinf{$_}';\n"
           or croak "$croak{'print'} MEMBERINFO";
     }
     fclose(MEMBERINFO);
 
 ## For New Backup permissions ##
-    fopen ( ADMINLST, ">$vardir/adminlst.txt" );
-    print {ADMINLST} join "\n", @adminlst or croak "$croak{'print'} ADMINLST";
+    my $newadminlist = join "\n", @adminlst;
+    fopen ( ADMINLST, ">$vardir/adminlst.db" );
+    print {ADMINLST} $newadminlist or croak "$croak{'print'} ADMINLST";
     fclose(ADMINLST);
 
     # If it is completely done ...
@@ -611,11 +612,7 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
         %memberlist = ();
 
         # Sort memberlist.txt
-        fopen( MEMBERLIST, "$memberdir/memberlist.txt.rebuild" )
-          || fatal_error( 'cannot_open', "$memberdir/memberlist.txt.rebuild",
-            1 );
-        my %memberlist = map { split /\t/xsm, $_ } <MEMBERLIST>;
-        fclose(MEMBERLIST);
+        require "$memberdir/memberlist.txt.rebuild";
 
         fopen( MEMBERLIST, ">$memberdir/memberlist.txt.rebuild" )
           || fatal_error( 'cannot_open', "$memberdir/memberlist.txt.rebuild",
@@ -625,16 +622,16 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
             keys %memberlist
           )
         {
-            print {MEMBERLIST} "$_\t$memberlist{$_}"
+            print {MEMBERLIST} "\$memberlist{'$_'} = '$memberlist{$_}';\n"
               or croak "$croak{'print'} MEMBERLIST";
         }
         fclose(MEMBERLIST);
 
         # Move the updated copy back
         rename "$memberdir/memberlist.txt.rebuild",
-            "$memberdir/memberlist.txt";
+            "Variables/Memberlist.pm";
         rename "$memberdir/memberinfo.txt.rebuild",
-            "$memberdir/memberinfo.txt";
+            "Variables/Memberinfo.pm";
         unlink "$memberdir/memberrest.txt.rebuild";
         unlink "$memberdir/membercalc.txt.rebuild";
 

@@ -71,12 +71,6 @@ require Sources::DateTime;
 #############################################
 $px = 'px';
 
-# Conversion was rewritten and fixed for xx-large
-# forums by Detlef Pilzecker (deti) in June 2008
-
-# The 'our' function is available since Perl v5.6.0
-# If your Perl version is lower, then comment the 'our'-lines out and use this:
-# use vars qw(@categoryorder,@catboards,@catdata,@boarddata,@allboards,%catinfo,%cat,%board,%boarddata,$catfile,$boardfile,$key,$value,$cnt);
 our ( @categoryorder, @catboards, @catdata, @boarddata, @allboards );
 our ( %catinfo,       %cat,       %board,   %boarddata, %fixed_users );
 our ( $catfile,       $boardfile, $key,     $value,     $cnt );
@@ -113,7 +107,7 @@ if ( -e "$vardir/Setup.lock" ) {
           $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <form action="$set_cgi?action=prepare" id="prepare" method="post">
         <table class="cs_thin pad_4px">
             <colgroup>
@@ -200,11 +194,11 @@ oFormObject.elements["convvardir"].value = dirval + "/Variables";
         $yyuname = q{};
 
         $convlang      = $FORM{'convertlang'};
-        $convertdir    = $FORM{'convertdir'} || q~Convert~;
+        $convertdir    = $FORM{'convertdir'}    || q~Convert~;
         $convboardsdir = $FORM{'convboardsdir'} || qq~$convertdir/Boards~;
-        $convmemberdir = $FORM{'convmemberdir'} || qq~convertdir/Members~;
-        $convdatadir   = $FORM{'convdatadir'} || qq~$convertdir/Messages~;
-        $convvardir    = $FORM{'convvardir'} || qq~$convertdir/Variables~;
+        $convmemberdir = $FORM{'convmemberdir'} || qq~$convertdir/Members~;
+        $convdatadir   = $FORM{'convdatadir'}   || qq~$convertdir/Messages~;
+        $convvardir    = $FORM{'convvardir'}    || qq~$convertdir/Variables~;
 
         if ( !-d "$convboardsdir" ) {
             setup_fatal_error( "Directory: $convboardsdir", 1 );
@@ -248,7 +242,7 @@ EOF
           . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
         <table class="cs_thin pad_4px">
             <colgroup>
             <col style="width:5%" />
@@ -304,7 +298,7 @@ EOF
           . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
         <col style="width:5%" />
@@ -372,7 +366,7 @@ EOF
             }
             $yymain .= qq~
     <br />
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
         <col style="width:5%" />
@@ -422,7 +416,7 @@ EOF
               $INFO{'mtotal'} *
               100 );
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -512,7 +506,7 @@ EOF
           . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -585,7 +579,7 @@ EOF
         my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -664,7 +658,7 @@ EOF
           . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -741,7 +735,7 @@ EOF
           $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -834,7 +828,7 @@ EOF
           . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -874,17 +868,14 @@ EOF
         </tr>
     </table>
     </div>
-
     <script type="text/javascript">
             function PleaseWait() {
                   document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\', click here on STOP before this red message appears again on next page.</b></span>';
             }
-
             function membtick() {
-                   PleaseWait();
-                   location.href="$set_cgi?action=cleanup;st=$INFO{'st'}";
+                PleaseWait();
+                location.href="$set_cgi?action=cleanup;st=$INFO{'st'}";
             }
-
             setTimeout("membtick()",300000);
     </script>
             ~;
@@ -916,7 +907,7 @@ EOF
           $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -979,22 +970,18 @@ EOF
         </tr>
     </table>
     </div>
-
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Date &amp; Time\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
             }
-
             function stoptick() { stop = 1; }
-
             stop = 0;
             function membtick() {
-                  if (stop != 1) {
-                        PleaseWait();
-                        location.href="$set_cgi?action=dates;st=$INFO{'st'};timeconv=$INFO{'timeconv'};pollfile=$INFO{'pollfile'};totalpolls=$INFO{'totalpolls'};polledfile=$INFO{'polledfile'}";
-                  }
+                if (stop != 1) {
+                    PleaseWait();
+                    location.href="$set_cgi?action=dates;st=$INFO{'st'};timeconv=$INFO{'timeconv'};pollfile=$INFO{'pollfile'};totalpolls=$INFO{'totalpolls'};polledfile=$INFO{'polledfile'}";
+                }
             }
-
             setTimeout("membtick()",2000);
       </script>
             ~;
@@ -1064,9 +1051,9 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$initmail|$fir
         if ( $INFO{'clean'} == 2 ) { MyMemberIndex(); }
         if ( $INFO{'clean'} == 3 ) { MyMailNotify(); }
         if ( $INFO{'clean'} == 4 ) { FixNopost(); }
-        if ($convlang) {
-            FixLang();
-        }
+        unlink "$memberdir/memberlist.txt";
+        unlink "$memberdir/memberinfo.txt";
+        unlink "$memberdir/member.ttl";
 
         if ( $INFO{'tmp_firstforum'} > $INFO{'firstforum'} ) {
             $setforumstart = timeformat( $INFO{'tmp_firstforum'} );
@@ -1092,6 +1079,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
                 <form action="$boardurl/ConvertLang.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to Convert Language" />
                     <input type="hidden" name="formsession" value="$formsession" />
+                    <input type="hidden" name="upfrom" value="1" />
                 </form>~;
         }
         else {
@@ -1108,7 +1096,7 @@ qq~<br /><br />There were some illegal user IDs. These have been changed. Please
         }
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -1209,7 +1197,7 @@ $convset
           $NavLink1 . $NavLink2 . $NavLink3 . $NavLink4 . $NavLink5 . $NavLink6;
 
         $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <colgroup>
             <col style="width:5%" />
@@ -2250,10 +2238,8 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
 # Message Conversion ##
 
 sub ConvertMessages {
-    require "$boardsdir/forum.master";
-
+    get_forum_master();
     my $ctbtime = ctbtime($date);
-
     my %stickies;
 
     if ( open $DATADIR, '<', "$convboardsdir/sticky.stk" ) {
@@ -2355,7 +2341,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
                 $lastposter =
                   $musername eq 'Guest' ? "Guest-$name" : $musername;
                 my @msg = split /[|]/xsm, $temparray[-1];
-#				($subject|$name|$email|$mdate|$musername|$icon|$dummy|$user_ip|$message|$ns|$editdate|$editby|$attachment)    
+#               ($subject|$name|$email|$mdate|$musername|$icon|$dummy|$user_ip|$message|$ns|$editdate|$editby|$attachment)
                 $msgdat = ctbtime($msg[3]);
                 my $newctb = <<NEW;
 ### ThreadID: $thread, LastModified: $msgdat ###
@@ -2645,6 +2631,20 @@ sub MyReCountTotals {
 }
 
 sub MyMemberIndex {
+    open $MEMDIR, '<', "$convmemberdir/memberlist.txt"
+      or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
+    my @memlist = <$MEMDIR>;
+    close $MEMDIR or croak 'cannot close FILE';
+    my $memlist = q{};
+    for (@memlist) {
+        my @nml = split /\t/xsm, $_;
+        $memlist .= "\$memberlist{'$nml[0]'} = '$nml[1]';\n";
+    }
+    open $MEMDIRLST, '>', "$vardir/Memberlist.pm"
+      or setup_fatal_error( "$maintext_23 $vardir/Memberlist.pm:", 1 );
+    print {$MEMDIRLST} $memlist or croak 'cannot print MEMDIR';
+    close $MEMDIRLST or croak 'cannot close MEMDIR';
+
     if ( $INFO{'memb_index'} > 0 ) {
         ManageMemberlist('load');
         ManageMemberinfo('load');
@@ -2717,7 +2717,7 @@ sub MyMemberIndex {
 
         $memberlist{$member} = sprintf '%010d', ${ $uid . $member }{'regtime'};
         $memberinf{$member} =
-qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'position'}|${$uid.$member}{'postcount'}~;
+qq~\['${$uid.$member}{'realname'}','${$uid.$member}{'email'}', '${$uid.$member}{'position'}', '${$uid.$member}{'postcount'}'\]~;
 
         if ( time() > $time_to_jump && ( $j + 1 ) < $totalmemb ) {
             ManageMemberlist('save');
@@ -2736,20 +2736,21 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
     $INFO{'total_memb'} = $totalmemb;
     $INFO{'clean'}      = 3;
 
-    open $MEMBERLISTREAD, '<', "$memberdir/memberlist.txt"
-      || setup_fatal_error( "$maintext_23 $memberdir/memberlist.txt: ", 1 );
-    my @num = <$MEMBERLISTREAD>;
-    close $MEMBERLISTREAD or croak 'cannot close MEMBERLISTREAD';
-    my $membertotal = @num;
+    require Variables::Memberlist;
+    my $membershiptotal = keys %memberlist;
+    while (($key, $value) = each %memberlist) {
+        $hash2{$value}=$key;
+    }
+    my @nkey = sort keys %hash2;
+    my $latestmember = $hash2{$nkey[-1]};
+    undef %hash2;
+    undef @nkey;
 
-    ( $latestmember, undef ) = split /\t/xsm, $num[-1], 2;
-
-    open $MEMTTL, '>', "$memberdir/members.ttl"
-      || setup_fatal_error( "$maintext_23 $memberdir/members.ttl: ", 1 );
-    print {$MEMTTL} qq~$membertotal|$latestmember~
-      or croak "cannot print $memberdir/members.ttl";
-    close $MEMTTL or croak 'cannot close MEMTTL';
-
+    open $TTL, '>',"Variables/memttl.db"
+          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
+    print {$TTL} qq~$membershiptotal|$latestmember~
+          or croak "$croak{'print'} TTL";
+    close $TTL;
     if ( $INFO{'tmp_firstforum'} > $INFO{'firstforum'} || $siglength > 200 ) {
         SetInstall2();
     }
@@ -3056,8 +3057,8 @@ sub tempstarter {
 
     # Requirements and Errors
     require Variables::Settings;
-    if ( -e "$vardir/convSettings.txt" ) {
-        require "$vardir/convSettings.txt";
+    if ( -e "$vardir/ConvSettings.txt" ) {
+        require "$vardir/ConvSettings.txt";
     }
     else { $convertdir = './Convert'; }
 
@@ -3141,10 +3142,10 @@ sub FoundConvLock {
     $formsession = cloak("$mbname$username");
 
     $yymain = qq~
-    <div class="bordercolor borderbox">
+    <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="ttabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
@@ -3251,8 +3252,8 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     $yyuname =
       $iamguest ? q{} : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
 
-    if ( $enable_news && -e "$vardir/news.txt" ) {
-        open $NEWS, '<', "$vardir/news.txt" or croak 'cannot open NEWS';
+    if ( $enable_news && -e "$langdir/English/news.txt" ) {
+        open $NEWS, '<', "$langdir/English/news.txt" or croak 'cannot open NEWS';
         @newsmessages = <$NEWS>;
         close $NEWS or croak 'cannot close NEWS';
     }
@@ -3267,7 +3268,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
         }
         if (   $curline =~ m/{yabb\ news}/xsm
             && $enable_news
-            && -e "$vardir/news.txt" )
+            && -e "$langdir/English/news.txt" )
         {
             srand;
             if ( $shownewsfader == 1 ) {
@@ -3284,7 +3285,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                         var fcontent = new Array();
                         var begintag = "";
                     ~;
-                open $NEWS, '<', "$vardir/news.txt"
+                open $NEWS, '<', "$langdir/English/news.txt"
                   or croak 'cannot open NEWS';
                 @newsmessages = <$NEWS>;
                 close $NEWS or croak 'cannot close NEWS';
@@ -3380,11 +3381,11 @@ sub SetInstall2 {
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
     if ( $convertdir ne './Convert') {
-		if ( -e "$convertdir/Settings.pl" ) {
-			$setfile = "$convertdir/Settings.pl";
-		}
-		elsif (-e "$convertdir/Settings.cgi") {
-		    $setfile = "$convertdir/Settings.cgi";
+        if ( -e "$convertdir/Settings.pl" ) {
+            $setfile = "$convertdir/Settings.pl";
+        }
+        elsif (-e "$convertdir/Settings.cgi") {
+            $setfile = "$convertdir/Settings.cgi";
         }
     }
     elsif ( -e "$convvardir/Settings.pl" ) {
@@ -3393,15 +3394,15 @@ sub SetInstall2 {
     elsif ( -e "$convvardir/Settings.cgi" ) {
         $setfile = "$convvardir/Settings.cgi";
     }
-	require $setfile;
-    $settings_file_version = 'YaBB 1';
+    require $setfile;
+    $settings_file_version = 'YaBB 2.7.00';
     $oldname   = $mbname;
         $oldemail  = $webmaster_email;
         $oldlang   = $language;
         $oldtime   = $timeselected;
         $oldoffset = $timeoffset;
-	($oldlang, undef) = split /\./xsm, $oldlang;
-	$oldlang = ucfirst $oldlang;
+    ($oldlang, undef) = split /\./xsm, $oldlang;
+    $oldlang = ucfirst $oldlang;
     if ($cookietsort) {
         ( undef, $rancook ) = split /\-/xsm, $cookietsort;
     }
@@ -3465,126 +3466,6 @@ sub SetInstall2 {
     SaveSettingsTo('Settings.pm');
 
     $ret = 1;
-    return;
-}
-
-sub FixLang {
-    open $FILE, '>',
-      "$convertlang/Boards/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Boards is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE;
-    opendir $BDIR,
-      "$convertlang/Boards"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Boards is not set correctly! Cannot read this directory! ",
-        1
-      );
-    @boardlist = grep -f "$convertlang/Boards/$_", readdir $BDIR;
-    closedir $BDIR;
-
-    open $FILE, '>',
-      "$convertlang/Members/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Members is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE;
-    opendir $MBDIR,
-      "$convertlang/Members"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Members is not set correctly! Cannot read this directory! ",
-        1
-      );
-    @memblist = grep -f "$convertlang/Members/$_", readdir $MBDIR;
-    closedir $MBDIR;
-
-    open $FILE, '>',
-      "$convertlang/Messages/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Messages is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE;
-    opendir $MSDIR,
-      "$convertlang/Messages"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Messages is not set correctly! Cannot read this directory! ",
-        1
-      );
-    @msglist = grep -f "$convertlang/Messages/$_", readdir $MSDIR;
-    closedir $MSDIR;
-
-    open $FILE, '>',
-      "$convertlang/Variables/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Variables is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE;
-    opendir $VDIR,
-      "$convertlang/Variables"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Variables is not set correctly! Cannot read this directory! ",
-        1
-      );
-    @varlist = grep -f "$convertlang/Variables/$_", readdir $VDIR;
-    closedir $VDIR;
-
-    for my $file (@boardlist) {
-        unlink "$convertlang/Boards/$file";
-    }
-    for my $file (@memblist) {
-        unlink "$convertlang/Members/$file";
-    }
-    for my $file (@msglist) {
-        unlink "$convertlang/Messages/$file";
-    }
-    for my $file (@varlist) {
-        unlink "$convertlang/Variables/$file";
-    }
-
-    require File::Copy;
-    File::Copy->import(copy);
-    opendir $BDIR, "$boardsdir"
-      or setup_fatal_error( "Cannot open $boardsdir! ", 1 );
-    @bdlist = grep -f "$boardsdir/$_", readdir $BDIR;
-    closedir $BDIR;
-    for (@bdlist) {
-        copy( "$boardsdir/$_", "$convertlang/Boards/$_" )
-          or croak "Cannot copy $_";
-    }
-    opendir $MSDIR, "$datadir"
-      or setup_fatal_error( "Cannot open $datadir! ", 1 );
-    @mslist = grep -f "$datadir/$_", readdir $MSDIR;
-    closedir $MSDIR;
-    for (@mslist) {
-        copy( "$datadir/$_", "$convertlang/Messages/$_" )
-          or croak "Cannot copy $_";
-    }
-    opendir $MDIR, "$memberdir"
-      or setup_fatal_error( "Cannot open $memberdir! ", 1 );
-    @mlist = grep -f "$memberdir/$_", readdir $MDIR;
-    closedir $MDIR;
-    for (@mlist) {
-        copy( "$memberdir/$_", "$convertlang/Members/$_" )
-          or croak "Cannot copy $_";
-    }
-    opendir $VDIR, "$vardir"
-      or setup_fatal_error( "Cannot open $vardir! ", 1 );
-    @varlist = grep -f "$vardir/$_", readdir $VDIR;
-    closedir $VDIR;
-    for (@varlist) {
-        copy( "$vardir/$_", "$convertlang/Variables/$_" )
-          or croak "Cannot copy $_";
-    }
-
     return;
 }
 

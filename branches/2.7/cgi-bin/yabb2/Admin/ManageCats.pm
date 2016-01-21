@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $managecatspmver = 'YaBB 2.7.00 $Revision$';
@@ -314,7 +314,7 @@ sub ReorderCats2 {
     get_forum_master();
     if ($moveitem) {
         if ( $FORM{'moveup'} ) {
-            for my $i ( 0 .. ( @categoryorder - 1 ) ) {
+            for my $i ( 0 .. $#categoryorder ) {
                 if ( $categoryorder[$i] eq $moveitem && $i > 0 ) {
                     $j                 = $i - 1;
                     $categoryorder[$i] = $categoryorder[$j];
@@ -324,7 +324,7 @@ sub ReorderCats2 {
             }
         }
         elsif ( $FORM{'movedown'} ) {
-            for my $i ( 0 .. ( @categoryorder - 1 ) ) {
+            for my $i ( 0 .. $#categoryorder ) {
                 if ( $categoryorder[$i] eq $moveitem && $i < $#categoryorder ) {
                     $j                 = $i + 1;
                     $categoryorder[$i] = $categoryorder[$j];

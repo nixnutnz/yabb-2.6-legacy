@@ -12,9 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
-use CGI qw(:standard);
+use CGI::Carp qw(fatalsToBrowser);
+use CGI;
 use Time::Local;
+use Time::gmtime;
 our $VERSION = '2.7.00';
 
 $banpmver = 'YaBB 2.7.00 $Revision$';
@@ -28,8 +29,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 sub ipban {
     is_admin_or_gmod();
 
-    use Time::gmtime;
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN, "<$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     @banlist = <BAN>;
     fclose(BAN);
     $today = time;
@@ -245,7 +245,7 @@ sub ipban2 {
     my %seen   = ();
     my @allban = ();
 
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN, "<$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     my @oldban = <BAN>;
     fclose(BAN);
     chomp @oldban;
@@ -257,7 +257,7 @@ sub ipban2 {
         }
     }
 
-    fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN2, ">$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     for my $j (@allban) {
         print {BAN2} qq~$j\n~ or croak "$croak{'print'} UNBAN";
     }
@@ -276,7 +276,7 @@ sub ipban_add {
 
     my @banin = split /\n/xsm, $ban_in;
 
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN, "<$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     my @myban = <BAN>;
     chomp @myban;
     fclose(BAN);
@@ -304,7 +304,7 @@ sub ipban_add {
             }
         }
 
-        fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+        fopen( BAN2, ">>$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
         if ( $ja && $ihave == 0 && $ja ne '127.0.0.1' ) {
             print {BAN2}
               qq~$type|$ja|$time|${$uid.$username}{'realname'} ($username)|p|$jb|\n~
@@ -324,11 +324,11 @@ sub ban_clean {
     is_admin_or_gmod();
 
     my $time    = time;
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN, "<$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     my @myban = <BAN>;
     fclose(BAN);
     chomp @myban;
-    fopen( BAN2, ">$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN2, ">$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
 
     *time_ban = sub {
         for my $i ( 0 .. 3 ) {
@@ -363,7 +363,7 @@ sub ban_clean {
 }
 
 sub banlog {
-    fopen( BANLOG, "<$vardir/ban_log.txt" ) || fatal_error( 'cannot_open', "$vardir/ban_log.txt", 1 );
+    fopen( BANLOG, '<Variables/ban.log' ) || fatal_error( 'cannot_open', 'Variables/ban.log', 1 );
     my @mybanlog = <BANLOG>;
     chomp @mybanlog;
     fclose(BANLOG);
@@ -403,7 +403,7 @@ sub ipban_err {
     $ban =~ tr/\r//d;
     $ban =~ s/\A[\s\n]+| |[\s\n]+\Z//gsm;
     $ban =~ s/\n\s*\n/\n/gsm;
-    fopen( BAN, "<$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN, "<$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     my @myban = <BAN>;
     chomp @myban;
     fclose(BAN);
@@ -426,7 +426,7 @@ sub ipban_err {
         }
     }
 
-    fopen( BAN2, ">>$vardir/banlist.txt" ) || fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
+    fopen( BAN2, ">>$vardir/banlist.db" ) || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
     if ( $ip_ban && $ihave == 0 && $ip_ban ne '127.0.0.1' ) {
         print {BAN2} qq~I|$ip_ban|$time|${$uid.$username}{'realname'}|$lev|\n~
           or croak "$croak{'print'} BAN2";

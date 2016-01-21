@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $removeoldtopicspmver = 'YaBB 2.7.00 $Revision$';
@@ -43,16 +43,12 @@ sub RemoveOldThreads {
     $yymain .=
       qq~<br /><b>$removemess_txt{'1'} $maxdays $removemess_txt{'2'}</b><br />~;
 
-    fopen( FILE, ">$vardir/oldestmes.txt" );
-    print {FILE} $maxdays or croak "$croak{'print'} oldestmes";
-    fclose(FILE);
-
-    require "$boardsdir/forum.master";
+    get_forum_master();
     require Admin::Attachments;
 
     my @boards = sort keys %board;
     my $inp = $INFO{'nextboard'} || 0;
-    for my $j ( $inp .. ( @boards - 1 ) ) {
+    for my $j ( $inp .. $#boards ) {
         my $checkboard = $FORM{ $boards[$j] . 'check' }
           || $INFO{ $boards[$j] . 'check' };
         if ( $checkboard == 1 ) {
@@ -165,6 +161,9 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
 
     $yymain .=
 qq~<br /><b>$removemess_txt{'5'} $INFO{'total_rem_count'} $removemess_txt{'6'}.</b>~;
+    $settings{'maxdays'} = $maxdays;
+    require Admin::NewSettings;
+    SaveSettingsTo('Settings.pm', %settings);
     AdminTemplate();
     return;
 }
@@ -209,10 +208,8 @@ qq~<b>$removemess_txt{'200'} <i>$max_process_time $admin_txt{'533'}</i>.<br />
                         location.href="$adminurl?action=removeoldthreads;maxdays=$FORM{'maxdays'}$INFO{'maxdays'};keep_them=$FORM{'keep_them'}$INFO{'keep_them'};nextboard=$j;st=$INFO{'st'};nextthread=$i;total_rem_count=$total$query";
                     }
                 }
-
                 setTimeout("membtick()",2000);
             </script>
-
             ~;
 
     AdminTemplate();

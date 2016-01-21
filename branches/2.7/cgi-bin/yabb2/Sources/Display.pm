@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $displaypmver = 'YaBB 2.7.00 $Revision$';
@@ -39,14 +39,8 @@ sub Display {
         my $iambot = 0;
         my $user_host =
           ( gethostbyaddr pack( 'C4', split /\./xsm, $user_ip ), 2 )[0];
-        if ( -e "$vardir/bots.hosts" ) {
-            fopen( BOTS, "$vardir/bots.hosts" )
-              or fatal_error( 'cannot_open', "$vardir/bots.hosts", 1 );
-            my @botlist = <BOTS>;
-            fclose(BOTS);
-            chomp @botlist;
-            for (@botlist) {
-                if ( $_         =~ /(.*?)\|(.*)/xsm ) { $bot_name = $1; }
+            if ( -e "Variables/BotsHosts.pm" ) {
+                require Variables::BotsHosts;
                 if ( $user_host =~ /$bot_name/ixsm )  { $iambot   = 1; }
             }
         }
@@ -86,7 +80,6 @@ sub Display {
                 $guest_view_limit_warn = $guest_view_limit_w;
             }
         }
-    }
 
     # Get the "NEW"est Post for this user.
     my $newestpost;
@@ -847,7 +840,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
 
             # store all downloadcounts in variable
             if ( !%attach_count ) {
-                fopen( ATM, "$vardir/attachments.txt" );
+                fopen( ATM, "$vardir/attachments.db" );
                 while (<ATM>) {
                     chomp $_;
                     my (
@@ -1859,7 +1852,7 @@ sub NextPrev {
 
     my ( $countsticky, $countnosticky ) = ( 0, 0 );
     my ( @stickythreadlist, @nostickythreadlist );
-    for my $i ( 0 .. ( @threadlist - 1 ) ) {
+    for my $i ( 0 .. $#threadlist ) {
         my $threadstatus = ( split /[|]/xsm, $threadlist[$i] )[8];
         if ( $threadstatus =~ /h/ism
             && !$staff )
@@ -1882,7 +1875,7 @@ sub NextPrev {
 
     my $is = 0;
     my ( $mnum, $mdate, $datecount );
-    for my $i ( 0 .. ( @threadlist - 1 ) ) {
+    for my $i ( 0 .. $#threadlist ) {
         ( $mnum, undef, undef, undef, $mdate, undef ) =
           split /[|]/xsm, $threadlist[$i], 6;
         if ( $mnum == $name ) {

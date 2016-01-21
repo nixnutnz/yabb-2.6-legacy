@@ -777,7 +777,7 @@ sub pmsearch {
         ManageMemberinfo('load');
         my $username;
         for ( keys %memberinf ) {
-            ( $memrealname, undef ) = split /[|]/xsm, $memberinf{$_}, 2;
+            ( $memrealname, undef ) = $memberinf{$_};
             if ( $memrealname eq $search ) { $username = $_; }
         }
         $search = $username;
