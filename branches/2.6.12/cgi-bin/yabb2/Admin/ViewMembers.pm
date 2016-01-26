@@ -859,11 +859,8 @@ sub buildPages {
         </tr>
        </table>
        $sel_box
-    </div>~;
-    if ( $isgood == 1 ) {
-        $yymain .= $gmodsubmit;
-    }
-    $yymain .= q~
+    </div>
+$gmodsubmit;
     </form>~;
     }
     return;
@@ -1037,7 +1034,7 @@ sub FindMembers {
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
     AdminTemplate();
-    return;
+    return $isgood;
 }
 
 1;
