@@ -152,7 +152,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
 
     if ($enableclicklog) {
         my (@log);
-        fopen( LOG, "$vardir/clicklog.txt" );
+        fopen( LOG, "<$vardir/clicklog.txt" );
         @log = <LOG>;
         fclose(LOG);
         $yyclicks    = @log;
@@ -353,18 +353,27 @@ sub ShowClickLog {
     if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; }
     else                   { $logtimetext = $admin_txt{'698a'}; }
 
-    fopen( LOG, "$vardir/clicklog.txt" );
+    fopen( LOG, "<$vardir/clicklog.txt" );
     @log = <LOG>;
     fclose(LOG);
     chomp @log;
 
-    foreach my $i (0 .. $#log) {
-        $log[$i] =~ s/\x0//gsm;
-        $log[$i] =~ s/^[x20-\x7E]+$//gsm;
-        ( $iplist[$i], $date, $to[$i], $from[$i], $info[$i], $ip[$i] ) =
-          split /\|/xsm, $log[$i];
+    for my $i (0 .. $#log) {
+        $log[$i]  =~ s/chr(32)//gxms;
+        $log[$i]  =~ s/\s+//gsm;
+        $log[$i] =~ s/^[x21-\x7E]+$//gsm;
+        @newlog = split /[|]/xsm, $log[$i];
+        if ($#newlog != 5 ) { next;}
+        else {
+            $iplist[$i] = $newlog[0];
+            $date = $newlog[1];
+            $to[$i] = $newlog[2];
+            $from[$i] = $newlog[3];
+            $info[$i] = $newlog[4];
+            $ip[$i] = $newlog[5];
+        }
     }
- 
+
     for my $i ( 0 .. $#iplist ) {
         $iplist{ $iplist[$i] }++;
     }
@@ -374,10 +383,10 @@ sub ShowClickLog {
         $newiplist[$i] = [ $key, $val ];
         $i++;
     }
-    for my $i ( 0 .. $#iplist ) {
+    for my $k ( 0 .. $#iplist ) {
         for $j ( 0 .. $#newiplist ) {
-            if ( $newiplist[$j]->[0] eq $iplist[$i] ) {
-                push @{$newiplist[$j]}, $ip[$i];
+            if ( $newiplist[$j]->[0] eq $iplist[$k] ) {
+                push @{$newiplist[$j]}, $ip[$k], $iplist[$i] ;
             }
         }
     }
@@ -386,34 +395,29 @@ sub ShowClickLog {
     for my $i ( 0 .. $#newiplist ) {
         my $lookupIP =
           ($ipLookup)
-          ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[0]">$newiplist[$i]->[0]</a>~
-          : qq~$newiplist[$i]->[0]~;
-        if (
-            $newiplist[$i]->[0] =~ /\S+/sm
-            && ( $newiplist[$i]->[0] =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm || $newiplist[$i]->[0] =~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm || !LoadUser($newiplist[$i]->[0], 'vars' ) )
-            )
-        {
-            $guestiplist .=
-qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
-        }
-        else {
-            LoadUser( $newiplist[$i]->[0], 'vars' );
+          ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>~
+          : qq~$newiplist[$i]->[2]~;
+        my $lstuser = $newiplist[$i]->[0];
+        if ( $lstuser ne $newiplist[$i]->[2] && -e "$memberdir/$lstuser.vars" ) {
+            LoadUser( $lstuser, 'vars' );
             if ($do_scramble_id) {
-                $cloakedUserName = cloak( $newiplist[$i]->[0] );
+                $cloakedUserName = cloak( $lstuser );
             }
-            else { $cloakedUserName = $newiplist[$i]->[0]; }
-            my $displayUserName = $newiplist[$i]->[0];
+            else { $cloakedUserName = $lstuser; }
+            my $displayUserName = $lstuser;
             if (
                 ${ $uid . $displayUserName }{'realname'}
-                && ( ${ $uid . $displayUserName }{'realname'} ne
-                    $newiplist[$i]->[0] )
-              )
+                && ( ${ $uid . $displayUserName }{'realname'} ne $lstuser )
+            )
             {
                 $displayUserName = ${ $uid . $displayUserName }{'realname'};
             }
-
             $useriplist .=
-qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> (<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>)<br />~;
+qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> ($lookupIP)<br />~;
+            }
+        elsif ( $newiplist[$i]->[2] ) {
+            $guestiplist .=
+qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
         }
     }
 
