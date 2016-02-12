@@ -157,6 +157,21 @@ sub mainMenu {
 
 ## Tab Mod Hook ##
 
+    if ($accept_permafull) {
+        my @gsttabs = qw( home register help search );
+
+        my $scriptperm = qq~$perm_domain/$symlink~;
+        for my $gtab ( keys %tab) {
+            for (@gsttabs) {
+                if ($gtab eq $_ ) {
+                    if ($_ eq 'home') {
+                    $tab{$gtab} =~ s/$scripturl/$scriptperm/xsm;
+                    }
+                    $tab{$gtab} =~ s/$scripturl\?action\=/$scriptperm/xsm;
+                }
+            }
+        }
+    }
     $yytabmenu = qq~<ul>\n~;
     # Advanced Tabs starts here
     for my $i ( 0 .. $#AdvancedTabs ) {
@@ -261,8 +276,8 @@ sub GetTabtxt {
         %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
         fclose(TABTXT);
         for (keys %tabtxt) {
-			chomp $tabtxt{$_}
-		}
+            chomp $tabtxt{$_}
+        }
     }
     elsif ( -e "$langdir/English/tabtext.txt" ) {
         fopen( TABTXT, "$langdir/English/tabtext.txt" );

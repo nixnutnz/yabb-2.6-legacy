@@ -1379,10 +1379,7 @@ sub SetInstall2 {
         if ( -e '/bin/gzip' && open GZIP, '|, gzip -f' ) {
             $gzcomp = 1;
         }
-        else {
-            eval { require Compress::Zlib; Compress::Zlib::memGzip('test'); };
-            $gzcomp = $@ ? 0 : 2;
-        }
+        else { $gzcomp = 0; }
         $gzforce        = 0;
         $cachebehaviour = 0;
         $use_flock      = 0;
@@ -1443,8 +1440,6 @@ sub SetInstall2 {
 'Forum default' => "default|default|default|default|default|default|default|0|0|0|0",
 'Mobile' => "mobile|mobile|mobile|mobile|mobile|mobile|mobile|0|0|0|1",
 );
-
-\@lngs = ('English');                   #installed languages; 
 
 \$maintenance = $maintenance;                       # Set to 1 to enable Maintenance mode
 \$rememberbackup = $rememberbackup;                 # seconds past since last backup until alert is displayed

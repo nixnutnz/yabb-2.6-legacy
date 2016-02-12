@@ -843,8 +843,9 @@ $backup_txt{55} <b>$filesize</b>!<br />
             );
             if (!$mailtype) {
                 $msg->send();
-            } else {
-                my @arg = ("$smtp_server", Hello => "$smtp_server", Timeout => 30);
+            }
+            else {
+                my @arg = ("$smtp_server", Hello => "$helloserv", Timeout => 30);
                 push(@arg, AuthUser => "$authuser") if $authuser;
                 push(@arg, AuthPass => "$authpass") if $authpass;
                 $msg->send('smtp', @arg);

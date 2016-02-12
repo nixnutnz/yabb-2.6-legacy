@@ -25,6 +25,7 @@ $abbr_lang = 'en-us';
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
 @months_m = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'); #list for lower case months if needed.
 @days_short = ('Sun','Mon','Tue','Wed','Thu','Fri','Sat'); # for smtp
+@alpha = qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
 
 %maintxt = (
 'w3c_lngcode' => q~en-us~,

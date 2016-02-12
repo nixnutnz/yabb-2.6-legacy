@@ -96,7 +96,8 @@ qq~<input type="checkbox" name="fadelinks" id="fadelinks" value="1" ${ischecked(
     }
 );
 
-for (@lngs) {
+require "$langdir/Lang.lng";
+for (sort keys %lngs ) {
     if ( -e "$langdir/$_/news.txt") {
         fopen(NEWS, "<$langdir/$_/news.txt");
         ${$_ . '_news'} = do { local $INPUT_RECORD_SEPARATOR = undef; <NEWS> };
@@ -113,12 +114,13 @@ for (@lngs) {
 # Routine to save them
 sub SaveSettings {
     my %settings = @_;
-    for (@lngs) {
+    require "$langdir/Lang.lng";
+    for (sort keys %lngs ) {
         $lbl = $_ . '_news';
         $settings{$lbl} =~ tr/\r//d;
         chomp $settings{$lbl};
         FromChars( $settings{$lbl} );
-	}
+    }
 
     # Settings.pm stuff
     SaveSettingsTo( 'Settings.pm', %settings );

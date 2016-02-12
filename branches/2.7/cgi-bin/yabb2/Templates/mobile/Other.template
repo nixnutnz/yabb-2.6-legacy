@@ -23,7 +23,7 @@ $my_session = 'session.png';
 ## IPlookup ##
 $my_ipdiv = qq~
 <div style="width:50em; margin: 0 auto">
-    <div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$micon_bg{'ip'}" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</div>
+    <div class="tabtitle maingrad" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$micon_bg{'ip'}" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</div>
     <div class="windowbg2 padd_4px">
         <span style="font-weight: bold; margin-bottom: 10px;">$lookup_txt{'01'} {yabb ip} $lookup_txt{'02'}</span>
         <div class="windowbg2 padd_4px">{yabb lookuplink} </div>
@@ -120,16 +120,16 @@ $my_sessions = qq~
 <br /><br />
 <form action="$scripturl?action=revalidatesession2" method="post" name="sesform" accept-charset="$yymycharset">
 <div class="bordercolor" style="padding: 1px; margin-left: auto; margin-right: auto;">
-	<div class="tabtitle padd_3px"><img src="$imagesdir/$my_session" alt="" /><strong>$img_txt{'34a'}</strong></div>
-	<div class="windowbg padd_3px">
+    <div class="tabtitle maingrad padd_3px"><img src="$imagesdir/$my_session" alt="" /><strong>$img_txt{'34a'}</strong></div>
+    <div class="windowbg padd_3px">
         {yabb sesstext3}
-		<br />
-		<br />{yabb sesstext4} {yabb sesremark}
+        <br />
+        <br />{yabb sesstext4} {yabb sesremark}
         <br /><label for="sesanswer"><strong>{yabb sesquestion}:</strong></label>
-		<br /><input type="{yabb sestype}" name="sesanswer" id="sesanswer" size="20" tabindex="1" />
+        <br /><input type="{yabb sestype}" name="sesanswer" id="sesanswer" size="20" tabindex="1" />
             <input type="hidden" name="sredir" value="{yabb sesredir}" />
-	</div>
-	<div class="catbg center" style="padding: 8px;"><input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" /></div>
+    </div>
+    <div class="catbg center" style="padding: 8px;"><input type="submit" value="$img_txt{'34a'}" tabindex="2" class="button" /></div>
 </div>
 </form>
 <script type="text/javascript">
@@ -263,7 +263,7 @@ $my_smilie_window_tr = qq~
 
 $my_show_error = qq~
 <div class="system-body">
-    <div class="system-info" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'error_description'}</div>
+    <div class="system-info maingrad" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'error_description'}</div>
     <div class="system-info-body">{yabb errormessage}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
@@ -273,7 +273,7 @@ $my_show_error = qq~
 
 $my_profile_int = qq~
 <div class="system-body">
-    <div class="system-info" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'members_only'}</div>
+    <div class="system-info maingrad" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'members_only'}</div>
     <div class="system-info-body">$maintxt{'reg_please'}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>

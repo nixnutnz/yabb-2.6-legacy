@@ -40,7 +40,7 @@ $mycalout_goto_main = qq~<tr>
     </colgroup>~;
 
 $mycalout_gottobox = qq~
-    <table class="tabtitle tabtitle-text">
+    <table class="tabtitle tabtitle-text maingrad">
         <colgroup>
             <col style="width:30%" />
             <col style="width:70%" />
@@ -58,7 +58,7 @@ $mycalout_gottobox = qq~
 ## mini calendar display ##
 
 $mycalout_board = qq~
-<table class="tabtitle tabtitle-text">
+<table class="tabtitle tabtitle-text maingrad">
     <colgroup>
         <col style="width:30%" />
         <col style="width:70%" />
@@ -67,12 +67,12 @@ $mycalout_board = qq~
 </table>~;
 
 $mycalout_notboard = qq~
-<table class="tabtitle tabtitle-text">
+<table class="tabtitle tabtitle-text maingrad">
     {yabb cal_display}
 </table>~;
 
 $mycal_displayssi = qq~
-<table class="tabtitle pad_3px h_25px">
+<table class="tabtitle maingrad pad_3px h_25px">
     <tr>
         <td class="center small">{yabb last_link}</td>
         <td class="center small bold">{yabb mon_name} {yabb year}</td>

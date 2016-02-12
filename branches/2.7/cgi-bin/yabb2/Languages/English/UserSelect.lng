@@ -61,6 +61,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'other' => q~Other~,
 'noresults' => q~No Results~,
 'qsearch' => q~Search Members~,
+'illegal' => q~Invalid character~,
 );
 
 1;

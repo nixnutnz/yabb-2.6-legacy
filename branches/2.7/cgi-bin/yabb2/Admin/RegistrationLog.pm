@@ -42,7 +42,7 @@ sub view_reglog {
 
         # If a pre-registration list exists load it
         if ( -e "Variables/meminactive.db" ) {
-            fopen( INACT, "Variables/meminactive.db" );
+            fopen( INACT, "<Variables/meminactive.db" );
             @reglist = <INACT>;
             fclose(INACT);
         }
@@ -570,7 +570,7 @@ sub approve_registration {
     if ($do_scramble_id)  { $apruser      = decloak($apruser); }
 
     ## load the list with waiting approvals ##
-    fopen( APR, "<$memberdir/memapprove.db" );
+    fopen( APR, "<Variables/memapprove.db" );
     @aprlist = <APR>;
     fclose(APR);
 

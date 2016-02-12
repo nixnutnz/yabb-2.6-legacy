@@ -32,7 +32,7 @@ $my_session = 'session.png';
 ## UserProfile login ##
 $myprofile_a = qq~
 <div style="width:45em; margin:0 auto 1em">
-    <div class="tabtitle center" style="line-height:3em; vertical-align:bottom"><b>$profile_txt{'901'}</b></div>
+    <div class="tabtitle maingrad center" style="line-height:3em; vertical-align:bottom"><b>$profile_txt{'901'}</b></div>
 <form action="{yabb prof_act}" method="post" name="confirmform">
     <div class="windowbg2 center">
             <label for="passwrd"><span class="small"><br />{yabb sid_descript}<br /><br /></span></label>

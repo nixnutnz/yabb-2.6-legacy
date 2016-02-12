@@ -755,28 +755,12 @@ sub Register2 {
         fatal_error('invalid_email');
     }
 
-    fopen( RESERVE, "$vardir/reserve.txt" )
-      or fatal_error( 'cannot_open', "$vardir/reserve.txt", 1 );
-    @reserve = <RESERVE>;
-    fclose(RESERVE);
-    fopen( RESERVECFG, "$vardir/reservecfg.txt" )
-      or fatal_error( 'cannot_open', "$vardir/reservecfg.txt", 1 );
-    @reservecfg = <RESERVECFG>;
-    fclose(RESERVECFG);
-
-    for my $aa ( 0 .. $#reservecfg ) {
-        chomp $reservecfg[$aa];
-    }
-    $matchword = $reservecfg[0] eq 'checked';
-    $matchcase = $reservecfg[1] eq 'checked';
-    $matchuser = $reservecfg[2] eq 'checked';
-    $matchname = $reservecfg[3] eq 'checked';
     $namecheck =
-        $matchcase eq 'checked'
+        $matchcase
       ? $member{'regusername'}
       : lc $member{'regusername'};
     $realnamecheck =
-        $matchcase eq 'checked'
+        $matchcase
       ? $member{'regrealname'}
       : lc $member{'regrealname'};
 
@@ -987,7 +971,7 @@ sub Register2 {
 
         $regpass = $member{'passwrd1'};
 
-        fopen( INACT, ">>$memberdir/meminactive.db", 1 );
+        fopen( INACT, ">>Variables/meminactive.db", 1 );
         print {INACT}
           "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n"
           or croak "$croak{'print'} INACT";
@@ -1315,7 +1299,6 @@ sub user_activation {
     }
 
     if ($changed) {
-
         # if changed write new inactive list
         fopen( INACT, ">Variables/meminactive.db" );
         print {INACT} @chnglist or croak "$croak{'print'} INACT";
@@ -1329,7 +1312,6 @@ sub user_activation {
         }
     }
     else {
-
         # add entry to registration log
         fopen( REGLOG, ">>Variables/registration.log", 1 );
         print {REGLOG} "$date|E|$reguser|$user_ip\n"

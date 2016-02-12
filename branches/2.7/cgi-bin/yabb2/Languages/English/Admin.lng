@@ -42,11 +42,20 @@ $abbr_lang = 'en-us';
 '18' => q~Edit Search Engine Identifiers~,
 '19' => q~Please place one search engine entry per line. Format:<br /><em>(partial) domain name e.g. googlebot</em>|<em>Name as it appears on screen</em><br />Engines with the same display name will be counted together, regardless of domain name. If you want each domain counted separately, you must give them different display names.~,
 '21' => q~Posts~,
-'22' => q~Allow Permalink Environment?~,
-'23' => q~Permalink Domain~,
+'22' => q~Allow Simple Permalink Environment?<br /><span class="small">Posts only with separate Permalink link.</span>~,
+'22a' => q~Allow Full Permalink Environment?<br /><span class="small">All guest accessible section links as Permalinks.</span>~,
+'22r' => q~Allow RSS Permalink Environment?<br /><span class="small">Links to RSS feed as Permalinks.</span>~,
+'23' => q~Permalink Domain<br /><span class="small">(include 'http://') Note: this is also the domain for your RSS Permalink (below)</span>~,
+'23a' => q~Permalink text for .htaccess: (Simple)~,
+'23b' => q~Permalink text for .htaccess: (Full)~,
 '24' => q~Permalink Settings~,
 '25' => q~Permalink Symlink URL part (omit leading slash and include trailing slash (e.g. articles/))~,
 '26' => q~This is the part of the URL between your domain name and the Permalink Symlink URL part<br />(e.g. http://www.yourdomain.com/<strong>articles/</strong>news/this-is-the-title)~,
+'25r' => q~RSSrecent Permalink Symlink URL part (omit leading slash trailing slash (e.g. RSSrecent))~,
+'26r' => q~This is the RSSrecent Permalink Symlink URL part<br />(e.g. http://www.yourdomain.com/<strong>RSSrecent</strong>)~,
+'25b' => q~RSSboard Permalink Symlink URL part (omit leading slash trailing slash (e.g. RSSboard))~,
+'26b' => q~This is the RSSboard Permalink Symlink URL part<br />(e.g. http://www.yourdomain.com/<strong>RSSboard</strong>)~,
+'25a' => q~RSS Permalink text for .htaccess:~,
 '31' => q~Remove~,
 '32' => q~Go~,
 '39' => q~Password incorrect~,
@@ -257,7 +266,7 @@ $abbr_lang = 'en-us';
 '402' => q~Unix/Linux &amp; Win2k/NT File-Locking~,
 '403' => q~Windows 9x/ME File-Locking~,
 '404' => q~Send e-mails using~,
-'407' => q~SMTP-Server<br /><span class="small">For Net::SMTP::TLS, specify the port number with a ":&lt;portnumber&gt;" at the end. Example: smtp.gmail.com<em>:25</em></span>~,
+'407' => q~SMTP-Server<br /><span class="small">For Net::SMTP or Net::SMTPS, specify the port number with a ":&lt;portnumber&gt;" at the end. Example: smtp.gmail.com<em>:587</em></span>~,
 '408' => q~Minimum time between two submissions from the same IP (in seconds)~,
 '409' => q~Hide signatures from Guests?<br /><span class="small">If checked, only registered members can see signatures.</span>~,
 '410' => q~NFSLock based File-Locking (Unix only)~,
@@ -624,12 +633,14 @@ $abbr_lang = 'en-us';
 '355b' => q~Test webmaster e-mail settings on Save~,
 'testemail' => q~Test E-mail~,
 'testsubject' => q~YaBB e-mail settings test~,
-'testmessage' => qq~Hi $mbname Webmaster!
+'testmessage' => qq~Hi $mbname Webmaster
 
 This is a test of your $mbname Forum's e-mail settings.
 
 Thanks for using YaBB!~,
 'mailfrom' => qq~"$mbname E-Mail Test" <$webmaster_email>~,
+
+## Template Editor ###
 'modfolder' => q~Create New Template Folder~,
 'modfoldername' => q~New Template Folder Name~,
 'modgfolder' => q~Create New Template Graphics Folder~,
@@ -643,6 +654,9 @@ Thanks for using YaBB!~,
 'newfolder' => q~New Folder~,
 'uploadedg' => q~New Graphics File Uploads~,
 'error_spd' => q~ErrorLog speed banning. Minimum number of seconds between multiple error log entries from the same IP address. <br /><span class="small">Violators are banned through .htaccess if allowed. Set to '0' to disable</span>~,
+'langpack' => q~Language and Help Files~,
+'view' => q~View {yabb fld} files~,
+'hide' => q~Hide {yabb fld} files~,
 );
 
 %floodtxt = (
@@ -1283,10 +1297,11 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '1' => q~Select SMTP Server Authorization Type<br /><span class="small">OFF means No Authorization is required by the SMTP server</span>~,
 '3' => q~SMTP Authorization Username~,
 '4' => q~SMTP Authorization Password~,
+'5' => q~SMTP Hello domain<br /><span class="small">This is the domain your forum's IP address resolves to for DNS look-up.</span>~,
 'sendmail' => q~Unix/Linux/BSD Sendmail~,
 'smtp' => q~YaBB SMTP Engine~,
 'net' => q~Net::SMTP (Perl Module)~,
-'tslnet' => q~Net::SMTP::TLS (Perl Module)~,
+'tslnet' => q~Net::SMTPS (Perl Module)~,
 'auto' => q~AUTO~,
 'cram' => q~CRAM-MD5~,
 'login' => q~LOGIN~,
@@ -1401,9 +1416,9 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Time::HiRes' => q~Used for the benchmarking time if debug is enabled.<br />If this module in not installed, the benchmarking time will be displayed in full seconds and not in high resolution seconds. Otherwise you do not need this module.~,
 'Time::Local' => q~Used to convert time strings into timestamps.<br />This module is essential. Without it, YaBB will not always work.~,
 'File::Find' => q~Used for avatar and attachment upload.<br />If this module is not installed and these features are enabled, you will get an error messages when you try to upload. Otherwise you do not need this module.~,
-'CGI' => q~Used for avatar and attachment upload.<br />If this module is not installed and these features are enabled, you will get an error messages when you try to upload. Otherwise you do not need this module.~,
-'Net::SMTP' => q~Used to send e-mails via SMTP.<br />This module is only needed if you want to send your e-mails via Net::SMTP. Otherwise you do not need this module.~,
-'Net::SMTP::TLS' => q~Used to send e-mails via SMTP::TLS.<br />This module is only needed if you want to send your e-mails via Net::SMTP::TLS. Otherwise you do not need this module.~,
+'CGI' => q~Used for avatar and attachment upload and diagnostics.~,
+'Net::SMTP' => q~Used to send e-mails via SMTP.<br />This module is only needed if you want to send your e-mails via Net::SMTP. Otherwise you do not need this module.<br /><strong>Your version</strong>:~,
+'Net::SMTPS' => q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
 'Compress::Zlib' => qq~Used for the Backup feature and browser Output Compression.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details) and/or if you want to enable "Use GZip-Compression?". Otherwise you do not need this module.~,
 'Compress::Bzip2' => qq~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
 'Archive::Tar' => qq~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
@@ -1418,13 +1433,15 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'bytes' => q~Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.~,
 'integer' => q~Used to send e-mails via "YaBB SMTP Engine".<br />This module is only needed if you want to send your e-mails via the "YaBB SMTP Engine". Otherwise you do not need this module.~,
 'DateTime' => q~Required by DateTime::TimeZone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.~,
-'DateTime::TimeZone' => q~Used to get user and forum Time Zone offsets based on the user's actual time zone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data.~,
+'DateTime::TimeZone' => q~Used to get user and forum Time Zone offsets based on the user's actual time zone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data.</span>~,
 'DateTime::TimeZone2' => q~<br /><span class="important">This Module needs to be kept current as it contains time sensitive Time Zone data. Check with your server host to make sure this Module is being kept current.</span><br /><strong>Your version</strong>:~,
 'URI::Escape' => q~Used by Post/Message Preview function.<br />This module is essential. Without it, the Preview function will not work.~,
 'perlver' => q~Your Perl Version~,
 'Net::DNS' => q~Used by the improved e-mail checker. If this module is not installed, you cannot enable the improved e-mail checker.~,
 'Mail::CheckUser' => q~Used by the improved e-mail checker. This module should have been installed with YaBB.~,
 'Module::Load' => q~Used by Advanced Backup.<br />This module is essential. Without it, the Backup functions will not work.~,
+'server' => q~Your Server~,
+'LWP::Simple' => q~Used by YaBMod.<br />If this module is not installed, you will be unable to use YaBMod. Otherwise you do not need this module.~,
 );
 
 %settings_txt = (
@@ -1492,6 +1509,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'freedisk' => q~<span class="small">You can enable <span class="under">one</span> of these options. <strong>Note</strong> that not all options are available on all servers.</span>~,
 'freedisk2' => q~Free Disk Space Options <span class="small"><strong>Note</strong>: not all options are available on all servers.</span>~,
 'checkspace' => q~Free Disk Space~,
+'advhelp' => qq~ (see <a href="$scripturl?action=help;section=admin#Advanced_Settings" target="_blank">Advanced Settings Help</a>)~,
 
 # Security Settings
 'generalsec' => q~General~,

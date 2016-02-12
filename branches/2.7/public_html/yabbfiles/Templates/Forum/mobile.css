@@ -36,6 +36,12 @@ a:hover {
 
 a:focus, input:focus, textarea:focus, select:focus { outline: 0 none; }
 
+.maingrad {
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
+}
+
 #header {
     font-family: Verdana, Helvetica, Sans-Serif;
     color: #eee;
@@ -184,9 +190,6 @@ table.fixed {
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
@@ -201,9 +204,6 @@ table.fixed {
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle-bottom {
@@ -215,9 +215,6 @@ table.fixed {
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
@@ -1076,9 +1073,6 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     height: 25%;
     line-height: 2em;
     text-align: center;
@@ -1329,9 +1323,6 @@ span.ubbcbutton {
 
 /* Post and Thread Tools */
 .windowbg td.post_tools {
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     height: 100%;
     border-top: 0;
     border-bottom: 0;
@@ -1343,9 +1334,6 @@ span.ubbcbutton {
 }
 
 .windowbg2 td.post_tools,.tabtitle td.post_tools,.tabtitle-bottom td.post_tools {
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     height: 100%;
     border-top: 0;
     border-bottom: 0;
@@ -1998,9 +1986,6 @@ h4.help {
     font-size: 1em;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;

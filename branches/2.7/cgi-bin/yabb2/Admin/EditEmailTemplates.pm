@@ -55,8 +55,8 @@ sub editemailtemplates {
                 && $item =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm
                 && -e "$langdir/$item/Email.lng" )
             {
-                my $displang = $item;
-                $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+                require "$langdir/Lang.lng";
+                my $displang = $lngs{$item};
                 $yymain .= qq~
                     <option value="$item">$displang</option>~;
             }

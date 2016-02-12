@@ -75,8 +75,9 @@ sub convcontrol {
     LoadBoardControl();
     my $allboards = join q~', '~, @mybrds;
     my $newbrds = qq{\@allboards = ('$allboards');\n};
+    $newbrds .= qq{\$nid = '$uid';\n~;
     for my $cntboard (@mybrds) {
-        $newbrds .= qq~\%{$cntboard} = (\n~;
+        $newbrds .= qq~\%{$uid . $cntboard} = (\n~;
         foreach ( keys %{ $uid . $cntboard } ) {
             $newbrds .= qq{'$_' => q~${ $uid . $cntboard }{$_}~,\n};
         }

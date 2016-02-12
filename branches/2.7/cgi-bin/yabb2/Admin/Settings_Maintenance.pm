@@ -42,7 +42,8 @@ qq~<input type="checkbox" name="maintenance" id="maintenance" value="1" ${ischec
     }
 );
 
-for (@lngs) {
+require "$langdir/Lang.lng";
+for (sort keys %lngs ) {
     if ( -e "$langdir/$_/maintenancetext.txt") {
         fopen(MAINTTXT, "<$langdir/$_/maintenancetext.txt");
         ${$_ . '_maintenancetext'} = <MAINTTXT>;

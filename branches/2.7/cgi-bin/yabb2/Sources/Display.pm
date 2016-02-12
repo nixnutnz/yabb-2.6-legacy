@@ -28,6 +28,11 @@ get_micon();
 get_template('Display');
 get_gmod();
 
+if ( $accept_permafull) {
+    $permbrd = qq~$perm_domain/$symlink~ . 'brd_';
+    $permcat = qq~$perm_domain/$symlink~ . 'cat_';
+}
+
 sub Display {
 
     # Check if board was 'shown to all' - and whether they can view the topic
@@ -236,7 +241,7 @@ sub Display {
 
     my $permdate = permtimer($mnum);
     my $display_permalink =
-qq~<a href="http://$perm_domain/$symlink$permdate/$currentboard/$mnum">$display_txt{'10'}</a>~;
+qq~<a href="$perm_domain/$symlink$permdate/$currentboard/$mnum">$display_txt{'10'}</a>~;
 
     # Look for a poll file for this thread.
     if ( AccessCheck( $currentboard, 3 ) eq 'granted' ) {
@@ -681,6 +686,10 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         $navback =
 qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
         $template_mods = qq~$showmods$showmodgroups~;
+    }
+    if ( $accept_permafull ) {
+        $template_cat =~ s/$scripturl\?catselect\=/$permcat/xsm;
+        $template_board =~ s/$scripturl\?board\=/$permbrd/xsm;
     }
     if (   $showtopicviewers
         && ($staff)
@@ -1351,6 +1360,10 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
         $msgimg =
 qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
+        if ($accept_permafull) {
+		    $msgimg =
+qq~<a href="$perm_domain/$symlink$permdate/$currentboard/$viewnum#$counter">$micon{$micon}</a>~;
+	    }
 
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
@@ -1454,6 +1467,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $outblock =~ s/{yabb regdate}/$template_regdate/gsm;
         $outblock =~ s/{yabb ext_prof}/$template_ext_prof/gsm;
         $outblock =~ s/{yabb postinfo}/$template_postinfo/gsm;
+
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
         }
@@ -1492,7 +1506,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $outblock =~ s/{yabb admin}/$template_admin/gsm;
         $outblock =~ s/{yabb contactlist}/$contactblock/gsm;
 
-        if ( $accept_permalink == 1 ) {
+        if ( $accept_permalink == 1  && !$accept_permafull ) {
             $outblock =~ s/{yabb permalink}/$display_permalink/gsm;
         }
         else {
@@ -1620,6 +1634,9 @@ qq~<a href="$scripturl?board=$parentboard" class="a">$pboardname</a>~;
             $pboardlink =
 qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardname</a>~;
         }
+		if ( $accept_permafull) {
+			$pboardlink =~ s/$scripturl\?board\=/$permbrd/xsm;
+		}
         $boardtree   = qq~ &rsaquo; $pboardlink$boardtree~;
         $parentboard = ${ $uid . $parentboard }{'parent'};
     }

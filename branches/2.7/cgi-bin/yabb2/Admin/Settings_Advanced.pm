@@ -56,7 +56,33 @@ qq~\n  <option value="2" ${isselected($gzcomp == 2)}>$gztxt{'5'}</option>~;
 if ( $rss_disabled eq q{} ) { $rss_disabled = 0; }
 if ( $rss_limit    eq q{} ) { $rss_limit    = 10; }
 if ( $rss_message  eq q{} ) { $rss_message  = 1; }
+if ($perm_domain && $symlink) { $perm_txt = qq~
+RewriteEngine On # Turn on the rewriting engine
 
+RewriteRule ^$symlink/\$ cgi-bin/yabb2/YaBB.pl [L]
+RewriteRule ^$symlink/help/(.+)?\$ cgi-bin/yabb2/YaBB.pl?action=help&amp;section=$1 [L]
+RewriteRule ^$symlink/help(.+)?\$ cgi-bin/yabb2/YaBB.pl?action=help$1 [L]
+RewriteRule ^$symlink/search\$ cgi-bin/yabb2/YaBB.pl?action=search [L]
+RewriteRule ^$symlink/cat_([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?catselect=$1 [L]
+RewriteRule ^$symlink/brd_([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?board=$1 [L]
+RewriteRule ^$symlink/([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)/(.+)\$ cgi-bin/yabb2/YaBB.pl?num=$5 [L]
+RewriteRule ^$rsssymrecent/([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent&amp;amp;catselect=$1 [L]
+RewriteRule ^$rsssymrecent\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent [L]
+RewriteRule ^$rsssymboards/([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?action=RSSboard&amp;amp;board=$1 [L]
+~;
+}
+if ($perm_domain && $symlink) { $perm_txtsimp = qq~
+RewriteEngine On # Turn on the rewriting engine
+
+RewriteRule ^$symlink/([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)/(.+)\$ cgi-bin/yabb2/YaBB.pl?num=$5 [L]
+~;
+}
+if ($perm_domain) { $perm_rss = qq~
+RewriteEngine On # Turn on the rewriting engine
+RewriteRule ^$rsssymrecent/([A-Za-z0-9/\\-_,\~\\(\\)]*)?\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent&amp;amp;catselect=\$1 [L]
+RewriteRule ^$rsssymrecent\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent [L]
+RewriteRule ^$rsssymboards/([A-Za-z0-9/\\-_,\~\\(\\)]*)?\$ cgi-bin/yabb2/YaBB.pl?action=RSSboard&amp;amp;board=\$1 [L] ~;
+}
 if ( ischecked2($checkspace) == 1) {
    $checklabel = qq~$admin_txt{'checkspace'} <b><a href="$adminurl?action=checkspace">Disk Space Functions</a></b> $admin_txt{'checkspace2'}~;
 }
@@ -71,7 +97,7 @@ else { $checklabel = qq~$admin_txt{'checkspace'}~ ;
         items => [
 
             # Permalinks
-            { header => $admin_txt{'24'}, },
+            { header => "$admin_txt{'24'}$settings_txt{'advhelp'}", },
             {
                 description =>
                   qq~<label for="accept_permalink">$admin_txt{'22'}</label>~,
@@ -82,13 +108,20 @@ qq~<input type="checkbox" name="accept_permalink" id="accept_permalink" value="1
             },
             {
                 description =>
+                  qq~<label for="accept_permafull">$admin_txt{'22a'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="accept_permafull" id="accept_permafull" value="1" ${ischecked($accept_permafull)}/>~,
+                name     => 'accept_permafull',
+                validate => 'boolean',
+            },
+            {
+                description =>
 qq~<label for="symlink">$admin_txt{'25'}<br /><span class="small">$admin_txt{'26'}</span></label>~,
                 input_html =>
 qq~<input type="text" size="30" name="symlink" id="symlink" value="$symlink" />~,
                 name       => 'symlink',
                 validate   => 'text,null',
-                depends_on => ['accept_permalink'],
-            },
+             },
             {
                 description =>
                   qq~<label for="perm_domain">$admin_txt{'23'}</label>~,
@@ -96,9 +129,19 @@ qq~<input type="text" size="30" name="symlink" id="symlink" value="$symlink" />~
 qq~<input type="text" size="30" name="perm_domain" id="perm_domain" value="$perm_domain" />~,
                 name       => 'perm_domain',
                 validate   => 'text,null',
-                depends_on => ['accept_permalink'],
             },
-
+            {
+                description =>
+                  qq~<label for="perm_txtsimp">$admin_txt{'23a'}</label>~,
+                input_html =>
+qq~<textarea cols="75" id="perm_txtsimp">$perm_txtsimp</textarea>~,
+            },
+            {
+                description =>
+                  qq~<label for="perm_txt">$admin_txt{'23b'}</label>~,
+                input_html =>
+qq~<textarea cols="75" id="perm_txt">$perm_txt</textarea>~,
+            },
             # RSS
             { header => $settings_txt{'rss'}, },
             {
@@ -117,7 +160,6 @@ qq~<input type="text" name="rss_limit" id="rss_limit" size="5" value="$rss_limit
                 validate   => 'number',
                 depends_on => ['!rss_disabled'],
             },
-
             {
                 description =>
                   qq~<label for="showauthor">$rss_txt{'7'}</label>~,
@@ -127,7 +169,6 @@ qq~<input type="checkbox" name="showauthor" id="showauthor"${ischecked($showauth
                 validate   => 'boolean',
                 depends_on => ['!rss_disabled'],
             },
-
             {
                 description =>
                   qq~<label for="rssemail">$rss_txt{'email'}</label>~,
@@ -137,7 +178,6 @@ qq~<input type="text" size="30" name="rssemail" id="rssemail" value="$rssemail" 
                 validate   => 'text,null',
                 depends_on => ['showauthor'],
             },
-
             {
                 description => qq~<label for="showdate">$rss_txt{'8'}</label>~,
                 input_html =>
@@ -158,6 +198,39 @@ qq~<input type="checkbox" name="showdate" id="showdate"${ischecked($showdate)} /
                 name       => 'rss_message',
                 validate   => 'number',
                 depends_on => ['!rss_disabled'],
+            },
+            {
+                description =>
+                  qq~<label for="rssperm">$admin_txt{'22r'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="rssperm" id="rssperm" value="1" />~,
+                name       => 'rssperm',
+                validate   => 'boolean',
+                depends_on => ['!rss_disabled'],
+            },
+            {
+                description =>
+qq~<label for="rsssymrecent">$admin_txt{'25r'}<br /><span class="small">$admin_txt{'26r'}</span></label>~,
+                input_html =>
+qq~<input type="text" size="30" name="rsssymrecent" id="rsssymrecent" value="$rsssymrecent" />~,
+                name       => 'rsssymrecent',
+                validate   => 'text,null',
+                depends_on => ['!rss_disabled'],
+            },
+            {
+                description =>
+qq~<label for="rsssymboards">$admin_txt{'25b'}<br /><span class="small">$admin_txt{'26b'}</span></label>~,
+                input_html =>
+qq~<input type="text" size="30" name="rsssymboards" id="rsssymboards" value="$rsssymboards" />~,
+                name       => 'rsssymboards',
+                validate   => 'text,null',
+                depends_on => ['!rss_disabled'],
+            },
+            {
+                description =>
+                  qq~<label for="perm_rss">$admin_txt{'25a'}</label>~,
+                input_html =>
+qq~<textarea cols="75" id="perm_rss">$perm_rss</textarea>~,
             },
         ],
     },
@@ -223,6 +296,13 @@ qq~<input type="text" name="authuser" id="authuser" size="20" value="$authuser" 
                 input_html =>
 qq~<input type="password" name="authpass" id="authpass" size="20" value="$authpass" />~,
                 name     => 'authpass',
+                validate => 'text,null',
+            },
+            {
+                description => qq~<label for="helloserv">$smtp_txt{'5'}</label>~,
+                input_html =>
+qq~<input type="text" name="helloserv" id="helloserv" size="20" value="$helloserv" />~,
+                name     => 'helloserv',
                 validate => 'text,null',
             },
             {

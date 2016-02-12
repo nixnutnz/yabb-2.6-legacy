@@ -63,8 +63,8 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
     </tr>~;
         $aa++;
     }
-    my $displang = $help_language;
-    $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+    require "$langdir/Lang.lng";
+    my $displang = $lngs{$help_language};
     $yymain .= qq~
 <form name="help_update" action="$adminurl?action=helpediting2" method="post" accept-charset="$yymycharset">
     <input type="hidden" name="area" value="$help_area" />

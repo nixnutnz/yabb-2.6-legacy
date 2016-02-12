@@ -74,7 +74,7 @@ sub AddModerators {
 
     for my $catid (@categoryorder) {
         (@bdlist) = split /\,/xsm, $cat{$catid};
-        ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{"$catid"};
+        ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
         ToChars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
         my $indent = -2;

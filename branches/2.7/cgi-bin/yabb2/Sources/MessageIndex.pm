@@ -47,6 +47,11 @@ else {
       );
 }
 
+if ( $accept_permafull) {
+    $permbrd = qq~$perm_domain/$symlink~ . 'brd_';
+    $permcat = qq~$perm_domain/$symlink~ . 'cat_';
+}
+
 sub MessageIndex {
 
     # Check if board was 'shown to all' - and whether they can view the board
@@ -600,6 +605,14 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         $boardtree   = qq~ &rsaquo; $pboardname$boardtree~;
         $parentboard = ${ $uid . $parentboard }{'parent'};
     }
+    if ( $accept_permafull) {
+        $homelink = qq~<a href="$perm_domain/$symlink">$mbname</a>~;
+        $catlink  = qq~<a href="$permcat$catid">$cat</a>~;
+        $boardlink =~ s/$scripturl\?board\=/$permbrd/xsm;
+        $pboardname =~ s/$scripturl\?board\=/$permbrd/xsm;
+        $boardtree =~ s/$scripturl\?board\=/$permbrd/xsm;
+    }
+
 
     # check how many col's must be spanned
     if ( $multiview > 0 ) {
@@ -730,7 +743,11 @@ qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$message
           ${$mnum}{'board'} eq $annboard ? $annboard : $currentboard;
         my $permdate = permtimer($mnum);
         my $message_permalink =
-qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
+qq~<a href="$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
+        if ( $accept_permafull) {
+            $message_permalink =
+qq~<a href="$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$msub</a>~;
+        }
 
         $threadclass = 'thread';
         if    ( $mstate =~ /h/ism ) { $threadclass = 'hide'; }
@@ -1224,6 +1241,9 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         my $mydate  = timeformat($mdate);
         my $thicon  = $micon{$threadclass};
         my $tempbar = $movedFlag ? $threadbarMoved : $threadbar;
+        if ( $accept_permafull) {
+            $msublink = $message_permalink;
+        }
         $tempbar =~ s/{yabb admin column}/$admincol/gsm;
         $tempbar =~ s/{yabb threadpic}/$thicon/gsm;
         $tempbar =~ s/{yabb icon}/$micon/gsm;
@@ -1241,7 +1261,7 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         $tempbar =~ s/{yabb lastposter}/$lastpostername/gsm;
         $tempbar =~ s/{yabb altthdcolor}/$altthdcolor/gsm;
 
-        if ( $accept_permalink == 1 ) {
+        if ( $accept_permalink == 1 && !$accept_permafull ) {
             $tempbar =~ s/{yabb permalink}/$message_permalink/gsm;
         }
         else {
@@ -1403,6 +1423,12 @@ qq~<br /><a href="javascript:void(0);" onclick="ModSettings()"><span class="smal
 qq~<a href="$scripturl?action=RSSboard;board=$currentboard" target="_blank"><img src="$micon_bg{'rss'}"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
         $rss_text =
 qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
+        if ($rssperm || $accept_permafull ) {
+            $rss_link =
+qq~<a href="$perm_domain/$rsssymboards/$currentboard" target="_blank"><img src="$micon_bg{'rss'}"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+            $rss_text =
+qq~<a href="$perm_domain/$rsssymboards/$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
+        }
     }
     $yyrssfeed = $rss_text;
     $yyrss     = $rss_link;
@@ -1782,6 +1808,10 @@ qq~\nvar markallreadlang = '$messageindex_txt{'500'}';\nvar markfinishedlang = '
     {    # Check to see if we're on a real board, not announcements
         $yyinlinestyle .=
 qq~    <link rel="alternate" type="application/rss+xml" title="$messageindex_txt{'843'}" href="$scripturl?action=RSSboard;board=$INFO{'board'}" />~;
+        if ($rssperm || $accept_permafull ) {
+            $yyinlinestyle .=
+qq~    <link rel="alternate" type="application/rss+xml" title="$messageindex_txt{'843'}" href="$perm_domain/$rsssymboards/$INFO{'board'}" />~;
+        }
     }
 
     if ( !$messagelist ) {

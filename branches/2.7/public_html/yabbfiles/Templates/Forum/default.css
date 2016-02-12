@@ -50,6 +50,12 @@ a:focus, input:focus, textarea:focus, select:focus { outline: 0 none; }
 .headertl {padding:4px; min-height:5em; line-height:1.5em; text-align:left; vertical-align:middle; display: table-cell; width:100%}
 .logor { text-align:right; vertical-align:middle; display: table-cell; width:100%}
 
+.maingrad {
+    background: -webkit-linear-gradient(top, #569dce, #3571b2);
+    background: -moz-linear-gradient(top, #569dce, #3571b2);
+    background: linear-gradient(#569dce, #3571b2);
+}
+
 #header a { color:#2d2d2d; }
 
 #header .highlight a { color: #3b5998; }
@@ -191,9 +197,6 @@ table.fixed {
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
@@ -208,9 +211,6 @@ table.fixed {
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle-bottom {
@@ -221,9 +221,6 @@ table.fixed {
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
@@ -1073,9 +1070,6 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     height: 25%;
     line-height: 2em;
     text-align: center;
@@ -1329,9 +1323,6 @@ span.ubbcbutton {
 
 /* Post and Thread Tools */
 .windowbg td.post_tools {
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     height: 100%;
     border-top: 0;
     border-bottom: 0;
@@ -1343,9 +1334,6 @@ span.ubbcbutton {
 }
 
 .windowbg2 td.post_tools,.tabtitle td.post_tools,.tabtitle-bottom td.post_tools {
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     height: 100%;
     border-top: 0;
     border-bottom: 0;
@@ -1992,9 +1980,6 @@ h4.help {
     height: 35px;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
-    background: linear-gradient(#569dce, #3571b2);
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
@@ -2060,9 +2045,6 @@ span.newlinks {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    background: -webkit-linear-gradient(top, #569dce, #3673b3);
-    background: -moz-linear-gradient(top, #569dce, #3673b3);
-    background: linear-gradient(#569dce, #3673b3);
 }
 
 span.newlinks_c {

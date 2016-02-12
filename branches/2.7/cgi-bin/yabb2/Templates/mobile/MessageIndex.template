@@ -31,8 +31,8 @@ $my_ttsep = $menusep;
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
 if($useThreadtools == 1) {
-    $threadhandelstyle = qq~ class="post_tools center" style="width:10em; padding-right:1em;"~;
-    $threadhandelstyle2 = qq~ class="post_tools center" style="width:10em; padding-right:1em;"~;
+    $threadhandelstyle = qq~ class="post_tools maingrad center" style="width:10em; padding-right:1em;"~;
+    $threadhandelstyle2 = qq~ class="post_tools maingrad center" style="width:10em; padding-right:1em;"~;
 }
 else {
     $threadhandelstyle = qq~ class="right" style="padding-right:1em;"~;
@@ -57,7 +57,7 @@ if (!$messagelist) {
     if (${$uid.$currentboard}{'rules'} == 1) {
         $messageindex_template .= qq~
 <!-- Board Rules start -->
-            <div class="tabtitle" style="margin-top: 1.5em; line-height:3em; vertical-align:bottom; padding-left:.5em">{yabb rulestitle}</div>
+            <div class="tabtitle maingrad" style="margin-top: 1.5em; line-height:3em; vertical-align:bottom; padding-left:.5em">{yabb rulestitle}</div>
             <div class="windowbg" style="padding:.5em">{yabb rulesdescription}</div>
  <!-- Board Rules end -->
 ~;
@@ -80,7 +80,7 @@ if ($action ne 'favorites') {
     $messageindex_template .= qq~
 <!-- Button Bar start -->
 {yabb modupdate}
-    <div class="tabtitle">
+    <div class="tabtitle maingrad">
 ~;
     if ($messagelist) {
         $messageindex_template .= qq~
@@ -128,7 +128,7 @@ $messageindex_template .= qq~
 
 if ($action ne 'favorites') {
     $messageindex_template .= qq~<!-- Button Bar start -->
-            <div class="tabtitle-bottom" >
+            <div class="tabtitle-bottom maingrad" >
                 <div style="padding-left:7px; float:left; width:48%">{yabb pageindex bottom}</div>
                 <div style="float:right; width:48%">
                     <div class="post_tools_a right" style="padding-right: 10px">{yabb outsidethreadtools}</div>
@@ -244,7 +244,7 @@ $msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=vie
 $brd_notify = qq~
     <form action="$scripturl?action=boardnotify3;board={yabb currentboard}" method="post">
     <div style="width: 30em; margin: 0 auto">
-        <div class="tabtitle" style="padding-left: 10px;">
+        <div class="tabtitle maingrad" style="padding-left: 10px;">
             <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'136'} - {yabb boardname}" title="$notify_txt{'136'} - {yabb boardname}" /> <strong>$notify_txt{'136'} - {yabb boardname}</strong>
         </div>
         <div class="windowbg" style="padding:1em 4px; text-align:center;">
@@ -276,7 +276,7 @@ $msg_listpages = qq~
         self.close();
     }
     </script>
-    <div class="tabtitle center" style="line-height:3em; vertical-align:bottom;">$messageindex_txt{'139'} $messageindex_txt{'18'}</div>
+    <div class="tabtitle maingrad center" style="line-height:3em; vertical-align:bottom;">$messageindex_txt{'139'} $messageindex_txt{'18'}</div>
     <div class="windowbg center" style="padding:4px 10px">
         <p>&laquo; $messageindex_txt{'139'} {yabb pages} &raquo;</p>
     </div>
@@ -295,7 +295,7 @@ $visel_4 = q~</tr></table>~;
 
 
 $boardpassw = qq~
-<div class="tabtitle center" style="line-height:3em; vertical-align:bottom; width: 80%; margin:0 auto">
+<div class="tabtitle maingrad center" style="line-height:3em; vertical-align:bottom; width: 80%; margin:0 auto">
     <img src="$imagesdir/$actionlock" alt="" /> <strong>$maintxt{'900pw'}: $boardname</strong>
 </div>
 <div class="windowbg center padd_4px" style="width: 80%; margin:0 auto">
@@ -322,7 +322,7 @@ function CheckPassField() {
 ~;
 
 $boardpassw_g = qq~
-<div class="tabtitle padd_3px" style="width: 80%;"><img src="$imagesdir/$actionlock" alt="" /> <strong>$maintxt{'900pw'}: $boardname</strong></div>
+<div class="tabtitle maingrad padd_3px" style="width: 80%;"><img src="$imagesdir/$actionlock" alt="" /> <strong>$maintxt{'900pw'}: $boardname</strong></div>
 <div class="windowbg center"><p>$maintxt{'900pg'}</p></div>
 <div class="center" style="margin-top: 1em;"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></div>~;
 1;

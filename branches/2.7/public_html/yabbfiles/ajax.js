@@ -124,7 +124,7 @@ function MarkAllAsRead(url,imgdir,lang,brdid) {
     document.getElementById("ImageAlertIFrame").style.display = "none";
     imagebody.style.display = "block";
 
-    var insert = '<div class="topper">'+markallreadlanguage+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
+    var insert = '<div class="topper maingrad">'+markallreadlanguage+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
     imagebody.innerHTML = insert;
     imagebody.style.width = "230px";
     imagebody.style.height = "100px";
@@ -139,7 +139,7 @@ function MarkAllAsRead(url,imgdir,lang,brdid) {
 
 function MarkFinished() {
     if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete") {
-        var insert = '<div class="topper">'+markfinishedlang+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
+        var insert = '<div class="topper maingrad">'+markfinishedlang+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif">';
         document.getElementById("ImageAlertBody").innerHTML = insert;
         setTimeout("HideAlert()",1500);
         var images = document.getElementsByTagName("img");
@@ -197,7 +197,7 @@ function AddRemFav(url,imgdir) {
         if(document.postmodify != null) { document.postmodify.favorite.checked = ''; }
     }
 
-    var insert = '<div class="topper">'+text+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif"></div>';
+    var insert = '<div class="topper maingrad">'+text+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif"></div>';
     imagebody.innerHTML = insert;
     imagebody.style.width = "230px";
     imagebody.style.height = "100px";
@@ -214,7 +214,7 @@ function AddRemFav(url,imgdir) {
 
 function AddRemFavFinished() {
     if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-        document.getElementById("ImageAlertBody").innerHTML = '<div class="topper">'+markfinishedlang+'</div><div class="rotate">&nbsp;</div>';
+        document.getElementById("ImageAlertBody").innerHTML = '<div class="topper maingrad">'+markfinishedlang+'</div><div class="rotate">&nbsp;</div>';
         setTimeout("HideAlert()",1500);
         var links = document.getElementById("favlink");
         var href = links.href;
@@ -261,7 +261,7 @@ function Notify(url,imgdir) {
         if(document.postmodify != null) { document.postmodify.notify.checked = ''; }
     }
 
-    var insert = '<div class="topper">'+text+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif"></div>';
+    var insert = '<div class="topper maingrad">'+text+'</div><div class="rotate"><img src="' + imagedir + '/Rotate.gif"></div>';
     imagebody.innerHTML = insert;
     imagebody.style.width = "230px";
     imagebody.style.height = "100px";
@@ -277,7 +277,7 @@ function Notify(url,imgdir) {
 
 function NotifyFinished() {
     if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-        document.getElementById("ImageAlertBody").innerHTML = '<div class="topper">'+markfinishedlang+'</div><div class="rotate">&nbsp;</div>';
+        document.getElementById("ImageAlertBody").innerHTML = '<div class="topper maingrad">'+markfinishedlang+'</div><div class="rotate">&nbsp;</div>';
         setTimeout("HideAlert()",1500);
         var links = document.getElementById("notifylink");
         var href = links.href;

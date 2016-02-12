@@ -117,7 +117,7 @@ $downloads_att_c = qq~<tr>
 
 $downloads_att_out_a = qq~
 <div style="width:98%; margin:0 auto">
-    <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/xx.gif" alt="" />&nbsp;<b>{yabb fatxt39}</b></div>
+    <div class="tabtitle maingrad" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/xx.gif" alt="" />&nbsp;<b>{yabb fatxt39}</b></div>
     <table class="pad_4px">
     <tr>
         <td class="windowbg center" colspan="{yabb colspan}">

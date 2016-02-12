@@ -168,7 +168,7 @@ sub print_HTML_output_and_finish {
         }
         else {
             require Compress::Zlib;
-            binmode STDOUT;
+            binmode(STDOUT, ':utf8');
             print Compress::Zlib::memGzip($output)
               or croak "$croak{'print'} ZLib";
         }
@@ -381,6 +381,9 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
+	if ( $accept_permafull) {
+		$yyboardlink = qq~<a href="$perm_domain/$symlink">$mbname</a>~;
+	}
 
     # static/dynamic clock
     $yytime = timeformat( $date, 1 );
@@ -1525,12 +1528,10 @@ sub SpamQuestionCheck {
 sub CountChars {
     $convertstr =~ s/&\x2332;/ /gsm;    # why? where? (deti)
     #length does not always function properly with UTF-8 - convert UTF-8 to internal Perl utf8
-    if ( $yymycharset eq 'UTF-8' ) {
-        require utf8;
-        require Encode;
-        Encode->import( decode_utf8, encode_utf8 );
-        $convertstr = decode_utf8($convertstr);
-    }
+    require utf8;
+    require Encode;
+    Encode->import( decode_utf8, encode_utf8 );
+    $convertstr = decode_utf8($convertstr);
 
     $cliped = 0;
     my ( $string, $curstring, $stinglength, $teststring );
@@ -1601,9 +1602,7 @@ sub CountChars {
 
     # eliminate spaces, broken HTML-characters or special characters at the end
     $convertstr =~ s/(\[(ch\d*)?|&[a-z]*| +)$//sm;
-    if ( $yymycharset eq 'UTF-8' ) {
-      $convertstr = encode_utf8($convertstr);
-    }
+    $convertstr = encode_utf8($convertstr);
     return $convertstr;
 }
 
@@ -1691,7 +1690,7 @@ sub enc_eMail {
     }
     $titlesp = $title;
     $titlesp =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_eMail_x($1,$2,$3) /egsm;
-    if ($src || $yymycharset eq 'UTF-8') {$titlesp = $title;}
+    if ($src) {$titlesp = $title;}
 
     return qq~<script type='text/javascript'>\nSpamInator('$titlesp',"$code1","$code2","&#109;&#97;&#105;&#108;&#92;&#117;&#48;&#48;&#55;&#52;&#111;&#92;&#117;&#48;&#48;&#51;&#97;",'$subbody');\n</script>~;
 
@@ -2857,19 +2856,16 @@ sub guestLangSel {
     $morelang = 0;
     my @langDir = readdir DIR;
     closedir DIR;
+    require "$langdir/Lang.lng";
     for my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
         chomp $langitems;
-        if (   ( $langitems ne q{.} )
-            && ( $langitems ne q{..} )
-            && ( $langitems ne q{.htaccess} )
-            && ( $langitems ne q{index.html} ) )
+        if ( -e "$langdir/$langitems/Main.lng" )
         {
             $lngsel = q{};
             if ( $langitems eq $language ) {
                 $lngsel = q~ selected="selected"~;
             }
-            my $displang = $langitems;
-            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+            my $displang = $lngs{$langitems}; 
             $langopt .=
               qq~<option value="$langitems"$lngsel>$displang</option>~;
             $morelang++;

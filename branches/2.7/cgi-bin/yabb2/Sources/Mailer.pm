@@ -81,41 +81,51 @@ sub sendmail {
 
     }
     elsif ( $mailtype == 2 || $mailtype == 3 ) {
-        my @arg = ( "$smtp_server", Hello => "$smtp_server", Timeout => 30 );
+        my $port = 25;
+        if ($smtp_server =~ s/:(\d+)$//) { $port = $1; }
+        my @arg = ( "$smtp_server", Hello => "$helloserv", Timeout => 30 );
         if ( $mailtype == 2 ) {
             eval q^
                 use Net::SMTP;
+                if ($port) { push @arg, Port => $port; }
+                if ($authuser) { push @arg, User => "$authuser" ;}
+                if ($authpass) { push @arg, Password => "$authpass" ;}
                 push @arg, Debug => 0;
                 $smtp = Net::SMTP->new(@arg) || croak "Unable to create Net::SMTP object. Server: '$smtp_server'\n\n" . $OS_ERROR;
             ^;
         }
         else {
             eval q^
-                use Net::SMTP::TLS;
-                my $port = 25;
-                if ($smtp_server =~ s/:(\d+)$//sm) { $port = $1; }
+                use Net::SMTPS;
+                my $ssl = 'starttls';   # 'ssl' / 'starttls' / undef
+                if ( $port == 465 ){ $ssl = 'ssl';}
                 push @arg, Port => $port;
-                if ($authuser) { push @arg, User => "$authuser" ;}
-                if ($authpass) { push @arg, Password => "$authpass" ;}
-                $smtp = Net::SMTP::TLS->new(@arg) || croak "Unable to create Net::SMTP::TLS object. Server: '$smtp_server', port '$port'\n\n" . $OS_ERROR;
+                push @arg, doSSL => $ssl;
+                $smtp = Net::SMTPS->new(@arg) or croak "Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n" . $OS_ERROR;
+                $smtp->auth($authuser, $authpass) or croak 'could not authenticate';
             ^;
         }
         if ($EVAL_ERROR) {
             fatal_error( 'net_fatal',
                 "$error_txt{'error_verbose'}: $EVAL_ERROR" );
         }
-
+        
         eval q^
+            use utf8;
+            use Encode qw(decode encode);
+            $subject =~ s/&amp;/&/xsm;
+            my $subject_encoded = encode("MIME-Header",decode('UTF-8',$subject));
+            my $mail_body = qq~<pre $pre>$message</pre>~;
             $smtp->mail($from);
             for (split /, /sm, $to) { $smtp->to($_); }
             $smtp->data();
             $smtp->datasend("To: $toheader\r\n");
             $smtp->datasend("From: $fromheader\r\n");
             $smtp->datasend("X-Mailer: YaBB Net::SMTP\r\n");
-            $smtp->datasend("Subject: $subject\r\n");
-            $smtp->datasend("Content-Type: text/html\; charset=$charsetheader\r\n");
+            $smtp->datasend("Subject: $subject_encoded\r\n");
+            $smtp->datasend("Content-Type: text/html\; charset=UTF-8\r\n");
             $smtp->datasend("\r\n");
-            $smtp->datasend("<pre $pre>$message</pre>");
+            $smtp->datasend("$mail_body");
             $smtp->dataend();
             $smtp->quit();
         ^;

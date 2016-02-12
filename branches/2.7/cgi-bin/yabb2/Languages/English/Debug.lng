@@ -14,7 +14,6 @@
 
 $englishdebuglngver = 'YaBB 2.7.00 $Revision$';
 @englishdebuglngmods = ();
-push @englishdebuglngmods, 'Debug Plus';
 if (@englishdebuglngmods) {
     $englishdebuglngmods = 1;
 }

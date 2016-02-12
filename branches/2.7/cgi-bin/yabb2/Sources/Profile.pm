@@ -836,10 +836,10 @@ qq~<option value="$i"${isselected($i == $textsize)}>$i%</option>\n~;
     my @lfilesanddirs = readdir DIR;
     closedir DIR;
     my $lngcnt = 0;
+    require "$langdir/Lang.lng";
     for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
         if ( -e "$langdir/$fld/Main.lng" ) {
-            my $displang = $fld;
-            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+            my $displang = $lngs{$fld};
             $drawnldirs .=
 qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$displang</option>~;
             $lngcnt++;

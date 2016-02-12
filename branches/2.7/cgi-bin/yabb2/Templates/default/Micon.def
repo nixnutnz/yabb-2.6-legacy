@@ -217,7 +217,7 @@ LoadLanguage('Micon');
 );
 
 %newload = (
-'new_mess' => qq~<span class='NewLinks'><span class='newlinks'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
+'new_mess' => qq~<span class='NewLinks'><span class='newlinks maingrad'><span class='newlinks_c' title='$messageindex_txt_m{'303'}'><b><i>$messageindex_txt_m{'302'}</i></b></span></span></span>~,
 'brd_new' => 'on.png',
 'brd_old' => 'off.png',
 'sub_brd_new' => 'on_sub.png',

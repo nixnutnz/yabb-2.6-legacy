@@ -29,6 +29,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('BoardIndex');
 get_micon();
 
+if ($rss_perm || $accept_permafull ) {
+    $mysymrecent = $perm_domain . '/' . $rsssymrecent;
+    $mysymboard = $perm_domain . '/' . $rsssymboards;
+    $permbrd = qq~$perm_domain/$symlink~ . 'brd_';
+    $permcat = qq~$perm_domain/$symlink~ . 'cat_';
+}
+
 sub BoardIndex {
     my (
         $users,   $lspostid,   $lspostbd,   $lssub,      $lsposter,
@@ -87,7 +94,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 $bot_count{$is_a_bot}++;
             }
             elsif ($name) {
-                if ( LoadUser($name) ) {
+                if ( -e "$memberdir/$name.vars" ) {
+                    LoadUser($name, 'vars');
                     if ( $name eq $username ) { $user_in_log = 1; }
                     elsif ( ${ $uid . $name }{'lastonline'} < $lastonline ) {
                         next;
@@ -180,7 +188,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /[|]/xsm, $_, 7;
             if ($name) {
-                if ( LoadUser($name) ) {
+                if ( -e "$memberdir/$name.vars" ) {
+                    LoadUser( $name, 'vars');
                     if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
                         $bvusers{$boardv}++;
@@ -678,12 +687,21 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
             $template_colboardtable = qq~id="col$catid" style="display:none;"~;
             $catlink = qq~<a href="$scripturl?$my_cat=$catid">$catname</a>~;
         }
+        if ( $accept_permafull) {
+            $catlink =~ s/$scripturl\?catselect\=/$permcat/gxsm;
+        }
 
         # Don't need the category headers if we're loading ajax subboards
         if ( !$INFO{'a'} ) {
             if ( !$rss_disabled && $catrss ) {
-                $rss_catlink =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
+                if ( $rss_perm  || $accept_permafull ) {
+                    $rss_catlink =
+qq~<a href="$mysymrecent/$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
+                }
+                else {
+                    $rss_catlink =
+qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
+                }
             }
             else {
                 $rss_catlink = q{};
@@ -951,6 +969,10 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                     {
                         $rss_boardlink =
 qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
+                        if ( $rss_perm || $accept_permafull ) {
+                            $rss_boardlink =
+qq~<a href="$mysymboard/$curboard" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
+                        }
                     }
                     else {
                         $rss_boardlink = q{};
@@ -1049,6 +1071,9 @@ qq~ $childcnt{$childbd} $boardindex_txt{'72'}~;
                         }
                         $template_subboards .= qq~$tmp_sublinks, ~;
                     }
+                    if ($accept_permafull) {
+						$tmp_sublinks =~ s/$scripturl\?board\=/$permbrd/gxsm;
+					}
                     $template_subboards =~ s/, $//gsm;
 
                     my $sub_txt = $boardindex_txt{'64'};
@@ -1126,6 +1151,9 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                 else {
                     $templateblock =~ s/{yabb boardurl}/$scripturl\?board\=$curboard/gsm;
                 }
+				if ($accept_permafull) {
+					$templateblock =~ s/$scripturl\?board\=/$permbrd/gxsm;
+				}
 
                 # Make hidden table rows for drop down message list
                 $expandmessages = $brd_expandmessages;
@@ -1477,18 +1505,20 @@ qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></s
         # Template it
         my ( $rss_link, $rss_text );
         if ( !$rss_disabled ) {
+            $myrss_link = qq~$scripturl?action=RSSrecent~;
+            if ( $INFO{'catselect'} ) {
+                $myrss_link = qq~$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}~;
+            }
+            if ( $rss_perm  || $accept_permafull ) {
+                $myrss_link = qq~$mysymrecent~;
+                if ( $INFO{'catselect'} ) {
+                    $myrss_link = qq~$mysymrecent/$INFO{'catselect'}~;
+                }
+            }
             $rss_link =
-qq~<a href="$scripturl?action=RSSrecent" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
-            if ( $INFO{'catselect'} ) {
-                $rss_link =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
-            }
+qq~<a href="$myrss_link" target="_blank"><img src="$micon_bg{'rss'}" alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
             $rss_text =
-qq~<a href="$scripturl?action=RSSrecent" target="_blank">$boardindex_txt{'792'}</a>~;
-            if ( $INFO{'catselect'} ) {
-                $rss_text =
-qq~<a href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" target="_blank">$boardindex_txt{'792'}</a>~;
-            }
+qq~<a href="$myrss_link" target="_blank">$boardindex_txt{'792'}</a>~;
         }
         $yyrssfeed = $rss_text;
         $yyrss     = $rss_link;
@@ -1674,14 +1704,8 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
 
         # Make browsers aware of our RSS
         if ( !$rss_disabled ) {
-            if ( $INFO{'catselect'} ) {    # Handle categories properly
-                $yyinlinestyle .=
-qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}" />~;
-            }
-            else {
-                $yyinlinestyle .=
-qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$scripturl?action=RSSrecent" />~;
-            }
+            $yyinlinestyle .=
+qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'792'}" href="$myrss_link" />~;
         }
         template();
     }
@@ -1698,6 +1722,10 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'
             ToChars($mynamecat);
             my $catlinkb =
               qq~<a href="$scripturl?catselect=$mycat">$mynamecat</a>~;
+            if ( $accept_permafull) {
+                $catlinkb =
+              qq~<a href="$permcat$mycat">$mynamecat</a>~;
+            }
             my $parentboard = $subboard_sel;
 
             while ($parentboard) {
@@ -1715,6 +1743,9 @@ qq~<a href="$scripturl?board=$parentboard" class="a"><strong>$pboardname</strong
                     $pboardname =
 qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$pboardname</strong></a>~;
                 }
+                if ($accept_permafull) {
+					$pboardname =~ s/$scripturl\?board\=/$permbrd/xsm;
+				}
                 $boardtree =
                   qq~ &rsaquo; $catlinkb &rsaquo; $pboardname$boardtree~;
                 $parentboard = ${ $uid . $parentboard }{'parent'};
@@ -2023,4 +2054,5 @@ sub find_latest_data  {
                 $childcnt{$parentbd}++;
             }
         };
+
 1;

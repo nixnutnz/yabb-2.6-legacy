@@ -299,7 +299,7 @@ sub MLDate {
     while (($key, $value) = each %memberlist) {
         $hash2{$value}=$key;
     }
-    @buffer = sort keys %hash2;    
+    @buffer = sort keys %hash2;
 
     $memcount = keys %hash2;
     buildIndex();
@@ -861,11 +861,6 @@ sub buildPages {
        </table>
        $sel_box
     </div>~;
-    if ( $isgood == 1 ) {
-        $yymain .= $gmodsubmit;
-    }
-    $yymain .= q~
-    </form>~;
     }
     return;
 }
@@ -1024,21 +1019,21 @@ sub FindMembers {
             $numshown++;
             $i++;
         }
-	$isgood = 1;
+    $isgood = 1;
     }
     else {
         $yymain .= qq~
             <tr>
                   <td class="windowbg2" colspan="9"><br />$ml_txt{'802'} <i>$FORM{'member'}</i><br /><br /></td>
             </tr>~;
-		$isgood = 0;
+        $isgood = 0;
     }
     undef @findmemlist;
     undef %memberinf;
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
     AdminTemplate();
-    return;
+    return $isgood;
 }
 
 1;

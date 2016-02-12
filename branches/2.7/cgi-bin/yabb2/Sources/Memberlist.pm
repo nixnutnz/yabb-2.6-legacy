@@ -16,6 +16,8 @@
 #use warnings;
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+use utf8;
+use Encode ( decode_utf8, encode_utf8 );
 our $VERSION = '2.7.00';
 
 $memberlistpmver = 'YaBB 2.7.00 $Revision$';
@@ -72,16 +74,14 @@ sub Ml {
         || $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' )
     {
-        $page     = 'a';
-        $showpage = 'A';
-        while ( $page ne 'z' ) {
+        for $x ( 0 .. $#alpha ) {
+            $page     = lc $alpha[$x];
+            $showpage = $alpha[$x];
             $LetterLinks .=
 qq(<a href="$scripturl?action=ml;sort=mlletter;letter=$page" class="$letterclass"><b>$showpage&nbsp;</b></a> );
-            $page++;
-            $showpage++;
         }
         $LetterLinks .=
-qq(<a href="$scripturl?action=ml;sort=mlletter;letter=z" class="$letterclass"><b>Z</b></a>  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$letterclass"><b>$ml_txt{'800'}</b></a> );
+qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$letterclass"><b>$ml_txt{'800'}</b></a> );
     }
 
     if   ( $INFO{'start'} eq q{} ) { $start = 0; }
@@ -130,8 +130,9 @@ qq(<a href="$scripturl?action=ml;sort=mlletter;letter=z" class="$letterclass"><b
 }
 
 sub MLByLetter {
-    $letter = lc $INFO{'letter'};
+    $letter = decode_utf8($INFO{'letter'});
     $i      = 0;
+
     ManageMemberinfo('load');
     %namehash = ();
     for my $i ( keys %memberinf) {
@@ -142,8 +143,15 @@ sub MLByLetter {
         $memrealname = $listname;
         $membername = $namehash{$listname}[0];
         $mememail = $namehash{$listname}[1];
+        $memrealname = decode_utf8($memrealname);
+        my $alpha = decode_utf8($alpha[0]);
+        my $omega = decode_utf8($alpha[-1]);
+       
         if ($letter) {
-            if ( $memrealname =~ /^$letter/ixsm || ( $letter eq 'other' && $memrealname =~ m/^[^a-z]/ixsm ))
+            $SearchName = lc( substr $memrealname, 0, 1 );
+            if ( $SearchName eq lc $letter ) { $ToShow[$i] = $membername; $i++; }
+            elsif ( $letter eq 'other'
+                && ( ( $SearchName lt lc $alpha ) || ( $SearchName gt lc $omega ) ) )
             {
                 $ToShow[$i] = $membername;
                 $i++;
@@ -492,8 +500,8 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmembe
                     if ( $counter % $MembersPerPage == 0 ) {
                         $pagetxtindex .=
                           $start == $counter
-                          ? qq~<span class="small">[$tmpa]&nbsp;</span>~
-                          : qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$counter$findmember"><span class="small">$tmpa</span></a>&nbsp;~;
+                          ? qq~<b>[$tmpa]</b>&nbsp;~
+                          : qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$counter$findmember">$tmpa</a>&nbsp;~;
                         $tmpa++;
                     }
                 }
@@ -502,7 +510,7 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmembe
                 }
                 if ( $endpage != $memcount ) {
                     $pageindexadd .=
-qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember"><span class="small">$lastpn</span></a>~;
+qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember">$lastpn</a>~;
                 }
                 $pagetxtindex .= qq~$pageindexadd~;
                 $pageindex1 = qq~$pagetxtindexst$pagetxtindex</span>~;

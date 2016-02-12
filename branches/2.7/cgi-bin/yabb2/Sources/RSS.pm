@@ -129,12 +129,12 @@ sub RSS_board {
                 <title>~ . RSSDescriptionTrim($msub) . q~</title>
                 <link>~
               . RSSDescriptionTrim(
-                "http://$perm_domain/$symlink$permdate/$currentboard/$curnum")
+                "$perm_domain/$symlink$permdate/$currentboard/$curnum")
               . q~</link>
                 <category>~ . RSSDescriptionTrim($category) . q~</category>
                 <guid isPermaLink="true">~
               . RSSDescriptionTrim(
-                "http://$perm_domain/$symlink$permdate/$currentboard/$curnum")
+                "$perm_domain/$symlink$permdate/$currentboard/$curnum")
               . q~</guid>
 ~;
         }
@@ -365,12 +365,12 @@ sub RSS_recent {
             <title>~ . RSSDescriptionTrim("$bn - $msub") . q~</title>
             <link>~
               . RSSDescriptionTrim(
-                "http://$perm_domain/$symlink$permdate/$board/$curnum")
+                "$perm_domain/$symlink$permdate/$board/$curnum")
               . q~</link>
             <category>~ . RSSDescriptionTrim($category) . q~</category>
             <guid isPermaLink="true">~
               . RSSDescriptionTrim(
-                "http://$perm_domain/$symlink$permdate/$board/$curnum")
+                "$perm_domain/$symlink$permdate/$board/$curnum")
               . qq~</guid>\n~;
         }
         else {

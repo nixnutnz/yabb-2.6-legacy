@@ -314,7 +314,7 @@ sub isselected {
 sub email_test {
     require Sources::Mailer;
     $testmessage = $admin_txt{'testmessage'};
-#    $testmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/xsm;
+    $testmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/xsm;
     sendmail(
         $webmaster_email,
         $admin_txt{'testsubject'},
@@ -409,20 +409,19 @@ sub SaveSettingsTo {
     for my $key ( keys %settings ) {
         ${$key} = delete $settings{$key};
     }
-    for (@lngs) {
+    require "$langdir/Lang.lng";
+    for ( keys %lngs ) {
         if ( ${$_ . '_maintenancetext'} ) {
             fopen(MAINT, ">$langdir/$_/maintenancetext.txt");
             print {MAINT} ${$_ . '_maintenancetext'} or croak "$croak{'print'} MAINT";
             fclose(MAINT);
         }
         if (${$_ . '_news'} ) {
-            fopen( NEWS, ">$langdir/$_/news.txt", 1 ) || fatal_error( 'cannot_open', "$vardir/news.txt", 1 );
+            fopen( NEWS, ">$langdir/$_/news.txt", 1 ) || fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
             print {NEWS} ${$_ . '_news'} or croak "$croak{'print'} NEWS";
             fclose(NEWS);
         }
     }
-
-    $mylng = q{'} . join( qq~', '~, @lngs ) . q{'};
 
     if ( $codemaxchars > 15 ) { $codemaxchars = 15; }
     my $setfile;
@@ -533,7 +532,6 @@ sub SaveSettingsTo {
 \$yymycharset = 'UTF-8';                 # character encoding now 'UTF-8' only;
 
 \%templateset = ($templateset);             # Forum templates settings
-\@lngs = ($mylng);                          #installed languages;
 
 \$maintenance = $maintenance;               # Set to 1 to enable Maintenance mode
 \$rememberbackup = $rememberbackup;         # seconds past since last backup until alert is displayed
@@ -578,10 +576,11 @@ sub SaveSettingsTo {
 \$temp_switcher_allowed = $temp_switcher_allowed;   # minimum user level for show Style Switcher: 0 = all, 1 = only members
 
 \$mailprog = '$mailprog';               # Location of your sendmail program
-\$smtp_server = '$smtp_server';         # Address of your SMTP-Server (for Net::SMTP::TLS, specify the port number with a ":<portnumber>" at the end)
+\$smtp_server = '$smtp_server';         # Address of your SMTP-Server (for Net::SMTPS, specify the port number with a ":<portnumber>" at the end)
 \$smtp_auth_required = $smtp_auth_required; # Set to 1 if the SMTP server requires Authorisation
 \$authuser = '$authuser';               # Username for SMTP authorisation
 \$authpass = '$authpass';               # Password for SMTP authorisation
+\$helloserv = '$helloserv';             # This is the domain your forum's IP address resolves to for DNS look-up.
 \$webmaster_email = '$webmaster_email'; # Your email address. (eg: \$webmaster_email = q^admin\@host.com^;)
 \$mailtype = $mailtype;                     # Mail program to use: 0 = sendmail, 1 = SMTP, 2 = Net::SMTP, 3 = Net::SMTP::TLS
 
@@ -964,10 +963,14 @@ $ext_prof_fields
 
 ########## Permalinks ##########
 
-\$accept_permalink = $accept_permalink;     # Set to 1 to have the board accept permalink alike environment strings
+\$accept_permalink = $accept_permalink;     # Set to 1 to have the board accept permalink-like environment strings for posts
+\$accept_permafull = $accept_permafull;     # Set to 1 to have the board accept permalink-like environment strings for guest accessible sections
 \$symlink = '$symlink';         # The part defined in .htaccess redirection rules that is between domainname and permalink
 \$perm_spacer = '$perm_spacer';     # The character used in the permalink output file that replaces the space.
-\$perm_domain = '$perm_domain';     # The full domainname (no http://) where the .haccess redirect is set on.
+\$perm_domain = '$perm_domain';     # The full domainname where the .haccess redirect is set on.
+\$rss_perm = $rssperm;                    # Set to 1 to have the board accept permalink-like environment strings for RSS
+\$rsssymrecent = '$rsssymrecent';         # The part defined in .htaccess redirection rules that is between domainname and permalink
+\$rsssymboards = '$rsssymboards';         # The part defined in .htaccess redirection rules that is between domainname and permalink
 
 ########## bypass post for locked thread ##########
 

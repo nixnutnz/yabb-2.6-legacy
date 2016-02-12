@@ -33,7 +33,7 @@ if ( !$script_root ) {
 
 my ( $checker_output, $i );
 
-my @modules = qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTP::TLS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape);
+my @modules = qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape);
 
 push @modules, 'Module::Load';
 
@@ -86,6 +86,7 @@ my $perlver = $];
 if ( $perlver gt '5.009' ) {
     $perlver = $^V;
 }
+my $server = $ENV{'SERVER_SOFTWARE'};
 
 if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~
@@ -99,7 +100,9 @@ if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
                     </td>
                 </tr><tr>
                     <td class="catbg" colspan="3">
-                        <b>$modulecheck{'perlver'}</b>: $perlver
+                        $modulecheck{'perlver'}: <em>$perlver</em>
+                        <br />$modulecheck{'server'}: <em>$server</em>
+                        <br />$modulecheck{'mod_access_compat'}
                     </td>
                 </tr>~ . (
         $i

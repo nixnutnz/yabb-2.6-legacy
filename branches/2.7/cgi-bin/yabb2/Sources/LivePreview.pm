@@ -26,12 +26,9 @@ if (@livepreviewpmmods) {
 if ( $action eq 'detailedversion' ) { return 1; }
 
 use URI::Escape;
-if ( $yymycharset ne 'UTF-8' ) {
-    require Encode;
-    Encode->import( decode_utf8, encode_utf8  );
-}
 LoadCensorList();
 guard();
+
 if ($enable_ubbc) {
     if ( !$yyYaBBCloaded ) {
         require Sources::YaBBC;
@@ -44,9 +41,6 @@ sub DoLiveMessage {
     $FORM{'message'} =~ s/\r//gsm;
     $message = $FORM{'message'};
     uri_unescape($message);
-    if ( $yymycharset ne 'UTF-8' ) {
-         $message = decode_utf8($message);
-    }
     $message =~ s/\[ch8203\]//igsm;
     $message =~ s/\&\x238203;//igsm;
     FromChars($message);
@@ -70,9 +64,7 @@ sub DoLiveMessage {
     $message  = Censor($message);
     $csubject = $FORM{'subject'};
     uri_unescape($csubject);
-    if ( $yymycharset ne 'UTF-8' ) {
-         $csubject = decode_utf8($csubject);
-    }
+
     $csubject =~ s/[\r\n]//gsm;
     FromChars($csubject);
     $convertstr = $csubject;
@@ -87,19 +79,11 @@ sub DoLiveMessage {
     $myname = $FORM{'guestname'};
     uri_unescape($myname);
 
-    if ( $yymycharset ne 'UTF-8' ) {
-         $myname = decode_utf8($myname);
-    }
     $myname =~ s/[\r\n]//gsm;
     FromChars($myname);
     ToHTML($myname);
     ToChars($myname);
     $myname = Censor($myname);
-    if ( $yymycharset ne 'UTF-8' ) {
-        $csubject = encode_utf8($csubject);
-        $message = encode_utf8($message);
-        $myname = encode_utf8($message);
-    }
     print "Content-type: application/x-www-form-urlencoded\n\n"
       or croak "$croak{'print'} content-type";
     print qq~$csubject|$message|$myname~ or croak "$croak{'print'}";
@@ -119,9 +103,6 @@ sub DoLiveIM {
     $FORM{'message'} =~ s/\r//gxsm;
     $message = $FORM{'message'};
     uri_unescape($message);
-    if ( $yymycharset ne 'UTF-8' ) {
-        $message = decode_utf8($message);
-    }
     $message =~ s/\[ch8203\]//igsm;
     $message =~ s/\&\x238203;//igsm;
     FromChars($message);
@@ -146,9 +127,6 @@ sub DoLiveIM {
     $message  = Censor($message);
     $csubject = $FORM{'subject'};
     uri_unescape($csubject);
-    if ( $yymycharset ne 'UTF-8' ) {
-        $csubject = decode_utf8($csubject);
-    }
     $csubject =~ s/[\r\n]//gsm;
     FromChars($csubject);
     $convertstr = $csubject;
@@ -181,10 +159,6 @@ sub DoLiveIM {
     $messageblock =~ s/{yabb my_showIP}/$liveipimg $livemip/gsm;
 
     liveimage_resize();
-    if ( $yymycharset ne 'UTF-8' ) {
-        $messageblock = encode_utf8($messageblock);
-    }
-
     print "Content-type: application/x-www-form-urlencoded\n\n"
       or croak "$croak{'print'} content-type";
     print qq~$messageblock\n~ or croak "$croak{'print'} messageblock";
@@ -203,9 +177,6 @@ sub DoLiveCal {
     LoadLanguage('EventCal');
     $message = $FORM{'message'};
     uri_unescape($message);
-    if ( $yymycharset ne 'UTF-8' ) {
-        $message = decode_utf8($message);
-    }
     $message =~ s/\r//gxsm;
     $message =~ s/\[ch8203\]//igsm;
     $message =~ s/\&\x238203;//igsm;
@@ -234,9 +205,6 @@ sub DoLiveCal {
     $myname = $FORM{'guestname'};
     uri_unescape($myname);
 
-    if ( $yymycharset ne 'UTF-8' ) {
-        $myname = decode_utf8($myname);
-    }
     $myname =~ s/[\r\n]//gsm;
     FromChars($myname);
     ToHTML($myname);
@@ -255,12 +223,6 @@ sub DoLiveCal {
     $mybtimein = timeformat($mybtime);
     $cdate     = dtonly($mybtimein);
 
-    if ( $yymycharset ne 'UTF-8' ) {
-        $message = encode_utf8($message);
-        $myname = encode_utf8($myname);
-        $cdate = encode_utf8($cdate);
-        $txt_icon = encode_utf8($txt_icon);
-    }
     print "Content-type: application/x-www-form-urlencoded\n\n"
       or croak "$croak{'print'} content-type";
     print qq~$message|$myname|$cdate|$txt_icon|$mycal_type~

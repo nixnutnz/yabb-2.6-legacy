@@ -13,6 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 our $VERSION = '2.7.00';
+use CGI::Carp qw(fatalsToBrowser);
+use utf8;
+use Encode qw(decode_utf8 encode_utf8);
 
 $userselectpmver = 'YaBB 2.7.00 $Revision$';
 @userselectpmmods = ();
@@ -130,10 +133,9 @@ sub MemberList {
         $instruct_start = qq~$usersel_txt{'instruct'}~;
         $instruct_end   = qq~$usersel_txt{'groups'}~;
     }
-    $page     = 'a';
-    $showpage = 'A';
-
-    while ( $page ne 'z' ) {
+	for $x ( 0 .. $#alpha ) {
+            $page     = lc $alpha[$x];
+            $showpage = $alpha[$x];
         if ( $INFO{'letter'} && $page eq $INFO{'letter'} ) {
             $LetterLinks .=
 qq~<div class="letterlinks_a"><span class="small"><b>$showpage</b></span></div>~;
@@ -142,16 +144,6 @@ qq~<div class="letterlinks_a"><span class="small"><b>$showpage</b></span></div>~
             $LetterLinks .=
 qq~<div class="letterlinks_b"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$page"><span class="small"><b>$showpage</b></span></a></div>~;
         }
-        $page++;
-        $showpage++;
-    }
-    if ( $INFO{'letter'} && $INFO{'letter'} eq 'z' ) {
-        $LetterLinks .=
-q~<div class="letterlinks_a"><span class="small"><b>Z</b></span></div>~;
-    }
-    else {
-        $LetterLinks .=
-qq~<div class="letterlinks_b"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=z"><span class="small"><b>Z</b></span></a></div>~;
     }
     if ( $INFO{'letter'} && $INFO{'letter'} eq 'other' ) {
         $LetterLinks .=
@@ -173,7 +165,7 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
         }
     }
     if ( $to_id eq 'groups' ) { $LetterLinks = q{}; }
-    if ( $INFO{'letter'} ne 'all' ) { $letter = lc $INFO{'letter'}; }
+    if ( $INFO{'letter'} ne 'all' ) { $letter = $INFO{'letter'}; }
 
     $i            = 0;
     $recent_exist = 1;
@@ -316,10 +308,15 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
             }
             $memrealname = $memberinf{$membername}[0];
             $mememail = $memberinf{$membername}[1];
+
+            $letter = decode_utf8($letter);
+            $memrealname = decode_utf8($memrealname);
+            $alpha = decode_utf8($alpha[0]);
+            $omega = decode_utf8($alpha[-1]);
             if ($letter) {
                 $SearchName = lc( substr $memrealname, 0, 1 );
                 if (
-                    $SearchName eq $letter
+                    $SearchName eq lc $letter
                     && (
                         $membername ne $username
                         || (   $to_id =~ /moderators\d/xsm
@@ -331,7 +328,7 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
                 }
                 elsif (
                        $letter eq 'other'
-                    && ( ( $SearchName lt 'a' ) || ( $SearchName gt 'z' ) )
+                    && ( ( $SearchName lt lc $alpha ) || ( $SearchName gt lc $omega ) )
                     && (
                         $membername ne $username
                         || (   $to_id =~ /moderators\d/xsm
@@ -842,22 +839,29 @@ sub quickSearch {
 
 sub doquicksearch {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
-
     ManageMemberinfo('load');
-    my (@matches);
+    my @matches = ();
+    my $match = q{};
     for my $membername (
         sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
         keys %memberinf
       )
     {
         my $realname = $memberinf{$membername}[0];
-        if ( $realname =~ /^$INFO{'letter'}/ixsm ) {
+        $realname = decode_utf8($realname);
+        $letter = decode_utf8($INFO{'letter'});
+        if ( $letter =~ m/[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/gsm) {
+            $match = $usersel_txt{'illegal'};
+        }
+        elsif ( $realname =~ /^$letter/ixsm ) {
+            $realname = encode_utf8($realname);
             push @matches, $realname, $membername;
         }
     }
+    if ( !$match ) { $match = join q{,}, @matches; }
     print "Content-type: text/plain\n\n"
       or croak "$croak{'print'} content-type";
-    print join q{,}, @matches or croak "$croak{'print'} matches";
+    print $match or croak "$croak{'print'} matches";
 
     CORE::exit;    # This is here only to avoid server error log entries!
     return;
@@ -900,13 +904,13 @@ sub checkUserAvail {
                 if ($matchword) {
                     if ( $realnamecheck eq $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
                 else {
                     if ( $realnamecheck =~ $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
             }
@@ -928,13 +932,13 @@ sub checkUserAvail {
                 if ($matchword) {
                     if ( $namecheck eq $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
                 else {
                     if ( $namecheck =~ $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
             }
