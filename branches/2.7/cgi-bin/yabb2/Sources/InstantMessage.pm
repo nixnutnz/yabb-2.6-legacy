@@ -455,21 +455,6 @@ qq~                            <option value="$img"$myic>$alt</option>\n~;
     # this declares the beginning of the UBBC section
     $JSandInput .= qq~
     <script type="text/javascript">
-    function Hash() {
-        this.length = 0;
-        this.items = new Array();
-        for (var i = 0; i < arguments.length; i += 2) {
-            if (typeof(arguments[i + 1]) != 'undefined') {
-                this.items[arguments[i]] = arguments[i + 1];
-                this.length++;
-            }
-        }
-
-        this.getItem = function(in_key) {
-            return this.items[in_key];
-        };
-    }
-
     function showimage() {
         $jsIM
         var icon_set = document.getElementById("status").options[document.getElementById("status").selectedIndex].value;

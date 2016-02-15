@@ -44,6 +44,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '19' => q~Here you can change the colors of the background, borders and text as well as the font family and text size for the main elements of your forum.<br /><strong>Note</strong>: If an element attribute such as font has no choices available, that attribute has not been set for that element in the stylesheet.~,
 '20' => q~Element~,
 '21' => q~Backgr.~,
+'21g' => q~Background Grad.~,
 '22' => q~Font~,
 '23' => q~Border~,
 '24' => q~Edit~,
@@ -131,6 +132,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'edit_files' => q~Go to Edit Template Files~,
 'configure' => q~Go to Configure Templates~,
 'mobile' => q~Is this a mobile template? (Mobile templates have certain functions - such as context helps and preview - disabled.)~,
+'maingrad' => q~Common Gradient (.maingrad)~,
 );
 
 1;

@@ -37,7 +37,7 @@ $mysharedlogc = q~
 
 $mysharedlog_top = qq~
 $myborder
-    <div class="tabtitle tabtitle-text" style="margin-top:1em; line-height:3em; vertical-align:bottom">$loginout_txt{'34'}</div>
+    <div class="tabtitle maingrad tabtitle-text" style="margin-top:1em; line-height:3em; vertical-align:bottom">$loginout_txt{'34'}</div>
 <table class="bordercolor pad_4px cs_thin">
     <colgroup>
         <col style="width:6%" />

@@ -1,11 +1,11 @@
 ###############################################################################
 # ManageStyles.pm                                                             #
-# $Date: 11.21.14 $                                                           #
+# $Date: 06.01.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.1                                                  #
-# Packaged:       November 21, 2014                                           #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -13,8 +13,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.1';
-$managestylespmver = 'YaBB 2.6.1 $Revision$';
+our $VERSION = '2.7.00';
+$managestylespmver = 'YaBB 2.7.00 $Revision$';
 @managestylesmods = ();
 if (@managestylesmods) {
     $managestylesmods = 1;
@@ -249,8 +249,8 @@ my ( $headerstyle, $headerastyle );
 
     $gen_fontsize =
 q~              <select name="cssfntsize" id="cssfntsize" style="vertical-align: middle;" onchange="previewFont()">~;
-    for my $i ( 7 .. 20 ) {
-        $gen_fontsize .= qq~                <option value="$i">$i</option>~;
+    for my $i ( 83, 92, 100, 108, 112, 120 ) {
+        $gen_fontsize .= qq~                <option value="$i">$i%</option>~;
     }
     $gen_fontsize .= q~
                 </select>~;
@@ -311,6 +311,12 @@ qq~                 <option value="$bodystyle" selected="selected">$templ_txt{'2
         $tabmenustyle =~ s/.*?(\.tabmenu\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
           qq~                   <option value='$tabmenustyle'>$templ_txt{'tabmenu'}</option>\n~;
+    }
+    if ( $stylestr =~ /\.maingrad/sm ) {
+        $maingradstyle = $stylestr;
+        $maingradstyle =~ s/.*?(\.maingrad\s*?\{.+?\}).*/$1/igsm;
+        $selstyl .=
+          qq~                   <option value='$maingradstyle'>$templ_txt{'maingrad'}</option>\n~;
     }
     if ( $stylestr =~ /\.tabtitle/sm && $istabbed ) {
         $tabtitlestyle = $stylestr;
@@ -440,14 +446,14 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
         $selstyl .=
           qq~                   <option value='$userinfostyle'>$templ_txt{'userinfo'}</option>\n~;
     }
-    if ( $stylestr =~ /\.message/sm ) {
+    if ( $stylestr =~ /\.message, \#message, .prevwin/sm ) {
         $postsstyle = $stylestr;
-        $postsstyle =~ s/.*?(\.message\s*?\{.+?\}).*/$1/igsm;
+        $postsstyle =~ s/.*?(\.message, \#message, .prevwin\s*?\{.+?\}).*/$1/igsm;
         $selstyl .= qq~                 <option value='$postsstyle'>$templ_txt{'65'}</option>\n~;
 
-        if ( $stylestr =~ /\.message a/sm ) {
+        if ( $stylestr =~ /\.message a, .prevwin a/sm ) {
             $postsstyle_a = $stylestr;
-            $postsstyle_a =~ s/.*?(\.message a\s*?\{.+?\}).*/$1/igsm;
+            $postsstyle_a =~ s/.*?(\.message a, \.prevwin a\s*?\{.+?\}).*/$1/igsm;
             $selstyl .=
               qq~                   <option value='$postsstyle_a'>$templ_txt{'66'}</option>\n~;
         }
@@ -590,6 +596,13 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
                             </span>
                             <span>
                                 <input type="text" size="9" name="backcol" id="backcol" value="$backcol" class="windowbg2" style="font-size: 10px; border: 1px #eef7ff solid; vertical-align: middle;" onchange="previewColor(this.value)" />
+                            </span>
+                            <br />
+                            <span style="width: 70px;">
+                                <input type="radio" name="selopt" id="selopt4" value="background" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="manSelect();" /> <label for="selopt4"><span class="small" style="vertical-align: middle;"><b>$templ_txt{'21g'}</b></span></label>
+                            </span>
+                            <span>
+                                <input type="text" size="30" name="backcol2" id="backcol2" value="$backcol2" class="windowbg2" style="font-size: 10px; border: 1px #eef7ff solid; vertical-align: middle;" onchange="previewColor(this.value)" />
                             </span>
                             <br />
                             <span style="width: 70px;">
@@ -886,7 +899,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     }
     if ($istabbed) {
         $viewstyle .= qq~
-<table class="tabtitle">
+<table class="tabtitle maingrad">
     <colgroup>
         <col style="width:33%;  height:25px" />
         <col style="width:34%;  height:25px" />
@@ -894,7 +907,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     </colgroup>
     <tr>
         <td style="padding-left:1%">
-            $templ_txt{'tabtitle'}
+            $templ_txt{'tabtitle'}<br />$templ_txt{'maingrad'}
         </td><td>
             <a href="javascript:;">$templ_txt{'tabtitlea'}</a>
         </td><td class="tabtitle-text">
@@ -1156,7 +1169,7 @@ function updateUBBC(thebg) {
         document.allstyles.ubbcselbutton[i].checked = false;
         if (document.allstyles.ubbcselbutton[i].value == thebg) document.allstyles.ubbcselbutton[i].checked = true;
     }
-	//stylelink = $stylestr;
+    //stylelink = $stylestr;
     thenewstyle = document.allstyles.stylelink.value;
     cssoption = document.allstyles.ubbcbuttonbg.value;
     newcssoption = cssoption.replace(/(background\\-image\\s*?\\:\.*?\\/UBBCbuttons\\/).*?(\\)\\;)/i, "\$1" + thebg + "\$2");
@@ -1173,6 +1186,7 @@ function previewColor(thecolor) {
     var cssfont = document.allstyles.selopt1;
     var cssback = document.allstyles.selopt2;
     var cssborder = document.allstyles.selopt3;
+    var gradient = document.allstyles.selopt4;
     if(cssfont.checked) {
         newcssoption=cssoption.replace(/( color\\s*?\\:).+?(\\;)/i, "\$1 " + thecolor + "\$2");
         document.allstyles.textcol.value = thecolor;
@@ -1188,6 +1202,13 @@ function previewColor(thecolor) {
             thenewstyle=thenewstyle.replace(/(\\.tabmenu.*?\\{.*?background-color\\s*?\\:).+?(\\;)/ig, "\$1 " + thecolor + "\$2");
             thenewstyle=thenewstyle.replace(/(\\.rightbox.*?\\{.*?background-color\\s*?\\:).+?(\\;)/ig, "\$1 " + thecolor + "\$2");
             thenewstyle=thenewstyle.replace(/(\\.mainbottom.*?\\{.*?background-color\\s*?\\:).+?(\\;)/ig, "\$1 " + thecolor + "\$2");
+        }
+    }
+    if(gradient.checked) {
+        newcssoption=cssoption.replace(/(background\s*?\\:)(.+?)(\\;)/i, "\$1 " + thecolor + "\$3");
+        document.allstyles.backcol2.value = thecolor;
+        if(cssoption.match(/\\.gradmain\\s*?\\{/)) {
+            thenewstyle=thenewstyle.replace(/(\\.gradmain.*?\\{.*?background\\s*?\\:)(.+?)(\\;)/ig, "\$1 " + thecolor + "\$3");
         }
     }
     if(cssborder.checked) {
@@ -1303,7 +1324,7 @@ function previewFont() {
         thesize = document.allstyles.cssfntsize.options[document.allstyles.cssfntsize.selectedIndex].value;
         thenewstyle = document.allstyles.stylelink.value;
         cssoption = document.allstyles.csselement.options[document.allstyles.csselement.selectedIndex].value;
-        newcssoption=cssoption.replace(/(font\\-size\\s*?\\:\\s*?)[\\d]{1,2}(\\w+?\;)/i, "\$1" + thesize + "\$2");
+        newcssoption=cssoption.replace(/(font\\-size\\s*?\\:\\s*?)[\\d]{0,3}([a-zA-Z0-9%]+?\\;)/i, "\$1" + thesize + "\$2");
         document.allstyles.csselement.options[document.allstyles.csselement.selectedIndex].value = newcssoption;
         re=cssoption.replace(/(.*)/, "\$1");
         thenewstyle=thenewstyle.replace(re, newcssoption);
@@ -1385,6 +1406,7 @@ function manSelect() {
         var cssfont = document.allstyles.selopt1;
         var cssback = document.allstyles.selopt2;
         var cssborder = document.allstyles.selopt3;
+        var gradient = document.allstyles.selopt4;
         document.allstyles.textcol.disabled = true;
         document.allstyles.backcol.disabled = true;
         document.allstyles.bordcol.disabled = true;
@@ -1395,6 +1417,9 @@ function manSelect() {
         }
         if(cssback.checked == true) {
                 document.allstyles.backcol.disabled = false;
+        }
+        if(gradient.checked == true) {
+                document.allstyles.backcol2.disabled = false;
         }
         if(cssborder.checked == true) {
                 document.allstyles.bordcol.disabled = false;
@@ -1422,19 +1447,22 @@ function setElement() {
         var cssfont = document.allstyles.selopt1;
         var cssback = document.allstyles.selopt2;
         var cssborder = document.allstyles.selopt3;
+        var gradient = document.allstyles.selopt4;
         cssfont.checked = false;
         cssback.checked = false;
+        gradient.checked = false;
         cssborder.checked = false;
         cssfont.disabled = true;
         cssback.disabled = true;
+        gradient.disabled = true;
         cssborder.disabled = true;
 
         if(tmpcssoption[1].match(/font\-size/g)) {
                 cssfont.disabled = false;
                 document.allstyles.cssfntsize.disabled = false;
-                thefontsize=tmpcssoption[1].replace(/.*?font\\-size\\s*?\\:\\s*?([\\d]{1,2})\\w+?\\;.*/, "\$1");
+                thefontsize=tmpcssoption[1].replace(/.*?font\\-size\\s*?\\:\\s*?([\\d]{0,3})[a-zA-Z0-9_%]+?\\;.*/i, "\$1");
                 if(!thefontsize) thesel=0;
-                else thesel=thefontsize-7;
+                else thesel=thefontsize;
                 document.allstyles.cssfntsize.value = document.allstyles.cssfntsize.options[thesel].value;
         }
         if(tmpcssoption[1].match(/font\-family/g)) {
@@ -1475,6 +1503,15 @@ function setElement() {
         else {
                 document.allstyles.backcol.value = '';
         }
+        if( tmpcssoption[1].match(/gradient/g)) {
+                gradient.disabled = false;
+                thegradcolor=tmpcssoption[1].replace(/(.*?)background\\s*?\\:\\s*(.+?)\\;(.*)/i, "\$2");
+                thegradcolor=thegradcolor.replace(/\\s/g, "");
+                document.allstyles.backcol2.value = thegradcolor;
+         }
+        else {
+                document.allstyles.backcol2.value = '';
+         }
         if(tmpcssoption[1].match(/ color/g)) {
                 cssfont.disabled = false;
                 thefontcolor=tmpcssoption[1].replace(/(.*?) color\\s*?\\:(.+?)\\;(.*)/i, "\$2");
@@ -1640,19 +1677,20 @@ sub ModifyCSS2 {
         }
         $style_cnt = $FORM{'stylelink'};
         FromHTML($style_cnt);
-        $style_cnt =~ s/(\*\/)/$1\n\n/gsm;
-        $style_cnt =~ s/(\/\*)/\n$1/gsm;
+        $style_cnt =~ s/(\*\/)/$1\n/gsm;
+        $style_cnt =~ s/(\/\*)/$1/gsm;
         $style_cnt =~ s/(\{)/$1\n/gsm;
-        $style_cnt =~ s/(\})/$1\n/gsm;
+        $style_cnt =~ s/(\})/$1\n\n/gsm;
         $style_cnt =~ s/(\;)/$1\n/gsm;
         @style_arr = split /\n/xsm, $style_cnt;
+        chomp @style_arr;
 
         fopen( TMPCSS, ">$htmldir/Templates/Forum/$style_name.css" )
           || fatal_error( 'cannot_open',
             "$htmldir/Templates/Forum/$style_name.css", 1 );
         for my $style_sgl (@style_arr) {
             $style_sgl =~ s/\A\s+?//gxsm;
-            if ( $style_sgl =~ m{\;+\Z}sm ) { $style_sgl = qq~\t$style_sgl~; }
+            if ( $style_sgl =~ m{\;+\Z}sm ) { $style_sgl = qq~    $style_sgl~; }
             $style_sgl =~ s/$yyhtml_root\/Templates\/Forum/\./gsm;
             $style_sgl =~ s/$yyhtml_root/\.\.\/\.\./gsm;
             print {TMPCSS} "$style_sgl\n" or croak "$croak{'print'} TMPCSS";

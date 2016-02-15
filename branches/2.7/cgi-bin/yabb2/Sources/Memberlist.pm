@@ -17,7 +17,7 @@
 #no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
-use Encode ( decode_utf8, encode_utf8 );
+use Encode qw(decode_utf8 encode_utf8);
 our $VERSION = '2.7.00';
 
 $memberlistpmver = 'YaBB 2.7.00 $Revision$';

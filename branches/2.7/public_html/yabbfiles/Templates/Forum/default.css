@@ -43,16 +43,13 @@ a:focus, input:focus, textarea:focus, select:focus { outline: 0 none; }
     background-color: #4378ae;
     padding-left:1%;
     display: table;
-    width:99%;
 }
 
 .headerrow  { display: table-row;}
 .headertl {padding:4px; min-height:5em; line-height:1.5em; text-align:left; vertical-align:middle; display: table-cell; width:100%}
-.logor { text-align:right; vertical-align:middle; display: table-cell; width:100%}
+.logor { text-align:right; vertical-align:middle; display: table-cell; width:100%; min-height: 120px; padding: 1em 0;}
 
 .maingrad {
-    background: -webkit-linear-gradient(top, #569dce, #3571b2);
-    background: -moz-linear-gradient(top, #569dce, #3571b2);
     background: linear-gradient(#569dce, #3571b2);
 }
 
@@ -2095,6 +2092,38 @@ body#print { background-color:#fff;background-image:none; color:#000}
 #print a:focus, input:focus, textarea:focus, select:focus {
         outline: 0 none;
 }
+
+.marquee {
+    width: 100%;
+    margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.marquee span {
+    display: inline-block;
+    padding-left: 100%;
+/* show the marquee just outside the div */
+    -webkit-animation: marquee 15s linear infinite;
+    animation: marquee 15s linear infinite;
+}
+
+.marquee span:hover {
+    animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+}
+
+/* Make it move */
+@keyframes marquee {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+@-webkit-keyframes marquee {
+    0%   { -webkit-transform: translate(0, 0); }
+    100% { -webkit-transform: translate(-100%, 0); }
+}
+
 
 /* Mod Hook Start*/
 

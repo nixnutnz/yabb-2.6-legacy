@@ -61,7 +61,7 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
     <div class="bordercolor" style="width:350px">
     <table class="cs_thin pad_3px" style="width:350px">
         <tr>
-            <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
+            <td class="titlebg maingrad"><label for="letter">$addmod_txt{'modsearch'}</label></td>
         </tr><tr>
             <td class="windowbg2">
                 <span class="small">$addmod_txt{'instruct'}</span>
@@ -279,7 +279,7 @@ $my_smilie_window_tr = qq~
 
 $my_show_error = qq~
 <div class="system-body">
-    <div class="system-info maingrad">$maintxt{'error_description'}</div>
+    <div class="system-info maingrad"> &nbsp; <b>$maintxt{'error_description'}</b></div>
     <div class="system-info-body">{yabb errormessage}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
@@ -289,7 +289,7 @@ $my_show_error = qq~
 
 $my_profile_int = qq~
 <div class="system-body">
-    <div class="system-info maingrad">$maintxt{'members_only'}</div>
+    <div class="system-info maingrad"> &nbsp; <b>$maintxt{'members_only'}</b></div>
     <div class="system-info-body">$maintxt{'reg_please'}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>

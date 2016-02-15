@@ -2040,9 +2040,6 @@ span.newlinks {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    background: -webkit-linear-gradient(top, #569dce, #3673b3);
-    background: -moz-linear-gradient(top, #569dce, #3673b3);
-    background: linear-gradient(#569dce, #3673b3);
 }
 
 span.newlinks_c {

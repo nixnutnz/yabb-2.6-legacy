@@ -327,7 +327,7 @@ $show_check = qq~<tr>
     </tr>~;
 
 $my_admin_login = qq~
-<table class="tabtitle border-space pad-cell" style="width:500px">
+<table class="tabtitle border-space maingrad pad-cell" style="width:500px">
     <tr>
         <td class="center"><b>$admin_txt{'901'}</b></td>
     </tr>

@@ -479,20 +479,6 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
         $mycalout_chars = qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
-    function Hash() {
-        this.length = 0;
-        this.items = new Array();
-        for (var i = 0; i < arguments.length; i += 2) {
-            if (typeof(arguments[i + 1]) != 'undefined') {
-                this.items[arguments[i]] = arguments[i + 1];
-                this.length++;
-            }
-        }
-
-        this.getItem = function(in_key) {
-            return this.items[in_key];
-        };
-    }
    $jsCal
    $jsCal_txt
    function calshowimage() {
