@@ -28,7 +28,7 @@ if ( $FORM{'reglanguage'} ) {
 ##agreement before registration form
 $myregister_fullagree = qq~
 <form action="$scripturl?action=register" method="post">
-    <div class="tabtitle maingrad" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/xx.gif" alt="" /> $register_txt{'764a'}</div>
+    <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/xx.gif" alt="" /> $register_txt{'764a'}</div>
     <div class="windowbg padd_8px">{yabb fullagree}</div>
     <div class="catbg center padd_8px">
             <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" />
@@ -63,7 +63,7 @@ $myaedomains_b = q~</select>
 
 $myregister_regfill_a = qq~
 <div style="width:90em; margin:0 auto">
-    <div class="tabtitle maingrad" style="padding-left:1%; line-height:3em; vertical-align:bottom">
+    <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom">
         <img src="$imagesdir/register.gif" alt="$register_txt{'97'}" title="$register_txt{'97'}" /> $register_txt{'517'}
     </div>
 <table class="pad_4px" style="border-spacing: 0 1px; border-collapse:separate">
@@ -300,7 +300,7 @@ $ext_spacer = qq~<tr><td class="catbg" colspan="2">{yabb fieldcomment}&nbsp;</td
 
 $myregister_pending = qq~
             <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-                <table class="tabtitle maingrad">
+                <table class="tabtitle">
                     <tr>
                         <td style="padding-left:1%; height:25px"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b></td>
                     </tr>
@@ -314,7 +314,7 @@ $myregister_pending = qq~
 
 $myregister_password = qq~
     <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-        <table class="tabtitle maingrad">
+        <table class="tabtitle">
             <tr>
                 <td style="padding-left:1%; height:25px"><b>$register_txt{'97'}</b></td>
             </tr>
@@ -331,7 +331,7 @@ $myregister_password = qq~
 $myregister_welcome = qq~
             <form action="$scripturl?action=login2" method="post">
             <div class="bordercolor" style="width: 400px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-                <table class="tabtitle maingrad">
+                <table class="tabtitle">
                 <tr>
                     <td style="padding-left:1%; height:25px">
                         <img src="$imagesdir/register.gif" alt="$register_txt{'97'}" title="$register_txt{'97'}" /> <b>$register_txt{'97'}</b>
@@ -363,7 +363,7 @@ $myregister_prereg1 = qq~
 
 $myregister_prereg2 = qq~
                 <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-                    <div class="tabtitle maingrad" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /> <b>$prereg_txt{'1a'}</b>
+                    <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /> <b>$prereg_txt{'1a'}</b>
                     </div>
                     <div class="windowbg padd_4px">$prereg_txt{'5'}~;
 

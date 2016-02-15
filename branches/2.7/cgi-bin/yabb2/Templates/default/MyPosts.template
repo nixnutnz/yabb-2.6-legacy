@@ -23,7 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 $my_favbrds = 'favboards.png';
 
 $favorites_template .= qq~<!-- Board Description start -->
-<table class="tabtitle-sub maingrad">
+<table class="tabtitle-sub">
     <colgroup>
         <col style="width:8%" />
         <col style="width:20%" />
@@ -171,7 +171,7 @@ $my_boardnote = qq~
     }
 </script>
     <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
-    <div class="tabtitle maingrad" style="padding-left:1em; line-height:3em; vertical-align:bottom">
+    <div class="tabtitle" style="padding-left:1em; line-height:3em; vertical-align:bottom">
          <img src="$imagesdir/$brd_notify_img" alt="notify_txt{'136'}" title="$notify_txt{'136'}" /> <b>$notify_txt{'136'}</b>
          {yabb note_brd}
     </div>
@@ -184,7 +184,7 @@ $my_boardnote = qq~
     </table>
     </form>
     <form action="$scripturl?action=notify4" method="post" name="threadnotify">
-    <div class="tabtitle maingrad" style="padding-left:1em; line-height:3em; vertical-align:bottom">
+    <div class="tabtitle" style="padding-left:1em; line-height:3em; vertical-align:bottom">
                 <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <b>$notify_txt{'118'}</b>
      </div>
     <table class="pad_4px cs_thin">
@@ -264,7 +264,7 @@ $my_threadnote_b = qq~<tr>
 
 ##Recent Posts
 $myshow_recent_a = qq~
-<table class="tabtitle maingrad">
+<table class="tabtitle">
     <colgroup>
         <col style="width:5%" />
         <col style="width:95%" />

@@ -27,7 +27,7 @@ $mysharedbot = q~</div>~;
 
 $mysharedloga = qq~
 $myborder_with_title
-    <div class="tabtitle maingrad padd_4px" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><strong>{yabb sharedLogin_title}</strong></div>~;
+    <div class="tabtitle padd_4px" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><strong>{yabb sharedLogin_title}</strong></div>~;
 
 $mysharedlogb = q~
     <div class="windowbg">{yabb sharedLogin_text}</div>~;
@@ -37,7 +37,7 @@ $mysharedlogc = q~
 
 $mysharedlog_top = qq~
 $myborder
-    <div class="tabtitle maingrad tabtitle-text" style="margin-top:1em; line-height:3em; vertical-align:bottom">$loginout_txt{'34'}</div>~;
+    <div class="tabtitle tabtitle-text" style="margin-top:1em; line-height:3em; vertical-align:bottom">$loginout_txt{'34'}</div>~;
 
 $mylogintxt = $loginout_txt{'35'};
 
@@ -68,7 +68,7 @@ $mysharedlog_bodya = qq~
 ~;
 
 $myremindera = qq~<div style="width: 100%;">
-    <div class="tabtitle maingrad" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</div>
+    <div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</div>
     <div class="windowbg padd_3px">
         <label for="user"><strong>$mylogintxt:</strong></label>
         <input type="text" name="user" id="user" maxlength="100" {yabb regstyle} size="50" />
@@ -106,7 +106,7 @@ $myreminder_endform = qq~
 ~;
 
 $myreminder2 = qq~<div style="margin:0 auto; padding:2em 0 1em">
-    <div class="tabtitle maingrad" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</div>
+    <div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</div>
     <div class="windowbg center padd_3px"><strong>$loginout_txt{'192'} {yabb forum_user}</strong></div>
 </div>
 <p class="center marbot"><a href="$scripturl">$maintxt{'go_to_board'}</a></p>~;

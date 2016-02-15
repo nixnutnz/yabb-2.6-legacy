@@ -46,7 +46,7 @@ $cal_col_ss_top = q~
         <td class="windowbg2 center">{yabb sternzeichen}</td>~;
 
 $mybdlist_calgoto = qq~
-<div class="tabtitle tabtitle-text maingrad">
+<div class="tabtitle tabtitle-text">
     <div style="float:left; padding-left:1%; width:29%; line-height:3em; vertical-align:bottom">$var_cal{'caltitle'}</div>
     <div class="right" style="float:right; padding: 2px 1% 1px 0; width:68%">{yabb calgotobox}</div>
     <div class="clear"></div>

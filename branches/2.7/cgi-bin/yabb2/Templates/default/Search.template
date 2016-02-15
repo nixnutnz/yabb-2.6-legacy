@@ -22,7 +22,7 @@ $search_img = 'search.png';
 
 $mysearch_template = qq~
 <div style="width:90em; margin:0 auto">
-<div class="tabtitle maingrad" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$imagesdir/$search_img" alt="" /> $search_txt{'183'}</div>
+<div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$imagesdir/$search_img" alt="" /> $search_txt{'183'}</div>
 <table class="bordercolor pad_4px" style="border-spacing: 0 1px; border-collapse:separate">
     <colgroup>
         <col style="width:45%" />
@@ -107,7 +107,7 @@ $mysearch_template5 = qq~
 </table></div></form>~;
 
 $mysearch_template6 =
-  qq~<table class="tabtitle maingrad" style="table-layout: fixed;">
+  qq~<table class="tabtitle" style="table-layout: fixed;">
     <colgroup>
         <col style="width:5%" />
         <col style="width:95%" />

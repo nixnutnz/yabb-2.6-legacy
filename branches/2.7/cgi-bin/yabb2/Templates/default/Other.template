@@ -23,7 +23,7 @@ $my_session = 'session.png';
 ## IPlookup ##
 $my_ipdiv = qq~
 <div style="width:50em; margin: 0 auto">
-    <div class="tabtitle maingrad" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$micon_bg{'ip'}" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</div>
+    <div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$micon_bg{'ip'}" alt="" /> $lookup_txt{'iplookup'} - {yabb ip}</div>
     <div class="windowbg2 padd_4px">
         <span style="font-weight: bold; margin-bottom: 10px;">$lookup_txt{'01'} {yabb ip} $lookup_txt{'02'}</span>
         <div class="windowbg2 padd_4px">{yabb lookuplink} </div>
@@ -61,7 +61,7 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
     <div class="bordercolor" style="width:350px">
     <table class="cs_thin pad_3px" style="width:350px">
         <tr>
-            <td class="titlebg maingrad"><label for="letter">$addmod_txt{'modsearch'}</label></td>
+            <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
         </tr><tr>
             <td class="windowbg2">
                 <span class="small">$addmod_txt{'instruct'}</span>
@@ -120,7 +120,7 @@ $my_sessions = qq~
 <br /><br />
 <form action="$scripturl?action=revalidatesession2" method="post" name="sesform" accept-charset="$yymycharset">
 <div class="bordercolor" style="padding: 1px; width: 50%; margin-left: auto; margin-right: auto;">
-<table class="tabtitle maingrad">
+<table class="tabtitle">
     <tr>
         <td>
             <img src="$imagesdir/$my_session" alt="" /><b>$img_txt{'34a'}</b>
@@ -279,7 +279,7 @@ $my_smilie_window_tr = qq~
 
 $my_show_error = qq~
 <div class="system-body">
-    <div class="system-info maingrad"> &nbsp; <b>$maintxt{'error_description'}</b></div>
+    <div class="system-info"> &nbsp; <b>$maintxt{'error_description'}</b></div>
     <div class="system-info-body">{yabb errormessage}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
@@ -289,7 +289,7 @@ $my_show_error = qq~
 
 $my_profile_int = qq~
 <div class="system-body">
-    <div class="system-info maingrad"> &nbsp; <b>$maintxt{'members_only'}</b></div>
+    <div class="system-info"> &nbsp; <b>$maintxt{'members_only'}</b></div>
     <div class="system-info-body">$maintxt{'reg_please'}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
@@ -308,7 +308,7 @@ $myban_page = qq~
 </head>
 <body style="min-width: 280px;">
     <form action="$scripturl?action=ban_page_b" method="post">
-        <table class="tabtitle maingrad pad_3px" style="margin-top:2em">
+        <table class="tabtitle pad_3px" style="margin-top:2em">
             <tr>
                 <th class="center">$profile_txt{'ban_page'}</th>
             </tr>

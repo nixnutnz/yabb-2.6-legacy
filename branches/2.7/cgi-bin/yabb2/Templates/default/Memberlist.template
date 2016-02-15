@@ -32,7 +32,7 @@ $my_findform = qq~<form action="$scripturl?action=ml;sort=memsearch" method="pos
             </form> ~;
 
 $my_memberlist_main = qq~
-        <table class="tabtitle maingrad pad_3px">
+        <table class="tabtitle pad_3px">
             <tr>
                 <td>
                     <div style="float: left; width: 24%; text-align: left; padding-left:1%">{yabb pageindex1}</div>
@@ -96,7 +96,7 @@ $my_findmember = qq~<tr>
 
 $my_memberlist_bottom = qq~
         </table>
-        <table class="tabtitle-bottom maingrad pad_3px">
+        <table class="tabtitle-bottom pad_3px">
             <tr>
                 <td>
                     <div style="float: left; width: 24%; text-align: left; padding-left: 1%;">{yabb pageindex2}</div>

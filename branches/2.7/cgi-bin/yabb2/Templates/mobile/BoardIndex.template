@@ -66,7 +66,7 @@ $boardindex_template .= qq~
 if(!$subboard_sel) {
 $boardindex_template .= qq~
 <!-- Info Center block start -->
-        <div class="tabtitle maingrad tabtitle-text" style="margin-top:1em; padding-left:1%; line-height:3em; vertical-align:bottom">$boardindex_txt{'200'}</div>
+        <div class="tabtitle tabtitle-text" style="margin-top:1em; padding-left:1%; line-height:3em; vertical-align:bottom">$boardindex_txt{'200'}</div>
         <div class="windowbg2 info-center vtop small">
             $boardindex_txt{'489'} <strong>{yabb totalmessages} $boardindex_txt{'21l'}</strong> $boardindex_txt{'490'} <strong>{yabb totaltopics} $boardindex_txt{'330l'}</strong>.<br />
             {yabb lastpostlink} {yabb lastpostdate}
@@ -79,7 +79,7 @@ $boardindex_template .= qq~
             $boardindex_txt{'802'} <strong>{yabb mostguests}</strong>$maintxt{'30b'} $maintxt{'30'} {yabb mostguestsdate}.<br />
             $boardindex_txt{'803'} <strong>{yabb mostbots}</strong>$maintxt{'30b'} $maintxt{'30'} {yabb mostbotsdate}.
         </div>
-        <div class="tabtitle maingrad tabtitle-text small" style="margin-top:1em; padding-left:1%; line-height:3em; vertical-align:bottom">$boardindex_txt{'158'}</div>
+        <div class="tabtitle tabtitle-text small" style="margin-top:1em; padding-left:1%; line-height:3em; vertical-align:bottom">$boardindex_txt{'158'}</div>
         <div class="windowbg2 info-center vtop small">
             {yabb users}<br />
             {yabb onlineusers}
@@ -105,7 +105,7 @@ $new_msg_bg = "windowbg";
 $new_msg_class = "small";
 
 $catheader = qq~
-        <div class="tabtitle maingrad tabtitle-text" style="padding-left:1%; line-height:3em; vertical-align:bottom; margin-top:.5em;">{yabb catimage} {yabb catrss} {yabb catlink}</div>
+        <div class="tabtitle tabtitle-text" style="padding-left:1%; line-height:3em; vertical-align:bottom; margin-top:.5em;">{yabb catimage} {yabb catrss} {yabb catlink}</div>
         <div {yabb colboardtable} class="bordercolor mar-bot">{yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}</div>
         <div {yabb boardtable} class="mar-bot">~;
 

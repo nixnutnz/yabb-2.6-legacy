@@ -37,7 +37,7 @@ $threadhandellist2 = qq~
 ~;
 
 if($useThreadtools) {
-    $threadhandelstyle = q~ class="post_tools maingrad center" style="width:10em"~;
+    $threadhandelstyle = q~ class="post_tools center" style="width:10em"~;
     $my_fixed = q~ style="table-layout: fixed;"~;
 } else {
     $threadhandelstyle = qq~ style="text-align:right"~;
@@ -61,7 +61,7 @@ $display_template = qq~
 {yabb pollmain}
 <!-- Poll end -->
 <!-- Threads Button Bar start -->
-    <table class="tabtitle maingrad pad_4px"$my_fixed>
+    <table class="tabtitle pad_4px"$my_fixed>
         <tr>
             <td>{yabb pageindex top}</td>
             <td class="post_tools_a" style="padding-right:10px; text-align:right">
@@ -86,7 +86,7 @@ $display_template = qq~
     {yabb multiend}
 <!-- Threads block end, should be left as is -->
 <!-- Threads Button Bar start -->
-    <table class="tabtitle-bottom maingrad pad_4px"$my_fixed>
+    <table class="tabtitle-bottom pad_4px"$my_fixed>
         <tr>
             <td>{yabb pageindex bottom}</td>
             <td class="post_tools_a" style="padding-right:10px; text-align:right">
@@ -117,7 +117,7 @@ $posthandellist = qq~
 ~;
 
 if($usePosttools) {
-    $posthandelstyle = q~ class="post_tools maingrad center dividerbot" style="width:100px; height: 2em; vertical-align:middle"~;
+    $posthandelstyle = q~ class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle"~;
     $posthandeladmin = qq~<div style="float:right; vertical-align:bottom; height:100%;">{yabb admin}</div>~;
     $postcol= 3;
     $padd_right = q~; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle~;
@@ -223,7 +223,7 @@ $messageblock = qq~
 
 #Recent Posts/Topics
 $myrecent = qq~
-<div class="tabtitle maingrad">
+<div class="tabtitle">
     <div class="center" style="float:left; width:5%; line-height:3em; vertical-align:top">{yabb counter}</div>
     <div class="padd_4px" style="float:right; width:94%">&nbsp;<a href="$scripturl?catselect={yabb catbrd}"><span class="under">{yabb catname}</span></a>{yabb boardtree} / <a href="$scripturl?num={yabb tnum}"><span class="under">{yabb msub}</span></a>
     <br />&nbsp;<span class="small">$maintxt{'30'}: {yabb mdate}</span>&nbsp;</div>
@@ -271,7 +271,7 @@ function NoPost(op) {
 <form action="$scripturl?action=split_splice;board=$currentboard;thread=$INFO{'thread'}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yymycharset">
             <input type="hidden" name="formsession" value="{yabb formsession}" />
             <div style="width:90%; margin:0 auto">
-                <div class="tabtitle maingrad" style="line-height:3em; vertical-align:bottom; padding-left:.5em"><img src="$imagesdir/$admin_move" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></div>
+                <div class="tabtitle" style="line-height:3em; vertical-align:bottom; padding-left:.5em"><img src="$imagesdir/$admin_move" alt="$sstxt{'1'}" /> <b>$sstxt{'1'}</b></div>
                 <div class="catbg padd_8px"><b>$sstxt{'2'}:</b></div>
                 <div class="windowbg padd_8px"><b>$sstxt{'3'}</b></div>
                 <div class="windowbg2 padd_8px">
@@ -402,12 +402,12 @@ $mysend_spam = qq~<tr>
     </tr>~;
 
 $my_guest_limit = qq~
-<div class="tabtitle maingrad" style="line-height:3em; vertical-align:bottom"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</div>
+<div class="tabtitle" style="line-height:3em; vertical-align:bottom"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</div>
 <div class="windowbg padd_4px" style="margin-bottom:1em">$display_txt{'guest_message_block'}</div>
 ~;
 
 $guest_view_limit_w = qq~
-<div class="tabtitle maingrad" style="line-height:3em; vertical-align:bottom"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</div>
+<div class="tabtitle" style="line-height:3em; vertical-align:bottom"><img src="$micon_bg{'xx'}" alt=""> $display_txt{'guest_message'}</div>
 <div class="windowbg padd_4px" style="margin-bottom:1em">$display_txt{'guest_message_warn'}</div>
 ~;
 

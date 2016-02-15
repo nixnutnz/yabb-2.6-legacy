@@ -29,7 +29,7 @@ $palhight = 302;
 
 ## Post Top
 $mypost_title = qq~{yabb my_topper}
-<div class="tabtitle maingrad" style="padding-left:1%;">
+<div class="tabtitle" style="padding-left:1%;">
     <img src="{yabb icon_img}" alt="" /> {yabb yytitle}
 </div>
     {yabb my_topview}
@@ -144,7 +144,7 @@ $mypost_return_to = qq~<div id="feature_status_9" class="windowbg padd_3px">
 
 
 $mypost_showmessages = q~
-<div class="tabtitle maingrad" style="padding-left:1%; margin-top:.5em;">{yabb my_showmess_disnum}</div>
+<div class="tabtitle" style="padding-left:1%; margin-top:.5em;">{yabb my_showmess_disnum}</div>
 {yabb my_showmess_mess}~;
 
 $mypost_showmessages_a = qq~
