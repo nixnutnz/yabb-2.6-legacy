@@ -410,7 +410,7 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         $myrequirebd = qq~ <span class="small">$profile_txt{'563b'}</span>~;
     }
     $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yymycharset">
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" autocomplete="off" name="creator" accept-charset="$yymycharset">
 $myprofile_edit~;
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
     $showProfile =~ s/{yabb my_newpass}/$my_newpass/sm;
@@ -1016,7 +1016,7 @@ qq~\n<option value="local"$myselectb>$profile_txt{'372a'}</option>~;
     $my_time =~ s/{yabb my_dynamic}/$my_dynamic/sm;
 
     $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator"$my_allow_avatars>~;
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" accept-charset="$yymycharset" name="creator"$my_allow_avatars>~;
     $showProfile .= $myprofile_options;
     $showProfile .=
 qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="width_100">$signature</textarea><br />~;
@@ -1110,7 +1110,7 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
     }
 
     $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript: selectblNames();">~;
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post"  accept-charset="$yymycharset" name="creator" onsubmit="javascript: selectblNames();">~;
     $showProfile .= $myprofile_buddy;
 
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
@@ -1219,7 +1219,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
     }
 
     $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" onsubmit="javascript:selectINames();" >~;
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" name="creator" accept-charset="$yymycharset" onsubmit="javascript:selectINames();" >~;
     $showProfile .= $myprofile_PMpref;
 
     $showProfile =~ s/{yabb profiletitle}/$profiletitle/sm;
@@ -1439,7 +1439,7 @@ qq~                        <option value="$minute_val">$minute_val</option>\n~;
     $myprofile_userinfo =
       qq~<input type="hidden" name="username" value="$INFO{'username'}" />~;
     $showProfile .= qq~
-<form action="$scripturl?action=$scriptAction;username=$useraccount{$user};sid=$INFO{'sid'}" method="post" name="creator">~;
+<form action="$scripturl?action=$scriptAction;username=$useraccount{$user};sid=$INFO{'sid'}" method="post" accept-charset="$yymycharset" name="creator">~;
     $showProfile .= $myprofile_admin_a;
     AddModerators();
     $showProfile .= $myprofile_admin_b;

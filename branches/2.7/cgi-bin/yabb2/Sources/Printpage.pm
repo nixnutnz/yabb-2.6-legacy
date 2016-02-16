@@ -76,8 +76,6 @@ sub Print_IM {
     $printDate = timeformat( $date, 1 );
 
     # Lets output all that info.
-    if ($yycharset) {$yymycharset = $yycharset;}
-
     $threadDate = timeformat( $threaddate, 1 );
 
     if ( $INFO{'caller'} == 1 ) {

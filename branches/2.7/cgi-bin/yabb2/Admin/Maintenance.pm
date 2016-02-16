@@ -575,8 +575,7 @@ sub RebuildMemList {
                 stringtotime( ${ $uid . $member }{'regdate'} )
                   || stringtotime($forumstart)
             );
-        $memberinf{$member} =
-qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'position'}|${$uid.$member}{'postcount'}|${$uid.$member}{'addgroups'}~;
+        $memberinf{$member} = [ ${$uid.$member}{'realname'}, ${$uid.$member}{'email'}, ${$uid.$member}{'position'}, ${$uid.$member}{'postcount'}, ${$uid.$member}{'addgroups'} ];
         if ( ${$uid.$member}{'position'} eq 'Administrator' || ( ${$uid.$member}{'position'} eq 'Global Moderator' && $gmod_access{'backup'} ) ) {
             push @adminlst, $member;
         }
@@ -585,20 +584,23 @@ qq~${$uid.$member}{'realname'}|${$uid.$member}{'email'}|${$uid.$member}{'positio
     }
 
     # Save what we have rebuilt so far
+    $update = q{};
+    for (keys %memberlist) {
+        $update .= qq~\$memberlist{'$_'} = '$memberlist{$_}';\n~;
+    }
     fopen( MEMBERLIST, ">>$memberdir/memberlist.txt.rebuild" )
       || fatal_error( 'cannot_open', "$memberdir/memberlist.txt.rebuild", 1 );
-    for ( keys %memberlist ) {
-        print {MEMBERLIST} "\$memberlist{'$_'} = '$memberlist{$_}';\n"
-          or croak "$croak{'print'} MEMBERLIST";
-    }
+    print {MEMBERLIST} $update or croak "$croak{'print'} MEMBERLIST";
     fclose(MEMBERLIST);
 
+    $update = q{};
+    for ( keys %memberinf ) {
+        $val = join q~','~, @{$memberinf{$_}};
+        $update .= qq~\$memberinf{'$_'} = \['$val'\];\n~;
+    }
     fopen( MEMBERINFO, ">>$memberdir/memberinfo.txt.rebuild" )
       || fatal_error( 'cannot_open', "$memberdir/memberinfo.txt.rebuild", 1 );
-    for ( keys %memberinf ) {
-        print {MEMBERINFO} "\$memberinf{'$_'} = '$memberinf{$_}';\n"
-          or croak "$croak{'print'} MEMBERINFO";
-    }
+        print {MEMBERINFO} $update or croak "$croak{'print'} MEMBERINFO";
     fclose(MEMBERINFO);
 
 ## For New Backup permissions ##

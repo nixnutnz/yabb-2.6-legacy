@@ -139,7 +139,8 @@ sub MLByLetter {
     $i      = 0;
     ManageMemberinfo('load');
     for my $i ( keys %memberinf) {
-        $namehash{$memberinf{$i}[0]} = [$i, $memberinf{$i}[1]];
+        my @inf = @{$memberinf{$i}};
+        $namehash{$inf[0]} = [$i, $inf[1]];
     }
     @namehash = sort {lc $a cmp lc $b} keys %namehash;
     for my $listname ( @namehash ){

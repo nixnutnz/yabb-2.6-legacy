@@ -30,7 +30,7 @@
     <div class="menutop" style="padding-left:1%;">
         <div class="small" style="line-height:2.6em; vertical-align: top;" id="yabbclock">{yabb time}</div>
         <div class="small" style="line-height:2.6em; vertical-align: top;">{yabb styleswitch}{yabb tempswitcher}{yabb langChooser}</div>
-        <div class="yabb_searchbox">{yabb searchbox}</div>
+        {yabb searchbox}
         <span class="yabb_rss">{yabb rss}</span>
     </div>
     <header id="header">
@@ -64,6 +64,16 @@
     <br /><br />
 </div>
 {yabb high}
+<script>
+// add common gradient class
+var gradcls = ["tabtitle", "tabtitle-sub", "tabtitle-bottom", "topper", "post_tools", "system-info", "newlinks",];
+for (var j = 0; j < gradcls.length; j++) {
+    var gradmain = document.getElementsByClassName(gradcls[j]);
+    for (i = 0; i < gradmain.length; i++) {
+        gradmain[i].classList.add('maingrad');
+    }
+}
+</script>;
 <script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
 {yabb news}
 </body>

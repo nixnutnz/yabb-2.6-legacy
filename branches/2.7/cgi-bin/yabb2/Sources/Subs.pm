@@ -381,9 +381,9 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
 
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
-	if ( $accept_permafull) {
-		$yyboardlink = qq~<a href="$perm_domain/$symlink">$mbname</a>~;
-	}
+    if ( $accept_permafull) {
+        $yyboardlink = qq~<a href="$perm_domain/$symlink">$mbname</a>~;
+    }
 
     # static/dynamic clock
     $yytime = timeformat( $date, 1 );
@@ -2374,7 +2374,6 @@ sub referer_check {
 
 sub Dereferer {
     if ( !$stealthurl ) { fatal_error('no_access'); }
-    if ($yycharset) {$yymycharset = $yycharset;}
     print "Content-Type: text/html\n\n" or croak "$croak{'print'} content-type";
     print
 qq~<!DOCTYPE html>
@@ -2596,7 +2595,7 @@ sub ManageMemberlist {
         require Variables::Memberlist;
     }
     if ( $todo eq 'add' ) {
-        $memberlist{$user} = "$userreg";
+        $memberlist{$user} = $userreg;
 
     }
     elsif ( $todo eq 'update' ) {
@@ -2617,10 +2616,12 @@ sub ManageMemberlist {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
+        my $update = q{};
+        for (sort keys %memberlist) {
+            $update .= qq~\$memberlist{'$_'} = '$memberlist{$_}';\n~;
+        }
         fopen( MEMBLIST, ">Variables/Memberlist.pm" );
-        print {MEMBLIST} map { "\$memberlist{'$_'} = '$memberlist{$_}';\n" }
-          sort { $memberlist{$a} <=> $memberlist{$b} } keys %memberlist
-          or croak "$croak{'print'} MEMBLIST";
+        print {MEMBLIST} $update or croak "$croak{'print'} MEMBLIST";
         fclose(MEMBLIST);
         undef %memberlist;
     }
@@ -2644,13 +2645,13 @@ sub ManageMemberinfo {
         chomp @adminlst;
     }
     if ( $todo eq 'add' ) {
-        $memberinf{$user} = qq~$userdisp|$usermail|$usergrp|$usercnt|$useraddgrp~;
+        $memberinf{$user} = [ $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp,];
         if ( $usergrp eq 'Administrator' || ( $usergrp eq 'Global Moderator' && $gmod_access{'backup'} ) ) {
             push @adminlst, $user;
         }
     }
     elsif ( $todo eq 'update' ) {
-        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) = split  /[|]/xsm, $memberinf{$user};
+        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) = @{$memberinf{$user}};
         if ($userreg)  { $regdate     = $userreg; }
         if ($userdisp) { $memrealname = $userdisp; }
         if ($usermail) { $mememail    = $usermail; }
@@ -2660,7 +2661,7 @@ sub ManageMemberinfo {
             if ( $useraddgrp =~ /\x23\x23\x23blank\x23\x23\x23/sm ) { $useraddgrp = q{}; }
             $memaddgrp = $useraddgrp;
         }
-        $memberinf{$user} = qq~$memrealname|$mememail|$memposition|$memposts|$memaddgrp~;
+        $memberinf{$user} = [ $memrealname,$mememail,$memposition,$memposts,$memaddgrp ];
         for (@adminlst) {
             if ( $_ eq $user && ( $memposition ne 'Administrator' && ( $memposition ne 'Global Moderator' || !$gmod_access{'backup'} ) ) ) {
                 $_ eq q{};
@@ -2686,10 +2687,13 @@ sub ManageMemberinfo {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        
+        my $update = q{};
+        for (sort keys %memberinf) {
+            $val = join q~','~, @{$memberinf{$_}};
+            $update .= qq~\$memberinf{'$_'} = \['$val'\];\n~;
+        }
         fopen( MEMBINFO, ">Variables/Memberinfo.pm" );
-        print {MEMBINFO} map { "\$memberinf{'$_'} = '$memberinf{$_}';\n" } keys %memberinf
-          or croak "$croak{'print'} MEMBINFO";
+        print {MEMBINFO} $update or croak "$croak{'print'} MEMBINFO";
         fclose(MEMBINFO);
         undef %memberinf;
         fopen ( ADMINLST, ">$vardir/adminlst.db" );
@@ -2865,7 +2869,7 @@ sub guestLangSel {
             if ( $langitems eq $language ) {
                 $lngsel = q~ selected="selected"~;
             }
-            my $displang = $lngs{$langitems}; 
+            my $displang = $lngs{$langitems};
             $langopt .=
               qq~<option value="$langitems"$lngsel>$displang</option>~;
             $morelang++;
@@ -3086,8 +3090,8 @@ sub get_template {
 
 sub get_break {
     if ( $useMobile ) {
-		$brk = '<br />';
-	}
+        $brk = '<br />';
+    }
     return $brk;
 }
 

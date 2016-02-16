@@ -618,12 +618,3 @@ function Hash() {
         return this.items[in_key];
     };
 }
-
-// add common gradient class
-var gradcls = ["tabtitle", "tabtitle-sub", "tabtitle-bottom", "topper", "post_tools", "system-info", "newlinks",];
-for (var j = 0; j < gradcls.length; j++) {
-    var gradmain = document.getElementsByClassName(gradcls[j]);
-    for (i = 0; i < gradmain.length; i++) {
-        gradmain[i].classList.add('maingrad');
-    }
-}

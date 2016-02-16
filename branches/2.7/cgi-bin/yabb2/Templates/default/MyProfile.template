@@ -771,7 +771,8 @@ $show_check = qq~<tr>
         <td class="windowbg vtop"><label for="passwrd1"><b>$register_txt{'81'}:</b></label></td>
         <td class="windowbg">
             <div style="float:left;">
-                <input autocomplete="off" type="password" maxlength="30" name="passwrd1" id="passwrd1" value="{yabb tmpregpasswrd1}" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;
+                <input type="password" style="display:none">
+                <input type="password" autocomplete="off" maxlength="30" name="passwrd1" id="passwrd1" value="{yabb tmpregpasswrd1}" size="30" onkeypress="capsLock(event,'cappasswrd1')" onkeyup="runPassword(this.value);" /> *&nbsp;
            </div>
            <div class="pass_box">
                <div id="password-strength-meter"></div>

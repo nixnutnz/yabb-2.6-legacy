@@ -75,7 +75,7 @@ sub Ml {
         || $INFO{'sort'} eq 'username' )
     {
         for $x ( 0 .. $#alpha ) {
-            $page     = lc $alpha[$x];
+            $page     = $alpha[$x];
             $showpage = $alpha[$x];
             $LetterLinks .=
 qq(<a href="$scripturl?action=ml;sort=mlletter;letter=$page" class="$letterclass"><b>$showpage&nbsp;</b></a> );
@@ -136,7 +136,8 @@ sub MLByLetter {
     ManageMemberinfo('load');
     %namehash = ();
     for my $i ( keys %memberinf) {
-        $namehash{$memberinf{$i}[0]} = [$i, $memberinf{$i}[1]];
+        my @inf = @{$memberinf{$i}};
+        $namehash{$inf[0]} = [$i, $inf[1]];
     }
     @namehash = sort {lc $a cmp lc $b} keys %namehash;
     for my $listname ( @namehash ){
@@ -146,7 +147,7 @@ sub MLByLetter {
         $memrealname = decode_utf8($memrealname);
         my $alpha = decode_utf8($alpha[0]);
         my $omega = decode_utf8($alpha[-1]);
-       
+
         if ($letter) {
             $SearchName = lc( substr $memrealname, 0, 1 );
             if ( $SearchName eq lc $letter ) { $ToShow[$i] = $membername; $i++; }

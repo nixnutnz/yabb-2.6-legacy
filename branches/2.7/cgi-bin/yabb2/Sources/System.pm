@@ -13,6 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
+use utf8;
 our $VERSION = '2.7.00';
 
 $systempmver = 'YaBB 2.7.00 $Revision$';
@@ -332,20 +333,29 @@ sub UserAccount {
     push @tags, 'topicpreview', 'collapsescpoll';
     push @tags, 'banned';
    ## Mod hook ##
-
-    my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
-    for my $cnt ( 0 .. $#tags ) {
-        $newvars .= qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
+    require "$memberdir/$user.$userext";
+    my $fix = 0;
+    for my $cn ( 0 .. $#tags ) {
+        if ( $vars{$tags[$cn]} ne ${$uid.$user}{$tags[$cn]} ) {
+            $fix = 1;
+            last;
+        }
     }
-    $newvars .= qq~);\n\n1;\n~;
-    fopen( UPDATEUSER, ">$memberdir/$user.$userext", 1 )
-      or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
-    print {UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
-    fclose(UPDATEUSER);
-    fopen( UPDTUSER, ">$memberdir/$user.lst" ) or fatal_error( 'cannot_open',
+#    if ($fix == 1) {
+        my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
+        for my $cnt ( 0 .. $#tags ) {
+            $newvars .= qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
+        }
+        $newvars .= qq~);\n\n1;\n~;
+        open( UPDATEUSER, '>', "$memberdir/$user.$userext" )
+            or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
+        print {UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
+        close(UPDATEUSER);
+#    }
+    open( UPDTUSER, '>', "$memberdir/$user.lst" ) or fatal_error( 'cannot_open',
                     "$memberdir/$user.lst", 1 );
     print {UPDTUSER} ${ $uid . $user }{'lastonline'} or croak "$croak{'print'} UPDTUSER";
-    fclose(UPDTUSER);
+    close(UPDTUSER);
     return;
 }
 
@@ -455,7 +465,7 @@ sub MemberPostGroup {
 sub MembershipCountTotal {
     require Variables::Memberlist;
     $membertotal = keys %memberlist;
-    
+
     while (($key, $value) = each %memberlist) {
        $hash2{$value}=$key;
     }
@@ -472,7 +482,8 @@ sub MembershipCountTotal {
 
     if (wantarray) {
         ManageMemberinfo('load');
-        $latestrealname = $memberinf{$latestmember}[0];
+        my @inf = @{$memberinf{$latestmember}};
+        $latestrealname = $inf[0];
         undef %memberinf;
         return ( $membertotal, $latestmember, $latestrealname );
     }
