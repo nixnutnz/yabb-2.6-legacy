@@ -23,7 +23,7 @@ use Carp;
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$convertplver = 'YaBB 2.6.12 $Revision: 1654 $';
+$convertplver = 'YaBB 2.6.12 $Revision: 1667 $';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -2341,11 +2341,14 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
 
             my $trstate = exists $stickies{$thread} ? 's' : q{};
             $lastposter = $musername eq 'Guest' ? "Guest-$name" : $musername;
+            my @msg = split /[|]/xsm, $temparray[-1];
+#			($subject|$name|$email|$mdate|$musername|$icon|$dummy|$user_ip|$message|$ns|$editdate|$editby|$attachment)    
+            $msgdat = ctbtime($msg[3]);
 
             open $CTB, '>', "$datadir/$thread.ctb"
               || setup_fatal_error( "$maintext_23 $datadir/$thread.ctb: ", 1 );
             print {$CTB}
-qq~### ThreadID: $thread, LastModified: $ctbtime ###\n\n'board',"$boardname"\n'replies',"$#messagelines"\n'views',"$views"\n'lastposter',"$lastposter"\n'lastpostdate',"$mdate"\n'threadstatus',"$trstate"\n'repliers',""\n~
+qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n'board',"$boardname"\n'replies',"$#messagelines"\n'views',"$views"\n'lastposter',"$msg[4]"\n'lastpostdate',"$msg[3]"\n'threadstatus',"$msg[6]"\n'repliers',""\n~
               or croak "cannot print $datadir/$thread.ctb";
             close $CTB or croak 'cannot close CTB';
 
@@ -3333,8 +3336,8 @@ sub SetInstall2 {
     $ret = 0;
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
-    if ( $convertdir ne './Convert' && -e "$convertdir/Settings.pl" ) {
-        require "$convertdir/Settings.pl";
+    if ( $convertdir ne './Convert' && -e "Settings.pl" ) {
+        require "Settings.pl";
         $oldname   = $mbname;
         $oldemail  = $webmaster_email;
         $oldlang   = $language;
@@ -3368,6 +3371,7 @@ sub SetInstall2 {
     if ( $enable_notifications eq q{} ) {
         $enable_notifications = $enable_notification ? 3 : 0;
     }
+    $yymycharset     = 'ISO-8859-1';
     $lang            = $oldlang   || 'English';
     $webmaster_email = $oldemail  || 'webmaster@mysite.com';
     $timeselected    = $oldtime   || 0;

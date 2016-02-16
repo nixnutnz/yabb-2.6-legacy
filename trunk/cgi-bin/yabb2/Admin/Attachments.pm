@@ -12,10 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
-our $VERSION = '2.6.12';
+use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = '2.6.11';
 
-$attachmentspmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$attachmentspmver = 'YaBB 2.6.12 $Revision: 1667 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Attachments {

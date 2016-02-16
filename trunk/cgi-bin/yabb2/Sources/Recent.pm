@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
 # from YaBB3.0 build 100 #
-$recentpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$recentpmver = 'YaBB 2.6.12 $Revision: 1667 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Sub RecentTopics shows all the most recently posted topics
@@ -146,7 +146,7 @@ sub RecentPosts {
                     $msub,  $mname,   $memail, $mdate,   $musername,
                     $micon, $mattach, $mip,    $message, $mns
                 ) = split /\|/xsm, $mess[$c];
-                $mtime = $mdate;
+                $mtime = $mdate < 1000000000 ? "0$mdate" : $mdate;
                 $messages[$numfound] =
 "$mtime|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mattach|$mip|$message|$mns|$tstate|$tstart";
                 $numfound++;

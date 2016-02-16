@@ -24,7 +24,7 @@ use English qw(-no_match_vars);
 
 our $VERSION = '2.6.12';
 
-$convert2xplver = 'YaBB 2.6.12 $Revision: 1660 $';
+$convert2xplver = 'YaBB 2.6.12 $Revision: 1667 $';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -1111,9 +1111,9 @@ qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modg
 qq~$cat|$board|$mypic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss|\n~;
             if ( $pic ) {
                 $brdpix .= qq~$board|default|$pic\n~;
-        }
             }
-        }
+         }
+    }
     $newboard =~ s/FIX/-/gxsm;
     $brdpix =~ s/FIX/-/gxsm;
         open $FORUMCONTROL, '>', "$boardsdir/forum.control"
@@ -1459,11 +1459,12 @@ sub Convert_Settings {
         require "$convvardir/membergroups.txt";
         for (keys %NoPost) {
             if ( $NoPost{$_} ) { push @new_nopostorder, $_; }
-		}
+        }
         @nopostorder = @new_nopostorder;
     }
 
     ( undef, $rancook ) = split /\-/xsm, $cookieusername;
+    $yymycharset     = 'ISO-8859-1';
     $cookietsort      = qq~Y2tsort-$rancook~;
     $cookieview       = qq~Y2view-$rancook~;
     $cookieviewtime   = isempty( $cookieviewtime,   525600 );

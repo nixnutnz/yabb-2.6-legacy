@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$subspmver = 'YaBB 2.6.12 $Revision: 1654 $';
+$subspmver = 'YaBB 2.6.12 $Revision: 1676 $';
 
 use subs 'exit';
 
@@ -2185,22 +2185,26 @@ sub WriteLog {
         @new_log = <LOG>;
         fclose( LOG );
         my $hostin = $ENV{'HTTP_USER_AGENT'};
+        $hostin =~ s/\x0//gsm;
         $hostin =~ s/\x7C//gsm;
+        $hostin =~ s/^[x21-\x7E]+$//gsm;
         my $httprefer = $ENV{'HTTP_REFERER'};
+        $httprefer =~ s/\x0//gsm;
         $httprefer =~ s/\x7C//gsm;
+        $httprefer =~ s/^[x21-\x7E]+$//gsm;
         my $newlog = "$field|$date|$ENV{'REQUEST_URI'}|"
           . (
             $httprefer =~ m/$boardurl/ism
             ? q{}
             : $httprefer
           )
-          . "|$hostin|$user_ip";
+          . "|$hostin|$user_ip\n";
         $newlog =~ s/\x0//gsm;
         $newlog =~ s/chr(32)//gsms;
         $newlog =~ s/\s+//gxms;
         $newlog =~ s/^[x20-\x7E]+$//gsm;
         fopen( LOG, ">$vardir/clicklog.txt", 1 );
-        print {LOG} "$newlog\n"
+        print {LOG} $newlog
           or croak "$croak{'print'} LOG";
         foreach (@new_log) {
             if ( ( split /\|/xsm, $_, 3 )[1] >= $onlinetime ) {

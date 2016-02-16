@@ -15,7 +15,7 @@
 use Carp;
 our $VERSION = '2.6.12';
 
-$mailmemberspmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$mailmemberspmver = 'YaBB 2.6.12 $Revision: 1676 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($iamguest) { fatal_error('no_access'); }
@@ -191,24 +191,24 @@ sub Mailing {
     </div>
     <div class="windowbg2" style="float: left; width: 50%; margin: 1%; margin-top: 0; border: 0;">
         <table>
-    <tr>
-                <td class="center">
-        <input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
-    </td>
-    </tr>
-    </table>
+            <tr>
+                <td class="center"><input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" /></td>
+            </tr>
+        </table>
     </div>
     <div style="clear: both;"></div>
 </div>
 </form>
-
 <script type="text/javascript">
 function checkIfSelected() {
-    for(var x = 0; x < document.adv_membermail.field1.options.length; x++) {
-        if(document.adv_membermail.field1.options[x].selected) return true;
-        alert("$amv_txt{'48a'}"); return false;
+    if( document.adv_membermail.field1.options.selectedIndex == -1 ) {
+        alert("$amv_txt{'48a'}");
+        return false;
+    } else {
+    return true;
     }
 }
+
 function selectCheckAll(tchecked) {
     for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
 }
