@@ -899,7 +899,9 @@ sub ConvertMembers {
     my $meminfo = q{};
     for (@meminfo) {
         my @nml = split /\t/xsm, $_;
-        $meminfo .= "\$memberinf{'$nml[0]'} = '$nml[1]';\n";
+        my @varinfo = split /[|]/xsm, $nml[1];
+        my $val = join q~','~, @varinfo;
+        $meminfo .= qq~\$memberinf{'$_'} = \['$val'\];\n~;
     }
     open $NMEMINFO, '>', "$vardir/Memberinfo.pm"
       or setup_fatal_error( "$maintext_23 $vardir/Memberinfo.pm: ", 1 );
