@@ -60,15 +60,15 @@ if ($perm_domain && $symlink) { $perm_txt = qq~
 RewriteEngine On # Turn on the rewriting engine
 
 RewriteRule ^$symlink/\$ cgi-bin/yabb2/YaBB.pl [L]
-RewriteRule ^$symlink/help/(.+)?\$ cgi-bin/yabb2/YaBB.pl?action=help&amp;section=$1 [L]
-RewriteRule ^$symlink/help(.+)?\$ cgi-bin/yabb2/YaBB.pl?action=help$1 [L]
+RewriteRule ^$symlink/help/(.+)?\$ cgi-bin/yabb2/YaBB.pl?action=help&amp;section=\$1 [L]
+RewriteRule ^$symlink/help(.+)?\$ cgi-bin/yabb2/YaBB.pl?action=help\$1 [L]
 RewriteRule ^$symlink/search\$ cgi-bin/yabb2/YaBB.pl?action=search [L]
-RewriteRule ^$symlink/cat_([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?catselect=$1 [L]
-RewriteRule ^$symlink/brd_([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?board=$1 [L]
-RewriteRule ^$symlink/([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)/(.+)\$ cgi-bin/yabb2/YaBB.pl?num=$5 [L]
-RewriteRule ^$rsssymrecent/([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent&amp;amp;catselect=$1 [L]
+RewriteRule ^$symlink/cat_([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?catselect=\$1 [L]
+RewriteRule ^$symlink/brd_([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?board=\$1 [L]
+RewriteRule ^$symlink/([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)/(.+)\$ cgi-bin/yabb2/YaBB.pl?num=\$5 [L]
+RewriteRule ^$rsssymrecent/([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent&amp;amp;catselect=\$1 [L]
 RewriteRule ^$rsssymrecent\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent [L]
-RewriteRule ^$rsssymboards/([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?action=RSSboard&amp;amp;board=$1 [L]
+RewriteRule ^$rsssymboards/([A-Za-z0-9/\\-_,\~\\(\\)]*)\$ cgi-bin/yabb2/YaBB.pl?action=RSSboard&amp;amp;board=\$1 [L]
 ~;
 }
 if ($perm_domain && $symlink) { $perm_txtsimp = qq~

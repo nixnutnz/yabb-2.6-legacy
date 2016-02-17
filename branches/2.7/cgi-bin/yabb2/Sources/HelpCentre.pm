@@ -134,7 +134,7 @@ qq~<a href="$scripturl?action=help;section=admin">$helptxt{'6'}</a>~;
     }
     if ($accept_permafull) {
 
-        my $scriptperm = qq~$perm_domain/$symlink~ . 'help';
+        my $scriptperm = qq~$perm_domain/$symlink/~ . 'help';
         if ($modhlp) {$modhlp = qq~<a href="$scriptperm/moderator">$helptxt{'4'}</a>~;}
         if ($gmodhlp) {$gmodhlp = qq~<a href="$scriptperm/global_mod">$helptxt{'5'}</a>~;}
         if ($adminhlp) {$adminhlp = qq~<a href="$scriptperm/admin">$helptxt{'6'}</a>~;}

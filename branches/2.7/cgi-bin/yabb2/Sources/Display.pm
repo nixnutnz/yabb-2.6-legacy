@@ -29,8 +29,8 @@ get_template('Display');
 get_gmod();
 
 if ( $accept_permafull) {
-    $permbrd = qq~$perm_domain/$symlink~ . 'brd_';
-    $permcat = qq~$perm_domain/$symlink~ . 'cat_';
+    $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
+    $permcat = qq~$perm_domain/$symlink/~ . 'cat_';
 }
 
 sub Display {
@@ -241,7 +241,7 @@ sub Display {
 
     my $permdate = permtimer($mnum);
     my $display_permalink =
-qq~<a href="$perm_domain/$symlink$permdate/$currentboard/$mnum">$display_txt{'10'}</a>~;
+qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$mnum">$display_txt{'10'}</a>~;
 
     # Look for a poll file for this thread.
     if ( AccessCheck( $currentboard, 3 ) eq 'granted' ) {
@@ -1361,9 +1361,9 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
         $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
         if ($accept_permafull) {
-		    $msgimg =
-qq~<a href="$perm_domain/$symlink$permdate/$currentboard/$viewnum#$counter">$micon{$micon}</a>~;
-	    }
+            $msgimg =
+qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$micon{$micon}</a>~;
+        }
 
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
@@ -1797,6 +1797,10 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
         if ( $sendtopicmail > 1 ) {
             LoadLanguage('SendTopic');
             LoadLanguage('Email');
+            $topiclink = qq~$scripturl?num=$viewnum~;
+            if ($accept_permafull) {
+                $topiclink = qq~$perm_domain/$symlink/$permdate/$currentboard/$viewnum~;
+            } 
             require Sources::Mailer;
             $esubject = uri_escape(
 "$sendtopic_txt{'118'}: $msubthread ($sendtopic_txt{'318'} ${$uid.$username}{'realname'})"
@@ -1808,7 +1812,7 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
                         'toname'      => '?????',
                         'subject'     => $msubthread,
                         'displayname' => ${ $uid . $username }{'realname'},
-                        'num'         => $viewnum
+                        'num'         => $topiclink
                     }
                 )
             );

@@ -32,8 +32,8 @@ get_micon();
 if ($rss_perm || $accept_permafull ) {
     $mysymrecent = $perm_domain . '/' . $rsssymrecent;
     $mysymboard = $perm_domain . '/' . $rsssymboards;
-    $permbrd = qq~$perm_domain/$symlink~ . 'brd_';
-    $permcat = qq~$perm_domain/$symlink~ . 'cat_';
+    $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
+    $permcat = qq~$perm_domain/$symlink/~ . 'cat_';
 }
 
 sub BoardIndex {

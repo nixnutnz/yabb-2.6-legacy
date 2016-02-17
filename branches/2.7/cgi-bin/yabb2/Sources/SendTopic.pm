@@ -209,6 +209,11 @@ sub SendTopic2 {
         @{ $thread_arrayref{$topic} } = <FILE>;
         fclose(FILE);
     }
+        $topiclink = qq~$scripturl?num=$topic~;
+        if ($accept_permafull) {
+            my $permdate = permtimer($topic);
+            $topiclink = qq~$perm_domain/$symlink/$permdate/$board/$topic~;
+        } 
     $subject = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
     FromHTML($subject);
     require Sources::Mailer;
@@ -219,14 +224,14 @@ sub SendTopic2 {
             'toname'      => $rname,
             'subject'     => $subject,
             'displayname' => $yname,
-            'num'         => $topic
+            'num'         => $topiclink
         }
     );
     sendmail( $remail,
         "$sendtopic_txt{'118'}: $subject ($sendtopic_txt{'318'} $yname)",
         $message, $yemail );
 
-    $yySetLocation = qq~$scripturl?num=$topic~;
+    $yySetLocation = qq~$topiclink~;
     redirectexit();
     return;
 }

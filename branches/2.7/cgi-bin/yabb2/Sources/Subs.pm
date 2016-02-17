@@ -382,7 +382,7 @@ qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp;
     $yyboardname = "$mbname";
     $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
     if ( $accept_permafull) {
-        $yyboardlink = qq~<a href="$perm_domain/$symlink">$mbname</a>~;
+        $yyboardlink = qq~<a href="$perm_domain/$symlink/">$mbname</a>~;
     }
 
     # static/dynamic clock

@@ -48,8 +48,8 @@ else {
 }
 
 if ( $accept_permafull) {
-    $permbrd = qq~$perm_domain/$symlink~ . 'brd_';
-    $permcat = qq~$perm_domain/$symlink~ . 'cat_';
+    $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
+    $permcat = qq~$perm_domain/$symlink/~ . 'cat_';
 }
 
 sub MessageIndex {
@@ -606,7 +606,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         $parentboard = ${ $uid . $parentboard }{'parent'};
     }
     if ( $accept_permafull) {
-        $homelink = qq~<a href="$perm_domain/$symlink">$mbname</a>~;
+        $homelink = qq~<a href="$perm_domain/$symlink/">$mbname</a>~;
         $catlink  = qq~<a href="$permcat$catid">$cat</a>~;
         $boardlink =~ s/$scripturl\?board\=/$permbrd/xsm;
         $pboardname =~ s/$scripturl\?board\=/$permbrd/xsm;
@@ -743,10 +743,10 @@ qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$message
           ${$mnum}{'board'} eq $annboard ? $annboard : $currentboard;
         my $permdate = permtimer($mnum);
         my $message_permalink =
-qq~<a href="$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
+qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
         if ( $accept_permafull) {
             $message_permalink =
-qq~<a href="$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$msub</a>~;
+qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$msub</a>~;
         }
 
         $threadclass = 'thread';

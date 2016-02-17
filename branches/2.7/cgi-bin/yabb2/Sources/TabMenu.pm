@@ -160,7 +160,7 @@ sub mainMenu {
     if ($accept_permafull) {
         my @gsttabs = qw( home register help search );
 
-        my $scriptperm = qq~$perm_domain/$symlink~;
+        my $scriptperm = qq~$perm_domain/$symlink/~;
         for my $gtab ( keys %tab) {
             for (@gsttabs) {
                 if ($gtab eq $_ ) {

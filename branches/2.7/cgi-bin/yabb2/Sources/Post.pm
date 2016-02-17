@@ -2230,13 +2230,18 @@ sub NewNotify {
                 || ${ $uid . $curuser }{'notify_me'} == 3 )
             {
                 $curmail = $memberinf{$curuser}[1];
+                $permdate = permtimer($thisthread);
+                $topiclink = qq~$scripturl?num=$thisthread~;
+                if ($accept_permafull) {
+                    $topiclink = qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
+                } 
                 sendmail(
                     $curmail,
                     "$notifysubjects{$curlang}{'136'}: $thissubject",
                     template_email(
                         $notifystrings{$curlang}
                           {'boardnewtopicnotificationemail'},
-                        { 'subject' => $thissubject, 'num' => $thisthread, 'tauthor' => $thisauthor, 'tmessage' => $thismessage }
+                        { 'subject' => $thissubject, 'num' => $topiclink, 'tauthor' => $thisauthor, 'tmessage' => $thismessage }
                     ),
                     q{},
                     $notifycharset{$curlang}{'emailcharset'}
@@ -2253,6 +2258,7 @@ sub NewNotify {
 sub ReplyNotify {
     my ( $thisthread, $thissubject, $tem ) = @_;
     my $page = qq{$tem#$tem};
+    $permdate = permtimer($thisthread);
 
     my $thisauthor = ${ $uid . $username }{'realname'} || $maintxt{'28'};
     my $thismessage = $message;
@@ -2285,7 +2291,6 @@ sub ReplyNotify {
             $languages{ ( split /[|]/xsm, $theboard{$_}, 2 )[0] } = 1;
         }
         LoadNotifyMessages( \%languages );
-
         while ( my ( $curuser, $value ) = each %theboard ) {
             my ( $curlang, $notify_type, undef ) =
               split /[|]/xsm, $value;
@@ -2295,6 +2300,10 @@ sub ReplyNotify {
                     || ${ $uid . $curuser }{'notify_me'} == 3 )
                 {
                     $curmail = $memberinf{$curuser}[1];
+                    $topiclink = qq~$scripturl?num=$thisthread~;
+                    if ($accept_permafull) {
+                        $topiclink = qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
+                    } 
                     sendmail(
                         $curmail,
                         "$notifysubjects{$curlang}{'136'}: $thissubject",
@@ -2302,7 +2311,7 @@ sub ReplyNotify {
                             $notifystrings{$curlang}{'boardnotificationemail'},
                             {
                                 'subject' => $thissubject,
-                                'num' => $thisthread,
+                                'num' => $topiclink,
                                 'start' => $page,
                                 'tauthor' => $thisauthor,
                                 'tmessage' => $thismessage
@@ -2338,6 +2347,10 @@ sub ReplyNotify {
                     || ${ $uid . $curuser }{'notify_me'} == 3 )
                 {
                     $curmail = $memberinf{$curuser}[1];
+                    $topiclink = qq~$scripturl?num=$thisthread~;
+                    if ($accept_permafull) {
+                        $topiclink = qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
+                    } 
                     sendmail(
                         $curmail,
                         "$notifysubjects{$curlang}{'118'}: $thissubject",
@@ -2345,7 +2358,7 @@ sub ReplyNotify {
                             $notifystrings{$curlang}{'topicnotificationemail'},
                             {
                                 'subject' => $thissubject,
-                                'num' => $thisthread,
+                                'num' => $topiclink,
                                 'start' => $page,
                                 'tauthor' => $thisauthor,
                                 'tmessage' => $thismessage

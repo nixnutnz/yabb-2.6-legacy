@@ -286,7 +286,7 @@ $boardnewtopicnotificationemail = q~A new topic, "{yabb subject}", has been post
 
 ########################################
 
-View it at <a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={yabb num}</a>
+View it at <a href="{yabb num}">{yabb num}</a>
 
 Regards,
 The {yabb mbname} team~;
@@ -301,7 +301,7 @@ $boardnotificationemail = q~A reply, "{yabb subject}", has been posted from {yab
 
 ########################################
 
-View it at <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scripturl}?num={yabb num}/{yabb start}</a>
+View it at <a href="{yabb num}/{yabb start}">{yabb num}/{yabb start}</a>
 
 Regards,
 The {yabb mbname} team~;
@@ -316,7 +316,7 @@ $topicnotificationemail = q~A reply, "{yabb subject}", has been posted by {yabb 
 
 ########################################
 
-View it at <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scripturl}?num={yabb num}/{yabb start}</a>
+View it at <a href="{yabb num}/{yabb start}">{yabb num}/{yabb start}</a>
 
 No more notifications will be sent until you visit the topic again.
 
@@ -339,7 +339,7 @@ $emaildesc{'sendtopicemail'} = q~The E-mail for sending a Topic~;
 $sendtopicemail = q~Dear {yabb toname},
 I want you to check out the following topic, "{yabb subject}", on {yabb mbname}. To view it, please click the link below:
 
-<a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={yabb num}</a>
+<a href="{yabb num}">{yabb num}</a>
 
 Thanks,
 {yabb displayname}~;

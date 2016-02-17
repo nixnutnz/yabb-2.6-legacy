@@ -342,8 +342,11 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     ParseNavArray(@forum_layout);
     ParseNavArray(@forum_stats);
     ParseNavArray(@boardmod_mods);
-
-    $topmenu_one = qq~<a href="$boardurl/$yyexec.$yyext">$admintxt{'15'} $mbname</a>~;
+    $boardlink = qq~$boardurl/$yyexec.$yyext~;
+    if ( $accept_permafull) {
+        $boardlink = qq~$perm_domain/$symlink/~;
+    }
+    $topmenu_one = qq~<a href="$boardlink">$admintxt{'15'} $mbname</a>~;
     $topmenu_two = qq~<a href="$adminurl">$admintxt{'33'}</a>~;
     $topmenu_tree =
       qq~<a href="$scripturl?action=help;section=admin">$admintxt{'35'}</a>~;

@@ -139,7 +139,7 @@ sub Favorites {
           ${$mnum}{'board'} eq $annboard ? $annboard : $currentboard;
         my $permdate = permtimer($mnum);
         my $message_permalink =
-qq~<a href="$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
+qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
 
         $threadclass = 'thread';
         if    ( $mstate =~ /h/ism ) { $threadclass = 'hide'; }
