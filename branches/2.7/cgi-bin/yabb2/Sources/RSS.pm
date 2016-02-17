@@ -123,7 +123,7 @@ sub RSS_board {
         FromHTML($category);
 
         # Show the minimum stuff (topic title, link to it)
-        if ($accept_permalink) {
+        if ($accept_permalink || $accept_permafull) {
             $permdate = permtimer($curnum);
             $yymain .= q~       <item>
                 <title>~ . RSSDescriptionTrim($msub) . q~</title>
@@ -357,7 +357,7 @@ sub RSS_recent {
         FromHTML($category);
         my $bn = $boardname{$board};
         FromHTML($bn);
-        if ($accept_permalink) {
+        if ($accept_permalink || $accept_permafull) {
             my $permsub = $msub;
             $permdate = permtimer($curnum);
             $permsub =~ s/ /$perm_spacer/gsm;
