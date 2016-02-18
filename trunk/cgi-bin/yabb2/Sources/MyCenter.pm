@@ -202,7 +202,7 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
             doshowims();
         }
         ## posting the message or draft
-        elsif ( $action eq 'imsend2' ) {
+        elsif ( $action eq 'imsend2' || $FORM{'draft'} ) {
             $IM_box = $inmes_txt{'148'};
             if ( $INFO{'forward'} == 1 ) { $IM_box = $inmes_txt{'forward'}; }
             if ( $INFO{'reply'} )        { $IM_box = $inmes_txt{'replymess'}; }

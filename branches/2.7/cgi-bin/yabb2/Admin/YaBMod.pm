@@ -18,7 +18,11 @@
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
-$yabmodpmver = 'YaBMod.pm 0.6 Alpha for YaBB 2.7.00';
+$yabmodpmver = 'YaBMod.pm 0.7 Alpha for YaBB 2.7.00';
+@yabmodpmmods = ();
+if (@yabmodpmmods) {
+    $yabmodpmmods = 1;
+}
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## sub Modlist
@@ -1244,10 +1248,6 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                     || $files_name_cgi eq 'Languages/'
                     || $files_name_cgi eq 'Languages/English/'
                     || $files_name_cgi eq 'Languages/English/Mods/'
-                    || $files_name_cgi eq 'Languages/German/'
-                    || $files_name_cgi eq 'Languages/German/Mods/'
-                    || $files_name_cgi eq 'Languages/German_Du/'
-                    || $files_name_cgi eq 'Languages/German_Du/Mods/'
                     || $files_name_cgi eq 'Members/'
                     || $files_name_cgi eq 'Messages/'
                     || $files_name_cgi eq 'Mods/'
