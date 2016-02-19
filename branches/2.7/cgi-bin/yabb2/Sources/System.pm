@@ -333,15 +333,17 @@ sub UserAccount {
     push @tags, 'topicpreview', 'collapsescpoll';
     push @tags, 'banned';
    ## Mod hook ##
-    require "$memberdir/$user.$userext";
     my $fix = 0;
+    if ( -e "$memberdir/$user.$userext") {
+    require "$memberdir/$user.$userext";
     for my $cn ( 0 .. $#tags ) {
         if ( $vars{$tags[$cn]} ne ${$uid.$user}{$tags[$cn]} ) {
             $fix = 1;
             last;
+            }
         }
     }
-#    if ($fix == 1) {
+    if ($fix == 1) {
         my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
         for my $cnt ( 0 .. $#tags ) {
             $newvars .= qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
@@ -351,7 +353,7 @@ sub UserAccount {
             or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
         print {UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
         close(UPDATEUSER);
-#    }
+    }
     open( UPDTUSER, '>', "$memberdir/$user.lst" ) or fatal_error( 'cannot_open',
                     "$memberdir/$user.lst", 1 );
     print {UPDTUSER} ${ $uid . $user }{'lastonline'} or croak "$croak{'print'} UPDTUSER";

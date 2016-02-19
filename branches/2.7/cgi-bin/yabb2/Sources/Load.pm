@@ -283,11 +283,15 @@ sub LoadUser {
     if ( -e "$memberdir/$user.$userextension" ) {
         if ( $user ne $username ) {
             require "$memberdir/$user.$userextension";
+            fopen( LOADUSER, "<$memberdir/$user.lst" ) or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
+            $mylastonline = <LOADUSER>;
+            fclose(LOADUSER);
             %{$uid . $user} = %vars;
+            ${ $uid . $user }{'lastonline'} = $mylastonline;
         }
         else {
             require "$memberdir/$user.$userextension";
-            fopen( LOADUSER, "<$memberdir/$user.lst" ) or fatal_error( 'cannot_open', "$memberdir/$user.lst load2", 1 );
+            fopen( LOADUSER, "<$memberdir/$user.lst" ) or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
             $mylastonline = <LOADUSER>;
             fclose(LOADUSER);
 
@@ -802,7 +806,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
 
 sub QuickLinks {
     my ( $user, $online ) = @_;
-    my $lastonline;
     if ($iamguest) {
         return ( $online ? $format_unbold{$user} : $format{$user} );
     }

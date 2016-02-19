@@ -1811,7 +1811,6 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
 
         $noteuser = $iamadmin ? $member{'username'} : $user;
 
-        unlink "$memberdir/$noteuser.dat";
         unlink "$memberdir/$noteuser.vars";
         unlink "$memberdir/$noteuser.ims";
         unlink "$memberdir/$noteuser.msg";
@@ -2710,7 +2709,8 @@ sub ViewProfile {
     if ( $user =~ m{/}xsm )  { fatal_error('no_user_slash'); }
     if ( $user =~ m{\\}xsm ) { fatal_error('no_user_backslash'); }
 
-    if ( !LoadUser($user) )   { fatal_error('no_profile_exists'); }
+    if ( !-e "$memberdir/$user.vars" )   { fatal_error('no_profile_exists'); }
+    else { LoadUser($user, 'vars'); }
     if ( $user eq $username ) { LoadMiniUser($user); }
 
     my ( $modify, $gender );
@@ -3166,7 +3166,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
     $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
     $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
     if ( $userlastlogin eq q{} ) { $userlastlogin = "$profile_txt{'470'}"; }
-    if ( $userlastpost eq q{} )  { $userlastpost  = "$profile_txt{'470'}"; }
+    if ( !$userlastpost ) { $userlastpost  = "$profile_txt{'470'}"; }
     if ( $userlastim eq q{} )    { $userlastim    = "$profile_txt{'470'}"; }
     my ( $lastonline, $lastpost, $lastPM );
     ## MF-B code fix for lpd
@@ -3374,7 +3374,7 @@ sub usersrecentposts {
     if ( $INFO{'username'} =~ /\\/xsm ) {
         fatal_error('no_user_backslash');
     }
-    if ( !-e ("$memberdir/$INFO{'username'}.vars") ) {
+    if ( !-e "$memberdir/$INFO{'username'}.vars" ) {
         fatal_error('no_profile_exists');
     }
     if ( $action =~ /^(?:my)?usersrecentposts$/xsm ) { spam_protection(); }

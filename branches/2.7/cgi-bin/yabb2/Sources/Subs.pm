@@ -2425,18 +2425,9 @@ sub Recent_Load {
     undef %recent;
     if ( -e "$memberdir/$who_to_load.rlog" ) {
         fopen( RLOG, "$memberdir/$who_to_load.rlog" );
-        my %r = map { /(.*)\t(.*)/xsm } <RLOG>;
+        my %r = map { /(.*)\|(.*)/xsm } <RLOG>;
         fclose(RLOG);
         map { @{ $recent{$_} } = split /,/xsm, $r{$_} } keys %r;
-    }
-    elsif ( -e "$memberdir/$who_to_load.wlog" ) {
-        require "$memberdir/$who_to_load.wlog";
-        fopen( RLOG, ">$memberdir/$who_to_load.rlog" );
-        print {RLOG} map { "$_\t$recent{$_}\n" } keys %recent
-          or croak "$croak{'print'} RLOG";
-        fclose(RLOG);
-        unlink "$memberdir/$who_to_load.wlog";
-        Recent_Load($who_to_load);
     }
     return;
 }
@@ -2465,8 +2456,10 @@ sub Recent_Save {
         unlink "$memberdir/$who_to_save.rlog";
         return;
     }
-    my $recent = map { "$_\t" . join( q{,}, @{ $recent{$_} } ) . "\n" }
-      keys %recent;
+	my $recent = q{};
+	for ( keys %recent ) {
+		$recent .= qq~$_|~ . join( q{,}, @{ $recent{$_} } ) . qq~\n~;
+	}
     fopen( RLOG, ">$memberdir/$who_to_save.rlog" );
     print {RLOG} $recent or croak "$croak{'print'} RLOG";
     fclose(RLOG);

@@ -872,7 +872,9 @@ sub buildPages {
         </tr>
        </table>
        $sel_box
-    </div>~;
+    </div>
+$gmodsubmit;
+    </form>~;
     }
     return;
 }

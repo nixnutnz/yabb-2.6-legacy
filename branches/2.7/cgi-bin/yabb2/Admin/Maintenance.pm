@@ -809,7 +809,7 @@ sub RebuildMemHistory {
         for my $user ( keys %posts ) {
             if ( -e "$memberdir/$user.vars" ) {
                 fopen( HIST, ">>$memberdir/$user.rlog" );
-                print {HIST} "$topic\t$posts{$user},$dates{$user}\n"
+                print {HIST} "$topic|$posts{$user},$dates{$user}\n"
                   or croak "$croak{'print'} HIST";
                 fclose(HIST);
             }
