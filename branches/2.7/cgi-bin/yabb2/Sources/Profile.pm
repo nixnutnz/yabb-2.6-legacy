@@ -1812,6 +1812,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         $noteuser = $iamadmin ? $member{'username'} : $user;
 
         unlink "$memberdir/$noteuser.vars";
+        unlink "$memberdir/$noteuser.lst";
         unlink "$memberdir/$noteuser.ims";
         unlink "$memberdir/$noteuser.msg";
         unlink "$memberdir/$noteuser.log";
@@ -1819,6 +1820,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         unlink "$memberdir/$noteuser.outbox";
         unlink "$memberdir/$noteuser.imstore";
         unlink "$memberdir/$noteuser.imdraft";
+        unlink "$memberdir/$noteuser.usctmp";
 
         if (   ${ $uid . $user }{'userpic'}
             && ${ $uid . $user }{'userpic'} =~

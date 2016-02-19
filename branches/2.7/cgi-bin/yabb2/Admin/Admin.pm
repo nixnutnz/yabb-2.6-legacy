@@ -812,8 +812,8 @@ sub DeleteMultiMembers {
                 }
             }
             if ( $FORM{'button'} == 2 ) {
-                unlink "$memberdir/$currentmem.dat";
                 unlink "$memberdir/$currentmem.vars";
+                unlink "$memberdir/$currentmem.lst";
                 unlink "$memberdir/$currentmem.ims";
                 unlink "$memberdir/$currentmem.msg";
                 unlink "$memberdir/$currentmem.log";
