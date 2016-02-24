@@ -13,7 +13,7 @@
 ###############################################################################
 $defaultdisplaytemver = 'YaBB 2.7.00 $Revision$';
 @defaultdisplaymods = ();
-if (@defaultdisplay) {
+if (@defaultdisplaymods) {
     $defaultdisplaymods = 1;
 }
 if ( $action eq 'detailedversion' ) { return 1; }

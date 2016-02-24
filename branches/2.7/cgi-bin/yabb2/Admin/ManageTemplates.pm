@@ -1474,6 +1474,8 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
     $display_template =~ s/({|<)yabb forumselect(}|>)//gsm;
     $display_template =~ s/({|<)yabb guestview(}|>)//gsm;
     $display_template =~ s/({|<)yabb reason(}|>)//gsm;
+## Display Template Mod Hook ##
+## End Display Template Mod Hook ##
     $display_template =~ s/<td class="dividerbot" style="vertical-align:middle;">/<td class="dividerbot" style="vertical-align:middle;" colspan="2">/gsm;
     $display_template =~ s/<td class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle">/<td class="center dividerbot" style="height: 2em; vertical-align:middle">/gsm;
     $display_template =~ s/class="post_tools center" style="width:100px"/class="right"/gsm;

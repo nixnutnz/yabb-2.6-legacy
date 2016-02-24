@@ -40,7 +40,7 @@ sub PrepareProfile {
     if ($iamguest) { fatal_error('no_access'); }
 
     # If someone registers with a '+' in their name It causes problems.
-    # Get's turned into a <space> in the query string Change it back here.
+    # Gets turned into a <space> in the query string Change it back here.
     # Users who register with spaces get them replaced with _
     # So no problem there.
     $INFO{'username'} =~ tr/ /+/;
@@ -3101,11 +3101,9 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                             $my_brd = 'boardselect';
                         }
                         else { $my_brd = 'board'; }
-                        $my_mod_star .=
-                            qq~<a href="$scripturl?$my_brd=$board" class="a">~
-                          . ( '&nbsp;' x $indent )
+                        $my_mod_star .= ( '&nbsp;' x $indent )
                           . ( $dash x ( $indent / 2 ) )
-                          . qq~$boardname</a><br />\n~;
+                          .  qq~<a href="$scripturl?$my_brd=$board" class="a">$boardname</a><br />\n~;
                     }
                 }
                 if ( $subboard{$board} ) {
