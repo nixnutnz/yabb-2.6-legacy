@@ -1781,6 +1781,9 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     $display_template =~ s/{yabb adminhandellist}/$adminhandellist/gsm;
     $display_template =~ s/{yabb forumselect}/$selecthtml/gsm;
 
+## Display Mod Hook ##
+## End Display Mod Hook ##
+
     $yymain .= qq~
     $display_template
     <script type="text/javascript">//<![CDATA[

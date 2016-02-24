@@ -1177,6 +1177,8 @@ qq~<span class="small" style="vertical-align: middle;"> <b>$messageindex_txt{'13
     $tempbar =~ s/({|<)yabb views(}|>)/12/gsm;
     $tempbar =~ s/({|<)yabb lastpostlink(}|>)/$templastpostlink/gsm;
     $tempbar =~ s/({|<)yabb lastposter(}|>)/$templastposter/gsm;
+## Tempbar Mod Hook ##
+## End Tempbar Mod Hook ##
 
     if ( $accept_permalink == 1 ) {
         $tempbar =~ s/({|<)yabb permalink(}|>)/$message_permalink/gsm;

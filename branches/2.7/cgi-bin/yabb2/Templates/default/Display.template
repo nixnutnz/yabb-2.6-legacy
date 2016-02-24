@@ -75,8 +75,7 @@ $display_template = qq~
 <!-- Threads Title Bar start -->
         {yabb topicviewers}
     <div class="titlebg">
-        <div class="padd_4px" style="float: left; width: 70%;">{yabb threadimage} {yabb threadurl} ($display_txt{'641'} {yabb views} $display_txt{'642'})</div>
-        <div class="padd_4px" style="float: right; text-align: right; font-weight: normal; padding-right:1%">{yabb likes} &nbsp; {yabb likeimage}</div>
+        <div class="padd_4px">{yabb threadimage} {yabb threadurl} ($display_txt{'641'} {yabb views} $display_txt{'642'})</div>
 </div>
 
 <!-- Threads Title Bar end -->

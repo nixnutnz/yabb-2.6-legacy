@@ -1260,6 +1260,8 @@ qq~$maintxt{'758'}: '<a href="$scripturl?num=$movedFlag">$2</a>'<br /><span clas
         $tempbar =~ s/{yabb lastpostlink}/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$img{'lastpost'} $mydate<\/a>/gsm;
         $tempbar =~ s/{yabb lastposter}/$lastpostername/gsm;
         $tempbar =~ s/{yabb altthdcolor}/$altthdcolor/gsm;
+## Tempbar Mod Hook ##
+## End Tempbar Mod Hook ##
 
         if ( $accept_permalink == 1 && !$accept_permafull ) {
             $tempbar =~ s/{yabb permalink}/$message_permalink/gsm;

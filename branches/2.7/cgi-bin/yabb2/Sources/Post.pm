@@ -1254,6 +1254,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb lastmod}/$lastmod/sm;
         $my_postsection =~ s/{yabb nscheck}/$nscheck/sm;
         $my_postsection =~ s/{yabb return_to}/$return_to/sm;
+## PostSection Mod Hook ##
+## End PostSection Mod Hook ##
     }
 
     #    these are the buttons to submit
