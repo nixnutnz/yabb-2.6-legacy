@@ -1,4 +1,5 @@
 MANIFEST
+checksum.txt   - 68254 bytes - updated Sat Jan  2 09:09:57 2016
 readmeFIRST.txt   - 2003 bytes - updated Sat Jan  2 07:24:01 2016
 VERSION.txt   - 38 bytes - updated Sat Jan  2 07:16:05 2016
 Quick-Guide_26/Quick-Guide.html   - 855 bytes - updated Thu Feb 20 19:33:26 2014 - MD5 checksum = e8449e14b9ebf2a6a94e3fc8c8d744df
@@ -9,6 +10,7 @@ cgi-bin/yabb2/Convert.pl   - 141778 bytes - updated Wed Jan 13 07:06:09 2016 - M
 cgi-bin/yabb2/Convert2x.pl   - 77990 bytes - updated Wed Jan 13 07:06:10 2016 - MD5 checksum = a9f5100b2a5027588769c548cb9e5c6f
 cgi-bin/yabb2/index.html   - 158 bytes - updated Wed Jan 30 14:11:35 2013 - MD5 checksum = 9d6131de5a3996f5bf1433b8ecda765b
 cgi-bin/yabb2/license.txt   - 18673 bytes - updated Sat Jan  2 07:33:21 2016
+cgi-bin/yabb2/logfix.txt   - 5168 bytes - updated Tue Feb  9 07:50:44 2016
 cgi-bin/yabb2/Paths.pm   - 25 bytes - updated Thu Feb 20 12:13:44 2014 - MD5 checksum = 87ddfe812d0c41bf9811c9820381fcc5
 cgi-bin/yabb2/Setup.pl   - 125944 bytes - updated Tue Jan  5 12:24:23 2016 - MD5 checksum = a7dc15e10aede2f5be2e847acd8d008b
 cgi-bin/yabb2/YaBB.pl   - 7134 bytes - updated Sun Jan  3 09:10:49 2016 - MD5 checksum = 3b279c02d6b03901ccbe6085bbd3e910
@@ -51,7 +53,7 @@ cgi-bin/yabb2/Admin/MailMembers.pm   - 27709 bytes - updated Mon Feb  8 08:23:38
 cgi-bin/yabb2/Admin/Maintenance.pm   - 41210 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 2bc816fe010c86b38f8f3545b0214b4c
 cgi-bin/yabb2/Admin/ManageBoards.pm   - 88882 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 5810e997be622cc12ed9e7758ef26692
 cgi-bin/yabb2/Admin/ManageCats.pm   - 14171 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = d7d4f6064fb6d1fa18a57ef5f03319bc
-cgi-bin/yabb2/Admin/ManageTemplates.pm   - 152015 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 6d653b50868507eb0d4778a67aafb63a
+cgi-bin/yabb2/Admin/ManageTemplates.pm   - 152019 bytes - updated Fri Feb 26 06:59:07 2016 - MD5 checksum = 553bb2a25ad405f68ef7c7b98e9be3ed
 cgi-bin/yabb2/Admin/MemberGroups.pm   - 36599 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 64f0af0ed9a79b31f55b8bda1784844a
 cgi-bin/yabb2/Admin/ModList.pm   - 5118 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 130f6c5ab028acef499c28c36f610131
 cgi-bin/yabb2/Admin/ModuleChecker.pm   - 4910 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = db9d983a4a02d3890edcfdea02195e21
@@ -131,7 +133,7 @@ cgi-bin/yabb2/Sources/Menu.pm   - 8539 bytes - updated Sun Jan  3 09:10:48 2016 
 cgi-bin/yabb2/Sources/MessageIndex.pm   - 88530 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 081aecc4c2dec5fc3a5aed1e21d97002
 cgi-bin/yabb2/Sources/ModifyMessage.pm   - 37739 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 2dda98ac3dea59a3a6cfe1bd2d6a6a5a
 cgi-bin/yabb2/Sources/MoveSplitSplice.pm   - 43308 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = f4281ef7d9253bae447cd6f6f9414129
-cgi-bin/yabb2/Sources/MyCenter.pm   - 126306 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = 04c418c022dae0c20e183036217cb6c7
+cgi-bin/yabb2/Sources/MyCenter.pm   - 126324 bytes - updated Thu Feb 18 09:36:00 2016 - MD5 checksum = 38c3044dee615eeaccdf829dde4952ff
 cgi-bin/yabb2/Sources/Notify.pm   - 22648 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = ecdc368d6f8fc13d6b5574740f3cc583
 cgi-bin/yabb2/Sources/Palette.pm   - 11136 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = b992b5cadd8d4d768ddaa0f6bbdd3fe4
 cgi-bin/yabb2/Sources/Poll.pm   - 33452 bytes - updated Sun Jan  3 09:10:48 2016 - MD5 checksum = b1a8aef13dd3a04f84f596b6b58340f2
@@ -139,7 +141,7 @@ cgi-bin/yabb2/Sources/Post.pm   - 118115 bytes - updated Wed Jan 13 07:06:10 201
 cgi-bin/yabb2/Sources/PostBox.pm   - 49930 bytes - updated Sun Jan  3 09:10:49 2016 - MD5 checksum = 1dbbfc3efd8e82a0d09050df3951d4c0
 cgi-bin/yabb2/Sources/Printpage.pm   - 44017 bytes - updated Sun Jan  3 09:10:49 2016 - MD5 checksum = eea95f1808b1b4a8b2df045fc41071dc
 cgi-bin/yabb2/Sources/Profile.pm   - 145375 bytes - updated Sun Jan  3 09:10:49 2016 - MD5 checksum = 4c78d8d7b5695b939e91e792191c16f3
-cgi-bin/yabb2/Sources/Recent.pm   - 21495 bytes - updated Wed Jan 13 07:06:10 2016 - MD5 checksum = ad2c28f9e2a1535d12d4e7abfecb537d
+cgi-bin/yabb2/Sources/Recent.pm   - 21429 bytes - updated Wed Feb 24 08:03:16 2016 - MD5 checksum = 2ec5338d01934fc5a8d8f34b6de03b22
 cgi-bin/yabb2/Sources/Register.pm   - 52402 bytes - updated Sun Jan  3 09:10:49 2016 - MD5 checksum = ebf0c56901fdb09a361764ac52d1cc8c
 cgi-bin/yabb2/Sources/RemoveTopic.pm   - 9443 bytes - updated Sun Jan  3 09:10:49 2016 - MD5 checksum = 321688671ff13cc92add159190cfbc24
 cgi-bin/yabb2/Sources/RSS.pm   - 22903 bytes - updated Sun Jan  3 09:10:49 2016 - MD5 checksum = 812a223a02a84753380168b4b0318156

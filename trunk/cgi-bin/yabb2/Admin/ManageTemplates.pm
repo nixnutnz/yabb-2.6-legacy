@@ -15,7 +15,7 @@
 use Carp;
 our $VERSION = '2.6.12';
 
-$managetemplatespmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$managetemplatespmver = 'YaBB 2.6.12 $Revision: 1696 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
@@ -318,9 +318,9 @@ sub ModifySkin {
             ( $section, $ext ) = split /\./xsm, $file;
             $hselected = q{};
             if ( $ext eq 'html' && $section eq $name ) {
-                $viewhead  = $name;
                 if ( $file eq $headfile ) {
                     $hselected = q~ selected="selected"~;
+                    $viewhead  = $name;
                 }
                 $headtemplates .=
                   qq~<option value="$file"$hselected>$name</option>\n~;
