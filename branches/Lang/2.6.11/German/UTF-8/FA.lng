@@ -16,7 +16,7 @@
 #              with assistance from the YaBB community.                       #
 ###############################################################################
 
-$germanfalngver = 'YaBB 2.6.11 $Revision: 1611 $',
+$germanfalngver = 'YaBB 2.6.11 $Revision: 1611 $';
 @germanfalngmods = ();
 if(@germanfalngmods){
     $germanfalngmods = 1;
