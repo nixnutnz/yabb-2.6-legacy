@@ -318,9 +318,9 @@ sub ModifySkin {
             ( $section, $ext ) = split /\./xsm, $file;
             $hselected = q{};
             if ( $ext eq 'html' && $section eq $name ) {
-                $viewhead  = $name;
                 if ( $file eq $headfile ) {
                     $hselected = q~ selected="selected"~;
+                    $viewhead  = $name;
                 }
                 $headtemplates .=
                   qq~<option value="$file"$hselected>$name</option>\n~;
