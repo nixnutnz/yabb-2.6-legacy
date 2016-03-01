@@ -44,18 +44,13 @@ a:focus, input:focus, textarea:focus, select:focus { outline: 0 none; }
     padding-left:1%;
     display: table;
 }
-
-.headerrow  { display: table-row;}
-.headertl {padding:4px; min-height:5em; line-height:1.5em; text-align:left; vertical-align:middle; display: table-cell; width:100%}
-.logor { text-align:right; vertical-align:middle; display: table-cell; width:100%; min-height: 120px; padding: 1em 0;}
-
-.maingrad {
-    background: linear-gradient(#569dce, #3571b2);
-}
-
 #header a { color:#2d2d2d; }
 
 #header .highlight a { color: #3b5998; }
+
+div.headerrow  { display: table-row;}
+div.headertl {padding:4px; min-height:5em; line-height:1.5em; text-align:left; vertical-align:middle; display: table-cell; width:100%}
+div.logor { text-align:right; vertical-align:middle; display: table-cell; width:100%; min-height: 120px; padding: 1em 0;}
 
 form {
     display: inline;
@@ -85,7 +80,7 @@ sup {
     top: -0.4em;
 }
 
-.button, input[type="submit"], input[type="reset"], input[type="button"] {
+input.button[type="submit"], input.button[type="reset"], input.button[type="button"] {
     background-color: #eee;
     border: 1px solid #c6c6c6;
     color: #000;
@@ -198,6 +193,7 @@ table.fixed {
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
     border-bottom: 1px solid #195392;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle-sub {
@@ -208,6 +204,7 @@ table.fixed {
     font-style: normal;
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle-bottom {
@@ -222,6 +219,7 @@ table.fixed {
     -moz-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
     border-top: 1px solid #195392;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle a, .tabtitle-bottom a {
@@ -1070,6 +1068,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     height: 25%;
     line-height: 2em;
     text-align: center;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 #ImageAlert div.rotate {
@@ -1328,6 +1327,7 @@ span.ubbcbutton {
     border-style: solid;
     border-color: #ddd;
     padding: 3px 10px 3px 3px;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 .windowbg2 td.post_tools,.tabtitle td.post_tools,.tabtitle-bottom td.post_tools {
@@ -1339,6 +1339,7 @@ span.ubbcbutton {
     border-style: solid;
     border-color: #edeff4;
     padding: 3px 10px 3px 3px;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 .post_tools_menu {
@@ -1981,7 +1982,8 @@ h4.help {
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
     border-bottom: 1px solid #195392;
-    padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom
+    padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 .system-info td {
@@ -2042,6 +2044,7 @@ span.newlinks {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    background: linear-gradient(#569dce, #3571b2);
 }
 
 span.newlinks_c {
@@ -2059,7 +2062,7 @@ color:#ff0000; font-weight:700;
 
 body#print { background-color:#fff;background-image:none; color:#000}
 
-#print.button, input[type="submit"], input[type="reset"], input[type="button"] {
+#print input[type="submit"], #print input[type="reset"], #print input[type="button"] {
     background-color: #FFFFFF;
     border: 1px solid #b1bdc9;
     color: #000000;
@@ -2071,7 +2074,7 @@ body#print { background-color:#fff;background-image:none; color:#000}
     cursor: pointer;
 }
 
-#print.button:hover, input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover {
+#print input[type="submit"]:hover, #print input[type="reset"]:hover, #print input[type="button"]:hover {
     background-color: #D1D1D1;
 }
 
@@ -2089,7 +2092,7 @@ body#print { background-color:#fff;background-image:none; color:#000}
         color: #0000FF;
         text-decoration: underline;
 }
-#print a:focus, input:focus, textarea:focus, select:focus {
+#print a:focus, #print input:focus, #print textarea:focus, #print select:focus {
         outline: 0 none;
 }
 

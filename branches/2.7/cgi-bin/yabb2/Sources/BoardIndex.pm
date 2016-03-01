@@ -1685,6 +1685,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         }
 
         LoadBroadcastMessages($username);
+        LoadGuestMessages($username);
 
         # look for new BM
         if ($BCnewMessage) {
@@ -1698,6 +1699,20 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
                 $yymain .= qq~
 <script type="text/javascript">
     if (confirm("$boardindex_imtxt{'50'}$boardindex_imtxt{'51'}?")) location.href = ("$scripturl?action=im;focus=bmess");
+</script>~;
+            }
+        }
+        if ($GnewMessage) {
+            if ( ${ $uid . $username }{'im_imspop'} ) {
+                $yymain .= qq~
+<script type="text/javascript">
+    if (confirm("$boardindex_imtxt{'50g'}$boardindex_imtxt{'51g'}?")) window.open("$scripturl?action=im;focus=gmess","_blank");
+</script>~;
+            }
+            else {
+                $yymain .= qq~
+<script type="text/javascript">
+    if (confirm("$boardindex_imtxt{'50g'}$boardindex_imtxt{'51g'}?")) location.href = ("$scripturl?action=im;focus=gmess");
 </script>~;
             }
         }

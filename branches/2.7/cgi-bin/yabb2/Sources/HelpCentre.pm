@@ -36,7 +36,7 @@ for (@my_modimglist) {
     $modimg = SetImage( $_, $UseMenuType );
     $mymoding .= qq~$menusep$modimg~;
 }
-$mymoding =~ s/\Q$menusep//ism;
+$mymoding =~ s/\Q$menusep\E//ixsm;
 
 sub SectionDecide {
 

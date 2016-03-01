@@ -1585,7 +1585,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/{yabb markall button}/$markalllink$tool_sep/gsm;
     $topichandellist =~ s/{yabb new post button}/$postlink$tool_sep/gsm;
     $topichandellist =~ s/{yabb new poll button}/$polllink$tool_sep/gsm;
-    $topichandellist =~ s/\Q$menusep//ixsm;
+    $topichandellist =~ s/\Q$menusep\E//ixsm;
 
     @threadin = ( "$notify_board","$markalllink","$postlink","$polllink",);
     @threadout = ();
@@ -1609,12 +1609,12 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/{yabb new poll button}/$threadout[3]/gsm;
 ## Mod Hook outside_threadtools ##
     if ( $my_ttsep ne q{ } ) {
-        $outside_threadtools =~ s/\Q$my_ttsep//ixsm;
+        $outside_threadtools =~ s/\Q$my_ttsep\E//ixsm;
     }
 
     if ( !$useThreadtools ) {
-        if ( $menusep ne q{ } ) {
-            $outside_threadtools =~ s/\Q$menusep//ixsm;
+        if ( $MenuType == 1 ) {
+            $outside_threadtools =~ s/\Q$menusep\E//ixsm;
         }
         $topichandellist     = $outside_threadtools . $topichandellist;
         $outside_threadtools = q{};

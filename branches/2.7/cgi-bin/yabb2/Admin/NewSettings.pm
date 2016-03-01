@@ -31,10 +31,9 @@ my %settings_dispatch = (
     security    => "$admindir/Settings_Security.pm",
     antispam    => "$admindir/Settings_Antispam.pm",
     maintenance => "$admindir/Settings_Maintenance.pm",
+);
 
     ### BOARDMOD SETTINGS ANCHOR ###
-    ### ADD BEFORE THESE LINES   ###
-);
 
 my $page = $INFO{'page'};
 

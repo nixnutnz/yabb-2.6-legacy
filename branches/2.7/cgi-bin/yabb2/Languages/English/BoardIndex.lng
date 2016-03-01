@@ -104,6 +104,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '50' => q~New Broadcast Personal Messages.~,
 '51' => q~\nWould you like to view the Broadcast PM box~,
 '50a' => q~New Alert Messages:~,
+'50g' => q~New Guest Personal Messages.~,
+'51g' => q~\nWould you like to view the Guest PM box~,
 );
 
 %boardindex_exptxt = (

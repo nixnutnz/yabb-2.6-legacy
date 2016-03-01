@@ -334,9 +334,9 @@ sub ModifySkin {
             ( $section, $ext ) = split /\./xsm, $file;
             $hselected = q{};
             if ( $ext eq 'html' && $section eq $name ) {
-                $viewhead  = $name;
                 if ( $file eq $headfile ) {
                     $hselected = q~ selected="selected"~;
+                    $viewhead  = $name;
                 }
                 $headtemplates .=
                   qq~<option value="$file"$hselected>$name</option>\n~;
@@ -417,7 +417,7 @@ s/img src\=\"$imagesdir\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eisg
     $tempuim   = qq~$templ_txt{'70'} <a id="ims">0 $templ_txt{'71'}</a>.~;
     $temptime  = timeformat( $date, 1 );
     my $tempsearchbox =
-qq~<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" /><input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
+qq~<div style="display: inline-block; width: 20%; padding-right: 1%; float:right"><div class="yabb_searchbox"><input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" /><input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" /></div></div><div class="clear"></div>
 ~;
     my $tempsearchform = q~<form>~;
     $altbrdcolor = q~windowbg2~;

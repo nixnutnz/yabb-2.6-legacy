@@ -119,6 +119,12 @@ $mypmmenu_bmbox = qq~<tr>
                 <td class="windowbg2"><span class="nav">{yabb BCCount}{yabb inboxNewCount_bm}</span></td>
             </tr>~;
 
+$mypmmenu_gmbox = qq~<tr>
+                <td class="windowbg2"><img src="$imagesdir/$im_inbox" alt="$inmes_txt{'guest'}" title="$inmes_txt{'guest'}" /></td>
+                <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im;focus=gmess">$inmes_txt{'guest'}</a></span></td>
+                <td class="windowbg2"><span class="nav">{yabb GCount}{yabb inboxNewCount_gm}</span></td>
+            </tr>~;
+
 $my_MCViewMenu = qq~
         {yabb MCView_tab}
         <table>
@@ -235,7 +241,10 @@ $my_MCPmMenu = qq~
                 <col style="width:15%" />
                 <col style="width:60%" />
                 <col style="width:25%" />
-            </colgroup>{yabb MCPmMenu_bm}{yabb mypmmenu_inbox}{yabb MCPmMenu_bmbox}
+            </colgroup>{yabb MCPmMenu_bm}
+{yabb mypmmenu_inbox}
+{yabb MCPmMenu_bmbox}
+{yabb MCPmMenu_gmbox}
             <tr>
                 <td class="windowbg2"><img src="$imagesdir/$im_outbox" alt="$inmes_txt{'draft'}" title="$inmes_txt{'draft'}" /></td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=imdraft">$inmes_txt{'draft'}</a></span> </td>
@@ -420,7 +429,9 @@ $my_PMview = qq~<tr>
 $my_BM_mess = qq~{yabb MCContent_stk}{yabb MCContent_stk_i}{yabb MCContent_lgnd}<tr>
         <td class="{yabb class_PM_list}">{yabb BCnew}
         {yabb messageIcon}
-        {yabb messIcon}<a href="$scripturl?action={yabb actString};caller={yabb callerid};id={yabb messageid}">{yabb msub}</a>{yabb attachIcon}</td>
+        {yabb messIcon}<a href="$scripturl?action={yabb actString};caller={yabb callerid};id={yabb messageid}">{yabb msub}</a>
+{yabb attachIcon}
+        </td>
         <td class="{yabb class_PM_list}">~;
 
 $my_dimmessages = q~<tr>
@@ -452,5 +463,8 @@ $my_buddiesCurrentStatus_a = qq~<tr class="{yabb css}">
             <td class="center">{yabb buddyemail}</td>
             <td class="center">{yabb buddywww}</td>
         </tr>~;
+
+$my_IM_show2 = q~</td>
+    </tr>~;
 
 1;

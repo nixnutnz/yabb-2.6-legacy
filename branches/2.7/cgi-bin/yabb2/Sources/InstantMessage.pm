@@ -46,7 +46,6 @@ if (   ( $action eq 'imsend' || $action eq 'imsend2' )
 if ( $iamadmin || $iamgmod ) { $MaxMessLen = $AdMaxMessLen; }
 
 ## create the send IM section of the screen
-
 sub buildIMsend {
     LoadLanguage('InstantMessage');
     LoadCensorList();
@@ -1279,14 +1278,23 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
             }
 
             if ( !$ignored ) {
+                $mods = q{};
+                @messhsh = getIMlist();
+                if ( $#messhsh > 14 ) {
+                    for my $i ( 15 .. $#messhsh) {
+                        $mods .= $messlst{$messhsh[$i]} || '';
+                        $mods .= '|';
+                    }
+                }
 
                 # Send message to user
                 fopen( INBOX, "$memberdir/$UserTo.msg" );
                 my @inmessages = <INBOX>;
                 fclose(INBOX);
+
                 fopen( INBOX, ">$memberdir/$UserTo.msg" );
                 print {INBOX}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||$fixfile\n"
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||$fixfile|$mods\n"
                   or croak "$croak{'print'} INBOX";
                 print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
                 fclose(INBOX);
@@ -1299,9 +1307,10 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                     fopen( INBOX, "$memberdir/$username.msg" );
                     my @myinmessages = <INBOX>;
                     fclose(INBOX);
+
                     fopen( INBOX, ">$memberdir/$username.msg" );
                     print {INBOX}
-"$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||$fixfile\n"
+"$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||$fixfile|$mods\n"
                       or croak "$croak{'print'} INBOX";
                     print {INBOX} @myinmessages
                       or croak "$croak{'print'} INBOX";
@@ -1373,13 +1382,22 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         }
     }
 
+## IM Mod Hook B  (%messlst hash additions - values for added @messhsh list) ##
+
     if ( !$FORM{'draft'} && $isBMess ) {
         fopen( INBOX, "<$memberdir/broadcast.messages" );
         my @inmessages = <INBOX>;
         fclose(INBOX);
+        $mods = q{};
+        @messhsh = getIMlist();
+        if ( $#messhsh > 14 ) {
+            for my $i ( 15 .. $#messhsh) {
+                $mods .= $messlst{$messhsh[$i]} || '';
+                $mods .= '|';
+            }
+        }
         fopen( INBOX, ">$memberdir/broadcast.messages" );
-        print {INBOX}
-"$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||$fixfile\n"
+        print {INBOX} "$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||$fixfile|$mods\n"
           or croak "$croak{'print'} INBOX";
         print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
         fclose(INBOX);
@@ -1389,7 +1407,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         updateMessageFlag( $username, $FORM{'info'}, 'msg', q{}, 'r' );
     }
 
-    ## this now outside the for, to allow just one write in the outbox
+    ## this now outside the 'for', to allow just one write in the outbox
     # Add message to outbox, read outbox
 
     @outmessages = ();
@@ -1435,10 +1453,18 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         fopen( OUTBOX, "+>$memberdir/$username.$savetofile" )
           or
           fatal_error( 'cannot_open', "+>$memberdir/$username.$savetofile", 1 );
+            $mods = q{};
+            @messhsh = getIMlist();
+            if ( $#messhsh > 14 ) {
+                for my $i ( 15 .. $#messhsh) {
+                    $mods .= $messlst{$messhsh[$i]} || '';
+                    $mods .= '|';
+                }
+            }
         ## all but drafts being resaved just get added to their file
         if ( !$FORM{'draft'} || ( $FORM{'draft'} && !$FORM{'draftid'} ) ) {
             print {OUTBOX}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile\n"
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile|$mods\n"
               or croak "$croak{'print'} OUTBOX";
             print {OUTBOX} @outmessages or croak "$croak{'print'} OUTBOX";
 
@@ -1453,7 +1479,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
                 }
                 else {
                     print {OUTBOX}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile\n"
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile|$mods\n"
                       or croak "$croak{'print'} OUTBOX";
                 }
             }
@@ -1485,7 +1511,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
             }
             elsif ( $FORM{'draftleave'} ) {
                 print {DRAFTFILE}
-"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile\n"
+"$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$messFlag|||$fixfile|$mods\n"
                   or croak "$croak{'print'} DRAFTFILE";
             }
         }
@@ -1579,9 +1605,8 @@ sub ProcIMrecs {
     return;
 }
 
-sub pageLinksList {
-
     # Build the page links list.
+sub pageLinksList {
     $maxmessagedisplay ||= 10;
     my $userthreadpage =
       ( split /[|]/xsm, ${ $uid . $username }{'pageindex'} )[3];
@@ -1594,6 +1619,7 @@ sub pageLinksList {
         $viewfolderinfo = qq~;viewfolder=$INFO{'viewfolder'}~;
     }
     if ( $INFO{'focus'} eq 'bmess' ) { $bmesslink = q~;focus=bmess~; }
+    if ( $INFO{'focus'} eq 'gmess' ) { $bmesslink = q~;focus=gmess~; }
     my @tempim = @dimmessages;
     if ( $action eq 'imstorage' ) {
         my $i = 0;
@@ -1651,7 +1677,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo"><span cl
                     $tmpa++;
                 }
             }
-            if ( $endpage < $max - ($maxmessagedisplay) ) {
+            if ( $endpage < ($max - $maxmessagedisplay) ) {
                 $pageindexadd = q~...&nbsp;~;
             }
             if ( $endpage != $max ) {
@@ -1804,25 +1830,21 @@ sub DoShowIM {
         %attach_gif
     );
     $messcount = 0;
-    for my $messagesim (@dimmessages) {
-        $nextMessid = $messageid;
-        (
-            $messageid,   $musername,    $mtousers, $mccusers,
-            $mbccusers,   $msub,         $mdate,    $immessage,
-            $mpmessageid, $mreplyno,     $imip,     $mstatus,
-            $mflags,      $mstorefolder, $mattach,
-        ) = split /[|]/xsm, $messagesim;
+
+    for my $msg (@dimmessages) {
+        $nextMessid = $messlst{'messageid'};
+        %messlst  = getIMhash($msg);
         $messcount++;
-        if ( $messageid == $inp ) { $messfound = 1; last; }
+        if ( $messlst{'messageid'} == $inp ) { $messfound = 1; last; }
     }
 
     if ( !$messfound ) {
         my $redirect;
         my @redrect =
-          ( q{}, 'im', 'imoutbox', 'imstorage', 'imdraft', 'im;focus=bmess', );
+          ( q{}, 'im', 'imoutbox', 'imstorage', 'imdraft', 'im;focus=bmess', 'im;focus=gmess' );
 
-        for my $i ( 1 .. 5 ) {
-            if ( $INFO{'caller'} == $i + 1 ) {
+        for my $i ( 1 .. 6 ) {
+            if ( $INFO{'caller'} == $i ) {
                 $redirect = $redrect[$i];
             }
         }
@@ -1848,10 +1870,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$nextMessid">$inm
 qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'190'}</a>~;
     }
 
-    my $mydate = timeformat( $mdate, 0, 0, 0, 1 );
+    my $mydate = timeformat( $messlst{'mdate'}, 0, 0, 0, 1 );
     if ( $INFO{'caller'} == 1 ) {
-        if ($mtousers) {
-            for my $uname ( split /,/xsm, $mtousers ) {
+        if ($messlst{'mtousers'}) {
+            for my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
                 LoadValidUserDisplay($uname);
                 $usernamelinkto .= (
                     ${ $uid . $uname }{'realname'}
@@ -1865,8 +1887,8 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             $usernamelinkto =~ s/, $//sm;
             $toTitle = qq~$inmes_txt{'324'}:~;
         }
-        if ($mccusers) {
-            for my $uname ( split /,/xsm, $mccusers ) {
+        if ($messlst{'mbccusers'}) {
+            for my $uname ( split /,/xsm, $messlst{'mbccusers'} ) {
                 LoadValidUserDisplay($uname);
                 $usernamelinkcc .= (
                     ${ $uid . $uname }{'realname'}
@@ -1880,8 +1902,8 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             $usernamelinkcc =~ s/, $//sm;
             $toTitleCC = qq~$inmes_txt{'325'}:~;
         }
-        if ($mbccusers) {
-            for my $uname ( split /,/xsm, $mbccusers ) {
+        if ($messlst{'mbccusers'}) {
+            for my $uname ( split /,/xsm, $messlst{'mbccusers'} ) {
                 if ( $uname eq $username ) {
                     LoadValidUserDisplay($uname);
                     $usernamelinkbcc =
@@ -1898,39 +1920,39 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             }
         }
 
-        if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
-            my ( $guestName, $guestEmail ) = split / /sm, $musername;
+        if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
+            my ( $guestName, $guestEmail ) = split / /sm, $messlst{'musername'};
             $guestName =~ s/%20/ /gsm;
             $usernamelinkfrom =
               qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
         }
         else {
-            LoadValidUserDisplay($musername);
+            LoadValidUserDisplay($messlst{'musername'});
             $usernamelinkfrom =
-              ${ $uid . $musername }{'realname'}
-              ? CreateUserDisplayLine($musername)
+              ${ $uid . $messlst{'musername'} }{'realname'}
+              ? CreateUserDisplayLine($messlst{'musername'})
               : (
-                  $musername ? qq~$musername ($maintxt{'470a'})~
+                  $messlst{'musername'} ? $messlst{'musername'} . qq~($maintxt{'470a'})~
                 : $maintxt{'470a'}
-              );    # 470a == Ex-Member
+              );
         }
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
     elsif ( $INFO{'caller'} == 2 ) {
-        LoadValidUserDisplay($musername);
+        LoadValidUserDisplay($messlst{'musername'});
         $usernamelinkfrom =
-          ${ $uid . $musername }{'realname'}
-          ? CreateUserDisplayLine($musername)
+          ${ $uid . $messlst{'musername'} }{'realname'}
+          ? CreateUserDisplayLine($messlst{'musername'})
           : (
-            $musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'} );
+            $musername ? $messlst{'musername'} . qq~ ($maintxt{'470a'})~ : $maintxt{'470a'} );
 
         # 470a == Ex-Member
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
-        if ( $mstatus !~ /b/sm ) {
-            if ( $mstatus !~ /gr/sm ) {
-                for my $uname ( split /,/xsm, $mtousers ) {
+        if ( $messlst{'mstatus'} !~ /b/sm ) {
+            if ( $messlst{'mstatus'} !~ /gr/sm ) {
+                for my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
                     LoadValidUserDisplay($uname);
                     $usernamelinkto .= (
                         ${ $uid . $uname }{'realname'}
@@ -1939,11 +1961,11 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                               $uname ? qq~$uname ($maintxt{'470a'})~
                             : $maintxt{'470a'}
                         )
-                    ) . q{, };    # 470a == Ex-Member
+                    ) . q{, };
                 }
             }
             else {
-                my ( $guestName, $guestEmail ) = split / /sm, $mtousers;
+                my ( $guestName, $guestEmail ) = split / /sm, $messlst{'mtousers'};
                 $guestName =~ s/%20/ /gsm;
                 $usernamelinkto =
                   qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
@@ -1951,14 +1973,14 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             $toTitle = qq~$inmes_txt{'324'}:~;
         }
         else {
-            for my $uname ( split /,/xsm, $mtousers ) {
+            for my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
                 $usernamelinkto .= links_to($uname);
             }
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
         $usernamelinkto =~ s/, $//sm;
-        if ($mccusers) {
-            for my $uname ( split /,/xsm, $mccusers ) {
+        if ($messlst{'mccusers'} ) {
+            for my $uname ( split /,/xsm, $messlst{'mccusers'} ) {
                 LoadValidUserDisplay($uname);
                 $usernamelinkcc .= (
                     ${ $uid . $uname }{'realname'}
@@ -1972,8 +1994,8 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
             $usernamelinkcc =~ s/, $//sm;
             $toTitleCC = qq~$inmes_txt{'325'}:~;
         }
-        if ($mbccusers) {
-            for my $uname ( split /,/xsm, $mbccusers ) {
+        if ($messlst{'mbccusers'}) {
+            for my $uname ( split /,/xsm, $messlst{'mbccusers'} ) {
                 LoadValidUserDisplay($uname);
                 $usernamelinkbcc .= (
                     ${ $uid . $uname }{'realname'}
@@ -1982,16 +2004,16 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                           $uname ? qq~$uname ($maintxt{'470a'})~
                         : $maintxt{'470a'}
                     )
-                ) . q{, };    # 470a == Ex-Member
+                ) . q{, };
             }
             $usernamelinkbcc =~ s/, $//sm;
             $toTitleBCC = qq~$inmes_txt{'326'}:~;
         }
     }
     elsif ( $INFO{'caller'} == 3 ) {
-        if ( $mstatus !~ /b/sm ) {
-            if ( $mstatus !~ /gr/sm ) {
-                for my $uname ( split /,/xsm, $mtousers ) {
+        if ( $messlst{'mstatus'} !~ /b/sm ) {
+            if ( $messlst{'mstatus'} !~ /gr/sm ) {
+                for my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
                     LoadValidUserDisplay($uname);
                     $usernamelinkto .= (
                         ${ $uid . $uname }{'realname'}
@@ -2000,18 +2022,18 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                               $uname ? qq~$uname ($maintxt{'470a'})~
                             : $maintxt{'470a'}
                         )
-                    ) . q{, };    # 470a == Ex-Member
+                    ) . q{, };
                 }
             }
             else {
-                my ( $guestName, $guestEmail ) = split / /sm, $mtousers;
+                my ( $guestName, $guestEmail ) = split / /sm, $messlst{'mtousers'};
                 $guestName =~ s/%20/ /gsm;
                 $usernamelinkto =
                   qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
             }
             $toTitle = qq~$inmes_txt{'324'}:~;
-            if ( $mccusers && $musername eq $username ) {
-                for my $uname ( split /,/xsm, $mccusers ) {
+            if ( $messlst{'mccusers'} && $messlst{'musername'} eq $username ) {
+                for my $uname ( split /,/xsm, $messlst{'mccusers'} ) {
                     LoadValidUserDisplay($uname);
                     $usernamelinkcc .= (
                         ${ $uid . $uname }{'realname'}
@@ -2020,13 +2042,13 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                               $uname ? qq~$uname ($maintxt{'470a'})~
                             : $maintxt{'470a'}
                         )
-                    ) . q{, };    # 470a == Ex-Member
+                    ) . q{, };
                 }
                 $usernamelinkcc =~ s/, $//sm;
                 $toTitleCC = qq~$inmes_txt{'325'}:~;
             }
-            if ( $mbccusers && $musername eq $username ) {
-                for my $uname ( split /,/xsm, $mbccusers ) {
+            if ( $messlst{'mbccusers'} && $messlst{'musername'} eq $username ) {
+                for my $uname ( split /,/xsm, $messlst{'mbccusers'} ) {
                     LoadValidUserDisplay($uname);
                     $usernamelinkbcc .= (
                         ${ $uid . $uname }{'realname'}
@@ -2035,62 +2057,62 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                               $uname ? qq~$uname ($maintxt{'470a'})~
                             : $maintxt{'470a'}
                         )
-                    ) . q{, };    # 470a == Ex-Member
+                    ) . q{, };
                 }
                 $usernamelinkbcc =~ s/, $//sm;
                 $toTitleBCC = qq~$inmes_txt{'326'}:~;
             }
         }
         else {
-            for my $uname ( split /,/xsm, $mtousers ) {
+            for my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
                 $usernamelinkto .= links_to($uname);
             }
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
         $usernamelinkto =~ s/, $//sm;
 
-        if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
-            my ( $guestName, $guestEmail ) = split / /sm, $musername;
+        if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
+            my ( $guestName, $guestEmail ) = split / /sm, $messlst{'musername'};
             $guestName =~ s/%20/ /gsm;
             $usernamelinkfrom =
               qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
         }
         else {
-            LoadValidUserDisplay($musername);
+            LoadValidUserDisplay($messlst{'musername'});
             $usernamelinkfrom =
-              ${ $uid . $musername }{'realname'}
-              ? CreateUserDisplayLine($musername)
+              ${ $uid . $messlst{'musername'} }{'realname'}
+              ? CreateUserDisplayLine($messlst{'musername'})
               : (
-                  $musername ? qq~$musername ($maintxt{'470a'})~
+                  $messlst{'musername'} ? qq~$messlst{'musername'} ($maintxt{'470a'})~
                 : $maintxt{'470a'}
-              );    # 470a == Ex-Member
+              );
         }
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
-    elsif ( $INFO{'caller'} == 5 && ( $mstatus eq 'g' || $mstatus eq 'ga' ) ) {
-        my ( $guestName, $guestEmail ) = split / /sm, $musername;
+    elsif ( $INFO{'caller'} == 6 && ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) ) {
+        my ( $guestName, $guestEmail ) = split / /sm, $messlst{'musername'};
         $guestName =~ s/%20/ /gsm;
         $usernamelinkfrom =
           qq~$guestName (<a href="mailto:$guestEmail">$guestEmail</a>)~;
         $fromTitle = qq~$inmes_txt{'318'}:~;
 
     }
-    elsif ( $INFO{'caller'} == 5 && $mstatus =~ /b/sm ) {
-        if ($mtousers) {
-            for my $uname ( split /,/xsm, $mtousers ) {
+    elsif ( $INFO{'caller'} == 5 && $messlst{'mstatus'} =~ /b/sm ) {
+        if ($messlst{'mtousers'}) {
+            for my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
                 $usernamelinkto .= links_to($uname);
             }
             $usernamelinkto =~ s/, $//sm;
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
 
-        LoadValidUserDisplay($musername);
+        LoadValidUserDisplay($messlst{'musername'});
         $usernamelinkfrom =
-          ${ $uid . $musername }{'realname'}
-          ? CreateUserDisplayLine($musername)
+          ${ $uid . $messlst{'musername'} }{'realname'}
+          ? CreateUserDisplayLine($messlst{'musername'})
           : (
-            $musername ? qq~$musername ($maintxt{'470a'})~ : $maintxt{'470a'} );
+            $messlst{'musername'} ? $messlst{'musername'} . qq~ ($maintxt{'470a'})~ : $maintxt{'470a'} );
 
         # 470a == Ex-Member
 
@@ -2099,10 +2121,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 
     $PMnav = buildPMNavigator();
 
-    ToChars($msub);
-    $msub = Censor($msub);
+    ToChars($messlst{'msub'});
+    $messlst{'msub'} = Censor($messlst{'msub'});
 
-    $message = $immessage;
+    $message = $messlst{'immessage'};
     wrap();
     if ($enable_ubbc) {
         enable_yabbc();
@@ -2146,15 +2168,15 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
         </span><br />
         ~;
     }
-    if ( $mstatus ne 'ga' && $mstatus ne 'g' && $signature ) {
+    if ( $messlst{'mstatus'} ne 'ga' && $messlst{'mstatus'} ne 'g' && $signature ) {
         $my_sig = $show_my_sig;
         $my_sig =~ s/{yabb signature}/$signature/sm;
     }
 
     # Do we have an attachment file?
-    chomp $mattach;
-    if ( $mattach ne q{} ) {
-        for ( split /,/xsm, $mattach ) {
+    chomp $messlst{'mattach'};
+    if ( $messlst{'mattach'} ne q{} ) {
+        for ( split /,/xsm, $messlst{'mattach'} ) {
             my ( $pmAttachFile, undef ) = split /~/xsm, $_;
             if ( $pmAttachFile =~ /\.(.+?)$/xsm ) {
                 $ext = lc $1;
@@ -2208,38 +2230,38 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
 
     my $lookupIP =
       ($ipLookup)
-      ? qq~<a href="$scripturl?action=iplookup;ip=$imip">$imip</a>~
-      : qq~$imip~;
+      ? qq~<a href="$scripturl?action=iplookup;ip=$messlst{'imip'}">$messlst{'imip'}</a>~
+      : qq~$messlst{'imip'}~;
     if ( $iamadmin || $iamgmod && $gmod_access2{'ipban2'} eq 'on' ) {
         $imip = $lookupIP;
     }
     else { $imip = $inmes_txt{'511'}; }
 
     my $postMenuTemp = q{};
-    if ( $mstatus ne 'ga' && $mstatus ne 'g' ) {
+    if ( $messlst{'mstatus'} ne 'ga' && $messlst{'mstatus'} ne 'g' ) {
         $postMenuTemp = $sendEmail . $sendPM . $membAdInfo . '&nbsp;';
-        $postMenuTemp =~ s/\Q$menusep//ism;
+        if ( $MenuType == 1 ) {
+            $postMenuTemp =~ s/\Q$menusep\E//ixsm;
+        }
     }
 
-    $mreplyno++;
+    $messlst{'mreplyno'}++;
     $showIM_link = q{};
     $mymid = q{};
     if (   $INFO{'caller'} == 1
-        || ( $INFO{'caller'} == 3 && $musername ne q{} )
-        || ( $INFO{'caller'} == 5 && $musername ne q{} ) )
+        || ( $INFO{'caller'} == 3 && $messlst{'musername'} ne q{} )
+        || ( $INFO{'caller'} == 5 && $messlst{'musername'} ne q{} )
+        || ( $INFO{'caller'} == 6 && $messlst{'musername'} ne q{} ) )
     {    ## inbox / stored inbox can reply/quote
-        if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
+        if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
            $postMenuTemp = q{};
-           if ($mrepby) {
-                $postMenuTemp = qq~$inmes_txt{'repguest'} ${ $uid . $mrepby }{'realname'} ~ . timeformat($mrepdate);
-            }
             $showIM_link .=
-qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;replyguest=1;id=$messageid">$img{'reply_ims'}</a>~;
+qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'};replyguest=1;id=$messlst{'messageid'}">$img{'reply_ims'}</a>~;
         }
         else {
-            if ( $mtousers ) {
+            if ( $messlst{'mtousers'} ) {
                 my $ii = 0;
-                for my $tuname ( split /,/xsm, $mtousers ) {
+                for my $tuname ( split /,/xsm, $messlst{'mtousers'} ) {
                     if ( $tuname ne $username ) {
                         $mymid .= $tuname . ',';
                         $ii++
@@ -2251,26 +2273,26 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
                 }
             }
             $showIM_link .= qq~
-            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;to=$useraccount{$musername};id=$messageid$mymid">$img{'quote'}</a>$menusep
-            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};reply=$mreplyno;to=$useraccount{$musername};id=$messageid$mymid">$img{'reply_ims'}</a>$menusep~;
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}$mymid">$img{'quote'}</a>$menusep
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};reply=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}$mymid">$img{'reply_ims'}</a>$menusep~;
         }
     }
 
-    if ( $INFO{'caller'} != 5 && $mstatus ne 'ga' && $mstatus ne 'g' ) {
+    if ( $INFO{'caller'} != 6 && $messlst{'mstatus'} ne 'ga' && $messlst{'mstatus'} ne 'g' ) {
         $showIM_link .= qq~
-            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;forward=1;id=$messageid">$img{'forward'}</a>$menusep~;
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'};forward=1;id=$messlst{'messageid'}">$img{'forward'}</a>$menusep~;
     }
 
     if ( $INFO{'caller'} != 5
-        || ( $INFO{'caller'} == 5 && ( $iamadmin || $username eq $musername ) )
+        || ( $INFO{'caller'} == 5 && ( $iamadmin || $username eq $messlst{'musername'} ) )
       )
     {
-        chomp $mattach;
+        chomp $messlst{'mattach'};
         if (   $INFO{'caller'} == 2
             || $INFO{'caller'} == 3
-            || $INFO{'caller'} == 5 && $mattach ne q{} )
+            || $INFO{'caller'} == 5 && $messlst{'mattach'} ne q{} )
         {
-            for ( split /,/xsm, $mattach ) {
+            for ( split /,/xsm, $messlst{'mattach'} ) {
                 my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
                 if ( $username eq $pmAttachUser
                     && -e "$pmuploaddir/$pmAttachFile" )
@@ -2280,26 +2302,26 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
             }
         }
         $showIM_link .= qq~
-            <a href="$scripturl?action=deletemultimessages;caller=$INFO{'caller'};deleteid=$messageid" onclick="return confirm('$inmes_txt{'770'}$attachDeleteWarn');">$img{'im_remove'}</a>
+            <a href="$scripturl?action=deletemultimessages;caller=$INFO{'caller'};deleteid=$messlst{'messageid'}" onclick="return confirm('$inmes_txt{'770'}$attachDeleteWarn');">$img{'im_remove'}</a>
         ~;
     }
     $showIM_link .= qq~
-            $menusep<a href="javascript:void(window.open('$scripturl?action=imprint;caller=$INFO{'caller'};id=$messageid','printwindow'))">$img{'print_im'}</a>
+            $menusep<a href="javascript:void(window.open('$scripturl?action=imprint;caller=$INFO{'caller'};id=$messlst{'messageid'}','printwindow'))">$img{'print_im'}</a>
         ~;
     $my_notme = q{};
-    if    ( $mstatus =~ m/c/sm ) { $messIconName = 'confidential'; }
-    elsif ( $mstatus =~ m/u/sm ) { $messIconName = 'urgent'; }
-    elsif ( $mstatus =~ m/a/sm || $messStatus =~ m/ga/sm ) {
+    if    ( $messlst{'mstatus'} =~ m/c/sm ) { $messIconName = 'confidential'; }
+    elsif ( $messlst{'mstatus'} =~ m/u/sm ) { $messIconName = 'urgent'; }
+    elsif ( $messlst{'mstatus'} =~ m/a/sm || $messlst{'mstatus'} =~ m/ga/sm ) {
         $messIconName = 'alertmod';
     }
-    elsif ( $mstatus =~ m/gr/sm ) {
+    elsif ( $messlst{'mstatus'} =~ m/gr/sm ) {
         $messIconName = 'guestpmreply';
     }
-    elsif ( $mstatus =~ m/g/sm ) { $messIconName = 'guestpm'; }
+    elsif ( $messlst{'mstatus'} =~ m/g/sm ) { $messIconName = 'guestpm'; }
     else                         { $messIconName = 'standard'; }
 
-    if ( $mstatus ne 'ga' && $mstatus ne 'g' ) {
-        $notme    = $musername eq $username ? $mtousers : $musername;
+    if ( $messlst{'mstatus'} ne 'ga' && $messlst{'mstatus'} ne 'g' ) {
+        $notme    = $messlst{'musername'} eq $username ? $messlst{'mtousers'} : $messlst{'musername'};
         $notme    = ${ $uid . $notme }{'realname'};
         $my_notme = (
             $notme
@@ -2310,7 +2332,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
 
     $showIM .= $myIM_show;
     $showIM =~ s/{yabb my_title}/$my_title/sm;
-    $showIM =~ s/{yabb msub}/$msub/sm;
+    $showIM =~ s/{yabb msub}/$messlst{'msub'}/sm;
     $showIM =~ s/{yabb msimg}/$micon{$messIconName}/sm;
     $showIM =~ s/{yabb mydate}/$mydate/sm;
     $showIM =~ s/{yabb message}/$message/sm;
@@ -2347,6 +2369,7 @@ sub buildPMNavigator {
 ## show original PM/BM or the PM/BM before Preview at the bottom of the message field
 sub doshowims {
     my $tempdate;
+    my %messlst = (); 
     if ( $INFO{'id'} && !$INFO{'replyguest'} ) {
         my $messageCount     = 0;
         my $messageFoundFlag = 0;
@@ -2357,19 +2380,15 @@ sub doshowims {
         }
         ## as a backup, if it is not found that way, revert to the list member
         if ( !$messageFoundFlag ) { $messageCount = $INFO{'num'}; }
-        (
-            $messageid, $musername, $mto,     $mtocc,  $mtobcc,
-            $msub,      $mdate,     $message, $mparid, $mreplyno,
-            $mip,       $mstatus,   $mflags,  $mstore, $mattach
-        ) = split /[|]/xsm, $messages[$messageCount];
-        $tempdate = timeformat($mdate);
+        %messlst  = getIMhash($messages[$messageCount]);
+        $tempdate = timeformat($messlst{'mdate'});
     }
     else {
         return;
     }
 
-    ToChars($msub);
-    $msub = Censor($msub);
+    ToChars($messlst{'msub'});
+    $messlst{'msub'} = Censor($messlst{'msub'});
 
     wrap();
     if ($enable_ubbc) {
@@ -2377,12 +2396,12 @@ sub doshowims {
         DoUBBC();
     }
     wrap2();
-    ToChars($message);
-    $message = Censor($message);
+    ToChars($messlst{'immessage'});
+    $messlst{'immessage'} = Censor($messlst{'immessage'});
 
-    if ( !${ $uid . $musername }{'password'} ) { LoadUser($musername); }
-    my $musernameRealName = ${ $uid . $musername }{'realname'};
-    if ( !$musernameRealName ) { $musernameRealName = $musername; }
+    if ( !${ $uid . $messlst{'musername'} }{'password'} ) { LoadUser($messlst{'musername'}); }
+    my $musernameRealName = ${ $uid . $messlst{'musername'} }{'realname'};
+    if ( !$musernameRealName ) { $musernameRealName = $messlst{'musername'}; }
     $my_save_draft = (
         ( $INFO{'id'} && $INFO{'caller'} != 4 )
         ? "$inmes_txt{'30'}: "
@@ -2390,26 +2409,16 @@ sub doshowims {
     );
 
     $imsend .= $my_savedraft;
-    $imsend =~ s/{yabb msub}/$msub/sm;
+    $imsend =~ s/{yabb msub}/$messlst{'msub'}/sm;
     $imsend =~ s/{yabb musernameRealName}/$musernameRealName/sm;
     $imsend =~ s/{yabb my_save_draft}/$my_save_draft/sm;
     $imsend =~ s/{yabb tempdate}/$tempdate/sm;
-    $imsend =~ s/{yabb message}/$message/sm;
+    $imsend =~ s/{yabb message}/$messlst{'immessage'}/sm;
     return $imsend;
 }
 
 sub links_to {
     my ($uname) = @_;
-    my @opts2 = (
-        [ 'all', 'admins', 'gmods', 'fmods', 'mods', ],
-        [
-            qq~<b>$inmes_txt{'bmallmembers'}</b>~,
-            qq~<b>$inmes_txt{'bmadmins'}</b>~,
-            qq~<b>$inmes_txt{'bmgmods'}</b>~,
-            qq~<b>$inmes_txt{'bmfmods'}</b>~,
-            qq~<b>$inmes_txt{'bmmods'}</b>~,
-        ],
-    );
 
     if (   $uname eq 'all'
         || $uname eq 'admins'
@@ -2417,12 +2426,9 @@ sub links_to {
         || $uname eq 'fmods'
         || $uname eq 'mods' )
     {
-        for my $i ( 0 .. 4 ) {
-            my $opt0 = $opts2[0]->[$i];
-            my $opt1 = $opts2[1]->[$i];
-
-            if ( $uname eq $opt0 ) {
-                $usernamelinkto = $opt1 . q{, };
+        for my $i ( keys %grps ) {
+            if ( $uname eq $i ) {
+                $usernamelinkto = $inmes_txt{ $grps{$i} } . q{, };
             }
         }
     }

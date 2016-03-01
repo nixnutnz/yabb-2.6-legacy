@@ -18,7 +18,6 @@ if (@englishpostlngmods) {
     $englishpostlngmods = 1;
 }
 if ( $action eq 'detailedversion' ) { return 1; }
-$brk = get_break();
 
 %post_txt = (
 '10' => q~Save~,

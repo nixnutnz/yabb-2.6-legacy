@@ -114,6 +114,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'attach_1' => q~This message contains~,
 'attach_2' => q~attachments~,
 'attach_3' => q~attachment~,
+'guest' => q~Guest Messages~,
 );
 
 %inmes_imtxt = (
@@ -187,6 +188,14 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'to' => q~To~,
 'sent' => q~Sent~,
 'subject' => q~Subject~,
+);
+
+%grps = (
+all    => 'bmallmembers',
+mods   => 'bmmods',
+fmods  => 'bmfmods',
+gmods  => 'bmgmods',
+admins => 'bmadmins',
 );
 
 1;

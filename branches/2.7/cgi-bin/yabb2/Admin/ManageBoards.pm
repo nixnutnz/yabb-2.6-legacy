@@ -361,7 +361,7 @@ sub BoardScreen {
         get_forum_master();
         for my $bd (@editbrd) {
 
-# Remove Board form category it belongs to unless it's a sub board, then it's not in the cat list
+# Remove Board from category it belongs to unless it's a sub board, then it's not in the cat list
             if ( !${ $uid . $bd }{'parent'} ) {
                 $category = ${ $uid . $bd }{'cat'};
                 @bdlist = split /,/xsm, $cat{$category};
@@ -1559,8 +1559,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         if ( $FORM{"pic$i"} ) {
             $mypic = 'y';
         }
-        @modhook = (
-        );
+        @modhook = ();
         ## BRD Mod Hook ##
         $modchk = @modhook;
         $modhook = q{};
@@ -1570,7 +1569,7 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         push @boardcontrol,
 qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderatorgroups$i"}|$FORM{"topicperms$i"}|$FORM{"replyperms$i"}|$FORM{"pollperms$i"}|$FORM{"zero$i"}|$FORM{"membergroups$i"}|$FORM{"ann$i"}|$FORM{"rbin$i"}|$FORM{"att$i"}|$FORM{"minage$i"}|$FORM{"maxage$i"}|$FORM{"gender$i"}|$FORM{"canpost$i"}|$FORM{"parent$i"}|$FORM{"rules$i"}|$brulestitle|$brulesdesc|$FORM{"rulescollapse$i"}|$FORM{"paswwr$i"}|$encryptopass|$FORM{"brdrss$i"}|$modhook\n~;
         push @changes, $id;
-        $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a>~;
+        $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a><br />~;
     }
 
     # do the saving here, after all new boards passed the tests (fatal_error)

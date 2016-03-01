@@ -132,7 +132,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'edit_files' => q~Go to Edit Template Files~,
 'configure' => q~Go to Configure Templates~,
 'mobile' => q~Is this a mobile template? (Mobile templates have certain functions - such as context helps and preview - disabled.)~,
-'maingrad' => q~Common Gradient (.maingrad)~,
+'newlinks' => q~New links back~,
+'newlinks_c' => q~New Links text~,
 );
 
 1;

@@ -1005,7 +1005,7 @@ sub fatal_error_logging {
         $FORM{$formdata} =~ s/\n//igsm;
     }
 
-    if ($iamguest) {
+    if ($iamguest && $user_ip ne '127.0.0.1') {
         if ( $error_spd > 0 ) {
             @erloga = split /[|]/xsm, $errorlog[-1];
             @erlogb = split /[|]/xsm, $errorlog[$#errorlog-1];
@@ -3569,6 +3569,24 @@ sub loadtranlist {
     }
     return %translist;
 ##    Many thanks to "Velocity" for his transliteration contribution. ##
+}
+
+sub getIMlist {
+    @messhsh = qw( messageid musername mtousers mccusers mbccusers msub mdate immessage mpmessageid mreplyno imip mstatus mflags mstorefolder mattach );
+## IM/BM/GM Mod Hook ##
+    return @messhsh;
+}
+
+sub getIMhash {
+    my ($msg) = @_;
+    chomp $msg;
+    my @messhsh = getIMlist();
+    my %messlst = ();
+    my @messim = split /[|]/xsm, $msg;
+    for my $i (0 .. $#messhsh) {
+        $messlst{$messhsh[$i]} = $messim[$i] || '';
+    }
+    return %messlst;
 }
 
 1;

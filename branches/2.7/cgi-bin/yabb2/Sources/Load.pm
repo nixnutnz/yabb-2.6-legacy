@@ -33,59 +33,31 @@ sub LoadBoardControl {
 
     for my $boardline (@boardcontrols) {
         $boardline =~ s/[\r\n]//gxsm;    # Built in chomp
-        my (
-            $cntcat,         $cntboard,        $cntpic,
-            $cntdescription, $cntmods,         $cntmodgroups,
-            $cnttopicperms,  $cntreplyperms,   $cntpollperms,
-            $cntzero,        $cntmembergroups, $cntann,
-            $cntrbin,        $cntattperms,     $cntminageperms,
-            $cntmaxageperms, $cntgenderperms,  $cntcanpost,
-            $cntparent,      $rules,           $rulestitle,
-            $rulesdesc,      $rulescollapse,   $brdpasswr,
-            $brdpassw,       $cntbdrss,
-            ## Mod Hook 1 ##
-        ) = split /[|]/xsm, $boardline;
+        chomp $boardline;
+
+        my @brdlist =
+          qw( cat brd pic description mods modgroups topicperms replyperms pollperms zero membergroups ann rbin attperms minageperms maxageperms genderperms canpost parent rules rulestitle rulesdesc rulescollapse brdpasswr brdpassw brdrss );
+## BoardList Mod Hook ##
+
+        my @boardline = split /[|]/xsm, $boardline;
         ## create a global boards array
-        push @allboards, $cntboard;
+        push @allboards, $boardline[1];
 
-        $cntdescription =~ s/\&\ /\&amp; /gxsm;
-        if ( substr( $cntmods, 0, 2 ) eq ', ' ) {
-            substr( $cntmods, 0, 2 ) = q{};
+        $boardline[3] =~ s/\&\ /\&amp; /gxsm;
+        if ( substr( $boardline[4], 0, 2 ) eq ', ' ) {
+            substr( $boardline[4], 0, 2 ) = q{};
         }
-        if ( substr( $cntmodgroups, 0, 2 ) eq ', ' ) {
-            substr( $cntmodgroups, 0, 2 ) = q{};
+        if ( substr( $boardline[5], 0, 2 ) eq ', ' ) {
+            substr( $boardline[5], 0, 2 ) = q{};
         }
 
-        %{ $uid . $cntboard } = (
-            'cat'           => $cntcat,
-            'description'   => $cntdescription,
-            'pic'           => $cntpic,
-            'mods'          => $cntmods,
-            'modgroups'     => $cntmodgroups,
-            'topicperms'    => $cnttopicperms,
-            'replyperms'    => $cntreplyperms,
-            'pollperms'     => $cntpollperms,
-            'zero'          => $cntzero,
-            'membergroups'  => $cntmembergroups,
-            'ann'           => $cntann,
-            'rbin'          => $cntrbin,
-            'attperms'      => $cntattperms,
-            'minageperms'   => $cntminageperms,
-            'maxageperms'   => $cntmaxageperms,
-            'genderperms'   => $cntgenderperms,
-            'canpost'       => $cntcanpost,
-            'parent'        => $cntparent,
-            'rules'         => $rules,
-            'rulestitle'    => $rulestitle,
-            'rulesdesc'     => $rulesdesc,
-            'rulescollapse' => $rulescollapse,
-            'brdpasswr'     => $brdpasswr,
-            'brdpassw'      => $brdpassw,
-            'brdrss'        => $cntbdrss,
-             ## Mod Hook 2 ##
-        );
-        if ( $cntann == 1 )  { $annboard = $cntboard; }
-        if ( $cntrbin == 1 ) { $binboard = $cntboard; }
+        my $cntboard = $boardline[1];
+        %{ $uid . $cntboard } = ();
+        for my $i ( 0 .. $#brdlist ) {
+            ${ $uid . $cntboard }{ $brdlist[$i] } = $boardline[$i];
+            }
+        if ( $boardline[14] == 1 ) { $annboard = $cntboard; }
+        if ( $boardline[15] == 1 ) { $binboard = $cntboard; }
     }
     return;
 }
@@ -114,7 +86,8 @@ qq~<a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'
 
     if ( ${$username}{'PMmnum'} == 1 ) {
         if ( ${$username}{'PMimnewcount'} == 1 ) {
-          $yyim = qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'155b'}</a>~;
+            $yyim =
+qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'155b'}</a>~;
         }
         else {
           $yyim =
@@ -126,7 +99,8 @@ qq~<a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'
  qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>~;
     }
     elsif ( ${$username}{'PMmnum'} == ${$username}{'PMimnewcount'} ) {
-        $yyim = qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'154b'}</a>~;
+        $yyim =
+qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'154b'}</a>~;
     }
     else {
          $yyim =
@@ -283,7 +257,8 @@ sub LoadUser {
     if ( -e "$memberdir/$user.$userextension" ) {
         if ( $user ne $username ) {
             require "$memberdir/$user.$userextension";
-            fopen( LOADUSER, "<$memberdir/$user.lst" ) or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
+            fopen( LOADUSER, "<$memberdir/$user.lst" )
+              or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
             $mylastonline = <LOADUSER>;
             fclose(LOADUSER);
             %{$uid . $user} = %vars;
@@ -291,7 +266,8 @@ sub LoadUser {
         }
         else {
             require "$memberdir/$user.$userextension";
-            fopen( LOADUSER, "<$memberdir/$user.lst" ) or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
+            fopen( LOADUSER, "<$memberdir/$user.lst" )
+              or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
             $mylastonline = <LOADUSER>;
             fclose(LOADUSER);
 
@@ -302,8 +278,9 @@ sub LoadUser {
                 if ( $INFO{'action'} ne 'login2'
                         && !${ $uid . $user }{'stealth'} )
                     {
-                    fopen( LOADUSER, ">$memberdir/$user.lst" ) or fatal_error( 'cannot_open',
-                    "$memberdir/$user.lst", 1 );
+                    fopen( LOADUSER, ">$memberdir/$user.lst" )
+                      or
+                      fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
                     print {LOADUSER} $date or croak "$croak{'print'} LOADUSER";
                 fclose(LOADUSER);
                 }
@@ -567,9 +544,11 @@ sub LoadUserDisplay {
 
     if ($showzodiac && ${ $uid . $user }{'bday'}) {
         require Sources::EventCalBirthdays;
-        my ($user_bdmon, $user_bdday, undef ) = split /\//xsm, ${ $uid . $user }{'bday'} ;
+        my ( $user_bdmon, $user_bdday, undef ) = split /\//xsm,
+          ${ $uid . $user }{'bday'};
         $zodiac = starsign($user_bdday, $user_bdmon);
-        ${ $uid . $user }{'zodiac'} = qq~<span style="vertical-align: middle;">$zodiac_txt{'sign'}:</span> $zodiac<br />~;
+        ${ $uid . $user }{'zodiac'} =
+qq~<span style="vertical-align: middle;">$zodiac_txt{'sign'}:</span> $zodiac<br />~;
     }
     else {
         ${ $uid . $user }{'zodiac'} = q{};
@@ -625,6 +604,7 @@ sub LoadMiniUser {
 
     my @memstat = ();
     if ( exists $Group{$tempgroupcheck} && $tempgroupcheck ne q{} ) {
+
         #(
         #    $title,     $stars,     $starpic,    $color,
         #    $noshow,    $viewperms, $topicperms, $replyperms,
@@ -675,17 +655,19 @@ sub LoadMiniUser {
         @memstat = ( q{}, 0, q{}, q{}, 1, q{}, q{}, q{}, q{}, q{} );
     }
 
-# The following puts some new has variables in if this user is the user browsing the board
+# The following puts some new 'has' variables in if this user is the user browsing the board
     if ( $user eq $username ) {
         if ($tempgroup) {
-            (
-                undef,     undef,      undef,       undef,
-                undef,     $viewperms, $topicperms, $replyperms,
-                $pollperms, $attachperms
-            ) = split /[|]/xsm, $tempgroup;
+
+            #            (
+            #                undef,     undef,      undef,       undef,
+            #                undef,     $viewperms, $topicperms, $replyperms,
+            #                $pollperms, $attachperms
+            #            )
+            my @myperms = split /[|]/xsm, $tempgroup, 11;
         }
         ${ $uid . $user }{'perms'} =
-          "$viewperms|$topicperms|$replyperms|$pollperms|$attachperms";
+"$myperms[5]|$myperms[6]|$myperms[7]|$myperms[8]|$myperms[9]|$myperms[10]";
     }
 
     $userlink = ${ $uid . $user }{'realname'} || $user;
@@ -707,14 +689,16 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="c
         if ( $memstat[3] ne q{} ) {
                 $link{$user} =
 qq~<span style="color:$memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
-        $format{$user} = qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
+            $format{$user} =
+qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
         $format_unbold{$user} =
           qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">${$uid.$user}{'realname'}</span>~;
         $col_title{$user} =
           qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$memberinfo{$user}</span>~;
         }
         else {
-            $link{$user} = qq~<span title="$maintxt{'members_only'}">$userlink</span>~;
+            $link{$user} =
+              qq~<span title="$maintxt{'members_only'}">$userlink</span>~;
             $format{$user}        = qq~$userlink~;
             $format_unbold{$user} = qq~${$uid.$user}{'realname'}~;
             $col_title{$user}     = qq~$memberinfo{$user}~;
@@ -853,7 +837,9 @@ sub QuickLinks {
             @memstats = split /[|]/xsm, $Group{'Moderator'};
         }
         my $display = 'display:inline';
-        if ( $ENV{'HTTP_USER_AGENT'} =~ /opera/ism || $ENV{'HTTP_USER_AGENT'} =~ /firefox/ism ) {
+        if (   $ENV{'HTTP_USER_AGENT'} =~ /opera/ism
+            || $ENV{'HTTP_USER_AGENT'} =~ /firefox/ism )
+        {
             $display = 'display:inline-block';
         }
 
@@ -908,8 +894,7 @@ qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$
     else {
         $quicklinks =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~
-          . ( $online ? $format_unbold{$user} : $format{$user} )
-          . q~</a>~;
+          . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</a>~;
     }
 
     return $quicklinks;
@@ -925,7 +910,11 @@ sub LoadTools {
     require Sources::Menu;
 
     for my $i ( 0 .. $#buttons ) {
-        if ( $buttons[$i] eq 'printp' && ( !$ppostperms || ( $iamguest && $ppostperms < 2 ) ) || $buttons[$i] eq 'print' && ( !$ptopicperms || ( $iamguest && $ptopicperms < 2 ) ) ) {
+        if ( $buttons[$i] eq 'printp'
+            && ( !$ppostperms || ( $iamguest && $ppostperms < 2 ) )
+            || $buttons[$i] eq 'print'
+            && ( !$ptopicperms || ( $iamguest && $ptopicperms < 2 ) ) )
+        {
             $buttons[$i] = q{};
             $tools[$i] = q{};
         }
@@ -953,7 +942,7 @@ sub MakeTools {
     $template =~ s/\|\|\|/$list_item/gsm;
     $template =~ s/<li>[\s]*<\/li>//gsm;
     if ( $MenuType == 1 ) {
-        $template =~ s/\Q$menusep//gsm;
+        $template =~ s/\Q$menusep\E//ixgsm;
     }
 
     my $tools_template = $template
@@ -1145,7 +1134,10 @@ sub WhatTemplate {
         }
     }
     if ( !$found ) { $template = 'Forum default'; }
-    if (${ $uid . $username }{'template'} ne q{} || $yyCookies{'yabb2template'} ne q{} || $FORM{'template'} ne q{}) {
+    if (   ${ $uid . $username }{'template'} ne q{}
+        || $yyCookies{'yabb2template'} ne q{}
+        || $FORM{'template'} ne q{} )
+    {
         while (($curtemplate, $value) = each(%templateset)) {
             if ($FORM{'template'} && $curtemplate eq $FORM{'template'}) {
                 if ( $sessionvalid && !$iamguest ) {
@@ -1158,15 +1150,21 @@ sub WhatTemplate {
                         -name    => 'yabb2template',
                         -value   => $FORM{'template'},
                         -path    => $pathval,
-                        -expires => "Sunday, 17-Jan-2038 00:00:00 GMT");
+                        -expires => "Sunday, 17-Jan-2038 00:00:00 GMT"
+                    );
                 }
-                my $redir = $FORM{'redir'} ? "?$FORM{'redir'}" : $iamguest ? '?' : q{};
+                my $redir =
+                  $FORM{'redir'} ? "?$FORM{'redir'}" : $iamguest ? '?' : q{};
                 $redir =~ s/search2/search/gxsm;
                 $yySetLocation = qq~$scripturl$redir~;
                 redirectexit();
             }
-            elsif ($iamguest && $curtemplate eq $yyCookies{'yabb2template'}) { $template = $curtemplate; }
-            elsif ($curtemplate eq ${ $uid . $username }{'template'}) { $template = $curtemplate; }
+            elsif ( $iamguest && $curtemplate eq $yyCookies{'yabb2template'} ) {
+                $template = $curtemplate;
+            }
+            elsif ( $curtemplate eq ${ $uid . $username }{'template'} ) {
+                $template = $curtemplate;
+            }
         }
     }
     (
@@ -1340,6 +1338,7 @@ sub buildIMS {
     $storeCounts = join q{|}, @storefoldersCount;
 
     LoadBroadcastMessages($builduser);
+    LoadGuestMessages($builduser);
 
     ${$builduser}{'PMmnum'}         = $incurr      || 0;
     ${$builduser}{'PMimnewcount'}   = $inunr       || 0;
@@ -1355,9 +1354,10 @@ sub buildIMS {
 sub update_IMS {
     my $builduser = shift;
     my @tag =
-      qw(PMmnum PMimnewcount PMmoutnum PMstorenum PMdraftnum PMfolders PMfoldersCount PMbcRead);
+      qw(PMmnum PMimnewcount PMmoutnum PMstorenum PMdraftnum PMfolders PMfoldersCount PMbcRead PMgRead);
 
-    my $updateims = qq~### UserIMS YaBB 2.7.00 Version $builduser ###\n\n%ims = (\n~;
+    my $updateims =
+      qq~### UserIMS YaBB 2.7.00 Version $builduser ###\n\n%ims = (\n~;
     for my $cnt ( 0 .. $#tag ) {
         $updateims .= qq~'$tag[$cnt]' => "${$builduser}{$tag[$cnt]}",\n~;
     }
@@ -1396,18 +1396,19 @@ sub LoadBroadcastMessages {    #check broadcast messages
     $BCCount      = 0;
     if ( -e "$memberdir/broadcast.messages" ) {
         my %PMbcRead;
+        my %messlst = ();;
         map { $PMbcRead{$_} = 1; } split /,/xsm, ${$builduser}{'PMbcRead'};
-
         fopen( BCMESS, "<$memberdir/broadcast.messages" )
           or fatal_error( 'cannot_open', "$memberdir/broadcast.messages", 1 );
         my @bcmessages = <BCMESS>;
         fclose(BCMESS);
-        for (@bcmessages) {
-            my ( $mnum, $mfrom, $mto, undef ) = split /[|]/xsm, $_, 4;
-            if ( $mfrom eq $username ) { $BCCount++; $PMbcRead{$mnum} = 1; }
-            elsif ( BroadMessageView($mto) ) {
+        chomp @bcmessages;
+        for my $msg (@bcmessages) {
+            %messlst  = getIMhash($msg);
+            if ( $messlst{'musername'} eq $username ) { $BCCount++; $PMbcRead{$messlst{'messageid'}} = 1; }
+            elsif ( BroadMessageView($messlst{'mtousers'}) ) {
                 $BCCount++;
-                if ( exists $PMbcRead{$mnum} ) { $PMbcRead{$mnum} = 1; }
+                if ( exists $PMbcRead{$messlst{'messageid'}} ) { $PMbcRead{$messlst{'messageid'}} = 1; }
                 else                           { $BCnewMessage++; }
             }
         }
@@ -1422,6 +1423,52 @@ sub LoadBroadcastMessages {    #check broadcast messages
     }
     else {
         ${$builduser}{'PMbcRead'} = q{};
+    }
+    return;
+}
+
+sub LoadGuestMessages {    #check guest messages
+    return
+      if ( $iamguest
+        || $PM_level == 0
+        || ( $maintenance   && !$iamadmin )
+        || ( $PM_level == 2 && ( !$staff ) )
+        || ( $PM_level == 3 && ( !$iamadmin && !$iamgmod ) )
+        || ( $PM_level == 4 && ( !$iamadmin && !$iamgmod && !$iamfmod ) ) );
+
+    my $builduser = shift;
+    $GnewMessage = 0;
+    $Gcount      = 0;
+    if ( -e "$memberdir/guest.messages" ) {
+        my %PMgRead;
+        my %gmesslst = ();
+        map { $PMgRead{$_} = 1; } split /,/xsm, ${$builduser}{'PMgRead'};
+
+        fopen( GMESS, "<$memberdir/guest.messages" )
+          or fatal_error( 'cannot_open', "$memberdir/guest.messages", 1 );
+        my @gmessages = <GMESS>;
+        fclose(GMESS);
+        chomp @gmessages;
+        for my $msg (@gmessages) {
+            %gmesslst  = getIMhash($msg);
+            if ( $gmesslst{'musername'} eq $username ) { $Gcount++; $PMgRead{$gmesslst{'messageid'}} = 1; }
+            elsif ( BroadMessageView($messlst{'mtousers'} ) ) {
+                $Gcount++;
+                if ( exists $PMgRead{$gmesslst{'messageid'}} ) { $PMgRead{$gmesslst{'messageid'}} = 1; }
+                else                           { $GnewMessage++; }
+            }
+        }
+        ${$builduser}{'PMgRead'} = q{};
+        for ( keys %PMgRead ) {
+            if ( $PMgRead{$_} ) {
+                ${$builduser}{ 'PMgRead' . $_ } = 1;
+                ${$builduser}{'PMgRead'} .=
+                  ${$builduser}{'PMgRead'} ? ",$_" : $_;
+            }
+        }
+    }
+    else {
+        ${$builduser}{'PMgRead'} = q{};
     }
     return;
 }

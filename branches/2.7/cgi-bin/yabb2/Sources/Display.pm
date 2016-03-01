@@ -1385,7 +1385,7 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         $posthandelblock =~ s/{yabb modalert}/$PMAlertButton$tool_sep/gsm;
         $posthandelblock =~ s/{yabb print_post}/$template_print_post$tool_sep/gsm;
         $posthandelblock =~ s/{yabb admin}/$template_admin/gsm;
-        $posthandelblock =~ s/\Q$menusep//ism;
+        $posthandelblock =~ s/\Q$menusep\E//ixsm;
 
         @psetmenusep = ( "$template_markquote","$template_quote","$template_modify","$template_split","$template_delete","$PMAlertButton","$template_print_post",);
         @postout = ();
@@ -1413,7 +1413,7 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
             $outside_posttools_tmp = q{};
         }
         else {
-            $outside_posttools_tmp =~ s/\Q$menusep//ixsm;
+            $outside_posttools_tmp =~ s/\Q$menusep\E//ixsm;
             $outside_posttools_tmp =~
               s/\[tool=(.+?)\](.+?)\[\/tool\]/$tmpimg{$1}/gxsm;
             $posthandelblock =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
@@ -1439,7 +1439,7 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         $contactblock =~ s/{yabb youtube}/$youtubead/gsm;
         $contactblock =~ s/{yabb addbuddy}/$addbuddy/gsm;
 ## Mod Hook Contactblock ##
-        $contactblock =~ s/\Q$menusep//ixsm;
+        $contactblock =~ s/\Q$menusep\E//ixsm;
 
         $outblock =~ s/{yabb images}/$imagesdir/gsm;
         $outblock =~ s/{yabb messageoptions}/$msgcontrol/gsm;
@@ -1666,7 +1666,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $threadhandellist =~
       s/{yabb sendtopic}/$template_sendtopic$tool_sep/gsm;
     $threadhandellist =~ s/{yabb print}/$template_print$tool_sep/gsm;
-    $threadhandellist =~ s/\Q$menusep//ixsm;
+    $threadhandellist =~ s/\Q$menusep\E//ixsm;
 
     $threadhandellist2 =~ s/{yabb markunread}/$mark_unread$tool_sep/gsm;
     $threadhandellist2 =~ s/{yabb reply}/$replybutton$tool_sep/gsm;
@@ -1677,7 +1677,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $threadhandellist2 =~
       s/{yabb sendtopic}/$template_sendtopic$tool_sep/gsm;
     $threadhandellist2 =~ s/{yabb print}/$template_print$tool_sep/gsm;
-    $threadhandellist2 =~ s/\Q$menusep//ixsm;
+    $threadhandellist2 =~ s/\Q$menusep\E//ixsm;
 
     @threadin = ( "$mark_unread","$replybutton","$pollbutton","$notify","$template_favorite","$template_sendtopic","$template_print",);
     @threadout = ();
@@ -1699,7 +1699,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $outside_threadtools =~ s/{yabb sendtopic}/$threadout[5]/gsm;
     $outside_threadtools =~ s/{yabb print}/$threadout[6]/gsm;
     if ( $menusep ne q{ } ) {
-        $outside_threadtools =~ s/\Q$menusep//ixsm;
+        $outside_threadtools =~ s/\Q$menusep\E//ixsm;
     }
 
     if ( !$useThreadtools ) {
@@ -1728,7 +1728,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $adminhandellist =~ s/{yabb hide}/$template_hide/gsm;
     $adminhandellist =~ s/{yabb sticky}/$template_sticky/gsm;
     $adminhandellist =~ s/{yabb multidelete}/$template_multidelete/gsm;
-    $adminhandellist =~ s/\Q$menusep//ixsm;
+    $adminhandellist =~ s/\Q$menusep\E//ixsm;
 
     $display_template =~ s/{yabb guestview}/$guest_view_limit_warn/gsm;
     $display_template =~ s/{yabb home}/$template_home/gsm;

@@ -312,12 +312,6 @@ qq~                 <option value="$bodystyle" selected="selected">$templ_txt{'2
         $selstyl .=
           qq~                   <option value='$tabmenustyle'>$templ_txt{'tabmenu'}</option>\n~;
     }
-    if ( $stylestr =~ /\.maingrad/sm ) {
-        $maingradstyle = $stylestr;
-        $maingradstyle =~ s/.*?(\.maingrad\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .=
-          qq~                   <option value='$maingradstyle'>$templ_txt{'maingrad'}</option>\n~;
-    }
     if ( $stylestr =~ /\.tabtitle/sm && $istabbed ) {
         $tabtitlestyle = $stylestr;
         $tabtitlestyle =~ s/.*?(\.tabtitle\s*?\{.+?\}).*/$1/igsm;
@@ -457,6 +451,18 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
             $selstyl .=
               qq~                   <option value='$postsstyle_a'>$templ_txt{'66'}</option>\n~;
         }
+    }
+    if ( $stylestr =~ /\.newlinks/sm ) {
+        $newlinks = $stylestr;
+        $newlinks =~ s/.*?(\.newlinks\s*?\{.+?\}).*/$1/igsm;
+        $selstyl .=
+          qq~                   <option value='$newlinks'>$templ_txt{'newlinks'}</option>\n~;
+    }
+    if ( $stylestr =~ /\.newlinks_c/sm ) {
+        $newlinks_c = $stylestr;
+        $newlinks_c =~ s/.*?(\.newlinks_c\s*?\{.+?\}).*/$1/igsm;
+        $selstyl .=
+          qq~                   <option value='$newlinks_c'>$templ_txt{'newlinks_c'}</option>\n~;
     }
     if ( $stylestr =~ /input/sm ) {
         $inputstyle = $stylestr;
@@ -899,7 +905,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     }
     if ($istabbed) {
         $viewstyle .= qq~
-<table class="tabtitle maingrad">
+<table class="tabtitle">
     <colgroup>
         <col style="width:33%;  height:25px" />
         <col style="width:34%;  height:25px" />
@@ -907,7 +913,7 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
     </colgroup>
     <tr>
         <td style="padding-left:1%">
-            $templ_txt{'tabtitle'}<br />$templ_txt{'maingrad'}
+            $templ_txt{'tabtitle'}
         </td><td>
             <a href="javascript:;">$templ_txt{'tabtitlea'}</a>
         </td><td class="tabtitle-text">

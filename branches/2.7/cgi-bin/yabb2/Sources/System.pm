@@ -343,7 +343,7 @@ sub UserAccount {
             }
         }
     }
-    if ($fix == 1) {
+    if ($fix == 1 || !-e "$memberdir/$user.$userext" ) {
         my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
         for my $cnt ( 0 .. $#tags ) {
             $newvars .= qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;

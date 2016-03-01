@@ -456,17 +456,16 @@ sub AccessCheck {
     }
     $INFO{'zeropost'} = ${ $uid . $curboard }{'zero'};
     if ($iamadmin) { $access = 'granted'; return $access; }
-    my ( $viewperms, $topicperms, $replyperms, $pollperms, $attachperms );
+    my @myperms = ();
     if ( $username ne 'Guest' ) {
-        ( $viewperms, $topicperms, $replyperms, $pollperms, $attachperms ) =
-          split /[|]/xsm, ${ $uid . $username }{'perms'};
+        @myperms = split /[|]/xsm, ${ $uid . $username }{'perms'};
     }
     if ( $username eq 'Guest' && !$enable_guestposting ) {
-        $viewperms   = 0;
-        $topicperms  = 1;
-        $replyperms  = 1;
-        $pollperms   = 1;
-        $attachperms = 1;
+        $myperms[0] = 0;
+        $myperms[1] = 1;
+        $myperms[2] = 1;
+        $myperms[3] = 1;
+        $myperms[4] = 1;
     }
     my $access = 'denied';
 
@@ -475,7 +474,7 @@ sub AccessCheck {
         if ( ${ $uid . $curboard }{'topicperms'} eq q{} ) {
             $access = 'granted';
         }
-        if ( $topicperms == 1 ) { $access = 'notgranted'; }
+        if ( $myperms[1] == 1 ) { $access = 'notgranted'; }
     }
     elsif ( $checktype == 2 ) {    # Reply access check
         if ( $iamgmod || $iamfmod || $boardmod ) { $access = 'granted'; }
@@ -485,7 +484,7 @@ sub AccessCheck {
             if ( ${ $uid . $curboard }{'replyperms'} eq q{} ) {
                 $access = 'granted';
             }
-            if ( $replyperms == 1 && !$topicstart{$username} ) {
+            if ( $myperms[2] == 1 && !$topicstart{$username} ) {
                 $access = 'notgranted';
             }
         }
@@ -495,16 +494,16 @@ sub AccessCheck {
         if ( ${ $uid . $curboard }{'pollperms'} eq q{} ) {
             $access = 'granted';
         }
-        if ( $pollperms == 1 ) { $access = 'notgranted'; }
+        if ( $myperms[3] == 1 ) { $access = 'notgranted'; }
     }
     elsif ( $checktype == 4 ) {    # Attachment access check
         if ( ${ $uid . $curboard }{'attperms'} == 1 ) { $access = 'granted'; }
-        if ( $attachperms == 1 ) { $access = 'notgranted'; }
+        if ( $myperms[4] == 1 ) { $access = 'notgranted'; }
     }
     else {                         # Board access check
         @allowed_groups = split /, /sm, $boardperms;
         if ( $boardperms eq q{} ) { $access = 'granted'; }
-        if ( $viewperms == 1 ) { $access = 'notgranted'; }
+        if ( $myperms[0] == 1 ) { $access = 'notgranted'; }
     }
 
     # age and gender check

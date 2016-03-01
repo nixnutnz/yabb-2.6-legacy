@@ -1,11 +1,11 @@
 ###############################################################################
 # Post.pm                                                                     #
-# $Date: 12.31.15 $                                                           #
+# $Date: 06.01.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       December 31, 2015                                           #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -37,7 +37,6 @@ require Sources::SpamCheck;
 require Sources::PostBox;
 get_micon();
 get_template('Post');
-
 
 if (   $iamguest
     && $gpvalid_en
@@ -173,7 +172,8 @@ sub Post {
           s/{yabb verification_question_desc}/$verification_question_desc/sm;
         $verification_question_field =~
           s/{yabb spam_question_id}/$spam_question_id/sm;
-        $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/sm;
+        $verification_question_field =~
+          s/{yabb spam_question_image}/$spam_image/sm;
     }
 
     $sub        = q{};
@@ -322,7 +322,8 @@ sub Postpage {
             my ($img, $alt) = split /[|]/xsm, $iconlist{$key};
             my $myic = q{};
             if ( $icon eq $img ) {$myic = ' selected="selected" '; }
-            $iconopts .= qq~                <option value="$img"$myic>$alt</option>\n~;
+            $iconopts .=
+              qq~                <option value="$img"$myic>$alt</option>\n~;
         }
 
         $extra =~ s/{yabb iconopts}/$iconopts/sm;
@@ -420,8 +421,7 @@ sub Postpage {
         && !$Quick_Post )
     {
         if ($threadid) {
-            $threadlink =
-              qq~<a href="$scripturl?num=$threadid">$subtitle</a>~;
+            $threadlink = qq~<a href="$scripturl?num=$threadid">$subtitle</a>~;
         }
         else {
             $threadlink = "$subtitle";
@@ -591,7 +591,10 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
     ~;
 
     if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
-        if ( $ismobile ) { $iconliveprev = q~         document.images.liveicons.src = icon_show;~; }
+        if ($ismobile) {
+            $iconliveprev =
+              q~         document.images.liveicons.src = icon_show;~;
+        }
 
         $my_modalert = qq~
     function showimage() {
@@ -850,32 +853,30 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
         $messageblock =~ s/{yabb memberinfo}/$livememberinfo/gsm;
         $messageblock =~ s/{yabb stars}/$livememberstar/gsm;
         $messageblock =~ s/{yabb location}/$liveuserlocation/gsm;
-        $messageblock =~
-          s/{yabb gender}/${$uid.$tmpmusername}{'gender'}/gsm;
+        $messageblock =~ s/{yabb gender}/${$uid.$tmpmusername}{'gender'}/gsm;
         $messageblock =~
           s/{yabb usertext}/${$uid.$tmpmusername}{'usertext'}/gsm;
-        $messageblock =~
-          s/{yabb userpic}/${$uid.$tmpmusername}{'userpic'}/gsm;
+        $messageblock =~ s/{yabb userpic}/${$uid.$tmpmusername}{'userpic'}/gsm;
         $messageblock =~ s/{yabb postinfo}/$livetemplate_postinfo/gsm;
         $messageblock =~ s/{yabb msgdate}/$moddate/gsm;
         $messageblock =~ s/{yabb msgimg}/$livemsgimg/gsm;
         $messageblock =~ s/{yabb age}/$liveuser_age/gsm;
         $messageblock =~ s/{yabb regdate}/$liveuser_regdate/gsm;
-        $messageblock =~
-          s/{yabb subject}/<span id="savesubj"><\/span>/gsm;
-        $messageblock =~
-          s/{yabb message}/<span id="savemess"><\/span>/gsm;
+        $messageblock =~ s/{yabb subject}/<span id="savesubj"><\/span>/gsm;
+        $messageblock =~ s/{yabb message}/<span id="savemess"><\/span>/gsm;
         $messageblock =~ s/{yabb modified}/$tmplastmodified/gsm;
         $messageblock =~ s/{yabb ipimg}/$liveipimg/gsm;
         $messageblock =~ s/{yabb ip}/$livemip/gsm;
         $messageblock =~
           s/{yabb signature}/${$uid.$tmpmusername}{'signature'}/gsm;
         $messageblock =~ s/{yabb signaturehr}/$livesignature_hr/gsm;
+
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
         }
         else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+              ${ $uid . $username }{'postlayout'};
             $txtsz = qq~; font-size:$txtsz%~;
         }
         $messageblock =~ s/{yabb txtsz}/$txtsz/sm;
@@ -1021,8 +1022,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                         || $extension =~ /png/ism )
                     {
                         if ( $line !~ /banner/ism ) {
-                            $smilieslist .=
-                              qq~   <option value="$i"~
+                            $smilieslist .= qq~   <option value="$i"~
                               . (
                                 $name eq $showinbox
                                 ? ' selected="selected"'
@@ -1236,7 +1236,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_postsection =~ s/{yabb email_field}/$email_field/sm;
         $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
         $my_postsection =~ s/{yabb guestcol}/$guestpost_col/gsm;
-        $my_postsection =~ s/{yabb verification_question_field}/$verification_question_field/sm;
+        $my_postsection =~
+          s/{yabb verification_question_field}/$verification_question_field/sm;
         $my_postsection =~ s/{yabb sub}/$sub/sm;
         $my_postsection =~ s/{yabb my_submax}/$my_submax/sm;
         $my_postsection =~ s/{yabb myreason}/$my_reason/sm;
@@ -1721,13 +1722,12 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
             if ($file) {
                 $fixfile = $file;
+
              # replace all inappropriate characters from lists in Language files
-                if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
-                {
+                if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm ) {
                         my %translist = loadtranlist();
                         @uploadtranlist = keys %translist;
-                        for ( @uploadtranlist )
-                        {
+                    for (@uploadtranlist) {
                             $fixfile =~ s/$_/$translist{$_}/gsm;
                 }
                 $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gxsm;
@@ -1878,7 +1878,8 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                     }
                 }
                 fclose(ATTFILE);
-                if ( !$okatt ) {   # delete the file as it contains illegal code
+                    if ( !$okatt )
+                    {    # delete the file as it contains illegal code
                     for (qw("@filelist" $fixfile)) {
                         unlink "$uploaddir/$_";
                     }
@@ -1997,7 +1998,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         my $newtime = ctbtime();
         if ( ${$threadid}{'board'} ne $currentboard ) {
             if ( AccessCheck( ${$threadid}{'board'}, 2 ) ne 'granted' ) {
-                fatal_error('no_perm_reply')
+                fatal_error('no_perm_reply');
             }
             $currentboard = ${$threadid}{'board'};
         }
@@ -2171,8 +2172,8 @@ sub LoadNotifyMessages {
 
     for my $lang ( keys %{$languages} ) {
         next
-          if $notifystrings{$lang}
-          {'boardnewtopicnotificationemail'};    # next if already loaded
+          if $notifystrings{$lang}{'boardnewtopicnotificationemail'};
+                                       # next if already loaded
         $language = $lang;
         LoadLanguage('Email');
         $notifystrings{$lang} = {
@@ -2202,7 +2203,8 @@ sub NewNotify {
     $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
     $thismessage =~ s/\[.*?\]//g;
     $thismessage =~ s/<(br|p).*?>/\n/ig;
-    $thismessage =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~gxsm;
+    $thismessage =~
+      s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~gxsm;
     FromHTML($thismessage);
     $thismessage =~ s/>/&gt;/gsm;
     $thismessage =~ s/</&lt;/gsm;
@@ -2235,7 +2237,8 @@ sub NewNotify {
                 $permdate = permtimer($thisthread);
                 $topiclink = qq~$scripturl?num=$thisthread~;
                 if ($accept_permafull) {
-                    $topiclink = qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
+                    $topiclink =
+qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
                 } 
                 sendmail(
                     $curmail,
@@ -2243,7 +2246,12 @@ sub NewNotify {
                     template_email(
                         $notifystrings{$curlang}
                           {'boardnewtopicnotificationemail'},
-                        { 'subject' => $thissubject, 'num' => $topiclink, 'tauthor' => $thisauthor, 'tmessage' => $thismessage }
+                        {
+                            'subject'  => $thissubject,
+                            'num'      => $topiclink,
+                            'tauthor'  => $thisauthor,
+                            'tmessage' => $thismessage
+                        }
                     ),
                     q{},
                     $notifycharset{$curlang}{'emailcharset'}
@@ -2270,7 +2278,8 @@ sub ReplyNotify {
     $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~igxsm;
     $thismessage =~ s/\[.*?\]//gxsm;
     $thismessage =~ s/<(br|p).*?>/\n/igxsm;
-    $thismessage =~ s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~igsxm;
+    $thismessage =~
+      s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~igsxm;
     FromHTML($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
@@ -2304,7 +2313,8 @@ sub ReplyNotify {
                     $curmail = $memberinf{$curuser}[1];
                     $topiclink = qq~$scripturl?num=$thisthread~;
                     if ($accept_permafull) {
-                        $topiclink = qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
+                        $topiclink =
+qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
                     } 
                     sendmail(
                         $curmail,
@@ -2351,7 +2361,8 @@ sub ReplyNotify {
                     $curmail = $memberinf{$curuser}[1];
                     $topiclink = qq~$scripturl?num=$thisthread~;
                     if ($accept_permafull) {
-                        $topiclink = qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
+                        $topiclink =
+qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
                     } 
                     sendmail(
                         $curmail,
@@ -2434,7 +2445,8 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 $registrationdate = int time;
             }
             if ( ${ $uid . $tempname }{'regdate'}
-                && ( $messagedate > $registrationdate || $tempname eq 'admin' ) )
+                && ( $messagedate > $registrationdate || $tempname eq 'admin' )
+              )
             {
                 $displaynamelink = profile_view($tempname);
             }
@@ -2489,11 +2501,13 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 $my_showmess_mess =~ s/{yabb tempdate}/$tempdate/sm;
                 $my_showmess_mess =~ s/{yabb quote_msg_id}/$quote_msg_id/sm;
                 $my_showmess_mess =~ s/{yabb message}/$message/sm;
+
                 if ( !${ $uid . $username }{'postlayout'} ) {
                     $txtsz = q{};
                 }
                 else {
-                    ( undef, undef, $txtsz, undef ) = split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+                    ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+                      ${ $uid . $username }{'postlayout'};
                     $txtsz = qq~; font-size:$txtsz%~;
                 }
                 $my_showmess_mess =~ s/{yabb txtsz}/$txtsz/sm;
@@ -2555,7 +2569,8 @@ sub sendGuestPM {
           s/{yabb verification_question_desc}/$verification_question_desc/gsm;
         $verification_question_field =~
           s/{yabb spam_question_id}/$spam_question_id/gsm;
-        $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/gsm;
+        $verification_question_field =~
+          s/{yabb spam_question_image}/$spam_image/gsm;
     }
     $sub        = q{};
     $settofield = 'subject';
@@ -2677,16 +2692,13 @@ sub sendGuestPM2 {
     $mreplies = 0;
 
     # set announcement flag according to status of current board
-    if ( -e "$memberdir/broadcast.messages" ) {
-        fopen( INBOX, "$memberdir/broadcast.messages" );
+    if ( -e "$memberdir/guest.messages" ) {
+        fopen( INBOX, "$memberdir/guest.messages" );
         @bmessages = <INBOX>;
         fclose(INBOX);
     }
-    fopen( INBOX, ">$memberdir/broadcast.messages" );
+    fopen( INBOX, ">$memberdir/guest.messages" );
 
-    # new format:  #messageid|from user|touser(s)|(ccuser(s))|(bccuser(s))|
-    #    subject|date|message|(parentmid)|(reply#)|ip|
-    #           messagestatus|flags|storefolder|attachment
     print {INBOX}
 "$newthreadid|$name $email|admin|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|g|||\n"
       or croak "$croak{'print'} INBOX";
@@ -2770,7 +2782,8 @@ sub modAlert {
           s/{yabb verification_question_desc}/$verification_question_desc/gsm;
         $verification_question_field =~
           s/{yabb spam_question_id}/$spam_question_id/gsm;
-        $verification_question_field =~ s/{yabb spam_question_image}/$spam_image/gsm;
+        $verification_question_field =~
+          s/{yabb spam_question_image}/$spam_image/gsm;
     }
 
     $sub        = q{};
@@ -3021,9 +3034,7 @@ sub modAlert2 {
             }
             elsif ( $PMenableBm_level && $x ) {
                 if ( !%memberinf ) { ManageMemberinfo('load'); }
-                for ( split /,/xsm,
-                    ( $memberinf{$toBoardMod} )[4] )
-                {
+                for ( split /,/xsm, ( $memberinf{$toBoardMod} )[4] ) {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) { next MANAGEMODS; }
                 }
             }
@@ -3046,15 +3057,21 @@ sub modAlert2 {
     }
 
     if ( $PMenableBm_level && $x ) {
+
         # set announcement flag according to status of current board
-            if   ($iamguest) { $mstatus = q~ga~; }
+        $msgfile = "$memberdir/broadcast.messages";
+        if ($iamguest){
+            $mstatus = q~ga~;
+            $msgfile = "$memberdir/guest.messages";
+        }
             else             { $mstatus = q~ab~; }
+
         #if sender is guest and Alert is going to ModGroup
-        fopen( INBOX, "$memberdir/broadcast.messages" )
-          or fatal_error( 'cannot_open', "$memberdir/broadcast.messages" );
+        fopen( INBOX, $msgfile )
+          or fatal_error( 'cannot_open', "$msgfile" );
         my @inmessages = <INBOX>;
         fclose(INBOX);
-        fopen( INBOX, ">$memberdir/broadcast.messages" );
+        fopen( INBOX, ">$msgfile" );
         print {INBOX}
 "$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|$mstatus|||\n"
           or croak "$croak{'print'} INBOX";
