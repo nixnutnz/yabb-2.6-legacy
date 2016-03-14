@@ -2156,11 +2156,11 @@ sub WriteLog {
         }
     }
     my $hostin = qq~$user_host#$ENV{'HTTP_USER_AGENT'}~;
-    $hostin =~ s/\x0//gsm;
+#    $hostin =~ s/\x0//gsm;
     $hostin =~ s/chr(32)//gsms;
-    $hostin =~ s/\s+//gxms;
+#    $hostin =~ s/\s+//gxms;
     $hostin =~ s/\x7C//gsm;
-    $hostin =~ s/^[x20-\x7E]+$//gsm;
+    $hostin =~ s/[^\x21-\x7E]+$//gsm;
     fopen( LOG, ">$vardir/log.txt" );
     print {LOG} (
 "$field|$date|$user_ip|$hostin|$username|$currentboard|"
@@ -2185,13 +2185,13 @@ sub WriteLog {
         @new_log = <LOG>;
         fclose( LOG );
         my $hostin = $ENV{'HTTP_USER_AGENT'};
-        $hostin =~ s/\x0//gsm;
+#        $hostin =~ s/\x0//gsm;
         $hostin =~ s/\x7C//gsm;
-        $hostin =~ s/^[x21-\x7E]+$//gsm;
+        $hostin =~ s/[^\x21-\x7E]+$//gsm;
         my $httprefer = $ENV{'HTTP_REFERER'};
-        $httprefer =~ s/\x0//gsm;
+#        $httprefer =~ s/\x0//gsm;
         $httprefer =~ s/\x7C//gsm;
-        $httprefer =~ s/^[x21-\x7E]+$//gsm;
+        $httprefer =~ s/[^\x21-\x7E]+$//gsm;
         my $newlog = "$field|$date|$ENV{'REQUEST_URI'}|"
           . (
             $httprefer =~ m/$boardurl/ism
@@ -2199,12 +2199,12 @@ sub WriteLog {
             : $httprefer
           )
           . "|$hostin|$user_ip\n";
-        $newlog =~ s/\x0//gsm;
+#        $newlog =~ s/\x0//gsm;
         $newlog =~ s/chr(32)//gsms;
-        $newlog =~ s/\s+//gxms;
-        $newlog =~ s/^[x20-\x7E]+$//gsm;
+#        $newlog =~ s/\s+//gms;
+        $newlog =~ s/[^\x21-\x7E]+$//gsm;
         fopen( LOG, ">$vardir/clicklog.txt", 1 );
-        print {LOG} $newlog
+        print {LOG} $newlog . "\n"
           or croak "$croak{'print'} LOG";
         foreach (@new_log) {
             if ( ( split /\|/xsm, $_, 3 )[1] >= $onlinetime ) {
