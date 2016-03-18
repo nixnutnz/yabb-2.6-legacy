@@ -5,14 +5,14 @@ $SectionName = "Banning_Functions";
 ### Section 1
 #############################################
 $SectionSub1 = "Banning_Members";
-$SectionBody1 = q~<p>2.6.0 allows Global Moderators and Forum Moderators a new additional ability: You can ban users who break Forum rules, are disruptive or are spamming the Forum.</p>
+$SectionBody1 = q~<p>2.6 allows Global Moderators and Forum Moderators a new additional ability: You can ban users who break Forum rules, are disruptive or are spamming the Forum.</p>
 <p>To begin banning a Member, access the Member's Profile. This page will give you three methods for banning a Member:</p>
 <ol>
 	<li>by IP address</li>
 	<li>by e-Mail address</li>
     <li>by User ID</li>
 </ol>
-<p><b><span class="underline">Banning a Member</span></b></p>
+<p><b><span class="under">Banning a Member</span></b></p>
 <ul>
 	<li><b>IP Address</b>
 		<ul>

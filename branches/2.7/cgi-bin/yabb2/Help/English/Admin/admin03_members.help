@@ -34,7 +34,7 @@ $SectionBody3 = q~<p>Unfortunately, users are not always filled with the great s
         <ul>
             <li>Banning by IP address will prevent anyone from accessing your board if their IP address is listed here. While effective, this could prevent a legitimate user from logging on, such as two people sharing the same ISP connection. It may also fail if the user is behind a proxy or has a dynamic IP. To enter a specific IP address, enter all four octets of the users IP address &#40;example: 192.168.255.8&#41;.</li>
         </ul>
-        <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> You may also block a range of IP addresses by only entering in the first few octets of the address. For example, entering the IP as: 192.168. would block every IP address from 192.168.0.0 through 192.168.255.255. Enter only 1 IP address per line.</p> </li>
+        <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> You may also block a range of IP addresses by only entering in the first few octets of the address. For example, entering the IP as: 192.168. would block every IP address from 192.168.0.0 through 192.168.255.255. Enter only 1 IP address per line.</p> </li>
     <li><b>E-mail Address</b>
         <ul>
             <li>This second method allows you to prevent anyone using a specific e-mail address (example: bad&#64;user.com) from registering or logging in. Enter only 1 e-mail address per line.</li>
@@ -53,7 +53,7 @@ $SectionBody3 = q~<p>Unfortunately, users are not always filled with the great s
         <ul>
             <li>Banning by IP address will prevent anyone from accessing your board if their IP address is listed here.</li>
         </ul>
-        <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> You can only block IP's that are listed in the member's profile.</p> </li>
+        <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> You can only block IP's that are listed in the member's profile.</p> </li>
     <li><b>E-mail Address</b>
         <ul>
             <li>This method allows you to prevent anyone using a specific e-mail address (example: bad&#64;user.com) from registering or logging in.</li>
@@ -94,7 +94,7 @@ $SectionBody4 = q~<p>Member Groups give you the ability to assign a group or cla
     <li><b>Star Type:</b>
         <ul>
             <li>Choose a default star type from the drop down box, or enter the URL to a different image.
-                <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> If you've imported an older forum to 2.6.0/2.6.1, your old default stars will not appear as 2.6.0 uses different star graphics with different extensions. If you wish to use the old stars or had custom ones, make sure to copy them into the folder that holds your template graphics. This will most likely be 'yabbfiles/Templates/Forum/default'. Otherwise, simply choose new star graphics from the drop down list.</p></li>
+                <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> If you've imported an older forum to 2.6.0/2.6.1, your old default stars will not appear as 2.6.0 uses different star graphics with different extensions. If you wish to use the old stars or had custom ones, make sure to copy them into the folder that holds your template graphics. This will most likely be 'yabbfiles/Templates/Forum/default'. Otherwise, simply choose new star graphics from the drop down list.</p></li>
         </ul>
     </li>
     <li><b>Color:</b>
@@ -116,8 +116,8 @@ $SectionBody4 = q~<p>Member Groups give you the ability to assign a group or cla
         <ul>
             <li>Select this if you want users to be automatically assigned to this group based on Post Count. Then enter the minimum number of Posts required to become a Member of this Group.</li>
         </ul>
-        <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> YaBB comes with a Post-Dependent Member Group called &#8220;New Members&#8221; that has a minimum Post Count of <b>-1</b>. This is in place to automatically assign new registering Members to a group. A new Member starts with a Post Count of -1, so if you <i>delete this Group</i> or <i>change the minimum Post Count</i>, your new Members will not be able to post or use PMs until you manually put them in a Group. You may edit the name of the Group, stars, or colors with no effects on new Members.</p>
-        <p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> A good way to customize your YaBB forum is to assign names to your Post Dependent groups that relate to your forum's niche.</p>
+        <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> YaBB comes with a Post-Dependent Member Group called &#8220;New Members&#8221; that has a minimum Post Count of <b>-1</b>. This is in place to automatically assign new registering Members to a group. A new Member starts with a Post Count of -1, so if you <i>delete this Group</i> or <i>change the minimum Post Count</i>, your new Members will not be able to post or use PMs until you manually put them in a Group. You may edit the name of the Group, stars, or colors with no effects on new Members.</p>
+        <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> A good way to customize your YaBB forum is to assign names to your Post Dependent groups that relate to your forum's niche.</p>
     </li>
 </ul>
 ~;
@@ -130,8 +130,8 @@ $SectionBody5 = q~<p>YaBB gives you the ability to select what administrative fu
 <p>The most important options are listed as three selections at the top of the page. Note that access to the Admin Center does NOT necessarily mean your Global Moderators can control all the items you can see in the Admin Center. If you allow this access, you can customize the Global Moderator permissions in the list of actions below.</p>
 <p>Choosing Editing the Profile (but not the Admin Edits) will allow the Global Moderator to change passwords, e-mail addresses, and all other options in the User's Profile (except Admin Edits). <b>Note:</b> Global Moderators cannot edit or modify any Administrator Profile.</p>
 <p>Choosing the Admin Edits option will allow Global Moderators to change a user's Post Count, Position, and Member Group(s). <b>Note:</b> Global Moderators cannot edit or modify Administrator Admin Edits, nor can they &#8220;promote&#8221; other users to Global Moderators or Forum Administrators.</p>
-<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> Some actions depend on what level of Profile edit the Global Moderator has been granted. Access to such things as PM Attachments and downloading YaBB backups depend on having the Admin Edits option checked.</p>
-<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> In most cases, actions you do NOT select for the Global Moderator will not even be visible to them in the Admin Center; however this is <i>not always the case</i>.</p>
+<p class="help_attn"><b><span class="under">Administrator Tip:</span></b> Some actions depend on what level of Profile edit the Global Moderator has been granted. Access to such things as PM Attachments and downloading YaBB backups depend on having the Admin Edits option checked.</p>
+<p class="help_attn"><b><span class="under">Administrator Tip:</span></b> In most cases, actions you do NOT select for the Global Moderator will not even be visible to them in the Admin Center; however this is <i>not always the case</i>.</p>
 ~;
 #############################################
 ### Section 6

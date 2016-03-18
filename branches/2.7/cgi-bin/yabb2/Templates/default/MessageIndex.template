@@ -24,7 +24,8 @@ LoadLanguage('BoardIndex');
 # When thread tools is on $outside_threadtools will show buttons normally, while the handle list will show in the thread tools' dropdown
 # $outsidde_ttsep will act as a separator between the buttons outside thread tools.
 
-$outside_threadtools = qq~{yabb new post button}{yabb new poll button}~;
+@outside_threadtools = ('{yabb new post button}', '{yabb new poll button}');
+$outside_threadtools = join '', @outside_threadtools;
 $outside_ttsep = q~~;
 $my_ttsep = $menusep;
 

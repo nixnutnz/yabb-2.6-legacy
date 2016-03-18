@@ -29,7 +29,7 @@ $SectionBody1 = q~<p>YaBB 2.6 boasts the addition of an Event Calendar where mem
         <br />Here you can upload and manage additional icons to customize your Event Calendar.
     </li>
 </ul>
-<p class="help_attn"><b><span class="underline">Administrator Tip:</span></b> If 'Allow User to hide age in Profile and Message View and hide age and birth year in Calendar?' is checked in &#8220;Forum Settings -> Members&#8221;, Members can choose to hide their age. In that event, only the Member's birth month and day will be shown.</p>
+<p class="help_attn"><b><span class="under">Administrator Tip:</span></b> If 'Allow User to hide age in Profile and Message View and hide age and birth year in Calendar?' is checked in &#8220;Forum Settings -> Members&#8221;, Members can choose to hide their age. In that event, only the Member's birth month and day will be shown.</p>
 ~;
 #############################################
 

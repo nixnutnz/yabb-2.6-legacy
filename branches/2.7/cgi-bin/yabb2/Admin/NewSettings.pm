@@ -485,6 +485,31 @@ sub SaveSettingsTo {
                 }
             }
         }
+        my %modlinks = ();
+        my %modadd = ();
+## Modlinks MOD hook ##
+        for my $i ( keys %modlinks) {
+            if ( $modlinks{$i} > 0 ) {
+                my $fond = 0;
+                for (@AdvancedTabs ) {
+                    if ( $_ =~ /[|]/xsm ) {
+                        my ( $tab_key, undef, undef ) =split /[|]/xsm, $_, 2;
+                        if ( $tab_key eq $i) {
+                            $_ = qq~$i$modadd{$i}~;
+                            $fond = 1;
+                        }
+                    }
+                }
+                if ( $fond == 0 ) { push @AdvancedTabs, qq~$i$modadd{$i}~;}
+            }
+            else {
+                my @new_tabs_order;
+                for (@AdvancedTabs) {
+                    if ( $_ !~ /^$i\|?/xsm ) { push @new_tabs_order, $_; }
+                }
+                @AdvancedTabs = @new_tabs_order;
+            }
+        }
 
         my $AdvancedTabs = q{'} . join( q{','}, @AdvancedTabs ) . q{'};
 

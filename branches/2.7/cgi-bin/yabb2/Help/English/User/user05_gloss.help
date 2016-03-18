@@ -50,7 +50,7 @@ $SectionBody1 = q~YaBB has many descriptive terms that refer to its component pa
     <dt><b>Display Name</b></dt>
     <dd>See '<b>Screen Name</b>'.</dd>
     <dt><b>Download Counter</b></dt>
-    <dd>This is a feature associated with files attached to Posts, and is displayed to the right of the file name. This tells how many times the attached file has been downloaded. <span class="underline"><b>NOTE:</b></span> In the case of image files, a user may click on the file name and see the image displayed in their browser. This counts as a download, even though the user has not truly downloaded the file to their PC.</dd>
+    <dd>This is a feature associated with files attached to Posts, and is displayed to the right of the file name. This tells how many times the attached file has been downloaded. <span class="under"><b>NOTE:</b></span> In the case of image files, a user may click on the file name and see the image displayed in their browser. This counts as a download, even though the user has not truly downloaded the file to their PC.</dd>
 </dl><dl>
     <dt class="help_dd"><b>E</b></dt>
     <dt><b>Error Log</b></dt>
@@ -142,7 +142,7 @@ $SectionBody1 = q~YaBB has many descriptive terms that refer to its component pa
     <dd>This is the user's &#8220;public&#8221; name, the name that displays above their avatar picture to the left of the Post Window and in the Member List. A user may change this name by editing the Screen Name in their Profile.</dd>
     <dt><b>Search</b></dt>
     <dd>This feature allows a user to search through the forum for information in posts or posts by users. Several options are listed on the Search page.</dd>
-    <dt class="help_dd"><b><span class="underline">User Tip:</span></b> For general searches, use the option "Any Poster" in the selection box at the bottom of the "By User" sections.</dt>
+    <dt class="help_dd"><b><span class="under">User Tip:</span></b> For general searches, use the option "Any Poster" in the selection box at the bottom of the "By User" sections.</dt>
     <dt><b>Signature</b></dt>
     <dd>This is a section that shows up at the bottom of each user's post. A signature can contain an image, text, or a combination of both. Signatures can be created by each user in their Profile - Options page.</dd>
     <dt><b>Smilies</b></dt>
@@ -157,7 +157,7 @@ $SectionBody1 = q~YaBB has many descriptive terms that refer to its component pa
     <dt class="help_dd"><b>T</b></dt>
     <dt><b>Template</b></dt>
     <dd>This most commonly refers to the default.html file that forms the "look" of your forum. This file contains the forum logo, menu tabs, copyright, and all the items that will appear on each page of your forum.</dd>
-    <dd>This can also refer to the collection of .template files, .html file, .css file, and graphics that give your forum its appearance. This is not one actual <i>file</i>, but is <span class="underline">data</span> that is stored in the 'templateset' variable in the Settings.pm file in the Variables folder.</dd>
+    <dd>This can also refer to the collection of .template files, .html file, .css file, and graphics that give your forum its appearance. This is not one actual <i>file</i>, but is <span class="under">data</span> that is stored in the 'templateset' variable in the Settings.pm file in the Variables folder.</dd>
     <dt><b>Template Configuration Screen</b></dt>
     <dd>This is a section within the Admin Center that lets the Administrator configure a particular template to use a specific Style Sheet, .template files, or folder containing graphic images.</dd>
     <dt><b>Topic</b></dt>

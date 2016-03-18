@@ -45,7 +45,7 @@ $SectionBody3 = q~The Edit Profile section gives you quick access to your basic 
 <p>If you would like others to see how old you are and have a special icon in your profile on your birthday, please enter it in DD (day), MM (month), YYYY (year) format. You may also be able to hide your birth-year and age from Guests and other members. Some forums put limits on how many times you can edit this information.</p>
 <h4 class="help">Location</h4>
 <p>Optional. This box is available for filling in information about where you live, where you're from, or anything else you choose to have displayed in your Profile.</p>
-<p class="help_attn"><b><span class="underline">User Tip:</span></b> Keep in mind that some Boards may contain an age or gender restriction for access. For example, if you don't enter an age in your profile, there will be no way to know if you should be allowed access to a Board that sets an age limit of over 21. Likewise with gender, if a Board is set up to allow Females only, you won't be allowed access if you don't enter Female as your gender in the Profile. In some cases the Admin may have chosen to make Gender and/or Birth-date mandatory and may limit how many times you may edit this information.</p>
+<p class="help_attn"><b><span class="under">User Tip:</span></b> Keep in mind that some Boards may contain an age or gender restriction for access. For example, if you don't enter an age in your profile, there will be no way to know if you should be allowed access to a Board that sets an age limit of over 21. Likewise with gender, if a Board is set up to allow Females only, you won't be allowed access if you don't enter Female as your gender in the Profile. In some cases the Admin may have chosen to make Gender and/or Birth-date mandatory and may limit how many times you may edit this information.</p>
 ~;
 #############################################
 
@@ -90,9 +90,9 @@ $SectionBody5 = q~The Options section of your YaBB profile allows you to edit fo
 <p>YaBB allows you to define a small picture (called an avatar) that will display under your name to the left side your posts. This forum has a number of avatars already installed, and you may pick one from the list. If you wish to use your own image as an avatar, please see the options below.</p>
 <p>The Forum Administrator may also enable either or both of the following options:</p>
 <ul>
-    <li><span class="underline"><b>Linking to your own avatar image</b></span>
+    <li><span class="under"><b>Linking to your own avatar image</b></span>
         <br />If you have your own image and would like to use it on this YaBB as an avatar, you may enter the URL here.</li>
-    <li><span class="underline"><b>Uploading your own avatar image</b></span>
+    <li><span class="under"><b>Uploading your own avatar image</b></span>
         <br />If you would like to upload your own image and would like to use it on this YaBB as an avatar, click on the Browse button and select a file on your computer to upload.</li>
 </ul>
 <h4 class="help">Personal Text</h4>
@@ -123,7 +123,7 @@ $SectionBody5 = q~The Options section of your YaBB profile allows you to edit fo
 ### Section 6
 #############################################
 $SectionSub6 = "Buddy_List";
-$SectionBody6 = q~The <span class="underline"><b>Buddy List</b></span> section of the profile gives you the ability to add other members that you're frequently contact to a list that will show in your User CP view.  Your Buddy List will display each name, their Online/Offline status, and link options to send the user a PM, an e-mail, or visit the link to their website.<br />
+$SectionBody6 = q~The <span class="under"><b>Buddy List</b></span> section of the profile gives you the ability to add other members that you're frequently contact to a list that will show in your User CP view.  Your Buddy List will display each name, their Online/Offline status, and link options to send the user a PM, an e-mail, or visit the link to their website.<br />
 <ul>
     <li>Add users to your Buddy List by clicking on the link below the Buddy List display box.</li>
     <li>Delete users from your Buddy List by double-clicking on their user name inside the Buddy List display box.</li>
@@ -135,13 +135,13 @@ $SectionBody6 = q~The <span class="underline"><b>Buddy List</b></span> section o
 #############################################
 $SectionSub7 = "PM_Preferences";
 $SectionBody7 = q~This section of your profile gives you the ability to customize how you view and receive Personal Messages from other community members.
-<p class="help_attn"><b><span class="underline">User Tip:</span></b> Keep in mind that Personal Messaging is an optional feature and will only be available if the Administrator chooses to enable it.  Likewise, some of the options listed below that are underlined may not be seen in your PM Preferences list because they are also optional at the Administrator's discretion and may be disabled.</p>
+<p class="help_attn"><b><span class="under">User Tip:</span></b> Keep in mind that Personal Messaging is an optional feature and will only be available if the Administrator chooses to enable it.  Likewise, some of the options listed below that are underlined may not be seen in your PM Preferences list because they are also optional at the Administrator's discretion and may be disabled.</p>
 <h4 class="help">Ignore List</h4>
 <p>This function allows you to ignore other members by preventing you from viewing any personal messages they send. Additionally, you are given a check-box option to disable all PMs if you so choose.</p>
 <h4 class="help">Notify Me of New PMs by e-mail:</h4>
 <p>If you would like an e-mail when a member sends you a personal message, this option allows you to enable that feature.</p>
 <h4 class="help">Enable Personal Message Pop-up?</h4>
-<p>Checking this box will display a small pop-up window to notify you of any new Personal Messages. If <span class="underline">not</span> checked, you will see new messages in the &#8220;greeting&#8221; at the top of the forum in this format: You have X message&#40;s&#41;, and Y new message&#40;s&#41;.</p>
+<p>Checking this box will display a small pop-up window to notify you of any new Personal Messages. If <span class="under">not</span> checked, you will see new messages in the &#8220;greeting&#8221; at the top of the forum in this format: You have X message&#40;s&#41;, and Y new message&#40;s&#41;.</p>
 <h4 class="help">PM Pop-up shows PMs in new Window?</h4>
 <p>If you have PM Pop-ups enabled, checking this box will open your PMs in a new window when you click on the link in the pop-up window, otherwise, it will load in the current one.</p>
 <h4 class="help">View Message Text in List View of Personal Messages?</h4>

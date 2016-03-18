@@ -18,7 +18,7 @@ $SectionBody2 = q~<p>To begin banning a Member, access the Member's Profile. Thi
     <li>by E-mail address</li>
     <li>by User ID</li>
 </ol>
-<p><b><span class="underline">Banning a Member</span></b></p>
+<p><b><span class="under">Banning a Member</span></b></p>
 <ul>
     <li><b>IP Address</b>
         <ul>

@@ -138,16 +138,15 @@ sub AddNewTab2 {
             next
               if $lngdir eq q{.} || $lngdir eq q{..} || !-d "$langdir/$lngdir";
             undef %tabtxt;
-            if ( fopen( TABTXT, "$langdir/$lngdir/tabtext.txt" ) ) {
-                %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
-                fclose(TABTXT);
+            if ( -e "$langdir/$lngdir/tabtext.txt" ) {
+                require "$langdir/$lngdir/tabtext.txt";
             }
-            $tabtxt{$tabaction} = $tabtext;
             fopen( TABTXT, ">$langdir/$lngdir/tabtext.txt" )
               or fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt",
                 1 );
-            print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
+            print {TABTXT} map { "\$tabtxt{'$_'} = '$tabtxt{$_}';\n" } keys %tabtxt
               or croak "$croak{'print'} TABTXT";
+            print {TABTXT} "1;\n" or croak "$croak{'print'} TABTXT";
             fclose(TABTXT);
         }
 
@@ -181,8 +180,7 @@ sub EditTab {
     $tabdel   = $micon{'tabdel'};
     %edittab= ();
     my @tablist = qw(home help search ml eventcal birthdaylist admin revalidatesession login register guestpm mycenter logout);
-## Mod hook tablist ##
-## End Mod hook tablist ##
+## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
     for (@tablist) {
         $edittab{$_} = qq~<span class="tabstyle">$tabfill$texttab{$_}$tabfill</span>~;
     }
@@ -269,15 +267,12 @@ sub EditTab2 {
         $tosavetxt = $FORM{$tosave};
         ToHTML($tosavetxt);
         $tab_lang = $language ? $language : $lang;
-        fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" )
-          or fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
-        %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
-        fclose(TABTXT);
-        $tabtxt{$tosave} = $tosavetxt;
+        require "$langdir/$tab_lang/tabtext.txt";
         fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" )
           or fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
-        print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
+        print {TABTXT} map { "\$tabtxt{'$_'} = '$tabtxt{$_}';\n" }  keys %tabtxt
           or croak "$croak{'print'} TABTXT";
+        print {TABTXT} "1;\n" or croak "$croak{'print'} TABTXT";
         fclose(TABTXT);
     }
 
@@ -341,21 +336,14 @@ sub DeleteTab {
             {
                 next;
             }
-            fopen( TABTXT, "$langdir/$lngdir/tabtext.txt" )
-              or fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt" );
-            %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
-            fclose(TABTXT);
+            require "$langdir/$lngdir/tabtext.txt";
             delete $tabtxt{$todelete};
-            if ( !%tabtxt ) {
-                unlink "$langdir/$lngdir/tabtext.txt";
-            }
-            else {
                 fopen( TABTXT, ">$langdir/$lngdir/tabtext.txt" );
-                print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
+            print {TABTXT} map { "\$tabtxt{'$_'} = '$tabtxt{$_}';\n" }  keys %tabtxt
                   or croak "$croak{'print'} TABTXT";
+            print {TABTXT} "1;\n" or croak "$croak{'print'} TABTXT";
                 fclose(TABTXT);
             }
-        }
 
         my @new_tabs_order;
         for (@AdvancedTabs) {
@@ -385,8 +373,7 @@ sub GetTexttab {
     $texttab{'guestpm'}           = $img_txt{'pmadmin'};
     $texttab{'mycenter'}          = $img_txt{'mycenter'};
     $texttab{'logout'}            = $img_txt{'108'};
-## Mod Hook GetTextTab ##
-## End Mod Hook GetTextTab ##
+
     if ( !$tab_lang ) { GetTabtxt(); }
     for ( keys %tabtxt ) { $texttab{$_} = $tabtxt{$_}; }
     return;

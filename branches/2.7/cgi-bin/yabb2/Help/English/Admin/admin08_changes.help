@@ -85,11 +85,11 @@ $SectionBody3 = q~<p>These are some completely new features to YaBB 2.3 that wer
     <li><b>Image Resize and Greybox</b>
         <br />Admins can set limits on maximum display size for avatar images, posted images, attachment images, and signature images. Larger images will &quot;shrink&quot; to fit within the maximum set limits.
         <br />Attached images and images inside posts can be shown on a slightly translucent surface instead in a new window. The Administrator can select between a single view and a gallery style view for attached images.
-        <p class="help_attn"><span class="underline"><b>NOTE:</b></span> An image taller than it is wide will be limited by the maximum height and will adjust the width proportionally, which will be less than the maximum width. An image wider than taller will be limited by the maximum width and will adjust the height proportionally, which will be less than the maximum height.</p>
+        <p class="help_attn"><span class="under"><b>NOTE:</b></span> An image taller than it is wide will be limited by the maximum height and will adjust the width proportionally, which will be less than the maximum width. An image wider than taller will be limited by the maximum width and will adjust the height proportionally, which will be less than the maximum height.</p>
     </li>
     <li><b>Multi-Attachments</b>
         <br />Admins can choose how many and what type of files a user may attach to a post. A download counter for each attached file is also provided. Files attached will show an icon symbolizing each particular file type for the most common file types.
-        <p class="help_attn_strong"><span class="underline"><b>WARNING:</b></span> Some file types can pose risks to either the forum or the user who downloads them because they can be used to include malicious code. These include but are not limited to:</p>
+        <p class="help_attn_strong"><span class="under"><b>WARNING:</b></span> Some file types can pose risks to either the forum or the user who downloads them because they can be used to include malicious code. These include but are not limited to:</p>
         <ul>
             <li class="help_attn_strong">MS Excel files &#40;.xls&#41; which can contain malicious code in macros</li>
             <li class="help_attn_strong">MS PowerPoint files &#40;.ppt&#41; which can contain malicious scripts</li>

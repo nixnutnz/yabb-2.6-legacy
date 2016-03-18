@@ -30,10 +30,10 @@ $SectionBody3 = q~<p><b>Stealth Mode</b> is a YaBB feature designed to allow For
 ### Section 4
 #############################################
 $SectionSub4 = "Encrypt_User_IDs";
-$SectionBody4 = q~<p>This feature is designed to enhance security by allowing Forum Administrators the option to conceal the User's <span class="underline">log in</span> name in the link to their Profile. This is the link that appears wherever the mouse cursor is placed over a Member's <span class="underline">Displayed</span> Name.</p>
+$SectionBody4 = q~<p>This feature is designed to enhance security by allowing Forum Administrators the option to conceal the User's <span class="under">log in</span> name in the link to their Profile. This is the link that appears wherever the mouse cursor is placed over a Member's <span class="under">Displayed</span> Name.</p>
 <ul>
-    <li><span class="underline"><b>Option disabled:</b></span> When this option is disabled, the link will end with &#8220;username=(user's login ID)&#8221;</li>
-    <li><span class="underline"><b>Option enabled:</b></span> When this option is enable, the link will end with &#8220;username=(encrypted number)&#8221;</li>
+    <li><span class="under"><b>Option disabled:</b></span> When this option is disabled, the link will end with &#8220;username=(user's login ID)&#8221;</li>
+    <li><span class="under"><b>Option enabled:</b></span> When this option is enable, the link will end with &#8220;username=(encrypted number)&#8221;</li>
 </ul>
 <p>This option is enabled by default. It may be disabled by unchecking the &#8220;Encrypt User IDs&#8221; box in the Admin Center&#47;Security Center&#47;Security Settings section under the &#8220;General&#8221; tab.</p>
 ~;
@@ -70,7 +70,7 @@ $SectionBody7 = q~<p>This feature allows Forum Administrators the option to view
 ### Section 8
 #############################################
 $SectionSub8 = "Spam_Protect_-_Enter_Percent";
-$SectionBody8 = q~<p>This feature is designed to limit spam by setting a limit on how many other Members a User may send a Personal Message to at one time. The number you enter represents <b>the maximum <span class="underline">percent</span> of total Members</b> a User may send PMs to at one time. </p>
+$SectionBody8 = q~<p>This feature is designed to limit spam by setting a limit on how many other Members a User may send a Personal Message to at one time. The number you enter represents <b>the maximum <span class="under">percent</span> of total Members</b> a User may send PMs to at one time. </p>
 <p>This option is enabled by entering a desired percent in the appropriate box found in the &#8220;Personal Messages&#8221; tab found in the Admin Center&#47;Forum Configuration&#47;Forum Settings section.</p>
 ~;
 #############################################

@@ -60,7 +60,7 @@ sub mainMenu {
 'guestpm2' => 'guestpm',
 );
 
-## Mod hook 1 ##
+## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
 
     if ( $action eq 'addtab' && $iamadmin ) {
         require Sources::AdvancedTabs;
@@ -155,8 +155,6 @@ sub mainMenu {
         $tab{'logout'} = qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}</a>$tabhtml_r~;
     }
 
-## Tab Mod Hook ##
-
     if ($accept_permafull) {
         my @gsttabs = qw( home register help search );
 
@@ -237,32 +235,15 @@ qq~<li id="edittab"><span$seledittab><a href="$scripturl?action=edittab" title="
 sub GetTabtxt2 {
     $tab_lang = $language ? $language : $lang;
     if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
-        fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" );
-        @tabtext = <TABTXT>;
-        fclose(TABTXT);
-        chomp @tabtext;
-        for ( @tabtext ) {
-            if ( $_ ne q{} ) {
-                ($key, $val ) = split /\t/xsm, $_;
-                $tabtxt{$key} = $val;
-            }
-        }
+        require "$langdir/$tab_lang/tabtext.txt";
     }
     elsif ( -e "$langdir/English/tabtext.txt" ) {
-        fopen( TABTXT, "$langdir/English/tabtext.txt" );
-        @tabtext = <TABTXT>;
-        fclose(TABTXT);
-        chomp @tabtext;
-        for ( @tabtext ) {
-            if ( $_ ne q{} ) {
-                ($key, $val ) = split /\t/xsm, $_;
-                $tabtxt{$key} = $val;
-            }
-        }
+        require "$langdir/English/tabtext.txt";
         if ( -e "$langdir/$tab_lang/Main.lng" ) {
             fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-            print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
+            print {TABTXT} map { "\$tabtxt{'$_'} = '$tabtxt{$_}';\n" } keys %tabtxt
               or croak "$croak{'print'} TABTXT";
+            print {TABTXT} "1;\n" or croak "$croak{'print'} TABTXT";
             fclose(TABTXT);
         }
     }
@@ -272,21 +253,18 @@ sub GetTabtxt2 {
 sub GetTabtxt {
     $tab_lang = $language ? $language : $lang;
     if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
-        fopen( TABTXT, "$langdir/$tab_lang/tabtext.txt" );
-        %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
-        fclose(TABTXT);
+        require "$langdir/$tab_lang/tabtext.txt";
         for (keys %tabtxt) {
             chomp $tabtxt{$_}
         }
     }
     elsif ( -e "$langdir/English/tabtext.txt" ) {
-        fopen( TABTXT, "$langdir/English/tabtext.txt" );
-        %tabtxt = map { /(.*)\t(.*)/xsm } <TABTXT>;
-        fclose(TABTXT);
+        require "$langdir/English/tabtext.txt";
         if ( -e "$langdir/$tab_lang/Main.lng" ) {
             fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-            print {TABTXT} map { "$_\t$tabtxt{$_}\n" } keys %tabtxt
+            print {TABTXT} map { "\$tabtxt{'$_'} = '$tabtxt{$_}';\n" }  keys %tabtxt
               or croak "$croak{'print'} TABTXT";
+            print {TABTXT} "1;\n" or croak "$croak{'print'} TABTXT";
             fclose(TABTXT);
         }
     }
