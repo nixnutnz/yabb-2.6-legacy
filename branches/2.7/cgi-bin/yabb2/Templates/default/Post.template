@@ -32,7 +32,7 @@ $palhight = 302;
 ## Post Top
 $mypost_title = qq~{yabb my_topper}
 <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom">
-    <img src="{yabb icon_img}" alt="" /> {yabb yytitle}{yabb draft_note}
+    <img src="{yabb icon_img}" alt="" /> {yabb yytitle}
 </div>
     {yabb my_topview}
 ~;
