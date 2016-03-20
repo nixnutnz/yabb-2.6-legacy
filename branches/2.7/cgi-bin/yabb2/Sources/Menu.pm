@@ -39,16 +39,13 @@ sub SetMenu {
     }
     else { $Menu_def = q~Templates/default/Menu.def~; }
 
-    fopen( MENUFILE, "$Menu_def" );
-    %img = map { /(.*),(.*)/xsm } <MENUFILE>;
-    fclose(MENUFILE);
+    require $Menu_def;
 
-    while ( ( $key, $value ) = each %img ) {
-        chomp $value;
+    while ( ( $key, $value ) = each %img_set ) {
         (
             $button_icon, $button_text, $text_num, $alt_text,
             $alt_num,     $span_class,  $imgext,   $mod_or_not
-        ) = split /[|]/xsm, $value;
+        ) = @{$value};
         if ( !$alt_text ) {
             $alt_text = $button_text;
             $alt_num  = $text_num;
@@ -110,18 +107,12 @@ sub SetImage {
         $Menu_def = qq~Templates/$usestyle/Menu.def~;
     }
     else { $Menu_def = q~Templates/default/Menu.def~; }
-
-    fopen( MENUFILE, "$Menu_def" );
-    %img_set = map { /(.*),(.*)/xsm } <MENUFILE>;
-    fclose(MENUFILE);
-
-    my $imgname = $img_set{$img_name};
+    require $Menu_def;
 
     (
         $button_icon, $button_text, $text_num, $alt_text,
         $alt_num,     $span_class,  $imgext,   $mod_or_not
-    ) = split /[|]/xsm, $imgname;
-    chomp $mod_or_not;
+    ) = @{$img_set{$img_name}};
     if ( !$alt_text ) {
         $alt_text = $button_text;
         $alt_num  = $text_num;
