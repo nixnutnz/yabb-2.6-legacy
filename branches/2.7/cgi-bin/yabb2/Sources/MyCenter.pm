@@ -1135,7 +1135,7 @@ sub drawPMbox {
             elsif ( $callerid == 6 ) {
                 fopen( NFILE, "$memberdir/guest.messages" );
                 @gmessages = <NFILE>;
-				fclose(NFILE);
+                fclose(NFILE);
             }
             else {
                 fopen( NFILE, "$memberdir/broadcast.messages" );
@@ -1717,7 +1717,7 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
                         $GC = 1;
                     }
                 }
-				}
+            }
             if ( $BC || $GC ) { buildIMS( $username, 'update' ); }
         }
         else {

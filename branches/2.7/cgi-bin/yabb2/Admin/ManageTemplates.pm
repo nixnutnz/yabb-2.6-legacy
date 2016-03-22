@@ -699,7 +699,7 @@ qq~                         <option value="$name">$name</option>
     </div>
     <div style="float:right; width:49%">
         <div class="bordercolor">
-        <form action="$adminurl?action=modfolder" name="modfolder" method="post" style="display: inline;" accept-charset="$yymycharset">
+        <form action="$adminurl?action=modgfolder" name="modgfolder" method="post" style="display: inline;" accept-charset="$yymycharset">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <tr>
                     <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'modgfolder'}</th>
@@ -1633,6 +1633,20 @@ sub NewTemplateFolder2 {
        $yySetLocation = qq~$adminurl?action=modskin~;
         redirectexit();
     }
+    return;
+}
+
+sub NewGraphicsFolder {
+    if ( $FORM{'modfolder'} ) {
+        $newfolder = $FORM{'modfolder'};
+        $newd = $FORM{'locus'};
+        $newdir = qq~$newd/$newfolder~;
+        mkdir $newdir, 0755;
+        $yySetLocation = qq~$adminurl?action=modfolder2;newfolder=$newdir~;
+        redirectexit();
+    }
+    else { fatal_error('nofolder'); }
+
     return;
 }
 

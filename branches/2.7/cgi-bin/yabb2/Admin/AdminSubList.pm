@@ -185,6 +185,7 @@ if (@adminsublistpmmods) {
 'viewmembers' => 'ViewMembers.pm&Ml',
 'blockip' => 'ErrorLog.pm&blockip',
 'modfolder' => 'ManageTemplates.pm&NewTemplateFolder',
+'modgfolder' => 'ManageTemplates.pm&NewGraphicsFolder',
 'modfolder2' => 'ManageTemplates.pm&NewTemplateFolder2',
 'modfolderup' => 'ManageTemplates.pm&NewTemplateUpload',
 'fixboarddupes' => 'ManageBoards.pm&FixBoardDupes',

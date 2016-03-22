@@ -21,7 +21,7 @@ our $VERSION = '2.7.00';
 
 $profilepmver = 'YaBB 2.7.00 $Revision$';
 @profilepmmods = ();
-if ( @profilepmmods ) {
+if (@profilepmmods) {
     $profilepmmods = 1;
 }
 if ( $action eq 'detailedversion' ) { return 1; }
