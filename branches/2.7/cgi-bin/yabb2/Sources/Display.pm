@@ -167,7 +167,7 @@ sub Display {
         ToChars($virboardname);
     }
 
-    ( $cat, $catperms ) = split /[|]/xsm, $catinfo{"$curcat"};
+    ( $cat, $catperms ) = split /[|]/xsm, $catinfo{$curcat};
     ToChars($cat);
 
     ( $boardname, $boardperms, $boardview ) =

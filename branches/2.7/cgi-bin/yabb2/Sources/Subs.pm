@@ -168,7 +168,7 @@ sub print_HTML_output_and_finish {
         }
         else {
             require Compress::Zlib;
-            binmode(STDOUT, ':utf8');
+            binmode STDOUT;
             print Compress::Zlib::memGzip($output)
               or croak "$croak{'print'} ZLib";
         }

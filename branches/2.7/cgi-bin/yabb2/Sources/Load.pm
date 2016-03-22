@@ -56,8 +56,8 @@ sub LoadBoardControl {
         for my $i ( 0 .. $#brdlist ) {
             ${ $uid . $cntboard }{ $brdlist[$i] } = $boardline[$i];
             }
-        if ( $boardline[14] == 1 ) { $annboard = $cntboard; }
-        if ( $boardline[15] == 1 ) { $binboard = $cntboard; }
+        if ( $boardline[11] == 1 ) { $annboard = $cntboard; }
+        if ( $boardline[12] == 1 ) { $binboard = $cntboard; }
     }
     return;
 }
