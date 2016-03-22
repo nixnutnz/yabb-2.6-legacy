@@ -1511,9 +1511,9 @@ function insert_user (oElement,username,userid) {
     $MCProfMenu =~ s/{yabb my_buddylink}/$my_buddylink/sm;
     $MCProfMenu =~ s/{yabb my_IMpref}/$my_IMpref/sm;
     $MCProfMenu =~ s/{yabb my_adminlink}/$my_adminlink/sm;
-## end Profile div
+## end Profile div ##
 
-## start Posts div
+## start Posts div ##
     if ( ${ $uid . $username }{'postcount'} > 0 && $maxrecentdisplay > 0 ) {
         $MCPost_count = $my_MCPost_count;
         $MCPost_count =~ s/{yabb username}/$useraccount{$username}/sm;
@@ -1773,6 +1773,7 @@ qq~$mycenter_txt{'buddylisttitle'}:<br />$buddiesCurrentStatus~;
         elsif ( $action eq 'myviewprofile' )      { ViewProfile(); }
         elsif ( $action eq 'myprofileAdmin' )     { ModifyProfileAdmin(); }
         elsif ( $action eq 'myprofileAdmin2' )    { ModifyProfileAdmin2(); }
+##Profile Mod Hook ##
         $MCContent .= $showProfile;
     }
     elsif ( $view eq 'notify' ) {
