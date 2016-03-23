@@ -979,7 +979,8 @@ $ext_prof_fields
 ########## Time Lock ##########
 
 \$tlnomodflag = $tlnomodflag;           # Set to 1 limit time users may modify posts
-\$tlnomodtime = $tlnomodtime;           # Time limit on modifying posts (days)
+\$tlnomodtime = $tlnomodtime;           # Time limit on modifying posts
+\$tlnomodday = $tlnomodday;             # Time limit in days (1 = minutes)
 \$tlnodelflag = $tlnodelflag;           # Set to 1 limit time users may delete posts
 \$tlnodeltime = $tlnodeltime;           # Time limit on deleting posts (days)
 \$tllastmodflag = $tllastmodflag;       # Set to 1 allow users to modify posts up to the specified time limit w/o showing "last Edit" message

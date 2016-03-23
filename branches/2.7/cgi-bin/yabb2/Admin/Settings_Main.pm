@@ -232,6 +232,9 @@ if    ( !$ptopicperms )     { $pt0 = ' selected="selected"'; }
 elsif ( $ptopicperms == 1 ) { $pt1 = ' selected="selected"'; }
 elsif ( $ptopicperms == 2 ) { $pt2 = ' selected="selected"'; }
 
+if ($tlnomodday) { $timelck = $timelocktxt{'09'}; }
+else {$timelck = $timelocktxt{'10'};}
+
 # List of settings
 
 @settings = (
@@ -645,7 +648,13 @@ elsif ( $ptopicperms == 2 ) { $pt2 = ' selected="selected"'; }
             validate => 'boolean',
         },
         {
-            description => qq~<label for="tlnomodtime">$timelocktxt{'04'}</label>~,
+            description => qq~<label for="tlnomodday">$timelocktxt{'11'}</label>~,
+            input_html => qq~<input type="checkbox" name="tlnomodday" id="tlnomodday" value="1"${ischecked($tlnomodday)} />~,
+            name => 'tlnomodday',
+            validate => 'boolean',
+        },
+        {
+            description => qq~<label for="tlnomodtime">$timelocktxt{'04'}$timelck</label>~,
             input_html => qq~<input type="text" size="5" name="tlnomodtime" id="tlnomodtime" value="$tlnomodtime" />~,
             name => 'tlnomodtime',
             validate => 'number',
@@ -658,7 +667,7 @@ elsif ( $ptopicperms == 2 ) { $pt2 = ' selected="selected"'; }
             validate => 'boolean',
         },
         {
-            description => qq~<label for="tlnodeltime">$timelocktxt{'08'}</label>~,
+            description => qq~<label for="tlnodeltime">$timelocktxt{'08'}$timelck</label>~,
             input_html => qq~<input type="text" size="5" name="tlnodeltime" id="tlnodeltime" value="$tlnodeltime" />~,
             name => 'tlnodeltime',
             validate => 'number',

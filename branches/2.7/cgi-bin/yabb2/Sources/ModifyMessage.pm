@@ -63,7 +63,8 @@ sub ModifyMessage {
 
     my $modtopic_chk = 0;
     my $fixtime = $tlnomodtime;
-    $timeset = 86400;
+    my $timeset = 86400;
+    if ($tlnomodday) {$timeset = 60;}
     if ( $tlnomodflag && ${ $uid . $currentboard }{'modtopic'} ne $tlnomodtime ) {
         $fixtime = qq~${ $uid . $currentboard }{'modtopic'}~;
         if ( (${ $uid . $currentboard }{'modtopic'} == 0 || $date < $mdate + ( ${ $uid . $currentboard }{'modtopic'} * $timeset ) ) ) {

@@ -1282,6 +1282,8 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
                     }
                 }
             }
+            my $timeset = 86400;
+            if ($tlnomodday) {$timeset = 60;}
             if (
                 $sessionvalid == 1
                 && (
@@ -1289,7 +1291,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
                     || (
                         $username eq $musername
                         && (  !$tlnomodflag
-                           || $date < $mdate + ( $tlnomodtime * 86400 ) )
+                           || $date < $mdate + ( $tlnomodtime * $timeset ) )
                     )
                 )
               )

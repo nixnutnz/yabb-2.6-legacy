@@ -1224,6 +1224,9 @@ Thanks for using YaBB!~,
 '06' => q~Time limit to modify posts without 'Last Edit' message (in minutes):~,
 '07' => q~Enable a time limit for users to delete posts?<br /><span class="small">If disabled, a member can delete his post whenever he wants.</span>~,
 '08' => q~Time limit for normal members to delete their posts:~,
+'09' => q~ (in minutes)~,
+'10' => q~ (in days)~,
+'11' => q~ Set Time Limit in minutes?<br /><span class="small">This affects both modifying and removing posts (default is days). [A day is 1440 minutes.]</span>~,
 );
 
 $maintxt {'769'} = 'Today'; ## needed to show Today in registration log
