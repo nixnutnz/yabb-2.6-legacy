@@ -872,7 +872,7 @@ sub checkUserAvail {
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
 
-    for my $i ( 0 .. ( @reservecfg - 1 ) ) {
+    for my $i ( 0 .. $#reservecfg ) {
         chomp $reservecfg[$i];
     }
     $matchword = $reservecfg[0] eq 'checked';

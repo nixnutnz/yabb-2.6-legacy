@@ -1500,7 +1500,7 @@ qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resi
 qq~<img src="$imagesdir/$newload{'brd_col'}" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
             my @collbdrules =
               split /\|/xsm, ${ $uid . $username }{'collapsebdrules'};
-            for my $i ( 0 .. ( @collbdrules - 1 ) ) {
+            for my $i ( 0 .. $#collbdrules ) {
                 ( $rulebd, $rulelgt ) = split /,/xsm, $collbdrules[$i];
                 if ( $rulebd eq $currentboard && $rulelgt == $tmprulelgt ) {
                     $tmpruletxt = qq~$messageindex_txt{'collruletext'}~;
@@ -1823,7 +1823,7 @@ s/(<!-- Icon and access info end -->)/$1\n<div class="q_post_space">{yabb forumj
 sub collapse_bdrule {
     $tmpboardrules = q{};
     my @tmpbdrule = split /\|/xsm, ${ $uid . $username }{'collapsebdrules'};
-    for my $i ( 0 .. ( @tmpbdrule - 1 ) ) {
+    for my $i ( 0 .. $#tmpbdrule ) {
         my ( $tmrulebd, $tmrulelgt ) = split /,/xsm, $tmpbdrule[$i];
         if ( $tmrulebd ne $INFO{'rulebd'} ) {
             $tmpboardrules .= qq~$tmpbdrule[$i]|~;

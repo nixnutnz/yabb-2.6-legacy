@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
 $newsettingspmver = 'YaBB 2.6.12 $Revision$';

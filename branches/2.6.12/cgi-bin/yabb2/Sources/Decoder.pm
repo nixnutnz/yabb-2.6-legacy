@@ -119,7 +119,7 @@ qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_3'} $lastCharsLen $floodtxt{
     $codemaxchars2 = $codemaxchars + int rand 2;
     ## Generate a random string
     $captcha = keygen( $codemaxchars2, $captchastyle );
-    ## now we are going to spice the captcha with the formsession
+    ## now we are going to spice the captcha with the masterkey
     $sessionid = scramble( $captcha, $masterkey );
     chomp $sessionid;
 

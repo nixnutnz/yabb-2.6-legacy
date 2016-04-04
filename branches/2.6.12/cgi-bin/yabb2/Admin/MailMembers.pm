@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
 $mailmemberspmver = 'YaBB 2.6.12 $Revision$';
@@ -185,7 +185,6 @@ sub Mailing {
         }
         $yymain .= qq~
     </div>
-
     <div class="windowbg2" style="float: left; width: 44%; margin: 1%; margin-top: 0; border: 0;">
     &nbsp;
     </div>

@@ -1317,9 +1317,9 @@ sub buildIMS {
         }
     }
     ## run through the messages and count against the folder name
-    for my $y ( 0 .. ( @currStoreFolders - 1 ) ) {
+    for my $y ( 0 .. $#currStoreFolders ) {
         $storefoldersCount[$y] = 0;
-        for my $x ( 0 .. ( @imstore - 1 ) ) {
+        for my $x ( 0 .. $#imstore ) {
             if ( ( split /\|/xsm, $imstore[$x] )[13] eq $currStoreFolders[$y] )
             {
                 $storefoldersCount[$y]++;
@@ -1350,7 +1350,7 @@ sub update_IMS {
       or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
     print {UPDATE_IMS} qq~### UserIMS YaBB 2.6.12 Version ###\n\n~
       or croak "$croak{'print'} update IMS";
-    for my $cnt ( 0 .. ( @tag - 1 ) ) {
+    for my $cnt ( 0 .. $#tag ) {
         print {UPDATE_IMS} qq~'$tag[$cnt]',"${$builduser}{$tag[$cnt]}"\n~
           or croak "$croak{'print'} update IMS";
     }

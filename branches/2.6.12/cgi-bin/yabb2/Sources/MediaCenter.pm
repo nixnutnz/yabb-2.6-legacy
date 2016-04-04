@@ -41,7 +41,6 @@ qq~$maintxt{'41'} <a href="$scripturl?action=login;sesredir=num\~$curnum">$img{'
             $video .=
 qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a> !!~;
         }
-
     }
     else {
         if ( !$player_version ) { $player_version = 6; }

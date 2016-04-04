@@ -602,14 +602,14 @@ sub shellaccess {
     # Parse the arguments
     my ( $i, %arguments );
 
-    for my $i ( 0 .. ( @ARGV - 1 ) ) {
+    for my $i ( 0 .. $#ARGV ) {
         if ( $ARGV[$i] =~ /\A\-/sm ) {
             my ( $option, $value );
             $option = $ARGV[$i];
             $option =~ s/\A\-\-?//xsm;
             ( $option, $value ) = split /\=/xsm, $option;
             $arguments{$option} = $value || q{};
-            if ( !defined $arguments{$option} ) { $arguments{$option} = 1; }
+            if ( !$arguments{$option} ) { $arguments{$option} = 1; }
         }
     }
 

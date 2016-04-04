@@ -36,7 +36,7 @@ sub SetStatus {
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <BOARDFILE>;
 	fclose( BOARDFILE );
-    for my $line ( 0 .. ( @boardfile - 1 ) ) {
+    for my $line ( 0 .. $#boardfile ) {
         if ( $boardfile[$line] =~ m/\A$threadid\|/xsm ) {
             my (
                 $mnum,     $msub,      $mname, $memail, $mdate,

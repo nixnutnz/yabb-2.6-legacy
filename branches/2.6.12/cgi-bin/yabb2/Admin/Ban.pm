@@ -12,7 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local;
 our $VERSION = '2.6.12';

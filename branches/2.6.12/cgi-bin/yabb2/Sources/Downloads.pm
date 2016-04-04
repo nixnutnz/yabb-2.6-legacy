@@ -364,7 +364,7 @@ sub DownloadFileCouter {
     }
 
     if ( !-e "$uploaddir/$dfile" ) {
-        fatal_error( q{}, "$dfile $maintxt{'23'}" );
+        fatal_error( q{}, "$maintxt{'23'} $dfile$maintxt{'23a'}" );
     }
 
     fopen( ATM, "<$vardir/attachments.txt", 1 )
@@ -372,8 +372,8 @@ sub DownloadFileCouter {
     my @attachments = <ATM>;
     fclose( ATM );
 
-    for my $aa ( 0 .. ( @attachments - 1 ) ) {
-        $attachments[$aa] =~
+    for my $i ( 0 .. $#attachments ) {
+        $attachments[$i] =~
 s/(.+\|)(.+)\|(\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
     fopen( ATM, ">$vardir/attachments.txt", 1 )

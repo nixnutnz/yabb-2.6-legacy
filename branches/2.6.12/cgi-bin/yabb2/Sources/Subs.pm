@@ -646,7 +646,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                     var startcolor = convProp(bcolor);~;
             my $greybox = $img_greybox;
             $img_greybox = 0;
-            foreach my $j ( 0 .. ( @newsmessages - 1 ) ) {
+            foreach my $j ( 0 .. $#newsmessages ) {
                 $message = $newsmessages[$j];
                 wrap();
                 if ($enable_ubbc) {
@@ -1612,7 +1612,7 @@ sub uri_escape {    # usage: $safe = uri_escape( $string )
     my $text = shift;
 
     #    return undef unless defined $text;
-    defined $text || return;
+    $text || return;
     if ( !%escapes ) {
 
         # Build a char->hex map
@@ -2157,8 +2157,8 @@ sub WriteLog {
     }
     my $hostin = qq~$user_host#$ENV{'HTTP_USER_AGENT'}~;
 #    $hostin =~ s/\x0//gsm;
-    $hostin =~ s/chr(32)//gsms;
-#    $hostin =~ s/\s+//gxms;
+    $hostin =~ s/chr(32)//gxms;
+    $hostin =~ s/\s+/ /gxms;
     $hostin =~ s/\x7C//gsm;
     $hostin =~ s/[^\x21-\x7E]+$//gsm;
     fopen( LOG, ">$vardir/log.txt" );
@@ -2224,7 +2224,7 @@ sub RemoveUserOnline {
     fopen( LOG, ">$vardir/log.txt", 1 );
     if ($user) {
         my $x = -1;
-        for my $i ( 0 .. ( @logentries - 1 ) ) {
+        for my $i ( 0 .. $#logentries ) {
             if ( ( split /\|/xsm, $logentries[$i], 2 )[0] ne $user ) {
                 print {LOG} $logentries[$i] or croak "$croak{'print'} LOG";
             }
@@ -2987,7 +2987,7 @@ sub get_template {
     my @templ_list = ( $useboard, $usemessage, $usedisplay, $usemycenter );
     my @ld_list    = qw(BoardIndex MessageIndex Display MyCenter);
     my $ld_cn      = 0;
-    for my $x ( 0 .. ( @ld_list - 1 ) ) {
+    for my $x ( 0 .. $#ld_list ) {
         if ( $templt eq $ld_list[$x] ) {
             require qq~$templatesdir/$templ_list[$x]/$ld_list[$x].template~;
             $ld_cn = 1;

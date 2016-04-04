@@ -53,6 +53,7 @@ sub mainMenu {
             'guestpm'
         ],
     );
+
 ## Mod hook 1 ##
 
     if ( $action eq 'addtab' && $iamadmin ) {

@@ -2022,7 +2022,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}" rel="no
                             @grps = qw(all mods fmods gmods admins);
                             @grps2 =
                               qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
-                            for my $grp ( 0 .. ( @grps - 1 ) ) {
+                            for my $grp ( 0 .. $#grps ) {
                                 if ( $muser eq $grps[$grp] ) {
                                     $usernameto = $inmes_txt{ $grps2[$grp] };
                                 }
@@ -2059,7 +2059,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musernameto}" r
                         @grps = qw(all mods fmods gmods admins);
                         @grps2 =
                           qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
-                        for my $grp ( 0 .. ( @grps - 1 ) ) {
+                        for my $grp ( 0 .. $#grps ) {
                             if ( $musernameto eq $grps[$grp] ) {
                                 $usernameto = $inmes_txt{ $grps2[$grp] };
                             }
@@ -2378,7 +2378,7 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                     @grps  = qw(all mods fmods gmods admins);
                     @grps2 = qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                     foreach my $uname ( split /,/xsm, $musernameto ) {
-                        for my $grp ( 0 .. ( @grps - 1 ) ) {
+                        for my $grp ( 0 .. $#grps ) {
                             if ( $uname eq $grps[$grp] ) {
                                 push @usernameto, $inmes_txt{ $grps2[$grp] };
                             }
@@ -2435,7 +2435,7 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                     @grps  = qw(all mods fmods gmods admins);
                     @grps2 = qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                     foreach my $uname ( split /,/xsm, $musernameto ) {
-                        for my $grp ( 0 .. ( @grps - 1 ) ) {
+                        for my $grp ( 0 .. $#grps ) {
                             if ( $uname eq $grps[$grp] ) {
                                 push @usernameto, $inmes_txt{ $grps2[$grp] };
                             }
@@ -2544,7 +2544,7 @@ qq~$guestName<br />(<a href="mailto:$guestEmail">$guestEmail</a>)~;
                     @grps  = qw(all mods fmods gmods admins);
                     @grps2 = qw(bmallmembers bmmods bmfmods bmgmods bmadmins);
                     foreach my $uname ( split /,/xsm, $musernameto ) {
-                        for my $grp ( 0 .. ( @grps - 1 ) ) {
+                        for my $grp ( 0 .. $#grps ) {
                             if ( $uname eq $grps[$grp] ) {
                                 push @usernameto, $inmes_txt{ $grps2[$grp] };
                             }

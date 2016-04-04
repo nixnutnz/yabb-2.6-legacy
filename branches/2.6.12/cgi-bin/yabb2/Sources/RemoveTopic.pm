@@ -34,7 +34,7 @@ sub RemoveThread {
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <BOARDFILE>;
     fclose( BOARDFILE );
-    for my $aa ( 0 .. ( @buffer - 1 ) ) {
+    for my $aa ( 0 .. $#buffer ) {
         if ( $buffer[$aa] =~ m{\A$thread\|}xsm ) {
             $threadline = $buffer[$aa];
             $buffer[$aa] = q{};

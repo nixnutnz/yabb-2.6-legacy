@@ -83,7 +83,7 @@ sub ModifyMessage {
         ToChars($poll_question);
         ToChars($poll_comment);
 
-        for my $i ( 1 .. ( @poll_data - 1 ) ) {
+        for my $i ( 1 .. $#poll_data ) {
             ( $votes[$i], $options[$i], $slicecolor[$i], $split[$i] ) =
               split /\|/xsm, $poll_data[$i];
             ToChars( $options[$i] );
@@ -789,7 +789,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
         fopen( BOARD, "+<$boardsdir/$currentboard.txt" )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @board = <BOARD>;
-        for my $c ( 0 .. ( @board - 1 ) ) {
+        for my $c ( 0 .. $#board ) {
             if ( $board[$c] =~ m{\A$threadid\|}osm ) {
                 $board[$c] = "$yyThreadLine\n";
                 last;
@@ -985,7 +985,7 @@ sub MultiDel {    # deletes single- or multi-Posts
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <BOARDFILE>;
 
-    for my $c ( 0 .. ( @buffer - 1 ) ) {
+    for my $c ( 0 .. $#buffer ) {
         if ( $buffer[$c] =~ /^$thread\|/xsm ) {
             $threadline = $buffer[$c];
             splice @buffer, $c, 1;
@@ -1001,7 +1001,7 @@ sub MultiDel {    # deletes single- or multi-Posts
     $newthreadline[5] = ${$thread}{'replies'};    # replay number
 
     my $inserted = 0;
-    for my $c ( 0 .. ( @buffer - 1 ) ) {
+    for my $c ( 0 .. $#buffer ) {
         if ( ( split /\|/xsm, $buffer[$a], 6 )[4] < $newthreadline[4] ) {
             splice @buffer, $c, 0, join( q{|}, @newthreadline ) . "\n";
             $inserted = 1;

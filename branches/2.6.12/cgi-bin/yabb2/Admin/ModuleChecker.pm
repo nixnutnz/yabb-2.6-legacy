@@ -14,7 +14,7 @@
 ###############################################################################
 use strict;
 #use warnings;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
@@ -60,7 +60,7 @@ foreach my $module ( @modules ) {
             my $version   = $module->VERSION;
             my $myversion = (
                 "%s %s is\n %s\n",
-                $module, ( defined $version ? $version : '<NO $VERSION>' ),
+                $module, ( $version ? $version : '<NO $VERSION>' ),
             );
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>

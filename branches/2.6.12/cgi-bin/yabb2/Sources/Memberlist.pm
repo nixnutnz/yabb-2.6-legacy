@@ -222,7 +222,7 @@ sub MLPosition {
     ManageMemberinfo('load');
 
     my %nopostorder;
-    for my $i ( 0 .. ( @nopostorder - 1 ) ) {
+    for my $i ( 0 .. $#nopostorder ) {
         $nopostorder{ $nopostorder[$i] } = $i;
     }
 

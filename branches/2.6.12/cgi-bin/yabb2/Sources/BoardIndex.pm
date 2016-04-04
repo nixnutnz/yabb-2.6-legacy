@@ -1177,8 +1177,7 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                     $templateblock = $boardblockext;
                     $bdd           = q{};
                     my @bname = split /<br \/>/sm, $bddescr;
-                    my $dcnt = @bname;
-                    for my $i ( 1 .. ( $dcnt - 1 ) ) {
+                    for my $i ( 1 .. $#bname ) {
                         $bdd .= $bname[$i] . '<br />';
                     }
                     $boardname =
