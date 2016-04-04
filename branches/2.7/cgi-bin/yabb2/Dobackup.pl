@@ -17,7 +17,7 @@
 ###############################################################################
 # use strict;
 # use warnings;
-# no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local;
@@ -37,7 +37,7 @@ require Paths;
 if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 else                     { $yyext = 'pl'; }
 
-my ( @settings, %pathconvert );
+my %pathconvert     = ();
 my $q               = CGI->new;
 my $id              = $q->param('myid');
 my $passwrd         = $q->param('passwrd');
@@ -97,7 +97,7 @@ sub runbackup {
                 "$backup_txt{32} \$runbackup_again=$runbackup_again" );
         }
 
-        my @again = split /\./xsm, $runbackup_again;
+        my @again = split /[.]/xsm, $runbackup_again;
         $backupnewest = $again[1];
         @backup_paths = split /_/xsm, $again[2];
         if ( $again[3] eq 'a' ) {
@@ -124,7 +124,7 @@ sub runbackup {
     }
 
     $backuptime = $mybackuptime || time;
-    my $time_to_jump = time + $max_process_time;
+    my $time_to_jump = time + $bkmax_process_time;
     $curtime = $mycurtime || $mcurtime;
 
     $backupnewest ||= $backupnewst;
@@ -174,14 +174,14 @@ sub runbackup {
         $i++;
         if ( $i >= $loop1 ) {
             $j = 0;
-            foreach my $path ( split /\|/xsm, $pathconvert{$key} ) {
+            for my $path ( split /[|]/xsm, $pathconvert{$key} ) {
                 $j++;
                 if ( $j > $loop2 ) {
                     $loop2 = 0;
 
 # To keep this simple, I will just point to a generic subroutine that takes care of
 # handling the differences in backup methods.
-                    if ( $path =~ s/^\.\///xsm ) {
+                    if ( $path =~ s/^[.]\///xsm ) {
                         $ENV{'SCRIPT_FILENAME'} =~ /(.*\/)/xsm;
                         $path = "$1$path";
                     }
@@ -206,7 +206,7 @@ sub runbackup {
 
     $lastbackup = $curtime; # save the last backup time with the actual settings
     print_BackupSettings();
-    backuplock('off');
+    backupdone();
     return;
 }
 
@@ -232,7 +232,7 @@ sub backupdone {    # Display the amount of time it took to be nice ;)
     my $timelogp =
 qq~        <p class="center">This backup took $myhrstxt$mymintxt$mysectxt ($btime seconds).</p>~;
 
-    if ( !-e "Variables/backup.lock" ) {
+    if ( !-e 'Variables/backup.lock' ) {
         print qq~<!DOCTYPE html>
 <html lang='en-US'>
 <head>
@@ -252,16 +252,16 @@ $timelogp
     </div>
 </body>
 </html>
-~;
+~ or croak 'cannot print page';
     }
     exit;
 }
 
 sub runbackup_loop {
-    my ( $i, $j, $curtme, $backupnewest, $backuptime ) = @_;
+    my ( $i, $j, $curtme, $backupnwst, $backuptime ) = @_;
     $page = qq~
     <p id="memcontinued">
-        $backup_txt{'542'} <a href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewst=$backupnewest;backuptime=$backuptime;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd" onclick="PleaseWait();">$backup_txt{'543'}</a>.<br />
+        $backup_txt{'542'} <a href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewest=$backupnwst;backuptime=$backuptime;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd" onclick="PleaseWait();">$backup_txt{'543'}</a>.<br />
         $backup_txt{'90'}
     </p>
 
@@ -276,7 +276,7 @@ sub runbackup_loop {
         function membtick() {
             if (stop != 1) {
                 PleaseWait();
-                location.href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewst=$backupnewest;backuptime=$backuptime;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd";
+                location.href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewest=$backupnwst;backuptime=$backuptime;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd";
             }
         }
 
@@ -292,8 +292,10 @@ sub check_backup_settings {
     if ( !$backupmethod ) { fatal_error( q{}, "$backup_txt{29}" ); }
 
     if ( $backupmethod =~ /::/xsm ) {    # It is a module, test-require it
-        eval "use $backupmethod();";
-        if ($EVAL_ERROR) {
+        if ( eval { require "$backupmethod()" } ) {
+            "$backupmethod()"->import();
+        }
+        else{
             fatal_error( q{}, "$backup_txt{39} $backupmethod $backup_txt{41}" );
         }
     }
@@ -315,8 +317,11 @@ sub check_backup_settings {
 
     # If we are using Archive::Tar, check for the compression method.
     elsif ( $backupmethod eq 'Archive::Tar' && $compressmethod ne 'none' ) {
-        eval "use $compressmethod();";
-        if ($EVAL_ERROR) {
+        if ( eval { require "$compressmethod()" } ) {
+                require "$compressmethod()";
+                "$compressmethod()"->import();
+        }
+        else{
             fatal_error( q{},
                 "$backup_txt{39} $compressmethod $backup_txt{41}" );
         }
@@ -416,6 +421,7 @@ sub print_BackupSettings {
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
+    backuplock('off');
     return;
 }
 
@@ -424,21 +430,31 @@ sub BackupMethodInit {
 
     # Check module types and load them at runtime (not compilation)
     if ( $backupmethod eq 'Archive::Tar' ) {
-        eval 'use Archive::Tar;';    # Everything is exported at once
-        if ($EVAL_ERROR) {
+        if ( eval { require Archive::Tar } ) { # Everything is exported at once
+                require Archive::Tar;
+                Archive::Tar->import();
+            }
+        else{
             fatal_error( q{}, "$backup_txt{28} Archive::Tar: $EVAL_ERROR" );
         }
         if ( $compressmethod eq 'Compress::Zlib' ) {    # Also using Zlib
-            eval 'use Compress::Zlib;';    # Zlib exports everything at once
-            if ($EVAL_ERROR) {
+            if ( eval { require Compress::Zlib } )
+            {    # Zlib exports everything at once
+        }
+        else{
                 fatal_error( q{},
-                    "$backup_txt{28} Compres::Zlib: $EVAL_ERROR" );
+                    "$backup_txt{28} Compress::Zlib: $EVAL_ERROR" );
             }
         }
         elsif ( $compressmethod eq 'Compress::Bzip2' ) {
-            eval 'use Compress::Bzip2 qw(:utilities);'
-              ;    # Finally, something I can export just some code with
-            if ($EVAL_ERROR) {
+            if (
+                eval { require Compress::Bzip2 }
+              )
+            {
+                require Compress::Bzip2;
+                Compress::Bzip2 import->qw(':utilities');
+            }
+        else{
                 fatal_error( q{},
                     "$backup_txt{28} Compress::Bzip2: $EVAL_ERROR" );
             }
@@ -455,13 +471,16 @@ sub BackupMethodInit {
         }
     }
     elsif ( $backupmethod eq 'Archive::Zip' ) {
-        eval 'use Archive::Zip;';   # Everything is exported by default here too
-        if ($EVAL_ERROR) {
+        if ( eval { require Archive::Zip } )
+        {    # Everything is exported by default here too
+            require Archive::Zip;
+            Archive::Zip->import();
+        }
+        else{
             fatal_error( q{}, "$backup_txt{28} Archive::Zip: $EVAL_ERROR" );
         }
-        $zipfile = Archive::Zip->new;
-
 # We need this for the loops, when preventing to run into browser/server timeout.
+        $zipfile = Archive::Zip->new;
         if ( -e "$backupdir/backup$backuptype.$curtime.$filedirs.a.zip" ) {
             $zipfile->read(
                 "$backupdir/backup$backuptype.$curtime.$filedirs.a.zip");
@@ -486,7 +505,7 @@ sub BackupMethodFinalize {
                 "bzip2 -z $backupdir/backup$backuptype.$curtime.$filedirs.tar")
               || fatal_error(
                 q{},
-"'bzip2 -z $backupdir/backup$backuptype.$curtime.$filedirs.tar.bz2' $backup_txt{31}: $!. $backup_txt{32} "
+"'bzip2 -z $backupdir/backup$backuptype.$curtime.$filedirs.tar.bz2' $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
                   . ( $CHILD_ERROR >> 8 )
               );
 
@@ -496,7 +515,7 @@ sub BackupMethodFinalize {
                 "gzip $backupdir/backup$backuptype.$curtime.$filedirs.tar")
               || fatal_error(
                 q{},
-"'gzip $backupdir/backup$backuptype.$curtime.$filedirs.tar.gz' $backup_txt{31}: $!. $backup_txt{32} "
+"'gzip $backupdir/backup$backuptype.$curtime.$filedirs.tar.gz' $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
                   . ( $CHILD_ERROR >> 8 )
               );
         }
@@ -530,7 +549,6 @@ sub BackupMethodFinalize {
     return;
 }
 
-
 sub ak_system
 {    # Returns a success code. The system's code returned is $CHILD_ERROR >> 8
     @x = @_;
@@ -558,9 +576,9 @@ sub CheckPath {
 
 sub cookie {
     my ( $cookieusername, $cookiepassword ) = @_;
-    my ( $password, %cookies, );
+    my ( %cookies, );
     foreach ( split /; /sm, $ENV{'HTTP_COOKIE'} ) {
-        $_ =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack('C', hex($1))/egxsm;
+        $_ =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
         my ( $cookie, $value ) = split /=/xsm;
         $cookies{$cookie} = $value;
     }
@@ -609,7 +627,7 @@ $looper
         <p class="center">$mbname &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$yr. All Rights Reserved.</p>
     </div>
 </body>
-</html>~;
+</html>~ or croak 'cannot print page';
     exit;
 }
 

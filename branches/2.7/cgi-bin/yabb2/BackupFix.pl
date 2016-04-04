@@ -18,7 +18,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
+
 #use warnings;
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local;
@@ -158,16 +160,16 @@ my $page = qq~<!DOCTYPE html>
 print $page or croak 'Oops - no page here';
 
 sub cookie {
-    my ( $cookieusername, $cookiepassword ) = @_;
-    my ( $password, %cookies, );
+    my ( $cookieusrname, $cookiepasswrd ) = @_;
+    my ( %cookies, );
     foreach ( split /; /sm, $ENV{'HTTP_COOKIE'} ) {
-        $_ =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack('C', hex($1))/egxsm;
+        $_ =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
         my ( $cookie, $value ) = split /=/xsm;
         $cookies{$cookie} = $value;
     }
-    if ( $cookies{$cookiepassword} ) {
-        $password = $cookies{$cookiepassword};
-        $username = $cookies{$cookieusername} || 'Guest';
+    if ( $cookies{$cookiepasswrd} ) {
+        $password = $cookies{$cookiepasswrd};
+        $username = $cookies{$cookieusrname} || 'Guest';
     }
     else {
         $password = q{};
@@ -186,20 +188,9 @@ sub encode_password {
 
 sub get_user {
     my ($muser) = @_;
-    my $file = qq~$memberdir/$muser.vars~;
-    open my $FBOOK, '<', $file or croak 'cannot find user';
-    my @fbook = <$FBOOK>;
-    close $FBOOK or croak 'cannot close user file';
-    foreach my $i (@fbook) {
-        chomp $i;
-        my ( $ind, $value ) = split /,/xsm, $i;
-        if ($value) {
-            $value =~ s/’/&#714;/xsm;
-            $value =~ s/"//gxsm;
-            $ind =~ s/\'//gxsm;
-            $map{$ind} = $value;
-        }
-    }
+    our (%vars);
+    require "$memberdir/$muser.vars";
+    my %map = %vars;
     return ( $map{'realname'}, $map{'password'} );
 }
 

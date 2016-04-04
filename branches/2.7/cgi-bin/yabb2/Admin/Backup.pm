@@ -17,7 +17,7 @@
 ###############################################################################
 # use strict;
 # use warnings;
-# no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 use Module::Load;
@@ -187,14 +187,14 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
             unlink "$vardir/backuptest.$curtime.tar";
         }
         else {
-            $input        = qq~disabled="disabled" id="backupmethod1"~;
+            $input        = q~disabled="disabled" id="backupmethod1"~;
             $style        = q~backup-disabled~;
-            $disabledtext = ": Tar $backup_txt{31}: $!. $backup_txt{32} "
+            $disabledtext = ": Tar $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 );
         }
     }
     else {
-        $input        = qq~disabled="disabled" id="backupmethod1"~;
+        $input        = q~disabled="disabled" id="backupmethod1"~;
         $style        = q~backup-disabled~;
         $disabledtext = $backup_txt{41};
     }
@@ -222,14 +222,14 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
             unlink "$vardir/backuptest.$curtime.zip";
         }
         else {
-            $input        = qq~disabled="disabled" id="backupmethod2"~;
+            $input        = q~disabled="disabled" id="backupmethod2"~;
             $style        = q~backup-disabled~;
-            $disabledtext = ": Zip $backup_txt{31}: $!. $backup_txt{32} "
+            $disabledtext = ": Zip $backup_txt{31}: $OS_ERROR. $backup_txt{32} "
               . ( $CHILD_ERROR >> 8 );
         }
     }
     else {
-        $input        = qq~disabled="disabled" id="backupmethod2"~;
+        $input        = q~disabled="disabled" id="backupmethod2"~;
         $style        = q~backup-disabled~;
         $disabledtext = $backup_txt{41};
     }
@@ -412,6 +412,14 @@ $selmodules
       . ( $rememberbackup / 86400 )
       . qq~" size="3"/> <label for="rememberbackup">$backup_txt{'19d'}</label>
             </td>
+        </tr><tr>
+            <td class="catbg"><b>$backup_txt{'19e'}</b></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <label for="bkmax_process_time">$backup_txt{'19f'}</label> <input type="text" name="bkmax_process_time" id="bkmax_process_time" value="~
+      . ( $bkmax_process_time )
+      . qq~" size="3" /> <label for="bkmax_process_time">$backup_txt{'19g'}</label>
+            </td>
         </tr>
     </table>
     </div>
@@ -454,7 +462,7 @@ $presetjavascriptcode
             map          { [ $_, /(\d+)/xsm, $_ ] } @backups
           )
         {
-            if ( $file !~ /\A(backup)(n?)\.(\d+)\.([^\.]+)\.(.+)/xsm ) { next; }
+            if ( $file =~ /\A(backup)(n?)\.(\d+)\.([^\.]+)\.(.+)/xsm ) {
             if ( !$lastbackupfiletime ) { $lastbackupfiletime = $3; }
             my $filesize = -s "$backupdir/$file";
             $filesize = int( $filesize / 1024 );    # Measure it in kilobytes
@@ -493,7 +501,7 @@ $presetjavascriptcode
                     <br /><a href="$boardurl/Dobackup.pl?myid=$username;passwrd=${ $uid . $username }{'password'};runbackup_again=$filename">$backup_txt{'62'}</a></td>
                 <td class="center">~
               . (
-                ( $5 =~ /^a\.tar/xsm || $5 !~ /tar/xsm )
+                ( $5 =~ /^a[.]tar/xsm || $5 !~ /tar/xsm )
                 ? q{-}
                 : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~
               )
@@ -501,6 +509,8 @@ $presetjavascriptcode
                 <td>$delete</td>
             </tr>~;
         }
+        else {next}
+          }
 
         $filelist ||= qq~<tr>
                 <td colspan="9"><i>$backup_txt{38}</i></td>
@@ -607,6 +617,7 @@ sub backupsettings2 {
     $backupdir     = $FORM{'backupdir'};
     $backupprogusr = $FORM{'backupprogusr'};
     $backupprogbin = $FORM{'backupprogbin'} || '/usr/bin';
+    $bkmax_process_time = $FORM{'bkmax_process_time'} || 5;
 
     $lastbackup = 0;    # reset when saving settings new
     print_BackupSettings();
@@ -741,14 +752,12 @@ sub downloadbackup {
       or croak "$croak{'print'} Content-Type";
 
     # open in binmode
-    open( READ, $filename )
-      || fatal_error( q{}, "$backup_txt{46} $filename", 1 );
-    binmode READ;
-
-    # stream it out
+    open '<', $READ, $filename
+      or fatal_error( q{}, "$backup_txt{46} $filename", 1 );
+    binmode $READ;
     binmode STDOUT;
-    while (<READ>) { print; }
-    close(READ);
+    while (<$READ>) { print or croak 'cannot print file'; }
+    close $READ or fatal_error( q{}, "$backup_txt{46} $filename", 1 );
     return;
 }
 
@@ -1018,7 +1027,7 @@ sub recoverbackup2 {
           $restore_root;    # mkdir somtimes does not set the CHMOD as expected
     }
 
-    $FORM{'recoverfile'} =~ /\.tar(.*)$/xsm;
+    $FORM{'recoverfile'} =~ /[.]tar(.*)$/xsm;
     if ( $1 eq '.gz' ) {
         $recovertype =
           "tar -tzf $backupdir/$FORM{'recoverfile'} -C $restore_root";

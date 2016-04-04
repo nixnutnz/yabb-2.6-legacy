@@ -62,6 +62,9 @@ if( ! $script_root ) {
 '19b' => q~Backup Reminder~,
 '19c' => q~Show an alert if no backup has been performed in~,
 '19d' => q~days. Enter zero or leave blank to disable reminder.~,
+'19e' => q~Max Process Time~,
+'19f' => q~Max Process Time is currently set for~,
+'19g' => q~seconds - adjust this up or down to prevent server timeouts~,
 '20' => q~Save Settings~,
 
 # Begin run backup area

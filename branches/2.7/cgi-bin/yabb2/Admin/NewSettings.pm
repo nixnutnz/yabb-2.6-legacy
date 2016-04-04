@@ -13,6 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -315,11 +316,10 @@ sub email_test {
     $testmessage = $admin_txt{'testmessage'};
     $testmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/xsm;
     sendmail(
-        $webmaster_email,
-        $admin_txt{'testsubject'},
-        $testmessage,
-        $admin_txt{'mailfrom'}
+        $webmaster_email, $admin_txt{'testsubject'},
+        $testmessage,     $admin_txt{'mailfrom'}
     );
+    return;
 }
 
 # Regexes. Will be used like this: $var =~ /^(?:$regexes{'a'}|$regexes{'b'}|$regexes{'c'})$/ || die;
@@ -332,7 +332,7 @@ my %regexes = (
 
     # optional "#" (for hex color codes), plus hex characters
     alpha    => '[a-zA-Z]+',           # Letters
-    text     => '[^\n\r]+',            # Anything but newlines
+    text     => '[^\r\n]+',            # Anything but newlines
     fulltext => '(?s).+',              # Anything, including newlines
     null     => q{},
 
@@ -412,11 +412,13 @@ sub SaveSettingsTo {
     for ( keys %lngs ) {
         if ( ${$_ . '_maintenancetext'} ) {
             fopen(MAINT, ">$langdir/$_/maintenancetext.txt");
-            print {MAINT} ${$_ . '_maintenancetext'} or croak "$croak{'print'} MAINT";
+            print {MAINT} ${ $_ . '_maintenancetext' }
+              or croak "$croak{'print'} MAINT";
             fclose(MAINT);
         }
         if (${$_ . '_news'} ) {
-            fopen( NEWS, ">$langdir/$_/news.txt", 1 ) || fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
+            fopen( NEWS, ">$langdir/$_/news.txt", 1 )
+              || fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
             print {NEWS} ${$_ . '_news'} or croak "$croak{'print'} NEWS";
             fclose(NEWS);
         }
@@ -526,14 +528,15 @@ sub SaveSettingsTo {
         if (@SmilieLinebreak) {
             $SmilieLinebreak = q{"} . join( q{","}, @SmilieLinebreak ) . q{"};
         }
-        if (!$bookmarks) { $bookmarks = q{'} . join( q{', '}, @bookmarks ) . q{'}; }
-
+        if ( !$bookmarks ) {
+            $bookmarks = q{'} . join( q{', '}, @bookmarks ) . q{'};
+        }
 
         my $backup_paths = join q{ }, @backup_paths;
 
         $smtp_server =~ s/^\s+|\s+$//gxsm;
 
-        $setfile = <<EOF;
+        $setfile = << "EOF";
 ###############################################################################
 # Settings.pm                                                                 #
 ###############################################################################
@@ -1141,6 +1144,7 @@ $ext_prof_fields
 \$backupdir = '$backupdir';
 \$lastbackup = $lastbackup;
 \$backupsettingsloaded = $backupsettingsloaded;
+\$bkmax_process_time = $bkmax_process_time;
 
 ###############################################################################
 # Mod Settings                                                                #
