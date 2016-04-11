@@ -12,12 +12,13 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-our $VERSION = '2.7.00';
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode_utf8 encode_utf8);
+our $VERSION = '2.7.00';
 
-$userselectpmver = 'YaBB 2.7.00 $Revision$';
+$userselectpmver  = 'YaBB 2.7.00 $Revision$';
 @userselectpmmods = ();
 if (@userselectpmmods) {
     $userselectpmmods = 1;
@@ -43,18 +44,18 @@ sub FindMem {
         $INFO{'sort'}  = 'username';
         $INFO{'start'} = 0;
     }
-    elsif ( $SearchStr =~ /\*/xsm ) {
-        $SearchStr =~ s/\*+/\*/gxsm;
-        if ( $SearchStr =~ /\*\$/xsm ) {
+    elsif ( $SearchStr =~ /[*]/xsm ) {
+        $SearchStr =~ s/[*]+/*/gxsm;
+        if ( $SearchStr =~ /[*]\$/xsm ) {
             $SearchStr = substr $SearchStr, 0, length($SearchStr) - 1;
             $LookFor = qq~\^$SearchStr~;
         }
-        elsif ( $SearchStr =~ /^\*/xsm ) {
+        elsif ( $SearchStr =~ /^[*]/xsm ) {
             $SearchStr = substr $SearchStr, 1;
             $LookFor = qq~$SearchStr\$~;
         }
         else {
-            ( $before, $after ) = split /\*/xsm, $SearchStr;
+            ( $before, $after ) = split /[*]/xsm, $SearchStr;
             $LookFor = qq~\^($before).*?($after)\$~;
         }
     }
@@ -103,9 +104,9 @@ sub MemberList {
                 ~;
             }
             $radiobuttons = $my_bcc_radio;
-            $radiobuttons =~ s/{yabb my_radio_to}/$my_radio_to/sm;
-            $radiobuttons =~ s/{yabb my_radio_cc}/$my_radio_cc/sm;
-            $radiobuttons =~ s/{yabb my_radio_bcc}/$my_radio_bcc/sm;
+            $radiobuttons =~ s/\Q{yabb my_radio_to}\E/$my_radio_to/xsm;
+            $radiobuttons =~ s/\Q{yabb my_radio_cc}\E/$my_radio_cc/xsm;
+            $radiobuttons =~ s/\Q{yabb my_radio_bcc}\E/$my_radio_bcc/xsm;
         }
     }
     if ( $to_id =~ /moderators\d/xsm ) {
@@ -133,9 +134,9 @@ sub MemberList {
         $instruct_start = qq~$usersel_txt{'instruct'}~;
         $instruct_end   = qq~$usersel_txt{'groups'}~;
     }
-	for $x ( 0 .. $#alpha ) {
-            $page     = lc $alpha[$x];
-            $showpage = $alpha[$x];
+    for my $x ( 0 .. $#alpha ) {
+        $page     = lc $alpha[$x];
+        $showpage = $alpha[$x];
         if ( $INFO{'letter'} && $page eq $INFO{'letter'} ) {
             $LetterLinks .=
 qq~<div class="letterlinks_a"><span class="small"><b>$showpage</b></span></div>~;
@@ -164,8 +165,8 @@ qq~<div class="letterlinks_c"><span class="small"><b>$usersel_txt{'allsearch'}</
 qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=all"><span class="small"><b>$usersel_txt{'allsearch'}</b></span></a></div>~;
         }
     }
-    if ( $to_id eq 'groups' ) { $LetterLinks = q{}; }
-    if ( $INFO{'letter'} ne 'all' ) { $letter = $INFO{'letter'}; }
+    if ( $to_id eq 'groups' )       { $LetterLinks = q{}; }
+    if ( $INFO{'letter'} ne 'all' ) { $letter      = $INFO{'letter'}; }
 
     $i            = 0;
     $recent_exist = 1;
@@ -188,56 +189,51 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
             if ( !${ $uid . $recentname }{'password'} ) {
                 LoadUser($recentname);
             }
-            if ( ${ $uid . $recentname}{'realname'} ) {
+            if ( ${ $uid . $recentname }{'realname'} ) {
                 $memberinf{$recentname} =
-                  qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
+qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
             }
         }
     }
     elsif ( $INFO{'sort'} eq 'pmsearch' ) {
         if ( !-e "$memberdir/$username.usctmp" ) {
             ManageMemberinfo('load');
-            fopen( FILE, ">$memberdir/$username.usctmp" );
+            my $prnusctmp = q{};
             for my $membername (
                 sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
                 keys %memberinf
               )
             {
                 $memrealname = $memberinf{$membername}[0];
-                $mememail = $memberinf{$membername}[1];
+                $mememail    = $memberinf{$membername}[1];
                 ## do not find own name - unless for search or board mods!
-                if ( $to_id !~ /moderators\d/xsm && $to_id !~ /userspec/sm ) {
-                    if (   $memrealname =~ /$LookFor/igxsm
-                        && $membername ne $username )
+                if ( $to_id !~ /moderators\d/xsm && $to_id !~ /userspec/xsm ) {
+                    if (
+                        $membername ne $username
+                        && (   $memrealname =~ /$LookFor/igxsm
+                            || $mememail =~ /$LookFor/igxsm )
+                      )
                     {
-                        print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak "$croak{'print'} FILE";
-                    }
-                    elsif ($mememail =~ /$LookFor/igxsm
-                        && $membername ne $username )
-                    {
-                        print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak "$croak{'print'} FILE";
+                        $prnusctmp .= "$membername,$memrealname|$mememail\n";
                     }
                 }
                 else {
-                    if ( $memrealname =~ /$LookFor/igxsm ) {
-                        print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak "$croak{'print'} FILE";
-                    }
-                    elsif ( $mememail =~ /$LookFor/igxsm ) {
-                        print {FILE} "$membername,$memrealname|$mememail\n"
-                          or croak "$croak{'print'} FILE";
+                    if (   $memrealname =~ /$LookFor/igxsm
+                        || $mememail =~ /$LookFor/igxsm )
+                    {
+                        $prnusctmp .= "$membername,$memrealname|$mememail\n";
                     }
                 }
             }
+            fopen( FILE, ">$memberdir/$username.usctmp" );
+            print {FILE} $prnusctmp or croak "$croak{'print'} usctmp";
             fclose(FILE);
             undef %memberinf;
         }
         fopen( FILE, "$memberdir/$username.usctmp" );
         while ( $line = <FILE> ) {
             chomp $line;
-            ( $recentname, $realinfo ) = split /\,/xsm, $line;
+            ( $recentname, $realinfo ) = split /,/xsm, $line;
             $memberinf{$recentname} = $realinfo;
         }
         fclose(FILE);
@@ -263,8 +259,10 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
         ManageMemberinfo('load');
     }
 
-    if   ( $INFO{'sort'} eq 'recentpm' ) { $selRecent = q~class="windowbg recentpm"~; }
-    else                                 { $selRecent = q~class="windowbg2 recentpm"~; }
+    if ( $INFO{'sort'} eq 'recentpm' ) {
+        $selRecent = q~class="windowbg recentpm"~;
+    }
+    else { $selRecent = q~class="windowbg2 recentpm"~; }
 
     if ( $INFO{'sort'} eq 'mlletter' || $INFO{'sort'} eq 'username' ) {
         $selUser = q~class="windowbg recentpm"~;
@@ -273,13 +271,13 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
 
     if (
         (
-            $to_id !~ /toshow/sm || ( $PM_level
+            $to_id !~ /toshow/xsm || ( $PM_level
                 && ( $PM_level != 2 || $staff )
                 && ( $PM_level != 3 || $iamadmin || $iamgmod )
                 && ( $PM_level != 4 || $iamadmin || $iamgmod || $iamfmod ) )
         )
         or (
-            $to_id !~ /userspec/sm
+            $to_id !~ /userspec/xsm
             || (   ( $ML_Allowed != 1 || !$iamguest )
                 && ( $ML_Allowed != 2 || $staff )
                 && ( $ML_Allowed != 3 || $iamadmin || $iamgmod )
@@ -292,7 +290,7 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
             keys %memberinf
           )
         {
-            if ( $to_id =~ /toshow/sm ) {
+            if ( $to_id =~ /toshow/xsm ) {
                 if ( $PM_level == 2 ) {
                     CheckUserPM_Level($membername);
                     next if $UserPM_Level{$membername} < 2;
@@ -307,12 +305,12 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
                 }
             }
             $memrealname = $memberinf{$membername}[0];
-            $mememail = $memberinf{$membername}[1];
+            $mememail    = $memberinf{$membername}[1];
 
-            $letter = decode_utf8($letter);
+            $letter      = decode_utf8($letter);
             $memrealname = decode_utf8($memrealname);
-            $alpha = decode_utf8($alpha[0]);
-            $omega = decode_utf8($alpha[-1]);
+            $alpha       = decode_utf8( $alpha[0] );
+            $omega       = decode_utf8( $alpha[-1] );
             if ($letter) {
                 $SearchName = lc( substr $memrealname, 0, 1 );
                 if (
@@ -320,19 +318,20 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
                     && (
                         $membername ne $username
                         || (   $to_id =~ /moderators\d/xsm
-                            || $to_id =~ /userspec/sm )
+                            || $to_id =~ /userspec/xsm )
                     )
                   )
                 {
                     $ToShow[$i] = $membername;
                 }
                 elsif (
-                       $letter eq 'other'
-                    && ( ( $SearchName lt lc $alpha ) || ( $SearchName gt lc $omega ) )
+                    $letter eq 'other'
+                    && (   ( $SearchName lt lc $alpha )
+                        || ( $SearchName gt lc $omega ) )
                     && (
                         $membername ne $username
                         || (   $to_id =~ /moderators\d/xsm
-                            || $to_id =~ /userspec/sm )
+                            || $to_id =~ /userspec/xsm )
                     )
                   )
                 {
@@ -368,7 +367,7 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
         $yymain_inner .= qq~
             $radiobuttons
         ~;
-        if ( $to_id =~ /userspec/sm ) {
+        if ( $to_id =~ /userspec/xsm ) {
             $yymain_inner .= qq~
             <select name="rec_list" id="rec_list" size="10" class="reclist" ondblclick="copy_option('$to_id')">\n
         ~;
@@ -454,7 +453,7 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
         ~;
     }
     $yymain .= $my_sel_box;
-    $yymain =~ s/{yabb yymain_inner}/$yymain_inner/sm;
+    $yymain =~ s/\Q{yabb yymain_inner}\E/$yymain_inner/xsm;
 
     undef @ToShow;
     buildPages(0);
@@ -533,9 +532,8 @@ qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$lett
                 $pageindex = qq~$pagetxtindexst$pagetxtindex</span>~;
             }
             else {
-                $pagedropindex =
-q~<div class="pagedrp">~;
-                $tstart = $start;
+                $pagedropindex = q~<div class="pagedrp">~;
+                $tstart        = $start;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
                     ( $tstart, $start ) = split /\-/xsm, $INFO{'start'};
                 }
@@ -667,7 +665,7 @@ sub buildPages {
                 <input type="submit" class="button" style="font-size: 10px;" value="$usersel_txt{'gobutton'}" />
             </form>~;
     }
-    if ( $recent_exist && $to_id =~ /toshow/sm ) {
+    if ( $recent_exist && $to_id =~ /toshow/xsm ) {
         $not_groups_b = qq~
             <div $selRecent onclick="location.href='$scripturl?action=imlist;sort=recentpm;toid=$to_id';"><b>$usersel_txt{'recentlist'}</b></div>
             <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';"><b>$usersel_txt{'alllist'}</b></div>
@@ -685,14 +683,14 @@ sub buildPages {
     }
     if ( $LetterLinks ne q{} ) {
         $TableHeader_lt .= $my_tableHeader_lt;
-        $TableHeader_lt =~ s/{yabb LetterLinks}/$LetterLinks/sm;
+        $TableHeader_lt =~ s/\Q{yabb LetterLinks}\E/$LetterLinks/xsm;
     }
 
     $TableHeader .= $my_tableHeader;
-    $TableHeader =~ s/{yabb instructtext}/$instructtext/sm;
-    $TableHeader =~ s/{yabb not_groups}/$not_groups/sm;
-    $TableHeader =~ s/{yabb not_groups_b}/$not_groups_b/sm;
-    $TableHeader =~ s/{yabb TableHeader_lt}/$TableHeader_lt/sm;
+    $TableHeader =~ s/\Q{yabb instructtext}\E/$instructtext/xsm;
+    $TableHeader =~ s/\Q{yabb not_groups}\E/$not_groups/xsm;
+    $TableHeader =~ s/\Q{yabb not_groups_b}\E/$not_groups_b/xsm;
+    $TableHeader =~ s/\Q{yabb TableHeader_lt}\E/$TableHeader_lt/xsm;
 
     $numbegin = ( $start + 1 );
     $numend   = ( $start + $MembersPerPage );
@@ -702,17 +700,17 @@ sub buildPages {
 
     if ( $x[0] ) {
         $yymain .= $my_usersel;
-        $yymain =~ s/{yabb TableHeader}/$TableHeader/sm;
-        $yymain =~ s/{yabb pageindex}/$pageindex/sm;
+        $yymain =~ s/\Q{yabb TableHeader}\E/$TableHeader/xsm;
+        $yymain =~ s/\Q{yabb pageindex}\E/$pageindex/xsm;
     }
     else {
         if ( $to_id ne 'groups' ) {
             $my_inst3 = $usersel_txt{'instruct3'};
         }
         $yymain .= $my_usersel_inst;
-        $yymain =~ s/{yabb instruct_start}/$instruct_start/sm;
-        $yymain =~ s/{yabb instruct_end}/$instruct_end/sm;
-        $yymain =~ s/{yabb pageindexjs}/$pageindexjs/sm;
+        $yymain =~ s/\Q{yabb instruct_start}\E/$instruct_start/xsm;
+        $yymain =~ s/\Q{yabb instruct_end}\E/$instruct_end/xsm;
+        $yymain =~ s/\Q{yabb pageindexjs}\E/$pageindexjs/xsm;
     }
     return;
 }
@@ -744,10 +742,10 @@ sub userselectTemplate {
     }
 
     $output = $my_usersel_tem;
-    $output =~ s/{yabb noresults}/$usersel_txt{'noresults'}/sm;
-    $output =~ s/{yabb title}/$yytitle/sm;
-    $output =~ s/{yabb show_cc}/$show_cc/sm;
-    $output =~ s/{yabb main}/$yymain/sm;
+    $output =~ s/\Q{yabb noresults}\E/$usersel_txt{'noresults'}/xsm;
+    $output =~ s/\Q{yabb title}\E/$yytitle/xsm;
+    $output =~ s/\Q{yabb show_cc}\E/$show_cc/xsm;
+    $output =~ s/\Q{yabb main}\E/$yymain/xsm;
 
     $addsession =
 qq~<input type="hidden" name="formsession" value="$formsession" /></form>~;
@@ -795,25 +793,25 @@ qq~<br />loadrecentpms from ($pack, $file, $line)<br />=========================
             undef,   undef,       undef,    undef,      undef,
             undef,   $messStatus, undef
         ) = split /[|]/xsm, $usermessage;    # pull name from PM
-        if ( $messStatus =~ m/b/sm || $messStatus =~ m/g/sm ) { next; }
+        if ( $messStatus =~ m/b/xsm || $messStatus =~ m/g/xsm ) { next; }
         ## push all name strings
         if ( $fromName && $fromName ne $username ) {
             push @recentUsers, $fromName;
         }
         if ($toNames) {
-            for my $listItem ( split /\,/xsm, $toNames ) {
+            for my $listItem ( split /,/xsm, $toNames ) {
                 if ( $listItem ne $username ) { push @recentUsers, $listItem; }
             }
         }
         if ($toCCNames) {
-            for my $listItem ( split /\,/xsm, $toCCNames ) {
+            for my $listItem ( split /,/xsm, $toCCNames ) {
                 if ( $listItem ne $username ) {
                     push @recentUsers, $listItem;
                 }
             }
         }
         if ($toBCCNames) {
-            for my $listItem ( split /\,/xsm, $toBCCNames ) {
+            for my $listItem ( split /,/xsm, $toBCCNames ) {
                 if ( $listItem ne $username ) {
                     push @recentUsers, $listItem;
                 }
@@ -830,7 +828,7 @@ sub quickSearch {
 
     $to_id  = $INFO{'toid'};
     $yymain = $my_quickSearch;
-    $yymain =~ s/{yabb to_id}/$to_id/gsm;
+    $yymain =~ s/\Q{yabb to_id}\E/$to_id/gxsm;
 
     $yytitle = $usersel_txt{'modpagetitle'};
     userselectTemplate();
@@ -841,7 +839,7 @@ sub doquicksearch {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
     ManageMemberinfo('load');
     my @matches = ();
-    my $match = q{};
+    my $match   = q{};
     for my $membername (
         sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
         keys %memberinf
@@ -849,8 +847,8 @@ sub doquicksearch {
     {
         my $realname = $memberinf{$membername}[0];
         $realname = decode_utf8($realname);
-        $letter = decode_utf8($INFO{'letter'});
-        if ( $letter =~ m/[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/gsm) {
+        $letter   = decode_utf8( $INFO{'letter'} );
+        if ( $letter =~ m/[^\w\x80-\xFF\[\]()#%+,\-|.:=?@\^]/gxsm ) {
             $match = $usersel_txt{'illegal'};
         }
         elsif ( $realname =~ /^$letter/ixsm ) {
@@ -878,8 +876,8 @@ sub checkUserAvail {
         $INFO{'email'} =~ s/\A\s+|\s+\z//gxsm;
         $type = $register_txt{'112'};
         if (
-            lc $INFO{'email'} eq lc MemberIndex( 'check_exist', $INFO{'email'}, 2 )
-          )
+            lc $INFO{'email'} eq
+            lc MemberIndex( 'check_exist', $INFO{'email'}, 2 ) )
         {
             $taken = 'true';
         }
@@ -921,7 +919,8 @@ sub checkUserAvail {
         $INFO{'user'} =~ s/\s/_/gxsm;
         $type = $register_txt{'110'};
         if (
-            lc $INFO{'user'} eq lc MemberIndex( 'check_exist', $INFO{'user'}, 0 ) )
+            lc $INFO{'user'} eq
+            lc MemberIndex( 'check_exist', $INFO{'user'}, 0 ) )
         {
             $taken = 'true';
         }
@@ -958,7 +957,8 @@ qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type
 qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type$register_txt{'115'}</span>~;
     }
 
-    print "Content-type: text/plain;charset=$yymycharset;\n\n$INFO{'type'}|$avail"
+    print
+      "Content-type: text/plain;charset=$yymycharset;\n\n$INFO{'type'}|$avail"
       or croak "$croak{'print'} avail";
 
     CORE::exit;    # This is here only to avoid server error log entries!

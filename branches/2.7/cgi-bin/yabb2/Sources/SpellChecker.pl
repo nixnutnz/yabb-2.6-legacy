@@ -32,7 +32,7 @@ $url = "http://orangoo.com/newnox?lang=$ENV{'QUERY_STRING'}";
 $res =
   $ua->request( POST $url, Content_Type => 'text/xml', Content => $reqXML );
 
-croak "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/sm;
+croak "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/xsm;
 
 print "Content-Type: text/xml\n\n" or croak "$croak{'print'} content-type";
 print $res->{_content} or croak "$croak{'print'} speller";

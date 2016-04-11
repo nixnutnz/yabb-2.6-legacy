@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$downloadspmver = 'YaBB 2.7.00 $Revision$';
+$downloadspmver  = 'YaBB 2.7.00 $Revision$';
 @downloadspmmods = ();
 if (@downloadspmmods) {
     $downloadspmmods = 1;
@@ -31,7 +31,7 @@ sub DownloadView {
     print_output_header();
 
     $output = $downloads_top;
-    $output =~ s/{yabb fatxt39}/$fatxt{'39'}/sm;
+    $output =~ s/\Q{yabb fatxt39}\E/$fatxt{'39'}/xsm;
 
     my $thread = $INFO{'thread'};
     if ( !ref $thread_arrayref{$thread} ) {
@@ -40,7 +40,8 @@ sub DownloadView {
         @{ $thread_arrayref{$thread} } = <MSGTXT>;
         fclose(MSGTXT);
     }
-    my $threadname = ( split /[|]/xsm, ${ $thread_arrayref{$thread} }[0], 2 )[0];
+    my $threadname =
+      ( split /[|]/xsm, ${ $thread_arrayref{$thread} }[0], 2 )[0];
     my @attachinput =
       map { split /,/xsm, ( split /[|]/xsm, $_ )[12] }
       @{ $thread_arrayref{$thread} };
@@ -52,8 +53,10 @@ sub DownloadView {
     fopen( AML, "$vardir/attachments.db" )
       or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
     @attachinput =
-      grep { $_ =~ /$thread\|.+\|(.+)\|\d+\s+/xsm && exists $attachinput{$1} }
-      <AML>;
+      grep {
+        $_ =~ /$thread[|].+[|](.+)[|]\d+\s+/xsm
+          && exists $attachinput{$1}
+      } <AML>;
     fclose(AML);
 
     my $max = @attachinput;
@@ -70,12 +73,12 @@ sub DownloadView {
     my $colspan = ( $iamadmin || $iamgmod ) ? 8 : 7;
     if ( !$max ) {
         $viewattachments .= $downloads_att;
-        $viewattachments =~ s/{yabb colspan}/$colspan/gsm;
-        $viewattachments =~ s/{yabb colspan}/$colspan/gsm;
-        $viewattachments =~ s/{yabb threadname}/$threadname/gsm;
-        $viewattachments =~ s/{yabb fatxt48}/$fatxt{'38'}/gsm;
-        $viewattachments =~ s/{yabb fatxt70}/$fatxt{'70'}/gsm;
-        $viewattachments =~ s/{yabb fatxt71}/$fatxt{'71'}/gsm;
+        $viewattachments =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
+        $viewattachments =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
+        $viewattachments =~ s/\Q{yabb threadname}\E/$threadname/gxsm;
+        $viewattachments =~ s/\Q{yabb fatxt48}\E/$fatxt{'38'}/gxsm;
+        $viewattachments =~ s/\Q{yabb fatxt70}\E/$fatxt{'70'}/gxsm;
+        $viewattachments =~ s/\Q{yabb fatxt71}\E/$fatxt{'71'}/gxsm;
     }
     else {
         if ( $iamadmin || $iamgmod ) {
@@ -123,8 +126,8 @@ sub DownloadView {
             }
             elsif ( $sort == 100 ) {
                 @attachments = sort {
-                    lc(   ( split /\./xsm, ( split /[|]/xsm, $a )[7] )[1] ) cmp
-                      lc( ( split /\./xsm, ( split /[|]/xsm, $b )[7] )[1] );
+                    lc(   ( split /[.]/xsm, ( split /[|]/xsm, $a )[7] )[1] ) cmp
+                      lc( ( split /[.]/xsm, ( split /[|]/xsm, $b )[7] )[1] );
                 } @attachinput;    # sort extension lexically
             }
             else {
@@ -143,8 +146,8 @@ sub DownloadView {
             }
             elsif ( $sort == -100 ) {
                 @attachments = reverse sort {
-                    lc(   ( split /\./xsm, ( split /[|]/xsm, $a )[7] )[1] ) cmp
-                      lc( ( split /\./xsm, ( split /[|]/xsm, $b )[7] )[1] );
+                    lc(   ( split /[.]/xsm, ( split /[|]/xsm, $a )[7] )[1] ) cmp
+                      lc( ( split /[.]/xsm, ( split /[|]/xsm, $b )[7] )[1] );
                 } @attachinput;    # sort extension lexically
             }
             else {
@@ -174,7 +177,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort
             $pageindex =
 qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort" class="norm">1</a>&nbsp;~;
         }
-        for my $counter ( $startpage .. ( $endpage - 1 ) ) {
+        foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
             if ( $counter % 25 == 0 ) {
                 $pageindex .=
                   $newstart == $counter
@@ -201,7 +204,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
         else                    { $numshow = qq~($numbegin - $numend)~; }
 
         my ( %attach_gif, $ext );
-        for my $row ( splice @attachments, $newstart, 25 ) {
+        foreach my $row ( splice @attachments, $newstart, 25 ) {
             chomp $row;
             my (
                 $amthreadid, $amreplies,      $amthreadsub,
@@ -209,7 +212,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
                 $amdate,     $amfn,           $amcount
             ) = split /[|]/xsm, $row;
 
-            if ( $amfn =~ /\.(.+?)$/xsm ) {
+            if ( $amfn =~ /[.](.+?)$/xsm ) {
                 $ext = $1;
             }
             if ( !exists $attach_gif{$ext} ) {
@@ -233,16 +236,16 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
                 $att_admin = q{};
             }
             $viewattachments .= $downloads_att_b;
-            $viewattachments =~ s/{yabb att_admin}/$att_admin/gsm;
-            $viewattachments =~ s/{yabb amfn}/$amfn/gsm;
-            $viewattachments =~ s/{yabb attach_gif}/$attach_gif{$ext}/gsm;
-            $viewattachments =~ s/{yabb thread}/$thread/gsm;
-            $viewattachments =~ s/{yabb amkb}/$amkb/gsm;
-            $viewattachments =~ s/{yabb amdate}/$amdate/gsm;
-            $viewattachments =~ s/{yabb amcount}/$amcount/gsm;
-            $viewattachments =~ s/{yabb amreplies}/$amreplies/gsm;
-            $viewattachments =~ s/{yabb amthreadsub}/$amthreadsub/gsm;
-            $viewattachments =~ s/{yabb amposter}/$amposter/gsm;
+            $viewattachments =~ s/\Q{yabb att_admin}\E/$att_admin/gxsm;
+            $viewattachments =~ s/\Q{yabb amfn}\E/$amfn/gxsm;
+            $viewattachments =~ s/\Q{yabb attach_gif}\E/$attach_gif{$ext}/gxsm;
+            $viewattachments =~ s/\Q{yabb thread}\E/$thread/gxsm;
+            $viewattachments =~ s/\Q{yabb amkb}\E/$amkb/gxsm;
+            $viewattachments =~ s/\Q{yabb amdate}\E/$amdate/gxsm;
+            $viewattachments =~ s/\Q{yabb amcount}\E/$amcount/gxsm;
+            $viewattachments =~ s/\Q{yabb amreplies}\E/$amreplies/gxsm;
+            $viewattachments =~ s/\Q{yabb amthreadsub}\E/$amthreadsub/gxsm;
+            $viewattachments =~ s/\Q{yabb amposter}\E/$amposter/gxsm;
         }
 
         if ( $iamadmin || $iamgmod ) {
@@ -254,27 +257,27 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
             $att_admin_c = '&nbsp;';
         }
         $viewattachments .= $downloads_att_c;
-        $viewattachments =~ s/{yabb att_admin_b}/$att_admin_b/gsm;
-        $viewattachments =~ s/{yabb att_admin_c}/$att_admin_c/gsm;
-        $viewattachments =~ s/{yabb amv_txt38a}/$amv_txt{'38a'}/gsm;
-        $viewattachments =~ s/{yabb admin_txt32}/$admin_txt{'32'}/gsm;
-        $viewattachments =~ s/{yabb thread}/$thread/gsm;
-        $viewattachments =~ s/{yabb threadname}/$threadname/gsm;
-        $viewattachments =~ s/{yabb fatxt70}/$fatxt{'70'}/gsm;
-        $viewattachments =~ s/{yabb fatxt71}/$fatxt{'71'}/gsm;
-        $viewattachments =~ s/{yabb pageindex}/$pageindex/gsm;
+        $viewattachments =~ s/\Q{yabb att_admin_b}\E/$att_admin_b/gxsm;
+        $viewattachments =~ s/\Q{yabb att_admin_c}\E/$att_admin_c/gxsm;
+        $viewattachments =~ s/\Q{yabb amv_txt38a}\E/$amv_txt{'38a'}/gxsm;
+        $viewattachments =~ s/\Q{yabb admin_txt32}\E/$admin_txt{'32'}/gxsm;
+        $viewattachments =~ s/\Q{yabb thread}\E/$thread/gxsm;
+        $viewattachments =~ s/\Q{yabb threadname}\E/$threadname/gxsm;
+        $viewattachments =~ s/\Q{yabb fatxt70}\E/$fatxt{'70'}/gxsm;
+        $viewattachments =~ s/\Q{yabb fatxt71}\E/$fatxt{'71'}/gxsm;
+        $viewattachments =~ s/\Q{yabb pageindex}\E/$pageindex/gxsm;
 
         $output .= qq~
         <input type="hidden" name="newstart" value="$newstart" />~;
     }
 
-    my $class_sortattach = $sort =~ /7/sm   ? 'windowbg2' : 'windowbg';
-    my $class_sorttype   = $sort =~ /100/sm ? 'windowbg2' : 'windowbg';
-    my $class_sortsize   = $sort =~ /5/sm   ? 'windowbg2' : 'windowbg';
-    my $class_sortdate   = $sort =~ /6/sm   ? 'windowbg2' : 'windowbg';
-    my $class_sorcount   = $sort =~ /8/sm   ? 'windowbg2' : 'windowbg';
-    my $class_sortsubj   = $sort =~ /1$/sm  ? 'windowbg2' : 'windowbg';
-    my $class_sortuser   = $sort =~ /3/sm   ? 'windowbg2' : 'windowbg';
+    my $class_sortattach = $sort =~ /7/xsm   ? 'windowbg2' : 'windowbg';
+    my $class_sorttype   = $sort =~ /100/xsm ? 'windowbg2' : 'windowbg';
+    my $class_sortsize   = $sort =~ /5/xsm   ? 'windowbg2' : 'windowbg';
+    my $class_sortdate   = $sort =~ /6/xsm   ? 'windowbg2' : 'windowbg';
+    my $class_sorcount   = $sort =~ /8/xsm   ? 'windowbg2' : 'windowbg';
+    my $class_sortsubj   = $sort =~ /1$/xsm  ? 'windowbg2' : 'windowbg';
+    my $class_sortuser   = $sort =~ /3/xsm   ? 'windowbg2' : 'windowbg';
 
     if ( $iamadmin || $iamgmod ) {
         $att_out_admin_a = $my_out_att_admin_a;
@@ -284,73 +287,73 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
     }
 
     $output .= $downloads_att_out_a;
-    $output =~ s/{yabb colspan}/$colspan/gsm;
-    $output =~ s/{yabb threadname}/$threadname/gsm;
-    $output =~ s/{yabb pageindex}/$pageindex/gsm;
-    $output =~ s/{yabb max}/$max/gsm;
-    $output =~ s/{yabb numshow}/$numshow/gsm;
-    $output =~ s/{yabb fatxt39}/$fatxt{'39'}/gsm;
-    $output =~ s/{yabb fatxt76}/$fatxt{'76'}/gsm;
-    $output =~ s/{yabb fatxt75}/$fatxt{'75'}/gsm;
-    $output =~ s/{yabb fatxt28}/$fatxt{'28'}/gsm;
+    $output =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
+    $output =~ s/\Q{yabb threadname}\E/$threadname/gxsm;
+    $output =~ s/\Q{yabb pageindex}\E/$pageindex/gxsm;
+    $output =~ s/\Q{yabb max}\E/$max/gxsm;
+    $output =~ s/\Q{yabb numshow}\E/$numshow/gxsm;
+    $output =~ s/\Q{yabb fatxt39}\E/$fatxt{'39'}/gxsm;
+    $output =~ s/\Q{yabb fatxt76}\E/$fatxt{'76'}/gxsm;
+    $output =~ s/\Q{yabb fatxt75}\E/$fatxt{'75'}/gxsm;
+    $output =~ s/\Q{yabb fatxt28}\E/$fatxt{'28'}/gxsm;
 
     $output .= $att_out_admin_a;
-    $output =~ s/{yabb fatxt45}/$fatxt{'45'}/gsm;
+    $output =~ s/\Q{yabb fatxt45}\E/$fatxt{'45'}/gxsm;
     my $att_text;
 
     $rsort = ( $sort == 7 ? -7 : 7 );
     $att_text = $my_att_sort;
-    $att_text =~ s/{yabb attsort}/$rsort/gsm;
-    $att_text =~ s/{yabb attclass}/$class_sortattach/gsm;
-    $att_text =~ s/{yabb atttext}/$fatxt{'40'}/gsm;
+    $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
+    $att_text =~ s/\Q{yabb attclass}\E/$class_sortattach/gxsm;
+    $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'40'}/gxsm;
     $output .= $att_text;
- 
+
     $rsort = ( $sort == 100 ? -100 : 100 );
     $att_text = $my_att_sort;
-    $att_text =~ s/{yabb attsort}/$rsort/gsm;
-    $att_text =~ s/{yabb attclass}/$class_sorttype/gsm;
-    $att_text =~ s/{yabb atttext}/$fatxt{'40a'}/gsm;
+    $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
+    $att_text =~ s/\Q{yabb attclass}\E/$class_sorttype/gxsm;
+    $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'40a'}/gxsm;
     $output .= $att_text;
 
     $rsort = ( $sort == 5 ? -5 : 5 );
     $att_text = $my_att_sort;
-    $att_text =~ s/{yabb attsort}/$rsort/gsm;
-    $att_text =~ s/{yabb attclass}/$class_sortsize/gsm;
-    $att_text =~ s/{yabb atttext}/$fatxt{'41'}/gsm;
+    $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
+    $att_text =~ s/\Q{yabb attclass}\E/$class_sortsize/gxsm;
+    $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'41'}/gxsm;
     $output .= $att_text;
 
     $rsort = ( $sort == -6 ? 6 : -6 );
     $att_text = $my_att_sort;
-    $att_text =~ s/{yabb attsort}/$rsort/gsm;
-    $att_text =~ s/{yabb attclass}/$class_sortdate/gsm;
-    $att_text =~ s/{yabb atttext}/$fatxt{'43'}/gsm;
+    $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
+    $att_text =~ s/\Q{yabb attclass}\E/$class_sortdate/gxsm;
+    $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'43'}/gxsm;
     $output .= $att_text;
 
     $rsort = ( $sort == -8 ? 8 : -8 );
     $att_text = $my_att_sort;
-    $att_text =~ s/{yabb attsort}/$rsort/gsm;
-    $att_text =~ s/{yabb attclass}/$class_sorcount/gsm;
-    $att_text =~ s/{yabb atttext}/$fatxt{'41a'}/gsm;
+    $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
+    $att_text =~ s/\Q{yabb attclass}\E/$class_sorcount/gxsm;
+    $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'41a'}/gxsm;
     $output .= $att_text;
 
     $rsort = ( $sort == 1 ? -1 : 1 );
     $att_text = $my_att_sort;
-    $att_text =~ s/{yabb attsort}/$rsort/gsm;
-    $att_text =~ s/{yabb attclass}/$class_sortsubj/gsm;
-    $att_text =~ s/{yabb atttext}/$fatxt{'44'}/gsm;
+    $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
+    $att_text =~ s/\Q{yabb attclass}\E/$class_sortsubj/gxsm;
+    $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'44'}/gxsm;
     $output .= $att_text;
 
     $rsort = ( $sort == 3 ? -3 : 3 );
     $att_text = $my_att_sort;
-    $att_text =~ s/{yabb attsort}/$rsort/gsm;
-    $att_text =~ s/{yabb attclass}/$class_sortuser/gsm;
-    $att_text =~ s/{yabb atttext}/$fatxt{'42'}/gsm;
+    $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
+    $att_text =~ s/\Q{yabb attclass}\E/$class_sortuser/gxsm;
+    $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'42'}/gxsm;
     $output .= $att_text;
 
     $output .= $downloads_tbl_end;
 
-    $output =~ s/{yabb thread}/$thread/gsm;
-    $output =~ s/{yabb viewattachments}/$viewattachments/gsm;
+    $output =~ s/\Q{yabb thread}\E/$thread/gxsm;
+    $output =~ s/\Q{yabb viewattachments}\E/$viewattachments/gxsm;
 
     if ( $max && ( $iamadmin || $iamgmod ) ) { $output .= '</form>'; }
 
@@ -374,15 +377,16 @@ sub DownloadFileCouter {
     fopen( ATM, '<Variables/attachments.db', 1 )
       or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
     my @attachments = <ATM>;
-    fclose( ATM );
+    fclose(ATM);
 
-    for my $i ( 0 .. $#attachments ) {
+    foreach my $i ( 0 .. $#attachments ) {
         $attachments[$i] =~
-s/(.+\|)(.+)\|(\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
+s/(.+[|])(.+)[|](\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
+    my $prnatt = join q{}, @attachments;
     fopen( ATM, '>Variables/attachments.db', 1 )
       or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
-    print {ATM} @attachments or croak "$croak{'print'} ATM";
+    print {ATM} $prnatt or croak "$croak{'print'} ATM";
     fclose(ATM);
 
     print "Location: $uploadurl/$dfile\n\r\n\r"

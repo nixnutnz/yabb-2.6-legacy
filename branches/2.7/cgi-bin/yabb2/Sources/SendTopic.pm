@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$sendtopicpmver = 'YaBB 2.7.00 $Revision$';
+$sendtopicpmver  = 'YaBB 2.7.00 $Revision$';
 @sendtopicpmmods = ();
 if (@sendtopicpmmods) {
     $sendtopicpmmods = 1;
@@ -23,7 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
 
-if ($gpvalid_en && $iamguest) { require Sources::Decoder; }
+if ( $gpvalid_en && $iamguest ) { require Sources::Decoder; }
 
 LoadLanguage('SendTopic');
 get_micon();
@@ -49,13 +49,16 @@ sub SendTopic {
     }
     $subject = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
 
-    if ($gpvalid_en && $iamguest) {
+    if ( $gpvalid_en && $iamguest ) {
         validation_code();
         $my_valcode = $mysend_valcode;
-        $my_valcode =~ s/{yabb showcheck}/$showcheck/sm;
-        $my_valcode =~ s/{yabb flood_text}/$flood_text/sm;
+        $my_valcode =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
+        $my_valcode =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
     }
-    if ( $spam_questions_gp && $iamguest && -e "$langdir/$language/spam.questions" ) {
+    if (   $spam_questions_gp
+        && $iamguest
+        && -e "$langdir/$language/spam.questions" )
+    {
         SpamQuestion();
         my $verification_question_desc;
         if ($spam_questions_case) {
@@ -63,11 +66,11 @@ sub SendTopic {
               qq~<br />$sendtopic_txt{'verification_question_case'}~;
         }
         $my_spam = $mysend_spam;
-        $my_spam =~ s/{yabb spam_question}/$spam_question/sm;
+        $my_spam =~ s/\Q{yabb spam_question}\E/$spam_question/xsm;
         $my_spam =~
-          s/{yabb verification_question_desc}/$verification_question_desc/sm;
-        $my_spam =~ s/{yabb spam_question_id}/$spam_question_id/sm;
-        $my_spam =~ s/{yabb spam_question_image}/$spam_image/sm;
+s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
+        $my_spam =~ s/\Q{yabb spam_question_id}\E/$spam_question_id/xsm;
+        $my_spam =~ s/\Q{yabb spam_question_image}\E/$spam_image/xsm;
     }
 
     $my_jschecks = qq~<script type="text/javascript">
@@ -120,14 +123,14 @@ sub SendTopic {
 </script>~;
 
     $yymain .= $mysend_top;
-    $yymain =~ s/{yabb subject}/$subject/sm;
-    $yymain =~ s/{yabb realname}/${$uid.$username}{'realname'}/sm;
-    $yymain =~ s/{yabb email}/${$uid.$username}{'email'}/sm;
-    $yymain =~ s/{yabb my_valcode}/$my_valcode/sm;
-    $yymain =~ s/{yabb my_spam}/$my_spam/sm;
-    $yymain =~ s/{yabb my_jschecks}/$my_jschecks/sm;
-    $yymain =~ s/{yabb board}/$board/sm;
-    $yymain =~ s/{yabb topic}/$topic/sm;
+    $yymain =~ s/\Q{yabb subject}\E/$subject/xsm;
+    $yymain =~ s/\Q{yabb realname}\E/${$uid.$username}{'realname'}/xsm;
+    $yymain =~ s/\Q{yabb email}\E/${$uid.$username}{'email'}/xsm;
+    $yymain =~ s/\Q{yabb my_valcode}\E/$my_valcode/xsm;
+    $yymain =~ s/\Q{yabb my_spam}\E/$my_spam/xsm;
+    $yymain =~ s/\Q{yabb my_jschecks}\E/$my_jschecks/xsm;
+    $yymain =~ s/\Q{yabb board}\E/$board/xsm;
+    $yymain =~ s/\Q{yabb topic}\E/$topic/xsm;
 
     $yytitle =
 "$sendtopic_txt{'707'}&nbsp; &laquo; $subject &raquo; &nbsp;$sendtopic_txt{'708'}";
@@ -150,12 +153,12 @@ sub SendTopic2 {
     $rname  = $FORM{'r_name'};
     $yemail = $FORM{'y_email'};
     $remail = $FORM{'r_email'};
-    $yname  =~ s/\A\s+//xsm;
-    $yname  =~ s/\s+\Z//xsm;
+    $yname =~ s/\A\s+//xsm;
+    $yname =~ s/\s+\Z//xsm;
     $yemail =~ s/\A\s+//xsm;
     $yemail =~ s/\s+\Z//xsm;
-    $rname  =~ s/\A\s+//xsm;
-    $rname  =~ s/\s+\Z//xsm;
+    $rname =~ s/\A\s+//xsm;
+    $rname =~ s/\s+\Z//xsm;
     $remail =~ s/\A\s+//xsm;
     $remail =~ s/\s+\Z//xsm;
 
@@ -168,12 +171,12 @@ sub SendTopic2 {
     if ( $yemail eq q{} ) {
         fatal_error( 'no_email', "$sendtopic_txt{'336'}" );
     }
-    if ( $yemail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/sm ) {
+    if ( $yemail !~ /^$invalmailchar$/xsm ) {
         fatal_error( 'invalid_character',
             "$sendtopic_txt{'336'} $sendtopic_txt{'241'}" );
     }
-    if (   ( $yemail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/sm )
-        || ( $yemail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/sm ) )
+    if (   ( $yemail =~ /$invalemaila/xsm )
+        || ( $yemail !~ /$invalemailb/xsm ) )
     {
         fatal_error( 'invalid_email', "$sendtopic_txt{'336'}" );
     }
@@ -186,34 +189,37 @@ sub SendTopic2 {
     if ( $remail eq q{} ) {
         fatal_error( 'no_email', "$sendtopic_txt{'718'}" );
     }
-    if ( $remail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/sm ) {
+    if ( $remail !~ /^$invalmailchar$/xsm ) {
         fatal_error( 'invalid_character',
             "$sendtopic_txt{'718'} $sendtopic_txt{'241'}" );
     }
-    if (   ( $remail =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/sm )
-        || ( $remail !~ /^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/sm ) )
+    if (   ( $remail =~ /$invalemaila/xsm )
+        || ( $remail !~ /$invalemailb/xsm ) )
     {
         fatal_error( 'invalid_email', "$sendtopic_txt{'718'}" );
     }
 
-    if ($gpvalid_en && $iamguest) {
+    if ( $gpvalid_en && $iamguest ) {
         validation_check( $FORM{'verification'} );
     }
-    if ( $spam_questions_gp && $iamguest && -e "$langdir/$language/spam.questions" ) {
+    if (   $spam_questions_gp
+        && $iamguest
+        && -e "$langdir/$language/spam.questions" )
+    {
         SpamQuestionCheck( $FORM{'verification_question'},
             $FORM{'verification_question_id'} );
-    } 
+    }
     if ( !ref $thread_arrayref{$topic} ) {
         fopen( FILE, "$datadir/$topic.txt" )
           or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
         @{ $thread_arrayref{$topic} } = <FILE>;
         fclose(FILE);
     }
-        $topiclink = qq~$scripturl?num=$topic~;
-        if ($accept_permafull) {
-            my $permdate = permtimer($topic);
-            $topiclink = qq~$perm_domain/$symlink/$permdate/$board/$topic~;
-        } 
+    $topiclink = qq~$scripturl?num=$topic~;
+    if ($accept_permafull) {
+        my $permdate = permtimer($topic);
+        $topiclink = qq~$perm_domain/$symlink/$permdate/$board/$topic~;
+    }
     $subject = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
     FromHTML($subject);
     require Sources::Mailer;

@@ -16,6 +16,7 @@
 # use warnings;
 # no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = '2.7.00';
 
 $yabmodsourcepmver = 'YaBB 2.7.00 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
@@ -33,7 +34,7 @@ sub YaBModSource {
     if ($iamadmin) {
         fopen( TMPL, "$editdir/$pickfile" );
         while ( $line = <TMPL> ) {
-            $line =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
+            $line =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
             $line =~ s/\&nbsp;/ /igxsm;
             $line =~ s/[\r\n]//gxsm;
             ToHTML($line);
@@ -44,7 +45,7 @@ sub YaBModSource {
 
     print_output_header();
 
-    $output = <<"PAGE";
+    $output = << "PAGE";
 <!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
@@ -71,6 +72,7 @@ sub YaBModSource {
 PAGE
 
     print_HTML_output_and_finish();
+    return;
 }
 
 1;

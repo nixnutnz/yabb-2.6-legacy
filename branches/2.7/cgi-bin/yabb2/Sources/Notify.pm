@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$notifypmver = 'YaBB 2.7.00 $Revision$';
+$notifypmver  = 'YaBB 2.7.00 $Revision$';
 @notifypmmods = ();
 if (@notifypmmods) {
     $notifypmmods = 1;
@@ -49,7 +49,7 @@ sub ManageBoardNotify {
         if ( @oldnote < ( $maxtnote || 10 ) ) {
             for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
                 $bb{$_} = 1;
-           }
+            }
             $bb{$theboard} = 1;
             ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
             UserAccount($user);
@@ -126,13 +126,13 @@ sub BoardNotify {
     }
 
     $yymain .= $brd_notify;
-    $yymain =~ s/{yabb boardname}/$boardname/gsm;
-    $yymain =~ s/{yabb currentboard}/$currentboard/gsm;
-    $yymain =~ s/{yabb currentboard}/$currentboard/gsm;
-    $yymain =~ s/{yabb selected1}/$selected1/gsm;
-    $yymain =~ s/{yabb selected2}/$selected2/gsm;
-    $yymain =~ s/{yabb deloption}/$deloption/gsm;
-    $yymain =~ s/{yabb my_delopt}/$my_delopt/gsm;
+    $yymain =~ s/\Q{yabb boardname}\E/$boardname/gxsm;
+    $yymain =~ s/\Q{yabb currentboard}\E/$currentboard/gxsm;
+    $yymain =~ s/\Q{yabb currentboard}\E/$currentboard/gxsm;
+    $yymain =~ s/\Q{yabb selected1}\E/$selected1/gxsm;
+    $yymain =~ s/\Q{yabb selected2}\E/$selected2/gxsm;
+    $yymain =~ s/\Q{yabb deloption}\E/$deloption/gxsm;
+    $yymain =~ s/\Q{yabb my_delopt}\E/$my_delopt/gxsm;
 
     undef %theboard;
     $yytitle = "$notify_txt{'125'}";
@@ -175,7 +175,7 @@ sub ManageThreadNotify {
         ##  open mail file and build hash
         if ( -e "$datadir/$thethread.mail" ) {
             fopen( THREADNOTE, "$datadir/$thethread.mail" );
-            %thethread = map /(.*)\t(.*)/, <THREADNOTE>;
+            %thethread = map { /(.*)\t(.*)/xsm } <THREADNOTE>;
             fclose(THREADNOTE);
         }
     }
@@ -192,7 +192,8 @@ sub ManageThreadNotify {
     }
     elsif ( $todo eq 'update' ) {
         if ( exists $thethread{$user} ) {
-            ( $memlang, $memtype, $memview ) = split /[|]/xsm, $thethread{$user};
+            ( $memlang, $memtype, $memview ) = split /[|]/xsm,
+              $thethread{$user};
             if ($userlang) { $memlang = $userlang; }
             if ($notetype) { $memtype = $notetype; }
             if ($noteview) { $memview = $noteview; }
@@ -302,11 +303,12 @@ sub removeNotifications {
 sub getMailFiles {
     opendir BOARDNOT, "$boardsdir";
     @bmaildir =
-      map { ( split /\./xsm, $_ )[0] } grep { /\.mail$/xsm } readdir BOARDNOT;
+      map { ( split /[.]/xsm, $_ )[0] } grep { /[.]mail$/xsm } readdir BOARDNOT;
     closedir BOARDNOT;
     opendir THREADNOT, "$datadir";
     @tmaildir =
-      map { ( split /\./xsm, $_ )[0] } grep { /\.mail$/xsm } readdir THREADNOT;
+      map { ( split /[.]/xsm, $_ )[0] }
+      grep { /[.]mail$/xsm } readdir THREADNOT;
     closedir THREADNOT;
     return;
 }
@@ -352,20 +354,20 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
                     )
                   )
                 {
-                    ${ $$board_notify{$_} }[2] = 1;
+                    ${ ${$board_notify}{$_} }[2] = 1;
                 }
             }
         }
 
         my ( $selected1, $selected2 );
-        if ( ${ $$board_notify{$_} }[1] == 1 ) {    # new topics
+        if ( ${ ${$board_notify}{$_} }[1] == 1 ) {    # new topics
             $selected1 = q~ selected="selected"~;
         }
-        else {                                      # all new posts
+        else {                                        # all new posts
             $selected2 = q~ selected="selected"~;
         }
 
-        if ( ${ $$board_notify{$_} }[2] ) {
+        if ( ${ ${$board_notify}{$_} }[2] ) {
             $new =
 qq~<img src="$imagesdir/$brdimg_new" alt="$notify_txt{'333'}" title="$notify_txt{'333'}" />~;
         }
@@ -376,11 +378,11 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
 
         ## output notify detail - option 3 = remove notify
         $boardblock .= $my_boardblock;
-        $boardblock =~ s/{yabb brd}/$_/gsm;
-        $boardblock =~ s/{yabb new}/$new/gsm;
-        $boardblock =~ s/{yabb brdnote0}/${$$board_notify{$_}}[0]/gsm;
-        $boardblock =~ s/{yabb selected1}/$selected1/gsm;
-        $boardblock =~ s/{yabb selected2}/$selected2/gsm;
+        $boardblock =~ s/\Q{yabb brd}\E/$_/gxsm;
+        $boardblock =~ s/\Q{yabb new}\E/$new/gxsm;
+        $boardblock =~ s/\Q{yabb brdnote0}\E/${$$board_notify{$_}}[0]/gxsm;
+        $boardblock =~ s/\Q{yabb selected1}\E/$selected1/gxsm;
+        $boardblock =~ s/\Q{yabb selected2}\E/$selected2/gxsm;
     }
 
     if ( !$num ) {    # no board notifies up
@@ -388,7 +390,7 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
     }
     else {            # list boards
         $my_showNotifications_b = $my_notebrdlist;
-        $my_showNotifications_b =~ s/{yabb boardblock}/$boardblock/gsm;
+        $my_showNotifications_b =~ s/\Q{yabb boardblock}\E/$boardblock/gxsm;
     }
 
     $num = 0;
@@ -398,13 +400,13 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
 
         ## build block for display
         $threadblock .= $my_threadblock;
-        $threadblock =~ s/{yabb tnote0}/${$$thread_notify{$_}}[0]/gsm;
-        $threadblock =~ s/{yabb tnote1}/${$$thread_notify{$_}}[1]/gsm;
-        $threadblock =~ s/{yabb tnote2}/${$$thread_notify{$_}}[2]/gsm;
-        $threadblock =~ s/{yabb tnote3}/${$$thread_notify{$_}}[3]/gsm;
-        $threadblock =~ s/{yabb tnote4}/${$$thread_notify{$_}}[4]/gsm;
-        $threadblock =~ s/{yabb tnote5}/${$$thread_notify{$_}}[5]/gsm;
-        $threadblock =~ s/{yabb tnote6}/${$$thread_notify{$_}}[6]/gsm;
+        $threadblock =~ s/\Q{yabb tnote0}\E/${$$thread_notify{$_}}[0]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote1}\E/${$$thread_notify{$_}}[1]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote2}\E/${$$thread_notify{$_}}[2]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote3}\E/${$$thread_notify{$_}}[3]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote4}\E/${$$thread_notify{$_}}[4]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote5}\E/${$$thread_notify{$_}}[5]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote6}\E/${$$thread_notify{$_}}[6]/gxsm;
     }
 
     if ( !$num ) {    ## no threads listed
@@ -412,16 +414,16 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
     }
     else {            ## output details
         $my_showNotifications_t = $my_threadnote_b;
-        $my_showNotifications_t =~ s/{yabb threadblock}/$threadblock/gsm;
+        $my_showNotifications_t =~ s/\Q{yabb threadblock}\E/$threadblock/gxsm;
     }
     $showNotifications = $my_boardnote;
 
     #    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
-    $showNotifications =~ s/{yabb note_brd}//sm;
+    $showNotifications =~ s/\Q{yabb note_brd}\E//xsm;
     $showNotifications =~
-      s/{yabb my_showNotifications_b}/$my_showNotifications_b/sm;
+      s/\Q{yabb my_showNotifications_b}\E/$my_showNotifications_b/xsm;
     $showNotifications =~
-      s/{yabb my_showNotifications_t}/$my_showNotifications_t/sm;
+      s/\Q{yabb my_showNotifications_t}\E/$my_showNotifications_t/xsm;
     $showNotifications .= $my_threadnote_end;
 
     $yytitle = "$notify_txt{'124'}";
@@ -453,7 +455,7 @@ sub NotificationAlert {
     ## run through boards list
     for my $myboard (@bmaildir) {    # board name from file name
         if ( !-e "$boardsdir/$myboard.txt" )
-        {                                # remove from user board_notifications
+        {                            # remove from user board_notifications
             ManageBoardNotify( 'delete', $myboard, $username );
             next;
         }
@@ -467,7 +469,7 @@ sub NotificationAlert {
 
             $board_notify{$myboard} = [
                 $boardname,
-                ( split /[|]/xsm, $theboard{$username} )[1],    # boardnotifytype
+                ( split /[|]/xsm, $theboard{$username} )[1],   # boardnotifytype
                 (
                     (
                              $max_log_days_old
@@ -558,7 +560,7 @@ sub NotificationAlert {
 
                 # grab boardname from list
               CHECKBOARDNAME: for my $catid (@categoryorder) {
-                    for ( split /\,/xsm, $cat{$catid} ) {
+                    for ( split /,/xsm, $cat{$catid} ) {
                         ## find the match, grab data and jump out
                         if ( $_ eq $boardid ) {
                             $catname = ( split /[|]/xsm, $catinfo{$catid} )[0];

@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$setstatuspmver = 'YaBB 2.7.00 $Revision$';
+$setstatuspmver  = 'YaBB 2.7.00 $Revision$';
 @setstatuspmmods = ();
 if (@setstatuspmmods) {
     $setstatuspmmods = 1;
@@ -39,9 +39,9 @@ sub SetStatus {
     fopen( BOARDFILE, "<$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <BOARDFILE>;
-	fclose( BOARDFILE );
+    fclose(BOARDFILE);
     for my $line ( 0 .. $#boardfile ) {
-        if ( $boardfile[$line] =~ m/\A$threadid\|/xsm ) {
+        if ( $boardfile[$line] =~ m/\A$threadid[|]/xsm ) {
             my (
                 $mnum,     $msub,      $mname, $memail, $mdate,
                 $mreplies, $musername, $micon, $mstate
@@ -72,9 +72,10 @@ sub SetStatus {
 "$mnum|$msub|$mname|$memail|$mdate|$mreplies|$musername|$micon|$mstate\n";
         }
     }
+    my $prnbrd = join q{}, @boardfile;
     fopen( BOARDFILE, ">$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    print {BOARDFILE} @boardfile or croak "$croak{'print'} BOARDFILE";
+    print {BOARDFILE} $prnbrd or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 
     MessageTotals( 'load', $threadid );

@@ -12,10 +12,13 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-our $VERSION = '2.7.00';
+# use strict;
+# use warnings;
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
+our $VERSION = '2.7.00';
 
-$modifymessagepmver = 'YaBB 2.7.00 $Revision$';
+$modifymessagepmver  = 'YaBB 2.7.00 $Revision$';
 @modifymessagepmmods = ();
 if (@modifymessagepmmods) {
     $modifymessagepmmods = 1;
@@ -62,20 +65,28 @@ sub ModifyMessage {
     $postthread = 2;
 
     my $modtopic_chk = 0;
-    my $fixtime = $tlnomodtime;
-    my $timeset = 86400;
-    if ($tlnomodday) {$timeset = 60;}
-    if ( $tlnomodflag && ${ $uid . $currentboard }{'modtopic'} ne $tlnomodtime ) {
+    my $fixtime      = $tlnomodtime;
+    my $timeset      = 86400;
+    if ($tlnomodday) { $timeset = 60; }
+    if ( $tlnomodflag && ${ $uid . $currentboard }{'modtopic'} ne $tlnomodtime )
+    {
         $fixtime = qq~${ $uid . $currentboard }{'modtopic'}~;
-        if ( (${ $uid . $currentboard }{'modtopic'} == 0 || $date < $mdate + ( ${ $uid . $currentboard }{'modtopic'} * $timeset ) ) ) {
+        if (
+            (
+                ${ $uid . $currentboard }{'modtopic'} == 0
+                || $date <
+                $mdate + ( ${ $uid . $currentboard }{'modtopic'} * $timeset )
+            )
+          )
+        {
             $modtopic_chk = 1;
         }
     }
-    if ( $mstate =~ /l/ism ) {
+    if ( $mstate =~ /l/ixsm ) {
         if ($bypass_lock_perm) { $icanbypass = checkUserLockBypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
-    elsif ( !$staff
+    elsif (!$staff
         && !$modtopic_chk
         && $tlnomodflag
         && $date > $mdate + ( $tlnomodtime * $timeset ) )
@@ -98,7 +109,7 @@ sub ModifyMessage {
         ToChars($poll_question);
         ToChars($poll_comment);
 
-        for my $i ( 1 .. $#poll_data ) {
+        foreach my $i ( 1 .. $#poll_data ) {
             ( $votes[$i], $options[$i], $slicecolor[$i], $split[$i] ) =
               split /[|]/xsm, $poll_data[$i];
             ToChars( $options[$i] );
@@ -108,8 +119,7 @@ sub ModifyMessage {
             fatal_error('not_allowed');
         }
 
-        $poll_comment =~ s/<br \/>/\n/gsm;
-        $poll_comment =~ s/<br>/\n/gxsm;
+        $poll_comment =~ s/<br.*?>/\n/gxsm;
         $pollthread = 2;
         $settofield = 'question';
         $icon       = 'poll_mod';
@@ -144,14 +154,15 @@ sub ModifyMessage {
         $nscheck   = $mns ? ' checked'       : q{};
 
         $lastmod = $mypost_lastmod;
-        $lastmod =~ s/{yabb lastmod_a}/$lastmod_a/sm;
+        $lastmod =~ s/\Q{yabb lastmod_a}\E/$lastmod_a/xsm;
 
         $icon = $micon;
-        $message =~ s/<br \/>/\n/igsm;
-        $message =~ s/<br>/\n/igxsm;
-        $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
+        $message =~ s/<br.*?>/\n/igxsm;
+        $message =~ s/\Q &nbsp; \&nbsp; \&nbsp;\Q/\t/igxsm;
         $settofield = 'message';
-        if ( $message =~ s/\[reason\](.+?)\[\/reason\]//isgm ) { $reason = $1; }
+        if ( $message =~ s/\[reason\](.+?)\[\/reason\]//igxsm ) {
+            $reason = $1;
+        }
     }
     $submittxt   = $post_txt{'10'};
     $destination = 'modify2';
@@ -315,8 +326,8 @@ sub ModifyMessage2 {
         $poll_end_min  = $FORM{'poll_end_min'};
 
         if ( $pie_radius =~ /\D/xsm ) { $pie_radius = 100; }
-        if ( $pie_radius < 100 ) { $pie_radius = 100; }
-        if ( $pie_radius > 200 ) { $pie_radius = 200; }
+        if ( $pie_radius < 100 )      { $pie_radius = 100; }
+        if ( $pie_radius > 200 )      { $pie_radius = 200; }
 
         if ( $vote_limit =~ /\D/xsm ) {
             $vote_limit = 0;
@@ -352,7 +363,7 @@ sub ModifyMessage2 {
         push @new_poll_data,
 qq~$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_choice|$date|$username|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n~;
 
-        for my $i ( 1 .. $numpolloptions ) {
+        foreach my $i ( 1 .. $numpolloptions ) {
             ( $votes, undef ) = split /[|]/xsm, $poll_data[$i], 2;
             if ( !$votes ) { $votes = 0; }
             if ( $FORM{"option$i"} ) {
@@ -401,9 +412,9 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         }
 
         # showcase poll end
-
+        my $prnpoll = join q{}, @new_poll_data;
         fopen( POLL, ">$datadir/$threadid.poll" );
-        print {POLL} @new_poll_data or croak "$croak{'print'} POLL";
+        print {POLL} $prnpoll or croak "$croak{'print'} POLL";
         fclose(POLL);
 
         $yySetLocation = qq~$scripturl?num=$threadid~;
@@ -457,7 +468,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     $ns        = $FORM{'ns'};
     $notify    = $FORM{'notify'};
     $thestatus = $FORM{'topicstatus'};
-    $thestatus =~ s/\, //gsm;
+    $thestatus =~ s/,\s//gxsm;
     CheckIcon();
 
     if ( $FORM{'reason'} ) {
@@ -488,8 +499,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
 
     my $mess_len = $message;
-    $mess_len =~ s/[\r\n ]//igsm;
-    $mess_len =~ s/&\x23\d{3,}?\;/X/igxsm;
+    $mess_len =~ s/[\r\n ]//igxsm;
+    $mess_len =~ s/&\x23\d{3,}?;/X/igxsm;
     if ( length($mess_len) > $MaxMessLen ) {
         require Sources::Post;
         Preview($post_txt{'536'} . q{ }
@@ -500,13 +511,13 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
     FromChars($subject);
     $convertstr = $subject;
-    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re: /sm ? 4 : 0 );
+    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
     CountChars();
     $subject = $convertstr;
     ToHTML($subject);
 
     ToHTML($name);
-    $email =~ s/\|//gxsm;
+    $email =~ s/[|]//gxsm;
     ToHTML($email);
     if ( !$subject || $subject =~ m{\A[\s_.,]+\Z}xsm ) {
         fatal_error('no_subject');
@@ -524,9 +535,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         && !$staff
         && !$iamguest )
     {
-        if (   $message =~ m{http:\/\/}xsm
-            || $message =~ m{https:\/\/}xsm
-            || $message =~ m{ftp:\/\/}xsm
+        if (   $message =~ m{https?://}xsm
+            || $message =~ m{ftp://}xsm
             || $message =~ m{www.}xsm
             || $message =~ m{ftp.}xsm =~ m{\[url}xsm
             || $message =~ m{\[link}xsm
@@ -546,13 +556,13 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         $ticon = $icon;
     }
 
-    if ( $tstate =~ /l/ism ) {
+    if ( $tstate =~ /l/ixsm ) {
         if ($bypass_lock_perm) { $icanbypass = checkUserLockBypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
     if ($staff) {
         $thestatus =~ s/0//gxsm;
-        $tstate = $tstate =~ /a/ism ? "0a$thestatus" : "0$thestatus";
+        $tstate = $tstate =~ /a/ixsm ? "0a$thestatus" : "0$thestatus";
         MessageTotals( 'load', $tnum );
         ${$tnum}{'threadstatus'} = $tstate;
         MessageTotals( 'update', $tnum );
@@ -561,14 +571,14 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     $yyThreadLine =
       qq~$tnum|$tsub|$tname|$temail|$tdate|$treplies|$tusername|$ticon|$tstate~;
 
-    if   ( $mip =~ /$user_ip/sm ) { $useredit_ip = $mip; }
-    else                          { $useredit_ip = "$mip $user_ip"; }
+    if   ( $mip =~ /$user_ip/xsm ) { $useredit_ip = $mip; }
+    else                           { $useredit_ip = "$mip $user_ip"; }
 
     my ( @attachments, %post_attach, %del_filename );
     fopen( ATM, "+<$vardir/attachments.db" );
     seek ATM, 0, 0;
     while (<ATM>) {
-        if ( $_ =~ /^(\d+)\|(\d+)\|.+\|(.+)\|\d+\s+/sm ) {
+        if ( $_ =~ /^(\d+)[|](\d+)[|].+[|](.+)[|]\d+\s+/xsm ) {
             $del_filename{$3}++;
             if ( $threadid == $1 && $postid == $2 ) {
                 $post_attach{$3} = $_;
@@ -581,33 +591,33 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
     my ( $file, $fixfile, @filelist, @newfilelist, $fixext );
 
-    for my $y ( 1 .. $allowattach ) {
+    foreach my $y ( 1 .. $allowattach ) {
         if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
         if ( $file
             && ( $FORM{"w_file$y"} eq 'attachnew' || !exists $FORM{"w_file$y"} )
           )
         {
             $fixfile = $file;
-            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gsm;
-# replace all inappropriate characters from lists in Language files
-            if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm )
-            {
+            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gxsm;
+
+            # replace all inappropriate characters from lists in Language files
+            if ( $fixfile =~ /[^0-9A-Za-z+\-.:]/xsm ) {
                 my %translist = loadtranlist();
                 @uploadtranlist = keys %translist;
-                for ( @uploadtranlist )
-                {
-                    $fixfile =~ s/$_/$translist{$_}/gsm;
+                foreach (@uploadtranlist) {
+                    $fixfile =~ s/$_/$translist{$_}/gxsm;
                 }
-                $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gxsm;
+                $fixfile =~ s/[^0-9A-Za-z+\-.:]/_/gxsm;
             }
+
             # replace . with _ in the filename except for the extension
             my $fixname = $fixfile;
-            if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
+            if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
                 $fixext = $2;
             }
-            (my $fixchck = $fixname) =~ s/_//gxsm;
-            if ($fixchck eq q{}) {
-                fatal_error('rename', "$fixfile" );
+            ( my $fixchck = $fixname ) =~ s/_//gxsm;
+            if ( $fixchck eq q{} ) {
+                fatal_error( 'rename', "$fixfile" );
             }
 
             my $spamdetected = spamcheck("$fixname");
@@ -618,21 +628,21 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                     UserAccount( $username, 'update' );
                     $spam_hits_left_count =
                       $post_speed_count - ${ $uid . $username }{'spamcount'};
-                    for (@newfilelist) { unlink "$uploaddir/$_"; }
+                    foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                     fatal_error('tsc_alert');
                 }
             }
             if ( $use_guardian && $string_on ) {
                 @bannedstrings = split /[|]/xsm, $banned_strings;
-                for (@bannedstrings) {
+                foreach (@bannedstrings) {
                     chomp $_;
-                    if ( $fixname =~ m/$_/ism ) {
+                    if ( $fixname =~ m/$_/ixsm ) {
                         fatal_error( 'attach_name_blocked', "($_)" );
                     }
                 }
             }
-            $fixext  =~ s/\.(pl|pm|cgi|php)/._$1/ism;
-            $fixname =~ s/\./_/gxsm;
+            $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+            $fixname =~ s/[.]/_/gxsm;
             $fixfile = qq~$fixname$fixext~;
 
             if ( $FORM{"w_filename$y"} ) {
@@ -642,15 +652,15 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                 $fixfile = check_existence( $uploaddir, $fixfile );
             }
             elsif ( $overwrite == 2 && -e "$uploaddir/$fixfile" ) {
-                for (@newfilelist) { unlink "$uploaddir/$_"; }
+                foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                 fatal_error(file_overwrite);
             }
 
             my $match = 0;
             if ( !$checkext ) { $match = 1; }
             else {
-                for my $ext (@ext) {
-                    if ( grep { /$ext$/ism } $fixfile ) {
+                foreach my $ext (@ext) {
+                    if ( grep { /$ext$/ixsm } $fixfile ) {
                         $match = 1;
                         last;
                     }
@@ -663,12 +673,12 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                         && $allowguestattach != 1 )
                   )
                 {
-                    for (@newfilelist) { unlink "$uploaddir/$_"; }
+                    foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                     fatal_error('no_perm_att');
                 }
             }
             else {
-                for (@newfilelist) { unlink "$uploaddir/$_"; }
+                foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                 fatal_error("$fixfile $fatxt{'20'} @ext");
             }
 
@@ -679,7 +689,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
             $limit ||= 0;
             if ( $limit > 0 && $filesize > ( 1024 * $limit ) ) {
-                for (@newfilelist) { unlink "$uploaddir/$_"; }
+                foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                 fatal_error( q{},
                         "$fatxt{'21'} $fixfile ("
                       . int( $filesize / 1024 )
@@ -687,10 +697,10 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                       . $limit );
             }
             $dirlimit ||= 0;
-            if ($dirlimit > 0) {
+            if ( $dirlimit > 0 ) {
                 my $dirsize = dirsize($uploaddir);
                 if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
-                    for (@newfilelist) { unlink "$uploaddir/$_"; }
+                    foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                     fatal_error(
                         q{},
                         "$fatxt{'22'} $fixfile ("
@@ -716,23 +726,23 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
             else
             { # return the server's error message if the new file could not be created
-                for (@newfilelist) { unlink "$uploaddir/$_"; }
+                foreach (@newfilelist) { unlink "$uploaddir/$_"; }
                 fatal_error( 'file_not_open', "$uploaddir" );
             }
 
      # check if file has actually been uploaded, by checking the file has a size
             my $filesizekb = -s "$uploaddir/$fixfile";
             if ( !$filesizekb ) {
-                for (qw("@newfilelist" $fixfile)) {
+                foreach (qw("@newfilelist" $fixfile)) {
                     unlink "$uploaddir/$_";
                 }
                 fatal_error( 'file_not_uploaded', $fixfile );
             }
             $filesizekb = int( $filesizekb / 1024 );
 
-            if ( $fixfile =~ /\.(jpg|gif|png|jpeg)$/ixsm ) {
+            if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
                 my $okatt = 1;
-                if ( $fixfile =~ /gif$/ism ) {
+                if ( $fixfile =~ /gif$/ixsm ) {
                     my $header;
                     fopen( ATTFILE, "$uploaddir/$fixfile" );
                     read ATTFILE, $header, 10;
@@ -744,14 +754,14 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                 }
                 fopen( ATTFILE, "$uploaddir/$fixfile" );
                 while ( read ATTFILE, $buffer, 1024 ) {
-                    if ( $buffer =~ /<(html|script|body)/igsm ) {
+                    if ( $buffer =~ /<(?:html|script|body)/igxsm ) {
                         $okatt = 0;
                         last;
                     }
                 }
                 fclose(ATTFILE);
                 if ( !$okatt ) {   # delete the file as it contains illegal code
-                    for (qw("@newfilelist" $fixfile)) {
+                    foreach (qw("@newfilelist" $fixfile)) {
                         unlink "$uploaddir/$_";
                     }
                     fatal_error( 'file_not_uploaded',
@@ -792,10 +802,10 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
 
     ${ $thread_arrayref{$threadid} }[$postid] =
 qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$date|$username|$fixfile\n~;
+    my $prnarray = join q{}, @{ $thread_arrayref{$threadid} };
     fopen( FILE, ">$datadir/$threadid.txt" )
       or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
-    print {FILE} @{ $thread_arrayref{$threadid} }
-      or croak "$croak{'print'} FILE";
+    print {FILE} $prnarray or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     if ( $postid == 0 || $staff ) {
@@ -804,8 +814,8 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
         fopen( BOARD, "+<$boardsdir/$currentboard.txt" )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @board = <BOARD>;
-        for my $c ( 0 .. $#board ) {
-            if ( $board[$c] =~ m{\A$threadid\|}osm ) {
+        foreach my $c ( 0 .. $#board ) {
+            if ( $board[$c] =~ m{\A$threadid[|]}oxsm ) {
                 $board[$c] = "$yyThreadLine\n";
                 last;
             }
@@ -883,7 +893,7 @@ sub MultiDel {    # deletes single- or multi-Posts
     # check all checkboxes, delete posts if checkbox is ticked
     my $kill = 0;
     my $postid;
-    for my $count ( reverse 0 .. $#messages ) {
+    foreach my $count ( reverse 0 .. $#messages ) {
         if ( $FORM{"del$count"} ne q{} ) {
             chomp $messages[$count];
             @message = split /[|]/xsm, $messages[$count];
@@ -920,7 +930,7 @@ sub MultiDel {    # deletes single- or multi-Posts
 
             # decrease members post count if not in a zero post count board
             if (   !${ $uid . $currentboard }{'zero'}
-                && $musername  ne 'Guest'
+                && $musername ne 'Guest'
                 && $message[6] ne 'no_postcount' )
             {
                 if ( !${ $uid . $musername }{'password'} ) {
@@ -934,7 +944,7 @@ sub MultiDel {    # deletes single- or multi-Posts
                     $grp_after = qq~${$uid.$musername}{'position'}~;
                 }
                 else {
-                    for
+                    foreach
                       my $postamount ( reverse sort { $a <=> $b } keys %Post )
                     {
                         if ( ${ $uid . $musername }{'postcount'} > $postamount )
@@ -949,7 +959,7 @@ sub MultiDel {    # deletes single- or multi-Posts
                     ${ $uid . $musername }{'postcount'} );
 
                 my ( $md, $mu, $mdmu );
-                for ( reverse @messages ) {
+                foreach ( reverse @messages ) {
                     ( undef, undef, undef, $md, $mu, undef ) = split /[|]/xsm,
                       $_, 6;
                     if ( $mu eq $musername ) { $mdmu = $md; last; }
@@ -973,9 +983,10 @@ sub MultiDel {    # deletes single- or multi-Posts
     @{ $thread_arrayref{$thread} } = @messages;
 
 # if thread has not been deleted: update thread, update message index details ...
+    my $prnmess = join q{}, @{ $thread_arrayref{$thread} };
     fopen( FILE, ">$datadir/$thread.txt" )
       or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
-    print {FILE} @{ $thread_arrayref{$thread} } or croak "$croak{'print'} FILE";
+    print {FILE} $prnmess or croak "$croak{'print'} FILE";
     fclose(FILE);
 
     my @firstmessage = split /[|]/xsm, ${ $thread_arrayref{$thread} }[0];
@@ -1000,8 +1011,8 @@ sub MultiDel {    # deletes single- or multi-Posts
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <BOARDFILE>;
 
-    for my $c ( 0 .. $#buffer ) {
-        if ( $buffer[$c] =~ /^$thread\|/xsm ) {
+    foreach my $c ( 0 .. $#buffer ) {
+        if ( $buffer[$c] =~ /^$thread[|]/xsm ) {
             $threadline = $buffer[$c];
             splice @buffer, $c, 1;
             last;
@@ -1013,10 +1024,10 @@ sub MultiDel {    # deletes single- or multi-Posts
     $newthreadline[1] = $firstmessage[0];         # subject of first message
     $newthreadline[7] = $firstmessage[5];         # icon of first message
     $newthreadline[4] = $lastmessage[3];          # date of last message
-    $newthreadline[5] = ${$thread}{'replies'};    # replay number
+    $newthreadline[5] = ${$thread}{'replies'};    # reply number
 
     my $inserted = 0;
-    for my $c ( 0 .. $#buffer ) {
+    foreach my $c ( 0 .. $#buffer ) {
         if ( ( split /[|]/xsm, $buffer[$a], 6 )[4] < $newthreadline[4] ) {
             splice @buffer, $c, 0, join( q{|}, @newthreadline ) . "\n";
             $inserted = 1;

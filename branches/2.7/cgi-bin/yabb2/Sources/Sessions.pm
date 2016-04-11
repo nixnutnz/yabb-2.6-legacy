@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$sessionspmver = 'YaBB 2.7.00 $Revision$';
+$sessionspmver  = 'YaBB 2.7.00 $Revision$';
 @sessionspmmods = ();
 if (@sessionspmmods) {
     $sessionspmmods = 1;
@@ -41,19 +41,18 @@ sub SessionReval {
     }
 
     $yymain .= $my_sessions;
-    $yymain =~ s/{yabb sesremark}/$sesremark/sm;
-    $yymain =~ s/{yabb sestype}/$sestype/sm;
-    $yymain =~ s/{yabb sesstext3}/$session_txt{'3'}/sm;
-    $yymain =~ s/{yabb sesstext4}/$session_txt{'4'}/sm;
-    $yymain =~ s/{yabb sesquestion}/$sesquest_txt{$sesquestion}/sm;
-    $yymain =~ s/{yabb sesredir}/$INFO{'sesredir'}/sm;
-    $yytitle   = "$img_txt{'34a'}";
+    $yymain =~ s/\Q{yabb sesremark}\E/$sesremark/xsm;
+    $yymain =~ s/\Q{yabb sestype}\E/$sestype/xsm;
+    $yymain =~ s/\Q{yabb sesstext3}\E/$session_txt{'3'}/xsm;
+    $yymain =~ s/\Q{yabb sesstext4}\E/$session_txt{'4'}/xsm;
+    $yymain =~ s/\Q{yabb sesquestion}\E/$sesquest_txt{$sesquestion}/xsm;
+    $yymain =~ s/\Q{yabb sesredir}\E/$INFO{'sesredir'}/xsm;
+    $yytitle = "$img_txt{'34a'}";
     template();
     return;
 }
 
 sub SessionReval2 {
-#    require Sources::Decoder;
     $FORM{'cookielength'}   = 360;
     $FORM{'cookieneverexp'} = 1;
     if ( $FORM{'sesanswer'} eq q{} ) { fatal_error('no_secret_answer'); }
@@ -66,7 +65,7 @@ sub SessionReval2 {
     }
     else {
         $question = encode_password( ${ $uid . $username }{'sesanswer'} );
-        $answer =   encode_password( $FORM{'sesanswer'} );
+        $answer   = encode_password( $FORM{'sesanswer'} );
 
         #       bug fix courtesy Derek Barnstorm;
         chomp $answer;

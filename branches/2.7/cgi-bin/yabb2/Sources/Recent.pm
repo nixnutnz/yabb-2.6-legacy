@@ -14,12 +14,11 @@
 ###############################################################################
 # use strict;
 # use warnings;
-# no warnings qw(uninitialized once);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-# from YaBB3.0 build 100 #
-$recentpmver = 'YaBB 2.7.00 $Revision$';
+$recentpmver  = 'YaBB 2.7.00 $Revision$';
 @recentpmmods = ();
 if (@recentpmmods) {
     $recentpmmods = 1;
@@ -53,22 +52,19 @@ sub RecentPosts {
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
             if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-                my $bdmods = ${ $uid . $curboard }{'mods'};
-                $bdmods =~ s/\, /\,/gsm;
-                $bdmods =~ s/\ /\,/gsm;
+                my $bdmods     = ${ $uid . $curboard }{'mods'};
                 my %moderators = ();
                 my $pswiammod  = 0;
-                for my $curuser ( split /\,/xsm, $bdmods ) {
+                for my $curuser ( split /\//xsm, $bdmods ) {
                     if ( $username eq $curuser ) { $pswiammod = 1; }
                 }
-                my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
-                $bdmodgroups =~ s/\, /\,/gsm;
+                my $bdmodgroups     = ${ $uid . $curboard }{'modgroups'};
                 my %moderatorgroups = ();
-                for my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                for my $curgroup ( split /\//xsm, $bdmodgroups ) {
                     if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                         $pswiammod = 1;
                     }
-                    for my $memberaddgroups ( split /\, /sm,
+                    for my $memberaddgroups ( split /,\s*/xsm,
                         ${ $uid . $username }{'addgroups'} )
                     {
                         chomp $memberaddgroups;
@@ -120,7 +116,7 @@ sub RecentPosts {
 
     for my $catid (@categoryorder) {
 
-        (@bdlist) = split /\,/xsm, $cat{$catid};
+        (@bdlist) = split /,/xsm, $cat{$catid};
 
         ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
         $cataccess = CatAccess($catperms);
@@ -274,31 +270,33 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under"
 
         if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
             $my_tstate = $myrecent_mess;
-            $my_tstate =~ s/{yabb tnum}/$tnum/gsm;
-            $my_tstate =~ s/{yabb c}/$c/gsm;
+            $my_tstate =~ s/\Q{yabb tnum}\E/$tnum/gxsm;
+            $my_tstate =~ s/\Q{yabb c}\E/$c/gxsm;
         }
 
         $yymain .= $myrecent;
-        $yymain =~ s/{yabb counter}/$counter/sm;
-        $yymain =~ s/{yabb catbrd}/$my_cat/sm;
-        $yymain =~ s/{yabb catname}/$catname{$board}/sm;
-        $yymain =~ s/{yabb boardtree}/$boardtree/sm;
-        $yymain =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
-        $yymain =~ s/{yabb msub}/$msub/sm;
-        $yymain =~ s/{yabb mdate}/$mdate/sm;
-        $yymain =~ s/{yabb tname}/$tname/sm;
-        $yymain =~ s/{yabb mname}/$mname/sm;
-        $yymain =~ s/{yabb my_tstate}/$my_tstate/sm;
-        $yymain =~ s/{yabb message}/$message/sm;
+        $yymain =~ s/\Q{yabb counter}\E/$counter/xsm;
+        $yymain =~ s/\Q{yabb catbrd}\E/$my_cat/xsm;
+        $yymain =~ s/\Q{yabb catname}\E/$catname{$board}/xsm;
+        $yymain =~ s/\Q{yabb boardtree}\E/$boardtree/xsm;
+        $yymain =~ s/\Q{yabb tnum}\E/$tnum\/$c#$c/xsm;
+        $yymain =~ s/\Q{yabb msub}\E/$msub/xsm;
+        $yymain =~ s/\Q{yabb mdate}\E/$mdate/xsm;
+        $yymain =~ s/\Q{yabb tname}\E/$tname/xsm;
+        $yymain =~ s/\Q{yabb mname}\E/$mname/xsm;
+        $yymain =~ s/\Q{yabb my_tstate}\E/$my_tstate/xsm;
+        $yymain =~ s/\Q{yabb message}\E/$message/xsm;
+
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
         }
         else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+              ${ $uid . $username }{'postlayout'};
             if ( $txtsz < 60 ) { $txtsz = 100; }
             $txtsz = qq~; font-size:$txtsz%~;
         }
-        $yymain =~ s/{yabb txtsz}/$txtsz/gsm;
+        $yymain =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
     }
 
     $yynavigation = qq~&rsaquo; $maintxt{'214'}~;
@@ -321,7 +319,7 @@ sub RecentTopics {
     for my $catid (@categoryorder) {
         my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
         if ( !CatAccess($catperms) ) { next; }
-        (@bdlist) = split /\,/xsm, $cat{$catid};
+        (@bdlist) = split /,/xsm, $cat{$catid};
         recursive_check(@bdlist);
     }
 
@@ -408,7 +406,7 @@ sub RecentTopics {
         if ( ${ $uid . $musername }{'regdate'} && $mdate > $registrationdate ) {
             $mname = profile_view($musername);
         }
-        elsif ( $musername !~ m{Guest}sm && $mdate < $registrationdate ) {
+        elsif ( $musername !~ m{Guest}xsm && $mdate < $registrationdate ) {
             $mname = qq~$mname - $maintxt{'470a'}~;
         }
         else {
@@ -473,31 +471,33 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
 
         if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
             $my_tstate = $myrecent_mess;
-            $my_tstate =~ s/{yabb tnum}/$tnum/gsm;
-            $my_tstate =~ s/{yabb c}/$c/gsm;
+            $my_tstate =~ s/\Q{yabb tnum}\E/$tnum/gxsm;
+            $my_tstate =~ s/\Q{yabb c}\E/$c/gxsm;
         }
 
         $yymain .= $myrecent;
-        $yymain =~ s/{yabb counter}/$counter/sm;
-        $yymain =~ s/{yabb catbrd}/$my_cat/sm;
-        $yymain =~ s/{yabb catname}/$my_catname/sm;
-        $yymain =~ s/{yabb boardtree}/$boardtree/sm;
-        $yymain =~ s/{yabb tnum}/$tnum\/$c#$c/sm;
-        $yymain =~ s/{yabb msub}/$msub/sm;
-        $yymain =~ s/{yabb mdate}/$mdate/sm;
-        $yymain =~ s/{yabb tname}/$tname/sm;
-        $yymain =~ s/{yabb mname}/$mname/sm;
-        $yymain =~ s/{yabb my_tstate}/$my_tstate/sm;
-        $yymain =~ s/{yabb message}/$message/sm;
+        $yymain =~ s/\Q{yabb counter}\E/$counter/xsm;
+        $yymain =~ s/\Q{yabb catbrd}\E/$my_cat/xsm;
+        $yymain =~ s/\Q{yabb catname}\E/$my_catname/xsm;
+        $yymain =~ s/\Q{yabb boardtree\E}/$boardtree/xsm;
+        $yymain =~ s/\Q{yabb tnum}\E/$tnum\/$c#$c/xsm;
+        $yymain =~ s/\Q{yabb msub}\E/$msub/xsm;
+        $yymain =~ s/\Q{yabb mdate}\E/$mdate/xsm;
+        $yymain =~ s/\Q{yabb tname}\E/$tname/xsm;
+        $yymain =~ s/\Q{yabb mname}\E/$mname/xsm;
+        $yymain =~ s/\Q{yabb my_tstate}\E/$my_tstate/xsm;
+        $yymain =~ s/\Q{yabb message}\E/$message/xsm;
+
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
         }
         else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+              ${ $uid . $username }{'postlayout'};
             if ( $txtsz < 60 ) { $txtsz = 100; }
             $txtsz = qq~; font-size:$txtsz%~;
         }
-        $yymain =~ s/{yabb txtsz}/$txtsz/gsm;
+        $yymain =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
     }
 
     $yynavigation = qq~&rsaquo; $maintxt{'214b'}~;
@@ -516,22 +516,19 @@ sub recursive_check {
         if ( !$iamadmin && $access ne 'granted' ) { next; }
 
         if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-            my $bdmods = ${ $uid . $curboard }{'mods'};
-            $bdmods =~ s/\, /\,/gsm;
-            $bdmods =~ s/\ /\,/gsm;
+            my $bdmods     = ${ $uid . $curboard }{'mods'};
             my %moderators = ();
             my $pswiammod  = 0;
-            for my $curuser ( split /\,/xsm, $bdmods ) {
+            for my $curuser ( split /\//xsm, $bdmods ) {
                 if ( $username eq $curuser ) { $pswiammod = 1; }
             }
-            my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
-            $bdmodgroups =~ s/\, /\,/gsm;
+            my $bdmodgroups     = ${ $uid . $curboard }{'modgroups'};
             my %moderatorgroups = ();
-            for my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+            for my $curgroup ( split /\//xsm, $bdmodgroups ) {
                 if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                     $pswiammod = 1;
                 }
-                for my $memberaddgroups ( split /\, /sm,
+                for my $memberaddgroups ( split /,\s*/xsm,
                     ${ $uid . $username }{'addgroups'} )
                 {
                     chomp $memberaddgroups;

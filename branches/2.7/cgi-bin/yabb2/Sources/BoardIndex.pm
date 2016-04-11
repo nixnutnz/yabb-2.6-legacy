@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$boardindexpmver = 'YaBB 2.7.00 $Revision$';
+$boardindexpmver  = 'YaBB 2.7.00 $Revision$';
 @boardindexpmmods = ();
 if (@boardindexpmmods) {
     $boardindexpmmods = 1;
@@ -29,11 +29,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 LoadLanguage('BoardIndex');
 get_micon();
 
-if ($rss_perm || $accept_permafull ) {
-    $mysymrecent = $perm_domain . '/' . $rsssymrecent;
-    $mysymboard = $perm_domain . '/' . $rsssymboards;
-    $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
-    $permcat = qq~$perm_domain/$symlink/~ . 'cat_';
+if ( $rss_perm || $accept_permafull ) {
+    $mysymrecent = $perm_domain . q{/} . $rsssymrecent;
+    $mysymboard  = $perm_domain . q{/} . $rsssymboards;
+    $permbrd     = qq~$perm_domain/$symlink/~ . 'brd_';
+    $permcat     = qq~$perm_domain/$symlink/~ . 'cat_';
 }
 
 sub BoardIndex {
@@ -42,10 +42,10 @@ sub BoardIndex {
         $lsreply, $lsdatetime, @goodboards, @loadboards, $guestlist
     );
     get_forum_master();
-    my @brd_img_id = sort ( keys %board);
+    my @brd_img_id = sort keys %board;
     my %brd_img_id = ();
-    my $brdimgcnt = 0;
-    for ( @brd_img_id ) {
+    my $brdimgcnt  = 0;
+    foreach (@brd_img_id) {
         $brd_img_id{$_} = $brdimgcnt;
         $brdimgcnt++;
     }
@@ -76,7 +76,7 @@ sub BoardIndex {
         GetBotlist();
 
         my $lastonline = $date - ( $OnlineLogTime * 60 );
-        for (@logentries) {
+        foreach (@logentries) {
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /[|]/xsm, $_, 7;
             if ( !$last_ip ) {
@@ -95,7 +95,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             }
             elsif ($name) {
                 if ( -e "$memberdir/$name.vars" ) {
-                    LoadUser($name, 'vars');
+                    LoadUser( $name, 'vars' );
                     if ( $name eq $username ) { $user_in_log = 1; }
                     elsif ( ${ $uid . $name }{'lastonline'} < $lastonline ) {
                         next;
@@ -144,7 +144,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     || ( $iamfmod && $show_online_ip_fmod ) )
                 {
                     $users .= "&nbsp;<i>($user_ip)</i>";
-                    $guestlist =~ s/<i>$lookupIP<\/i>, //osm;
+                    $guestlist =~ s/<i>$lookupIP<\/i>,\s//oxsm;
                 }
             }
         }
@@ -154,18 +154,18 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         }
 
         if ($numusers) {
-            $users =~ s/, \Z//sm;
+            $users =~ s/,\s\Z//xsm;
             $users .= q~<br />~;
         }
         if ($guestlist) {    # build the guest list
-            $guestlist =~ s/, $//sm;
+            $guestlist =~ s/,\s$//xsm;
             $guestlist = qq~<span class="small">$guestlist</span><br />~;
         }
         if ($numbots) {      # build the bot list
-            for ( sort keys %bot_count ) {
+            foreach ( sort keys %bot_count ) {
                 $botlist .= qq~$_&nbsp;($bot_count{$_}), ~;
             }
-            $botlist =~ s/, $//sm;
+            $botlist =~ s/,\s$//xsm;
             $botlist = qq~<span class="small">$botlist</span>~;
         }
 
@@ -184,12 +184,12 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
     }
 
     else {
-        for (@logentries) {
+        foreach (@logentries) {
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /[|]/xsm, $_, 7;
             if ($name) {
                 if ( -e "$memberdir/$name.vars" ) {
-                    LoadUser( $name, 'vars');
+                    LoadUser( $name, 'vars' );
                     if ( $iamadmin || $iamgmod || $iamfmod ) {
                         $numusers++;
                         $bvusers{$boardv}++;
@@ -213,7 +213,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
     }
 
 # first get all the boards based on the categories found in forum.master or the provided sub board
-    for my $catid (@tmplist) {
+    foreach my $catid (@tmplist) {
         if (   $INFO{'catselect'} ne $catid
             && $INFO{'catselect'}
             && !$subboard_sel )
@@ -223,7 +223,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
         # get boards in category if we're not looking for subboards
         if ( !$subboard_sel ) {
-            (@bdlist) = split /\,/xsm, $cat{$catid};
+            @bdlist = split /,/xsm, $cat{$catid};
             my ( $catname, $catperms, $catallowcol ) =
               split /[|]/xsm, $catinfo{$catid};
 
@@ -233,10 +233,10 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             $cat_boardcnt{$catid} = 0;
         }
         else {
-            (@bdlist) = split /[|]/xsm, $subboard{$catid};
+            @bdlist = split /[|]/xsm, $subboard{$catid};
         }
 
-        for my $curboard (@bdlist) {
+        foreach my $curboard (@bdlist) {
             if ( !exists $board{$curboard} ) {
                 gostRemove( $catid, $curboard );
                 next;
@@ -262,7 +262,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
          # recursively check access to all sub boards then add them to load list
                 *recursive_boards = sub {
-                    for my $childbd (@_) {
+                    foreach my $childbd (@_) {
 
                # now fill all the necessary hashes to show all board index stuff
                         if ( !exists $board{$childbd} ) {
@@ -344,19 +344,17 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             {
                 my $pswiammod = 0;
                 my $bdmods    = ${ $uid . $curboard }{'mods'};
-                $bdmods =~ s/\, /\,/gsm;
-                $bdmods =~ s/\ /\,/gsm;
-                for my $curuser ( split /\,/xsm, $bdmods ) {
+
+                foreach my $curuser ( split /\//xsm, $bdmods ) {
                     if ( $username eq $curuser ) { $pswiammod = 1; last; }
                 }
                 my $bdmodgroups = ${ $uid . $scboard }{'modgroups'};
-                $bdmodgroups =~ s/\, /\,/gsm;
-                for my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                foreach my $curgroup ( split /\//xsm, $bdmodgroups ) {
                     if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                         $pswiammod = 1;
                         last;
                     }
-                    for my $memberaddgroups ( split /\, /xsm,
+                    foreach my $memberaddgroups ( split /,/xsm,
                         ${ $uid . $username }{'addgroups'} )
                     {
                         chomp $memberaddgroups;
@@ -390,20 +388,20 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
     # showcase poll end
 
-    for my $curboard (@loadboards) {
+    foreach my $curboard (@loadboards) {
         chomp $curboard;
 
         my $iammodhere = q{};
-        for my $curuser ( split /, ?/sm, ${ $uid . $curboard }{'mods'} ) {
+        foreach my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} ) {
             if ( $username eq $curuser ) { $iammodhere = 1; }
         }
-        for
-          my $curgroup ( split /, /sm, ${ $uid . $curboard }{'modgroups'} )
+        foreach
+          my $curgroup ( split /\//xsm, ${ $uid . $curboard }{'modgroups'} )
         {
             if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                 $iammodhere = 1;
             }
-            for ( split /,/xsm, ${ $uid . $username }{'addgroups'} ) {
+            foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} ) {
                 if ( $_ eq $curgroup ) { $iammodhere = 1; last; }
             }
         }
@@ -420,7 +418,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             && !$iamadmin
             && !$iamgmod
             && !$iamfmod
-            && ${ $uid . $curboard }{'lasttopicstate'} =~ /h/ism )
+            && ${ $uid . $curboard }{'lasttopicstate'} =~ /h/ixsm )
         {
             ${ $uid . $curboard }{'lastpostid'}   = q{};
             ${ $uid . $curboard }{'lastsubject'}  = q{};
@@ -433,16 +431,17 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             my @threadlist = <MNUM>;
             fclose(MNUM);
 
-            for (@threadlist) {
+            foreach (@threadlist) {
                 (
                     $messageid, undef, undef, undef, undef,
                     undef,      undef, undef, $messagestate
                 ) = split /[|]/xsm, $_;
-                if ( $messagestate !~ /h/ism ) {
+                if ( $messagestate !~ /h/ixsm ) {
                     fopen( FILE, "$datadir/$messageid.txt" ) || next;
                     my @lastthreadmessages = <FILE>;
                     fclose(FILE);
-                    my @lastmessage = split /[|]/xsm, $lastthreadmessages[-1], 6;
+                    my @lastmessage = split /[|]/xsm, $lastthreadmessages[-1],
+                      6;
                     ${ $uid . $curboard }{'lastpostid'}  = $messageid;
                     ${ $uid . $curboard }{'lastsubject'} = $lastmessage[0];
                     ${ $uid . $curboard }{'lastreply'}   = $#lastthreadmessages;
@@ -452,7 +451,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                       : $lastmessage[4];
                     ${ $uid . $curboard }{'lastposttime'} = $lastmessage[3];
                     $lastposttime{$curboard} = timeformat( $lastmessage[3] );
-                    $lastposttime{$curboard2} = timeformat( $lastmessage[3],0,0,0,1 );
+                    $lastposttime{$curboard2} =
+                      timeformat( $lastmessage[3], 0, 0, 0, 1 );
                     last;
                 }
             }
@@ -469,7 +469,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             $lastposttime{$curboard} =
               timeformat( ${ $uid . $curboard }{'lastposttime'} );
             $lastposttime{$curboard2} =
-              timeformat( ${ $uid . $curboard }{'lastposttime'},0,0,0,1 );
+              timeformat( ${ $uid . $curboard }{'lastposttime'}, 0, 0, 0, 1 );
         }
         else { $lastposttime{$curboard} = $boardindex_txt{'470'}; }
 
@@ -550,7 +550,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
     # count boards to see if we print anything when we're looking for subboards
     my $brd_count;
     LoadCensorList();
-    for my $catid (@tmplist) {
+    foreach my $catid (@tmplist) {
         if (   $INFO{'catselect'} ne $catid
             && $INFO{'catselect'}
             && !$subboard_sel )
@@ -562,7 +562,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
 
         # get boards in category if we're not looking for subboards
         if ( !$subboard_sel ) {
-            (@bdlist) = split /\,/xsm, $cat{$catid};
+            (@bdlist) = split /,/xsm, $cat{$catid};
             ( $catname, $catperms, $catallowcol, $catimage, $catrss ) =
               split /[|]/xsm, $catinfo{$catid};
             ToChars($catname);
@@ -600,12 +600,13 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
 # loop through any collapsed boards to find new posts in it and change the image to match
 # Now shows this whether minimized or not, for Javascript hiding/showing. (Unilat)
             if ( $INFO{'catselect'} eq q{} ) {
-                for my $boardinfo (@goodboards) {
+                foreach my $boardinfo (@goodboards) {
                     my $testcat;
                     ( $testcat, $curboard ) = split /[|]/xsm, $boardinfo;
                     if ( $testcat ne $catid ) { next; }
-                    else { find_latest_data( $curboard, split /[|]/xsm,
-                        $subboard{$curboard} );
+                    else {
+                        find_latest_data( $curboard, split /[|]/xsm,
+                            $subboard{$curboard} );
                     }
 
 # as we fill the vars based on all boards we need to skip any cat already shown before
@@ -625,8 +626,9 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                     $newrowend{$catname} = $brd_newrowend;
                     if ( $catcol{$catid} ) {
                         $my_brdrow = $brd_newrow;
-                        $my_brdrow =~ s/{yabb new_msg_bg}/$new_msg_bg/sm;
-                        $my_brdrow =~ s/{yabb new_msg_class}/$new_msg_class/sm;
+                        $my_brdrow =~ s/\Q{yabb new_msg_bg}\E/$new_msg_bg/xsm;
+                        $my_brdrow =~
+                          s/\Q{yabb new_msg_class}\E/$new_msg_class/xsm;
                         $newrowstart{$catname} = $my_brdrow;
                         $template_boardtable = qq~id="$catid"~;
                         $template_colboardtable =
@@ -634,8 +636,9 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                     }
                     else {
                         $my_brdrow = $brd_newrow;
-                        $my_brdrow =~ s/{yabb new_msg_bg}/$new_msg_bg/sm;
-                        $my_brdrow =~ s/{yabb new_msg_class}/$new_msg_class/sm;
+                        $my_brdrow =~ s/\Q{yabb new_msg_bg}\E/$new_msg_bg/xsm;
+                        $my_brdrow =~
+                          s/\Q{yabb new_msg_class}\E/$new_msg_class/xsm;
                         $newrowstart{$catname} = $my_brdrow;
                         $template_boardtable =
                           qq~id="$catid" style="display:none;"~;
@@ -687,14 +690,14 @@ qq~$collapse_link $hash{$catname} <a href="$scripturl?$my_cat=$catid" title="$bo
             $template_colboardtable = qq~id="col$catid" style="display:none;"~;
             $catlink = qq~<a href="$scripturl?$my_cat=$catid">$catname</a>~;
         }
-        if ( $accept_permafull) {
-            $catlink =~ s/$scripturl\?catselect\=/$permcat/gxsm;
+        if ($accept_permafull) {
+            $catlink =~ s/$scripturl[?]catselect\=/$permcat/gxsm;
         }
 
         # Don't need the category headers if we're loading ajax subboards
         if ( !$INFO{'a'} ) {
             if ( !$rss_disabled && $catrss ) {
-                if ( $rss_perm  || $accept_permafull ) {
+                if ( $rss_perm || $accept_permafull ) {
                     $rss_catlink =
 qq~<a href="$mysymrecent/$catid" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $catname" title="$maintxt{'rssfeed'} - $catname" /></a>~;
                 }
@@ -708,25 +711,29 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
             }
             $templatecat = $catheader;
             $tmpcatimg   = q{};
-            $imgid = $brd_img_id{$catid};
+            $imgid       = $brd_img_id{$catid};
             if ( $catimage ne q{} ) {
-                if ( $catimage =~ /\//ism ) {
-                    $catimage = qq~<img src="$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_images(this);" />~;
+                if ( $catimage =~ /\//ixsm ) {
+                    $catimage =
+qq~<img src="$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_images(this);" />~;
                 }
                 elsif ($catimage) {
-                    $catimage = qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_images(this);" />~;
+                    $catimage =
+qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_images(this);" />~;
                 }
                 $tmpcatimg = qq~$catimage~;
             }
-            $templatecat =~ s/{yabb catimage}/$tmpcatimg/gsm;
-            $templatecat =~ s/{yabb catrss}/$rss_catlink/gsm;
-            $templatecat =~ s/{yabb catlink}/$catlink/gsm;
-            $templatecat =~ s/{yabb newmsg start}/$newrowstart{$catname}/gsm;
-            $templatecat =~ s/{yabb newmsg icon}/$newrowicon{$catname}/gsm;
-            $templatecat =~ s/{yabb newmsg}/$newms{$catname}/gsm;
-            $templatecat =~ s/{yabb newmsg end}/$newrowend{$catname}/gsm;
-            $templatecat =~ s/{yabb boardtable}/$template_boardtable/gsm;
-            $templatecat =~ s/{yabb colboardtable}/$template_colboardtable/gsm;
+            $templatecat =~ s/\Q{yabb catimage}\E/$tmpcatimg/gxsm;
+            $templatecat =~ s/\Q{yabb catrss}\E/$rss_catlink/gxsm;
+            $templatecat =~ s/\Q{yabb catlink}\E/$catlink/gxsm;
+            $templatecat =~
+              s/\Q{yabb newmsg start}\E/$newrowstart{$catname}/gxsm;
+            $templatecat =~ s/\Q{yabb newmsg icon}\E/$newrowicon{$catname}/gxsm;
+            $templatecat =~ s/\Q{yabb newmsg}\E/$newms{$catname}/gxsm;
+            $templatecat =~ s/\Q{yabb newmsg end}\E/$newrowend{$catname}/gxsm;
+            $templatecat =~ s/\Q{yabb boardtable}\E/$template_boardtable/gxsm;
+            $templatecat =~
+              s/\Q{yabb colboardtable}\E/$template_colboardtable/gxsm;
             $tmptemplateblock .= $templatecat;
         }
 
@@ -737,7 +744,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
             || $INFO{'catselect'} ne q{}
             || $iamguest )
         {    # deti
-            for my $boardinfo (@goodboards) {
+            foreach my $boardinfo (@goodboards) {
                 my $testcat;
                 ( $testcat, $curboard ) = split /[|]/xsm, $boardinfo;
                 if ( $testcat ne $catid ) { next; }
@@ -765,20 +772,24 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 ToChars($boardname);
                 $INFO{'zeropost'} = 0;
                 $zero             = q{};
-                $bdpic = qq~$imagesdir/boards.$bdpicExt~;
+                $bdpic            = qq~$imagesdir/boards.$bdpicExt~;
                 fopen( BRDPIC, "<$boardsdir/brdpics.db" );
                 my @brdpics = <BRDPIC>;
-                fclose( BRDPIC);
+                fclose(BRDPIC);
                 chomp @brdpics;
-                for (@brdpics) {
+
+                foreach (@brdpics) {
                     my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
                     if ( $brdnm eq $curboard && $template eq $style ) {
-                        if ( $brdpic =~ /\//ism ) {
+                        if ( $brdpic =~ /\//ixsm ) {
                             $bdpic = $brdpic;
                             last;
                         }
                         else {
-                            if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" ) {
+                            if (
+                                -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic"
+                              )
+                            {
                                 $bdpic = qq~$imagesdir/Boards/$brdpic~;
                             }
                             else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
@@ -786,10 +797,10 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                         }
                     }
                     else {
-                        if ( $boardname =~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
+                        if ( $boardname =~ m{[ht|f]tps?://}xsm ) {
                             $bdpic = qq~$imagesdir/$extern~;
                         }
-                        else {$bdpic = qq~$imagesdir/boards.$bdpicExt~; }
+                        else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
                     }
                 }
 
@@ -800,15 +811,15 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                     $bdpic = qq~$imagesdir/recycle.$bdpicExt~;
                 }
                 $bddescr = q{};
-                if (${ $uid . $curboard }{'description'} ne q{} ) {
-                    $bddescr          = $brk . ${ $uid . $curboard }{'description'};
-                ToChars($bddescr);
+                if ( ${ $uid . $curboard }{'description'} ne q{} ) {
+                    $bddescr = $brk . ${ $uid . $curboard }{'description'};
+                    ToChars($bddescr);
                 }
                 $iammod     = q{};
                 %moderators = ();
                 my $curmods = ${ $uid . $curboard }{'mods'};
 
-                for my $curuser ( split /, ?/sm, $curmods ) {
+                foreach my $curuser ( split /\//xsm, $curmods ) {
                     if ( $username eq $curuser ) { $iammod = 1; }
                     LoadUser($curuser);
                     $moderators{$curuser} = ${ $uid . $curuser }{'realname'};
@@ -824,17 +835,17 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                     FormatUserName($tmpa);
                     $showmods .= QuickLinks( $tmpa, 1 ) . q{, };
                 }
-                $showmods =~ s/, \Z//sm;
+                $showmods =~ s/,\s*?$//xsm;
 
                 LoadUser($username);
                 %moderatorgroups = ();
-                for my $curgroup ( split /, /sm,
+                foreach my $curgroup ( split /\//xsm,
                     ${ $uid . $curboard }{'modgroups'} )
                 {
                     if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                         $iammod = 1;
                     }
-                    for ( split /,/xsm, ${ $uid . $username }{'addgroups'} )
+                    foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} )
                     {
                         if ( $_ eq $curgroup ) { $iammod = 1; last; }
                     }
@@ -853,7 +864,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 while ( $tmpa = each %moderatorgroups ) {
                     $showmodgroups .= qq~$moderatorgroups{$tmpa}, ~;
                 }
-                $showmodgroups =~ s/, \Z//sm;
+                $showmodgroups =~ s/,\s*$//xsm;
                 if ( $showmodgroups eq q{} && $showmods eq q{} ) {
                     $showmodgroups = q{};
                 }
@@ -888,7 +899,7 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
 qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" />~;
                 }
                 $lastposter = ${ $uid . $curboard }{'lastposter'};
-                $lastposter =~ s/\AGuest-(.*)/$1 ($maintxt{'28'})/ism;
+                $lastposter =~ s/\AGuest-(.*)/$1 ($maintxt{'28'})/ixsm;
 
                 if ( !$lastposterguest{$curboard}
                     && ${ $uid . $curboard }{'lastposter'} ne
@@ -919,14 +930,21 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                         my @x = <EXMEMBERTHREAD>;
                         fclose(EXMEMBERTHREAD);
                         @lstp = split /[|]/xsm, $x[-1];
-                        if ( $lstp[4] eq 'Guest') {
+                        if ( $lstp[4] eq 'Guest' ) {
                             $lastposter = qq~$lstp[1] ($maintxt{'28'})~;
                         }
-                        else { $lastposter = qq~$lstp[1] - $boardindex_txt{'470a'}~; }
+                        else {
+                            $lastposter =
+                              qq~$lstp[1] - $boardindex_txt{'470a'}~;
+                        }
                     }
                 }
-                ${ $uid . $curboard }{'lastposter'} = isempty( ${ $uid . $curboard }{'lastposter'}, $boardindex_txt{'470'} );
-                ${ $uid . $curboard }{'lastposttime'} = isempty( ${ $uid . $curboard }{'lastposttime'}, $boardindex_txt{'470'} );
+                ${ $uid . $curboard }{'lastposter'} =
+                  isempty( ${ $uid . $curboard }{'lastposter'},
+                    $boardindex_txt{'470'} );
+                ${ $uid . $curboard }{'lastposttime'} =
+                  isempty( ${ $uid . $curboard }{'lastposttime'},
+                    $boardindex_txt{'470'} );
 
                 my $templateblock = $boardblock;
 
@@ -986,10 +1004,10 @@ qq~<a href="$mysymboard/$curboard" target="_blank"><img src="$micon_bg{'boardrss
                 if ( $subboard{$curboard} ) {
                     my @childboards = split /[|]/xsm, $subboard{$curboard};
                     $tmp_sublist = $subboard_list;
-                    for my $childbd (@childboards) {
+                    foreach my $childbd (@childboards) {
                         my $tmp_sublinks = $subboard_links_ext;
-                        my ( $chldboardname, $chldboardperms, $chldboardview ) =
-                          split /[|]/xsm, $board{$childbd};
+                        my ( $chldboardname, $chldboardperms, $chldboardview )
+                          = split /[|]/xsm, $board{$childbd};
                         my $access =
                           AccessCheck( $childbd, q{}, $chldboardperms );
                         if (  !$iamadmin
@@ -1049,32 +1067,40 @@ qq~ $childcnt{$childbd} $boardindex_txt{'72'}~;
                             }
                         }
 
-                        if ( $chldboardname =~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
+                        if ( $chldboardname =~ m/[ht|f]tp[s ]{0,1}:\/\//xsm ) {
                             $tmp_sublinks = $subboard_links_ext;
                             $bdd          = q{};
                             $my_bddescr   = ${ $uid . $childbd }{'description'};
-                            my @bname = split /<br \/>/sm, $my_bddescr;
-                            ToChars($bname[0]);
-                            $boardname = qq~$scripturl\?action\=showexternal;exboard\=$childbd~;
-                            $tmp_sublinks =~ s/{yabb boardurl}/$boardname/gsm;
-                            $tmp_sublinks =~ s/{yabb new}/$new/gsm;
-                            $tmp_sublinks =~ s/{yabb boardname}/$bname[0]/gsm;
-                            $tmp_sublinks =~ s/{yabb sub_lock}/$sub_lock/gsm;
+                            my @bname = split /<br.*?>/xsm, $my_bddescr;
+                            ToChars( $bname[0] );
+                            $boardname =
+qq~$scripturl\?action\=showexternal;exboard\=$childbd~;
+                            $tmp_sublinks =~
+                              s/\Q{yabb boardurl}\E/$boardname/gxsm;
+                            $tmp_sublinks =~ s/\Q{yabb new}\E/$new/gxsm;
+                            $tmp_sublinks =~
+                              s/\Q{yabb boardname}\E/$bname[0]/gxsm;
+                            $tmp_sublinks =~
+                              s/\Q{yabb sub_lock}\E/$sub_lock/gxsm;
                         }
                         else {
                             $tmp_sublinks = $subboard_links;
-                            $tmp_sublinks =~ s/{yabb boardname}/$chldboardname/gsm;
-                            $tmp_sublinks =~ s/{yabb boardurl}/$scripturl\?board\=$childbd/gsm;
-                            $tmp_sublinks =~ s/{yabb new}/$sub_new/gsm;
-                            $tmp_sublinks =~ s/{yabb sub_lock}/$sub_lock/gsm;
-                            $tmp_sublinks =~ s/{yabb boardinfo}/$boardinfotxt/gsm;
+                            $tmp_sublinks =~
+                              s/\Q{yabb boardname}\E/$chldboardname/gxsm;
+                            $tmp_sublinks =~
+s/\Q{yabb boardurl}\E/$scripturl\?board\=$childbd/gxsm;
+                            $tmp_sublinks =~ s/\Q{yabb new}\E/$sub_new/gxsm;
+                            $tmp_sublinks =~
+                              s/\Q{yabb sub_lock}\E/$sub_lock/gxsm;
+                            $tmp_sublinks =~
+                              s/\Q{yabb boardinfo}\E/$boardinfotxt/gxsm;
                         }
                         $template_subboards .= qq~$tmp_sublinks, ~;
                     }
                     if ($accept_permafull) {
-						$tmp_sublinks =~ s/$scripturl\?board\=/$permbrd/gxsm;
-					}
-                    $template_subboards =~ s/, $//gsm;
+                        $tmp_sublinks =~ s/$scripturl[?]board\=/$permbrd/gxsm;
+                    }
+                    $template_subboards =~ s/,\s*$//gxsm;
 
                     my $sub_txt = $boardindex_txt{'64'};
 
@@ -1099,9 +1125,9 @@ qq~<a href="javascript:void(0)" id="subdropa_$curboard" style="font-weight:bold"
                         }
                     }
                     $tmp_sublist =~
-                      s/{yabb subboardlinks}/$template_subboards/gsm;
-                    $tmp_sublist =~ s/{yabb subdropdown}/$subdropdown/gsm;
-                    $tmp_sublist =~ s/{yabb subtxt}/$sub_txt/gsm;
+                      s/\Q{yabb subboardlinks}\E/$template_subboards/gxsm;
+                    $tmp_sublist =~ s/\Q{yabb subdropdown}\E/$subdropdown/gxsm;
+                    $tmp_sublist =~ s/\Q{yabb subtxt}\E/$sub_txt/gxsm;
                 }
 
                 my $altbrdcolor =
@@ -1109,7 +1135,7 @@ qq~<a href="javascript:void(0)" id="subdropa_$curboard" style="font-weight:bold"
                   ? 'windowbg'
                   : 'windowbg2';
                 my $boardanchor = $curboard;
-                if ( $boardanchor =~ m{\A[^az]}ism ) {
+                if ( $boardanchor =~ m{\A[^az]}ixsm ) {
                     $boardanchor =~ s/(.*?)/b$1/xsm;
                 }
                 my $lasttopiclink =
@@ -1146,19 +1172,22 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
 # if it's a parent board that cannot be posted in, just show sub board list when clicked vs. message index
                 if ( $subboard{$curboard} && !${ $uid . $curboard }{'canpost'} )
                 {
-                    $templateblock =~ s/{yabb boardurl}/$scripturl\?boardselect\=$curboard/gsm;
+                    $templateblock =~
+s/\Q{yabb boardurl}\E/$scripturl\?boardselect\=$curboard/gxsm;
                 }
                 else {
-                    $templateblock =~ s/{yabb boardurl}/$scripturl\?board\=$curboard/gsm;
+                    $templateblock =~
+                      s/\Q{yabb boardurl}\E/$scripturl\?board\=$curboard/gxsm;
                 }
-				if ($accept_permafull) {
-					$templateblock =~ s/$scripturl\?board\=/$permbrd/gxsm;
-				}
+                if ($accept_permafull) {
+                    $templateblock =~ s/$scripturl[?]board\=/$permbrd/gxsm;
+                }
 
                 # Make hidden table rows for drop down message list
                 $expandmessages = $brd_expandmessages;
-                $expandmessages =~ s/{yabb curboard}/$curboard/gsm;
-                $messagedropdown;
+                $expandmessages =~ s/\Q{yabb curboard}\E/$curboard/gxsm;
+
+                # $messagedropdown;
                 ( $boardname, $boardperms, $boardview ) =
                   split /[|]/xsm, $board{$curboard};
                 $access = AccessCheck( $curboard, q{}, $boardperms );
@@ -1174,57 +1203,75 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                 $bdpic =
 qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onload="resize_brd_images(this);" /> ~;
 
-                if ( $boardname !~ m/[ht|f]tp[s]{0,1}:\/\//sm ) {
-                    $templateblock =~ s/{yabb expandmessages}/$expandmessages/gsm;
-                    $templateblock =~ s/{yabb messagedropdown}/$messagedropdown/gsm;
+                if ( $boardname !~ m/[ht|f]tp[s ]{0,1}:\/\//xsm ) {
+                    $templateblock =~
+                      s/\Q{yabb expandmessages}\E/$expandmessages/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb messagedropdown}\E/$messagedropdown/gxsm;
                     ToChars($boardname);
-                    $templateblock =~ s/{yabb boardanchor}/$boardanchor/gsm;
-                    $templateblock =~ s/{yabb new}/$new/gsm;
-                    $templateblock =~ s/{yabb boardrss}/$rss_boardlink/gsm;
-                    $templateblock =~ s/{yabb newsm}/$new2/gsm;
-                    $templateblock =~ s/{yabb boardpic}/$bdpic/gsm;
-                    $templateblock =~ s/{yabb boardname}/$boardname $boardpwpic/gsm;
-                    $templateblock =~ s/{yabb boarddesc}/$bddescr/gsm;
+                    $templateblock =~
+                      s/\Q{yabb boardanchor}\E/$boardanchor/gxsm;
+                    $templateblock =~ s/\Q{yabb new}\E/$new/gxsm;
+                    $templateblock =~ s/\Q{yabb boardrss}\E/$rss_boardlink/gxsm;
+                    $templateblock =~ s/\Q{yabb newsm}\E/$new2/gxsm;
+                    $templateblock =~ s/\Q{yabb boardpic}\E/$bdpic/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb boardname}\E/$boardname $boardpwpic/gxsm;
+                    $templateblock =~ s/\Q{yabb boarddesc}\E/$bddescr/gxsm;
                     my $boardviewers;
 
                     if ( $bvusers{$curboard} && !$iamguest ) {
-                        $tmpboardviewers = NumberFormat($bvusers{$curboard});
-                        $boardviewers = qq~&nbsp;($tmpboardviewers&nbsp;$boardindex_txt{'bviews'})~;
+                        $tmpboardviewers = NumberFormat( $bvusers{$curboard} );
+                        $boardviewers =
+qq~&nbsp;($tmpboardviewers&nbsp;$boardindex_txt{'bviews'})~;
                     }
-                    $templateblock =~ s/{yabb boardviewers}/$boardviewers/gsm;
-                    $templateblock =~ s/{yabb moderators}/$showmods$showmodgroups/gsm;
-                    $templateblock =~ s/{yabb threadcount}/${$uid.$curboard}{'threadcount'}/gsm;
-                    $templateblock =~ s/{yabb messagecount}/${$uid.$curboard}{'messagecount'}/gsm;
-                    $templateblock =~ s/{yabb lastpostlink}/$lastpostlink/gsm;
-                    $templateblock =~ s/{yabb lastposter}/$lastposter/gsm;
-                    $templateblock =~ s/{yabb lasttopiclink}/$lasttopiclink/gsm;
-                    $templateblock =~ s/{yabb altbrdcolor}/$altbrdcolor/gsm;
-                    $templateblock =~ s/{yabb subboardlist}/$tmp_sublist/gsm;
+                    $templateblock =~
+                      s/\Q{yabb boardviewers}\E/$boardviewers/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb moderators}\E/$showmods$showmodgroups/gxsm;
+                    $templateblock =~
+s/\Q{yabb threadcount}\E/${$uid.$curboard}{'threadcount'}/gxsm;
+                    $templateblock =~
+s/\Q{yabb messagecount}\E/${$uid.$curboard}{'messagecount'}/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb lastpostlink}\E/$lastpostlink/gxsm;
+                    $templateblock =~ s/\Q{yabb lastposter}\E/$lastposter/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb lasttopiclink}\E/$lasttopiclink/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb altbrdcolor}\E/$altbrdcolor/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb subboardlist}\E/$tmp_sublist/gxsm;
                 }
                 else {
                     $templateblock = $boardblockext;
                     $bdd           = q{};
-                    my @bname = split /<br \/>/sm, $bddescr;
+                    my @bname = split /<br.*?>/xsm, $bddescr;
                     my $dcnt = @bname;
-                    for my $i ( 1 .. ( $dcnt - 1 ) ) {
+                    foreach my $i ( 1 .. ( $dcnt - 1 ) ) {
                         $bdd .= $bname[$i] . '<br />';
                     }
                     $boardname =
                       qq~$scripturl\?action\=showexternal;exboard\=$curboard~;
-                    ToChars($bname[0]);
+                    ToChars( $bname[0] );
                     ToChars($bdd);
                     $my_blankext = q{--};
-                    $templateblock =~ s/{yabb boardurl}/$boardname/gsm;
-                    $templateblock =~ s/{yabb boardpic}/$bdpic/gsm;
-                    $templateblock =~ s/{yabb boardname}/$bname[0]/gsm;
-                    $templateblock =~ s/{yabb boarddesc}/$bdd/gsm;
-                    $templateblock =~ s/{yabb threadcount}/$my_blankext/gsm;
-                    $templateblock =~ s/{yabb messagecount}/$my_blankext/gsm;
+                    $templateblock =~ s/\Q{yabb boardurl}\E/$boardname/gxsm;
+                    $templateblock =~ s/\Q{yabb boardpic}\E/$bdpic/gxsm;
+                    $templateblock =~ s/\Q{yabb boardname}\E/$bname[0]/gxsm;
+                    $templateblock =~ s/\Q{yabb boarddesc}\E/$bdd/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb threadcount}\E/$my_blankext/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb messagecount}\E/$my_blankext/gxsm;
                     $lastpostlink = RedirectExternalShow() || 0;
-                    $templateblock =~ s/{yabb lastpostlink}/$lastpostlink/gsm;
-                    $templateblock =~ s/{yabb altbrdcolor}/$altbrdcolor/gsm;
-                    $templateblock =~ s/{yabb subboardlist}/$tmp_sublist/gsm;
-                    $templateblock =~ s/{yabb boardanchor}/$curboard/gsm;
+                    $templateblock =~
+                      s/\Q{yabb lastpostlink}\E/$lastpostlink/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb altbrdcolor}\E/$altbrdcolor/gxsm;
+                    $templateblock =~
+                      s/\Q{yabb subboardlist}\E/$tmp_sublist/gxsm;
+                    $templateblock =~ s/\Q{yabb boardanchor}\E/$curboard/gxsm;
                 }
 
                 $tmptemplateblock .= $templateblock;
@@ -1335,12 +1382,12 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     $totalm = NumberFormat($totalm);
 
     # Template some stuff for sub boards before the rest
-    $boardindex_template =~ s/{yabb catsblock}/$tmptemplateblock/gsm;
+    $boardindex_template =~ s/\Q{yabb catsblock}\E/$tmptemplateblock/gxsm;
 
 # no matter if this is ajax subboards, subboards at top of messageindex, or regular boardindex we need these vars now
-    $brd_img_idw       = isempty( $max_brd_img_width, 50 );
-    $brd_img_idh       = isempty( $max_brd_img_height, 50 );
-    $fix_brd_img_size  = isempty( $fix_brd_img_size, 0 );
+    $brd_img_idw      = isempty( $max_brd_img_width,  50 );
+    $brd_img_idh      = isempty( $max_brd_img_height, 50 );
+    $fix_brd_img_size = isempty( $fix_brd_img_size,   0 );
     $template_catnames =~ s/,\Z//xsm;
     $template_boardnames =~ s/,\Z//xsm;
     $yymain .= qq~
@@ -1372,7 +1419,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
     # don't show info center, login, etc. if we're calling from sub boards
     if ( !$subboard_sel ) {
         $guestson =
-          qq~<span class="small">$boardindex_txt{'141'}: <strong>$guests</strong></span>~;
+qq~<span class="small">$boardindex_txt{'141'}: <strong>$guests</strong></span>~;
         $userson =
 qq~<span class="small">$boardindex_txt{'142'}: <strong>$numusers</strong></span>~;
         $botson =
@@ -1381,15 +1428,15 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
         $totalusers = $numusers + $guests;
 
         if ( !-e ("$vardir/mostlog.log") ) {
+            my $mostusrs = << "MOST";
+$numusers|$date
+$guests|$date
+$totalusers|$date
+$numbots|$date
+
+MOST
             fopen( MOSTUSERS, ">$vardir/mostlog.log" );
-            print {MOSTUSERS} "$numusers|$date\n"
-              or croak "$croak{'print'} MOSTUSERS";
-            print {MOSTUSERS} "$guests|$date\n"
-              or croak "$croak{'print'} MOSTUSERS";
-            print {MOSTUSERS} "$totalusers|$date\n"
-              or croak "$croak{'print'} MOSTUSERS";
-            print {MOSTUSERS} "$numbots|$date\n"
-              or croak "$croak{'print'} MOSTUSERS";
+            print {MOSTUSERS} $mostusrs or croak "$croak{'print'} MOSTUSERS";
             fclose(MOSTUSERS);
         }
         fopen( MOSTUSERS, "<$vardir/mostlog.log" );
@@ -1418,7 +1465,6 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
             || $numbots > $mostbots
             || $totalusers > $mostusers )
         {
-            fopen( MOSTUSERS, ">$vardir/mostlog.log" );
             if ( $numusers > $mostmemb ) {
                 $mostmemb = $numusers;
                 $datememb = $date;
@@ -1435,20 +1481,20 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
                 $mostbots = $numbots;
                 $datebots = $date;
             }
-            print {MOSTUSERS} "$mostmemb|$datememb\n"
-              or croak "$croak{'print'} MOSTUSERS";
-            print {MOSTUSERS} "$mostguest|$dateguest\n"
-              or croak "$croak{'print'} MOSTUSERS";
-            print {MOSTUSERS} "$mostusers|$dateusers\n"
-              or croak "$croak{'print'} MOSTUSERS";
-            print {MOSTUSERS} "$mostbots|$datebots\n"
-              or croak "$croak{'print'} MOSTUSERS";
+            my $mymost = << "MOST";
+$mostmemb|$datememb
+$mostguest|$dateguest
+$mostusers|$dateusers
+$mostbots|$datebots
+MOST
+            fopen( MOSTUSERS, ">$vardir/mostlog.log" );
+            print {MOSTUSERS} $mymost or croak "$croak{'print'} MOSTUSERS";
             fclose(MOSTUSERS);
         }
-        $themostmembdate  = timeformat($datememb,0,0,0,1);
-        $themostguestdate = timeformat($dateguest,0,0,0,1);
-        $themostuserdate  = timeformat($dateusers,0,0,0,1);
-        $themostbotsdate  = timeformat($datebots,0,0,0,1);
+        $themostmembdate  = timeformat( $datememb,  0, 0, 0, 1 );
+        $themostguestdate = timeformat( $dateguest, 0, 0, 0, 1 );
+        $themostuserdate  = timeformat( $dateusers, 0, 0, 0, 1 );
+        $themostbotsdate  = timeformat( $datebots,  0, 0, 0, 1 );
         $mostmemb         = NumberFormat($mostmemb);
         $mostguest        = NumberFormat($mostguest);
         $mostusers        = NumberFormat($mostusers);
@@ -1465,7 +1511,7 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
         $tmpcnt    = 0;
         $grpcolors = q{};
 
-        for my $stafgrp ( sort keys %Group ) {
+        foreach my $stafgrp ( sort keys %Group ) {
             ( $title, undef, undef, $color, $noshow, undef ) =
               split /[|]/xsm, $Group{$stafgrp}, 6;
             if ( $color && $noshow != 1 ) {
@@ -1474,7 +1520,7 @@ qq~<span class="small">$boardindex_txt{'143'}: <strong>$numbots</strong></span>~
 qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></span> $title</div>~;
             }
         }
-        for (@nopostorder) {
+        foreach (@nopostorder) {
             ( $title, undef, undef, $color, $noshow, undef ) =
               split /[|]/xsm, $NoPost{$_}, 6;
             if ( $color && $noshow != 1 ) {
@@ -1483,7 +1529,7 @@ qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></s
 qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></span> $title</div>~;
             }
         }
-        for my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
+        foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
             ( $title, undef, undef, $color, $noshow, undef ) =
               split /[|]/xsm, $Post{$postamount}, 6;
             if ( $color && $noshow != 1 ) {
@@ -1494,7 +1540,7 @@ qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></s
         }
         $rows = int( ( $tmpcnt / 2 ) + 0.5 );
         $col1 = 1;
-        for ( 1 .. $rows ) {
+        foreach ( 1 .. $rows ) {
             $col2 = $rows + $col1;
             if ( $tmpcolors{$col1} ) { $grpcolors .= qq~$tmpcolors{$col1}~; }
             if ( $tmpcolors{$col2} ) { $grpcolors .= qq~$tmpcolors{$col2}~; }
@@ -1507,9 +1553,10 @@ qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></s
         if ( !$rss_disabled ) {
             $myrss_link = qq~$scripturl?action=RSSrecent~;
             if ( $INFO{'catselect'} ) {
-                $myrss_link = qq~$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}~;
+                $myrss_link =
+                  qq~$scripturl?action=RSSrecent;catselect=$INFO{'catselect'}~;
             }
-            if ( $rss_perm  || $accept_permafull ) {
+            if ( $rss_perm || $accept_permafull ) {
                 $myrss_link = qq~$mysymrecent~;
                 if ( $INFO{'catselect'} ) {
                     $myrss_link = qq~$mysymrecent/$INFO{'catselect'}~;
@@ -1522,20 +1569,21 @@ qq~<a href="$myrss_link" target="_blank">$boardindex_txt{'792'}</a>~;
         }
         $yyrssfeed = $rss_text;
         $yyrss     = $rss_link;
-        $boardindex_template =~ s/{yabb rssfeed}/$rss_text/gsm;
-        $boardindex_template =~ s/{yabb rss}/$rss_link/gsm;
+        $boardindex_template =~ s/\Q{yabb rssfeed}\E/$rss_text/gxsm;
+        $boardindex_template =~ s/\Q{yabb rss}\E/$rss_link/gxsm;
 
-        $boardindex_template =~ s/{yabb navigation}/&nbsp;/gsm;
-        $boardindex_template =~ s/{yabb pollshowcase}/$polltemp/gsm;
-        $boardindex_template =~ s/{yabb selecthtml}//gsm;
+        $boardindex_template =~ s/\Q{yabb navigation}\E/&nbsp;/gxsm;
+        $boardindex_template =~ s/\Q{yabb pollshowcase}\E/$polltemp/gxsm;
+        $boardindex_template =~ s/\Q{yabb selecthtml}\E//gxsm;
 
-        $boardhandellist =~ s/{yabb collapse}/$collapselink/gsm;
-        $boardhandellist =~ s/{yabb expand}/$expandlink/gsm;
-        $boardhandellist =~ s/{yabb markallread}/$markalllink/gsm;
+        $boardhandellist =~ s/\Q{yabb collapse}\E/$collapselink/gxsm;
+        $boardhandellist =~ s/\Q{yabb expand}\E/$expandlink/gxsm;
+        $boardhandellist =~ s/\Q{yabb markallread}\E/$markalllink/gxsm;
 
-        $boardindex_template =~ s/{yabb boardhandellist}/$boardhandellist/gsm;
-        $boardindex_template =~ s/{yabb totaltopics}/$totalt/gsm;
-        $boardindex_template =~ s/{yabb totalmessages}/$totalm/gsm;
+        $boardindex_template =~
+          s/\Q{yabb boardhandellist}\E/$boardhandellist/gxsm;
+        $boardindex_template =~ s/\Q{yabb totaltopics}\E/$totalt/gxsm;
+        $boardindex_template =~ s/\Q{yabb totalmessages}\E/$totalm/gxsm;
 
 ### recent/recentopics?##
         if ($Show_RecentBar) {
@@ -1553,7 +1601,7 @@ qq~$boardindex_txt{'236'} <strong><a href="$scripturl?num=$lspostid/$lsreply#$ls
 qq~$boardindex_txt{'791'} <form method="post" action="$scripturl?action=$recentl" name="$recentl" style="display: inline"><select size="1" name="display" onchange="submit()"><option value="">&nbsp;</option>~;
                     my ( $x, $y ) = ( int( $maxrecentdisplay / 5 ), 0 );
                     if ($x) {
-                        for my $i ( 1 .. 5 ) {
+                        foreach my $i ( 1 .. 5 ) {
                             $y = $i * $x;
                             $recentpostslink .=
                               qq~<option value="$y">$y</option>~;
@@ -1575,13 +1623,14 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt $boa
 qq~$boardindex_txt{'791'} <form method="post" action="$scripturl?action=$recentl_t" name="$recentl_t" style="display: inline"><select size="1" name="display" onchange="submit()"><option value="">&nbsp;</option>~;
                     my ( $x, $y ) = ( int( $maxrecentdisplay_t / 5 ), 0 );
                     if ($x) {
-                        for my $i ( 1 .. 5 ) {
+                        foreach my $i ( 1 .. 5 ) {
                             $y = $i * $x;
                             $recenttopicslink .=
                               qq~<option value="$y">$y</option>~;
                         }
                     }
                     if ( $maxrecentdisplay > $y ) {
+                        $recenttopicslink .=
 qq~<option value="$maxrecentdisplay_t">$maxrecentdisplay_t</option>~;
                     }
                     $recenttopicslink .=
@@ -1591,17 +1640,21 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
             if ( $Show_RecentBar == 3 && $maxrecentdisplay_t > 0 ) {
                 $spc = q~<br />~;
             }
-            $boardindex_template =~ s/{yabb lastpostlink}/$lastpostlink/gsm;
-            $boardindex_template =~ s/{yabb recentposts}/$recentpostslink/gsm;
-            $boardindex_template =~ s/{yabb spc}/$spc/sm;
-            $boardindex_template =~ s/{yabb recenttopics}/$recenttopicslink/gsm;
-            $boardindex_template =~ s/{yabb lastpostdate}/$tmlsdatetime/gsm;
+            $boardindex_template =~
+              s/\Q{yabb lastpostlink}\E/$lastpostlink/gxsm;
+            $boardindex_template =~
+              s/\Q{yabb recentposts}\E/$recentpostslink/gxsm;
+            $boardindex_template =~ s/\Q{yabb spc}\E/$spc/xsm;
+            $boardindex_template =~
+              s/\Q{yabb recenttopics}\E/$recenttopicslink/gxsm;
+            $boardindex_template =~
+              s/\Q{yabb lastpostdate}\E/$tmlsdatetime/gxsm;
         }
         else {
-            $boardindex_template =~ s/{yabb lastpostlink}//gsm;
-            $boardindex_template =~ s/{yabb recentposts}//gsm;
-            $boardindex_template =~ s/{yabb recenttopics}//gsm;
-            $boardindex_template =~ s/{yabb lastpostdate}//gsm;
+            $boardindex_template =~ s/\Q{yabb lastpostlink}\E//gxsm;
+            $boardindex_template =~ s/\Q{yabb recentposts}\E//gxsm;
+            $boardindex_template =~ s/\Q{yabb recenttopics}\E//gxsm;
+            $boardindex_template =~ s/\Q{yabb lastpostdate}\E//gxsm;
         }
         $memcount = NumberFormat($memcount);
         $membercountlink =
@@ -1609,36 +1662,40 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         if ( $iamguest && $ML_Allowed ) {
             $membercountlink = qq~<strong>$memcount</strong>~;
         }
-        $boardindex_template =~ s/{yabb membercount}/$membercountlink/gsm;
+        $boardindex_template =~ s/\Q{yabb membercount}\E/$membercountlink/gxsm;
         if ($showlatestmember) {
             LoadUser($latestmember);
             $latestmemberlink =
                 qq~$boardindex_txt{'201'} ~
               . QuickLinks($latestmember)
               . q~.<br />~;
-            $boardindex_template =~ s/{yabb latestmember}/$latestmemberlink/gsm;
+            $boardindex_template =~
+              s/\Q{yabb latestmember}\E/$latestmemberlink/gxsm;
         }
         else {
-            $boardindex_template =~ s/{yabb latestmember}//gsm;
+            $boardindex_template =~ s/\Q{yabb latestmember}\E//gxsm;
         }
-        $boardindex_template =~ s/{yabb ims}/$ims/gsm;
-        $boardindex_template =~ s/{yabb guests}/$guestson/gsm;
-        $boardindex_template =~ s/{yabb users}/$userson/gsm;
-        $boardindex_template =~ s/{yabb bots}/$botson/gsm;
-        $boardindex_template =~ s/{yabb onlineusers}/$users/gsm;
-        $boardindex_template =~ s/{yabb onlineguests}/$guestlist/gsm;
-        $boardindex_template =~ s/{yabb onlinebots}/$botlist/gsm;
-        $boardindex_template =~ s/{yabb mostmembers}/$mostmemb/gsm;
-        $boardindex_template =~ s/{yabb mostguests}/$mostguest/gsm;
-        $boardindex_template =~ s/{yabb mostbots}/$mostbots/gsm;
-        $boardindex_template =~ s/{yabb mostusers}/$mostusers/gsm;
-        $boardindex_template =~ s/{yabb mostmembersdate}/$themostmembdate/gsm;
-        $boardindex_template =~ s/{yabb mostguestsdate}/$themostguestdate/gsm;
-        $boardindex_template =~ s/{yabb mostbotsdate}/$themostbotsdate/gsm;
-        $boardindex_template =~ s/{yabb mostusersdate}/$themostuserdate/gsm;
-        $boardindex_template =~ s/{yabb groupcolors}/$grpcolors/gsm;
-        $boardindex_template =~ s/{yabb sharedlogin}/$shared_login/gsm;
-        $boardindex_template =~ s/{yabb new_load}/$newload/gsm;
+        $boardindex_template =~ s/\Q{yabb ims}\E/$ims/gxsm;
+        $boardindex_template =~ s/\Q{yabb guests}\E/$guestson/gxsm;
+        $boardindex_template =~ s/\Q{yabb users}\E/$userson/gxsm;
+        $boardindex_template =~ s/\Q{yabb bots}\E/$botson/gxsm;
+        $boardindex_template =~ s/\Q{yabb onlineusers}\E/$users/gxsm;
+        $boardindex_template =~ s/\Q{yabb onlineguests}\E/$guestlist/gxsm;
+        $boardindex_template =~ s/\Q{yabb onlinebots}\E/$botlist/gxsm;
+        $boardindex_template =~ s/\Q{yabb mostmembers}\E/$mostmemb/gxsm;
+        $boardindex_template =~ s/\Q{yabb mostguests}\E/$mostguest/gxsm;
+        $boardindex_template =~ s/\Q{yabb mostbots}\E/$mostbots/gxsm;
+        $boardindex_template =~ s/\Q{yabb mostusers}\E/$mostusers/gxsm;
+        $boardindex_template =~
+          s/\Q{yabb mostmembersdate}\E/$themostmembdate/gxsm;
+        $boardindex_template =~
+          s/\Q{yabb mostguestsdate}\E/$themostguestdate/gxsm;
+        $boardindex_template =~ s/\Q{yabb mostbotsdate}\E/$themostbotsdate/gxsm;
+        $boardindex_template =~
+          s/\Q{yabb mostusersdate}\E/$themostuserdate/gxsm;
+        $boardindex_template =~ s/\Q{yabb groupcolors}\E/$grpcolors/gxsm;
+        $boardindex_template =~ s/\Q{yabb sharedlogin}\E/$shared_login/gxsm;
+        $boardindex_template =~ s/\Q{yabb new_load}\E/$newload/gxsm;
 
         # EventCal START
         my $cal_display;
@@ -1646,7 +1703,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
             require Sources::EventCal;
             $cal_display = eventcal();
         }
-        $boardindex_template =~ s/{yabb caldisplay}/$cal_display/gsm;
+        $boardindex_template =~ s/\Q{yabb caldisplay}\E/$cal_display/gxsm;
 
         # EventCal END
 
@@ -1737,9 +1794,8 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'
             ToChars($mynamecat);
             my $catlinkb =
               qq~<a href="$scripturl?catselect=$mycat">$mynamecat</a>~;
-            if ( $accept_permafull) {
-                $catlinkb =
-              qq~<a href="$permcat$mycat">$mynamecat</a>~;
+            if ($accept_permafull) {
+                $catlinkb = qq~<a href="$permcat$mycat">$mynamecat</a>~;
             }
             my $parentboard = $subboard_sel;
 
@@ -1759,8 +1815,8 @@ qq~<a href="$scripturl?board=$parentboard" class="a"><strong>$pboardname</strong
 qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$pboardname</strong></a>~;
                 }
                 if ($accept_permafull) {
-					$pboardname =~ s/$scripturl\?board\=/$permbrd/xsm;
-				}
+                    $pboardname =~ s/$scripturl[?]board\=/$permbrd/xsm;
+                }
                 $boardtree =
                   qq~ &rsaquo; $catlinkb &rsaquo; $pboardname$boardtree~;
                 $parentboard = ${ $uid . $parentboard }{'parent'};
@@ -1792,6 +1848,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$
 ~;
             }
         }
+        return;
     }
     else {
         print "Content-type: text/html; charset=$yymycharset\n\n"
@@ -1801,14 +1858,12 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$
             $boardindex_template
             </table>
         ~ or croak "$croak{'print'} table";
-        CORE::exit;    # This is here only to avoid server error log entries!
+        return;
     }
-
-    # cannot have return here - breaks subboard display;
 }
 
 sub GetBotlist {
-    if ( -e "Variables/BotsHosts.pm" ) {
+    if ( -e 'Variables/BotsHosts.pm' ) {
         require Variables::BotsHosts;
     }
     return;
@@ -1816,7 +1871,7 @@ sub GetBotlist {
 
 sub Is_Bot {
     my ($bothost) = @_;
-    for (@all_bots) { return $bot_name{$_} if $bothost =~ /$_/ism; }
+    foreach (@all_bots) { return $bot_name{$_} if $bothost =~ /$_/ixsm; }
     return;
 }
 
@@ -1824,7 +1879,7 @@ sub Collapse_Write {
     my @userhide;
 
     # rewrite the category hash for the user
-    for my $key (@categoryorder) {
+    foreach my $key (@categoryorder) {
         my ( $catname, $catperms, $catallowcol ) =
           split /[|]/xsm, $catinfo{$key};
         $access = CatAccess($catperms);
@@ -1866,7 +1921,7 @@ sub Collapse_All {
         fatal_error('collapse_invalid_state');
     }
 
-    for my $key (@categoryorder) {
+    foreach my $key (@categoryorder) {
         my ( $catname, $catperms, $catallowcol ) =
           split /[|]/xsm, $catinfo{$key};
         if ( $catallowcol eq '1' ) {
@@ -1900,13 +1955,12 @@ sub MarkAllRead {    # Mark all boards as read.
 
     *recursive_mark = sub {
         my @x = @_;
-        for my $board (@x) {
+        foreach my $board (@x) {
 
             # Security check
             if (
-                AccessCheck(
-                    $board, q{}, ( split /[|]/xsm, $board{$board} )[1]
-                ) ne 'granted'
+                AccessCheck( $board, q{},
+                    ( split /[|]/xsm, $board{$board} )[1] ) ne 'granted'
               )
             {
                 delete $yyuserlog{"$board--mark"};
@@ -1926,18 +1980,18 @@ sub MarkAllRead {    # Mark all boards as read.
         }
     };
 
-    for my $catid (@cats) {
+    foreach my $catid (@cats) {
 
         # Security check
         if ( !CatAccess( ( split /[|]/xsm, $catinfo{$catid} )[1] ) ) {
-            for my $board ( split /\,/xsm, $cat{$catid} ) {
+            foreach my $board ( split /,/xsm, $cat{$catid} ) {
                 delete $yyuserlog{"$board--mark"};
                 delete $yyuserlog{$board};
             }
             next;
         }
 
-        recursive_mark( split /\,/xsm, $cat{$catid} );
+        recursive_mark( split /,/xsm, $cat{$catid} );
     }
 
     # Write it out
@@ -1953,9 +2007,9 @@ sub MarkAllRead {    # Mark all boards as read.
 sub gostRemove {
     my ( $thecat, $gostboard ) = @_;
     get_forum_master();
-    (@gbdlist) = split /\,/xsm, $cat{$thecat};
+    (@gbdlist) = split /,/xsm, $cat{$thecat};
     $tmp_master = q{};
-    for my $item (@gbdlist) {
+    foreach my $item (@gbdlist) {
         if ( $item ne $gostboard ) {
             $tmp_master .= qq~$item,~;
         }
@@ -1972,9 +2026,9 @@ sub Del_Max_IM {
     my @IMmessages = <DELMAXIM>;
     fclose(DELMAXIM);
     splice @IMmessages, $max;
-
+    my $prnmess = join q{}, @IMmessages;
     fopen( DELMAXIM, ">$memberdir/$username.$ext" );
-    print {DELMAXIM} @IMmessages or croak "$croak{'print'} DELMAXIM";
+    print {DELMAXIM} $prnmess or croak "$croak{'print'} DELMAXIM";
     fclose(DELMAXIM);
     return;
 }
@@ -2003,71 +2057,66 @@ sub RedirectExternalShow {
     }
 }
 
-sub find_latest_data  {
-            my ( $parentbd, @children ) = @_;
-            $childcnt{$parentbd}    = 0;
-            $sub_new_cnt{$parentbd} = 0;
-            for my $childbd (@children) {
+sub find_latest_data {
+    my ( $parentbd, @children ) = @_;
+    $childcnt{$parentbd}    = 0;
+    $sub_new_cnt{$parentbd} = 0;
+    foreach my $childbd (@children) {
 
 # make recursive call first so we can get latest post data working from bottom up.
-                if ( $subboard{$childbd} ) {
-                    find_latest_data( $childbd, split /[|]/xsm,
-                        $subboard{$childbd} );
-                }
+        if ( $subboard{$childbd} ) {
+            find_latest_data( $childbd, split /[|]/xsm, $subboard{$childbd} );
+        }
 
-                # don't check sub board if its lastposttime is N/A
-                if ( ${ $uid . $childbd }{'lastposttime'} ne
-                    $boardindex_txt{'470'} )
-                {
+        # don't check sub board if its lastposttime is N/A
+        if ( ${ $uid . $childbd }{'lastposttime'} ne $boardindex_txt{'470'} ) {
 
-                  # update parent board last data if this child's is more recent
-                    if ( $lastpostrealtime{$childbd} >
-                        $lastpostrealtime{$parentbd} )
-                    {
-                        $lastposttime{$parentbd} = $lastposttime{$childbd};
-                        $lastpostrealtime{$parentbd} =
-                          $lastpostrealtime{$childbd};
-                        ${ $uid . $parentbd }{'lastposttime'} =
-                          ${ $uid . $childbd }{'lastposttime'};
-                        ${ $uid . $parentbd }{'lastposter'} =
-                          ${ $uid . $childbd }{'lastposter'};
-                        ${ $uid . $parentbd }{'lastpostid'} =
-                          ${ $uid . $childbd }{'lastpostid'};
-                        ${ $uid . $parentbd }{'lastreply'} =
-                          ${ $uid . $childbd }{'lastreply'};
-                        ${ $uid . $parentbd }{'lastsubject'} =
-                          ${ $uid . $childbd }{'lastsubject'};
-                        ${ $uid . $parentbd }{'lasticon'} =
-                          ${ $uid . $childbd }{'lasticon'};
-                        ${ $uid . $parentbd }{'lasttopicstate'} =
-                          ${ $uid . $childbd }{'lasttopicstate'};
-                    }
-                }
+            # update parent board last data if this child's is more recent
+            if ( $lastpostrealtime{$childbd} > $lastpostrealtime{$parentbd} ) {
+                $lastposttime{$parentbd}     = $lastposttime{$childbd};
+                $lastpostrealtime{$parentbd} = $lastpostrealtime{$childbd};
+                ${ $uid . $parentbd }{'lastposttime'} =
+                  ${ $uid . $childbd }{'lastposttime'};
+                ${ $uid . $parentbd }{'lastposter'} =
+                  ${ $uid . $childbd }{'lastposter'};
+                ${ $uid . $parentbd }{'lastpostid'} =
+                  ${ $uid . $childbd }{'lastpostid'};
+                ${ $uid . $parentbd }{'lastreply'} =
+                  ${ $uid . $childbd }{'lastreply'};
+                ${ $uid . $parentbd }{'lastsubject'} =
+                  ${ $uid . $childbd }{'lastsubject'};
+                ${ $uid . $parentbd }{'lasticon'} =
+                  ${ $uid . $childbd }{'lasticon'};
+                ${ $uid . $parentbd }{'lasttopicstate'} =
+                  ${ $uid . $childbd }{'lasttopicstate'};
+            }
+        }
 
-                # Add to totals
-                ${ $uid . $parentbd }{'threadcount'} +=
-                  ${ $uid . $childbd }{'threadcount'};
-                ${ $uid . $parentbd }{'messagecount'} +=
-                  ${ $uid . $childbd }{'messagecount'};
+        # Add to totals
+        ${ $uid . $parentbd }{'threadcount'} +=
+          ${ $uid . $childbd }{'threadcount'};
+        ${ $uid . $parentbd }{'messagecount'} +=
+          ${ $uid . $childbd }{'messagecount'};
 
       # but if it's a parent board that can't be posted in, don't add to totals.
-                if ( $subboard{$childbd} && !${ $uid . $childbd }{'canpost'} ) {
-                    ${ $uid . $parentbd }{'threadcount'} -=
-                      ${ $uid . $childbd }{'threadcount'};
-                    ${ $uid . $parentbd }{'messagecount'} -=
-                      ${ $uid . $childbd }{'messagecount'};
-                }
-                if ( $new_icon{$childbd} ) {
+        if ( $subboard{$childbd} && !${ $uid . $childbd }{'canpost'} ) {
+            ${ $uid . $parentbd }{'threadcount'} -=
+              ${ $uid . $childbd }{'threadcount'};
+            ${ $uid . $parentbd }{'messagecount'} -=
+              ${ $uid . $childbd }{'messagecount'};
+        }
+        if ( $new_icon{$childbd} ) {
 
-                    # parent board gets new status if child has something new
-                    $new_icon{$parentbd} = $new_icon{$childbd};
+            # parent board gets new status if child has something new
+            $new_icon{$parentbd} = $new_icon{$childbd};
 
-                    # count sub boards with new posts
-                    $sub_new_cnt{$parentbd}++;
-                }
+            # count sub boards with new posts
+            $sub_new_cnt{$parentbd}++;
+        }
 
-                $childcnt{$parentbd}++;
-            }
-        };
+        $childcnt{$parentbd}++;
+    }
+    return;
+}
 
 1;

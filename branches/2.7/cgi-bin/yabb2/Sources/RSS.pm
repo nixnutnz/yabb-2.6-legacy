@@ -13,9 +13,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use CGI::Carp qw(fatalsToBrowser);
+use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$rsspmver = 'YaBB 2.7.00 $Revision$';
+$rsspmver  = 'YaBB 2.7.00 $Revision$';
 @rsspmmods = ();
 if (@rsspmmods) {
     $rsspmmods = 1;
@@ -123,7 +124,7 @@ sub RSS_board {
         FromHTML($category);
 
         # Show the minimum stuff (topic title, link to it)
-        if ($accept_permalink || $accept_permafull) {
+        if ( $accept_permalink || $accept_permafull ) {
             $permdate = permtimer($curnum);
             $yymain .= q~       <item>
                 <title>~ . RSSDescriptionTrim($msub) . q~</title>
@@ -184,7 +185,7 @@ sub RSS_board {
                 }
                 else {
                     $yymain .=
-                        q~           <author>~
+                      q~           <author>~
                       . RSSDescriptionTrim(
                         "$rssemail (${$uid.$musername}{'realname'})")
                       . qq~</author>\n~;
@@ -202,7 +203,8 @@ sub RSS_board {
         }
         if ( $message ne q{} ) {
             ( $message, undef ) = Split_Splice_Move( $message, $curnum );
-            $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/$maintxt{'rsscode'}/eisgm;
+            $message =~
+s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/$maintxt{'rsscode'}/eigxsm;
             if ($enable_ubbc) {
                 LoadUser($musername);
                 $displayname = ${ $uid . $musername }{'realname'};
@@ -222,7 +224,7 @@ sub RSS_board {
         # Finish up the item
         $yymain .= q~       </item>
 ~;
-        $yymain =~ s/data-rel/rel/gsm;
+        $yymain =~ s/\Qdata-rel\E/rel/gxsm;
         $i++;    # Increment
     }
 
@@ -260,14 +262,14 @@ sub RSS_recent {
     # and add them to a giant array
     for my $catid (@categoryorder) {
 
-        my @bdlist = split /\,/xsm, $cat{$catid};
+        my @bdlist = split /,/xsm, $cat{$catid};
         my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
         my $cataccess = CatAccess($catperms);
         if ( !$cataccess ) { next; }
 
         if ( $INFO{'catselect'} ) {
             $yytitle = $catname;
-            $mydesc = $catname;
+            $mydesc  = $catname;
         }
 
         *get_subboards = sub {
@@ -312,7 +314,7 @@ sub RSS_recent {
 
                 if ( $subboard{$brd} ) {
                     get_subboards( split /[|]/xsm, $subboard{$brd} );
-               }
+                }
             }
         };
         for my $curbrd (@bdlist) {
@@ -346,6 +348,7 @@ sub RSS_recent {
                 || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
             {
                 Send304NotModified();
+
                 # Comment this out to test with caching disabled
             }
         }
@@ -357,7 +360,7 @@ sub RSS_recent {
         FromHTML($category);
         my $bn = $boardname{$board};
         FromHTML($bn);
-        if ($accept_permalink || $accept_permafull) {
+        if ( $accept_permalink || $accept_permafull ) {
             my $permsub = $msub;
             $permdate = permtimer($curnum);
             $permsub =~ s/ /$perm_spacer/gsm;
@@ -410,6 +413,7 @@ sub RSS_recent {
         }
 
         if ($showauthor) {
+
             # The spec really wants us to include their email.
             if ( -e "$memberdir/$musername.vars" ) {
                 LoadUser($musername);
@@ -457,7 +461,7 @@ sub RSS_recent {
 
         $yymain .= qq~      </item>\n
 ~;
-        $yymain =~ s/data-rel/rel/gsm;
+        $yymain =~ s/\Qdata-rel\E/rel/gxsm;
     }
 
     ToChars($boardname);
@@ -549,7 +553,7 @@ sub RSS_error {
         $l =
 "<br />$maintxt{'error_location'}: $e_filename<br />$maintxt{'error_line'}: $e_line<br />$maintxt{'error_subroutine'}: $e_subroutine";
     }
-    if ($v) { $v = "<br />$maintxt{'error_verbose'}: $!"; }
+    if ($v) { $v = "<br />$maintxt{'error_verbose'}: $OS_ERROR"; }
 
     if ($elenable) {
         fatal_error_logging("$ot$l$v");
@@ -581,24 +585,24 @@ sub RFC822Date {
 
     # Takes a Unix timestamp and returns the RFC-822 date format
     # of it: Sat, 07 Sep 2002 9:42:31 GMT
-    my @GMTime = split / +/sm, gmtime shift;
+    my @GMTime = split /\s+/xsm, gmtime shift;
     return "$GMTime[0], $GMTime[2] $GMTime[1] $GMTime[4] $GMTime[3] GMT";
 }
 
 sub RSSDescriptionTrim {    # This formats the RSS
     my @x = @_;
 
-    $x[0] =~ s/ (class|style)\s*=\s*[\x22\x27].+?[\x27\x22]//gsm;
+    $x[0] =~ s/\s (class|style)\s*=\s*[\x22\x27].+?[\x27\x22]//gxsm;
 
-    $x[0] =~ s/&/&\x2338;/gsm;
-    $x[0] =~ s/\x22/&\x2334;/gsm;
-    $x[0] =~ s/\x27/&\x2339;/gsm;
-    $x[0] =~ s/  / &\x23160;/gsm;
-    $x[0] =~ s/</&\x2360;/gsm;
-    $x[0] =~ s/>/&\x2362;/gsm;
-    $x[0] =~ s/\|/&\x23124;/gsm;
-    $x[0] =~ s/\{/&\x23123;/gsm;
-    $x[0] =~ s/\}/&\x23125;/gsm;
+    $x[0] =~ s/&/&\x2338;/gxsm;
+    $x[0] =~ s/\x22/&\x2334;/gxsm;
+    $x[0] =~ s/\x27/&\x2339;/gxsm;
+    $x[0] =~ s/[ ]{2}/ &\x23160;/gxsm;
+    $x[0] =~ s/</&\x2360;/gxsm;
+    $x[0] =~ s/>/&\x2362;/gxsm;
+    $x[0] =~ s/[|]/&\x23124;/gxsm;
+    $x[0] =~ s/[{]/&\x23123;/gxsm;
+    $x[0] =~ s/[}]/&\x23125;/gxsm;
 
     return $x[0];
 }
@@ -606,10 +610,10 @@ sub RSSDescriptionTrim {    # This formats the RSS
 sub shellaccess {
 
     # Parse the arguments
-    my (%arguments );
+    my (%arguments);
 
     for my $i ( 0 .. $#ARGV ) {
-        if ( $ARGV[$i] =~ /\A\-/sm ) {
+        if ( $ARGV[$i] =~ /\A\-/xsm ) {
             my ( $option, $value );
             $option = $ARGV[$i];
             $option =~ s/\A\-\-?//xsm;

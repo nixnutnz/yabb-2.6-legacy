@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$iplookuppmver = 'YaBB 2.7.00 $Revision$';
+$iplookuppmver  = 'YaBB 2.7.00 $Revision$';
 @iplookuppmmods = ();
 if (@iplookuppmmods) {
     $iplookuppmmods = 1;
@@ -35,21 +35,22 @@ sub IPLookup {
     my $lookuplink = q{};
     @iplookup_urls = keys %iplookup;
 
-    for my $i (@iplookup_urls) {
+    foreach my $i (@iplookup_urls) {
         $iplookup_name = $i;
         $iplookup_name =~ s/_/ /xsm;
         $iplookup_name = Censor($iplookup_name);
-        $iplookup_url =  $iplookup{$i};
+        $iplookup_url  = $iplookup{$i};
         $iplookup_url =~ s/{ip}/$ip/gxsm;
-        $iplookup_url =~ s/^\s+//gsm;
-        $iplookup_url =~ s/\s+$//gsm;
+        $iplookup_url =~ s/^\s+//gxsm;
+        $iplookup_url =~ s/\s+$//gxsm;
         $iplookup_url =~ s/\r//gxsm;
         $iplookup_url =~ s/\n//gxsm;
-        $iplookup_url =~ s/\t//gsm;
-        if ( $iplookup_url !~ /&(.*amp;)/gsm ) {
+        $iplookup_url =~ s/\t//gxsm;
+
+        if ( $iplookup_url !~ /&(?:.*amp;)/gxsm ) {
             $iplookup_url =~ s/&/&amp;/gxsm;
         }
-        if ( $iplookup_url !~ /http(s|):\/\//xsm ) {
+        if ( $iplookup_url !~ m{https?://}xsm ) {
             $iplookup_url = qq~http://$iplookup_url~;
         }
 
@@ -58,8 +59,8 @@ sub IPLookup {
     }
 
     $yymain .= $my_ipdiv;
-    $yymain =~ s/{yabb lookuplink}/$lookuplink/gsm;
-    $yymain =~ s/{yabb ip}/$ip/gsm;
+    $yymain =~ s/\Q{yabb lookuplink}\E/$lookuplink/gxsm;
+    $yymain =~ s/\Q{yabb ip}\E/$ip/gxsm;
 
     $yytitle      = qq~$lookup_txt{'iplookup'}~;
     $yynavigation = qq~&rsaquo; $lookup_txt{'iplookup'}~;

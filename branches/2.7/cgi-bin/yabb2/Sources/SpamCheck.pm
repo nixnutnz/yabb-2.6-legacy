@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$spamcheckpmver = 'YaBB 2.7.00 $Revision$';
+$spamcheckpmver  = 'YaBB 2.7.00 $Revision$';
 @spamcheckpmmods = ();
 if (@spamcheckpmmods) {
     $spamcheckpmmods = 1;
@@ -23,7 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 sub spamcheck {
     my ($rawcontent) = @_;
-    $rawcontent =~ s/[\r\n\t]/ /gxsm;        #convert cr/lf/tab to space
+    $rawcontent =~ s/[\r\n\t]/ /gxsm;    #convert cr/lf/tab to space
     $rawcontent =~ s/\[(.*?){1,2}\]//gxsm;
 
 # rip out all make up yabb tags if it is a non yabbc message which can be used to break and obscure words
@@ -40,12 +40,12 @@ sub spamcheck {
         while ( $buffer = <SPAM> ) {
             chomp $buffer;
             $spamline = q{};
-            if ( $buffer =~ m/\~\;/xsm ) {
-                ( $spamcnt, $spamline ) = split /\~\;/xsm, $buffer;
+            if ( $buffer =~ m/~;/xsm ) {
+                ( $spamcnt, $spamline ) = split /~;/xsm, $buffer;
                 $searchtype = 'S';
             }
-            elsif ( $buffer =~ m/\=\;/xsm ) {
-                ( $spamcnt, $spamline ) = split /\=\;/xsm, $buffer;
+            elsif ( $buffer =~ m/=;/xsm ) {
+                ( $spamcnt, $spamline ) = split /=;/xsm, $buffer;
                 $searchtype = 'E';
             }
             else {

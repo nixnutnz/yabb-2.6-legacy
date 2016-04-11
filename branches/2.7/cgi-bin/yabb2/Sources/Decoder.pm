@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$decoderpmver = 'YaBB 2.7.00 $Revision$';
+$decoderpmver  = 'YaBB 2.7.00 $Revision$';
 @decoderpmmods = ();
 if (@decoderpmmods) {
     $decoderpmmods = 1;
@@ -39,7 +39,7 @@ sub scramble {
         $scramble .= encode_password($scramble);
     }
     $scramble =~ s/\//y/gxsm;
-    $scramble =~ s/\+/x/gxsm;
+    $scramble =~ s/[+]/x/gxsm;
     $scramble =~ s/\-/Z/gxsm;
     $scramble =~ s/\:/Q/gxsm;
 
@@ -48,7 +48,7 @@ sub scramble {
     for my $n ( 0 .. length $input ) {
         $value = ( substr $carrier, $n, 1 ) + $lastvalue + 1;
         $lastvalue = $value;
-        substr( $scramble, $value, 1 ) = substr $input, $n, 1;
+        substr $scramble, $value, 1, ( substr $input, $n, 1 );
     }
 
     # adding code length to code
@@ -89,7 +89,7 @@ sub descramble {
 sub validation_check {
     my ($checkcode) = @_;
     if ( $checkcode eq q{} ) { fatal_error('no_verification_code'); }
-    if ( $checkcode !~ /\A[0-9A-Za-z]+\Z/xsm ) {
+    if ( $checkcode !~ /\A[[:alnum]]+\Z/xsm ) {
         fatal_error('invalid_verification_code');
     }
     if ( testcaptcha( $FORM{'sessionid'} ) ne $checkcode ) {

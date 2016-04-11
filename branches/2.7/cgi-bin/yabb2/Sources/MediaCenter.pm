@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$mediacenterpmver = 'YaBB 2.7.00 $Revision$';
+$mediacenterpmver  = 'YaBB 2.7.00 $Revision$';
 @mediacenterpmmods = ();
 if (@mediacenterpmmods) {
     $mediacenterpmmods = 1;
@@ -50,16 +50,17 @@ qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a> !!~
     else {
         if ( !$player_version ) { $player_version = 6; }
         my ( $media_url, $play_pars ) = @_;
-        if ( $media_url !~ m/^http(s)?:\/\//xsm ) {
-            $media_url = 'media://' . $media_url;
+        if ( $media_url =~ m{^http(s)?://}xsm ) {
+            $media_url =~ s/http$1:/media:/gxsm;
         }
-        else { $media_url =~ s/http$1:/media:/gxsm; }
+        else { $media_url = 'media://' . $media_url; }
 
         ToHTML($media_url);    ## convert url to html
 
         # file extensions that open windows media player for video
         if ( $media_url =~
-            m/(\.wmv|\.wpl|\.asf|\.avi|\.mpg|\.mpeg|\.divx|\.xdiv)$/ixsm )
+            m/([.]wmv|[.]wpl|[.]asf|[.]avi|[.]mpg|[.]mpeg|[.]divx|[.]xdiv)$/ixsm
+          )
         {
             if ( $player_version == 6 ) {
                 $video = $embed_wmv6;
@@ -75,7 +76,7 @@ qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a> !!~
             # file extensions that open windows media player for audio
         }
         elsif ( $media_url =~
-            m/(\.wma|\.wax|\.asx|\.mp3|\.mid|\.wav|\.kar|\.rmi)$/ixsm )
+            m/([.]wma|[.]wax|[.]asx|[.]mp3|[.]mid|[.]wav|[.]kar|[.]rmi)$/ixsm )
         {
             if ( $player_version == 6 ) {
                 $video = $embed_wma6;
@@ -87,27 +88,27 @@ qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a> !!~
                 $video = $embed_wma6;
             }
 
-        # file extensions that open flash player
-            }
-            elsif ( $media_url =~ m/(\.ra|\.ram|\.rm)$/ixsm ) {
+            # file extensions that open flash player
+        }
+        elsif ( $media_url =~ m/([.]ra|[.]ram|[.]rm)$/ixsm ) {
             $video = $embed_ra;
 
         }
-        elsif ( $media_url =~ m/\.swf$/ixsm ) {
+        elsif ( $media_url =~ m/[.]swf$/ixsm ) {
             $video = $embed_flash;
 
         }
-        elsif ( $media_url =~ m/\.flv$/ixsm ) {
+        elsif ( $media_url =~ m/[.]flv$/ixsm ) {
             $video = $embed_flv;
 
         }
-        elsif ( $media_url =~ m/[\/\.]myvideo\./ixsm ) {
+        elsif ( $media_url =~ m/[\/.]myvideo[.]/ixsm ) {
             $media_url =~ s/\/watch\//\/movie\//gxsm;
             $video         = $embed_flash;
             $controlheight = 46;
 
         }
-        elsif ( $media_url =~ m/[\/\.]myspace.*videoid=/ixsm ) {
+        elsif ( $media_url =~ m/[\/.]myspace.*videoid=/ixsm ) {
             $media_url =~ /videoid=(\d+)/xsm;
             $media_url =
 qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~;
@@ -115,13 +116,13 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
             $controlheight = 42;
 
         }
-        elsif ( $media_url =~ m/youtube\.com/ixsm ) {
-            ( undef, $media_in ) = split /\?/xsm, $media_url;
-            @media_in = split /\&/gxsm, $media_in;
-            for my $i (@media_in) {
-                if ( $i =~ m/v=/sm ) {
-                    $i =~ s/amp;//gsm;
-                    $i =~ s/v=//gsm;
+        elsif ( $media_url =~ m/youtube[.]com/ixsm ) {
+            ( undef, $media_in ) = split /[?]/xsm, $media_url;
+            @media_in = split /[&]/gxsm, $media_in;
+            foreach my $i (@media_in) {
+                if ( $i =~ m/v=/xsm ) {
+                    $i =~ s/amp;//gxsm;
+                    $i =~ s/v=//gxsm;
                     $media_url = qq~http://www.youtube.com/v/$i~;
                 }
             }
@@ -129,18 +130,18 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
             $controlheight = 36;
         }
 
-        elsif ( $media_url =~ m/youtu\.be/ixsm ) {
-            $media_url =~ s/youtu\.be\//www\.youtube\.com\/v\//gxsm;
+        elsif ( $media_url =~ m/youtu[.]be/ixsm ) {
+            $media_url =~ s/youtu[.]be\//www[.]youtube[.]com\/v\//gxsm;
             $video         = $embed_youtube;
             $controlheight = 36;
         }
-        elsif ( $media_url =~ m/facebook\.com/ixsm ) {
-            ( undef, $media_in ) = split /\?/xsm, $media_url;
+        elsif ( $media_url =~ m/facebook[.]com/ixsm ) {
+            ( undef, $media_in ) = split /[?]/xsm, $media_url;
             @media_in = split /\&/gxsm, $media_in;
-            for my $i (@media_in) {
-                if ( $i =~ m/v=/sm ) {
-                    $i =~ s/amp;//gsm;
-                    $i =~ s/v=//gsm;
+            foreach my $i (@media_in) {
+                if ( $i =~ m/v=/xsm ) {
+                    $i =~ s/amp;//xgsm;
+                    $i =~ s/v=//gxsm;
                     $media_url = $i;
                 }
             }
@@ -148,7 +149,7 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
         }
 
         # added Clipfish video url support
-        elsif ( $media_url =~ m/clipfish\.de/ixsm ) {
+        elsif ( $media_url =~ m/clipfish[.]de/ixsm ) {
             ( undef, $temp ) = split /video\//xsm, $media_url;
             ( $videoid, undef ) = split /\//xsm, $temp;
             $media_url =
@@ -159,13 +160,13 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
          # GameTrailers.com START
          # added Gametrailers.com url support (user video with .html at the end)
         }
-        elsif ($media_url =~ m/gametrailers\.com/ixsm
+        elsif ($media_url =~ m/gametrailers[.]com/ixsm
             && $media_url =~ m/user/ixsm
-            && $media_url =~ m/\.html/ixsm )
+            && $media_url =~ m/[.]html/ixsm )
         {
             ( undef, $temp ) = split /gametrailers.com\//xsm, $media_url;
             ( undef, undef, $temp ) = split /\//xsm, $temp;
-            ( $mid, undef ) = split /\./xsm, $temp;
+            ( $mid, undef ) = split /[.]/xsm, $temp;
             $media_url =
               qq~http://www.gametrailers.com/remote_wrap.php?umid=$mid~;
             $video         = $embed_flash;
@@ -173,11 +174,11 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
 
 # added GameTrailers.com video url support  (user video without .html at the end)
         }
-        elsif ($media_url =~ m/gametrailers\.com/ixsm
+        elsif ($media_url =~ m/gametrailers[.]com/ixsm
             && $media_url =~ m/user/ixsm )
         {
-            ( undef, $temp ) = split /gametrailers.com\//xsm, $media_url;
-            ( $mid, undef ) = split /\./xsm, $temp;
+            ( undef, $temp ) = split /gametrailers[.]com\//xsm, $media_url;
+            ( $mid, undef ) = split /[.]/xsm, $temp;
             ( undef, undef, $mid ) = split /\//xsm, $temp;
             $media_url =
               qq~http://www.gametrailers.com/remote_wrap.php?umid=$mid~;
@@ -186,12 +187,12 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
 
        # added Gametrailers.com url support (normal video with .html at the end)
         }
-        elsif ($media_url =~ m/gametrailers\.com/ixsm
-            && $media_url =~ m/\.html/ixsm )
+        elsif ($media_url =~ m/gametrailers[.]com/ixsm
+            && $media_url =~ m/[.]html/ixsm )
         {
             ( undef, $temp ) = split /gametrailers.com\//xsm, $media_url;
             ( undef, $temp ) = split /\//xsm, $temp;
-            ( $mid, undef ) = split /\./xsm, $temp;
+            ( $mid, undef ) = split /[.]/xsm, $temp;
             $media_url =
               qq~http://www.gametrailers.com/remote_wrap.php?mid=$mid~;
             $video         = $embed_flash;
@@ -199,9 +200,9 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
 
 # added GameTrailers.com video url support  (normal video without .html at the end)
         }
-        elsif ( $media_url =~ m/gametrailers\.com/ixsm ) {
+        elsif ( $media_url =~ m/gametrailers[.]com/ixsm ) {
             ( undef, $temp ) = split /gametrailers.com\//xsm, $media_url;
-            ( $mid, undef ) = split /\./xsm, $temp;
+            ( $mid, undef ) = split /[.]/xsm, $temp;
             ( undef, undef, $mid ) = split /\//xsm, $temp;
             $media_url =
               qq~http://www.gametrailers.com/remote_wrap.php?mid=$mid~;
@@ -212,7 +213,7 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
         }
 
         # added Google video url support
-        elsif ( $media_url =~ m/video\.google/ixsm ) {
+        elsif ( $media_url =~ m/video[.]google/ixsm ) {
             ( undef, $docid ) = split /=/xsm, $media_url;
             $media_url =
               qq~media://video.google.com/googleplayer.swf?docId=$docid~;
@@ -222,29 +223,29 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
         }
 
         # added dailymotion video url support
-        elsif ( $media_url =~ m/dailymotion\.com/ixsm ) {
+        elsif ( $media_url =~ m/dailymotion[.]com/ixsm ) {
             $video = $iframe_dailymotion;
         }
 
         # added vimeo video url support
-        elsif ( $media_url =~ m/vimeo\.com/ixsm ) {
+        elsif ( $media_url =~ m/vimeo[.]com/ixsm ) {
             $video = $iframe_vimeo;
         }
 
         # added hulu video url support
-        elsif ( $media_url =~ m/hulu\.com/ixsm ) {
+        elsif ( $media_url =~ m/hulu[.]com/ixsm ) {
             $video         = $embed_flash;
             $controlheight = 0;
 
             # file extensions that open apple QuickTime player
         }
-        elsif ( $media_url =~ m/(\.qt|\.qtm|\.mov|\.mp4|\.3gp)$/ixsm ) {
+        elsif ( $media_url =~ m/([.]qt|[.]qtm|[.]mov|[.]mp4|[.]3gp)$/ixsm ) {
             $video         = $embed_qt;
             $controlheight = 15;
         }
 
         # added thenutz videos
-        elsif ( $media_url =~ m/thenutz\.tv.+?(\d+)/ixsm ) {
+        elsif ( $media_url =~ m/thenutz[.]tv.+?(\d+)/ixsm ) {
             $media_url = $1;
             $video     = $iframe_thenutz;
         }
@@ -302,8 +303,8 @@ qq~http://www.clipfish.de/cfng/flash/clipfish_player_3.swf?as=0&vid=$videoid&r=1
 
 sub flashconvert {
     my ( $fl_url, $fl_size ) = @_;
-    $fl_size =~ s/ //gsm;
-    my ( $fl_width, undef ) = split /\,/xsm, $fl_size;
+    $fl_size =~ s/\s+//gxsm;
+    my ( $fl_width, undef ) = split /,/xsm, $fl_size;
     return "\[media width\=$fl_width\]$fl_url\[/media\]";
 }
 

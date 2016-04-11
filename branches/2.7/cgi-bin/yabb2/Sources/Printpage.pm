@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$printpagepmver = 'YaBB 2.7.00 $Revision$';
+$printpagepmver  = 'YaBB 2.7.00 $Revision$';
 @printpagepmmods = ();
 if (@printpagepmmods) {
     $printpagepmmods = 1;
@@ -51,6 +52,10 @@ sub Print_IM {
     elsif ( $INFO{'caller'} == 5 ) {
         fopen( THREADS, "$memberdir/broadcast.messages" ) || donoopen();
         $boxtitle = qq~$inmes_txt{'broadcast'}~;
+    }
+    elsif ( $INFO{'caller'} == 6 ) {
+        fopen( THREADS, "$memberdir/guest.messages" ) || donoopen();
+        $boxtitle = qq~$inmes_txt{'guest'}~;
     }
     @threads = <THREADS>;
     fclose(THREADS);
@@ -91,7 +96,7 @@ sub Print_IM {
                     )
                 ) . q{, };    # 470a == Ex-Member
             }
-            $usernameTo =~ s/, $//sm;
+            $usernameTo =~ s/,\s$//xsm;
             $usernameTo = qq~<b>$usernameTo</b><br />~;
             $toTitle    = qq~$inmes_txt{'324'}:~;
         }
@@ -107,7 +112,7 @@ sub Print_IM {
                     )
                 ) . q{, };
             }
-            $usernameCC =~ s/, $//sm;
+            $usernameCC =~ s/,\s$//xsm;
             $usernameCC = qq~<b>$usernameCC</b><br />~;
             $toTitleCC  = qq~$inmes_txt{'325'}:~;
         }
@@ -131,8 +136,8 @@ sub Print_IM {
         }
 
         if ( $threadstatus eq 'g' || $threadstatus eq 'ga' ) {
-            my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
-            $guestName =~ s/%20/ /gsm;
+            my ( $guestName, $guestEmail ) = split / /xsm, $threadposter;
+            $guestName =~ s/%20/ /gxsm;
             $usernameFrom = qq~<b>$guestName ($guestEmail)</b><br />~;
         }
         else {
@@ -153,7 +158,7 @@ sub Print_IM {
         LoadLanguage('FA');
         for ( split /,/xsm, $threadAttach ) {
             my ( $pmAttachFile, undef ) = split /~/xsm, $_;
-            if ( $pmAttachFile =~ /\.(.+?)$/sm ) {
+            if ( $pmAttachFile =~ /[.](.+?)$/xsm ) {
                 $ext = lc $1;
             }
             if ( !exists $attach_gif{$ext} ) {
@@ -164,7 +169,7 @@ sub Print_IM {
             }
             my $filesize = -s "$pmuploaddir/$pmAttachFile";
             if ($filesize) {
-                if (   $pmAttachFile =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ism
+                if (   $pmAttachFile =~ /[.](?:bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                     && $pmDisplayPics == 1 )
                 {
                     $imagecount++;
@@ -187,7 +192,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
         }
         if ( $pmShowAttach && $pmAttachment ) {
             $pmAttachment =~
-              s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
+s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         }
         $pmAttachments .= qq~
             <hr />
@@ -206,8 +211,8 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
         $usernameFrom = qq~<b>$usernameFrom</b><br />~;
         $fromTitle    = qq~$inmes_txt{'318'}:~;
 
-        if ( $threadstatus !~ /b/sm ) {
-            if ( $threadstatus !~ /gr/sm ) {
+        if ( $threadstatus !~ /b/xsm ) {
+            if ( $threadstatus !~ /gr/xsm ) {
                 for my $uname ( split /,/xsm, $threadtousers ) {
                     LoadUser($uname);
                     $usernameTo .= (
@@ -234,7 +239,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
             }
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
-        $usernameTo =~ s/, $//sm;
+        $usernameTo =~ s/,\s$//xsm;
         $usernameTo = qq~<b>$usernameTo</b><br />~;
         if ($threadccusers) {
             for my $uname ( split /,/xsm, $threadccusers ) {
@@ -248,7 +253,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
                     )
                 ) . q{, };    # 470a == Ex-Member
             }
-            $usernameCC =~ s/, $//sm;
+            $usernameCC =~ s/,\s$//xsm;
             $usernameCC = qq~<b>$usernameCC</b><br />~;
             $toTitleCC  = qq~$inmes_txt{'325'}:~;
         }
@@ -264,7 +269,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
                     )
                 ) . q{, };    # 470a == Ex-Member
             }
-            $usernameBCC =~ s/, $//sm;
+            $usernameBCC =~ s/,\s$//xsm;
             $usernameBCC = qq~<b>$usernameBCC</b>~;
             $toTitleBCC  = qq~$inmes_txt{'326'}:~;
         }
@@ -286,7 +291,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
             }
             else {
                 my ( $guestName, $guestEmail ) = split / /sm, $threadtousers;
-                $guestName =~ s/%20/ /gsm;
+                $guestName =~ s/%20/ /gxsm;
                 $usernameTo = qq~$guestName ($guestEmail)~;
             }
             $toTitle = qq~$inmes_txt{'324'}:~;
@@ -302,7 +307,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
                         )
                     ) . q{, };    # 470a == Ex-Member
                 }
-                $usernameCC =~ s/, $//sm;
+                $usernameCC =~ s/,\s$//xsm;
                 $usernameCC = qq~<b>$usernameCC</b><br />~;
                 $toTitleCC  = qq~$inmes_txt{'325'}:~;
             }
@@ -318,7 +323,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
                         )
                     ) . q{, };    # 470a == Ex-Member
                 }
-                $usernameBCC =~ s/, $//sm;
+                $usernameBCC =~ s/,\s$//xsm;
                 $usernameBCC = qq~<b>$usernameBCC</b>~;
                 $toTitleBCC  = qq~$inmes_txt{'326'}:~;
             }
@@ -330,12 +335,12 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
             }
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
-        $usernameTo =~ s/, $//sm;
+        $usernameTo =~ s/,\s$//xsm;
         $usernameTo = qq~<b>$usernameTo</b><br />~;
 
         if ( $threadstatus eq 'g' || $threadstatus eq 'ga' ) {
             my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
-            $guestName =~ s/%20/ /gsm;
+            $guestName =~ s/%20/ /gxsm;
             $usernameFrom = qq~$guestName ($guestEmail)~;
         }
         else {
@@ -356,7 +361,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
         && ( $threadstatus eq 'g' || $threadstatus eq 'ga' ) )
     {
         my ( $guestName, $guestEmail ) = split / /sm, $threadposter;
-        $guestName =~ s/%20/ /gsm;
+        $guestName =~ s/%20/ /gxsm;
         $usernameFrom = qq~<b>$guestName ($guestEmail)</b><br />~;
         $fromTitle    = qq~$inmes_txt{'318'}:~;
 
@@ -367,7 +372,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
             for my $uname ( split /,/xsm, $threadtousers ) {
                 $usernameTo .= links_to($uname);
             }
-            $usernameTo =~ s/, $//sm;
+            $usernameTo =~ s/,\s$//xsm;
             $usernameTo .= q~<br />~;
             $toTitle = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
         }
@@ -384,20 +389,28 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
         $usernameFrom = qq~<b>$usernameFrom</b><br />~;
         $fromTitle    = qq~$inmes_txt{'318'}:~;
     }
-    do_print();
+    $message     = $threadpost;
+    $displayname = $threadposter;
+    if ($enable_ubbc) {
+        enable_yabbc();
+        DoUBBC();
+    }
+    $threadpost = $message;
     $output .= $myprint_im;
-    $output =~ s/{yabb printtitle}/$mbname - $maintxt{'668'}/gsm;
-    $output =~ s/{yabb boxtitle}/$boxtitle/gsm;
-    $output =~ s/{yabb storetitle}/$storetitle/gsm;
-    $output =~ s/{yabb printDate}/$printDate/gsm;
-    $output =~ s/{yabb threadtitle}/$inmes_txt{'70'}: <b>$threadtitle<\/b>/gsm;
-    $output =~ s/{yabb threadDate}/$inmes_txt{'317'}: <b>$threadDate<\/b>/gsm;
-    $output =~ s/{yabb threadpost}/$threadpost/gsm;
-    $output =~ s/{yabb pmAttachments}/$pmAttachments/gsm;
-    $output =~ s/{yabb totitle}/$toTitle $usernameTo/gsm;
-    $output =~ s/{yabb fromtitle}/$fromTitle $usernameFrom/gsm;
-    $output =~ s/{yabb totitlecc}/$toTitleCC $usernameToCC/gsm;
-    $output =~ s/{yabb totitlebcc}/$toTitleBCC $usernameToBCC/gsm;
+    $output =~ s/\Q{yabb printtitle}\E/$mbname - $maintxt{'668'}/gxsm;
+    $output =~ s/\Q{yabb boxtitle}\E/$boxtitle/gxsm;
+    $output =~ s/\Q{yabb storetitle}\E/$storetitle/gxsm;
+    $output =~ s/\Q{yabb printDate}\E/$printDate/gxsm;
+    $output =~
+      s/\Q{yabb threadtitle}\E/$inmes_txt{'70'}: <b>$threadtitle<\/b>/gxsm;
+    $output =~
+      s/\Q{yabb threadDate}\E/$inmes_txt{'317'}: <b>$threadDate<\/b>/gxsm;
+    $output =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
+    $output =~ s/\Q{yabb pmAttachments}\E/$pmAttachments/gxsm;
+    $output =~ s/\Q{yabb totitle}\E/$toTitle $usernameTo/gxsm;
+    $output =~ s/\Q{yabb fromtitle}\E/$fromTitle $usernameFrom/gxsm;
+    $output =~ s/\Q{yabb totitlecc}\E/$toTitleCC $usernameToCC/gxsm;
+    $output =~ s/\Q{yabb totitlebcc}\E/$toTitleBCC $usernameToBCC/gxsm;
 
     image_resize();
 
@@ -415,7 +428,7 @@ sub Print {
     MessageTotals( 'load', $num );
 
     my $ishidden;
-    if ( ${$num}{'threadstatus'} =~ /h/ism ) {
+    if ( ${$num}{'threadstatus'} =~ /h/ixsm ) {
         $ishidden = 1;
     }
 
@@ -425,10 +438,10 @@ sub Print {
 
     # Figure out the name of the category
     get_forum_master();
-    ( $cat, $catperms ) = split /[|]/xsm, $catinfo{"$curcat"};
+    ( $cat, $catperms ) = split /[|]/xsm, $catinfo{$curcat};
 
     ( $boardname, $boardperms, $boardview ) =
-      split /[|]/xsm, $board{"$currentboard"};
+      split /[|]/xsm, $board{$currentboard};
 
     LoadCensorList();
 
@@ -450,7 +463,7 @@ sub Print {
     my $pageTitle = $post ? $maintxt{'668a'} : $maintxt{'668'};
 
     ### Lets output all that info. ###
-    if ($yycharset) {$yymycharset = $yycharset;}
+    if ($yycharset) { $yymycharset = $yycharset; }
 
     LoadLanguage('FA');
     my $printthread = q{};
@@ -477,8 +490,15 @@ sub Print {
         }
         ( $threadtitle, undef ) = Split_Splice_Move( $threadtitle, 0 );
         ( $threadpost,  undef ) = Split_Splice_Move( $threadpost,  $num );
+        $message     = $threadpost;
+        $displayname = $threadposter;
+        if ($enable_ubbc) {
+            enable_yabbc();
+            DoUBBC();
+        }
+        $threadpost = $message;
+        $threaddate = timeformat( $threaddate, 1 );
 
-        do_print();
         $myattach = q{};
         chomp $attachments;
         if ($attachments) {
@@ -502,7 +522,7 @@ sub Print {
             my $showattach = q{};
 
             for ( split /,/xsm, $attachments ) {
-                if ( $_ =~ /\.(.+?)$/xsm ) {
+                if ( $_ =~ /[.](.+?)$/xsm ) {
                     $ext = lc $1;
                 }
                 if ( !exists $attach_gif{$ext} ) {
@@ -514,9 +534,12 @@ sub Print {
                       : "$micon_bg{'paperclip'}";
                 }
                 my $filesize = -s "$uploaddir/$_";
-                $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : isempty( $fatxt{'41c'}, $fatxt{'41a'} ); 
+                $download_txt =
+                  ( $attach_count{$_} == 1 )
+                  ? $fatxt{'41b'}
+                  : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
                 if ($filesize) {
-                    if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
+                    if (   $_ =~ /[.](?:bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
                     {
                         $imagecount++;
@@ -537,14 +560,14 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $scr
 qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
                       . (
                         exists $attach_count{$_}
-                        ? qq~ | $attach_count{$_} $download_txt ~ 
+                        ? qq~ | $attach_count{$_} $download_txt ~
                         : q{}
                       ) . q~)</div>~;
                 }
             }
             if ( $showattach && $attachment ) {
                 $attachment =~
-s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
+s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
             }
             $myattach .= qq~
             <hr />
@@ -552,377 +575,27 @@ s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
             $showattach~;
         }
         $printthread .= $mythread;
-        $printthread =~ s/{yabb threadtitle}/$threadtitle/gsm;
-        $printthread =~ s/{yabb threadposter}/$threadposter/gsm;
-        $printthread =~ s/{yabb threaddate}/$threaddate/gsm;
-        $printthread =~ s/{yabb attach}/$myattach/gsm;
-        $printthread =~ s/{yabb threadpost}/$threadpost/gsm;
+        $printthread =~ s/\Q{yabb threadtitle}\E/$threadtitle/gxsm;
+        $printthread =~ s/\Q{yabb threadposter}\E/$threadposter/gxsm;
+        $printthread =~ s/\Q{yabb threaddate}\E/$threaddate/gxsm;
+        $printthread =~ s/\Q{yabb attach}\E/$myattach/gxsm;
+        $printthread =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
     }
+
     $output = $myprint;
-    $output =~ s/{yabb num}/$num/gsm;
-    $output =~ s/{yabb threadpost}/$threadpost/gsm;
-    $output =~ s/{yabb messagetitle}/$messagetitle/gsm;
-    $output =~ s/{yabb startedby}/$startedby/gsm;
-    $output =~ s/{yabb startedon}/$startedon/gsm;
-    $output =~ s/{yabb pagetitle}/$mbname - $pageTitle/gsm;
-    $output =~ s/{yabb printthread}/$printthread/gsm;
+    $output =~ s/\Q{yabb num}\E/$num/gxsm;
+    $output =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
+    $output =~ s/\Q{yabb messagetitle}\E/$messagetitle/gxsm;
+    $output =~ s/\Q{yabb startedby}\E/$startedby/gxsm;
+    $output =~ s/\Q{yabb startedon}\E/$startedon/gxsm;
+    $output =~ s/\Q{yabb pagetitle}\E/$mbname - $pageTitle/gxsm;
+    $output =~ s/\Q{yabb printthread}\E/$printthread/gxsm;
 
     image_resize();
 
     print_output_header();
     print_HTML_output_and_finish();
     return;
-}
-
-sub codemsg {
-    my ($code) = @_;
-    my %killhash = (
-        q{;}  => '&#059;',
-        q{!}  => '&#33;',
-        q{(}  => '&#40;',
-        q{)}  => '&#41;',
-        q{-}  => '&#45;',
-        q{.}  => '&#46;',
-        q{/}  => '&#47;',
-        q{:}  => '&#58;',
-        q{?}  => '&#63;',
-        q{[}  => '&#91;',
-        q{\\} => '&#92;',
-        q{]}  => '&#93;',
-        q{^}  => '&#94;',
-    );
-    if ( $code !~ /&\S*;/xsm ) { $code =~ s/;/&\x23059;/gxsm; }
-    $code =~ s/([\(\)\-\:\\\/\?\!\]\[\.\^])/$killhash{$1}/gxsm;
-    $_ =
-q~<br /><b>Code:</b><br /><table class="cs_thin" style="width:90%"><tr><td><table class="padd_2px"><tr><td><span style="font-family:courier; font-size:80%">CODE</span></td></tr></table></td></tr></table>~;
-    $_ =~ s/CODE/$code/gxsm;
-    return $_;
-}
-
-sub donoopen {
-    print qq~Content-Type: text/html\r\n\r\n
-<html>
-<head>
-<title>$maintxt{'199'}</title>
-</head>
-<body>
-<p style="font-size:small; font-family:Arial,Helvetica; text-align:center">$maintxt{'199'}</p>
-</body>
-</html>~ or croak "$croak{'print'}";
-    exit;
-}
-
-sub do_print {
-    $threadpost =~ s/\[reason\](.+?)\[\/reason\]//isgxm;
-    $threadpost =~ s/<br \/>/\n/igxsm;
-    $threadpost =~ s/\[highlight(.*?)\](.*?)\[\/highlight\]/$2/isgxm;
-    $threadpost =~
-s/\[code\s*(.+?)\]\n*(.+?)\n*\[\/code\]/<br \/><b>Code ($1):<\/b><br \/><table class=\"cs_thin\"><tr><td><table class=\"pad_2px\"><tr><td><span style=\"font-family:courier; font-size:80%\">$2<\/span><\/td><\/tr><\/table><\/td><\/tr><\/table>/isgm;
-    $threadpost =~ s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
-    $threadpost =~ s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
-    $threadpost =~ s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
-
-    $threadpost =~ s/\[b\](.*?)\[\/b\]/<b>$1<\/b>/isgxm;
-    $threadpost =~ s/\[i\](.*?)\[\/i\]/<i>$1<\/i>/isgxm;
-    $threadpost =~
-s/\[u\](.*?)\[\/u\]/<span style="text-decoration:underline">$1<\/span>/isgm;
-    $threadpost =~ s/\[s\](.*?)\[\/s\]/<s>$1<\/s>/isgxm;
-    $threadpost =~ s/\[move\](.*?)\[\/move\]/$1/isgxm;
-
-    $threadpost =~ s/\[glow(.*?)\](.*?)\[\/glow\]/&elimnests($2)/eisgxm;
-    $threadpost =~ s/\[shadow(.*?)\](.*?)\[\/shadow\]/&elimnests($2)/eisgxm;
-
-    $threadpost =~ s/\[shadow=(\S+?),(.+?),(.+?)\](.+?)\[\/shadow\]/$4/eisgxm;
-    $threadpost =~ s/\[glow=(\S+?),(.+?),(.+?)\](.+?)\[\/glow\]/$4/eisgxm;
-
-    $threadpost =~ s/\[color=([\w#]+)\](.*?)\[\/color\]/$2/isgxm;
-    $threadpost =~ s/\[black\](.*?)\[\/black\]/$1/isgxm;
-    $threadpost =~ s/\[white\](.*?)\[\/white\]/$1/isgxm;
-    $threadpost =~ s/\[red\](.*?)\[\/red\]/$1/isgxm;
-    $threadpost =~ s/\[green\](.*?)\[\/green\]/$1/isgxm;
-    $threadpost =~ s/\[blue\](.*?)\[\/blue\]/$1/isgxm;
-    $threadpost =~
-s/\[font=(.+?)\](.+?)\[\/font\]/<span style="font-family:$1;">$2<\/span>/isgm;
-
-    while (
-        $threadpost =~ s/\[size=(.+?)\](.+?)\[\/size\]/sizefont($1,$2)/eisgxm )
-    {
-    }
-
-    $threadpost =~
-s/\[quote\s+author=(.*?)\s+link=(.*?)\].*\/me\s+(.*?)\[\/quote\]/\[quote author=$1 link=$2\]<i>* $1 $3<\/i>\[\/quote\]/isgm;
-    $threadpost =~
-s/\[quote(.*?)\].*\/me\s+(.*?)\[\/quote\]/\[quote$1\]<i>* Me $2<\/i>\[\/quote\]/isgm;
-    $threadpost =~
-      s/\/me\s+(.*)/* $displayname $1/igsm;    #*/ make my syntax checker happy
-
-    # Images in message
-    $threadpost =~ s/\[img(.*?)\](.*?)\[\/img\]/ imagemsg($1,$2) /eisgm;
-
-    $threadpost =~ s/\[tt\](.*?)\[\/tt\]/<tt>$1<\/tt>/isgxm;
-    $threadpost =~
-      s/\[left\](.*?)\[\/left\]/<div style="text-align: left;">$1<\/div>/isgm;
-    $threadpost =~
-s/\[center\](.*?)\[\/center\]/<div style="text-align: center;">$1<\/div>/isgm;
-    $threadpost =~
-s/\[right\](.*?)\[\/right\]/<div style="text-align: right;">$1<\/div>/isgm;
-    $threadpost =~
-s/\[justify\](.*?)\[\/justify\]/<div style="text-align: justify">$1<\/div>/isgm;
-    $threadpost =~ s/\[sub\](.*?)\[\/sub\]/<sub>$1<\/sub>/isxgm;
-    $threadpost =~ s/\[sup\](.*?)\[\/sup\]/<sup>$1<\/sup>/isgxm;
-    $threadpost =~
-s/\[fixed\](.*?)\[\/fixed\]/<span style="font-family: Courier New;">$1<\/span>/isgm;
-
-    $threadpost =~ s/\[\[/\{\{/gxsm;
-    $threadpost =~ s/\]\]/\}\}/gxsm;
-    $threadpost =~ s/\|/\&verbar;/gxsm;
-    $threadpost =~
-      s/\[hr\]\n/<hr style="width:40%; text-align:left" class="hr" \/>/gsm;
-    $threadpost =~
-      s/\[hr\]/<hr style="width:40%; text-align:left" class="hr" \/>/gsm;
-    $threadpost =~ s/\[br\]/\n/igxsm;
-
-    $threadpost =~ s/\[flash\](.*?)\[\/flash\]/\[media\]$1\[\/media\]/isgxm;
-
-    $threadpost =~
-      s/\[url=\s*(.+?)\s*\]\s*(.+?)\s*\[\/url\]/format_url2($1, $2)/eisgxm;
-    $threadpost =~ s/\[url\]\s*(\S+?)\s*\[\/url\]/format_url3($1)/eisgxm;
-
-    if ($autolinkurls) {
-        $threadpost =~ s/\[url\]\s*([^\[]+)\s*\[\/url\]/[url]$1\[\/url]/gxsm;
-        $threadpost =~
-          s/\[link\]\s*([^\[]+)\s*\[\/link\]/[link]$1\[\/link]/gxsm;
-        $threadpost =~ s/\[news\](\S+?)\[\/news\]/<a href="$1">$1<\/a>/isgm;
-        $threadpost =~ s/\[gopher\](\S+?)\[\/gopher\]/<a href="$1">$1<\/a>/isgm;
-        $threadpost =~ s/&quot;&gt;/\x22>/gxsm;
-        $threadpost =~ s/(\[\*\])/ $1/gsm;
-        $threadpost =~ s/(\[\/list\])/ $1/gsm;
-        $threadpost =~ s/(\[\/tr\])/ $1/gsm;
-        $threadpost =~ s/(\[\/td\])/ $1/gsm;
-        $threadpost =~ s/\<span style\=/\<span_style\=/gsm;
-        $threadpost =~ s/\<div style\=/\<div_style\=/gsm;
-        $threadpost =~
-s/([^\w\"\=\[\]]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highlight\]|\[\*\]|\[td\]|\A)\\*(\w+?\:\/\/(?:[\w\~\;\:\,\$\-\+\!\*\?\/\=\&\@\#\%\(\)\[\](?:\<\S+?\>\S+?\<\/\S+?\>)]+?)\.(?:[\w\~\.\;\:\,\$\-\+\!\*\?\/\=\&\@\#\%\(\)\[\]\x80-\xFF]{1,})+?)/format_url($1,$2)/eisgm;
-        $threadpost =~
-s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highlight\]|\[\*\]|\[td\]|\A|\()\\*(www\.[^\.](?:[\w\~\;\:\,\$\-\+\!\*\?\/\=\&\@\#\%\(\)\[\](?:\<\S+?\>\S+?\<\/\S+?\>)]+?)\.(?:[\w\~\.\;\:\,\$\-\+\!\*\?\/\=\&\@\#\%\(\)\[\]\x80-\xFF]{1,})+?)/format_url($1,$2)/eisgm;
-        $threadpost =~ s/\<span_style\=/\<span style\=/gsm;
-        $threadpost =~ s/\<div_style\=/\<div style\=/gsm;
-    }
-
-    if ($stealthurl) {
-        $threadpost =~
-s/\[url=\s*(\w+\:\/\/.+?)\](.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$2<\/a>/isgm;
-        $threadpost =~
-s/\[url=\s*(.+?)\]\s*(.+?)\s*\[\/url\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$1" target="_blank">$2<\/a>/isgm;
-
-        $threadpost =~
-s/\[link\]\s*www\.\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/www.$1">www.$1<\/a>/isgm;
-        $threadpost =~
-s/\[link=\s*(\w+\:\/\/.+?)\](.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1">$2<\/a>/isgm;
-        $threadpost =~
-s/\[link=\s*(.+?)\]\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$1">$2<\/a>/isgm;
-        $threadpost =~
-s/\[link\]\s*(.+?)\s*\[\/link\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1">$1<\/a>/isgm;
-        $threadpost =~
-s/\[ftp\]\s*(.+?)\s*\[\/ftp\]/<a href="$boardurl\/$yyexec.$yyext?action=dereferer;url=$1" target="_blank">$1<\/a>/isgm;
-    }
-    else {
-        $threadpost =~
-s/\[url=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/url\]/<a href="$1" target="_blank">$2<\/a>/isgm;
-        $threadpost =~
-s/\[url=\s*(\S+?)\](.+?)\s*\[\/url\]/<a href="http:\/\/$1" target="_blank">$2<\/a>/isgm;
-        $threadpost =~
-s/\[link\]\s*www\.(\S+?)\s*\[\/link\]/<a href="http:\/\/www.$1">www.$1<\/a>/isgm;
-        $threadpost =~
-s/\[link=\s*(\S\w+\:\/\/\S+?)\s*\](.+?)\[\/link\]/<a href="$1">$2<\/a>/isgm;
-        $threadpost =~
-s/\[link=\s*(\S+?)\](.+?)\s*\[\/link\]/<a href="http:\/\/$1">$2<\/a>/isgm;
-        $threadpost =~
-          s/\[link\]\s*(\S+?)\s*\[\/link\]/<a href="$1">$1<\/a>/isgm;
-        $threadpost =~
-s/\[ftp\]\s*(ftp:\/\/)?(.+?)\s*\[\/ftp\]/<a href="ftp:\/\/$2">$1$2<\/a>/isgm;
-    }
-
-    $threadpost =~ s/(dereferer\;url\=http\:\/\/.*?)#(\S+?\")/$1;anch=$2/isgm;
-
-    if ( $guest_media_disallowed && $iamguest ) {
-        my $oops =
-qq~ <i>$maintxt{'40'}&nbsp;&nbsp;$maintxt{'41'} <a href="$scripturl?action=login"><b>$maintxt{'34'}</b></a></i>~;
-        if ($regtype) {
-            $oops .=
-qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b></a></i>~;
-        }
-
-        $threadpost =~ s/<a href=".+?<\/a>/[oops]/gsm;
-        $threadpost =~ s/<img src=".+?>/[oops]/gsm;
-        $threadpost =~ s/\[media\].*?\[\/media\]/[oops]/isgxm;
-        $threadpost =~ s/\[oops\]/$oops/gxsm;
-    }
-
-    $threadpost =~ s/\[media\](.*?)\[\/media\]/$1/isgxm;
-
-    $threadpost =~ s/\[email\]\s*(\S+?\@\S+?)\s*\[\/email\]/$1/isgxm;
-    $threadpost =~
-      s/\[email=\s*(\S+?\@\S+?)\]\s*(.*?)\s*\[\/email\]/$2 ($1)/isgm;
-
-    $threadpost =~ s/\[news\](.+?)\[\/news\]/$1/isgxm;
-    $threadpost =~ s/\[gopher\](.+?)\[\/gopher\]/$1/isgxm;
-    $threadpost =~ s/\[ftp\](.+?)\[\/ftp\]/$1/isgxm;
-
-    while ( $threadpost =~
-/\[quote\s+author=(.*?)\slink=.*?\s+date=(.*?)\s*\]\n*.*?\n*\[\/quote\]/ism
-      )
-    {
-        my $author = $1;
-        my $date = timeformat( $2, 1 );
-
-        if ($author) {    # out of YaBBC.pm -> sub quotemsg {
-            ToChars($author);
-            if ( !-e "$memberdir/$author.vars" )
-            {             # if the file is there it is an unencrypted user ID
-                $author = decloak($author);
-
-                # if not, decrypt it and see if it is a regged user
-                if ( !-e "$memberdir/$author.vars" )
-                {    # if still not found probably the author is a screen name
-                    $testauthor = MemberIndex( 'check_exist', "$author" );
-
-                    # check if this name exists in the memberlist
-                    if ( $testauthor ne q{} )
-                    {    # if it is, load the user id returned
-                        $author = $testauthor;
-                        LoadUser($author);
-                        $author = ${ $uid . $author }{'realname'};
-
-                        # set final author var to the current users screen name
-                    }
-                    else {
-                        $author = decloak($author);
-
- # if all fails it is a non existing real name so decode and asign as screenname
-                    }
-                }
-                else {
-                    LoadUser($author);
-
-# after encoding the user ID was found and loaded, setting the current real name
-                    $author = ${ $uid . $author }{'realname'};
-                }
-            }
-            else {
-                LoadUser($author);
-
-# it was an old style user id which could be loaded and screen name set to final author
-                $author = ${ $uid . $author }{'realname'};
-            }
-        }
-
-        $threadpost =~
-s/\[quote\s+author=.*?link=.*?\s+date=.*?\s*\]\n*(.*?)\n*\[\/quote\]/<br \/><i>$author $maintxt{'30a'} $date:<\/i><table style="padding:1px; width:90%; border:thin solid #000"><tr><td style="width:100%;font-size:10px">$1<\/td><\/tr><\/table>/ism;
-    }
-    $threadpost =~
-s/\[quote\]\n*(.+?)\n*\[\/quote\]/<br \/><i>$maintxt{'31'}:<\/i><table style="padding:1px; width:90%; border:thin solid #000"><tr><td style="width:100%;font-size:10px; font-family:Arial,Helvetica">$1<\/td><\/tr><\/table>/isgm;
-
-## list code from YaBBC.pm - DAR ##
-    $threadpost =~ s/\s*\[\*\]/<\/li><li>/isgm;
-    $threadpost =~ s/\[olist\]/<ol>/isgm;
-    $threadpost =~ s/\s*\[\/olist\]/<\/li><\/ol>/isgm;
-    $threadpost =~ s/<\/li><ol>/<ol>/isgm;
-    $threadpost =~ s/<ol><\/li>/<ol>/isgm;
-    $threadpost =~ s/\[list\]/<ul>/isgm;
-    $threadpost =~
-s/\[list (.+?)\]/<ul style="list-style-image\: url($defaultimagesdir\/$1\.gif)">/isgm;
-    $threadpost =~ s/\s*\[\/list\]/<\/li><\/ul>/isgm;
-    $threadpost =~ s/<\/li><ul>/<ul>/isgm;
-    $threadpost =~ s/<ul><\/li>/<ul>/isgm;
-    $threadpost =~ s/<\/li><ul (.+?)>/<ul $1>/isgm;
-    $threadpost =~ s/<ul (.+?)><\/li>/<ul $1>/isgm;
-
-    $threadpost =~
-      s/\[pre\](.+?)\[\/pre\]/'<pre>' . dopre($1) . '<\/pre>'/isegm;
-
-    $threadpost =~ s/\[flash=(\S+?),(\S+?)\](\S+?)\[\/flash\]/$3/isxgm;
-
-    $threadpost =~ s/\{\{/\[/gxsm;
-    $threadpost =~ s/\}\}/\]/gxsm;
-
-    if ( $threadpost =~ m{\[table\]}ixsm ) {
-        $threadpost =~
-s/\n{0,1}\[table\]\n*(.+?)\n*\[\/table\]\n{0,1}/<table>$1<\/table>/isgxm;
-        while ( $threadpost =~
-s/\<table\>(.*?)\n*\[tr\]\n*(.*?)\n*\[\/tr\]\n*(.*?)\<\/table\>/<table>$1<tr>$2<\/tr>$3<\/table>/isxm
-          )
-        {
-        }
-        while ( $threadpost =~
-s/\<tr\>(.*?)\n*\[td\]\n{0,1}(.*?)\n{0,1}\[\/td\]\n*(.*?)\<\/tr\>/<tr>$1<td>$2<\/td>$3<\/tr>/isxm
-          )
-        {
-        }
-    }
-
-    $threadpost =~ s/\[\&table(.*?)\]/<table$1>/gxsm;
-    $threadpost =~ s/\[\/\&table\]/<\/table>/gxsm;
-    $threadpost =~ s/\n/<br \/>/igsm;
-
-    ### Censor it ###
-    $threadtitle = Censor($threadtitle);
-    $threadpost  = Censor($threadpost);
-
-    ToChars($threadtitle);
-    ToChars($threadpost);
-
-    $threaddate = timeformat( $threaddate, 1 );
-    return;
-}
-
-sub imagemsg {    # out of YaBBC.pm -> sub imagemsg {
-    my ( $attribut, $url ) = @_;
-
-    # use or kill urls
-    $url =~ s/\[url\](.*?)\[\/url\]/$1/igxsm;
-    $url =~ s/\[link\](.*?)\[\/link\]/$1/igxsm;
-    $url =~ s/\[url\s*=\s*(.*?)\s*.*?\].*?\[\/url\]/$1/igxsm;
-    $url =~ s/\[link\s*=\s*(.*?)\s*.*?\].*?\[\/link\]/$1/igxsm;
-    $url =~ s/\[url.*?\/url\]//igxsm;
-    $url =~ s/\[link.*?\/link\]//igxsm;
-
-    my $char_160 = chr 160;
-    $url =~ s/(\s|&nbsp;|$char_160)+//gxsm;
-
-    if ( $url !~ /^http.+?\.(gif|jpg|jpeg|png|bmp)$/ixsm ) {
-        return q{ } . $url;
-    }
-
-    my %parameter;
-    FromHTML($attribut);
-    $attribut =~ s/(\s|$char_160)+/ /gsm;
-    for ( split / +/sm, $attribut ) {
-        my ( $key, $value ) = split /=/xsm, $_;
-        $value =~ s/[\x22\x27]//gxsm;
-        $parameter{$key} = $value;
-    }
-
-    if ( $parameter{'name'} ne 'signat_img_resize' ) {
-        $parameter{'name'} = 'post_img_resize';
-    }
-    ToHTML( $parameter{'alt'} );
-    $parameter{'align'}  =~ s/[^a-z]//igxsm;
-    $parameter{'width'}  =~ s/\D//gxsm;
-    $parameter{'height'} =~ s/\D//gxsm;
-    if ( $parameter{'align'} ) {
-        $parameter{'align'} = qq~ align:$parameter{'align'};~;
-    }
-    if ( $parameter{'width'} ) {
-        $parameter{'width'} = qq~ width:$parameter{'width'};~;
-    }
-    if ( $parameter{'height'} ) {
-        $parameter{'height'} = qq~ height:$parameter{'height'};~;
-    }
-
-    $imagecount++;
-    return
-qq~ <img src="$url" name="$parameter{'name'}" alt="$parameter{'alt'}" style="display:none;$parameter{'align'}$parameter{'width'}$parameter{'height'}" /><span id="urlimagecount$imagecount" style="display:none">$url</span>~;
 }
 
 1;

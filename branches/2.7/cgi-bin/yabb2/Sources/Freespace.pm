@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
-$freespacepmver = 'YaBB 2.7.00 $Revision$';
+$freespacepmver  = 'YaBB 2.7.00 $Revision$';
 @freespacepmmods = ();
 if (@freespacepmmods) {
     $freespacepmmods = 1;
@@ -38,7 +38,7 @@ sub freespace {
               if $lastline !~ m/byte/ism;
 
            # error trapping if output fails. The word byte should be in the line
-            if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/sm ) {
+            if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/xsm ) {
                 $FreeBytes = $3 - 100_000;    # 100000 bytes reserve
             }
 
@@ -58,8 +58,8 @@ sub freespace {
             return -1 if !$quota[2];
 
             # error trapping if output fails.
-            @quota = split / +/sm, $quota[$enable_quota], 5;
-            $quota[2] =~ s/\*//xsm;
+            @quota = split /[ ]+/xsm, $quota[$enable_quota], 5;
+            $quota[2] =~ s/[*]//xsm;
             $FreeBytes =
               ( ( $quota[3] - $quota[2] ) * 1024 ) -
               100_000;    # 100000 bytes reserve
@@ -74,9 +74,9 @@ sub freespace {
                 $child_pid = fork;
                 if ( !$child_pid ) {    # child process runs here and exits then
                     $findfile_space = 0;
-                    map { $findfile_space += $_ }
-                      split /-/xsm,
+                    my @fnd = split /-/xsm,
                       qx(find $findfile_root -noleaf -type f -printf '%s-');
+                    for (@fnd) { $findfile_space += $_; }
                     $findfile_space =
                       ( ( $findfile_maxsize * 1024 * 1024 ) - $findfile_space )
                       . '<>'
@@ -103,8 +103,8 @@ sub freespace {
 
             # error trapping if output fails. The % sign should be in the line
             $FreeBytes =
-              ( ( split / +/sm, $lastline, 5 )[3] * 1024 ) -
-              100_000;    # 100000 bytes reserve
+              ( ( split /[ ]+/xsm, $lastline, 5 )[3] * 1024 ) -
+              100000;    # 100000 bytes reserve
 
         }
         else {
@@ -115,11 +115,11 @@ sub freespace {
     }
     if ( $FreeBytes < 1 ) { automaintenance( 'on', 'low_disk' ); }
 
-    if ( $FreeBytes >= _1073_741_824 ) {
+    if ( $FreeBytes >= 1073741824 ) {
         $yyfreespace = sprintf '%.2f',
           $FreeBytes / ( 1024 * 1024 * 1024 ) . " GB ($yyfreespace)";
     }
-    elsif ( $FreeBytes >= 1_048_576 ) {
+    elsif ( $FreeBytes >= 1048576 ) {
         $yyfreespace = sprintf '%.2f',
           $FreeBytes / ( 1024 * 1024 ) . " MB ($yyfreespace)";
     }

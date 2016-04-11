@@ -35,7 +35,7 @@ push @INC, './Modules';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
-    if ( $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm ) {
+    if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
     }
     $yypath =~ s/\\/\//gxsm;
@@ -50,20 +50,23 @@ $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
-$script_root =~ s/\/AdminIndex\.(pl|cgi)//igxsm;
+$script_root =~ s/\/AdminIndex[.](pl|cgi)//igxsm;
 
 require Paths;
 if   ( -e ("$yyexec.cgi") ) { $yyxt = 'cgi'; }
 else                        { $yyxt = 'pl'; }
 if ( -e "$vardir/backup.lock" ) {
     $back_url = "$boardurl/BackupFix.$yyxt";
-    print "Location: $back_url\n\n";
+    print "Location: $back_url\n\n" or croak 'cannot print location';
     exit;
 }
 require Variables::Settings;
 
 # Check always for Time::HiRes
-eval { require Time::HiRes; import Time::HiRes qw(time); };
+if ( eval { require Time::HiRes; import Time::HiRes qw(time); } ) {
+    require Time::HiRes;
+    import Time::HiRes qw(time);
+}
 $START_TIME = time;
 
 require './Sources/Subs.pm';
@@ -96,8 +99,10 @@ $max_process_time = 20;
 
 $action = $INFO{'action'};
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };
-eval { yymain(); };
-if ($@) { fatal_error( 'untrapped', ":<br />$@" ); }
+if ( eval { yymain(); } ) {
+    yymain();
+}
+else { fatal_error( 'untrapped', ":<br />$EVAL_ERROR" ); }
 
 sub yymain {
 
@@ -159,7 +164,7 @@ sub ParseNavArray {
     foreach my $element (@x) {
         chomp $element;
         ( $action_to_take, $vistext, $whatitdoes, $isheader ) =
-          split /\|/xsm, $element;
+          split /[|]/xsm, $element;
 
         if ( $action_area eq $action_to_take ) {
             $currentclass = 'class="current"';
@@ -252,7 +257,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "modagreement|$admintxt{'a2_sub4'}|$admintxt{'a2_label4'}|",
         "gmodaccess|$admintxt{'a2_sub5'}|$admintxt{'a2_label5'}|",
         "eventcal_set|$admintxt{'a2_sub6'}|$admintxt{'a2_label6'}|",
-        "bookmarks|$admintxt{'bookmarks'}|$admintxt{'bookmarks1'}|"
+        "bookmarks|$admintxt{'bookmarks'}|$admintxt{'bookmarks1'}|",
     );
 
     @security_settings = (
@@ -343,18 +348,21 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
     ParseNavArray(@forum_stats);
     ParseNavArray(@boardmod_mods);
     $boardlink = qq~$boardurl/$yyexec.$yyext~;
-    if ( $accept_permafull) {
+
+    if ($accept_permafull) {
         $boardlink = qq~$perm_domain/$symlink/~;
     }
     $topmenu_one = qq~<a href="$boardlink">$admintxt{'15'} $mbname</a>~;
     $topmenu_two = qq~<a href="$adminurl">$admintxt{'33'}</a>~;
     $topmenu_tree =
       qq~<a href="$scripturl?action=help;section=admin">$admintxt{'35'}</a>~;
-    $topmenu_four = qq~<a href="http://www.yabbforum.com" target="_blank">$admintxt{'36'}</a>~;
-    $topmenu_five = qq~<a href="$boardurl/$yyexec.$yyext?action=mycenter" target="_blank">$admin_txt{'usercp'}</a> ~;
+    $topmenu_four =
+qq~<a href="http://www.yabbforum.com" target="_blank">$admintxt{'36'}</a>~;
+    $topmenu_five =
+qq~<a href="$boardurl/$yyexec.$yyext?action=mycenter" target="_blank">$admin_txt{'usercp'}</a> ~;
     $topmenu_five =~ s/USER/${ $uid . $username }{'realname'}/sm;
 
-    if ($maintenance && $action ne 'detailedversion') {
+    if ( $maintenance && $action ne 'detailedversion' ) {
         $yyadmin_alert .=
 qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{'616a'}</b></span><br /><br />~;
     }
@@ -371,27 +379,27 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
     print_output_header();
 
     my $yytitle = qq~$mbname $admin_txt{'208'}: $yytitle~;
-    $header =~ s/({|<)yabb\ title(}|>)/$yytitle/gxsm;
-    $header =~ s/({|<)yabb\ style(}|>)/$adminstyle/gxsm;
-    $header =~ s/({|<)yabb\ charset(}|>)/$yymycharset/gxsm;
-    $header =~ s/({|<)yabb\ javascript(}|>)/$yyjavascript/gxsm;
+    $header =~ s/\Q{yabb title}\E/$yytitle/gxsm;
+    $header =~ s/\Q{yabb style}\E/$adminstyle/gxsm;
+    $header =~ s/\Q{yabb charset}\E/$yymycharset/gxsm;
+    $header =~ s/\Q{yabb javascript}\E/$yyjavascript/gxsm;
 
-    $leftmenutop =~ s/({|<)yabb\ images(}|>)/$adminimages/gxsm;
-    $leftmenutop =~ s/({|<)yabb\ maintenance(}|>)/$yyadmin_alert/gxsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_one(}|>)/$topmenu_one/xsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_two(}|>)/$topmenu_two/xsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_tree(}|>)/$topmenu_tree/xsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_four(}|>)/$topmenu_four/xsm;
-    $topnav      =~ s/({|<)yabb\ topmenu_five(}|>)/$topmenu_five/xsm;
-    $topnav      =~ s/({|<)yabb\ brdname(}|>)/$mbname/xsm;
+    $leftmenutop =~ s/\Q{yabb images}\E/$adminimages/gxsm;
+    $leftmenutop =~ s/\Q{yabb maintenance}\E/$yyadmin_alert/gxsm;
+    $topnav =~ s/\Q{yabb topmenu_one}\E/$topmenu_one/xsm;
+    $topnav =~ s/\Q{yabb topmenu_two}\E/$topmenu_two/xsm;
+    $topnav =~ s/\Q{yabb topmenu_tree}\E/$topmenu_tree/xsm;
+    $topnav =~ s/\Q{yabb topmenu_four}\E/$topmenu_four/xsm;
+    $topnav =~ s/\Q{yabb topmenu_five}\E/$topmenu_five/xsm;
+    $topnav =~ s/\Q{yabb brdname}\E/$mbname/xsm;
 
     if ($debug) { Debug(); }
-    $mainbody =~ s/({|<)yabb\ main(}|>)/$yymain/gxsm;
-    $mainbody =~ s/({|<)yabb_admin\ debug(}|>)/$yydebug/gxsm;
+    $mainbody =~ s/\Q{yabb main}\E/$yymain/gxsm;
+    $mainbody =~ s/\Q{yabb_admin debug}\E/$yydebug/gxsm;
 
     $mainbody =~ s/img src\=\"$imagesdir\/(.+?)\"/AdmImgLoc($1)/eisgm;
     $mainbody =~
-s/img src\=\&quot\;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . AdmImgLoc2($1) . "\&quot;"/eisgm;
+s/img src\=\&quot;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . AdmImgLoc2($1) . "\&quot;"/eisgm;
 
     # For the template editing Javascript images
 
@@ -431,3 +439,5 @@ sub TrackAdminLogins {
     fclose(ADMINLOG);
     return;
 }
+
+1;

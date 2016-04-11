@@ -18,7 +18,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$favoritespmver = 'YaBB 2.7.00 $Revision$';
+$favoritespmver  = 'YaBB 2.7.00 $Revision$';
 @favoritespmmods = ();
 if (@favoritespmmods) {
     $favoritespmmods = 1;
@@ -41,42 +41,44 @@ sub Favorites {
 # grab all relevant info on the favorite thread for this user and check access to them
     if ( !$maxfavs ) { $maxfavs = 10; }
     my @favboards;
-    eval { require Variables::Movedthreads };
-        for my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
+    if ( eval { require Variables::Movedthreads } ) {
+        require Variables::Movedthreads;
+    }
+    foreach my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
 
-            # see if thread exists and search for it if moved
-            if ( exists $moved_file{$myfav} ) {
-                my @moved = ($myfav);
-                while ( exists $moved_file{$myfav} ) {
-                    $myfav = $moved_file{$myfav};
-                    unshift @moved, $myfav;
-                }
-                for (@moved) {
-                    $myfav = $_;
-                    if ( $myfav ne $moved[-1] ) {
-                        if ( -e "$datadir/$myfav.ctb" ) {
-                            RemFav( $moved[-1], 'nonexist' );
-                            AddFav( $myfav, 0, 1 );
-                            last;
-                        }
-                    }
-                    elsif ( !-e "$datadir/$myfav.ctb" ) {
-                        RemFav( $myfav, 'nonexist' );
-                        $myfav = 0;
+        # see if thread exists and search for it if moved
+        if ( exists $moved_file{$myfav} ) {
+            my @moved = ($myfav);
+            while ( exists $moved_file{$myfav} ) {
+                $myfav = $moved_file{$myfav};
+                unshift @moved, $myfav;
+            }
+            foreach (@moved) {
+                $myfav = $_;
+                if ( $myfav ne $moved[-1] ) {
+                    if ( -e "$datadir/$myfav.ctb" ) {
+                        RemFav( $moved[-1], 'nonexist' );
+                        AddFav( $myfav, 0, 1 );
+                        last;
                     }
                 }
-                next if !$myfav;
+                elsif ( !-e "$datadir/$myfav.ctb" ) {
+                    RemFav( $myfav, 'nonexist' );
+                    $myfav = 0;
+                }
             }
-            elsif ( !-e "$datadir/$myfav.ctb" ) {
-                RemFav( $myfav, 'nonexist' );
-                next;
-            }
-            MessageTotals( 'load', $myfav );
-            $favoboard = ${$myfav}{'board'};
-            push @favboards, "$favoboard|$myfav";
+            next if !$myfav;
         }
+        elsif ( !-e "$datadir/$myfav.ctb" ) {
+            RemFav( $myfav, 'nonexist' );
+            next;
+        }
+        MessageTotals( 'load', $myfav );
+        $favoboard = ${$myfav}{'board'};
+        push @favboards, "$favoboard|$myfav";
+    }
 
-    for ( sort @favboards ) {
+    foreach ( sort @favboards ) {
         ( $loadboard, $loadfav ) = split /[|]/xsm, $_;
         if ( !${ $uid . $loadboard }{'board'} ) {
             BoardTotals( 'load', $loadboard );
@@ -84,14 +86,13 @@ sub Favorites {
 
         next
           if !$iamadmin
-              && AccessCheck( $loadboard, q{},
-                  ( split /[|]/xsm, $board{$loadboard} )[1] ) ne 'granted';
+          && AccessCheck( $loadboard, q{},
+            ( split /[|]/xsm, $board{$loadboard} )[1] ) ne 'granted';
 
         next
           if !$iamadmin
-              && !CatAccess(
-                  ( split /[|]/xsm, $catinfo{"${$uid.$loadboard}{'cat'}"} )[1]
-              );
+          && !CatAccess(
+            ( split /[|]/xsm, $catinfo{"${$uid.$loadboard}{'cat'}"} )[1] );
 
         fopen( BRDTXT, "$boardsdir/$loadboard.txt" )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
@@ -110,7 +111,7 @@ sub Favorites {
     my %attachments;
     my $att_length = -s 'Variables/attachments.db';
     if ( ( -s 'Variables/attachments.db' ) > 5 ) {
-        fopen( ATM, '<Variables/attachments.db');
+        fopen( ATM, '<Variables/attachments.db' );
         while (<ATM>) {
             $attachments{ ( split /[|]/xsm, $_, 2 )[0] }++;
         }
@@ -124,7 +125,7 @@ sub Favorites {
     $counter = $start;
     getlog();
     my $dmax = $date - ( $max_log_days_old * 86400 );
-    for (@threads) {
+    foreach (@threads) {
         (
             $mnum,     $msub,      $mname, $memail, $mdate,
             $mreplies, $musername, $micon, $mstate
@@ -142,11 +143,11 @@ sub Favorites {
 qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
 
         $threadclass = 'thread';
-        if    ( $mstate =~ /h/ism ) { $threadclass = 'hide'; }
-        elsif ( $mstate =~ /l/ism ) { $threadclass = 'locked'; }
+        if    ( $mstate =~ /h/ixsm )         { $threadclass = 'hide'; }
+        elsif ( $mstate =~ /l/ixsm )         { $threadclass = 'locked'; }
         elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
         elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
-        elsif ( $mstate eq q{} ) { $threadclass = 'thread'; }
+        elsif ( $mstate eq q{} )             { $threadclass = 'thread'; }
         if ( $threadclass eq 'hide' && $mstate =~ /s/ism && $mstate !~ /l/ism )
         {
             $threadclass = 'hidesticky';
@@ -228,8 +229,9 @@ qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new">$micon{'new'}</a>~;
                 $poll_end    = q{};
                 $poll[0] =
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
+                my $prnpoll = join q{}, @poll;
                 fopen( POLL, ">$datadir/$mnum.poll" );
-                print {POLL} @poll or croak "$croak{'print'} POLL";
+                print {POLL} $prnpoll or croak "$croak{'print'} POLL";
                 fclose(POLL);
             }
             $micon = qq~$img{'pollicon'}~;
@@ -319,7 +321,7 @@ qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &
         }
         elsif ( $mreplies + 1 > $maxmessagedisplay ) {
             $tmpa = 1;
-            for my $tmpb ( 0 .. $mreplies ) {
+            foreach my $tmpb ( 0 .. $mreplies ) {
                 if ( $tmpb % $maxmessagedisplay == 0 ) {
                     $pages .=
                         qq~<a href="$scripturl?num=$mnum/~
@@ -398,28 +400,31 @@ qq~<a href="$scripturl?num=$mnum/$mreplies#$mreplies">$img{'lastpost'}$mydate</a
         $adminbar =
 qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~;
         $admincol = $admincolumn;
-        $admincol =~ s/{yabb admin}/$adminbar/gsm;
+        $admincol =~ s/\Q{yabb admin}\E/$adminbar/gxsm;
 
-        $tempbar =~ s/{yabb admin column}/$admincol/gsm;
-        $tempbar =~ s/{yabb threadpic}/$threadpic/gsm;
-        $tempbar =~ s/{yabb icon}/$micon/gsm;
-        $tempbar =~ s/{yabb new}/$new/gsm;
-        $tempbar =~ s/{yabb poll}/$mpoll/gsm;
-        $tempbar =~ s/{yabb favorite}/$favicon{$mnum}/gsm;
-        $tempbar =~ s/{yabb subjectlink}/$msublink/gsm;
-        $tempbar =~ s/{yabb attachmenticon}/$temp_attachment/gsm;
-        $tempbar =~ s/{yabb pages}/$pages/gsm;
-        $tempbar =~ s/{yabb starter}/$mname/gsm;
-        $tempbar =~ s/{yabb replies}/$fmreplies/gsm;
-        $tempbar =~ s/{yabb views}/$views/gsm;
-        $tempbar =~ s/{yabb lastpostlink}/$lastpostlink/gsm;
-        $tempbar =~ s/{yabb lastposter}/$lastpostername/gsm;
+        $tempbar =~ s/\Q{yabb admin column}\E/$admincol/gxsm;
+        $tempbar =~ s/\Q{yabb threadpic}\E/$threadpic/gxsm;
+        $tempbar =~ s/\Q{yabb icon}\E/$micon/gxsm;
+        $tempbar =~ s/\Q{yabb new}\E/$new/gxsm;
+        $tempbar =~ s/\Q{yabb poll}\E/$mpoll/gxsm;
+        $tempbar =~ s/\Q{yabb favorite}\E/$favicon{$mnum}/gxsm;
+        $tempbar =~ s/\Q{yabb subjectlink}\E/$msublink/gxsm;
+        $tempbar =~ s/\Q{yabb attachmenticon}\E/$temp_attachment/gxsm;
+        $tempbar =~ s/\Q{yabb pages}\E/$pages/gxsm;
+        $tempbar =~ s/\Q{yabb starter}\E/$mname/gxsm;
+        $tempbar =~ s/\Q{yabb replies}\E/$fmreplies/gxsm;
+        $tempbar =~ s/\Q{yabb views}\E/$views/gxsm;
+        $tempbar =~ s/\Q{yabb lastpostlink}\E/$lastpostlink/gxsm;
+        $tempbar =~ s/\Q{yabb lastposter}\E/$lastpostername/gxsm;
+
         if ( $accept_permalink == 1 ) {
-            $tempbar =~ s/{yabb permalink}/$message_permalink/gsm;
+            $tempbar =~ s/\Q{yabb permalink}\E/$message_permalink/gxsm;
         }
         else {
-            $tempbar =~ s/{yabb permalink}//gsm;
+            $tempbar =~ s/\Q{yabb permalink}\E//gxsm;
         }
+## Tempbar Mod Hook ##
+## End Tempbar Mod Hook ##
         $tmptempbar .= $tempbar;
         $counter++;
         $mcount++;
@@ -461,20 +466,20 @@ qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multir
     $admincheckboxes = q~
     <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
     ~;
-    $subfooterbar =~ s/{yabb admin selector}/$adminselector/gsm;
-    $subfooterbar =~ s/{yabb admin checkboxes}/$admincheckboxes/gsm;
+    $subfooterbar =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
+    $subfooterbar =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
 
     # Template it
-    $adminheader =~ s/{yabb admin}/$messageindex_txt{'2'}/gsm;
+    $adminheader =~ s/\Q{yabb admin}\E/$messageindex_txt{'2'}/gxsm;
 
-    $favorites_template =~ s/{yabb home}//gsm;
-    $favorites_template =~ s/{yabb category}//gsm;
+    $favorites_template =~ s/\Q{yabb home}\E//gxsm;
+    $favorites_template =~ s/\Q{yabb category}\E//gxsm;
 
     $yynavigation =
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'70'}~;
 
     $favboard = qq~<span class="nav">$img_txt{'70'}</span>~;
-    $favorites_template =~ s/{yabb board}/$favboard/gsm;
+    $favorites_template =~ s/\Q{yabb board}\E/$favboard/gxsm;
     $bdescrip =
 qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_txt{'77'} $maxfavs $messageindex_txt{'78'}~;
     $curfav   = NumberFormat($curfav);
@@ -482,24 +487,24 @@ qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_tx
     $bdpicExt ||= 'gif';
 
     ToChars($bdescrip);
-    $boarddescription   =~ s/{yabb boarddescription}/$bdescrip/gsm;
-    $favorites_template =~ s/{yabb description}/$boarddescription/gsm;
+    $boarddescription =~ s/\Q{yabb boarddescription}\E/$bdescrip/gxsm;
+    $favorites_template =~ s/\Q{yabb description}\E/$boarddescription/gxsm;
     $bdpic =
 qq~ <img src="$imagesdir/$my_favbrds" alt="$img_txt{'70'}" title="$img_txt{'70'}" /> ~;
-    $favorites_template =~ s/{yabb bdpicture}/$bdpic/gsm;
-    $favorites_template =~ s/{yabb threadcount}/$curfav/gsm;
-    $favorites_template =~ s/{yabb messagecount}/$treplies/gsm;
+    $favorites_template =~ s/\Q{yabb bdpicture}\E/$bdpic/gxsm;
+    $favorites_template =~ s/\Q{yabb threadcount}\E/$curfav/gxsm;
+    $favorites_template =~ s/\Q{yabb messagecount}\E/$treplies/gxsm;
 
-    $favorites_template =~ s/{yabb colspan}/$colspan/gsm;
+    $favorites_template =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
 
-    $favorites_template =~ s/{yabb admin column}/$adminheader/gsm;
-    $favorites_template =~ s/{yabb modupdate}/$formstart/gsm;
-    $favorites_template =~ s/{yabb modupdateend}/$formend/gsm;
+    $favorites_template =~ s/\Q{yabb admin column}\E/$adminheader/gxsm;
+    $favorites_template =~ s/\Q{yabb modupdate}\E/$formstart/gxsm;
+    $favorites_template =~ s/\Q{yabb modupdateend}\E/$formend/gxsm;
 
-    $favorites_template =~ s/{yabb threadblock}/$tmptempbar/gsm;
-    $favorites_template =~ s/{yabb adminfooter}/$subfooterbar/gsm;
-    $favorites_template =~ s/{yabb icons}/$yabbicons/gsm;
-    $favorites_template =~ s/{yabb admin icons}/$yabbadminicons/gsm;
+    $favorites_template =~ s/\Q{yabb threadblock}\E/$tmptempbar/gxsm;
+    $favorites_template =~ s/\Q{yabb adminfooter}\E/$subfooterbar/gxsm;
+    $favorites_template =~ s/\Q{yabb icons}\E/$yabbicons/gxsm;
+    $favorites_template =~ s/\Q{yabb admin\s icons}\E/$yabbadminicons/gxsm;
     $showFavorites .= qq~$favorites_template~;
 
     $showFavorites .= qq~
@@ -564,7 +569,7 @@ sub RemFav {
     if ( !$goto ) { $goto = 0; }
 
     my @newfav;
-    for ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
+    foreach ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
         if ( $favo ne $_ ) { push @newfav, $_; }
     }
 
@@ -595,8 +600,8 @@ sub IsFav {
     my $addfav = $img{'addfav'};
     my $remfav = $img{'remfav'};
     if ($useThreadtools) {
-        $addfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
-        $remfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
+        $addfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+        $remfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
     }
     if ( !$postcheck ) {
         $yyjavascript .= qq~\n
@@ -613,7 +618,7 @@ qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=addfav;fav=$favo;sta
     }
     else { $nofav = 2; }
 
-    for (@oldfav) {
+    foreach (@oldfav) {
         if ( $favo eq $_ ) {
             $button =
 qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=remfav;fav=$favo;start=$goto','$imagesdir')" id="favlink">$img{'remfav'}</a>~;
@@ -632,8 +637,8 @@ sub IsFav1 {
     my $addfav = $img{'addfav'};
     my $remfav = $img{'remfav'};
     if ($useThreadtools) {
-        $addfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
-        $remfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gsm;
+        $addfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
+        $remfav =~ s/\[tool=(.+?)\](.+?)\[\/tool\]/$2/gxsm;
     }
     if ( !$postcheck ) {
         $yyjavascript .= qq~\n
@@ -650,7 +655,7 @@ qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=addfav;fav=$favo;sta
     }
     else { $nofav = 2; }
 
-    for (@oldfav) {
+    foreach (@oldfav) {
         if ( $favo eq $_ ) {
             $button =
 qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=remfav;fav=$favo;start=$goto','$imagesdir')" id="favlink2">$img{'remfav'}</a>~;

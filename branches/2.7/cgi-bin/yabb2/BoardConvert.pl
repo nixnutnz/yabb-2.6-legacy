@@ -13,6 +13,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,8 +21,9 @@ $boardconvertplver = 'YaBB 2.7.00 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
-    $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm;
-    $yypath = $1;
+    if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
+        $yypath = $1;
+    }
     $yypath =~ s/\\/\//gxsm;
     chdir $yypath;
     push @INC, $yypath;
@@ -33,7 +35,7 @@ if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
 $script_root =~ s/\\/\//gxsm;
-$script_root =~ s/\/BoardConvert\.(pl|cgi)//igxsm;
+$script_root =~ s/\/BoardConvert[.](pl|cgi)//igxsm;
 
 if   ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
 else                   { $yyext = 'pl'; }
@@ -60,14 +62,14 @@ sub convcontrol {
     open $FORUMCONTROL, '<', "$boardsdir/forum.control"
       or croak 'cannot_open forum.control';
     my @boardcontrols = <$FORUMCONTROL>;
-    close $FORUMCONTROL;
+    close $FORUMCONTROL or croak 'cannot close forum.control';
     chomp @boardcontrols;
     my @allboards = ();
     for my $boardline (@boardcontrols) {
-        $boardline =~ s/[\r\n]//g;    # Built in chomp
-        ( undef, $cntboard ) = split /\|/xsm, $boardline;
+        $boardline =~ s/[\r\n]//gxsm;    # Built in chomp
+        ( undef, $cntboard ) = split /[|]/xsm, $boardline;
         ## create a global boards array
-        push( @allboards, $cntboard );
+        push @allboards, $cntboard;
     }
 
     my %seen = ();
@@ -75,7 +77,7 @@ sub convcontrol {
     LoadBoardControl();
     my $allboards = join q~', '~, @mybrds;
     my $newbrds = qq{\@allboards = ('$allboards');\n};
-    $newbrds .= qq{\$nid = '$uid';\n~;
+    $newbrds .= qq~\$nid = '$uid';\n~;
     for my $cntboard (@mybrds) {
         $newbrds .= qq~\%{$uid . $cntboard} = (\n~;
         foreach ( keys %{ $uid . $cntboard } ) {
@@ -86,9 +88,10 @@ sub convcontrol {
     $newbrds .= qq~\n1;\n~;
     $newbrds =~ s/-/FIX/gxsm;
 
-    open $BOARDCONV, '>', "$vardir/boardconv.txt";
-    print {$BOARDCONV} $newbrds;
-    close $BOARDCONV;
+    open $BOARDCONV, '>', "$vardir/boardconv.txt"
+      or croak 'cannot open coardconv.txt';
+    print {$BOARDCONV} $newbrds or croak 'cannot print coardconv.txt';
+    close $BOARDCONV or croak 'cannot close coardconv.txt';
 
     $yymain .= qq~
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">

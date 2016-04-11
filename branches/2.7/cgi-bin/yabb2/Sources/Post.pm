@@ -14,12 +14,12 @@
 ###############################################################################
 # use strict;
 # use warnings;
-# no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use Fcntl ':flock';
 our $VERSION = '2.7.00';
 
-$postpmver = 'YaBB 2.7.00 $Revision$';
+$postpmver  = 'YaBB 2.7.00 $Revision$';
 @postpmmods = ();
 if (@postpmmods) {
     $postpmmods = 1;
@@ -137,10 +137,10 @@ sub Post {
     if ( $pollthread == 2 && $useraddpoll == 0 ) { fatal_error('no_access'); }
 
     $guestpost_fields = q{};
-    if ( $iamguest ) {
-    $guestpost_fields = $mypost_guest_fields;
-    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
-    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+    if ($iamguest) {
+        $guestpost_fields = $mypost_guest_fields;
+        $guestpost_fields =~ s/\Q{yabb name}\E/$FORM{'name'}/xsm;
+        $guestpost_fields =~ s/\Q{yabb email}\E/$FORM{'email'}/xsm;
     }
 
     if ( $iamguest && $gpvalid_en ) {
@@ -149,8 +149,8 @@ sub Post {
             $verification eq q{}
           ? $mypost_guest_c
           : q{};
-        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
-        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
+        $verification_field =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
+        $verification_field =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
     }
     if (   $iamguest
         && $spam_questions_gp
@@ -167,13 +167,13 @@ sub Post {
           ? $mypost_guest_e
           : q{};
         $verification_question_field =~
-          s/{yabb spam_question}/$spam_question/gsm;
+          s/\Q{yabb spam_question}\E/$spam_question/gxsm;
         $verification_question_field =~
-          s/{yabb verification_question_desc}/$verification_question_desc/sm;
+s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
         $verification_question_field =~
-          s/{yabb spam_question_id}/$spam_question_id/sm;
+          s/\Q{yabb spam_question_id}\E/$spam_question_id/xsm;
         $verification_question_field =~
-          s/{yabb spam_question_image}/$spam_image/sm;
+          s/\Q{yabb spam_question_image}\E/$spam_image/xsm;
     }
 
     $sub        = q{};
@@ -191,16 +191,16 @@ sub Post {
                 $micon,    $mattach, $mip,    $mmessage, $mns
             ) = split /[|]/xsm, ${ $thread_arrayref{$threadid} }[$quotemsg];
             $message = $mmessage;
-            $message =~ s/<br.*?>/\n/igsm;
-            $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
+            $message =~ s/<br.*?>/\n/igxsm;
+            $message =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
             if ( !$nestedquotes ) {
                 $message =~
-s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/isgm;
+s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/igxsm;
             }
             $mname = isempty( $mname, isempty( $musername, $post_txt{'470'} ) );
             my $hidename = $musername;
             if ( $musername eq 'Guest' ) { $hidename = $mname; }
-            if ($do_scramble_id) { $hidename = cloak($hidename); }
+            if ($do_scramble_id)         { $hidename = cloak($hidename); }
             $usernames_life_quote{$hidename} = $mname;
 
             # for display names in Quotes in LivePreview
@@ -211,18 +211,18 @@ qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]\[/qu
               ) - 3;
             my $mess_len = $message;
             ToChars($mess_len);
-            $mess_len =~ s/[\r\n ]//igsm;
-            $mess_len =~ s/&\x23\d{3,}?\;/X/igxsm;
+            $mess_len =~ s/[\r\n ]//igxsm;
+            $mess_len =~ s/&\x23\d{3,}?;/X/igxsm;
 
             if ( length $mess_len >= $maxlengthofquote ) {
                 LoadLanguage('Error');
                 alertbox( $error_txt{'quote_too_long'} );
                 $message = substr( $message, 0, $maxlengthofquote ) . q{...};
-                my @c = $message =~ m/\[code\]/gxsm;
+                my @c      = $message =~ m/\[code\]/gxsm;
                 my $countc = @c;
-                my @d = $message =~ m~\[/code\]~gxsm;
+                my @d      = $message =~ m/\[\/code\]/gxsm;
                 my $countd = @d;
-                if ($countc > $countd ) {
+                if ( $countc > $countd ) {
                     $message = $message . q~[/code]~;
                 }
             }
@@ -276,7 +276,7 @@ sub Postpage {
 
     if ( $postid eq 'Poll' ) { $sub = "$post_txt{'66a'}"; }
 
-    $message =~ s/<\//\&lt\;\//igxsm;
+    $message =~ s/<\//&lt;\//igxsm;
     ToChars($message);
     $message = Censor($message);
     ToChars($sub);
@@ -293,7 +293,7 @@ sub Postpage {
         {
             $tmplastmodified =
                 qq~&laquo; <i>$display_txt{'211'}: ~
-              . timeformat($date,0,0,0,1)
+              . timeformat( $date, 0, 0, 0, 1 )
               . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &raquo;~;
         }
         $tmpmusername = $thismusername;
@@ -306,8 +306,8 @@ sub Postpage {
     }
     $moddate = timeformat($moddate);
     if ( !$useMobile ) {
-    require Sources::ContextHelp;
-    ContextScript('post');
+        require Sources::ContextHelp;
+        ContextScript('post');
     }
 
     if (   $postid ne 'Poll'
@@ -317,18 +317,18 @@ sub Postpage {
         $extra = $mypost_extra;
         my $iconopts = q{};
 
-        @iconlist =();
-        for my $key ( sort keys %iconlist ) {
-            my ($img, $alt) = split /[|]/xsm, $iconlist{$key};
+        @iconlist = ();
+        foreach my $key ( sort keys %iconlist ) {
+            my ( $img, $alt ) = split /[|]/xsm, $iconlist{$key};
             my $myic = q{};
-            if ( $icon eq $img ) {$myic = ' selected="selected" '; }
+            if ( $icon eq $img ) { $myic = ' selected="selected" '; }
             $iconopts .=
               qq~                <option value="$img"$myic>$alt</option>\n~;
         }
 
-        $extra =~ s/{yabb iconopts}/$iconopts/sm;
-        $extra =~ s/{yabb icon}/$icon/sm;
-        $extra =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
+        $extra =~ s/\Q{yabb iconopts}\E/$iconopts/xsm;
+        $extra =~ s/\Q{yabb icon}\E/$icon/xsm;
+        $extra =~ s/\Q{yabb icon_img}\E/$micon_bg{$icon}/xsm;
 
         if ( $iamguest && $threadid ne q{} ) { $settofield = 'name'; }
     }
@@ -380,9 +380,9 @@ sub Postpage {
 
         if ( $postid ne 'Poll' ) {
             $notification = $mypost_notification;
-            $notification =~ s/{yabb hasnotify}/$hasnotify/sm;
-            $notification =~ s/{yabb notify}/$notify/sm;
-            $notification =~ s/{yabb notifytext}/$notifytext/sm;
+            $notification =~ s/\Q{yabb hasnotify}\E/$hasnotify/xsm;
+            $notification =~ s/\Q{yabb notify}\E/$notify/xsm;
+            $notification =~ s/\Q{yabb notifytext}\E/$notifytext/xsm;
         }
     }
 
@@ -390,7 +390,7 @@ sub Postpage {
     $favoriteadd = q{};
     if (  !$iamguest
         && $currentboard ne $annboard
-        && $destination  ne 'modalert2' )
+        && $destination ne 'modalert2' )
     {
         $favoritetext = $post_txt{'notfav'};
         require Sources::Favorites;
@@ -408,8 +408,8 @@ sub Postpage {
             $favoritetext = $post_txt{'maximumfav'};
         }
         $favoriteadd = $mypost_favoriteadd;
-        $favoriteadd =~ s/{yabb favorite}/$favorite/sm;
-        $favoriteadd =~ s/{yabb favoritetext}/$favoritetext/sm;
+        $favoriteadd =~ s/\Q{yabb favorite}/$favorite/xsm;
+        $favoriteadd =~ s/\Q{yabb favoritetext}/$favoritetext/xsm;
     }
 
     if   ( !$sub ) { $subtitle = "<i>$post_txt{'33'}</i>"; }
@@ -502,11 +502,11 @@ function checkForm(theForm) {
 qq~<form action="$scripturl?action=imgroups" method="post" name="postmodify" onsubmit="return submitproc()" accept-charset="$yymycharset">~;
     }
     else {
-        if ($curnum) { $thecurboard = qq~num=$curnum\;action=$destination~; }
+        if ($curnum) { $thecurboard = qq~num=$curnum;action=$destination~; }
         elsif ( $destination eq 'guestpm2' ) {
             $thecurboard = qq~action=$destination~;
         }
-        else { $thecurboard = qq~board=$currentboard\;action=$destination~; }
+        else { $thecurboard = qq~board=$currentboard;action=$destination~; }
 
         $allowattach ||= 0;
         if (   AccessCheck( $currentboard, 4 ) eq 'granted'
@@ -533,7 +533,7 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
     $i                 = 0;
     if ( $showadded == 1 ) {
         while ( $SmilieURL[$i] ) {
-            if ( $SmilieURL[$i] =~ /\//ism ) { $tmpurl = $SmilieURL[$i]; }
+            if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
             else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
             $moresmilieslist .=
 qq~             <img src="$tmpurl" class="bottom pointer" alt="$SmilieDescription[$i]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i]\n~;
@@ -552,14 +552,14 @@ qq~             <img src="$tmpurl" class="bottom pointer" alt="$SmilieDescriptio
         opendir DIR, "$htmldir/Smilies";
         @contents = readdir DIR;
         closedir DIR;
-        for my $line ( sort { uc($a) cmp uc $b } @contents ) {
-            ( $name, $extension ) = split /\./xsm, $line;
-            if (   $extension =~ /gif/ism
-                || $extension =~ /jpg/ism
-                || $extension =~ /jpeg/ism
-                || $extension =~ /png/ism )
+        foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
+            ( $name, $extension ) = split /[.]/xsm, $line;
+            if (   $extension =~ /gif/ixsm
+                || $extension =~ /jpg/ixsm
+                || $extension =~ /jpeg/ixsm
+                || $extension =~ /png/ixsm )
             {
-                if ( $line !~ /banner/ism ) {
+                if ( $line !~ /banner/ixsm ) {
                     $moresmilieslist .=
 qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i]\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
@@ -628,7 +628,7 @@ $iconliveprev
     if ( keys(%moderatorgroups) > 0 ) {
         while ( $_ = each %moderatorgroups ) {
             if ( ${ $uid . $username }{'position'} eq $_ ) { $iammod = 1; }
-            for my $memberaddgroups ( split /,/xsm,
+            foreach my $memberaddgroups ( split /,/xsm,
                 ${ $uid . $username }{'addgroups'} )
             {
                 if ( $memberaddgroups eq $_ ) { $iammod = 1; last; }
@@ -644,7 +644,7 @@ $iconliveprev
         my ( $reptime, $repuser, $isreplying, @tmprepliers, $isrep,
             $template_viewers, $topviewers );
         chomp @repliers;
-        for my $i ( 0 .. $#repliers ) {
+        foreach my $i ( 0 .. $#repliers ) {
             ( $reptime, $repuser, $isreplying ) = split /[|]/xsm, $repliers[$i];
             next if ( $date - $reptime ) > 600;
             if ( $repuser eq $username ) {
@@ -672,10 +672,10 @@ $iconliveprev
             && $template_viewers
             && ( $staff && $sessionvalid == 1 ) )
         {
-            $template_viewers =~ s/\, \Z/\./sm;
+            $template_viewers =~ s/,\s\Z/./xsm;
             $my_tview = $mypost_topview;
-            $my_tview =~ s/{yabb topviewers}/$topviewers/sm;
-            $my_tview =~ s/{yabb template_viewers}/$template_viewers/sm;
+            $my_tview =~ s/\Q{yabb topviewers}/$topviewers/xsm;
+            $my_tview =~ s/\Q{yabb template_viewers}/$template_viewers/xsm;
         }
     }
 
@@ -698,26 +698,26 @@ $iconliveprev
         if ($pie_legends)  { $legchecked = ' checked="checked"'; }
 
         $piecolarray = q~["",~;
-        for my $i ( 1 .. $numpolloptions ) {
+        foreach my $i ( 1 .. $numpolloptions ) {
             if ( $split[$i] ) { $splitchecked[$i] = ' checked="checked"'; }
             if ( $FORM{"slicecol$i"} ) {
                 $slicecolor[$i] = $FORM{"slicecol$i"} || 'transparent';
             }
             $mypoll_opt .= $my_poll_options;
-            $mypoll_opt =~ s/{yabb i}/$i/gsm;
-            $mypoll_opt =~ s/{yabb maxpo}/$maxpo/gsm;
-            $mypoll_opt =~ s/{yabb options_i}/$options[$i]/gsm;
-            $mypoll_opt =~ s/{yabb slicecolor_i}/$slicecolor[$i]/gsm;
-            $mypoll_opt =~ s/{yabb splitchecked_i}/$splitchecked[$i]/sm;
+            $mypoll_opt =~ s/\Q{yabb i}/$i/gxsm;
+            $mypoll_opt =~ s/\Q{yabb maxpo}/$maxpo/gxsm;
+            $mypoll_opt =~ s/\Q{yabb options_i}/$options[$i]/gxsm;
+            $mypoll_opt =~ s/\Q{yabb slicecolor_i}/$slicecolor[$i]/gxsm;
+            $mypoll_opt =~ s/\Q{yabb splitchecked_i}/$splitchecked[$i]/xsm;
             $piecolarray .= qq~"$slicecolor[$i]", ~;
         }
-        $piecolarray =~ s/\, $//ism;
+        $piecolarray =~ s/,\s $//ixsm;
         $piecolarray .= q~]~;
 
         if ( $maxpc > 0 ) {
             $my_maxpc = $my_poll_comment;
             $my_maxpc .=
-qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea>
+qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb\s maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea>
 ~;
             $my_maxpc .= $my_poll_comment_b;
         }
@@ -745,24 +745,24 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
           : q{};
         $my_pie .= $my_poll_hide;
 
-        $my_pie =~ s/{yabb piecolarray}/$piecolarray/sm;
-        $my_pie =~ s/{yabb poll_end_days}/$poll_end_days/sm;
-        $my_pie =~ s/{yabb poll_end_min}/$poll_end_min/sm;
-        $my_pie =~ s/{yabb scchecked}/$scchecked/sm;
-        $my_pie =~ s/{yabb gvchecked}/$gvchecked/sm;
-        $my_pie =~ s/{yabb hrchecked}/$hrchecked/sm;
-        $my_pie =~ s/{yabb mcchecked}/$mcchecked/sm;
-        $my_pie =~ s/{yabb vote_limit}/$vote_limit/sm;
-        $my_pie =~ s/{yabb legchecked}/$legchecked/sm;
-        $my_pie =~ s/{yabb pie_radius}/$pie_radius/sm;
+        $my_pie =~ s/\Q{yabb piecolarray}\E/$piecolarray/xsm;
+        $my_pie =~ s/\Q{yabb poll_end_days}\E/$poll_end_days/xsm;
+        $my_pie =~ s/\Q{yabb poll_end_min}\E/$poll_end_min/xsm;
+        $my_pie =~ s/\Q{yabb scchecked}\E/$scchecked/xsm;
+        $my_pie =~ s/\Q{yabb gvchecked}\E/$gvchecked/xsm;
+        $my_pie =~ s/\Q{yabb hrchecked}\E/$hrchecked/xsm;
+        $my_pie =~ s/\Q{yabb mcchecked}\E/$mcchecked/xsm;
+        $my_pie =~ s/\Q{yabb vote_limit}\E/$vote_limit/xsm;
+        $my_pie =~ s/\Q{yabb legchecked}\E/$legchecked/xsm;
+        $my_pie =~ s/\Q{yabb pie_radius}\E/$pie_radius/xsm;
 
         $my_pollsection = $mypost_poll_top;
-        $my_pollsection =~ s/{yabb poll_question}/$poll_question/sm;
-        $my_pollsection =~ s/{yabb maxpq}/$maxpq/sm;
-        $my_pollsection =~ s/{yabb pollthread}/$pollthread/sm;
-        $my_pollsection =~ s/{yabb mypoll_opt}/$mypoll_opt/sm;
-        $my_pollsection =~ s/{yabb my_maxpc}/$my_maxpc/sm;
-        $my_pollsection =~ s/{yabb my_pie}/$my_pie/sm;
+        $my_pollsection =~ s/\Q{yabb poll_question}\E/$poll_question/xsm;
+        $my_pollsection =~ s/\Q{yabb maxpq}\E/$maxpq/xsm;
+        $my_pollsection =~ s/\Q{yabb pollthread}\E/$pollthread/xsm;
+        $my_pollsection =~ s/\Q{yabb mypoll_opt}\E/$mypoll_opt/xsm;
+        $my_pollsection =~ s/\Q{yabb my_maxpc}\E/$my_maxpc/xsm;
+        $my_pollsection =~ s/\Q{yabb my_pie}\E/$my_pie/xsm;
     }
 
     if ( $postid ne 'Poll' ) {
@@ -807,7 +807,7 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
                 $dr_regdate =
                   timeformat( ${ $uid . $tmpmusername }{'regtime'} );
                 $dr_regdate = dtonly($dr_regdate);
-                $dr_regdate =~ s/(.*)(, 1?[0-9]):[0-9][0-9].*/$1/xsm;
+                $dr_regdate =~ s/(.*)(, 1?\d):\d\d.*/$1/xsm;
                 $liveuser_regdate =
                   qq~$display_txt{'regdate'} $dr_regdate<br />~;
             }
@@ -826,7 +826,7 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
                 {
                     $tmplastmodified =
 qq~<div class="small" style="float: right; width: 100%; text-align: right; margin-top: 5px;">&laquo; <i>$display_txt{'211'}: ~
-                      . timeformat($date,0,0,0,1)
+                      . timeformat( $date, 0, 0, 0, 1 )
                       . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &raquo; &nbsp;</div>~;
                 }
             }
@@ -846,30 +846,32 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
 
         FromHTML($moddate);
         $messageblock = $mypost_liveprev;
-        $messageblock =~ s/{yabb images}/$imagesdir/gsm;
-        $messageblock =~ s/{yabb css}/$css/gsm;
+        $messageblock =~ s/\Q{yabb images}\E/$imagesdir/gxsm;
+        $messageblock =~ s/\Q{yabb css}\E/$css/gxsm;
         $messageblock =~
-s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelink<\/span>/gsm;
-        $messageblock =~ s/{yabb memberinfo}/$livememberinfo/gsm;
-        $messageblock =~ s/{yabb stars}/$livememberstar/gsm;
-        $messageblock =~ s/{yabb location}/$liveuserlocation/gsm;
-        $messageblock =~ s/{yabb gender}/${$uid.$tmpmusername}{'gender'}/gsm;
+s/\Q{yabb userlink}\E/<span id="savename" style="font-weight: bold">$liveusernamelink<\/span>/gxsm;
+        $messageblock =~ s/\Q{yabb memberinfo}\E/$livememberinfo/gxsm;
+        $messageblock =~ s/\Q{yabb stars}\E/$livememberstar/gxsm;
+        $messageblock =~ s/\Q{yabb location}\E/$liveuserlocation/gxsm;
         $messageblock =~
-          s/{yabb usertext}/${$uid.$tmpmusername}{'usertext'}/gsm;
-        $messageblock =~ s/{yabb userpic}/${$uid.$tmpmusername}{'userpic'}/gsm;
-        $messageblock =~ s/{yabb postinfo}/$livetemplate_postinfo/gsm;
-        $messageblock =~ s/{yabb msgdate}/$moddate/gsm;
-        $messageblock =~ s/{yabb msgimg}/$livemsgimg/gsm;
-        $messageblock =~ s/{yabb age}/$liveuser_age/gsm;
-        $messageblock =~ s/{yabb regdate}/$liveuser_regdate/gsm;
-        $messageblock =~ s/{yabb subject}/<span id="savesubj"><\/span>/gsm;
-        $messageblock =~ s/{yabb message}/<span id="savemess"><\/span>/gsm;
-        $messageblock =~ s/{yabb modified}/$tmplastmodified/gsm;
-        $messageblock =~ s/{yabb ipimg}/$liveipimg/gsm;
-        $messageblock =~ s/{yabb ip}/$livemip/gsm;
+          s/\Q{yabb gender}\E/${$uid.$tmpmusername}{'gender'}/gxsm;
         $messageblock =~
-          s/{yabb signature}/${$uid.$tmpmusername}{'signature'}/gsm;
-        $messageblock =~ s/{yabb signaturehr}/$livesignature_hr/gsm;
+          s/\Q{yabb usertext}\E/${$uid.$tmpmusername}{'usertext'}/gxsm;
+        $messageblock =~
+          s/\Q{yabb userpic}\E/${$uid.$tmpmusername}{'userpic'}/gxsm;
+        $messageblock =~ s/\Q{yabb postinfo}\E/$livetemplate_postinfo/gxsm;
+        $messageblock =~ s/\Q{yabb msgdate}\E/$moddate/gxsm;
+        $messageblock =~ s/\Q{yabb msgimg}\E/$livemsgimg/gxsm;
+        $messageblock =~ s/\Q{yabb age}\E/$liveuser_age/gxsm;
+        $messageblock =~ s/\Q{yabb regdate}/$liveuser_regdate/gxsm;
+        $messageblock =~ s/\Q{yabb subject\E}/<span id="savesubj"><\/span>/gxsm;
+        $messageblock =~ s/\Q{yabb message}\E/<span id="savemess"><\/span>/gxsm;
+        $messageblock =~ s/\Q{yabb modified}\E/$tmplastmodified/gxsm;
+        $messageblock =~ s/\Q{yabb ipimg}\E/$liveipimg/gxsm;
+        $messageblock =~ s/\Q{yabb ip}\E/$livemip/gxsm;
+        $messageblock =~
+          s/\Q{yabb signature}\E/${$uid.$tmpmusername}{'signature'}/gxsm;
+        $messageblock =~ s/\Q{yabb signaturehr}\E/$livesignature_hr/gxsm;
 
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
@@ -879,8 +881,8 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
               ${ $uid . $username }{'postlayout'};
             $txtsz = qq~; font-size:$txtsz%~;
         }
-        $messageblock =~ s/{yabb txtsz}/$txtsz/sm;
-        $messageblock =~ s/{yabb (.+?)}//gsm;
+        $messageblock =~ s/\Q{yabb txtsz}\E/$txtsz/xsm;
+        $messageblock =~ s/\Q{yabb \E(.+?)}//gxsm;
 
         if ( !$minlinkpost ) { $minlinkpost = 0; }
 
@@ -917,9 +919,9 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
             elsif ( $mreplies >= $HotTopic ) { $threadclass = 'hotthread'; }
         }
         if ( $action ne 'modalert' ) {
-            if ( $thestatus =~ /s/sm ) { $stselect = q~selected="selected"~; }
-            if ( $thestatus =~ /l/sm ) { $lcselect = q~selected="selected"~; }
-            if ( $thestatus =~ /h/sm ) { $hdselect = q~selected="selected"~; }
+            if ( $thestatus =~ /s/xsm ) { $stselect = q~selected="selected"~; }
+            if ( $thestatus =~ /l/xsm ) { $lcselect = q~selected="selected"~; }
+            if ( $thestatus =~ /h/xsm ) { $hdselect = q~selected="selected"~; }
             $hidestatus = q{};
 
             if ( $staff && $sessionvalid == 1 ) {
@@ -929,20 +931,20 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
                   ? qq~<option value="s" $stselect>$post_txt{'35'}</option>~
                   : q{};
                 $my_t_status = $mypost_topicstatus;
-                $my_t_status =~ s/{yabb my_curbrd}/$my_curbrd/sm;
-                $my_t_status =~ s/{yabb my_stselect}/$my_stselect/sm;
-                $my_t_status =~ s/{yabb lcselect}/$lcselect/sm;
-                $my_t_status =~ s/{yabb hdselect}/$hdselect/sm;
-                $my_t_status =~ s/{yabb threadclass}/$threadclass/sm;
+                $my_t_status =~ s/\Q{yabb my_curbrd}\E/$my_curbrd/xsm;
+                $my_t_status =~ s/\Q{yabb my_stselect}\E/$my_stselect/xsm;
+                $my_t_status =~ s/\Q{yabb lcselect}\E/$lcselect/xsm;
+                $my_t_status =~ s/\Q{yabb hdselect}\E/$hdselect/xsm;
+                $my_t_status =~ s/\Q{yabb threadclass}\E/$threadclass/xsm;
                 $my_t_status =~
-                  s/{yabb threadclass_img}/$micon_bg{$threadclass}/sm;
+                  s/\Q{yabb threadclass_img}\E/$micon_bg{$threadclass}/xsm;
             }
             else {
                 $hidestatus =
 qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             }
         }
-        $my_submax = $set_subjectMaxLength + ( $sub =~ /^Re: /sm ? 4 : 0 );
+        $my_submax = $set_subjectMaxLength + ( $sub =~ /^Re:\s/xsm ? 4 : 0 );
 
         if (
                $post ne 'imsend'
@@ -953,7 +955,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
           )
         {
             $my_reason = $mypost_reason;
-            $my_reason =~ s/{yabb reason}/$reason/sm;
+            $my_reason =~ s/\Q{yabb reason}\E/$reason/xsm;
         }
 
         $my_rem_smilies =
@@ -996,10 +998,10 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                         ? ' selected="selected"'
                         : q{}
                       ) . qq~>$SmilieDescription[$i]</option>\n~;
-                    if ( $SmilieURL[$i] =~ /\//ism ) {
+                    if ( $SmilieURL[$i] =~ /\//ixsm ) {
                         $tmpurl = $SmilieURL[$i];
                     }
-                    else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+                    else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
                     $smilie_url_array .= qq~"$tmpurl", ~;
                     $tmpcode = $SmilieCode[$i];
                     $tmpcode =~ s/\&quot;/\x22/gxsm;
@@ -1014,14 +1016,14 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 opendir DIR, "$htmldir/Smilies";
                 @contents = readdir DIR;
                 closedir DIR;
-                for my $line ( sort { uc($a) cmp uc $b } @contents ) {
-                    ( $name, $extension ) = split /\./xsm, $line;
-                    if (   $extension =~ /gif/ism
-                        || $extension =~ /jpg/ism
-                        || $extension =~ /jpeg/ism
-                        || $extension =~ /png/ism )
+                foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
+                    ( $name, $extension ) = split /[.]/xsm, $line;
+                    if (   $extension =~ /gif/ixsm
+                        || $extension =~ /jpg/ixsm
+                        || $extension =~ /jpeg/ixsm
+                        || $extension =~ /png/ixsm )
                     {
-                        if ( $line !~ /banner/ism ) {
+                        if ( $line !~ /banner/ixsm ) {
                             $smilieslist .= qq~   <option value="$i"~
                               . (
                                 $name eq $showinbox
@@ -1047,7 +1049,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             </script>
             $mypost_smiley1
             ~;
-            $mypost_smilie_array =~ s/{yabb smilieslist}/$smilieslist/sm;
+            $mypost_smilie_array =~ s/\Q{yabb smilieslist}\E/$smilieslist/xsm;
         }
         else {
             $mypost_smilie_array .= q~
@@ -1083,7 +1085,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         }
 
         $my_post_smilies .= $mypost_smilies_c;
-        $my_post_smilies =~ s/{yabb my_smilies}/$my_smilies/sm;
+        $my_post_smilies =~ s/\Q{yabb my_smilies}\E/$my_smilies/xsm;
 
         # File Attachment's Browse Box Code
         $allowattach ||= 0;
@@ -1110,7 +1112,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             }
 
             my $startcount;
-            for my $y ( 1 .. $allowattach ) {
+            foreach my $y ( 1 .. $allowattach ) {
                 if (   ( $action eq 'modify' || $action eq 'modify2' )
                     && $files[ $y - 1 ] ne q{}
                     && -e "$uploaddir/$files[$y-1]" )
@@ -1195,13 +1197,13 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             </script>~;
             }
             $my_feat5 = $mypost_feat5;
-            $my_feat5 =~ s/{yabb mfn}/$mfn/sm;
-            $my_feat5 =~ s/{yabb my_att_mfn}/$my_att_mfn/sm;
-            $my_feat5 =~ s/{yabb my_att_allow}/$my_att_allow/sm;
-            $my_feat5 =~ s/{yabb filetype_info}/$filetype_info/sm;
-            $my_feat5 =~ s/{yabb filesize_info}/$filesize_info/sm;
-            $my_feat5 =~ s/{yabb mypoll_att}/$mypoll_att/sm;
-            $my_feat5 =~ s/{yabb my_att_b}/$my_att_b/sm;
+            $my_feat5 =~ s/\Q{yabb mfn}\E/$mfn/xsm;
+            $my_feat5 =~ s/\Q{yabb my_att_mfn}\E/$my_att_mfn/xsm;
+            $my_feat5 =~ s/\Q{yabb my_att_allow}\E/$my_att_allow/xsm;
+            $my_feat5 =~ s/\Q{yabb filetype_info}\E/$filetype_info/xsm;
+            $my_feat5 =~ s/\Q{yabb filesize_info}\E/$filesize_info/xsm;
+            $my_feat5 =~ s/\Q{yabb mypoll_att}\E/$mypoll_att/xsm;
+            $my_feat5 =~ s/\Q{yabb my_att_b}\E/$my_att_b/xsm;
 
         }
 
@@ -1213,7 +1215,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $FORM{'return_to'}
           ? $FORM{'return_to'}
           : ${ $uid . $username }{'return_to'};
-        for my $rt ( 1 .. 3 ) {
+        foreach my $rt ( 1 .. 3 ) {
             $return_to_select .=
               $rts == $rt
               ? qq~<option value="$rt" selected="selected">$return_to_txt{$rt}</option>~
@@ -1221,40 +1223,43 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         }
         if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
             $return_to = $mypost_return_to;
-            $return_to =~ s/{yabb return_to_select}/$return_to_select/sm;
+            $return_to =~ s/\Q{yabb return_to_select}\E/$return_to_select/xsm;
         }
         ### Return To modify end ###
         $guestpost_col = $my_guestpost_col;
-        if ( $iamguest ) { $guestpost_col = $my_guestpost_col + 2; }
+        if ($iamguest) { $guestpost_col = $my_guestpost_col + 2; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
-        $my_postsection =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
-        $my_postsection =~ s/{yabb messageblock}/$messageblock/sm;
-        $my_postsection =~ s/{yabb my_t_status}/$my_t_status/sm;
-        $my_postsection =~ s/{yabb extra}/$extra/sm;
-        $my_postsection =~ s/{yabb name_field}/$guestpost_fields/sm;
-        $my_postsection =~ s/{yabb email_field}/$email_field/sm;
-        $my_postsection =~ s/{yabb verification_field}/$verification_field/sm;
-        $my_postsection =~ s/{yabb guestcol}/$guestpost_col/gsm;
         $my_postsection =~
-          s/{yabb verification_question_field}/$verification_question_field/sm;
-        $my_postsection =~ s/{yabb sub}/$sub/sm;
-        $my_postsection =~ s/{yabb my_submax}/$my_submax/sm;
-        $my_postsection =~ s/{yabb myreason}/$my_reason/sm;
-        $my_postsection =~ s/{yabb my_rem_smilies}/$my_rem_smilies/sm;
-        $my_postsection =~ s/{yabb my_ubbc}/$my_ubbc/sm;
-        $my_postsection =~ s/{yabb my_postsec_b}/$my_postsec_b/sm;
-        $my_postsection =~ s/{yabb my_googie}/$my_googie/sm;
-        $my_postsection =~ s/{yabb mypost_smilie_array}/$mypost_smilie_array/sm;
-        $my_postsection =~ s/{yabb my_post_feata}/$my_post_feata/sm;
-        $my_postsection =~ s/{yabb my_post_smilies}/$my_post_smilies/sm;
-        $my_postsection =~ s/{yabb my_feat5}/$my_feat5/sm;
-        $my_postsection =~ s/{yabb my_is_prev}/$my_is_prev/sm;
-        $my_postsection =~ s/{yabb notification}/$notification/sm;
-        $my_postsection =~ s/{yabb favoriteadd}/$favoriteadd/sm;
-        $my_postsection =~ s/{yabb lastmod}/$lastmod/sm;
-        $my_postsection =~ s/{yabb nscheck}/$nscheck/sm;
-        $my_postsection =~ s/{yabb return_to}/$return_to/sm;
+          s/\Q{yabb my_postsection_ajx}\E/$my_postsection_ajx/xsm;
+        $my_postsection =~ s/\Q{yabb messageblock}\E/$messageblock/xsm;
+        $my_postsection =~ s/\Q{yabb my_t_status}\E/$my_t_status/xsm;
+        $my_postsection =~ s/\Q{yabb extra}\E/$extra/xsm;
+        $my_postsection =~ s/\Q{yabb name_field}\E/$guestpost_fields/xsm;
+        $my_postsection =~ s/\Q{yabb email_field}\E/$email_field/xsm;
+        $my_postsection =~
+          s/\Q{yabb verification_field}\E/$verification_field/xsm;
+        $my_postsection =~ s/\Q{yabb guestcol}\E/$guestpost_col/gxsm;
+        $my_postsection =~
+s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
+        $my_postsection =~ s/\Q{yabb sub}\E/$sub/xsm;
+        $my_postsection =~ s/\Q{yabb my_submax}\E/$my_submax/xsm;
+        $my_postsection =~ s/\Q{yabb myreason}\E/$my_reason/xsm;
+        $my_postsection =~ s/\Q{yabb my_rem_smilies}\E/$my_rem_smilies/xsm;
+        $my_postsection =~ s/\Q{yabb my_ubbc}\E/$my_ubbc/xsm;
+        $my_postsection =~ s/\Q{yabb my_postsec_b}\E/$my_postsec_b/xsm;
+        $my_postsection =~ s/\Q{yabb my_googie}\E/$my_googie/xsm;
+        $my_postsection =~
+          s/\Q{yabb mypost_smilie_array}\E/$mypost_smilie_array/xsm;
+        $my_postsection =~ s/\Q{yabb my_post_feata}\E/$my_post_feata/xsm;
+        $my_postsection =~ s/\Q{yabb my_post_smilies}\E/$my_post_smilies/xsm;
+        $my_postsection =~ s/\Q{yabb my_feat5}\E/$my_feat5/xsm;
+        $my_postsection =~ s/\Q{yabb my_is_prev}\E/$my_is_prev/xsm;
+        $my_postsection =~ s/\Q{yabb notification}\E/$notification/xsm;
+        $my_postsection =~ s/\Q{yabb favoriteadd}\E/$favoriteadd/xsm;
+        $my_postsection =~ s/\Q{yabb lastmod}\E/$lastmod/xsm;
+        $my_postsection =~ s/\Q{yabb nscheck}\E/$nscheck/xsm;
+        $my_postsection =~ s/\Q{yabb return_to}\E/$return_to/xsm;
 ## PostSection Mod Hook ##
 ## End PostSection Mod Hook ##
     }
@@ -1271,7 +1276,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         $my_spdpost = speedpost();
     }
 
-    if ( !$yyinlinestyle =~ /cookiesupport\.js/xsm ) {
+    if ( !$yyinlinestyle =~ /cookiesupport[.]js/xsm ) {
         $yyinlinestyle .=
 qq~<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
     }
@@ -1326,7 +1331,7 @@ showtpstatus();
         {
             $tmplastmodified =
                 qq~&laquo; <i>$display_txt{'211'}: ~
-              . timeformat($date,0,0,0,1)
+              . timeformat( $date, 0, 0, 0, 1 )
               . qq~ $display_txt{'525'} ${$uid.$username}{'realname'}</i> &raquo;~;
         }
         $tmpmusername = $thismusername;
@@ -1341,8 +1346,8 @@ showtpstatus();
 
     get_template('Display');
 
-    for (@months) { $jsmonths .= qq~'$_',~; }
-    $jsmonths =~ s/\,\Z//xsm;
+    foreach (@months) { $jsmonths .= qq~'$_',~; }
+    $jsmonths =~ s/,\Z//xsm;
     $jstimeselected = ${ $uid . $username }{'timeselect'} || $timeselected;
 
     if ( $postid ne 'Poll' ) {
@@ -1377,7 +1382,7 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
 
     $yymain .= $my_pollsection;
     $yymain .= $my_postsection;
-    if ( $postid eq 'Poll' && $action eq 'modify') {
+    if ( $postid eq 'Poll' && $action eq 'modify' ) {
         $yymain .= $mypoll_tablefix;
     }
     $yymain .= $my_post_submit;
@@ -1386,11 +1391,11 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
     $yymain .= $my_tclass;
     $yymain .= $my_postbox_3;
     $yymain .= $my_showCC;
-    $yymain =~ s/{yabb my_topper}/$my_topper/sm;
-    $yymain =~ s/{yabb icon}/$icon/sm;
-    $yymain =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
-    $yymain =~ s/{yabb yytitle}/$yytitle/sm;
-    $yymain =~ s/{yabb my_topview}/$my_tview/sm;
+    $yymain =~ s/\Q{yabb my_topper}\E/$my_topper/xsm;
+    $yymain =~ s/\Q{yabb icon}\E/$icon/xsm;
+    $yymain =~ s/\Q{yabb icon_img}\E/$micon_bg{$icon}/xsm;
+    $yymain =~ s/\Q{yabb yytitle}\E\E/$yytitle/xsm;
+    $yymain =~ s/\Q{yabb my_topview}/$my_tview/xsm;
     return;
 }
 
@@ -1400,7 +1405,7 @@ sub Preview {
     ToHTML($error);
 
     # allows the following HTML-tags in error messages: <br /> <strong>
-    $error =~ s/&lt;br( \/)&gt;/<br \/>/igsm;
+    $error =~ s/&lt;br.*?&gt;/<br \/>/igxsm;
     $error =~ s/&lt;(\/?)b&gt;/<$1strong>/igxsm;
     if ( $action eq 'modify2' ) {
         $tmpmusername = $thismusername;
@@ -1412,8 +1417,9 @@ sub Preview {
     if ($error) {
         LoadLanguage('Error');
         $prevmain .= $mypost_prevmain_error;
-        $prevmain =~ s/{yabb preverror}/$error/sm;
-        $prevmain =~ s/{yabb error_occurred}/$error_txt{'error_occurred'}/sm;
+        $prevmain =~ s/\Q{yabb preverror}\E/$error/xsm;
+        $prevmain =~
+          s/\Q{yabb error_occurred}\E/$error_txt{'error_occurred'}/xsm;
     }
 
     $message = $mess;
@@ -1490,7 +1496,7 @@ sub Post2 {
     $hasnotify  = $FORM{'hasnotify'};
     $favorite   = $FORM{'favorite'};
     $thestatus  = $FORM{'topicstatus'};
-    $thestatus =~ s/\, //gsm;
+    $thestatus =~ s/,\s//gxsm;
     chomp $thestatus;
 
     # Check if poster isn't using a distilled email domain
@@ -1539,10 +1545,10 @@ sub Post2 {
     }
     $allowattach ||= 0;
     if ( $allowattach > 0 ) {
-        for my $y ( 1 .. $allowattach ) {
+        foreach my $y ( 1 .. $allowattach ) {
             if ( $CGI_query && $CGI_query->upload("file$y") ) {
 
-            # Check once for ability to post attachments
+                # Check once for ability to post attachments
                 if ( AccessCheck( $currentboard, 4 ) ne 'granted' ) {
                     fatal_error('no_perm_att');
                 }
@@ -1556,10 +1562,10 @@ sub Post2 {
     ## clean name and email - remove | from name and turn any _ to spaces for mail
     if ( $name && $email ) {
         ToHTML($name);
-        $email =~ s/\|//gxsm;
+        $email =~ s/[|]//gxsm;
         ToHTML($email);
         $tempname = $name;
-        $name =~ s/\_/ /gsm;
+        $name =~ s/_/ /gxsm;
     }
 
     # Fixes a bug with posting hexed characters.
@@ -1569,7 +1575,7 @@ sub Post2 {
 
     $subject =~ s/[\r\n]//gxsm;
     my $testsub = $subject;
-    $testsub =~ s/ |\&nbsp;//gsm;
+    $testsub =~ s/\s |\&nbsp;//gxsm;
     if ( $testsub eq q{} && $pollthread != 2 ) {
         fatal_error( 'useless_post', "$testsub" );
     }
@@ -1583,9 +1589,8 @@ sub Post2 {
     if ( ${ $uid . $username }{'postcount'} < $minlinkpost
         && !$staff )
     {
-        if (   $message =~ m{http:\/\/}xsm
-            || $message =~ m{https:\/\/}xsm
-            || $message =~ m{ftp:\/\/}xsm
+        if (   $message =~ m{https?://}xsm
+            || $message =~ m{ftp://}xsm
             || $message =~ m{www.}xsm
             || $message =~ m{ftp.}xsm =~ m{\[url}xsm
             || $message =~ m{\[link}xsm
@@ -1598,7 +1603,7 @@ sub Post2 {
 
     FromChars($subject);
     $convertstr = $subject;
-    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re: /sm ? 4 : 0 );
+    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
     CountChars();
     $subject = $convertstr;
     ToHTML($subject);
@@ -1664,8 +1669,8 @@ sub Post2 {
         $poll_end_min  = $FORM{'poll_end_min'};
 
         if ( $pie_radius =~ /\D/xsm ) { $pie_radius = 100; }
-        if ( $pie_radius < 100 ) { $pie_radius = 100; }
-        if ( $pie_radius > 200 ) { $pie_radius = 200; }
+        if ( $pie_radius < 100 )      { $pie_radius = 100; }
+        if ( $pie_radius > 200 )      { $pie_radius = 200; }
 
         FromChars($poll_comment);
         $convertstr = $poll_comment;
@@ -1674,7 +1679,7 @@ sub Post2 {
         $poll_comment = $convertstr;
 
         ToHTML($poll_comment);
-        $poll_comment =~ s/\n/<br \/>/gsm;
+        $poll_comment =~ s/\n/<br \/>/gxsm;
         $poll_comment =~ s/\r//gxsm;
         if ( !$poll_end_days || $poll_end_days =~ /\D/xsm ) {
             $poll_end_days = q{};
@@ -1689,9 +1694,9 @@ sub Post2 {
         push @poll_data,
 qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$multi_choice|||$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n~;
 
-        for my $i ( 1 .. $numpolloptions ) {
+        foreach my $i ( 1 .. $numpolloptions ) {
             if ( $FORM{"option$i"} ) {
-                $FORM{"option$i"} =~ s/\&nbsp;/ /gsm;
+                $FORM{"option$i"} =~ s/\&nbsp;/ /gxsm;
                 $testspaces = regex_1( $FORM{"option$i"} );
                 if (   length($testspaces) == 0
                     && length( $FORM{"option$i"} ) > 0 )
@@ -1718,178 +1723,178 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
     my ( $file, $fixfile, @filelist, %filesizekb );
     $allowattach ||= 0;
     if ( $allowattach > 0 ) {
-        for my $y ( 1 .. $allowattach ) {
+        foreach my $y ( 1 .. $allowattach ) {
             if ($CGI_query) { $file = $CGI_query->upload("file$y"); }
             if ($file) {
                 $fixfile = $file;
 
              # replace all inappropriate characters from lists in Language files
-                if ( $fixfile =~ /[^0-9A-Za-z\+\-\.:_]/xsm ) {
-                        my %translist = loadtranlist();
-                        @uploadtranlist = keys %translist;
-                    for (@uploadtranlist) {
-                            $fixfile =~ s/$_/$translist{$_}/gsm;
+                if ( $fixfile =~ /[^0-9A-Za-z+\-.:]/xsm ) {
+                    my %translist = loadtranlist();
+                    @uploadtranlist = keys %translist;
+                    foreach (@uploadtranlist) {
+                        $fixfile =~ s/$_/$translist{$_}/gxsm;
+                    }
+                    $fixfile =~ s/[^0-9A-Za-z+\-.:]/_/gxsm;
                 }
-                $fixfile =~ s/[^0-9A-Za-z\+\-\.:_]/_/gxsm;
-            }
-            my $fixname = $fixfile;
-            if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
-                $fixext = $2;
-            }
-            (my $fixchck = $fixname) =~ s/_//gxsm;
-            if ($fixchck eq q{}) {
-                fatal_error('rename', "$fixfile" );
-            }
-            $spamdetected = spamcheck($fixname);
-            if ( !$staff ) {
-                if ( $spamdetected == 1 ) {
-                    ${ $uid . $username }{'spamcount'}++;
-                    ${ $uid . $username }{'spamtime'} = $date;
-                    UserAccount( $username, 'update' );
-                    $spam_hits_left_count =
-                              $post_speed_count -
-                              ${ $uid . $username }{'spamcount'};
-                    for (@filelist) { unlink "$uploaddir/$_"; }
-                    fatal_error('tsc_alert');
+                my $fixname = $fixfile;
+                if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
+                    $fixext = $2;
                 }
-            }
-            if ( $use_guardian && $string_on ) {
-                @bannedstrings = split /[|]/xsm, $banned_strings;
-                for (@bannedstrings) {
-                    chomp $_;
-                    if ( $fixname =~ m/$_/ism ) {
-                        fatal_error( 'attach_name_blocked', "($_)" );
+                ( my $fixchck = $fixname ) =~ s/_//gxsm;
+                if ( $fixchck eq q{} ) {
+                    fatal_error( 'rename', "$fixfile" );
+                }
+                $spamdetected = spamcheck($fixname);
+                if ( !$staff ) {
+                    if ( $spamdetected == 1 ) {
+                        ${ $uid . $username }{'spamcount'}++;
+                        ${ $uid . $username }{'spamtime'} = $date;
+                        UserAccount( $username, 'update' );
+                        $spam_hits_left_count =
+                          $post_speed_count -
+                          ${ $uid . $username }{'spamcount'};
+                        foreach (@filelist) { unlink "$uploaddir/$_"; }
+                        fatal_error('tsc_alert');
                     }
                 }
-            }
-            $fixext  =~ s/\.(pl|pm|cgi|php)/._$1/ixsm;
-            $fixname =~ s/\.(?!tar$)/_/gxsm;
-            $fixfile = qq~$fixname$fixext~;
-
-            if ( !$overwrite ) {
-                $fixfile = check_existence( $uploaddir, $fixfile );
-            }
-            elsif ( $overwrite == 2 && -e "$uploaddir/$fixfile" ) {
-                for (@filelist) { unlink "$uploaddir/$_"; }
-                fatal_error('file_overwrite');
-            }
-
-            my $match = 0;
-            if ( !$checkext ) { $match = 1; }
-            else {
-                for my $ext (@ext) {
-                    if ( grep { /$ext$/ixsm } $fixfile ) {
-                        $match = 1;
-                        last;
+                if ( $use_guardian && $string_on ) {
+                    @bannedstrings = split /[|]/xsm, $banned_strings;
+                    foreach (@bannedstrings) {
+                        chomp $_;
+                        if ( $fixname =~ m/$_/ixsm ) {
+                            fatal_error( 'attach_name_blocked', "($_)" );
+                        }
                     }
                 }
-            }
-            $allowattach ||= 0;
-            if ($match) {
-                if (
-                    $allowattach == 0
-                    || ( ( $allowguestattach != 0 && $username eq 'Guest' )
-                        && $allowguestattach != 1 )
-                  )
-                {
-                    for (@filelist) { unlink "$uploaddir/$_"; }
-                    fatal_error('no_perm_att');
-                }
-            }
-            else {
-                for (@filelist) { unlink "$uploaddir/$_"; }
-                fatal_error( q{}, "$fixfile $fatxt{'20'} @ext" );
-            }
+                $fixext =~ s/[.](?:pl|pm|cgi|php)/._$1/ixsm;
+                $fixname =~ s/[.](?!tar$)/_/gxsm;
+                $fixfile = qq~$fixname$fixext~;
 
-            my ( $size, $buffer, $filesize, $file_buffer );
-            while ( $size = read $file, $buffer, 512 ) {
-                $filesize += $size;
-                $file_buffer .= $buffer;
-            }
-            $limit ||= 0;
-            if ( $limit > 0 && $filesize > ( 1024 * $limit ) ) {
-                for (@filelist) { unlink "$uploaddir/$_"; }
-                fatal_error( q{},
-                        "$fatxt{'21'} $fixfile ("
-                      . int( $filesize / 1024 )
-                      . " KB) $fatxt{'21b'} "
-                      . $limit );
-            }
-            $dirlimit ||= 0;
-            if ( $dirlimit > 0 ) {
-                my $dirsize = dirsize($uploaddir);
-                if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
-                    for (@filelist) { unlink "$uploaddir/$_"; }
-                    fatal_error(
-                        q{},
-                        "$fatxt{'22'} $fixfile ("
-                          . (
-                            int( $filesize / 1024 ) -
-                              $dirlimit +
-                              int( $dirsize / 1024 )
-                          )
-                          . " KB) $fatxt{'22b'}"
-                    );
+                if ( !$overwrite ) {
+                    $fixfile = check_existence( $uploaddir, $fixfile );
                 }
-            } 
+                elsif ( $overwrite == 2 && -e "$uploaddir/$fixfile" ) {
+                    foreach (@filelist) { unlink "$uploaddir/$_"; }
+                    fatal_error('file_overwrite');
+                }
+
+                my $match = 0;
+                if ( !$checkext ) { $match = 1; }
+                else {
+                    foreach my $ext (@ext) {
+                        if ( grep { /$ext$/ixsm } $fixfile ) {
+                            $match = 1;
+                            last;
+                        }
+                    }
+                }
+                $allowattach ||= 0;
+                if ($match) {
+                    if (
+                        $allowattach == 0
+                        || ( ( $allowguestattach != 0 && $username eq 'Guest' )
+                            && $allowguestattach != 1 )
+                      )
+                    {
+                        foreach (@filelist) { unlink "$uploaddir/$_"; }
+                        fatal_error('no_perm_att');
+                    }
+                }
+                else {
+                    foreach (@filelist) { unlink "$uploaddir/$_"; }
+                    fatal_error( q{}, "$fixfile $fatxt{'20'} @ext" );
+                }
+
+                my ( $size, $buffer, $filesize, $file_buffer );
+                while ( $size = read $file, $buffer, 512 ) {
+                    $filesize += $size;
+                    $file_buffer .= $buffer;
+                }
+                $limit ||= 0;
+                if ( $limit > 0 && $filesize > ( 1024 * $limit ) ) {
+                    foreach (@filelist) { unlink "$uploaddir/$_"; }
+                    fatal_error( q{},
+                            "$fatxt{'21'} $fixfile ("
+                          . int( $filesize / 1024 )
+                          . " KB) $fatxt{'21b'} "
+                          . $limit );
+                }
+                $dirlimit ||= 0;
+                if ( $dirlimit > 0 ) {
+                    my $dirsize = dirsize($uploaddir);
+                    if ( $filesize > ( ( 1024 * $dirlimit ) - $dirsize ) ) {
+                        foreach (@filelist) { unlink "$uploaddir/$_"; }
+                        fatal_error(
+                            q{},
+                            "$fatxt{'22'} $fixfile ("
+                              . (
+                                int( $filesize / 1024 ) -
+                                  $dirlimit +
+                                  int( $dirsize / 1024 )
+                              )
+                              . " KB) $fatxt{'22b'}"
+                        );
+                    }
+                }
 
  # create a new file on the server using the formatted ( new instance ) filename
-            if ( fopen( NEWFILE, ">$uploaddir/$fixfile" ) ) {
-                binmode NEWFILE;
+                if ( fopen( NEWFILE, ">$uploaddir/$fixfile" ) ) {
+                    binmode NEWFILE;
 
-                # needed for operating systems (OS) Windows, ignored by Linux
-                print {NEWFILE} $file_buffer
-                  or croak "$croak{'print'} NEWFILE";    # write new file on HD
-                fclose(NEWFILE);
-            }
-            else
-            { # return the server's error message if the new file could not be created
-                for (@filelist) { unlink "$uploaddir/$_"; }
-                fatal_error( 'file_not_open', "$uploaddir" );
-            }
+                   # needed for operating systems (OS) Windows, ignored by Linux
+                    print {NEWFILE} $file_buffer
+                      or croak "$croak{'print'} NEWFILE"; # write new file on HD
+                    fclose(NEWFILE);
+                }
+                else
+                { # return the server's error message if the new file could not be created
+                    foreach (@filelist) { unlink "$uploaddir/$_"; }
+                    fatal_error( 'file_not_open', "$uploaddir" );
+                }
 
      # check if file has actually been uploaded, by checking the file has a size
-            $filesizekb{$fixfile} = -s "$uploaddir/$fixfile";
-            if ( !$filesizekb{$fixfile} ) {
-                for (qw("@filelist" $fixfile)) {
-                    unlink "$uploaddir/$_";
-                }
-                fatal_error( 'file_not_uploaded', $fixfile );
-            }
-            $filesizekb{$fixfile} = int( $filesizekb{$fixfile} / 1024 );
-
-            if ( $fixfile =~ /\.(jpg|gif|png|jpeg)$/ism ) {
-                my $okatt = 1;
-                if ( $fixfile =~ /gif$/ism ) {
-                    my $header;
-                    fopen( ATTFILE, "$uploaddir/$fixfile" );
-                    read ATTFILE, $header, 10;
-                    my $giftest;
-                    ( $giftest, undef, undef, undef, undef, undef ) =
-                      unpack 'a3a3C4', $header;
-                    fclose(ATTFILE);
-                    if ( $giftest ne 'GIF' ) { $okatt = 0; }
-                }
-                fopen( ATTFILE, "$uploaddir/$fixfile" );
-                while ( read ATTFILE, $buffer, 1024 ) {
-                    if ( $buffer =~ /<(html|script|body)/igxsm ) {
-                        $okatt = 0;
-                        last;
-                    }
-                }
-                fclose(ATTFILE);
-                    if ( !$okatt )
-                    {    # delete the file as it contains illegal code
-                    for (qw("@filelist" $fixfile)) {
+                $filesizekb{$fixfile} = -s "$uploaddir/$fixfile";
+                if ( !$filesizekb{$fixfile} ) {
+                    foreach (qw("@filelist" $fixfile)) {
                         unlink "$uploaddir/$_";
                     }
-                    fatal_error( 'file_not_uploaded',
-                        "$fixfile $fatxt{'20a'}" );
+                    fatal_error( 'file_not_uploaded', $fixfile );
                 }
+                $filesizekb{$fixfile} = int( $filesizekb{$fixfile} / 1024 );
+
+                if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
+                    my $okatt = 1;
+                    if ( $fixfile =~ /gif$/ixsm ) {
+                        my $header;
+                        fopen( ATTFILE, "$uploaddir/$fixfile" );
+                        read ATTFILE, $header, 10;
+                        my $giftest;
+                        ( $giftest, undef, undef, undef, undef, undef ) =
+                          unpack 'a3a3C4', $header;
+                        fclose(ATTFILE);
+                        if ( $giftest ne 'GIF' ) { $okatt = 0; }
+                    }
+                    fopen( ATTFILE, "$uploaddir/$fixfile" );
+                    while ( read ATTFILE, $buffer, 1024 ) {
+                        if ( $buffer =~ /<(html|script|body)/igxsm ) {
+                            $okatt = 0;
+                            last;
+                        }
+                    }
+                    fclose(ATTFILE);
+                    if ( !$okatt )
+                    {    # delete the file as it contains illegal code
+                        foreach (qw("@filelist" $fixfile)) {
+                            unlink "$uploaddir/$_";
+                        }
+                        fatal_error( 'file_not_uploaded',
+                            "$fixfile $fatxt{'20a'}" );
+                    }
+                }
+                push @filelist, $fixfile;
             }
-            push @filelist, $fixfile;
         }
-    }
     }
 
     #Create the list of files
@@ -1918,13 +1923,15 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @buffer = <FILE>;
         fclose(FILE);
-         fopen( FILE, ">$boardsdir/$currentboard.txt", 1 )
+
+        unshift @buffer,
+qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~;
+        fopen( FILE, ">$boardsdir/$currentboard.txt", 1 )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-        print {FILE}
-qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~
-          or croak "$croak{'print'} FILE";
-        print {FILE} @buffer or croak "$croak{'print'} FILE";
+        my $prnbuff = join q{}, @buffer;
+        print {FILE} $prnbuff or croak "$croak{'print'} FILE";
         fclose(FILE);
+
         fopen( FILE, ">$datadir/$newthreadid.txt" )
           or fatal_error( 'cannot_open', "$datadir/$newthreadid.txt", 1 );
         print {FILE}
@@ -1933,13 +1940,14 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
         fclose(FILE);
 
         if (@filelist) {
+            my $prnfile = q{};
+            foreach my $fixfile (@filelist) {
+                $prnfile .=
+qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~;
+            }
             fopen( AMP, '>>Variables/attachments.db' )
               or fatal_error( 'cannot_open', 'Variables/attachments.db' );
-            for my $fixfile (@filelist) {
-                print {AMP}
-qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
-                  or croak "$croak{'print'} AMP";
-            }
+            print {AMP} $prnfile or croak "$croak{'print'} AMP";
             fclose(AMP);
         }
         if ($pollthread) {    # Save Poll data for new thread
@@ -1949,9 +1957,9 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
                 print {SCFILE} $newthreadid or croak "$croak{'print'} SCFILE";
                 fclose(SCFILE);
             }
-
+            my $prnpolldat = join q{}, @poll_data;
             fopen( POLL, ">$datadir/$newthreadid.poll" );
-            print {POLL} @poll_data or croak "$croak{'print'} POLL";
+            print {POLL} $prnpolldat or croak "$croak{'print'} POLL";
             fclose(POLL);
         }
         ## write the ctb file for the new thread
@@ -1979,10 +1987,10 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
             $mreplies, $musername, $micon, $mstate
         ) = split /[|]/xsm, $yyThreadLine;
 
-        if ( $mstate =~ /l/ism ) {    # locked thread
+        if ( $mstate =~ /l/ixsm ) {    # locked thread
             if ($bypass_lock_perm) {
                 $icanbypass = checkUserLockBypass();
-            }                         # only if bypass switched on
+            }                          # only if bypass switched on
             if ( !$icanbypass ) { fatal_error('topic_locked'); }
         }
         if ($staff) {
@@ -2011,7 +2019,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         ${$threadid}{'lastposter'}   = $iamguest ? "Guest-$name" : $username;
         ${$threadid}{'lastpostdate'} = $date;
         ${$threadid}{'threadstatus'} = $mstate;
-        write_ctb($myctb, $threadid, %threadid);
+        write_ctb( $myctb, $threadid, %threadid );
 
         $mreplies = ${$threadid}{'replies'};
 
@@ -2022,25 +2030,25 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
                 print {SCFILE} $threadid or croak "$croak{'print'} SCFILE";
                 fclose(SCFILE);
             }
+            my $prnpolldat = join q{}, @poll_data;
             fopen( POLL, ">$datadir/$threadid.poll" );
-            print {POLL} @poll_data or croak "$croak{'print'} POLL";
+            print {POLL} $prnpolldat or croak "$croak{'print'} POLL";
             fclose(POLL);
         }
-
         fopen( BOARDFILE, "<$boardsdir/$currentboard.txt", 1 )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @buffer = <BOARDFILE>;
-        fclose( BOARDFILE );
+        fclose(BOARDFILE);
 
-        for my $i ( 0 .. $#buffer ) {
-            if ( $buffer[$i] =~ m{\A$mnum\|}oxsm ) { $buffer[$i] = q{}; last; }
+        foreach my $i ( 0 .. $#buffer ) {
+            if ( $buffer[$i] =~ m{\A$mnum[|]}oxsm ) { $buffer[$i] = q{}; last; }
         }
+        unshift @buffer,
+qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~;
+        my $prnbuff = join q{}, @buffer;
         fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-        print {BOARDFILE}
-qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~
-          or croak "$croak{'print'} BOARDFILE";
-        print {BOARDFILE} @buffer or croak "$croak{'print'} BOARDFILE";
+        print {BOARDFILE} $prnbuff or croak "$croak{'print'} BOARDFILE";
         fclose(BOARDFILE);
 
         fopen( THREADFILE, ">>$datadir/$threadid.txt" )
@@ -2051,13 +2059,14 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
         fclose(THREADFILE);
 
         if (@filelist) {
+            my $prnfix = q{};
+            foreach my $fixfile (@filelist) {
+                $prnfix .=
+qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~;
+            }
             fopen( AMP, '>>Variables/attachments.db' )
               or fatal_error( 'cannot_open', 'Variables/attachments.db' );
-            for my $fixfile (@filelist) {
-                print {AMP}
-qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~
-                  or croak "$croak{'print'} AMP";
-            }
+            print {AMP} $prnfix or croak "$croak{'print'} AMP";
             fclose(AMP);
         }
 
@@ -2081,7 +2090,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 $grp_after = qq~${$uid.$username}{'position'}~;
             }
             else {
-                for my $postamount (
+                foreach my $postamount (
                     reverse sort { $a <=> $b }
                     keys %Post
                   )
@@ -2170,10 +2179,11 @@ sub LoadNotifyMessages {
     my $currentlang = $language;
     ${$languages}{$currentlang} = 1;    # Load the current language too
 
-    for my $lang ( keys %{$languages} ) {
+    foreach my $lang ( keys %{$languages} ) {
         next
           if $notifystrings{$lang}{'boardnewtopicnotificationemail'};
-                                       # next if already loaded
+
+        # next if already loaded
         $language = $lang;
         LoadLanguage('Email');
         $notifystrings{$lang} = {
@@ -2197,17 +2207,17 @@ sub NewNotify {
 
     my $thisauthor = ${ $uid . $username }{'realname'} || $maintxt{'28'};
     my $thismessage = $message;
-    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/g;
-    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~ig;
-    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~ig;
-    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~ig;
-    $thismessage =~ s/\[.*?\]//g;
-    $thismessage =~ s/<(br|p).*?>/\n/ig;
+    $thismessage =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/gxsm;
+    $thismessage =~ s/\[b\](.*?)\[\/b\]/*$1*/igxsm;
+    $thismessage =~ s/\[i\](.*?)\[\/i\]/\/$1\//igxsm;
+    $thismessage =~ s/\[u\](.*?)\[\/u\]/_$1_/igxsm;
+    $thismessage =~ s/\[.*?\]//gxsm;
+    $thismessage =~ s/<(br|p).*?>/\n/igxsm;
     $thismessage =~
-      s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~gxsm;
+s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
     FromHTML($thismessage);
-    $thismessage =~ s/>/&gt;/gsm;
-    $thismessage =~ s/</&lt;/gsm;
+    $thismessage =~ s/>/&gt;/gxsm;
+    $thismessage =~ s/</&lt;/gxsm;
     my $boardname;
     ( $boardname, undef ) = split /[|]/xsm, $board{$currentboard}, 2;
     ToChars($boardname);
@@ -2221,7 +2231,7 @@ sub NewNotify {
     ManageMemberinfo('load');
     ManageBoardNotify( 'load', $currentboard );
     my %languages;
-    for ( keys %theboard ) {
+    foreach ( keys %theboard ) {
         $languages{ ( split /[|]/xsm, $theboard{$_}, 2 )[0] } = 1;
     }
     LoadNotifyMessages( \%languages );
@@ -2233,13 +2243,13 @@ sub NewNotify {
             if (   ${ $uid . $curuser }{'notify_me'} == 1
                 || ${ $uid . $curuser }{'notify_me'} == 3 )
             {
-                $curmail = $memberinf{$curuser}[1];
-                $permdate = permtimer($thisthread);
+                $curmail   = $memberinf{$curuser}[1];
+                $permdate  = permtimer($thisthread);
                 $topiclink = qq~$scripturl?num=$thisthread~;
                 if ($accept_permafull) {
                     $topiclink =
 qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
-                } 
+                }
                 sendmail(
                     $curmail,
                     "$notifysubjects{$curlang}{'136'}: $thissubject",
@@ -2272,14 +2282,14 @@ sub ReplyNotify {
 
     my $thisauthor = ${ $uid . $username }{'realname'} || $maintxt{'28'};
     my $thismessage = $message;
-    $thismessage =~ s/ &nbsp; &nbsp; &nbsp;/\t/gsm;
-    $thismessage =~ s~\[b\](.*?)\[/b\]~*$1*~igxsm;
-    $thismessage =~ s~\[i\](.*?)\[/i\]~/$1/~igxsm;
-    $thismessage =~ s~\[u\](.*?)\[/u\]~_$1_~igxsm;
+    $thismessage =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/gxsm;
+    $thismessage =~ s/\[b\](.*?)\[\/b\]/*$1*/igxsm;
+    $thismessage =~ s/\[i\](.*?)\[\/i\]/\/$1\//igxsm;
+    $thismessage =~ s/\[u\](.*?)\[\/u\]/_$1_/igxsm;
     $thismessage =~ s/\[.*?\]//gxsm;
     $thismessage =~ s/<(br|p).*?>/\n/igxsm;
     $thismessage =~
-      s~</?([A-Za-z](?>[^\s>/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>~~igsxm;
+s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
     FromHTML($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
@@ -2298,7 +2308,7 @@ sub ReplyNotify {
     if ( -e "$boardsdir/$currentboard.mail" ) {
         ManageBoardNotify( 'load', $currentboard );
         my %languages;
-        for ( keys %theboard ) {
+        foreach ( keys %theboard ) {
             $languages{ ( split /[|]/xsm, $theboard{$_}, 2 )[0] } = 1;
         }
         LoadNotifyMessages( \%languages );
@@ -2310,22 +2320,22 @@ sub ReplyNotify {
                 if (   ${ $uid . $curuser }{'notify_me'} == 1
                     || ${ $uid . $curuser }{'notify_me'} == 3 )
                 {
-                    $curmail = $memberinf{$curuser}[1];
+                    $curmail   = $memberinf{$curuser}[1];
                     $topiclink = qq~$scripturl?num=$thisthread~;
                     if ($accept_permafull) {
                         $topiclink =
 qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
-                    } 
+                    }
                     sendmail(
                         $curmail,
                         "$notifysubjects{$curlang}{'136'}: $thissubject",
                         template_email(
                             $notifystrings{$curlang}{'boardnotificationemail'},
                             {
-                                'subject' => $thissubject,
-                                'num' => $topiclink,
-                                'start' => $page,
-                                'tauthor' => $thisauthor,
+                                'subject'  => $thissubject,
+                                'num'      => $topiclink,
+                                'start'    => $page,
+                                'tauthor'  => $thisauthor,
                                 'tmessage' => $thismessage
                             }
                         ),
@@ -2342,7 +2352,7 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
     if ( -e "$datadir/$thisthread.mail" ) {
         ManageThreadNotify( 'load', $thisthread );
         my %languages;
-        for ( keys %thethread ) {
+        foreach ( keys %thethread ) {
             $languages{ ( split /[|]/xsm, $thethread{$_}, 2 )[0] } = 1;
         }
         LoadNotifyMessages( \%languages );
@@ -2358,22 +2368,22 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
                 if (   ${ $uid . $curuser }{'notify_me'} == 1
                     || ${ $uid . $curuser }{'notify_me'} == 3 )
                 {
-                    $curmail = $memberinf{$curuser}[1];
+                    $curmail   = $memberinf{$curuser}[1];
                     $topiclink = qq~$scripturl?num=$thisthread~;
                     if ($accept_permafull) {
                         $topiclink =
 qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
-                    } 
+                    }
                     sendmail(
                         $curmail,
                         "$notifysubjects{$curlang}{'118'}: $thissubject",
                         template_email(
                             $notifystrings{$curlang}{'topicnotificationemail'},
                             {
-                                'subject' => $thissubject,
-                                'num' => $topiclink,
-                                'start' => $page,
-                                'tauthor' => $thisauthor,
+                                'subject'  => $thissubject,
+                                'num'      => $topiclink,
+                                'start'    => $page,
+                                'tauthor'  => $thisauthor,
                                 'tmessage' => $thismessage
                             }
                         ),
@@ -2407,12 +2417,12 @@ sub doshowthread {
         if ( @messages < $cutamount ) { $cutamount = @messages; }
         $showall = $post_cutts{'3'};
 
-        if ( @messages => $cutamount && $showpageall ) {
+        if ( @messages >= $cutamount && $showpageall ) {
             $showall .=
 qq~ $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply$INFO{'start'};showall=yes" class="under">$post_cutts{'4'}</a> $post_cutts{'5'} ~;
         }
 
-        if ( $INFO{'showall'} ne q{} || $cutamount eq 'all' ) {
+        if ( $INFO{'showall'} ne q{} ) {
             $origcutamount = $cutamount;
             $cutamount     = $pidtxt{'01'};
             $showall =
@@ -2421,10 +2431,11 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
         $my_showmess_disnum = qq~
             <strong>$post_txt{'468'} - $post_cutts{'2'} $cutamount $showall</strong>~;
         if ( $tsreverse == 1 ) { @messages = reverse @messages; }
-        if ( $INFO{'showall'} ne q{} || $cutamount eq 'all' ) {
+        if ( $INFO{'showall'} ne q{} ) {
             $cutamount = 1000;
         }
-        for my $amounter ( 0 .. ( $cutamount - 1 ) ) {
+        else { $cutamount = $origcutamount; }
+        foreach my $amounter ( 0 .. ( $cutamount - 1 ) ) {
             (
                 undef, $temprname, undef, $tempdate, $tempname,
                 undef, undef,      undef, $message,  $ns
@@ -2460,7 +2471,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
             }
 
             my $quickmessage = $message;
-            $quickmessage =~ s/<(br|p).*?>/\\r\\n/igsm;
+            $quickmessage =~ s/<(br|p).*?>/\\r\\n/igxsm;
             $quickmessage =~ s/\x27/\\\x27/gxsm;
             my $quote_mname = $useraccount{$tempname};
             $quote_mname =~ s/\x27/\\\x27/gxsm;
@@ -2493,14 +2504,15 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
 
                 $my_showmess_mess .= $mypost_showmessages_a;
                 $my_showmess_mess =~
-                  s/{yabb displaynamelink}/$displaynamelink/sm;
+                  s/\Q{yabb displaynamelink}\E/$displaynamelink/xsm;
                 $my_showmess_mess =~
-                  s/{yabb my_enable_markquote}/$my_enable_markquote/sm;
+                  s/\Q{yabb my_enable_markquote}\E/$my_enable_markquote/xsm;
                 $my_showmess_mess =~
-                  s/{yabb my_enable_quickjump}/$my_enable_quickjump/sm;
-                $my_showmess_mess =~ s/{yabb tempdate}/$tempdate/sm;
-                $my_showmess_mess =~ s/{yabb quote_msg_id}/$quote_msg_id/sm;
-                $my_showmess_mess =~ s/{yabb message}/$message/sm;
+                  s/\Q{yabb my_enable_quickjump}\E/$my_enable_quickjump/xsm;
+                $my_showmess_mess =~ s/\Q{yabb tempdate}\E/$tempdate/xsm;
+                $my_showmess_mess =~
+                  s/\Q{yabb quote_msg_id}\E/$quote_msg_id/xsm;
+                $my_showmess_mess =~ s/\Q{yabb message}\E/$message/xsm;
 
                 if ( !${ $uid . $username }{'postlayout'} ) {
                     $txtsz = q{};
@@ -2510,12 +2522,12 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                       ${ $uid . $username }{'postlayout'};
                     $txtsz = qq~; font-size:$txtsz%~;
                 }
-                $my_showmess_mess =~ s/{yabb txtsz}/$txtsz/sm;
+                $my_showmess_mess =~ s/\Q{yabb txtsz}\E/$txtsz/xsm;
             }
         }
         $my_showmess = $mypost_showmessages;
-        $my_showmess =~ s/{yabb my_showmess_disnum}/$my_showmess_disnum/sm;
-        $my_showmess =~ s/{yabb my_showmess_mess}/$my_showmess_mess/sm;
+        $my_showmess =~ s/\Q{yabb my_showmess_disnum}\E/$my_showmess_disnum/xsm;
+        $my_showmess =~ s/\Q{yabb my_showmess_mess}\E/$my_showmess_mess/xsm;
     }
     else {
         $my_showmess .= '<!--no summary-->';
@@ -2536,8 +2548,8 @@ sub sendGuestPM {
     $postthread = 2;
 
     $guestpost_fields = $mypost_guest_fields;
-    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
-    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+    $guestpost_fields =~ s/\Q{yabb name}\E/$FORM{'name'}/xsm;
+    $guestpost_fields =~ s/\Q{yabb email}\E/$FORM{'email'}/xsm;
 
     if ($gpvalid_en) {
         validation_code();
@@ -2545,8 +2557,8 @@ sub sendGuestPM {
             $verification eq q{}
           ? $mypost_guest_c
           : q{};
-        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
-        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
+        $verification_field =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
+        $verification_field =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
 
     }
     if (   $iamguest
@@ -2564,16 +2576,16 @@ sub sendGuestPM {
           ? $mypost_veri_c
           : q{};
         $verification_question_field =~
-          s/{yabb spam_question}/$spam_question/gsm;
+          s/\Q{yabb spam_question}\E/$spam_question/gxsm;
         $verification_question_field =~
-          s/{yabb verification_question_desc}/$verification_question_desc/gsm;
+s/\Q{yabb verification_question_desc}\E/$verification_question_desc/gxsm;
         $verification_question_field =~
-          s/{yabb spam_question_id}/$spam_question_id/gsm;
+          s/\Q{yabb spam_question_id}\E/$spam_question_id/gxsm;
         $verification_question_field =~
-          s/{yabb spam_question_image}/$spam_image/gsm;
+          s/\Q{yabb spam_question_image}\E/$spam_image/gxsm;
     }
-    $sub        = q{};
-    $settofield = 'subject';
+    $sub         = q{};
+    $settofield  = 'subject';
     $t_title     = $post_txt{'sendmessguest'};
     $submittxt   = $post_txt{'148'};
     $destination = 'guestpm2';
@@ -2634,8 +2646,8 @@ sub sendGuestPM2 {
     if ( $name && $email ) {
         ToHTML($name);
         $tempname = $name;
-        $name  =~ s/\_/ /gsm;
-        $email =~ s/\|//gxsm;
+        $name =~ s/_/ /gxsm;
+        $email =~ s/[|]//gxsm;
         ToHTML($email);
     }
 
@@ -2644,15 +2656,15 @@ sub sendGuestPM2 {
 
     # Check Message Length Precisely
     my $mess_len = $message;
-    $mess_len =~ s/[\r\n ]//igsm;
-    $mess_len =~ s/&\x23\d{3,}?\;/X/igxsm;
+    $mess_len =~ s/[\r\n ]//igxsm;
+    $mess_len =~ s/&\x23\d{3,}?;/X/igxsm;
 
     undef $mess_len;
 
     spam_protection();
 
     my $testsub = $subject;
-    $testsub =~ s/[\r\n\ ]|\&nbsp;//gsm;
+    $testsub =~ s/[\r\n ]|&nbsp;//gxsm;
     if ( $testsub eq q{} ) { fatal_error( 'useless_post', $testsub ); }
 
     my $testmessage = regex_1($message);
@@ -2663,7 +2675,7 @@ sub sendGuestPM2 {
     $subject =~ s/[\r\n]//gxsm;
     FromChars($subject);
     $convertstr = $subject;
-    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re: /sm ? 4 : 0 );
+    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
     CountChars();
     $subject = $convertstr;
     ToHTML($subject);
@@ -2688,7 +2700,7 @@ sub sendGuestPM2 {
     $newthreadid = getnewid();
 
     # Encode spaces in name, to avoid confusing bm
-    $name =~ s/ /%20/gsm;
+    $name =~ s/[ ]/%20/gxsm;
     $mreplies = 0;
 
     # set announcement flag according to status of current board
@@ -2697,12 +2709,11 @@ sub sendGuestPM2 {
         @bmessages = <INBOX>;
         fclose(INBOX);
     }
+    unshift @bmessages,
+"$newthreadid|$name $email|admin|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|g|||\n";
+    my $prnbmess = join q{}, @bmessages;
     fopen( INBOX, ">$memberdir/guest.messages" );
-
-    print {INBOX}
-"$newthreadid|$name $email|admin|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|g|||\n"
-      or croak "$croak{'print'} INBOX";
-    print {INBOX} @bmessages or croak "$croak{'print'} INBOX";
+    print {INBOX} $prnbmess or croak "$croak{'print'} INBOX";
     fclose(INBOX);
     undef @bmessages;
 
@@ -2746,10 +2757,10 @@ sub modAlert {
     $postthread = 2;
 
     $guestpost_fields = q{};
-    if ( $iamguest ) {
-    $guestpost_fields = $mypost_guest_fields;
-    $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
-    $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+    if ($iamguest) {
+        $guestpost_fields = $mypost_guest_fields;
+        $guestpost_fields =~ s/\Q{yabb name}\E/$FORM{'name'}/xsm;
+        $guestpost_fields =~ s/\Q{yabb email}\E/$FORM{'email'}/xsm;
     }
 
     if ( $iamguest && $gpvalid_en ) {
@@ -2758,8 +2769,8 @@ sub modAlert {
             $verification eq q{}
           ? $mypost_guest_c
           : q{};
-        $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
-        $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
+        $verification_field =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
+        $verification_field =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
     }
 
     if (   $iamguest
@@ -2777,13 +2788,13 @@ sub modAlert {
           ? $mypost_veri_c
           : q{};
         $verification_question_field =~
-          s/{yabb spam_question}/$spam_question/gsm;
+          s/\Q{yabb spam_question}\E/$spam_question/gxsm;
         $verification_question_field =~
-          s/{yabb verification_question_desc}/$verification_question_desc/gsm;
+s/\Q{yabb verification_question_desc}\E/$verification_question_desc/gxsm;
         $verification_question_field =~
-          s/{yabb spam_question_id}/$spam_question_id/gsm;
+          s/\Q{yabb spam_question_id}\E/$spam_question_id/gxsm;
         $verification_question_field =~
-          s/{yabb spam_question_image}/$spam_image/gsm;
+          s/\Q{yabb spam_question_image}\E/$spam_image/gxsm;
     }
 
     $sub        = q{};
@@ -2801,16 +2812,16 @@ sub modAlert {
                 $micon,    $mattach, $mip,    $mmessage, $mns
             ) = split /[|]/xsm, ${ $thread_arrayref{$threadid} }[$quotemsg];
             $message = $mmessage;
-            $message =~ s/<br.*?>/\n/igsm;
-            $message =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
+            $message =~ s/<br.*?>/\n/igxsm;
+            $message =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
             if ( !$nestedquotes ) {
                 $message =~
-s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/isgxm;
+s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/igxsm;
             }
             $mname = isempty( $mname, isempty( $musername, $post_txt{'470'} ) );
             my $hidename = $musername;
             if ( $musername eq 'Guest' ) { $hidename = $mname; }
-            if ($do_scramble_id) { $hidename = cloak($hidename); }
+            if ($do_scramble_id)         { $hidename = cloak($hidename); }
             my $maxlengthofquote =
               $MaxMessLen -
               length(
@@ -2887,8 +2898,8 @@ sub modAlert2 {
         ## clean name and email - remove | from name and turn any _ to spaces for email
         ToHTML($name);
         $tempname = $name;
-        $name  =~ s/_/ /gsm;
-        $email =~ s/\|//gxsm;
+        $name =~ s/_/ /gxsm;
+        $email =~ s/[|]//gxsm;
         ToHTML($email);
 
         # Fixes a bug with posting hexed characters
@@ -2903,7 +2914,7 @@ sub modAlert2 {
         }
 
         # Encode spaces in name, to avoid confusing!
-        $name =~ s/ /%20/gsm;
+        $name =~ s/[ ]/%20/gxsm;
         $name .= qq~ $email~;
     }
     else {
@@ -2936,7 +2947,7 @@ sub modAlert2 {
     $subject =~ s/[\r\n]//gxsm;
     my $tstsubject = $subject;
     my $testsub    = $subject;
-    $testsub =~ s/ |\&nbsp;//gsm;
+    $testsub =~ s/\s |\&nbsp;//gxsm;
     if ( $testsub eq q{} ) { fatal_error( 'useless_post', $testsub ); }
 
     my $testmessage = regex_1($message);
@@ -2946,7 +2957,7 @@ sub modAlert2 {
 
     FromChars($subject);
     $convertstr = $subject;
-    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re: /sm ? 4 : 0 );
+    $convertcut = $set_subjectMaxLength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
 
     CountChars();
     $subject = $convertstr;
@@ -2965,7 +2976,7 @@ sub modAlert2 {
     my $x;
     my $mods    = ${ $uid . $currentboard }{'mods'};
     my $modgrps = ${ $uid . $currentboard }{'modgroups'};
-    $modgrps =~ s/, /,/gsm;
+    $modgrps =~ s/\//,/gxsm;
 
 # because modgroups are saved with ' ' and this MyCenter.pm does not understand ;-)
 # If no BM is allowed and no mods is assigned => send the "AlertMod" to admin
@@ -2984,8 +2995,8 @@ sub modAlert2 {
         if ( $modgrps =~ /admins|gmods|fmods|mods/xsm ) { $x = 1; }
         else {
             if ( !%memberinf ) { ManageMemberinfo('load'); }
-          MANAGEINFO: for ( keys %memberinf ) {
-                for ( split /,/xsm, $memberinf{$_}[4] ) {
+          MANAGEINFO: foreach ( keys %memberinf ) {
+                foreach ( split /,/xsm, $memberinf{$_}[4] ) {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) {
                         $x = 1;
                         last MANAGEINFO;
@@ -2996,7 +3007,7 @@ sub modAlert2 {
         }
     }
     if ($mods) {
-      MANAGEMODS: for my $toBoardMod ( split /, ?/sm, $mods ) {
+      MANAGEMODS: for my $toBoardMod ( split /\//xsm, $mods ) {
             chomp $toBoardMod;
 
 # Send notification (Will only work if Admin has allowed the Email Notification)
@@ -3034,7 +3045,7 @@ sub modAlert2 {
             }
             elsif ( $PMenableBm_level && $x ) {
                 if ( !%memberinf ) { ManageMemberinfo('load'); }
-                for ( split /,/xsm, ( $memberinf{$toBoardMod} )[4] ) {
+                foreach ( split /,/xsm, ( $memberinf{$toBoardMod} )[4] ) {
                     if ( $_ && $modgrps =~ /\b$_\b/xsm ) { next MANAGEMODS; }
                 }
             }
@@ -3045,11 +3056,12 @@ sub modAlert2 {
             fopen( INBOX, "$memberdir/$toBoardMod.msg" );
             my @inmessages = <INBOX>;
             fclose(INBOX);
+
+            unshift @inmessages,
+"$newthreadid|$name|$toBoardMod|||$subject|$date|$message|$newthreadid|0|$user_ip|$mstatus|u||\n";
+            my $prninmess = join q{}, @inmessages;
             fopen( INBOX, ">$memberdir/$toBoardMod.msg" );
-            print {INBOX}
-"$newthreadid|$name|$toBoardMod|||$subject|$date|$message|$newthreadid|0|$user_ip|$mstatus|u||\n"
-              or croak "$croak{'print'} INBOX";
-            print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
+            print {INBOX} $prninmess or croak "$croak{'print'} INBOX";
             fclose(INBOX);
             require Sources::MyCenter;
             updateIMS( $toBoardMod, $newthreadid, 'messagein' );
@@ -3060,22 +3072,23 @@ sub modAlert2 {
 
         # set announcement flag according to status of current board
         $msgfile = "$memberdir/broadcast.messages";
-        if ($iamguest){
+        if ($iamguest) {
             $mstatus = q~ga~;
             $msgfile = "$memberdir/guest.messages";
         }
-            else             { $mstatus = q~ab~; }
+        else { $mstatus = q~ab~; }
 
         #if sender is guest and Alert is going to ModGroup
         fopen( INBOX, $msgfile )
           or fatal_error( 'cannot_open', "$msgfile" );
         my @inmessages = <INBOX>;
         fclose(INBOX);
+
+        unshift @inmessages,
+"$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|$mstatus|||\n";
+        $prninmess = join q{}, @inmessages;
         fopen( INBOX, ">$msgfile" );
-        print {INBOX}
-"$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|$mstatus|||\n"
-          or croak "$croak{'print'} INBOX";
-        print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
+        print {INBOX} $prninmess or croak "$croak{'print'} INBOX";
         fclose(INBOX);
     }
 

@@ -15,17 +15,24 @@
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$smtppmver = 'YaBB 2.7.00 $Revision$';
+$smtppmver  = 'YaBB 2.7.00 $Revision$';
 @smtppmmods = ();
 if (@smtppmmods) {
     $smtppmmods = 1;
 }
 if ( $action eq 'detailedversion' ) { return 1; }
 
-eval q{
-    use IO::Socket::INET;
-    use Digest::HMAC_MD5 qw(hmac_md5_hex);
-};
+if (
+    eval {
+        require IO::Socket::INET;
+        require Digest::HMAC_MD5;
+    }
+  )
+{
+    require IO::Socket::INET;
+    require Digest::HMAC_MD5;
+    Digest::HMAC_MD5->import(hmac_md5_hex);
+}
 
 LoadLanguage('Smtp');
 
@@ -34,9 +41,11 @@ sub use_smtp {
     $OUTPUT_AUTOFLUSH = 1;
     my ($proto) = ( getprotobyname 'tcp' )[2];
     my ($port) = ( getservbyname 'smtp', 'tcp' )[2] || 25;
-    if ( $smtp_server =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/xsm ) {
+    if ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
+    {
         $smtpaddr =
-          ( $smtp_server =~ /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/xsm )
+          ( $smtp_server =~
+              /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
           ? pack( 'C4', $1, $2, $3, $4 )
           : ( gethostbyname $smtp_server )[4];
     }
@@ -150,7 +159,7 @@ sub use_smtp {
     (
         $smtpsec,  $smtpmin,  $smtphour, $smtpmday, $smtpmon,
         $smtpyear, $smtpwday, $smtpyday, $smtpisdst
-    ) = gmtime( $date );
+    ) = gmtime $date;
     $smtpyear = sprintf '%02d', ( $smtpyear - 100 );
     $smtphour = sprintf '%02d', $smtphour;
     $smtpmin  = sprintf '%02d', $smtpmin;
@@ -167,7 +176,7 @@ qq~$days_short[$smtpwday], $smtpmday $months2[$smtpmon] $smtpyear $smtphour\:$sm
     ( $code, $text, $more ) = get_line();
 
     # Add as many addressees as needed
-    for ( split /,\ /xsm, $smtp_to ) {
+    for ( split /,\s* /xsm, $smtp_to ) {
         send_line("RCPT TO: <$_>\r\n");
         ( $code, $text, $more ) = get_line();
     }
@@ -207,7 +216,7 @@ sub get_line {
 }
 
 # Send one line back to the server
-sub send_line (@) {
+sub send_line {
     my @args = @_;
 
     #   $args[0] =~ s/\n/\r\n/gsm;
@@ -219,7 +228,7 @@ sub send_line (@) {
 }
 
 # Helper function to encode CRAM-MD5 challenge
-sub encode_cram_md5 ($$$) {
+sub encode_cram_md5 {
     my ( $ticket64, $username, $password ) = @_;
     my $ticket = decode_smtp64($ticket64)
       or die "Unable to decode Base64 encoded string '$ticket64'\n";
@@ -261,7 +270,7 @@ sub encode_smtp64 {
     return $res;
 }
 
-sub decode_smtp64 ($) {
+sub decode_smtp64 {
     local $WARNING = 0;    # unpack("u",...) gives bogus warning in 5.00[123]
     require integer;
     import integer;
@@ -288,7 +297,7 @@ sub decode_smtp64 ($) {
     return unpack 'u', $uustr;
 }
 
-sub say_hello ($) {
+sub say_hello {
     my ($hello_host) = @_;
     my ( $feat, $param );
 
@@ -307,7 +316,7 @@ sub say_hello ($) {
     return 1;
 }
 
-sub read_features ($) {
+sub read_features {
     my ($featref) = @_;
 
     # Empty the hash

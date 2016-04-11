@@ -908,7 +908,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
                         <td class="windowbg2" colspan="3">
                             <select name="moderators$i" id="moderators$i" multiple="multiple" size="3" style="width: 320px;" ondblclick="removeUser(this);">~;
 
-        my @thisBoardModerators = split /, ?/sm, $moderators;
+        my @thisBoardModerators = split /\//sm, $moderators;
         for my $thisMod (@thisBoardModerators) {
             LoadUser($thisMod);
             my $thisModname = ${ $uid . $thisMod }{'realname'};
@@ -934,7 +934,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         for (@nopostorder) {
             @groupinfo = split /[|]/xsm, $NoPost{$_};
             $box .= qq~<option value="$_"~;
-            for ( split /, /sm, $moderatorgroups ) {
+            for ( split /\//xsm, $moderatorgroups ) {
                 ( $lineinfo, undef ) = split /[|]/xsm, $NoPost{$_}, 2;
                 if ( $lineinfo eq $groupinfo[0] ) {
                     $box .= q~ selected="selected" ~;
@@ -1518,14 +1518,14 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         $bdescription = $FORM{"description$i"};
         FromChars($bdescription);
         $bdescription =~ s/\r//gxsm;
-        $bdescription =~ s/\n/<br \/>/gsm;
+        $bdescription =~ s/\n/<br \/>/gxsm;
+        my @mods = split /,\s*/xsm, $FORM{'moderators'};
         if ($do_scramble_id) {
-            my @mods;
-            for ( split /\, /sm, $FORM{"moderators$i"} ) {
-                push @mods, decloak($_);
+            for (@mods) {
+                $_ = decloak($_);
             }
-            $FORM{"moderators$i"} = join q{, }, @mods;
         }
+        $FORM{"moderators$i"} = join q{/}, @mods;
         if ( $FORM{"brdrss$i"} eq q{} ) { $FORM{"brdrss$i"} = 0; } ### RSS on Board Index ###
         if ( $FORM{"zero$i"} eq q{} ) { $FORM{"zero$i"} = 0; }
         $FORM{"minage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
@@ -1561,11 +1561,14 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         }
         @modhook = ();
         ## BRD Mod Hook ##
+
         $modchk = @modhook;
         $modhook = q{};
         if ( $modchk > 0 ) {
             $modhook = join q{|}, @modhook;
         }
+        $FORM{"moderators$i"} =~ s/,\s*/\//xsm;
+        $FORM{"moderatorgroups$i"} =~ s/,\s*/\//xsm;
         push @boardcontrol,
 qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderatorgroups$i"}|$FORM{"topicperms$i"}|$FORM{"replyperms$i"}|$FORM{"pollperms$i"}|$FORM{"zero$i"}|$FORM{"membergroups$i"}|$FORM{"ann$i"}|$FORM{"rbin$i"}|$FORM{"att$i"}|$FORM{"minage$i"}|$FORM{"maxage$i"}|$FORM{"gender$i"}|$FORM{"canpost$i"}|$FORM{"parent$i"}|$FORM{"rules$i"}|$brulestitle|$brulesdesc|$FORM{"rulescollapse$i"}|$FORM{"paswwr$i"}|$encryptopass|$FORM{"brdrss$i"}|$modhook\n~;
         push @changes, $id;

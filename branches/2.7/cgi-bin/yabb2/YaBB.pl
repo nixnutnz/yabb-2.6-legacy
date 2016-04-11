@@ -26,7 +26,7 @@ our $VERSION = '2.7.00';
 ### Version Info ###
 $YaBBversion = 'YaBB 2.7.00';
 $yabbplver   = 'YaBB 2.7.00 $Revision$';
-@yabbmods = ();
+@yabbmods    = ();
 if (@yabbmods) {
     $yabbmods = 1;
 }
@@ -40,7 +40,7 @@ BEGIN {
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyIIS = 1;
-        if ( $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm ) {
+        if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
             $yypath = $1;
         }
         $yypath =~ s/\\/\//gxsm;
@@ -53,21 +53,24 @@ BEGIN {
     if ( !$script_root ) {
         $script_root = $ENV{'PATH_TRANSLATED'};
     }
-    $script_root =~ s/\/$yyexec\.(pl|cgi)//igxsm;
+    $script_root =~ s/\/$yyexec[.](pl|cgi)//igxsm;
 
     require Paths;
     if   ( -e ("$yyexec.cgi") ) { $yyxt = 'cgi'; }
     else                        { $yyxt = 'pl'; }
     if ( -e "$vardir/backup.lock" ) {
         $back_url = "$boardurl/BackupFix.$yyxt";
-        print "Location: $back_url\n\n";
+        print "Location: $back_url\n\n" or croak 'cannot print location';
         exit;
     }
     require Variables::Settings;
 
     # Check for Time::HiRes if debugmodus is on
     if ($debug) {
-        eval { require Time::HiRes; import Time::HiRes qw(time); };
+        if ( eval { require Time::HiRes; import Time::HiRes qw(time); } ) {
+            require Time::HiRes;
+            import Time::HiRes qw(time);
+        }
     }
     $START_TIME = time;
 
@@ -112,7 +115,7 @@ $yyfreespace =
     : q{}
   );
 
-if ( $iamgmod ) {
+if ($iamgmod) {
     require Variables::Gmodset;
 }
 if ( !$masterkey ) {
@@ -160,8 +163,8 @@ guard();
 if ($referersecurity) { referer_check(); }
 
 if ( $regtype == 1 || $regtype == 2 ) {
-    $inactive = -s "Variables/meminactive.db";
-    $approve = -s "Variables/memapprove.db";
+    $inactive = -s 'Variables/meminactive.db';
+    $approve  = -s 'Variables/memapprove.db';
     if ( $inactive > 2 ) {
         RegApprovalCheck();
         activation_check();
@@ -179,8 +182,10 @@ WriteLog();    # write into the logfile
 SearchAccess();
 
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };
-eval { yymain(); };
-if ($@) { fatal_error( 'untrapped', ":<br />$@" ); }
+if ( eval { yymain() } ) {
+    yymain();
+}
+else { fatal_error( 'untrapped', ":<br />$EVAL_ERROR" ); }
 
 sub yymain {
 

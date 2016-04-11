@@ -19,7 +19,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$contexthelppmver = 'YaBB 2.7.00 $Revision$';
+$contexthelppmver  = 'YaBB 2.7.00 $Revision$';
 @contexthelppmmods = ();
 if (@contexthelppmmods) {
     $contexthelppmmods = 1;
@@ -31,7 +31,7 @@ sub ContextScript {
     LoadLanguage('ContextHelp');
 
     $contextlst = q{};
-    while( ($key, $value) = each %contextxt ) {
+    while ( ( $key, $value ) = each %contextxt ) {
         if ( $key eq 'clicktip' ) {
             $contextlst .= qq~'contexttip', '$contextxt{'clicktip'}',\n~;
         }
@@ -39,7 +39,7 @@ sub ContextScript {
             $contextlst .= qq~'$key', '$value',\n~;
         }
     }
-    $contextlst =~ s/\,\n\Z//xsm;
+    $contextlst =~ s/,\n\Z//xsm;
 
     my $contextmain = qq~
 var contexthash = new Hash($contextlst);

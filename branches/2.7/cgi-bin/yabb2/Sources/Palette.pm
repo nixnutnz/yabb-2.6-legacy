@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$palettepmver = 'YaBB 2.7.00 $Revision$';
+$palettepmver  = 'YaBB 2.7.00 $Revision$';
 @palettepmmods = ();
 if (@palettepmmods) {
     $palettepmmods = 1;
@@ -177,8 +177,6 @@ function Pickshowcolor(color) {
 }
 
 sub showcolor {
-
-    #deep nest removed to sub#
     my ($z) = @_;
     if ( $z % 51 == 0 ) {
         my $c1 = sprintf '%02x', $z;

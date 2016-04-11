@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$loginoutpmver = 'YaBB 2.7.00 $Revision$';
+$loginoutpmver  = 'YaBB 2.7.00 $Revision$';
 @loginoutpmmods = ();
 if (@loginoutpmmods) {
     $loginoutpmmods = 1;
@@ -45,19 +45,19 @@ sub Login2 {
         fatal_error( 'logged_in_already', $username );
     }
     if ( $FORM{'username'} eq q{} ) { fatal_error('no_username'); }
-    if ( $FORM{'passwrd'}  eq q{} ) { fatal_error('no_password'); }
+    if ( $FORM{'passwrd'} eq q{} )  { fatal_error('no_password'); }
     $username = $FORM{'username'};
     $username =~ s/\s/_/gxsm;
-    if ( $username =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm ) {
-        $error_txt = isempty($loginout_txt{'35a'}, "$loginout_txt{'35'} $loginout_txt{'241'}");
-        fatal_error( 'invalid_character',
-            "$error_txt" );
+    if ( $username =~ /[^ \w\x80-\xFF\[\]()#%+,\-|.:=?@\^]/xsm ) {
+        $error_txt = isempty( $loginout_txt{'35a'},
+            "$loginout_txt{'35'} $loginout_txt{'241'}" );
+        fatal_error( 'invalid_character', "$error_txt" );
     }
 
     ## Check if login ID is not an email address ##
     if ( !-e "$memberdir/$username.vars" ) {
         $test_id = MemberIndex( 'who_is', "$FORM{'username'}" );
-        if ( $test_id ) { $username = $test_id; }
+        if ($test_id) { $username = $test_id; }
     }
 
     if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
@@ -66,7 +66,9 @@ sub Login2 {
     elsif ( -e "$memberdir/$username.wait" && $regtype == 1 ) {
         fatal_error('prereg_wait');
     }
-    elsif ( !-e "$memberdir/$username.vars" ) { fatal_error('bad_credentials'); }
+    elsif ( !-e "$memberdir/$username.vars" ) {
+        fatal_error('bad_credentials');
+    }
 
     if ( -e "$memberdir/$username.pre" && -e "$memberdir/$username.vars" ) {
         unlink "$memberdir/$username.pre";
@@ -183,10 +185,10 @@ sub sharedLogin {
     #cookie length is now all or nothing.
     if ( $sharedLogin_title ne q{} ) {
         $sharedlog = $mysharedloga;
-        $sharedlog =~ s/{yabb sharedLogin_title}/$sharedLogin_title/sm;
+        $sharedlog =~ s/\Q{yabb sharedLogin_title}\E/$sharedLogin_title/xsm;
         if ( $sharedLogin_text ne q{} ) {
             $sharedlog .= $mysharedlogb;
-            $sharedlog =~ s/{yabb sharedLogin_text}/$sharedLogin_text/sm;
+            $sharedlog =~ s/\Q{yabb sharedLogin_text}\E/$sharedLogin_text/xsm;
         }
         $sharedlog .= $mysharedlogc;
         $sharedbot = $myborder_bottom;
@@ -197,19 +199,19 @@ sub sharedLogin {
     }
     if ($maintenance) { $hide_passlink = ' style="visibility: hidden;"' }
     if ( $maintenance || !$regtype ) {
-        $hide_reglink = ' style="visibility: hidden;"';;
+        $hide_reglink = ' style="visibility: hidden;"';
     }
     $sharedlog .= qq~
             <form id="loginform" name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yymycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
     $mysharedlog_bodya
     $sharedbot~;
-    $sharedlog =~ s/{yabb regstyle}/$regstyle/sm;
-    $sharedlog =~ s/{yabb hide_reglink}/$hide_reglink/gsm;
-    $sharedlog =~ s/{yabb hide_passlink}/$hide_passlink/gsm;
+    $sharedlog =~ s/\Q{yabb regstyle}\E/$regstyle/xsm;
+    $sharedlog =~ s/\Q{yabb hide_reglink}\E/$hide_reglink/gxsm;
+    $sharedlog =~ s/\Q{yabb hide_passlink}\E/$hide_passlink/gxsm;
     my $cookielength_sel = q{};
-    if ( $Cookie_Length  ) { $cookielength_sel = ' checked="checked"'}
-    $sharedlog =~ s/{yabb cookielength_sel}/$cookielength_sel/gsm;
+    if ($Cookie_Length) { $cookielength_sel = ' checked="checked"' }
+    $sharedlog =~ s/\Q{yabb cookielength_sel}\E/$cookielength_sel/gxsm;
     $loginform         = 1;
     $sharedLogin_title = q{};
     $sharedLogin_text  = q{};
@@ -225,14 +227,14 @@ sub Reminder {
     $yymain .= qq~<br /><br />
 <form action="$scripturl?action=reminder2" method="post" name="reminder" onsubmit="return CheckReminderField();" accept-charset="$yymycharset">
 $myremindera~;
-    $yymain =~ s/{yabb mbname}/$mbname/sm;
-    $yymain =~ s/{yabb regstyle}/$regstyle/sm;
+    $yymain =~ s/\Q{yabb mbname}\E/$mbname/xsm;
+    $yymain =~ s/\Q{yabb regstyle}\E/$regstyle/xsm;
 
     if ($regcheck) {
         validation_code();
         $yymain .= $myreminder_regcheck;
-        $yymain =~ s/{yabb flood_text}/$flood_text/sm;
-        $yymain =~ s/{yabb showcheck}/$showcheck/sm;
+        $yymain =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
+        $yymain =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
     }
     if ( $spam_questions_send && -e "$langdir/$language/spam.questions" ) {
         SpamQuestion();
@@ -242,11 +244,11 @@ $myremindera~;
               qq~<br />$loginout_txt{'verification_question_case'}~;
         }
         $yymain .= $myreminder_vericheck;
-        $yymain =~ s/{yabb spam_question}/$spam_question/sm;
-        $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
-        $yymain =~ s/{yabb spam_question_image}/$spam_image/sm;
+        $yymain =~ s/\Q{yabb spam_question}\E/$spam_question/xsm;
+        $yymain =~ s/\Q{yabb spam_question_id}\E/$spam_question_id/xsm;
+        $yymain =~ s/\Q{yabb spam_question_image}\E/$spam_image/xsm;
         $yymain =~
-          s/{yabb verification_question_desc}/$verification_question_desc/sm;
+s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
     }
 
     $yymain .= $myreminder_endform;
@@ -344,13 +346,14 @@ sub Reminder2 {
     if ( exists $pass{$user} ) { delete $pass{$user}; }
     $pass{"$user"} = $randid;
 
+    my $forpasses = q{};
+    while ( ( $key, $value ) = each %pass ) {
+        $forpasses .= qq~\$pass{'$key'} = '$value';\n~;
+    }
+    $forpasses .= '1;';
     fopen( FILE, ">$memberdir/forgotten.passes" )
       or fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
-    while ( ( $key, $value ) = each %pass ) {
-        print {FILE} qq~\$pass{'$key'} = '$value';\n~
-          or croak "$croak{'print'} forgotten.passes";
-    }
-    print {FILE} '1;' or croak "$croak{'print'} forgotten.passes";
+    print {FILE} $forpasses or croak "$croak{'print'} forgotten.passes";
     fclose(FILE);
 
     $subject = "$mbname $loginout_txt{'36b'}: ${$uid.$user}{'realname'}";
@@ -370,8 +373,8 @@ sub Reminder2 {
     get_template('Loginout');
 
     $yymain .= $myreminder2;
-    $yymain =~ s/{yabb mbname}/$mbname/sm;
-    $yymain =~ s/{yabb forum_user}/$FORM{'user'}/sm;
+    $yymain =~ s/\Q{yabb mbname}\E/$mbname/xsm;
+    $yymain =~ s/\Q{yabb forum_user}\E/$FORM{'user'}/xsm;
 
     $yytitle = "$loginout_txt{'669'}";
     template();
@@ -383,10 +386,10 @@ sub Reminder3 {
     if   ($do_scramble_id) { $user = decloak( $INFO{'user'} ); }
     else                   { $user = $INFO{'user'}; }
 
-    if ( $id !~ /[a-zA-Z0-9]+/xsm ) {
+    if ( $id !~ /[[:alnum]]+/xsm ) {
         fatal_error( 'invalid_character', "ID $loginout_txt{'241'}" );
     }
-    if ( $user =~ /[^\w#\%\+\-\.\@\^]/xsm ) {
+    if ( $user =~ /[^\w#%+\-.@\^]/xsm ) {
         fatal_error( 'invalid_character', "User $loginout_txt{'241'}" );
     }
 
@@ -394,7 +397,7 @@ sub Reminder3 {
     @chararray =
       qw(0 1 2 3 4 5 6 7 8 9 a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
     my $newpassword;
-    for my $i ( 0 .. 7 ) {
+    foreach my $i ( 0 .. 7 ) {
         $newpassword .= $chararray[ int rand 61 ];
     }
 
@@ -405,13 +408,14 @@ sub Reminder3 {
     require "$memberdir/forgotten.passes";
     if ( $pass{$user} ne $id ) { fatal_error('wrong_id'); }
     delete $pass{$user};
+    my $forpasses = q{};
+    while ( ( $key, $value ) = each %pass ) {
+        $forpasses .= qq~\$pass{'$key'} = '$value';\n~;
+    }
+    $forpasses .= '1;';
     fopen( FORGOTTEN, ">$memberdir/forgotten.passes" )
       or fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
-    while ( ( $key, $value ) = each %pass ) {
-        print {FORGOTTEN} qq~\$pass{'$key'} = '$value';\n~
-          or croak "$croak{'print'} FORGOTTEN";
-    }
-    print {FORGOTTEN} "\n1;" or croak "$croak{'print'} FORGOTTEN";
+    print {FORGOTTEN} $forpasses or croak "$croak{'print'} FORGOTTEN";
     fclose(FORGOTTEN);
 
     # add newly generated password to user data
@@ -428,11 +432,11 @@ qq*action~profileCheck2;redir~myprofile;username~$INFO{'user'};passwrd~$newpassw
 }
 
 sub InMaintenance {
-    if (-e "$langdir/$language/maintenancetext.txt") {
-        fopen(MAINTTXT, "<$langdir/$language/maintenancetext.txt");
+    if ( -e "$langdir/$language/maintenancetext.txt" ) {
+        fopen( MAINTTXT, "<$langdir/$language/maintenancetext.txt" );
         $maintenancetext = <MAINTTXT>;
         fclose(MAINTTXT);
-    if ( $maintenancetext ne q{} ) { $maintxt{'157'} = $maintenancetext; }
+        if ( $maintenancetext ne q{} ) { $maintxt{'157'} = $maintenancetext; }
     }
     $sharedLogin_title = "$maintxt{'114'}";
     $sharedLogin_text  = "<b>$maintxt{'156'}</b><br />$maintxt{'157'}";

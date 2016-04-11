@@ -21,7 +21,10 @@ if (@debugpmmods) {
 }
 
 sub Debug {
-    if ( $debug == 1 || ( $debug == 2 && ( $iamadmin || $iamgmod ) ) || $debug == 3 ) {
+    if (   $debug == 1
+        || ( $debug == 2 && ( $iamadmin || $iamgmod ) )
+        || $debug == 3 )
+    {
         $yyfileactions =
 "$debug_txt{'opened'} $file_open $debug_txt{'closed'} $file_close $debug_txt{'equal'}";
 

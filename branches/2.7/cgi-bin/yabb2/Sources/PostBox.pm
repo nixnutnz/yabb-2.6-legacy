@@ -13,11 +13,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 #use warnings;
-#no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$postboxpmver = 'YaBB 2.7.00 $Revision$';
+$postboxpmver  = 'YaBB 2.7.00 $Revision$';
 @postboxpmmods = ();
 if (@postboxpmmods) {
     $postboxpmmods = 1;
@@ -69,14 +69,14 @@ sub postbox {
     my %mods = ();
     ## Mod Hook for UBBC ##
 
-    ( $mods, $mods_w )           = ubbc_modlist(%mods);
-    ( $boxlist1, $boxlist1_w )   = ubbc_boxlist(%boxlist1);
+    ( $mods,      $mods_w )      = ubbc_modlist(%mods);
+    ( $boxlist1,  $boxlist1_w )  = ubbc_boxlist(%boxlist1);
     ( $textdecor, $textdecor_w ) = ubbc_boxlist(%textdecor);
-    ( $txtalgn, $txtalgn_w )     = ubbc_boxlist(%txtalgn);
+    ( $txtalgn,   $txtalgn_w )   = ubbc_boxlist(%txtalgn);
     $fntcolor_w = 68;
     $font_w = $boxlist1_w - ( $textdecor_w + $txtalgn_w + $fntcolor_w + 25 );
     $ubbc_box_w = $boxlist1_w + $mods_w;
-    $box = qq~            <div style="float:left; width:${ubbc_box_w}px">
+    $box        = qq~            <div style="float:left; width:${ubbc_box_w}px">
             <div style="float:right; width:${mods_w}px">
             $mods
             </div>
@@ -109,15 +109,25 @@ sub postbox {
             <select name="fontsize" id="fontsize" onchange="if(this.options[this.selectedIndex].value) fntsize(this.options[this.selectedIndex].value);">
                 <option value="">100%</option>
                 <option value="">-\\-</option>~;
-            my @fntoptions = ( 55, 70, 85, 100, 115, 130, 145, 160, 175, 200, 300, 400, 500, 600);
-            my $fntopts = q{};
-            for my $i ( 0 .. $#fntoptions ) {
-                if ( $fntoptions[$i] >= $fontsizemin && $fntoptions[$i] <= $fontsizemax ) {
-                    if( $fntoptions[$i] == 100 ) { $fntopts .= qq~               <option value="100" selected="selected">100%</option>\n~;}
-                    else { $fntopts .= qq~              <option value="$fntoptions[$i]">$fntoptions[$i]%</option>\n~;}
-                }
+    my @fntoptions =
+      ( 55, 70, 85, 100, 115, 130, 145, 160, 175, 200, 300, 400, 500, 600 );
+    my $fntopts = q{};
+
+    foreach my $i ( 0 .. $#fntoptions ) {
+        if (   $fntoptions[$i] >= $fontsizemin
+            && $fntoptions[$i] <= $fontsizemax )
+        {
+            if ( $fntoptions[$i] == 100 ) {
+                $fntopts .=
+qq~               <option value="100" selected="selected">100%</option>\n~;
             }
-        $box .= qq~
+            else {
+                $fntopts .=
+qq~              <option value="$fntoptions[$i]">$fntoptions[$i]%</option>\n~;
+            }
+        }
+    }
+    $box .= qq~
 $fntopts
             </select>
             </div>
@@ -180,11 +190,11 @@ sub postbox2 {
     $col_row ||= 0;
     if ( !$textsize || $textsize < 60 ) { $textsize = 60; }
     if ( $textsize > 160 ) { $textsize = 160; }
-    if ( $pheight > 400 ) { $pheight  = 400; }
-    if ( $pheight < 130 ) { $pheight  = 130; }
-    if ( $pwidth > 600 )  { $pwidth   = 600; }
-    if ( $pwidth < 468 )  { $pwidth   = 468; }
-    $mtextsize  = $textsize . '%';
+    if ( $pheight > 400 )  { $pheight  = 400; }
+    if ( $pheight < 130 )  { $pheight  = 130; }
+    if ( $pwidth > 600 )   { $pwidth   = 600; }
+    if ( $pwidth < 468 )   { $pwidth   = 468; }
+    $mtextsize  = $textsize . q{%};
     $mheight    = $pheight . 'px';
     $mwidth     = $pwidth . 'px';
     $dheight    = ( $pheight + 12 ) . 'px';
@@ -235,12 +245,11 @@ sub postbox2 {
                         </div>
                     </div>~;
     my $break = q{ };
-    if (!$replyguest) {
+    if ( !$replyguest ) {
         if ( $MaxMessLen >= 10000 ) {
             $break = q~<br />~;
         }
-        $box .=
-                    qq~<div class="chrwarn">
+        $box .= qq~<div class="chrwarn">
                         <img src="$imagesdir/green1.gif" id="chrwarn" height="8" width="8" alt="" />
                         <span class="small">$npf_txt{'03'} $MaxMessLen $npf_txt{'03a'}<input value="$MaxMessLen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>
                     </div>~;
@@ -248,9 +257,9 @@ sub postbox2 {
     $box .= qq~                    <div class="chrsize">
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />% <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-10);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(10);" /></span>
             </div>~;
-    if ($action ne 'imsend' ) { $box .='</div></div>'; }
-    $box =~ s/{yabb br}/$break/gsm;
-    $box =~ s/{yabb_getbreak}/$brk/gsm;
+    if ( $action ne 'imsend' ) { $box .= '</div></div>'; }
+    $box =~ s/\Q{yabb br}\E/$break/gxsm;
+    $box =~ s/{yabb_getbreak}/$brk/gxsm;
     return $box;
 }
 
@@ -364,7 +373,14 @@ sub postbox3 {
 
     #// Collapse/Expand additional features
     #//var col_row = $col_row;
-    if ( $action ne 'imsend' && $action ne 'eventcal' ) {
+    my @noneedrow = qw(imsend eventcal);
+    my $needrow   = 0;
+    foreach (@noneedrow) {
+        if ( $action ne $_ ) {
+            $needrow = 1;
+        }
+    }
+    if ( $needrow == 1 ) {
         $box .= qq~
     var col_row = $col_row;
 
@@ -413,7 +429,8 @@ qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="
 <script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
 <script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
     if ( !$img_greybox || $action eq 'guestpm' ) {
-        $googiea .= qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
+        $googiea .=
+qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
     }
     return $googiea;
 }
@@ -438,7 +455,7 @@ sub googie {
 }
 
 sub smilies_list {
-        %smiley_bar = (
+    %smiley_bar = (
         'a' => "smiley.gif|smiley()|$post_txt{'287'}",
         'b' => "wink.gif|wink()|$post_txt{'292'}",
         'c' => "cheesy.gif|cheesy()|$post_txt{'289'}",
@@ -455,15 +472,16 @@ sub smilies_list {
         'n' => "undecided.gif|undecided()|$post_txt{'528'}",
         'o' => "kiss.gif|kiss()|$post_txt{'529'}",
         'p' => "cry.gif|cry()|$post_txt{'530'}",
-        );
+    );
 
-        my $hand = q~class='bottom cursor' style='margin:1px;'~;
-        my $smilies_list = q{};
-        for my $i ( sort keys %smiley_bar ) {
-            my ($img, $click, $alt) = split /[|]/xsm, $smiley_bar{$i};
-            $smilies_list .= qq~<img src='$imagesdir/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
-        }
-        $smilies_list .= $moresmilieslist;
+    my $hand         = q~class='bottom cursor' style='margin:1px;'~;
+    my $smilies_list = q{};
+    foreach my $i ( sort keys %smiley_bar ) {
+        my ( $img, $click, $alt ) = split /[|]/xsm, $smiley_bar{$i};
+        $smilies_list .=
+qq~<img src='$imagesdir/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
+    }
+    $smilies_list .= $moresmilieslist;
     return $smilies_list;
 }
 
@@ -494,7 +512,7 @@ sub attach {
         <td colspan="2">~;
 
     my $startcount;
-    for my $y ( 1 .. $allowattach ) {
+    foreach my $y ( 1 .. $allowattach ) {
         if (   ( $action eq 'modify' || $action eq 'modify2' )
             && $files[ $y - 1 ] ne q{}
             && -e "$uploaddir/$files[$y-1]" )
@@ -502,7 +520,8 @@ sub attach {
             $startcount++;
             $yymain .= qq~
             <div id="attform_a_$y" class="att_lft~
-              . ( $y > 1 ? q~_b~ : q{} ) . qq~"><strong>$fatxt{'6'} $y:</strong></div>
+              . ( $y > 1 ? q~_b~ : q{} )
+              . qq~"><strong>$fatxt{'6'} $y:</strong></div>
             <div id="attform_b_$y" class="att_rgt~
               . ( $y > 1 ? q~_b~ : q{} ) . qq~">
                 <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
@@ -917,37 +936,41 @@ tick();
 
 sub ubbc_boxlist {
     my %list = @_;
-    my $hand = q~class='vtop cursor' style='height:22px; width:23px;' onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
+    my $hand =
+q~class='vtop cursor' style='height:22px; width:23px;' onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
     my $boxlist = q{};
-    my $w = 0;
-    for my $i ( sort keys %list ) {
-        my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
-        $boxlist .= qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
-        $w++
+    my $w       = 0;
+    foreach my $i ( sort keys %list ) {
+        my ( $img, $click, $alt ) = split /[|]/xsm, $list{$i};
+        $boxlist .=
+qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
+        $w++;
     }
     $boxlist_w = $w * 24;
-    return ($boxlist, $boxlist_w);
+    return ( $boxlist, $boxlist_w );
 }
 
 sub ubbc_modlist {
     my %list = @_;
-    my $hand = q~class='vtop cursor' style='height:22px; width:23px;' onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
+    my $hand =
+q~class='vtop cursor' style='height:22px; width:23px;' onmouseover='contextTip(event, this.alt);' onmouseout='contextTip(event, this.alt);' oncontextmenu='if(!showcontexthelp(this.src, this.alt)) return false;'~;
     my $boxlist = q{};
-    my $w = 0;
-    for my $i ( sort keys %list ) {
-        my ($img, $click, $alt) = split /[|]/xsm, $list{$i};
-        $boxlist .= qq~<span class="ubbcbutton ubbcbuttonback"><img src='$modimgurl/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
-        $w++
+    my $w       = 0;
+    foreach my $i ( sort keys %list ) {
+        my ( $img, $click, $alt ) = split /[|]/xsm, $list{$i};
+        $boxlist .=
+qq~<span class="ubbcbutton ubbcbuttonback"><img src='$modimgurl/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
+        $w++;
     }
     my $mod_w = 0;
     if ( $w % 2 == 0 ) {
-        $mod_w = $w/2;
+        $mod_w = $w / 2;
     }
     else {
-        $mod_w = 1 + int $w/2;
+        $mod_w = 1 + int $w / 2;
     }
     $boxlist_w = $mod_w * 24;
-    return ($boxlist, $boxlist_w);
+    return ( $boxlist, $boxlist_w );
 }
 
 1;

@@ -12,11 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 our $VERSION = '2.7.00';
 
-$systempmver = 'YaBB 2.7.00 $Revision$';
+$systempmver  = 'YaBB 2.7.00 $Revision$';
 @systempmmods = ();
 if (@systempmmods) {
     $systempmmods = 1;
@@ -36,8 +37,8 @@ sub BoardTotals {
             @lines = <FORUMTOTALS>;
             fclose(FORUMTOTALS);
             chomp @lines;
-            for $updateboard (@updateboards) {
-                for $line (@lines) {
+            for my $updateboard (@updateboards) {
+                for my $line (@lines) {
                     @boardvars = split /[|]/xsm, $line;
                     if ( $boardvars[0] eq $updateboard
                         && exists $board{ $boardvars[0] } )
@@ -55,8 +56,8 @@ sub BoardTotals {
             fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
               or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
-            fclose( FORUMTOTALS );
-            for $line ( 0 .. ( $#lines ) ) {
+            fclose(FORUMTOTALS);
+            for my $line ( 0 .. $#lines ) {
                 @boardvars = split /[|]/xsm, $lines[$line];
                 if ( exists $board{ $boardvars[0] } ) {
                     if ( $boardvars[0] eq $updateboards[0] ) {
@@ -83,9 +84,11 @@ sub BoardTotals {
                     $lines[$line] = q{};
                 }
             }
+            $prnlines = join q{}, @lines;
             fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
               or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
+            print {FORUMTOTALS} $prnlines
+              or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
 
         }
@@ -93,7 +96,7 @@ sub BoardTotals {
             fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
               or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
-            fclose( FORUMTOTALS );
+            fclose(FORUMTOTALS);
             for my $line ( 0 .. $#lines ) {
                 @boardvars = split /[|]/xsm, $lines[$line], 2;
                 if ( $boardvars[0] eq $updateboards[0]
@@ -102,9 +105,11 @@ sub BoardTotals {
                     $lines[$line] = q{};
                 }
             }
+            $prnlines = join q{}, @lines;
             fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
               or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            print {FORUMTOTALS} @lines or croak "$croak{'print'} FORUMTOTALS";
+            print {FORUMTOTALS} $prnlines
+              or croak "$croak{'print'} FORUMTOTALS";
             fclose(FORUMTOTALS);
         }
         elsif ( $job eq 'add' ) {
@@ -160,8 +165,8 @@ sub BoardSetLastInfo {
             if ( $lastthreadstate !~ /m/sm ) {
                 chomp $lastthreadstate;
                 fopen( FILE, "$datadir/$lastthreadid.txt" )
-                  or fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt",
-                    1 );
+                  or
+                  fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt", 1 );
                 @lastthreadmessages = <FILE>;
                 fclose(FILE);
                 @lastmessage =
@@ -273,17 +278,15 @@ sub MessageTotals {
 # Changes here on @tag must also be done in Post.pm -> sub Post2 -> my @tag = ...
         my @tag =
           qw(board replies views lastposter lastpostdate threadstatus repliers);
+        my $prnctb =
+qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n%$updatethread = (\n~;
+        for my $cnt ( 0 .. $#tag ) {
+            $prnctb .= qq~'$tag[$cnt]' => "${$updatethread}{$tag[$cnt]}",\n~;
+        }
+        $prnctb .= qq~);\n\n1;\n~;
         fopen( UPDATE_CTB, ">$datadir/$updatethread.ctb", 1 )
           or fatal_error( 'cannot_open', "$datadir/$updatethread.ctb", 1 );
-        print {UPDATE_CTB}
-          qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n%$updatethread = (\n~
-          or croak "$croak{'print'} UPDATE_CTB";
-        for my $cnt ( 0 .. $#tag ) {
-            print {UPDATE_CTB} qq~'$tag[$cnt]' => "${$updatethread}{$tag[$cnt]}",\n~
-              or croak "$croak{'print'} UPDATE_CTB";
-        }
-        print {UPDATE_CTB}
-          qq~);\n\n1;\n~ or croak "$croak{'print'} UPDATE_CTB";
+        print {UPDATE_CTB} $prnctb or croak "$croak{'print'} UPDATE_CTB";
         fclose(UPDATE_CTB);
     }
     return;
@@ -297,7 +300,7 @@ sub UserAccount {
 
     if ( $action eq 'update' ) {
         if ($pars) {
-            for ( split /\+/xsm, $pars ) { ${ $uid . $user }{$_} = $date; }
+            for ( split /[+]/xsm, $pars ) { ${ $uid . $user }{$_} = $date; }
         }
         elsif ( $username eq $user ) {
             ${ $uid . $user }{'lastonline'} = $date;
@@ -307,7 +310,7 @@ sub UserAccount {
             ${ $uid . $user }{'reversetopic'} = $ttsreverse;
         }
         if ( !exists( ${ $uid . $user }{'banned'} ) ) {
-            ${ $uid . $user }{'banned'} = "0|0";
+            ${ $uid . $user }{'banned'} = '0|0';
         }
     }
     elsif ( $action eq 'preregister' ) {
@@ -332,37 +335,39 @@ sub UserAccount {
     }
     push @tags, 'topicpreview', 'collapsescpoll';
     push @tags, 'banned';
-   ## Mod hook ##
+    ## Mod hook ##
     my $fix = 0;
-    if ( -e "$memberdir/$user.$userext") {
-    require "$memberdir/$user.$userext";
-    for my $cn ( 0 .. $#tags ) {
-        if ( $vars{$tags[$cn]} ne ${$uid.$user}{$tags[$cn]} ) {
-            $fix = 1;
-            last;
+    if ( -e "$memberdir/$user.$userext" ) {
+        require "$memberdir/$user.$userext";
+        for my $cn ( 0 .. $#tags ) {
+            if ( $vars{ $tags[$cn] } ne ${ $uid . $user }{ $tags[$cn] } ) {
+                $fix = 1;
+                last;
             }
         }
     }
-    if ($fix == 1 || !-e "$memberdir/$user.$userext" ) {
+    if ( $fix == 1 || !-e "$memberdir/$user.$userext" ) {
         my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
         for my $cnt ( 0 .. $#tags ) {
             $newvars .= qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
         }
         $newvars .= qq~);\n\n1;\n~;
-        open( UPDATEUSER, '>', "$memberdir/$user.$userext" )
-            or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
-        print {UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
-        close(UPDATEUSER);
+        open $UPDATEUSER, '>', "$memberdir/$user.$userext"
+          or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
+        print {$UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
+        close $UPDATEUSER or croak "$croak{'close'} UPDATEUSER";
     }
-    open( UPDTUSER, '>', "$memberdir/$user.lst" ) or fatal_error( 'cannot_open',
-                    "$memberdir/$user.lst", 1 );
-    print {UPDTUSER} ${ $uid . $user }{'lastonline'} or croak "$croak{'print'} UPDTUSER";
-    close(UPDTUSER);
+    open $UPDTUSER, '>', "$memberdir/$user.lst"
+      or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
+    print {$UPDTUSER} ${ $uid . $user }{'lastonline'}
+      or croak "$croak{'print'} UPDTUSER";
+    close $UPDTUSER or croak "$croak{'close'} UPDTUSER";
     return;
 }
 
 sub MemberIndex {
     my ( $memaction, $user, $mychk ) = @_;
+    my $return = q{};
     if ( $memaction eq 'add' && LoadUser($user) ) {
         $theregdate = stringtotime( ${ $uid . $user }{'regdate'} );
         $theregdate = sprintf '%010d', $theregdate;
@@ -383,19 +388,19 @@ sub MemberIndex {
             ${ $uid . $user }{'postcount'}
         );
 
-        fopen( TTL, "<Variables/memttl.db" )
-          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
+        fopen( TTL, '<Variables/memttl.db' )
+          or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         $buffer = <TTL>;
         fclose(TTL);
 
         ( $membershiptotal, undef ) = split /[|]/xsm, $buffer;
         $membershiptotal++;
 
-        fopen( TTL, ">Variables/memttl.db" )
-          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
+        fopen( TTL, '>Variables/memttl.db' )
+          or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         print {TTL} qq~$membershiptotal|$user~ or croak "$croak{'print'} TTL";
         fclose(TTL);
-        return 0;
+        $return = 0;
 
     }
     elsif ( $memaction eq 'remove' && $user ) {
@@ -408,48 +413,55 @@ sub MemberIndex {
         require Variables::Memberlist;
 
         my $membershiptotal = keys %memberlist;
-        while (($key, $value) = each %memberlist) {
-           $hash2{$value}=$key;
+        while ( ( $key, $value ) = each %memberlist ) {
+            $hash2{$value} = $key;
         }
-        my @nkey = sort keys %hash2;
-        my $latestmember = $hash2{$nkey[-1]};
+        my @nkey         = sort keys %hash2;
+        my $latestmember = $hash2{ $nkey[-1] };
         undef %hash2;
         undef @nkey;
 
-        fopen( TTL, ">Variables/memttl.db" )
-          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
+        fopen( TTL, '>Variables/memttl.db' )
+          or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         print {TTL} qq~$membershiptotal|$latestmember~
           or croak "$croak{'print'} TTL";
         fclose(TTL);
-        return 0;
-
+        $return = 0;
     }
-    elsif ( ( $memaction eq 'check_exist' || $memaction eq 'who_is' ) && $user ) {
+    elsif ( ( $memaction eq 'check_exist' || $memaction eq 'who_is' ) && $user )
+    {
         ManageMemberinfo('load');
         while ( ( $curmemb, $value ) = each %memberinf ) {
             ( $curname, $curmail, $curposition, $curpostcnt ) =
               split /[|]/xsm, $value;
-            if ( $memaction eq 'check_exist') {
+            if ( $memaction eq 'check_exist' ) {
                 if ( lc $user eq lc $curmemb && $mychk == 0 ) {
                     undef %memberinf;
-                    return $curmemb;
+                    $return = $curmemb;
                 }
                 elsif ( lc $user eq lc $curmail && $mychk == 2 ) {
                     undef %memberinf;
-                    return $curmail;
+                    $return = $curmail;
                 }
                 elsif ( lc $user eq lc $curname && $mychk == 1 ) {
                     undef %memberinf;
-                    return $curname;
+                    $return = $curname;
                 }
             }
-            elsif ( $memaction eq 'who_is' && ( lc $user eq lc $curmemb || lc $user eq lc $curmail || ($screenlogin && lc $user eq lc $curname ) ) ) {
+            elsif (
+                $memaction eq 'who_is'
+                && (   lc $user eq lc $curmemb
+                    || lc $user eq lc $curmail
+                    || ( $screenlogin && lc $user eq lc $curname ) )
+              )
+            {
                 undef %memberinf;
-                return $curmemb;
+                $return = $curmemb;
             }
         }
     }
-#    return;
+
+    return $return;
 }
 
 sub MemberPostGroup {
@@ -468,23 +480,23 @@ sub MembershipCountTotal {
     require Variables::Memberlist;
     $membertotal = keys %memberlist;
 
-    while (($key, $value) = each %memberlist) {
-       $hash2{$value}=$key;
+    while ( ( $key, $value ) = each %memberlist ) {
+        $hash2{$value} = $key;
     }
-    my @nkey = sort keys %hash2;
-    my $latestmember = $hash2{$nkey[-1]};
+    my @nkey         = sort keys %hash2;
+    my $latestmember = $hash2{ $nkey[-1] };
     undef %hash2;
     undef @nkey;
 
-    fopen( MEMTTL, ">Variables/memttl.db" )
-      or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
+    fopen( MEMTTL, '>Variables/memttl.db' )
+      or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
     print {MEMTTL} qq~$membertotal|$latestmember~
       or croak "$croak{'print'} MEMTTL";
     fclose(MEMTTL);
 
-    if (wantarray) {
+    if ($wantarray) {
         ManageMemberinfo('load');
-        my @inf = @{$memberinf{$latestmember}};
+        my @inf = @{ $memberinf{$latestmember} };
         $latestrealname = $inf[0];
         undef %memberinf;
         return ( $membertotal, $latestmember, $latestrealname );
@@ -549,7 +561,7 @@ qq~<div class="editbg">$reg_txt{'admin_alert_start_more'} $preregged_waiting $re
 sub activation_check {
     my ( $changed, $regtime, $regmember );
     my $timespan = $preregspan * 3600;
-    fopen( INACT, "<Variables/meminactive.db" );
+    fopen( INACT, '<Variables/meminactive.db' );
     my @actlist = <INACT>;
     fclose(INACT);
 
@@ -576,8 +588,9 @@ sub activation_check {
     if ($changed) {
 
         # re-open inactive list for update if changed
-        fopen( INACT, ">Variables/meminactive.db", 1 );
-        print {INACT} @outlist or croak "$croak{'print'} INACT";
+        $prnout = join q{}, @outlist;
+        fopen( INACT, '>Variables/meminactive.db', 1 );
+        print {INACT} $prnout or croak "$croak{'print'} INACT";
         fclose(INACT);
     }
     return;
@@ -590,9 +603,9 @@ sub MakeStealthURL {
     my ($theurl) = @_;
     if ($stealthurl) {
         $theurl =~
-s/([^\w\"\=\[\]]|[\n\b]|\A)\\*(\w+:\/\/[\w\~\.\;\:\,\$\-\+\!\*\?\/\=\&\@\#\%]+\.[\w\~\;\:\$\-\+\!\*\?\/\=\&\@\#\%]+[\w\~\;\:\$\-\+\!\*\?\/\=\&\@\#\%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=$2/isgm;
+s/([^\w"=\[\]]|[\n\b]|\A)\\*(\w+:\/\/[\w\~.;:,$\-+!*?\/=&@#%]+[.][\w~;:$\-+!*?\/=&@#%]+[\w~:\-+$;!*?\/=&@#%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=$2/igxsm;
         $theurl =~
-s/([^\"\=\[\]\/\:\.(\:\/\/\w+)]|[\n\b]|\A)\\*(www\.[^\.][\w\~\.\;\:\,\$\-\+\!\*\?\/\=\&\@\#\%]+\.[\w\~\;\:\$\-\+\!\*\?\/\=\&\@\#\%]+[\w\~\;\:\$\-\+\!\*\?\/\=\&\@\#\%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$2/isgm;
+s/([^"=\[\]\/:.(\:\/\/\w+)]|[\n\b]|\A)\\*(www[.][^.][\w~.;:,$\-+!*?\/=&@#%]+[.][\w~;:$\-+!*?\/=&@#%]+[\w~:\-+$;!*?\/=&@#%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$2/igxsm;
     }
     return $theurl;
 }
@@ -659,9 +672,9 @@ sub Rearrange_Sticky {
             $mnum,     $msub,      $mname, $memail, $mdate,
             $mreplies, $musername, $micon, $mstate
         ) = split /[|]/xsm, $_;
-        if ( $mstate =~ /(s|a)/ism && $mnum eq $stkynum ) { $stky = $n; }
-        if ( $mstate =~ /(s|a)/ism ) { push @stickies, $_; $n++; }
-        if ( $mstate =~ /s/ism ) { $_ = q{}; }
+        if ( $mstate =~ /[sa]/ixsm && $mnum eq $stkynum ) { $stky = $n; }
+        if ( $mstate =~ /[sa]/ixsm ) { push @stickies, $_; $n++; }
+        if ( $mstate =~ /s/ixsm ) { $_ = q{}; }
     }
     if ( $direction eq 'down' && $stky != $#stickies ) {
         $i = $stky;

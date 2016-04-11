@@ -13,13 +13,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-#use warnings;
-#no warnings qw(uninitialized once redefine);
+# use warnings;
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
 our $VERSION = '2.7.00';
 
-$eventcalpmver = 'YaBB 2.7.00 $Revision$';
+$eventcalpmver  = 'YaBB 2.7.00 $Revision$';
 @eventcalpmmods = ();
 if (@eventcalpmmods) {
     $eventcalpmmods = 1;
@@ -40,11 +40,13 @@ get_template('Calendar');
 if ( eval { require "$vardir/eventcalIcon.txt"; 1 } ) {
     $i = 0;
     while ( $CalIconURL[$i] ) {
-        $cal_icon{"$CalIconURL[$i]"} = qq~<img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="$CalIDescription[$i]" />~;
-        $cal_icon_bg{"$CalIconURL[$i]"} = qq~$yyhtml_root/EventIcons/$CalIconURL[$i]~;
+        $cal_icon{"$CalIconURL[$i]"} =
+qq~<img src="$yyhtml_root/EventIcons/$CalIconURL[$i]" alt="$CalIDescription[$i]" />~;
+        $cal_icon_bg{"$CalIconURL[$i]"} =
+          qq~$yyhtml_root/EventIcons/$CalIconURL[$i]~;
         $var_cal{"$CalIconURL[$i]"} = $CalIDescription[$i];
         $add_cal_icon[$i] = qq~$CalIconURL[$i]|$CalIDescription[$i]~;
-    $i++;
+        $i++;
     }
 }
 
@@ -62,8 +64,8 @@ var jsCal = new Hash(
 'eventsport', '$cal_icon_bg{'eventsport'}',
 'eventmedia', '$cal_icon_bg{'eventmedia'}',
 'eventmeeting', '$cal_icon_bg{'eventmeeting'}'~;
-for $i (@add_cal_icon) {
-     my($i_a,$i_b) = split /[|]/xsm, $i;
+foreach my $i (@add_cal_icon) {
+    my ( $i_a, $i_b ) = split /[|]/xsm, $i;
     $jsCal .= qq~,\n'$i_a', '$yyhtml_root/EventIcons/$i_a'~;
 }
 $jsCal .= qq~);\n~;
@@ -79,22 +81,19 @@ var jsCaltxt = new Hash(
 'eventsport', '$var_cal{'eventsport'}',
 'eventmedia', '$var_cal{'eventmedia'}',
 'eventmeeting', '$var_cal{'eventmeeting'}'~;
-for $i (@add_cal_icon) {
-     my($i_a,$i_b) = split /[|]/xsm, $i; #
+foreach my $i (@add_cal_icon) {
+    my ( $i_a, $i_b ) = split /[|]/xsm, $i;
     $jsCal_txt .= qq~,\n'$i_a', '$i_b'~;
 }
 $jsCal_txt .= qq~);\n~;
 
 my $mytimeselected =
-      ( $forum_default || !${ $uid . $username }{'timeselect'} )
-      ? $timeselected
-      : ${ $uid . $username }{'timeselect'};
+  ( $forum_default || !${ $uid . $username }{'timeselect'} )
+  ? $timeselected
+  : ${ $uid . $username }{'timeselect'};
 
 my $timeord = 0;
-if (   $mytimeselected == 8
-    || $mytimeselected == 6
-    || $mytimeselected == 3
-    || $mytimeselected == 2 ) {
+if ( $mytimeselected =~ /[8632]/xsm ) {
     $timeord = 1;
 }
 
@@ -114,17 +113,17 @@ sub eventcal {
     elsif ( $CalEventPerms eq q{} ) { $Allow_Event_Imput = 1; }
     elsif ( $iamguest && $CalEventPerms ) { $Allow_Event_Imput = 0; }
     else {
-      TOPLOOP: for my $element ( split /,/xsm, $CalEventPerms ) {
+      TOPLOOP: foreach my $element ( split /,/xsm, $CalEventPerms ) {
             if ( $element eq ${ $uid . $username }{'position'} ) {
                 $Allow_Event_Imput = 1;
                 last;
             }
-            for ( split /,/xsm, $memberaddgroup{$username} ) {
+            foreach ( split /,/xsm, $memberaddgroup{$username} ) {
                 if ( $element eq $_ ) { $Allow_Event_Imput = 1; last TOPLOOP; }
             }
         }
         if ( !$Allow_Event_Imput && $CalEventMods ) {
-            for ( split /,/xsm, $CalEventMods ) {
+            foreach ( split /,/xsm, $CalEventMods ) {
                 if ( $_ eq $username ) { $Allow_Event_Imput = 1; last; }
             }
         }
@@ -164,7 +163,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
     }
 
     my $newdate = $date;
-    my $toffs = 0;
+    my $toffs   = 0;
     if ($enabletz) {
         $toffs = toffs($date);
     }
@@ -192,7 +191,6 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
         $year = $INFO{'calyear'};
         $mon  = $INFO{'calmon'} - 1;
     }
-#    timeformatcal($date);    # get only correct $mytimeselected
 
     # Time/Days end
 
@@ -218,9 +216,9 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
     if ( $next_mon < 10 ) { $next_mon = "0$next_mon"; }
     if ( $last_mon < 10 ) { $last_mon = "0$last_mon"; }
     $next_link =
-qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$next_mon;calyear=$next_year;" title="$stnextname $next_year"> -&raquo;</a>~;
+qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$next_mon;calyear=$next_year;" title="$stnextname $next_year">&raquo;</a>~;
     $last_link =
-qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_year" title="$stlastname $last_year">&laquo;- </a>~;
+qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_year" title="$stlastname $last_year">&laquo;</a>~;
 
     # Get Navi end
 
@@ -249,7 +247,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
 
     # Add Events and GoTo begin
 
-    for my $i ( 1 .. 31 ) {
+    foreach my $i ( 1 .. 31 ) {
         my $sel = q{};
         if ( $mday == $i && !$sel_day ) {
             $sel = ' selected="selected"';
@@ -267,7 +265,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
           . qq~"$sel>$i</option>\n~;
     }
 
-    for my $i ( 1 .. 12 ) {
+    foreach my $i ( 1 .. 12 ) {
         my $sel = q{};
         if ( $mon == $i && !$sel_mon ) {
             $sel = ' selected="selected"';
@@ -288,7 +286,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
     my $gyears3 = $year - 3;
     my $gyears2 = $year - 2;
     my $gyears1 = $year - 1;
-    for my $i ( $year .. ( $year + 3 ) ) {
+    foreach my $i ( $year .. ( $year + 3 ) ) {
         my $sel = q{};
         if ( $year == $i && !$sel_year ) {
             $sel = ' selected="selected"';
@@ -332,8 +330,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     </select>~;
 
     my $addevdate;
-    if ( $timeord == 1 )
-    {
+    if ( $timeord == 1 ) {
         $addevdate     = $sdays . $smonths;
         $calgotobox_dm = $boxdays . $boxmonths;
     }
@@ -384,7 +381,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             || ( $CalEventNoName == 1 && !$iamguest ) )
         {
             $option_noname = $mycal_noname;
-            $option_noname =~ s/{yabb cecknonam}/$cecknonam/sm;
+            $option_noname =~ s/\Q{yabb cecknonam}\E/$cecknonam/xsm;
         }
 
         if ( $iamadmin || $iamgmod || ( $CalEventPrivate == 1 && !$iamguest ) )
@@ -497,15 +494,15 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
             $iamguest
           ? $mycal_guest_fields
           : q{};
-        $guestpost_fields =~ s/{yabb name}/$FORM{'name'}/sm;
-        $guestpost_fields =~ s/{yabb email}/$FORM{'email'}/sm;
+        $guestpost_fields =~ s/\Q{yabb name}\E/$FORM{'name'}/xsm;
+        $guestpost_fields =~ s/\Q{yabb email}\E/$FORM{'email'}/xsm;
 
         if ( $iamguest && $gpvalid_en ) {
             require Sources::Decoder;
             validation_code();
             $verification_field = $mycal_validation;
-            $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
-            $verification_field =~ s/{yabb flood_text}/$flood_text/sm;
+            $verification_field =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
+            $verification_field =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
         }
         if (   $iamguest
             && $spam_questions_gp
@@ -518,12 +515,14 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
                   qq~<br />$var_cal{'verification_question_case'}~;
             }
             $mycalout_spamquestion = $mycal_spamquest;
-            $mycalout_spamquestion =~ s/{yabb spam_question}/$spam_question/sm;
             $mycalout_spamquestion =~
-s/{yabb verification_question_desc}/$verification_question_desc/sm;
+              s/\Q{yabb spam_question}\E/$spam_question/xsm;
             $mycalout_spamquestion =~
-              s/{yabb spam_question_id}/$spam_question_id/sm;
-            $mycalout_spamquestion =~ s/{yabb spam_question_image}/$spam_image/sm;
+s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
+            $mycalout_spamquestion =~
+              s/\Q{yabb spam_question_id}\E/$spam_question_id/xsm;
+            $mycalout_spamquestion =~
+              s/\Q{yabb spam_question_image}\E/$spam_image/xsm;
         }
         if ($iamguest) {
             $liveusernamelink =
@@ -557,15 +556,14 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
         $my_private = q~<span id="ev_private"></span>~;
 
         $messageblock = $mycal_liveprev;
-        $messageblock =~ s/{yabb css}/$css/gsm;
-        $messageblock =~ s/{yabb eventuserlink}/$liveusernamelink/gsm;
-        $messageblock =~ s/{yabb cdate}/<span id="cdate"><\/span>/gsm;
-        $messageblock =~ s/{yabb my_cal_icon}/$livemsgimg/gsm;
-        $messageblock =~ s/{yabb my_cal_private}/$my_private/sm;
-        $messageblock =~ s/{yabb icon_text}/$my_evtitle/sm;
-        $messageblock =~
-          s/{yabb message}/<span id="savemess"><\/span>/gsm;
-        $messageblock =~ s/{yabb (.+?)}//gsm;
+        $messageblock =~ s/\Q{yabb css}\E/$css/gxsm;
+        $messageblock =~ s/\Q{yabb eventuserlink}\E/$liveusernamelink/gxsm;
+        $messageblock =~ s/\Q{yabb cdate}\E/<span id="cdate"><\/span>/gxsm;
+        $messageblock =~ s/\Q{yabb my_cal_icon}\E/$livemsgimg/gxsm;
+        $messageblock =~ s/\Q{yabb my_cal_private}\E/$my_private/xsm;
+        $messageblock =~ s/\Q{yabb icon_text}\E/$my_evtitle/xsm;
+        $messageblock =~ s/\Q{yabb message}\E/<span id="savemess"><\/span>/gxsm;
+        $messageblock =~ s/\Q{yabb \E(.+?)}//gxsm;
 
         $my_postsection_ajx = my_check_prev();
     }
@@ -612,26 +610,27 @@ $my_subcheck
 $mycalout_addevent
 ~;
 
-    $mycalout_post =~ s/{yabb calevent}/$var_cal{'calevent'}/sm;
-    $mycalout_post =~ s/{yabb addevdate}/$addevdate/sm;
-    $mycalout_post =~ s/{yabb option_noname}/$option_noname/sm;
-    $mycalout_post =~ s/{yabb mycalout_caltype}/$mycalout_caltype/sm;
-    $mycalout_post =~ s/{yabb mycalout_calicon}/$mycalout_calicon/sm;
-    $mycalout_post =~ s/{yabb calicon}/$calicon/gsm;
-    $mycalout_post =~ s/{yabb caliconimg}/$cal_icon_bg{$calicon}/gsm;
-    $mycalout_post =~ s/{yabb mycalout_cthelp}/$mycalout_cthelp/sm;
-    $mycalout_post =~ s/{yabb mycalout_post2}/$mycalout_post2/sm;
-    $mycalout_post =~ s/{yabb mycalout_googie}/$mycalout_googie/sm;
-    $mycalout_post =~ s/{yabb mycalout_smilies}/$mycalout_smilies/sm;
-    $mycalout_post =~ s/{yabb mycalout_post3}/$mycalout_post3/sm;
-    $mycalout_post =~ s/{yabb mycalout_chars}/$mycalout_chars/sm;
-    $mycalout_post =~ s/{yabb mycalout_validation}/$verification_field/sm;
-    $mycalout_post =~ s/{yabb guestpost_fields}/$guestpost_fields/sm;
-    $mycalout_post =~ s/{yabb mycalout_spamquestion}/$mycalout_spamquestion/sm;
-    $mycalout_post =~ s/{yabb nscheck}/$nscheck/sm;
-    $mycalout_post =~ s/{yabb mycalout_send}/$mycalout_send/sm;
-    $mycalout_post =~ s/{yabb messageblock}/$messageblock/sm;
-    $mycalout_post =~ s/{yabb my_postsection_ajx}/$my_postsection_ajx/sm;
+    $mycalout_post =~ s/\Q{yabb calevent}\E/$var_cal{'calevent'}/xsm;
+    $mycalout_post =~ s/\Q{yabb addevdate}\E/$addevdate/xsm;
+    $mycalout_post =~ s/\Q{yabb option_noname}\E/$option_noname/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_caltype}\E/$mycalout_caltype/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_calicon}\E/$mycalout_calicon/xsm;
+    $mycalout_post =~ s/\Q{yabb calicon}\E/$calicon/gxsm;
+    $mycalout_post =~ s/\Q{yabb caliconimg}\E/$cal_icon_bg{$calicon}/gxsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_cthelp}\E/$mycalout_cthelp/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_post2}\E/$mycalout_post2/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_googie}\E/$mycalout_googie/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_smilies}\E/$mycalout_smilies/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_post3}\E/$mycalout_post3/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_chars}\E/$mycalout_chars/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_validation}\E/$verification_field/xsm;
+    $mycalout_post =~ s/\Q{yabb guestpost_fields}\E/$guestpost_fields/xsm;
+    $mycalout_post =~
+      s/\Q{yabb mycalout_spamquestion}\E/$mycalout_spamquestion/xsm;
+    $mycalout_post =~ s/\Q{yabb nscheck}\E/$nscheck/xsm;
+    $mycalout_post =~ s/\Q{yabb mycalout_send}\E/$mycalout_send/xsm;
+    $mycalout_post =~ s/\Q{yabb messageblock}\E/$messageblock/xsm;
+    $mycalout_post =~ s/\Q{yabb my_postsection_ajx}\E/$my_postsection_ajx/xsm;
 
     # YaBBC Section end
 
@@ -649,7 +648,7 @@ $mycalout_addevent
         my @birthmembers = <EVENTBIRTH>;
         fclose(EVENTBIRTH);
 
-        for my $x (@birthmembers) {
+        foreach my $x (@birthmembers) {
             chomp $x;
             (
                 $user_bdyear, $user_bdmon,  $user_bdday,
@@ -675,7 +674,7 @@ $mycalout_addevent
                 $age       = $bd_y - $user_bdyear;
             }
 
-            %{ bday . $bd_year . $user_bdmon . $user_bdday } = (
+            %{ 'bday' . $bd_year . $user_bdmon . $user_bdday } = (
                 'caleventdate' => "$bd_year$user_bdmon$user_bdday",
                 'calyear'      => "$bd_year",
                 'calmon'       => "$user_bdmon",
@@ -699,7 +698,7 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
     fopen( EVENTFILE, "$vardir/eventcal.db" );
     my @calinput = <EVENTFILE>;
     fclose(EVENTFILE);
-    for my $eventline ( sort @calinput ) {
+    foreach my $eventline ( sort @calinput ) {
         chomp $eventline;
         my (
             $cal_date,  $cal_type,  $cal_name, $cal_time,
@@ -713,7 +712,7 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
 
         if ( $cal_type == 2 ) {
             next if $cal_name ne $username;
-            %{ private . $c_year . $c_mon . $c_day . $username . '2' } =
+            %{ 'private' . $c_year . $c_mon . $c_day . $username . '2' } =
               ( 'private' => 2, );
         }
         elsif ( $cal_type == 1 && $iamguest ) { next; }
@@ -754,7 +753,7 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
         if   ( $CalEventNoName == 2 ) { $cal_noname = 1; }
         else                          { $cal_noname = $cal_noname; }
 
-        %{ event . $c_year . $c_mon . $c_day } = (
+        %{ 'event' . $c_year . $c_mon . $c_day } = (
             'caleventdate' => $cal_date,
             'calyear'      => $c_year,
             'calmon'       => $c_mon,
@@ -792,13 +791,13 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
         $d_day      = substr $event_date, 6, 2;
 
         $mybtime   = stringtotime(qq~$d_mon/$d_day/$d_year~);
-        $mybtimein = timeformatcal($mybtime, $Show_caltoday);
+        $mybtimein = timeformatcal( $mybtime, $Show_caltoday );
         $cdate     = dtonly($mybtimein);
 
         if ( $INFO{'showmini'} ) {
             $mycalout_top = $mycalout_gottobox;
 
-            for my $cal_events ( sort @caldata ) {
+            foreach my $cal_events ( sort @caldata ) {
                 my (
                     $cdat, $ctyp,   $cnam,  $ctim, $chide, $ceve,
                     $cico, $cnonam, $ctyp2, $ns,   $g
@@ -830,7 +829,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
 
                 if ( $event_date == $cdat && !$INFO{'edit_cal_even'} ) {
                     $eventfound = 1;
-                    if ( $g eq 'g' || lc $cnam eq 'guest') {
+                    if ( $g eq 'g' || lc $cnam eq 'guest' ) {
                         $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
                     }
                     elsif ( $g ne 'g' && !-e "$memberdir/$cnam.vars" ) {
@@ -869,22 +868,25 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                         }
                         $myevent_ann = q{};
                         $mycalout_greet .= $mycal_greet;
-                        $mycalout_greet =~ s/{yabb cdate}/$cdate/sm;
+                        $mycalout_greet =~ s/\Q{yabb cdate}\E/$cdate/xsm;
                         $mycalout_greet =~
-                          s/{yabb eventbduserlink}/$eventbduserlink/sm;
-                        $mycalout_greet =~ s/{yabb greet}/$greet/sm;
-                        $mycalout_greet =~ s/{yabb myevent_ann}/$myevent_ann/sm;
+                          s/\Q{yabb eventbduserlink}\E/$eventbduserlink/xsm;
+                        $mycalout_greet =~ s/\Q{yabb greet}\E/$greet/xsm;
                         $mycalout_greet =~
-                          s/{yabb my_cal_icon}/$cal_icon{'eventbd'}/sm;
+                          s/\Q{yabb myevent_ann}\E/$myevent_ann/xsm;
+                        $mycalout_greet =~
+                          s/\Q{yabb my_cal_icon}\E/$cal_icon{'eventbd'}/xsm;
+
                         if ( !${ $uid . $username }{'postlayout'} ) {
                             $bdtxtsz = q{};
                         }
                         else {
-                            ( undef, undef, $txtsz, undef ) = split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+                            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+                              ${ $uid . $username }{'postlayout'};
                             if ( $txtsz < 60 ) { $txtsz = 100; }
                             $bdtxtsz = qq~ style="font-size:$txtsz%;"~;
                         }
-                        $mycalout_greet =~ s/{yabb bdtxtsz}/$bdtxtsz/sm;
+                        $mycalout_greet =~ s/\Q{yabb bdtxtsz}\E/$bdtxtsz/xsm;
                     }
                     else {
                         $mycalout_greet .= $mycal_greet_b;
@@ -902,7 +904,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
 
                         $mycalout_greet .= $mycal_greet_c;
                         $mycalout_greet =~
-                          s/{yabb event_message}/$event_message/sm;
+                          s/\Q{yabb event_message}\E/$event_message/xsm;
 
                         if (
                             !$iamguest
@@ -923,9 +925,10 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                 }
             }
 
-            if (   !exists( ${ event . $d_year . $d_mon . $d_day }{'calday'} )
+            if (   !exists( ${ 'event' . $d_year . $d_mon . $d_day }{'calday'} )
                 && !$eventfound
-                && !exists( ${ bday . $d_year . $d_mon . $d_day }{'calday'} ) )
+                && !exists( ${ 'bday' . $d_year . $d_mon . $d_day }{'calday'} )
+              )
             {
                 $mycalout_no = $mycalout_noevent;
             }
@@ -933,23 +936,27 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                 $ShowEventAddLink2 =
 qq~<span class="small"> $cal_icon{'eventmoreadd'} <a href="$scripturl?action=eventcal;calshow=1;addnew=1">$var_calpost{'getaddevent'}</a></span><br />~;
             }
-            if ( $Show_BirthdaysList && (!$iamguest || $Show_BirthdaysList != 1) ) {
+            if ( $Show_BirthdaysList
+                && ( !$iamguest || $Show_BirthdaysList != 1 ) )
+            {
                 $ShowBirthdaysLink2 =
 qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
             }
             if ( $ShowEventAddLink2 || $ShowBirthdaysLink2 ) {
                 $event_link = $myevent_link;
-                $event_link =~ s/{yabb ShowBirthdaysLink2}/$ShowBirthdaysLink2/sm;
-                $event_link =~ s/{yabb ShowEventAddLink2}/$ShowEventAddLink2/sm;
+                $event_link =~
+                  s/\Q{yabb ShowBirthdaysLink2}\E/$ShowBirthdaysLink2/xsm;
+                $event_link =~
+                  s/\Q{yabb ShowEventAddLink2}\E/$ShowEventAddLink2/xsm;
             }
             $yymain .= $mycalout_showevent;
-            $yymain =~ s/{yabb mycalout_top}/$mycalout_top/sm;
-            $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
-            $yymain =~ s/{yabb mycalout_greet}/$mycalout_greet/sm;
-            $yymain =~ s/{yabb mycalout_no}/$mycalout_no/sm;
-            $yymain =~ s/{yabb myevent_ann}/$myevent_ann/sm;
-            $yymain =~ s/{yabb nscheck}/$nscheck/sm;
-            $yymain =~ s/{yabb ShowEventAddLink2}/$event_link/sm;
+            $yymain =~ s/\Q{yabb mycalout_top}\E/$mycalout_top/xsm;
+            $yymain =~ s/\Q{yabb calgotobox}\E/$calgotobox/xsm;
+            $yymain =~ s/\Q{yabb mycalout_greet}\E/$mycalout_greet/xsm;
+            $yymain =~ s/\Q{yabb mycalout_no}\E/$mycalout_no/xsm;
+            $yymain =~ s/\Q{yabb myevent_ann}\E/$myevent_ann/xsm;
+            $yymain =~ s/\Q{yabb nscheck}\E/$nscheck/xsm;
+            $yymain =~ s/\Q{yabb ShowEventAddLink2}\E/$event_link/xsm;
 
             $yytitle = $var_cal{'yytitle'};
             template();
@@ -961,7 +968,7 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
         if ( $INFO{'edit_cal_even'} || $INFO{'showthisdate'} ) {
             $mycalout_top = $mycalout_gottobox;
 
-            for my $cal_events ( sort @caldata ) {
+            foreach my $cal_events ( sort @caldata ) {
                 my (
                     $cdat, $ctyp,   $cnam,  $ctim, $chide, $ceve,
                     $cico, $cnonam, $ctyp2, $ns,   $g
@@ -980,7 +987,6 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
                 $delete_event = q{};
                 $edit_event   = q{};
                 $icon_text    = $var_cal{$cico};
-#                if ( !$var_cal{$cico} ) { $icon_text = calicontext($cico); }
 
                 if ( $ns eq 'NS' ) {
                     $message = q~[noparse]~ . $ceve . q~[/noparse]~;
@@ -992,7 +998,7 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
 
                 if ( $event_id eq $ctim && $cdat == $event_date ) {
                     $eventfound = 1;
-                    if ( $g eq 'g'|| lc $cnam eq 'guest' ) {
+                    if ( $g eq 'g' || lc $cnam eq 'guest' ) {
                         $eventuserlink = qq~$cnam ($var_cal{'guest'})~;
                     }
                     elsif ( $g ne 'g' && !-e "$memberdir/$cnam.vars" ) {
@@ -1029,10 +1035,10 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
                               qq~$var_cal{'calis'} $ceve $var_cal{'calold'}~;
                         }
                         $mycalout_greet .= $mycal_greet;
-                        $mycalout_greet =~ s/{yabb cdate}/$cdate/sm;
+                        $mycalout_greet =~ s/\Q{yabb cdate}\E/$cdate/xsm;
                         $mycalout_greet =~
-                          s/{yabb eventbduserlink}/$eventbduserlink/sm;
-                        $mycalout_greet =~ s/{yabb greet}/$greet/sm;
+                          s/\Q{yabb eventbduserlink}\E/$eventbduserlink/xsm;
+                        $mycalout_greet =~ s/\Q{yabb greet}\E/$greet/xsm;
                     }
                     else {
                         $mycalout_greet .= $mycal_greet_b;
@@ -1046,7 +1052,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         }
                         $mycalout_greet .= $mycal_greet_c;
                         $mycalout_greet =~
-                          s/{yabb event_message}/$event_message/sm;
+                          s/\Q{yabb event_message}\E/$event_message/xsm;
 
                         if (
                             !$iamguest
@@ -1066,27 +1072,29 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         && ( $username eq $cnam || $iamadmin || $iamgmod ) )
                     {
                         $editmessage = $ceve;
-                        $editmessage =~ s/<\//\&lt\;\//isgxm;
-                        $editmessage =~ s/<br \/>/\n/gsm;
-                        $editmessage =~ s/ \&nbsp; \&nbsp; \&nbsp;/\t/igsm;
+                        $editmessage =~ s/<\//\&lt;\//igxsm;
+                        $editmessage =~ s/<br.*?>/\n/gxsm;
+                        $editmessage =~
+                          s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
                         ToChars($editmessage);
 
                         if ( $ns eq 'NS' ) { $nsc = q~checked="checked"~; }
                         $mycalout_greet .= $mycalout_edit_box;
-                        $mycalout_greet =~ s/{yabb event_id}/$event_id/sm;
+                        $mycalout_greet =~ s/\Q{yabb event_id}\E/$event_id/xsm;
                         $mycalout_greet =~
-                          s/{yabb mycalout_post}/$mycalout_post/sm;
-                        $mycalout_greet =~ s/{yabb calevent}/$editmessage/sm;
-                        $mycalout_greet =~ s/{yabb nscheck}/$nsc/sm;
+                          s/\Q{yabb mycalout_post}\E/$mycalout_post/xsm;
                         $mycalout_greet =~
-                          s/{yabb modify}/$cal_icon{'modify'}/sm;
+                          s/\Q{yabb calevent}\E/$editmessage/xsm;
+                        $mycalout_greet =~ s/\Q{yabb nscheck}\E/$nsc/xsm;
+                        $mycalout_greet =~
+                          s/\Q{yabb modify}\E/$cal_icon{'modify'}/xsm;
                     }
                 }
             }
             $yymain .= $mycalout_edit;
-            $yymain =~ s/{yabb mycalout_top}/$mycalout_top/sm;
-            $yymain =~ s/{yabb calgotobox}/$calgotobox/sm;
-            $yymain =~ s/{yabb mycalout_greet}/$mycalout_greet/sm;
+            $yymain =~ s/\Q{yabb mycalout_top}\E/$mycalout_top/xsm;
+            $yymain =~ s/\Q{yabb calgotobox}\E/$calgotobox/xsm;
+            $yymain =~ s/\Q{yabb mycalout_greet}\E/$mycalout_greet/xsm;
 
             $yytitle = $var_cal{'yytitle'};
             template();
@@ -1179,12 +1187,13 @@ qq~\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/calscroller.css" 
           gmtime( $daterechnug + ( 86400 * $DisplayEvents ) );
         $m_cal++;
         $y_cal += 1900;
-        $caleventbegin = "$year" . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
+        $caleventbegin = "$year" . sprintf( '%02d', $mon ) . sprintf '%02d',
+          $mday;
         $caleventend =
           "$y_cal" . sprintf( '%02d', $m_cal ) . sprintf '%02d',
           $d_cal;
     }
-    for my $cal_events ( sort @caldata ) {
+    foreach my $cal_events ( sort @caldata ) {
         my (
             $cdate, $ctype,   $cname,  $ctime, $chide, $cevent,
             $cicon, $cnoname, $ctype2, $ns,    $g
@@ -1222,20 +1231,22 @@ qq~$var_cal{'calcoming'} $var_cal{'calsubtitle'} ($DisplayEvents $var_cal{'calda
 
         if ( $cicon eq q{} ) { $cico = 'eventinfo'; }
         $CalShortEvent ||= 0;
-        my @matches = $cevent =~ /<br \/>/gsm;
+        my @matches   = $cevent =~ /<br.*?>/gxsm;
         my $linecount = @matches;
-        if ( ( $CalShortEvent > 0 && length($cevent) > $CalShortEvent ) || $linecount > 3 ) {
+        if ( ( $CalShortEvent > 0 && length($cevent) > $CalShortEvent )
+            || $linecount > 3 )
+        {
             if ( $ctime ne 'birthday' ) {
                 if ( $enable_ubbc && $No_ShortUbbc == 1 ) {
-                    $cevent =~ s/\[url(.*?)\](.*?)\[\/url\]/$2/isgxm;
-                    $cevent =~ s/\[ftp(.*?)\](.*?)\[\/ftp\]/$2/isgxm;
-                    $cevent =~ s/\[email(.*?)\](.*?)\[\/email\]/$2/isgxm;
-                    $cevent =~ s/\[link(.*?)\](.*?)\[\/link\]/$2/isgxm;
-                    $cevent =~ s/\[img\](.*?)\[\/img\]//isgxm;
-                    $cevent =~ s/\[flash\](.*?)\[\/flash\]//igsxm;
-                    $cevent =~ s/\[b\](.*?)\[\/b\]/*$1*/isgxm;
-                    $cevent =~ s/\[i\](.*?)\[\/i\]/\/$1\//isgxm;
-                    $cevent =~ s/\[u\](.*?)\[\/u\]/_$1_/isgsm;
+                    $cevent =~ s/\[url(.*?)\](.*?)\[\/url\]/$2/igxsm;
+                    $cevent =~ s/\[ftp(.*?)\](.*?)\[\/ftp\]/$2/igxsm;
+                    $cevent =~ s/\[email(.*?)\](.*?)\[\/email\]/$2/igxsm;
+                    $cevent =~ s/\[link(.*?)\](.*?)\[\/link\]/$2/igxsm;
+                    $cevent =~ s/\[img\](.*?)\[\/img\]//igxsm;
+                    $cevent =~ s/\[flash\](.*?)\[\/flash\]//igxsm;
+                    $cevent =~ s/\[b\](.*?)\[\/b\]/*$1*/igxsm;
+                    $cevent =~ s/\[i\](.*?)\[\/i\]/\/$1\//igxsm;
+                    $cevent =~ s/\[u\](.*?)\[\/u\]/_$1_/igxsm;
                     $cevent =~ s/\[.*?\]//gsxm;
                     $cevent =~ s/https?:\/\///igxsm;
                 }
@@ -1265,7 +1276,7 @@ qq~<br /><a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cda
 
         if ( $event_found == 1 ) {
             $mybtime   = stringtotime(qq~$cmon/$cday/$cyear~);
-            $mybtimein = timeformatcal($mybtime, $Show_caltoday);
+            $mybtimein = timeformatcal( $mybtime, $Show_caltoday );
             $cdate     = dtonly($mybtimein);
 
             if ( $showage && $chide ) {
@@ -1335,31 +1346,35 @@ qq~<div class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$
                           qq~$var_cal{'calis'} $cevent $var_cal{'calold'}~;
                     }
                     $outstring .= $mycal_outstring_bday;
-                    $outstring =~ s/{yabb cdate}/$cdate/sm;
-                    $outstring =~ s/{yabb eventbduserlink}/$eventbduserlink/sm;
-                    $outstring =~ s/{yabb greet}/$greet/sm;
-                    $outstring =~ s/{yabb my_cal_icon}/$cal_icon{'eventbd'}/sm;
+                    $outstring =~ s/\Q{yabb cdate}\E/$cdate/xsm;
+                    $outstring =~
+                      s/\Q{yabb eventbduserlink}\E/$eventbduserlink/xsm;
+                    $outstring =~ s/\Q{yabb greet}\E/$greet/xsm;
+                    $outstring =~
+                      s/\Q{yabb my_cal_icon}\E/$cal_icon{'eventbd'}/xsm;
                 }
                 elsif ( $ctype == 2 ) {
                     $outstring .= $mycal_outstring_private;
-                    $outstring =~ s/{yabb cicon}/$cal_icon{$cicon}/sm;
-                    $outstring =~ s/{yabb cdate}/$cdate/sm;
-                    $outstring =~ s/{yabb icon_text}/$icon_text/gsm;
-                    $outstring =~ s/{yabb eventuserlink}/$eventuserlink/sm;
-                    $outstring =~ s/{yabb cevent}/$cevent/sm;
+                    $outstring =~ s/\Q{yabb cicon}\E/$cal_icon{$cicon}/xsm;
+                    $outstring =~ s/\Q{yabb cdate}\E/$cdate/xsm;
+                    $outstring =~ s/\Q{yabb icon_text}\E/$icon_text/gxsm;
+                    $outstring =~ s/\Q{yabb eventuserlink}\E/$eventuserlink/xsm;
+                    $outstring =~ s/\Q{yabb cevent}\E/$cevent/xsm;
                     $outstring =~
-                      s/{yabb my_cal_icon}/$cal_icon{'eventprivate'}/sm;
-                    $outstring =~ s/{yabb my_cal_icon_ev}/$cal_icon{$cicon}/sm;
+                      s/\Q{yabb my_cal_icon}\E/$cal_icon{'eventprivate'}/xsm;
+                    $outstring =~
+                      s/\Q{yabb my_cal_icon_ev}\E/$cal_icon{$cicon}/xsm;
 
                 }
                 else {
                     $outstring .= $mycal_outstring;
-                    $outstring =~ s/{yabb cicon}/$cal_icon{$cicon}/sm;
-                    $outstring =~ s/{yabb cdate}/$cdate/sm;
-                    $outstring =~ s/{yabb icon_text}/$icon_text/gsm;
-                    $outstring =~ s/{yabb eventuserlink}/$eventuserlink/sm;
-                    $outstring =~ s/{yabb cevent}/$cevent/sm;
-                    $outstring =~ s/{yabb my_cal_icon_ev}/$cal_icon{$cicon}/sm;
+                    $outstring =~ s/\Q{yabb cicon}\E/$cal_icon{$cicon}/xsm;
+                    $outstring =~ s/\Q{yabb cdate}\E/$cdate/xsm;
+                    $outstring =~ s/\Q{yabb icon_text}\E/$icon_text/gxsm;
+                    $outstring =~ s/\Q{yabb eventuserlink}\E/$eventuserlink/xsm;
+                    $outstring =~ s/\Q{yabb cevent}\E/$cevent/xsm;
+                    $outstring =~
+                      s/\Q{yabb my_cal_icon_ev}\E/$cal_icon{$cicon}/xsm;
                 }
             }
         }
@@ -1374,7 +1389,7 @@ qq~<div class="small">$cal_icon{$cicon} $cdate <b>$icon_text</b> $eventuserlink$
 
     # Print Mini EventCal begin
 
-    if ($Show_BirthdaysList && ( !$iamguest || $Show_BirthdaysList != 1 ) ) {
+    if ( $Show_BirthdaysList && ( !$iamguest || $Show_BirthdaysList != 1 ) ) {
         $ShowBirthdaysLink =
 qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birthdaylist">$var_cal{'calbdaylist'}</a></span>~;
     }
@@ -1388,22 +1403,22 @@ qq~<br /><span class="small"> $cal_icon{'eventmoreadd'} <a href="$scripturl?acti
     if ( $mon == 2 ) {
         if ( $year % 4 == 0 ) { $days = 29; }
     }
-    for my $i ( 1 .. 7 ) {
+    foreach my $i ( 1 .. 7 ) {
         $st = "calday_$i";
         $dstr[ $i - 1 ] = $mycal_showday_dstr;
-        $dstr[ $i - 1 ] =~ s/{yabb cal_day}/$cal_day/sm;
-        $dstr[ $i - 1 ] =~ s/{yabb var_cal_st}/$var_cal{$st}/sm;
+        $dstr[ $i - 1 ] =~ s/\Q{yabb cal_day}\E/$cal_day/xsm;
+        $dstr[ $i - 1 ] =~ s/\Q{yabb var_cal_st}\E/$var_cal{$st}/xsm;
     }
     $dcnt  = 0;
     $e_day = $wday1;
     if ( $wday1 > 1 ) {
-        for my $i ( 1 .. ( $wday1 - 1 ) ) {
+        foreach my $i ( 1 .. ( $wday1 - 1 ) ) {
             $cal_out_d .= $mycal_showday_blnk;
         }
     }
     if ( !$Event_TodayColor ) { $Event_TodayColor = '#FF0000'; }
 
-    for my $i ( 1 .. $days ) {
+    foreach my $i ( 1 .. $days ) {
         $dddd = $i;
         if ( $dddd < 10 ) { $dddd = "0$dddd"; }
 
@@ -1417,24 +1432,24 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
         }
 
         $cal_pic = q{};
-        if (  !exists( ${ event . $year . $view_mon . $dddd }{'calday'} )
-            && exists( ${ bday . $year . $view_mon . $dddd }{'calday'} ) )
+        if (  !exists( ${ 'event' . $year . $view_mon . $dddd }{'calday'} )
+            && exists( ${ 'bday' . $year . $view_mon . $dddd }{'calday'} ) )
         {
             $cal_pic = "$cal_icon_bg{'eventbd'}";
         }
-        if ( exists( ${ event . $year . $view_mon . $dddd }{'calday'} )
-            && !exists( ${ bday . $year . $view_mon . $dddd }{'calday'} ) )
+        if ( exists( ${ 'event' . $year . $view_mon . $dddd }{'calday'} )
+            && !exists( ${ 'bday' . $year . $view_mon . $dddd }{'calday'} ) )
         {
             $cal_pic = "$cal_icon_bg{'eventinfo'}";
         }
-        if (   exists( ${ event . $year . $view_mon . $dddd }{'calday'} )
-            && exists( ${ bday . $year . $view_mon . $dddd }{'calday'} ) )
+        if (   exists( ${ 'event' . $year . $view_mon . $dddd }{'calday'} )
+            && exists( ${ 'bday' . $year . $view_mon . $dddd }{'calday'} ) )
         {
             $cal_pic = "$cal_icon_bg{'eventinfobd'}";
         }
         if (
             exists(
-                ${ private . $year . $view_mon . $dddd . $username . '2' }
+                ${ 'private' . $year . $view_mon . $dddd . $username . '2' }
                   {'private'}
             )
           )
@@ -1443,21 +1458,21 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
         }
         if ($Show_MiniCalIcons) { $cal_pic = q{}; }
 
-        if (   exists( ${ bday . $year . $view_mon . $dddd }{'calday'} )
-            || exists( ${ event . $year . $view_mon . $dddd }{'calday'} ) )
+        if (   exists( ${ 'bday' . $year . $view_mon . $dddd }{'calday'} )
+            || exists( ${ 'event' . $year . $view_mon . $dddd }{'calday'} ) )
         {
             $cal_out_dy .= $mycal_showday;
-            $cal_out_dy =~ s/{yabb cal_days}/$cal_days/sm;
-            $cal_out_dy =~ s/{yabb cal_pic}/$cal_pic/sm;
-            $cal_out_dy =~ s/{yabb year}/$year/sm;
-            $cal_out_dy =~ s/{yabb view_mon}/$view_mon/sm;
-            $cal_out_dy =~ s/{yabb dddd}/$dddd/sm;
-            $cal_out_dy =~ s/{yabb sel}/$sel/sm;
+            $cal_out_dy =~ s/\Q{yabb cal_days}\E/$cal_days/xsm;
+            $cal_out_dy =~ s/\Q{yabb cal_pic}\E/$cal_pic/xsm;
+            $cal_out_dy =~ s/\Q{yabb year}\E/$year/xsm;
+            $cal_out_dy =~ s/\Q{yabb view_mon}\E/$view_mon/xsm;
+            $cal_out_dy =~ s/\Q{yabb dddd}\E/$dddd/xsm;
+            $cal_out_dy =~ s/\Q{yabb sel}\E/$sel/xsm;
         }
         else {
             $cal_out_dy .= $mycal_showday_b;
-            $cal_out_dy =~ s/{yabb cal_days}/$cal_days/sm;
-            $cal_out_dy =~ s/{yabb sel}/$sel/sm;
+            $cal_out_dy =~ s/\Q{yabb cal_days}\E/$cal_days/xsm;
+            $cal_out_dy =~ s/\Q{yabb sel}/$sel\E/xsm;
         }
 
         $e_day++;
@@ -1473,14 +1488,14 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     $endday = $endrow - $e_day + 2;
     if ( $endday < 8 ) {
         if ( !$cal_out && $endday > 1 ) { $cal_out = $mycal_tr; }
-        for my $i ( 1 .. ( $endday - 1 ) ) {
+        foreach my $i ( 1 .. ( $endday - 1 ) ) {
             $cal_out_blnk .= $mycal_showday_blnk;
         }
     }
     $cal_out = $mycal_dy_top;
-    $cal_out =~ s/{yabb cal_out_d}/$cal_out_d/sm;
-    $cal_out =~ s/{yabb cal_out_dy}/$cal_out_dy/sm;
-    $cal_out =~ s/{yabb cal_out_blnk}/$cal_out_blnk/sm;
+    $cal_out =~ s/\Q{yabb cal_out_d}\E/$cal_out_d/xsm;
+    $cal_out =~ s/\Q{yabb cal_out_dy}\E/$cal_out_dy/xsm;
+    $cal_out =~ s/\Q{yabb cal_out_blnk}\E/$cal_out_blnk/xsm;
 
     if ($ShowSunday) {
         $weekdays =
@@ -1496,22 +1511,21 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     # EventCal Output begin
 
     $cal_displayssi .= $mycal_displayssi;
-    $cal_displayssi =~ s/{yabb last_link}/$last_link/sm;
-    $cal_displayssi =~ s/{yabb mon_name}/$mon_name/sm;
-    $cal_displayssi =~ s/{yabb year}/$year/sm;
-    $cal_displayssi =~ s/{yabb next_link}/$next_link/sm;
-    $cal_displayssi =~ s/{yabb next_link}/$next_link/sm;
-    $cal_displayssi =~ s/{yabb weekdays}/$weekdays/sm;
-    $cal_displayssi =~ s/{yabb cal_out}/$cal_out/sm;
+    $cal_displayssi =~ s/\Q{yabb last_link}\E/$last_link/gxsm;
+    $cal_displayssi =~ s/\Q{yabb mon_name}\E/$mon_name/gxsm;
+    $cal_displayssi =~ s/\Q{yabb year}\E/$year/gxsm;
+    $cal_displayssi =~ s/\Q{yabb next_link}\E/$next_link/gxsm;
+    $cal_displayssi =~ s/\Q{yabb weekdays}\E/$weekdays/gxsm;
+    $cal_displayssi =~ s/\Q{yabb cal_out}\E/$cal_out/gxsm;
 
     my $cal_display_show = $mycalout_goto_main;
 
     if ( $outstring !~ /$yyhtml_root\//xsm ) {
         $outstring = $my_out_a;
-        $outstring =~ s/{yabb cal_eventinfo}/$cal_icon{'eventinfo'}/sm;
+        $outstring =~ s/\Q{yabb cal_eventinfo}\E/$cal_icon{'eventinfo'}/xsm;
     }
 
-    if ( $action eq 'eventcal' && !$INFO{'calshow'} ) {$INFO{'calshow'} = 1;}
+    if ( $action eq 'eventcal' && !$INFO{'calshow'} ) { $INFO{'calshow'} = 1; }
     if ( $DisplayCalEvents || $INFO{'calshow'} ) {
         $cal_display_calevent = qq~
                 <b>$event_index</b><br />
@@ -1524,19 +1538,19 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
 
         if ( $INFO{'addnew'} == 1 ) {
             $cal_allow .= $mycal_addnew_left;
-            $cal_allow =~ s/{yabb mycalout_post}/$mycalout_post/sm;
-            $cal_allow =~ s/{yabb cal_modify}/$cal_icon{'modify'}/sm;
+            $cal_allow =~ s/\Q{yabb mycalout_post}\E/$mycalout_post/xsm;
+            $cal_allow =~ s/\Q{yabb cal_modify}\E/$cal_icon{'modify'}/xsm;
         }
     }
 
     $cal_display = $mycal_show_ssi;
-    $cal_display =~ s/{yabb cal_display_show}/$cal_display_show/sm;
-    $cal_display =~ s/{yabb calgotobox}/$calgotobox/sm;
-    $cal_display =~ s/{yabb cal_displayssi}/$cal_displayssi/sm;
-    $cal_display =~ s/{yabb ShowBirthdaysLink}/$ShowBirthdaysLink/sm;
-    $cal_display =~ s/{yabb ShowEventAddLink}/$ShowEventAddLink/sm;
-    $cal_display =~ s/{yabb cal_display_calevent}/$cal_display_calevent/sm;
-    $cal_display =~ s/{yabb cal_allow}/$cal_allow/sm;
+    $cal_display =~ s/\Q{yabb cal_display_show}\E/$cal_display_show/xsm;
+    $cal_display =~ s/\Q{yabb calgotobox}\E/$calgotobox/xsm;
+    $cal_display =~ s/\Q{yabb cal_displayssi}\E/$cal_displayssi/xsm;
+    $cal_display =~ s/\Q{yabb ShowBirthdaysLink}\E/$ShowBirthdaysLink/xsm;
+    $cal_display =~ s/\Q{yabb ShowEventAddLink}\E/$ShowEventAddLink/xsm;
+    $cal_display =~ s/\Q{yabb cal_display_calevent}\E/$cal_display_calevent/xsm;
+    $cal_display =~ s/\Q{yabb cal_allow}\E/$cal_allow/xsm;
 
     ## Print EventCal SSI ##
     if    ( $ssicalmode == 1 ) { return $cal_display; }
@@ -1548,15 +1562,14 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
     ## Print EventCal in new window ##
     if ( $INFO{'calshow'} == 1 ) {
         $yymain .= $mycalout_notboard;
-        $yymain =~ s/{yabb cal_display}/$cal_display/gsm;
+        $yymain =~ s/\Q{yabb cal_display}\E/$cal_display/gxsm;
 
         $yytitle = $var_cal{'yytitle'};
         template();
         return;
     }
 
-    $mycalout_board;
-    $mycalout_board =~ s/{yabb cal_display}/$cal_display/sm;
+    $mycalout_board =~ s/\Q{yabb cal_display}\E/$cal_display/xsm;
     return $mycalout_board;
 }
 
@@ -1575,7 +1588,7 @@ sub del_cal {
             fclose(FILE);
 
             fopen( FILE, ">$vardir/eventcal.db" );
-            print {FILE} grep { !/$INFO{'calid'}/sm } @caldata
+            print {FILE} grep { !/$INFO{'calid'}/xsm } @caldata
               or croak "$croak{'print'} eventcal.db";
             fclose(FILE);
         }
@@ -1617,14 +1630,11 @@ sub add_cal {
             Preview( $post_txt{'568'} );
         }
         if ( $FORM{'email'} eq {} ) { Preview("$post_txt{'76'}"); }
-        if ( $FORM{'email'} !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/xsm ) {
+        if ( $FORM{'email'} !~ /^$invalmailchar$/xsm ) {
             Preview("$post_txt{'240'} $post_txt{'69'} $post_txt{'241'}");
         }
-        if (
-            ( $FORM{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm )
-            || ( $FORM{'email'} !~
-                /^.+@\[?(\w|[-.])+\.([a-zA-Z]{2,4}|[0-9]{1,4})\]?$/xsm )
-          )
+        if (   ( $FORM{'email'} =~ /$invalemaila/xsm )
+            || ( $FORM{'email'} !~ /$invalemailb/xsm ) )
         {
             Preview("$post_txt{'500'}");
         }
@@ -1633,9 +1643,9 @@ sub add_cal {
 
     if ( length( $FORM{'message'} ) > 0 ) {
         $calmessage = $FORM{'message'};
-        $calmessage =~ s/\|//gxsm;
+        $calmessage =~ s/[|]//gxsm;
         $calmessage =~ s/\cM//gxsm;
-        $calmessage =~ s/\:\`\(/\:\x27\(/gxsm;
+        $calmessage =~ s/[:][`][(]/\:\x27\(/gxsm;
 
         $calmessage =~ s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
         $calmessage =~ s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
@@ -1643,9 +1653,10 @@ sub add_cal {
           s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
         FromChars($calmessage);
         ToHTML($calmessage);
-        $calmessage =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gsm;
-        $calmessage =~ s/\n/<br \/>/gsm;
+        $calmessage =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
+        $calmessage =~ s/\n/<br \/>/gxsm;
         $calmessage =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
+
         if ($iamguest) {
             $guestname = $FORM{'name'};
             FromChars($guestname);
@@ -1655,7 +1666,7 @@ sub add_cal {
         my @calinput = <EVENTFILE>;
         fclose(EVENTFILE);
         if ( $FORM{'editid'} ) {
-            for my $i ( 0 .. $#calinput ) {
+            foreach my $i ( 0 .. $#calinput ) {
                 chomp $calinput[$i];
                 (
                     $c_date,  $c_type,  $c_name, $c_time,
@@ -1677,8 +1688,9 @@ sub add_cal {
             push @calinput,
 "$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$username|$date||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}|$g\n";
         }
+        my $prncal = join q{}, @calinput;
         fopen( EVENTFILE, ">$vardir/eventcal.db" );
-        print {EVENTFILE} @calinput or croak "$croak{'print'} EVENTFILE";
+        print {EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
         fclose(EVENTFILE);
 
         if ( !$iamguest
@@ -1707,7 +1719,7 @@ sub del_old_events {
     if ( $caltoday == 1 ) {
 
         my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
-          gmtime($date);
+          gmtime $date;
         $year += 1900;
         $mon++;
         $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
@@ -1716,14 +1728,15 @@ sub del_old_events {
     fopen( EVENTFILE, "$vardir/eventcal.db" );
     my @calinput = <EVENTFILE>;
     fclose(EVENTFILE);
-    for my $i ( 0 .. $#calinput ) {
-        ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef ) =
-          split /[|]/xsm, $calinput[$i];
+    foreach my $i ( 0 .. $#calinput ) {
+        ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef )
+          = split /[|]/xsm, $calinput[$i];
         chop $c_type2;
         if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
     }
+    my $prncal = join q{}, @calinput;
     fopen( EVENTFILE, ">$vardir/eventcal.db" );
-    print {EVENTFILE} @calinput or croak "$croak{'print'} EVENTFILE";
+    print {EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
     fclose(EVENTFILE);
     return;
 }
@@ -1747,9 +1760,9 @@ sub calicontext {
 
 sub CountLines {
     ($convertstr) = @_;
-    my @string = split /<br \/>/sm, $convertstr;
+    my @string = split /<br.*?>/xsm, $convertstr;
     my $str = q{};
-    for my $i ( 0 .. 2 ) {
+    foreach my $i ( 0 .. 2 ) {
         $str .= qq~$string[$i]<br />~;
     }
     return $str;

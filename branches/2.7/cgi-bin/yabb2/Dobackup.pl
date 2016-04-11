@@ -87,7 +87,6 @@ else {
         backuplock('on');
     }
     runbackup();
-    backupdone();
 }
 
 sub runbackup {

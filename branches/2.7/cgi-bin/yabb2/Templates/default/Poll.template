@@ -103,4 +103,10 @@ $mypoll_hasvoted = q~
         <div class="small" style="float: left; text-align: left;">&nbsp;&nbsp;{yabb votesi} ({yabb pollpercent}%)</div>
     </div>~;
 
+$mypoll_notlocked = qq~
+           <div style="float: right; width: 55px; text-align: right; margin-right:4px">
+                <a href="$scripturl?num=$viewnum">$poll_bar</a> &nbsp;
+                <a href="$scripturl?num=$viewnum;view=pie">$poll_pie</a>
+           </div>~;
+
 1;

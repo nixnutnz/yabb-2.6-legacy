@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$helpcentrepmver = 'YaBB 2.7.00 $Revision$';
+$helpcentrepmver  = 'YaBB 2.7.00 $Revision$';
 @helpcentrepmmods = ();
 if (@helpcentrepmmods) {
     $helpcentrepmmods = 1;
@@ -32,7 +32,7 @@ undef $guest_media_disallowed;
 @my_modimglist =
   qw( admin_rem admin_move_split_splice admin_lock hide admin_sticky admin_del );
 $my_moding = q{};
-for (@my_modimglist) {
+foreach (@my_modimglist) {
     $modimg = SetImage( $_, $UseMenuType );
     $mymoding .= qq~$menusep$modimg~;
 }
@@ -46,18 +46,18 @@ sub SectionDecide {
     if ($UseHelp_Perms) {
         $ismod = 0;
         if ( !exists $memberinfo{$username} ) { LoadUser($username); }
-        for my $catid (@categoryorder) {
+        foreach my $catid (@categoryorder) {
             if ($ismod) { last; }
             $boardlist = $cat{$catid};
-            (@bdlist) = split /\,/xsm, $boardlist;
-            for my $curboard (@bdlist) {
+            (@bdlist) = split /,/xsm, $boardlist;
+            foreach my $curboard (@bdlist) {
                 if ($ismod) { last; }
-                for
-                  my $curuser ( split /, ?/sm, ${ $uid . $curboard }{'mods'} )
+                foreach
+                  my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} )
                 {
                     if ( $curuser eq $username ) { $ismod = 1; last; }
                 }
-                for ( split /, /sm, ${ $uid . $curboard }{'modgroups'} ) {
+                foreach ( split /\//xsm, ${ $uid . $curboard }{'modgroups'} ) {
                     if ( $_ eq ${ $uid . $username }{'position'} ) {
                         $ismod = 1;
                         last;
@@ -82,7 +82,8 @@ sub SectionDecide {
         $help_area = 'Gmod';
     }
     elsif ( $INFO{'section'} eq 'moderator' ) {
-        if ( $UseHelp_Perms && !$ismod && !$iamgmod && !$iamadmin && !$iamfmod ) {
+        if ( $UseHelp_Perms && !$ismod && !$iamgmod && !$iamadmin && !$iamfmod )
+        {
             fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
         }
         ${ $INFO{'section'} . _class } = 'selected-bg';
@@ -130,25 +131,31 @@ qq~<a href="$scripturl?action=help;section=moderator">$helptxt{'4'}</a>~;
         $gmodhlp =
 qq~<a href="$scripturl?action=help;section=global_mod">$helptxt{'5'}</a>~;
         $adminhlp =
-qq~<a href="$scripturl?action=help;section=admin">$helptxt{'6'}</a>~;
+          qq~<a href="$scripturl?action=help;section=admin">$helptxt{'6'}</a>~;
     }
     if ($accept_permafull) {
 
         my $scriptperm = qq~$perm_domain/$symlink/~ . 'help';
-        if ($modhlp) {$modhlp = qq~<a href="$scriptperm/moderator">$helptxt{'4'}</a>~;}
-        if ($gmodhlp) {$gmodhlp = qq~<a href="$scriptperm/global_mod">$helptxt{'5'}</a>~;}
-        if ($adminhlp) {$adminhlp = qq~<a href="$scriptperm/admin">$helptxt{'6'}</a>~;}
+        if ($modhlp) {
+            $modhlp = qq~<a href="$scriptperm/moderator">$helptxt{'4'}</a>~;
+        }
+        if ($gmodhlp) {
+            $gmodhlp = qq~<a href="$scriptperm/global_mod">$helptxt{'5'}</a>~;
+        }
+        if ($adminhlp) {
+            $adminhlp = qq~<a href="$scriptperm/admin">$helptxt{'6'}</a>~;
+        }
         $userhlp = qq~<a href="$scriptperm">$helptxt{'3'}</a>~;
     }
 
-    $HelpNavBar =~ s/{user menu}/$userhlp/gsm;
-    $HelpNavBar =~ s/{moderator menu}/$modhlp/gsm;
-    $HelpNavBar =~ s/{global mod menu}/$gmodhlp/gsm;
-    $HelpNavBar =~ s/{admin menu}/$adminhlp/gsm;
-    $HelpNavBar =~ s/{user class}/$UserClass/gsm;
-    $HelpNavBar =~ s/{moderator class}/$moderator_class/gsm;
-    $HelpNavBar =~ s/{global mod class}/$global_mod_class/gsm;
-    $HelpNavBar =~ s/{admin class}/$admin_class/gsm;
+    $HelpNavBar =~ s/\Q{user menu}\E/$userhlp/gxsm;
+    $HelpNavBar =~ s/\Q{moderator menu}\E/$modhlp/gxsm;
+    $HelpNavBar =~ s/\Q{global mod menu}\E/$gmodhlp/gxsm;
+    $HelpNavBar =~ s/\Q{admin menu}\E/$adminhlp/gxsm;
+    $HelpNavBar =~ s/\Q{user class}\E/$UserClass/gxsm;
+    $HelpNavBar =~ s/\Q{moderator class}\E/$moderator_class/gxsm;
+    $HelpNavBar =~ s/\Q{global mod class}\E/$global_mod_class/gxsm;
+    $HelpNavBar =~ s/\Q{admin class}\E/$admin_class/gxsm;
     $yymain .= $HelpNavBar;
     return $yymain;
 
@@ -167,7 +174,7 @@ sub GetHelpFiles {
     my @helporderlist = @{$help_area};
     chomp @helporderlist;
 
-    for (@helporderlist) {
+    foreach (@helporderlist) {
         if ( -e "$helpfile/$language/$help_area/$_.help" ) {
             require "$helpfile/$language/$help_area/$_.help";
         }
@@ -193,14 +200,14 @@ sub GetHelpFiles {
 sub MainHelp {
 
     $TempParse = $BodyHeader;
-    $BrdID = $mbname;
-    $BrdID =~ s/ /_/gsm;
-    $SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
-    $SectionName =~ s/ /_/gsm;
-    $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
+    $BrdID     = $mbname;
+    $BrdID =~ s/[ ]/_/gxsm;
+    $SectionName =~ s/\Q{yabb myboardname}\E/$BrdID/gxsm;
+    $SectionName =~ s/[ ]/_/gxsm;
+    $TempParse =~ s/\Q{yabb section_anchor}\E/$SectionName/gxsm;
     $SectionNam = $SectionName;
-    $SectionNam =~ s/_/ /gsm;
-    $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
+    $SectionNam =~ s/_/ /gxsm;
+    $TempParse =~ s/\Q{yabb section_name}\E/$SectionNam/gxsm;
     $Body .= qq~$TempParse~;
 
     $i = 1;
@@ -213,24 +220,24 @@ sub MainHelp {
             next;
         }
 
-        $TempParse     = $BodySubHeader;
-        $BrdID = $mbname;
-        $BrdID =~ s/ /_/gsm;
+        $TempParse = $BodySubHeader;
+        $BrdID     = $mbname;
+        $BrdID =~ s/[ ]/_/gxsm;
         $SectionAnchor = ${ SectionSub . $i };
         $SectionSub    = ${ SectionSub . $i };
-        $SectionSub =~ s/_/ /gsm;
-        $SectionAnchor =~ s/{yabb myboardname}/$BrdID/gsm;
-        $SectionAnchor =~ s/ /_/gsm;
-        $TempParse  =~ s/{yabb section_anchor}/$SectionAnchor/gsm;
-        $TempParse  =~ s/{yabb section_sub}/$SectionSub/gsm;
-        $TempParse  =~ s/{yabb myboardname}/$mbname/gsm;
+        $SectionSub =~ s/_/ /gxsm;
+        $SectionAnchor =~ s/\Q{yabb myboardname}\E/$BrdID/gxsm;
+        $SectionAnchor =~ s/[ ]/_/gxsm;
+        $TempParse =~ s/\Q{yabb section_anchor}\E/$SectionAnchor/gxsm;
+        $TempParse =~ s/\Q{yabb section_sub}\E/$SectionSub/gxsm;
+        $TempParse =~ s/\Q{yabb myboardname}\E/$mbname/gxsm;
         $Body .= qq~$TempParse~;
 
         $message     = ${ SectionBody . $i };
         $displayname = ${ $uid . $username }{'realname'};
         enable_yabbc();
         $message =~
-s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem;
+s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/egxsm;
         wrap2();
 
         if ( $SectionAnchor eq 'YaBBC_Reference' ) {
@@ -245,9 +252,9 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem
         }
 
         $TempParse = $BodyItem;
-        $TempParse =~ s/{yabb item}/$message/gsm;
-        $TempParse =~ s/{yabb mymoding}/$mymoding/sm;
-        $TempParse  =~ s/{top_img}/$top_img/gsm;
+        $TempParse =~ s/\Q{yabb item}\E/$message/gxsm;
+        $TempParse =~ s/\Q{yabb mymoding}\E/$mymoding/xsm;
+        $TempParse =~ s/{top_img}\E/$top_img/gxsm;
         $Body .= qq~$TempParse~;
         $i++;
     }
@@ -275,18 +282,18 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/sgem
     sub codehlp {
         my ($hcode) = @_;
         if ( $hcode !~ /&\S*;/xsm ) { $hcode =~ s/;/&\x23059;/gxsm; }
-        $hcode =~ s/([\(\)\-\:\\\/\?\!\]\[\.\^])/$hpkillhash{$1}/gxsm;
+        $hcode =~ s/([()\-:\\\/?!\]\[.\^])/$hpkillhash{$1}/gxsm;
         $hcode =~
-s/(&\x2391\;.+?&\x2393\;)/<span class="important">$1<\/span>/isgm;
+          s/(&\x2391\;.+?&\x2393\;)/<span class="important">$1<\/span>/igxsm;
         $hcode =~
-s/(&\x2391\;&\x2347\;.+?&\x2393\;)/<span class="important">$1<\/span>/isgm;
+s/(&\x2391\;&\x2347\;.+?&\x2393\;)/<span class="important">$1<\/span>/igxsm;
         return $hcode;
     }
 }
 
 sub ContentContainer {
-    $MainLayout =~ s/{yabb contents}/$Contents/gsm;
-    $MainLayout =~ s/{yabb body}/$Body/gsm;
+    $MainLayout =~ s/\Q{yabb contents}\E/$Contents/gxsm;
+    $MainLayout =~ s/\Q{yabb body}\E/$Body/gxsm;
 
     $yymain .= qq~$MainLayout~;
     return $yymain;
@@ -296,13 +303,13 @@ sub DoContents {
     $TempParse = $ContentHeader;
 
     $BrdID = $mbname;
-    $BrdID =~ s/ /_/gsm;
-    $SectionName =~ s/{yabb myboardname}/$BrdID/gsm;
-    $TempParse =~ s/{yabb section_anchor}/$SectionName/gsm;
+    $BrdID =~ s/[ ]/_/gxsm;
+    $SectionName =~ s/\Q{yabb myboardname}\E/$BrdID/gxsm;
+    $TempParse =~ s/\Q{yabb section_anchor}\E/$SectionName/gxsm;
     $SectionNam = $SectionName;
-    $SectionNam =~ s/_/ /gsm;
-    $TempParse  =~ s/{yabb section_name}/$SectionNam/gsm;
-    $TempParse  =~ s/{top_img}/$top_img/gsm;
+    $SectionNam =~ s/_/ /gxsm;
+    $TempParse =~ s/\Q{yabb section_name}\E/$SectionNam/gxsm;
+    $TempParse =~ s/{top_img}/$top_img/gxsm;
     $Contents .= qq~$TempParse~;
 
     $Contents .= q~<ul class="help_ul">~;
@@ -320,9 +327,9 @@ sub DoContents {
         ${ SectionSub . $i } =~ s/_/ /gxsm;
 
         $TempParse = $ContentItem;
-        $TempParse =~ s/{yabb anchor}/$SectionAnchor/gsm;
-        $TempParse =~ s/{yabb myboardname}/$BrdID/gsm;
-        $TempParse =~ s/{yabb content}/${SectionSub.$i}/gsm;
+        $TempParse =~ s/\Q{yabb anchor}\E/$SectionAnchor/gxsm;
+        $TempParse =~ s/\Q{yabb myboardname}\E/$BrdID/gxsm;
+        $TempParse =~ s/\Q{yabb content}\E/${SectionSub.$i}/gxsm;
 
         $Contents .= qq~$TempParse~;
         ${ SectionSub . $i } = q{};

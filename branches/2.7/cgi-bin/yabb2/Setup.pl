@@ -23,8 +23,8 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
-$setupplver = 'YaBB 2.7.00 $Revision$';
-$yymycharset  = 'UTF-8';
+$setupplver  = 'YaBB 2.7.00 $Revision$';
+$yymycharset = 'UTF-8';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -35,8 +35,9 @@ $time_to_jump     = time() + $max_process_time;
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
-    $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm;
-    $yypath = $1;
+    if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
+        $yypath = $1;
+    }
     $yypath =~ s/\\/\//gxsm;
     chdir $yypath;
     push @INC, $yypath;
@@ -44,11 +45,11 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
 
 ### Requirements and Errors ###
 my $script_root = $ENV{'SCRIPT_FILENAME'};
-if( ! $script_root ) {
-        $script_root = $ENV{'PATH_TRANSLATED'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
 }
 $script_root =~ s/\\/\//gxsm;
-$script_root =~ s/\/Setup\.(pl|cgi)//igxsm;
+$script_root =~ s/\/Setup[.](pl|cgi)//igxsm;
 
 if    ( -e './Paths.pm' )            { require Paths; }
 elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
@@ -88,7 +89,7 @@ $yytabmenu = q~&nbsp;~;
 
 if ( -e "$vardir/Setup.lock" ) {
     FoundSetupLock();
-        }
+}
 #############################################
 # Setup starts here                         #
 #############################################
@@ -100,7 +101,7 @@ if ( !$action ) {
     $rand_cook_sess = "Y2Sess-$rand_integer";
     $rand_cook_sort = "Y2tsort-$rand_integer";
     $rand_cook_view = "Y2view-$rand_integer";
-    my $cooks = <<EOF;
+    my $cooks = << "EOF";
 $rand_cook_user
 $rand_cook_pass
 $rand_cook_sess
@@ -151,7 +152,7 @@ SimpleOutput();
 
 sub adminlogin {
     open $LICENSE, '<', 'license.txt' or croak 'cannot load License.';
-    my $license = do { local $/; <$LICENSE>; };
+    my $license = do { local $INPUT_RECORD_SEPARATOR = undef; <$LICENSE>; };
     close $LICENSE or croak 'cannot close License';
 
     $yymain .= qq~
@@ -373,8 +374,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
         $htmldir      = $fnd_htmldir;
         $uploaddir    = $fnd_uploaddir;
         $uploadurl    = $fnd_uploadurl;
-        $pmuploaddir    = $fnd_pmuploaddir;
-        $pmuploadurl    = $fnd_pmuploadurl;
+        $pmuploaddir  = $fnd_pmuploaddir;
+        $pmuploadurl  = $fnd_pmuploadurl;
         $yyhtml_root  = $fnd_html_root;
         $datadir      = $fnd_datadir;
         $boardsdir    = $fnd_boardsdir;
@@ -386,8 +387,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
         $helpfile     = $fnd_helpfile;
         $templatesdir = $fnd_templatesdir;
 
-        $facesdir = $fnd_facesdir;
-        $facesurl = $fnd_facesurl;
+        $facesdir  = $fnd_facesdir;
+        $facesurl  = $fnd_facesurl;
         $modimgdir = $fnd_modimgdir;
         $modimgurl = $fnd_modimgurl;
     }
@@ -401,7 +402,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     }
 
     # Remove Setup.pl and cgi - and also nph- for buggy IIS.
-    $support_env_path =~ s/(nph-)?Setup.(pl|cgi)//igsm;
+    $support_env_path =~ s/(nph-)?Setup.(pl|cgi)//igxsm;
     $support_env_path =~ s/\/\Z//xsm;
 
     # replace \ with / for Windows Servers
@@ -693,8 +694,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     $htmldir      = $FORM{'htmldir'};
     $uploaddir    = $FORM{'uploaddir'};
     $uploadurl    = $FORM{'uploadurl'};
-    $pmuploaddir    = $FORM{'pmuploaddir'};
-    $pmuploadurl    = $FORM{'pmuploadurl'};
+    $pmuploaddir  = $FORM{'pmuploaddir'};
+    $pmuploadurl  = $FORM{'pmuploadurl'};
     $yyhtml_root  = $FORM{'html_root'};
     $datadir      = $FORM{'datadir'};
     $boardsdir    = $FORM{'boardsdir'};
@@ -706,12 +707,12 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     $helpfile     = $FORM{'helpfile'};
     $templatesdir = $FORM{'templatesdir'};
 
-    $facesdir = $FORM{'facesdir'};
-    $facesurl = $FORM{'facesurl'};
-    $modimgdir    = $FORM{'modimgdir'};
-    $modimgurl    = $FORM{'modimgurl'};
+    $facesdir  = $FORM{'facesdir'};
+    $facesurl  = $FORM{'facesurl'};
+    $modimgdir = $FORM{'modimgdir'};
+    $modimgurl = $FORM{'modimgurl'};
 
-    my $setfile = <<EOF;
+    my $setfile = << "EOF";
 ###############################################################################
 # Paths.pm                                                                    #
 ###############################################################################
@@ -801,7 +802,7 @@ sub VarInstall {
     }
 
     if ( !-e "$varsdir/Referer.pm" ) {
-        my $allowed = <<EOF;
+        my $allowed = << "EOF";
 # Referrer Control #
 
 %referallow = (
@@ -885,7 +886,7 @@ EOF
     }
 
     if ( !-e "$varsdir/Gmodset.pm" ) {
-        my $setfile = <<EOF;
+        my $setfile = << "EOF";
 ### Gmod Related Setttings ###
 
 \$allow_gmod_admin = "on";
@@ -1161,7 +1162,7 @@ sub SetInstall {
     foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
         if (   -d "$langdir/$fld"
             && -e "$langdir/$fld/Main.lng"
-            && $fld =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm )
+            && $fld =~ m{\A[\w#%\-:+?$&~,@/]+\Z}xsm )
         {
             if ( 'English' eq $fld ) {
                 $drawnldirs .=
@@ -1274,30 +1275,30 @@ sub SetInstall2 {
         $smtp_auth_required    = 1;
         $authuser              = q~admin~;
         $authpass              = q~admin~;
-        $webmaster_email = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
-        $mailtype        = 0;
-        $MenuType               = 2;
-        $profilebutton          = 1;
-        $allow_hide_email       = 1;
-        $showlatestmember       = 1;
-        $shownewsfader          = 0;
-        $Show_RecentBar         = 1;
-        $showmodify             = 1;
-        $ShowBDescrip           = 1;
-        $showuserpic            = 1;
-        $showusertext           = 1;
-        $showtopicviewers       = 1;
-        $showtopicrepliers      = 1;
-        $showgenderimage        = 1;
-        $showyabbcbutt          = 1;
-        $nestedquotes           = 1;
-        $parseflash             = 0;
-        $enableclicklog         = 0;
-        $showimageinquote       = 0;
-        $enable_ubbc            = 1;
-        $enable_news            = 1;
-        $allowpics              = 1;
-        $upload_useravatar      = 0;
+        $webmaster_email   = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
+        $mailtype          = 0;
+        $MenuType          = 2;
+        $profilebutton     = 1;
+        $allow_hide_email  = 1;
+        $showlatestmember  = 1;
+        $shownewsfader     = 0;
+        $Show_RecentBar    = 1;
+        $showmodify        = 1;
+        $ShowBDescrip      = 1;
+        $showuserpic       = 1;
+        $showusertext      = 1;
+        $showtopicviewers  = 1;
+        $showtopicrepliers = 1;
+        $showgenderimage   = 1;
+        $showyabbcbutt     = 1;
+        $nestedquotes      = 1;
+        $parseflash        = 0;
+        $enableclicklog    = 0;
+        $showimageinquote  = 0;
+        $enable_ubbc       = 1;
+        $enable_news       = 1;
+        $allowpics         = 1;
+        $upload_useravatar = 0;
         $upload_avatargroup     = q{};
         $avatar_limit           = 100;
         $avatar_dirlimit        = 10_000;
@@ -1363,9 +1364,9 @@ sub SetInstall2 {
         $max_attach_img_width   = 200;
         $max_attach_img_height  = 0;
         $fix_attach_img_size    = 0;
-        $max_brd_img_width   = 50;
-        $max_brd_img_height  = 50;
-        $fix_brd_img_size    = 0;
+        $max_brd_img_width      = 50;
+        $max_brd_img_height     = 50;
+        $fix_brd_img_size       = 0;
         $img_greybox            = 1;
         $extendedprofiles       = 0;
         $enable_freespace_check = 0;
@@ -1386,24 +1387,24 @@ sub SetInstall2 {
         $faketruncation = 0;
         $debug          = 0;
 
-        $checkallcaps         = 0;
-        $set_subjectMaxLength = 50;
-        $honeypot             = 1;
-        $speedpostdetection   = 1;
-        $spd_detention_time   = 300;
-        $min_post_speed       = 2;
-        $post_speed_count     = 3;
-        $minlinkpost          = 0;
-        $minlinksig           = 0;
-        $minlinkweb           = 0;
-        $showsearchboxnum     = 31;
-        $showregdate          = 1;
-        $enableguestsearch    = 1;
+        $checkallcaps           = 0;
+        $set_subjectMaxLength   = 50;
+        $honeypot               = 1;
+        $speedpostdetection     = 1;
+        $spd_detention_time     = 300;
+        $min_post_speed         = 2;
+        $post_speed_count       = 3;
+        $minlinkpost            = 0;
+        $minlinksig             = 0;
+        $minlinkweb             = 0;
+        $showsearchboxnum       = 31;
+        $showregdate            = 1;
+        $enableguestsearch      = 1;
         $enableguestquicksearch = 1;
-        $maxsteps             = 40;
-        $stepdelay            = 75;
-        $fadelinks            = 0;
-        $cookieviewtime = 525_600;
+        $maxsteps               = 40;
+        $stepdelay              = 75;
+        $fadelinks              = 0;
+        $cookieviewtime         = 525_600;
 
         # Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
@@ -1416,7 +1417,7 @@ sub SetInstall2 {
         $fadertime  = 1000;
     }
 
-    my $setfile = <<EOF;
+    my $setfile = << "EOF";
 ###############################################################################
 # Settings.pm                                                                 #
 ###############################################################################
@@ -1945,7 +1946,7 @@ EOF
     fclose(SETTING);
     if ( $action eq 'setinstall2' ) {
         LoadUser('admin');
-        ${ $uid . 'admin' }{'email'} = $webmaster_email;
+        ${ $uid . 'admin' }{'email'}      = $webmaster_email;
         ${ $uid . 'admin' }{'regdate'}    = timetostring($date);
         ${ $uid . 'admin' }{'regtime'}    = $date;
         ${ $uid . 'admin' }{'timeselect'} = $timeselected;
@@ -1969,8 +1970,9 @@ sub tempstarter {
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyIIS = 1;
-        $PROGRAM_NAME =~ m{(.*)(\\|/)}sm;
-        $yypath = $1;
+        if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
+            $yypath = $1;
+        }
         $yypath =~ s/\\/\//gxsm;
         chdir $yypath;
         push @INC, $yypath;
@@ -1990,7 +1992,7 @@ sub tempstarter {
 sub CheckInstall {
     tempstarter();
     my $install_error;
-    my $firstmstime = time();
+    my $firstmstime = time;
     $windowbg = '#fafafa';
     $header   = '#5488ba';
     $catbg    = '#ddd';
@@ -2033,7 +2035,7 @@ sub CheckInstall {
         chomp $boardstot;
         ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
           split /[|]/xsm, $boardstot;
-        if ( $brdname eq 'general') {
+        if ( $brdname eq 'general' ) {
             $brdprint .=
 "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.7.00 forum!|xx|0|\n"
               or croak 'cannot print FORUMTOTALS';
@@ -2048,11 +2050,13 @@ sub CheckInstall {
     open $FIRSTMS, '>', "$datadir/$firstmstime.txt"
       or croak "cannot open $datadir/$firstmstime.txt";
     print {$FIRSTMS}
-qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|webmaster@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~;
+qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|webmaster\@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~
+      or croak "cannot print $datadir/$firstmstime.txt";
     close $FIRSTMS or croak "cannot close $datadir/$firstmstime.txt";
     require Sources::DateTime;
-    open $FIRSTMSC, '>', "$datadir/$firstmstime.ctb";
-    $msgdat = ctbtime( $firstmstime );
+    open $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
+      or croak "cannot print $datadir/$firstmstime.txt";
+    $msgdat = ctbtime($firstmstime);
     my $frstctb = qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
 %$firstmstime = (
 'board' => "general",
@@ -2072,10 +2076,12 @@ qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|webmaster@mysite.com|$fi
       or croak "cannot print $datadir/$firstmstime.ctb";
     close $FIRSTMSC or croak "cannot close $datadir/$firstmstime.ctb";
 
-    open $FIRSTBRD, '>>', "$boardsdir/general.txt";
+    open $FIRSTBRD, '>>', "$boardsdir/general.txt"
+      or croak 'cannot open general.txt';
     print {$FIRSTBRD}
-qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_email|$firstmstime|0|admin|xx|0\n~;
-    close $FIRSTBRD or croak "cannot close general.txt";
+qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_email|$firstmstime|0|admin|xx|0\n~
+      or croak 'cannot print general.txt';
+    close $FIRSTBRD or croak 'cannot close general.txt';
 
     $mem_missing = q{};
     $mem_created = q{};
@@ -2083,7 +2089,7 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
     else                                 { $mem_created .= q~admin.outbox, ~; }
     if   ( !-e "$memberdir/admin.vars" ) { $mem_missing .= q~admin.vars, ~; }
     else                                 { $mem_created .= q~admin.vars, ~; }
- 
+
     $mem_missing =~ s/, $//sm;
     $mem_created =~ s/, $//sm;
 
@@ -2124,19 +2130,21 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
     }
     else { $var_created .= q~Memberinfo.pm, ~; }
     if   ( !-e "$vardir/memttl.db" ) { $var_missing .= q~memttl.db~; }
-    else                                  { $var_created .= q~memttl.db~; }
+    else                             { $var_created .= q~memttl.db~; }
     if   ( !-e "$vardir/adminlog.log" ) { $var_missing .= q~adminlog.log, ~; }
     else                                { $var_created .= q~adminlog.log, ~; }
     if ( !-e "$vardir/attachments.db" ) {
         $var_missing .= q~attachments.db, ~;
     }
-    else                                   { $var_created .= q~attachments.db, ~; }
-    if   ( !-e "$vardir/pmattachments.db" ) { $var_missing .= q~pmattachments.db, ~; }
-    else                                  { $var_created .= q~pmattachments.db, ~; }
+    else { $var_created .= q~attachments.db, ~; }
+    if ( !-e "$vardir/pmattachments.db" ) {
+        $var_missing .= q~pmattachments.db, ~;
+    }
+    else { $var_created .= q~pmattachments.db, ~; }
     if   ( !-e "$vardir/ban.log" ) { $var_missing .= q~ban.log, ~; }
-    else                               { $var_created .= q~ban.log, ~; }
+    else                           { $var_created .= q~ban.log, ~; }
     if   ( !-e "$vardir/banlist.db" ) { $var_missing .= q~banlist.db, ~; }
-    else                               { $var_created .= q~banlist.db, ~; }
+    else                              { $var_created .= q~banlist.db, ~; }
     if   ( !-e "$vardir/clicklog.log" ) { $var_missing .= q~clicklog.log, ~; }
     else                                { $var_created .= q~clicklog.log, ~; }
     if   ( !-e "$vardir/errorlog.log" ) { $var_missing .= q~errorlog.log, ~; }
@@ -2158,6 +2166,8 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
 
     $var_missing =~ s/, $//sm;
     $var_created =~ s/, $//sm;
+
+    UserAccount( 'admin', 'update', 'lastpost+lastonline' );
 
     $yymain .= q~
     <table class="tabtitle" style="margin-top:.5em">
@@ -2356,7 +2366,7 @@ sub ready {
 }
 
 sub CreateSetupLock {
-    my $lock = <<LOCK;
+    my $lock = << "LOCK";
 This is a lockfile for the Setup Utility.
 It prevents it being run again after it has been run once.
 Delete this file if you want to run the Setup Utility again.
@@ -2377,19 +2387,20 @@ sub SetupImgLoc {
 }
 
 sub setup_fatal_error {
-      my $e = $_[0];
-      my $v = $_[1];
-      $e .= "\n";
+    my @x = @_;
+    my $e = $x[0];
+    my $v = $x[1];
+    $e .= "\n";
     if ($v) { $e .= $OS_ERROR . "\n"; }
 
-      $yymenu = qq~Boards & Categories | ~;
-      $yymenu .= qq~Members | ~;
-      $yymenu .= qq~Messages | ~;
-      $yymenu .= qq~Date & Time | ~;
-      $yymenu .= qq~Clean Up | ~;
-      $yymenu .= qq~Login~;
+    $yymenu = q~Boards &amp; Categories | ~;
+    $yymenu .= q~Members | ~;
+    $yymenu .= q~Messages | ~;
+    $yymenu .= q~Date &amp; Time | ~;
+    $yymenu .= q~Clean Up | ~;
+    $yymenu .= q~Login~;
 
-      $yymain .= qq~
+    $yymain .= qq~
 <table class="bordercolor center border-space pad-cell" width="80%" >
     <tr>
         <td class="titlebg text1"><b>An Error Has Occurred!</b></td>
@@ -2399,13 +2410,14 @@ sub setup_fatal_error {
 </table>
 <p style="text-align:center"><a href="javascript:history.go(-1)">Back</a></p>
 ~;
-      $yyim    = "YaBB 2.7.00 Setup Error.";
-      $yytitle = "YaBB 2.7.00 Setup Error.";
+    $yyim    = 'YaBB 2.7.00 Setup Error.';
+    $yytitle = 'YaBB 2.7.00 Setup Error.';
 
-      if (!-e "$vardir/Settings.pm") { SimpleOutput(); }
+    if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
-      tempstarter();
-      SetupTemplate();
+    tempstarter();
+    SetupTemplate();
+    return;
 }
 
 sub SimpleOutput {
@@ -2465,9 +2477,10 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
       $iamguest ? q{} : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
 
     if ($enable_news) {
-        open $NEWS, '<', 'Languages/English/news.txt';
+        open $NEWS, '<', 'Languages/English/news.txt'
+          or croak 'cannot open news';
         @newsmessages = <$NEWS>;
-        close $NEWS;
+        close $NEWS or croak 'cannot close news';
     }
     for my $i ( 0 .. $#yytemplate ) {
         $curline = $yytemplate[$i];
@@ -2478,7 +2491,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
             $yynewstitle =
               qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
         }
-        if ( $curline =~ m/{yabb\ news}/xsm && $enable_news ) {
+        if ( $curline =~ m/\Q{yabb news}\E/xsm && $enable_news ) {
             srand;
             if ( $shownewsfader == 1 ) {
 
@@ -2498,14 +2511,14 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                 @newsmessages = <$NEWS>;
                 close $NEWS or croak 'cannot close NEWS';
                 for my $j ( 0 .. $#newsmessages ) {
-                    $newsmessages[$j] =~ s/\n|\r//gxsm;
+                    $newsmessages[$j] =~ s/[\r\n]//gxsm;
                     if ( $newsmessages[$j] eq q{} ) { next; }
                     if ( $i != 0 ) { $yymain .= qq~\n~; }
                     $message = $newsmessages[$j];
                     if ($enable_ubbc) {
                         enable_yabbc();
                         DoUBBC();
-                        }
+                    }
                     $message =~ s/\x22/\\\x22/gxsm;
                     $yynews .= qq~
                                     fcontent[$j] = "$message";\n
@@ -2529,7 +2542,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                 var div = document.getElementById("newsdiv");
                 div.innerHTML = news;
             </script>~;
-           }
+            }
         }
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
@@ -2566,7 +2579,7 @@ s/(.+;)[ \t]+(\x23.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) .
     *cut_comment = sub {    # line break of too long comments
         my @x = @_;
         my ( $comment, $length ) =
-          ( q{}, 120 );    # 120 Col is the max width of page
+          ( q{}, 120 );     # 120 Col is the max width of page
         my $var_length = length $x[0];
         while ( $length < $var_length ) { $length += 120; }
         foreach ( split / +/sm, $x[1] ) {
@@ -2613,7 +2626,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
                 <form action="Convert2x.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Convert 2x files" />
                 </form>~;
-}
+    }
 
     $yymain = qq~
 <div class="bordercolor borderbox">

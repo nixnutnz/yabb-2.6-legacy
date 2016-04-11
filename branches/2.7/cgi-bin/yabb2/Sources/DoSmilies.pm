@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$dosmiliespmver = 'YaBB 2.7.00 $Revision$';
+$dosmiliespmver  = 'YaBB 2.7.00 $Revision$';
 @dosmiliespmmods = ();
 if (@dosmiliespmmods) {
     $dosmiliespmmods = 1;
@@ -32,7 +32,7 @@ sub SmiliePut {
     $i                 = 0;
     while ( $SmilieURL[$i] ) {
         if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-        else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+        else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
         if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
             $moresmilieslist .= q~<br />~;
         }
@@ -52,8 +52,8 @@ qq~<img src="$tmpurl" class="moresmiles" alt="$SmilieDescription[$i]" onclick="j
         @contents = readdir DIR;
         closedir DIR;
         $smilieslist = q{};
-        for my $line ( sort { uc $a cmp uc $b } @contents ) {
-            ( $name, $extension ) = split /\./xsm, $line;
+        foreach my $line ( sort { uc $a cmp uc $b } @contents ) {
+            ( $name, $extension ) = split /[.]/xsm, $line;
             if (   $extension =~ /gif/ism
                 || $extension =~ /jpg/ism
                 || $extension =~ /jpeg/ism
@@ -77,11 +77,11 @@ qq~<img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmil
     }
 
     $output = $smilie_window_a;
-    $output =~ s/{yabb popback}/$popback/sm;
-    $output =~ s/{yabb poptext}/$poptext/sm;
-    $output =~ s/{yabb my_output}/$my_output/sm;
-    $output =~ s/{yabb evenmoresmilies}/$evenmoresmilies/sm;
-    $output =~ s/{yabb more_smilie_array}/$more_smilie_array/sm;
+    $output =~ s/\Q{yabb popback}\E/$popback/xsm;
+    $output =~ s/\Q{yabb poptext}\E/$poptext/xsm;
+    $output =~ s/\Q{yabb my_output}\E/$my_output/xsm;
+    $output =~ s/\Q{yabb evenmoresmilies}\E/$evenmoresmilies/xsm;
+    $output =~ s/\Q{yabb more_smilie_array}\E/$more_smilie_array/xsm;
 
     print_HTML_output_and_finish();
     return;
@@ -105,15 +105,15 @@ sub SmilieIndex {
             }
             else { $smiliescolor = $my_smiliebg_b; }
             if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-            else { $tmpurl = qq~$defaultimagesdir/$SmilieURL[$i]~; }
+            else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
 
             $smilieslist .= $my_smilie_window_td;
-            $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
-            $smilieslist =~ s/{yabb tmpurl}/$tmpurl/gsm;
-            $smilieslist =~ s/{yabb i}/$i/gsm;
-            $smilieslist =~ s/{yabb poptext}/$poptext/gsm;
+            $smilieslist =~ s/\Q{yabb smiliescolor}\E/$smiliescolor/gxsm;
+            $smilieslist =~ s/\Q{yabb tmpurl}\E/$tmpurl/gxsm;
+            $smilieslist =~ s/\Q{yabb i}\E/$i/gxsm;
+            $smilieslist =~ s/\Q{yabb poptext}\E/$poptext/gxsm;
             $smilieslist =~
-              s/{yabb SmilieDescription}/$SmilieDescription[$i]/gsm;
+              s/\Q{yabb SmilieDescription}\E/$SmilieDescription[$i]/gxsm;
 
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = $SmilieCode[$i];
@@ -129,8 +129,8 @@ sub SmilieIndex {
         opendir DIR, "$htmldir/Smilies";
         @contents = readdir DIR;
         closedir DIR;
-        for my $line ( sort { uc($a) cmp uc $b } @contents ) {
-            ( $name, $extension ) = split /\./xsm, $line;
+        foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
+            ( $name, $extension ) = split /[.]/xsm, $line;
             if (   $extension =~ /gif/ixsm
                 || $extension =~ /jpg/ixsm
                 || $extension =~ /jpeg/ixsm
@@ -146,10 +146,11 @@ sub SmilieIndex {
                     }
                     else { $smiliescolor = $my_smiliebg_b; }
                     $smilieslist .= $my_smilie_window_td_line;
-                    $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
-                    $smilieslist =~ s/{yabb line}/$line/gsm;
-                    $smilieslist =~ s/{yabb i}/$i/gsm;
-                    $smilieslist =~ s/{yabb poptext}/$poptext/gsm;
+                    $smilieslist =~
+                      s/\Q{yabb smiliescolor}\E/$smiliescolor/gxsm;
+                    $smilieslist =~ s/\Q{yabb line}\E/$line/gxsm;
+                    $smilieslist =~ s/\Q{yabb i}\E/$i/gxsm;
+                    $smilieslist =~ s/\Q{yabb poptext}\E/$poptext/gxsm;
 
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
@@ -163,7 +164,7 @@ sub SmilieIndex {
         }
         else { $smiliescolor = $my_smiliebg_b }
         $smilieslist .= $my_smilie_window_blnk;
-        $smilieslist =~ s/{yabb smiliescolor}/$smiliescolor/gsm;
+        $smilieslist =~ s/\Q{yabb smiliescolor}\E/$smiliescolor/gxsm;
         $i++;
     }
     $smilie_code_array .= q~""~;
@@ -176,10 +177,10 @@ sub SmilieIndex {
     }
 
     $output = $smilie_window_advanced;
-    $output =~ s/{yabb popback}/$popback/gsm;
-    $output =~ s/{yabb smiliesheader}/$smiliesheader/sm;
-    $output =~ s/{yabb smilieslist}/$smilieslist/sm;
-    $output =~ s/{yabb more_smilie_array}/$more_smilie_array/sm;
+    $output =~ s/\Q{yabb popback}\E/$popback/gxsm;
+    $output =~ s/\Q{yabb smiliesheader}\E/$smiliesheader/xsm;
+    $output =~ s/\Q{yabb smilieslist}\E/$smilieslist/xsm;
+    $output =~ s/\Q{yabb more_smilie_array}\E/$more_smilie_array/xsm;
 
     print_HTML_output_and_finish();
     return;

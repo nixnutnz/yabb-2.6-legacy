@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$tabmenupmver = 'YaBB 2.7.00 $Revision$';
+$tabmenupmver  = 'YaBB 2.7.00 $Revision$';
 @tabmenupmmods = ();
 if (@tabmenupmmods) {
     $tabmenupmmods = 1;
@@ -29,36 +29,36 @@ $tabfill = q{};
 
 sub mainMenu {
     my %acting = (
-'search2' => 'search',
-'favorites' => 'mycenter',
-'shownotify' => 'mycenter',
-'im' => 'mycenter',
-'imdraft' => 'mycenter',
-'imoutbox' => 'mycenter',
-'imstorage' => 'mycenter',
-'imsend' => 'mycenter',
-'imsend2' => 'mycenter',
-'imshow' => 'mycenter',
-'profileCheck' => 'mycenter',
-'myviewprofile' => 'mycenter',
-'myprofile' => 'mycenter',
-'myprofileContacts' => 'mycenter',
-'myprofileOptions' => 'mycenter',
-'myprofileBuddy' => 'mycenter',
-'myprofileIM' => 'mycenter',
-'myprofileAdmin' => 'mycenter',
-'myusersrecentposts' => 'mycenter',
-'messagepagetext' => 'home',
-'messagepagedrop' => 'home',
-'threadpagetext' => 'home',
-'threadpagedrop' => 'home',
-'post' => 'home',
-'notify' => 'home',
-'boardnotify' => 'home',
-'sendtopic' => 'home',
-'modify' => 'home',
-'guestpm2' => 'guestpm',
-);
+        'search2'            => 'search',
+        'favorites'          => 'mycenter',
+        'shownotify'         => 'mycenter',
+        'im'                 => 'mycenter',
+        'imdraft'            => 'mycenter',
+        'imoutbox'           => 'mycenter',
+        'imstorage'          => 'mycenter',
+        'imsend'             => 'mycenter',
+        'imsend2'            => 'mycenter',
+        'imshow'             => 'mycenter',
+        'profileCheck'       => 'mycenter',
+        'myviewprofile'      => 'mycenter',
+        'myprofile'          => 'mycenter',
+        'myprofileContacts'  => 'mycenter',
+        'myprofileOptions'   => 'mycenter',
+        'myprofileBuddy'     => 'mycenter',
+        'myprofileIM'        => 'mycenter',
+        'myprofileAdmin'     => 'mycenter',
+        'myusersrecentposts' => 'mycenter',
+        'messagepagetext'    => 'home',
+        'messagepagedrop'    => 'home',
+        'threadpagetext'     => 'home',
+        'threadpagedrop'     => 'home',
+        'post'               => 'home',
+        'notify'             => 'home',
+        'boardnotify'        => 'home',
+        'sendtopic'          => 'home',
+        'modify'             => 'home',
+        'guestpm2'           => 'guestpm',
+    );
 
 ## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
 
@@ -81,19 +81,24 @@ sub mainMenu {
 
     my $tabhtml_l = q~                        <li><span|><a href=~;
     my $tabhtml_r = qq~</span></li>\n~;
-    $tab{'home'} = qq~$tabhtml_l"$scripturl" title="$img_txt{'103'}">$img_txt{'103'}</a>$tabhtml_r~;
-    $tab{'help'} = qq~$tabhtml_l"$scripturl?action=help" title="$img_txt{'119'}" class="help">$img_txt{'119'}</a>$tabhtml_r~;
+    $tab{'home'} =
+qq~$tabhtml_l"$scripturl" title="$img_txt{'103'}">$img_txt{'103'}</a>$tabhtml_r~;
+    $tab{'help'} =
+qq~$tabhtml_l"$scripturl?action=help" title="$img_txt{'119'}" class="help">$img_txt{'119'}</a>$tabhtml_r~;
 
     if ( $maxsearchdisplay > -1 && $advsearchaccess eq 'granted' ) {
-        $tab{'search'} = qq~$tabhtml_l"$scripturl?action=search" title="$img_txt{'182'}">$img_txt{'182'}</a>$tabhtml_r~;
+        $tab{'search'} =
+qq~$tabhtml_l"$scripturl?action=search" title="$img_txt{'182'}">$img_txt{'182'}</a>$tabhtml_r~;
     }
     if ( $Show_EventButton == 2 || ( !$iamguest && $Show_EventButton == 1 ) ) {
-        $tab{'eventcal'} = qq~$tabhtml_l"$scripturl?action=eventcal;calshow=1" title="$img_txt{'eventcal'}">$img_txt{'eventcal'}</a>$tabhtml_r~;
+        $tab{'eventcal'} =
+qq~$tabhtml_l"$scripturl?action=eventcal;calshow=1" title="$img_txt{'eventcal'}">$img_txt{'eventcal'}</a>$tabhtml_r~;
     }
     if ( $Show_BirthdayButton == 2
         || ( !$iamguest && $Show_BirthdayButton == 1 ) )
     {
-        $tab{'birthdaylist'} = qq~$tabhtml_l"$scripturl?action=birthdaylist" title="$img_txt{'birthdaylist'}">$img_txt{'birthdaylist'}</a>$tabhtml_r~;
+        $tab{'birthdaylist'} =
+qq~$tabhtml_l"$scripturl?action=birthdaylist" title="$img_txt{'birthdaylist'}">$img_txt{'birthdaylist'}</a>$tabhtml_r~;
     }
     if (   !$ML_Allowed
         || ( $ML_Allowed == 1 && !$iamguest )
@@ -101,19 +106,22 @@ sub mainMenu {
         || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
         || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
     {
-        $tab{'ml'} = qq~$tabhtml_l"$scripturl?action=ml" title="$img_txt{'331'}">$img_txt{'331'}</a>$tabhtml_r~;
+        $tab{'ml'} =
+qq~$tabhtml_l"$scripturl?action=ml" title="$img_txt{'331'}">$img_txt{'331'}</a>$tabhtml_r~;
     }
     if ($iamadmin) {
         if   ($do_scramble_id) { $user = cloak($username); }
         else                   { $user = $username; }
-        $tab{'admin'} = qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
+        $tab{'admin'} =
+qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
     }
     if ($iamgmod) {
         get_gmod();
         if ($allow_gmod_admin) {
             if   ($do_scramble_id) { $user = cloak($username); }
             else                   { $user = $username; }
-            $tab{'admin'} = qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
+            $tab{'admin'} =
+qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
         }
     }
     if ( $sessionvalid == 0 && !$iamguest && !$INFO{'set'} ) {
@@ -127,7 +135,8 @@ sub mainMenu {
             $sesredir =~ s/;/x3B/gxsm;
             $sesredir = qq~;sesredir=$sesredir~;
         }
-        $tab{'revalidatesession'} = qq~$tabhtml_l"$scripturl?action=revalidatesession$sesredir" title="$img_txt{'34a'}">$img_txt{'34a'}</a>$tabhtml_r~;
+        $tab{'revalidatesession'} =
+qq~$tabhtml_l"$scripturl?action=revalidatesession$sesredir" title="$img_txt{'34a'}">$img_txt{'34a'}</a>$tabhtml_r~;
     }
     if ($iamguest) {
         my $sesredir;
@@ -144,33 +153,38 @@ sub mainMenu {
             : "$scripturl?action=login$sesredir"
           ) . qq~" title="$img_txt{'34'}">$img_txt{'34'}</a>$tabhtml_r~;
         if ($regtype) {
-            $tab{'register'} = qq~$tabhtml_l"$scripturl?action=register" title="$img_txt{'97'}">$img_txt{'97'}</a>$tabhtml_r~;
+            $tab{'register'} =
+qq~$tabhtml_l"$scripturl?action=register" title="$img_txt{'97'}">$img_txt{'97'}</a>$tabhtml_r~;
         }
         if ( $PMenableGuestButton && $PM_level > 0 && $PMenableBm_level > 0 ) {
-            $tab{'guestpm'} = qq~$tabhtml_l"$scripturl?action=guestpm" title="$img_txt{'pmadmin'}">$img_txt{'pmadmin'}</a>$tabhtml_r~;
+            $tab{'guestpm'} =
+qq~$tabhtml_l"$scripturl?action=guestpm" title="$img_txt{'pmadmin'}">$img_txt{'pmadmin'}</a>$tabhtml_r~;
         }
     }
     else {
-        $tab{'mycenter'} = qq~$tabhtml_l"$scripturl?action=mycenter" title="$img_txt{'mycenter'}">$img_txt{'mycenter'}</a>$tabhtml_r~;
-        $tab{'logout'} = qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}</a>$tabhtml_r~;
+        $tab{'mycenter'} =
+qq~$tabhtml_l"$scripturl?action=mycenter" title="$img_txt{'mycenter'}">$img_txt{'mycenter'}</a>$tabhtml_r~;
+        $tab{'logout'} =
+qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}</a>$tabhtml_r~;
     }
 
     if ($accept_permafull) {
         my @gsttabs = qw( home register help search );
 
         my $scriptperm = qq~$perm_domain/$symlink/~;
-        for my $gtab ( keys %tab) {
+        for my $gtab ( keys %tab ) {
             for (@gsttabs) {
-                if ($gtab eq $_ ) {
-                    if ($_ eq 'home') {
-                    $tab{$gtab} =~ s/$scripturl/$scriptperm/xsm;
+                if ( $gtab eq $_ ) {
+                    if ( $_ eq 'home' ) {
+                        $tab{$gtab} =~ s/$scripturl/$scriptperm/xsm;
                     }
-                    $tab{$gtab} =~ s/$scripturl\?action\=/$scriptperm/xsm;
+                    $tab{$gtab} =~ s/$scripturl[?]action\=/$scriptperm/xsm;
                 }
             }
         }
     }
     $yytabmenu = qq~<ul>\n~;
+
     # Advanced Tabs starts here
     for my $i ( 0 .. $#AdvancedTabs ) {
         if ( $AdvancedTabs[$i] =~ /[|]/xsm ) {
@@ -206,13 +220,14 @@ sub mainMenu {
             }
         }
         elsif ( $tab{ $AdvancedTabs[$i] } ) {
-            my ( $first, $last ) = split /[|]/xsm, $tab{ $AdvancedTabs[$i] };
-            $yytabmenu .= $first
+            my ( $tabfirst, $tablast ) = split /[|]/xsm,
+              $tab{ $AdvancedTabs[$i] };
+            $yytabmenu .= $tabfirst
               . (
-                ( $AdvancedTabs[$i] eq $tmpaction && $last )
+                ( $AdvancedTabs[$i] eq $tmpaction && $tablast )
                 ? q~ class="selected"~
                 : q{}
-              ) . $last;
+              ) . $tablast;
         }
     }
     $yytabmenu .= q~                   </ul>~;
@@ -240,10 +255,13 @@ sub GetTabtxt2 {
     elsif ( -e "$langdir/English/tabtext.txt" ) {
         require "$langdir/English/tabtext.txt";
         if ( -e "$langdir/$tab_lang/Main.lng" ) {
+            my $prntab = q{};
+            for ( keys %tabtxt ) {
+                $prntab .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
+            }
+            $prntab .= "1;\n";
             fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-            print {TABTXT} map { "\$tabtxt{'$_'} = '$tabtxt{$_}';\n" } keys %tabtxt
-              or croak "$croak{'print'} TABTXT";
-            print {TABTXT} "1;\n" or croak "$croak{'print'} TABTXT";
+            print {TABTXT} $prntab or croak "$croak{'print'} TABTXT";
             fclose(TABTXT);
         }
     }
@@ -254,17 +272,20 @@ sub GetTabtxt {
     $tab_lang = $language ? $language : $lang;
     if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
         require "$langdir/$tab_lang/tabtext.txt";
-        for (keys %tabtxt) {
-            chomp $tabtxt{$_}
+        for ( keys %tabtxt ) {
+            chomp $tabtxt{$_};
         }
     }
     elsif ( -e "$langdir/English/tabtext.txt" ) {
         require "$langdir/English/tabtext.txt";
         if ( -e "$langdir/$tab_lang/Main.lng" ) {
+            my $prntab = q{};
+            for ( keys %tabtxt ) {
+                $prntab .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
+            }
+            $prntab .= "1;\n";
             fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-            print {TABTXT} map { "\$tabtxt{'$_'} = '$tabtxt{$_}';\n" }  keys %tabtxt
-              or croak "$croak{'print'} TABTXT";
-            print {TABTXT} "1;\n" or croak "$croak{'print'} TABTXT";
+            print {TABTXT} $prntab or croak "$croak{'print'} TABTXT";
             fclose(TABTXT);
         }
     }

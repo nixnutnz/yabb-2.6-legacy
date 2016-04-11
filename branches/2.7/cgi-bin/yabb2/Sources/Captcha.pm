@@ -26,12 +26,13 @@
 
 # use strict;
 # use warnings;
+## no critic
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$captchapmver = 'YaBB 2.7.00 $Revision$';
+$captchapmver  = 'YaBB 2.7.00 $Revision$';
 @captchapmmods = ();
 if (@captchapmmods) {
     $captchapmmods = 1;
@@ -56,7 +57,7 @@ sub captcha {
     my ($msg) = @_;
     ## make colors for validation image into hex again ##
     $rgb_foreground =~ s/\#//gxsm;
-    $rgb_shade      =~ s/\#//gxsm;
+    $rgb_shade =~ s/\#//gxsm;
     $rgb_background =~ s/\#//gxsm;
     $r_f = substr $rgb_foreground, 0, 2;
     $g_f = substr $rgb_foreground, 2, 2;
@@ -1330,7 +1331,8 @@ sub captcha {
 
     # Global Colour Map
     print $palette or croak "$croak{'print'}";
-    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette ) or croak "$croak{'print'}";
+    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette )
+      or croak "$croak{'print'}";
 
     if ($TRANSPARENT_INDEX) {
 
@@ -1394,7 +1396,8 @@ sub captcha {
             $line = $lines[ $y / $LINE_HEIGHT ];
             $c    = ( $i < length $line ) ? substr $line, $i, 1 : q{ };
             $d    = substr $ci{$c}, $cy * ( $CHAR_WIDTH + $nl ) + $cx + $nl, 1;
-               # dot in character definition
+
+            # dot in character definition
             if ( $distortion > 0 ) {
                 $dis_level = 9 - $distortion;
                 if ( $random_number <= $dis_level ) {
@@ -1483,7 +1486,8 @@ sub captcha {
     }
 
     # Finish up
-    print "\0" or croak "$croak{'print'}";    # zero byte count (end of raster data)
+    print "\0"
+      or croak "$croak{'print'}";    # zero byte count (end of raster data)
 
     # GIF Terminator
     print ';' or croak "$croak{'print'}";

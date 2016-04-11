@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.7.00';
 
-$searchpmver = 'YaBB 2.7.00 $Revision$';
+$searchpmver  = 'YaBB 2.7.00 $Revision$';
 @searchpmmods = ();
 if (@searchpmmods) {
     $searchpmmods = 1;
@@ -29,7 +29,7 @@ if ( $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
     get_forum_master();
     for my $catid (@categoryorder) {
-        (@bdlist) = split /\,/xsm, $cat{$catid};
+        (@bdlist) = split /,/xsm, $cat{$catid};
         my ( $catname, $catperms, $catallowcol ) = split /[|]/xsm,
           $catinfo{$catid};
         my $access = CatAccess($catperms);
@@ -57,14 +57,14 @@ if ( $FORM{'searchboards'} =~ /\A\!/xsm ) {
         }
         return;
     }
-    $checklist =~ s/, \Z//sm;
+    $checklist =~ s/,\s\Z//xsm;
     $FORM{'searchboards'} = $checklist;
 }
 
 sub plushSearch1 {
 
     # generate error if admin has disabled search options
-    if ( $maxsearchdisplay < 0 ) { fatal_error('search_disabled'); }
+    if ( $maxsearchdisplay < 0 )         { fatal_error('search_disabled'); }
     if ( $advsearchaccess ne 'granted' ) { fatal_error('no_access'); }
     my (
         @categories, $curcat,   %catname, %cataccess, @membergroups,
@@ -151,7 +151,7 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
 
     for my $catid (@categoryorder) {
         $boardlist = $cat{$catid};
-        (@bdlist) = split /\,/xsm, $boardlist;
+        (@bdlist) = split /,/xsm, $boardlist;
         ( $catname, $catperms ) = split /[|]/xsm, $catinfo{"$catid"};
         $cataccess = CatAccess($catperms);
         if ( !$cataccess ) { next; }
@@ -164,22 +164,19 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
             if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-                my $bdmods = ${ $uid . $curboard }{'mods'};
-                $bdmods =~ s/\, /\,/gsm;
-                $bdmods =~ s/\ /\,/gsm;
+                my $bdmods     = ${ $uid . $curboard }{'mods'};
                 my %moderators = ();
                 my $pswiammod  = 0;
-                for my $curuser ( split /\,/xsm, $bdmods ) {
+                for my $curuser ( split /\//xsm, $bdmods ) {
                     if ( $username eq $curuser ) { $pswiammod = 1; }
                 }
-                my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
-                $bdmodgroups =~ s/\, /\,/gsm;
+                my $bdmodgroups     = ${ $uid . $curboard }{'modgroups'};
                 my %moderatorgroups = ();
-                for my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+                for my $curgroup ( split /\//xsm, $bdmodgroups ) {
                     if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                         $pswiammod = 1;
                     }
-                    for my $memberaddgroups ( split /\, /sm,
+                    for my $memberaddgroups ( split /,\s/xsm,
                         ${ $uid . $username }{'addgroups'} )
                     {
                         chomp $memberaddgroups;
@@ -272,8 +269,8 @@ qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label fo
             }
             </script>~;
     $yymain .= $mysearch_template5;
-    $yymain =~ s/{yabb maxsearchdisplay}/$maxsearchdisplay/sm;
-    $yymain =~ s/{yabb search_ip}/$search_ip/sm;
+    $yymain =~ s/\Q{yabb maxsearchdisplay}\E/$maxsearchdisplay/xsm;
+    $yymain =~ s/\Q{yabb search_ip}\E/$search_ip/xsm;
 
     $yymain .= qq~
 <script type="text/javascript">
@@ -308,7 +305,7 @@ sub plushSearch2 {
       || ( int( ( $date - stringtotime($forumstart) ) / 86400 ) + 1 );
 
     my $display = $FORM{'numberreturned'} || $maxsearchdisplay;
-    if ( $maxage  =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }
+    if ( $maxage =~ /\D/xsm )  { fatal_error('only_numbers_allowed'); }
     if ( $display =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }
 
     # restrict flooding using form abuse
@@ -327,7 +324,7 @@ sub plushSearch2 {
     if ( $userspec =~ m{\\}xsm ) { fatal_error('no_user_backslash'); }
     $userspec =~ s/\A\s+//xsm;
     $userspec =~ s/\s+\Z//xsm;
-    $userspec =~ s/[^0-9A-Za-z#%+,-\.@^_]//gxsm;
+    $userspec =~ s/[^\w#%+,-.@\^]//gxsm;
     if ($do_scramble_id) {
         $userspec =~ s/ //gsm;
         $userspec = decloak($userspec);
@@ -379,7 +376,7 @@ sub plushSearch2 {
     get_forum_master();
     for my $catid (@categoryorder) {
         $boardlist = $cat{$catid};
-        (@bdlist) = split /\,/xsm, $boardlist;
+        (@bdlist) = split /,/xsm, $boardlist;
         ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
         $cataccess = CatAccess($catperms);
         if ( !$cataccess ) { next; }
@@ -403,7 +400,7 @@ sub plushSearch2 {
     }
     if ($enable_ubbc) { require Sources::YaBBC; }
 
-    @boards = split /\,\ /xsm, $FORM{'searchboards'};
+    @boards = split /,\s/xsm, $FORM{'searchboards'};
   BOARDCHECK: for my $curboard (@boards) {
         ( $boardname{$curboard}, $boardperms, $boardview ) = split /[|]/xsm,
           $board{$curboard};
@@ -412,22 +409,19 @@ sub plushSearch2 {
         if ( !$iamadmin && $access ne 'granted' ) { next; }
 
         if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-            my $bdmods = ${ $uid . $curboard }{'mods'};
-            $bdmods =~ s/\, /\,/gsm;
-            $bdmods =~ s/\ /\,/gsm;
+            my $bdmods     = ${ $uid . $curboard }{'mods'};
             my %moderators = ();
             my $pswiammod  = 0;
-            for my $curuser ( split /\,/xsm, $bdmods ) {
+            for my $curuser ( split /\//xsm, $bdmods ) {
                 if ( $username eq $curuser ) { $pswiammod = 1; }
             }
-            my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
-            $bdmodgroups =~ s/\, /\,/gsm;
+            my $bdmodgroups     = ${ $uid . $curboard }{'modgroups'};
             my %moderatorgroups = ();
-            for my $curgroup ( split /\,/xsm, $bdmodgroups ) {
+            for my $curgroup ( split /\//xsm, $bdmodgroups ) {
                 if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                     $pswiammod = 1;
                 }
-                for my $memberaddgroups ( split /\, /sm,
+                for my $memberaddgroups ( split /,\s/xsm,
                     ${ $uid . $username }{'addgroups'} )
                 {
                     chomp $memberaddgroups;
@@ -462,18 +456,18 @@ sub plushSearch2 {
 
             if (   $tdate < $maxtime
                 || $tstate =~ /m/ism
-                || ( !$iamadmin && !$iamgmod && $tstate =~ /h/ism ) )
+                || ( !$iamadmin && !$iamgmod && $tstate =~ /h/ixsm ) )
             {
                 next THREADCHECK;
             }
             if ( $userkind == 1 ) {
                 if ( $tusername eq 'Guest' ) {
-                    if ( $tname !~ m{\A\Q$userspec\E\Z}ism ) {
+                    if ( $tname !~ m{\A\Q$userspec\E\Z}ixsm ) {
                         next THREADCHECK;
                     }
                 }
                 else {
-                    if ( $tusername !~ m{\A\Q$userspec\E\Z}ism ) {
+                    if ( $tusername !~ m{\A\Q$userspec\E\Z}ixsm ) {
                         next THREADCHECK;
                     }
                 }
@@ -522,7 +516,7 @@ sub plushSearch2 {
                     if (
                         $userkind == 3
                         || (   $userkind == 2
-                            && $mname !~ m{\A\Q$userspec\E\Z}ism )
+                            && $mname !~ m{\A\Q$userspec\E\Z}ixsm )
                       )
                     {
                         next POSTCHECK;
@@ -532,7 +526,7 @@ sub plushSearch2 {
                     if (
                         $userkind == 4
                         || (   $userkind == 2
-                            && $musername !~ m{\A\Q$userspec\E\Z}ism )
+                            && $musername !~ m{\A\Q$userspec\E\Z}ixsm )
                       )
                     {
                         next POSTCHECK;
@@ -563,28 +557,29 @@ sub plushSearch2 {
                     $ipfound   = 0;
                     @mip       = split / /sm, $mip;
                     $mip       = q~~;
-                    $mip_class    = q~~;
+                    $mip_class = q~~;
                     for (@mip) {
-                        if ( $_ =~ /\b$search_ip/sm ) {
+                        if ( $_ =~ /\b$search_ip/xsm ) {
                             $ipfound = 1;
                         }
-                        if ( $ipLookup ) {
-                            if ( $_ =~ /\b$search_ip/sm ) {
+                        if ($ipLookup) {
+                            if ( $_ =~ /\b$search_ip/xsm ) {
                                 $mip_class = ' highlight';
                             }
                             $mip .=
 qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small$mip_class">$_</span></a> ~;
                         }
                         else {
-                            $mip .= qq~<span class="small$mip_class">$_</span> ~;
+                            $mip .=
+                              qq~<span class="small$mip_class">$_</span> ~;
                         }
                     }
                 }
                 else {
-                    @mip       = split / /sm, $mip;
-                    $mip    = q~~;
+                    @mip = split /\s/xsm, $mip;
+                    $mip = q~~;
                     for (@mip) {
-                        if ( $ipLookup ) {
+                        if ($ipLookup) {
                             $mip .=
 qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small">$_</span></a> ~;
                         }
@@ -678,12 +673,12 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><u>$pboardname</u><
         ++$counter;
 
         $yymain .= $mysearch_template6;
-        $yymain =~ s/{yabb counter}/$counter/sm;
+        $yymain =~ s/\Q{yabb counter}/$counter/xsm;
         $yymain .=
 qq~<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$board}</span></a> / <a href="$scripturl?board=$board"><span class="under">$boardname{$board}</span></a> / <a href="$scripturl?num=$tnum/$msgnum#$msgnum"><span class="under">$msub</span></a>&nbsp;<br /><span class="small">$search_txt{'30'}: $mdate</span>~;
         $yymain .= $mysearch_template7;
-        $yymain =~ s/{yabb tname}/$tname/sm;
-        $yymain =~ s/{yabb mname}/$mname/sm;
+        $yymain =~ s/\Q{yabb tname}\E/$tname/xsm;
+        $yymain =~ s/\Q{yabb mname}\E/$mname/xsm;
 
         if ( $tstate != 1
             && ( !$iamguest || ( $iamguest && $enable_guestposting ) ) )
@@ -705,14 +700,14 @@ qq~$menusep<a href="$scripturl?action=notify2;oldnotify=1;num=$tnum/$msgnum#$msg
 qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify~;
         }
         if (   $staff
-            && ( $icanbypass || $tstate !~ /l/ism )
+            && ( $icanbypass || $tstate !~ /l/ixsm )
             && ( !$iammod || is_moderator( $username, $board ) ) )
         {
             LoadLanguage('Display');
             $yymain .=
 qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~
               . (
-                ( $icanbypass && $tstate =~ /l/ism )
+                ( $icanbypass && $tstate =~ /l/ixsm )
                 ? qq~$display_txt{'modifyinlocked'}\\n\\n~
                 : q{}
               ) . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
@@ -722,23 +717,24 @@ qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" o
             || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
         {
             $my_ipfind = $mysearch_template10;
-            $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
-            $my_ipfind =~ s/{yabb ipimg}/$ipimg/sm;
-            $my_ipfind =~ s/{yabb mip}/$mip/sm;
+            $ipimg     = qq~<img src="$micon_bg{'ip'}" alt="" />~;
+            $my_ipfind =~ s/\Q{yabb ipimg}\E/$ipimg/xsm;
+            $my_ipfind =~ s/\Q{yabb mip}\E/$mip/xsm;
         }
 
         $yymain .= $mysearch_template9;
-        $yymain =~ s/{yabb message}/$message/sm;
-        $yymain =~ s/{yabb my_ipfind}/$my_ipfind/sm;
+        $yymain =~ s/\Q{yabb message}\E/$message/xsm;
+        $yymain =~ s/\Q{yabb my_ipfind}\E/$my_ipfind/xsm;
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
         }
         else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+              ${ $uid . $username }{'postlayout'};
             if ( $txtsz < 60 ) { $txtsz = 100; }
             $txtsz = qq~; font-size:$txtsz%~;
         }
-        $yymain =~ s/{yabb txtsze}/$txtsz/gsm;
+        $yymain =~ s/\Q{yabb txtsze}\E/$txtsz/gxsm;
     }
 
     if (@messages) {
@@ -757,11 +753,12 @@ $search_txt{'167'}<hr class="hr" />
 
 sub pmsearch {
     $enable_PMsearch ||= 0;
+
     # generate error if admin has disabled search options
     if ( $enable_PMsearch <= 0 ) { fatal_error('search_disabled'); }
 
     my $display = $FORM{'numberreturned'} || $enable_PMsearch;
-    if ( $display =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }
+    if ( $display =~ /\D/xsm )         { fatal_error('only_numbers_allowed'); }
     if ( $display > $enable_PMsearch ) { fatal_error('result_too_high'); }
 
     $searchtype = $FORM{'searchtype'} || $INFO{'searchtype'};
@@ -787,19 +784,19 @@ sub pmsearch {
     if ( $searchtype != 5 ) {
         $search =~ s/\A\s+//xsm;
         $search =~ s/\s+\Z//xsm;
-        if ( $searchtype != 3 ) { $search =~ s/\s+/ /gsm; }
+        if ( $searchtype != 3 ) { $search =~ s/\s+/ /gxsm; }
         if ( $search eq q{} || $search eq q{ } ) { fatal_error('no_search'); }
         if ( $search =~ m{/}xsm )  { fatal_error('no_search_slashes'); }
         if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
         ToHTML($search);
-        $search =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gsm;
+        $search =~ s/\t/ &nbsp; &nbsp; &nbsp;/gxsm;
         $search =~ s/\cM//gxsm;
         $search =~ s/\n/<br \/>/gxsm;
     }
 
     my $pmboxesCount = 1;
     if ( $pmbox eq '!all' ) { $pmboxesCount = 3; }
-    if ( $searchtype == 5 ) { @search = ($search); }
+    if ( $searchtype == 5 ) { @search       = ($search); }
     elsif ( $searchtype != 3 ) { @search = split /\s+/xsm, lc $search; }
     else                       { @search = ( lc $search ); }
 
@@ -907,7 +904,7 @@ sub pmsearch {
             else {
                 $subfound = 1;
                 for (@search) {
-                    if ( $msub !~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
+                    if ( $msub !~ m{(?:^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
                         $subfound = 0;
                         last;
                     }
@@ -978,51 +975,51 @@ sub pmsearch {
         my ( $fromTitle, $toTitle, $toTitleCC, $toTitleBCC, $FolderName );
 
         if ($mfromuser) {
-            for my $uname ( split /\,/xsm, $mfromuser ) {
+            for my $uname ( split /,/xsm, $mfromuser ) {
                 my ( $guestName, $guestEmail ) = split / /sm, $uname;
                 if ($guestEmail) { $uname = 'Guest'; }
                 $MemberFromLink .=
                   addMemberLink( $uname, $guestName, $mdate ) . q{, };
             }
-            $MemberFromLink =~ s/, \Z//sm;
-            $MemberFromLink =~ s/%20/ /gsm;
+            $MemberFromLink =~ s/,\s\Z//xsm;
+            $MemberFromLink =~ s/%20/ /gxsm;
             $fromTitle = qq~$search_txt{'pmfrom'}: $MemberFromLink<br />~;
         }
 
         if ($mtouser) {
             if ( $mstatus ne 'sb' ) {
-                for my $uname ( split /\,/xsm, $mtouser ) {
+                for my $uname ( split /,/xsm, $mtouser ) {
                     $MemberToLink .=
                       addMemberLink( $uname, $uname, $mdate ) . q{, };
                 }
-                $MemberToLink =~ s/, \Z//sm;
+                $MemberToLink =~ s/,\s\Z//xsm;
                 $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
             }
             else {
                 require Sources::InstantMessage;
-                for my $uname ( split /\,/xsm, $mtouser ) {
+                for my $uname ( split /,/xsm, $mtouser ) {
                     $MemberToLink .= links_to($uname);
                 }
-                $MemberToLink =~ s/, \Z//sm;
+                $MemberToLink =~ s/,\s\Z//xsm;
                 $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
             }
         }
 
         if ( $mccuser && $mfromuser eq $username ) {
-            for my $uname ( split /\,/xsm, $mccuser ) {
+            for my $uname ( split /,/xsm, $mccuser ) {
                 $MemberCCLink .=
                   addMemberLink( $uname, $uname, $mdate ) . q{, };
             }
-            $MemberCCLink =~ s/, \Z//sm;
+            $MemberCCLink =~ s/,\s\Z//xsm;
             $toTitleCC = qq~$search_txt{'pmcc'}: $MemberCCLink<br />~;
         }
 
         if ( $mbccuser && $mfromuser eq $username ) {
-            for my $uname ( split /\,/xsm, $mbccuser ) {
+            for my $uname ( split /,/xsm, $mbccuser ) {
                 $MemberBCCLink .=
                   addMemberLink( $uname, $uname, $mdate ) . q{, };
             }
-            $MemberBCCLink =~ s/, \Z//sm;
+            $MemberBCCLink =~ s/,\s\Z//xsm;
             $toTitleBCC = qq~$search_txt{'pmbcc'}: $MemberBCCLink<br />~;
         }
 
@@ -1044,7 +1041,9 @@ sub pmsearch {
         $mdate = timeformat($mdate);
 
         Highlight( \$msub, \$message, \@search, 0 );
-        if ( $enable_ubbc && $message !~ /\x23nosmileys/isgm ) { MakeSmileys(); }
+        if ( $enable_ubbc && $message !~ /\x23nosmileys/igxsm ) {
+            MakeSmileys();
+        }
 
         $message = Censor($message);
         $msub    = Censor($msub);
@@ -1052,27 +1051,28 @@ sub pmsearch {
         ++$counter;
 
         $yysearchmain .= $mysearch_PM;
-        $yysearchmain =~ s/{yabb counter}/$counter/sm;
-        $yysearchmain =~ s/{yabb FolderName}/$FolderName/sm;
-        $yysearchmain =~ s/{yabb msub}/$msub/sm;
-        $yysearchmain =~ s/{yabb mdate}/$mdate/sm;
-        $yysearchmain =~ s/{yabb thispmbox}/$thispmbox/gsm;
-        $yysearchmain =~ s/{yabb messageid}/$messageid/gsm;
-        $yysearchmain =~ s/{yabb message}/$message/sm;
-        $yysearchmain =~ s/{yabb fromTitle}/$fromTitle/sm;
-        $yysearchmain =~ s/{yabb toTitle}/$toTitle/sm;
-        $yysearchmain =~ s/{yabb toTitleCC}/$toTitleCC/sm;
-        $yysearchmain =~ s/{yabb toTitleBCC}/$toTitleBCC/sm;
+        $yysearchmain =~ s/\Q{yabb counter}\E/$counter/xsm;
+        $yysearchmain =~ s/\Q{yabb FolderName}\E/$FolderName/xsm;
+        $yysearchmain =~ s/\Q{yabb msub}\E/$msub/xsm;
+        $yysearchmain =~ s/\Q{yabb mdate}\E/$mdate/xsm;
+        $yysearchmain =~ s/\Q{yabb thispmbox}\E/$thispmbox/gxsm;
+        $yysearchmain =~ s/\Q{yabb messageid}\E/$messageid/gxsm;
+        $yysearchmain =~ s/\Q{yabb message}\E/$message/xsm;
+        $yysearchmain =~ s/\Q{yabb fromTitle}\E/$fromTitle/xsm;
+        $yysearchmain =~ s/\Q{yabb toTitle}\E/$toTitle/xsm;
+        $yysearchmain =~ s/\Q{yabb toTitleCC}\E/$toTitleCC/xsm;
+        $yysearchmain =~ s/\Q{yabb toTitleBCC}\E/$toTitleBCC/xsm;
+
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
         }
         else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+              ${ $uid . $username }{'postlayout'};
             if ( $txtsz < 60 ) { $txtsz = 100; }
             $txtsz = qq~; font-size:$txtsz%~;
         }
-        $yysearchmain =~ s/{yabb txtsze}/$txtsz/gsm;
-
+        $yysearchmain =~ s/\Q{yabb txtsze}\E/$txtsz/gxsm;
     }
 
     if (@messages) {
@@ -1095,7 +1095,7 @@ sub addMemberLink {
     {
         $mname = profile_view($user);
     }
-    elsif ($user !~ m/Guest/sm
+    elsif ($user !~ m/Guest/xsm
         && $mdate < ( ${ $uid . $user }{'regtime'} || $date ) )
     {
         $mname = qq~$displayname - $maintxt{'470a'}~;
@@ -1111,8 +1111,8 @@ sub Highlight {
     my $i = 0;
     my @HTMLtags;
     my $HTMLtag = 'HTML';
-    while ( ${$message} =~ /\[$HTMLtag\d+\]/sm ) { $HTMLtag .= '1'; }
-    while ( ${$message} =~ s/(<.+?>)/[$HTMLtag$i]/sm ) {
+    while ( ${$message} =~ /\[$HTMLtag\d+\]/xsm ) { $HTMLtag .= '1'; }
+    while ( ${$message} =~ s/(<.+?>)/[$HTMLtag$i]/xsm ) {
         push @HTMLtags, $1;
         $i++;
     }
@@ -1120,22 +1120,30 @@ sub Highlight {
     for my $tmp ( @{$search} ) {
         if ($case) {
             if ( $searchtype == 4 ) {
-                ${$msub}    =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
-                ${$message} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gsm;
+                ${$msub} =~
+                  s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gxsm;
+                ${$message} =~
+                  s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gxsm;
             }
             else {
-                ${$msub}    =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
-                ${$message} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gsm;
+                ${$msub} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gxsm;
+                ${$message} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/gxsm;
             }
         }
         else {
             if ( $searchtype == 4 ) {
-                ${$msub}    =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
-                ${$message} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igsm;
+                ${$msub} =~
+                  s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igxsm;
+                ${$message} =~
+                  s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igxsm;
             }
             else {
-                ${$msub}    =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
-                ${$message} =~ s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igsm;
+                ${$msub} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igxsm;
+                ${$message} =~
+s/(^|\W|_)(\Q$tmp\E)(?=$|\W|_)/$1<span class="highlight">$2<\/span>$3/igxsm;
             }
         }
     }
@@ -1184,13 +1192,13 @@ sub case_subfound2 {
     $subfound = 1;
     for (@search) {
         if (   $case
-            && $msub !~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}xsm )
+            && $msub !~ m{(?:^|\W|_)\Q$_\E(?=$|\W|_)}xsm )
         {
             $subfound = 0;
             last;
         }
         elsif ( !$case
-            && $msub !~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}ixsm )
+            && $msub !~ m{(?:^|\W|_)\Q$_\E(?=$|\W|_)}ixsm )
         {
             $subfound = 0;
             last;
@@ -1207,7 +1215,7 @@ sub msgfnd {
             $msgfound = 1;
             last;
         }
-        elsif ( $message =~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
+        elsif ( $message =~ m{(?:^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
             $msgfound = 1;
             last;
         }
@@ -1219,11 +1227,12 @@ sub msgfnd2 {
     my ($message) = @_;
     $msgfound = 1;
     for (@search) {
-        if ( $message !~ m{(^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
+        if ( $message !~ m{(?:^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
             $msgfound = 0;
             last;
         }
     }
     return $msgfound;
 }
+
 1;

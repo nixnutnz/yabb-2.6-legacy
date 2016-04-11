@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$removetopicpmver = 'YaBB 2.7.00 $Revision$';
+$removetopicpmver  = 'YaBB 2.7.00 $Revision$';
 @removetopicpmmods = ();
 if (@removetopicpmmods) {
     $removetopicpmmods = 1;
@@ -37,17 +37,18 @@ sub RemoveThread {
     fopen( BOARDFILE, "<$boardsdir/$currentboard.txt", 1 )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <BOARDFILE>;
-    fclose( BOARDFILE );
-    for my $aa ( 0 .. $#buffer ) {
-        if ( $buffer[$aa] =~ m{\A$thread\|}xsm ) {
-            $threadline = $buffer[$aa];
-            $buffer[$aa] = q{};
+    fclose(BOARDFILE);
+    for my $i ( 0 .. $#buffer ) {
+        if ( $buffer[$i] =~ m{\A$thread[|]}xsm ) {
+            $threadline = $buffer[$i];
+            $buffer[$i] = q{};
             last;
         }
     }
+    my $prnbrd = join q{}, @buffer;
     fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    print {BOARDFILE} @buffer or croak "$croak{'print'} BOARDFILE";
+    print {BOARDFILE} $prnbrd or croak "$croak{'print'} BOARDFILE";
     fclose(BOARDFILE);
 
     if ($threadline) {

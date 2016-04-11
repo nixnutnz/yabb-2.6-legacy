@@ -1,5 +1,4 @@
 #!/usr/bin/perl --
-
 ###############################################################################
 # LangConvert.pl                                                              #
 # $Date: 06.01.16 $                                                           #
@@ -14,6 +13,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -21,8 +21,9 @@ $boardconvertplver = 'YaBB 2.7.00 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
-    $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm;
-    $yypath = $1;
+    if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
+        $yypath = $1;
+    }
     $yypath =~ s/\\/\//gxsm;
     chdir $yypath;
     push @INC, $yypath;
@@ -30,11 +31,11 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
 
 ### Requirements and Errors ###
 my $script_root = $ENV{'SCRIPT_FILENAME'};
-if( ! $script_root ) {
-        $script_root = $ENV{'PATH_TRANSLATED'};
+if ( !$script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
 }
 $script_root =~ s/\\/\//gxsm;
-$script_root =~ s/\/LangConvert\.(pl|cgi)//igxsm;
+$script_root =~ s/\/LangConvert[.](pl|cgi)//igxsm;
 
 if   ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
 else                   { $yyext = 'pl'; }
@@ -42,7 +43,7 @@ if   ($boardurl) { $set_cgi = "$boardurl/LangConvert.$yyext"; }
 else             { $set_cgi = "LangConvert.$yyext"; }
 
 my $pxt = $yyext;
-if ( -e 'Paths.$pxt' ) {
+if ( -e "Paths.$pxt" ) {
     require "Paths.$pxt";
 }
 elsif ( -e 'Paths.pm' ) {
@@ -57,35 +58,37 @@ if ( !$action ) {
 }
 
 if    ( $action eq 'adminlogin2' ) { adminlogin2(); }
-elsif ( $action eq 'convbrd') {    convcontrol(); }
+elsif ( $action eq 'convbrd' )     { convcontrol(); }
 
 sub convcontrol {
 
-open $FORUMCONTROL, '<', "$boardsdir/forum.control" or croak 'cannot open forum.control';
-my @boardcontrols = <$FORUMCONTROL>;
-close $FORUMCONTROL or croak 'cannot close forum.control';
-chomp @boardcontrols;
+    open $FORUMCONTROL, '<', "$boardsdir/forum.control"
+      or croak 'cannot open forum.control';
+    my @boardcontrols = <$FORUMCONTROL>;
+    close $FORUMCONTROL or croak 'cannot close forum.control';
+    chomp @boardcontrols;
 
-for my $boardline (@boardcontrols) {
-    $boardline =~ s/[\r\n]//g; # Built in chomp
-        (undef, $cntboard ) = split /[|]/xsm, $boardline;
-    ## create a global boards array
-    push(@allboards, $cntboard);
-}
-
-LoadBoardControl();
-my $brdconv = q{};
-for my $cntboard (@allboards) {
-    $brdconv .= qq~\%$cntboard = (\n~;
-    foreach (keys %{ $uid . $cntboard } ) {
-        $brdconv .= "'$_' => '${ $uid . $cntboard }{$_}',\n";
+    for my $boardline (@boardcontrols) {
+        $boardline =~ s/[\r\n]//gxsm;    # Built in chomp
+        ( undef, $cntboard ) = split /[|]/xsm, $boardline;
+        ## create a global boards array
+        push @allboards, $cntboard;
     }
-       $brdconv .= qq~);\n~;
-}
 
-open $BOARDCONV, '>',"$vardir/boardconv.txt" or croak 'cannot open boardsconv.txt';
-print {$BOARDCONV} $brdconv or croak 'cannot print boardsconv.txt';
-close $BOARDCONV or croak 'cannot close boardsconv.txt';
+    LoadBoardControl();
+    my $brdconv = q{};
+    for my $cntboard (@allboards) {
+        $brdconv .= qq~\%$cntboard = (\n~;
+        foreach ( keys %{ $uid . $cntboard } ) {
+            $brdconv .= "'$_' => '${ $uid . $cntboard }{$_}',\n";
+        }
+        $brdconv .= qq~);\n~;
+    }
+
+    open $BOARDCONV, '>', "$vardir/boardconv.txt"
+      or croak 'cannot open boardsconv.txt';
+    print {$BOARDCONV} $brdconv or croak 'cannot print boardsconv.txt';
+    close $BOARDCONV or croak 'cannot close boardsconv.txt';
 
     $yymain .= qq~
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
@@ -95,7 +98,6 @@ close $BOARDCONV or croak 'cannot close boardsconv.txt';
 
     return SimpleOutput();
 }
-
 
 sub SimpleOutput {
     $gzcomp = 0;

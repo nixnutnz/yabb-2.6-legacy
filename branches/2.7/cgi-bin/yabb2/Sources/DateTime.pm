@@ -18,14 +18,14 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.7.00';
 
-$datetimepmver = 'YaBB 2.7.00 $Revision$';
+$datetimepmver  = 'YaBB 2.7.00 $Revision$';
 @datetimepmmods = ();
 if (@datetimepmmods) {
     $datetimepmmods = 1;
 }
 
 @days_rfc = qw( Sun Mon Tue Wed Thu Fri Sat );
-    # for RFC compliant feed time
+
 @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
 
 sub calcdifference {    # Input: $date1 $date2
@@ -34,7 +34,7 @@ sub calcdifference {    # Input: $date1 $date2
 }
 
 sub toffs {
-    my ($mydate, $forum_default) = @_;
+    my ( $mydate, $forum_default ) = @_;
     my $toffs = 0;
 
     if ( $iamguest || $forum_default || !${ $uid . $username }{'user_tz'} ) {
@@ -44,21 +44,23 @@ sub toffs {
         $tzname = ${ $uid . $username }{'user_tz'};
     }
 
-    eval {
-          require DateTime;
-          require DateTime::TimeZone;
-    };
-    if( !$EVAL_ERROR ) {
+    if (
+        eval {
+            require DateTime;
+            require DateTime::TimeZone;
+        }
+      )
+    {
         DateTime->import();
         DateTime::TimeZone->import();
         if ( $tzname eq 'local' ) {
             $tzname = 'UTC';
         }
-        my $tz = DateTime::TimeZone->new(name => $tzname);
+        my $tz = DateTime::TimeZone->new( name => $tzname );
         my $now = DateTime->from_epoch( 'epoch' => $mydate );
         $toffs = $tz->offset_for_datetime($now);
     }
-    elsif ( $EVAL_ERROR ) {
+    else {
         if ( $tzname eq 'local' ) {
             $toffs = $timeoffset;
             $toffs +=
@@ -67,7 +69,6 @@ sub toffs {
         }
         else { $toffs = 0; }
     }
-    else { $toffs = 0; }
 
     return $toffs;
 }
@@ -80,10 +81,10 @@ sub timetostring {
     if ($enabletz) {
         $toffs = toffs($thedate);
     }
-    my $newtime =  $thedate + $toffs;
+    my $newtime = $thedate + $toffs;
 
     ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, undef ) =
-      gmtime( $newtime );
+      gmtime $newtime;
     $sec  = sprintf '%02d', $sec;
     $min  = sprintf '%02d', $min;
     $hour = sprintf '%02d', $hour;
@@ -105,16 +106,14 @@ sub stringtotime {
 
 # receive standard format yabb date/time string.
 # allow for oddities thrown up from y1 , with full year / single digit day/month
-    my $amonth = 1;
-    my $aday   = 1;
-    my $ayear  = 0;
-    my $ahour  = 0;
-    my $amin   = 0;
-    my $asec   = 0;
-
-    if ( $splitvar =~
-        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/sm )
-    {
+    my $amonth  = 1;
+    my $aday    = 1;
+    my $ayear   = 0;
+    my $ahour   = 0;
+    my $amin    = 0;
+    my $asec    = 0;
+    my $regshrt = qr{(\d{1,2})\/(\d{1,2})\/(\d{2,4})}xsm;
+    if ( $splitvar =~ m/$regshrt.*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/xsm ) {
         $amonth = int $1;
         $aday   = int $2;
         $ayear  = int $3;
@@ -122,7 +121,7 @@ sub stringtotime {
         $amin   = int $5;
         $asec   = int $6;
     }
-    elsif ( $splitvar =~ m/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/sm ) {
+    elsif ( $splitvar =~ m/$regshrt/xsm ) {
         $amonth = int $1;
         $aday   = int $2;
         $ayear  = int $3;
@@ -178,15 +177,15 @@ sub timeformat {
 
     # find out what timezone is to be used.
     my $toffs = 0;
-    if ( $enabletz) {
-        $toffs = toffs($oldformat, $forum_default);
+    if ($enabletz) {
+        $toffs = toffs( $oldformat, $forum_default );
     }
-    my $mynewtime =  $oldformat + $toffs;
+    my $mynewtime = $oldformat + $toffs;
 
     my (
         $newsecond, $newminute,  $newhour,    $newday, $newmonth,
         $newyear,   $newweekday, $newyearday, $newoff
-    ) = gmtime( $mynewtime );
+    ) = gmtime $mynewtime;
     $newmonth++;
     $newyear += 1900;
 
@@ -253,7 +252,10 @@ sub timeformat {
         time_1( $daytxt, $newday, $newmonth, $newyear, $newtime ),
         time_2( $daytxt, $newday, $newmonth, $newyear, $newtime ),
         time_3( $daytxt, $newday, $newmonth, $newyear, $newtime ),
-        time_4( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute, $lower ),
+        time_4(
+            $daytxt,  $newday,    $newmonth, $newyear,
+            $newhour, $newminute, $lower
+        ),
         time_5( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
         time_6( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
         q{},
@@ -285,7 +287,7 @@ sub timeformatcal {
     my (
         $newsecond, $newminute,  $newhour,    $newday, $newmonth,
         $newyear,   $newweekday, $newyearday, $newoff
-    ) = gmtime( $mynewtime );
+    ) = gmtime $mynewtime;
     $newmonth++;
     $newyear += 1900;
 
@@ -316,7 +318,7 @@ sub timeformatcal {
 
     $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
-    if ( $enabletz) {
+    if ($enabletz) {
         $toffs = toffs($date);
     }
     ( undef, undef, undef, undef, undef, $yy, undef, $yd, undef ) =
@@ -422,7 +424,7 @@ sub CalcAge {
 
 sub NumberFormat {
     my ($inp) = @_;
-    my ( $decimal, $fraction ) = split /\./xsm, $inp;
+    my ( $decimal, $fraction ) = split /[.]/xsm, $inp;
     my $tmpforumformat = $forumnumberformat || 1;
     my $numberformat = ${ $uid . $username }{'numberformat'} || $tmpforumformat;
     my @septor =
@@ -436,11 +438,11 @@ sub NumberFormat {
             $decimalpt = $drb;
         }
     }
-    if ( $decimal =~ m/\d{4,}/sm ) {
+    if ( $decimal =~ m/\d{4,}/xsm ) {
         $decimal = reverse $decimal;
-        $decimal =~ s/(\d{3})/$1$separator/gsm;
+        $decimal =~ s/(\d{3})/$1$separator/gxsm;
         $decimal = reverse $decimal;
-        $decimal =~ s/^(\.|\,| )//sm;
+        $decimal =~ s/^([., ])//xsm;
     }
     $newnumber = $decimal;
     if ($fraction) {
@@ -480,14 +482,16 @@ sub time_3 {
 }
 
 sub time_4 {
-    my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute, $lower ) = @_;
+    my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute, $lower )
+      = @_;
     $ampm = $newhour > 11 ? 'pm' : 'am';
     $newhour2 = $newhour % 12 || 12;
-    if ( !@months_m ) { @months_m = @months; }
-    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
-    elsif ( $lower ) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
-    else             { $newmonth2 = $months[ $newmonth - 1 ]; }
+    if    ( !@months_m ) { @months_m  = @months; }
+    if    ($use_rfc)     { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
+    elsif ($lower)       { $newmonth2 = $months_m[ $newmonth - 1 ]; }
+    else                 { $newmonth2 = $months[ $newmonth - 1 ]; }
     $newday2 = "$timetxt{'4'}";
+
     if ( $newday > 10 && $newday < 20 ) {
         $newday2 = "$timetxt{'4'}";
     }
@@ -499,9 +503,9 @@ sub time_4 {
         }
     }
     $newformat =
-          $daytxt
-          ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
-          : qq~$newmonth2$maintxt{'770'} $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
+      $daytxt
+      ? qq~$daytxt $maintxt{'107'} $newhour2:$newminute$ampm~
+      : qq~$newmonth2$maintxt{'770'} $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
 
     return $newformat;
 }
@@ -520,9 +524,9 @@ sub time_5 {
 
 sub time_6 {
     my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @_;
-    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
-    elsif ( @months_m )            { $newmonth2 = $months_m[ $newmonth - 1 ]; }
-    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
+    if    ($use_rfc)  { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
+    elsif (@months_m) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
+    else              { $newmonth2 = $months[ $newmonth - 1 ]; }
     $newformat =
       $daytxt
       ? qq~$daytxt $maintxt{'107'} $newhour:$newminute~
@@ -535,9 +539,9 @@ sub time_8 {
     my ( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @_;
     $ampm = $newhour > 11 ? 'pm' : 'am';
     $newhour2 = $newhour % 12 || 12;
-    if   ($use_rfc) { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
-    elsif ( @months_m )            { $newmonth2 = $months_m[ $newmonth - 1 ]; }
-    else            { $newmonth2 = $months[ $newmonth - 1 ]; }
+    if    ($use_rfc)  { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
+    elsif (@months_m) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
+    else              { $newmonth2 = $months[ $newmonth - 1 ]; }
     $newday2 = "$timetxt{'4'}";
     if ( $newday > 10 && $newday < 20 ) {
         $newday2 = "$timetxt{'4'}";
@@ -559,7 +563,7 @@ sub time_8 {
 
 sub dtonly {
     my ($newformat) = @_;
-    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism ) {
+    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
         $dateonly = $1;
     }
 
@@ -568,7 +572,7 @@ sub dtonly {
 
 sub tmonly {
     my ($newformat) = @_;
-    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ism ) {
+    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
         $timeonly = $2;
     }
 
@@ -579,7 +583,7 @@ sub bdayno_year {
     my ($newformat) = @_;
     $date_noyear = $newformat;
     if ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-        ( $date_noyear, undef ) = split /\,/xsm, $newformat;
+        ( $date_noyear, undef ) = split /,/xsm, $newformat;
     }
     elsif ( $mytimeselected == 1 || $mytimeselected == 5 ) {
         @date_noyear = split /\//xsm, $newformat;
@@ -597,27 +601,27 @@ sub bdayno_year {
     return ($date_noyear);
 }
 
-sub IsLeap { 
-   my ($year ) = @_;
-   return 0 if $year % 4;
-   return 1 if $year % 100;
-   return 0 if $year % 400;
-   return 1;
+sub IsLeap {
+    my ($year) = @_;
+    return 0 if $year % 4;
+    return 1 if $year % 100;
+    return 0 if $year % 400;
+    return 1;
 }
 
 sub ctbtime {
     my (
         $newsecond, $newminute,  $newhour,    $newday, $newmonth,
         $newyear,   $newweekday, $newyearday, $newoff
-    ) = gmtime( $date );
+    ) = gmtime $date;
     $newyear += 1900;
-    $shortday = $days_rfc[$newweekday];
-    $shortmon = $months_rfc[$newmonth];
+    $shortday  = $days_rfc[$newweekday];
+    $shortmon  = $months_rfc[$newmonth];
     $newhour   = sprintf '%02d', $newhour;
     $newminute = sprintf '%02d', $newminute;
     $newsecond = sprintf '%02d', $newsecond;
-    $newmin = $newhour . q{:} . $newminute . q{:} . $newsecond;
-    $newtime = qq~$shortday, $newday $shortmon $newyear $newmin UTC~;
+    $newmin    = $newhour . q{:} . $newminute . q{:} . $newsecond;
+    $newtime   = qq~$shortday, $newday $shortmon $newyear $newmin UTC~;
 
     return $newtime;
 }

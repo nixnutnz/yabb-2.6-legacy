@@ -34,7 +34,7 @@ $time_to_jump     = time() + $max_process_time;
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
-    if ( $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm ) {
+    if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
     }
     $yypath =~ s/\\/\//gxsm;
@@ -194,11 +194,11 @@ oFormObject.elements["convvardir"].value = dirval + "/Variables";
         $yyuname = q{};
 
         $convlang      = $FORM{'convertlang'};
-        $convertdir    = $FORM{'convertdir'}    || q~Convert~;
+        $convertdir    = $FORM{'convertdir'} || q~Convert~;
         $convboardsdir = $FORM{'convboardsdir'} || qq~$convertdir/Boards~;
         $convmemberdir = $FORM{'convmemberdir'} || qq~$convertdir/Members~;
-        $convdatadir   = $FORM{'convdatadir'}   || qq~$convertdir/Messages~;
-        $convvardir    = $FORM{'convvardir'}    || qq~$convertdir/Variables~;
+        $convdatadir   = $FORM{'convdatadir'} || qq~$convertdir/Messages~;
+        $convvardir    = $FORM{'convvardir'} || qq~$convertdir/Variables~;
 
         if ( !-d "$convboardsdir" ) {
             setup_fatal_error( "Directory: $convboardsdir", 1 );
@@ -216,7 +216,7 @@ oFormObject.elements["convvardir"].value = dirval + "/Variables";
             setup_fatal_error( "File: $convvardir/cat.txt", 1 );
         }
 
-        my $setfile = <<EOF;
+        my $setfile = << "EOF";
 \$convertdir = q~$convertdir~;
 \$convboardsdir = q~$convboardsdir~;
 \$convmemberdir = q~$convmemberdir~;
@@ -362,9 +362,9 @@ EOF
             close $FIXUSER or croak 'cannot close FIXUSER';
             chomp @fixed;
             for my $set (@fixed) {
-                $set =~ s/[\r\n]//gsm;
+                $set =~ s/[\r\n]//gxsm;
             }
-            $yymain .= qq~
+            $yymain .= q~
     <br />
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -994,7 +994,7 @@ EOF
         if ( !$INFO{'clean'} ) {
             my $brdttls = q{};
             foreach my $testboard (@allboards) {
-                $testboard =~ s/[\r\n]//gsm;
+                $testboard =~ s/[\r\n]//gxsm;
                 chomp $testboard;
                 if ( -e "$convboardsdir/$testboard.ttl" ) {
                     open $BOARDTTL, '<',
@@ -1002,9 +1002,10 @@ EOF
                       || setup_fatal_error(
                         "Can not open $convboardsdir/$testboard.ttl", 1 );
                     my $line = <$BOARDTTL>;
-                    close $BOARDTTL;
+                    close $BOARDTTL
+                      or croak "cannot close $convboardsdir/$testboard.ttl";
                     chomp $line;
-                    $line =~ s/[\r\n]//gsm;
+                    $line =~ s/[\r\n]//gxsm;
                     $brdttls .= "$testboard|$line|\n";
                 }
             }
@@ -1015,15 +1016,18 @@ EOF
 "general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.7.00 forum!|xx|0|\n";
             open $FORUMTOTALS, '>>', "$boardsdir/forum.totals"
               || setup_fatal_error( "Can not open $boardsdir/forum.totals", 1 );
-            print {$FORUMTOTALS} $brdttls;
+            print {$FORUMTOTALS} $brdttls or croak 'cannot print forum.totals';
             close $FORUMTOTALS or croak "Cannot close $boardsdir/forum.totals";
-            open $FIRSTMS, '>', "$datadir/$firstmstime.txt";
+            open $FIRSTMS, '>', "$datadir/$firstmstime.txt"
+              or croak 'cannot open FIRSTMS';
             my $initmail = 'webmaster@mysite.com';
             print {$FIRSTMS}
-qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$initmail|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~;
-            close $FIRSTMS;
+qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$initmail|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~
+              or croak 'cannot print FIRSTMS';
+            close $FIRSTMS or croak 'cannot close FIRSTMS';
             $msgdat = ctbtime($firstmstime);
-            open $FIRSTMSC, '>', "$datadir/$firstmstime.ctb";
+            open $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
+              or croak 'cannot open FIRSTMSC';
             print {FIRSTMSC}
 qq~### ThreadID: $firstmstime, LastModified: $msgdat  ### \n\n%$firstmstime = (\n
 'board' => "general",
@@ -1033,12 +1037,14 @@ qq~### ThreadID: $firstmstime, LastModified: $msgdat  ### \n\n%$firstmstime = (\
 'lastpostdate' => "$firstmstime",
 'threadstatus' => "0",
 'repliers' => "$firstmstime|admin|0",
-);\n\n1;\n~;
-            close $FIRSTMSC;
-            open $FIRSTBRD, '>>', "$boardsdir/general.txt";
+);\n\n1;\n~ or croak 'cannot open FIRSTMSC';
+            close $FIRSTMSC or croak 'cannot open FIRSTMSC';
+            open $FIRSTBRD, '>>', "$boardsdir/general.txt"
+              or croak 'cannot open FIRSTBRD';
             print {$FIRSTBRD}
-qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$initmail|$firstmstime|0|admin|xx|0\n~;
-            close $FIRSTBRD;
+qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$initmail|$firstmstime|0|admin|xx|0\n~
+              or croak 'cannot print FIRSTBRD';
+            close $FIRSTBRD or croak 'cannot close FIRSTBRD';
 
             $yySetLocation =
                 qq~$set_cgi?action=cleanup2;st=~
@@ -1412,7 +1418,7 @@ sub ConvertMembers1 {
 
         next if !-e "$convmemberdir/$uname.dat";
 
-        if ( $uname =~ /[^\w\+\-\.\@]|guest/ixsm ) {
+        if ( $uname =~ /[^\w+\-.@]|guest/ixsm ) {
             IllegalUser($uname);
         }
         else {
@@ -1456,10 +1462,10 @@ sub IllegalUser {
     my ($user) = @_;
 
     my $fixeduser = $user;
-    $fixeduser =~ s/[^\w\+\-\.\@]|guest//gixm;
+    $fixeduser =~ s/[^\w+\-.@]|guest//gixsm;
     if ( !$fixeduser ) { $fixeduser = 'fixeduser'; }
     $fixeduser = check_existence( $memberdir, "$fixeduser.vars" );
-    $fixeduser =~ s/(\S+?)(\.\S+$)/$1/xm;
+    $fixeduser =~ s/(\S+?)([.]\S+$)/$1/xsm;
 
     open $LOADOLDUSER, '<', "$convmemberdir/$user.dat"
       || setup_fatal_error( "$maintext_23 $convmemberdir/$user.dat: ", 1 );
@@ -1467,7 +1473,7 @@ sub IllegalUser {
     close $LOADOLDUSER or croak 'cannot close LOADOLDUSER';
     chomp @settings;
     for my $set (@settings) {
-        $set = s/[\r\n]//gsm;
+        $set = s/[\r\n]//gxsm;
     }
     chomp @settings;
 
@@ -1498,11 +1504,11 @@ sub IllegalUser {
         chomp $lastpost;
         chomp $lastim;
         $lastonline =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
         $lastpost =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
         $lastim =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
     }
 
     if ( -e "$convmemberdir/$user.yam" ) {
@@ -1521,7 +1527,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
 
     $regitime = "$settings[14]";
     $regitime =~
-s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")/eixsm;
 
     if   ($default_template) { $new_template = $default_template; }
     else                     { $new_template = q~Forum default~; }
@@ -1532,11 +1538,11 @@ s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")
         $settings[5] =~ s/&&/&amp;&amp;/gxsm;
         $settings[5] =~ s/\x22/&quot;/gxsm;
         $settings[5] =~
-s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
-        $settings[5] =~ s/<br>/<br \/>/igsm;
+s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igexsm;
+        $settings[5] =~ s/<br.*?>/<br \/>/igxsm;
     }
 
-    my @location = split /,|\|/xsm, $settings[15];
+    my @location = split /,|[|]/xsm, $settings[15];
     shift @location;
 
     %{ $uid . $fixeduser } = (
@@ -1545,7 +1551,7 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
         'email'    => "$settings[2]",
         'webtitle' => "$settings[3]",
         'weburl'   => (
-            ( $settings[4] && $settings[4] !~ m{\Ahttps?://}sm )
+            ( $settings[4] && $settings[4] !~ m{\Ahttps?://}xsm )
             ? 'http://'
             : q{}
           )
@@ -1604,7 +1610,7 @@ sub MyUpdateUser {
     my @settings = <$LOADOLDUSER>;
     close $LOADOLDUSER or croak 'cannot close LOADUSER';
     for my $set (@settings) {
-        $set =~ s/[\r\n]//gsm;
+        $set =~ s/[\r\n]//gxsm;
     }
     chomp @settings;
 
@@ -1635,11 +1641,11 @@ sub MyUpdateUser {
         chomp $lastpost;
         chomp $lastim;
         $lastonline =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
         $lastpost =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
         $lastim =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
     }
 
     if ( -e "$convmemberdir/$user.yam" ) {
@@ -1658,7 +1664,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
 
     $regitime = "$settings[14]";
     $regitime =~
-s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")/eixsm;
 
     if   ($default_template) { $new_template = $default_template; }
     else                     { $new_template = q~Forum default~; }
@@ -1669,11 +1675,11 @@ s/(\d{2}\/\d{2}\/\d{2,4}).*?(\d{2}\:\d{2}\:\d{2})/&conv_stringtotime("$1 at $2")
         $settings[5] =~ s/&&/&amp;&amp;/gxsm;
         $settings[5] =~ s/\x22/&quot;/gxsm;
         $settings[5] =~
-s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
+s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igexsm;
         $settings[5] =~ s/<br>/<br \/>/igxsm;
     }
 
-    my @location = split /,|\|/xsm, $settings[15];
+    my @location = split /,|[|]/xsm, $settings[15];
     shift @location;
 
     %{ $uid . $user } = (
@@ -1682,7 +1688,7 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
         'email'    => "$settings[2]",
         'webtitle' => "$settings[3]",
         'weburl'   => (
-            ( $settings[4] && $settings[4] !~ m{\Ahttps?://}sm )
+            ( $settings[4] && $settings[4] !~ m{\Ahttps?://}xsm )
             ? 'http://'
             : q{}
           )
@@ -1774,7 +1780,7 @@ sub memgrpconvert {
     my @memgrp = <$MEMGRP>;
     close $MEMGRP or croak 'cannot close MEMGRP';
     for my $set (@memgrp) {
-        $set =~ s/[\r\n]//gsm;
+        $set =~ s/[\r\n]//gxsm;
     }
     chomp @memgrp;
     $Group{'Mid Moderator'} =
@@ -1834,8 +1840,8 @@ sub ConvertMembers2 {
                               ? ${ $fixed_users{$name} }[0]
                               : $name;
                             $date =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eism;
-                            $message =~ s/<br>/<br \/>/igsm;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eixsm;
+                            $message =~ s/<br.*?>/<br \/>/igxsm;
                             if ( $folder eq 'outbox' ) {
                                 $folder = 'out';
                                 if    ( !$read_flag )     { $read_flag = 'u'; }
@@ -1860,8 +1866,8 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$
                               ? ${ $fixed_users{$name} }[0]
                               : $name;
                             $date =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eism;
-                            $message =~ s/<br>/<br \/>/igsm;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eixsm;
+                            $message =~ s/<br.*?>/<br \/>/igxsm;
                             if ( $id < 101 || $id eq q{} ) { $id = $date; }
                             if ( $cnt == 0 ) {    # msg
                                 if ( $read_flag == 1 ) {
@@ -1920,18 +1926,17 @@ sub GetCats {
     @categoryorder = <$VDIR>;
     close $VDIR or croak 'cannot close VDIR';
     for my $set (@categoryorder) {
-        $set =~ s/[\r\n]//gsm;
+        $set =~ s/[\r\n]//gxsm;
     }
     chomp @categoryorder;
 
-    my @allboards;
     for my $fcat (@categoryorder) {
         open $VCAT, '<', "$convboardsdir/$fcat.cat"
           || setup_fatal_error( "$maintext_23 $convboardsdir/$fcat.cat: ", 1 );
         @catdata = <$VCAT>;
         close $VCAT or croak 'cannot close VCAT';
         for my $set (@catdata) {
-            $set =~ s/[\r\n]//gsm;
+            $set =~ s/[\r\n]//gxsm;
         }
         chomp @catdata;
 
@@ -1951,7 +1956,7 @@ sub GetCats {
         @bdata = <$VBRD>;
         close $VBRD or croak 'cannot close VBRD';
         for my $set (@bdata) {
-            $set =~ s/[\r\n]//gsm;
+            $set =~ s/[\r\n]//gxsm;
         }
         chomp $bdata[0];
 
@@ -2001,21 +2006,21 @@ sub GetCats {
     while ( ( $key, $value ) = each %cat ) {
 
         # Strip membergroups with a ~ from them
-        $value =~ s/~//gsm;
+        $value =~ s/~//gxsm;
         push @temparray, qq~\$cat{$key} = qq\~$value\~;\n~;
     }
     while ( ( $key, $value ) = each %catinfo ) {
 
         # Strip membergroups with a ~ from them
         $value =~ s/~//gxsm;
-        $value =~ s/,/, /gsm;
+        $value =~ s/,/\//gxsm;
         push @temparray, qq~\$catinfo{$key} = qq\~$value\~;\n~;
     }
     while ( ( $key, $value ) = each %board ) {
 
         # Strip membergroups with a ~ from them
         $value =~ s/~//gxsm;
-        $value =~ s/,/, /gsm;
+        $value =~ s/,/\//gxsm;
         push @temparray, qq~\$board{'$key'} = qq\~$value\~;\n~;
     }
     open $FILE, '>', "$boardsdir/forum.master"
@@ -2038,22 +2043,23 @@ sub CreateControl {
             @category = <$CINFO>;
             close $CINFO or croak "cannot close $convboardsdir/$foundboard.ctb";
             for my $set (@category) {
-                $set =~ s/[\r\n]//gsm;
+                $set =~ s/[\r\n]//gxsm;
             }
             chomp $category[0];
             $cntcat = $category[0];
 
             # get boardinfo
-            open $BINFO, '<', "$convboardsdir/$foundboard.dat";
+            open $BINFO, '<', "$convboardsdir/$foundboard.dat"
+              or croak 'cannot open BINFO';
             @boardinfo = <$BINFO>;
             close $BINFO or croak 'cannot close BINFO';
             for my $set (@boardinfo) {
-                $set =~ s/[\r\n]//gsm;
+                $set =~ s/[\r\n]//gxsm;
             }
             chomp @boardinfo;
 
-            $boardinfo[2] =~ s/^\||\|$//gxsm;
-            $boardinfo[2] =~ s/\|(\S?)/,$1/gxsm;
+            $boardinfo[2] =~ s/^[|]|[|]$//gxsm;
+            $boardinfo[2] =~ s/[|](\S?)/,$1/gxsm;
             $cntmods = join q{,},
               grep { exists $fixed_users{$_} ? ${ $fixed_users{$_} }[0] : $_; }
               split /,/xsm, $boardinfo[2];
@@ -2068,9 +2074,9 @@ sub CreateControl {
             $cntstartperms = "$start_groups{$foundboard}";
             $cntreplyperms = "$reply_groups{$foundboard}";
             $cntpollperms  = q{};
-            $cntstartperms =~ s/,/, /gsm;
-            $cntreplyperms =~ s/,/, /gsm;
-            $cntpollperms =~ s/,/, /gsm;
+            $cntstartperms =~ s/,/, /gxsm;
+            $cntreplyperms =~ s/,/, /gxsm;
+            $cntpollperms =~ s/,/, /gxsm;
             $cntpic      = "$boardpic{$foundboard}";
             $cntzero     = q{};
             $cntpassword = q{};
@@ -2083,14 +2089,16 @@ sub CreateControl {
                 if ($cntpic) { $mypic = 'y'; }
                 push @boardcontrol,
 "$cntcat|$foundboard|$mypic|$cntdescription|$cntmods|$cntmodgroups|$cntstartperms|$cntreplyperms|$cntpollperms|$cntzero|$cntpassword|$cnttotals|$cntattperms|$spare|||\n";
-                open $BRDPIC, '>>', "$boardsdir/brdpics.db";
-                print {$BRDPIC} qq~$foundboard|default|$cntpic\n~;
+                open $BRDPIC, '>>', "$boardsdir/brdpics.db"
+                  or croak 'cannot open BRDPIC';
+                print {$BRDPIC} qq~$foundboard|default|$cntpic\n~
+                  or croak 'cannot print BRDPIC';
                 close $BRDPIC or croak 'cannot close BRDPIC';
             }
         }
         if ( $foundboard eq 'general' && !-e "$convboardsdir/general.txt" )
         {    # add general board if not exist
-            my $firstmstime = time();
+            my $firstmstime = time;
             push @boardcontrol,
 qq{general|general||This is the board for General Discussions.<br /><i>The board description can now hold multiple lines and can use HTML!</i>|admin|||||0||||1|||\n};
             open $BOARDFILE, '>',
@@ -2156,14 +2164,14 @@ sub ConvertBoards {
         @boardfile = <$BOARDFILE>;
         close $BOARDFILE or croak "cannot close $convboardsdir/$boards[$i].txt";
         for my $set (@boardfile) {
-            $set =~ s/[\r\n]//gsm;
+            $set =~ s/[\r\n]//gxsm;
         }
         chomp @boardfile;
 
         @temparray = ();
         for my $j ( ( $INFO{'bfstart'} || 0 ) .. $#boardfile ) {
             my $line = $boardfile[$j];
-            $line =~ s/[\r\n]//gsm;
+            $line =~ s/[\r\n]//gxsm;
             chomp $line;
 
             my (
@@ -2184,7 +2192,7 @@ sub ConvertBoards {
               ? ${ $fixed_users{$musername} }[0]
               : $musername;
             $mdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
             $mstate =~ s/1/l/xsm;
             if ( exists $stickies{$mnum} ) { $mstate .= 's'; }
             push @temparray,
@@ -2196,7 +2204,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
                   || setup_fatal_error(
                     "$maintext_23 $boardsdir/$boards[$i].txt: ", 1 );
                 for my $set (@temparray) {
-                    $set =~ s/[\r\n]//gsm;
+                    $set =~ s/[\r\n]//gxsm;
                 }
                 print {$BOARDFILE} @temparray or croak 'cannot print BOARDFILE';
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
@@ -2299,17 +2307,17 @@ sub ConvertMessages {
                     if ( $message =~ /\[[qgs]/ixsm )
                     {    # too many RegExpr take too much time!!!
                         $message =~
-s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\](.*?)\[\/quote\]/QuoteFix($2,$3,$4,$5)/eigsm;
+s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\](.*?)\[\/quote\]/QuoteFix($2,$3,$4,$5)/eigxsm;
                         $message =~
-s/\[(glow|shadow)=.*?\](.*?)\[\/(glow|shadow)\]/\[glb\]$2\[\/glb\]/igsm;
+s/\[(glow|shadow)=.*?\](.*?)\[\/(glow|shadow)\]/\[glb\]$2\[\/glb\]/igxsm;
                         $message =~
-s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igesm;
+s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]" /igexsm;
                     }
-                    $message =~ s/<br>/<br \/>/igsm;
+                    $message =~ s/<br.*?>/<br \/>/igxsm;
                     $mdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eixsm;
                     $editdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eixsm;
                     push @temparray,
 "$subject|$name|$email|$mdate|$musername|$icon|$dummy|$user_ip|$message|$ns|$editdate|$editby|$attachment\n";
                     if ( $musername ne 'Guest' ) {
@@ -2341,9 +2349,10 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
                 $lastposter =
                   $musername eq 'Guest' ? "Guest-$name" : $musername;
                 my @msg = split /[|]/xsm, $temparray[-1];
+
 #               ($subject|$name|$email|$mdate|$musername|$icon|$dummy|$user_ip|$message|$ns|$editdate|$editby|$attachment)
-                $msgdat = ctbtime($msg[3]);
-                my $newctb = <<NEW;
+                $msgdat = ctbtime( $msg[3] );
+                my $newctb = << "NEW";
 ### ThreadID: $thread, LastModified: $msgdat ###
 
 \%$thread = (
@@ -2491,7 +2500,7 @@ sub ConvertTimeToString {
     if ( $INFO{'timeconv'} < 1 ) {
         opendir DATADIR, $convdatadir
           || setup_fatal_error( "Directory: $convdatadir: ", 1 );
-        my @polls = sort grep { /\.poll$/xsm } readdir DATADIR;
+        my @polls = sort grep { /[.]poll$/xsm } readdir DATADIR;
         closedir DATADIR;
 
         my $totalpolls = @polls;
@@ -2513,9 +2522,9 @@ sub ConvertTimeToString {
               ? ${ $fixed_users{$polluname} }[0]
               : $polluname;
             $pdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
             $epdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime("$1 at $2")/eixsm;
 
             open $POLLFILE, '>', "$datadir/$file"
               || setup_fatal_error( "$maintext_23 $datadir/$file: ", 1 );
@@ -2541,7 +2550,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
     if ( $INFO{'timeconv'} < 2 ) {
         opendir DATADIR, $convdatadir
           || setup_fatal_error( "Directory: $convdatadir: ", 1 );
-        my @polled = sort grep { /\.polled$/xsm } readdir DATADIR;
+        my @polled = sort grep { /[.]polled$/xsm } readdir DATADIR;
         closedir DATADIR;
 
         my $totalpolled = @polled;
@@ -2562,7 +2571,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
                   ? ${ $fixed_users{$pollername} }[0]
                   : $pollername;
                 $pdate =~
-s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eism;
+s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("$1 at $2")/eixsm;
                 push @temparray, "$dummy1|$pollername|$dummy3|$pdate\n";
             }
             open $POLLEDFILE, '>', "$datadir/$file"
@@ -2658,13 +2667,13 @@ sub MyMemberIndex {
 
     opendir MEMBERS, $memberdir
       || setup_fatal_error( "Directory: $memberdir: ", 1 );
-    @members = sort grep { /.\.vars$/xsm } readdir MEMBERS;
+    @members = sort grep { /.[.]vars$/xsm } readdir MEMBERS;
     closedir MEMBERS;
 
     $totalmemb = @members;
     for my $j ( ( $INFO{'memb_index'} || 0 ) .. ( $totalmemb - 1 ) ) {
         $member = $members[$j];
-        $member =~ s/\.vars$//gxsm;
+        $member =~ s/[.]vars$//gxsm;
 
         LoadUser($member);
 
@@ -2738,19 +2747,19 @@ qq~\['${$uid.$member}{'realname'}','${$uid.$member}{'email'}', '${$uid.$member}{
 
     require Variables::Memberlist;
     my $membershiptotal = keys %memberlist;
-    while (($key, $value) = each %memberlist) {
-        $hash2{$value}=$key;
+    while ( ( $key, $value ) = each %memberlist ) {
+        $hash2{$value} = $key;
     }
-    my @nkey = sort keys %hash2;
-    my $latestmember = $hash2{$nkey[-1]};
+    my @nkey         = sort keys %hash2;
+    my $latestmember = $hash2{ $nkey[-1] };
     undef %hash2;
     undef @nkey;
 
-    open $TTL, '>',"Variables/memttl.db"
-          or fatal_error( 'cannot_open', "Variables/memttl.db", 1 );
+    open $TTL, '>', 'Variables/memttl.db'
+      or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
     print {$TTL} qq~$membershiptotal|$latestmember~
-          or croak "$croak{'print'} TTL";
-    close $TTL;
+      or croak "$croak{'print'} TTL";
+    close $TTL or croak 'cannot close TTL';
     if ( $INFO{'tmp_firstforum'} > $INFO{'firstforum'} || $siglength > 200 ) {
         SetInstall2();
     }
@@ -2775,12 +2784,12 @@ sub MyMailNotify {
 
     opendir DIRECTORY, $convdatadir
       || setup_fatal_error( "Directory: $convdatadir: ", 1 );
-    my @files = sort grep { /\.mail$/xsm } readdir DIRECTORY;
+    my @files = sort grep { /[.]mail$/xsm } readdir DIRECTORY;
     closedir DIRECTORY;
 
     my $totalfiles = @files;
     for my $j ( ( $INFO{'my_mail_n'} || 0 ) .. ( $totalfiles - 1 ) ) {
-        my $filename = ( split /\./xsm, $files[$j], 2 )[0];
+        my $filename = ( split /[.]/xsm, $files[$j], 2 )[0];
 
         open $MAILFILE, '<', "$convdatadir/$filename.mail"
           || setup_fatal_error( "$maintext_23 $convdatadir/$filename.mail: ",
@@ -2824,7 +2833,7 @@ sub FixNopost {
         @boardcontrols = <$FORUMCONTROL>;
         close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
         for my $set (@boardcontrols) {
-            $set =~ s/[\r\n]//gsm;
+            $set =~ s/[\r\n]//gxsm;
         }
         chomp @boardcontrols;
 
@@ -2932,15 +2941,8 @@ qq~$cntcat|$cntboard|$cntpic|$cntdescription|$cntmods|$newmodgroups|$newtopicper
 sub format_timestring {
     my ($time_string) = @_;
 
-    if ( $time_string !~
-        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/ism
-      )
-    {
-        $time_string = "$forumstart";
-    }
-
     if ( $time_string =~
-        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/ism
+        m/(\d{1,2})\/(\d{1,2})\/(\d{2,4}).*?(\d{1,2})\:(\d{1,2})\:(\d{1,2})/ixsm
       )
     {
         $dr_month  = $1;
@@ -2950,6 +2952,7 @@ sub format_timestring {
         $dr_minute = $5;
         $dr_secund = $6;
     }
+    else { $time_string = "$forumstart"; }
 
     if ( $dr_month > 12 ) { $dr_month = 12; }
     if ( $dr_month < 1 )  { $dr_month = 1; }
@@ -3047,7 +3050,7 @@ sub tempstarter {
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyIIS = 1;
-        if ( $PROGRAM_NAME =~ m{(.*)(\\|/)}xsm ) {
+        if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
             $yypath = $1;
         }
         $yypath =~ s/\\/\//gxsm;
@@ -3253,20 +3256,21 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
       $iamguest ? q{} : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
 
     if ( $enable_news && -e "$langdir/English/news.txt" ) {
-        open $NEWS, '<', "$langdir/English/news.txt" or croak 'cannot open NEWS';
+        open $NEWS, '<', "$langdir/English/news.txt"
+          or croak 'cannot open NEWS';
         @newsmessages = <$NEWS>;
         close $NEWS or croak 'cannot close NEWS';
     }
     for my $i ( 0 .. $#yytemplate ) {
         $curline = $yytemplate[$i];
-        if ( !$yycopyin && $curline =~ m/{yabb\ copyright}/xsm ) {
+        if ( !$yycopyin && $curline =~ m/\Q{yabb copyright}\E/xsm ) {
             $yycopyin = 1;
         }
-        if ( $curline =~ m/{yabb\ newstitle}/xsm && $enable_news ) {
+        if ( $curline =~ m/\Q{yabb newstitle}\E/xsm && $enable_news ) {
             $yynewstitle =
               qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
         }
-        if (   $curline =~ m/{yabb\ news}/xsm
+        if (   $curline =~ m/\Q{yabb news}\E/xsm
             && $enable_news
             && -e "$langdir/English/news.txt" )
         {
@@ -3290,7 +3294,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                 @newsmessages = <$NEWS>;
                 close $NEWS or croak 'cannot close NEWS';
                 for my $j ( 0 .. $#newsmessages ) {
-                    $newsmessages[$j] =~ s/\n|\r//gxsm;
+                    $newsmessages[$j] =~ s/[\r\n]//gxsm;
                     if ( $newsmessages[$j] eq q{} ) { next; }
                     if ( $i != 0 ) { $yymain .= qq~\n~; }
                     $message = $newsmessages[$j];
@@ -3380,11 +3384,11 @@ sub SetInstall2 {
     $ret = 0;
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
-    if ( $convertdir ne './Convert') {
+    if ( $convertdir ne './Convert' ) {
         if ( -e "$convertdir/Settings.pl" ) {
             $setfile = "$convertdir/Settings.pl";
         }
-        elsif (-e "$convertdir/Settings.cgi") {
+        elsif ( -e "$convertdir/Settings.cgi" ) {
             $setfile = "$convertdir/Settings.cgi";
         }
     }
@@ -3396,13 +3400,14 @@ sub SetInstall2 {
     }
     require $setfile;
     $settings_file_version = 'YaBB 2.7.00';
-    $oldname   = $mbname;
-        $oldemail  = $webmaster_email;
-        $oldlang   = $language;
-        $oldtime   = $timeselected;
-        $oldoffset = $timeoffset;
-    ($oldlang, undef) = split /\./xsm, $oldlang;
+    $oldname               = $mbname;
+    $oldemail              = $webmaster_email;
+    $oldlang               = $language;
+    $oldtime               = $timeselected;
+    $oldoffset             = $timeoffset;
+    ( $oldlang, undef ) = split /[.]/xsm, $oldlang;
     $oldlang = ucfirst $oldlang;
+
     if ($cookietsort) {
         ( undef, $rancook ) = split /\-/xsm, $cookietsort;
     }
@@ -3419,17 +3424,17 @@ sub SetInstall2 {
     if ( $enable_notifications eq q{} ) {
         $enable_notifications = $enable_notification ? 3 : 0;
     }
-    $mbname          = $oldname;
-    $lang            = $oldlang   || 'English';
-    $webmaster_email = $oldemail  || 'webmaster@mysite.com';
-    $timeselected    = $oldtime   || 0;
-    $timeoffset      = $oldoffset || 0;
-    $cookieviewtime  = 525600;
-    $MaxIMMessLen    = 2000;
-    $AdMaxIMMessLen  = 3000;
-    $MaxCalMessLen   = 200;
-    $AdMaxCalMessLen = 300;
-    $Show_EventCal   = 0;
+    $mbname                = $oldname;
+    $lang                  = $oldlang || 'English';
+    $webmaster_email       = $oldemail || 'webmaster@mysite.com';
+    $timeselected          = $oldtime || 0;
+    $timeoffset            = $oldoffset || 0;
+    $cookieviewtime        = 525600;
+    $MaxIMMessLen          = 2000;
+    $AdMaxIMMessLen        = 3000;
+    $MaxCalMessLen         = 200;
+    $AdMaxCalMessLen       = 300;
+    $Show_EventCal         = 0;
     $Event_TodayColor      = '#ff0000';
     $fix_avatar_img_size   = 0;
     $max_avatar_width      = 65;
@@ -3456,11 +3461,11 @@ sub SetInstall2 {
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
     %templateset = (
         'Forum default' =>
-          "default|default|default|default|default|default|default|0|0|0|0",
-        'Mobile' => "mobile|mobile|mobile|mobile|mobile|mobile|mobile|0|0|0|1",
+          'default|default|default|default|default|default|default|0|0|0|0',
+        'Mobile' => 'mobile|mobile|mobile|mobile|mobile|mobile|mobile|0|0|0|1',
     );
     $default_template = 'Forum default';
-    $gzforce = 0;
+    $gzforce          = 0;
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');

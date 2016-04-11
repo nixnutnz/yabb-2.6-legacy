@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$registerpmver = 'YaBB 2.7.00 $Revision$';
+$registerpmver  = 'YaBB 2.7.00 $Revision$';
 @registerpmmods = ();
 if (@registerpmmods) {
     $registerpmmods = 1;
@@ -63,9 +63,9 @@ sub Register {
         @agreement = <AGREE>;
         fclose(AGREE);
         $fullagree = join q{}, @agreement;
-        $fullagree =~ s/\n/<br \/>/gsm;
+        $fullagree =~ s/\n/<br \/>/gxsm;
         $yymain .= $myregister_fullagree;
-        $yymain =~ s/{yabb fullagree}/$fullagree/sm;
+        $yymain =~ s/\Q{yabb fullagree}\E/$fullagree/xsm;
         template();
         exit;
     }
@@ -103,7 +103,7 @@ sub Register {
 
     if (@adomains) {
         $aedomains = $myaedomains_a;
-        $aedomains =~ s/{yabb tmpregemail}/$tmpregemail/sm;
+        $aedomains =~ s/\Q{yabb tmpregemail}\E/$tmpregemail/xsm;
         for (@adomains) {
             $aedomains .=
               ( $_ =~ m/\@/xsm )
@@ -129,14 +129,14 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 
     if ( $morelang > 1 ) {
         $yymain .= $myregister_morelang;
-        $yymain =~ s/{yabb langopt}/$langopt/sm;
+        $yymain =~ s/\Q{yabb langopt}\E/$langopt/xsm;
     }
     $newfield = q{};
 ## user name section
     $yymain .= $myregister_regfill_b;
-    $yymain =~ s/{yabb tmpregname}/$tmpregname/sm;
-    $yymain =~ s/{yabb regstyle}/$regstyle/sm;
-    $yymain =~ s/{yabb language}/$language/sm;
+    $yymain =~ s/\Q{yabb tmpregname}\E/$tmpregname/xsm;
+    $yymain =~ s/\Q{yabb regstyle}\E/$regstyle/xsm;
+    $yymain =~ s/\Q{yabb language}\E/$language/xsm;
 
     if ($name_cannot_be_userid) {
         $yymain .= qq~
@@ -145,18 +145,15 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 
     $email2 = q{};
     if ( $imp_email_check == 1 ) {
-        eval {
-            require Net::DNS;
-        };
-        if (!$EVAL_ERROR ) {
+        if ( eval { require Net::DNS } ) {
             $email2 = $myregister_email2;
-            $email2 =~ s/{yabb email2}/$register_txt{'70'}/sm;
+            $email2 =~ s/\Q{yabb email2}\E/$register_txt{'70'}/xsm;
         }
     }
 
     $yymain .= $myregister_avail;
-    $yymain =~ s/{yabb tmprealname}/$tmprealname/sm;
-    $yymain =~ s/{yabb aedomains}/$aedomains/sm;
+    $yymain =~ s/\Q{yabb tmprealname}\E/$tmprealname/xsm;
+    $yymain =~ s/\Q{yabb aedomains}\E/$aedomains/xsm;
 
     if ( $allow_hide_email == 1 ) {
         $yymain .= qq~
@@ -185,10 +182,10 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
               . ( $birthday_on_reg == 2 ? $myreg_req : q{} )
               . qq~ <span class="small">$register_txt{'birthday_b'}</span>~;
         }
-        $yymain =~ s/{yabb editAgeTxt}/$editAgeTxt/sm;
-        $yymain =~ s/{yabb birthdate0}/$birthdate[0]/sm;
-        $yymain =~ s/{yabb birthdate1}/$birthdate[1]/sm;
-        $yymain =~ s/{yabb birthdate2}/$birthdate[2]/sm;
+        $yymain =~ s/\Q{yabb editAgeTxt}\E/$editAgeTxt/xsm;
+        $yymain =~ s/\Q{yabb birthdate0}\E/$birthdate[0]/xsm;
+        $yymain =~ s/\Q{yabb birthdate1}\E/$birthdate[1]/xsm;
+        $yymain =~ s/\Q{yabb birthdate2}\E/$birthdate[2]/xsm;
 
         $yymain .= $myregister_endrow;
     }
@@ -205,8 +202,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         }
 
         $yymain .= $myregister_gender;
-        $yymain =~ s/{yabb editGenderTxt}/$editGenderTxt/sm;
-        $yymain =~ s/{yabb nongen_opt}/$nongen_opt/sm;
+        $yymain =~ s/\Q{yabb editGenderTxt}\E/$editGenderTxt/xsm;
+        $yymain =~ s/\Q{yabb nongen_opt}\E/$nongen_opt/xsm;
     }
     if ( !$emailpassword ) {
         $yymain .= password_check();
@@ -233,9 +230,9 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 
         if ($addmemgroup) {
             $yymain .= $myregister_addmem;
-            $yymain =~ s/{yabb additional_explain}/$additional_explain/sm;
-            $yymain =~ s/{yabb selsize}/$selsize/sm;
-            $yymain =~ s/{yabb addmemgroup}/$addmemgroup/sm;
+            $yymain =~ s/\Q{yabb additional_explain}\E/$additional_explain/xsm;
+            $yymain =~ s/\Q{yabb selsize}\E/$selsize/xsm;
+            $yymain =~ s/\Q{yabb addmemgroup}\E/$addmemgroup/xsm;
         }
     }
 
@@ -246,8 +243,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
           . $myregister_regreason_c
           . length($RegReasonSymbols)
           . $myregister_regreason_b;
-        $yymain =~ s/{yabb reason}/$reason/sm;
-        $yymain =~ s/{yabb RegReasonSymbols}/$RegReasonSymbols/gsm;
+        $yymain =~ s/\Q{yabb reason}\E/$reason/xsm;
+        $yymain =~ s/\Q{yabb RegReasonSymbols}\E/$RegReasonSymbols/gxsm;
     }
 
     if ($extendedprofiles) {
@@ -260,8 +257,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         require Sources::Decoder;
         validation_code();
         $yymain .= $myregister_regcheck;
-        $yymain =~ s/{yabb flood_text}/$flood_text/sm;
-        $yymain =~ s/{yabb showcheck}/$showcheck/sm;
+        $yymain =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
+        $yymain =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
     }
     if ( $en_spam_questions && -e "$langdir/$language/spam.questions" ) {
         SpamQuestion();
@@ -272,11 +269,11 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         }
         $yymain .= $myregister_spamquest;
 
-        $yymain =~ s/{yabb spam_question}/$spam_question/sm;
+        $yymain =~ s/\Q{yabb spam_question}\E/$spam_question/xsm;
         $yymain =~
-          s/{yabb verification_question_desc}/$verification_question_desc/sm;
-        $yymain =~ s/{yabb spam_question_id}/$spam_question_id/sm;
-        $yymain =~ s/{yabb spam_question_image}/$spam_image/sm;
+s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
+        $yymain =~ s/\Q{yabb spam_question_id}\E/$spam_question_id/xsm;
+        $yymain =~ s/\Q{yabb spam_question_image}\E/$spam_image/xsm;
     }
     if ( $honeypot == 1 ) {
         fopen( HONEY, "<$langdir/$language/honey.txt" )
@@ -288,8 +285,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         $newfieldb = $honey[$hony];
 
         $yymain .= $myregister_honey;
-        $yymain =~ s/{yabb newfieldb}/$newfieldb/sm;
-        $yymain =~ s/{yabb newfield}/$newfield/sm;
+        $yymain =~ s/\Q{yabb newfieldb}\E/$newfieldb/xsm;
+        $yymain =~ s/\Q{yabb newfield}\E/$newfield/xsm;
     }
 
     # SpamFruits courtesy of Carsten Dalgaard #
@@ -299,7 +296,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         my $rdn = int rand 4;
         $fruit = $fruits[$rdn];
         $yymain .= $myregister_fruits;
-        $yymain =~ s/{yabb fruit}/$fruit/gsm;
+        $yymain =~ s/\Q{yabb fruit}/$fruit/gxsm;
         $yymain .= qq~
                 <script type="text/javascript">
                     function ShowFruits() {
@@ -344,9 +341,9 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         @agreement = <AGREE>;
         fclose(AGREE);
         $fullagree = join q{}, @agreement;
-        $fullagree =~ s/\n/<br \/>/gsm;
+        $fullagree =~ s/\n/<br \/>/gxsm;
         $yymain .= $myregister_regagree;
-        $yymain =~ s/{yabb fullagree}/$fullagree/gsm;
+        $yymain =~ s/\Q{yabb fullagree}\E/$fullagree/gxsm;
 
     }
     $yymain .= $myregister_endform;
@@ -360,14 +357,14 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             document.creator.regusername.focus();
             return false;
         }~;
-        if ( !$emailpassword ) {
-            $yymain .= qq~
+    if ( !$emailpassword ) {
+        $yymain .= qq~
         if (document.creator.regusername.value == document.creator.passwrd1.value || document.creator.regrealname.value == document.creator.passwrd1.value) {
             alert("$register_txt{'error_usernameispass'}");
             document.creator.regusername.focus();
             return false;
         }~;
-        }
+    }
     $yymain .= qq~
         if (document.creator.regrealname.value === '') {
             alert("$register_txt{'error_realname'}");
@@ -394,7 +391,8 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
         }~ .
 
       (
-          $imp_email_check ? qq~
+        $imp_email_check
+        ? qq~
         if (document.creator.email2.value === '') {
             alert("$register_txt{'error_email2'}");
             document.creator.email2.focus();
@@ -404,8 +402,10 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             alert("$register_txt{'error_email3'}");
             document.creator.email.focus();
             return false;
-        }~ : q{}
-      ) .
+        }~
+        : q{}
+      )
+      .
 
       (
         $birthday_on_reg
@@ -471,7 +471,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
                 return false;
             }
         }
-		var regcheck = $regcheck;
+        var regcheck = $regcheck;
         if (regcheck > 0 && document.creator.verification.value === '') {
             alert("$register_txt{'error_verification'}");
             document.creator.verification.focus();
@@ -529,29 +529,29 @@ sub Register2 {
     while ( ( $key, $value ) = each %FORM ) {
         $value =~ s/\A\s+//xsm;
         $value =~ s/\s+\Z//xsm;
-        if ( $key ne 'reason' ) { $value =~ s/[\n\r]//gxsm; }
+        if ( $key ne 'reason' ) { $value =~ s/[\r\n]//gxsm; }
         $member{$key} = $value;
     }
     if ( $member{'domain'} ) { $member{'email'} .= $member{'domain'}; }
-    $member{'regrealname'} =~ s/\t+/\ /gsm;
+    $member{'regrealname'} =~ s/\t+/ /gxsm;
 
-    # If enabled check if user has a valid e-mail address (needs Net::DNS to be installed)
+# If enabled check if user has a valid e-mail address (needs Net::DNS to be installed)
     if ( $imp_email_check == 1 ) {
-        eval {
-            require Net::DNS;
-        };
-        if ( !$EVAL_ERROR ) {
-            my $helo;
+        if ( eval { require Net::DNS } ) {
             require Mail::CheckUser;
             Mail::CheckUser->import(qw(check_email last_check));
             $Mail::CheckUser::Sender_Addr = $webmaster_email;
-            if ($boardurl =~ /http\:\/\/(.*?)\//){ $Mail::CheckUser::Helo_Domain = $1; }
-            if (check_email($member{'email'})) {
+            if ( $boardurl =~ /http\:\/\/(.*?)\//xsm ) {
+                $Mail::CheckUser::Helo_Domain = $1;
+            }
+            if ( check_email( $member{'email'} ) ) {
                 my $email_ok = 1;
             }
             else {
                 my $failure = last_check()->{code};
-                fatal_error(q{}, "$mail_check{'address'} $member{'email'} $mail_check{'invalid'} $mail_check{'reason'} $mail_check{$failure}");
+                fatal_error( q{},
+"$mail_check{'address'} $member{'email'} $mail_check{'invalid'} $mail_check{'reason'} $mail_check{$failure}"
+                );
             }
         }
     }
@@ -568,7 +568,7 @@ sub Register2 {
         fatal_error( 'id_to_long', "($member{'regusername'})" );
     }
     if ( $member{'email'} ne $member{'email2'} && $imp_email_check ) {
-        fatal_error( 'email_mismatch' );
+        fatal_error('email_mismatch');
     }
     if ( length( $member{'email'} ) > 100 ) {
         fatal_error( 'email_to_long', "($member{'email'})" );
@@ -582,11 +582,11 @@ sub Register2 {
     if ( $member{'regusername'} =~ /guest/ixsm ) {
         fatal_error( 'id_reserved', "$member{'regusername'}" );
     }
-    if ( $member{'regusername'} =~ /[^\w\+\-\_\@\.]/sm ) {
+    if ( $member{'regusername'} =~ /[^\w+\-@.]/xsm ) {
         fatal_error( 'invalid_character',
             "$register_txt{'35'} $register_txt{'241e'}" );
     }
-    if ( $member{'regusername'} =~ /^[0-9]+$/sm ) {
+    if ( $member{'regusername'} =~ /^\d+$/xsm ) {
         fatal_error( 'all_numbers',
             "$register_txt{'35'} $register_txt{'241n'}" );
     }
@@ -638,9 +638,7 @@ sub Register2 {
         fatal_error( 'realname_to_long',
             "($member{'regrealname'} => $convertstr)" );
     }
-    if ( $member{'regrealname'} =~
-        /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm )
-    {
+    if ( $member{'regrealname'} =~ /$invalrname/xsm ) {
         fatal_error( 'invalid_character',
             "$register_txt{'38'} $register_txt{'241re'}" );
     }
@@ -658,8 +656,8 @@ sub Register2 {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if (
-        lc $member{'email'} eq lc MemberIndex( 'check_exist', $member{'email'}, 2 )
-      )
+        lc $member{'email'} eq
+        lc MemberIndex( 'check_exist', $member{'email'}, 2 ) )
     {
         fatal_error( 'email_taken', "($member{'email'})" );
     }
@@ -691,7 +689,7 @@ sub Register2 {
         FromChars( $member{'reason'} );
         ToHTML( $member{'reason'} );
         ToChars( $member{'reason'} );
-        $member{'reason'} =~ s/[\n\r]{1,2}/<br \/>/igsm;
+        $member{'reason'} =~ s/[\r\n]{1,2}/<br \/>/igxsm;
     }
 
     if ($regcheck) {
@@ -737,20 +735,17 @@ sub Register2 {
         if ( $member{'passwrd1'} eq q{} ) {
             fatal_error( 'no_password', "($member{'regusername'})" );
         }
-        if ( $member{'passwrd1'} =~
-            /[^\s\w!\@#\$\%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/xsm )
-        {
+        if ( $member{'passwrd1'} =~ /$invalpass/xsm ) {
             fatal_error( 'invalid_character',
                 "$register_txt{'36'} $register_txt{'241'}" );
         }
     }
-    if ( $member{'email'} !~ /^[\w\-\.\+]+\@[\w\-\.\+]+\.\w{2,4}$/xsm ) {
+    if ( $member{'email'} !~ /^$invalmailchar$/xsm ) {
         fatal_error( 'invalid_character',
             "$register_txt{'69'} $register_txt{'241e'}" );
     }
-    if (   $member{'email'} =~ /(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm
-        || $member{'email'} !~
-        /\A.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?\Z/xsm )
+    if (   $member{'email'} =~ /$invalemaila/xsm
+        || $member{'email'} !~ /$invalemailb/xsm )
     {
         fatal_error('invalid_email');
     }
@@ -809,13 +804,12 @@ sub Register2 {
         fatal_error('already_preregged');
     }
 
-    if ( $new_template !~ m{\A[0-9a-zA-Z\_\(\)\ \#\%\-\:\+\?\$\&\~\.\,\@]+\Z}xsm
+    if (   $new_template !~ m{\A[\w()#%\-:+?$~&.,@]+\Z}xsm
         && $new_template ne q{} )
     {
         fatal_error('invalid_template');
     }
-    if ( $member{'language'} !~
-        m{\A[0-9a-zA-Z\_\(\)\ \#\%\-\:\+\?\$\&\~\.\,\@]+\Z}xsm
+    if (   $member{'language'} !~ m{\A[\w()#%\-:+?$&~.,@]+\Z}xsm
         && $member{'language'} ne q{} )
     {
         fatal_error('invalid_language');
@@ -831,8 +825,8 @@ sub Register2 {
 
     if ($birthday_on_reg) {
         $member{'birth_month'} =~ s/\D//gxsm;
-        $member{'birth_day'}   =~ s/\D//gxsm;
-        $member{'birth_year'}  =~ s/\D//gxsm;
+        $member{'birth_day'} =~ s/\D//gxsm;
+        $member{'birth_year'} =~ s/\D//gxsm;
         if ( $birthday_on_reg == 1 ) {
             if (   length( $member{'birth_month'} ) < 2
                 || $member{'birth_month'} < 1
@@ -919,7 +913,7 @@ sub Register2 {
         && $member{'joinmemgroup'} ne q{} )
     {
         my @newmemgr;
-        for ( split /, /sm, $member{'joinmemgroup'} ) {
+        for ( split /,\s/xsm, $member{'joinmemgroup'} ) {
             if ( $NoPost{$_} && ( split /[|]/xsm, $NoPost{$_} )[10] == 1 ) {
                 push @newmemgr, $_;
             }
@@ -931,15 +925,15 @@ sub Register2 {
         my ( @reglist, @x );
 
         # If a pre-registration list exists load it
-        if ( -e "Variables/meminactive.db" ) {
-            fopen( INACT, "<Variables/meminactive.db" );
+        if ( -e 'Variables/meminactive.db' ) {
+            fopen( INACT, '<Variables/meminactive.db' );
             @reglist = <INACT>;
             fclose(INACT);
         }
 
         # If a approve-registration list exists load it too
-        if ( -e "Variables/memapprove.db" ) {
-            fopen( APPROVE, "<Variables/memapprove.db" );
+        if ( -e 'Variables/memapprove.db' ) {
+            fopen( APPROVE, '<Variables/memapprove.db' );
             push @reglist, <APPROVE>;
             fclose(APPROVE);
         }
@@ -971,7 +965,7 @@ sub Register2 {
 
         $regpass = $member{'passwrd1'};
 
-        fopen( INACT, ">>Variables/meminactive.db", 1 );
+        fopen( INACT, '>>Variables/meminactive.db', 1 );
         print {INACT}
           "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n"
           or croak "$croak{'print'} INACT";
@@ -1021,9 +1015,6 @@ sub Register2 {
         FormatUserName($reguser);
 
         if ( $send_welcomeim == 1 ) {
-
-# new format msg file:
-# messageid|(from)user|(touser(s))|(ccuser(s))|(bccuser(s))|subject|date|message|(parentmid)|reply#|ip|messagestatus|flags|storefolder|attachment
             $messageid = $BASETIME . $PROCESS_ID;
             fopen( IM, ">$memberdir/$member{'regusername'}.msg", 1 );
             print {IM}
@@ -1096,9 +1087,9 @@ sub Register2 {
                 $language = $templanguage;
             }
             $yymain .= $myregister_welcome;
-            $yymain =~ s/{yabb regusername}/$member{'regusername'}/sm;
-            $yymain =~ s/{yabb passwrd1}/$member{'passwrd1'}/sm;
-            $yymain =~ s/{yabb Cookie_Length}/$Cookie_Length/sm;
+            $yymain =~ s/\Q{yabb regusername}\E/$member{'regusername'}/xsm;
+            $yymain =~ s/\Q{yabb passwrd1}\E/$member{'passwrd1'}/xsm;
+            $yymain =~ s/\Q{yabb Cookie_Length}\E/$Cookie_Length/xsm;
         }
         $yytitle = "$register_txt{'245'}";
     }
@@ -1116,11 +1107,22 @@ sub user_activation {
     if ( !-e "$memberdir/$reguser.pre" && -e "$memberdir/$reguser.vars" ) {
         fatal_error('already_activated');
     }
-    if ( ( $regtype != 1 && !-e "$memberdir/$reguser.pre" ) || ( $regtype == 1 && !-e "$memberdir/$reguser.pre" && !-e "$memberdir/$reguser.wait" ) ) { fatal_error('prereg_expired'); }
-    elsif ( $regtype == 1 && -e "$memberdir/$reguser.wait" ) { fatal_error('prereg_wait'); }
+    if (
+        ( $regtype != 1 && !-e "$memberdir/$reguser.pre" )
+        || (   $regtype == 1
+            && !-e "$memberdir/$reguser.pre"
+            && !-e "$memberdir/$reguser.wait" )
+      )
+    {
+        fatal_error('prereg_expired');
+    }
+    elsif ( $regtype == 1 && -e "$memberdir/$reguser.wait" ) {
+        fatal_error('prereg_wait');
+    }
+
     # If a pre-registration list exists load it
-    if ( -e "Variables/meminactive.db" ) {
-        fopen( INACT, "<Variables/meminactive.db" );
+    if ( -e 'Variables/meminactive.db' ) {
+        fopen( INACT, '<Variables/meminactive.db' );
         @reglist = <INACT>;
         fclose(INACT);
     }
@@ -1132,8 +1134,8 @@ sub user_activation {
         fclose(REGLOG);
         fatal_error('prereg_expired');
     }
-    if ( $regtype == 1 && -e "Variables/memapprove.db" ) {
-        fopen( APR, "<Variables/memapprove.db" );
+    if ( $regtype == 1 && -e 'Variables/memapprove.db' ) {
+        fopen( APR, '<Variables/memapprove.db' );
         @aprlist = <APR>;
         fclose(APR);
     }
@@ -1152,8 +1154,6 @@ sub user_activation {
                 fopen( REGLOG, ">>$vardir/registration.log", 1 );
                 print {REGLOG} "$date|E|$reguser||$user_ip\n"
                   or croak "$croak{'print'} REGLOG";
-
-                # add entry to registration log
                 fclose(REGLOG);
                 fatal_error('wrong_code');
 
@@ -1162,7 +1162,6 @@ sub user_activation {
 
         # user is in list and the keys match, so move him/her for admin approval
                 unshift @aprlist, $_;
-
                 rename "$memberdir/$reguser.pre", "$memberdir/$reguser.wait";
 
                 # add entry to registration log
@@ -1196,9 +1195,10 @@ sub user_activation {
 
                 # check if email is already in active use
                 if (
-                    lc ${ $uid . $reguser }{'email'} eq
-                    lc MemberIndex( 'check_exist',
-                        ${ $uid . $reguser }{'email'}, 2 ) )
+                    lc ${ $uid . $reguser }{'email'} eq lc MemberIndex(
+                        'check_exist', ${ $uid . $reguser }{'email'}, 2
+                    )
+                  )
                 {
                     fatal_error( 'email_taken', "(${$uid.$reguser}{'email'})" );
                 }
@@ -1264,9 +1264,6 @@ sub user_activation {
             }
 
             if ( $send_welcomeim == 1 ) {
-
-# new format msg file:
-# messageid|(from)user|(touser(s))|(ccuser(s))|(bccuser(s))|subject|date|message|(parentmid)|reply#|ip|messagestatus|flags|storefolder|attachment
                 $messageid = $BASETIME . $PROCESS_ID;
                 fopen( INBOX, ">$memberdir/$reguser.msg" );
                 print {INBOX}
@@ -1299,21 +1296,24 @@ sub user_activation {
     }
 
     if ($changed) {
+
         # if changed write new inactive list
-        fopen( INACT, ">Variables/meminactive.db" );
-        print {INACT} @chnglist or croak "$croak{'print'} INACT";
+        my $prnchng = join q{}, @chnglist;
+        fopen( INACT, '>Variables/meminactive.db' );
+        print {INACT} $prnchng or croak "$croak{'print'} INACT";
         fclose(INACT);
 
         # update approval user list
         if ( $regtype == 1 ) {
-            fopen( APR, ">Variables/memapprove.db" );
-            print {APR} @aprlist or croak "$croak{'print'} APR";
+            my $prnapr = join q{}, @aprlist;
+            fopen( APR, '>Variables/memapprove.db' );
+            print {APR} $prnapr or croak "$croak{'print'} APR";
             fclose(APR);
         }
     }
     else {
         # add entry to registration log
-        fopen( REGLOG, ">>Variables/registration.log", 1 );
+        fopen( REGLOG, '>>Variables/registration.log', 1 );
         print {REGLOG} "$date|E|$reguser|$user_ip\n"
           or croak "$croak{'print'} REGLOG";
         fclose(REGLOG);

@@ -24,7 +24,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$addmoderatorspmver = 'YaBB 2.7.00 $Revision$';
+$addmoderatorspmver  = 'YaBB 2.7.00 $Revision$';
 @addmoderatorspmmods = ();
 if (@addmoderatorspmmods) {
     $addmoderatorspmmods = 1;
@@ -40,7 +40,7 @@ sub AddModerators {
     *get_subboards = sub {
         my @x = @_;
         $indent += 2;
-        $modsel     = q{};
+        $modsel = q{};
         for my $board (@x) {
             my $dash;
             if ( $indent > 2 ) { $dash = q{-}; }
@@ -49,13 +49,13 @@ sub AddModerators {
               split /[|]/xsm, $board{$board};
             if (   ${ $uid . $board }{'ann'} == 1
                 || ${ $uid . $board }{'rbin'} == 1
-                || $boardname =~ m/http:\/\//xsm )
+                || $boardname =~ m{https?://}xsm )
             {
                 next;
             }
             ToChars($boardname);
             $moderators = ${ $uid . $board }{'mods'};
-            my @BoardModerators = split /, ?/sm, $moderators;
+            my @BoardModerators = split /\//xsm, $moderators;
             $modsel = q{};
             for my $thisMod (@BoardModerators) {
                 if ( $thisMod eq $user ) { $modsel = q~ selected="selected"~; }
@@ -73,7 +73,7 @@ sub AddModerators {
     };
 
     for my $catid (@categoryorder) {
-        (@bdlist) = split /\,/xsm, $cat{$catid};
+        (@bdlist) = split /,/xsm, $cat{$catid};
         ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
         ToChars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
@@ -81,14 +81,14 @@ sub AddModerators {
         get_subboards(@bdlist);
     }
     $showProfile .= $myshowProfile;
-    $showProfile =~ s/{yabb addbdmod}/$addbdmod/sm;
+    $showProfile =~ s/\Q{yabb addbdmod}\E/$addbdmod/xsm;
     return;
 }
 
 sub AddModerators2 {
     my @x    = @_;
     my $user = $x[0];
-    @modbd = split /, /sm, $x[1];
+    @modbd = split /,\s*/xsm, $x[1];
     chomp @modbd;
     fopen( FORUMCNTR, "$boardsdir/forum.control" )
       or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
@@ -96,21 +96,22 @@ sub AddModerators2 {
     fclose(FORUMCNTR);
     fopen( FORUMCNT, ">$boardsdir/forum.control" )
       or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+
     for my $boardline (@boardcntr) {
-        $boardline =~ s/[\r\n]//gsm;
-        my @newline = split /[|]/xsm, $boardline;
-        my @bdmodlist = split /, /sm, $newline[4];
+        $boardline =~ s/[\r\n]//gxsm;
+        my @newline   = split /[|]/xsm, $boardline;
+        my @bdmodlist = split /\//xsm,  $newline[4];
         chomp @bdmodlist;
-        $newline[4]  = q{};
-        $bdi       = 0;
-        for (@bdmodlist) {
+        $newline[4] = q{};
+        $bdi = 0;
+        foreach (@bdmodlist) {
             if ( $_ eq $user ) { splice @bdmodlist, $bdi, 1; last; }
             $bdi++;
         }
-        for (@modbd) {
+        foreach (@modbd) {
             if ( $_ eq $newline[1] ) { push @bdmodlist, $user; last; }
         }
-        $newline[4] = join q{, }, @bdmodlist;
+        $newline[4] = join q{/}, @bdmodlist;
         $newline = join q{|}, @newline;
         print {FORUMCNT} "$newline\n" or croak "$croak{'print'} FORUMCNT";
     }
@@ -181,17 +182,20 @@ function copy_option(to_select) {
 }
 </script>~;
     $yymain .= $myselectmods;
-    $yymain =~ s/{yabb to_board}/$to_board/sm;
+    $yymain =~ s/\Q{yabb to_board}\E/$to_board/xsm;
 
     $modmbrcnt = 0;
     my $modmbr = q{};
-    my @thisBoardModerators = split /, ?/sm, $moderators;
+    my @thisBoardModerators = split /\//xsm, $moderators;
     for my $thisMod (@thisBoardModerators) {
         LoadUser($thisMod);
         my $thisModname = ${ $uid . $thisMod }{'realname'};
         if ( !$thisModname ) { $thisModname = $thisMod; }
         if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        if ( $thisMod eq q{} ) { $modmbr .= q{                <option value="" disabled="disabled">--</option>};}
+        if ( $thisMod eq q{} ) {
+            $modmbr .=
+q{                <option value="" disabled="disabled">--</option>};
+        }
         else {
             $modmbr .=
 qq~                <option value="$thisMod" selected="selected">$thisModname</option>~;
@@ -201,15 +205,15 @@ qq~                <option value="$thisMod" selected="selected">$thisModname</op
     if   ( $modmbrcnt == 1 ) { $addmod_list = $messageindex_txt{'298'}; }
     else                     { $addmod_list = $messageindex_txt{'63'}; }
     $yymain .= $myselectmods_b;
-    $yymain =~ s/{yabb addmod_list}/$addmod_list/gsm;
-    $yymain =~ s/{yabb modmbr}/$modmbr/gsm;
+    $yymain =~ s/\Q{yabb addmod_list}\E/$addmod_list/gxsm;
+    $yymain =~ s/\Q{yabb modmbr}\E/$modmbr/gxsm;
 
     $modgrpcnt = 0;
     my $modgrp = q{};
     for (@nopostorder) {
         @groupinfo = split /[|]/xsm, $NoPost{$_};
         $modgrp .= qq~<option value="$_"~;
-        for ( split /, /sm, $moderatorgroups ) {
+        for ( split /\//xsm, $moderatorgroups ) {
             ( $lineinfo, undef ) = split /[|]/xsm, $NoPost{$_}, 2;
             if ( $lineinfo eq $groupinfo[0] ) {
                 $modgrp .= q~ selected="selected" ~;
@@ -222,8 +226,8 @@ qq~                <option value="$thisMod" selected="selected">$thisModname</op
         if   ( $modgrpcnt == 1 ) { $addgrp_list = $messageindex_txt{'298a'}; }
         else                     { $addgrp_list = $messageindex_txt{'63a'}; }
         $yymain .= $myselectmods_c;
-        $yymain =~ s/{yabb addgrp_list}/$addgrp_list/gsm;
-        $yymain =~ s/{yabb modgrp}/$modgrp/gsm;
+        $yymain =~ s/\Q{yabb addgrp_list}\E/$addgrp_list/gxsm;
+        $yymain =~ s/\Q{yabb modgrp}\E/$modgrp/gxsm;
     }
     $yymain .= $myselectmods_d;
     return;
@@ -231,32 +235,35 @@ qq~                <option value="$thisMod" selected="selected">$thisModname</op
 
 sub ModSearch2 {
     $modboard = $INFO{'toboard'};
+    my @mods = split /,\s*/xsm, $FORM{'moderators'};
     if ($do_scramble_id) {
-        my @mods;
-        for ( split /, /sm, $FORM{'moderators'} ) {
-            push @mods, decloak($_);
+        for (@mods) {
+            $_ = decloak($_);
         }
-        $FORM{'moderators'} = join q{, }, @mods;
     }
     fopen( FORUMCNTR, "$boardsdir/forum.control" )
       or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     my @boardcntr = <FORUMCNTR>;
     fclose(FORUMCNTR);
-    fopen( FORUMCNT, ">$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+
+    my $myline = q{};
     for my $boardline (@boardcntr) {
         $boardline =~ s/[\r\n]//gxsm;
         @newline = split /[|]/xsm, $boardline;
         if ( $newline[1] eq $modboard ) {
-            $newline[4] = $FORM{'moderators'};
+            $newline[4] = join q{/}, @mods;
+            $FORM{'moderatorgroups'} =~ s/,\s+/\//xsm;
             $newline[5] = $FORM{'moderatorgroups'};
             $newline = join q{|}, @newline;
-            print {FORUMCNT} "$newline\n" or croak "$croak{'print'} FORUMCNT";
+            $myline .= "$newline\n";
         }
         else {
-            print {FORUMCNT} "$boardline\n" or croak "$croak{'print'} FORUMCNT";
+            $myline .= "$boardline\n";
         }
     }
+    fopen( FORUMCNT, ">$boardsdir/forum.control" )
+      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+    print {FORUMCNT} $myline or croak "$croak{'print'} FORUMCNT";
     fclose(FORUMCNT);
 
     $yySetLocation = qq~$scripturl?board=$INFO{'toboard'}~;

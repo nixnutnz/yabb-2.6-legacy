@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$eventcalssipmver = 'YaBB 2.7.00 $Revision$';
+$eventcalssipmver  = 'YaBB 2.7.00 $Revision$';
 @eventcalssipmmods = ();
 if (@eventcalssipmmods) {
     $eventcalssipmmods = 1;

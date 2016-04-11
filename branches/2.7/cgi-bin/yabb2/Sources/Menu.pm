@@ -24,7 +24,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$menupmver = 'YaBB 2.7.00 $Revision$';
+$menupmver  = 'YaBB 2.7.00 $Revision$';
 @menupmmods = ();
 if (@menupmmods) {
     $menupmmods = 1;
@@ -112,7 +112,7 @@ sub SetImage {
     (
         $button_icon, $button_text, $text_num, $alt_text,
         $alt_num,     $span_class,  $imgext,   $mod_or_not
-    ) = @{$img_set{$img_name}};
+    ) = @{ $img_set{$img_name} };
     if ( !$alt_text ) {
         $alt_text = $button_text;
         $alt_num  = $text_num;
@@ -122,9 +122,7 @@ sub SetImage {
     }
     else {
         $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-        if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext")
-          )
-        {
+        if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext") ) {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
         }
     }
