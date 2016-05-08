@@ -112,7 +112,7 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
         }
         elsif ( $media_url =~ m/youtube\.com/ixsm ) {
             ( undef, $media_in ) = split /\?/xsm, $media_url;
-            @media_in = split /\&/gxsm, $media_in;
+            @media_in = split /\&/xsm, $media_in;
             foreach my $i (@media_in) {
                 if ( $i =~ m/v=/sm ) {
                     $i =~ s/amp;//gsm;

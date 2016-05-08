@@ -1989,7 +1989,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         # Check if thread has moved. And do necessary access check
         if ( ${$threadid}{'board'} ne $currentboard ) {
             if ( AccessCheck( ${$threadid}{'board'}, 2 ) ne 'granted' ) {
-                    foreach my $cnt ( 0 .. $#tag ) {
+                foreach my $cnt ( 0 .. $#tag ) {
                     print {UPDATE_CTB}
                       qq~'$tag[$cnt]',"${$threadid}{$tag[$cnt]}"\n~
                       or croak "$croak{'print'} UPDATE_CTB";
@@ -2010,8 +2010,8 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         ${$threadid}{'lastpostdate'} = $date;
         ${$threadid}{'threadstatus'} = $mstate;
 
-            foreach my $cnt ( 0 .. $#tag ) {
-                print {UPDATE_CTB}
+        foreach my $cnt ( 0 .. $#tag ) {
+            print {UPDATE_CTB}
                   qq~'$tag[$cnt]',"${$threadid}{$tag[$cnt]}"\n~
               or croak "$croak{'print'} UPDATE_CTB";
         }
