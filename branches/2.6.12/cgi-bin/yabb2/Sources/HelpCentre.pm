@@ -323,9 +323,14 @@ sub DoContents {
 }
 
 sub CreateOrderFile {
-    opendir HELPDIR, "$helpfile/$language/$help_area";
-    @contents = readdir HELPDIR;
-    closedir HELPDIR;
+    if ( opendir HELPDIR, "$helpfile/$language/$help_area" ) {
+        @contents = readdir HELPDIR;
+        closedir HELPDIR;
+    }
+    elsif ( opendir HELPDIR, "$helpfile/English/$help_area" ) {
+        @contents = readdir HELPDIR;
+        closedir HELPDIR;
+    }
 
     foreach ( sort { uc($a) cmp uc $b } @contents ) {
         ( $name, $extension ) = split /\./xsm, $_;
