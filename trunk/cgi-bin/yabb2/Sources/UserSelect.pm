@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.12';
 
-$userselectpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$userselectpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $INFO{'toid'} ne 'userspec' && $action ne 'checkavail' ) {
@@ -872,7 +872,7 @@ sub checkUserAvail {
     @reservecfg = <RESERVECFG>;
     fclose(RESERVECFG);
 
-    for my $i ( 0 .. ( @reservecfg - 1 ) ) {
+    for my $i ( 0 .. $#reservecfg ) {
         chomp $reservecfg[$i];
     }
     $matchword = $reservecfg[0] eq 'checked';

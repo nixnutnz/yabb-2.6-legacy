@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$pollpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$pollpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('Poll');
@@ -42,7 +42,7 @@ sub DoVote {
         undef, undef,        $vote_limit, undef
     ) = split /\|/xsm, $poll_question, 14;
 
-    for my $i ( 0 .. ( @poll_data - 1 ) ) {
+    for my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i], $slicecols[$i], $split[$i] ) =
           split /\|/xsm, $poll_data[$i];
@@ -69,7 +69,7 @@ sub DoVote {
     @polled = <FILE>;
     fclose(FILE);
 
-    for my $i ( 0 .. ( @polled - 1 ) ) {
+    for my $i ( 0 .. $#polled ) {
         ( $voters_ip, $voters_name, $voters_vote, $vote_time ) = split /\|/xsm,
           $polled[$i];
         chomp $voters_vote;
@@ -105,7 +105,7 @@ sub DoVote {
 
     fopen(FILE, ">$datadir/$pollnum.poll");
     print {FILE} "$poll_question\n" or croak "$croak{'print'} POLL FILE";
-    for my $i ( 0 .. ( @poll_data - 1 ) ) {
+    for my $i ( 0 .. $#poll_data ) {
         print {FILE} "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"
           or croak "$croak{'print'} POLL FILE";
     }
@@ -145,7 +145,7 @@ sub UndoVote {
     my @options;
     my @votes;
 
-    for my $i ( 0 .. ( @poll_data - 1 ) ) {
+    for my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i], $slicecols[$i], $split[$i] ) =
           split /\|/xsm, $poll_data[$i];
@@ -157,7 +157,7 @@ sub UndoVote {
 
     if ( $FORM{'multidel'} == 1 ) {
         is_admin();
-        for my $i ( 0 .. ( @polled - 1 ) ) {
+        for my $i ( 0 .. $#polled ) {
             ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
               split /\|/xsm, $polled[$i];
             chomp $voters_vote;
@@ -174,7 +174,7 @@ sub UndoVote {
         if ($iamguest)  { fatal_error('not_allowed'); }
         if ($poll_lock) { fatal_error('locked_poll_no_delete'); }
         $found = 0;
-        for my $i ( 0 .. ( @polled - 1 ) ) {
+        for my $i ( 0 .. $#polled ) {
             ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
               split /\|/xsm, $polled[$i];
             chomp $voters_vote;
@@ -192,7 +192,7 @@ sub UndoVote {
 
     fopen(FILE, ">$datadir/$pollnum.poll");
     print {FILE} $poll_question or croak "$croak{'print'} POLL FILE";
-    for my $i ( 0 .. ( @poll_data - 1 ) ) {
+    for my $i ( 0 .. $#poll_data ) {
         print {FILE} "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n"
           or croak "$croak{'print'} POLL FILE";
     }
@@ -297,7 +297,7 @@ sub votedetails {
     my @votes;
     my $totalvotes = 0;
     my $maxvote    = 0;
-    for my $i ( 0 .. ( @poll_data - 1 ) ) {
+    for my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i] ) = split /\|/xsm, $poll_data[$i];
         $totalvotes += int $votes[$i];
@@ -527,7 +527,7 @@ qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate
     my $totalvotes = 0;
     my $maxvote    = 0;
     $piearray = q~[~;
-    for my $i ( 0 .. ( @poll_data - 1 ) ) {
+    for my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i], $slicecolor[$i], $split[$i] ) =
           split /\|/xsm, $poll_data[$i];
@@ -639,7 +639,7 @@ qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_d
                 require Sources::YaBBC;
             }
             $footer = $users_votetext;
-            for my $i ( 0 .. ( @users_vote - 1 ) ) {
+            for my $i ( 0 .. $#users_vote ) {
                 $optnum = $users_vote[$i];
 
                 # Censor the user answer.
@@ -756,7 +756,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
             }
         }
         else {
-            for my $i ( 0 .. ( @options - 1 ) ) {
+            for my $i ( 0 .. $#options ) {
                 if ( !$options[$i] ) { next; }
 
                 # Display Poll Options

@@ -13,10 +13,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$newsettingspmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$newsettingspmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.

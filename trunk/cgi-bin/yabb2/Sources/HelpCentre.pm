@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$helpcentrepmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$helpcentrepmver = 'YaBB 2.6.12 $Revision: 1713 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');
@@ -323,9 +323,14 @@ sub DoContents {
 }
 
 sub CreateOrderFile {
-    opendir HELPDIR, "$helpfile/$language/$help_area";
-    @contents = readdir HELPDIR;
-    closedir HELPDIR;
+    if ( opendir HELPDIR, "$helpfile/$language/$help_area" ) {
+        @contents = readdir HELPDIR;
+        closedir HELPDIR;
+    }
+    elsif ( opendir HELPDIR, "$helpfile/English/$help_area" ) {
+        @contents = readdir HELPDIR;
+        closedir HELPDIR;
+    }
 
     foreach ( sort { uc($a) cmp uc $b } @contents ) {
         ( $name, $extension ) = split /\./xsm, $_;

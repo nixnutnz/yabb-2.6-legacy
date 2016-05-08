@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.12';
 
-$searchpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$searchpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Search');
@@ -624,7 +624,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
     undef %found;
     @search = grep { !$found{$_}++ } @tmpsearch;
     my $icanbypass = checkUserLockBypass();
-    for my $i ( 0 .. ( @messages - 1 ) ) {
+    for my $i ( 0 .. $#messages ) {
         (
             $board, $tnum,    $msgnum, $tusername, $tname, $msub,
             $mname, $memail,  $mdate,  $musername, $micon, $mattach,
@@ -954,7 +954,7 @@ sub pmsearch {
     @search = grep { !$found{$_}++ } @tmpsearch;
 
     ## output results
-    for my $i ( 0 .. ( @messages - 1 ) ) {
+    for my $i ( 0 .. $#messages ) {
         my (
             $thispmbox, $msgnum,    $msub,         $mname,
             $memail,    $mdate,     $mfromuser,    $mtouser,

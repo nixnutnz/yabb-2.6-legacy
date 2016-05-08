@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$palettepmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$palettepmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ColorPicker {
@@ -23,7 +23,7 @@ sub ColorPicker {
 
     if ( $INFO{'palnr'} && $iamadmin ) {
         my @new_pal;
-        for my $i ( 0 .. ( @pallist - 1 ) ) {
+        for my $i ( 0 .. $#pallist ) {
             if ( $i == ( $INFO{'palnr'} - 1 ) && $INFO{'palcolor'} ) {
                 push @new_pal, "#$INFO{'palcolor'}";
             }

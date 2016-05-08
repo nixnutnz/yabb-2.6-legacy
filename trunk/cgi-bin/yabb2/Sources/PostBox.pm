@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$postboxpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$postboxpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -106,7 +106,7 @@ sub postbox {
                 <option value="">-\\-</option>~;
             my @fntoptions = ( 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 36, 48, 56, 72);
             my $fntopts = q{};
-            for my $i ( 0 .. ( @fntoptions - 1 ) ) {
+            for my $i ( 0 .. $#fntoptions ) {
                 if ( $fntoptions[$i] >= $fontsizemin && $fntoptions[$i] <= $fontsizemax ) {
                     if( $fntoptions[$i] == 11 ) { $fntopts .= qq~               <option value="11" selected="selected">11</option>\n~;}
                     else { $fntopts .= qq~              <option value="$fntoptions[$i]">$fntoptions[$i]</option>\n~;}

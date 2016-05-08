@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$boardindexpmver = 'YaBB 2.6.12 $Revision: 1677 $';
+$boardindexpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
@@ -1177,8 +1177,7 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                     $templateblock = $boardblockext;
                     $bdd           = q{};
                     my @bname = split /<br \/>/sm, $bddescr;
-                    my $dcnt = @bname;
-                    for my $i ( 1 .. ( $dcnt - 1 ) ) {
+                    for my $i ( 1 .. $#bname ) {
                         $bdd .= $bname[$i] . '<br />';
                     }
                     $boardname =

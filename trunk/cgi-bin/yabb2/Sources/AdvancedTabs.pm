@@ -18,7 +18,7 @@ no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$advancedtabspmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$advancedtabspmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub AddNewTab {
@@ -185,7 +185,7 @@ sub EditTab {
 
     my $selsize   = 0;
     my $isexttabs = 0;
-    for my $i ( 0 .. ( @AdvancedTabs - 1 ) ) {
+    for my $i ( 0 .. $#AdvancedTabs ) {
         if ( $AdvancedTabs[$i] =~ /\|/xsm ) {
             my ( $tab_key, $tmptab_url, $isaction, $username_req, $tab_access,
                 $dummy )
@@ -287,7 +287,7 @@ sub ReorderTab {
     if ($iamadmin) {
         if ($moveitem) {
             if ( $FORM{'moveleft'} ) {
-                for my $i ( 0 .. ( @AdvancedTabs - 1 ) ) {
+                for my $i ( 0 .. $#AdvancedTabs ) {
                     if ( $AdvancedTabs[$i] =~ /^$moveitem\|?/xsm && $i > 0 ) {
                         my $j = $i - 1;
                         my $x = $AdvancedTabs[$i];
@@ -298,7 +298,7 @@ sub ReorderTab {
                 }
             }
             elsif ( $FORM{'moveright'} ) {
-                for my $i ( 0 .. ( @AdvancedTabs - 1 ) ) {
+                for my $i ( 0 .. $#AdvancedTabs ) {
                     if (   $AdvancedTabs[$i] =~ /^$moveitem\|?/xsm
                         && $i < $#AdvancedTabs )
                     {

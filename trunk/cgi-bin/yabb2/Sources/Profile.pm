@@ -19,7 +19,7 @@ use English qw(-no_match_vars);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$profilepmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$profilepmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');
@@ -1696,7 +1696,7 @@ sub ModifyProfile2 {
         my @attachments = <ATM>;
         fclose(ATM);
 
-        for my $i ( 0 .. ( @attachments - 1 ) ) {
+        for my $i ( 0 .. $#attachments ) {
             $attachments[$i] =~
 s/^(\d+\|\d+\|.*?)\|(.*?)\|/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{'name'}|" : "$1|$2|") /esm;
         }
@@ -3236,7 +3236,7 @@ qq~<a href="$scripturl?action=ipban_update;ban_memname=$ban_user_name;username=$
         $ip_ban_options = q{};
         if ( ${ $uid . $user }{'lastips'} ) {
             @ip_ban = split /\|/xsm, ${ $uid . $user }{'lastips'};
-            for my $ip ( 0 .. ( @ip_ban - 1 ) ) {
+            for my $ip ( 0 .. $#ip_ban ) {
                 if ( check_banlist( q{}, "$ip_ban[$ip]", q{} ) ) {
                     $banlink[$ip] =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'905a'}$ip_ban[$ip]');">$profile_txt{'905'}</a> ]</span>~;
@@ -3257,7 +3257,7 @@ qq~<a href="$scripturl?action=ipban_update;ban=$ip_ban[$ip];username=$useraccoun
                     $banlink[$ip] .= q{};
                 }
             }
-            for my $i ( 0 .. ( @ip_ban - 1 ) ) {
+            for my $i ( 0 .. $#ip_ban ) {
                 if ( $ip_ban[$i] ) {
                     my $lookupIP =
                       ($ipLookup)
@@ -3454,7 +3454,7 @@ sub usersrecentposts {
             next;
         }
 
-        for my $i ( 0 .. ( @{ $boardtxt{$curboard} } - 1 ) ) {
+        for my $i ( 0 .. $#{ $boardtxt{$curboard} } ) {
             (
                 $tnum,     $tsub,      $tname, $temail, $tdate,
                 $treplies, $tusername, $ticon, $tstate
@@ -3579,7 +3579,7 @@ sub usersrecentposts {
                     fclose(FILE);
                 }
 
-                for my $i ( 0 .. ( @{ $boardtxt{$curboard} } - 1 ) ) {
+                for my $i ( 0 .. $#{ $boardtxt{$curboard} } ) {
                     (
                         $tnum,      $tsub,  $tname,
                         $temail,    $tdate, $treplies,
@@ -3660,7 +3660,7 @@ sub usersrecentposts {
 
     LoadCensorList();
 
-    for my $i ( 0 .. ( @data - 1 ) ) {
+    for my $i ( 0 .. $#data ) {
         next if !$data[$i];
 
         (

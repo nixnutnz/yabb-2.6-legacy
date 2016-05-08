@@ -13,11 +13,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+our $settings_mainpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements

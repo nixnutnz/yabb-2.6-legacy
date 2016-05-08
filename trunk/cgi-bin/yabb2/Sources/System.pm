@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$systempmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$systempmver = 'YaBB 2.6.12 $Revision: 1710 $';
 
 sub BoardTotals {
     my ( $job, @updateboards ) = @_;
@@ -89,7 +89,7 @@ sub BoardTotals {
               or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
             @lines = <FORUMTOTALS>;
             fclose( FORUMTOTALS );
-            for my $line ( 0 .. ( @lines - 1 ) ) {
+            for my $line ( 0 .. $#lines ) {
                 @boardvars = split /\|/xsm, $lines[$line], 2;
                 if ( $boardvars[0] eq $updateboards[0]
                     || !exists $board{ $boardvars[0] } )
@@ -125,7 +125,7 @@ sub BoardCountTotals {
     fclose(BOARD);
     my $threadcount  = @threads;
     my $messagecount = $threadcount;
-    for my $i ( 0 .. ( @threads - 1 ) ) {
+    for my $i ( 0 .. $#threads ) {
         my @threadline = split /\|/xsm, $threads[$i];
         if ( $threadline[8] =~ /m/sm ) {
             $threadcount--;
@@ -331,7 +331,7 @@ sub UserAccount {
       or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
     print {UPDATEUSER} "### User variables for ID: $user ###\n\n"
       or croak "$croak{'print'} UPDATEUSER";
-    for my $cnt ( 0 .. ( @tags - 1 ) ) {
+    for my $cnt ( 0 .. $#tags ) {
         print {UPDATEUSER} qq~'$tags[$cnt]',"${$uid.$user}{$tags[$cnt]}"\n~
           or croak "$croak{'print'} UPDATEUSER";
     }
@@ -670,6 +670,5 @@ sub Rearrange_Sticky {
     redirectexit();
     return;
 }
-## End Sticky Shimmy Shuffle ##
 
 1;

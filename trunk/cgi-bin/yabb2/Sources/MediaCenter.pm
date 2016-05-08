@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.12';
 
-$mediacenterpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$mediacenterpmver = 'YaBB 2.6.12 $Revision: 1714 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub embed {
@@ -41,7 +41,6 @@ qq~$maintxt{'41'} <a href="$scripturl?action=login;sesredir=num\~$curnum">$img{'
             $video .=
 qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a> !!~;
         }
-
     }
     else {
         if ( !$player_version ) { $player_version = 6; }
@@ -113,7 +112,7 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
         }
         elsif ( $media_url =~ m/youtube\.com/ixsm ) {
             ( undef, $media_in ) = split /\?/xsm, $media_url;
-            @media_in = split /\&/gxsm, $media_in;
+            @media_in = split /\&/xsm, $media_in;
             foreach my $i (@media_in) {
                 if ( $i =~ m/v=/sm ) {
                     $i =~ s/amp;//gsm;

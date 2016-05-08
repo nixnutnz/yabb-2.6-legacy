@@ -18,7 +18,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$postpmver = 'YaBB 2.6.12 $Revision: 1667 $';
+$postpmver = 'YaBB 2.6.12 $Revision: 1714 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -32,7 +32,6 @@ require Sources::SpamCheck;
 require Sources::PostBox;
 get_micon();
 get_template('Post');
-
 
 if (   $iamguest
     && $gpvalid_en
@@ -633,7 +632,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
         my ( $reptime, $repuser, $isreplying, @tmprepliers, $isrep,
             $template_viewers, $topviewers );
         chomp @repliers;
-        for my $i ( 0 .. ( @repliers - 1 ) ) {
+        for my $i ( 0 .. $#repliers ) {
             ( $reptime, $repuser, $isreplying ) = split /\|/xsm, $repliers[$i];
             next if ( $date - $reptime ) > 600;
             if ( $repuser eq $username ) {
@@ -1990,7 +1989,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         # Check if thread has moved. And do necessary access check
         if ( ${$threadid}{'board'} ne $currentboard ) {
             if ( AccessCheck( ${$threadid}{'board'}, 2 ) ne 'granted' ) {
-                foreach my $cnt ( 0 .. ( @tag - 1 ) ) {
+                foreach my $cnt ( 0 .. $#tag ) {
                     print {UPDATE_CTB}
                       qq~'$tag[$cnt]',"${$threadid}{$tag[$cnt]}"\n~
                       or croak "$croak{'print'} UPDATE_CTB";
@@ -2011,8 +2010,9 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         ${$threadid}{'lastpostdate'} = $date;
         ${$threadid}{'threadstatus'} = $mstate;
 
-        foreach my $cnt ( 0 .. ( @tag - 1 ) ) {
-            print {UPDATE_CTB} qq~'$tag[$cnt]',"${$threadid}{$tag[$cnt]}"\n~
+        foreach my $cnt ( 0 .. $#tag ) {
+            print {UPDATE_CTB}
+                  qq~'$tag[$cnt]',"${$threadid}{$tag[$cnt]}"\n~
               or croak "$croak{'print'} UPDATE_CTB";
         }
         fclose(UPDATE_CTB);
@@ -2038,7 +2038,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         my @buffer = <BOARDFILE>;
         fclose( BOARDFILE );
 
-        foreach my $i ( 0 .. ( @buffer - 1 ) ) {
+        foreach my $i ( 0 .. $#buffer ) {
             if ( $buffer[$i] =~ m{\A$mnum\|}oxsm ) { $buffer[$i] = q{}; last; }
         }
         fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )

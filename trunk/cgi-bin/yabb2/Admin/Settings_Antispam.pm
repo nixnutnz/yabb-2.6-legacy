@@ -13,15 +13,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$settings_antispampmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$settings_antispampmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-
-# TSC
 if ( -e "$vardir/spamrules.txt" ) {
     fopen( SPAM, "$vardir/spamrules.txt" )
       || fatal_error( 'cannot_open', 'spamrules.txt', 1 );

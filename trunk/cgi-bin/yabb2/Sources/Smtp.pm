@@ -15,7 +15,7 @@
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$smtppmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$smtppmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 eval q{
@@ -53,7 +53,7 @@ sub use_smtp {
     get_line();
     say_hello($smtp_server) or exit 1;
 
-    if ( defined( $features{'AUTH'} ) && $smtp_auth_required ) {
+    if ( $features{'AUTH'} && $smtp_auth_required ) {
 
         # Try CRAM-MD5 if supported by the server
         if (
@@ -237,7 +237,7 @@ sub encode_smtp64 {
     }
     require integer;
     import integer;
-    if ( !defined $eol ) { $eol = "\n"; }
+    if ( !$eol ) { $eol = "\n"; }
 
     my $res = pack 'u', $inp;
 

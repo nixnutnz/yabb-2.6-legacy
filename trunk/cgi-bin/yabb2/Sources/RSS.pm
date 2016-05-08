@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$rsspmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$rsspmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Change the error routine for here.
@@ -602,14 +602,14 @@ sub shellaccess {
     # Parse the arguments
     my ( $i, %arguments );
 
-    for my $i ( 0 .. ( @ARGV - 1 ) ) {
+    for my $i ( 0 .. $#ARGV ) {
         if ( $ARGV[$i] =~ /\A\-/sm ) {
             my ( $option, $value );
             $option = $ARGV[$i];
             $option =~ s/\A\-\-?//xsm;
             ( $option, $value ) = split /\=/xsm, $option;
             $arguments{$option} = $value || q{};
-            if ( !defined $arguments{$option} ) { $arguments{$option} = 1; }
+            if ( !$arguments{$option} ) { $arguments{$option} = 1; }
         }
     }
 

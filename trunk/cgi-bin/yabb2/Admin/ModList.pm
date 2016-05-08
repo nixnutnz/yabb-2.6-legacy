@@ -13,10 +13,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$modlistpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$modlistpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ListMods {

@@ -12,10 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$manageboardspmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$manageboardspmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
@@ -42,6 +42,24 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         $managedescr = $admin_txt{'677'};
         $act2        = 'addboard';
         $action_area = 'manageboards';
+        ## find bad boards
+        my @dupedbrds = ();
+        my @mylist = ();
+        while( ( $key, $value ) = each %cat ) {
+            @mylist = split /,/xsm, $value;
+            push @dupedbrds, @mylist;
+        }
+        while( ( $key, $value ) = each %subboard ) {
+            @mylist = split /[|]/xsm, $value;
+            push @dupedbrds, @mylist;
+        }
+        my %dup_counts;
+        for (@dupedbrds) { $dup_counts{$_}++ };
+        my @chkbrds = grep { $dup_counts{$_} > 1 } keys %dup_counts;
+        @chkbrds = sort(@chkbrds);
+        if (@chkbrds) {
+            $managedescr .= qq~<br />$admin_txt{'dupbrd'} @chkbrds<br />$admin_txt{'dupbrdlnk'}~;
+        }
     }
     $yymain .= qq~<script type="text/javascript">
         function checkSubmit(where){
@@ -2023,4 +2041,124 @@ sub ConfRemBoard {
     AdminTemplate();
     return;
 }
+
+sub FixBoardDupes {
+    is_admin_or_gmod();
+    get_forum_master();
+    my @dupedbrds = ();
+    my @mylist = ();
+    my @catbrds = ();
+    my @subbrds = ();
+    while( ( $key, $value ) = each %cat ) {
+        @mylist = split /,/xsm, $value;
+        push @dupedbrds, @mylist;
+    }
+    while( ( $key, $value ) = each %subboard ) {
+        @mylist = split /[|]/xsm, $value;
+        push @dupedbrds, @mylist;
+    }
+    my %dup_counts;
+    for (@dupedbrds) { $dup_counts{$_}++ };
+    my @chkbrds = grep { $dup_counts{$_} > 1 } keys %dup_counts;
+    if (@chkbrds) {
+        while( ( $key, $value ) = each %cat ) {
+            @mylist = split /,/xsm, $value;
+            for my $x (@mylist) {
+                for my $y (@chkbrds) {
+                    if ( $x eq $y ) {
+                        push @catbrds, qq~$x|c|$key~;
+                    }
+                }
+            }
+        }
+        while( ( $key, $value ) = each %subboard ) {
+            @mylist = split /[|]/xsm, $value;
+            for my $x (@mylist) {
+                for my $y (@chkbrds) {
+                    if ( $x eq $y ) {
+                        push @catbrds, qq~$x|s|$key~;
+                    }
+                }
+            }
+        }
+    }
+    $dupedlist = qq~<br /><span style="font-size:125%">$admin_txt{'fixinstruct'}</span>~;
+    @catbrds = sort(@catbrds);
+    $mynum = 0;
+    for (@catbrds) {
+        my( $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
+        if ( $tp eq 'c') {
+            $dupedlist .= qq~<br /><input type="checkbox" name="$mynum|$_" value="1" /> $admin_txt{'58'} $dpfile $admin_txt{'incat'} $mydupcat~;
+        }
+        else {
+            $dupedlist .= qq~<br /><input type="checkbox" name="$mynum|$_" value="1" /> $admin_txt{'subbrd'} $dpfile $admin_txt{'inbrd'} $mydupcat~;
+        }
+        $mynum++;
+    }
+    $yymain .= qq~
+    <form action="$adminurl?action=fixdupes" method="post" accept-charset="$yymycharset">
+    <table class="bordercolor border-space pad-cell">
+        <tr>
+            <td class="titlebg">$admin_img{'cat_img'}&nbsp;<b>$admin_txt{'fixdupbrd'}</b></td>
+        </tr><tr>
+            <td class="windowbg">
+                 $dupedlist
+            </td>
+        </tr><tr>
+            <td class="titlebg center">
+                <input type="submit" value="$admin_txt{'fixdupbrd'}" class="button" />
+            </td>
+        </tr>
+    </table>
+    </form>
+~;
+    $yytitle     = qq~$admin_txt{'fixdupbrd'}~;
+    $action_area = 'manageboards';
+    AdminTemplate();
+    return;
+}
+
+sub FixDupes {
+    is_admin_or_gmod();
+    get_forum_master();
+    @torem = ();
+    $i = 0;
+    while ( $_ = each %FORM ) {
+        if ( $FORM{$_} ) {
+            my( $num, $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
+            push @torem, qq~$dpfile|$tp|$mydupcat~;
+        }
+    }
+    my %hash;
+    my @del = ();
+    my $i = 0;
+    $hash{$_}++ foreach (@torem);
+    for (keys %hash) {
+        ( $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
+        if ( $tp eq 'c' ) {
+            @dupcat = split /,/xsm, $cat{$mydupcat};
+            $i = 0;
+            $i++ until $dupcat[$i] eq $dpfile;
+            splice(@dupcat, $i, 1);
+            $cat{$mydupcat} = join q{,}, @dupcat;
+            push @del, $dpfile;
+        }
+        else {
+            @dupcat = split /[|]/xsm, $subboard{$mydupcat};
+            $i = 0;
+            $i++ until $dupcat[$i] eq $dpfile;
+            splice(@dupcat, $i, 1);
+            $subboard{$mydupcat} = join q{,}, @dupcat;
+            push @del, $dpfile;
+        }
+    }
+
+    Write_ForumMaster();
+    $yymain .= qq~Duplicate Boards removed<br />@del<br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a>~;
+    $yytitle     = qq~$admin_txt{'fixdupbrd'}~;
+    $action_area = 'manageboards';
+    AdminTemplate();
+    return;
+}
+
 1;

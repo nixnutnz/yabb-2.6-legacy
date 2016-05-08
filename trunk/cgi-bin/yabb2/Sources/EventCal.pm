@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
 our $VERSION = '2.6.12';
 
-$eventcalpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$eventcalpmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -195,7 +195,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
     # Get Navi begin
 
     if ( !$INFO{'calmon'} )      { $INFO{'calmon'} = $mon + 1; }
-    if ( !$INFO{'calmon'} > 12 ) { $INFO{'calmon'} = 12; }
+    if ( $INFO{'calmon'} > 12 ) { $INFO{'calmon'} = 12; }
 
     $next_mon  = $INFO{'calmon'} + 1;
     $next_year = $year;
@@ -1667,7 +1667,7 @@ sub add_cal {
         my @calinput = <EVENTFILE>;
         fclose(EVENTFILE);
         if ( $FORM{'editid'} ) {
-            for my $i ( 0 .. ( @calinput - 1 ) ) {
+            for my $i ( 0 .. $#calinput ) {
                 chomp $calinput[$i];
                 (
                     $c_date,  $c_type,  $c_name, $c_time,
@@ -1728,7 +1728,7 @@ sub del_old_events {
     fopen( EVENTFILE, "$vardir/eventcal.db" );
     my @calinput = <EVENTFILE>;
     fclose(EVENTFILE);
-    for my $i ( 0 .. ( @calinput - 1 ) ) {
+    for my $i ( 0 .. $#calinput ) {
         ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef ) =
           split /\|/xsm, $calinput[$i];
         chop $c_type2;

@@ -12,10 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$maintenancepmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$maintenancepmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub RebuildMessageIndex {
@@ -109,25 +109,11 @@ sub RebuildMessageIndex {
                 fopen( CTB, "$datadir/$thread.ctb", 1 );
                 my @ctb = <CTB>;
                 fclose(CTB);
-                if ( $ctb[0] =~ /###/xsm ) {    # new format
-                    foreach (@ctb) {
+                for (@ctb) {
                         if ( $_ =~ /^'(.*?)',"(.*?)"/xsm ) { ${$thread}{$1} = $2; }
                     }
                     @repliers = split /\,/xsm, ${$thread}{'repliers'};
                 }
-                else {                       # old format
-                    chomp @ctb;
-                    my @tag =
-                      qw(board replies views lastposter lastpostdate threadstatus repliers);
-                    for my $cnt ( 0 .. 6 ) {
-                        ${$thread}{ $tag[$cnt] } = $ctb[$cnt];
-                    }
-                    @repliers = ();
-                    for my $repcnt ( 7 .. ( @ctb - 1 ) ) {
-                        push @repliers, $ctb[$repcnt];
-                    }
-                }
-            }
 
             # set correct board
             $theboard =

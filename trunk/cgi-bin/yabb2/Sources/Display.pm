@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$displaypmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$displaypmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
@@ -1845,7 +1845,7 @@ sub NextPrev {
 
     my ( $countsticky, $countnosticky ) = ( 0, 0 );
     my ( @stickythreadlist, @nostickythreadlist );
-    for my $i ( 0 .. ( @threadlist - 1 ) ) {
+    for my $i ( 0 .. $#threadlist ) {
         my $threadstatus = ( split /\|/xsm, $threadlist[$i] )[8];
         if ( $threadstatus =~ /h/ism
             && !$staff )
@@ -1868,7 +1868,7 @@ sub NextPrev {
 
     my $is = 0;
     my ( $mnum, $mdate, $datecount );
-    for my $i ( 0 .. ( @threadlist - 1 ) ) {
+    for my $i ( 0 .. $#threadlist ) {
         ( $mnum, undef, undef, undef, $mdate, undef ) =
           split /\|/xsm, $threadlist[$i], 6;
         if ( $mnum == $name ) {

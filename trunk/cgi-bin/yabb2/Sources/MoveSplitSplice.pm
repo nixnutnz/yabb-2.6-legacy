@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$movesplitsplicepmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$movesplitsplicepmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MoveSplitSplice');
@@ -54,7 +54,7 @@ sub Split_Splice {
     my @messages = @{ $thread_arrayref{$curthread} };
 
     my ( $counter, $size1 );
-    for my $counter ( 0 .. ( @messages - 1 ) ) {
+    for my $counter ( 0 .. $#messages ) {
         $message = ( split /\|/xsm, $messages[$counter], 10 )[8];
         ( $message, undef ) = Split_Splice_Move( $message, 1 );
         DoUBBC();
@@ -95,7 +95,7 @@ sub Split_Splice {
 
     # List of options of what, if anything, to leave in place of the posts moved
     my @leaveopts = ( $sstxt{'11'}, $sstxt{'12'}, $sstxt{'13'} );
-    for my $counter ( 0 .. ( @leaveopts - 1 ) ) {
+    for my $counter ( 0 .. $#leaveopts ) {
         $leavelist .=
             qq~<option value="$counter" ~
           . ( $FORM{'leave'} == $counter ? q~selected="selected"~ : q{} )
@@ -190,7 +190,7 @@ sub Split_Splice {
         }
         @messages = @{ $thread_arrayref{$newthread} };
 
-        for my $counter ( 0 .. ( @messages - 1 ) ) {
+        for my $counter ( 0 .. $#messages ) {
             $message = ( split /[\|]/xsm, $messages[$counter], 10 )[8];
             ( $message, undef ) = Split_Splice_Move( $message, 1 );
             DoUBBC();
@@ -382,7 +382,7 @@ sub Split_Splice_2 {
             }
             $newposition = -1;
         }
-        for my $i ( 0 .. ( @newthread - 1 ) ) {
+        for my $i ( 0 .. $#newthread ) {
             push @utdnewthread, $newthread[$i];
             if ( $newposition == $i ) {
                 foreach (@postnum) {
@@ -435,7 +435,7 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
     }
     elsif ( $leavemess != 1 ) {
         if ( $newboard eq $binboard ) { $leavemess = 2; }
-        for my $i ( 0 .. ( @curthread - 1 ) ) {
+        for my $i ( 0 .. $#curthread ) {
             if ( $movingposts =~ /\b$i\b/xsm ) {
                 if ( $leavemess == 0 && $i == $postnum[-1] ) {
                     my $tmpsub;
@@ -469,7 +469,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
     }
 
     if (@utdcurthread) {
-        for my $i ( 0 .. ( @utdcurthread - 1 ) ) {    # sort post numbers
+        for my $i ( 0 .. $#utdcurthread ) {    # sort post numbers
             my @x = split /\|/xsm, $utdcurthread[$i];
             $x[6] = $i;
             $utdcurthread[$i] = join q{|}, @x;
@@ -488,7 +488,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
         $INFO{'moveit'} = $moveit;
     }
 
-    for my $i ( 0 .. ( @utdnewthread - 1 ) ) {    # sort post numbers
+    for my $i ( 0 .. $#utdnewthread ) {    # sort post numbers
         my @x = split /\|/xsm, $utdnewthread[$i];
         $x[6] = $i;
         $utdnewthread[$i] = join q{|}, @x;
@@ -598,7 +598,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
     fclose( BOARD );
 
     my $old_mstate;
-    for my $i ( 0 .. ( @curmessindex - 1 ) ) {
+    for my $i ( 0 .. $#curmessindex ) {
         my (
             $mnum,     $msub,      $mname, $memail, $mdate,
             $mreplies, $musername, $micon, $mstate
@@ -739,7 +739,7 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
             }
         }
         else {
-            for my $i ( 0 .. ( @newmessindex - 1 ) ) {
+            for my $i ( 0 .. $#newmessindex ) {
                 my (
                     $mnum,     $msub,      $mname, $memail, $mdate,
                     $mreplies, $musername, $micon, $mstate
@@ -905,7 +905,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
 
     # now fix all attachments.txt info
     my $attachments;
-    for my $i ( $postnum[0] .. ( @curthread - 1 ) )
+    for my $i ( $postnum[0] .. $#curthread )
     {    # see if old thread had attachments
         $attachments = ( split /\|/xsm, $curthread[$i] )[12];
         chomp $attachments;
@@ -915,7 +915,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
         }
     }
     if ( !$attachments ) {    # see if new thread has attachments
-        for my $i ( $linkcount .. ( @utdnewthread - 1 ) ) {
+        for my $i ( $linkcount .. $#utdnewthread ) {
             $attachments = ( split /\|/xsm, $utdnewthread[$i] )[12];
             chomp $attachments;
             if ($attachments) {

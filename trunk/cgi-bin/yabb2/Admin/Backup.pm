@@ -18,11 +18,11 @@
 # use strict;
 # use warnings;
 # no warnings qw(uninitialized once redefine);
-use Carp;
+use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$backuppmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$backuppmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
@@ -586,7 +586,7 @@ s/\$rememberbackup = \d+;/\$rememberbackup = $rememberbackup;/sm;
             }
         }
 
-        # if \$rememberbackup = is not allready in Settings.pm
+        # if \$rememberbackup = is not already in Settings.pm
         if ( $rememberbackup && $rememberbackup == $FORM{'rememberbackup'} ) {
             $rememberbackup *= 86_400;        # days in seconds
             unshift @settings, "\$rememberbackup = $rememberbackup;\n";

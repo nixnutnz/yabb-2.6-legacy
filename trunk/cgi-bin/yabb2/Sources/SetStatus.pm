@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.12';
 
-$setstatuspmver = 'YaBB 2.6.12 $Revision: 1651 $';
+$setstatuspmver = 'YaBB 2.6.12 $Revision: 1710 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub SetStatus {
@@ -36,7 +36,7 @@ sub SetStatus {
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <BOARDFILE>;
 	fclose( BOARDFILE );
-    for my $line ( 0 .. ( @boardfile - 1 ) ) {
+    for my $line ( 0 .. $#boardfile ) {
         if ( $boardfile[$line] =~ m/\A$threadid\|/xsm ) {
             my (
                 $mnum,     $msub,      $mname, $memail, $mdate,
