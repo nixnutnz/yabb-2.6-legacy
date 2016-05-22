@@ -780,10 +780,10 @@ sub image_resize {
             && $x[1] eq 'avatarml' )
         {
             if ( $max_avatarml_width && $x[2] !~ / width=./sm ) {
-                $x[2] =~ s/( style=.)/$1width:$max_avatarml_width\px;/sm;
+                $x[2] =~ s/( style=.)/$1width:$max_avatarml_width$px;/sm;
             }
             if ( $max_avatarml_height && $x[2] !~ / height=./sm ) {
-                $x[2] =~ s/( style=.)/$1height:$max_avatarml_height\px;/sm;
+                $x[2] =~ s/( style=.)/$1height:$max_avatarml_height$px;/sm;
             }
             $x[2] =~ s/display:none/display:inline/sm;
         }
