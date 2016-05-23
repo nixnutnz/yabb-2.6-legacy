@@ -1,0 +1,138 @@
+15c15
+< use CGI::Carp qw(fatalsToBrowser);
+---
+> use Carp;
+21c21
+< $adminpmver = 'YaBB 2.6.12 $Revision: 1676 $';
+---
+> $adminpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+155c155
+<         fopen( LOG, "<$vardir/clicklog.txt" );
+---
+>         fopen( LOG, "$vardir/clicklog.txt" );
+356c356
+<     fopen( LOG, "<$vardir/clicklog.txt" );
+---
+>     fopen( LOG, "$vardir/clicklog.txt" );
+361,374c361,365
+<     for my $i (0 .. $#log) {
+<         $log[$i]  =~ s/chr(32)//gxms;
+<         $log[$i]  =~ s/\s+//gsm;
+<         $log[$i] =~ s/^[x21-\x7E]+$//gsm;
+<         @newlog = split /[|]/xsm, $log[$i];
+<         if ($#newlog != 5 ) { next;}
+<         else {
+<             $iplist[$i] = $newlog[0];
+<             $date = $newlog[1];
+<             $to[$i] = $newlog[2];
+<             $from[$i] = $newlog[3];
+<             $info[$i] = $newlog[4];
+<             $ip[$i] = $newlog[5];
+<         }
+---
+>     foreach my $i (0 .. $#log) {
+>         $log[$i] =~ s/\x0//gsm;
+>         $log[$i] =~ s/^[x20-\x7E]+$//gsm;
+>         ( $iplist[$i], $date, $to[$i], $from[$i], $info[$i], $ip[$i] ) =
+>           split /\|/xsm, $log[$i];
+376c367
+< 
+---
+>  
+386c377
+<     for my $k ( 0 .. $#iplist ) {
+---
+>     for my $i ( 0 .. $#iplist ) {
+388,389c379,380
+<             if ( $newiplist[$j]->[0] eq $iplist[$k] ) {
+<                 push @{$newiplist[$j]}, $ip[$k], $iplist[$i] ;
+---
+>             if ( $newiplist[$j]->[0] eq $iplist[$i] ) {
+>                 push @{$newiplist[$j]}, $ip[$i];
+398,402c389,400
+<           ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>~
+<           : qq~$newiplist[$i]->[2]~;
+<         my $lstuser = $newiplist[$i]->[0];
+<         if ( $lstuser ne $newiplist[$i]->[2] && -e "$memberdir/$lstuser.vars" ) {
+<             LoadUser( $lstuser, 'vars' );
+---
+>           ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[0]">$newiplist[$i]->[0]</a>~
+>           : qq~$newiplist[$i]->[0]~;
+>         if (
+>             $newiplist[$i]->[0] =~ /\S+/sm
+>             && ( $newiplist[$i]->[0] =~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm || $newiplist[$i]->[0] =~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm || !LoadUser($newiplist[$i]->[0], 'vars' ) )
+>             )
+>         {
+>             $guestiplist .=
+> qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
+>         }
+>         else {
+>             LoadUser( $newiplist[$i]->[0], 'vars' );
+404c402
+<                 $cloakedUserName = cloak( $lstuser );
+---
+>                 $cloakedUserName = cloak( $newiplist[$i]->[0] );
+406,407c404,405
+<             else { $cloakedUserName = $lstuser; }
+<             my $displayUserName = $lstuser;
+---
+>             else { $cloakedUserName = $newiplist[$i]->[0]; }
+>             my $displayUserName = $newiplist[$i]->[0];
+410,411c408,410
+<                 && ( ${ $uid . $displayUserName }{'realname'} ne $lstuser )
+<             )
+---
+>                 && ( ${ $uid . $displayUserName }{'realname'} ne
+>                     $newiplist[$i]->[0] )
+>               )
+414a414
+> 
+416,420c416
+< qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> ($lookupIP)<br />~;
+<             }
+<         elsif ( $newiplist[$i]->[2] ) {
+<             $guestiplist .=
+< qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
+---
+> qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> (<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>)<br />~;
+8c8
+< # Packaged:       January 5, 2016                                             #
+---
+> # Packaged:       January 5, 2016                                             #
+22c22
+< $boardindexpmver = 'YaBB 2.6.12 $Revision: 1676 $';
+---
+> $boardindexpmver = 'YaBB 2.6.12 $Revision: 1651 $';
+85,86c85
+<                 if ( -e "$memberdir/$name.vars" ) {
+<                     LoadUser( $name, 'vars');
+---
+>                 if ( $name !~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/sm && $name !~ /^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/sm && LoadUser($name, 'vars', 'brd1') ) {
+111c110
+<                     if ( $name eq $user_ip ) { $guest_in_log = 1; }
+---
+>                     if ( !LoadUser($name, 'vars', 'brd2') || $name eq $user_ip ) { $guest_in_log = 1; }
+139c138
+<         elsif ( $iamguest && !$is_a_bot && !$guest_in_log ) {
+---
+>         elsif ( $iamguest && !$iambot && !$guest_in_log ) {
+22c22
+< $subspmver = 'YaBB 2.6.12 $Revision: 1676 $';
+---
+> $subspmver = 'YaBB 2.6.12 $Revision: 1654 $';
+2188d2187
+<         $hostin =~ s/\x0//gsm;
+2190d2188
+<         $hostin =~ s/^[x21-\x7E]+$//gsm;
+2192d2189
+<         $httprefer =~ s/\x0//gsm;
+2194d2190
+<         $httprefer =~ s/^[x21-\x7E]+$//gsm;
+2201c2197
+<           . "|$hostin|$user_ip\n";
+---
+>           . "|$hostin|$user_ip";
+2207c2203
+<         print {LOG} $newlog
+---
+>         print {LOG} "$newlog\n"
