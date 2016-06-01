@@ -15,13 +15,15 @@
 # use strict;
 our $VERSION = '2.6.13';
 
-our $smiliespmver = 'YaBB 2.6.13 $Revision: 1651 $';
+our $smiliespmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
 sub SmiliePanel {
     is_admin_or_gmod();
+	my $ss1 = q{};
+	my $ss2 = q{};
     if    ( $smiliestyle == 1 ) { $ss1 = q{ selected="selected"}; }
     elsif ( $smiliestyle == 2 ) { $ss2 = q{ selected="selected"}; }
     @sa = ();
@@ -29,14 +31,18 @@ sub SmiliePanel {
         if ( $showadded == $i ) {
             $sa[$i] = q{ selected="selected"};
         }
+        else {$sa[$i] = q{};}
     }
     @ssm = ();
     foreach my $i ( 1 .. 4 ) {
         if ( $showsmdir == $i ) {
             $ssm[$i] = q{ selected="selected"};
         }
+		else {$ssm[$i] = q{};}
     }
-    if ( $detachblock == 1 )  { $dblock   = q{ checked="checked"}; }
+    my $dblock = q{};
+    if ( $detachblock )  { $dblock   = q{ checked="checked"}; }
+    my $remnosmi = q{};
     if ($removenormalsmilies) { $remnosmi = q{ checked="checked"}; }
     opendir DIR, "$htmldir/Smilies";
     @contents = readdir DIR;
@@ -326,13 +332,13 @@ sub AddSmilies {
     @SmilieLinebreak   = ();
     my $temp_a = 0;
     for ( 1 .. $count_smimg ) {
-        if ( $FORM{"scd[$temp_a]"} ne q{} || $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"sdescr[$temp_a]"} ne q{} ) {
-            if ( $FORM{"scd[$temp_a]"} eq q{} ) { fatal_error('', $smiltxt{'error_code'}); }
-            if ( $FORM{"smimg[$temp_a]"} eq q{} && $FORM{"cur_smimg[$temp_a]"} eq q{} ) { fatal_error(q{}, $smiltxt{'error_image'}); }
-            if ( $FORM{"sdescr[$temp_a]"} eq q{} ) { fatal_error('', $smiltxt{'error_desc'}); }
+        if ( $FORM{"scd[$temp_a]"} || $FORM{"smimg[$temp_a]"} || $FORM{"sdescr[$temp_a]"} ) {
+            if ( !$FORM{"scd[$temp_a]"} ) { fatal_error('', $smiltxt{'error_code'}); }
+            if ( !$FORM{"smimg[$temp_a]"} && !$FORM{"cur_smimg[$temp_a]"} ) { fatal_error(q{}, $smiltxt{'error_image'}); }
+            if ( !$FORM{"sdescr[$temp_a]"} ) { fatal_error('', $smiltxt{'error_desc'}); }
         }
-        if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && ( $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"cur_smimg[$temp_a]"} ne q{} ) ) {
-            if ( $FORM{"smimg[$temp_a]"} ne q{} ) {
+        if ( $FORM{"delbox[$temp_a]"} && $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} && ( $FORM{"smimg[$temp_a]"} || $FORM{"cur_smimg[$temp_a]"} ) ) {
+            if ( $FORM{"smimg[$temp_a]"} ) {
                 $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100', '0');
             }
             else {
@@ -352,7 +358,7 @@ sub AddSmilies {
 
             push @SmilieLinebreak, ( $FORM{"smbox[$temp_a]"} ? '<br />' : q{} );
         }
-        if ( $FORM{"delbox[$temp_a]"} == 1 && $FORM{"cur_smimg[$temp_a]"} !~ /^(exclamation|question).png$/) {
+        if ( $FORM{"delbox[$temp_a]"} && $FORM{"delbox[$temp_a]"} == 1 && $FORM{"cur_smimg[$temp_a]"} !~ /^(exclamation|question).png$/) {
             unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_smimg[$temp_a]\"}";
         }
         ++$temp_a;

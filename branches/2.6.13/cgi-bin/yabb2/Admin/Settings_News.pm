@@ -13,10 +13,12 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+no warnings qw(redefine);
+#SaveSettings sub
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$settings_newspmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$settings_newspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Load the news from news.txt

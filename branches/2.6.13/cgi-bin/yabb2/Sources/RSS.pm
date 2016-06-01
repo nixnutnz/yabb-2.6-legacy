@@ -12,10 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$rsspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$rsspmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Change the error routine for here.
@@ -162,7 +164,7 @@ sub RSS_board {
             $post = <TOPIC>;
         }
         fclose(TOPIC);
-        if ( $post ne q{} ) {
+        if ( $post ) {
             (
                 undef, undef, undef, undef,    $musername,
                 undef, undef, undef, $message, $ns
@@ -196,7 +198,7 @@ sub RSS_board {
             $yymain .= qq~      <pubDate>$realdate</pubDate>
 ~;
         }
-        if ( $message ne q{} ) {
+        if ( $message ) {
             ( $message, undef ) = Split_Splice_Move( $message, $curnum );
             if ($enable_ubbc) {
                 LoadUser($musername);
@@ -264,7 +266,7 @@ sub RSS_recent {
             $mydesc  = $catname;
         }
 
-        *get_subboards = sub {
+        local *get_subboards = sub {
             my @brd = @_;
             for my $brd (@brd) {
                 ( $boardname{$brd}, $boardperms, $boardview ) = split /\|/xsm,
@@ -336,8 +338,8 @@ sub RSS_recent {
         # Does it need to be returned as a 304?
         if ( $i == 0 ) {    # Do this for the first request only
             $cachedate = RFC822Date($mdate);
-            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate
-                || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
+            if (   ($ENV{'HTTP_IF_NONE_MATCH'} && $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate)
+                || ($ENV{'HTTP_IF_MODIFIED_SINCE'} && $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate ) )
             {
                 Send304NotModified();
                 # Comment this out to test with caching disabled
@@ -396,7 +398,7 @@ sub RSS_recent {
         }
         fclose(TOPIC);
 
-        if ( $post ne q{} ) {
+        if ( $post ) {
             (
                 undef, undef, undef, undef,    $musername,
                 undef, undef, undef, $message, $ns
@@ -433,7 +435,7 @@ sub RSS_recent {
             $yymain .= qq~          <pubDate>$realdate</pubDate>\n~;
         }
 
-        if ( $message ne q{} ) {
+        if ( $message ) {
             ( $message, undef ) = Split_Splice_Move( $message, $curnum );
             if ($enable_ubbc) {
                 LoadUser($musername);
@@ -455,6 +457,7 @@ sub RSS_recent {
     }
 
     ToChars($boardname);
+    $curboard ||= q{};
     $yydesc = ${ $uid . $curboard }{'description'};
 
     RSS_template();
@@ -471,8 +474,8 @@ sub RSS_template {    # print RSS output
     print_output_header();
 
     # Make the generator look better
-    my $RSSplver = $rssplver;
-    $RSSplver =~ s/\$//gxsm;
+    my $RSSpmver = $rsspmver;
+    $RSSpmver =~ s/\$//gxsm;
 
 # Removed per Corey's suggestion: http://www.yabbforum.com/community/YaBB.pl?num=1142571424/20#20
 #my $docs = "       <docs>http://$perm_domain</docs>\n" if $perm_domain;
@@ -511,7 +514,7 @@ sub RSS_template {    # print RSS output
         <copyright>~ . RSSDescriptionTrim($mn) . qq~</copyright>
         <lastBuildDate>$rssdate</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
-        <generator>$RSSplver</generator>
+        <generator>$RSSpmver</generator>
         <ttl>30</ttl>
 $yymain
     </channel>
@@ -581,7 +584,7 @@ sub RFC822Date {
 
 sub RSSDescriptionTrim {    # This formats the RSS
     my @x = @_;
-
+    $x[0] ||= q{};
     $x[0] =~ s/ (class|style)\s*=\s*[\x22\x27].+?[\x27\x22]//gsm;
 
     $x[0] =~ s/&/&\x2338;/gsm;

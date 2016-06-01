@@ -12,10 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$loginoutpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$loginoutpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($regcheck) { require Sources::Decoder; }
@@ -40,8 +42,8 @@ sub Login2 {
     if ( !$iamguest && $sessionvalid == 1 ) {
         fatal_error( 'logged_in_already', $username );
     }
-    if ( $FORM{'username'} eq q{} ) { fatal_error('no_username'); }
-    if ( $FORM{'passwrd'}  eq q{} ) { fatal_error('no_password'); }
+    if ( !$FORM{'username'} ) { fatal_error('no_username'); }
+    if ( !$FORM{'passwrd'} ) { fatal_error('no_password'); }
     $username = $FORM{'username'};
     $username =~ s/\s/_/gxsm;
     if ( $username =~ /[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/sm ) {
@@ -177,10 +179,10 @@ sub sharedLogin {
     }
 
     #cookie length is now all or nothing.
-    if ( $sharedLogin_title ne q{} ) {
+    if ( $sharedLogin_title ) {
         $sharedlog = $mysharedloga;
         $sharedlog =~ s/{yabb sharedLogin_title}/$sharedLogin_title/sm;
-        if ( $sharedLogin_text ne q{} ) {
+        if ( $sharedLogin_text ) {
             $sharedlog .= $mysharedlogb;
             $sharedlog =~ s/{yabb sharedLogin_text}/$sharedLogin_text/sm;
         }
@@ -195,6 +197,7 @@ sub sharedLogin {
     if ( $maintenance || !$regtype ) {
         $hide_reglink = ' style="visibility: hidden;"';;
     }
+	$INFO{'sesredir'} ||= q{};
     $sharedlog .= qq~
             <form id="loginform" name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yymycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
@@ -424,7 +427,7 @@ qq*action~profileCheck2;redir~myprofile;username~$INFO{'user'};passwrd~$newpassw
 }
 
 sub InMaintenance {
-    if ( $maintenancetext ne q{} ) { $maintxt{'157'} = $maintenancetext; }
+    if ( $maintenancetext ) { $maintxt{'157'} = $maintenancetext; }
     $sharedLogin_title = "$maintxt{'114'}";
     $sharedLogin_text  = "<b>$maintxt{'156'}</b><br />$maintxt{'157'}";
     $yymain .= sharedLogin();

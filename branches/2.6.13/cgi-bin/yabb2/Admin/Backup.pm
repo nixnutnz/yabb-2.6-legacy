@@ -17,12 +17,12 @@
 ###############################################################################
 # use strict;
 # use warnings;
-# no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$backuppmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$backuppmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
@@ -61,13 +61,15 @@ sub backupsettings {
         $yymain .=
 qq~<b>$backup_txt{33} $INFO{'backupspendtime'} $backup_txt{34}</b><br /><br />~;
     }
-    if ( $INFO{'mailinfo'} == 1 ) {
-        $yymain .=
+    if ( $INFO{'mailinfo'} ) {
+        if ( $INFO{'mailinfo'} == 1 ) {
+            $yymain .=
 qq~<span class="good"><b>$backup_txt{'mailsuccess'}</b></span><br /><br />~;
-    }
-    if ( $INFO{'mailinfo'} == -1 ) {
-        $yymain .=
+        }
+        if ( $INFO{'mailinfo'} == -1 ) {
+            $yymain .=
 qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
+        }
     }
 
     # Yes, my checklists are really hashes. Oh well.
@@ -76,8 +78,8 @@ qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     }
     if ( @backup_paths == 9 ) { $allchecked = 'checked="checked" '; }
 
-    $methodchecklist{$backupmethod}   = 'checked="checked" ';
-    $methodchecklist{$compressmethod} = 'checked="checked" ';
+    $methodchecklist{$backupmethod} = 'checked="checked" ' || q{};
+    $methodchecklist{$compressmethod} = 'checked="checked" ' || q{};
 
     # domodulecheck if we have a checked value
     $presetjavascriptcode = qq~ domodulecheck("$backupmethod", 'init');~;
@@ -413,13 +415,16 @@ $presetjavascriptcode
 
         # Look for the files.
         opendir BACKUPDIR, $backupdir;
-        @backups = readdir BACKUPDIR;
+        while ( my $file = readdir BACKUPDIR ) {
+            next if $file eq q{.} || $file eq q{..} || $file eq '.htaccess';
+            push @backups, $file;
+        }
         closedir BACKUPDIR;
 
         my ( $lastbackupfiletime, $filename );
         foreach my $file (
             map          { $_->[0] }
-            reverse sort { $a->[1] <=> $b->[1] }
+            reverse sort { $a->[1] cmp $b->[1] }
             map          { [ $_, /(\d+)/xsm, $_ ] } @backups
           )
         {

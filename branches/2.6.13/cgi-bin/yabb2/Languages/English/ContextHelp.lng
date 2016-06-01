@@ -15,7 +15,7 @@
 # for his contribution to the YaBB community                                  #
 ###############################################################################
 
-$contexthelplngver = 'YaBB 2.6.13 $Revision: 1676 $';
+$contexthelplngver = 'YaBB 2.6.13 $Revision$';
 
 ### Do not translate uppercase words in sharp brackets ([])
 

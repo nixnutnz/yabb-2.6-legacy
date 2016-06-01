@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$settings_advancedpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$settings_advancedpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $uploaddiriscorrect = qq~<span class="important">$admin_txt{'164'}</span>~;
@@ -49,11 +49,11 @@ qq~\n  <option value="2" ${isselected($gzcomp == 2)}>$gztxt{'5'}</option>~;
 }
 
 # RSS Defaults
-if ( $rss_disabled eq q{} ) { $rss_disabled = 0; }
-if ( $rss_limit    eq q{} ) { $rss_limit    = 10; }
-if ( $rss_message  eq q{} ) { $rss_message  = 1; }
+if ( !$rss_disabled ) { $rss_disabled = 0; }
+if ( !$rss_limit ) { $rss_limit    = 10; }
+if ( !$rss_message ) { $rss_message  = 1; }
 
-if ( ischecked2($checkspace) == 1) {
+if ( ischecked2($checkspace) && ischecked2($checkspace) == 1) {
    $checklabel = qq~$admin_txt{'checkspace'} <b><a href="$adminurl?action=checkspace">Disk Space Functions</a></b> $admin_txt{'checkspace2'}~;
 }
 else { $checklabel = qq~$admin_txt{'checkspace'}~ ;

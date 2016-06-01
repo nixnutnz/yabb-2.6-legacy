@@ -12,10 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$notifypmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$notifypmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Notify');
@@ -66,12 +68,14 @@ sub ManageBoardNotify {
         foreach my $u ( split /,/xsm, $user ) {
             delete $theboard{$u};
             LoadUser($u);
-            foreach ( split /,/xsm, ${ $uid . $u }{'board_notifications'} ) {
-                $bb{$_} = 1;
-            }
-            if ( delete $bb{$theboard} ) {
-                ${ $uid . $u }{'board_notifications'} = join q{,}, keys %bb;
-                UserAccount($u);
+            if (${ $uid . $u }{'board_notifications'}) {
+                foreach ( split /,/xsm, ${ $uid . $u }{'board_notifications'} ) {
+                    $bb{$_} = 1;
+                }
+                if ( delete $bb{$theboard} ) {
+                    ${ $uid . $u }{'board_notifications'} = join q{,}, keys %bb;
+                    UserAccount($u);
+                }
             }
             undef %bb;
         }
@@ -162,12 +166,13 @@ sub BoardNotify2 {
 
 sub ManageThreadNotify {
     my ( $todo, $thethread, $user, $userlang, $notetype, $noteview ) = @_;
+    $thethread ||=0;
     if (   $todo eq 'load'
         || $todo eq 'update'
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        undef %thethread;
+        %thethread = ();
         ##  open mail file and build hash
         if ( -e "$datadir/$thethread.mail" ) {
             fopen( THREADNOTE, "$datadir/$thethread.mail" );
@@ -200,13 +205,15 @@ sub ManageThreadNotify {
         foreach my $u ( split /,/xsm, $user ) {
             delete $thethread{$u};
             LoadUser($u);
-            foreach ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} ) {
-                $t{$_} = 1;
-            }
-            if ( delete $t{$thethread} ) {
-                ${ $uid . $u }{'thread_notifications'} = join q{,}, keys %t;
-                UserAccount($u);
-            }
+			if (${ $uid . $u }{'thread_notifications'}) {
+				foreach ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} ) {
+					$t{$_} = 1;
+				}
+			}
+			if ( delete $t{$thethread} ) {
+				${ $uid . $u }{'thread_notifications'} = join q{,}, keys %t;
+				UserAccount($u);
+			}
             undef %t;
         }
     }
@@ -377,14 +384,22 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         $boardblock =~ s/{yabb brdnote0}/${$$board_notify{$_}}[0]/gsm;
         $boardblock =~ s/{yabb selected1}/$selected1/gsm;
         $boardblock =~ s/{yabb selected2}/$selected2/gsm;
+        $boardblock =~ s/{yabb notify_txt132}/$notify_txt{'132'}/gsm;
+        $boardblock =~ s/{yabb notify_txt133}/$notify_txt{'133'}/gsm;
+        $boardblock =~ s/{yabb notify_txt134}/$notify_txt{'134'}/gsm;
     }
 
     if ( !$num ) {    # no board notifies up
         $my_showNotifications_b = $my_nonotes;
+        $my_showNotifications_b =~ s/{yabb notify_txt139}/$notify_txt{'139'}/sm;
     }
     else {            # list boards
         $my_showNotifications_b = $my_notebrdlist;
         $my_showNotifications_b =~ s/{yabb boardblock}/$boardblock/gsm;
+        $my_showNotifications_b =~ s/{yabb notify_txt135}/$notify_txt{'135'}/gsm;
+        $my_showNotifications_b =~ s/{yabb notify_txt138}/$notify_txt{'138'}/gsm;
+        $my_showNotifications_b =~ s/{yabb notify_txt124}/$notify_txt{'124'}/gsm;
+        $my_showNotifications_b =~ s/{yabb notify_txt121}/$notify_txt{'121'}/gsm;
     }
 
     $num = 0;
@@ -401,19 +416,28 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         $threadblock =~ s/{yabb tnote4}/${$$thread_notify{$_}}[4]/gsm;
         $threadblock =~ s/{yabb tnote5}/${$$thread_notify{$_}}[5]/gsm;
         $threadblock =~ s/{yabb tnote6}/${$$thread_notify{$_}}[6]/gsm;
+        $threadblock =~ s/{yabb notify_txt120}/$notify_txt{'120'}/gsm;
+        $threadblock =~ s/{yabb notify_txtlastpost}/$notify_txt{'lastpost'}/gsm;
     }
 
     if ( !$num ) {    ## no threads listed
         $my_showNotifications_t = $my_nothreads;
+        $my_showNotifications_t =~ s/{yabb notify_txt119}/$notify_txt{'119'}/sm;
     }
     else {            ## output details
         $my_showNotifications_t = $my_threadnote_b;
         $my_showNotifications_t =~ s/{yabb threadblock}/$threadblock/gsm;
+        $my_showNotifications_t =~ s/{yabb notify_txt140}/$notify_txt{'140'}/sm;
+        $my_showNotifications_t =~ s/{yabb notify_txt134}/$notify_txt{'134'}/sm;
+        $my_showNotifications_t =~ s/{yabb notify_txt124}/$notify_txt{'124'}/sm;
+        $my_showNotifications_t =~ s/{yabb notify_txt124}/$notify_txt{'121'}/sm;
     }
     $showNotifications = $my_boardnote;
 
     #    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
     $showNotifications =~ s/{yabb note_brd}//sm;
+    $showNotifications =~ s/{yabb notify_txt136}/$notify_txt{'136'}/gsm;
+    $showNotifications =~ s/{yabb notify_txt118}/$notify_txt{'118'}/gsm;
     $showNotifications =~
       s/{yabb my_showNotifications_b}/$my_showNotifications_b/sm;
     $showNotifications =~

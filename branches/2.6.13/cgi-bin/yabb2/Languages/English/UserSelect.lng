@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$userselectlngver = 'YaBB 2.6.13 $Revision: 1651 $';
+$userselectlngver = 'YaBB 2.6.13 $Revision$';
 
 %usersel_txt = (
 'addselected' => 'Add Selected',
@@ -56,6 +56,7 @@ $userselectlngver = 'YaBB 2.6.13 $Revision: 1651 $';
 'other' => 'Other',
 'noresults' => 'No Results',
 'qsearch' => 'Search Members',
+'memfound' => 'Member Found',
 );
 
 1;

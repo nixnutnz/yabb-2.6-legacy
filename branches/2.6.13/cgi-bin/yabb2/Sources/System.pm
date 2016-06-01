@@ -12,10 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$systempmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$systempmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 
 sub BoardTotals {
     my ( $job, @updateboards ) = @_;
@@ -56,7 +58,7 @@ sub BoardTotals {
                 if ( exists $board{ $boardvars[0] } ) {
                     if ( $boardvars[0] eq $updateboards[0] ) {
                         $lines[$line] = "$updateboards[0]|";
-                        chomp $boardvars[9];
+#                        chomp $boardvars[9];
                         for my $cnt ( 1 .. $#tags ) {
                             if (
                                 exists(
@@ -202,15 +204,17 @@ sub MessageTotals {
         }
     }
     elsif ( $job eq 'load' ) {
-        if ( ${$updatethread}{'board'} ne q{} ) {
+        if ( ${$updatethread}{'board'} ) {
             return;
         }    ## skip load if the variable is already filled
+		if ( -e "$datadir/$updatethread.ctb"){
         fopen( CTB, "$datadir/$updatethread.ctb", 1 );
         while ( my $inp = <CTB> ) {
             if ( $inp =~ /^'(.*?)',"(.*?)"/xsm ) { ${$updatethread}{$1} = $2; }
         }
         fclose(CTB);
         @repliers = split /,/xsm, ${$updatethread}{'repliers'};
+		}
         return;
 
     }
@@ -292,27 +296,30 @@ sub UserAccount {
     my ( $user, $action, $pars ) = @_;
     return if !${ $uid . $user }{'password'};
 
-    if ( $action eq 'update' ) {
-        if ($pars) {
-            foreach ( split /\+/xsm, $pars ) { ${ $uid . $user }{$_} = $date; }
+    if ($action) { 
+        if ( $action eq 'update' ) {
+            if ($pars) {
+                foreach ( split /\+/xsm, $pars ) { ${ $uid . $user }{$_} = $date; }
+            }
+            elsif ( $username eq $user ) {
+                ${ $uid . $user }{'lastonline'} = $date;
+            }
+            $userext = 'vars';
+            if ( !exists( ${ $uid . $user }{'reversetopic'} ) ) {
+                ${ $uid . $user }{'reversetopic'} = $ttsreverse;
+            }
         }
-        elsif ( $username eq $user ) {
-            ${ $uid . $user }{'lastonline'} = $date;
+        elsif ( $action eq 'preregister' ) {
+            $userext = 'pre';
         }
-        $userext = 'vars';
-        if ( !exists( ${ $uid . $user }{'reversetopic'} ) ) {
-            ${ $uid . $user }{'reversetopic'} = $ttsreverse;
+        elsif ( $action eq 'register' ) {
+            $userext = 'vars';
         }
-    }
-    elsif ( $action eq 'preregister' ) {
-        $userext = 'pre';
-    }
-    elsif ( $action eq 'register' ) {
-        $userext = 'vars';
-    }
-    elsif ( $action eq 'delete' ) {
-        unlink "$memberdir/$user.vars";
-        return;
+        elsif ( $action eq 'delete' ) {
+            unlink "$memberdir/$user.vars";
+            return;
+        }
+        else { $userext = 'vars'; }
     }
     else { $userext = 'vars'; }
 
@@ -332,6 +339,7 @@ sub UserAccount {
     print {UPDATEUSER} "### User variables for ID: $user ###\n\n"
       or croak "$croak{'print'} UPDATEUSER";
     for my $cnt ( 0 .. $#tags ) {
+        ${$uid.$user}{$tags[$cnt]} ||= q{};
         print {UPDATEUSER} qq~'$tags[$cnt]',"${$uid.$user}{$tags[$cnt]}"\n~
           or croak "$croak{'print'} UPDATEUSER";
     }

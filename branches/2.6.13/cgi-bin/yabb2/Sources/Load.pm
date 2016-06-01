@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$loadpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$loadpmver = 'YaBB 2.6.13 $Revision$';
 
 sub LoadBoardControl {
     $binboard = q{};
@@ -80,8 +81,8 @@ sub LoadBoardControl {
             'brdrss'        => $cntbdrss,
              ## Mod Hook 2 ##
         );
-        if ( $cntann == 1 )  { $annboard = $cntboard; }
-        if ( $cntrbin == 1 ) { $binboard = $cntboard; }
+        if ( $cntann && $cntann == 1 )  { $annboard = $cntboard; }
+        if ( $cntrbin && $cntrbin == 1 ) { $binboard = $cntboard; }
     }
     return;
 }
@@ -165,7 +166,7 @@ sub LoadCensorList {
     for my $langd (@lang) {
         if ( -e "$langdir/$langd/censor.txt" ) {
             fopen( CENSOR, "$langdir/$langd/censor.txt" );
-            while ( chomp( $buffer = <CENSOR> ) ) {
+            while ( $buffer = <CENSOR> ) {
                 $buffer =~ s/\r(?=\n*)//gxsm;
                 if ( $buffer =~ m/\~/sm ) {
                     ( $tmpa, $tmpb ) = split /\~/xsm, $buffer;
@@ -266,7 +267,7 @@ sub FormatUserName {
 sub LoadUser {
     my ( $user, $userextension, $tst ) = @_;
     return 1 if exists ${ $uid . $user }{'realname'};
-    return 0 if $user eq q{} || $user eq 'Guest';
+    return 0 if !$user || $user eq 'Guest';
 
     if ( !$userextension ) {
     if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
@@ -387,7 +388,7 @@ sub KillModerator {
 
     for my $boardline (@oldcontrols) {
         chomp $boardline;
-        if ( $boardline ne q{} ) {
+        if ( $boardline ) {
             @newmods = ();
             @boardline = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $boardline[4] ) {
@@ -416,7 +417,7 @@ sub KillModeratorGroup {
 
     foreach my $boardline (@oldcontrols) {
         chomp $boardline;
-        if ( $boardline ne q{} ) {
+        if ( $boardline ) {
             @newmods = ();
             @boardline = split /\|/xsm, $boardline;
             foreach ( split /, /sm, $boardline[5] ) {
@@ -631,7 +632,7 @@ sub LoadMiniUser {
     $tempgroupcheck = ${ $uid . $user }{'position'} || q{};
 
     my @memstat = ();
-    if ( exists $Group{$tempgroupcheck} && $tempgroupcheck ne q{} ) {
+    if ( exists $Group{$tempgroupcheck} && $tempgroupcheck ) {
         #(
         #    $title,     $stars,     $starpic,    $color,
         #    $noshow,    $viewperms, $topicperms, $replyperms,
@@ -649,13 +650,14 @@ sub LoadMiniUser {
         $tempgroup         = $Group{'Moderator'};
         $memberunfo{$user} = $tempgroupcheck;
     }
-    elsif ( exists $NoPost{$tempgroupcheck} && $tempgroupcheck ne q{} ) {
+    elsif ( exists $NoPost{$tempgroupcheck} && $tempgroupcheck ) {
         @memstat = split /\|/xsm, $NoPost{$tempgroupcheck};
         $temptitle         = $memstat[0];
         $tempgroup         = $NoPost{$tempgroupcheck};
         $memberunfo{$user} = $tempgroupcheck;
     }
 
+    ${ $uid . $user }{'postcount'} ||= 0;
     if ( !$tempgroup ) {
         foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
             if ( ${ $uid . $user }{'postcount'} >= $postamount ) {
@@ -698,10 +700,10 @@ sub LoadMiniUser {
     $userlink = ${ $uid . $user }{'realname'} || $user;
     $userlink = qq~<b>$userlink</b>~;
     if   ( !$scripturl ) { $scripturl         = qq~$boardurl/$yyexec.$yyext~; }
-    if   ( $bold != 1 )  { $memberinfo{$user} = qq~$memstat[0]~; }
+    if   ( $bold != 1 )  { $memberinfo{$user} = qq~$memstat[0]~;  }
     else                 { $memberinfo{$user} = qq~<b>$memstat[0]</b>~; }
 
-    if ( $memstat[3] ne q{} && !$iamguest ) {
+    if ( $memstat[3] && !$iamguest ) {
         $link{$user} =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$memstat[3];">$userlink</a>~;
         $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
@@ -711,7 +713,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="c
           qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
     }
     elsif ( $iamguest ) {
-        if ( $memstat[3] ne q{} ) {
+        if ( $memstat[3] ) {
                 $link{$user} =
 qq~<span style="color:$memstat[3];">$userlink</span>~;
         $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
@@ -1050,7 +1052,7 @@ sub UpdateCookie {
     my ( $valid, $expiration );
     if ( $what eq 'delete' ) {
         $expiration = 'Thursday, 01-Jan-1970 00:00:00 GMT';
-        if ( $pathval eq q{} ) { $pathval = q~/~; }
+        if ( !$pathval ) { $pathval = q~/~; }
         if ( $iamguest && $FORM{'guestlang'} && $enable_guestlanguage ) {
             if ( $FORM{'guestlang'} && !$guestLang ) {
                 $guestLang = qq~$FORM{'guestlang'}~;
@@ -1064,7 +1066,7 @@ sub UpdateCookie {
     }
     elsif ( $what eq 'write' ) {
         $expiration = $expire;
-        if ( $pathval eq q{} ) { $pathval = q~/~; }
+        if ( !$pathval ) { $pathval = q~/~; }
         $valid = 1;
     }
 
@@ -1147,7 +1149,7 @@ sub WhatTemplate {
         }
     }
     if ( !$found ) { $template = 'Forum default'; }
-    if ( ${ $uid . $username }{'template'} ne q{} ) {
+    if ( ${ $uid . $username }{'template'} ) {
         if ( !exists $templateset{ ${ $uid . $username }{'template'} } ) {
             ${ $uid . $username }{'template'} = 'Forum default';
             UserAccount( $username, 'update' );
@@ -1181,9 +1183,9 @@ sub WhatTemplate {
         $usemycenter = 'default';
     }
 
-    if ( $UseMenuType eq q{} ) { $UseMenuType = $MenuType; }
-    if ( $useThreadtools eq q{} ) { $useThreadtools = $threadtools; }
-    if ( $usePosttools eq q{} ) { $usePosttools = $posttools; }
+    if ( !$UseMenuType ) { $UseMenuType = $MenuType; }
+    if ( !$useThreadtools ) { $useThreadtools = $threadtools; }
+    if ( !$usePosttools ) { $usePosttools = $posttools; }
 
     if ( -d "$htmldir/Templates/Forum/$useimages" ) {
         $imagesdir = "$yyhtml_root/Templates/Forum/$useimages";
@@ -1196,7 +1198,7 @@ sub WhatTemplate {
 }
 
 sub WhatLanguage {
-    if ( ${ $uid . $username }{'language'} ne q{} ) {
+    if ( ${ $uid . $username }{'language'} ) {
         $language = ${ $uid . $username }{'language'};
     }
     elsif ( $FORM{'guestlang'} && $enable_guestlanguage ) {
@@ -1284,9 +1286,9 @@ sub buildIMS {
             foreach my $message (@imstore) {
                 my @messLine = split /\|/xsm, $message;
                 ## look through list for folder name
-                if ( $messLine[13] eq q{} )
+                if ( !$messLine[13] )
                 {    # some folder missing within imstore
-                    if ( $messLine[1] ne q{} ) {    # 'from' name so inbox
+                    if ( $messLine[1] ) {    # 'from' name so inbox
                         $messLine[13] = 'in';
                     }
                     else {                          # no 'from' so outbox
@@ -1393,7 +1395,7 @@ sub LoadBroadcastMessages {    #check broadcast messages
     $BCCount      = 0;
     if ( -e "$memberdir/broadcast.messages" ) {
         my %PMbcRead;
-        map { $PMbcRead{$_} = 1; } split /,/xsm, ${$builduser}{'PMbcRead'};
+        if (${$builduser}{'PMbcRead'}) { map { $PMbcRead{$_} = 1; } split /,/xsm, ${$builduser}{'PMbcRead'};}
 
         fopen( BCMESS, "<$memberdir/broadcast.messages" )
           or fatal_error( 'cannot_open', "$memberdir/broadcast.messages", 1 );

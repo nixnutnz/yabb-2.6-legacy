@@ -15,9 +15,11 @@
 # Michael Prager. Last modification by him: 15.11.07                          #
 # Added to the YaBB default code on 07. September 2008                        #
 ###############################################################################
+#no warnings qw(uninitialized once);
 our $VERSION = '2.6.13';
 
-$extendedprofilespmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$extendedprofilespmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');
@@ -28,7 +30,7 @@ $ext_max_email_length = 60;
 $ext_max_url_length   = 100;
 $ext_max_image_length = 100;
 
-my %field;
+my %field = ();
 
 # outputs the value of a user's extended profile field
 ## USAGE: $value = ext_get("admin","my_custom_fieldname");
@@ -44,17 +46,17 @@ sub ext_get {
     ext_get_profile($pusername);
     $id    = ext_get_field_id($fieldname);
     $value = ${ $uid . $pusername }{ 'ext_' . $id };
-    if ( $no_parse eq q{} || $no_parse == 0 ) {
+    if ( !$no_parse || $no_parse == 0 ) {
         $field = ext_get_field($id);
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $options[3] ne q{} && $value eq q{} ) { $value = $options[3]; }
+            if ( $options[3] && !$value ) { $value = $options[3]; }
             if ( $options[4] == 1 ) {
                 $value = ext_parse_ubbc( $value, $pusername );
             }
 
         }
-        elsif ( $field{'type'} eq 'text_multi' && $value ne q{} ) {
+        elsif ( $field{'type'} eq 'text_multi' && $value ) {
             @options = split /\^/xsm, $field{'options'};
             if ( $options[3] == 1 ) {
                 $value = ext_parse_ubbc( $value, $pusername );
@@ -63,41 +65,41 @@ sub ext_get {
         }
         elsif ( $field{'type'} eq 'select' ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $value > $#options || $value eq q{} ) { $value = 0; }
+            if ( ($value && $value > $#options) || !$value ) { $value = 0; }
             $value = $options[$value];
 
         }
         elsif ( $field{'type'} eq 'radiobuttons' ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $value > $#options ) { $value = 0; }
-            if ( !$field{'radiounselect'} && $value eq q{} ) { $value = 0; }
-            if ( $value ne q{} ) { $value = $options[$value]; }
+            if ( ($value && $value > $#options) ) { $value = 0; }
+            if ( !$field{'radiounselect'} && !$value ) { $value = 0; }
+            if ( $value ) { $value = $options[$value]; }
 
         }
-        elsif ( $field{'type'} eq 'date' && $value ne q{} ) {
+        elsif ( $field{'type'} eq 'date' && $value ) {
             @mytime = split /\//xsm, $value;
             $mytime = timelocal(0,0,0, $mytime[1],$mytime[0]-1,$mytime[2]);
             $mytime =  timeformatcal($mytime);
             $value = dtonly ($mytime);
         }
         elsif ( $field{'type'} eq 'checkbox' ) {
-            if   ( $value == 1 ) { $value = $lang_ext{'true'} }
+            if   ( $value && $value == 1 ) { $value = $lang_ext{'true'} }
             else                 { $value = $lang_ext{'false'} }
 
         }
         elsif ( $field{'type'} eq 'spacer' ) {
             @options = split /\^/xsm, $field{'options'};
-            if   ( $options[0] == 1 ) { $value = qq~$ext_spacer_br~; }
+            if   ( $options[0] && $options[0] == 1 ) { $value = qq~$ext_spacer_br~; }
             else                      { $value = qq~$ext_spacer_hr~; }
 
         }
-        elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
+        elsif ( $field{'type'} eq 'url' && $value ) {
             if ( $value !~ m{\Ahttp://}sm ) { $value = "http://$value"; }
 
         }
-        elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
+        elsif ( $field{'type'} eq 'image' && $value ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $options[2] ne q{} ) {
+            if ( $options[2] ) {
                 @allowed_extensions = split /\ /xsm, $options[2];
                 $match = 0;
                 foreach my $extension (@allowed_extensions) {
@@ -108,11 +110,11 @@ sub ext_get {
                 }
                 if ( $match == 0 ) { return q{}; }
             }
-            if ( $options[0] ne q{} && $options[0] != 0 ) {
+            if ( $options[0] && $options[0] != 0 ) {
                 $width = q~ width="~ . ( $options[0] + 0 ) . q~"~;
             }
             else { $width = q{}; }
-            if ( $options[1] ne q{} && $options[1] != 0 ) {
+            if ( $options[1] && $options[1] != 0 ) {
                 $height = q~ height="~ . ( $options[1] + 0 ) . q~"~;
             }
             else { $height = q{}; }
@@ -187,14 +189,14 @@ sub ext_has_access {
         ${ $uid . $username }{'postcount'}, undef,
       );
 
-    if ( ( $allowed_users ne q{} ) || ( $allowed_groups ne q{} ) ) {
-        if ( $allowed_users ne q{} ) {
+    if ( ( $allowed_users ) || ( $allowed_groups ) ) {
+        if ( $allowed_users ) {
             @users = split /\,/xsm, $allowed_users;
             foreach my $user (@users) {
                 if ( $user eq $username ) { $access = 1; return $access; }
             }
         }
-        if ( $allowed_groups ne q{} ) {
+        if ( $allowed_groups ) {
 
 # generate list of allowed groups
 # example: @groups = ('Administrator', 'Moderator', 'Global Moderator', 'Post{-1}', 'NoPost{1}');
@@ -209,13 +211,13 @@ sub ext_has_access {
                 {
                     if ( $group eq $usergroup ) { $access = 1; return $access; }
                 }
-                elsif ( $group =~ m/^NoPost{(\d+)}$/sm ) {
+                elsif ( $group =~ m/^NoPost\{(\d+)}$/sm ) {
 
                     # check if user is on a post-independent group
                     $groupid = $1;
 
                     # check if group exists at all
-                    if ( exists $NoPost{$groupid} && $groupid ne q{} ) {
+                    if ( exists $NoPost{$groupid} && $groupid ) {
 
                        # check if group id is in user position or addgroup field
                         if ( $usergroup eq $groupid ) {
@@ -230,7 +232,7 @@ sub ext_has_access {
                         }
                     }
                 }
-                elsif ( $group =~ m/^Post{(\d+)}$/sm ) {
+                elsif ( $group =~ m/^Post\{(\d+)}$/sm ) {
 
                     # check if user is in one of the post-depending groups...
                     $groupid = $1;
@@ -289,17 +291,17 @@ sub ext_viewprofile {
             && $field{'active'} == 1
             && ext_has_access( $field{'v_users'}, $field{'v_groups'} ) )
         {
-            if ( $output eq q{} && $previous != 1 ) {
+            if ( !$output && (!$previous || $previous != 1) ) {
                 $pre_output = $ext_pre_output;
                 $previous   = 1;
             }
 
             # format the output dependend of the field type
-            if (   ( $field{'type'} eq 'text' && $value ne q{} )
-                || ( $field{'type'} eq 'text_multi'   && $value ne q{} )
+            if (   ( $field{'type'} eq 'text' && $value )
+                || ( $field{'type'} eq 'text_multi'   && $value )
                 || ( $field{'type'} eq 'select'       && $value ne q{ } )
-                || ( $field{'type'} eq 'radiobuttons' && $value ne q{} )
-                || ( $field{'type'} eq 'date'         && $value ne q{} )
+                || ( $field{'type'} eq 'radiobuttons' && $value )
+                || ( $field{'type'} eq 'date'         && $value )
                 || $field{'type'} eq 'checkbox' )
             {
                 $output .= qq~
@@ -315,7 +317,7 @@ sub ext_viewprofile {
             elsif ( $field{'type'} eq 'spacer' ) {
 
 # only print spacer if the previous entry was no spacer of the same type and if this is not the last entry
-                if ( ( $previous == 0 || $field{'comment'} ne q{} )
+                if ( ( $previous == 0 || $field{'comment'} )
                     && $id ne $last_field_id )
                 {
                     if ( $value eq $ext_spacer_br ) {
@@ -327,7 +329,7 @@ sub ext_viewprofile {
                     }
                     else {
                         $output .= $ext_output_a;
-                        if ( $field{'comment'} ne q{} ) {
+                        if ( $field{'comment'} ) {
                             $output .= $ext_output_c;
                         }
                         else {
@@ -336,9 +338,8 @@ sub ext_viewprofile {
                         $previous = 1;
                     }
                 }
-
             }
-            elsif ( $field{'type'} eq 'email' && $value ne q{} ) {
+            elsif ( $field{'type'} eq 'email' && $value ) {
                 $output .= qq~
             <div class="ext_lft">
             <b>$field{'name'}:</b>
@@ -349,7 +350,7 @@ sub ext_viewprofile {
                 $previous = 0;
 
             }
-            elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
+            elsif ( $field{'type'} eq 'url' && $value ) {
                 $output .= qq~
             <div class="ext_lft">
             <b>$field{'name'}:</b>
@@ -360,7 +361,7 @@ sub ext_viewprofile {
                 $previous = 0;
 
             }
-            elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
+            elsif ( $field{'type'} eq 'image' && $value ) {
                 $output .= qq~
             <div class="ext_lft">
             <b>$field{'name'}:</b>
@@ -374,7 +375,7 @@ sub ext_viewprofile {
     }
 
     # only add spacer if there there is at least one field displayed
-    if ( $output ne q{} ) {
+    if ( $output ) {
         $output = $pre_output . $output . q~
         </td>
     </tr>~;
@@ -397,7 +398,7 @@ sub ext_viewinposts {
             $field = ext_get_field($id);
             $value = ext_get( $pusername, $fieldname );
 
-            if ( $popup ne q{} ) {
+            if ( $popup ) {
                 $visible          = $field{'visible_in_posts_popup'};
                 $users            = $field{'pp_users'};
                 $groups           = $field{'pp_groups'};
@@ -419,14 +420,14 @@ sub ext_viewinposts {
                     $displayedfieldname = "$field{'name'}: ";
                 }
                 else { $displayedfieldname = q{}; }
-                if ( $output eq q{} ) { $output = qq~$ext_spacer_br\n~; }
+                if ( $output ) { $output = qq~$ext_spacer_br\n~; }
 
                 # format the output depending on the field type
-                if (   ( $field{'type'} eq 'text' && $value ne q{} )
-                    || ( $field{'type'} eq 'text_multi'   && $value ne q{} )
+                if (   ( $field{'type'} eq 'text' && $value )
+                    || ( $field{'type'} eq 'text_multi'   && $value )
                     || ( $field{'type'} eq 'select'       && $value ne q{ } )
-                    || ( $field{'type'} eq 'radiobuttons' && $value ne q{} )
-                    || ( $field{'type'} eq 'date'         && $value ne q{} )
+                    || ( $field{'type'} eq 'radiobuttons' && $value )
+                    || ( $field{'type'} eq 'date'         && $value )
                     || $field{'type'} eq 'checkbox' )
                 {
                     $output .= qq~$displayedfieldname$value<br />\n~;
@@ -435,24 +436,24 @@ sub ext_viewinposts {
                 elsif ( $field{'type'} eq 'spacer' ) {
 
                     # those tags are required to keep the doc XHTML 1.0 valid
-                    if ( $previous ne "</small>$value<small>" ) {
-                        $previous = qq~</small>$value<small>~;
+                    if ( $previous ne qq~</span>$value<span class="small">~ ) {
+                        $previous = qq~</span>$value<span class="small">~;
                         $output .= $previous;
                     }
                 }
-                elsif ( $field{'type'} eq 'email' && $value ne q{} ) {
+                elsif ( $field{'type'} eq 'email' && $value ) {
                     $output .=
                         $displayedfieldname
                       . enc_eMail( $img_txt{'69'}, $value, q{}, q{} )
                       . qq~<br />\n~;
                     $previous = q{};
                 }
-                elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
+                elsif ( $field{'type'} eq 'url' && $value ) {
                     $output .=
 qq~$displayedfieldname<a href="$value" target="_blank">$value</a><br />\n~;
                     $previous = q{};
                 }
-                elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
+                elsif ( $field{'type'} eq 'image' && $value ) {
                     $output .= qq~$displayedfieldname$value<br />\n~;
                     $previous = q{};
                 }
@@ -461,10 +462,10 @@ qq~$displayedfieldname<a href="$value" target="_blank">$value</a><br />\n~;
     }
 
 # check if there we have any output (except spacers) at all. If so, return empty output
-    $pre_output = $output;
+    $pre_output = $output || q{};
     $pre_output =~
-s/(?:\<\/small>(?:(?:$ext_spacer_hr)|(?:$ext_spacer_br))<small>)|\n|(?:\<br(?: \/)?>)//igsm;
-    if ( $pre_output eq q{} ) { $output = q{}; }
+s/(?:\<\/span>(?:(?:$ext_spacer_hr)|(?:$ext_spacer_br))<span class="small">)|\n|(?:\<br(?: \/)?>)//igsm;
+    if ( $pre_output ) { $output = q{}; }
 
     return $output;
 }
@@ -477,9 +478,9 @@ s/(?:\<\/small>(?:(?:$ext_spacer_hr)|(?:$ext_spacer_br))<small>)|\n|(?:\<br(?: \
     # returns the output for the post page (popup box)
     sub ext_viewinposts_popup {
         my ( $pusername, $link, $output ) = ( shift, shift );
-        $output = ext_viewinposts( $pusername, 'popup' );
+        $output = ext_viewinposts( $pusername, 'popup' ) || q{};
         $output =~ s/^$ext_spacer_br\n//igxsm;
-        if ( $output ne q{} ) {
+        if ( $output ) {
             $link =~
 s/<a /<a onmouseover="document.getElementById('ext_$ext_usercount').style.visibility = 'visible'" onmouseout="document.getElementById('ext_$ext_usercount').style.visibility = 'hidden'" /igsm;
             $output =
@@ -519,6 +520,7 @@ sub ext_memberlist_get_headercount {
 
 # count the linebreaks to get the number of additional <td>s for the memberlist table
     my ( $headers, $headercount ) = ( shift, 0 );
+    $headers ||= 0;
     $headers =~ s/(\n)/ $headercount++ /egm;
     return $headercount;
 }
@@ -547,18 +549,17 @@ sub ext_memberlist_tds {
 
             $td_attributs = qq~class="$color"~;
 
-            #}
             if ( $field{'type'} eq 'email' ) {
-                if ( $value ne q{} ) {
+                if ( $value ) {
                     $value = enc_eMail( $img_txt{'69'}, $value, q{}, q{} );
                 }
             }
             elsif ( $field{'type'} eq 'url' ) {
-                if ( $value ne q{} ) {
+                if ( $value ) {
                     $value = qq~<a href="$value" target="_blank">$value</a>~;
                 }
             }
-            if ( $value eq q{} ) { $value .= '&nbsp;'; }
+            if ( !$value ) { $value .= '&nbsp;'; }
             $output .= $ext_memberlist_td;
             $output =~ s/{yabb ext_td_attributs}/$td_attributs/sm;
             $output =~ s/{yabb ext_value}/$value/sm;
@@ -588,7 +589,7 @@ sub ext_gen_editfield {
     $field = ext_get_field($id);
 
     # if username is omitted, we'll generate the code for the registration page
-    if ( $pusername ne q{} ) {
+    if ( $pusername ) {
         $value = ext_get( $pusername, $field{'name'}, 1 );
     }
 
@@ -605,14 +606,14 @@ sub ext_gen_editfield {
     my $name_id = "ext_$id";
     if ( $field{'type'} eq 'text' ) {
         @options = split /\^/xsm, $field{'options'};
-        if ( $options[0] ne q{} ) {
+        if ( $options[0] ) {
             $options[0] = qq~ maxlength="$options[0]"~;
         }
-        if ( $options[1] ne q{} ) { $options[1] = qq~ size="$options[1]"~; }
-        if ( $options[3] ne q{} && $value eq q{} ) {
+        if ( $options[1] ) { $options[1] = qq~ size="$options[1]"~; }
+        if ( $options[3] && !$value ) {
             $options[3] = qq~ value="$options[3]"~;
         }
-        else { $options[3] = qq~ value="$value"~; }
+        elsif ($value) { $options[3] = qq~ value="$value"~; }
         $output .=
             $template1
           . qq~<input type="text"$options[0] name="ext_$id" id="ext_$id"$options[1] $options[3] />~
@@ -660,9 +661,9 @@ sub ext_gen_editfield {
     </script>~;
         }
         else { $field{'options'} = q{}; }
-        if   ( $options[1] ne q{} ) { $options[1] = qq~ rows="$options[1]"~; }
+        if   ( $options[1] ) { $options[1] = qq~ rows="$options[1]"~; }
         else                        { $options[1] = q~ rows="4"~; }
-        if   ( $options[2] ne q{} ) { $options[2] = qq~ cols="$options[2]"~; }
+        if   ( $options[2] ) { $options[2] = qq~ cols="$options[2]"~; }
         else                        { $options[2] = q~ cols="50"~; }
         $value =~ s/<br(?: ?\/)?>/\n/gm;
         $output .=
@@ -675,7 +676,7 @@ sub ext_gen_editfield {
         $output .=
           $template1 . qq~<select name="ext_$id" id="ext_$id" size="1">\n~;
         @options = split /\^/xsm, $field{'options'};
-        if ( $value > $#options || $value eq q{} ) { $ext_profile[$id] = 0; }
+        if ( !$value || $value > $#options ) { $ext_profile[$id] = 0; }
         $count = 0;
         foreach (@options) {
             if   ( $count == $value ) { $selected = ' selected="selected"'; }
@@ -690,10 +691,10 @@ sub ext_gen_editfield {
         $output .= $template1;
         @options = split /\^/xsm, $field{'options'};
         if ( $value > $#options ) { $value = 0; }
-        if ( !$field{'radiounselect'} && $value eq q{} ) { $value = 0; }
+        if ( !$field{'radiounselect'} && !$value ) { $value = 0; }
         $count = 0;
         foreach (@options) {
-            if ( $value ne q{} && $count == $value ) {
+            if ( $value && $count == $value ) {
                 $selected = qq~ id="ext_$id" checked="checked"~;
             }
             else { $selected = q{}; }
@@ -736,7 +737,7 @@ qq~ $profile_txt{'565'} <input type="text" name="ext_$id\_day" id="ext_$id\_day"
 
     }
     elsif ( $field{'type'} eq 'checkbox' ) {
-        if   ( $value == 1 ) { $value = ' checked="checked"'; }
+        if   ( $value && $value == 1 ) { $value = ' checked="checked"'; }
         else                 { $value = q{}; }
 
 # we have to use a little trick here to get a value from a checkbox if it has been unchecked by adding a hidden <input value=""> before it
@@ -770,7 +771,7 @@ qq~ $profile_txt{'565'} <input type="text" name="ext_$id\_day" id="ext_$id\_day"
 
     }
     elsif ( $field{'type'} eq 'image' ) {
-        if ( $value eq q{} ) { $value = 'http://'; }
+        if ( !$value ) { $value = 'http://'; }
         $output .=
             $template1
           . qq~<input type="text" name="ext_$id" id="ext_$id" maxlength="$ext_max_image_length" size="50" value="$value" />~
@@ -900,7 +901,6 @@ sub ext_validate_submition {
                 @options = split /\^/xsm, $field{'options'};
 
 # don't fill it with default value yet, it might be required on registration
-# if ($options[3] ne q{} && $value eq "") { $value = $options[3]; $newprofile{'ext_'.$id} = $value; }
                 if ( $options[0] + 0 > 0 && length($value) > $options[0] ) {
                     $output .=
                         $field{'name'} . q{: }
@@ -908,8 +908,9 @@ sub ext_validate_submition {
                       . "<br />\n";
                 }
                 if (   $options[2] == 1
+                    && $value
                     && $value !~ /[0-9\.,]+/xsm
-                    && $value ne q{} )
+                     )
                 {
                     $output .=
                         $field{'name'} . q{: }
@@ -961,7 +962,7 @@ sub ext_validate_submition {
                 next;
 
             }
-            elsif ( $field{'type'} eq 'date' && $value ne q{} ) {
+            elsif ( $field{'type'} eq 'date' && $value ) {
                 if ( $value !~ /[0-9]/xsm ) {
                     $output .=
                         $field{'name'} . q{: }
@@ -1022,12 +1023,12 @@ sub ext_validate_submition {
 
             }
             elsif ( $field{'type'} eq 'checkbox' ) {
-                if   ( $value ne q{} ) { $newprofile{ 'ext_' . $id } = 1; }
+                if   ( $value ) { $newprofile{ 'ext_' . $id } = 1; }
                 else                   { $newprofile{ 'ext_' . $id } = 0; }
                 next;
 
             }
-            elsif ( $field{'type'} eq 'email' && $value ne q{} ) {
+            elsif ( $field{'type'} eq 'email' && $value ) {
                 $value = substr $value, 0, $ext_max_email_length;
 
                 # uses the code from Profile.pm without further checking...
@@ -1050,17 +1051,17 @@ sub ext_validate_submition {
                 }
 
             }
-            elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
+            elsif ( $field{'type'} eq 'url' && $value ) {
                 $value = substr $value, 0, $ext_max_url_length;
 
             }
             elsif ($field{'type'} eq 'image'
-                && $value ne q{}
+                && $value
                 && $value ne 'http://' )
             {
                 $value = substr $value, 0, $ext_max_image_length;
                 @options = split /\^/xsm, $field{'options'};
-                if ( $options[2] ne q{} ) {
+                if ( $options[2] ) {
                     @allowed_extensions = split / /sm, $options[2];
                     $match = 0;
                     foreach my $extension (@allowed_extensions) {
@@ -1099,12 +1100,12 @@ sub ext_validate_submition {
         if ( defined $newprofile{ 'ext_' . $id } ) {
             if (   $field{'type'} eq 'checkbox'
                 || $field{'type'} eq 'radiobuttons' ) {
-                if ( $newprofile{ 'ext_' . $id } eq q{} ) {
+                if ( !$newprofile{ 'ext_' . $id } ) {
                     $newprofile{ 'ext_' . $id } = 0;
                 }
             }
             elsif ( $field{'type'} eq 'select' ) {
-                if ( $newprofile{ 'ext_' . $id } eq q{} ) {
+                if ( !$newprofile{ 'ext_' . $id } ) {
                     $newprofile{ 'ext_' . $id } = 0;
                 }
                 @options = split /\^/xsm, $field{'options'};
@@ -1150,7 +1151,7 @@ sub ext_validate_submition {
 
 #       if (!defined $newprofile{'ext_'.$id} || $field{'active'} == 0) { $newprofile{'ext_'.$id} = $value; }
         if (   $field{'required_on_reg'} == 1
-            && $newprofile{ 'ext_' . $id } eq q{}
+            && !$newprofile{ 'ext_' . $id }
             && $action eq 'register2' )
         {
             $output .=
@@ -1158,9 +1159,9 @@ sub ext_validate_submition {
         }
 
         # only fill with default value AFTER check of requirement
-        if ( $field{'type'} eq 'text' && $newprofile{ 'ext_' . $id } eq q{} ) {
+        if ( $field{'type'} eq 'text' && !$newprofile{ 'ext_' . $id } ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $options[3] ne q{} ) {
+            if ( !$options[3] ) {
                 $newprofile{ 'ext_' . $id } = $options[3];
             }
         }
@@ -1168,7 +1169,7 @@ sub ext_validate_submition {
             $newprofile{ 'ext_' . $id } = q{};
         }
         elsif ($field{'type'} eq 'select'
-            && $newprofile{ 'ext_' . $id } eq q{} )
+            && !$newprofile{ 'ext_' . $id } )
         {
             $newprofile{ 'ext_' . $id } = 0;
         }

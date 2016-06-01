@@ -23,7 +23,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
-$setupplver  = 'YaBB 2.6.13 $Revision: 1654 $';
+$setupplver  = 'YaBB 2.6.13 $Revision$';
 $yymycharset = 'UTF-8';
 
 # conversion will stop after $max_process_time
@@ -713,7 +713,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.6.13                                                 #
-# Packaged:       December 2, 2014                                            #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016  YaBB (www.yabbforum.com) - All Rights Reserved.    #
@@ -1464,7 +1464,7 @@ sub SetInstall2 {
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.6.13                                                 #
-# Packaged:       December 2, 2014                                            #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016  YaBB (www.yabbforum.com) - All Rights Reserved.    #

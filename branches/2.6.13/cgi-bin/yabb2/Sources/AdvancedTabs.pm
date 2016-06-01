@@ -14,11 +14,11 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$advancedtabspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$advancedtabspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub AddNewTab {
@@ -114,7 +114,7 @@ sub AddNewTab2 {
             }
         } @AdvancedTabs;
 
-        if ( $taburl == 1 || $taburl == 2 ) {
+        if ( $taburl =~ m/\d/xsm && ($taburl == 1 || $taburl == 2) ) {
             if ( $FORM{'taburl'} =~ m/username\=/ixsm ) { $tmpusernamereq = 1; }
             $exttaburl = $FORM{'taburl'};
             $exttaburl =~ s/(.*?)\?(.*?)/$2/gxsm;

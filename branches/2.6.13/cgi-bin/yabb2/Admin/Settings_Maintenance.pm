@@ -13,9 +13,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+no warnings qw(redefine);
+#SaveSettings sub
 our $VERSION = '2.6.13';
 
-our $settings_maintenancepmver = 'YaBB 2.6.13 $Revision: 1651 $';
+our $settings_maintenancepmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # List of settings

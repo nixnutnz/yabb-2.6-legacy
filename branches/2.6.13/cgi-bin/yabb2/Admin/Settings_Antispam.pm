@@ -13,11 +13,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+no warnings qw(redefine);
+#SaveSettings sub
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
-$settings_antispampmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$settings_antispampmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( -e "$vardir/spamrules.txt" ) {

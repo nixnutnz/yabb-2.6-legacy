@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$membergroupspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$membergroupspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";
@@ -106,7 +106,7 @@ sub EditMemberGroups {
             <col  style="width: 15%" />
         </colgroup>
 ~;
-
+    $additional_tablehead = q{};
     if ( $addmemgroup_enabled > 0 ) {
         $additional_tablehead =
           qq~<td class="catbg center"><b>$amgtxt{'83'}</b></td>~;
@@ -293,7 +293,7 @@ sub editAddGroup {
     if ( $INFO{'group'} ) {
         $viewtitle = $admintxt{'18a'};
         ( $type, $element ) = split /\|/xsm, $INFO{'group'};
-        if ( $element ne q{} ) {
+        if ( $element ) {
             if ( $type eq 'P' ) {
                 $posts = $element;
                 @memstats = split /\|/xsm, $Post{$element};
@@ -321,7 +321,7 @@ sub editAddGroup {
         }
     }
 
-    if ( $stars !~ /\A[0-9]+\Z/xsm ) { $stars = 0; }
+    if ( !$stars || $stars !~ /\A[0-9]+\Z/xsm ) { $stars = 0; }
 
     $otherdisable = q~ disabled="disabled"~;
 
@@ -359,18 +359,19 @@ sub editAddGroup {
     if ($memstats[4])     { $pc   = q{}; }
     if ($memstats[10]) { $admg = q~ checked="checked"~; }
 
-    if ( $posts eq q{} && $action ne 'editgroup1' ) {
+    if ( !$posts && $action ne 'editgroup1' ) {
         $post2 = q{ checked="checked"};
         $pt    = q{ disabled="disabled"};
     }
     else { $post1 = q~ checked="checked"~; $pd = q~ disabled="disabled"~; }
 
-    if ( $memstats[5] == 1 ) { $vc  = q~ checked="checked"~; }
-    if ( $memstats[6] == 1 ) { $tc  = q~ checked="checked"~; }
-    if ( $memstats[7] == 1 ) { $rc  = q~ checked="checked"~; }
-    if ( $memstats[8] == 1 ) { $poc = q~ checked="checked"~; }
-    if ( $memstats[9] == 1 ) { $ac  = q~ checked="checked"~; }
+    if ( $memstats[5] && $memstats[5] == 1 ) { $vc  = q~ checked="checked"~; }
+    if ( $memstats[6] && $memstats[6] == 1 ) { $tc  = q~ checked="checked"~; }
+    if ( $memstats[7] && $memstats[7] == 1 ) { $rc  = q~ checked="checked"~; }
+    if ( $memstats[8] && $memstats[8] == 1 ) { $poc = q~ checked="checked"~; }
+    if ( $memstats[9] && $memstats[9] == 1 ) { $ac  = q~ checked="checked"~; }
 
+    $INFO{'group'} ||= q{};
     $yymain .= qq~
 <form name="groups" action="$adminurl?action=editAddGroup2" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <input type="hidden" name="original" value="$INFO{'group'}" />
@@ -394,8 +395,12 @@ sub editAddGroup {
         <td class="windowbg"><label for="starsadmin">$amgtxt{'38'}:</label></td>
         <td class="windowbg2">
             <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">~;
+	$stara[8] ||= q{};
     for my $i ( 1 .. 7 ) {
-            $yymain .= qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option>\n~;
+	    $starsgif[$i] ||= q{};
+	    $stara[$i] ||= q{};
+	    $starstxt[$i] ||= q{};
+        $yymain .= qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option>\n~;
     }
     $yymain .= qq~                <option value="other"$stara[8]>$amgtxt{'26'}</option>
             </select>
@@ -444,7 +449,9 @@ sub editAddGroup {
 
     # Get color selected
     $yymain =~ s/(<option value="$memstats[3]")/$1 selected="selected"/sm;
-
+    $post1 ||= q{};
+    $post2 ||= q{};
+    $noposts ||= q{};
     if ( !exists $Group{ $INFO{'group'} } ) {
         $yymain .= qq~<tr>
         <td class="windowbg"><label for="postindepend">$amgtxt{'39a'}</label></td>
@@ -486,6 +493,11 @@ sub editAddGroup {
         }
     }
     if ( $INFO{'group'} ne 'Administrator' ) {
+	    $vc ||= q{};
+	    $tc ||= q{};
+	    $rc ||= q{};
+	    $poc ||= q{};
+	    $ac ||= q{};
         $yymain .= qq~
     </table>
 </div>
@@ -616,13 +628,13 @@ sub editAddGroup2 {
         }
     }
     else { $star = $FORM{'starsadmin'}; }
-    $color = $FORM{'color2'} ne q{} ? "#$FORM{'color2'}" : q{};
+    $color = $FORM{'color2'} ? "#$FORM{'color2'}" : q{};
     $postdepend = $FORM{'postdepend'};
-    if ( $FORM{'posts'} !~ /\d+/xsm && $postdepend eq 'Yes' ) {
+    if ( (!$FORM{'posts'} || $FORM{'posts'} !~ /\d+/xsm) && $postdepend && $postdepend eq 'Yes' ) {
         fatal_error('no_post_number');
     }
     else { $posts = $FORM{'posts'} }
-    if ( $postdepend eq 'No' ) { $noposts = $FORM{'noposts'}; }
+    if ( !$postdepend || $postdepend eq 'No' ) { $noposts = $FORM{'noposts'}; }
 
     if   ( $FORM{'viewpublic'} ) { $viewpublic = 0 }
     else                         { $viewpublic = 1 }
@@ -639,7 +651,7 @@ sub editAddGroup2 {
         ( $type, $element ) = split /\|/xsm, $original;
 
         # Ignoring Administrative groups.
-        if ( $element ne q{} ) {
+        if ( $element ) {
             if ( $type eq 'P' ) {
                 if ( $element != $posts || $postdepend eq 'No' ) {
                     if ($iamgmod) { fatal_error('newpostdep_gmod'); }
@@ -666,7 +678,7 @@ sub editAddGroup2 {
         }
     }
 
-    if ( ( split /\|/xsm, $Group{$original}, 2 )[0] ne $name ) {
+    if ( $Group{$original} && ( split /\|/xsm, $Group{$original}, 2 )[0] ne $name ) {
         if ( $lcname eq lc( ( split /\|/xsm, $Group{'Administrator'}, 2 )[0] ) )
         {
             fatal_error( 'double_group', $lcname );
@@ -713,7 +725,7 @@ sub editAddGroup2 {
 # Now, we must deliberate on what type of thing this group is, and add/read(when editing) it.
 # First, using original variable, we check to see it's not a perma-group.
     ( $type, $element ) = split /\|/xsm, $original;
-    if ( $element eq q{} && $original ne q{} ) {
+    if ( $element && $original ) {
 
 # We have a perma-group! $type is now equal to the perma group or key for the hash.
 # add in code to actually set the line.
@@ -723,7 +735,7 @@ sub editAddGroup2 {
     else {
 
         # post dependent group.
-        if ( $postdepend eq 'Yes' ) {
+        if ( $postdepend && $postdepend eq 'Yes' ) {
             foreach my $key ( keys %Post ) {
                 if (
                     $posts == $key
@@ -744,6 +756,7 @@ sub editAddGroup2 {
             # no post group
         }
         else {
+            $noposts ||= 0;
             $NoPost{$noposts} =
 "$name|$FORM{'numstars'}|$star|$color|$viewpublic|$view|$topics|$reply|$polls|$attach|$additional";
             my $isinorder;

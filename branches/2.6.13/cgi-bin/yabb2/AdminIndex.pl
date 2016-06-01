@@ -16,14 +16,14 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
 ### Version Info ###
 $YaBBversion     = 'YaBB 2.6.13';
-$adminindexplver = 'YaBB 2.6.13 $Revision: 1651 $';
+$adminindexplver = 'YaBB 2.6.13 $Revision$';
 
 # Make sure the module path is present
 push @INC, './Modules';
@@ -80,7 +80,7 @@ if ( !$maintenance && -e "$vardir/maintenance.lock" ) { $maintenance = 2; }
 # in seconds, than the browser will call the script again
 # until all is done. Don't put it too high or you will run
 # into server or browser timeout.
-$max_process_time = 20;
+$max_process_time = 5;
 
 $action = $INFO{'action'};
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };

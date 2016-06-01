@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$printpagepmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$printpagepmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -202,7 +202,7 @@ function do_images() {
         $fromTitle = qq~$inmes_txt{'318'}:~;
     }
     chomp $threadAttach;
-    if ( $threadAttach ne q{} ) {
+    if ( $threadAttach ) {
         LoadLanguage('FA');
         foreach ( split /,/xsm, $threadAttach ) {
             my ( $pmAttachFile, undef ) = split /~/xsm, $_;
@@ -727,7 +727,7 @@ s/<div class="small">/<div class="small" style="margin:8px;">/gsm;
     return;
 }
 
-sub codemsg {
+sub prcodemsg {
     my ($code) = @_;
     my %killhash = (
         q{;}  => '&#059;',
@@ -810,7 +810,7 @@ s/\[quote(.*?)\].*\/me\s+(.*?)\[\/quote\]/\[quote$1\]<i>* Me $2<\/i>\[\/quote\]/
       s/\/me\s+(.*)/* $displayname $1/igsm;    #*/ make my syntax checker happy
 
     # Images in message
-    $threadpost =~ s/\[img(.*?)\](.*?)\[\/img\]/ imagemsg($1,$2) /eisgm;
+    $threadpost =~ s/\[img(.*?)\](.*?)\[\/img\]/ primagemsg($1,$2) /eisgm;
 
     $threadpost =~ s/\[tt\](.*?)\[\/tt\]/<tt>$1<\/tt>/isgxm;
     $threadpost =~
@@ -941,7 +941,7 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b>$maintxt{'97'}</b>
                     $testauthor = MemberIndex( 'check_exist', "$author" );
 
                     # check if this name exists in the memberlist
-                    if ( $testauthor ne q{} )
+                    if ( $testauthor )
                     {    # if it is, load the user id returned
                         $author = $testauthor;
                         LoadUser($author);
@@ -1029,7 +1029,7 @@ s/\<tr\>(.*?)\n*\[td\]\n{0,1}(.*?)\n{0,1}\[\/td\]\n*(.*?)\<\/tr\>/<tr>$1<td>$2<\
     return;
 }
 
-sub imagemsg {    # out of YaBBC.pm -> sub imagemsg {
+sub primagemsg {    # out of YaBBC.pm -> sub imagemsg {
     my ( $attribut, $url ) = @_;
 
     # use or kill urls

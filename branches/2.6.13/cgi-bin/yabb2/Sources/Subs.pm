@@ -14,12 +14,13 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
+use URI::Escape;
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
-$subspmver = 'YaBB 2.6.13 $Revision: 1717 $';
+$subspmver = 'YaBB 2.6.13 $Revision$';
 
 use subs 'exit';
 
@@ -471,7 +472,7 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
         $yyjavascript .= q~        jumptologin = 1;~;
     }
     else {
-        if ( ${ $uid . $username }{'bday'} ne q{} ) {
+        if ( ${ $uid . $username }{'bday'} ) {
             my ( $usermonth, $userday, $useryear ) =
               split /\//xsm, ${ $uid . $username }{'bday'};
             if ( $usermonth == $mon_num && $userday == $mday ) {
@@ -534,6 +535,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     }
 
     $yysearchbox = q{};
+    $qckage ||= 0;
     if ( !$iamguest || $guestaccess != 0 ) {
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             my $blurb = qq~$maintxt{'searchimg'} $qckage $maintxt{'searchimg2'}~;
@@ -763,7 +765,7 @@ sub image_resize {
 
 # Hardcoded! Set to 1 for Perl to do the fix...size work here. Set to 0 for the javascript within the browser do this work.
 
-    *check_image_resize = sub {
+    local *check_image_resize = sub {
         my @x  = @_;
         my $px = 'px';
         if ( $fix_avatar_img_size && $perl_do_it == 1 && $x[1] eq 'avatar' ) {
@@ -931,6 +933,9 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
 
     $yymain .= $my_show_error;
     $yymain =~ s/{yabb errormessage}/$errormessage/sm;
+    $yymain =~ s/{yabb spam_hits_left_count}/$spam_hits_left_count/gsm;
+    $yymain =~ s/{yabb spamwrd}/$spam_wrd/gsm;
+    $yymain =~ s/{yabb detention_left}/$detention_left/gsm;
     $yytitle = "$maintxt{'error_description'}";
 
     if ( $adminscreen && $action ne 'admincheck2' ) {
@@ -989,7 +994,7 @@ sub fatal_error_logging {
     fopen( ERRORLOG, ">$vardir/errorlog.txt" );
     foreach (@errorlog) {
         chomp;
-        if ( $_ ne q{} ) {
+        if ( $_ ) {
             print {ERRORLOG} $_ . "\n" or croak "$croak{'print'} ERRORLOG";
         }
     }
@@ -1011,7 +1016,7 @@ sub FindPermalink {
       split /\//xsm, $old_env;
     if ( -e "$boardsdir/$permboard.txt" ) {
         $permboardfound = 1;
-        if ( $permnum ne q{} && -e "$datadir/$permnum.txt" ) {
+        if ( $permnum && -e "$datadir/$permnum.txt" ) {
             $new_env        = qq~num=$permnum~;
             $permtopicfound = 1;
         }
@@ -1135,11 +1140,11 @@ qq~<br /><span class="under">$debug_txt{'postpairs'}:</span><br />~;
 
             # $CGI_query must be a global variable
             my (@value);
-            foreach my $name ( $CGI_query->param() ) {
+            foreach my $name ( $CGI_query->param ) {
                 if ( $name =~ /^file(\d+|_avatar)$/xsm ) { next; }
 
         # files are directly called in Profile.pm, Post.pm and ModifyMessages.pl
-                @value = $CGI_query->param($name);
+                @value = $CGI_query->multi_param($name);
                 if ($debug) {
                     LoadLanguage('Debug');
                     $getpairs .=
@@ -1243,7 +1248,7 @@ sub dumplog {
         $date2 = $date;
         fopen( DUMPLOG, ">$memberdir/$username.log" );
         while ( ( $name, $date1 ) = each %yyuserlog ) {
-            $result = calcdifference( $date1, $date2 );    # output => $result
+            $result = calcdtdiff( $date1, $date2 );    # output => $result
             if ( $result <= $max_log_days_old ) {
                 print {DUMPLOG} qq~$name|$date1\n~
                   or croak "$croak{'print'} DUMPLOG";
@@ -1303,7 +1308,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
 
         my $indent = -2;
 
-        *jump_subboards = sub {
+        local *jump_subboards = sub {
             my @x = @_;
             $indent += 2;
             foreach my $board (@x) {
@@ -1314,7 +1319,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                   split /\|/xsm, $board{"$board"};
                 ToChars($boardname);
                 my $access = AccessCheck( $board, q{}, $boardperms );
-                if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {
+                if ( !$iamadmin && !$access && $boardview != 1 ) {
                     next;
                 }
                 if ( ${ $uid . $board }{'brdpasswr'} ) {
@@ -1473,7 +1478,7 @@ sub SpamQuestionCheck {
         $verification_answer   = lc $verification_answer;
         $verification_question = lc $verification_question;
     }
-    if ( $verification_question eq q{} ) {
+    if ( !$verification_question ) {
         fatal_error('no_verification_question');
     }
     @verificationanswer = split /,/xsm, $verification_answer;
@@ -1580,7 +1585,7 @@ sub WrapChars {
         $char    = $curword;
         $length  = 0;
         $curword = q{};
-        while ( $char ne q{} ) {
+        while ( $char ) {
             if    ( $char =~ s/^(&\x23?[a-z\d]+;)//ism ) { $curword .= $1; }
             elsif ( $char =~ s/^(.)//sm )             { $curword .= $1; }
             $length++;
@@ -1606,25 +1611,6 @@ sub WrapChars {
     return $tmpwrapstr;
 }
 
-# Out of: Escape.pm, v 3.28 2004/11/05 13:58:31
-# Original Modul at: http://search.cpan.org/~gaas/URI-1.35/URI/Escape.pm
-sub uri_escape {    # usage: $safe = uri_escape( $string )
-    my $text = shift;
-
-    #    return undef unless defined $text;
-    $text || return;
-    if ( !%escapes ) {
-
-        # Build a char->hex map
-        for ( 0 .. 255 ) { $escapes{ chr $_ } = sprintf '%%%02X', $_ }
-    }
-
-    # Default unsafe characters. RFC 2732 ^(uric - reserved)
-    $text =~ s/([^A-Za-z0-9\-_.!~*\x27()])/ $escapes{$1} || $1 /gesm;
-
-    return $text;
-}
-
 sub enc_eMail {
     my ($title,$email,$subject,$body,$src) = @_;
     my ($charset_value);
@@ -1638,7 +1624,7 @@ sub enc_eMail {
     }
     $code2 = uri_escape($code2);
 
-    *enc_eMail_x = sub {
+    local *enc_eMail_x = sub {
         my ( $x, $y, $z ) = @_;
         if ( !$y ) {
             $x = ord $x;
@@ -1858,7 +1844,7 @@ sub wrap {
         $message .= "$cur ";
     }
     $message =~ s/\[code((?:\s*).*?)\](.*?)\[\/code\]/unwrap($1,$2)/eisgm;
-    $message =~ s/ {yabbbr} /\n/gsm;
+    $message =~ s/ \{yabbbr} /\n/gsm;
     $message =~ s/{yabbwrap}/\n/gsm;
 
     ToHTML($message);
@@ -1869,7 +1855,7 @@ sub wrap {
 
 sub wrap2 {
     $message =~
-s/<a href=(\S*?)(\s[^>]*)?>(\S*?)<\/a>/ my ($mes,$out,$i) = ($3,q{},1); { while ($mes ne q{}) { if ($mes =~ s\/^(<.+?>)\/\/) { $out .= $1; } elsif ($mes =~ s\/^(&.+?;|\[ch\d{3,}\]|.)\/\/) { last if $i > $linewrap; $i++; $out .= $1; if ($mes eq q{}) { $i--; last; } } } } "<a href=$1$2>$out" . ($i > $linewrap ? q{...} : q{}) . '<\/a>' /eigsm;
+s/<a href=(\S*?)(\s[^>]*)?>(\S*?)<\/a>/ my ($mes,$out,$i) = ($3,q{},1); { while ($mes) { if ($mes =~ s\/^(<.+?>)\/\/) { $out .= $1; } elsif ($mes =~ s\/^(&.+?;|\[ch\d{3,}\]|.)\/\/) { last if $i > $linewrap; $i++; $out .= $1; if ($mes eq q{}) { $i--; last; } } } } "<a href=$1$2>$out" . ($i > $linewrap ? q{...} : q{}) . '<\/a>' /eigsm;
     return;
 }
 
@@ -2284,7 +2270,7 @@ sub referer_check {
     my $refererdomain = substr $ENV{HTTP_REFERER}, 7,
       ( index $ENV{HTTP_REFERER}, q{/}, 7 ) - 7;
     if (   $refererdomain !~ /$referencedomain/sm
-        && $ENV{QUERY_STRING} ne q{}
+        && $ENV{QUERY_STRING}
         && length($refererdomain) > 0 )
     {
         my $goodaction = 0;
@@ -2461,7 +2447,7 @@ sub Write_ForumMaster {
           or croak "$croak{'print'} FORUMMASTER";
     }
     while ( ( $key, $value ) = each %subboard ) {
-        if ( $value ne q{} ) {
+        if ( $value ) {
             print {FORUMMASTER} qq~\$subboard{'$key'} = qq\~$value\~;\n~
               or croak "$croak{'print'} FORUMMASTER";
         }
@@ -2491,7 +2477,7 @@ sub MemberPageindex {
     }
     UserAccount( $username, 'update' );
     my $SearchStr = $FORM{'member'} || $INFO{'member'};
-    if ( $SearchStr ne q{} ) { $findmember = qq~;member=$SearchStr~; }
+    if ( $SearchStr ) { $findmember = qq~;member=$SearchStr~; }
     if ( !$INFO{'from'} ) {
         $yySetLocation =
 qq~$scripturl?action=ml;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$findmember~;
@@ -3228,6 +3214,7 @@ sub BoardPassw {
 sub BoardPassw_g {
     #template in MessageIndex.template
     $yymain .= $boardpassw_g;
+    $yymain =~ s/{yabb scripturl}/scripturl/gsm;
 
     $yytitle = qq~$maintxt{'900pw'}: $boardname~;
     template();
@@ -3253,7 +3240,7 @@ sub BoardPasswCheck {
     WriteLog();
     undef $FORM{'boardpw'};
 
-    if ( $returnnum ne q{} ) {
+    if ( $returnnum ) {
         $yySetLocation = qq~$scripturl?num=$returnnum~;
     }
     else {

@@ -14,17 +14,19 @@
 ###############################################################################
 # use strict;
 #use warnings;
-#no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$instantmessagepmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$instantmessagepmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 require Sources::PostBox;
 require Sources::SpamCheck;
 LoadLanguage('FA');
 LoadLanguage('Post');
+LoadLanguage('Display');
 
 get_micon();
 get_template('MyMessage');
@@ -54,7 +56,7 @@ sub buildIMsend {
     $mctitle = $inmes_txt{'775'};
     if ($sendBMess) { $mctitle = $inmes_txt{'775a'}; }
     ## check for a draft being opened
-    if ( $INFO{'caller'} == 4 && $INFO{'id'} ) {
+    if ( $INFO{'caller'} && $INFO{'caller'} == 4 && $INFO{'id'} ) {
         if ( !-e "$memberdir/$username.imdraft" ) {
             fatal_error( 'cannot_open', "$username.imdraft" );
         }
@@ -106,7 +108,7 @@ sub buildIMsend {
         }
     }
     if (
-        $sendBMess != 1
+        (!$sendBMess || $sendBMess != 1)
         || (
                ( $PMenableBm_level != 1 || ( !$staff ) )
             && ( $PMenableBm_level != 2 || ( !$iamadmin && !$iamgmod ) )
@@ -140,10 +142,10 @@ sub buildIMsend {
         # this defines what the top area of the post box will look like:
         ## if this is a reply , load the 'from' name off the message
         if ( $INFO{'reply'} || $INFO{'quote'} ) { $INFO{'to'} = $mfrom; }
-        if ( !$INFO{'to'} && $FORM{'to'} ne q{} ) { $INFO{'to'} = $FORM{'to'}; }
+        if ( !$INFO{'to'} && $FORM{'to'} ) { $INFO{'to'} = $FORM{'to'}; }
 
         ## if cloaking is enabled, and 'to' is not a blank
-        if ( $do_scramble_id && $INFO{'to'} ne q{} ) {
+        if ( $do_scramble_id && $INFO{'to'} ) {
             decloak( $INFO{'to'} );
         }
 
@@ -175,7 +177,6 @@ sub buildIMsend {
     $ctmain
     <script type="text/javascript">
     var displayNames = new Object();
-    $template_names
     </script>
     ~;
     $my_gimsend  = q{};
@@ -426,6 +427,8 @@ qq~                            <option value="$img"$myic>$alt</option>\n~;
         $imsend_send =~ s/{yabb iconopts}/$iconopts/sm;
         $imsend_send =~ s/{yabb pmicon}/$pmicon/gsm;
         $imsend_send =~ s/{yabb pmicon_img}/$micon_bg{$pmicon}/gsm;
+        $imsend_send =~ s/{yabb inmes_txt_status}/$inmes_txt{'status'}/gsm;
+        $imsend_send =~ s/{yabb im_message_status_pmicon}/$im_message_status{$pmicon}/gsm;
     }
     else {
         $imsend_send = $my_imsend_Guest;
@@ -606,6 +609,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
         $cloakAttach = cloak($mattach);
         $my_show_FA .= $my_FA_show;
         $my_show_FA =~ s/{yabb cloakAttach}/$cloakAttach/sm;
+        $my_show_FA =~ s/{yabb fatxt80}/$fatxt{'80'}/sm;
 
         if ( $allowAttachIM > 1 ) {
             $my_allow_FA = qq~
@@ -631,7 +635,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
                         )
                         && !$FORM{'reply'}
                     )
-                    && $files[ $y - 1 ] ne q{}
+                    && $files[ $y - 1 ]
                     && -e "$pmuploaddir/$files[$y-1]"
                   )
                 {
@@ -1218,10 +1222,10 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
             ## check and see if 1) username is marked 'away' 2) they left a message 3) you have not already had an auto-reply
             my $sendAutoReply = 1;
             if (   ${ $uid . $UserTo }{'offlinestatus'} eq 'away'
-                && ${ $uid . $UserTo }{'awayreply'} ne q{}
-                && ${ $uid . $UserTo }{'awaysubj'} ne q{} )
+                && ${ $uid . $UserTo }{'awayreply'}
+                && ${ $uid . $UserTo }{'awaysubj'} )
             {
-                if ( ${ $uid . $UserTo }{'awayreplysent'} eq q{} ) {
+                if ( !${ $uid . $UserTo }{'awayreplysent'} ) {
                     ${ $uid . $UserTo }{'awayreplysent'} = $username;
                     UserAccount( $UserTo, 'update' );
                 }
@@ -1250,11 +1254,13 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
             }
 
             if ( !$ignored ) {
-
+                my @inmessages = (); 
                 # Send message to user
-                fopen( INBOX, "$memberdir/$UserTo.msg" );
-                my @inmessages = <INBOX>;
-                fclose(INBOX);
+                if ( -e "$memberdir/$UserTo.msg") {
+                    fopen( INBOX, "<$memberdir/$UserTo.msg" );
+                    @inmessages = <INBOX>;
+                    fclose(INBOX);
+                }
                 fopen( INBOX, ">$memberdir/$UserTo.msg" );
                 print {INBOX}
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||$fixfile\n"
@@ -1262,14 +1268,17 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                 print {INBOX} @inmessages or croak "$croak{'print'} INBOX";
                 fclose(INBOX);
 
+
                 # we've added the msg to the inbox, now update the ims file
                 updateIMS( $UserTo, $messageid, 'messagein' );
                 ## if we need to drop the 'away' reply in....
                 if ($sendAutoReply) {
                     my $rmessageid = getnewid();
-                    fopen( INBOX, "$memberdir/$username.msg" );
-                    my @myinmessages = <INBOX>;
-                    fclose(INBOX);
+                    if ( -e "$memberdir/$username.msg") { 
+                        fopen( INBOX, "$memberdir/$username.msg" );
+                        my @myinmessages = <INBOX>;
+                        fclose(INBOX);
+                    }
                     fopen( INBOX, ">$memberdir/$username.msg" );
                     print {INBOX}
 "$rmessageid|$UserTo|$username|||${$uid.$UserTo}{'awaysubj'}|$date|${$uid.$UserTo}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||$fixfile\n"
@@ -1281,7 +1290,7 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                 ## relocated sender msg out of the loop
 
 # Send notification (Will only work if Admin has allowed the Email Notification)
-                if ( ${ $uid . $UserTo }{'notify_me'} > 1
+                if ( ${ $uid . $UserTo }{'notify_me'} && ${ $uid . $UserTo }{'notify_me'} > 1
                     && $enable_notifications > 1 )
                 {
                     require Sources::Mailer;
@@ -1291,7 +1300,7 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                     LoadCensorList();
                     $useremail = ${ $uid . $UserTo }{'email'};
                     $useremail =~ s/[\n\r]//gxsm;
-                    if ( $useremail ne q{} ) {
+                    if ( $useremail ) {
                         my $msubject = $subject ? $subject : $inmes_txt{'767'};
                         $fromname = ${ $uid . $username }{'realname'};
                         FromHTML($msubject);
@@ -1304,7 +1313,7 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                         $chmessage = regex_4($chmessage);
 
                         $pmAttachUrl = q{};
-                        if ( $fixfile ne q{} ) {
+                        if ( $fixfile ) {
                             foreach ( split /,/xsm, $fixfile ) {
                                 my ( $pmAttachFile, undef ) = split /~/xsm, $_;
                                 $pmAttachUrl .=
@@ -1345,9 +1354,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     }
 
     if ( !$FORM{'draft'} && $isBMess ) {
-        fopen( INBOX, "<$memberdir/broadcast.messages" );
-        my @inmessages = <INBOX>;
-        fclose(INBOX);
+        if ( -e "$memberdir/broadcast.messages") {
+            fopen( INBOX, "<$memberdir/broadcast.messages" );
+            my @inmessages = <INBOX>;
+            fclose(INBOX);
+        }
         fopen( INBOX, ">$memberdir/broadcast.messages" );
         print {INBOX}
 "$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||$fixfile\n"
@@ -1366,9 +1377,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     @outmessages = ();
     my $savetofile = 'outbox';
     if ( $FORM{'draft'} ) { $savetofile = 'imdraft'; }
-    fopen( OUTBOX, "$memberdir/$username.$savetofile" );
-    @outmessages = <OUTBOX>;
-    fclose(OUTBOX);
+    if ( -e "$memberdir/$username.$savetofile") {
+        fopen( OUTBOX, "$memberdir/$username.$savetofile" );
+        @outmessages = <OUTBOX>;
+        fclose(OUTBOX);
+    }
 
     # add the PM to the outbox
     # the sep users now live together
@@ -1401,7 +1414,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
 
     if (  !$FORM{'dontstoreinoutbox'}
         || $FORM{'draft'}
-        || ( $FORM{'dontstoreinoutbox'} && $fixfile ne q{} ) )
+        || ( $FORM{'dontstoreinoutbox'} && $fixfile ) )
     {
         fopen( OUTBOX, "+>$memberdir/$username.$savetofile" )
           or
@@ -1482,7 +1495,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     if ( !$FORM{'draft'} ) { UserAccount( $username, 'update', 'lastim' ); }
     UserAccount( $username, 'update', 'lastonline' );
 
-    if ( $FORM{'dontstoreinoutbox'} && $fixfile eq q{} ) {
+    if ( $FORM{'dontstoreinoutbox'} && !$fixfile ) {
         $yySetLocation = qq~$scripturl?action=im~;
     }
     elsif ( $FORM{'draft'} ) { $yySetLocation = qq~$scripturl?action=imdraft~; }
@@ -1561,10 +1574,10 @@ sub pageLinksList {
     $postdisplaynum = 3;    # max number of pages to display
     $dropdisplaynum = 10;
     $startpage      = 0;
-    if ( $INFO{'viewfolder'} ne q{} ) {
+    if ( $INFO{'viewfolder'} ) {
         $viewfolderinfo = qq~;viewfolder=$INFO{'viewfolder'}~;
     }
-    if ( $INFO{'focus'} eq 'bmess' ) { $bmesslink = q~;focus=bmess~; }
+    if ( $INFO{'focus'} && $INFO{'focus'} eq 'bmess' ) { $bmesslink = q~;focus=bmess~; }
     my @tempim = @dimmessages;
     if ( $action eq 'imstorage' ) {
         my $i = 0;
@@ -1577,7 +1590,7 @@ sub pageLinksList {
         }
     }
     $max = $#tempim + 1;
-    if ( $INFO{'start'} eq 'all' ) {
+    if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
         $maxmessagedisplay = $max;
         $all               = 1;
         $allselected       = q~ selected="selected"~;
@@ -1770,9 +1783,8 @@ sub DoShowIM {
         $showIM,           $fromTitle,      $toTitle,
         $toTitleCC,        $toTitleBCC,     $usernamelinkfrom,
         $usernamelinkto,   $usernamelinkcc, $usernamelinkbcc,
-        $prevMessId,       $nextMessid,     $PMnav,
-        $attachDeleteWarn, $pmAttachment,   $pmShowAttach,
-        %attach_gif
+        $prevMessId,       $nextMessid,     $attachDeleteWarn,
+        $pmAttachment,     $pmShowAttach,   %attach_gif
     );
     $messcount = 0;
     foreach my $messagesim (@dimmessages) {
@@ -1806,11 +1818,11 @@ sub DoShowIM {
         ( $prevMessId, undef ) = split /\|/xsm, $dimmessages[$messcount];
     }
     ## wrap the URL in
-    if ( $INFO{'id'} ne 'all' && $prevMessId ne q{} ) {
+    if ( $INFO{'id'} ne 'all' && $prevMessId ) {
         $previd =
 qq~&laquo; <a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$prevMessId">$inmes_imtxt{'40'}</a>~;
     }
-    if ( $INFO{'id'} ne 'all' && $nextMessid ne q{} ) {
+    if ( $INFO{'id'} ne 'all' && $nextMessid ) {
         $nextid =
 qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$nextMessid">$inmes_imtxt{'41'}</a> &raquo;~;
     }
@@ -2012,7 +2024,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
                 $toTitleBCC = qq~$inmes_txt{'326'}:~;
             }
         }
-        else {
+        elsif ( $mstatus =~ /b/xsm ) {
             foreach my $uname ( split /,/xsm, $mtousers ) {
                 $usernamelinkto .= links_to($uname);
             }
@@ -2124,7 +2136,9 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=all">$inmes_txt{'
 
     # Do we have an attachment file?
     chomp $mattach;
-    if ( $mattach ne q{} ) {
+	my $my_attach = q{};
+	my $PMnav = q{};
+    if ( $mattach ) {
         foreach ( split /,/xsm, $mattach ) {
             my ( $pmAttachFile, undef ) = split /~/xsm, $_;
             if ( $pmAttachFile =~ /\.(.+?)$/xsm ) {
@@ -2195,10 +2209,10 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
     $mreplyno++;
     $showIM_link = q{};
     if (   $INFO{'caller'} == 1
-        || ( $INFO{'caller'} == 3 && $musername ne q{} )
-        || ( $INFO{'caller'} == 5 && $musername ne q{} ) )
+        || ( $INFO{'caller'} == 3 && $musername )
+        || ( $INFO{'caller'} == 5 && $musername ) )
     {    ## inbox / stored inbox can reply/quote
-        if ( $mstatus eq 'g' || $mstatus eq 'ga' ) {
+        if ( $mstatus && ($mstatus eq 'g' || $mstatus eq 'ga') ) {
             $showIM_link .=
 qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;replyguest=1;id=$messageid">$img{'reply_ims'}</a>~;
         }
@@ -2209,7 +2223,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
         }
     }
 
-    if ( $INFO{'caller'} != 5 && $mstatus ne 'ga' && $mstatus ne 'g' ) {
+    if ( $INFO{'caller'} != 5 && $mstatus && ($mstatus ne 'ga' && $mstatus ne 'g') ) {
         $showIM_link .= qq~
             <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;forward=1;id=$messageid">$img{'forward'}</a>$menusep~;
     }
@@ -2221,7 +2235,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
         chomp $mattach;
         if (   $INFO{'caller'} == 2
             || $INFO{'caller'} == 3
-            || $INFO{'caller'} == 5 && $mattach ne q{} )
+            || $INFO{'caller'} == 5 && $mattach )
         {
             foreach ( split /,/xsm, $mattach ) {
                 my ( $pmAttachFile, $pmAttachUser ) = split /~/xsm, $_;
@@ -2281,10 +2295,10 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$mreplyno;repl
 
 ## build the links for single PM display
 sub buildPMNavigator {
-    if ( $previd ne q{} ) { $PMnav = qq~$previd~; }
-    if ( $allid ne q{} && $previd ne q{} ) { $PMnav .= qq~ | $allid~; }
-    elsif ( $allid ne q{} ) { $PMnav = qq~$allid~; }
-    if ( $nextid ne q{} && $allid ne q{} ) { $PMnav .= qq~ | $nextid~; }
+    if ( $previd ) { $PMnav = qq~$previd~; }
+    if ( $allid && $previd ) { $PMnav .= qq~ | $allid~; }
+    elsif ($allid) { $PMnav = qq~$allid~; }
+    if ( $nextid && $allid ) { $PMnav .= qq~ | $nextid~; }
     return $PMnav;
 }
 

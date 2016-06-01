@@ -14,12 +14,12 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$registerpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$registerpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$iamguest
@@ -574,24 +574,24 @@ sub Register2 {
     if ( length( $member{'email'} ) > 100 ) {
         fatal_error( 'email_to_long', "($member{'email'})" );
     }
-    if ( $member{'regusername'} eq q{} ) {
+    if ( !$member{'regusername'} ) {
         fatal_error( 'no_username', "($member{'regusername'})" );
     }
-    if ( $member{'regusername'} eq q{_} ) {
+    elsif ( $member{'regusername'} eq q{_} ) {
         fatal_error( 'id_alfa_only', "($member{'regusername'})" );
     }
-    if ( $member{'regusername'} =~ /guest/ixsm ) {
+    elsif ( $member{'regusername'} =~ /guest/ixsm ) {
         fatal_error( 'id_reserved', "$member{'regusername'}" );
     }
-    if ( $member{'regusername'} =~ /[^\w\+\-\_\@\.]/sm ) {
+    elsif ( $member{'regusername'} =~ /[^\w\+\-\_\@\.]/sm ) {
         fatal_error( 'invalid_character',
             "$register_txt{'35'} $register_txt{'241e'}" );
     }
-    if ( $member{'regusername'} =~ /^[0-9]+$/sm ) {
+    elsif ( $member{'regusername'} =~ /^[0-9]+$/sm ) {
         fatal_error( 'all_numbers',
             "$register_txt{'35'} $register_txt{'241n'}" );
     }
-    if ( $member{'email'} eq q{} ) {
+    if ( !$member{'email'} ) {
         fatal_error( 'no_email', "($member{'regusername'})" );
     }
     if ( -e ("$memberdir/$member{'regusername'}.vars") ) {
@@ -600,7 +600,7 @@ sub Register2 {
     if ( $member{'regusername'} eq $member{'passwrd1'} ) {
         fatal_error('password_is_userid');
     }
-    if ( $member{'reason'} eq q{} && $regtype == 1 ) {
+    if ( !$member{'reason'} && $regtype == 1 ) {
         fatal_error('no_reg_reason');
     }
 
@@ -679,7 +679,7 @@ sub Register2 {
     if ( Censor( $member{'regrealname'} ) ne $member{'regrealname'} ) {
         fatal_error( 'censor3', CheckCensor( $member{'regrealname'} ) );
     }
-    if ( $honeypot == 1 && $member{'add_field0'} ne q{} ) {
+    if ( $honeypot == 1 && $member{'add_field0'} ) {
         fatal_error('bad_bot');
     }
 
@@ -735,10 +735,10 @@ sub Register2 {
         if ( $member{'passwrd1'} ne $member{'passwrd2'} ) {
             fatal_error( 'password_mismatch', "($member{'regusername'})" );
         }
-        if ( $member{'passwrd1'} eq q{} ) {
+        if ( !$member{'passwrd1'} ) {
             fatal_error( 'no_password', "($member{'regusername'})" );
         }
-        if ( $member{'passwrd1'} =~
+        elsif ( $member{'passwrd1'} =~
             /[^\s\w!\@#\$\%\^&\*\(\)\+\|`~\-=\\:;'",\.\/\?\[\]\{\}]/xsm )
         {
             fatal_error( 'invalid_character',
@@ -826,14 +826,13 @@ sub Register2 {
         fatal_error('already_preregged');
     }
 
-    if ( $new_template !~ m{\A[0-9a-zA-Z\_\(\)\ \#\%\-\:\+\?\$\&\~\.\,\@]+\Z}xsm
-        && $new_template ne q{} )
+    if ( $new_template && $new_template !~ m{\A[0-9a-zA-Z\_\(\)\ \#\%\-\:\+\?\$\&\~\.\,\@]+\Z}xsm )
     {
         fatal_error('invalid_template');
     }
-    if ( $member{'language'} !~
+    if ( $member{'language'} && $member{'language'} !~
         m{\A[0-9a-zA-Z\_\(\)\ \#\%\-\:\+\?\$\&\~\.\,\@]+\Z}xsm
-        && $member{'language'} ne q{} )
+        )
     {
         fatal_error('invalid_language');
     }
@@ -904,13 +903,13 @@ sub Register2 {
     }
     if ($gender_on_reg) {
         ${ $uid . $reguser }{'gender'} = $member{'gender'};
-        if ( $editGenderLimit && ${ $uid . $reguser }{'gender'} ne q{} ) {
+        if ( $editGenderLimit && ${ $uid . $reguser }{'gender'} ) {
             ${ $uid . $reguser }{'disablegender'} = 1;
         }
     }
     if (   $birthday_on_reg
         && $editAgeLimit
-        && ${ $uid . $reguser }{'bday'} ne q{} )
+        && ${ $uid . $reguser }{'bday'} )
     {
         ${ $uid . $reguser }{'disableage'} = 1;
     }
@@ -933,7 +932,7 @@ sub Register2 {
     ${ $uid . $reguser }{'pageindex'}  = q~1|1|1|1~;
 
     if ( ( $addmemgroup_enabled == 1 || $addmemgroup_enabled == 3 )
-        && $member{'joinmemgroup'} ne q{} )
+        && $member{'joinmemgroup'} )
     {
         my @newmemgr;
         foreach ( split /, /sm, $member{'joinmemgroup'} ) {
@@ -976,7 +975,7 @@ sub Register2 {
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
             my $error = ext_validate_submition( $reguser, $reguser );
-            if ( $error ne q{} ) {
+            if ( $error ) {
                 fatal_error( 'extended_profiles_validation', $error );
             }
             ext_saveprofile($reguser);
@@ -1028,7 +1027,7 @@ sub Register2 {
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
             my $error = ext_validate_submition( $reguser, $reguser );
-            if ( $error ne q{} ) {
+            if ( $error ) {
                 fatal_error( 'extended_profiles_validation', $error );
             }
             ext_saveprofile($reguser);

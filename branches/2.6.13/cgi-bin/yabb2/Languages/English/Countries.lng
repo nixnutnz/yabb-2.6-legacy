@@ -4,7 +4,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.6.13                                                 #
-# Packaged:       December 2, 2014                                            #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$countrieslngver = 'YaBB 2.6.13 $Revision: 1651 $';
+$countrieslngver = 'YaBB 2.6.13 $Revision$';
 
 #NOTE: DO NOT translate the left hand items.
 #This version corresponds with DateTime version 1.85.

@@ -14,11 +14,12 @@
 ###############################################################################
 # use strict;
 #use warnings;
-#no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$eventcalbirthdayspmver = 'YaBB 2.6.13 $Revision: 1670 $';
+$eventcalbirthdayspmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -59,7 +60,7 @@ qq~ <label for="selday"><span class="small">$var_cal{'calday'}</span></label>
         if ( $mday == $i && !$sel_day ) {
             $sel = ' selected="selected"';
         }
-        elsif ( $sel_day == $i ) {
+        elsif ( $sel_day && $sel_day == $i ) {
             $sel = ' selected="selected"';
         }
         $boxdays .=
@@ -77,7 +78,7 @@ qq~ <label for="selmon"><span class="small">$var_cal{'calmonth'}</span></label>
         if ( $mon == $i && !$sel_mon ) {
             $sel = ' selected="selected"';
         }
-        elsif ( $sel_mon == $i ) {
+        elsif ( $sel_mon && $sel_mon == $i ) {
             $sel = ' selected="selected"';
         }
         $boxmonths .=
@@ -90,7 +91,7 @@ qq~ <label for="selmon"><span class="small">$var_cal{'calmonth'}</span></label>
     my $gyears3 = $year - 3;
     my $gyears2 = $year - 2;
     my $gyears1 = $year - 1;
-    my $boxyears .=
+    my $boxyears =
 qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></label>
     <select class="input" name="selyear" id="selyear">
         <option value="$gyears3">$gyears3</option>
@@ -101,7 +102,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         if ( $year == $i && !$sel_year ) {
             $sel = ' selected="selected"';
         }
-        elsif ( $sel_year == $i ) {
+        elsif ( $sel_year && $sel_year == $i ) {
             $sel = ' selected="selected"';
         }
         $boxyears .= qq~        <option value="$i"$sel>$i</option>\n~;
@@ -128,6 +129,8 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     # Begin Birthdaylist
 
     my $sortiert = $INFO{'sort'} || $FORM{'sort'};
+    $INFO{'letter'} ||= q{};
+    $FORM{'letter'} ||= q{};
     my $letter   = lc $INFO{'letter'} || lc $FORM{'letter'};
     $vmonth = $INFO{'vmonth'} || $FORM{'vmonth'};
     # Begin Letter
@@ -139,8 +142,8 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     <select size="1" name="letter" onchange="submit()" class="small" style="vertical-align: middle;">
         <option value="">&nbsp;</option>
         <option value="other">$var_cal{'other'}</option>~;
-    for my $i ( 0 .. ( @abcde - 1 ) ) {
-        $letter_s .= qq~        <option value="$abcde[$i]"$sel>$abcde[$i]</option>\n~;
+    for my $i ( 0 .. $#abcde ) {
+        $letter_s .= qq~        <option value="$abcde[$i]">$abcde[$i]</option>\n~;
     }
     $letter_s .=
 qq~    </select>
@@ -199,9 +202,12 @@ qq~    </select>
       qw( null calmon_01 calmon_02 calmon_03 calmon_04 calmon_05 calmon_06 calmon_07 calmon_08 calmon_09 calmon_10 calmon_11 calmon_12 );
 
     ManageMemberinfo('load');
-    fopen( EVENTBIRTH, "$vardir/eventcalbday.db" );
-    my @birthmembers = <EVENTBIRTH>;
-    fclose(EVENTBIRTH);
+    my @birthmembers = ();
+    if ( -e "$vardir/eventcalbday.db") {
+        fopen( EVENTBIRTH, "<$vardir/eventcalbday.db" );
+        @birthmembers = <EVENTBIRTH>;
+        fclose(EVENTBIRTH);
+    }
 
     my @birthmembers1 = ();
     my @birthmembers2 = ();
@@ -342,16 +348,6 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
         }
         $bdmonths = $mybd_months;
         $bdmonths =~ s/{yabb bdmonthlink}/$bdmonthlinks/gsm;
-    }
-
-    for my $i ( 'a' .. 'z' ) {
-        $my_alpha_a .=
-            $mybdlist_alpha_a
-          . $i
-          . q~" style="text-decoration:none;">~
-          . uc($i)
-          . $mybdlist_alpha_b;
-        $my_alpha_a =~ s/{yabb sortiert}/$sortiert/sm;
     }
 
     for my $j ( 1 .. 12 ) {

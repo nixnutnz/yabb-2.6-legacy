@@ -14,11 +14,12 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$favoritespmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$favoritespmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Favorites {
@@ -127,7 +128,7 @@ sub Favorites {
         ) = split /\|/xsm, $_;
 
         # Set thread class depending on locked status and number of replies.
-        if ( $mnum eq q{} ) { next; }
+        if ( !$mnum ) { next; }
 
         MessageTotals( 'load', $mnum );
 
@@ -138,40 +139,42 @@ sub Favorites {
 qq~<a href="http://$perm_domain/$symlink$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
 
         $threadclass = 'thread';
-        if    ( $mstate =~ /h/ism ) { $threadclass = 'hide'; }
-        elsif ( $mstate =~ /l/ism ) { $threadclass = 'locked'; }
-        elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
-        elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
-        elsif ( $mstate eq q{} ) { $threadclass = 'thread'; }
-        if ( $threadclass eq 'hide' && $mstate =~ /s/ism && $mstate !~ /l/ism )
-        {
-            $threadclass = 'hidesticky';
-        }
-        elsif ($threadclass eq 'hide'
-            && $mstate =~ /l/ism
-            && $mstate !~ /s/ism )
-        {
-            $threadclass = 'hidelock';
-        }
-        elsif ($threadclass eq 'hide'
-            && $mstate =~ /s/ism
-            && $mstate =~ /l/ism )
-        {
-            $threadclass = 'hidestickylock';
-        }
-        elsif ($threadclass eq 'locked'
-            && $mstate =~ /s/ism
-            && $mstate !~ /h/ism )
-        {
-            $threadclass = 'stickylock';
-        }
-        elsif ( $mstate =~ /s/ism && $mstate !~ /h/ism ) {
-            $threadclass = 'sticky';
-        }
-        elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/ism ) {
-            $threadclass =
-              $threadclass eq 'locked' ? 'announcementlock' : 'announcement';
-        }
+		if ( !$mstate ) { $threadclass = 'thread'; }
+		else {
+			if    ( $mstate =~ /h/ism ) { $threadclass = 'hide'; }
+			elsif ( $mstate =~ /l/ism ) { $threadclass = 'locked'; }
+			elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
+			elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
+			if ( $threadclass eq 'hide' && $mstate =~ /s/ism && $mstate !~ /l/ism )
+			{
+				$threadclass = 'hidesticky';
+			}
+			elsif ($threadclass eq 'hide'
+				&& $mstate =~ /l/ism
+				&& $mstate !~ /s/ism )
+			{
+				$threadclass = 'hidelock';
+			}
+			elsif ($threadclass eq 'hide'
+				&& $mstate =~ /s/ism
+				&& $mstate =~ /l/ism )
+			{
+				$threadclass = 'hidestickylock';
+			}
+			elsif ($threadclass eq 'locked'
+				&& $mstate =~ /s/ism
+				&& $mstate !~ /h/ism )
+			{
+				$threadclass = 'stickylock';
+			}
+			elsif ( $mstate =~ /s/ism && $mstate !~ /h/ism ) {
+				$threadclass = 'sticky';
+			}
+			elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/ism ) {
+				$threadclass =
+				$threadclass eq 'locked' ? 'announcementlock' : 'announcement';
+			}
+		}
 
         my $movedFlag;
         ( undef, $movedFlag ) = Split_Splice_Move( $msub, $mnum );
@@ -265,7 +268,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
 
         # Build the page links list.
         $pages = q{};
-        $pagesall;
         if ($showpageall) {
             $pagesall =
               qq~<a href="$scripturl?num=$mnum/all-0">$pidtxt{'01'}</a>~;

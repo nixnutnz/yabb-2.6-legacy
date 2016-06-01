@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$falngver = 'YaBB 2.6.13 $Revision: 1651 $',
+$falngver = 'YaBB 2.6.13 $Revision$',
 
 %fatxt = (
 '1' => 'Attachment deleted',

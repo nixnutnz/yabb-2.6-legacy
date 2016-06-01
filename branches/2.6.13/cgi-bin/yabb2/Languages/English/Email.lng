@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$emaillngver = 'YaBB 2.6.13 $Revision: 1651 $';
+$emaillngver = 'YaBB 2.6.13 $Revision$';
 
 %yabbtagdesc = (
 # Constant tags
@@ -376,10 +376,10 @@ Subject: {yabb subject}
 ~;
 
 
-$yabbtags{'deleteduseremail'} = q~screen name~;
-$emaildesc{'deleteduseremail'} = q~The Deleted User Notification E-mail~;
-$deletedusersybject = q~Your account deleted on~;
-$deleteduseremail = q~Hello, {yabb displayname}!
+$yabbtags{'deleteduseremail'} = qq~screen name~;
+$emaildesc{'deleteduseremail'} = qq~The Deleted User Notification E-mail~;
+$deletedusersybject = qq~Your account deleted on~;
+$deleteduseremail = qq~Hello, {yabb displayname}!
 
 Your account on {yabb mbname} is no longer active and has been deleted.
 

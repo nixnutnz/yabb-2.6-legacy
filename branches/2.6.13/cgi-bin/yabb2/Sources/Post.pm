@@ -14,11 +14,12 @@
 ###############################################################################
 # use strict;
 # use warnings;
-# no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$postpmver = 'YaBB 2.6.13 $Revision: 1714 $';
+$postpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -70,7 +71,7 @@ sub Post {
     }
     if (  !$staff
         && $speedpostdetection
-        && ${ $uid . $username }{'spamcount'} >= $post_speed_count )
+        && ( ${ $uid . $username }{'spamcount'}  && ${ $uid . $username }{'spamcount'} >= $post_speed_count ))
     {
         $detention_time =
           ${ $uid . $username }{'spamtime'} + $spd_detention_time;
@@ -83,7 +84,7 @@ sub Post {
             UserAccount( $username, 'update' );
         }
     }
-    if ( $currentboard eq q{} && !$iamguest ) { fatal_error('no_access'); }
+    if ( !$currentboard && !$iamguest ) { fatal_error('no_access'); }
     my ( $filetype_info, $filesize_info );
     my ( $subtitle, $x, $msubject, $mattach, $mip, $mmessage, $mns );
     my $quotemsg = $INFO{'quote'};
@@ -141,7 +142,7 @@ sub Post {
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
         $verification_field =
-            $verification eq q{}
+            !$verification
           ? $mypost_guest_c
           : q{};
         $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
@@ -158,7 +159,7 @@ sub Post {
               qq~<br />$post_txt{'verification_question_case'}~;
         }
         $verification_question_field =
-            $verification_question eq q{}
+            !$verification_question
           ? $mypost_guest_e
           : q{};
         $verification_question_field =~
@@ -172,14 +173,14 @@ sub Post {
 
     $sub        = q{};
     $settofield = 'subject';
-    if ( $threadid ne q{} ) {
+    if ( $threadid ) {
         if ( !ref $thread_arrayref{$threadid} ) {
             fopen( FILE, "$datadir/$threadid.txt" )
               or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <FILE>;
             fclose(FILE);
         }
-        if ( $quotemsg ne q{} ) {
+        if ( $quotemsg ) {
             (
                 $msubject, $mname,   $memail, $mdate,    $musername,
                 $micon,    $mattach, $mip,    $mmessage, $mns
@@ -321,7 +322,7 @@ sub Postpage {
         $extra =~ s/{yabb icon}/$icon/sm;
         $extra =~ s/{yabb icon_img}/$micon_bg{$icon}/sm;
 
-        if ( $iamguest && $threadid ne q{} ) { $settofield = 'name'; }
+        if ( $iamguest && $threadid ) { $settofield = 'name'; }
     }
 
     if ( $pollthread && $iamguest ) { $guest_vote = 1; }
@@ -864,8 +865,9 @@ s/{yabb userlink}/<span id="savename" style="font-weight: bold">$liveusernamelin
         $messageblock =~ s/{yabb signaturehr}/$livesignature_hr/gsm;
         $messageblock =~ s/{yabb (.+?)}//gsm;
 
-        if ( !$minlinkpost ) { $minlinkpost = 0; }
-
+        $minlinkpost ||= 0;
+		${ $uid . $username }{'postcount'} ||= 0;
+        $nolinkallow ||= 0;
         if ( ( $iamguest && $minlinkpost > 0 )
             || ${ $uid . $username }{'postcount'} < $minlinkpost
             && !$iamadmin
@@ -1092,7 +1094,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             my $startcount;
             for my $y ( 1 .. $allowattach ) {
                 if (   ( $action eq 'modify' || $action eq 'modify2' )
-                    && $files[ $y - 1 ] ne q{}
+                    && $files[ $y - 1 ]
                     && -e "$uploaddir/$files[$y-1]" )
                 {
                     $startcount++;
@@ -1194,6 +1196,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $FORM{'return_to'}
           ? $FORM{'return_to'}
           : ${ $uid . $username }{'return_to'};
+        $rts ||= 1;
         for my $rt ( 1 .. 3 ) {
             $return_to_select .=
               $rts == $rt
@@ -1406,7 +1409,7 @@ sub Preview {
 
     if ( !$view ) {
         Postpage();
-        if ( $threadid ne q{} && $post eq 'post' ) { doshowthread(); }
+        if ( $threadid && $post eq 'post' ) { doshowthread(); }
 
         template();
     }
@@ -1414,13 +1417,13 @@ sub Preview {
 }
 
 sub Post2 {
-    if ( $iamguest && $enable_guestposting == 0 ) {
+    if ( $iamguest && !$enable_guestposting ) {
         fatal_error('not_logged_in');
     }
 
     if (  !$staff
         && $speedpostdetection
-        && ${ $uid . $username }{'spamcount'} >= $post_speed_count )
+        && ( ${ $uid . $username }{'spamcount'} && ${ $uid . $username }{'spamcount'} >= $post_speed_count ))
     {
         $detention_time =
           ${ $uid . $username }{'spamtime'} + $spd_detention_time;
@@ -1472,7 +1475,7 @@ sub Post2 {
 
     # Check if poster isn't using a distilled email domain
     email_domain_check($email);
-    my $spamdetected = spamcheck("$name $subject $message");
+    my ($spamdetected, $spamwrd) = spamcheck("$name $subject $message");
     if ( !${ $uid . $FORM{$username} }{'spamcount'} ) {
         ${ $uid . $FORM{$username} }{'spamcount'} = 0;
     }
@@ -1547,17 +1550,17 @@ sub Post2 {
     $subject =~ s/[\r\n]//gxsm;
     my $testsub = $subject;
     $testsub =~ s/ |\&nbsp;//gsm;
-    if ( $testsub eq q{} && $pollthread != 2 ) {
+    if ( !$testsub && $pollthread != 2 ) {
         fatal_error( 'useless_post', "$testsub" );
     }
 
     my $testmessage = regex_1($message);
-    if ( $testmessage eq q{} && $message ne q{} && $pollthread != 2 ) {
+    if ( !$testmessage && $message && $pollthread != 2 ) {
         fatal_error( 'useless_post', "$testmessage" );
     }
 
-    if ( !$minlinkpost ) { $minlinkpost = 0; }
-    if ( ${ $uid . $username }{'postcount'} < $minlinkpost
+    $minlinkpost ||= 0;
+    if ( ${ $uid . $username }{'postcount'} && ${ $uid . $username }{'postcount'} < $minlinkpost
         && !$staff )
     {
         if (   $message =~ m{http:\/\/}xsm
@@ -1632,7 +1635,7 @@ sub Post2 {
 
         $guest_vote   = $FORM{'guest_vote'}   || 0;
         $hide_results = $FORM{'hide_results'} || 0;
-        $multi_choice = $FORM{'multi_choice'} || 0;
+        $multi_choice = $FORM{'multi_choice'} || q{};
         $poll_comment = $FORM{'poll_comment'} || q{};
         $vote_limit   = $FORM{'vote_limit'}   || 0;
         $pie_legends  = $FORM{'pie_legends'}  || 0;
@@ -1717,7 +1720,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
             if ( $fixname =~ s/(.+)(\..+?)$/$1/xsm ) {
                 $fixext = $2;
             }
-            $spamdetected = spamcheck("$fixname");
+            ($spamdetected, $spamwrd) = spamcheck("$fixname");
             if ( !$staff ) {
                 if ( $spamdetected == 1 ) {
                     ${ $uid . $username }{'spamcount'}++;
@@ -1872,7 +1875,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
 
     # If no thread specified, this is a new thread.
     # Find a valid random ID for it.
-    if ( $threadid eq q{} ) {
+    if ( !$threadid ) {
         $newthreadid = getnewid();
     }
     else {
@@ -2393,12 +2396,12 @@ sub doshowthread {
         if ( @messages < $cutamount ) { $cutamount = @messages; }
         $showall = $post_cutts{'3'};
 
-        if ( @messages => $cutamount && $showpageall ) {
+        if ( @messages >= $cutamount && $showpageall ) {
             $showall .=
 qq~ $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply$INFO{'start'};showall=yes" class="under">$post_cutts{'4'}</a> $post_cutts{'5'} ~;
         }
 
-        if ( $INFO{'showall'} ne q{} || $cutamount eq 'all' ) {
+        if ( $INFO{'showall'} || $cutamount eq 'all' ) {
             $origcutamount = $cutamount;
             $cutamount     = $pidtxt{'01'};
             $showall =
@@ -2407,7 +2410,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
         $my_showmess_disnum = qq~
             <b>$post_txt{'468'} - $post_cutts{'2'} $cutamount $showall</b>~;
         if ( $tsreverse == 1 ) { @messages = reverse @messages; }
-        if ( $INFO{'showall'} ne q{} || $cutamount eq 'all' ) {
+        if ( $INFO{'showall'} || $cutamount eq 'all' ) {
             $cutamount = 1000;
         }
         foreach my $amounter ( 0 .. ( $cutamount - 1 ) ) {
@@ -2471,7 +2474,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tempname}">$for
             ToChars($message);
             $message = Censor($message);
 
-            if ( $message ne q{} ) {
+            if ( $message ) {
                 $my_enable_markquote =
                   ( $enable_markquote && $enable_quickreply )
                   ? qq~&nbsp;&nbsp;<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,''))">$img{'mquote'}</a>~
@@ -2524,7 +2527,7 @@ sub sendGuestPM {
     if ($gpvalid_en) {
         validation_code();
         $verification_field =
-            $verification eq q{}
+            !$verification
           ? $mypost_guest_c
           : q{};
         $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
@@ -2542,7 +2545,7 @@ sub sendGuestPM {
               qq~<br />$post_txt{'verification_question_case'}~;
         }
         $verification_question_field =
-            $verification_question eq q{}
+            !$verification_question
           ? $mypost_veri_c
           : q{};
         $verification_question_field =~
@@ -2634,10 +2637,10 @@ sub sendGuestPM2 {
 
     my $testsub = $subject;
     $testsub =~ s/[\r\n\ ]|\&nbsp;//gsm;
-    if ( $testsub eq q{} ) { fatal_error( 'useless_post', $testsub ); }
+    if ( !$testsub ) { fatal_error( 'useless_post', $testsub ); }
 
     my $testmessage = regex_1($message);
-    if ( $testmessage eq q{} && $message ne q{} ) {
+    if ( !$testmessage && $message ) {
         fatal_error( 'useless_post', $testmessage );
     }
 
@@ -2704,7 +2707,7 @@ sub modAlert {
     if ( !$iamguest && !$PMenableAlertButton ) {
         fatal_error('no_access');
     }
-    if ( $currentboard eq q{} && !$iamguest ) {
+    if ( !$currentboard && !$iamguest ) {
         fatal_error('no_access');
     }
     if ( !$PM_level ) { fatal_error('no_access'); }
@@ -2739,7 +2742,7 @@ sub modAlert {
     if ( $iamguest && $gpvalid_en ) {
         validation_code();
         $verification_field =
-            $verification eq q{}
+            !$verification
           ? $mypost_guest_c
           : q{};
         $verification_field =~ s/{yabb showcheck}/$showcheck/sm;
@@ -2757,7 +2760,7 @@ sub modAlert {
               qq~<br />$post_txt{'verification_question_case'}~;
         }
         $verification_question_field =
-            $verification_question eq q{}
+            !$verification_question
           ? $mypost_veri_c
           : q{};
         $verification_question_field =~
@@ -2771,14 +2774,14 @@ sub modAlert {
 
     $sub        = q{};
     $settofield = 'subject';
-    if ( $threadid ne q{} ) {
+    if ( $threadid ) {
         if ( !ref $thread_arrayref{$threadid} ) {
             fopen( FILE, "$datadir/$threadid.txt" )
               or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <FILE>;
             fclose(FILE);
         }
-        if ( $quotemsg ne q{} ) {
+        if ( $quotemsg ) {
             (
                 $msubject, $mname,   $memail, $mdate,    $musername,
                 $micon,    $mattach, $mip,    $mmessage, $mns
@@ -2920,10 +2923,10 @@ sub modAlert2 {
     my $tstsubject = $subject;
     my $testsub    = $subject;
     $testsub =~ s/ |\&nbsp;//gsm;
-    if ( $testsub eq q{} ) { fatal_error( 'useless_post', $testsub ); }
+    if ( !$testsub ) { fatal_error( 'useless_post', $testsub ); }
 
     my $testmessage = regex_1($message);
-    if ( $testmessage eq q{} && $message ne q{} ) {
+    if ( !$testmessage && $message ) {
         fatal_error( 'useless_post', $testmessage );
     }
 
@@ -2986,7 +2989,7 @@ sub modAlert2 {
             LoadUser($toBoardMod);
             if (   ${ $uid . $toBoardMod }{'notify_me'} > 1
                 && $enable_notifications > 1
-                && ${ $uid . $toBoardMod }{'email'} ne q{} )
+                && ${ $uid . $toBoardMod }{'email'} )
             {
                 require Sources::Mailer;
                 $language = ${ $uid . $toBoardMod }{'language'};

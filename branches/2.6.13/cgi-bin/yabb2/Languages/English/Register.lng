@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$registerlngver = 'YaBB 2.6.13 $Revision: 1651 $';
+$registerlngver = 'YaBB 2.6.13 $Revision$';
 
 %register_txt = (
 '4' => 'For security reasons, it&#39;s advisable to have your screen name not the same as your login ID.',
@@ -66,6 +66,7 @@ $registerlngver = 'YaBB 2.6.13 $Revision: 1651 $';
 '764a' => 'User Agreement',
 '765' => 'Join Member Group',
 '765a' => 'Add to Member Group',
+'765b' => 'No Member Group selected.',
 '766' => 'You can join a Member Group only on Registration.',
 '767' => 'You can also join a Member Group after registration from your Edit Profile page.',
 '767a' => ' Hold down Ctrl or Shift key (Apple key on Mac) and click to select more groups.',

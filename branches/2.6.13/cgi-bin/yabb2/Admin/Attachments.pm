@@ -15,15 +15,17 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$attachmentspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$attachmentspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Attachments {
     is_admin_or_gmod();
 
-    fopen( AMS, "$vardir/attachments.txt" );
-    my @attachments = <AMS>;
-    fclose(AMS);
+	if ( -e "$vardir/attachments.txt") {
+        fopen( AMS, "$vardir/attachments.txt" );
+        @attachments = <AMS>;
+        fclose(AMS);
+	}
 
     my $attachment_space = 0;
     foreach (@attachments) {
@@ -37,26 +39,39 @@ sub Attachments {
     else {
         $remaining_space = NumberFormat( ( $dirlimit - $attachment_space ) ) . ' KB';
     }
-
+	$maxdaysattach = q{};
+    if ( -e "$vardir/oldestattach.txt" ) {
     fopen( FILE, "$vardir/oldestattach.txt" );
     $maxdaysattach = <FILE>;
     fclose(FILE);
+	}
 
+	$pmMaxDaysAttach = q{};
+	if(-e "$vardir/oldestpmattach.txt") {
     fopen( FILE, "$vardir/oldestpmattach.txt" );
     $pmMaxDaysAttach = <FILE>;
     fclose(FILE);
+	}
 
+	$maxsizeattach = q{};
+	if ( -e "$vardir/maxattachsize.txt" ) {
     fopen( FILE, "$vardir/maxattachsize.txt" );
     $maxsizeattach = <FILE>;
     fclose(FILE);
+	}
 
+	$pmMaxSizeAttach = q{};
+    if (-e "$vardir/maxpmattachsize.txt") {
     fopen( FILE, "$vardir/maxpmattachsize.txt" );
     $pmMaxSizeAttach = <FILE>;
     fclose(FILE);
+	}
 
-    fopen( PMATTACHLOG, "$vardir/pm.attachments" );
-    my @pmAttachments = <PMATTACHLOG>;
-    fclose(PMATTACHLOG);
+	if( -e "$vardir/pm.attachments" ) {
+        fopen( PMATTACHLOG, "$vardir/pm.attachments" );
+        @pmAttachments = <PMATTACHLOG>;
+        fclose(PMATTACHLOG);
+	}
 
     my $pmAttachmentSpace = 0;
     foreach (@pmAttachments) {
@@ -482,6 +497,7 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="8"><b><i>$fatxt{'48'}</i>
             $endpage = $newstart + ( $postdisplaynum * 25 );
         }
         else { $endpage = $max; }
+		$startpage ||=0;
         if ( $startpage > 0 ) {
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&nbsp;...&nbsp;~;
@@ -501,6 +517,7 @@ qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&n
         }
         $lastpn  = int( $max / 25 ) + 1;
         $lastptn = ( $lastpn - 1 ) * 25;
+		$pageindexadd = q{};
         if ( $endpage < $max - (25) ) { $pageindexadd = q~...&nbsp;~; }
         if ( $endpage != $max ) {
             $pageindexadd .=

@@ -14,11 +14,11 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$guardianpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$guardianpmver = 'YaBB 2.6.13 $Revision$';
 
 $not_from   = qq~$webmaster_email~;
 $not_to     = qq~$webmaster_email~;
@@ -35,7 +35,7 @@ sub guard {
     @white_list = split /\|/xsm, $whitelist;
     foreach (@white_list) {
         chomp $_;
-        if (
+        if ( $_ &&
             (
                    $proxy0 =~ m/$_/xsm
                 || $proxy1 =~ m/$_/xsm
@@ -43,7 +43,6 @@ sub guard {
                 || $proxy3 =~ m/$_/xsm
                 || $username eq $_
             )
-            && $_ ne q{}
           )
         {
             $whitelisted = 1;
@@ -93,10 +92,10 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
     $remote = get_ip();
     if ( index $remote, q{, } ) {
         @remotes = split /\, /sm, $remote;
-        if (   $remotes[0] ne 'unknown'
+        if ( $remotes[0] && $remotes[0] ne 'unknown'
             && $remotes[0] ne 'empty'
             && $remotes[0] ne '127.0.0.1'
-            && $remotes[0] ne q{} )
+             )
         {
             $remote = $remotes[0];
         }
@@ -112,7 +111,7 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
         $streferer = lc get_referer();
         foreach (@refererlist) {
             chomp $_;
-            if ( $streferer =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $_ && $streferer =~ m/$_/xsm ) {
                 LoadLanguage('Guardian');
                 $abuse_time = timeformat($date, 1, 'rfc', 1);
                 if ($referer_notify) {
@@ -157,7 +156,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
         $agent = lc get_user_agent();
         foreach (@harvesterlist) {
             chomp $_;
-            if ( $agent =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $_ && $agent =~ m/$_/xsm ) {
                 if ($harvester_notify) {
                     LoadLanguage('Guardian');
                     $abuse_time = timeformat($date, 1, 'rfc', 1);
@@ -202,7 +201,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
         $method = lc get_request_method();
         foreach (@requestlist) {
             chomp $_;
-            if ( $method =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $_ && $method =~ m/$_/xsm ) {
                 if ($request_notify) {
                     LoadLanguage('Guardian');
                     $abuse_time = timeformat($date, 1, 'rfc', 1);
@@ -254,7 +253,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 chomp $testkey;
                 $temp_query =~ s/$testkey//gxsm;
             }
-            if ( $temp_query =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $_ && $temp_query =~ m/$_/xsm ) {
                 if ($string_notify) {
                     LoadLanguage('Guardian');
                     $abuse_time = timeformat($date, 1, 'rfc', 1);
@@ -655,12 +654,12 @@ sub update_htaccess {
     $start    = 0;
     foreach (@htlines) {
         chomp $_;
-        if ( $_ eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $_ !~ m/\x23/xsm && $_ ne q{} ) {
+        if ( $_ && $_ eq $htheader ) { $start = 1; }
+        if ( $_ && $start == 0 && $_ !~ m/\x23/xsm ) {
             push @htout, "$_\n";
         }
-        if ( $_ eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $_ =~ s/Deny from //gsm ) {
+        if ( $_ && $_ eq $htfooter ) { $start = 0; }
+        if ( $_ && $start == 1 && $_ =~ s/Deny from //gsm ) {
             push @denies, $_;
         }
     }

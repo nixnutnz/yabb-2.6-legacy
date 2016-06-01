@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$mailmemberspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$mailmemberspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($iamguest) { fatal_error('no_access'); }
@@ -313,13 +313,13 @@ sub MailingMembers {
     $selPos   = q{};
     $selUser  = q{};
 
-    if ( $FORM{'sortform'} eq 'position' ) {
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'position' ) {
         $selPos = q~ selected="selected"~;
     }
     else { $selUser = q~ selected="selected"~; }
 
-    if ( $INFO{'sort'} ne q{} ) { $sortmode = ';sort=' . $INFO{'sort'}; }
-    elsif ( $FORM{'sortform'} ne q{} ) {
+    if ( $INFO{'sort'} ) { $sortmode = ';sort=' . $INFO{'sort'}; }
+    elsif ( $FORM{'sortform'} ) {
         $sortmode = ';sort=' . $FORM{'sortform'};
     }
 
@@ -360,6 +360,7 @@ sub MailingMembers {
     while ( ( $membername, $value ) = each %memberinf ) {
         ( $memberrealname, undef, $memposition, $memposts ) = split /\|/xsm,
           $value;
+		$memposts ||= 0;
         $pstsort    = 99_999_999 - $memposts;
         $sortgroups = q{};
         $j          = 0;
@@ -368,8 +369,8 @@ sub MailingMembers {
             $sortgroups = '!!!';
         }
         else {
-            if (   $FORM{'sortform'} eq 'position'
-                || $INFO{'sort'} eq 'position' )
+            if (   ($FORM{'sortform'} && $FORM{'sortform'} eq 'position')
+                || ($INFO{'sort'} && $INFO{'sort'} eq 'position') )
             {
                 foreach my $key ( keys %Group ) {
                     if ( $memposition eq $key ) {
@@ -478,7 +479,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     ~;
 
     if ( $memcount != 0 ) {
-        if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
+        if ( $FORM{'sortform'} ) { $FORM{'sortform'} = $INFO{'sort'}; }
         if ( !$FORM{'reversed'} ) { $FORM{'reversed'} = $INFO{'reversed'}; }
 
         @groupinfo = ();

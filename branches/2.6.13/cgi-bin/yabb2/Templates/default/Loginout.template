@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$loginouttemver = 'YaBB 2.6.13 $Revision: 1651 $';
+$loginouttemver = 'YaBB 2.6.13 $Revision$';
 
 $myborder =
 q~<div class="bordercolor" style="width: 100%; margin-bottom: 8px; margin-left: auto; margin-right: auto;">~;

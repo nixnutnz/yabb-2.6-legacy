@@ -11,7 +11,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$messageindextemver = 'YaBB 2.6.13 $Revision: 1651 $';
+no warnings qw(uninitialized once);
+$messageindextemver = 'YaBB 2.6.13 $Revision$';
 
 LoadLanguage('BoardIndex');
 
@@ -25,7 +26,7 @@ $my_ttsep = $menusep;
 
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
-if($useThreadtools == 1) {
+if($useThreadtools && $useThreadtools == 1) {
     $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
     $threadhandelstyle2 = qq~ class="post_tools center" style="width:10em"~;
 }

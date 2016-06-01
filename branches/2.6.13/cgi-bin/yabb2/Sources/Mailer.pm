@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$mailerpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$mailerpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $pre = q~style="padding:5px 40px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:100%; overflow-x:auto;"~;
@@ -157,7 +157,9 @@ sub sendmail {
 sub template_email {
     my ( $message, $info ) = @_;
     foreach my $key ( keys %{$info} ) {
-        $message =~ s/{yabb $key}/$info->{$key}/gsm;
+        if ( $info->{$key} ) {
+            $message =~ s/{yabb $key}/$info->{$key}/gsm;
+        }
     }
     $message =~ s/{yabb scripturl}/$scripturl/gsm;
     $message =~ s/{yabb adminurl}/$adminurl/gsm;
@@ -169,11 +171,15 @@ sub tomail {
     my ( $MAIL, $mailout ) = @_;
     my ( $fromheader, $toheader, $subject, $message, $charsetheader ) =
       @{$mailout};
+    my $cte = "Content-Transfer-Encoding: 7bit\r";
+    if ( $charsetheader eq 'UTF-8') {
+        $cte = "Content-Transfer-Encoding: 8bit\r";
+    }
     print {$MAIL} "To: $toheader\n"           or croak "$croak{'print'} mail";
     print {$MAIL} "From: $fromheader\n"       or croak "$croak{'print'} mail";
     print {$MAIL} "X-Mailer: YaBB Sendmail\n" or croak "$croak{'print'} mail";
     print {$MAIL} "Subject: $subject\n"       or croak "$croak{'print'} mail";
-    print {$MAIL} "MIME-Version: 1.0\n\n$cte\nContent-Type: text/html\; charset=$charsetheader\n\n"
+    print {$MAIL} "MIME-Version: 1.0\r\n$cte\nContent-Type: text/html\; charset=$charsetheader\r\n"
       or croak "$croak{'print'} mail";
     $message =~ s/\r\n/\n/gsm;
     print {$MAIL} "<pre $pre>$message</pre>\n" or croak "$croak{'print'} mail";

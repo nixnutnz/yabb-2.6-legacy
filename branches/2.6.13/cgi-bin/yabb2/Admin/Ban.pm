@@ -17,7 +17,7 @@ use CGI qw(:standard);
 use Time::Local;
 our $VERSION = '2.6.13';
 
-$banpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$banpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 #the ban list in the Admin Center
@@ -38,19 +38,19 @@ sub ipban {
                 $tmb = $banned[2] + ( $bandays[$i] * 86400 );
             }
         }
-
+        $mybanname = ${$uid.$ban_user}{'realname'} || q{};
         if ( $banned[4] eq 'p' ) {
             $timeb =
-qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'p_ban'}~;
+qq~$tmc by $mybanname [$ban_user] - $admin_txt{'p_ban'}~;
         }
         elsif ( $banned[4] ne 'p' && $tmb < $today ) {
             $timeb =
-qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expired'}~;
+qq~$tmc by $mybanname [$ban_user] - $admin_txt{'expired'}~;
         }
         else {
             $tma = timeformat($tmb,1);
             $timeb =
-qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expireon'}: $tma~;
+qq~$tmc by $mybanname [$ban_user] - $admin_txt{'expireon'}: $tma~;
         }
         return $timeb;
     };
@@ -169,7 +169,7 @@ qq~$tmc by ${$uid.$ban_user}{'realname'} [$ban_user] - $admin_txt{'expireon'}: $
                 <td class="windowbg2 vtop" rowspan="2">
                     <div style="height:30em; overflow:auto">
                     <ul>~;
-    $yymain .= banlog();
+    $yymain .= banlog() || q{};
     $yymain .= qq~            </ul>
                     </div>
                 </td>

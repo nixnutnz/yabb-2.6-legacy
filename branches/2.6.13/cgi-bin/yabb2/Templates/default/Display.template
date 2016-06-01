@@ -11,7 +11,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$displaytemver = 'YaBB 2.6.13 $Revision: 1651 $';
+no warnings qw(uninitialized once);
+$displaytemver = 'YaBB 2.6.13 $Revision$';
 
 $disp_qquname = 'qquname.gif';
 $disp_arrow_dn = 'arrow_down.gif';
@@ -162,6 +163,7 @@ else {
     $postcol = 3;
     $posttoola = ' width:1%';
     $padd_right = q{};
+    $posthandeladmin = q{};
 }
 
 $contactlist = qq~
@@ -289,7 +291,7 @@ $myrecent = qq~
 
 $myrecent_mess = qq~
             <td class="right">&nbsp;
-                <a href="$scripturl?board=$board;action=post;num={yabb tnum}/{yabb c}#{yabb c};title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num={yabb tnum};quote={yabb c};title=PostReply">$img{'recentquote'}</a>$notify &nbsp;
+                <a href="$scripturl?board={yabb board};action=post;num={yabb tnum}/{yabb c}#{yabb c};title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board={yabb board};action=post;num={yabb tnum};quote={yabb c};title=PostReply">$img{'recentquote'}</a>{yabb notify} &nbsp;
             </td>~;
 
 $mydisp_topicview = qq~

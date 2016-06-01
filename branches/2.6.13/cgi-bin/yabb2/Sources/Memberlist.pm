@@ -14,11 +14,12 @@
 ###############################################################################
 # use strict;
 #use warnings;
-#no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$memberlistpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$memberlistpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $ML_Allowed ) { fatal_error('no_access'); }
@@ -58,8 +59,8 @@ sub Ml {
         $barmax = $barmaxnumb;
     }
 
-    $FORM{'sortform'} ||= $INFO{'sortform'};    # Fix for Javascript disabled
-    if ( $INFO{'sort'} eq q{} && $FORM{'sortform'} eq q{} ) {
+    $FORM{'sortform'} ||= $INFO{'sortform'} || q{};    # Fix for Javascript disabled
+    if ( !$INFO{'sort'} && !$FORM{'sortform'} eq q{} ) {
         $INFO{'sort'}     = $defaultml;
         $FORM{'sortform'} = $defaultml;
     }
@@ -80,8 +81,7 @@ qq(<a href="$scripturl?action=ml;sort=mlletter;letter=$page" class="$letterclass
 qq(<a href="$scripturl?action=ml;sort=mlletter;letter=z" class="$letterclass"><b>Z</b></a>  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$letterclass"><b>$ml_txt{'800'}</b></a> );
     }
 
-    if   ( $INFO{'start'} eq q{} ) { $start = 0; }
-    else                           { $start = "$INFO{'start'}"; }
+    $start = $INFO{'start'} || 0;
     if ( $FORM{'sortform'} eq 'posts' || $INFO{'sort'} eq 'posts' ) {
         $selcPost .= q~ selected="selected"~;
         $selPost  .= qq~class="$header_class_selected"~;
@@ -116,7 +116,7 @@ qq(<a href="$scripturl?action=ml;sort=mlletter;letter=z" class="$letterclass"><b
     if ( $FORM{'sortform'} eq 'memsearch' || $INFO{'sort'} eq 'memsearch' ) {
         FindMembers();
     }
-    if (   $INFO{'sort'} eq q{}
+    if (   !$INFO{'sort'}
         || $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' )
     {
@@ -289,12 +289,10 @@ sub MLDate {
         $counter++;
     }
     foreach my $counter ( 0 .. ( $MembersPerPage - 1 ) ) {
-        if ( $buffer = <MEMBERLISTREAD> ) {
+        while (defined( $buffer = <MEMBERLISTREAD> ) ) {
             chomp $buffer;
-            if ($buffer) {
-                ( $membername, undef ) = split /\t/xsm, $buffer, 2;
-                showRows($membername);
-            }
+            ( $membername, undef ) = split /\t/xsm, $buffer, 2;
+            showRows($membername);
         }
     }
     fclose(MEMBERLISTREAD);
@@ -308,7 +306,7 @@ sub showRows {
     my ($user) = @_;
 
     my $wwwshow = qq~<img src="$imagesdir/$ml_trans" width="15" alt="" />~;
-    if ( $user ne q{} ) {
+    if ( $user ) {
         LoadUser($user);
         my $group_stars = q{};
         if ($group_stars_ml) {
@@ -316,10 +314,11 @@ sub showRows {
             $memberstar{$user} =~ s/<br \/>//gsm;
             $group_stars = qq~<br />$memberstar{$user}~;
         }
-        if ( ${ $uid . $user }{'realname'} eq q{} ) {
+        if ( ${ $uid . $user }{'realname'} ) {
             ${ $uid . $user }{'realname'} = $user;
         }
-        if ( !$minlinkweb ) { $minlinkweb = 0; }
+        $minlinkweb ||= 0;
+		${ $uid . $user }{'postcount'} ||=0;
         if (
             ${ $uid . $user }{'weburl'}
             && (   ${ $uid . $user }{'postcount'} >= $minlinkweb
@@ -342,7 +341,7 @@ qq~<a href="${$uid.$user}{'weburl'}" target="_blank"><img src="$micon_bg{'www'}"
             $Bar =
 qq~<img src="$imagesdir/$ml_bar" width="$barwidth" height="10" alt="" />~;
         }
-        if ( $Bar eq q{} ) { $Bar = '&nbsp;'; }
+        if ( !$Bar ) { $Bar = '&nbsp;'; }
         my $additional_tds =
           $extendedprofiles ? ext_memberlist_tds($user) : q{};
 
@@ -433,13 +432,13 @@ sub buildIndex {
             $allselected );
         $indexdisplaynum = 3;
         $dropdisplaynum  = 10;
-        if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
+        if ( !$FORM{'sortform'} ) { $FORM{'sortform'} = $INFO{'sort'}; }
         $postdisplaynum = 3;
         $startpage      = 0;
         $max            = $memcount;
-        if ( $SearchStr ne q{} ) { $findmember = qq~;member=$SearchStr~; }
+        if ( $SearchStr ) { $findmember = qq~;member=$SearchStr~; }
 
-        if ( $INFO{'start'} eq 'all' ) {
+        if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
             $MembersPerPage = $max;
             $all            = 1;
             $allselected    = q~ selected="selected"~;
@@ -691,7 +690,7 @@ sub buildPages {
     $TableHeader =~ s/{yabb selReg}/$selReg/sm;
     $TableHeader =~ s/{yabb add_headers}/$additional_headers/sm;
 
-    if ( $LetterLinks ne q{} ) {
+    if ( $LetterLinks ) {
         $TableHeader .= $my_letterlinks;
         $TableHeader =~ s/{yabb letterlinks}/$LetterLinks/sm;
         $TableHeader =~ s/{yabb headercount}/$headercount/sm;

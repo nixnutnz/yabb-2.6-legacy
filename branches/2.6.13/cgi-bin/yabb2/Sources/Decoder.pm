@@ -12,14 +12,16 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(uninitialized once);
 our $VERSION = '2.6.13';
 
-$decoderpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$decoderpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub scramble {
     my ( $input, $user ) = @_;
-    if ( $user eq q{} ) { return; }
+    if ( !$user || !$input ) { return; }
 
     # creating a codekey based on userid
     my $carrier = q{};
@@ -42,7 +44,8 @@ sub scramble {
     # making a mess of the input
     my $lastvalue = 3;
     for my $n ( 0 .. length $input ) {
-        $value = ( substr $carrier, $n, 1 ) + $lastvalue + 1;
+        my $str = ( substr $carrier, $n, 1) || 0;
+        $value = $str + $lastvalue + 1;
         $lastvalue = $value;
         substr( $scramble, $value, 1 ) = substr $input, $n, 1;
     }
@@ -55,7 +58,7 @@ sub scramble {
 
 sub descramble {
     my ( $input, $user ) = @_;
-    if ( $user eq q{} ) { return; }
+    if ( !$user ) { return; }
 
     # creating a codekey based on userid
     my $carrier = q{};
@@ -84,7 +87,7 @@ sub descramble {
 
 sub validation_check {
     my ($checkcode) = @_;
-    if ( $checkcode eq q{} ) { fatal_error('no_verification_code'); }
+    if ( !$checkcode ) { fatal_error('no_verification_code'); }
     if ( $checkcode !~ /\A[0-9A-Za-z]+\Z/xsm ) {
         fatal_error('invalid_verification_code');
     }

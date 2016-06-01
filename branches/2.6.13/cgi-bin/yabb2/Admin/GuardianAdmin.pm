@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$guardianadminpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$guardianadminpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Guardian');
@@ -26,37 +26,63 @@ sub setup_guardian {
     is_admin_or_gmod();
 
     # figure out what to print
+    $guardian_checked = q{};
     if ($use_guardian)      { $guardian_checked = ' checked="checked" ' }
+    $htaccess_checked = q{};
     if ($use_htaccess)      { $htaccess_checked = ' checked="checked" ' }
+    $proxy_on_checked = q{};
     if ($disallow_proxy_on) { $proxy_on_checked = ' checked="checked" ' }
+    $proxy_notify_checked = q{};
     if ($disallow_proxy_notify) {
         $proxy_notify_checked = ' checked="checked" ';
     }
+    $proxy_htaccess_checked = q{};
     if ($disallow_proxy_htaccess) {
         $proxy_htaccess_checked = ' checked="checked" ';
     }
+    $referer_on_checked = q{};
     if ($referer_on)       { $referer_on_checked       = ' checked="checked" ' }
+    $referer_notify_checked = q{};
     if ($referer_notify)   { $referer_notify_checked   = ' checked="checked" ' }
+    $referer_htaccess_checked = q{};
     if ($referer_htaccess) { $referer_htaccess_checked = ' checked="checked" ' }
+    $harvester_on_checked = q{};
     if ($harvester_on)     { $harvester_on_checked     = ' checked="checked" ' }
+    $harvester_notify_checked = q{};
     if ($harvester_notify) { $harvester_notify_checked = ' checked="checked" ' }
+    $harvester_htaccess_checked = q{};
     if ($harvester_htaccess) {
         $harvester_htaccess_checked = ' checked="checked" ';
     }
+    $request_on_checked = q{};
     if ($request_on)       { $request_on_checked       = ' checked="checked" ' }
+    $request_notify_checked = q{};
     if ($request_notify)   { $request_notify_checked   = ' checked="checked" ' }
+    $request_htaccess_checked = q{};
     if ($request_htaccess) { $request_htaccess_checked = ' checked="checked" ' }
+    $string_on_checked = q{};
     if ($string_on)        { $string_on_checked        = ' checked="checked" ' }
+    $string_notify_checked = q{};
     if ($string_notify)    { $string_notify_checked    = ' checked="checked" ' }
+    $string_htaccess_checked = q{};
     if ($string_htaccess)  { $string_htaccess_checked  = ' checked="checked" ' }
+    $union_on_checked = q{};
     if ($union_on)         { $union_on_checked         = ' checked="checked" ' }
+    $union_notify_checked = q{};
     if ($union_notify)     { $union_notify_checked     = ' checked="checked" ' }
+    $union_htaccess_checked = q{};
     if ($union_htaccess)   { $union_htaccess_checked   = ' checked="checked" ' }
+    $clike_on_checked = q{};
     if ($clike_on)         { $clike_on_checked         = ' checked="checked" ' }
+    $clike_notify_checked = q{};
     if ($clike_notify)     { $clike_notify_checked     = ' checked="checked" ' }
+    $clike_htaccess_checked = q{};
     if ($clike_htaccess)   { $clike_htaccess_checked   = ' checked="checked" ' }
+    $script_on_checked = q{};
     if ($script_on)        { $script_on_checked        = ' checked="checked" ' }
+    $script_notify_checked = q{};
     if ($script_notify)    { $script_notify_checked    = ' checked="checked" ' }
+    $script_htaccess_checked = q{};
     if ($script_htaccess)  { $script_htaccess_checked  = ' checked="checked" ' }
 
     ## make splits turn into linefeeds for the forms
@@ -70,8 +96,9 @@ sub setup_guardian {
     $banned_requests   =~ s/\|/\n/gxsm;
     $banned_strings    =~ s/\|/\n/gxsm;
     $whitelist         =~ s/\|/\n/gxsm;
-    @access_denied = update_htaccess('load');
+    @access_denied = gr_update_htaccess('load');
 
+    $acc_denied = q{};
     foreach (@access_denied) {
         chomp $_;
         $acc_denied .= "$_\n";
@@ -366,8 +393,11 @@ sub setup_guardian2 {
       use_guardian use_htaccess disallow_proxy_on disallow_proxy_htaccess referer_on referer_htaccess harvester_on harvester_htaccess request_on request_htaccess string_on string_htaccess union_on union_htaccess clike_on clike_htaccess script_on script_htaccess disallow_proxy_notify referer_notify harvester_notify request_notify string_notify union_notify clike_notify script_notify};
 
     # Set as 0 or 1 if box was checked or not
-    my $fi;
-    map { $fi = lc $_; ${$_} = $FORM{$fi} == 1 ? 1 : 0; } @onoff;
+    foreach (@onoff) {
+        my $fi = lc $_;
+        if (!$FORM{$fi}) {${$_} = 0;}
+        else {${$_} = $FORM{$fi} == 1 ? 1 : 0;}
+    }
 
     $banned_harvesters = $FORM{'banned_harvesters'};
     $banned_referers   = $FORM{'banned_referers'};
@@ -401,21 +431,22 @@ sub setup_guardian2 {
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
     @access_denied = split /\,/xsm, $access_denied;
-    update_htaccess( 'save', @access_denied );
+    gr_update_htaccess( 'save', @access_denied );
 
     $yySetLocation = qq~$adminurl?action=setup_guardian~;
     redirectexit();
     return;
 }
 
-sub update_htaccess {
+sub gr_update_htaccess {
     my ( $action, @values ) = @_;
     my ( $htheader, $htfooter, @denies, @htout );
     if ( !$action ) { return 0; }
-    fopen( HTA, '.htaccess' );
-    @htlines = <HTA>;
-    fclose(HTA);
-
+    if ( -e '.htaccess' ) {
+        fopen( HTA, '.htaccess' );
+        @htlines = <HTA>;
+        fclose(HTA);
+    }
 # header to determine only who has access to the main script, not the admin script
     $htheader = q~<Files YaBB*>~;
     $htfooter = q~</Files>~;
@@ -429,6 +460,7 @@ sub update_htaccess {
             push @denies, $_;
         }
     }
+
     if ( $action eq 'load' ) {
         return @denies;
     }
@@ -453,7 +485,7 @@ sub update_htaccess {
     }
     elsif ( $action eq 'add' ) {
         push @denies, @values;
-        update_htaccess( 'save', @denies );
+        gr_update_htaccess( 'save', @denies );
     }
     return;
 }
@@ -463,7 +495,7 @@ sub guardian_block {
 
     if ( $use_guardian && $use_htaccess ) {
         my $blockIP = $INFO{'ip'};
-        update_htaccess( 'add', $blockIP );
+        gr_update_htaccess( 'add', $blockIP );
         $yySetLocation = qq~$adminurl?action=$INFO{'return'}~;
         redirectexit();
     }

@@ -18,8 +18,9 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
-our $modulecheckerpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+our $modulecheckerpmver = 'YaBB 2.6.13 $Revision$';
 our ( $action, $yymain, %modulecheck );
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $script_root = $ENV{'SCRIPT_FILENAME'};
@@ -57,14 +58,10 @@ foreach my $module ( @modules ) {
     }
     else {
         if ( $module eq 'DateTime::TimeZone' ) {
-            my $version   = $module->VERSION;
-            my $myversion = (
-                "%s %s is\n %s\n",
-                $module, ( $version ? $version : '<NO $VERSION>' ),
-            );
+            my $version   = $module->VERSION || '<NO $VERSION>';
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>
-                    <td class="windowbg2" colspan="2">$modulecheck{'6'} $modulecheck{'DateTime::TimeZone2'} <b>$myversion</b></td>
+                    <td class="windowbg2" colspan="2">$modulecheck{'6'} $modulecheck{'DateTime::TimeZone2'} \n<b>$version</b></td>
                 </tr>~;
         }
         else {

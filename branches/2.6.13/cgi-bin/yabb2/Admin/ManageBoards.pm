@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$manageboardspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$manageboardspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
@@ -173,7 +174,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
             my $tmpwidth3 = 5;
             # recursive loop to display all sub boards
 
-            *show_boards = sub {
+            local *show_boards = sub {
                 my @brdlist = @_;
                 $indent += 3;
                 for my $curboard (@brdlist) {
@@ -184,6 +185,7 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                     $descr = ${ $uid . $curboard }{'description'};
                     $descr =~ s/\<br \/>/\n/gsm;
                     my $bicon = q{};
+					if ( -e "$boardsdir/brdpics.db") {
                     fopen( BRDPIC, "<$boardsdir/brdpics.db" );
                     my @brdpics = <BRDPIC>;
                     fclose( BRDPIC);
@@ -207,13 +209,14 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                             }
                         }
                     }
-                    if ( ${ $uid . $curboard }{'ann'} == 1 ) {
+					}
+                    if ( ${ $uid . $curboard }{'ann'} ) {
                         $bicon =
 qq~ <img src="$imagesdir/ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
                         $tmpwidth2 = 90 - $indent;
                         $tmpwidth3 = 5;
                     }
-                    if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
+                    if ( ${ $uid . $curboard }{'rbin'} ) {
                         $bicon =
 qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
                         $tmpwidth2 = 90 - $indent;
@@ -230,7 +233,7 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                     if ($cliped) { $descr .= q{...}; }
 
                     my $tmpwidth  = 100 - $indent;
-
+                    $subboard{$curboard} ||= q{};
                     my @children = split /\|/xsm, $subboard{$curboard};
 
                     $reorder_subs =
@@ -723,7 +726,7 @@ function checkParent(id, board) {
     for my $i ( 1 .. $FORM{'amount'} ) {
 
         # differentiate between edit or add boards
-        if ( $editboards[$i] eq q{} && $INFO{'action'} eq 'boardscreen' ) {
+        if ( $editboards[$i] && $INFO{'action'} eq 'boardscreen' ) {
             next;
         }
         if ( $INFO{'action'} eq 'boardscreen' ) {
@@ -732,7 +735,9 @@ function checkParent(id, board) {
         else {
             $boardtext = "$admin_txt{'58'} $i:";
         }
-
+        $editboards[$i] ||= q{};
+		${$uid.$editboards[$i]}{'parent'} ||=q{};
+		${$uid.$editboards[$i]}{'cat'} ||= q{};
         # print javascript hash of board names and their equivalent category
         if ( !$INFO{'parent'} ) {
             $brd_javascript .=
@@ -745,32 +750,38 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
 
         my $boardcat = ${ $uid . $editboards[$i] }{'cat'};
         for my $catid (@categoryorder) {
+		    $catid ||=q{};
             @bdlist = split /,/xsm, $cat{$catid};
             ( $curcatname, $catperms ) = split /\|/xsm, $catinfo{"$catid"};
+			$curcatname ||= q{};
+			$selected = q{};
             if ( $INFO{'action'} eq 'boardscreen' || $INFO{'parent'} ) {
                 if ( $catid eq $boardcat || $catid eq $INFO{'category'} ) {
                     $selected = q~ selected="selected"~;
                 }
-                else { $selected = q{}; }
             }
             ToChars($curcatname);
             $catsel{$i} .=
               qq~<option value="$catid"$selected>$curcatname</option>~;
         }
         $catsel .= q~</select>~;
-        if ( $istart == 0 ) { $istart = $i; }
-
+        if ( !$istart || $istart == 0 ) { $istart = $i; }
+        $id ||= q{};
+		$board{"$id"} ||= q{};
         ( $boardname, $boardperms, $boardview ) = split /\|/xsm, $board{"$id"};
+		$boardname ||= q{};
+		$boardperms ||= q{};
+		$boardview ||= q{};
         ToChars($boardname);
         if ( $INFO{'action'} eq 'boardscreen' ) { $boardtext = $boardname; }
-        $description = ${ $uid . $editboards[$i] }{'description'};
+        $description = ${ $uid . $editboards[$i] }{'description'} || q{};;
         $description =~ s/<br \/>/\n/gsm;
         ToChars($description);
-        $moderators      = ${ $uid . $editboards[$i] }{'mods'};
-        $moderatorgroups = ${ $uid . $editboards[$i] }{'modgroups'};
-        $boardminage     = ${ $uid . $editboards[$i] }{'minageperms'};
-        $boardmaxage     = ${ $uid . $editboards[$i] }{'maxageperms'};
-        $boardgender     = ${ $uid . $editboards[$i] }{'genderperms'};
+        $moderators      = ${ $uid . $editboards[$i] }{'mods'} || q{};
+        $moderatorgroups = ${ $uid . $editboards[$i] }{'modgroups'} || q{};
+        $boardminage     = ${ $uid . $editboards[$i] }{'minageperms'} || q{};
+        $boardmaxage     = ${ $uid . $editboards[$i] }{'maxageperms'} || q{};
+        $boardgender     = ${ $uid . $editboards[$i] }{'genderperms'} || q{};
         $genselect       = qq~<select name="gender$i" id="gender$i">~;
         $gentag[0]       = q{};
         $gentag[1]       = 'M';
@@ -789,15 +800,15 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
             }
         }
         $genselect .= q~</select>~;
-        my $canpostch;
-        if ( ${ $uid . $id }{'canpost'} == 1
+        my $canpostch = q{};
+        if ( ${ $uid . $id }{'canpost'} && ${ $uid . $id }{'canpost'} == 1
             || $INFO{'action'} ne 'boardscreen' )
         {
             $canpostch = q~ checked="checked"~;
         }
 
         # Make children list if it contains sub boards
-        my $childrenlist;
+        my $childrenlist = q{};
         if ( $subboard{$id} ) {
             for my $childbd ( split /\|/xsm, $subboard{$id} ) {
                 my ( $chldboardname, undef, undef ) =
@@ -808,7 +819,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
             $childrenlist =~ s/, $//gsm;
         }
 
-        if ( $childrenlist eq q{} ) { $childrenlist = $admin_txt{'246'}; }
+        if ( !$childrenlist ) { $childrenlist = $admin_txt{'246'}; }
 
         # Retrieve Optional Details
         $ann      = q{};
@@ -822,47 +833,47 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         $brdpassw = ${$uid.$editboards[$i]}{'brdpassw'};
         $brdpassw3 = q{};
         $brdpassw2 = q{};
-        if ($brdpassw ne q{}) { $brdpassw2 = qq~$boardpass_txt{'900pt'}~; }
-        if (${$uid.$editboards[$i]}{'brdpasswr'} == 1) { $brdpasswr   = q~ checked="checked"~; }
-        if ( $boardview == 1 ) { $showpriv = q~ checked="checked"~; }
-        if ( ${ $uid . $id }{'zero'} == 1 ) {
+        if ($brdpassw) { $brdpassw2 = qq~$boardpass_txt{'900pt'}~; }
+        if (${$uid.$editboards[$i]}{'brdpasswr'}) { $brdpasswr   = q~ checked="checked"~; }
+        if ( $boardview ) { $showpriv = q~ checked="checked"~; }
+        if ( ${ $uid . $id }{'zero'}) {
             $zeroch = q~ checked="checked"~;
         }
 
-        if ( ${ $uid . $id }{'attperms'} == 1 ) {
+        if ( ${ $uid . $id }{'attperms'} ) {
             $attch = q~ checked="checked"~;
         }
-        if ( ${ $uid . $id }{'brdrss'} == 1 )   {
+        if ( ${ $uid . $id }{'brdrss'} )   {
             $brdrssch = q~ checked="checked"~;
         } ### RSS on Board Index ###
 
-        if ( ${ $uid . $id }{'ann'} == 1 ) {
+        if ( ${ $uid . $id }{'ann'} ) {
             $annch  = q~ checked="checked"~;
             $brdpic = q~ disabled="disabled"~;
         }
-        elsif ( $annboard ne q{} ) {
+        elsif ( $annboard ) {
             $annch    = q~ disabled="disabled"~;
             $annexist = 1;
         }
-        if ( ${ $uid . $id }{'rbin'} == 1 ) {
+        if ( ${ $uid . $id }{'rbin'}) {
             $rbinch = q~ checked="checked"~;
             $brdpic = q~ disabled="disabled"~;
         }
-        elsif ( $binboard ne q{} ) {
+        elsif ( $binboard ) {
             $rbinch    = q~ disabled="disabled"~;
             $rbinexist = 1;
         }
         $en_rules = q{};
-        if ( ${ $uid . $id }{'rules'} == 1 ) {
+        if ( ${ $uid . $id }{'rules'}) {
             $en_rules = q~ checked="checked"~;
         }
         $en_rulescoll = q{};
-        if ( ${ $uid . $id }{'rulescollapse'} == 1 ) {
+        if ( ${ $uid . $id }{'rulescollapse'} ) {
             $en_rulescoll = q~ checked="checked"~;
         }
         $rulestitle = ${ $uid . $editboards[$i] }{'rulestitle'};
         ToChars($rulestitle);
-        $rulesdesc = ${ $uid . $editboards[$i] }{'rulesdesc'};
+        $rulesdesc = ${ $uid . $editboards[$i] }{'rulesdesc'} || q{};
         $rulesdesc =~ s/<br \/>/\n/gsm;
         ToChars($rulesdesc);
 
@@ -961,6 +972,7 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
         my $brdpic_addr = q{};
         my $brdpic_loc  = q{};
         my $mystyle = q{};
+		if (-e "$boardsdir/brdpics.db") {
         fopen( BRDPIC, "<$boardsdir/brdpics.db" );
         my @brdpics = <BRDPIC>;
         fclose( BRDPIC);
@@ -985,7 +997,11 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                 }
             }
         }
-
+		}
+        $myboardpic ||= q{};
+		$rulestitle ||= q{};
+		$brdfpassw3 ||= q{};
+		$brdpassw ||= q{};
         $yymain .= qq~
                         </td>
                     </tr><tr>
@@ -1180,11 +1196,11 @@ sub DrawPerms {
     my ( $permissions, $permstype ) = @_;
     my ( $foundit, %found, $groupsel, $groupsel2, $name );
     my $count = 0;
-    if ( $permissions eq q{} ) { $permissions = 'xk8yj56ndkal'; }
+    if ( !$permissions ) { $permissions = 'xk8yj56ndkal'; }
     my @perms = split /, /sm, $permissions;
     for my $perm (@perms) {
         $foundit = 0;
-        if ( $permstype == 1 ) {
+        if ( $permstype && $permstype == 1 ) {
             $name = $admin_txt{'65f'};
             if ( $perm eq 'Topic Starter' ) {
                 $foundit = 1;
@@ -1192,7 +1208,7 @@ sub DrawPerms {
                 $groupsel .=
 qq~                         <option value="Topic Starter" selected="selected">$name</option>\n~;
             }
-            if ( $count == $#perms && $found{$name} != 1 ) {
+            if ( $count == $#perms && $found{$name} && $found{$name} != 1 ) {
                 $groupsel2 .=
                   qq~                           <option value="Topic Starter">$name</option>\n~;
             }
@@ -1205,7 +1221,7 @@ qq~                         <option value="Topic Starter" selected="selected">$n
             $groupsel .=
 qq~                         <option value="Administrator" selected="selected">$name</option>\n~;
         }
-        if ( $count == $#perms && $found{$name} != 1 ) {
+        if ( $count == $#perms && $found{$name} && $found{$name} != 1 ) {
             $groupsel2 .= qq~                           <option value="Administrator">$name</option>\n~;
         }
 
@@ -1216,7 +1232,7 @@ qq~                         <option value="Administrator" selected="selected">$n
             $groupsel .=
 qq~                         <option value="Global Moderator" selected="selected">$name</option>\n~;
         }
-        if ( $count == $#perms && $found{$name} != 1 ) {
+        if ( $count == $#perms && $found{$name} && $found{$name} != 1 ) {
             $groupsel2 .= qq~                           <option value="Global Moderator">$name</option>\n~;
         }
 
@@ -1227,7 +1243,7 @@ qq~                         <option value="Global Moderator" selected="selected"
             $groupsel .=
 qq~                         <option value="Mid Moderator" selected="selected">$name</option>\n~;
         }
-        if ( $count == $#perms && $found{$name} != 1 ) {
+        if ( $count == $#perms && $found{$name} && $found{$name} != 1 ) {
             $groupsel2 .= qq~                           <option value="Mid Moderator">$name</option>\n~;
         }
         if ( $foundit != 1 || $count == $#perms ) {
@@ -1239,7 +1255,7 @@ qq~                         <option value="Mid Moderator" selected="selected">$n
                     $groupsel .=
 qq~                         <option value="$_" selected="selected">$name</option>\n~;
                 }
-                if ( $found{$_} != 1 && $count == $#perms ) {
+                if ( $found{$_} && $found{$_} != 1 && $count == $#perms ) {
                     $groupsel2 .= qq~                           <option value="$_">$name</option>\n~;
                 }
             }
@@ -1253,7 +1269,7 @@ qq~                         <option value="$_" selected="selected">$name</option
 qq~                         <option value="$name" selected="selected">$name</option>\n~;
                     }
                     if ( $count == $#perms
-                        && ( $found{$name} != 1 || $found{$name} eq q{} ) )
+                        && ( !$found{$name}|| $found{$name} != 1 ) )
                     {
                         $groupsel2 .=
                           qq~                           <option value="$name">$name</option>\n~;
@@ -1263,6 +1279,7 @@ qq~                         <option value="$name" selected="selected">$name</opt
         }
         $count++;
     }
+    $groupsel ||= q{};
     return $groupsel . $groupsel2;
 }
 
@@ -1357,7 +1374,7 @@ sub AddBoards2 {
                 $cat{ $FORM{"cat$i"} } = join q{,}, @bdlist;
             }
             else {
-                if ( $subboard{ $FORM{"parent$i"} } ne q{} ) {
+                if ( $subboard{ $FORM{"parent$i"} } ) {
                     $subboard{ $FORM{"parent$i"} } .= qq~|$id~;
                 }
                 else {
@@ -1509,6 +1526,8 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
 
       # If someone has the bright idea of starting a membergroup with a $
       # We need to escape it for them, to prevent us interpreting it as a var...
+		$FORM{"viewperms$i"} ||= q{};
+		$FORM{"show$i"} ||= q{};
         $FORM{"viewperms$i"} =~ s/\$/\\\$/gxsm;
 
         $board{"$id"} = "$bname|$FORM{\"viewperms$i\"}|$FORM{\"show$i\"}";
@@ -1523,8 +1542,8 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
             }
             $FORM{"moderators$i"} = join q{, }, @mods;
         }
-        if ( $FORM{"brdrss$i"} eq q{} ) { $FORM{"brdrss$i"} = 0; } ### RSS on Board Index ###
-        if ( $FORM{"zero$i"} eq q{} ) { $FORM{"zero$i"} = 0; }
+        if ( !$FORM{"brdrss$i"} ) { $FORM{"brdrss$i"} = 0; } ### RSS on Board Index ###
+        if ( !$FORM{"zero$i"} ) { $FORM{"zero$i"} = 0; }
         $FORM{"minage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
         $FORM{"maxage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
         if ( $FORM{"minage$i"} < 0 )   { $FORM{"minage$i"} = q{}; }
@@ -1536,8 +1555,8 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
             $FORM{"maxage$i"} = $FORM{"minage$i"};
         }
 
-        if ( $FORM{"rules$i"}         eq q{} ) { $FORM{"rules$i"}         = 0; }
-        if ( $FORM{"rulescollapse$i"} eq q{} ) { $FORM{"rulescollapse$i"} = 0; }
+        if ( !$FORM{"rules$i"} ) { $FORM{"rules$i"}         = 0; }
+        if ( !$FORM{"rulescollapse$i"} ) { $FORM{"rulescollapse$i"} = 0; }
         $brulestitle = $FORM{"rulestitle$i"};
         FromChars($brulestitle);
         $brulesdesc = $FORM{"rulesdesc$i"};
@@ -1546,18 +1565,18 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         $brulesdesc =~ s/\n/<br \/>/gsm;
 
         $FORM{"pasww$i"} =~ s/ //gsm;
-        if ($FORM{"pasww$i"} ne q{}) {
+        if ($FORM{"pasww$i"}) {
             if ($FORM{"pasww$i"} !~ /\A[\s0-9A-Za-z!@#$%\^&*\(\)_\+|`~\-=\\:;'",\.\/?\[\]\{\}]+\Z/sm) { fatal_error("$register_txt{'240'} $register_txt{'36'} $register_txt{'241'}") }
             $encryptopass = encode_password($FORM{"pasww$i"});
         }
         else {
             if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
         }
+		$mypic = 'n';
         if ( $FORM{"pic$i"} ) {
             $mypic = 'y';
         }
-        @modhook = (
-        );
+        @modhook = ();
         ## BRD Mod Hook ##
         $modchk = @modhook;
         $modhook = q{};

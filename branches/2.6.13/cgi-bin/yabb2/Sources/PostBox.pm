@@ -13,11 +13,12 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 #use warnings;
-#no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$postboxpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$postboxpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -484,7 +485,7 @@ sub attach {
     my $startcount;
     for my $y ( 1 .. $allowattach ) {
         if (   ( $action eq 'modify' || $action eq 'modify2' )
-            && $files[ $y - 1 ] ne q{}
+            && $files[ $y - 1 ]
             && -e "$uploaddir/$files[$y-1]" )
         {
             $startcount++;

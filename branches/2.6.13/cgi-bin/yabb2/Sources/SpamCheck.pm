@@ -12,9 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 our $VERSION = '2.6.13';
 
-$spamcheckpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$spamcheckpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub spamcheck {
@@ -45,14 +47,14 @@ sub spamcheck {
                 $searchtype = 'E';
             }
             else {
-                if ( $buffer ne q{} ) {
+                if ( $buffer ) {
                     $spamline   = $buffer;
                     $spamcnt    = 0;
                     $searchtype = 'S';
                 }
             }
             if ( !$spamcnt ) { $spamcnt = 0; }
-            if ( $spamline ne q{} ) {
+            if ( $spamline ) {
                 push @spamlines, [ $spamline, $spamcnt, $searchtype ];
             }
         }

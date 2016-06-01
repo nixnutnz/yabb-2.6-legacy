@@ -12,9 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 our $VERSION = '2.6.13';
 
-$userselectpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$userselectpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $INFO{'toid'} ne 'userspec' && $action ne 'checkavail' ) {
@@ -67,7 +68,7 @@ sub MemberList {
         unlink "$memberdir/$username.usctmp";
     }
 
-    if   ( $INFO{'start'} eq q{} ) { $start = 0; }
+    if   ( !$INFO{'start'} ) { $start = 0; }
     else                           { $start = $INFO{'start'}; }
 
     $to_id        = $INFO{'toid'};
@@ -358,9 +359,9 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
         $pageindex = q{};
     }
     else {
-        buildIndex();
+        userbuildindex();
     }
-    buildPages(1);
+    userbuildpages(1);
     $bb       = $start;
     $numshown = 0;
     if ($memcount) {
@@ -381,7 +382,7 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
             $user = $ToShow[$bb];
             if ( $to_id ne 'groups' ) {
                 my $cloakedUserName;
-                if ( $user ne q{} ) {
+                if ( $user ) {
                     $color      = q{};
                     $colorstyle = q~ style="font-weight: bold;~;
                     !${ $uid . $user }{'password'}
@@ -401,9 +402,9 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
             else {
                 my $groupName     = q{};
                 my $groupdisabled = q{};
-                if ( $user ne q{} ) {
+                if ( $user ) {
                     $groupName = $usersel_txt{$user};
-                    if ( $groupName eq q{} ) {
+                    if ( $groupName ) {
                         $groupName = ( split /\|/xsm, $NoPost{$user} )[0];
                     }
                     $user =
@@ -456,13 +457,13 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
     $yymain =~ s/{yabb yymain_inner}/$yymain_inner/sm;
 
     undef @ToShow;
-    buildPages(0);
+    userbuildpages(0);
     $yytitle = $page_title;
     userselectTemplate();
     return;
 }
 
-sub buildIndex {
+sub userbuildindex {
     if ( $memcount != 0 ) {
         if ( !$iamguest ) {
             ( undef, undef, $usermemberpage, undef ) =
@@ -471,12 +472,12 @@ sub buildIndex {
         my ( $pagetxtindex, $pagedropindex, $all, $allselected );
         $indexdisplaynum = 3;
         $dropdisplaynum  = 10;
-        if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
+        if ( !$FORM{'sortform'} || $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
         $postdisplaynum = 3;
         $startpage      = 0;
         $max            = $memcount;
 
-        if ( $INFO{'start'} eq 'all' ) {
+        if ( $INFO{'start'}  && $INFO{'start'} eq 'all' ) {
             $MembersPerPage = $max;
             $all            = 1;
             $allselected    = q~ selected="selected"~;
@@ -652,7 +653,7 @@ qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03
     return;
 }
 
-sub buildPages {
+sub userbuildpages {
     my @x = @_;
     if ( $to_id eq 'groups' ) { $instructtext = $usersel_txt{'instruct4'}; }
     else {
@@ -682,7 +683,7 @@ sub buildPages {
             <div $selUser onclick="location.href='$scripturl?action=imlist;sort=username;toid=$to_id';" style="width: 454px;"><b>$usersel_txt{'groups'}</b></div>
         ~;
     }
-    if ( $LetterLinks ne q{} ) {
+    if ( $LetterLinks ) {
         $TableHeader_lt .= $my_tableHeader_lt;
         $TableHeader_lt =~ s/{yabb LetterLinks}/$LetterLinks/sm;
     }
@@ -830,6 +831,11 @@ sub quickSearch {
     $to_id  = $INFO{'toid'};
     $yymain = $my_quickSearch;
     $yymain =~ s/{yabb to_id}/$to_id/gsm;
+    $yymain =~ s/{yabb usel_qsearch}/$usersel_txt{'qsearch'}/gsm;
+    $yymain =~ s/{yabb usel_addselected}/$usersel_txt{'addselected'}/gsm;
+    $yymain =~ s/{yabb usel_pageclose}/$usersel_txt{'pageclose'}/gsm;
+    $yymain =~ s/{yabb usel_instruct0}/$usersel_txt{'instruct0'}/gsm;
+    $yymain =~ s/{yabb usel_moderatorlist}/$usersel_txt{'moderatorlist'}/gsm;
 
     $yytitle = $usersel_txt{'modpagetitle'};
     userselectTemplate();
@@ -913,13 +919,13 @@ sub checkUserAvail {
                 if ($matchword) {
                     if ( $realnamecheck eq $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
                 else {
                     if ( $realnamecheck =~ $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
             }
@@ -941,13 +947,13 @@ sub checkUserAvail {
                 if ($matchword) {
                     if ( $namecheck eq $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
                 else {
                     if ( $namecheck =~ $reservecheck ) {
                         $taken = 'reg';
-                        break;
+                        last;
                     }
                 }
             }

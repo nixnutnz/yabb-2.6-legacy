@@ -14,12 +14,13 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$boardindexpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$boardindexpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('BoardIndex');
@@ -249,7 +250,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             if ( $subboard{$curboard} ) {
 
          # recursively check access to all sub boards then add them to load list
-                *recursive_boards = sub {
+                local *recursive_boards = sub {
                     foreach my $childbd (@_) {
 
                # now fill all the necessary hashes to show all board index stuff
@@ -270,7 +271,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                           split /\|/xsm, $board{$childbd};
                         $access = AccessCheck( $childbd, q{}, $boardperms );
                         if (  !$iamadmin
-                            && $access ne 'granted'
+                            && !$access
                             && $boardview != 1 )
                         {
                             next;
@@ -467,6 +468,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
           ? 0
           : ${ $uid . $curboard }{'lastposttime'};
 
+        ${ $uid . $curboard }{'lastreply'} ||= 0;
         $lsreply{$curboard} = ${ $uid . $curboard }{'lastreply'} + 1;
         if ( ${ $uid . $curboard }{'lastposter'} =~ m{\AGuest-(.*)}xsm ) {
             ${ $uid . $curboard }{'lastposter'} = $1 . " ($maintxt{'28'})";
@@ -506,6 +508,10 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         }
 
         # determine the true last post on all the boards a user has access to
+
+        if (${ $uid . $curboard }{'lastposttime'} eq 'N/A') {
+            ${ $uid . $curboard }{'lastposttime'} = 0;
+        }
         if ( ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime
             && $lastposttime{$curboard} ne $boardindex_txt{'470'} )
         {
@@ -588,7 +594,7 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
         # Moved this out of for loop. Gets the latest data for sub boards
 # loop through any collapsed boards to find new posts in it and change the image to match
 # Now shows this whether minimized or not, for Javascript hiding/showing. (Unilat)
-            if ( $INFO{'catselect'} eq q{} ) {
+            if ( !$INFO{'catselect'} ) {
                 foreach my $boardinfo (@goodboards) {
                     my $testcat;
                     ( $testcat, $curboard ) = split /\|/xsm, $boardinfo;
@@ -689,7 +695,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
             $templatecat = $catheader;
             $tmpcatimg   = q{};
             $imgid = $brd_img_id{$catid};
-            if ( $catimage ne q{} ) {
+            if ( $catimage ) {
                 if ( $catimage =~ /\//ism ) {
                     $catimage = qq~<img src="$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_images(this);" />~;
                 }
@@ -714,7 +720,7 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
 
         if (  !$INFO{'oldcollapse'}
             || $catcol{$catid}
-            || $INFO{'catselect'} ne q{}
+            || $INFO{'catselect'}
             || $iamguest )
         {    # deti
             foreach my $boardinfo (@goodboards) {
@@ -746,19 +752,24 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                 $INFO{'zeropost'} = 0;
                 $zero             = q{};
                 $bdpic = qq~$imagesdir/boards.$bdpicExt~;
+                $bdpic            = qq~$imagesdir/boards.$bdpicExt~;
+                if ( -e "$boardsdir/brdpics.db") {
                 fopen( BRDPIC, "<$boardsdir/brdpics.db" );
                 my @brdpics = <BRDPIC>;
                 fclose( BRDPIC);
                 chomp @brdpics;
-                for (@brdpics) {
+                    foreach (@brdpics) {
                     my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
                     if ( $brdnm eq $curboard && $template eq $style ) {
-                        if ( $brdpic =~ /\//ism ) {
+                            if ( $brdpic =~ /\//ixsm ) {
                             $bdpic = $brdpic;
                             last;
                         }
                         else {
-                            if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" ) {
+                                if (
+                                    -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic"
+                                )
+                                {
                                 $bdpic = qq~$imagesdir/Boards/$brdpic~;
                             }
                             else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
@@ -766,17 +777,24 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                         }
                     }
                     else {
-                        if ( $boardname =~ m/[ht|f]tp[s]{0,1}:\/\//sm  ) {
+                            if ( $boardname =~ m{[ht|f]tp(s?)://}xsm ) {
                             $bdpic = qq~$imagesdir/$extern~;
                         }
                         else {$bdpic = qq~$imagesdir/boards.$bdpicExt~; }
                     }
                 }
+                }
+                else {
+                    if ( $boardname =~ m{[ht|f]tp(s?)://}xsm ) {
+                        $bdpic = qq~$imagesdir/$extern~;
+                    }
+                    else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
+                }
 
-                if ( ${ $uid . $curboard }{'ann'} == 1 ) {
+                if ( ${ $uid . $curboard }{'ann'} ) {
                     $bdpic = qq~$imagesdir/ann.$bdpicExt~;
                 }
-                if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
+                if ( ${ $uid . $curboard }{'rbin'} ) {
                     $bdpic = qq~$imagesdir/recycle.$bdpicExt~;
                 }
                 $bddescr          = ${ $uid . $curboard }{'description'};
@@ -831,10 +849,10 @@ qq~<a href="$scripturl?action=RSSrecent;catselect=$catid" target="_blank"><img s
                     $showmodgroups .= qq~$moderatorgroups{$tmpa}, ~;
                 }
                 $showmodgroups =~ s/, \Z//sm;
-                if ( $showmodgroups eq q{} && $showmods eq q{} ) {
+                if ( !$showmodgroups && !$showmods ) {
                     $showmodgroups = q~<br />~;
                 }
-                if ( $showmodgroups ne q{} && $showmods ne q{} ) {
+                if ( $showmodgroups && $showmods ) {
                     $showmods .= q~<br />~;
                 }
 
@@ -936,7 +954,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$lastposter}" re
                 ToChars($fulltopictext);
                 $fulltopictext = Censor($fulltopictext);
 
-                if ( ${ $uid . $curboard }{'lastreply'} ne q{} ) {
+                if ( ${ $uid . $curboard }{'lastreply'} ) {
                     $lastpostlink =
 qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'lastreply'}#${$uid.$curboard}{'lastreply'}" title="$boardindex_txt{'22'}">$img{'lastpost'}</a> $lastposttime{$curboard}~;
                 }
@@ -1130,11 +1148,10 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                 # Make hidden table rows for drop down message list
                 $expandmessages = $brd_expandmessages;
                 $expandmessages =~ s/{yabb curboard}/$curboard/gsm;
-                $messagedropdown;
                 ( $boardname, $boardperms, $boardview ) =
                   split /\|/xsm, $board{$curboard};
                 $access = AccessCheck( $curboard, q{}, $boardperms );
-                if (   ( $boardperms eq q{} && !$crypass )
+                if (   ( !$boardperms && !$crypass )
                     || ( !$iamguest && $access eq 'granted' ) )
                 {
                     $messagedropdown =
@@ -1279,7 +1296,7 @@ qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><
             }
         }
 
-        if ( $INFO{'catselect'} eq q{} ) {
+        if ( !$INFO{'catselect'} ) {
             if   ($colbutton) { $col_vis = q{}; }
             else              { $col_vis = q{ style="display:none;"}; }
             if ( ${ $uid . $username }{'cathide'} ) { $exp_vis = q{}; }
@@ -1432,7 +1449,7 @@ qq~<span class="small">$boardindex_txt{'143'}: <b>$numbots</b></span>~;
             $shared_login      = sharedLogin();
         }
 
-        my %tmpcolors;
+        my %tmpcolors = ();
         $tmpcnt    = 0;
         $grpcolors = q{};
 
@@ -1551,7 +1568,7 @@ qq~$boardindex_txt{'791'} <form method="post" action="$scripturl?action=$recentl
                         }
                     }
                     if ( $maxrecentdisplay > $y ) {
-qq~<option value="$maxrecentdisplay_t">$maxrecentdisplay_t</option>~;
+                        $recenttopicslink .= qq~<option value="$maxrecentdisplay_t">$maxrecentdisplay_t</option>~;
                     }
                     $recenttopicslink .=
 qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $boardindex_txt{'793'}~;
@@ -1861,7 +1878,7 @@ sub MarkAllRead {    # Mark all boards as read.
     # Load the whole log
     getlog();
 
-    *recursive_mark = sub {
+    local *recursive_mark = sub {
         my @x = @_;
         foreach my $board (@x) {
 
@@ -1907,7 +1924,7 @@ sub MarkAllRead {    # Mark all boards as read.
     dumplog();
 
     if ( $INFO{'oldmarkread'} ) {
-        redirectinternal();
+        BoardIndex();
     }
     $elenable = 0;
     croak q{};    # This is here only to avoid server error log entries!

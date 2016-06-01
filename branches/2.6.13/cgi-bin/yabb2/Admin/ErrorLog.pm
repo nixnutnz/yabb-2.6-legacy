@@ -12,10 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings;
+# qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$errorlogpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$errorlogpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ErrorLog {
@@ -33,8 +35,7 @@ sub ErrorLog {
         if ( $tmpArray[0] eq q{} || $tmpArray[0] =~ /\D/igsm || $tmpArray[1] eq q{} || $tmpArray[1] =~ /\D/igsm ) { next; }
         else {
             $date1 = $tmpArray[1];
-            calcdifference();
-            $date_ref = $result;
+            $date_ref = calcdtdiff($date1,$date2);
             $tmplist[$mytest] = qq~$date_ref|$errors[$i]~;
             $mytest++;
         }
@@ -387,7 +388,7 @@ sub YaBBsort {
     return 1;
 }
 
-sub update_htaccess {
+sub er_update_htaccess {
     my ( $action, @values ) = @_;
     my ( $htheader, $htfooter, @denies, @htout );
     if ( !$action ) { return 0; }
@@ -432,7 +433,7 @@ sub update_htaccess {
     }
     elsif ( $action eq 'add' ) {
         push @denies, @values;
-    update_htaccess( 'save', @denies );
+    er_update_htaccess( 'save', @denies );
     }
     return;
 }
@@ -440,7 +441,7 @@ sub update_htaccess {
 sub blockip {
     is_admin_or_gmod();
     my $blockIP = $INFO{'ip'};
-    update_htaccess( 'add', $blockIP );
+    er_update_htaccess( 'add', $blockIP );
     $yySetLocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;

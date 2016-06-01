@@ -14,12 +14,12 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
-$freespacepmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$freespacepmver = 'YaBB 2.6.13 $Revision$';
 
 sub freespace {
     my ( $FreeBytes, $hostchecked );

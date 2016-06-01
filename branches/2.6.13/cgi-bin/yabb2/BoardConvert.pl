@@ -17,7 +17,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$boardconvertplver = 'YaBB 2.6.13 $Revision: 1660 $';
+$boardconvertplver = 'YaBB 2.6.13 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;

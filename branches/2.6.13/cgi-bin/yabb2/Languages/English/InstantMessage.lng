@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$instantmessagelngver = 'YaBB 2.6.13 $Revision: 1651 $';
+$instantmessagelngver = 'YaBB 2.6.13 $Revision$';
 
 %inmes_txt = (
 '21' => 'Posts',
@@ -52,7 +52,7 @@ $instantmessagelngver = 'YaBB 2.6.13 $Revision: 1651 $';
 'bmallmembers' => 'All forum members',
 'bmadmins' => 'Administrators',
 'bmgmods' => 'Global moderators',
-'bmymods' => 'Forum moderators',
+'bmfmods' => 'Forum moderators',
 'bmmods' => 'All board moderators / mod groups',
 '470' => 'N/A',
 '500' => 'Marking all Messages as read', # inside JavaScript!
@@ -109,6 +109,7 @@ $instantmessagelngver = 'YaBB 2.6.13 $Revision: 1651 $';
 'attach_1' => 'This message contains',
 'attach_2' => 'attachments',
 'attach_3' => 'attachment',
+'mycenter' => 'User CP',
 );
 
 %inmes_imtxt = (

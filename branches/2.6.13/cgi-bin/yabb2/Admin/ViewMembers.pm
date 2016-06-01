@@ -15,7 +15,7 @@
 # use strict;
 our $VERSION = '2.6.13';
 
-$viewmemberspmver = 'YaBB 2.6.13 $Revision: 1674 $';
+$viewmemberspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MemberList');
@@ -25,7 +25,7 @@ my ( $sortmode, $sortorder, $spages );
 $MembersPerPage = $TopAmmount;
 $maxbar         = 100;
 
-sub Ml {
+sub Admin_Ml {
 
     # Decides how to sort memberlist, and gives default sort order
     if ( !$barmaxnumb ) { $barmaxnumb = 500; }
@@ -48,12 +48,12 @@ sub Ml {
         $FORM{'sortform'} = $defaultml;
     }
 
-    if (   $FORM{'sortform'} eq 'username'
-        || $INFO{'sort'} eq 'mlletter'
-        || $INFO{'sort'} eq 'username' )
+    if (   $FORM{'sortform'} && $FORM{'sortform'} eq 'username'
+        || $INFO{'sort'} && ($INFO{'sort'} eq 'mlletter'|| $INFO{'sort'} eq 'username' ) )
     {
         $page     = 'a';
         $showpage = 'A';
+        $LetterLinks = q{};
         while ( $page ne 'z' ) {
             $LetterLinks .=
 qq(<a href="$adminurl?action=ml;sort=mlletter;letter=$page" class="catbg a"><b>$showpage&nbsp;</b></a> );
@@ -63,14 +63,15 @@ qq(<a href="$adminurl?action=ml;sort=mlletter;letter=$page" class="catbg a"><b>$
         $LetterLinks .=
 qq(<a href="$adminurl?action=ml;sort=mlletter;letter=z" class="catbg a"><b>Z</b></a>  <a href="$adminurl?action=ml;sort=mlletter;letter=other" class="catbg a"><b>$ml_txt{'800'}</b></a> );
     }
-
-    if ( $INFO{'start'} eq q{} ) { $start = 0; }
+    $spages = q{};
+    if ( !$INFO{'start'} ) { $start = 0; }
     else { $start = $INFO{'start'}; $spages = ";start=$start"; }
 
-    if ( $INFO{'sort'} ne q{} ) { $sortmode = ';sort=' . $INFO{'sort'}; }
-    elsif ( $FORM{'sortform'} ne q{} ) {
+    if ( $INFO{'sort'} ) { $sortmode = ';sort=' . $INFO{'sort'}; }
+    elsif ( $FORM{'sortform'} ) {
         $sortmode = ';sort=' . $FORM{'sortform'};
     }
+    $sortorder = q{};
     if ( $INFO{'reversed'} || $FORM{'reversed'} ) {
         $selReversed = q~ checked="checked"~;
         $sortorder   = ';reversed=1';
@@ -85,52 +86,63 @@ qq(<a href="$adminurl?action=ml;sort=mlletter;letter=z" class="catbg a"><b>Z</b>
     $selLastPost_a = q~windowbg2~;
     $selLastIM_a = q~windowbg2~;
     $selUser_a = q~windowbg2~;
-    if ( $FORM{'sortform'} eq 'posts' || $INFO{'sort'} eq 'posts' ) {
+    $selUser = q{};
+    $selPos = q{};
+    $selPost = q{};
+    $selLastOn = q{};
+    $selLastPost = q{};
+    $selLastIm = q{};
+    $selReversed = q{};
+    $selReg = q{};
+    if ( ($FORM{'sortform'} && $FORM{'sortform'} eq 'posts') || ($INFO{'sort'} && $INFO{'sort'} eq 'posts') ) {
         $selPost_a = q~windowbg~;
         $selPost .= q~ selected="selected"~;
-        MLTop();
+        viewmltop();
     }
-    if ( $FORM{'sortform'} eq 'regdate' || $INFO{'sort'} eq 'regdate' ) {
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'regdate' || $INFO{'sort'} && $INFO{'sort'} eq 'regdate' ) {
         $selReg .= q~ selected="selected"~;
         $selReg_a = q~windowbg~;
-        MLDate();
+        viewmldate();
     }
-    if ( $FORM{'sortform'} eq 'position' || $INFO{'sort'} eq 'position' ) {
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'position' || $INFO{'sort'} && $INFO{'sort'} eq 'position' ) {
         $selPos .= q~ selected="selected"~;
         $selPos_a = q~windowbg~;
-        MLPosition();
+        viewmlposition();
     }
-    if ( $FORM{'sortform'} eq 'lastonline' || $INFO{'sort'} eq 'lastonline' ) {
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'lastonline' || $INFO{'sort'} && $INFO{'sort'} eq 'lastonline' ) {
         $selLastOn .= q~ selected="selected"~;
         $selLastOn_a = q~windowbg~;
         MLLastOnline();
     }
-    if ( $FORM{'sortform'} eq 'lastpost' || $INFO{'sort'} eq 'lastpost' ) {
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'lastpost' || $INFO{'sort'} && $INFO{'sort'} eq 'lastpost' ) {
         $selLastPost .= q~ selected="selected"~;
         $selLastPost_a = q~windowbg~;
         MLLastPost();
     }
-    if ( $FORM{'sortform'} eq 'lastim' || $INFO{'sort'} eq 'lastim' ) {
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'lastim' || $INFO{'sort'} && $INFO{'sort'} eq 'lastim' ) {
         $selLastIm .= q~ selected="selected"~;
         $selLastIM_a = q~windowbg~;
         MLLastIm();
     }
-    if ( $FORM{'sortform'} eq 'memsearch' || $INFO{'sort'} eq 'memsearch' ) {
-        FindMembers();
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'memsearch' || $INFO{'sort'} && $INFO{'sort'} eq 'memsearch' ) {
+        viewfindmembers();
     }
-    if (   $INFO{'sort'} eq q{}
+    if (   !$INFO{'sort'}
         || $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' )
     {
         $selUser .= q~ selected="selected"~;
         $selUser_a = q~windowbg~;
-        MLByLetter();
+        viewmlbyletter();
     }
     return;
 }
 
-sub MLByLetter {
-    $letter = lc $INFO{'letter'};
+sub viewmlbyletter {
+    $letter = q{};
+    if ($INFO{'letter'} ) {
+        $letter = lc $INFO{'letter'};
+    }
     $i      = 0;
     ManageMemberinfo('load');
     foreach my $membername (
@@ -158,6 +170,8 @@ sub MLByLetter {
     undef %memberinf;
 
     $memcount = @ToShow;
+    $pageindex1 = q{};
+    $pageindex2 = q{};
     if ( !$memcount && $letter ) {
         $pageindex1 =
 qq~<span class="index-togl small">$admin_img{'index_togl'}</span>~;
@@ -165,14 +179,14 @@ qq~<span class="index-togl small">$admin_img{'index_togl'}</span>~;
 qq~<span class="index-togl small">$admin_img{'index_togl'}</span>~;
     }
     else {
-        buildIndex();
+        admin_buildindex();
     }
-    buildPages(1);
+   viewbuildpages(1);
     $bb = $start;
 
     if ($memcount) {
         while ( $numshown < $MembersPerPage ) {
-            showRows( $ToShow[$bb] );
+            viewshowrows( $ToShow[$bb] );
             $numshown++;
             $bb++;
         }
@@ -188,19 +202,20 @@ qq~<span class="index-togl small">$admin_img{'index_togl'}</span>~;
     }
 
     undef @ToShow;
-    buildPages(0);
+    viewbuildpages(0);
     $yytitle     = "$ml_txt{'312'} $numshow";
     $action_area = 'viewmembers';
     AdminTemplate();
     return;
 }
 
-sub MLTop {
+sub viewmltop {
     %top_list = ();
 
     ManageMemberinfo('load');
     while ( ( $membername, $value ) = each %memberinf ) {
         ( $memrealname, undef, undef, $memposts ) = split /\|/xsm, $value;
+        $memposts ||= 0;
         $memposts = sprintf '%06d', ( 999_999 - $memposts );
         $top_list{$membername} = qq~$memposts|$memrealname~;
     }
@@ -212,31 +227,32 @@ sub MLTop {
     }
 
     $memcount = @toplist;
-    buildIndex();
-    buildPages(1);
+    admin_buildindex();
+    viewbuildpages(1);
     $bb = $start;
 
     while ( $numshown < $MembersPerPage ) {
-        showRows( $toplist[$bb] );
+        viewshowrows( $toplist[$bb] );
         $numshown++;
         $bb++;
     }
 
     undef @toplist;
-    buildPages(0);
+    viewbuildpages(0);
     $yytitle     = "$ml_txt{'313'} $ml_txt{'314'} $numshow";
     $action_area = 'viewmembers';
     AdminTemplate();
     return;
 }
 
-sub MLPosition {
+sub viewmlposition {
     %TopMembers = ();
 
     ManageMemberinfo('load');
     while ( ( $membername, $value ) = each %memberinf ) {
         ( $memberrealname, undef, $memposition, $memposts ) =
           split /\|/xsm, $value;
+        $memposts ||= 0;  
         $pstsort    = 99_999_999 - $memposts;
         $sortgroups = q{};
         foreach my $key ( keys %Group ) {
@@ -272,26 +288,26 @@ sub MLPosition {
     }
 
     $memcount = @toplist;
-    buildIndex();
-    buildPages(1);
+    admin_buildindex();
+    viewbuildpages(1);
     $bb = $start;
 
     while ( $numshown < $MembersPerPage ) {
-        showRows( $toplist[$bb] );
+        viewshowrows( $toplist[$bb] );
         $numshown++;
         $bb++;
     }
 
     undef @toplist;
     undef %memberinf;
-    buildPages(0);
+    viewbuildpages(0);
     $yytitle     = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
     $action_area = 'viewmembers';
     AdminTemplate();
     return;
 }
 
-sub MLDate {
+sub viewmldate {
     fopen( MEMBERLISTREAD, "$memberdir/memberlist.txt" );
     @tempmemlist = <MEMBERLISTREAD>;
     fclose(MEMBERLISTREAD);
@@ -300,28 +316,28 @@ sub MLDate {
     }
 
     $memcount = @tempmemlist;
-    buildIndex();
-    buildPages(1);
+    admin_buildindex();
+    viewbuildpages(1);
     $bb = $start;
 
-    while ( $numshown < $MembersPerPage ) {
+    while ( $numshown < $MembersPerPage && $tempmemlist[$bb] ) {
         ( $membername, undef ) = split /\t/xsm, $tempmemlist[$bb], 2;
-        showRows($membername);
+        viewshowrows($membername);
         $numshown++;
         $bb++;
     }
-
+    $TableFooter ||= q{};
     $yymain .= $TableFooter;
-    buildPages(0);
+    viewbuildpages(0);
     $yytitle     = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'233'}";
     $action_area = 'viewmembers';
     AdminTemplate();
     return;
 }
 
-sub showRows {
+sub viewshowrows {
     my ($user) = @_;
-    if ( $user ne q{} ) {
+    if ( $user ) {
         LoadUser($user);
         $date2 = $date;
 
@@ -330,48 +346,41 @@ sub showRows {
         my $userlastim     = ${ $uid . $user }{'lastim'};
 
         $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
-        calcdifference();
-        $days_reg = $result;
+        $days_reg = calcdtdiff($date1, $date2);
 
         my ( $tmpa, $tmpb, $tmpc );
         if ( $userlastonline eq q{} ) { $userlastonline = q{-};
              $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
-            calcdifference();
-            $tmpa = $result;
+             $tmpa = calcdtdiff($date1, $date2);
             }
         else {
             $date1 = $userlastonline;
-            calcdifference();
-            $userlastonline = $result;
+            $userlastonline = calcdtdiff($date1, $date2);
             $tmpa           = $userlastonline;
         }
         if ( $userlastpost eq q{} ) { $userlastpost = q{-};
              $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
-            calcdifference();
-            $tmpb = $result;
+            $tmpb = calcdtdiff($date1, $date2);
             }
         else {
             $date1 = $userlastpost;
-            calcdifference();
-            $userlastpost = $result;
-             $tmpb         = $userlastpost;
+            $userlastpost = calcdtdiff($date1, $date2);
+            $tmpb         = $userlastpost;
         }
-        if ( $userlastim eq q{} ) { $userlastim = q{-};
+        if ( !$userlastim ) { $userlastim = q{-};
             $date1 = stringtotime( ${ $uid . $user }{'regdate'} );
-            calcdifference();
-            $tmpc = $result;
+            $tmpc = calcdtdiff($date1, $date2);
             }
         else {
             $date1 = $userlastim;
-            calcdifference();
-            $userlastim = $result;
+            $userlastim = calcdtdiff($date1, $date2);
             $tmpc       = $userlastim;
         }
         $userlastonline = NumberFormat($userlastonline);
         $userlastpost   = NumberFormat($userlastpost);
         $userlastim     = NumberFormat($userlastim);
         $userpostcount  = NumberFormat( ${ $uid . $user }{'postcount'} );
-
+        $CheckingAll = q{};
         if ( $user ne 'admin' ) {
             $CheckingAll .=
 qq~"$days_reg|${$uid.$user}{'postcount'}|$tmpa|$tmpb|$tmpc|$user", ~;
@@ -466,22 +475,22 @@ qq~<input type="checkbox" name="member$numshown" value="$user" class="windowbg" 
     return;
 }
 
-sub buildIndex {
+sub admin_buildindex {
     if ( $memcount != 0 ) {
 
         ( undef, undef, $usermemberpage ) =
-          split /\|/xsm, ${ $uid . $username }{'pageindex'};
+          split /\|/xsm, (${ $uid . $username }{'pageindex'} || q{});
 
         # Build the page links list.
         my ( $pagetxtindex, $pagedropindex1, $pagedropindex2, $all,
             $allselected );
         $indexdisplaynum = 3;
         $dropdisplaynum  = 10;
-        if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
+        if ( !$FORM{'sortform'} ) { $FORM{'sortform'} = $INFO{'sort'}; }
         $postdisplaynum = 3;
         $startpage      = 0;
         $max            = $memcount;
-        if ( $INFO{'start'} eq 'all' ) {
+        if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
             $MembersPerPage = $max;
             $all            = 1;
             $allselected    = q~ selected="selected"~;
@@ -503,12 +512,12 @@ sub buildIndex {
         else { $endpage = $memcount }
         $lastpn = int( ( $memcount - 1 ) / $MembersPerPage ) + 1;
         $lastptn = ( $lastpn - 1 ) * $MembersPerPage;
+        $pageindexjs = q{};
         $pageindex1 =
 qq~<span class="index-togl small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
         $pageindex2 =
 qq~<span class="index-togl small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
-
             if ( $usermemberpage == 1 ) {
                 $pagetxtindexst =
 qq~<span class="index-togl small"><a href="$scripturl?action=memberpagedrop;from=admin;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$sortorder"><img src="$imagesdir/index_togl.png" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
@@ -676,7 +685,7 @@ qq~<img src="$imagesdir/index_right.png" height="14" width="13" alt="$pidtxt{'03
     return;
 }
 
-sub buildPages {
+sub viewbuildpages {
     my ($inp) = @_;
 
     $FindForm .= qq~
@@ -747,13 +756,14 @@ sub buildPages {
             </tr>
         ~;
 
-    if ( $LetterLinks ne q{} ) {
+    if ( $LetterLinks ) {
         $TableHeader .= qq(<tr>
                 <td class="catbg" colspan="9"><span class="small">$LetterLinks</span></td>
             </tr>);
     }
 
     $selbox = q{};
+    $CheckingAll ||= q{};
     if ( $iamadmin || ($iamgmod && $gmod_access{'deletemultimembers'} eq 'on' ) ) {
         $sel_box = qq~
             <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">
@@ -784,7 +794,7 @@ sub buildPages {
                 </tr>
             </table>
         <script type="text/javascript">
-        mem_data = new Array ( "", $CheckingAll"" );
+        mem_data = new Array ( "", "$CheckingAll" );
         function checkAll(ticked) {
             if(navigator.appName == "Microsoft Internet Explorer") {var alt_pressed = self.event.altKey; var ctrl_pressed = self.event.ctrlKey;}
             else {alt_pressed = false; ctrl_pressed = false;}
@@ -818,6 +828,10 @@ sub buildPages {
     if ( $numend > $memcount ) { $numend  = $memcount; }
     if ( $memcount == 0 )      { $numshow = q{}; }
     else { $numshow = qq~($numbegin - $numend $ml_txt{'309'} $memcount)~; }
+    $pageindex1 ||= q{};
+    $pageindex2 ||= q{};
+    $pageindexjs ||= q{};
+
     if ($inp) {
         $yymain .= qq~
     <div class="rightboxdiv">
@@ -878,7 +892,7 @@ sub MLLastPost {
     undef %memberinf;
 
     my @toplist =
-      reverse sort { $TopMembers{$a} <=> $TopMembers{$b} } keys %TopMembers;
+      reverse sort { $TopMembers{$a} cmp $TopMembers{$b} } keys %TopMembers;
     undef %TopMembers;
 
     if ( $FORM{'reversed'} || $INFO{'reversed'} ) {
@@ -886,19 +900,19 @@ sub MLLastPost {
     }
 
     $memcount = @toplist;
-    buildIndex();
-    buildPages(1);
+    admin_buildindex();
+    viewbuildpages(1);
     $bb = $start;
 
     while ( ( $numshown < $MembersPerPage ) ) {
-        showRows( $toplist[$bb] );
+        viewshowrows( $toplist[$bb] );
         $numshown++;
         $bb++;
     }
 
     undef @toplist;
-    buildPages(0);
-
+    viewbuildpages(0);
+    $TableFooter ||= q{};
     $yymain .= $TableFooter;
     $yytitle     = "$ml_txt{'313'} $TopAmmount $ml_txt{'314'}";
     $action_area = 'viewmembers';
@@ -918,7 +932,7 @@ sub MLLastIm {
     undef %memberinf;
 
     my @toplist =
-      reverse sort { $TopMembers{$a} <=> $TopMembers{$b} } keys %TopMembers;
+      reverse sort { $TopMembers{$a} cmp $TopMembers{$b} } keys %TopMembers;
     undef %TopMembers;
 
     if ( $FORM{'reversed'} || $INFO{'reversed'} ) {
@@ -926,19 +940,19 @@ sub MLLastIm {
     }
 
     $memcount = @toplist;
-    buildIndex();
-    buildPages(1);
+    admin_buildindex();
+    viewbuildpages(1);
     $bb = $start;
 
     while ( ( $numshown < $MembersPerPage ) ) {
-        showRows( $toplist[$bb] );
+        viewshowrows( $toplist[$bb] );
         $numshown++;
         $bb++;
     }
 
     undef @toplist;
-    buildPages(0);
-
+    viewbuildpages(0);
+    $TableFooter ||= q{};
     $yymain .= $TableFooter;
     $yytitle     = "$ml_txt{'313'} $TopAmmount $ml_txt{'314'}";
     $action_area = 'viewmembers';
@@ -958,7 +972,7 @@ sub MLLastOnline {
     undef %memberinf;
 
     my @toplist =
-      reverse sort { $TopMembers{$a} <=> $TopMembers{$b} } keys %TopMembers;
+      reverse sort { $TopMembers{$a} cmp $TopMembers{$b} } keys %TopMembers;
     undef %TopMembers;
 
     if ( $FORM{'reversed'} || $INFO{'reversed'} ) {
@@ -966,19 +980,19 @@ sub MLLastOnline {
     }
 
     $memcount = @toplist;
-    buildIndex();
-    buildPages(1);
+    admin_buildindex();
+    viewbuildpages(1);
     $bb = $start;
 
     while ( $numshown < $MembersPerPage ) {
-        showRows( $toplist[$bb] );
+        viewshowrows( $toplist[$bb] );
         $numshown++;
         $bb++;
     }
 
     undef @toplist;
-    buildPages(0);
-
+    viewbuildpages(0);
+    $TableFooter ||= q{};
     $yymain .= $TableFooter;
     $yytitle     = "$ml_txt{'313'} $TopAmmount $ml_txt{'314'}";
     $action_area = 'viewmembers';
@@ -986,7 +1000,7 @@ sub MLLastOnline {
     return;
 }
 
-sub FindMembers {
+sub viewfindmembers {
     $SearchStr = $FORM{'member'} || $INFO{'member'};
     $LookFor = qq~^$SearchStr\$~;
     $LookFor =~ s/\*+/.*?/gsm;
@@ -1009,14 +1023,13 @@ sub FindMembers {
       sort { lc $memberfind{$a} cmp lc $memberfind{$b} } keys %memberfind;
     undef %memberfind;
     $memcount = @findmemlist;
-    buildIndex();
-    buildPages(1);
+    admin_buildindex();
+    viewbuildpages(1);
     if ( $memcount > 0 ) {
         my $i = $start;
         $numshown = 0;
         while ( $numshown < $MembersPerPage ) {
-            chomp $findmemlist[$i];
-            showRows( $findmemlist[$i] );
+            viewshowrows( $findmemlist[$i] );
             $numshown++;
             $i++;
         }
@@ -1031,7 +1044,7 @@ sub FindMembers {
     }
     undef @findmemlist;
     undef %memberinf;
-    buildPages(0);
+    viewbuildpages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
     AdminTemplate();
     return $isgood;

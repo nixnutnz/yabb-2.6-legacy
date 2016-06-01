@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
-$registrationlogpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$registrationlogpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -54,7 +54,7 @@ sub view_reglog {
         push @logentries, "$servertime|LD|$username|$username|$user_ip";
     }
     @memberlist = reverse @memberlist;
-
+    $startpage = 0;
     if ( @logentries > 0 ) {
         $logcount = @logentries;
         my $newstart = $INFO{'newstart'} || 0;
@@ -71,6 +71,7 @@ sub view_reglog {
             $endpage = $newstart + ( $postdisplaynum * 25 );
         }
         else { $endpage = $max }
+        $pageindex = q{};
         if ( $startpage > 0 ) {
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0" class="norm">1</a>&nbsp;...&nbsp;~;
@@ -95,7 +96,7 @@ qq~<a href="$adminurl?action=$action;newstart=0" class="norm">1</a>&nbsp;~;
             $pageindexadd .=
 qq~<a href="$adminurl?action=$action;newstart=$lastptn">$lastpn</a>~;
         }
-        $pageindex .= $pageindexadd;
+        $pageindex .= $pageindexadd || q{};
 
         $pageindex = qq~<tr>
                 <td class="windowbg" colspan="4"><span class="small" style="float: left;">$admin_txt{'139'}: $pageindex</span></td>
@@ -181,7 +182,8 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
             <td class="windowbg2 center">$delrecord</td>
         </tr>~;
     }
-
+    $pageindex ||= q{};
+    $loglist ||= q{};
     $yymain .= qq~
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
@@ -321,7 +323,7 @@ sub view_registration {
     my $viewuser = $INFO{'username'} || $FORM{'username'};
     my $readuser = $viewuser;
     my $viewtype = $INFO{'type'};
-    my $actkey   = $INFO{'activationkey'};
+    my $actkey   = $INFO{'activationkey'} || q{};
     if ($do_scramble_id) { $readuser = decloak($viewuser); }
     LoadUser($readuser);
     $yymain .= qq~
@@ -360,7 +362,7 @@ sub view_registration {
     }
 
     if ( $addmemgroup_enabled == 2 || $addmemgroup_enabled == 3 ) {
-        my @usergroup;
+        my @usergroup = ();
         foreach ( split /,/xsm, ${ $uid.$readuser }{'addgroups'} ) {
             push
               @usergroup,
@@ -369,9 +371,12 @@ sub view_registration {
                 $NoPost{ ${ $uid.$readuser }{'addgroups'} }, 2
               )[0];
         }
+        my $usrgrp = $register_txt{'765b'};
+        if ( @usergroup ) {
+            $usrgrp = join( q{, }, @usergroup ); }
         $yymain .= qq~<tr class="windowbg">
    <td><b>$register_txt{'765a'}:</b></td>
-   <td>~ . join( q{, }, @usergroup ) . q~</td>
+   <td>$usrgrp</td>
  </tr>~;
     }
 
@@ -396,10 +401,11 @@ sub view_registration {
     }
     if ($extendedprofiles) {
         require Admin::Settings_ExtendedProfiles;
-        $yymain .= ext_viewprofile_r($readuser);
+        $yymain .= ext_viewprofile_r($readuser) || q{};
     }
 
     if ( $viewtype eq 'approve' ) {
+        $admin_reason ||= q{};
         $yymain .= qq~<tr>
    <td colspan="2" class="titlebg">$admin_img{'profile'} <b>$prereg_txt{'apr_admin_reason_title'}</b></td>
  </tr>
@@ -498,7 +504,7 @@ sub reject_registration {
         $language = ${ $uid . $deluser }{'language'};
         LoadLanguage('Email');
         require Sources::Mailer;
-        if ( $admin_reason ne q{} ) {
+        if ( $admin_reason ) {
             $message = template_email(
                 $reviewrejectedemail,
                 {
@@ -514,7 +520,7 @@ sub reject_registration {
                 $message, q{}, $emailcharset
             );
         }
-        elsif ( $nomailspammer == 1 ) {
+        elsif ( $nomailspammer && $nomailspammer == 1 ) {
             $message = template_email(
                 $instantrejectedemail,
                 {
@@ -641,7 +647,7 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
             }
         }
         else {
-            if ( $admin_reason ne q{} ) {
+            if ( $admin_reason ) {
                 $message = template_email(
                     $reviewapprovedemail,
                     {

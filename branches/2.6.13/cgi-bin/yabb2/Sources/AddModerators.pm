@@ -20,11 +20,12 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$addmoderatorspmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$addmoderatorspmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('AddModerators');
@@ -33,18 +34,18 @@ get_template('Other');
 sub AddModerators {
     $addbdmod = q{};
 
-    *get_subboards = sub {
+    local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         $modsel     = q{};
         foreach my $board (@x) {
-            my $dash;
+            my $dash = q{};
             if ( $indent > 2 ) { $dash = q{-}; }
 
             ( $boardname, $boardperms, $boardview ) =
               split /\|/xsm, $board{$board};
-            if (   ${ $uid . $board }{'ann'} == 1
-                || ${ $uid . $board }{'rbin'} == 1
+            if (   ${ $uid . $board }{'ann'}
+                || ${ $uid . $board }{'rbin'}
                 || $boardname =~ m/http:\/\//xsm )
             {
                 next;
@@ -84,6 +85,7 @@ sub AddModerators {
 sub AddModerators2 {
     my @x    = @_;
     my $user = $x[0];
+	$x[1] ||= q{};
     @modbd = split /, /sm, $x[1];
     chomp @modbd;
     fopen( FORUMCNTR, "$boardsdir/forum.control" )
@@ -187,7 +189,7 @@ function copy_option(to_select) {
         my $thisModname = ${ $uid . $thisMod }{'realname'};
         if ( !$thisModname ) { $thisModname = $thisMod; }
         if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        if ( $thisMod eq q{} ) { $modmbr .= q{                <option value="" disabled="disabled">--</option>};}
+        if ( !$thisMod ) { $modmbr .= q{                <option value="" disabled="disabled">--</option>};}
         else {
             $modmbr .=
 qq~                <option value="$thisMod" selected="selected">$thisModname</option>~;

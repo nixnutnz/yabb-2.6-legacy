@@ -12,9 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized);
 our $VERSION = '2.6.13';
 
-$searchpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$searchpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Search');
@@ -216,7 +218,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
             if ( !$subboard{$curboard} ) { next; }
             my $indent;
 
-            *get_subboards = sub {
+            local *get_subboards = sub {
                 my @x = @_;
                 $indent += 2;
                 foreach my $childbd (@x) {
@@ -343,7 +345,7 @@ sub plushSearch2 {
     $search =~ s/\A\s+//xsm;
     $search =~ s/\s+\Z//xsm;
     if ( $searchtype != 3 ) { $search =~ s/\s+/ /gxsm; }
-    if ( $search eq q{} || $search eq q{ } ) { fatal_error('no_search'); }
+    if ( !$search || $search eq q{ } ) { fatal_error('no_search'); }
     if ( $search =~ m{/}xsm )  { fatal_error('no_search_slashes'); }
     if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
     my $searchsubject = $FORM{'subfield'} eq 'on';
@@ -367,9 +369,7 @@ sub plushSearch2 {
         @boards,    $counter,      $msgnum
     );
     my $maxtime =
-      $date +
-      ( 3600 * ${ $uid . $username }{'timeoffset'} ) -
-      ( $maxage * 86400 );
+      $date - ( $maxage * 86400 );
     my $oldestfound = 9999999999;
 
     get_forum_master();
@@ -479,7 +479,7 @@ sub plushSearch2 {
             @messages = <FILE>;
             fclose(FILE);
 
-          POSTCHECK: foreach my $msgnum ( reverse 0 .. @messages ) {
+          POSTCHECK: foreach my $msgnum ( reverse 0 .. $#messages ) {
                 $curpost = $messages[$msgnum];
                 chomp $curpost;
 
@@ -681,7 +681,7 @@ qq~<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$b
         $yymain =~ s/{yabb tname}/$tname/sm;
         $yymain =~ s/{yabb mname}/$mname/sm;
 
-        if ( $tstate != 1
+        if ( (!$tstate || $tstate !~ m/1/xsm)
             && ( !$iamguest || ( $iamguest && $enable_guestposting ) ) )
         {
             my $notify = q{};
@@ -699,19 +699,6 @@ qq~$menusep<a href="$scripturl?action=notify2;oldnotify=1;num=$tnum/$msgnum#$msg
             }
             $yymain .=
 qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=PostReply">$img{'reply'}</a>$menusep<a href="$scripturl?board=$board;action=post;num=$tnum;quote=$msgnum;title=PostReply">$img{'recentquote'}</a>$notify~;
-        }
-        if (   $staff
-            && ( $icanbypass || $tstate !~ /l/ism )
-            && ( !$iammod || is_moderator( $username, $board ) ) )
-        {
-            LoadLanguage('Display');
-            $yymain .=
-qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$c=$c" onclick="return confirm('~
-              . (
-                ( $icanbypass && $tstate =~ /l/ism )
-                ? qq~$display_txt{'modifyinlocked'}\\n\\n~
-                : q{}
-              ) . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
         }
         if (   $iamadmin
             || $iamfmod
@@ -775,7 +762,7 @@ sub pmsearch {
         $search =~ s/\A\s+//xsm;
         $search =~ s/\s+\Z//xsm;
         if ( $searchtype != 3 ) { $search =~ s/\s+/ /gsm; }
-        if ( $search eq q{} || $search eq q{ } ) { fatal_error('no_search'); }
+        if ( !$search || $search eq q{ } ) { fatal_error('no_search'); }
         if ( $search =~ m{/}xsm )  { fatal_error('no_search_slashes'); }
         if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
         ToHTML($search);
@@ -828,7 +815,7 @@ sub pmsearch {
     if ($enable_ubbc) { require Sources::YaBBC; }
 
     for my $boxCount ( 1 .. $pmboxesCount ) {
-
+        if ( $pmbox eq '!all') { $pmbox = 0; }
         if ( $boxCount == 1 || $pmbox == 1 ) {
             @scanthreads = @msgthreads;
             $pmboxName   = 1;
@@ -943,7 +930,7 @@ sub pmsearch {
     }    # not to display username
     $search = Censor($search);
 
-    # Search for censored or uncencored search string and remove duplicate words
+    # Search for censored or uncensored search string and remove duplicate words
     my @tmpsearch;
     if ( $searchtype != 5 ) {
         if   ( $searchtype == 3 ) { @tmpsearch = ( lc $search ); }
@@ -977,7 +964,7 @@ sub pmsearch {
         }
 
         if ($mtouser) {
-            if ( $mstatus ne 'sb' ) {
+            if ( $mstatus !~ m/b/xsm ) {
                 foreach my $uname ( split /\,/xsm, $mtouser ) {
                     $MemberToLink .=
                       addMemberLink( $uname, $uname, $mdate ) . q{, };

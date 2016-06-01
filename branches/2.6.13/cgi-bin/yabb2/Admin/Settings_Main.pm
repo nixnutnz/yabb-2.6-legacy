@@ -13,11 +13,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+no warnings qw(uninitialized once redefine);
+#SaveSettings sub
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.13';
 
-our $settings_mainpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+our $settings_mainpmver = 'YaBB 2.6.13 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 # Language requirements
@@ -827,11 +829,11 @@ $qckage    = defined $qckage ? $qckage : 31;
             description => qq~<label for="qckage">$settings_txt{'qckage'}</label>~,
             input_html => qq~
                 <select name="qckage" id="qckage">
-                <option value="7"${isselected($qckage == 7)}>$settings_txt{'qckweek'}</option>
-                <option value="31"${isselected($qckage == 31)}>$settings_txt{'qckmonth'}</option>
-                <option value="92"${isselected($qckage == 92)}>$settings_txt{'qckthreemonths'}</option>
-                <option value="365"${isselected($qckage == 365)}>$settings_txt{'qckyear'}</option>
-                <option value="0"${isselected($qckage == 0)}>$settings_txt{'qckallposts'}</option>
+                <option value="7"${isselected($qckage && $qckage == 7)}>$settings_txt{'qckweek'}</option>
+                <option value="31"${isselected($qckage && $qckage == 31)}>$settings_txt{'qckmonth'}</option>
+                <option value="92"${isselected($qckage && $qckage == 92)}>$settings_txt{'qckthreemonths'}</option>
+                <option value="365"${isselected($qckage && $qckage == 365)}>$settings_txt{'qckyear'}</option>
+                <option value="0"${isselected($qckage && $qckage == 0)}>$settings_txt{'qckallposts'}</option>
                 </select>~,
             name => 'qckage',
             validate => 'number',

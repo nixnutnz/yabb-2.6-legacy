@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$settings_bookmarkspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$settings_bookmarkspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Bookmarks');
@@ -23,20 +23,22 @@ LoadLanguage('Bookmarks');
 sub Bookmarks {
 
     is_admin_or_gmod();
-
+    
+    $chk_bookmarks = q{};
     if ($en_bookmarks) { $chk_bookmarks = q~ checked="checked"~; }
     get_forum_master();
+    my $indent = -2;
 
- *get_subboards = sub {
+    local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         foreach my $board (@x) {
-            my $dash;
+            my $dash = q{-};
             if ( $indent > 2 ) { $dash = q{-}; }
 
             ( $boardname, $boardperms, $boardview ) =
               split /\|/xsm, $board{"$board"};
-            if ( ${ $uid . $board }{'rbin'} == 1
+            if ( ${ $uid . $board }{'rbin'}
                 || $boardname =~ m/http:\/\//xsm )
             {
                 next;
@@ -65,8 +67,8 @@ sub Bookmarks {
         $board_list .= qq~<option disabled="disabled">$catname</option>\n~;
         foreach my $board (@bdlist) {
             ( $boardname, undef, undef ) = split /\|/xsm, $board{"$board"};
-            if (   ${ $uid . $board }{'ann'} == 1
-                || ${ $uid . $board }{'rbin'} == 1
+            if (   ${ $uid . $board }{'ann'}
+                || ${ $uid . $board }{'rbin'}
                 || $boardname =~ m/http:\/\//xsm )
             {
                 next;
@@ -74,7 +76,7 @@ sub Bookmarks {
             ToChars($boardname);
             $sel_board = q{};
         }
-        my $indent = -2;
+        $indent = -2;
         get_subboards(@bdlist);
     }
 
@@ -95,7 +97,7 @@ sub Bookmarks {
         <td>$admin_txt{'edit'}</td>
         <td>$admin_txt{'delete'}</td>
     </tr>~;
-        foreach my $bookmark ( sort { $a <=> $b } @bookmarks ) {
+        foreach my $bookmark ( sort { $a cmp $b } @bookmarks ) {
             ( $bm_order, $bm_title, $bm_image, $bm_url, $bm_id ) =
               split /\|/xsm, $bookmark;
             $show_bookmarks .= qq~<tr class="windowbg2">
@@ -124,6 +126,7 @@ sub Bookmarks {
     </tr>~;
     }
 
+    $bm_subcut ||= q{};
     $yymain .= qq~
 <form action="$adminurl?action=bookmarks2" method="post">
 <div class="bordercolor rightboxdiv">

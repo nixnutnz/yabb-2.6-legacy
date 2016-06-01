@@ -13,10 +13,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$newsettingspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$newsettingspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -32,7 +33,7 @@ my %settings_dispatch = (
     ### ADD BEFORE THESE LINES   ###
 );
 
-my $page = $INFO{'page'};
+my $page = $INFO{'page'} || 0;
 
 # 'eval' because NewSettings.pm can be called by Sources/TabMenu.pm
 eval { require $settings_dispatch{$page}; };
@@ -166,27 +167,27 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
             my $C = $require =~ s/\(//xsm ? '(' : q{};
 
             # Is false
+            $getelem = q~document.getElementsByName~;
             if ( $require =~ s/^\!//xsm ) {
                 $requirejs{$require} .=
 qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
             }
-
             # Is equal to
             elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
+qq~$C$getelem("$ritem")[0].value == '$1'$AndOr ~;
             }
 
             # Is not equal to
             elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
+qq~$C$getelem("$ritem")[0].value != '$1'$AndOr ~;
             }
 
             # Is true
             else {
                 $requirejs{$require} .=
-                  qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
+                  qq~$C$getelem("$ritem")[0].checked$AndOr ~;
             }
             $dependicies .= qq~        checkDependent("$require");\n~;
         }
@@ -198,8 +199,9 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     }
 
     # Hidden "feature": jump directly to a tab by default via the URL bar.
+    $INFO{'tab'} ||= q{};
     $INFO{'tab'} =~ s/\W//gxsm;
-    $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
+    $default_tab = $INFO{'tab'} || $settings[0]->{'id'} || q{};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
     <table class="border-space pad-cell">
@@ -405,10 +407,11 @@ sub SaveSettingsTo {
 
         my $templateset = join q{},
           map { qq~'$_' => "$templateset{$_}",\n~; } keys %templateset;
-
+        $ext_prof_order = q{};
         if (@ext_prof_order) {
             $ext_prof_order = q{"} . join( q{","}, @ext_prof_order ) . q{"};
         }
+		$ext_prof_fields = q{};
         if (@ext_prof_fields) {
             $ext_prof_fields =
               q{"} . join( qq~",\n"~, @ext_prof_fields ) . q{"};
@@ -429,7 +432,7 @@ sub SaveSettingsTo {
 
         if (@pallist) { $pallist = q{"} . join( q{","}, @pallist ) . q{"}; }
 
-        if ( $INFO{'page'} eq 'main' ) {
+        if ( $INFO{'page'} && $INFO{'page'} eq 'main' ) {
             if ( !$enable_notifications_N ) {
                 if ( !$enable_notifications_PM ) {
                     $enable_notifications = 0;
@@ -450,21 +453,28 @@ sub SaveSettingsTo {
 
         my $AdvancedTabs = q{"} . join( q{","}, @AdvancedTabs ) . q{"};
 
+        $detachblock ||= q{};
+        $removenormalsmilies ||= q{};
+        my $SmilieURL = q{};
         if (@SmilieURL) {
             $SmilieURL = q{"} . join( q{","}, @SmilieURL ) . q{"};
         }
+        my $SmilieCode = q{};
         if (@SmilieCode) {
             $SmilieCode = q{"} . join( q{","}, @SmilieCode ) . q{"};
         }
+        my $SmilieDescription = q{};
         if (@SmilieDescription) {
             $SmilieDescription =
               q{"} . join( q{","}, @SmilieDescription ) . q{"};
         }
+        my $SmilieLinebreak = q{};
         if (@SmilieLinebreak) {
             $SmilieLinebreak = q{"} . join( q{","}, @SmilieLinebreak ) . q{"};
         }
 
         my $backup_paths = join q{ }, @backup_paths;
+        $nopostorder = join q{ }, @nopostorder;
 
         $smtp_server =~ s/^\s+|\s+$//gxsm;
 
@@ -547,7 +557,7 @@ sub SaveSettingsTo {
 ########## MemberGroups ##########
 
 $member_groups
-\@nopostorder = qw(@nopostorder);           # Order how "Post independent Member Groups" are displayed
+\@nopostorder = qw($nopostorder);           # Order how "Post independent Member Groups" are displayed
 
 ########## Layout ##########
 
@@ -1073,7 +1083,7 @@ sub WriteSettingsTo {
     $setfile =~ s/=\s+;/= 0;/gsm;
 
     # Make it look nicely aligned. The comment starts after 50 Col
-
+    my $filler = q{ } x 50;
     *cut_comment = sub {
         my ( $comment, $length ) =
           ( q{}, 150 );    # 120 Col is the max width of page
@@ -1090,7 +1100,7 @@ sub WriteSettingsTo {
         $comment =~ s/ $//sm;
         return $comment;
     };
-    my $filler = q{ } x 50;
+
     $setfile =~
 s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
     $setfile =~ s/\t+(#.+$)/$filler$1/gm;

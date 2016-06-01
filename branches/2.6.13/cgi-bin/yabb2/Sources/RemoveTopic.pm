@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$removetopicpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$removetopicpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub RemoveThread {
@@ -82,7 +82,7 @@ sub RemoveThread {
     # then look backwards to delete the other entries in
     # the Moved-Info-row if their files were deleted
 
-    *moved_loop = sub {
+    local *moved_loop = sub {
         my $th = shift;
         foreach ( keys %moved_file ) {
             if (   exists $moved_file{$_}
@@ -123,7 +123,7 @@ sub DeleteThread {
         RemFav($delete);
     }
     if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
-        && $binboard ne q{}
+        && $binboard
         && $currentboard ne $binboard )
     {
         require Sources::MoveSplitSplice;
@@ -137,7 +137,7 @@ sub DeleteThread {
         $INFO{'newthread'} = 'new';
         Split_Splice_2();
     }
-    elsif ( $iamadmin || $iamgmod || $iamfmod || $binboard eq q{} ) {
+    elsif ( $iamadmin || $iamgmod || $iamfmod || !$binboard ) {
         $INFO{'moveit'} = 1;
         $INFO{'thread'} = $delete;
         RemoveThread();
@@ -166,30 +166,30 @@ sub Multi {
     while ( $mess_loop >= $count ) {
         my ( $lock, $stick, $move, $delete, $ref, $hide );
 
-        if ( $FORM{'multiaction'} eq q{} ) {
+        if ( $FORM{'multiaction'} ) {
             $lock   = $FORM{"lockadmin$count"};
             $stick  = $FORM{"stickadmin$count"};
             $move   = $FORM{"moveadmin$count"};
             $delete = $FORM{"deleteadmin$count"};
             $hide   = $FORM{"hideadmin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'lock' ) {
-            $lock = $FORM{"admin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'stick' ) {
-            $stick = $FORM{"admin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'move' ) {
-            $move = $FORM{"admin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'delete' ) {
-            $delete = $FORM{"admin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'hide' ) {
-            $hide = $FORM{"admin$count"};
+            if ( $FORM{'multiaction'} eq 'lock' ) {
+                $lock = $FORM{"admin$count"};
+            }
+            elsif ( $FORM{'multiaction'} eq 'stick' ) {
+                $stick = $FORM{"admin$count"};
+            }
+            elsif ( $FORM{'multiaction'} eq 'move' ) {
+                $move = $FORM{"admin$count"};
+            }
+            elsif ( $FORM{'multiaction'} eq 'delete' ) {
+                $delete = $FORM{"admin$count"};
+            }
+            elsif ( $FORM{'multiaction'} eq 'hide' ) {
+                $hide = $FORM{"admin$count"};
+            }
         }
 
-        if ( $FORM{'ref'} eq 'favorites' ) {
+        if ( $FORM{'ref'} && $FORM{'ref'} eq 'favorites' ) {
             $ref = qq~$scripturl?action=favorites~;
         }
         else {
@@ -235,13 +235,13 @@ sub Multi {
                 MessageTotals( 'load', $delete );
                 $currentboard = ${$delete}{'board'};
             }
-            if ( $FORM{'ref'} eq 'favorites' ) {
+            if ( $FORM{'ref'} && $FORM{'ref'} eq 'favorites' ) {
                 $INFO{'ref'} = 'delete';
                 require Sources::Favorites;
                 RemFav($delete);
             }
             if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
-                && $binboard ne q{}
+                && $binboard
                 && $currentboard ne $binboard )
             {
                 $INFO{'moveit'}    = 1;
@@ -254,7 +254,7 @@ sub Multi {
                 $INFO{'newthread'} = 'new';
                 Split_Splice_2();
             }
-            elsif ( $iamadmin || $iamgmod || $iamfmod || $binboard eq q{} ) {
+            elsif ( $iamadmin || $iamgmod || $iamfmod || !$binboard ) {
                 $INFO{'moveit'} = 1;
                 $INFO{'thread'} = $delete;
                 RemoveThread();

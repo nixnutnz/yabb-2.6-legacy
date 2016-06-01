@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$managecatspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$managecatspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub DoCats {
@@ -86,11 +86,14 @@ sub AddCats {
 </div>
 ~;
     require Admin::ManageBoards;
-
+    my $id = q{};
+    $allowChecked = q{};
+    $curcatname = q{};
+    $catimage = q{};
+    $catrssch = q{};
     # Start Looping through and repeating the board adding wherever needed
     for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
-        if (   ( !$editcats[$i] && $INFO{'action'} eq 'catscreen' )
-            || ( $editcats[$i] eq q{} && $INFO{'action'} eq 'catscreen' ) )
+        if ( !$editcats[$i] && $INFO{'action'} eq 'catscreen' )
         {
             next;
         }
@@ -103,12 +106,11 @@ sub AddCats {
                   split /\|/xsm, $catinfo{"$catid"};
                 ToChars($curcatname);
                 $cattext = $curcatname;
-                if ( $catallowcol eq q{} || $catallowcol eq '1' ) {
+                if ( !$catallowcol || $catallowcol eq '1' ) {
                     $allowChecked = 'checked="checked"';
                 }
-                else { $allowChecked = q{}; }
                 ### RSS on Board Index Start ###
-                if ( $catrss == 1 ) { $catrssch = ' checked="checked"'; }
+                if ( $catrss && $catrss == 1 ) { $catrssch = ' checked="checked"'; }
                 else { $catrssch = q{}; }
                 ### RSS on Board Index End ###
             }
@@ -197,9 +199,9 @@ sub AddCats2 {
     get_forum_master();
 
     for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
-        if ( $FORM{"catimage$i"} ne q{} ) {
+        if ( $FORM{"catimage$i"} ) {
             $FORM{"catimage$i"} = UploadFile("catimage$i", 'Templates/Forum/default', 'png jpg jpeg gif', '250', '0');
-            if ( $FORM{"cur_catimage$i"} ne q{} ) {
+            if ( $FORM{"cur_catimage$i"} ) {
                 unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
             }
         }
@@ -207,11 +209,11 @@ sub AddCats2 {
             $FORM{"catimage$i"} = $FORM{"cur_catimage$i"};
         }
 
-        if ( $FORM{"cur_catimage$i"} ne q{} && $FORM{"del_catimage$i"} ) {
+        if ( $FORM{"cur_catimage$i"} && $FORM{"del_catimage$i"} ) {
             unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
             $FORM{"catimage$i"} = q{};
         }
-        if ( $FORM{"theid$i"} eq q{} ) { next; }
+        if ( !$FORM{"theid$i"} ) { next; }
         $id = $FORM{"theid$i"};
         if ( $id !~ /^[0-9A-Za-z#%+-\.@^_]+$/xsm ) {
             fatal_error( 'invalid_character',
@@ -228,12 +230,12 @@ sub AddCats2 {
         FromChars($cname);
         ToHTML($cname);
 
-        if   ( $FORM{"allowcol$i"} eq 'on' ) { $FORM{"allowcol$i"} = 1; }
+        if   ( $FORM{"allowcol$i"} && $FORM{"allowcol$i"} eq 'on' ) { $FORM{"allowcol$i"} = 1; }
         else                                 { $FORM{"allowcol$i"} = 0; }
 
-        if ( $FORM{"catrss$i"} eq 'on' ) { $FORM{"catrss$i"} = 1; }
+        if ( $FORM{"catrss$i"} && $FORM{"catrss$i"} eq 'on' ) { $FORM{"catrss$i"} = 1; }
         else { $FORM{"catrss$i"} = 0; }
-
+        $FORM{"catperms$i"} ||= q{};
         $catinfo{"$id"} = qq~$cname|$FORM{"catperms$i"}|$FORM{"allowcol$i"}|$FORM{"catimage$i"}|$FORM{"catrss$i"}~;
 
         $yymain .= qq~$admin_txt{'830'} <i>$id</i> $admin_txt{'48'}<br />~;

@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$adminlngver = 'YaBB 2.6.13 $Revision: 1654 $';
+$adminlngver = 'YaBB 2.6.13 $Revision$';
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 @months = ('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
@@ -1129,7 +1129,7 @@ $abbr_lang = 'en-us';
 %versiontxt = (
 '1' => q~Either your browser doesn't support JavaScript or you need to enable it to allow the versioncheck to work.~,
 '2' => '<b><span style="color:red">There is a new release version available.</span></b><br />If you would like to download ',
-'3' => qq~, please go to <a href="$yabb_dnloads">$yabb_dnloads</a>.~,
+'3' => qq~, please go to <a href="{yabb yabb_dnloads}">{yabb yabb_dnloads}</a>.~,
 '4' => 'YOUR version:',
 '5' => 'Latest RELEASE version:',
 '6' => 'You are running the latest release version.',

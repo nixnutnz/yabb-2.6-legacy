@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$removeoldtopicspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$removeoldtopicspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub RemoveOldThreads {
@@ -31,7 +31,6 @@ sub RemoveOldThreads {
     $time_to_jump = time() + $max_process_time;
 
     my ( @threads, $num, $status, $keep_sticky, %attachfile );
-    $date1;
     $date2 = $date;
 
     $yytitle     = "$removemess_txt{'120'} $maxdays";
@@ -51,7 +50,7 @@ sub RemoveOldThreads {
     foreach my $j ( $inp .. ( @boards - 1 ) ) {
         my $checkboard = $FORM{ $boards[$j] . 'check' }
           || $INFO{ $boards[$j] . 'check' };
-        if ( $checkboard == 1 ) {
+        if ( $checkboard && $checkboard == 1 ) {
             $keep_sticky = ( $FORM{'keep_them'} || $INFO{'keep_them'} ) ? 1 : 0;
 
             fopen( BOARDFILE, "$boardsdir/$boards[$j].txt" );
@@ -74,7 +73,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                 ) = split /\|/xsm, $threads[$i];
                 $date1 = sprintf '%010d', $date1;
 
-                if ( $i < $INFO{'nextthread'} ) {
+                if ( $INFO{'nextthread'} && $i < $INFO{'nextthread'} ) {
                     push @temparray_1, "$date1|$threads[$i]";
                     next;
                 }
@@ -85,7 +84,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                     $yymain .= "$num : $removemess_txt{'4'} <br />";
                 }
                 else {
-                    calcdifference();
+                    $result = calcdtdiff($date1,$date2);
                     if ( $result <= $maxdays ) { # If the message is not too old
                         push @temparray_1, "$date1|$threads[$i]";
                         $yymain .=
@@ -158,7 +157,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
     RemoveAttachments( \%attachfile );
 
     automaintenance('off');
-
+    $INFO{'total_rem_count'} ||= 0;
     $yymain .=
 qq~<br /><b>$removemess_txt{'5'} $INFO{'total_rem_count'} $removemess_txt{'6'}.</b>~;
     AdminTemplate();

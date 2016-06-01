@@ -11,7 +11,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$defaultmicondefver = 'YaBB 2.6.13 $Revision: 1651 $';
+no warnings qw(uninitialized once);
+$defaultmicondefver = 'YaBB 2.6.13 $Revision$';
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
@@ -299,7 +300,7 @@ var jsIM = new Hash($jsIMlist);
 ~;
 
 $my_sep = q{ };
-if ( $MenuType == 1 || $UseMenuT == 1) {
+if ( ($MenuType && $MenuType == 1) || ($UseMenuT && $UseMenuT == 1)) {
     $my_sep = q{ | };
 }
 1;

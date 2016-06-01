@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$downloadspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$downloadspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_template('Downloads');
@@ -154,6 +154,7 @@ sub DownloadView {
         $postdisplaynum = 8;
         $newstart       = ( int( $newstart / 25 ) ) * 25;
         $tmpa           = 1;
+        $startpage = 0;
         if ( $newstart >= ( ( $postdisplaynum - 1 ) * 25 ) ) {
             $startpage = $newstart - ( ( $postdisplaynum - 1 ) * 25 );
             $tmpa = int( $startpage / 25 ) + 1;
@@ -181,6 +182,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort
         }
         $lastpn  = int( $max / 25 ) + 1;
         $lastptn = ( $lastpn - 1 ) * 25;
+        $pageindexadd = q{};
         if ( $endpage < $max - (25) ) { $pageindexadd = q~...&nbsp;~; }
         if ( $endpage != $max ) {
             $pageindexadd .=

@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$maintenancepmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$maintenancepmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub RebuildMessageIndex {
@@ -312,8 +312,13 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
 
 sub RebuildMessageIndexText {
     my ( $part, $j, $total ) = @_;
+    $part ||= 0;
+	$j ||= 0;
+	$total ||= 0;
+    $INFO{'count_del_threads'} ||= 0;
 
     $j++;
+    $INFO{'st'} ||=0;
     $INFO{'st'} =
       int( $INFO{'st'} + time() - $time_to_jump + $max_process_time );
 
@@ -343,7 +348,6 @@ sub RebuildMessageIndexText {
     $yymain .= qq~</b>
     <p id="memcontinued">$admin_txt{'542'} <a href="$adminurl?action=rebuildmesindex;rebuild=$part;st=$INFO{'st'};next=$j;count_del_threads=$INFO{'count_del_threads'}" onclick="PleaseWait();">$admin_txt{'543'}</a>...<br />$admin_txt{'544'}
     </p>
-
     <script type="text/javascript">
         function PleaseWait() {
             document.getElementById("memcontinued").innerHTML = '<span class="important"><b>$admin_txt{'545'}</b></span><br />&nbsp;<br />&nbsp;';

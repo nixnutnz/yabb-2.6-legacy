@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$postlngver = 'YaBB 2.6.13 $Revision: 1651 $';
+$postlngver = 'YaBB 2.6.13 $Revision$';
 
 %post_txt = (
 '10' => 'Save',
@@ -139,6 +139,7 @@ $postlngver = 'YaBB 2.6.13 $Revision: 1651 $';
 'selectall' => 'Select All', 
 '603' => 'Edited',
 '604' => '/me - my name',
+'646' => q~Members replying to this topic~,
 '750' => 'Check this if you wish to be notified of replies to this topic.',
 '752' => 'You must fill in the recipient field.',
 '768' => 'Are you sure you want to remove this member from list?',

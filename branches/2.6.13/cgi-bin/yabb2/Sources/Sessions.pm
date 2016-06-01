@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.13';
 
-$sessionspmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$sessionspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
@@ -22,7 +22,7 @@ get_micon();
 get_template('Other');
 
 sub SessionReval {
-    if (   ${ $uid . $username }{'sesquest'} eq q{}
+    if (   !${ $uid . $username }{'sesquest'}
         || ${ $uid . $username }{'sesquest'} eq 'password' )
     {
         $sesremark =
@@ -52,8 +52,8 @@ sub SessionReval2 {
 #    require Sources::Decoder;
     $FORM{'cookielength'}   = 360;
     $FORM{'cookieneverexp'} = 1;
-    if ( $FORM{'sesanswer'} eq q{} ) { fatal_error('no_secret_answer'); }
-    if (   ${ $uid . $username }{'sesquest'} eq q{}
+    if ( !$FORM{'sesanswer'} ) { fatal_error('no_secret_answer'); }
+    if (   !${ $uid . $username }{'sesquest'}
         || ${ $uid . $username }{'sesquest'} eq 'password' )
     {
         $question = ${ $uid . $username }{'password'};

@@ -15,10 +15,12 @@
 #                and added to YaBB core in Version 2.5.4/2.6.0                #
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$livepreviewpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$livepreviewpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 use URI::Escape;
@@ -133,7 +135,10 @@ sub DoLiveIM {
         if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
 
         if ($enable_ubbc) {
-            $displayname = ${ $uid . $tmpmusername }{'realname'};
+		    $displayname = q{};
+		    if ( $tmpmusername ) {
+                $displayname = ${ $uid . $tmpmusername }{'realname'};
+			}
             DoUBBC();
             $message =~ s/ style="display:none"/ style="display:inline"/gsm;
         }
@@ -273,17 +278,17 @@ sub DoLiveCal {
 
 sub liveimage_resize {
     my ($resize_num);
-    *check_image_resize = sub {
+    local *check_image_resize = sub {
         my @x = @_;
         $resize_num++;
         $x[0] = "post_liveimg_resize_$resize_num";
         return qq~"$x[0]"$x[1]~;
     };
 
-    $messageblock =~
-      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gesm;
-    $message =~
-      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gesm;
+    if ($messageblock) {$messageblock =~
+      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gesm;}
+    if ($message) {$message =~
+      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gesm;}
 
     return;
 }

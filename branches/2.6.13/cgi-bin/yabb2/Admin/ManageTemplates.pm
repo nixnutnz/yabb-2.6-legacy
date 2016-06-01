@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$managetemplatespmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$managetemplatespmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
@@ -80,7 +81,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
     }
 
     fopen( TMPL, "$templatesdir/$templatefile" );
-    my $line = join '',<TMPL>;
+    $line = join '',<TMPL>;
     fclose(TMPL);
     for my $x( 0 .. ( length($line) - 1 ) ){
         $fulltemplate .= "&#" . sprintf("%03d",ord((substr($line,$x,1)))) . ";";
@@ -183,19 +184,17 @@ sub ModifySkin {
     $thisimagesdir = "$yyhtml_root/Templates/Forum/$aktimages";
 
     $ttoolschecked = q{};
-    if ( $INFO{'threadtools'} ne q{} ) {
-        if ($INFO{'threadtools'} == 1 ) {
+    if ( $INFO{'threadtools'} && $INFO{'threadtools'} == 1 ) {
             $ttoolschecked = ' checked="checked"';
-        }
-    }
-    elsif ( $aktthreadtools == 1 ) {
+     }
+    elsif ( $aktthreadtools && $aktthreadtools == 1 ) {
         $ttoolschecked = ' checked="checked"';
     }
-    elsif ( $threadtools == 1 ) {
+    elsif ( $threadtools && $threadtools == 1 ) {
         $ttoolschecked = ' checked="checked"';
     }
 
-    if ( $aktposttools == 1 || $INFO{'posttools'} == 1 ) {
+    if ( ($aktposttools && $aktposttools == 1)  || ($INFO{'posttools'} && $INFO{'posttools'} == 1) ) {
         $ptoolschecked = ' checked="checked"';
     }
 
@@ -216,19 +215,19 @@ sub ModifySkin {
     if ( $INFO{'mycenterfile'} ) { $mycenterfile = $INFO{'mycenterfile'}; }
     else { $mycenterfile = "$aktmycenter/MyCenter.template"; }
 
-    if ( $INFO{'menutype'} ne q{} ) { $UseMenuType = $INFO{'menutype'}; }
+    if ( $INFO{'menutype'} ) { $UseMenuType = $INFO{'menutype'}; }
     else {
         $UseMenuType = $MenuType;
-        if ( $aktmenutype ne q{} ) { $UseMenuType = $aktmenutype; }
+        if ( $aktmenutype ) { $UseMenuType = $aktmenutype; }
     }
 
-    if ( $INFO{'threadtools'} ne q{} ) { $useThreadtools = $INFO{'threadtools'}; }
+    if ( $INFO{'threadtools'} ) { $useThreadtools = $INFO{'threadtools'}; }
     else {
         if ( $thistemplate ne 'Forum default' ) { $useThreadtools = $aktthreadtools; }
         else { $useThreadtools = $threadtools; }
     }
 
-    if ( $INFO{'posttools'} ne q{} ) { $usePosttools = $INFO{'posttools'}; }
+    if ( $INFO{'posttools'} ) { $usePosttools = $INFO{'posttools'}; }
     else {
         $usePosttools = $posttools;
         if ( $thistemplate ne 'Forum default' ) { $usePosttools = $aktposttools; }
@@ -255,6 +254,7 @@ sub ModifySkin {
         if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
             ( $name, $ext, $bak ) = split /\./xsm, $file;
             $selected = q{};
+            $ext ||= q{};
             if ( !$bak && $ext eq 'css' ) {
                 if ( $file eq $cssfile ) {
                     $selected = q~ selected="selected"~;
@@ -317,6 +317,8 @@ sub ModifySkin {
             $thefile = qq~$name/$file~;
             ( $section, $ext ) = split /\./xsm, $file;
             $hselected = q{};
+            $ext ||= q{};
+            $section ||= q{};
             if ( $ext eq 'html' && $section eq $name ) {
                 if ( $file eq $headfile ) {
                     $hselected = q~ selected="selected"~;
@@ -400,6 +402,7 @@ s/img src\=\"$imagesdir\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eisg
     $tempuname = qq~$templ_txt{'69'} ${$uid.$username}{'realname'}, ~;
     $tempuim   = qq~$templ_txt{'70'} <a id="ims">0 $templ_txt{'71'}</a>.~;
     $temptime  = timeformat( $date, 1 );
+    $showsearchboxnum ||= q{};
     my $tempsearchbox =
 qq~<input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" /><input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" />
 ~;
@@ -476,7 +479,7 @@ s/img src\=\"$tempimages\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eis
     $fulltemplate =~
       s/<a href="http:\/\/validator.w3.org\/check\/referer">.+?<\/a>//gsm;
     $fulltemplate =~
-s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\={yabb url}">.+?<\/a>//gsm;
+s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=\{yabb url}">.+?<\/a>//gsm;
     $fulltemplate =~ s/[\n\r]//gxsm;
     ToHTML($fulltemplate);
 
@@ -745,27 +748,27 @@ sub BoardTempl {
 
     $grpcolors = q{};
     ( $title, undef, undef, $color, $noshow ) = split /\|/xsm,
-      $Group{'Administrator'}, 5;
+      $Group{'Administrator'};
     my $admcolor = qq~$color~;
     if ( $color && $noshow != 1 ) {
         $grpcolors .=
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
     }
     ( $title, undef, undef, $color, $noshow ) =
-      split /\|/xsm, $Group{'Global Moderator'}, 5;
+      split /\|/xsm, $Group{'Global Moderator'};
     if ( $color && $noshow != 1 ) {
         $grpcolors .=
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
     }
     ( $title, undef, undef, $color, $noshow ) =
-      split /\|/xsm, $Group{'Mid Moderator'}, 5;
+      split /\|/xsm, $Group{'Mid Moderator'};
     if ( $color && $noshow != 1 ) {
         $grpcolors .=
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
     }
     foreach my $nopostamount ( sort { $a <=> $b } keys %NoPost ) {
         ( $title, undef, undef, $color, $noshow ) = split /\|/xsm,
-          $NoPost{$nopostamount}, 5;
+          $NoPost{$nopostamount};
         if ( $color && $noshow != 1 ) {
             $grpcolors .=
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
@@ -773,7 +776,7 @@ qq~<div class="small" style="float: left; width: 49%;"><span style="color: $colo
     }
     foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
         ( $title, undef, undef, $color, $noshow ) = split /\|/xsm,
-          $Post{$postamount}, 5;
+          $Post{$postamount};
         if ( $color && $noshow != 1 ) {
             $grpcolors .=
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
@@ -1763,13 +1766,13 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
         $drawpos1 .= 'px';
         $viewimgx = $1;
         $viewimgx .= 'px';
-        $drawpos2 = $1 + 213;
+        $drawpos2 = $2 + 213;
         $drawpos2 .= 'px';
         $drawimgwd = $previmage;
         $drawimgwd =~ m/.*?padding\s*?\:\s*?\d{1,2}px\s*?\d{1,2}px\s*?\d{1,2}px\s*?(\d{1,2})px.*/ism;
         $viewimgpad = $1;
         $viewimgpad .= 'px';
-        $drawpos3 = $1 + 213;
+        $drawpos3 = $2 + 213;
         $drawpos3 .= 'px';
     }
     if ( $stylestr =~ /\.seperator/sm ) {

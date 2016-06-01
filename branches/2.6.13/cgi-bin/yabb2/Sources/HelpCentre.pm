@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$helpcentrepmver = 'YaBB 2.6.13 $Revision: 1713 $';
+$helpcentrepmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');
@@ -62,28 +63,33 @@ sub SectionDecide {
         }
     }
 
-    if ( $INFO{'section'} eq 'admin' ) {
-        if ( $UseHelp_Perms && !$iamadmin ) {
-            fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
+    if ( $INFO{'section'} ) {
+        if ( $INFO{'section'} eq 'admin' ) {
+            if ( $UseHelp_Perms && !$iamadmin ) {
+                fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
+            }
+            ${ $INFO{'section'} . _class } = 'selected-bg';
+            $help_area = 'Admin';
         }
-        ${ $INFO{'section'} . _class } = 'selected-bg';
-        $help_area = 'Admin';
-    }
-    elsif ( $INFO{'section'} eq 'global_mod' ) {
-        if ( $UseHelp_Perms && !$iamgmod && !$iamadmin ) {
-            fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
+        elsif ( $INFO{'section'} eq 'global_mod' ) {
+            if ( $UseHelp_Perms && !$iamgmod && !$iamadmin ) {
+                fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
+            }
+            ${ $INFO{'section'} . _class } = 'selected-bg';
+            $help_area = 'Gmod';
         }
-        ${ $INFO{'section'} . _class } = 'selected-bg';
-        $help_area = 'Gmod';
-    }
-    elsif ( $INFO{'section'} eq 'moderator' ) {
-        if ( $UseHelp_Perms && !$ismod && !$iamgmod && !$iamadmin && !$iamfmod ) {
-            fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
+        elsif ( $INFO{'section'} eq 'moderator' ) {
+            if ( $UseHelp_Perms && !$ismod && !$iamgmod && !$iamadmin && !$iamfmod ) {
+                fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
+            }
+            ${ $INFO{'section'} . _class } = 'selected-bg';
+            $help_area = 'Moderator';
         }
-        ${ $INFO{'section'} . _class } = 'selected-bg';
-        $help_area = 'Moderator';
+        else {
+        $UserClass = 'selected-bg';
+        $help_area = 'User';
+        }
     }
-
     else {
         $UserClass = 'selected-bg';
         $help_area = 'User';

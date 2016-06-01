@@ -12,9 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 our $VERSION = '2.6.13';
 
-$sendtopicpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$sendtopicpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
@@ -29,10 +30,10 @@ sub SendTopic {
     $topic = $INFO{'topic'};
     MessageTotals( 'load', $topic );
     $board = ${$topic}{'board'};
-    if ( $board eq q{} || $board eq q{_} || $board eq q{ } ) {
+    if ( !$board || $board eq q{_} || $board eq q{ } ) {
         fatal_error('no_board_send');
     }
-    if ( $topic eq q{} || $topic eq q{_} || $topic eq q{ } ) {
+    if ( !$topic || $topic eq q{_} || $topic eq q{ } ) {
         fatal_error('no_topic_send');
     }
     if ($iamguest) { $focus_y_name = q~document.sendtopic.y_name.focus();~; }
@@ -135,10 +136,10 @@ sub SendTopic {
 sub SendTopic2 {
     $topic = $FORM{'topic'};
     $board = $FORM{'board'};
-    if ( $board eq q{} || $board eq q{_} || $board eq q{ } ) {
+    if ( !$board || $board eq q{_} || $board eq q{ } ) {
         fatal_error('no_board_send');
     }
-    if ( $topic eq q{} || $topic eq q{_} || $topic eq q{ } ) {
+    if ( !$topic || $topic eq q{_} || $topic eq q{ } ) {
         fatal_error('no_topic_send');
     }
 
@@ -155,13 +156,13 @@ sub SendTopic2 {
     $remail =~ s/\A\s+//xsm;
     $remail =~ s/\s+\Z//xsm;
 
-    if ( $yname eq q{} || $yname eq q{_} || $yname eq q{ } ) {
+    if ( !$yname || $yname eq q{_} || $yname eq q{ } ) {
         fatal_error( 'no_name', "$sendtopic_txt{'335'}" );
     }
     if ( length($yname) > 25 ) {
         fatal_error( 'sendname_too_long', "$sendtopic_txt{'335'}" );
     }
-    if ( $yemail eq q{} ) {
+    if ( !$yemail ) {
         fatal_error( 'no_email', "$sendtopic_txt{'336'}" );
     }
     if ( $yemail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/sm ) {
@@ -173,13 +174,13 @@ sub SendTopic2 {
     {
         fatal_error( 'invalid_email', "$sendtopic_txt{'336'}" );
     }
-    if ( $rname eq q{} || $rname eq q{_} || $rname eq q{ } ) {
+    if ( !$rname || $rname eq q{_} || $rname eq q{ } ) {
         fatal_error( 'no_name', "$sendtopic_txt{'717'}" );
     }
     if ( length($rname) > 25 ) {
         fatal_error( 'sendname_too_long', "$sendtopic_txt{'717'}" );
     }
-    if ( $remail eq q{} ) {
+    if ( !$remail ) {
         fatal_error( 'no_email', "$sendtopic_txt{'718'}" );
     }
     if ( $remail !~ /[\w\-\.\+]+\@[\w\-\.\+]+\.(\w{2,4}$)/sm ) {

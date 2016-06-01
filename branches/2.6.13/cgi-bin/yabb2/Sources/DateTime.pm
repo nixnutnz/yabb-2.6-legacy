@@ -18,14 +18,15 @@ use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.13';
 
-$datetimepmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$datetimepmver = 'YaBB 2.6.13 $Revision$';
 
 @days_rfc = qw( Sun Mon Tue Wed Thu Fri Sat );
     # for RFC compliant feed time
 @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
 
-sub calcdifference {    # Input: $date1 $date2
-    $result = int( $date2 / 86400 ) - int( $date1 / 86400 );
+sub calcdtdiff {    # Input: $date1 $date2
+    my ( $date1, $date2 ) = @_;
+    my $result = int( $date2 / 86400 ) - int( $date1 / 86400 );
     return $result;
 }
 
@@ -380,7 +381,7 @@ sub CalcAge {
     timetostring($date);
     my ( $usermonth, $userday, $useryear );
 
-    if ( ${ $uid . $user }{'bday'} ne q{} ) {
+    if ( ${ $uid . $user }{'bday'} ) {
         ( $usermonth, $userday, $useryear ) =
           split /\//xsm, ${ $uid . $user }{'bday'};
 

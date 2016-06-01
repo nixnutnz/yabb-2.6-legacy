@@ -12,9 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$yabbcpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$yabbcpmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -92,7 +95,7 @@ sub quotemsg {
                 $testauthor = MemberIndex( 'check_exist', "$qauthor" );
 
                 # check if this name exists in the memberlist
-                if ( $testauthor ne q{} )
+                if ( $testauthor )
                 {      # if it is, load the user id returned
                     $qauthor = $testauthor;
                     LoadUser($qauthor);
@@ -292,7 +295,7 @@ sub imagemsg {
     FromHTML($attribut);
     $attribut =~ s/(\s|$char_160)+/ /gxsm;
 
-    *altconv = sub {
+    local *altconv = sub {
         my ( $attfirst, $attalt, $attlast ) = @_;
         $attalt =~ s/\s/_/gxsm;
         $attfirst . qq~ alt=$attalt $attlast~;
@@ -353,7 +356,7 @@ sub imagemsg {
 sub DoUBBC {
     my ($image_type) = @_;
     $ycsscounter = 2;
-    if ( $ns eq 'NS' || $message =~ s/\x23nosmileys//isgm ) { return $message; }
+    if ( $ns && $ns eq 'NS' || $message =~ s/\x23nosmileys//isgm ) { return $message; }
     if ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) { $message = parseimgflash($message); }
     $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eisgm;
     $message =~ s/\[reason\](.+?)\[\/reason\]//igsm;
@@ -482,7 +485,7 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
     $message =~ s/\[email\]\s*(\S+?\@\S+?)\s*\[\/email\]/<a href="mailto:$1">$1<\/a>/isgm;
     $message =~ s/\[email=\s*(\S+?\@\S+?)\](.*?)\[\/email\]/<a href="mailto:$1">$2<\/a>/isgm;
 
-    *editsmsg = sub {
+    local *editsmsg = sub {
         my ($edittext) = @_;
         $formedit = qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div><!--edit-->~;
         return $formedit;
@@ -498,8 +501,8 @@ s/([^\"\=\[\]\/\:\.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highli
         # convert old flash tags to media tags
         while ( $message =~ s/\[flash\s*(.*?)\]\n*(.*?)\n*\[\/flash\]/flashconvert($2,$1)/eisgm ) { }
         # convert old flash tags to media tags
-        while ( $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/embed($1)/eisgm ) { }
-        while ( $message =~ s/\[media\s*(.*?)\]\n*(.*?)\n*\[\/media\]/embed($2,$1)/eisgm ){ }
+        while ( $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/myembed($1)/eisgm ) { }
+        while ( $message =~ s/\[media\s*(.*?)\]\n*(.*?)\n*\[\/media\]/myembed($2,$1)/eisgm ){ }
         $message =~ s/media:/http:/igxsm;
     }
 

@@ -14,7 +14,7 @@
 ###############################################################################
 
 our $VERSION = '2.6.13';
-$adminsublistpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$adminsublistpmver = 'YaBB 2.6.13 $Revision$';
 
 %director = (
 'addboard' => 'ManageBoards.pm&AddBoards',
@@ -110,7 +110,7 @@ $adminsublistpmver = 'YaBB 2.6.13 $Revision: 1651 $';
 'managecats' => 'ManageBoards.pm&ManageBoards',
 'managepmattachments2' => 'Attachments.pm&PMAttachments2',
 'membershiprecount' => 'Maintenance.pm&AdminMembershipRecount',
-'ml' => 'ViewMembers.pm&Ml',
+'ml' => 'ViewMembers.pm&Admin_Ml',
 'modagreement' => 'AdminEdit.pm&ModifyAgreement',
 'modagreement2' => 'AdminEdit.pm&ModifyAgreement2',
 'modcss' => 'ManageTemplates.pm&ModifyCSS',
@@ -174,7 +174,7 @@ $adminsublistpmver = 'YaBB 2.6.13 $Revision: 1651 $';
 'stats' => 'Admin.pm&FullStats',
 'view_regentry' => 'RegistrationLog.pm&view_registration',
 'view_reglog' => 'RegistrationLog.pm&view_reglog',
-'viewmembers' => 'ViewMembers.pm&Ml',
+'viewmembers' => 'ViewMembers.pm&Admin_Ml',
 'blockip' => 'ErrorLog.pm&blockip',
 );
 

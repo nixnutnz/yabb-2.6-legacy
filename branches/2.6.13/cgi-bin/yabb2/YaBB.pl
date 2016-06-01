@@ -1,7 +1,7 @@
 #!/usr/bin/perl --
 # $Id: YaBB Main$
 # $HeadURL: YaBB $
-# $Revision: 1651 $
+# $Revision$
 # $Source: /YaBB.pl $
 ###############################################################################
 # YaBB.pl                                                                     #
@@ -18,6 +18,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 #use strict;
+#use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
@@ -25,7 +26,7 @@ our $VERSION = '2.6.13';
 
 ### Version Info ###
 $YaBBversion = 'YaBB 2.6.13';
-$yabbplver   = 'YaBB 2.6.13 $Revision: 1651 $';
+$yabbplver   = 'YaBB 2.6.13 $Revision$';
 
 if ( $action eq 'detailedversion' ) { return 1; }
 
@@ -65,7 +66,6 @@ BEGIN {
     require Sources::DateTime;
     require Sources::Load;
 
-    require Sources::Guardian;
     get_forum_master();
 }    # END of BEGIN block
 
@@ -142,8 +142,10 @@ if ( $is_perm && $accept_permalink ) {
             "$permboard|C:$permachecktime|T:$threadpermatime" );
     }
 }
-
-guard();
+if ($use_guardian) {
+    require Sources::Guardian;
+    guard();
+}
 
 # Check if the action is allowed from an external domain
 if ($referersecurity) { referer_check(); }
@@ -199,7 +201,7 @@ sub yymain {
         KickGuest();
     }
 
-    if ( $action ne q{} ) {
+    if ( $action ) {
         if ( $action eq $randaction ) {
             require Sources::Decoder;
             convert();
@@ -217,11 +219,11 @@ sub yymain {
             }
         }
     }
-    elsif ( $INFO{'num'} ne q{} ) {
+    elsif ( $INFO{'num'} ) {
         require Sources::Display;
         Display();
     }
-    elsif ( $currentboard eq q{} ) {
+    elsif ( !$currentboard ) {
         require Sources::BoardIndex;
         BoardIndex();
     }

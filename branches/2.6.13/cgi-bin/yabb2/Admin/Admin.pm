@@ -12,13 +12,14 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.6.13';
 
-$adminpmver = 'YaBB 2.6.13 $Revision: 1676 $';
+$adminpmver = 'YaBB 2.6.13 $Revision$';
 LoadLanguage('Credits');
 
 get_template('AdminCentre');
@@ -150,6 +151,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
     $avgm = int( $totalm / $memcount );
     LoadAdmins();
 
+    $yyclicks = q{};
     if ($enableclicklog) {
         my (@log);
         fopen( LOG, "<$vardir/clicklog.txt" );
@@ -241,7 +243,6 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     }
 
     BoardTotals( 'load', @goodboards );
-
     # &getlog; not used here !!?
     foreach my $curboard (@goodboards) {
         chomp $curboard;
@@ -256,9 +257,8 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
           ? $boardindex_txt{'470'}
           : ${ $uid . $curboard }{'lastposttime'};
         $lastpostrealtime{$curboard} =
-          ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
-          || !${ $uid . $curboard }{'lastposttime'}
-          ? q{}
+          !${ $uid . $curboard }{'lastposttime'} || ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
+           ? q{}
           : ${ $uid . $curboard }{'lastposttime'};
         if ( ${ $uid . $curboard }{'lastposter'} =~ m{\AGuest-(.*)}xsm ) {
             ${ $uid . $curboard }{'lastposter'} = $1;
@@ -277,7 +277,11 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
         $totalt += ${ $uid . $curboard }{'threadcount'};
 
         # determine the true last post on all the boards a user has access to
-        if ( $lastposttime > $lastthreadtime ) {
+        $lspostid ||= q{};
+        $lsreply ||= q{};
+        $lssub ||= q{};
+        $lsdatetime ||= q{};
+        if ( $lastposttime && $lastposttime ne 'N/A' && $lastposttime > $lastthreadtime ) {
             $lsdatetime     = timeformat($lastposttime);
             $lsposter       = ${ $uid . $curboard }{'lastposter'};
             $lssub          = ${ $uid . $curboard }{'lastsubject'};
@@ -704,16 +708,13 @@ sub DeleteMultiMembers {
     automaintenance('on');
 
     my @userslist = ();
-    chomp $FORM{'button'};
-    chomp $FORM{'emailsubject'};
-    chomp $FORM{'emailtext'};
-    $tmpemailsubject = $FORM{'emailsubject'};
-    $tmpemailtext    = $FORM{'emailtext'};
-    if ( $FORM{'button'} != 1 && $FORM{'button'} != 2 ) {
+    $tmpemailsubject = $FORM{'emailsubject'} || q{};
+    $tmpemailtext    = $FORM{'emailtext'} || q{};
+    if ( $FORM{'button'} && $FORM{'button'} != 1 && $FORM{'button'} != 2 ) {
         fatal_error('no_access');
     }
 
-    if ( $FORM{'del_mail'} || $FORM{'emailtext'} ne q{} ) {
+    if ( $FORM{'del_mail'} || $FORM{'emailtext'} ) {
         require Sources::Mailer;
     }
 
@@ -722,7 +723,7 @@ sub DeleteMultiMembers {
     fclose(FILE);
     my $count = 0;
 
-    if ( $FORM{'button'} == 1 && $FORM{'emailtext'} ne q{} ) {
+    if ( $FORM{'button'} == 1 && $FORM{'emailtext'} ) {
         $FORM{'emailsubject'} =~ s/\|/&verbar;/gsm;
         $FORM{'emailtext'} =~ s/\|/&verbar;/gsm;
         $FORM{'emailtext'} =~ s/\r(?=\n*)//gxsm;
@@ -738,7 +739,7 @@ sub DeleteMultiMembers {
         if ( exists $FORM{"member$count"} ) {
             if ( -e "$memberdir/$currentmem.vars" ) {    # Bypass dead entries.
                 LoadUser($currentmem);
-                if ( $FORM{'emailtext'} ne q{} ) {
+                if ( $FORM{'emailtext'} ) {
                     $emailsubject = $FORM{'emailsubject'};
                     $emailtext    = $FORM{'emailtext'};
                     $emailsubject =~
@@ -798,8 +799,11 @@ sub DeleteMultiMembers {
         $yySetLocation = qq~$adminurl?action=mailing;sort=$INFO{'sort'}~;
     }
     else {
+        $dstart = $INFO{'start'}|| 0;
+        $reversed = $INFO{'reversed'} || q{};
+        #sort=$INFO{'sort'};reversed=$INFO{'reversed'}
         $yySetLocation =
-qq~$adminurl?action=viewmembers;start=$INFO{'start'};sort=$INFO{'sort'};reversed=$INFO{'reversed'}~;
+qq~$adminurl?action=viewmembers;start=$dstart;sort=$INFO{'sort'};reversed=$reversed~;
     }
     redirectexit();
     return;
@@ -977,6 +981,7 @@ sub Refcontrol {
                 last;
             }
         }
+        $refexpl_txt{$actfound} ||= q{};
         $refexpl_txt{$actfound} =~ s/\x22/\x27/gxsm;    # XHTML Validation
         $dismenu .=
 qq~<input type="checkbox" name="$actfound" id="$actfound"$selected />&nbsp;<label for="$actfound"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $refexpl_txt{$actfound}" title="$reftxt{'1a'} $refexpl_txt{$actfound}" /> $actfound</label><br />\n~;
@@ -1057,7 +1062,8 @@ sub Refcontrol2 {
 sub AddMember {
     is_admin_or_gmod();
     LoadLanguage('Register');
-
+    $sessionid ||=q{};
+    $regdate ||=q{};
     $yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
@@ -1328,8 +1334,8 @@ sub AddMember2 {
             }
         }
     }
-
-    if ( -e ("$memberdir/$member{'username'}.vars") ) {
+    my $chmem = $member{'username'} || q{};
+    if ( -e ("$memberdir/$chmem.vars") ) {
         fatal_error('id_taken');
     }
 
@@ -1360,16 +1366,15 @@ sub AddMember2 {
     ${ $uid . $reguser }{'regdate'}       = $registerdate;
     ${ $uid . $reguser }{'regtime'}       = $date;
     ${ $uid . $reguser }{'timeselect'}    = $timeselected;
-    ${ $uid . $reguser }{'timeoffset'}    = $timeoffset;
-    ${ $uid . $reguser }{'dsttimeoffset'} = $dstoffset;
     ${ $uid . $reguser }{'hidemail'}      = $FORM{'hideemail'} ? 1 : 0;
     ${ $uid . $reguser }{'timeformat'}    = q~MM D+ YYYY @ HH:mm:ss*~;
     ${ $uid . $reguser }{'template'}      = $new_template;
     ${ $uid . $reguser }{'language'}      = $member{'userlang'};
     ${ $uid . $reguser }{'pageindex'}     = q~1|1|1~;
 
-    UserAccount( $reguser, 'register' ) & MemberIndex( 'add', $reguser ) &
-      FormatUserName($reguser);
+    UserAccount( $reguser, 'register' );
+    MemberIndex( 'add', $reguser );
+    FormatUserName($reguser);
 
     if ($emailpassword) {
         my $templanguage = $language;
@@ -1425,6 +1430,10 @@ sub AdminCheck {
 
     my $adminpass  = 'adminpass';
     my $cookiename = "$cookieusername$adminpass";
+    $my_query = q{};
+    $my_action = q{};
+    $my_page = q{};
+
     if ( $yyCookies{$cookiename} ) {
         if ( $INFO{'action2'} ) {
             $my_action = qq~action=$INFO{'action2'};~;

@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$admineditpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$admineditpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -28,7 +29,7 @@ sub GmodSettings {
     if ( !-e ("$vardir/gmodsettings.txt") ) { GmodSettings2(); }
     require "$vardir/gmodsettings.txt";
 
-    if ( $gmod_newfile eq q{} ) { GmodSettings2(); }
+    if ( !$gmod_newfile ) { GmodSettings2(); }
 
     fopen( MODACCESS, "$vardir/gmodsettings.txt" );
     @scriptlines = <MODACCESS>;

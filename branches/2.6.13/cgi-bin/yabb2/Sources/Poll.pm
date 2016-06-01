@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$pollpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$pollpmver = 'YaBB 2.6.13 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 LoadLanguage('Poll');
@@ -31,7 +32,7 @@ sub DoVote {
 
     $novote = 0;
     $vote   = q{};
-    fopen(FILE, "$datadir/$pollnum.poll");
+    fopen(FILE, "<$datadir/$pollnum.poll");
     $poll_question = <FILE>;
     @poll_data     = <FILE>;
     fclose(FILE);
@@ -46,7 +47,7 @@ sub DoVote {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i], $slicecols[$i], $split[$i] ) =
           split /\|/xsm, $poll_data[$i];
-        $tmp_vote = qq~$FORM{"option$i"}~;
+        $tmp_vote = $FORM{"option$i"};
         if ( $multi_vote && $tmp_vote ne q{} ) {
             $votes[$i]++;
             $novote = 1;
@@ -65,41 +66,43 @@ sub DoVote {
     if ( $iamguest && !$guest_vote ) { fatal_error('members_only'); }
     if ($poll_locked) { fatal_error('locked_poll_no_count'); }
 
-    fopen(FILE, "$datadir/$pollnum.polled");
-    @polled = <FILE>;
-    fclose(FILE);
+    if ( -e "$datadir/$pollnum.polled" ) {
+        fopen(FILE, "<$datadir/$pollnum.polled");
+        @polled = <FILE>;
+        fclose(FILE);
 
-    for my $i ( 0 .. $#polled ) {
-        ( $voters_ip, $voters_name, $voters_vote, $vote_time ) = split /\|/xsm,
-          $polled[$i];
-        chomp $voters_vote;
-        if (   $iamguest
-            && $voters_name  eq 'Guest'
-            && lc $voters_ip eq lc $user_ip )
-        {
-            fatal_error('ip_guest_used');
-        }
-        elsif ($iamguest
-            && $voters_name ne 'Guest'
-            && lc $voters_ip eq lc $user_ip )
-        {
-            fatal_error('ip_member_used');
-        }
-        elsif ( !$iamguest
-            && $voters_name ne 'Guest'
-            && lc $username eq lc $voters_name )
-        {
-            fatal_error('voted_already');
-        }
-        elsif ( !$iamguest
-            && $voters_name  eq 'Guest'
-            && lc $voters_ip eq lc $user_ip )
-        {
-            foreach my $oldvote ( split /\,/xsm, $voters_vote ) {
-                $votes[$oldvote]--;
+        for my $i ( 0 .. $#polled ) {
+            ( $voters_ip, $voters_name, $voters_vote, $vote_time ) = split /\|/xsm,
+              $polled[$i];
+            chomp $voters_vote;
+            if (   $iamguest
+                && $voters_name  eq 'Guest'
+                && lc $voters_ip eq lc $user_ip )
+            {
+                fatal_error('ip_guest_used');
             }
-            $polled[$i] = q{};
-            last;
+            elsif ($iamguest
+                && $voters_name ne 'Guest'
+                && lc $voters_ip eq lc $user_ip )
+            {
+                fatal_error('ip_member_used');
+            }
+            elsif ( !$iamguest
+                && $voters_name ne 'Guest'
+                && lc $username eq lc $voters_name )
+            {
+                fatal_error('voted_already');
+            }
+            elsif ( !$iamguest
+                && $voters_name  eq 'Guest'
+                && lc $voters_ip eq lc $user_ip )
+            {
+                foreach my $oldvote ( split /\,/xsm, $voters_vote ) {
+                    $votes[$oldvote]--;
+                }
+                $polled[$i] = q{};
+                last;
+            }
         }
     }
 
@@ -137,7 +140,7 @@ sub UndoVote {
     check_deletepoll();
     if ( !$iamadmin && $poll_nodelete{$username} ) { fatal_error('no_access'); }
 
-    fopen(FILE, "$datadir/$pollnum.poll");
+    fopen(FILE, "<$datadir/$pollnum.poll");
     $poll_question = <FILE>;
     @poll_data     = <FILE>;
     fclose(FILE);
@@ -151,7 +154,7 @@ sub UndoVote {
           split /\|/xsm, $poll_data[$i];
     }
 
-    fopen(FILE, "$datadir/$pollnum.polled");
+    fopen(FILE, "<$datadir/$pollnum.polled");
     @polled = <FILE>;
     fclose(FILE);
 
@@ -168,8 +171,8 @@ sub UndoVote {
                 }
                 $polled[$i] = q{};
             }
-            }
         }
+    }
      else {
         if ($iamguest)  { fatal_error('not_allowed'); }
         if ($poll_lock) { fatal_error('locked_poll_no_delete'); }
@@ -219,7 +222,7 @@ sub LockPoll {
         fatal_error( 'poll_not_found', $pollnum );
     }
 
-    fopen(FILE, "$datadir/$pollnum.poll");
+    fopen(FILE, "<$datadir/$pollnum.poll");
     $poll_question = <FILE>;
     @poll_data     = <FILE>;
     fclose(FILE);
@@ -263,7 +266,7 @@ sub votedetails {
     get_forum_master();
     ( $curcat, $catperms ) = split /\|/xsm, $catinfo{"$cat"};
 
-    fopen(FILE, "$datadir/$pollnum.poll");
+    fopen(FILE, "<$datadir/$pollnum.poll");
     $poll_question = <FILE>;
     @poll_data     = <FILE>;
     fclose(FILE);
@@ -276,7 +279,7 @@ sub votedetails {
     ) = split /\|/xsm, $poll_question, 13;
 
     if ( !ref $thread_arrayref{$pollnum} ) {
-        fopen(POLLTP, "$datadir/$pollnum.txt");
+        fopen(POLLTP, "<$datadir/$pollnum.txt");
         @{$thread_arrayref{$pollnum}} = <POLLTP>;
         fclose(POLLTP);
     }
@@ -311,7 +314,7 @@ sub votedetails {
         ToChars( $options[$i] );
     }
 
-    fopen(FILE, "$datadir/$pollnum.polled");
+    fopen(FILE, "<$datadir/$pollnum.polled");
     @polled = <FILE>;
     fclose(FILE);
 
@@ -430,7 +433,7 @@ qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showc
         }
     }
     elsif ( -e "$datadir/showcase.poll" ) {
-        fopen (FILE, "$datadir/showcase.poll");
+        fopen (FILE, "<$datadir/showcase.poll");
         if ( $pollnum == <FILE> ) {
             $boardpoll = qq~&nbsp;/ $polltxt{'showcased'}~;
         }
@@ -453,7 +456,7 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
 
     LoadCensorList();
 
-    fopen(FILE, "$datadir/$pollnum.poll");
+    fopen(FILE, "<$datadir/$pollnum.poll");
     $poll_question = <FILE>;
     @poll_data = <FILE>;
     fclose(FILE);
@@ -483,41 +486,43 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
     $has_voted = 0;
     if (!$guest_vote && $iamguest) { $has_voted = 4; }
     else {
-        fopen(FILE, "$datadir/$pollnum.polled");
-        @polled = <FILE>;
-        fclose(FILE);
-        foreach my $tmpLine (@polled) {
-            chomp $tmpline;
-            ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
-              split /\|/xsm, $tmpLine;
-            if (   $iamguest
-                && $voters_name  eq 'Guest'
-                && lc $voters_ip eq lc $user_ip )
-            {
-                $has_voted = 1;
-                last;
-            }
-            elsif ($iamguest
-                && $voters_name ne 'Guest'
-                && lc $voters_ip eq lc $user_ip )
-            {
-                $has_voted = 2;
-                last;
-            }
-            elsif (!$iamguest && lc $username eq lc $voters_name) {
-                $has_voted = 3;
-                $users_votedate = timeformat($vote_date);
-                @users_vote     = split /\,/xsm, $voters_vote;
-                my $users_votecount = @users_vote;
-                if ($users_votecount == 1) {
-                    $users_votetext =
+        if ( -e "$datadir/$pollnum.polled" ) {
+            fopen(FILE, "<$datadir/$pollnum.polled");
+            @polled = <FILE>;
+            fclose(FILE);
+            foreach my $tmpline (@polled) {
+                 chomp $tmpline;
+                ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
+                  split /\|/xsm, $tmpline;
+                if (   $iamguest
+                    && $voters_name  eq 'Guest'
+                    && lc $voters_ip eq lc $user_ip )
+                {
+                    $has_voted = 1;
+                    last;
+                }
+                elsif ($iamguest
+                    && $voters_name ne 'Guest'
+                    && lc $voters_ip eq lc $user_ip )
+                {
+                    $has_voted = 2;
+                    last;
+                }
+                elsif (!$iamguest && lc $username eq lc $voters_name) {
+                    $has_voted = 3;
+                    $users_votedate = timeformat($vote_date);
+                    @users_vote     = split /\,/xsm, $voters_vote;
+                    my $users_votecount = @users_vote;
+                    if ($users_votecount == 1) {
+                        $users_votetext =
 qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate<br /><span style="font-weight: bold;">$polltxt{'65'}:</span> ~;
-                }
-                else {
-                    $users_votetext =
+                    }
+                    else {
+                        $users_votetext =
 qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate<br /><span style="font-weight: bold;">$polltxt{'66'}:</span> ~;
+                    }
+                    last;
                 }
-                last;
             }
         }
     }
@@ -576,7 +581,7 @@ qq~<a href="$scripturl?action=showvoters;num=$pollnum">$img{'viewvotes'}</a>~;
         }
     }
 
-    if ( $poll_modname ne q{} && $poll_mod ne q{} && $showmodify ) {
+    if ( $poll_modname && $poll_mod && $showmodify ) {
         $poll_mod = timeformat($poll_mod);
         LoadUser($poll_modname);
         if ( $iamguest ) {
@@ -588,7 +593,7 @@ qq~<span class="small">&#171; $polltxt{'45a'}: $format_unbold{$poll_modname} $po
 qq~<span class="small">&#171; $polltxt{'45a'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_modname}">$format_unbold{$poll_modname}</a> $polltxt{'46'}: $poll_mod &#187;</span>~;
         }
     }
-    elsif ( $poll_uname ne q{} && $poll_date ne q{} ) {
+    elsif ( $poll_uname && $poll_date ) {
         $poll_date = timeformat($poll_date);
         if ($poll_uname ne 'Guest' && -e "$memberdir/$poll_uname.vars") {
             LoadUser($poll_uname);
@@ -601,7 +606,7 @@ qq~<span class="small">&#171; $polltxt{'45'}: $format_unbold{$poll_uname} $pollt
 qq~<span class="small">&#171; $polltxt{'45'}: <a href="$scripturl?action=viewprofile;username=$useraccount{$poll_uname}">$format_unbold{$poll_uname}</a> $polltxt{'46'}: $poll_date &#187;</span>~;
             }
         }
-        elsif ( $poll_name ne q{} ) {
+        elsif ( $poll_name ) {
             $displaydate =
 qq~<span class="small">&#171; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_date &#187;</span>~;
         }
@@ -675,7 +680,7 @@ qq~<a href="$scripturl?action=undovote;num=$pollnum$scp">$img{'deletevote'}</a>~
     $scdivdisp = q~block~;
     $poll_coll = q{};
     if(!$INFO{'num'} && !$iamguest) {
-        if(${$uid.$username}{'collapsescpoll'} == $pollnum) {
+        if( ${$uid.$username}{'collapsescpoll'} && ${$uid.$username}{'collapsescpoll'} == $pollnum) {
             $poll_coll .= qq~<img src="$imagesdir/$cat_exp" id="scpollcollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" class="cursor" onclick="collapseSCpoll('$pollnum');" />~;
             $scdivdisp = q~none~;
         }
@@ -776,7 +781,7 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
         }
     }
 
-    if ($poll_comment ne q{}) {
+    if ($poll_comment) {
         $poll_comment = Censor($poll_comment);
         $message = $poll_comment;
         if ($enable_ubbc) {
@@ -865,7 +870,7 @@ sub collapse_poll {
 }
 
 sub check_deletepoll {
-    fopen(FILE, "$datadir/$pollnum.poll");
+    fopen(FILE, "<$datadir/$pollnum.poll");
     $poll_chech = <FILE>;
     fclose(FILE);
     chomp $poll_chech;
@@ -876,7 +881,7 @@ sub check_deletepoll {
         return;
     }
     if (-e "$datadir/$pollnum.polled") {
-        fopen(FILE, "$datadir/$pollnum.polled");
+        fopen(FILE, "<$datadir/$pollnum.polled");
         @chpolled = <FILE>;
         fclose(FILE);
         foreach my $chvoter (@chpolled) {

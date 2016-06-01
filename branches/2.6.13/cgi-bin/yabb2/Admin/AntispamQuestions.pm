@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$antispamquestionspmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$antispamquestionspmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $questions_language = $FORM{'questions_language'} || $INFO{'questions_language'} || $lang;
@@ -23,9 +23,11 @@ my $questions_language = $FORM{'questions_language'} || $INFO{'questions_languag
 sub SpamQuestions {
 
     is_admin_or_gmod();
-
+	$chk_spam_question = q{};
     if ($en_spam_questions)   { $chk_spam_question = q~ checked="checked"~; }
+	$chk_spam_question_send = q{};
     if ($spam_questions_send) { $chk_spam_question_send = q~ checked="checked"~; }
+	$chk_spam_question_gp = q{};
     if ($spam_questions_gp)   { $chk_spam_question_gp = q~ checked="checked"~; }
     opendir LNGDIR, $langdir;
     my @lfilesanddirs = readdir LNGDIR;
@@ -59,7 +61,7 @@ sub SpamQuestions {
             <td><b>$admin_txt{'delete'}</b></td>
         </tr>~;
 
-        foreach my $question ( sort { $a <=> $b } @spam_questions ) {
+        foreach my $question ( sort { $a cmp $b } @spam_questions ) {
             chomp $question;
             ( $spam_question_id, $spam_question, $spam_answer, undef, $spam_image ) = split /\|/xsm,
               $question;

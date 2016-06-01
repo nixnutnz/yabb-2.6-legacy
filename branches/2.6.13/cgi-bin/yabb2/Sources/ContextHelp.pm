@@ -15,11 +15,11 @@
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
 # for his contribution to the YaBB community                                  #
 ###############################################################################
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$contexthelppmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$contexthelppmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ContextScript {

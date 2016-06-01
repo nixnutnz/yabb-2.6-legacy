@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 our $VERSION = '2.6.13';
 use CGI::Carp qw(fatalsToBrowser);
 
-$modifymessagepmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$modifymessagepmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$post_txt_loaded ) {
@@ -34,7 +35,7 @@ $set_subjectMaxLength ||= 50;
 
 sub ModifyMessage {
     if ($iamguest) { fatal_error('members_only'); }
-    if ( $currentboard eq q{} ) { fatal_error('no_access'); }
+    if ( !$currentboard ) { fatal_error('no_access'); }
 
     my ( $mattach, $mip, $mmessage, $mns, $mlm, $mlmb );
     $threadid = $INFO{'thread'};
@@ -163,7 +164,7 @@ sub ModifyMessage2 {
     }
 
     # the post is to be deleted...
-    if ( $INFO{'d'} == 1 ) {
+    if ( $INFO{'d'} && $INFO{'d'} == 1 ) {
         $threadid = $FORM{'thread'};
         $postid   = $FORM{'id'};
 
@@ -323,15 +324,15 @@ sub ModifyMessage2 {
         $poll_comment =~ s/\r//gxsm;
 
         if ( !$poll_end_days || $poll_end_days =~ /\D/xsm ) {
-            $poll_end_days = q{};
+            $poll_end_days = 0;
         }
         if ( !$poll_end_min || $poll_end_min =~ /\D/xsm ) {
-            $poll_end_min = q{};
+            $poll_end_min = 0;
         }
-        my $poll_end = q{};
+        my $poll_end = 0;
         if ($poll_end_days) { $poll_end = $poll_end_days * 86400; }
         if ($poll_end_min) { $poll_end += $poll_end_min * 60; }
-        if ($poll_end)     { $poll_end += $date; }
+        if ($poll_end > 0)     { $poll_end += $date; }
 
         my @new_poll_data;
         push @new_poll_data,
@@ -413,7 +414,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         chomp $mfn;
         if (
             (
-                ${ $uid . $username }{'regdate'} >= $mdate
+                ${ $uid . $username }{'regtime'} >= $mdate
                 || $musername ne $username
             )
             && !$staff
@@ -435,13 +436,13 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
     # the post is to be modified...
     $name      = $FORM{'name'};
-    $email     = $FORM{'email'};
+    $email     = $FORM{'email'} || q{};
     $subject   = $FORM{'subject'};
     $message   = $FORM{'message'};
     $icon      = $FORM{'icon'};
-    $ns        = $FORM{'ns'};
+    $ns        = $FORM{'ns'} || q{};
     $notify    = $FORM{'notify'};
-    $thestatus = $FORM{'topicstatus'};
+    $thestatus = $FORM{'topicstatus'} || q{};
     $thestatus =~ s/\, //gsm;
     CheckIcon();
 
@@ -454,10 +455,10 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     if ( !$message ) { fatal_error('no_message'); }
 
     $spamdetected = spamcheck("$subject $message");
-    if ( !${ $uid . $FORM{$username} }{'spamcount'} ) {
-        ${ $uid . $FORM{$username} }{'spamcount'} = 0;
+    if ( !${ $uid . $FORM{'tmpmusername'} }{'spamcount'} ) {
+        ${ $uid . $FORM{'tmpmusername'} }{'spamcount'} = 0;
     }
-    $postspeed = $date - $posttime;
+    $postspeed = $date - $FORM{'tmpmdate'};
     if ( !$staff ) {
         if ( ( $speedpostdetection && $postspeed < $min_post_speed )
             || $spamdetected == 1 )
@@ -500,7 +501,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     ToChars($testmessage);
     $testmessage = regex_1($testmessage);
 
-    if ( $testmessage eq q{} && $message ne q{} && $pollthread != 2 ) {
+    if ( !$testmessage && $message && $pollthread != 2 ) {
         fatal_error( 'useless_post', "$testmessage" );
     }
 
@@ -869,14 +870,14 @@ sub MultiDel {    # deletes single- or multi-Posts
     my $kill = 0;
     my $postid;
     foreach my $count ( reverse 0 .. $#messages ) {
-        if ( $FORM{"del$count"} ne q{} ) {
+        if ( $FORM{"del$count"} ) {
             chomp $messages[$count];
             @message = split /\|/xsm, $messages[$count];
             $musername = $message[4];
 
             # Checks that the user is actually allowed to access multidel
             if (
-                ${ $uid . $username }{'regdate'} > $message[3]
+                ${ $uid . $username }{'regtime'} > $message[3]
                 || (  !$staff
                     && $musername ne $username )
                 || !$sessionvalid
@@ -1002,7 +1003,7 @@ sub MultiDel {    # deletes single- or multi-Posts
 
     my $inserted = 0;
     for my $c ( 0 .. $#buffer ) {
-        if ( ( split /\|/xsm, $buffer[$a], 6 )[4] < $newthreadline[4] ) {
+        if ( ( split /\|/xsm, $buffer[$c], 6 )[4] < $newthreadline[4] ) {
             splice @buffer, $c, 0, join( q{|}, @newthreadline ) . "\n";
             $inserted = 1;
             last;

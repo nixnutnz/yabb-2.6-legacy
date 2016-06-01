@@ -12,10 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$displaypmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$displaypmver = 'YaBB 2.6.13 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
@@ -86,7 +88,7 @@ sub Display {
 
     # Get the "NEW"est Post for this user.
     my $newestpost;
-    if ( !$iamguest && $max_log_days_old && $INFO{'start'} eq 'new' ) {
+    if ( !$iamguest && $max_log_days_old && ($INFO{'start'} && $INFO{'start'} eq 'new') ) {
 
         # This decides which messages were already read in the thread to
         # determining where the redirect should go. It is done by
@@ -283,7 +285,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
     }
     elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
     elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
-    elsif ( $mstate eq q{} ) { $threadclass = 'thread'; }
+    elsif ( !$mstate ) { $threadclass = 'thread'; }
 
     ## stickies
     if ( $mstate =~ /s/ism ) {
@@ -321,7 +323,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
         ManageThreadNotify( 'update', $mnum, $username, q{}, q{}, '1' );
     }
 
-    if ( $showmodgroups ne q{} && $showmods ne q{} ) { $showmods .= q~ - ~; }
+    if ( $showmodgroups && $showmods ) { $showmods .= q~ - ~; }
 
     # Build the page links list.
     if ( !$iamguest ) {
@@ -333,17 +335,20 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
     $dropdisplaynum = 10;
     $startpage      = 0;
     $max            = $mreplies + 1;
-    if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' && $showpageall != 0 ) {
-        $maxmessagedisplay = $max;
-        $all               = 1;
-        $allselected       = q~ selected="selected"~;
-        $start             = !$ttsreverse ? 0 : $mreplies;
-    }
-    else {
-        $start =
-          $INFO{'start'} !~ /\d/xsm
-          ? ( !$ttsreverse ? 0 : $mreplies )
-          : $INFO{'start'};
+	$start = 0;
+	if ($INFO{'start'}) {
+        if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' && $showpageall != 0 ) {
+            $maxmessagedisplay = $max;
+            $all               = 1;
+            $allselected       = q~ selected="selected"~;
+            $start             = !$ttsreverse ? 0 : $mreplies;
+        }
+        else {
+            $start =
+              $INFO{'start'} !~ /\d/xsm
+              ? ( !$ttsreverse ? 0 : $mreplies )
+              : $INFO{'start'};
+        }
     }
     $start = $start > $mreplies ? $mreplies : $start;
     $start =
@@ -653,7 +658,7 @@ qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~
 
     $template_home = qq~<a href="$scripturl" class="nav">$mbname</a>~;
     $topviewers    = 0;
-    if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
+    if ( ${ $uid . $currentboard }{'ann'} ) {
         if ($vircurrentboard) {
             $template_cat =
               qq~<a href="$scripturl?catselect=$vircurcat">$vircat</a>~;
@@ -836,7 +841,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
         $attachment   = q{};
         $showattach   = q{};
         $showattachhr = q{};
-        if ( $mfn ne q{} ) {
+        if ( $mfn ) {
 
             # store all downloadcounts in variable
             if ( !%attach_count ) {
@@ -868,6 +873,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
                 $urlname =~ s/([^A-Za-z0-9])/sprintf('%%%02X', ord($1))/egxsm;
+                $attach_count{$_} ||= 0; 
                 $download_txt = ( $attach_count{$_} == 1 ) ? $fatxt{'41b'} : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
                 if ($filesize) {
                     if (   $_ =~ /\.(bmp|jpe|jpg|jpeg|gif|png)$/ixsm
@@ -899,7 +905,7 @@ qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><im
                     $attachment .=
 qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
                       . (
-                        exists $attach_count{$_}
+                        $attach_count{$_}
                         ? qq~ | $attach_count{$_} $download_txt ~
                         : q{}
                       ) . q~)</div>~;
@@ -915,8 +921,8 @@ s/<div class="small">/<div class="small attbox_b">/gsm;
         # Should we show "last modified by?"
         if (
                $showmodify
-            && $mlm  ne q{}
-            && $mlmb ne q{}
+            && $mlm
+            && $mlmb
             && ( !$tllastmodflag
                 || ( $mdate + ( $tllastmodtime * 60 ) ) < $mlm )
           )
@@ -1280,7 +1286,7 @@ qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboar
                 }
             }
             if (
-                $sessionvalid == 1
+                ($sessionvalid && $sessionvalid == 1)
                 && (
                     $staff
                     || (
@@ -1303,7 +1309,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
 
             if (   $counter > 0
                 && ($staff)
-                && $sessionvalid == 1 )
+                && $sessionvalid && $sessionvalid == 1 )
             {
                 $template_split =
 qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=~
@@ -1311,7 +1317,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
                   . qq~;leave=0;newcat=$curcat;newboard=$currentboard;newthread=new;ss_submit=1" onclick="return confirm('$display_txt{'split_confirm'}');">$img{'admin_split'}</a>~;
             }
             if (
-                $sessionvalid == 1
+                ($sessionvalid && $sessionvalid == 1)
                 && (
                     $staff
                     || (
@@ -1561,7 +1567,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
           or fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
         @bookmarks = <BMARKS>;
         fclose(BMARKS);
-        foreach my $bookmark ( sort { $a <=> $b } @bookmarks ) {
+        foreach my $bookmark ( sort { $a cmp $b } @bookmarks ) {
             chomp $bookmark;
             ( undef, $bm_title, $bm_image, $bm_url, undef ) = split /\|/xsm,
               $bookmark;

@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$honeypotpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$honeypotpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $honey_language = $FORM{'honey_language'} || $INFO{'honey_language'} || $lang;

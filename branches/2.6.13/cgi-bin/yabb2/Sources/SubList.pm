@@ -14,7 +14,7 @@
 ###############################################################################
 our $VERSION = '2.6.13';
 
-$sublistpmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$sublistpmver = 'YaBB 2.6.13 $Revision$';
 if ($action eq 'detailedversion') { return 1; }
 
 %director = (

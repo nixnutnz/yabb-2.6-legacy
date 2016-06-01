@@ -14,11 +14,11 @@
 ###############################################################################
 # use strict;
 # use warnings;
-# no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$securitypmver = 'YaBB 2.6.13 $Revision: 1651 $';
+$securitypmver = 'YaBB 2.6.13 $Revision$';
 
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.
@@ -46,7 +46,7 @@ if ( $INFO{'thread'} =~ m{/}xsm ) {
 
 # BIG thread check
 $curnum = $INFO{'num'} || $INFO{'thread'} || $FORM{'threadid'};
-if ( $curnum ne q{} ) {
+if ( $curnum ) {
     if ( $curnum =~ /\D/xsm ) {
         fatal_error( 'only_numbers_allowed', "Thread ID: '$curnum'" );
     }
@@ -73,7 +73,7 @@ else {
     $currentboard = $INFO{'board'};
 }
 
-if ( $currentboard ne q{} ) {
+if ( $currentboard ) {
     if ( $currentboard !~ /\A[\s0-9A-Za-z#%+,-\.:=?@^_]+\Z/xsm ) {
         fatal_error( 'invalid_character', "$maintxt{'board'}" );
     }
@@ -91,7 +91,7 @@ if ( $currentboard ne q{} ) {
     $catid = ${ $uid . $currentboard }{'cat'};
     ( $cat, $catperms ) = split /\|/xsm, $catinfo{$catid};
     $cataccess = CatAccess($catperms);
-    if ( $annboard eq q{} || $currentboard ne $annboard ) {
+    if ( !$annboard || $currentboard ne $annboard ) {
         if ( !$cataccess ) { fatal_error('no_access'); }
     }
 
@@ -141,11 +141,10 @@ if ( $currentboard ne q{} ) {
 else {
     ### BIG category check
     $currentcat = $INFO{'cat'} || $INFO{'catselect'};
-    if ( $currentcat ne q{} ) {
+    if ( $currentcat ) {
         if ( $currentcat =~ m{/}xsm )  { fatal_error('no_cat_slash'); }
         if ( $currentcat =~ m{\\}xsm ) { fatal_error('no_cat_backslash'); }
-        if (   $currentcat ne q{}
-            && $currentcat !~ /\A[\s0-9A-Za-z#%+,-\.:=?@^_]+\Z/xsm )
+        if ( $currentcat !~ /\A[\s0-9A-Za-z#%+,-\.:=?@^_]+\Z/xsm )
         {
             fatal_error( 'invalid_character', "$maintxt{'cat'}" );
         }
@@ -167,7 +166,7 @@ sub is_admin {
 sub is_admin_or_gmod {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
 
-    if ( $iamgmod && $action ne q{} ) {
+    if ( $iamgmod && $action ) {
         require "$vardir/gmodsettings.txt";
         if (   $gmod_access{"$action"} ne 'on'
             && $gmod_access2{"$action"} ne 'on' )
@@ -181,7 +180,7 @@ sub is_admin_or_gmod {
 sub is_admin_or_gmod_or_fmod {
     if ( !$iamadmin && !$iamgmod && !$iamfmod ) { fatal_error('no_access'); }
 
-    if ( $iamgmod && $action ne q{} ) {
+    if ( $iamgmod && $action ) {
         require "$vardir/gmodsettings.txt";
         if (   $gmod_access{"$action"} ne 'on'
             && $gmod_access2{"$action"} ne 'on' )
@@ -200,7 +199,7 @@ sub banning {
 
     if ( !$admincheck && ( $username eq 'admin' || $iamadmin ) ) { return; }
 
-    *write_banlog = sub {
+    local *write_banlog = sub {
         my ($bantry) = @_;
         if ($admincheck) {
             fatal_error( 'banned',
@@ -216,7 +215,7 @@ sub banning {
     };
     my $tmb     = 0;
     $time    = time;
-    *time_ban = sub {
+    local *time_ban = sub {
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
                 $tmb = $banned[2] + ( $bandays[$i] * 84_600 );
@@ -294,7 +293,7 @@ sub check_banlist {
         chomp @banlist;
         my $tmb     = 0;
         $today    = time;
-        *time_ban = sub {
+        local *time_ban = sub {
             for my $i ( 0 .. 3 ) {
                 if ( $banned[4] eq $timeban[$i] ) {
                     $tmb = $banned[2] + ( $bandays[$i] * 84600 );
@@ -450,41 +449,42 @@ sub AccessCheck {
     }
     my $access = 'denied';
 
+    $checktype ||= 0;
     if ( $checktype == 1 ) {    # Post access check
         @allowed_groups = split /, /sm, ${ $uid . $curboard }{'topicperms'};
-        if ( ${ $uid . $curboard }{'topicperms'} eq q{} ) {
+        if ( !${ $uid . $curboard }{'topicperms'} ) {
             $access = 'granted';
         }
-        if ( $topicperms == 1 ) { $access = 'notgranted'; }
+        if ( $topicperms && $topicperms == 1 ) { $access = 'notgranted'; }
     }
     elsif ( $checktype == 2 ) {    # Reply access check
         if ( $iamgmod || $iamfmod || $boardmod ) { $access = 'granted'; }
         else {
             @allowed_groups =
               split /, /sm, ${ $uid . $curboard }{'replyperms'};
-            if ( ${ $uid . $curboard }{'replyperms'} eq q{} ) {
+            if ( !${ $uid . $curboard }{'replyperms'} ) {
                 $access = 'granted';
             }
-            if ( $replyperms == 1 && !$topicstart{$username} ) {
+            if ( $replyperms && $replyperms == 1 && !$topicstart{$username} ) {
                 $access = 'notgranted';
             }
         }
     }
     elsif ( $checktype == 3 ) {    # Poll access check
         @allowed_groups = split /, /sm, ${ $uid . $curboard }{'pollperms'};
-        if ( ${ $uid . $curboard }{'pollperms'} eq q{} ) {
+        if ( !${ $uid . $curboard }{'pollperms'}) {
             $access = 'granted';
         }
-        if ( $pollperms == 1 ) { $access = 'notgranted'; }
+        if ( $pollperms && $pollperms == 1 ) { $access = 'notgranted'; }
     }
     elsif ( $checktype == 4 ) {    # Attachment access check
-        if ( ${ $uid . $curboard }{'attperms'} == 1 ) { $access = 'granted'; }
-        if ( $attachperms == 1 ) { $access = 'notgranted'; }
+        if ( ${ $uid . $curboard }{'attperms'} && ${ $uid . $curboard }{'attperms'} == 1 ) { $access = 'granted'; }
+        if ( $attachperms && $attachperms == 1 ) { $access = 'notgranted'; }
     }
     else {                         # Board access check
         @allowed_groups = split /, /sm, $boardperms;
-        if ( $boardperms eq q{} ) { $access = 'granted'; }
-        if ( $viewperms == 1 ) { $access = 'notgranted'; }
+        if ( !$boardperms ) { $access = 'granted'; }
+        if ( $viewperms && $viewperms == 1 ) { $access = 'notgranted'; }
     }
 
     # age and gender check
@@ -556,7 +556,7 @@ sub AccessCheck {
 
 sub CatAccess {
     my ($cataccess) = @_;
-    if ( $iamadmin || $cataccess eq q{} ) { return 1; }
+    if ( $iamadmin || !$cataccess ) { return 1; }
 
     my $access = 0;
     @allow_groups = split /, /sm, $cataccess;
@@ -595,7 +595,7 @@ sub email_domain_check {
                 @my_ch   = split /\./xsm, $my_x;
                 @my_ch_e = split /\./xsm, $checkdomain;
                 if ( $checkdomain =~ m/$_/ism
-                    || ( $my_ch[0] eq q{} && $my_ch[-1] eq $my_ch_e[-1] ) )
+                    || ( !$my_ch[0] && $my_ch[-1] eq $my_ch_e[-1] ) )
                 {
                     fatal_error( 'domain_not_allowed', "$_" );
                 }
@@ -711,7 +711,7 @@ sub ipban_update {
 
         if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' ) {
             $add_ban =
-              qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~;
+              qq~$type|$banned|$time|$username|$lev|\n~;
         }
         fopen( BAN2, ">>$vardir/banlist.txt" ) or fatal_error( 'cannot_open', "$vardir/banlist.txt", 1 );
         print {BAN2} $add_ban or croak "$croak{'print'} BAN2";

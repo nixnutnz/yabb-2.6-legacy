@@ -14,10 +14,10 @@
 ###############################################################################
 our $VERSION = '2.6.13';
 
-$mediacenterpmver = 'YaBB 2.6.13 $Revision: 1714 $';
+$mediacenterpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub embed {
+sub myembed {
     if ( $guest_media_disallowed && $iamguest ) {
         if ($enable_ubbc) {
             $video = q~[oops]~;
@@ -45,12 +45,14 @@ qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a> !!~
     else {
         if ( !$player_version ) { $player_version = 6; }
         my ( $media_url, $play_pars ) = @_;
-        if ( $media_url !~ m/^http(s)?:\/\//xsm ) {
-            $media_url = 'media://' . $media_url;
+        if (!$play_pars) {$play_pars = q{};}
+        if ( $media_url =~ m/^http(s|)?:\/\//xsm ) {
+            $media_url =~ s/http$1:/media:/gxsm;
         }
-        else { $media_url =~ s/http$1:/media:/gxsm; }
+        else { $media_url = 'media://' . $media_url; }
 
         ToHTML($media_url);    ## convert url to html
+        my $controlheight = 0;
 
         # file extensions that open windows media player for video
         if ( $media_url =~
@@ -131,7 +133,7 @@ qq~http://mediaservices.myspace.com/services/media/embed.aspx/m=$1,t=1,mt=video~
         }
         elsif ( $media_url =~ m/facebook\.com/ixsm ) {
             ( undef, $media_in ) = split /\?/xsm, $media_url;
-            @media_in = split /\&/gxsm, $media_in;
+            @media_in = split /\&/xsm, $media_in;
             foreach my $i (@media_in) {
                 if ( $i =~ m/v=/sm ) {
                     $i =~ s/amp;//gsm;

@@ -12,10 +12,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$movesplitsplicepmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$movesplitsplicepmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MoveSplitSplice');
@@ -117,15 +118,15 @@ sub Split_Splice {
     $boardlist = qq~<option value="boards">$sstxt{'29'}</option>\n~;
     my $indent = -2;
 
-    *get_subboards = sub {
+    local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         foreach my $childbd (@x) {
-            my $dash;
+            my $dash = q{-};
             if ( $indent > 0 ) { $dash = q{-}; }
             my ( $boardname, $boardperms ) = split /\|/xsm, $board{$childbd}, 3;
             ToChars($boardname);
-            my $access = AccessCheck( $_, q{}, $boardperms );
+            my $access = AccessCheck( $childbd, q{}, $boardperms );
             next if !$iamadmin && $access ne 'granted' && $boardview != 1;
 
             my $bdnopost =
@@ -182,7 +183,7 @@ sub Split_Splice {
     }
 
     # Get new thread posts to select splice site
-    if ( $FORM{'newthread'} ne 'new' ) {
+    if ( $FORM{'newthread'} && $FORM{'newthread'} ne 'new' ) {
         if ( !ref $thread_arrayref{$newthread} ) {
             fopen( FILE, "$datadir/$newthread.txt" );
             @{ $thread_arrayref{$newthread} } = <FILE>;
@@ -233,10 +234,13 @@ sub Split_Splice {
         || $threadids !~ /\b$newthread\b/xsm )
     {
         $my_output = $mymove_output_a;
-        $my_output =~ s/{yabb newthread_subject}/$FORM{'newthread_subject'}/sm;
+        if ($FORM{'newthread_subject'}) {
+            $my_output =~ s/{yabb newthread_subject}/$FORM{'newthread_subject'}/sm;}
+		else {$my_output =~ s/{yabb newthread_subject}//sm;}
         $my_output =~ s/{yabb position}/$FORM{'position'}/sm;
+		if ($FORM{'old_position_thread'}) { 
         $my_output =~
-          s/{yabb old_position_thread}/$FORM{'old_position_thread'}/sm;
+          s/{yabb old_position_thread}/$FORM{'old_position_thread'}/sm;}
     }
     else {
         $my_output = $mymove_output_b;
@@ -291,7 +295,7 @@ sub Split_Splice_2 {
     $FORM{'position'} = $newposition;
 
     # Error messages if something is not filled out right
-    if ( $movingposts eq q{} ) {
+    if ( !$movingposts ) {
         fatal_error( q{}, "$sstxt{'22b'} $sstxt{'23'} $sstxt{'50'}" );
     }
     if ( $newcat   eq 'cats' )   { fatal_error( q{}, "$sstxt{'22'}" ); }

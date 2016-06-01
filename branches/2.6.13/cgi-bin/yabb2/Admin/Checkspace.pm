@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$checkspacepmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$checkspacepmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub checkspace {
@@ -74,7 +74,7 @@ sub checkspace {
     if ( $quota[2] ) {
         if ( !$enable_quota ) { $ds = ( split / +/sm, $disk_space[1], 2 )[0]; }
         $my_q_select =
-          isselected( $i == $enable_quota
+          chkisselected( $i == $enable_quota
               || ( $ds && $quota[$i] =~ /^$ds/sm ) );
         $quota_select .= q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
         for my $i ( 2 .. ( @quota - 1 ) ) {
@@ -88,8 +88,8 @@ sub checkspace {
 
     #    }
 
-    $ch_spc      = ischecked($enable_freespace_check);
-    $ch_enable_q = ischecked($enable_quota);
+    $ch_spc      = chkischecked($enable_freespace_check);
+    $ch_enable_q = chkischecked($enable_quota);
 
     @settings = (
         {
@@ -313,6 +313,7 @@ sub chsettings {
             my $C = $require =~ s/\(//xsm ? '(' : q{};
 
             # Is false
+            my $byname = qq~document.getElementsByName("$ritem")[0]~;
             if ( $require =~ s/^\!//xsm ) {
                 $requirejs{$require} .=
 qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
@@ -321,19 +322,19 @@ qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
             # Is equal to
             elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
+qq~$C$byname.value == '$1'$AndOr ~;
             }
 
             # Is not equal to
             elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
+qq~$C$byname.value != '$1'$AndOr ~;
             }
 
             # Is true
             else {
                 $requirejs{$require} .=
-                  qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
+                  qq~$C$byname.checked$AndOr ~;
             }
             $dependicies .= qq~     checkDependent("$require");\n~;
         }
@@ -401,7 +402,7 @@ $dependicies
     return;
 }
 
-sub ischecked {
+sub chkischecked {
     my ($inp) = @_;
 
     # Return a ref so we can be used like ${ischecked($var)} inside a string
@@ -409,7 +410,7 @@ sub ischecked {
     return;
 }
 
-sub isselected {
+sub chkisselected {
     my ($inp) = @_;
 
     # Return a ref so we can be used like ${ischecked($var)} inside a string

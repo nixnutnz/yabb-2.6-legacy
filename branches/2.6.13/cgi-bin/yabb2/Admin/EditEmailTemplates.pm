@@ -16,7 +16,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$editemailtemplatespmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$editemailtemplatespmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub editemailtemplates {
@@ -73,7 +73,6 @@ sub editemailtemplates {
     elsif ( !$string ) {
 
         # Select string
-
         $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
     <input type="hidden" name="action" value="editemailtemplates" />
@@ -146,6 +145,7 @@ sub editemailtemplates {
         # Find the list of usable YaBB tags
         foreach my $yabbtag ( split /\s+/xsm, $yabbtags{$string} ) {
             if ( $yabbtag !~ /\w/xsm ) { next; }
+            $yabbtagdesc{$yabbtag} ||= q{};
             $yymain .= qq~
                     <li>{yabb $yabbtag} $yabbtagdesc{$yabbtag}</li>~;
         }

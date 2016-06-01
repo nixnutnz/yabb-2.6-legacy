@@ -15,7 +15,7 @@
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
 
-$smtppmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$smtppmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 eval q{
@@ -182,8 +182,8 @@ qq~$days_short[$smtpwday], $smtpmday $months2[$smtpmon] $smtpyear $smtphour\:$sm
 
     # It is polite to close the door behind you
     send_line("QUIT\r\n");
-    if ( $smtp_from eq q{} ) { $proto_error = "$smtp_txt{'no_from'}<br />"; }
-    if ( $smtp_to eq q{} ) { $proto_error .= "$smtp_txt{'no_to'}<br />"; }
+    if ( !$smtp_from ) { $proto_error = "$smtp_txt{'no_from'}<br />"; }
+    if ( !$smtp_to ) { $proto_error .= "$smtp_txt{'no_to'}<br />"; }
     if ($proto_error) {
         fatal_error( 'smtp_error', "<br />$proto_error<br />$sendlog" );
     }
@@ -278,7 +278,7 @@ sub decode_smtp64 ($) {
     $str = substr $str, $i;
 
     # and any leftover chars
-    if ( $str ne q{} ) {
+    if ( $str ) {
         $uustr .= chr( 32 + length($str) * 3 / 4 ) . $str;
     }
     return unpack 'u', $uustr;

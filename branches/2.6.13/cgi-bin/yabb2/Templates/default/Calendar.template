@@ -11,7 +11,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$calendartemver = 'YaBB 2.6.13 $Revision: 1651 $';
+$calendartemver = 'YaBB 2.6.13 $Revision$';
 
 $cal_day = q~ class="titlebg center minical_border"~;
 $cal_days = q~ class="windowbg2 center minical_border"~;

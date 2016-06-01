@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$bookmarkslngver = 'YaBB 2.6.13 $Revision: 1651 $';
+$bookmarkslngver = 'YaBB 2.6.13 $Revision$';
 
 %bookmark_txt = (
 '01' => 'Image',

@@ -15,7 +15,7 @@
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.6.13';
 
-$eventcalsetpmver = 'YaBB 2.6.13 $Revision: 1710 $';
+$eventcalsetpmver = 'YaBB 2.6.13 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -28,7 +28,10 @@ sub EventCalSet {
     my ($caleventprivatechecked, $chkDelete_EventsUntil);
 
     # figure out what to print
-
+    $aevt1 = $aevt2 = $aevt3 = $aevt4 = $bevt1 = $bevt2 = $bevt3 = $cevt1 = $cevt2 = $cevt3 = $devt1 = $devt2 = $devt3 = q{};
+    $eevt1 = $eevt2 = $eevt3 = $fevt1 = $fevt2 = $fevt3 = $gevt1 = $gevt2 = $gevt3 = $onsundaychecked = $Show_caltodaych = $onminiiconchecked = q{};
+	$oncolorlinkschecked = $dcaleventschecked = $onnosubbcchecked = $chkDelete_EventsUntil = $caleventprivatechecked = $noname2 = $noname3 = $onbdcolorlinkschecked = q{};
+	$onbdstarchecked = q{};
     if    ( !$Scroll_Events )     { $aevt1 = ' selected="selected"'; }
     elsif ( $Scroll_Events == 1 ) { $aevt2 = ' selected="selected"'; }
     elsif ( $Scroll_Events == 2 ) { $aevt3 = ' selected="selected"'; }
@@ -256,6 +259,7 @@ sub EventCalSet {
             </table>
             </div>
             </form>~;
+    $yymain =~ s/{yabb admin_txt14}/$admin_txt{'14'}/gsm;
 
     ## Calendar Event-Icon Setting ##
 
@@ -374,7 +378,7 @@ function removeIcons(remic_id) {
 sub EventCalSet2 {
     is_admin_or_gmod();
 
-    if ( $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
+    if ( $FORM{'rebuiltbd'} && $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
         unlink "$vardir/eventcalbday.db";
 
         fopen( FILE, "$memberdir/memberlist.txt" );
@@ -397,7 +401,7 @@ sub EventCalSet2 {
                 }
                 if (${ $uid . $user_xy }{'hideage'}){$user_hide = 1;}
                 else {$user_hide = q{};}
-                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~ or qq~$croak{'print'} eventcalbday.db~;
+                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~ or croak qq~$croak{'print'} eventcalbday.db~;
             }
         }
         fclose(FILE);
@@ -405,8 +409,8 @@ sub EventCalSet2 {
         $yySetLocation = qq~$adminurl?action=eventcal_set;rebok=1~;
         redirectexit();
     }
-    elsif ( $FORM{'del_old_events'} eq "$event_cal{'del'}" ) {
-        del_old_events();
+    elsif ( $FORM{'del_old_events'} && $FORM{'del_old_events'} eq "$event_cal{'del'}" ) {
+        admin_del_old_events();
     }
     else { eventcal_save();}
     return;
@@ -515,7 +519,7 @@ sub eventcal_save {
     return;
 }
 
-sub del_old_events {
+sub admin_del_old_events {
     $caltoday = 1;
     my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) = gmtime( $date );
         $year += 1900;
