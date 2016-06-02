@@ -111,17 +111,20 @@ sub freespace {
     }
     if ( $FreeBytes < 1 ) { automaintenance( 'on', 'low_disk' ); }
 
-    if ( $FreeBytes >= _1073_741_824 ) {
+    if ( $FreeBytes >= 1073_741_824 ) {
         $yyfreespace = sprintf '%.2f',
-          $FreeBytes / ( 1024 * 1024 * 1024 ) . " GB ($yyfreespace)";
+          $FreeBytes / ( 1024 * 1024 * 1024 );
+        $yyfreespace .= " GB ($yyfreespace)";       
     }
     elsif ( $FreeBytes >= 1_048_576 ) {
         $yyfreespace = sprintf '%.2f',
-          $FreeBytes / ( 1024 * 1024 ) . " MB ($yyfreespace)";
+          $FreeBytes / ( 1024 * 1024 );
+          $yyfreespace .= " MB ($yyfreespace)";  
     }
     else {
         $yyfreespace =
-          sprintf( '%.2f', $FreeBytes / 1024 ) . " KB ($yyfreespace)";
+          sprintf( '%.2f', $FreeBytes / 1024 );
+         $yyfreespace .= " KB ($yyfreespace)";
     }
     return $hostchecked;
 }

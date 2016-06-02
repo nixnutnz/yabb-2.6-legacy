@@ -12,6 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.13';
@@ -73,11 +74,11 @@ sub checkspace {
 
     if ( $quota[2] ) {
         if ( !$enable_quota ) { $ds = ( split / +/sm, $disk_space[1], 2 )[0]; }
+        for my $i ( 2 .. ( @quota - 1 ) ) {
         $my_q_select =
           chkisselected( $i == $enable_quota
               || ( $ds && $quota[$i] =~ /^$ds/sm ) );
         $quota_select .= q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
-        for my $i ( 2 .. ( @quota - 1 ) ) {
             $quota[$i] =~ s/^ +//sm;
             $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
             $quota_select .=
@@ -85,8 +86,6 @@ sub checkspace {
         }
         $quota_select .= '</select>';
     }
-
-    #    }
 
     $ch_spc      = chkischecked($enable_freespace_check);
     $ch_enable_q = chkischecked($enable_quota);
@@ -322,19 +321,19 @@ qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
             # Is equal to
             elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C$byname.value == '$1'$AndOr ~;
+qq~$C{'document.getElementsByName'}("$ritem")[0].value == '$1'$AndOr ~;
             }
 
             # Is not equal to
             elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C$byname.value != '$1'$AndOr ~;
+qq~$C{'document.getElementsByName'}("$ritem")[0].value != '$1'$AndOr ~;
             }
 
             # Is true
             else {
                 $requirejs{$require} .=
-                  qq~$C$byname.checked$AndOr ~;
+                  qq~$C{'document.getElementsByName'}("$ritem")[0].checked$AndOr ~;
             }
             $dependicies .= qq~     checkDependent("$require");\n~;
         }
@@ -404,17 +403,13 @@ $dependicies
 
 sub chkischecked {
     my ($inp) = @_;
-
-    # Return a ref so we can be used like ${ischecked($var)} inside a string
-    if ( $inp == 1 ) { return 'checked="checked"'; }
+    if ( $inp ) { return 'checked="checked"'; }
     return;
 }
 
 sub chkisselected {
     my ($inp) = @_;
-
-    # Return a ref so we can be used like ${ischecked($var)} inside a string
-    if ( $inp == 1 ) { return 'selected="selected"'; }
+    if ( $inp ) { return 'selected="selected"'; }
     return;
 }
 
