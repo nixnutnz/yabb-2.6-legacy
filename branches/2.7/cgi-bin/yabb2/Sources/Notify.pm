@@ -20,6 +20,7 @@ $notifypmver  = 'YaBB 2.7.00 $Revision$';
 if (@notifypmmods) {
     $notifypmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Notify');
@@ -47,7 +48,7 @@ sub ManageBoardNotify {
         my @oldnote = split /,/xsm,
           ${ $uid . $username }{'board_notifications'};
         if ( @oldnote < ( $maxtnote || 10 ) ) {
-            for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
+            foreach ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
                 $bb{$_} = 1;
             }
             $bb{$theboard} = 1;
@@ -67,15 +68,17 @@ sub ManageBoardNotify {
     }
     elsif ( $todo eq 'delete' ) {
         my %bb;
-        for my $u ( split /,/xsm, $user ) {
+        foreach my $u ( split /,/xsm, $user ) {
             delete $theboard{$u};
             LoadUser($u);
-            for ( split /,/xsm, ${ $uid . $u }{'board_notifications'} ) {
+            if (${ $uid . $u }{'board_notifications'}) {
+                foreach ( split /,/xsm, ${ $uid . $u }{'board_notifications'} ) {
                 $bb{$_} = 1;
             }
             if ( delete $bb{$theboard} ) {
                 ${ $uid . $u }{'board_notifications'} = join q{,}, keys %bb;
                 UserAccount($u);
+            }
             }
             undef %bb;
         }
@@ -142,7 +145,7 @@ sub BoardNotify {
 
 sub BoardNotify2 {
     if ($iamguest) { fatal_error('members_only'); }
-    for my $variable ( keys %FORM ) {
+    foreach my $variable ( keys %FORM ) {
         if ( $variable eq 'formsession' ) { next; }
         $notify_type = $FORM{$variable};
         if ( $notify_type == 1 || $notify_type == 2 ) {
@@ -166,12 +169,13 @@ sub BoardNotify2 {
 
 sub ManageThreadNotify {
     my ( $todo, $thethread, $user, $userlang, $notetype, $noteview ) = @_;
+    $thethread ||=0;
     if (   $todo eq 'load'
         || $todo eq 'update'
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        undef %thethread;
+        %thethread = ();
         ##  open mail file and build hash
         if ( -e "$datadir/$thethread.mail" ) {
             fopen( THREADNOTE, "$datadir/$thethread.mail" );
@@ -183,7 +187,7 @@ sub ManageThreadNotify {
         $thethread{$user} = "$userlang|$notetype|$noteview";
         LoadUser($user);
         my %t;
-        for ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} ) {
+        foreach ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} ) {
             $t{$_} = 1;
         }
         $t{$thethread} = 1;
@@ -202,12 +206,14 @@ sub ManageThreadNotify {
     }
     elsif ( $todo eq 'delete' ) {
         my %t;
-        for my $u ( split /,/xsm, $user ) {
+        foreach my $u ( split /,/xsm, $user ) {
             delete $thethread{$u};
             LoadUser($u);
-            for ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} ) {
+			if (${ $uid . $u }{'thread_notifications'}) {
+				foreach ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} ) {
                 $t{$_} = 1;
             }
+			}
             if ( delete $t{$thethread} ) {
                 ${ $uid . $u }{'thread_notifications'} = join q{,}, keys %t;
                 UserAccount($u);
@@ -265,7 +271,7 @@ sub Notify3 {
 
 sub Notify4 {
     if ($iamguest) { fatal_error('members_only'); }
-    for my $variable ( keys %FORM ) {
+    foreach my $variable ( keys %FORM ) {
         my ( $notype, $threadno ) = split /-/xsm, $variable;
         if ( $notype eq 'thread' ) {
             ManageThreadNotify( 'delete', $threadno, $username );
@@ -279,10 +285,10 @@ sub Notify4 {
 sub updateLanguage {
     my ( $user, $newlang ) = @_;
     getMailFiles();
-    for (@bmaildir) {
+    foreach (@bmaildir) {
         ManageBoardNotify( 'update', $_, $user, $newlang, q{}, q{} );
     }
-    for (@tmaildir) {
+    foreach (@tmaildir) {
         ManageThreadNotify( 'update', $_, $user, $newlang, q{}, q{} );
     }
     return;
@@ -291,7 +297,7 @@ sub updateLanguage {
 sub removeNotifications {
     my $user_s = shift;
     getMailFiles();
-    for (@bmaildir) {
+    foreach (@bmaildir) {
         ManageBoardNotify( 'delete', $_, $user_s );
     }
     for (@tmaildir) {
@@ -307,8 +313,7 @@ sub getMailFiles {
     closedir BOARDNOT;
     opendir THREADNOT, "$datadir";
     @tmaildir =
-      map { ( split /[.]/xsm, $_ )[0] }
-      grep { /[.]mail$/xsm } readdir THREADNOT;
+      map { ( split /[.]/xsm, $_ )[0] } grep { /[.]mail$/xsm } readdir THREADNOT;
     closedir THREADNOT;
     return;
 }
@@ -336,7 +341,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     my $dmax = $date - ( $max_log_days_old * 86400 );
 
     # Board notifications
-    for ( keys %{$board_notify} ) {    # boardname, boardnotifytype , new
+    foreach ( keys %{$board_notify} ) {    # boardname, boardnotifytype , new
         $num++;
         if ( $subboard{$_} ) {
             @brd = split /[|]/xsm, $subboard{$_};
@@ -383,14 +388,22 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         $boardblock =~ s/\Q{yabb brdnote0}\E/${$$board_notify{$_}}[0]/gxsm;
         $boardblock =~ s/\Q{yabb selected1}\E/$selected1/gxsm;
         $boardblock =~ s/\Q{yabb selected2}\E/$selected2/gxsm;
+        $boardblock =~ s/\Q{yabb notify_txt132}\E/$notify_txt{'132'}/gxsm;
+        $boardblock =~ s/\Q{yabb notify_txt133}\E/$notify_txt{'133'}/gxsm;
+        $boardblock =~ s/\Q{yabb notify_txt134}\E/$notify_txt{'134'}/gxsm;
     }
 
     if ( !$num ) {    # no board notifies up
         $my_showNotifications_b = $my_nonotes;
+        $my_showNotifications_b =~ s/\Q{yabb notify_txt139}\E/$notify_txt{'139'}/xsm;
     }
     else {            # list boards
         $my_showNotifications_b = $my_notebrdlist;
         $my_showNotifications_b =~ s/\Q{yabb boardblock}\E/$boardblock/gxsm;
+        $my_showNotifications_b =~ s/\Q{yabb notify_txt135}\E/$notify_txt{'135'}/gxsm;
+        $my_showNotifications_b =~ s/\Q{yabb notify_txt138}\E/$notify_txt{'138'}/gxsm;
+        $my_showNotifications_b =~ s/\Q{yabb notify_txt124}\E/$notify_txt{'124'}/gxsm;
+        $my_showNotifications_b =~ s/\Q{yabb notify_txt121}\E/$notify_txt{'121'}/gxsm;
     }
 
     $num = 0;
@@ -407,19 +420,29 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
         $threadblock =~ s/\Q{yabb tnote4}\E/${$$thread_notify{$_}}[4]/gxsm;
         $threadblock =~ s/\Q{yabb tnote5}\E/${$$thread_notify{$_}}[5]/gxsm;
         $threadblock =~ s/\Q{yabb tnote6}\E/${$$thread_notify{$_}}[6]/gxsm;
+        $threadblock =~ s/\Q{yabb notify_txt120}\E/$notify_txt{'120'}/gxsm;
+        $threadblock =~ s/\Q{yabb notify_txtlastpost}\E/$notify_txt{'lastpost'}/gxsm;
     }
 
     if ( !$num ) {    ## no threads listed
         $my_showNotifications_t = $my_nothreads;
+        $my_showNotifications_t =~ s/\Q{yabb notify_txt119}\E/$notify_txt{'119'}/xsm;
     }
     else {            ## output details
         $my_showNotifications_t = $my_threadnote_b;
         $my_showNotifications_t =~ s/\Q{yabb threadblock}\E/$threadblock/gxsm;
+        $my_showNotifications_t =~ s/\Q{yabb notify_txt140}\E/$notify_txt{'140'}/xsm;
+        $my_showNotifications_t =~ s/\Q{yabb notify_txt134}\E/$notify_txt{'134'}/xsm;
+        $my_showNotifications_t =~ s/\Q{yabb notify_txt124}\E/$notify_txt{'124'}/gxsm;
+        $my_showNotifications_t =~ s/\Q{yabb notify_txt121}\E/$notify_txt{'121'}/gxsm;
     }
     $showNotifications = $my_boardnote;
 
-    #    $showNotifications =~ s/{yabb note_brd}/$note_brd/sm;
     $showNotifications =~ s/\Q{yabb note_brd}\E//xsm;
+    $showNotifications =~ s/\Q{yabb notify_txt136}\E/$notify_txt{'136'}/gxsm;
+    $showNotifications =~ s/\Q{yabb notify_txt118}\E/$notify_txt{'118'}/gxsm;
+    $showNotifications =~ s/\Q{yabb notify_txt136}\E/$notify_txt{'136'}/gxsm;
+    $showNotifications =~ s/\Q{yabb notify_txt118}\E/$notify_txt{'118'}/gxsm;
     $showNotifications =~
       s/\Q{yabb my_showNotifications_b}\E/$my_showNotifications_b/xsm;
     $showNotifications =~
@@ -596,6 +619,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
                # Decide if thread should have the "NEW" indicator next to it.
                # Do this by reading the user's log for last read time on thread,
                # and compare to the last post time on the thread.
+                $yyuserlog{$mythread} ||= 0;
+                $yyuserlog{"$boardid--mark"} ||= 0;
+                ${$mythread}{'lastpostdate'} ||= 0;
                 my $dlp  = int $yyuserlog{$mythread};
                 my $dlpb = int $yyuserlog{"$boardid--mark"};
                 $dlp = $dlp > $dlpb ? $dlp : $dlpb;

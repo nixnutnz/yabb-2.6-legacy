@@ -12,8 +12,6 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
@@ -23,6 +21,7 @@ $modifymessagepmver  = 'YaBB 2.7.00 $Revision$';
 if (@modifymessagepmmods) {
     $modifymessagepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$post_txt_loaded ) {
@@ -68,7 +67,7 @@ sub ModifyMessage {
     my $fixtime      = $tlnomodtime;
     my $timeset      = 86400;
     if ($tlnomodday) { $timeset = 60; }
-    if ( $tlnomodflag && ${ $uid . $currentboard }{'modtopic'} ne $tlnomodtime )
+    if ( $tlnomodflag && ${ $uid . $currentboard }{'modtopic'} && ${ $uid . $currentboard }{'modtopic'} ne $tlnomodtime )
     {
         $fixtime = qq~${ $uid . $currentboard }{'modtopic'}~;
         if (
@@ -157,12 +156,10 @@ sub ModifyMessage {
         $lastmod =~ s/\Q{yabb lastmod_a}\E/$lastmod_a/xsm;
 
         $icon = $micon;
-        $message =~ s/<br.*?>/\n/igxsm;
+        $message =~ s/<br>|<br\s\/>/\n/igxsm;
         $message =~ s/\Q &nbsp; \&nbsp; \&nbsp;\Q/\t/igxsm;
         $settofield = 'message';
-        if ( $message =~ s/\[reason\](.+?)\[\/reason\]//igxsm ) {
-            $reason = $1;
-        }
+        if ( $message =~ s/\[reason\](.+?)\[\/reason\]//igxsm ) { $reason = $1; }
     }
     $submittxt   = $post_txt{'10'};
     $destination = 'modify2';
@@ -189,7 +186,7 @@ sub ModifyMessage2 {
     }
 
     # the post is to be deleted...
-    if ( $INFO{'d'} == 1 ) {
+    if ( $INFO{'d'} && $INFO{'d'} == 1 ) {
         $threadid = $FORM{'thread'};
         $postid   = $FORM{'id'};
 
@@ -232,7 +229,7 @@ sub ModifyMessage2 {
                 ) = split /[|]/xsm, ${ $thread_arrayref{$threadid} }[$postid];
                 chomp $mfn;
                 if (
-                    ${ $uid . $username }{'regdate'} > $mdate
+                    ${ $uid . $username }{'regtime'} > $mdate
                     || (  !$staff
                         && $musername ne $username )
                     || !$sessionvalid
@@ -349,15 +346,15 @@ sub ModifyMessage2 {
         $poll_comment =~ s/\r//gxsm;
 
         if ( !$poll_end_days || $poll_end_days =~ /\D/xsm ) {
-            $poll_end_days = q{};
+            $poll_end_days = 0;
         }
         if ( !$poll_end_min || $poll_end_min =~ /\D/xsm ) {
-            $poll_end_min = q{};
+            $poll_end_min = 0;
         }
-        my $poll_end = q{};
+        my $poll_end = 0;
         if ($poll_end_days) { $poll_end = $poll_end_days * 86400; }
         if ($poll_end_min) { $poll_end += $poll_end_min * 60; }
-        if ($poll_end)     { $poll_end += $date; }
+        if ($poll_end > 0)     { $poll_end += $date; }
 
         my @new_poll_data;
         push @new_poll_data,
@@ -439,7 +436,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         chomp $mfn;
         if (
             (
-                ${ $uid . $username }{'regdate'} >= $mdate
+                ${ $uid . $username }{'regtime'} >= $mdate
                 || $musername ne $username
             )
             && !$staff
@@ -601,13 +598,13 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/gxsm;
 
             # replace all inappropriate characters from lists in Language files
-            if ( $fixfile =~ /[^0-9A-Za-z+\-.:]/xsm ) {
+            if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
                 my %translist = loadtranlist();
                 @uploadtranlist = keys %translist;
                 foreach (@uploadtranlist) {
                     $fixfile =~ s/$_/$translist{$_}/gxsm;
                 }
-                $fixfile =~ s/[^0-9A-Za-z+\-.:]/_/gxsm;
+                $fixfile =~ s/[^\w+\-.:]/_/gxsm;
             }
 
             # replace . with _ in the filename except for the extension
@@ -799,7 +796,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
 
     # Create the list of files
     $fixfile = join q{,}, @filelist;
-
+    $message =~ s/[\n\r]//gxsm;
     ${ $thread_arrayref{$threadid} }[$postid] =
 qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$date|$username|$fixfile\n~;
     my $prnarray = join q{}, @{ $thread_arrayref{$threadid} };
@@ -901,7 +898,7 @@ sub MultiDel {    # deletes single- or multi-Posts
 
             # Checks that the user is actually allowed to access multidel
             if (
-                ${ $uid . $username }{'regdate'} > $message[3]
+                ${ $uid . $username }{'regtime'} > $message[3]
                 || (  !$staff
                     && $musername ne $username )
                 || !$sessionvalid
@@ -944,8 +941,7 @@ sub MultiDel {    # deletes single- or multi-Posts
                     $grp_after = qq~${$uid.$musername}{'position'}~;
                 }
                 else {
-                    foreach
-                      my $postamount ( reverse sort { $a <=> $b } keys %Post )
+                    foreach my $postamount ( reverse sort { $a <=> $b } keys %Post )
                     {
                         if ( ${ $uid . $musername }{'postcount'} > $postamount )
                         {
@@ -1028,7 +1024,7 @@ sub MultiDel {    # deletes single- or multi-Posts
 
     my $inserted = 0;
     foreach my $c ( 0 .. $#buffer ) {
-        if ( ( split /[|]/xsm, $buffer[$a], 6 )[4] < $newthreadline[4] ) {
+        if ( ( split /[|]/xsm, $buffer[$c], 6 )[4] < $newthreadline[4] ) {
             splice @buffer, $c, 0, join( q{|}, @newthreadline ) . "\n";
             $inserted = 1;
             last;

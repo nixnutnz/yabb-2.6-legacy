@@ -17,6 +17,7 @@ $englishemaillngver = 'YaBB 2.7.00 $Revision$';
 if (@englishemaillngmods) {
     $englishemaillngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %yabbtagdesc = (
@@ -406,7 +407,7 @@ The {yabb mbname} team
 ~;
 
 $yabbtags{'suspendeduseremail'} = q~screen name~;
-$emaildesc{'suspendeduseremail'} = q~The Banned User Notification E-mail~;
+$emaildesc{'suspendeduseremail'} = q~The Suspended User Notification E-mail~;
 $suspendusersybject = q~Your account suspended on~;
 $suspendeduseremail = q~Hello, {yabb displayname}:
 

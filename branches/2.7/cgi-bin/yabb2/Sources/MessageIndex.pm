@@ -14,7 +14,7 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once);
+no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -23,12 +23,14 @@ $messageindexpmver  = 'YaBB 2.7.00 $Revision$';
 if (@messageindexpmmods) {
     $messageindexpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
 LoadLanguage('MessageIndex');
+LoadLanguage('Notify');
 
-if ( $INFO{'tsort'} eq q{} ) {
+if ( !$INFO{'tsort'} ) {
     $tsortcookie = "$cookietsort$currentboard$username";
     $tsort       = $yyCookies{$tsortcookie};
     $tsort =~ s/\D//gxsm;
@@ -89,11 +91,13 @@ sub MessageIndex {
             }
             else { $showmods = qq~($messageindex_txt{'63'}: ~; }
 
-            while ( $_ = each %moderators ) {
-                FormatUserName($_);
-                $showmods .= QuickLinks( $_, 1 ) . q{, };
+            %sortmd = reverse %moderators;
+            @sortmd = sort keys %sortmd;
+            foreach my $i (@sortmd) {
+                FormatUserName($sortmd{$i});
+                $showmods .= QuickLinks( $sortmd{$i}, 1 ) . q{, };
             }
-            $showmods =~ s/,\s \Z/)/xsm;
+            $showmods =~ s/,\s$/)/xsm;
         }
         if ( keys %moderatorgroups > 0 ) {
             if ( keys %moderatorgroups == 1 ) {
@@ -104,12 +108,12 @@ sub MessageIndex {
             my ( $tmpmodgrp, $thismodgrp );
             while ( $_ = each %moderatorgroups ) {
                 $tmpmodgrp = $moderatorgroups{$_};
-                ( $thismodgrp, undef ) = split /[|]/xsm, $NoPost{$tmpmodgrp}, 2;
+                ( $thismodgrp, undef ) = @{$NoPost{$tmpmodgrp}};
                 $showmodgroups .= qq~$thismodgrp, ~;
             }
-            $showmodgroups =~ s/,\s \Z/)/xsm;
+            $showmodgroups =~ s/,\s$/)/xsm;
         }
-        if ( $showmodgroups ne q{} && $showmods ne q{} ) {
+        if ( $showmodgroups && $showmods ) {
             $showmods .= q~ - ~;
         }
         if ( ${ $uid . $currentboard }{'brdpasswr'} ) {
@@ -132,7 +136,7 @@ sub MessageIndex {
     # Load announcements, if they exist.
     if (   $annboard
         && $annboard ne $currentboard
-        && ${ $uid . $currentboard }{'rbin'} != 1 )
+        && !${ $uid . $currentboard }{'rbin'} )
     {
         chomp $annboard;
         fopen( ANN, "$boardsdir/$annboard.txt" );
@@ -168,7 +172,7 @@ qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex
     my %starter;
     @temp_list = @threadlist;
 
-    *starter = sub {
+    local *starter = sub {
         if ( exists $user_info{ $_[0] } ) { return $user_info{ $_[0] }; }
         if ( !exists $memberinf{ $_[0] } ) {
             return lc $_[1][2];
@@ -177,67 +181,70 @@ qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex
           lc $memberinf{ $_[0] }[0];
     };
 
-    if ( $tsort == 1 ) {
-        $sort_lastpostim =
+    if ($tsort) {
+        if ( $tsort == 1 ) {
+            $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=0" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_first'}~;
-        @threadlist = reverse @temp_list;
-    }
-    elsif ( $tsort == 2 ) {
-        $sort_subject =
+            @threadlist = reverse @temp_list;
+        }
+        elsif ( $tsort == 2 ) {
+            $sort_subject =
 qq~<a href="$scripturl?board=$currentboard;tsort=3" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_up'}~;
-        @threadlist = reverse sort {
-            lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
-              lc( ( split /[|]/xsm, $b, 3 )[1] )
-        } @temp_list;
-    }
-    elsif ( $tsort == 3 ) {
-        $sort_subject =
+            @threadlist = reverse sort {
+                lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
+                  lc( ( split /[|]/xsm, $b, 3 )[1] )
+            } @temp_list;
+        }
+        elsif ( $tsort == 3 ) {
+            $sort_subject =
 qq~<a href="$scripturl?board=$currentboard;tsort=2" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_down'}~;
-        @threadlist = sort {
-            lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
-              lc( ( split /[|]/xsm, $b, 3 )[1] )
-        } @temp_list;
-    }
-    elsif ( $tsort == 4 ) {
-        ManageMemberinfo('load');
-        $sort_starter =
+            @threadlist = sort {
+                lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
+                  lc( ( split /[|]/xsm, $b, 3 )[1] )
+            } @temp_list;
+        }
+        elsif ( $tsort == 4 ) {
+            ManageMemberinfo('load');
+            $sort_starter =
 qq~<a href="$scripturl?board=$currentboard;tsort=5" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_up'}~;
-        @threadlist = reverse sort {
-            starter( ( split /[|]/xsm, $a, 8 )[6], $a )
-              cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
-        } @temp_list;
-        undef %memberinf;
-    }
-    elsif ( $tsort == 5 ) {
-        ManageMemberinfo('load');
-        $sort_starter =
+            @threadlist = reverse sort {
+                starter( ( split /[|]/xsm, $a, 8 )[6], $a )
+                  cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
+            } @temp_list;
+            undef %memberinf;
+        }
+        elsif ( $tsort == 5 ) {
+            ManageMemberinfo('load');
+            $sort_starter =
 qq~<a href="$scripturl?board=$currentboard;tsort=4" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_down'}~;
-        @threadlist = sort {
-            starter( ( split /[|]/xsm, $a, 8 )[6], $a )
-              cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
-        } @temp_list;
-        undef %memberinf;
-    }
-    elsif ( $tsort == 6 ) {
-        $sort_answer =
+            @threadlist = sort {
+                starter( ( split /[|]/xsm, $a, 8 )[6], $a )
+                  cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
+            } @temp_list;
+            undef %memberinf;
+        }
+        elsif ( $tsort == 6 ) {
+            $sort_answer =
 qq~<a href="$scripturl?board=$currentboard;tsort=7" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_up'}~;
-        @threadlist =
-          reverse
-          sort { ( split /[|]/xsm, $a, 7 )[5] <=> ( split /[|]/xsm, $b, 7 )[5] }
-          @temp_list;
-    }
-    elsif ( $tsort == 7 ) {
-        $sort_answer =
+            @threadlist =
+              reverse
+              sort {
+                ( split /[|]/xsm, $a, 7 )[5] <=> ( split /[|]/xsm, $b, 7 )[5]
+              } @temp_list;
+        }
+        elsif ( $tsort == 7 ) {
+            $sort_answer =
 qq~<a href="$scripturl?board=$currentboard;tsort=6" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_down'}~;
-        @threadlist =
-          sort { ( split /[|]/xsm, $a, 7 )[5] <=> ( split /[|]/xsm, $b, 7 )[5] }
-          @temp_list;
-    }
-    else {
-        $sort_lastpostim =
+            @threadlist =
+              sort {
+                ( split /[|]/xsm, $a, 7 )[5] <=> ( split /[|]/xsm, $b, 7 )[5]
+              } @temp_list;
+        }
+        else {
+            $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=1" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
+        }
     }
-
     undef @temp_list;
     undef %starter;
 
@@ -270,7 +277,10 @@ qq~<a href="$scripturl?board=$currentboard;tsort=1" rel="nofollow">$messageindex
     $dropdisplaynum  = 10;
     $startpage       = 0;
     $max             = $threadcount;
-    if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' && $showpageall != 0 ) {
+    if (   $INFO{'start'}
+        && substr( $INFO{'start'}, 0, 3 ) eq 'all'
+        && $showpageall != 0 )
+    {
         $maxindex    = $max;
         $all         = 1;
         $allselected = q~ selected="selected"~;
@@ -298,7 +308,6 @@ qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$messag
     $pageindex2 = $pageindex1;
 
     if ( $pagenumb > 1 || $all ) {
-
         if ( $usermessagepage == 1 || $iamguest ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
             if ( !$iamguest ) {
@@ -593,7 +602,9 @@ qq~<a href="$scripturl?board=$currentboard" class="a"><b>$curboardname</b></a>~;
           split /[|]/xsm, $board{"$parentboard"};
         ToChars($pboardname);
 
-        if ( ${ $uid . $parentboard }{'canpost'} || !$subboard{$parentboard} ) {
+        if ( ${ $uid . $parentboard }{'canpost'}
+            || !$subboard{$parentboard} )
+        {
             $pboardname =
 qq~<a href="$scripturl?board=$parentboard" class="a"><b>$pboardname</b></a>~;
         }
@@ -700,6 +711,7 @@ qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$message
     my $tmpstickyheader;
     if ($stkynum) {
         $stickyheader =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
+        $stickyheader =~ s/\Q{yabb messageindex_stickygrp_1}\E/$messageindex_stickygrp{'1'}/gxsm;
         $tmpstickyheader = $stickyheader;
     }
 
@@ -748,42 +760,50 @@ qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$msub</a>~;
         }
 
         $threadclass = 'thread';
-        if    ( $mstate =~ /h/ixsm )         { $threadclass = 'hide'; }
-        elsif ( $mstate =~ /l/ixsm )         { $threadclass = 'locked'; }
-        elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
-        elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
-        elsif ( $mstate eq q{} )             { $threadclass = 'thread'; }
-        if ( $threadclass eq 'hide' && $mstate =~ /s/ixsm && $mstate !~ /l/ixsm )
-        {
-            $threadclass = 'hidesticky';
-        }
-        elsif ($threadclass eq 'hide'
-            && $mstate =~ /l/ixsm
-            && $mstate !~ /s/ixsm )
-        {
-            $threadclass = 'hidelock';
-        }
-        elsif ($threadclass eq 'hide'
-            && $mstate =~ /s/ixsm
-            && $mstate =~ /l/ixsm )
-        {
-            $threadclass = 'hidestickylock';
-        }
-        elsif ($threadclass eq 'locked'
-            && $mstate =~ /s/ixsm
-            && $mstate !~ /h/ixsm )
-        {
-            $threadclass = 'stickylock';
-        }
-        elsif ( $mstate =~ /s/ixsm && $mstate !~ /h/ixsm ) {
-            $threadclass = 'sticky';
-        }
-        elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/ixsm ) {
-            $threadclass =
-              $threadclass eq 'locked' ? 'announcementlock' : 'announcement';
+        if ( !$mstate ) { $threadclass = 'thread'; }
+        else {
+            if    ( $mstate =~ /h/ixsm ) { $threadclass = 'hide'; }
+            elsif ( $mstate =~ /l/ixsm ) { $threadclass = 'locked'; }
+            elsif ( $mreplies >= $VeryHotTopic ) {
+                $threadclass = 'veryhotthread';
+            }
+            elsif ( $mreplies >= $HotTopic ) { $threadclass = 'hotthread'; }
+            if (   $threadclass eq 'hide'
+                && $mstate =~ /s/ixsm
+                && $mstate !~ /l/ixsm )
+            {
+                $threadclass = 'hidesticky';
+            }
+            elsif ($threadclass eq 'hide'
+                && $mstate =~ /l/ixsm
+                && $mstate !~ /s/ixsm )
+            {
+                $threadclass = 'hidelock';
+            }
+            elsif ($threadclass eq 'hide'
+                && $mstate =~ /s/ixsm
+                && $mstate =~ /l/ixsm )
+            {
+                $threadclass = 'hidestickylock';
+            }
+            elsif ($threadclass eq 'locked'
+                && $mstate =~ /s/ixsm
+                && $mstate !~ /h/ixsm )
+            {
+                $threadclass = 'stickylock';
+            }
+            elsif ( $mstate =~ m/s/ixsm && $mstate !~ m/h/ixsm ) {
+                $threadclass = 'sticky';
+            }
+        elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ m/h/ixsm ) {
+                $threadclass =
+                  $threadclass eq 'locked'
+                  ? 'announcementlock'
+                  : 'announcement';
+            }
         }
         ### Start Sticky Shimmy Shuffle mod
-        my $stickdir;
+        my $stickdir = q{};
         if ($staff) {
             if (   $threadclass eq 'sticky'
                 || $threadclass eq 'stickylock'
@@ -820,6 +840,7 @@ qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;
               int( $yyuserlog{"$currentboard--mark"} )
               ? int( $yyuserlog{$mnum} )
               : int $yyuserlog{"$currentboard--mark"};
+            $mdate ||= 0;
             if (
                 !$movedFlag
                 && (   $yyuserlog{"$mnum--unread"}
@@ -891,6 +912,7 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
         # Load the current nickname of the account name of the thread starter.
         if ( $musername ne 'Guest' ) {
             LoadUser($musername);
+            $mdate ||= 0;
 
             # See if they are an ex-member.
             if (
@@ -1014,27 +1036,33 @@ qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &
         }
         $lastpostername = $lastposter || $messageindex_txt{'470'};
 
-        if ( ( $stkynum && ( $counter >= $stkynum ) ) && ( $stkyshowed < 1 ) ) {
+        if (   ( $stkynum && ( $counter >= $stkynum ) )
+            && ( $stkyshowed < 1 ) )
+        {
             $nonstickyheader =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
+            $nonstickyheader =~ s/\Q{yabb messageindex_stickygrp_2}\E/$messageindex_stickygrp{'2'}/gxsm;
             $tmptempbar .= $nonstickyheader;
             $stkyshowed = 1;
         }
 
 # Check if the thread contains attachments and create a paper-clip icon if it does
-        my $alt =
-            $attachments{$mnum} == 1
-          ? $messageindex_txt{'5'}
-          : $messageindex_txt{'4'};
-        $temp_attachment =
-          $attachments{$mnum}
-          ? (
-            ( $guest_media_disallowed && $iamguest )
-            ? qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
-            : $msg_attach_win
-              . qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" /></a>~
-          )
-          : q{};
-        $temp_attachment =~ s/\Q{yabb mnum}\E/$mnum/xsm;
+        $temp_attachment = q{};
+        if ( $attachments{$mnum} ) {
+            my $alt =
+                $attachments{$mnum} == 1
+              ? $messageindex_txt{'5'}
+              : $messageindex_txt{'4'};
+            $temp_attachment =
+              $attachments{$mnum}
+              ? (
+                ( $guest_media_disallowed && $iamguest )
+                ? qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
+                : $msg_attach_win
+                  . qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" /></a>~
+              )
+              : q{};
+            $temp_attachment =~ s/\Q{yabb mnum}\E/$mnum/xsm;
+        }
 
         $mcount++;
 
@@ -1165,7 +1193,7 @@ s/\[media].*?\[\/media]/[b][$messageindex_tp{'media_tp'}][\/b]/igxsm;
                 $themessage =~ s/(<br.*?>\s?<br.*?>)/<br \/>/igxsm;
                 $themessage =~ s/^<br.*?>//igxsm;
 
-                *fixtags = sub {
+                local *fixtags = sub {
                     ( $tmpmessage, $pretext, $pretag, $tagtext, $posttag ) = @_;
                     $testmessage = $tmpmessage;
                     $testmessage =~ s/\[.*?\]//gxsm;
@@ -1420,7 +1448,8 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
     $micon{'hotthread'} $messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}<br />
     $micon{'veryhotthread'} $messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}<br />
 ~;
-
+        $yabbadminicons =~ s/\Q{yabb veryhotthread}\E/$VeryHotTopic/gxsm;
+        $yabbadminicons =~ s/\Q{yabb hottopic}\E/$HotTopic/gxsm;
         LoadAccess();
     }
 
@@ -1478,7 +1507,7 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
     $messageindex_template =~ s/\Q{yabb sortlastpostim}\E/$sort_lastpostim/gxsm;
 
     if ($ShowBDescrip) {
-        if ( $bdescrip ne q{} ) {
+        if ($bdescrip) {
             ToChars($bdescrip);
             $boarddescription =~
               s/\Q{yabb boarddescription}\E/$brk$bdescrip/gxsm;
@@ -1490,25 +1519,31 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
         }
     }
     $bdpic = qq~$imagesdir/boards.$bdpicExt~;
-    fopen( BRDPIC, "<$boardsdir/brdpics.db" );
-    my @brdpics = <BRDPIC>;
-    fclose(BRDPIC);
-    chomp @brdpics;
-    foreach (@brdpics) {
-        my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-        if ( $brdnm eq $currentboard && $template eq $style ) {
-            if ( $brdpic =~ /\//ixsm ) {
-                $bdpic = $brdpic;
-            }
-            elsif ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" ) {
-                $bdpic = qq~$imagesdir/Boards/$brdpic~;
+    if ( -e "<$boardsdir/brdpics.db" ) {
+        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+        my @brdpics = <BRDPIC>;
+        fclose(BRDPIC);
+        chomp @brdpics;
+        foreach (@brdpics) {
+            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+            if ( $brdnm eq $currentboard && $template eq $style ) {
+                if ( $brdpic =~ /\//ixsm ) {
+                    $bdpic = $brdpic;
+                }
+                elsif (
+                    -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" )
+                {
+                    $bdpic = qq~$imagesdir/Boards/$brdpic~;
+                }
             }
         }
     }
-    if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
+    else { $bdpic = qq~$imagesdir/boards.$bdpicExt~; }
+
+    if ( ${ $uid . $currentboard }{'ann'} ) {
         $bdpic = qq~$imagesdir/ann.$bdpicExt~;
     }
-    if ( ${ $uid . $currentboard }{'rbin'} == 1 ) {
+    if ( ${ $uid . $currentboard }{'rbin'} ) {
         $bdpic = qq~$imagesdir/recycle.$bdpicExt~;
     }
 
@@ -1531,7 +1566,7 @@ qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resi
         ToChars( ${ $uid . $currentboard }{'rulesdesc'} );
         $tmpruletxt = qq~${$uid.$currentboard}{'rulesdesc'}~;
 
-        if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} == 1 ) {
+        if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} ) {
             $tmprulelgt = length( ${ $uid . $currentboard }{'rulesdesc'} );
             $rulestitle =
 qq~<img src="$imagesdir/$newload{'brd_col'}" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
@@ -1550,7 +1585,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
         $rulestitle .= qq~&nbsp;${$uid.$currentboard}{'rulestitle'}~;
         $rulesdesc = qq~<div id="bdruledesc">$tmpruletxt</div>~;
 
-        if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} == 1 ) {
+        if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} ) {
             $mycat_col = $newload{'brd_col'};
             $mycat_exp = $newload{'brd_exp'};
             $rulesdesc .= qq~
@@ -1622,7 +1657,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     }
 
     if ( !$useThreadtools ) {
-        if ( $MenuType == 1 ) {
+        if ( $UseMenuType == 1 ) {
             $outside_threadtools =~ s/\Q$menusep\E//ixsm;
         }
         $topichandellist     = $outside_threadtools . $topichandellist;
@@ -1890,7 +1925,7 @@ sub MarkRead {    # Mark all threads in this board as read.
     dumplog("$currentboard--mark");
 
     if ( $INFO{'oldmarkread'} ) {
-        redirectinternal();
+        MessageIndex();
     }
     $elenable = 0;
     return;
@@ -1898,13 +1933,13 @@ sub MarkRead {    # Mark all threads in this board as read.
 
 sub ListPages {
     my ( $pcount, $maxvalue, $tlink );
-    if ( $INFO{'num'} ne q{} ) {
+    if ( $INFO{'num'} ) {
         $tlink    = $INFO{'num'};
         $pcount   = ${ $INFO{'num'} }{'replies'} + 1;
         $maxvalue = $maxmessagedisplay;
         $jcode    = 'num=';
     }
-    if ( $INFO{'board'} ne q{} ) {
+    if ( $INFO{'board'} ) {
         $tlink    = $INFO{'board'};
         $pcount   = $INFO{'count'};
         $maxvalue = $maxdisplay;
@@ -1947,7 +1982,7 @@ sub MessagePageindex {
         ${ $uid . $username }{'pageindex'} = qq~1|$trindx|$mbindx|$pmindx~;
     }
     UserAccount( $username, 'update' );
-    redirectinternal();
+    MessageIndex();
     return;
 }
 
@@ -1959,7 +1994,7 @@ sub moveto {
     );
     get_forum_master();
 
-    *move_subboards = sub {
+    local *move_subboards = sub {
         my @x = @_;
         $indent += 2;
         foreach my $board (@x) {
@@ -2039,7 +2074,8 @@ sub LoadAccess {
     if (
            AccessCheck( $currentboard, 4 ) eq 'granted'
         && $allowattach > 0
-        && ${ $uid . $currentboard }{'attperms'} == 1
+        && (   ${ $uid . $currentboard }{'attperms'}
+            && ${ $uid . $currentboard }{'attperms'} == 1 )
         && ( ( $allowguestattach == 0 && !$iamguest )
             || $allowguestattach == 1 )
       )
@@ -2064,7 +2100,7 @@ sub LoadAccess {
 
     # Zero Post Check
     if ( $username ne 'Guest' ) {
-        if ( $INFO{'zeropost'} != 1
+            if ( !$INFO{'zeropost'}
             && AccessCheck( $currentboard, 2 ) eq 'granted' )
         {
             $yesaccesses .=
@@ -2080,14 +2116,14 @@ sub LoadAccess {
 }
 
 sub SetTopicPreview {
-    if ( $INFO{'todo'} eq 'disable' ) {
+    if ( !$INFO{'todo'} || $INFO{'todo'} eq 'disable' ) {
         ${ $uid . $username }{'topicpreview'} = '0';
     }
     else {
         ${ $uid . $username }{'topicpreview'} = '1';
     }
     UserAccount( $username, 'update' );
-    redirectinternal();
+    MessageIndex();
     return;
 }
 

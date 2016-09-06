@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.20                                                 #
-# Packaged:       December 31, 2015                                           #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mobilemyprofiletemver = 'YaBB 2.6.20 $Revision$';
+$mobilemyprofiletemver = 'YaBB 2.7.00 $Revision$';
 @mobilemyprofilemods = ();
 if (@mobilemyprofilemods) {
     $mobilemyprofilemods = 1;
@@ -58,9 +58,9 @@ $myprofile_a = qq~
 ## admin edit menu ##
 $myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px fixed" style="margin-bottom: -1px">
     <tr>
-        <td class="{yabb menucolor0} center bottom"><span class="small"><b><a href="$scripturl?action=profile;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{79}</a></b></span></td>
-        <td class="{yabb menucolor1} center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{819}</a></b></span></td>
-        <td class="{yabb menucolor2} center bottom"><span class="small"><b><a href="$scripturl?action=profileOptions;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{818}</a></b></span></td>
+        <td class="{yabb menucolor0} center bottom"><span class="small"><b><a href="$scripturl?action=profile;username={yabb menu_user};sid={yabb sid}">{yabb profile_txt_79}</a></b></span></td>
+        <td class="{yabb menucolor1} center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username={yabb menu_user};sid={yabb sid}">{yabb profile_txt819}</a></b></span></td>
+        <td class="{yabb menucolor2} center bottom"><span class="small"><b><a href="$scripturl?action=profileOptions;username={yabb menu_user};sid={yabb sid}">{yabb profile_txt818}</a></b></span></td>
         {yabb bdlist}
         {yabb pmlevel}
         {yabb showadmin}
@@ -68,13 +68,13 @@ $myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px fixed" style="mar
 </table>
 ~;
 
-$myprofile_bdlist = qq~<td class="{yabb menucolor3} center bottom"><span class="small"><b><a href="$scripturl?action=profileBuddy;username={yabb bduser};sid=$INFO{'sid'}">$profile_buddy_list{'buddylist'}</a></b></span></td>~;
+$myprofile_bdlist = qq~<td class="{yabb menucolor3} center bottom"><span class="small"><b><a href="$scripturl?action=profileBuddy;username={yabb bduser};sid={yabb sid}">$profile_buddy_list{'buddylist'}</a></b></span></td>~;
 
 $myprofile_pmlevel = qq~
-        <td class="{yabb menucolor4} center bottom"><span class="small"><b><a href="$scripturl?action=profileIM;username={yabb pmuser};sid=$INFO{'sid'}">$profile_imtxt{56} $profile_txt{323}</a></b></span></td>~;
+        <td class="{yabb menucolor4} center bottom"><span class="small"><b><a href="$scripturl?action=profileIM;username={yabb pmuser};sid={yabb sid}">$profile_imtxt{56} $profile_txt{323}</a></b></span></td>~;
 
 $myprofile_showadmin= qq~
-        <td class="{yabb menucolor5} center bottom"><span class="small"><b><a href="$scripturl?action=profileAdmin;username={yabb aduser};sid=$INFO{'sid'}">$profile_txt{820}</a></b></span></td>~;
+        <td class="{yabb menucolor5} center bottom"><span class="small"><b><a href="$scripturl?action=profileAdmin;username={yabb aduser};sid={yabb sid}">$profile_txt{820}</a></b></span></td>~;
 ## end admin edit menu ##
 
 ## Profile edit ##
@@ -498,7 +498,7 @@ $myprofile_PMpref = qq~<table class="pad_4px" style="border-spacing: 0 1px; bord
             <select name="ignore" id="ignore" size="4" multiple="multiple" style="width:250px;" ondblclick="removeUser(this);" >{yabb my_ignore}
             </select>
             <br />
-            <input type="checkbox" name="ignoreall" id="ignoreall" $ignoreallChecked /> <label for="ignoreall">$profile_txt{'ignoreall'}</label><br />
+            <input type="checkbox" name="ignoreall" id="ignoreall" {yabb ignoreallChecked} /> <label for="ignoreall">$profile_txt{'ignoreall'}</label><br />
             <span class="small"><a href="javascript:void(0);" onclick="imWin();">$profile_txt{'ignorelistadd'}</a></span>
         </td>
     </tr>
@@ -747,7 +747,7 @@ $myshow_reminder = qq~    <tr>
             <div style="float: left; width: 70%;">
             <form action="$scripturl?action=reminder2" method="post">
             <input type="hidden" name="user" value="$INFO{'username'}" />
-            <input type="submit" value="$profile_txt{'pass_reminder_2'}" class="button" onclick="return confirm('$profile_txt{'pass_reminder_3'} {yabb my_realname}${$uid.$user}{'realname'}?');" />
+            <input type="submit" value="$profile_txt{'pass_reminder_2'}" class="button" onclick="return confirm('$profile_txt{'pass_reminder_3'} {yabb my_realname}?');" />
             </form>
             </div>
         </td>
@@ -814,7 +814,7 @@ $ext_output_a = q~
 $ext_output_c = qq~
         <td class="catbg">
             <img src="$imagesdir/$my_profile" alt="" />&nbsp;
-            <b>$field{'comment'}</b>
+            <b>{yabb fieldcomment}</b>
         </td>
     </tr><tr>
         <td class="windowbg2 vtop">~;

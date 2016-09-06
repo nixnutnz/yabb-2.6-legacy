@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+#use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
@@ -21,6 +23,7 @@ $editemailtemplatespmver = 'YaBB 2.7.00 $Revision$';
 if (@editemailtemplatespmmods) {
     $editemailtemplatespmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub editemailtemplates {
@@ -52,7 +55,7 @@ sub editemailtemplates {
         closedir LNGDIR;
         for my $item ( sort { lc($a) cmp lc $b } @langitems ) {
             if (   -d "$langdir/$item"
-                && $item =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm
+                && $item =~ m{\A[\w\#\%\-\:\+\?\$\&\~\,\@/]+\Z}xsm
                 && -e "$langdir/$item/Email.lng" )
             {
                 require "$langdir/Lang.lng";
@@ -188,7 +191,7 @@ sub editemailtemplates2 {
     my $string   = $INFO{'string'};
     my $message  = $FORM{'message'};
 
-    $message =~ s/(\~|\\)/\\$1/gxsm;
+    $message =~ s/([\~\\])/\\$1/gxsm;
     $message =~ s/\r(?=\n*)//gxsm;
 
     if ( !$message || !$string ) { fatal_error('no_info'); }
@@ -206,7 +209,7 @@ sub editemailtemplates2 {
     }
 
     # Make the change
-    $langfile =~ s/\$\Q$string\E = qq~.+?~;/\$$string = qq~$message~;/sm;
+    $langfile =~ s/\$\Q$string\E = q~.+?~;/\$$string = q~$message~;/sm;
 
     # Write it out
     fopen( LANG, ">$langdir/$editlang/Email.lng" )
@@ -215,7 +218,7 @@ sub editemailtemplates2 {
     print {LANG} $langfile or croak "$croak{'print'} LANG";
     fclose(LANG);
 
-    $yySetLocation = qq~$adminurl?editemailtemplates&lang=$editlang~;
+    $yySetLocation = qq~$adminurl?action=editemailtemplates&lang=$editlang~;
     redirectexit();
     return;
 }

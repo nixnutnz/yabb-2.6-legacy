@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,32 +22,34 @@ $antispamquestionspmver = 'YaBB 2.7.00 $Revision$';
 if (@antispamquestionspmmods) {
     $antispamquestionspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-my $questions_language = $FORM{'questions_language'} || $INFO{'questions_language'} || $lang;
+my $questions_language =
+  $FORM{'questions_language'} || $INFO{'questions_language'} || $lang;
 
 sub SpamQuestions {
-
     is_admin_or_gmod();
-
-    if ($en_spam_questions)   { $chk_spam_question = q~ checked="checked"~; }
-    if ($spam_questions_send) { $chk_spam_question_send = q~ checked="checked"~; }
-    if ($spam_questions_gp)   { $chk_spam_question_gp = q~ checked="checked"~; }
     opendir LNGDIR, $langdir;
     my @lfilesanddirs = readdir LNGDIR;
     closedir LNGDIR;
 
-    for my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
+    foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
         if (-e "$langdir/$fld/Main.lng") {
             my $displang = $fld;
-            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
-            if ($questions_language eq $fld) { $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~; }
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gixsm;
+            if ( $questions_language eq $fld ) {
+                $drawnldirs .=
+qq~<option value="$fld" selected="selected">$displang</option>~;
+            }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
     }
 
     if (-e "$langdir/$questions_language/spam.questions") {
-        fopen(SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions") || fatal_error('cannot_open',"$langdir/$questions_language/spam.questions", 1);
+        fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
+          || fatal_error( 'cannot_open',
+            "$langdir/$questions_language/spam.questions", 1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
     }
@@ -54,8 +58,7 @@ sub SpamQuestions {
 
     if ($total_questions) {
         $header_row = q~ colspan="5"~;
-        $show_questions =
-          qq~        <tr class="catbg">
+        $show_questions = qq~        <tr class="catbg">
             <td><b>$spam_question_txt{'question'}</b></td>
             <td><b>$spam_question_txt{'answer'}</b></td>
             <td><b>$spam_question_txt{'image'}</b></td>
@@ -63,11 +66,18 @@ sub SpamQuestions {
             <td><b>$admin_txt{'delete'}</b></td>
         </tr>~;
 
-        for my $question ( sort { $a <=> $b } @spam_questions ) {
+        foreach my $question ( sort { $a cmp $b } @spam_questions ) {
             chomp $question;
-            ( $spam_question_id, $spam_question, $spam_answer, undef, $spam_image ) = split /[|]/xsm,
+            (
+                $spam_question_id, $spam_question, $spam_answer, undef,
+                $spam_image
+              )
+              = split /[|]/xsm,
               $question;
-              $spam_image = $spam_image ? qq~<a href="$defaultimagesdir/Spam_Img/$spam_image" target="_blank">$spam_image</a>~ : $spam_question_txt{'na'};
+            $spam_image =
+              $spam_image
+              ? qq~<a href="$defaultimagesdir/Spam_Img/$spam_image" target="_blank">$spam_image</a>~
+              : $spam_question_txt{'na'};
             $show_questions .= qq~        <tr class="windowbg2">
             <td>$spam_question</td>
             <td>$spam_answer</td>
@@ -107,13 +117,13 @@ sub SpamQuestions {
             <th class="titlebg" colspan="2">$admin_img{'prefimg'} $spam_question_txt{'question_settings'}</th>
         </tr><tr class="windowbg2 vtop">
             <td><label for="en_spam_questions">$spam_question_txt{'enable_question'}</label></td>
-            <td><input type="checkbox" name="en_spam_questions" id="en_spam_questions" value="1"$chk_spam_question /></td>
+            <td><input type="checkbox" name="en_spam_questions" id="en_spam_questions" value="1"${ischecked($en_spam_questions)} /></td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="spam_questions_send">$spam_question_txt{'enable_question_send'}</label></td>
-            <td><input type="checkbox" name="spam_questions_send" id="spam_questions_send" value="1"$chk_spam_question_send /></td>
+            <td><input type="checkbox" name="spam_questions_send" id="spam_questions_send" value="1"${ischecked($spam_questions_send)} /></td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="spam_questions_gp">$spam_question_txt{'enable_question_gp'}</label></td>
-            <td><input type="checkbox" name="spam_questions_gp" id="spam_questions_gp" value="1"$chk_spam_question_gp /></td>
+            <td><input type="checkbox" name="spam_questions_gp" id="spam_questions_gp" value="1"${ischecked($spam_questions_gp)} /></td>
         </tr>
     </table>
 </div>
@@ -208,7 +218,8 @@ sub SpamQuestions2 {
     SaveSettingsTo('Settings.pm');
 
     if ( $action eq 'spam_questions2' ) {
-        $yySetLocation = qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
+        $yySetLocation =
+qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
         redirectexit();
     }
     return;
@@ -217,28 +228,36 @@ sub SpamQuestions2 {
 sub SpamQuestionsAdd {
     is_admin_or_gmod();
 
+    if ( !$FORM{'spam_question'} ) {
+        fatal_error( 'invalid_value', "$spam_question_txt{'question'}" );
+    }
+    if ( !$FORM{'spam_answer'} ) {
+        fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
+    }
+
+    $spam_image = UploadFile(
+        'spam_image',
+        'Templates/Forum/default/Spam_Img',
+        'png jpg jpeg gif',
+        '250', '0'
+    );
+
+    $spam_image ||= q{};
     $spam_question = $FORM{'spam_question'};
     $spam_answer   = $FORM{'spam_answer'};
     $spam_case     = $FORM{'spam_case'} || '0';
 
-    if ( $spam_question eq q{} ) {
-        fatal_error( 'invalid_value', "$spam_question_txt{'question'}" );
-    }
-    if ( $spam_answer eq q{} ) {
-        fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
-    }
-
-    $spam_image = UploadFile('spam_image', 'Templates/Forum/default/Spam_Img', 'png jpg jpeg gif', '250', '0');
-
     fopen( SPAMQUESTIONS, ">>$langdir/$questions_language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
-        1 );
-    print {SPAMQUESTIONS} "$date|$spam_question|$spam_answer|$spam_case|$spam_image\n"
+      || fatal_error( 'cannot_open',
+        "$langdir/$questions_language/spam.questions", 1 );
+    print {SPAMQUESTIONS}
+      "$date|$spam_question|$spam_answer|$spam_case|$spam_image\n"
       or croak "$croak{'print'} SPAMQUESTIONS";
     fclose(SPAMQUESTIONS);
 
     if ( $action eq 'spam_questions_add' ) {
-        $yySetLocation = qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
+        $yySetLocation =
+qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
         redirectexit();
     }
     return;
@@ -251,8 +270,8 @@ sub SpamQuestionsEdit {
     my $question_edit = q{};
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
-        1 );
+      || fatal_error( 'cannot_open',
+        "$langdir/$questions_language/spam.questions", 1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
 
@@ -263,12 +282,14 @@ sub SpamQuestionsEdit {
             last;
         }
     }
-    ( $spam_question_id, $spam_question, $spam_answer, $spam_case, $spam_image ) = split /[|]/xsm,
+    ( $spam_question_id, $spam_question, $spam_answer, $spam_case, $spam_image )
+      = split /[|]/xsm,
       $question_edit;
     if ($spam_case)   { $chk_spam_case = q~ checked="checked"~; }
     my $spam_image_value = q{};
     if ( $spam_image ) {
-        $spam_image_value = qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$defaultimagesdir/Spam_Img/$spam_image" target="_blank">$spam_image</a><br /><input type="checkbox" name="del_spam_image" id="del_spam_image" value="1" /> <label for="del_spam_image">$admin_txt{'remove_img'}</label></div>~;
+        $spam_image_value =
+qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$defaultimagesdir/Spam_Img/$spam_image" target="_blank">$spam_image</a><br /><input type="checkbox" name="del_spam_image" id="del_spam_image" value="1" /> <label for="del_spam_image">$admin_txt{'remove_img'}</label></div>~;
     }
     $yymain = qq~
 <form action="$adminurl?action=spam_questions_edit2" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
@@ -326,15 +347,20 @@ sub SpamQuestionsEdit2 {
     $cur_spam_image   = $FORM{'cur_spam_image'};
     $del_spam_image   = $FORM{'del_spam_image'};
 
-    if ( $spam_question eq q{} ) {
+    if ( !$FORM{'spam_question'} ) {
         fatal_error( 'invalid_value', "$spam_question_txt{'question'}" );
     }
-    if ( $spam_answer eq q{} ) {
+    if ( !$FORM{'spam_answer'} ) {
         fatal_error( 'invalid_value', "$spam_question_txt{'answer'}" );
     }
 
-    if ( $spam_image ne q{} ) {
-        $spam_image = UploadFile('spam_image', 'Templates/Forum/default/Spam_Img', 'png jpg jpeg gif', '250', '0');
+    if ( !$FORM{'spam_image'} ) {
+        $spam_image = UploadFile(
+            'spam_image',
+            'Templates/Forum/default/Spam_Img',
+            'png jpg jpeg gif',
+            '250', '0'
+        );
         unlink "$htmldir/Templates/Forum/default/Spam_Img/$cur_spam_image";
     }
     else {
@@ -346,23 +372,26 @@ sub SpamQuestionsEdit2 {
     }
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
-        1 );
+      || fatal_error( 'cannot_open',
+        "$langdir/$questions_language/spam.questions", 1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
 
     @question = grep { !/$spam_question_id/xsm } @spam_questions;
-    push @question, "$spam_question_id|$spam_question|$spam_answer|$spam_case|$spam_image";
+    push @question,
+      "$spam_question_id|$spam_question|$spam_answer|$spam_case|$spam_image";
     $question = join q{}, @question;
 
     fopen( SPAMQUESTIONS, ">$langdir/$questions_language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
-        1 );
-    print {SPAMQUESTIONS} "$question\n" or croak "$croak{'print'} SPAMQUESTIONS";
+      || fatal_error( 'cannot_open',
+        "$langdir/$questions_language/spam.questions", 1 );
+    print {SPAMQUESTIONS} "$question\n"
+      or croak "$croak{'print'} SPAMQUESTIONS";
     fclose(SPAMQUESTIONS);
 
     if ( $action eq 'spam_questions_edit2' ) {
-        $yySetLocation = qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
+        $yySetLocation =
+qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
         redirectexit();
     }
     return;
@@ -372,14 +401,14 @@ sub SpamQuestionsDelete {
     is_admin_or_gmod();
 
     fopen( SPAMQUESTIONS, "<$langdir/$questions_language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
-        1 );
+      || fatal_error( 'cannot_open',
+        "$langdir/$questions_language/spam.questions", 1 );
     @spam_questions = <SPAMQUESTIONS>;
     fclose(SPAMQUESTIONS);
 
     fopen( SPAMQUESTIONS, ">$langdir/$questions_language/spam.questions" )
-      || fatal_error( 'cannot_open', "$langdir/$questions_language/spam.questions",
-        1 );
+      || fatal_error( 'cannot_open',
+        "$langdir/$questions_language/spam.questions", 1 );
     print {SPAMQUESTIONS}
       grep { !/$FORM{'spam_question_id'}/xsm } @spam_questions
       or croak "$croak{'print'} SPAMQUESTIONS";
@@ -400,7 +429,8 @@ sub SpamQuestionsDelete {
     }
 
     if ( $action eq 'spam_questions_delete' ) {
-        $yySetLocation = qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
+        $yySetLocation =
+qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'}~;
         redirectexit();
     }
     return;

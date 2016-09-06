@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
@@ -27,7 +29,8 @@ if (@detailedversionpmmods) {
 }
 
 $versionimg = 'http://www.yabbforum.com/images/version/versioncheck.gif';
-
+$yabb_update = 'http://www.yabbforum.com/update';
+$versionchk   = $yabb_update . '/versioncheck.js';
 sub ver_detail {
     is_admin_or_gmod();
     if ($maintenance) {
@@ -56,29 +59,31 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
             $checksum{ $keys[-1] } = $check;
         }
         $vercheck = 0;
-        open( $DATA, '<', "$boarddir/AdminIndex.$yyaext" )
-          or croak "Can't open $boarddir/AdminIndex.$yyaext: $!";
-        binmode($DATA);
+        open $DATA, '<', "$boarddir/AdminIndex.$yyaext"
+          or croak "Can't open $boarddir/AdminIndex.$yyaext: $OS_ERROR";
+        binmode $DATA;
         $lineadmin = Digest::MD5->new->addfile($DATA)->hexdigest;
-        close $DATA;
+        close $DATA
+          or croak "Can't close $boarddir/AdminIndex.$yyaext: $OS_ERROR";
 
-        open( $DATY, '<', "$boarddir/$yyexec.$yyext" )
-          or croak "Can't open $boarddir/$yyexec.$yyext: $!";
-        binmode($DATY);
+        open $DATY, '<', "$boarddir/$yyexec.$yyext"
+          or croak "Can't open $boarddir/$yyexec.$yyext: $OS_ERROR";
+        binmode $DATY;
         $lineyabb = Digest::MD5->new->addfile($DATY)->hexdigest;
-        close $DATY;
+        close $DATY or croak "Can't close $boarddir/$yyexec.$yyext: $OS_ERROR";
 
-        open( $DATB, '<', "$boarddir/BackupFix.$yyext" )
-          or croak "Can't open $boarddir/BackupFix.$yyext: $!";
-        binmode($DATB);
+        open $DATB, '<', "$boarddir/BackupFix.$yyext"
+          or croak "Can't open $boarddir/BackupFix.$yyext: $OS_ERROR";
+        binmode $DATB;
         $lineb = Digest::MD5->new->addfile($DATB)->hexdigest;
-        close $DATB;
+        close $DATB
+          or croak "Can't close $boarddir/BackupFix.$yyext: $OS_ERROR";
 
-        open( $DATD, '<', "$boarddir/Dobackup.$yyext" )
-          or croak "Can't open $boarddir/Dobackup.$yyext: $!";
-        binmode($DATD);
+        open $DATD, '<', "$boarddir/Dobackup.$yyext"
+          or croak "Can't open $boarddir/Dobackup.$yyext: $OS_ERROR";
+        binmode $DATD;
         $lined = Digest::MD5->new->addfile($DATD)->hexdigest;
-        close $DATD;
+        close $DATD or croak "Can't close $boarddir/Dobackup.$yyext: $OS_ERROR";
     }
     else {
         $vercheck = 1;
@@ -86,7 +91,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
     }
     $adminindexplver =~ s/\$Revision\: (.*?) \$/Build $1/igsm;
     $adminindexmodcheck = q{};
-    if ( $adminindexmods == 1 ) {
+    if ( $adminindexmods ) {
         my $adminmodslist = q{};
         for ( sort @adminindexmods ) {
             $adminmodslist .= qq~$_<br />~;
@@ -107,7 +112,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
             $checkver = 1;
         }
     }
-    if ( $checkver == 1 ) {
+    if ( $checkver ) {
         $dateadmin = scalar localtime $ageadmin;
         $adminchkmatch =
               qq~<span class="small"> $admin_txt{'chngfle'} $dateadmin</span>~;
@@ -115,7 +120,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
 
     $yabbplver =~ s/\$Revision\: (.*?) \$/Build $1/igsm;
     $yabbmodcheck = q{};
-    if ( $yabbmods == 1 ) {
+    if ( $yabbmods ) {
         for ( sort @yabbmods ) {
             $yabbmodslist .= qq~$_<br />~;
         }
@@ -124,7 +129,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
 qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); return false;">$admin_txt{'modded'}</a></span> <div id="yabbmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('yabbmods'); return false;" class="small">$yabbmodslist</div>~;
     }
     $ageyabb  = ( stat("$boarddir/$yyexec.$yyext")->mtime );
-    if ( $vercheck == 0 ) {
+    if ( !$vercheck || $vercheck == 0 ) {
         if ( $lineyabb ne $checksum{"$yyexec.$yyext"} ) {
             $checkvery = 1;
         }
@@ -135,17 +140,17 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
         }
     }
 
-    if ( $checkvery == 1 ) {
+    if ( $checkvery ) {
         $dateyabb = scalar localtime $ageyabb;
         $yabbchkmatch =
               qq~<span class="small"> $admin_txt{'chngfle'} $dateyabb</span>~;
     }
 
-# opening BackupFix to the the version breaks the detail version script;
+    # opening BackupFix to get the version breaks the detail version script;
 
     $agebackupfix  = ( stat("$boarddir/BackupFix.$yyext")->mtime );
     $checkverb = 0;
-    if ( $vercheck == 0 ) {
+    if ( !$vercheck || $vercheck == 0 ) {
         if ( $lineb ne $checksum{"BackupFix.$yyext"} ) {
             $checkverb = 1;
         }
@@ -155,7 +160,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
             $checkverb = 1;
         }
     }
-    if ( $checkverb == 1 ) {
+    if ( $checkverb ) {
         $datebackupfix = scalar localtime $agebackupfix;
         $backupfixmatch =
               qq~<span class="small"> $admin_txt{'chngfle'} $datebackupfix</span>~;
@@ -164,7 +169,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
     require "$boarddir/Dobackup.$yyext";
     $dobackupplver =~ s/\$Revision\: (.*?) \$/Build $1/igsm;
     $dobackupmodcheck = q{};
-    if ( $dobackupplmods == 1 ) {
+    if ( $dobackupplmods ) {
         my $dobackupplmodslist = q{};
         for ( sort @dobackupplmods ) {
             $dobackupmodslist .= qq~$_<br />~;
@@ -175,7 +180,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'
     }
     $agedobackup  = ( stat("$boarddir/Dobackup.$yyext")->mtime );
     $checkverd = 0;
-    if ( $vercheck == 0 ) {
+    if ( !$vercheck || $vercheck == 0 ) {
         if ( $lined ne $checksum{"Dobackup.$yyext"} ) {
             $checkverd = 1;
         }
@@ -185,25 +190,27 @@ qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'
             $checkverb = 1;
         }
     }
-    if ( $checkverd == 1 ) {
+    if ( $checkverd ) {
         $datedobackup = scalar localtime $agedobackup;
         $dobackupmatch =
               qq~<span class="small"> $admin_txt{'chngfle'} $datedobackup</span>~;
     }
 
-    open my $DEFHTML, '<', "$templatesdir/default/default.html";
+    open my $DEFHTML, '<', "$templatesdir/default/default.html"
+      or croak 'cannot open default.html';
     my @defaulthtmlver = <$DEFHTML>;
-    close $DEFHTML;
+    close $DEFHTML or croak 'cannot close default.html';
     for my $x (@defaulthtmlver) {
-        if ( $x =~ /<!-- YaBB / ) {
+        if ( $x =~ /<!--\ YaBB /xsm ) {
             $x =~
               s/<!-- YaBB (.*?) \$Revision\: (.*?) \$ -->/YaBB $1 Build $2/igsm;
             $defaulthtmlver = $x;
-            open( $DAT, '<', "$templatesdir/default/default.html" )
-              or croak "Can't open $templatesdir/default/default.html: $!";
-            binmode($DAT);
+            open $DAT, '<', "$templatesdir/default/default.html"
+              or croak
+              "Can't open $templatesdir/default/default.html: $OS_ERROR";
+            binmode $DAT;
             $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-            close $DAT;
+            close $DAT or croak 'cannot close default.html';
             $defaultchkmatch = q{};
             if ( $linec ne $checksum{'default.html'} ) {
                 $age  = ( stat("$templatesdir/default/default.html")->mtime );
@@ -312,7 +319,7 @@ function hideMods(id) {
             for my $fileinDIR (@lfilesanddirsf) {
                 chomp $fileinDIR;
                 if ( $fileinDIR =~ m/\.lng\Z/xsm ) {
-                    $date = time();
+                    $date = time;
                     $year = 2015;
                     require "$langdir/$fld/$fileinDIR";
                     $flda = lc $fld;
@@ -325,17 +332,19 @@ function hideMods(id) {
                     $modmatch    = q{};
                     $modrevision = $flda . $modrevision;
                     $modmatch    = mod_link($modrevision);
-                    open( $DAT, '<', "$langdir/$fld/$fileinDIR" )
-                      or croak "Can't open $fileinDIR: $!";
-                    binmode($DAT);
+                    open $DAT, '<', "$langdir/$fld/$fileinDIR"
+                      or croak "Can't open $fileinDIR: $OS_ERROR";
+                    binmode $DAT;
                     $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                    close $DAT;
+                    close $DAT or croak 'cannot close file';
                     $chkmatch = q{};
 
                     $age  = ( stat("$langdir/$fld/$fileinDIR")->mtime );
                     $ver_age  = ( stat("$langdir/$fld/version.txt")->mtime );
                     $date = scalar localtime $age;
-                    if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+                    if (   ( !$vercheck || $vercheck == 0 && $linec ne $checksum{$fileinDIR} )
+                        || ( $vercheck == 1 && $age > $ver_age ) )
+                    {
                         $chkmatch =
 qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                     }
@@ -348,29 +357,43 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             my @helps = qw(Admin Gmod Moderator User);
             for my $area (@helps) {
                 if ( -d "$helpfile/$fld/$area" ) {
-                    opendir HELPDIRF, "$helpfile/$fld/$area" or croak "cannot open $helpfile/$fld/$area";
+                    opendir HELPDIRF, "$helpfile/$fld/$area"
+                      or croak "cannot open $helpfile/$fld/$area";
                     my @helpdir = readdir HELPDIRF;
                     closedir HELPDIRF;
                     @helpdir = sort @helpdir;
                     for my $helpinDIR (@helpdir) {
                         chomp $helpinDIR;
                         if ( $helpinDIR =~ m/\.help\Z/xsm ) {
-                            $date = time();
+                            $date = time;
                             $year = 2015;
                             require "$helpfile/$fld/$area/$helpinDIR";
-                            my $txtrevision = lc $fld . $area . '_' . $helpinDIR;
+                            my $txtrevision =
+                              lc $fld . $area . '_' . $helpinDIR;
                             $txtrevision =~ s/\.help/helpver/igsm;
-                            ${$txtrevision} =~ s/\$Revision\: (.*?) \$/Build $1/igsm;
-                            open( $DAT, '<', "$helpfile/$fld/$area/$helpinDIR" ) or croak "Can't open $helpinDIR: $!";
-                            binmode($DAT);
+                            ${$txtrevision} =~
+                              s/\$Revision\: (.*?) \$/Build $1/igsm;
+                            open $DAT, '<', "$helpfile/$fld/$area/$helpinDIR"
+                              or croak "Can't open $helpinDIR: $OS_ERROR";
+                            binmode $DAT;
                             $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                            close $DAT;
+                            close $DAT or croak 'cannot close file';
                             $chkmatch = q{};
 
-                            $age  = ( stat("$helpfile/$fld/$area/$helpinDIR")->mtime );
-                            $ver_age  = ( stat("$langdir/$fld/version.txt")->mtime );
+                            $age = (
+                                stat("$helpfile/$fld/$area/$helpinDIR")
+                                  ->mtime );
+                            $ver_age =
+                              ( stat("$langdir/$fld/version.txt")->mtime );
                             $date = scalar localtime $age;
-                            if ( ($vercheck == 0 && $linec ne $checksum{$helpinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+                            if (
+                                (
+                                       $vercheck == 0
+                                    && $linec ne $checksum{$helpinDIR}
+                                )
+                                || ( $vercheck == 1 && $age > $ver_age )
+                              )
+                            {
                                 $chkmatch =
 qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                             }
@@ -382,7 +405,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                     }
                 }
             }
-            $yymain .= qq~
+            $yymain .= q~
                     </table>
                 </td>
             </tr>~;
@@ -425,16 +448,18 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             $modrevision =~ s/\.pl/plmods/igsm;
             $modmatch = q{};
             $modmatch = mod_link($modrevision);
-            open( $DAT, '<', "$admindir/$fileinDIR" )
-              or croak "Can't open $fileinDIR: $!";
-            binmode($DAT);
+            open $DAT, '<', "$admindir/$fileinDIR"
+              or croak "Can't open $fileinDIR: $OS_ERROR";
+            binmode $DAT;
             $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-            close $DAT;
+            close $DAT or croak 'cannot close file';
             $chkmatch = q{};
 
             $age  = ( stat("$admindir/$fileinDIR")->mtime );
             $date = scalar localtime $age;
-            if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+            if (   ( $vercheck == 0 && $linec ne $checksum{$fileinDIR} )
+                || ( $vercheck == 1 && $age > $ver_age ) )
+            {
                 $chkmatch =
                   qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             }
@@ -452,16 +477,18 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             $modmatch = q{};
             $modrevision =~ s/\.pm/pmmods/igsm;
             $modmatch = mod_link($modrevision);
-            open( $DAT, '<', "$admindir/$fileinDIR" )
-              or croak "Can't open $fileinDIR: $!";
-            binmode($DAT);
+            open $DAT, '<', "$admindir/$fileinDIR"
+              or croak "Can't open $fileinDIR: $OS_ERROR";
+            binmode $DAT;
             $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-            close $DAT;
+            close $DAT or croak 'cannot close file';
             $chkmatch = q{};
 
             $age  = ( stat("$admindir/$fileinDIR")->mtime );
             $date = scalar localtime $age;
-            if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+            if (   ( $vercheck == 0 && $linec ne $checksum{$fileinDIR} )
+                || ( $vercheck == 1 && $age > $ver_age ) )
+            {
                 $chkmatch =
                   qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             }
@@ -507,16 +534,18 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             $modmatch = q{};
             $modrevision =~ s/\.pl/plmods/igsm;
             $modmatch = mod_link($modrevision);
-            open( $DAT, '<', "$sourcedir/$fileinDIR" )
-              or croak "Can't open $fileinDIR: $!";
-            binmode($DAT);
+            open $DAT, '<', "$sourcedir/$fileinDIR"
+              or croak "Can't open $fileinDIR: $OS_ERROR";
+            binmode $DAT;
             $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-            close $DAT;
+            close $DAT or croak 'cannot close file';
             $chkmatch = q{};
 
             $age  = ( stat("$sourcedir/$fileinDIR")->mtime );
             $date = scalar localtime $age;
-            if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+            if (   ( $vercheck == 0 && $linec ne $checksum{$fileinDIR} )
+                || ( $vercheck == 1 && $age > $ver_age ) )
+            {
                 $chkmatch =
                   qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             }
@@ -534,16 +563,18 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             $modrevision =~ s/\.pm/pmmods/igsm;
             $modmatch = q{};
             $modmatch = mod_link($modrevision);
-            open( $DAT, '<', "$sourcedir/$fileinDIR" )
-              or croak "Can't open $fileinDIR: $!";
-            binmode($DAT);
+            open $DAT, '<', "$sourcedir/$fileinDIR"
+              or croak "Can't open $fileinDIR: $OS_ERROR";
+            binmode $DAT;
             $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-            close $DAT;
+            close $DAT or croak 'cannot close file';
             $chkmatch = q{};
 
             $age  = ( stat("$sourcedir/$fileinDIR")->mtime );
             $date = scalar localtime $age;
-            if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+            if (   ( $vercheck == 0 && $linec ne $checksum{$fileinDIR} )
+                || ( $vercheck == 1 && $age > $ver_age ) )
+            {
                 $chkmatch =
                   qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             }
@@ -590,7 +621,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             </tr>~;
     for my $folderindir (@templDIR) {
         opendir DIR, "$templatesdir/$folderindir"
-          or croak "Can't open $templatesdir/$folderindir: $!";
+          or croak "Can't open $templatesdir/$folderindir: $OS_ERROR";
         my @templatesDIR = readdir DIR;
         closedir DIR;
         @templatesDIR = sort @templatesDIR;
@@ -608,17 +639,18 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 $modrevision = $flda . $modrevision;
                 $modrevision =~ s/\.template/mods/igsm;
                 $modmatch = mod_link($modrevision);
-                open( $DAT, '<', "$templatesdir/$folderindir/$fileinDIR" )
-                  or croak "Can't open $fileinDIR: $!";
-                binmode($DAT);
+                open $DAT, '<', "$templatesdir/$folderindir/$fileinDIR"
+                  or croak "Can't open $fileinDIR: $OS_ERROR";
+                binmode $DAT;
                 $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                close $DAT;
+                close $DAT or croak 'cannot close file';
                 $chkmatch = q{};
 
-                $age =
-                  ( stat("$templatesdir/$folderindir/$fileinDIR")->mtime );
+                $age = ( stat("$templatesdir/$folderindir/$fileinDIR")->mtime );
                 $date = scalar localtime $age;
-                if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+                if (   ( $vercheck == 0 && $linec ne $checksum{$fileinDIR} )
+                    || ( $vercheck == 1 && $age > $ver_age ) )
+                {
                     $chkmatch =
 qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 }
@@ -628,7 +660,6 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             </tr>~;
             }
             elsif ( $fileinDIR =~ m/\.def\Z/xsm ) {
-                if ( $fileinDIR ne 'Menu.def' ) {
                     require "$templatesdir/$folderindir/$fileinDIR";
                     my $txtrevision = lc $fileinDIR;
                     $flda = lc $folderindir;
@@ -640,16 +671,19 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                     $modmatch    = q{};
                     $modrevision = $flda . $modrevision;
                     $modmatch    = mod_link($modrevision);
-                    open( $DAT, '<', "$templatesdir/$folderindir/$fileinDIR" )
-                      or croak "Can't open $fileinDIR: $!";
-                    binmode($DAT);
+                open $DAT, '<', "$templatesdir/$folderindir/$fileinDIR"
+                  or croak "Can't open $fileinDIR: $OS_ERROR";
+                binmode $DAT;
                     $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                    close $DAT;
+                close $DAT or croak 'cannot close file';
                     $chkmatch = q{};
 
-                    $age = ( stat("$templatesdir/$folderindir/$fileinDIR")->mtime );
+                $age =
+                  ( stat("$templatesdir/$folderindir/$fileinDIR")->mtime );
                     $date = scalar localtime $age;
-                    if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+                if (   ( $vercheck == 0 && $linec ne $checksum{$fileinDIR} )
+                    || ( $vercheck == 1 && $age > $ver_age ) )
+                {
                         $chkmatch =
 qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                     }
@@ -658,57 +692,43 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$modmatch$chkmatch</td>
             </tr>~;
                 }
-                elsif ( -e "$templatesdir/$folderindir/Menu.def" ) {
-                    open my $MENUDEF, '<',
-                      "$templatesdir/$folderindir/Menu.def";
-                    my @menudef = <$MENUDEF>;
-                    close $MENUDEF;
-                    $menudefver = $menudef[0];
-                    $menudefver =~
-s/'YaBB (.*?) \$Revision\: (.*?) \$'/YaBB $1 Build $2/igsm;
-                    open( $DAT, '<', "$templatesdir/$folderindir/Menu.def" )
-                      or croak "Can't open $fileinDIR: $!";
-                    binmode($DAT);
-                    $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                    close $DAT;
-                    $chkmatch = q{};
-
-                    $age = (stat("$templatesdir/$folderindir/Menu.def")->mtime );
-                    $date = scalar localtime $age;
-                    if ( ($vercheck == 0 && $linec ne $checksum{$fileinDIR} ) || ( $vercheck == 1 && $age > $ver_age) ) {
-                        $chkmatch =
-qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
-                    }
-                    $yymain .= qq~<tr>
-                <td class="windowbg2">$folderindir/Menu.def</td>
-                <td class="windowbg2"><i>$menudefver</i>$chkmatch</td>
-            </tr>~;
-                }
-            }
             elsif ($fileinDIR =~ m/$folderindir\.html/xsm
                 && $folderindir ne 'default'
                 && -e "$templatesdir/$folderindir/$folderindir.html" )
             {
                 open my $MDEFHTML, '<',
-                  "$templatesdir/$folderindir/$folderindir.html";
+                  "$templatesdir/$folderindir/$folderindir.html"
+                  or croak "cannot open $folderindir.html";
                 my @mydefaulthtmlver = <$MDEFHTML>;
-                close $MDEFHTML;
+                close $MDEFHTML or croak "cannot close $folderindir.html";
                 for my $x (@mydefaulthtmlver) {
-                    if ( $x =~ /<!-- YaBB / ) {
+                    if ( $x =~ /<!--\ YaBB /xsm ) {
                         $x =~
 s/<!-- YaBB (.*?) \$Revision\: (.*?) \$ -->/YaBB $1 Build $2/igsm;
                         $mydefaulthtmlver = $x;
-                        open( $MDAT, '<',
-                            "$templatesdir/$folderindir/$folderindir.html" )
+                        open $MDAT, '<',
+                          "$templatesdir/$folderindir/$folderindir.html"
                           or croak
-"Can't open $templatesdir/$folderindir/$folderindir.html: $!";
-                        binmode($MDAT);
+"Can't open $templatesdir/$folderindir/$folderindir.html: $OS_ERROR";
+                        binmode $MDAT;
                         $linec = Digest::MD5->new->addfile($MDAT)->hexdigest;
-                        close $MDAT;
+                        close $MDAT or croak 'cannot close file';
                         $mydefaultchkmatch = q{};
-                        $age = ( stat("$templatesdir/$folderindir/$folderindir.html")->mtime );
+                        $age               = (
+                            stat(
+                                "$templatesdir/$folderindir/$folderindir.html")
+                              ->mtime
+                        );
                         $date = scalar localtime $age;
-                    if ( ($vercheck == 0 && $linec ne $checksum{"$folderindir.html"} ) || ( $vercheck == 1 && $age > $ver_age) ) {
+
+                        if (
+                            (
+                                   $vercheck == 0
+                                && $linec ne $checksum{"$folderindir.html"}
+                            )
+                            || ( $vercheck == 1 && $age > $ver_age )
+                          )
+                        {
                             $mydefaultchkmatch =
                               qq~<span class="small"> Changed on $date</span>~;
                         }
@@ -736,7 +756,7 @@ s/<!-- YaBB (.*?) \$Revision\: (.*?) \$ -->/YaBB $1 Build $2/igsm;
 sub mod_link {
     my ($modrevision) = @_;
     $modslist = q{};
-    if ( ${$modrevision} == 1 ) {
+    if ( ${$modrevision} ) {
         @mymodlist = sort @{$modrevision};
         for (@mymodlist) {
             $modslist .= qq~$_<br />~;

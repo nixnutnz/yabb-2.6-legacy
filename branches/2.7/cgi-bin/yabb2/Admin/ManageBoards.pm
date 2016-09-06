@@ -12,14 +12,17 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$manageboardspmver = 'YaBB 2.7.00 $Revision$';
+$manageboardspmver  = 'YaBB 2.7.00 $Revision$';
 @manageboardspmmods = ();
 if (@manageboardspmmods) {
     $manageboardspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
@@ -38,31 +41,32 @@ qq~<a href="$adminurl?action=reordercats"><img src="$admin_img{'reorder'}" alt="
         $action_area = 'managecats';
     }
     else {
-        $colspan = q~colspan="4"~;
-        $add     = $admin_txt{'50'};
-        $act     = 'boardscreen';
-        $manage =
-qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
+        $colspan     = q~colspan="4"~;
+        $add         = $admin_txt{'50'};
+        $act         = 'boardscreen';
+        $manage      = qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         $managedescr = $admin_txt{'677'};
         $act2        = 'addboard';
         $action_area = 'manageboards';
 ## find bad boards ##
         my @dupedbrds = ();
-        my @mylist = ();
-        while( ( $key, $value ) = each %cat ) {
+        my @mylist    = ();
+
+        while ( ( $key, $value ) = each %cat ) {
             @mylist = split /,/xsm, $value;
             push @dupedbrds, @mylist;
         }
-        while( ( $key, $value ) = each %subboard ) {
+        while ( ( $key, $value ) = each %subboard ) {
             @mylist = split /[|]/xsm, $value;
             push @dupedbrds, @mylist;
         }
         my %dup_counts;
-        for (@dupedbrds) { $dup_counts{$_}++ };
+        for (@dupedbrds) { $dup_counts{$_}++ }
         my @chkbrds = grep { $dup_counts{$_} > 1 } keys %dup_counts;
         @chkbrds = sort(@chkbrds);
         if (@chkbrds) {
-            $managedescr .= qq~<br />$admin_txt{'dupbrd'} @chkbrds<br />$admin_txt{'dupbrdlnk'}~;
+            $managedescr .=
+qq~<br />$admin_txt{'dupbrd'} @chkbrds<br />$admin_txt{'dupbrdlnk'}~;
         }
     }
     $yymain .= qq~<script type="text/javascript">
@@ -135,7 +139,8 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                 </table>~;
     for my $catid (@categoryorder) {
         @bdlist = split /,/xsm, $cat{$catid};
-        ( $curcatname, $catperms, undef, $catpic ) = split /[|]/xsm, $catinfo{$catid};
+        ( $curcatname, $catperms, undef, $catpic ) = split /[|]/xsm,
+          $catinfo{$catid};
         ToChars($curcatname);
         $temppic = q{};
         if ( $INFO{'action'} eq 'managecats' ) {
@@ -144,10 +149,11 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
             $temphrefclass = q{};
         }
         else {
-            $tempcolspan   = q~colspan="4"~;
-            $tempclass     = 'catbg';
-            if ( $catpic ) {
-                $temppic = qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/Forum/default/$catpic" id="brd_img_resize" alt="$catid" /></div>~;
+            $tempcolspan = q~colspan="4"~;
+            $tempclass   = 'catbg';
+            if ($catpic) {
+                $temppic =
+qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/Forum/default/$catpic" id="brd_img_resize" alt="$catid" /></div>~;
             }
             $temphrefclass = q~class="catbg a"~;
         }
@@ -168,15 +174,16 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
         if ( $INFO{'action'} ne 'managecats' ) {
             my $indent = -3;
             @tmplt = ();
-            for my $curtemplate ( sort keys %templateset ){
-                @templatelst = split /[|]/xsm, $templateset{$curtemplate};
+            for my $curtemplate ( sort keys %templateset ) {
+                @templatelst = @{$templateset{$curtemplate}};
                 push @tmplt, $curtemplate;
             }
             my $tmpwidth2 = 90 - $indent;
             my $tmpwidth3 = 5;
+
             # recursive loop to display all sub boards
 
-            *show_boards = sub {
+            local *show_boards = sub {
                 my @brdlist = @_;
                 $indent += 3;
                 for my $curboard (@brdlist) {
@@ -187,36 +194,41 @@ qq~$admin_img{'cat_img'} &nbsp;<b>$admin_txt{'51'}</b>~;
                     $descr = ${ $uid . $curboard }{'description'};
                     $descr =~ s/\<br \/>/\n/gsm;
                     my $bicon = q{};
-                    fopen( BRDPIC, "<$boardsdir/brdpics.db" );
-                    my @brdpics = <BRDPIC>;
-                    fclose( BRDPIC);
-                    chomp @brdpics;
-                    for (@brdpics) {
-                        my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-                        if ( $brdnm eq $curboard ) {
-                            for my $x ( 0 .. $#tmplt ) {
-                                if ( $style eq $tmplt[$x] ) {
-                                    if ( $brdpic =~ /\//ixsm ) {
-                                        $bicon .= qq~$style: <img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                    if ( -e "$boardsdir/brdpics.db" ) {
+                        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+                        my @brdpics = <BRDPIC>;
+                        fclose(BRDPIC);
+                        chomp @brdpics;
+                        for (@brdpics) {
+                            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+                            if ( $brdnm eq $curboard ) {
+                                for my $x ( 0 .. $#tmplt ) {
+                                    if ( $style eq $tmplt[$x] ) {
+                                        if ( $brdpic =~ /\//ixsm ) {
+                                            $bicon .=
+qq~$style: <img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                                        }
+                                        else {
+                                            @mytempst = split /[|]/xsm,
+                                              $templateset{$style};
+                                            $myimgfolder = $mytempst[1];
+                                            $bicon .=
+qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                                        }
+                                        $tmpwidth2 = 80 - $indent;
+                                        $tmpwidth3 = 15;
                                     }
-                                    else {
-                                        @mytempst = split /[|]/xsm, $templateset{$style};
-                                        $myimgfolder = $mytempst[1];
-                                        $bicon .= qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
-                                    }
-                                    $tmpwidth2 = 80 - $indent;
-                                    $tmpwidth3 = 15;
                                 }
                             }
                         }
                     }
-                    if ( ${ $uid . $curboard }{'ann'} == 1 ) {
+                    if ( ${ $uid . $curboard }{'ann'} ) {
                         $bicon =
 qq~ <img src="$imagesdir/ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
                         $tmpwidth2 = 90 - $indent;
                         $tmpwidth3 = 5;
                     }
-                    if ( ${ $uid . $curboard }{'rbin'} == 1 ) {
+                    if ( ${ $uid . $curboard }{'rbin'} ) {
                         $bicon =
 qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
                         $tmpwidth2 = 90 - $indent;
@@ -232,8 +244,8 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                     ToChars($descr);
                     if ($cliped) { $descr .= q{...}; }
 
-                    my $tmpwidth  = 100 - $indent;
-
+                    my $tmpwidth = 100 - $indent;
+                    $subboard{$curboard} ||= q{};
                     my @children = split /[|]/xsm, $subboard{$curboard};
 
                     $reorder_subs =
@@ -244,11 +256,11 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                     my $del_txt  = $admin_txt{'251'};
                     my $edit_txt = $admin_txt{'253'};
                     if ( ${ $uid . $curboard }{'parent'} ) {
-                        $del_txt  =~ s/{(.*?)}/$admin_txt{'254'}$1/gxsm;
+                        $del_txt =~ s/{(.*?)}/$admin_txt{'254'}$1/gxsm;
                         $edit_txt =~ s/{(.*?)}/$admin_txt{'254'}$1/gxsm;
                     }
                     else {
-                        $del_txt  =~ s/{(.*?)}/$1/gxsm;
+                        $del_txt =~ s/{(.*?)}/$1/gxsm;
                         $edit_txt =~ s/{(.*?)}/$1/gxsm;
                     }
 
@@ -331,7 +343,7 @@ sub BoardScreen {
         my @catboards = split /,/xsm, $cat{$thiscat};
 
         # make an array of all sub boards recursively
-        *recursive_boards = sub {
+        local *recursive_boards = sub {
             my @x = @_;
             push @theboards, @x;
             for my $childbd (@x) {
@@ -431,10 +443,8 @@ sub DeleteBoards {
     my @x = @_;
     is_admin_or_gmod();
 
-    fopen( FORUMCONTROL, "+<$boardsdir/forum.control" )
-      || fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    seek FORUMCONTROL, 0, 0;
-    my @oldcontrols = <FORUMCONTROL>;
+    require "$boardsdir/forum.control";
+    my @oldcontrols = keys %control;
     for my $board (@x) {
         fopen( BOARDDATA, "$boardsdir/$board.txt" );
         @messages = <BOARDDATA>;
@@ -448,17 +458,8 @@ sub DeleteBoards {
             unlink "$datadir/$id\.poll";
             unlink "$datadir/$id\.polled";
         }
-        for my $cnt ( 0 .. $#oldcontrols ) {
-            my $oldboard;
-            ( undef, $oldboard, undef ) = split /[|]/xsm, $oldcontrols[$cnt], 3;
-            $yydebug .= "$cnt   $oldboard \n";
-            if ( $oldboard eq $board ) {
-                $oldcontrols[$cnt] = q{};
-                $yydebug .= qq~\$board{\"$oldboard\"}~;
-                delete $board{"$board"};
-                last;
-            }
-        }
+
+        delete $control{$board};
         unlink "$boardsdir/$board.txt";
         unlink "$boardsdir/$board.ttl";
         unlink "$boardsdir/$board.poster";
@@ -489,30 +490,11 @@ sub DeleteBoards {
 
     # Update parents for subboards that had a parent deleted.
     if (@del_updateparent) {
-        for my $cnt ( 0 .. $#oldcontrols ) {
-            @newbrd = split /[|]/xsm, $oldcontrols[$cnt];
-            for my $changedboard (@del_updateparent) {
-                if ( $changedboard eq $oldboard ) {
-                    $newbrd[18] = ${$uid.$changedboard}{'parent'};
-                    $newbrd = join q{|}, @newbrd;
-                    $oldcontrols[$cnt] = $newbrd . "\n";
-                    last;
-                }
-            }
+        for my $changedboard (@del_updateparent) {
+            ${ $control{$changedboard} }[17] = ${ $uid . $changedboard }{'parent'};
         }
     }
-    my @boardcontrol = grep { $_; } @oldcontrols;
-
-    truncate FORUMCONTROL, 0;
-    seek FORUMCONTROL, 0, 0;
-    print {FORUMCONTROL} sort @boardcontrol
-      or croak "$croak{'print'} FORUMCONTROL";
-    fclose(FORUMCONTROL);
-
-    fopen( FORUMCONTROL, "$boardsdir/forum.control" );
-    @forum_control = <FORUMCONTROL>;
-    fclose(FORUMCONTROL);
-    return;
+    write_forum_control();
 }
 
 sub AddBoards {
@@ -530,7 +512,7 @@ sub AddBoards {
     LoadBoardControl();
 
 # build recursive drop down of boards in each category for selecting parent board
-    *get_subboards = sub {
+    local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         for my $childbd (@x) {
@@ -551,6 +533,7 @@ sub AddBoards {
         $indent -= 2;
     };
     for $thiscat (@categoryorder) {
+
         # $thiscat cannot be properly localized
         my @catboards = split /\,/xsm, $cat{$thiscat};
         my $indent = -2;
@@ -726,7 +709,7 @@ function checkParent(id, board) {
     for my $i ( 1 .. $FORM{'amount'} ) {
 
         # differentiate between edit or add boards
-        if ( $editboards[$i] eq q{} && $INFO{'action'} eq 'boardscreen' ) {
+        if ( !$editboards[$i] && $INFO{'action'} eq 'boardscreen' ) {
             next;
         }
         if ( $INFO{'action'} eq 'boardscreen' ) {
@@ -735,6 +718,9 @@ function checkParent(id, board) {
         else {
             $boardtext = "$admin_txt{'58'} $i:";
         }
+        $editboards[$i]                       ||= q{};
+        ${ $uid . $editboards[$i] }{'parent'} ||= q{};
+        ${ $uid . $editboards[$i] }{'cat'}    ||= q{};
 
         # print javascript hash of board names and their equivalent category
         if ( !$INFO{'parent'} ) {
@@ -748,37 +734,48 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
 
         my $boardcat = ${ $uid . $editboards[$i] }{'cat'};
         for my $catid (@categoryorder) {
+            $catid ||= q{};
             @bdlist = split /,/xsm, $cat{$catid};
-            ( $curcatname, $catperms ) = split /[|]/xsm, $catinfo{"$catid"};
-            if ( $INFO{'action'} eq 'boardscreen' || $INFO{'parent'} ) {
-                if ( $catid eq $boardcat || $catid eq $INFO{'category'} ) {
+            ( $curcatname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+            $curcatname ||= q{};
+            $selected = q{};
+            if (   $INFO{'action'} && $INFO{'action'} eq 'boardscreen'
+                || $INFO{'parent'} )
+            {
+                if (   $catid eq $boardcat
+                    || $INFO{'category'} && ( $catid eq $INFO{'category'} ) )
+                {
                     $selected = q~ selected="selected"~;
                 }
-                else { $selected = q{}; }
             }
             ToChars($curcatname);
             $catsel{$i} .=
               qq~<option value="$catid"$selected>$curcatname</option>~;
         }
         $catsel .= q~</select>~;
-        if ( $istart == 0 ) { $istart = $i; }
-
-        ( $boardname, $boardperms, $boardview ) = split /[|]/xsm, $board{"$id"};
+        if ( !$istart || $istart == 0 ) { $istart = $i; }
+        $id ||= q{};
+        $board{$id} ||= q{};
+        ( $boardname, $boardperms, $boardview ) = split /[|]/xsm, $board{$id};
+        $boardname  ||= q{};
+        $boardperms ||= q{};
+        $boardview  ||= q{};
         ToChars($boardname);
         if ( $INFO{'action'} eq 'boardscreen' ) { $boardtext = $boardname; }
-        $description = ${ $uid . $editboards[$i] }{'description'};
+        $description = ${ $uid . $editboards[$i] }{'description'} || q{};
         $description =~ s/<br \/>/\n/gsm;
         ToChars($description);
-        $moderators      = ${ $uid . $editboards[$i] }{'mods'};
-        $moderatorgroups = ${ $uid . $editboards[$i] }{'modgroups'};
-        $boardminage     = ${ $uid . $editboards[$i] }{'minageperms'};
-        $boardmaxage     = ${ $uid . $editboards[$i] }{'maxageperms'};
-        $boardgender     = ${ $uid . $editboards[$i] }{'genderperms'};
+        $moderators      = ${ $uid . $editboards[$i] }{'mods'}        || q{};
+        $moderatorgroups = ${ $uid . $editboards[$i] }{'modgroups'}   || q{};
+        $boardminage     = ${ $uid . $editboards[$i] }{'minageperms'} || q{};
+        $boardmaxage     = ${ $uid . $editboards[$i] }{'maxageperms'} || q{};
+        $boardgender     = ${ $uid . $editboards[$i] }{'genderperms'} || q{};
         $genselect       = qq~<select name="gender$i" id="gender$i">~;
         $gentag[0]       = q{};
         $gentag[1]       = 'M';
         $gentag[2]       = 'F';
         $gentag[3]       = 'B';
+
         for my $genlabel (@gentag) {
             $gentext = '99';
             $gentext .= $genlabel;
@@ -792,80 +789,83 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
             }
         }
         $genselect .= q~</select>~;
-        my $canpostch;
-        if ( ${ $uid . $id }{'canpost'} == 1
+        my $canpostch = q{};
+        if ( ${ $uid . $id }{'canpost'}
             || $INFO{'action'} ne 'boardscreen' )
         {
             $canpostch = q~ checked="checked"~;
         }
 
         # Make children list if it contains sub boards
-        my $childrenlist;
+        my $childrenlist = q{};
         if ( $subboard{$id} ) {
             for my $childbd ( split /[|]/xsm, $subboard{$id} ) {
                 my ( $chldboardname, undef, undef ) =
-                  split /[|]/xsm, $board{"$childbd"};
+                  split /[|]/xsm, $board{$childbd};
                 ToChars($chldboardname);
                 $childrenlist .= qq~$chldboardname, ~;
             }
             $childrenlist =~ s/, $//gsm;
         }
 
-        if ( $childrenlist eq q{} ) { $childrenlist = $admin_txt{'246'}; }
+        if ( !$childrenlist ) { $childrenlist = $admin_txt{'246'}; }
 
         # Retrieve Optional Details
-        $ann      = q{};
-        $rbin     = q{};
-        $zeroch   = q{};
-        $attch    = q{};
-        $showpriv = q{};
-        $brdpic   = q{};
-        $brdrssch = q{}; ### RSS on Board Index ###
+        $ann       = q{};
+        $rbin      = q{};
+        $zeroch    = q{};
+        $attch     = q{};
+        $showpriv  = q{};
+        $brdpic    = q{};
+        $brdrssch  = q{};    ### RSS on Board Index ###
         $brdpasswr = q{};
-        $brdpassw = ${$uid.$editboards[$i]}{'brdpassw'};
+        $brdpassw  = ${ $uid . $editboards[$i] }{'brdpassw'};
         $brdpassw3 = q{};
         $brdpassw2 = q{};
-        if ($brdpassw ne q{}) { $brdpassw2 = qq~$boardpass_txt{'900pt'}~; }
-        if (${$uid.$editboards[$i]}{'brdpasswr'} == 1) { $brdpasswr   = q~ checked="checked"~; }
-        if ( $boardview == 1 ) { $showpriv = q~ checked="checked"~; }
-        if ( ${ $uid . $id }{'zero'} == 1 ) {
+        if ($brdpassw) { $brdpassw2 = qq~$boardpass_txt{'900pt'}~; }
+
+        if ( ${ $uid . $editboards[$i] }{'brdpasswr'} ) {
+            $brdpasswr = q~ checked="checked"~;
+        }
+        if ($boardview) { $showpriv = q~ checked="checked"~; }
+        if ( ${ $uid . $id }{'zero'} ) {
             $zeroch = q~ checked="checked"~;
         }
 
-        if ( ${ $uid . $id }{'attperms'} == 1 ) {
+        if ( ${ $uid . $id }{'attperms'} ) {
             $attch = q~ checked="checked"~;
         }
-        if ( ${ $uid . $id }{'brdrss'} == 1 )   {
+        if ( ${ $uid . $id }{'brdrss'} ) {
             $brdrssch = q~ checked="checked"~;
-        } ### RSS on Board Index ###
+        }    ### RSS on Board Index ###
 
-        if ( ${ $uid . $id }{'ann'} == 1 ) {
+        if ( ${ $uid . $id }{'ann'} ) {
             $annch  = q~ checked="checked"~;
             $brdpic = q~ disabled="disabled"~;
         }
-        elsif ( $annboard ne q{} ) {
+        elsif ($annboard) {
             $annch    = q~ disabled="disabled"~;
             $annexist = 1;
         }
-        if ( ${ $uid . $id }{'rbin'} == 1 ) {
+        if ( ${ $uid . $id }{'rbin'} ) {
             $rbinch = q~ checked="checked"~;
             $brdpic = q~ disabled="disabled"~;
         }
-        elsif ( $binboard ne q{} ) {
+        elsif ($binboard) {
             $rbinch    = q~ disabled="disabled"~;
             $rbinexist = 1;
         }
         $en_rules = q{};
-        if ( ${ $uid . $id }{'rules'} == 1 ) {
+        if ( ${ $uid . $id }{'rules'} ) {
             $en_rules = q~ checked="checked"~;
         }
         $en_rulescoll = q{};
-        if ( ${ $uid . $id }{'rulescollapse'} == 1 ) {
+        if ( ${ $uid . $id }{'rulescollapse'} ) {
             $en_rulescoll = q~ checked="checked"~;
         }
         $rulestitle = ${ $uid . $editboards[$i] }{'rulestitle'};
         ToChars($rulestitle);
-        $rulesdesc = ${ $uid . $editboards[$i] }{'rulesdesc'};
+        $rulesdesc = ${ $uid . $editboards[$i] }{'rulesdesc'} || q{};
         $rulesdesc =~ s/<br \/>/\n/gsm;
         ToChars($rulesdesc);
 
@@ -880,7 +880,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
                     </tr><tr>
                         <td class="catbg" colspan="4"><b>$admin_txt{'59'}:</b> $admin_txt{'60'}</td>
                     </tr><tr>~;
-        if ( $id ne q{} ) {
+        if ($id) {
             $yymain .= qq~
                         <td class="windowbg2"><b>$admin_txt{'61'}</b></td>
                         <td class="windowbg2" colspan="3"><input type="hidden" name="id$i" id="id$i" value="$id" />$id</td>~;
@@ -928,14 +928,14 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
                         <td class="windowbg2" colspan="3">
 ~;
 
-        # Allows admin to select entire membergroups to be a board moderator
+     # Allows admin to select entire NoPost membergroups to be a board moderator
         $k = 0;
         my $box = q{};
-        for (@nopostorder) {
-            @groupinfo = split /[|]/xsm, $NoPost{$_};
+        for my $i(@nopostorder) {
+            @groupinfo = @{ $NoPost{$i} };
             $box .= qq~<option value="$_"~;
-            for ( split /\//xsm, $moderatorgroups ) {
-                ( $lineinfo, undef ) = split /[|]/xsm, $NoPost{$_}, 2;
+            for my $j( split /\//xsm, $moderatorgroups ) {
+                ( $lineinfo, undef ) = @{ $NoPost{$j} };
                 if ( $lineinfo eq $groupinfo[0] ) {
                     $box .= q~ selected="selected" ~;
                 }
@@ -954,41 +954,50 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
 
         my $drawndirs = q{};
         @tmplt = ();
-        for my $curtemplate ( sort keys %templateset ){
-            @templatelst = split /[|]/xsm, $templateset{$curtemplate};
-            $drawndirs .= qq~<option value="$curtemplate">$curtemplate</option>\n~;
+        for my $curtemplate ( sort keys %templateset ) {
+            @templatelst = @{$templateset{$curtemplate}};
+            $drawndirs .=
+              qq~<option value="$curtemplate">$curtemplate</option>\n~;
             push @tmplt, $curtemplate;
         }
 
         my $boardpic_value = q{};
-        my $brdpic_addr = q{};
-        my $brdpic_loc  = q{};
-        my $mystyle = q{};
-        fopen( BRDPIC, "<$boardsdir/brdpics.db" );
-        my @brdpics = <BRDPIC>;
-        fclose( BRDPIC);
-        chomp @brdpics;
-        for (@brdpics) {
-            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
-            if ( $brdnm eq $editboards[$i] ) {
-                for my $x ( 0 .. $#tmplt ) {
-                    if ( $style eq $tmplt[$x] ) {
-                        $mystyle = $style;
-                        if ( $brdpic =~ /\/\//ixsm ) {
-                            $brdpic_addr = qq~$brdpic~;
+        my $brdpic_addr    = q{};
+        my $brdpic_loc     = q{};
+        my $mystyle        = q{};
+        if ( -e "$boardsdir/brdpics.db" ) {
+            fopen( BRDPIC, "<$boardsdir/brdpics.db" );
+            my @brdpics = <BRDPIC>;
+            fclose(BRDPIC);
+            chomp @brdpics;
+            for (@brdpics) {
+                my ( $brdnm, $style, $brdpic ) = split /[|]/xsm, $_;
+                if ( $brdnm eq $editboards[$i] ) {
+                    for my $x ( 0 .. $#tmplt ) {
+                        if ( $style eq $tmplt[$x] ) {
+                            $mystyle = $style;
+                            if ( $brdpic =~ /\/\//ixsm ) {
+                                $brdpic_addr = qq~$brdpic~;
+                            }
+                            else {
+                                @mytempst = split /[|]/xsm,
+                                  $templateset{$style};
+                                $myimgfolder = $mytempst[1];
+                                $brdpic_addr =
+qq~$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic~;
+                            }
+                            $lbl = 'del_pic' . $i . '_' . $x;
+                            $boardpic_value .=
+qq~               <div class="small bold"><input type="checkbox" name="$lbl" id="$lbl" value="$brdnm|$style|$brdpic" /><label for="$lbl">$admin_txt{'64b4'}</label><br />$admin_txt{'current_img'}: <a href="$brdpic_addr" target="_blank">$mystyle - $brdpic</a> <img src="$brdpic_addr" id="brd_img_resize" alt="board_pic" /> </div>~;
                         }
-                        else {
-                            @mytempst = split /[|]/xsm, $templateset{$style};
-                            $myimgfolder = $mytempst[1];
-                            $brdpic_addr = qq~$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic~;
-                        }
-                        $lbl = 'del_pic' . $i . '_' . $x;
-                        $boardpic_value .= qq~               <div class="small bold"><input type="checkbox" name="$lbl" id="$lbl" value="$brdnm|$style|$brdpic" /><label for="$lbl">$admin_txt{'64b4'}</label><br />$admin_txt{'current_img'}: <a href="$brdpic_addr" target="_blank">$mystyle - $brdpic</a> <img src="$brdpic_addr" id="brd_img_resize" alt="board_pic" /> </div>~;
                     }
                 }
             }
         }
-
+        $myboardpic ||= q{};
+        $rulestitle ||= q{};
+        $brdfpassw3 ||= q{};
+        $brdpassw   ||= q{};
         $yymain .= qq~
                         </td>
                     </tr><tr>
@@ -1170,9 +1179,9 @@ function checkbin(bcheck, bwho) {
 selectParentBoard();
         </script>
     ~;
-   $yytitle     = "$admin_txt{'50'}";
-   if ( $INFO{'action'} eq 'boardscreen' ) {
-    $yytitle     = "$admin_txt{'50a'}";
+    $yytitle = "$admin_txt{'50'}";
+    if ( $INFO{'action'} eq 'boardscreen' ) {
+        $yytitle = "$admin_txt{'50a'}";
     }
     $action_area = 'manageboards';
     AdminTemplate();
@@ -1183,10 +1192,11 @@ sub DrawPerms {
     my ( $permissions, $permstype ) = @_;
     my ( $foundit, %found, $groupsel, $groupsel2, $name );
     my $count = 0;
-    if ( $permissions eq q{} ) { $permissions = 'xk8yj56ndkal'; }
-    my @perms = split /, /sm, $permissions;
+    if ( !$permissions ) { $permissions = 'xk8yj56ndkal'; }
+    my @perms = split /,\s/xsm, $permissions;
     for my $perm (@perms) {
         $foundit = 0;
+        $permstype ||= 0;
         if ( $permstype == 1 ) {
             $name = $admin_txt{'65f'};
             if ( $perm eq 'Topic Starter' ) {
@@ -1195,60 +1205,65 @@ sub DrawPerms {
                 $groupsel .=
 qq~                         <option value="Topic Starter" selected="selected">$name</option>\n~;
             }
-            if ( $count == $#perms && $found{$name} != 1 ) {
+            if ( $count == $#perms && ( !$found{$name} || $found{$name} != 1 ) )
+            {
                 $groupsel2 .=
-                  qq~                           <option value="Topic Starter">$name</option>\n~;
+qq~                           <option value="Topic Starter">$name</option>\n~;
             }
         }
 
-        ( $name, undef ) = split /[|]/xsm, $Group{'Administrator'}, 2;
+        ( $name, undef ) = @{ $Group{'Administrator'} };
         if ( $perm eq 'Administrator' ) {
             $foundit = 1;
             $found{$name} = 1;
             $groupsel .=
 qq~                         <option value="Administrator" selected="selected">$name</option>\n~;
         }
-        if ( $count == $#perms && $found{$name} != 1 ) {
-            $groupsel2 .= qq~                           <option value="Administrator">$name</option>\n~;
+        if ( $count == $#perms && ( !$found{$name} || $found{$name} != 1 ) ) {
+            $groupsel2 .=
+qq~                           <option value="Administrator">$name</option>\n~;
         }
 
-        ( $name, undef ) = split /[|]/xsm, $Group{'Global Moderator'}, 2;
+        ( $name, undef ) = @{ $Group{'Global Moderator'} };
         if ( $perm eq 'Global Moderator' ) {
             $foundit = 1;
             $found{$name} = 1;
             $groupsel .=
 qq~                         <option value="Global Moderator" selected="selected">$name</option>\n~;
         }
-        if ( $count == $#perms && $found{$name} != 1 ) {
-            $groupsel2 .= qq~                           <option value="Global Moderator">$name</option>\n~;
+        if ( $count == $#perms && ( !$found{$name} || $found{$name} != 1 ) ) {
+            $groupsel2 .=
+qq~                           <option value="Global Moderator">$name</option>\n~;
         }
 
-        ( $name, undef ) = split /[|]/xsm, $Group{'Mid Moderator'}, 2;
+        ( $name, undef ) = @{ $Group{'Mid Moderator'} };
         if ( $perm eq 'Mid Moderator' ) {
             $foundit = 1;
             $found{$name} = 1;
             $groupsel .=
 qq~                         <option value="Mid Moderator" selected="selected">$name</option>\n~;
         }
-        if ( $count == $#perms && $found{$name} != 1 ) {
-            $groupsel2 .= qq~                           <option value="Mid Moderator">$name</option>\n~;
+        if ( $count == $#perms && ( !$found{$name} || $found{$name} != 1 ) ) {
+            $groupsel2 .=
+qq~                           <option value="Mid Moderator">$name</option>\n~;
         }
         if ( $foundit != 1 || $count == $#perms ) {
             for (@nopostorder) {
-                ( $name, undef ) = split /[|]/xsm, $NoPost{$_}, 2;
+                ( $name, undef ) = @{ $NoPost{$_} };
                 if ( $perm eq $_ ) {
                     $foundit = 1;
                     $found{$_} = 1;
                     $groupsel .=
 qq~                         <option value="$_" selected="selected">$name</option>\n~;
                 }
-                if ( $found{$_} != 1 && $count == $#perms ) {
-                    $groupsel2 .= qq~                           <option value="$_">$name</option>\n~;
+                if ( ( !$found{$_} || $found{$_} != 1 ) && $count == $#perms ) {
+                    $groupsel2 .=
+qq~                           <option value="$_">$name</option>\n~;
                 }
             }
             if ( $foundit != 1 || $count == $#perms ) {
                 for ( reverse sort { $a <=> $b } keys %Post ) {
-                    ( $name, undef ) = split /[|]/xsm, $Post{$_}, 2;
+                    ( $name, undef ) = @{ $Post{$_} };
                     if ( $perm eq $name ) {
                         $foundit = 1;
                         $found{$name} = 1;
@@ -1256,16 +1271,17 @@ qq~                         <option value="$_" selected="selected">$name</option
 qq~                         <option value="$name" selected="selected">$name</option>\n~;
                     }
                     if ( $count == $#perms
-                        && ( $found{$name} != 1 || $found{$name} eq q{} ) )
+                        && ( !$found{$name} || $found{$name} != 1 ) )
                     {
                         $groupsel2 .=
-                          qq~                           <option value="$name">$name</option>\n~;
+qq~                           <option value="$name">$name</option>\n~;
                     }
                 }
             }
         }
         $count++;
     }
+    $groupsel ||= q{};
     return $groupsel . $groupsel2;
 }
 
@@ -1279,7 +1295,7 @@ sub AddBoards2 {
 
     for my $i ( 1 .. $FORM{'amount'} ) {
         ##### Dealing with Required Info here #####
-        if ( $FORM{"id$i"} eq q{} ) { next; }
+        if ( !$FORM{"id$i"} ) { next; }
         $id = $FORM{"id$i"};
         if ( $FORM{"ann$i"} )  { $anncount++; }
         if ( $FORM{"rbin$i"} ) { $rbincount++; }
@@ -1290,22 +1306,26 @@ sub AddBoards2 {
                 "$admin_txt{'61'} $admin_txt{'241'}" );
         }
         my $newpic = q{};
-        if ( $FORM{"pic$i"} ne q{} ) {
-            $newpic = $FORM{"pic$i"};
-            @mytempst = split /[|]/xsm, $templateset{$FORM{"templt$i"}};
+        if ( $FORM{"pic$i"} ) {
+            $newpic      = $FORM{"pic$i"};
+            @mytempst    = @{$templateset{ $FORM{"templt$i"} }};
             $myimgfolder = $mytempst[1];
-            $FORM{"pic$i"} = UploadFile("pic$i", qq~Templates/Forum/$myimgfolder/Boards~, 'png jpg jpeg gif', '250', '0');
+            $FORM{"pic$i"} =
+              UploadFile( "pic$i", qq~Templates/Forum/$myimgfolder/Boards~,
+                'png/jpg/jpeg/gif', '250', '0' );
             fopen( BRDPIC, ">>$boardsdir/brdpics.db" );
             print {BRDPIC} qq~$id|$FORM{"templt$i"}|$newpic\n~;
             fclose(BRDPIC);
 
-            if ( $FORM{"cur_pic$i"} ne q{} ) {
-                unlink qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
+            if ( $FORM{"cur_pic$i"} ) {
+                unlink
+qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
             }
         }
-        elsif ( $FORM{"mypic$i"} ne q{} ) {
+        elsif ( $FORM{"mypic$i"} ) {
             $newpic = $FORM{"mypic$i"};
-            if ( $newpic !~ m{^[0-9a-zA-Z_\.\x23\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm )
+            if ( $newpic !~
+                m{^[\w\.\x23\%\-\:\+\?\$\&\~\.\,\@/]+\.(gif|png|bmp|jpg)$}xsm )
             {
                 fatal_error('invalid_picture');
             }
@@ -1326,18 +1346,20 @@ sub AddBoards2 {
             if ( $FORM{"$lbl"} ) {
                 my @pklst = split /[|]/xsm, $FORM{"$lbl"};
                 if ( $pklst[2] !~ /[ht|f]tp[s]{0,1}:\/\//xsm ) {
-                    unlink qq~$htmldir/Templates/Forum/$pklst[1]/Boards/$pklst[2]~;
+                    unlink
+                      qq~$htmldir/Templates/Forum/$pklst[1]/Boards/$pklst[2]~;
                 }
                 fopen( BRDPIC, "<$boardsdir/brdpics.db" );
                 @piclist = <BRDPIC>;
                 fclose(BRDPIC);
                 chomp @piclist;
                 fopen( BRDPIC2, ">$boardsdir/brdpics.db" );
-                for ( @piclist) {
+                for (@piclist) {
                     if ( $_ ne $FORM{"$lbl"} ) {
                         print {BRDPIC2} qq~$_\n~;
                     }
-                    else { print {BRDPIC2} q{};
+                    else {
+                        print {BRDPIC2} q{};
                     }
                 }
                 fclose(BRDPIC2);
@@ -1349,7 +1371,7 @@ sub AddBoards2 {
 
             # adding a board
             # make sure no board already exists with that id
-            if ( exists $board{"$id"} ) {
+            if ( exists $board{$id} ) {
                 fatal_error( 'board_defined', "$id" );
             }
 
@@ -1360,7 +1382,7 @@ sub AddBoards2 {
                 $cat{ $FORM{"cat$i"} } = join q{,}, @bdlist;
             }
             else {
-                if ( $subboard{ $FORM{"parent$i"} } ne q{} ) {
+                if ( $subboard{ $FORM{"parent$i"} } ) {
                     $subboard{ $FORM{"parent$i"} } .= qq~|$id~;
                 }
                 else {
@@ -1383,7 +1405,7 @@ sub AddBoards2 {
                 # recursively change the category of child boards.
                 if ( $subboard{$id} ) {
 
-                    *cat_change = sub {
+                    local *cat_change = sub {
                         my @x = @_;
                         for my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} = qq~$FORM{"cat$i"}~;
@@ -1407,14 +1429,14 @@ sub AddBoards2 {
                         if ( $id eq $bd ) { splice @bdlist, $k, 1; }
                         $k++;
                     }
-                    $cat{"$category"} = join q{,}, @bdlist;
+                    $cat{$category} = join q{,}, @bdlist;
                 }
 
                 # Add Category to new Category, but only if it isn't a sub board
                 if ( !$FORM{"parent$i"} ) {
                     my $ncat = $FORM{"cat$i"};
-                    if ( $cat{$ncat} ne q{} ) { $cat{$ncat} .= ",$id"; }
-                    else                      { $cat{$ncat} = $id; }
+                    if ( $cat{$ncat} ) { $cat{$ncat} .= ",$id"; }
+                    else               { $cat{$ncat} = $id; }
                 }
             }
 
@@ -1451,7 +1473,7 @@ sub AddBoards2 {
                 }
 
 # if we're removing the parent board, move it back up to it's category, otherwise add to new parent board
-                if ( $FORM{"parent$i"} eq q{} ) {
+                if ( !$FORM{"parent$i"} ) {
 
                     # only move up to cat if cat is the same as previously
                     if ( $category eq $FORM{"cat$i"} ) {
@@ -1487,9 +1509,10 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                     }
                 }
                 elsif ( !$FORM{"ann$i"}
+                    && $boardtomodify[0]
                     && ( split /[|]/xsm, $boardtomodify[0] )[8] =~ /a/ism )
                 {
-                    *take_a_off =
+                    local *take_a_off =
                       sub { my $y = shift; $y =~ s/a//gsm; return $y; };
                     for my $x ( 0 .. $#boardtomodify ) {
                         $boardtomodify[$x] =~
@@ -1512,35 +1535,49 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
 
       # If someone has the bright idea of starting a membergroup with a $
       # We need to escape it for them, to prevent us interpreting it as a var...
+        $FORM{"viewperms$i"} ||= q{};
+        $FORM{"show$i"}      ||= q{};
         $FORM{"viewperms$i"} =~ s/\$/\\\$/gxsm;
 
-        $board{"$id"} = "$bname|$FORM{\"viewperms$i\"}|$FORM{\"show$i\"}";
-        $bdescription = $FORM{"description$i"};
+        $board{$id} = "$bname|$FORM{\"viewperms$i\"}|$FORM{\"show$i\"}";
+        $bdescription = $FORM{"description$i"} || q{};
         FromChars($bdescription);
         $bdescription =~ s/\r//gxsm;
         $bdescription =~ s/\n/<br \/>/gxsm;
-        my @mods = split /,\s*/xsm, $FORM{'moderators'};
-        if ($do_scramble_id) {
-            for (@mods) {
-                $_ = decloak($_);
+        if ( $FORM{"moderators$i"} ) {
+            my @mods = split /,\s*/xsm, $FORM{"moderators$i"};
+            if ($do_scramble_id) {
+                for (@mods) {
+                    $_ = decloak($_);
+                }
             }
+            $FORM{"moderators$i"} = join q{/}, @mods;
         }
-        $FORM{"moderators$i"} = join q{/}, @mods;
-        if ( $FORM{"brdrss$i"} eq q{} ) { $FORM{"brdrss$i"} = 0; } ### RSS on Board Index ###
-        if ( $FORM{"zero$i"} eq q{} ) { $FORM{"zero$i"} = 0; }
+        if ( !$FORM{"brdrss$i"} ) {
+            $FORM{"brdrss$i"} = 0;
+        }    ### RSS on Board Index ###
+        if ( !$FORM{"zero$i"} ) { $FORM{"zero$i"} = 0; }
         $FORM{"minage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
         $FORM{"maxage$i"} =~ tr/[0-9]//cd;    ## remove non numbers
-        if ( $FORM{"minage$i"} < 0 )   { $FORM{"minage$i"} = q{}; }
-        if ( $FORM{"maxage$i"} < 0 )   { $FORM{"maxage$i"} = q{}; }
-        if ( $FORM{"minage$i"} > 180 ) { $FORM{"minage$i"} = q{}; }
-        if ( $FORM{"maxage$i"} > 180 ) { $FORM{"maxage$i"} = q{}; }
+        if ( !$FORM{"minage$i"} || $FORM{"minage$i"} < 0 ) {
+            $FORM{"minage$i"} = q{};
+        }
+        if ( !$FORM{"maxage$i"} || $FORM{"maxage$i"} < 0 ) {
+            $FORM{"maxage$i"} = q{};
+        }
+        if ( $FORM{"minage$i"} && $FORM{"minage$i"} > 180 ) {
+            $FORM{"minage$i"} = q{};
+        }
+        if ( $FORM{"maxage$i"} && $FORM{"maxage$i"} > 180 ) {
+            $FORM{"maxage$i"} = q{};
+        }
 
         if ( $FORM{"maxage$i"} && $FORM{"maxage$i"} < $FORM{"minage$i"} ) {
             $FORM{"maxage$i"} = $FORM{"minage$i"};
         }
 
-        if ( $FORM{"rules$i"}         eq q{} ) { $FORM{"rules$i"}         = 0; }
-        if ( $FORM{"rulescollapse$i"} eq q{} ) { $FORM{"rulescollapse$i"} = 0; }
+        if ( !$FORM{"rules$i"} )         { $FORM{"rules$i"}         = 0; }
+        if ( !$FORM{"rulescollapse$i"} ) { $FORM{"rulescollapse$i"} = 0; }
         $brulestitle = $FORM{"rulestitle$i"};
         FromChars($brulestitle);
         $brulesdesc = $FORM{"rulesdesc$i"};
@@ -1549,30 +1586,46 @@ s/(.*\|)(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         $brulesdesc =~ s/\n/<br \/>/gsm;
 
         $FORM{"pasww$i"} =~ s/ //gsm;
-        if ($FORM{"pasww$i"} ne q{}) {
-            if ($FORM{"pasww$i"} !~ /\A[\s0-9A-Za-z!@#$%\^&*\(\)_\+|`~\-=\\:;'",\.\/?\[\]\{\}]+\Z/sm) { fatal_error("$register_txt{'240'} $register_txt{'36'} $register_txt{'241'}") }
-            $encryptopass = encode_password($FORM{"pasww$i"});
+        if ( $FORM{"pasww$i"} ) {
+            if ( $FORM{"pasww$i"} !~
+                /\A[\s0-9A-Za-z!@#$%\^&*\(\)_\+|`~\-=\\:;'",\.\/?\[\]\{\}]+\Z/sm
+              )
+            {
+                fatal_error(
+"$register_txt{'240'} $register_txt{'36'} $register_txt{'241'}"
+                );
+            }
+            $encryptopass = encode_password( $FORM{"pasww$i"} );
         }
         else {
-            if ($FORM{"paswwr$i"}) { $encryptopass = $FORM{"brdpassw$i"}; } else { $encryptopass = q{};}
+            if   ( $FORM{"paswwr$i"} ) { $encryptopass = $FORM{"brdpassw$i"}; }
+            else                       { $encryptopass = q{}; }
         }
+        $mypic = 'n';
         if ( $FORM{"pic$i"} ) {
             $mypic = 'y';
         }
         @modhook = ();
         ## BRD Mod Hook ##
 
-        $modchk = @modhook;
+        $modchk  = @modhook;
         $modhook = q{};
         if ( $modchk > 0 ) {
-            $modhook = join q{|}, @modhook;
+            $modhook .= join q{', '}, @modhook;
         }
+        $FORM{"moderators$i"} ||= q{};
         $FORM{"moderators$i"} =~ s/,\s*/\//xsm;
+        $FORM{"moderatorgroups$i"} ||= q{};
         $FORM{"moderatorgroups$i"} =~ s/,\s*/\//xsm;
-        push @boardcontrol,
-qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderatorgroups$i"}|$FORM{"topicperms$i"}|$FORM{"replyperms$i"}|$FORM{"pollperms$i"}|$FORM{"zero$i"}|$FORM{"membergroups$i"}|$FORM{"ann$i"}|$FORM{"rbin$i"}|$FORM{"att$i"}|$FORM{"minage$i"}|$FORM{"maxage$i"}|$FORM{"gender$i"}|$FORM{"canpost$i"}|$FORM{"parent$i"}|$FORM{"rules$i"}|$brulestitle|$brulesdesc|$FORM{"rulescollapse$i"}|$FORM{"paswwr$i"}|$encryptopass|$FORM{"brdrss$i"}|$modhook\n~;
-        push @changes, $id;
-        $yymain .= qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a><br />~;
+        my @frmchks =
+          qw(topicperms replyperms pollperms zero membergroups ann rbin minage maxage paswwr);
+        foreach my $j (@frmchks) {
+            $FORM{"$j$i"} ||= q{};
+        }
+        $control{$id} = [$FORM{"cat$i"}, $mypic, $bdescription, $FORM{"moderators$i"}, $FORM{"moderatorgroups$i"}, $FORM{"topicperms$i"}, $FORM{"replyperms$i"}, $FORM{"pollperms$i"}, $FORM{"zero$i"}, $FORM{"membergroups$i"}, $FORM{"ann$i"}, $FORM{"rbin$i"}, $FORM{"att$i"}, $FORM{"minage$i"}, $FORM{"maxage$i"}, $FORM{"gender$i"}, $FORM{"canpost$i"}, $FORM{"parent$i"}, $FORM{"rules$i"}, $brulestitle, $brulesdesc, $FORM{"rulescollapse$i"}, $FORM{"paswwr$i"}, $encryptopass, $FORM{"brdrss$i"}, $modhook];
+        push @changes,      $id;
+        $yymain .=
+qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a><br />~;
     }
 
     # do the saving here, after all new boards passed the tests (fatal_error)
@@ -1581,41 +1634,19 @@ qq~$FORM{"cat$i"}|$id|$mypic|$bdescription|$FORM{"moderators$i"}|$FORM{"moderato
     }
 
     Write_ForumMaster();
-    fopen( FORUMCONTROL, "+<$boardsdir/forum.control" );
-    seek FORUMCONTROL, 0, 0;
-    my @oldcontrols = <FORUMCONTROL>;
-    my $oldboard;
-
+    require "$boardsdir/forum.control";
     # Update categories for subboards that got changed.
-    for my $cnt ( 0 .. $#oldcontrols ) {
-        ( undef, $oldboard, undef ) = split /[|]/xsm, $oldcontrols[$cnt], 3;
+    for my $cnt ( keys %control ) {
         for my $changedboard (@updatecats) {
-            if ( $changedboard eq $oldboard ) {
-                my ( $oldcat, $therest ) = split /[|]/xsm, $oldcontrols[$cnt], 2;
-                $oldcontrols[$cnt] = qq~${$uid.$changedboard}{'cat'}|$therest~;
+            if ( $changedboard eq $cnt ) {
+                ${ $control{$cnt} }[0] = ${ $uid . $changedboard }{'cat'};
                 last;
             }
         }
     }
+    write_forum_control();
 
-    for my $cnt ( 0 .. $#oldcontrols ) {
-        ( undef, $oldboard, undef ) = split /[|]/xsm, $oldcontrols[$cnt], 3;
-        for my $changedboard (@changes) {
-            if ( $changedboard eq $oldboard ) {
-                $oldcontrols[$cnt] = q{};
-                last;
-            }
-        }
-    }
-    push @oldcontrols, @boardcontrol;
-    @boardcontrol = grep { $_; } @oldcontrols;
-
-    truncate FORUMCONTROL, 0;
-    seek FORUMCONTROL, 0, 0;
-    print {FORUMCONTROL} sort @boardcontrol or croak "$croak{'print'} FORUMCONTOL";
-    fclose(FORUMCONTROL);
-
-    $yytitle = $admin_txt{'50a'};
+    $yytitle     = $admin_txt{'50a'};
     $action_area = 'manageboards';
     AdminTemplate();
     return;
@@ -1649,14 +1680,14 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
             my $indent = -2;
             $catboardlist{$category} = q~<option value=''>&nbsp;</option>~;
 
-            *get_subboards2 = sub {
+            local *get_subboards2 = sub {
                 my @x = @_;
                 $indent += 2;
                 for my $childbd (@x) {
-                    my $dash;
+                    my $dash = q{};
                     if ( $indent > 0 ) { $dash = q{-}; }
                     ( $chldboardname, undef, undef ) =
-                      split /[|]/xsm, $board{"$childbd"};
+                      split /[|]/xsm, $board{$childbd};
                     ToChars($chldboardname);
                     $catboardlist{$category} .=
                         qq~<option value='$childbd'>~
@@ -1892,7 +1923,7 @@ sub ReorderBoards2 {
                 # recursively change the category of child boards.
                 if ( $subboard{$moveitem} ) {
 
-                    *cat_change2 = sub {
+                    local *cat_change2 = sub {
                         my @x = @_;
                         for my $childbd (@x) {
                             ${ $uid . $childbd }{'cat'} =
@@ -1922,15 +1953,15 @@ sub ReorderBoards2 {
 
                     # add to new cat list
                     my $ncat = $FORM{'selectcategory'};
-                    if ( $cat{$ncat} ne q{} ) { $cat{$ncat} .= ",$moveitem"; }
-                    else                      { $cat{$ncat} = $moveitem; }
+                    if ( $cat{$ncat} ) { $cat{$ncat} .= ",$moveitem"; }
+                    else               { $cat{$ncat} = $moveitem; }
                 }
             }
 
             # if parent has changed
             if ( ${ $uid . $moveitem }{'parent'} ne $FORM{'selectboard'} ) {
 
-# if it had a parent, remove it from that list, otherwise it didnt have a parent so remove it from cat list
+# if it had a parent, remove it from that list, otherwise it did not have a parent so remove it from cat list
                 if ( ${ $uid . $moveitem }{'parent'} ) {
                     my @bdlist = split /[|]/xsm,
                       $subboard{ ${ $uid . $moveitem }{'parent'} };
@@ -1961,7 +1992,7 @@ sub ReorderBoards2 {
                 }
 
 # if we're removing the parent board, move it back up to its category, otherwise add to new parent board
-                if ( $FORM{'selectboard'} eq q{} ) {
+                if ( !$FORM{'selectboard'} ) {
 
                     # only move up to cat if cat is the same as previously
                     if ( $category eq $FORM{'selectcategory'} ) {
@@ -1985,34 +2016,17 @@ sub ReorderBoards2 {
             }
         }
         Write_ForumMaster();
-        fopen( FORUMCONTROL, "+<$boardsdir/forum.control" );
-        seek FORUMCONTROL, 0, 0;
-        my @oldcontrols = <FORUMCONTROL>;
-        for my $cnt ( 0 .. $#oldcontrols ) {
-            my @newbrd  = split /[|]/xsm, $oldcontrols[$cnt];
-            if ( $moveitem eq $oldboard ) {
-                $newbrd[0] = ${$uid.$moveitem}{'cat'};
-                $newbrd[18] = ${$uid.$moveitem}{'parent'};
-                $newboardline = join q{|}, @newbrd;
-                $oldcontrols[$cnt] = $newboardline . "\n";
-            }
-            for my $changedboard (@updatecats) {
-                if ( $changedboard eq $oldboard ) {
-                    $newbrd[0] = ${$uid.$changedboard}{'cat'};
-                    $newbrd[18] = ${$uid.$changedboard}{'parent'};
-                    $newboardline = join q{|}, @newbrd;
-                    $oldcontrols[$cnt] = $newboardline . "\n";
-                }
-            }
+        require "$boardsdir/forum.control";
+
+        if ( $moveitem ) {
+            ${$control{$moveitem}}[0]  = ${ $uid . $moveitem }{'cat'};
+            ${$control{$moveitem}}[17] = ${ $uid . $moveitem }{'parent'};
         }
-        my @boardcontrol = grep { $_; } @oldcontrols;
-
-        truncate FORUMCONTROL, 0;
-        seek FORUMCONTROL, 0, 0;
-        print {FORUMCONTROL} sort @boardcontrol
-          or croak "$croak{'print'} FORUMCONTROL";
-        fclose(FORUMCONTROL);
-
+        for my $changedboard (@updatecats) {
+            ${$control{$changedboard}}[0]  = ${ $uid . $changedboard }{'cat'};
+            ${$control{$changedboard}}[17] = ${ $uid . $changedboard }{'parent'};
+        }
+        write_forum_control();
     }
     $yySetLocation =
       qq~$adminurl?action=reorderboards;item=$category;theboard=$moveitem~;
@@ -2051,22 +2065,22 @@ sub FixBoardDupes {
     is_admin_or_gmod();
     get_forum_master();
     my @dupedbrds = ();
-    my @mylist = ();
-    my @catbrds = ();
-    my @subbrds = ();
-    while( ( $key, $value ) = each %cat ) {
+    my @mylist    = ();
+    my @catbrds   = ();
+    my @subbrds   = ();
+    while ( ( $key, $value ) = each %cat ) {
         @mylist = split /,/xsm, $value;
         push @dupedbrds, @mylist;
     }
-    while( ( $key, $value ) = each %subboard ) {
+    while ( ( $key, $value ) = each %subboard ) {
         @mylist = split /[|]/xsm, $value;
         push @dupedbrds, @mylist;
     }
     my %dup_counts;
-    for (@dupedbrds) { $dup_counts{$_}++ };
+    for (@dupedbrds) { $dup_counts{$_}++ }
     my @chkbrds = grep { $dup_counts{$_} > 1 } keys %dup_counts;
     if (@chkbrds) {
-        while( ( $key, $value ) = each %cat ) {
+        while ( ( $key, $value ) = each %cat ) {
             @mylist = split /,/xsm, $value;
             for my $x (@mylist) {
                 for my $y (@chkbrds) {
@@ -2076,7 +2090,7 @@ sub FixBoardDupes {
                 }
             }
         }
-        while( ( $key, $value ) = each %subboard ) {
+        while ( ( $key, $value ) = each %subboard ) {
             @mylist = split /[|]/xsm, $value;
             for my $x (@mylist) {
                 for my $y (@chkbrds) {
@@ -2087,16 +2101,19 @@ sub FixBoardDupes {
             }
         }
     }
-    $dupedlist = qq~<br /><span style="font-size:125%">$admin_txt{'fixinstruct'}</span>~;
+    $dupedlist =
+      qq~<br /><span style="font-size:125%">$admin_txt{'fixinstruct'}</span>~;
     @catbrds = sort(@catbrds);
-    $mynum = 0;
+    $mynum   = 0;
     for (@catbrds) {
-        my( $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
-        if ( $tp eq 'c') {
-            $dupedlist .= qq~<br /><input type="checkbox" name="$mynum|$_" value="1" /> $admin_txt{'58'} $dpfile $admin_txt{'incat'} $mydupcat~;
+        my ( $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
+        if ( $tp eq 'c' ) {
+            $dupedlist .=
+qq~<br /><input type="checkbox" name="$mynum|$_" value="1" /> $admin_txt{'58'} $dpfile $admin_txt{'incat'} $mydupcat~;
         }
         else {
-            $dupedlist .= qq~<br /><input type="checkbox" name="$mynum|$_" value="1" /> $admin_txt{'subbrd'} $dpfile $admin_txt{'inbrd'} $mydupcat~;
+            $dupedlist .=
+qq~<br /><input type="checkbox" name="$mynum|$_" value="1" /> $admin_txt{'subbrd'} $dpfile $admin_txt{'inbrd'} $mydupcat~;
         }
         $mynum++;
     }
@@ -2127,24 +2144,24 @@ sub FixDupes {
     is_admin_or_gmod();
     get_forum_master();
     @torem = ();
-    $i = 0;
+    $i     = 0;
     while ( $_ = each %FORM ) {
         if ( $FORM{$_} ) {
-            my( $num, $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
+            my ( $num, $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
             push @torem, qq~$dpfile|$tp|$mydupcat~;
         }
     }
     my %hash;
     my @del = ();
-    my $i = 0;
+    my $i   = 0;
     $hash{$_}++ for (@torem);
-    for (keys %hash) {
+    for ( keys %hash ) {
         ( $dpfile, $tp, $mydupcat ) = split /[|]/xsm, $_;
         if ( $tp eq 'c' ) {
             @dupcat = split /,/xsm, $cat{$mydupcat};
             $i = 0;
             $i++ until $dupcat[$i] eq $dpfile;
-            splice(@dupcat, $i, 1);
+            splice( @dupcat, $i, 1 );
             $cat{$mydupcat} = join q{,}, @dupcat;
             push @del, $dpfile;
         }
@@ -2152,14 +2169,15 @@ sub FixDupes {
             @dupcat = split /[|]/xsm, $subboard{$mydupcat};
             $i = 0;
             $i++ until $dupcat[$i] eq $dpfile;
-            splice(@dupcat, $i, 1);
+            splice( @dupcat, $i, 1 );
             $subboard{$mydupcat} = join q{,}, @dupcat;
             push @del, $dpfile;
         }
     }
 
     Write_ForumMaster();
-    $yymain .= qq~Duplicate Boards removed<br />@del<br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a>~;
+    $yymain .=
+qq~$admin_txt{'fixduprem'}<br />@del<br /><a href="$adminurl?action=manageboards">$admin_txt{'51'}</a>~;
     $yytitle     = qq~$admin_txt{'fixdupbrd'}~;
     $action_area = 'manageboards';
     AdminTemplate();

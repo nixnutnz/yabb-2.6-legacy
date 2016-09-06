@@ -13,6 +13,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -21,6 +23,7 @@ $modlistpmver = 'YaBB 2.7.00 $Revision$';
 if (@modlistpmmods) {
     $modlistpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ListMods {

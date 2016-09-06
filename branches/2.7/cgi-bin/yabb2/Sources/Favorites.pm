@@ -23,6 +23,7 @@ $favoritespmver  = 'YaBB 2.7.00 $Revision$';
 if (@favoritespmmods) {
     $favoritespmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Favorites {
@@ -132,7 +133,7 @@ sub Favorites {
         ) = split /[|]/xsm, $_;
 
         # Set thread class depending on locked status and number of replies.
-        if ( $mnum eq q{} ) { next; }
+        if ( !$mnum ) { next; }
 
         MessageTotals( 'load', $mnum );
 
@@ -143,11 +144,12 @@ sub Favorites {
 qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
 
         $threadclass = 'thread';
-        if    ( $mstate =~ /h/ixsm )         { $threadclass = 'hide'; }
-        elsif ( $mstate =~ /l/ixsm )         { $threadclass = 'locked'; }
+		if ( !$mstate ) { $threadclass = 'thread'; }
+		else {
+			if    ( $mstate =~ /h/ism ) { $threadclass = 'hide'; }
+			elsif ( $mstate =~ /l/ism ) { $threadclass = 'locked'; }
         elsif ( $mreplies >= $VeryHotTopic ) { $threadclass = 'veryhotthread'; }
         elsif ( $mreplies >= $HotTopic )     { $threadclass = 'hotthread'; }
-        elsif ( $mstate eq q{} )             { $threadclass = 'thread'; }
         if ( $threadclass eq 'hide' && $mstate =~ /s/ism && $mstate !~ /l/ism )
         {
             $threadclass = 'hidesticky';
@@ -177,6 +179,7 @@ qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_
             $threadclass =
               $threadclass eq 'locked' ? 'announcementlock' : 'announcement';
         }
+		}
 
         my $movedFlag;
         ( undef, $movedFlag ) = Split_Splice_Move( $msub, $mnum );
@@ -271,7 +274,6 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
 
         # Build the page links list.
         $pages = q{};
-        $pagesall;
         if ($showpageall) {
             $pagesall =
               qq~<a href="$scripturl?num=$mnum/all-0">$pidtxt{'01'}</a>~;
@@ -416,6 +418,9 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         $tempbar =~ s/\Q{yabb views}\E/$views/gxsm;
         $tempbar =~ s/\Q{yabb lastpostlink}\E/$lastpostlink/gxsm;
         $tempbar =~ s/\Q{yabb lastposter}\E/$lastpostername/gxsm;
+        $tempbar =~ s/\Q{yabb my_favs_527}\E/$my_favs{'527'}/gxsm;
+        $tempbar =~ s/\Q{yabb my_favs_526}\E/$my_favs{'526'}/gxsm;
+        $tempbar =~ s/\Q{yabb my_favs_525}\E/$my_favs{'525'}/gxsm;
 
         if ( $accept_permalink == 1 ) {
             $tempbar =~ s/\Q{yabb permalink}\E/$message_permalink/gxsm;
@@ -434,6 +439,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
     # Put a "no messages" message if no threads exist:
     if ( !$tmptempbar ) {
         $tmptempbar = $no_favs;
+		$tmptempbar =~ s/\Q{yabb messageindex_txt_840}\E/$messageindex_txt{'840'}/xsm
     }
 
     $yabbicons = qq~$micon{'thread'} $messageindex_txt{'457'}
@@ -453,6 +459,8 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
     <br />$micon{'hotthread'} $messageindex_txt{'454'} $HotTopic $messageindex_txt{'454a'}
     <br />$micon{'veryhotthread'} $messageindex_txt{'455'} $VeryHotTopic $messageindex_txt{'454a'}<br />
     ~;
+    $yabbadminicons =~ s/\Q{yabb veryhotthread}\E/$VeryHotTopic/gxsm;
+    $yabbadminicons =~ s/\Q{yabb hottopic}\E/$HotTopic/gxsm;
 
     $formstart =
 qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multiremfav" method="post" style="display: inline">~;
@@ -468,6 +476,7 @@ qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multir
     ~;
     $subfooterbar =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
     $subfooterbar =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
+    $subfooterbar =~ s/\Q{yabb my_favs_737}\E/$my_favs{'737'}/gxsm;
 
     # Template it
     $adminheader =~ s/\Q{yabb admin}\E/$messageindex_txt{'2'}/gxsm;
@@ -504,7 +513,14 @@ qq~ <img src="$imagesdir/$my_favbrds" alt="$img_txt{'70'}" title="$img_txt{'70'}
     $favorites_template =~ s/\Q{yabb threadblock}\E/$tmptempbar/gxsm;
     $favorites_template =~ s/\Q{yabb adminfooter}\E/$subfooterbar/gxsm;
     $favorites_template =~ s/\Q{yabb icons}\E/$yabbicons/gxsm;
-    $favorites_template =~ s/\Q{yabb admin\s icons}\E/$yabbadminicons/gxsm;
+    $favorites_template =~ s/\Q{yabb admin icons}\E/$yabbadminicons/gxsm;
+    $favorites_template =~ s/\Q{yabb my_favs_330}\E/$my_favs{'330'}/gxsm;
+    $favorites_template =~ s/\Q{yabb my_favs_21}\E/$my_favs{'21'}/gxsm;
+    $favorites_template =~ s/\Q{yabb my_favs_70}\E/$my_favs{'70'}/gxsm;
+    $favorites_template =~ s/\Q{yabb my_favs_109}\E/$my_favs{'109'}/gxsm;
+    $favorites_template =~ s/\Q{yabb my_favs_110}\E/$my_favs{'110'}/gxsm;
+    $favorites_template =~ s/\Q{yabb my_favs_301}\E/$my_favs{'301'}/gxsm;
+    $favorites_template =~ s/\Q{yabb my_favs_22}\E/$my_favs{'22'}/gxsm;
     $showFavorites .= qq~$favorites_template~;
 
     $showFavorites .= qq~

@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.20                                                 #
-# Packaged:       December 31, 2015                                           #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mobilemymessagetemver = 'YaBB 2.6.20 $Revision$';
+$mobilemymessagetemver = 'YaBB 2.7.00 $Revision$';
 @mobilemymessagemods = ();
 if (@mobilemymessagemods) {
     $mobilemymessagemods = 1;
@@ -138,12 +138,12 @@ $my_imsend_IM = qq~{yabb my_gimsend} {yabb my_send}<tr>
                 <tr>
                     <td class="vtop">{yabb imWinop}{yabb imsend_cc}</td>
                     <td class="vtop" id="test">
-                        <label for="status"><b>$inmes_txt{'status'}:</b></label>
+                        <label for="status"><b>{yabb inmes_txt_status}:</b></label>
                         <br />
                         <select name="status" id="status" tabindex="2" size="3" onchange="showtpstatus();{yabb onchange_text2}">
 {yabb iconopts}
                         </select>
-                        <img src="{yabb pmicon_img}" id="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="$im_message_status{'{yabb pmicon}'}" title="$im_message_status{'{yabb pmicon}'}" />
+                        <img src="{yabb pmicon_img}" id="icons" style="margin:1em 10px 0 10px; vertical-align:top" alt="{yabb im_message_status_pmicon}" title="{yabb im_message_status_pmicon}" />
                         <input type="hidden" id="iconholder" value="{yabb pmicon}" />
                     </td>
                 </tr>

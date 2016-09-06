@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +22,7 @@ $eventcalsetpmver = 'YaBB 2.7.00 $Revision$';
 if (@eventcalsetpmmods) {
     $eventcalsetpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -30,65 +33,10 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 sub EventCalSet {
     is_admin_or_gmod();
     my ($caleventprivatechecked, $chkDelete_EventsUntil);
-
-    # figure out what to print
-
-    if    ( !$Scroll_Events )     { $aevt1 = ' selected="selected"'; }
-    elsif ( $Scroll_Events == 1 ) { $aevt2 = ' selected="selected"'; }
-    elsif ( $Scroll_Events == 2 ) { $aevt3 = ' selected="selected"'; }
-    elsif ( $Scroll_Events == 3 ) { $aevt4 = ' selected="selected"'; }
-
-    if ( !$Show_EventCal ) { $bevt1 = ' selected="selected"'; }
-    elsif ( $Show_EventCal == 1 ) {
-        $bevt2           = ' selected="selected"';
-    }
-    elsif ( $Show_EventCal == 2 ) {
-        $bevt3           = ' selected="selected"';
-      }
-
-    if    ( !$Show_EventButton )     { $cevt1 = ' selected="selected"'; }
-    elsif ( $Show_EventButton == 1 ) { $cevt2 = ' selected="selected"'; }
-    elsif ( $Show_EventButton == 2 ) { $cevt3 = ' selected="selected"'; }
-
-    if ( !$Show_BirthdaysList ) { $devt1 = ' selected="selected"'; }
-    elsif ( $Show_BirthdaysList == 1 ) {
-        $devt2         = ' selected="selected"';
-    }
-    elsif ( $Show_BirthdaysList == 2 ) {
-        $devt3         = ' selected="selected"';
-    }
-
-    if    ( !$Show_BirthdayButton )     { $eevt1 = ' selected="selected"'; }
-    elsif ( $Show_BirthdayButton == 1 ) { $eevt2 = ' selected="selected"'; }
-    elsif ( $Show_BirthdayButton == 2 ) { $eevt3 = ' selected="selected"'; }
-
-    if    ( !$Show_BirthdayDate )     { $fevt1 = ' selected="selected"'; }
-    elsif ( $Show_BirthdayDate == 1 ) { $fevt2 = ' selected="selected"'; }
-    elsif ( $Show_BirthdayDate == 2 ) { $fevt3 = ' selected="selected"'; }
-
-    if    ( !$Show_EventBirthdays )     { $gevt1 = ' selected="selected"'; }
-    elsif ( $Show_EventBirthdays == 1 ) { $gevt2 = ' selected="selected"'; }
-    elsif ( $Show_EventBirthdays == 2 ) { $gevt3 = ' selected="selected"'; }
-
-    if ($Show_caltoday)       { $Show_caltodaych = 'checked="checked"'; }
-    if ($Show_BirthdaysList)  { $onbirthlistchecked     = 'checked="checked"'; }
-    if ($Show_MiniCalIcons)   { $onminiiconchecked      = 'checked="checked"'; }
-    if ($ShowSunday)          { $onsundaychecked        = 'checked="checked"'; }
-    if ($CalEventPrivate)     { $caleventprivatechecked = 'checked="checked"'; }
-    if ($Delete_EventsUntil)  { $chkDelete_EventsUntil = 'checked="checked"'; }
-    if ($DisplayCalEvents)    { $dcaleventschecked      = 'checked="checked"'; }
-    if ($Show_ColorLinks)     { $oncolorlinkschecked    = 'checked="checked"'; }
-    if ($No_ShortUbbc)        { $onnosubbcchecked       = 'checked="checked"'; }
-    if ($Show_BdColorLinks)   { $onbdcolorlinkschecked  = 'checked="checked"'; }
-    if ($Show_BdStarsign)     { $onbdstarchecked  = 'checked="checked"'; }
     $Event_TodayColor = lc $Event_TodayColor;
 
-    if    ( !$CalEventNoName )     { $noname1 = ' selected="selected"'; }
-    elsif ( $CalEventNoName == 1 ) { $noname2 = ' selected="selected"'; }
-    elsif ( $CalEventNoName == 2 ) { $noname3 = ' selected="selected"'; }
-
     require Admin::ManageBoards;
-    $CalEventPerms =~ s/,/, /gsm;
+    $CalEventPerms =~ s/,/, /gxsm;
     $CalEventPerms = DrawPerms($CalEventPerms);
 
     $yymain .= qq~
@@ -106,32 +54,32 @@ sub EventCalSet {
                     <td class="windowbg2"><label for="Show_EventCal">$event_cal{'3'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_EventCal" id="Show_EventCal" size="1">
-                        <option value="0"$bevt1>$userlevel_txt{'none'}</option>
-                        <option value="1"$bevt2>$userlevel_txt{'members'}</option>
-                        <option value="2"$bevt3>$userlevel_txt{'all'}</option>
+                        <option value="0"${isselected($Show_EventCal==0)}>$userlevel_txt{'none'}</option>
+                        <option value="1"${isselected($Show_EventCal==1)}>$userlevel_txt{'members'}</option>
+                        <option value="2"${isselected($Show_EventCal==2)}>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_EventButton">$event_cal{'4'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_EventButton" id="Show_EventButton" size="1">
-                        <option value="0"$cevt1>$userlevel_txt{'none'}</option>
-                        <option value="1"$cevt2>$userlevel_txt{'members'}</option>
-                        <option value="2"$cevt3>$userlevel_txt{'all'}</option>
+                        <option value="0"${isselected($Show_EventButton==0)}>$userlevel_txt{'none'}</option>
+                        <option value="1"${isselected($Show_EventButton==1)}>$userlevel_txt{'members'}</option>
+                        <option value="2"${isselected($Show_EventButton==2)}>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_EventBirthdays">$event_cal{'5'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_EventBirthdays" id="Show_EventBirthdays" size="1">
-                        <option value="0"$gevt1>$userlevel_txt{'none'}</option>
-                        <option value="1"$gevt2>$userlevel_txt{'members'}</option>
-                        <option value="2"$gevt3>$userlevel_txt{'all'}</option>
+                        <option value="0"${isselected($Show_EventBirthdays==0)}>$userlevel_txt{'none'}</option>
+                        <option value="1"${isselected($Show_EventBirthdays==1)}>$userlevel_txt{'members'}</option>
+                        <option value="2"${isselected($Show_EventBirthdays==2)}>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="ShowSunday">$event_cal{'36'}<br /><span class="small">$event_cal{'37'}</span></label></td>
-                    <td class="windowbg2"><input type="checkbox" name="ShowSunday" id="ShowSunday" $onsundaychecked /></td>
+                    <td class="windowbg2"><input type="checkbox" name="ShowSunday" id="ShowSunday"${ischecked($ShowSunday)} /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Event_TodayColor">$event_cal{'8'}</label></td>
                     <td class="windowbg2">
@@ -146,28 +94,28 @@ sub EventCalSet {
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_caltoday">$event_cal{'showtoday'}</label></td>
-                    <td class="windowbg2"><input type="checkbox" name="Show_caltoday" id="Show_caltoday" value="1" $Show_caltodaych /></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_caltoday" id="Show_caltoday" value="1"${ischecked($Show_caltoday)} /></td>
                 </tr><tr>
                     <td class="catbg" colspan="2"><span class="small">$event_cal{'22'}</span></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_MiniCalIcons">$event_cal{'43'}</label></td>
-                    <td class="windowbg2"><input type="checkbox" name="Show_MiniCalIcons" id="Show_MiniCalIcons" $onminiiconchecked /></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_MiniCalIcons" id="Show_MiniCalIcons"${ischecked($Show_MiniCalIcons)} /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_ColorLinks">$event_cal{'44'}<br /><span class="small">$event_cal{'45'}</span></label></td>
-                    <td class="windowbg2"><input type="checkbox" name="Show_ColorLinks" id="Show_ColorLinks" $oncolorlinkschecked /></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_ColorLinks" id="Show_ColorLinks"${ischecked($Show_ColorLinks)} /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Scroll_Events">$event_cal{'9'}<br /><span class="small">$event_cal{'10'}</span></label></td>
                     <td class="windowbg2">
                         <select name="Scroll_Events" id="Scroll_Events" size="1">
-                        <option value="0"$aevt1>$userlevel_txt{'none'}</option>
-                        <option value="1"$aevt2>$event_cal{'12'} ($event_cal{'56'})</option>
-                        <option value="3"$aevt4>$event_cal{'12'} ($event_cal{'57'})</option>
-                        <option value="2"$aevt3>$event_cal{'13'}</option>
+                        <option value="0"${isselected($Scroll_Events==0)}>$userlevel_txt{'none'}</option>
+                        <option value="1"${isselected($Scroll_Events==1)}>$event_cal{'12'} ($event_cal{'56'})</option>
+                        <option value="3"${isselected($Scroll_Events==3)}>$event_cal{'12'} ($event_cal{'57'})</option>
+                        <option value="2"${isselected($Scroll_Events==2)}>$event_cal{'13'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="DisplayCalEvents">$event_cal{'20'}</label></td>
-                    <td class="windowbg2"><input type="checkbox" name="DisplayCalEvents" id="DisplayCalEvents" $dcaleventschecked /></td>
+                    <td class="windowbg2"><input type="checkbox" name="DisplayCalEvents" id="DisplayCalEvents"${ischecked($DisplayCalEvents)} /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="DisplayEvents">$event_cal{'34'}<br /><span class="small">$event_cal{'35'}</span></label></td>
                     <td class="windowbg2"><input type="text" name="DisplayEvents" id="DisplayEvents" size="5" value="$DisplayEvents" /></td>
@@ -175,11 +123,11 @@ sub EventCalSet {
                     <td class="windowbg2"><label for="CalShortEvent">$event_cal{'6'}<br /><span class="small">$event_cal{'7'}</span></label></td>
                     <td class="windowbg2">
                         <input type="text" name="CalShortEvent" id="CalShortEvent" size="5" value="$CalShortEvent" /><br />
-                        <input type="checkbox" name="No_ShortUbbc" id="No_ShortUbbc" $onnosubbcchecked /> <span class="small"><label for="No_ShortUbbc">$event_cal{'58'}</label></span>
+                        <input type="checkbox" name="No_ShortUbbc" id="No_ShortUbbc"${ischecked($No_ShortUbbc)} /> <span class="small"><label for="No_ShortUbbc">$event_cal{'58'}</label></span>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Delete_EventsUntil">$event_cal{'52'}</label></td>
-                    <td class="windowbg2"><input type="checkbox" name="Delete_EventsUntil" id="Delete_EventsUntil" value="1" $chkDelete_EventsUntil /></td>
+                    <td class="windowbg2"><input type="checkbox" name="Delete_EventsUntil" id="Delete_EventsUntil" value="1"${ischecked($Delete_EventsUntil)} /></td>
                 </tr><tr>
                     <td class="catbg" colspan="2"><span class="small">$event_cal{'23'}</span></td>
                 </tr><tr>
@@ -190,14 +138,14 @@ sub EventCalSet {
                     <td class="windowbg2"><input type="text" name="CalEventMods" id="CalEventMods" size="35" value="$CalEventMods" /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="CalEventPrivate">$event_cal{'18'}<br /><span class="small">$event_cal{'19'}</span></label></td>
-                    <td class="windowbg2"><input type="checkbox" name="CalEventPrivate" id="CalEventPrivate" $caleventprivatechecked /></td>
+                    <td class="windowbg2"><input type="checkbox" name="CalEventPrivate" id="CalEventPrivate"${ischecked($CalEventPrivate)} /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="CalEventNoName">$event_cal{'24'}</label></td>
                     <td class="windowbg2">
                         <select name="CalEventNoName" id="CalEventNoName" size="1">
-                        <option value="0"$noname1>$userlevel_txt{'gmodadmin'}</option>
-                        <option value="1"$noname2>$userlevel_txt{'members'}</option>
-                        <option value="2"$noname3>$userlevel_txt{'none'}</option>
+                        <option value="0"${isselected($CalEventNoName==0)}>$userlevel_txt{'gmodadmin'}</option>
+                        <option value="1"${isselected($CalEventNoName==1)}>$userlevel_txt{'members'}</option>
+                        <option value="2"${isselected($CalEventNoName==2)}>$userlevel_txt{'none'}</option>
                         </select>
                     </td>
                 </tr><tr>
@@ -212,27 +160,27 @@ sub EventCalSet {
                     <td class="windowbg2"><label for="Show_BirthdaysList">$event_cal{'42'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_BirthdaysList" id="Show_BirthdaysList" size="1">
-                        <option value="0"$devt1>$userlevel_txt{'none'}</option>
-                        <option value="1"$devt2>$userlevel_txt{'members'}</option>
-                        <option value="2"$devt3>$userlevel_txt{'all'}</option>
+                        <option value="0"${isselected($Show_BirthdaysList==0)}>$userlevel_txt{'none'}</option>
+                        <option value="1"${isselected($Show_BirthdaysList==1)}>$userlevel_txt{'members'}</option>
+                        <option value="2"${isselected($Show_BirthdaysList==2)}>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_BirthdayButton">$event_cal{'48'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_BirthdayButton" id="Show_BirthdayButton" size="1">
-                        <option value="0"$eevt1>$userlevel_txt{'none'}</option>
-                        <option value="1"$eevt2>$userlevel_txt{'members'}</option>
-                        <option value="2"$eevt3>$userlevel_txt{'all'}</option>
+                        <option value="0"${isselected($Show_BirthdayButton==0)}>$userlevel_txt{'none'}</option>
+                        <option value="1"${isselected($Show_BirthdayButton==1)}>$userlevel_txt{'members'}</option>
+                        <option value="2"${isselected($Show_BirthdayButton==2)}>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_BirthdayDate">$event_cal{'50'}</label></td>
                     <td class="windowbg2">
                         <select name="Show_BirthdayDate" id="Show_BirthdayDate" size="1">
-                        <option value="0"$fevt1>$userlevel_txt{'none'}</option>
-                        <option value="1"$fevt2>$userlevel_txt{'members'}</option>
-                        <option value="2"$fevt3>$userlevel_txt{'all'}</option>
+                        <option value="0"${isselected($Show_BirthdayDate==0)}>$userlevel_txt{'none'}</option>
+                        <option value="1"${isselected($Show_BirthdayDate==1)}>$userlevel_txt{'members'}</option>
+                        <option value="2"${isselected($Show_BirthdayDate==2)}>$userlevel_txt{'all'}</option>
                         </select>
                     </td>
                 </tr><tr>
@@ -240,10 +188,10 @@ sub EventCalSet {
                     <td class="windowbg2"><input type="text" size="5" name="calsplit" id="calsplit" value="$calsplit" /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_BdColorLinks">$event_cal{'44a'}<br /><span class="small">$event_cal{'45'}</span></label></td>
-                    <td class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks" $onbdcolorlinkschecked /></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_BdColorLinks" id="Show_BdColorLinks"${ischecked($Show_BdColorLinks)} /></td>
                 </tr><tr>
                     <td class="windowbg2"><label for="Show_BdStarsign">$event_cal{'42a'}</label></td>
-                    <td class="windowbg2"><input type="checkbox" name="Show_BdStarsign" id="Show_BdStarsign" $onbdstarchecked /></td>
+                    <td class="windowbg2"><input type="checkbox" name="Show_BdStarsign" id="Show_BdStarsign"${ischecked($Show_BdStarsign)} /></td>
                 </tr>
             </table>
             </div>
@@ -260,6 +208,7 @@ sub EventCalSet {
             </table>
             </div>
             </form>~;
+    $yymain =~ s/\Q{yabb admin_txt14}\E/$admin_txt{'14'}/gxsm;
 
     ## Calendar Event-Icon Setting ##
 
@@ -378,15 +327,13 @@ function removeIcons(remic_id) {
 sub EventCalSet2 {
     is_admin_or_gmod();
 
-    if ( $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
+    if ( $FORM{'rebuiltbd'} && $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
         unlink "$vardir/eventcalbday.db";
+        require Variables::Memberlist;
+        my @birthmembers = keys %memberlist;
 
-        fopen( FILE, "<Variables/Memberlist.pm" );
-        @birthmembers = <FILE>;
-        fclose(FILE);
-        fopen( FILE, ">$vardir/eventcalbday.db" );
-        for my $user_name (@birthmembers) {
-            ( $user_xy, $dummy ) = split /\t/sm, $user_name;
+        my $bdlist = q{};
+        foreach my $user_xy (@birthmembers) {
             chomp $user_xy;
             LoadUser($user_xy);
             $user_xy_bd = ${ $uid . $user_xy }{'bday'};
@@ -401,16 +348,18 @@ sub EventCalSet2 {
                 }
                 if (${ $uid . $user_xy }{'hideage'}){$user_hide = 1;}
                 else {$user_hide = q{};}
-                print {FILE} qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~ or qq~$croak{'print'} eventcalbday.db~;
+                $bdlist .= qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~;
             }
         }
+        fopen( FILE, ">$vardir/eventcalbday.db" );
+        print {FILE} $bdlist or croak qq~$croak{'print'} eventcalbday.db~;
         fclose(FILE);
 
         $yySetLocation = qq~$adminurl?action=eventcal_set;rebok=1~;
         redirectexit();
     }
-    elsif ( $FORM{'del_old_events'} eq "$event_cal{'del'}" ) {
-        del_old_events();
+    elsif ( $FORM{'del_old_events'} && $FORM{'del_old_events'} eq "$event_cal{'del'}" ) {
+        admin_del_old_events();
     }
     else { eventcal_save();}
     return;
@@ -428,11 +377,35 @@ sub EventCalSet3 {
 
     for ( 1 .. $calimg_count ) {
 
-        if ( $FORM{"calidescr[$tempA]"} ne q{} && ( $FORM{"caliimg[$tempA]"} eq q{} && $FORM{"cur_caliimg[$tempA]"} eq q{} ) ) { fatal_error('', $event_cal{'error_image'}); }
-        if ( $FORM{"calidescr[$tempA]"} eq q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) { fatal_error('', $event_cal{'error_desc'}); }
-        if ( $FORM{"calidelbox[$tempA]"} != 1 && $FORM{"calidescr[$tempA]"} ne q{} && ( $FORM{"caliimg[$tempA]"} ne q{} || $FORM{"cur_caliimg[$tempA]"} ne q{} ) ) {
-            if ( $FORM{"caliimg[$tempA]"} ne q{} ) {
-                $FORM{"caliimg[$tempA]"} = UploadFile("caliimg[$tempA]", 'EventIcons', 'png jpg jpeg gif', '100', '0');
+        if (
+            $FORM{"calidescr[$tempA]"}
+            && (   !$FORM{"caliimg[$tempA]"}
+                && !$FORM{"cur_caliimg[$tempA]"} )
+          )
+        {
+            fatal_error( q{}, $event_cal{'error_image'} );
+        }
+        if (
+            !$FORM{"calidescr[$tempA]"}
+            && (   $FORM{"caliimg[$tempA]"}
+                || $FORM{"cur_caliimg[$tempA]"} )
+          )
+        {
+            fatal_error( q{}, $event_cal{'error_desc'} );
+        }
+        if (
+               $FORM{"calidelbox[$tempA]"} != 1
+            && $FORM{"calidescr[$tempA]"}
+            && (   $FORM{"caliimg[$tempA]"}
+                || $FORM{"cur_caliimg[$tempA]"} )
+          )
+        {
+            if ( $FORM{"caliimg[$tempA]"} ) {
+                $FORM{"caliimg[$tempA]"} = UploadFile(
+                    "caliimg[$tempA]",  'EventIcons',
+                    'png jpg jpeg gif', '100',
+                    '0'
+                );
                 unlink "$htmldir/EventIcons/$FORM{\"cur_caliimg[$tempA]\"}";
             }
             else {
@@ -461,11 +434,11 @@ qq~\$CalIconURL[$count] = "$FORM{"caliimg[$tempA]"}";\n\$CalIDescription[$count]
 sub eventcal_save {
     is_admin_or_gmod();
 
-    if ( $FORM{'Event_TodayColor'}   eq q{} ) { fatal_error('invalid_value', "$event_cal{'8'}"); }
-    if ( $FORM{'DisplayEvents'}      eq q{} ) { fatal_error('invalid_value', "$event_cal{'34'}"); }
-    if ( $FORM{'CalShortEvent'}      eq q{} ) { fatal_error('invalid_value', "$event_cal{'6'}"); }
-    if ( $FORM{'MaxCalMessLen'}      eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498e'}"); }
-    if ( $FORM{'AdMaxCalMessLen'}    eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498f'}"); }
+    if ( !$FORM{'Event_TodayColor'} ) { fatal_error('invalid_value', "$event_cal{'8'}"); }
+    if ( $FORM{'DisplayEvents'} eq q{} ) { fatal_error('invalid_value', "$event_cal{'34'}"); }
+    if ( $FORM{'CalShortEvent'} eq q{} ) { fatal_error('invalid_value', "$event_cal{'6'}"); }
+    if ( $FORM{'MaxCalMessLen'} eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498e'}"); }
+    if ( $FORM{'AdMaxCalMessLen'} eq q{} ) { fatal_error('invalid_value', "$admin_txt{'498f'}"); }
     # Set 1 or 0 if box was checked or not
     map { ${$_} = $FORM{$_} ? 1 : 0; }
           qw{Show_MiniCalIcons CalEventPrivate DisplayCalEvents ShowSunday Show_ColorLinks No_ShortUbbc Show_BdColorLinks Show_BdStarsign Show_caltoday};
@@ -473,7 +446,7 @@ sub eventcal_save {
 # If empty fields are submitted, set them to default-values to save yabb from crashing
         $DisplayEvents = $FORM{'DisplayEvents'};
         $DisplayEvents =~ s/[^\d]//gxsm;
-        $DisplayEvents    = $DisplayEvents            || 0;
+        $DisplayEvents ||= 0;
         $Scroll_Events    = $FORM{'Scroll_Events'}    || 0;
         $Show_EventCal    = $FORM{'Show_EventCal'}    || 0;
         $Show_EventButton = $FORM{'Show_EventButton'} || 0;
@@ -491,19 +464,18 @@ sub eventcal_save {
         }
         $Show_BirthdayDate = $FORM{'Show_BirthdayDate'} || 0;
         $CalEventNoName    = $FORM{'CalEventNoName'}    || 0;
-        $Event_TodayColor =
-          uc( $FORM{'Event_TodayColor'} || '#f00' ) . '#000';
+        $Event_TodayColor = uc( $FORM{'Event_TodayColor'} || '#f00' ) . '#000';
         $Event_TodayColor =~ s/[^a-fA-F0-9#]//gxsm;
         $Event_TodayColor = substr $Event_TodayColor, 0, 7;
         $Delete_EventsUntil = $FORM{'Delete_EventsUntil'} || 0;
         $CalShortEvent = $FORM{'CalShortEvent'} || 0;
         $CalShortEvent =~ s/[^\d]//gxsm;
         $CalEventPerms = $FORM{'CalEventPerms'} || q{};
-        $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gsm;
+        $CalEventPerms =~ s/^\s*,\s*|\s*,\s*$//gxsm;
         $CalEventPerms =~ s/\s*,\s*/,/gsm;
         $CalEventMods = $FORM{'CalEventMods'} || q{};
-        $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gsm;
-        $CalEventMods =~ s/\s*,\s*/,/gsm;
+        $CalEventMods =~ s/^\s*,\s*|\s*,\s*$//gxsm;
+        $CalEventMods =~ s/\s*,\s*/,/gxsm;
         $MaxCalMessLen = $FORM{'MaxCalMessLen'};
         $MaxCalMessLen =~ s/[^\d]//gxsm;
         $AdMaxCalMessLen = $FORM{'AdMaxCalMessLen'};
@@ -519,9 +491,10 @@ sub eventcal_save {
     return;
 }
 
-sub del_old_events {
+sub admin_del_old_events {
     $caltoday = 1;
-    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) = gmtime( $date );
+    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
+      gmtime $date;
         $year += 1900;
         $mon++;
         $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
@@ -530,8 +503,8 @@ sub del_old_events {
     my @calinput = <EVENTFILE>;
     fclose(EVENTFILE);
     for my $i ( 0 .. $#calinput ) {
-        ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef ) =
-          split /[|]/xsm, $calinput[$i];
+        ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2, undef )
+          = split /[|]/xsm, $calinput[$i];
         chop $c_type2;
         if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
     }
@@ -543,4 +516,5 @@ sub del_old_events {
     redirectexit();
     return;
 }
+
 1;

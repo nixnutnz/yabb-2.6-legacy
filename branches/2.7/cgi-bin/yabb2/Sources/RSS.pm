@@ -21,6 +21,7 @@ $rsspmver  = 'YaBB 2.7.00 $Revision$';
 if (@rsspmmods) {
     $rsspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Change the error routine for here.
@@ -101,8 +102,8 @@ sub RSS_board {
         # Does it need to be returned as a 304?
         if ( $i == 0 ) {    # Do this for the first request only
             $cachedate = RFC822Date($mdate);
-            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate
-                || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
+            if (   ($ENV{'HTTP_IF_NONE_MATCH'} && $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate)
+                || ($ENV{'HTTP_IF_MODIFIED_SINCE'} && $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate ))
             {
                 Send304NotModified();
 
@@ -167,7 +168,7 @@ sub RSS_board {
             $post = <TOPIC>;
         }
         fclose(TOPIC);
-        if ( $post ne q{} ) {
+        if ( $post ) {
             (
                 undef, undef, undef, undef,    $musername,
                 undef, undef, undef, $message, $ns
@@ -201,7 +202,7 @@ sub RSS_board {
             $yymain .= qq~      <pubDate>$realdate</pubDate>
 ~;
         }
-        if ( $message ne q{} ) {
+        if ( $message ) {
             ( $message, undef ) = Split_Splice_Move( $message, $curnum );
             $message =~
 s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/$maintxt{'rsscode'}/eigxsm;
@@ -224,7 +225,7 @@ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/$maintxt{'rsscode'}/eigxsm;
         # Finish up the item
         $yymain .= q~       </item>
 ~;
-        $yymain =~ s/\Qdata-rel\E/rel/gxsm;
+        $yymain =~ s/data-rel/rel/gxsm;
         $i++;    # Increment
     }
 
@@ -272,7 +273,7 @@ sub RSS_recent {
             $mydesc  = $catname;
         }
 
-        *get_subboards = sub {
+        local *get_subboards = sub {
             my @brd = @_;
             for my $brd (@brd) {
                 ( $boardname{$brd}, $boardperms, $boardview ) = split /[|]/xsm,
@@ -344,8 +345,8 @@ sub RSS_recent {
         # Does it need to be returned as a 304?
         if ( $i == 0 ) {    # Do this for the first request only
             $cachedate = RFC822Date($mdate);
-            if (   $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate
-                || $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate )
+            if (   ($ENV{'HTTP_IF_NONE_MATCH'} && $ENV{'HTTP_IF_NONE_MATCH'} eq $cachedate)
+                || ($ENV{'HTTP_IF_MODIFIED_SINCE'} && $ENV{'HTTP_IF_MODIFIED_SINCE'} eq $cachedate ))
             {
                 Send304NotModified();
 
@@ -405,7 +406,7 @@ sub RSS_recent {
         }
         fclose(TOPIC);
 
-        if ( $post ne q{} ) {
+        if ( $post ) {
             (
                 undef, undef, undef, undef,    $musername,
                 undef, undef, undef, $message, $ns
@@ -443,7 +444,7 @@ sub RSS_recent {
             $yymain .= qq~          <pubDate>$realdate</pubDate>\n~;
         }
 
-        if ( $message ne q{} ) {
+        if ( $message ) {
             ( $message, undef ) = Split_Splice_Move( $message, $curnum );
             if ($enable_ubbc) {
                 LoadUser($musername);
@@ -461,7 +462,7 @@ sub RSS_recent {
 
         $yymain .= qq~      </item>\n
 ~;
-        $yymain =~ s/\Qdata-rel\E/rel/gxsm;
+        $yymain =~ s/data-rel/rel/gxsm;
     }
 
     ToChars($boardname);

@@ -29,6 +29,7 @@ $addmoderatorspmver  = 'YaBB 2.7.00 $Revision$';
 if (@addmoderatorspmmods) {
     $addmoderatorspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('AddModerators');
@@ -37,7 +38,7 @@ get_template('Other');
 sub AddModerators {
     $addbdmod = q{};
 
-    *get_subboards = sub {
+    local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         $modsel = q{};
@@ -47,8 +48,8 @@ sub AddModerators {
 
             ( $boardname, $boardperms, $boardview ) =
               split /[|]/xsm, $board{$board};
-            if (   ${ $uid . $board }{'ann'} == 1
-                || ${ $uid . $board }{'rbin'} == 1
+            if (   ${ $uid . $board }{'ann'}
+                || ${ $uid . $board }{'rbin'}
                 || $boardname =~ m{https?://}xsm )
             {
                 next;
@@ -82,40 +83,36 @@ sub AddModerators {
     }
     $showProfile .= $myshowProfile;
     $showProfile =~ s/\Q{yabb addbdmod}\E/$addbdmod/xsm;
+    $showProfile =~ s/\Q{yabb addmod_txt_addmod_title}\E/$addmod_txt{'addmod_title'}/gxsm;
+    $showProfile =~ s/\Q{yabb addmod_txt_addmod_text}\E/$addmod_txt{'addmod_txt'}/gxsm;
+    $showProfile =~ s/\Q{yabb addmod_txt_addmod_all}\E/$addmod_txt{'addmod_all'}/gxsm;
     return;
 }
 
 sub AddModerators2 {
     my @x    = @_;
     my $user = $x[0];
-    @modbd = split /,\s*/xsm, $x[1];
+    my @boardcontrol = ();
+    my @modbd = split /,\s*/xsm, $x[1];
     chomp @modbd;
-    fopen( FORUMCNTR, "$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    my @boardcntr = <FORUMCNTR>;
-    fclose(FORUMCNTR);
-    fopen( FORUMCNT, ">$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
+    require "$boardsdir/forum.control";
 
-    for my $boardline (@boardcntr) {
-        $boardline =~ s/[\r\n]//gxsm;
-        my @newline   = split /[|]/xsm, $boardline;
-        my @bdmodlist = split /\//xsm,  $newline[4];
+    for my $boardline (keys %control) {
+        my @bdmodlist = split /\//xsm, ${$control{$boardline}}[3];
         chomp @bdmodlist;
-        $newline[4] = q{};
+        ${$control{$boardline}}[3] = q{};
         $bdi = 0;
         foreach (@bdmodlist) {
             if ( $_ eq $user ) { splice @bdmodlist, $bdi, 1; last; }
             $bdi++;
         }
         foreach (@modbd) {
-            if ( $_ eq $newline[1] ) { push @bdmodlist, $user; last; }
+            if ( $_ eq $boardline ) { push @bdmodlist, $user; last; }
         }
-        $newline[4] = join q{/}, @bdmodlist;
-        $newline = join q{|}, @newline;
-        print {FORUMCNT} "$newline\n" or croak "$croak{'print'} FORUMCNT";
+        ${$control{$boardline}}[3] = join q{/}, @bdmodlist;
     }
-    fclose(FORUMCNT);
+
+    write_forum_control();
     return;
 }
 
@@ -183,6 +180,9 @@ function copy_option(to_select) {
 </script>~;
     $yymain .= $myselectmods;
     $yymain =~ s/\Q{yabb to_board}\E/$to_board/xsm;
+    $yymain =~ s/\Q{yabb addmod_txt_modsearch}\E/$addmod_txt{'modsearch'}/xsm;
+    $yymain =~ s/\Q{yabb addmod_txt_instruct}\E/$addmod_txt{'instruct'}/xsm;
+    $yymain =~ s/\Q{yabb addmod_txt_addselected}\E/$addmod_txt{'addselected'}/xsm;
 
     $modmbrcnt = 0;
     my $modmbr = q{};
@@ -211,10 +211,10 @@ qq~                <option value="$thisMod" selected="selected">$thisModname</op
     $modgrpcnt = 0;
     my $modgrp = q{};
     for (@nopostorder) {
-        @groupinfo = split /[|]/xsm, $NoPost{$_};
+        @groupinfo = @{$NoPost{$_}};
         $modgrp .= qq~<option value="$_"~;
         for ( split /\//xsm, $moderatorgroups ) {
-            ( $lineinfo, undef ) = split /[|]/xsm, $NoPost{$_}, 2;
+            ( $lineinfo, undef ) = @{$NoPost{$_}};
             if ( $lineinfo eq $groupinfo[0] ) {
                 $modgrp .= q~ selected="selected" ~;
             }
@@ -230,41 +230,25 @@ qq~                <option value="$thisMod" selected="selected">$thisModname</op
         $yymain =~ s/\Q{yabb modgrp}\E/$modgrp/gxsm;
     }
     $yymain .= $myselectmods_d;
+    $yymain =~ s/\Q{yabb addmod_txt_pageclose}\E/$addmod_txt{'pageclose'}/gxsm;
+    $yymain =~ s/\Q{yabb addmod_txt_addmod_save}\E/$addmod_txt{'addmod_save'}/gxsm;
     return;
 }
 
 sub ModSearch2 {
     $modboard = $INFO{'toboard'};
     my @mods = split /,\s*/xsm, $FORM{'moderators'};
+    $FORM{'moderatorgroups'} =~ s/,\s+/\//xsm;
     if ($do_scramble_id) {
         for (@mods) {
             $_ = decloak($_);
         }
     }
-    fopen( FORUMCNTR, "$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    my @boardcntr = <FORUMCNTR>;
-    fclose(FORUMCNTR);
+    require "$boardsdir/forum.control";
+    ${$control{$modboard}}[3] = join q{/}, @mods;
+    ${$control{$modboard}}[4] = $FORM{'moderatorgroups'};
 
-    my $myline = q{};
-    for my $boardline (@boardcntr) {
-        $boardline =~ s/[\r\n]//gxsm;
-        @newline = split /[|]/xsm, $boardline;
-        if ( $newline[1] eq $modboard ) {
-            $newline[4] = join q{/}, @mods;
-            $FORM{'moderatorgroups'} =~ s/,\s+/\//xsm;
-            $newline[5] = $FORM{'moderatorgroups'};
-            $newline = join q{|}, @newline;
-            $myline .= "$newline\n";
-        }
-        else {
-            $myline .= "$boardline\n";
-        }
-    }
-    fopen( FORUMCNT, ">$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    print {FORUMCNT} $myline or croak "$croak{'print'} FORUMCNT";
-    fclose(FORUMCNT);
+    write_forum_control();
 
     $yySetLocation = qq~$scripturl?board=$INFO{'toboard'}~;
     redirectexit();

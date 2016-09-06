@@ -24,6 +24,7 @@ $contexthelppmver  = 'YaBB 2.7.00 $Revision$';
 if (@contexthelppmmods) {
     $contexthelppmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ContextScript {

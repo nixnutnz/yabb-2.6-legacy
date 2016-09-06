@@ -23,6 +23,8 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 use Encode qw(decode encode);
 use Encode::Guess;
+use File::Copy;
+use utf8;
 our $VERSION = '2.7.00';
 
 my $convertlangplver = 'YaBB 2.7.00 $Revision$';
@@ -79,10 +81,10 @@ if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
 my $scripturl = "$boardurl/$yyexec.$yyext";
 
 my $lang        = 'ISO-8859-1';
-my $convertlang = './ConvertLang';
+my $convertlang = "$boarddir/ConvertLang";
 
 # Make sure the module path is present
-push @INC, './Modules';
+push @INC, "$boarddir/Modules";
 
 require Sources::Subs;
 require Sources::System;
@@ -142,6 +144,10 @@ TXT
                     <p>IDs of the boards <strong>not</strong> in the majority language:
                         <br /><textarea name="langmin" cols="20" rows="2" /></textarea>
                     </p>
+                    <p>If your forum used <b>both</b> ISO-8859-1 and windows-1251 (Cyrillic) encodings, type in the <b>Name/Folder</b> of the Language Pack(s) in the <strong>minority language</strong>  (one Language per line). Otherwise leave this blank.</p>
+                    <p>Names of the Languages <strong>not</strong> in the majority language:
+                        <br /><textarea name="langpack" cols="20" rows="2" /></textarea>
+                    </p>
 TXT
         }
         $yymain = qq~
@@ -200,12 +206,19 @@ $langtxt
             $j =~ tr/\n//d;
             $mincats .= $j . q{ };
         }
+        my @langpack = split /\n/xsm, $FORM{'langpack'};
+        foreach my $j (@langpack) {
+            $j =~ tr/\r//d;
+            $j =~ tr/\n//d;
+            $minpack .= $j . q{ };
+        }
 
         my $langfile = << "EOF";
 \$lang = '$FORM{'lang'}';
 \$lang2 = '$FORM{'minlang'}';
 \@minbrds = qw( $minbrds );
 \@mincats = qw( $mincats );
+\@minpack = qw( $minpack );
 
 1;
 EOF
@@ -722,7 +735,7 @@ EOF
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minute(s)</i>.<br />
                 <br />
                 <br />
-                <span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
+                <span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, Check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the error in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br />
                 <br />
                 Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
@@ -769,9 +782,19 @@ sub PrepareConv {
 
 sub ConvertMembers {
     my %minmems = ();
-    if ( -e 'Variables/memconv.txt' ) {
-        require 'Variables/memconv.txt';
-    }
+    if ( @minpack ) {
+        require "$convertlang/Variables/Memberlist.pm";
+        @mlst = keys %memberlist;
+        foreach my $j (@mlst) {
+            LoadUser($j);
+            $minmems{$j} = 0;
+            foreach ( @minpack ) {
+                if ( ${ $uid . $j }{'language'} eq $_ ) {
+                    $minmems{$j} = 1;
+                }
+            }
+        }
+     }
     else {
         require "$convertlang/Variables/Memberlist.pm";
         @mlst = keys %memberlist;
@@ -797,21 +820,27 @@ sub ConvertMembers {
     }
 
     require "$convertlang/Variables/Memberinfo.pm";
-    my $meminfo = q{};
     @memfile = keys %memberinf;
     for my $user (@memfile) {
         if ( $minmems{$user} == 1 ) {
             $langua = 'CP1251';
         }
         else { $langua = 'ISO-8859-1'; }
-        my @meminf = split /[|]/xsm, $memberinf{$user};
+        my @meminf = @{$memberinf{$user}};
         encode( 'utf8', decode( $langua, $meminf[0] ) );
         encode( 'utf8', decode( $langua, $meminf[1] ) );
-        $userinfo =
-          qq~'$meminf[0]|$meminf[1]|$meminf[2]|$meminf[3]|$meminf[4]|'~;
-        $meminfo .= qq~\$memberinf{'$user'} = $userinfo;\n~;
+        $memberinf{$user} = [$meminf[0], $meminf[1], $meminf[2], $meminf[3], $meminf[4]];
     }
-    open $NMEMFILE, '>', 'Variables/Memberinfo.pm'
+    my @memberinf = ();
+    foreach my $cnt ( sort keys %memberinf ) {
+        my $prline = join q{', '}, @{$memberinf{$cnt}};
+        my $newline = qq~\$memberinf{'$cnt'} = ['$prline'];~;
+        push @memberinf, $newline . "\n";
+    }
+    my $meminfo .= join q{}, @memberinf;
+    $meminfo .= qq~\n1;\n\n~;
+ 
+    open $NMEMFILE, '>', "$vardir/Memberinfo.pm"
       or setup_fatal_error( "$maintext_23 Variables/Memberinfo.pm:", 1 );
     print {$NMEMFILE} $meminfo or croak 'cannot print NMEMFILE';
     close $NMEMFILE or croak "cannot close $NMEMFILE";
@@ -875,7 +904,7 @@ sub MoveBoards {
             @unique = grep { !$seen{$_}++ } @catval;
             $val2   = join q{,}, @unique;
 
-            $brdinfo .= qq~\$cat{'$key'} = qq\~$val2\~;\n~;
+            $brdinfo .= qq~\$cat{'$key'} = q\~$val2\~;\n~;
         }
         while ( ( $key, $value ) = each %catinfo ) {
             my ( $catname, $therest ) = split /[|]/xsm, $value, 2;
@@ -895,11 +924,11 @@ sub MoveBoards {
             if ( $lingua eq 'ISO-8859-1' ) {
                 $value = ansi($value);
             }
-            Encode::from_to( $value, $lingua, 'utf-8' );
+            $value = encode( 'utf8', decode( $lingua, $value ) );
             @langvala = split /[|]/xsm, $value;
             pop @langvala;
             $value = join q{|}, @langvala;
-            $brdinfo .= qq~\$catinfo{'$key'} = qq\~$value\~;\n~;
+            $brdinfo .= qq~\$catinfo{'$key'} = q\~$value\~;\n~;
         }
         while ( ( $key, $value ) = each %board ) {
             my ( $boardname, $therest ) = split /[|]/xsm, $value, 2;
@@ -919,18 +948,18 @@ sub MoveBoards {
             if ( $lingua eq 'ISO-8859-1' ) {
                 $value = ansi($value);
             }
-            Encode::from_to( $value, $lingua, 'utf-8' );
+            $value = encode( 'utf8', decode( $lingua, $value ) );
             @langvalb = split /[|]/xsm, $value;
             pop @langvalb;
             $value = join q{|}, @langvalb;
-            $brdinfo .= qq~\$board{'$key'} = qq\~$value\~;\n~;
+            $brdinfo .= qq~\$board{'$key'} = q\~$value\~;\n~;
         }
         while ( ( $key, $value ) = each %subboard ) {
             if ( $value ne q{} ) {
-                $brdinfo .= qq~\$subboard{'$key'} = qq\~$value\~;\n~;
+                $brdinfo .= qq~\$subboard{'$key'} = q\~$value\~;\n~;
             }
         }
-        $brdinfo .= qq~\n1;~;
+        $brdinfo .= qq~\n1;\n~;
         open my $NEWBRD, '>', "$boardsdir/forum.master"
           or croak 'cannot close NEWBRD';
         print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
@@ -946,7 +975,6 @@ sub MoveBoards {
         for my $i (@brdinfo) {
             @brdline = split /[|]/xsm, $i;
 
-          #F3|20|186|1284471754|framework|1284471754|0|Attack of Conscience|xx|0
             $brdline{ $brdline[0] } = [ 0, $i ];
             for my $brd (@minbrds) {
                 if ( $brdline[0] eq $brd ) {
@@ -962,13 +990,13 @@ sub MoveBoards {
                 if ( $lang2 eq 'ISO-8859-1' ) {
                     $brdline2 = ansi($brdline2);
                 }
-                Encode::from_to( $brdline2, $lang2, 'utf-8' );    # or whatever
+                $brdline2 = encode( 'utf8', decode( $lang2, $brdline2 ) );
             }
             else {
                 if ( $lang eq 'ISO-8859-1' ) {
                     $brdline2 = ansi($brdline2);
                 }
-                Encode::from_to( $brdline2, $lang, 'utf-8' );
+                $brdline2 = encode( 'utf8', decode( $lang2, $brdline2 ) );
             }
             push @brdinfo2, "$brdline2\n";
         }
@@ -977,40 +1005,37 @@ sub MoveBoards {
         print {$NEWBD} @brdinfo2 or croak 'cannot print NEWBD';
         close $NEWBD or croak 'cannot close NEWBD';
 
-        open my $OLDCON, '<', "$convertlang/Boards/forum.control"
-          or croak 'cannot open OLDCON';
-        @brdcon = <$OLDCON>;
-        close $OLDCON or croak 'cannot close OLDCON';
+        require "$convertlang/Boards/forum.control";
 
         my @brdcon2 = ();
         my %brdcon  = ();
-        for (@brdcon) {
-            @brdconline = split /[|]/xsm, $_;
-            $brdcon{ $brdconline[1] } = [ 0, $_ ];
+
+        foreach my $cnt ( keys %control ) {
+            $brdcon{ $cnt } = [ 0, ${$control{$cnt}}[2] ];
             for my $line (@minbrds) {
-                if ( $brdconline[1] eq $line ) {
-                    $brdcon{ $brdconline[1] }[0] = 1;
+                if ( $brd_id eq $line ) {
+                    $brdcon{ $brd_id } = [ 1, ${$control{$cnt}}[2] ];
                 }
             }
         }
-        my @brdconkeys = keys %brdcon;
-        for my $i (@brdconkeys) {
-            if ( $brdcon{$i}[0] == 1 ) {
+        for my $i (keys %brdcon) {
+            $linga2 = $lang;
+            ( $isling, $brdconline2 ) = @{$brdcon{$i}};
+            if ( $isling == 1 ) {
                 $linga2 = $lang2;
             }
-            else { $linga2 = $lang; }
-            $brdconline2 = $brdcon{$i}[1];
             if ( $linga2 eq 'ISO-8859-1' ) {
                 $brdconline2 = ansi($brdconline2);
             }
-            my $decoder = guess_encoding($brdconline2);
-            Encode::from_to( $brdconline2, $decoder, 'utf-8' );
-            push @brdcon2, $brdconline2;
+            $brdconline2 = encode( 'utf8', decode( $linga2, $brdconline2 ) );
+            ${$control{$i}}[2] = $brdconline2;
         }
-        open my $NEWCON, '>', "$boardsdir/forum.control"
-          or croak 'cannot close NEWCON';
-        print {$NEWCON} @brdcon2 or croak 'cannot print NEWCON';
-        close $NEWCON or croak 'cannot close NEWCON';
+        foreach my $cnt ( sort keys %control ) {
+            my $prline = join q{', '}, @{$control{$cnt}};
+            my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
+            push @boardcontrol, $newline . "\n";
+        }
+        write_forum_control();
     }
     else {
         my @brdlst = ( 'forum.master', 'forum.totals', 'forum.control', );
@@ -1024,11 +1049,10 @@ sub MoveBoards {
             if ( $lang eq 'ISO-8859-1' ) {
                 $brdinfo = ansi($brdinfo);
             }
-            my $decoder = guess_encoding($brdinfo);
-            Encode::from_to( $brdinfo, $decoder, 'utf-8' );
+            $brdinfo = encode( 'utf8', decode( $lang, $brdinfo ) );
             open my $NEWBRD, '>', "$boardsdir/$newbrd"
               or croak 'cannot close NEWBRD';
-            print {$NEWBRD} "$brdinfo/n$flag" or croak 'cannot print NEWBRD';
+            print {$NEWBRD} "$brdinfo\n$flag" or croak 'cannot print NEWBRD';
             close $NEWBRD or croak 'cannot close NEWBRD';
         }
     }
@@ -1052,7 +1076,7 @@ sub MoveBoards {
                 if ( $lingua eq 'ISO-8859-1' ) {
                     $brdinfo = ansi($brdinfo);
                 }
-                Encode::from_to( $brdinfo, $lingua, 'utf-8' );
+                $brdinfo = encode( 'utf8', decode( $lingua, $brdinfo ) );
                 open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                   or croak 'cannot open NEWBRD';
                 print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
@@ -1117,8 +1141,7 @@ sub MoveMessages {
                     if ( $lingua eq 'ISO-8859-1' ) {
                         $messagelines = ansi($messagelines);
                     }
-
-                    Encode::from_to( $messagelines, $lingua, 'utf-8' );
+                    $messagelines = encode( 'utf8', decode( $lingua, $messagelines ) );
                     open my $NMSGFILE, '>',
                       "$datadir/$thread.$ext"
                       or
@@ -1188,7 +1211,7 @@ sub MoveVariables {
                 if ( $lang eq 'ISO-8859-1' ) {
                     $oldvar = ansi($oldvar);
                 }
-                Encode::from_to( $oldvar, $lang, 'utf-8' );
+                $oldvar = encode( 'utf8', decode( $lang, $oldvar ) );
                 open my $NEWVAR, '>', "$vardir/$file"
                   or croak 'cannot open NEWVAR';
                 print {$NEWVAR} $oldvar or croak "cannot print $vardir/$file";
@@ -1270,7 +1293,7 @@ sub tempstarter {
     $YaBBversion = 'YaBB 2.7.00';
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    push @INC, "$boarddir/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
         $yyiis = 1;
@@ -1374,11 +1397,10 @@ sub SimpleOutput {
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+    <meta charset="utf-8">
     <title>YaBB 2.7.00 Setup</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-
 <!-- Main Content -->
 <div style="height: 40px;">&nbsp;</div>
 <div style="text-align:center">$yymain</div>
@@ -1550,9 +1572,6 @@ sub FixLang {
     for my $file (@varlist) {
         unlink "$convertlang/Variables/$file";
     }
-
-    require File::Copy;
-    File::Copy->import('copy');
     opendir $BDIR, "$boardsdir"
       or setup_fatal_error( "Cannot open $boardsdir! ", 1 );
     @bdlist = grep { -f "$boardsdir/$_" } readdir $BDIR;

@@ -35,9 +35,9 @@ $favorites_template .= qq~<!-- Board Description start -->
         <td><b>{yabb board}</b></td>
         <td>{yabb description} </td>
         <td class="center small">
-            <span class="bold">$my_favs{'330'}:</span> {yabb threadcount}
+            <span class="bold"{yabb my_favs_330}:</span> {yabb threadcount}
             <br />
-            <span class="bold">$my_favs{'21'}:</span> {yabb messagecount}
+            <span class="bold">{yabb my_favs_21}:</span> {yabb messagecount}
         </td>
     </tr>
 </table>
@@ -51,10 +51,10 @@ $favorites_template .= qq~<!-- Board Description start -->
     </colgroup>
     <tr>
         <td class="titlebg center" colspan="2">&nbsp;</td>
-        <td class="titlebg">$my_favs{'70'} / $my_favs{'109'}</td>
-        <td class="titlebg center">$my_favs{'110'}</td>
-        <td class="titlebg center">$my_favs{'301'}</td>
-        <td class="titlebg center">$my_favs{'22'}</td>
+        <td class="titlebg">{yabb my_favs_70} / {yabb my_favs_109}</td>
+        <td class="titlebg center">{yabb my_favs_110}</td>
+        <td class="titlebg center">{yabb my_favs_301}</td>
+        <td class="titlebg center">{yabb my_favs_22}</td>
         {yabb admin column}
     </tr>
     {yabb threadblock}
@@ -82,7 +82,7 @@ $favorites_template .= qq~<!-- Icon and access info start -->
 ~;
 
 $no_favs = qq~<tr>
-        <td class="windowbg2 center" style="padding-bottom:1em;" colspan="8"><br />$messageindex_txt{'840'}</td>
+        <td class="windowbg2 center" style="padding-bottom:1em;" colspan="8"><br />{yabb messageindex_txt_840}</td>
     </tr>~;
 
 
@@ -103,13 +103,13 @@ $admincolumn = qq~<td class="windowbg center" style="white-space: nowrap">{yabb 
 # Sticky or global announcements header    #
 
 $stickyheader = qq~<tr>
-                    <td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'1'}</td>
+                    <td colspan="{yabb colspan}" class="catbg">&nbsp;{yabb messageindex_stickygrp_1}</td>
                 </tr>~;
 
 # Non sticky or global announcements header#
 
 $nonstickyheader = qq~<tr>
-                    <td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'2'}</td>
+                    <td colspan="{yabb colspan}" class="catbg">&nbsp;{yabb messageindex_stickygrp_2}</td>
                 </tr>~;
 
 # Thread bar                               #
@@ -118,7 +118,7 @@ $threadbar = qq~<tr>
                     <td class="windowbg center">{yabb threadpic}</td>
                     <td class="windowbg center">{yabb icon}</td>
                     <td class="windowbg2">
-                        <div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}<br /><span class="small">$my_favs{'527'} {yabb starttime} $my_favs{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span></div>
+                        <div style="float: left; width: 95%;">{yabb favorite} {yabb new} {yabb poll}{yabb subjectlink}<br /><span class="small">{yabb my_favs_527} {yabb starttime} {yabb my_favs_526} {yabb starter}{yabb pages}<br />{yabb permalink}</span></div>
                         <div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
                     </td>
                     <td class="windowbg center">{yabb replies}</td>
@@ -126,7 +126,7 @@ $threadbar = qq~<tr>
                     <td class="windowbg2">
                         <span class="small">
                         {yabb lastpostlink}<br />
-                        <b>$my_favs{'525'}:</b> {yabb lastposter}</span></td>
+                        <b>{yabb my_favs_525}:</b> {yabb lastposter}</span></td>
                         {yabb admin column}
                 </tr>~;
 
@@ -143,7 +143,7 @@ $threadbarMoved = qq~<tr>
 
 $subfooterbar = qq~<tr>
                     <td class="titlebg right" colspan="6">
-                        <span class="small">{yabb admin selector} <label for="checkall">$my_favs{'737'}</label></span>
+                        <span class="small">{yabb admin selector} <label for="checkall">{yabb my_favs_737}</label></span>
                     </td>
                     <td class="titlebg center" style="white-space: nowrap">
                     {yabb admin checkboxes}
@@ -172,7 +172,7 @@ $my_boardnote = qq~
 </script>
     <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
     <div class="tabtitle" style="padding-left:1em; line-height:3em; vertical-align:bottom">
-         <img src="$imagesdir/$brd_notify_img" alt="notify_txt{'136'}" title="$notify_txt{'136'}" /> <b>$notify_txt{'136'}</b>
+         <img src="$imagesdir/$brd_notify_img" alt="{yabb notify_txt136}" title="{yabb notify_txt136}" /> <b>{yabb notify_txt136}</b>
          {yabb note_brd}
     </div>
     <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
@@ -185,7 +185,7 @@ $my_boardnote = qq~
     </form>
     <form action="$scripturl?action=notify4" method="post" name="threadnotify">
     <div class="tabtitle" style="padding-left:1em; line-height:3em; vertical-align:bottom">
-                <img src="$imagesdir/$brd_notify_img" alt="$notify_txt{'118'}" title="$notify_txt{'118'}" /> <b>$notify_txt{'118'}</b>
+                <img src="$imagesdir/$brd_notify_img" alt="{yabb notify_txt118}" title="{yabb notify_txt118}" /> <b>{yabb notify_txt118}</b>
      </div>
     <table class="pad_4px cs_thin">
         <colgroup>
@@ -202,9 +202,9 @@ $my_boardblock = qq~<tr>
         </td>
         <td class="windowbg center">
             <select name="{yabb brd}">
-                <option value="1"{yabb selected1}>$notify_txt{'132'}</option>
-                <option value="2"{yabb selected2}>$notify_txt{'133'}</option>
-                <option value="3">$notify_txt{'134'}</option>
+                <option value="1"{yabb selected1}>{yabb notify_txt132}</option>
+                <option value="2"{yabb selected2}>{yabb notify_txt133}</option>
+                <option value="3">{yabb notify_txt134}</option>
             </select>
         </td>
     </tr>~;
@@ -212,25 +212,25 @@ $my_boardblock = qq~<tr>
 $my_nonotes = qq~<tr>
         <td class="windowbg2" colspan="2">
             <br />
-            $notify_txt{'139'}<br /><br />
+            {yabb notify_txt139}<br /><br />
             </td>
         </tr>~;
 
 $my_notebrdlist = qq~<tr>
-        <td class="catbg"><b>$notify_txt{'135'}</b></td>
-        <td class="catbg center"><b>$notify_txt{'138'}</b></td>
+        <td class="catbg"><b>{yabb notify_txt135}</b></td>
+        <td class="catbg center"><b>{yabb notify_txt138}</b></td>
     </tr>
     {yabb boardblock}
     <tr>
         <td class="windowbg center" colspan="2">
-            <input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
+            <input type="submit" value="{yabb notify_txt124}" class="button" />&nbsp; <input type="reset" value="{yabb notify_txt121}" class="button" />
         </td>
     </tr>~;
 
 $my_threadblock = qq~<tr>
         <td class="windowbg">
-            <b><a href="$scripturl?num={yabb tnote0}/new">{yabb tnote2} {yabb tnote1}</a></b> $notify_txt{'120'} {yabb tnote3}
-            <br /><span class="small">{yabb tnote4} &raquo; {yabb tnote5} - $notify_txt{'lastpost'} {yabb tnote6}</span>
+            <b><a href="$scripturl?num={yabb tnote0}/new">{yabb tnote2} {yabb tnote1}</a></b> {yabb notify_txt120} {yabb tnote3}
+            <br /><span class="small">{yabb tnote4} &raquo; {yabb tnote5} - {yabb notify_txtlastpost} {yabb tnote6}</span>
         </td>
         <td class="windowbg center">
             <input type="checkbox" name="thread-{yabb tnote0}" value="1" />
@@ -240,25 +240,25 @@ $my_threadblock = qq~<tr>
 $my_nothreads = qq~<tr>
         <td class="windowbg2" colspan="2">
             <br />
-            $notify_txt{'119'}<br /><br />
+            {yabb notify_txt119}<br /><br />
         </td>
     </tr>~;
 
 $my_threadnote_b = qq~<tr>
         <td class="catbg">
-            <b>$notify_txt{'140'}</b>
+            <b>{yabb notify_txt140}</b>
         </td>
         <td class="catbg center">
-            <b>$notify_txt{'134'}</b>
+            <b>{yabb notify_txt134}</b>
         </td>
     </tr>
     {yabb threadblock}
     <tr>
-        <td class="catbg right"><span class="small"><label for="checkall">$notify_txt{'144'}</label></span></td>
+        <td class="catbg right"><span class="small"><label for="checkall">{yabb notify_txt144}</label></span></td>
         <td class="catbg center"><input type="checkbox" name="checkall" id="checkall" value="" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" /></td>
     </tr><tr>
         <td class="windowbg center" colspan="2">
-            <input type="submit" value="$notify_txt{'124'}" class="button" />&nbsp; <input type="reset" value="$notify_txt{'121'}" class="button" />
+            <input type="submit" value="{yabb notify_txt124}" class="button" />&nbsp; <input type="reset" value={yabb notify_txt121}" class="button" />
         </td>
     </tr>~;
 

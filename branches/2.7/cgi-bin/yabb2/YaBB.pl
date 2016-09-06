@@ -18,8 +18,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 #use strict;
-no warnings qw(uninitialized once redefine);
-use Carp;
+use warnings;
+no warnings qw(once redefine);
+use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
@@ -30,7 +31,7 @@ $yabbplver   = 'YaBB 2.7.00 $Revision$';
 if (@yabbmods) {
     $yabbmods = 1;
 }
-
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 BEGIN {
@@ -79,7 +80,6 @@ BEGIN {
     require Sources::DateTime;
     require Sources::Load;
 
-    require Sources::Guardian;
     get_forum_master();
 }    # END of BEGIN block
 
@@ -98,22 +98,24 @@ WhatTemplate();        # Figure out which template to be using.
 WhatLanguage();        # Figure out which language file we should be using! :D
 
 # Do this now that language is available
-$yyfreespace =
-    $hostchecked < 0
-  ? $error_txt{'module_missing'}
-  : (
-    (
-        $yyfreespace && ( ( $debug == 1 && !$iamguest )
-            || ( $debug == 2 && $iamgmod )
-            || $iamadmin )
-    )
-    ? q~<div>~
-      . (
-        $hostchecked > 0 ? $maintxt{'freeuserspace'} : $maintxt{'freediskspace'}
-      )
-      . qq~ $yyfreespace</div>~
-    : q{}
-  );
+if ($hostchecked) {
+    $yyfreespace =
+        $hostchecked < 0
+      ? $error_txt{'module_missing'}
+      : (
+        (
+            $yyfreespace && ( ( $debug == 1 && !$iamguest )
+                || ( $debug == 2 && $iamgmod )
+                || $iamadmin )
+        )
+        ? q~<div>~
+          . (
+            $hostchecked > 0 ? $maintxt{'freeuserspace'} : $maintxt{'freediskspace'}
+          )
+          . qq~ $yyfreespace</div>~
+        : q{}
+      );
+}
 
 if ($iamgmod) {
     require Variables::Gmodset;
@@ -156,21 +158,27 @@ if ( $is_perm && $accept_permalink ) {
             "$permboard|C:$permachecktime|T:$threadpermatime" );
     }
 }
-
-guard();
+if ($use_guardian) {
+    require Sources::Guardian;
+    guard();
+}
 
 # Check if the action is allowed from an external domain
 if ($referersecurity) { referer_check(); }
 
 if ( $regtype == 1 || $regtype == 2 ) {
-    $inactive = -s 'Variables/meminactive.db';
-    $approve  = -s 'Variables/memapprove.db';
-    if ( $inactive > 2 ) {
-        RegApprovalCheck();
-        activation_check();
+    if ( -e 'Variables/meminactive.db' ) {
+        $inactive = -s 'Variables/meminactive.db';
+        if ( $inactive > 2 ) {
+            RegApprovalCheck();
+            activation_check();
+        }
     }
-    elsif ( $approve > 2 ) {
-        RegApprovalCheck();
+    elsif ( -e 'Variables/memapprove.db' ) {
+        $approve  = -s 'Variables/memapprove.db';
+            if ( $approve > 2 ) {
+            RegApprovalCheck();
+        }
     }
 }
 
@@ -215,7 +223,7 @@ sub yymain {
         KickGuest();
     }
 
-    if ( $action ne q{} ) {
+    if ( $action ) {
         if ( $action eq $randaction ) {
             require Sources::Decoder;
             convert();
@@ -233,11 +241,11 @@ sub yymain {
             }
         }
     }
-    elsif ( $INFO{'num'} ne q{} ) {
+    elsif ( $INFO{'num'} ) {
         require Sources::Display;
         Display();
     }
-    elsif ( $currentboard eq q{} ) {
+    elsif ( !$currentboard ) {
         require Sources::BoardIndex;
         BoardIndex();
     }

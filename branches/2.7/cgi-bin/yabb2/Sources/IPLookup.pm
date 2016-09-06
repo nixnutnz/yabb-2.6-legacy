@@ -20,9 +20,10 @@ $iplookuppmver  = 'YaBB 2.7.00 $Revision$';
 if (@iplookuppmmods) {
     $iplookuppmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if ( !$ipLookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamfmod ) ) {
+if ( !$ip_lookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamfmod ) ) {
     fatal_error('not_allowed');
 }
 

@@ -13,7 +13,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
-#use warnings;
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
@@ -24,6 +25,7 @@ my @modulecheckerpmmods = ();
 if (@modulecheckerpmmods) {
     $modulecheckerpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 my $script_root = $ENV{'SCRIPT_FILENAME'};
@@ -33,17 +35,31 @@ if ( !$script_root ) {
 
 my ( $checker_output, $i );
 
-my @modules = qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape);
+my @modules =
+  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape);
 
 push @modules, 'Module::Load';
 
 @modules = sort @modules;
 
 for my $module ( @modules ) {
-    eval "require $module;";
     my $dont_continue_setup = q{};
-
-    if ($EVAL_ERROR) {
+    if ( eval "require $module" ) {
+        if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {
+            my $myversion   = $module->VERSION || '<NO $VERSION>';
+            $checker_output .= qq~<tr>
+                    <td class="windowbg2"><span class="good">$module</span></td>
+                    <td class="windowbg2" colspan="2">$modulecheck{'6'} $modulecheck{$module . '2'} $myversion</td>
+                </tr>~;
+        }
+        else {
+            $checker_output .= qq~<tr>
+                    <td class="windowbg2"><span class="good">$module</span></td>
+                    <td class="windowbg2" colspan="2">$modulecheck{'6'}</td>
+                </tr>~;
+        }
+    }
+    else {
         if ( $module eq 'Digest::MD5' ) { $dont_continue_setup = 1; }
         $i = $modulecheck{'8'};
         my $e = $EVAL_ERROR;
@@ -61,32 +77,13 @@ for my $module ( @modules ) {
                     <td class="windowbg2">$modulecheck{"$module"}</td>
                 </tr>~;
     }
-    else {
-        if ( $module eq 'DateTime::TimeZone' ) {
-            my $version   = $module->VERSION;
-            my $myversion = (
-                "%s %s is\n %s\n",
-                $module, ( defined $version ? $version : '<NO $VERSION>' ),
-            );
-            $checker_output .= qq~<tr>
-                    <td class="windowbg2"><span class="good">$module</span></td>
-                    <td class="windowbg2" colspan="2">$modulecheck{'6'} $modulecheck{'DateTime::TimeZone2'} <b>$myversion</b></td>
-                </tr>~;
-        }
-        else {
-            $checker_output .= qq~<tr>
-                    <td class="windowbg2"><span class="good">$module</span></td>
-                    <td class="windowbg2" colspan="2">$modulecheck{'6'}</td>
-                </tr>~;
-        }
-    }
 }
 
 my $perlver = $];
 if ( $perlver gt '5.009' ) {
-    $perlver = $^V;
+    $perlver = $PERL_VERSION;
 }
-my $server = $ENV{'SERVER_SOFTWARE'};
+my $server = $ENV{'SERVER_SOFTWARE'} || $modulecheck{'noserver'};
 
 if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
     $yymain .= qq~

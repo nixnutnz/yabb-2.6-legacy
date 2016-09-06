@@ -17,6 +17,7 @@ $englishmiconlngver = 'YaBB 2.7.00 $Revision$';
 if (@englishmiconlngmods) {
     $englishmiconlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 
@@ -68,6 +69,7 @@ if (!$language){$language = $lang;}
 'alertmod' => q~Alert Moderator.~,
 'guestpm' => q~PM from Guest~,
 'guestpmreply' => q~Reply to PM from Guest~,
+'imopen' => q~PM opened~,
 );
 
 %tabmenu_txt_m = (

@@ -13,7 +13,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-no warnings qw(uninitialized once redefine);
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -22,6 +24,7 @@ $newsettingspmver = 'YaBB 2.7.00 $Revision$';
 if (@newsettingspmmods) {
     $newsettingspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Figure out what tabset to use, depending on the page= parameter.
@@ -34,9 +37,9 @@ my %settings_dispatch = (
     maintenance => "$admindir/Settings_Maintenance.pm",
 );
 
-    ### BOARDMOD SETTINGS ANCHOR ###
+### BOARDMOD SETTINGS ANCHOR ###
 
-my $page = $INFO{'page'};
+my $page = $INFO{'page'} || 'main';
 
 # 'eval' because NewSettings.pm can be called by Sources/TabMenu.pm
 eval { require $settings_dispatch{$page}; };
@@ -79,17 +82,17 @@ sub settings {
     <ul id="navlist">
 ~;
     my $i = 0;
-    for my $tab (@settings) {
+    foreach my $tab (@settings) {
         $tab->{'name'} =~ s/ /&nbsp;/gsm;
 
-        # The &nbsp;'s are for Konqueror, and also to add a little more padding.
+        # The &nbsp;s are for Konqueror, and also to add a little more padding.
         $yymain .=
 qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id'}'); return false;">&nbsp;<a href="#tab_$tab->{'id'}">$tab->{'name'}</a>&nbsp;</li>
 ~;
     }
     $yymain .= q~  </ul>~;
 
-    for my $tab (@settings) {
+    foreach my $tab (@settings) {
         $yymain .= qq~
     <div class="bordercolor borderstyle rightboxdiv">
         <table class="section" style="border-collapse:separate; border-spacing: 1px;" id="tab_$tab->{'id'}">
@@ -103,7 +106,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
        </td>
      </tr>~;
 
-        for my $item ( @{ $tab->{'items'} } ) {
+        foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
          <td class="catbg padd-cell" colspan="2"><span class="small">$item->{'header'}</span></td>
@@ -125,7 +128,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
 
             # Handle settings that require other settings
             if ( $item->{'depends_on'} && $item->{'name'} ) {
-                for my $require ( @{ $item->{'depends_on'} } ) {
+                foreach my $require ( @{ $item->{'depends_on'} } ) {
 
 # This is somewhat messy, but it works well.
 # We strip off the possible options: inverse, equal, and not equal
@@ -153,13 +156,13 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
 
     my $dependicies = q{};
     my $onloadevents;
-    for my $ritem (@requireorder) {
+    foreach my $ritem (@requireorder) {
         $dependicies .= qq~
     function handleDependent_$ritem() {
         var isChecked = document.getElementsByName("$ritem")[0].checked;
         var itemValue = document.getElementsByName("$ritem")[0].value;\n~;
 
-        for my $require ( @{ $requirements{$ritem} } ) {
+        foreach my $require ( @{ $requirements{$ritem} } ) {
 
             # && or ||, ( and )
             my $AndOr = $require =~ s/\)//xsm ? ')' : q{};
@@ -175,19 +178,22 @@ qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
             # Is equal to
             elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
+                  $C
+                  . qq~document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
             }
 
             # Is not equal to
             elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
+                  $C
+                  . qq~document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
             }
 
             # Is true
             else {
                 $requirejs{$require} .=
-                  qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
+                  $C
+                  . qq~document.getElementsByName("$ritem")[0].checked$AndOr ~;
             }
             $dependicies .= qq~        checkDependent("$require");\n~;
         }
@@ -199,8 +205,9 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     }
 
     # Hidden "feature": jump directly to a tab by default via the URL bar.
+    $INFO{'tab'} ||= q{};
     $INFO{'tab'} =~ s/\W//gxsm;
-    $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
+    $default_tab = $INFO{'tab'} || $settings[0]->{'id'} || q{};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
     <table class="border-space pad-cell">
@@ -259,7 +266,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
         var elm = document.getElementsByName(eid)[0];\n~;
 
     # Loop through each item that depends on something else
-    for my $name ( keys %requirejs ) {
+    foreach my $name ( keys %requirejs ) {
         my $logic = $requirejs{$name};
         $logic =~ s/ (&&|\|\|) $//sm;
         $yymain .= qq~
@@ -293,22 +300,6 @@ $dependicies
     $action_area = "newsettings;page=$page";
     AdminTemplate();
     return;
-}
-
-sub ischecked {
-    my ($inp) = @_;
-
-    # Return a ref so we can be used like ${ischecked($var)} inside a string
-    return \' checked="checked"' if $inp;
-    return \q{};
-}
-
-sub isselected {
-    my ($inp) = @_;
-
-    # Return a ref so we can be used like ${isselected($var)} inside a string
-    return \' selected="selected"' if $inp;
-    return \q{};
 }
 
 sub email_test {
@@ -405,21 +396,21 @@ sub SaveSettingsTo {
     # these cannot be reversed per Perl Critic.
 
     # This is why we should use hashes for options to begin with.
-    for my $key ( keys %settings ) {
+    foreach my $key ( keys %settings ) {
         ${$key} = delete $settings{$key};
     }
     require "$langdir/Lang.lng";
     for ( keys %lngs ) {
-        if ( ${$_ . '_maintenancetext'} ) {
-            fopen(MAINT, ">$langdir/$_/maintenancetext.txt");
+        if ( ${ $_ . '_maintenancetext' } ) {
+            fopen( MAINT, ">$langdir/$_/maintenancetext.txt" );
             print {MAINT} ${ $_ . '_maintenancetext' }
               or croak "$croak{'print'} MAINT";
             fclose(MAINT);
         }
-        if (${$_ . '_news'} ) {
+        if ( ${ $_ . '_news' } ) {
             fopen( NEWS, ">$langdir/$_/news.txt", 1 )
               || fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
-            print {NEWS} ${$_ . '_news'} or croak "$croak{'print'} NEWS";
+            print {NEWS} ${ $_ . '_news' } or croak "$croak{'print'} NEWS";
             fclose(NEWS);
         }
     }
@@ -430,22 +421,33 @@ sub SaveSettingsTo {
         $fadertext       ||= $color{'fadertext'};
         $faderbackground ||= $color{'faderbg'};
 
-        my $templateset = join q{}, map { qq~'$_' => "$templateset{$_}",\n~; } keys %templateset;
-        if (!$iplookup) {
-            $iplookup = join q{}, map { qq~'$_' => "$iplookup{$_}",\n~; } keys %iplookup;
+        my $templateset = q{};
+        foreach my $i ( sort keys %templateset ) {
+            my $tmpset = join q~','~, @{ $templateset{$i} };
+            $templateset .= qq~'$i' => ['~ . $tmpset . qq~'],\n~;
         }
-        if (@ext_prof_order) {
-            $ext_prof_order = q{"} . join( q{","}, @ext_prof_order ) . q{"};
+        if ( !$iplookup_url ) {
+            $iplookup_url = join q{},
+              map { qq~'$_' => "$iplookup{$_}",\n~; } keys %iplookup;
         }
-        if (@ext_prof_fields) {
+
+        if ( !$ext_prof_order && $ext_prof_order[0] ) {
+            $ext_prof_order = q{'} . join( q{','}, @ext_prof_order ) . q{'};
+        }
+        else {$ext_prof_order = q{};}
+        if ( !$ext_prof_fields && $ext_prof_fields[0] ) {
             $ext_prof_fields =
-              q{"} . join( qq~",\n"~, @ext_prof_fields ) . q{"};
+              q{'} . join( qq~',\n'~, @ext_prof_fields ) . q{'};
         }
-        if (!$adomains && $adomains[0] ) {
+        else {$ext_prof_fields = q{};}
+
+        $adomains ||= q{};
+        if ( !$adomains && $adomains[0] ) {
             $adomains = q{'} . join( q~', '~, @adomains ) . q{'};
         }
-        if (!$bdomains && $bdomains[0] ) {
-        $bdomains = q{'} . join( q~', '~, @bdomains ) . q{'};
+        $bdomains ||= q{};
+        if ( !$bdomains && $bdomains[0] ) {
+            $bdomains = q{'} . join( q~', '~, @bdomains ) . q{'};
         }
         if ( !$reserve && $reserve[0] ) {
             $reserve = q{'} . join( q~', '~, @reserve ) . q{'};
@@ -454,22 +456,33 @@ sub SaveSettingsTo {
             $spamrules = q{'} . join( q~', '~, @spamrules ) . q{'};
         }
 
+        $usertxtwrap ||= 20;
+
         my $member_groups = "# Static Member Groups\n";
-        for ( keys %Group ) {
-            $member_groups .= qq~\$Group{'$_'} = '$Group{$_}';\n~;
+        foreach ( keys %Group ) {
+            ${ $Group{$_} }[3] ||= q{};
+            ${ $Group{$_} }[10] ||= 0;
+            $member_groups .=
+qq~\$Group{'$_'} = \[ '${$Group{$_}}[0]', '${$Group{$_}}[1]', '${$Group{$_}}[2]', '${$Group{$_}}[3]', ${$Group{$_}}[4], ${$Group{$_}}[5], ${$Group{$_}}[6], ${$Group{$_}}[7], ${$Group{$_}}[8], ${$Group{$_}}[9], ${$Group{$_}}[10] \];\n~;
         }
         $member_groups .= "\n# Post independent Member Groups\n";
-        for ( keys %NoPost ) {
-            $member_groups .= qq~\$NoPost{'$_'} = '$NoPost{$_}';\n~;
+        foreach ( keys %NoPost ) {
+            ${ $NoPost{$_} }[3] ||= q{};
+            ${ $NoPost{$_} }[10] ||= 0;
+            $member_groups .=
+qq~\$NoPost{'$_'} = \[ '${$NoPost{$_}}[0]', '${$NoPost{$_}}[1]', '${$NoPost{$_}}[2]', '${$NoPost{$_}}[3]', ${$NoPost{$_}}[4], ${$NoPost{$_}}[5], ${$NoPost{$_}}[6], ${$NoPost{$_}}[7], ${$NoPost{$_}}[8], ${$NoPost{$_}}[9], ${$NoPost{$_}}[10] \];\n~;
         }
         $member_groups .= "\n# Post dependent Member Groups\n";
-        for ( keys %Post ) {
-            $member_groups .= qq~\$Post{'$_'} = '$Post{$_}';\n~;
+        foreach ( keys %Post ) {
+            ${ $Post{$_} }[3] ||= q{};
+            ${ $Post{$_} }[10] ||= 0;
+            $member_groups .=
+qq~\$Post{'$_'} = \[ '${$Post{$_}}[0]', '${$Post{$_}}[1]', '${$Post{$_}}[2]', '${$Post{$_}}[3]', ${$Post{$_}}[4], ${$Post{$_}}[5], ${$Post{$_}}[6], ${$Post{$_}}[7], ${$Post{$_}}[8], ${$Post{$_}}[9], ${$Post{$_}}[10] \];\n~;
         }
 
-        if (@pallist) { $pallist = q{"} . join( q{","}, @pallist ) . q{"}; }
+        if (@pallist) { $pallist = q{'} . join( q{','}, @pallist ) . q{'}; }
 
-        if ( $INFO{'page'} eq 'main' ) {
+        if ( $INFO{'page'} && $INFO{'page'} eq 'main' ) {
             if ( !$enable_notifications_N ) {
                 if ( !$enable_notifications_PM ) {
                     $enable_notifications = 0;
@@ -488,21 +501,21 @@ sub SaveSettingsTo {
             }
         }
         my %modlinks = ();
-        my %modadd = ();
+        my %modadd   = ();
 ## Modlinks MOD hook ##
-        for my $i ( keys %modlinks) {
+        for my $i ( keys %modlinks ) {
             if ( $modlinks{$i} > 0 ) {
                 my $fond = 0;
-                for (@AdvancedTabs ) {
+                for (@AdvancedTabs) {
                     if ( $_ =~ /[|]/xsm ) {
-                        my ( $tab_key, undef, undef ) =split /[|]/xsm, $_, 2;
-                        if ( $tab_key eq $i) {
-                            $_ = qq~$i$modadd{$i}~;
+                        my ( $tab_key, undef, undef ) = split /[|]/xsm, $_, 2;
+                        if ( $tab_key eq $i ) {
+                            $_    = qq~$i$modadd{$i}~;
                             $fond = 1;
                         }
                     }
                 }
-                if ( $fond == 0 ) { push @AdvancedTabs, qq~$i$modadd{$i}~;}
+                if ( $fond == 0 ) { push @AdvancedTabs, qq~$i$modadd{$i}~; }
             }
             else {
                 my @new_tabs_order;
@@ -515,24 +528,38 @@ sub SaveSettingsTo {
 
         my $AdvancedTabs = q{'} . join( q{','}, @AdvancedTabs ) . q{'};
 
-        if (@SmilieURL) {
-            $SmilieURL = q{"} . join( q{","}, @SmilieURL ) . q{"};
+        $detachblock         ||= q{};
+        $removenormalsmilies ||= q{};
+        my $addedsmilies = q{};
+        foreach ( keys %addedsmilies ) {
+            $addedsmilies .=
+qq~\$addedsmilies{'$_'} = \[ '${$addedsmilies{$_}}[0]', '${$addedsmilies{$_}}[1]', '${$addedsmilies{$_}}[2]', '${$addedsmilies{$_}}[3]' \];\n~;
         }
-        if (@SmilieCode) {
-            $SmilieCode = q{"} . join( q{","}, @SmilieCode ) . q{"};
-        }
-        if (@SmilieDescription) {
-            $SmilieDescription =
-              q{"} . join( q{","}, @SmilieDescription ) . q{"};
-        }
-        if (@SmilieLinebreak) {
-            $SmilieLinebreak = q{"} . join( q{","}, @SmilieLinebreak ) . q{"};
-        }
+        $smilieorder = join q{ }, @smilieorder;
+
         if ( !$bookmarks ) {
             $bookmarks = q{'} . join( q{', '}, @bookmarks ) . q{'};
         }
 
+        $bkmax_process_time ||= 5;
+
         my $backup_paths = join q{ }, @backup_paths;
+        $nopostorder = join q{ }, @nopostorder;
+        my @setlist =
+          qw( accept_permafull accept_permalink addmemgroup_enabled birthday_on_reg buddyListEnabled bypass_lock_perm CalEventMods CalEventNoName CalEventPerms CalEventPrivate calsplit captchaEndChars captchaStartChars captchastyle clike_htaccess Delete_EventsUntil detachblock disallow_proxy_htaccess DisplayCalEvents distortion en_spam_questions enable_guest_view_limit enable_MCaway enable_MCstatusStealth enable_PMautoAway enable_quota enable_spell_check enable_YaBBBut enabletopichover findfile_maxsize findfile_root findfile_space findfile_time getreversedns gpvalid_en group_stars_ml guest_view_limit guest_view_limit_block harvester_htaccess helloserv hide_signat_for_guests hostusername imp_email_check ip_lookup maxdays maxdaysattach maxsizeattach min_reg_time No_ShortUbbc nomailspammer perm_domain perm_spacer pm_spam_chk PMAlertButtonGuests pmAttachGroups pmCheckExt pmDisplayPics PMenable_bcc PMenable_cc PMenableAlertButton PMenableGuestButton pmMaxDaysAttach pmMaxSizeAttach posttools profile_int referer_htaccess removenormalsmilies request_htaccess rssperm rsssymboards rsssymrecent script_htaccess Scroll_Events self_del_user Show_BdColorLinks Show_BdStarsign Show_BirthdayButton Show_BirthdayDate Show_BirthdaysList Show_caltoday Show_ColorLinks Show_EventBirthdays Show_EventButton Show_MiniCalIcons showage showinbox showpageall ShowSunday showuserage showuserpicml showzodiac spam_questions_case spam_questions_gp spam_questions_send spamfruits staff_reason string_htaccess symlink temp_switcher_allowed templ_switcher threadtools tlnomodday union_htaccess user_hide_attach_img user_hide_avatars user_hide_img user_hide_signat user_hide_smilies_row user_hide_user_text user_reason usertools );
+
+        foreach my $i (@setlist) {
+            ${$i} ||= q{};
+        }
+        my @setlistb =
+          qw(timeoffset imspam ppostperms ptopicperms enable_PMsearch editAgeLimit editGenderLimit);
+        foreach my $i (@setlistb) {
+            ${$i} ||= 0;
+        }
+
+        if (%afix_img_size) {
+            %fix_img_size = %afix_img_size;
+        }
 
         $smtp_server =~ s/^\s+|\s+$//gxsm;
 
@@ -555,7 +582,6 @@ sub SaveSettingsTo {
 # Note: these settings must be properly changed for YaBB to work
 
 \$settings_file_version = '$YaBBversion';
-# If not equal actual YaBBversion then the updating process is run through
 \$yymycharset = 'UTF-8';                 # character encoding now 'UTF-8' only;
 
 \%templateset = ($templateset);             # Forum templates settings
@@ -624,14 +650,11 @@ sub SaveSettingsTo {
 ########## MemberGroups ##########
 
 $member_groups
-\@nopostorder = qw(@nopostorder);           # Order how "Post independent Member Groups" are displayed
+\@nopostorder = qw($nopostorder);           # Order how "Post independent Member Groups" are displayed
 
 ########## Layout ##########
 
-\$MenuType = $MenuType;                     # 1 for text menu or anything else for images menu
 \$profilebutton = $profilebutton;           # 1 to show view profile button under post, or 0 for blank
-\$threadtools = $threadtools;               # Enable dropdown for post actions
-\$posttools = $posttools;                   # Enable dropdown for post actions
 \$usertools = $usertools;                   # Allow admin to hide the list of tools that show when clicking a userlink
 \$allow_hide_email = $allow_hide_email;     # Allow users to hide their email from public. Set 0 to disable
 \$user_hide_avatars = $user_hide_avatars;       # Allow users to hide Avatars in threads. Set 0 to disable
@@ -703,7 +726,6 @@ $member_groups
 \$enabletz = $enabletz;                     # Allow for timezone selection
 \$default_tz = '$default_tz';               # default forum timezone
 \$timeoffset = '$timeoffset';           # Time Offset to GMT/UTC (0 for GMT/UTC)
-\$dstoffset = $dstoffset;                   # Time Offset (for daylight savings time, 0 to disable DST)
 \$dynamic_clock = $dynamic_clock;           # Set to a value enables the dynamic clock at the top of the page
 \$TopAmmount = $TopAmmount;                 # No. of top posters to display on the top members list
 \$maxdisplay = $maxdisplay;                 # Maximum of topics to display
@@ -745,6 +767,7 @@ $member_groups
 \$fadelinks = $fadelinks;                   # Fade links as well as text?
 
 \$defaultusertxt = '$defaultusertxt';   # The default user text visible in users posts
+\$usertxtwrap = $usertxtwrap;   # Number of characters per line for user text
 \$timeout = $timeout;                       # Minimum time between 2 postings from the same IP
 \$HotTopic = $HotTopic;                     # Number of posts needed in a topic for it to be classed as "Hot"
 \$VeryHotTopic = $VeryHotTopic;             # Number of posts needed in a topic for it to be classed as "Very Hot"
@@ -769,25 +792,16 @@ $member_groups
 \$quoteuser_color = '$quoteuser_color';     # Set the default color of @ in userquote
 
 ########## MemberPic Settings ##########
+\%fix_img_size = (
+attach => [$fix_img_size{'attach'}[0], $fix_img_size{'attach'}[1], $fix_img_size{'attach'}[2]],
+avatar => [$fix_img_size{'avatar'}[0], $fix_img_size{'avatar'}[1], $fix_img_size{'avatar'}[2]],
+avatarml => [$fix_img_size{'avatarml'}[0], $fix_img_size{'avatarml'}[1], $fix_img_size{'avatarml'}[2]],
+brd => [$fix_img_size{'brd'}[0], $fix_img_size{'brd'}[1], $fix_img_size{'brd'}[2]],
+post => [$fix_img_size{'post'}[0], $fix_img_size{'post'}[1], $fix_img_size{'post'}[2]],
+signat => [$fix_img_size{'signat'}[0], $fix_img_size{'signat'}[1], $fix_img_size{'signat'}[2]],
+ext => [$fix_img_size{'ext'}[0], $fix_img_size{'ext'}[1], $fix_img_size{'ext'}[2]],
+);
 
-\$max_avatar_width = $max_avatar_width;     # Set maximum pixel width to which the self-selected avatars are resized, 0 disables this limit
-\$max_avatar_height = $max_avatar_height;   # Set maximum pixel height to which the self-selected avatars are resized, 0 disables this limit
-\$fix_avatar_img_size = $fix_avatar_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the self-selected avatars in member list are resized, 0 disables this limit
-\$max_avatarml_height = $max_avatarml_height;       # Set maximum pixel height to which the self-selected avatars in member list are resized, 0 disables this limit
-\$fix_avatarml_img_size = $fix_avatarml_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_post_img_width = $max_post_img_width; # Set maximum pixel width for images, 0 disables this limit
-\$max_post_img_height = $max_post_img_height;   # Set maximum pixel height for images, 0 disables this limit
-\$fix_post_img_size = $fix_post_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_signat_img_width = $max_signat_img_width; # Set maximum pixel width for images in the signature, 0 disables this limit
-\$max_signat_img_height = $max_signat_img_height;   # Set maximum pixel height for images in the signature, 0 disables this limit
-\$fix_signat_img_size = $fix_signat_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_attach_img_width = $max_attach_img_width; # Set maximum pixel width for attached images, 0 disables this limit
-\$max_attach_img_height = $max_attach_img_height;   # Set maximum pixel height for attached images, 0 disables this limit
-\$fix_attach_img_size = $fix_attach_img_size;   # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_brd_img_width = $max_brd_img_width;                           # Set maximum pixel width to which the Board Images are resized, 0 disables this limit
-\$max_brd_img_height = $max_brd_img_height;                          # Set maximum pixel height to which the Board Images are resized, 0 disables this limit
-\$fix_brd_img_size = $fix_brd_img_size;
 \$img_greybox = $img_greybox;           # Set to 0 to disable "greybox" (each image is shown in a new window)
                             # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                             # Set to 2 to enable the attachment and post image "greybox" => attachment images: (all images/page), post images: (one image/page)
@@ -1041,10 +1055,8 @@ $ext_prof_fields
 
 ########## Smilies ##########
 
-\@SmilieURL = ($SmilieURL);         # Additional Smilies URL
-\@SmilieCode = ($SmilieCode);           # Additional Smilies Code
-\@SmilieDescription = ($SmilieDescription); # Additional Smilies Description
-\@SmilieLinebreak = ($SmilieLinebreak);     # Additional Smilies Linebreak
+$addedsmilies
+\@smilieorder = qw($smilieorder);
 
 \$smiliestyle = $smiliestyle;         # smiliestyle
 \$showadded = $showadded;         # showadded
@@ -1080,10 +1092,10 @@ $ext_prof_fields
 \$show_online_ip_admin = $show_online_ip_admin; # Set to 1 to show online IP's to admins.
 \$show_online_ip_gmod = $show_online_ip_gmod;   # Set to 1 to show online IP's to global moderators.
 \$show_online_ip_fmod = $show_online_ip_fmod;   # Set to 1 to show online IP's to yabb moderators.
-\$ipLookup = $ipLookup;                        # Set to 1 to enable IP Lookup.
+\$ip_lookup = $ip_lookup;                        # Set to 1 to enable IP Lookup.
 \$masterkey = '$masterkey';         # Seed for encryption of captchas
 
-\%iplookup = ($iplookup);           #IPlookup url list
+\%iplookup = ($iplookup_url);           #IPlookup url list
 
 ###############################################################################
 # Guardian Settings (old Guardian.banned and Guardian.settings)               #
@@ -1162,7 +1174,7 @@ EOF
     }
 
     WriteSettingsTo( "$vardir/$file", $setfile );
-    if ( $FORM{'email_test'} == 1 ) {
+    if ( $FORM{'email_test'} ) {
         email_test();
     }
     return;
@@ -1171,13 +1183,14 @@ EOF
 # Subroutine for writing the common format of settings file
 sub WriteSettingsTo {
     my ( $file, $setfile ) = @_;
+    my $filler = q{ } x 50;
 
     # Fix a certain type of syntax error
-    $setfile =~ s/=\s+;/= 0;/gsm;
+    $setfile =~ s/=\s+;/= 0;/gxsm;
 
     # Make it look nicely aligned. The comment starts after 50 Col
 
-    *cut_comment = sub {
+    local *cut_comment = sub {
         my ( $comment, $length ) =
           ( q{}, 150 );    # 120 Col is the max width of page
         my $var_length = length $_[0];
@@ -1193,7 +1206,7 @@ sub WriteSettingsTo {
         $comment =~ s/ $//sm;
         return $comment;
     };
-    my $filler = q{ } x 50;
+
     $setfile =~
 s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
     $setfile =~ s/\t+(#.+$)/$filler$1/gm;

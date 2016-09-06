@@ -24,6 +24,7 @@ $postpmver  = 'YaBB 2.7.00 $Revision$';
 if (@postpmmods) {
     $postpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -75,7 +76,7 @@ sub Post {
     }
     if (  !$staff
         && $speedpostdetection
-        && ${ $uid . $username }{'spamcount'} >= $post_speed_count )
+        && ( ${ $uid . $username }{'spamcount'}  && ${ $uid . $username }{'spamcount'} >= $post_speed_count ))
     {
         $detention_time =
           ${ $uid . $username }{'spamtime'} + $spd_detention_time;
@@ -88,7 +89,7 @@ sub Post {
             UserAccount( $username, 'update' );
         }
     }
-    if ( $currentboard eq q{} && !$iamguest ) { fatal_error('no_access'); }
+    if ( !$currentboard && !$iamguest ) { fatal_error('no_access'); }
     my ( $filetype_info, $filesize_info );
     my ( $subtitle, $x, $msubject, $mattach, $mip, $mmessage, $mns );
     my $quotemsg = $INFO{'quote'};
@@ -178,7 +179,7 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
 
     $sub        = q{};
     $settofield = 'subject';
-    if ( $threadid ne q{} ) {
+    if ( $threadid ) {
         if ( !ref $thread_arrayref{$threadid} ) {
             fopen( FILE, "$datadir/$threadid.txt" )
               or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
@@ -330,7 +331,7 @@ sub Postpage {
         $extra =~ s/\Q{yabb icon}\E/$icon/xsm;
         $extra =~ s/\Q{yabb icon_img}\E/$micon_bg{$icon}/xsm;
 
-        if ( $iamguest && $threadid ne q{} ) { $settofield = 'name'; }
+        if ( $iamguest && $threadid ) { $settofield = 'name'; }
     }
 
     if ( $pollthread && $iamguest ) { $guest_vote = 1; }
@@ -408,8 +409,8 @@ sub Postpage {
             $favoritetext = $post_txt{'maximumfav'};
         }
         $favoriteadd = $mypost_favoriteadd;
-        $favoriteadd =~ s/\Q{yabb favorite}/$favorite/xsm;
-        $favoriteadd =~ s/\Q{yabb favoritetext}/$favoritetext/xsm;
+        $favoriteadd =~ s/\Q{yabb favorite}\E/$favorite/xsm;
+        $favoriteadd =~ s/\Q{yabb favoritetext}\E/$favoritetext/xsm;
     }
 
     if   ( !$sub ) { $subtitle = "<i>$post_txt{'33'}</i>"; }
@@ -527,17 +528,16 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
     }
 
     # this declares the beginning of the UBBC section
-
     $moresmilieslist   = q{};
     $more_smilie_array = q{};
     $i                 = 0;
     if ( $showadded == 1 ) {
-        while ( $SmilieURL[$i] ) {
-            if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-            else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
+        while ( $smilieorder[$i] ) {
+            if ( ${$addedsmilies{$smilieorder[$i]}}[0] =~ /\//ixsm ) { $tmpurl = ${$addedsmilies{$smilieorder[$i]}}[0]; }
+            else { $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~; }
             $moresmilieslist .=
-qq~             <img src="$tmpurl" class="bottom pointer" alt="$SmilieDescription[$i]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i]\n~;
-            $tmpcode = $SmilieCode[$i];
+qq~             <img src="$tmpurl" class="bottom pointer" alt="${$addedsmilies{$smilieorder[$i]}}[2]" title="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
+            $tmpcode = ${$addedsmilies{$smilieorder[$i]}}[1];
             $tmpcode =~ s/\&quot;/\x22/gxsm;
 
             FromHTML($tmpcode);
@@ -554,14 +554,11 @@ qq~             <img src="$tmpurl" class="bottom pointer" alt="$SmilieDescriptio
         closedir DIR;
         foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
             ( $name, $extension ) = split /[.]/xsm, $line;
-            if (   $extension =~ /gif/ixsm
-                || $extension =~ /jpg/ixsm
-                || $extension =~ /jpeg/ixsm
-                || $extension =~ /png/ixsm )
+            if (   $extension =~ [gif|jpg|jpeg|png]/ixsm )
             {
                 if ( $line !~ /banner/ixsm ) {
                     $moresmilieslist .=
-qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" />$SmilieLinebreak[$i]\n~;
+qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt="$name" title="$name" onclick="javascript: MoreSmilies($i);" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
                     $more_smilie_array .= qq~" [smiley=$line]", ~;
                     $i++;
                 }
@@ -579,7 +576,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
     }
     ~;
 
-    if ( $smiliestyle == 1 ) {
+    if ( $smiliestyle && $smiliestyle == 1 ) {
         $smiliewinlink = qq~$scripturl?action=smilieput~;
     }
     else { $smiliewinlink = qq~$scripturl?action=smilieindex~; }
@@ -709,6 +706,8 @@ $iconliveprev
             $mypoll_opt =~ s/\Q{yabb options_i}/$options[$i]/gxsm;
             $mypoll_opt =~ s/\Q{yabb slicecolor_i}/$slicecolor[$i]/gxsm;
             $mypoll_opt =~ s/\Q{yabb splitchecked_i}/$splitchecked[$i]/xsm;
+            $mypoll_opt =~ s/\Q{yabb post_polltxt_splitslice}/$post_polltxt{'splitslice'}/xsm;
+            $mypoll_opt =~ s/\Q{yabb post_polltxt_7}/$post_polltxt{'7'}/xsm;
             $piecolarray .= qq~"$slicecolor[$i]", ~;
         }
         $piecolarray =~ s/,\s $//ixsm;
@@ -717,7 +716,7 @@ $iconliveprev
         if ( $maxpc > 0 ) {
             $my_maxpc = $my_poll_comment;
             $my_maxpc .=
-qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb\s maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea>
+qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onkeyup="if (document.postmodify.poll_comment.value.length > {yabb maxpc}) {document.postmodify.poll_comment.value = document.postmodify.poll_comment.value.substring(0,$maxpc)}">$poll_comment</textarea>
 ~;
             $my_maxpc .= $my_poll_comment_b;
         }
@@ -763,6 +762,11 @@ qq~            <textarea name="poll_comment" rows="3" cols="60" wrap="soft" onke
         $my_pollsection =~ s/\Q{yabb mypoll_opt}\E/$mypoll_opt/xsm;
         $my_pollsection =~ s/\Q{yabb my_maxpc}\E/$my_maxpc/xsm;
         $my_pollsection =~ s/\Q{yabb my_pie}\E/$my_pie/xsm;
+        $my_pollsection =~ s/\Q{yabb post_polltxt_6}\E/$post_polltxt{'6'}/xsm;
+        $my_pollsection =~ s/\Q{yabb post_polltxt_polloptions}\E/$post_polltxt{'polloptions'}/xsm;
+        $my_pollsection =~ s/\Q{yabb post_polltxt_polloptionstext}\E/$post_polltxt{'polloptionstext'}/xsm;
+        $my_pollsection =~ s/\Q{yabb post_polltxt_pieslicecolor}\E/$post_polltxt{'pieslicecolor'}/xsm;
+        $my_pollsection =~ s/\Q{yabb post_polltxt_pieslicesplit}\E/$post_polltxt{'pieslicesplit'}/xsm;
     }
 
     if ( $postid ne 'Poll' ) {
@@ -853,12 +857,10 @@ s/\Q{yabb userlink}\E/<span id="savename" style="font-weight: bold">$liveusernam
         $messageblock =~ s/\Q{yabb memberinfo}\E/$livememberinfo/gxsm;
         $messageblock =~ s/\Q{yabb stars}\E/$livememberstar/gxsm;
         $messageblock =~ s/\Q{yabb location}\E/$liveuserlocation/gxsm;
-        $messageblock =~
-          s/\Q{yabb gender}\E/${$uid.$tmpmusername}{'gender'}/gxsm;
+        $messageblock =~ s/\Q{yabb gender}\E/${$uid.$tmpmusername}{'gender'}/gxsm;
         $messageblock =~
           s/\Q{yabb usertext}\E/${$uid.$tmpmusername}{'usertext'}/gxsm;
-        $messageblock =~
-          s/\Q{yabb userpic}\E/${$uid.$tmpmusername}{'userpic'}/gxsm;
+        $messageblock =~ s/\Q{yabb userpic}\E/${$uid.$tmpmusername}{'userpic'}/gxsm;
         $messageblock =~ s/\Q{yabb postinfo}\E/$livetemplate_postinfo/gxsm;
         $messageblock =~ s/\Q{yabb msgdate}\E/$moddate/gxsm;
         $messageblock =~ s/\Q{yabb msgimg}\E/$livemsgimg/gxsm;
@@ -872,6 +874,8 @@ s/\Q{yabb userlink}\E/<span id="savename" style="font-weight: bold">$liveusernam
         $messageblock =~
           s/\Q{yabb signature}\E/${$uid.$tmpmusername}{'signature'}/gxsm;
         $messageblock =~ s/\Q{yabb signaturehr}\E/$livesignature_hr/gxsm;
+        $messageblock =~ s/\Q{yabb messageclass}\E/$messageclass/gxsm;
+        $messageblock =~ s/\Q{yabb display_txt643}\E/$display_txt{'643'}/gxsm;
 
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
@@ -1215,6 +1219,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $FORM{'return_to'}
           ? $FORM{'return_to'}
           : ${ $uid . $username }{'return_to'};
+        $rts ||= 1;
         foreach my $rt ( 1 .. 3 ) {
             $return_to_select .=
               $rts == $rt
@@ -1230,15 +1235,13 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
         if ($iamguest) { $guestpost_col = $my_guestpost_col + 2; }
         $my_postsec_b   = postbox2();
         $my_postsection = $mypost_postblock;
-        $my_postsection =~
-          s/\Q{yabb my_postsection_ajx}\E/$my_postsection_ajx/xsm;
+        $my_postsection =~ s/\Q{yabb my_postsection_ajx}\E/$my_postsection_ajx/xsm;
         $my_postsection =~ s/\Q{yabb messageblock}\E/$messageblock/xsm;
         $my_postsection =~ s/\Q{yabb my_t_status}\E/$my_t_status/xsm;
         $my_postsection =~ s/\Q{yabb extra}\E/$extra/xsm;
         $my_postsection =~ s/\Q{yabb name_field}\E/$guestpost_fields/xsm;
         $my_postsection =~ s/\Q{yabb email_field}\E/$email_field/xsm;
-        $my_postsection =~
-          s/\Q{yabb verification_field}\E/$verification_field/xsm;
+        $my_postsection =~ s/\Q{yabb verification_field}\E/$verification_field/xsm;
         $my_postsection =~ s/\Q{yabb guestcol}\E/$guestpost_col/gxsm;
         $my_postsection =~
 s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
@@ -1249,8 +1252,7 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
         $my_postsection =~ s/\Q{yabb my_ubbc}\E/$my_ubbc/xsm;
         $my_postsection =~ s/\Q{yabb my_postsec_b}\E/$my_postsec_b/xsm;
         $my_postsection =~ s/\Q{yabb my_googie}\E/$my_googie/xsm;
-        $my_postsection =~
-          s/\Q{yabb mypost_smilie_array}\E/$mypost_smilie_array/xsm;
+        $my_postsection =~ s/\Q{yabb mypost_smilie_array}\E/$mypost_smilie_array/xsm;
         $my_postsection =~ s/\Q{yabb my_post_feata}\E/$my_post_feata/xsm;
         $my_postsection =~ s/\Q{yabb my_post_smilies}\E/$my_post_smilies/xsm;
         $my_postsection =~ s/\Q{yabb my_feat5}\E/$my_feat5/xsm;
@@ -1394,8 +1396,8 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
     $yymain =~ s/\Q{yabb my_topper}\E/$my_topper/xsm;
     $yymain =~ s/\Q{yabb icon}\E/$icon/xsm;
     $yymain =~ s/\Q{yabb icon_img}\E/$micon_bg{$icon}/xsm;
-    $yymain =~ s/\Q{yabb yytitle}\E\E/$yytitle/xsm;
-    $yymain =~ s/\Q{yabb my_topview}/$my_tview/xsm;
+    $yymain =~ s/\Q{yabb yytitle}\E/$yytitle/xsm;
+    $yymain =~ s/\Q{yabb my_topview}\E/$my_tview/xsm;
     return;
 }
 
@@ -1405,7 +1407,7 @@ sub Preview {
     ToHTML($error);
 
     # allows the following HTML-tags in error messages: <br /> <strong>
-    $error =~ s/&lt;br.*?&gt;/<br \/>/igxsm;
+    $error =~ s/&lt;br(\s \/)&gt;/<br \/>/igxsm;
     $error =~ s/&lt;(\/?)b&gt;/<$1strong>/igxsm;
     if ( $action eq 'modify2' ) {
         $tmpmusername = $thismusername;
@@ -1418,8 +1420,7 @@ sub Preview {
         LoadLanguage('Error');
         $prevmain .= $mypost_prevmain_error;
         $prevmain =~ s/\Q{yabb preverror}\E/$error/xsm;
-        $prevmain =~
-          s/\Q{yabb error_occurred}\E/$error_txt{'error_occurred'}/xsm;
+        $prevmain =~ s/\Q{yabb error_occurred}\E/$error_txt{'error_occurred'}/xsm;
     }
 
     $message = $mess;
@@ -1729,13 +1730,13 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 $fixfile = $file;
 
              # replace all inappropriate characters from lists in Language files
-                if ( $fixfile =~ /[^0-9A-Za-z+\-.:]/xsm ) {
+                if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
                     my %translist = loadtranlist();
                     @uploadtranlist = keys %translist;
                     foreach (@uploadtranlist) {
                         $fixfile =~ s/$_/$translist{$_}/gxsm;
                     }
-                    $fixfile =~ s/[^0-9A-Za-z+\-.:]/_/gxsm;
+                    $fixfile =~ s/[^\w+\-.:]/_/gxsm;
                 }
                 my $fixname = $fixfile;
                 if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
@@ -2096,8 +2097,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                   )
                 {
                     if ( ${ $uid . $username }{'postcount'} >= $postamount ) {
-                        ( $title, undef ) =
-                          split /[|]/xsm, $Post{$postamount}, 2;
+                        ( $title, undef ) = @{$Post{$postamount}};
                         $grp_after = $title;
                         last;
                     }
@@ -2422,8 +2422,7 @@ sub doshowthread {
 qq~ $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply$INFO{'start'};showall=yes" class="under">$post_cutts{'4'}</a> $post_cutts{'5'} ~;
         }
 
-        if ( $INFO{'showall'} ne q{} ) {
-            $origcutamount = $cutamount;
+        if ( $INFO{'showall'} ) {
             $cutamount     = $pidtxt{'01'};
             $showall =
 qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threadid;title=PostReply/$INFO{'start'}" class="under"> $post_cutts{'4'}</a> $post_cutts{'6'} ~;
@@ -2434,7 +2433,6 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
         if ( $INFO{'showall'} ne q{} ) {
             $cutamount = 1000;
         }
-        else { $cutamount = $origcutamount; }
         foreach my $amounter ( 0 .. ( $cutamount - 1 ) ) {
             (
                 undef, $temprname, undef, $tempdate, $tempname,
@@ -2491,7 +2489,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
             ToChars($message);
             $message = Censor($message);
 
-            if ( $message ne q{} ) {
+            if ( $message && $message ne q{} ) {
                 $my_enable_markquote =
                   ( $enable_markquote && $enable_quickreply )
                   ? qq~&nbsp;&nbsp;<a href="javascript:void(quoteSelection('$quote_mname',$threadid,$quote_msg_id,$messagedate,''))">$img{'mquote'}</a>~
@@ -2510,8 +2508,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 $my_showmess_mess =~
                   s/\Q{yabb my_enable_quickjump}\E/$my_enable_quickjump/xsm;
                 $my_showmess_mess =~ s/\Q{yabb tempdate}\E/$tempdate/xsm;
-                $my_showmess_mess =~
-                  s/\Q{yabb quote_msg_id}\E/$quote_msg_id/xsm;
+                $my_showmess_mess =~ s/\Q{yabb quote_msg_id}\E/$quote_msg_id/xsm;
                 $my_showmess_mess =~ s/\Q{yabb message}\E/$message/xsm;
 
                 if ( !${ $uid . $username }{'postlayout'} ) {

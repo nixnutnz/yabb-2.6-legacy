@@ -12,6 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
+#no warnings qw(redefine);
+#no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
@@ -21,6 +25,7 @@ $checkspacepmver = 'YaBB 2.7.00 $Revision$';
 if (@checkspacepmmods) {
     $checkspacepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub checkspace {
@@ -28,9 +33,9 @@ sub checkspace {
 
     # Free Disk Space Checking
     if ( $OSNAME =~ /Win/sm ) {
-        open my $fh, q{-|}, 'DIR /-C' or croak "Can't open pipe: $!";
+        open my $fh, q{-|}, 'DIR /-C' or croak "Can't open pipe: $OS_ERROR";
         my @x = <$fh>;
-        close $fh or croak "Can't close pipe: $!";
+        close $fh or croak "Can't close pipe: $OS_ERROR";
         my $lastline = pop @x;
 
         # should look like: 17 Directory(s), 21305790464 Bytes free
@@ -55,22 +60,26 @@ sub checkspace {
         @disk_space = $yyfreespace;
     }
     else {
-        open my $dsh, q{-|}, 'df -k .' or croak "Can't open pipe: $!";
+        open my $dsh, q{-|}, 'df -k .' or croak "Can't open pipe: $OS_ERROR";
         @disk_space = <$dsh>;
-        close $dsh or croak "Can't close pipe: $!";
+        close $dsh or croak "Can't close pipe: $OS_ERROR";
 
-        map { $_ =~ s/ +/  /gsm } @disk_space;
+        for (@disk_space) {
+            $_ =~ s/ +/  /gsm;
+        }
 
         open my $ffh, q{-|}, 'find . -noleaf -type f -printf "%s-"'
-          or croak "Can't open pipe: $!";
+          or croak "Can't open pipe: $OS_ERROR";
         my @find = <$ffh>;
-        close $ffh or croak "Can't close pipe: $!";
+        close $ffh or croak "Can't close pipe: $OS_ERROR";
     }
     $hostusername = $hostusername
-      || ( split / +/sm, qx{ls -l YaBB.$yyext} )[2];
+      || ( split / +/sm, qx{ls -l YaBB.$yyext} )[2] || q{};
     my @quota = qx{quota -u $hostusername -v};
+    $quota[0] ||= q{};
     $quota[0] =~ s/^ +//sm;
     $quota[0] =~ s/ /&nbsp;/gsm;
+    $quota[1] ||= q{};
     $quota[1] =~ s/^ +//sm;
     $quota[1] =~ s/ /&nbsp;/gsm;
     my $quota_select = qq~$quota[0]<br />$quota[1]~;
@@ -79,8 +88,9 @@ sub checkspace {
         if ( !$enable_quota ) { $ds = ( split / +/sm, $disk_space[1], 2 )[0]; }
         $my_q_select =
           isselected( $i == $enable_quota
-              || ( $ds && $quota[$i] =~ /^$ds/sm ) );
-        $quota_select .= q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
+              || ( $ds && $quota[$i] =~ /^$ds/xsm ) );
+        $quota_select .=
+          q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
         for my $i ( 2 .. $#quota ) {
             $quota[$i] =~ s/^ +//sm;
             $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
@@ -89,11 +99,6 @@ sub checkspace {
         }
         $quota_select .= '</select>';
     }
-
-    #    }
-
-    $ch_spc      = ischecked($enable_freespace_check);
-    $ch_enable_q = ischecked($enable_quota);
 
     @settings = (
         {
@@ -108,7 +113,7 @@ sub checkspace {
 q~<input type="checkbox" name="enable_quota" id="enable_quota" value="1" ~
                       . (
                          !$quota[2] ? 'disabled="disabled" '
-                        : $ch_enable_q
+                        : ischecked($enable_quota)
                       )
                       . q~/>~,
                     name       => 'enable_quota',
@@ -191,7 +196,7 @@ qq~<input type="text" name="findfile_maxsize" id="findfile_maxsize" size="10" va
                     description =>
 qq~<label for="enable_freespace_check">$admin_txt{'diskspacecheck'}</label>~,
                     input_html =>
-qq~<input type="checkbox" name="enable_freespace_check" id="enable_freespace_check" value="1" $ch_spc /><pre>@disk_space</pre>~,
+qq~<input type="checkbox" name="enable_freespace_check" id="enable_freespace_check" value="1" ${ischecked($enable_freespace_check)} /><pre>@disk_space</pre>~,
                     name       => 'enable_freespace_check',
                     validate   => 'boolean',
                     depends_on => [
@@ -325,19 +330,19 @@ qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
             # Is equal to
             elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
+$C . qq~document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
             }
 
             # Is not equal to
             elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
+$C . qq~document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
             }
 
             # Is true
             else {
                 $requirejs{$require} .=
-                  qq~$C\document.getElementsByName("$ritem")[0].checked$AndOr ~;
+                  $C . qq~document.getElementsByName("$ritem")[0].checked$AndOr ~;
             }
             $dependicies .= qq~     checkDependent("$require");\n~;
         }
@@ -349,6 +354,7 @@ qq~$C\document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     }
 
     # Hidden "feature": jump directly to a tab by default via the URL bar.
+    $INFO{'tab'} ||= q{};
     $INFO{'tab'} =~ s/\W//gxsm;
     $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
@@ -402,22 +408,6 @@ $dependicies
     }
   </script>~;
 
-    return;
-}
-
-sub ischecked {
-    my ($inp) = @_;
-
-    # Return a ref so we can be used like ${ischecked($var)} inside a string
-    if ( $inp == 1 ) { return 'checked="checked"'; }
-    return;
-}
-
-sub isselected {
-    my ($inp) = @_;
-
-    # Return a ref so we can be used like ${ischecked($var)} inside a string
-    if ( $inp == 1 ) { return 'selected="selected"'; }
     return;
 }
 

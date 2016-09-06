@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +22,7 @@ $edithelpcentrepmver = 'YaBB 2.7.00 $Revision$';
 if (@edithelpcentrepmmods) {
     $edithelpcentrepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');
@@ -111,14 +114,12 @@ sub HelpEdit2 {
     $txtrevision = $FORM{'txtrevision'};
     $mytxtrevision = $FORM{'mytxtrevision'} || q~''~;
 
-    fopen(HELPORDER, ">$helpfile/$help_language/$Area/$Page.help");
-    print HELPORDER qq~\$$txtrevision = $mytxtrevision;\nif ( $action eq 'detailedversion' ) { return 1; }\n~;
-
+    my $prhelp =
+qq~\$$txtrevision = '$mytxtrevision';\nif ( \$action eq 'detailedversion' ) { return 1; }\n~;
     $FORM{'SectionName'} =~ s/ /_/gsm;
-    print HELPORDER qq~\$SectionName = "$FORM{'SectionName'}";\n\n~;
+    $prhelp .= qq~\$SectionName = q\~$FORM{'SectionName'}\~;\n\n~;
     $aa = 1;
     while ($FORM{"SectionBody$aa"}) {
-
         $FORM{"SectionBody$aa"} =~ tr/\r//d;
         $FORM{"SectionBody$aa"} =~ s/\cM//gxsm;
         $FORM{"SectionBody$aa"} =~
@@ -131,24 +132,20 @@ sub HelpEdit2 {
         $FORM{"SectionBody$aa"} =~ s/@/\\@/gxsm;
 
         $FORM{"SectionSub$aa"} =~ s/ /_/gsm;
+        $prhelp .= qq~
+### Section $aa
+#############################################
+\$SectionSub$aa = q\~$FORM{"SectionSub$aa"}\~;
+\$SectionBody$aa = q\~$FORM{"SectionBody$aa"}\~;
+#############################################
 
-        print {HELPORDER} qq~### Section $aa\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER} qq~#############################################\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER} qq~\$SectionSub$aa = "$FORM{"SectionSub$aa"}";\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER}
-          qq~\$SectionBody$aa = qq\~$FORM{"SectionBody$aa"}\~;\n~
-          or croak "$croak{'print'} HELPORDER";
-        print {HELPORDER}
-          qq~#############################################\n\n\n~
-          or croak "$croak{'print'} HELPORDER";
-
+~;
         $aa++;
     }
-    print {HELPORDER} q~1;~ or croak "$croak{'print'} HELPORDER";
+    $prhelp .= qq~1;\n~;
 
+    fopen( HELPORDER, ">$helpfile/$help_language/$Area/$Page.help" );
+    print {HELPORDER} $prhelp or croak "$croak{'print'} HELPORDER";
     fclose(HELPORDER);
 
     $yymain .= "$helptxt{'8'}";
@@ -174,11 +171,8 @@ sub HelpSet2 {
 sub MainAdmin {
     my ( $admin_list, $adminlist, $gmod_list, $gmodlist, $moderator_list,
         $moderatorlist, $user_list, $userlist );
-    my $perms_check = q{};
-    if ( $UseHelp_Perms == 1 ) {
-        $perms_check = q~ checked='checked'~;
-    }
-    $yymain .= qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: inline">
+    $yymain .=
+qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: inline">
             <table class="bordercolor border-space pad-cell" style="width:44em; margin-bottom:.5em">
                 <tr>
                     <td class="titlebg">
@@ -186,7 +180,7 @@ sub MainAdmin {
                     </td>
                 </tr><tr>
                     <td class="windowbg2">
-                        <label for="UseHelp_Perms">$helptxt{'9'}</label> <input type="checkbox" name="UseHelp_Perms" id="UseHelp_Perms" value="1"$perms_check />
+                        <label for="UseHelp_Perms">$helptxt{'9'}</label> <input type="checkbox" name="UseHelp_Perms" id="UseHelp_Perms" value="1"$(ischecked($UseHelp_Perms)}perms_check />
                     </td>
                 </tr><tr>
                     <td class="catbg center">
@@ -212,10 +206,11 @@ sub MainAdmin {
 
     for my $item (sort {lc($a) cmp lc $b} @lfilesanddirs) {
         if (   -d "$helpfile/$item"
-                && $item =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm ) {
+                && $item =~ m{\A[\w\#\%\-\:\+\?\$\&\~\,\@/]+\Z}xsm ) {
             my $displang = $item;
-            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
-            $yymain .= qq~                    <option value="$item">$displang</option>~;
+            $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gixsm;
+            $yymain .=
+              qq~                    <option value="$item">$displang</option>~;
         }
     }
     $yymain .= qq~                </select>
@@ -246,27 +241,31 @@ sub SetOrderFile {
     @oldorder = split /\n/xsm, $oldorder;
     @neworder = split /\n/xsm, $neworder;
     for (@oldorder) {
-        $_ =~ s/[\n\r]//gxsm;
+        $_ =~ s/[\r\n]//gxsm;
         $verify_hash{"$_"}++;
     }
     $theorder = q{};
     for my $order (@neworder) {
-        $order =~ s/[\n\r]//gxsm;
+        $order =~ s/[\r\n]//gxsm;
         if ( $order eq q{} ) { next; }
         if ( !exists $verify_hash{$order} ) { next; }
         $theorder .= "$order ";
     }
     my @helps = qw(Admin Gmod Moderator User);
-    fopen( HELPORDER, ">$helpfile/$help_language/HelpOrder.pm" )
-      or croak("couldn't write order file - check permissions on $helpfile/$help_language");
+    my $prhlp = q{};
     for (@helps) {
         if ($_ eq $help_area ) {
-            print {HELPORDER} qq~\@$_ = qw($theorder);\n~ or croak "$croak{'print'} HELPORDER";
+            $prhlp .= qq~\@$_ = qw($theorder);\n~;
         }
         else {
-            print {HELPORDER} qq~\@$_ = qw(@{$_});\n~ or croak "$croak{'print'} HELPORDER";
+            $prhlp .= qq~\@$_ = qw(@{$_});\n~;
         }
     }
+    fopen( HELPORDER, ">$helpfile/$help_language/HelpOrder.pm" )
+      or croak(
+"couldn't write order file - check permissions on $helpfile/$help_language"
+      );
+    print {HELPORDER} $prhlp or croak 'cannot print helporder';
     fclose(HELPORDER);
     $yytitle       = "$helptxt{'7'}";
     $yySetLocation = qq~$adminurl?action=edithelp;help_language=$help_language~;
@@ -357,7 +356,7 @@ sub edithelp {
     if ( $usercount < 4 )  { $usercount  = 4; }
 
     my $displang = $help_language;
-    $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+    $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gixsm;
     $yymain .= qq~
         <script type="text/javascript">
 var nline = '\\n';

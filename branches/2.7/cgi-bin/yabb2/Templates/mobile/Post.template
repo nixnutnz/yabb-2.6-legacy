@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.20                                                 #
-# Packaged:       December 31, 2015                                           #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mobileposttemver = 'YaBB 2.6.20 $Revision$';
+$mobileposttemver = 'YaBB 2.7.00 $Revision$';
 @mobilepostmods = ();
 if (@mobilepostmods) {
     $mobilepostmods = 1;
@@ -167,7 +167,7 @@ $mypost_poll_top = qq~
         <br /><input type="text" size="40" name="question" id="question" value="{yabb poll_question}" maxlength="{yabb maxpq}" />
         <input type="hidden" name="pollthread" value="{yabb pollthread}" />
     </div>
-<table class="windowbg pad_3px" style="margin:0; width:auto">
+<table class="windowbg pad_3px">
     <tr>
         <td class="catbg"><b>$post_polltxt{'polloptions'}</b></td>
         <td class="catbg"><b>$post_polltxt{'polloptionstext'}</b></td>
@@ -179,7 +179,7 @@ $mypost_poll_top = qq~
 ~;
 
 $my_poll_options = qq~<tr>
-        <td class="windowbg2"><label for="option{yabb i}"> &nbsp; $post_polltxt{'7'} {yabb i}: &nbsp;</label></td>
+        <td class="windowbg2"><label for="option{yabb i}"> &nbsp; {yabb post_polltxt_7} {yabb i}: &nbsp;</label></td>
         <td class="windowbg2">
             <input type="text" size="30" maxlength="{yabb maxpo}" name="option{yabb i}" id="option{yabb i}" value="{yabb options_i}" />
         </td>
@@ -188,9 +188,9 @@ $my_poll_options = qq~<tr>
             <input type="hidden" name="slicecol{yabb i}" id="slicecol{yabb i}" value="{yabb slicecolor_i}" />
         </td>
         <td class="windowbg2 center">
-            <input type="checkbox" name="split{yabb i}" value="1"{yabb splitchecked_i} /> <span class="small">$post_polltxt{'splitslice'}</span>
+            <input type="checkbox" name="split{yabb i}" value="1"{yabb splitchecked_i} /> <span class="small">{yabb post_polltxt_splitslice}</span>
         </td>
-        <td class="windowbg2">
+        <td class="windowbg2" colspan="2">
             &nbsp;
         </td>
     </tr>~;

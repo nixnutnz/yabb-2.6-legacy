@@ -17,6 +17,7 @@ $englishprofilelngver = 'YaBB 2.7.00 $Revision$';
 if (@englishprofilelngmods) {
     $englishprofilelngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %profile_txt = (

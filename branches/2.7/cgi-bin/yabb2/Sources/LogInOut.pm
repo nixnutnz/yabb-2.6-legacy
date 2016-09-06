@@ -20,6 +20,7 @@ $loginoutpmver  = 'YaBB 2.7.00 $Revision$';
 if (@loginoutpmmods) {
     $loginoutpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($regcheck) { require Sources::Decoder; }
@@ -44,8 +45,8 @@ sub Login2 {
     if ( !$iamguest && $sessionvalid == 1 ) {
         fatal_error( 'logged_in_already', $username );
     }
-    if ( $FORM{'username'} eq q{} ) { fatal_error('no_username'); }
-    if ( $FORM{'passwrd'} eq q{} )  { fatal_error('no_password'); }
+    if ( !$FORM{'username'} ) { fatal_error('no_username'); }
+    if ( !$FORM{'passwrd'} )  { fatal_error('no_password'); }
     $username = $FORM{'username'};
     $username =~ s/\s/_/gxsm;
     if ( $username =~ /[^ \w\x80-\xFF\[\]()#%+,\-|.:=?@\^]/xsm ) {
@@ -114,10 +115,19 @@ sub Login2 {
         fatal_error('bad_credentials');
     }
 
-    $iamadmin = ${ $uid . $username }{'position'} eq 'Administrator'    ? 1 : 0;
-    $iamgmod  = ${ $uid . $username }{'position'} eq 'Global Moderator' ? 1 : 0;
-    $sessionvalid = 1;
-    $iamguest     = 0;
+    $iamadmin = 0;
+    $iamgmod = 0;
+    if ( ${ $uid . $username }{'position'} ) {
+        if (${ $uid . $username }{'position'} eq 'Administrator' ) {
+            $iamadmin = 1;
+            $sessionvalid = 1;
+        }
+        if ( ${ $uid . $username }{'position'} eq 'Global Moderator') {
+            $iamgmod = 0;
+            $sessionvalid = 1;
+        }
+        $iamguest     = 0;
+    }
 
     if ( $maintenance && !$iamadmin ) {
         $username = 'Guest';
@@ -149,8 +159,8 @@ sub Login2 {
 
     if ( $FORM{'sredir'} ) {
         $FORM{'sredir'} =~ s/\~/\=/gxsm;
-        $FORM{'sredir'} =~ s/x3B/;/gsm;
-        $FORM{'sredir'} =~ s/search2/search/gsm;
+        $FORM{'sredir'} =~ s/x3B/;/gxsm;
+        $FORM{'sredir'} =~ s/search2/search/gxsm;
         $FORM{'sredir'} = qq~?$FORM{'sredir'}~;
         if ( $FORM{'sredir'} =~
             /action=(register|login2|reminder|reminder2)/xsm )
@@ -158,6 +168,9 @@ sub Login2 {
             $FORM{'sredir'} = q{};
         }
     }
+	else {
+		$FORM{'sredir'} = q{};
+	}
     $yySetLocation = qq~$scripturl$FORM{'sredir'}~;
     redirectexit();
     return;
@@ -183,10 +196,10 @@ sub sharedLogin {
     }
 
     #cookie length is now all or nothing.
-    if ( $sharedLogin_title ne q{} ) {
+    if ( $sharedLogin_title ) {
         $sharedlog = $mysharedloga;
         $sharedlog =~ s/\Q{yabb sharedLogin_title}\E/$sharedLogin_title/xsm;
-        if ( $sharedLogin_text ne q{} ) {
+        if ( $sharedLogin_text ) {
             $sharedlog .= $mysharedlogb;
             $sharedlog =~ s/\Q{yabb sharedLogin_text}\E/$sharedLogin_text/xsm;
         }
@@ -198,9 +211,12 @@ sub sharedLogin {
         $sharedbot = $mysharedbot;
     }
     if ($maintenance) { $hide_passlink = ' style="visibility: hidden;"' }
+    $hide_reglink = q{};
     if ( $maintenance || !$regtype ) {
         $hide_reglink = ' style="visibility: hidden;"';
     }
+    $INFO{'sesredir'} ||= q{};
+    $hide_passlink ||= q{};
     $sharedlog .= qq~
             <form id="loginform" name="loginform" action="$scripturl?action=login2" method="post" accept-charset="$yymycharset">
                 <input type="hidden" name="sredir" value="$INFO{'sesredir'}" />
@@ -344,7 +360,7 @@ sub Reminder2 {
         require "$memberdir/forgotten.passes";
     }
     if ( exists $pass{$user} ) { delete $pass{$user}; }
-    $pass{"$user"} = $randid;
+    $pass{$user} = $randid;
 
     my $forpasses = q{};
     while ( ( $key, $value ) = each %pass ) {

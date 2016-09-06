@@ -13,6 +13,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
+#no warnings qw(uninitialized);
 our $VERSION = '2.7.00';
 
 our $settings_maintenancepmver = 'YaBB 2.7.00 $Revision$';
@@ -20,6 +24,7 @@ our $settings_maintenancepmver = 'YaBB 2.7.00 $Revision$';
 if (@settings_maintenancepmmods) {
     $settings_maintenancepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # List of settings
@@ -52,9 +57,15 @@ for (sort keys %lngs ) {
     else {${$_ . '_maintenancetext'} = q{};}
     $lbl = $_ . '_maintenancetext';
 
-    push @{ $settings[0]{items} }, { description => qq~<label for="$lbl">$admin_txt{'348Text'} - $_</label>~, input_html => qq~<textarea cols="30" rows="5" name="$lbl" id="$lbl" style="width: 98%">${$lbl}</textarea>~, name     => "$lbl", validate => 'fulltext,null', };
+    push @{ $settings[0]{items} },
+      {
+        description => qq~<label for="$lbl">$admin_txt{'348Text'} - $_</label>~,
+        input_html =>
+qq~<textarea cols="30" rows="5" name="$lbl" id="$lbl" style="width: 98%">${$lbl}</textarea>~,
+        name     => "$lbl",
+        validate => 'fulltext,null',
+      };
 }
-
 
 # Routine to save them
 sub SaveSettings {

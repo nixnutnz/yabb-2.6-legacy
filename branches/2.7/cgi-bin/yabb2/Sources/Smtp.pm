@@ -20,14 +20,12 @@ $smtppmver  = 'YaBB 2.7.00 $Revision$';
 if (@smtppmmods) {
     $smtppmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if (
-    eval {
-        require IO::Socket::INET;
-        require Digest::HMAC_MD5;
-    }
-  )
+if (eval {
+    require IO::Socket::INET;
+    require Digest::HMAC_MD5} )
 {
     require IO::Socket::INET;
     require Digest::HMAC_MD5;
@@ -41,11 +39,9 @@ sub use_smtp {
     $OUTPUT_AUTOFLUSH = 1;
     my ($proto) = ( getprotobyname 'tcp' )[2];
     my ($port) = ( getservbyname 'smtp', 'tcp' )[2] || 25;
-    if ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
-    {
+    if ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm ) {
         $smtpaddr =
-          ( $smtp_server =~
-              /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
+          ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
           ? pack( 'C4', $1, $2, $3, $4 )
           : ( gethostbyname $smtp_server )[4];
     }

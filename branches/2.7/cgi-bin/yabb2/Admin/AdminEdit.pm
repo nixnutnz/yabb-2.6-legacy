@@ -12,6 +12,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +23,7 @@ $admineditpmver = 'YaBB 2.7.00 $Revision$';
 if (@admineditpmmods) {
     $admineditpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -76,7 +80,7 @@ sub EditBots2 {
 
     $newbots = qq~%botname = (\n~;
     for ( sort @mybots) {
-        my @newbots = split /[|]/, $_;
+        my @newbots = split /[|]/xsm, $_;
         $newbots .= qq~'$newbots[0]' => '$newbots[1]',\n~;
     }
     $newbots .= qq~);\n\n1;\n~;
@@ -95,28 +99,25 @@ sub SetCensor {
     if ( $FORM{'censorlanguage'} ) { $censorlanguage = $FORM{'censorlanguage'} }
     else                           { $censorlanguage = $lang; }
     opendir LNGDIR, $langdir;
-    my @lfilesanddirs = readdir LNGDIR;
+    my @langitems = readdir LNGDIR;
     closedir LNGDIR;
-
-    for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
-        if (   -d "$langdir/$fld"
-            && $fld =~ m{\A[0-9a-zA-Z_\#\%\-\:\+\?\$\&\~\,\@/]+\Z}sm
-            && -e "$langdir/$fld/Main.lng" )
-        {
-                $displang = $fld;
-                $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
+    require "$langdir/Lang.lng";
+    my $drawnldirs = q{};
+    foreach my $fld ( sort { lc($a) cmp lc $b } @langitems ) {
+        my $dispsel = q{};
+        if ( -e "$langdir/$fld/Main.lng" ) {
+            my $displang = $lngs{$fld};
                 if ( $censorlanguage eq $fld ) {
-                  $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~;
+                $dispsel = ' selected="selected"';
             }
-            else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
+        $drawnldirs .= qq~<option value="$fld"$dispsel>$displang</option>~;
         }
     }
 
-    my ( @censored, $i );
     fopen( CENSOR, "$langdir/$censorlanguage/censor.txt" );
-    @censored = <CENSOR>;
+    my @censored = <CENSOR>;
     fclose(CENSOR);
-    for my $i (@censored) {
+    foreach my $i (@censored) {
         $i =~ tr/\r//d;
         $i =~ tr/\n//d;
     }
@@ -130,7 +131,6 @@ sub SetCensor {
         </tr><tr>
             <td class="windowbg2">
             <form action="$adminurl?action=setcensor" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
-                $templs{'7'}
                 <select name="censorlanguage" id="censorlanguage" size="1">
                     $drawnldirs
                 </select>
@@ -154,7 +154,7 @@ sub SetCensor {
                 <div class="pad-more">
                     <input type="hidden" name="censorlanguage" value="$censorlanguage" />
                     <textarea rows="35" cols="15" name="censored" id="censored" style="width:90%">~;
-    for my $i (@censored) {
+    foreach my $i (@censored) {
         if ( !$i || $i !~ m/.+[\=~].+/sm ) { next; }
         $yymain .= "$i\n";
     }
@@ -196,7 +196,7 @@ sub SetCensor2 {    # don't use &FromChars() here!!!
     my @lines = split /\n/xsm, $FORM{'censored'};
     fopen( CENSOR, ">$langdir/$censorlanguage/censor.txt", 1 );
 
-    for my $i (@lines) {
+    foreach my $i (@lines) {
         $i =~ tr/\n//d;
         if ( !$i || $i !~ m/.+[\=~].+/sm ) { next; }
         print {CENSOR} "$i\n" or croak "$croak{'print'} CENSOR";
@@ -209,11 +209,6 @@ sub SetCensor2 {    # don't use &FromChars() here!!!
 
 sub SetReserve {
     is_admin_or_gmod();
-    if ( $matchword ) { $reservecheck[0] = q~ checked="checked"~; }
-    if ( $matchcase ) { $reservecheck[1] = q~ checked="checked"~; }
-    if ( $matchuser ) { $reservecheck[2] = q~ checked="checked"~; }
-    if ( $matchname ) { $reservecheck[3] = q~ checked="checked"~; }
-
     $yymain .= qq~
 <form action="$adminurl?action=setreserve2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
@@ -228,20 +223,21 @@ sub SetReserve {
             <td class="windowbg2"><div class="pad-more">
                 $admin_txt{'342'}
                 <p class="center"><textarea cols="40" rows="35" name="reserved" style="width:95%">~;
-    for my $i (@reserve) {
+    foreach my $i (@reserve) {
         chomp $i;
-        if ( $i !~ m{\A[\S|\s]*[\n\r]*\Z}sm ) { next; }
+        $i =~ s/\t//gxsm;
+        if ( $i !~ m{\A[\S|\s]*[\n\r]*\Z}xsm ) { next; }
         $yymain .= "$i\n";
     }
     $yymain .= qq~</textarea>
       </p>
-      <input type="checkbox" name="matchword" id="matchword" value="checked"$reservecheck[0] />
+      <input type="checkbox" name="matchword" id="matchword"${ischecked($matchword)} />
       <label for="matchword">$admin_txt{'726'}</label><br />
-      <input type="checkbox" name="matchcase" id="matchcase" value="checked"$reservecheck[1] />
+      <input type="checkbox" name="matchcase" id="matchcase"${ischecked($matchcase)} />
       <label for="matchcase">$admin_txt{'727'}</label><br />
-      <input type="checkbox" name="matchuser" id="matchuser" value="checked"$reservecheck[2] />
+      <input type="checkbox" name="matchuser" id="matchuser"${ischecked($matchuser)} />
       <label for="matchuser">$admin_txt{'728'}</label><br />
-      <input type="checkbox" name="matchname" id="matchname" value="checked"$reservecheck[3] />
+      <input type="checkbox" name="matchname" id="matchname"${ischecked($matchname)}" />
       <label for="matchname">$admin_txt{'729'}</label>
             </div></td>
         </tr>
@@ -268,15 +264,10 @@ sub SetReserve {
 
 sub SetReserve2 {
     is_admin_or_gmod();
-    $matchword = $FORM{'matchword'} eq 'checked' ? 1 : 0;
-    $matchcase = $FORM{'matchcase'} eq 'checked' ? 1 : 0;
-    $matchuser = $FORM{'matchuser'} eq 'checked' ? 1 : 0;
-    $matchname = $FORM{'matchname'} eq 'checked' ? 1 : 0;
-
-    $settings{'matchword'} = $matchword;
-    $settings{'matchcase'} = $matchcase;
-    $settings{'$matchuser'} = $matchuser;
-    $settings{'matchname'} = $matchname;
+    $settings{'matchword'} = $FORM{'matchword'} ? 1 : 0;
+    $settings{'matchcase'} = $FORM{'matchcase'} ? 1 : 0;
+    $settings{'matchuser'} = $FORM{'matchuser'} ? 1 : 0;
+    $settings{'matchname'} = $FORM{'matchname'} ? 1 : 0;
 
     $reserved = $FORM{'reserved'};
     $reserved =~ tr/\r//d;
@@ -305,12 +296,14 @@ sub ModifyAgreement {
          $FORM{'agreementlanguage'}
       || $INFO{'agreementlanguage'}
       || $lang;
-    for my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
+    foreach my $fld (sort {lc($a) cmp lc $b} @lfilesanddirs) {
         if (-e "$langdir/$fld/Main.lng") {
             $displang = $fld;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gism;
             if ($agreementlanguage eq $fld) {
-                $drawnldirs .= qq~<option value="$fld" selected="selected">$displang</option>~; }
+                $drawnldirs .=
+qq~<option value="$fld" selected="selected">$displang</option>~;
+            }
             else { $drawnldirs .= qq~<option value="$fld">$displang</option>~; }
         }
     }
@@ -323,6 +316,7 @@ sub ModifyAgreement {
         $fullagreement .= qq~$line\n~;
     }
     fclose(AGREE);
+    $INFO{'destination'} ||= q{};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: -1px;">
@@ -337,7 +331,6 @@ sub ModifyAgreement {
         </tr><tr>
            <td class="windowbg2">
                 <form action="$adminurl?action=modagreement" method="post" enctype="application/x-www-form-urlencoded">
-                $templs{'8'}
                 <select name="agreementlanguage" id="agreementlanguage" size="1">
                 $drawnldirs
                 </select>
@@ -394,28 +387,35 @@ sub ModifyAgreement2 {
     print {AGREE} $FORM{'agreement'} or croak "$croak{'print'} AGREE";
     fclose(AGREE);
 
-    $FORM{'agreement'} =~ s/\n/<br \/>\n/gsm;
+    $FORM{'agreement'} =~ s/\n/<br \/>\n/gxsm;
     if ( -e "$helpfile/$agreementlanguage/User/user00_agreement.help" ) {
         require "$helpfile/$agreementlanguage/User/user00_agreement.help";
-        my $txtrevision = lc $agreementlanguage . 'user_user00_agreementhelpver';
+        my $txtrevision =
+          lc $agreementlanguage . 'user_user00_agreementhelpver';
         my $mytxtrevision = ${$txtrevision} || q~''~;
-        fopen( HELPAGREE,
-            ">$helpfile/$agreementlanguage/User/user00_agreement.help" );
+
         $my_regtitle = $register_txt{'764a'};
         $my_regtitle =~ s/ /_/gsm;
-        print HELPAGREE qq~\$$txtrevision = $mytxtrevision;\nif ( $action eq 'detailedversion' ) { return 1; }\n~;
-        print {HELPAGREE} qq^\$SectionName = "$my_regtitle";
+        my $prihelp =
+qq~\$$txtrevision = '$mytxtrevision';\n~;
+        $prihelp .= qq^\$SectionName = "$my_regtitle";
 
 ### Section 1
 #############################################
 \$SectionSub1 = "{yabb_boardname}_$my_regtitle";
-\$SectionBody1 = qq~<p>$FORM{'agreement'}</p>~;
+\$SectionBody1 = q~<p>$FORM{'agreement'}</p>~;
 #############################################
 
-
-1;^ or croak "$croak{'print'} $helpfile/$agreementlanguage/User/user00_agreement.help";
+1;^;
+    if ( -e "$helpfile/$agreementlanguage/User/user00_agreement.help" ) {
+        fopen( HELPAGREE,
+            ">$helpfile/$agreementlanguage/User/user00_agreement.help" );
+        print {HELPAGREE} qq~$prihelp~
+          or croak
+"$croak{'print'} $helpfile/$agreementlanguage/User/user00_agreement.help";
         fclose(HELPAGREE);
     }
+}
 
     $yySetLocation =
       $FORM{'destination'}
@@ -432,14 +432,16 @@ sub GmodSettings {
     if ( !-e ("$vardir/Gmodset.pm") ) { GmodSettings2(); }
     require Variables::Gmodset;
 
-    if ( $gmod_newfile eq q{} ) { GmodSettings2(); }
+    if ( !$gmod_newfile || $gmod_newfile eq q{} ) { GmodSettings2(); }
 
-    if ( $allow_gmod_aprofile eq 'on' || ( $allow_gmod_profile eq 'on' && $self_del_user == 1 ) ) {
+    if ( $allow_gmod_aprofile
+        || ( $allow_gmod_profile && $self_del_user ) )
+    {
         $deletemulti = 'deletemultimembers';
     }
     else { $deletemulti = q{}; }
 
-    if ( $allow_gmod_aprofile eq 'on' ) {
+    if ( $allow_gmod_aprofile ) {
         $seepmattach = 'managepmattachments';
         $emailbackup = 'emailbackup';
     }
@@ -448,19 +450,48 @@ sub GmodSettings {
         $emailbackup = q{};
     }
 
-    if ($extendedprofiles == 1 ) {
+    if ($extendedprofiles ) {
         $ext_admin = 'ext_admin';
     }
     else {$ext_admin = q{}; }
 
-    @gmodmember_controls = ( 'gmodmember_controls', 'viewmembers', 'addmember', "$deletemulti", 'modmemgr', 'mailing', 'ipban',);
-    @gmodforumsettings = ( 'gmodforumsettings', 'newsettings;page=main', 'newsettings;page=advanced', "$ext_admin", 'editbots',);
-    @gmodgeneral_controls = ('gmodgeneral_controls', 'newsettings;page=news', 'smilies', 'setcensor', 'modagreement', 'eventcal_set', 'bookmarks',);
-    @gmodsecurity_settings = ('gmodsecurity_settings', 'referer_control', 'newsettings;page=security', 'setup_guardian', 'newsettings;page=antispam', 'spam_questions', 'honeypot',);
-    @gmodforum_controls = qw(gmodforum_controls managecats manageboards helpadmin editemailtemplates);
+    @gmodmember_controls = (
+        'gmodmember_controls', 'viewmembers',
+        'addmember',           "$deletemulti",
+        'modmemgr',            'mailing',
+        'ipban',
+    );
+    @gmodforumsettings = (
+        'gmodforumsettings',         'newsettings;page=main',
+        'newsettings;page=advanced', "$ext_admin",
+        'editbots',
+    );
+    @gmodgeneral_controls = (
+        'gmodgeneral_controls', 'newsettings;page=news',
+        'smilies',              'setcensor',
+        'modagreement',         'eventcal_set',
+        'bookmarks',
+    );
+    @gmodsecurity_settings = (
+        'gmodsecurity_settings',     'referer_control',
+        'newsettings;page=security', 'setup_guardian',
+        'newsettings;page=antispam', 'spam_questions',
+        'honeypot',
+    );
+    @gmodforum_controls =
+      qw(gmodforum_controls managecats manageboards helpadmin editemailtemplates);
     @gmodforum_layout = qw(gmodforum_layout modskin modcss modtemp);
-    @gmodmaintence_controls = ( 'gmodmaintence_controls', 'backup', "$emailbackup", 'clean_log', 'boardrecount', 'rebuildmesindex', 'membershiprecount', 'rebuildmemlist', 'rebuildmemhist', 'rebuildnotifications', 'deleteoldthreads', 'manageattachments', "$seepmattach", );
-    @gmodforum_stats = qw(gmodforum_stats detailedversion stats showclicks errorlog);
+    @gmodmaintence_controls = (
+        'gmodmaintence_controls', 'backup',
+        "$emailbackup",           'clean_log',
+        'boardrecount',           'rebuildmesindex',
+        'membershiprecount',      'rebuildmemlist',
+        'rebuildmemhist',         'rebuildnotifications',
+        'deleteoldthreads',       'manageattachments',
+        "$seepmattach",
+    );
+    @gmodforum_stats =
+      qw(gmodforum_stats detailedversion stats showclicks errorlog);
     @gmodboardmod_mods = qw(gmodboardmod_mods modlist);
 
     $dismenu = q{};
@@ -476,9 +507,7 @@ sub GmodSettings {
     $dismenu .= showGMod(@gmodforum_stats);
     $dismenu .= showGMod(@gmodboardmod_mods);
 
-    if ($allow_gmod_admin) { $gmod_selected_a = ' checked="checked"'; }
     if ($allow_gmod_profile) {
-        $gmod_selected_p = ' checked="checked"';
         if ($allow_gmod_aprofile) { $gmod_selected_ap = ' checked="checked"'; }
     }
     else {
@@ -498,8 +527,8 @@ sub GmodSettings {
         </tr><tr>
             <td class="windowbg2" colspan="3">
                 <div class="pad-more">
-                    <input type="checkbox" id="allow_gmod_admin" name="allow_gmod_admin"$gmod_selected_a /> <label for="allow_gmod_admin">$gmod_settings{'2'}</label><br />
-                    <input type="checkbox" id="allow_gmod_profile" name="allow_gmod_profile"$gmod_selected_p onclick="depend(this.checked);" /> <label for="allow_gmod_profile">$gmod_settings{'3'}</label><br />
+                    <input type="checkbox" id="allow_gmod_admin" name="allow_gmod_admin"${ischecked($allow_gmod_admin)} /> <label for="allow_gmod_admin">$gmod_settings{'2'}</label><br />
+                    <input type="checkbox" id="allow_gmod_profile" name="allow_gmod_profile"${ischecked($allow_gmod_profile)} onclick="depend(this.checked);" /> <label for="allow_gmod_profile">$gmod_settings{'3'}</label><br />
                     <input type="checkbox" id="allow_gmod_aprofile" name="allow_gmod_aprofile"$gmod_selected_ap /> <label for="allow_gmod_aprofile">$gmod_settings{'3a'}</label>
                 </div>
             </td>
@@ -542,18 +571,17 @@ function depend(value) {
 sub showGMod {
     my @x = @_;
     my %gmodset1 = ();
-    my $dismenu = qq~<div class="windowbg padd-cell"><b>$gmod_settings{$x[0]}</b></div>
+    my $dismenu =
+      qq~<div class="windowbg padd-cell"><b>$gmod_settings{$x[0]}</b></div>
     <ul style="margin-top:0">~;
     for my $i( 1 .. $#x ) {
         if ( $x[$i] eq q{} ) { next; }
         $key = $x[$i];
         $value = $gmod_access{$key};
         $key =~ s/newsettings\;page\=//xsm;
-        $checked = q{};
         $gmodset1{$key} = $value;
-        if ( $gmodset1{$key} eq 'on' ) { $checked = ' checked="checked"'; }
         $dismenu .=
-qq~\n        <li style="list-style:none"><input type="checkbox" name="$key" id="$key"$checked />&nbsp;<label for="$key"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $gmodprivexpl_txt{$key}" title="$reftxt{'1a'} $gmodprivexpl_txt{$key}" /> $gmodpriv_txt{$key}</label></li>\n~;
+qq~\n        <li style="list-style:none"><input type="checkbox" name="$key" id="$key"${ischecked($gmodset1{$key})} />&nbsp;<label for="$key"><img src="$admin_img{'question'}" alt="$reftxt{'1a'} $gmodprivexpl_txt{$key}" title="$reftxt{'1a'} $gmodprivexpl_txt{$key}" /> $gmodpriv_txt{$key}</label></li>\n~;
     }
     $dismenu .= q~    </ul>~;
     return $dismenu;
@@ -564,31 +592,34 @@ sub GmodSettings2 {
 
     @pagelist = qw(main advanced news security antispam);
     for my $i ( @pagelist) {
-        if ( $FORM{$i} eq 'on' ){
+        if ( $FORM{$i} ){
             push @mynewsettings, qq~'$i',~;
         }
     }
 
-    if ( $FORM{'allow_gmod_aprofile'} eq 'on' ) {
-        $seepmattach = qq~managepmattachments => '$FORM{'managepmattachments'}',~;
+    if ( $FORM{'allow_gmod_aprofile'} ) {
+        $seepmattach =
+          qq~managepmattachments => '$FORM{'managepmattachments'}',~;
         $emailbackup = qq~emailbackup => '$FORM{'emailbackup'}',~;
     }
-    if ( $FORM{'allow_gmod_aprofile'} eq 'on' || ( $FORM{'allow_gmod_profile'} eq 'on' && $self_del_user == 1 ) ) {
+    if ( $FORM{'allow_gmod_aprofile'}
+        || ( $FORM{'allow_gmod_profile'} && $self_del_user ) )
+    {
         $deletemulti = qq~deletemultimembers => '$FORM{'deletemultimembers'}',~;
     }
-    if ( $FORM{'deletemultimembers'} eq 'on' || $FORM{'addmember'} eq 'on' ) {
+    if ( $FORM{'deletemultimembers'} || $FORM{'addmember'} ) {
         $FORM{'viewmembers'} = 'on';
     }
-    if ( $FORM{'manageattachments'} eq 'on' ) {
+    if ( $FORM{'manageattachments'} ) {
         $FORM{'viewmembers'} = 'on';
     }
-    if ( $FORM{'ipban'} eq 'on' ) {
+    if ( $FORM{'ipban'} ) {
         $FORM{'ipban2'} = 'on';
     }
 
     my $filler =
 q~                                                                               ~;
-    my $setfile = <<EOF;
+    my $setfile = << "EOF";
 ### Gmod Related Settings ###
 
 \$allow_gmod_admin = '$FORM{'allow_gmod_admin'}';
@@ -803,7 +834,7 @@ EOF
 sub EditPaths {
 
     # Simple output of env variables, for troubleshooting
-    if ( $ENV{'SCRIPT_FILENAME'} ne q{} ) {
+    if ( $ENV{'SCRIPT_FILENAME'} ) {
         $support_env_path = $ENV{'SCRIPT_FILENAME'};
 
         # replace \'s with /'s for Windows Servers
@@ -812,7 +843,7 @@ sub EditPaths {
         # Remove Setupl.pl and cgi - and also nph- for buggy IIS.
         $support_env_path =~ s/(nph-)?AdminIndex.(pl|cgi)//igxsm;
     }
-    elsif ( $ENV{'PATH_TRANSLATED'} ne q{} ) {
+    elsif ( $ENV{'PATH_TRANSLATED'} ) {
         $support_env_path = $ENV{'PATH_TRANSLATED'};
 
         # replace \'s with /'s for Windows Servers
@@ -1113,10 +1144,12 @@ EOF
 
 sub nicely_aligned_file {
     my $filler = q{ } x 70;
+
         # Make files look nicely aligned. The comment starts after 70 Col
 
     my $setfile = shift;
-    $setfile =~ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 70 ? length $1 : 69)) . $2 /gem;
+    $setfile =~
+s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 70 ? length $1 : 69)) . $2 /gem;
     $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
     *cut_comment = sub {    # line break of too long comments
         my @x = @_;
@@ -1124,7 +1157,7 @@ sub nicely_aligned_file {
           ( q{}, 140 );    # 120 Col is the max width of page
         my $var_length = length $x[0];
         while ( $length < $var_length ) { $length += 140; }
-        for ( split / +/sm, $x[1] ) {
+        foreach ( split / +/sm, $x[1] ) {
             if ( ( $var_length + length($comment) + length $_ ) > $length ) {
                 $comment =~ s/ $//sm;
                 $comment .= "\n$filler#  $_ ";

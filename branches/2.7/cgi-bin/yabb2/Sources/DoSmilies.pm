@@ -19,6 +19,7 @@ $dosmiliespmver  = 'YaBB 2.7.00 $Revision$';
 if (@dosmiliespmmods) {
     $dosmiliespmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Main');
@@ -30,16 +31,16 @@ sub SmiliePut {
     $evenmoresmilies   = q{};
     $more_smilie_array = q{};
     $i                 = 0;
-    while ( $SmilieURL[$i] ) {
-        if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-        else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
+    while ( $smilieorder[$i] ) {
+        if ( ${$addedsmilies{$smilieorder[$i]}}[0] =~ /\//ixsm ) { $tmpurl = ${$addedsmilies{$smilieorder[$i]}}[0]; }
+        else { $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~; }
         if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
             $moresmilieslist .= q~<br />~;
         }
         $moresmilieslist .=
-qq~<img src="$tmpurl" class="moresmiles" alt="$SmilieDescription[$i]" onclick="javascript:MoreSmilies($i)" />$SmilieLinebreak[$i]\n~;
+qq~<img src="$tmpurl" class="moresmiles" alt="${$addedsmilies{$smilieorder[$i]}}[2]" onclick="javascript:MoreSmilies($i)" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
         $smilie_url_array .= qq~"$tmpurl", ~;
-        $tmpcode = $SmilieCode[$i];
+        $tmpcode = ${$addedsmilies{$smilieorder[$i]}}[1];
         $tmpcode =~ s/\&quot;/\x22/gxsm;
         FromHTML($tmpcode);
         $tmpcode =~ s/&\x2336;/\$/gxsm;
@@ -54,10 +55,7 @@ qq~<img src="$tmpurl" class="moresmiles" alt="$SmilieDescription[$i]" onclick="j
         $smilieslist = q{};
         foreach my $line ( sort { uc $a cmp uc $b } @contents ) {
             ( $name, $extension ) = split /[.]/xsm, $line;
-            if (   $extension =~ /gif/ism
-                || $extension =~ /jpg/ism
-                || $extension =~ /jpeg/ism
-                || $extension =~ /png/ism )
+            if ( $extension =~ m/[gif|jpg|jpeg|png]/ixsm )
             {
                 if ( $line !~ /banner/ism ) {
                     if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
@@ -75,8 +73,7 @@ qq~<img src="$yyhtml_root/Smilies/$line" id="$name" onclick="javascript:MoreSmil
     if ( $showadded == 3 || ( $showadded == 2 && $detachblock == 1 ) ) {
         $my_output .= qq~ $moresmilieslist ~;
     }
-
-    $output = $smilie_window_a;
+    $output = $smilie_window_simple;
     $output =~ s/\Q{yabb popback}\E/$popback/xsm;
     $output =~ s/\Q{yabb poptext}\E/$poptext/xsm;
     $output =~ s/\Q{yabb my_output}\E/$my_output/xsm;
@@ -95,7 +92,7 @@ sub SmilieIndex {
     $smilieslist       = q{};
     $smilie_code_array = q{};
     if ( $showadded == 3 || ( $showadded == 2 && $detachblock == 1 ) ) {
-        while ( $SmilieURL[$i] ) {
+        while ( $smilieorder[$i] ) {
             if ( $i % 4 == 0 && $i != 0 ) {
                 $smilieslist .= $my_smilie_window_tr;
                 $offset++;
@@ -104,8 +101,8 @@ sub SmilieIndex {
                 $smiliescolor = $my_smiliebg_a;
             }
             else { $smiliescolor = $my_smiliebg_b; }
-            if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-            else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
+            if ( ${$addedsmilies{$smilieorder[$i]}}[0] =~ /\//ixsm ) { $tmpurl = ${$addedsmilies{$smilieorder[$i]}}[0]; }
+            else { $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~; }
 
             $smilieslist .= $my_smilie_window_td;
             $smilieslist =~ s/\Q{yabb smiliescolor}\E/$smiliescolor/gxsm;
@@ -113,10 +110,10 @@ sub SmilieIndex {
             $smilieslist =~ s/\Q{yabb i}\E/$i/gxsm;
             $smilieslist =~ s/\Q{yabb poptext}\E/$poptext/gxsm;
             $smilieslist =~
-              s/\Q{yabb SmilieDescription}\E/$SmilieDescription[$i]/gxsm;
+              s/\Q{yabb SmilieDescription}\E/${$addedsmilies{$smilieorder[$i]}}[2]/gxsm;
 
             $smilie_url_array .= qq~"$tmpurl", ~;
-            $tmpcode = $SmilieCode[$i];
+            $tmpcode = ${$addedsmilies{$smilieorder[$i]}}[1];
             $tmpcode =~ s/\&quot;/\x22/gxsm;
             FromHTML($tmpcode);
             $tmpcode =~ s/&\x2336;/\$/gxsm;
@@ -131,10 +128,7 @@ sub SmilieIndex {
         closedir DIR;
         foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
             ( $name, $extension ) = split /[.]/xsm, $line;
-            if (   $extension =~ /gif/ixsm
-                || $extension =~ /jpg/ixsm
-                || $extension =~ /jpeg/ixsm
-                || $extension =~ /png/ixsm )
+            if (   $extension =~ m/[gif|jpg|jpeg|png]/ixsm )
             {
                 if ( $line !~ /banner/ixsm ) {
                     if ( $i % 4 == 0 && $i != 0 ) {
@@ -146,8 +140,7 @@ sub SmilieIndex {
                     }
                     else { $smiliescolor = $my_smiliebg_b; }
                     $smilieslist .= $my_smilie_window_td_line;
-                    $smilieslist =~
-                      s/\Q{yabb smiliescolor}\E/$smiliescolor/gxsm;
+                    $smilieslist =~ s/\Q{yabb smiliescolor}\E/$smiliescolor/gxsm;
                     $smilieslist =~ s/\Q{yabb line}\E/$line/gxsm;
                     $smilieslist =~ s/\Q{yabb i}\E/$i/gxsm;
                     $smilieslist =~ s/\Q{yabb poptext}\E/$poptext/gxsm;

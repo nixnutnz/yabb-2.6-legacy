@@ -22,6 +22,7 @@ $postboxpmver  = 'YaBB 2.7.00 $Revision$';
 if (@postboxpmmods) {
     $postboxpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -374,10 +375,11 @@ sub postbox3 {
     #// Collapse/Expand additional features
     #//var col_row = $col_row;
     my @noneedrow = qw(imsend eventcal);
-    my $needrow   = 0;
+    my $needrow = 1;
     foreach (@noneedrow) {
-        if ( $action ne $_ ) {
-            $needrow = 1;
+        if ( $action eq $_ ) {
+            $needrow = 0;
+            last;
         }
     }
     if ( $needrow == 1 ) {
@@ -854,9 +856,9 @@ function autoPreview() {
     }
 }
 function LivePrevImgResize() {
-    var maxwidth = $max_post_img_width;
-    var maxheight = $max_post_img_height;
-    var fix_size = $fix_post_img_size;
+    var maxwidth = $fix_img_size{'post'}[1];
+    var maxheight = $fix_img_size{'post'}[2];
+    var fix_size = $fix_img_size{'post'}[0];
     noimgdir   = '$imagesdir';
     noimgtitle = '$maintxt{'171'}';
 

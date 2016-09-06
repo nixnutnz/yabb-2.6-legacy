@@ -12,6 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 $managestylespmver = 'YaBB 2.7.00 $Revision$';
@@ -19,6 +23,7 @@ $managestylespmver = 'YaBB 2.7.00 $Revision$';
 if (@managestylesmods) {
     $managestylesmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Templates');
@@ -38,7 +43,8 @@ sub ModifyStyle {
         $csstype = qq~$htmldir/Templates/Admin/$cssfile~;
         $admincs = 1;
     }
-    else { $cssfile = 'default.css';
+    else {
+        $cssfile = 'default.css';
         $csstype = qq~$htmldir/Templates/Forum/$cssfile~;
     }
     opendir TMPLDIR, "$htmldir/Templates/Forum";
@@ -76,7 +82,7 @@ sub ModifyStyle {
     while ( $line = <CSS> ) {
         $line =~ s/[\r\n]//gxsm;
         $line =~ s/&nbsp;/&\x2338;nbsp;/gxsm;
-        $line =~ s/&amp;/&\x2338;amp;/gsm;
+        $line =~ s/&amp;/&\x2338;amp;/gxsm;
         FromHTML($line);
         $fullcss .= qq~$line\n~;
     }
@@ -163,11 +169,13 @@ sub ModifyStyle2 {
     else                       { $cssfile = 'default.css'; }
     if ( $FORM{'type'} ) {
         fopen( CSS, ">$htmldir/Templates/Admin/$cssfile" )
-          || fatal_error( 'cannot_open', "$htmldir/Templates/Admin/$cssfile", 1 );
+          || fatal_error( 'cannot_open', "$htmldir/Templates/Admin/$cssfile",
+            1 );
     }
     else {
         fopen( CSS, ">$htmldir/Templates/Forum/$cssfile" )
-          || fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile", 1 );
+          || fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile",
+            1 );
     }
     print {CSS} "$FORM{'css'}\n" or croak "$croak{'print'} CSS";
     fclose(CSS);
@@ -180,19 +188,17 @@ sub ModifyCSS {
     is_admin_or_gmod();
 
     if   ( $INFO{'templateset'} ) { $thistemplate = $INFO{'templateset'}; }
-    else                          { $thistemplate = "$template"; }
+    else                          { $thistemplate = $template; }
 
-    while ( ( $curtemplate, $value ) = each %templateset ) {
-        if ( $curtemplate eq $thistemplate ) { $akttemplate = $curtemplate; }
-    }
-
-    ( $aktstyle, $aktimages, $akthead, $aktboard, $aktmessage, $aktdisplay, $aktmenutype, $aktthreadtools, $aktposttools ) =
-      split /[|]/xsm, $templateset{$akttemplate};
+    (
+        $aktstyle,    $aktimages,      $akthead,
+        $aktboard,    $aktmessage,     $aktdisplay,
+        $aktmenutype, $aktthreadtools, $aktposttools
+    ) = @{$templateset{$thistemplate}};
 
     my ( $fullcss, $line );
     if   ( $INFO{'cssfile'} ) { $cssfile = $INFO{'cssfile'}; }
     else                      { $cssfile = "$aktstyle.css"; }
-
     $tempimages = qq~$yyhtml_root/Templates/Forum/$aktimages~;
     my $istabbed = 0;
 
@@ -213,7 +219,8 @@ sub ModifyCSS {
                     $selected = q~ selected="selected"~;
                     $viewcss  = $name;
                 }
-                $forumcss .= qq~<option value="$file"$selected>$name</option>\n~;
+                $forumcss .=
+                  qq~<option value="$file"$selected>$name</option>\n~;
             }
         }
     }
@@ -223,19 +230,21 @@ sub ModifyCSS {
     @thecss = <CSS>;
     fclose(CSS);
     for my $style_sgl (@thecss) {
-        $style_sgl =~ s/[\n\r]//gxsm;
+        $style_sgl =~ s/[\r\n]//gxsm;
         $style_sgl =~ s/\A\s*//xsm;
         $style_sgl =~ s/\s*\Z//xsm;
-        $style_sgl =~ s/\t//gsm;
-        $style_sgl =~ s/^\s+//gsm;
-        $style_sgl =~ s/\s+$//gsm;
-        $style_sgl =~ s/\.\/default/$yyhtml_root\/Templates\/Forum\/default/gsm;
-        $style_sgl =~ s/\.\/$viewcss/$yyhtml_root\/Templates\/Forum\/$viewcss/gsm;
-        $style_sgl =~ s/\.\.\/\.\.\/UBBCbuttons/$yyhtml_root\/UBBCbuttons/gsm;
-        $style_sgl =~ s/\.\.\/\.\.\/Buttons/$yyhtml_root\/Buttons/gsm;
+        $style_sgl =~ s/\t//gxsm;
+        $style_sgl =~ s/^\s+//gxsm;
+        $style_sgl =~ s/\s+$//gxsm;
+        $style_sgl =~
+          s/\.\/default/$yyhtml_root\/Templates\/Forum\/default/gxsm;
+        $style_sgl =~
+          s/\.\/$viewcss/$yyhtml_root\/Templates\/Forum\/$viewcss/gxsm;
+        $style_sgl =~ s/\.\.\/\.\.\/UBBCbuttons/$yyhtml_root\/UBBCbuttons/gxsm;
+        $style_sgl =~ s/\.\.\/\.\.\/Buttons/$yyhtml_root\/Buttons/gxsm;
         $stylestr .= qq~$style_sgl ~;
     }
-    $stylestr =~ s/\s{2,}/ /gsm;
+    $stylestr =~ s/\s{2,}/ /gxsm;
     my (
         $selstyl,            $postsstyle,    $seperatorstyle,
         $bodycontainerstyle, $bodystyle,     $containerstyle,
@@ -283,215 +292,238 @@ qq~             <select name="borderstyle" id="borderstyle" style="vertical-alig
 
     if ( $stylestr =~ /body/sm ) {
         $bodystyle = $stylestr;
-        $bodystyle =~ s/.*?(body\s*?\{.+?\}).*/$1/igsm;
+        $bodystyle =~ s/.*?(body\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
 qq~                 <option value="$bodystyle" selected="selected">$templ_txt{'25'}</option>\n~;
     }
-    if ( $stylestr =~ /\#container/sm ) {
+    if ( $stylestr =~ /\#container/xsm ) {
         $containerstyle = $stylestr;
-        $containerstyle =~ s/.*?(\#container.*?\{.+?\}).*/$1/igsm;
+        $containerstyle =~ s/.*?(\#container.*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$containerstyle'>$templ_txt{'26'}</option>\n~;
     }
-    if ( $stylestr =~ /\#header/sm ) {
+    if ( $stylestr =~ /\#header/xsm ) {
         $headerstyle = $stylestr;
-        $headerstyle =~ s/.*?(\#header.*?\{.+?\}).*/$1/igsm;
+        $headerstyle =~ s/.*?(\#header.*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$headerstyle'>$templ_txt{'26b'}</option>\n~;
     }
-    if ( $stylestr =~ /\#header a/sm ) {
+    if ( $stylestr =~ /\#header\ a/xsm ) {
         $headerastyle = $stylestr;
-        $headerastyle =~ s/.*?(\#header a.*?\{.+?\}).*/$1/igsm;
+        $headerastyle =~ s/.*?(\#header\ a.*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$headerastyle'>$templ_txt{'26c'}</option>\n~;
     }
-    if ( $stylestr =~ /\.tabmenu/sm ) {
+    if ( $stylestr =~ /\.tabmenu/xsm ) {
         $istabbed = 1;
         $tabmenustyle = $stylestr;
-        $tabmenustyle =~ s/.*?(\.tabmenu\s*?\{.+?\}).*/$1/igsm;
+        $tabmenustyle =~ s/.*?(\.tabmenu\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$tabmenustyle'>$templ_txt{'tabmenu'}</option>\n~;
     }
     if ( $stylestr =~ /\.tabtitle/sm && $istabbed ) {
         $tabtitlestyle = $stylestr;
-        $tabtitlestyle =~ s/.*?(\.tabtitle\s*?\{.+?\}).*/$1/igsm;
+        $tabtitlestyle =~ s/.*?(\.tabtitle\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$tabtitlestyle'>$templ_txt{'tabtitle'}</option>\n~;
-        if ( $stylestr =~ /\.tabtitle a, .tabtitle-bottom a/ ) {
+        if ( $stylestr =~ /\.tabtitle\ a, .tabtitle-bottom\ a/xsm ) {
             $tabtitlestyle_a = $stylestr;
-            $tabtitlestyle_a =~ s/.*?(\.tabtitle a, \.tabtitle-bottom a\s*?\{.+?\}).*/$1/igsm;
+            $tabtitlestyle_a =~
+              s/.*?(\.tabtitle\ a, \.tabtitle-bottom\ a\s*?\{.+?\}).*/$1/igxsm;
             $selstyl .=
 qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</option>\n~;
         }
     }
-    if ( $stylestr =~ /\.buttonleft/sm && $stylestr =~ /\.buttonright/sm && $stylestr =~ /\.buttonimage/sm && $stylestr =~ /\.buttontext/sm ) {
+    if (   $stylestr =~ /\.buttonleft/xsm
+        && $stylestr =~ /\.buttonright/xsm
+        && $stylestr =~ /\.buttonimage/xsm
+        && $stylestr =~ /\.buttontext/xsm )
+    {
+        $cap         = 10;
+        $caq         = 10;
         $cssbuttons = 1;
         $buttonstyle = $stylestr;
-        $buttonstyle =~ s/.*?(\.buttontext\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~<option value='$buttonstyle'>$templ_txt{'buttontext'}</option>\n~;
+        $buttonstyle =~ s/.*?(\.buttontext\s*?\{.+?\}).*/$1/igxsm;
+        $selstyl .=
+          qq~<option value='$buttonstyle'>$templ_txt{'buttontext'}</option>\n~;
         $prevtext = $buttonstyle;
-        $prevtext =~ s/\.buttontext\s*?\{(.+?)\}/$1/igsm;
+        $prevtext =~ s/\.buttontext\s*?\{(.+?)\}/$1/igxsm;
         $drawtxtpos = $prevtext;
-        $drawtxtpos =~ m/.*?top\s*?\:\s*?(\d{1,2})px.*/ism;
-        $viewtxty = $1;
+        $drawtxtpos =~ m/.*?top\s*?\:\s*?(\d{1,2})px.*/ixsm;
+        if ($1) { $cap = $1; }
+        $viewtxty = $cap;
         $viewtxty .= 'px';
-        $drawpos4 = ($1 * 5) + 213;
+        $drawpos4 = ( $cap * 5 ) + 213;
         $drawpos4 .= 'px';
         $buttonleftstyle = $stylestr;
-        $buttonleftstyle =~ s/.*?(\.buttonleft\s*?\{.+?\}).*/$1/igsm;
-        $buttonleftbg = qq~<input type="hidden" id="buttonleftbg" name="buttonleftbg" value="$buttonleftstyle" />\n~;
+        $buttonleftstyle =~ s/.*?(\.buttonleft\s*?\{.+?\}).*/$1/igxsm;
+        $buttonleftbg =
+qq~<input type="hidden" id="buttonleftbg" name="buttonleftbg" value="$buttonleftstyle" />\n~;
         $buttonbg = $buttonleftstyle;
-        $buttonbg =~ s~.*?($yyhtml_root/Buttons/)(.*?)\.(.*)~$2~gsm;
+        $buttonbg =~ s/.*?($yyhtml_root\/Buttons\/)(.*?)\.(.*)/$2/gxsm;
         $prevleft = $buttonleftstyle;
-        $prevleft =~ s/\.buttonleft\s*?\{(.+?)\}/$1/igsm;
+        $prevleft =~ s/\.buttonleft\s*?\{(.+?)\}/$1/igxsm;
         $buttonrightstyle = $stylestr;
-        $buttonrightstyle =~ s/.*?(\.buttonright\s*?\{.+?\}).*/$1/igsm;
-        $buttonrightbg = qq~<input type="hidden" id="buttonrightbg" name="buttonrightbg" value="$buttonrightstyle" />\n~;
+        $buttonrightstyle =~ s/.*?(\.buttonright\s*?\{.+?\}).*/$1/igxsm;
+        $buttonrightbg =
+qq~<input type="hidden" id="buttonrightbg" name="buttonrightbg" value="$buttonrightstyle" />\n~;
         $prevright = $buttonrightstyle;
-        $prevright =~ s/\.buttonright\s*?\{(.+?)\}/$1/igsm;
+        $prevright =~ s/\.buttonright\s*?\{(.+?)\}/$1/igxsm;
         $buttonimagestyle = $stylestr;
-        $buttonimagestyle =~ s/.*?(\.buttonimage\s*?\{.+?\}).*/$1/igsm;
-        $buttonimagebg = qq~<input type="hidden" id="buttonimagebg" name="buttonimagebg" value="$buttonimagestyle" />\n~;
+        $buttonimagestyle =~ s/.*?(\.buttonimage\s*?\{.+?\}).*/$1/igxsm;
+        $buttonimagebg =
+qq~<input type="hidden" id="buttonimagebg" name="buttonimagebg" value="$buttonimagestyle" />\n~;
         $previmage = $buttonimagestyle;
-        $previmage =~ s/\.buttonimage\s*?\{(.+?)\}/$1/igsm;
+        $previmage =~ s/\.buttonimage\s*?\{(.+?)\}/$1/igxsm;
         $drawimgpos = $previmage;
-        $drawimgpos =~ m/.*?background\-position\s*?\:\s*?(\d{1,2})px\s*?(\d{1,2})px.*/ism;
-        $viewimgy = $2;
+        $drawimgpos =~
+          m/.*?background\-position\s*?\:\s*?(\d{1,2})px\s*?(\d{1,2})px.*/ixsm;
+        if ($1) { $cap = $1; }
+        if ($2) { $caq = $2; }
+        $viewimgy = $caq;
         $viewimgy .= 'px';
-        $drawpos1 = ($2 * 5) + 213;
+        $drawpos1 = ( $caq * 5 ) + 213;
         $drawpos1 .= 'px';
-        $viewimgx = $1;
+        $viewimgx = $cap;
         $viewimgx .= 'px';
-        $drawpos2 = $1 + 213;
+        $drawpos2 = 213;
         $drawpos2 .= 'px';
         $drawimgwd = $previmage;
-        $drawimgwd =~ m/.*?padding\s*?\:\s*?\d{1,2}px\s*?\d{1,2}px\s*?\d{1,2}px\s*?(\d{1,2})px.*/ism;
-        $viewimgpad = $1;
+        $drawimgwd =~
+m/.*?padding\s*?\:\s*?\d{1,2}px\s*?\d{1,2}px\s*?\d{1,2}px\s*?(\d{1,2})px.*/ixsm;
+        if ($1) { $cap = $1; }
+        $viewimgpad = $cap;
         $viewimgpad .= 'px';
-        $drawpos3 = $1 + 213;
+        $drawpos3 = 213;
         $drawpos3 .= 'px';
     }
-    if ( $stylestr =~ /.ubbcbuttonback/sm ) {
+    if ( $stylestr =~ /.ubbcbuttonback/xsm ) {
         $ubbcbuttonbackstyle = $stylestr;
-        $ubbcbuttonbackstyle =~ s/.*?(\.ubbcbuttonback\s*?\{.+?\}).*/$1/igsm;
+        $ubbcbuttonbackstyle =~ s/.*?(\.ubbcbuttonback\s*?\{.+?\}).*/$1/igxsm;
         $ubbcbg = $ubbcbuttonbackstyle;
-        $ubbcbg =~ s/.*?(\/UBBCbuttons\/)(.*?)\)(.*)/$2/gsm;
+        $ubbcbg =~ s/.*?(\/UBBCbuttons\/)(.*?)\)(.*)/$2/gxsm;
     }
 
-    if ( $stylestr =~ /\.seperator/sm ) {
+    if ( $stylestr =~ /\.seperator/xsm ) {
         $seperatorstyle = $stylestr;
-        $seperatorstyle =~ s/.*?(\.seperator\s*?\{.+?\}).*/$1/igsm;
+        $seperatorstyle =~ s/.*?(\.seperator\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$seperatorstyle'>$templ_txt{'27'}</option>\n~;
     }
-    if ( $stylestr =~ /\.bordercolor/sm ) {
+    if ( $stylestr =~ /\.bordercolor/xsm ) {
         $bordercolorstyle = $stylestr;
-        $bordercolorstyle =~ s/.*?(\.bordercolor\s*?\{.+?\}).*/$1/igsm;
+        $bordercolorstyle =~ s/.*?(\.bordercolor\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$bordercolorstyle'>$templ_txt{'28'}</option>\n~;
     }
-    if ( $stylestr =~ /\.hr/sm ) {
+    if ( $stylestr =~ /\.hr/xsm ) {
         $hrstyle = $stylestr;
-        $hrstyle =~ s/.*?(\.hr\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~                 <option value='$hrstyle'>$templ_txt{'29'}</option>\n~;
+        $hrstyle =~ s/.*?(\.hr\s*?\{.+?\}).*/$1/igxsm;
+        $selstyl .=
+qq~                 <option value='$hrstyle'>$templ_txt{'29'}</option>\n~;
     }
-    if ( $stylestr =~ /\.titlebg/sm ) {
+    if ( $stylestr =~ /\.titlebg/xsm ) {
         $titlestyle = $stylestr;
-        $titlestyle =~ s/.*?(\.titlebg\s*?\{.+?\}).*/$1/igsm;
+        $titlestyle =~ s/.*?(\.titlebg\s*?\{.+?\}).*/$1/igxsm;
         $titlestyle = $titlestyle;
-        $selstyl .= qq~                 <option value='$titlestyle'>$templ_txt{'30'}</option>\n~;
-        if ( $stylestr =~ /\.titlebg a/sm ) {
+        $selstyl .=
+qq~                 <option value='$titlestyle'>$templ_txt{'30'}</option>\n~;
+        if ( $stylestr =~ /\.titlebg\ a/xsm ) {
             $titlestyle_a = $stylestr;
-            $titlestyle_a =~ s/.*?(\.titlebg a\s*?\{.+?\}).*/$1/igsm;
+            $titlestyle_a =~ s/.*?(\.titlebg\ a\s*?\{.+?\}).*/$1/igxsm;
             $selstyl .=
               qq~                   <option value='$titlestyle_a'>$templ_txt{'30a'}</option>\n~;
         }
     }
-    if ( $stylestr =~ /\.catbg/sm ) {
+    if ( $stylestr =~ /\.catbg/xsm ) {
         $categorystyle = $stylestr;
-        $categorystyle =~ s/.*?(\.catbg\s*?\{.+?\}).*/$1/igsm;
+        $categorystyle =~ s/.*?(\.catbg\s*?\{.+?\}).*/$1/igxsm;
         $categorystyle = $categorystyle;
         $selstyl .=
           qq~                   <option value='$categorystyle'>$templ_txt{'31'}</option>\n~;
-        if ( $stylestr =~ /\.catbg a/sm ) {
+        if ( $stylestr =~ /\.catbg\ a/xsm ) {
             $categorystyle_a = $stylestr;
-            $categorystyle_a =~ s/.*?(\.catbg a\s*?\{.+?\}).*/$1/igsm;
+            $categorystyle_a =~ s/.*?(\.catbg\ a\s*?\{.+?\}).*/$1/igxsm;
             $selstyl .=
               qq~                   <option value='$categorystyle_a'>$templ_txt{'31a'}</option>\n~;
         }
     }
-    if ( $stylestr =~ /\.windowbg/sm ) {
+    if ( $stylestr =~ /\.windowbg/xsm ) {
         $window1style = $stylestr;
-        $window1style =~ s/.*?(\.windowbg\s*?\{.+?\}).*/$1/igsm;
+        $window1style =~ s/.*?(\.windowbg\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$window1style'>$templ_txt{'32'}</option>\n~;
     }
-    if ( $stylestr =~ /\.windowbg2/sm ) {
+    if ( $stylestr =~ /\.windowbg2/xsm ) {
         $window2style = $stylestr;
-        $window2style =~ s/.*?(\.windowbg2.*?\{.+?\}).*/$1/igsm;
+        $window2style =~ s/.*?(\.windowbg2.*?\{.+?\}).*/$1/igxsm;
         $windowcol2 = $window2style;
-        $windowcol2 =~ s/.*?(\#[a-f0-9]{3,6}).*/$1/ism;
+        $windowcol2 =~ s/.*?(\#[a-f0-9]{3,6}).*/$1/ixsm;
         $selstyl .=
           qq~                   <option value='$window2style'>$templ_txt{'33'}</option>\n~;
     }
-    if ( $stylestr =~ /\.post-userinfo/sm ) {
+    if ( $stylestr =~ /\.post-userinfo/xsm ) {
         $userinfostyle = $stylestr;
-        $userinfostyle =~ s/.*?(\.post-userinfo.*?\{.+?\}).*/$1/igsm;
+        $userinfostyle =~ s/.*?(\.post-userinfo.*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$userinfostyle'>$templ_txt{'userinfo'}</option>\n~;
     }
     if ( $stylestr =~ /\.message, \#message, .prevwin/sm ) {
         $postsstyle = $stylestr;
-        $postsstyle =~ s/.*?(\.message, \#message, .prevwin\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~                 <option value='$postsstyle'>$templ_txt{'65'}</option>\n~;
+        $postsstyle =~
+          s/.*?(\.message, \#message, .prevwin\s*?\{.+?\}).*/$1/igsm;
+        $selstyl .=
+qq~                 <option value='$postsstyle'>$templ_txt{'65'}</option>\n~;
 
         if ( $stylestr =~ /\.message a, .prevwin a/sm ) {
             $postsstyle_a = $stylestr;
-            $postsstyle_a =~ s/.*?(\.message a, \.prevwin a\s*?\{.+?\}).*/$1/igsm;
+            $postsstyle_a =~
+              s/.*?(\.message a, \.prevwin a\s*?\{.+?\}).*/$1/igsm;
             $selstyl .=
               qq~                   <option value='$postsstyle_a'>$templ_txt{'66'}</option>\n~;
         }
     }
-    if ( $stylestr =~ /\.newlinks/sm ) {
+    if ( $stylestr =~ /\.newlinks/xsm ) {
         $newlinks = $stylestr;
-        $newlinks =~ s/.*?(\.newlinks\s*?\{.+?\}).*/$1/igsm;
+        $newlinks =~ s/.*?(\.newlinks\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$newlinks'>$templ_txt{'newlinks'}</option>\n~;
     }
-    if ( $stylestr =~ /\.newlinks_c/sm ) {
+    if ( $stylestr =~ /\.newlinks_c/xsm ) {
         $newlinks_c = $stylestr;
-        $newlinks_c =~ s/.*?(\.newlinks_c\s*?\{.+?\}).*/$1/igsm;
+        $newlinks_c =~ s/.*?(\.newlinks_c\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$newlinks_c'>$templ_txt{'newlinks_c'}</option>\n~;
     }
-    if ( $stylestr =~ /input/sm ) {
+    if ( $stylestr =~ /input/xsm ) {
         $inputstyle = $stylestr;
-        $inputstyle =~ s/.*?(input\s*?\{.+?\}).*/$1/igsm;
+        $inputstyle =~ s/.*?(input\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$inputstyle'>$templ_txt{'34a'}</option>\n~;
     }
-    if ( $stylestr =~ /button/sm ) {
+    if ( $stylestr =~ /button/xsm ) {
         $buttonstyle = $stylestr;
-        $buttonstyle =~ s/.*?(button\s*?\{.+?\}).*/$1/igsm;
+        $buttonstyle =~ s/.*?(button\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$buttonstyle'>$templ_txt{'34b'}</option>\n~;
     }
-    if ( $stylestr =~ /textarea/sm ) {
+    if ( $stylestr =~ /textarea/xsm ) {
         $textareastyle = $stylestr;
-        $textareastyle =~ s/.*?(textarea\s*?\{.+?\}).*/$1/igsm;
+        $textareastyle =~ s/.*?(textarea\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$textareastyle'>$templ_txt{'35'}</option>\n~;
     }
-    if ( $stylestr =~ /select/sm ) {
+    if ( $stylestr =~ /select/xsm ) {
         $selectstyle = $stylestr;
         $selectstyle =~ s/.*?(select\s*?\{.+?\}).*/$1/igsm;
         $selstyl .=
           qq~                   <option value='$selectstyle'>$templ_txt{'36'}</option>\n~;
     }
-    if ( $stylestr =~ /.quote/sm ) {
+    if ( $stylestr =~ /.quote/xsm ) {
         $quotestyle = $stylestr;
-        $quotestyle =~ s/.*?(\.quote\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~                 <option value='$quotestyle'>$templ_txt{'37'}</option>\n~;
+        $quotestyle =~ s/.*?(\.quote\s*?\{.+?\}).*/$1/igxsm;
+        $selstyl .=
+qq~                 <option value='$quotestyle'>$templ_txt{'37'}</option>\n~;
         $message = qq~\[quote\]$templ_txt{'53'}\[/quote\]~;
         if ($enable_ubbc) {
             enable_yabbc();
@@ -499,10 +531,11 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
         }
         $aquote = $message;
     }
-    if ( $stylestr =~ /.code/sm ) {
+    if ( $stylestr =~ /.code/xsm ) {
         $codestyle = $stylestr;
-        $codestyle =~ s/.*?(\.code\s*?\{.+?\}).*/$1/igsm;
-        $selstyl .= qq~                 <option value='$codestyle'>$templ_txt{'38'}</option>\n~;
+        $codestyle =~ s/.*?(\.code\s*?\{.+?\}).*/$1/igxsm;
+        $selstyl .=
+qq~                 <option value='$codestyle'>$templ_txt{'38'}</option>\n~;
         $message = qq~\[code\]$templ_txt{'54'}\[/code\]~;
         if ($enable_ubbc) {
             enable_yabbc();
@@ -510,9 +543,9 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
         }
         $acode = $message;
     }
-    if ( $stylestr =~ /.editbg/sm ) {
+    if ( $stylestr =~ /.editbg/xsm ) {
         $editbgstyle = $stylestr;
-        $editbgstyle =~ s/.*?(\.editbg\s*?\{.+?\}).*/$1/igsm;
+        $editbgstyle =~ s/.*?(\.editbg\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$editbgstyle'>$templ_txt{'24'}</option>\n~;
         $message = qq~\[edit\]$templ_txt{'55'}\[/edit\]~;
@@ -522,9 +555,9 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
         }
         $aedit = $message;
     }
-    if ( $stylestr =~ /.highlight/sm ) {
+    if ( $stylestr =~ /.highlight/xsm ) {
         $highlightstyle = $stylestr;
-        $highlightstyle =~ s/.*?(\.highlight\s*?\{.+?\}).*/$1/igsm;
+        $highlightstyle =~ s/.*?(\.highlight\s*?\{.+?\}).*/$1/igxsm;
         $selstyl .=
           qq~                   <option value='$highlightstyle'>$templ_txt{'39'}</option>\n~;
         $message = qq~\[highlight\]$templ_txt{'56'}\[/highlight\]~;
@@ -534,7 +567,7 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
         }
         $ahighlight = $message;
     }
-    if ( $stylestr =~ /.bodycontainer/sm ) {
+    if ( $stylestr =~ /.bodycontainer/xsm ) {
         $bodycontainerstyle = 1;
     }
 
@@ -658,12 +691,17 @@ qq~                 <option value='$tabtitlestyle_a'>$templ_txt{'tabtitlea'}</op
         ($tmpname, $tmpside) = split /\_/xsm, $name;
         $checked = q{};
         if ($name eq $buttonbg) { $checked = q~ checked = "checked"~; }
-        if (($extension =~ /gif/ism || $extension =~ /png/ism) && $tmpside eq 'left') {
+        if ( ( $extension =~ m/[gif|png]/ixsm )
+            && $tmpside eq 'left' )
+        {
             $bleft = qq~_left.$extension~;
             $bright = qq~_right.$extension~;
-            $thisbutton .= qq~<div style="float: left; width: 99%; margin: 2px; vertical-align: bottom;"><div style="float: left; height: 20px; width: 112px; padding: 0 0 0 6px; background-image: url($yyhtml_root/Buttons/$tmpname$bleft); background-repeat: no-repeat; vertical-align: bottom; cursor: pointer;" onclick="updateButtons('$line');">~;
-            $thisbutton .= qq~<div style="float: left; height: 20px; padding: 0 80px 0 0; background-image: url($yyhtml_root/Buttons/$tmpname$bright); background-position: right; background-repeat: no-repeat; vertical-align: bottom;"><div style="float: left; height: 20px; padding: 0 0 0 25px;"></div></div></div>~;
-            $thisbutton .= qq~<div style="float: left; height: 20px;"><input type="radio" name="selbutton" id="selbutton$x" value="$line" class="windowbg2" style="border: 0; vertical-align: middle;"$checked onclick="updateButtons(this.value);" /> <label for="selbutton$x" style="vertical-align: middle;"><b>$tmpname</b></label></div></div>\n~;
+            $thisbutton .=
+qq~<div style="float: left; width: 99%; margin: 2px; vertical-align: bottom;"><div style="float: left; height: 20px; width: 112px; padding: 0 0 0 6px; background-image: url($yyhtml_root/Buttons/$tmpname$bleft); background-repeat: no-repeat; vertical-align: bottom; cursor: pointer;" onclick="updateButtons('$line');">~;
+            $thisbutton .=
+qq~<div style="float: left; height: 20px; padding: 0 80px 0 0; background-image: url($yyhtml_root/Buttons/$tmpname$bright); background-position: right; background-repeat: no-repeat; vertical-align: bottom;"><div style="float: left; height: 20px; padding: 0 0 0 25px;"></div></div></div>~;
+            $thisbutton .=
+qq~<div style="float: left; height: 20px;"><input type="radio" name="selbutton" id="selbutton$x" value="$line" class="windowbg2" style="border: 0; vertical-align: middle;"$checked onclick="updateButtons(this.value);" /> <label for="selbutton$x" style="vertical-align: middle;"><b>$tmpname</b></label></div></div>\n~;
             $x++;
         }
     }
@@ -818,26 +856,38 @@ skydobject.initialize()
 </script>
         </td>
         <td class="windowbg2 vtop"><b>$templ_txt{'ubbcbutton'}</b>:<br />$templ_txt{'ubbcdescription'}<br />~;
-        my @backlist = ( 'ubbc.png', 'ubbc1.png', 'ubbc2.png', 'ubbc3.png', 'ubbc4.png', 'ubbc5.png', 'ubbc6.png', 'ubbc7.png', 'ubbc8.png', 'ubbc9.png', 'ubbc10.png', 'ubbc11.png', 'ubbc12.png', 'ubbc13.png' );
+    my @backlist = (
+        'ubbc.png',   'ubbc1.png', 'ubbc2.png',  'ubbc3.png',
+        'ubbc4.png',  'ubbc5.png', 'ubbc6.png',  'ubbc7.png',
+        'ubbc8.png',  'ubbc9.png', 'ubbc10.png', 'ubbc11.png',
+        'ubbc12.png', 'ubbc13.png',
+    );
         my $hand = q~class='vtop cursor' style='height:22px; width:23px;'~;
-        $ubbcbutton = q~height: 22px; width: 23px; border: 0; margin: 0 1px 1px 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; float:left;~;
+    $ubbcbutton =
+q~height: 22px; width: 23px; border: 0; margin: 0 1px 1px 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block; float:left;~;
         $ubbcbuttonlist = q{};
         $y = 1;
+
         for (@backlist) {
             $ubbccol = int(@backlist/2);
             if ( $y - 1 == $ubbccol ) {
-                $ubbcbuttonlist .= '</div><div style="float:left; padding: 0 20px 0 0">';
+            $ubbcbuttonlist .=
+              '</div><div style="float:left; padding: 0 20px 0 0">';
             }
-            $ubbcbuttonback = qq~background-image: url($yyhtml_root/UBBCbuttons/$_);~;
-            $ubbcbuttonlist .= qq~<span style="$ubbcbutton$ubbcbuttonback">&nbsp;</span> ~;
+        $ubbcbuttonback =
+          qq~background-image: url($yyhtml_root/UBBCbuttons/$_);~;
+        $ubbcbuttonlist .=
+          qq~<span style="$ubbcbutton$ubbcbuttonback">&nbsp;</span> ~;
             if ( $_ eq $ubbcbg ) {
                 $uchecked = ' checked="checked"';
             }
             else { $uchecked = q{};}
-            $ubbcbuttonlist .= qq~<input type="radio" name="ubbcselbutton" id="ubbcselbutton$y" value="$_"$uchecked onclick="updateUBBC(this.value);" /> <label for="ubbcselbutton$y" style="vertical-align: top;"><b>$_</b></label><br /><br />~;
-            $y++
+        $ubbcbuttonlist .=
+qq~<input type="radio" name="ubbcselbutton" id="ubbcselbutton$y" value="$_"$uchecked onclick="updateUBBC(this.value);" /> <label for="ubbcselbutton$y" style="vertical-align: top;"><b>$_</b></label><br /><br />~;
+        $y++;
         }
-    $yymain .= qq~<br /><input type="hidden" id="ubbcbuttonbg" name="ubbcbuttonbg" value="$ubbcbuttonbackstyle" /><div style="float:left; padding: 0 20px 0 0">$ubbcbuttonlist</div><div class="clear"></div></td>
+    $yymain .=
+qq~<br /><input type="hidden" id="ubbcbuttonbg" name="ubbcbuttonbg" value="$ubbcbuttonbackstyle" /><div style="float:left; padding: 0 20px 0 0">$ubbcbuttonlist</div><div class="clear"></div></td>
     </tr>~;
 
     $viewstylestart =
@@ -964,11 +1014,16 @@ q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
 </table>
 ~;
 
-$menusep = qq~<img src="$defaultimagesdir/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" />~;
-$viewstyleleft = q~style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-$viewstyleright = q~style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
-$viewstyleimage = q~height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
-$viewstyletext = q~style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
+    $menusep =
+qq~<img src="$defaultimagesdir/buttonsep.png" style="height: 20px; width: 1px; margin: 0; padding: 0; vertical-align: top; display: inline-block;" alt="" />~;
+    $viewstyleleft =
+q~style="height: 20px; border: 0; margin: 1px 1px; background-position: top left; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+    $viewstyleright =
+q~style="height: 20px; border: 0; margin: 0; background-position: top right; background-repeat: no-repeat; text-decoration: none; font-size: 18px; vertical-align: top; display: inline-block;"~;
+    $viewstyleimage =
+q~height: 20px; border: 0; margin: 0; background-repeat: no-repeat; vertical-align: top; text-decoration: none; font-size: 18px; display: inline-block;~;
+    $viewstyletext =
+q~style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-decoration: none; vertical-align: top; white-space: nowrap; display: inline-block;"~;
 
 $viewstyle .= qq~
 <table class="bordercolor border-space pad-cell">
@@ -1000,10 +1055,11 @@ my %textdecor = (
     'e' => "highlight.png|$post_txt{'246'}",
 );
 my $boxlist = q{};
-my $hand = q~class='vtop cursor' style='height:22px; width:23px;'~;
+
 for my $i ( sort keys %textdecor ) {
     my ($img, $alt) = split /[|]/xsm, $textdecor{$i};
-    $boxlist .= qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$img' $hand alt='$alt' title='$alt' /></span>\n~;
+        $boxlist .=
+qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$img' $hand alt='$alt' title='$alt' /></span>\n~;
 }
 
 $viewstyle .= qq~$boxlist
@@ -1069,20 +1125,20 @@ $viewstyle .= qq~
 </div>
 </body>
 </html>~;
-    $viewstylestart =~ s/^\s+//gsm;
-    $viewstylestart =~ s/\s+$//gsm;
-    $viewstylestart =~ s/[\n\r]//gxsm;
-    $viewstylestart =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $viewstylestart =~ s/^\s+//gxsm;
+    $viewstylestart =~ s/\s+$//gxsm;
+    $viewstylestart =~ s/[\r\n]//gxsm;
+    $viewstylestart =~ s/\Q{yabb xml_lang}\E/$abbr_lang/gxsm;
     ToHTML($viewstylestart);
-    $stylestr =~ s/^\s+//gsm;
-    $stylestr =~ s/\s+$//gsm;
-    $stylestr =~ s/[\n\r]//gxsm;
-    $stylestr =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $stylestr =~ s/^\s+//gxsm;
+    $stylestr =~ s/\s+$//gxsm;
+    $stylestr =~ s/[\r\n]//gxsm;
+    $stylestr =~ s/\Q{yabb xml_lang}\E/$abbr_lang/gxsm;
     ToHTML($stylestr);
-    $viewstyle =~ s/^\s+//gsm;
-    $viewstyle =~ s/\s+$//gsm;
-    $viewstyle =~ s/[\n\r]//gxsm;
-    $viewstyle =~ s/({|<)yabb xml_lang(}|>)/$abbr_lang/gsm;
+    $viewstyle =~ s/^\s+//gxsm;
+    $viewstyle =~ s/\s+$//gxsm;
+    $viewstyle =~ s/[\r\n]//gxsm;
+    $viewstyle =~ s/\Q{yabb xml_lang}\E/$abbr_lang/gxsm;
     ToHTML($viewstyle);
 
     if($viewcss eq 'default') {
@@ -1211,7 +1267,7 @@ function previewColor(thecolor) {
         }
     }
     if(gradient.checked) {
-        newcssoption=cssoption.replace(/(background\s*?\\:)(.+?)(\\;)/i, "\$1 " + thecolor + "\$3");
+        newcssoption=cssoption.replace(/(background\\s*?\\:)(.+?)(\\;)/i, "\$1 " + thecolor + "\$3");
         document.allstyles.backcol2.value = thecolor;
         if(cssoption.match(/\\.gradmain\\s*?\\{/)) {
             thenewstyle=thenewstyle.replace(/(\\.gradmain.*?\\{.*?background\\s*?\\:)(.+?)(\\;)/ig, "\$1 " + thecolor + "\$3");
@@ -1676,18 +1732,17 @@ sub ModifyCSS2 {
         if ( $style_name eq 'default' ) {
             fatal_error('no_delete_default');
         }
-        if (   $style_name !~ m{\A[0-9a-zA-Z_\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\Z}sm
-            || $style_name eq q{} )
+        if ( !$style_name || $style_name !~ m{\A[\w\.\#\%\-\:\+\?\$\&\~\.\,\@/]+\Z}xsm )
         {
             fatal_error('invalid_template');
         }
         $style_cnt = $FORM{'stylelink'};
         FromHTML($style_cnt);
-        $style_cnt =~ s/(\*\/)/$1\n/gsm;
-        $style_cnt =~ s/(\/\*)/$1/gsm;
-        $style_cnt =~ s/(\{)/$1\n/gsm;
-        $style_cnt =~ s/(\})/$1\n\n/gsm;
-        $style_cnt =~ s/(\;)/$1\n/gsm;
+        $style_cnt =~ s/(\*\/)/$1\n/gxsm;
+        $style_cnt =~ s/(\/\*)/$1/gxsm;
+        $style_cnt =~ s/(\{)/$1\n/gxsm;
+        $style_cnt =~ s/(\})/$1\n\n/gxsm;
+        $style_cnt =~ s/(;)/$1\n/gxsm;
         @style_arr = split /\n/xsm, $style_cnt;
         chomp @style_arr;
 
@@ -1696,9 +1751,9 @@ sub ModifyCSS2 {
             "$htmldir/Templates/Forum/$style_name.css", 1 );
         for my $style_sgl (@style_arr) {
             $style_sgl =~ s/\A\s+?//gxsm;
-            if ( $style_sgl =~ m{\;+\Z}sm ) { $style_sgl = qq~    $style_sgl~; }
-            $style_sgl =~ s/$yyhtml_root\/Templates\/Forum/\./gsm;
-            $style_sgl =~ s/$yyhtml_root/\.\.\/\.\./gsm;
+            if ( $style_sgl =~ m{;+\Z}xsm ) { $style_sgl = qq~    $style_sgl~; }
+            $style_sgl =~ s/$yyhtml_root\/Templates\/Forum/[.]/gxsm;
+            $style_sgl =~ s/$yyhtml_root/\.\.\/\.\./gxsm;
             print {TMPCSS} "$style_sgl\n" or croak "$croak{'print'} TMPCSS";
         }
         fclose(TMPCSS);

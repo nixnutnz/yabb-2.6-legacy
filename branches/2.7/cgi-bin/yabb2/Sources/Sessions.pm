@@ -19,6 +19,7 @@ $sessionspmver  = 'YaBB 2.7.00 $Revision$';
 if (@sessionspmmods) {
     $sessionspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
@@ -26,7 +27,7 @@ get_micon();
 get_template('Other');
 
 sub SessionReval {
-    if (   ${ $uid . $username }{'sesquest'} eq q{}
+    if (   !${ $uid . $username }{'sesquest'}
         || ${ $uid . $username }{'sesquest'} eq 'password' )
     {
         $sesremark =

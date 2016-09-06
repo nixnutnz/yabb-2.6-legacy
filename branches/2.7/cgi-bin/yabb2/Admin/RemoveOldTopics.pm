@@ -12,6 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +24,7 @@ $removeoldtopicspmver = 'YaBB 2.7.00 $Revision$';
 if (@removeoldtopicspmmods) {
     $removeoldtopicspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub RemoveOldThreads {
@@ -35,7 +40,6 @@ sub RemoveOldThreads {
     $time_to_jump = time() + $max_process_time;
 
     my ( @threads, $num, $status, $keep_sticky, %attachfile );
-    $date1;
     $date2 = $date;
 
     $yytitle     = "$removemess_txt{'120'} $maxdays";
@@ -85,7 +89,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                     $yymain .= "$num : $removemess_txt{'4'} <br />";
                 }
                 else {
-                    calcdifference();
+                    $result = calcdtdiff($date1,$date2);
                     if ( $result <= $maxdays ) { # If the message is not too old
                         push @temparray_1, "$date1|$threads[$i]";
                         $yymain .=
@@ -119,13 +123,16 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                         $date1 = sprintf '%010d', $date1;
                         push @temparray_1, "$date1|$threads[$x]";
                     }
+                    for (@temparray_1) {
+                        $_ =~ s/^.*?\|//xsm;
+                    }
+                    @temparray_1 =
+                      reverse sort { lc($a) cmp lc $b } @temparray_1;
+                    $prnarray = join q{}, @temparray_1;
                     fopen( BOARDFILE, ">$boardsdir/$boards[$j].txt", 1 )
                       || fatal_error( 'cannot_open',
                         "$boardsdir/$boards[$j].txt", 1 );
-                    print {BOARDFILE} map( {
-                        s/^.*?\|//xsm;
-                        $_;
-                      } reverse sort { lc($a) cmp lc $b } @temparray_1 )
+                    print {BOARDFILE} $prnarray
                       or croak "$croak{'print'} BOARDFILE";
                     fclose(BOARDFILE);
 
@@ -137,15 +144,14 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                     RemoveOldThreadsText( $j, $i, $INFO{'total_rem_count'} );
                 }
             }
-
+            for (@temparray_1) {
+                $_ =~ s/^.*?\|//xsm;
+            }
+            @temparray_1 = reverse sort { lc($a) cmp lc $b } @temparray_1;
+            $prnarray = join q{}, @temparray_1;
             fopen( BOARDFILE, ">$boardsdir/$boards[$j].txt", 1 )
-              || fatal_error( 'cannot_open', "$boardsdir/$boards[$j].txt",
-                1 );
-            print {BOARDFILE} map( {
-                s/^.*?\|//xsm;
-                $_;
-              } reverse sort { lc($a) cmp lc $b } @temparray_1 )
-              or croak "$croak{'print'} BOARDFILE";
+              || fatal_error( 'cannot_open', "$boardsdir/$boards[$j].txt", 1 );
+            print {BOARDFILE} $prnarray or croak "$croak{'print'} BOARDFILE";
             fclose(BOARDFILE);
 
             BoardCountTotals( $boards[$j] );

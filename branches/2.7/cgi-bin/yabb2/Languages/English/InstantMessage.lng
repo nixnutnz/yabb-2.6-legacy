@@ -17,6 +17,7 @@ $englishinstantmessagelngver = 'YaBB 2.7.00 $Revision$';
 if (@englishinstantmessagelngmods) {
     $englishinstantmessagelngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %inmes_txt = (
@@ -31,6 +32,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '146' => q~Reply~,
 '147' => q~Forward~,
 'sendmess' => q~Send Message~,
+'im_low_postcount' => qq~You are only allowed to read Personal Messages until you've reached a post count of {yabb numposts}.~,
 'sendbroadmess' => q~Send Broadcast Message~,
 '151' => q~No messages...~,
 '190' => q~All~,

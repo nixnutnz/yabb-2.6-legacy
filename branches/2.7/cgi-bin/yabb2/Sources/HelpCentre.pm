@@ -12,6 +12,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+#no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +21,7 @@ $helpcentrepmver  = 'YaBB 2.7.00 $Revision$';
 if (@helpcentrepmmods) {
     $helpcentrepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('HelpCentre');
@@ -52,8 +54,7 @@ sub SectionDecide {
             (@bdlist) = split /,/xsm, $boardlist;
             foreach my $curboard (@bdlist) {
                 if ($ismod) { last; }
-                foreach
-                  my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} )
+                foreach my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} )
                 {
                     if ( $curuser eq $username ) { $ismod = 1; last; }
                 }
@@ -67,6 +68,7 @@ sub SectionDecide {
         }
     }
 
+    if ( $INFO{'section'} ) {
     if ( $INFO{'section'} eq 'admin' ) {
         if ( $UseHelp_Perms && !$iamadmin ) {
             fatal_error( 'no_access', 'HelpCentre->SectionDecide' );
@@ -89,7 +91,11 @@ sub SectionDecide {
         ${ $INFO{'section'} . _class } = 'selected-bg';
         $help_area = 'Moderator';
     }
-
+        else {
+        $UserClass = 'selected-bg';
+        $help_area = 'User';
+        }
+    }
     else {
         $UserClass = 'selected-bg';
         $help_area = 'User';
@@ -212,8 +218,7 @@ sub MainHelp {
 
     $i = 1;
     while ( ${ SectionSub . $i } ) {
-
-        if ( ${ SectionExcl . $i } eq 'yabbc'
+        if ( ${ SectionExcl . $i } && ${ SectionExcl . $i } eq 'yabbc'
             && ( !$enable_ubbc || !$showyabbcbutt ) )
         {
             $i++;
@@ -253,8 +258,8 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; ToHTML($text); DoUBBCTo($text);/egxs
 
         $TempParse = $BodyItem;
         $TempParse =~ s/\Q{yabb item}\E/$message/gxsm;
-        $TempParse =~ s/\Q{yabb mymoding}\E/$mymoding/xsm;
-        $TempParse =~ s/{top_img}\E/$top_img/gxsm;
+        $TempParse =~ s/\Q{yabb mymoding}\E/$mymoding/gxsm;
+        $TempParse =~ s/\Q{top_img}\E/$top_img/gxsm;
         $Body .= qq~$TempParse~;
         $i++;
     }
@@ -309,14 +314,14 @@ sub DoContents {
     $SectionNam = $SectionName;
     $SectionNam =~ s/_/ /gxsm;
     $TempParse =~ s/\Q{yabb section_name}\E/$SectionNam/gxsm;
-    $TempParse =~ s/{top_img}/$top_img/gxsm;
+    $TempParse =~ s/\Q{top_img}\E/$top_img/gxsm;
     $Contents .= qq~$TempParse~;
 
     $Contents .= q~<ul class="help_ul">~;
     $i = 1;
     while ( ${ SectionSub . $i } ) {
 
-        if ( ${ SectionExcl . $i } eq 'yabbc'
+        if ( ${ SectionExcl . $i } && ${ SectionExcl . $i } eq 'yabbc'
             && ( !$enable_ubbc || !$showyabbcbutt ) )
         {
             $i++;

@@ -33,12 +33,12 @@ $my_ipdiv = qq~
 
 ## AddModerators
 $myshowProfile = qq~<tr class="windowbg">
-        <td><label for="addmod"><b>$addmod_txt{'addmod_title'}: </b><br /><span class="small">$addmod_txt{'addmod_text'}</span></label></td>
+        <td><label for="addmod"><b>{yabb addmod_txt_addmod_title}: </b><br /><span class="small">{yabb addmod_txt_addmod_text}</span></label></td>
         <td>
             <select name="addmod" id="addmod" multiple="multiple" onchange="selectnum();">
             {yabb addbdmod}
             </select>
-            <input type="checkbox" name="selAll" id="selAll" onclick="if (this.checked) selectAll(true); else selectAll(false);" /> <label for="selAll"><span class="small">$addmod_txt{'addmod_all'}</span></label>
+            <input type="checkbox" name="selAll" id="selAll" onclick="if (this.checked) selectAll(true); else selectAll(false);" /> <label for="selAll"><span class="small">{yabb addmod_txt_addmod_all}</span></label>
             <script type="text/javascript">
             function selectAll(_v) {
                 for(var i=0; i < document.creator.addmod.length; i++)
@@ -61,10 +61,10 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
     <div class="bordercolor" style="width:350px">
     <table class="cs_thin pad_3px" style="width:350px">
         <tr>
-            <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
+            <td class="titlebg"><label for="letter">{yabb addmod_txt_modsearch}</label></td>
         </tr><tr>
             <td class="windowbg2">
-                <span class="small">$addmod_txt{'instruct'}</span>
+                <span class="small">{yabb addmod_txt_instruct}</span>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -77,7 +77,7 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
             </td>
         </tr><tr>
             <td class="windowbg">
-                <input type="button" class="button" onclick="copy_option('moderators')" value="$addmod_txt{'addselected'}" style="width: 340px;" />
+                <input type="button" class="button" onclick="copy_option('moderators')" value="{yabb addmod_txt_addselected}" style="width: 340px;" />
             </td>
         </tr>~;
 
@@ -104,7 +104,7 @@ $myselectmods_c = qq~<tr>
 
 $myselectmods_d = qq~<tr>
             <td class="windowbg">
-                <input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 170px;" />
+                <input type="submit" class="button" value="{yabb addmod_txt_addmod_save}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="{yabb addmod_txt_pageclose}" style="width: 170px;" />
             </td>
         </tr>
     </table>
@@ -160,11 +160,10 @@ $my_smiliebg_b = q~windowbg~;
 #in the event you want a banner for the smilies header #
 $my_banner = 'banner.gif';
 
-$smilie_window_a =
+$smilie_window_simple =
 qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
-<!-- YaBB 2.7.00 $Revision$ -->
     <meta charset=$yymycharset">
 <title>$smiltxt{'1'}</title>
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
@@ -300,7 +299,7 @@ $myban_page = qq~
 <html lang='{yabb xml_lang}'>
 <head>
     <meta charset="{yabb mycharset}">
-    <title>$profile_txt{'ban_page'}</title>
+    <title>{yabb profile_txt_ban_page}</title>
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
@@ -310,7 +309,7 @@ $myban_page = qq~
     <form action="$scripturl?action=ban_page_b" method="post">
         <table class="tabtitle pad_3px" style="margin-top:2em">
             <tr>
-                <th class="center">$profile_txt{'ban_page'}</th>
+                <th class="center">{yabb profile_txt_ban_page}</th>
             </tr>
         </table>
         <table class="cs_thin">
@@ -319,13 +318,13 @@ $myban_page = qq~
                     {yabb ban_item}
                 </td>
             </tr></tr>
-                <td class="right windowbg"><label for="ban_reason"><b>$profile_txt{'ban_reason'}: </b></label></td>
+                <td class="right windowbg"><label for="ban_reason"><b>{yabb profile_txt_ban_reason}: </b></label></td>
                 <td class="windowbg"><input type="text" maxlength="200" name="ban_reason" id="ban_reason" size="50" /></td>
             </tr></tr>
-                <td class="right windowbg"><label for="email_ban"><b>$profile_txt{'email_ban'}: </b></label></td>
+                <td class="right windowbg"><label for="email_ban"><b>{yabb profile_txt_email_ban}: </b></label></td>
                 <td class="windowbg"><input type="checkbox" name="email_ban" id="email_ban" value="1" /></td>
             </tr><tr class="catbg">
-                <td style="height:30px" class="center"  colspan="2"><input type="submit" value="$profile_txt{'ban_enter'}" class="button" />&nbsp;<input type="button" name="closewindow" value="$profile_txt{'ban_cancel'}" class="button" onclick="javascript:window.close();" /></td>
+                <td style="height:30px" class="center" colspan="2"><input type="submit" value="{yabb profile_txt_ban_enter}" class="button" />&nbsp;<input type="button" name="closewindow" value="{yabb profile_txt_ban_cancel}" class="button" onclick="javascript:window.close();" /></td>
             </tr>
         </table>
         <input type="hidden" name="formsession" value="$formsession" />
@@ -340,7 +339,7 @@ $myban_page2 = qq~<!DOCTYPE html>
 <html lang='{yabb xml_lang}'>
 <head>
     <meta charset="{yabb mycharset}">
-    <title>$profile_txt{'ban_page'}</title>
+    <title>{yabb profile_txt_ban_page}</title>
 </head>
 <body>
 <script type="text/javascript">
@@ -351,11 +350,6 @@ $myban_page2 = qq~<!DOCTYPE html>
 </html>~;
 
 ## PrintPage ##
-
-$showurl = q{};
-if ( $showprinturl == 1 ) {
-    $showurl = qq~<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span><br />~;
-}
 
 $myprint_im = qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
@@ -395,10 +389,9 @@ $myprint_im = qq~<!DOCTYPE html>
         </td>
     </tr><tr>
         <td class="vtop" colspan="2">
-            $showurl
-            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $inmes_txt{'usercp'} {yabb boxtitle} {yabb storetitle} $inmes_txt{'30'} {yabb printDate}</span>
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">{yabb load_imtxt_71} {yabb inmes_txt_usercp} {yabb boxtitle} {yabb storetitle} {yabb load_imtxt_30} {yabb printDate}</span>
             <br />
-            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller=$INFO{'caller'};id=$INFO{'id'}</span>
+            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller={yabb caller};id={yabb id}</span>
         </td>
     </tr>
 </table>
@@ -481,8 +474,7 @@ $myprint = qq~<!DOCTYPE html>
         </td>
     </tr><tr>
         <td class="vtop" colspan="2">
-            $showurl
-            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$cat &gt;&gt; $boardname &gt;&gt; {yabb messagetitle}</span>
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">{yabb cat} &gt;&gt; {yabb boardname} &gt;&gt; {yabb messagetitle}</span>
             <br />
             <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?num={yabb num}</span>
             <br />

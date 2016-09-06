@@ -76,7 +76,7 @@ sub freespace {
                     $findfile_space = 0;
                     my @fnd = split /-/xsm,
                       qx(find $findfile_root -noleaf -type f -printf '%s-');
-                    for (@fnd) { $findfile_space += $_; }
+                    foreach my $i ( @fnd ) { $findfile_space += $i; }
                     $findfile_space =
                       ( ( $findfile_maxsize * 1024 * 1024 ) - $findfile_space )
                       . '<>'

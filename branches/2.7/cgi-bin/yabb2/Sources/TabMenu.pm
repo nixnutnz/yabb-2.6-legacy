@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       December 31, 2015                                           #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -19,6 +19,7 @@ $tabmenupmver  = 'YaBB 2.7.00 $Revision$';
 if (@tabmenupmmods) {
     $tabmenupmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('TabMenu');
@@ -71,7 +72,7 @@ sub mainMenu {
         EditTab();
     }
     elsif ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
-    elsif ( $action ne q{} ) {
+    elsif ( $action ) {
         $tmpaction = $acting{$action};
         if ( !$tmpaction ) { $tmpaction = $action; }
     }
@@ -86,14 +87,16 @@ qq~$tabhtml_l"$scripturl" title="$img_txt{'103'}">$img_txt{'103'}</a>$tabhtml_r~
     $tab{'help'} =
 qq~$tabhtml_l"$scripturl?action=help" title="$img_txt{'119'}" class="help">$img_txt{'119'}</a>$tabhtml_r~;
 
-    if ( $maxsearchdisplay > -1 && $advsearchaccess eq 'granted' ) {
+    if ( $maxsearchdisplay && $maxsearchdisplay > -1 && $advsearchaccess && $advsearchaccess eq 'granted' ) {
         $tab{'search'} =
 qq~$tabhtml_l"$scripturl?action=search" title="$img_txt{'182'}">$img_txt{'182'}</a>$tabhtml_r~;
     }
+    $Show_EventButton ||= 0;
     if ( $Show_EventButton == 2 || ( !$iamguest && $Show_EventButton == 1 ) ) {
         $tab{'eventcal'} =
 qq~$tabhtml_l"$scripturl?action=eventcal;calshow=1" title="$img_txt{'eventcal'}">$img_txt{'eventcal'}</a>$tabhtml_r~;
     }
+    $Show_BirthdayButton ||= 0;
     if ( $Show_BirthdayButton == 2
         || ( !$iamguest && $Show_BirthdayButton == 1 ) )
     {
@@ -124,6 +127,7 @@ qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" tit
 qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" title="$img_txt{'2'}">$img_txt{'2'}</a>$tabhtml_r~;
         }
     }
+    $sessionvalid ||= 0;
     if ( $sessionvalid == 0 && !$iamguest && !$INFO{'set'} ) {
         my $sesredir;
         if (   $testenv
@@ -197,9 +201,11 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
                 || ( $tab_access < 3 && $iamgmod )
                 || $iamadmin )
             {
-                if ( $tmptab_url == 1 ) { $tab_url = $scripturl; }
-                elsif ( $tmptab_url == 2 ) {
-                    $tab_url = qq~$boardurl/AdminIndex.$yyaext~;
+                if ( $tmptab_url =~ m/\d/xsm) {
+                    if ( $tmptab_url == 1 ) { $tab_url = $scripturl; }
+                    elsif ( $tmptab_url == 2 ) {
+                        $tab_url = qq~$boardurl/AdminIndex.$yyaext~;
+                    }
                 }
                 else { $tab_url = $tmptab_url; }
                 if ($isaction) { $tab_url .= qq~?action=$tab_key~; }
@@ -220,8 +226,8 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
             }
         }
         elsif ( $tab{ $AdvancedTabs[$i] } ) {
-            my ( $tabfirst, $tablast ) = split /[|]/xsm,
-              $tab{ $AdvancedTabs[$i] };
+            $tmpaction ||= q{};
+            my ( $tabfirst, $tablast ) = split /[|]/xsm, $tab{ $AdvancedTabs[$i] };
             $yytabmenu .= $tabfirst
               . (
                 ( $AdvancedTabs[$i] eq $tmpaction && $tablast )
@@ -233,7 +239,8 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
     $yytabmenu .= q~                   </ul>~;
 
     if ( $iamadmin && $addtab_on == 1 ) {
-        my ( $seladdtab, $seledittab );
+        my $seladdtab = q{};
+        my $seledittab = q{};
         if    ( $action eq 'addtab' )  { $seladdtab  = q~ class="selected"~; }
         elsif ( $action eq 'edittab' ) { $seledittab = q~ class="selected"~; }
         $yytabadd =

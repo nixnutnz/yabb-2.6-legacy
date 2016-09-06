@@ -13,19 +13,23 @@
 # Mod written by XTC (Xonder), added to YaBB Core for 2.7.00                  #
 ###############################################################################
 # use strict;
-#use warnings;
-#no warnings qw(uninitialized once redefine);
+use warnings;
+no warnings qw(once);
+#no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
+use File::Copy;
+use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
 our $VERSION = '2.7.00';
 $yabmodpmver = 'YaBMod.pm 0.7 Alpha for YaBB 2.7.00';
+
 @yabmodpmmods = ();
 if (@yabmodpmmods) {
     $yabmodpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-## sub Modlist
 sub YaBMmodlist {
     is_admin();
     opendir( DIR, "$boarddir/Mods" )
@@ -232,7 +236,7 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
             if ($par eq 'mod') { $modmod .= '<br />'; }
         }
     }
-    my $text = join q{}, <FILE>;
+    my $text = do { local $INPUT_RECORD_SEPARATOR = undef; <FILE> };
     fclose(FILE);
 
     $yymain .= qq~
@@ -325,12 +329,6 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
 ## sub Apply Mod
 sub YaBMapplymod {
     is_admin();
-
-    eval { use File::Copy; };
-    if ($EVAL_ERROR) {
-        fatal_error( q{}, "$yabmtxt{28} File::Copy: $EVAL_ERROR" );
-    }
-
     my $installtest = $INFO{'installtest'};
     my $file        = $INFO{'file'};
 
@@ -426,7 +424,8 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
                           || install_error(
                             "$yabmtxt{'no_write'} '$modeditfilename'<br />",
                             "$file", $installtest );
-                        print {FILE} @modeditfile;
+                        print {FILE} @modeditfile
+                          or croak 'cannot print modeditfile';
                         fclose(FILE);
                     }
                     redo editsearch1;
@@ -533,12 +532,12 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
                             last;
                         }
 
-                        if ( $modfile[$i] =~ /^<replace>/ism ) {
+                        if ( $modfile[$i] =~ /^<replace>/ixsm ) {
                             $i++;
 
                             for (
                                 $k = 0, undef @modaddstr ;
-                                $modfile[$i] !~ /^<\/replace>/ism ;
+                                $modfile[$i] !~ /^<\/replace>/ixsm ;
                                 $i++, $k++
                               )
                             {
@@ -596,7 +595,7 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
         fopen( FILE, ">$editdir/$modeditfilename" )
           || install_error( "$yabmtxt{'no_write'} '$modeditfilename'<br />",
             "$file", $installtest );
-        print {FILE} @modeditfile;
+        print {FILE} @modeditfile or croak 'cannot print modedit';
         fclose(FILE);
     }    #Installtest
     if ( !$installtest ) {    #Installtest
@@ -608,7 +607,8 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
             "$file", $installtest );
         for (@mods) {
             chomp;
-            print {IN} "$settings_file_version\\$_\n";
+            print {IN} "$settings_file_version\\$_\n"
+              or croak 'cannot print settings';
         }
         fclose(IN);
         update_mod_data($file);
@@ -642,11 +642,6 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
 ## sub Uninstall Mod
 sub YaBMuninstallmod {
     is_admin();
-
-    eval { use File::Copy; };
-    if ($EVAL_ERROR) {
-        fatal_error( q{}, "$yabmtxt{28} File::Copy: $EVAL_ERROR" );
-    }
 
     my $installtest = $INFO{'installtest'};
     my $file        = $INFO{'file'};
@@ -742,7 +737,8 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
                           || install_error(
                             "$yabmtxt{'no_write'} '$modeditfilename'<br />",
                             "$file", $installtest );
-                        print {FILE} @modeditfile;
+                        print {FILE} @modeditfile
+                          or croak 'cannot print modedit';
                         fclose(FILE);
                     }
                     redo editsearch2;
@@ -921,8 +917,7 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
                             @modaddstr;
                     }
                     else {    #  Replace
-                        splice
-                            @modeditfile,  $searchfound,
+                        splice @modeditfile, $searchfound,
                             @modsearchstr, @modaddstr;
                     }
 
@@ -945,7 +940,7 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
         fopen( FILE, ">$editdir/$modeditfilename" )
           || install_error( "$yabmtxt{'no_write'} '$modeditfilename'<br />",
             "$file", $installtest );
-        print {FILE} @modeditfile;
+        print {FILE} @modeditfile or croak 'cannot print modedit';
         fclose(FILE);
     }
 
@@ -957,7 +952,8 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
             "$file", $installtest );
         for (@mods) {
             chomp;
-            print {IN} "$settings_file_version\\$_\n";
+            print {IN} "$settings_file_version\\$_\n"
+              or croak 'cannot print settings';
         }
         fclose(IN);
         update_mod_data( $file, 'uninstall' );
@@ -995,7 +991,8 @@ qq~<input type="button" value="$yabmtxt{'24'}" onClick="self.location.href='$adm
 ## sub dosearch for Apply Mod and Uninstall Mod
 sub dosearch {
     my ( $i, $j );
-    for ( $i = 0, $j = 0, $searchfound = 0 ; $i <= $#modeditfile ; $i++, $j++ ) {
+    for ( $i = 0, $j = 0, $searchfound = 0 ; $i <= $#modeditfile ; $i++, $j++ )
+    {
         $modeditfile[$i] =~ tr/\r//d;
         $modsearchstr[$j] =~ tr/\r//d;
         $modsearchstr[$j] =~ s/\n\Z//xsm;
@@ -1113,7 +1110,12 @@ sub YaBMuploadmod {
 
         #Download zip or mod file with the Modul LWP::Simple
         #if ( !$use_wget ) {
-        eval {require LWP::Simple;};
+        if ( eval { require LWP::Simple } ) {
+            require LWP::Simple;
+        }
+        else {
+            fatal_error( q{}, 'No LWP::Simple', 1 );
+        }
 
         $rc = getstore( $mod_url, $place_this_mod );
         $yymain .= qq~LWP::Simple $yabmtxt{'11'} ($rc)<br />~;
@@ -1124,7 +1126,7 @@ sub YaBMuploadmod {
             $yymain .=
 qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'}<br />$yabmtxt{'67'}<br /><br />~;
             $befehl = "wget -O $place_this_mod $mod_url";
-            print `$befehl`;
+            print `$befehl` or croak 'cannot print befehl';
         }
 
         $yymain .= qq~<br />
@@ -1171,8 +1173,7 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
     # Upload file function
     if ( $FORM{'upload_mod'} ne q{} ) {
         $FORM{'upload_mod'} =
-          UploadFile( 'upload_mod', 'YaBMod/temp', 'mod zip', '2000',
-            '0' );
+          UploadFile( 'upload_mod', 'YaBMod/temp', 'mod/zip', '2000', '0' );
         $anhang = 1;
     }
 
@@ -1182,27 +1183,31 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
     }
 
     # If zip file
-    if ( $mod_extension eq zip ) {
-        eval {use Archive::Zip qw( :ERROR_CODES :CONSTANTS );};
-        if ($EVAL_ERROR) {
-            fatal_error( q{}, "$yabmtxt{28} Archive::Zip: $EVAL_ERROR" );
-        }
-
+    if ( $mod_extension eq 'zip' ) {
         my $zip_name = "$htmldir/YaBMod/temp/$upload_modfile";
         my $zip_path = "$htmldir/YaBMod/temp";
         $yymain .= qq~$yabmtxt{'32'} <b>$upload_modfile</b> ...<br />~;
         my $zip = Archive::Zip->new();
-        if ( $zip->read($zip_name) != AZ_OK ) { fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );}
+        if ( $zip->read($zip_name) != AZ_OK ) {
+            fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
+        }
         $yymain .= qq~$yabmtxt{'33'}<br /><br />~;
 
         for my $files_name ( $zip->memberNames() ) {
 
+            $HTMLmain = q{};
+            $HTMLmain1 = q{};
+            $Systemmain = q{};
+            $Systemmain1 = q{};
             if ( $files_name =~ /^.*yabbfiles/ixsm ) {
                 $HTMLmain        = qq~<b>$yabmtxt{'34'}</b>~;
                 $files_name_html = $files_name;
                 $files_name_html =~ s/.*yabbfiles\///xsm;
-                my $status = $zip->extractMemberWithoutPaths( $files_name, "$htmldir/$files_name_html" );
-                if ( $status != AZ_OK ) { fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 ); }
+                my $status = $zip->extractMemberWithoutPaths( $files_name,
+                    "$htmldir/$files_name_html" );
+                if ( $status != AZ_OK ) {
+                    fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
+                }
                 unless ( $files_name_html eq q{}
                     || $files_name_html eq 'Attachments/'
                     || $files_name_html eq 'avatar/'
@@ -1236,7 +1241,9 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 $files_name_cgi =~ s/.*yabb2\///xsm;
                 my $status = $zip->extractMemberWithoutPaths( $files_name,
                     "$boarddir/$files_name_cgi" );
-                if ($status != AZ_OK) {fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );}
+                if ( $status != AZ_OK ) {
+                    fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
+                }
                 unless ( $files_name_cgi eq q{}
                     || $files_name_cgi eq 'Admin/'
                     || $files_name_cgi eq 'Admin/Mods/'
@@ -1278,7 +1285,9 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 $files_name_mod =~ s/.*\///xsm;
                 my $status = $zip->extractMemberWithoutPaths( $files_name,
                     "$boarddir/Mods/$files_name_mod" );
-                if ($status != AZ_OK) { fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 ); }
+                if ( $status != AZ_OK ) {
+                    fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
+                }
                 push @uninstall, qq~mod|$files_name_mod\n~;
                 $BoardModmain1 .= qq~<br />$files_name_mod<br />~;
             }
@@ -1340,7 +1349,6 @@ sub YaBMmodifymod {
     $formsession = cloak("$mbname$username");
 
     my $modfilesdir = "$boarddir/Mods";
-    my @tempnames;
     my ( $fulltemplate, $line );
     if    ( $FORM{'templatefile'} ) { $templatefile = $FORM{'templatefile'} }
     elsif ( $INFO{'templatefile'} ) { $templatefile = $INFO{'templatefile'} }
@@ -1679,19 +1687,22 @@ qq~<br /><span style="color: #FF0000;"><b>$yabmtxt{'18'}!!!</b> $error</span>$re
 
 sub get_mod_data {
     my ($itag) = @_;
-    fopen( MLOG, "$boarddir/Mods/Log/get_install.data" );
-    @data = <MLOG>;
-    fclose(MLOG);
-    for (@data) {
-        chop $_;
-        my ( $keys, $values ) = split /\t/xsm, $_;
-        ${$itag}{$keys} = $values;
+    if ( -e "$boarddir/Mods/Log/get_install.data" ) {
+        fopen( MLOG, "<$boarddir/Mods/Log/get_install.data" );
+        @data = <MLOG>;
+        fclose(MLOG);
+        for (@data) {
+            chop $_;
+            my ( $keys, $values ) = split /\t/xsm, $_;
+            ${$itag}{$keys} = $values;
+        }
     }
     return;
 }
 
 sub update_mod_data {
     my ( $mod, $action, $res ) = @_;
+    $action ||= q{};
 
     if ( $action eq 'uninstall' ) {
         fopen( FILE, "<$boarddir/Mods/Log/get_install.data" );
@@ -1700,14 +1711,12 @@ sub update_mod_data {
         @hilfmod = grep {!/$mod/xsm} @moddata;
 
         fopen( FILE, ">$boarddir/Mods/Log/get_install.data" );
-        print {FILE} @hilfmod;
+        print {FILE} @hilfmod or croak 'cannot print installdata';
         fclose(FILE);
-
     }
     else {
-
         fopen( FILE, ">>$boarddir/Mods/Log/get_install.data" );
-        print {FILE} "$mod\t$date\n";
+        print {FILE} "$mod\t$date\n" or croak 'cannot print installdata';
         fclose(FILE);
     }
     return;

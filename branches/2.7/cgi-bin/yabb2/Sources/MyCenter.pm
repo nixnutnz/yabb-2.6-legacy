@@ -23,6 +23,7 @@ $mycenterpmver  = 'YaBB 2.7.00 $Revision$';
 if (@mycenterpmmods) {
     $mycenterpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('InstantMessage');
@@ -33,6 +34,7 @@ get_template('MyCenter');
 get_gmod();
 $pm_lev = PMlev();
 
+${ $uid . $username }{'realname'} ||= q{};
 $mycenter_txt{'welcometxt'} =~ s/USERLABEL/${$uid.$username}{'realname'}/gxsm;
 
 $showIM            = q{};
@@ -88,7 +90,9 @@ sub mycenter {
             foreach
               my $storefolder ( split /[|]/xsm, ${$username}{'PMfolders'} )
             {
-                if ( $storefolder ne $INFO{'viewfolder'} ) {
+                if (   $INFO{'viewfolder'}
+                    && $storefolder ne $INFO{'viewfolder'} )
+                {
                     push @otherStoreFolders, $storefolder;
                     $foundextra = 1;
                 }
@@ -122,11 +126,15 @@ qq~<option value="$otherFolder">$otherFolderName</option>~;
             $movebutton =
 qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="button" />$otherStoreSelect $inmes_txt{'storeor'}~;
             $IM_box = $inmes_txt{'inbox'};
-            if ( $INFO{'focus'} eq 'bmess' || $INFO{'bmess'} eq 'yes' ) {
+            if (   $INFO{'focus'} && $INFO{'focus'} eq 'bmess'
+                || $INFO{'bmess'} && $INFO{'bmess'} eq 'yes' )
+            {
                 $IM_box   = $inmes_txt{'broadcast'};
                 $callerid = 5;
             }
-            if ( $INFO{'focus'} eq 'gmess' || $INFO{'gmess'} eq 'yes' ) {
+            if (   $INFO{'focus'} && $INFO{'focus'} eq 'gmess'
+                || $INFO{'gmess'} && $INFO{'gmess'} eq 'yes' )
+            {
                 $IM_box   = $inmes_txt{'guest'};
                 $callerid = 6;
             }
@@ -178,18 +186,20 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
 qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="button" />$otherStoreSelect $inmes_txt{'storeor'}~;
             $IM_box = $inmes_txt{'storage'};
 
-            fopen( THREADS, "$memberdir/$username.imstore" );
-            @threads = <THREADS>;
-            fclose(THREADS);
-            $threadid = $INFO{'id'};
-            foreach my $thread (@threads) {
-                chomp $thread;
-                if ( $thread =~ /$threadid/xsm ) {
-                    @fold = split /[|]/xsm, $thread;
-                    if ( $fold[13] eq 'in' || $fold[13] eq 'out' ) {
-                        $folder = qq~$im_folders_txt{$fold[13]}~;
+            if ( -e "$memberdir/$username.imstore" ) {
+                fopen( THREADS, "$memberdir/$username.imstore" );
+                @threads = <THREADS>;
+                fclose(THREADS);
+                $threadid = $INFO{'id'};
+                foreach my $thread (@threads) {
+                    chomp $thread;
+                    if ( $thread =~ /$threadid/xsm ) {
+                        @fold = split /[|]/xsm, $thread;
+                        if ( $fold[13] eq 'in' || $fold[13] eq 'out' ) {
+                            $folder = qq~$im_folders_txt{$fold[13]}~;
+                        }
+                        else { $folder = $fold[13]; }
                     }
-                    else { $folder = $fold[13]; }
                 }
             }
             if (   $INFO{'viewfolder'} eq 'in'
@@ -296,6 +306,7 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
 qq~&rsaquo; <a href="$scripturl?action=mycenter">$img_txt{'mycenter'}</a> &rsaquo; $mctitle~;
 
     ## set template up
+    $MCGlobalFormStart ||= q{};
     $mycenter_template =~ s/\Q{yabb mcviewmenu}\E/$MCViewMenu/gxsm;
     $mycenter_template =~ s/\Q{yabb mcmenu}\E/$yymcmenu/gxsm;
     $mycenter_template =~ s/\Q{yabb mcpmmenu}\E/$MCPmMenu/gxsm;
@@ -827,10 +838,20 @@ sub CreateUserDisplayLine {
             }
 
             if ( !$iamguest ) {
+                if (   !$iamadmin
+                    && !$iamgmod
+                    && !$staff
+                    && ${ $uid . $username }{'postcount'} < $numposts
+                    && $pm_spam_chk != 1 )
+                {
+                    $sendPM = q{};
+                }
+                else {
 
-                # Allow instant message sending if current user is a member.
-                $sendPM =
+                    # Allow instant message sending if current user is a member.
+                    $sendPM =
 qq~$menusep<a href="$scripturl?action=imsend;to=$useraccount{$usrname}">$img{'message_sm'}</a>~;
+                }
             }
             if (   !${ $uid . $usrname }{'hidemail'}
                 || $iamadmin
@@ -1130,19 +1151,22 @@ sub drawPMbox {
     {
         if ( !$INFO{'focus'} ) {
             if ( $callerid < 5 ) {
-                fopen( NFILE, "$memberdir/$username.$PMfileToOpen" );
-                @dimmessages = <NFILE>;
-                foreach ( reverse @dimmessages ) {
-                    my (
-                        $mID,  undef, undef, undef, undef, undef,  undef,
-                        undef, undef, undef, undef, undef, $mFlag, undef
-                    ) = split /[|]/xsm, $_, 14;
-                    ${ $username . $PMfileToOpen }{$mID} = $mFlag;
-                    if ( $INFO{'id'} == -1 && $mFlag eq 'u' ) {
-                        $INFO{'id'} = $mID;
+                if ( -e "$memberdir/$username.$PMfileToOpen" ) {
+                    fopen( NFILE, "$memberdir/$username.$PMfileToOpen" );
+                    @dimmessages = <NFILE>;
+                    foreach ( reverse @dimmessages ) {
+                        my (
+                            $mID,  undef, undef,  undef, undef,
+                            undef, undef, undef,  undef, undef,
+                            undef, undef, $mFlag, undef
+                        ) = split /[|]/xsm, $_, 14;
+                        ${ $username . $PMfileToOpen }{$mID} = $mFlag;
+                        if ( $INFO{'id'} == -1 && $mFlag eq 'u' ) {
+                            $INFO{'id'} = $mID;
+                        }
                     }
+                    fclose(NFILE);
                 }
-                fclose(NFILE);
             }
             elsif ( $callerid == 6 ) {
                 fopen( NFILE, "$memberdir/guest.messages" );
@@ -1201,8 +1225,8 @@ sub drawPMbox {
             }
             undef @gmessages;
         }
-        @stkbmessages = reverse sort { $a <=> $b } @stkbmessages;
-        @tmpbmessages = reverse sort { $a <=> $b } @tmpbmessages;
+        @stkbmessages = reverse sort { $a cmp $b } @stkbmessages;
+        @tmpbmessages = reverse sort { $a cmp $b } @tmpbmessages;
         push @dimmessages, @stkbmessages;
         push @dimmessages, @tmpbmessages;
         undef @stkbmessages;
@@ -1933,6 +1957,17 @@ qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_
             $MCPmMenu_pmsearch = $my_pmsearch;
             $MCPmMenu_pmsearch =~
               s/\Q{yabb MCPmMenu_pmsearch_b}\E/$MCPmMenu_pmsearch_b/xsm;
+            $MCPmMenu_pmsearch =~ s/\Q{yabb callerid}\E/$callerid/xsm;
+        }
+        if (   !$staff
+            && ${ $uid . $username }{'postcount'} < $numposts
+            && $pm_spam_chk != 1 )
+        {
+            $MCPmMenu .= $mypmmmenu_imsend_low;
+            $MCPmMenu =~ s/\Q{yabb numposts}\E/$numposts/xsm;
+        }
+        else {
+            $MCPmMenu .= $mypmmmenu_imsend;
         }
 
         $MCPmMenu .= $my_MCPmMenu;
@@ -2229,8 +2264,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$muser}" rel="no
                                 && $uname ne 'gmods'
                                 && $uname ne 'admins' )
                             {
-                                my ( $title, undef ) =
-                                  split /[|]/xsm, $NoPost{$uname}, 2;
+                                my ( $title, undef ) = @{$NoPost{$uname}};
                                 $usernameto = $title;
                             }
                             if ( $usernameto && $switchComma == 0 ) {
@@ -2264,8 +2298,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$messlst{'mtouse
                             && $uname ne 'gmods'
                             && $uname ne 'admins' )
                         {
-                            my ( $title, undef ) =
-                              split /[|]/xsm, $NoPost{$uname}, 2;
+                            my ( $title, undef ) = @{$NoPost{$uname}};
                             $usernameto = $title;
                         }
                     }
@@ -2346,7 +2379,8 @@ qq~<img src="$imagesdir/$newload{'imopen2'}" alt="$inmes_imtxt{'inread'}" title=
                     ## not opened
                     if ( !$imOpened && !$hasMultiRecs ) {
                         LoadUser( $messlst{'mtousers'} );
-                        if ( ${ $uid . $messlst{'mtousers'} }{'notify_me'} < 2
+                        if (   ${ $uid . $messlst{'mtousers'} }{'notify_me'}
+                            && ${ $uid . $messlst{'mtousers'} }{'notify_me'} < 2
                             || $enable_notifications < 2 )
                         {
                             $messageIcon =
@@ -2848,15 +2882,36 @@ $sepa<a href="$scripturl?action=imsend;caller=$callerid;forward=1;quote=$messlst
 $sepa<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messlst{'messageid'}" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
                 }
                 else {
-                    $actionsMenu =
+                    if (   !$iamadmin
+                        && !$iamgmod
+                        && !$staff
+                        && ${ $uid . $username }{'postcount'} < $numposts
+                        && $pm_spam_chk != 1 )
+                    {
+                        $actionsMenu =
+qq~<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messlst{'messageid'}" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
+                    }
+                    else {
+                        $actionsMenu =
 qq~<a href="$scripturl?action=imsend;caller=$callerid;quote=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}">$inmes_txt{'145'}</a>$sepa<a href="$scripturl?action=imsend;caller=$callerid;reply=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}">$inmes_txt{'146'}</a>$sepa<a href="$scripturl?action=imsend;caller=$callerid;forward=1;quote=$messlst{'mreplyno'};id=$messlst{'messageid'}">$inmes_txt{'147'}</a>$sepa<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messlst{'messageid'}" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
+                    }
 
                     ## broadcast messages can only be quoted on!
                 }
             }
             elsif ( $action eq 'im' && $viewBMess ) {
-                $actionsMenu =
+                if (   !$iamadmin
+                    && !$iamgmod
+                    && !$staff
+                    && ${ $uid . $username }{'postcount'} < $numposts
+                    && $pm_spam_chk != 1 )
+                {
+                    $actionsMenu = q{};
+                }
+                else {
+                    $actionsMenu =
 qq~<a href="$scripturl?action=imsend;caller=$callerid;quote=$messlst{'mreplyno'};id=$messlst{'messageid'}">$inmes_txt{'145'}</a>$sepa<a href="$scripturl?action=imsend;caller=$callerid;reply=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}">$inmes_txt{'146'}</a>~;
+                }
                 if ( $iamadmin || $username eq $messlst{'musername'} ) {
                     $actionsMenu .=
 qq~$sepa<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messlst{'messageid'}" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
@@ -3239,7 +3294,7 @@ sub getgrps {
             && $uname ne 'gmods'
             && $uname ne 'admins' )
         {
-            my ( $title, undef ) = split /[|]/xsm, $NoPost{$uname}, 2;
+            my ( $title, undef ) = @{$NoPost{$uname}};
             push @return, $title;
         }
     }

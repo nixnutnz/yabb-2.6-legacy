@@ -12,7 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-
+use warnings;
+no warnings qw(once);
 our $VERSION = '2.7.00';
 $adminsublistpmver = 'YaBB 2.7.00 $Revision$';
 @adminsublistpmmods = ();
@@ -118,7 +119,7 @@ if (@adminsublistpmmods) {
 'managecats' => 'ManageBoards.pm&ManageBoards',
 'managepmattachments2' => 'Attachments.pm&PMAttachments2',
 'membershiprecount' => 'Maintenance.pm&AdminMembershipRecount',
-'ml' => 'ViewMembers.pm&Ml',
+'ml'                     => 'ViewMembers.pm&Admin_Ml',
 'modagreement' => 'AdminEdit.pm&ModifyAgreement',
 'modagreement2' => 'AdminEdit.pm&ModifyAgreement2',
 'modcss' => 'ManageStyles.pm&ModifyCSS',
@@ -182,7 +183,7 @@ if (@adminsublistpmmods) {
 'stats' => 'Admin.pm&FullStats',
 'view_regentry' => 'RegistrationLog.pm&view_registration',
 'view_reglog' => 'RegistrationLog.pm&view_reglog',
-'viewmembers' => 'ViewMembers.pm&Ml',
+'viewmembers'            => 'ViewMembers.pm&Admin_Ml',
 'blockip' => 'ErrorLog.pm&blockip',
 'modfolder' => 'ManageTemplates.pm&NewTemplateFolder',
 'modgfolder' => 'ManageTemplates.pm&NewGraphicsFolder',

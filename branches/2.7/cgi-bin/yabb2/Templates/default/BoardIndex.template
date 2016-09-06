@@ -134,6 +134,7 @@ $boardindex_template .= qq~
 <!-- ## End Event Cal ## -->
     {yabb sharedlogin}
 <!-- Info Center block end -->
+{yabb new_load}
 ~;
 }
 

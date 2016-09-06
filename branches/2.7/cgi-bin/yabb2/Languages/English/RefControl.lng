@@ -17,6 +17,7 @@ $englishrefcontrollngver = 'YaBB 2.6.20 $Revision$';
 if(@englishrefcontrollngmods){
     $englishrefcontrollngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %refer_settings = (

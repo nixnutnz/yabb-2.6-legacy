@@ -17,6 +17,7 @@ $englishboardindexlngver = 'YaBB 2.7.00 $Revision$';
 if (@englishboardindexlngmods) {
     $englishboardindexlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %boardindex_txt = (

@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.20                                                 #
-# Packaged:       December 31, 2015                                           #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mobilememberlisttemver = 'YaBB 2.6.20 $Revision$';
+$mobilememberlisttemver = 'YaBB 2.7.00 $Revision$';
 @mobilememberlistmods = ();
 if (@mobilememberlistmods) {
     $mobilememberlistmods = 1;
@@ -27,8 +27,8 @@ $ml_trans ='trans.gif';
 $ml_bar ='bar.gif';
 
 $my_findform = qq~<form action="$scripturl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
-            <input type="text" name="member" id="member" value="$ml_txt{'801'}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '$ml_txt{'801'}');" onblur="txtInFields(this, '$ml_txt{'801'}')" />
-            <input type="submit" class="button" style="font-size: 10px;" value="$ml_txt{'2'}" />
+            <input type="text" name="member" id="member" value="{yabb ml_txt801}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '{yabb ml_txt801}');" onblur="txtInFields(this, '{yabb ml_txt801}')" />
+            <input type="submit" class="button" style="font-size: 10px;" value="{yabb ml_txt_2}" />
             </form> ~;
 
 $my_memberlist_main = qq~
@@ -56,14 +56,14 @@ $my_memberlist_main = qq~
 
 $my_header = qq~<tr>
                 {yabb row_userpic}
-                <td {yabb selUser} onclick="location.href='$scripturl?action=ml;sort=username';"><a href="$scripturl?action=ml;sort=username"><b>$ml_txt{'35'}</b></a></td>
-                <td class="catbg center"><img src="$micon_bg{'email'}" alt="$ml_txt{'307'}" title="$ml_txt{'307'}" /></td>
-                <td class="catbg center"><img src="$micon_bg{'www'}" alt="$ml_txt{'96'}" title="$ml_txt{'96'}" /></td>
+                <td {yabb selUser} onclick="location.href='$scripturl?action=ml;sort=username';"><a href="$scripturl?action=ml;sort=username"><b>{yabb ml_txt_35}</b></a></td>
+                <td class="catbg center"><img src="$micon_bg{'email'}" alt="{yabb ml_txt_307}" title="{yabb ml_txt_307}" /></td>
+                <td class="catbg center"><img src="$micon_bg{'www'}" alt="{yabb ml_txt_96}" title="{yabb ml_txt_96}" /></td>
                 <td {yabb selPos} onclick="location.href='$scripturl?action=ml;sort=position';">
-                    <a href="$scripturl?action=ml;sort=position"><b>$ml_txt{'87'}</b></a>
+                    <a href="$scripturl?action=ml;sort=position"><b>{yabb ml_txt_87}</b></a>
                 </td>
-                <td {yabb selPost} onclick="location.href='$scripturl?action=ml;sort=posts';" colspan="2"><a href="$scripturl?action=ml;sort=posts"><b>$ml_txt{'21'}</b></a></td>
-                <td {yabb selReg} onclick="location.href='$scripturl?action=ml;sort=regdate';"><a href="$scripturl?action=ml;sort=regdate"><b>$ml_txt{'234'}</b></a></td>
+                <td {yabb selPost} onclick="location.href='$scripturl?action=ml;sort=posts';" colspan="2"><a href="$scripturl?action=ml;sort=posts"><b>{yabb ml_txt_21}</b></a></td>
+                <td {yabb selReg} onclick="location.href='$scripturl?action=ml;sort=regdate';"><a href="$scripturl?action=ml;sort=regdate"><b>{yabb ml_txt_234}</b></a></td>
                 {yabb add_headers}
             </tr>~;
 
@@ -82,17 +82,17 @@ $my_memrow = qq~<tr>
 $my_userpic_td = qq~
             <td class="windowbg2 center">{yabb my_userpic}</td>~;
 
-$my_row_userpic = qq~<td class="catbg center"><b>$ml_txt{'34'}</b></td>~;
+$my_row_userpic = qq~<td class="catbg center"><b>{yabb ml_txt_34}</b></td>~;
 
 $my_letterlinks = qq~<tr>
                 <td class="catbg" colspan="{yabb headercount}"><span class="small">{yabb letterlinks}</span></td>
             </tr>~;
 
 $my_letter =
-qq~<tr><td class="windowbg center"  colspan="{yabb headercount}"><br /><b>$ml_txt{'760'}</b><br /><br /></td></tr>~;
+qq~<tr><td class="windowbg center"  colspan="{yabb headercount}"><br /><b>{yabb ml_txt_760}</b><br /><br /></td></tr>~;
 
 $my_findmember = qq~<tr>
-                  <td class="windowbg2 center" colspan="7"><br />$ml_txt{'802'} <i>{yabb formmember}</i><br /><br /></td>
+                  <td class="windowbg2 center" colspan="7"><br />{yabb ml_txt_802} <i>{yabb formmember}</i><br /><br /></td>
             </tr>~;
 
 $my_memberlist_bottom = qq~
@@ -268,7 +268,7 @@ $my_quickSearch = qq~
     <div class="bordercolor" style="width:300px">
     <table class="pad_3px cs_thin">
         <tr>
-            <td class="titlebg"><label for="letter">$usersel_txt{'qsearch'}</label></td>
+            <td class="titlebg"><label for="letter">{yabb usersel_txt_qsearch}</label></td>
         </tr><tr>
             <td class="windowbg2">
                 <div style="float:left"><input type="text" name="letter" id="letter" onkeyup="LetterChange(this.value)" style="width:270px" /></div>
@@ -280,11 +280,11 @@ $my_quickSearch = qq~
             </td>
         </tr><tr>
             <td class="windowbg">
-                <input type="button" class="button" onclick="copy_option('{yabb to_id}')" value="$usersel_txt{'addselected'}" style="width: 145px;" /><input type="button" class="button" onclick="window.close()" value="$usersel_txt{'pageclose'}" style="width: 145px;" />
+                <input type="button" class="button" onclick="copy_option('{yabb to_id}')" value="{yabb usersel_txt_addselected}" style="width: 145px;" /><input type="button" class="button" onclick="window.close()" value="{yabb usersel_txt_pageclose}" style="width: 145px;" />
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <br /><span class="small">$usersel_txt{'instruct0'} $usersel_txt{'moderatorlist'}</span><br /><br />
+                <br /><span class="small">{yabb usersel_txt_instruct0} {yabb usersel_txt_moderatorlist}</span><br /><br />
             </td>
         </tr>
     </table>

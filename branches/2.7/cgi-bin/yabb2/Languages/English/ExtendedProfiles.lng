@@ -17,6 +17,7 @@ $englishextendedprofileslngver = 'YaBB 2.7.00 $Revision$';
 if (@englishextendedprofileslngmods) {
     $englishextendedprofileslngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %lang_ext = (
@@ -134,10 +135,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'cannot_open_file' => q~Can't open file ~,
 'invalid_extension' => q~Your image has a forbidden extension.~,
 'image' => q~Image~,
-'image_width' => q~Width~,
-'image_width_description' => q~Set a value if you want to limit the image width to a specific value. Leave blank to disable limit.~,
-'image_height' => q~Height~,
-'image_height_description' => q~Set a value if you want to limit the image height to a specific value. Leave blank to disable limit.~,
+'image_width' => q~Height and Width~,
+'image_width_description' => qq~Set Extended Profile Image width in <a href="$boardurl/AdminIndex.yyaext?action=newsettings;page=advanced" />Advanced Settings</a> -> Images.~,
 'allowed_extensions' => q~Allowed Extensions~,
 'allowed_extensions_description' => q~Limit this field to specific file extensions by entering a list of extensions separated by spaces. E.g. 'jpg jpeg gif png bmp'. Leave blank to disable limit.~,
 'converter_missing_vars' => q~Cannot open the Convert/Variables folder you specified. Please make sure that your input is correct and that the permissions are set properly (755 for the folder and 644 for all its files).~,

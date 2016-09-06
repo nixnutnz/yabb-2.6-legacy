@@ -15,6 +15,9 @@
 # Michael Prager. Last modification by him: 15.11.07                          #
 # Added to the YaBB default code on 07. September 2008                        #
 ###############################################################################
+use warnings;
+no warnings qw(once);
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $settings_extendedprofilespmver = 'YaBB 2.7.00 $Revision$';
@@ -22,6 +25,7 @@ $settings_extendedprofilespmver = 'YaBB 2.7.00 $Revision$';
 if (@settings_extendedprofilespmmods) {
     $settings_extendedprofilespmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('ExtendedProfiles');
@@ -34,11 +38,30 @@ $ext_max_image_length = 100;
 
 my %field;
 
-# outputs the value of a user's extended profile field
-## USAGE: $value = ext_get("admin","my_custom_fieldname");
-##  or    $value_raw = ext_get("admin","my_custom_fieldname",1);
-## pass the third argument if you want to get the raw content e.g. an unformatted date
-sub ext_get {
+# returns the id of a field through the fieldname
+sub admin_ext_get_field_id {
+    my ( $fieldname, $count, $id, $current, $currentname, undef ) =
+      ( shift, 0 );
+    foreach my $current (@ext_prof_fields) {
+        ( $currentname, $count, undef ) = split /\|/xsm, $current;
+        if ( $currentname eq $fieldname ) { $id = $count; last; }
+    }
+    return $id;
+}
+
+# returns all settings of a specific field
+sub admin_ext_get_field {
+    my ($id) = @_;
+    my %field = ();
+    my @fldlist = qw( name count type options active comment required_on_reg visible_in_viewprofile v_users v_groups visible_in_posts p_users p_groups p_displayfieldname visible_in_memberlist m_users m_groups editable_by_user visible_in_posts_popup pp_users pp_groups pp_displayfieldname radiounselect );
+    my @ext_fields = split /[|]/xsm, $ext_prof_fields[ $id ];
+    foreach my $i ( 0 .. $#fldlist ) {
+        $field{ $fldlist[$i] } = $ext_fields[$i];
+    }
+    return %field;
+}
+
+sub admin_ext_get {
     my (
         $pusername, $fieldname, $no_parse,           @ext_profile,
         @options,   $field,     $id,                 $value,
@@ -46,20 +69,19 @@ sub ext_get {
         $match
     ) = ( shift, shift, shift );
 
-    ext_get_profile($pusername);
-    $id    = ext_get_field_id($fieldname);
+    admin_ext_get_profile($pusername);
+    $id    = admin_ext_get_field_id($fieldname);
     $value = ${ $uid . $pusername }{ 'ext_' . $id };
-    if ( $no_parse eq q{} || $no_parse == 0 ) {
-        $field = ext_get_field($id);
+    if ( !$no_parse || $no_parse == 0 ) {
+        %field = admin_ext_get_field($id);
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $options[3] ne q{} && $value eq q{} ) { $value = $options[3]; }
+            if ( $options[3] && !$value ) { $value = $options[3]; }
             if ( $options[4] == 1 ) {
                 $value = ext_parse_ubbc( $value, $pusername );
             }
-
         }
-        elsif ( $field{'type'} eq 'text_multi' && $value ne q{} ) {
+        elsif ( $field{'type'} eq 'text_multi' && $value ) {
             @options = split /\^/xsm, $field{'options'};
             if ( $options[3] == 1 ) {
                 $value = ext_parse_ubbc( $value, $pusername );
@@ -68,23 +90,20 @@ sub ext_get {
         }
         elsif ( $field{'type'} eq 'select' ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $value > $#options || $value eq q{} ) { $value = 0; }
+            if ( $value > $#options || !$value ) { $value = 0; }
             $value = $options[$value];
-
         }
         elsif ( $field{'type'} eq 'radiobuttons' ) {
             @options = split /\^/xsm, $field{'options'};
             if ( $value > $#options ) { $value = 0; }
-            if ( !$field{'radiounselect'} && $value eq q{} ) { $value = 0; }
-            if ( $value ne q{} ) { $value = $options[$value]; }
-
+            if ( !$field{'radiounselect'} && !$value ) { $value = 0; }
+            if ( $value ) { $value = $options[$value]; }
         }
-        elsif ( $field{'type'} eq 'date' && $value ne q{} ) {
+        elsif ( $field{'type'} eq 'date' && $value ) {
             $value = ext_timeformat($value);
-
         }
         elsif ( $field{'type'} eq 'checkbox' ) {
-            if   ( $value == 1 ) { $value = $lang_ext{'true'} }
+            if   ( $value && $value == 1 ) { $value = $lang_ext{'true'} }
             else                 { $value = $lang_ext{'false'} }
         }
         elsif ( $field{'type'} eq 'spacer' ) {
@@ -92,15 +111,15 @@ sub ext_get {
             if   ( $options[0] == 1 ) { $value = qq~$ext_spacer_br~; }
             else                      { $value = qq~$ext_spacer_hr~; }
         }
-        elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
-            if ( $value !~ m{\Ahttp://}sm ) { $value = "http://$value"; }
+        elsif ( $field{'type'} eq 'url' && $value ) {
+            if ( $value !~ m{\Ahttps?://}xsm ) { $value = "http://$value"; }
         }
-        elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
+        elsif ( $field{'type'} eq 'image' && $value ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( $options[2] ne q{} ) {
+            if ( $options[2] ) {
                 @allowed_extensions = split /\ /xsm, $options[2];
                 $match = 0;
-                for my $extension (@allowed_extensions) {
+                foreach my $extension (@allowed_extensions) {
                     if ( grep { /$extension$/ism } $value ) {
                         $match = 1;
                         last;
@@ -108,66 +127,24 @@ sub ext_get {
                 }
                 if ( $match == 0 ) { return q{}; }
             }
-            if ( $options[0] ne q{} && $options[0] != 0 ) {
+            if ( $options[0] && $options[0] != 0 ) {
                 $width = q~ width="~ . ( $options[0] + 0 ) . q~"~;
             }
             else { $width = q{}; }
-            if ( $options[1] ne q{} && $options[1] != 0 ) {
+            if ( $options[1] && $options[1] != 0 ) {
                 $height = q~ height="~ . ( $options[1] + 0 ) . q~"~;
             }
             else { $height = q{}; }
             if ( $value !~ m{\Ahttp://}sm ) { $value = "http://$value"; }
-            $value = qq~<img src="$value" class="vtop"$width$height alt=q{} />~;
+            $value = qq~<img src="$value" class="vtop"$width$height alt="" />~;
         }
     }
 
     return $value;
 }
 
-sub ext_get_profile {
+sub admin_ext_get_profile {
     LoadUser(shift);
-    return;
-}
-
-# returns an array of the form qw(ext_0 ext_1 ext_2 ...)
-sub ext_get_fields_array {
-    my ( $count, @result ) = (0);
-    for (@ext_prof_fields) {
-        push @result, "ext_$count";
-        $count++;
-    }
-    return @result;
-}
-
-# returns the id of a field through the fieldname
-sub ext_get_field_id {
-    my ( $fieldname, $count, $id, $current, $currentname, $dummy ) =
-      ( shift, 0 );
-    for my $current (@ext_prof_fields) {
-        ( $currentname, $dummy ) = split /[|]/xsm, $current;
-        if ( $currentname eq $fieldname ) { $id = $count; last; }
-        $count++;
-    }
-    return $id;
-}
-
-# returns all settings of a specific field
-sub ext_get_field {
-    $field{'id'} = shift;
-    (
-        $field{'name'},                   $field{'type'},
-        $field{'options'},                $field{'active'},
-        $field{'comment'},                $field{'required_on_reg'},
-        $field{'visible_in_viewprofile'}, $field{'v_users'},
-        $field{'v_groups'},               $field{'visible_in_posts'},
-        $field{'p_users'},                $field{'p_groups'},
-        $field{'p_displayfieldname'},     $field{'visible_in_memberlist'},
-        $field{'m_users'},                $field{'m_groups'},
-        $field{'editable_by_user'},       $field{'visible_in_posts_popup'},
-        $field{'pp_users'},               $field{'pp_groups'},
-        $field{'pp_displayfieldname'},    $field{'radiounselect'},
-        undef
-    ) = split /[|]/xsm, $ext_prof_fields[ $field{'id'} ];
     return;
 }
 
@@ -177,8 +154,7 @@ sub ext_timeformat {
         $mytimeselected, $oldformat,  $mytimeformat, $newday,
         $newday2,        $newmonth,   $newmonth2,    $newyear,
         $newshortyear,   $oldmonth,   $oldday,       $oldyear,
-        $newweekday,     $newyearday, $newweek,      $dummy,
-        $usefullmonth
+        $newweekday,     $newyearday, $newweek,      $usefullmonth
     );
 
     if ( ${ $uid . $username }{'timeselect'} > 0 ) {
@@ -193,7 +169,7 @@ sub ext_timeformat {
     $oldday   = substr $oldformat, 3, 2;
     $oldyear  = substr $oldformat, 6, 4;
 
-    if ( $oldformat ne q{} ) {
+    if ( $oldformat ) {
         $newday       = $oldday + 0;
         $newmonth     = $oldmonth + 0;
         $newyear      = $oldyear + 0;
@@ -202,18 +178,14 @@ sub ext_timeformat {
         if ( $newday < 10 && $mytimeselected != 4 ) { $newday = "0$newday"; }
 
         if ( $mytimeselected == 1 ) {
-            qq~$newmonth/$newday/$newshortyear~;
+            $newformat = qq~$newmonth/$newday/$newshortyear~;
 
         }
         elsif ( $mytimeselected == 2 ) {
             $newformat = qq~$newday.$newmonth.$newshortyear~;
-            return $newformat;
-
         }
         elsif ( $mytimeselected == 3 ) {
             $newformat = qq~$newday.$newmonth.$newyear~;
-            return $newformat;
-
         }
         elsif ( $mytimeselected == 4 || $mytimeselected == 8 ) {
             $newmonth--;
@@ -232,25 +204,19 @@ sub ext_timeformat {
             }
             else { $newday2 = "$timetxt{'4'}"; }
             $newformat = qq~$newmonth2 $newday$newday2, $newyear~;
-            return $newformat;
-
         }
         elsif ( $mytimeselected == 5 ) {
             $newformat = qq~$newmonth/$newday/$newshortyear~;
-            return $newformat;
-
         }
         elsif ( $mytimeselected == 6 ) {
             $newmonth2 = $months[ $newmonth - 1 ];
             $newformat = qq~$newday. $newmonth2 $newyear~;
-            return $newformat;
-
         }
         elsif ( $mytimeselected == 7 ) {
             (
-                $dummy,      $dummy,      $dummy,
-                $dummy,      $dummy,      $dummy,
-                $newweekday, $newyearday, $dummy
+                undef,      undef,      undef,
+                undef,      undef,      undef,
+                $newweekday, $newyearday, undef
             ) = gmtime $oldformat;
             $newweek = int( ( $newyearday + 1 - $newweekday ) / 7 ) + 1;
 
@@ -292,14 +258,13 @@ sub ext_timeformat {
             }
 
             $mytimeformat =~ s/\*//gxsm;
-            return $mytimeformat;
+            $newformat = $mytimeformat;
         }
     }
-    else { return q{}; }
+    else { $newformat = q{}; }
 
-    #no return;
+    return $newformat;
 }
-
 
 # returns the output for the Extended Profile Controls in admin center
 sub ext_admin {
@@ -342,15 +307,16 @@ sub ext_admin {
                 </table>~;
     }
     else {
-         $yymain .= q~              </table>~;
-        for my $fieldname (@ext_prof_order) {
-            $id = ext_get_field_id($fieldname);
-            ext_get_field($id);
-            my @typelist = qw( text text_multi select radiobuttons checkbox date email url spacer image );
-            for my $i (0 .. 9) {
+        $yymain .= q~              </table>~;
+        foreach my $fieldname (@ext_prof_order) {
+            $id = admin_ext_get_field_id($fieldname);
+            %field = admin_ext_get_field($id);
+            my @typelist =
+              qw( text text_multi select radiobuttons checkbox date email url spacer image );
+            foreach my $i ( 0 .. 9 ) {
                 if ($field{'type'} eq $typelist[$i]) {
                     $selected[$i] = ' selected="selected"';
-            }
+                }
                 else { $selected[$i] = q{}; }
             }
             if   ( $field{'active'} == 1 ) { $active = ' checked="checked"'; }
@@ -365,6 +331,7 @@ sub ext_admin {
                     <tr>
                         <td class="windowbg2 center">
                             <input name="id" type="hidden" value="$id" />
+                            <input name="ncn" type="hidden" value="$field{'count'}" />
                             <input type="checkbox" name="active" value="1"$active />
                         </td>
                         <td class="windowbg2 center">
@@ -471,35 +438,7 @@ sub ext_admin {
 </form>
 </div>
 ~;
-    if ( -e "$vardir/Extended.lock" ) { $yymain .= FoundExtLock();}
-    else {
-    if ( -e "$vardir/ConvSettings.txt" ) {
-        require "$vardir/ConvSettings.txt";
-    }
-    else {
-        $convmemberdir = './Convert/Members';
-        $convvardir    = './Convert/Variables';
-    }
 
-    $yymain .= qq~
-<div class="bordercolor rightboxdiv">
-    <table class="border-space pad-cell">
-        <tr>
-            <td class="titlebg"><img src="$imagesdir/profile.gif" alt="" /> <b>$lang_ext{'converter_title'}</b></td>
-        </tr><tr>
-            <td class="windowbg2">$lang_ext{'converter_description'}
-                <form action="$adminurl?action=ext_convert" method="post">
-                <p class="center"><br />
-                <label for="members">$lang_ext{'path_old_members_folder'}:</label>  <input name="members" id="members" value="$convmemberdir" /><br />
-                <label for="vars">$lang_ext{'path_old_variables_folder'}:</label>  <input name="vars" id="vars" value="$convvardir" /><br /><br />
-                <input type="submit" name="convert" value="$lang_ext{'converter_button'}" /><br /><br /></p>
-        </form>
-        </td>
-      </tr>
-      </table>
-</div>
-~;
-}
     $yytitle     = $lang_ext{'Profiles_Controls'};
     $action_area = 'ext_admin';
     AdminTemplate();
@@ -531,10 +470,16 @@ sub ext_admin_create {
     is_admin_or_gmod();
 
     ToHTML( $FORM{'name'} );
-
+    my @count = ();
+    foreach my $i (@ext_prof_fields) {
+        my (undef, $cn, undef ) = split /[|]/xsm, $i;
+        push @count, $cn;
+    }
+    @count = sort @count;
+    $ncn = $count[-1] + 1;
     push @ext_prof_order, $FORM{'name'};
     push @ext_prof_fields,
-      "$FORM{'name'}|$FORM{'type'}||1||0|1|||0|||0|0|||1|0|||0|0";
+      "$FORM{'name'}|$ncn|$FORM{'type'}||1||0|1|||0|||0|0|||1|0|||0|0";
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
@@ -564,26 +509,28 @@ sub ext_admin_gen_groupslist {
     for (@groups) {
         $groupcheck{$_} = ' selected="selected"';
     }
-    my @grps = ( 'Administrator','Global Moderator','Mid Moderator','Moderator',);
-    my $output = q{};
-    for (@grps) {
-        $output .= qq~<option value="$_"$groupcheck{$_}>~
-      . ( split /[|]/xsm, $Group{$_} )[0]
-      . qq~</option>\n~;
-    }
-
-    for ( sort { $a <=> $b } keys %NoPost ) {
-        $groupid = $_;
+    my @grps =
+      ( 'Administrator', 'Global Moderator', 'Mid Moderator', 'Moderator', );
+    $output = q{};
+    for my $i(@grps) {
+        $groupcheck{$i} ||= q{};
         $output .=
-qq~<option value="NoPost{$groupid}"$groupcheck{'NoPost{'.$groupid.'}'}>~
-          . ( split /[|]/xsm, ( split /[|]/xsm, $NoPost{$groupid} )[0] )[0]
+            qq~<option value="$i"$groupcheck{$i}>~
+          . ${$Group{$i}}[0]
           . qq~</option>\n~;
     }
-    for ( reverse sort { $a <=> $b } keys %Post ) {
-        $groupid = $_;
+    if ( %NoPost ) {
+        for my $i ( sort keys %NoPost ) {
+            $output .= qq~<option value="$i"$groupcheck{$i}>~
+              . ${$NoPost{$i}}[0]
+              . qq~</option>\n~;
+        }
+    }
+    for my $i( reverse sort { $a <=> $b } keys %Post ) {
+        $groupcheck{$i} ||= q{};
         $output .=
-            qq~<option value="Post{$groupid}"$groupcheck{'Post{'.$groupid.'}'}>~
-          . ( split /[|]/xsm, ( split /[|]/xsm, $Post{$groupid} )[0] )[0]
+            qq~<option value="$i"$groupcheck{$i}}>~
+          . ${$Post{$i}}[0]
           . qq~</option>\n~;
     }
 
@@ -595,26 +542,25 @@ sub ext_admin_edit {
     @x = @_;
     my (
         @fields,    @order,       $type,           $active,
-        $id,        $name,        $oldname,        $req1,
-        $req2,      $req3,        $v_check,        $p_check,
-        $p_d_check, $m_check,     @editable_check, $is_numeric,
+        $id,        $name,        $oldname,
+        @editable_check, $is_numeric,
         $ubbc,      @options,     $check1,         $check2,
         @contents,  @old_content, $new_content,    $output
     );
     $oldname = $x[0];
     is_admin_or_gmod();
 
-    if ( $FORM{'apply'} ne q{} ) {
+    if ( $FORM{'apply'} ) {
         ToHTML( $FORM{'name'} );
         $name   = $FORM{'name'};
         $id     = $FORM{'id'};
         $type   = $FORM{'type'};
-        $active = $FORM{'active'} ne q{} ? 1 : 0;
+        $active = $FORM{'active'} ? 1 : 0;
 
         @fields = @ext_prof_fields;
         @_ = split /[|]/xsm, $fields[ $FORM{'id'} ];
         $fields[ $FORM{'id'} ] =
-"$name|$type|$x[2]|$active|$x[4]|$x[5]|$x[6]|$x[7]|$x[8]|$x[9]|$x[10]|$x[11]|$x[12]|$x[13]|$x[14]|$x[15]|$x[16]|$x[17]|$x[18]|$x[19]|$x[20]|$x[21]";
+"$name|$x[1]|$type|$x[3]|$active|$x[5]|$x[6]|$x[7]|$x[8]|$x[9]|$x[10]|$x[11]|$x[12]|$x[13]|$x[14]|$x[15]|$x[16]|$x[17]|$x[18]|$x[19]|$x[20]|$x[21]|$x[22]";
         @ext_prof_fields = @fields;
 
         @order = @ext_prof_order;
@@ -632,50 +578,11 @@ sub ext_admin_edit {
         redirectexit();
 
     }
-    elsif ( $FORM{'options'} ne q{} ) {
-        ext_get_field( $FORM{'id'} );
+    elsif ( $FORM{'options'} ) {
+        %field = admin_ext_get_field( $FORM{'id'} );
         if   ( $field{'active'} == 1 ) { $active = $lang_ext{'true'}; }
         else                           { $active = $lang_ext{'false'}; }
-        if ( $field{'required_on_reg'} == 1 ) {
-            $req1 = q{};
-            $req2 = ' checked="checked"';
-            $req3 = q{};
-        }
-        elsif ( $field{'required_on_reg'} == 2 ) {
-            $req1 = q{};
-            $req2 = q{};
-            $req3 = ' checked="checked"';
-        }
-        else { $req1 = ' checked="checked"'; $req2 = q{}; $req3 = q{}; }
-        if ( $field{'visible_in_viewprofile'} == 1 ) {
-            $v_check = ' checked="checked"';
-        }
-        else { $v_check = q{}; }
-        if ( $field{'visible_in_posts'} == 1 ) {
-            $p_check = ' checked="checked"';
-        }
-        else { $p_check = q{}; }
-        if ( $field{'visible_in_posts_popup'} == 1 ) {
-            $pp_check = ' checked="checked"';
-        }
-        else { $pp_check = q{}; }
-        if ( $field{'p_displayfieldname'} == 1 ) {
-            $p_d_check = ' checked="checked"';
-        }
-        else { $p_d_check = q{}; }
-        if ( $field{'pp_displayfieldname'} == 1 ) {
-            $pp_d_check = ' checked="checked"';
-        }
-        else { $pp_d_check = q{}; }
-        if ( $field{'visible_in_memberlist'} == 1 ) {
-            $m_check = ' checked="checked"';
-        }
-        else { $m_check = q{}; }
-        if ( $field{'radiounselect'} == 1 ) {
-            $radiounselect = ' checked="checked"';
-        }
-        else { $radiounselect = q{}; }
-        $editable_check[ $field{'editable_by_user'} ] = ' selected="selected"';
+
         $yymain .= qq~
 <form action="$adminurl?action=ext_edit2" method="post" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
@@ -701,10 +608,9 @@ sub ext_admin_edit {
 ~;
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};
-            if   ( $options[2] == 1 ) { $is_numeric = ' checked="checked"' }
-            else                      { $is_numeric = q{} }
-            if   ( $options[4] == 1 ) { $ubbc = ' checked="checked"' }
-            else                      { $ubbc = q{} }
+            foreach my $i ( 0 .. 4) {
+                $options[$i] ||= q{};
+            }
             $yymain .= ext_admin_gen_inputfield(
                 qq~<label for="limit_len">$lang_ext{'limit_len'}</label>~,
 qq~<label for="limit_len">$lang_ext{'limit_len_description'}</label>~,
@@ -718,7 +624,7 @@ qq~<input name="width" id="width" size="5" value='$options[1]' />~
               . ext_admin_gen_inputfield(
                 qq~<label for="is_numeric">$lang_ext{'is_numeric'}</label>~,
 qq~<label for="is_numeric">$lang_ext{'is_numeric_description'}</label>~,
-qq~<input name="is_numeric" id="is_numeric" type="checkbox" value="1"$is_numeric />~
+qq~<input name="is_numeric" id="is_numeric" type="checkbox" value="1"${ischecked($options[2])} />~
               )
               . ext_admin_gen_inputfield(
                 qq~<label for="default">$lang_ext{'default'}</label>~,
@@ -728,13 +634,14 @@ qq~<input name="default" id="default" size="50" value='$options[3]' />~
               . ext_admin_gen_inputfield(
                 qq~<label for="ubbc">$lang_ext{'ubbc'}</label>~,
                 qq~<label for="ubbc">$lang_ext{'ubbc_description'}</label>~,
-qq~<input name="ubbc" id="ubbc" type="checkbox" value="1"$ubbc />~
+qq~<input name="ubbc" id="ubbc" type="checkbox" value="1"${ischecked($options[4])} />~
               );
         }
         elsif ( $field{'type'} eq 'text_multi' ) {
             @options = split /\^/xsm, $field{'options'};
-            if   ( $options[3] == 1 ) { $ubbc = ' checked="checked"' }
-            else                      { $ubbc = q{} }
+            $options[0] ||= q{};
+            $options[1] ||= q{};
+            $options[2] ||= q{};
             $yymain .= ext_admin_gen_inputfield(
                 qq~<label for="limit_len">$lang_ext{'limit_len'}</label>~,
 qq~<label for="limit_len">$lang_ext{'limit_len_description'}</label>~,
@@ -753,7 +660,7 @@ qq~<input name="limit_len" id="limit_len" size="5" value='$options[0]' />~
               . ext_admin_gen_inputfield(
                 qq~<label for="ubbc">$lang_ext{'ubbc'}</label>~,
                 qq~<label for="ubbc">$lang_ext{'ubbc_description'}</label>~,
-qq~<input name="ubbc" id="ubbc" type="checkbox" value="1"$ubbc />~
+qq~<input name="ubbc" id="ubbc" type="checkbox" value="1"${ischecked($options[3])} />~
               );
         }
         elsif ( $field{'type'} eq 'select' ) {
@@ -778,11 +685,14 @@ qq~<textarea name="options" id="options" cols="30" rows="3">$output</textarea>~
               . ext_admin_gen_inputfield(
 qq~<label for="radiounselect">$lang_ext{'radiounselect'}</label>~,
 qq~<label for="radiounselect">$lang_ext{'radiounselect_description'}</label>~,
-qq~<input name="radiounselect" id="radiounselect" type="checkbox" value="1"$radiounselect />~
+qq~<input name="radiounselect" id="radiounselect" type="checkbox" value="1"${ischecked($field{'radiounselect'})} />~
               );
         }
         elsif ( $field{'type'} eq 'spacer' ) {
             @options = split /\^/xsm, $field{'options'};
+            foreach my $i ( 0 .. 1) {
+                $options[$i] ||= 0;
+            }
             if ( $options[0] == 1 ) {
                 $check2 = ' checked="checked"';
                 $check1 = q{};
@@ -799,28 +709,20 @@ qq~<input name="hr_or_br" id="hr_or_br" type="radio" value="0"$check1 />$lang_ex
               . ext_admin_gen_inputfield(
 qq~<label for="visible_in_editprofile">$lang_ext{'visible_in_editprofile'}</label>~,
 qq~<label for="visible_in_editprofile">$lang_ext{'visible_in_editprofile_description'}</label>~,
-qq~<input name="visible_in_editprofile" id="visible_in_editprofile" type="checkbox" value="1"$options[1] />~
+qq~<input name="visible_in_editprofile" id="visible_in_editprofile" type="checkbox" value="1"${ischecked($options[1])} />~
               );
-
         }
         elsif ( $field{'type'} eq 'image' ) {
-            @options = split /\^/xsm, $field{'options'};
-
-    #if ($options[3] == 1) { $ubbc = ' checked="checked"' } else { $ubbc = q{} }
+            $options = $field{'options'};
             $yymain .= ext_admin_gen_inputfield(
-                qq~<label for="image_width">$lang_ext{'image_width'}</label>~,
+qq~<label for="image_width">$lang_ext{'image_width'}</label>~,
 qq~<label for="image_width">$lang_ext{'image_width_description'}</label>~,
-qq~<input name="image_width" id="image_width" size="5" value='$options[0]' />~
-              )
-              . ext_admin_gen_inputfield(
-                qq~<label for="image_height">$lang_ext{'image_height'}</label>~,
-qq~<label for="image_height">$lang_ext{'image_height_description'}</label>~,
-qq~<input name="image_height" id="image_height" size="5" value='$options[1]' />~
+q~~,
               )
               . ext_admin_gen_inputfield(
 qq~<label for="allowed_extensions">$lang_ext{'allowed_extensions'}</label>~,
 qq~<label for="allowed_extensions">$lang_ext{'allowed_extensions_description'}</label>~,
-qq~<input name="allowed_extensions" id="allowed_extensions" size="30" value='$options[2]' />~
+qq~<input name="allowed_extensions" id="allowed_extensions" size="30" value='$options' />~
               );
         }
 
@@ -832,14 +734,14 @@ qq~<input name="comment" id="comment" size="50" value='$field{'comment'}' />~
           . ext_admin_gen_inputfield(
 qq~<label for="required_on_reg">$lang_ext{'required_on_reg'}</label>~,
 qq~<label for="required_on_reg">$lang_ext{'required_on_reg_description'}</label>~,
-qq~<input name="required_on_reg" type="radio" value="1"$req2 /> $lang_ext{'req1'}<br />\n~
-              . qq~<input name="required_on_reg" id="required_on_reg" type="radio" value="0"$req1 /> $lang_ext{'req0'}<br />\n~
-              . qq~<input name="required_on_reg" type="radio" value="2"$req3 /> $lang_ext{'req2'}\n~
+qq~<input name="required_on_reg" type="radio" value="1"${ischecked($field{'required_on_reg'} == 1)} /> $lang_ext{'req1'}<br />\n~
+              . qq~<input name="required_on_reg" id="required_on_reg" type="radio" value="0"${ischecked($field{'required_on_reg'} == 0)} /> $lang_ext{'req0'}<br />\n~
+              . qq~<input name="required_on_reg" type="radio" value="2"${ischecked($field{'required_on_reg'} == 3)} /> $lang_ext{'req2'}\n~
           )
           . ext_admin_gen_inputfield(
 qq~<label for="visible_in_viewprofile">$lang_ext{'visible_in_viewprofile'}</label>~,
 qq~<label for="visible_in_viewprofile">$lang_ext{'visible_in_viewprofile_description'}</label>~,
-qq~<input name="visible_in_viewprofile" id="visible_in_viewprofile" type="checkbox" value="1"$v_check /><br />\n~
+qq~<input name="visible_in_viewprofile" id="visible_in_viewprofile" type="checkbox" value="1"${ischecked($field{'visible_in_viewprofile'})} /><br />\n~
               . qq~<table class="windowbg2 pad-cell">\n~
               . qq~  <tr><td><label for="v_users">$lang_ext{'v_users'}:</label> </td><td><input name="v_users" id="v_users" value="$field{'v_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="v_groups">$lang_ext{'v_groups'}:</label> </td><td>\n~
@@ -852,9 +754,9 @@ qq~<input name="visible_in_viewprofile" id="visible_in_viewprofile" type="checkb
           . ext_admin_gen_inputfield(
 qq~<label for="visible_in_posts">$lang_ext{'visible_in_posts'}</label>~,
 qq~<label for="visible_in_posts">$lang_ext{'visible_in_posts_description'}</label>~,
-qq~<input name="visible_in_posts" id="visible_in_posts" type="checkbox" value="1"$p_check /><br />\n~
+qq~<input name="visible_in_posts" id="visible_in_posts" type="checkbox" value="1"${ischecked($field{'visible_in_posts'})} /><br />\n~
               . qq~<table class="windowbg2 pad-cell">\n~
-              . qq~  <tr><td><label for="p_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="p_displayfieldname" id="p_displayfieldname" type="checkbox" value="1"$p_d_check /></td></tr>\n~
+              . qq~  <tr><td><label for="p_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="p_displayfieldname" id="p_displayfieldname" type="checkbox" value="1"${ischecked($field{'p_displayfieldname'})} /></td></tr>\n~
               . qq~  <tr><td><label for="p_users">$lang_ext{'p_users'}:</label> </td><td><input name="p_users" id="p_users" value="$field{'p_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="p_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~
               . qq~    <select multiple="multiple" name="p_groups" id="p_groups" size="4">\n~
@@ -866,9 +768,9 @@ qq~<input name="visible_in_posts" id="visible_in_posts" type="checkbox" value="1
           . ext_admin_gen_inputfield(
 qq~<label for="visible_in_posts_popup">$lang_ext{'visible_in_posts_popup'}</label>~,
 qq~<label for="visible_in_posts_popup">$lang_ext{'visible_in_posts_popup_description'}</label>~,
-qq~<input name="visible_in_posts_popup" id="visible_in_posts_popup" type="checkbox" value="1"$pp_check /><br />\n~
+qq~<input name="visible_in_posts_popup" id="visible_in_posts_popup" type="checkbox" value="1"${ischecked($field{'visible_in_posts_popup'})} /><br />\n~
               . qq~<table class="windowbg2 pad-cell">\n~
-              . qq~  <tr><td><label for="pp_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="pp_displayfieldname" id="pp_displayfieldname" type="checkbox" value="1"$pp_d_check /></td></tr>\n~
+              . qq~  <tr><td><label for="pp_displayfieldname">$lang_ext{'display_fieldname'}:</label> </td><td><input name="pp_displayfieldname" id="pp_displayfieldname" type="checkbox" value="1"${ischecked($field{'pp_displayfieldname'})} /></td></tr>\n~
               . qq~  <tr><td><label for="pp_users">$lang_ext{'p_users'}:</label> </td><td><input name="pp_users" id="pp_users" value="$field{'pp_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="pp_groups">$lang_ext{'p_groups'}:</label> </td><td>\n~
               . qq~    <select multiple="multiple" name="pp_groups" id="pp_groups" size="4">\n~
@@ -880,7 +782,7 @@ qq~<input name="visible_in_posts_popup" id="visible_in_posts_popup" type="checkb
           . ext_admin_gen_inputfield(
 qq~<label for="visible_in_memberlist">$lang_ext{'visible_in_memberlist'}</label>~,
 qq~<label for="visible_in_memberlist">$lang_ext{'visible_in_memberlist_description'}</label>~,
-qq~<input name="visible_in_memberlist" id="visible_in_memberlist" type="checkbox" value="1"$m_check /><br />\n~
+qq~<input name="visible_in_memberlist" id="visible_in_memberlist" type="checkbox" value="1"${ischecked($field{'visible_in_memberlist'})} /><br />\n~
               . qq~<table class="windowbg2 pad-cell">\n~
               . qq~  <tr><td><label for="m_users">$lang_ext{'m_users'}:</label> </td><td><input name="m_users" id="m_users" value="$field{'m_users'}" /></td></tr>\n~
               . qq~  <tr><td class="vtop"><label for="m_groups">$lang_ext{'m_groups'}:</label> </td><td>\n~
@@ -896,17 +798,18 @@ qq~<input name="visible_in_memberlist" id="visible_in_memberlist" type="checkbox
 qq~\n        <label for="editable_by_user">$lang_ext{'editable_by_user'}</label>~,
 qq~\n        <label for="editable_by_user">$lang_ext{'editable_by_user_description'}</label>~,
 qq~\n                <select name="editable_by_user" id="editable_by_user" size="1">\n~
-                  . qq~  <option value="0"$editable_check[0]>$lang_ext{'page_admin'}</option>\n~
-                  . qq~  <option value="1"$editable_check[1]>$lang_ext{'page_edit'}</option>\n~
-                  . qq~  <option value="2"$editable_check[2]>$lang_ext{'page_contact'}</option>\n~
-                  . qq~  <option value="3"$editable_check[3]>$lang_ext{'page_options'}</option>\n~
-                  . qq~  <option value="4"$editable_check[4]>$lang_ext{'page_im'}</option>\n~
+                  . qq~  <option value="0"${isselected($field{'editable_by_user'} == 0)}>$lang_ext{'page_admin'}</option>\n~
+                  . qq~  <option value="1"${isselected($field{'editable_by_user'} == 1)}>$lang_ext{'page_edit'}</option>\n~
+                  . qq~  <option value="2"${isselected($field{'editable_by_user'} == 2)}>$lang_ext{'page_contact'}</option>\n~
+                  . qq~  <option value="3"${isselected($field{'editable_by_user'} == 3)}>$lang_ext{'page_options'}</option>\n~
+                  . qq~  <option value="4"${isselected($field{'editable_by_user'} == 4)}>$lang_ext{'page_im'}</option>\n~
                   . qq~</select>\n~
             );
         }
         $yymain .= qq~
             </table>
             <input name="id" type="hidden" value="$FORM{'id'}" />
+            <input name="ncn" type="hidden" value="$FORM{'ncn'}" />
             <input name="name" type="hidden" value="$FORM{'name'}" />
             <input name="type" type="hidden" value="$FORM{'type'}" />
             <input name="active" type="hidden" value="$FORM{'active'}" />
@@ -916,7 +819,7 @@ qq~\n                <select name="editable_by_user" id="editable_by_user" size=
               q~<input name="editable_by_user" type="hidden" value="1" />
             ~;
         }
-       $yymain .= qq~
+        $yymain .= qq~
         </td>
     </tr>
 </table>
@@ -940,9 +843,9 @@ qq~\n                <select name="editable_by_user" id="editable_by_user" size=
         AdminTemplate();
 
     }
-    elsif ( $FORM{'delete'} ne q{} ) {
+    elsif ( $FORM{'delete'} ) {
         $id = 0;
-        ext_get_field( $FORM{'id'} );
+        %field = admin_ext_get_field( $FORM{'id'} );
         @fields          = @ext_prof_fields;
         @ext_prof_fields = ();
         for (@fields) {
@@ -969,7 +872,7 @@ qq~\n                <select name="editable_by_user" id="editable_by_user" size=
             seek EXT_FILE, 0, 0;
             @old_content = <EXT_FILE>;
             $new_content = join q{}, @old_content;
-            $new_content =~ s/\n'ext_$FORM{'id'}',"(?:.*?)"\n/\n/igsm;
+            $new_content =~ s/\n\'ext_$FORM{'id'}',"(?:.*?)"\n/\n/igxsm;
             seek EXT_FILE, 0, 0;
             truncate EXT_FILE, 0;
             print {EXT_FILE} $new_content or croak "$croak{'print'} EXT_FILE";
@@ -993,50 +896,56 @@ sub ext_admin_edit2 {
 
     ToHTML( $FORM{'name'} );
     ToHTML( $FORM{'comment'} );
-    if ( $FORM{'active'}          eq q{} ) { $FORM{'active'}          = 0; }
-    if ( $FORM{'required_on_reg'} eq q{} ) { $FORM{'required_on_reg'} = 0; }
-    if ( $FORM{'visible_in_viewprofile'} eq q{} ) {
+    if ( !$FORM{'active'} )          { $FORM{'active'}          = 0; }
+    if ( !$FORM{'required_on_reg'} ) { $FORM{'required_on_reg'} = 0; }
+    if ( !$FORM{'visible_in_viewprofile'} ) {
         $FORM{'visible_in_viewprofile'} = 0;
     }
-    if ( $FORM{'visible_in_posts'} eq q{} ) { $FORM{'visible_in_posts'} = 0; }
-    if ( $FORM{'visible_in_posts_popup'} eq q{} ) {
+    if ( !$FORM{'visible_in_posts'} ) { $FORM{'visible_in_posts'} = 0; }
+    if ( !$FORM{'visible_in_posts_popup'}) {
         $FORM{'visible_in_posts_popup'} = 0;
     }
-    if ( $FORM{'p_displayfieldname'} eq q{} ) {
+    if ( !$FORM{'p_displayfieldname'} ) {
         $FORM{'p_displayfieldname'} = 0;
     }
-    if ( $FORM{'pp_displayfieldname'} eq q{} ) {
+    if ( !$FORM{'pp_displayfieldname'} ) {
         $FORM{'pp_displayfieldname'} = 0;
     }
-    if ( $FORM{'visible_in_memberlist'} eq q{} ) {
+    if ( !$FORM{'visible_in_memberlist'} ) {
         $FORM{'visible_in_memberlist'} = 0;
     }
-    if ( $FORM{'editable_by_user'} eq q{} ) { $FORM{'editable_by_user'} = 0; }
-    $FORM{'v_users'}   =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
-    $FORM{'v_groups'}  =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
-    $FORM{'p_users'}   =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
-    $FORM{'p_groups'}  =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
-    $FORM{'pp_users'}  =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    if ( !$FORM{'editable_by_user'} ) { $FORM{'editable_by_user'} = 0; }
+
+    $FORM{'v_users'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    $FORM{'v_groups'} ||= q{};
+    $FORM{'v_groups'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    $FORM{'p_users'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    $FORM{'p_groups'} ||= q{};
+    $FORM{'p_groups'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    $FORM{'pp_users'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    $FORM{'pp_groups'} ||= q{};
     $FORM{'pp_groups'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
-    $FORM{'m_users'}   =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
-    $FORM{'m_groups'}  =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    $FORM{'m_users'} ||= q{};
+    $FORM{'m_users'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
+    $FORM{'m_groups'} ||= q{};
+    $FORM{'m_groups'} =~ s/^(\s)*(.+?)(\s)*$/$2/xsm;
     $FORM{'v_groups'}  = join q{,}, split /\s*\,\s*/xsm, $FORM{'v_groups'};
     $FORM{'p_groups'}  = join q{,}, split /\s*\,\s*/xsm, $FORM{'p_groups'};
     $FORM{'pp_groups'} = join q{,}, split /\s*\,\s*/xsm, $FORM{'pp_groups'};
     $FORM{'m_groups'}  = join q{,}, split /\s*\,\s*/xsm, $FORM{'m_groups'};
 
     if ( $FORM{'type'} eq 'text' ) {
-        if ( $FORM{'width'} == 0 ) { $FORM{'width'} = q{}; }
-        if ( $FORM{'is_numeric'} eq q{} ) { $FORM{'is_numeric'} = 0; }
-        if ( $FORM{'ubbc'}       eq q{} ) { $FORM{'ubbc'}       = 0; }
+        if ( !$FORM{'width'} || $FORM{'width'} == 0 )        { $FORM{'width'}      = q{}; }
+        if ( !$FORM{'is_numeric'} ) { $FORM{'is_numeric'} = 0; }
+        if ( !$FORM{'ubbc'} )       { $FORM{'ubbc'}       = 0; }
         $FORM{'options'} =
 "$FORM{'limit_len'}^$FORM{'width'}^$FORM{'is_numeric'}^$FORM{'default'}^$FORM{'ubbc'}";
 
     }
     elsif ( $FORM{'type'} eq 'text_multi' ) {
-        if ( $FORM{'rows'} == 0 ) { $FORM{'rows'} = q{}; }
-        if ( $FORM{'cols'} == 0 ) { $FORM{'cols'} = q{}; }
-        if ( $FORM{'ubbc'} eq q{} ) { $FORM{'ubbc'} = 0; }
+        if ( !$FORM{'rows'} || $FORM{'rows'} == 0 )   { $FORM{'rows'} = q{}; }
+        if ( !$FORM{'cols'} || $FORM{'cols'} == 0 )   { $FORM{'cols'} = q{}; }
+        if ( !$FORM{'ubbc'} ) { $FORM{'ubbc'} = 0; }
         $FORM{'options'} =
           "$FORM{'limit_len'}^$FORM{'rows'}^$FORM{'cols'}^$FORM{'ubbc'}";
     }
@@ -1046,8 +955,7 @@ sub ext_admin_edit2 {
         $FORM{'options'} =~ s/[\s\n]+\Z//xsm;
         $FORM{'options'} =~ s/\n\s*\n/\n/gxsm;
         @options = split /\n/xsm, $FORM{'options'};
-        $FORM{'options'} = q{};
-        for (@options) { $FORM{'options'} .= q{\^} . $_; }
+        $FORM{'options'} = q{\^} . join q{\^}, @options;
         $FORM{'options'} =~ s/^\^//xsm;
     }
     elsif ( $FORM{'type'} eq 'radiobuttons' ) {
@@ -1056,28 +964,44 @@ sub ext_admin_edit2 {
         $FORM{'options'} =~ s/[\s\n]+\Z//xsm;
         $FORM{'options'} =~ s/\n\s*\n/\n/gxsm;
         @options = split /\n/xsm, $FORM{'options'};
-        $FORM{'options'} = q{};
-        for (@options) { $FORM{'options'} .= q{\^} . $_; }
+        $FORM{'options'} = q{\^} . join q{\^}, @options;
         $FORM{'options'} =~ s/^\^//xsm;
-        if ( $FORM{'radiounselect'} eq q{} ) { $FORM{'radiounselect'} = 0; }
     }
     elsif ( $FORM{'type'} eq 'spacer' ) {
-        if ( $FORM{'visible_in_editprofile'} eq q{} ) {
+        if ( !$FORM{'visible_in_editprofile'} ) {
             $FORM{'visible_in_editprofile'} = 0;
         }
         $FORM{'options'} = "$FORM{'hr_or_br'}^$FORM{'visible_in_editprofile'}";
     }
     elsif ( $FORM{'type'} eq 'image' ) {
-        if ( $FORM{'image_width'} == 0 )  { $FORM{'image_width'}  = q{}; }
-        if ( $FORM{'image_height'} == 0 ) { $FORM{'image_height'} = q{}; }
         $FORM{'options'} =
-"$FORM{'image_width'}^$FORM{'image_height'}^$FORM{'allowed_extensions'}";
+"$FORM{'allowed_extensions'}";
     }
-
+    $FORM{'radiounselect'} ||= 0;
+    $FORM{'options'} ||= q{};
     @fields = @ext_prof_fields;
-    $fields[ $FORM{'id'} ] =
-"$FORM{'name'}|$FORM{'type'}|$FORM{'options'}|$FORM{'active'}|$FORM{'comment'}|$FORM{'required_on_reg'}|$FORM{'visible_in_viewprofile'}|$FORM{'v_users'}|$FORM{'v_groups'}|$FORM{'visible_in_posts'}|$FORM{'p_users'}|$FORM{'p_groups'}|$FORM{'p_displayfieldname'}|$FORM{'visible_in_memberlist'}|$FORM{'m_users'}|$FORM{'m_groups'}|$FORM{'editable_by_user'}|$FORM{'visible_in_posts_popup'}|$FORM{'pp_users'}|$FORM{'pp_groups'}|$FORM{'pp_displayfieldname'}|$FORM{'radiounselect'}";
-
+    $fields[ $FORM{'id'} ] = qq~$FORM{'name'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'ncn'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'type'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'options'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'active'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'comment'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'required_on_reg'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'visible_in_viewprofile'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'v_users'}|$FORM{'v_groups'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'visible_in_posts'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'p_users'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'p_groups'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'p_displayfieldname'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'visible_in_memberlist'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'m_users'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'m_groups'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'editable_by_user'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'visible_in_posts_popup'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'pp_users'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'pp_groups'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'pp_displayfieldname'}|~;
+    $fields[ $FORM{'id'} ] .= qq~$FORM{'radiounselect'}~;
     @ext_prof_fields = @fields;
 
     require Admin::NewSettings;
@@ -1088,313 +1012,7 @@ sub ext_admin_edit2 {
     return;
 }
 
-# converts a user's .ext file to Y2 format
-sub ext_user_convert {
-    my ( $pusername, $old_membersdir, @ext_profile, $id ) = ( shift, shift );
-    is_admin_or_gmod();
 
-    if ( -e "$old_membersdir/$pusername.ext" ) {
-        if ( -e "$memberdir/$pusername.vars" ) {
-            ext_get_profile($pusername);
-
-            fopen( EXT_FILE, "$old_membersdir/$pusername.ext" )
-              || admin_fatal_error( 'cannot_open',
-                "$old_membersdir/$pusername.ext" );
-            @ext_profile = <EXT_FILE>;
-            fclose(EXT_FILE);
-            chomp @ext_profile;
-
-            $id = 0;
-            for (@ext_prof_fields) {
-                ${ $uid . $pusername }{ 'ext_' . $id } = $ext_profile[$id];
-                $id++;
-            }
-            UserAccount( $pusername, 'update' );
-
-            # don't delete old .ext files anymore, user can do that himself now.
-            #unlink "$old_membersdir/$pusername.ext";
-        }
-    }
-    return;
-}
-
-# convert a string of usergroup names from the old YaBB format into Y2's new format
-sub ext_admin_convert_fixgroupnames {
-    my ( $input, $done, $j, @groups, $group, $groupid, %checkdoubles ) =
-      ( shift, 0 );
-
-    @groups = split /\s*\,\s*/xsm, $input;
-    for my $j ( 0 .. $#groups ) {
-
-        # if groupname is in old format
-        if (   $groups[$j] ne 'Administrator'
-            && $groups[$j] ne 'Global Moderator'
-            && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
-        {
-
-            # find best matching usergroup
-            for my $groupid ( sort { $a <=> $b } keys %NoPost ) {
-                if ( $groups[$j] eq
-                    ( split /[|]/xsm, ( split /[|]/xsm, $NoPost{$groupid} )[0] )
-                    [0] )
-                {
-                    $groups[$j] = "NoPost{$groupid}";
-
-                    # check for doubles
-                    if ( $checkdoubles{ $groups[$j] } == 1 ) {
-                        splice @groups, $j, 1;
-                        $j--;
-                        $done = 1;
-                        last;
-                    }
-                    else {
-                        $checkdoubles{ $groups[$j] } = 1;
-                    }
-                }
-            }
-            if ( $done == 1 ) { $done = 0; next; }
-            for my $groupid ( reverse sort { $a <=> $b } keys %Post ) {
-                if ( $groups[$j] eq
-                    ( split /[|]/xsm, ( split /[|]/xsm, $Post{$groupid} )[0] )[0]
-                  )
-                {
-                    $groups[$j] = "Post{$groupid}";
-
-                    # check for doubles
-                    if ( $checkdoubles{ $groups[$j] } == 1 ) {
-                        splice @groups, $j, 1;
-                        $done = 1;
-                        $j--;
-                        last;
-                    }
-                    else {
-                        $checkdoubles{ $groups[$j] } = 1;
-                    }
-                }
-            }
-            if ( $done == 1 ) { $done = 0; next; }
-        }
-        else {
-            $checkdoubles{ $groups[$j] } = 1;
-        }
-
-        # if still not matching, get rid of it!
-        if (   $groups[$j] ne 'Administrator'
-            && $groups[$j] ne 'Global Moderator'
-            && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
-        {
-
-            #delete $groups[$j];
-            splice @groups, $j, 1;
-            $j--;
-        }
-    }
-    join q{,}, @groups;
-    return;
-}
-
-# converts ALL old .ext files into the the YaBB 2 file format
-sub ext_admin_convert {
-    my ( @contents, $filename, $old_membersdir, $old_vardir, $i );
-    is_admin_or_gmod();
-
-    $old_membersdir = $FORM{'members'};
-    $old_vardir     = $FORM{'vars'};
-
-    if ( !-e $old_vardir ) {
-        admin_fatal_error( 'extended_profiles_convert',
-            $lang_ext{'converter_missing_vars'} );
-    }
-    if ( !-e "$old_vardir/extended_profiles_order.txt" ) {
-        admin_fatal_error( 'extended_profiles_convert',
-            $lang_ext{'converter_missing_order'} );
-    }
-    if ( !-e "$old_vardir/extended_profiles_fields.txt" ) {
-        admin_fatal_error( 'extended_profiles_convert',
-            $lang_ext{'converter_missing_fields'} );
-    }
-
-    fopen( CONVERTER, "$old_vardir/extended_profiles_order.txt" )
-      || admin_fatal_error( 'cannot_open',
-        "$old_vardir/extended_profiles_order.txt" );
-    @ext_prof_order = <CONVERTER>;
-    fclose(CONVERTER);
-    chomp @ext_prof_order;
-
-    # copy old extended_profiles_fields and extended_profiles_order files
-    fopen( CONVERTER, "$old_vardir/extended_profiles_fields.txt" )
-      || admin_fatal_error( 'cannot_open',
-        "$old_vardir/extended_profiles_fields.txt" );
-    @ext_prof_fields = <CONVERTER>;
-    fclose(CONVERTER);
-    chomp @ext_prof_fields;
-
-    #check if used membergroups still exist + convert to YaBB new format
-    for my $i ( 0 .. $#ext_prof_fields ) {
-        my @field = split /[|]/xsm, $ext_prof_fields[$i];
-        $field[8]  = ext_admin_convert_fixgroupnames( $field[8] );
-        $field[11] = ext_admin_convert_fixgroupnames( $field[11] );
-        $field[15] = ext_admin_convert_fixgroupnames( $field[15] );
-        $field[19] = ext_admin_convert_fixgroupnames( $field[19] );
-        $ext_prof_fields[$i] = join q{|}, @field;
-    }
-
-    require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
-
-    opendir EXT_DIR, "$old_membersdir";
-    @contents = grep { /\.ext$/xsm } readdir EXT_DIR;
-    closedir EXT_DIR;
-
-    for my $filename (@contents) {
-        $filename =~ s/.ext$//xsm;
-        ext_user_convert( $filename, $old_membersdir );
-    }
-
-    $yymain .= $lang_ext{'converter_succeeded'};
-    CreateExtLock();
-    $yytitle = "$lang_ext{'Profiles_Controls'} - $lang_ext{'options_title'}";
-    $action_area = 'ext_admin';
-    AdminTemplate();
-    return;
-}
-
-sub ext_viewprofile_r {
-    my (
-        $pusername, @ext_profile,   $id,    $output,
-        $fieldname, @options,       $value, $previous,
-        $count,     $last_field_id, $pre_output
-    ) = (shift);
-
-    if ( $#ext_prof_order > 0 ) {
-        $last_field_id = ext_get_field_id( $ext_prof_order[-1] );
-    }
-
-    for my $fieldname (@ext_prof_order) {
-        $id = ext_get_field_id($fieldname);
-        ext_get_field($id);
-        $value = ext_get( $pusername, $fieldname );
-        if ( $field{'required_on_reg'} == 1 ) {
-
-            if ( $output eq q{} && $previous != 1 ) {
-                $pre_output = q~<tr>
-        <td class="windowbg2 vtop" colspan="2">~;
-                $previous = 1;
-            }
-
-            # format the output dependent on the field type
-            if (   ( $field{'type'} eq 'text' && $value ne q{} )
-                || ( $field{'type'} eq 'text_multi'   && $value ne q{} )
-                || ( $field{'type'} eq 'select'       && $value ne q{ } )
-                || ( $field{'type'} eq 'radiobuttons' && $value ne q{} )
-                || ( $field{'type'} eq 'date'         && $value ne q{} )
-                || $field{'type'} eq 'checkbox' )
-            {
-                $output .= qq~<tr>
-            <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
-            <td class="windowbg2 vtop">$value&nbsp;</td>
-        </tr>~;
-                $previous = 0;
-            }
-            elsif ( $field{'type'} eq 'spacer' ) {
-
-# only print spacer if the previous entry was no spacer of the same type and if this is not the last entry
-                if ( ( $previous == 0 || $field{'comment'} ne q{} )
-                    && $id ne $last_field_id )
-                {
-                    if ( $value eq $ext_spacer_br ) {
-                        $output .= qq~<tr>
-            <td class="windowbg2 vtop" colspan="2">$ext_spacer_br</td>
-    </tr>~;
-                        $previous = 0;
-                    }
-                    else {
-                        $output .= q~
-        </td>
-    </tr><tr>~;
-                        if ( $field{'comment'} ne q{} ) {
-                            $output .= qq~
-        <td class="catbg" colspan="2">
-            $admin_img{'profile'}&nbsp;
-            <span class="text1"><b>$field{'comment'}</b></span>
-        </td>
-    </tr><tr>
-        <td class="windowbg2 vtop" colspan="2">~;
-                        }
-                        else {
-                            $output .= q~
-        <td class="windowbg2 vtop" colspan="2">~;
-                        }
-                        $previous = 1;
-                    }
-                }
-            }
-            elsif ( $field{'type'} eq 'email' && $value ne q{} ) {
-                $output .= qq~<tr>
-                <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
-                <td class="windowbg2 vtop">
-            ~ . enc_eMail( $img_txt{'69'}, $value, q{}, q{} ) . q~
-            </td>
-        </tr>~;
-                $previous = 0;
-            }
-            elsif ( $field{'type'} eq 'url' && $value ne q{} ) {
-                $output .= qq~<tr>
-            <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
-            <td class="windowbg2 vtop"><a href="$value" target="_blank">$value</a></td>
-        </tr>~;
-                $previous = 0;
-
-            }
-            elsif ( $field{'type'} eq 'image' && $value ne q{} ) {
-                $output .= qq~<tr>
-            <td class="windowbg2 vtop"><b>$field{'name'}:</b></td>
-            <td class="windowbg2 vtop">$value</td>
-        </tr>~;
-                $previous = 0;
-            }
-        }
-    }
-
-    # only add spacer if there there is at least one field displayed
-    if ( $output ne q{} ) {
-        $output = $pre_output . $output . q~
-        </td>
-    </tr>~;
-    }
-    return $output;
-}
-
-sub CreateExtLock {
-    fopen( LOCKFILE, ">$vardir/Extended.lock" )
-      || setup_fatal_error( "$maintext_23 $vardir/Extended.lock: ", 1 );
-    print {LOCKFILE} qq~This is a lockfile for the Extended Profiles.\n~
-      or croak 'cannot print to LOCKFILE';
-    print {LOCKFILE}
-      qq~It prevents it being run again after it has been run once.\n~
-      or croak 'cannot print to LOCKFILE';
-    print {LOCKFILE} q~Delete this file if you want to run the Converter again.~
-      or croak 'cannot print to LOCKFILE';
-    fclose(LOCKFILE);
-
-    return;
-}
-sub FoundExtLock {
-    $found = qq~
-    <div class="bordercolor rightboxdiv">
-    <table class="border-space pad-cell" style="margin-bottom: .5em;"">
-        <tr>
-            <td class="titlebg"><img src="$imagesdir/profile.gif" alt="" /> <b>$lang_ext{'convlock'}</b></td>
-        </tr><tr>
-            <td class="windowbg2 center" style="font-size: 11px;">$lang_ext{'convlock_desc'}</td>
-        </tr>
-    </table>
-    </div>
-      ~;
-    return $found;
-}
 1;
 
 # file formats used by this code:

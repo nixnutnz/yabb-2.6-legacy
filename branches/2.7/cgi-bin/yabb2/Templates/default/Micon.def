@@ -38,8 +38,8 @@ LoadLanguage('Micon');
 'thread' => qq~<img src="$imagesdir/thread.gif" alt="$messageindex_txt_m{'457'}" title="$messageindex_txt_m{'457'}" />~,
 'hide' => qq~<img src="$imagesdir/hide.gif" alt="$messageindex_txt_m{'458'}" title="$messageindex_txt_m{'458'}" />~,
 'locked' => qq~<img src="$imagesdir/locked.gif" alt="$messageindex_txt_m{'456'}" title="$messageindex_txt_m{'456'}" />~,
-'veryhotthread' => qq~<img src="$imagesdir/veryhotthread.gif" alt="$messageindex_txt_m{'455'} $VeryHotTopic $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'455'} $VeryHotTopic $messageindex_txt_m{'454a'}" />~,
-'hotthread' => qq~<img src="$imagesdir/hotthread.gif" alt="$messageindex_txt_m{'454'} $HotTopic $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'454'} $HotTopic $messageindex_txt_m{'454a'}" />~,
+'veryhotthread' => qq~<img src="$imagesdir/veryhotthread.gif" alt="$messageindex_txt_m{'455'} {yabb veryhotthread} $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'455'} {yabb veryhotthread} $messageindex_txt_m{'454a'}" />~,
+'hotthread' => qq~<img src="$imagesdir/hotthread.gif" alt="$messageindex_txt_m{'454'} {yabb hottopic} $messageindex_txt_m{'454a'}" title="$messageindex_txt_m{'454'} {yabb hottopic} $messageindex_txt_m{'454a'}" />~,
 'hidesticky' => qq~<img src="$imagesdir/hidesticky.gif" alt="$messageindex_txt_m{'459'}" title="$messageindex_txt_m{'459'}" />~,
 'hidelock' => qq~<img src="$imagesdir/hidelock.gif" alt="$messageindex_txt_m{'460'}" title="$messageindex_txt_m{'460'}" />~,
 'hidestickylock' => qq~<img src="$imagesdir/hidestickylock.gif" alt="$messageindex_txt_m{'461'}" title="$messageindex_txt_m{'461'}" />~,
@@ -48,7 +48,7 @@ LoadLanguage('Micon');
 'announcementlock' => qq~<img src="$imagesdir/announcementlock.gif" alt="$messageindex_txt_m{'779b'}" title="$messageindex_txt_m{'779b'}" />~,
 'announcement' => qq~<img src="$imagesdir/announcement.gif" alt="$messageindex_txt_m{'779a'}" title="$messageindex_txt_m{'779a'}" />~,
 'locked_moved' => qq~<img src="$imagesdir/locked_moved.gif" alt="$messageindex_txt_m{'845'}" title="$messageindex_txt_m{'845'}" />~,
-'guestreply' => qq~<img src="$imagesdir/guestreply.gif" alt="$im_message_status_m{'guestreply'}" title="$im_message_status_m{'guestreply'}" />~,
+'guestreply' => qq~<img src="$imagesdir/guestreply.gif" alt="$im_message_status_m{'guestpmreply'}" title="$im_message_status_m{'guestpmreply'}" />~,
 'standard' => qq~<img src="$imagesdir/standard.gif" alt="$im_message_status_m{'standard'}" title="$im_message_status_m{'standard'}" />~,
 'confidential' => qq~<img src="$imagesdir/confidential.gif" alt="$im_message_status_m{'confidential'}" title="$im_message_status_m{'confidential'}" />~,
 'urgent' => qq~<img src="$imagesdir/exclamation.png" alt="$im_message_status_m{'urgent'}" title="$im_message_status_m{'urgent'}" />~,
@@ -144,7 +144,6 @@ LoadLanguage('Micon');
 'modify' => qq~<img src="$imagesdir/modify.png" alt="$var_cal_m{'caledit'}" title="$var_cal_m{'caledit'}" />~,
 'delete' => qq~<img src="$imagesdir/delete.gif" alt="$var_cal_m{'caldel'}" title="$var_cal_m{'caldel'}" />~,
 'eventmore' => qq~<img src="$imagesdir/eventmore.gif" alt="" />~,
-'eventmorebd' => qq~<img src="$imagesdir/eventmore.gif" alt="$var_cal_m{'calbirthdays'}" />~,
 'eventmoreadd' => qq~<img src="$imagesdir/eventmore.gif" alt="$var_cal_m{'getaddevent'}" />~,
 'eventinfo' => qq~<img src="$imagesdir/eventinfo.gif" alt="$var_cal_m{'eventinfo'}" />~,
 'eventinfobd' => qq~<img src="$imagesdir/eventinfobd.gif" alt="" />~,
@@ -299,7 +298,7 @@ var jsIM = new Hash($jsIMlist);
 ~;
 
 $my_sep = q{ };
-if ( $MenuType == 1 || $UseMenuT == 1) {
+if ( $UseMenuT && $UseMenuT == 1 ) {
     $my_sep = q{ | };
 }
 1;

@@ -17,7 +17,9 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(once);
+no warnings qw(redefine);
+#no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 use Module::Load;
@@ -115,8 +117,9 @@ sub backupsettings {
             </td>
         </tr>~;
 
-    my $label_id;
+    my $label_id = 0;
     for my $module (qw(Compress::Zlib IO::Compress::Bzip2)) {
+        $methodchecklist{$module}||= q{};
         $label_id++;
         $input =
 qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklist{$module}~;
@@ -149,6 +152,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
 
     for my $command ( "$backupprogbin/gzip", "$backupprogbin/bzip2" ) {
         $label_id++;
+        $methodchecklist{$command} ||= q{};
         $input =
 qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{$command}~;
         $newcommand = CheckPath($command);
@@ -171,12 +175,12 @@ qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{
     $tarcompress2 .= q~<tr>
             <td class="windowbg">&nbsp;</td>
         </tr>~;
-
+    $methodchecklist{"$backupprogusr/tar"} ||= q{};
 # Display the commands we can use for compression
 # Non-translated here, as I doubt there are words to describe "tar" in another language
     $input =
 qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="domodulecheck('$backupprogusr/tar')" $methodchecklist{"$backupprogusr/tar"}~;
-    $newcommand = CheckPath("$backupprogusr/tar");
+    $newcommand = CheckPath("$backupprogusr/tar") || q{};
     if ($newcommand) {
         if (
             ak_system(
@@ -208,10 +212,10 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
                 <input type="radio" $input$gmod_disable /> <label for="backupmethod1">Tar ($newcommand) $disabledtext</label>
             </td>
         </tr>$tarcompress2~;
-
+    $methodchecklist{"$backupprogusr/zip"} ||= q{};
     $input =
 qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="domodulecheck('$backupprogusr/zip')" $methodchecklist{"$backupprogusr/zip"}~;
-    $newcommand = CheckPath("$backupprogusr/zip");
+    $newcommand = CheckPath("$backupprogusr/zip") || q{};
     if ($newcommand) {
         if (
             ak_system(
@@ -233,6 +237,7 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
         $style        = q~backup-disabled~;
         $disabledtext = $backup_txt{41};
     }
+    $newcommand ||= q{};
     $selmodules .= qq~<tr>
             <td class="windowbg2 $style">
                 <input type="radio" $input$gmod_disable /> <label for="backupmethod2">Zip ($newcommand) $disabledtext</label>
@@ -242,8 +247,9 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
         </tr>~;
 
     # Display the modules that we can use
-    for my $module (qw(Archive::Tar Archive::Zip)) {
+    foreach my $module (qw(Archive::Tar Archive::Zip)) {
         $i++;
+        $methodchecklist{$module} ||= q{};
         $input =
 qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulecheck('$module')" $methodchecklist{$module}~;
         eval { load $module; 1 } or $eval = 1;
@@ -273,15 +279,16 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
         $yymain .=
 qq~<b>$backup_txt{33} $INFO{'backupspendtime'} $backup_txt{34}</b><br /><br />~;
     }
-    if ( $INFO{'mailinfo'} == 1 ) {
+    if ( $INFO{'mailinfo'} && $INFO{'mailinfo'} == 1 ) {
         $yymain .=
 qq~<span class="good"><b>$backup_txt{'mailsuccess'}</b></span><br /><br />~;
     }
-    if ( $INFO{'mailinfo'} == -1 ) {
+    if ( $INFO{'mailinfo'} && $INFO{'mailinfo'} == -1 ) {
         $yymain .=
 qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     }
 
+    $yymainnosettings ||= q{};
     # Javascript to make the behavior of the form buttons work better
     $yymain .= qq~
 <script type="text/javascript">
@@ -452,17 +459,20 @@ $presetjavascriptcode
 
         # Look for the files.
         opendir BACKUPDIR, $backupdir;
-        @backups = readdir BACKUPDIR;
+        while ( my $file = readdir BACKUPDIR ) {
+            next if $file eq q{.} || $file eq q{..} || $file eq '.htaccess';
+            push @backups, $file;
+        }
         closedir BACKUPDIR;
 
         my ( $lastbackupfiletime, $filename );
-        for my $file (
+        foreach my $file (
             map          { $_->[0] }
-            reverse sort { $a->[1] <=> $b->[1] }
+            reverse sort { $a->[1] cmp $b->[1] }
             map          { [ $_, /(\d+)/xsm, $_ ] } @backups
           )
         {
-            if ( $file =~ /\A(backup)(n?)\.(\d+)\.([^\.]+)\.(.+)/xsm ) {
+            if ( $file !~ /\A(backup)(n?)\.(\d+)\.([^\.]+)\.(.+)/xsm ) { next; }
             if ( !$lastbackupfiletime ) { $lastbackupfiletime = $3; }
             my $filesize = -s "$backupdir/$file";
             $filesize = int( $filesize / 1024 );    # Measure it in kilobytes
@@ -471,7 +481,7 @@ $presetjavascriptcode
             }                                       # Measure it in megabytes
             else { $filesize .= ' KB'; }            # Label it
             my @dirs;
-            for ( split /_/xsm, $4 ) {
+            foreach ( split /_/xsm, $4 ) {
                 push @dirs, $dirs{$_};
             }
             $dnload = qq~<a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{'60'}</a>~;
@@ -509,8 +519,6 @@ $presetjavascriptcode
                 <td>$delete</td>
             </tr>~;
         }
-        else {next}
-          }
 
         $filelist ||= qq~<tr>
                 <td colspan="9"><i>$backup_txt{38}</i></td>
@@ -752,8 +760,8 @@ sub downloadbackup {
       or croak "$croak{'print'} Content-Type";
 
     # open in binmode
-    open '<', $READ, $filename
-      or fatal_error( q{}, "$backup_txt{46} $filename", 1 );
+    open( $READ, $filename )
+      || fatal_error( q{}, "$backup_txt{46} $filename", 1 );
     binmode $READ;
     binmode STDOUT;
     while (<$READ>) { print or croak 'cannot print file'; }

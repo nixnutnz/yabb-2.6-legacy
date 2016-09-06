@@ -18,6 +18,7 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 $spellcheckerplver = 'YaBB 2.7.00 $Revision$';
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 use LWP::UserAgent;

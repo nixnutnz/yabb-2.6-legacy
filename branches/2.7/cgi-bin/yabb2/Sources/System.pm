@@ -25,102 +25,45 @@ if (@systempmmods) {
 
 sub BoardTotals {
     my ( $job, @updateboards ) = @_;
-    my ( $line, @lines, $updateboard, @boardvars, $cnt );
     if ( !@updateboards ) { @updateboards = @allboards; }
     chomp @updateboards;
     if (@updateboards) {
+        require "$boardsdir/forum.totals";
         my @tags =
-          qw(board threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate);
+          qw(threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate);
         if ( $job eq 'load' ) {
-            fopen( FORUMTOTALS, "$boardsdir/forum.totals" )
-              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            @lines = <FORUMTOTALS>;
-            fclose(FORUMTOTALS);
-            chomp @lines;
             for my $updateboard (@updateboards) {
-                for my $line (@lines) {
-                    @boardvars = split /[|]/xsm, $line;
-                    if ( $boardvars[0] eq $updateboard
-                        && exists $board{ $boardvars[0] } )
-                    {
-                        for my $cnt ( 1 .. $#tags ) {
-                            ${ $uid . $updateboard }{ $tags[$cnt] } =
-                              $boardvars[$cnt];
-                        }
-                        last;
-                    }
+                @boardvars = @{$totals{$updateboard}};
+                for my $cnt ( 0 .. $#tags ) {
+                    ${ $uid . $updateboard }{ $tags[$cnt] } =
+                      $boardvars[$cnt];
                 }
             }
         }
         elsif ( $job eq 'update' ) {
-            fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
-              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            @lines = <FORUMTOTALS>;
-            fclose(FORUMTOTALS);
-            for my $line ( 0 .. $#lines ) {
-                @boardvars = split /[|]/xsm, $lines[$line];
-                if ( exists $board{ $boardvars[0] } ) {
-                    if ( $boardvars[0] eq $updateboards[0] ) {
-                        $lines[$line] = "$updateboards[0]|";
-                        chomp $boardvars[9];
-                        for my $cnt ( 1 .. $#tags ) {
-                            if (
-                                exists(
-                                    ${ $uid . $boardvars[0] }{ $tags[$cnt] }
-                                )
-                              )
-                            {
-                                $lines[$line] .=
-                                  ${ $uid . $boardvars[0] }{ $tags[$cnt] };
-                            }
-                            else {
-                                $lines[$line] .= $boardvars[$cnt];
-                            }
-                            $lines[$line] .= $cnt < $#tags ? q{|} : "\n";
-                        }
+            for my $updateboard (@updateboards) {
+                @boardvars = @{$totals{$updateboard}};
+                chomp @boardvars;
+                for my $cnt ( 0 .. $#tags ) {
+                    if ( exists( ${ $uid . $updateboard }{ $tags[$cnt] } ) ) {
+                        ${$totals{$updateboard}}[$cnt] = ${ $uid . $updateboard }{ $tags[$cnt] };
                     }
                 }
-                else {
-                    $lines[$line] = q{};
-                }
             }
-            $prnlines = join q{}, @lines;
-            fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
-              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            print {FORUMTOTALS} $prnlines
-              or croak "$croak{'print'} FORUMTOTALS";
-            fclose(FORUMTOTALS);
-
+            write_forum_totals();
         }
         elsif ( $job eq 'delete' ) {
-            fopen( FORUMTOTALS, "<$boardsdir/forum.totals" )
-              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            @lines = <FORUMTOTALS>;
-            fclose(FORUMTOTALS);
-            for my $line ( 0 .. $#lines ) {
-                @boardvars = split /[|]/xsm, $lines[$line], 2;
-                if ( $boardvars[0] eq $updateboards[0]
-                    || !exists $board{ $boardvars[0] } )
-                {
-                    $lines[$line] = q{};
-                }
+            foreach my $i ( @updateboards ) {
+                delete $totals{$i};
             }
-            $prnlines = join q{}, @lines;
-            fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
-              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            print {FORUMTOTALS} $prnlines
-              or croak "$croak{'print'} FORUMTOTALS";
-            fclose(FORUMTOTALS);
+            write_forum_totals();
         }
         elsif ( $job eq 'add' ) {
-            fopen( FORUMTOTALS, ">>$boardsdir/forum.totals" )
-              or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-            for (@updateboards) {
-                print {FORUMTOTALS} "$_|0|0|N/A|N/A||||\n"
-                  or croak "$croak{'print'} FORUMTOTALS";
+            foreach my $i (@updateboards) {
+                $totals{$i} = ['0', '0', 'N/A', 'N/A', '','',''];
             }
-            fclose(FORUMTOTALS);
-        }
+            write_forum_totals();
+         }
     }
     return;
 }
@@ -177,15 +120,15 @@ sub BoardSetLastInfo {
         }
     }
     ${ $uid . $setboard }{'lastposttime'} =
-      $lastthreadid ? $lastmessage[3] : 'N/A';
+      $lastthreadid ? $lastmessage[3] : 0;
     ${ $uid . $setboard }{'lastposter'} =
       $lastthreadid
       ? (
         $lastmessage[4] eq 'Guest' ? "Guest-$lastmessage[1]" : $lastmessage[4] )
       : 'N/A';
-    ${ $uid . $setboard }{'lastpostid'} = $lastthreadid ? $lastthreadid : q{};
+    ${ $uid . $setboard }{'lastpostid'} = $lastthreadid ? $lastthreadid : 0;
     ${ $uid . $setboard }{'lastreply'} =
-      $lastthreadid ? $#lastthreadmessages : q{};
+      $lastthreadid ? $#lastthreadmessages : 0;
     ${ $uid . $setboard }{'lastsubject'} =
       $lastthreadid ? $lastmessage[0] : q{};
     ${ $uid . $setboard }{'lasticon'} = $lastthreadid ? $lastmessage[5] : q{};
@@ -206,17 +149,19 @@ sub MessageTotals {
     if ( !$updatethread ) { return; }
 
     if ( $job eq 'update' ) {
-        if ( ${$updatethread}{'board'} eq q{} )
+        if ( !${$updatethread}{'board'} )
         {    ## load if the variable is not already filled
             MessageTotals( 'load', $updatethread );
         }
     }
     elsif ( $job eq 'load' ) {
-        if ( ${$updatethread}{'board'} ne q{} ) {
+        if ( ${$updatethread}{'board'} ) {
             return;
         }    ## skip load if the variable is already filled
-        require "$datadir/$updatethread.ctb";
-        @repliers = split /,/xsm, ${$updatethread}{'repliers'};
+        if (-e "$datadir/$updatethread.ctb" ) {
+            require "$datadir/$updatethread.ctb";
+            @repliers = split /,/xsm, ${$updatethread}{'repliers'};
+        }
         return;
 
     }
@@ -327,14 +272,12 @@ sub UserAccount {
 
     # using sequential tag writing as hashes do not sort the way we like them to
     my @tags =
-      qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage disableage gender disablegender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook twitter youtube msn gtalk timeselect user_tz dynamic_clock postcount lastpost lastim im_ignorelist im_popup im_imspop pmviewMess notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_img hide_attach_img hide_signat hide_smilies_row numberformat collapsebdrules return_to);
+      qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage disableage gender disablegender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook twitter youtube msn gtalk timeselect user_tz dynamic_clock postcount lastpost lastim im_ignorelist im_popup im_imspop pmviewMess notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_img hide_attach_img hide_signat hide_smilies_row numberformat collapsebdrules return_to topicpreview collapsescpoll banned);
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
         push @tags, ext_get_fields_array();
     }
-    push @tags, 'topicpreview', 'collapsescpoll';
-    push @tags, 'banned';
     ## Mod hook ##
     my $fix = 0;
     if ( -e "$memberdir/$user.$userext" ) {
@@ -349,7 +292,9 @@ sub UserAccount {
     if ( $fix == 1 || !-e "$memberdir/$user.$userext" ) {
         my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
         for my $cnt ( 0 .. $#tags ) {
-            $newvars .= qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
+            if (${$uid.$user}{$tags[$cnt]}) {
+                $newvars .= qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
+            }
         }
         $newvars .= qq~);\n\n1;\n~;
         open $UPDATEUSER, '>', "$memberdir/$user.$userext"
@@ -357,6 +302,7 @@ sub UserAccount {
         print {$UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
         close $UPDATEUSER or croak "$croak{'close'} UPDATEUSER";
     }
+    ${ $uid . $user }{'lastonline'} ||= q{};
     open $UPDTUSER, '>', "$memberdir/$user.lst"
       or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
     print {$UPDTUSER} ${ $uid . $user }{'lastonline'}
@@ -432,14 +378,13 @@ sub MemberIndex {
     {
         ManageMemberinfo('load');
         while ( ( $curmemb, $value ) = each %memberinf ) {
-            ( $curname, $curmail, $curposition, $curpostcnt ) =
-              split /[|]/xsm, $value;
+            ( $curname, $curmail, $curposition, $curpostcnt ) = @{$value};
             if ( $memaction eq 'check_exist' ) {
                 if ( lc $user eq lc $curmemb && $mychk == 0 ) {
                     undef %memberinf;
                     $return = $curmemb;
                 }
-                elsif ( lc $user eq lc $curmail && $mychk == 2 ) {
+                elsif ( $curmail && lc $user eq lc $curmail && $mychk == 2 ) {
                     undef %memberinf;
                     $return = $curmail;
                 }
@@ -469,7 +414,7 @@ sub MemberPostGroup {
     $grtitle = q{};
     for my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
         if ( $userpostcnt >= $postamount ) {
-            ( $grtitle, undef ) = split /[|]/xsm, $Post{$postamount}, 2;
+            ( $grtitle, undef ) = @{$Post{$postamount}};
             last;
         }
     }
@@ -603,9 +548,9 @@ sub MakeStealthURL {
     my ($theurl) = @_;
     if ($stealthurl) {
         $theurl =~
-s/([^\w"=\[\]]|[\n\b]|\A)\\*(\w+:\/\/[\w\~.;:,$\-+!*?\/=&@#%]+[.][\w~;:$\-+!*?\/=&@#%]+[\w~:\-+$;!*?\/=&@#%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=$2/igxsm;
+s/([^\w"=\[\]]|[\n\b]|\A)\\*(\w+:\/\/[\w\~.;:,\$\-+!*?\/=&@#%]+[.][\w~;:\$\-+!*?\/=&@#%]+[\w~:\-+\$;!*?\/=&@#%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=$2/igxsm;
         $theurl =~
-s/([^"=\[\]\/:.(\:\/\/\w+)]|[\n\b]|\A)\\*(www[.][^.][\w~.;:,$\-+!*?\/=&@#%]+[.][\w~;:$\-+!*?\/=&@#%]+[\w~:\-+$;!*?\/=&@#%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$2/igxsm;
+s/([^"=\[\]\/:.(\:\/\/\w+)]|[\n\b]|\A)\\*(www[.][^.][\w~.;:,\$\-+!*?\/=&@#%]+[.][\w~;:\$\-+!*?\/=&@#%]+[\w~:\-+\$;!*?\/=&@#%])/$boardurl\/$yyexec.$yyext?action=dereferer;url=http:\/\/$2/igxsm;
     }
     return $theurl;
 }

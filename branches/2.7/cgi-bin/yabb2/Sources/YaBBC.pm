@@ -22,6 +22,7 @@ $yabbcpmver  = 'YaBB 2.7.00 $Revision$';
 if (@yabbcpmmods) {
     $yabbcpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Post');
@@ -78,16 +79,16 @@ s/(\W|^):thumb/$1<img class="smil" data-rel="&#58;thumb" src="$imagesdir\/thumbu
     $message =~
 s/(\W|^)&gt;:-D/$1<img class="smil" data-rel="&gt;&#58;-D" src="$imagesdir\/evil.gif" alt="$post_txt{'802'}" title="$post_txt{'802'}" \/>/gxsm;
 
-    my $count = 0;
-    while ( $SmilieURL[$count] ) {
-        if ( $SmilieURL[$count] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$count]; }
-        else { $tmpurl = qq~$imagesdir/$SmilieURL[$count]~; }
-        $tmpcode = $SmilieCode[$count];
+    my $j = 0;
+    while ( $smilieorder[$j] ) {
+        if ( ${$addedsmilies{$smilieorder[$j]}}[0] =~ /\//ixsm ) { $tmpurl = ${$addedsmilies{$smilieorder[$j]}}[0]; }
+        else { $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$j]}}[0]~; }
+        $tmpcode = ${$addedsmilies{$smilieorder[$j]}}[1];
         $tmpcode =~ s/&\x2336;/\$/gxsm;
         $tmpcode =~ s/&\x2364;/\@/gxsm;
         $message =~
-s/\Q$tmpcode\E/<img class="smil" data-rel="$SmilieCode[$count]" src="$tmpurl" alt="$SmilieDescription[$count]" title="$SmilieDescription[$count]" \/>/gxsm;
-        $count++;
+s/\Q$tmpcode\E/<img class="smil" data-rel="${$addedsmilies{$smilieorder[$j]}}[1]" src="$tmpurl" alt="${$addedsmilies{$smilieorder[$j]}}[2]" title="${$addedsmilies{$smilieorder[$j]}}[2]" \/>/gxsm;
+        $j++;
     }
 
     $i = 0;
@@ -122,7 +123,7 @@ sub quotemsg {
                 $testauthor = MemberIndex( 'check_exist', "$qauthor" );
 
                 # check if this name exists in the memberlist
-                if ( $testauthor ne q{} )
+                if ( $testauthor )
                 {      # if it is, load the user id returned
                     $qauthor = $testauthor;
                     LoadUser($qauthor);
@@ -197,7 +198,7 @@ s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b
     {
         $tmp_message =~ s/\Q[img \E(.+?)\]/[img\]/igxsm;
         $tmp_message =~
-s/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(http\:\/\/)*(.+?)(?:\s[\t\n]|$hardspace|$char_160)*\[\/img\]/\[url\]$1$2\[\/url\]/igxsm;
+s/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(https?\:\/\/)*(.+?)(?:\s[\t\n]|$hardspace|$char_160)*\[\/img\]/\[url\]$1$2\[\/url\]/igxsm;
     }
     return $tmp_message;
 }
@@ -330,7 +331,7 @@ sub imagemsg {
     FromHTML($attribut);
     $attribut =~ s/(\s|$char_160)+/ /gxsm;
 
-    *altconv = sub {
+    local *altconv = sub {
         my ( $attfirst, $attalt, $attlast ) = @_;
         $attalt =~ s/\s/_/gxsm;
         $attfirst . qq~ alt=$attalt $attlast~;
@@ -391,7 +392,7 @@ sub imagemsg {
 sub DoUBBC {
     my ($image_type) = @_;
     $ycsscounter = 2;
-    if ( $ns eq 'NS' || $message =~ s/\x23nosmileys//ixsgm ) {
+    if ( $ns && $ns eq 'NS' || $message =~ s/\x23nosmileys//ixsgm ) {
         return $message;
     }
     if ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) {
@@ -405,8 +406,8 @@ sub DoUBBC {
     $message =~ s/\[\/quote\]/ \[\/quote\]/igxsm;
     $message =~ s/\[glow\]/ \[glow\]/igxsm;
     $message =~ s/\[\/glow\]/ \[\/glow\]/igxsm;
-    $message =~ s/<br>|<br \/>/\n/igxsm;
-    $message =~ s/<br>\x1f|<br \/>\x1f/\n/igxsm;
+    $message =~ s/<br>|<br\s\/>/\n/igxsm;
+    $message =~ s/<br>\x1f|<br\s\/>\x1f/\n/igxsm;
     $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/codemsg($2,$1)/eigxsm;
 
     # [code] must come at first! At least before image transformation!
@@ -440,7 +441,7 @@ s/(\[url[^\[]*\]\s*)?\[img(.*?)\](.*?)\[\/img\]/ imagemsg($1,$2,$3,$image_type) 
     }
 
     $message =~
-s/\[color=([[:alnum]\# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span><!--color-->/igxsm;
+s/\[color=([[:alnum:]# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span><!--color-->/igxsm;
     $message =~
       s/\[black\](.*?)\[\/black\]/<span style="color:#000000;">$1<\/span>/igxsm;
     $message =~
@@ -456,7 +457,7 @@ s/\[color=([[:alnum]\# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span>
 s/\[font=([\w# -]+)\](.+?)\[\/font\]/<span style="font-family: $1;">$2<\/span><!--font-->/igxsm;
 
     while ( $message =~
-        s/\[size=([[:alnum]\# ]+)\](.+?)\[\/size\]/sizefont($1,$2)/eigxsm )
+        s/\[size=([[:alnum:]# ]+)\](.+?)\[\/size\]/sizefont($1,$2)/eigxsm )
     {
     }
 
@@ -498,11 +499,15 @@ s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span><!--highli
         $message =~ s/(\[\/td\])/ $1/gxsm;
         $message =~ s/\Q<span style=\E/<span_style=/gxsm;
         $message =~ s/\Q<div style=\E/<div_style=/gxsm;
-        $message =~
-s/([^\w"=\[\]]|[\n\b]|&quot;|\[quote.*?\]|\[edit\]|\[highlight\]|\[*\]|\[td\]|\A)\\*(\w+?:\/\/([\w~;:,\$\-+!*?\/=&@#%()\[\](<\S+?>\S+?<\/\S+?>)]+?)[.]([\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})+?)/format_url($1,$2)/eigxsm;
-        $message =~
-s/([^"=\[\]\/:.\-(:\/\/\w+)]|[\n\b]|&quot;|\[quote.*?\]|\[edit\]|\[highlight\]|\[*\]|\[td\]|\A|\()\\*(www[.][^.]([\w~;:,\$\-+!*?\/=&@#%()\[\](<\S+?>\S+?<\/\S+?>)]+?)[.]([\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})+?)/format_url($1,$2)/eigxsm;
+        my $reg1 = qr{([^\w"=\[\]]|[\n\b]|\&quot;|\[quote.*?\]|\[edit\]|\[highlight\]|\[[*]\]|\[td\]|\A)}xsm;
+        my $reg2 = qr{[\w~;:,\$\-+!*?\/=&@#%()\[\](?:<\S+?>\S+?<\/\S+?>)]}xsm;
+        my $reg3 = qr{(?:[\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})}xsm;
+        $message =~ s/$reg1[*](\w+?:\/\/(?:$reg2+?)[.]$reg3+?)/format_url($1,$2)/eigxsm;
 
+        my $reg4 = qr{[^"=\[\]\/:.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highlight\]}xsm;
+#        $message =~ s/([^"=\[\]\/:.\-(:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highlight\]|\[[*]\]|\[td\]|\A|\()\\*(www[.][^.](?:[\w~;:,\$\-+!*?\/=&@#%()\[\](?:<\S+?>\S+?<\/\S+?>)]+?)[.](?:(?:[\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})+?)/format_url($1,$2)/eigxsm;
+        $message =~
+s/($reg4|\[[*]]|\[td\]|\A|\()\\*(www[.][^.](?:$reg2+?)[.]$reg3+?)/format_url($1,$2)/eigxsm;
         $message =~ s/\Q<span_style=\E/<span style=/gxsm;
         $message =~ s/\Q<div_style=\E/<div style=/gxsm;
     }
@@ -544,7 +549,7 @@ s/\[email\]\s*(\S+?\@\S+?)\s*\[\/email\]/<a href="mailto:$1">$1<\/a>/igxsm;
     $message =~
 s/\[email=\s*(\S+?\@\S+?)\](.*?)\[\/email\]/<a href="mailto:$1">$2<\/a>/igxsm;
 
-    *editsmsg = sub {
+    local *editsmsg = sub {
         my ($edittext) = @_;
         $formedit =
 qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div><!--edit-->~;
@@ -569,12 +574,15 @@ qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1
         }
 
         # convert old flash tags to media tags
-        while ( $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/embed($1)/eigxsm )
-        {
+        while ( $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/myembed($1)/eisgm ) {
+            if ( $1 =~ /https:/xsm ) {
+                $message =~ s/media:/https:/igxsm;
+            }
         }
-        while ( $message =~
-            s/\[media\s*(.*?)\]\n*(.*?)\n*\[\/media\]/embed($2,$1)/eigxsm )
-        {
+        while ( $message =~ s/\[media\s*(.*?)\]\n*(.*?)\n*\[\/media\]/myembed($2,$1)/eisgm ){
+            if ( $1 =~ /https:/xsm) {
+                $message =~ s/media:/https:/igxsm;
+            }
         }
         $message =~ s/media:/http:/igxsm;
     }

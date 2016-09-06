@@ -19,6 +19,7 @@ $englisheventcallngver = 'YaBB 2.7.00 $Revision$';
 if (@englisheventcallngmods) {
     $englisheventcallngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ### Event Calendar ###
@@ -143,7 +144,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '12' => q~Auto-Scroll~,
 '13' => q~Manual-Scroll~,
 '14' => q~Select which member groups are allowed to add/edit events:~,
-'15' => qq~Making NO selection allows all Groups, Users and Guests to add/edit events.<br /><br />$admin_txt{'14'}~,
+'15' => q~Making NO selection allows all Groups, Users and Guests to add/edit events.<br /><br />{yabb admin_txt14}~,
 '16' => q~Allow these members to add Events~,
 '17' => q~List multiple members as 'username1,username2'.~,
 '18' => q~Allow members to add 'Private Events'?~,

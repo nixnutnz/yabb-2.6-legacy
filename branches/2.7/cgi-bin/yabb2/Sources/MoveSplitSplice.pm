@@ -20,6 +20,7 @@ $movesplitsplicepmver  = 'YaBB 2.7.00 $Revision$';
 if (@movesplitsplicepmmods) {
     $movesplitsplicepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('MoveSplitSplice');
@@ -237,18 +238,20 @@ sub Split_Splice {
         || $threadids !~ /\b$newthread\b/xsm )
     {
         $my_output = $mymove_output_a;
-        $my_output =~
-          s/\Q{yabb newthread_subject}\E/$FORM{'newthread_subject'}/xsm;
+        $my_output =~ s/\Q{yabb newthread_subject}\E/$FORM{'newthread_subject'}/xsm;
         $my_output =~ s/\Q{yabb position}\E/$FORM{'position'}/xsm;
+        $my_output =~ s/\Q{yabb sstxt_9}\E/$sstxt{'9'}/xsm;
+        $my_output =~ s/\Q{yabb sstxt_20}\E/$sstxt{'20'}/xsm;
         $my_output =~
           s/\Q{yabb old_position_thread}\E/$FORM{'old_position_thread'}/xsm;
     }
     else {
         $my_output = $mymove_output_b;
         $my_output =~ s/\Q{yabb positionlist}\E/$positionlist/xsm;
-        $my_output =~
-          s/\Q{yabb newthread_subject}\E/$FORM{'newthread_subject'}/xsm;
+        $my_output =~ s/\Q{yabb newthread_subject}\E/$FORM{'newthread_subject'}/xsm;
         $my_output =~ s/\Q{yabb newthread}\E/$newthread/xsm;
+        $my_output =~ s/\Q{yabb sstxt_10}\E/$sstxt{'10'}/xsm;
+        $my_output =~ s/\Q{yabb sstxt_19}\E/$sstxt{'19'}/xsm;
     }
 
     $my_checked = $FORM{'newinfo'} ? ' checked="checked"' : q{};
@@ -260,9 +263,29 @@ sub Split_Splice {
     $output =~ s/\Q{yabb catlist}\E/$catlist/xsm;
     $output =~ s/\Q{yabb boardlist}\E/$boardlist/xsm;
     $output =~ s/\Q{yabb threadlist}\E/$threadlist/xsm;
+    $output =~ s/\Q{yabb currentboard}\E/$currentboard/xsm;
     $output =~ s/\Q{yabb my_output}\E/$my_output/xsm;
     $output =~ s/\Q{yabb my_checked}\E/$my_checked/xsm;
     $output =~ s/\Q{yabb size1}\E/$size1/xsm;
+    $output =~ s/\Q{yabb sstxt_1}\E/$sstxt{'1'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_2}\E/$sstxt{'2'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_3}\E/$sstxt{'3'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_4}\E/$sstxt{'4'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_5}\E/$sstxt{'5'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_6}\E/$sstxt{'6'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_7}\E/$sstxt{'7'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_8}\E/$sstxt{'8'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_14}\E/$sstxt{'14'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_14a}\E/$sstxt{'14a'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_15}\E/$sstxt{'15'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_15a}\E/$sstxt{'15a'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_16}\E/$sstxt{'16'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_17}\E/$sstxt{'17'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_18}\E/$sstxt{'18'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_24}\E/$sstxt{'24'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_25}\E/$sstxt{'25'}/gxsm;
+    $output =~ s/\Q{yabb sstxt_27}\E/$sstxt{'27'}/gxsm;
+    $output =~ s/\Q{yabb INFO_thread}\E/$INFO{'thread'}/gxsm;
 
     print_output_header();
     print_HTML_output_and_finish();
@@ -328,9 +351,10 @@ sub Split_Splice_2 {
 
 # Check to see if current thread was the latest post for the board and if the last post was selected to change
     BoardTotals( 'load', $curboard );
+    if ( ${$curthreadid}{'lastpostdate'} eq 'N/A') {${$curthreadid}{'lastpostdate'} = 0;}
     if (
         ${$curthreadid}{'lastpostdate'} == ${ $uid . $curboard }{'lastposttime'}
-        && $leavemess == 2
+        && $leavemess && $leavemess == 2
         && $postnum[-1] == $#curthread )
     {
         $newest_post = 1;
@@ -344,7 +368,7 @@ sub Split_Splice_2 {
         while ( -e "$datadir/$newthreadid.txt" ) { $newthreadid++; }
 
         foreach (@postnum) {
-            if ( $newthreadsub || $leavemess == 1 )
+            if ( $newthreadsub || ($leavemess && $leavemess == 1 ))
             {    # insert new subject name || add 'no_postcount' into copies
                 my @x = split /[|]/xsm, $curthread[$_];
                 if ($newthreadsub) {
@@ -1018,8 +1042,7 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
             my (%t);
             foreach my $u ( keys %thethread ) {
                 LoadUser($u);
-                foreach ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} )
-                {
+                foreach ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} ) {
                     $t{$_} = 1;
                 }
                 delete $t{$curthreadid};

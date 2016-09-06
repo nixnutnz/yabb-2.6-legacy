@@ -24,6 +24,7 @@ $registerpmver  = 'YaBB 2.7.00 $Revision$';
 if (@registerpmmods) {
     $registerpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$iamguest
@@ -215,7 +216,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             my (
                 $title, undef, undef, undef, undef, undef,
                 undef,  undef, undef, undef, $additional
-            ) = split /[|]/xsm, $NoPost{$_};
+            ) = @{$NoPost{$_}};
             if ($additional) {
                 $addmemgroup .= qq~<option value="$_">$title</option>~;
                 $selsize++;
@@ -804,13 +805,11 @@ sub Register2 {
         fatal_error('already_preregged');
     }
 
-    if (   $new_template !~ m{\A[\w()#%\-:+?$~&.,@]+\Z}xsm
-        && $new_template ne q{} )
+    if ( $new_template && $new_template !~ m{\A[\w()\ #%\-:+?\$&~.,@]+\Z}xsm )
     {
         fatal_error('invalid_template');
     }
-    if (   $member{'language'} !~ m{\A[\w()#%\-:+?$&~.,@]+\Z}xsm
-        && $member{'language'} ne q{} )
+    if ( $member{'language'} && $member{'language'} !~ m{\A[\w()\ #%\-:+?\$&~.,@]+\Z}xsm )
     {
         fatal_error('invalid_language');
     }
@@ -907,6 +906,7 @@ sub Register2 {
     ${ $uid . $reguser }{'timeformat'} = q~MM D+ YYYY @ HH:mm:ss*~;
     ${ $uid . $reguser }{'template'}   = $new_template;
     ${ $uid . $reguser }{'language'}   = $language;
+    ${ $uid . $reguser }{'hideage'}    = $member{'hide_age'} ? 1 : 0;
     ${ $uid . $reguser }{'pageindex'}  = q~1|1|1|1~;
 
     if ( ( $addmemgroup_enabled == 1 || $addmemgroup_enabled == 3 )
@@ -914,7 +914,7 @@ sub Register2 {
     {
         my @newmemgr;
         for ( split /,\s/xsm, $member{'joinmemgroup'} ) {
-            if ( $NoPost{$_} && ( split /[|]/xsm, $NoPost{$_} )[10] == 1 ) {
+            if ( $NoPost{$_} && ${$NoPost{$_}}[10] == 1 ) {
                 push @newmemgr, $_;
             }
         }

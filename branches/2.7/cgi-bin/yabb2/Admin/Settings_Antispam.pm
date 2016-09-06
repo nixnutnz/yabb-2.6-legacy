@@ -12,7 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
+#no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
@@ -22,8 +25,8 @@ $settings_antispampmver = 'YaBB 2.7.00 $Revision$';
 if (@settings_antispampmmods) {
     $settings_antispampmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
-
 
 # TSC
 $spamlist = join "\n", @spamrules;
@@ -33,7 +36,7 @@ $spamlist = join "\n", @spamrules;
 $adomains = join "\n", @adomains;
 $bdomains = join "\n", @bdomains;
 
-if ($min_reg_time eq q{}) {$min_reg_time = 15 ;}
+if (!$min_reg_time) {$min_reg_time = 15 ;}
 
 # List of settings
 our @settings = (
@@ -90,8 +93,10 @@ qq~<input type="text" name="timeout" id="timeout" size="4" value="$timeout" />~,
                 validate => 'number',
             },
             {
-                description => qq~<label for="min_reg_time">$admin_txt{'min_reg_time'}</label>~,
-                input_html => qq~<input type="text" name="min_reg_time" id="min_reg_time" size="4" value="$min_reg_time" />~,
+                description =>
+qq~<label for="min_reg_time">$admin_txt{'min_reg_time'}</label>~,
+                input_html =>
+qq~<input type="text" name="min_reg_time" id="min_reg_time" size="4" value="$min_reg_time" />~,
                 name => 'min_reg_time',
                 validate => 'number',
             },
@@ -195,23 +200,24 @@ sub SaveSettings {
 
     my $adomains = $settings{'adomains'};
     my $bdomains = $settings{'bdomains'};
-    *cleandomain = sub {
+    local *cleandomain = sub {
         my($x) = @_;
         $x =~ s/\n/,/gxsm;
         $x =~ s/\s+//gxsm;
         $x =~ s/(^,+|,+$)//gxsm;
         $x =~ s/,+/,/gxsm;
         $x =~ s/\@/\\@/gxsm;
-        return $x };
+        return $x;
+    };
     if ( $adomains ) {
         $adomains = cleandomain($adomains);
-        @adomains = split /,/, $adomains;
+        @adomains             = split /,/xsm, $adomains;
         $adomains = join q~', '~, @adomains;
         $settings{'adomains'} = qq~'$adomains'~;
     }
     if ( $bdomains ) {
         $bdomains = cleandomain($bdomains);
-        @bdomains = split /,/, $bdomains;
+        @bdomains             = split /,/xsm, $bdomains;
         $bdomains = join q~', '~, @bdomains;
         $settings{'bdomains'} = qq~'$bdomains'~;
     }

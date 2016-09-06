@@ -23,6 +23,7 @@ $userselectpmver  = 'YaBB 2.7.00 $Revision$';
 if (@userselectpmmods) {
     $userselectpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $INFO{'toid'} ne 'userspec' && $action ne 'checkavail' ) {
@@ -208,19 +209,16 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
                 $mememail    = $memberinf{$membername}[1];
                 ## do not find own name - unless for search or board mods!
                 if ( $to_id !~ /moderators\d/xsm && $to_id !~ /userspec/xsm ) {
-                    if (
-                        $membername ne $username
-                        && (   $memrealname =~ /$LookFor/igxsm
-                            || $mememail =~ /$LookFor/igxsm )
-                      )
+                    if (   $membername ne $username && 
+                          ( $memrealname =~ /$LookFor/igxsm
+                          || $mememail =~ /$LookFor/igxsm ) )
                     {
                         $prnusctmp .= "$membername,$memrealname|$mememail\n";
                     }
                 }
                 else {
                     if (   $memrealname =~ /$LookFor/igxsm
-                        || $mememail =~ /$LookFor/igxsm )
-                    {
+                       || $mememail =~ /$LookFor/igxsm ) {
                         $prnusctmp .= "$membername,$memrealname|$mememail\n";
                     }
                 }
@@ -404,7 +402,7 @@ qq~<option value="$cloakedUserName"$colorstyle>${$uid.$user}{'realname'}</option
                 if ( $user ne q{} ) {
                     $groupName = $usersel_txt{$user};
                     if ( $groupName eq q{} ) {
-                        $groupName = ( split /[|]/xsm, $NoPost{$user} )[0];
+                        $groupName = ${$NoPost{$user}}[0];
                     }
                     $user =
                       $user eq 'bmallmembers' ? 'all'
@@ -829,6 +827,11 @@ sub quickSearch {
     $to_id  = $INFO{'toid'};
     $yymain = $my_quickSearch;
     $yymain =~ s/\Q{yabb to_id}\E/$to_id/gxsm;
+    $yymain =~ s/\Q{yabb usersel_txt_qsearch}\E/$usersel_txt{'qsearch'}/gxsm;
+    $yymain =~ s/\Q{yabb usersel_txt_pageclose}\E/$usersel_txt{'pageclose'}/gxsm;
+    $yymain =~ s/\Q{yabb usersel_txt_addselected}\E/$usersel_txt{'addselected'}/gxsm;
+    $yymain =~ s/\Q{yabb usersel_txt_instruct0}\E/$usersel_txt{'instruct0'}/gxsm;
+    $yymain =~ s/\Q{yabb usersel_txt_moderatorlist}\E/$usersel_txt{'moderatorlist'}/gxsm;
 
     $yytitle = $usersel_txt{'modpagetitle'};
     userselectTemplate();

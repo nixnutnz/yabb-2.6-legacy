@@ -24,6 +24,7 @@ $profilepmver  = 'YaBB 2.7.00 $Revision$';
 if (@profilepmmods) {
     $profilepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Profile');
@@ -124,6 +125,10 @@ sub ProfileCheck {
     $yymain =~
 s/\Q{yabb prof_act}\E/$scripturl?action=profileCheck2;username=$useraccount{$user}/xsm;
     $yymain =~ s/\Q{yabb redirsid}\E/$redirsid/xsm;
+    $yymain =~ s/\Q{yabb profile_txt901}\E/$profile_txt{'901'}/xsm;
+    $yymain =~ s/\Q{yabb profile_txt900}\E/$profile_txt{'900'}/xsm;
+    $yymain =~ s/\Q{yabb profile_txtcapslock}\E/$profile_txt{'capslock'}/xsm;
+    $yymain =~ s/\Q{yabb profile_txtwrong_char}\E/$profile_txt{'wrong_char'}/xsm;
 
     $yynavigation = qq~&rsaquo; $profile_txt{'900'}~;
     $yytitle      = $profile_txt{'900'};
@@ -176,12 +181,15 @@ sub ProfileMenu {
         $bdlist = $myprofie_bdlist;
         $bdlist =~ s/\Q{yabb menucolor3}\E/$menucolors[3]/xsm;
         $bdlist =~ s/\Q{yabb bduser}\E/$useraccount{$user}/xsm;
+        $bdlist =~ s/\Q{yabb profile_buddy_listbuddylist}\E/$profile_buddy_list{'buddylist'}/xsm;
     }
 
     if ( $pm_lev == 1 ) {
         $pmlevel = $myprofile_pmlevel;
         $pmlevel =~ s/\Q{yabb menucolor4}\E/$menucolors[4]/xsm;
         $pmlevel =~ s/\Q{yabb pmuser}\E/$useraccount{$user}/xsm;
+        $pmlevel =~ s/\Q{yabb profile_imtxt56}\E/$profile_imtxt{'56'}/xsm;
+        $pmlevel =~ s/\Q{yabb profile_txt323}\E/$profile_txt{'323'}/xsm;
     }
     if (
         $iamadmin
@@ -193,6 +201,7 @@ sub ProfileMenu {
         $showadmin = $myprofile_showadmin;
         $showadmin =~ s/\Q{yabb menucolor5}\E/$menucolors[5]/xsm;
         $showadmin =~ s/\Q{yabb aduser}\E/$useraccount{$user}/xsm;
+        $showadmin =~ s/\Q{yabb profile_txt820}\E/$profile_txt{'820'}/xsm;
     }
     $yymain .= $myprofile_menu;
     $yymain =~ s/\Q{yabb menu_user}\E/$useraccount{$user}/gxsm;
@@ -203,6 +212,9 @@ sub ProfileMenu {
     $yymain =~ s/\Q{yabb bdlist}\E/$bdlist/xsm;
     $yymain =~ s/\Q{yabb pmlevel}\E/$pmlevel/xsm;
     $yymain =~ s/\Q{yabb showadmin}\E/$showadmin/xsm;
+    $yymain =~ s/\Q{yabb profile_txt79}\E/$profile_txt{'79'}/xsm;
+    $yymain =~ s/\Q{yabb profile_txt818}\E/$profile_txt{'818'}/xsm;
+    $yymain =~ s/\Q{yabb profile_txt819}\E/$profile_txt{'819'}/xsm;
     return $yymain;
 }
 
@@ -260,7 +272,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         && !$iamadmin
         && ( !$iamgmod || !$allow_gmod_profile ) )
     {
-        if ( $editGenderLimit == 1 && ${ $uid . $user }{'gender'} eq q{} ) {
+        if ( $editGenderLimit == 1 && !${ $uid . $user }{'gender'} ) {
             $editGenderTxt = qq~$profile_txt{'gender_edit_1'}~;
         }
         elsif ( ${ $uid . $user }{'disablegender'} >= $editGenderLimit ) {
@@ -269,8 +281,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
             $genderField        = qq~
 <input type="hidden" name="gender" value="${ $uid . $user }{'gender'}" />~;
         }
-        elsif (${ $uid . $user }{'disablegender'} eq q{}
-            && ${ $uid . $user }{'gender'} eq q{} )
+        elsif (!${ $uid . $user }{'disablegender'}
+            && !${ $uid . $user }{'gender'} )
         {
             if ( $editGenderCount == 1 ) {
                 $editGenderTxt =
@@ -301,11 +313,11 @@ qq~ $profile_txt{'gender_edit_2'} $editGenderCount $profile_txt{'dob_edit_4'}~;
         && !$iamadmin
         && ( !$iamgmod || !$allow_gmod_profile ) )
     {
-        if ( $editAgeLimit == 1 && ${ $uid . $user }{'disableage'} eq q{} ) {
+        if ( $editAgeLimit == 1 && !${ $uid . $user }{'disableage'} ) {
             $editAgeTxt = qq~$profile_txt{'dob_edit_1'}~;
         }
         elsif (${ $uid . $user }{'disableage'} >= $editAgeLimit
-            && ${ $uid . $user }{'bday'} ne q{} )
+            && ${ $uid . $user }{'bday'} )
         {
             $editAgeTxt        = qq~$profile_txt{'dob_edit_7'}~;
             $disableBdayFields = q~ disabled="disabled"~;
@@ -314,8 +326,8 @@ qq~ $profile_txt{'gender_edit_2'} $editGenderCount $profile_txt{'dob_edit_4'}~;
 <input type="hidden" name="bday2" value="$uday" />
 <input type="hidden" name="bday3" value="$uyear" />~;
         }
-        elsif (${ $uid . $user }{'disableage'} eq q{}
-            && ${ $uid . $user }{'bday'} eq q{} )
+        elsif (!${ $uid . $user }{'disableage'}
+            && !${ $uid . $user }{'bday'} )
         {
             if ( $editAgeCount == 1 ) {
                 $editAgeTxt .=
@@ -402,12 +414,13 @@ qq~<label for="bday2">$profile_txt{'565'}</label><select name="bday2" id="bday2"
         if ( ${ $uid . $user }{'hideage'} ) { $checked = ' checked="checked"'; }
         $my_showageshow = $myprofile_showage;
         $my_showageshow =~ s/\Q{yabb agechecked}\E/$checked/xsm;
+        $my_showageshow =~ s/\Q{yabb profile_txt563a}\E/$profile_txt{'563a'}/xsm;
     }
 
+    my $my_show_ext_prof = q{};
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        my $show_ext_prof = ext_editprofile( $user, 'edit' );
-        $my_show_ext_prof = $show_ext_prof;
+        $my_show_ext_prof = ext_editprofile( $user, 'edit' );
     }
 
     if ( $birthday_on_reg > 1 ) {
@@ -432,6 +445,18 @@ $myprofile_edit~;
     $showProfile =~ s/\Q{yabb showageshow}\E/$my_showageshow/xsm;
     $showProfile =~ s/\Q{yabb user_location}\E/${$uid.$user}{'location'}/xsm;
     $showProfile =~ s/\Q{yabb my_show_ext_prof}\E/$my_show_ext_prof/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt698}\E/$profile_txt{'698'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt68}\E/$profile_txt{'68'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt231}\E/$profile_txt{'231'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt238}\E/$profile_txt{'238'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt239}\E/$profile_txt{'239'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt563}\E/$profile_txt{'563'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt227}\E/$profile_txt{'227'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt227}\E/$profile_txt{'227'}/xsm;
+    $showProfile =~ s/\Q{yabb register_txt81}\E/$register_txt{'81'}/xsm;
+    $showProfile =~ s/\Q{yabb register_txt82}E/$register_txt{'82'}/xsm;
+    $showProfile =~ s/\Q{yabb register_txtcapslock}\E/$register_txt{'capslock'}/gxsm;
+    $showProfile =~ s/\Q{yabb register_txtwrongchar}\E/$register_txt{'wrongchar'}/gxsm;
 ## Mod Hook showProfile1 ##
 
     if (   $sessions == 1
@@ -444,11 +469,11 @@ $myprofile_edit~;
         $questsel = qq~<select name="sesquest" id="sesquest" size="1">\n~;
         while ( ( $key, $val ) = each %sesquest_txt ) {
             if (   ${ $uid . $user }{'sesquest'} eq $key
-                && ${ $uid . $user }{'sesquest'} ne q{} )
+                && ${ $uid . $user }{'sesquest'} )
             {
                 $sessel = q~ selected="selected"~;
             }
-            elsif ( $key eq 'password' && ${ $uid . $user }{'sesquest'} eq q{} )
+            elsif ( $key eq 'password' && !${ $uid . $user }{'sesquest'} )
             {
                 $sessel = q~ selected="selected"~;
             }
@@ -481,6 +506,7 @@ qq~ &nbsp; &nbsp; &nbsp; <input type="submit" name="moda" value="$profile_txt{'8
     $showProfile .= $myprofile_bottom;
     $showProfile =~ s/\Q{yabb show_confdel}/$show_confdel/xsm;
     $showProfile =~ s/\Q{yabb sid_expires}/$expiretxt/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -522,17 +548,21 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         }
         $my_hidemail = $myprofile_hidemail;
         $my_hidemail =~ s/\Q{yabb checked}\E/$checked/xsm;
+        $my_hidemail =~ s/\Q{yabb profile_txt721}\E/$profile_txt{'721'}/xsm;
     }
 
     if ( !$minlinkweb ) { $minlinkweb = 0; }
-    if (   ${ $uid . $user }{'postcount'} >= $minlinkweb
+    if (   ${ $uid . $user }{'postcount'} && ${ $uid . $user }{'postcount'} >= $minlinkweb
         || ${ $uid . $user }{'position'} eq 'Administrator'
         || ${ $uid . $user }{'position'} eq 'Global Moderator' )
     {
         $my_minlinkweb = $myprofile_minlinkweb;
-        $my_minlinkweb =~
-          s/\Q{yabb my_webtitle}\E/${$uid.$user}{'webtitle'}/xsm;
+        $my_minlinkweb =~ s/\Q{yabb my_webtitle}\E/${$uid.$user}{'webtitle'}/xsm;
         $my_minlinkweb =~ s/\Q{yabb my_weburl}\E/${$uid.$user}{'weburl'}/xsm;
+        $my_minlinkweb =~ s/\Q{yabb profile_txt83}\E/$profile_txt{'83'}/xsm;
+        $my_minlinkweb =~ s/\Q{yabb profile_txt598}\E/$profile_txt{'598'}/xsm;
+        $my_minlinkweb =~ s/\Q{yabb profile_txt84}\E/$profile_txt{'84'}/xsm;
+        $my_minlinkweb =~ s/\Q{yabb profile_txt599}\E/$profile_txt{'599'}/xsm;
     }
     if (
         $pm_lev == 1
@@ -565,6 +595,12 @@ qq~             <textarea name="awayreply" id="awayreply" rows="4" cols="50">$aw
         $my_away =~ s/\Q{yabb offChecked}/$offChecked/xsm;
         $my_away =~ s/\Q{yabb awayChecked}/$awayChecked/xsm;
         $my_away =~ s/\Q{yabb MaxAwayLen}/$MaxAwayLen/gxsm;
+        $my_away =~ s/\Q{yabb profile_txtshowstatus}\E/$profile_txt{'showstatus'}/xsm;
+        $my_away =~ s/\Q{yabb profile_txtstatusexplain}\E/$profile_txt{'statusexplain'}/xsm;
+        $my_away =~ s/\Q{yabb profile_txtawaydescription}\E/$profile_txt{'awaydescription'}/xsm;
+        $my_away =~ s/\Q{yabb profile_txtawayasubj}\E/$profile_txt{'asubj'}/xsm;
+        $my_away =~ s/\Q{yabb profile_txtawayamess}\E/$profile_txt{'amess'}/xsm;
+        $my_away =~ s/\Q{yabb profile_txt664a}\E/$profile_txt{'664a'}/xsm;
     }
     if (
         (
@@ -580,11 +616,13 @@ qq~             <textarea name="awayreply" id="awayreply" rows="4" cols="50">$aw
         }
         $my_stealth = $myprofile_stealth;
         $my_stealth =~ s/\Q{yabb stealthChecked}/$stealthChecked/xsm;
+        $my_stealth =~ s/\Q{yabb profile_txtstealth}\E/$profile_txt{'stealth'}/xsm;
+        $my_stealth =~ s/\Q{yabb profile_txtstealthexplain}\E/$profile_txt{'stealthexplain'}/xsm;
     }
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $my_extended .= ext_editprofile( $user, 'contact' );
+        $my_extended = ext_editprofile( $user, 'contact' ) || q{};
     }
 
     $showProfile .= qq~
@@ -608,6 +646,31 @@ $myprofile_contact
     $showProfile =~ s/\Q{yabb my_stealth}\E/$my_stealth/xsm;
     $showProfile =~ s/\Q{yabb my_extended}\E/$my_extended/xsm;
     $showProfile =~ s/\Q{yabb sid_expires}\E/$expiretxt/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt69}\E/$profile_txt{'69'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt679}\E/$profile_txt{'679'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt513}\E/$profile_txt{'513'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt600}\E/$profile_txt{'600'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt603}\E/$profile_txt{'603'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt601}\E/$profile_txt{'601'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt604}\E/$profile_txt{'604'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt602}\E/$profile_txt{'602'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt825}\E/$profile_txt{'825'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt826}\E/$profile_txt{'826'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt827}\E/$profile_txt{'827'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt828}\E/$profile_txt{'828'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt570}\E/$profile_txt{'570'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt571}\E/$profile_txt{'571'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt572}\E/$profile_txt{'572'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt573}\E/$profile_txt{'573'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt574}\E/$profile_txt{'574'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt575}\E/$profile_txt{'575'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt576}\E/$profile_txt{'576'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt577}\E/$profile_txt{'577'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt578}\E/$profile_txt{'578'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt579}\E/$profile_txt{'579'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt580}\E/$profile_txt{'580'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt581}\E/$profile_txt{'581'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -660,8 +723,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     );
 
     if ($allowpics) {
-        opendir DIR,
-          $facesdir
+        opendir DIR, $facesdir
           or fatal_error( 'cannot_open_dir',
             "($facesdir)!<br />$profile_txt{'681'}", 1 );
         @contents = readdir DIR;
@@ -678,10 +740,10 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
             {
                 $checked = ' selected="selected" ';
             }
-            if (   $extension =~ /gif/ixsm
+            if (   $extension && ($extension =~ /gif/ixsm
                 || $extension =~ /jpg/ixsm
                 || $extension =~ /jpeg/ixsm
-                || $extension =~ /png/ixsm )
+                || $extension =~ /png/ixsm ) )
             {
                 if ( $line eq $my_blank_avatar ) {
                     $images =
@@ -732,6 +794,10 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         $my_show_avatar =~ s/\Q{yabb av_tmp}\E/$tmp/xsm;
         $my_show_avatar =~ s/\Q{yabb images}\E/$images/xsm;
         $my_show_avatar =~ s/\Q{yabb checked}\E/$checked/xsm;
+        $my_show_avatar =~ s/\Q{yabb profile_txt229}\E/$profile_txt{'229'}/xsm;
+        $my_show_avatar =~ s/\Q{yabb profile_txt474}\E/$profile_txt{'474'}/xsm;
+        $my_show_avatar =~ s/\Q{yabb profile_txt475}\E/$profile_txt{'475'}/xsm;
+        $my_show_avatar =~ s/\Q{yabb profile_txt477}\E/$profile_txt{'477'}/xsm;
     }
 
     $signature = ${ $uid . $user }{'signature'};
@@ -746,6 +812,8 @@ qq~                <option value="$line"$checked>$name</option>\n~;
             $my_addmemgroup = $myprofile_addmemgroup;
             $my_addmemgroup =~ s/\Q{yabb selsize}\E/$selsize/xsm;
             $my_addmemgroup =~ s/\Q{yabb addmemgroup}\E/$addmemgroup/xsm;
+            $my_addmemgroup =~ s/\Q{yabb profile_txt910}\E/$profile_txt{'910'}/xsm;
+            $my_addmemgroup =~ s/\Q{yabb profile_txt910a}\E/$profile_txt{'910a'}/xsm;
         }
     }
 
@@ -789,6 +857,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
         $my_notify = $myprofile_notify;
         $my_notify =~ s/\Q{yabb my_notify_a}\E/$my_notify_a/xsm;
         $my_notify =~ s/\Q{yabb my_notify_b}\E/$my_notify_b/xsm;
+        $my_notify =~ s/\Q{yabb profile_txtonlinealert}\E/$profile_txt{'onlinealert'}/xsm;
     }
 
     if ($ttsureverse) {
@@ -799,9 +868,11 @@ qq~                <option value="$line"$checked>$name</option>\n~;
           ${ $uid . $user }{'reversetopic'} ? q~ checked="checked"~ : q{};
         $my_reverse = $myprofile_reverse;
         $my_reverse =~ s/\Q{yabb my_reversi}\E/$my_reversi/xsm;
+        $my_reverse =~ s/\Q{yabb profile_txt810}\E/$profile_txt{'810'}/xsm;
+        $my_reverse =~ s/\Q{yabb profile_txt811}\E/$profile_txt{'811'}/xsm;
     }
 
-    my $rts = ${ $uid . $user }{'return_to'};
+    my $rts = ${ $uid . $user }{'return_to'} ? ${ $uid . $user }{'return_to'} : 1;
     for my $rt ( 1 .. 3 ) {
         $return_to_select .=
           $rts == $rt
@@ -810,9 +881,11 @@ qq~                <option value="$line"$checked>$name</option>\n~;
     }
     my $return_to = $myprofile_return_to;
     $return_to =~ s/\Q{yabb return_to_select}\E/$return_to_select/xsm;
+    $return_to =~ s/\Q{yabb return_to_txt01}\E/$return_to_txt{'01'}/xsm;
+    $return_to =~ s/\Q{yabb return_to_txt03}\E/$return_to_txt{'03'}/xsm;
 
     my $tmptcnt = 0;
-    for my $curtemplate (
+    foreach my $curtemplate (
         sort { $templateset{$a} cmp $templateset{$b} }
         keys %templateset
       )
@@ -826,6 +899,8 @@ qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'t
     if ( $tmptcnt > 1 ) {
         $my_template = $myprofile_template;
         $my_template =~ s/\Q{yabb drawndirs}\E/$drawndirs/xsm;
+        $my_template =~ s/\Q{yabb profile_txt814}\E/$profile_txt{'814'}/xsm;
+        $my_template =~ s/\Q{yabb profile_txt815}\E/$profile_txt{'815'}/xsm;
     }
 
     my @fontszes = ( 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160 );
@@ -838,6 +913,7 @@ qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'t
     my $userfntsze = $myprofile_fntsze;
     $userfntsze =~ s/\Q{yabb fntsize}\E/$drawnfnt/xsm;
     $userfntsze =~ s/\Q{yabb myfnt}\E/$textsize/gxsm;
+    $userfntsze =~ s/\Q{yabb profile_txtfntsze}\E/$profile_txt{'fntsze'}/gxsm;
 
     opendir DIR, $langdir;
     my @lfilesanddirs = readdir DIR;
@@ -857,6 +933,8 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
     if ( $lngcnt > 1 ) {
         $my_show_lang = $myprofile_show_lang;
         $my_show_lang =~ s/\Q{yabb drawnldirs}\E/$drawnldirs/xsm;
+        $my_show_lang =~ s/\Q{yabb profile_txt817}\E/$profile_txt{'817'}/xsm;
+        $my_show_lang =~ s/\Q{yabb profile_txt815}\E/$profile_txt{'815'}/xsm;
     }
 
     if ( $user_hide_avatars && $showuserpic && $allowpics )
@@ -864,8 +942,8 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         $my_show_avatar_opts = $myprofile_show_avatars;
         $my_hide_avatar =
           ${ $uid . $user }{'hide_avatars'} ? ' checked="checked"' : q{};
-        $my_show_avatar_opts =~
-          s/\Q{yabb user_showavatar}\E/$my_hide_avatar/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb user_showavatar}\E/$my_hide_avatar/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb profile_display_optionshide_avatars}\E/$profile_display_options{'hide_avatars'}/xsm;
     }
     else { $my_show_avatar_opts = q{}; }
 
@@ -874,8 +952,8 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         $my_show_avatar_opts .= $myprofile_hide_user_text;
         $my_hide_user_text =
           ${ $uid . $user }{'hide_user_text'} ? ' checked="checked"' : q{};
-        $my_show_avatar_opts =~
-          s/\Q{yabb hide_user_text}\E/$my_hide_user_text/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb hide_user_text}\E/$my_hide_user_text/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb profile_display_optionshide_user_text}\E/$profile_display_options{'hide_user_text'}/xsm;
     }
 
     if ($user_hide_img) {    # checkbox to hide images in threads
@@ -883,6 +961,7 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         $my_hide_img =
           ${ $uid . $user }{'hide_img'} ? ' checked="checked"' : q{};
         $my_show_avatar_opts =~ s/\Q{yabb hide_img}\E/$my_hide_img/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb profile_display_optionshide_img}\E/$profile_display_options{'hide_img'}/xsm;
     }
 
     $allowattach ||= 0;
@@ -891,8 +970,8 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         $my_show_avatar_opts .= $myprofile_hide_attach_img;
         $my_hide_attach_img =
           ${ $uid . $user }{'hide_attach_img'} ? ' checked="checked"' : q{};
-        $my_show_avatar_opts =~
-          s/\Q{yabb hide_attach_img}\E/$my_hide_attach_img/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb hide_attach_img}\E/$my_hide_attach_img/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb profile_display_optionshide_attachimg}\E/$profile_display_options{'hide_attach_img'}/xsm;
     }
 
     if ($user_hide_signat) {    # checkbox to hide signatures in threads
@@ -900,6 +979,7 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
         $my_hide_signat =
           ${ $uid . $user }{'hide_signat'} ? ' checked="checked"' : q{};
         $my_show_avatar_opts =~ s/\Q{yabb hide_signat}\E/$my_hide_signat/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb profile_display_optionshide_signat}\E/$profile_display_options{'hide_signat'}/xsm;
     }
 
     if ( $user_hide_smilies_row && !$removenormalsmilies )
@@ -909,6 +989,7 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
           ${ $uid . $user }{'hide_smilies_row'} ? ' checked="checked"' : q{};
         $my_show_avatar_opts =~
           s/\Q{yabb hide_smilies_row}\E/$my_hide_smilies_row/xsm;
+        $my_show_avatar_opts =~ s/\Q{yabb profile_display_optionshide_smilies_row}\E/$profile_display_options{'hide_smilies_row'}/xsm;
     }
 
     if ($extendedprofiles) {
@@ -917,6 +998,7 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
     }
 
     my $cnnn = 0;
+    ${ $uid . $user }{'numberformat'} ||= 1;
     for my $i ( 1 .. 5 ) {
         if ( ${ $uid . $user }{'numberformat'} == $i ) {
             $unfsl[$i] = ' selected="selected" ';
@@ -932,7 +1014,7 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
 
     my $cntm = 0;
     for my $j ( 1 .. 8 ) {
-        if ( ${ $uid . $user }{'timeselect'} == $j ) {
+        if ( ${ $uid . $user }{'timeselect'} && ${ $uid . $user }{'timeselect'} == $j ) {
             $tsl[$j] = ' selected="selected" ';
             $cntm++;
         }
@@ -962,13 +1044,8 @@ qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$di
     my $user_tz_select = q{};
     $default_tz ||= 'UTC';
     if ($enabletz) {
-        if (
-            eval {
-                require DateTime;
-                require DateTime::TimeZone;
-            }
-          )
-        {
+        if ( eval { require DateTime;
+            require DateTime::TimeZone; } ) {
             DateTime->import();
             DateTime::TimeZone->import();
             LoadLanguage('Countries');
@@ -1014,6 +1091,8 @@ qq~\n<option value="local"$myselectb>$profile_txt{'372a'}</option>~;
         }
         $my_tz = $my_tz_select;
         $my_tz =~ s/\Q{yabb my_user_tz}\E/$user_tz_select/xsm;
+        $my_tz =~ s/\Q{yabb profile_txt371}\E/$profile_txt{'371'}/xsm;
+        $my_tz =~ s/\Q{yabb profile_txt372}\E/$profile_txt{'372'}/xsm;
     }
     else { $my_tz = q{}; }
 
@@ -1027,6 +1106,12 @@ qq~\n<option value="local"$myselectb>$profile_txt{'372a'}</option>~;
     $my_time =~ s/\Q{yabb my_timeformat}\E/$my_timeformat/xsm;
     $my_time =~ s/\Q{yabb my_tz_select}\E/$my_tz/xsm;
     $my_time =~ s/\Q{yabb my_dynamic}\E/$my_dynamic/xsm;
+    $my_time =~ s/\Q{yabb profile_txt486}\E/$profile_txt{'486'}/xsm;
+    $my_time =~ s/\Q{yabb profile_txt479}\E/$profile_txt{'479'}/xsm;
+    $my_time =~ s/\Q{yabb profile_txt373}\E/$profile_txt{'373'}/xsm;
+    $my_time =~ s/\Q{yabb profile_txt520}\E/$profile_txt{'520'}/xsm;
+    $my_time =~ s/\Q{yabb profile_txt521}\E/$profile_txt{'521'}/xsm;
+    $my_time =~ s/\Q{yabb profile_txtusernumbformat}\E/$profile_txt{'usernumbformat'}/xsm;
 
     $showProfile .= qq~
 <form action="$scripturl?action=$scriptAction;username=$useraccount{$INFO{'username'}};sid=$INFO{'sid'}" method="post" accept-charset="$yymycharset" name="creator"$my_allow_avatars>~;
@@ -1050,6 +1135,11 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="
     $showProfile =~ s/\Q{yabb my_extprofile}\E/$my_extprofile/xsm;
     $showProfile =~ s/\Q{yabb sid_expires}\E/$expiretxt/xsm;
     $showProfile =~ s/\Q{yabb my_fntsze}\E/$userfntsze/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt85}\E/$profile_txt{'85'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt606}\E/$profile_txt{'606'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt664}\E/$profile_txt{'664'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt228}\E/$profile_txt{'228'}/xsm;
 
 ## Mod Hook showProfile_options ##
 
@@ -1113,7 +1203,7 @@ qq~$profile_txt{'79'} ($user) &rsaquo; $profile_buddy_list{'buddylist'}~;
     if ( ${ $uid . $user }{'buddylist'} ) {
         my @buddies = split /[|]/xsm, ${ $uid . $user }{'buddylist'};
         chomp @buddies;
-        for my $buddy (@buddies) {
+        foreach my $buddy (@buddies) {
             LoadUser($buddy);
             if ( ${ $uid . $buddy }{'realname'} ) {
                 $buildBuddyList .=
@@ -1129,6 +1219,10 @@ qq~<option value="$buddy">${$uid.$buddy}{'realname'}</option>~;
     $showProfile =~ s/\Q{yabb profiletitle}\E/$profiletitle/xsm;
     $showProfile =~ s/\Q{yabb buildBuddyList}\E/$buildBuddyList/xsm;
     $showProfile =~ s/\Q{yabb sid_expires}\E/$expiretxt/xsm;
+    $showProfile =~ s/\Q{yabb profile_buddy_listbuddylist}\E/$profile_buddy_list{'buddylist'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_buddy_listexplain}\E/$profile_buddy_list{'explain'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_buddy_listadd}\E/$profile_buddy_list{'add'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1192,7 +1286,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     {
         my @ignoreList = split /[|]/xsm, ${ $uid . $user }{'im_ignorelist'};
         chomp @ignoreList;
-        for my $ignoreName (@ignoreList) {
+        foreach my $ignoreName (@ignoreList) {
             LoadUser($ignoreName);
             my $ignoreUser;
             if ( ${ $uid . $ignoreName }{'realname'} ) {
@@ -1214,6 +1308,9 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
         $my_PMnotify = $myprofile_PMnotify;
         $my_PMnotify =~ s/\Q{yabb my_PM_notifyme}\E/$my_PM_notifyme/xsm;
         $my_PMnotify =~ s/\Q{yabb my_PM_notifyme_2}\E/$my_PM_notifyme_2/xsm;
+        $my_PMnotify =~ s/\Q{yabb profile_txt327}\E/$profile_txt{'327'}/xsm;
+        $my_PMnotify =~ s/\Q{yabb profile_txt164}\E/$profile_txt{'164'}/xsm;
+        $my_PMnotify =~ s/\Q{yabb profile_txt163}\E/$profile_txt{'163'}/xsm;
     }
 
     if ( ${ $uid . $user }{'im_popup'} ) {
@@ -1228,7 +1325,7 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
     }
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $my_extprofile .= ext_editprofile( $user, 'im' );
+        $my_extprofile = ext_editprofile( $user, 'im' );
     }
 
     $showProfile .= qq~
@@ -1243,6 +1340,16 @@ qq~\n                        <option value="$ignoreName">$ignoreUser</option>~;
     $showProfile =~ s/\Q{yabb my_extprofile}\E/$my_extprofile/xsm;
     $showProfile =~ s/\Q{yabb sid_expires}\E/$expiretxt/xsm;
     $showProfile =~ s/\Q{yabb my_PMnotify}\E/$my_PMnotify/xsm;
+    $showProfile =~ s/\Q{yabb ignoreallChecked}\E/$ignoreallChecked/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt325}\E/$profile_txt{'325'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txtignoreexplain}\E/$profile_txt{'ignoreexplain'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txtignoreall}\E/$profile_txt{'ignoreall'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txtignorelistadd}\E/$profile_txt{'ignorelistadd'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_imtxt05}\E/$profile_imtxt{'05'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_imtxt53}\E/$profile_imtxt{'53'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txtviewmess}\E/$profile_txt{'viewmess'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txtviewmessexplain}\E/$profile_txt{'viewmessexplain'}/xsm;
 
     if ( !$view ) {
         $yymain .= $showProfile;
@@ -1264,7 +1371,7 @@ sub ModifyProfileAdmin {
     $mygrp = 0;
     for (@grps) {
         if ( ${ $uid . $user }{'position'} eq $_ ) {
-            @memstat = split /[|]/xsm, $Group{$_};
+            @memstat = @{$Group{$_}};
             $tt      = $memstat[0];
             $mygrp   = 1;
         }
@@ -1272,7 +1379,7 @@ sub ModifyProfileAdmin {
     if ( $mygrp != 1 ) {
         if ( ${ $uid . $user }{'position'} ) {
             $ttgrp = ${ $uid . $user }{'position'};
-            ( $tt, undef ) = split /[|]/xsm, $NoPost{$ttgrp}, 2;
+            ( $tt, undef ) = @{$NoPost{$ttgrp}};
         }
         else { $tt = ${ $uid . $user }{'position'}; }
     }
@@ -1286,12 +1393,9 @@ sub ModifyProfileAdmin {
           DrawGroups( ${ $uid . $user }{'addgroups'}, q{}, 1 );
     }
 
-    $userlastlogin = timeformat( ${ $uid . $user }{'lastonline'} );
-    $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
-    $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
-    if ( $userlastlogin eq q{} ) { $userlastlogin = $profile_txt{'470'}; }
-    if ( $userlastpost eq q{} )  { $userlastpost  = $profile_txt{'470'}; }
-    if ( $userlastim eq q{} )    { $userlastim    = $profile_txt{'470'}; }
+    $userlastlogin = timeformat( ${ $uid . $user }{'lastonline'} ) || $profile_txt{'470'};
+    $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} ) || $profile_txt{'470'};
+    $userlastim    = timeformat( ${ $uid . $user }{'lastim'} ) || $profile_txt{'470'};
 
     my $scriptAction = q~profileAdmin2~;
     if ($view) {
@@ -1311,7 +1415,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     }
     if ($iamadmin) {
         for (@grps) {
-            @memstat = split /[|]/xsm, $Group{$_};
+            @memstat = @{$Group{$_}};
             if ( $_ ne 'Moderator' ) {
                 $my_group .=
 qq~\n                        <option value="$_">$memstat[0]</option>~;
@@ -1321,15 +1425,17 @@ qq~\n                        <option value="$_">$memstat[0]</option>~;
 
     my $z = 0;
     for (@nopostorder) {
-        @memstat = split /[|]/xsm, $NoPost{$_}, 5;
+        @memstat = @{$NoPost{$_}};
         $my_group .= qq~<option value="$_">$memstat[0]</option>~;
         $z++;
     }
 
-    if ( $tta ne q{} ) {
+    if ( $tta ) {
         $my_tta = $myprofile_tta;
         $my_tta =~ s/\Q{yabb selsize}\E/$selsize/xsm;
         $my_tta =~ s/\Q{yabb tta}\E/$tta/xsm;
+        $my_tta =~ s/\Q{yabb profile_txt87a}\E/$profile_txt{'87a'}/xsm;
+        $my_tta =~ s/\Q{yabb profile_txt87b}\E/$profile_txt{'87b'}/xsm;
     }
 
     (
@@ -1476,6 +1582,14 @@ qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</text
     $showProfile =~ s/\Q{yabb userlastim}\E/$userlastim/xsm;
     $showProfile =~ s/\Q{yabb my_extprofile}\E/$my_extprofile/xsm;
     $showProfile =~ s/\Q{yabb sid_expires}\E/$expiretxt/xsm;
+    $showProfile =~ s/\Q{yabb profile_amv_txt9}\E/$profile_amv_txt{'9'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_amv_txt10}\E/$profile_amv_txt{'10'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_amv_txt11}\E/$profile_amv_txt{'11'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt21}\E/$profile_txt{'21'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt87}\E/$profile_txt{'87'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt233}\E/$profile_txt{'233'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt234}\E/$profile_txt{'234'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
 
 ## Mod Hook showProfile_admin ##
 
@@ -1505,11 +1619,11 @@ sub ModifyProfile2 {
             && ( $iamadmin || $iamgmod )
             && $username eq $user )
         {
-            if ( $member{'sesquest'} eq 'password' ) {
-                $member{'sesanswer'} = q{};
-            }
-            elsif ( $member{'sesanswer'} eq q{} ) {
+            if ( !$member{'sesanswer'} && $member{'sesquest'} ne 'password' ) {
                 fatal_error('no_secret_answer');
+            }
+            elsif ( $member{'sesquest'} eq 'password' ) {
+                $member{'sesanswer'} = q{};
             }
         }
 
@@ -1517,7 +1631,7 @@ sub ModifyProfile2 {
             if ( $member{'passwrd1'} ne $member{'passwrd2'} ) {
                 fatal_error( 'password_mismatch', "$member{'username'}" );
             }
-            if ( $member{'passwrd1'} eq q{} ) {
+            if ( !$member{'passwrd1'} ) {
                 fatal_error( 'no_password', "$member{'username'}" );
             }
             if ( $member{'passwrd1'} =~ /$invalpass/xsm ) {
@@ -1562,17 +1676,17 @@ sub ModifyProfile2 {
                 && !$iamadmin
                 && ( !$iamgmod || !$allow_gmod_profile )
             )
-            && (   $member{'bday1'} eq q{}
-                || $member{'bday2'} eq q{}
-                || $member{'bday3'} eq q{} )
+            && (   !$member{'bday1'}
+                || !$member{'bday2'}
+                || !$member{'bday3'} )
           )
         {
             fatal_error( 'invalid_birthdate',
                 "($member{'bday1'}/$member{'bday2'}/$member{'bday3'})" );
         }
-        elsif ($member{'bday1'} ne q{}
-            || $member{'bday2'} ne q{}
-            || $member{'bday3'} ne q{} )
+        elsif ($member{'bday1'}
+            || $member{'bday2'}
+            || $member{'bday3'} )
         {
             if (   $member{'bday1'} !~ /^\d+$/xsm
                 || $member{'bday2'} !~ /^\d+$/xsm
@@ -1608,11 +1722,9 @@ sub ModifyProfile2 {
 
         if (
             $editGenderLimit
-            && (   ${ $uid . $user }{'gender'} ne $member{'gender'}
-                || ${ $uid . $user }{'gender'} eq q{} )
-          )
+            && (   !${ $uid . $user }{'gender'} || ${ $uid . $user }{'gender'} ne $member{'gender'} ) )
         {
-            if ( ${ $uid . $user }{'disablegender'} eq q{} ) {
+            if ( !${ $uid . $user }{'disablegender'} ) {
                 ${ $uid . $user }{'disablegender'} = 1;
             }
             else { ${ $uid . $user }{'disablegender'}++; }
@@ -1620,18 +1732,18 @@ sub ModifyProfile2 {
         if (
             $editAgeLimit
             && (   ${ $uid . $user }{'bday'} ne $member{'bday'}
-                || ${ $uid . $user }{'bday'} eq q{} )
+                || !${ $uid . $user }{'bday'} )
           )
         {
-            if ( ${ $uid . $user }{'disableage'} eq q{} ) {
+            if ( !${ $uid . $user }{'disableage'} ) {
                 ${ $uid . $user }{'disableage'} = 1;
             }
             else { ${ $uid . $user }{'disableage'}++; }
         }
 
         # EventCal Begin
-        if (   ${ $uid . $user }{'bday'} ne "$member{'bday'}"
-            || ${ $uid . $user }{'hideage'} ne "$member{'hideage'}" )
+        if (   ${ $uid . $user }{'bday'} ne $member{'bday'}
+            || ${ $uid . $user }{'hideage'} ne $member{'hideage'} )
         {
             $Update_EventCal = 1;
         }
@@ -1641,7 +1753,7 @@ sub ModifyProfile2 {
         if ($extendedprofiles) {  # run this before you start to save something!
             require Sources::ExtendedProfiles;
             my $error = ext_validate_submition( $username, $user );
-            if ( $error ne q{} ) {
+            if ( $error ) {
                 fatal_error( 'extended_profiles_validation', $error );
             }
             ext_saveprofile($user);
@@ -1650,7 +1762,7 @@ sub ModifyProfile2 {
         if ( ${ $uid . $user }{'realname'} ne $member{'name'} ) {
             $member{'name'} =~ s/\t+/ /gxsm;
         }
-        if ( $member{'name'} eq q{} ) { fatal_error('no_name'); }
+        if ( !$member{'name'}) { fatal_error('no_name'); }
         if ( $name_cannot_be_userid
             && lc $member{'name'} eq lc $member{'username'} )
         {
@@ -1674,7 +1786,9 @@ sub ModifyProfile2 {
         CountChars();
         $member{'name'} = $convertstr;
         if ($cliped) { fatal_error('name_too_long'); }
-        if ( $member{'name'} =~ /$invalrname/xsm ) {
+        if (
+            $member{'name'} =~ $invalrname )
+        {
             fatal_error( 'invalid_character',
                 "$profile_txt{'68'} $profile_txt{'241re'}" );
         }
@@ -1735,7 +1849,9 @@ s/^(\d+[|]\d+[|].*?)[|](.*?)[|]/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{
         fclose(ATM);
 
    #Since we have not encountered a fatal error, time to rewrite our memberlist.
-        ManageMemberinfo( 'update', $user, $member{'name'} );
+        if ( $member{'name'} ne ${$uid.$user}{'realname'} ) {
+            ManageMemberinfo( 'update', $user, $member{'name'} );
+        }
 
         ToHTML( $member{'gender'} );
         FromChars( $member{'location'} );
@@ -1761,13 +1877,16 @@ s/^(\d+[|]\d+[|].*?)[|](.*?)[|]/ ($2 eq ${$uid.$user}{'realname'} ? "$1|$member{
         ${ $uid . $user }{'sesanswer'} = $member{'sesanswer'};
 
         # EventCal Begin
-        if ( $Update_EventCal == 1 ) {
+        if ( $Update_EventCal && $Update_EventCal == 1 ) {
+            my @birthmembers = ();
+            if ( -e "$vardir/eventcalbday.db") {
             fopen( FILE, "$vardir/eventcalbday.db" );
-            my @birthmembers = <FILE>;
+                @birthmembers = <FILE>;
             fclose(FILE);
+            }
             my $cn   = 0;
             my $prnx = q{};
-            for my $x (@birthmembers) {
+            foreach my $x (@birthmembers) {
                 chomp $x;
                 my ( $user_year, $user_month, $user_day, $user_xy, $user_hide )
                   = split /[|]/xsm, $x;
@@ -1863,7 +1982,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         @pmattach = <PMATTACH>;
         fclose(PMATTACH);
 
-        for my $pm_attach (@pmattach) {
+        foreach my $pm_attach (@pmattach) {
             ( undef, undef, undef, $attach_file, undef, $attach_user ) =
               split /[|]/xsm, $pm_attach;
             chomp $attach_user;
@@ -1875,7 +1994,7 @@ qq~$scripturl?action=$scriptAction;username=$useraccount{$member{'username'}};si
         MemberIndex( 'remove', $noteuser );
 
         # EventCalbday Begin
-        fopen( FILE, "$vardir/eventcalbday.db" );
+        fopen( FILE, "<$vardir/eventcalbday.db" );
         my @birthmembers = <FILE>;
         fclose(FILE);
 
@@ -1958,13 +2077,15 @@ sub ModifyProfileContacts2 {
         $newpassemail = 1;
     }
 
-    if ( $member{'email'} eq q{} ) { fatal_error('no_email'); }
+    if ( !$member{'email'} ) { fatal_error('no_email'); }
     if ( $member{'email'} !~ /^$invalmailchar$/xsm ) {
         fatal_error( 'invalid_character',
             "$profile_txt{'69'} $profile_txt{'241e'}" );
     }
-    if (   ( $member{'email'} =~ /$invalemaila/xsm )
-        || ( $member{'email'} !~ /$invalemailb/xsm ) )
+    if (
+        ( $member{'email'} =~ $invalemaila ) ||
+         ( $member{'email'} !~ $invalemailb )
+      )
     {
         fatal_error('invalid_email');
     }
@@ -2008,7 +2129,7 @@ sub ModifyProfileContacts2 {
     if ($extendedprofiles) {    # run this before you start to save something!
         require Sources::ExtendedProfiles;
         my $error = ext_validate_submition( $username, $user );
-        if ( $error ne q{} ) {
+        if ( $error ) {
             fatal_error( 'extended_profiles_validation', $error );
         }
         ext_saveprofile($user);
@@ -2021,12 +2142,13 @@ sub ModifyProfileContacts2 {
         if ( lc $is_existing eq $testemail ) {
             fatal_error( 'email_taken', "($member{'email'})" );
         }
+        else {
+            ManageMemberinfo( 'update', $user, q{}, $member{'email'} );
+        }
     }
 
-# Since we haven't encountered a fatal error, time to rewrite our memberlist a little.
-    ManageMemberinfo( 'update', $user, q{}, $member{'email'} );
 ## if enabled but not set, default offline status to 'offline'
-    if ( $enable_MCaway && $member{'offlinestatus'} eq q{} ) {
+    if ( $enable_MCaway && !$member{'offlinestatus'} ) {
         $member{'offlinestatus'} = 'offline';
     }
 
@@ -2120,7 +2242,7 @@ sub ModifyProfileOptions2 {
     if ( $member{'moda'} ne $profile_txt{'88'} ) { fatal_error('not_allowed'); }
 
     if ( !$minlinksig ) { $minlinksig = 0; }
-    if (   ${ $uid . $user }{'postcount'} < $minlinksig
+    if (   ${ $uid . $user }{'postcount'} && ${ $uid . $user }{'postcount'} < $minlinksig
         && !$iamadmin
         && !$iamgmod )
     {
@@ -2173,7 +2295,7 @@ sub ModifyProfileOptions2 {
         }
         else { $ext = $1; }
         my $fixfile = ${ $uid . $user }{'realname'};
-        if ( $fixfile =~ /[^0-9A-Za-z+\-.:]/xsm )
+        if ( $fixfile =~ /[^\w+\-.:]/xsm )
         {    # replace all inappropriate characters
             my %translist = loadtranlist();
             @uploadtranlist = keys %translist;
@@ -2182,7 +2304,7 @@ sub ModifyProfileOptions2 {
             }
 
             # END Transliteration. Thanks to "Velocity" for this contribution.
-            $fixfile =~ s/[^0-9A-Za-z+\-.:]/_/gxsm;
+            $fixfile =~ s/[^\w+\-.:]/_/gxsm;
         }
         $fixfile .= ".$ext";
 
@@ -2294,7 +2416,7 @@ sub ModifyProfileOptions2 {
     {
         $member{'userpic'} = $member{'userpicpersonal'};
     }
-    if ( $member{'userpic'} eq q{} || !$allowpics ) {
+    if ( !$member{'userpic'} || !$allowpics ) {
         $member{'userpic'} = $my_blank_avatar;
     }
     if ( $member{'userpic'} !~ m{\A[\w.#%\-:+?$&~.,@/]+\Z}xsm ) {
@@ -2306,27 +2428,27 @@ sub ModifyProfileOptions2 {
         unlink "$facesdir/UserAvatars/$1";
     }
 
-    if ( $member{'usertemplate'} ne q{}
+    if ( !$member{'usertemplate'} ) {
+        $member{'usertemplate'} = $template;
+    }
+    elsif ( $member{'usertemplate'}
         && !$templateset{ $member{'usertemplate'} } )
     {
         fatal_error('invalid_template');
     }
-    if ( $member{'usertemplate'} eq q{} ) {
-        $member{'usertemplate'} = $template;
+    if ( !$member{'userlanguage'} ) {
+        $member{'userlanguage'} = $language;
     }
-    if ( $member{'userlanguage'} ne q{}
+    if ( $member{'userlanguage'}
         && !-e "$langdir/$member{'userlanguage'}/Main.lng" )
     {
         fatal_error('invalid_language');
-    }
-    if ( $member{'userlanguage'} eq q{} ) {
-        $member{'userlanguage'} = $language;
     }
 
     if ($extendedprofiles) {    # run this before you start to save something!
         require Sources::ExtendedProfiles;
         my $error = ext_validate_submition( $username, $user );
-        if ( $error ne q{} ) {
+        if ( $error ) {
             fatal_error( 'extended_profiles_validation', $error );
         }
         ext_saveprofile($user);
@@ -2347,10 +2469,10 @@ sub ModifyProfileOptions2 {
         my @nopostmember;
         for ( keys %NoPost ) {
             next if ${ $uid . $user }{'position'} eq $_;
-            if ( $groups{$_} == 1 && ( split /[|]/xsm, $NoPost{$_} )[10] ) {
+            if ( $groups{$_} == 1 && ${$NoPost{$_}}[10] ) {
                 push @nopostmember, $_;
             }
-            elsif ( $groups{$_} == 2 && !( split /[|]/xsm, $NoPost{$_} )[10] ) {
+            elsif ( $groups{$_} == 2 && !${$NoPost{$_}}[10] ) {
                 push @nopostmember, $_;
             }
         }
@@ -2404,8 +2526,8 @@ sub ModifyProfileOptions2 {
       )
       : (
         (
-                 ${ $uid . $user }{'notify_me'} == 2
-              || ${ $uid . $user }{'notify_me'} == 3
+                 ${ $uid . $user }{'notify_me'} && (${ $uid . $user }{'notify_me'} == 2
+              || ${ $uid . $user }{'notify_me'} == 3)
         ) ? 2 : 0
       );
     ${ $uid . $user }{'reversetopic'}  = $member{'reversetopic'} ? 1 : 0;
@@ -2476,7 +2598,7 @@ sub ModifyProfileBuddy2 {
         my @buddies = split /,/xsm, $member{'buddylist'};
         chomp @buddies;
         $member{'buddylist'} = q{};
-        for my $cloakedBuddy (@buddies) {
+        foreach my $cloakedBuddy (@buddies) {
             $cloakedBuddy =~ s/^[ ]//xsm;
             $cloakedBuddy = decloak($cloakedBuddy);
             ToHTML($cloakedBuddy);
@@ -2518,7 +2640,7 @@ sub ModifyProfileIM2 {
     while ( ( $key, $value ) = each %FORM ) {
         $value =~ s/\A\s+//xsm;
         $value =~ s/\s+\Z//xsm;
-        if ( $key ne 'ignore' ) { $value =~ s/[\r\n]//gxsm; }
+        if ( $key ne 'ignore' ) { $value =~ s/[\n\r]//gxsm; }
         $member{$key} = $value;
     }
     $member{'username'} = $user;
@@ -2528,7 +2650,7 @@ sub ModifyProfileIM2 {
     if ( !$member{'ignoreall'} ) {
         my @ignoreList = split /,/xsm, $member{'ignore'};
         chomp @ignoreList;
-        for my $cloakedIgnore (@ignoreList) {
+        foreach my $cloakedIgnore (@ignoreList) {
             $cloakedIgnore =~ s/\A\s //xsm;
             $cloakedIgnore =~ s/\s \Z//xsm;
             $cloakedIgnore = decloak($cloakedIgnore);
@@ -2553,8 +2675,8 @@ sub ModifyProfileIM2 {
       )
       : (
         (
-                 ${ $uid . $user }{'notify_me'} == 1
-              || ${ $uid . $user }{'notify_me'} == 3
+                 ${ $uid . $user }{'notify_me'} && (${ $uid . $user }{'notify_me'} == 1
+              || ${ $uid . $user }{'notify_me'} == 3)
         ) ? 1 : 0
       );
     ${ $uid . $user }{'im_popup'}   = $member{'userpopup'}  ? 1 : 0;
@@ -2616,7 +2738,7 @@ sub ModifyProfileAdmin2 {
         $member{'settings7'} = ${ $uid . $user }{'position'};
     }
 
-    if ( $member{'settings6'} eq q{} ) { $member{'settings6'} = 0; }
+    if ( !$member{'settings6'}) { $member{'settings6'} = 0; }
     if ( $member{'settings6'} !~ /\A\d+\Z/xsm ) {
         fatal_error('invalid_postcount');
     }
@@ -2660,7 +2782,7 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
         else {
             for my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
                 if ( $member{'settings6'} >= $postamount ) {
-                    ( $title, undef ) = split /[|]/xsm, $Post{$postamount}, 2;
+                    ( $title, undef ) = @{$Post{$postamount}};
                     $grp_after = $title;
                     last;
                 }
@@ -2678,7 +2800,7 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
         if ( $groups{$_} ) { push @nopostmember, $_; }
     }
     $member{'addgroup'} = join q{,}, @nopostmember;
-    if ( $member{'addgroup'} eq q{} ) { $member{'addgroup'} = '###blank###'; }
+    if ( !$member{'addgroup'}) { $member{'addgroup'} = '###blank###'; }
     if ( $member{'addgroup'} ne ${ $uid . $user }{'addgroups'} ) {
         ManageMemberinfo( 'update', $user, q{}, q{}, q{}, q{},
             $member{'addgroup'} );
@@ -2711,7 +2833,7 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
     if ($extendedprofiles) {    # run this before you start to save something!
         require Sources::ExtendedProfiles;
         my $error = ext_validate_submition( $username, $user );
-        if ( $error ne q{} ) {
+        if ( $error ) {
             fatal_error( 'extended_profiles_validation', $error );
         }
         ext_saveprofile($user);
@@ -2746,12 +2868,11 @@ sub ViewProfile {
 
     my ( $modify, $gender );
     my (
-        $pic_row,      $buddybutton,   $row_addgrp,   $row_gender,
+        $pic_row,      $buddybutton, $row_gender,
         $row_age,      $row_location,  $row_icq,      $row_aim,
         $row_yim,      $row_gtalk,     $row_skype,    $row_myspace,
         $row_facebook, $row_twitter,   $row_youtube,  $row_email,
-        $row_website,  $row_signature, $showusertext, $row_zodiac
-    );
+        $row_website,  $row_signature, $showusertext, $row_zodiac);
 
     # Convert forum start date to string, if there is no date set,
     # Defaults to 1st Jan, 2005
@@ -2821,12 +2942,13 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
     }
 
     # Hide empty profile fields from display
+    my $row_addgrp = q{};
     if ( $addmembergroup{$user} ) {
         $showaddgr = $addmembergroup{$user};
         $showaddgr =~ s/<br.*?>/, /gxsm;
         $showaddgr =~ s/\A,\s//xsm;
-        $showaddgr =~ s/,\s\Z//xsm;
-        $row_addgrp .= qq~$showaddgr<br />~;
+        $showaddgr =~ s/,\s$//xsm;
+        $row_addgrp = qq~$showaddgr<br />~;
     }
     if ( ${ $uid . $user }{'gender'} ) {
         if ( ${ $uid . $user }{'gender'} eq 'Male' ) {
@@ -2983,7 +3105,7 @@ qq~<img src="$facesurl/${$uid.$user}{'userpic'}" id="avatar_img_resize" alt="" s
             }
             else {
                 my ( $admtitle, undef ) =
-                  split /[|]/xsm, $Group{'Administrator'}, 2;
+                  @{$Group{'Administrator'}};
                 $rowEmail =
 qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             }
@@ -3040,6 +3162,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
 
         $row_signature = $myrow_sig;
         $row_signature =~ s/\Q{yabb message}\E/$message/xsm;
+        $row_signature =~ s/\Q{yabb profile_txt85}\E/$profile_txt{'85'}/xsm;
     }
 
     # End empty field checking
@@ -3048,7 +3171,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
     $post_count = ${ $uid . $user }{'postcount'};
     if ( !$post_count ) { $post_count = 0 }
 
-    $string_regdate = stringtotime( ${ $uid . $user }{'regdate'} );
+    $string_regdate = ${ $uid . $user }{'regtime'};
     $string_curdate = $date;
 
     if ( $string_curdate < $forumstart ) { $string_curdate = $forumstart }
@@ -3068,7 +3191,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         # Censor the usertext and wrap it
         LoadCensorList();
         $showusertext =
-          WrapChars( Censor( ${ $uid . $user }{'usertext'} ), 20 );
+          WrapChars( Censor( ${ $uid . $user }{'usertext'} ), $usertxtwrap );
     }
 
     if ( !$view ) {
@@ -3094,7 +3217,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         $userismod = is_moderator($user);
     }
     if ($userismod) {
-        @memstats = split /[|]/xsm, $Group{'Moderator'};
+        @memstats = @{$Group{'Moderator'}};
         my $starnum        = $memstats[1];
         my $memberstartemp = q{};
         if ( $memstats[2] !~ /\//xsm ) {
@@ -3105,17 +3228,17 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         }
         $memberstar = $memberstartemp ? "$memberstartemp<br />" : q{};
 
-        *get_subboards = sub {
+        local *get_subboards = sub {
             my @x = @_;
             $indent += 2;
-            for my $board (@x) {
+            foreach my $board (@x) {
                 my $dash;
                 if ( $indent > 2 ) { $dash = q{-}; }
 
                 ( $boardname, $boardperms, $boardview ) =
                   split /[|]/xsm, $board{$board};
-                if (   ${ $uid . $board }{'ann'} == 1
-                    || ${ $uid . $board }{'rbin'} == 1 )
+                if (   ${ $uid . $board }{'ann'}
+                    || ${ $uid . $board }{'rbin'} )
                 {
                     next;
                 }
@@ -3124,7 +3247,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 for my $thisMod (@BoardModerators) {
                     if ( $thisMod eq $user ) {
                         ( $boardname, $boardperms, $boardview ) =
-                          split /[|]/xsm, $board{"$board"};
+                          split /[|]/xsm, $board{$board};
                         ToChars($boardname);
                         if ( !${ $uid . $board }{'canpost'}
                             && $subboard{$board} )
@@ -3197,12 +3320,12 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
     $userlastlogin = timeformat( ${ $uid . $user }{'lastonline'} );
     $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
     $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
-    if ( $userlastlogin eq q{} ) { $userlastlogin = "$profile_txt{'470'}"; }
+    if ( !$userlastlogin ) { $userlastlogin = "$profile_txt{'470'}"; }
     if ( !$userlastpost )        { $userlastpost  = "$profile_txt{'470'}"; }
-    if ( $userlastim eq q{} )    { $userlastim    = "$profile_txt{'470'}"; }
+    if ( !$userlastim )    { $userlastim    = "$profile_txt{'470'}"; }
     my ( $lastonline, $lastpost, $lastPM );
     ## MF-B code fix for lpd
-    if ( ${ $uid . $user }{'postcount'} > 0 ) {
+    if ( ${ $uid . $user }{'postcount'} && ${ $uid . $user }{'postcount'} > 0 ) {
         $userlastpost = usersrecentposts(1);
     }
     ####
@@ -3230,7 +3353,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
         require Sources::Security;
         $is_banned = check_banlist( "${$uid.$user}{'email'}", q{}, "$user" );
         $ban_user_email = ${ $uid . $user }{'email'};
-        $ban_user_email =~ s/([[:^alnum]])/sprintf('%%%02X', ord($1))/egxsm;
+        $ban_user_email =~ s/([[:^alnum:]])/sprintf('%%%02X', ord($1))/egxsm;
         if ( $is_banned =~ /E/xsm ) {
             $ban_email_link =
 qq~<span class="small">[ <a href="$scripturl?action=ipban_update;ban_email=$ban_user_email;username=$useraccount{$user};unban=1" onclick="return confirm('$profile_txt{'904a'}${$uid.$user}{'email'}');">$profile_txt{'904'}</a> ]</span>~;
@@ -3313,6 +3436,9 @@ qq~<a href="javascript:void(window.open('$scripturl?action=ban_page_a;ban=$ip_ba
         $my_banning =~ s/\Q{yabb ban_email}\E/${$uid.$user}{'email'}/xsm;
         $my_banning =~ s/\Q{yabb ban_email_link}\E/$ban_email_link/xsm;
         $my_banning =~ s/\Q{yabb ip_ban_options}\E/$ip_ban_options/xsm;
+        $my_banning =~ s/\Q{yabb profile_txt902}\E/$profile_txt{'902'}/xsm;
+        $my_banning =~ s/\Q{yabb profile_txt69}\E/$profile_txt{'69'}/xsm;
+        $my_banning =~ s/\Q{yabb profile_txt909}\E/$profile_txt{'909'}/xsm;
     }
     if ( ${ $uid . $user }{'position'} eq 'Administrator' && !$iamadmin ) {
         $my_banning = q{};
@@ -3325,9 +3451,13 @@ qq~<a href="javascript:void(window.open('$scripturl?action=ban_page_a;ban=$ip_ba
     {
         $my_reminder = $myshow_reminder;
         $my_reminder =~ s/\Q{yabb my_realname}\E/${$uid.$user}{'realname'}/xsm;
+        $my_reminder =~ s/\Q{yabb user}\E/$INFO{'username'}/xsm;
+        $my_reminder =~ s/\Q{yabb profile_txtpass_reminder_1}\E/$profile_txt{'pass_reminder_1'}/xsm;
+        $my_reminder =~ s/\Q{yabb profile_txtpass_reminder_2}\E/$profile_txt{'pass_reminder_2'}/xsm;
+        $my_reminder =~ s/\Q{yabb profile_txtpass_reminder_3}\E/$profile_txt{'pass_reminder_3'}/xsm;
     }
 
-    if (   ${ $uid . $user }{'postcount'} > 0
+    if (   ${ $uid . $user }{'postcount'} && ${ $uid . $user }{'postcount'} > 0
         && $maxrecentdisplay > 0
         && !$view )
     {
@@ -3348,6 +3478,9 @@ qq~<a href="javascript:void(window.open('$scripturl?action=ban_page_a;ban=$ip_ba
         $my_recent =~ s/\Q{yabb user}\E/$useraccount{$user}/xsm;
         $my_recent =~ s/\Q{yabb my_recent_display}\E/$my_recent_display/xsm;
         $my_recent =~ s/\Q{yabb my_realname}\E/${$uid.$user}{'realname'}/xsm;
+        $my_recent =~ s/\Q{yabb profile_txt460}\E/$profile_txt{'460'}/xsm;
+        $my_recent =~ s/\Q{yabb profile_txt461}\E/$profile_txt{'461'}/xsm;
+        $my_recent =~ s/\Q{yabb profile_txt462}\E/$profile_txt{'462'}/xsm;
     }
 
     $showProfile .= $myshow_profile;
@@ -3388,6 +3521,12 @@ qq~<a href="javascript:void(window.open('$scripturl?action=ban_page_a;ban=$ip_ba
     $showProfile =~ s/\Q{yabb my_banning}\E/$my_banning/xsm;
     $showProfile =~ s/\Q{yabb my_reminder}\E/$my_reminder/xsm;
     $showProfile =~ s/\Q{yabb my_recent}\E/$my_recent/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt21}\E/$profile_txt{'21'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt893}\E/$profile_txt{'893'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt233}\E/$profile_txt{'233'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt894}\E/$profile_txt{'894'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt459}\E/$profile_txt{'459'}/xsm;
+    $showProfile =~ s/\Q{yabb profile_txt819}\E/$profile_txt{'819'}/xsm;
 ## Mod Hook showProfile2 ##
 
     $yytitle = $profile_txt{'92u'};
@@ -3441,16 +3580,16 @@ sub usersrecentposts {
     @data = map { 0 } @data;
 
     get_forum_master();
-    for my $catid (@categoryorder) {
-        for ( split /,/xsm, $cat{$catid} ) {
+    foreach my $catid (@categoryorder) {
+        foreach ( split /,/xsm, $cat{$catid} ) {
             $boardcat{$_} = $catid;
             @{ $catinfos{$_} } = split /[|]/xsm, $catinfo{$catid}, 3;
         }
     }
 
-  RECENTCHECK: for my $thread (@recent) {
+  RECENTCHECK: foreach my $thread (@recent) {
         MessageTotals( 'load', $thread );
-        if ( ${$thread}{'board'} eq q{} ) {
+        if ( !${$thread}{'board'} ) {
             $save_recent = 1;
             delete $recent{$thread};
             $recentcount--;
@@ -3761,7 +3900,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
         $showProfile =~ s/\Q{yabb poster}\E/$mname/xsm;
         $showProfile =~ s/\Q{yabb mypostborder}\E/$mypostborder/xsm;
 
-        if ( $tstate != 1 ) {
+        if ( $tstate !~ m/1/xsm ) {
             if ( ${ $uid . $username }{'thread_notifications'} =~
                 /\b$tnum\b/xsm )
             {
@@ -3817,7 +3956,7 @@ sub DrawGroups {
         my (
             $name, undef, undef, undef, undef, undef,
             undef, undef, undef, undef, $additional
-        ) = split /[|]/xsm, $NoPost{$key};
+        ) = @{$NoPost{$key}};
         next if ( !$show_additional && !$additional ) || $position eq $key;
 
         $groupsel .=
@@ -3827,14 +3966,6 @@ sub DrawGroups {
         $selsize++;
     }
     return ( $groupsel, ( $selsize > 6 ? 6 : $selsize ) );
-}
-
-sub isselected {
-    my ($inp) = @_;
-
-    # Return a ref so we can be used like ${isselected($var)} inside a string
-    return \' selected="selected"' if $inp;
-    return \q{};
 }
 
 1;

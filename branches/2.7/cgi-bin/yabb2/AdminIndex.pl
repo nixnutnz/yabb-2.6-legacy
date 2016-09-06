@@ -16,6 +16,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
@@ -95,14 +96,14 @@ if ( !$maintenance && -e "$vardir/maintenance.lock" ) { $maintenance = 2; }
 # in seconds, than the browser will call the script again
 # until all is done. Don't put it too high or you will run
 # into server or browser timeout.
-$max_process_time = 20;
+$max_process_time = 5;
 
 $action = $INFO{'action'};
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };
 if ( eval { yymain(); } ) {
     yymain();
 }
-else { fatal_error( 'untrapped', ":<br />$EVAL_ERROR" ); }
+elsif($EVAL_ERROR) { fatal_error( 'untrapped', ":<br />$EVAL_ERROR" ); }
 
 sub yymain {
 
@@ -113,7 +114,7 @@ sub yymain {
     }
 
     # Do Sessions Checking
-    if ( !$iamguest && $sessions == 1 && $sessionvalid != 1 ) {
+    if ( !$iamguest && $sessions && $sessionvalid != 1 ) {
         $yySetLocation = qq~$scripturl?action=revalidatesession~;
         redirectexit();
     }
@@ -133,7 +134,7 @@ sub yymain {
         }
     }
 
-    if ( $action ne q{} ) {
+    if ( $action ) {
         if ( $action eq $randaction ) {
             require Sources::Decoder;
             convert();
@@ -223,7 +224,7 @@ sub AdmImgLoc2 {
 sub AdminTemplate {
     $admin_template = ${ $uid . $username }{'template'};
     if ( !-d "$htmldir/Templates/Admin/$admin_template"
-        || $admin_template eq q{} )
+        || !$admin_template )
     {
         $admin_template = 'default';
     }
@@ -299,13 +300,13 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/$admin_template.css
         "newsettings;page=maintenance|$admin_txt{'67'}|$admin_txt{'67'}|",
         "backup|$admintxt{'a3_sub5'}|$admintxt{'a3_label5'}|",
         "rebuildmesindex|$admintxt{'a7_sub2a'}|$admintxt{'a7_label2a'}|",
+        "deleteoldthreads|$admintxt{'a7_sub5'}|$admintxt{'a7_label5'}|",
         "boardrecount|$admintxt{'a7_sub2'}|$admintxt{'a7_label2'}|",
+        "rebuildmemhist|$admintxt{'a7_sub4a'}|$admintxt{'a7_label4a'}|",
         "rebuildmemlist|$admintxt{'a7_sub4'}|$admintxt{'a7_label4'}|",
         "membershiprecount|$admintxt{'a7_sub3'}|$admintxt{'a7_label3'}|",
-        "rebuildmemhist|$admintxt{'a7_sub4a'}|$admintxt{'a7_label4a'}|",
         "rebuildnotifications|$admintxt{'a7_sub4b'}|$admintxt{'a7_label4b'}|",
         "clean_log|$admintxt{'a7_sub1'}|$admintxt{'a7_label1'}|",
-        "deleteoldthreads|$admintxt{'a7_sub5'}|$admintxt{'a7_label5'}|",
         "manageattachments|$admintxt{'a7_sub6'}|$admintxt{'a7_label6'}|",
     );
 

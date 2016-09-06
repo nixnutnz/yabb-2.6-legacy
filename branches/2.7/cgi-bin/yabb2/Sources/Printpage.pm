@@ -21,6 +21,7 @@ $printpagepmver  = 'YaBB 2.7.00 $Revision$';
 if (@printpagepmmods) {
     $printpagepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -395,22 +396,30 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         enable_yabbc();
         DoUBBC();
     }
+    $showurla = q{};
+    if ( $showprinturl ) {
+        $showurla = $showurl;
+    }
+
     $threadpost = $message;
     $output .= $myprint_im;
     $output =~ s/\Q{yabb printtitle}\E/$mbname - $maintxt{'668'}/gxsm;
+    $output =~ s/\Q{yabb showurl}\E/$showurla/gxsm;
     $output =~ s/\Q{yabb boxtitle}\E/$boxtitle/gxsm;
     $output =~ s/\Q{yabb storetitle}\E/$storetitle/gxsm;
     $output =~ s/\Q{yabb printDate}\E/$printDate/gxsm;
-    $output =~
-      s/\Q{yabb threadtitle}\E/$inmes_txt{'70'}: <b>$threadtitle<\/b>/gxsm;
-    $output =~
-      s/\Q{yabb threadDate}\E/$inmes_txt{'317'}: <b>$threadDate<\/b>/gxsm;
+    $output =~ s/\Q{yabb threadtitle}\E/$inmes_txt{'70'}: <b>$threadtitle<\/b>/gxsm;
+    $output =~ s/\Q{yabb threadDate}\E/$inmes_txt{'317'}: <b>$threadDate<\/b>/gxsm;
     $output =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
     $output =~ s/\Q{yabb pmAttachments}\E/$pmAttachments/gxsm;
     $output =~ s/\Q{yabb totitle}\E/$toTitle $usernameTo/gxsm;
     $output =~ s/\Q{yabb fromtitle}\E/$fromTitle $usernameFrom/gxsm;
     $output =~ s/\Q{yabb totitlecc}\E/$toTitleCC $usernameToCC/gxsm;
     $output =~ s/\Q{yabb totitlebcc}\E/$toTitleBCC $usernameToBCC/gxsm;
+    $output =~ s/\Q{yabb load_imtxt_71}\E/$load_imtxt{'71'}/gxsm;
+    $output =~ s/\Q{yabb inmes_txt_usercp}\E/$inmes_txt{'usercp'}/gxsm;
+    $output =~ s/\Q{yabb caller}\E/$INFO{'caller'}/gxsm;
+    $output =~ s/\Q{yabb id}\E/$INFO{'id'}/gxsm;
 
     image_resize();
 
@@ -581,15 +590,16 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         $printthread =~ s/\Q{yabb attach}\E/$myattach/gxsm;
         $printthread =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
     }
-
     $output = $myprint;
     $output =~ s/\Q{yabb num}\E/$num/gxsm;
     $output =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
+    $output =~ s/\Q{yabb boardname}\E/$boardname/gxsm;
     $output =~ s/\Q{yabb messagetitle}\E/$messagetitle/gxsm;
     $output =~ s/\Q{yabb startedby}\E/$startedby/gxsm;
     $output =~ s/\Q{yabb startedon}\E/$startedon/gxsm;
     $output =~ s/\Q{yabb pagetitle}\E/$mbname - $pageTitle/gxsm;
     $output =~ s/\Q{yabb printthread}\E/$printthread/gxsm;
+    $output =~ s/\Q{yabb cat}\E/$cat/gxsm;
 
     image_resize();
 

@@ -14,7 +14,7 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 use Time::Local;
 our $VERSION = '2.7.00';
@@ -24,6 +24,7 @@ $eventcalpmver  = 'YaBB 2.7.00 $Revision$';
 if (@eventcalpmmods) {
     $eventcalpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('EventCal');
@@ -110,7 +111,7 @@ sub eventcal {
 
     my $Allow_Event_Imput = 0;
     if ($iamadmin) { $Allow_Event_Imput = 1; }
-    elsif ( $CalEventPerms eq q{} ) { $Allow_Event_Imput = 1; }
+    elsif ( !$CalEventPerms ) { $Allow_Event_Imput = 1; }
     elsif ( $iamguest && $CalEventPerms ) { $Allow_Event_Imput = 0; }
     else {
       TOPLOOP: foreach my $element ( split /,/xsm, $CalEventPerms ) {
@@ -133,7 +134,7 @@ sub eventcal {
 
     # GoTo Box begin
 
-    if ( $INFO{'calgotobox'} == 1 ) {
+    if ( $INFO{'calgotobox'} ) {
         $goyear = $FORM{'calyear'};
         $gomon  = $FORM{'calmon'};
         $goday  = $FORM{'calday'};
@@ -197,7 +198,7 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
     # Get Navi begin
 
     if ( !$INFO{'calmon'} )      { $INFO{'calmon'} = $mon + 1; }
-    if ( !$INFO{'calmon'} > 12 ) { $INFO{'calmon'} = 12; }
+    if ( $INFO{'calmon'} > 12 ) { $INFO{'calmon'} = 12; }
 
     $next_mon  = $INFO{'calmon'} + 1;
     $next_year = $year;
@@ -252,7 +253,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
         if ( $mday == $i && !$sel_day ) {
             $sel = ' selected="selected"';
         }
-        elsif ( $sel_day == $i ) {
+        elsif ( $sel_day && $sel_day == $i ) {
             $sel = ' selected="selected"';
         }
         $sdays_inner .=
@@ -270,7 +271,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
         if ( $mon == $i && !$sel_mon ) {
             $sel = ' selected="selected"';
         }
-        elsif ( $sel_mon == $i ) {
+        elsif ( $sel_mon && $sel_mon == $i ) {
             $sel = ' selected="selected"';
         }
         $smonths_inner .=
@@ -291,7 +292,7 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
         if ( $year == $i && !$sel_year ) {
             $sel = ' selected="selected"';
         }
-        elsif ( $sel_year == $i ) {
+        elsif ( $sel_year && $sel_year == $i ) {
             $sel = ' selected="selected"';
         }
         $syears_inner   .= qq~        <option value="$i"$sel>$i</option>\n~;
@@ -329,7 +330,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         $boxyears_inner
     </select>~;
 
-    my $addevdate;
+    my $addevdate = q{};
     if ( $timeord == 1 ) {
         $addevdate     = $sdays . $smonths;
         $calgotobox_dm = $boxdays . $boxmonths;
@@ -350,7 +351,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     # YaBBC Section begin
 
     my $mycalout_post;
-    if ( $INFO{'addnew'} == 1 ) {
+    if ( $INFO{'addnew'} ) {
         if ( $INFO{'edit_cal_even'} ) {
             $var_cal{'calevent'} = "$var_cal{'caledit'}:";
         }
@@ -639,11 +640,12 @@ $mycalout_addevent
     if ( $INFO{'eventdate'} ) { $bd_year = substr $INFO{'eventdate'}, 0, 4; }
     else                      { $bd_year = $year; }
 
-    my @caldata;
+    my @caldata = ();
     ## Get Birthdays ##
     if ( ( $Show_EventBirthdays == 1 && !$iamguest )
         || $Show_EventBirthdays == 2 )
     {
+        if( -e "$vardir/eventcalbday.db") {
         fopen( EVENTBIRTH, "$vardir/eventcalbday.db" );
         my @birthmembers = <EVENTBIRTH>;
         fclose(EVENTBIRTH);
@@ -693,8 +695,10 @@ $mycalout_addevent
 qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age</span>|birthday|0|$ns~;
         }
     }
+    }
 
     ## Get Events ##
+	if (-e "$vardir/eventcal.db" ) {
     fopen( EVENTFILE, "$vardir/eventcal.db" );
     my @calinput = <EVENTFILE>;
     fclose(EVENTFILE);
@@ -717,7 +721,7 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
         }
         elsif ( $cal_type == 1 && $iamguest ) { next; }
 
-        if ( $cal_icon eq q{} ) { $cal_icon = 'eventinfo'; }
+			if ( !$cal_icon ) { $cal_icon = 'eventinfo'; }
 
         if ( $cal_type2 == 2 ) {
             $c_mon  = $st_mon;
@@ -772,7 +776,7 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
 
         push @caldata,
 qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_noname|$cal_type2|$ns|$g~;
-
+        }
     }
 
     # Event data end
@@ -850,8 +854,7 @@ qq~$cal_date|$cal_type|$cal_name|$cal_time|$cal_hide|$cal_event|$cal_icon|$cal_n
                     {
                         $cnonam = 0;
                     }
-                    else { $cnonam = $cnonam; }
-                    if ( $cnonam == 1 ) { $eventuserlink = q{}; }
+                    if ( $cnonam ) { $eventuserlink = q{}; }
                     else {
                         $eventuserlink =
                           "<br /><b>$var_cal{'by'}</b> $eventuserlink";
@@ -927,8 +930,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
 
             if (   !exists( ${ 'event' . $d_year . $d_mon . $d_day }{'calday'} )
                 && !$eventfound
-                && !exists( ${ 'bday' . $d_year . $d_mon . $d_day }{'calday'} )
-              )
+                && !exists( ${ 'bday' . $d_year . $d_mon . $d_day }{'calday'} ) )
             {
                 $mycalout_no = $mycalout_noevent;
             }
@@ -976,7 +978,7 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
                 if ( !$Show_ColorLinks ) {
                     $memrealname = $memberinf{$cnam}[0];
                 }
-                if ( $cico eq q{} ) { $cico = 'eventinfo'; }
+                if ( !$cico ) { $cico = 'eventinfo'; }
                 if ( $cdat =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
                     ( $dd_year, $dd_mon, $dd_day ) = ( $1, $2, $3 );
                 }
@@ -988,7 +990,7 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
                 $edit_event   = q{};
                 $icon_text    = $var_cal{$cico};
 
-                if ( $ns eq 'NS' ) {
+                if ( $ns && $ns eq 'NS' ) {
                     $message = q~[noparse]~ . $ceve . q~[/noparse]~;
                 }
                 else { $message = $ceve; }
@@ -1020,7 +1022,7 @@ qq~<span class="small"> $cal_icon{'eventmorebd'} <a href="$scripturl?action=birt
                         $cnonam = 0;
                     }
                     else { $cnonam = $cnonam; }
-                    if ( $cnonam == 1 ) { $eventuserlink = q{}; }
+                    if ( $cnonam ) { $eventuserlink = q{}; }
                     else {
                         $eventuserlink =
                           "<br /><b>$var_cal{'by'}</b>  $eventuserlink";
@@ -1083,8 +1085,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         $mycalout_greet =~ s/\Q{yabb event_id}\E/$event_id/xsm;
                         $mycalout_greet =~
                           s/\Q{yabb mycalout_post}\E/$mycalout_post/xsm;
-                        $mycalout_greet =~
-                          s/\Q{yabb calevent}\E/$editmessage/xsm;
+                        $mycalout_greet =~ s/\Q{yabb calevent}\E/$editmessage/xsm;
                         $mycalout_greet =~ s/\Q{yabb nscheck}\E/$nsc/xsm;
                         $mycalout_greet =~
                           s/\Q{yabb modify}\E/$cal_icon{'modify'}/xsm;
@@ -1229,7 +1230,7 @@ qq~$var_cal{'calcoming'} $var_cal{'calsubtitle'} ($DisplayEvents $var_cal{'calda
             }
         }
 
-        if ( $cicon eq q{} ) { $cico = 'eventinfo'; }
+        if ( !$cicon ) { $cico = 'eventinfo'; }
         $CalShortEvent ||= 0;
         my @matches   = $cevent =~ /<br.*?>/gxsm;
         my $linecount = @matches;
@@ -1309,8 +1310,8 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;eventdate=$cyear$cmon$cday;cali
             {
                 $cnoname = 0;
             }
-            else { $cnoname = $cnoname; }
-            if ( $cnoname == 1 ) { $eventuserlink = q{}; }
+            else { $cnoname = 1; }
+            if ( $cnoname ) { $eventuserlink = q{}; }
             else {
                 $eventuserlink =
 qq~<br /><b>$var_cal{'by'}</b> $eventuserlink<hr class="hr2" />~;
@@ -1472,7 +1473,7 @@ qq~<span class="small" style="color:$Event_TodayColor"><b>$i</b></span>~;
         else {
             $cal_out_dy .= $mycal_showday_b;
             $cal_out_dy =~ s/\Q{yabb cal_days}\E/$cal_days/xsm;
-            $cal_out_dy =~ s/\Q{yabb sel}/$sel\E/xsm;
+            $cal_out_dy =~ s/\Q{yabb sel}\E/$sel/xsm;
         }
 
         $e_day++;
@@ -1633,8 +1634,11 @@ sub add_cal {
         if ( $FORM{'email'} !~ /^$invalmailchar$/xsm ) {
             Preview("$post_txt{'240'} $post_txt{'69'} $post_txt{'241'}");
         }
-        if (   ( $FORM{'email'} =~ /$invalemaila/xsm )
-            || ( $FORM{'email'} !~ /$invalemailb/xsm ) )
+        if (
+            ( $FORM{'email'} =~ /$invalemaila/xsm )
+            || ( $FORM{'email'} !~
+                /$invalemailb/xsm )
+          )
         {
             Preview("$post_txt{'500'}");
         }
@@ -1662,9 +1666,11 @@ sub add_cal {
             FromChars($guestname);
             ToHTML($guestname);
         }
-        fopen( EVENTFILE, "$vardir/eventcal.db" );
-        my @calinput = <EVENTFILE>;
-        fclose(EVENTFILE);
+        my @calinput = ();
+        if ( -e "$vardir/eventcal.db") {fopen( EVENTFILE, "$vardir/eventcal.db" );
+            @calinput = <EVENTFILE>;
+            fclose(EVENTFILE);
+        }
         if ( $FORM{'editid'} ) {
             foreach my $i ( 0 .. $#calinput ) {
                 chomp $calinput[$i];

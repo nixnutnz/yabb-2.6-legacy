@@ -23,6 +23,7 @@ $advancedtabspmver  = 'YaBB 2.7.00 $Revision$';
 if (@advancedtabspmmods) {
     $advancedtabspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub AddNewTab {
@@ -107,7 +108,7 @@ sub AddNewTab2 {
         }
         else {
             $tabaction = lc $tabtext;
-            $tabaction =~ s/ /\_/gsm;
+            $tabaction =~ s/\ /_/gxsm;
             $tmpisaction = 0;
         }
         $tabaction =~ s/\W/_/gxsm;

@@ -13,8 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-#use warnings;
-no warnings qw(uninitialized once redefine);
+# use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode_utf8 encode_utf8);
@@ -25,6 +24,7 @@ $memberlistpmver  = 'YaBB 2.7.00 $Revision$';
 if (@memberlistpmmods) {
     $memberlistpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( $iamguest && $ML_Allowed ) { fatal_error('no_access'); }
@@ -47,25 +47,25 @@ $dr_warning     = q{};
 $forumstart     = $forumstart ? stringtotime($forumstart) : '1104537600';
 
 sub Ml {
-
     # Decides how to sort memberlist, and gives default sort order
-
     if ( !$barmaxnumb ) { $barmaxnumb = 500; }
     if ( $barmaxdepend == 1 ) {
         $barmax = 1;
-        ManageMemberinfo('load');
-        while ( ( $key, $value ) = each %memberinf ) {
-            ( undef, undef, undef, $memposts ) = split /[|]/xsm, $value;
-            if ( $memposts > $barmax ) { $barmax = $memposts; }
+        my @bar = ();
+        require Variables::Memberinfo;
+        foreach my $i ( keys %memberinf ) {
+            $memposts = $memberinf{$i}[3] || 0;
+            push @bar, $memposts;
         }
-        undef %memberinf;
+        @bar = reverse sort @bar;
+        if ( $bar[0] > $barmax ) { $barmax = $bar[0]; }
     }
     else {
         $barmax = $barmaxnumb;
     }
 
-    $FORM{'sortform'} ||= $INFO{'sortform'};    # Fix for Javascript disabled
-    if ( $INFO{'sort'} eq q{} && $FORM{'sortform'} eq q{} ) {
+    $FORM{'sortform'} ||= $INFO{'sortform'} || q{};    # Fix for Javascript disabled
+    if ( !$INFO{'sort'} && !$FORM{'sortform'} ) {
         $INFO{'sort'}     = $defaultml;
         $FORM{'sortform'} = $defaultml;
     }
@@ -84,39 +84,31 @@ qq(<a href="$scripturl?action=ml;sort=mlletter;letter=$page" class="$letterclass
 qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$letterclass"><b>$ml_txt{'800'}</b></a> );
     }
 
-    if   ( $INFO{'start'} eq q{} ) { $start = 0; }
-    else                           { $start = "$INFO{'start'}"; }
+    $start = $INFO{'start'} || 0;
+    my @selchksel = qw(posts regdate position user );
+    %selchksel = ();
+    foreach my $i (@selchksel) {
+        $selchksel{$i} = [ qq~class="$header_class"~, ''];
+    }
     if ( $FORM{'sortform'} eq 'posts' || $INFO{'sort'} eq 'posts' ) {
-        $selcPost .= q~ selected="selected"~;
-        $selPost  .= qq~class="$header_class_selected"~;
+        $selchksel{'posts'} = [ qq~class="$header_class_selected"~, ' selected="selected"' ];
+        MLTop();
     }
-    else { $selPost .= qq~class="$header_class"~; }
     if ( $FORM{'sortform'} eq 'regdate' || $INFO{'sort'} eq 'regdate' ) {
-        $selcReg .= q~ selected="selected"~;
-        $selReg  .= qq~class="$header_class_selected"~;
+        $selchksel{'regdate'} = [ qq~class="$header_class_selected"~, ' selected="selected"' ];
+        MLDate();
     }
-    else { $selReg .= qq~class="$header_class"~; }
     if ( $FORM{'sortform'} eq 'position' || $INFO{'sort'} eq 'position' ) {
-        $selcPos .= q~ selected="selected"~;
-        $selPos  .= qq~class="$header_class_selected"~;
+        $selchksel{'position'} = [ qq~class="$header_class_selected"~, ' selected="selected"' ];
+        MLPosition();
     }
-    else { $selPos .= qq~class="$header_class"~; }
     if (   $FORM{'sortform'} eq 'username'
         || $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' )
     {
-        $selcUser .= q~ selected="selected"~;
-        $selUser  .= qq~class="$header_class_selected"~;
+        $selchksel{'user'} = [ qq~class="$header_class_selected"~, ' selected="selected"' ];
     }
-    else { $selUser .= qq~class="$header_class"~; }
 
-    if ( $FORM{'sortform'} eq 'posts' || $INFO{'sort'} eq 'posts' ) { MLTop(); }
-    if ( $FORM{'sortform'} eq 'regdate' || $INFO{'sort'} eq 'regdate' ) {
-        MLDate();
-    }
-    if ( $FORM{'sortform'} eq 'position' || $INFO{'sort'} eq 'position' ) {
-        MLPosition();
-    }
     if ( $FORM{'sortform'} eq 'memsearch' || $INFO{'sort'} eq 'memsearch' ) {
         FindMembers();
     }
@@ -130,16 +122,14 @@ qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$lettercla
 }
 
 sub MLByLetter {
-    $letter = decode_utf8( $INFO{'letter'} );
-    $i      = 0;
-
-    ManageMemberinfo('load');
+    $letter = decode_utf8( $INFO{'letter'} ) || q{};
+    require Variables::Memberinfo;
     %namehash = ();
     foreach my $i ( keys %memberinf ) {
-        my @inf = @{ $memberinf{$i} };
-        $namehash{ $inf[0] } = [ $i, $inf[1] ];
+        $namehash{ $memberinf{$i}[0] } = [ $i, $memberinf{$i}[1] ];
     }
     @namehash = sort { lc $a cmp lc $b } keys %namehash;
+    my $j = 0;
     foreach my $listname (@namehash) {
         $memrealname = $listname;
         $membername  = $namehash{$listname}[0];
@@ -151,8 +141,8 @@ sub MLByLetter {
         if ($letter) {
             $SearchName = lc( substr $memrealname, 0, 1 );
             if ( $SearchName eq lc $letter ) {
-                $ToShow[$i] = $membername;
-                $i++;
+                $ToShow[$j] = $membername;
+                $j++;
             }
             elsif (
                 $letter eq 'other'
@@ -160,13 +150,13 @@ sub MLByLetter {
                     || ( $SearchName gt lc $omega ) )
               )
             {
-                $ToShow[$i] = $membername;
-                $i++;
+                $ToShow[$j] = $membername;
+                $j++;
             }
         }
         else {
-            $ToShow[$i] = $membername;
-            $i++;
+            $ToShow[$j] = $membername;
+            $j++;
         }
     }
     undef %memberinf;
@@ -199,6 +189,7 @@ sub MLByLetter {
         if ($letter) {
             $yymain .= $my_letter;
             $yymain =~ s/\Q{yabb headercount}\E/$headercount/xsm;
+            $yymain =~ s/\Q{yabb ml_txt_760}\E/$ml_txt{'760'}/xsm;
         }
     }
     undef @ToShow;
@@ -212,7 +203,9 @@ sub MLTop {
     %top_list = ();
     ManageMemberinfo('load');
     while ( ( $membername, $value ) = each %memberinf ) {
-        ( $memrealname, undef, undef, $memposts ) = split /[|]/xsm, $value;
+        ( $memrealname, undef, undef, $memposts ) = @{$value};
+        $memposts ||= 0;
+        $memrealname ||= q{};
         $memposts = sprintf '%06d', ( 999_999 - $memposts );
         $top_list{$membername} = qq~$memposts|$memrealname~;
     }
@@ -246,9 +239,9 @@ sub MLPosition {
     }
 
   MEMBERPOSITION: while ( ( $membername, $value ) = each %memberinf ) {
-        ( $memberrealname, undef, $memposition, $memposts ) =
-          split /[|]/xsm, $value;
-        $memposts = 9_999_999_999 - $memposts;
+        ( $memberrealname, undef, $memposition, $memposts ) = @{$value};
+        $memposts ||= 0;
+        $memposts = sprintf '%06d', ( 999_999 - $memposts );
 
         foreach ( keys %Group ) {
             if ( $memposition eq $_ ) {
@@ -303,14 +296,15 @@ sub MLDate {
     buildIndex();
     buildPages(1);
     require Variables::Memberlist;
-    $buffer = keys %memberlist;
     while ( ( $key, $value ) = each %memberlist ) {
         $hash2{$value} = $key;
     }
     @buffer = sort keys %hash2;
 
     foreach my $counter ( $start .. ( $start + $MembersPerPage - 1 ) ) {
-        showRows( $hash2{ $buffer[$counter] } );
+        if ($buffer[$counter]) {
+            showRows( $hash2{ $buffer[$counter] } );
+        }
     }
     buildPages(0);
     $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'233'} $numshow";
@@ -322,7 +316,7 @@ sub showRows {
     my ($user) = @_;
 
     my $wwwshow = qq~<img src="$imagesdir/$ml_trans" width="15" alt="" />~;
-    if ( $user ne q{} ) {
+    if ( $user ) {
         LoadUser($user);
         my $group_stars = q{};
         if ($group_stars_ml) {
@@ -330,10 +324,11 @@ sub showRows {
             $memberstar{$user} =~ s/<br.*?>//gxsm;
             $group_stars = qq~<br />$memberstar{$user}~;
         }
-        if ( ${ $uid . $user }{'realname'} eq q{} ) {
+        if ( !${ $uid . $user }{'realname'} ) {
             ${ $uid . $user }{'realname'} = $user;
         }
-        if ( !$minlinkweb ) { $minlinkweb = 0; }
+        $minlinkweb ||= 0;
+        ${ $uid . $user }{'postcount'} ||=0;
         if (
             ${ $uid . $user }{'weburl'}
             && (   ${ $uid . $user }{'postcount'} >= $minlinkweb
@@ -356,7 +351,7 @@ qq~<a href="${$uid.$user}{'weburl'}" target="_blank"><img src="$micon_bg{'www'}"
             $Bar =
 qq~<img src="$imagesdir/$ml_bar" width="$barwidth" height="10" alt="" />~;
         }
-        if ( $Bar eq q{} ) { $Bar = '&nbsp;'; }
+        if ( !$Bar ) { $Bar = '&nbsp;'; }
         my $additional_tds =
           $extendedprofiles ? ext_memberlist_tds($user) : q{};
 
@@ -366,7 +361,7 @@ qq~<img src="$imagesdir/$ml_bar" width="$barwidth" height="10" alt="" />~;
             $dr_regdate =~ s/(.*)(, 1?\d):\d\d.*/$1/xsm;
             if ( $iamadmin && ${ $uid . $user }{'regtime'} < $forumstart ) {
                 $dr_regdate =
-                  qq~<span style="color: #AA0000;">$dr_regdate *</span>~;
+                  qq~<span class="important">$dr_regdate *</span>~;
                 $dr_warning =
 qq~$ml_txt{'dr_warning'} <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=main">$ml_txt{'dr_warnurl'}</a>~;
             }
@@ -420,6 +415,7 @@ qq~<img src="$micon_bg{'email'}" alt="$img_txt{'69'}" title="~
 
         $yypostcount = NumberFormat( ${ $uid . $user }{'postcount'} );
 
+        $additional_tds ||= q{};
         $yymain .= $my_memrow;
         $yymain =~ s/\Q{yabb add_tds}\E/$additional_tds/xsm;
         $yymain =~ s/\Q{yabb userpic}\E/$userpic/xsm;
@@ -447,13 +443,13 @@ sub buildIndex {
             $allselected );
         $indexdisplaynum = 3;
         $dropdisplaynum  = 10;
-        if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
+        if ( !$FORM{'sortform'} ) { $FORM{'sortform'} = $INFO{'sort'}; }
         $postdisplaynum = 3;
         $startpage      = 0;
         $max            = $memcount;
-        if ( $SearchStr ne q{} ) { $findmember = qq~;member=$SearchStr~; }
+        if ( $SearchStr ) { $findmember = qq~;member=$SearchStr~; }
 
-        if ( $INFO{'start'} eq 'all' ) {
+        if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
             $MembersPerPage = $max;
             $all            = 1;
             $allselected    = q~ selected="selected"~;
@@ -661,15 +657,21 @@ sub buildPages {
     my ($inp) = @_;
 
     $FindForm .= $my_findform;
+    $FindForm =~ s/\Q{yabb ml_txt_801}\E/$ml_txt{'801'}/gxsm;
+    $FindForm =~ s/\Q{yabb ml_txt_2}\E/$ml_txt{'2'}/gxsm;
+    $selcUser ||= q{};
+    $selcPos ||= q{};
+    $selcPost ||= q{};
+    $selcReg ||= q{};
 
     $SortJump .= qq(
             <label for="sortform">$ml_txt{'1'}</label>
            <form action="$scripturl?action=ml" method="get" style="display: inline;">
             <select name="sortform" id="sortform" onchange="submit()">
-            <option value="username"$selcUser>$ml_txt{'35'}</option>
-            <option value="position"$selcPos>$ml_txt{'87'}</option>
-            <option value="posts"$selcPost>$ml_txt{'21'}</option>
-            <option value="regdate"$selcReg>$ml_txt{'233'}</option>
+            <option value="username"$selchksel{'user'}[1]>$ml_txt{'35'}</option>
+            <option value="position"$selchksel{'position'}[1]>$ml_txt{'87'}</option>
+            <option value="posts"$selchksel{'posts'}[1]>$ml_txt{'21'}</option>
+            <option value="regdate"$selchksel{'regdate'}[1]>$ml_txt{'233'}</option>
             </select>
             <input type="hidden" name="action" value="ml" />
            </form>
@@ -681,7 +683,7 @@ sub buildPages {
         $headertop = 7;
     }
 
-    my $additional_headers;
+    my $additional_headers = q{};
     $headercount = $headertop;
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
@@ -690,6 +692,7 @@ sub buildPages {
     }
     if ( $showuserpicml && $allowpics ) {
         $row_userpic = $my_row_userpic;
+        $row_userpic =~ s/\Q{yabb ml_txt_34}\E/$ml_txt{'34'}/xsm;
         $col_userpic = q~<col style="width:auto" />~;
     }
     else {
@@ -699,13 +702,19 @@ sub buildPages {
 
     $TableHeader .= $my_header;
     $TableHeader =~ s/\Q{yabb row_userpic}\E/$row_userpic/xsm;
-    $TableHeader =~ s/\Q{yabb selUser}\E/$selUser/xsm;
-    $TableHeader =~ s/\Q{yabb selPos}\E/$selPos/xsm;
-    $TableHeader =~ s/\Q{yabb selPost}\E/$selPost/xsm;
-    $TableHeader =~ s/\Q{yabb selReg}\E/$selReg/xsm;
+    $TableHeader =~ s/\Q{yabb selUser}\E/$selchksel{'user'}[0]/xsm;
+    $TableHeader =~ s/\Q{yabb selPos}\E/$selchksel{'position'}[0]/xsm;
+    $TableHeader =~ s/\Q{yabb selPost}\E/$selchksel{'posts'}[0]/xsm;
+    $TableHeader =~ s/\Q{yabb selReg}\E/$selchksel{'regdate'}[0]/xsm;
     $TableHeader =~ s/\Q{yabb add_headers}\E/$additional_headers/xsm;
+    $TableHeader =~ s/\Q{yabb ml_txt_21}\E/$ml_txt{'21'}/gxsm;
+    $TableHeader =~ s/\Q{yabb ml_txt_35}\E/$ml_txt{'35'}/gxsm;
+    $TableHeader =~ s/\Q{yabb ml_txt_307}\E/$ml_txt{'307'}/gxsm;
+    $TableHeader =~ s/\Q{yabb ml_txt_96}\E/$ml_txt{'96'}/gxsm;
+    $TableHeader =~ s/\Q{yabb ml_txt_87}\E/$ml_txt{'87'}/gxsm;
+    $TableHeader =~ s/\Q{yabb ml_txt_234}\E/$ml_txt{'234'}/gxsm;
 
-    if ( $LetterLinks ne q{} ) {
+    if ( $LetterLinks ) {
         $TableHeader .= $my_letterlinks;
         $TableHeader =~ s/\Q{yabb letterlinks}\E/$LetterLinks/xsm;
         $TableHeader =~ s/\Q{yabb headercount}\E/$headercount/xsm;
@@ -721,6 +730,7 @@ sub buildPages {
         $yymain .= qq~$my_memberlist_main
             $TableHeader
         ~;
+        $pageindex1 ||= q{};
         $yymain =~ s/\Q{yabb col_userpic}\E/$col_userpic/xsm;
         $yymain =~ s/\Q{yabb pageindex1}\E/$pageindex1/xsm;
         $yymain =~ s/\Q{yabb findform}\E/$FindForm/xsm;
@@ -728,6 +738,8 @@ sub buildPages {
 
     }
     else {
+        $pageindex2 ||= q{};
+        $pageindexjs ||= q{};
         $yymain .= $my_memberlist_bottom;
         $yymain =~ s/\Q{yabb headercount}\E/$headercount/gxsm;
         $yymain =~ s/\Q{yabb pageindex2}\E/$pageindex2/xsm;
@@ -745,7 +757,7 @@ sub FindMembers {
     ManageMemberinfo('load');
     my %memberfind = ();
     while ( ( $membername, $value ) = each %memberinf ) {
-        ( $memrealname, $mememail, undef ) = split /[|]/xsm, $value, 3;
+        ( $memrealname, $mememail, undef ) = @{$value};
         if ( $memrealname =~ /$LookFor/ixsm ) {
             $memberfind{$membername} = $memrealname;
         }
@@ -767,7 +779,6 @@ sub FindMembers {
         my $i = $start;
         $numshown = 0;
         while ( $numshown < $MembersPerPage ) {
-            chomp $findmemlist[$i];
             showRows( $findmemlist[$i] );
             $numshown++;
             $i++;
@@ -776,11 +787,12 @@ sub FindMembers {
     else {
         $yymain .= $my_findmember;
         $yymain =~ s/\Q{yabb formmember}\E/$FORM{'member'}/xsm;
+        $yymain =~ s/\Q{yabb ml_txt_802}\E/$ml_txt{'802'}/xsm;
     }
     undef @findmemlist;
     undef %memberinf;
     buildPages(0);
-    $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshow";
+    $yytitle = "$ml_txt{'313'} $ml_txt{'4'} $ml_txt{'87'} $numshown";
     template();
     return;
 }

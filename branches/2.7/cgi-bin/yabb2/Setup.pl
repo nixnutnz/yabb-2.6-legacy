@@ -17,14 +17,16 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use warnings;
+no warnings qw(once);
+#no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 $setupplver  = 'YaBB 2.7.00 $Revision$';
 $yymycharset = 'UTF-8';
+$langdir = './Languages';
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -175,7 +177,7 @@ sub adminlogin {
 }
 
 sub adminlogin2 {
-    if ( $FORM{'password'} eq q{} ) {
+    if ( !$FORM{'password'} ) {
         setup_fatal_error('Setup Error: You should fill in your password!');
     }
 
@@ -1112,7 +1114,7 @@ sub checkmodules {
 <p class="none"><strong>If this page is on a white background, go back and check your path settings - the url for yabbfiles is configured wrong or yabbfiles/Templates/Forum/default.css is missing.</strong></p>~;
 
     require Admin::ModuleChecker;
-    $yymain =~ s/float: left; |<\/div>$//gsm;
+    $yymain =~ s/\Qfloat: left; \E|<\/div>$//gxsm;
 
     if ($dont_continue_setup) {
         $yymain .= q~
@@ -1277,7 +1279,6 @@ sub SetInstall2 {
         $authpass              = q~admin~;
         $webmaster_email   = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
         $mailtype          = 0;
-        $MenuType          = 2;
         $profilebutton     = 1;
         $allow_hide_email  = 1;
         $showlatestmember  = 1;
@@ -1416,6 +1417,17 @@ sub SetInstall2 {
         $MaxSigLen  = $siglength || 200;
         $fadertime  = 1000;
     }
+    my @setlist =
+       qw( accept_permafull accept_permalink addmemgroup_enabled birthday_on_reg buddyListEnabled bypass_lock_perm CalEventMods CalEventNoName CalEventPerms CalEventPrivate calsplit captchaEndChars captchaStartChars captchastyle clike_htaccess Delete_EventsUntil detachblock disallow_proxy_htaccess DisplayCalEvents distortion en_spam_questions enable_guest_view_limit enable_MCaway enable_MCstatusStealth enable_PMautoAway enable_quota enable_spell_check enable_YaBBBut enabletopichover findfile_maxsize findfile_root findfile_space findfile_time getreversedns gpvalid_en group_stars_ml guest_view_limit guest_view_limit_block harvester_htaccess helloserv hide_signat_for_guests hostusername imp_email_check ip_lookup maxdays maxdaysattach maxsizeattach min_reg_time No_ShortUbbc nomailspammer perm_domain perm_spacer pm_spam_chk PMAlertButtonGuests pmAttachGroups pmCheckExt pmDisplayPics PMenable_bcc PMenable_cc PMenableAlertButton PMenableGuestButton pmMaxDaysAttach pmMaxSizeAttach posttools profile_int referer_htaccess removenormalsmilies request_htaccess rssperm rsssymboards rsssymrecent script_htaccess Scroll_Events self_del_user Show_BdColorLinks Show_BdStarsign Show_BirthdayButton Show_BirthdayDate Show_BirthdaysList Show_caltoday Show_ColorLinks Show_EventBirthdays Show_EventButton Show_MiniCalIcons showage showinbox showpageall ShowSunday showuserage showuserpicml showzodiac spam_questions_case spam_questions_gp spam_questions_send spamfruits staff_reason string_htaccess symlink temp_switcher_allowed templ_switcher threadtools tlnomodday union_htaccess user_hide_attach_img user_hide_avatars user_hide_img user_hide_signat user_hide_smilies_row user_hide_user_text user_reason usertools );
+
+    foreach my $i (@setlist) {
+        ${$i} ||= q{};
+    }
+    my @setlistb =
+      qw(timeoffset imspam ppostperms ptopicperms enable_PMsearch editAgeLimit editGenderLimit);
+    foreach my $i (@setlistb) {
+        ${$i} ||= 0;
+    }
 
     my $setfile = << "EOF";
 ###############################################################################
@@ -1437,9 +1449,9 @@ sub SetInstall2 {
 
 \$settings_file_version = q~$settings_file_version~; # If not equal actual YaBBversion then the updating process is run through
 \$yymycharset = q~UTF-8~;                        #character encoding now 'UTF-8' only;
-\%templateset = (
-'Forum default' => "default|default|default|default|default|default|default|0|0|0|0",
-'Mobile' => "mobile|mobile|mobile|mobile|mobile|mobile|mobile|0|0|0|1",
+\%templateset = 
+('Forum default' => ['default','default','default','default','default','default','default','2','0','0','0'],
+'Mobile' => ['mobile','mobile','mobile','mobile','mobile','mobile','mobile','0','0','0','1'],
 );
 
 \$maintenance = $maintenance;                       # Set to 1 to enable Maintenance mode
@@ -1500,19 +1512,18 @@ sub SetInstall2 {
 
 ########## MemberGroups ##########
 
-\$Group{'Administrator'} = 'Forum Administrator|5|staradmin.png|#FF0000|0|0|0|0|0|0|0';
-\$Group{'Global Moderator'} = 'Global Moderator|5|stargmod.png|#0000FF|0|0|0|0|0|0|0';
-\$Group{'Mid Moderator'} = 'Forum Moderator|5|starfmod.png|#008080|0|0|0|0|0|0|0';
-\$Group{'Moderator'} = 'Board Moderator|5|starmod.png|#008000|0|0|0|0|0|0|0';
-\$Post{'500'} = "God Member|5|starsilver.png||0|0|0|0|0|0";
-\$Post{'250'} = "Senior Member|4|stargold.png||0|0|0|0|0|0";
-\$Post{'100'} = "Full Member|3|starblue.png||0|0|0|0|0|0";
-\$Post{'50'} = "Junior Member|2|stargold.png||0|0|0|0|0|0";
-\$Post{'-1'} = "New Member|1|stargold.png||0|0|0|0|0|0";
+\$Group{'Administrator'} = ['Forum Administrator', 5, 'staradmin.png', '#FF0000', 0, 0, 0, 0, 0, 0, 0];
+\$Group{'Global Moderator'} = ['Global Moderator', 5, 'stargmod.png', '#0000FF', 0, 0, 0, 0, 0, 0, 0];
+\$Group{'Mid Moderator'} = ['Forum Moderator', 5, 'starfmod.png', '#008080', 0, 0, 0, 0, 0, 0, 0];
+\$Group{'Moderator'} = ['Board Moderator', 5, 'starmod.png', '#008000', 0, 0, 0, 0, 0, 0, 0];
+\$Post{'500'} = ['God Member', 5, 'starsilver.png', '', 0, 0, 0, 0, 0, 0];
+\$Post{'250'} = ['Senior Member', 4, 'stargold.png', '', 0, 0, 0, 0, 0, 0];
+\$Post{'100'} = ['Full Member', 3, 'starblue.png', '', 0, 0, 0, 0, 0, 0];
+\$Post{'50'} = ['Junior Member', 2, 'stargold.png', '', 0, 0, 0, 0, 0, 0];
+\$Post{'-1'} = ['New Member', 1, 'stargold.png', '', 0, 0, 0, 0, 0, 0];
 
 ########## Layout ##########
 
-\$MenuType = $MenuType;                             # 1 for text menu or anything else for images menu
 \$profilebutton = $profilebutton;                   # 1 to show view profile button under post, or 0 for blank
 \$allow_hide_email = $allow_hide_email;             # Allow users to hide their email from public. Set 0 to disable
 \$showlatestmember = $showlatestmember;             # Set to 1 to display "Welcome Newest Member" on the Board Index
@@ -1537,7 +1548,7 @@ sub SetInstall2 {
 \$enableclicklog = $enableclicklog;                 # Set to 1 to track stats in Clicklog (this may slow your board down)
 \$showimageinquote = $showimageinquote;             # Set to 1 to shows images in quotes, 0 displays a link to the image
 \$showregdate = $showregdate;                       # Set to 1 to show date of registration.
-\@pallist = ("#ff0000","#00ff00","#0000ff","#00ffff","#ff00ff","#ffff00"); # color settings of the palette
+\@pallist = ('#ff0000','#00ff00','#0000ff','#00ffff','#ff00ff','#ffff00'); # color settings of the palette
 
 ########## Feature Settings ##########
 
@@ -1611,6 +1622,7 @@ sub SetInstall2 {
 \$fadelinks = $fadelinks;                           # Fade links as well as text?
 
 \$defaultusertxt = q~$defaultusertxt~;             # The dafault usertext visible in users posts
+\$usertxtwrap = 20;                                # Number of characters per line for user text
 \$timeout = $timeout;                               # Minimum time between 2 postings from the same IP
 \$HotTopic = $HotTopic;                             # Number of posts needed in a topic for it to be classed as "Hot"
 \$VeryHotTopic = $VeryHotTopic;                     # Number of posts needed in a topic for it to be classed as "Very Hot"
@@ -1631,38 +1643,16 @@ sub SetInstall2 {
 \$quoteuser_color = '$quoteuser_color';             # Set the default color of @ in userquote
 
 ########## MemberPic Settings ##########
+\%fix_img_size = (
+attach => [$fix_attach_img_size, $max_attach_img_width, $max_attach_img_height],
+avatar => [$fix_avatar_img_size, $max_avatar_height, $max_avatar_width],
+avatarml => [$fix_avatarml_img_size, $max_avatarml_width, $max_avatarml_height],
+brd => [$fix_brd_img_size, $max_brd_img_width, $max_brd_img_height],
+post => [$fix_post_img_size, $max_post_img_width, $max_post_img_height],
+signat => [$fix_signat_img_size, $max_signat_img_width, $max_signat_img_height],
+ext => [0, 0, 0],
+);
 
-\$max_avatar_width = $max_avatar_width;             # Set maximum pixel width to which the selfselected userpics are resized,
-                                                    # 0 disables this limit
-\$max_avatar_height = $max_avatar_height;           # Set maximum pixel height to which the selfselected userpics are resized,
-                                                    # 0 disables this limit
-\$fix_avatar_img_size = $fix_avatar_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_avatarml_width = $max_avatarml_width;         # Set maximum pixel width to which the selfselected userpics in member list are resized, 0 disables
-                                                    #  this limit
-\$max_avatarml_height = $max_avatarml_height;       #Set maximum pixel height to which the selfselected userpics in member list are resized, 0 disables
-                                                    #  this limit
-\$fix_avatarml_img_size = $fix_avatarml_img_size;                       # Set to 1 disable the image resize feature and sets the image size to the max_... values. If one of
-                                                    #  the max_... values is 0 the image is shown in its proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_post_img_width = $max_post_img_width;         # Set maximum pixel width for images, 0 disables this limit
-\$max_post_img_height = $max_post_img_height;       # Set maximum pixel height for images, 0 disables this limit
-\$fix_post_img_size = $fix_post_img_size;           # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_signat_img_width = $max_signat_img_width;     # Set maximum pixel width for images in the signature, 0 disables this limit
-\$max_signat_img_height = $max_signat_img_height;   # Set maximum pixel height for images in the signature, 0 disables this limit
-\$fix_signat_img_size = $fix_signat_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_attach_img_width = $max_attach_img_width;     # Set maximum pixel width for attached images, 0 disables this limit
-\$max_attach_img_height = $max_attach_img_height;   # Set maximum pixel height for attached images, 0 disables this limit
-\$fix_attach_img_size = $fix_attach_img_size;       # Set to 1 disable the image resize feature and sets the image size to the
-                                                    # max_... values. If one of the max_... values is 0 the image is shown in its
-                                                    # proportions to the other value. If both are 0 the image is shown at its original size.
-\$max_brd_img_width = $max_brd_img_width;                           # Set maximum pixel width to which the Board Images are resized, 0 disables this limit
-\$max_brd_img_height = $max_brd_img_height;                          # Set maximum pixel height to which the Board Images are resized, 0 disables this limit
-\$fix_brd_img_size = $max_brd_img_size;
 \$img_greybox = $img_greybox;                       # Set to 0 to disable "greybox" (each image is shown in a new window)
                                                     # Set to 1 to enable the attachment and post image "greybox" (one image/page)
                                                     # Set to 2 to enable the attachment and post image "greybox" =>
@@ -1842,10 +1832,10 @@ sub SetInstall2 {
 
 ########## Smilies ##########
 
-\@SmilieURL = ("exclamation.png","question.png"); # Additional Smilies URL
-\@SmilieCode = (":exclamation",":question");      # Additional Smilies Code
-\@SmilieDescription = ("Exclaim","Questioning");  # Additional Smilies Description
-\@SmilieLinebreak = ("","");                      # Additional Smilies Linebreak
+\$addedsmilies{'1'} = [ 'exclamation.png', ':exclamation', 'Exclaim', '' ];
+\$addedsmilies{'2'} = [ 'question.png', ':question', 'Question', '' ];
+
+\@smilieorder = qw(1 2);
 
 \$smiliestyle = 2;                              # smiliestyle
 \$showadded = 2;                                # showadded
@@ -2013,39 +2003,24 @@ sub CheckInstall {
     if ( !-e "$boardsdir/forum.totals" ) { $brd_missing .= q~forum.totals, ~; }
     else {
         $brd_created .= q~forum.totals, ~;
-        open $FORUMTOT, '<', "$boardsdir/forum.totals"
-          || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
-        @totboards = <$FORUMTOT>;
-        close $FORUMTOT or croak 'cannot close forum.totals';
-    }
-    for my $boardstot (@totboards) {
-        chomp $boardstot;
-        ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
-          split /[|]/xsm, $boardstot, 7;
-        if ( !-e "$boardsdir/$brdname.txt" ) {
-            $brd_missing .= qq~$brdname.txt, ~;
+        require "$boardsdir/forum.totals";
+        for my $brdname (keys %totals) {
+            if ( !-e "$boardsdir/$brdname.txt" ) {
+                $brd_missing .= qq~$brdname.txt, ~;
+            }
+            else { $brd_created .= qq~$brdname.txt, ~; }
         }
-        else { $brd_created .= qq~$brdname.txt, ~; }
-
     }
     $brd_missing =~ s/, $//sm;
     $brd_created =~ s/, $//sm;
-    my $brdprint = q{};
-    for my $boardstot (@totboards) {
-        chomp $boardstot;
-        ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
-          split /[|]/xsm, $boardstot;
-        if ( $brdname eq 'general' ) {
-            $brdprint .=
-"general|1|1|$firstmstime|admin|$firstmstime|0|Welcome to your new YaBB 2.7.00 forum!|xx|0|\n"
-              or croak 'cannot print FORUMTOTALS';
-        }
-        else { $brdprint .= qq~$boardstot\n~; }
-    }
-    open $FORUMTOTALS, '>', "$boardsdir/forum.totals"
-      || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
-    print {$FORUMTOTALS} $brdprint or croak 'cannot print forum.totals';
-    close $FORUMTOTALS or croak 'cannot close forum.totals';
+    ${ $uid . 'general'}{'lastposttime'}   = $firstmstime;
+    ${ $uid . 'general' }{'lastposter'}     = 'admin';
+    ${ $uid . 'general' }{'lastpostid'}     = $firstmstime;
+    ${ $uid . 'general' }{'lastreply'}      = 0;
+    ${ $uid . 'general' }{'lastsubject'}    = 'Welcome to your new YaBB 2.7.00 forum!';
+    ${ $uid . 'general' }{'lasttopicstate'} ='xx';
+    ${ $uid . 'general' }{'lasticon'}       = 0;
+    BoardTotals( 'update', 'general' );
 
     open $FIRSTMS, '>', "$datadir/$firstmstime.txt"
       or croak "cannot open $datadir/$firstmstime.txt";
@@ -2053,9 +2028,9 @@ sub CheckInstall {
 qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|webmaster\@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~
       or croak "cannot print $datadir/$firstmstime.txt";
     close $FIRSTMS or croak "cannot close $datadir/$firstmstime.txt";
-    require Sources::DateTime;
     open $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
       or croak "cannot print $datadir/$firstmstime.txt";
+    require Sources::DateTime;
     $msgdat = ctbtime($firstmstime);
     my $frstctb = qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
 %$firstmstime = (
@@ -2096,16 +2071,9 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
     $msg_missing = q{};
     $msg_created = q{};
 
-    if ( -e "$boardsdir/forum.totals" ) {
-        open $FORUMTOT, '<', "$boardsdir/forum.totals"
-          || setup_fatal_error( "$maintext_23 $boardsdir/forum.totals: ", 1 );
-        @totboards = <$FORUMTOT>;
-        close $FORUMTOT or croak 'cannot close forum.totals';
-    }
-    for my $boardstot (@totboards) {
-        chomp $boardstot;
-        ( $brdname, undef, undef, undef, undef, $msgname, undef ) =
-          split /[|]/xsm, $boardstot, 7;
+    require "$boardsdir/forum.totals";
+    for my $brdname (keys %totals) {
+        ( undef, undef, undef, undef, $msgname, undef ) = @{$totals{$brdname}};
         next if !$msgname;
         if ( !-e "$datadir/$msgname.ctb" ) {
             $msg_missing .= qq~$msgname.ctb, ~;
@@ -2477,10 +2445,10 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
       $iamguest ? q{} : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
 
     if ($enable_news) {
-        open $NEWS, '<', 'Languages/English/news.txt'
-          or croak 'cannot open news';
+        open $NEWS, '<', "$langdir/English/news.txt"
+          or croak 'cannot open NEWS';
         @newsmessages = <$NEWS>;
-        close $NEWS or croak 'cannot close news';
+        close $NEWS or croak 'cannot close NEWS';
     }
     for my $i ( 0 .. $#yytemplate ) {
         $curline = $yytemplate[$i];
@@ -2507,9 +2475,6 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                                     var fcontent = new Array();
                                     var begintag = "";
                         ~;
-                open $NEWS, '<', "$vardir/news.txt" or croak 'cannot open NEWS';
-                @newsmessages = <$NEWS>;
-                close $NEWS or croak 'cannot close NEWS';
                 for my $j ( 0 .. $#newsmessages ) {
                     $newsmessages[$j] =~ s/[\r\n]//gxsm;
                     if ( $newsmessages[$j] eq q{} ) { next; }
@@ -2545,9 +2510,12 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
             }
         }
         $yyurl = $scripturl;
-        $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
-        $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
-        $curline =~ s/img src\=\"$imagesdir\/(.+?)\"/SetupImgLoc($1)/eigxsm;
+        if ( $curline =~ /{yabb\s+(\w+)}/xsm ) {
+            $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
+        }
+        if ( $curline =~ /img src\=\"$imagesdir\/(.+?)\"/ixsm ) {
+            $curline =~ s/img src\=\"$imagesdir\/(.+?)\"/SetupImgLoc($1)/eigxsm;
+        }
         $output .= $curline;
     }
     if ( $yycopyin == 0 ) {
@@ -2571,12 +2539,12 @@ sub nicely_aligned_file {
     # Make files look nicely aligned. The comment starts after 50 Col
 
     my $setfile = shift;
-    $setfile =~ s/=\s+;/= 0;/gsm;
+    $setfile =~ s/=\s+;/= 0;/gxsm;
     $setfile =~
 s/(.+;)[ \t]+(\x23.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
     $setfile =~ s/\t+(\x23.+$)/$filler$1/gsm;
 
-    *cut_comment = sub {    # line break of too long comments
+    local *cut_comment = sub {    # line break of too long comments
         my @x = @_;
         my ( $comment, $length ) =
           ( q{}, 120 );     # 120 Col is the max width of page

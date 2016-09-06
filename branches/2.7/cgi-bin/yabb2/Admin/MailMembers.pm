@@ -12,6 +12,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +24,7 @@ $mailmemberspmver = 'YaBB 2.7.00 $Revision$';
 if (@mailmemberspmmods) {
     $mailmemberspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ($iamguest) { fatal_error('no_access'); }
@@ -57,20 +62,20 @@ sub Mailing {
 ~;
     my $grpselect;
     my $groupcnt = 0;
-    for ( sort { $a cmp $b } keys %Group ) {
+    foreach ( sort { $a cmp $b } keys %Group ) {
         if ( $_ ne 'Moderator' ) {
-            ( $title, $dummy ) = split /[|]/xsm, $Group{$_}, 2;
+            ( $title, undef ) = @{$Group{$_}};
             $grpselect .= qq~\n<option value="$_"> $title</option>~;
             $groupcnt++;
         }
     }
-    for (@nopostorder) {
-        ( $title, $dummy ) = split /[|]/xsm, $NoPost{$_}, 2;
+    foreach (@nopostorder) {
+        ( $title, undef ) = @{$NoPost{$_}};
         $grpselect .= qq~\n<option value="$_"> $title</option>~;
         $groupcnt++;
     }
-    for ( reverse sort { $a <=> $b } keys %Post ) {
-        ( $title, $dummy ) = split /[|]/xsm, $Post{$_}, 2;
+    foreach ( reverse sort { $a <=> $b } keys %Post ) {
+        ( $title, undef ) = @{$Post{$_}};
         $grpselect .= qq~\n<option value="$title"> $title</option>~;
         $groupcnt++;
     }
@@ -161,7 +166,7 @@ sub Mailing {
                 <col span="4" style="width:auto" />
             </colgroup>
 ~;
-            for my $curmail (@maillist) {
+            foreach my $curmail (@maillist) {
                 chomp $curmail;
                 ( $otime, $osubject, $otext, $osender ) = split /[|]/xsm,
                   $curmail;
@@ -239,19 +244,20 @@ sub Mailing2 {
     if ( !$FORM{'mailsend'} && !$FORM{'convert'} ) { fatal_error('no_access'); }
     @convlist = ();
     if ( $FORM{'mailsend'} && $FORM{'emailtext'} ne q{} ) {
-        $FORM{'emailsubject'} =~ s/\|/&\x23124;/gsm;
-        $FORM{'emailtext'}    =~ s/\|/&\x23124;/gsm;
-        $FORM{'emailtext'}    =~ s/\r//gsm;
+        $FORM{'emailsubject'} =~ s/\|/&\x23124;/gxsm;
+        $FORM{'emailtext'} =~ s/\|/&\x23124;/gxsm;
+        $FORM{'emailtext'} =~ s/\r//gxsm;
         $mailline =
           qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
         MailList($mailline);
     }
-    (@mailgroups) = split /\, /sm, $FORM{'field1'};
+    (@mailgroups) = split /\,\s/xsm, $FORM{'field1'};
     ManageMemberinfo('load');
     $i = 0;
     my ( $emailsubject, $emailtext );
     for my $user ( keys %memberinf ) {
-        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) = $memberinf{$user};
+        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
+          @{ $memberinf{$user} };
         FromHTML($memrealname);
 
         if ( $FORM{'mailsend'} && $FORM{'emailtext'} ne q{} ) {
@@ -278,17 +284,19 @@ sub Mailing2 {
             sendmail( $mememail, $emailsubject, $emailtext );
         }
         elsif ( $mailit && $FORM{'convert'} ) {
-            if ( $memrealname =~ /&\x23(\d{3,}?)\;/igxsm ) { $memrealname = $user; }
-            $convlist[$i] = qq~$memrealname\;$mememail\n~;
+            if ( $memrealname =~ /&\x23(\d{3,}?);/igxsm ) {
+                $memrealname = $user;
+            }
+            $convlist[$i] = qq~$memrealname;$mememail\n~;
             $i++;
         }
     }
     undef %memberinf;
     if (@convlist) {
+        my $prlist = "Name;E-mail Address\n";
+        $prlist .= join q{}, @convlist;
         fopen( ADDRESSLIST, ">$vardir/yabbaddress.csv", 1 );
-        print {ADDRESSLIST} "Name\;E-mail Address\n"
-          or croak "$croak{'print'} ADDRESSLIST";
-        print {ADDRESSLIST} @convlist or croak "$croak{'print'} ADDRESSLIST";
+        print {ADDRESSLIST} $prlist or croak "$croak{'print'} ADDRESSLIST";
         fclose(ADDRESSLIST);
     }
     elsif ( $FORM{'convert'} ) {
@@ -304,10 +312,11 @@ sub Mailing3 {
     fopen( FILE, "$vardir/yabbaddress.csv" );
     @addlist = <FILE>;
     fclose(FILE);
-    print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~ or croak "$croak{'print'} yabbaddress";
+    print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~
+      or croak "$croak{'print'} yabbaddress";
     for my $curadd (@addlist) {
         chomp $curadd;
-        print qq~$curadd\n~ or croak "$croak{'print'} yabbaddress";
+        print qq~$curadd\n~;# or croak "$croak{'print'} yabbaddress";
     }
     return;
 }
@@ -317,13 +326,13 @@ sub MailingMembers {
     $selPos   = q{};
     $selUser  = q{};
 
-    if ( $FORM{'sortform'} eq 'position' ) {
+    if ( $FORM{'sortform'} && $FORM{'sortform'} eq 'position' ) {
         $selPos = q~ selected="selected"~;
     }
     else { $selUser = q~ selected="selected"~; }
 
-    if ( $INFO{'sort'} ne q{} ) { $sortmode = ';sort=' . $INFO{'sort'}; }
-    elsif ( $FORM{'sortform'} ne q{} ) {
+    if ( $INFO{'sort'} ) { $sortmode = ';sort=' . $INFO{'sort'}; }
+    elsif ( $FORM{'sortform'}) {
         $sortmode = ';sort=' . $FORM{'sortform'};
     }
 
@@ -362,8 +371,8 @@ sub MailingMembers {
 
     ManageMemberinfo('load');
     while ( ( $membername, $value ) = each %memberinf ) {
-        ( $memberrealname, undef, $memposition, $memposts ) = split /[|]/xsm,
-          $value;
+        ( $memberrealname, undef, $memposition, $memposts ) = @{$value};
+        $memposts ||= 0;
         $pstsort    = 99_999_999 - $memposts;
         $sortgroups = q{};
         $j          = 0;
@@ -372,8 +381,8 @@ sub MailingMembers {
             $sortgroups = '!!!';
         }
         else {
-            if (   $FORM{'sortform'} eq 'position'
-                || $INFO{'sort'} eq 'position' )
+            if (   ($FORM{'sortform'} && $FORM{'sortform'} eq 'position')
+                || ($INFO{'sort'} && $INFO{'sort'} eq 'position') )
             {
                 for my $key ( keys %Group ) {
                     if ( $memposition eq $key ) {
@@ -419,34 +428,30 @@ sub MailingMembers {
     while ( ( $numshown < $memcount ) ) {
         $user = $toplist[$bb];
 
-        ( $memrealname, $mememail, $memposition, $memposts ) = split /[|]/xsm,
-          $memberinf{$user};
+        ( $memrealname, $mememail, $memposition, $memposts ) =
+          @{ $memberinf{$user} };
 
         if   ( $user eq $username ) { $bagcolor = 'windowbg2'; }
         else                        { $bagcolor = 'windowbg'; }
-        if ( $memrealname ne q{} ) {
+        if ( $memrealname ) {
             $addel =
 qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg" style="border: 0;" />~;
             $actualnum++;
 
             my $memberinfo = "$memposition";
             if ( $memberinfo eq 'Administrator' ) {
-                ( $memberinfo, undef ) = split /[|]/xsm, $Group{'Administrator'},
-                  2;
+                ( $memberinfo, undef ) = @{$Group{'Administrator'}};
             }
             elsif ( $memberinfo eq 'Global Moderator' ) {
-                ( $memberinfo, undef ) = split /[|]/xsm,
-                  $Group{'Global Moderator'}, 2;
+                ( $memberinfo, undef ) = @{$Group{'Global Moderator'}};
             }
             elsif ( $memberinfo eq 'Mid Moderator' ) {
-                ( $memberinfo, undef ) = split /[|]/xsm,
-                  $Group{'Mid Moderator'}, 2;
+                ( $memberinfo, undef ) = @{$Group{'Mid Moderator'}};
             }
             else {
                 for my $key ( sort { $a <=> $b } keys %NoPost ) {
                     if ( $key eq $memberinfo ) {
-                        ( $memberinfo, undef ) = split /[|]/xsm, $NoPost{$key},
-                          2;
+                        ( $memberinfo, undef ) = @{$NoPost{$key}};
                     }
                 }
             }
@@ -455,7 +460,7 @@ qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg"
             ToJS($memberinfo);
             $tmp_postcount = $memposts;
             $checkinfo     = $memberinfo;
-            $checkinfo =~ s/\, /\'\|\'/gsm;
+            $checkinfo =~ s/\,\s/\'\|\'/gxsm;
             $CheckingAll .= qq~"'$checkinfo'", ~;
 
             if   ($do_scramble_id) { $cloakusername = cloak($user); }
@@ -482,33 +487,33 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     ~;
 
     if ( $memcount != 0 ) {
-        if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
+        if ( !$FORM{'sortform'} ) { $FORM{'sortform'} = $INFO{'sort'}; }
         if ( !$FORM{'reversed'} ) { $FORM{'reversed'} = $INFO{'reversed'}; }
 
         @groupinfo = ();
         $i         = 0;
         $z         = 0;
 
-        ( $title, $dummy ) = split /[|]/xsm, $Group{'Administrator'}, 2;
+        ( $title, undef ) = @{$Group{'Administrator'}};
         ToJS($title);
         $groupinfo[$i] = $title;
         $i++;
         $grp_data = qq~"'$title'", ~;
 
-        ( $title, $dummy ) = split /[|]/xsm, $Group{'Global Moderator'}, 2;
+        ( $title, undef ) = @{$Group{'Global Moderator'}};
         ToJS($title);
         $groupinfo[$i] = $title;
         $i++;
         $grp_data .= qq~"'$title'", ~;
 
-        ( $title, $dummy ) = split /[|]/xsm, $Group{'Mid Moderator'}, 2;
+        ( $title, undef ) = @{$Group{'Mid Moderator'}};
         ToJS($title);
         $groupinfo[$i] = $title;
         $i++;
         $grp_data .= qq~"'$title'", ~;
 
         for (@nopostorder) {
-            ( $title, $dummy ) = split /[|]/xsm, $NoPost{$_}, 2;
+            ( $title, undef ) = @{$NoPost{$_}};
             ToJS($title);
             $groupinfo[$i] = $title;
             $grp_data .= qq~"'$title'", ~;
@@ -580,7 +585,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
                 <col span="4" style="width:auto" />
             </colgroup>
         ~;
-            for my $curmail (@maillist) {
+            foreach my $curmail (@maillist) {
                 chomp $curmail;
                 ( $otime, $osubject, $otext, $osender ) = split /[|]/xsm,
                   $curmail;
@@ -694,22 +699,23 @@ function showMailmemb(thesubject, thetext, thetime) {
 }
 
 sub ToJS {
-    $_[0] =~ s/;/&\x23059;/gsm;
-    $_[0] =~ s/\!/&\x2333;/gsm;
-    $_[0] =~ s/\(/&\x2340;/gsm;
-    $_[0] =~ s/\)/&\x2341;/gsm;
-    $_[0] =~ s/\-/&\x2345;/gsm;
-    $_[0] =~ s/\./&\x2346;/gsm;
-    $_[0] =~ s/\:/&\x2358;/gsm;
-    $_[0] =~ s/\?/&\x2363;/gsm;
-    $_[0] =~ s/\[/&\x2391;/gsm;
-    $_[0] =~ s~\\~&\x2392;&\x2392;~gsm;
-    $_[0] =~ s/\]/&\x2393;/gsm;
-    $_[0] =~ s/\^/&\x2394;/gsm;
-    $_[0] =~ s/\x22/&\x2334;/gsm;
-    $_[0] =~ s/\x27/&\x2396;/gsm;
-    $_[0] =~ s/\</&\x2360;/gsm;
-    $_[0] =~ s/\>/&\x2362;/gsm;
+    $_[0] =~ s/;/&\x23059;/gxsm;
+    $_[0] =~ s/\!/&\x2333;/gxsm;
+    $_[0] =~ s/\(/&\x2340;/gxsm;
+    $_[0] =~ s/\)/&\x2341;/gxsm;
+    $_[0] =~ s/\-/&\x2345;/gxsm;
+    $_[0] =~ s/\./&\x2346;/gxsm;
+    $_[0] =~ s/\:/&\x2358;/gxsm;
+    $_[0] =~ s/\?/&\x2363;/gxsm;
+    $_[0] =~ s/\[/&\x2391;/gxsm;
+    $_[0] =~ s~\\~&\x2392;&\x2392;~gxsm;
+    $_[0] =~ s/\]/&\x2393;/gxsm;
+    $_[0] =~ s/\^/&\x2394;/gxsm;
+    $_[0] =~ s/\x22/&\x2334;/gxsm;
+    $_[0] =~ s/\x27/&\x2396;/gxsm;
+    $_[0] =~ s/\</&\x2360;/gxsm;
+    $_[0] =~ s/\>/&\x2362;/gxsm;
+    return;
 }
 
 1;

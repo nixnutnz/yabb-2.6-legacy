@@ -22,6 +22,7 @@ $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};
 $post_error = qq~$imagesdir/exclamation.png~;
 
+$my_spacer = q{};
 if (!$enable_quickreply) {$my_spacer = 'style="margin-bottom:1em;"';}
 $messageclass = 'message';
 $my_guestpost_col = 2;
@@ -248,11 +249,8 @@ $mypost_showmessages_a = qq~<table class="pad_3px" style="table-layout: fixed;">
         <td>
             <span class="small">$post_txt{'279'}: {yabb displaynamelink}<br />$post_txt{'280'}: {yabb tempdate}</span>
         </td>
-        <td class="right">
-             {yabb my_enable_markquote}{yabb my_enable_quickjump}
-        </td>
     </tr><tr>
-        <td class="windowbg2" style="height:30px" colspan="2">
+        <td class="windowbg2" style="height:30px">
             <div class="message" onmouseup="get_selection({yabb quote_msg_id});" style="max-height: 150px; overflow: auto{yabb txtsz};">
             {yabb message}
            </div>
@@ -271,7 +269,7 @@ $mypost_poll_top = qq~
         <col style="width:auto" />
     </colgroup>
     <tr>
-        <td class="catbg small" colspan="5"><label for="question"><b>$post_polltxt{'6'}:</b></label></td>
+        <td class="catbg small" colspan="5"><label for="question"><b>{yabb post_polltxt_6}:</b></label></td>
     </tr><tr>
         <td class="windowbg2">&nbsp;</td>
         <td class="windowbg2" style="padding: 8px 0;" colspan="4">
@@ -279,10 +277,10 @@ $mypost_poll_top = qq~
             <input type="hidden" name="pollthread" value="{yabb pollthread}" />
         </td>
     </tr><tr>
-        <td class="catbg small"><b>$post_polltxt{'polloptions'}</b></td>
-        <td class="catbg small"><b>$post_polltxt{'polloptionstext'}</b></td>
-        <td class="catbg small center"><b>$post_polltxt{'pieslicecolor'}</b></td>
-        <td class="catbg small" colspan="2"><b>$post_polltxt{'pieslicesplit'}</b></td>
+        <td class="catbg small"><b>{yabb post_polltxt_polloptions}</b></td>
+        <td class="catbg small"><b>{yabb post_polltxt_polloptionstext}</b></td>
+        <td class="catbg small center"><b>{yabb post_polltxt_pieslicecolor}</b></td>
+        <td class="catbg small" colspan="2"><b>{yabb post_polltxt_pieslicesplit}</b></td>
     </tr>{yabb mypoll_opt}
     {yabb my_maxpc}
     {yabb my_pie}
@@ -290,7 +288,7 @@ $mypost_poll_top = qq~
 ~;
 
 $my_poll_options = qq~<tr>
-        <td class="windowbg2 right"><label for="option{yabb i}"> &nbsp; $post_polltxt{'7'} {yabb i}: &nbsp;</label></td>
+        <td class="windowbg2 right"><label for="option{yabb i}"> &nbsp; {yabb post_polltxt_7} {yabb i}: &nbsp;</label></td>
         <td class="windowbg2">
             <input type="text" size="35" maxlength="{yabb maxpo}" name="option{yabb i}" id="option{yabb i}" value="{yabb options_i}" />
         </td>
@@ -299,7 +297,7 @@ $my_poll_options = qq~<tr>
             <input type="hidden" name="slicecol{yabb i}" id="slicecol{yabb i}" value="{yabb slicecolor_i}" />
         </td>
         <td class="windowbg2 center">
-            <input type="checkbox" name="split{yabb i}" value="1"{yabb splitchecked_i} /> <span class="small">$post_polltxt{'splitslice'}</span>
+            <input type="checkbox" name="split{yabb i}" value="1"{yabb splitchecked_i} /> <span class="small">{yabb post_polltxt_splitslice}</span>
         </td>
         <td class="windowbg2">
             &nbsp;
@@ -507,7 +505,7 @@ $mypost_liveprev = qq~
             </td>
         </tr><tr>
             <td class="{yabb css} vtop" style="height:10em" colspan="2">
-               <div class="$messageclass" style="float: left; width: 99%; overflow: auto;">
+               <div class="{yabb messageclass}" style="float: left; width: 99%; overflow: auto;">
                  {yabb message}
                 </div>
             </td>
@@ -528,7 +526,7 @@ $mypost_liveprev = qq~
             </td>
         </tr><tr>
              <td class="{yabb css} bottom post-userinfo">
-                <span onclick="toTop(0)" class="cursor"><img src="$imagesdir/back_to_top.png" alt="$display_txt{'643'}" title="$display_txt{'643'}" /></span>
+                <span onclick="toTop(0)" class="cursor"><img src="$imagesdir/back_to_top.png" alt="{yabb display_txt643}" title="{yabb display_txt643}" /></span>
             </td>
             <td class="{yabb css} bottom dividertop" colspan="2">
                     <div class="small" style="float: left; width: 74%;">

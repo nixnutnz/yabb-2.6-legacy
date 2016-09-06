@@ -42,11 +42,20 @@ sub Debug {
 
         ToHTML($openfiles);
         $openfiles =~ s/\n/<br \/>/gxsm;
+        $yytrace ||= q{};
+        $yyfileactions ||= q{};
+        $getpairs ||= q{};
+        $user_ip ||= q{};
 
         $yydebug =
-qq~<br /><div class="small debug"><span class="under">$debug_txt{'debugging'}<span><br /><br /><span class="under">$debug_txt{'benchmarking'}:</span><br />$yytimeclock<br /><br /><span class="under">$debug_txt{'ipaddress'}:</span><br />$user_ip<br /><br /><span class="under">$debug_txt{'browser'}:</span><br />$ENV{'HTTP_USER_AGENT'}<br />$getpairs<br /><span class="under">$debug_txt{'trace'}:</span>$yytrace<br /><br /><span class="under">$debug_txt{'check'}:</span><br />$yyfileactions<br /><br /><span class="under">$debug_txt{'filehandles'}:</span><br />$debug_txt{'filehandleslegend'}<br /><br />$openfiles<br /><span class="under">$debug_txt{'filesloaded'}:<span class="tt">require</span></span>~;
+qq~<br /><div class="small debug"><span class="under">$debug_txt{'debugging'}<span><br /><br />
+<span class="under">$debug_txt{'benchmarking'}:</span><br />$yytimeclock<br /><br />
+<span class="under">$debug_txt{'ipaddress'}:</span><br />$user_ip<br /><br />
+<span class="under">$debug_txt{'browser'}:</span><br />$ENV{'HTTP_USER_AGENT'}<br />$getpairs<br /><span class="under">$debug_txt{'trace'}:</span>$yytrace<br /><br />
+<span class="under">$debug_txt{'check'}:</span><br />$yyfileactions<br /><br />
+<span class="under">$debug_txt{'filehandles'}:</span><br />$debug_txt{'filehandleslegend'}<br /><br />$openfiles<br /><span class="under">$debug_txt{'filesloaded'}:<span class="tt">require</span></span>~;
 
-        for ( sort keys %INC ) { $yydebug .= qq~<br />$_ => $INC{$_}~; }
+        for ( sort keys %INC ) { if ($_ && $INC{$_}) {$yydebug .= qq~<br />$_ => $INC{$_}~;} }
 
         $yydebug .= q~<br /><br /><br />
     </div>~;

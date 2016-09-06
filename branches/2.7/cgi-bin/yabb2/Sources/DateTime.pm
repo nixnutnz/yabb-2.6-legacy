@@ -28,8 +28,9 @@ if (@datetimepmmods) {
 
 @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
 
-sub calcdifference {    # Input: $date1 $date2
-    $result = int( $date2 / 86400 ) - int( $date1 / 86400 );
+sub calcdtdiff {    # Input: $date1 $date2
+    my ( $date1, $date2 ) = @_;
+    my $result = int( $date2 / 86400 ) - int( $date1 / 86400 );
     return $result;
 }
 

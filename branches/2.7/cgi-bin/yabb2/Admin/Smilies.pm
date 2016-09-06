@@ -13,6 +13,8 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+use warnings;
+no warnings qw(once);
 our $VERSION = '2.7.00';
 
 our $smiliespmver = 'YaBB 2.7.00 $Revision$';
@@ -20,40 +22,22 @@ our $smiliespmver = 'YaBB 2.7.00 $Revision$';
 if (@smiliespmmods) {
     $smiliespmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 
 sub SmiliePanel {
     is_admin_or_gmod();
-    if    ( $smiliestyle == 1 ) { $ss1 = q{ selected="selected"}; }
-    elsif ( $smiliestyle == 2 ) { $ss2 = q{ selected="selected"}; }
-    @sa = ();
-    for my $i ( 1 .. 4 ) {
-        if ( $showadded == $i ) {
-            $sa[$i] = q{ selected="selected"};
-        }
-    }
-    @ssm = ();
-    for my $i ( 1 .. 4 ) {
-        if ( $showsmdir == $i ) {
-            $ssm[$i] = q{ selected="selected"};
-        }
-    }
-    if ( $detachblock == 1 )  { $dblock   = q{ checked="checked"}; }
-    if ($removenormalsmilies) { $remnosmi = q{ checked="checked"}; }
+
     opendir DIR, "$htmldir/Smilies";
     @contents = readdir DIR;
     closedir DIR;
     $smilieslist = q{};
 
-    for my $line ( sort { uc($a) cmp uc $b } @contents ) {
+    foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
         my ( $name, $extension ) = split /\./xsm, $line;
-        if (   $extension =~ /gif/ism
-            || $extension =~ /jpg/ism
-            || $extension =~ /jpeg/ism
-            || $extension =~ /png/ism )
-        {
+        if ( $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
             if ( $line !~ /banner/ism ) {
                 $smilieslist .= qq~<tr>
     <td class="windowbg2 center">
@@ -83,38 +67,38 @@ sub SmiliePanel {
         <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'3'}</b><br /></td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="removenormalsmilies">$smiltxt{'24'}</label></td>
-        <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"$remnosmi /></td>
+        <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"${ischecked($removenormalsmilies)} /></td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="smiliestyle">$smiltxt{'4'}</label></td>
         <td class="windowbg2" colspan="4">
             <select name="smiliestyle" id="smiliestyle">
-                <option value="1"$ss1>$smiltxt{'5'}</option>
-                <option value="2"$ss2>$smiltxt{'6'}</option>
+                <option value="1"${isselected($smiliestyle == 1)}>$smiltxt{'5'}</option>
+                <option value="2"${isselected($smiliestyle == 2)}>$smiltxt{'6'}</option>
             </select>
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="showadded">$smiltxt{'7'}</label></td>
         <td class="windowbg2" colspan="4">
             <select name="showadded" id="showadded">
-                <option value="1"$sa[1]>$smiltxt{'8'}</option>
-                <option value="2"$sa[2]>$smiltxt{'9'}</option>
-                <option value="3"$sa[3]>$smiltxt{'10'}</option>
-                <option value="4"$sa[4]>$smiltxt{'11'}</option>
+                <option value="1"${isselected($showadded == 1)}>$smiltxt{'8'}</option>
+                <option value="2"${isselected($showadded == 2)}>$smiltxt{'9'}</option>
+                <option value="3"${isselected($showadded == 3)}>$smiltxt{'10'}</option>
+                <option value="4"${isselected($showadded == 4)}>$smiltxt{'11'}</option>
             </select>
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="showsmdir">$smiltxt{'2'}</label></td>
         <td class="windowbg2" colspan="4">
             <select name="showsmdir" id="showsmdir">
-                <option value="1"$ssm[1]>$smiltxt{'8'}</option>
-                <option value="2"$ssm[2]>$smiltxt{'9'}</option>
-                <option value="3"$ssm[3]>$smiltxt{'10'}</option>
-                <option value="4"$ssm[4]>$smiltxt{'11'}</option>
+                <option value="1"${isselected($showsmdir == 1)}>$smiltxt{'8'}</option>
+                <option value="2"${isselected($showsmdir == 2)}>$smiltxt{'9'}</option>
+                <option value="3"${isselected($showsmdir == 3)}>$smiltxt{'10'}</option>
+                <option value="4"${isselected($showsmdir == 4)}>$smiltxt{'11'}</option>
             </select>
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="detachblock">$smiltxt{'12'}<br /> $smiltxt{'13'}</label></td>
-        <td class="windowbg2" colspan="4"><input type="checkbox" name="detachblock" id="detachblock" value="1"$dblock /></td>
+        <td class="windowbg2" colspan="4"><input type="checkbox" name="detachblock" id="detachblock" value="1"${ischecked($detachblock)} /></td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="winwidth">$smiltxt{'14'}</label></td>
         <td class="windowbg2" colspan="4"><input type="text" size="10" name="winwidth" id="winwidth" value="$winwidth" /></td>
@@ -124,7 +108,7 @@ sub SmiliePanel {
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="showinbox">$smiltxt{'23'}</label></td>
         <td class="windowbg2" colspan="4"><input type="radio" name="showinbox" id="showinbox" value=""~
-              . ( !$showinbox ? ' checked="checked"' : q{} ) . qq~ /></td>
+      . ( !$showinbox ? ' checked="checked"' : q{} ) . qq~ /></td>
     </tr><tr>
         <td class="windowbg2" colspan="4">$smiltxt{'18'}</td>
         <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>
@@ -167,50 +151,54 @@ sub SmiliePanel {
         <td class="catbg center small">$asmtxt{'12'}</td>
     </tr>~;
 
-    $i = 0;
     my $add_smiley = 1;
-    for (@SmilieURL) {
-        if ( $i != 0 ) {
+    foreach my $j ( 0 .. $#smilieorder ) {
+        if ( $j > 0 ) {
             $up =
-qq~<a href="$adminurl?action=smiliemove;index=$i;moveup=1"><img src="$imagesdir/smiley_up.gif" alt="$asmtxt{'13'}" title="$asmtxt{'13'}" /></a>~;
+qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];moveup=1"><img src="$imagesdir/smiley_up.gif" alt="$asmtxt{'13'}" title="$asmtxt{'13'}" /></a>~;
         }
         else {
             $up = qq~<img src="$imagesdir/smiley_up.gif" alt="" />~;
         }
-        if ( $SmilieURL[ $i + 1 ] ) {
+        if ( $j < $#smilieorder ) {
             $down =
-qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdir/smiley_down.gif" alt="$asmtxt{'14'}" title="$asmtxt{'14'}" /></a>~;
+qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img src="$imagesdir/smiley_down.gif" alt="$asmtxt{'14'}" title="$asmtxt{'14'}" /></a>~;
         }
         else {
             $down = qq~<img src="$imagesdir/smiley_down.gif" alt="" />~;
         }
         $yymain .= qq~<tr>
-    <td class="windowbg2 center"><input type="radio" name="showinbox" value="$SmilieDescription[$i]"~
-          . ( $showinbox eq $SmilieDescription[$i] ? ' checked="checked"' : q{} )
+    <td class="windowbg2 center"><input type="radio" name="showinbox" value="${$addedsmilies{$smilieorder[$j]}}[2]"~
+          . ( $showinbox eq ${ $addedsmilies{ $smilieorder[$j] } }[2]
+            ? ' checked="checked"'
+            : q{} )
           . qq~ /></td>
-    <td class="windowbg2 center"><input type="text" name="scd[$i]" value="$SmilieCode[$i]" /></td>
+    <td class="windowbg2 center"><input type="text" name="scd[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[1]" /></td>
     <td class="windowbg2 center" style="white-space: nowrap;">
-        <input type="file" name="smimg[$i]" id="smimg[$i]" size="35" />
-        <input type="hidden" name="cur_smimg[$i]" value="$SmilieURL[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span>
-        <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$SmilieURL[$i]" target="_blank">$SmilieURL[$i]</a></div>
+        <input type="file" name="smimg[$smilieorder[$j]]" id="smimg[$smilieorder[$j]]" size="35" />
+        <input type="hidden" name="cur_smimg[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[0]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$smilieorder[$j]]').value='';">X</span>
+        <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/${$addedsmilies{$smilieorder[$j]}}[0]" target="_blank">${$addedsmilies{$smilieorder[$j]}}[0]</a></div>
     </td>
-    <td class="windowbg2 center"><input type="text" name="sdescr[$i]" value="$SmilieDescription[$i]" /></td>
-    <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" value="1"~
-          . ( $SmilieLinebreak[$i] eq '<br />' ? ' checked="checked"' : q{} )
+    <td class="windowbg2 center"><input type="text" name="sdescr[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[2]" /></td>
+    <td class="windowbg2 center"><input type="checkbox" name="smbox[$smilieorder[$j]]" value="1"~
+          . ( ${ $addedsmilies{ $smilieorder[$j] } }[3] eq '<br />'
+            ? ' checked="checked"'
+            : q{} )
           . q~ /></td>
     <td class="windowbg2 center"><img src="~
           . (
-              $SmilieURL[$i] =~ /\//ixsm
-            ? $SmilieURL[$i]
-            : qq~$imagesdir/$SmilieURL[$i]~
+              ${ $addedsmilies{ $smilieorder[$j] } }[0] =~ /\//ixsm
+            ? ${ $addedsmilies{ $smilieorder[$j] } }[0]
+            : qq~$imagesdir/${$addedsmilies{$smilieorder[$j]}}[0]~
           )
           . qq~" alt="" /></td>
-    <td class="windowbg2 center"><input type="checkbox" name="delbox[$i]" value="1" /></td>
+    <td class="windowbg2 center"><input type="checkbox" name="delbox[$smilieorder[$j]]" value="1" /></td>
     <td class="windowbg2 center">$up $down</td>
   </tr>~;
-        $i++;
         $add_smiley++;
     }
+    my @ck = sort @smilieorder;
+    $i = $ck[-1] + 1;
     my $added_smilies = $i;
     $yymain .= qq~<tr>
     <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'08'}</b></td>
@@ -239,7 +227,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$i;movedown=1"><img src="$imagesdi
         <img src="$imagesdir/cat_collapse.png" alt="$smiltxt{'26'}" title="$smiltxt{'26'}" class="cursor" style="visibility: visible;" id="col_smiley$i" onclick="removeSmilies($i);" />
     </td>
   </tr>~;
-}
+    }
     $yymain .= qq~<tr>
     <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'2'}</b></td>
   </tr><tr>
@@ -317,50 +305,91 @@ sub AddSmilies {
     $poptext =~ s/[^a-f0-9]//igxsm;
     $showinbox           = $FORM{'showinbox'};
     $removenormalsmilies = $FORM{'removenormalsmilies'};
-    $count_smimg = $FORM{'smimg_count'};
+    $count_smimg         = $FORM{'smimg_count'};
 
-    if ( $winwidth  eq q{} ) { fatal_error('invalid_value', "$smiltxt{'14'}"); }
-    if ( $winheight eq q{} ) { fatal_error('invalid_value', "$smiltxt{'15'}"); }
-    if ( $popback   eq q{} ) { fatal_error('invalid_value', "$smiltxt{'20'}"); }
-    if ( $poptext   eq q{} ) { fatal_error('invalid_value', "$smiltxt{'19'}"); }
+    if ( !$winwidth ) {
+        fatal_error( 'invalid_value', "$smiltxt{'14'}" );
+    }
+    if ( !$winheight ) {
+        fatal_error( 'invalid_value', "$smiltxt{'15'}" );
+    }
+    if ( !$popback ) { fatal_error( 'invalid_value', "$smiltxt{'20'}" ); }
+    if ( !$poptext ) { fatal_error( 'invalid_value', "$smiltxt{'19'}" ); }
 
-    @SmilieURL         = ();
-    @SmilieCode        = ();
-    @SmilieDescription = ();
-    @SmilieLinebreak   = ();
-    my $temp_a = 0;
+    my $temp_a = 1;
     for ( 1 .. $count_smimg ) {
-        if ( $FORM{"scd[$temp_a]"} ne q{} || $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"sdescr[$temp_a]"} ne q{} ) {
-            if ( $FORM{"scd[$temp_a]"} eq q{} ) { fatal_error('', $smiltxt{'error_code'}); }
-            if ( $FORM{"smimg[$temp_a]"} eq q{} && $FORM{"cur_smimg[$temp_a]"} eq q{} ) { fatal_error(q{}, $smiltxt{'error_image'}); }
-            if ( $FORM{"sdescr[$temp_a]"} eq q{} ) { fatal_error('', $smiltxt{'error_desc'}); }
+        if (   $FORM{"scd[$temp_a]"}
+            || $FORM{"smimg[$temp_a]"}
+            || $FORM{"sdescr[$temp_a]"} )
+        {
+            if ( !$FORM{"scd[$temp_a]"} ) {
+                fatal_error( q{}, $smiltxt{'error_code'} );
+            }
+            if (   !$FORM{"smimg[$temp_a]"}
+                && !$FORM{"cur_smimg[$temp_a]"} )
+            {
+                fatal_error( q{}, $smiltxt{'error_image'} );
+            }
+            if ( !$FORM{"sdescr[$temp_a]"} ) {
+                fatal_error( q{}, $smiltxt{'error_desc'} );
+            }
         }
-        if ( $FORM{"delbox[$temp_a]"} != 1 && $FORM{"sdescr[$temp_a]"} ne q{} && ( $FORM{"smimg[$temp_a]"} ne q{} || $FORM{"cur_smimg[$temp_a]"} ne q{} ) ) {
-            if ( $FORM{"smimg[$temp_a]"} ne q{} ) {
-                $FORM{"smimg[$temp_a]"} = UploadFile("smimg[$temp_a]", 'Templates/Forum/default', 'png jpg jpeg gif', '100', '0');
+        if (
+              !$FORM{"delbox[$temp_a]"}
+            && $FORM{"sdescr[$temp_a]"}
+            && (   $FORM{"smimg[$temp_a]"}
+                || $FORM{"cur_smimg[$temp_a]"} )
+          )
+        {
+            if ( $FORM{"smimg[$temp_a]"} ) {
+                $FORM{"smimg[$temp_a]"} = UploadFile(
+                    "smimg[$temp_a]",   'Templates/Forum/default',
+                    'png/jpg/jpeg/gif', '100',
+                    '0'
+                );
             }
             else {
                 $FORM{"smimg[$temp_a]"} = $FORM{"cur_smimg[$temp_a]"};
             }
-            push @SmilieURL, $FORM{"smimg[$temp_a]"};
 
             ToHTML( $FORM{"scd[$temp_a]"} );
             $FORM{"scd[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
             $FORM{"scd[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
-            push @SmilieCode, $FORM{"scd[$temp_a]"};
 
             ToHTML( $FORM{"sdescr[$temp_a]"} );
             $FORM{"sdescr[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
             $FORM{"sdescr[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
-            push @SmilieDescription, $FORM{"sdescr[$temp_a]"};
+            my $smbox = $FORM{"smbox[$temp_a]"} ? '<br />' : q{};
 
-            push @SmilieLinebreak, ( $FORM{"smbox[$temp_a]"} ? '<br />' : q{} );
+            $addedsmilies{$temp_a} = [
+                $FORM{"smimg[$temp_a]"},  $FORM{"scd[$temp_a]"},
+                $FORM{"sdescr[$temp_a]"}, $smbox
+            ];
         }
-        if ( $FORM{"delbox[$temp_a]"} == 1 && $FORM{"cur_smimg[$temp_a]"} !~ /^(exclamation|question).png$/) {
-            unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_smimg[$temp_a]\"}";
+        if ( $FORM{"delbox[$temp_a]"} ) {
+            delete $addedsmilies{$temp_a};
+            foreach my $i (@smilieorder) {
+                if ( $i ne $temp_a ) { push @neworder, $i }
+            }
+            if ( $FORM{"cur_smimg[$temp_a]"} !~
+                /^(?:exclamation|question).png$/xsm )
+            {
+                unlink
+"$htmldir/Templates/Forum/default/$FORM{\"cur_smimg[$temp_a]\"}";
+            }
         }
         ++$temp_a;
     }
+    %seen = ();
+    @anew = ();
+    if (@neworder) { @smilieorder = @neworder; }
+    foreach my $i (@smilieorder) { $seen{$i} = 1; }
+    foreach my $i ( keys %addedsmilies ) {
+        if ( !$seen{$i} ) {
+            push @anew, $i;
+        }
+    }
+    push @smilieorder, @anew;
 
     require Admin::NewSettings;
     SaveSettingsTo('Settings.pm');
@@ -372,32 +401,20 @@ sub AddSmilies {
 
 sub SmilieMove {
     is_admin_or_gmod();
-
-    if ( exists $INFO{'index'} ) {
-        for my $i ( 0 .. $#SmilieURL ) {
+    if ( $INFO{'index'} ) {
+        my $moveit = $INFO{'index'};
+        foreach my $i ( 0 .. $#smilieorder ) {
             if (
-                $i == $INFO{'index'}
-                && (   ( $INFO{'movedown'} && $i >= 0 && $i < $#SmilieURL )
-                    || ( $INFO{'moveup'} && $i <= $#SmilieURL && $i > 0 ) )
+                $smilieorder[$i] == $moveit
+                && (   ( $INFO{'movedown'} && $i >= 0 && $i < $#smilieorder )
+                    || ( $INFO{'moveup'} && $i <= $#smilieorder && $i > 0 ) )
               )
             {
                 my $j = $INFO{'moveup'} ? $i - 1 : $i + 1;
 
-                my $moveit = $SmilieURL[$i];
-                $SmilieURL[$i] = $SmilieURL[$j];
-                $SmilieURL[$j] = $moveit;
-
-                $moveit         = $SmilieCode[$i];
-                $SmilieCode[$i] = $SmilieCode[$j];
-                $SmilieCode[$j] = $moveit;
-
-                $moveit                = $SmilieDescription[$i];
-                $SmilieDescription[$i] = $SmilieDescription[$j];
-                $SmilieDescription[$j] = $moveit;
-
-                $moveit              = $SmilieLinebreak[$i];
-                $SmilieLinebreak[$i] = $SmilieLinebreak[$j];
-                $SmilieLinebreak[$j] = $moveit;
+                my $moveit = $smilieorder[$i];
+                $smilieorder[$i] = $smilieorder[$j];
+                $smilieorder[$j] = $moveit;
                 last;
             }
         }

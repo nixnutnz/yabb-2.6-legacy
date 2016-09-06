@@ -17,6 +17,7 @@ $englishmessageindexlngver = 'YaBB 2.7.00 $Revision$';
 if (@englishmessageindexlngmods) {
     $englishmessageindexlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %messageindex_txt = (

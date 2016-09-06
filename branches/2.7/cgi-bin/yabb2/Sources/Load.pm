@@ -28,39 +28,30 @@ sub LoadBoardControl {
     $binboard = q{};
     $annboard = q{};
 
-    fopen( FORUMCONTROL, "$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    my @boardcontrols = <FORUMCONTROL>;
-    fclose(FORUMCONTROL);
-    $maxboards = $#boardcontrols;
-
-    foreach my $boardline (@boardcontrols) {
-        $boardline =~ s/[\r\n]//gxsm;    # Built in chomp
-        chomp $boardline;
-
-        my @brdlist =
-          qw( cat brd pic description mods modgroups topicperms replyperms pollperms zero membergroups ann rbin attperms minageperms maxageperms genderperms canpost parent rules rulestitle rulesdesc rulescollapse brdpasswr brdpassw brdrss );
+    require "$boardsdir/forum.control";
+    @allboards = keys %control;
+    $maxboards = @allboards;
+    my @brdlist =
+          qw( cat pic description mods modgroups topicperms replyperms pollperms zero membergroups ann rbin attperms minageperms maxageperms genderperms canpost parent rules rulestitle rulesdesc rulescollapse brdpasswr brdpassw brdrss );
 ## BoardList Mod Hook ##
 
-        my @boardline = split /[|]/xsm, $boardline;
+    foreach my $boardline (@allboards) {
+        my @boardline = @{$control{$boardline}};
         ## create a global boards array
-        push @allboards, $boardline[1];
-
-        $boardline[3] =~ s/[&][ ]/&amp; /gxsm;
-        if ( substr( $boardline[4], 0, 2 ) eq ', ' ) {
-            substr $boardline[4], 0, 2, q{};
+        $boardline[2] =~ s/[&][ ]/&amp; /gxsm;
+        if ( substr( $boardline[3], 0, 1 ) eq '/' ) {
+            substr $boardline[3], 0, 1, q{};
         }
-        if ( substr( $boardline[5], 0, 2 ) eq ', ' ) {
-            substr $boardline[5], 0, 2, q{};
+        if ( substr( $boardline[4], 0, 1 ) eq '/' ) {
+            substr $boardline[4], 0, 1, q{};
         }
 
-        my $cntboard = $boardline[1];
-        %{ $uid . $cntboard } = ();
+        %{ $uid . $boardline } = ();
         foreach my $i ( 0 .. $#brdlist ) {
-            ${ $uid . $cntboard }{ $brdlist[$i] } = $boardline[$i];
+            ${ $uid . $boardline }{ $brdlist[$i] } = $boardline[$i];
         }
-        if ( $boardline[11] == 1 ) { $annboard = $cntboard; }
-        if ( $boardline[12] == 1 ) { $binboard = $cntboard; }
+        if ( $boardline[10] ) { $annboard = $cntboard; }
+        if ( $boardline[11] ) { $binboard = $cntboard; }
     }
     return;
 }
@@ -146,7 +137,7 @@ sub LoadCensorList {
     foreach my $langd (@lang) {
         if ( -e "$langdir/$langd/censor.txt" ) {
             fopen( CENSOR, "$langdir/$langd/censor.txt" );
-            while ( chomp( $buffer = <CENSOR> ) ) {
+            while ( $buffer = <CENSOR> ) {
                 $buffer =~ s/\r(?=\n*)//gxsm;
                 if ( $buffer =~ m/\~/xsm ) {
                     ( $tmpa, $tmpb ) = split /\~/xsm, $buffer;
@@ -247,7 +238,7 @@ sub FormatUserName {
 sub LoadUser {
     my ( $user, $userextension ) = @_;
     return 1 if exists ${ $uid . $user }{'realname'};
-    return 0 if $user eq q{} || $user eq 'Guest';
+    return 0 if !$user || $user eq 'Guest';
 
     if ( !$userextension ) { $userextension = 'vars'; }
     if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
@@ -277,6 +268,10 @@ sub LoadUser {
             my @settings = keys %vars;
             %{ $uid . $user } = %vars;
             ${ $uid . $user }{'lastonline'} = $mylastonline;
+            require "$langdir/Lang.lng";
+            if ( !$lng{ ${ $uid . $user }{'language'} } ) {
+                ${ $uid . $user }{'language'} = 'English';
+            }
             if ( scalar @settings != 0 ) {
                 if ( $INFO{'action'} ne 'login2'
                     && !${ $uid . $user }{'stealth'} )
@@ -352,61 +347,38 @@ sub is_moderator_b {
 
 sub KillModerator {
     my ($killmod) = @_;
-    my ( @boardcontrol, @newmods, @boardline );
-    fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    @oldcontrols = <FORUMCONTROL>;
-    fclose(FORUMCONTROL);
+    my @boardcontrol = ();
+    require "$boardsdir/forum.control";
 
-    foreach my $boardline (@oldcontrols) {
-        chomp $boardline;
-        if ( $boardline ne q{} ) {
-            @newmods = ();
-            @boardline = split /[|]/xsm, $boardline;
-            foreach ( split /\//xsm, $boardline[4] ) {
-                if ( $killmod ne $_ ) { push @newmods, $_; }
-            }
-            $boardline[4] = join q{, }, @newmods;
-            $newboardline = join q{|}, @boardline;
-            push @boardcontrol, $newboardline . "\n";
+    foreach my $boardline (keys %control) {
+        my @newmods = ();
+        foreach my $i( split /\//xsm, ${$control{$boardline}}[3] ) {
+            if ( $killmod ne $i ) { push @newmods, $i; }
         }
+        ${$control{$boardline}}[3] = join q{/}, @newmods;
     }
-    @boardcontrol = undupe(@boardcontrol);
-    my $prnbrd = join q{}, @boardcontrol;
-    fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    print {FORUMCONTROL} $prnbrd or croak "$croak{'print'} FORUMCONTROL";
-    fclose(FORUMCONTROL);
+    foreach my $cnt ( sort keys %control ) {
+        my $prline = join q{', '}, @{$control{$cnt}};
+        my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
+        push @boardcontrol, $newline . "\n";
+    }
+    write_forum_control();
     return;
 }
 
 sub KillModeratorGroup {
     my ($killmod) = @_;
-    my ( @boardcontrol, @newmods, @boardline );
-    fopen( FORUMCONTROL, "<$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    @oldcontrols = <FORUMCONTROL>;
-    fclose(FORUMCONTROL);
+    my @boardcontrol = ();
+    require "$boardsdir/forum.control";
 
-    foreach my $boardline (@oldcontrols) {
-        chomp $boardline;
-        if ( $boardline ne q{} ) {
-            @newmods = ();
-            @boardline = split /[|]/xsm, $boardline;
-            foreach ( split /\//xsm, $boardline[5] ) {
-                if ( $killmod ne $_ ) { push @newmods, $_; }
-            }
-            $boardline[5] = join q{, }, @newmods;
-            $newboardline = join q{|}, @boardline;
-            push @boardcontrol, $newboardline . "\n";
+    foreach my $boardline (keys %control) {
+        my @newmods = ();
+        foreach my $i ( split /\//xsm, ${$control{$boardline}}[4] ) {
+            if ( $killmod ne $i ) { push @newmods, $i; }
         }
+        ${$control{$boardline}}[4] = join q{/}, @newmods;
     }
-    @boardcontrol = undupe(@boardcontrol);
-    my $prnbrd = join q{}, @boardcontrol;
-    fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
-      or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    print {FORUMCONTROL} $prnbrd or croak "$croak{'print'} FORUMCONTROL";
-    fclose(FORUMCONTROL);
+    write_forum_control();
     return;
 }
 
@@ -459,10 +431,6 @@ sub LoadUserDisplay {
 
     $thegtalkuser = $user;
     $thegtalkname = ${ $uid . $user }{'realname'};
-
-    if ( !$UseMenuType ) {
-        $UseMenuType = $MenuType;
-    }
 
     get_micon();
 
@@ -562,7 +530,7 @@ qq~<span style="vertical-align: middle;">$zodiac_txt{'sign'}:</span> $zodiac<br 
     if ( $showusertext && ${ $uid . $user }{'usertext'} )
     {    # Censor the usertext and wrap it
         ${ $uid . $user }{'usertext'} =
-          WrapChars( Censor( ${ $uid . $user }{'usertext'} ), 20 );
+          WrapChars( Censor( ${ $uid . $user }{'usertext'} ), $usertxtwrap );
     }
     else {
         ${ $uid . $user }{'usertext'} = q{};
@@ -608,36 +576,37 @@ sub LoadMiniUser {
     $tempgroupcheck = ${ $uid . $user }{'position'} || q{};
 
     my @memstat = ();
-    if ( exists $Group{$tempgroupcheck} && $tempgroupcheck ne q{} ) {
-
+    %addmembergroup = ();
+    if ( $tempgroupcheck && $Group{$tempgroupcheck} ) {
         #(
         #    $title,     $stars,     $starpic,    $color,
         #    $noshow,    $viewperms, $topicperms, $replyperms,
         #    $pollperms, $attachperms
         #)
-        @memstat   = split /[|]/xsm, $Group{$tempgroupcheck};
+        @memstat   = @{$Group{$tempgroupcheck}};
         $temptitle = $memstat[0];
         $tempgroup = $Group{$tempgroupcheck};
         if ( $memstat[4] == 0 ) { $bold = 1; }
         $memberunfo{$user} = $tempgroupcheck;
     }
     elsif ( $moderators{$user} ) {
-        @memstat           = split /[|]/xsm, $Group{'Moderator'};
+        @memstat           = @{$Group{'Moderator'}};
         $temptitle         = $memstat[0];
         $tempgroup         = $Group{'Moderator'};
         $memberunfo{$user} = $tempgroupcheck;
     }
-    elsif ( exists $NoPost{$tempgroupcheck} && $tempgroupcheck ne q{} ) {
-        @memstat           = split /[|]/xsm, $NoPost{$tempgroupcheck};
+    elsif ( $tempgroupcheck && $NoPost{$tempgroupcheck} ) {
+        @memstat           = @{$NoPost{$tempgroupcheck}};
         $temptitle         = $memstat[0];
         $tempgroup         = $NoPost{$tempgroupcheck};
         $memberunfo{$user} = $tempgroupcheck;
     }
 
+    ${ $uid . $user }{'postcount'} ||= 0;
     if ( !$tempgroup ) {
         foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
             if ( ${ $uid . $user }{'postcount'} >= $postamount ) {
-                @memstat = split /[|]/xsm, $Post{$postamount};
+                @memstat = @{$Post{$postamount}};
                 $tempgroup = $Post{$postamount};
                 last;
             }
@@ -649,7 +618,7 @@ sub LoadMiniUser {
         $temptitle = $memstat[0];
         foreach my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
             if ( ${ $uid . $user }{'postcount'} > $postamount ) {
-                @memstat = split /[|]/xsm, $Post{$postamount}, 5;
+                @memstat = @{$Post{$postamount}};
                 last;
             }
         }
@@ -669,7 +638,7 @@ sub LoadMiniUser {
             #                undef,     $viewperms, $topicperms, $replyperms,
             #                $pollperms, $attachperms
             #            )
-            my @myperms = split /[|]/xsm, $tempgroup, 11;
+            my @myperms = @{$tempgroup};
         }
         ${ $uid . $user }{'perms'} =
 "$myperms[5]|$myperms[6]|$myperms[7]|$myperms[8]|$myperms[9]|$myperms[10]";
@@ -681,7 +650,7 @@ sub LoadMiniUser {
     if   ( $bold != 1 )  { $memberinfo{$user} = qq~$memstat[0]~; }
     else                 { $memberinfo{$user} = qq~<b>$memstat[0]</b>~; }
 
-    if ( $memstat[3] ne q{} && !$iamguest ) {
+    if ( $memstat[3] && !$iamguest ) {
         $link{$user} =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$memstat[3];">$userlink</a>~;
         $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
@@ -691,7 +660,7 @@ qq~<span style="color: $memstat[3];">${$uid.$user}{'realname'}</span>~;
           qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
     }
     elsif ($iamguest) {
-        if ( $memstat[3] ne q{} ) {
+        if ( $memstat[3] ) {
             $link{$user} =
 qq~<span style="color:$memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
             $format{$user} =
@@ -723,7 +692,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
                 $atitle,     undef,       undef,        undef,
                 $anoshow,    $aviewperms, $atopicperms, $areplyperms,
                 $apollperms, $aattachperms
-            ) = split /[|]/xsm, $NoPost{$key};
+            ) = @{$NoPost{$key}};
             if ( $addgrptitle eq $key && $atitle ne $memstat[0] ) {
                 if ( $user eq $username && !$iamadmin ) {
                     if ( $aviewperms == 1 )   { $viewperms   = 1; }
@@ -748,7 +717,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
             }
         }
     }
-    $addmembergroup{$user} =~ s/<br.*?>\Z//xsm;
+    $addmembergroup{$user} =~ s/<br\s\/>\Z//xsm;
 
     if ( $username eq 'Guest' ) { $memberunfo{$user} = 'Guest'; }
 
@@ -834,12 +803,12 @@ sub QuickLinks {
             $lastonline = qq~ title="$maintxt{'13'}."~;
         }
     }
-    my $quicklinks;
+    my $quicklinks = q{};
     if ($usertools) {
         $qlcount++;
         my $modcol = is_moderator_b($user);
         if ( $modcol == 1 ) {
-            @memstats = split /[|]/xsm, $Group{'Moderator'};
+            @memstats = @{$Group{'Moderator'}};
         }
         my $display = 'display:inline';
         if (   $ENV{'HTTP_USER_AGENT'} =~ /opera/ism
@@ -884,7 +853,6 @@ qq~             <li><a href="$scripturl?action=imsend;to=$useraccount{$user}">$m
                 $quicklinks .=
 qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$maintxt{'4'} ${$uid.$user}{'realname'} $maintxt{'5'}</a></li>\n~;
             }
-
         }
         else {
 
@@ -946,7 +914,7 @@ sub MakeTools {
     $template = qq~<li>$template</li>~;
     $template =~ s/[|]{3}/$list_item/gxsm;
     $template =~ s/<li>[\s]*<\/li>//gxsm;
-    if ( $MenuType == 1 ) {
+    if ( $UseMenuType == 1 ) {
         $template =~ s/\Q$menusep\E//ixgsm;
     }
 
@@ -1042,7 +1010,7 @@ sub UpdateCookie {
     my ( $valid, $expiration );
     if ( $what eq 'delete' ) {
         $expiration = 'Thursday, 01-Jan-1970 00:00:00 GMT';
-        if ( $pathval eq q{} ) { $pathval = q~/~; }
+        if ( !$pathval || $pathval eq q{} ) { $pathval = q~/~; }
         if ( $iamguest && $FORM{'guestlang'} && $enable_guestlanguage ) {
             if ( $FORM{'guestlang'} && !$guestLang ) {
                 $guestLang = qq~$FORM{'guestlang'}~;
@@ -1176,7 +1144,7 @@ sub WhatTemplate {
         $usestyle,       $useimages,    $usehead,     $useboard,
         $usemessage,     $usedisplay,   $usemycenter, $UseMenuType,
         $useThreadtools, $usePosttools, $useMobile
-    ) = split /[|]/xsm, $templateset{$template};
+    ) = @{$templateset{$template}};
 
     if ( !-e "$htmldir/Templates/Forum/$usestyle.css" ) {
         $usestyle = 'default';
@@ -1194,10 +1162,6 @@ sub WhatTemplate {
     if ( !-e "$templatesdir/$usemycenter/MyCenter.template" ) {
         $usemycenter = 'default';
     }
-
-    if ( $UseMenuType eq q{} )    { $UseMenuType    = $MenuType; }
-    if ( $useThreadtools eq q{} ) { $useThreadtools = $threadtools; }
-    if ( $usePosttools eq q{} )   { $usePosttools   = $posttools; }
 
     if ( -d "$htmldir/Templates/Forum/$useimages" ) {
         $imagesdir = "$yyhtml_root/Templates/Forum/$useimages";
@@ -1257,7 +1221,6 @@ sub buildIMS {
         my @messages = <USERMSG>;
         fclose(USERMSG);
 
-  # test the data for version. 16 elements in new format, no more than 8 in old.
         foreach my $message (@messages) {
 
             # If the message is flagged as u(nopened), add to the new count

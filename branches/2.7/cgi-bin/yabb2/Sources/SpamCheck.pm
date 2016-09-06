@@ -19,6 +19,7 @@ $spamcheckpmver  = 'YaBB 2.7.00 $Revision$';
 if (@spamcheckpmmods) {
     $spamcheckpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub spamcheck {

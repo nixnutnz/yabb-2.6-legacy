@@ -13,6 +13,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
+no warnings qw(uninitialized);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
@@ -21,6 +25,7 @@ $settings_newspmver = 'YaBB 2.7.00 $Revision$';
 if (@settings_newspmmods) {
     $settings_newspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Load the news from news.txt
@@ -41,10 +46,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
             {
                 description =>
                   qq~<label for="enable_news">$admin_txt{'379'}</label>~,
-                    # Description of item (displayed on left)
                 input_html =>
 qq~<input type="checkbox" name="enable_news" id="enable_news" value="1" ${ischecked($enable_news)}/>~,
-                    # HTML for item
                 name     => 'enable_news',    # Variable/FORM name
                 validate => 'boolean',        # Regex(es) to validate against
             },
@@ -100,7 +103,8 @@ require "$langdir/Lang.lng";
 for (sort keys %lngs ) {
     if ( -e "$langdir/$_/news.txt") {
         fopen(NEWS, "<$langdir/$_/news.txt");
-        ${$_ . '_news'} = do { local $INPUT_RECORD_SEPARATOR = undef; <NEWS> };
+        ${ $_ . '_news' } =
+          do { local $INPUT_RECORD_SEPARATOR = undef; <NEWS> };
         fclose(NEWS);
     }
     else {${$_ . '_news'} = q{};}
@@ -108,7 +112,17 @@ for (sort keys %lngs ) {
     ToHTML(${$lbl});
     ToChars(${$lbl});
 
-    push @{ $settings[1]{items} }, { two_rows => 1, description => qq~<label for="$lbl">$admin_txt{'670'} <strong>$_</strong></label>~, input_html => qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl}</textarea>~, name => "$lbl", validate   => 'null,fulltext', depends_on => ['enable_news'],};
+    push @{ $settings[1]{items} },
+      {
+        two_rows => 1,
+        description =>
+          qq~<label for="$lbl">$admin_txt{'670'} <strong>$_</strong></label>~,
+        input_html =>
+qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl}</textarea>~,
+        name       => "$lbl",
+        validate   => 'null,fulltext',
+        depends_on => ['enable_news'],
+      };
 }
 
 # Routine to save them

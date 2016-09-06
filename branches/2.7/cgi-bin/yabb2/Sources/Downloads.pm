@@ -20,6 +20,7 @@ $downloadspmver  = 'YaBB 2.7.00 $Revision$';
 if (@downloadspmmods) {
     $downloadspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_template('Downloads');
@@ -169,6 +170,7 @@ sub DownloadView {
             $endpage = $newstart + ( $postdisplaynum * 25 );
         }
         else { $endpage = $max; }
+        $startpage ||= 0;
         if ( $startpage > 0 ) {
             $pageindex =
 qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort" class="norm">1</a>&nbsp;...&nbsp;~;
@@ -188,6 +190,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort
         }
         $lastpn  = int( $max / 25 ) + 1;
         $lastptn = ( $lastpn - 1 ) * 25;
+        my $pageindexadd = q{};
         if ( $endpage < $max - (25) ) { $pageindexadd = q~...&nbsp;~; }
         if ( $endpage != $max ) {
             $pageindexadd .=

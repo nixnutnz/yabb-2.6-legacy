@@ -11,11 +11,13 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+
 $defaultmyprofiletemver = 'YaBB 2.7.00 $Revision$';
 @defaultmyprofilemods = ();
 if (@defaultmyprofilemods) {
     $defaultmyprofilemods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $my_bdaycake = 'bdaycake.png';
@@ -32,7 +34,7 @@ $my_session = 'session.png';
 ## UserProfile login ##
 $myprofile_a = qq~
 <div style="width:45em; margin:0 auto 1em">
-    <div class="tabtitle center" style="line-height:3em; vertical-align:bottom"><b>$profile_txt{'901'}</b></div>
+    <div class="tabtitle center" style="line-height:3em; vertical-align:bottom"><b>{yabb profile_txt901}</b></div>
 <form action="{yabb prof_act}" method="post" name="confirmform">
     <div class="windowbg2 center">
             <label for="passwrd"><span class="small"><br />{yabb sid_descript}<br /><br /></span></label>
@@ -41,12 +43,12 @@ $myprofile_a = qq~
             <input type="hidden" name="redir" value="{yabb redirsid}" />
             <div style="padding-top: 4px;">
                 <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
-                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd">$profile_txt{'capslock'}</div>
-                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd_char">$profile_txt{'wrong_char'}: <span id="cappasswrd_character">&nbsp;</span></div>
+                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd">{yabb profile_txtcapslock}</div>
+                <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd_char">{yabb profile_txtwrong_char}: <span id="cappasswrd_character">&nbsp;</span></div>
             </div>
     </div>
     <div class="catbg center padd_8px">
-            <input type="submit" value="$profile_txt{'900'}" class="button" />
+            <input type="submit" value="{yabb profile_txt900}" class="button" />
     </div>
 </form>
 </div>
@@ -58,9 +60,9 @@ $myprofile_a = qq~
 ## admin edit menu ##
 $myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px fixed" style="margin-bottom: -1px">
     <tr>
-        <td class="{yabb menucolor0} center bottom"><span class="small"><b><a href="$scripturl?action=profile;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{79}</a></b></span></td>
-        <td class="{yabb menucolor1} center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{819}</a></b></span></td>
-        <td class="{yabb menucolor2} center bottom"><span class="small"><b><a href="$scripturl?action=profileOptions;username={yabb menu_user};sid=$INFO{'sid'}">$profile_txt{818}</a></b></span></td>
+        <td class="{yabb menucolor0} center bottom"><span class="small"><b><a href="$scripturl?action=profile;username={yabb menu_user};sid={yabb sid}">{yabb profile_txt79}</a></b></span></td>
+        <td class="{yabb menucolor1} center bottom"><span class="small"><b><a href="$scripturl?action=profileContacts;username={yabb menu_user};sid={yabb sid}">{yabb profile_txt819}</a></b></span></td>
+        <td class="{yabb menucolor2} center bottom"><span class="small"><b><a href="$scripturl?action=profileOptions;username={yabb menu_user};sid={yabb sid}">{yabb profile_txt818}</a></b></span></td>
         {yabb bdlist}
         {yabb pmlevel}
         {yabb showadmin}
@@ -68,13 +70,13 @@ $myprofile_menu = qq~<table class="bordercolor cs_thin pad_4px fixed" style="mar
 </table>
 ~;
 
-$myprofile_bdlist = qq~<td class="{yabb menucolor3} center bottom"><span class="small"><b><a href="$scripturl?action=profileBuddy;username={yabb bduser};sid=$INFO{'sid'}">$profile_buddy_list{'buddylist'}</a></b></span></td>~;
+$myprofile_bdlist = qq~<td class="{yabb menucolor3} center bottom"><span class="small"><b><a href="$scripturl?action=profileBuddy;username={yabb bduser};sid={yabb sid}">{yabb profile_buddy_listbuddylist}</a></b></span></td>~;
 
 $myprofile_pmlevel = qq~
-        <td class="{yabb menucolor4} center bottom"><span class="small"><b><a href="$scripturl?action=profileIM;username={yabb pmuser};sid=$INFO{'sid'}">$profile_imtxt{56} $profile_txt{323}</a></b></span></td>~;
+        <td class="{yabb menucolor4} center bottom"><span class="small"><b><a href="$scripturl?action=profileIM;username={yabb pmuser};sid={yabb sid}">{yabb profile_imtxt56} $profile_txt{323}</a></b></span></td>~;
 
 $myprofile_showadmin= qq~
-        <td class="{yabb menucolor5} center bottom"><span class="small"><b><a href="$scripturl?action=profileAdmin;username={yabb aduser};sid=$INFO{'sid'}">$profile_txt{820}</a></b></span></td>~;
+        <td class="{yabb menucolor5} center bottom"><span class="small"><b><a href="$scripturl?action=profileAdmin;username={yabb aduser};sid={yabb sid}">{yabb profile_txt820}</a></b></span></td>~;
 ## end admin edit menu ##
 
 ## Profile edit ##
@@ -85,7 +87,7 @@ $myprofile_edit = qq~<table class="pad_4px" style="border-spacing: 0 1px; border
     </colgroup>
     <tr class="catbg">
         <td colspan="2">
-            <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b><br /><span class="small">$profile_txt{'698'}</span>{yabb my_newpass}
+            <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b><br /><span class="small">{yabb profile_txt698}</span>{yabb my_newpass}
         </td>
     </tr>{yabb my_passchk}
     <tr class="windowbg">
@@ -96,25 +98,25 @@ $myprofile_edit = qq~<table class="pad_4px" style="border-spacing: 0 1px; border
              <input type="text" maxlength="30" onchange="checkAvail('$scripturl',this.value,'display')" name="name" id="name" size="30" value="{yabb user}" /><div id="displayavailability"></div>
         </td>
     </tr><tr class="windowbg">
-         <td><label for="gender"><b>$profile_txt{231}: </b>{yabb editGenderTxt}</label></td>
+         <td><label for="gender"><b>{yabb profile_txt231}: </b>{yabb editGenderTxt}</label></td>
          <td><select name="gender" id="gender" size="1"{yabb disableGenderField}>
             <option value="">--</option>
-            <option value="Male"{yabb GenderMale}>$profile_txt{'238'}</option>
-            <option value="Female"{yabb GenderFemale}>$profile_txt{'239'}</option>
+            <option value="Male"{yabb GenderMale}>{yabb profile_txt238}</option>
+            <option value="Female"{yabb GenderFemale}>{yabb profile_txt239}</option>
             </select>{yabb genderField}
         </td>
     </tr>
     <tr class="windowbg">
-       <td><label for="birthday"><b>$profile_txt{'563'}:{yabb require_bd}</b>{yabb editAgeTxt}</label></td>
+       <td><label for="birthday"><b>{yabb profile_txt563}:{yabb require_bd}</b>{yabb editAgeTxt}</label></td>
        <td><span class="small">{yabb bdaysel}{yabb require_bd}</span></td>
     </tr>{yabb showageshow}
     <tr class="windowbg">
-        <td><label for="location"><b>$profile_txt{'227'}: </b></label></td>
+        <td><label for="location"><b>{yabb profile_txt227}: </b></label></td>
         <td><input type="text" maxlength="30" name="location" id="location" size="30" value="{yabb user_location}" /></td>
     </tr>{yabb my_show_ext_prof}~;
 
 $myprofile_showage = qq~<tr class="windowbg">
-        <td><label for="hideage"><b>$profile_txt{'563a'}</b></label></td>
+        <td><label for="hideage"><b>{yabb profile_txt563a}</b></label></td>
         <td><input type="checkbox" name="hideage" id="hideage" value="1"{yabb agechecked} /></td>
     </tr>~;
 
@@ -129,7 +131,7 @@ $myprofile_session = qq~<tr>
 $myprofile_bottom = qq~<tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
+            <input type="submit" name="moda" value="{yabb profile_txt88}" class="button" />
             <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
@@ -146,50 +148,50 @@ $myprofile_contact = qq~<table class="pad_4px" style="border-spacing: 0 1px; bor
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
     </tr><tr class="windowbg">
-        <td><label for="email"><b>$profile_txt{'69'}: </b><br /><span class="small">$profile_txt{'679'} </span></label></td>
+        <td><label for="email"><b>{yabb profile_txt69}: </b><br /><span class="small">{yabb profile_txt679} </span></label></td>
         <td><input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.value,'email')" name="email" id="email" size="40" value="{yabb user_email}" />
             <div id="emailavailability"></div>
         </td>
     </tr>{yabb my_hidemail}
     <tr class="windowbg">
-        <td><label for="icq"><b>$profile_txt{'513'}: </b>
-            <br /><span class="small">$profile_txt{'600'}</span></label></td>
+        <td><label for="icq"><b>{yabb profile_txt513}: </b>
+            <br /><span class="small">{yabb profile_txt600}</span></label></td>
         <td><input type="text" maxlength="10" name="icq" id="icq" size="40" value="{yabb my_icq}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="aim"><b>$profile_txt{'603'}: </b>
-            <br /><span class="small">$profile_txt{'601'}</span></label></td>
+        <td><label for="aim"><b>{yabb profile_txt603}: </b>
+            <br /><span class="small">{yabb profile_txt601}</span></label></td>
         <td><input type="text" maxlength="30" name="aim" id="aim" size="40" value="{yabb my_aim}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="yim"><b>$profile_txt{'604'}: </b>
-            <br /><span class="small">$profile_txt{'602'}</span></label></td>
+        <td><label for="yim"><b>{yabb profile_txt604}: </b>
+            <br /><span class="small">{yabb profile_txt602}</span></label></td>
         <td><input type="text" maxlength="30" name="yim" id="yim" size="40" value="{yabb my_yim}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="gtalk"><b>$profile_txt{'825'}: </b>
-            <br /><span class="small">$profile_txt{'826'}</span></label></td>
+        <td><label for="gtalk"><b>{yabb profile_txt825}: </b>
+            <br /><span class="small">{yabb profile_txt826}</span></label></td>
         <td><input type="text" maxlength="50" name="gtalk" id="gtalk" size="40" value="{yabb my_gtalk}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="skype"><b>$profile_txt{'827'}: </b>
-            <br /><span class="small">$profile_txt{'828'}</span></label></td>
+        <td><label for="skype"><b>{yabb profile_txt827}: </b>
+            <br /><span class="small">{yabb profile_txt828}</span></label></td>
         <td><input type="text" maxlength="50" name="skype" id="skype" size="40" value="{yabb my_skype}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="myspace"><b>$profile_txt{'570'}:</b>
-            <br /><span class="small">$profile_txt{'571'}</span></label></td>
-        <td><label for="myspace"><span class="small">$profile_txt{'572'}</span></label>
+        <td><label for="myspace"><b>{yabb profile_txt570}:</b>
+            <br /><span class="small">{yabb profile_txt571}</span></label></td>
+        <td><label for="myspace"><span class="small">{yabb profile_txt572}</span></label>
             <br /><input type="text" maxlength="50" name="myspace" id="myspace" size="40" value="{yabb my_myspace}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="facebook"><b>$profile_txt{'573'}:</b>
-            <br /><span class="small">$profile_txt{'574'}</span></label></td>
-        <td><label for="facebook"><span class="small">$profile_txt{'575'}</span></label>
+        <td><label for="facebook"><b>{yabb profile_txt573}:</b>
+            <br /><span class="small">{yabb profile_txt574}</span></label></td>
+        <td><label for="facebook"><span class="small">{yabb profile_txt575}</span></label>
             <br /><input type="text" maxlength="50" name="facebook" id="facebook" size="40" value="{yabb my_facebook}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="twitter"><b>$profile_txt{'576'}:</b>
-            <br /><span class="small">$profile_txt{'577'}</span></label></td>
-        <td><label for="twitter"><span class="small">$profile_txt{'578'}</span></label>
+        <td><label for="twitter"><b>{yabb profile_txt576}:</b>
+            <br /><span class="small">{yabb profile_txt577}</span></label></td>
+        <td><label for="twitter"><span class="small">{yabb profile_txt578}</span></label>
             <br /><input type="text" maxlength="50" name="twitter" id="twitter" size="40" value="{yabb my_twitter}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="youtube"><b>$profile_txt{'579'}:</b>
-            <br /><span class="small">$profile_txt{'580'}</span></label></td>
-        <td><label for="youtube"><span class="small">$profile_txt{'581'}</span></label>
+        <td><label for="youtube"><b>{yabb profile_txt579}:</b>
+            <br /><span class="small">{yabb profile_txt580}</span></label></td>
+        <td><label for="youtube"><span class="small">{yabb profile_txt581}</span></label>
             <br /><input type="text" maxlength="50" name="youtube" id="youtube" size="40" value="{yabb my_youtube}" /></td>
     </tr>
 {yabb my_minlinkweb}
@@ -199,7 +201,7 @@ $myprofile_contact = qq~<table class="pad_4px" style="border-spacing: 0 1px; bor
     <tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
+            <input type="submit" name="moda" value="{yabb profile_txt88}" class="button" />
             <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
@@ -207,34 +209,34 @@ $myprofile_contact = qq~<table class="pad_4px" style="border-spacing: 0 1px; bor
 </form>~;
 
 $myprofile_hidemail = qq~<tr class="windowbg">
-        <td><label for="hideemail"><b>$profile_txt{'721'}</b></label></td>
+        <td><label for="hideemail"><b>{yabb profile_txt721}</b></label></td>
         <td><input type="checkbox" name="hideemail" id="hideemail" value="1"{yabb checked} /></td>
     </tr>~;
 
 $myprofile_minlinkweb = qq~<tr class="windowbg">
-        <td><label for="webtitle"><b>$profile_txt{'83'}: </b>
-            <br /><span class="small">$profile_txt{'598'}</span></label></td>
+        <td><label for="webtitle"><b>{yabb profile_txt83}: </b>
+            <br /><span class="small">{yabb profile_txt598}</span></label></td>
         <td><input type="text" maxlength="30" name="webtitle" id="webtitle" size="40" value="{yabb my_webtitle}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="weburl"><b>$profile_txt{'84'}: </b>
-            <br /><span class="small">$profile_txt{'599'}</span></label></td>
+        <td><label for="weburl"><b>{yabb profile_txt84}: </b>
+            <br /><span class="small">{yabb profile_txt599}</span></label></td>
         <td><input type="text" name="weburl" id="weburl" size="40" value="{yabb my_weburl}" /></td>
     </tr>~;
 
 $myprofile_away = qq~<tr class="windowbg">
-        <td><label for="offlinestatus"><b>$profile_txt{'showstatus'}: </b>
-            <br /><span class="small">$profile_txt{'statusexplain'}<br />$profile_txt{'awaydescription'}</span></label></td>
+        <td><label for="offlinestatus"><b>{yabb profile_txtshowstatus}: </b>
+            <br /><span class="small">{yabb profile_txtstatusexplain}<br />{yabb profile_txtawaydescription}</span></label></td>
         <td>
            <select name="offlinestatus" id="offlinestatus">
                <option value="offline"{yabb offChecked}>$maintxt{'61'}</option>
                <option value="away"{yabb awayChecked}>$maintxt{'away'}</option>
              </select><br /><br />
-             <label for="awaysubj"><span class="small">$profile_txt{'asubj'}</span></label><br />
+             <label for="awaysubj"><span class="small">{yabb profile_txtasubj}</span></label><br />
              <input type="text" name="awaysubj" id="awaysubj" size="50" maxlength="50" value="{yabb awaysubj}" /><br /><br />
-             <label for="awayreply"><span class="small">$profile_txt{'amess'}</span></label><br />~;
+             <label for="awayreply"><span class="small">{yabb profile_txtamess}</span></label><br />~;
 
 $myprofile_away_b =qq~
-             <span class="small">$profile_txt{'664a'} <input value="{yabb MaxAwayLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
+             <span class="small">{yabb profile_txt664a} <input value="{yabb MaxAwayLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
              <script type="text/javascript">
                  var supportsKeys = false;
                  function tick() {
@@ -260,7 +262,7 @@ $myprofile_away_b =qq~
     </tr>~;
 
 $myprofile_stealth = qq~<tr class="windowbg">
-        <td><label for="stealth"><b>$profile_txt{'stealth'}: </b><br /><span class="small">$profile_txt{'stealthexplain'}</span></label></td>
+        <td><label for="stealth"><b>{yabb profile_txtstealth}: </b><br /><span class="small">{yabb profile_txtstealthexplain}</span></label></td>
         <td><input type="checkbox" name="stealth" id="stealth" value="1"{yabb stealthChecked} /></td>
     </tr>~;
 
@@ -276,13 +278,13 @@ $myprofile_options = qq~<table class="pad_4px" style="border-spacing: 0 1px; bor
     </tr><tr class="windowbg">
 {yabb my_show_avatar}
     <tr class="windowbg">
-        <td><label for="usertext"><b>$profile_txt{'228'}: </b></label></td>
+        <td><label for="usertext"><b>{yabb profile_txt228}: </b></label></td>
         <td><input type="text" name="usertext" id="usertext" size="40" value="{yabb usertext}" maxlength="50" /></td>
     </tr><tr class="windowbg">
-         <td><label for="signature"><b>$profile_txt{'85'}:</b><br /><span class="small">$profile_txt{'606'}</span></label></td>
+         <td><label for="signature"><b>{yabb profile_txt85}:</b><br /><span class="small">{yabb profile_txt606}</span></label></td>
          <td>~;
 
-$myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
+$myprofile_options_b = qq~             <span class="small">{yabb profile_txt664} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
              <script type="text/javascript">
                  var supportsKeys = false;
                  function tick() {
@@ -317,7 +319,7 @@ $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <
     <tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
+            <input type="submit" name="moda" value="{yabb profile_txt88}" class="button" />
             <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
@@ -325,10 +327,10 @@ $myprofile_options_b = qq~             <span class="small">$profile_txt{'664'} <
 </form>~;
 
 $myprofile_show_avatar_a = qq~
-        <td><label for="userpic"><b>$profile_txt{'229'}:</b></label>
-            <br /><span class="small"><label for="userpic">$profile_txt{'474'}</label>
-            <label for="userpicpersonalcheck">$profile_txt{'475'}</label> {yabb my_up_avatar_a}
-            <br />$profile_txt{'477'}</span></td>
+        <td><label for="userpic"><b>{yabb profile_txt229}:</b></label>
+            <br /><span class="small"><label for="userpic">{yabb profile_txt474}</label>
+            <label for="userpicpersonalcheck">{yabb profile_txt475}</label> {yabb my_up_avatar_a}
+            <br />{yabb profile_txt477}</span></td>
         <td>            <script type="text/javascript">
                 function showimage(x) {
                     if (!document.images) return;
@@ -364,7 +366,7 @@ $myprofile_show_avatar_a = qq~
 
 
 $myprofile_addmemgroup = qq~<tr class="windowbg">
-        <td><label for="joinmemgroup"><b>$profile_txt{'910'}:</b><br /><span class="small">$profile_txt{'910a'}</span></label></td>
+        <td><label for="joinmemgroup"><b>{yabb profile_txt910}:</b><br /><span class="small">{yabb profile_txt910a}</span></label></td>
         <td>
             <select name="joinmemgroup" id="joinmemgroup" size="{yabb selsize}" multiple="multiple">
                 {yabb addmemgroup}
@@ -373,41 +375,41 @@ $myprofile_addmemgroup = qq~<tr class="windowbg">
     </tr>~;
 
 $myprofile_time = qq~<tr class="windowbg">
-        <td><label for="usernumberformat"><b>$profile_txt{'usernumbformat'}:</b></label></td>
+        <td><label for="usernumberformat"><b>{yabb profile_txtusernumbformat}:</b></label></td>
         <td>
             <select name="usernumberformat" id="usernumberformat" size="1">
                 {yabb my_num_option}
             </select>
         </td>
     </tr><tr class="windowbg">
-        <td><label for="usertimeselect"><b>$profile_txt{'486'}:</b><br />
-            <span class="small">$profile_txt{'479'}</span></label></td>
+        <td><label for="usertimeselect"><b>{yabb profile_txt486}:</b><br />
+            <span class="small">{yabb profile_txt479}</span></label></td>
         <td>
             <select name="usertimeselect" id="usertimeselect" size="1">
                 {yabb my_time_option}
             </select>
         </td>
     </tr><tr class="windowbg">
-        <td><label for="user_tz"><b>$profile_txt{'373'}:</b></label></td>
+        <td><label for="user_tz"><b>{yabb profile_txt373}:</b></label></td>
         <td>{yabb my_timeformat}</td>
         {yabb my_tz_select}
     </tr><tr class="windowbg">
-       <td><label for="dynamic_clock"><b>$profile_txt{'520'}</b><br /><span class="small">$profile_txt{'521'}</span></label></td>
+       <td><label for="dynamic_clock"><b>{yabb profile_txt520}</b><br /><span class="small">{yabb profile_txt521}</span></label></td>
        <td><input type="checkbox" name="dynamic_clock" id="dynamic_clock" value="1"{yabb my_dynamic} /></td>
     </tr>{yabb my_notify}~;
 
 $my_tz_select = qq~    </tr><tr class="windowbg">
-        <td><label for="user_tz"><b>$profile_txt{'371'}:</b><br /><span class="small">$profile_txt{'372'}</span></label></td>
+        <td><label for="user_tz"><b>{yabb profile_txt371}:</b><br /><span class="small">{yabb profile_txt372}</span></label></td>
         <td><b>{yabb my_user_tz}</b>
         </td>~;
 
 $myprofile_notify = qq~<tr class="windowbg">
-        <td class="vtop"><b>$profile_txt{'onlinealert'}:</b></td>
+        <td class="vtop"><b>{yabb profile_txtonlinealert}:</b></td>
         <td>{yabb my_notify_a} {yabb my_notify_b}</td>
     </tr>~;
 
 $myprofile_reverse = qq~<tr class="windowbg">
-        <td><label for="reversetopic"><b>$profile_txt{'810'}</b><br /><span class="small">$profile_txt{'811'}</span></label></td>
+        <td><label for="reversetopic"><b>{yabb profile_txt810}</b><br /><span class="small">{yabb profile_txt811}</span></label></td>
         <td class="vtop"><input type="checkbox" name="reversetopic" id="reversetopic" {yabb my_reversi} /></td>
     </tr>~;
 
@@ -417,12 +419,12 @@ $myprofile_return_to = qq~<tr class="windowbg">
     </tr>~;
 
 $myprofile_template = qq~<tr class="windowbg">
-        <td><label for="usertemplate"><b>$profile_txt{'814'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
+        <td><label for="usertemplate"><b>{yabb profile_txt814}</b><br /><span class="small">{yabb profile_txt815}</span></label></td>
         <td><select name="usertemplate" id="usertemplate">{yabb drawndirs}</select></td>
     </tr>~;
 
 $myprofile_show_lang = qq~<tr class="windowbg">
-        <td><label for="userlanguage"><b>$profile_txt{'817'}</b><br /><span class="small">$profile_txt{'815'}</span></label></td>
+        <td><label for="userlanguage"><b>{yabb profile_txt817}</b><br /><span class="small">{yabb profile_txt815}</span></label></td>
         <td><select name="userlanguage" id="userlanguage">{yabb drawnldirs}</select></td>
     </tr>~;
 
@@ -466,7 +468,7 @@ $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
     </tr><tr class="windowbg">
-        <td><b>$profile_buddy_list{'buddylist'}</b><br /><span class="small">$profile_buddy_list{'explain'}</span></td>
+        <td><b>{yabb profile_buddy_listbuddylist}</b><br /><span class="small">$profile_buddy_list{'explain'}</span></td>
         <td>
             <select name="buddylist" id="buddylist" multiple="multiple" size="3" style="width: 250px; height: 150px;" ondblclick="removeUser(this);">
             {yabb buildBuddyList}
@@ -476,7 +478,7 @@ $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
     </tr><tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
+            <input type="submit" name="moda" value="{yabb profile_txt88}" class="button" />
             <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
@@ -493,13 +495,13 @@ $myprofile_PMpref = qq~<table class="pad_4px" style="border-spacing: 0 1px; bord
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b></td>
     </tr><tr class="windowbg">
-        <td class="vtop"><b>$profile_txt{'325'}:</b><br /><span class="small">$profile_txt{'ignoreexplain'}</span></td>
+        <td class="vtop"><b>{yabb profile_txt325}:</b><br /><span class="small">{yabb profile_txtignoreexplain}</span></td>
         <td>
             <select name="ignore" id="ignore" size="4" multiple="multiple" style="width:250px;" ondblclick="removeUser(this);" >{yabb my_ignore}
             </select>
             <br />
-            <input type="checkbox" name="ignoreall" id="ignoreall" $ignoreallChecked /> <label for="ignoreall">$profile_txt{'ignoreall'}</label><br />
-            <span class="small"><a href="javascript:void(0);" onclick="imWin();">$profile_txt{'ignorelistadd'}</a></span>
+            <input type="checkbox" name="ignoreall" id="ignoreall" {yabb ignoreallChecked} /> <label for="ignoreall">{yabb profile_txtignoreall}</label><br />
+            <span class="small"><a href="javascript:void(0);" onclick="imWin();">{yabb profile_txtignorelistadd}</a></span>
         </td>
     </tr>
 {yabb my_PMnotify}
@@ -510,12 +512,12 @@ $myprofile_PMpref = qq~<table class="pad_4px" style="border-spacing: 0 1px; bord
         <td><label for="popupims"><b>$profile_imtxt{'53'}</b></label></td>
         <td><input type="checkbox" name="popupims" id="popupims" value="1"{yabb popup_userim} /></td>
     </tr><tr class="windowbg">
-        <td><label for="pmviewMess"><b>$profile_txt{'viewmess'}</b><br /><span class="small">$profile_txt{'viewmessexplain'}</span></label></td>
+        <td><label for="pmviewMess"><b>{yabb profile_txtviewmess}</b><br /><span class="small">{yabb profile_txtviewmessexplain}</span></label></td>
         <td><input type="checkbox" name="pmviewMess" id="pmviewMess" value="1"{yabb pmviewMessChecked} /></td>
     </tr><tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
+            <input type="submit" name="moda" value="{yabb profile_txt88}" class="button" />
             <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
@@ -523,11 +525,11 @@ $myprofile_PMpref = qq~<table class="pad_4px" style="border-spacing: 0 1px; bord
 </form>~;
 
 $myprofile_PMnotify = qq~    <tr class="windowbg">
-        <td class="vtop"><label for="notify_PM"><b>$profile_txt{'327'}:</b></label></td>
+        <td class="vtop"><label for="notify_PM"><b>{yabb profile_txt327}:</b></label></td>
         <td>
             <select name="notify_PM" id="notify_PM">
-                <option value="0"{yabb my_PM_notifyme}>$profile_txt{'164'}</option>
-                <option value="1"{yabb my_PM_notifyme_2}>$profile_txt{'163'}</option>
+                <option value="0"{yabb my_PM_notifyme}>{yabb profile_txt164}</option>
+                <option value="1"{yabb my_PM_notifyme_2}>{yabb profile_txt163}</option>
             </select>
         </td>
     </tr>~;
@@ -542,10 +544,10 @@ $myprofile_admin_a = qq~<table class="pad_4px" style="border-spacing: 0 1px; bor
         <td class="catbg" colspan="2">
         <img src="$imagesdir/$my_profile" alt="" /> <b>{yabb profiletitle}</b> {yabb myprofile_userinfo}</td>
     </tr><tr class="windowbg">
-        <td><label for="settings6"><b>$profile_txt{'21'}: </b></label></td>
+        <td><label for="settings6"><b>{yabb profile_txt21}: </b></label></td>
         <td><input type="text" name="settings6" id="settings6" size="4" value="{yabb postcount}" /></td>
     </tr><tr class="windowbg">
-        <td><label for="settings7"><b>$profile_txt{'87'}: </b></label></td>
+        <td><label for="settings7"><b>{yabb profile_txt87}: </b></label></td>
         <td>
             <select name="settings7" id="settings7">
                 <option value="{yabb position}">{yabb tt}</option>
@@ -556,7 +558,7 @@ $myprofile_admin_a = qq~<table class="pad_4px" style="border-spacing: 0 1px; bor
     </tr>{yabb my_tta}~;
 
 $myprofile_tta = qq~<tr class="windowbg">
-        <td class="vtop"><label for="addgroup"><b>$profile_txt{'87a'}: </b><br /><span class="small">$profile_txt{'87b'}</span></label></td>
+        <td class="vtop"><label for="addgroup"><b>{yabb profile_txt87a}: </b><br /><span class="small">{yabb profile_txt87b}</span></label></td>
         <td>
             <select name="addgroup" id="addgroup" size="{yabb selsize}" multiple="multiple">
                 {yabb tta}
@@ -565,13 +567,13 @@ $myprofile_tta = qq~<tr class="windowbg">
     </tr>~;
 
 $myprofile_admin_b = qq~<tr class="windowbg">
-        <td><label for="dr_day_month"><b>$profile_txt{'233'}:</b></label></td>
+        <td><label for="dr_day_month"><b>{yabb profile_txt233}:</b></label></td>
         <td>
             {yabb all_date} $maintxt{'107'} {yabb sel_hour} {yabb sel_minute} <span class="small">$maintxt{'UTC'}</span>
             <input type="hidden" value="{yabb dr_secund}" name="dr_secund" />
         </td>
     </tr><tr class="windowbg">
-        <td><label for="regreason"><b>$profile_txt{'234'}:</b></label></td>
+        <td><label for="regreason"><b>{yabb profile_txt234}:</b></label></td>
         <td>~;
 
 $myprofile_admin_bb = qq~</td>
@@ -589,7 +591,7 @@ $myprofile_admin_bb = qq~</td>
     <tr class="catbg">
         <td class="center" style="height:50px" colspan="2">
             {yabb show_confdel}
-            <input type="submit" name="moda" value="$profile_txt{'88'}" class="button" />
+            <input type="submit" name="moda" value="{yabb profile_txt88}" class="button" />
             <br /><span class="small">{yabb sid_expires}</span>
         </td>
     </tr>
@@ -608,7 +610,7 @@ $myprofile_title = qq~<table class="pad_4px" style="border-spacing: 0 1px; borde
 
 $myrow_sig = qq~<tr>
         <td class="catbg">
-            <img src="$imagesdir/$my_profile" alt="" />&nbsp;<b>$profile_txt{'85'}</b>
+            <img src="$imagesdir/$my_profile" alt="" />&nbsp;<b>{yabb profile_txt85}</b>
         </td>
     </tr><tr>
         <td class="windowbg2">
@@ -645,16 +647,16 @@ $myshow_profile = qq~
     <tr>
         <td class="windowbg2 vtop">
             <div class="contactleft">
-                <b>$profile_txt{'21'}: </b>
+                <b>{yabb profile_txt21}: </b>
             </div>
             <div class="contactright">
-                <b>{yabb post_count}<br />{yabb post_per_day}</b> $profile_txt{'893'}
+                <b>{yabb post_count}<br />{yabb post_per_day}</b> {yabb profile_txt893}
             </div>
             <div class="contactleft">
-                <b>$profile_txt{'233'}: </b>
+                <b>{yabb profile_txt233}: </b>
             </div>
             <div class="contactright">
-                {yabb dr}<br /><b>{yabb member_for_days}</b> $profile_txt{'894'}
+                {yabb dr}<br /><b>{yabb member_for_days}</b> {yabb profile_txt894}
             </div>
         </td>
     </tr>
@@ -663,7 +665,7 @@ $myshow_profile = qq~
     <tr>
         <td class="catbg">
              <img src="$imagesdir/$my_profile" alt="" />&nbsp;
-             <b>$profile_txt{'819'}</b>
+             <b>{yabb profile_txt819}</b>
         </td>
     </tr><tr>
         <td class="windowbg2">
@@ -685,7 +687,7 @@ $myshow_profile = qq~
     <tr>
         <td class="catbg">
             <img src="$imagesdir/$my_profile" alt="" />&nbsp;
-            <b>$profile_txt{'459'}</b>
+            <b>{yabb profile_txt459}</b>
         </td>
     </tr><tr>
         <td class="windowbg2">
@@ -732,22 +734,22 @@ $myshow_gender = q~    <tr>
 
 $myshow_banning = qq~    <tr>
         <td class="windowbg2">
-            <div class="contactleft"><b>$profile_txt{'902'}:</b></div>
+            <div class="contactleft"><b>{yabb profile_txt902}:</b></div>
             <div class="contactright">{yabb ban_user}<br />{yabb ban_user_link}</div>
-            <div class="contactleft"><b>$profile_txt{'69'}:</b></div>
+            <div class="contactleft"><b>{yabb profile_txt69}:</b></div>
             <div class="contactright">{yabb ban_email}<br />{yabb ban_email_link}</div>
-            <div class="contactleft"><b>$profile_txt{'909'}:</b></div>
+            <div class="contactleft"><b>{yabb profile_txt909}:</b></div>
             <div class="contactright">{yabb ip_ban_options}</div>
         </td>
     </tr>~;
 
 $myshow_reminder = qq~    <tr>
         <td class="windowbg2">
-            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>$profile_txt{'pass_reminder_1'}:</b></div>
+            <div style="float: left; clear: left; width: 30%; padding-top: 5px; padding-bottom: 5px;"><b>{yabb profile_txtpass_reminder_1}:</b></div>
             <div style="float: left; width: 70%;">
             <form action="$scripturl?action=reminder2" method="post">
-            <input type="hidden" name="user" value="$INFO{'username'}" />
-            <input type="submit" value="$profile_txt{'pass_reminder_2'}" class="button" onclick="return confirm('$profile_txt{'pass_reminder_3'} {yabb my_realname}${$uid.$user}{'realname'}?');" />
+            <input type="hidden" name="user" value="{yabb user}" />
+            <input type="submit" value="{yabb profile_txtpass_reminder_2}" class="button" onclick="return confirm('{yabb profile_txtpass_reminder_3} {yabb my_realname}?');" />
             </form>
             </div>
         </td>
@@ -756,15 +758,15 @@ $myshow_reminder = qq~    <tr>
 $myshow_recent = qq~    <tr>
         <td class="windowbg2">
             <form action="$scripturl?action=usersrecentposts;username={yabb user}" method="post">
-                $profile_txt{'460'} <select name="viewscount" size="1">{yabb my_recent_display}
-                </select> $profile_txt{'461'} {yabb my_realname}.
-                <input type="submit" value="$profile_txt{'462'}" class="button" />
+                {yabb profile_txt460} <select name="viewscount" size="1">{yabb my_recent_display}
+                </select> {yabb profile_txt461} {yabb my_realname}.
+                <input type="submit" value="{yabb profile_txt462}" class="button" />
             </form>
         </td>
     </tr>~;
 
 $myshow_c = qq~    <tr class="windowbg">
-         <td><label for="name"><b>$profile_txt{68}: </b><br />~;
+         <td><label for="name"><b>{yabb profile_txt68}: </b><br />~;
 
 ## Passwordcheck ##
 $show_check = qq~<tr>
@@ -814,7 +816,7 @@ $ext_output_a = q~
 $ext_output_c = qq~
         <td class="catbg">
             <img src="$imagesdir/$my_profile" alt="" />&nbsp;
-            <b>$field{'comment'}</b>
+            <b>{yabb fieldcomment}</b>
         </td>
     </tr><tr>
         <td class="windowbg2 vtop">~;
@@ -825,10 +827,10 @@ $ext_output_b = q~
 $ext_endrow = q~        </td>
     </tr>~;
 
-$ext_spacer = qq~<tr><td class="catbg" colspan="2">{yabb fieldcomment}&nbsp;</td></tr>\n~;
+$ext_spacer = qq~<tr><td class="windowbg" colspan="2">{yabb fieldcomment}&nbsp;</td></tr>\n~;
 
 $myprofile_fntsze = qq~<tr class="windowbg">
-        <td><label for="userfntsize"><b>$profile_txt{'fntsze'}: </b></label></td>
+        <td><label for="userfntsize"><b>{yabb profile_txtfntsze}: </b></label></td>
         <td>
         <script type="text/javascript">
                 function showfont(x) {

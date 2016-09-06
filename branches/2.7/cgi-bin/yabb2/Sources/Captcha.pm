@@ -26,8 +26,6 @@
 
 # use strict;
 # use warnings;
-## no critic
-no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
@@ -37,21 +35,16 @@ $captchapmver  = 'YaBB 2.7.00 $Revision$';
 if (@captchapmmods) {
     $captchapmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $OUTPUT_AUTOFLUSH = 1;
 
-if ( !$rgb_foreground ) {
-    $rgb_foreground = '0000EE';
-}
+$rgb_foreground ||= '0000EE';
 
-if ( !$rgb_shade ) {
-    $rgb_shade = '999999';
-}
+$rgb_shade ||= '999999';
 
-if ( !$rgb_background ) {
-    $rgb_background = 'FFFFFF';
-}
+$rgb_background ||= 'FFFFFF';
 
 sub captcha {
     my ($msg) = @_;
@@ -96,7 +89,7 @@ sub captcha {
  # implement bit packing. 7 bits per pixel translates into 8 bits per code which
  # exactly matches a byte and therefore bit packing is not needed.
 
-    $palette .= "$backcolor";     # 0 = white
+    my $palette = "$backcolor";     # 0 = white
     $palette .= "$shadecolor";    # 1 = grey
     $palette .= "$highcolor";     # 2 = almost black
 
@@ -1289,7 +1282,7 @@ sub captcha {
     $LINE_HEIGHT = $CHAR_HEIGHT * $DOT_HEIGHT;
     @lines       = split /\n/xsm, $msg;
     $len         = 0;
-    for (@lines) {
+    foreach (@lines) {
         if ( length $_ > $len ) { $len = length $_; }
     }
     $w = $len * $CHAR_WIDTH * $DOT_WIDTH;
@@ -1331,8 +1324,7 @@ sub captcha {
 
     # Global Colour Map
     print $palette or croak "$croak{'print'}";
-    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette )
-      or croak "$croak{'print'}";
+    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette ) or croak "$croak{'print'}";
 
     if ($TRANSPARENT_INDEX) {
 
@@ -1379,24 +1371,22 @@ sub captcha {
     print pack 'C', $BITS_PER_PIXEL or croak "$croak{'print'}";
 
     # the data is output in blocks with a leading byte count
-    my ( $img, $line, $random_number );
-    my ( $y,   $cy,   $dy );
-    my ( $x,   $cx,   $i, $c, $d, $di, $r );
+    my $img = q{};
+    my ( $x,   $di );
     $range = 10;
     for my $y ( 0 .. ( $h - 1 ) ) {
-        $cy =
+        my $cy =
           int( $y / $DOT_HEIGHT ) % $CHAR_HEIGHT;    # y coord in character dots
-        $dy = $y % $DOT_HEIGHT;
+        my $dy = $y % $DOT_HEIGHT;
         for ( $x = 0 ; $x < $w ; $x += $DOT_WIDTH ) {
-            $random_number = int rand $range;
-            $cx =
+            my $random_number = int rand $range;
+            my $cx =
               int( $x / $DOT_WIDTH ) % $CHAR_WIDTH;  # x coord in character dots
-            $i =
+            my $i =
               int( $x / $DOT_WIDTH / $CHAR_WIDTH );  # index into message string
-            $line = $lines[ $y / $LINE_HEIGHT ];
-            $c    = ( $i < length $line ) ? substr $line, $i, 1 : q{ };
-            $d    = substr $ci{$c}, $cy * ( $CHAR_WIDTH + $nl ) + $cx + $nl, 1;
-
+            my $line = $lines[ $y / $LINE_HEIGHT ];
+            my $c    = ( $i < length $line ) ? substr $line, $i, 1 : q{ };
+            my $d    = substr $ci{$c}, $cy * ( $CHAR_WIDTH + $nl ) + $cx + $nl, 1;
             # dot in character definition
             if ( $distortion > 0 ) {
                 $dis_level = 9 - $distortion;
@@ -1411,7 +1401,7 @@ sub captcha {
                 $di = ( $d eq 'X' ) ? $dot : $nodot;
             }
             $di = substr $di, $dy * ( $DOT_WIDTH + $nl ) + $nl, $DOT_WIDTH;
-            for my $i ( 0 .. ( length $di - 1 ) ) {
+            for my $i ( 0 .. ( (length $di) - 1 ) ) {
                 $c = ord substr $di, $i, 1;
                 if ( $randomizer > 0 ) {
 
@@ -1419,7 +1409,7 @@ sub captcha {
                     if ( $randomizer == 1 ) { $rc1 = 1; $rc2 = 1; }
                     if ( $randomizer == 2 ) { $rc1 = 2; $rc2 = 2; }
                     if ( $randomizer == 3 ) { $rc1 = 1; $rc2 = 2; }
-                    $r = rand;
+                    my $r = rand;
                     if ( $r < .1 ) {
                         $c += $rc1;
                     }
@@ -1436,10 +1426,10 @@ sub captcha {
     }
 
     # Re-arrange the image data so it's bit-packed
-    my ( $cnt, $pkdimg, $buf, $bufbits );
+    my $pkdimg = q{};
     $i       = 0;
-    $buf     = 0;
-    $bufbits = 0;
+    my $buf     = 0;
+    my $bufbits = 0;
     while ( $i <= length $img ) {
         if ( $i < length $img ) {
 
@@ -1478,7 +1468,7 @@ sub captcha {
     # Output image data
     $i = 0;
     while ( $i < length $pkdimg ) {
-        $cnt = ( length $pkdimg ) - $i;
+        my $cnt = ( length $pkdimg ) - $i;
         if ( $cnt > 255 ) { $cnt = 255; }
         print pack 'C', $cnt or croak "$croak{'print'}";
         print substr $pkdimg, $i, $cnt or croak "$croak{'print'}";
@@ -1486,8 +1476,7 @@ sub captcha {
     }
 
     # Finish up
-    print "\0"
-      or croak "$croak{'print'}";    # zero byte count (end of raster data)
+    print "\0" or croak "$croak{'print'}";    # zero byte count (end of raster data)
 
     # GIF Terminator
     print ';' or croak "$croak{'print'}";

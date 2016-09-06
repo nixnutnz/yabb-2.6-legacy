@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
@@ -21,6 +23,7 @@ $registrationlogpmver = 'YaBB 2.7.00 $Revision$';
 if (@registrationlogpmmods) {
     $registrationlogpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Register');
@@ -36,13 +39,13 @@ sub view_reglog {
         fclose(LOGFILE);
         @logentries = reverse @logentries;
 
-        fopen( FILE, "Variables/Memberlist.pm" );
+        fopen( FILE, 'Variables/Memberlist.pm' );
         @memberlist = <FILE>;
         fclose(FILE);
 
         # If a pre-registration list exists load it
-        if ( -e "Variables/meminactive.db" ) {
-            fopen( INACT, "<Variables/meminactive.db" );
+        if ( -e 'Variables/meminactive.db' ) {
+            fopen( INACT, '<Variables/meminactive.db' );
             @reglist = <INACT>;
             fclose(INACT);
         }
@@ -113,7 +116,7 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn">$lastpn</a>~;
 
         @logentries = splice @logentries, $newstart, 25;
     }
-
+    my $loglist = q{};
     for my $logentry (@logentries) {
         chomp $logentry;
         my ( $logtime, $status, $userid, $actid, $ipadd ) =
@@ -126,7 +129,7 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn">$lastpn</a>~;
             $cryptactid  = $actid;
             $cryptuserid = $userid;
         }
-        if ( $userid ne $actid && $actid ne q{} ) {
+        if ( $actid && $userid ne $actid) {
             LoadUser($actid);
             $actadminlink =
 qq~ $prereg_txt{'by'} <a href="$scripturl?action=viewprofile;username=$cryptactid">${$uid.$actid}{'realname'}</a>~;
@@ -153,7 +156,7 @@ qq~<a href="$adminurl?action=del_regentry;username=$cryptid">$prereg_txt{'del'}<
             $delrecord .=
 qq~<br /><a href="$adminurl?action=view_regentry;username=$cryptid~
               . (
-                $actkey{$userid} ne q{}
+                $actkey{$userid}
                 ? ";activationkey=$actkey{$userid};type=validate"
                 : q{}
               ) . qq~">$prereg_txt{'view'}</a>~;
@@ -175,7 +178,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
             $delrecord = '---';
         }
         my $lookupIP =
-          ($ipLookup)
+          ($ip_lookup)
           ? qq~<a href="$scripturl?action=iplookup;ip=$ipadd">$ipadd</a>~
           : qq~$ipadd~;
         $loglist .= qq~<tr>
@@ -186,6 +189,7 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
         </tr>~;
     }
 
+	$pageindex ||= q{};
     $yymain .= qq~
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
@@ -284,7 +288,7 @@ sub kill_registration {
     my $deluser = $inp || $INFO{'username'};
     if ($do_scramble_id) { $deluser = decloak($deluser); }
 
-    fopen( INFILE, "<Variables/meminactive.db" );
+    fopen( INFILE, '<Variables/meminactive.db' );
     @actlist = <INFILE>;
     fclose(INFILE);
 
@@ -311,7 +315,7 @@ sub kill_registration {
     if ($changed) {
 
         # re-open inactive list for update if changed
-        fopen( OUTFILE, ">Variables/meminactive.db", 1 );
+        fopen( OUTFILE, '>Variables/meminactive.db', 1 );
         print {OUTFILE} @outlist or croak "$croak{'print'} OUTFILE";
         fclose(OUTFILE);
     }
@@ -380,7 +384,7 @@ sub view_registration {
     }
 
     my $lookupIP =
-      ($ipLookup)
+      ($ip_lookup)
       ? qq~<a href="$scripturl?action=iplookup;ip=${$uid.$readuser}{'lastips'}">${$uid.$readuser}{'lastips'}</a>~
       : qq~${$uid.$readuser}{'lastips'}~;
 
@@ -488,8 +492,8 @@ sub reject_registration {
 
     if ($do_scramble_id)  { $deluser      = decloak($deluser); }
 
-    if ( -e "Variables/memapprove.db" && $regtype == 1 ) {
-        fopen( APR, "<Variables/memapprove.db" );
+    if ( -e 'Variables/memapprove.db' && $regtype == 1 ) {
+        fopen( APR, '<Variables/memapprove.db' );
         @aprlist = <APR>;
         fclose(APR);
     }
@@ -502,7 +506,7 @@ sub reject_registration {
         $language = ${ $uid . $deluser }{'language'};
         LoadLanguage('Email');
         require Sources::Mailer;
-        if ( $admin_reason ne q{} ) {
+        if ( $admin_reason ) {
             $message = template_email(
                 $reviewrejectedemail,
                 {
@@ -546,7 +550,7 @@ sub reject_registration {
         }
 
         # update approval user list
-        fopen( APR, ">Variables/memapprove.db" );
+        fopen( APR, '>Variables/memapprove.db' );
         print {APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose(APR);
 
@@ -570,7 +574,7 @@ sub approve_registration {
     if ($do_scramble_id)  { $apruser      = decloak($apruser); }
 
     ## load the list with waiting approvals ##
-    fopen( APR, "<Variables/memapprove.db" );
+    fopen( APR, '<Variables/memapprove.db' );
     @aprlist = <APR>;
     fclose(APR);
 
@@ -586,7 +590,7 @@ sub approve_registration {
     }
 
     ## check if waiting user exists and was indeed in the waiting list ##
-    if ( -e "$memberdir/$apruser.wait" && $foundmember ne q{} ) {
+    if ( -e "$memberdir/$apruser.wait" && $foundmember ) {
         LoadUser($apruser);
 
         # ckeck if email is already in active use
@@ -604,7 +608,7 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         MemberIndex( 'add', $apruser );
 
         # update approval user list
-        fopen( APR, ">Variables/memapprove.db" );
+        fopen( APR, '>Variables/memapprove.db' );
         print {APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose(APR);
 
@@ -620,7 +624,7 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         LoadLanguage('Email');
         require Sources::Mailer;
         if ($emailpassword) {
-            if ( $admin_reason ne q{} ) {
+            if ( $admin_reason ) {
                 $message = template_email(
                     $pwreviewapprovedemail,
                     {
@@ -645,7 +649,7 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
             }
         }
         else {
-            if ( $admin_reason ne q{} ) {
+            if ( $admin_reason ) {
                 $message = template_email(
                     $reviewapprovedemail,
                     {
@@ -675,9 +679,6 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         $language = $templanguage;
 
         if ( $send_welcomeim == 1 ) {
-
-# new format msg file:
-# messageid|(from)user|(touser(s))|(ccuser(s))|(bccuser(s))|subject|date|message|(parentmid)|reply#|ip|messagestatus|flags|storefolder|attachment
             $messageid = $BASETIME . $PROCESS_ID;
             fopen( INBOX, ">$memberdir/$apruser.msg" );
             print {INBOX}

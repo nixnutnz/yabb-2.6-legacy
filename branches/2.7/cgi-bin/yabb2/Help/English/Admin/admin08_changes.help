@@ -1,4 +1,4 @@
-$englishadmin_admin08_changeshelpver = 'YaBB 2.6.11 $Revision: 1626 $';
+$englishadmin_admin08_changeshelpver = 'YaBB 2.7.00 $Revision: 1808 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 $SectionName = "What's_Changed";
 
@@ -211,10 +211,41 @@ $SectionBody5 = q~<p>These are some completely new features to YaBB 2.6.0 that w
     </li>
 </ul>
 ~;
-### Section 6
+
+$SectionSub6 = "New_Features_in_YaBB_2.7.0";
+$SectionBody6 = q~<p>These are some new features to YaBB 2.7.0 that were added by popular request of users. These additions include:</p>
+<ul>
+    <li><b>Advanced Timed Bans</b>
+        <br />This gives additional language separating temporary bans (suspensions) from permanent bans. When banning from a member's profile, the Administrator, Global Moderators, and Forum Moderators can choose to give reason for the ban and send an e-mail to the member letting them know how long they've been banned for and why.
+    </li>
+    <li><strong>Advanced Backup</strong>
+        <br />Now all members, including those who can access the forum while it's in maintenance mode, are locked out of the forum during the backup process. The new backup process runs outside of YaBB itself.
+    </li>
+    <li><strong>Advanced Template Editor</strong>
+        <br />Now Admins can create new template folders and upload new template graphics from within YaBB.
+    </li>
+    <li><strong>Language Specific News and Maintenance Notices</strong>
+        <br />Each installed language can now have its own version of News and the Maintenance Notice.
+    </li>
+    <li><strong>Advanced PM Spam Check</strong>
+        <br />At the Admin can now choose to allow members with fewer than the minimum number of posts to send PMs using the same spam checks as used by guests when posting and sending PMs to the Admin.
+    </li>
+    <li><strong>Separate Listing for Guest PMs to the Admin</strong>
+        <br />Guest PMs/Alerts are now stored and listed separately from Broadcast Messages.
+    </li>
+    <li><strong>YabMod</strong>
+        <br />Created by YaBB modder XTC, YabMod allows admins to upload and install YaBB Mods from within YaBB itself.
+    </li>
+    <li><strong>Under the Hood</strong>
+        <br />Many of the data files have been reconfigured, more UTF-8 encoding support has been added. <strong>YaBB 2.7.00 does not support other language encodings.</strong> Many Buttons and links that threw errors for guests have been coded to not show at all for visitors not authorized to use them.
+    </li>
+</ul>
+~;
+
+### Section 7
 #############################################
-$SectionSub6 = "License_-_YaBB_Public_License_(YPL)";
-$SectionBody6 = q~
+$SectionSub7 = "License_-_YaBB_Public_License_(YPL)";
+$SectionBody7 = q~
 <h2>YaBB Public License (YPL)</h2>
 <p>Below is the license YaBB has adopted for the software. It explains your extended rights and restrictions with the YaBB forum software. We basically ask that you leave the copyright intact and visible on the bottom of your forum at all times on all pages. If you wish to break the following license or remove the copyright, you may make an inquiry by visiting the following URL: <a href="http://www.yabbforum.com/licenses.php">http://www.yabbforum.com/licenses.php</a>.</p>
 <ul>

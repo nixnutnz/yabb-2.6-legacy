@@ -29,6 +29,7 @@ $menupmver  = 'YaBB 2.7.00 $Revision$';
 if (@menupmmods) {
     $menupmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -128,7 +129,7 @@ sub SetImage {
     }
     if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
     else                    { $helpstyle = q~~; }
-    if ( $UseMenuT == 0 ) {
+    if ( !$UseMenuT || $UseMenuT == 0 ) {
         $menusep = $my_sep;
         if ( $img_name eq 'gtalk' ) {
             $img_out =
@@ -139,7 +140,7 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" class="cursor" onclick="window
 qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
         }
     }
-    elsif ( $UseMenuT == 1 ) {
+    elsif ( $UseMenuT && $UseMenuT == 1 ) {
         $menusep = $my_sep;
         if ( $img_name eq 'gtalk' ) {
             $img_out =
@@ -150,7 +151,7 @@ qq~<span style="white-space: nowrap;" class="$span_class cursor" title="${$alt_t
 qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
         }
     }
-    elsif ( $UseMenuT == 3 ) {
+    elsif ( $UseMenuT && $UseMenuT == 3 ) {
         $menusep = q{};
         $img_out =
           qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$text_num}~;

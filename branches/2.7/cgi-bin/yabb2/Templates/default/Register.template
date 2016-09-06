@@ -285,7 +285,7 @@ $ext_output_a = q~
 $ext_output_c = qq~
         <td class="catbg">
             <img src="$imagesdir/profile.gif" alt="" />&nbsp;
-            <b>$field{'comment'}</b>
+            <b>{yabb fieldcomment}</b>
         </td>
     </tr><tr>
         <td class="windowbg vtop">~;

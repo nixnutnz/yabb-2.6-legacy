@@ -34,7 +34,7 @@ $abbr_lang = 'en-us';
 '8' => q~Edit Member Groups~,
 '9' => q~View all members~,
 '10' => q~Save~,
-'11' => q~Here, you can add and edit Member Groups.~,
+'11' => q~Here, you can add and edit Member Groups.<br /><span class="small">Note: Member Groups without assigned text colors will not appear in the Groups list on Board Index.</span>~,
 '12' => q~Staff Member Groups (These groups cannot be removed)~,
 '13' => q~Moderator Groups~,
 '14' => q~(Hold the control or apple key to select or de-select multiple entries)~,
@@ -250,6 +250,7 @@ $abbr_lang = 'en-us';
 '384' => q~Show User Avatar in Message View?~,
 '385' => q~Show User Text in Message View?~,
 '385a' => q~Default User Text (under user avatar)~,
+'385b' => q~User Text Wrap (number of characters per line for User Text below user avatar)~,
 '386' => q~Show Gender Image in Message View?~,
 '386a' => q~Allow User to hide age in Profile and Message View and hide age and birth year in Calendar?~,
 '387' => q~Enable News Fader?~,
@@ -298,6 +299,9 @@ $abbr_lang = 'en-us';
 'brd_pic_w' => q~Board Picture display width (0 = no limit set)~,
 'brd_pic_h' => q~Board Picture image display height (0 = no limit set)~,
 'brd_pic' => q~Disable the Smart Image Resize feature for Board Pictures?<br /><span class="small">If checked, the smart image resize feature is disabled and the image size is set exactly to the values above. This <em>can</em> deform the images. If one of the values is 0, the image is proportionately scaled to the other value. If both are 0, the image is shown at its original size without any resizing.</span>~,
+'ext_pic_w' => q~Extended Profile Picture display width (0 = no limit set)~,
+'ext_pic_h' => q~Extended Profile Picture image display height (0 = no limit set)~,
+'ext_pic' => q~Disable the Smart Image Resize feature for Extended Profile Pictures?<br /><span class="small">If checked, the smart image resize feature is disabled and the image size is set exactly to the values above. This <em>can</em> deform the images. If one of the values is 0, the image is proportionately scaled to the other value. If both are 0, the image is shown at its original size without any resizing.</span>~,
 '479a' => q~Use the "greybox" for Images?<br /><span class="small">If enabled, images in posts (including attachments) will be shown on a slightly translucent gray surface if you click on them. For Attachment images, you also have a second option: Show all Attachment-Images on that page one after the other in one box, versus displayed separately.<br />If set to "disabled," Attachment images will be shown in an new window and embedded Post images are left in the textarea.</span>~,
 '479b' => q~Disable "greybox"~,
 '479c' => q~Enable "greybox" with one image per box~,
@@ -345,7 +349,6 @@ $abbr_lang = 'en-us';
 '509b' => q~Show Posts~,
 '509c' => q~Show Topics~,
 '509d' => q~Show both Topics and Posts~,
-'521' => qq~Select Default Menu Style<br /><span class="small"><strong>Note</strong>: Menu styles for each template can be set in <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a></span>~,
 '521a' => q~Icon + Text~,
 '521b' => q~Text Only~,
 '521c' => q~Buttons Only~,
@@ -354,8 +357,6 @@ $abbr_lang = 'en-us';
 '524' => q~Auto-link URLs?~,
 '525' => q~Check for ALL CAPS?<br /><span class="small">If set to 0, no checking is done. Otherwise, the number determines how many characters in all caps are required to open a JavaScript alert on submission of the post.</span>~,
 '526' => q~Show User Tools (QuickLinks) for member name links?~,
-'527' => qq~Enable Post Tools?<br /><span class="small">Checking this option will display posting options in a drop-down menu instead of buttons.<br /><strong>Note</strong>: Post Tools can be enabled for each template in <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a></span>~,
-'528' => qq~Enable Topic Tools?<br /><span class="small">Checking this option will display topic options in a drop-down menu instead of buttons.<br /><strong>Note</strong>:Topic Tools can be enabled for each template in <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a></span>~,
 '529' => q~User Info style:<br /><span class="small">When checked, User Info will display to the left of posts as in previous versions. When unchecked User Info will be displayed above each post in the new format.</span>~,
 '530' => q~Rebuilding the Message Index can take a long time in Boards with many Threads.<br />Do you really want to do this?<br />~,
 '531' => q~Click here to start now.~,
@@ -541,6 +542,7 @@ $abbr_lang = 'en-us';
 'findroot' => q~<em>find</em>: Path to the root directory of your user account on a multiple user host system.<br /><span class="small">The path must be <strong>from system root to your user root</strong>. Example:<br />/var/www/your_domain_name/<br />/var/www/web1234/<br /><br />You can also specify a path to your forum or a directory in your forum and specify a maximum amount of space as a limit for it 'find' will use that limit instead of your host account limits. Example:<br />/var/www/your_domain_name/cgi-bin/yabb2/<br />/var/www/your_domain_name/public_html/yabbfiles/Attachments/</span>~,
 'findmax' => q~<em>find</em>: Available space you are allowed to use in the above directory (in Megabytes).<br /><span class="small">This should be the same amount of disk space as your hosting plan advertises.<br />Since you should set 'find' to check the available host space only all X hours or once per day, you should set this value lower than the space your host provides to you, to avoid running out of space due to some sudden increase of disk use for example by attachments or other high volume consuming postings.<br />To enable 'find' for free host space checking this value must be &gt; 0. If the used space within the above directory is higher than this value, the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br /><strong>Reminder</strong>: Only Admins can access the forum when in Maintenance Mode.<br />Just in case you don't remember: 1 GB = 1024 MB</span>~,
 'diskspacecheck' => q~Enable free disk space check?<br /><span class="small">This checks for the available physical disk space on the Linux or Windows server. Be aware that not all of that disk space may be usable by you. It may show a number greater than allowed by your personal hosting plan.<br />If your available disk space drops below 100&thinsp;000 Bytes (100 KB), the forum will automatically go into Maintenance Mode to prevent running out of space and losing data.<br />Reminder: Only Admins can access the forum when in Maintenance Mode.</span>~,
+'getreversedns' => q~Enable Reverse DNS Lookup.~,
 'minlinkpost' => q~Minimum number of posts a member must have before links and images can be posted~,
 'minlinkpost_exp' => q~This prevents spambots from spamposting directly after registering~,
 'minlinksig' => q~Number of posts a member must have before links and images can be created in signature~,
@@ -619,6 +621,7 @@ $abbr_lang = 'en-us';
 'dupbrd' => q~<span class="important">Warning: There are duplicate Boards: </span>~,
 'dupbrdlnk' => qq~<span class="important"><a href="$boardurl/AdminIndex.$yyaext?action=fixboarddupes">Fix duplicate boards</a></span>~,
 'fixdupbrd' => q~Fix Duplicates~,
+'fixduprem' => q~Duplicate Boards removed~,
 'subbrd' => q~Sub-Board~,
 'inbrd' => q~in Board~,
 'incat' => q~in Category~,
@@ -686,6 +689,12 @@ Thanks for using YaBB!~,
 'extra_chars_start' => q~Add extra characters to the start of the validation code:~,
 'extra_chars_end' => q~Add extra characters to the end of the validation code:~,
 'extra_chars_desc' => q~This will add characters which do not need to be entered by the user and will fool spambots.<br />e.g. XX~,
+'casewarning' => q~Please type the characters that appear in the image. The characters must be typed in the same order, and they are case-sensitive.~,
+'casewarning_1' => q~Please type the characters exactly as they appear in the image,~,
+'casewarning_2' => q~<br /><span style="font-weight: bold;">without the first~,
+'casewarning_3' => q~<br /><span style="font-weight: bold;">without the last~,
+'casewarning_4' => q~and last~,
+'casewarning_5' => q~characters.</span><br />The characters must be typed in the same order,<br />and they are case-sensitive.~,
 );
 
 %modtxt = (
@@ -1200,7 +1209,7 @@ Thanks for using YaBB!~,
 %versiontxt = (
 '1' => q~Either your browser doesn't support JavaScript or you need to enable it to allow the versioncheck to work.~,
 '2' => q~<span class="important">There is a new release version available.</span><br />If you would like to download ~,
-'3' => qq~, please go to <a href="$yabb_dnloads">$yabb_dnloads</a>.~,
+'3' => qq~, please go to <a href="{yabb yabb_dnloads}">{yabb yabb_dnloads}</a>.~,
 '4' => q~YOUR version:~,
 '5' => q~Latest RELEASE version:~,
 '6' => q~You are running the latest release version.~,
@@ -1420,6 +1429,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Time::Local' => q~Used to convert time strings into timestamps.<br />This module is essential. Without it, YaBB will not always work.~,
 'File::Find' => q~Used for avatar and attachment upload.<br />If this module is not installed and these features are enabled, you will get an error messages when you try to upload. Otherwise you do not need this module.~,
 'CGI' => q~Used for avatar and attachment upload and diagnostics.~,
+'CGI2' => q~<strong>Your version</strong>:~,
 'Net::SMTP' => q~Used to send e-mails via SMTP.<br />This module is only needed if you want to send your e-mails via Net::SMTP. Otherwise you do not need this module.<br /><strong>Your version</strong>:~,
 'Net::SMTPS' => q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
 'Compress::Zlib' => qq~Used for the Backup feature and browser Output Compression.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details) and/or if you want to enable "Use GZip-Compression?". Otherwise you do not need this module.~,
@@ -1445,6 +1455,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Module::Load' => q~Used by Advanced Backup.<br />This module is essential. Without it, the Backup functions will not work.~,
 'server' => q~Your Server~,
 'LWP::Simple' => q~Used by YaBMod.<br />If this module is not installed, you will be unable to use YaBMod. Otherwise you do not need this module.~,
+'noserver' => q~no server information available~,
+'mod_access_compat' => q~No Mod Access~,
 );
 
 %settings_txt = (
@@ -1604,6 +1616,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 );
 
 %croak = (
+'open' => q~Cannot open~,
+'close' => q~Cannot close~,
 'print' => q~Cannot print~,
 );
 
@@ -1688,7 +1702,6 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'install' => q~has already been installed!~,
 'n_install' => q~has not been installed!~,
 );
-
 
 timetostring($date);
 $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$YaBBversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;

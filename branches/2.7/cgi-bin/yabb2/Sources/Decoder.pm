@@ -19,11 +19,12 @@ $decoderpmver  = 'YaBB 2.7.00 $Revision$';
 if (@decoderpmmods) {
     $decoderpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub scramble {
     my ( $input, $user ) = @_;
-    if ( $user eq q{} ) { return; }
+    if ( !$user || !$input ) { return; }
 
     # creating a codekey based on userid
     my $carrier = q{};
@@ -46,9 +47,10 @@ sub scramble {
     # making a mess of the input
     my $lastvalue = 3;
     for my $n ( 0 .. length $input ) {
-        $value = ( substr $carrier, $n, 1 ) + $lastvalue + 1;
+        my $str = ( substr $carrier, $n, 1) || 0;
+        $value = $str + $lastvalue + 1;
         $lastvalue = $value;
-        substr $scramble, $value, 1, ( substr $input, $n, 1 );
+        substr( $scramble, $value, 1 ) = substr $input, $n, 1;
     }
 
     # adding code length to code
@@ -59,7 +61,7 @@ sub scramble {
 
 sub descramble {
     my ( $input, $user ) = @_;
-    if ( $user eq q{} ) { return; }
+    if ( !$user ) { return; }
 
     # creating a codekey based on userid
     my $carrier = q{};
@@ -88,8 +90,8 @@ sub descramble {
 
 sub validation_check {
     my ($checkcode) = @_;
-    if ( $checkcode eq q{} ) { fatal_error('no_verification_code'); }
-    if ( $checkcode !~ /\A[[:alnum]]+\Z/xsm ) {
+    if ( !$checkcode ) { fatal_error('no_verification_code'); }
+    if ( $checkcode !~ /\A[[:alnum:]]+\Z/xsm ) {
         fatal_error('invalid_verification_code');
     }
     if ( testcaptcha( $FORM{'sessionid'} ) ne $checkcode ) {
@@ -143,7 +145,8 @@ sub testcaptcha {
 
 sub convert {
     require Sources::Captcha;
-    my ( $startChars, $endChars );
+    my $startChars = q{};
+    my $endChars = q{};
     if ($captchaStartChars) { $startChars = $captchaStartChars; }
     if ($captchaEndChars)   { $endChars   = $captchaEndChars; }
     $captcha = testcaptcha( $INFO{$randaction} );

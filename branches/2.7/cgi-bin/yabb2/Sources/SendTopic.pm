@@ -19,6 +19,7 @@ $sendtopicpmver  = 'YaBB 2.7.00 $Revision$';
 if (@sendtopicpmmods) {
     $sendtopicpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
@@ -54,6 +55,8 @@ sub SendTopic {
         $my_valcode = $mysend_valcode;
         $my_valcode =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
         $my_valcode =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
+        $my_valcode =~ s/\Q{yabb floodtxt_1}\E/$floodtxt{'1'}/xsm;
+        $my_valcode =~ s/\Q{yabb floodtxt_3}\E/$floodtxt{'3'}/xsm;
     }
     if (   $spam_questions_gp
         && $iamguest
@@ -71,6 +74,7 @@ sub SendTopic {
 s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
         $my_spam =~ s/\Q{yabb spam_question_id}\E/$spam_question_id/xsm;
         $my_spam =~ s/\Q{yabb spam_question_image}\E/$spam_image/xsm;
+        $my_spam =~ s/\Q{yabb sendtopic_txt_verification_question_desc}\E/$sendtopic_txt{'verification_question_desc'}/xsm;
     }
 
     $my_jschecks = qq~<script type="text/javascript">
@@ -131,6 +135,13 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
     $yymain =~ s/\Q{yabb my_jschecks}\E/$my_jschecks/xsm;
     $yymain =~ s/\Q{yabb board}\E/$board/xsm;
     $yymain =~ s/\Q{yabb topic}\E/$topic/xsm;
+    $yymain =~ s/\Q{yabb sendtopic_txt_707}\E/$sendtopic_txt{'707'}/xsm;
+    $yymain =~ s/\Q{yabb sendtopic_txt_708}\E/$sendtopic_txt{'708'}/xsm;
+    $yymain =~ s/\Q{yabb sendtopic_txt_717}\E/$sendtopic_txt{'717'}/xsm;
+    $yymain =~ s/\Q{yabb sendtopic_txt_718}\E/$sendtopic_txt{'718'}/xsm;
+    $yymain =~ s/\Q{yabb sendtopic_txt_335}\E/$sendtopic_txt{'335'}/xsm;
+    $yymain =~ s/\Q{yabb sendtopic_txt_336}\E/$sendtopic_txt{'336'}/xsm;
+    $yymain =~ s/\Q{yabb sendtopic_txt_339}\E/$sendtopic_txt{'339'}/xsm;
 
     $yytitle =
 "$sendtopic_txt{'707'}&nbsp; &laquo; $subject &raquo; &nbsp;$sendtopic_txt{'708'}";

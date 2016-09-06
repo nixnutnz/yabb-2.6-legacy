@@ -11,11 +11,13 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+
 $defaultmycentertemver = 'YaBB 2.7.00 $Revision$';
 @defaultmycentermods = ();
 if (@defaultmycentermods) {
     $defaultmycentermods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
@@ -105,9 +107,13 @@ $myprofileblock = qq~
 </div>
 ~;
 
-$mypmmenu_inbox = qq~<tr>
+$mypmmmenu_imsend = qq~<tr>
                 <td colspan="3"><span class="nav bold"><a href="$scripturl?action=imsend">$img{'im_send'}</a></span></td>
-            </tr><tr>
+            </tr><tr>~;
+$mypmmmenu_imsend_low = qq~<tr>
+                <td colspan="3"><span class="nav">$inmes_txt{'im_low_postcount'}</span></td>
+            </tr><tr>~;
+$mypmmenu_inbox = qq~
                 <td class="windowbg2"><img src="$imagesdir/$im_inbox" alt="$inmes_txt{'inbox'}" title="$inmes_txt{'inbox'}" /></td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im">$inmes_txt{'inbox'}</a></span></td>
                 <td class="windowbg2"><span class="nav">{yabb username_PMmnum}{yabb inboxNewCount}</span></td>
@@ -363,7 +369,7 @@ $my_pmsearch = qq~<tr>
 
 $my_pmsearch_b = qq~
                 - <input type="radio" name="pmbox" id="pmboxall" value="" checked="checked" /> <label for="pmboxall">$pm_search{'all'}</label>
-                <input type="radio" name="pmbox" id="pmboxthis" value="$callerid" /> <label for="pmboxthis">$pm_search{'justthis'}</label>
+                <input type="radio" name="pmbox" id="pmboxthis" value="{yabb callerid}" /> <label for="pmboxthis">$pm_search{'justthis'}</label>
                 <br />~;
 
 ## end IM left ##

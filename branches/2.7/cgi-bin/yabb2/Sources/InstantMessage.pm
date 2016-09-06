@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-#use warnings;
+# use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
@@ -23,6 +23,7 @@ $instantmessagepmver  = 'YaBB 2.7.00 $Revision$';
 if (@instantmessagepmmods) {
     $instantmessagepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 require Sources::PostBox;
@@ -109,7 +110,8 @@ sub buildIMsend {
         }
     }
     if (
-        $sendBMess != 1
+          !$sendBMess
+        || $sendBmess > 1
         || (
                ( $PMenableBm_level != 1 || ( !$staff ) )
             && ( $PMenableBm_level != 2 || ( !$iamadmin && !$iamgmod ) )
@@ -334,8 +336,7 @@ qq~<option selected="selected" value="mods">$inmes_txt{'bmmods'}</option>\n~;
                     }
                     else {
                         foreach ( keys %NoPost ) {
-                            my ( $title, undef ) =
-                              split /[|]/xsm, $NoPost{$_}, 2;
+                            my ( $title, undef ) = @{$NoPost{$_}};
                             if ( $touser eq $_ ) {
                                 $imWinop .=
 qq~<option selected="selected" value="$_">$title</option>\n~;
@@ -438,6 +439,9 @@ qq~                            <option value="$img"$myic>$alt</option>\n~;
         $imsend_send =~ s/\Q{yabb iconopts}\E/$iconopts/xsm;
         $imsend_send =~ s/\Q{yabb pmicon}\E/$pmicon/gxsm;
         $imsend_send =~ s/\Q{yabb pmicon_img}\E/$micon_bg{$pmicon}/gxsm;
+        $imsend_send =~ s/\Q{yabb inmes_txt_status}\E/$inmes_txt{'status'}/gxsm;
+        $imsend_send =~
+s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
     }
     else {
         $imsend_send = $my_imsend_Guest;
@@ -504,12 +508,12 @@ qq~                            <option value="$img"$myic>$alt</option>\n~;
         $more_smilie_array = q{};
         $i                 = 0;
         if ( $showadded == 1 ) {
-            while ( $SmilieURL[$i] ) {
-                if ( $SmilieURL[$i] =~ /\//ixsm ) { $tmpurl = $SmilieURL[$i]; }
-                else { $tmpurl = qq~$imagesdir/$SmilieURL[$i]~; }
+            while ( $smilieorder[$i] ) {
+                if ( ${$addedsmilies{$smilieorder[$i]}}[0] =~ /\//ixsm ) { $tmpurl = ${$addedsmilies{$smilieorder[$i]}}[0]; }
+                else { $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~; }
                 $moresmilieslist .=
-qq~             <img src="$tmpurl" alt="$SmilieDescription[$i]" onclick="javascript: MoreSmilies($i);" class="bottom cursor" />$SmilieLinebreak[$i]\n~;
-                $tmpcode = $SmilieCode[$i];
+qq~             <img src="$tmpurl" alt="${$addedsmilies{$smilieorder[$i]}}[2]" onclick="javascript: MoreSmilies($i);" class="bottom cursor" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
+                $tmpcode = ${$addedsmilies{$smilieorder[$i]}}[1];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
 
                 FromHTML($tmpcode);
@@ -903,7 +907,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $imsend =~ s/\Q{yabb postbox3}\E/$postbox3/xsm;
     $imsend =~ s/\Q{yabb my_ispreview}\E/$my_ispreview/xsm;
     $imsend =~ s/\Q{yabb my_isreply}\E/$my_isreply/xsm;
-    $imsend =~ s/\Q{yabb post}/$post\E/xsm;
+    $imsend =~ s/\Q{yabb post}\E/$post/xsm;
     $imsend =~ s/\Q{yabb hidestatus}\E/$hidestatus/xsm;
     $imsend =~ s/\Q{yabb submittxt}\E/$submittxt/xsm;
     $imsend =~ s/\Q{yabb sendBMessFlag}\E/$sendBMessFlag/xsm;
@@ -1026,13 +1030,13 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
 
              # replace all inappropriate characters from lists in Language files
-                if ( $fixfile =~ /[^0-9A-Za-z+-.:]/xsm ) {
+                if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
                     my %translist = loadtranlist();
                     @uploadtranlist = keys %translist;
                     foreach (@uploadtranlist) {
                         $fixfile =~ s/$_/$translist{$_}/gxsm;
                     }
-                    $fixfile =~ s/[^0-9A-Za-z+-.:_]/_/gxsm;
+                    $fixfile =~ s/[^\w+\-.:]/_/gxsm;
                 }
                 my $fixname = $fixfile;
                 if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
@@ -1303,9 +1307,12 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                 }
 
                 # Send message to user
-                fopen( INBOX, "$memberdir/$UserTo.msg" );
-                my @inmessages = <INBOX>;
-                fclose(INBOX);
+                my @inmessages = ();
+                if ( -e "$memberdir/$UserTo.msg" ) {
+                    fopen( INBOX, "$memberdir/$UserTo.msg" );
+                    @inmessages = <INBOX>;
+                    fclose(INBOX);
+                }
                 unshift @inmessages,
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||$fixfile|$mods\n";
                 my $prninmess = join q{}, @inmessages;
@@ -1332,7 +1339,9 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                 ## relocated sender msg out of the loop
 
 # Send notification (Will only work if Admin has allowed the Email Notification)
-                if ( ${ $uid . $UserTo }{'notify_me'} > 1
+                if (   ${ $uid . $UserTo }{'notify_me'}
+                    && ${ $uid . $UserTo }{'notify_me'} > 1
+                    && $enable_notifications
                     && $enable_notifications > 1 )
                 {
                     require Sources::Mailer;
@@ -1390,7 +1399,7 @@ qq~$messageid|$date|$filesizekb{$logFixfile}|$logFixfile|${$uid.$username}{'real
                 $badusers .=
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$format_unbold{$baduser}</a>, ~;
             }
-            $badusers =~ s/,\s\Z//xsm;
+            $badusers =~ s/,\s$//xsm;
             fatal_error( 'im_bad_users', $badusers );
         }
     }
@@ -1427,9 +1436,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     @outmessages = ();
     my $savetofile = 'outbox';
     if ( $FORM{'draft'} ) { $savetofile = 'imdraft'; }
-    fopen( OUTBOX, "$memberdir/$username.$savetofile" );
-    @outmessages = <OUTBOX>;
-    fclose(OUTBOX);
+    if ( -e "$memberdir/$username.$savetofile" ) {
+        fopen( OUTBOX, "$memberdir/$username.$savetofile" );
+        @outmessages = <OUTBOX>;
+        fclose(OUTBOX);
+    }
 
     # add the PM to the outbox
     # the sep users now live together
@@ -1539,7 +1550,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
                 $badusers .=
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$format_unbold{$baduser}</a>, ~;
             }
-            $badusers =~ s/,\s\Z//xsm;
+            $badusers =~ s/,\s$//xsm;
             fatal_error( 'im_bad_users', $badusers );
         }
     }
@@ -2269,7 +2280,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
     my $postMenuTemp = q{};
     if ( $messlst{'mstatus'} ne 'ga' && $messlst{'mstatus'} ne 'g' ) {
         $postMenuTemp = $sendEmail . $sendPM . $membAdInfo . '&nbsp;';
-        if ( $MenuType == 1 ) {
+        if ( $UseMenuType == 1 ) {
             $postMenuTemp =~ s/\Q$menusep\E//ixsm;
         }
     }
@@ -2301,9 +2312,19 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
                     $mymid = ';mid=' . $mymid;
                 }
             }
-            $showIM_link .= qq~
+            if (   !$iamadmin
+                && !$iamgmod
+                && !$staff
+                && ${ $uid . $username }{'postcount'} < $numposts
+                && $pm_spam_chk != 1 )
+            {
+                $showIM_link .= q{};
+            }
+            else {
+                $showIM_link .= qq~
             <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}$mymid">$img{'quote'}</a>$menusep
             <a href="$scripturl?action=imsend;caller=$INFO{'caller'};reply=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}$mymid">$img{'reply_ims'}</a>$menusep~;
+            }
         }
     }
 
@@ -2311,8 +2332,18 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
         && $messlst{'mstatus'} ne 'ga'
         && $messlst{'mstatus'} ne 'g' )
     {
-        $showIM_link .= qq~
+        if (   !$iamadmin
+            && !$iamgmod
+            && !$staff
+            && ${ $uid . $username }{'postcount'} < $numposts
+            && $pm_spam_chk != 1 )
+        {
+            $showIM_link .= q{};
+        }
+        else {
+            $showIM_link .= qq~
             <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'};forward=1;id=$messlst{'messageid'}">$img{'forward'}</a>$menusep~;
+        }
     }
 
     if (
@@ -2475,7 +2506,7 @@ sub links_to {
         }
     }
     else {
-        my ( $title, undef ) = split /[|]/xsm, $NoPost{$uname}, 2;
+        my ( $title, undef ) = @{$NoPost{$uname}};
         $usernamelinkto = qq~<b>$title</b>~ . q{, };
     }
     return $usernamelinkto;

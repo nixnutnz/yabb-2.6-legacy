@@ -13,6 +13,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
+use warnings;
+no warnings qw(once);
+no warnings qw(redefine);
+no warnings qw(uninitialized);
 our $VERSION = '2.7.00';
 
 $settings_securitypmver = 'YaBB 2.7.00 $Revision$';
@@ -20,6 +24,7 @@ $settings_securitypmver = 'YaBB 2.7.00 $Revision$';
 if (@settings_securitypmmods) {
     $settings_securitypmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Sessions');
@@ -27,8 +32,8 @@ $admin_images = "$yyhtml_root/Templates/Admin/default";
 
 my @iplookup_urls = sort keys %iplookup;
 $iplookup_urls = q{};
-for $i (@iplookup_urls) {
-    if ( $iplookup{$i} !~ /&(.*amp;)/gsm ) {
+foreach my $i (@iplookup_urls) {
+    if ( $iplookup{$i} !~ /&(?:.*amp;)/gxsm ) {
         $iplookup{$i} =~ s/&/&amp;/gxsm;
     }
     $j = $i;
@@ -107,8 +112,8 @@ qq~<input type="checkbox" name="show_online_ip_fmod" id="show_online_ip_fmod" va
                 description =>
 qq~<label for="ip_lookup">$admin_txt{'iplookup'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="ipLookup" id="ip_lookup" value="1"${ischecked($ipLookup)} />~,
-                name     => 'ipLookup',
+qq~<input type="checkbox" name="ip_lookup" id="ip_lookup" value="1"${ischecked($ip_lookup)} />~,
+                name     => 'ip_lookup',
                 validate => 'boolean',
             },
             {
@@ -118,7 +123,7 @@ qq~<label for="ip_lookup_urls">$admin_txt{'iplookup_urls'}</label>~,
 qq~<textarea name="iplookup_urls" id="ip_lookup_urls" cols="55" rows="7">$iplookup_urls</textarea>~,
                 name => 'iplookup_urls',
                 validate => 'fulltext',
-                depends_on => ['ipLookup'],
+                depends_on => ['ip_lookup'],
             },
         ],
     },
@@ -286,15 +291,18 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
 sub SaveSettings {
     my %settings = @_;
     my $newset = q{};
-    for my $iplookup_url ( split /\s+/sm, $settings{'iplookup_urls'} ) {
-        if ( $iplookup_url =~ /:\/\//xsm && $iplookup_url !~ /http(s|):\/\//xsm ) {
-            fatal_error('invalid_value', $iplookup_url . $admin_txt{'iplookup_protocols'});
+    for my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
+        if (   $iplookup_url =~ /:\/\//xsm
+            && $iplookup_url !~ /http(?:s|):\/\//xsm )
+        {
+            fatal_error( 'invalid_value',
+                $iplookup_url . $admin_txt{'iplookup_protocols'} );
         }
         @ipset = split /[|]/xsm, $iplookup_url;
         $ipset[0] =~ s/\ /_/xsm;
         $newset .= qq~'$ipset[0]' => '$ipset[1]',\n~;
     }
-    $settings{'iplookup'} = $newset;
+    $settings{'iplookup_url'} = $newset;
 
     if (   length $settings{'masterkey'} < 8
         || length $settings{'masterkey'} > 24 )

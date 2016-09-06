@@ -2117,6 +2117,18 @@ body#print { background-color:#fff;background-image:none; color:#000}
     -webkit-animation-play-state: paused;
 }
 
+.ext_code {
+    background-color: #ccc;
+    border: 1px #34689a solid;
+    color: #000;
+    font-family: Courier, "Courier New", Serif;
+    font-size: 120%;
+    font-style: normal;
+    font-weight: 400;
+    padding: 4px;
+    margin: 0;
+}
+
 /* Make it move */
 @keyframes marquee {
     0%   { transform: translate(0, 0); }

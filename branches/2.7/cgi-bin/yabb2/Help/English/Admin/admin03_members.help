@@ -1,4 +1,4 @@
-$englishadmin_admin03_membershelpver = 'YaBB 2.6.11 $Revision: 1626 $';
+$englishadmin_admin03_membershelpver = 'YaBB 2.7.00 $Revision: 1808 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 $SectionName = "Manage_Members";
 
@@ -16,7 +16,6 @@ $SectionBody2 = q~<p>It may become necessary from time to time for a Forum Admin
 <p>From your Member Controls section on the Admin Center sidebar, click on the link titled &#8220;Add Member&#8221;. This new page will give you a simple registration form that will allow you to add a Member without having to logout. Simply fill out this form with the new Member's User Name, Password and e-Mail.</p>
 ~;
 #############################################
-
 
 ### Section 3
 #############################################
@@ -37,7 +36,7 @@ $SectionBody3 = q~<p>Unfortunately, users are not always filled with the great s
         <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> You may also block a range of IP addresses by only entering in the first few octets of the address. For example, entering the IP as: 192.168. would block every IP address from 192.168.0.0 through 192.168.255.255. Enter only 1 IP address per line.</p> </li>
     <li><b>E-mail Address</b>
         <ul>
-            <li>This second method allows you to prevent anyone using a specific e-mail address (example: bad&#64;user.com) from registering or logging in. Enter only 1 e-mail address per line.</li>
+            <li>This second method allows you to prevent anyone using a specific e-mail address (example: bad&#64;user.com) from registering or logging in. Enter only 1 e-mail address per line. This should be a complete address. If you wish to prevent entire e-mail domains from being used on your forum, use the E-mail Domain filter under Anti-Spam Settings.</li>
         </ul>
     </li>
     <li><b>Username</b>
@@ -47,7 +46,7 @@ $SectionBody3 = q~<p>Unfortunately, users are not always filled with the great s
     </li>
 </ul>
 <h4>Banning a Member from their Profile</h4>
-<p class="help_attn">Banning from their Profile gives the Admin (or other authorized staff person) the option of banning the member for set time periods, giving a reason for the banning and the opto sending the an e-mail notifying them of the ban.</p>
+<p class="help_attn">Banning from their Profile gives the Admin (or other authorized staff person) the option of banning the member for set time periods, giving a reason for the banning and the option of sending the an e-mail notifying them of the ban. A temporary ban is called a 'suspension'.</p>
 <ul>
     <li><b>IP Address</b>
         <ul>

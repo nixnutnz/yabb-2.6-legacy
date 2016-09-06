@@ -20,6 +20,7 @@
 # use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+use File::Copy qw(copy);
 use English qw(-no_match_vars);
 
 our $VERSION = '2.7.00';
@@ -884,6 +885,8 @@ sub ConvertMembers {
     close $MEMDIR or croak 'cannot close FILE';
     my $memlist = q{};
     for (@memlist) {
+        $_ =~ s/[\n\r]//gxsm;
+        chomp $_;
         my @nml = split /\t/xsm, $_;
         $memlist .= "\$memberlist{'$nml[0]'} = '$nml[1]';\n";
     }
@@ -899,10 +902,12 @@ sub ConvertMembers {
     chomp @meminfo;
     my $meminfo = q{};
     for (@meminfo) {
+        $_ =~ s/[\n\r]//gxsm;
+        chomp $_;
         my @nml     = split /\t/xsm,  $_;
         my @varinfo = split /[|]/xsm, $nml[1];
         my $val = join q~','~, @varinfo;
-        $meminfo .= qq~\$memberinf{'$_'} = \['$val'\];\n~;
+        $meminfo .= qq~\$memberinf{'$nml[0]'} = \['$val'\];\n~;
     }
     open $NMEMINFO, '>', "$vardir/Memberinfo.pm"
       or setup_fatal_error( "$maintext_23 $vardir/Memberinfo.pm: ", 1 );
@@ -996,7 +1001,6 @@ sub ConvertMembers {
     for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) {
         ( $user, undef ) = split /\t/xsm, $memlist[$i];
 
-        my @tags = ();
         for my $userext (@xta) {
             if ( -e "$convmemberdir/$user.$userext" ) {
                 open $LOADUSER, '<',
@@ -1007,6 +1011,7 @@ sub ConvertMembers {
                 my @settings = <$LOADUSER>;
                 close $LOADUSER
                   or croak "cannot close $convmemberdir/$user.$userext";
+                my @tags = ();
                 foreach (@settings) {
                     if ( $_ =~ /'(.*?)',"(.*?)"/xsm ) {
                         ${ $uid . $user }{$1} = $2;
@@ -1223,17 +1228,18 @@ sub ConvertMembers {
 # Board + Category Conversion ##
 
 sub MoveBoards {
-    my @brdlst = ( 'forum.master', 'forum.totals' );
-    for my $newbrd (@brdlst) {
-        open $OLDBRD, '<', "$convboardsdir/$newbrd"
-          or croak 'cannot open OLDBRD';
-        my @brdinfo = <$OLDBRD>;
-        close $OLDBRD or croak 'cannot close OLDBRD';
-
-        open $NEWBRD, '>', "$boardsdir/$newbrd" or croak 'cannot open NEWBRD';
-        print {$NEWBRD} @brdinfo or croak 'cannot print NEWBRD';
-        close $NEWBRD or croak 'cannot close NEWBRD';
+    copy "$convboardsdir/forum.master", "$boardsdir/forum.master";
+    open $FTOTALS, '<', "$convboardsdir/forum.totals" or setup_fatal_error(
+                    "$maintext_23 $convboardsdir/forum.totals: ", 1 );
+    my @ftotals = <$FTOTALS>;
+    close $FTOTALS;
+    %totals = ();
+    foreach my $cnt (@ftotals) {
+        my @tconv = split /[|]/xsm, $cnt;
+        $totals{$tconv[0]} = [ $tconv[1], $tconv[2], $tconv[3], $tconv[4], $tconv[5], $tconv[6], $tconv[7], $tconv[8], $tconv[9] ];
     }
+    write_forum_totals();
+
     require "$convboardsdir/forum.master";
     @boards    = sort keys %board;
     @subboards = sort keys %subboard;
@@ -1270,16 +1276,14 @@ sub MoveBoards {
 sub FixControl {
     my $newboard = q{};
     my $brdpix   = q{};
+    %newcontrol = ();
     if ( -e qq~$convvardir/boardconv.txt~ ) {
         require qq~$convvardir/boardconv.txt~;
         for my $i (@allboards) {
             my $x = $nid . $i;
             ${$x}{'mypic'} = q{};
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
-
-#            $cat, $board, $pic, $description, $mods, $modgroups, $topicperms,  $replyperms,   $pollperms, $zero, $membergroups, $ann, $rbin, $attperms, $minageperms, $maxageperms, $genderperms,  $canpost, $parent, $rules, $rulestitle, $rulesdesc, $rulescollapse, $brdpasswr, $brdpassw, $bdrss,
-            $newboard .=
-qq~${$x}{'cat'}|$i|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}|\n~;
+            $newcontrol{$i} = [${$x}{'cat'},${$x}{'mypic'}, ${$x}{'description'}, ${$x}{'mods'}, ${$x}{'modgroups'}, ${$x}{'topicperms'}, ${$x}{'replyperms'}, ${$x}{'pollperms'}, ${$x}{'zero'}, ${$x}{'membergroups'}, ${$x}{'ann'}, ${$x}{'rbin'}, ${$x}{'attperms'}, ${$x}{'minageperms'}, ${$x}{'maxageperms'}, ${$x}{'genderperms'}, ${$x}{'canpost'}, ${$x}{'parent'}, ${$x}{'rules'}, ${$x}{'rulestitle'}, ${$x}{'rulesdesc'}, ${$x}{'rulescollapse'}, ${$x}{'brdpasswr'}, ${$x}{'brdpassw'}, ${$x}{'brdrss'}];
             if ( ${$x}{'pic'} ) {
                 $brdpix .= qq~$i|default|${$x}{'pic'}\n~;
             }
@@ -1291,6 +1295,7 @@ qq~${$x}{'cat'}|$i|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modg
             1 );
         @oldboardcontrols = <$OLDFORUMCONTROL>;
         close $OLDFORUMCONTROL or croak 'cannot close OLDFORMCONTROL';
+
         chomp @oldboardcontrols;
         foreach (@oldboardcontrols) {
             my (
@@ -1304,20 +1309,29 @@ qq~${$x}{'cat'}|$i|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modg
             ) = split /[|]/xsm, $_;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
-            $newboard .=
-qq~$cat|$oldboard|$mypic|$description|$mods|$modgroups|$topicperms|$replyperms|$pollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss|\n~;
+            $newcontrol{$oldboard} = [$cat, $mypic, $description, $mods, $modgroups, $topicperms, $replyperms, $pollperms, $zero, $membergroups, $ann, $rbin, $attperms, $minageperms, $maxageperms, $genderperms, $canpost, $parent, $rules, $rulestitle, $rulesdesc, $rulescollapse, $brdpasswr, $brdpassw, $brdrss];
             if ($pic) {
                 $brdpix .= qq~$board|default|$pic\n~;
             }
         }
     }
-    $newboard =~ s/FIX/-/gxsm;
-    $brdpix =~ s/FIX/-/gxsm;
+    my @boardcontrol = ();
+    foreach my $cnt ( sort keys %newcontrol ) {
+        my $prline = join q{', '}, @{$newcontrol{$cnt}};
+        my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
+        $newline =~ s/FIX/-/gxsm;
+        push @boardcontrol, $newline . "\n";
+    }
+    @boardcontrol = undupe(@boardcontrol);
+    my $prnbrd = join q{}, @boardcontrol;
+    $prnbrd .= qq~\n1;\n\n~;
     open $FORUMCONTROL, '>', "$boardsdir/forum.control"
       or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
-    print {$FORUMCONTROL} $newboard
+    print {$FORUMCONTROL} $prnbrd
       or croak 'cannot print FORUMCONTROL';
     close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
+
+    $brdpix =~ s/FIX/-/gxsm;
     open $BRDPIC, '>', "$boardsdir/brdpics.db" or croak 'cannot open BRDIC';
     print {$BRDPIC} $brdpix or croak 'cannot print BRDPIC';
     close $BRDPIC or croak 'cannot close BRDPIC';
@@ -1327,51 +1341,34 @@ qq~$cat|$oldboard|$mypic|$description|$mods|$modgroups|$topicperms|$replyperms|$
 
 sub FixNopost {
     if ( $NoPost{'1'} ) {
-        open $FORUMCONTROL, '<', "$boardsdir/forum.control"
-          or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
-        @boardcontrols = <$FORUMCONTROL>;
-        close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
-        chomp @boardcontrols;
-
+        require "$boardsdir/forum.control";
         my $totalnoposts = keys %NoPost;
-        for my $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
-            ( $grptitle, undef ) = split /[|]/xsm, $NoPost{$i}, 2;
+        foreach my $cnt ( keys %control ) {
+            for my $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
+                ( $grptitle, undef ) = @{$NoPost{$i}};
 
-            foreach my $key ( keys %catinfo ) {
-                ( $catname, $catperms, $catcol ) =
-                  split /[|]/xsm, $catinfo{$key}, 3;
-                $newperm = q{};
-                foreach my $theperm ( split /, /sm, $catperms ) {
-                    if ( $theperm eq $grptitle ) { $theperm = $i; }
-                    $newperm .= qq~$theperm, ~;
+                for my $key ( keys %catinfo ) {
+                    ( $catname, $catperms, $catcol ) =
+                      split /[|]/xsm, $catinfo{$key}, 3;
+                    $newperm = q{};
+                    for my $theperm ( split /, /sm, $catperms ) {
+                        if ( $theperm eq $grptitle ) { $theperm = $i; }
+                        $newperm .= qq~$theperm, ~;
+                    }
+                    $newperm =~ s/, $//sm;
+                    $catinfo{$key} = qq~$catname|$newperm|$catcol~;
                 }
-                $newperm =~ s/, $//sm;
-                $catinfo{$key} = qq~$catname|$newperm|$catcol~;
-            }
-            foreach my $key ( keys %board ) {
-                ( $boardname, $boardperms, $boardshow ) =
-                  split /[|]/xsm, $board{$key}, 3;
-                $newperm = q{};
-                foreach my $theperm ( split /, /sm, $boardperms ) {
-                    if ( $theperm eq $grptitle ) { $theperm = $i; }
-                    $newperm .= qq~$theperm, ~;
+                for my $key ( keys %board ) {
+                    ( $boardname, $boardperms, $boardshow ) =
+                      split /[|]/xsm, $board{$key}, 3;
+                    $newperm = q{};
+                    foreach my $theperm ( split /, /sm, $boardperms ) {
+                        if ( $theperm eq $grptitle ) { $theperm = $i; }
+                        $newperm .= qq~$theperm, ~;
+                    }
+                    $newperm =~ s/, $//sm;
+                    $board{$key} = qq~$boardname|$newperm|$boardshow~;
                 }
-                $newperm =~ s/, $//sm;
-                $board{$key} = qq~$boardname|$newperm|$boardshow~;
-            }
-            for my $j ( 0 .. $#boardcontrols ) {
-                (
-                    $cat,         $oldboard,      $pic,
-                    $description, $mods,          $modgroups,
-                    $topicperms,  $replyperms,    $pollperms,
-                    $zero,        $membergroups,  $ann,
-                    $rbin,        $attperms,      $minageperms,
-                    $maxageperms, $genderperms,   $canpost,
-                    $parent,      $rules,         $rulestitle,
-                    $rulesdesc,   $rulescollapse, $brdpasswr,
-                    $brdpassw,    $bdrss
-                ) = split /[|]/xsm, $boardcontrols[$j];
-
                 $newmodgroups = q{};
                 foreach my $theperm ( split /, /sm, $cntmodgroups ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
@@ -1400,16 +1397,24 @@ sub FixNopost {
                 }
                 $newpollperms =~ s/, $//sm;
 
-                $boardcontrols[$j] =
-qq~$cat|$oldboard|$pic|$description|$mods|$newmodgroups|$newtopicperms|$newreplyperms|$newpollperms|$zero|$membergroups|$ann|$rbin|$attperms|$minageperms|$maxageperms|$genderperms|$canpost|$parent|$rules|$rulestitle|$rulesdesc|$rulescollapse|$brdpasswr|$brdpassw|$brdrss|\n~;
+                ${ $control{ $cnt } }[4] = $newmodgroups;
+                ${ $control{ $cnt } }[5] = $newtopicperms;
+                ${ $control{ $cnt } }[6] = $newreplyperms;
+                ${ $control{ $cnt } }[7] = $newpollperms;
+            }
+            if ( time() > $time_to_jump && ( $i + 1 ) < $totalnoposts ) {
+                write_forum_control();
+
+                $yySetLocation =
+                  qq~$set_cgi?action=cleanup2;st=~
+                  . int(
+                    $INFO{'st'} + time() - $time_to_jump + $max_process_time )
+                  . qq~;starttime=$time_to_jump;clean=4;total_boards=$INFO{'total_boards'};total_re_tot=$INFO{'total_re_tot'};total_memb=$INFO{'total_memb'};tmp_firstforum=$INFO{'tmp_firstforum'};firstforum=$INFO{'firstforum'};total_mail_n=$INFO{'total_mail_n'};total_nopost=$totalnoposts;fix_nopost=~
+                  . ( $i + 1 );
+                redirectexit();
             }
         }
-
-        open $FORUMCONTROL, '>', "$boardsdir/forum.control"
-          or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
-        print {$FORUMCONTROL} @boardcontrols
-          or croak 'cannot print FORUMCONTROL';
-        close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
+        write_forum_control();
     }
     return;
 }
@@ -1874,7 +1879,7 @@ sub Convert_Settings {
 
     if ( -e "$convvardir/email_domain_filter.txt" ) {
         require "$convvardir/email_domain_filter.txt";
-        *cleandomain = sub {
+        local *cleandomain = sub {
             my ($x) = @_;
             $x =~ s/\n/,/gxsm;
             $x =~ s/\s+//gxsm;
@@ -1966,7 +1971,7 @@ EOF
         $settings{'matchname'} = $matchname;
     }
 
-    require "$vardir/Memberlist.pm";
+    require Variables::Memberlist;
     while ( ( $key, $value ) = each %memberlist ) {
         $hash2{$value} = $key;
     }
@@ -2025,12 +2030,42 @@ qq~The Forum Start date was set to $forumstart but the first member was register
     my @adv =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
     $settings{'AdvancedTabs'} = @adv;
-    %templateset = (
-        'Forum default' =>
-          'default|default|default|default|default|default|default|0|0|0|0',
-        'Mobile' => 'mobile|mobile|mobile|mobile|mobile|mobile|mobile|0|0|0|1',
+    %templateset = ('Forum default' => ['default','default','default','default','default','default','default','2','0','0','0'],
+    'Mobile' => ['mobile','mobile','mobile','mobile','mobile','mobile','mobile','0','0','0','1'],
     );
+    my @newfields = ();
+    if (@ext_prof_fields) {
+        foreach my $i (0 .. $#ext_prof_fields) {
+            @fields = split /[|]/xsm, $ext_prof_fields[$i];
+            $newfields[$i] = qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[6]|$fields[7]|$fields[8]|$fields[9]|$fields[10]|$fields[11]|$fields[12]|$fields[13]|$fields[14]|$fields[15]|$fields[16]|$fields[16]|$fields[18]|$fields[19]|$fields[20]|$fields[21]~;
+       }
+    }
+    @ext_prof_fields = @newfields;
     $default_template = 'Forum default';
+
+    foreach ( keys %Group ) {
+        if ( $Group{$_} =~ m/[|]/xsm ) {
+            my @newgrp1 = split /[|]/xsm, $Group{$_};
+            $Group{$_} = [ "$newgrp1[0]", $newgrp1[1], "$newgrp1[2]", "$newgrp1[3]", $newgrp1[4], $newgrp1[5], $newgrp1[6], $newgrp1[7], $newgrp1[8], $newgrp1[9], $newgrp1[10] ];
+        }
+    }
+    foreach ( keys %NoPost ) {
+        if ( $NoPost{$_} =~ m/[|]/xsm ) {
+            my @newgrp2 = split /[|]/xsm, $NoPost{$_};
+            $NoPost{$_} = ["$newgrp2[0]", $newgrp2[1], "$newgrp2[2]", "$newgrp2[3]", $newgrp2[4], $newgrp2[5], $newgrp2[6], $newgrp2[7], $newgrp2[8], $newgrp2[9], $newgrp2[10]];
+        }
+    }
+    foreach ( keys %Post ) {
+        if ( $Post{$_} =~ m/[|]/xsm ) {
+            my @newgrp3 = split /[|]/xsm, $Post{$_};
+            $Post{$_} = ["$newgrp3[0]", $newgrp3[1], "$newgrp3[2]", "$newgrp3[3]", $newgrp3[4], $newgrp3[5], $newgrp3[6], $newgrp3[7], $newgrp3[8], $newgrp3[9], $newgrp3[10]];
+        }
+    }
+    foreach my $i ( 0 .. $#SmilieURL ) {
+        $addedsmilies{$i + 1} = ["$SmilieURL[$i]", "$SmilieCode[$i]", "$SmilieDescription[$i]", "$SmilieLinebreak[$i]"];
+        push @smilieorder, $i + 1;
+    }
+
     require Admin::NewSettings;
     SaveSettingsTo( 'Settings.pm', %settings );
 
@@ -2385,7 +2420,7 @@ sub nicely_aligned_file {
 s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
     $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
 
-    *cut_comment = sub {    # line break of too long comments
+    local *cut_comment = sub {    # line break of too long comments
         my @x = @_;
         my ( $comment, $length ) =
           ( q{}, 120 );     # 120 Col is the max width of page
@@ -2407,7 +2442,6 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 }
 
 sub checkattach {
-    if ($convlang) { $vardir = "$convertlang/Variables"; }
     open $AMS, '<', "$vardir/attachments.db" or croak 'cannot open oldattach';
     my @attachments = <$AMS>;
     close $AMS or croak 'cannot open oldattach';

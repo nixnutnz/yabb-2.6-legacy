@@ -17,6 +17,7 @@ $englishdebuglngver = 'YaBB 2.7.00 $Revision$';
 if (@englishdebuglngmods) {
     $englishdebuglngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'English' ) { return 1; }
 
 %debug_txt = (

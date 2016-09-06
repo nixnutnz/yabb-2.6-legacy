@@ -20,6 +20,7 @@ $palettepmver  = 'YaBB 2.7.00 $Revision$';
 if (@palettepmmods) {
     $palettepmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub ColorPicker {

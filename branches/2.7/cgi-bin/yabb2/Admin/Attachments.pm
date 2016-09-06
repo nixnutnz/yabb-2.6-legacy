@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +22,7 @@ $attachmentspmver = 'YaBB 2.7.00 $Revision$';
 if (@attachmentspmmods) {
     $attachmentspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub Attachments {
@@ -30,7 +33,7 @@ sub Attachments {
     fclose(AMS);
 
     my $attachment_space = 0;
-    for (@attachments) {
+    foreach (@attachments) {
         $attachment_space += NumberFormat( ( split /[|]/xsm, $_, 7 )[5] );
     }
 
@@ -39,7 +42,8 @@ sub Attachments {
         $remaining_space = "$fatxt{'23'}";
     }
     else {
-        $remaining_space = NumberFormat( ( $dirlimit - $attachment_space ) ) . ' KB';
+        $remaining_space =
+          NumberFormat( ( $dirlimit - $attachment_space ) ) . ' KB';
     }
 
     fopen( PMATTACHLOG, '<Variables/pmattachments.db' );
@@ -47,7 +51,7 @@ sub Attachments {
     fclose(PMATTACHLOG);
 
     my $pmAttachmentSpace = 0;
-    for (@pmAttachments) {
+    foreach (@pmAttachments) {
         $pmAttachmentSpace += NumberFormat( ( split /[|]/xsm, $_, 4 )[2] );
     }
 
@@ -56,7 +60,8 @@ sub Attachments {
         $pmRemainingSpace = "$fatxt{'23a'}";
     }
     else {
-        $pmRemainingSpace = NumberFormat( ( $pmDirLimit - $pmAttachmentSpace ) ) . ' KB';
+        $pmRemainingSpace =
+          NumberFormat( ( $pmDirLimit - $pmAttachmentSpace ) ) . ' KB';
     }
 
     my $totalattachnum = @attachments;
@@ -141,7 +146,12 @@ sub Attachments {
         </td>
     </tr>~;
         require Variables::Gmodset;
-        if ( $iamgmod  && ($gmod_access{'managepmattachments'} ne 'on' && $gmod_access2{'managepmattachments2'} ne 'on') || $allow_gmod_aprofile ne 'on' ) {
+    if (
+        $iamgmod && ( ( $gmod_access{'managepmattachments'} ne 'on'
+            && $gmod_access2{'managepmattachments2'} ne 'on' )
+        || $allow_gmod_aprofile ne 'on' )
+      )
+    {
             $yymain .= q{};
         }
         else {
@@ -217,7 +227,7 @@ sub RemoveOldAttachments {
     fclose(AML);
 
     my ( %att, @line );
-    for (@attachmentstxt) {
+    foreach (@attachmentstxt) {
         @line = split /[|]/xsm, $_;
         $att{ $line[7] } = $line[0];
     }
@@ -477,6 +487,7 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="8"><b><i>$fatxt{'48'}</i>
             $endpage = $newstart + ( $postdisplaynum * 25 );
         }
         else { $endpage = $max; }
+        $startpage ||= 0;
         if ( $startpage > 0 ) {
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&nbsp;...&nbsp;~;
@@ -485,7 +496,7 @@ qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&n
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&nbsp;~;
         }
-        for my $counter ( $startpage .. ( $endpage - 1 ) ) {
+        foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
             if ( $counter % 25 == 0 ) {
                 $pageindex .=
                   $newstart == $counter
@@ -496,6 +507,7 @@ qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&n
         }
         $lastpn  = int( $max / 25 ) + 1;
         $lastptn = ( $lastpn - 1 ) * 25;
+        $pageindexadd = q{};
         if ( $endpage < $max - (25) ) { $pageindexadd = q~...&nbsp;~; }
         if ( $endpage != $max ) {
             $pageindexadd .=
@@ -513,7 +525,7 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
         else                    { $numshow = qq~($numbegin - $numend)~; }
 
         my ( %attach_gif, $ext );
-        for my $row ( splice @attachments, $newstart, 25 ) {
+        foreach my $row ( splice @attachments, $newstart, 25 ) {
             chomp $row;
             my (
                 $amthreadid, $amreplies,      $amthreadsub,
@@ -568,15 +580,17 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
         <input type="hidden" name="newstart" value="$newstart" />~;
     }
 
-    my $class_sortattach = $sort =~ /7/sm   ? 'catbg' : 'windowbg';
-    my $class_sorttype   = $sort =~ /100/sm ? 'catbg' : 'windowbg';
-    my $class_sortsize   = $sort =~ /5/sm   ? 'catbg' : 'windowbg';
-    my $class_sortdate   = $sort =~ /6/sm   ? 'catbg' : 'windowbg';
-    my $class_sorcount   = $sort =~ /8/sm   ? 'catbg' : 'windowbg';
-    my $class_sortsubj   = $sort =~ /2/sm   ? 'catbg' : 'windowbg';
-    my $class_sortuser   = $sort =~ /3/sm   ? 'catbg' : 'windowbg';
+    my $class_sortattach = $sort =~ /7/xsm   ? 'catbg' : 'windowbg';
+    my $class_sorttype   = $sort =~ /100/xsm ? 'catbg' : 'windowbg';
+    my $class_sortsize   = $sort =~ /5/xsm   ? 'catbg' : 'windowbg';
+    my $class_sortdate   = $sort =~ /6/xsm   ? 'catbg' : 'windowbg';
+    my $class_sorcount   = $sort =~ /8/xsm   ? 'catbg' : 'windowbg';
+    my $class_sortsubj   = $sort =~ /2/xsm   ? 'catbg' : 'windowbg';
+    my $class_sortuser   = $sort =~ /3/xsm   ? 'catbg' : 'windowbg';
 
     my $rsort;
+    $numshow ||= q{};
+    $pageindex ||= q{};
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -661,7 +675,7 @@ sub DeleteAttachments {
     if ( !$FORM{'formsession'} ) { automaintenance('on'); }
 
     my %rem_att;
-    for ( keys %FORM ) {
+    foreach ( keys %FORM ) {
         if ( $_ =~ /^del_(\d+)$/xsm ) {
             my $thread = $1;
             $rem_att{$thread} = $FORM{$_};
@@ -729,7 +743,7 @@ sub FullRebuildAttachents {
 
     my ( $topicnum, @newattachments, $mreplies, $msub, $mname, $mdate, $mfn,
         $nexttopic );
-    for my $i ( $INFO{'topicnum'} .. $#topiclist ) {
+    foreach my $i ( $INFO{'topicnum'} .. $#topiclist ) {
         ( $topicnum, undef ) = split /[|]/xsm, $topiclist[$i], 2;
         fopen( TOPIC, "$datadir/$topicnum.txt" );
         my @topic = <TOPIC>;
@@ -737,12 +751,12 @@ sub FullRebuildAttachents {
         chomp @topic;
 
         $mreplies = 0;
-        for (@topic) {
+        foreach (@topic) {
             (
                 $msub, $mname, undef, $mdate, undef, undef, undef,
                 undef, undef,  undef, undef,  undef, $mfn
             ) = split /[|]/xsm, $_;
-            for ( split /,/xsm, $mfn ) {
+            foreach ( split /,/xsm, $mfn ) {
                 if ( -e "$uploaddir/$_" ) {
                     my $asize = int( ( -s "$uploaddir/$_" ) / 1024 ) || 1;
                     push @newattachments,
@@ -761,8 +775,7 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
 
     if (@newattachments) {
         fopen( NEWATM, ">>$vardir/newattachments.tmp" )
-          || fatal_error( 'cannot_open', "$vardir/newattachments.tmp",
-            1 );
+          || fatal_error( 'cannot_open', "$vardir/newattachments.tmp", 1 );
         print {NEWATM} @newattachments or croak "$croak{'print'} NEWATM";
         fclose(NEWATM);
     }
@@ -831,7 +844,7 @@ sub RemoveGhostAttach {
     fclose(ATM);
 
     my %att;
-    for (@attachmentstxt) {
+    foreach (@attachmentstxt) {
         $att{ ( split /[|]/xsm, $_ )[7] } = 1;
     }
 
@@ -841,8 +854,11 @@ sub RemoveGhostAttach {
 
     $yymain .= qq~$fatxt{'61'}:<br />~;
 
-    for my $fileinDIR (@filesDIR) {
-        if ( !$att{$fileinDIR} && $fileinDIR ne 'index.html' && $fileinDIR ne '.htaccess'  ) {
+    foreach my $fileinDIR (@filesDIR) {
+        if (  !$att{$fileinDIR}
+            && $fileinDIR ne 'index.html'
+            && $fileinDIR ne '.htaccess' )
+        {
             unlink "$uploaddir/$fileinDIR";
             $yymain .= qq~<br />$fatxt{'61b'}: $fileinDIR~;
         }
@@ -871,12 +887,12 @@ sub RemoveAttachments
     truncate ATM, 0;
     seek ATM, 0, 0;
     my ( $athreadnum, $afilename, %del_filename );
-    for (@attachments) {
-        ( undef, undef, undef, undef, undef, undef, undef, $afilename, undef ) =
-          split /[|]/xsm, $_;
+    foreach (@attachments) {
+        ( undef, undef, undef, undef, undef, undef, undef, $afilename, undef )
+          = split /[|]/xsm, $_;
         $del_filename{$afilename}++;
     }
-    for my $i ( 0 .. $#attachments ) {
+    foreach my $i ( 0 .. $#attachments ) {
         (
             $athreadnum, undef, undef,      undef, undef,
             undef,       undef, $afilename, undef
@@ -909,6 +925,7 @@ sub RemoveAttachments
 
     return $count;
 }
+
 sub PMAttachments2 {
     is_admin_or_gmod();
 
@@ -1004,7 +1021,7 @@ qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&n
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0;sort=$sort" class="norm">1</a>&nbsp;~;
         }
-        for my $counter ( $startpage .. ( $endpage - 1 ) ) {
+        foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
             if ( $counter % 25 == 0 ) {
                 $pageindex .=
                   $newstart == $counter
@@ -1032,8 +1049,10 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
         else                    { $numshow = qq~($numbegin - $numend)~; }
 
         my ( %attach_gif, $ext );
-        for my $row ( splice @pmAttachments, $newstart, 25 ) {
-            my ( undef, $pmAttachDate, $pmAttachKB, $pmAttachName, $pmAttachUser, undef ) = split /[|]/xsm, $row;
+        foreach my $row ( splice @pmAttachments, $newstart, 25 ) {
+            my ( undef, $pmAttachDate, $pmAttachKB, $pmAttachName,
+                $pmAttachUser, undef )
+              = split /[|]/xsm, $row;
             chomp $pmAttachUser;
             if ( $pmAttachName =~ /\.(.+?)$/xsm ) {
                 $ext = $1;
@@ -1079,11 +1098,14 @@ qq~<div class="small" style="line-height: 2.5em; float: right; text-align: right
         <input type="hidden" name="newstart" value="$newstart" />~;
     }
 
-    my $class_sortattach = $sort =~ /3/sm   ? 'catbg' : 'windowbg';
-    my $class_sorttype   = $sort =~ /100/sm ? 'catbg' : 'windowbg';
-    my $class_sortsize   = $sort =~ /2/sm   ? 'catbg' : 'windowbg';
-    my $class_sortdate   = $sort =~ /1/sm   ? 'catbg' : 'windowbg';
-    my $class_sortuser   = $sort =~ /4/sm   ? 'catbg' : 'windowbg';
+    my $class_sortattach = $sort =~ /3/xsm   ? 'catbg' : 'windowbg';
+    my $class_sorttype   = $sort =~ /100/xsm ? 'catbg' : 'windowbg';
+    my $class_sortsize   = $sort =~ /2/xsm   ? 'catbg' : 'windowbg';
+    my $class_sortdate   = $sort =~ /1/xsm   ? 'catbg' : 'windowbg';
+    my $class_sortuser   = $sort =~ /4/xsm   ? 'catbg' : 'windowbg';
+
+    $numshow ||= q{};
+    $pageindex ||= q{};
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -1170,7 +1192,8 @@ sub DeletePMAttachments {
 
     if ( !$FORM{'formsession'} ) { automaintenance('off'); }
 
-    $yySetLocation = qq~$adminurl?action=managepmattachments2;newstart=$FORM{'newstart'}~;
+    $yySetLocation =
+      qq~$adminurl?action=managepmattachments2;newstart=$FORM{'newstart'}~;
     redirectexit();
     return;
 }
@@ -1223,7 +1246,8 @@ sub RemoveOldPMAttachments {
             if ( $pmMaxDaysAttach > 0 && $age <= $pmMaxDaysAttach ) {
 
                 # If the attachment is not too old
-                $info .= qq~<br />$pmAttachments[$aa] = $age $admin_txt{'122'}.~;
+                $info .=
+                  qq~<br />$pmAttachments[$aa] = $age $admin_txt{'122'}.~;
 
             }
             elsif ( exists $att{ $pmAttachments[$aa] } ) {
@@ -1375,7 +1399,6 @@ qq~$adminurl?action=removebigpmattachments;pmmaxsizeattach=$pmmaxsizeattach;next
 }
 
 sub RemovePMAttachments {
-    # remove single or multiple attachments stored in a hash-reference
     my $count = 0;
     my $ThreadHashref =
       shift; # usage: ${$ThreadHashref}{'threadnum'} = 'filename1|filename2|...'
@@ -1396,9 +1419,8 @@ sub RemovePMAttachments {
         $del_filename{$afilename}++;
     }
     for my $i ( 0 .. $#pmAttachments ) {
-        (
-            $athreadnum, undef, undef, $afilename, undef, undef
-        ) = split /[|]/xsm, $pmAttachments[$i];
+        ( $athreadnum, undef, undef, $afilename, undef, undef ) =
+          split /[|]/xsm, $pmAttachments[$i];
         my $del = 0;
         if ( exists ${$ThreadHashref}{$athreadnum} ) {
             if ( defined ${$ThreadHashref}{$athreadnum} ) {
@@ -1438,16 +1460,17 @@ sub FullRebuildPMAttachments {
     fclose(ATM);
     for my $pmattach ( @pm_attach ) {
         chomp $pmattach;
-        ( $atid, $atdate, $atsize, $atfile, $atuser, $atusername ) = split /[|]/xsm, $pmattach;
+        ( $atid, $atdate, $atsize, $atfile, $atuser, $atusername ) =
+          split /[|]/xsm, $pmattach;
         if ( -e "$pmuploaddir/$atfile" ) {
-            push @newattachments, qq~$atid|$atdate|$atsize|$atfile|$atuser|$atusername\n~;
+            push @newattachments,
+              qq~$atid|$atdate|$atsize|$atfile|$atuser|$atusername\n~;
         }
     }
 
     if (@newattachments) {
         fopen( NEWATM, ">>$vardir/newpmattachments.tmp" )
-          || fatal_error( 'cannot_open', "$vardir/newpmattachments.tmp",
-            1 );
+          || fatal_error( 'cannot_open', "$vardir/newpmattachments.tmp", 1 );
         print {NEWATM} @newattachments or croak "$croak{'print'} NEWATM";
         fclose(NEWATM);
     }
@@ -1489,7 +1512,10 @@ sub RemoveGhostPMAttach {
     $yymain .= qq~$fatxt{'61c'}:<br />~;
 
     for my $fileinDIR (@filesDIR) {
-        if ( !$att{$fileinDIR} && $fileinDIR ne 'index.html' && $fileinDIR ne '.htaccess'  ) {
+        if (  !$att{$fileinDIR}
+            && $fileinDIR ne 'index.html'
+            && $fileinDIR ne '.htaccess' )
+        {
             unlink "$pmuploaddir/$fileinDIR";
             $yymain .= qq~<br />$fatxt{'61b'}: $fileinDIR~;
         }

@@ -3,15 +3,15 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.20                                                 #
-# Packaged:       December 31, 2015                                           #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2015 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$mobileothertemver = 'YaBB 2.6.20 $Revision$';
+$mobileothertemver = 'YaBB 2.7.00 $Revision$';
 @mobileothermods = ();
 if (@mobileothermods) {
     $mobileothermods = 1;
@@ -33,12 +33,12 @@ $my_ipdiv = qq~
 
 ## AddModerators
 $myshowProfile = qq~<tr class="windowbg">
-        <td><label for="addmod"><strong>$addmod_txt{'addmod_title'}: </strong><br /><span class="small">$addmod_txt{'addmod_text'}</span></label></td>
+        <td><label for="addmod"><strong>{yabb addmod_txt_addmod_title}: </strong><br /><span class="small">{yabb addmod_txt_addmod_text}</span></label></td>
         <td>
             <select name="addmod" id="addmod" multiple="multiple" onchange="selectnum();">
             {yabb addbdmod}
             </select>
-            <input type="checkbox" name="selAll" id="selAll" onclick="if (this.checked) selectAll(true); else selectAll(false);" /> <label for="selAll"><span class="small">$addmod_txt{'addmod_all'}</span></label>
+            <input type="checkbox" name="selAll" id="selAll" onclick="if (this.checked) selectAll(true); else selectAll(false);" /> <label for="selAll"><span class="small">{yabb addmod_txt_addmod_all}</span></label>
             <script type="text/javascript">
             function selectAll(_v) {
                 for(var i=0; i < document.creator.addmod.length; i++)
@@ -61,10 +61,10 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
     <div class="bordercolor" style="width:350px">
     <table class="cs_thin pad_3px" style="width:350px">
         <tr>
-            <td class="titlebg"><label for="letter">$addmod_txt{'modsearch'}</label></td>
+            <td class="titlebg"><label for="letter">{yabb addmod_txt_modsearch}</label></td>
         </tr><tr>
             <td class="windowbg2">
-                <span class="small">$addmod_txt{'instruct'}</span>
+                <span class="small">{yabb addmod_txt_instruct}</span>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -77,7 +77,7 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
             </td>
         </tr><tr>
             <td class="windowbg">
-                <input type="button" class="button" onclick="copy_option('moderators')" value="$addmod_txt{'addselected'}" style="width: 340px;" />
+                <input type="button" class="button" onclick="copy_option('moderators')" value="{yabb addmod_txt_addselected}" style="width: 340px;" />
             </td>
         </tr>~;
 
@@ -104,7 +104,7 @@ $myselectmods_c = qq~<tr>
 
 $myselectmods_d = qq~<tr>
             <td class="windowbg">
-                <input type="submit" class="button" value="$addmod_txt{'addmod_save'}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="$addmod_txt{'pageclose'}" style="width: 170px;" />
+                <input type="submit" class="button" value="{yabb addmod_txt_addmod_save}" style="width: 170px;" /><input type="button" class="button" onclick="ModSettings()" value="{yabb addmod_txt_pageclose}" style="width: 170px;" />
             </td>
         </tr>
     </table>
@@ -148,7 +148,6 @@ $smilie_window_a =
 qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
-<!-- YaBB 2.6.2 $Revision$ -->
     <meta charset=$yymycharset">
     <title>$smiltxt{'1'}</title>
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
@@ -281,11 +280,6 @@ $my_profile_int = qq~
 
 ## PrintPage ##
 
-$showurl = q{};
-if ( $showprinturl == 1 ) {
-    $showurl = qq~<span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl</span><br />~;
-}
-
 $myprint_im = qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
@@ -324,10 +318,9 @@ $myprint_im = qq~<!DOCTYPE html>
         </td>
     </tr><tr>
         <td class="vtop" colspan="2">
-            $showurl
-            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$load_imtxt{'71'} $inmes_txt{'usercp'} {yabb boxtitle} {yabb storetitle} $inmes_txt{'30'} {yabb printDate}</span>
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">{yabb load_imtxt_71} {yabb inmes_txt_usercp} {yabb boxtitle} {yabb storetitle} {yabb load_imtxt_30} {yabb printDate}</span>
             <br />
-            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller=$INFO{'caller'};id=$INFO{'id'}</span>
+            <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?action=imshow;caller={yabb caller};id={yabb id}</span>
         </td>
     </tr>
 </table>
@@ -410,8 +403,7 @@ $myprint = qq~<!DOCTYPE html>
         </td>
     </tr><tr>
         <td class="vtop" colspan="2">
-            $showurl
-            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">$cat &gt;&gt; $boardname &gt;&gt; {yabb messagetitle}</span>
+            <span style="font-family: arial, sans-serif; font-size: 16px; font-weight: bold;">{yabb cat} &gt;&gt; {yabb boardname} &gt;&gt; {yabb messagetitle}</span>
             <br />
             <span style="font-family: arial, sans-serif; font-size: 10px;">$scripturl?num={yabb num}</span>
             <br />

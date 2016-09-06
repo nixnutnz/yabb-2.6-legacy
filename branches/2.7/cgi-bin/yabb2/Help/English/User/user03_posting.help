@@ -1,4 +1,4 @@
-$englishuser_user03_postinghelpver = 'YaBB 2.6.11 $Revision: 1626 $';
+$englishuser_user03_postinghelpver = 'YaBB 2.7.00 $Revision: 1808 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 $SectionName = "Posting";
 

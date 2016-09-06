@@ -17,6 +17,7 @@ $englisherrorlngver = 'YaBB 2.7.00 $Revision$';
 if (@englisherrorlngmods) {
     $englisherrorlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %error_txt = (
@@ -59,10 +60,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'form_spoofing'        => q~<strong>ALERT</strong> Form Spoofing Detected coming from IP address:~,
 'post_flooding'        => q~The last POST request from your IP was less than~,
 'denial_of_service'    => q~The last POST request created an error message: ~,
-'speed_alert'          => qq~Posting this fast is considered spamming.<br />You are only allowed <strong>$spam_hits_left_count</strong> more attempt(s) after which you will be banned as spammer.~,
-'tsc_alert'            => qq~One of the form fields contains text which is considered spam.<br />You are only allowed <strong>$spam_hits_left_count</strong> more attempt(s) after which you will be banned as a spammer.~,
-'speedpostban'         => qq~You are currently banned from posting due to possible spamming.<br />After <strong>$detention_left</strong> second(s) your ban will automatically be lifted.~,
-'truncation_error'     => qq~Please make sure you have 'fake truncation' turned on in your Settings.pm file.<br />\$faketruncation = 1;<br />Could not truncate file~,
+'speed_alert'          => q~Posting this fast is considered spamming.<br />You are only allowed <strong>{yabb spam_hits_left_count}</strong> more attempt(s) after which you will be banned as spammer.~,
+'tsc_alert'            => q~One of the form fields contains text which is considered spam.<br />You are only allowed <strong>{yabb spam_hits_left_count}</strong> more attempt(s) after which you will be banned as a spammer.~,
+'speedpostban'         => q~You are currently banned from posting due to possible spamming.<br />After <strong>{yabb detention_left}</strong> second(s) your ban will automatically be lifted.~,
+'truncation_error'     => q~Please make sure you have 'fake truncation' turned on in your Settings.pm file.<br />\$faketruncation = 1;<br />Could not truncate file~,
 'referer_violation'    => q~This action is not allowed from an outside domain. <br />Action is: ~,
 'egg'                  => q~Self Destruct Sequence Started!<br />~,
 'domain_not_allowed'   => q~You may not register with, post as a guest or change your e-mail address to one from the domain~,

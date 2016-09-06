@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       December 31, 2015                                           #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -14,7 +14,7 @@
 ###############################################################################
 # use strict;
 # use warnings;
-no warnings qw(uninitialized once redefine);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -23,6 +23,7 @@ $displaypmver  = 'YaBB 2.7.00 $Revision$';
 if (@displaypmmods) {
     $displaypmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Display');
@@ -81,17 +82,21 @@ sub Display {
             $yytitle               = $display_txt{'guest_message'};
             $yynavigation          = qq~&rsaquo; $display_txt{'guest_message'}~;
             $yymain .= $my_guest_limit;
+            $yymain =~ s/\Q{yabb display_txt_guest_message}\E/$display_txt{'guest_message'}/xsm;
+            $yymain =~ s/\Q{yabb display_txt_guest_message_block}\E/$display_txt{'guest_message_block'}/xsm;
             template();
             exit;
         }
         else {
             $guest_view_limit_warn = $guest_view_limit_w;
+            $guest_view_limit_warn =~ s/\Q{yabb display_txt_guest_message}\E/$display_txt{'guest_message'}/xsm;
+            $guest_view_limit_warn =~ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/xsm;
         }
     }
 
     # Get the "NEW"est Post for this user.
     my $newestpost;
-    if ( !$iamguest && $max_log_days_old && $INFO{'start'} eq 'new' ) {
+    if ( !$iamguest && $max_log_days_old && ($INFO{'start'} && $INFO{'start'} eq 'new') ) {
 
         # This decides which messages were already read in the thread to
         # determining where the redirect should go. It is done by
@@ -209,15 +214,18 @@ sub Display {
     $msubthread = Censor($msubthread);
 
     # Build a list of this board's moderators.
+    $showmods = q{};
     if ( keys %moderators > 0 ) {
         if ( keys %moderators == 1 ) { $showmods = qq~($display_txt{'298'}: ~; }
         else                         { $showmods = qq~($display_txt{'63'}: ~; }
 
-        while ( $_ = each %moderators ) {
-            FormatUserName($_);
-            $showmods .= QuickLinks( $_, 1 ) . q{, };
+        my %sortmd = reverse %moderators;
+        my @sortmd = sort keys %sortmd;
+        foreach my $i (@sortmd) {
+            FormatUserName($sortmd{$i});
+            $showmods .= QuickLinks( $sortmd{$i}, 1 ) . q{, };
         }
-        $showmods =~ s/,\s\Z/)/xsm;
+        $showmods =~ s/,\s$/)/xsm;
     }
     if ( keys %moderatorgroups > 0 ) {
         if ( keys %moderatorgroups == 1 ) {
@@ -228,7 +236,7 @@ sub Display {
         my ( $tmpmodgrp, $thismodgrp );
         while ( $_ = each %moderatorgroups ) {
             $tmpmodgrp = $moderatorgroups{$_};
-            ( $thismodgrp, undef ) = split /[|]/xsm, $NoPost{$tmpmodgrp}, 2;
+            ( $thismodgrp, undef ) = @{$NoPost{$tmpmodgrp}};
             $showmodgroups .= qq~$thismodgrp, ~;
         }
         $showmodgroups =~ s/,\s\Z/)/xsm;
@@ -327,7 +335,7 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
         ManageThreadNotify( 'update', $mnum, $username, q{}, q{}, '1' );
     }
 
-    if ( $showmodgroups ne q{} && $showmods ne q{} ) { $showmods .= q~ - ~; }
+    if ( $showmodgroups && $showmods ) { $showmods .= q~ - ~; }
 
     # Build the page links list.
     if ( !$iamguest ) {
@@ -339,17 +347,20 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
     $dropdisplaynum = 10;
     $startpage      = 0;
     $max            = $mreplies + 1;
-    if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' && $showpageall != 0 ) {
-        $maxmessagedisplay = $max;
-        $all               = 1;
-        $allselected       = q~ selected="selected"~;
-        $start             = !$ttsreverse ? 0 : $mreplies;
-    }
-    else {
-        $start =
-          $INFO{'start'} !~ /\d/xsm
-          ? ( !$ttsreverse ? 0 : $mreplies )
-          : $INFO{'start'};
+	$start = 0;
+	if ($INFO{'start'}) {
+        if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' && $showpageall != 0 ) {
+            $maxmessagedisplay = $max;
+            $all               = 1;
+            $allselected       = q~ selected="selected"~;
+            $start             = !$ttsreverse ? 0 : $mreplies;
+        }
+        else {
+            $start =
+              $INFO{'start'} !~ /\d/xsm
+              ? ( !$ttsreverse ? 0 : $mreplies )
+              : $INFO{'start'};
+        }
     }
     $start = $start > $mreplies ? $mreplies : $start;
     $start =
@@ -658,7 +669,7 @@ qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~
 
     $template_home = qq~<a href="$scripturl" class="nav">$mbname</a>~;
     $topviewers    = 0;
-    if ( ${ $uid . $currentboard }{'ann'} == 1 ) {
+    if ( ${ $uid . $currentboard }{'ann'} ) {
         if ($vircurrentboard) {
             $template_cat =
               qq~<a href="$scripturl?catselect=$vircurcat">$vircat</a>~;
@@ -726,6 +737,8 @@ qq~<a href="$scripturl?board=$currentboard">&lsaquo; $maintxt{'board'}</a>~;
           IsFav1( $viewnum, ( !$ttsreverse ? $start : $mreplies - $start ) );
     }
     $template_threadimage = qq~$micon{$threadclass}~;
+    $template_threadimage =~ s/\Q{yabb veryhotthread}\E/$VeryHotTopic/gxsm;
+    $template_threadimage =~ s/\Q{yabb hottopic}\E/$HotTopic/gxsm;
     $template_sendtopic =
       $sendtopicmail
       ? qq~$menusep<a href="javascript:sendtopicmail($sendtopicmail);">$img{'sendtopic'}</a>~
@@ -850,7 +863,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
         $attachment   = q{};
         $showattach   = q{};
         $showattachhr = q{};
-        if ( $mfn ne q{} ) {
+        if ( $mfn ) {
 
             # store all downloadcounts in variable
             if ( !%attach_count ) {
@@ -882,6 +895,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
                 my $filesize = -s "$uploaddir/$_";
                 $urlname = $_;
                 $urlname =~ s/([[:^alnum]])/sprintf('%%%02X', ord($1))/egxsm;
+                $attach_count{$_} ||= 0;
                 $download_txt =
                   ( $attach_count{$_} == 1 )
                   ? $fatxt{'41b'}
@@ -932,8 +946,8 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ 
         # Should we show "last modified by?"
         if (
                $showmodify
-            && $mlm ne q{}
-            && $mlmb ne q{}
+            && $mlm
+            && $mlmb
             && ( !$tllastmodflag
                 || ( $mdate + ( $tllastmodtime * 60 ) ) < $mlm )
           )
@@ -1165,11 +1179,11 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
             if ($iamguest) { $template_email = q{}; }
             if ( $musername ne 'Guest' ) {
                 $template_email =
-                  $menusep . enc_eMail( $img{'email_sm'}, $memailad, q{}, q{} );
+                  $menusep . enc_eMail( $img{'email_sm'}, $memailad, q{}, q{} ) . ' ';
             }
             else {
                 $template_email =
-                  $menusep . enc_eMail( $img{'email_sm'}, $memail, q{}, q{} );
+                  $menusep . enc_eMail( $img{'email_sm'}, $memail, q{}, q{} ) . ' ';
             }
             if ($iamadmin) {
                 if ( $musername ne 'Guest' ) {
@@ -1257,7 +1271,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                                 $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
                             }
                             $outblock =~
-s/(<div)( class="$messageclass" style="float: left; width: 99%; overflow: auto;">)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
+s/(<div)(\Q class="$messageclass" style="float: left; width: 99%; overflow: auto;">\E)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
 
                             $template_quote =
 qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;
@@ -1324,7 +1338,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=print;num=$vi
 
             if (   $counter > 0
                 && ($staff)
-                && $sessionvalid == 1 )
+                && $sessionvalid )
             {
                 $template_split =
 qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$viewnum;oldposts=~
@@ -1332,7 +1346,7 @@ qq~$menusep<a href="$scripturl?action=split_splice;board=$currentboard;thread=$v
                   . qq~;leave=0;newcat=$curcat;newboard=$currentboard;newthread=new;ss_submit=1" onclick="return confirm('$display_txt{'split_confirm'}');">$img{'admin_split'}</a>~;
             }
             if (
-                $sessionvalid == 1
+                $sessionvalid
                 && (
                     $staff
                     || (
@@ -1392,21 +1406,18 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
 
         $tool_sep = $usePosttools ? '|||' : q{};
 
-        $posthandelblock =~
-          s/\Q{yabb markquote}\E/$template_markquote$tool_sep/gxsm;
         $posthandelblock =~ s/\Q{yabb quote}\E/$template_quote$tool_sep/gxsm;
         $posthandelblock =~ s/\Q{yabb modify}\E/$template_modify$tool_sep/gxsm;
         $posthandelblock =~ s/\Q{yabb split}\E/$template_split$tool_sep/gxsm;
-        $posthandelblock =~
-          s/\Q{yabb delete}\E\E/$template_delete$tool_sep/gxsm;
-        $posthandelblock =~ s/\Q{yabb modalert}/$PMAlertButton$tool_sep/gxsm;
+        $posthandelblock =~ s/\Q{yabb delete}\E/$template_delete$tool_sep/gxsm;
+        $posthandelblock =~ s/\Q{yabb modalert}\E/$PMAlertButton$tool_sep/gxsm;
         $posthandelblock =~
           s/\Q{yabb print_post}\E/$template_print_post$tool_sep/gxsm;
         $posthandelblock =~ s/\Q{yabb admin}\E/$template_admin/gxsm;
         $posthandelblock =~ s/\Q$menusep\E//ixsm;
 
         @psetmenusep = (
-            "$template_markquote", "$template_quote",
+            '', "$template_quote",
             "$template_modify",    "$template_split",
             "$template_delete",    "$PMAlertButton",
             "$template_print_post",
@@ -1423,7 +1434,6 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
             $psepcn++;
         }
         my $outside_posttools_tmp = $outside_posttools;
-        $outside_posttools_tmp =~ s/\Q{yabb markquote}\E/$postout[0]/gxsm;
         $outside_posttools_tmp =~ s/\Q{yabb quote}\E/$postout[1]/gxsm;
         $outside_posttools_tmp =~ s/\Q{yabb modify}\E/$postout[2]/gxsm;
         $outside_posttools_tmp =~ s/\Q{yabb split}\E/$postout[3]/gxsm;
@@ -1510,8 +1520,7 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
               s/\Q{yabb usertext}\E/${$uid.$musername}{'usertext'}/gxsm;
         }
         if ( !$hideavatar ) {
-            $outblock =~
-              s/\Q{yabb userpic}\E/${$uid.$musername}{'userpic'}/gxsm;
+            $outblock =~ s/\Q{yabb userpic}\E/${$uid.$musername}{'userpic'}/gxsm;
         }
         $outblock =~ s/\Q{yabb message}\E/$message/gxsm;
         $outblock =~ s/\Q{yabb modified}\E/$lastmodified/gxsm;
@@ -1539,6 +1548,8 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         }
         $outblock =~ s/\Q{yabb useronline}\E/$userOnline/gxsm;
         $outblock =~ s/\Q{yabb isbuddy}\E/$buddyad/gxsm;
+
+        $outblock =~ s/\Q{yabb display_txt_643}\E/$display_txt{'643'}/gxsm;
 
         $tmpoutblock .= $outblock;
 
@@ -1590,6 +1601,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
         $topic_viewers = $mydisp_topicview;
         $topic_viewers =~ s/\Q{yabb topviewers}\E/$topviewers/xsm;
         $topic_viewers =~ s/\Q{yabb template_viewers}\E/$template_viewers/xsm;
+        $topic_viewers =~ s/\Q{yabb display_txt_644}\E/$display_txt{'644'}/xsm;
     }
 
     # Social Bookmarks Start
@@ -1603,11 +1615,7 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
         $board_bookmarks = 1;
     }
     if ( $en_bookmarks && $board_bookmarks ) {
-        fopen( BMARKS, "<$vardir/Bookmarks.txt" )
-          or fatal_error( 'cannot_open', "$vardir/Bookmarks.txt", 1 );
-        @bookmarks = <BMARKS>;
-        fclose(BMARKS);
-        foreach my $bookmark ( sort { $a <=> $b } @bookmarks ) {
+        foreach my $bookmark ( sort { $a cmp $b } @bookmarks ) {
             chomp $bookmark;
             ( undef, $bm_title, $bm_image, $bm_url, undef ) = split /[|]/xsm,
               $bookmark;
@@ -1626,6 +1634,7 @@ qq~<a href="$bm_url" rel="nofollow" target="_blank"><img src="$yyhtml_root/Bookm
         }
         $bookmarks = $my_bookmarks;
         $bookmarks =~ s/\Q{yabb bookmarks}\E/$show_bookmarks/xsm;
+        $bookmarks =~ s/\Q{yabb display_txt_bookmarks}\E/$display_txt{'bookmarks'}/xsm;
     }
 
     # Social Bookmarks End
@@ -1692,8 +1701,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $threadhandellist =~ s/\Q{yabb poll}\E/$pollbutton$tool_sep/gxsm;
     $threadhandellist =~ s/\Q{yabb notify}\E/$notify$tool_sep/gxsm;
     $threadhandellist =~ s/\Q{yabb favorite}\E/$template_favorite$tool_sep/gxsm;
-    $threadhandellist =~
-      s/\Q{yabb sendtopic}\E/$template_sendtopic$tool_sep/gxsm;
+    $threadhandellist =~ s/\Q{yabb sendtopic}\E/$template_sendtopic$tool_sep/gxsm;
     $threadhandellist =~ s/\Q{yabb print}\E/$template_print$tool_sep/gxsm;
     $threadhandellist =~ s/\Q$menusep//ixsm;
 
@@ -1812,6 +1820,10 @@ qq~<form name="multidel" action="$scripturl?board=$currentboard;action=multidel;
     $display_template =~ s/\Q{yabb postsblock}\E/$tmpoutblock/gxsm;
     $display_template =~ s/\Q{yabb adminhandellist}\E/$adminhandellist/gxsm;
     $display_template =~ s/\Q{yabb forumselect}\E/$selecthtml/gxsm;
+    $display_template =~ s/\Q{yabb display_txt_lft}\E/$display_txt{'lft'}/gxsm;
+    $display_template =~ s/\Q{yabb display_txt_rgt}\E/$display_txt{'rgt'}/gxsm;
+    $display_template =~ s/\Q{yabb display_txt_641}\E/$display_txt{'641'}/gxsm;
+    $display_template =~ s/\Q{yabb display_txt_642}\E/$display_txt{'642'}/gxsm;
 
 ## Display Mod Hook ##
 ## End Display Mod Hook ##
@@ -1954,6 +1966,7 @@ qq~<a href="$scripturl?$thevirboard$next">$display_txt{'767'}</a>~;
             }
             $is = 1;
         }
+        $mdate ||= 0;
         if ( $mdate > $lastvisit ) { $datecount++; }
         last if $is && $datecount > 1;
     }
@@ -1971,12 +1984,13 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
 
     print qq~Content-type: text/html\n\n~
       or croak "$croak{'print'} page content";
-    $setgtalk = $gtalk;
+    $setgtalk = $gtalker;
     $setgtalk =~ s/\Q{yabb xml_lang}\E/$abbr_lang/xsm;
     $setgtalk =~ s/\Q{yabb mycharset}\E/$yymycharset/xsm;
     $setgtalk =~ s/\Q{yabb style}\E/$gtalkstyle/xsm;
     $setgtalk =~ s/\Q{yabb gname}\E/${ $uid . $gtalkname }{'realname'}/gxsm;
     $setgtalk =~ s/\Q{yabb gtalkuser}\E/$gtalkuser/gxsm;
+    $setgtalk =~ s/\Q{yabb display_txt_google}\E/$display_txt{'google'}/gxsm;
 
     print $setgtalk or croak "$croak{'print'} page";
     return;

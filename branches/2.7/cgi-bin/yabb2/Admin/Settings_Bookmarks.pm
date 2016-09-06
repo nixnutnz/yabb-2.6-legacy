@@ -12,6 +12,8 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -20,6 +22,7 @@ $settings_bookmarkspmver = 'YaBB 2.7.00 $Revision$';
 if (@settings_bookmarkspmmods) {
     $settings_bookmarkspmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 LoadLanguage('Bookmarks');
@@ -27,26 +30,28 @@ LoadLanguage('Bookmarks');
 sub Bookmarks {
     is_admin_or_gmod();
 
+    $chk_bookmarks = q{};
     if ($en_bookmarks) { $chk_bookmarks = q~ checked="checked"~; }
     get_forum_master();
+    my $indent = -2;
 
- *get_subboards = sub {
+    local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
-        for my $board (@x) {
-            my $dash;
+        foreach my $board (@x) {
+            my $dash = q{-};
             if ( $indent > 2 ) { $dash = q{-}; }
 
             ( $boardname, $boardperms, $boardview ) =
-              split /[|]/xsm, $board{"$board"};
-            if ( ${ $uid . $board }{'rbin'} == 1
+              split /[|]/xsm, $board{$board};
+            if ( ${ $uid . $board }{'rbin'}
                 || $boardname =~ m/http:\/\//xsm )
             {
                 next;
             }
             ToChars($boardname);
             $sel_board = q{};
-            for ( split /\,\ /sm, $bm_boards ) {
+            foreach ( split /,\s/xsm, $bm_boards ) {
                 if ( $_ eq $board ) { $sel_board = q~ selected="selected"~; }
             }
             $board_list .=
@@ -61,15 +66,15 @@ sub Bookmarks {
         $indent -= 2;
     };
 
-    for my $catid (@categoryorder) {
+    foreach my $catid (@categoryorder) {
         @bdlist = split /,/xsm, $cat{$catid};
-        ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{"$catid"};
+        ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
         ToChars($catname);
         $board_list .= qq~<option disabled="disabled">$catname</option>\n~;
-        for my $board (@bdlist) {
-            ( $boardname, undef, undef ) = split /[|]/xsm, $board{"$board"};
-            if (   ${ $uid . $board }{'ann'} == 1
-                || ${ $uid . $board }{'rbin'} == 1
+        foreach my $board (@bdlist) {
+            ( $boardname, undef, undef ) = split /[|]/xsm, $board{$board};
+            if (   ${ $uid . $board }{'ann'}
+                || ${ $uid . $board }{'rbin'}
                 || $boardname =~ m/http:\/\//xsm )
             {
                 next;
@@ -77,7 +82,7 @@ sub Bookmarks {
             ToChars($boardname);
             $sel_board = q{};
         }
-        my $indent = -2;
+        $indent = -2;
         get_subboards(@bdlist);
     }
 
@@ -92,7 +97,7 @@ sub Bookmarks {
         <td>$admin_txt{'edit'}</td>
         <td>$admin_txt{'delete'}</td>
     </tr>~;
-        for my $bookmark ( sort { $a <=> $b } @bookmarks ) {
+        foreach my $bookmark ( sort { $a cmp $b } @bookmarks ) {
             ( $bm_order, $bm_title, $bm_image, $bm_url, $bm_id ) =
               split /[|]/xsm, $bookmark;
             $show_bookmarks .= qq~<tr class="windowbg2">
@@ -121,6 +126,7 @@ sub Bookmarks {
     </tr>~;
     }
 
+    $bm_subcut ||= q{};
     $yymain .= qq~
 <form action="$adminurl?action=bookmarks2" method="post">
 <div class="bordercolor rightboxdiv">
@@ -239,18 +245,19 @@ sub AddBookmark {
     $bm_image = $FORM{'bm_image'};
     $bm_url   = $FORM{'bm_url'};
 
-    if ( $bm_title eq q{} ) {
+    if ( !$FORM{'bm_title'} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'02'}" );
     }
-    if ( $bm_image eq q{} ) {
+    if ( !$FORM{'bm_image'} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'01'}" );
     }
-    if ( $bm_url eq q{} ) { fatal_error( 'no_value', "$bookmark_txt{'14'}" ); }
-    if ( $bm_order eq q{} ) {
+    if ( !$FORM{'bm_url'} ) { fatal_error( 'no_value', "$bookmark_txt{'14'}" ); }
+    if ( !$FORM{'bm_order'} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
     }
 
-    $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0');
+    $bm_image =
+      UploadFile( 'bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0' );
 
     my $newbook = qq~$bm_order|$bm_title|$bm_image|$bm_url|$date~;
     push @bookmarks, $newbook;
@@ -277,8 +284,7 @@ sub DeleteBookmark {
         }
         else { push @newbook, $bookmark;}
     }
-    ( undef, undef, $bm_image, undef, undef ) = split /[|]/xsm,
-      $bm_delete;
+    ( undef, undef, $bm_image, undef, undef ) = split /[|]/xsm, $bm_delete;
 
     unlink "$htmldir/Bookmarks/$bm_image";
 
@@ -297,9 +303,9 @@ sub EditBookmark {
     is_admin_or_gmod();
 
     $id = $FORM{'bookmark_id'};
-    my $bm_edit = q{};
+    my $bm_edit = {};
 
-    for my $bookmark (@bookmarks) {
+    foreach my $bookmark (@bookmarks) {
         chomp $bookmark;
         if ( $bookmark =~ /$id/xsm ) {
             $bm_edit = $bookmark;
@@ -364,16 +370,19 @@ sub EditBookmark2 {
     $bm_id    = $FORM{'bm_id'};
     $bm_cur_image = $FORM{'bm_cur_image'};
 
-    if ( $bm_title eq q{} ) {
+    if ( !$bm_title ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'02'}" );
     }
-    if ( $bm_url eq q{} ) { fatal_error( 'invalid_value', "$bookmark_txt{'14'}" ); }
-    if ( $bm_order eq q{} ) {
+    if ( !$bm_url ) {
+        fatal_error( 'invalid_value', "$bookmark_txt{'14'}" );
+    }
+    if ( !$bm_order ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
     }
 
-    if ( $bm_image ne q{} ) {
-        $bm_image = UploadFile('bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0');
+    if ( $bm_image ) {
+        $bm_image =
+          UploadFile( 'bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0' );
         unlink "$htmldir/Bookmarks/$bm_cur_image";
     }
     else {

@@ -23,6 +23,7 @@ $recentpmver  = 'YaBB 2.7.00 $Revision$';
 if (@recentpmmods) {
     $recentpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Sub RecentTopics shows all the most recently posted topics
@@ -181,7 +182,7 @@ sub RecentPosts {
         else {
             $registrationdate = $date;
         }
-
+        $trstart ||= 0;
         if ( ${ $uid . $tusername }{'regdate'} && $trstart > $registrationdate )
         {
             $tname = profile_view($tusername);
@@ -268,10 +269,12 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under"
         }
         $counter = $i + 1;
 
-        if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
+        if ( $tstate !~ m/1/xsm && ( !$iamguest || $enable_guestposting ) ) {
             $my_tstate = $myrecent_mess;
             $my_tstate =~ s/\Q{yabb tnum}\E/$tnum/gxsm;
             $my_tstate =~ s/\Q{yabb c}\E/$c/gxsm;
+            $my_tstate =~ s/\Q{yabb board}\E/$board/gxsm;
+            $my_tstate =~ s/\Q{yabb notify}\E/$notify/gxsm;
         }
 
         $yymain .= $myrecent;

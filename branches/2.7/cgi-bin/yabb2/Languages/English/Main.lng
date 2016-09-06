@@ -17,6 +17,7 @@ $englishmainlngver = 'YaBB 2.7.00 $Revision$';
 if (@englishmainlngmods) {
     $englishmainlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'English' ) { return 1; }
 
 $abbr_lang = 'en-us';
@@ -149,7 +150,7 @@ $abbr_lang = 'en-us';
 '900pw' => q~Enter Password for~,
 '900pd' => q~Password Access Board~,
 '900pe' => q~Please enter a password.~,
-'900pg' => qq~Password Access Boards are for Members only. Please <a href="$scripturl?action=register" style="font-weight: bold;">register an account with us</a> or <a href="$scripturl?action=login" style="font-weight: bold;">login</a>.~,
+'900pg' => q~Password Access Boards are for Members only. Please <a href={yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
 '900pr' => q~Private~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
@@ -168,7 +169,7 @@ $abbr_lang = 'en-us';
 'maint' => q~Remove this file if your board is in maintenance for no reason.~,
 'printpage' => q~Print this page~,
 'members_only' => q~Only members can access another member's profile.~,
-'reg_please' => qq~Please <a href="$scripturl?action=register" style="font-weight: bold;">register an account with us</a> or <a href="$scripturl?action=login" style="font-weight: bold;">login</a>.~,
+'reg_please' => q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
 'regplease' => q~Please Register~,
 'banned' => q~Banned~,
 );

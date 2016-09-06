@@ -23,6 +23,7 @@ $livepreviewpmver  = 'YaBB 2.7.00 $Revision$';
 if (@livepreviewpmmods) {
     $livepreviewpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 use URI::Escape;
@@ -57,8 +58,7 @@ sub DoLiveMessage {
 
         if ($enable_ubbc) {
             DoUBBC();
-            $message =~
-              s/\Q style="display:none"\E/ style="display:inline"/gxsm;
+            $message =~ s/\Q style="display:none"\E/ style="display:inline"/gxsm;
         }
         wrap2();
         ToChars($message);
@@ -119,10 +119,12 @@ sub DoLiveIM {
         if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
 
         if ($enable_ubbc) {
-            $displayname = ${ $uid . $tmpmusername }{'realname'};
+            $displayname = q{};
+            if ( $tmpmusername ) {
+                $displayname = ${ $uid . $tmpmusername }{'realname'};
+            }
             DoUBBC();
-            $message =~
-              s/\Q style="display:none"\E/ style="display:inline"/gxsm;
+            $message =~ s/\Q style="display:none"\E/ style="display:inline"/gxsm;
         }
         wrap2();
         ToChars($message);
@@ -159,7 +161,6 @@ sub DoLiveIM {
         $messageblock =~ s/\Q{yabb my_sig}\E/$my_sig/gxsm;
         $messageblock =~ s/\Q{yabb my_attach}\E/$my_attach/gxsm;
         $messageblock =~ s/\Q{yabb my_showIP}\E/$liveipimg $livemip/gxsm;
-
         if ( !${ $uid . $username }{'postlayout'} ) {
             $txtsz = q{};
         }
@@ -206,10 +207,10 @@ sub DoLiveCal {
         if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
 
         if ($enable_ubbc) {
+            $tmpmusername ||= q{};
             $displayname = ${ $uid . $tmpmusername }{'realname'};
             DoUBBC();
-            $message =~
-              s/\Q style="display:none"\E/ style="display:inline"/gxsm;
+            $message =~ s/\Q style="display:none"\E/ style="display:inline"/gxsm;
         }
         wrap2();
         ToChars($message);
@@ -253,17 +254,17 @@ sub DoLiveCal {
 
 sub liveimage_resize {
     my ($resize_num);
-    *check_image_resize = sub {
+    local *check_image_resize = sub {
         my @x = @_;
         $resize_num++;
         $x[0] = "post_liveimg_resize_$resize_num";
         return qq~"$x[0]"$x[1]~;
     };
 
-    $messageblock =~
-      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /egxsm;
-    $message =~
-      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /egxsm;
+    if ($messageblock) {$messageblock =~
+      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gexsm;}
+    if ($message) {$message =~
+      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gexsm;}
 
     return;
 }

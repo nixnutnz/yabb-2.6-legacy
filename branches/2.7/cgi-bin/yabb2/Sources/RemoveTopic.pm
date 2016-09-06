@@ -20,6 +20,7 @@ $removetopicpmver  = 'YaBB 2.7.00 $Revision$';
 if (@removetopicpmmods) {
     $removetopicpmmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 sub RemoveThread {
@@ -87,7 +88,7 @@ sub RemoveThread {
     # then look backwards to delete the other entries in
     # the Moved-Info-row if their files were deleted
 
-    *moved_loop = sub {
+    local *moved_loop = sub {
         my $th = shift;
         for ( keys %moved_file ) {
             if (   exists $moved_file{$_}
@@ -194,7 +195,7 @@ sub Multi {
             $hide = $FORM{"admin$count"};
         }
 
-        if ( $FORM{'ref'} eq 'favorites' ) {
+        if ( $FORM{'ref'} && $FORM{'ref'} eq 'favorites' ) {
             $ref = qq~$scripturl?action=favorites~;
         }
         else {
@@ -240,13 +241,13 @@ sub Multi {
                 MessageTotals( 'load', $delete );
                 $currentboard = ${$delete}{'board'};
             }
-            if ( $FORM{'ref'} eq 'favorites' ) {
+            if ( $FORM{'ref'} && $FORM{'ref'} eq 'favorites' ) {
                 $INFO{'ref'} = 'delete';
                 require Sources::Favorites;
                 RemFav($delete);
             }
             if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
-                && $binboard ne q{}
+                && $binboard
                 && $currentboard ne $binboard )
             {
                 $INFO{'moveit'}    = 1;
