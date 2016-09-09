@@ -1,0 +1,7 @@
+##YaBB Language Install List##
+
+%lngs = (
+'English' => 'English',
+);
+
+1;
