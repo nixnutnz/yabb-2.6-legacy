@@ -241,7 +241,7 @@ qq~Setup Error: Could not find the admin data file in $memberdir. Please check y
     }
 
     if ( $FORM{'cookielength'} < 1 || $FORM{'cookielength'} > 9999 ) {
-        $FORM{'cookielength'} = 1500;
+        $FORM{'cookielength'} = $cookie_length;
     }
     my %ck = ();
     if ( !$FORM{'cookieneverexp'} ) { $ck{'len'} = "\+$FORM{'cookielength'}m"; }
@@ -833,6 +833,8 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 
 1;
 EOF
+
+    my $filler = q{ } x 70;
     $setfile =~ s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;
     $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gexm;
     $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gexm;
@@ -972,59 +974,59 @@ EOF
 ### Areas Gmods can Access ###
 
 \%gmod_access = (
-ext_admin => '',
+'ext_admin' => '',
 
 'newsettings;page=main' => '',
 'newsettings;page=advanced' => 'on',
-editbots, '',
+'editbots' => '',
 
 'newsettings;page=news' => 'on',
-smilies => 'on',
-setcensor => 'on',
-modagreement => 'on',
-eventcal_set => '',
-bookmarks => '',
+'smilies' => 'on',
+'setcensor' => 'on',
+'modagreement' => 'on',
+'eventcal_set' => '',
+'bookmarks' => '',
 
-referer_control => '',
+'referer_control' => '',
 'newsettings;page=security' => '',
-setup_guardian => '',
+'setup_guardian' => '',
 'newsettings;page=antispam' => '',
-spam_questions => '',
-honeypot => '',
+'spam_questions' => '',
+'honeypot' => '',
 
-managecats => '',
-manageboards => '',
-helpadmin => 'on',
-editemailtemplates => '',
+'managecats' => '',
+'manageboards' => '',
+'helpadmin' => 'on',
+'editemailtemplates' => '',
 
-addmember => '',
-viewmembers => 'on',
-modmemgr => '',
-mailing => 'on',
-ipban => 'on',
-setreserve => 'on',
+'addmember' => '',
+'viewmembers' => 'on',
+'modmemgr' => '',
+'mailing' => 'on',
+'ipban' => 'on',
+'setreserve' => 'on',
 
-modskin => '',
-modcss => '',
-modtemp => '',
+'modskin' => '',
+'modcss' => '',
+'modtemp' => '',
 
-clean_log => 'on',
-boardrecount => '',
-rebuildmesindex => '',
-membershiprecount => '',
-rebuildmemlist => '',
-rebuildmemhist => '',
-deleteoldthreads => '',
-manageattachments => 'on',
-backupsettings => '',
+'clean_log' => 'on',
+'boardrecount' => '',
+'rebuildmesindex' => '',
+'membershiprecount' => '',
+'rebuildmemlist' => '',
+'rebuildmemhist' => '',
+'deleteoldthreads' => '',
+'manageattachments' => 'on',
+'backupsettings' => '',
 
-detailedversion => 'on',
-stats => 'on',
-showclicks => 'on',
-errorlog => 'on',
-view_reglog => 'on',
+'detailedversion' => 'on',
+'stats' => 'on',
+'showclicks' => 'on',
+'errorlog' => 'on',
+'view_reglog' => 'on',
 
-modlist => '',
+'modlist' => '',
 );
 
 \%gmod_access2 = (
@@ -1344,7 +1346,9 @@ sub setinstall2 {
         $webmaster_email   = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
         $forumnumberformat = $FORM{'forumnumberformat'} || 1;
         $timeselected      = $FORM{'timeselect'} || 0;
-        if ( -e '/bin/gzip' && open my $GZIP, q{|-}, 'gzip -f' ) {
+
+        # gzip requires magic #
+        if ( -e '/bin/gzip' && open GZIP, '|, gzip -f' ) {
             $gzcomp = 1;
         }
         else { $gzcomp = 0; }
@@ -1771,7 +1775,7 @@ ext => [0, 0, 0],
 \$fmodview = 2;                                    # Multi-admin settings for Mid Moderators: 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 \$modview = 2;                                     # Multi-admin settings for Moderators: 0=none, 1=icons 2=single checkbox 3=multiple checkboxes
 
-########## Advanced Memberview Plus ##########
+########## Memberview ##########
 
 \$showallgroups = 1;
 \$online_logtime = 15;                             # Time in minutes before Users are removed from the Online Log
@@ -2539,7 +2543,6 @@ sub setuptemplate {
 
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
-    $usestyle ||= 'default';
     $yystyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/setup.css" type="text/css" />\n~;
     $yystyle =~ s/$usestyle\///gxsm;

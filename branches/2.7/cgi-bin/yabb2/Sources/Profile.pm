@@ -1635,7 +1635,7 @@ qq~\n                        <option value="$_">$memstat[0]</option>~;
       = gmtime(
           ${ $uid . $user }{'regtime'}
         ? ${ $uid . $user }{'regtime'}
-        : $forumstart
+        : stringtotime($forumstart)
       );
     $dr_month++;
 

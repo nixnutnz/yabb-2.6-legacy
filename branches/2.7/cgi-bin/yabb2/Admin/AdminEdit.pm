@@ -18,7 +18,7 @@ no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-our $admineditpmver  = 'YaBB 2.7.00 $Revision: 1830 $';
+our $admineditpmver  = 'YaBB 2.7.00 $Revision: 1833 $';
 our @admineditpmmods = ();
 our $admineditpmmods = 0;
 if (@admineditpmmods) {
@@ -40,10 +40,9 @@ our (
 );
 ## settings ##
 our (
-    $yymycharset,   @reserved,            @reserve,
-    $matchword,     $matchcase,           $matchuser,
-    $matchname,     %settings,            $allow_gmod_profile,
-    $self_del_user, $allow_gmod_aprofile, $extendedprofiles,
+    $yymycharset,   @reserved,  @reserve,   $matchword,
+    $matchcase,     $matchuser, $matchname, %settings,
+    $self_del_user, $extendedprofiles,
 );
 ## other ##
 our (
@@ -472,7 +471,10 @@ sub gmod_settings {
     load_language('GModPrivileges');
 
     if ( !-e ("$vardir/Gmodset.pm") ) { gmod_settings2(); }
-    our ( $gmod_newfile, $allow_gmod_admin, $allow_gmod_aprofile, $allow_gmod_profile, );
+    our (
+        $gmod_newfile,        $allow_gmod_admin,
+        $allow_gmod_aprofile, $allow_gmod_profile,
+    );
     require Variables::Gmodset;
 
     if ( !$gmod_newfile || $gmod_newfile eq q{} ) { gmod_settings2(); }
@@ -666,8 +668,6 @@ sub gmod_settings2 {
         $FORM{'ipban2'} = 'on';
     }
 
-    my $filler =
-q~                                                                               ~;
     my $setfile = << "EOF";
 ### Gmod Related Settings ###
 
@@ -1135,8 +1135,6 @@ sub edit_paths2 {
     $modimgdir    = $FORM{'modimgdir'};
     $modimgurl    = $FORM{'modimgurl'};
 
-    my $filler =
-q~                                                                               ~;
     my $setfile = << "EOF";
 ###############################################################################
 # Paths.pm                                                                    #
@@ -1201,7 +1199,8 @@ sub nicely_aligned_file {
 
         # Make files look nicely aligned. The comment starts after 70 Col
 
-    $setfile =~ s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;
+    $setfile =~
+      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;
     $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gexm;
     $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gexm;
     return $setfile;

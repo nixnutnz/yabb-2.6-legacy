@@ -527,7 +527,7 @@ sub time_4 {
       @myargs;
     my $ampm = $newhour > 11 ? 'pm' : 'am';
     my $newhour2 = $newhour % 12 || 12;
-    my ($newmonth2);
+    my $newmonth2 = q{};
     if    ( !@months_m ) { @months_m  = @months; }
     if    ($use_rfc)     { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif ($lower)       { $newmonth2 = $months_m[ $newmonth - 1 ]; }
@@ -568,7 +568,7 @@ sub time_5 {
 sub time_6 {
     my @myargs = @_;
     my ( $dytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @myargs;
-    my $newmonth2 = $months[ $newmonth - 1 ];
+    my $newmonth2 = q{};
     if    ($use_rfc)  { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif (@months_m) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
     else              { $newmonth2 = $months[ $newmonth - 1 ]; }
@@ -585,7 +585,7 @@ sub time_8 {
     my ( $dytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @myargs;
     my $ampm = $newhour > 11 ? 'pm' : 'am';
     my $newhour2 = $newhour % 12 || 12;
-    my $newmonth2 = $months[ $newmonth - 1 ];
+    my $newmonth2 = q{};
     if    ($use_rfc)  { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif (@months_m) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
     else              { $newmonth2 = $months[ $newmonth - 1 ]; }
