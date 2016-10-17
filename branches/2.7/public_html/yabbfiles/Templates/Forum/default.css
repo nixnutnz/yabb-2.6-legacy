@@ -194,6 +194,7 @@ table.fixed {
     border-radius: 5px 5px 0 0;
     border-bottom: 1px solid #195392;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle-sub {
@@ -220,6 +221,7 @@ table.fixed {
     border-radius: 0 0 5px 5px;
     border-top: 1px solid #195392;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle a, .tabtitle-bottom a {
@@ -378,28 +380,28 @@ table.fixed {
 
 .useronline {
     background: url(./default/user_online.png) no-repeat;
-    padding-left: 15px;
+    padding: 0 0 1px 15px;
     color: #2e8b57;
     font-weight: 700;
 }
 
 .useroffline {
     background: url(./default/user_offline.png) no-repeat;
-    padding-left: 15px;
+    padding: 0 0 1px 15px;
     color: #7b68ee;
     font-weight: 700;
 }
 
 .userbanned {
     background: url(./default/user_offline.png) no-repeat;
-    padding-left: 15px;
+    padding: 0 0 1px 15px;
     color: #000;
     font-weight: 700;
 }
 
 .useraway {
     background: url(./default/user_away.png) no-repeat;
-    padding-left: 15px;
+    padding: 0 0 1px 15px;
     color: #6078b0;
     font-weight: 700;
 }
@@ -1069,6 +1071,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
     line-height: 2em;
     text-align: center;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 #ImageAlert div.rotate {
@@ -1328,6 +1331,7 @@ span.ubbcbutton {
     border-color: #ddd;
     padding: 3px 10px 3px 3px;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 .windowbg2 td.post_tools,.tabtitle td.post_tools,.tabtitle-bottom td.post_tools {
@@ -1340,6 +1344,7 @@ span.ubbcbutton {
     border-color: #edeff4;
     padding: 3px 10px 3px 3px;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 .post_tools_menu {
@@ -1984,6 +1989,7 @@ h4.help {
     border-bottom: 1px solid #195392;
     padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 .system-info td {
@@ -2045,6 +2051,7 @@ span.newlinks {
     -moz-border-radius: 3px;
     border-radius: 3px;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 span.newlinks_c {

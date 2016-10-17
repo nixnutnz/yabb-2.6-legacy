@@ -489,7 +489,7 @@ function resize_brd_images(img) {
 * Original 'fader.js' by NRg (allbrowsers_fader.mod v2.02 01/12/2002)
 *
 * Based upon uni-directional fading code from:
-* Fading Scroller- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* Fading Scroller- ï¿½ Dynamic Drive DHTML code library (www.dynamicdrive.com)
 * This notice MUST stay intact for legal use
 * Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
 ***********************************************/
