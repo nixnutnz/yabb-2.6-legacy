@@ -12,33 +12,89 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
+no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.7.00';
 
-$adminpmver = 'YaBB 2.7.00 $Revision$';
-@adminpmmods = ();
+our $adminpmver = 'YaBB 2.7.00 $Revision$';
+our @adminpmmods = ();
+our $adminpmmods = 0;
 if (@adminpmmods) {
     $adminpmmods = 1;
 }
-LoadLanguage('Credits');
+##  languages ##
+our (
+    %croak,            %admin_txt,          %admintxt,
+    %errorlog,         %boardindex_txt,     %clicklog_txt,
+    %aduptxt,          %reftxt,             %refer_settings,
+    %refer_txt,        %refexpl_txt,        %register_txt,
+    %admin_img,        %mailreg_txt,        %versiontxt,
+    $deleteduseremail, $deletedusersybject, $emailcharset,
+    $passwordregemail, $emailwelcome,       $welcomeregemail,
+    %credits_txt,
+);
+## paths ##
+our ( $convdir, $htmldir, $vardir, $adminurl, $memberdir, $boardurl, $langdir );
+## settings ##
+our (
+    $allow_hide_email, $cookieusername, $default_template,
+    $defaultusertxt,   $do_scramble_id, $dstoffset,
+    $emailpassword,    $enableclicklog, $imsubject,
+    $imtext,           $ip_lookup,      $matchcase,
+    $matchname,        $matchuser,      $matchword,
+    $maxdays,          $mbname,         $name_cannot_be_userid,
+    $send_welcomeim,   $sendname,       $timeoffset,
+    $timeselected,     @reserve
+);
+## template ##
+our ( $convert_box, $convertlang_box, $front_page,
+    $last_div, $my_admin_login, $versionchk, $yabb_update );
+## other ##
+our (
+    $date,        $formsession,   $invalemaila,   $invalpass,
+    $uid,         $user,          $yytitle,       $yyuname,
+    $action_area, $cliped,        $iamadmin,      $iamgmod,
+    $invalemailb, $invalmailchar, $invalrname,    $language,
+    $regdate,     $rna,           $scripturl,     $sessionid,
+    $username,    $yabbversion,   $yyhtml_root,   $yymain,
+    $yymycharset, $yynavigation,  $yysetlocation, %cat,
+    %catinfo,     %FORM,          %INFO,          %referallow,
+    %yy_cookies,  @categoryorder, @other_cookies,
+);
 
-get_template('AdminCentre');
+load_language('Admin');
+load_language('Credits');
+get_template( 'AdminCentre', 'admin' );
 
-sub Admin {
+my $adminimages = qq~$yyhtml_root/Templates/Admin/default~;
+
+sub admin {
     is_admin_or_gmod();
 
-    $my_lastlogin = GetLastLogins();
+    my $my_lastlogin = getlastlogins();
 
     $yymain .= $front_page;
-    $yymain =~ s/\Q{yabb iFrameSupport}\E/$iFrameSupport/xsm;
-    $yymain =~ s/\Q{yabb YaBBversion}\E/$YaBBversion/gxsm;
+    $yymain =~ s/\Q{yabb YaBBversion}\E/$yabbversion/gxsm;
     $yymain =~ s/\Q{yabb upd}\E/$yabb_update/xsm;
     $yymain =~ s/\Q{yabb lastlogins}\E/$my_lastlogin/xsm;
+    $yymain =~ s/\Q{yabb admintxt_1}\E/$admintxt{'1'}/xsm;
+    $yymain =~ s/\Q{yabb admintxt_2}\E/$admintxt{'2'}/xsm;
+    $yymain =~ s/\Q{yabb admintxt_6}\E/$admintxt{'6'}/xsm;
+    $yymain =~ s/\Q{yabb credits_txt_yabb2}\E/$credits_txt{'yabb2'}/xsm;
+    $yymain =~ s/\Q{yabb credits_txt_yabb252}\E/$credits_txt{'yabb252'}/xsm;
+    $yymain =~ s/\Q{yabb credits_txt_yabb260}\E/$credits_txt{'yabb260'}/xsm;
+    $yymain =~ s/\Q{yabb credits_txt_Thanks}\E/$credits_txt{'Thanks'}/xsm;
+    $yymain =~ s/\Q{yabb credits_txt_yabb}\E/$credits_txt{'yabb'}/xsm;
+    $yymain =~
+      s/\Q{yabb credits_txt_yabb2Credits}\E/$credits_txt{'yabb2Credits'}/xsm;
+    $yymain =~
+      s/\Q{yabb credits_txt_noBytesHarmed}\E/$credits_txt{'noBytesHarmed'}/xsm;
+    $yymain =~ s/\Q{yabb images}\E/$adminimages/gxsm;
 
     if ( -d './Convert' ) {
         $yymain .= $convert_box;
@@ -51,12 +107,12 @@ sub Admin {
 
     require Admin::ModuleChecker;
 
-    $yytitle = "$admin_txt{'208'}";
-    AdminTemplate();
+    $yytitle = $admin_txt{'208'};
+    admintemplate();
     return;
 }
 
-sub DeleteConverterFiles {
+sub deleteconverterfiles {
     my @convertdir = qw~Boards Members Messages Variables~;
 
     foreach my $cnvdir (@convertdir) {
@@ -64,7 +120,7 @@ sub DeleteConverterFiles {
         if ( -d "$convdir" ) {
             opendir 'CNVDIR', $convdir
               || fatal_error( 'cannot_open_dir', "$convdir" );
-            @convlist = readdir 'CNVDIR';
+            my @convlist = readdir 'CNVDIR';
             closedir 'CNVDIR';
             foreach my $file (@convlist) {
                 unlink "$convdir/$file"
@@ -77,7 +133,7 @@ sub DeleteConverterFiles {
     if ( -d "$convdir" ) {
         opendir 'CNVDIR', $convdir
           || fatal_error( 'cannot_open_dir', "$convdir" );
-        @convlist = readdir 'CNVDIR';
+        my @convlist = readdir 'CNVDIR';
         closedir 'CNVDIR';
         foreach my $file (@convlist) {
             unlink "$convdir/$file";
@@ -88,7 +144,7 @@ sub DeleteConverterFiles {
     if ( -e './Convert.pl' )      { unlink './Convert.pl'; }
     if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
     if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
-    if ( -e './LangConvert.pl' ) { unlink './LangConvert.pl'; }
+    if ( -e './LangConvert.pl' )  { unlink './LangConvert.pl'; }
 
     if ( -e "$htmldir/Templates/Forum/setup.css" ) {
         unlink "$htmldir/Templates/Forum/setup.css";
@@ -98,12 +154,12 @@ sub DeleteConverterFiles {
     }
 
     $yymain .= qq~<b>$admintxt{'10'}</b>~;
-    $yytitle = "$admintxt{'10'}";
-    AdminTemplate();
+    $yytitle = $admintxt{'10'};
+    admintemplate();
     return;
 }
 
-sub DeleteLangConverterFiles {
+sub deletelangconverterfiles {
     my @convertdir = qw~Boards Members Messages Variables~;
 
     for my $cnvdir (@convertdir) {
@@ -111,7 +167,7 @@ sub DeleteLangConverterFiles {
         if ( -d "$convdir" ) {
             opendir 'CNVDIR', $convdir
               || fatal_error( 'cannot_open_dir', "$convdir" );
-            @convlist = readdir 'CNVDIR';
+            my @convlist = readdir 'CNVDIR';
             closedir 'CNVDIR';
             for my $file (@convlist) {
                 unlink "$convdir/$file"
@@ -124,7 +180,7 @@ sub DeleteLangConverterFiles {
     if ( -d "$convdir" ) {
         opendir 'CNVDIR', $convdir
           || fatal_error( 'cannot_open_dir', "$convdir" );
-        @convlist = readdir 'CNVDIR';
+        my @convlist = readdir 'CNVDIR';
         closedir 'CNVDIR';
         for my $file (@convlist) {
             unlink "$convdir/$file";
@@ -134,51 +190,63 @@ sub DeleteLangConverterFiles {
 
     if ( -e './ConvertLang.pl' ) { unlink './ConvertLang.pl'; }
     $yymain .= qq~<b>$admintxt{'10a'}</b>~;
-    $yytitle = "$admintxt{'10a'}";
-    AdminTemplate();
+    $yytitle = $admintxt{'10a'};
+    admintemplate();
     return;
 }
 
-sub GetLastLogins {
-    fopen( ADMINLOG, "$vardir/adminlog.log" );
-    @adminlog = <ADMINLOG>;
-    fclose(ADMINLOG);
+sub getlastlogins {
+    open my $ADMINLOG, '<', "$vardir/adminlog.log"
+      or croak "$croak{'open'} adminlog.log";
+    my @adminlog = <$ADMINLOG>;
+    close $ADMINLOG or croak "$croak{'close'} adminlog.log";
     @adminlog = reverse sort @adminlog;
-
+    my $loginadmin = q{};
+    our (%useraccount);
     for my $line (@adminlog) {
         chomp $line;
-        @element = split /[|]/xsm, $line;
-        if ( !${ $uid . $element[1] }{'realname'} ) {
-            LoadUser( $element[1] );
+        my @element = split /[|]/xsm, $line;
+        {
+            no strict qw(refs);
+            if ( !${ $uid . $element[1] }{'realname'} ) {
+                load_user( $element[1] );
+            }
         }    # If user is not in memory, s/he must be loaded.
         $element[0] = timeformat( $element[0] );
-        my $lookupIP =
+        my $lookup_ip =
           ($ip_lookup)
           ? qq~<a href="$scripturl?action=iplookup;ip=$element[2]">$element[2]</a>~
           : qq~$element[1]~;
-        $loginadmin .= qq~
-                <a href="$scripturl?action=viewprofile;username=$useraccount{$element[1]}">${$uid.$element[1]}{'realname'}</a> <span class="small">($lookupIP) - $element[0]</span><br />
+        {
+            no strict qw(refs);
+            $loginadmin .= qq~
+                <a href="$scripturl?action=viewprofile;username=$useraccount{$element[1]}">${$uid.$element[1]}{'realname'}</a> <span class="small">($lookup_ip) - $element[0]</span><br />
                 ~;
+        }
     }
     return $loginadmin;
 }
 
-sub FullStats {
+sub fullstats {
     is_admin_or_gmod();
-    my ( $numcats, $numboards, $totalt, $totalm, $avgm );
-    my ( $memcount, $latestmember ) = MembershipGet();
-    LoadUser($latestmember);
-    $thelatestmember =
+    my ( $numcats, $numboards, $totalt, $totalm, $avgm, $thelatestmember );
+    my ( $memcount, $latestmember ) = membership_get();
+    our (%useraccount);
+    load_user($latestmember);
+    {
+        no strict qw(refs);
+        $thelatestmember =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">${$uid.$latestmember}{'realname'}</a>~;
+    }
     $memcount ||= 1;
 
     $numcats = 0;
-
     get_forum_master();
+    my (@loadboards);
     for my $catid (@categoryorder) {
-        $boardlist = $cat{$catid};
+        my $boardlist = $cat{$catid};
         $numcats++;
-        @bdlist = split /,/xsm, $boardlist;
+        my @bdlist = split /,/xsm, $boardlist;
         my ( $catname, $catperms, $catallowcol ) =
           split /[|]/xsm, $catinfo{$catid};
 
@@ -189,21 +257,27 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
         }
     }
 
-    BoardTotals( 'load', @loadboards );
+    boardtotals( 'load', @loadboards );
     for my $curboard (@loadboards) {
-        $totalm += ${ $uid . $curboard }{'messagecount'};
-        $totalt += ${ $uid . $curboard }{'threadcount'};
+        {
+            no strict qw(refs);
+            $totalm += ${ $uid . $curboard }{'messagecount'};
+            $totalt += ${ $uid . $curboard }{'threadcount'};
+        }
     }
 
     $avgm = int( $totalm / $memcount );
-    LoadAdmins();
-
+    my ( $administrators, $gmods ) = loadadmins();
+    my $yyclicktext = $admin_txt{'692a'};
+    my $yyclicklink = q{};
+    my $yyclicks    = q{};
     if ($enableclicklog) {
-        fopen( LOG, "$vardir/clicklog.log" );
-        my @log = <LOG>;
-        fclose(LOG);
+        open my $LOG, '<', "$vardir/clicklog.log"
+          or croak "$croak{'open'} clicklog.log";
+        my @log = <$LOG>;
+        close $LOG or croak "$croak{'close'} clicklog.log";
         $yyclicks    = @log;
-        $yyclicks    = NumberFormat($yyclicks);
+        $yyclicks    = number_format($yyclicks);
         $yyclicktext = $admin_txt{'692'};
         $yyclicklink =
 qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
@@ -211,18 +285,18 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     else {
         $yyclicktext = $admin_txt{'692a'};
         $yyclicklink = q{};
-        $yyclicks = q{};
+        $yyclicks    = q{};
     }
-    my (@elog);
-    fopen( ELOG, "$vardir/errorlog.log" );
-    @elog = <ELOG>;
-    fclose(ELOG);
-    $errorslog = @elog;
-    $memcount  = NumberFormat($memcount);
-    $totalt    = NumberFormat($totalt);
-    $totalm    = NumberFormat($totalm);
-    $avgm      = NumberFormat($avgm);
-    $errorslog = NumberFormat($errorslog);
+    open my $ELOG, '<', "$vardir/errorlog.log"
+      or croak "$croak{'open'} error.log";
+    my @elog = <$ELOG>;
+    close $ELOG or croak "$croak{'close'} error.log";
+    my $errorslog = @elog;
+    $memcount  = number_format($memcount);
+    $totalt    = number_format($totalt);
+    $totalm    = number_format($totalm);
+    $avgm      = number_format($avgm);
+    $errorslog = number_format($errorslog);
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -280,62 +354,75 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
 # Sorts the threads to find the most recent post
 # No need to check for board access here because only admins have access to this page
     get_forum_master();
+    my (@goodboards);
     for my $catid (@categoryorder) {
-        $boardlist = $cat{$catid};
-        @bdlist = split /,/xsm, $boardlist;
+        my $boardlist = $cat{$catid};
+        my @bdlist = split /,/xsm, $boardlist;
         for my $curboard (@bdlist) {
             push @goodboards, $curboard;
         }
     }
 
-    BoardTotals( 'load', @goodboards );
+    boardtotals( 'load', @goodboards );
 
     # &getlog; not used here !!?
-    %lastpostrealtime = ();
+    my ( %lastpostrealtime, %lastposttime, %lastposterguest );
+    my ( $lsdatetime, $lsposter, $lssub, $lsreply, $lspostid );
     for my $curboard (@goodboards) {
         chomp $curboard;
-        $lastposttime = ${ $uid . $curboard }{'lastposttime'};
-        if ( $lastposttime =~ /\d+$/xsm ) {
-            $lastposttime{$curboard} = timeformat($lastposttime);
+        my $lastposttime = q{};
+        {
+            no strict qw(refs);
+            $lastposttime = ${ $uid . $curboard }{'lastposttime'};
+            if ( $lastposttime =~ /\d+$/xsm ) {
+                $lastposttime{$curboard} = timeformat($lastposttime);
+            }
+            ${ $uid . $curboard }{'lastposttime'} =
+              ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
+              || !${ $uid . $curboard }{'lastposttime'}
+              ? $boardindex_txt{'470'}
+              : ${ $uid . $curboard }{'lastposttime'};
+            $lastpostrealtime{$curboard} =
+                !${ $uid . $curboard }{'lastposttime'}
+              || ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
+              ? q{}
+              : ${ $uid . $curboard }{'lastposttime'};
+            if ( ${ $uid . $curboard }{'lastposter'} =~ m{\AGuest-(.*)}xsm ) {
+                ${ $uid . $curboard }{'lastposter'} = $1;
+                $lastposterguest{$curboard} = 1;
+            }
+            ${ $uid . $curboard }{'lastposter'} =
+              ${ $uid . $curboard }{'lastposter'} eq 'N/A'
+              || !${ $uid . $curboard }{'lastposter'}
+              ? $boardindex_txt{'470'}
+              : ${ $uid . $curboard }{'lastposter'};
+            ${ $uid . $curboard }{'messagecount'} =
+              ${ $uid . $curboard }{'messagecount'} || 0;
+            ${ $uid . $curboard }{'threadcount'} =
+              ${ $uid . $curboard }{'threadcount'} || 0;
+            $totalm =~ s/,//gxsm;
+            $totalm += ${ $uid . $curboard }{'messagecount'};
+            $totalt += ${ $uid . $curboard }{'threadcount'};
         }
-        ${ $uid . $curboard }{'lastposttime'} =
-          ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
-          || !${ $uid . $curboard }{'lastposttime'}
-          ? $boardindex_txt{'470'}
-          : ${ $uid . $curboard }{'lastposttime'};
-        $lastpostrealtime{$curboard} =
-          !${ $uid . $curboard }{'lastposttime'} || ${ $uid . $curboard }{'lastposttime'} eq 'N/A'
-          ? q{}
-          : ${ $uid . $curboard }{'lastposttime'};
-        if ( ${ $uid . $curboard }{'lastposter'} =~ m{\AGuest-(.*)}xsm ) {
-            ${ $uid . $curboard }{'lastposter'} = $1;
-            $lastposterguest{$curboard} = 1;
-        }
-        ${ $uid . $curboard }{'lastposter'} =
-          ${ $uid . $curboard }{'lastposter'} eq 'N/A'
-          || !${ $uid . $curboard }{'lastposter'}
-          ? $boardindex_txt{'470'}
-          : ${ $uid . $curboard }{'lastposter'};
-        ${ $uid . $curboard }{'messagecount'} =
-          ${ $uid . $curboard }{'messagecount'} || 0;
-        ${ $uid . $curboard }{'threadcount'} =
-          ${ $uid . $curboard }{'threadcount'} || 0;
-        $totalm += ${ $uid . $curboard }{'messagecount'};
-        $totalt += ${ $uid . $curboard }{'threadcount'};
 
         # determine the true last post on all the boards a user has access to
         my $lastthreadtime = 0;
-        if ( ${ $uid . $curboard }{'lastposttime'} && ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime ) {
-            $lsdatetime     = timeformat($lastposttime);
-            $lsposter       = ${ $uid . $curboard }{'lastposter'};
-            $lssub          = ${ $uid . $curboard }{'lastsubject'};
-            $lspostid       = ${ $uid . $curboard }{'lastpostid'};
-            $lsreply        = ${ $uid . $curboard }{'lastreply'};
-            $lastthreadtime = $lastposttime;
+        {
+            no strict qw(refs);
+            if (   ${ $uid . $curboard }{'lastposttime'}
+                && ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime )
+            {
+                $lsdatetime     = timeformat($lastposttime);
+                $lsposter       = ${ $uid . $curboard }{'lastposter'};
+                $lssub          = ${ $uid . $curboard }{'lastsubject'};
+                $lspostid       = ${ $uid . $curboard }{'lastpostid'};
+                $lsreply        = ${ $uid . $curboard }{'lastreply'};
+                $lastthreadtime = $lastposttime;
+            }
         }
     }
-    ( $lssub, undef ) = Split_Splice_Move( $lssub, 0 );
-    ToChars($lssub);
+    ( $lssub, undef ) = split_splice_move( $lssub, 0 );
+    to_chars($lssub);
     $yymain .=
 qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)</div>
                     <br />
@@ -350,9 +437,9 @@ qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)
                         <script src="$versionchk" type="text/javascript"></script>
                         <script type="text/javascript">
                             if (typeof STABLE === "undefined" || STABLE === null ) {
-                                document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>$rna</b> <p>");
+                                document.write("$versiontxt{'4'} <b>$yabbversion</b> - $versiontxt{'5'} <b>$rna</b> <p>");
                             } else {
-                                document.write("$versiontxt{'4'} <b>$YaBBversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
+                                document.write("$versiontxt{'4'} <b>$yabbversion</b> - $versiontxt{'5'} <b>"+STABLE+"</b> <p>");
                             }
                         </script>
                     </div>
@@ -364,55 +451,58 @@ qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)
 
     $yytitle     = $admintxt{'28'};
     $action_area = 'stats';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub LoadAdmins {
+sub loadadmins {
     is_admin_or_gmod();
-    $administrators = q{};
-    $gmods          = q{};
+    my $administrators = q{};
+    my $gmods          = q{};
+    our (%memberinf);
     require Variables::Memberinfo;
     foreach my $i ( keys %memberinf ) {
-        if   ($do_scramble_id) { $membernameCloaked = cloak($i); }
-        else                   { $membernameCloaked = $i; }
+        my $membernamecloaked = $i;
+        if   ($do_scramble_id) { $membernamecloaked = cloak($i); }
+        else                   { $membernamecloaked = $i; }
         if ( $memberinf{$i}[2] && $memberinf{$i}[2] eq 'Administrator' ) {
             $administrators .=
-qq~ <a href="$scripturl?action=viewprofile;username=$membernameCloaked">$memberinf{$i}[0]</a><span class="small">,</span> \n~;
+qq~ <a href="$scripturl?action=viewprofile;username=$membernamecloaked">$memberinf{$i}[0]</a><span class="small">,</span> \n~;
         }
         if ( $memberinf{$i}[2] && $memberinf{$i}[2] eq 'Global Moderator' ) {
             $gmods .=
-qq~ <a href="$scripturl?action=viewprofile;username=$membernameCloaked">$memberinf{$i}[0]</a><span class="small">,</span> \n~;
+qq~ <a href="$scripturl?action=viewprofile;username=$membernamecloaked">$memberinf{$i}[0]</a><span class="small">,</span> \n~;
         }
     }
     $administrators =~ s/\Q<span class="small">,<\/span> \E\n\Z//xsm;
     $gmods =~ s/\Q<span class="small">,<\/span> \E\n\Z//xsm;
     if ( !$gmods ) { $gmods = q~&nbsp;~; }
     undef %memberinf;
-    return;
+    return ( $administrators, $gmods );
 }
 
-sub ShowClickLog {
+sub showclicklog {
     is_admin_or_gmod();
-
+    my $logtimetext = $admin_txt{'698a'};
     if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; }
     else                   { $logtimetext = $admin_txt{'698a'}; }
 
-    fopen( LOG, "$vardir/clicklog.log" );
-    my @log = <LOG>;
-    fclose(LOG);
+    open my $LOG, '<', "$vardir/clicklog.log"
+      or croak "$croak{'open'} clicklog.log";
+    my @log = <$LOG>;
+    close $LOG or croak "$croak{'close'} clicklog.log";
     chomp @log;
-
-    for my $i (0 .. $#log) {
-        @newlog = split /[|]/xsm, $log[$i];
-        if ($#newlog != 5 ) { next;}
+    my ( @iplist, @to, @from, @info, @ip, %iplist, $key, $val, @newiplist );
+    for my $i ( 0 .. $#log ) {
+        my @newlog = split /[|]/xsm, $log[$i];
+        if ( $#newlog != 5 ) { next; }
         else {
             $iplist[$i] = $newlog[0];
-            $date = $newlog[1];
-            $to[$i] = $newlog[2];
-            $from[$i] = $newlog[3];
-            $info[$i] = $newlog[4];
-            $ip[$i] = $newlog[5];
+            $date       = $newlog[1];
+            $to[$i]     = $newlog[2];
+            $from[$i]   = $newlog[3];
+            $info[$i]   = $newlog[4];
+            $ip[$i]     = $newlog[5];
         }
     }
 
@@ -420,7 +510,7 @@ sub ShowClickLog {
         $iplist{ $iplist[$i] }++;
     }
 
-    $i = 0;
+    my $i = 0;
     while ( ( $key, $val ) = each %iplist ) {
         $newiplist[$i] = [ $key, $val ];
         $i++;
@@ -428,46 +518,52 @@ sub ShowClickLog {
     for my $k ( 0 .. $#iplist ) {
         for my $j ( 0 .. $#newiplist ) {
             if ( $newiplist[$j]->[0] eq $iplist[$k] ) {
-                push @{$newiplist[$j]}, $ip[$k], $iplist[$i] ;
+                push @{ $newiplist[$j] }, $ip[$k], $iplist[$i];
             }
         }
     }
-    $totalclick = @iplist;
-    $totalip    = @newiplist;
+    my $totalclick  = @iplist;
+    my $totalip     = @newiplist;
+    my $useriplist  = q{};
+    my $guestiplist = q{};
     for my $i ( 0 .. $#newiplist ) {
-        my $lookupIP =
+        my $lookup_ip =
           ($ip_lookup)
           ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>~
           : qq~$newiplist[$i]->[2]~;
         my $lstuser = $newiplist[$i]->[0];
-
         if ( $lstuser ne $newiplist[$i]->[2] && -e "$memberdir/$lstuser.vars" )
         {
-            LoadUser( $lstuser, 'vars' );
+            load_user( $lstuser, 'vars' );
+            my $cloaked_username = $lstuser;
             if ($do_scramble_id) {
-                $cloakedUserName = cloak( $lstuser );
+                $cloaked_username = cloak($lstuser);
             }
-            else { $cloakedUserName = $lstuser; }
-            my $displayUserName = $lstuser;
-            if ( ${ $uid . $displayUserName }{'realname'}
-                && ( ${ $uid . $displayUserName }{'realname'} ne $lstuser ) )
+            else { $cloaked_username = $lstuser; }
+            my $displayusername = $lstuser;
             {
-                $displayUserName = ${ $uid . $displayUserName }{'realname'};
+                no strict qw(refs);
+                if ( ${ $uid . $displayusername }{'realname'}
+                    && ( ${ $uid . $displayusername }{'realname'} ne $lstuser )
+                  )
+                {
+                    $displayusername = ${ $uid . $displayusername }{'realname'};
+                }
             }
             $useriplist .=
-qq~<a href="$scripturl?action=viewprofile;username=$cloakedUserName">$displayUserName</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> ($lookupIP)<br />~;
-            }
+qq~<a href="$scripturl?action=viewprofile;username=$cloaked_username">$displayusername</a>&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span> ($lookup_ip)<br />~;
+        }
         elsif ( $newiplist[$i]->[2] ) {
             $guestiplist .=
-qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
+qq~$lookup_ip&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br />~;
         }
     }
-
+    my ( @browser, @os, %browser, @newbrowser );
     for my $curentry (@info) {
-        if ( $curentry !~ /\s\(Win/ixsm || $curentry !~ /\s\(mac/xsm ) {
-            $curentry =~ s/\s\((compatible;\s)*/ - /igxsm;
+        if ( $curentry !~ /\s[(]Win/ixsm || $curentry !~ /\s[(]mac/xsm ) {
+            $curentry =~ s/\s[(](compatible;\s)*/ - /igxsm;
         }
-        else { $curentry =~ s/(\S)*\(/; /gxsm; }
+        else { $curentry =~ s/(\S)*[(]/; /gxsm; }
         if ( $curentry =~ /\s-\sWin/ixsm ) {
             $curentry =~ s/\s-\sWin/; win/igxsm;
         }
@@ -476,34 +572,40 @@ qq~$lookupIP&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><br
         }
         ( $browser[$i], $os[$i] ) = split /;\s/xsm, $curentry;
         $os[$i] ||= q{};
-        if ( $os[$i] =~ /\)\s\S/xsm ) {
-            ( $os[$i], $browser[$i] ) = split /\)\s/xsm, $os[$i];
+        if ( $os[$i] =~ /[)]\s\S/xsm ) {
+            ( $os[$i], $browser[$i] ) = split /[)]\s/xsm, $os[$i];
         }
-        $os[$i] =~ s/\)//gxsm;
+        $os[$i] =~ s/[)]//gxsm;
         $i++;
     }
 
-    for my $i ( 0 .. $#browser ) { if ($browser[$i]) { $browser{ $browser[$i] }++;} }
+    for my $i ( 0 .. $#browser ) {
+        if ( $browser[$i] ) { $browser{ $browser[$i] }++; }
+    }
     $i = 0;
     while ( ( $key, $val ) = each %browser ) {
         $newbrowser[$i] = [ $key, $val ];
         $i++;
     }
-    $totalbrow = @newbrowser;
+    my $totalbrow   = @newbrowser;
+    my $browserlist = q{};
     for my $i ( 0 .. $#newbrowser ) {
         if ( $newbrowser[$i]->[0] =~ /\S+/xsm ) {
             $browserlist .=
 qq~$newbrowser[$i]->[0] &nbsp;<span class="important">(<i>$newbrowser[$i]->[1]</i>)</span><br />~;
         }
     }
-
-    for my $i ( 0 .. $#os ) { if ($os[$i]) {  $os{ $os[$i] }++; } }
+    my ( %os, @newoslist, %to, @newtolist );
+    for my $i ( 0 .. $#os ) {
+        if ( $os[$i] ) { $os{ $os[$i] }++; }
+    }
     $i = 0;
     while ( ( $key, $val ) = each %os ) {
         $newoslist[$i] = [ $key, $val ];
         $i++;
     }
-    $totalos = @newoslist;
+    my $totalos = @newoslist;
+    my $oslist  = q{};
     for my $i ( 0 .. $#newoslist ) {
         if ( $newoslist[$i]->[0] =~ /\S+/xsm ) {
             $oslist .=
@@ -517,19 +619,22 @@ qq~$newoslist[$i]->[0] &nbsp;<span class="important">(<i>$newoslist[$i]->[1]</i>
         $newtolist[$i] = [ $key, $val ];
         $i++;
     }
-    for my $i ( 0 ..  $#newtolist ) {
+    my $scriptcalls = q{};
+    for my $i ( 0 .. $#newtolist ) {
         if ( $newtolist[$i]->[0] =~ /\S+/xsm ) {
             $scriptcalls .=
 qq~<a href="$newtolist[$i]->[0]" target="_blank">$newtolist[$i]->[0]</a>&nbsp;<span class="important">(<i>$newtolist[$i]->[1]</i>)</span><br />~;
         }
     }
-
+    my ( %from, @newfromlist );
     for my $i ( 0 .. $#from ) { $from{ $from[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %from ) {
         $newfromlist[$i] = [ $key, $val ];
         $i++;
     }
+    my $message   = q{};
+    my $referlist = q{};
     for my $i ( 0 .. $#newfromlist ) {
         if (   $newfromlist[$i]->[0] =~ /\S+/xsm
             && $newfromlist[$i]->[0] !~ m{$boardurl}ixsm )
@@ -559,12 +664,12 @@ qq~$message&nbsp;<span class="important">(<i>$newfromlist[$i]->[1]</i>)</span><b
  </div>~;
 
     if ($enableclicklog) {
-        $useriplist ||= q{};
+        $useriplist  ||= q{};
         $guestiplist ||= q{};
         $browserlist ||= q{};
-        $oslist ||= q{};
+        $oslist      ||= q{};
         $scriptcalls ||= q{};
-        $referlist  ||= q{};
+        $referlist   ||= q{};
         $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
@@ -662,14 +767,14 @@ qq~$message&nbsp;<span class="important">(<i>$newfromlist[$i]->[1]</i>)</span><b
 
     $yytitle     = $admin_txt{'693'};
     $action_area = 'showclicks';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub DeleteOldMessages {
+sub deleteoldmessages {
     is_admin_or_gmod();
 
-    $yytitle = "$aduptxt{'04'}";
+    $yytitle = $aduptxt{'04'};
     $yymain .= qq~
 <form action="$adminurl?action=removeoldthreads" method="post">
 <div class="bordercolor rightboxdiv">
@@ -688,17 +793,18 @@ sub DeleteOldMessages {
                     <label for="keep_them">$admin_txt{'4'}</label> <input type="checkbox" name="keep_them" id="keep_them" value="1" /><br />
                     <label for="maxdays">$admin_txt{'124'} <input type="text" name="maxdays" id="maxdays" size="4" value="$maxdays" /> $admin_txt{'579'} $admin_txt{'2'}:</label>
                     <div style="margin-left: 25px; margin-right: auto; text-align: left;">~;
-
+    our ( %board, %subboard );
     get_forum_master();
 
     for my $catid (@categoryorder) {
-        $boardlist = $cat{$catid};
-        @bdlist = split /,/xsm, $boardlist;
-        ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        my $boardlist = $cat{$catid};
+        my @bdlist = split /,/xsm, $boardlist;
+        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
 
         for my $curboard (@bdlist) {
-            ( $boardname, $boardperms, $boardview ) =
+            my ( $boardname, $boardperms, $boardview ) =
               split /[|]/xsm, $board{$curboard};
+            my $selectname = q{};
             if ( $boardname !~ m/[ht|f]tp[s ]{0,1}:\/\//xsm ) {
                 $selectname = $curboard . 'check';
                 $yymain .= qq~
@@ -739,11 +845,11 @@ sub DeleteOldMessages {
 </form>~;
 
     $action_area = 'deleteoldthreads';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub DeleteMultiMembers {
+sub deletemultimembers {
     is_admin_or_gmod();
 
     automaintenance('on');
@@ -760,56 +866,69 @@ sub DeleteMultiMembers {
         require Sources::Mailer;
     }
 
-    fopen( FILE, 'Variables/Memberlist.pm' );
-    @memnum = <FILE>;
-    fclose(FILE);
-    my $count = 0;
-
+    open my $FILE, '<', 'Variables/Memberlist.pm'
+      or croak "$croak{'open'} Memberlist";
+    my @memnum = <$FILE>;
+    close $FILE or croak "$croak{'open'} Memberlist";
+    my $count    = 0;
+    my $mailline = q{};
     if ( $FORM{'button'} == 1 && $FORM{'emailtext'} ne q{} ) {
         $FORM{'emailsubject'} =~ s/[|]/&verbar;/gxsm;
         $FORM{'emailtext'} =~ s/[|]/&verbar;/gxsm;
         $FORM{'emailtext'} =~ s/\r(?=\n*)//gxsm;
         $mailline =
           qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
-        MailList($mailline);
+        require Admin::AdminSubs;
+        mail_list($mailline);
     }
 
     my $templanguage = $language;
-
+    my $emailsubject = q{};
+    my $emailtext    = q{};
     while ( @memnum >= $count ) {
         my $currentmem = $FORM{"member$count"};
         if ( exists $FORM{"member$count"} ) {
             if ( -e "$memberdir/$currentmem.vars" ) {    # Bypass dead entries.
-                LoadUser($currentmem);
+                load_user($currentmem);
                 if ( $FORM{'emailtext'} ne q{} ) {
                     $emailsubject = $FORM{'emailsubject'};
                     $emailtext    = $FORM{'emailtext'};
-                    $emailsubject =~
-                      s/\[name\]/${$uid.$currentmem}{'realname'}/igxsm;
-                    $emailsubject =~ s/\[username\]/$currentmem/igxsm;
-                    $emailtext =~
-                      s/\[name\]/${$uid.$currentmem}{'realname'}/igxsm;
-                    $emailtext =~ s/\[username\]/$currentmem/igxsm;
-                    sendmail( ${ $uid . $currentmem }{'email'},
-                        $emailsubject, $emailtext );
+                    {
+                        no strict qw(refs);
+                        $emailsubject =~
+                          s/\[name\]/${$uid.$currentmem}{'realname'}/igxsm;
+                        $emailsubject =~ s/\[username\]/$currentmem/igxsm;
+                        $emailtext =~
+                          s/\[name\]/${$uid.$currentmem}{'realname'}/igxsm;
+                        $emailtext =~ s/\[username\]/$currentmem/igxsm;
+                        sendmail( ${ $uid . $currentmem }{'email'},
+                            $emailsubject, $emailtext );
+                    }
                 }
                 elsif ( $FORM{'del_mail'} ) {
-                    $language = ${ $uid . $currentmem }{'language'};
-                    LoadLanguage('Email');
-                    my $message = template_email(
-                        $deleteduseremail,
-                        {
-                            'displayname' => ${ $uid . $currentmem }{'realname'}
-                        }
-                    );
-                    sendmail(
-                        ${ $uid . $currentmem }{'email'},
-                        "$deletedusersybject $mbname",
-                        $message, q{}, $emailcharset
-                    );
+                    {
+                        no strict qw(refs);
+                        $language = ${ $uid . $currentmem }{'language'};
+                        load_language('Email');
+                        my $message = template_email(
+                            $deleteduseremail,
+                            {
+                                'displayname' =>
+                                  ${ $uid . $currentmem }{'realname'}
+                            }
+                        );
+                        sendmail(
+                            ${ $uid . $currentmem }{'email'},
+                            "$deletedusersybject $mbname",
+                            $message, q{}, $emailcharset
+                        );
+                    }
                 }
-                if ( $currentmem ne $username ) {
-                    undef %{ $uid . $currentmem };
+                {
+                    no strict qw(refs);
+                    if ( $currentmem ne $username ) {
+                        undef %{ $uid . $currentmem };
+                    }
                 }
             }
             if ( $FORM{'button'} == 2 ) {
@@ -827,45 +946,46 @@ sub DeleteMultiMembers {
                 push @userslist, $currentmem;
 
                 # For security, remove username from mod position
-                KillModerator($currentmem);
+                kill_moderator($currentmem);
             }
         }
         $count++;
     }
-    if (@userslist) { MemberIndex( 'remove', join q{,}, @userslist ); }
+    if (@userslist) { member_index( 'remove', join q{,}, @userslist ); }
 
     automaintenance('off');
 
     $language = $templanguage;
     if ( $FORM{'button'} == 1 ) {
-        $yySetLocation = qq~$adminurl?action=mailing;sort=$INFO{'sort'}~;
+        $yysetlocation = qq~$adminurl?action=mailing;sort=$INFO{'sort'}~;
     }
     else {
-        $yySetLocation =
+        $yysetlocation =
 qq~$adminurl?action=viewmembers;start=$INFO{'start'};sort=$INFO{'sort'};reversed=$INFO{'reversed'}~;
     }
     redirectexit();
     return;
 }
 
-sub Refcontrol {
+sub refcontrol {
     is_admin_or_gmod();
-    LoadLanguage('RefControl');
-
+    load_language('RefControl');
     require Variables::Referer;
-    @refergeneral = qw(
+    my @refergeneral = qw(
       refer_controls messageindex display      recent
       recenttopics   RSSboard     RSSrecent    eventcal
       get_cal_ssi    birthdaylist downloadfile viewdownloads
       help           login        ml           mycenter
       viewprofile    register     reminder     search
     );
-    @refermods = ( 'refer_mods');
+    my @refermods = ('refer_mods');
+    my @action    = @refergeneral;
+    push @action, @refermods;
     ## refershow Mod Hooks
-    if ( $actfound) {
-        $refexpl_txt{$actfound} =~ s/\x22/\x27/gxsm;
+    foreach my $i (@action) {
+        $refexpl_txt{$i} =~ s/\x22/\x27/gxsm;
     }
-    $dismenu = q{};
+    my $dismenu = q{};
     $dismenu .= showrefer(@refergeneral);
     $dismenu .= q~</td><td class="windowbg2 vtop">~;
     $dismenu .= showrefer(@refermods);
@@ -907,23 +1027,23 @@ sub Refcontrol {
 </div>
 </form>~;
 
-    $yytitle     = "$reftxt{'1'}";
+    $yytitle     = $reftxt{'1'};
     $action_area = 'referer_control';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub Refcontrol2 {
+sub refcontrol2 {
     is_admin_or_gmod();
     require Variables::Referer;
-
-    for my $key ( keys %referallow) {
+    my ( @actfound, %actlist );
+    foreach my $key ( keys %referallow ) {
         push @actfound, $key;
     }
-    my %actlist = ();
-    for my $actfound (@actfound) {
-        if ( $FORM{$actfound} ) { $actlist{$actfound} = q~'on'~; }
-        else {$actlist .= $actlist{$actfound} = q~''~; }
+    my $actlist = q{};
+    foreach my $act (@actfound) {
+        if ( $FORM{$act} ) { $actlist{$act} = q~'on'~; }
+        else               { $actlist .= $actlist{$act} = q~''~; }
     }
 
     my $setfile = << "EOF";
@@ -957,26 +1077,27 @@ sub Refcontrol2 {
 1;
 EOF
 
-    fopen( REFERRERACCESS, ">$vardir/Referer.pm" );
-    print {REFERRERACCESS} $setfile or croak "$croak{'print'} REFERRERACCESS";
-    fclose(REFERRERACCESS);
-    $yySetLocation = qq~$adminurl?action=referer_control~;
+    open my $REFERRERACCESS, '>', "$vardir/Referer.pm"
+      or croak "$croak{'open'} Referer";
+    print {$REFERRERACCESS} $setfile or croak "$croak{'print'} Referer";
+    close $REFERRERACCESS or croak "$croak{'close'} Referer";
+    $yysetlocation = qq~$adminurl?action=referer_control~;
     redirectexit();
     return;
 }
 
 sub showrefer {
     my @x = @_;
-    my %referset = ();
+    my (%referset);
     my $dismenu =
       qq~<div class="windowbg padd-cell"><b>$refer_settings{$x[0]}</b></div>~;
     if ( $#x > 0 ) {
         $dismenu .= q~    <ul style="margin-top:0">~;
-        for my $i( 1 .. $#x ) {
+        for my $i ( 1 .. $#x ) {
             if ( $x[$i] eq q{} ) { next; }
-            $key = $x[$i];
-            $value = $referallow{$key};
-            $checked = q{};
+            my $key     = $x[$i];
+            my $value   = $referallow{$key};
+            my $checked = q{};
             $referset{$key} = $value;
             if ( $referset{$key} eq 'on' ) { $checked = ' checked="checked"'; }
             $dismenu .=
@@ -987,11 +1108,11 @@ qq~\n        <li style="list-style:none"><input type="checkbox" name="$key" id="
     return $dismenu;
 }
 
-sub AddMember {
+sub addmember {
     is_admin_or_gmod();
-    LoadLanguage('Register');
-    $sessionid ||=q{};
-    $regdate ||=q{};
+    load_language('Register');
+    $sessionid ||= q{};
+    $regdate   ||= q{};
     $yymain .= qq~
 <script type="text/javascript" src="$yyhtml_root/YaBB.js"></script>
 <script type="text/javascript" src="$yyhtml_root/ajax.js"></script>
@@ -1016,7 +1137,7 @@ sub AddMember {
             <td class="windowbg"><label for="email"><b>$register_txt{'69'}:</b></label></td>
             <td class="windowbg2"><input type="text" maxlength="100" name="email" id="email" onchange="checkAvail('$scripturl',this.value,'email')" size="50" /><div id="emailavailability"></div></td>
         </tr>~;
-    if ( $allow_hide_email ) {
+    if ($allow_hide_email) {
         $yymain .= qq~<tr>
             <td class="windowbg"><label for="hideemail"><b>$register_txt{'721'}</b></label></td>
             <td class="windowbg2"><input type="checkbox" name="hideemail" id="hideemail" value="1" checked="checked" /></td>
@@ -1070,18 +1191,18 @@ sub AddMember {
     document.creator.regusername.focus();
 </script>~;
 
-    $yytitle     = "$register_txt{'97'}";
+    $yytitle     = $register_txt{'97'};
     $action_area = 'addmember';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub AddMember2 {
+sub addmember2 {
     is_admin_or_gmod();
-    LoadLanguage('Register');
-    LoadLanguage('Main');
+    load_language('Register');
+    load_language('Main');
     my %member;
-    while ( ( $key, $value ) = each %FORM ) {
+    while ( my ( $key, $value ) = each %FORM ) {
         $value =~ s/\A\s+//xsm;
         $value =~ s/\s+\Z//xsm;
         $value =~ s/[\n\r]//gxsm;
@@ -1092,7 +1213,11 @@ sub AddMember2 {
     banning( $member{'regusername'}, $member{'email'}, 1 );
 
 # check if there is a system hash named like this by checking existence through size
-    my $hsize = keys %{ $member{'regusername'} };
+    my $hsize = 0;
+    {
+        no strict qw(refs);
+        $hsize = keys %{ $member{'regusername'} };
+    }
     if ( $hsize > 0 ) { fatal_error('system_prohibited_id'); }
     if ( length( $member{'regusername'} ) > 25 ) {
         $member{'regusername'} = substr $member{'regusername'}, 0, 25;
@@ -1106,7 +1231,7 @@ sub AddMember2 {
     if ( $member{'regusername'} =~ /guest/ism ) {
         fatal_error( 'id_reserved', "($member{'regusername'})" );
     }
-    if ( $member{'regusername'} =~ /[^\w\+\-\.\@]/xsm ) {
+    if ( $member{'regusername'} =~ /[^\w+\-.\@]/xsm ) {
         fatal_error( 'invalid_character',
             "$register_txt{'35'} $register_txt{'241e'}" );
     }
@@ -1124,17 +1249,16 @@ sub AddMember2 {
         fatal_error('password_is_userid');
     }
 
-    FromChars( $member{'regrealname'} );
-    $convertstr = $member{'regrealname'};
-    $convertcut = 30;
-    CountChars();
+    from_chars( $member{'regrealname'} );
+    my $convertstr = $member{'regrealname'};
+    my $convertcut = 30;
+    count_chars();
     $member{'regrealname'} = $convertstr;
     if ($cliped) {
         fatal_error( 'realname_to_long',
             "($member{'regrealname'} => $convertstr)" );
     }
-    if ( $member{'regrealname'} =~ /$invalrname/xsm )
-    {
+    if ( $member{'regrealname'} =~ /$invalrname/xsm ) {
         fatal_error( 'invalid_character',
             "$register_txt{'38'} $register_txt{'241re'}" );
     }
@@ -1144,16 +1268,16 @@ sub AddMember2 {
         $member{'passwrd1'} = int rand 100;
         $member{'passwrd1'} =~ tr/0123456789/ymifxupbck/;
         $_ = int rand 77;
-        $_ =~ tr/0123456789/q8dv7w4jm3/;
+        tr/0123456789/q8dv7w4jm3/;
         $member{'passwrd1'} .= $_;
         $_ = int rand 89;
-        $_ =~ tr/0123456789/y6uivpkcxw/;
+        tr/0123456789/y6uivpkcxw/;
         $member{'passwrd1'} .= $_;
         $_ = int rand 188;
-        $_ =~ tr/0123456789/poiuytrewq/;
+        tr/0123456789/poiuytrewq/;
         $member{'passwrd1'} .= $_;
         $_ = int rand 65;
-        $_ =~ tr/0123456789/lkjhgfdaut/;
+        tr/0123456789/lkjhgfdaut/;
         $member{'passwrd1'} .= $_;
     }
     else {
@@ -1163,8 +1287,7 @@ sub AddMember2 {
         if ( !$member{'passwrd1'} ) {
             fatal_error( 'no_password', "($member{'regusername'})" );
         }
-        if ( $member{'passwrd1'} =~ $invalpass )
-        {
+        if ( $member{'passwrd1'} =~ $invalpass ) {
             fatal_error( 'invalid_character',
                 "$register_txt{'36'} $register_txt{'241'}" );
         }
@@ -1174,29 +1297,27 @@ sub AddMember2 {
         fatal_error( 'invalid_character',
             "$register_txt{'69'} $register_txt{'241e'}" );
     }
-    if (
-        ( $member{'email'} =~ $invalemaila )
-        || ( $member{'email'} !~ $invalemailb )
-      )
+    if (   ( $member{'email'} =~ $invalemaila )
+        || ( $member{'email'} !~ $invalemailb ) )
     {
         fatal_error('invalid_email');
     }
 
     if (
         lc $member{'regusername'} eq
-        lc MemberIndex( 'check_exist', $member{'regusername'}, 0 ) )
+        lc member_index( 'check_exist', $member{'regusername'}, 0 ) )
     {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if (
         lc $member{'email'} eq
-        lc MemberIndex( 'check_exist', $member{'email'}, 2 ) )
+        lc member_index( 'check_exist', $member{'email'}, 2 ) )
     {
         fatal_error( 'email_taken', "($member{'email'})" );
     }
     if (
         lc $member{'regrealname'} eq
-        lc MemberIndex( 'check_exist', $member{'regrealname'}, 1 ) )
+        lc member_index( 'check_exist', $member{'regrealname'}, 1 ) )
     {
         fatal_error( 'name_taken', "($member{'regrealname'})" );
     }
@@ -1207,17 +1328,17 @@ sub AddMember2 {
         fatal_error('name_is_userid');
     }
 
-    $namecheck =
+    my $namecheck =
         $matchcase
       ? $member{'regusername'}
       : lc $member{'regusername'};
-    $realnamecheck =
+    my $realnamecheck =
         $matchcase
       ? $member{'regrealname'}
       : lc $member{'regrealname'};
 
     for my $reserved (@reserve) {
-        $reservecheck = $matchcase ? $reserved : lc $reserved;
+        my $reservecheck = $matchcase ? $reserved : lc $reserved;
         if ($matchuser) {
             if ($matchword) {
                 if ( $namecheck eq $reservecheck ) {
@@ -1248,49 +1369,51 @@ sub AddMember2 {
         fatal_error('id_taken');
     }
 
-    if ( $send_welcomeim ) {
-
-        $messageid = $BASETIME . $PROCESS_ID;
-        fopen( IM, ">$memberdir/$member{'regusername'}.msg", 1 );
-        print {IM}
+    if ($send_welcomeim) {
+        my $messageid = $BASETIME . $PROCESS_ID;
+        open my $IM, '>', "$memberdir/$member{'regusername'}.msg"
+          or croak "$croak{'open'} IM";
+        print {$IM}
 "$messageid|$sendname|$member{'regusername'}|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
           or croak "$croak{'print'} IM";
-        fclose(IM);
+        close $IM or croak "$croak{'close'} IM";
     }
-    $encryptopass = encode_password( $member{'passwrd1'} );
-    $reguser      = $member{'regusername'};
-    $registerdate = timetostring($date);
-
+    my $encryptopass = encode_password( $member{'passwrd1'} );
+    my $reguser      = $member{'regusername'};
+    my $registerdate = timetostring($date);
+    my $new_template = 'default';
     if   ($default_template) { $new_template = $default_template; }
     else                     { $new_template = 'default'; }
 
-    ToHTML( $member{'regrealname'} );
+    to_html( $member{'regrealname'} );
+    {
+        no strict qw(refs);
+        ${ $uid . $reguser }{'password'}      = $encryptopass;
+        ${ $uid . $reguser }{'realname'}      = $member{'regrealname'};
+        ${ $uid . $reguser }{'email'}         = lc $member{'email'};
+        ${ $uid . $reguser }{'postcount'}     = 0;
+        ${ $uid . $reguser }{'usertext'}      = $defaultusertxt;
+        ${ $uid . $reguser }{'userpic'}       = 'blank.gif';
+        ${ $uid . $reguser }{'regdate'}       = $registerdate;
+        ${ $uid . $reguser }{'regtime'}       = $date;
+        ${ $uid . $reguser }{'timeselect'}    = $timeselected;
+        ${ $uid . $reguser }{'timeoffset'}    = $timeoffset;
+        ${ $uid . $reguser }{'dsttimeoffset'} = $dstoffset;
+        ${ $uid . $reguser }{'hidemail'}      = $FORM{'hideemail'} ? 1 : 0;
+        ${ $uid . $reguser }{'timeformat'}    = q~MM D+ YYYY @ HH:mm:ss*~;
+        ${ $uid . $reguser }{'template'}      = $new_template;
+        ${ $uid . $reguser }{'language'}      = $member{'userlang'};
+        ${ $uid . $reguser }{'pageindex'}     = q~1|1|1~;
+    }
 
-    ${ $uid . $reguser }{'password'}      = $encryptopass;
-    ${ $uid . $reguser }{'realname'}      = $member{'regrealname'};
-    ${ $uid . $reguser }{'email'}         = lc $member{'email'};
-    ${ $uid . $reguser }{'postcount'}     = 0;
-    ${ $uid . $reguser }{'usertext'}      = $defaultusertxt;
-    ${ $uid . $reguser }{'userpic'}       = 'blank.gif';
-    ${ $uid . $reguser }{'regdate'}       = $registerdate;
-    ${ $uid . $reguser }{'regtime'}       = $date;
-    ${ $uid . $reguser }{'timeselect'}    = $timeselected;
-    ${ $uid . $reguser }{'timeoffset'}    = $timeoffset;
-    ${ $uid . $reguser }{'dsttimeoffset'} = $dstoffset;
-    ${ $uid . $reguser }{'hidemail'}      = $FORM{'hideemail'} ? 1 : 0;
-    ${ $uid . $reguser }{'timeformat'}    = q~MM D+ YYYY @ HH:mm:ss*~;
-    ${ $uid . $reguser }{'template'}      = $new_template;
-    ${ $uid . $reguser }{'language'}      = $member{'userlang'};
-    ${ $uid . $reguser }{'pageindex'}     = q~1|1|1~;
-
-    UserAccount( $reguser, 'register' );
-    MemberIndex( 'add', $reguser );
-      FormatUserName($reguser);
+    user_account( $reguser, 'register' );
+    member_index( 'add', $reguser );
+    format_username($reguser);
 
     if ($emailpassword) {
         my $templanguage = $language;
         $language = $member{'userlang'};
-        LoadLanguage('Email');
+        load_language('Email');
         require Sources::Mailer;
         my $message = template_email(
             $passwordregemail,
@@ -1308,7 +1431,7 @@ sub AddMember2 {
     elsif ($emailwelcome) {
         my $templanguage = $language;
         $language = $member{'userlang'};
-        LoadLanguage('Email');
+        load_language('Email');
         require Sources::Mailer;
         my $message = template_email(
             $welcomeregemail,
@@ -1323,28 +1446,28 @@ sub AddMember2 {
         $language = $templanguage;
     }
 
-    $yytitle = "$register_txt{'245'}";
-    $yymain  = "$register_txt{'245'}";
-    $yySetLocation =
+    $yytitle = $register_txt{'245'};
+    $yymain  = $register_txt{'245'};
+    $yysetlocation =
       qq~$adminurl?action=viewmembers;sort=regdate;reversed=on;start=0~;
     redirectexit();
     $action_area = 'addmember';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub AdminCheck {
+sub admincheck {
     $yymain .= $my_admin_login;
-    $formsession = cloak("$mbname$username");
+    $formsession = cloak( $mbname . $username );
     if   ($do_scramble_id) { $user = cloak($username); }
     else                   { $user = $username; }
 
     my $adminpass  = 'adminpass';
     my $cookiename = "$cookieusername$adminpass";
-    my $my_query ||= q{};
-    my $my_action ||= q{};
-    my $my_page ||= q{};
-    if ( $yyCookies{$cookiename} ) {
+    my $my_query   = q{};
+    my $my_action  = q{};
+    my $my_page    = q{};
+    if ( $yy_cookies{$cookiename} ) {
         if ( $INFO{'action2'} ) {
             $my_action = qq~action=$INFO{'action2'};~;
         }
@@ -1352,7 +1475,7 @@ sub AdminCheck {
             $my_page = qq~page=$INFO{'page'};~;
         }
         if ( $my_action || $my_page ) { $my_query = q{?}; }
-        $yySetLocation = qq~$adminurl$my_query$my_action$my_page~;
+        $yysetlocation = qq~$adminurl$my_query$my_action$my_page~;
         redirectexit();
     }
     else {
@@ -1367,45 +1490,51 @@ sub AdminCheck {
 
         $yynavigation = qq~&rsaquo; $admin_txt{'900'}~;
         $yytitle      = $admin_txt{'900'};
-        $yyuname      = qq~${$uid.$username}{'realname'}~;
+        {
+            no strict qw(refs);
+            $yyuname = ${ $uid . $username }{'realname'};
+        }
         template();
     }
     return;
 }
 
-sub AdminCheck2 {
-    my $password = encode_password( $FORM{'passwrd'} || $INFO{'passwrd'} );
-    my $my_query ||= q{};
-    my $my_action ||= q{};
-    my $my_page ||= q{};
+sub admincheck2 {
+    my $password  = encode_password( $FORM{'passwrd'} || $INFO{'passwrd'} );
+    my $my_query  = q{};
+    my $my_action = q{};
+    my $my_page   = q{};
     if ( $FORM{'action'} ) { $my_action = qq~action=$FORM{'action'};~; }
     if ( $FORM{'page'} )   { $my_page   = qq~page=$FORM{'page'};~; }
     if ( $my_action || $my_page ) { $my_query = q{?}; }
 
-    if   ( $do_scramble_id ) { $user = decloak($username); }
+    if   ($do_scramble_id) { $user = decloak($username); }
     else                   { $user = $username; }
-    if ( ( $iamadmin || $iamgmod )
-        && $password ne ${ $uid . $user }{'password'} )
     {
-        fatal_error('no_admin_passwrd');
-    }
-    elsif ( $iamadmin
-        && encode_password('admin') eq ${ $uid . $user }{'password'} )
-    {
-        fatal_error('default_password');
+        no strict qw(refs);
+        if ( ( $iamadmin || $iamgmod )
+            && $password ne ${ $uid . $user }{'password'} )
+        {
+            fatal_error('no_admin_passwrd');
+        }
+        elsif ( $iamadmin
+            && encode_password('admin') eq ${ $uid . $user }{'password'} )
+        {
+            fatal_error('default_password');
+        }
     }
 
     my $adminpass  = 'adminpass';
     my $cookiename = "$cookieusername$adminpass";
-    push @otherCookies,
+    push @other_cookies,
       write_cookie(
-        -name    => "$cookiename",
+        -name    => $cookiename,
         -value   => 'on',
         -path    => q{/},
         -expires => '0'
       );
 
-    $yySetLocation = qq~$adminurl$my_query$my_action$my_page~;
+    $yysetlocation = qq~$adminurl$my_query$my_action$my_page~;
     redirectexit();
     return;
 }

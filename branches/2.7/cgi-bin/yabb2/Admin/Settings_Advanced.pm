@@ -12,28 +12,80 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
+no warnings qw(redefine); #save_settings sub
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$settings_advancedpmver = 'YaBB 2.7.00 $Revision$';
-@settings_advancespmmods = ();
+our $settings_advancedpmver  = 'YaBB 2.7.00 $Revision$';
+our @settings_advancedpmmods = ();
+our $settings_advancedpmmods = 0;
 if (@settings_advancedpmmods) {
     $settings_advancedpmmods = 1;
 }
+##  languages ##
+our (
+    %croak,        %admin_txt,    %admin_img,  %gztxt,
+    %settings_txt, %rss_txt,      %smtp_txt,   %edit_paths_txt,
+    %fatxt,        %fix_img_size, %settop_txt, %floodtxt,
+    %amv_txt,      %errorlog,     %afix_img_size
+);
+## paths ##
+our ( $adminurl, $yyhtml_root, $uploaddir, $pmuploaddir );
+## settings ##
+our (
+    $yymycharset,                  $rss_disabled,
+    $rss_limit,                    $rss_message,
+    $permdomain,                   $symlink,
+    $gzcomp,                       $backupprogbin,
+    $perm_domain,                  $rsssymrecent,
+    $rsssymboards,                 $checkspace,
+    $accept_permalink,             $accept_permafull,
+    $showauthor,                   $rssemail,
+    $showdate,                     $mailtype,
+    $mailprog,                     $smtp_server,
+    $smtp_auth_required,           $authuser,
+    $helloserv,                    $webmaster_email,
+    $authpass,                     $new_member_notification,
+    $new_member_notification_mail, $sendtopicmail,
+    $allowguestattach,             $allowattach,
+    $amdisplaypics,                $checkext,
+    @ext,                          $limit,
+    $dirlimit,                     $overwrite,
+    $allow_attach_im,              $pm_attach_groups,
+    $pm_display_pics,              $pm_checkext,
+    @pm_attachext,                 $pm_file_limit,
+    $pm_dirlimit,                  $pm_file_overwrite,
+    $img_greybox,                  $gzforce,
+    $cachebehaviour,               $enableclicklog,
+    $click_logtime,                $getreversedns,
+    $max_log_days_old,             $maxrecentdisplay,
+    $maxsearchdisplay,             $online_logtime,
+    $lastonlineinlink,             $elenable,
+    $elrotate,                     $elmax,
+    $debug,                        $maxrecentdisplay_t,
+    $use_flock,                    $faketruncation,
+    $extendedprofiles
+);
+## other ##
+our ( $action, $yymain, $yytitle, $yysetlocation, $action_area, $language,
+    %INFO, %FORM, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+load_language('Admin');
+load_language('FA');
 
 my $uploaddiriscorrect = qq~<span class="important">$admin_txt{'164'}</span>~;
 if ( -w $uploaddir && -d $uploaddir ) {
     $uploaddiriscorrect = qq~<span class="good">$admin_txt{'163'}</span>~;
 }
 
-my $pmUploadDirIsCorrect = qq~<span class="important">$admin_txt{'164'}</span>~;
+my $pmuploaddiriscorrect = qq~<span class="important">$admin_txt{'164'}</span>~;
 if ( -w $pmuploaddir && -d $pmuploaddir ) {
-    $pmUploadDirIsCorrect = qq~<span class="good">$admin_txt{'163'}</span>~;
+    $pmuploaddiriscorrect = qq~<span class="good">$admin_txt{'163'}</span>~;
 }
 
 require Admin::ManageBoards;
@@ -42,25 +94,24 @@ require Admin::ManageBoards;
 
 # Setting for gzip, if it is available
 my $compressgzip =
-  ( -e "$backupprogbin/gzip" && open GZIP, '| gzip -f' )
+  ( -e "$backupprogbin/gzip" && open my $GZIP, q{|-}, 'gzip -f' )
   ? qq~\n  <option value="1" ${isselected($gzcomp == 1)}>$gztxt{'4'}</option>~
   : q{};
 
 # Setting for Compress::Zlib, if it is available
-my $compresszlib;
-eval { require Compress::Zlib; Compress::Zlib::memGzip('test'); };
-if ( !$EVAL_ERROR ) {
+my $compresszlib = q{};
+if ( eval { require Compress::Zlib; Compress::Zlib::memGzip('test'); 1; } ) {
     $compresszlib =
 qq~\n  <option value="2" ${isselected($gzcomp == 2)}>$gztxt{'5'}</option>~;
 }
 
 # RSS Defaults
-if ( !$rss_disabled ) { $rss_disabled = 0; }
-if ( !$rss_limit )    { $rss_limit    = 10; }
-if ( !$rss_message )  { $rss_message  = 1; }
-my $perm_txt = q{};
+$rss_disabled ||= 0;
+$rss_limit    ||= 10;
+$rss_message  ||= 1;
+my $perm_txt     = q{};
 my $perm_txtsimp = q{};
-my $perm_rss = q{};
+my $perm_rss     = q{};
 if ( $perm_domain && $symlink ) {
     $perm_txt = qq~
 RewriteEngine On # Turn on the rewriting engine
@@ -89,16 +140,14 @@ RewriteRule ^$rsssymrecent/([A-Za-z0-9/\\-_,\~\\(\\)]*)?\$ cgi-bin/yabb2/YaBB.pl
 RewriteRule ^$rsssymrecent\$ cgi-bin/yabb2/YaBB.pl?action=RSSrecent [L]
 RewriteRule ^$rsssymboards/([A-Za-z0-9/\\-_,\~\\(\\)]*)?\$ cgi-bin/yabb2/YaBB.pl?action=RSSboard&amp;amp;board=\$1 [L] ~;
 }
-if ( ischecked2($checkspace)) {
+my $checklabel = $admin_txt{'checkspace'};
+if ( ischecked($checkspace) ) {
     $checklabel =
 qq~$admin_txt{'checkspace'} <b><a href="$adminurl?action=checkspace">Disk Space Functions</a></b> $admin_txt{'checkspace2'}~;
 }
-else {
-    $checklabel = qq~$admin_txt{'checkspace'}~;
-}
 
 # List of settings
-@settings = (
+our @settings = (
     {
         name  => $settings_txt{'permarss'},
         id    => 'permarss',
@@ -127,16 +176,16 @@ qq~<input type="checkbox" name="accept_permafull" id="accept_permafull" value="1
 qq~<label for="symlink">$admin_txt{'25'}<br /><span class="small">$admin_txt{'26'}</span></label>~,
                 input_html =>
 qq~<input type="text" size="30" name="symlink" id="symlink" value="$symlink" />~,
-                name       => 'symlink',
-                validate   => 'text,null',
-             },
+                name     => 'symlink',
+                validate => 'text,null',
+            },
             {
                 description =>
                   qq~<label for="perm_domain">$admin_txt{'23'}</label>~,
                 input_html =>
 qq~<input type="text" size="30" name="perm_domain" id="perm_domain" value="$perm_domain" />~,
-                name       => 'perm_domain',
-                validate   => 'text,null',
+                name     => 'perm_domain',
+                validate => 'text,null',
             },
             {
                 description =>
@@ -148,7 +197,7 @@ qq~<textarea cols="75" id="perm_txtsimp">$perm_txtsimp</textarea>~,
                 description =>
                   qq~<label for="perm_txt">$admin_txt{'23b'}</label>~,
                 input_html =>
-qq~<textarea cols="75" id="perm_txt">$perm_txt</textarea>~,
+                  qq~<textarea cols="75" id="perm_txt">$perm_txt</textarea>~,
             },
             { header => $settings_txt{'rss'}, },
             {
@@ -237,7 +286,7 @@ qq~<input type="text" size="30" name="rsssymboards" id="rsssymboards" value="$rs
                 description =>
                   qq~<label for="perm_rss">$admin_txt{'25a'}</label>~,
                 input_html =>
-qq~<textarea cols="75" id="perm_rss">$perm_rss</textarea>~,
+                  qq~<textarea cols="75" id="perm_rss">$perm_rss</textarea>~,
             },
         ],
     },
@@ -453,90 +502,91 @@ qq~<input type="text" name="dirlimit" id="dirlimit" size="5" value="$dirlimit" /
             { header => $settings_txt{'pm_attachments'}, },
             {
                 description =>
-                  qq~$edit_paths_txt{'20a'}<br />$settings_txt{'changeinpaths'}~,
+qq~$edit_paths_txt{'20a'}<br />$settings_txt{'changeinpaths'}~,
                 input_html => $pmuploaddir,    # Non-changeable setting
             },
             {
                 description => $settings_txt{'pmuploaddircorrect'},
-                input_html  => $pmUploadDirIsCorrect
+                input_html  => $pmuploaddiriscorrect
                 ,  # This is tested to see if it's valid at the top of the file.
             },
             {
                 description =>
                   qq~<label for="allow_attach_im">$fatxt{'17a'}</label>~,
                 input_html =>
-qq~<input type="text" name="allowAttachIM" id="allow_attach_im" size="5" value="$allowAttachIM" /> ~,
-                name     => 'allowAttachIM',
+qq~<input type="text" name="allow_attach_im" id="allow_attach_im" size="5" value="$allow_attach_im" /> ~,
+                name     => 'allow_attach_im',
                 validate => 'number',
             },
             {
                 description =>
                   qq~<label for="pm_attach_groups">$fatxt{'17b'}</label>~,
                 input_html =>
-q~<select multiple="multiple" name="pmAttachGroups" id="pm_attach_groups" size="8">~
-                  . DrawPerms( $pmAttachGroups, 0 )
+q~<select multiple="multiple" name="pm_attach_groups" id="pm_attach_groups" size="8">~
+                  . draw_perms( $pm_attach_groups, 0 )
                   . q~</select>~,
-                name => 'pmAttachGroups',
-                validate => 'text,null',
-                depends_on => ['allowAttachIM!=0'],
+                name       => 'pm_attach_groups',
+                validate   => 'text,null',
+                depends_on => ['allow_attach_im!=0'],
             },
             {
                 description =>
                   qq~<label for="pmdisplaypics">$fatxt{'16a'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="pmDisplayPics" id="pmdisplaypics" value="1" ${ischecked($pmDisplayPics)}/>~,
-                name       => 'pmDisplayPics',
+qq~<input type="checkbox" name="pmdisplaypics" id="pmdisplaypics" value="1" ${ischecked($pm_display_pics)}/>~,
+                name       => 'pmdisplaypics',
                 validate   => 'boolean',
-                depends_on => ['allowAttachIM!=0'],
+                depends_on => ['allow_attach_im!=0'],
             },
             {
-                description => qq~<label for="pmcheckext">$fatxt{'15'}</label>~,
+                description =>
+                  qq~<label for="pm_checkext">$fatxt{'15'}</label>~,
                 input_html =>
-qq~<input type="checkbox" name="pmCheckExt" id="pmcheckext" value="1" ${ischecked($pmCheckExt)}/>~,
-                name       => 'pmCheckExt',
+qq~<input type="checkbox" name="pm_checkext" id="pm_checkext" value="1" ${ischecked($pm_checkext)}/>~,
+                name       => 'pm_checkext',
                 validate   => 'boolean',
-                depends_on => ['allowAttachIM!=0'],
+                depends_on => ['allow_attach_im!=0'],
             },
             {
                 description =>
                   qq~<label for="pmextensions">$fatxt{'14a'}</label>~,
                 input_html =>
-q~<input type="text" name="pmAttachExt" id="pmextensions" size="35" value="~
-                  . join( q{ }, @pmAttachExt ) . q~" />~,
-                name       => 'pmAttachExt',
+q~<input type="text" name="pmextensions" id="pmextensions" size="35" value="~
+                  . join( q{ }, @pm_attachext ) . q~" />~,
+                name       => 'pmextensions',
                 validate   => 'text',
-                depends_on => [ 'allowAttachIM!=0', 'pmCheckExt' ],
+                depends_on => [ 'allow_attach_im!=0', 'pm_checkext' ],
             },
             {
                 description =>
-                  qq~<label for="pmfilelimit">$fatxt{'12a'}</label>~,
+                  qq~<label for="pm_file_limit">$fatxt{'12a'}</label>~,
                 input_html =>
-qq~<input type="text" name="pmFileLimit" id="pmfilelimit" size="5" value="$pmFileLimit" /> KB~,
-                name       => 'pmFileLimit',
+qq~<input type="text" name="pm_file_limit" id="pm_file_limit" size="5" value="$pm_file_limit" /> KB~,
+                name       => 'pm_file_limit',
                 validate   => 'number',
-                depends_on => ['allowAttachIM!=0'],
+                depends_on => ['allow_attach_im!=0'],
             },
             {
                 description =>
-                  qq~<label for="pmdirlimit">$fatxt{'13a'}</label>~,
+                  qq~<label for="pm_dirlimit">$fatxt{'13a'}</label>~,
                 input_html =>
-qq~<input type="text" name="pmDirLimit" id="pmdirlimit" size="5" value="$pmDirLimit" /> KB~,
-                name       => 'pmDirLimit',
+qq~<input type="text" name="pm_dirlimit" id="pm_dirlimit" size="5" value="$pm_dirlimit" /> KB~,
+                name       => 'pm_dirlimit',
                 validate   => 'number',
-                depends_on => ['allowAttachIM!=0'],
+                depends_on => ['allow_attach_im!=0'],
             },
             {
                 description =>
-                  qq~<label for="pmfileoverwrite">$fatxt{'53'}</label>~,
-                input_html  => qq~
-            <select name="pmFileOverwrite" id="pmfileoverwrite" size="1">
-            <option value="0"${isselected($pmFileOverwrite == 0)}>$fatxt{'54r'}</option>
-            <option value="1"${isselected($pmFileOverwrite == 1)}>$fatxt{'54o'}</option>
-            <option value="2"${isselected($pmFileOverwrite == 2)}>$fatxt{'54n'}</option>
+                  qq~<label for="pm_file_overwrite">$fatxt{'53'}</label>~,
+                input_html => qq~
+            <select name="pm_file_overwrite" id="pm_file_overwrite" size="1">
+            <option value="0"${isselected($pm_file_overwrite == 0)}>$fatxt{'54r'}</option>
+            <option value="1"${isselected($pm_file_overwrite == 1)}>$fatxt{'54o'}</option>
+            <option value="2"${isselected($pm_file_overwrite == 2)}>$fatxt{'54n'}</option>
             </select>~,
-                name       => 'pmFileOverwrite',
+                name       => 'pm_file_overwrite',
                 validate   => 'number',
-                depends_on => ['allowAttachIM!=0'],
+                depends_on => ['allow_attach_im!=0'],
             },
         ],
     },
@@ -582,21 +632,27 @@ qq~<input type="checkbox" name="fix_avatar_img_size" id="fix_avatar_img_size" va
                 validate => 'boolean',
             },
             {
-                description => qq~<label for="max_avatarml_width">$admin_txt{'473a'}</label>~,
-                input_html => qq~<input type="text" name="max_avatarml_width" id="max_avatarml_width" size="5" value="$fix_img_size{'avatarml'}[1]" /> pixel~,
-                name => 'max_avatarml_width',
+                description =>
+qq~<label for="max_avatarml_width">$admin_txt{'473a'}</label>~,
+                input_html =>
+qq~<input type="text" name="max_avatarml_width" id="max_avatarml_width" size="5" value="$fix_img_size{'avatarml'}[1]" /> pixel~,
+                name     => 'max_avatarml_width',
                 validate => 'number',
             },
             {
-                description => qq~<label for="max_avatarml_height">$admin_txt{'473b'}</label>~,
-                input_html => qq~<input type="text" name="max_avatarml_height" id="max_avatarml_height" size="5" value="$fix_img_size{'avatarml'}[2]" /> pixel~,
-                name => 'max_avatarml_height',
+                description =>
+qq~<label for="max_avatarml_height">$admin_txt{'473b'}</label>~,
+                input_html =>
+qq~<input type="text" name="max_avatarml_height" id="max_avatarml_height" size="5" value="$fix_img_size{'avatarml'}[2]" /> pixel~,
+                name     => 'max_avatarml_height',
                 validate => 'number',
             },
             {
-                description => qq~<label for="fix_avatarml_img_size">$admin_txt{'473c'}</label>~,
-                input_html => qq~<input type="checkbox" name="fix_avatarml_img_size" id="fix_avatarml_img_size" value="1"${ischecked($fix_img_size{'avatarml'}[0])} />~,
-                name => 'fix_avatarml_img_size',
+                description =>
+qq~<label for="fix_avatarml_img_size">$admin_txt{'473c'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="fix_avatarml_img_size" id="fix_avatarml_img_size" value="1"${ischecked($fix_img_size{'avatarml'}[0])} />~,
+                name     => 'fix_avatarml_img_size',
                 validate => 'boolean',
             },
             {
@@ -737,20 +793,20 @@ qq~<input type="checkbox" name="enableclicklog" id="enableclicklog" value="1" ${
             },
             {
                 description =>
-                  qq~<label for="ClickLogTime">$admin_txt{'690'}</label>~,
+                  qq~<label for="click_logtime">$admin_txt{'690'}</label>~,
                 input_html =>
-qq~<input type="text" name="ClickLogTime" id="ClickLogTime" size="5" value="$ClickLogTime" />~,
-                name       => 'ClickLogTime',
+qq~<input type="text" name="click_logtime" id="click_logtime" size="5" value="$click_logtime" />~,
+                name       => 'click_logtime',
                 validate   => 'number',
                 depends_on => ['enableclicklog'],
             },
             {
                 description =>
-                  qq~<label for="getreversedns">$admin_txt{'getreversedns'}</label>~,
+qq~<label for="getreversedns">$admin_txt{'getreversedns'}</label>~,
                 input_html =>
 qq~<input type="checkbox" name="getreversedns" id="getreversedns" value="1" ${ischecked($getreversedns)} />~,
-                name       => 'getreversedns',
-                validate   => 'boolean',
+                name     => 'getreversedns',
+                validate => 'boolean',
             },
             {
                 description =>
@@ -786,10 +842,10 @@ qq~<input type="text" name="maxsearchdisplay" id="maxsearchdisplay" size="5" val
             },
             {
                 description =>
-                  qq~<label for="OnlineLogTime">$amv_txt{'13'}</label>~,
+                  qq~<label for="online_logtime">$amv_txt{'13'}</label>~,
                 input_html =>
-qq~<input type="text" name="OnlineLogTime" id="OnlineLogTime" size="5" value="$OnlineLogTime" />~,
-                name     => 'OnlineLogTime',
+qq~<input type="text" name="online_logtime" id="online_logtime" size="5" value="$online_logtime" />~,
+                name     => 'online_logtime',
                 validate => 'number',
             },
             {
@@ -866,82 +922,74 @@ qq~<input type="checkbox" name="faketruncation" id="faketruncation" value="1" ${
                 description => qq~<label for="checkspace">$checklabel</label>~,
                 input_html =>
 qq~<input type="checkbox" name="checkspace" id="checkspace" value="1" ${ischecked($checkspace)}/>~,
-                name       => 'checkspace',
-                validate   => 'boolean',
+                name     => 'checkspace',
+                validate => 'boolean',
             },
         ],
     },
 );
 
-
 if ($extendedprofiles) {
-        push @{ $settings[3]{items} },
-           {
-                description =>
-qq~<label for="max_ext_img_width">$admin_txt{'ext_pic_w'}</label>~,
-                input_html =>
+    push @{ $settings[3]{items} },
+      {
+        description =>
+          qq~<label for="max_ext_img_width">$admin_txt{'ext_pic_w'}</label>~,
+        input_html =>
 qq~<input type="text" name="max_ext_img_width" id="max_ext_img_width" size="5" value="$fix_img_size{'ext'}[1]" /> pixel~,
-                name     => 'max_ext_img_width',
-                validate => 'number',
-            },
-            {
-                description =>
-qq~<label for="max_ext_img_height">$admin_txt{'ext_pic_h'}</label>~,
-                input_html =>
+        name     => 'max_ext_img_width',
+        validate => 'number',
+      },
+      {
+        description =>
+          qq~<label for="max_ext_img_height">$admin_txt{'ext_pic_h'}</label>~,
+        input_html =>
 qq~<input type="text" name="max_ext_img_height" id="max_ext_img_height" size="5" value="$fix_img_size{'ext'}[2]" /> pixel~,
-                name     => 'max_ext_img_height',
-                validate => 'number',
-            },
-            {
-                description =>
-qq~<label for="fix_ext_img_size">$admin_txt{'ext_pic'}</label>~,
-                input_html =>
+        name     => 'max_ext_img_height',
+        validate => 'number',
+      },
+      {
+        description =>
+          qq~<label for="fix_ext_img_size">$admin_txt{'ext_pic'}</label>~,
+        input_html =>
 qq~<input type="checkbox" name="fix_ext_img_size" id="fix_ext_img_size" value="1"${ischecked($fix_img_size{'ext'}[0])} />~,
-                name     => 'fix_ext_img_size',
-                validate => 'boolean',
-            },
+        name     => 'fix_ext_img_size',
+        validate => 'boolean',
+      },
+      ;
 }
 
 # Routine to save them
-sub SaveSettings {
+sub save_settings {
     my %settings = @_;
-    $settings{'extensions'} =~ s/[^\ A-Za-z0-9_]//gsm;
+    $settings{'extensions'} =~ s/[^\w ]//gxsm;
     @ext = split /\s+/xsm, $settings{'extensions'};
-    $settings{'pmAttachExt'} =~ s/[^\ A-Za-z0-9_]//gsm;
-    @pmAttachExt = split /\s+/xsm, $settings{'pmAttachExt'};
+    $settings{'pmextensions'} =~ s/[^\w ]//gxsm;
+    @pm_attachext = split /\s+/xsm, $settings{'pmextensions'};
     %afix_img_size = ();
-    $afix_img_size{'attach'}[0] = $FORM{'fix_attach_img_size'} || 0;
-    $afix_img_size{'attach'}[1] = $FORM{'max_attach_img_width'} || 0;
-    $afix_img_size{'attach'}[2] = $FORM{'max_attach_img_height'} || 0;
-    $afix_img_size{'avatar'}[0] = $FORM{'fix_avatar_img_size'} || 0;
-    $afix_img_size{'avatar'}[1] = $FORM{'max_avatar_width'} || 0;
-    $afix_img_size{'avatar'}[2] = $FORM{'max_avatar_height'} || 0;
+    $afix_img_size{'attach'}[0]   = $FORM{'fix_attach_img_size'}   || 0;
+    $afix_img_size{'attach'}[1]   = $FORM{'max_attach_img_width'}  || 0;
+    $afix_img_size{'attach'}[2]   = $FORM{'max_attach_img_height'} || 0;
+    $afix_img_size{'avatar'}[0]   = $FORM{'fix_avatar_img_size'}   || 0;
+    $afix_img_size{'avatar'}[1]   = $FORM{'max_avatar_width'}      || 0;
+    $afix_img_size{'avatar'}[2]   = $FORM{'max_avatar_height'}     || 0;
     $afix_img_size{'avatarml'}[0] = $FORM{'fix_avatarml_img_size'} || 0;
-    $afix_img_size{'avatarml'}[1] = $FORM{'max_avatarml_width'} || 0;
-    $afix_img_size{'avatarml'}[2] = $FORM{'max_avatarml_height'} || 0;
-    $afix_img_size{'brd'}[0] = $FORM{'fix_brd_img_size'} || 0;
-    $afix_img_size{'brd'}[1] = $FORM{'max_brd_img_width'} || 0;
-    $afix_img_size{'brd'}[2] = $FORM{'max_brd_img_height'} || 0;
-    $afix_img_size{'post'}[0] = $FORM{'fix_post_img_size'} || 0;
-    $afix_img_size{'post'}[1] = $FORM{'max_post_img_width'} || 0;
-    $afix_img_size{'post'}[2] = $FORM{'max_post_img_height'} || 0;
-    $afix_img_size{'signat'}[0] = $FORM{'fix_signat_img_size'} || 0;
-    $afix_img_size{'signat'}[1] = $FORM{'max_signat_img_width'} || 0;
-    $afix_img_size{'signat'}[2] = $FORM{'max_signat_img_height'} || 0;
-    $afix_img_size{'ext'}[0] = $FORM{'fix_ext_img_size'} || 0;
-    $afix_img_size{'ext'}[1] = $FORM{'max_ext_img_width'} || 0;
-    $afix_img_size{'ext'}[2] = $FORM{'max_ext_img_height'} || 0;
+    $afix_img_size{'avatarml'}[1] = $FORM{'max_avatarml_width'}    || 0;
+    $afix_img_size{'avatarml'}[2] = $FORM{'max_avatarml_height'}   || 0;
+    $afix_img_size{'brd'}[0]      = $FORM{'fix_brd_img_size'}      || 0;
+    $afix_img_size{'brd'}[1]      = $FORM{'max_brd_img_width'}     || 0;
+    $afix_img_size{'brd'}[2]      = $FORM{'max_brd_img_height'}    || 0;
+    $afix_img_size{'post'}[0]     = $FORM{'fix_post_img_size'}     || 0;
+    $afix_img_size{'post'}[1]     = $FORM{'max_post_img_width'}    || 0;
+    $afix_img_size{'post'}[2]     = $FORM{'max_post_img_height'}   || 0;
+    $afix_img_size{'signat'}[0]   = $FORM{'fix_signat_img_size'}   || 0;
+    $afix_img_size{'signat'}[1]   = $FORM{'max_signat_img_width'}  || 0;
+    $afix_img_size{'signat'}[2]   = $FORM{'max_signat_img_height'} || 0;
+    $afix_img_size{'ext'}[0]      = $FORM{'fix_ext_img_size'}      || 0;
+    $afix_img_size{'ext'}[1]      = $FORM{'max_ext_img_width'}     || 0;
+    $afix_img_size{'ext'}[2]      = $FORM{'max_ext_img_height'}    || 0;
 
-    SaveSettingsTo('Settings.pm', %settings);
+    save_settings_to( 'Settings.pm', %settings );
     return;
-}
-
-sub ischecked2 {
-    my ($inp) = @_;
-
-    # Return a ref so we can be used like ${ischecked($var)} inside a string
-    if ($inp ) { return 1; }
-    else { return q{}; }
 }
 
 1;

@@ -12,28 +12,38 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
+use strict;
 use warnings;
-no warnings qw(once);
-no warnings qw(redefine);
+no warnings qw(redefine);    #save_settings;
 no warnings qw(uninitialized);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$settings_newspmver = 'YaBB 2.7.00 $Revision$';
-@settings_newspmmods = ();
+our $settings_newspmver  = 'YaBB 2.7.00 $Revision$';
+our @settings_newspmmods = ();
+our $settings_newspmmods = 0;
 if (@settings_newspmmods) {
     $settings_newspmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %lngs, %settings_txt );
+## paths ##
+our ( $adminurl, $langdir, $vardir );
+## settings ##
+our ( $enable_news, $shownewsfader, $maxsteps, $stepdelay, $fadelinks );
+## other ##
+our ( $action, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+load_language('Admin');
 
 # Load the news from news.txt
 
 # ToHTML, in case they have some crazy HTML in it like </textarea>
 
 # List of settings
-@settings = (
+our @settings = (
 
     # Begin tab
     {
@@ -100,44 +110,48 @@ qq~<input type="checkbox" name="fadelinks" id="fadelinks" value="1" ${ischecked(
 );
 
 require "$langdir/Lang.lng";
-for (sort keys %lngs ) {
-    if ( -e "$langdir/$_/news.txt") {
-        fopen(NEWS, "<$langdir/$_/news.txt");
-        ${ $_ . '_news' } =
-          do { local $INPUT_RECORD_SEPARATOR = undef; <NEWS> };
-        fclose(NEWS);
-    }
-    else {${$_ . '_news'} = q{};}
-    $lbl = $_ . '_news';
-    ToHTML(${$lbl});
-    ToChars(${$lbl});
+{
+    no strict qw(refs);
+    for ( sort keys %lngs ) {
+        if ( -e "$langdir/$_/news.txt" ) {
+            open my $NEWS, '<', "$langdir/$_/news.txt"
+              or croak "$croak{'open'} NEWS";
+            ${ $_ . '_news' } =
+              do { local $INPUT_RECORD_SEPARATOR = undef; <$NEWS> };
+            close $NEWS or croak "$croak{'close'} NEWS";
+        }
+        else { ${ $_ . '_news' } = q{}; }
+        my $lbl = $_ . '_news';
+        to_html( ${$lbl} );
+        to_chars( ${$lbl} );
 
-    push @{ $settings[1]{items} },
-      {
-        two_rows => 1,
-        description =>
-          qq~<label for="$lbl">$admin_txt{'670'} <strong>$_</strong></label>~,
-        input_html =>
+        push @{ $settings[1]{items} },
+          {
+            two_rows => 1,
+            description =>
+qq~<label for="$lbl">$admin_txt{'670'} <strong>$_</strong></label>~,
+            input_html =>
 qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl}</textarea>~,
-        name       => "$lbl",
-        validate   => 'null,fulltext',
-        depends_on => ['enable_news'],
-      };
+            name       => $lbl,
+            validate   => 'null,fulltext',
+            depends_on => ['enable_news'],
+          };
+    }
 }
 
 # Routine to save them
-sub SaveSettings {
+sub save_settings {
     my %settings = @_;
     require "$langdir/Lang.lng";
-    for (sort keys %lngs ) {
-        $lbl = $_ . '_news';
+    for ( sort keys %lngs ) {
+        my $lbl = $_ . '_news';
         $settings{$lbl} =~ tr/\r//d;
         chomp $settings{$lbl};
-        FromChars( $settings{$lbl} );
+        from_chars( $settings{$lbl} );
     }
 
     # Settings.pm stuff
-    SaveSettingsTo( 'Settings.pm', %settings );
+    save_settings_to( 'Settings.pm', %settings );
     return;
 }
 

@@ -12,41 +12,56 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
-no warnings qw(redefine);
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$removeoldtopicspmver = 'YaBB 2.7.00 $Revision$';
-@removeoldtopicspmmods = ();
+our $removeoldtopicspmver  = 'YaBB 2.7.00 $Revision$';
+our @removeoldtopicspmmods = ();
+our $removeoldtopicspmmods = 0;
 if (@removeoldtopicspmmods) {
     $removeoldtopicspmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admin_img, %removemess_txt );
+## paths ##
+our ( $adminurl, $yyhtml_root, $boardsdir, $datadir );
+## settings ##
+our ( $yymycharset, %settings );
+## other ##
+our (
+    $action,      $yymain,   $yytitle, $yysetlocation,
+    $action_area, $language, %INFO,    %FORM,
+    $date,        $max_process_time,
+);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub RemoveOldThreads {
+my $time_to_jump = time() + $max_process_time;
+
+load_language('Admin');
+
+sub remove_old_threads {
     is_admin_or_gmod();
     my $maxdays = $FORM{'maxdays'} || $INFO{'maxdays'};
-    if ( $maxdays !~ /\A[0-9]+\Z/xsm ) {
+    if ( $maxdays !~ /\A\d+\Z/xsm ) {
         fatal_error('only_numbers_allowed');
     }
 
     automaintenance('on');
 
     # Set up the multi-step action
-    $time_to_jump = time() + $max_process_time;
 
-    my ( @threads, $num, $status, $keep_sticky, %attachfile );
-    $date2 = $date;
+    my ( $keep_sticky, %attachfile );
+    my $date2 = $date;
 
     $yytitle     = "$removemess_txt{'120'} $maxdays";
     $action_area = 'deleteoldthreads';
     $yymain .=
       qq~<br /><b>$removemess_txt{'1'} $maxdays $removemess_txt{'2'}</b><br />~;
 
+    our (%board);
     get_forum_master();
     require Admin::Attachments;
 
@@ -55,12 +70,13 @@ sub RemoveOldThreads {
     for my $j ( $inp .. $#boards ) {
         my $checkboard = $FORM{ $boards[$j] . 'check' }
           || $INFO{ $boards[$j] . 'check' };
-        if ( $checkboard == 1 ) {
+        if ( $checkboard && $checkboard == 1 ) {
             $keep_sticky = ( $FORM{'keep_them'} || $INFO{'keep_them'} ) ? 1 : 0;
 
-            fopen( BOARDFILE, "$boardsdir/$boards[$j].txt" );
-            @threads = <BOARDFILE>;
-            fclose(BOARDFILE);
+            open my $BOARDFILE, '<', "$boardsdir/$boards[$j].txt"
+              or croak "$croak{'open'} BOARDFILE";
+            my @threads = <$BOARDFILE>;
+            close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
 
             my $totalthreads = @threads;
             my ($boardname) = split /[|]/xsm, $board{ $boards[$j] }, 2;
@@ -72,16 +88,17 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
             my @temparray_1 = ();
             my $tempcount   = 0;
             for my $i ( 0 .. ( $totalthreads - 1 ) ) {
-                (
+                my (
                     $num,  undef, undef, undef, $date1,
                     undef, undef, undef, $status
                 ) = split /[|]/xsm, $threads[$i];
                 $date1 = sprintf '%010d', $date1;
 
-                if ( $i < $INFO{'nextthread'} ) {
+                if ( $INFO{'nextthread'} && $i < $INFO{'nextthread'} ) {
                     push @temparray_1, "$date1|$threads[$i]";
                     next;
                 }
+                my ($result);
 
                 # Check if original thread was sticky
                 if ( $keep_sticky && $status =~ /s/ism ) {
@@ -89,7 +106,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                     $yymain .= "$num : $removemess_txt{'4'} <br />";
                 }
                 else {
-                    $result = calcdtdiff($date1,$date2);
+                    $result = calcdtdiff( $date1, $date2 );
                     if ( $result <= $maxdays ) { # If the message is not too old
                         push @temparray_1, "$date1|$threads[$i]";
                         $yymain .=
@@ -124,35 +141,36 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                         push @temparray_1, "$date1|$threads[$x]";
                     }
                     for (@temparray_1) {
-                        $_ =~ s/^.*?\|//xsm;
+                        s/^.*?[|]//xsm;
                     }
                     @temparray_1 =
                       reverse sort { lc($a) cmp lc $b } @temparray_1;
-                    $prnarray = join q{}, @temparray_1;
-                    fopen( BOARDFILE, ">$boardsdir/$boards[$j].txt", 1 )
-                      || fatal_error( 'cannot_open',
+                    my $prnarray = join q{}, @temparray_1;
+                    open my $BOARDFILE, '>',
+                      "$boardsdir/$boards[$j].txt"
+                      or fatal_error( 'cannot_open',
                         "$boardsdir/$boards[$j].txt", 1 );
-                    print {BOARDFILE} $prnarray
+                    print {$BOARDFILE} $prnarray
                       or croak "$croak{'print'} BOARDFILE";
-                    fclose(BOARDFILE);
+                    close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
 
                     # remove attachments of removed topics
-                    RemoveAttachments( \%attachfile );
+                    remove_attachments( \%attachfile );
 
                     $i -= $tempcount;
                     $INFO{'total_rem_count'} += $tempcount;
-                    RemoveOldThreadsText( $j, $i, $INFO{'total_rem_count'} );
+                    remove_old_threads_text( $j, $i, $INFO{'total_rem_count'} );
                 }
             }
             for (@temparray_1) {
-                $_ =~ s/^.*?\|//xsm;
+                s/^.*?[|]//xsm;
             }
             @temparray_1 = reverse sort { lc($a) cmp lc $b } @temparray_1;
-            $prnarray = join q{}, @temparray_1;
-            fopen( BOARDFILE, ">$boardsdir/$boards[$j].txt", 1 )
-              || fatal_error( 'cannot_open', "$boardsdir/$boards[$j].txt", 1 );
-            print {BOARDFILE} $prnarray or croak "$croak{'print'} BOARDFILE";
-            fclose(BOARDFILE);
+            my $prnarray = join q{}, @temparray_1;
+            open $BOARDFILE, '>', "$boardsdir/$boards[$j].txt"
+              or fatal_error( 'cannot_open', "$boardsdir/$boards[$j].txt", 1 );
+            print {$BOARDFILE} $prnarray or croak "$croak{'print'} BOARDFILE";
+            close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
 
             BoardCountTotals( $boards[$j] );
             $INFO{'total_rem_count'} += $tempcount;
@@ -161,7 +179,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
     }
 
     # remove attachments of removed topics
-    RemoveAttachments( \%attachfile );
+    remove_attachments( \%attachfile );
 
     automaintenance('off');
 
@@ -169,12 +187,12 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
 qq~<br /><b>$removemess_txt{'5'} $INFO{'total_rem_count'} $removemess_txt{'6'}.</b>~;
     $settings{'maxdays'} = $maxdays;
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm', %settings);
-    AdminTemplate();
+    save_settings_to( 'Settings.pm', %settings );
+    admintemplate();
     return;
 }
 
-sub RemoveOldThreadsText {
+sub remove_old_threads_text {
     my ( $j, $i, $total ) = @_;
 
     $INFO{'st'} =
@@ -182,10 +200,10 @@ sub RemoveOldThreadsText {
 
     my $query;
     for ( keys %FORM ) {
-        if ( $_ =~ /check$/xsm ) { $query .= qq~;$_=$FORM{$_}~; }
+        if (/check$/xsm) { $query .= qq~;$_=$FORM{$_}~; }
     }
     for ( keys %INFO ) {
-        if ( $_ =~ /check$/xsm ) { $query .= qq~;$_=$INFO{$_}~; }
+        if (/check$/xsm) { $query .= qq~;$_=$INFO{$_}~; }
     }
 
     $yymain =
@@ -218,7 +236,7 @@ qq~<b>$removemess_txt{'200'} <i>$max_process_time $admin_txt{'533'}</i>.<br />
             </script>
             ~;
 
-    AdminTemplate();
+    admintemplate();
     return;
 }
 

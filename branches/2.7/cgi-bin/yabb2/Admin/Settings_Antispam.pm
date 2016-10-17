@@ -12,31 +12,49 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
-no warnings qw(redefine);
-#no warnings qw(uninitialized);
+no warnings qw(redefine);    #save_settings sub
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
-$settings_antispampmver = 'YaBB 2.7.00 $Revision$';
-@settings_antispampmmods = ();
+our $settings_antispampmver  = 'YaBB 2.7.00 $Revision$';
+our @settings_antispampmmods = ();
+our $settings_antispampmmods = 0;
 if (@settings_antispampmmods) {
     $settings_antispampmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %settings_txt, %tsc_txt,
+    %domain_filter_txt );
+## paths ##
+our ($adminurl);
+## settings ##
+our (
+    @spamrules,          $min_reg_time,   $post_speed_count,
+    $minlinkpost,        $minlinksig,     $spd_detention_time,
+    $speedpostdetection, $min_post_speed, @adomains,
+    @bdomains,           $minlinkweb,     $timeout,
+    $honeypot,           $spamfruits,     $error_spd,
+    $spamr
+);
+## other ##
+our ( $action, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+load_language('Admin');
+
 # TSC
-$spamlist = join "\n", @spamrules;
+my $spamlist = join "\n", @spamrules;
 
 # Email Domain Filter
 
-$adomains = join "\n", @adomains;
-$bdomains = join "\n", @bdomains;
+my $adomains = join "\n", @adomains;
+my $bdomains = join "\n", @bdomains;
 
-if (!$min_reg_time) {$min_reg_time = 15 ;}
+if ( !$min_reg_time ) { $min_reg_time = 15; }
 
 # List of settings
 our @settings = (
@@ -97,7 +115,7 @@ qq~<input type="text" name="timeout" id="timeout" size="4" value="$timeout" />~,
 qq~<label for="min_reg_time">$admin_txt{'min_reg_time'}</label>~,
                 input_html =>
 qq~<input type="text" name="min_reg_time" id="min_reg_time" size="4" value="$min_reg_time" />~,
-                name => 'min_reg_time',
+                name     => 'min_reg_time',
                 validate => 'number',
             },
             { header => $settings_txt{'speedban'}, },
@@ -187,7 +205,7 @@ qq~<textarea cols="60" rows="35" name="bdomains" id="bdomains" style="width: 95%
 );
 
 # Routine to save them
-sub SaveSettings {
+sub save_settings {
     my %settings = @_;
 
     # TSC
@@ -198,10 +216,10 @@ sub SaveSettings {
 
     # email domain filter
 
-    my $adomains = $settings{'adomains'};
-    my $bdomains = $settings{'bdomains'};
+    my $adomainsx = $settings{'adomains'};
+    my $bdomainsx = $settings{'bdomains'};
     local *cleandomain = sub {
-        my($x) = @_;
+        my ($x) = @_;
         $x =~ s/\n/,/gxsm;
         $x =~ s/\s+//gxsm;
         $x =~ s/(^,+|,+$)//gxsm;
@@ -209,20 +227,20 @@ sub SaveSettings {
         $x =~ s/\@/\\@/gxsm;
         return $x;
     };
-    if ( $adomains ) {
-        $adomains = cleandomain($adomains);
-        @adomains             = split /,/xsm, $adomains;
-        $adomains = join q~', '~, @adomains;
-        $settings{'adomains'} = qq~'$adomains'~;
+    if ($adomainsx) {
+        $adomainsx            = cleandomain($adomainsx);
+        @adomains             = split /,/xsm, $adomainsx;
+        $adomainsx            = join q~', '~, @adomains;
+        $settings{'adomains'} = qq~'$adomainsx'~;
     }
-    if ( $bdomains ) {
-        $bdomains = cleandomain($bdomains);
-        @bdomains             = split /,/xsm, $bdomains;
-        $bdomains = join q~', '~, @bdomains;
-        $settings{'bdomains'} = qq~'$bdomains'~;
+    if ($bdomainsx) {
+        $bdomainsx            = cleandomain($bdomainsx);
+        @bdomains             = split /,/xsm, $bdomainsx;
+        $bdomainsx            = join q~', '~, @bdomains;
+        $settings{'bdomains'} = qq~'$bdomainsx'~;
     }
 
-    SaveSettingsTo( 'Settings.pm', %settings );
+    save_settings_to( 'Settings.pm', %settings );
     return;
 }
 

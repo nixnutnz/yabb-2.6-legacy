@@ -12,59 +12,81 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-#use warnings;
-#no warnings qw(uninitialized once);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$errorlogpmver = 'YaBB 2.7.00 $Revision$';
-@errorlogpmmods = ();
+our $errorlogpmver  = 'YaBB 2.7.00 $Revision$';
+our @errorlogpmmods = ();
+our $errorlogpmmods = 0;
 if (@errorlogpmmods) {
     $errorlogpmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %admin_img, %errorlog );
+## paths ##
+our ( $adminurl, $vardir, $yyhtml_root, $boardurl, );
+## settings ##
+our ( $yymycharset, $use_guardian, $use_htaccess, $ip_lookup );
+## other ##
+our (
+    $action,      $yymain,      $yytitle, $yysetlocation,
+    $action_area, %INFO,        %FORM,    $date,
+    $scripturl,   $yyext,       $yyaext,  $yyexec,
+    %useraccount, %userprofile, $OS_ERROR,
+);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub ErrorLog {
+load_language('Admin');
+
+sub error_log {
     is_admin_or_gmod();
-    $yytitle    = "$errorlog{'1'}";
-    $errorcount = 0;
-    fopen( ERRORFILE, "<$vardir/errorlog.log" );
-    @errors = <ERRORFILE>;
-    fclose(ERRORFILE);
-    $errorcount = @errors;
-    $date2      = $date;
-    $mytest = 0;
+    $yytitle = $errorlog{'1'};
+    my (@errors);
+    if ( -e "$vardir/errorlog.log" ) {
+        open my $ERRORFILE, '<', "$vardir/errorlog.log"
+          or croak "$croak{'open'} ERRORFILE";
+        @errors = <$ERRORFILE>;
+        close $ERRORFILE or croak "$croak{'close'} ERRORFILE";
+    }
+    my $errorcount = @errors;
+    my $date2      = $date;
+    my $date1      = 0;
+    my $mytest     = 0;
+    my (@tmplist);
+    my $date_ref = 0;
+
     for my $i ( 0 .. $#errors ) {
-        my @tmpArray = split /[|]/xsm, $errors[$i];
-        if (   $tmpArray[0] eq q{}
-            || $tmpArray[0] =~ /\D/igxsm
-            || $tmpArray[1] eq q{}
-            || $tmpArray[1] =~ /\D/igxsm )
+        my @tmp_array = split /[|]/xsm, $errors[$i];
+        if (   $tmp_array[0] eq q{}
+            || $tmp_array[0] =~ /\D/igxsm
+            || $tmp_array[1] eq q{}
+            || $tmp_array[1] =~ /\D/igxsm )
         {
             next;
         }
         else {
-            $date1 = $tmpArray[1];
-            $date_ref = calcdtdiff($date1,$date2);
+            $date1            = $tmp_array[1];
+            $date_ref         = calcdtdiff( $date1, $date2 );
             $tmplist[$mytest] = qq~$date_ref|$errors[$i]~;
             $mytest++;
         }
     }
 
-    $sortmode  = $INFO{'sort'};
-    $sortorder = $INFO{'order'};
+    my $sortmode  = $INFO{'sort'}  || 0;
+    my $sortorder = $INFO{'order'} || 0;
     if ( !$sortmode ) {
         $sortmode = 'time';
     }
     if ( !$sortorder ) {
         $sortorder = 'reverse';
     }
-    my @sortlist = ();
-    my $field    = '0';    # 0-based field defaults to the datecmp value
-    my $type     = '0';    # 0=numeric; 1=text
-    my $case     = '1';    # 0=case sensitive; 1=ignore case
-    my $dir      = '0';    # 0=increasing; 1=decreasing
+    my $field = '0';    # 0-based field defaults to the datecmp value
+    my $type  = '0';    # 0=numeric; 1=text
+    my $case  = '1';    # 0=case sensitive; 1=ignore case
+    my $dir   = '0';    # 0=increasing; 1=decreasing
 
     if ( $sortmode eq 'time' ) {
         $field = '1';
@@ -84,11 +106,14 @@ sub ErrorLog {
         $case  = '0';
         $dir   = '0';
     }
-    @sortlist =
+    my @sortlist =
       map { $_->[0] }
-      sort { YaBBsort( $field, $type, $case, $dir ) }
+      sort { yabb_sort( $field, $type, $case, $dir ) }
       map { [ $_, split /[|]/xsm ] } @tmplist;
 
+    my $order_time  = q{};
+    my $order_users = q{};
+    my $order_ip    = q{};
     if ( $INFO{'order'} && $INFO{'order'} eq 'reverse' ) {
         @sortlist = reverse @sortlist;
     }
@@ -104,16 +129,17 @@ sub ErrorLog {
         }
     }
 
-    $INFO{'sort'} ||= q{};
+    $INFO{'sort'}  ||= q{};
     $INFO{'order'} ||= q{};
-    if ( $sortmode ) {
+    if ($sortmode) {
         $sortmode = ';sort=' . $INFO{'sort'};
     }
-    if ( $sortorder ) {
+    if ($sortorder) {
         $sortorder = ';order=' . $INFO{'order'};
     }
 
-    $errorlog_error = q{};
+    my $errorlog_error = q{};
+    my $err            = q{};
     if ( $#errors > $#tmplist ) {
         $err = $#errors - $#tmplist;
         $errorlog_error =
@@ -123,9 +149,8 @@ qq~<br /><span class="important"><b>$errorlog{'27a'} $err $errorlog{'27b'}</b></
 qq~<br /><span class="important"><b>$errorlog{'27c'} $err $errorlog{'27d'}</b></span>~;
         }
     }
-    $startmode ||= q{};
     $order_users ||= q{};
-    $order_ip ||= q{};
+    $order_ip    ||= q{};
     $yymain .= qq~\
 <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -166,29 +191,32 @@ function uncheckAll() {
             </tr><tr>
                 <td class="catbg center"><b>$errorlog{'21'}</b></td>
                 <td class="catbg center">
-                    <a href="$adminurl?action=errorlog$startmode;sort=time$order_time"><b>$errorlog{'5'}</b></a>
+                    <a href="$adminurl?action=errorlog;sort=time$order_time"><b>$errorlog{'5'}</b></a>
                 </td>
                 <td class="catbg center">
-                    <a href="$adminurl?action=errorlog$startmode;sort=users$order_users"><b>$errorlog{'11'}</b></a> ( <a href="$adminurl?action=errorlog$startmode;sort=ip$order_ip"><b>$errorlog{'6'}</b></a> )
+                    <a href="$adminurl?action=errorlog;sort=users$order_users"><b>$errorlog{'11'}</b></a> ( <a href="$adminurl?action=errorlog;sort=ip$order_ip"><b>$errorlog{'6'}</b></a> )
                 </td>
                 <td class="catbg center"><b>$errorlog{'7'} / $errorlog{'8'}</b></td>
                 <td class="catbg center"><b>$errorlog{'13'}</b></td>
             </tr>~;
-    $numshown  = 0;
-    $actualnum = 0;
-    $bb = 0;
+    my $numshown       = 0;
+    my $actualnum      = 0;
+    my $bb             = 0;
+    my $print_errorlog = q{};
+    my (%userlist);
+
     while ( $numshown <= $errorcount ) {
         my ( $tmp_user, $username, $numb, $ids, $all ) = q{};
         $numshown++;
         $sortlist[$bb] ||= q{};
-        $sortlist[$bb] =~ s/<br \/>/\[br \/\]/gsm;
+        $sortlist[$bb] =~ s/<br\s \/>/\[br \/\]/gxsm;
         $sortlist[$bb] =~ s/<b>/\[b\]/gxsm;
         $sortlist[$bb] =~ s/<\/b>/\[\/b\]/gxsm;
         $sortlist[$bb] =~ s/</&lt;/gxsm;
         $sortlist[$bb] =~ s/>/&gt;/gxsm;
         $sortlist[$bb] =~ s/\[b\]/<b>/gxsm;
         $sortlist[$bb] =~ s/\[\/b\]/<\/b>/gxsm;
-        $sortlist[$bb] =~ s/\[br \/\]/<br \/>/gsm;
+        $sortlist[$bb] =~ s/\[br\s \/\]/<br \/>/gxsm;
         $sortlist[$bb] =~ s/\$/&dollar;/gxsm;
         $sortlist[$bb] =~ s/\@/&commat;/gxsm;
         $sortlist[$bb] =~ s/\%/&percnt;/gxsm;
@@ -199,7 +227,7 @@ function uncheckAll() {
             $tmp_password
         ) = split /[|]/xsm, $sortlist[$bb];
         if ( !$tmp_id ) { next; }
-        FormatUserName($tmp_username);
+        format_username($tmp_username);
 
         if ( !$tmp_username ) {
             $tmp_user = 'Guest';
@@ -207,38 +235,41 @@ function uncheckAll() {
         else {
             $tmp_user = $tmp_username;
         }
-        $userlist{$tmp_user} = $userlist{$tmp_user} + 1;
+        $userlist{$tmp_user}++;
         $tmp_date = timeformat($tmp_date);
-        LoadUser($tmp_user);
-        my $ipBlock = q{};
-        my $lookupIP = qq{$tmp_userip};
-        my $ipBan = q{};
+        load_user($tmp_user);
+        my $ip_block  = q{};
+        my $lookup_ip = qq{$tmp_userip};
+        my $ip_ban    = q{};
         if ( $tmp_userip ne '127.0.0.1' ) {
-            $ipBlock =
+            $ip_block =
               ( $use_guardian && $use_htaccess )
               ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~
               : qq~<br /><a href="$adminurl?action=blockip;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock2'}</a>~;
 
-            $lookupIP =
+            $lookup_ip =
               ($ip_lookup)
-            ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
-            : qq~$tmp_userip~;
-            $ipBan =
+              ? qq~<a href="$scripturl?action=iplookup;ip=$tmp_userip">$tmp_userip</a>~
+              : qq~$tmp_userip~;
+            $ip_ban =
 qq~ - <a href="$adminurl?action=ipban_err;ban=$tmp_userip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$tmp_userip');">$admin_txt{'725f'}</a>~;
-            }
-            if ( $tmp_user eq "$useraccount{$tmp_user}" ) {
-                if ( $userprofile{$tmp_user}->[1] ) {
+        }
+        if (   $tmp_user
+            && $useraccount{$tmp_user}
+            && $tmp_user eq $useraccount{$tmp_user} )
+        {
+            if ( $userprofile{$tmp_user}->[1] ) {
                 $username =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" target="_blank">$userprofile{$tmp_user}->[1]</a>~;
-                }
-                else {
-                    $username .= qq~$useraccount{$tmp_user}~;
-                }
-            $username .= qq~<br />$lookupIP$ipBan$ipBlock~;
             }
             else {
-                $username = qq~$tmp_user<br />$lookupIP$ipBan$ipBlock~;
+                $username .= $useraccount{$tmp_user};
             }
+            $username .= qq~<br />$lookup_ip$ip_ban$ip_block~;
+        }
+        else {
+            $username = qq~$tmp_user<br />$lookup_ip$ip_ban$ip_block~;
+        }
         if ( $tmp_topic_number eq q{} ) {
             $numb = "&amp;action=$tmp_action";
         }
@@ -265,7 +296,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$tmp_user}" targ
         }
 
         $bb++;
-        $addel =
+        my $addel =
 qq~                <td class="windowbg center"><input type="checkbox" name="error$tmp_id" value="$tmp_id" class="windowbg" style="border: 0;" /></td>~;
         $actualnum++;
         $print_errorlog .= qq~<tr>
@@ -286,13 +317,14 @@ qq~                <td class="windowbg center"><input type="checkbox" name="erro
     $yymain .= qq~
 $print_errorlog
     ~;
-
-    @userlist = reverse sort { $userlist{$a} <=> $userlist{$b} } keys %userlist;
+    my $errmember = q{};
+    my @userlist =
+      reverse sort { $userlist{$a} <=> $userlist{$b} } keys %userlist;
     foreach my $member (@userlist) {
         $errmember .= qq~$member ($userlist{$member}), ~;
     }
     $errmember ||= q{};
-    $errmember =~ s/, \Z//sm;
+    $errmember =~ s/,\s\Z//xsm;
 
     $yymain .= qq~          <tr>
                 <td class="windowbg2" colspan="5"><div class="pad-more"><b>$errorlog{'26'}</b> $errmember</div></td>
@@ -336,30 +368,30 @@ q~<input type="checkbox" name="checkall" id="checkall" class="windowbg" style="b
 </form>
 ~;
     $action_area = 'errorlog';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub CleanErrorLog {
+sub clean_error_log {
     is_admin_or_gmod();
     if ( -e ("$vardir/errorlog.log") ) {
-        unlink "$vardir/errorlog.log" or croak qq~$OS_ERROR~;
+        unlink "$vardir/errorlog.log" or croak $OS_ERROR;
     }
-    $yySetLocation = qq~$adminurl?action=errorlog~;
+    $yysetlocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;
 }
 
-sub DeleteError {
+sub delete_error {
     is_admin_or_gmod();
     my ( $sortmode, $sortorder );
     chomp $FORM{'button'};
     if ( $FORM{'button'} ne '4' ) { fatal_error('no_access'); }
-    fopen( FILE, "$vardir/errorlog.log" );
-    @errors = <FILE>;
-    fclose(FILE);
+    open my $FILE, '<', "$vardir/errorlog.log" or croak "$croak{'open'} FILE";
+    my @errors = <$FILE>;
+    close $FILE or croak "$croak{'close'} FILE";
     unlink "$vardir/errorlog.log";
-    fopen( FILE, ">>$vardir/errorlog.log" );
+    open $FILE, '>>', "$vardir/errorlog.log" or croak "$croak{'open'} FILE";
 
     foreach my $line (@errors) {
         chomp $line;
@@ -368,44 +400,47 @@ sub DeleteError {
             $tmp_error, $tmp_board, $tmp_action
         ) = split /[|]/xsm, $line;
         if ( !exists $FORM{"error$tmp_id"} ) {
-            print {FILE} $line . "\n" or croak "$croak{'print'} FILE";
+            print {$FILE} $line . "\n" or croak "$croak{'print'} FILE";
         }
     }
-    fclose(FILE);
-    $yySetLocation = qq~$adminurl?action=errorlog~;
+    close $FILE or croak "$croak{'close'} FILE";
+    $yysetlocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;
 }
 
 # Moved here from Subs.pm since it was only used here
-sub YaBBsort {
+sub yabb_sort {
     my $field = ( shift || 0 ) + 1;    # 0-based field
     my $type = shift || 0;             # 0=numeric; 1=text
     my $case = shift || 0;             # 0=case sensitive; 1=ignore case
     my $dir  = shift || 0;             # 0=increasing; 1=decreasing
-    if ( $type == 0 ) {
-        if ( $dir == 0 ) {
-            $a->[$field] <=> $b->[$field];
-        }
-        else {
-            $b->[$field] <=> $a->[$field];
-        }
-    }
-    else {
-        if ( $case == 1 ) {
+    {
+        no warnings;
+        if ( $type == 0 ) {
             if ( $dir == 0 ) {
-                uc $a->[$field] cmp uc $b->[$field];
+                $a->[$field] <=> $b->[$field];
             }
             else {
-                uc $b->[$field] cmp uc $a->[$field];
+                $b->[$field] <=> $a->[$field];
             }
         }
         else {
-            if ( $dir == 0 ) {
-                uc $a->[$field] cmp uc $b->[$field];
+            if ( $case == 1 ) {
+                if ( $dir == 0 ) {
+                    uc $a->[$field] cmp uc $b->[$field];
+                }
+                else {
+                    uc $b->[$field] cmp uc $a->[$field];
+                }
             }
             else {
-                uc $b->[$field] cmp uc $a->[$field];
+                if ( $dir == 0 ) {
+                    uc $a->[$field] cmp uc $b->[$field];
+                }
+                else {
+                    uc $b->[$field] cmp uc $a->[$field];
+                }
             }
         }
     }
@@ -413,61 +448,61 @@ sub YaBBsort {
 }
 
 sub er_update_htaccess {
-    my ( $action, @values ) = @_;
-    my ( $htheader, $htfooter, @denies, @htout );
-    if ( !$action ) { return 0; }
-    fopen( HTA, '.htaccess' );
-    @htlines = <HTA>;
-    fclose(HTA);
+    my ( $act, @values ) = @_;
+    my ( @denies, @htout );
+    if ( !$act ) { return 0; }
+    open my $HTA, '<', '.htaccess' or croak "$croak{'open'} HTA";
+    my @htlines = <$HTA>;
+    close $HTA or croak "$croak{'close'} HTA";
 
 # header to determine only who has access to the main script, not the admin script
-    $htheader = q~<Files YaBB*>~;
-    $htfooter = q~</Files>~;
-    $start    = 0;
-    foreach (@htlines) {
-        chomp $_;
-        if ( $_ eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $_ !~ m{#}xsm && $_ ne q{} ) {
-            push @htout, "$_\n";
+    my $htheader = q~<Files YaBB*>~;
+    my $htfooter = q~</Files>~;
+    my $start    = 0;
+    foreach my $ln (@htlines) {
+        chomp $ln;
+        if ( $ln eq $htheader ) { $start = 1; }
+        if ( $start == 0 && $ln !~ m{#}xsm && $ln ne q{} ) {
+            push @htout, "$ln\n";
         }
-        if ( $_ eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $_ =~ s/Deny from //gsm ) {
-            push @denies, $_;
+        if ( $ln eq $htfooter ) { $start = 0; }
+        if ( $start == 1 && $ln =~ s/Deny from //gsm ) {
+            push @denies, $ln;
         }
     }
-    if ( $action eq 'load' ) {
+    if ( $act eq 'load' ) {
         return @denies;
     }
-    elsif ( $action eq 'save' ) {
+    elsif ( $act eq 'save' ) {
         my $prhta =
           '# Last modified by YaBB: ' . ctbtime( $date, 1 ) . " #\n\n";
         $prhta .= join q{}, @htout;
         if (@values) {
             $prhta .= "\n$htheader\n";
-            for (@values) {
-                if ( $_ ) {
-                    chomp $_;
-                    $prhta .= "Deny from $_\n";
+            for my $ln (@values) {
+                if ($ln) {
+                    chomp $ln;
+                    $prhta .= "Deny from $ln\n";
                 }
             }
             $prhta .= "$htfooter\n";
         }
-        fopen( HTA, '>.htaccess' );
-        print {HTA} $prhta or croak "$croak{'print'} HTA";
-        fclose(HTA);
+        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
+        print {$HTA} $prhta or croak "$croak{'print'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
     }
-    elsif ( $action eq 'add' ) {
+    elsif ( $act eq 'add' ) {
         push @denies, @values;
-    er_update_htaccess( 'save', @denies );
+        er_update_htaccess( 'save', @denies );
     }
     return;
 }
 
 sub blockip {
     is_admin_or_gmod();
-    my $blockIP = $INFO{'ip'};
-    er_update_htaccess( 'add', $blockIP );
-    $yySetLocation = qq~$adminurl?action=errorlog~;
+    my $block_ip = $INFO{'ip'};
+    er_update_htaccess( 'add', $block_ip );
+    $yysetlocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;
 }

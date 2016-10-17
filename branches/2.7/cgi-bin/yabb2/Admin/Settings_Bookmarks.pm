@@ -1,5 +1,5 @@
 ###############################################################################
-# BookmarkSettings.pm                                                         #
+# Settings_Bookmarks.pm                                                       #
 # $Date: 06.01.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
@@ -12,81 +12,113 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$settings_bookmarkspmver = 'YaBB 2.7.00 $Revision$';
-@settings_bookmarkspmmods = ();
+our $settings_bookmarkspmver  = 'YaBB 2.7.00 $Revision$';
+our @settings_bookmarkspmmods = ();
+our $settings_bookmarkspmmods = 0;
 if (@settings_bookmarkspmmods) {
     $settings_bookmarkspmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %admin_img, %bookmark_txt );
+## paths ##
+our ($adminurl);
+## settings ##
+our (
+    $en_bookmarks, $bm_boards, $show_bookmarks,
+    %settings,     %bookmarks, $bm_subcut,
+);
+## template ##
+our ( $yyhtml_root, $htmldir );
+## other ##
+our ( $action, $action_area, $uid, $yymain, $yytitle, $yysetlocation, %FORM,
+    $date );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('Bookmarks');
+load_language('Admin');
+load_language('Bookmarks');
 
-sub Bookmarks {
+sub book_marks {
     is_admin_or_gmod();
 
-    $chk_bookmarks = q{};
+    my $chk_bookmarks = q{};
     if ($en_bookmarks) { $chk_bookmarks = q~ checked="checked"~; }
+    our ( %board, @categoryorder, %subboard, %cat, %catinfo );
     get_forum_master();
-    my $indent = -2;
+    my ($sel_board);
+    my $board_list = q{};
+    my $indent     = -2;
 
     local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
-        foreach my $board (@x) {
-            my $dash = q{-};
-            if ( $indent > 2 ) { $dash = q{-}; }
+        {
+            no strict qw(refs);
+            foreach my $board (@x) {
+                my $dash = q{-};
+                if ( $indent > 2 ) { $dash = q{-}; }
 
-            ( $boardname, $boardperms, $boardview ) =
-              split /[|]/xsm, $board{$board};
-            if ( ${ $uid . $board }{'rbin'}
-                || $boardname =~ m/http:\/\//xsm )
-            {
-                next;
+                my ( $boardname, $boardperms, $boardview ) =
+                  split /[|]/xsm, $board{$board};
+
+                if (   ${ $uid . $board }{'rbin'}
+                    || ${ $uid . $board }{'ann'}
+                    || $boardname =~ m/http:\/\//xsm )
+                {
+                    next;
+                }
+                to_chars($boardname);
+                $sel_board = q{};
+                foreach ( split /,\s/xsm, $bm_boards ) {
+                    if ( $_ eq $board ) {
+                        $sel_board = q~ selected="selected"~;
+                    }
+                }
+                $board_list .=
+                    qq~<option value="$board"$sel_board>~
+                  . ( '&nbsp;' x $indent )
+                  . ( $dash x ( $indent / 2 ) )
+                  . qq~$boardname</option>\n~;
+                if ( $subboard{$board} ) {
+                    get_subboards( split /[|]/xsm, $subboard{$board} );
+                }
             }
-            ToChars($boardname);
-            $sel_board = q{};
-            foreach ( split /,\s/xsm, $bm_boards ) {
-                if ( $_ eq $board ) { $sel_board = q~ selected="selected"~; }
-            }
-            $board_list .=
-                qq~<option value="$board"$sel_board>~
-              . ( '&nbsp;' x $indent )
-              . ( $dash x ( $indent / 2 ) )
-              . qq~$boardname</option>\n~;
-            if ( $subboard{$board} ) {
-                get_subboards( split /[|]/xsm, $subboard{$board} );
-            }
+            $indent -= 2;
         }
-        $indent -= 2;
     };
 
     foreach my $catid (@categoryorder) {
-        @bdlist = split /,/xsm, $cat{$catid};
-        ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
-        ToChars($catname);
+        my @bdlist = split /,/xsm, $cat{$catid};
+        my ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
+        to_chars($catname);
         $board_list .= qq~<option disabled="disabled">$catname</option>\n~;
-        foreach my $board (@bdlist) {
-            ( $boardname, undef, undef ) = split /[|]/xsm, $board{$board};
-            if (   ${ $uid . $board }{'ann'}
-                || ${ $uid . $board }{'rbin'}
-                || $boardname =~ m/http:\/\//xsm )
-            {
-                next;
+        {
+            no strict qw(refs);
+            foreach my $board (@bdlist) {
+                my ( $boardname, undef, undef ) = split /[|]/xsm,
+                  $board{$board};
+
+                if (   ${ $uid . $board }{'ann'}
+                    || ${ $uid . $board }{'rbin'}
+                    || $boardname =~ m/http:\/\//xsm )
+                {
+                    next;
+                }
+
+                to_chars($boardname);
+                $sel_board = q{};
             }
-            ToChars($boardname);
-            $sel_board = q{};
         }
         $indent = -2;
         get_subboards(@bdlist);
     }
-
-    $total_bookmarks = @bookmarks || 0;
+    my @bookmarks = keys %bookmarks;
+    my $total_bookmarks = @bookmarks || 0;
 
     if (@bookmarks) {
         $show_bookmarks = qq~
@@ -97,9 +129,14 @@ sub Bookmarks {
         <td>$admin_txt{'edit'}</td>
         <td>$admin_txt{'delete'}</td>
     </tr>~;
-        foreach my $bookmark ( sort { $a cmp $b } @bookmarks ) {
-            ( $bm_order, $bm_title, $bm_image, $bm_url, $bm_id ) =
-              split /[|]/xsm, $bookmark;
+        foreach my $bookmark (
+            sort { lc ${ $bookmarks{$a} }[1] cmp lc ${ $bookmarks{$b} }[1] }
+            keys %bookmarks
+          )
+        {
+            my $bm_id = $bookmark;
+            my ( $bm_order, $bm_title, $bm_image, $bm_url ) =
+              @{ $bookmarks{$bookmark} };
             $show_bookmarks .= qq~<tr class="windowbg2">
         <td><img src="$yyhtml_root/Bookmarks/$bm_image" alt="$bm_title" title="$bm_title" /></td>
         <td>$bm_title</td>
@@ -214,11 +251,11 @@ sub Bookmarks {
 
     $yytitle     = $admintxt{'bookmarks1'};
     $action_area = 'bookmarks';
-    AdminTemplate();
+    admintemplate();
     exit;
 }
 
-sub Bookmarks2 {
+sub book_marks2 {
 
     is_admin_or_gmod();
 
@@ -227,23 +264,22 @@ sub Bookmarks2 {
     $bm_boards    = $FORM{'bm_boards'};
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
     if ( $action eq 'bookmarks2' ) {
-        $yySetLocation = qq~$adminurl?action=bookmarks~;
+        $yysetlocation = qq~$adminurl?action=bookmarks~;
         redirectexit();
     }
     return;
 }
 
-sub AddBookmark {
-
+sub add_bookmark {
     is_admin_or_gmod();
 
-    $bm_order = $FORM{'bm_order'};
-    $bm_title = $FORM{'bm_title'};
-    $bm_image = $FORM{'bm_image'};
-    $bm_url   = $FORM{'bm_url'};
+    my $bm_order = $FORM{'bm_order'};
+    my $bm_title = $FORM{'bm_title'};
+    my $bm_image = $FORM{'bm_image'};
+    my $bm_url   = $FORM{'bm_url'};
 
     if ( !$FORM{'bm_title'} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'02'}" );
@@ -251,69 +287,56 @@ sub AddBookmark {
     if ( !$FORM{'bm_image'} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'01'}" );
     }
-    if ( !$FORM{'bm_url'} ) { fatal_error( 'no_value', "$bookmark_txt{'14'}" ); }
+    if ( !$FORM{'bm_url'} ) {
+        fatal_error( 'no_value', "$bookmark_txt{'14'}" );
+    }
     if ( !$FORM{'bm_order'} ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
     }
 
     $bm_image =
-      UploadFile( 'bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0' );
-
-    my $newbook = qq~$bm_order|$bm_title|$bm_image|$bm_url|$date~;
-    push @bookmarks, $newbook;
-    $settings{'bookmarks'} = q{'} . join( q{', '}, @bookmarks ) . q{'};
+      upload_file( 'bm_image', 'Bookmarks', 'png/jpg/jpeg/gif', '250', '0' );
+    my $bm_id = time;
+    $bookmarks{$bm_id} = [ $bm_order, $bm_title, $bm_image, $bm_url ];
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm', %settings);
+    save_settings_to( 'Settings.pm', %settings );
 
     if ( $action eq 'bookmarks_add' ) {
-        $yySetLocation = qq~$adminurl?action=bookmarks~;
+        $yysetlocation = qq~$adminurl?action=bookmarks~;
         redirectexit();
     }
     return;
 }
 
-sub DeleteBookmark {
+sub delete_bookmark {
     is_admin_or_gmod();
-
-    my @newbook = ();
-    for my $bookmark (@bookmarks) {
-        chomp $bookmark;
-        if ( $bookmark =~ /$FORM{'bookmark_id'}/xsm ) {
-            $bm_delete = $bookmark;
-        }
-        else { push @newbook, $bookmark;}
-    }
-    ( undef, undef, $bm_image, undef, undef ) = split /[|]/xsm, $bm_delete;
-
+    my $del_id   = $FORM{'bookmark_id'};
+    my $bm_image = ${ $bookmarks{$del_id} }[2];
+    delete $bookmarks{$del_id};
     unlink "$htmldir/Bookmarks/$bm_image";
 
-    $settings{'bookmarks'} = q{'} . join( q{', '}, @newbook ) . q{'};
-
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm', %settings);
+    save_settings_to('Settings.pm');
     if ( $action eq 'bookmarks_delete' ) {
-        $yySetLocation = qq~$adminurl?action=bookmarks~;
+        $yysetlocation = qq~$adminurl?action=bookmarks~;
         redirectexit();
     }
     return;
 }
 
-sub EditBookmark {
+sub edit_bookmark {
     is_admin_or_gmod();
-
-    $id = $FORM{'bookmark_id'};
-    my $bm_edit = {};
-
-    foreach my $bookmark (@bookmarks) {
-        chomp $bookmark;
-        if ( $bookmark =~ /$id/xsm ) {
-            $bm_edit = $bookmark;
+    my $bm_id   = $FORM{'bookmark_id'};
+    my @bm_edit = ();
+    my (@bookmarks);
+    foreach my $bookmark ( keys %bookmarks ) {
+        if ( $bookmark =~ /$bm_id/xsm ) {
+            @bm_edit = @{ $bookmarks{$bookmark} };
             last;
         }
     }
-    ( $bm_order, $bm_title, $bm_image, $bm_url, $bm_id ) = split /[|]/xsm,
-      $bm_edit;
+    my ( $bm_order, $bm_title, $bm_image, $bm_url ) = @bm_edit;
 
     $yymain .= qq~
 <form action="$adminurl?action=bookmarks_edit2" method="post" enctype="multipart/form-data">
@@ -356,19 +379,19 @@ sub EditBookmark {
 </form>~;
 
     $yytitle = $admintxt{'bookmarks1'};
-    AdminTemplate();
+    admintemplate();
     exit;
 }
 
-sub EditBookmark2 {
+sub edit_bookmark2 {
     is_admin_or_gmod();
 
-    $bm_order = $FORM{'bm_order'};
-    $bm_title = $FORM{'bm_title'};
-    $bm_image = $FORM{'bm_image'};
-    $bm_url   = $FORM{'bm_url'};
-    $bm_id    = $FORM{'bm_id'};
-    $bm_cur_image = $FORM{'bm_cur_image'};
+    my $bm_order     = $FORM{'bm_order'};
+    my $bm_title     = $FORM{'bm_title'};
+    my $bm_image     = $FORM{'bm_image'};
+    my $bm_url       = $FORM{'bm_url'};
+    my $bm_id        = $FORM{'bm_id'};
+    my $bm_cur_image = $FORM{'bm_cur_image'};
 
     if ( !$bm_title ) {
         fatal_error( 'invalid_value', "$bookmark_txt{'02'}" );
@@ -380,25 +403,23 @@ sub EditBookmark2 {
         fatal_error( 'invalid_value', "$bookmark_txt{'03'}" );
     }
 
-    if ( $bm_image ) {
+    if ($bm_image) {
         $bm_image =
-          UploadFile( 'bm_image', 'Bookmarks', 'png jpg jpeg gif', '250', '0' );
+          upload_file( 'bm_image', 'Bookmarks', 'png/jpg/jpeg/gif', '250',
+            '0' );
         unlink "$htmldir/Bookmarks/$bm_cur_image";
     }
     else {
         $bm_image = $bm_cur_image;
     }
 
-    @bookmark = grep { !/$bm_id/xsm } @bookmarks;
-    push @bookmark, qq~$bm_order|$bm_title|$bm_image|$bm_url|$bm_id~;
-
-    $settings{'bookmarks'} = q{'} . join( q{', '}, @bookmark ) . q{'};
+    $bookmarks{$bm_id} = [ $bm_order, $bm_title, $bm_image, $bm_url ];
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm', %settings);
+    save_settings_to('Settings.pm');
 
     if ( $action eq 'bookmarks_edit2' ) {
-        $yySetLocation = qq~$adminurl?action=bookmarks~;
+        $yysetlocation = qq~$adminurl?action=bookmarks~;
         redirectexit();
     }
     return;

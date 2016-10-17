@@ -12,33 +12,48 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
+use strict;
 use warnings;
-no warnings qw(once);
 our $VERSION = '2.7.00';
 
-our $smiliespmver = 'YaBB 2.7.00 $Revision$';
-@smiliespmmods = ();
+our $smiliespmver  = 'YaBB 2.7.00 $Revision$';
+our @smiliespmmods = ();
+our $smiliespmmods = 0;
 if (@smiliespmmods) {
     $smiliespmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %admin_img, %smiltxt, %asmtxt, );
+## paths ##
+our ( $adminurl, $yyhtml_root, $scripturl, $htmldir, $imagesdir, );
+## settings ##
+our (
+    $yymycharset, $showinbox, $removenormalsmilies, $smiliestyle,
+    $showadded,   $showsmdir, $detachblock,         $winwidth,
+    $winheight,   $popback,   $poptext,             @smilieorder,
+    %addedsmilies,
+);
+## other ##
+our ( $action, $yymain, $yytitle, $yysetlocation, %FORM, %INFO, $action_area );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-$admin_images = "$yyhtml_root/Templates/Admin/default";
+load_language('Admin');
 
-sub SmiliePanel {
+my $adminimages = "$yyhtml_root/Templates/Admin/default";
+
+sub smilie_panel {
     is_admin_or_gmod();
 
-    opendir DIR, "$htmldir/Smilies";
-    @contents = readdir DIR;
+    opendir DIR, "$htmldir/Smilies/";
+    my @contents = readdir DIR;
     closedir DIR;
-    $smilieslist = q{};
+    my $smilieslist = q{};
 
     foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
-        my ( $name, $extension ) = split /\./xsm, $line;
+        my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
-            if ( $line !~ /banner/ism ) {
+            if ( $line !~ /banner/ixsm ) {
                 $smilieslist .= qq~<tr>
     <td class="windowbg2 center">
         <input type="radio" name="showinbox" value="$name"~
@@ -52,6 +67,7 @@ sub SmiliePanel {
             }
         }
     }
+    my $hshcd = '\x23';
     $yymain .= qq~
 <form action="$adminurl?action=addsmilies" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
@@ -116,10 +132,10 @@ sub SmiliePanel {
         <td class="windowbg2" colspan="4"><label for="popback">$smiltxt{'20'}</label></td>
         <td class="windowbg2" colspan="4">
         #<input type="text" size="10" name="popback" id="popback" value="$popback" onkeyup="previewColor(this.value);" />
-            <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <span id="popback_color" style="background-color: #$popback;">&nbsp; &nbsp; &nbsp;</span> <img src="$adminimages/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor(color) {
-                color = color.replace(/\x23/, '');
+                color = color.replace(/$hshcd/, '');
                 document.getElementById('popback_color').style.background = '#' + color;
                 document.getElementsByName("popback")[0].value = color;
             }
@@ -129,10 +145,10 @@ sub SmiliePanel {
         <td class="windowbg2" colspan="4"><label for="poptext">$smiltxt{'19'}</label></td>
         <td class="windowbg2" colspan="4">
         #<input type="text" size="10" name="poptext" id="poptext" value="$poptext" onkeyup="previewColor_0(this.value);"/>
-            <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <span id="poptext_color" style="background-color: #$poptext;">&nbsp; &nbsp; &nbsp;</span> <img src="$adminimages/palette1.gif" style="cursor: pointer; vertical-align: top;" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor_0(color) {
-                color = color.replace(/\x23/, '');
+                color = color.replace(/$hshcd/, '');
                 document.getElementById('poptext_color').style.background = '#' + color;
                 document.getElementsByName("poptext")[0].value = color;
             }
@@ -152,6 +168,8 @@ sub SmiliePanel {
     </tr>~;
 
     my $add_smiley = 1;
+    my $up         = q{};
+    my $down       = q{};
     foreach my $j ( 0 .. $#smilieorder ) {
         if ( $j > 0 ) {
             $up =
@@ -169,9 +187,11 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
         }
         $yymain .= qq~<tr>
     <td class="windowbg2 center"><input type="radio" name="showinbox" value="${$addedsmilies{$smilieorder[$j]}}[2]"~
-          . ( $showinbox eq ${ $addedsmilies{ $smilieorder[$j] } }[2]
+          . (
+            $showinbox eq ${ $addedsmilies{ $smilieorder[$j] } }[2]
             ? ' checked="checked"'
-            : q{} )
+            : q{}
+          )
           . qq~ /></td>
     <td class="windowbg2 center"><input type="text" name="scd[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[1]" /></td>
     <td class="windowbg2 center" style="white-space: nowrap;">
@@ -181,9 +201,11 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
     </td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[2]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$smilieorder[$j]]" value="1"~
-          . ( ${ $addedsmilies{ $smilieorder[$j] } }[3] eq '<br />'
+          . (
+            ${ $addedsmilies{ $smilieorder[$j] } }[3] eq '<br />'
             ? ' checked="checked"'
-            : q{} )
+            : q{}
+          )
           . q~ /></td>
     <td class="windowbg2 center"><img src="~
           . (
@@ -197,8 +219,8 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
   </tr>~;
         $add_smiley++;
     }
-    my @ck = sort @smilieorder;
-    $i = $ck[-1] + 1;
+    my @ck            = sort @smilieorder;
+    my $i             = $ck[-1] + 1;
     my $added_smilies = $i;
     $yymain .= qq~<tr>
     <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'08'}</b></td>
@@ -283,14 +305,14 @@ function removeSmilies(remsm_id) {
 </form>
 ~;
 
-    $yytitle     = "$asmtxt{'01'}";
+    $yytitle     = $asmtxt{'01'};
     $action_area = 'smilies';
-    AdminTemplate();
+    admintemplate();
 
     return;
 }
 
-sub AddSmilies {
+sub add_smilies {
     is_admin_or_gmod();
 
     $smiliestyle = $FORM{'smiliestyle'};
@@ -300,12 +322,12 @@ sub AddSmilies {
     $winwidth    = $FORM{'winwidth'};
     $winheight   = $FORM{'winheight'};
     $popback     = $FORM{'popback'};
-    $popback =~ s/[^a-f0-9]//igxsm;
+    $popback =~ s/[^a-f\d]//igxsm;
     $poptext = $FORM{'poptext'};
-    $poptext =~ s/[^a-f0-9]//igxsm;
+    $poptext =~ s/[^a-f\d]//igxsm;
     $showinbox           = $FORM{'showinbox'};
     $removenormalsmilies = $FORM{'removenormalsmilies'};
-    $count_smimg         = $FORM{'smimg_count'};
+    my $count_smimg = $FORM{'smimg_count'};
 
     if ( !$winwidth ) {
         fatal_error( 'invalid_value', "$smiltxt{'14'}" );
@@ -317,6 +339,7 @@ sub AddSmilies {
     if ( !$poptext ) { fatal_error( 'invalid_value', "$smiltxt{'19'}" ); }
 
     my $temp_a = 1;
+    my (@neworder);
     for ( 1 .. $count_smimg ) {
         if (   $FORM{"scd[$temp_a]"}
             || $FORM{"smimg[$temp_a]"}
@@ -342,7 +365,7 @@ sub AddSmilies {
           )
         {
             if ( $FORM{"smimg[$temp_a]"} ) {
-                $FORM{"smimg[$temp_a]"} = UploadFile(
+                $FORM{"smimg[$temp_a]"} = upload_file(
                     "smimg[$temp_a]",   'Templates/Forum/default',
                     'png/jpg/jpeg/gif', '100',
                     '0'
@@ -352,11 +375,11 @@ sub AddSmilies {
                 $FORM{"smimg[$temp_a]"} = $FORM{"cur_smimg[$temp_a]"};
             }
 
-            ToHTML( $FORM{"scd[$temp_a]"} );
+            to_html( $FORM{"scd[$temp_a]"} );
             $FORM{"scd[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
             $FORM{"scd[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
 
-            ToHTML( $FORM{"sdescr[$temp_a]"} );
+            to_html( $FORM{"sdescr[$temp_a]"} );
             $FORM{"sdescr[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
             $FORM{"sdescr[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
             my $smbox = $FORM{"smbox[$temp_a]"} ? '<br />' : q{};
@@ -380,8 +403,8 @@ sub AddSmilies {
         }
         ++$temp_a;
     }
-    %seen = ();
-    @anew = ();
+    my %seen = ();
+    my @anew = ();
     if (@neworder) { @smilieorder = @neworder; }
     foreach my $i (@smilieorder) { $seen{$i} = 1; }
     foreach my $i ( keys %addedsmilies ) {
@@ -392,14 +415,14 @@ sub AddSmilies {
     push @smilieorder, @anew;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
-    $yySetLocation = qq~$adminurl?action=smilies~;
+    $yysetlocation = qq~$adminurl?action=smilies~;
     redirectexit();
     return;
 }
 
-sub SmilieMove {
+sub smilie_move {
     is_admin_or_gmod();
     if ( $INFO{'index'} ) {
         my $moveit = $INFO{'index'};
@@ -412,7 +435,7 @@ sub SmilieMove {
             {
                 my $j = $INFO{'moveup'} ? $i - 1 : $i + 1;
 
-                my $moveit = $smilieorder[$i];
+                $moveit          = $smilieorder[$i];
                 $smilieorder[$i] = $smilieorder[$j];
                 $smilieorder[$j] = $moveit;
                 last;
@@ -421,9 +444,9 @@ sub SmilieMove {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
-    $yySetLocation = qq~$adminurl?action=smilies~;
+    $yysetlocation = qq~$adminurl?action=smilies~;
     redirectexit();
     return;
 }

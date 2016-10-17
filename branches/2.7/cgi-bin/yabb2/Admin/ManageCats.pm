@@ -12,21 +12,38 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$managecatspmver = 'YaBB 2.7.00 $Revision$';
-@managecatspmmods = ();
+our $managecatspmver  = 'YaBB 2.7.00 $Revision$';
+our @managecatspmmods = ();
+our $managecatspmmods = 0;
 if (@managecatspmmods) {
     $managecatspmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admin_img, %exptxt, );
+## paths ##
+our ( $adminurl, $yyhtml_root, $imagesdir, $htmldir );
+## settings ##
+our ( $yymycharset, );
+## other ##
+our (
+    $action,      $yymain,   $yytitle, $yysetlocation,
+    $action_area, $language, %INFO,    %FORM,
+    $date,        %cat,      %catinfo, @categoryorder,
+);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub DoCats {
+load_language('Admin');
+
+sub do_cats {
     is_admin_or_gmod();
     my $i = 0;
+    my (@editcats);
     while ( $_ = each %FORM ) {
         if ( $FORM{$_} && /^yitem_(.+)$/xsm ) {
             $editcats[$i] = $1;
@@ -34,18 +51,18 @@ sub DoCats {
         }
     }
 
-    if ( $FORM{'baction'} eq 'edit' ) { AddCats(@editcats); }
+    if ( $FORM{'baction'} eq 'edit' ) { add_cats(@editcats); }
     elsif ( $FORM{'baction'} eq 'delme' ) {
         get_forum_master();
         for my $catid (@editcats) {
             ##Check if category has any boards, and if it does remove them.
             if ( $cat{$catid} ) {
                 require Admin::ManageBoards;
-                DeleteBoards( split /,/xsm, $cat{$catid} );
+                delete_boards( split /,/xsm, $cat{$catid} );
             }
 
-            delete $cat{"$catid"};
-            delete $catinfo{"$catid"};
+            delete $cat{$catid};
+            delete $catinfo{$catid};
 
             my $x = 0;
             for my $categoryid (@categoryorder) {
@@ -59,15 +76,15 @@ sub DoCats {
             $yymain .=
               qq~$admin_txt{'830'} <i>$catid</i> $admin_txt{'831'}<br />~;
         }
-        Write_ForumMaster();
+        write_forummaster();
     }
-    $yytitle     = "$admin_txt{'3'}";
+    $yytitle     = $admin_txt{'3'};
     $action_area = 'managecats';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub AddCats {
+sub add_cats {
     my @editcats = @_;
     is_admin_or_gmod();
 
@@ -92,30 +109,37 @@ sub AddCats {
 </div>
 ~;
     require Admin::ManageBoards;
+    my $allow_checked = q{};
+    my (
+        $id,       $cattext,     $catrssch, $curcatname,
+        $catperms, $catallowcol, $catimage, $catrss,
+    );
+    my (@bdlist);
 
     # Start Looping through and repeating the board adding wherever needed
     for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
-        if ( (!$editcats[$i] || $editcats[$i] eq q{}) && $INFO{'action'} eq 'catscreen' )
+        if ( ( !$editcats[$i] || $editcats[$i] eq q{} )
+            && $INFO{'action'} eq 'catscreen' )
         {
             next;
         }
-		$allowChecked = q{};
+        $allow_checked = q{};
         if ( $INFO{'action'} eq 'catscreen' ) {
             $id = $editcats[$i];
             for my $catid (@categoryorder) {
                 if ( $id ne $catid ) { next; }
                 @bdlist = split /,/xsm, $cat{$catid};
                 ( $curcatname, $catperms, $catallowcol, $catimage, $catrss ) =
-                  split /[|]/xsm, $catinfo{"$catid"};
-                ToChars($curcatname);
+                  split /[|]/xsm, $catinfo{$catid};
+                to_chars($curcatname);
                 $cattext = $curcatname;
                 if ( !$catallowcol || $catallowcol eq '1' ) {
-                    $allowChecked = 'checked="checked"';
+                    $allow_checked = 'checked="checked"';
                 }
-                else { $allowChecked = q{}; }
+                else { $allow_checked = q{}; }
                 ### RSS on Board Index Start ###
-                if ( $catrss ) { $catrssch = ' checked="checked"'; }
-                else { $catrssch = q{}; }
+                if   ($catrss) { $catrssch = ' checked="checked"'; }
+                else           { $catrssch = q{}; }
                 ### RSS on Board Index End ###
             }
         }
@@ -124,12 +148,12 @@ sub AddCats {
             $cattext = "$admin_txt{'44'} $cat_num:";
         }
         my $catimage_value = q{};
-        if ( $catimage ) {
+        if ($catimage) {
             $catimage_value =
 qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/$catimage" target="_blank">$catimage</a><br /><input type="checkbox" name="del_catimage$i" id="del_catimage$i" value="1" /> <label for="del_catimage$i">$admin_txt{'64b5'}</label></div>~;
         }
-        $catperms = DrawPerms( $catperms, 0 );
-       $yymain .= qq~
+        $catperms = draw_perms( $catperms, 0 );
+        $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
@@ -146,20 +170,20 @@ qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Temp
                 <div class="pad-more"><input type="hidden" name="theid$i" id="theid$i" value="$id" />$id~;
         }
         else {
-		    $id ||= q{};
+            $id ||= q{};
             $yymain .= qq~
             <td class="windowbg"><label for="theid$i"><b>$admin_txt{'61a'}</b><br />$admin_txt{'61b'}</label></td>
             <td class="windowbg2">
                 <div class="pad-more"><input type="text" name="theid$i" id="theid$i" value="$id" />~;
         }
-		$curcatname ||= q{};
-		$catimage ||= q{};
-		$catrssch ||= q{};
+        $curcatname ||= q{};
+        $catimage   ||= q{};
+        $catrssch   ||= q{};
         $yymain .= qq~
                 </div>
             </td>
             <td class="windowbg2 center" rowspan="4"><select multiple="multiple" name="catperms$i" id="catperms$i" size="5">$catperms</select><br /><label for="catperms$i"><span class="small">$admin_txt{'14'}</span></label></td>
-            <td class="windowbg2 center" rowspan="4"><input type="checkbox" $allowChecked name="allowcol$i" id="allowcol$i" /></td>
+            <td class="windowbg2 center" rowspan="4"><input type="checkbox" $allow_checked name="allowcol$i" id="allowcol$i" /></td>
         </tr><tr>
             <td class="windowbg"><label for="name$i"><b>$admin_txt{'68'}:</b></label></td>
             <td class="windowbg2">
@@ -203,25 +227,26 @@ qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Temp
 </div>
 </form>~;
 
-    $yytitle     = "$admin_txt{'3'}";
+    $yytitle     = $admin_txt{'3'};
     $action_area = 'managecats';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub AddCats2 {
+sub add_cats2 {
     is_admin_or_gmod();
     get_forum_master();
 
     for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
         if ( $FORM{"catimage$i"} ) {
-            $FORM{"catimage$i"} = UploadFile(
+            $FORM{"catimage$i"} = upload_file(
                 "catimage$i",       'Templates/Forum/default',
-                'png jpg jpeg gif', '250',
+                'png/jpg/jpeg/gif', '250',
                 '0'
             );
             if ( $FORM{"cur_catimage$i"} ) {
-                unlink "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
+                unlink
+                  "$htmldir/Templates/Forum/default/$FORM{\"cur_catimage$i\"}";
             }
         }
         else {
@@ -233,26 +258,29 @@ sub AddCats2 {
             $FORM{"catimage$i"} = q{};
         }
         if ( !$FORM{"theid$i"} ) { next; }
-        $id = $FORM{"theid$i"};
-        if ( $id !~ /^[0-9A-Za-z#%+-\.@^_]+$/xsm ) {
+        my $id = $FORM{"theid$i"};
+        if ( $id !~ /^\w[.#%+-@^]+$/xsm ) {
             fatal_error( 'invalid_character',
                 "$admin_txt{'44'} $admin_txt{'241'}" );
         }
         if ( $FORM{'screenornot'} ne 'catscreen' ) {
-            if   ( $catinfo{"$id"} ) { fatal_error('cat_defined'); }
-            else                     { $cat{"$id"} = q{}; }
+            if   ( $catinfo{$id} ) { fatal_error('cat_defined'); }
+            else                   { $cat{$id} = q{}; }
             push @categoryorder, $id;
         }
         if ( !$FORM{"name$i"} ) { $FORM{"name$i"} = $id; }
 
-        $cname = $FORM{"name$i"};
-        FromChars($cname);
-        ToHTML($cname);
+        my $cname = $FORM{"name$i"};
+        from_chars($cname);
+        to_html($cname);
+        if ( $FORM{"allowcol$i"} && $FORM{"allowcol$i"} eq 'on' ) {
+            $FORM{"allowcol$i"} = 1;
+        }
+        else { $FORM{"allowcol$i"} = 0; }
 
-        if   ( $FORM{"allowcol$i"} eq 'on' ) { $FORM{"allowcol$i"} = 1; }
-        else                                 { $FORM{"allowcol$i"} = 0; }
-
-        if ( $FORM{"catrss$i"} eq 'on' ) { $FORM{"catrss$i"} = 1; }
+        if ( $FORM{"catrss$i"} && $FORM{"catrss$i"} eq 'on' ) {
+            $FORM{"catrss$i"} = 1;
+        }
         else { $FORM{"catrss$i"} = 0; }
 
         $FORM{"catperms$i"} ||= q{};
@@ -262,16 +290,17 @@ qq~$cname|$FORM{"catperms$i"}|$FORM{"allowcol$i"}|$FORM{"catimage$i"}|$FORM{"cat
 
         $yymain .= qq~$admin_txt{'830'} <i>$id</i> $admin_txt{'48'}<br />~;
     }
-    Write_ForumMaster();
+    write_forummaster();
 
     $action_area = 'managecats';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub ReorderCats {
+sub reorder_cats {
     is_admin_or_gmod();
     get_forum_master();
+    my ( $catcnt, $catnum, $categorylist );
     if ( @categoryorder > 1 ) {
         $catcnt = @categoryorder;
         $catnum = $catcnt;
@@ -280,9 +309,10 @@ sub ReorderCats {
 qq~<select name="selectcats" id="selectcats" size="$catcnt" style="width: 190px;">~;
         for my $category (@categoryorder) {
             chomp $category;
-            ( $categoryname, undef ) = split /[|]/xsm, $catinfo{$category}, 2;
-            ToChars($categoryname);
-            if ($INFO{'thecat'} && $category eq $INFO{'thecat'} ) {
+            my ( $categoryname, undef ) = split /[|]/xsm, $catinfo{$category},
+              2;
+            to_chars($categoryname);
+            if ( $INFO{'thecat'} && $category eq $INFO{'thecat'} ) {
                 $categorylist .=
 qq~<option value="$category" selected="selected">$categoryname</option>~;
             }
@@ -322,16 +352,17 @@ qq~<option value="$category" selected="selected">$categoryname</option>~;
     </table>
 </form>
 ~;
-    $yytitle     = "$admin_txt{'829'}";
+    $yytitle     = $admin_txt{'829'};
     $action_area = 'managecats';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub ReorderCats2 {
+sub reorder_cats2 {
     is_admin_or_gmod();
     my $moveitem = $FORM{'selectcats'};
     get_forum_master();
+    my ($j);
     if ($moveitem) {
         if ( $FORM{'moveup'} ) {
             for my $i ( 0 .. $#categoryorder ) {
@@ -353,9 +384,9 @@ sub ReorderCats2 {
                 }
             }
         }
-        Write_ForumMaster();
+        write_forummaster();
     }
-    $yySetLocation = qq~$adminurl?action=reordercats;thecat=$moveitem~;
+    $yysetlocation = qq~$adminurl?action=reordercats;thecat=$moveitem~;
     redirectexit();
     return;
 }

@@ -12,47 +12,79 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
-$registrationlogpmver = 'YaBB 2.7.00 $Revision$';
-@registrationlogpmmods = ();
+our $registrationlogpmver  = 'YaBB 2.7.00 $Revision$';
+our @registrationlogpmmods = ();
+our $registrationlogpmmods = 0;
 if (@registrationlogpmmods) {
     $registrationlogpmmods = 1;
 }
+##  languages ##
+our (
+    %croak,                  %admin_txt,            %admin_img,
+    %prereg_txt,             %actkey,               %register_txt,
+    $admin_reason,           $reviewrejectedemail,  %mailreg_txt,
+    $emailcharset,           $instantrejectedemail, $pwreviewapprovedemail,
+    $pwinstantapprovedemail, $instantapprovedemail, $send_welcomeim,
+    $imsubject,              $imtext,               $reviewapprovedemail
+);
+## paths ##
+our ( $adminurl, $vardir, $scripturl, $memberdir, $yyhtml_root );
+## settings ##
+our (
+    $yymycharset,      $do_scramble_id,      $ip_lookup,
+    $regtype,          $addmemgroup_enabled, %grp_nopost,
+    $extendedprofiles, $mbname,,
+    $nomailspammer,    $emailpassword,       $sendname
+);
+## other ##
+our (
+    $action,     $yymain,  $yytitle, $yysetlocation,
+    %INFO,       %FORM,    $date,    $username,
+    @memberlist, $user_ip, $uid,     $language,
+);
+
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('Register');
+load_language('Admin');
+load_language('Register');
 
 sub view_reglog {
     is_admin_or_gmod();
 
     $yytitle = $prereg_txt{'15a'};
 
+    my ( @reglist,    @logentries );
+    my ( $servertime, $pageindex );
     if ( -e "$vardir/registration.log" ) {
-        fopen( LOGFILE, "$vardir/registration.log" );
-        @logentries = <LOGFILE>;
-        fclose(LOGFILE);
+        open my $LOGFILE, '<', "$vardir/registration.log"
+          or croak "$croak{'open'} LOGFILE";
+        @logentries = <$LOGFILE>;
+        close $LOGFILE or croak "$croak{'close'} LOGFILE";
         @logentries = reverse @logentries;
 
-        fopen( FILE, 'Variables/Memberlist.pm' );
-        @memberlist = <FILE>;
-        fclose(FILE);
+        open my $FILE, '<', 'Variables/Memberlist.pm'
+          or croak "$croak{'open'} FILE";
+        @memberlist = <$FILE>;
+        close $FILE or croak "$croak{'close'} FILE";
 
         # If a pre-registration list exists load it
         if ( -e 'Variables/meminactive.db' ) {
-            fopen( INACT, '<Variables/meminactive.db' );
-            @reglist = <INACT>;
-            fclose(INACT);
+            open my $INACT, '<', 'Variables/meminactive.db'
+              or croak "$croak{'open'} INACT";
+            @reglist = <$INACT>;
+            close $INACT or croak "$croak{'close'} INACT";
         }
 
         # grab pre regged user activationkey for admin activation
         for (@reglist) {
-            ( undef, $actcode, $regmember, undef ) = split /[|]/xsm, $_, 4;
+            my ( undef, $actcode, $regmember, undef ) = split /[|]/xsm, $_, 4;
             $actkey{$regmember} = $actcode;
         }
     }
@@ -61,15 +93,16 @@ sub view_reglog {
         push @logentries, "$servertime|LD|$username|$username|$user_ip";
     }
     @memberlist = reverse @memberlist;
-
     if ( @logentries > 0 ) {
-        $logcount = @logentries;
+        my $logcount = @logentries;
         my $newstart = $INFO{'newstart'} || 0;
+        my ( $endpage, );
+        my $startpage      = 0;
+        my $postdisplaynum = 8;
+        my $max            = $logcount;
+        $newstart = ( int( $newstart / 25 ) ) * 25;
+        my $tmpa = 1;
 
-        $postdisplaynum = 8;
-        $max            = $logcount;
-        $newstart       = ( int( $newstart / 25 ) ) * 25;
-        $tmpa           = 1;
         if ( $newstart >= ( ( $postdisplaynum - 1 ) * 25 ) ) {
             $startpage = $newstart - ( ( $postdisplaynum - 1 ) * 25 );
             $tmpa = int( $startpage / 25 ) + 1;
@@ -77,12 +110,12 @@ sub view_reglog {
         if ( $max >= $newstart + ( $postdisplaynum * 25 ) ) {
             $endpage = $newstart + ( $postdisplaynum * 25 );
         }
-        else { $endpage = $max }
-        if ( $startpage > 0 ) {
+        else { $endpage = $max; }
+        if ( $startpage && $startpage > 0 ) {
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0" class="norm">1</a>&nbsp;...&nbsp;~;
         }
-        if ( $startpage == 25 ) {
+        if ( $startpage && $startpage == 25 ) {
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0" class="norm">1</a>&nbsp;~;
         }
@@ -95,8 +128,9 @@ qq~<a href="$adminurl?action=$action;newstart=0" class="norm">1</a>&nbsp;~;
                 $tmpa++;
             }
         }
-        $lastpn  = int( $logcount / 25 ) + 1;
-        $lastptn = ( $lastpn - 1 ) * 25;
+        my $pageindexadd = q{};
+        my $lastpn       = int( $logcount / 25 ) + 1;
+        my $lastptn      = ( $lastpn - 1 ) * 25;
         if ( $endpage < $max - (25) ) { $pageindexadd = q~...&nbsp;~; }
         if ( $endpage != $max ) {
             $pageindexadd .=
@@ -108,8 +142,9 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn">$lastpn</a>~;
                 <td class="windowbg" colspan="4"><span class="small" style="float: left;">$admin_txt{'139'}: $pageindex</span></td>
             </tr>~;
 
-        $numbegin = ( $newstart + 1 );
-        $numend   = ( $newstart + 25 );
+        my $numbegin = ( $newstart + 1 );
+        my $numend   = ( $newstart + 25 );
+        my $numshow  = q{};
         if   ( $numend > $logcount ) { $numend  = $logcount; }
         if   ( $logcount == 0 )      { $numshow = q{}; }
         else                         { $numshow = qq~($numbegin - $numend)~; }
@@ -121,6 +156,8 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn">$lastpn</a>~;
         chomp $logentry;
         my ( $logtime, $status, $userid, $actid, $ipadd ) =
           split /[|]/xsm, $logentry;
+        my $cryptactid  = $actid;
+        my $cryptuserid = $userid;
         if ($do_scramble_id) {
             $cryptactid  = cloak($actid);
             $cryptuserid = cloak($userid);
@@ -129,26 +166,36 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn">$lastpn</a>~;
             $cryptactid  = $actid;
             $cryptuserid = $userid;
         }
-        if ( $actid && $userid ne $actid) {
-            LoadUser($actid);
-            $actadminlink =
+        my $actadminlink = q{};
+        if ( $actid && $userid ne $actid ) {
+            load_user($actid);
+            {
+                no strict qw(refs);
+                $actadminlink =
 qq~ $prereg_txt{'by'} <a href="$scripturl?action=viewprofile;username=$cryptactid">${$uid.$actid}{'realname'}</a>~;
+            }
         }
         else {
             $actadminlink = q{};
         }
-        if ( $status eq 'AA' && LoadUser($userid) ) {
-            LoadUser($userid);
-            $linkuserid =
+        my $linkuserid = $userid;
+        if ( $status eq 'AA' && load_user($userid) ) {
+            load_user($userid);
+            {
+                no strict qw(refs);
+                $linkuserid =
 qq~$userid (<a href="$scripturl?action=viewprofile;username=$cryptuserid">${$uid.$userid}{'realname'}</a>)~;
+            }
         }
         else {
             $linkuserid = $userid;
         }
-        $is_member = check_member($userid);
+        my $is_member = check_member($userid);
+        my $cryptid   = $userid;
         if   ($do_scramble_id) { $cryptid = cloak($userid); }
         else                   { $cryptid = $userid; }
-        $reclogtime = timeformat($logtime);
+        my $reclogtime = timeformat($logtime);
+        my $delrecord  = q{};
         if ( $status eq 'N' && $is_member == 0 && -e "$memberdir/$userid.pre" )
         {
             $delrecord =
@@ -177,19 +224,25 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
         else {
             $delrecord = '---';
         }
-        my $lookupIP =
-          ($ip_lookup)
-          ? qq~<a href="$scripturl?action=iplookup;ip=$ipadd">$ipadd</a>~
-          : qq~$ipadd~;
+        my $lookup_ip = q{};
+        if ($ipadd) {
+            $lookup_ip = q~<br />IP: ~;
+            $lookup_ip .=
+              ($ip_lookup)
+              ? qq~<a href="$scripturl?action=iplookup;ip=$ipadd">$ipadd</a>~
+              : qq~$ipadd~;
+            $lookup_ip .=
+qq~- <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p;return=view_reglog">$admin_txt{'725f'}</a>~;
+        }
         $loglist .= qq~<tr>
             <td class="windowbg center">$reclogtime</td>
-            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink<br />IP: $lookupIP - <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p;return=view_reglog">$admin_txt{'725f'}</a></td>
+            <td class="windowbg2 center">$prereg_txt{$status}$actadminlink$lookup_ip</td>
             <td class="windowbg center">$linkuserid</td>
             <td class="windowbg2 center">$delrecord</td>
         </tr>~;
     }
 
-	$pageindex ||= q{};
+    $pageindex ||= q{};
     $yymain .= qq~
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="reglog_form" action="$adminurl?action=clean_reglog" method="post" onsubmit="return submitproc();">
@@ -231,8 +284,8 @@ qq~<br /><a href="$adminurl?action=apr_regentry;username=$userid">$prereg_txt{'a
             </div>
             </form>
 ~;
-    $action_area = 'view_reglog';
-    AdminTemplate();
+    our $action_area = 'view_reglog';
+    admintemplate();
     return;
 }
 
@@ -241,7 +294,7 @@ sub check_member {
     my $is_member = 0;
     for my $lstmember (@memberlist) {
         chomp $lstmember;
-        ( $listmember, undef ) = split /\t/xsm, $lstmember, 2;
+        my ( $listmember, undef ) = split /\t/xsm, $lstmember, 2;
         if ( $inp eq $listmember ) {
             $is_member = 1;
             last;
@@ -253,12 +306,12 @@ sub check_member {
 sub clean_reglog {
     is_admin_or_gmod();
     my (@outlist);
-    fopen( REG, "$vardir/registration.log", 1 );
-    my @reglist = <REG>;
-    fclose(REG);
+    open my $REG, '<', "$vardir/registration.log" or croak "$croak{'open'} REG";
+    my @reglist = <$REG>;
+    close $REG or croak "$croak{'close'} REG";
     ## depending on registration type only leave uncompleted entries in the log for completion and remove the failed or completed ones ##
     for (@reglist) {
-        my ( undef, $regstatus, $reguser, undef ) = split /[|]/xsm, $_;
+        my ( undef, $regstatus, $reguser, undef ) = split /[|]/xsm;
         if (   ( $regtype == 1 || $regtype == 2 )
             && $regstatus eq 'N'
             && -e "$memberdir/$reguser.pre" )
@@ -272,11 +325,11 @@ sub clean_reglog {
             push @outlist, $_;
         }
     }
-    fopen( REG, ">$vardir/registration.log", 1 );
-    print {REG} @outlist or croak "$croak{'print'} REG";
-    fclose(REG);
+    open $REG, '>', "$vardir/registration.log" or croak "$croak{'open'} REG";
+    print {$REG} @outlist or croak "$croak{'print'} REG";
+    close $REG or croak "$croak{'close'} REG";
 
-    $yySetLocation = qq~$adminurl?action=view_reglog~;
+    $yysetlocation = qq~$adminurl?action=view_reglog~;
     redirectexit();
     return;
 }
@@ -288,22 +341,25 @@ sub kill_registration {
     my $deluser = $inp || $INFO{'username'};
     if ($do_scramble_id) { $deluser = decloak($deluser); }
 
-    fopen( INFILE, '<Variables/meminactive.db' );
-    @actlist = <INFILE>;
-    fclose(INFILE);
+    open my $INFILE, '<', 'Variables/meminactive.db'
+      or croak "$croak{'open'} INFILE";
+    my @actlist = <$INFILE>;
+    close $INFILE or croak "$croak{'close'} INFILE";
 
     # check if user is in pre-registration and check activation key
+    my (@outlist);
     for (@actlist) {
-        ( $regtime, undef, $regmember, undef ) = split /[|]/xsm, $_, 4;
+        my ( $regtime, undef, $regmember, undef ) = split /[|]/xsm, $_, 4;
         if ( $deluser eq $regmember ) {
             $changed = 1;
             unlink "$memberdir/$regmember.pre";
 
             # add entry to registration log
-            fopen( REG, ">>$vardir/registration.log", 1 );
-            print {REG} "$date|D|$regmember|$username|$user_ip\n"
+            open my $REG, '>>', "$vardir/registration.log"
+              or croak "$croak{'open'} REG";
+            print {$REG} "$date|D|$regmember|$username|$user_ip\n"
               or croak "$croak{'print'} REG";
-            fclose(REG);
+            close $REG or croak "$croak{'close'} REG";
         }
         else {
 
@@ -315,11 +371,12 @@ sub kill_registration {
     if ($changed) {
 
         # re-open inactive list for update if changed
-        fopen( OUTFILE, '>Variables/meminactive.db', 1 );
-        print {OUTFILE} @outlist or croak "$croak{'print'} OUTFILE";
-        fclose(OUTFILE);
+        open my $OUTFILE, '>', 'Variables/meminactive.db'
+          or croak "$croak{'open'} OUTFILE";
+        print {$OUTFILE} @outlist or croak "$croak{'print'} OUTFILE";
+        close $OUTFILE or croak "$croak{'close'} OUTFILE";
     }
-    $yySetLocation = qq~$adminurl?action=view_reglog~;
+    $yysetlocation = qq~$adminurl?action=view_reglog~;
     redirectexit();
     return;
 }
@@ -329,10 +386,12 @@ sub view_registration {
     my $viewuser = $INFO{'username'} || $FORM{'username'};
     my $readuser = $viewuser;
     my $viewtype = $INFO{'type'};
-    my $actkey   = $INFO{'activationkey'};
+    my $actkey   = $INFO{'activationkey'} || q{};
     if ($do_scramble_id) { $readuser = decloak($viewuser); }
-    LoadUser($readuser);
-    $yymain .= qq~
+    load_user($readuser);
+    {
+        no strict qw(refs);
+        $yymain .= qq~
 <form action="$adminurl?action=admin_descision;activationkey=$actkey" method="post" name="creator">
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
@@ -353,54 +412,70 @@ sub view_registration {
        <td><b>$prereg_txt{'apr_name'}: </b></td>
        <td>${$uid.$readuser}{'realname'}</td>
     </tr>~;
-
-    if ( $viewtype eq 'validate' ) {
-        $yymain .= qq~<tr class="windowbg">
+    }
+    {
+        no strict qw(refs);
+        if ( $viewtype eq 'validate' ) {
+            $yymain .= qq~<tr class="windowbg">
         <td><b>$prereg_txt{'apr_email_invalid'}: </b></td>
         <td>${$uid.$readuser}{'email'}</td>
     </tr>~;
-    }
-    elsif ( $viewtype eq 'approve' ) {
-        $yymain .= qq~<tr class="windowbg">
+        }
+        elsif ( $viewtype eq 'approve' ) {
+            $yymain .= qq~<tr class="windowbg">
    <td><b>$prereg_txt{'apr_email_valid'}: </b></td>
    <td>${$uid.$readuser}{'email'}</td>
  </tr>~;
+        }
     }
 
     if ( $addmemgroup_enabled == 2 || $addmemgroup_enabled == 3 ) {
-        my @usergroup;
-        for ( split /,/xsm, ${ $uid.$readuser }{'addgroups'} ) {
-            push
-              @usergroup,
-              (
-                split /[|]/xsm,
-                $NoPost{ ${ $uid.$readuser }{'addgroups'} }, 2
-              )[0];
+        my (@usergroup);
+        {
+            no strict qw(refs);
+            for ( split /,/xsm, ${ $uid . $readuser }{'addgroups'} || q{} ) {
+                push
+                  @usergroup,
+                  ${ $grp_nopost{ ${ $uid . $readuser }{'addgroups'} } }[0];
+            }
+        }
+        my $usrgrp = $register_txt{'765b'};
+        if ( scalar @usergroup > 0 ) {
+            $usrgrp = join q{, }, @usergroup;
         }
         $yymain .= qq~<tr class="windowbg">
    <td><b>$register_txt{'765a'}:</b></td>
-   <td>~ . join( q{, }, @usergroup ) . q~</td>
+   <td>$usrgrp</td>
  </tr>~;
     }
 
-    my $lookupIP =
-      ($ip_lookup)
-      ? qq~<a href="$scripturl?action=iplookup;ip=${$uid.$readuser}{'lastips'}">${$uid.$readuser}{'lastips'}</a>~
-      : qq~${$uid.$readuser}{'lastips'}~;
-
-    $yymain .= qq~<tr class="windowbg">
+    my ($lookup_ip);
+    {
+        no strict qw(refs);
+        $lookup_ip =
+          ($ip_lookup)
+          ? qq~<a href="$scripturl?action=iplookup;ip=${$uid.$readuser}{'lastips'}">${$uid.$readuser}{'lastips'}</a>~
+          : qq~${$uid.$readuser}{'lastips'}~;
+    }
+    {
+        no strict qw(refs);
+        $yymain .= qq~<tr class="windowbg">
    <td><b>$prereg_txt{'apr_language'}: </b></td>
    <td>${$uid.$readuser}{'language'}</td>
  </tr><tr class="windowbg">
    <td><b>$prereg_txt{'apr_ip'}: </b></td>
-   <td>$lookupIP (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p;return=view_reglog">$admin_txt{'725f'}</a>)</td>
+   <td>$lookup_ip (<a href="$adminurl?action=ipban_err;ban=${$uid.$readuser}{'lastips'};lev=p;return=view_reglog">$admin_txt{'725f'}</a>)</td>
  </tr>~;
+    }
 
     if ( $regtype == 1 ) {
-        $yymain .= qq~<tr class="windowbg">
+        {
+            no strict qw(refs);
+            $yymain .= qq~<tr class="windowbg">
    <td><b>$prereg_txt{'apr_reason'}: </b></td>
    <td>${$uid.$readuser}{'regreason'}</td>
  </tr>~;
+        }
     }
     if ($extendedprofiles) {
         require Admin::Settings_ExtendedProfiles;
@@ -408,6 +483,7 @@ sub view_registration {
     }
 
     if ( $viewtype eq 'approve' ) {
+        $admin_reason ||= q{};
         $yymain .= qq~<tr>
    <td colspan="2" class="titlebg">$admin_img{'profile'} <b>$prereg_txt{'apr_admin_reason_title'}</b></td>
  </tr>
@@ -452,8 +528,8 @@ sub view_registration {
     $yymain .= q~
 </form>~;
 
-    $yytitle = "$prereg_txt{'view'}";
-    AdminTemplate();
+    $yytitle = $prereg_txt{'view'};
+    admintemplate();
     return;
 }
 
@@ -490,77 +566,91 @@ sub reject_registration {
     my $deluser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
 
-    if ($do_scramble_id)  { $deluser      = decloak($deluser); }
-
+    if ($do_scramble_id) { $deluser = decloak($deluser); }
+    my (@aprlist);
     if ( -e 'Variables/memapprove.db' && $regtype == 1 ) {
-        fopen( APR, '<Variables/memapprove.db' );
-        @aprlist = <APR>;
-        fclose(APR);
+        open my $APR, '<', 'Variables/memapprove.db'
+          or croak "$croak{'open'} APR";
+        @aprlist = <$APR>;
+        close $APR or croak "$croak{'close'} APR";
     }
 
     # check if waiting user exists
     if ( -e "$memberdir/$deluser.wait" ) {
-        LoadUser($deluser);
+        load_user($deluser);
         ## send a rejection email ##
         my $templanguage = $language;
-        $language = ${ $uid . $deluser }{'language'};
-        LoadLanguage('Email');
+        {
+            no strict qw(refs);
+            $language = ${ $uid . $deluser }{'language'};
+        }
+        load_language('Email');
         require Sources::Mailer;
-        if ( $admin_reason ) {
-            $message = template_email(
-                $reviewrejectedemail,
-                {
-                    'displayname' => ${ $uid . $deluser }{'realname'},
-                    'username'    => $deluser,
-                    'reviewer'    => ${ $uid . $username }{'realname'},
-                    'reason'      => $admin_reason
-                }
-            );
-            sendmail(
-                ${ $uid . $deluser }{'email'},
-                "$mailreg_txt{'apr_result_reject'} $mbname",
-                $message, q{}, $emailcharset
-            );
+        my ($message);
+        if ($admin_reason) {
+            {
+                no strict qw(refs);
+                $message = template_email(
+                    $reviewrejectedemail,
+                    {
+                        'displayname' => ${ $uid . $deluser }{'realname'},
+                        'username'    => $deluser,
+                        'reviewer'    => ${ $uid . $username }{'realname'},
+                        'reason'      => $admin_reason
+                    }
+                );
+                sendmail(
+                    ${ $uid . $deluser }{'email'},
+                    "$mailreg_txt{'apr_result_reject'} $mbname",
+                    $message, q{}, $emailcharset
+                );
+            }
         }
         elsif ( $nomailspammer == 1 ) {
-            $message = template_email(
-                $instantrejectedemail,
-                {
-                    'displayname' => ${ $uid . $deluser }{'realname'},
-                    'username'    => $deluser,
-                    'reviewer'    => ${ $uid . $username }{'realname'}
-                }
-            );
+            {
+                no strict qw(refs);
+                $message = template_email(
+                    $instantrejectedemail,
+                    {
+                        'displayname' => ${ $uid . $deluser }{'realname'},
+                        'username'    => $deluser,
+                        'reviewer'    => ${ $uid . $username }{'realname'}
+                    }
+                );
 
-            sendmail(
-                ${ $uid . $deluser }{'email'},
-                "$mailreg_txt{'apr_result_reject'} $mbname",
-                $message, q{}, $emailcharset
-            );
+                sendmail(
+                    ${ $uid . $deluser }{'email'},
+                    "$mailreg_txt{'apr_result_reject'} $mbname",
+                    $message, q{}, $emailcharset
+                );
+            }
         }
         $language = $templanguage;
 
         ## remove the registration data for the rejected user ##
         unlink "$memberdir/$deluser.wait";
+        my (@aprchnglist);
         for (@aprlist) {
-            ( undef, undef, $regmember, undef ) = split /[|]/xsm, $_, 4;
+            my ( undef, undef, $regmember, undef ) = split /[|]/xsm, $_, 4;
             if ( $regmember ne $deluser ) {
                 push @aprchnglist, $_;
             }
         }
 
         # update approval user list
-        fopen( APR, '>Variables/memapprove.db' );
-        print {APR} @aprchnglist or croak "$croak{'print'} APR";
-        fclose(APR);
+        open my $APR, '>', 'Variables/memapprove.db'
+          or croak "$croak{'open'} APR";
+        print {$APR} @aprchnglist or croak "$croak{'print'} APR";
+        close $APR or croak "$croak{'close'} APR";
 
         ## add entry to registration log ##
-        fopen( REG, ">>$vardir/registration.log", 1 );
-        print {REG} "$date|AR|$deluser|$username|$user_ip\n"
+        open my $REG, '>>', "$vardir/registration.log"
+          or croak "$croak{'open'} REG";
+        print {$REG} "$date|AR|$deluser|$username|$user_ip\n"
           or croak "$croak{'print'} REG";
-        fclose(REG);
+        close $REG or croak "$croak{'close'} REG";
     }
-    $yySetLocation = qq~$adminurl?action=view_reglog~;
+    $yysetlocation = qq~$adminurl?action=view_reglog~;
     redirectexit();
     return;
 }
@@ -571,15 +661,17 @@ sub approve_registration {
     my $apruser = $inp || $INFO{'username'};
     if ( !$admin_reason ) { $admin_reason = $FORM{'admin_reason'}; }
 
-    if ($do_scramble_id)  { $apruser      = decloak($apruser); }
+    if ($do_scramble_id) { $apruser = decloak($apruser); }
 
     ## load the list with waiting approvals ##
-    fopen( APR, '<Variables/memapprove.db' );
-    @aprlist = <APR>;
-    fclose(APR);
+    open my $APR, '<', 'Variables/memapprove.db' or croak "$croak{'open'} APR";
+    my @aprlist = <$APR>;
+    close $APR or croak "$croak{'close'} APR";
 
+    my (@aprchnglist);
+    my ( $foundmember, $foundpassword );
     for (@aprlist) {
-        ( undef, undef, $regmember, $regpassword ) = split /[|]/xsm, $_;
+        my ( undef, undef, $regmember, $regpassword ) = split /[|]/xsm;
         if ( $regmember ne $apruser ) {
             push @aprchnglist, $_;
         }
@@ -591,103 +683,129 @@ sub approve_registration {
 
     ## check if waiting user exists and was indeed in the waiting list ##
     if ( -e "$memberdir/$apruser.wait" && $foundmember ) {
-        LoadUser($apruser);
+        load_user($apruser);
 
         # ckeck if email is already in active use
-        if (
-            lc ${ $uid . $apruser }{'email'} eq
-            lc MemberIndex( 'check_exist', ${ $uid . $apruser }{'email'} ) )
         {
-            $yymain .=
+            no strict qw(refs);
+            if (
+                lc ${ $uid . $apruser }{'email'} eq
+                lc member_index( 'check_exist', ${ $uid . $apruser }{'email'} )
+              )
+            {
+                $yymain .=
 qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'email'}</i> ($prereg_txt{'35'}: $apruser)</b></span>~;
-            view_reglog();
+                view_reglog();
+            }
         }
 
         ## user is approved, so let him/her in ##
         rename "$memberdir/$apruser.wait", "$memberdir/$apruser.vars";
-        MemberIndex( 'add', $apruser );
+        member_index( 'add', $apruser );
 
         # update approval user list
-        fopen( APR, '>Variables/memapprove.db' );
-        print {APR} @aprchnglist or croak "$croak{'print'} APR";
-        fclose(APR);
+        open my $APR, '>', 'Variables/memapprove.db'
+          or croak "$croak{'open'} APR";
+        print {$APR} @aprchnglist or croak "$croak{'print'} APR";
+        close $APR or croak "$croak{'close'} APR";
 
         ## add entry to registration log ##
-        fopen( REG, ">>$vardir/registration.log", 1 );
-        print {REG} "$date|AA|$apruser|$username|$user_ip\n"
+        open my $REG, '>>', "$vardir/registration.log"
+          or croak "$croak{'open'} REG";
+        print {$REG} "$date|AA|$apruser|$username|$user_ip\n"
           or croak "$croak{'print'} REG";
-        fclose(REG);
+        close $REG or croak "$croak{'close'} REG";
 
         ## send a approval email ##
         my $templanguage = $language;
-        $language = ${ $uid . $apruser }{'language'};
-        LoadLanguage('Email');
+        {
+            no strict qw(refs);
+            $language = ${ $uid . $apruser }{'language'};
+        }
+        load_language('Email');
         require Sources::Mailer;
+        my ($message);
         if ($emailpassword) {
-            if ( $admin_reason ) {
-                $message = template_email(
-                    $pwreviewapprovedemail,
-                    {
-                        'displayname' => ${ $uid . $apruser }{'realname'},
-                        'username'    => $apruser,
-                        'reviewer'    => ${ $uid . $username }{'realname'},
-                        'reason'      => $admin_reason,
-                        'password'    => $foundpassword
-                    }
-                );
+            if ($admin_reason) {
+                {
+                    no strict qw(refs);
+                    $message = template_email(
+                        $pwreviewapprovedemail,
+                        {
+                            'displayname' => ${ $uid . $apruser }{'realname'},
+                            'username'    => $apruser,
+                            'reviewer'    => ${ $uid . $username }{'realname'},
+                            'reason'      => $admin_reason,
+                            'password'    => $foundpassword
+                        }
+                    );
+                }
             }
             else {
-                $message = template_email(
-                    $pwinstantapprovedemail,
-                    {
-                        'displayname' => ${ $uid . $apruser }{'realname'},
-                        'username'    => $apruser,
-                        'reviewer'    => ${ $uid . $username }{'realname'},
-                        'password'    => $foundpassword
-                    }
-                );
+                {
+                    no strict qw(refs);
+                    $message = template_email(
+                        $pwinstantapprovedemail,
+                        {
+                            'displayname' => ${ $uid . $apruser }{'realname'},
+                            'username'    => $apruser,
+                            'reviewer'    => ${ $uid . $username }{'realname'},
+                            'password'    => $foundpassword
+                        }
+                    );
+                }
             }
         }
         else {
-            if ( $admin_reason ) {
-                $message = template_email(
-                    $reviewapprovedemail,
-                    {
-                        'displayname' => ${ $uid . $apruser }{'realname'},
-                        'username'    => $apruser,
-                        'reviewer'    => ${ $uid . $username }{'realname'},
-                        'reason'      => $admin_reason
-                    }
-                );
+            if ($admin_reason) {
+                {
+                    no strict qw(refs);
+                    $message = template_email(
+                        $reviewapprovedemail,
+                        {
+                            'displayname' => ${ $uid . $apruser }{'realname'},
+                            'username'    => $apruser,
+                            'reviewer'    => ${ $uid . $username }{'realname'},
+                            'reason'      => $admin_reason
+                        }
+                    );
+                }
             }
             else {
-                $message = template_email(
-                    $instantapprovedemail,
-                    {
-                        'displayname' => ${ $uid . $apruser }{'realname'},
-                        'username'    => $apruser,
-                        'reviewer'    => ${ $uid . $username }{'realname'}
-                    }
-                );
+                {
+                    no strict qw(refs);
+                    $message = template_email(
+                        $instantapprovedemail,
+                        {
+                            'displayname' => ${ $uid . $apruser }{'realname'},
+                            'username'    => $apruser,
+                            'reviewer'    => ${ $uid . $username }{'realname'}
+                        }
+                    );
+                }
             }
         }
-        sendmail(
-            ${ $uid . $apruser }{'email'},
-            "$mailreg_txt{'apr_result_approved'} $mbname",
-            $message, q{}, $emailcharset
-        );
+        {
+            no strict qw(refs);
+            sendmail(
+                ${ $uid . $apruser }{'email'},
+                "$mailreg_txt{'apr_result_approved'} $mbname",
+                $message, q{}, $emailcharset
+            );
+        }
         $language = $templanguage;
 
         if ( $send_welcomeim == 1 ) {
-            $messageid = $BASETIME . $PROCESS_ID;
-            fopen( INBOX, ">$memberdir/$apruser.msg" );
-            print {INBOX}
+            my $messageid = $BASETIME . $PROCESS_ID;
+            open my $INBOX, '>', "$memberdir/$apruser.msg"
+              or croak "$croak{'open'} INBOX";
+            print {$INBOX}
 "$messageid|$sendname|$apruser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
               or croak "$croak{'print'} INBOX";
-            fclose(INBOX);
+            close $INBOX or croak "$croak{'close'} INBOX";
         }
     }
-    $yySetLocation = qq~$adminurl?action=view_reglog~;
+    $yysetlocation = qq~$adminurl?action=view_reglog~;
     redirectexit();
     return;
 }

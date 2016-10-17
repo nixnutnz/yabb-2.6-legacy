@@ -12,22 +12,54 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$guardianadminpmver = 'YaBB 2.7.00 $Revision$';
-@guardianadminpmmods = ();
+our $guardianadminpmver  = 'YaBB 2.7.00 $Revision$';
+our @guardianadminpmmods = ();
+our $guardianadminpmmods = 0;
 if (@guardianadminpmmods) {
     $guardianadminpmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admin_img, %guardian_txt );
+## paths ##
+our ( $adminurl, $yyhtml_root );
+## settings ##
+our (
+    $yymycharset,             $banned_harvesters,
+    $banned_referers,         $banned_requests,
+    $banned_strings,          $whitelist,
+    $use_guardian,            $use_htaccess,
+    $disallow_proxy_on,       $disallow_proxy_notify,
+    $disallow_proxy_htaccess, $referer_on,
+    $referer_notify,          $referer_htaccess,
+    $harvester_on,            $harvester_notify,
+    $harvester_htaccess,      $request_on,
+    $request_notify,          $request_htaccess,
+    $string_on,               $string_notify,
+    $string_htaccess,         $script_on,
+    $script_notify,           $script_htaccess,
+    $union_on,                $union_notify,
+    $union_htaccess,          $clike_on,
+    $clike_notify,            $clike_htaccess
+);
+## other ##
+our (
+    $action,        $yymain,      $yytitle,
+    $yysetlocation, $action_area, $language,
+    %INFO,          %FORM,        $date
+);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('Guardian');
-$admin_images = "$yyhtml_root/Templates/Admin/default";
-$guardimg      = 'guardian.png';
+load_language('Admin');
+load_language('Guardian');
+my $adminimages = "$yyhtml_root/Templates/Admin/default";
+my $guardimg    = 'guardian.png';
 
 sub setup_guardian {
     is_admin_or_gmod();
@@ -38,16 +70,16 @@ sub setup_guardian {
     chomp $banned_requests;
     chomp $banned_strings;
     chomp $whitelist;
-    $banned_harvesters =~ s/\|/\n/gxsm;
-    $banned_referers   =~ s/\|/\n/gxsm;
-    $banned_requests   =~ s/\|/\n/gxsm;
-    $banned_strings    =~ s/\|/\n/gxsm;
-    $whitelist         =~ s/\|/\n/gxsm;
-    @access_denied = gr_update_htaccess('load');
+    $banned_harvesters =~ s/[|]/\n/gxsm;
+    $banned_referers =~ s/[|]/\n/gxsm;
+    $banned_requests =~ s/[|]/\n/gxsm;
+    $banned_strings =~ s/[|]/\n/gxsm;
+    $whitelist =~ s/[|]/\n/gxsm;
+    my @access_denied = gr_update_htaccess('load');
 
-    $acc_denied = q{};
+    my $acc_denied = q{};
     foreach (@access_denied) {
-        chomp $_;
+        chomp;
         $acc_denied .= "$_\n";
     }
 
@@ -57,7 +89,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'title'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'title'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -70,7 +102,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'general'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'general'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -96,7 +128,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'proxy'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'proxy'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -126,7 +158,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'referer'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'referer'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -156,7 +188,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'harvester'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'harvester'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -186,7 +218,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'request'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'request'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -216,7 +248,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'string'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'string'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -246,7 +278,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'script'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'script'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -270,7 +302,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'union'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'union'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -294,7 +326,7 @@ sub setup_guardian {
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td class="titlebg">
-                <img src="$admin_images/$guardimg" alt="" /> <b>$guardian_txt{'clike'}</b>
+                <img src="$adminimages/$guardimg" alt="" /> <b>$guardian_txt{'clike'}</b>
             </td>
         </tr><tr>
             <td class="windowbg2">
@@ -329,7 +361,7 @@ sub setup_guardian {
 ~;
     $yytitle     = $guardian_txt{'setup'};
     $action_area = 'setup_guardian';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
@@ -339,73 +371,78 @@ sub setup_guardian2 {
       use_guardian use_htaccess disallow_proxy_on disallow_proxy_htaccess referer_on referer_htaccess harvester_on harvester_htaccess request_on request_htaccess string_on string_htaccess union_on union_htaccess clike_on clike_htaccess script_on script_htaccess disallow_proxy_notify referer_notify harvester_notify request_notify string_notify union_notify clike_notify script_notify};
 
     # Set as 0 or 1 if box was checked or not
-    foreach (@onoff) {
-        my $fi = lc $_;
-        if (!$FORM{$fi}) {${$_} = 0;}
-        else {${$_} = $FORM{$fi} ? 1 : 0;}
+    foreach my $chk (@onoff) {
+        my $fi = lc $chk;
+        {
+            no strict qw(refs);
+            if   ( !$FORM{$fi} ) { ${$chk} = 0; }
+            else                 { ${$chk} = $FORM{$fi} ? 1 : 0; }
+        }
     }
 
     $banned_harvesters = $FORM{'banned_harvesters'};
     $banned_referers   = $FORM{'banned_referers'};
     $banned_requests   = $FORM{'banned_requests'};
     $banned_strings    = $FORM{'banned_strings'};
-    $access_denied     = $FORM{'access_denied'};
-    $whitelist         = $FORM{'whitelist'};
+    my $access_denied = $FORM{'access_denied'};
+    $whitelist = $FORM{'whitelist'};
     chomp $banned_harvesters;
     chomp $banned_referers;
     chomp $banned_requests;
     chomp $banned_strings;
     chomp $whitelist;
     $banned_harvesters =~ s/\r//gxsm;
-    $banned_referers   =~ s/\r//gxsm;
-    $banned_requests   =~ s/\r//gxsm;
-    $banned_strings    =~ s/\r//gxsm;
-    $access_denied     =~ s/\r//gxsm;
-    $whitelist         =~ s/\r//gxsm;
+    $banned_referers =~ s/\r//gxsm;
+    $banned_requests =~ s/\r//gxsm;
+    $banned_strings =~ s/\r//gxsm;
+    $access_denied =~ s/\r//gxsm;
+    $whitelist =~ s/\r//gxsm;
     $banned_harvesters =~ s/\n/|/gxsm;
-    $banned_referers   =~ s/\n/|/gxsm;
-    $banned_requests   =~ s/\n/|/gxsm;
-    $banned_strings    =~ s/\n/|/gxsm;
-    $access_denied     =~ s/\n/,/gxsm;
-    $whitelist         =~ s/\n/|/gxsm;
+    $banned_referers =~ s/\n/|/gxsm;
+    $banned_requests =~ s/\n/|/gxsm;
+    $banned_strings =~ s/\n/|/gxsm;
+    $access_denied =~ s/\n/,/gxsm;
+    $whitelist =~ s/\n/|/gxsm;
 
     # We shouldn't let them block POST and GET since it'll mess things up.
     $banned_requests =~ s/post//igxsm;
     $banned_requests =~ s/get//igxsm;
-    $banned_requests =~ s/\|+/\|/igxsm;    # Clean up extra pipes
+    $banned_requests =~ s/[|]+/|/igxsm;    # Clean up extra pipes
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
-    @access_denied = split /,/xsm, $access_denied;
+    save_settings_to('Settings.pm');
+    my @access_denied = split /,/xsm, $access_denied;
     gr_update_htaccess( 'save', @access_denied );
 
-    $yySetLocation = qq~$adminurl?action=setup_guardian~;
+    $yysetlocation = qq~$adminurl?action=setup_guardian~;
     redirectexit();
     return;
 }
 
 sub gr_update_htaccess {
-    my ( $action, @values ) = @_;
+    my ( $act, @values ) = @_;
     my ( $htheader, $htfooter, @denies, @htout );
-    if ( !$action ) { return 0; }
+    if ( !$act ) { return 0; }
+    my @htlines;
     if ( -e '.htaccess' ) {
-        fopen( HTA, '.htaccess' );
-        @htlines = <HTA>;
-        fclose(HTA);
+        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} HTA";
+        @htlines = <$HTA>;
+        close $HTA or croak "$croak{'close'} HTA";
     }
+
 # header to determine only who has access to the main script, not the admin script
     $htheader = q~<Files YaBB*>~;
     $htfooter = q~</Files>~;
-    $start    = 0;
-    foreach (@htlines) {
-        chomp $_;
-        if ( $_ eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $_ !~ m{#}xsm && $_ ne q{} ) {
-            push @htout, "$_\n";
+    my $start = 0;
+    foreach my $chk (@htlines) {
+        chomp;
+        if ( $chk eq $htheader ) { $start = 1; }
+        if ( $start == 0 && $chk !~ m{#}xsm && $_ ne q{} ) {
+            push @htout, "$chk\n";
         }
         if ( $_ eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $_ =~ s/Deny from //gsm ) {
-            push @denies, $_;
+        if ( $start == 1 && $chk =~ s/Deny from //gsm ) {
+            push @denies, $chk;
         }
     }
     if ( $action eq 'load' ) {
@@ -418,16 +455,16 @@ sub gr_update_htaccess {
         if (@values) {
             $prhta .= "\n$htheader\n";
             for (@values) {
-                chomp $_;
+                chomp;
                 if ( $_ ne q{} ) {
                     $prhta .= "Deny from $_\n";
                 }
             }
             $prhta .= "$htfooter\n";
         }
-        fopen( HTA, '>.htaccess' );
-        print {HTA} $prhta or croak "$croak{'print'} HTA";
-        fclose(HTA);
+        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
+        print {$HTA} $prhta or croak "$croak{'print'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
     }
     elsif ( $action eq 'add' ) {
         push @denies, @values;
@@ -440,9 +477,9 @@ sub guardian_block {
     is_admin_or_gmod();
 
     if ( $use_guardian && $use_htaccess ) {
-        my $blockIP = $INFO{'ip'};
-        gr_update_htaccess( 'add', $blockIP );
-        $yySetLocation = qq~$adminurl?action=$INFO{'return'}~;
+        my $block_ip = $INFO{'ip'};
+        gr_update_htaccess( 'add', $block_ip );
+        $yysetlocation = qq~$adminurl?action=$INFO{'return'}~;
         redirectexit();
     }
     return;

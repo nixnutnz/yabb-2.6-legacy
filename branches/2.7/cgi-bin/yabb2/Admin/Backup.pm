@@ -15,29 +15,40 @@
 # Many thanks to AK108 (http://fkp.jkcsi.com/)                                #
 # for his contribution to the YaBB community                                  #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(once);
-no warnings qw(redefine);
-#no warnings qw(uninitialized);
+use strict;
+use warnings;
+no warnings qw(redefine uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 use Module::Load;
 our $VERSION = '2.7.00';
 
-$backuppmver = 'YaBB 2.7.00 $Revision$';
-@backuppmmods = ();
+our $backuppmver  = 'YaBB 2.7.00 $Revision$';
+our $backuppmmods = 0;
+our @backuppmmods = ();
 if (@backuppmmods) {
     $backuppmmods = 1;
 }
+our ( $action, %INFO, %FORM );
 if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
-@ENVpaths = split /\:/xsm, $ENV{'PATH'};
-
-LoadLanguage('Backup');
-$yytitle     = $backup_txt{1};
-$action_area = 'backup';
+my @envpaths = split /\:/xsm, $ENV{'PATH'};
+our (
+    %croak,              %backup_txt,    $backupsettingsloaded,
+    @backup_paths,       $backupmethod,  $compressmethod,
+    $backupprogusr,      $backupprogbin, $vardir,
+    $yyexec,             $yyext,         $backupdir,
+    $boarddir,           $yymain,        $adminurl,
+    $yymycharset,        %admin_img,     $rememberbackup,
+    $bkmax_process_time, %admin_txt,     $boardurl,
+    $username,           $uid,           $lastbackup,
+    $yysetlocation,      $date
+);
+load_language('Admin');
+load_language('Backup');
+our $yytitle     = $backup_txt{1};
+our $action_area = 'backup';
 
 my $curtime = CORE::time;
 
@@ -63,6 +74,7 @@ sub backupsettings {
         $file,          @backups,         $newcommand,
         $style,         $disabledtext,    $input
     );
+    our ( $iamgmod, $yymainnosettings, $allow_gmod_aprofile, );
     my $gmod_disable = q{};
     my $gmod_perms   = q{};
     if ( $iamgmod && !$allow_gmod_aprofile ) {
@@ -111,20 +123,23 @@ sub backupsettings {
     my $selmodules = q{};
 
     # Make a list of modules that we can use with Tar::Archive
-    $tarcompress1 = qq~<tr>
+    my $tarcompress1 = qq~<tr>
             <td class="windowbg">
                 <input type="radio" name="tarmodulecompress" id="tarmodulecompress" value="none" $methodchecklist{'none'}/> <label for="tarmodulecompress">$backup_txt{17}</label>
             </td>
         </tr>~;
 
     my $label_id = 0;
-    for my $module (qw(Compress::Zlib IO::Compress::Bzip2)) {
-        $methodchecklist{$module}||= q{};
+    for my $module (qw(Compress::Zlib Compress::Bzip2)) {
+        $methodchecklist{$module} ||= q{};
         $label_id++;
         $input =
 qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklist{$module}~;
-        eval { load $module; 1 } or $eval = 1;
-        if ($EVAL_ERROR) {
+        my $eval = 0;
+        if ( eval { load($module); 1 } ) {
+            $eval = 1;
+        }
+        if ($eval == 0) {
             $input        = qq~disabled="disabled" id="label_$label_id"~;
             $style        = q~backup-disabled~;
             $disabledtext = $backup_txt{41};
@@ -144,7 +159,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
         </tr>~;
 
     # Make a list of compression commands we can use with /usr/bin/tar
-    $tarcompress2 = qq~<tr>
+    my $tarcompress2 = qq~<tr>
             <td class="windowbg">
                 <input type="radio" name="bintarcompress" id="bintarcompress" value="none" onclick="domodulecheck('$backupprogusr/tar') $methodchecklist{'none'} /> <label for="bintarcompress">$backup_txt{17}</label>
             </td>
@@ -155,7 +170,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
         $methodchecklist{$command} ||= q{};
         $input =
 qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{$command}~;
-        $newcommand = CheckPath($command);
+        $newcommand = checkpath($command);
         if ( !$newcommand ) {
             $input        = qq~disabled="disabled" id="label_$label_id"~;
             $style        = q~backup-disabled~;
@@ -176,14 +191,15 @@ qq~name="bintarcompress" id="label_$label_id" value="$command" $methodchecklist{
             <td class="windowbg">&nbsp;</td>
         </tr>~;
     $methodchecklist{"$backupprogusr/tar"} ||= q{};
+
 # Display the commands we can use for compression
 # Non-translated here, as I doubt there are words to describe "tar" in another language
     $input =
 qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="domodulecheck('$backupprogusr/tar')" $methodchecklist{"$backupprogusr/tar"}~;
-    $newcommand = CheckPath("$backupprogusr/tar") || q{};
+    $newcommand = checkpath("$backupprogusr/tar") || q{};
     if ($newcommand) {
         if (
-            ak_system(
+            my_ak_system(
                 "tar -cf $vardir/backuptest.$curtime.tar ./$yyexec.$yyext")
           )
         {
@@ -215,10 +231,10 @@ qq~name="backupmethod" id="backupmethod1" value="$backupprogusr/tar" onclick="do
     $methodchecklist{"$backupprogusr/zip"} ||= q{};
     $input =
 qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="domodulecheck('$backupprogusr/zip')" $methodchecklist{"$backupprogusr/zip"}~;
-    $newcommand = CheckPath("$backupprogusr/zip") || q{};
+    $newcommand = checkpath("$backupprogusr/zip") || q{};
     if ($newcommand) {
         if (
-            ak_system(
+            my_ak_system(
                 "zip -gq $vardir/backuptest.$curtime.zip ./$yyexec.$yyext")
           )
         {
@@ -247,11 +263,13 @@ qq~name="backupmethod" id="backupmethod2" value="$backupprogusr/zip" onclick="do
         </tr>~;
 
     # Display the modules that we can use
+    my $i = 0;
     foreach my $module (qw(Archive::Tar Archive::Zip)) {
         $i++;
         $methodchecklist{$module} ||= q{};
         $input =
 qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulecheck('$module')" $methodchecklist{$module}~;
+        my $eval = 0;
         eval { load $module; 1 } or $eval = 1;
         if ($EVAL_ERROR) {
             $input        = qq~disabled="disabled" id="backupmethod3_$i"~;
@@ -271,7 +289,7 @@ qq~name="backupmethod" id="backupmethod3_$i" value="$module" onclick="domodulech
 
     # Last but not least, the submit button and the $backupdir path.
     $backupdir ||= "$boarddir/Backups";
-    if ( $backupdir =~ s/^\.\///xsm ) {
+    if ( $backupdir =~ s/^[.]\///xsm ) {
         $ENV{'SCRIPT_FILENAME'} =~ /(.*\/)/xsm;
         $backupdir = "$1$backupdir";
     }
@@ -289,6 +307,7 @@ qq~<span class="important"><b>$backup_txt{'mailfail'}</b></span><br /><br />~;
     }
 
     $yymainnosettings ||= q{};
+
     # Javascript to make the behavior of the form buttons work better
     $yymain .= qq~
 <script type="text/javascript">
@@ -424,7 +443,7 @@ $selmodules
         </tr><tr>
             <td class="windowbg2">
                 <label for="bkmax_process_time">$backup_txt{'19f'}</label> <input type="text" name="bkmax_process_time" id="bkmax_process_time" value="~
-      . ( $bkmax_process_time )
+      . ($bkmax_process_time)
       . qq~" size="3" /> <label for="bkmax_process_time">$backup_txt{'19g'}</label>
             </td>
         </tr>
@@ -459,77 +478,98 @@ $presetjavascriptcode
 
         # Look for the files.
         opendir BACKUPDIR, $backupdir;
-        while ( my $file = readdir BACKUPDIR ) {
+        while ( $file = readdir BACKUPDIR ) {
             next if $file eq q{.} || $file eq q{..} || $file eq '.htaccess';
             push @backups, $file;
         }
         closedir BACKUPDIR;
 
-        my ( $lastbackupfiletime, $filename );
+        my ( $lastbackupfiletime, $filename, $filelist );
         foreach my $file (
             map          { $_->[0] }
             reverse sort { $a->[1] cmp $b->[1] }
             map          { [ $_, /(\d+)/xsm, $_ ] } @backups
           )
         {
-            if ( $file !~ /\A(backup)(n?)\.(\d+)\.([^\.]+)\.(.+)/xsm ) { next; }
-            if ( !$lastbackupfiletime ) { $lastbackupfiletime = $3; }
-            my $filesize = -s "$backupdir/$file";
-            $filesize = int( $filesize / 1024 );    # Measure it in kilobytes
-            if ( $filesize > 1024 * 4 ) {
-                $filesize = int( $filesize / 1024 ) . ' MB';
-            }                                       # Measure it in megabytes
-            else { $filesize .= ' KB'; }            # Label it
-            my @dirs;
-            foreach ( split /_/xsm, $4 ) {
-                push @dirs, $dirs{$_};
-            }
-            $dnload = qq~<a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{'60'}</a>~;
-            $delete = qq~<a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a>~;
-            if ( $iamgmod && !$allow_gmod_aprofile ) {
-                $dnload = $backup_txt{'no_dnload'};
-                $delete = $backup_txt{'no_delete'};
-            }
+            if ( $file =~ /\A(backup)(n?)[.](\d+)[.]([^.]+)[.](.+)/xsm ) {
+                if ( !$lastbackupfiletime ) { $lastbackupfiletime = $3; }
+                my $filesize = -s "$backupdir/$file";
+                $filesize = int( $filesize / 1024 );   # Measure it in kilobytes
+                if ( $filesize > 1024 * 4 ) {
+                    $filesize = int( $filesize / 1024 ) . ' MB';
+                }                                      # Measure it in megabytes
+                else { $filesize .= ' KB'; }           # Label it
+                my @dirs;
+                foreach ( split /_/xsm, $4 ) {
+                    push @dirs, $dirs{$_};
+                }
+                my ( $aa, $bb, $cc, $dd, $ee ) = ( q{}, q{}, q{}, q{}, q{} );
+                if ($1) { $aa = $1; }
+                if ($2) { $bb = $2; }
+                if ($3) { $cc = $3; }
+                if ($4) { $dd = $4; }
+                if ($5) { $ee = $5; }
+                my $dnload =
+qq~<a href="$adminurl?action=downloadbackup;backupid=$file">$backup_txt{'60'}</a>~;
+                my $delete =
+qq~<a href="$adminurl?action=deletebackup;backupid=$file">$backup_txt{53}</a>~;
 
-            $filename = "$1$2.$3.$4.$5";
-            $filelist .= q~            <tr>
+                if ( $iamgmod && !$allow_gmod_aprofile ) {
+                    $dnload = $backup_txt{'no_dnload'};
+                    $delete = $backup_txt{'no_delete'};
+                }
+
+                $filename = "$1$2.$3.$4.$5";
+                my $backpass = q{};
+                {
+                    no strict qw(refs);
+                    $backpass = ${ $uid . $username }{'password'};
+                }
+                $filelist .= q~            <tr>
                 <td>~
-              . timeformat($3) . qq~</td>
+                  . timeformat($cc) . qq~</td>
                 <td class="right">$filesize</td>
                 <td>- ~
-              . join( '<br />- ', @dirs ) . q~</td>
+                  . join( '<br />- ', @dirs ) . q~</td>
                 <td>~
-              . (
-                $2
-                ? "<abbr title='$backup_txt{62}'>$backup_txt{'62a'}</abbr><br />"
-                : q{}
-              )
-              . qq~$5</td>
+                  . (
+                    $bb
+                    ? "<abbr title='$backup_txt{62}'>$backup_txt{'62a'}</abbr><br />"
+                    : q{}
+                  )
+                  . qq~$ee</td>
                 <td>$dnload</td>
                 <td><a href="$adminurl?action=emailbackup;backupid=$file">$backup_txt{'52'}</a></td>
-                <td><a href="$boardurl/Dobackup.pl?myid=$username;passwrd=${ $uid . $username }{'password'};runbackup_again=$1$2.0.$4.$5">$backup_txt{'61'}</a>
-                    <br /><a href="$boardurl/Dobackup.pl?myid=$username;passwrd=${ $uid . $username }{'password'};runbackup_again=$filename">$backup_txt{'62'}</a></td>
+                <td><a href="$boardurl/Dobackup.pl?myid=$username;passwrd=$backpass;runbackup_again=$aa$bb.0.$dd.$ee">$backup_txt{'61'}</a>
+                    <br /><a href="$boardurl/Dobackup.pl?myid=$username;passwrd=$backpass;runbackup_again=$filename">$backup_txt{'62'}</a></td>
                 <td class="center">~
-              . (
-                ( $5 =~ /^a[.]tar/xsm || $5 !~ /tar/xsm )
-                ? q{-}
-                : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~
-              )
-              . qq~</td>
+                  . (
+                    ( $ee =~ /^a[.]tar/xsm || $ee !~ /tar/xsm )
+                    ? q{-}
+                    : qq~<a href="$adminurl?action=recoverbackup1;recoverfile=$filename">$backup_txt{63}</a>~
+                  )
+                  . qq~</td>
                 <td>$delete</td>
             </tr>~;
+            }
+            else { next; }
         }
 
         $filelist ||= qq~<tr>
                 <td colspan="9"><i>$backup_txt{38}</i></td>
             </tr>~;
+        my $backpass = q{};
+        {
+            no strict qw(refs);
+            $backpass = ${ $uid . $username }{'password'};
+        }
 
         $yymain .= qq~
 <form action="$boardurl/Dobackup.pl" method="post" name="runbackup">
 <input type="hidden" name="backupnewest" value="0" />
 <input type="hidden" name="action" value="runbackup" />
 <input type="hidden" name="myid" value="$username" />
-<input type="hidden" name="passwrd" value="${ $uid . $username }{'password'}" />
+<input type="hidden" name="passwrd" value="$backpass" />
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
@@ -555,11 +595,16 @@ $presetjavascriptcode
             $lastbackupfiletime = timeformat( $lastbackup, 1 );
             $lastbackupfiletime =~ s/<.*?>//gxsm;
             if ( $backupmethod eq "$backupprogusr/zip" ) {
-                @lbt = split / /sm, $lastbackupfiletime;
+                my @lbt = split / /sm, $lastbackupfiletime;
                 $lastbackupfiletime = join q{ }, $lbt[0], $lbt[1], $lbt[2];
             }
             $yymain .= qq~
             <div style="margin-top: .5em;"><input type="button" name="submit2" value="$backup_txt{'25a'} $lastbackupfiletime" onclick="BackupNewest($lastbackup);" class="button" /></div>~;
+        }
+        my $backemail = q{};
+        {
+            no strict qw(refs);
+            $backemail = ${ $uid . $username }{'email'}
         }
         $yymain .= qq~
         </td>
@@ -573,7 +618,7 @@ $presetjavascriptcode
         <td class="titlebg" colspan="2">$admin_img{'prefimg'} <b>$backup_txt{35}</b></td>
     </tr><tr>
         <td class="windowbg2" colspan="2">
-            $backup_txt{37} <i>${$uid.$username}{'email'}</i> $backup_txt{'37a'}<br />
+            $backup_txt{37} <i>$backemail</i> $backup_txt{'37a'}<br />
             $backup_txt{36} <span style="font-family: monospace;">$backupdir</span>
             <table class="border-space pad-cell border">
                 <tr>
@@ -591,7 +636,7 @@ $presetjavascriptcode
 </div>~;
     }
 
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
@@ -613,8 +658,7 @@ sub backupsettings2 {
             if ( $FORM{ 'YaBB_' . $_ } ) { push @backup_paths, $_; }
         }
     }
-
-    check_backup_settings();
+    check_back_settings();
 
     # Set $backupdir
     if ( !-w $FORM{'backupdir'} ) {
@@ -622,26 +666,27 @@ sub backupsettings2 {
             "$backup_txt{42} '$FORM{'backupdir'}'. $backup_txt{43}" );
     }
 
-    $backupdir     = $FORM{'backupdir'};
-    $backupprogusr = $FORM{'backupprogusr'};
-    $backupprogbin = $FORM{'backupprogbin'} || '/usr/bin';
+    $backupdir          = $FORM{'backupdir'};
+    $backupprogusr      = $FORM{'backupprogusr'};
+    $backupprogbin      = $FORM{'backupprogbin'} || '/usr/bin';
     $bkmax_process_time = $FORM{'bkmax_process_time'} || 5;
 
     $lastbackup = 0;    # reset when saving settings new
-    print_BackupSettings();
+    print_backupsettings();
 
     # Set $rememberbackup for alert into Settings.pm
     if ( $rememberbackup != $FORM{'rememberbackup'} ) {
         $rememberbackup = $FORM{'rememberbackup'};
-        fopen( SETTINGS, "$vardir/Settings.pm" );
-        @settings = <SETTINGS>;
-        fclose(SETTINGS);
+        open my $SETTINGS, '<', "$vardir/Settings.pm"
+          or croak 'Cannot open Settings';
+        my @settings = <$SETTINGS>;
+        close $SETTINGS or croak 'Cannot close Settings';
         for my $i ( 0 .. $#settings ) {
-            if ( $settings[$i] =~ /\$rememberbackup = \d+;/sm ) {
+            if ( $settings[$i] =~ /\$rememberbackup\s=\s\d+;/xsm ) {
                 if ( !$rememberbackup ) { $rememberbackup = 0; }
                 $rememberbackup *= 86400;    # days in seconds
                 $settings[$i] =~
-s/\$rememberbackup = \d+;/\$rememberbackup = $rememberbackup;/sm;
+s/\$rememberbackup\s=\s\d+;/\$rememberbackup = $rememberbackup;/xsm;
             }
         }
 
@@ -650,29 +695,31 @@ s/\$rememberbackup = \d+;/\$rememberbackup = $rememberbackup;/sm;
             $rememberbackup *= 86400;        # days in seconds
             unshift @settings, "\$rememberbackup = $rememberbackup;\n";
         }
-        fopen( SETTINGS, ">$vardir/Settings.pm" );
-        print {SETTINGS} @settings or croak "$croak{'print'} SETTINGS";
-        fclose(SETTINGS);
+        open $SETTINGS, '>', "$vardir/Settings.pm"
+          or croak 'Cannot open Settings';
+        print {$SETTINGS} @settings or croak "$croak{'print'} SETTINGS";
+        close $SETTINGS or croak 'Cannot close Settings';
     }
 
-    $yySetLocation = qq~$adminurl?action=backup~;
+    $yysetlocation = qq~$adminurl?action=backup~;
     redirectexit();
     return;
 }
 
-sub check_backup_settings {
+sub check_back_settings {
     if ( !@backup_paths ) { fatal_error( q{}, "$backup_txt{3}" ); }
 
     if ( !$backupmethod ) { fatal_error( q{}, "$backup_txt{29}" ); }
 
     if ( $backupmethod =~ /::/xsm ) {    # It is a module, test-require it
+        my $eval = 0;
         eval { load $backupmethod; 1 } or $eval = 1;
         if ($EVAL_ERROR) {
             fatal_error( q{}, "$backup_txt{39} $backupmethod $backup_txt{41}" );
         }
     }
     else {
-        my $newcommand = CheckPath($backupmethod);
+        my $newcommand = checkpath($backupmethod);
         if ( !$newcommand ) {
             fatal_error( q{}, "$backup_txt{40} $backupmethod $backup_txt{41}" );
         }
@@ -680,7 +727,7 @@ sub check_backup_settings {
 
     # If we are using $backupprogusr/tar, check for the compression method.
     if ( $backupmethod eq "$backupprogusr/tar" && $compressmethod ne 'none' ) {
-        my $newcommand = CheckPath($compressmethod);
+        my $newcommand = checkpath($compressmethod);
         if ( !$newcommand ) {
             fatal_error( q{},
                 "$backup_txt{40} $compressmethod $backup_txt{41}" );
@@ -689,6 +736,7 @@ sub check_backup_settings {
 
     # If we are using Archive::Tar, check for the compression method.
     elsif ( $backupmethod eq 'Archive::Tar' && $compressmethod ne 'none' ) {
+        my $eval = 0;
         eval { load $compressmethod; 1 } or $eval = 1;
         if ($EVAL_ERROR) {
             fatal_error( q{},
@@ -701,7 +749,7 @@ sub check_backup_settings {
     return;
 }
 
-sub print_BackupSettings {
+sub print_backupsettings {
     my @newpaths;
     for my $path (qw(src bo lan mem mes temp var html upld)) {
         for (@backup_paths) {
@@ -712,13 +760,13 @@ sub print_BackupSettings {
     $backupsettingsloaded = 1;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
     return;
 }
 
-sub ak_system
+sub my_ak_system
 {    # Returns a success code. The system's code returned is $CHILD_ERROR >> 8
-    @x = @_;
+    my @x = @_;
     CORE::system(@x);
     if ( $CHILD_ERROR == -1 ) {
         return q{};
@@ -727,14 +775,14 @@ sub ak_system
     return 1;                                     # Success; return 1.
 }
 
-sub CheckPath {
+sub checkpath {
     my ($file) = @_;
 
     if ( -e $file ) { return $file; }
 
     $file =~ s/\A.*\///xsm;
 
-    for my $path (@ENVpaths) {
+    for my $path (@envpaths) {
         $path =~ s/\/\Z//xsm;
         if ( -e "$path/$file" ) { return "$path/$file"; }
     }
@@ -760,8 +808,8 @@ sub downloadbackup {
       or croak "$croak{'print'} Content-Type";
 
     # open in binmode
-    open( $READ, $filename )
-      || fatal_error( q{}, "$backup_txt{46} $filename", 1 );
+    open my $READ, '<', $filename
+      or fatal_error( q{}, "$backup_txt{46} $filename", 1 );
     binmode $READ;
     binmode STDOUT;
     while (<$READ>) { print or croak 'cannot print file'; }
@@ -781,7 +829,7 @@ $backup_txt{47} $filename $backup_txt{48}
 <br /><a href="$adminurl?action=deletebackup2;backupid=$filename">$backup_txt{49}</a> | <a href="$adminurl?action=backup">$backup_txt{50}</a>
 ~;
 
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
@@ -795,7 +843,7 @@ sub deletebackup2 {
     unlink "$backupdir/$filename"
       || fatal_error( q{}, "$backup_txt{51} $backupdir/$filename", 1 );
 
-    $yySetLocation = "$adminurl?action=backup";
+    $yysetlocation = "$adminurl?action=backup";
     redirectexit();
     return;
 }
@@ -813,38 +861,49 @@ sub emailbackup {
     }
 
     # Try to safely load MIME::Lite
+    my $eval = 0;
     eval { load MIME::Lite; 1 } or $eval = 1;
     if ( !$EVAL_ERROR && !$INFO{'linkmail'} ) {    # We can use MIME::Lite.
         my $filesize = -s "$backupdir/$filename";
-        $filesize = int( $filesize / 1024 );     # Measure it in kilobytes
+        $filesize = int( $filesize / 1024 );       # Measure it in kilobytes
         if ( !$INFO{'passwarning'} && $filesize > 1024 * 4 )
         {    # Warn if the file-size is to big for email (> 4 MB)
             if ( $filesize > 1024 * 4 ) {
                 $filesize = int( $filesize / 1024 ) . ' MB';
             }    # Measure it in megabytes
             else { $filesize .= ' KB'; }    # Label it
+            my $backemail = q{};
+            {
+                no strict qw(refs);
+                $backemail = ${ $uid . $username }{'email'};
+            }
 
             $yymain = qq~
 $backup_txt{54}?<br />
 $backup_txt{55} <b>$filesize</b>!<br />
 <br />
-<a href="$adminurl?action=emailbackup;backupid=$INFO{'backupid'};passwarning=1">$backup_txt{56} <i>${$uid.$username}{'email'}</i></a><br />
+<a href="$adminurl?action=emailbackup;backupid=$INFO{'backupid'};passwarning=1">$backup_txt{56} <i>$backemail</i></a><br />
 <a href="$adminurl?action=emailbackup;backupid=$INFO{'backupid'};linkmail=1">$backup_txt{57}</a><br />
 <a href="$adminurl?action=downloadbackup;backupid=$INFO{'backupid'}">$backup_txt{58}</a><br />
 <a href="$adminurl?action=backup">$backup_txt{59}</a>
 ~;
-            AdminTemplate();
+            admintemplate();
         }
 
         $mainmessage = $backup_txt{'mailmessage1'};
-        $mainmessage =~ s/USERNAME/${$uid.$username}{'realname'}/gsm;
+        {
+            no strict qw(refs);
+            $mainmessage =~ s/USERNAME/${$uid.$username}{'realname'}/gxsm;
+        }
         $mainmessage =~
-          s/LINK/$adminurl?action=downloadbackup;backupid=$filename/gsm;
-        $mainmessage =~ s/FILENAME/$filename/gsm;
+          s/LINK/$adminurl?action=downloadbackup;backupid=$filename/gxsm;
+        $mainmessage =~ s/FILENAME/$filename/gxsm;
 
-        eval q^
+        if (
+            eval {
+                q~
             my $msg = MIME::Lite->new(
-                To      => ${$uid.$username}{'email'},
+                To      => $backemail,
                 From    => $backup_txt{'mailfrom'},
                 Subject => $backup_txt{'mailsubject'},
                 Type    => 'multipart/mixed'
@@ -867,7 +926,12 @@ $backup_txt{55} <b>$filesize</b>!<br />
                 push(@arg, AuthPass => "$authpass") if $authpass;
                 $msg->send('smtp', @arg);
             }
-        ^;
+        ~;
+            }
+          )
+        {
+        $yysetlocation = "$adminurl?action=backup&mailinfo=1";
+        }
     }
 
     if ( $EVAL_ERROR || $INFO{'linkmail'} ) {
@@ -882,16 +946,20 @@ $backup_txt{55} <b>$filesize</b>!<br />
         $mainmessage =~ s/SYSTEMINFO/$EVAL_ERROR/sm;
 
         require Sources::Mailer;
+        my $backemail = q{};
+        {
+            no strict qw(refs);
+            $backemail = ${ $uid . $username }{'email'};
+        }
         sendmail(
-            ${ $uid . $username }{'email'},
-            $backup_txt{'mailsubject'},
+            $backemail,   $backup_txt{'mailsubject'},
             $mainmessage, $backup_txt{'mailfrom'}
         );
 
-        $yySetLocation = "$adminurl?action=backup&mailinfo=-1";
+        $yysetlocation = "$adminurl?action=backup&mailinfo=-1";
     }
     else {
-        $yySetLocation = "$adminurl?action=backup&mailinfo=1";
+        $yysetlocation = "$adminurl?action=backup&mailinfo=1";
     }
 
     redirectexit();
@@ -899,7 +967,7 @@ $backup_txt{55} <b>$filesize</b>!<br />
 }
 
 sub recoverbackup1 {
-    $INFO{'recoverfile'} =~ /\A(backup)(n?)\.(\d+)\.([^\.]+)\.(.+)/xsm;
+    $INFO{'recoverfile'} =~ /\A(backup)(n?)[.](\d+)[.]([^.]+)[.](.+)/xsm;
 
     my @dirs;
     for ( split /_/xsm, $4 ) {
@@ -937,6 +1005,7 @@ sub recoverbackup1 {
                 $backup_txt{102}<br />
                 <br />
                 <i>$INFO{'recoverfile'}</i>~;
+    my $myrec2 = q{};
     if ($2) {
         $myrec2 = " (<b>$backup_txt{62}</b>)";
     }
@@ -944,6 +1013,7 @@ sub recoverbackup1 {
         $myrec2 = q{};
     }
     $yymain .= $myrec2 . qq~ $backup_txt{103} ~;
+    my $mytime = q{};
     if ($3) {
         $mytime = timeformat($3);
     }
@@ -963,7 +1033,8 @@ sub recoverbackup1 {
                         <td class="center"><b>$backup_txt{108}</b></td>
                     </tr>~;
 
-    $INFO{'recoverfile'} =~ /\.tar(.*)$/xsm;
+    $INFO{'recoverfile'} =~ /[.]tar(.*)$/xsm;
+    my $recovertype = q{};
     if ( $1 eq '.gz' ) {
         $recovertype =
           "tar -tzf $backupdir/$INFO{'recoverfile'} -C $backupdir/";
@@ -976,7 +1047,7 @@ sub recoverbackup1 {
 
     for ( split /\n/xsm, qx($recovertype) ) {
         next if -d "/$_/";
-        $_ =~ /(.*\/)(.*)/xsm;
+        /(.*\/)(.*)/xsm;
         if ( !$checkdir{$1} && $2 ) {
             $checkdir{$1} = 1;
             $yymain .= qq~<tr>
@@ -1015,7 +1086,7 @@ sub recoverbackup1 {
 </div>
 </form>~;
 
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
@@ -1036,6 +1107,7 @@ sub recoverbackup2 {
     }
 
     $FORM{'recoverfile'} =~ /[.]tar(.*)$/xsm;
+    my $recovertype = q{};
     if ( $1 eq '.gz' ) {
         $recovertype =
           "tar -tzf $backupdir/$FORM{'recoverfile'} -C $restore_root";
@@ -1152,7 +1224,7 @@ sub recoverbackup2 {
 </table>
 </div>~;
 
-    AdminTemplate();
+    admintemplate();
     return;
 }
 

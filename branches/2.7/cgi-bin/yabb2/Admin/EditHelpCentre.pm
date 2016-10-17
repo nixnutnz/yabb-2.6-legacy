@@ -12,59 +12,81 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$edithelpcentrepmver = 'YaBB 2.7.00 $Revision$';
-@edithelpcentrepmmods = ();
+our $edithelpcentrepmver  = 'YaBB 2.7.00 $Revision$';
+our $edithelpcentrepmmods = 0;
+our @edithelpcentrepmmods = ();
 if (@edithelpcentrepmmods) {
     $edithelpcentrepmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %admin_img, %helptxt, %lngs );
+## paths ##
+our ( $adminurl, $vardir, $langdir, $helpfile );
+## settings ##
+our ( $yymycharset, $usehelp_perms, );
+## other ##
+our (
+    $action,        $yymain,      $yytitle,
+    $yysetlocation, $action_area, $language,
+    $lang,          %INFO,        %FORM,
+);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('HelpCentre');
+load_language('Admin');
+load_language('HelpCentre');
+
 $yytitle = $helptxt{'1'};
 my $help_language = $FORM{'help_language'} || $INFO{'help_language'} || $lang;
 
-sub HelpEdit {
-    $page      = $FORM{'page'};
-    $help_area = $INFO{'area'};
+sub help_edit {
+    my $page      = $FORM{'page'};
+    my $help_area = $INFO{'area'};
     if ( $page eq 'user00_agreement' ) {
-        $yySetLocation =
+        $yysetlocation =
 qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=helpadmin~;
         redirectexit();
     }
-
+    our ($section_name);
     require "$helpfile/$help_language/$help_area/$page.help";
     my $txtrevision = lc $help_language . $help_area . '_' . $page . 'helpver';
-    my $mytxtrevision = ${$txtrevision};
+    my $mytxtrevision = q{};
+    {
+        no strict qw(refs);
+        $mytxtrevision = ${$txtrevision};
+    }
 
-    $SectionName =~ s/_/ /gsm;
-    $admin_list = qq~<tr>
+    $section_name =~ s/_/ /gsm;
+    my $admin_list = qq~<tr>
         <td class="windowbg2">
-            <label for="SectionName"><b>$helptxt{'7a'}</b></label>: <input type="text" maxlength="50" size="50" value="$SectionName" name="SectionName" id="SectionName" />
+            <label for="section_name"><b>$helptxt{'7a'}</b></label>: <input type="text" maxlength="50" size="50" value="$section_name" name="section_name" id="section_name" />
         </td>
     </tr>~;
 
-    $aa = 1;
-    while ( ${ SectionSub . $aa } ) {
-        ${ SectionSub . $aa } =~ s/_/ /gsm;
-        my $hmessage;
-        $hmessage = ${ SectionBody . $aa };
+    my $aa = 1;
+    {
+        no strict qw(refs);
+        while ( ${ 'section_sub' . $aa } ) {
+            ${ 'section_sub' . $aa } =~ s/_/ /gsm;
+            my $hmessage;
+            $hmessage = ${ 'section_body' . $aa };
 
-        $admin_list .= qq~<tr>
+            $admin_list .= qq~<tr>
         <td class="windowbg">
-            <label for="SectionSub$aa"><b>$helptxt{'7b'}</b></label>: <input type="text" maxlength="50" size="50" value="${SectionSub.$aa}" name="SectionSub$aa" id="SectionSub$aa" />
+            <label for="section_sub$aa"><b>$helptxt{'7b'}</b></label>: <input type="text" maxlength="50" size="50" value="${'section_sub' . $aa}" name="section_sub$aa" id="section_sub$aa" />
         </td>
     </tr><tr>
         <td class="windowbg2" style="padding-bottom:1em">
-            <textarea rows="10" name="SectionBody$aa" style="width: 99%">$hmessage</textarea>
+            <textarea rows="10" name="section_body$aa" style="width: 99%">$hmessage</textarea>
         </td>
     </tr>~;
-        $aa++;
+            $aa++;
+        }
     }
     require "$langdir/Lang.lng";
     my $displang = $lngs{$help_language};
@@ -102,41 +124,41 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
     </div>
 </form>~;
 
-    $yytitle     = "$helptxt{'7'}";
+    $yytitle     = $helptxt{'7'};
     $action_area = 'helpadmin';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub HelpEdit2 {
-    $Area = $FORM{'area'};
-    $Page = $FORM{'page'};
-    $txtrevision = $FORM{'txtrevision'};
-    $mytxtrevision = $FORM{'mytxtrevision'} || q~''~;
+sub help_edit2 {
+    my $area          = $FORM{'area'};
+    my $page          = $FORM{'page'};
+    my $txtrevision   = $FORM{'txtrevision'};
+    my $mytxtrevision = $FORM{'mytxtrevision'} || q~''~;
 
     my $prhelp =
 qq~\$$txtrevision = '$mytxtrevision';\nif ( \$action eq 'detailedversion' ) { return 1; }\n~;
-    $FORM{'SectionName'} =~ s/ /_/gsm;
-    $prhelp .= qq~\$SectionName = q\~$FORM{'SectionName'}\~;\n\n~;
-    $aa = 1;
-    while ($FORM{"SectionBody$aa"}) {
-        $FORM{"SectionBody$aa"} =~ tr/\r//d;
-        $FORM{"SectionBody$aa"} =~ s/\cM//gxsm;
-        $FORM{"SectionBody$aa"} =~
+    $FORM{'section_name'} =~ s/ /_/gsm;
+    $prhelp .= qq~\$section_name = q\~$FORM{'section_name'}\~;\n\n~;
+    my $aa = 1;
+    while ( $FORM{"section_body$aa"} ) {
+        $FORM{"section_body$aa"} =~ tr/\r//d;
+        $FORM{"section_body$aa"} =~ s/\cM//gxsm;
+        $FORM{"section_body$aa"} =~
           s/\[([^\]]{0,30})\n([^\]]{0,30})\]/\[$1$2\]/gxsm;
-        $FORM{"SectionBody$aa"} =~
+        $FORM{"section_body$aa"} =~
           s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
-        $FORM{"SectionBody$aa"} =~
+        $FORM{"section_body$aa"} =~
           s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
-        $FORM{"SectionBody$aa"} =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gsm;
-        $FORM{"SectionBody$aa"} =~ s/@/\\@/gxsm;
+        $FORM{"section_body$aa"} =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
+        $FORM{"section_body$aa"} =~ s/@/\\@/gxsm;
 
-        $FORM{"SectionSub$aa"} =~ s/ /_/gsm;
+        $FORM{"section_sub$aa"} =~ s/ /_/gsm;
         $prhelp .= qq~
 ### Section $aa
 #############################################
-\$SectionSub$aa = q\~$FORM{"SectionSub$aa"}\~;
-\$SectionBody$aa = q\~$FORM{"SectionBody$aa"}\~;
+\$section_sub$aa = q\~$FORM{"section_sub$aa"}\~;
+\$section_body$aa = q\~$FORM{"section_body$aa"}\~;
 #############################################
 
 ~;
@@ -144,31 +166,32 @@ qq~\$$txtrevision = '$mytxtrevision';\nif ( \$action eq 'detailedversion' ) { re
     }
     $prhelp .= qq~1;\n~;
 
-    fopen( HELPORDER, ">$helpfile/$help_language/$Area/$Page.help" );
-    print {HELPORDER} $prhelp or croak "$croak{'print'} HELPORDER";
-    fclose(HELPORDER);
+    open my $HELPORDER, '>', "$helpfile/$help_language/$area/$page.help"
+      or croak "$croak{'open'} HELPFILE";
+    print {$HELPORDER} $prhelp or croak "$croak{'print'} HELPORDER";
+    close $HELPORDER or croak "$croak{'close'} HELPFILE";
 
-    $yymain .= "$helptxt{'8'}";
-    $yytitle       = "$helptxt{'7'}";
-    $yySetLocation = qq~$adminurl?action=edithelp;help_language=$help_language~;
+    $yymain .= $helptxt{'8'};
+    $yytitle       = $helptxt{'7'};
+    $yysetlocation = qq~$adminurl?action=edithelp;help_language=$help_language~;
     redirectexit();
     return;
 }
 
-sub HelpSet2 {
-    $UseHelp_Perms = $FORM{'UseHelp_Perms'} ? 1 : 0;
+sub helpset2 {
+    $usehelp_perms = $FORM{'UseHelp_Perms'} ? 1 : 0;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
-    $yymain .= "$helptxt{'8'}";
-    $yytitle       = "$helptxt{'7'}";
-    $yySetLocation = qq~$adminurl?action=helpadmin~;
+    $yymain .= $helptxt{'8'};
+    $yytitle       = $helptxt{'7'};
+    $yysetlocation = qq~$adminurl?action=helpadmin~;
     redirectexit();
     return;
 }
 
-sub MainAdmin {
+sub main_admin {
     my ( $admin_list, $adminlist, $gmod_list, $gmodlist, $moderator_list,
         $moderatorlist, $user_list, $userlist );
     $yymain .=
@@ -180,7 +203,7 @@ qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: i
                     </td>
                 </tr><tr>
                     <td class="windowbg2">
-                        <label for="UseHelp_Perms">$helptxt{'9'}</label> <input type="checkbox" name="UseHelp_Perms" id="UseHelp_Perms" value="1"$(ischecked($UseHelp_Perms)}perms_check />
+                        <label for="usehelp_perms">$helptxt{'9'}</label> <input type="checkbox" name="usehelp_perms" id="usehelp_perms" value="1"${ischecked($usehelp_perms)}perms_check />
                     </td>
                 </tr><tr>
                     <td class="catbg center">
@@ -204,9 +227,10 @@ qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: i
     my @lfilesanddirs = readdir HELPDIR;
     closedir HELPDIR;
 
-    for my $item (sort {lc($a) cmp lc $b} @lfilesanddirs) {
-        if (   -d "$helpfile/$item"
-                && $item =~ m{\A[\w\#\%\-\:\+\?\$\&\~\,\@/]+\Z}xsm ) {
+    for my $item ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+        if ( -d "$helpfile/$item"
+            && $item =~ m{\A[\w#%\-:+?\$&~,@\/]+\Z}xsm )
+        {
             my $displang = $item;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gixsm;
             $yymain .=
@@ -224,51 +248,54 @@ qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: i
         </form>
 ~;
 
-    $yytitle     = "$helptxt{'7'}";
+    $yytitle     = $helptxt{'7'};
     $action_area = 'helpadmin';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub SetOrderFile {
+sub set_orderfile {
     my $help_area   = $INFO{'area'};
     my %verify_hash = ();
-    $FORM{'order'}   =~ s/\r//gxsm;
+    $FORM{'order'} =~ s/\r//gxsm;
     $FORM{'testlst'} =~ s/\r//gxsm;
     require qq~$helpfile/$help_language/HelpOrder.pm~;
-    $oldorder = $FORM{'testlst'};
-    $neworder = $FORM{'order'};
-    @oldorder = split /\n/xsm, $oldorder;
-    @neworder = split /\n/xsm, $neworder;
+    my $oldorder = $FORM{'testlst'};
+    my $neworder = $FORM{'order'};
+    my @oldorder = split /\n/xsm, $oldorder;
+    my @neworder = split /\n/xsm, $neworder;
     for (@oldorder) {
-        $_ =~ s/[\r\n]//gxsm;
-        $verify_hash{"$_"}++;
+        s/[\r\n]//gxsm;
+        $verify_hash{$_}++;
     }
-    $theorder = q{};
+    my $theorder = q{};
     for my $order (@neworder) {
         $order =~ s/[\r\n]//gxsm;
         if ( $order eq q{} ) { next; }
         if ( !exists $verify_hash{$order} ) { next; }
         $theorder .= "$order ";
     }
-    my @helps = qw(Admin Gmod Moderator User);
+    my @helps = qw(admin gmod moderator user);
     my $prhlp = q{};
-    for (@helps) {
-        if ($_ eq $help_area ) {
-            $prhlp .= qq~\@$_ = qw($theorder);\n~;
-        }
-        else {
-            $prhlp .= qq~\@$_ = qw(@{$_});\n~;
+    {
+        no strict qw(refs);
+        for (@helps) {
+            if ( $_ eq $help_area ) {
+                $prhlp .= qq~\@$_ = qw($theorder);\n~;
+            }
+            else {
+                $prhlp .= qq~\@$_ = qw(@{$_});\n~;
+            }
         }
     }
-    fopen( HELPORDER, ">$helpfile/$help_language/HelpOrder.pm" )
+    open my $HELPORDER, '>', "$helpfile/$help_language/HelpOrder.pm"
       or croak(
 "couldn't write order file - check permissions on $helpfile/$help_language"
       );
-    print {HELPORDER} $prhlp or croak 'cannot print helporder';
-    fclose(HELPORDER);
-    $yytitle       = "$helptxt{'7'}";
-    $yySetLocation = qq~$adminurl?action=edithelp;help_language=$help_language~;
+    print {$HELPORDER} $prhlp or croak "$croak{'print'} HELPFILE";
+    close $HELPORDER or croak "$croak{'close'} HELPORDER";
+    $yytitle       = $helptxt{'7'};
+    $yysetlocation = qq~$adminurl?action=edithelp;help_language=$help_language~;
     redirectexit();
     return;
 }
@@ -277,75 +304,80 @@ sub edithelp {
     my ( $admin_list, $adminlist, $gmod_list, $gmodlist, $moderator_list,
         $moderatorlist, $user_list, $userlist );
     $help_language = $FORM{'help_language'} || $INFO{'help_language'} || $lang;
-    $admincount = 0;
+    my $admincount = 0;
+    my $admin_lst  = q{};
     opendir HELPDIR, "$helpfile/$help_language/Admin";
-    @contents = readdir HELPDIR;
+    my @contents = readdir HELPDIR;
     closedir HELPDIR;
     for my $line ( sort { uc($a) cmp uc $b } @contents ) {
-        ( $name, $extension ) = split /\./xsm, $line;
+        my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
-        $select = q{};
+        my $select = q{};
         if ( $admincount == 0 ) { $select = q~ selected="selected"~; }
         $admin_list .= qq~<option value="$name"$select>$name</option>~;
         $admin_lst  .= qq~$name\n~;
         $admincount++;
     }
+    our ( @admin, @gmod, @moderator, @user );
     require qq~$helpfile/$help_language/HelpOrder.pm~;
-    for my $line (@Admin) {
+    for my $line (@admin) {
         chomp $line;
         $adminlist .= "$line\n";
     }
 
-    $gmodcount = 0;
+    my $gmodcount = 0;
+    my $gmod_lst  = q{};
     opendir HELPDIR, "$helpfile/$help_language/Gmod";
     @contents = readdir HELPDIR;
     closedir HELPDIR;
     for my $line ( sort { uc($a) cmp uc $b } @contents ) {
-        ( $name, $extension ) = split /\./xsm, $line;
+        my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
-        $select = q{};
+        my $select = q{};
         if ( $gmodcount == 0 ) { $select = q~ selected="selected"~; }
         $gmod_list .= qq~<option value="$name"$select>$name</option>~;
         $gmod_lst  .= qq~$name\n~;
         $gmodcount++;
     }
-    for my $line (@Gmod) {
+    for my $line (@gmod) {
         chomp $line;
         $gmodlist .= "$line\n";
     }
 
-    $modcount = 0;
+    my $modcount      = 0;
+    my $moderator_lst = q{};
     opendir HELPDIR, "$helpfile/$help_language/Moderator";
     @contents = readdir HELPDIR;
     closedir HELPDIR;
     for my $line ( sort { uc($a) cmp uc $b } @contents ) {
-        ( $name, $extension ) = split /\./xsm, $line;
+        my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
-        $select = q{};
+        my $select = q{};
         if ( $modcount == 0 ) { $select = q~ selected="selected"~; }
         $moderator_list .= qq~<option value="$name"$select>$name</option>~;
         $moderator_lst  .= qq~$name\n~;
         $modcount++;
     }
-    for my $line (@Moderator) {
+    for my $line (@moderator) {
         chomp $line;
         $moderatorlist .= "$line\n";
     }
 
-    $usercount = 0;
+    my $usercount = 0;
+    my $user_lst  = q{};
     opendir HELPDIR, "$helpfile/$help_language/User";
     @contents = readdir HELPDIR;
     closedir HELPDIR;
     for my $line ( sort { uc($a) cmp uc $b } @contents ) {
-        ( $name, $extension ) = split /\./xsm, $line;
+        my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
-        $select = q{};
+        my $select = q{};
         if ( $usercount == 0 ) { $select = q~ selected="selected"~; }
         $user_list .= qq~<option value="$name"$select>$name</option>~;
         $user_lst  .= qq~$name\n~;
         $usercount++;
     }
-    for my $line (@User) {
+    for my $line (@user) {
         chomp $line;
         $userlist .= qq~$line\n~;
     }
@@ -398,7 +430,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'6'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="adminhelp" action="$adminurl?action=helpediting;area=Admin" method="post" style="display: inline" accept-charset="$yymycharset">
+                    <form name="adminhelp" action="$adminurl?action=helpediting;area=admin" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                         <select name="page" size="$admincount" class="help-page">
                             $admin_list
@@ -409,7 +441,7 @@ function adduserhelp() {
                         </span>
                     </form>
                     <span class="help-add"><input type="button" value="\-\>" onclick="addadminhelp()" /></span>
-                    <form name="adminorder" action="$adminurl?action=helporder;area=Admin" method="post" style="display: inline">
+                    <form name="adminorder" action="$adminurl?action=helporder;area=admin" method="post" style="display: inline">
                         <span style="float: right; text-align: center; width: 200px;">
                             <textarea name="order" cols="29" rows="$admincount" class="help-page">$adminlist</textarea>
                             <input type="hidden" value="$admin_lst" name="testlst" />
@@ -423,7 +455,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'5'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="gmodhelp" action="$adminurl?action=helpediting;area=Gmod" method="post" style="display: inline" accept-charset="$yymycharset">
+                    <form name="gmodhelp" action="$adminurl?action=helpediting;area=gmod" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                             <select name="page" size="$gmodcount" class="help-page">
                                 $gmod_list
@@ -436,7 +468,7 @@ function adduserhelp() {
                     <span class="help-add">
                         <input type="button" value="\-\>" onclick="addgmodhelp()" />
                     </span>
-                    <form name="gmodorder" action="$adminurl?action=helporder;area=Gmod" method="post" style="display: inline">
+                    <form name="gmodorder" action="$adminurl?action=helporder;area=gmod" method="post" style="display: inline">
                         <span style="float: right; text-align: center; width: 200px;">
                             <textarea name="order" cols="29" rows="$gmodcount" class="help-page">$gmodlist</textarea>
                             <input type="hidden" value="$gmod_lst" name="testlst" />
@@ -450,7 +482,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'4'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="modhelp" action="$adminurl?action=helpediting;area=Moderator" method="post" style="display: inline" accept-charset="$yymycharset">
+                    <form name="modhelp" action="$adminurl?action=helpediting;area=moderator" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                         <select name="page" size="$modcount" class="help-page">
                             $moderator_list
@@ -463,7 +495,7 @@ function adduserhelp() {
                     <span class="help-add">
                         <input type="button" value="\-\>" onclick="addmodhelp()" />
                     </span>
-                    <form name="modorder" action="$adminurl?action=helporder;area=Moderator" method="post" style="display: inline" accept-charset="$yymycharset">
+                    <form name="modorder" action="$adminurl?action=helporder;area=moderator" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span style="float: right; text-align: center; width: 200px;">
                             <textarea name="order" cols="29" rows="$modcount" class="help-page">$moderatorlist</textarea>
                             <input type="hidden" value="$moderator_lst" name="testlst" />
@@ -477,7 +509,7 @@ function adduserhelp() {
                 <td class="catbg"><i>$helptxt{'3'}</i></td>
             </tr><tr>
                 <td class="windowbg2 center">
-                    <form name="userhelp" action="$adminurl?action=helpediting;area=User" method="post" style="display: inline" accept-charset="$yymycharset">
+                    <form name="userhelp" action="$adminurl?action=helpediting;area=user" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span class="help-box">
                             <select name="page" size="$usercount" class="help-page">
                                 $user_list
@@ -490,7 +522,7 @@ function adduserhelp() {
                     <span class="help-add">
                         <input type="button" value="\-\>" onclick="adduserhelp()" />
                     </span>
-                    <form name="userorder" action="$adminurl?action=helporder;area=User" method="post" style="display: inline" accept-charset="$yymycharset">
+                    <form name="userorder" action="$adminurl?action=helporder;area=user" method="post" style="display: inline" accept-charset="$yymycharset">
                         <span style="float: right; text-align: center; width: 200px;">
                             <textarea name="order" cols="29" rows="$usercount" class="help-page">$userlist</textarea>
                             <input type="hidden" value="$user_lst" name="testlst" />
@@ -504,9 +536,9 @@ function adduserhelp() {
         </table>
 ~;
 
-    $yytitle     = "$helptxt{'7'}";
+    $yytitle     = $helptxt{'7'};
     $action_area = 'edithelp';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 

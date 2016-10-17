@@ -12,29 +12,36 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$membergroupspmver = 'YaBB 2.7.00 $Revision$';
-@membergroupspmmods = ();
+our $membergroupspmver  = 'YaBB 2.7.00 $Revision$';
+our @membergroupspmmods = ();
+our $membergroupspmmods = 0;
 if (@membergroupspmmods) {
     $membergroupspmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %admin_img, %amgtxt );
+## paths ##
+our ( $adminurl, $yyhtml_root, $imagesdir, $defaultimagesdir, $htmldir );
+## settings ##
+our ( $yymycharset, %grp_staff, %grp_nopost, %grp_post, @nopostorder,
+    $addmemgroup_enabled, $scripturl, $iamgmod );
+## other ##
+our ( $action, $yymain, $yytitle, $yysetlocation, $action_area, %INFO, %FORM, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-$admin_images = "$yyhtml_root/Templates/Admin/default";
+load_language('Admin');
 
-sub EditMemberGroups {
+my $adminimages = "$yyhtml_root/Templates/Admin/default";
+
+sub edit_member_groups {
     is_admin_or_gmod();
-
-#            (
-#                $title,     $stars,       $starpic,    $color,
-#                $noshow,    $viewperms,   $topicperms, $replyperms,
-#                $pollperms, $attachperms, $additional
-#            )
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -71,29 +78,29 @@ sub EditMemberGroups {
             <td class="catbg center"><b>$amgtxt{'01'}</b></td>
             <td class="catbg center"><b>$admin_txt{'53'}</b></td>
             <td class="catbg center"><b>&nbsp;</b></td>~;
-    my @grps = sort keys %Group;
+    my @grps     = sort keys %grp_staff;
     my @memstats = ();
-    for ( @grps ) {
-        @memstats = @{$Group{$_}};
+    my ( $thecolname, );
+    for (@grps) {
+        @memstats = @{ $grp_staff{$_} };
         $memstats[4] =
           ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
         $yymain .= qq~
         </tr><tr>
             <td class="windowbg2 center">$memstats[0]</td>
             <td class="windowbg2 center"><img src="$imagesdir/$memstats[2]" alt="" /> x $memstats[1]</td>~;
-
-    if ( $memstats[3] ) {
-        $thecolname = hextoname($memstats[3]);
-        $yymain .= qq~
+        if ( $memstats[3] ) {
+            $thecolname = hextoname( $memstats[3] );
+            $yymain .= qq~
             <td class="windowbg2 center"><span style="color:$memstats[3]">$thecolname</span></td>~;
-    }
-    else {
-        $yymain .= q~
+        }
+        else {
+            $yymain .= q~
             <td class="windowbg2 center">&nbsp;</td>~;
-    }
-    $mgrp = $_;
-    $mgrp =~ s/\ /%20/gsm;
-    $yymain .= qq~
+        }
+        my $mgrp = $_;
+        $mgrp =~ s/[ ]/%20/gxsm;
+        $yymain .= qq~
             <td class="windowbg2 center">$memstats[4]</td>
             <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=$mgrp">$admin_txt{'53'}</a></td>
             <td class="windowbg2 center">&nbsp;</td>~;
@@ -104,7 +111,7 @@ sub EditMemberGroups {
 </div>
 ~;
 
-    my $colspan = 6;
+    my $colspan  = 6;
     my $colgroup = q~<colgroup>
             <col  style="width: 25%" />
             <col  style="width: 15%" />
@@ -114,11 +121,11 @@ sub EditMemberGroups {
             <col  style="width: 15%" />
         </colgroup>
 ~;
-    $additional_tablehead = q{};
+    my $additional_tablehead = q{};
     if ( $addmemgroup_enabled > 0 ) {
         $additional_tablehead =
           qq~<td class="catbg center"><b>$amgtxt{'83'}</b></td>~;
-        $colspan = 7;
+        $colspan  = 7;
         $colgroup = q~<colgroup>
             <col style="width: 25%" />
             <col  style="width: 15%" />
@@ -154,43 +161,46 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
             <td class="catbg center"><b>$admin_txt{'54'}</b></td>
         </tr>~;
 
-    $count = 0;
+    my $count = 0;
     for (@nopostorder) {
-        @memstats = @{$NoPost{$_}};
-        $memstats[4] =
-          ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-        if ( $memstats[10] ) {
-            $memstats[10] =
-              ( $memstats[10] == 0 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-        }
-        if ( !$stars ) { $stars = 0; }
-        $yymain .= qq~<tr>
+        if ( exists $grp_nopost{$_} ) {
+            @memstats = @{ $grp_nopost{$_} };
+            $memstats[4] =
+              ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
+            if ( !$memstats[10] || $memstats[10] == 0 ) {
+                $memstats[10] = $admin_txt{'164'};
+            }
+            else { $memstats[10] = $admin_txt{'163'}; }
+            my $stars = $memstats[1];
+            if ( !$stars ) { $stars = 0; }
+            $yymain .= qq~<tr>
             <td class="windowbg2 center">$memstats[0]</td>
             <td class="windowbg2 center"><img src="$imagesdir/$memstats[2]" alt="" /> x $memstats[1]</td>~;
 
-        if ($memstats[3]) {
-            $thecolname = hextoname($memstats[3]);
-            $yymain .= qq~
+            if ( $memstats[3] ) {
+                $thecolname = hextoname( $memstats[3] );
+                $yymain .= qq~
             <td class="windowbg2 center"><span style="color:$memstats[3]">$thecolname</span></td>~;
-        }
-        else {
-            $yymain .= q~
+            }
+            else {
+                $yymain .= q~
             <td class="windowbg2 center">&nbsp;</td>~;
-        }
+            }
 
-        $yymain .= qq~
+            $yymain .= qq~
             <td class="windowbg2 center">$memstats[4]</td>~;
 
-        if ( $addmemgroup_enabled > 0 ) {
-            $yymain .= qq~
+            if ( $addmemgroup_enabled > 0 ) {
+                $yymain .= qq~
             <td class="windowbg2 center">$memstats[10]</td>~;
-        }
+            }
 
-        $yymain .= qq~
+            $yymain .= qq~
             <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=NP|$_">$admin_txt{'53'}</a></td>
             <td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=NP|$_">$admin_txt{'54'}</a></td>
         </tr>~;
-        $count++;
+            $count++;
+        }
     }
 
     if ( $count == 0 ) {
@@ -225,12 +235,12 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
             <td class="catbg center"><b>$admin_txt{'54'}</b></td>
         </tr>~;
 
-    my $count = 0;
-    for ( reverse sort { $a <=> $b } keys %Post ) {
-        @memstats = @{$Post{$_}};
+    $count = 0;
+    for ( reverse sort { $a <=> $b } keys %grp_post ) {
+        @memstats = @{ $grp_post{$_} };
         $memstats[4] =
           ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
-        if ( !$memstats[1] )             { $memstats[1]   = 0; }
+        if ( !$memstats[1] ) { $memstats[1] = 0; }
         if ( $memstats[2] !~ /\//xsm ) {
             $memstats[2] = "$imagesdir/$memstats[2]";
         }
@@ -238,8 +248,8 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
             <td class="windowbg2 center">$memstats[0]</td>
             <td class="windowbg2 center"><img src="$memstats[2]" alt="" /> x $memstats[1]</td>~;
 
-        if ($memstats[3]) {
-            $thecolname = hextoname($memstats[3]);
+        if ( $memstats[3] ) {
+            $thecolname = hextoname( $memstats[3] );
             $yymain .= qq~
             <td class="windowbg2 center"><span style="color: $memstats[3];">$thecolname</span></td>~;
         }
@@ -269,12 +279,12 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
     $yytitle     = $admin_txt{'8'};
     $action_area = 'modmemgr';
 
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
 sub hextoname {
-    ($colorname) = @_;
+    my ($colorname) = @_;
     $colorname =~ s/aqua|\x2300FFFF/$amgtxt{'56'}/ixsm;
     $colorname =~ s/black|\x23000000/$amgtxt{'57'}/ixsm;
     $colorname =~ s/blue|\x230000FF/$amgtxt{'58'}/ixsm;
@@ -302,43 +312,44 @@ sub hextoname {
     return $colorname;
 }
 
-sub editAddGroup {
+sub edit_add_group {
     is_admin_or_gmod();
     my @memstats = ();
+    my ( $viewtitle, $posts, $noposts, $choosable, );
     if ( $INFO{'group'} ) {
         $viewtitle = $admintxt{'18a'};
-        ( $type, $element ) = split /[|]/xsm, $INFO{'group'};
-        if ( $element ) {
+        my ( $type, $element ) = split /[|]/xsm, $INFO{'group'};
+        if ($element) {
             if ( $type eq 'P' ) {
-                $posts = $element;
-                @memstats = @{$Post{$element}};
+                $posts    = $element;
+                @memstats = @{ $grp_post{$element} };
             }
             else {
                 $noposts   = $element;
                 $choosable = 1;
-                @memstats = @{$NoPost{$element}};
+                @memstats  = @{ $grp_nopost{$element} };
             }
         }
         else {
-            @memstats = @{$Group{ $INFO{'group'} }};
+            @memstats = @{ $grp_staff{ $INFO{'group'} } };
         }
     }
     else {
-        $viewtitle = $admintxt{'18b'};
-        $memstats[0]    = q{};
-        $memstats[1]    = q{};
-        $memstats[2]    = q{};
-        $memstats[3]     = q{};
-        $posts     = q{};
-        $noposts   = 1;
-        for ( sort { $a <=> $b } keys %NoPost ) {
+        $viewtitle   = $admintxt{'18b'};
+        $memstats[0] = q{};
+        $memstats[1] = q{};
+        $memstats[2] = q{};
+        $memstats[3] = q{};
+        $posts       = q{};
+        $noposts     = 1;
+        for ( sort { $a <=> $b } keys %grp_nopost ) {
             $noposts = $_ + 1;
         }
     }
+    my $stars = $memstats[1];
+    if ( !$stars || $stars !~ /\A\d+\Z/xsm ) { $stars = 0; }
 
-    if ( !$stars || $stars !~ /\A[0-9]+\Z/xsm ) { $stars = 0; }
-
-    $otherdisable = q~ disabled="disabled"~;
+    my $otherdisable = q~ disabled="disabled"~;
 
     # Get star selected if needed.
     my @starsgif = (
@@ -350,8 +361,7 @@ sub editAddGroup {
         "$amgtxt{'22'}", "$amgtxt{'23'}", "$amgtxt{'24'}", "$amgtxt{'25'}",
     );
     my @stara = ();
-    $pick         = $memstats[2];
-    $otherdisable = q{};
+    my $pick  = $memstats[2];
     my $stsel = 0;
     for my $i ( 1 .. 7 ) {
         if ( $memstats[2] eq $starsgif[$i] ) {
@@ -364,23 +374,30 @@ sub editAddGroup {
     }
     my $starurl =
         ( $memstats[2] !~ m{http://}xsm ? "$imagesdir/" : q{} )
-      . ( $memstats[2]                  ? $memstats[2]      : 'blank.gif' );
+      . ( $memstats[2]                  ? $memstats[2]  : 'blank.gif' );
 
     $memstats[3] =~ s/\#//gxsm;
 
-    $pc = q~ checked="checked"~;
-    $pd = q{};
-    $pt = q{};
+    my $pc    = q~ checked="checked"~;
+    my $pd    = q{};
+    my $pt    = q{};
+    my $admg  = q{};
+    my $post1 = q{};
+    my $post2 = q{};
 
-    if ($memstats[4])     { $pc   = q{}; }
-    if ($memstats[10]) { $admg = q~ checked="checked"~; }
+    if ( $memstats[4] )  { $pc   = q{}; }
+    if ( $memstats[10] ) { $admg = q~ checked="checked"~; }
 
     if ( !$posts && $action ne 'editgroup1' ) {
         $post2 = q{ checked="checked"};
         $pt    = q{ disabled="disabled"};
     }
     else { $post1 = q~ checked="checked"~; $pd = q~ disabled="disabled"~; }
-
+    my $vc  = q{};
+    my $tc  = q{};
+    my $rc  = q{};
+    my $poc = q{};
+    my $ac  = q{};
     if ( $memstats[5] ) { $vc  = q~ checked="checked"~; }
     if ( $memstats[6] ) { $tc  = q~ checked="checked"~; }
     if ( $memstats[7] ) { $rc  = q~ checked="checked"~; }
@@ -414,7 +431,7 @@ sub editAddGroup {
     $stara[8] ||= q{};
     for my $i ( 1 .. 7 ) {
         $starsgif[$i] ||= q{};
-        $stara[$i] ||= q{};
+        $stara[$i]    ||= q{};
         $starstxt[$i] ||= q{};
         $yymain .=
 qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option>\n~;
@@ -461,17 +478,17 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
       . ( $memstats[3] ? qq* style="color: #$memstats[3];"* : q{} )
       . qq~><label for="color2"><b>$amgtxt{'08'}</b></label></span>
             #<input type="text" name="color2" id="color2" size="6" value="$memstats[3]" maxlength="6" onkeyup="viscolor(this.value);" /> &nbsp;
-            <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+            <img src="$adminimages/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
         </td>
     </tr>~;
 
     # Get color selected
-    $yymain =~ s/(<option value="$memstats[3]")/$1 selected="selected"/sm;
-    $posts ||= q{};
-    $post1 ||= q{};
-    $post2 ||= q{};
+    $yymain =~ s/(<option\s value="$memstats[3]")/$1 selected="selected"/xsm;
+    $posts   ||= q{};
+    $post1   ||= q{};
+    $post2   ||= q{};
     $noposts ||= q{};
-    if ( !exists $Group{ $INFO{'group'} } ) {
+    if ( !exists $grp_staff{ $INFO{'group'} } ) {
         $yymain .= qq~<tr>
         <td class="windowbg"><label for="postindepend">$amgtxt{'39a'}</label></td>
         <td class="windowbg2">
@@ -512,11 +529,11 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
         }
     }
     if ( $INFO{'group'} ne 'Administrator' ) {
-        $vc ||= q{};
-        $tc ||= q{};
-        $rc ||= q{};
+        $vc  ||= q{};
+        $tc  ||= q{};
+        $rc  ||= q{};
         $poc ||= q{};
-        $ac ||= q{};
+        $ac  ||= q{};
         $yymain .= qq~
     </table>
 </div>
@@ -544,7 +561,8 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
         </tr>~;
     }
 
-   $yymain .= qq~
+    my $hshcd = '\x23';
+    $yymain .= qq~
     </table>
 </div>
 <div class="bordercolor rightboxdiv">
@@ -578,7 +596,7 @@ function viscolor(v) {
 }
 
 function previewColor(color) {
-    color = color.replace(/\x23/, '');
+    color = color.replace(/$hshcd/, '');
     document.getElementById('color2').value = color;
     viscolor(color);
 }
@@ -613,33 +631,33 @@ function depend(value) {
 ~;
     $yytitle     = $admin_txt{'8'};
     $action_area = 'modmemgr';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub editAddGroup2 {
+sub edit_add_group2 {
     is_admin_or_gmod();
 
 # Additional checks are:
 # If post independent -> post dependent, then need to kill off post independent
 # If post dependent -> post independent, then need to kill off post dependent.
 # If post dependent -> NEW post dependent, then need to kill off OLD post dependent.
-    $newpostdep = 0;
+    my $newpostdep = 0;
 
     if ( !$FORM{'title'} ) { fatal_error('no_group_name'); }
-    $name = $FORM{'title'};
+    my $name = $FORM{'title'};
 
     $name =~ s/\x27/&\x2339;/gxsm;
     $name =~ s/,/&\x2344;/gxsm;
-    $name =~ s/\|/&\x23124;/gxsm;
-    $lcname = lc $name;
-
+    $name =~ s/[|]/&\x23124;/gxsm;
+    my $lcname = lc $name;
+    my ( $cur_otherstar, $star );
     if ( $FORM{'starsadmin'} eq 'other' ) {
         $cur_otherstar = $FORM{'cur_otherstar'};
         if ( $FORM{'otherstar'} ) {
-            $star = UploadFile(
+            $star = upload_file(
                 'otherstar',        'Templates/Forum/default',
-                'png jpg jpeg gif', '250',
+                'png/jpg/jpeg/gif', '250',
                 '0'
             );
             if ( $cur_otherstar !~
@@ -654,9 +672,13 @@ sub editAddGroup2 {
         }
     }
     else { $star = $FORM{'starsadmin'}; }
-    $color = $FORM{'color2'} ? "#$FORM{'color2'}" : q{};
-    $postdepend = $FORM{'postdepend'};
-    if ( (!$FORM{'posts'} || $FORM{'posts'} !~ /\d+/xsm) && $postdepend && $postdepend eq 'Yes' ) {
+    my $color = $FORM{'color2'} ? "#$FORM{'color2'}" : q{};
+    my $postdepend = $FORM{'postdepend'};
+    my ( $posts, $noposts, $viewpublic );
+    if (   ( !$FORM{'posts'} || $FORM{'posts'} !~ /\d+/xsm )
+        && $postdepend
+        && $postdepend eq 'Yes' )
+    {
         fatal_error('no_post_number');
     }
     else { $posts = $FORM{'posts'} }
@@ -664,35 +686,36 @@ sub editAddGroup2 {
 
     if   ( $FORM{'viewpublic'} ) { $viewpublic = 0 }
     else                         { $viewpublic = 1 }
-    $view       = $FORM{'view'}       || 0;
-    $topics     = $FORM{'topics'}     || 0;
-    $reply      = $FORM{'reply'}      || 0;
-    $polls      = $FORM{'polls'}      || 0;
-    $attach     = $FORM{'attach'}     || 0;
-    $additional = $FORM{'additional'} || 0;
-    $original   = $FORM{'original'};
+    my $view       = $FORM{'view'}       || 0;
+    my $topics     = $FORM{'topics'}     || 0;
+    my $reply      = $FORM{'reply'}      || 0;
+    my $polls      = $FORM{'polls'}      || 0;
+    my $attach     = $FORM{'attach'}     || 0;
+    my $additional = $FORM{'additional'} || 0;
+    my $original   = $FORM{'original'};
+    my ( $type, $element, );
 
     # all the checks.
-    if ( $original ) {
+    if ($original) {
         ( $type, $element ) = split /[|]/xsm, $original;
 
         # Ignoring Administrative groups.
-        if ( $element ) {
+        if ($element) {
             if ( $type eq 'P' ) {
                 if ( $element != $posts || $postdepend eq 'No' ) {
                     if ($iamgmod) { fatal_error('newpostdep_gmod'); }
 
-                    delete $Post{$element};
+                    delete $grp_post{$element};
                     $newpostdep = 1;
                     $noposts    = 1;
-                    foreach ( sort { $a <=> $b } keys %NoPost ) {
+                    foreach ( sort { $a <=> $b } keys %grp_nopost ) {
                         $noposts = $_ + 1;
                     }
                 }
             }
             elsif ( $type eq 'NP' ) {
                 if ( $element != $noposts || $postdepend eq 'Yes' ) {
-                    delete $NoPost{$element};
+                    delete $grp_nopost{$element};
                     for my $i ( 0 .. $#nopostorder ) {
                         if ( $nopostorder[$i] == $element ) {
                             splice @nopostorder, $i, 1;
@@ -704,48 +727,43 @@ sub editAddGroup2 {
         }
     }
 
-    if ( $Group{$original} && ${$Group{$original}}[0] ne $name ) {
-        if (
-            $lcname eq lc( ${$Group{'Administrator'}}[0] ) )
-        {
+    if ( $grp_staff{$original} && ${ $grp_staff{$original} }[0] ne $name ) {
+        if ( $lcname eq lc ${ $grp_staff{'Administrator'} }[0] ) {
             fatal_error( 'double_group', $lcname );
         }
-        if ( $lcname eq
-            lc ( ${$Group{'Global Moderator'}}[0] ) )
-        {
+        if ( $lcname eq lc ${ $grp_staff{'Global Moderator'} }[0] ) {
             fatal_error( 'double_group', $lcname );
         }
-        if (
-            $lcname eq lc ( ${$Group{'Mid Moderator'}}[0] ) )
-        {
+        if ( $lcname eq lc ${ $grp_staff{'Mid Moderator'} }[0] ) {
             fatal_error( 'double_group', $lcname );
         }
-        if ( $lcname eq lc ( ${$Group{'Moderator'}}[0] ) ) {
+        if ( $lcname eq lc ${ $grp_staff{'Moderator'} }[0] ) {
             fatal_error( 'double_group', $lcname );
         }
     }
 
     # Check Post Independent
-    for my $key ( keys %NoPost ) {
+    for my $key ( keys %grp_nopost ) {
+        $type ||= q{};
         if ( $type eq 'NP' && $key eq $element ) { next; }
-        ( $value, undef ) = @{$NoPost{$key}};
-        $lcvalue = lc $value;
+        my ( $value, undef ) = @{ $grp_nopost{$key} };
+        my $lcvalue = lc $value;
         if ( $lcname eq $lcvalue ) {
             fatal_error( 'double_group', $lcname );
         }
     }
 
     # Check Post Dependent
-    for my $key ( keys %Post ) {
+    for my $key ( keys %grp_post ) {
         if ( $type && $type eq 'P' && $key eq $element ) { next; }
-        ( $value, undef ) = @{$Post{$key}};
-        $lcvalue = lc $value;
+        my ( $value, undef ) = @{ $grp_post{$key} };
+        my $lcvalue = lc $value;
         if ( $lcname eq $lcvalue ) {
             fatal_error( 'double_group', $lcname );
         }
     }
 
-    if ( $FORM{'numstars'} !~ /\A[0-9]+\Z/xsm ) { $FORM{'numstars'} = 0; }
+    if ( $FORM{'numstars'} !~ /\A\d+\Z/xsm ) { $FORM{'numstars'} = 0; }
 
 # Now, we must deliberate on what type of thing this group is, and add/read(when editing) it.
 # First, using original variable, we check to see it's not a perma-group.
@@ -754,13 +772,17 @@ sub editAddGroup2 {
 
 # We have a perma-group! $type is now equal to the perma group or key for the hash.
 # add in code to actually set the line.
-        $Group{$type} = [$name, $FORM{'numstars'}, $star, $color, $viewpublic, $view, $topics, $reply, $polls, $attach, $additional];
+        $grp_staff{$type} = [
+            $name,       $FORM{'numstars'}, $star,   $color,
+            $viewpublic, $view,             $topics, $reply,
+            $polls,      $attach,           $additional
+        ];
     }
     else {
 
         # post dependent group.
         if ( $postdepend eq 'Yes' ) {
-            for my $key ( keys %Post ) {
+            for my $key ( keys %grp_post ) {
                 if (
                     $posts == $key
                     && (   $FORM{'origin'} eq 'editgroup1'
@@ -773,16 +795,26 @@ sub editAddGroup2 {
 
             if ($iamgmod) { fatal_error('newpostdep_gmod'); }
 
-            $Post{$posts} = [$name, $FORM{'numstars'}, $star, $color, $viewpublic, $view, $topics, $reply, $polls, $attach, $additional];
+            $grp_post{$posts} = [
+                $name,   $FORM{'numstars'}, $star,
+                $color,  $viewpublic,       $view,
+                $topics, $reply,            $polls,
+                $attach, $additional
+            ];
             $newpostdep = 1;
 
             # no post group
         }
         else {
-            $NoPost{$noposts} = [$name, $FORM{'numstars'}, $star, $color, $viewpublic, $view, $topics, $reply, $polls, $attach, $additional];
+            $grp_nopost{$noposts} = [
+                $name,   $FORM{'numstars'}, $star,
+                $color,  $viewpublic,       $view,
+                $topics, $reply,            $polls,
+                $attach, $additional
+            ];
             my $isinorder;
             for my $i ( 0 .. $#nopostorder ) {
-                if (   $NoPost{ $nopostorder[$i] }
+                if (   $grp_nopost{ $nopostorder[$i] }
                     && $nopostorder[$i] == $noposts )
                 {
                     $isinorder = 1;
@@ -794,49 +826,31 @@ sub editAddGroup2 {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
-    # save @nopostorder, %Group, %NoPost and %Post
+    # save @nopostorder, %grp_staff, %grp_nopost and %grp_post
 
     if ($newpostdep) {
-        $yySetLocation =
+        $yysetlocation =
           qq~$adminurl?action=rebuildmemlist;actiononfinish=modmemgr~;
     }
     else {
-        $yySetLocation = qq~$adminurl?action=modmemgr~;
+        $yysetlocation = qq~$adminurl?action=modmemgr~;
     }
     redirectexit();
     return;
 }
 
-sub permImage {
-    my @x = @_;
-    my $viewperms =
-      ( $x[0] != 1 ) ? qq~<img src="$imagesdir/open.gif" alt="" />~ : q{};
-    my $topicperms =
-      ( $x[1] != 1 ) ? qq~<img src="$imagesdir/new_thread.gif" alt="" />~ : q{};
-    my $replyperms =
-      ( $x[2] != 1 ) ? qq~<img src="$imagesdir/reply.gif" alt="" />~ : q{};
-    my $pollperms =
-      ( $x[3] != 1 )
-      ? qq~<img src="$imagesdir/poll_create.gif" alt="" />~
-      : q{};
-    my $attachperms =
-      ( $x[4] != 1 ) ? qq~<img src="$imagesdir/paperclip.gif" alt="" />~ : q{};
-
-    return "$viewperms $topicperms $replyperms $pollperms $attachperms";
-}
-
-sub deleteGroup {
+sub delete_group {
     if ( $INFO{'group'} ) {
-        ( $type, $element ) = split /[|]/xsm, $INFO{'group'};
-        if ( $element ) {
+        my ( $type, $element ) = split /[|]/xsm, $INFO{'group'};
+        if ($element) {
             if ( $type eq 'P' ) {
-                delete $Post{$element};
+                delete $grp_post{$element};
             }
             elsif ( $type eq 'NP' ) {
-                delete $NoPost{$element};
-                KillModeratorGroup($element);
+                delete $grp_nopost{$element};
+                kill_moderator_group($element);
             }
         }
     }
@@ -846,26 +860,27 @@ sub deleteGroup {
 
     my @new_nopostorder;
     for (@nopostorder) {
-        if ( $NoPost{$_} ) { push @new_nopostorder, $_; }
+        if ( $grp_nopost{$_} ) { push @new_nopostorder, $_; }
     }
     @nopostorder = @new_nopostorder;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
-    # save @nopostorder, %Group, %NoPost and %Post
+    # save @nopostorder, %grp_staff, %grp_nopost and %grp_post
 
-    $yySetLocation =
+    $yysetlocation =
       qq~$adminurl?action=rebuildmemlist;actiononfinish=modmemgr~;
     redirectexit();
     return;
 }
 
-sub reorderGroups {
-    $selsize = 0;
+sub reorder_groups {
+    my $selsize  = 0;
+    my $orderopt = q{};
     for (@nopostorder) {
-        if ( $NoPost{$_} ) {
-            ( $title, undef ) = @{$NoPost{$_}};
+        if ( $grp_nopost{$_} ) {
+            my ( $title, undef ) = @{ $grp_nopost{$_} };
             if ( $_ eq $INFO{'thegroup'} ) {
                 $orderopt .=
                   qq~<option value="$_" selected="selected">$title</option>~;
@@ -877,7 +892,7 @@ sub reorderGroups {
         }
     }
 
-    $rowspan = $#nopostorder + 2;
+    my $rowspan = $#nopostorder + 2;
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
@@ -904,7 +919,7 @@ sub reorderGroups {
         </tr>~;
 
     for (@nopostorder) {
-        ( $title, $stars, $starpic, $color, undef ) = @{$NoPost{$_}};
+        my ( $title, $stars, $starpic, $color, undef ) = @{ $grp_nopost{$_} };
         if ( !$stars ) { $stars = '0'; }
         $yymain .= q~<tr>
             <td class="windowbg2">~;
@@ -933,11 +948,11 @@ sub reorderGroups {
     $yytitle     = $admintxt{'reordergroups'};
     $action_area = 'modmemgr';
 
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
-sub reorderGroups2 {
+sub reorder_groups2 {
     my $moveitem = $FORM{'ordergroups'};
 
     if ($moveitem) {
@@ -957,11 +972,9 @@ sub reorderGroups2 {
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
-    # save @nopostorder
-
-    $yySetLocation = qq~$adminurl?action=reordergroup;thegroup=$moveitem~;
+    $yysetlocation = qq~$adminurl?action=reordergroup;thegroup=$moveitem~;
     redirectexit();
     return;
 }

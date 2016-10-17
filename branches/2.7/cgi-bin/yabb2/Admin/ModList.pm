@@ -12,21 +12,28 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
+use strict;
 use warnings;
-no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$modlistpmver = 'YaBB 2.7.00 $Revision$';
-@modlistpmmods = ();
+our $modlistpmver  = 'YaBB 2.7.00 $Revision$';
+our @modlistpmmods = ();
+our $modlistpmmods = 0;
 if (@modlistpmmods) {
     $modlistpmmods = 1;
 }
+##  languages ##
+our ( %admin_txt, %admin_img, %mod_list );
+## other ##
+our ( $action, $action_area, $yymain, $yytitle, );
+
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub ListMods {
+load_language('Admin');
+
+sub list_mods {
     my @installed_mods = ();
 
     # You need to list your mod in this file for full compliance.
@@ -42,9 +49,7 @@ sub ListMods {
 
 ### BOARDMOD ANCHOR ###
 ### END BOARDMOD ANCHOR ###
-    our ( $yymain, %mod_list, $imagesdir, $yytitle );
-    my ( $action_area,  $mod_text_list, $full_description );
-    $total_mods = @installed_mods;
+    my $total_mods = @installed_mods;
 
     if ( !@installed_mods ) {
         $yymain .= qq~
@@ -66,9 +71,11 @@ sub ListMods {
 ~;
         $yytitle     = $mod_list{'6'};
         $action_area = 'modlist';
-        AdminTemplate();
+        admintemplate();
     }
 
+    my $full_description = q{};
+    my $mod_text_list    = q{};
     for my $modification (@installed_mods) {
         chomp $modification;
         my ( $mod_anchor, $mod_author, $mod_desc, $mod_version, $mod_date ) =
@@ -76,8 +83,8 @@ sub ListMods {
 
         my $mod_displayname = $mod_anchor;
         $mod_displayname =~ s/\_/ /gxsm;
-        $mod_anchor      =~ s/ /\_/gsm;
-        $mod_anchor      =~ s/[^\w]//gxsm;
+        $mod_anchor =~ s/[ ]/\_/gxsm;
+        $mod_anchor =~ s/\W//gxsm;
 
         $mod_text_list .= qq~<tr>
             <td class="windowbg2">
@@ -141,7 +148,7 @@ $full_description
 
     $yytitle     = $mod_list{'6'};
     $action_area = 'modlist';
-    AdminTemplate();
+    admintemplate();
     return $yymain;
 }
 

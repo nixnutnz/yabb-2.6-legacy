@@ -12,19 +12,33 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-#use warnings;
-no warnings qw(once);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$editemailtemplatespmver = 'YaBB 2.7.00 $Revision$';
-@editemailtemplatespmmods = ();
+our $editemailtemplatespmver  = 'YaBB 2.7.00 $Revision$';
+our $editemailtemplatespmmods = 0;
+our @editemailtemplatespmmods = ();
 if (@editemailtemplatespmmods) {
     $editemailtemplatespmmods = 1;
 }
+
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %admin_img, %emaildesc, %emaileditor,
+    %yabbtagdesc, %yabbtags, );
+## paths ##
+our ( $adminurl, $vardir, $langdir, %lngs );
+## settings ##
+our ( $yymycharset, );
+## other ##
+our ( $action, $yymain, $yytitle, $yysetlocation, $action_area, $language,
+    %INFO, %FORM, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+load_language('Admin');
 
 sub editemailtemplates {
     is_admin_or_gmod();
@@ -55,7 +69,7 @@ sub editemailtemplates {
         closedir LNGDIR;
         for my $item ( sort { lc($a) cmp lc $b } @langitems ) {
             if (   -d "$langdir/$item"
-                && $item =~ m{\A[\w\#\%\-\:\+\?\$\&\~\,\@/]+\Z}xsm
+                && $item =~ m{\A[\w#%\-:+?\$&~,@\/]+\Z}xsm
                 && -e "$langdir/$item/Email.lng" )
             {
                 require "$langdir/Lang.lng";
@@ -96,7 +110,7 @@ sub editemailtemplates {
                 <select name="string">~;
 
         # Find all the strings
-        LoadLanguage('Email');
+        load_language('Email');
         my @emaildescset =
           sort { $emaildesc{$a} cmp $emaildesc{$b} } keys %emaildesc;
         for my $varname (@emaildescset) {
@@ -121,11 +135,14 @@ sub editemailtemplates {
         # Show editor
         my $reallang = $language;
         $language = $editlang;
-        LoadLanguage('Email');
+        load_language('Email');
         $language = $reallang;
-
-        my $message = ${$string};
-        ToHTML($message);
+        my ($message);
+        {
+            no strict qw(refs);
+            $message = ${$string};
+        }
+        to_html($message);
         my $comment = $emaildesc{$string};
 
         $yymain .= qq~
@@ -180,7 +197,7 @@ sub editemailtemplates {
 
     $yytitle     = $admintxt{'a4_label4'};
     $action_area = 'editemailtemplates';
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
@@ -197,11 +214,11 @@ sub editemailtemplates2 {
     if ( !$message || !$string ) { fatal_error('no_info'); }
 
     # Read the current file
-    fopen( LANG, "$langdir/$editlang/Email.lng" )
-      || fatal_error( 'cannot_open_language',
-        "$langdir/$editlang/Email.lng", 1 );
-    my $langfile = do { local $INPUT_RECORD_SEPARATOR = undef; <LANG> };
-    fclose(LANG);
+    open my $LANG, '<', "$langdir/$editlang/Email.lng"
+      or
+      fatal_error( 'cannot_open_language', "$langdir/$editlang/Email.lng", 1 );
+    my $langfile = do { local $INPUT_RECORD_SEPARATOR = undef; <$LANG> };
+    close $LANG or croak "$croak{'close'} LANG";
 
     # Vague hardcoded error since it was tampered with
     if ( $string !~ /\Q$string\E/xsm ) {
@@ -209,16 +226,16 @@ sub editemailtemplates2 {
     }
 
     # Make the change
-    $langfile =~ s/\$\Q$string\E = q~.+?~;/\$$string = q~$message~;/sm;
+    $langfile =~ s/\$\Q$string\E\s =\s q~.+?~;/\$$string = q~$message~;/xsm;
 
     # Write it out
-    fopen( LANG, ">$langdir/$editlang/Email.lng" )
-      || fatal_error( 'cannot_open_language',
-        "$langdir/$editlang/Email.lng", 1 );
-    print {LANG} $langfile or croak "$croak{'print'} LANG";
-    fclose(LANG);
+    open $LANG, '>', "$langdir/$editlang/Email.lng"
+      or
+      fatal_error( 'cannot_open_language', "$langdir/$editlang/Email.lng", 1 );
+    print {$LANG} $langfile or croak "$croak{'print'} LANG";
+    close $LANG or croak "$croak{'close'} LANG";
 
-    $yySetLocation = qq~$adminurl?action=editemailtemplates&lang=$editlang~;
+    $yysetlocation = qq~$adminurl?action=editemailtemplates&lang=$editlang~;
     redirectexit();
     return;
 }

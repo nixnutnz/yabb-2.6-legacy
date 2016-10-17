@@ -12,20 +12,252 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
+use strict;
+no strict qw(refs);
 use warnings;
-no warnings qw(once);
-no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$newsettingspmver = 'YaBB 2.7.00 $Revision$';
-@newsettingspmmods = ();
+our $newsettingspmver  = 'YaBB 2.7.00 $Revision$';
+our @newsettingspmmods = ();
+our $newsettingspmmods = 0;
 if (@newsettingspmmods) {
     $newsettingspmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %admin_img, %settings_txt, %lngs );
+## paths ##
+our ( $adminurl, $admindir, $langdir, $vardir );
+## settings ##
+our (
+    @settings,                     %settings,
+    $yymycharset,                  $codemaxchars,
+    $fadertext,                    %color,
+    $faderbackground,              %templateset,
+    $iplookup_url,                 %iplookup,
+    $ext_prof_order,               @ext_prof_order,
+    $ext_prof_fields,              @ext_prof_fields,
+    $adomains,                     @adomains,
+    $bdomains,                     @bdomains,
+    $reserve,                      @reserve,
+    $spamrules,                    @spamrules,
+    $usertxtwrap,                  %grp_staff,
+    %grp_nopost,                   %grp_post,
+    $nopostorder,                  @nopostorder,
+    $pallist,                      @pallist,
+    $enable_notifications,         $enable_notifications_n,
+    $enable_notifications_pm,      @advanced_tabs,
+    $detachblock,                  $removenormalsmilies,
+    %addedsmilies,                 $smilieorder,
+    @smilieorder,                  $bookmarks,
+    @bookmarks,                    $bkmax_process_time,
+    @backup_paths,                 %newcalicon,
+    @ext,                          @pm_attachext,
+    %afix_img_size,                %fix_img_size,
+    $smtp_server,                  $yabbversion,
+    $maintenance,                  $rememberbackup,
+    $guestaccess,                  $mbname,
+    $forumstart,                   $cookie_length,
+    $cookieusername,               $cookiepassword,
+    $cookiesession_name,           $cookietsort,
+    $cookieview,                   $cookieviewtime,
+    $regtype,                      $reg_agree,
+    $screenlogin,                  $imp_email_check,
+    $reg_reason_len,               $preregspan,
+    $pwstrengthmeter_scores,       $pwstrengthmeter_common,
+    $pwstrengthmeter_minchar,      $emailpassword,
+    $emailnewpass,                 $emailwelcome,
+    $name_cannot_be_userid,        $birthday_on_reg,
+    $gender_on_reg,                $nomailspammer,
+    $lang,                         $default_template,
+    $templ_switcher,               $temp_switcher_allowed,
+    $mailprog,                     $smtp_auth_required,
+    $authuser,                     $authpass,
+    $helloserv,                    $mailtype,
+    $usehelp_perms,                $matchword,
+    $matchcase,                    $matchuser,
+    $matchname,                    $profilebutton,
+    $usertools,                    $allow_hide_email,
+    $user_hide_avatars,            $user_hide_user_text,
+    $user_hide_img,                $user_hide_signat,
+    $user_hide_attach,             $user_hide_smilies,
+    $edit_genderlimit,             $edit_agelimit,
+    $enable_buddylist,             $addmemgroup_enabled,
+    $showlatestmember,             $user_hide_attach_img,
+    $user_hide_smilies_row,        $shownewsfader,
+    $show_recentbar,               $showmodify,
+    $show_brd_descrip,             $showuserpic,
+    $showusertext,                 $showtopicviewers,
+    $showtopicrepliers,            $hide_signat_for_guests,
+    $showgenderimage,              $showzodiac,
+    $showuserage,                  $showage,
+    $showregdate,                  $showyabbcbutt,
+    $nestedquotes,                 $parseflash,
+    $enableclicklog,               $showimageinquote,
+    $enabletopichover,             $staff_reason,
+    $user_reason,                  $enable_spell_check,
+    $enable_ubbc,                  $enable_news,
+    $allowpics,                    $upload_useravatar,
+    $upload_avatargroup,           $avatar_limit,
+    $avatar_dirlimit,              $default_avatar,
+    $default_userpic,              $enable_guestposting,
+    $guest_media_disallowed,       $enable_guestlanguage,
+    $enable_guest_view_limit,      $guest_view_limit,
+    $guest_view_limit_block,       $new_notification_alert,
+    $autolinkurls,                 $forumnumberformat,
+    $timeselected,                 $timecorrection,
+    $enabletz,                     $timeoffset,
+    $dynamic_clock,                $top_posters,
+    $maxdisplay,                   $maxfavs,
+    $default_tz,                   $maxrecentdisplay,
+    $maxrecentdisplay_t,           $maxsearchdisplay,
+    $maxmessagedisplay,            $showpageall,
+    $checkallcaps,                 $set_subject_maxlength,
+    $max_messlen,                  $max_pm_messlen,
+    $ad_max_messlen,               $ad_max_pm_messlen,
+    $cal_max_messlen,              $cal_admax_messlen,
+    $calsplit,                     $honeypot,
+    $spamfruits,                   $min_reg_time,
+    $speedpostdetection,           $spd_detention_time,
+    $min_post_speed,               $error_spd,
+    $minlinkpost,                  $minlinksig,
+    $post_speed_count,             $fontsizemin,
+    $fontsizemax,                  $max_siglen,
+    $clicklog_time,                $max_log_days,
+    $maxsteps,                     $stepdelay,
+    $minlinkweb,                   $click_logtime,
+    $max_log_days_old,             $fadelinks,
+    $defaultusertxt,               $timeout,
+    $hot_topic,                    $very_hot_topic,
+    $barmaxdepend,                 $barmaxnumb,
+    $defaultml,                    $ml_allowed,
+    $profile_int,                  $showuserpicml,
+    $group_stars_ml,               $enable_quickpost,
+    $enable_quickreply,            $enable_quickjump,
+    $enable_markquote,             $quick_quotelength,
+    $enable_quoteuser,             $quoteuser_color,
+    $img_greybox,                  $ppostperms,
+    $ptopicperms,                  $extendedprofiles,
+    $show_event_cal,               $show_eventbutton,
+    $show_event_birthdays,         $show_mini_calicons,
+    $show_sunday,                  $show_colorlinks,
+    $no_short_ubbc,                $event_todaycolor,
+    $show_caltoday,                $delete_eventsuntil,
+    $cal_event_short,              $cal_event_perms,
+    $cal_event_mods,               $cal_event_private,
+    $cal_event_noname,             $scroll_events,
+    $cal_event_display,            $display_events,
+    $birthday_list_show,           $birthday_button_show,
+    $birthday_date_show,           $birthday_color_show,
+    $birthday_sign_show,           $en_bookmarks,
+    $bm_subcut,                    $bm_boards,
+    $checkspace,                   $enable_quota,
+    $hostusername,                 $findfile_time,
+    $findfile_root,                $findfile_maxsize,
+    $findfile_space,               $enable_freespace_check,
+    $gzcomp,                       $gzforce,
+    $cachebehaviour,               $use_flock,
+    $faketruncation,               $debug,
+    $maxdays,                      $enableguestsearch,
+    $enableguestquicksearch,       $mgqcksearch,
+    $mgadvsearch,                  $qcksearchtype,
+    $qckage,                       $en_spam_questions,
+    $spam_questions_send,          $spam_questions_gp,
+    $spam_questions_case,          $rss_disabled,
+    $rss_limit,                    $rss_message,
+    $showauthor,                   $showdate,
+    $getreversedns,                $new_member_notification,
+    $new_member_notification_mail, $rssemail,
+    $sendtopicmail,                $mdadmin,
+    $mdglobal,                     $mdfmod,
+    $mdmod,                        $adminbin,
+    $adminview,                    $gmodview,
+    $fmodview,                     $modview,
+    $showallgroups,                $online_logtime,
+    $lastonlineinlink,             $numpolloptions,
+    $maxpq,                        $maxpo,
+    $maxpc,                        $useraddpoll,
+    $ubbcpolls,                    $pm_level,
+    $enable_guest_pm,              $enable_alert,
+    $enable_guest_alert,           $enable_pm_search,
+    $send_welcomeim,               $sendname,
+    $imsubject,                    $imtext,
+    $numposts,                     $pm_spam_chk,
+    $imspam,                       $enable_imlimit,
+    $numibox,                      $numobox,
+    $numstore,                     $numdraft,
+    $pm_enable_cc,                 $pm_enable_bcc,
+    $enable_storefolders,          $enable_bm_level,
+    $enable_mc_away,               $max_awaylen,
+    $enable_stealth,               $self_del_user,
+    $cutamount,                    $tsreverse,
+    $ttsreverse,                   $ttsureverse,
+    $tlnomodflag,                  $tlnomodtime,
+    $tlnodeltime,                  $tlnomodday,
+    $tlnodelflag,                  $tllastmodflag,
+    $tllastmodtime,                $accept_permalink,
+    $accept_permafull,             $symlink,
+    $perm_spacer,                  $perm_domain,
+    $rssperm,                      $rsssymrecent,
+    $rsssymboards,                 $bypass_lock_perm,
+    $limit,                        $maxsizeattach,
+    $maxdaysattach,                $dirlimit,
+    $overwrite,                    $checkext,
+    $amdisplaypics,                $allowattach,
+    $allowguestattach,             $allow_attach,
+    $allow_attach_im,              $pm_attach_groups,
+    $pm_display_pics,              $pm_checkext,
+    $pm_file_limit,                $pm_maxsizeattach,
+    $pm_maxdaysattach,             $pm_dirlimit,
+    $pm_file_overwrite,            $elmax,
+    $elenable,                     $elrotate,
+    $maxadminlog,                  $addtab_on,
+    $smiliestyle,                  $showadded,
+    $showsmdir,                    $winwidth,
+    $winheight,                    $popback,
+    $poptext,                      $showinbox,
+    $regcheck,                     $gpvalid_en,
+    $captchastyle,                 $captcha_start_chars,
+    $captcha_end_chars,            $rgb_foreground,
+    $rgb_shade,                    $rgb_background,
+    $translayer,                   $randomizer,
+    $distortion,                   $stealthurl,
+    $do_scramble_id,               $referersecurity,
+    $sessions,                     $show_online_ip_admin,
+    $show_online_ip_gmod,          $show_online_ip_fmod,
+    $ip_lookup,                    $masterkey,
+    $banned_harvesters,            $banned_referers,
+    $banned_requests,              $banned_strings,
+    $whitelist,                    $use_guardian,
+    $use_htaccess,                 $disallow_proxy_on,
+    $referer_on,                   $harvester_on,
+    $request_on,                   $string_on,
+    $union_on,                     $clike_on,
+    $disallow_proxy_htaccess,      $script_on,
+    $referer_htaccess,             $harvester_htaccess,
+    $request_htaccess,             $string_htaccess,
+    $union_htaccess,               $clike_htaccess,
+    $script_htaccess,              $disallow_proxy_notify,
+    $referer_notify,               $harvester_notify,
+    $request_notify,               $string_notify,
+    $union_notify,                 $clike_notify,
+    $script_notify,                $backupprogusr,
+    $backupprogbin,                $compressmethod,
+    $backupdir,                    $lastbackup,
+    $backupsettingsloaded,         $backupmethod,
+    %bookmarks,
+);
+## other ##
+our (
+    $action,        %INFO,   %FORM,        $yytitle,
+    $yysetlocation, $yymain, $action_area, $uid,
+    $username,      $webmaster_email
+);
+
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+load_language('Admin');
 
 # Figure out what tabset to use, depending on the page= parameter.
 my %settings_dispatch = (
@@ -42,7 +274,9 @@ my %settings_dispatch = (
 my $page = $INFO{'page'} || 'main';
 
 # 'eval' because NewSettings.pm can be called by Sources/TabMenu.pm
-eval { require $settings_dispatch{$page}; };
+if ( eval { require $settings_dispatch{$page}; 1 } ) {
+    require $settings_dispatch{$page};
+}
 
 sub settings {
     is_admin_or_gmod();
@@ -136,7 +370,7 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
 # While this data does not really belong with the value, it transfers nicely.
 # We then remove it and reuse it later.
                     my ( $inverse, $realname, $remainder ) =
-                      $require =~ m{(\(?\!?)(\w+)(.*)}xsm;
+                      $require =~ m{([(]?[!]?)(\w+)(.*)}xsm;
                     if ( !$requirements{$realname} ) {
                         push @requireorder, $realname;
                     }
@@ -154,8 +388,8 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
 
     my %requirejs;
 
-    my $dependicies = q{};
-    my $onloadevents;
+    my $dependicies  = q{};
+    my $onloadevents = q{};
     foreach my $ritem (@requireorder) {
         $dependicies .= qq~
     function handleDependent_$ritem() {
@@ -165,35 +399,35 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         foreach my $require ( @{ $requirements{$ritem} } ) {
 
             # && or ||, ( and )
-            my $AndOr = $require =~ s/\)//xsm ? ')' : q{};
-            $AndOr .= $require =~ s/\|\|//xsm ? ' ||' : ' &&';
-            my $C = $require =~ s/\(//xsm ? '(' : q{};
+            my $and_or = $require =~ s/[)]//xsm ? ')' : q{};
+            $and_or .= $require =~ s/[|][|]//xsm ? ' ||' : ' &&';
+            my $C = $require =~ s/[(]//xsm ? '(' : q{};
 
             # Is false
             if ( $require =~ s/^\!//xsm ) {
                 $requirejs{$require} .=
-qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
+qq~$C\!document.getElementsByName("$ritem")[0].checked$and_or ~;
             }
 
             # Is equal to
             elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
                   $C
-                  . qq~document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
+                  . qq~document.getElementsByName("$ritem")[0].value == '$1'$and_or ~;
             }
 
             # Is not equal to
             elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
                   $C
-                  . qq~document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
+                  . qq~document.getElementsByName("$ritem")[0].value != '$1'$and_or ~;
             }
 
             # Is true
             else {
                 $requirejs{$require} .=
                   $C
-                  . qq~document.getElementsByName("$ritem")[0].checked$AndOr ~;
+                  . qq~document.getElementsByName("$ritem")[0].checked$and_or ~;
             }
             $dependicies .= qq~        checkDependent("$require");\n~;
         }
@@ -207,7 +441,7 @@ qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
     # Hidden "feature": jump directly to a tab by default via the URL bar.
     $INFO{'tab'} ||= q{};
     $INFO{'tab'} =~ s/\W//gxsm;
-    $default_tab = $INFO{'tab'} || $settings[0]->{'id'} || q{};
+    my $default_tab = $INFO{'tab'} || $settings[0]->{'id'} || q{};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv" style="margin: .5em auto 0 0">
     <table class="border-space pad-cell">
@@ -268,7 +502,7 @@ qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
     # Loop through each item that depends on something else
     foreach my $name ( keys %requirejs ) {
         my $logic = $requirejs{$name};
-        $logic =~ s/ (&&|\|\|) $//sm;
+        $logic =~ s/\s (&&|[|][|])\s $//xsm;
         $yymain .= qq~
         if (eid == "$name" && ($logic)) {
             elm.disabled = false;
@@ -298,13 +532,13 @@ $dependicies
   </script>~;
 
     $action_area = "newsettings;page=$page";
-    AdminTemplate();
+    admintemplate();
     return;
 }
 
 sub email_test {
     require Sources::Mailer;
-    $testmessage = $admin_txt{'testmessage'};
+    my $testmessage = $admin_txt{'testmessage'};
     $testmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/xsm;
     sendmail(
         $webmaster_email, $admin_txt{'testsubject'},
@@ -330,7 +564,7 @@ my %regexes = (
 # Use this if something can be false, in addition to the normal valid characters (not needed for boolean)
 );
 
-# Preserve the traditional "2" name as well as the nicer SaveSettings.
+# Preserve the traditional "2" name as well as the nicer save_settings.
 sub settings2 {
     is_admin_or_gmod();
 
@@ -367,7 +601,7 @@ sub settings2 {
                 my $pattern = '^(?:'
                   . join( q{|}, @regexes{ split /,/xsm, $item->{'validate'} } )
                   . ')$';
-                if ( $settings{$name} !~ /$pattern/sm ) {
+                if ( $settings{$name} !~ /$pattern/xsm ) {
                     fatal_error( 'invalid_value',
                         qq~$name ($item->{'description'})~ );
                 }
@@ -382,16 +616,16 @@ sub settings2 {
 
 # Save them, as according to this type of settings
 # This subroutine resides in the file that is loaded in the hash at the top of the file.
-    SaveSettings(%settings);
-    $yySetLocation = "$adminurl?action=newsettings;page=$page";
+    save_settings(%settings);
+    $yysetlocation = "$adminurl?action=newsettings;page=$page";
     redirectexit();
     return;
 }
 
 # Subroutine for saving to Settings.pm
-sub SaveSettingsTo {
-    my $file     = shift;
-    my %settings = @_;
+sub save_settings_to {
+    my $file = shift;
+    %settings = @_;
 
     # these cannot be reversed per Perl Critic.
 
@@ -402,16 +636,17 @@ sub SaveSettingsTo {
     require "$langdir/Lang.lng";
     for ( keys %lngs ) {
         if ( ${ $_ . '_maintenancetext' } ) {
-            fopen( MAINT, ">$langdir/$_/maintenancetext.txt" );
-            print {MAINT} ${ $_ . '_maintenancetext' }
+            open my $MAINT, '>', "$langdir/$_/maintenancetext.txt"
+              or croak "$croak{'open'} MAINT";
+            print {$MAINT} ${ $_ . '_maintenancetext' }
               or croak "$croak{'print'} MAINT";
-            fclose(MAINT);
+            close $MAINT or croak "$croak{'close'} MAINT";
         }
         if ( ${ $_ . '_news' } ) {
-            fopen( NEWS, ">$langdir/$_/news.txt", 1 )
-              || fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
-            print {NEWS} ${ $_ . '_news' } or croak "$croak{'print'} NEWS";
-            fclose(NEWS);
+            open my $NEWS, '>', "$langdir/$_/news.txt"
+              or fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
+            print {$NEWS} ${ $_ . '_news' } or croak "$croak{'print'} NEWS";
+            close $NEWS or croak "$croak{'close'} NEWS";
         }
     }
 
@@ -434,12 +669,12 @@ sub SaveSettingsTo {
         if ( !$ext_prof_order && $ext_prof_order[0] ) {
             $ext_prof_order = q{'} . join( q{','}, @ext_prof_order ) . q{'};
         }
-        else {$ext_prof_order = q{};}
+        else { $ext_prof_order = q{}; }
         if ( !$ext_prof_fields && $ext_prof_fields[0] ) {
             $ext_prof_fields =
               q{'} . join( qq~',\n'~, @ext_prof_fields ) . q{'};
         }
-        else {$ext_prof_fields = q{};}
+        else { $ext_prof_fields = q{}; }
 
         $adomains ||= q{};
         if ( !$adomains && $adomains[0] ) {
@@ -459,43 +694,43 @@ sub SaveSettingsTo {
         $usertxtwrap ||= 20;
 
         my $member_groups = "# Static Member Groups\n";
-        foreach ( keys %Group ) {
-            ${ $Group{$_} }[3] ||= q{};
-            ${ $Group{$_} }[10] ||= 0;
+        foreach ( keys %grp_staff ) {
+            ${ $grp_staff{$_} }[3]  ||= q{};
+            ${ $grp_staff{$_} }[10] ||= 0;
             $member_groups .=
-qq~\$Group{'$_'} = \[ '${$Group{$_}}[0]', '${$Group{$_}}[1]', '${$Group{$_}}[2]', '${$Group{$_}}[3]', ${$Group{$_}}[4], ${$Group{$_}}[5], ${$Group{$_}}[6], ${$Group{$_}}[7], ${$Group{$_}}[8], ${$Group{$_}}[9], ${$Group{$_}}[10] \];\n~;
+qq~\$grp_staff{'$_'} = \[ '${$grp_staff{$_}}[0]', '${$grp_staff{$_}}[1]', '${$grp_staff{$_}}[2]', '${$grp_staff{$_}}[3]', ${$grp_staff{$_}}[4], ${$grp_staff{$_}}[5], ${$grp_staff{$_}}[6], ${$grp_staff{$_}}[7], ${$grp_staff{$_}}[8], ${$grp_staff{$_}}[9], ${$grp_staff{$_}}[10] \];\n~;
         }
         $member_groups .= "\n# Post independent Member Groups\n";
-        foreach ( keys %NoPost ) {
-            ${ $NoPost{$_} }[3] ||= q{};
-            ${ $NoPost{$_} }[10] ||= 0;
+        foreach ( keys %grp_nopost ) {
+            ${ $grp_nopost{$_} }[3]  ||= q{};
+            ${ $grp_nopost{$_} }[10] ||= 0;
             $member_groups .=
-qq~\$NoPost{'$_'} = \[ '${$NoPost{$_}}[0]', '${$NoPost{$_}}[1]', '${$NoPost{$_}}[2]', '${$NoPost{$_}}[3]', ${$NoPost{$_}}[4], ${$NoPost{$_}}[5], ${$NoPost{$_}}[6], ${$NoPost{$_}}[7], ${$NoPost{$_}}[8], ${$NoPost{$_}}[9], ${$NoPost{$_}}[10] \];\n~;
+qq~\$grp_nopost{'$_'} = \[ '${$grp_nopost{$_}}[0]', '${$grp_nopost{$_}}[1]', '${$grp_nopost{$_}}[2]', '${$grp_nopost{$_}}[3]', ${$grp_nopost{$_}}[4], ${$grp_nopost{$_}}[5], ${$grp_nopost{$_}}[6], ${$grp_nopost{$_}}[7], ${$grp_nopost{$_}}[8], ${$grp_nopost{$_}}[9], ${$grp_nopost{$_}}[10] \];\n~;
         }
         $member_groups .= "\n# Post dependent Member Groups\n";
-        foreach ( keys %Post ) {
-            ${ $Post{$_} }[3] ||= q{};
-            ${ $Post{$_} }[10] ||= 0;
+        foreach ( keys %grp_post ) {
+            ${ $grp_post{$_} }[3]  ||= q{};
+            ${ $grp_post{$_} }[10] ||= 0;
             $member_groups .=
-qq~\$Post{'$_'} = \[ '${$Post{$_}}[0]', '${$Post{$_}}[1]', '${$Post{$_}}[2]', '${$Post{$_}}[3]', ${$Post{$_}}[4], ${$Post{$_}}[5], ${$Post{$_}}[6], ${$Post{$_}}[7], ${$Post{$_}}[8], ${$Post{$_}}[9], ${$Post{$_}}[10] \];\n~;
+qq~\$grp_post{'$_'} = \[ '${$grp_post{$_}}[0]', '${$grp_post{$_}}[1]', '${$grp_post{$_}}[2]', '${$grp_post{$_}}[3]', ${$grp_post{$_}}[4], ${$grp_post{$_}}[5], ${$grp_post{$_}}[6], ${$grp_post{$_}}[7], ${$grp_post{$_}}[8], ${$grp_post{$_}}[9], ${$grp_post{$_}}[10] \];\n~;
         }
 
         if (@pallist) { $pallist = q{'} . join( q{','}, @pallist ) . q{'}; }
 
         if ( $INFO{'page'} && $INFO{'page'} eq 'main' ) {
-            if ( !$enable_notifications_N ) {
-                if ( !$enable_notifications_PM ) {
+            if ( !$enable_notifications_n ) {
+                if ( !$enable_notifications_pm ) {
                     $enable_notifications = 0;
                 }
-                elsif ($enable_notifications_PM) {
+                elsif ($enable_notifications_pm) {
                     $enable_notifications = 2;
                 }
             }
-            elsif ($enable_notifications_N) {
-                if ( !$enable_notifications_PM ) {
+            elsif ($enable_notifications_n) {
+                if ( !$enable_notifications_pm ) {
                     $enable_notifications = 1;
                 }
-                elsif ($enable_notifications_PM) {
+                elsif ($enable_notifications_pm) {
                     $enable_notifications = 3;
                 }
             }
@@ -506,27 +741,27 @@ qq~\$Post{'$_'} = \[ '${$Post{$_}}[0]', '${$Post{$_}}[1]', '${$Post{$_}}[2]', '$
         for my $i ( keys %modlinks ) {
             if ( $modlinks{$i} > 0 ) {
                 my $fond = 0;
-                for (@AdvancedTabs) {
-                    if ( $_ =~ /[|]/xsm ) {
-                        my ( $tab_key, undef, undef ) = split /[|]/xsm, $_, 2;
+                for my $ad (@advanced_tabs) {
+                    if ( $ad =~ /[|]/xsm ) {
+                        my ( $tab_key, undef, undef ) = split /[|]/xsm, $ad, 2;
                         if ( $tab_key eq $i ) {
-                            $_    = qq~$i$modadd{$i}~;
+                            $ad   = qq~$i$modadd{$i}~;
                             $fond = 1;
                         }
                     }
                 }
-                if ( $fond == 0 ) { push @AdvancedTabs, qq~$i$modadd{$i}~; }
+                if ( $fond == 0 ) { push @advanced_tabs, qq~$i$modadd{$i}~; }
             }
             else {
                 my @new_tabs_order;
-                for (@AdvancedTabs) {
-                    if ( $_ !~ /^$i\|?/xsm ) { push @new_tabs_order, $_; }
+                for my $ad (@advanced_tabs) {
+                    if ( $ad !~ /^$i[|]?/xsm ) { push @new_tabs_order, $ad; }
                 }
-                @AdvancedTabs = @new_tabs_order;
+                @advanced_tabs = @new_tabs_order;
             }
         }
 
-        my $AdvancedTabs = q{'} . join( q{','}, @AdvancedTabs ) . q{'};
+        my $advanced_tabs = q{'} . join( q{','}, @advanced_tabs ) . q{'};
 
         $detachblock         ||= q{};
         $removenormalsmilies ||= q{};
@@ -537,22 +772,32 @@ qq~\$addedsmilies{'$_'} = \[ '${$addedsmilies{$_}}[0]', '${$addedsmilies{$_}}[1]
         }
         $smilieorder = join q{ }, @smilieorder;
 
-        if ( !$bookmarks ) {
-            $bookmarks = q{'} . join( q{', '}, @bookmarks ) . q{'};
+        $bookmarks = q{};
+        foreach ( keys %bookmarks ) {
+            $bookmarks .=
+qq~\$bookmarks{'$_'} = \[ '${$bookmarks{$_}}[0]', '${$bookmarks{$_}}[1]', '${$bookmarks{$_}}[2]', '${$bookmarks{$_}}[3]' \];\n~;
         }
 
         $bkmax_process_time ||= 5;
 
         my $backup_paths = join q{ }, @backup_paths;
         $nopostorder = join q{ }, @nopostorder;
+        my $cal_icon   = q{};
+        my $newcalicon = q{};
+        foreach ( keys %newcalicon ) {
+            $newcalicon .=
+qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\n~;
+        }
+        my $extensions   = q{'} . join( q{', '}, @ext ) . q{'};
+        my $pm_attachext = q{'} . join( q{', '}, @pm_attachext ) . q{'};
         my @setlist =
-          qw( accept_permafull accept_permalink addmemgroup_enabled birthday_on_reg buddyListEnabled bypass_lock_perm CalEventMods CalEventNoName CalEventPerms CalEventPrivate calsplit captchaEndChars captchaStartChars captchastyle clike_htaccess Delete_EventsUntil detachblock disallow_proxy_htaccess DisplayCalEvents distortion en_spam_questions enable_guest_view_limit enable_MCaway enable_MCstatusStealth enable_PMautoAway enable_quota enable_spell_check enable_YaBBBut enabletopichover findfile_maxsize findfile_root findfile_space findfile_time getreversedns gpvalid_en group_stars_ml guest_view_limit guest_view_limit_block harvester_htaccess helloserv hide_signat_for_guests hostusername imp_email_check ip_lookup maxdays maxdaysattach maxsizeattach min_reg_time No_ShortUbbc nomailspammer perm_domain perm_spacer pm_spam_chk PMAlertButtonGuests pmAttachGroups pmCheckExt pmDisplayPics PMenable_bcc PMenable_cc PMenableAlertButton PMenableGuestButton pmMaxDaysAttach pmMaxSizeAttach posttools profile_int referer_htaccess removenormalsmilies request_htaccess rssperm rsssymboards rsssymrecent script_htaccess Scroll_Events self_del_user Show_BdColorLinks Show_BdStarsign Show_BirthdayButton Show_BirthdayDate Show_BirthdaysList Show_caltoday Show_ColorLinks Show_EventBirthdays Show_EventButton Show_MiniCalIcons showage showinbox showpageall ShowSunday showuserage showuserpicml showzodiac spam_questions_case spam_questions_gp spam_questions_send spamfruits staff_reason string_htaccess symlink temp_switcher_allowed templ_switcher threadtools tlnomodday union_htaccess user_hide_attach_img user_hide_avatars user_hide_img user_hide_signat user_hide_smilies_row user_hide_user_text user_reason usertools );
+          qw( accept_permafull accept_permalink addmemgroup_enabled birthday_on_reg enable_buddylist bypass_lock_perm cal_event_mods cal_event_noname cal_event_perms cal_event_private calsplit captcha_end_chars captcha_start_chars captchastyle clike_htaccess delete_eventsuntil detachblock disallow_proxy_htaccess cal_event_display distortion en_spam_questions enable_guest_view_limit enable_mc_away enable_stealth  enable_quota enable_spell_check enabletopichover findfile_maxsize findfile_root findfile_space findfile_time getreversedns gpvalid_en group_stars_ml guest_view_limit guest_view_limit_block harvester_htaccess helloserv hide_signat_for_guests hostusername imp_email_check ip_lookup maxdays maxdaysattach maxsizeattach min_reg_time no_short_ubbc nomailspammer perm_domain perm_spacer pm_spam_chk enable_guest_alert pm_attach_groups pm_checkext pm_display_pics pm_enable_bcc pm_enable_cc enable_alert enable_guest_pm pm_maxdaysattach pm_maxsizeattach posttools profile_int referer_htaccess removenormalsmilies request_htaccess rssperm rsssymboards rsssymrecent script_htaccess scroll_events self_del_user birthday_color_show birthday_sign_show birthday_button_show birthday_date_show birthday_list_show show_caltoday show_colorlinks show_event_birthdays show_eventbutton show_mini_calicons showage showinbox showpageall show_sunday showuserage showuserpicml showzodiac spam_questions_case spam_questions_gp spam_questions_send spamfruits staff_reason string_htaccess symlink temp_switcher_allowed templ_switcher threadtools tlnomodday union_htaccess usehelp_perms user_hide_attach_img user_hide_avatars user_hide_img user_hide_signat user_hide_smilies_row user_hide_user_text user_reason usertools );
 
         foreach my $i (@setlist) {
             ${$i} ||= q{};
         }
         my @setlistb =
-          qw(timeoffset imspam ppostperms ptopicperms enable_PMsearch editAgeLimit editGenderLimit);
+          qw(timeoffset imspam ppostperms ptopicperms enable_pm_search edit_agelimit edit_genderlimit allow_attach_im);
         foreach my $i (@setlistb) {
             ${$i} ||= 0;
         }
@@ -581,7 +826,7 @@ qq~\$addedsmilies{'$_'} = \[ '${$addedsmilies{$_}}[0]', '${$addedsmilies{$_}}[1]
 ########## Board Info ##########
 # Note: these settings must be properly changed for YaBB to work
 
-\$settings_file_version = '$YaBBversion';
+\$settings_file_version = '$yabbversion';
 \$yymycharset = 'UTF-8';                 # character encoding now 'UTF-8' only;
 
 \%templateset = ($templateset);             # Forum templates settings
@@ -593,7 +838,7 @@ qq~\$addedsmilies{'$_'} = \[ '${$addedsmilies{$_}}[0]', '${$addedsmilies{$_}}[1]
 
 \$mbname = '$mbname';                   # The name of your YaBB forum
 \$forumstart = '$forumstart';           # The start date of your YaBB Forum
-\$Cookie_Length = $Cookie_Length;           # Default time to set login cookies to stay for
+\$cookie_length = $cookie_length;           # Default time to set login cookies to stay for
 \$cookieusername = '$cookieusername';   # Name of the username cookie
 \$cookiepassword = '$cookiepassword';   # Name of the password cookie
 \$cookiesession_name = '$cookiesession_name';   # Name of the Session cookie
@@ -604,9 +849,9 @@ qq~\$addedsmilies{'$_'} = \[ '${$addedsmilies{$_}}[0]', '${$addedsmilies{$_}}[1]
 
 \$regtype = $regtype;                       # 0 = registration closed (only admin can register), 1 = pre registration with admin approval,
                                     # 2 = pre registration and email activation, 3 = open registration
-\$RegAgree = $RegAgree;                     # 0 = Don't show registration agreement, 1 = Show registration agreement before registration form, 2 = Show registration agreement on registration form
+\$reg_agree = $reg_agree;                     # 0 = Don't show registration agreement, 1 = Show registration agreement before registration form, 2 = Show registration agreement on registration form
 \$imp_email_check = $imp_email_check;    # Set to 1 to enable improved e-mail check
-\$RegReasonSymbols = $RegReasonSymbols;         # Maximum allowed symbols in User reason(s) for registering
+\$reg_reason_len = $reg_reason_len;         # Maximum allowed symbols in User reason(s) for registering
 \$preregspan = $preregspan;                 # Time span in hours for users to account activation before cleanup
 \$pwstrengthmeter_scores = '$pwstrengthmeter_scores';   # Password-Strength-Meter Scores
 \$pwstrengthmeter_common = '$pwstrengthmeter_common';   # Password-Strength-Meter common words
@@ -637,7 +882,7 @@ qq~\$addedsmilies{'$_'} = \[ '${$addedsmilies{$_}}[0]', '${$addedsmilies{$_}}[1]
 \$webmaster_email = '$webmaster_email'; # Your email address. (eg: \$webmaster_email = q^admin\@host.com^;)
 \$mailtype = $mailtype;                     # Mail program to use: 0 = sendmail, 1 = SMTP, 2 = Net::SMTP, 3 = Net::SMTP::TLS
 
-\$UseHelp_Perms = $UseHelp_Perms;           # Help Center: 1 == use permissions, 0 == don't use permissions
+\$usehelp_perms = $usehelp_perms;           # Help Center: 1 == use permissions, 0 == don't use permissions
 
 \@adomains = ($adomains);              #email domains - allowed
 \@bdomains = ($bdomains);              #email domains - denied
@@ -663,15 +908,15 @@ $member_groups
 \$user_hide_attach_img = $user_hide_attach_img;     # Allow users to hide Attached Images in threads. Set 0 to disable
 \$user_hide_signat = $user_hide_signat;         # Allow users to hide User Signatures in threads. Set 0 to disable
 \$user_hide_smilies_row = $user_hide_smilies_row;   # Allow users to hide Smilies row below the Post Message-inputarea. Set 0 to disable
-\$editGenderLimit = $editGenderLimit;       # Set a limit on the amount of times that member's can edit their gender
-\$editAgeLimit = $editAgeLimit;             # Set a limit on the amount of times that member's can edit their birthdate
-\$buddyListEnabled = $buddyListEnabled;     # Enable Buddy List
+\$edit_genderlimit = $edit_genderlimit;       # Set a limit on the amount of times that member's can edit their gender
+\$edit_agelimit = $edit_agelimit;             # Set a limit on the amount of times that member's can edit their birthdate
+\$enable_buddylist = $enable_buddylist;     # Enable Buddy List
 \$addmemgroup_enabled = $addmemgroup_enabled;   # Enable Users choose additional MemberGroups
 \$showlatestmember = $showlatestmember;     # Set to 1 to display "Welcome Newest Member" on the Board Index
 \$shownewsfader = $shownewsfader;           # 1 to allow or 0 to disallow NewsFader javascript
-\$Show_RecentBar = $Show_RecentBar;         # Set to 1 to display the Recent Post on Board Index
+\$show_recentbar = $show_recentbar;         # Set to 1 to display the Recent Post on Board Index
 \$showmodify = $showmodify;                 # Set to 1 to display "Last modified: Realname - Date" under each message
-\$ShowBDescrip = $ShowBDescrip;             # Set to 1 to display board descriptions on the topic (message) index for each board
+\$show_brd_descrip = $show_brd_descrip;             # Set to 1 to display board descriptions on the topic (message) index for each board
 \$showuserpic = $showuserpic;               # Set to 1 to display each member's avatar in the message view (by the ICQ.. etc.)
 \$showusertext = $showusertext;             # Set to 1 to display each member's personal text in the message view (by the ICQ.. etc.)
 \$showtopicviewers = $showtopicviewers;     # Set to 1 to display members viewing a topic
@@ -717,7 +962,7 @@ $member_groups
             # - Allow e-mail notification when new PM comes in => value == 2
             # - value == 0 => both disabled | value == 3 => both enabled
 
-\$NewNotificationAlert = $NewNotificationAlert; # enable notification alerts (popup) for new notifications
+\$new_notification_alert = $new_notification_alert; # enable notification alerts (popup) for new notifications
 \$autolinkurls = $autolinkurls;             # Set to 1 to turn URLs into links, or 0 for no auto-linking.
 
 \$forumnumberformat = $forumnumberformat;   # Select your preferred output Format for Numbers
@@ -727,7 +972,7 @@ $member_groups
 \$default_tz = '$default_tz';               # default forum timezone
 \$timeoffset = '$timeoffset';           # Time Offset to GMT/UTC (0 for GMT/UTC)
 \$dynamic_clock = $dynamic_clock;           # Set to a value enables the dynamic clock at the top of the page
-\$TopAmmount = $TopAmmount;                 # No. of top posters to display on the top members list
+\$top_posters = $top_posters;                 # No. of top posters to display on the top members list
 \$maxdisplay = $maxdisplay;                 # Maximum of topics to display
 \$maxfavs = $maxfavs;                       # Maximum of favorite topics to save in a profile
 \$maxrecentdisplay = $maxrecentdisplay;     # Maximum of posts to display on recent posts by a user (-1 to disable)
@@ -736,13 +981,13 @@ $member_groups
 \$maxmessagedisplay = $maxmessagedisplay;   # Maximum of messages to display
 \$showpageall = $showpageall;               # Disable or Enable show All on page selectors
 \$checkallcaps = $checkallcaps;             # Set to 0 to allow ALL CAPS in posts (subject and message) or set to a value > 0 to open a JS-alert if more characters in ALL CAPS were there.
-\$set_subjectMaxLength = $set_subjectMaxLength; # Maximum Allowed Characters in a Posts Subject
-\$MaxMessLen = $MaxMessLen;                 # Maximum Allowed Characters in a Posts
-\$AdMaxMessLen = $AdMaxMessLen;             # Maximum Allowed Characters in a Posts for Admins
-\$MaxIMMessLen = $MaxIMMessLen;             # Maximum Allowed Characters in a PM
-\$AdMaxIMMessLen = $AdMaxIMMessLen;                    # Maximum Allowed Characters in a PM for Admins
-\$MaxCalMessLen = $MaxCalMessLen;           # Maximum Allowed Characters in a Cal event
-\$AdMaxCalMessLen = $AdMaxCalMessLen;                   # Maximum Allowed Characters in a Cal Event for Admins
+\$set_subject_maxlength = $set_subject_maxlength; # Maximum Allowed Characters in a Posts Subject
+\$max_messlen = $max_messlen;                 # Maximum Allowed Characters in a Posts
+\$ad_max_messlen = $ad_max_messlen;             # Maximum Allowed Characters in a Posts for Admins
+\$max_pm_messlen = $max_pm_messlen;             # Maximum Allowed Characters in a PM
+\$ad_max_pm_messlen = $ad_max_pm_messlen;                    # Maximum Allowed Characters in a PM for Admins
+\$cal_max_messlen = $cal_max_messlen;           # Maximum Allowed Characters in a Cal event
+\$cal_admax_messlen = $cal_admax_messlen;                   # Maximum Allowed Characters in a Cal Event for Admins
 \$calsplit = $calsplit;                     # Maximum number to be shown on page without breaking into months.
 \$honeypot = $honeypot;                     # Set to 1 to activate Honeypot spam deterrent
 \$spamfruits = $spamfruits;                 # Set to 1 to activate SpamFruits spam deterrent
@@ -758,8 +1003,8 @@ $member_groups
 \$post_speed_count = $post_speed_count; # Maximum amount of abuses before a user gets banned
 \$fontsizemin = $fontsizemin;               # Minimum Allowed Font height in pixels
 \$fontsizemax = $fontsizemax;               # Maximum Allowed Font height in pixels
-\$MaxSigLen = $MaxSigLen;                   # Maximum Allowed Characters in Signatures
-\$ClickLogTime = $ClickLogTime;             # Time in minutes to log every click to your forum (longer time means larger log file size)
+\$max_siglen = $max_siglen;                   # Maximum Allowed Characters in Signatures
+\$click_logtime = $click_logtime;             # Time in minutes to log every click to your forum (longer time means larger log file size)
 \$max_log_days_old = $max_log_days_old; # If an entry in the user's log is older than ... days remove it
 
 \$maxsteps = $maxsteps;                     # Number of steps to take to change from start color to endcolor
@@ -769,14 +1014,14 @@ $member_groups
 \$defaultusertxt = '$defaultusertxt';   # The default user text visible in users posts
 \$usertxtwrap = $usertxtwrap;   # Number of characters per line for user text
 \$timeout = $timeout;                       # Minimum time between 2 postings from the same IP
-\$HotTopic = $HotTopic;                     # Number of posts needed in a topic for it to be classed as "Hot"
-\$VeryHotTopic = $VeryHotTopic;             # Number of posts needed in a topic for it to be classed as "Very Hot"
+\$hot_topic = $hot_topic;                     # Number of posts needed in a topic for it to be classed as "Hot"
+\$very_hot_topic = $very_hot_topic;             # Number of posts needed in a topic for it to be classed as "Very Hot"
 
 \$barmaxdepend = $barmaxdepend;             # Set to 1 to let bar-max-length depend on top poster or 0 to depend on a number of your choice
 \$barmaxnumb = $barmaxnumb;                 # Select number of post for max. bar-length in memberlist
 \$defaultml = '$defaultml';
 
-\$ML_Allowed = $ML_Allowed;                 # allow browse MemberList
+\$ml_allowed = $ml_allowed;                 # allow browse MemberList
 \$profile_int = $profile_int;               # 1 redirects guest clicks on member names to a register or login screen. 0 disables links on member names.
 \$showuserpicml = $showuserpicml;           # Set to 1 to display each member's avatar in the member list
 \$group_stars_ml = $group_stars_ml;         # Set to 1 to display group stars in the member list
@@ -821,37 +1066,39 @@ $ext_prof_fields
 ######################################################################
 
 ########## Standard Calendar Setting ##########
-\$Show_EventCal = $Show_EventCal;
-\$Show_EventButton = $Show_EventButton;
-\$Show_EventBirthdays = $Show_EventBirthdays;
-\$Show_MiniCalIcons = $Show_MiniCalIcons;
-\$ShowSunday = $ShowSunday;
-\$Show_ColorLinks = $Show_ColorLinks;
-\$No_ShortUbbc = $No_ShortUbbc;
-\$Event_TodayColor = '$Event_TodayColor';
-\$Show_caltoday = $Show_caltoday;
-\$Delete_EventsUntil = $Delete_EventsUntil;
-\$CalShortEvent = $CalShortEvent;
-\$CalEventPerms = qq~$CalEventPerms~;
-\$CalEventMods = qq~$CalEventMods~;
-\$CalEventPrivate = $CalEventPrivate;
-\$CalEventNoName = $CalEventNoName;
-\$Scroll_Events = $Scroll_Events;
-\$DisplayCalEvents = $DisplayCalEvents;
-\$DisplayEvents = $DisplayEvents;
+\$show_event_cal = $show_event_cal;
+\$show_eventbutton = $show_eventbutton;
+\$show_event_birthdays = $show_event_birthdays;
+\$show_mini_calicons = $show_mini_calicons;
+\$show_sunday = $show_sunday;
+\$show_colorlinks = $show_colorlinks;
+\$no_short_ubbc = $no_short_ubbc;
+\$event_todaycolor = '$event_todaycolor';
+\$show_caltoday = $show_caltoday;
+\$delete_eventsuntil = $delete_eventsuntil;
+\$cal_event_short = $cal_event_short;
+\$cal_event_perms = q~$cal_event_perms~;
+\$cal_event_mods = q~$cal_event_mods~;
+\$cal_event_private = $cal_event_private;
+\$cal_event_noname = $cal_event_noname;
+\$scroll_events = $scroll_events;
+\$cal_event_display = $cal_event_display;
+\$display_events = $display_events;
+
+$newcalicon
 
 ########## Birthdaylist Setting ##########
-\$Show_BirthdaysList = $Show_BirthdaysList;
-\$Show_BirthdayButton = $Show_BirthdayButton;
-\$Show_BirthdayDate = $Show_BirthdayDate;
-\$Show_BdColorLinks = $Show_BdColorLinks;
-\$Show_BdStarsign = $Show_BdStarsign;
+\$birthday_list_show = $birthday_list_show;
+\$birthday_button_show = $birthday_button_show;
+\$birthday_date_show = $birthday_date_show;
+\$birthday_color_show = $birthday_color_show;
+\$birthday_sign_show = $birthday_sign_show;
 
 ########## Social Bookmarks settings ##########
 \$en_bookmarks   = $en_bookmarks;  # Enable Social Bookmarks
 \$bm_subcut = $bm_subcut; # Maximum characters in subject
 \$bm_boards = '$bm_boards'; # Select the boards which Social Bookmarks will be shown in
-\@bookmarks = ($bookmarks); #bookmarks
+$bookmarks
 
 ########## File Settings ##########
 
@@ -895,6 +1142,8 @@ $ext_prof_fields
 # Advanced Settings                                                           #
 ###############################################################################
 
+\$getreversedns = $getreversedns;          #Set to 1 to get ReverseDNS lookup for user.log and clicklog.log
+
 ########## RSS Settings ##########
 
 \$rss_disabled = $rss_disabled;         # Set to 1 to disable the RSS feed
@@ -906,7 +1155,6 @@ $ext_prof_fields
 \$showauthor = $showauthor;         # Show author name
 \$rssemail = '$rssemail';             # default email if author email not shown
 \$showdate = $showdate;             # Show post date
-\$getreversedns = $getreversedns;          #Set to 1 to get ReverseDNS lookup for user.log and clicklog.log
 
 ########## New Member Notification Settings ##########
 
@@ -936,7 +1184,7 @@ $ext_prof_fields
 ########## Advanced Memberview Plus ##########
 
 \$showallgroups = $showallgroups;
-\$OnlineLogTime = $OnlineLogTime;       # Time in minutes before Users are removed from the Online Log
+\$online_logtime = $online_logtime;       # Time in minutes before Users are removed from the Online Log
 \$lastonlineinlink = $lastonlineinlink;     # Show "Last online X days and XX:XX:XX hours ago." to all members == 1
 
 ########## Polls ##########
@@ -950,16 +1198,16 @@ $ext_prof_fields
 
 ########## My Center and Personal Messaging Features ##########
 
-\$PM_level = $PM_level;             # minimum user level for private messaging: 0 = off, 1 = members, 2 = mods, 3 = gmod
-\$PMenableGuestButton = $PMenableGuestButton;   # enable 'pm to admin' for guests? 1=yes, 0=no. Appears on the general menu instead of 'my center'
-\$PMenableAlertButton = $PMenableAlertButton;   # enable 'alert moderator' button on thread view? 1=yes 0=no. Acts as a broadcast message to mods etc.
-\$PMAlertButtonGuests = $PMAlertButtonGuests;   # enable 'alert moderator' button for Guests
-\$enable_PMsearch = $enable_PMsearch;       # enable/max returns for PM search - 0 = off / 10 - 50 range for results
+\$pm_level = $pm_level;             # minimum user level for private messaging: 0 = off, 1 = members, 2 = mods, 3 = gmod
+\$enable_guest_pm = $enable_guest_pm;   # enable 'pm to admin' for guests? 1=yes, 0=no. Appears on the general menu instead of 'my center'
+\$enable_alert = $enable_alert;   # enable 'alert moderator' button on thread view? 1=yes 0=no. Acts as a broadcast message to mods etc.
+\$enable_guest_alert = $enable_guest_alert;   # enable 'alert moderator' button for Guests
+\$enable_pm_search = $enable_pm_search;       # enable/max returns for PM search - 0 = off / 10 - 50 range for results
 
 \$send_welcomeim = $send_welcomeim;     # enable auto-welcome message from forum to new member. 1=yes, 0=no
 \$sendname = '$sendname';           # username 'from' for welcome message. Defaults to fa.
-\$imsubject = '$imsubject';         # title of welcome message.
-\$imtext = '$imtext';           # message sent to new member
+\$imsubject = q~$imsubject~;         # title of welcome message.
+\$imtext = q~$imtext~;           # message sent to new member
 
 \$numposts = $numposts;             # Number of posts required to send Instant Messages
 \$pm_spam_chk = $pm_spam_chk;       # Allow PMs when less than numposts number with added anti-spam checks (0 disables)
@@ -971,19 +1219,16 @@ $ext_prof_fields
 \$numstore = $numstore;             # Number of maximum Messages in the Storage box
 \$numdraft = $numdraft;             # Number of maximum Messages in the draft box
 
-\$PMenable_cc = $PMenable_cc;           # enable cc for PM posting 1 yes, 0 no
-\$PMenable_bcc = $PMenable_bcc;         # enable bcc for PM posting 1 yes, 0 no
-\$PMenableBm_level = $PMenableBm_level;     # minimum level to send? 0 = off, 1 = mods, 2 = gmod, 3 = admin
+\$pm_enable_cc = $pm_enable_cc;           # enable cc for PM posting 1 yes, 0 no
+\$pm_enable_bcc = $pm_enable_bcc;         # enable bcc for PM posting 1 yes, 0 no
+\$enable_bm_level = $enable_bm_level;     # minimum level to send? 0 = off, 1 = mods, 2 = gmod, 3 = admin
 
 \$enable_storefolders = $enable_storefolders;   # enable additonal store folders - in/out are default for all
                             # 0=no > 1 = number, max 25
 
-\$enable_YaBBBut = $enable_YaBBBut;     # enable YABBC Buttons on post page? 1=yes, 0=no
-
-\$enable_PMautoAway = $enable_PMautoAway;   # enable PM 'away' auto reply for inbox.
-\$enable_MCaway = $enable_MCaway;       # enable 'away' indicator 0=Off 1=Staff to Staff 2=Staff to all 3=Members
-\$MaxAwayLen = $MaxAwayLen;             # maximum allowed characters in Away message
-\$enable_MCstatusStealth = $enable_MCstatusStealth; # enable 'stealth' mode for fa/gmods. Allows status label to stay at offline/away for all members viewing.
+\$enable_mc_away = $enable_mc_away;       # enable 'away' indicator 0=Off 1=Staff to Staff 2=Staff to all 3=Members
+\$max_awaylen = $max_awaylen;             # maximum allowed characters in Away message
+\$enable_stealth = $enable_stealth; # enable 'stealth' mode for fa/gmods. Allows status label to stay at offline/away for all members viewing.
 \$self_del_user = $self_del_user;           # 1: allow member to delete own account.
 
 ########## Topic Summary Cutter ##########
@@ -1025,21 +1270,21 @@ $ext_prof_fields
 \$maxdaysattach = $maxdaysattach;                               # Set remove old attachments. Set to 0 to disable.
 \$dirlimit = $dirlimit;             # Set to the maximum number of kilobytes the attachment directory can hold. Set to 0 to disable the directory size check.
 \$overwrite = $overwrite;           # Set to 0 to auto rename attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
-\@ext = qw(@ext);               # The allowed file extensions for file attachments. Variable should be set in the form of "jpg bmp gif" and so on.
+\@ext = ($extensions);               # The allowed file extensions for file attachments. Variable should be set in the form of "jpg bmp gif" and so on.
 \$checkext = $checkext;             # Set to 1 to enable file extension checking, set to 0 to allow all file types to be uploaded
 \$amdisplaypics = $amdisplaypics;       # Set to 1 to display attached pictures in posts, set to 0 to only show a link to them.
 \$allowattach = $allowattach;           # Set to the number of maximum files attaching a post, set to 0 to disable file attaching.
 \$allowguestattach = $allowguestattach;     # Set to 1 to allow guests to upload attachments, 0 to disable guest attachment uploading.
-\$allowAttachIM = $allowAttachIM;           # Set the maximum number of file attachments allowed in personal messages, set to 0 to disable file attachments in personal messages.
-\$pmAttachGroups = '$pmAttachGroups';   # Member groups allowed to send pm attachments, '' == all members
-\$pmDisplayPics = $pmDisplayPics;           # Set to 1 to display attached pictures in personal messages, set to 0 to only show a link to them.
-\$pmCheckExt = $pmCheckExt;                 # Set to 1 to enable file extension checking on pm attachments, set to 0 to allow all file types to be uploaded
-\@pmAttachExt = qw(@pmAttachExt);           # The allowed file extensions for pm file attachments. Variable should be set in the form of "jpg bmp gif" and so on.
-\$pmFileLimit = $pmFileLimit;               # Set to the maximum number of kilobytes a pm attachment can be. Set to 0 to disable the file size check.
-\$pmMaxSizeAttach = $pmMaxSizeAttach;                             # Set remove large pmattachments. Set to 0 to disable.
-\$pmMaxDaysAttach = $pmMaxDaysAttach;                             # Set remove old pmattachments. Set to 0 to disable.
-\$pmDirLimit = $pmDirLimit;                 # Set to the maximum number of kilobytes the pm attachment directory can hold. Set to 0 to disable the directory size check.
-\$pmFileOverwrite = $pmFileOverwrite;       # Set to 0 to auto rename pm attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
+\$allow_attach_im = $allow_attach_im;           # Set the maximum number of file attachments allowed in personal messages, set to 0 to disable file attachments in personal messages.
+\$pm_attach_groups = '$pm_attach_groups';   # Member groups allowed to send pm attachments, '' == all members
+\$pm_display_pics = $pm_display_pics;           # Set to 1 to display attached pictures in personal messages, set to 0 to only show a link to them.
+\$pm_checkext = $pm_checkext;                 # Set to 1 to enable file extension checking on pm attachments, set to 0 to allow all file types to be uploaded
+\@pm_attachext = ($pm_attachext);           # The allowed file extensions for pm file attachments. Variable should be set in the form of "jpg bmp gif" and so on.
+\$pm_file_limit = $pm_file_limit;               # Set to the maximum number of kilobytes a pm attachment can be. Set to 0 to disable the file size check.
+\$pm_maxsizeattach = $pm_maxsizeattach;                             # Set remove large pmattachments. Set to 0 to disable.
+\$pm_maxdaysattach = $pm_maxdaysattach;                             # Set remove old pmattachments. Set to 0 to disable.
+\$pm_dirlimit = $pm_dirlimit;                 # Set to the maximum number of kilobytes the pm attachment directory can hold. Set to 0 to disable the directory size check.
+\$pm_file_overwrite = $pm_file_overwrite;       # Set to 0 to auto rename pm attachments if they exist, 1 to overwrite them or 2 to generate an error if the file exists already.
 
 ########## Error Logger ##########
 
@@ -1051,7 +1296,7 @@ $ext_prof_fields
 
 ########## Advanced Tabs ##########
 \$addtab_on = $addtab_on;               # show advanced tabs on Forum (For admin only.)
-\@AdvancedTabs = ($AdvancedTabs);       # Advanced Tabs order and infos
+\@advanced_tabs = ($advanced_tabs);       # Advanced Tabs order and infos
 
 ########## Smilies ##########
 
@@ -1064,7 +1309,7 @@ $addedsmilies
 \$detachblock = $detachblock;         # detachblock
 \$winwidth = $winwidth;           # winwidth
 \$winheight = $winheight;         # winheight
-\$popback = $popback;             # popback
+\$popback = '$popback';             # popback
 \$poptext = '$poptext';             # poptext
 \$showinbox = '$showinbox';         # showinbox
 \$removenormalsmilies = $removenormalsmilies; # removenormalsmilies
@@ -1077,8 +1322,8 @@ $addedsmilies
 \$gpvalid_en = $gpvalid_en;         # Set to 1 if you want to enable validation code on guest posting
 \$codemaxchars = $codemaxchars;         # Set max length of validation code (15 is max)
 \$captchastyle = '$captchastyle';       # Set L = lowercase only, U = uppercase only, A = both upper and lowercase letters
-\$captchaStartChars = '$captchaStartChars'; # Set extra characters at the start of the validation code
-\$captchaEndChars = '$captchaEndChars'; # Set extra characters at the end of the validation code
+\$captcha_start_chars = '$captcha_start_chars'; # Set extra characters at the start of the validation code
+\$captcha_end_chars = '$captcha_end_chars'; # Set extra characters at the end of the validation code
 \$rgb_foreground = '$rgb_foreground';   # Set hex RGB value for validation image foreground color
 \$rgb_shade = '$rgb_shade';         # Set hex RGB value for validation image shade color
 \$rgb_background = '$rgb_background';   # Set hex RGB value for validation image background color
@@ -1172,50 +1417,11 @@ EOF
         # If you get this, you messed up.
         croak 'I do not know how to write to this file.';
     }
-
-    WriteSettingsTo( "$vardir/$file", $setfile );
+    require Admin::AdminSubs;
+    write_settings_to( "$vardir/$file", $setfile );
     if ( $FORM{'email_test'} ) {
         email_test();
     }
-    return;
-}
-
-# Subroutine for writing the common format of settings file
-sub WriteSettingsTo {
-    my ( $file, $setfile ) = @_;
-    my $filler = q{ } x 50;
-
-    # Fix a certain type of syntax error
-    $setfile =~ s/=\s+;/= 0;/gxsm;
-
-    # Make it look nicely aligned. The comment starts after 50 Col
-
-    local *cut_comment = sub {
-        my ( $comment, $length ) =
-          ( q{}, 150 );    # 120 Col is the max width of page
-        my $var_length = length $_[0];
-        while ( $length < $var_length ) { $length += 150; }
-        for ( split / +/sm, $_[1] ) {
-            if ( ( $var_length + length($comment) + length $_ ) > $length ) {
-                $comment =~ s/ $//sm;
-                $comment .= "\n$filler#  $_ ";
-                $length += 150;
-            }
-            else { $comment .= "$_ "; }
-        }
-        $comment =~ s/ $//sm;
-        return $comment;
-    };
-
-    $setfile =~
-s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
-    $setfile =~ s/\t+(#.+$)/$filler$1/gm;
-    $setfile =~ s/(.+)(#.+$)/ $1 . cut_comment($1,$2) /gem;
-
-    # Write it out
-    fopen( SETTINGS, ">$file" ) || fatal_error( 'cannot_open', $file, 1 );
-    print {SETTINGS} $setfile or croak "$croak{'print'} SETTINGS";
-    fclose(SETTINGS);
     return;
 }
 

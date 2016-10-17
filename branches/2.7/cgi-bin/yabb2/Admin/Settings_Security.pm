@@ -12,32 +12,52 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
+use strict;
 use warnings;
-no warnings qw(once);
-no warnings qw(redefine);
-no warnings qw(uninitialized);
+no warnings qw(redefine);    #save_settings;
 our $VERSION = '2.7.00';
 
-$settings_securitypmver = 'YaBB 2.7.00 $Revision$';
-@settings_securitypmmods = ();
+our $settings_securitypmver  = 'YaBB 2.7.00 $Revision$';
+our @settings_securitypmmods = ();
+our $settings_securitypmmods = 0;
 if (@settings_securitypmmods) {
     $settings_securitypmmods = 1;
 }
+##  languages ##
+our (
+    %croak,        %admin_txt,   %admintxt, %iplookup, %dereftxt,
+    %settings_txt, %session_txt, %reftxt,   %floodtxt
+);
+## paths ##
+our ( $adminurl, $yyhtml_root, $scripturl );
+## settings ##
+our (
+    $enable_news,         $regcheck,            $do_scramble_id,
+    $stealthurl,          $sessions,            $show_online_ip_admin,
+    $show_online_ip_gmod, $show_online_ip_fmod, $ip_lookup,
+    $gpvalid_en,          $translayer,          $codemaxchars,
+    $captchastyle,        $captcha_start_chars, $captcha_end_chars,
+    $masterkey,           $rgb_foreground,      $referersecurity,
+    $rgb_shade,           $rgb_background,      $randomizer,
+    $distortion,          $showcheck,
+);
+## other ##
+our ( $action, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('Sessions');
-$admin_images = "$yyhtml_root/Templates/Admin/default";
+load_language('Admin');
+load_language('Sessions');
+my $adminimages = "$yyhtml_root/Templates/Admin/default";
 
 my @iplookup_urls = sort keys %iplookup;
-$iplookup_urls = q{};
+my $iplookup_urls = q{};
 foreach my $i (@iplookup_urls) {
     if ( $iplookup{$i} !~ /&(?:.*amp;)/gxsm ) {
         $iplookup{$i} =~ s/&/&amp;/gxsm;
     }
-    $j = $i;
-    $i =~ s/\ /_/xsm;
+    my $j = $i;
+    $i =~ s/[ ]/_/xsm;
     $iplookup_urls .= qq~$i|$iplookup{$j}\n~;
 }
 
@@ -45,9 +65,10 @@ if ($regcheck) {
     require Sources::Decoder;
     validation_code();
 }
+$showcheck ||= q{};
 
 # List of settings
-@settings = (
+our @settings = (
     {
         name  => $settings_txt{'generalsec'},
         id    => 'flood',
@@ -78,7 +99,7 @@ qq~<input type="checkbox" name="do_scramble_id" id="do_scramble_id" value="1"${i
             },
             {
                 description =>
-qq~<label for="referersecurity">$reftxt{'8'}</label>~,
+                  qq~<label for="referersecurity">$reftxt{'8'}</label>~,
                 input_html =>
 qq~<input type="checkbox" name="referersecurity" id="referersecurity" value="1"${ischecked($referersecurity)} />~,
                 name     => 'referersecurity',
@@ -110,7 +131,7 @@ qq~<input type="checkbox" name="show_online_ip_fmod" id="show_online_ip_fmod" va
             },
             {
                 description =>
-qq~<label for="ip_lookup">$admin_txt{'iplookup'}</label>~,
+                  qq~<label for="ip_lookup">$admin_txt{'iplookup'}</label>~,
                 input_html =>
 qq~<input type="checkbox" name="ip_lookup" id="ip_lookup" value="1"${ischecked($ip_lookup)} />~,
                 name     => 'ip_lookup',
@@ -121,8 +142,8 @@ qq~<input type="checkbox" name="ip_lookup" id="ip_lookup" value="1"${ischecked($
 qq~<label for="ip_lookup_urls">$admin_txt{'iplookup_urls'}</label>~,
                 input_html =>
 qq~<textarea name="iplookup_urls" id="ip_lookup_urls" cols="55" rows="7">$iplookup_urls</textarea>~,
-                name => 'iplookup_urls',
-                validate => 'fulltext',
+                name       => 'iplookup_urls',
+                validate   => 'fulltext',
                 depends_on => ['ip_lookup'],
             },
         ],
@@ -179,19 +200,19 @@ qq~<input type="text" name="codemaxchars" id="codemaxchars" size="5" value="$cod
             },
             {
                 description =>
-qq~<label for="captchaStartChars">$floodtxt{'extra_chars_start'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
+qq~<label for="captcha_start_chars">$floodtxt{'extra_chars_start'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
                 input_html =>
-qq~<input type="text" name="captchaStartChars" id="captchaStartChars" size="5" value="$captchaStartChars" />~,
-                name       => 'captchaStartChars',
+qq~<input type="text" name="captcha_start_chars" id="captcha_start_chars" size="5" value="$captcha_start_chars" />~,
+                name       => 'captcha_start_chars',
                 validate   => 'text,null',
                 depends_on => [ 'regcheck||', 'gpvalid_en||' ],
             },
             {
                 description =>
-qq~<label for="captchaEndChars">$floodtxt{'extra_chars_end'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
+qq~<label for="captcha_end_chars">$floodtxt{'extra_chars_end'}<br /><span class="small">$floodtxt{'extra_chars_desc'}</span></label>~,
                 input_html =>
-qq~<input type="text" name="captchaEndChars" id="captchaEndChars" size="5" value="$captchaEndChars" />~,
-                name       => 'captchaEndChars',
+qq~<input type="text" name="captcha_end_chars" id="captcha_end_chars" size="5" value="$captcha_end_chars" />~,
+                name       => 'captcha_end_chars',
                 validate   => 'text,null',
                 depends_on => [ 'regcheck||', 'gpvalid_en||' ],
             },
@@ -208,7 +229,7 @@ qq~<input type="text" name="masterkey" id="masterkey" maxlength="24" size="50" v
                 description =>
                   qq~<label for="rgb_foreground">$floodtxt{'f'}</label>~,
                 input_html =>
-qq~<input type="text" name="rgb_foreground" id="rgb_foreground" maxlength="7" size="7" value="$rgb_foreground" onkeyup="previewColor(this.value);" /> <span id="rgb_foreground2" style="background-color:$rgb_foreground">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+qq~<input type="text" name="rgb_foreground" id="rgb_foreground" maxlength="7" size="7" value="$rgb_foreground" onkeyup="previewColor(this.value);" /> <span id="rgb_foreground2" style="background-color:$rgb_foreground">&nbsp; &nbsp; &nbsp;</span> <img src="$adminimages/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor(color) {
                 document.getElementById('rgb_foreground2').style.background = color;
@@ -223,7 +244,7 @@ qq~<input type="text" name="rgb_foreground" id="rgb_foreground" maxlength="7" si
                 description =>
                   qq~<label for="rgb_shade">$floodtxt{'s'}</label>~,
                 input_html =>
-qq~<input type="text" name="rgb_shade" id="rgb_shade" maxlength="7" size="7" value="$rgb_shade" onkeyup="previewColor_0(this.value);" /> <span id="rgb_shade2" style="background-color:$rgb_shade">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+qq~<input type="text" name="rgb_shade" id="rgb_shade" maxlength="7" size="7" value="$rgb_shade" onkeyup="previewColor_0(this.value);" /> <span id="rgb_shade2" style="background-color:$rgb_shade">&nbsp; &nbsp; &nbsp;</span> <img src="$adminimages/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ_0', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor_0(color0) {
                 document.getElementById('rgb_shade2').style.background = color0;
@@ -238,7 +259,7 @@ qq~<input type="text" name="rgb_shade" id="rgb_shade" maxlength="7" size="7" val
                 description =>
                   qq~<label for="rgb_background">$floodtxt{'b'}</label>~,
                 input_html =>
-qq~<input type="text" name="rgb_background" id="rgb_background" maxlength="7" size="7" value="$rgb_background" onkeyup="previewColor_1(this.value);" /> <span id="rgb_background2" style="background-color:$rgb_background">&nbsp; &nbsp; &nbsp;</span> <img src="$admin_images/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ_1', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
+qq~<input type="text" name="rgb_background" id="rgb_background" maxlength="7" size="7" value="$rgb_background" onkeyup="previewColor_1(this.value);" /> <span id="rgb_background2" style="background-color:$rgb_background">&nbsp; &nbsp; &nbsp;</span> <img src="$adminimages/palette1.gif" style="cursor: pointer; vertical-align:top" onclick="window.open('$scripturl?action=palette;task=templ_1', '', 'height=308,width=302,menubar=no,toolbar=no,scrollbars=no')" alt="" />
             <script type="text/javascript">
             function previewColor_1(color1) {
                 document.getElementById('rgb_background2').style.background = color1;
@@ -288,9 +309,9 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
 );
 
 # Routine to save them
-sub SaveSettings {
+sub save_settings {
     my %settings = @_;
-    my $newset = q{};
+    my $newset   = q{};
     for my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
         if (   $iplookup_url =~ /:\/\//xsm
             && $iplookup_url !~ /http(?:s|):\/\//xsm )
@@ -298,8 +319,8 @@ sub SaveSettings {
             fatal_error( 'invalid_value',
                 $iplookup_url . $admin_txt{'iplookup_protocols'} );
         }
-        @ipset = split /[|]/xsm, $iplookup_url;
-        $ipset[0] =~ s/\ /_/xsm;
+        my @ipset = split /[|]/xsm, $iplookup_url;
+        $ipset[0] =~ s/[ ]/_/xsm;
         $newset .= qq~'$ipset[0]' => '$ipset[1]',\n~;
     }
     $settings{'iplookup_url'} = $newset;
@@ -307,11 +328,11 @@ sub SaveSettings {
     if (   length $settings{'masterkey'} < 8
         || length $settings{'masterkey'} > 24 )
     {
-        LoadLanguage('Error');
+        load_language('Error');
         fatal_error('invalid_key');
     }
 
-    SaveSettingsTo( 'Settings.pm', %settings );
+    save_settings_to( 'Settings.pm', %settings );
     return;
 }
 

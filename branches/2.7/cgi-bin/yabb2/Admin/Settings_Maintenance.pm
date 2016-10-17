@@ -12,23 +12,34 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
+use strict;
 use warnings;
-no warnings qw(once);
-no warnings qw(redefine);
-#no warnings qw(uninitialized);
+no warnings qw(redefine);    #save_settings;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-our $settings_maintenancepmver = 'YaBB 2.7.00 $Revision$';
-@settings_maintenancepmmods = ();
+our $settings_maintenancepmver  = 'YaBB 2.7.00 $Revision$';
+our @settings_maintenancepmmods = ();
+our $settings_maintenancepmmods = 0;
 if (@settings_maintenancepmmods) {
     $settings_maintenancepmmods = 1;
 }
+
+##  languages ##
+our ( %croak, %admin_txt, %admintxt, %lngs );
+## paths ##
+our ( $adminurl, $langdir, $vardir );
+## settings ##
+our ( $maintenance, );
+## other ##
+our ( $action, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+load_language('Admin');
+
 # List of settings
-@settings = (
+our @settings = (
 
     # Begin tab
     {
@@ -48,27 +59,32 @@ qq~<input type="checkbox" name="maintenance" id="maintenance" value="1" ${ischec
 );
 
 require "$langdir/Lang.lng";
-for (sort keys %lngs ) {
-    if ( -e "$langdir/$_/maintenancetext.txt") {
-        fopen(MAINTTXT, "<$langdir/$_/maintenancetext.txt");
-        ${$_ . '_maintenancetext'} = <MAINTTXT>;
-        fclose(MAINTTXT);
-    }
-    else {${$_ . '_maintenancetext'} = q{};}
-    $lbl = $_ . '_maintenancetext';
+{
+    no strict qw(refs);
+    for ( sort keys %lngs ) {
+        if ( -e "$langdir/$_/maintenancetext.txt" ) {
+            open my $MAINTTXT, '<', "$langdir/$_/maintenancetext.txt"
+              or croak "$croak{'open'} MAINTTXT";
+            ${ $_ . '_maintenancetext' } = <$MAINTTXT>;
+            close $MAINTTXT or croak "$croak{'close'} MAINTTXT";
+        }
+        else { ${ $_ . '_maintenancetext' } = q{}; }
+        my $lbl = $_ . '_maintenancetext';
 
-    push @{ $settings[0]{items} },
-      {
-        description => qq~<label for="$lbl">$admin_txt{'348Text'} - $_</label>~,
-        input_html =>
+        push @{ $settings[0]{items} },
+          {
+            description =>
+              qq~<label for="$lbl">$admin_txt{'348Text'} - $_</label>~,
+            input_html =>
 qq~<textarea cols="30" rows="5" name="$lbl" id="$lbl" style="width: 98%">${$lbl}</textarea>~,
-        name     => "$lbl",
-        validate => 'fulltext,null',
-      };
+            name     => "$lbl",
+            validate => 'fulltext,null',
+          };
+    }
 }
 
 # Routine to save them
-sub SaveSettings {
+sub save_settings {
     my %settings = @_;
 
     if ( $settings{'maintenance'} != 1 ) {
@@ -76,7 +92,7 @@ sub SaveSettings {
           || fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
     }
 
-    SaveSettingsTo( 'Settings.pm', %settings );
+    save_settings_to( 'Settings.pm', %settings );
     return;
 }
 

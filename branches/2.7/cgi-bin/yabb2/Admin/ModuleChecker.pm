@@ -14,39 +14,40 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+use Module::Load;
 our $VERSION = '2.7.00';
 
-our $modulecheckerpmver = 'YaBB 2.7.00 $Revision$';
-our ( $action, $yymain, $modulecheckerpmmods, %modulecheck );
-my @modulecheckerpmmods = ();
+our $modulecheckerpmver  = 'YaBB 2.7.00 $Revision$';
+our @modulecheckerpmmods = ();
+our $modulecheckerpmmods = 0;
 if (@modulecheckerpmmods) {
     $modulecheckerpmmods = 1;
 }
+our ( $action, $yymain, %modulecheck );
+
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+load_language('Admin');
 
 my $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
 
-my ( $checker_output, $i );
-
 my @modules =
-  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib IO::Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape);
-
-push @modules, 'Module::Load';
+  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
 
 @modules = sort @modules;
+my $checker_output = q{};
+my ($i);
 
-for my $module ( @modules ) {
+for my $module (@modules) {
     my $dont_continue_setup = q{};
-    if ( eval "require $module" ) {
+    if ( eval { load($module); 1 } ) {
         if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {
-            my $myversion   = $module->VERSION || '<NO $VERSION>';
+            my $myversion = $module->VERSION || '<NO $VERSION>';
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="good">$module</span></td>
                     <td class="windowbg2" colspan="2">$modulecheck{'6'} $modulecheck{$module . '2'} $myversion</td>
@@ -74,7 +75,7 @@ for my $module ( @modules ) {
                         $modulecheck{'5'}<br />
                         <br />$e
                     </td>
-                    <td class="windowbg2">$modulecheck{"$module"}</td>
+                    <td class="windowbg2">$modulecheck{$module}</td>
                 </tr>~;
     }
 }
@@ -120,4 +121,5 @@ if ( $script_root !~ /ModuleChecker[.]\w+$/xsm ) {
         </div>~;
 
 }
+
 1;

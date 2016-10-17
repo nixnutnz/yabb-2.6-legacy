@@ -12,24 +12,40 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
 use warnings;
-no warnings qw(once);
-#no warnings qw(redefine);
-#no warnings qw(uninitialized);
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$checkspacepmver = 'YaBB 2.7.00 $Revision$';
-@checkspacepmmods = ();
+our $checkspacepmver  = 'YaBB 2.7.00 $Revision$';
+our $checkspacepmmods = 0;
+our @checkspacepmmods = ();
 if (@checkspacepmmods) {
     $checkspacepmmods = 1;
 }
+##  languages ##
+our ( %croak, %admin_txt, %admin_img, %settings_txt );
+## paths ##
+our ( $adminurl, $vardir, );
+## settings ##
+our ( $yymycharset, $hostusername, $findfile_time, $findfile_root,
+    $findfile_maxsize, $enable_freespace_check, );
+## other ##
+our (
+    $action,      $yymain,        $yytitle, %FORM,
+    $action_area, $yysetlocation, %INFO,    $yyfreespace,
+    $yyext,       $enable_quota,  @settings,
+);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+load_language('Admin');
+
 sub checkspace {
     is_admin_or_gmod();
+    my ( @disk_space, @find );
 
     # Free Disk Space Checking
     if ( $OSNAME =~ /Win/sm ) {
@@ -43,19 +59,20 @@ sub checkspace {
           if $lastline !~ m/byte/ism;
 
         # error trapping if output fails. The word byte should be in the line
+        my $free_bytes = 0;
         if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/xsm ) {
-            $FreeBytes = $3 - 100000;
+            $free_bytes = $3 - 100000;
         }    # 100000 bytes reserve
-        if ( $FreeBytes >= 1073741824 ) {
+        if ( $free_bytes >= 1073741824 ) {
             $yyfreespace =
-              sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 * 1024 ) ) . ' GB';
+              sprintf( '%.2f', $free_bytes / ( 1024 * 1024 * 1024 ) ) . ' GB';
         }
-        elsif ( $FreeBytes >= 1048576 ) {
+        elsif ( $free_bytes >= 1048576 ) {
             $yyfreespace =
-              sprintf( '%.2f', $FreeBytes / ( 1024 * 1024 ) ) . ' MB';
+              sprintf( '%.2f', $free_bytes / ( 1024 * 1024 ) ) . ' MB';
         }
         else {
-            $yyfreespace = sprintf( '%.2f', $FreeBytes / 1024 ) . ' KB';
+            $yyfreespace = sprintf( '%.2f', $free_bytes / 1024 ) . ' KB';
         }
         @disk_space = $yyfreespace;
     }
@@ -65,16 +82,18 @@ sub checkspace {
         close $dsh or croak "Can't close pipe: $OS_ERROR";
 
         for (@disk_space) {
-            $_ =~ s/ +/  /gsm;
+            s/ +/  /gsm;
         }
 
         open my $ffh, q{-|}, 'find . -noleaf -type f -printf "%s-"'
           or croak "Can't open pipe: $OS_ERROR";
-        my @find = <$ffh>;
+        @find = <$ffh>;
         close $ffh or croak "Can't close pipe: $OS_ERROR";
     }
-    $hostusername = $hostusername
-      || ( split / +/sm, qx{ls -l YaBB.$yyext} )[2] || q{};
+    $hostusername =
+         $hostusername
+      || ( split / +/sm, qx{ls -l YaBB.$yyext} )[2]
+      || q{};
     my @quota = qx{quota -u $hostusername -v};
     $quota[0] ||= q{};
     $quota[0] =~ s/^ +//sm;
@@ -83,23 +102,24 @@ sub checkspace {
     $quota[1] =~ s/^ +//sm;
     $quota[1] =~ s/ /&nbsp;/gsm;
     my $quota_select = qq~$quota[0]<br />$quota[1]~;
+    my $ds           = q{};
 
     if ( $quota[2] ) {
         if ( !$enable_quota ) { $ds = ( split / +/sm, $disk_space[1], 2 )[0]; }
-        $my_q_select =
-          isselected( $i == $enable_quota
-              || ( $ds && $quota[$i] =~ /^$ds/xsm ) );
         $quota_select .=
           q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
         for my $i ( 2 .. $#quota ) {
             $quota[$i] =~ s/^ +//sm;
             $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
+            my $my_q_select =
+              isselected( $i == $enable_quota
+                  || ( $ds && $quota[$i] =~ /^$ds/xsm ) );
             $quota_select .=
               qq~<option value="$i" ~ . $my_q_select . qq~>$quota[$i]</option>~;
         }
         $quota_select .= '</select>';
     }
-
+    my $diskspace = join q{}, @disk_space;
     @settings = (
         {
             name  => $settings_txt{'checkspace'},
@@ -112,7 +132,7 @@ sub checkspace {
                     input_html =>
 q~<input type="checkbox" name="enable_quota" id="enable_quota" value="1" ~
                       . (
-                         !$quota[2] ? 'disabled="disabled" '
+                        !$quota[2] ? 'disabled="disabled" '
                         : ischecked($enable_quota)
                       )
                       . q~/>~,
@@ -196,7 +216,7 @@ qq~<input type="text" name="findfile_maxsize" id="findfile_maxsize" size="10" va
                     description =>
 qq~<label for="enable_freespace_check">$admin_txt{'diskspacecheck'}</label>~,
                     input_html =>
-qq~<input type="checkbox" name="enable_freespace_check" id="enable_freespace_check" value="1" ${ischecked($enable_freespace_check)} /><pre>@disk_space</pre>~,
+qq~<input type="checkbox" name="enable_freespace_check" id="enable_freespace_check" value="1" ${ischecked($enable_freespace_check)} /><pre>$diskspace</pre>~,
                     name       => 'enable_freespace_check',
                     validate   => 'boolean',
                     depends_on => [
@@ -210,7 +230,7 @@ qq~<input type="checkbox" name="enable_freespace_check" id="enable_freespace_che
     );
     chsettings();
     $action_area = 'checkspace';
-    AdminTemplate();
+    admintemplate();
     exit;
 }
 
@@ -218,7 +238,7 @@ sub chsettings {
     is_admin_or_gmod();
 
     $yytitle = $admin_txt{'checkspclabel'};
-    $page    = 'checkspace';
+    my $page = 'checkspace';
 
     my @requireorder;    # an array for the correct order of the requirements
     my %requirements;    # a hash that says "Y is required by X"
@@ -288,7 +308,7 @@ sub chsettings {
 # While this data does not really belong with the value, it transfers nicely.
 # We then remove it and reuse it later.
                     my ( $inverse, $realname, $remainder ) =
-                      $require =~ m{(\(?\!?)(\w+)(.*)}xsm;
+                      $require =~ m{([(]?\!?)(\w+)(.*)}xsm;
                     if ( !$requirements{$realname} ) {
                         push @requireorder, $realname;
                     }
@@ -317,32 +337,35 @@ sub chsettings {
         for my $require ( @{ $requirements{$ritem} } ) {
 
             # && or ||, ( and )
-            my $AndOr = $require =~ s/\)//xsm ? ')' : q{};
-            $AndOr .= $require =~ s/\|\|//xsm ? ' ||' : ' &&';
-            my $C = $require =~ s/\(//xsm ? '(' : q{};
+            my $and_or = $require =~ s/[)]//xsm ? ')' : q{};
+            $and_or .= $require =~ s/[|][|]//xsm ? ' ||' : ' &&';
+            my $C = $require =~ s/[(]//xsm ? '(' : q{};
 
             # Is false
             if ( $require =~ s/^\!//xsm ) {
                 $requirejs{$require} .=
-qq~$C\!document.getElementsByName("$ritem")[0].checked$AndOr ~;
+qq~$C\!document.getElementsByName("$ritem")[0].checked$and_or ~;
             }
 
             # Is equal to
             elsif ( $require =~ s/\=\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-$C . qq~document.getElementsByName("$ritem")[0].value == '$1'$AndOr ~;
+                  $C
+                  . qq~document.getElementsByName("$ritem")[0].value == '$1'$and_or ~;
             }
 
             # Is not equal to
             elsif ( $require =~ s/\!\=(.*)$//xsm ) {
                 $requirejs{$require} .=
-$C . qq~document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
+                  $C
+                  . qq~document.getElementsByName("$ritem")[0].value != '$1'$and_or ~;
             }
 
             # Is true
             else {
                 $requirejs{$require} .=
-                  $C . qq~document.getElementsByName("$ritem")[0].checked$AndOr ~;
+                  $C
+                  . qq~document.getElementsByName("$ritem")[0].checked$and_or ~;
             }
             $dependicies .= qq~     checkDependent("$require");\n~;
         }
@@ -356,7 +379,7 @@ $C . qq~document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     # Hidden "feature": jump directly to a tab by default via the URL bar.
     $INFO{'tab'} ||= q{};
     $INFO{'tab'} =~ s/\W//gxsm;
-    $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
+    my $default_tab = $INFO{'tab'} || $settings[0]->{'id'};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
@@ -379,7 +402,7 @@ $C . qq~document.getElementsByName("$ritem")[0].value != '$1'$AndOr ~;
     # Loop through each item that depends on something else
     for my $name ( keys %requirejs ) {
         my $logic = $requirejs{$name};
-        $logic =~ s/ (&&|\|\|) $//sm;
+        $logic =~ s/\s (&&|[|][|])\s $//xsm;
         $yymain .= qq~
         if (eid == "$name" && ($logic)) {
             elm.disabled = false;
@@ -414,13 +437,13 @@ $dependicies
 sub checkspace_save {
     is_admin_or_gmod();
 
-    $enable_quota           = $FORM{'enable_quota'}           || '0';
-    $enable_quota_value     = $FORM{'enable_quota_value'}     || '0';
-    $hostusername           = $FORM{'hostusername'}           || q{};
-    $findfile_time          = $FORM{'findfile_time'}          || 0;
-    $findfile_root          = $FORM{'findfile_root'}          || q{};
-    $findfile_maxsize       = $FORM{'findfile_maxsize'}       || 0;
-    $findfile_space         = $FORM{'findfile_space'}         || '1<>0';
+    $enable_quota = $FORM{'enable_quota'} || '0';
+    my $enable_quota_value = $FORM{'enable_quota_value'} || '0';
+    $hostusername     = $FORM{'hostusername'}     || q{};
+    $findfile_time    = $FORM{'findfile_time'}    || 0;
+    $findfile_root    = $FORM{'findfile_root'}    || q{};
+    $findfile_maxsize = $FORM{'findfile_maxsize'} || 0;
+    my $findfile_space = $FORM{'findfile_space'} || '1<>0';
     $enable_freespace_check = $FORM{'enable_freespace_check'} || 0;
 
     if ( $enable_quota && $enable_quota_value > 1 && $hostusername ) {
@@ -428,7 +451,7 @@ sub checkspace_save {
         $findfile_maxsize       = 0;
         $enable_freespace_check = 0;
     }
-    elsif (-d "$findfile_root"
+    elsif (-d $findfile_root
         && $findfile_maxsize > 0
         && !$enable_freespace_check )
     {
@@ -439,16 +462,16 @@ sub checkspace_save {
         $findfile_maxsize = 0;
         $enable_quota     = 0;
     }
-    elsif ( !-d "$findfile_root" || !$findfile_maxsize ) {
+    elsif ( !-d $findfile_root || !$findfile_maxsize ) {
         $findfile_time    = 0;
         $findfile_maxsize = 0;
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
     if ( $action eq 'checkspace_save' ) {
-        $yySetLocation = qq~$adminurl?action=newsettings;page=advanced~;
+        $yysetlocation = qq~$adminurl?action=newsettings;page=advanced~;
         redirectexit();
     }
     return;
