@@ -18,41 +18,57 @@
 # e-mail: post@carsten-dalgaard.dk                                            #
 #  Added to YaBB core with the writer's permission, January 28, 2013          #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$menupmver  = 'YaBB 2.7.00 $Revision$';
-@menupmmods = ();
+our $menupmver  = 'YaBB 2.7.00 $Revision$';
+our @menupmmods = ();
+our $menupmmods = 0;
 if (@menupmmods) {
     $menupmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+our (
+    $usestyle,    %img_set, %img,        $modimgurl,
+    $yyhtml_root, $htmldir, $use_mobile, $use_menu_type,
+    $menusep,     $my_sep,  $scripturl,  $thegtalkuser,
+    $thegtalkname
+);
+
 get_micon();
 
-sub SetMenu {
+sub set_menu {
+    my ($menu_def);
     if ( -e ("Templates/$usestyle/Menu.def") ) {
-        $Menu_def = qq~Templates/$usestyle/Menu.def~;
+        $menu_def = qq~Templates/$usestyle/Menu.def~;
     }
-    else { $Menu_def = q~Templates/default/Menu.def~; }
+    else { $menu_def = q~Templates/default/Menu.def~; }
 
-    require $Menu_def;
+    require $menu_def;
 
-    while ( ( $key, $value ) = each %img_set ) {
-        (
+    while ( my ( $key, $value ) = each %img_set ) {
+        my (
             $button_icon, $button_text, $text_num, $alt_text,
             $alt_num,     $span_class,  $imgext,   $mod_or_not
         ) = @{$value};
-        if ( !$alt_text ) {
+        if ( !$alt_text || $alt_text eq q{} ) {
             $alt_text = $button_text;
             $alt_num  = $text_num;
         }
+        my ( $buttonins, $altins, );
+        {
+            no strict qw(refs);
+            $buttonins = ${$button_text}{$text_num} || q{};
+            $altins    = ${$alt_text}{$alt_num}     || q{};
+        }
+        my ($button_imgurl);
         if ( $mod_or_not eq 'mod' ) {
-            $button_imgurl = qq~$modimgurl~;
+            $button_imgurl = $modimgurl;
         }
         else {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
@@ -62,55 +78,60 @@ sub SetMenu {
                 $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
             }
         }
+        my $helpstyle = q~ cursor: pointer;~;
         if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
         else                    { $helpstyle = q~ cursor: pointer;~; }
+
         if (   $key ne 'lastpost'
             && $key ne 'pollicon'
             && $key ne 'polliconnew'
             && $key ne 'polliconclosed'
-            && !$useMobile )
+            && !$use_mobile )
         {
-            if ( $UseMenuType == 0 ) {
+            if ( $use_menu_type == 0 ) {
                 $menusep = $my_sep;
                 $img{$key} =
-qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
+qq~<img src="$button_imgurl/$button_icon.$imgext" alt="$altins" /> <span style="white-space: nowrap;" class="$span_class" title="$altins">$buttonins</span> ~;
             }
-            elsif ( $UseMenuType == 1 ) {
+            elsif ( $use_menu_type == 1 ) {
                 $menusep = $my_sep;
                 $img{$key} =
-qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span> ~;
+qq~<span style="white-space: nowrap;" class="$span_class" title="$altins">$buttonins</span> ~;
             }
             else {
                 $menusep =
 qq~<img src='$yyhtml_root/Templates/Forum/$usestyle/buttonsep.png' class='cssbutton1' alt='' title='' />~;
                 $img{$key} =
-qq~<span class="buttonleft cssbutton2" title="${$alt_text}{$alt_num}" style="$helpstyle">~;
+qq~<span class="buttonleft cssbutton2" title="$altins" style="$helpstyle">~;
                 $img{$key} .= q~<span class="buttonright cssbutton3">~;
                 $img{$key} .=
 qq~<span class="buttonimage cssbutton4" style="background-image: url($button_imgurl/$button_icon.$imgext);">~;
                 $img{$key} .=
-qq~<span class="buttontext cssbutton5">${$button_text}{$text_num}</span></span></span></span>~;
+qq~<span class="buttontext cssbutton5">$buttonins</span></span></span></span>~;
             }
         }
         else {
             $menusep = q{};
-            $img{$key} =
-qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$button_text}{$text_num}" title="${$button_text}{$text_num}" />&nbsp;~;
+            {
+                no strict qw(refs);
+                $img{$key} =
+qq~<img src="$button_imgurl/$button_icon.$imgext" alt="$buttonins" title="$buttonins" />&nbsp;~;
+            }
         }
     }
     return;
 }
 
-sub SetImage {
-    my ( $img_name, $UseMenuT ) = @_;
-
+sub set_image {
+    my ( $img_name, $use_menu_t ) = @_;
+    my ($menu_def);
     if ( -e ("Templates/$usestyle/Menu.def") ) {
-        $Menu_def = qq~Templates/$usestyle/Menu.def~;
+        $menu_def = qq~Templates/$usestyle/Menu.def~;
     }
-    else { $Menu_def = q~Templates/default/Menu.def~; }
-    require $Menu_def;
+    else { $menu_def = q~Templates/default/Menu.def~; }
+    require $menu_def;
 
-    (
+    my (
         $button_icon, $button_text, $text_num, $alt_text,
         $alt_num,     $span_class,  $imgext,   $mod_or_not
     ) = @{ $img_set{$img_name} };
@@ -118,8 +139,15 @@ sub SetImage {
         $alt_text = $button_text;
         $alt_num  = $text_num;
     }
+    my ( $buttonins, $altins, );
+    {
+        no strict qw(refs);
+        $buttonins = ${$button_text}{$text_num} || q{};
+        $altins    = ${$alt_text}{$alt_num}     || q{};
+    }
+    my ($button_imgurl);
     if ( $mod_or_not eq 'mod' ) {
-        $button_imgurl = qq~$modimgurl~;
+        $button_imgurl = $modimgurl;
     }
     else {
         $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
@@ -127,56 +155,55 @@ sub SetImage {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
         }
     }
-    if   ( $key eq 'help' ) { $helpstyle = q~ cursor: help;~; }
-    else                    { $helpstyle = q~~; }
-    if ( !$UseMenuT || $UseMenuT == 0 ) {
+    our ( $img_out, $helpstyle );
+    if   ( $img_name eq 'help' ) { $helpstyle = q~ cursor: help;~; }
+    else                         { $helpstyle = q~~; }
+    if ( !$use_menu_t || $use_menu_t == 0 ) {
         $menusep = $my_sep;
-        if ( $img_name eq 'gtalk' ) {
+        if ( $img_name eq 'gtalk' && $thegtalkuser ) {
             $img_out =
 qq~<img src="$button_imgurl/$button_icon.$imgext" class="cursor" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false" alt="$thegtalkname" title="$thegtalkname" />~;
         }
         else {
             $img_out =
-qq~<img src="$button_imgurl/$button_icon.$imgext" alt="${$alt_text}{$alt_num}" /> <span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
+qq~<img src="$button_imgurl/$button_icon.$imgext" alt="$altins" /> <span style="white-space: nowrap;" class="$span_class" title="$altins">$buttonins</span>~;
         }
     }
-    elsif ( $UseMenuT && $UseMenuT == 1 ) {
+    elsif ( $use_menu_t && $use_menu_t == 1 ) {
         $menusep = $my_sep;
         if ( $img_name eq 'gtalk' ) {
             $img_out =
-qq~<span style="white-space: nowrap;" class="$span_class cursor" title="${$alt_text}{$alt_num}" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false">${$button_text}{$text_num}</span>~;
+qq~<span style="white-space: nowrap;" class="$span_class cursor" title="$altins" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false">$buttonins</span>~;
         }
         else {
             $img_out =
-qq~<span style="white-space: nowrap;" class="$span_class" title="${$alt_text}{$alt_num}">${$button_text}{$text_num}</span>~;
+qq~<span style="white-space: nowrap;" class="$span_class" title="$altins">$buttonins</span>~;
         }
     }
-    elsif ( $UseMenuT && $UseMenuT == 3 ) {
+    elsif ( $use_menu_t && $use_menu_t == 3 ) {
         $menusep = q{};
-        $img_out =
-          qq~$button_imgurl/$button_icon.$imgext|${$button_text}{$text_num}~;
+        $img_out = qq~$button_imgurl/$button_icon.$imgext|$buttonins~;
     }
     else {
         $menusep =
 qq~<img src='$yyhtml_root/Templates/Forum/$usestyle/buttonsep.png' class='cssbutton1' alt='' title='' />~;
         if ( $img_name eq 'gtalk' ) {
-            $img_out =
-              qq~<span class="buttonleft cssbutton2" style="$helpstyle">~;
-            $img_out .= q~<span class="buttonright cssbutton3">~;
-            $img_out .=
-qq~<span class="buttonimage cssbutton4 cursor" style="background-image: url($button_imgurl/$button_icon.$imgext);" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false" title="${$button_text}{$alt_num}">~;
-            $img_out .=
-qq~<span class="buttontext cssbutton5">${$button_text}{$text_num}</span></span></span></span>~;
+            {
+                no strict qw(refs);
+                $img_out =
+                  qq~<span class="buttonleft cssbutton2" style="$helpstyle">
+<span class="buttonright cssbutton3">
+<span class="buttonimage cssbutton4 cursor" style="background-image: url($button_imgurl/$button_icon.$imgext);" onclick="window.open('$scripturl?action=setgtalk;gtalkname=$thegtalkuser','','height=80,width=340,menubar=0,toolbar=0,scrollbars=0,resizable=1'); return false" title="${$button_text}{$alt_num}">
+<span class="buttontext cssbutton5">$buttonins</span></span></span></span>~;
+            }
         }
         else {
             $menusep = q{};
             $img_out =
-qq~<span class="buttonleft cssbutton2" title="${$alt_text}{$alt_num}" style="$helpstyle">~;
-            $img_out .= q~<span class="buttonright cssbutton3">~;
-            $img_out .=
-qq~<span class="buttonimage cssbutton4" style="background-image: url($button_imgurl/$button_icon.$imgext);">~;
-            $img_out .=
-qq~<span class="buttontext cssbutton5">${$button_text}{$text_num}</span></span></span></span>~;
+qq~<span class="buttonleft cssbutton2" title="$altins" style="$helpstyle">
+<span class="buttonright cssbutton3">
+<span class="buttonimage cssbutton4" style="background-image: url($button_imgurl/$button_icon.$imgext);">
+<span class="buttontext cssbutton5">$buttonins</span></span></span></span>~;
         }
     }
     return $img_out;

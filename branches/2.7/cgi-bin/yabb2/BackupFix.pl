@@ -18,9 +18,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
-
-#use warnings;
-no warnings qw(uninitialized once redefine);
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local;
@@ -34,12 +32,12 @@ if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 else                     { $yyext = 'pl'; }
 
 my $back_url = "$boardurl/YaBB.$yyext";
-if ( !-e "$vardir/backup.lock" ) {
+if ( !-e 'Variables/backup.lock' ) {
     print "Location: $back_url\n\n" or croak 'cannot find location';
     exit;
 }
 
-open my $ALIST, '<', "$vardir/adminlst.db" or croak 'cannot find adminlist';
+open my $ALIST, '<', 'Variables/adminlst.db' or croak 'cannot find adminlist';
 my @alist = <$ALIST>;
 close $ALIST or croak 'cannot close adminlist';
 chomp @alist;
@@ -52,8 +50,8 @@ my $passwrd  = $q->param('passwrd');
 my $username = 'Guest';
 my $password = q{};
 
-if ( $job == 1 && $iamadmin == 1 ) {
-    unlink "$vardir/backup.lock";
+if ( $job && $job == 1 && $iamadmin && $iamadmin == 1 ) {
+    unlink 'Variables/backup.lock';
     print "Location: $back_url\n\n" or croak 'cannot find location';
     exit;
 }
@@ -63,7 +61,7 @@ require Variables::Settings;
 
 my $check = 0;
 if ( !$job ) {
-    ( $username, $password ) = cookie( $cookieusername, $cookiepassword );
+    ( $username, $password ) = bakcookie( $cookieusername, $cookiepassword );
     for my $i (@alist) {
         if ( $username eq $i ) {
             my ( $myid, $pssword ) = get_user($username);
@@ -90,7 +88,7 @@ elsif ( $job == 2 ) {
 }
 
 my $delbackuplock = q{};
-my $ver_age       = ( stat("$vardir/backup.lock")->mtime );
+my $ver_age       = ( stat('Variables/backup.lock')->mtime );
 my $time          = time;
 my $timelog       = q{};
 my $timelogp      = q{};
@@ -159,11 +157,11 @@ my $page = qq~<!DOCTYPE html>
 
 print $page or croak 'Oops - no page here';
 
-sub cookie {
+sub bakcookie {
     my ( $cookieusrname, $cookiepasswrd ) = @_;
     my ( %cookies, );
     foreach ( split /; /sm, $ENV{'HTTP_COOKIE'} ) {
-        $_ =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
+        s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
         my ( $cookie, $value ) = split /=/xsm;
         $cookies{$cookie} = $value;
     }

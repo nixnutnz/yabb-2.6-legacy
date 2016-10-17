@@ -32,7 +32,7 @@ $my_ipdiv = qq~
 </div>~;
 
 ## AddModerators
-$myshowProfile = qq~<tr class="windowbg">
+$myshowprofile = qq~<tr class="windowbg">
         <td><label for="addmod"><b>{yabb addmod_txt_addmod_title}: </b><br /><span class="small">{yabb addmod_txt_addmod_text}</span></label></td>
         <td>
             <select name="addmod" id="addmod" multiple="multiple" onchange="selectnum();">

@@ -130,7 +130,7 @@ $threadbar = qq~<tr>
                         {yabb admin column}
                 </tr>~;
 
-$threadbarMoved = qq~<tr>
+$threadbarmoved = qq~<tr>
                     <td class="windowbg2 center">{yabb threadpic}</td>
                     <td class="windowbg2 center">{yabb icon}</td>
                     <td class="windowbg" colspan="4">

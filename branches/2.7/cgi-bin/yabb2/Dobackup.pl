@@ -15,25 +15,37 @@
 ###############################################################################
 # Code excerpted from Admin/Backup.pm                                         #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use Time::Local;
 use English '-no_match_vars';
 
 our $VERSION = '2.7.00';
+our $yabbversion    = 'YaBB 2.7.00';
 
-$dobackupplver  = 'YaBB 2.7.00 $Revision$';
-@dobackupplmods = ();
+our $dobackupplver  = 'YaBB 2.7.00 $Revision$';
+our @dobackupplmods = ();
+our $dobackupplmods = 0;
 if (@dobackupplmods) {
     $dobackupplmods = 1;
 }
+
+our ($action);
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+our (%croak, %backup_txt);
+our ($vardir, $memberdir, $boardurl, $htmldir, $langdir, $helpfile, $boardsdir,
+$yyhtml_root, $datadir, $backupdir );
+our ($cookieusername, $cookiepassword, @backup_paths, $backupmethod, $backupprogusr,
+$compressmethod, $backupprogbin, $bkmax_process_time, $mbname, $backuptime, $yymycharset);
+our ($support_env_path, $tarcreated, $backuptype, $curtime, $backupsettingsloaded, $tarball, $zipfile);
 
 require Paths;
 
+my $yyext = 'pl';
 if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 else                     { $yyext = 'pl'; }
 
@@ -50,8 +62,6 @@ my $loop1           = $q->param('loop1');
 my $loop2           = $q->param('loop2');
 my $runbackup       = $q->param('action');
 
-$YaBBversion     = 'YaBB 2.7.00';
-
 open my $ALIST, '<', "$vardir/adminlst.db" or croak 'cannot find adminlist';
 my @alist = <$ALIST>;
 close $ALIST or croak 'cannot close adminlist';
@@ -59,7 +69,7 @@ chomp @alist;
 
 require Variables::Settings;
 my $check = 0;
-my ( $username, $password ) = cookie( $cookieusername, $cookiepassword );
+my ( $username, $password ) = mycookie( $cookieusername, $cookiepassword );
 for my $i (@alist) {
     if ( $username eq $i && $username eq $id && $password eq $passwrd ) {
         $check = 1;
@@ -67,8 +77,8 @@ for my $i (@alist) {
 }
 require Sources::Subs;
 require Sources::DateTime;
-LoadLanguage('Backup');
-@ENVpaths = split /\:/xsm, $ENV{'PATH'};
+load_language('Backup');
+my @ENVpaths = split /\:/xsm, $ENV{'PATH'};
 my $mcurtime = CORE::time;
 
 my ( undef, undef, undef, undef, undef, $anno, undef, undef, undef ) =
@@ -126,6 +136,7 @@ sub runbackup {
     my $time_to_jump = time + $bkmax_process_time;
     $curtime = $mycurtime || $mcurtime;
 
+    $backuptype ||= q{};
     $backupnewest ||= $backupnewst;
     if ( $backupnewest ) { $backuptype = 'n'; }
     if ( $backupnewest && $backupmethod eq "$backupprogusr/zip" ) {
@@ -148,7 +159,7 @@ sub runbackup {
 # We will build a hash to quickly match them.
 # A pipe separates them in the case of needing multiple real paths to handle one informal path
 
-    $boarddir = $support_env_path;
+    my $boarddir = $support_env_path;
 
     %pathconvert = (
         'src' =>
@@ -171,11 +182,11 @@ sub runbackup {
     my $i = 0;
     foreach my $key (@backup_paths) {
         $i++;
-        if ( $i >= $loop1 ) {
-            $j = 0;
+        if ( !$loop1 || $i >= $loop1 ) {
+            my $j = 0;
             for my $path ( split /[|]/xsm, $pathconvert{$key} ) {
                 $j++;
-                if ( $j > $loop2 ) {
+                if ( !$loop2 || $j > $loop2 ) {
                     $loop2 = 0;
 
 # To keep this simple, I will just point to a generic subroutine that takes care of
@@ -203,7 +214,7 @@ sub runbackup {
  # due to the maintenance.lock file that is removed with &automaintenance('off')
     BackupMethodFinalize( $filedirs, 0 );
 
-    $lastbackup = $curtime; # save the last backup time with the actual settings
+    our $lastbackup = $curtime; # save the last backup time with the actual settings
     print_BackupSettings();
     backupdone();
     return;
@@ -258,7 +269,7 @@ $timelogp
 
 sub runbackup_loop {
     my ( $i, $j, $curtme, $backupnwst, $backuptime ) = @_;
-    $page = qq~
+    my $page = qq~
     <p id="memcontinued">
         $backup_txt{'542'} <a href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewest=$backupnwst;backuptime=$backuptime;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd" onclick="PleaseWait();">$backup_txt{'543'}</a>.<br />
         $backup_txt{'90'}
@@ -419,7 +430,7 @@ sub print_BackupSettings {
     $backupsettingsloaded = 1;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
     backuplock('off');
     return;
 }
@@ -437,26 +448,12 @@ sub BackupMethodInit {
             fatal_error( q{}, "$backup_txt{28} Archive::Tar: $EVAL_ERROR" );
         }
         if ( $compressmethod eq 'Compress::Zlib' ) {    # Also using Zlib
-            if ( eval { require Compress::Zlib } )
-            {    # Zlib exports everything at once
-        }
-        else{
-                fatal_error( q{},
-                    "$backup_txt{28} Compress::Zlib: $EVAL_ERROR" );
-            }
+            if ( eval { require Compress::Zlib; 1 } ) { Compress::Zlib->import(); }# Zlib exports everything at once
+            else { fatal_error(q{},"$backup_txt{'28'} Compress::Zlib: $EVAL_ERROR"); }
         }
         elsif ( $compressmethod eq 'Compress::Bzip2' ) {
-            if (
-                eval { require Compress::Bzip2 }
-              )
-            {
-                require Compress::Bzip2;
-                Compress::Bzip2 import->qw(':utilities');
-            }
-        else{
-                fatal_error( q{},
-                    "$backup_txt{28} Compress::Bzip2: $EVAL_ERROR" );
-            }
+            if ( eval { require Compress::Bzip2; 1 } ) { Compress::Bzip2->import(':utilities');}
+            else { fatal_error(q{}, "$backup_txt{'28'} Compress::Bzip2: $EVAL_ERROR"); }
         }
         else { $compressmethod = 'none'; }
 
@@ -525,7 +522,7 @@ sub BackupMethodFinalize {
                 "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar", 0 );
         }
         elsif ( $compressmethod eq 'Compress::Zlib' ) {    # Gzip as a module
-            my ($gzip) = gzopen(
+            my $gzip = gzopen(
                 "$backupdir/backup$backuptype.$curtime.$filedirs.a.tar.gz",
                 'wb' );
             $gzip->gzwrite( $tarball->write );
@@ -550,7 +547,7 @@ sub BackupMethodFinalize {
 
 sub ak_system
 {    # Returns a success code. The system's code returned is $CHILD_ERROR >> 8
-    @x = @_;
+    my @x = @_;
     CORE::system(@x);
     if ( $CHILD_ERROR == -1 ) {
         return q{};
@@ -573,7 +570,7 @@ sub CheckPath {
     return;
 }
 
-sub cookie {
+sub mycookie {
     my ( $cookieusername, $cookiepassword ) = @_;
     my ( %cookies, );
     foreach ( split /; /sm, $ENV{'HTTP_COOKIE'} ) {
@@ -594,7 +591,7 @@ sub cookie {
 
 sub backuplock {
     my ($maction) = @_;
-    my $maintfile = "$vardir/backup.lock";
+    my $maintfile = 'Variables/backup.lock';
     if ( lc($maction) eq 'on' ) {
         open my $MAINT, '>', $maintfile or croak 'cannot create backup.lock';
         close $MAINT or croak 'cannot close backup.lock';
@@ -623,7 +620,7 @@ sub template2 {
     <div id="container">
         <h1 class="center">$mbname is in Backup Mode</h1>
 $looper
-        <p class="center">$mbname &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$yr. All Rights Reserved.</p>
+        <p class="center">$mbname &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$yabbversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$yr. All Rights Reserved.</p>
     </div>
 </body>
 </html>~ or croak 'cannot print page';

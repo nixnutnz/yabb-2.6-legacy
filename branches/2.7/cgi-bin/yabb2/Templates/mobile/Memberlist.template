@@ -27,7 +27,7 @@ $ml_trans ='trans.gif';
 $ml_bar ='bar.gif';
 
 $my_findform = qq~<form action="$scripturl?action=ml;sort=memsearch" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display: inline;">
-            <input type="text" name="member" id="member" value="{yabb ml_txt801}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '{yabb ml_txt801}');" onblur="txtInFields(this, '{yabb ml_txt801}')" />
+            <input type="text" name="member" id="member" value="{yabb ml_txt_801}" style="font-size: 11px; width: 180px;" onfocus="txtInFields(this, '{yabb ml_txt_801}');" onblur="txtInFields(this, '{yabb ml_txt_801}')" />
             <input type="submit" class="button" style="font-size: 10px;" value="{yabb ml_txt_2}" />
             </form> ~;
 
@@ -243,7 +243,7 @@ $my_usersel_inst = qq~<tr>
     {yabb pageindexjs}
 ~;
 
-$my_tableHeader = qq~<tr>
+$my_tableheader = qq~<tr>
             <td class="titlebg">
             <div class="small" style="float: left; width: 258px; padding-top: 3px;">
                 {yabb instructtext}
@@ -259,11 +259,11 @@ $my_tableHeader = qq~<tr>
             </td>
         </tr>{yabb TableHeader_lt}~;
 
-$my_tableHeader_lt = q~<tr>
+$my_tableheader_lt = q~<tr>
             <td class="titlebg">{yabb LetterLinks}</td>
         </tr>~;
 
-$my_quickSearch = qq~
+$my_quicksearch = qq~
     <script type="text/javascript">document.getElementById("select_body").className = "select_body_qsearch";</script>
     <div class="bordercolor" style="width:300px">
     <table class="pad_3px cs_thin">

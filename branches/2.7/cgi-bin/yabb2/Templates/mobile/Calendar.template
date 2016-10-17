@@ -169,9 +169,11 @@ $mycalout_addevent = qq~
         <col style="width:auto" />
     </colgroup>
     <tr>
-        <td class="windowbg2" colspan="2" style="{yabb txtsz}">
+        <td class="windowbg2" colspan="2">
+            <div id="savetable" style="float: left; text-align: left; width: 100%; padding: 0; margin: 0; overflow: hidden; display: none;">
         {yabb messageblock}
-
+            </div>
+            <div id="checktable" class="small" style="float: right; text-align: left; width: 77%; padding: 6px; margin: 0; display: none;"></div>
         </td>
     </tr><tr>
         <td class="windowbg2" colspan="2">

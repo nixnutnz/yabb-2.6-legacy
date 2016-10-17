@@ -12,21 +12,48 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-#use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$postboxpmver  = 'YaBB 2.7.00 $Revision$';
-@postboxpmmods = ();
+our $postboxpmver  = 'YaBB 2.7.00 $Revision$';
+our @postboxpmmods = ();
+our $postboxpmmods = 0;
 if (@postboxpmmods) {
     $postboxpmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
-
+## languages ##
+our ( %croak, %post_txt, %npf_txt, %spell_check, %fatxt, %livepreview_txt,
+    %chrwarn, %maintxt );
+## locations ##
+our ( $yyhtml_root, $scripturl, $defaultimagesdir, $imagesdir, $boardurl,
+    $uploaddir, $uploadurl, $modimgurl );
+## system ##
+our (
+    $date,      $uid,      $username,   $col_row,
+    %INFO,      $yyext,    $cat_exp,    $cat_col,
+    %FORM,      $yymain,   $mfn,        $post,
+    $submittxt, $iamguest, $my_ajxcall, $displayname,
+);
+## settings ##
+our (
+    $fontsizemin,       $fontsizemax,  @pallist,
+    $max_messlen,       $replyguest,   $img_greybox,
+    $moresmilieslist,   $allowattach,  $filetype_info,
+    $filesize_info,     $speedpost,    $min_post_speed,
+    $checkallcaps,      $nolinkallow,  $gpvalid_en,
+    $spam_questions_gp, %fix_img_size, $message,
+    $quick_post,
+);
 get_micon();
-$brk = get_break();
+
+## local ##
+my ( $jsdragwpos, $jsdraghpos, $textsize, %smiley_bar, );
 
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
 
@@ -70,14 +97,14 @@ sub postbox {
     my %mods = ();
     ## Mod Hook for UBBC ##
 
-    ( $mods,      $mods_w )      = ubbc_modlist(%mods);
-    ( $boxlist1,  $boxlist1_w )  = ubbc_boxlist(%boxlist1);
-    ( $textdecor, $textdecor_w ) = ubbc_boxlist(%textdecor);
-    ( $txtalgn,   $txtalgn_w )   = ubbc_boxlist(%txtalgn);
-    $fntcolor_w = 68;
-    $font_w = $boxlist1_w - ( $textdecor_w + $txtalgn_w + $fntcolor_w + 25 );
-    $ubbc_box_w = $boxlist1_w + $mods_w;
-    $box        = qq~            <div style="float:left; width:${ubbc_box_w}px">
+    my ( $mods,      $mods_w )      = ubbc_modlist(%mods);
+    my ( $boxlist1,  $boxlist1_w )  = ubbc_boxlist(%boxlist1);
+    my ( $textdecor, $textdecor_w ) = ubbc_boxlist(%textdecor);
+    my ( $txtalgn,   $txtalgn_w )   = ubbc_boxlist(%txtalgn);
+    my $fntcolor_w = 68;
+    my $font_w = $boxlist1_w - ( $textdecor_w + $txtalgn_w + $fntcolor_w + 25 );
+    my $ubbc_box_w = $boxlist1_w + $mods_w;
+    my $box = qq~            <div style="float:left; width:${ubbc_box_w}px">
             <div style="float:right; width:${mods_w}px">
             $mods
             </div>
@@ -179,14 +206,18 @@ $fntopts
 }
 
 sub postbox2 {
-    if ( !${ $uid . $username }{'postlayout'} ) {
-        $pheight  = 130;
-        $pwidth   = 448;
-        $textsize = 100;
-    }
-    else {
-        ( $pheight, $pwidth, $textsize, $col_row ) =
-          split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+    my ( $pheight, $pwidth );
+    {
+        no strict qw(refs);
+        if ( !${ $uid . $username }{'postlayout'} ) {
+            $pheight  = 130;
+            $pwidth   = 448;
+            $textsize = 100;
+        }
+        else {
+            ( $pheight, $pwidth, $textsize, $col_row ) =
+              split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+        }
     }
     $col_row ||= 0;
     if ( !$textsize || $textsize < 60 ) { $textsize = 60; }
@@ -195,18 +226,19 @@ sub postbox2 {
     if ( $pheight < 130 )  { $pheight  = 130; }
     if ( $pwidth > 600 )   { $pwidth   = 600; }
     if ( $pwidth < 468 )   { $pwidth   = 468; }
-    $mtextsize  = $textsize . q{%};
-    $mheight    = $pheight . 'px';
-    $mwidth     = $pwidth . 'px';
-    $dheight    = ( $pheight + 12 ) . 'px';
-    $dwidth     = ( $pwidth + 12 ) . 'px';
+    my $mtextsize = $textsize . q{%};
+    my $mheight   = $pheight . 'px';
+    my $mwidth    = $pwidth . 'px';
+    my $dheight   = ( $pheight + 12 ) . 'px';
+    my $dwidth    = ( $pwidth + 12 ) . 'px';
     $jsdragwpos = $pwidth - 480;
-    $dragwpos   = ( $pwidth - 480 ) . 'px';
+    my $dragwpos = ( $pwidth - 480 ) . 'px';
     $jsdraghpos = $pheight - 130;
-    $draghpos   = ( $pheight - 130 ) . 'px';
+    my $draghpos = ( $pheight - 130 ) . 'px';
+    $message ||= q{};
     if ( $INFO{'edit_cal_even'} ) { $message = q~{yabb calevent}~; }
 
-    $box = qq~
+    my $box = qq~
             <div id="spell_container"></div>
             <div class="left99">
                 <div class="leftleft">
@@ -247,25 +279,26 @@ sub postbox2 {
                     </div>~;
     my $break = q{ };
     if ( !$replyguest ) {
-        if ( $MaxMessLen >= 10000 ) {
+        if ( $max_messlen >= 10000 ) {
             $break = q~<br />~;
         }
         $box .= qq~<div class="chrwarn">
                         <img src="$imagesdir/green1.gif" id="chrwarn" height="8" width="8" alt="" />
-                        <span class="small">$npf_txt{'03'} $MaxMessLen $npf_txt{'03a'}<input value="$MaxMessLen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>
+                        <span class="small">$npf_txt{'03'} $max_messlen $npf_txt{'03a'}<input value="$max_messlen" size="3" name="msgCL" class="chrwarn" readonly="readonly" /></span>
                     </div>~;
     }
     $box .= qq~                    <div class="chrsize">
                         <span class="small">$post_txt{'textsize'} <input value="$textsize" size="2" name="txtsize" id="txtsize" class="chrsize" readonly="readonly" />% <img src="$imagesdir/smaller.gif" height="11" width="11" alt="" onclick="sizetext(-10);" /><img src="$imagesdir/larger.gif" height="11" width="11" alt="" onclick="sizetext(10);" /></span>
             </div>~;
     if ( $action ne 'imsend' ) { $box .= '</div></div>'; }
+    my $brk = get_break() || q{};
     $box =~ s/\Q{yabb br}\E/$break/gxsm;
     $box =~ s/{yabb_getbreak}/$brk/gxsm;
     return $box;
 }
 
 sub postbox3 {
-    $box = qq~
+    my $box = qq~
 <script type="text/javascript">
     var oldwidth = parseInt(document.getElementById('message').style.width) - $jsdragwpos;
     var olddragwidth = parseInt(document.getElementById('dragbgh').style.width) - $jsdragwpos;
@@ -375,7 +408,7 @@ sub postbox3 {
     #// Collapse/Expand additional features
     #//var col_row = $col_row;
     my @noneedrow = qw(imsend eventcal);
-    my $needrow = 1;
+    my $needrow   = 1;
     foreach (@noneedrow) {
         if ( $action eq $_ ) {
             $needrow = 0;
@@ -426,11 +459,16 @@ sub postbox3 {
 }
 
 sub googiea {
-    $googiea =
+    my $googiea =
 qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="text/css" />
 <script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
 <script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
-    if ( !$img_greybox || $action eq 'guestpm' ) {
+    if (  !$img_greybox
+        || $action eq 'guestpm'
+        || ( $INFO{'board'} && $quick_post )
+        || $action eq 'eventcal'
+        || $action eq 'modify' )
+    {
         $googiea .=
 qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
     }
@@ -439,7 +477,7 @@ qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
 
 sub googie {
     my ($userdefaultlang) = @_;
-    $googie = qq~
+    my $googie = qq~
             <script type="text/javascript">
             GOOGIE_DEFAULT_LANG = '$userdefaultlang';
             var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.$yyext?lang=");
@@ -483,6 +521,7 @@ sub smilies_list {
         $smilies_list .=
 qq~<img src='$imagesdir/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
     }
+    $moresmilieslist ||= q{};
     $smilies_list .= $moresmilieslist;
     return $smilies_list;
 }
@@ -598,6 +637,8 @@ sub attach {
 }
 
 sub speedpost {
+    $submittxt ||= q{};
+    $post      ||= q{};
     $speedpost = qq~
             var postdelay = $min_post_speed*1000;
             document.postmodify.$post.value = '$post_txt{"delay"}';
@@ -617,7 +658,9 @@ sub speedpost {
 
 sub my_check_prev {
     $checkallcaps ||= 0;
-    $x = qq~
+    $nolinkallow  ||= q{};
+    $post         ||= q{};
+    my $x = qq~
         <script type="text/javascript">
 
         var livepostas = '$post';
@@ -683,7 +726,7 @@ sub my_check_prev {
 }
 
 sub my_liveprev {
-    $x =
+    my $x =
       qq~var noalert = true, gralert = false, rdalert = false, clalert = false;
 var cntsec = 0;
 
@@ -730,7 +773,7 @@ document.getElementById("saveframe").style.display = "none";~;
 }
 function calcCharLeft() {
   var clipped = false;
-  var maxLength = $MaxMessLen;
+  var maxLength = $max_messlen;
   if (document.postmodify.message.value.length > maxLength) {
     document.postmodify.message.value = document.postmodify.message.value.substring(0,maxLength);
     var charleft = 0;
@@ -823,6 +866,7 @@ function autoPreview() {
     ~;
     }
     if ( $my_ajxcall eq 'ajxmessage' ) {
+        $displayname ||= q{};
         $x .= qq~
     var tmusername = encodeURIComponent('$displayname');
     sessvalue = encodeURIComponent(document.postmodify.formsession.value);
@@ -948,7 +992,7 @@ q~class='vtop cursor' style='height:22px; width:23px;' onmouseover='contextTip(e
 qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$img' onclick='$click;' $hand alt='$alt' title='$alt' /></span>\n~;
         $w++;
     }
-    $boxlist_w = $w * 24;
+    my $boxlist_w = $w * 24;
     return ( $boxlist, $boxlist_w );
 }
 
@@ -971,7 +1015,7 @@ qq~<span class="ubbcbutton ubbcbuttonback"><img src='$modimgurl/$img' onclick='$
     else {
         $mod_w = 1 + int $w / 2;
     }
-    $boxlist_w = $mod_w * 24;
+    my $boxlist_w = $mod_w * 24;
     return ( $boxlist, $boxlist_w );
 }
 

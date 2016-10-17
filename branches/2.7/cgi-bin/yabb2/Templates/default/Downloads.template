@@ -22,8 +22,8 @@ $downloads_top = qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
     <meta charset="$yymycharset">
-<title>{yabb fatxt39}</title>
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <title>{yabb fatxt39}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <script type="text/javascript">
     function download_file(amfn) {
         window.open('$scripturl?action=downloadfile;file=' + encodeURIComponent(amfn),'_blank');

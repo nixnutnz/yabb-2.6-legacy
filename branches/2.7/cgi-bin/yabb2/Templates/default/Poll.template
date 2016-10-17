@@ -45,7 +45,7 @@ $mypoll_details = qq~
     </div>
 </form>~;
 
-$mypoll_IP = qq~</tr>
+$mypoll_ip = qq~</tr>
             <td class="windowbg2 center"><input type="checkbox" name="{yabb id}" value="1" /></td>
             <td class="windowbg2">{yabb voters_name}</td>
             <td class="windowbg2 center">{yabb lookupIP}</td>

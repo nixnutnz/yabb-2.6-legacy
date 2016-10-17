@@ -139,7 +139,7 @@ $mysearch_template10 = qq~
                 {yabb ipimg}{yabb mip}
 ~;
 
-$mysearch_PM = qq~
+$mysearch_pm = qq~
 <table class="bordercolor cs_thin fixed">
     <colgroup>
         <col style="width:5%" />

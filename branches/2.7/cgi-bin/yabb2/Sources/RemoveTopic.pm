@@ -12,18 +12,31 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$removetopicpmver  = 'YaBB 2.7.00 $Revision$';
-@removetopicpmmods = ();
+our $removetopicpmver  = 'YaBB 2.7.00 $Revision$';
+our @removetopicpmmods = ();
+our $removetopicpmmods = 0;
 if (@removetopicpmmods) {
     $removetopicpmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub RemoveThread {
+our (
+    %croak,     %INFO,         %FORM,          $staff,
+    $iamposter, $currentboard, $boardsdir,     $datadir,
+    $uid,       %moved_file,   $yysetlocation, $scripturl,
+    $adminbin,  $iamadmin,     $iamgmod,       $iamfmod,
+    $binboard,  $maxdisplay,   %thread_arrayref
+);
+
+sub remove_thread {
     my $thread = $INFO{'thread'};
     if ( $thread =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }
 
@@ -31,14 +44,14 @@ sub RemoveThread {
         fatal_error('delete_not_allowed');
     }
     if ( !$currentboard ) {
-        MessageTotals( 'load', $thread );
+        message_totals( 'load', $thread );
         $currentboard = ${$thread}{'board'};
     }
     my $threadline = q{};
-    fopen( BOARDFILE, "<$boardsdir/$currentboard.txt", 1 )
+    open my $BOARDFILE, '<', "$boardsdir/$currentboard.txt"
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    my @buffer = <BOARDFILE>;
-    fclose(BOARDFILE);
+    my @buffer = <$BOARDFILE>;
+    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
     for my $i ( 0 .. $#buffer ) {
         if ( $buffer[$i] =~ m{\A$thread[|]}xsm ) {
             $threadline = $buffer[$i];
@@ -47,28 +60,30 @@ sub RemoveThread {
         }
     }
     my $prnbrd = join q{}, @buffer;
-    fopen( BOARDFILE, ">$boardsdir/$currentboard.txt", 1 )
+    open $BOARDFILE, '>', "$boardsdir/$currentboard.txt"
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    print {BOARDFILE} $prnbrd or croak "$croak{'print'} BOARDFILE";
-    fclose(BOARDFILE);
-
+    print {$BOARDFILE} $prnbrd or croak "$croak{'print'} BOARDFILE";
+    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
     if ($threadline) {
-        if ( !ref $thread_arrayref{$thread} ) {
-            fopen( FILE, "$datadir/$thread.txt" )
-              or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
-            @{ $thread_arrayref{$thread} } = <FILE>;
-            fclose(FILE);
-        }
+        {
+            no strict qw(refs);
+            if ( !ref $thread_arrayref{$thread} ) {
+                open my $FILE, '<', "$datadir/$thread.txt"
+                  or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
+                @{ $thread_arrayref{$thread} } = <$FILE>;
+                close $FILE or croak "$croak{'close'} $thread.txt";
+            }
 
-        BoardTotals( 'load', $currentboard );
-        if ( ( split /[|]/xsm, $threadline )[8] !~ /m/sm ) {
-            ${ $uid . $currentboard }{'threadcount'}--;
-            ${ $uid . $currentboard }{'messagecount'} -=
-              @{ $thread_arrayref{$thread} };
+            boardtotals( 'load', $currentboard );
+            if ( ( split /[|]/xsm, $threadline )[8] !~ /m/sm ) {
+                ${ $uid . $currentboard }{'threadcount'}--;
+                ${ $uid . $currentboard }{'messagecount'} -=
+                  @{ $thread_arrayref{$thread} };
 
-            # &BoardTotals("update", ...) is done in &BoardSetLastInfo
+                # &boardtotals("update", ...) is done in &board_setlast_info
+            }
         }
-        BoardSetLastInfo( $currentboard, \@buffer );
+        board_setlast_info( $currentboard, \@buffer );
 
         # remove thread files
         unlink "$datadir/$thread.txt";
@@ -81,13 +96,13 @@ sub RemoveThread {
         require Admin::Attachments;
         my %remattach;
         $remattach{$thread} = undef;
-        RemoveAttachments( \%remattach );
+        remove_attachments( \%remattach );
     }
 
     # remove from Movedthreads.pm only if it's the final thread
     # then look backwards to delete the other entries in
     # the Moved-Info-row if their files were deleted
-
+    my ($save_moved);
     local *moved_loop = sub {
         my $th = shift;
         for ( keys %moved_file ) {
@@ -109,27 +124,27 @@ sub RemoveThread {
     }
 
     if ( $INFO{'moveit'} != 1 ) {
-        $yySetLocation = qq~$scripturl?board=$currentboard~;
+        $yysetlocation = qq~$scripturl?board=$currentboard~;
         redirectexit();
     }
     return;
 }
 
-sub DeleteThread {
+sub delete_thread {
     my @x = @_;
-    $delete = $FORM{'thread'} || $INFO{'thread'} || $x[0];
+    my $delete = $FORM{'thread'} || $INFO{'thread'} || $x[0];
 
     if ( !$currentboard ) {
-        MessageTotals( 'load', $delete );
+        message_totals( 'load', $delete );
         $currentboard = ${$delete}{'board'};
     }
-    if ( $FORM{'ref'} eq 'favorites' ) {
+    if ( $FORM{'ref'} && $FORM{'ref'} eq 'favorites' ) {
         $INFO{'ref'} = 'delete';
         require Sources::Favorites;
-        RemFav($delete);
+        rem_fav($delete);
     }
     if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
-        && $binboard ne q{}
+        && $binboard
         && $currentboard ne $binboard )
     {
         require Sources::MoveSplitSplice;
@@ -141,38 +156,41 @@ sub DeleteThread {
         $INFO{'newinfo'}   = 1;
         $INFO{'newboard'}  = $binboard;
         $INFO{'newthread'} = 'new';
-        Split_Splice_2();
+        split_splice_2();
     }
     elsif ( $iamadmin || $iamgmod || $iamfmod || $binboard eq q{} ) {
         $INFO{'moveit'} = 1;
         $INFO{'thread'} = $delete;
-        RemoveThread();
+        remove_thread();
     }
-    $yySetLocation = qq~$scripturl?board=$currentboard~;
+    $yysetlocation = qq~$scripturl?board=$currentboard~;
     redirectexit();
     return;
 }
 
-sub Multi {
+sub multi {
     if ( !$staff ) { fatal_error('not_allowed'); }
 
     require Sources::SetStatus;
     require Sources::MoveSplitSplice;
 
     my $mess_loop;
-    if ( $FORM{'allpost'} =~ m/all/ism ) {
-        BoardTotals( 'load', $currentboard );
-        $mess_loop = ${ $uid . $currentboard }{'threadcount'};
-    }
-    else {
-        $mess_loop = $maxdisplay;
+    {
+        no strict qw(refs);
+        if ( $FORM{'allpost'} =~ m/all/ixsm ) {
+            boardtotals( 'load', $currentboard );
+            $mess_loop = ${ $uid . $currentboard }{'threadcount'};
+        }
+        else {
+            $mess_loop = $maxdisplay;
+        }
     }
 
     my $count = 1;
     while ( $mess_loop >= $count ) {
         my ( $lock, $stick, $move, $delete, $ref, $hide );
 
-        if ( $FORM{'multiaction'} eq q{} ) {
+        if ( !$FORM{'multiaction'} ) {
             $lock   = $FORM{"lockadmin$count"};
             $stick  = $FORM{"stickadmin$count"};
             $move   = $FORM{"moveadmin$count"};
@@ -207,14 +225,14 @@ sub Multi {
             $INFO{'thread'} = $lock;
             $INFO{'action'} = 'lock';
             $INFO{'ref'}    = $ref;
-            SetStatus();
+            set_status();
         }
         if ($stick) {
             $INFO{'moveit'} = 1;
             $INFO{'thread'} = $stick;
             $INFO{'action'} = 'sticky';
             $INFO{'ref'}    = $ref;
-            SetStatus();
+            set_status();
         }
         if ($move) {
             $INFO{'moveit'}   = 1;
@@ -227,24 +245,24 @@ sub Multi {
             $INFO{'newthread'} = 'new';
             if ( !$INFO{'newboard'} ) { redirectmove($currentboard); }
             else {
-                Split_Splice_2();
+                split_splice_2();
             }
         }
         if ($hide) {
             $INFO{'moveit'} = 1;
             $INFO{'action'} = 'hide';
             $INFO{'thread'} = $hide;
-            SetStatus();
+            set_status();
         }
         if ($delete) {
             if ( !$currentboard ) {
-                MessageTotals( 'load', $delete );
+                message_totals( 'load', $delete );
                 $currentboard = ${$delete}{'board'};
             }
             if ( $FORM{'ref'} && $FORM{'ref'} eq 'favorites' ) {
                 $INFO{'ref'} = 'delete';
                 require Sources::Favorites;
-                RemFav($delete);
+                rem_fav($delete);
             }
             if (   ( !$adminbin || ( !$iamadmin && !$iamgmod && !$iamfmod ) )
                 && $binboard
@@ -258,17 +276,17 @@ sub Multi {
                 $INFO{'newinfo'}   = 1;
                 $INFO{'newboard'}  = $binboard;
                 $INFO{'newthread'} = 'new';
-                Split_Splice_2();
+                split_splice_2();
             }
             elsif ( $iamadmin || $iamgmod || $iamfmod || $binboard eq q{} ) {
                 $INFO{'moveit'} = 1;
                 $INFO{'thread'} = $delete;
-                RemoveThread();
+                remove_thread();
             }
         }
         $count++;
     }
-    $yySetLocation = qq~$scripturl?board=$currentboard~;
+    $yysetlocation = qq~$scripturl?board=$currentboard~;
     redirectexit();
     return;
 }

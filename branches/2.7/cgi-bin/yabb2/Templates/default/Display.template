@@ -36,7 +36,7 @@ $threadhandellist2 = qq~
     {yabb notify2}{yabb favorite2}{yabb sendtopic}{yabb print}{yabb markunread}
 ~;
 
-if($useThreadtools) {
+if($usethread_tools) {
     $threadhandelstyle = q~ class="post_tools center" style="width:10em"~;
     $my_fixed = q~ style="table-layout: fixed;"~;
 } else {
@@ -120,7 +120,7 @@ $posttoola = ' width:1%';
 $padd_right = q{};
 $posthandeladmin = q{};
 $postcol = 3;
-if($usePosttools) {
+if($usepost_tools) {
     $posthandelstyle = q~ class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle"~;
     $posthandeladmin = q~<div style="float:right; vertical-align:bottom; height:100%;">{yabb admin}</div>~;
     $padd_right = q~; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle~;
@@ -208,7 +208,7 @@ $messageblock = qq~
                         {yabb contactlist} &nbsp;
                     </div>
                     <div class="small" style="float: left; text-align: right; width: 25%;">
-                        <span class="small">{yabb ipimg} {yabb ip}<br />{yabb permalink} &nbsp;</span>
+                        {yabb ipimg} {yabb ip}<br />{yabb permalink} &nbsp;
                     </div>
                 </td>
             </tr>
@@ -445,4 +445,5 @@ $gtalker = qq~<!DOCTYPE html>
     </table>
 </body>
 </html>~;
+
 1;

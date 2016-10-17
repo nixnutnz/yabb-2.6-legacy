@@ -419,7 +419,7 @@ $abbr_lang = 'en-us';
 '689a' => q~Maximum allowed characters in Away message~,
 '690' => q~Time in minutes to log each click in your forum<br />(must be less than 1440, which is 24 hours)~,
 '691' => q~Total Clicks~,
-'692' => qq~in the last $ClickLogTime minutes~,
+'692' => qq~in the last $click_logtime minutes~,
 '692a' => q~disabled~,
 '693' => q~View forum access log~,
 '694' => q~IP Access~,
@@ -427,8 +427,8 @@ $abbr_lang = 'en-us';
 '696' => q~Operating Systems~,
 '696a' => q~Script calls~,
 '697' => qq~This is a simple system that analyzes the log YaBB creates with each click someone makes in your forum. Use this as a rough estimate of the traffic, browser, and operating system of $mbname visitors. The numbers in parentheses beside each item are the number of occurrences of that item in your log.~,
-'698' => qq~<br /><br />You currently have logging set for $ClickLogTime minutes.~,
-'698a' => q~<br /><br />You currently have logging disabled.~,
+'698' => qq~<br /><br />You currently have logging set for $click_logtime minutes.~,
+'698a' => qq~<br /><br />You currently have logging disabled. To turn on logging, go to <a href="$boarddir/AdminIndex.pl?action=newsettings;page=advanced">Advanced Settings (Advanced)</a>~,
 '699' => q~Reserved names will keep members from registering certain user IDs or using these words in their screen names. Choose the options you wish to use from the bottom before submitting.~,
 '702' => q~E-mail Random Password to New Member Upon Registration?~,
 '710' => q~Password-Strength-Meter Scores<br /><span class ="small">Here you can define when the line jumps to the next higher level. Default is <em>10,15,30,40</em>. <span style="color:red">Insert only numbers and commas or you can get into trouble.</span><br />Set to <em>-1,-1,-1,-1</em> to disable the Password-Strength-Meter feature. Then it will show only if the Password is too short or if it is OK.</span>~,
@@ -656,6 +656,7 @@ Thanks for using YaBB!~,
 'modfolderfolder' => q~Select Folder to upload to~,
 'newfolder' => q~New Folder~,
 'uploadedg' => q~New Graphics File Uploads~,
+'uploaded' => q~New Template File Uploads~,
 'error_spd' => q~ErrorLog speed banning. Minimum number of seconds between multiple error log entries from the same IP address. <br /><span class="small">Violators are banned through .htaccess if allowed. Set to '0' to disable</span>~,
 'langpack' => q~Language and Help Files~,
 'view' => q~View {yabb fld} files~,
@@ -1177,7 +1178,7 @@ Thanks for using YaBB!~,
 'allowbcc' => q~Allow 'Bcc' list for PMs?<br /><span class="small">('Bcc' - member is 'copied' but doesn't see other recipients.)</span>~,
 'away' => q~Enable 'Away' indicator for members, works alongside 'Online/Offline'<br /><span class="small">Staff to Staff - Only forum Staff can use and see<br />Staff to All - Only forum Staff can use, All members can see<br />Members - All members can use and see</span>~,
 'extrastore' => q~Enable additional Store Folders<br /><span class="small">(In/Out are default for All, set to 0 to disable, max 25)</span>~,
-'NewNotificationAlert' => q~Allow member's new board and post notifications to appear at the top of each page, and permit pop-ups for these new notifications on the Board Index (based on the member's individual settings)?~,
+'Newnotification_alert' => q~Allow member's new board and post notifications to appear at the top of each page, and permit pop-ups for these new notifications on the Board Index (based on the member's individual settings)?~,
 'enable_PMsearch' => q~Allow members to be able to search their PMs<br /><span class="small">(Set to 0 to disable; maximum 50 results returned)</span>~,
 'enablePM' => q~Enable Personal Messaging for~,
 '87' => q~Enable Broadcast Messaging for~,
@@ -1703,8 +1704,13 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'n_install' => q~has not been installed!~,
 );
 
+%load_txt = (
+'616a' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
+'617' => q~Remember, last Backup was done on:~,
+);
+
 timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$YaBBversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$yabbversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
 $rna = 'Remote Server not available.';
 

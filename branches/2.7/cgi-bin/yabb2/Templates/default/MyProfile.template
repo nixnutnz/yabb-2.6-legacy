@@ -224,19 +224,21 @@ $myprofile_minlinkweb = qq~<tr class="windowbg">
     </tr>~;
 
 $myprofile_away = qq~<tr class="windowbg">
-        <td><label for="offlinestatus"><b>{yabb profile_txtshowstatus}: </b>
-            <br /><span class="small">{yabb profile_txtstatusexplain}<br />{yabb profile_txtawaydescription}</span></label></td>
-        <td>
+        <td><label for="offlinestatus"><b>{yabb profile_txtshowstatus}: </b><br /><span class="small">{yabb profile_txtstatusexplain}</span><td>
            <select name="offlinestatus" id="offlinestatus">
                <option value="offline"{yabb offChecked}>$maintxt{'61'}</option>
                <option value="away"{yabb awayChecked}>$maintxt{'away'}</option>
-             </select><br /><br />
+             </select>
+        </td>
+    </tr><tr class="windowbg">
+        <td class="vtop"><b>{yabb profile_txtawaydesc}</b><br /><span class="small">{yabb profile_txtawaydescription}</span></label></td>
+        <td>
              <label for="awaysubj"><span class="small">{yabb profile_txtasubj}</span></label><br />
              <input type="text" name="awaysubj" id="awaysubj" size="50" maxlength="50" value="{yabb awaysubj}" /><br /><br />
              <label for="awayreply"><span class="small">{yabb profile_txtamess}</span></label><br />~;
 
 $myprofile_away_b =qq~
-             <span class="small">{yabb profile_txt664a} <input value="{yabb MaxAwayLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
+             <span class="small">{yabb profile_txt664a} <input value="{yabb max_awaylen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br />
              <script type="text/javascript">
                  var supportsKeys = false;
                  function tick() {
@@ -245,7 +247,7 @@ $myprofile_away_b =qq~
                  }
                  function calcCharLeft(sig) {
                      clipped = false;
-                     maxLength = {yabb MaxAwayLen};
+                     maxLength = {yabb max_awaylen};
                      if (document.creator.awayreply.value.length > maxLength) {
                          document.creator.awayreply.value = document.creator.awayreply.value.substring(0,maxLength);
                          charleft = 0;
@@ -284,7 +286,7 @@ $myprofile_options = qq~<table class="pad_4px" style="border-spacing: 0 1px; bor
          <td><label for="signature"><b>{yabb profile_txt85}:</b><br /><span class="small">{yabb profile_txt606}</span></label></td>
          <td>~;
 
-$myprofile_options_b = qq~             <span class="small">{yabb profile_txt664} <input value="{yabb MaxSigLen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
+$myprofile_options_b = qq~             <span class="small">{yabb profile_txt664} <input value="{yabb max_siglen}" size="3" name="msgCL" class="windowbg" style="border: 0; width: 40px; padding: 1px; font-size: 11px;" readonly="readonly" /></span><br /><br />
              <script type="text/javascript">
                  var supportsKeys = false;
                  function tick() {
@@ -293,7 +295,7 @@ $myprofile_options_b = qq~             <span class="small">{yabb profile_txt664}
                  }
                  function calcCharLeft(sig) {
                      clipped = false;
-                     maxLength = {yabb MaxSigLen};
+                     maxLength = {yabb max_siglen};
                      if (document.creator.signature.value.length > maxLength) {
                          document.creator.signature.value = document.creator.signature.value.substring(0,maxLength);
                          charleft = 0;
@@ -486,7 +488,7 @@ $myprofile_buddy = qq~<table class="bordercolor cs_thin pad_4px">
 </form>~;
 
 ## PM preferences ##
-$myprofile_PMpref = qq~<table class="pad_4px" style="border-spacing: 0 1px; border-collapse:separate">
+$myprofile_pmpref = qq~<table class="pad_4px" style="border-spacing: 0 1px; border-collapse:separate">
     <colgroup>
         <col style="width:320px" />
         <col style="width:auto" />
@@ -524,7 +526,7 @@ $myprofile_PMpref = qq~<table class="pad_4px" style="border-spacing: 0 1px; bord
 </table>
 </form>~;
 
-$myprofile_PMnotify = qq~    <tr class="windowbg">
+$myprofile_pmnotify = qq~    <tr class="windowbg">
         <td class="vtop"><label for="notify_PM"><b>{yabb profile_txt327}:</b></label></td>
         <td>
             <select name="notify_PM" id="notify_PM">
@@ -807,7 +809,7 @@ $ext_template1 = qq~<tr class="windowbg">
 $ext_pre_output = q~<tr>
         <td class="windowbg2 vtop">~;
 
-$ext_msgCL = q~ class="windowbg" style="border: 0; width: 40px; padding: 1px;" ~;
+$ext_msg_cl = q~ class="windowbg" style="border: 0; width: 40px; padding: 1px;" ~;
 
 $ext_output_a = q~
         </td>

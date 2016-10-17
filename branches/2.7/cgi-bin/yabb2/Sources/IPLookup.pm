@@ -12,35 +12,45 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$iplookuppmver  = 'YaBB 2.7.00 $Revision$';
-@iplookuppmmods = ();
+our $iplookuppmver  = 'YaBB 2.7.00 $Revision$';
+our @iplookuppmmods = ();
+our $iplookuppmmods = 0;
 if (@iplookuppmmods) {
     $iplookuppmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+our (
+    $ip_lookup, %INFO,   $iamadmin, $iamgmod,      $iamfmod,
+    %iplookup,  $yymain, $yytitle,  $yynavigation, %lookup_txt,
+);
 
 if ( !$ip_lookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamfmod ) ) {
     fatal_error('not_allowed');
 }
 
-LoadCensorList();
+load_censor_list();
 get_micon();
+our ($my_ipdiv);
 get_template('Other');
 
-sub IPLookup {
-    $ip = $INFO{'ip'};
-    my $lookuplink = q{};
-    @iplookup_urls = keys %iplookup;
+sub ip_lookup {
+    my $ip            = $INFO{'ip'};
+    my $lookuplink    = q{};
+    my @iplookup_urls = keys %iplookup;
 
     foreach my $i (@iplookup_urls) {
-        $iplookup_name = $i;
+        my $iplookup_name = $i;
         $iplookup_name =~ s/_/ /xsm;
-        $iplookup_name = Censor($iplookup_name);
-        $iplookup_url  = $iplookup{$i};
+        $iplookup_name = do_censor($iplookup_name);
+        my $iplookup_url = $iplookup{$i};
         $iplookup_url =~ s/{ip}/$ip/gxsm;
         $iplookup_url =~ s/^\s+//gxsm;
         $iplookup_url =~ s/\s+$//gxsm;
@@ -63,7 +73,7 @@ sub IPLookup {
     $yymain =~ s/\Q{yabb lookuplink}\E/$lookuplink/gxsm;
     $yymain =~ s/\Q{yabb ip}\E/$ip/gxsm;
 
-    $yytitle      = qq~$lookup_txt{'iplookup'}~;
+    $yytitle      = $lookup_txt{'iplookup'};
     $yynavigation = qq~&rsaquo; $lookup_txt{'iplookup'}~;
     template();
     return;

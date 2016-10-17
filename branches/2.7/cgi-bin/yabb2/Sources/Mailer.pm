@@ -12,59 +12,71 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode encode);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$mailerpmver = 'YaBB 2.7.00 $Revision$';
-@mailerpmmods = ();
+our $mailerpmver  = 'YaBB 2.7.00 $Revision$';
+our @mailerpmmods = ();
+our $mailerpmmods = 0;
 if (@mailerpmmods) {
     $mailerpmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-$pre =
+our (
+    %croak,       %smtp_txt,        %error_txt,   $vardir,
+    $scripturl,   $adminurl,        $mbname,      $mailcharset,
+    $yymycharset, $webmaster_email, $from,        $to,
+    $mailtype,    $mailprog,        $smtp_server, $helloserv,
+    $authuser,    $authpass,        %mailer,
+);
+
+my $pre =
 q~style="padding:5px 40px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:100%; overflow-x:auto;"~;
 
 sub sendmail {
-    my ( $to, $subject, $message, $from, $mailcharset ) = @_;
+    my ( $ato, $subject, $message, $afrom, $amailcharset ) = @_;
 
-    # Do a FromHTML here for $to, and for $mbname
+    # Do a from_html here for $to, and for $mbname
     # Just in case has special chars like & in addresses
-    FromHTML($to);
-    FromHTML($mbname);
+    from_html($ato);
+    from_html($mbname);
 
 # Change commas to HTML entity - ToHTML doesn't catch this
 # It's only a problem when sending emails, so no change to ToHTML.
 # Changed to dash - &#144; misread in mail clients that use semi-colons as a delimiter
     $mbname =~ s/,/-/igxsm;
 
-    $charsetheader = $mailcharset ? $mailcharset : $yymycharset;
-
-    if ( !$from ) {
-        $from       = $webmaster_email;
-        $fromheader = qq~"$mbname" <$from>~;
+    my $charsetheader = $amailcharset ? $amailcharset : $yymycharset;
+    my ( $fromheader, $toheader, @mailout, );
+    if ( !$afrom ) {
+        $afrom      = $webmaster_email;
+        $fromheader = qq~"$mbname" <$afrom>~;
     }
     else {
-        $fromheader = "$from";
+        $fromheader = $afrom;
     }
 
-    if ( !$to ) {
-        $to       = $webmaster_email;
-        $toheader = "$mbname $smtp_txt{'555'} <$to>";
+    if ( !$ato ) {
+        $ato      = $webmaster_email;
+        $toheader = "$mbname $smtp_txt{'555'} <$ato>";
     }
     else {
-        $to =~ s/[ \t]+/, /gxsm;
-        $toheader = $to;
+        $ato =~ s/[ \t]+/, /gxsm;
+        $toheader = $ato;
     }
 
     $message =~ s/^[.]/../xsm;
     $message =~ s/[\r\n]/\n/gxsm;
-
+    my ( $smtp_to, $smtp_from, $smtp_message, $smtp_subject, $smtp_charset,
+        $smtp, );
     if ( $mailtype == 0 ) {
         my $mailprogram = qq~$mailprog -t~;
         open my $MAIL, q{|-}, $mailprogram or croak "$croak{'open'} MAIL";
@@ -76,8 +88,8 @@ sub sendmail {
         return 1;
     }
     elsif ( $mailtype == 1 ) {
-        $smtp_to      = $to;
-        $smtp_from    = $from;
+        $smtp_to      = $ato;
+        $smtp_from    = $afrom;
         $smtp_message = qq~<pre $pre>$message</pre>~;
         $smtp_subject = $subject;
         $smtp_charset = $charsetheader;
@@ -95,8 +107,7 @@ sub sendmail {
                 if ($authpass) { push @arg, Password => "$authpass"; }
                 push @arg, Debug => 0;
                 $smtp = Net::SMTP->new(@arg)
-                  || croak
-"Unable to create Net::SMTP object. Server: '$smtp_server'\n\n"
+                  or croak $mailer{'smtp'}
                   . $OS_ERROR;
             }
         }
@@ -106,11 +117,10 @@ sub sendmail {
             push @arg, Port  => $port;
             push @arg, doSSL => $ssl;
             $smtp = Net::SMTPS->new(@arg)
-              or croak
-"Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n"
+              or croak $mailer{'smtps1'}
               . $OS_ERROR;
             $smtp->auth( $authuser, $authpass )
-              or croak 'could not authenticate';
+              or croak $mailer{'smtps2'};
         }
         else {
             fatal_error( 'net_fatal',
@@ -122,8 +132,8 @@ sub sendmail {
             my $subject_encoded =
               encode( 'MIME-Header', decode( 'UTF-8', $subject ) );
             my $mail_body = qq~<pre $pre>$message</pre>~;
-            $smtp->mail($from);
-            for ( split /,\s/xsm, $to ) { $smtp->to($_); }
+            $smtp->mail($afrom);
+            for ( split /,\s/xsm, $ato ) { $smtp->to($_); }
             $smtp->data();
             $smtp->datasend("To: $toheader\r\n");
             $smtp->datasend("From: $fromheader\r\n");
@@ -153,9 +163,9 @@ X-Mailer: YaBB Sendmail
 Subject: $subject\n\n
 <pre $pre>$message</pre>\n
 End of Message\n\n";
-        fopen( MAIL, ">>$vardir/mail.log" );
-        print {MAIL} $mailout or croak "$croak{'print'} mail";
-        fclose(MAIL);
+        open my $MAIL, '>>', "$vardir/mail.log" or croak "$croak{'open'} mail";
+        print {$MAIL} $mailout or croak "$croak{'print'} mail";
+        close $MAIL or croak "$croak{'close'} mail";
         return 1;
     }
     return;

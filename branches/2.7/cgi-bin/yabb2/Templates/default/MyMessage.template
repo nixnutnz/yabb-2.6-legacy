@@ -28,7 +28,7 @@ $us_winhight_cc = 370;
 $us_winhight_to = 345;
 
 ## IM show - single post
-$myIM_show = qq~
+$myim_show = qq~
 <table class="bordercolor cs_thin pad_1px fixed">
     <tr>
         <td class="windowbg vtop" colspan="2">
@@ -91,7 +91,7 @@ $show_my_attach = qq~<tr>
         </td>
     </tr>~;
 
-$my_showIP = qq~<tr>
+$my_show_ip = qq~<tr>
         <td class="windowbg right" colspan="2">
             <div class="imcontact">
                 <span class="small"><img src="$micon_bg{'ip'}" alt="" /> {yabb imip}</span>
@@ -101,13 +101,13 @@ $my_showIP = qq~<tr>
 
 
 ## IM preview ##
-$myIM_prevmain = qq~<tr>
+$myim_prevmain = qq~<tr>
         <td class="windowbg">
         {yabb prevmain}
         </td>
     </tr>~;
 
-$myIM_liveprev = qq~<tr>
+$myim_liveprev = qq~<tr>
         <td class="vtop">
             <div style="height:16px;">
                 <img id="prevwin" src="$imagesdir/$cat_exp" alt="$npf_txt{'01'}" title="$npf_txt{'01'}" class="cursor" onclick="enabPrev();" /> <b>$npf_txt{'04'}</b>
@@ -121,7 +121,7 @@ $myIM_liveprev = qq~<tr>
         </td>
     </tr>~;
 
-$myIM_replyguest = qq~<tr>
+$myim_replyguest = qq~<tr>
         <td class="windowbg2">
         {yabb guest_reply}
         </td>
@@ -132,7 +132,7 @@ $my_tosend = q~<tr class="windowbg">
                     </td>
                 </tr>~;
 
-$my_imsend_IM = qq~{yabb my_gimsend} {yabb my_send}<tr>
+$my_imsend_im = qq~{yabb my_gimsend} {yabb my_send}<tr>
         <td class="windowbg" style="width:50%">
             <table class="pad_2px" style="width:95%; margin-left:0">
                 <tr>
@@ -151,7 +151,7 @@ $my_imsend_IM = qq~{yabb my_gimsend} {yabb my_send}<tr>
         </td>
     </tr>~;
 
-$my_imsend_Guest = qq~{yabb my_gimsend} {yabb my_send}<tr>
+$my_imsend_guest = qq~{yabb my_gimsend} {yabb my_send}<tr>
         <td class="windowbg" style="width:50%">
             <table class="pad_2px" style="width:95%; margin-left:0">
                 <tr>
@@ -180,7 +180,7 @@ $my_imsend_jsin = qq~<tr>
         <td class="windowbg2">
     ~;
 
-$my_postbox = qq~{yabb postbox2} </div>
+$my_postbox = q~{yabb postbox2} </div>
         </div>
 {yabb postbox3}</td>
     </tr>
@@ -197,23 +197,23 @@ $my_postbox_smilie = qq~
 
 
 #PM attachmments
-$my_FA_attach = qq~{yabb my_show_FA} {yabb my_allow_FA}
+$my_fa_attach = qq~{yabb my_show_FA} {yabb my_allow_FA}
         </td>
     </tr><tr>
         <td class="windowbg"><span class="small">{yabb pmFileTypeInfo}<br />{yabb pmFileSizeInfo}</span></td>
     </tr><tr>
         <td class="windowbg">~;
 
-$my_FA_show = qq~<tr>
+$my_fa_show = qq~<tr>
         <td class="windowbg">
-            <span style="font-weight: bold;">$fatxt{'80'}</span>
+            <span style="font-weight: bold;">{yabb fatxt80}</span>
             <input type="hidden" name="oldattach" id="oldattach" value="{yabb cloakAttach}" />~;
 
-$my_FA_att = qq~{yabb my_att_FA}
+$my_fa_att = qq~{yabb my_att_FA}
         </td>
     </tr>~;
 
-$my_FA_browse = qq~<tr>{yabb my_ispreview}
+$my_fa_browse = qq~<tr>{yabb my_ispreview}
         <td class="windowbg">{yabb my_isreply}
         </td>
     </tr><tr>
@@ -233,7 +233,7 @@ $my_spamchk = qq~<table style="width:auto; margin-left:0"><tr><td>
 
 
 $myshow_ispreview = qq~<tr>
-        <td class="windowbg important">$fatxt{'7a'}</td>
+        <td class="windowbg important">{yabb fatxt7a}</td>
     </tr>~;
 
 ## end IM posting/preview ##
@@ -257,7 +257,7 @@ $my_savedraft = qq~<tr>
         </td>
     </tr>~;
 
-$myIM_liveprev_b = qq~<table class="bordercolor cs_thin pad_1px fixed">
+$mypm_liveprev_b = qq~<table class="bordercolor cs_thin pad_1px fixed">
     <tr>
         <td class="windowbg2 vtop" colspan="2">
             <div style="width: 99%; padding: 2px; margin: 2px;">

@@ -12,8 +12,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$englishemaillngver = 'YaBB 2.7.00 $Revision$';
-@englishemaillngmods = ();
+our $englishemaillngver = 'YaBB 2.7.00 $Revision$';
+our $englishemaillngmods = 0;
+our @englishemaillngmods = ();
 if (@englishemaillngmods) {
     $englishemaillngmods = 1;
 }
@@ -382,7 +383,7 @@ Subject: {yabb subject}
 ~;
 
 
-$yabbtags{'deleteduseremail'} = q~screen name~;
+$yabbtags{'deleteduseremail'} = q~displayname~;
 $emaildesc{'deleteduseremail'} = q~The Deleted User Notification E-mail~;
 $deletedusersybject = q~Your account deleted on~;
 $deleteduseremail = q~Hello, {yabb displayname}!
@@ -394,7 +395,7 @@ The {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'banneduseremail'} = q~screen name~;
+$yabbtags{'banneduseremail'} = q~displayname~;
 $emaildesc{'banneduseremail'} = q~The Banned User Notification E-mail~;
 $bannedusersybject = q~Your account banned on~;
 $banneduseremail = q~Hello, {yabb displayname}:
@@ -406,7 +407,7 @@ The {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'suspendeduseremail'} = q~screen name~;
+$yabbtags{'suspendeduseremail'} = q~displayname~;
 $emaildesc{'suspendeduseremail'} = q~The Suspended User Notification E-mail~;
 $suspendusersybject = q~Your account suspended on~;
 $suspendeduseremail = q~Hello, {yabb displayname}:

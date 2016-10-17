@@ -22,7 +22,7 @@ $myreg_req = q~ <span class="important">*</span> ~;
 
 if ( $FORM{'reglanguage'} ) {
     $language = $FORM{'reglanguage'};
-    LoadLanguage('Register');
+    load_language('Register');
 }
 
 ##agreement before registration form
@@ -188,7 +188,7 @@ $myregister_regreason_b = qq~" name="msgCL" class="windowbg small" style="border
             }
             function calcCharLeft(sig) {
                 clipped = false;
-                maxLength = $RegReasonSymbols;
+                maxLength = $reg_reason_len;
                 if (document.creator.reason.value.length > maxLength) {
                     document.creator.reason.value = document.creator.reason.value.substring(0,maxLength);
                     charleft = 0;
@@ -276,7 +276,7 @@ $ext_template1 = qq~<tr>
 $ext_pre_output = q~<tr>
         <td class="windowbg vtop">~;
 
-$ext_msgCL = q~ class="windowbg" style="border: 0; width: 40px; padding: 1px;" ~;
+$ext_msg_cl = q~ class="windowbg" style="border: 0; width: 40px; padding: 1px;" ~;
 
 $ext_output_a = q~
         </td>
@@ -285,7 +285,7 @@ $ext_output_a = q~
 $ext_output_c = qq~
         <td class="catbg">
             <img src="$imagesdir/profile.gif" alt="" />&nbsp;
-            <b>$field{'comment'}</b>
+            <b>{yabb fieldcomment}</b>
         </td>
     </tr><tr>
         <td class="windowbg vtop">~;

@@ -21,7 +21,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 $boardhandellist = qq~
     {yabb expand}{yabb collapse}{yabb markallread}
 ~;
-$bdpicExt = 'png';
+$bdpic_ext = 'png';
 ## for the default announcement, recycle, subboard and regular board markers ##
 $brd_dropdown = 'dropdown.png';
 $brd_dropup = 'dropup.png';
@@ -29,6 +29,8 @@ $brd_arrowup = 'arrowup.gif';
 $brd_loadbar = 'loadbar.gif';
 $brd_info = 'info.png';
 $brd_online = 'online.png';
+$brd_fadeleftdropdown = 'fadeleftdropdown.gif';
+$brd_faderightdropdown = 'faderightdropdown.gif';
 $brd_closebutton = 'closebutton.png';
 $sub_arrow_dn = 'sub_arrow.png';
 $sub_arrow_up = 'sub_arrow_up.png';
@@ -37,7 +39,6 @@ $sub_extern = 'extern_sub.png';
 $tabfill = q~~;
 $topiccut = 25;
 $brdpicwidth = ($max_brd_img_width || 50) + 20;
-
 $boardindex_template = qq~<!-- Default Board Graphics courtesy of http://www.shapes4free.com/ -->
 <!-- Board Index Showcase Poll start -->
 {yabb pollshowcase}

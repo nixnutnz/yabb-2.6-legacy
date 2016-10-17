@@ -24,98 +24,105 @@
 # visit http://creativecommons.org/licenses/by-nc-sa/1.0/ or send a letter to
 # Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
 
-# use strict;
-# use warnings;
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$captchapmver  = 'YaBB 2.7.00 $Revision$';
-@captchapmmods = ();
+our $captchapmver  = 'YaBB 2.7.00 $Revision$';
+our @captchapmmods = ();
+our $captchapmmods = 0;
 if (@captchapmmods) {
     $captchapmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-$OUTPUT_AUTOFLUSH = 1;
+our (
+    %croak,      $rgb_foreground, $rgb_shade, $rgb_background,
+    $translayer, $distortion,     $randomizer,
+);
+my $OUTPUT_AUTOFLUSH = 1;
 
 $rgb_foreground ||= '0000EE';
 
 $rgb_shade ||= '999999';
 
 $rgb_background ||= 'FFFFFF';
-
+## no critic
 sub captcha {
     my ($msg) = @_;
     ## make colors for validation image into hex again ##
     $rgb_foreground =~ s/\#//gxsm;
     $rgb_shade =~ s/\#//gxsm;
     $rgb_background =~ s/\#//gxsm;
-    $r_f = substr $rgb_foreground, 0, 2;
-    $g_f = substr $rgb_foreground, 2, 2;
-    $b_f = substr $rgb_foreground, 4, 2;
-    $r_s = substr $rgb_shade,      0, 2;
-    $g_s = substr $rgb_shade,      2, 2;
-    $b_s = substr $rgb_shade,      4, 2;
-    $r_b = substr $rgb_background, 0, 2;
-    $g_b = substr $rgb_background, 2, 2;
-    $b_b = substr $rgb_background, 4, 2;
+    my $r_f = substr $rgb_foreground, 0, 2;
+    my $g_f = substr $rgb_foreground, 2, 2;
+    my $b_f = substr $rgb_foreground, 4, 2;
+    my $r_s = substr $rgb_shade,      0, 2;
+    my $g_s = substr $rgb_shade,      2, 2;
+    my $b_s = substr $rgb_shade,      4, 2;
+    my $r_b = substr $rgb_background, 0, 2;
+    my $g_b = substr $rgb_background, 2, 2;
+    my $b_b = substr $rgb_background, 4, 2;
 
     # color for center cross of the dots (RGB)
-    $highcolor = pack 'H2', $r_f;
+    my $highcolor = pack 'H2', $r_f;
     $highcolor .= pack 'H2', $g_f;
     $highcolor .= pack 'H2', $b_f;
 
     # color for shade in the dots (RGB)
-    $shadecolor = pack 'H2', $r_s;
+    my $shadecolor = pack 'H2', $r_s;
     $shadecolor .= pack 'H2', $g_s;
     $shadecolor .= pack 'H2', $b_s;
 
     # color for background of the dots (RGB)
-    $backcolor = pack 'H2', $r_b;
+    my $backcolor = pack 'H2', $r_b;
     $backcolor .= pack 'H2', $g_b;
     $backcolor .= pack 'H2', $b_b;
 
+    my $TRANSPARENT_INDEX = "\0";
     if   ( !$translayer || $translayer eq '0' ) { $TRANSPARENT_INDEX = "\3"; }
     else                                        { $TRANSPARENT_INDEX = "\0"; }
 
     # Palette
 
-    $BITS_PER_PIXEL = 7;    # DON'T CHANGE THIS!!!
+    my $BITS_PER_PIXEL = 7;    # DON'T CHANGE THIS!!!
 
  # A note about BITS_PER_PIXEL: GIF data is bit packed. For example, if the code
  # size is 6 bits, then 4 codes can be packed into 3 bytes. This script does not
  # implement bit packing. 7 bits per pixel translates into 8 bits per code which
  # exactly matches a byte and therefore bit packing is not needed.
 
-    my $palette = "$backcolor";     # 0 = white
-    $palette .= "$shadecolor";    # 1 = grey
-    $palette .= "$highcolor";     # 2 = almost black
+    my $palette = $backcolor;    # 0 = white
+    $palette .= $shadecolor;     # 1 = grey
+    $palette .= $highcolor;      # 2 = almost black
 
     # Dot definition
     # Defines a dot in terms of palette colours.
 
-    $DOT_WIDTH  = 3;
-    $DOT_HEIGHT = 3;
+    my $DOT_WIDTH  = 3;
+    my $DOT_HEIGHT = 3;
 
-    $dot = qq~
+    my $dot = qq~
 \1\2\1
 \2\2\2
 \1\2\1
 ~;
-    $nodot = qq~
+    my $nodot = qq~
 \0\0\0
 \0\0\0
 \0\0\0
 ~;
 
-    $invdot = qq~
+    my $invdot = qq~
 \1\0\1
 \0\0\0
 \1\0\1
 ~;
-    $invnodot = qq~
+    my $invnodot = qq~
 \1\1\1
 \1\1\1
 \1\1\1
@@ -1324,7 +1331,8 @@ sub captcha {
 
     # Global Colour Map
     print $palette or croak "$croak{'print'}";
-    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette ) or croak "$croak{'print'}";
+    print "\0" x ( ( 2**$BITS_PER_PIXEL * 3 ) - length $palette )
+      or croak "$croak{'print'}";
 
     if ($TRANSPARENT_INDEX) {
 
@@ -1372,8 +1380,8 @@ sub captcha {
 
     # the data is output in blocks with a leading byte count
     my $img = q{};
-    my ( $x,   $di );
-    $range = 10;
+    my ( $x, $di );
+    my $range = 10;
     for my $y ( 0 .. ( $h - 1 ) ) {
         my $cy =
           int( $y / $DOT_HEIGHT ) % $CHAR_HEIGHT;    # y coord in character dots
@@ -1385,9 +1393,11 @@ sub captcha {
             my $i =
               int( $x / $DOT_WIDTH / $CHAR_WIDTH );  # index into message string
             my $line = $lines[ $y / $LINE_HEIGHT ];
-            my $c    = ( $i < length $line ) ? substr $line, $i, 1 : q{ };
-            my $d    = substr $ci{$c}, $cy * ( $CHAR_WIDTH + $nl ) + $cx + $nl, 1;
+            my $c = ( $i < length $line ) ? substr $line, $i, 1 : q{ };
+            my $d = substr $ci{$c}, $cy * ( $CHAR_WIDTH + $nl ) + $cx + $nl, 1;
+
             # dot in character definition
+            my ($dis_level);
             if ( $distortion > 0 ) {
                 $dis_level = 9 - $distortion;
                 if ( $random_number <= $dis_level ) {
@@ -1401,9 +1411,10 @@ sub captcha {
                 $di = ( $d eq 'X' ) ? $dot : $nodot;
             }
             $di = substr $di, $dy * ( $DOT_WIDTH + $nl ) + $nl, $DOT_WIDTH;
-            for my $i ( 0 .. ( (length $di) - 1 ) ) {
+            for my $i ( 0 .. ( ( length $di ) - 1 ) ) {
                 $c = ord substr $di, $i, 1;
                 if ( $randomizer > 0 ) {
+                    my ( $rc1, $rc2 );
 
             # Start of randomizer - comment this block out if you don't like it!
                     if ( $randomizer == 1 ) { $rc1 = 1; $rc2 = 1; }
@@ -1426,10 +1437,11 @@ sub captcha {
     }
 
     # Re-arrange the image data so it's bit-packed
-    my $pkdimg = q{};
-    $i       = 0;
+    my $pkdimg  = q{};
+    my $i       = 0;
     my $buf     = 0;
     my $bufbits = 0;
+    my ($c);
     while ( $i <= length $img ) {
         if ( $i < length $img ) {
 
@@ -1476,7 +1488,8 @@ sub captcha {
     }
 
     # Finish up
-    print "\0" or croak "$croak{'print'}";    # zero byte count (end of raster data)
+    print "\0"
+      or croak "$croak{'print'}";    # zero byte count (end of raster data)
 
     # GIF Terminator
     print ';' or croak "$croak{'print'}";

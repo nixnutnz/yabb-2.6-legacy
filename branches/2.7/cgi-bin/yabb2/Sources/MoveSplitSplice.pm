@@ -12,27 +12,61 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+no strict qw(refs);
+use warnings;
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$movesplitsplicepmver  = 'YaBB 2.7.00 $Revision$';
-@movesplitsplicepmmods = ();
+our $movesplitsplicepmver  = 'YaBB 2.7.00 $Revision$';
+our @movesplitsplicepmmods = ();
+our $movesplitsplicepmmods = 0;
 if (@movesplitsplicepmmods) {
     $movesplitsplicepmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('MoveSplitSplice');
+## language ##
+our ( %croak, %sstxt, );
+## folders ##
+our ( $boardsdir, $datadir, $imagesdir, $scripturl, $uploaddir, );
+## system ##
+our (
+    $iamadmin,      $iamfmod,      $iamgmod,     $iamguest,
+    $staff,         $uid,          $username,    $yyaext,
+    $yymain,        $yynavigation, $yytitle,     %FORM,
+    %INFO,          %memberinf,    %memberinfo,  %useraccount,
+    @categoryorder, %catinfo,      %board,       %subboard,
+    %cat,           $boardview,    $formsession, $currentboard,
+    $binboard,      $date,         $user_ip,     %moved_file,
+    $yydebug,       %yyuserlog,    $annboard,    %thethread,
+    $curnum,
+);
+## settings ##
+our ( $cliped, $ttsureverse, $ttsreverse, $enable_notifications, $debug,
+    $abbr_lang, $yymycharset, );
+## template ##
+our ( $leavelist, $mymove_output_a, $mymove_output_b, $mymove_top, );
+
+load_language('MoveSplitSplice');
 
 get_template('Display');
 
-sub Split_Splice {
-    if ( !$staff ) { fatal_error('split_splice_not_allowed'); }
-    if ( $FORM{'ss_submit'} || $INFO{'ss_submit'} ) { Split_Splice_2(); }
+## local ##
+my ( %thread_arrayref, $yy_threadline, $mnum, $msub, $mname, $memail, $mdate,
+    $mreplies, $musername, $micon, $mstate, $mfn, );
+our ( $curboard, $curthread, $curthreadid );
 
-    my $curboard  = $INFO{'board'};
-    my $curthread = $INFO{'thread'};
+sub split_splice {
+    if ( !$staff ) { fatal_error('split_splice_not_allowed'); }
+    if ( $FORM{'ss_submit'} || $INFO{'ss_submit'} ) { split_splice_2(); }
+
+    $curboard  = $INFO{'board'};
+    $curthread = $INFO{'thread'};
     if ( !exists $FORM{'oldposts'} ) { $FORM{'oldposts'} = $INFO{'oldposts'}; }
     if ( !exists $FORM{'leave'} )    { $FORM{'leave'}    = $INFO{'leave'}; }
     if ( exists $INFO{'newinfo'} )   { $FORM{'newinfo'}  = $INFO{'newinfo'}; }
@@ -48,32 +82,33 @@ sub Split_Splice {
     if ( !exists $FORM{'position'} ) { $FORM{'position'} = $INFO{'position'}; }
 
     require Sources::YaBBC;
-    LoadCensorList();
+    load_censor_list();
 
     # Get posts of current thread
     if ( !ref $thread_arrayref{$curthread} ) {
-        fopen( FILE, "$datadir/$curthread.txt" );
-        @{ $thread_arrayref{$curthread} } = <FILE>;
-        fclose(FILE);
+        open my $FILE, '<', "$datadir/$curthread.txt"
+          or croak "$croak{'open'} $curthread.txt";
+        @{ $thread_arrayref{$curthread} } = <$FILE>;
+        close $FILE or croak "$croak{'close'} $curthread.txt";
     }
     my @messages = @{ $thread_arrayref{$curthread} };
 
-    my ( $counter, $size1 );
+    my ( $counter, $size1, $message );
     foreach my $counter ( 0 .. $#messages ) {
         $message = ( split /[|]/xsm, $messages[$counter], 10 )[8];
-        ( $message, undef ) = Split_Splice_Move( $message, 1 );
-        DoUBBC();
+        ( $message, undef ) = split_splice_move( $message, 1 );
+        do_ubbc();
 
-        $convertstr = $message;
+        my $convertstr = $message;
         $convertstr =~ s/<(p|br|div).*?>/ /gxsm;
         $convertstr =~ s/<.*?>//gxsm;    # remove HTML-tags
-        $convertcut = 50;
-        CountChars();
+        my $convertcut = 50;
+        count_chars();
         $message = $convertstr;
         if ($cliped) { $message .= ' ...'; }
 
-        ToChars($message);
-        $message = Censor($message);
+        to_chars($message);
+        $message = do_censor($message);
 
         $messages[$counter] = qq~<option value="$counter" ~
           . (
@@ -111,7 +146,7 @@ sub Split_Splice {
     my $catlist = qq~<option value="cats" >$sstxt{'28'}</option>\n~;
     foreach (@categoryorder) {
         my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$_}, 3;
-        next if !CatAccess($catperms);
+        next if !cat_access($catperms);
         $catlist .=
             qq~<option value="$_" ~
           . ( $newcat eq $_ ? q~selected="selected"~ : q{} )
@@ -119,20 +154,23 @@ sub Split_Splice {
     }
 
     # Get boards and make the current one the default selection
-    $boardlist = qq~<option value="boards">$sstxt{'29'}</option>\n~;
-    my $indent = -2;
+    my $boardlist = qq~<option value="boards">$sstxt{'29'}</option>\n~;
+    my $indent    = -2;
 
-    *get_subboards = sub {
+    local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
         foreach my $childbd (@x) {
-            my $dash;
+            my $dash = q{};
             if ( $indent > 0 ) { $dash = q{-}; }
             my ( $boardname, $boardperms ) = split /[|]/xsm, $board{$childbd},
               3;
-            ToChars($boardname);
-            my $access = AccessCheck( $_, q{}, $boardperms );
-            next if !$iamadmin && $access ne 'granted' && $boardview != 1;
+            to_chars($boardname);
+            my $access = access_check( $childbd, q{}, $boardperms );
+            next
+              if !$iamadmin
+              && $access ne 'granted'
+              && ( !$boardview || $boardview != 1 );
 
             my $bdnopost =
               ( ${ $uid . $childbd }{'canpost'} || !$subboard{$childbd} )
@@ -156,9 +194,10 @@ sub Split_Splice {
 
     # Get threads and make the current one the default selection
     my ( $threadlist, $threadids, $positionlist );
-    fopen( FILE, "$boardsdir/$newboard.txt" );
-    my @threads = <FILE>;
-    fclose(FILE);
+    open my $FILE, '<', "$boardsdir/$newboard.txt"
+      or croak "$croak{'open'} $newboard.txt";
+    my @threads = <$FILE>;
+    close $FILE or croak "$croak{'close'} $newboard.txt";
 
     $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
     my $threadid;
@@ -167,19 +206,19 @@ sub Split_Splice {
         next if $curthread eq $threadid;
         $threadids .= "$threadid,";
 
-        ( $message, undef ) = Split_Splice_Move( $message, $threadid );
-        DoUBBC();
+        ( $message, undef ) = split_splice_move( $message, $threadid );
+        do_ubbc();
 
-        $convertstr = $message;
-        $convertcut = 50;
-        CountChars();
+        my $convertstr = $message;
+        my $convertcut = 50;
+        count_chars();
         $message = $convertstr;
         if ($cliped) { $message .= ' ...'; }
 
-        ToChars($message);
+        to_chars($message);
         $message =~ s/<(p|br|div).*?>/ /gxsm;
         $message =~ s/<.*?>//gxsm;    # remove HTML-tags
-        $message = Censor($message);
+        $message = do_censor($message);
 
         $threadlist .=
             qq~<option value="$threadid" ~
@@ -188,29 +227,30 @@ sub Split_Splice {
     }
 
     # Get new thread posts to select splice site
-    if ( $FORM{'newthread'} ne 'new' ) {
+    if ( $FORM{'newthread'} && $FORM{'newthread'} ne 'new' ) {
         if ( !ref $thread_arrayref{$newthread} ) {
-            fopen( FILE, "$datadir/$newthread.txt" );
-            @{ $thread_arrayref{$newthread} } = <FILE>;
-            fclose(FILE);
+            open my $FILE, '<', "$datadir/$newthread.txt"
+              or croak "$croak{'open'} $newthread.txt";
+            @{ $thread_arrayref{$newthread} } = <$FILE>;
+            close $FILE or croak "$croak{'close'} $newthread.txt";
         }
         @messages = @{ $thread_arrayref{$newthread} };
 
         foreach my $counter ( 0 .. $#messages ) {
             $message = ( split /[|]/xsm, $messages[$counter], 10 )[8];
-            ( $message, undef ) = Split_Splice_Move( $message, 1 );
-            DoUBBC();
+            ( $message, undef ) = split_splice_move( $message, 1 );
+            do_ubbc();
 
-            $convertstr = $message;
-            $convertcut = 50;
-            CountChars();
+            my $convertstr = $message;
+            my $convertcut = 50;
+            count_chars();
             $message = $convertstr;
             if ($cliped) { $message .= ' ...'; }
 
-            ToChars($message);
+            to_chars($message);
             $message =~ s/<(p|br|div).*?>/ /gxsm;
             $message =~ s/<.*?>//gxsm;    # remove HTML-tags
-            $message = Censor($message);
+            $message = do_censor($message);
 
             $messages[$counter] =
                 qq~<option value="$counter">~
@@ -232,31 +272,33 @@ sub Split_Splice {
               s/(value="$FORM{'position'}")/$1 selected="selected"/xsm;
         }
     }
-
+    my ($my_output);
     if (   $newthread eq 'new'
         || !$threadlist
         || $threadids !~ /\b$newthread\b/xsm )
     {
+        my $newsub = $FORM{'newthread_subject'}   || q{};
+        my $oldpos = $FORM{'old_position_thread'} || q{};
         $my_output = $mymove_output_a;
-        $my_output =~ s/\Q{yabb newthread_subject}\E/$FORM{'newthread_subject'}/xsm;
+        $my_output =~ s/\Q{yabb newthread_subject}\E/$newsub/xsm;
         $my_output =~ s/\Q{yabb position}\E/$FORM{'position'}/xsm;
         $my_output =~ s/\Q{yabb sstxt_9}\E/$sstxt{'9'}/xsm;
         $my_output =~ s/\Q{yabb sstxt_20}\E/$sstxt{'20'}/xsm;
-        $my_output =~
-          s/\Q{yabb old_position_thread}\E/$FORM{'old_position_thread'}/xsm;
+        $my_output =~ s/\Q{yabb old_position_thread}\E/$oldpos/xsm;
     }
     else {
         $my_output = $mymove_output_b;
         $my_output =~ s/\Q{yabb positionlist}\E/$positionlist/xsm;
-        $my_output =~ s/\Q{yabb newthread_subject}\E/$FORM{'newthread_subject'}/xsm;
+        $my_output =~
+          s/\Q{yabb newthread_subject}\E/$FORM{'newthread_subject'}/xsm;
         $my_output =~ s/\Q{yabb newthread}\E/$newthread/xsm;
         $my_output =~ s/\Q{yabb sstxt_10}\E/$sstxt{'10'}/xsm;
         $my_output =~ s/\Q{yabb sstxt_19}\E/$sstxt{'19'}/xsm;
     }
 
-    $my_checked = $FORM{'newinfo'} ? ' checked="checked"' : q{};
+    my $my_checked = $FORM{'newinfo'} ? ' checked="checked"' : q{};
 
-    $output = $mymove_top;
+    our $output = $mymove_top;
     $output =~ s/\Q{yabb formsession}\E/$formsession/xsm;
     $output =~ s/\Q{yabb postlist}\E/$postlist/xsm;
     $output =~ s/\Q{yabb leavelist}\E/$leavelist/xsm;
@@ -288,22 +330,23 @@ sub Split_Splice {
     $output =~ s/\Q{yabb INFO_thread}\E/$INFO{'thread'}/gxsm;
 
     print_output_header();
-    print_HTML_output_and_finish();
+    print_html_output_and_finish();
     return;
 }
 
-sub Split_Splice_2 {
+sub split_splice_2 {
     if ( !$staff && $INFO{'newboard'} ne $binboard ) {
         fatal_error('split_splice_not_allowed');
     }
 
-    my $curboard    = $INFO{'board'};
-    my $curthreadid = $INFO{'thread'};
+    $curboard    = $INFO{'board'};
+    $curthreadid = $INFO{'thread'};
+    my $forcenewinfo = 0;
     my $movingposts =
       exists $INFO{'oldposts'} ? $INFO{'oldposts'} : $FORM{'oldposts'};
     $FORM{'oldposts'} = $movingposts;
     my $leavemess = exists $INFO{'leave'} ? $INFO{'leave'} : $FORM{'leave'};
-    my $forcenewinfo =
+    $forcenewinfo =
       exists $INFO{'newinfo'} ? $INFO{'newinfo'} : $FORM{'newinfo'};
     my $newcat = exists $INFO{'newcat'} ? $INFO{'newcat'} : $FORM{'newcat'};
     my $newboard =
@@ -334,12 +377,13 @@ sub Split_Splice_2 {
 
     # Get current thread posts
     if ( !ref $thread_arrayref{$curthreadid} ) {
-        fopen( FILE, "$datadir/$curthreadid.txt" );
-        @{ $thread_arrayref{$curthreadid} } = <FILE>;
-        fclose(FILE);
+        open my $FILE, '<', "$datadir/$curthreadid.txt"
+          or croak "$croak{'open'} $curthreadid.txt";
+        @{ $thread_arrayref{$curthreadid} } = <$FILE>;
+        close $FILE or croak "$croak{'close'} $curthreadid.txt";
     }
     my @curthread = @{ $thread_arrayref{$curthreadid} };
-    MessageTotals( 'load', $curthreadid );
+    message_totals( 'load', $curthreadid );
 
     # Store post numbers to be moved in array
     if ( ( split /,\s/xsm, $movingposts, 2 )[0] eq 'all' ) {
@@ -350,11 +394,16 @@ sub Split_Splice_2 {
     }    # sort numerically ascending because may be reversed!
 
 # Check to see if current thread was the latest post for the board and if the last post was selected to change
-    BoardTotals( 'load', $curboard );
-    if ( ${$curthreadid}{'lastpostdate'} eq 'N/A') {${$curthreadid}{'lastpostdate'} = 0;}
-    if (
-        ${$curthreadid}{'lastpostdate'} == ${ $uid . $curboard }{'lastposttime'}
-        && $leavemess && $leavemess == 2
+    boardtotals( 'load', $curboard );
+    my $newest_post = 0;
+    if ( ${$curthreadid}{'lastpostdate'} eq 'N/A' ) {
+        ${$curthreadid}{'lastpostdate'} = 0;
+    }
+    if (   ${$curthreadid}{'lastpostdate'}
+        && ${$curthreadid}{'lastpostdate'} ==
+        ${ $uid . $curboard }{'lastposttime'}
+        && $leavemess
+        && $leavemess == 2
         && $postnum[-1] == $#curthread )
     {
         $newest_post = 1;
@@ -368,7 +417,7 @@ sub Split_Splice_2 {
         while ( -e "$datadir/$newthreadid.txt" ) { $newthreadid++; }
 
         foreach (@postnum) {
-            if ( $newthreadsub || ($leavemess && $leavemess == 1 ))
+            if ( $newthreadsub || ( $leavemess && $leavemess == 1 ) )
             {    # insert new subject name || add 'no_postcount' into copies
                 my @x = split /[|]/xsm, $curthread[$_];
                 if ($newthreadsub) {
@@ -391,12 +440,13 @@ sub Split_Splice_2 {
 
         # Get existing thread posts
         if ( !ref $thread_arrayref{$newthreadid} ) {
-            fopen( FILE, "$datadir/$newthreadid.txt" );
-            @{ $thread_arrayref{$newthreadid} } = <FILE>;
-            fclose(FILE);
+            open my $FILE, '<', "$datadir/$newthreadid.txt"
+              or croak "$croak{'open'} $newthreadid.txt";
+            @{ $thread_arrayref{$newthreadid} } = <$FILE>;
+            close $FILE or croak "$croak{'close'} $newthreadid.txt";
         }
         my @newthread = @{ $thread_arrayref{$newthreadid} };
-        MessageTotals( 'load', $newthreadid );
+        message_totals( 'load', $newthreadid );
 
         if ( $newposition eq 'end' ) { $newposition = $#newthread; }
         elsif ( $newposition eq 'begin' ) {
@@ -432,7 +482,7 @@ sub Split_Splice_2 {
 
     # Remove or copy selected posts from current thread
     if ( $#postnum == $#curthread && $leavemess != 1 ) {
-        if ( $newboard ne $binboard ) {
+        if ( $binboard && $newboard ne $binboard ) {
             my ( $tmpsub, $tmpmessage );
             my $hidename = cloak($username);
             ( $tmpsub, undef ) = split /[|]/xsm, $curthread[0], 2;
@@ -447,7 +497,7 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid/$linkcount#$linkcount]~
                 $tmpsub =
 qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$tmpsub'~;
             }
-            FromChars($tmpmessage);
+            from_chars($tmpmessage);
             $utdcurthread[0] =
 qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
 
@@ -464,7 +514,7 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
         }
     }
     elsif ( $leavemess != 1 ) {
-        if ( $newboard eq $binboard ) { $leavemess = 2; }
+        if ( $binboard && $newboard eq $binboard ) { $leavemess = 2; }
         foreach my $i ( 0 .. $#curthread ) {
             if ( $movingposts =~ /\b$i\b/xsm ) {
                 if ( $leavemess == 0 && $i == $postnum[-1] ) {
@@ -482,7 +532,7 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
     }
     else { @utdcurthread = @curthread; }
 
-    if ($forcenewinfo) {
+    if ( $forcenewinfo > 0 ) {
         my ( $boardtitle, $tmpsub, $tmpmessage );
         ( $boardtitle, undef ) = split /[|]/xsm, $board{$curboard}, 2;
         $tmpmessage = (
@@ -491,7 +541,7 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
             : '[b][postsmovedhere1] ' . @postnum . ' [postsmovedhere2]'
           )
           . " [i]$boardtitle\[/i] [move by] [i]${$uid.$username}{'realname'}\[/i].[/b]";
-        FromChars($tmpmessage);
+        from_chars($tmpmessage);
         ( $tmpsub, undef, undef, undef, undef, undef, undef ) =
           split /[|]/xsm, $utdnewthread[0], 7;
         splice @utdnewthread, ( $linkcount + @postnum ), 0,
@@ -507,15 +557,16 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
 
         # Update current thread
         my $prnthrd = join q{}, @utdcurthread;
-        fopen( FILE, ">$datadir/$curthreadid.txt" );
-        print {FILE} $prnthrd or croak "$croak{'print'} FILE";
-        fclose(FILE);
+        open my $FILE, '>', "$datadir/$curthreadid.txt"
+          or croak "$croak{'open'} $curthreadid.txt";
+        print {$FILE} $prnthrd or croak "$croak{'print'} FILE";
+        close $FILE or croak "$croak{'close'} $curthreadid.txt";
     }
     else {
         require Sources::RemoveTopic;
         my $moveit = $INFO{'moveit'};
         $INFO{'moveit'} = 1;
-        RemoveThread();
+        remove_thread();
         $INFO{'moveit'} = $moveit;
     }
 
@@ -526,10 +577,11 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
     }
 
     # Update new thread
-    $prnthrdn = join q{}, @utdnewthread;
-    fopen( FILE, ">$datadir/$newthreadid.txt" );
-    print {FILE} $prnthrdn or croak "$croak{'print'} FILE";
-    fclose(FILE);
+    my $prnthrdn = join q{}, @utdnewthread;
+    open my $FILE, '>', "$datadir/$newthreadid.txt"
+      or croak "$croak{'close'} $newthreadid.txt";
+    print {$FILE} $prnthrdn or croak "$croak{'print'} $newthreadid.txt";
+    close $FILE or croak "$croak{'close'} $newthreadid.txt";
 
     # Update the .rlog files of the users
     my (
@@ -537,19 +589,21 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
         $md,                  $mu,                 $mnp,
         $mi,                  %mu,                 %curthreadusersdate,
         %curthreaduserscount, %newthreadusersdate, %newthreaduserscount,
-        %BoardTotals
+        %board_totals
     );
     $reply = 0;
     foreach (@utdcurthread)
     { # $subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile
         ( $ms, $mn, undef, $md, $mu, $mnp, undef, $mi, undef ) =
           split /[|]/xsm, $_, 9;
-        if ( ${ $BoardTotals{$curthreadid} }[0] <= $md ) {
-            $BoardTotals{$curthreadid} = [ $md, $mu, $reply, $ms, $mn, $mi ];
+        if (   ${ $board_totals{$curthreadid} }[0]
+            && ${ $board_totals{$curthreadid} }[0] <= $md )
+        {
+            $board_totals{$curthreadid} = [ $md, $mu, $reply, $ms, $mn, $mi ];
         }
         $reply++;
         next if $mnp eq 'no_postcount';
-        if ( $curthreadusersdate{$mu} < $md ) {
+        if ( $curthreadusersdate{$mu} && $curthreadusersdate{$mu} < $md ) {
             $curthreadusersdate{$mu} = $md;
         }
         $curthreaduserscount{$mu}++;
@@ -559,19 +613,22 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
     foreach (@utdnewthread) {
         ( $ms, $mn, undef, $md, $mu, $mnp, undef, $mi, undef ) =
           split /[|]/xsm, $_, 9;
-        if ( ${ $BoardTotals{$newthreadid} }[0] <= $md ) {
-            $BoardTotals{$newthreadid} = [ $md, $mu, $reply, $ms, $mn, $mi ];
+        if (   ${ $board_totals{$newthreadid} }[0]
+            && ${ $board_totals{$newthreadid} }[0] <= $md )
+        {
+            $board_totals{$newthreadid} = [ $md, $mu, $reply, $ms, $mn, $mi ];
         }
         $reply++;
         next if $mnp eq 'no_postcount';
-        if ( $newthreadusersdate{$mu} < $md ) {
+        if ( $newthreadusersdate{$mu} && $newthreadusersdate{$mu} < $md ) {
             $newthreadusersdate{$mu} = $md;
         }
         $newthreaduserscount{$mu}++;
         $mu{$mu} = 1;
     }
+    my (%recent);
     foreach my $mu ( keys %mu ) {
-        Recent_Load($mu);
+        recent_load($mu);
         delete $recent{$curthreadid};
         delete $recent{$newthreadid};
         if ( $curthreaduserscount{$mu} ) {
@@ -582,7 +639,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
             ${ $recent{$newthreadid} }[0] = $newthreaduserscount{$mu};
             ${ $recent{$newthreadid} }[1] = $newthreadusersdate{$mu};
         }
-        Recent_Save($mu);
+        recent_save($mu);
     }
 
     # For: Mark threads/boards as read
@@ -596,19 +653,21 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
 # Update .ctb, tags=>(board replies views lastposter lastpostdate threadstatus repliers)
 # curthread
     ${$curthreadid}{'replies'}      = $#utdcurthread;
-    ${$curthreadid}{'lastpostdate'} = ${ $BoardTotals{$curthreadid} }[0];
+    ${$curthreadid}{'lastpostdate'} = ${ $board_totals{$curthreadid} }[0];
     ${$curthreadid}{'lastposter'} =
-      ${ $BoardTotals{$curthreadid} }[1] eq 'Guest'
-      ? "Guest-${$BoardTotals{$curthreadid}}[4]"
-      : ${ $BoardTotals{$curthreadid} }[1];
+      (      ${ $board_totals{$curthreadid} }[1]
+          && ${ $board_totals{$curthreadid} }[1] eq 'Guest' )
+      ? "Guest-${$board_totals{$curthreadid}}[4]"
+      : ${ $board_totals{$curthreadid} }[1];
 
     # newthread
     ${$newthreadid}{'replies'}      = $#utdnewthread;
-    ${$newthreadid}{'lastpostdate'} = ${ $BoardTotals{$newthreadid} }[0];
+    ${$newthreadid}{'lastpostdate'} = ${ $board_totals{$newthreadid} }[0];
     ${$newthreadid}{'lastposter'} =
-      ${ $BoardTotals{$newthreadid} }[1] eq 'Guest'
-      ? "Guest-${$BoardTotals{$newthreadid}}[4]"
-      : ${ $BoardTotals{$newthreadid} }[1];
+      (      ${ $board_totals{$newthreadid} }[1]
+          && ${ $board_totals{$newthreadid} }[1] eq 'Guest' )
+      ? "Guest-${$board_totals{$newthreadid}}[4]"
+      : ${ $board_totals{$newthreadid} }[1];
     if ( $FORM{'newthread'} eq 'new' ) {
         ${$newthreadid}{'board'} = $newboard;
         ${$newthreadid}{'views'} =
@@ -625,17 +684,18 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
     }
 
     # Update current message index
-    fopen( BOARD, "<$boardsdir/$curboard.txt", 1 );
-    my @curmessindex = <BOARD>;
-    fclose(BOARD);
+    open my $BOARD, '<', "$boardsdir/$curboard.txt"
+      or croak "$croak{'open'} $curboard.txt";
+    my @curmessindex = <$BOARD>;
+    close $BOARD or croak "$croak{'close'} $curboard.txt";
 
-    my $old_mstate;
+    my $old_mstate = q{};
     foreach my $i ( 0 .. $#curmessindex ) {
-        my (
+        (
             $mnum,     $msub,      $mname, $memail, $mdate,
             $mreplies, $musername, $micon, $mstate
         ) = split /[|]/xsm, $curmessindex[$i];
-        if ( $mdate > $yyuserlog{$curboard} ) {
+        if ( $mdate && $mdate > $yyuserlog{$curboard} ) {
             $boardlog = 0;
         }    # For: Mark boards as read
         if ( $mnum == $curthreadid ) {
@@ -674,7 +734,7 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$msub'~;
             }
             $curmessindex[$i] =
 qq~$mnum|$msub|$mname|$memail|${$curthreadid}{'lastpostdate'}|$mreplies|$musername|$micon|$mstate\n~;
-            ${ $BoardTotals{$mnum} }[6] = $mstate;
+            ${ $board_totals{$mnum} }[6] = $mstate;
 
         }
         elsif ( $mnum == $newthreadid ) {
@@ -683,9 +743,9 @@ qq~$mnum|$msub|$mname|$memail|${$curthreadid}{'lastpostdate'}|$mreplies|$muserna
                 ( $msub, $mname, $memail, undef, $musername, $micon, undef ) =
                   split /[|]/xsm, $utdnewthread[0], 7;
             }
-            $yyThreadLine = $curmessindex[$i] =
+            $yy_threadline = $curmessindex[$i] =
 qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$mstate\n~;
-            ${ $BoardTotals{$mnum} }[6] = $mstate;
+            ${ $board_totals{$mnum} }[6] = $mstate;
             if (
                 ( $enable_notifications == 1 || $enable_notifications == 3 )
                 && (   -e "$boardsdir/$curboard.mail"
@@ -694,35 +754,35 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             {
                 require Sources::Post;
                 $currentboard = $curboard;
-                $msub         = Censor($msub);
-                ReplyNotify( $newthreadid, $msub, ${$newthreadid}{'replies'} );
+                $msub         = do_censor($msub);
+                reply_notify( $newthreadid, $msub, ${$newthreadid}{'replies'} );
             }
         }
     }
     if ( $curboard eq $newboard && $FORM{'newthread'} eq 'new' ) {
-        my ( $msub, $mname, $memail, $musername, $micon );
         ( $msub, $mname, $memail, undef, $musername, $micon, undef ) =
           split /[|]/xsm, $utdnewthread[0], 7;
         if ( $old_mstate !~ /0/ism ) { $old_mstate .= '0'; }
-        $yyThreadLine =
+        $yy_threadline =
 qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$old_mstate\n~;
-        unshift @curmessindex, $yyThreadLine;
-        ${ $BoardTotals{$newthreadid} }[6] = $old_mstate;
+        unshift @curmessindex, $yy_threadline;
+        ${ $board_totals{$newthreadid} }[6] = $old_mstate;
         if ( ( $enable_notifications == 1 || $enable_notifications == 3 )
             && -e "$boardsdir/$newboard.mail" )
         {
             require Sources::Post;
             $currentboard = $curboard;
-            $msub         = Censor($msub);
-            NewNotify( $newthreadid, $msub );
+            $msub         = do_censor($msub);
+            new_notify( $newthreadid, $msub );
         }
     }
-    fopen( BOARD, ">$boardsdir/$curboard.txt", 1 );
-    print {BOARD} reverse
-      sort { ( split /[|]/xsm, $a, 6 )[4] <=> ( split /[|]/xsm, $b, 6 )[4] }
+    open $BOARD, '>', "$boardsdir/$curboard.txt"
+      or croak "$croak{'open'} $curboard.txt";
+    print {$BOARD} reverse
+      sort { ( split /[|]/xsm, $a, 6 )[4] cmp( split /[|]/xsm, $b, 6 )[4] }
       @curmessindex
-      or croak "$croak{'print'} BOARD";
-    fclose(BOARD);
+      or croak "$croak{'print'} $curboard.txt";
+    close $BOARD or croak "$croak{'close'} $curboard.txt";
 
     if ($boardlog) {
         $yyuserlog{$curboard} = $date;
@@ -732,47 +792,51 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
     if ( $curboard ne $newboard ) {
         $boardlog = 1;    # For: Mark boards as read
 
-        fopen( BOARD, "+<$boardsdir/$newboard.txt", 1 );
-        seek BOARD, 0, 0;
-        my @newmessindex = <BOARD>;
-        truncate BOARD, 0;
-        seek BOARD, 0, 0;
+        open my $BOARD, '+<', "$boardsdir/$newboard.txt"
+          or croak "$croak{'open'} $newboard.txt";
+        seek $BOARD, 0, 0;
+        my @newmessindex = <$BOARD>;
+        truncate $BOARD, 0;
+        seek $BOARD, 0, 0;
 
         if ( $FORM{'newthread'} eq 'new' ) {
 
             # For: Mark boards as read
             foreach (@newmessindex) {
-                if ( ( split /[|]/xsm, $_, 6 )[4] > $yyuserlog{$newboard} ) {
+                my $chk = ( split /[|]/xsm, $_, 6 )[4];
+                if ( $chk && $chk > $yyuserlog{$newboard} ) {
                     $boardlog = 0;
                 }
                 last if !$boardlog;
             }
 
-            my ( $msub, $mname, $memail, undef, $musername, $micon, undef ) =
+            ( $msub, $mname, $memail, undef, $musername, $micon, undef ) =
               split /[|]/xsm, $utdnewthread[0], 7;
             if ( $old_mstate =~ /a/ixsm ) {
-                if ( $newboard ne $annboard ) { $old_mstate =~ s/a//gism; }
+                if ( $annboard && $newboard ne $annboard ) {
+                    $old_mstate =~ s/a//gism;
+                }
             }
-            elsif ( $newboard eq $annboard ) {
+            elsif ( $annboard && $newboard eq $annboard ) {
                 $old_mstate .= 'a';
             }
             if ( $old_mstate !~ /0/ixsm ) { $old_mstate .= '0'; }
-            $yyThreadLine =
+            $yy_threadline =
 qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$old_mstate\n~;
-            unshift @newmessindex, $yyThreadLine;
-            ${ $BoardTotals{$newthreadid} }[6] = $old_mstate;
+            unshift @newmessindex, $yy_threadline;
+            ${ $board_totals{$newthreadid} }[6] = $old_mstate;
             if ( ( $enable_notifications == 1 || $enable_notifications == 3 )
                 && -e "$boardsdir/$newboard.mail" )
             {
                 require Sources::Post;
                 $currentboard = $newboard;
-                $msub         = Censor($msub);
-                NewNotify( $newthreadid, $msub );
+                $msub         = do_censor($msub);
+                new_notify( $newthreadid, $msub );
             }
         }
         else {
             foreach my $i ( 0 .. $#newmessindex ) {
-                my (
+                (
                     $mnum,     $msub,      $mname, $memail, $mdate,
                     $mreplies, $musername, $micon, $mstate
                 ) = split /[|]/xsm, $newmessindex[$i];
@@ -787,9 +851,9 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
                             undef
                         ) = split /[|]/xsm, $utdnewthread[0], 7;
                     }
-                    $yyThreadLine = $newmessindex[$i] =
+                    $yy_threadline = $newmessindex[$i] =
 qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$mstate\n~;
-                    ${ $BoardTotals{$mnum} }[6] = $mstate;
+                    ${ $board_totals{$mnum} }[6] = $mstate;
                 }
             }
             if (
@@ -800,33 +864,33 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             {
                 require Sources::Post;
                 $currentboard = $newboard;
-                $msub         = Censor($msub);
-                ReplyNotify( $newthreadid, $msub, ${$newthreadid}{'replies'} );
+                $msub         = do_censor($msub);
+                reply_notify( $newthreadid, $msub, ${$newthreadid}{'replies'} );
             }
         }
-        print {BOARD} reverse
-          sort { ( split /[|]/xsm, $a, 6 )[4] <=> ( split /[|]/xsm, $b, 6 )[4] }
+        print {$BOARD} reverse
+          sort { ( split /[|]/xsm, $a, 6 )[4] cmp( split /[|]/xsm, $b, 6 )[4] }
           @newmessindex
           or croak "$croak{'print'} BOARD";
-        fclose(BOARD);
+        close $BOARD or croak "$croak{'close'} BOARD";
 
         if ($boardlog) {
             $yyuserlog{$newboard} = $date;
         }    # For: Mark boards as read
     }
 
-    if (@utdcurthread) { MessageTotals( 'update', $curthreadid ); }
-    MessageTotals( 'update', $newthreadid );
+    if (@utdcurthread) { message_totals( 'update', $curthreadid ); }
+    message_totals( 'update', $newthreadid );
 
 # update current board totals
-# BoardTotals- tags => (board threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate)
-#&BoardTotals("load", $curboard); - Load this at top now to detect if newest board post is being moved - Unilat
-    if ( ${ $BoardTotals{$curthreadid} }[6] =~ /m/xsm ) {    # Moved-Info thread
+# boardtotals- tags => (board threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate)
+#&boardtotals("load", $curboard); - Load this at top now to detect if newest board post is being moved - Unilat
+    if ( ${ $board_totals{$curthreadid} }[6] =~ /m/xsm ) {   # Moved-Info thread
         if ( $curboard ne $newboard ) {
             ${ $uid . $curboard }{'threadcount'}--;
             ${ $uid . $curboard }{'messagecount'} -= @postnum;
         }
-        BoardSetLastInfo( $curboard, \@curmessindex );
+        board_setlast_info( $curboard, \@curmessindex );
     }
     else {
         if ( $FORM{'newthread'} eq 'new' && $curboard eq $newboard ) {
@@ -853,86 +917,95 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             || (
                 (
                     (
-                        ${ $uid . $curboard }{'threadcount'} == 1
+                           ${ $uid . $curboard }{'threadcount'}
+                        && ${ $uid . $curboard }{'threadcount'} == 1
                         && @utdcurthread
                     )
-                    || ${ $BoardTotals{$curthreadid} }[0] >=
-                    ${ $uid . $curboard }{'lastposttime'}
+                    || (   ${ $board_totals{$curthreadid} }[0]
+                        && ${ $board_totals{$curthreadid} }[0] >=
+                        ${ $uid . $curboard }{'lastposttime'} )
                 )
-                && ( $curboard ne $newboard
-                    || ${ $BoardTotals{$curthreadid} }[0] >=
-                    ${ $BoardTotals{$newthreadid} }[0] )
+                && (
+                    $curboard ne $newboard
+                    || (   ${ $board_totals{$curthreadid} }[0]
+                        && ${ $board_totals{$curthreadid} }[0] >=
+                        ${ $board_totals{$newthreadid} }[0] )
+                )
             )
           )
         {
             ${ $uid . $curboard }{'lastposttime'} =
-              ${ $BoardTotals{$curthreadid} }[0];
+              ${ $board_totals{$curthreadid} }[0];
             ${ $uid . $curboard }{'lastposter'} =
-              ${ $BoardTotals{$curthreadid} }[1] eq 'Guest'
-              ? "Guest-${$BoardTotals{$curthreadid}}[4]"
-              : ${ $BoardTotals{$curthreadid} }[1];
+              ${ $board_totals{$curthreadid} }[1] eq 'Guest'
+              ? "Guest-${$board_totals{$curthreadid}}[4]"
+              : ${ $board_totals{$curthreadid} }[1];
             ${ $uid . $curboard }{'lastpostid'} = $curthreadid;
             ${ $uid . $curboard }{'lastreply'} =
-              ${ $BoardTotals{$curthreadid} }[2]--;
+              ${ $board_totals{$curthreadid} }[2]--;
             ${ $uid . $curboard }{'lastsubject'} =
-              ${ $BoardTotals{$curthreadid} }[3];
+              ${ $board_totals{$curthreadid} }[3];
             ${ $uid . $curboard }{'lasticon'} =
-              ${ $BoardTotals{$curthreadid} }[5];
+              ${ $board_totals{$curthreadid} }[5];
             ${ $uid . $curboard }{'lasttopicstate'} =
-              ${ $BoardTotals{$curthreadid} }[6];
+              ${ $board_totals{$curthreadid} }[6];
         }
-        elsif ( ${ $BoardTotals{$newthreadid} }[0] >=
+        elsif ( ${ $board_totals{$newthreadid} }[0] >=
             ${ $uid . $curboard }{'lastposttime'}
             && $curboard eq $newboard )
         {
             ${ $uid . $curboard }{'lastposttime'} =
-              ${ $BoardTotals{$newthreadid} }[0];
+              ${ $board_totals{$newthreadid} }[0];
             ${ $uid . $curboard }{'lastposter'} =
-              ${ $BoardTotals{$newthreadid} }[1] eq 'Guest'
-              ? "Guest-${$BoardTotals{$newthreadid}}[4]"
-              : ${ $BoardTotals{$newthreadid} }[1];
+              ${ $board_totals{$newthreadid} }[1] eq 'Guest'
+              ? "Guest-${$board_totals{$newthreadid}}[4]"
+              : ${ $board_totals{$newthreadid} }[1];
             ${ $uid . $curboard }{'lastpostid'} = $newthreadid;
             ${ $uid . $curboard }{'lastreply'} =
-              ${ $BoardTotals{$newthreadid} }[2]--;
+              ${ $board_totals{$newthreadid} }[2]--;
             ${ $uid . $curboard }{'lastsubject'} =
-              ${ $BoardTotals{$newthreadid} }[3];
+              ${ $board_totals{$newthreadid} }[3];
             ${ $uid . $curboard }{'lasticon'} =
-              ${ $BoardTotals{$newthreadid} }[5];
+              ${ $board_totals{$newthreadid} }[5];
             ${ $uid . $curboard }{'lasttopicstate'} =
-              ${ $BoardTotals{$newthreadid} }[6];
+              ${ $board_totals{$newthreadid} }[6];
         }
-        BoardSetLastInfo( $curboard, \@curmessindex );
+        board_setlast_info( $curboard, \@curmessindex );
     }
 
     # update new board totals if needed
     if ( $curboard ne $newboard ) {
-        BoardTotals( 'load', $newboard );
+        boardtotals( 'load', $newboard );
         if ( $FORM{'newthread'} eq 'new' ) {
             ${ $uid . $newboard }{'threadcount'}++;
         }
         ${ $uid . $newboard }{'messagecount'} +=
           @postnum + ( $forcenewinfo ? 1 : 0 );
-        if (   ${ $uid . $newboard }{'threadcount'} == 1
-            || ${ $BoardTotals{$newthreadid} }[0] >=
-            ${ $uid . $newboard }{'lastposttime'} )
+        if (
+               ${ $uid . $newboard }{'threadcount'}
+            && ${ $uid . $newboard }{'threadcount'} == 1
+            || (   ${ $board_totals{$newthreadid} }[0]
+                && ${ $board_totals{$newthreadid} }[0] >=
+                ${ $uid . $newboard }{'lastposttime'} )
+          )
         {
             ${ $uid . $newboard }{'lastposttime'} =
-              ${ $BoardTotals{$newthreadid} }[0];
+              ${ $board_totals{$newthreadid} }[0];
             ${ $uid . $newboard }{'lastposter'} =
-              ${ $BoardTotals{$newthreadid} }[1] eq 'Guest'
-              ? "Guest-${$BoardTotals{$newthreadid}}[4]"
-              : ${ $BoardTotals{$newthreadid} }[1];
+              ${ $board_totals{$newthreadid} }[1] eq 'Guest'
+              ? "Guest-${$board_totals{$newthreadid}}[4]"
+              : ${ $board_totals{$newthreadid} }[1];
             ${ $uid . $newboard }{'lastpostid'} = $newthreadid;
             ${ $uid . $newboard }{'lastreply'} =
-              ${ $BoardTotals{$newthreadid} }[2]--;
+              ${ $board_totals{$newthreadid} }[2]--;
             ${ $uid . $newboard }{'lastsubject'} =
-              ${ $BoardTotals{$newthreadid} }[3];
+              ${ $board_totals{$newthreadid} }[3];
             ${ $uid . $newboard }{'lasticon'} =
-              ${ $BoardTotals{$newthreadid} }[5];
+              ${ $board_totals{$newthreadid} }[5];
             ${ $uid . $newboard }{'lasttopicstate'} =
-              ${ $BoardTotals{$newthreadid} }[6];
+              ${ $board_totals{$newthreadid} }[6];
         }
-        BoardTotals( 'update', $newboard );
+        boardtotals( 'update', $newboard );
     }
 
     # now fix all attachments.txt info
@@ -958,14 +1031,14 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
     }
     if ($attachments) {
         my ( @newattachments, %attachments );
-        fopen( ATM, '<Variables/attachments.db', 1 )
+        open my $ATM, '<', 'Variables/attachments.db'
           or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
-        my @attach = <ATM>;
-        fclose(ATM);
+        my @attach = <$ATM>;
+        close $ATM or croak "$croak{'close'} attachments.db";
         foreach (@attach) {
             my ( $attid, undef, undef, undef, undef, undef, undef,
                 $attachmentname, $downloadscount )
-              = split /[|]/xsm, $_;
+              = split /[|]/xsm;
             if (   ( $attid != $curthreadid && $attid != $newthreadid )
                 || ( $attid == $curthreadid && $attachments != 1 ) )
             {
@@ -975,13 +1048,13 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             $attachments{$attachmentname} = $downloadscount;
         }
 
-        my $mreplies = 0;
+        $mreplies = 0;
         if ( $attachments == 1 ) {
             foreach (@utdcurthread) {    # fix new old thread attachments
-                my (
+                (
                     $msub, $mname, undef, $mdate, undef, undef, undef,
                     undef, undef,  undef, undef,  undef, $mfn
-                ) = split /[|]/xsm, $_;
+                ) = split /[|]/xsm;
                 chomp $mfn;
                 foreach ( split /,/xsm, $mfn ) {
                     if ( -e "$uploaddir/$_" ) {
@@ -998,10 +1071,10 @@ qq~$curthreadid|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
 
         $mreplies = 0;
         foreach (@utdnewthread) {    # fix new thread attachments
-            my (
+            (
                 $msub, $mname, undef, $mdate, undef, undef, undef,
                 undef, undef,  undef, undef,  undef, $mfn
-            ) = split /[|]/xsm, $_;
+            ) = split /[|]/xsm;
             chomp $mfn;
             foreach ( split /,/xsm, $mfn ) {
                 if ( -e "$uploaddir/$_" ) {
@@ -1013,13 +1086,13 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
             }
             $mreplies++;
         }
-        fopen( FATM, '>Variables/attachments.db' )
+        open my $FATM, '>', 'Variables/attachments.db'
           or fatal_error( 'cannot_open', 'Variables/attachments.db' );
-        print {FATM}
+        print {$FATM}
           sort { ( split /[|]/xsm, $a, 8 )[6] <=> ( split /[|]/xsm, $b, 8 )[6] }
           @newattachments
           or croak "$croak{'print'} ATM";
-        fclose(FATM);
+        close $FATM or croak "$croak{'close'} attachments.db";
     }
 
     if ( $#postnum == $#curthread ) {
@@ -1038,17 +1111,18 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
               "$datadir/$curthreadid.mail",
               "$datadir/$newthreadid.mail";
             require Sources::Notify;
-            ManageThreadNotify( 'load', $newthreadid );
+            managethreadnotify( 'load', $newthreadid );
             my (%t);
             foreach my $u ( keys %thethread ) {
-                LoadUser($u);
-                foreach ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} ) {
+                load_user($u);
+                foreach ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} )
+                {
                     $t{$_} = 1;
                 }
                 delete $t{$curthreadid};
                 $t{$newthreadid} = 1;
                 ${ $uid . $u }{'thread_notifications'} = join q{,}, keys %t;
-                UserAccount($u);
+                user_account($u);
                 undef %t;
             }
         }
@@ -1058,7 +1132,7 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
     delete $yyuserlog{"$curthreadid--unread"};
     dumplog($curthreadid);    # Save threads/boards as read
 
-    chomp $yyThreadLine;
+    chomp $yy_threadline;
 
     if ( $INFO{'moveit'} == 1 ) {
         $currentboard = $curboard;
@@ -1072,14 +1146,14 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
     }
     if ( $debug == 1 or ( $debug == 2 && $iamadmin ) ) {
         require Sources::Debug;
-        Debug();
+        debug();
         $yydebug =
 qq~\n- $#utdnewthread<br />\n- @utdnewthread<br />\n- ${$newthreadid}{'lastpostdate'}<br />\n- ${$newthreadid}{'lastposter'}<br />\n- \$enable_notifications == $enable_notifications<br />\n- \$attachments = $attachments<br />\n<a href="javascript:load_thread($newthreadid,$linkcount);">continue</a>\n$yydebug~;
     }
 
     print_output_header();
 
-    $output = qq~<!DOCTYPE html>
+    our $output = qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
 <meta charset="$yymycharset" />
@@ -1115,7 +1189,7 @@ qq~\n- $#utdnewthread<br />\n- @utdnewthread<br />\n- ${$newthreadid}{'lastpostd
 </body>
 </html>~;
 
-    print_HTML_output_and_finish();
+    print_html_output_and_finish();
     return;
 }
 

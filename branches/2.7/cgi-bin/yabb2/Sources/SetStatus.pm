@@ -12,18 +12,26 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$setstatuspmver  = 'YaBB 2.7.00 $Revision$';
-@setstatuspmmods = ();
+our $setstatuspmver  = 'YaBB 2.7.00 $Revision$';
+our @setstatuspmmods = ();
+our $setstatuspmmods = 0;
 if (@setstatuspmmods) {
     $setstatuspmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub SetStatus {
+our ( %croak, %INFO, %FORM, $staff, $currentboard, $boardsdir, $yysetlocation,
+    $scripturl, );
+
+sub set_status {
     if ( !$staff ) { fatal_error('no_access'); }
 
     my $start = $INFO{'start'} || 0;
@@ -33,14 +41,14 @@ sub SetStatus {
     my $thisstatus = q{};
 
     if ( !$currentboard ) {
-        MessageTotals( 'load', $threadid );
+        message_totals( 'load', $threadid );
         $currentboard = ${$threadid}{'board'};
     }
 
-    fopen( BOARDFILE, "<$boardsdir/$currentboard.txt" )
+    open my $BOARDFILE, '<', "$boardsdir/$currentboard.txt"
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    my @boardfile = <BOARDFILE>;
-    fclose(BOARDFILE);
+    my @boardfile = <$BOARDFILE>;
+    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
     for my $line ( 0 .. $#boardfile ) {
         if ( $boardfile[$line] =~ m/\A$threadid[|]/xsm ) {
             my (
@@ -49,7 +57,7 @@ sub SetStatus {
             ) = split /[|]/xsm, $boardfile[$line];
             chomp $mstate;
 
-            if ( $mstate !~ /0/sm ) { $mstate .= '0'; }
+            if ( $mstate !~ /0/xsm ) { $mstate .= '0'; }
 
             if ( $mstate =~ /$status/xsm ) {
                 $mstate =~ s/$status//igxsm;
@@ -57,15 +65,15 @@ sub SetStatus {
                 # Sticky-ing redirects to messageindex always
                 # Also handle message index
                 if ( $status eq 's' || $INFO{'tomessageindex'} ) {
-                    $yySetLocation = qq~$scripturl?board=$currentboard~;
+                    $yysetlocation = qq~$scripturl?board=$currentboard~;
                 }
                 else {
-                    $yySetLocation = qq~$scripturl?num=$threadid/$start~;
+                    $yysetlocation = qq~$scripturl?num=$threadid/$start~;
                 }
             }
             else {
                 $mstate .= $status;
-                $yySetLocation = qq~$scripturl?board=$currentboard~;
+                $yysetlocation = qq~$scripturl?board=$currentboard~;
             }
             $thisstatus = $mstate;
 
@@ -74,16 +82,16 @@ sub SetStatus {
         }
     }
     my $prnbrd = join q{}, @boardfile;
-    fopen( BOARDFILE, ">$boardsdir/$currentboard.txt" )
+    open $BOARDFILE, '>', "$boardsdir/$currentboard.txt"
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    print {BOARDFILE} $prnbrd or croak "$croak{'print'} BOARDFILE";
-    fclose(BOARDFILE);
+    print {$BOARDFILE} $prnbrd or croak "$croak{'print'} BOARDFILE";
+    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
 
-    MessageTotals( 'load', $threadid );
+    message_totals( 'load', $threadid );
     ${$threadid}{'threadstatus'} = $thisstatus;
-    MessageTotals( 'update', $threadid );
+    message_totals( 'update', $threadid );
 
-    BoardSetLastInfo( $currentboard, \@boardfile );
+    board_setlast_info( $currentboard, \@boardfile );
     if ( !$INFO{'moveit'} ) {
         redirectexit();
     }

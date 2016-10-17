@@ -14,24 +14,28 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$spellcheckerplver = 'YaBB 2.7.00 $Revision$';
+our $spellcheckerplver = 'YaBB 2.7.00 $Revision$';
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+our (%croak);
 use LWP::UserAgent;
 use HTTP::Request::Common;
 
-$ua = LWP::UserAgent->new( agent => 'GoogieSpell Client' );
-$reqXML = q{};
+our $ua = LWP::UserAgent->new( agent => 'GoogieSpell Client' );
+our $req_xml = q{};
 
-read STDIN, $reqXML, $ENV{'CONTENT_LENGTH'};
+read STDIN, $req_xml, $ENV{'CONTENT_LENGTH'};
 
-$url = "http://orangoo.com/newnox?lang=$ENV{'QUERY_STRING'}";
-$res =
-  $ua->request( POST $url, Content_Type => 'text/xml', Content => $reqXML );
+my $url = "http://orangoo.com/newnox?lang=$ENV{'QUERY_STRING'}";
+our $res =
+  $ua->request( POST $url, Content_Type => 'text/xml', Content => $req_xml );
 
 croak "$res->{_content}" if $res->{_content} =~ /LWP.+https.+Crypt::SSLeay/xsm;
 

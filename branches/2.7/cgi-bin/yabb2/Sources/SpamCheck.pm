@@ -12,15 +12,20 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 our $VERSION = '2.7.00';
 
-$spamcheckpmver  = 'YaBB 2.7.00 $Revision$';
-@spamcheckpmmods = ();
+our $spamcheckpmver  = 'YaBB 2.7.00 $Revision$';
+our @spamcheckpmmods = ();
+our $spamcheckpmmods = 0;
 if (@spamcheckpmmods) {
     $spamcheckpmmods = 1;
 }
-$action ||= q{};
+our ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
+
+our ( @spamrules, $spamlimit, $spamtype );
 
 sub spamcheck {
     my ($rawcontent) = @_;
@@ -34,47 +39,43 @@ sub spamcheck {
     my $testcontent = lc " $rawcontent";
 
 #add a leading space to trace start of the very first word and make it lowercase
-    my ( $spamline, $spamcnt, $searchtype );
-    if ( -e "$vardir/spamrules.txt" ) {
-        fopen( SPAM, "$vardir/spamrules.txt" )
-          or fatal_error( 'cannot_open', 'spamrules.txt', 1 );
-        while ( $buffer = <SPAM> ) {
-            chomp $buffer;
-            $spamline = q{};
-            if ( $buffer =~ m/~;/xsm ) {
-                ( $spamcnt, $spamline ) = split /~;/xsm, $buffer;
+    my ( $spamline, $spamcnt, $searchtype, @spamlines );
+    foreach my $buffer (@spamrules) {
+        chomp $buffer;
+        $spamline = q{};
+        if ( $buffer =~ m/~;/xsm ) {
+            ( $spamcnt, $spamline ) = split /~;/xsm, $buffer;
+            $searchtype = 'S';
+        }
+        elsif ( $buffer =~ m/=;/xsm ) {
+            ( $spamcnt, $spamline ) = split /=;/xsm, $buffer;
+            $searchtype = 'E';
+        }
+        else {
+            if ( $buffer ne q{} ) {
+                $spamline   = $buffer;
+                $spamcnt    = 0;
                 $searchtype = 'S';
             }
-            elsif ( $buffer =~ m/=;/xsm ) {
-                ( $spamcnt, $spamline ) = split /=;/xsm, $buffer;
-                $searchtype = 'E';
-            }
-            else {
-                if ( $buffer ne q{} ) {
-                    $spamline   = $buffer;
-                    $spamcnt    = 0;
-                    $searchtype = 'S';
-                }
-            }
-            if ( !$spamcnt ) { $spamcnt = 0; }
-            if ( $spamline ne q{} ) {
-                push @spamlines, [ $spamline, $spamcnt, $searchtype ];
-            }
         }
-        fclose(SPAM);
+        if ( !$spamcnt ) { $spamcnt = 0; }
+        if ( $spamline ne q{} ) {
+            push @spamlines, [ $spamline, $spamcnt, $searchtype ];
+        }
     }
-
+    our ( $is_spam, $spamword );
     for my $spamrule (@spamlines) {
         chomp $spamrule;
         $is_spam = 0;
         ( $spamword, $spamlimit, $spamtype ) = @{$spamrule};
+        my (@spamcount);
         if ( $spamtype eq 'S' ) {
             @spamcount = $testcontent =~ /$spamword/igxsm;
         }
         elsif ( $spamtype eq 'E' ) {
             @spamcount = $testcontent =~ /\b$spamword\b/igxsm;
         }
-        $spamcounter = $#spamcount + 1;
+        my $spamcounter = $#spamcount + 1;
         if ( $spamcounter > $spamlimit ) {
             $is_spam = 1;
             last;

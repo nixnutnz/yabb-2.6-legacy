@@ -15,24 +15,29 @@
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
 # for his contribution to the YaBB community                                  #
 ###############################################################################
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$contexthelppmver  = 'YaBB 2.7.00 $Revision$';
-@contexthelppmmods = ();
+our $contexthelppmver  = 'YaBB 2.7.00 $Revision$';
+our @contexthelppmmods = ();
+our $contexthelppmmods = 0;
 if (@contexthelppmmods) {
     $contexthelppmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub ContextScript {
-    my ($inp) = @_;
-    LoadLanguage('ContextHelp');
+our ( %contextxt, $displayname );
 
-    $contextlst = q{};
-    while ( ( $key, $value ) = each %contextxt ) {
+sub context_script {
+    my ($inp) = @_;
+    load_language('ContextHelp');
+
+    my $contextlst = q{};
+    while ( my ( $key, $value ) = each %contextxt ) {
         if ( $key eq 'clicktip' ) {
             $contextlst .= qq~'contexttip', '$contextxt{'clicktip'}',\n~;
         }
@@ -45,8 +50,8 @@ sub ContextScript {
     my $contextmain = qq~
 var contexthash = new Hash($contextlst);
 ~;
-
-    $ctmain .= qq~
+    $displayname ||= q{};
+    our $ctmain = qq~
     <script type="text/javascript">
     $contextmain
     </script>
@@ -157,7 +162,7 @@ var contexthash = new Hash($contextlst);
     }
     </script>
 ~;
-    return;
+    return $ctmain;
 }
 
 1;

@@ -12,41 +12,48 @@
 #               with assistance from the YaBB community.                      #
 # Mod written by XTC (Xonder), added to YaBB Core for 2.7.00                  #
 ###############################################################################
-# use strict;
-# use warnings;
-# no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$yabmodsourcepmver = 'YaBB 2.7.00 $Revision$';
+our $yabmodsourcepmver = 'YaBB 2.7.00 $Revision$';
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub YaBModSource {
+our (
+    %FORM,        $boarddir, $htmldir,   %memberunfo,
+    $username,    $iamadmin, $abbr_lang, $yymycharset,
+    $yyhtml_root, $usestyle, %croak,
+);
+
+require Admin::AdminSubs;
+
+sub yabmodsource {
+    my $editdir  = $boarddir;
     my $pickfile = $FORM{'filename'};
     if ( $pickfile =~ /^<html>/ixsm ) {
-        $editdir = "$htmldir";
+        $editdir = $htmldir;
         $pickfile =~ s/<html>//gxsm;
     }
-    else { $editdir = "$boarddir"; }
-
-    if ( !exists $memberunfo{$username} ) { LoadUser($username); }
-
+    $pickfile =~ s/[^\w.\/]//gxsm;
+    if ( !exists $memberunfo{$username} ) { load_user($username); }
+    our $html = q{};
     if ($iamadmin) {
-        fopen( TMPL, "$editdir/$pickfile" );
-        while ( $line = <TMPL> ) {
+        my $file = "$editdir/$pickfile";
+        open my $TMPL, '<', $file or croak "$croak{'open'} '$file'";
+        while ( my $line = <$TMPL> ) {
             $line =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
             $line =~ s/\&nbsp;/ /igxsm;
             $line =~ s/[\r\n]//gxsm;
-            ToHTML($line);
+            to_temphtml($line);
             $html .= qq~$line\n~;
         }
-        fclose(TMPL);
+        close $TMPL or croak "$croak{'close'} '$file'";
     }
 
-    print_output_header();
-
-    $output = << "PAGE";
+    our $output = << "PAGE";
 <!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
@@ -72,7 +79,8 @@ sub YaBModSource {
 </html>
 PAGE
 
-    print_HTML_output_and_finish();
+    print_output_header();
+    print_html_output_and_finish();
     return;
 }
 

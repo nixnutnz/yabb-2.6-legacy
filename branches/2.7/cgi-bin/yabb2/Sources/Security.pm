@@ -12,27 +12,67 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(redefine);
+use strict;
+no strict qw(refs);
+use warnings;
+no warnings qw(redefine uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$securitypmver  = 'YaBB 2.7.00 $Revision$';
-@securitypmmods = ();
+our $securitypmver  = 'YaBB 2.7.00 $Revision$';
+our @securitypmmods = ();
+our $securitypmmods = 0;
 if (@securitypmmods) {
     $securitypmmods = 1;
 }
 
+## languages ##
+our (
+    %croak,             %maintxt,            %register_txt,
+    %security_txt,      %profile_txt,        $banneduseremail,
+    $bannedusersybject, $suspendeduseremail, $suspendusersybject,
+    $emailcharset
+);
+## locations ##
+our ( $yyhtml_root, $boardurl, $datadir, $boardsdir, $vardir );
+## system ##
+our (
+    $action, $uid, $username, %FORM, %moved_file,
+    %INFO, $user_ip, $yyexec, $yyext, $yyaext, %board, $iamadmin,
+    %catinfo, %moderators, %moderatorgroups, $annboard, $staff, $iamgmod,
+    $iammod,
+    $iamfmod, %cat, %gmod_access, %gmod_access2, $date, @banned, $iamguest,
+    @banlist,
+    $email_banlist, $ip_banlist, $user_banlist, %memberunfo, %memberaddgroup,
+    %topicstart,
+    $age, $yysetlocation,
+
+);
+## settings ##
+our (
+    @timeban,                @bandays,                $enable_guestsearch,
+    $enablequestquicksearch, $enableguestsearch,      $mgadvsearch,
+    $mgqcksearch,            $enableguestquicksearch, $enable_guestposting,
+    @bdomains,               $do_scramble_id,         $mbname,
+    $language
+);
+## templates ##
+our ( $myban_page, $myban_page2 );
+## local ##
+my ( $banned, $curboard, $checktype );
+
 # Updates profile with current IP, if changed from last IP.
 # Will only actually update the file when .vars is being updated anyway to save extra load on server.
-if ( ${ $uid . $username }{'lastips'} && ${ $uid . $username }{'lastips'} !~ /^$user_ip[|]/xsm ) {
-    ${ $uid . $username }{'lastips'} = "$user_ip|${$uid.$username}{'lastips'}";
+if (  !${ $uid . $username }{'lastips'}
+    || ${ $uid . $username }{'lastips'} !~ /^$user_ip[|]/xsm )
+{
+    ${ $uid . $username }{'lastips'} =
+      "$user_ip|${ $uid . $username }{'lastips'}";
     ${ $uid . $username }{'lastips'} =~ s/^(.*?[|].*?[|].*?)[|].*/$1/xsm;
 }
 
-$scripturl = "$boardurl/$yyexec.$yyext";
-$adminurl  = "$boardurl/AdminIndex.$yyaext";
+our $scripturl = "$boardurl/$yyexec.$yyext";
+our $adminurl  = "$boardurl/AdminIndex.$yyaext";
 
 # BIG board check
 if ( $INFO{'board'} && $INFO{'board'} =~ m{/}xsm ) {
@@ -49,8 +89,9 @@ if ( $INFO{'thread'} && $INFO{'thread'} =~ m{/}xsm ) {
 }
 
 # BIG thread check
-$curnum = $INFO{'num'} || $INFO{'thread'} || $FORM{'threadid'};
-if ( $curnum ) {
+my $curnum = $INFO{'num'} || $INFO{'thread'} || $FORM{'threadid'};
+our ($currentboard);
+if ($curnum) {
     if ( $curnum =~ /\D/xsm ) {
         fatal_error( 'only_numbers_allowed', "Thread ID: '$curnum'" );
     }
@@ -70,14 +111,15 @@ if ( $curnum ) {
         }
     }
 
-    MessageTotals( 'load', $curnum );
+    message_totals( 'load', $curnum );
     $currentboard = ${$curnum}{'board'};
 }
 else {
     $currentboard = $INFO{'board'};
 }
-
-if ( $currentboard) {
+my ( $cat, $catperms, );
+our ( $boardname, $boardperms, $boardview );
+if ($currentboard) {
     if ( $currentboard !~ /\A[\s\w#%+,-.:=?@^]+\Z/xsm ) {
         fatal_error( 'invalid_character', "$maintxt{'board'}" );
     }
@@ -86,24 +128,27 @@ if ( $currentboard) {
     }
     ( $boardname, $boardperms, $boardview ) =
       split /[|]/xsm, $board{$currentboard};
-    my $access = AccessCheck( $currentboard, q{}, $boardperms );
-    if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {
+    my $access = access_check( $currentboard, q{}, $boardperms );
+    if (  !$iamadmin
+        && $access ne 'granted'
+        && ( !$boardview || $boardview != 1 ) )
+    {
         fatal_error('no_access');
     }
 
     # Determine what category we are in.
-    $catid = ${ $uid . $currentboard }{'cat'};
+    my $catid = ${ $uid . $currentboard }{'cat'};
     ( $cat, $catperms ) = split /[|]/xsm, $catinfo{$catid};
-    $cataccess = CatAccess($catperms);
+    my $cataccess = cat_access($catperms);
     if ( !$annboard || $currentboard ne $annboard ) {
         if ( !$cataccess ) { fatal_error('no_access'); }
     }
 
-    $bdescrip = ${ $uid . $currentboard }{'description'};
+    my $bdescrip = ${ $uid . $currentboard }{'description'};
 
 # Create Hash %moderators and %moderatorgroups with all Moderators of the current board
     for ( split /\//xsm, ${ $uid . $currentboard }{'mods'} ) {
-        LoadUser($_);
+        load_user($_);
         $moderators{$_} = ${ $uid . $_ }{'realname'};
     }
     for ( split /\//xsm, ${ $uid . $currentboard }{'modgroups'} ) {
@@ -129,26 +174,25 @@ if ( $currentboard) {
                 $accesstype = 1;    # Post Thread
             }
         }
-        $access = AccessCheck( $currentboard, $accesstype );
+        $access = access_check( $currentboard, $accesstype );
         if ( $access ne 'granted' ) { fatal_error('no_access'); }
     }
 
-    fopen( BOARDFILE, "$boardsdir/$currentboard.txt" )
-      or fatal_error( 'no_board_found', $currentboard, 1 );
-    while ( $yyThreadLine = <BOARDFILE> ) {
-        chomp $yyThreadLine;
-        if ( $curnum && $yyThreadLine =~ m{\A$curnum[|]}oxsm ) { last; }
+    open my $BOARDFILE, '<', "$boardsdir/$currentboard.txt"
+      or fatal_error( 'no_board_found', $currentboard );
+    while ( our $yy_threadline = <$BOARDFILE> ) {
+        chomp $yy_threadline;
+        if ( $curnum && $yy_threadline =~ m{\A$curnum[|]}oxsm ) { last; }
     }
-    fclose(BOARDFILE);
+    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
 }
 else {
     ### BIG category check
-    $currentcat = $INFO{'cat'} || $INFO{'catselect'};
-    if ( $currentcat ) {
+    my $currentcat = $INFO{'cat'} || $INFO{'catselect'};
+    if ($currentcat) {
         if ( $currentcat =~ m{/}xsm )  { fatal_error('no_cat_slash'); }
         if ( $currentcat =~ m{\\}xsm ) { fatal_error('no_cat_backslash'); }
-        if ( $currentcat !~ /\A[\s\w#%+,-.:=?@^]+\Z/xsm )
-        {
+        if ( $currentcat !~ /\A[\s\w#%+,-.:=?@^]+\Z/xsm ) {
             fatal_error( 'invalid_character', "$maintxt{'cat'}" );
         }
         if ( !$cat{$currentcat} ) {
@@ -156,7 +200,7 @@ else {
         }
 
         #  and need cataccess check!
-        $cataccess = CatAccess($catperms);
+        my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { fatal_error('no_access'); }
     }
 }
@@ -168,7 +212,7 @@ sub is_admin {
 
 sub is_admin_or_gmod {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
-
+    my $page = q{};
     if ( $iamgmod && $action ) {
         require Variables::Gmodset;
         $page = $INFO{'page'};
@@ -178,8 +222,8 @@ sub is_admin_or_gmod {
             (
                    $action ne 'newsettings'
                 && $action ne 'newsettings2'
-                && (   $gmod_access{$action} ne 'on'
-                    && $gmod_access2{$action} ne 'on' )
+                && (   !$gmod_access{$action}
+                    && !$gmod_access2{$action} )
             )
             || (
                 (
@@ -210,8 +254,8 @@ sub is_admin_or_gmod_or_fmod {
 
     if ( $iamgmod && $action ) {
         require Variables::Gmodset;
-        if (   $gmod_access{"$action"} ne 'on'
-            && $gmod_access2{"$action"} ne 'on' )
+        if (   !$gmod_access{$action}
+            && !$gmod_access2{$action} )
         {
             fatal_error('no_access');
         }
@@ -226,18 +270,19 @@ sub banning {
     my $admincheck = $x[2];
 
     if ( !$admincheck && ( $username eq 'admin' || $iamadmin ) ) { return; }
-
+    my ($tmp);
     local *write_banlog = sub {
         my ($bantry) = @_;
         if ($admincheck) {
             fatal_error( 'banned',
                 "$register_txt{'678'}$register_txt{'430'}!" );
         }
-        fopen( LOG, ">>$vardir/ban.log" );
-        print {LOG} "$date|$bantry\n" or croak "$croak{'print'} LOG";
-        fclose(LOG);
-        ( $banner, undef ) = split /\s[(]/xsm, $banned[3];
-        $bannedfor = q{};
+        open my $LOG, '>>', "$vardir/ban.log" or croak "$croak{'open'} banlog";
+        print {$LOG} "$date|$bantry\n" or croak "$croak{'print'} LOG";
+        close $LOG or croak "$croak{'close'} banlog";
+        my ( $banner, undef ) = split /\s[(]/xsm, $banned[3];
+        my $bannedfor  = q{};
+        my $myban_time = q{};
         if ( $banned[5] ) {
             $bannedfor = $security_txt{'ban_warn_b'} . q{ } . $banned[5] . q{ };
         }
@@ -255,12 +300,12 @@ sub banning {
             );
         }
 
-        UpdateCookie( 'delete', $ban_user );
+        update_cookie( 'delete', $ban_user );
         $username = 'Guest';
         $iamguest = 1;
     };
-    my $tmb = 0;
-    $time     = time;
+    my $tmb  = 0;
+    my $time = time;
     local *time_ban = sub {
         for my $i ( 0 .. 3 ) {
             if ( $banned[4] eq $timeban[$i] ) {
@@ -269,16 +314,18 @@ sub banning {
         }
         return $tmb;
     };
-    fopen( BAN, "<$vardir/banlist.db" )
+    open my $BAN, '<', "$vardir/banlist.db"
       or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
-    @banlist = <BAN>;
+    @banlist = <$BAN>;
+    close $BAN or croak "$croak{'close'} banlist";
+
     for my $i (@banlist) {
         chomp $i;
         @banned = split /[|]/xsm, $i;
         $tmp = time_ban();
 
         # IP BANNING
-        if ( $user_ip =~ /^$banned[1]/xsm ) { write_banlog("$user_ip"); }
+        if ( $user_ip =~ /^$banned[1]/xsm ) { write_banlog($user_ip); }
         if ( !$iamguest || $action eq 'register2' ) {
 
             # EMAIL BANNING
@@ -296,7 +343,6 @@ sub banning {
             }
         }
     }
-    fclose(BAN);
 
     return;
 }
@@ -312,7 +358,7 @@ sub check_banlist {
   # Returns all banning methods, unseparated (eg "EIU" if banned by all methods)
 
     my ( $e_ban, $ip_ban, $u_ban ) = @_;
-    my $ban_rtn;
+    my ( $ban_rtn, $today );
     if ( !-e "$vardir/banlist.db" ) {
         if ( $e_ban && $email_banlist ) {
             for ( split /,/xsm, $email_banlist ) {
@@ -331,13 +377,13 @@ sub check_banlist {
         }
     }
     else {
-        fopen( BAN, "$vardir/banlist.db" )
+        open my $BAN, '<', "$vardir/banlist.db"
           or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
-        @banlist = <BAN>;
-        fclose(BAN);
+        @banlist = <$BAN>;
+        close $BAN or croak "$croak{'close'} banlist";
         chomp @banlist;
         my $tmb = 0;
-        $today    = time;
+        $today = time;
         local *time_ban = sub {
             for my $i ( 0 .. 3 ) {
                 if ( $banned[4] eq $timeban[$i] ) {
@@ -400,10 +446,10 @@ sub check_banlist {
     return $ban_rtn;
 }
 
-sub CheckIcon {
+sub check_icon {
 
     # Check the icon so HTML cannot be exploited.
-    $icon =~ s/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/$1/xsm;
+    our $icon =~ s/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/$1/xsm;
     $icon =~ s/[[:^alpha]]//gxsm;
     $icon =~ s/\\//gxsm;
     $icon =~ s/\///gxsm;
@@ -422,10 +468,10 @@ sub CheckIcon {
     return;
 }
 
-sub SearchAccess {
-    $advsearchaccess = q{};
-    $qcksearchaccess = q{};
-    if ( !exists $memberunfo{$username} ) { LoadUser($username); }
+sub search_access {
+    our $advsearchaccess = q{};
+    our $qcksearchaccess = q{};
+    if ( !exists $memberunfo{$username} ) { load_user($username); }
     if ($iamguest) {
         if ($enableguestsearch)      { $advsearchaccess = 'granted'; }
         if ($enableguestquicksearch) { $qcksearchaccess = 'granted'; }
@@ -436,11 +482,11 @@ sub SearchAccess {
         $qcksearchaccess = 'granted';
         return;
     }
-    @advsearch_groups = split /,\s/xsm, $mgadvsearch;
+    my @advsearch_groups = split /,\s/xsm, $mgadvsearch;
     if ( !$mgadvsearch ) { $advsearchaccess = 'granted'; }
-    @qcksearch_groups = split /,\s/xsm, $mgqcksearch;
+    my @qcksearch_groups = split /,\s/xsm, $mgqcksearch;
     if ( !$mgqcksearch ) { $qcksearchaccess = 'granted'; }
-    $memberinform = $memberunfo{$username} || q{};
+    my $memberinform = $memberunfo{$username} || q{};
     for my $advelement (@advsearch_groups) {
         chomp $advelement;
         if ( $advelement eq $memberinform ) { $advsearchaccess = 'granted'; }
@@ -460,26 +506,31 @@ sub SearchAccess {
     return;
 }
 
-sub AccessCheck {
-    my ( $curboard, $checktype, $boardperms ) = @_;
+sub access_check {
+    ( $curboard, $checktype, $boardperms ) = @_;
 
     # Put whether it's a zero post count board in global variable
     # to save need to reopen file many times.
-	$username ||= q{};
-    if ( !exists $memberunfo{$username} ) { LoadUser($username); }
+    $username ||= q{};
+    if ( !exists $memberunfo{$username} ) { load_user($username); }
     my $boardmod = 0;
     for my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} ) {
         if ( $username eq $curuser ) { $boardmod = 1; }
     }
-    @board_modgrps = split /\//xsm, ${ $uid . $curboard }{'modgroups'};
+    my @board_modgrps = split /\//xsm, ${ $uid . $curboard }{'modgroups'};
     ${ $uid . $username }{'addgroups'} ||= q{};
-    @user_addgrps  = split /,/xsm,  ${ $uid . $username }{'addgroups'};
+    my @user_addgrps = split /,/xsm, ${ $uid . $username }{'addgroups'};
     for my $curgroup (@board_modgrps) {
-        if ( ${ $uid . $username }{'position'} eq $curgroup ) { $boardmod = 1; }
+        if (   ${ $uid . $username }{'position'}
+            && ${ $uid . $username }{'position'} eq $curgroup )
+        {
+            $boardmod = 1;
+        }
         for my $curaddgroup (@user_addgrps) {
             if ( $curaddgroup eq $curgroup ) { $boardmod = 1; }
         }
     }
+    our ($access);
     $INFO{'zeropost'} = ${ $uid . $curboard }{'zero'};
     if ($iamadmin) { $access = 'granted'; return $access; }
     my @myperms = ();
@@ -493,9 +544,10 @@ sub AccessCheck {
         $myperms[3] = 1;
         $myperms[4] = 1;
     }
-    my $access = 'denied';
+    $access = 'denied';
 
     $checktype ||= 0;
+    my @allowed_groups;
     if ( $checktype == 1 ) {    # Post access check
         @allowed_groups = split /,\s/xsm, ${ $uid . $curboard }{'topicperms'};
         if ( !${ $uid . $curboard }{'topicperms'} ) {
@@ -518,19 +570,19 @@ sub AccessCheck {
     }
     elsif ( $checktype == 3 ) {    # Poll access check
         @allowed_groups = split /,\s/xsm, ${ $uid . $curboard }{'pollperms'};
-        if ( ${ $uid . $curboard }{'pollperms'} eq q{} ) {
+        if ( !${ $uid . $curboard }{'pollperms'} ) {
             $access = 'granted';
         }
         if ( $myperms[3] && $myperms[3] == 1 ) { $access = 'notgranted'; }
     }
     elsif ( $checktype == 4 ) {    # Attachment access check
-        if ( ${ $uid . $curboard }{'attperms'} == 1 ) { $access = 'granted'; }
+        if ( ${ $uid . $curboard }{'attperms'} ) { $access = 'granted'; }
         if ( $myperms[4] && $myperms[4] == 1 ) { $access = 'notgranted'; }
     }
     else {                         # Board access check
         @allowed_groups = split /,\s/xsm, $boardperms;
         if ( !$boardperms ) { $access = 'granted'; }
-        if ( $myperms[0] && $myperms[0] == 1 )   { $access = 'notgranted'; }
+        if ( $myperms[0] && $myperms[0] == 1 ) { $access = 'notgranted'; }
     }
 
     # age and gender check
@@ -571,6 +623,7 @@ sub AccessCheck {
             $access = 'notgranted';
         }
     }
+    my ($memberinform);
     if ( $access ne 'granted' && $access ne 'notgranted' ) {
         $memberinform = $memberunfo{$username};
         for my $element (@allowed_groups) {
@@ -600,14 +653,15 @@ sub AccessCheck {
     return $access;
 }
 
-sub CatAccess {
+sub cat_access {
     my ($cataccess) = @_;
     if ( $iamadmin || !$cataccess ) { return 1; }
 
     my $access = 0;
-    @allow_groups = split /,\s/xsm, $cataccess;
-    if ( !exists $memberunfo{$username} ) { LoadUser($username); }
-    $memberinform = $memberunfo{$username} || q{};
+    my @allow_groups = split /,\s/xsm, $cataccess;
+    if ($iamguest) { $username = q{}; }
+    if ( !exists $memberunfo{$username} ) { load_user($username); }
+    my $memberinform = $memberunfo{$username} || q{};
     for my $element (@allow_groups) {
         chomp $element;
         if ( $element eq $memberinform ) { $access = 1; }
@@ -629,43 +683,44 @@ sub CatAccess {
 sub email_domain_check {
     ### Based upon Distilled Email Domains mod by AstroPilot ###
     my ($checkdomain) = @_;
-    if ($checkdomain && @bdomains) {
-        for (@bdomains) {
-            $my_x = $_;
-            if    ( $_ !~ /\@/xsm )   { $_ = "\@$_"; }
-            elsif ( $_ !~ /^[.]/xsm ) { $_ = ".$_"; }
-            @my_ch   = split /[.]/xsm, $my_x;
-            @my_ch_e = split /[.]/xsm, $checkdomain;
+    if ( $checkdomain && @bdomains ) {
+        for my $i (@bdomains) {
+            my $my_x = $i;
+            if    ( $i !~ /\@/xsm )   { $i = "\@$i"; }
+            elsif ( $i !~ /^[.]/xsm ) { $i = ".$i"; }
+            my @my_ch   = split /[.]/xsm, $my_x;
+            my @my_ch_e = split /[.]/xsm, $checkdomain;
             if ( $checkdomain =~ m/$_/ixsm
                 || ( $my_ch[0] eq q{} && $my_ch[-1] eq $my_ch_e[-1] ) )
             {
-                fatal_error( 'domain_not_allowed', "$_" );
+                fatal_error( 'domain_not_allowed', $i );
             }
         }
     }
     return;
 }
 
-sub GroupPerms {
-    my ( $groupAll, $groupCheck ) = @_;
-    if ( $groupAll && $groupCheck ) {
-        $allowGroups = 0;
-        for my $selectGroup ( split /,\s/xsm, $groupCheck ) {
-            if (   ( $selectGroup eq ${ $uid . $username }{'position'} )
-                || ( $selectGroup eq $memberunfo{$username} ) )
+sub group_perms {
+    my ( $groupall, $group_check ) = @_;
+    my ($allow_groups);
+    if ( $groupall && $group_check ) {
+        $allow_groups = 0;
+        for my $select_group ( split /,\s/xsm, $group_check ) {
+            if (   ( $select_group eq ${ $uid . $username }{'position'} )
+                || ( $select_group eq $memberunfo{$username} ) )
             {
-                $allowGroups = 1;
+                $allow_groups = 1;
                 last;
             }
             for ( split /,/xsm, ${ $uid . $username }{'addgroups'} ) {
-                if ( $selectGroup eq $_ ) { $allowGroups = 1; last; }
+                if ( $select_group eq $_ ) { $allow_groups = 1; last; }
             }
         }
     }
     else {
-        $allowGroups = 1;
+        $allow_groups = 1;
     }
-    return $allowGroups;
+    return $allow_groups;
 }
 
 sub ipban_update {
@@ -681,29 +736,31 @@ sub ipban_update {
         $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
         $ban_email =~ s/@/\\@/xsm;
 
-        my $time = time;
-        $ihave = 0;
-        $ehave = 0;
-        $uhave = 0;
-        fopen( BAN, "<$vardir/banlist.db" )
+        my $time  = time;
+        my $ihave = 0;
+        my $ehave = 0;
+        my $uhave = 0;
+        open my $BAN, '<', "$vardir/banlist.db"
           or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
-        my @myban = <BAN>;
+        my @myban = <$BAN>;
+        close $BAN or croak "$croak{'close'} banlist";
         chomp @myban;
-        fclose(BAN);
 
         if ( $unban == 1 ) {
-            fopen( BAN2, ">$vardir/banlist.db" )
+            open my $BAN2, '>', "$vardir/banlist.db"
               or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
             for my $i (@myban) {
                 @banned = split /[|]/xsm, $i;
-                if (   ($ban && $ban eq $banned[1])
-                    || ($ban_email && $ban_email eq $banned[1])
-                    || ($ban_mem && $ban_mem eq $banned[1]) )
+                my ($un_ban);
+                if (   ( $ban && $ban eq $banned[1] )
+                    || ( $ban_email && $ban_email eq $banned[1] )
+                    || ( $ban_mem   && $ban_mem eq $banned[1] ) )
                 {
                     $un_ban = q~~;
                     if ( $banned[4] eq 'p' ) {
-                        LoadUser($user);
-                        @ubanned = split /[|]/xsm, ${ $uid . $user }{'banned'};
+                        load_user($user);
+                        my @ubanned = split /[|]/xsm,
+                          ${ $uid . $user }{'banned'};
                         if ($ban_email) {
                             $ubanned[0] = 0;
                         }
@@ -712,20 +769,21 @@ sub ipban_update {
                         }
                         ${ $uid . $user }{'banned'} =
                           qq~$ubanned[0]|$ubanned[1]~;
-                        UserAccount( $user, 'update' );
+                        user_account( $user, 'update' );
                     }
                 }
                 else {
                     $un_ban =
 qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
                 }
-                print {BAN2} $un_ban or croak "$croak{'print'} BAN2";
+                print {$BAN2} $un_ban or croak "$croak{'print'} BAN2";
             }
-            fclose(BAN2);
+            close $BAN2 or croak "$croak{'close'} banlist";
         }
         else {
+            my ($type);
             $ihave = 0;
-            $tmb   = 0;
+            my $tmb = 0;
             if ($ban) {
                 $type   = 'I';
                 $banned = $ban;
@@ -751,18 +809,18 @@ qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
                     $ihave = 1;
                 }
             }
-
+            my $add_ban = q{};
             if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' ) {
                 $add_ban =
-qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|\n~;
+qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|$lev|\n~;
             }
-            fopen( BAN2, ">>$vardir/banlist.db" )
+            open my $BAN2, '>>', "$vardir/banlist.db"
               or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
-            print {BAN2} $add_ban or croak "$croak{'print'} BAN2";
-            fclose(BAN2);
+            print {$BAN2} $add_ban or croak "$croak{'print'} BAN2";
+            close $BAN2 or croak "$croak{'close'} banlist";
         }
 
-        $yySetLocation = qq~$scripturl?action=viewprofile;username=$user~;
+        $yysetlocation = qq~$scripturl?action=viewprofile;username=$user~;
         redirectexit();
     }
     return;
@@ -777,12 +835,13 @@ sub ban_page_a {
         my $ban_mem   = $INFO{'ban_memname'};
         my $user      = $INFO{'username'};
         $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
-        LoadLanguage('Profile');
+        load_language('Profile');
         my $ban_time = qq~<b>$profile_txt{$lev}</b>~;
 
         if ( $lev ne 'p' ) {
             $ban_time = qq~<b>$profile_txt{'ban_for'} $profile_txt{$lev}</b>~;
         }
+        my ( $ban_item, $bantype, $bantypeval );
         if ($ban) {
             $ban_item =
 qq~<b>$profile_txt{'908'}:</b><br /><span style="font-size:120%">$ban</span><br />$ban_time~;
@@ -806,20 +865,25 @@ qq~<b>$profile_txt{'906'}:</b><br /><span style="font-size:120%">$ban_mem</span>
 
         get_template('Other');
 
-        $output = $myban_page;
+        our $output = $myban_page;
         $output =~ s/\Q{yabb ban_item}\E/$ban_item/gxsm;
         $output =~ s/\Q{yabb bantype}\E/$bantype/gxsm;
         $output =~ s/\Q{yabb bantypeval}\E/$bantypeval/gxsm;
         $output =~ s/\Q{yabb banlev}\E/$lev/gxsm;
         $output =~ s/\Q{yabb banuser}\E/$user/gxsm;
-        $output =~ s/\Q{yabb profile_txt_ban_reason}\E/$profile_txt{'ban_reason'}/gxsm;
-        $output =~ s/\Q{yabb profile_txt_email_ban}\E/$profile_txt{'email_ban'}/gxsm;
-        $output =~ s/\Q{yabb profile_txt_ban_enter}\E/$profile_txt{'ban_enter'}/gxsm;
-        $output =~ s/\Q{yabb profile_txt_ban_page}\E/$profile_txt{'ban_page'}/gxsm;
-        $output =~ s/\Q{yabb profile_txt_ban_cancel}\E/$profile_txt{'ban_cancel'}/gxsm;
+        $output =~
+          s/\Q{yabb profile_txt_ban_reason}\E/$profile_txt{'ban_reason'}/gxsm;
+        $output =~
+          s/\Q{yabb profile_txt_email_ban}\E/$profile_txt{'email_ban'}/gxsm;
+        $output =~
+          s/\Q{yabb profile_txt_ban_enter}\E/$profile_txt{'ban_enter'}/gxsm;
+        $output =~
+          s/\Q{yabb profile_txt_ban_page}\E/$profile_txt{'ban_page'}/gxsm;
+        $output =~
+          s/\Q{yabb profile_txt_ban_cancel}\E/$profile_txt{'ban_cancel'}/gxsm;
 
         print_output_header();
-        print_HTML_output_and_finish();
+        print_html_output_and_finish();
     }
     return;
 }
@@ -836,16 +900,17 @@ sub ban_page_b {
         my $email_ban  = $FORM{'email_ban'};
         $ban_mem = $do_scramble_id ? decloak($ban_mem) : $ban_mem;
 
-        my $time = time;
-        $ihave = 0;
-        $ehave = 0;
-        $uhave = 0;
-        fopen( BAN, "<$vardir/banlist.db" )
+        my $time  = time;
+        my $ihave = 0;
+        my $ehave = 0;
+        my $uhave = 0;
+        open my $BAN, '<', "$vardir/banlist.db"
           or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
-        my @myban = <BAN>;
+        my @myban = <$BAN>;
+        close $BAN or croak "$croak{'close'} banlist";
         chomp @myban;
-        fclose(BAN);
 
+        my ($tmb);
         local *time_ban = sub {
             foreach my $i ( 0 .. 3 ) {
                 if ( $lev eq $timeban[$i] ) {
@@ -857,6 +922,7 @@ sub ban_page_b {
 
         $ihave = 0;
         $tmb   = 0;
+        my ($type);
         if ($ban) {
             $type   = 'I';
             $banned = $ban;
@@ -882,12 +948,13 @@ sub ban_page_b {
                 $ihave = 1;
             }
         }
-        LoadUser($user);
+        load_user($user);
+        my $add_ban = q{};
         if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' ) {
             $add_ban =
-qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|$ban_reason|\n~;
+qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|$lev|$ban_reason|\n~;
             if ( $lev eq 'p' ) {
-                @ubanned = split /[|]/xsm, ${ $uid . $user }{'banned'};
+                my @ubanned = split /[|]/xsm, ${ $uid . $user }{'banned'};
                 if ($ban_email) {
                     $ubanned[0] = 1;
                 }
@@ -895,11 +962,11 @@ qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|$ban_reaso
                     $ubanned[1] = 1;
                 }
                 ${ $uid . $user }{'banned'} = qq~$ubanned[0]|$ubanned[1]~;
-                UserAccount( $user, 'update' );
+                user_account( $user, 'update' );
             }
-
-            if ( $email_ban ) {
-                LoadLanguage('Email');
+            my ( $banned_time, $bannedsubj, $bemail, $busersybject, $tmp );
+            if ($email_ban) {
+                load_language('Email');
                 if ( $lev eq 'p' ) {
                     $banned_time  = $profile_txt{'p'};
                     $bannedsubj   = $security_txt{'banned'};
@@ -914,7 +981,7 @@ qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|$ban_reaso
                     $bemail       = $suspendeduseremail;
                     $busersybject = $suspendusersybject;
                 }
-                $bannedfor = q{};
+                my $bannedfor = q{};
                 if ($ban_reason) {
                     $bannedfor =
                       $security_txt{'ban_warn_b'} . $ban_reason . q{ };
@@ -937,20 +1004,21 @@ qq~$type|$banned|$time|${$uid.$username}{'realname'} ($username)|$lev|$ban_reaso
                     $message, q{}, $emailcharset
                 );
             }
-            fopen( BAN2, ">>$vardir/banlist.db" )
+            open my $BAN2, '>>', "$vardir/banlist.db"
               or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
-            print {BAN2} $add_ban or croak "$croak{'print'} BAN2";
-            fclose(BAN2);
+            print {$BAN2} $add_ban or croak "$croak{'print'} BAN2";
+            close $BAN2 or croak "$croak{'close'} banlist";
         }
 
         get_template('Other');
-        LoadLanguage('Profile');
-        $output = $myban_page2;
+        load_language('Profile');
+        our $output = $myban_page2;
         $output =~ s/\Q{yabb banuser}\E/$user/gxsm;
-        $output =~ s/\Q{yabb profile_txt_ban_page}\E/$profile_txt{'ban_page'}/gxsm;
+        $output =~
+          s/\Q{yabb profile_txt_ban_page}\E/$profile_txt{'ban_page'}/gxsm;
 
         print_output_header();
-        print_HTML_output_and_finish();
+        print_html_output_and_finish();
     }
     return;
 }

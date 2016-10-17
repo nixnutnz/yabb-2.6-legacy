@@ -74,7 +74,7 @@ require Paths;
 my $thisscript = "$ENV{'SCRIPT_NAME'}";
 my $yyext      = 'pl';
 our $yyexec      = 'YaBB';
-our $YaBBversion = 'YaBB 2.7.00';
+our $yabbversion = 'YaBB 2.7.00';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 my $set_cgi = "Convert2x.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
@@ -107,7 +107,7 @@ if ( -e "$vardir/Setup.lock" ) {
 
     tempstarter();
     tabmenushow();
-    FixLang();
+    fixlang();
 
     if ( !$action ) {
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
@@ -180,7 +180,7 @@ $langtxt
     }
 
     if ( $action eq 'prepare' ) {
-        UpdateCookie('delete');
+        update_cookie('delete');
 
         $username = 'Guest';
         $iamguest = '1';
@@ -274,8 +274,8 @@ EOF
     }
     elsif ( $action eq 'members' ) {
         require 'Variables/LangSettings.txt';
-        if ( !exists $INFO{'mstart1'} ) { PrepareConv(); }
-        ConvertMembers();
+        if ( !exists $INFO{'mstart1'} ) { prepareconv(); }
+        convertmembers();
 
         $yytabmenu = $navlink1 . $navlink2a . $navlink3 . $navlink5 . $navlink6;
 
@@ -411,7 +411,7 @@ EOF
     }
     elsif ( $action eq 'cats' ) {
         if ( !exists $INFO{'bstart'} ) {
-            MoveBoards();
+            moveboards();
         }
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
@@ -549,7 +549,7 @@ EOF
     }
     elsif ( $action eq 'messages' ) {
         require 'Variables/LangSettings.txt';
-        MoveMessages();
+        movemessages();
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
 
@@ -701,7 +701,7 @@ EOF
 
     elsif ( $action eq 'cleanup' ) {
         require 'Variables/LangSettings.txt';
-        MoveVariables();
+        movevariables();
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
 
@@ -761,17 +761,17 @@ EOF
     </table>
     </div>~;
 
-        CreateFixLock();
+        createfixlock();
     }
 
     $yyim    = 'You are running the YaBB 2.7.00 UTF-8 Converter.';
     $yytitle = 'YaBB 2.7.00 UTF-8  Converter';
-    SetupTemplate();
+    setuptemplate();
 }
 
 # Prepare Conversion ##
 
-sub PrepareConv {
+sub prepareconv {
     automaintenance('on');
     return;
 }
@@ -780,13 +780,13 @@ sub PrepareConv {
 
 # Member Conversion ##
 
-sub ConvertMembers {
+sub convertmembers {
     my %minmems = ();
     if ( @minpack ) {
         require "$convertlang/Variables/Memberlist.pm";
         @mlst = keys %memberlist;
         foreach my $j (@mlst) {
-            LoadUser($j);
+            load_user($j);
             $minmems{$j} = 0;
             foreach ( @minpack ) {
                 if ( ${ $uid . $j }{'language'} eq $_ ) {
@@ -837,7 +837,7 @@ sub ConvertMembers {
         my $newline = qq~\$memberinf{'$cnt'} = ['$prline'];~;
         push @memberinf, $newline . "\n";
     }
-    my $meminfo .= join q{}, @memberinf;
+    my $meminfo = join q{}, @memberinf;
     $meminfo .= qq~\n1;\n\n~;
  
     open $NMEMFILE, '>', "$vardir/Memberinfo.pm"
@@ -887,7 +887,7 @@ sub ConvertMembers {
 
 # Board + Category Conversion ##
 
-sub MoveBoards {
+sub moveboards {
     require 'Variables/LangSettings.txt';
     require "$convertlang/Boards/forum.master";
     my @boards    = sort keys %board;
@@ -1100,7 +1100,7 @@ sub MoveBoards {
 
 # Messages Conversion ##
 
-sub MoveMessages {
+sub movemessages {
     require "$boardsdir/forum.master";
     my @boards    = sort keys %board;
     my @subboards = sort keys %subboard;
@@ -1187,7 +1187,7 @@ sub MoveMessages {
 
 # Variables Conversion ##
 
-sub MoveVariables {
+sub movevariables {
     require q~Variables/LangSettings.txt~;
     opendir $BDIR, "$convertlang/Variables";
     @varlist = readdir $BDIR;
@@ -1226,7 +1226,7 @@ sub MoveVariables {
 
 #End Conversion#
 
-sub CreateFixLock {
+sub createfixlock {
     open my $LOCKFILE, '>', "$vardir/ConvertLang.lock"
       or setup_fatal_error( "$maintext_23 $vardir/ConvertLang.lock: ", 1 );
     print {$LOCKFILE}
@@ -1237,7 +1237,7 @@ qq~This is a lockfile for the ConvertLang Utility.\nIt prevents it being run aga
     return;
 }
 
-sub FoundConvertLangLock {
+sub foundconvertlanglock {
     tempstarter();
     require Sources::TabMenu;
     my $fixa = q{};
@@ -1290,7 +1290,7 @@ qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again,
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.7.00';
+    $yabbversion = 'YaBB 2.7.00';
 
     # Make sure the module path is present
     push @INC, "$boarddir/Modules";
@@ -1307,16 +1307,16 @@ sub tempstarter {
 
     # Requirements and Errors
     require Variables::Settings;
-    LoadCookie();    # Load the user's cookie (or set to guest)
-    LoadUserSettings();
-    WhatTemplate();
-    WhatLanguage();
+    load_cookie();    # Load the user's cookie (or set to guest)
+    load_usersettings();
+    what_template();
+    what_language();
     require Sources::Security;
-    WriteLog();
+    write_log();
     return;
 }
 
-sub SetupImgLoc {
+sub setupimglock {
     if ( !-e "$htmldir/Templates/Forum/$useimages/$_[0]" ) {
         $thisimgloc = qq~img src="$yyhtml_root/Templates/Forum/default/$_[0]"~;
     }
@@ -1385,11 +1385,11 @@ sub setup_fatal_error {
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
     tempstarter();
-    SetupTemplate();
+    setuptemplate();
     return;
 }
 
-sub SimpleOutput {
+sub simpleoutput {
     $gzcomp = 0;
     print_output_header();
 
@@ -1410,7 +1410,7 @@ sub SimpleOutput {
     exit;
 }
 
-sub SetupTemplate {
+sub setuptemplate {
     print_output_header();
 
     my $yyposition = $yytitle;
@@ -1445,7 +1445,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
         my $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
-        $curline =~ s/\Qimg src=\E\"$imagesdir\/(.+?)\"/SetupImgLoc($1)/eigxsm;
+        $curline =~ s/\Qimg src=\E\"$imagesdir\/(.+?)\"/setupimglock($1)/eigxsm;
         $output .= $curline;
     }
     if ( $yycopyin == 0 ) {
@@ -1491,7 +1491,7 @@ sub ansi {
     return $line;
 }
 
-sub FixLang {
+sub fixlang {
     open $FILE, '>',
       "$convertlang/Boards/dummy.testfile"
       or setup_fatal_error(

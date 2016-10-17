@@ -1,11 +1,11 @@
-$englishuser_user00_agreementhelpver = 'YaBB 2.7.00 $Revision: 1808 $';
+$englishuser_user00_agreementhelpver = 'YaBB 2.7.00 $Revision: 1818 $';
 if ( $action eq 'detailedversion' ) { return 1; }
-$SectionName = "User_Agreement";
+$section_name = "User_Agreement";
 
 ### Section 1
 #############################################
-$SectionSub1 = "{yabb_boardname}_User_Agreement";
-$SectionBody1 = q~<p>You agree, through your use of these forums, that you will not post any material which is false, defamatory, inaccurate, abusive, vulgar, hateful, harassing, obscene, profane, sexually-oriented, threatening, invasive of a person's privacy, or otherwise in violation of <i>any</i> law. You also agree not to post any copyrighted material unless the copyright is owned by you or you have consent from the owner of the copyrighted material. Spam, flooding, advertisements, chain letters, pyramid schemes, and solicitations are also inappropriate to this forum.<br />
+$section_sub1 = "{yabb_boardname}_User_Agreement";
+$section_body1 = q~<p>You agree, through your use of these forums, that you will not post any material which is false, defamatory, inaccurate, abusive, vulgar, hateful, harassing, obscene, profane, sexually-oriented, threatening, invasive of a person's privacy, or otherwise in violation of <i>any</i> law. You also agree not to post any copyrighted material unless the copyright is owned by you or you have consent from the owner of the copyrighted material. Spam, flooding, advertisements, chain letters, pyramid schemes, and solicitations are also inappropriate to this forum.<br />
 <br />
 Note that it is impossible for us to confirm the validity of posts on this forum. Please remember that we do not actively monitor the posted messages and are not responsible for their content. We do not warrant the accuracy, completeness, or usefulness of any information presented. The messages express the views of the author, not necessarily the views of this forum. Anyone who feels that a posted message is objectionable is encouraged to notify an administrator of this forum immediately. We have the right to remove objectionable content, within a reasonable time frame, if we determine that removal is necessary. This is a manual process, however, so please realize that we may not be able to remove or edit particular messages immediately. This policy applies to member profile information as well.<br />
 <br />

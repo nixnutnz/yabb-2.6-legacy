@@ -12,44 +12,72 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$sendtopicpmver  = 'YaBB 2.7.00 $Revision$';
-@sendtopicpmmods = ();
+our $sendtopicpmver  = 'YaBB 2.7.00 $Revision$';
+our @sendtopicpmmods = ();
+our $sendtopicpmmods = 0;
 if (@sendtopicpmmods) {
     $sendtopicpmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+our (
+    $sendtopicmail,       $gpvalid_en,       $iamguest,
+    %INFO,                %floodtxt,         $flood_text,
+    $datadir,             $mysend_valcode,   $showcheck,
+    $spam_questions_gp,   $langdir,          $language,
+    $spam_questions_case, %sendtopic_txt,    $mysend_spam,
+    $spam_question,       $spam_question_id, $spam_questions_send,
+    $spam_image,          $regcheck,         $yymain,
+    $mysend_top,          $uid,              $username,
+    $yytitle,             $yynavigation,     %FORM,
+    $invalmailchar,       $invalemaila,      $invalemailb,
+    $scripturl,           $accept_permafull, $perm_domain,
+    $symlink,             $yysetlocation,    $sendtopicemail,
+    %croak,               %thread_arrayref,
+);
 
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
 
 if ( $gpvalid_en && $iamguest ) { require Sources::Decoder; }
 
-LoadLanguage('SendTopic');
+load_language('SendTopic');
 get_micon();
 get_template('Display');
 
-sub SendTopic {
-    $topic = $INFO{'topic'};
-    MessageTotals( 'load', $topic );
-    $board = ${$topic}{'board'};
+sub send_topic {
+    my $topic = $INFO{'topic'};
+    message_totals( 'load', $topic );
+    my ( $board, );
+    {
+        no strict qw(refs);
+        $board = ${$topic}{'board'};
+    }
     if ( $board eq q{} || $board eq q{_} || $board eq q{ } ) {
         fatal_error('no_board_send');
     }
     if ( $topic eq q{} || $topic eq q{_} || $topic eq q{ } ) {
         fatal_error('no_topic_send');
     }
+    my $focus_y_name = q{};
     if ($iamguest) { $focus_y_name = q~document.sendtopic.y_name.focus();~; }
 
     if ( !ref $thread_arrayref{$topic} ) {
-        fopen( FILE, "$datadir/$topic.txt" )
+        open my $FILE, '<', "$datadir/$topic.txt"
           or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
-        @{ $thread_arrayref{$topic} } = <FILE>;
-        fclose(FILE);
+        @{ $thread_arrayref{$topic} } = <$FILE>;
+        close $FILE or croak "$croak{'close'} $topic.txt";
     }
-    $subject = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
-
+    my $subject    = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
+    my $my_spam    = q{};
+    my $my_valcode = q{};
     if ( $gpvalid_en && $iamguest ) {
         validation_code();
         $my_valcode = $mysend_valcode;
@@ -62,7 +90,7 @@ sub SendTopic {
         && $iamguest
         && -e "$langdir/$language/spam.questions" )
     {
-        SpamQuestion();
+        spam_question();
         my $verification_question_desc;
         if ($spam_questions_case) {
             $verification_question_desc =
@@ -74,10 +102,11 @@ sub SendTopic {
 s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
         $my_spam =~ s/\Q{yabb spam_question_id}\E/$spam_question_id/xsm;
         $my_spam =~ s/\Q{yabb spam_question_image}\E/$spam_image/xsm;
-        $my_spam =~ s/\Q{yabb sendtopic_txt_verification_question_desc}\E/$sendtopic_txt{'verification_question_desc'}/xsm;
+        $my_spam =~
+s/\Q{yabb sendtopic_txt_verification_question_desc}\E/$sendtopic_txt{'verification_question_desc'}/xsm;
     }
 
-    $my_jschecks = qq~<script type="text/javascript">
+    my $my_jschecks = qq~<script type="text/javascript">
     $focus_y_name
 
     function CheckSendTopicFields() {
@@ -128,8 +157,11 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
 
     $yymain .= $mysend_top;
     $yymain =~ s/\Q{yabb subject}\E/$subject/xsm;
-    $yymain =~ s/\Q{yabb realname}\E/${$uid.$username}{'realname'}/xsm;
-    $yymain =~ s/\Q{yabb email}\E/${$uid.$username}{'email'}/xsm;
+    {
+        no strict qw(refs);
+        $yymain =~ s/\Q{yabb realname}\E/${$uid.$username}{'realname'}/xsm;
+        $yymain =~ s/\Q{yabb email}\E/${$uid.$username}{'email'}/xsm;
+    }
     $yymain =~ s/\Q{yabb my_valcode}\E/$my_valcode/xsm;
     $yymain =~ s/\Q{yabb my_spam}\E/$my_spam/xsm;
     $yymain =~ s/\Q{yabb my_jschecks}\E/$my_jschecks/xsm;
@@ -150,20 +182,20 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
     return;
 }
 
-sub SendTopic2 {
-    $topic = $FORM{'topic'};
-    $board = $FORM{'board'};
-    if ( $board eq q{} || $board eq q{_} || $board eq q{ } ) {
+sub send_topic2 {
+    my $topic = $FORM{'topic'};
+    my $board = $FORM{'board'};
+    if ( !$board || $board eq q{} || $board eq q{_} || $board eq q{ } ) {
         fatal_error('no_board_send');
     }
-    if ( $topic eq q{} || $topic eq q{_} || $topic eq q{ } ) {
+    if ( !$topic || $topic eq q{} || $topic eq q{_} || $topic eq q{ } ) {
         fatal_error('no_topic_send');
     }
 
-    $yname  = $FORM{'y_name'};
-    $rname  = $FORM{'r_name'};
-    $yemail = $FORM{'y_email'};
-    $remail = $FORM{'r_email'};
+    my $yname  = $FORM{'y_name'};
+    my $rname  = $FORM{'r_name'};
+    my $yemail = $FORM{'y_email'};
+    my $remail = $FORM{'r_email'};
     $yname =~ s/\A\s+//xsm;
     $yname =~ s/\s+\Z//xsm;
     $yemail =~ s/\A\s+//xsm;
@@ -217,24 +249,24 @@ sub SendTopic2 {
         && $iamguest
         && -e "$langdir/$language/spam.questions" )
     {
-        SpamQuestionCheck( $FORM{'verification_question'},
+        spam_question_check( $FORM{'verification_question'},
             $FORM{'verification_question_id'} );
     }
     if ( !ref $thread_arrayref{$topic} ) {
-        fopen( FILE, "$datadir/$topic.txt" )
+        open my $FILE, '<', "$datadir/$topic.txt"
           or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
-        @{ $thread_arrayref{$topic} } = <FILE>;
-        fclose(FILE);
+        @{ $thread_arrayref{$topic} } = <$FILE>;
+        close $FILE or croak "$croak{'close'} $topic.txt";
     }
-    $topiclink = qq~$scripturl?num=$topic~;
+    my $topiclink = qq~$scripturl?num=$topic~;
     if ($accept_permafull) {
         my $permdate = permtimer($topic);
         $topiclink = qq~$perm_domain/$symlink/$permdate/$board/$topic~;
     }
-    $subject = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
-    FromHTML($subject);
+    my $subject = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
+    from_html($subject);
     require Sources::Mailer;
-    LoadLanguage('Email');
+    load_language('Email');
     my $message = template_email(
         $sendtopicemail,
         {
@@ -248,7 +280,7 @@ sub SendTopic2 {
         "$sendtopic_txt{'118'}: $subject ($sendtopic_txt{'318'} $yname)",
         $message, $yemail );
 
-    $yySetLocation = qq~$topiclink~;
+    $yysetlocation = $topiclink;
     redirectexit();
     return;
 }

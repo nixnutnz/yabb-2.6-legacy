@@ -12,29 +12,54 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 our $VERSION = '2.7.00';
 
-$yabbcpmver  = 'YaBB 2.7.00 $Revision$';
-@yabbcpmmods = ();
+our $yabbcpmver  = 'YaBB 2.7.00 $Revision$';
+our @yabbcpmmods = ();
+our $yabbcpmmods = 0;
 if (@yabbcpmmods) {
     $yabbcpmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('Post');
+## language ##
+our ( %croak, %display_txt, %maintxt, %post_txt, );
+## folders ##
+our ( $boardurl, $imagesdir, $memberdir, $scripturl, $yyhtml_root, );
+## settings ##
+our (
+    $autolinkurls,  $guest_media_disallowed, $img_greybox,
+    $regtype,       $showimageinquote,       $stealthurl,
+    $user_hide_img, @smilieorder,            %addedsmilies,
+);
+## system ##
+our (
+    $attachment, $curname,   $curnum, $daytxt, $displayname,
+    $iamguest,   $movedflag, $ns,     $uid,    $username,
+    $yyexec,     $yyext,     %useraccount
+);
+## templates ##
+our ( $showattach, $showattachhr, );
 
-$yyYaBBCloaded = 1;
+load_language('Post');
 
-sub MakeSmileys {
+our $yy_yabbloaded = 1;
+## local ##
+our ($message);
+
+sub make_smileys {
     my ($inp) = @_;
-    my $message = join q{}, $inp;
+    $inp ||= q{};
+    $message = join q{}, $inp;
     my $i = 0;
-    my @HTMLtags;
-    while ( $message =~ s/(<.+?>)/[HTML$i]/xsm ) { push @HTMLtags, $1; $i++; }
+    my @html_tags;
+    while ( $message =~ s/(<.+?>)/[HTML$i]/xsm ) { push @html_tags, $1; $i++; }
+    my ($smileydesc);
     if ( $message =~ /\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/igxsm ) {
         ( $smileydesc, undef ) = split /[.]/xsm, $2;
     }
@@ -55,7 +80,7 @@ s/(\W|^):-\[/$1<img class="smil" data-rel="&#58;&#45;\[" src="$imagesdir\/embara
     $message =~
 s/(\W|^):-[*]/$1<img class="smil" data-rel="&#58;&#45;\*" src="$imagesdir\/kiss.gif" alt="$post_txt{'529'}" title="$post_txt{'529'}" \/>/gxsm;
     $message =~
-s/(\W|^)&gt;:[(]/$1<img class="smil" data-rel="&gt;:&#40;" src="$imagesdir\/angry.gif" alt="$post_txt{'288'}" title="$post_txt{'288'}" \/>/gxsm;
+s/(\W|^)(&gt;|>):[(]/$1<img class="smil" data-rel="&gt;:&#40;" src="$imagesdir\/angry.gif" alt="$post_txt{'288'}" title="$post_txt{'288'}" \/>/gxsm;
     $message =~
 s/(\W|^)::[)]/$1<img class="smil" data-rel="&#58;&#58;&#41;" src="$imagesdir\/rolleyes.gif" alt="$post_txt{'450'}" title="$post_txt{'450'}" \/>/gxsm;
     $message =~
@@ -81,9 +106,12 @@ s/(\W|^)&gt;:-D/$1<img class="smil" data-rel="&gt;&#58;-D" src="$imagesdir\/evil
 
     my $j = 0;
     while ( $smilieorder[$j] ) {
-        if ( ${$addedsmilies{$smilieorder[$j]}}[0] =~ /\//ixsm ) { $tmpurl = ${$addedsmilies{$smilieorder[$j]}}[0]; }
+        my ($tmpurl);
+        if ( ${ $addedsmilies{ $smilieorder[$j] } }[0] =~ /\//ixsm ) {
+            $tmpurl = ${ $addedsmilies{ $smilieorder[$j] } }[0];
+        }
         else { $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$j]}}[0]~; }
-        $tmpcode = ${$addedsmilies{$smilieorder[$j]}}[1];
+        my $tmpcode = ${ $addedsmilies{ $smilieorder[$j] } }[1];
         $tmpcode =~ s/&\x2336;/\$/gxsm;
         $tmpcode =~ s/&\x2364;/\@/gxsm;
         $message =~
@@ -92,27 +120,28 @@ s/\Q$tmpcode\E/<img class="smil" data-rel="${$addedsmilies{$smilieorder[$j]}}[1]
     }
 
     $i = 0;
-    while ( $message =~ s/\[HTML$i\]/$HTMLtags[$i]/xsm ) { $i++; }
+    while ( $message =~ s/\[HTML$i\]/$html_tags[$i]/xsm ) { $i++; }
 
     return $message;
 }
 
-@ycssvalues  = qw ( quote quote2 );
-$ycssnum     = 2;
-$ycsscounter = 2;
-$qid_cnt     = 0;
+my @ycssvalues  = qw ( quote quote2 );
+my $ycssnum     = 2;
+my $ycsscounter = 2;
+my $qid_cnt     = 0;
 
 sub quotemsg {
     my ( $qauthor, $qlink, $qdate, $qmessage ) = @_;
     my ( $testauthor, $fqauthor );
-
-    $qid = $qauthor . $qid_cnt;
+    $qauthor ||= q{};
+    my $qid = $qauthor . $qid_cnt;
     $qid_cnt++;
 
+    my (%usernames_life_quote);
     if ($qauthor) {
         $usernames_life_quote{'temp_quote_autor'} =
           $qauthor;    # for display names in Quotes in LivePreview
-        ToChars($qauthor);
+        to_chars($qauthor);
         if ( !-e "$memberdir/$qauthor.vars" )
         {              # if the file is there it is an unencrypted user ID
             $qauthor = decloak($qauthor);
@@ -120,14 +149,16 @@ sub quotemsg {
             # if not, decrypt it and see if it is a registered user
             if ( !-e "$memberdir/$qauthor.vars" )
             {          # if still not found probably the author is a screen name
-                $testauthor = MemberIndex( 'check_exist', "$qauthor" );
+                $testauthor = member_index( 'check_exist', "$qauthor" );
 
                 # check if this name exists in the memberlist
-                if ( $testauthor )
-                {      # if it is, load the user id returned
+                if ($testauthor) {    # if it is, load the user id returned
                     $qauthor = $testauthor;
-                    LoadUser($qauthor);
-                    $fqauthor = ${ $uid . $qauthor }{'realname'};
+                    load_user($qauthor);
+                    {
+                        no strict qw(refs);
+                        $fqauthor = ${ $uid . $qauthor }{'realname'};
+                    }
 
                     # set final author var to the current users screen name
                 }
@@ -138,52 +169,61 @@ sub quotemsg {
                 }
             }
             else {
-                LoadUser($qauthor);
+                load_user($qauthor);
 
 # after encoding the user ID was found and loaded, setting the current real name
-                $fqauthor = ${ $uid . $qauthor }{'realname'};
+                {
+                    no strict qw(refs);
+                    $fqauthor = ${ $uid . $qauthor }{'realname'};
+                }
             }
         }
         else {
-            LoadUser($qauthor);
+            load_user($qauthor);
 
 # it was an old style user id which could be loaded and screen name set to final author
-            $fqauthor = ${ $uid . $qauthor }{'realname'};
+            {
+                no strict qw(refs);
+                $fqauthor = ${ $uid . $qauthor }{'realname'};
+            }
         }
         $qmessage =~
 s/\/me\s+(.*?)(\n|\Z)(.*?)/<i><span class="my_me">* $fqauthor<\/span> $1<\/i>$2$3/igxsm;
     }
 
     # next 2 lines: for display names in Quotes in LivePreview
-    $usernames_life_quote{ $usernames_life_quote{'temp_quote_autor'} } =
-      $fqauthor;
+    if ( $usernames_life_quote{'temp_quote_autor'} ) {
+        $usernames_life_quote{ $usernames_life_quote{'temp_quote_autor'} } =
+          $fqauthor;
+    }
     delete $usernames_life_quote{'temp_quote_autor'};
 
     $qmessage = parseimgflash($qmessage);
     $qdate = timeformat( $qdate, 0, 0, 0, 1 );
 
     # generates also the global variable $daytxt
-    $cssbg = $ycssvalues[ ( $ycsscounter % $ycssnum ) ];
+    my $cssbg = $ycssvalues[ ( $ycsscounter % $ycssnum ) ];
     $ycsscounter++;
-    if ( $fqauthor eq q{} || $qlink eq q{} || $qdate eq q{} ) {
+    if ( !$fqauthor || $fqauthor eq q{} || $qlink eq q{} || $qdate eq q{} ) {
         $_ = $post_txt{'601'};
     }
     elsif ( $qlink eq 'impost' ) {
         $_ = $daytxt ? $post_txt{'600a_d'} : $post_txt{'600a'};
-        $_ =~
+        if ( $useraccount{$qauthor} ) {
 s/AUTHOR2/$scripturl?action=viewprofile;username=$useraccount{$qauthor}/gxsm;
+        }
     }
     elsif ( $action ne 'imshow' && $action ne 'imsend' && $action ne 'imsend2' )
     {
         $_ = $daytxt ? $post_txt{'600_d'} : $post_txt{'600'};
     }
     else { $_ = $daytxt ? $post_txt{'599_d'} : $post_txt{'599'}; }
-    $_ =~ s/AUTHOR/$fqauthor/gxsm;
-    $_ =~ s/QUOTELINK/$scripturl?num=$qlink/gxsm;
-    $_ =~ s/DATE/$qdate/gxsm;
-    $_ =~ s/QUOTE/$qmessage/gxsm;
-    $_ =~ s/QID/$qid/gxsm;
-    $_ =~ s/QEND/<!--$qid-->/gxsm;
+    s/AUTHOR/$fqauthor/gxsm;
+    s/QUOTELINK/$scripturl?num=$qlink/gxsm;
+    s/DATE/$qdate/gxsm;
+    s/QUOTE/$qmessage/gxsm;
+    s/QID/$qid/gxsm;
+    s/QEND/<!--$qid-->/gxsm;
     return $_;
 }
 
@@ -193,12 +233,15 @@ sub parseimgflash {
 s/\[flash\=(\S+?),(\S+?)](\S+?)\[\/flash\]/<b>$display_txt{'769'} ($1 x $2):<\/b> <a href="$3" target="_blank" onclick="window.open('$3', 'flash', 'resizable,width=$1,height=$2'); return false;">>$3<\/a>/gxsm;
     my $char_160  = chr 160;
     my $hardspace = q~&nbsp;~;
-    if ( !$showimageinquote
-        || ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) )
     {
-        $tmp_message =~ s/\Q[img \E(.+?)\]/[img\]/igxsm;
-        $tmp_message =~
+        no strict qw(refs);
+        if ( !$showimageinquote
+            || ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) )
+        {
+            $tmp_message =~ s/\Q[img \E(.+?)\]/[img\]/igxsm;
+            $tmp_message =~
 s/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(https?\:\/\/)*(.+?)(?:\s[\t\n]|$hardspace|$char_160)*\[\/img\]/\[url\]$1$2\[\/url\]/igxsm;
+        }
     }
     return $tmp_message;
 }
@@ -221,56 +264,41 @@ s/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(https?\:\/\/)*(.+?)(?:\s[\t\n]|$hard
         'D'   => '&#068;',
     );
 
-    $codecnt = 0;
+    my $codecnt = 0;
 
     sub codemsg {
         my ( $code, $class ) = @_;
-        my @codeclass = (
-            [
-                'c++',        'css',    'html', 'java',
-                'javascript', 'pascal', 'perl', 'php',
-                'sql',
-            ],
-            [
-                'sh_cpp',        'sh_css',    'sh_html', 'sh_java',
-                'sh_javascript', 'sh_pascal', 'sh_perl', 'sh_php',
-                'sh_sql',
-            ],
-            [
-                ' (C++)',
-                ' (CSS)',
-                ' (HTML)',
-                ' (Java)',
-                ' (Javascript)',
-                ' (Pascal)',
-                ' (Perl)',
-                ' (PHP)',
-                ' (SQL)'
-            ],
+        my %codeclass = (
+            'c++'        => [ 'sh_cpp',        ' (C++)' ],
+            'css'        => [ 'sh_css',        ' (CSS)', ],
+            'html'       => [ 'sh_html',       ' (HTML)', ],
+            'java'       => [ 'sh_java',       ' (Java)', ],
+            'javascript' => [ 'sh_javascript', ' (Javascript)', ],
+            'pascal'     => [ 'sh_pascal',     ' (Pascal)', ],
+            'perl'       => [ 'sh_perl',       ' (Perl)', ],
+            'php'        => [ 'sh_php',        ' (PHP)', ],
+            'sql'        => [ 'sh_sql',        ' (SQL)' ],
         );
         my $insclass = 'code';
         my $prclass  = q{};
-        foreach my $i ( 0 .. 8 ) {
-            my $img0 = $codeclass[0]->[$i];
-            my $img1 = $codeclass[1]->[$i];
-            my $img2 = $codeclass[2]->[$i];
-            if ( lc $class eq $img0 ) {
-                $insclass = $img1;
-                $prclass  = $img2;
-            }
+        my $myclass  = lc $class;
+        if ( exists $codeclass{$myclass} ) {
+            $insclass = ${ $codeclass{$myclass} }[0];
+            $prclass  = ${ $codeclass{$myclass} }[1];
         }
-        ToChars($code);
+        to_chars($code);
         if ( $code !~ /&\S*;/gxsm ) { $code =~ s/;/&\x23059;/gxsm; }
         $code =~ s/([()\-:\\\/?!\]\[.\^[.]D])/$killhash{$1}/gxsm;
         $code =~
-s/\&\#91;highlight\&\#93;(.*?)\&\#91;\&\#47;highlight\&\#93;/<span class="highlight">$1<\/span>/isgxsm;
+s/\&\#91;highlight\&\#93;(.*?)\&\#91;\&\#47;highlight\&\#93;/<span class="highlight">$1<\/span>/igxsm;
         $_ = $post_txt{'602'};
 
         # Thx. to Michael Prager for the improved Code boxes
         # count lines in code
-        $linecount = () = $code =~ /\n/gxsm;
+        my $linecount = () = $code =~ /\n/gxsm;
 
         # if more that 20 lines then limit code box height
+        our $height = q{};
         if ( $linecount > 20 ) {
             $height = 'height: 300px;';
         }
@@ -286,6 +314,7 @@ s/\&\#91;highlight\&\#93;(.*?)\&\#91;\&\#47;highlight\&\#93;/<span class="highli
         # we need to keep normal linebreaks inside <pre> tag
         $code =~ s/&quot;&gt;/\[code_qgt\]/igxsm;
         $codecnt++;
+        my $prselect = q{};
         if ( $guest_media_disallowed && $iamguest ) {
             $prselect = q{};
         }
@@ -296,9 +325,9 @@ qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.
 
         $code =
 qq~<pre class="$insclass" id="code$codecnt">$code\[code_br][code_br]</pre>~;
-        $_ =~ s/XSELECTX/$prselect/gxsm;
-        $_ =~ s/XLANGX/$prclass/gxsm;
-        $_ =~ s/CODE/$code/gxsm;
+        s/XSELECTX/$prselect/gxsm;
+        s/XLANGX/$prclass/gxsm;
+        s/CODE/$code/gxsm;
         return $_;
     }
 
@@ -311,6 +340,7 @@ qq~<pre class="$insclass" id="code$codecnt">$code\[code_br][code_br]</pre>~;
 
 sub imagemsg {
     my ( $rest, $attribut, $url, $type ) = @_;
+    $rest ||= q{};
 
     # use or kill urls
     $url =~ s/\[url\](.*?)\[\/url\]/$1/igxsm;
@@ -328,7 +358,7 @@ sub imagemsg {
     }
 
     my %parameter;
-    FromHTML($attribut);
+    from_html($attribut);
     $attribut =~ s/(\s|$char_160)+/ /gxsm;
 
     local *altconv = sub {
@@ -338,7 +368,7 @@ sub imagemsg {
     };
     $attribut =~ s/(.*?)alt=(.+?)(\s\S+=|\Z)/ altconv($1,$2,$3)/eigxsm;
     foreach ( split /[ ]+/xsm, $attribut ) {
-        my ( $key, $value ) = split /=/xsm, $_;
+        my ( $key, $value ) = split /=/xsm;
         $value =~ s/[\x22\x27]//gxsm;
         $parameter{$key} = $value;
     }
@@ -358,46 +388,58 @@ sub imagemsg {
         $parameter{'name'} =
           $type ? q~id="signat_img_resize"~ : q~id="post_img_resize"~;
     }
-
+    $parameter{'alt'} ||= q{};
     $parameter{'alt'} =~ s/[<>"]/*/gxsm;
     $parameter{'alt'} =~ s/_/ /gxsm;
     if ( $url =~ /([^\/]+?)$/xsm ) {
         $parameter{'alt'} ||= $1;
     }
+    $parameter{'align'} ||= q{};
     $parameter{'align'} =~ s/[[:^lower:]]//igxsm;
-    $parameter{'width'} =~ s/\D//gxsm;
-    $parameter{'height'} =~ s/\D//gxsm;
     if ( $parameter{'align'} ) {
         $parameter{'align'} = qq~ style="vertical-align:$parameter{'align'}"~;
     }
+    $parameter{'width'} ||= q{};
+    $parameter{'width'} =~ s/\D//gxsm;
     if ( $parameter{'width'} ) {
         $parameter{'width'} = qq~ width="$parameter{'width'}"~;
     }
+    $parameter{'height'} ||= q{};
+    $parameter{'height'} =~ s/\D//gxsm;
     if ( $parameter{'height'} ) {
         $parameter{'height'} = qq~ height="$parameter{'height'}"~;
     }
 
     my $linkedimg = $rest =~ /\[url[^\[]*\]\s*$/ixsm ? 1 : 0;
-    return $rest
-      . (
-        ( !$linkedimg && $use_greybox )
-        ? qq~<a href="$url" data-rel="gb_image[nice_pics]" title="$parameter{'alt'}">~
-        : q{}
-      )
-      . qq~<img src="$url" $parameter{'name'} alt="$parameter{'alt'}" title="$parameter{'alt'}"$parameter{'align'}$parameter{'width'}$parameter{'height'} style="display:none" />~
-      . ( ( !$linkedimg && $img_greybox ) ? '</a>' : q{} );
+    my $resturl   = q{};
+    my $resturla  = q{};
+    if ( !$linkedimg && $use_greybox ) {
+        $resturl =
+qq~<a href="$url" data-rel="gb_image[nice_pics]" title="$parameter{'alt'}">~;
+        $resturla = '</a>';
+    }
+    my $rest_url = qq~<img src="$url" $parameter{'name'} ~;
+    $rest_url .= qq~alt="$parameter{'alt'}" title="$parameter{'alt'}"~;
+    $rest_url .= $parameter{'align'} . $parameter{'width'};
+    $rest_url .= qq~$parameter{'height'} style="display:none" />~;
+    $rest     .= $resturl . $rest_url . $resturla;
+    return $rest;
 }
 
 #greybox image bug fixed;
-sub DoUBBC {
+sub do_ubbc {
     my ($image_type) = @_;
     $ycsscounter = 2;
-    if ( $ns && $ns eq 'NS' || $message =~ s/\x23nosmileys//ixsgm ) {
+    if ( $ns || ( $message && $message =~ s/\x23nosmileys//ixsgm ) ) {
         return $message;
     }
-    if ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) {
-        $message = parseimgflash($message);
+    {
+        no strict qw(refs);
+        if ( ${ $uid . $username }{'hide_img'} && $user_hide_img ) {
+            $message = parseimgflash($message);
+        }
     }
+    $message ||= q{};
     $message =~ s/\[noparse\](.*?)(\[\/noparse\]|$)/noparse($1)/eigxsm;
     $message =~ s/\[reason\](.+?)\[\/reason\]//igxsm;
     $message =~ s/\[code\]/ \[code\]/igxsm;
@@ -494,20 +536,23 @@ s/\[highlight\](.*?)\[\/highlight\]/<span class="highlight">$1<\/span><!--highli
         $message =~ s/\[news\](\S+?)\[\/news\]/<a href="$1">$1<\/a>/igxsm;
         $message =~ s/\[gopher\](\S+?)\[\/gopher\]/<a href="$1">$1<\/a>/igxsm;
         $message =~ s/&quot;&gt;/\x22>/gxsm;
-        $message =~ s/(\[[*]\])/ $1/gxsm;
+        $message =~ s/(\[[*]])/ $1/gxsm;
         $message =~ s/(\[\/list\])/ $1/gxsm;
         $message =~ s/(\[\/td\])/ $1/gxsm;
         $message =~ s/\Q<span style=\E/<span_style=/gxsm;
         $message =~ s/\Q<div style=\E/<div_style=/gxsm;
-        my $reg1 = qr{([^\w"=\[\]]|[\n\b]|\&quot;|\[quote.*?\]|\[edit\]|\[highlight\]|\[[*]\]|\[td\]|\A)}xsm;
+        my $reg1 =
+qr{([^\w"=\[\]]|[\n\b]|\&quot;|\[quote.*?\]|\[edit\]|\[highlight\]|\[[*]\]|\[td\]|\A)}xsm;
         my $reg2 = qr{[\w~;:,\$\-+!*?\/=&@#%()\[\](?:<\S+?>\S+?<\/\S+?>)]}xsm;
         my $reg3 = qr{(?:[\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})}xsm;
-        $message =~ s/$reg1[*](\w+?:\/\/(?:$reg2+?)[.]$reg3+?)/format_url($1,$2)/eigxsm;
 
-        my $reg4 = qr{[^"=\[\]\/:.\-(\:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highlight\]}xsm;
-#        $message =~ s/([^"=\[\]\/:.\-(:\/\/\w+)]|[\n\b]|\&quot\;|\[quote.*?\]|\[edit\]|\[highlight\]|\[[*]\]|\[td\]|\A|\()\\*(www[.][^.](?:[\w~;:,\$\-+!*?\/=&@#%()\[\](?:<\S+?>\S+?<\/\S+?>)]+?)[.](?:(?:[\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})+?)/format_url($1,$2)/eigxsm;
+        my $reg4 =
+qr{[^"=\[\]\/:.\-(:\/\/\w+)]|[\n\b]|\&quot;|\[quote.*?\]|\[edit\]|\[highlight\]}xsm;
+
         $message =~
-s/($reg4|\[[*]]|\[td\]|\A|\()\\*(www[.][^.](?:$reg2+?)[.]$reg3+?)/format_url($1,$2)/eigxsm;
+s/([^\w"=\[\]]|[\n\b]|\&quot;|\[quote.*?\]|\[edit\]|\[highlight\]|\[[*]]|\[td\]|\A)\\*(\w+?:\/\/(?:[\w~;:,\$\-+!*?\/=&@#%()\[\](?:<\S+?>\S+?<\/\S+?>)]+?)[.](?:[\w~.;:,\$\-+!*?\/=&@#%()\[\]\x80-\xFF]{1,})+?)/format_url($1,$2)/eigxsm;
+        $message =~
+s/($reg4|\[[*]]|\[td\]|\A|[(])\\*(www[.][^.](?:$reg2+?)[.]$reg3+?)/format_url($1,$2)/eigxsm;
         $message =~ s/\Q<span_style=\E/<span style=/gxsm;
         $message =~ s/\Q<div_style=\E/<div style=/gxsm;
     }
@@ -551,14 +596,14 @@ s/\[email=\s*(\S+?\@\S+?)\](.*?)\[\/email\]/<a href="mailto:$1">$2<\/a>/igxsm;
 
     local *editsmsg = sub {
         my ($edittext) = @_;
-        $formedit =
+        my $formedit =
 qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1</div><!--edit-->~;
         return $formedit;
     };
     while ( $message =~ s/\[edit\]\n*(.*?)\n*\[\/edit\]/editsmsg($1)/eigxsm ) {
         ;
     }
-
+    $displayname ||= q{};
     $message =~
       s/\/me\s+(.*)/<span class="my_me">* $displayname<\/span> $1/igxsm;
 
@@ -574,13 +619,17 @@ qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1
         }
 
         # convert old flash tags to media tags
-        while ( $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/myembed($1)/eisgm ) {
+        while (
+            $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/myembed($1)/eigxsm )
+        {
             if ( $1 =~ /https:/xsm ) {
                 $message =~ s/media:/https:/igxsm;
             }
         }
-        while ( $message =~ s/\[media\s*(.*?)\]\n*(.*?)\n*\[\/media\]/myembed($2,$1)/eisgm ){
-            if ( $1 =~ /https:/xsm) {
+        while ( $message =~
+            s/\[media\s*(.*?)\]\n*(.*?)\n*\[\/media\]/myembed($2,$1)/eigxsm )
+        {
+            if ( $1 =~ /https:/xsm ) {
                 $message =~ s/media:/https:/igxsm;
             }
         }
@@ -588,8 +637,9 @@ qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1
     }
 
     if ( $guest_media_disallowed && $iamguest ) {
-        if   ($action) { $act = qq~;sesredir=action\~$action~; }
-        else           { $act = qq~;sesredir=num\~$curnum~; }
+        my ($act);
+        if ($action) { $act = qq~;sesredir=action\~$action~; }
+        else         { $curnum ||= q{}; $act = qq~;sesredir=num\~$curnum~; }
         my $oops =
 qq~ <i>$maintxt{'41'} <a href="$scripturl?action=login$act"><b><i>$maintxt{'34'}</i></b></a></i>~;
         if ($regtype) {
@@ -600,6 +650,7 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b><i>$maintxt{'97'}<
 
         $showattach   = q{};
         $showattachhr = q{};
+        $attachment ||= q{};
         $attachment =~ s/\Q<a href="\E.+?<\/a>/[oops]/gxsm;
         $attachment =~ s/\Q<img src="\E.+?>/[oops]/gxsm;
         $attachment =~ s/\[oops\]/$oops/gxsm;
@@ -608,7 +659,7 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b><i>$maintxt{'97'}<
         $message =~ s/\[oops\]/$oops/gxsm;
     }
 
-    $message = MakeSmileys($message);
+    $message = make_smileys($message);
 
     $message =~ s/\s*\[[*]\]/<\/li><li>/igxsm;
     $message =~ s/\[olist\]/<ol>/igxsm;
@@ -688,12 +739,12 @@ s/<\/tr>((?:(?!<tr>|<\/tr>|<td>|<\/td>|<table>|<\/table>).)*)<\/table>/<\/tr><\/
     return $message;
 }
 
-sub DoUBBCTo {
+sub do_ubbc_to {
 
-    # Does UBBC to $_[0] using DoUBBC and keeps $message the same
+    # Does UBBC to $_[0] using do_ubbc and keeps $message the same
     ($message) = @_;
     my $messagecopy = $message;
-    DoUBBC();
+    do_ubbc();
     my $returnthis = $message;
     $message = $messagecopy;
     return $returnthis;

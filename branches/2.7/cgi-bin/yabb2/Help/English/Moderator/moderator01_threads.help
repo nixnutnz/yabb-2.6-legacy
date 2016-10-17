@@ -1,11 +1,11 @@
-$englishmoderator_moderator01_threadshelpver = 'YaBB 2.7.00 $Revision: 1808 $';
+$englishmoderator_moderator01_threadshelpver = 'YaBB 2.7.00 $Revision: 1818 $';
 if ( $action eq 'detailedversion' ) { return 1; }
-$SectionName = "Topic_Functions";
+$section_name = "Topic_Functions";
 
 ### Section 1
 #############################################
-$SectionSub1 = "Deleting_an_entire_Topic";
-$SectionBody1 = q~<p>If you feel a topic is inappropriate, in violation of the member agreement of this forum, causing a problem, or is simply out of place, you have ability to remove the entire topic.</p>
+$section_sub1 = "Deleting_an_entire_Topic";
+$section_body1 = q~<p>If you feel a topic is inappropriate, in violation of the member agreement of this forum, causing a problem, or is simply out of place, you have ability to remove the entire topic.</p>
 <h4 class="help">Removing a Topic</h4>
 <p>When viewing the Post View</p>
 <ul>
@@ -46,8 +46,8 @@ $SectionBody1 = q~<p>If you feel a topic is inappropriate, in violation of the m
 
 ### Section 2
 #############################################
-$SectionSub2 = "Locking_or_Unlocking_a_Topic";
-$SectionBody2 = q~When you feel a topic can no longer serve a good purpose or you would like to prevent others from adding new posts, the lock/unlock function will provide you with this ability. Clicking once locks the Topic, clicking the button again unlocks the Topic
+$section_sub2 = "Locking_or_Unlocking_a_Topic";
+$section_body2 = q~When you feel a topic can no longer serve a good purpose or you would like to prevent others from adding new posts, the lock/unlock function will provide you with this ability. Clicking once locks the Topic, clicking the button again unlocks the Topic
 <h4 class="help">Locking/Unlocking a Topic</h4>
 <p>When viewing the Post View</p>
 <ul>
@@ -97,8 +97,8 @@ $SectionBody2 = q~When you feel a topic can no longer serve a good purpose or yo
 
 ### Section 3
 #############################################
-$SectionSub3 = "Sticky_Topics";
-$SectionBody3 = q~If you feel a topic is very important for everyone who visits the board you moderate, you may turn it into a &#8220;Sticky&#8221; topic. These topics will then be displayed on top of all other topics. A useful example would be for forum rules.
+$section_sub3 = "Sticky_Topics";
+$section_body3 = q~If you feel a topic is very important for everyone who visits the board you moderate, you may turn it into a &#8220;Sticky&#8221; topic. These topics will then be displayed on top of all other topics. A useful example would be for forum rules.
 <h4 class="help">How to Stick a Topic</h4>
 <p>When viewing the Topic</p>
 <ul>
@@ -142,8 +142,8 @@ $SectionBody3 = q~If you feel a topic is very important for everyone who visits 
 
 ### Section 4
 #############################################
-$SectionSub4 = "Hide_a_Topic";
-$SectionBody4 = q~If you don't want to delete a topic but want to keep it invisible to normal users, you can hide it. Hidden topics can only be viewed by Administrators, Global Moderators, Forum Moderators, and the Moderators of that board.
+$section_sub4 = "Hide_a_Topic";
+$section_body4 = q~If you don't want to delete a topic but want to keep it invisible to normal users, you can hide it. Hidden topics can only be viewed by Administrators, Global Moderators, Forum Moderators, and the Moderators of that board.
 <h4 class="help">How to Hide a Topic</h4>
 <p>When viewing the Topic</p>
 <ul>
@@ -189,8 +189,8 @@ $SectionBody4 = q~If you don't want to delete a topic but want to keep it invisi
 
 ### Section 5
 #############################################
-$SectionSub5 = "Move_a_Topic";
-$SectionBody5 = q~If you don't want to delete a Topic but you think it would fit better in another Board, you can use this option to move the Topic.  This option will leave a message with a link in the listing of topics for the original Board that says &#8220;This topic has been moved to (link to new board name) by (person who moved it)&#8221;. This lets users who have posted in the Topic know immediately where to find it, and gives them a quick way to navigate there.
+$section_sub5 = "Move_a_Topic";
+$section_body5 = q~If you don't want to delete a Topic but you think it would fit better in another Board, you can use this option to move the Topic.  This option will leave a message with a link in the listing of topics for the original Board that says &#8220;This topic has been moved to (link to new board name) by (person who moved it)&#8221;. This lets users who have posted in the Topic know immediately where to find it, and gives them a quick way to navigate there.
 <h4 class="help">How to Move a Topic</h4>
 <p>When viewing the Topic</p>
 <ul>
@@ -232,8 +232,8 @@ $SectionBody5 = q~If you don't want to delete a Topic but you think it would fit
 
 ### Section 6
 #############################################
-$SectionSub6 = "Splitting_a_Topic";
-$SectionBody6 = q~Since Splitting a Topic is done in the Post View, the explanation of this function is provided in <b>Post Functions</b>.
+$section_sub6 = "Splitting_a_Topic";
+$section_body6 = q~Since Splitting a Topic is done in the Post View, the explanation of this function is provided in <b>Post Functions</b>.
 ~;
 #############################################
 

@@ -189,7 +189,7 @@ oFormObject.elements["convvardir"].value = dirval + "/Variables";
     }
 
     if ( $action eq 'prepare' ) {
-        UpdateCookie('delete');
+        update_cookie('delete');
 
         $username = 'Guest';
         $iamguest = '1';
@@ -293,8 +293,8 @@ EOF
     }
     elsif ( $action eq 'members' ) {
         require q~Variables/ConvSettings.txt~;
-        if ( !exists $INFO{'mstart1'} ) { PrepareConv(); }
-        $INFO{'mstart2'} ? ConvertMembers2() : ConvertMembers1();
+        if ( !exists $INFO{'mstart1'} ) { prepareconv(); }
+        $INFO{'mstart2'} ? convertmembers2() : convertmembers1();
 
         $yytabmenu =
             $NavLink1
@@ -499,10 +499,10 @@ EOF
     elsif ( $action eq 'cats' ) {
         require q~Variables/ConvSettings.txt~;
         if ( !exists $INFO{'bstart'} || !exists $INFO{'bfstart'} ) {
-            GetCats();
-            CreateControl();
+            getcats();
+            createcontrol();
         }
-        ConvertBoards();
+        convertboards();
 
         $yytabmenu =
             $NavLink1
@@ -654,7 +654,7 @@ EOF
     }
     elsif ( $action eq 'messages' ) {
         require qq~$vardir/ConvSettings.txt~;
-        ConvertMessages();
+        convertmessages();
 
         $yytabmenu =
             $NavLink1
@@ -824,7 +824,7 @@ EOF
     }
     elsif ( $action eq 'dates' ) {
         require qq~$vardir/ConvSettings.txt~;
-        ConvertTimeToString();
+        converttimetostring();
 
         $yytabmenu =
             $NavLink1
@@ -1015,11 +1015,11 @@ EOF
                     chomp $line;
                     $line =~ s/[\r\n]//gxsm;
                     @myline =~ split /[|]/xsm, $line;
-                    $totals{$testboard} = [ $myline[0], $myline[1], conv_stringtotime($myline[2]), $myline[3], '', '', '', '' ];
+                    $totals{$testboard} = [ $myline[0], $myline[1], conv_stringtotime($myline[2]), $myline[3], q{}, q{}, q{}, q{} ];
                 }
             }
-            $totals{'recycle'} = [ 0, 0, 'N/A', 'N/A', '', '', '', '' ];
-            $totals{'announcements'} = [ 0, 0, 'N/A', 'N/A', '', '', '', '' ];
+            $totals{'recycle'} = [ 0, 0, 'N/A', 'N/A', q{}, q{}, q{}, q{} ];
+            $totals{'announcements'} = [ 0, 0, 'N/A', 'N/A', q{}, q{}, q{}, q{} ];
             $firstmstime = time;
             $totals{'general'} = [ 1, 1, $firstmstime,  'admin',  $firstmstime,  0,  'Welcome to your new YaBB 2.7.00 forum!',  'xx',  0 ];
             write_forum_totals();
@@ -1052,17 +1052,17 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$initmail|$fir
               or croak 'cannot print FIRSTBRD';
             close $FIRSTBRD or croak 'cannot close FIRSTBRD';
 
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=cleanup2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;clean=1;pass_error=1;total_boards=~
               . @allboards;
             redirectexit();
         }
-        if ( $INFO{'clean'} == 1 ) { MyReCountTotals(); }
-        if ( $INFO{'clean'} == 2 ) { MyMemberIndex(); }
-        if ( $INFO{'clean'} == 3 ) { MyMailNotify(); }
-        if ( $INFO{'clean'} == 4 ) { FixNopost(); }
+        if ( $INFO{'clean'} == 1 ) { myrecounttotals(); }
+        if ( $INFO{'clean'} == 2 ) { mymemberindex(); }
+        if ( $INFO{'clean'} == 3 ) { mymailnotify(); }
+        if ( $INFO{'clean'} == 4 ) { fixnopost(); }
         unlink "$memberdir/memberlist.txt";
         unlink "$memberdir/memberinfo.txt";
         unlink "$memberdir/member.ttl";
@@ -1085,7 +1085,7 @@ qq~The Forum Start date was set to $setforumstart but the first member was regis
         $formsession = cloak("$mbname$username");
 
         $convtext .=
-qq~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents.~;
+q~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents.~;
         $convset = q{};
         if ($convlang) {
             $convset .= qq~
@@ -1167,10 +1167,10 @@ $convset
         </tr>
     </table>
     </div>~;
-        CreateConvLock();
+        createconvlock();
     }
 
-    elsif ( $action eq 'setup3' ) { CheckInstall(); }
+    elsif ( $action eq 'setup3' ) { checkinstall(); }
     elsif ( $action eq 'cleanup2' ) {
         if (   ( !$INFO{'pass_error'} && $INFO{'my_re_tot'} <= 0 )
             && $INFO{'memb_index'} <= 0
@@ -1320,12 +1320,12 @@ $convset
     }
     $yyim    = 'You are running the YaBB 2.7.00 Converter.';
     $yytitle = 'YaBB 2.7.00 Converter';
-    SetupTemplate();
+    setuptemplate();
 }
 
 # Prepare Conversion ##
 
-sub PrepareConv {
+sub prepareconv {
     open $FILE, '>',
       "$boardsdir/dummy.testfile" || setup_fatal_error(
 "The CHMOD of the $boardsdir is not set correctly! Cannot write this directory!",
@@ -1411,7 +1411,7 @@ sub PrepareConv {
 
 # Member Conversion ##
 
-sub ConvertMembers1 {
+sub convertmembers1 {
     if (   -e "$convvardir/extended_profiles_order.txt"
         && -e "$convvardir/extended_profiles_fields.txt" )
     {
@@ -1430,14 +1430,14 @@ sub ConvertMembers1 {
         next if !-e "$convmemberdir/$uname.dat";
 
         if ( $uname =~ /[^\w+\-.@]|guest/ixsm ) {
-            IllegalUser($uname);
+            illegaluser($uname);
         }
         else {
-            MyUpdateUser($uname);
+            myupdateuser($uname);
         }
 
         if ( time() > $time_to_jump && ( $i + 1 ) < @memlist ) {
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=members2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;mtotal=~
@@ -1464,11 +1464,11 @@ sub ConvertMembers1 {
         }
     }
 
-    ConvertMembers2();
+    convertmembers2();
     return;
 }
 
-sub IllegalUser {
+sub illegaluser {
     my ($user) = @_;
 
     my $fixeduser = $user;
@@ -1613,7 +1613,7 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
         }
     }
 
-    UserAccount( $fixeduser, 'update' );
+    user_account( $fixeduser, 'update' );
 
     open $FIXUSER, '>>', "$vardir/fixusers.txt"
       || setup_fatal_error( "$maintext_23 $vardir/fixusers.txt: ", 1 );
@@ -1626,7 +1626,7 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
     return;
 }
 
-sub MyUpdateUser {
+sub myupdateuser {
     my ($user) = @_;
 
     open $LOADOLDUSER, '<', "$convmemberdir/$user.dat"
@@ -1774,7 +1774,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$
         ${ $uid . $user }{'lastim'} = $lastim[0];
     }
 
-    UserAccount( $user, 'update' );
+    user_account( $user, 'update' );
 
     if ( $user ne $username ) { undef %{ $uid . $user }; }
     return;
@@ -1786,46 +1786,46 @@ sub groupconvert {
     my $z = 1;
     undef %Post;
 
-    $Post{'-1'} = [
-        "$MemStatNewbie", $MemStarNumNewbie, "$MemStarPicNewbie",
-        "$MemTypeColNewbie", 0, 0, 0, 0, 0, 0
+    $grp_post{'-1'} = [
+        $MemStatNewbie, $MemStarNumNewbie, $MemStarPicNewbie,
+        $MemTypeColNewbie, 0, 0, 0, 0, 0, 0
     ];
     @nopostorder = ();
     while ( $MemStat[$i] ) {
         if ( $MemPostNum[$i] eq 'x' ) {
-            $NoPost{$z} = [
-                "$MemStat[$i]", $MemStarNum[$i], "$MemStarPic[$i]",
-                "$MemTypeCol[$i]", 0, 0, 0, 0, 0, 0
+            $grp_nopost{$z} = [
+                $MemStat[$i], $MemStarNum[$i], $MemStarPic[$i],
+                $MemTypeCol[$i], 0, 0, 0, 0, 0, 0
             ];
             push @nopostorder, $z;
             $z++;
         }
         else {
-            $Post{ $MemPostNum[$i] } = [
-                "$MemStat[$i]", $MemStarNum[$i], "$MemStarPic[$i]",
-                "$MemTypeCol[$i]", 0, 0, 0, 0, 0, 0
+            $grp_post{ $MemPostNum[$i] } = [
+                $MemStat[$i], $MemStarNum[$i], $MemStarPic[$i],
+                $MemTypeCol[$i], 0, 0, 0, 0, 0, 0
             ];
         }
         $i++;
     }
-    for my $key ( keys %Group ) {
-        $value = $Group{$key};
+    for my $key ( keys %grp_staff ) {
+        $value = $grp_staff{$key};
         $value =~ s/\x27/&\x2339;/gxsm;
-        $Group{$key} = $value;
+        $grp_staff{$key} = $value;
     }
-    for my $key ( keys %NoPost ) {
-        $value = $NoPost{$key};
+    for my $key ( keys %grp_nopost ) {
+        $value = $grp_nopost{$key};
         $value =~ s/\x27/&\x2339;/gxsm;
-        $NoPost{$key} = $value;
+        $grp_nopost{$key} = $value;
     }
-    for my $key ( keys %Post ) {
-        $value = $Post{$key};
+    for my $key ( keys %grp_post ) {
+        $value = $grp_post{$key};
         $value =~ s/\x27/&\x2339;/gxsm;
-        $Post{$key} = $value;
+        $grp_post{$key} = $value;
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');    # save %Group, %NoPost and %Post
+    save_settings_to('Settings.pm');    # save %Group, %NoPost and %Post
     return;
 }
 
@@ -1838,26 +1838,26 @@ sub memgrpconvert {
         $set =~ s/[\r\n]//gxsm;
     }
     chomp @memgrp;
-    $Group{'Mid Moderator'} =
+    $grp_staff{'Mid Moderator'} =
       [ 'Forum Moderator', 5, 'starfmod.png', '#008080', 0, 0, 0, 0, 0, 0, 0 ];
-    $Group{'Global Moderator'} =
+    $grp_staff{'Global Moderator'} =
       [ 'Global Moderator', 5, 'stargmod.png', '#0000FF', 0, 0, 0, 0, 0, 0, 0 ];
-    $Group{'Administrator'} =
+    $grp_staff{'Administrator'} =
       [ $memgrp[0], 5, 'staradmin.png', '#FF0000', 0, 0, 0, 0, 0, 0, 0 ];
-    $Group{'Moderator'} =
+    $grp_staff{'Moderator'} =
       [ $memgrp[1], 5, 'starmod.png', '#008000', 0, 0, 0, 0, 0, 0, 0 ];
-    $Post{'-1'}  = [ $memgrp[2], 1, 'stargold.png',   '', 0, 0, 0, 0, 0, 0, 0 ];
-    $Post{'50'}  = [ $memgrp[3], 2, 'stargold.png',   '', 0, 0, 0, 0, 0, 0, 0 ];
-    $Post{'100'} = [ $memgrp[4], 3, 'starblue.png',   '', 0, 0, 0, 0, 0, 0, 0 ];
-    $Post{'250'} = [ $memgrp[5], 4, 'stargold.png',   '', 0, 0, 0, 0, 0, 0, 0 ];
-    $Post{'500'} = [ $memgrp[6], 5, 'starsilver.png', '', 0, 0, 0, 0, 0, 0, 0 ];
+    $grp_post{'-1'}  = [ $memgrp[2], 1, 'stargold.png',   q{}, 0, 0, 0, 0, 0, 0, 0 ];
+    $grp_post{'50'}  = [ $memgrp[3], 2, 'stargold.png',   q{}, 0, 0, 0, 0, 0, 0, 0 ];
+    $grp_post{'100'} = [ $memgrp[4], 3, 'starblue.png',   q{}, 0, 0, 0, 0, 0, 0, 0 ];
+    $grp_post{'250'} = [ $memgrp[5], 4, 'stargold.png',   q{}, 0, 0, 0, 0, 0, 0, 0 ];
+    $grp_post{'500'} = [ $memgrp[6], 5, 'starsilver.png', q{}, 0, 0, 0, 0, 0, 0, 0 ];
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');    # save %Group and %Post
+    save_settings_to('Settings.pm');    # save %Group and %Post
     return;
 }
 
-sub ConvertMembers2 {
+sub convertmembers2 {
     open $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt: ", 1 );
     my @memlist = <$MEMDIR>;
@@ -1959,7 +1959,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$
         }
 
         if ( time() > $time_to_jump && ( $i + 1 ) < @memlist ) {
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=members2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;mtotal=~
@@ -1976,7 +1976,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$
 
 # Board + Category Conversion ##
 
-sub GetCats {
+sub getcats {
     open $VDIR, '<', "$convvardir/cat.txt"
       || setup_fatal_error( "$maintext_23 $convvardir/cat.txt: ", 1 );
     @categoryorder = <$VDIR>;
@@ -2097,7 +2097,7 @@ $temparray
     return;
 }
 
-sub CreateControl {
+sub createcontrol {
     require "$boardsdir/forum.master";
     for my $foundboard ( keys %board ) {
 
@@ -2159,8 +2159,8 @@ sub CreateControl {
                     $cntreplyperms,  $cntpollperms,
                     $cntzero,        $cntpassword,
                     $cnttotals,      $cntattperms,
-                    $spare,          '',
-                    '',              ''
+                    $spare,          q{},
+                    q{},             q{}
                 ];
                 open $BRDPIC, '>>', "$boardsdir/brdpics.db"
                   or croak 'cannot open BRDPIC';
@@ -2174,21 +2174,21 @@ sub CreateControl {
             my $firstmstime = time;
             $control{'general'} = [
                 'general',
-                '',
+                q{},
 'This is the board for General Discussions.<br /><i>The board description can now hold multiple lines and can use HTML!</i>',
                 'admin',
-                '',
-                '',
-                '',
-                '',
+                q{},
+                q{},
+                q{},
+                q{},
                 '0',
-                '',
-                '',
-                '',
+                q{},
+                q{},
+                q{},
                 '1',
-                '',
-                '',
-                ''
+                q{},
+                q{},
+                q{}
             ];
             open $BOARDFILE, '>',
               "$convboardsdir/general.txt"
@@ -2203,21 +2203,21 @@ qq{$firstmstime|Welcome to your new YaBB 2.7 forum!|Administrator|webmaster\@you
         {    # add trash if not exists
             $control{'recycle'} = [
                 'staff',
-                '',
+                q{},
 'If the Recycle Bin is turned on, removed topics will be moved to this board. This will allow you to recover them if it is necessary. You should purge messages in this board frequently to keep it clean.',
                 'admin',
-                '',
-                '',
-                '',
-                '',
+                q{},
+                q{},
+                q{},
+                q{},
                 '1',
-                '',
-                '',
+                q{},
+                q{},
                 '1',
-                '',
-                '',
-                '',
-                ''
+                q{},
+                q{},
+                q{},
+                q{}
             ];
             open $BOARDFILE, '>',
               "$convboardsdir/recycle.txt"
@@ -2231,21 +2231,21 @@ qq{$firstmstime|Welcome to your new YaBB 2.7 forum!|Administrator|webmaster\@you
         {
             $control{'announcements'} = [
                 'staff',
-                '',
+                q{},
 'Topics you place in this board will display as a "Global Announcement" on the top of all other boards. Use this for things such as forum rules, top news articles, or important statements.',
                 'admin',
-                '',
+                q{},
                 'Administrator',
-                '',
-                '',
+                q{},
+                q{},
                 '0',
-                '',
+                q{},
                 '1',
-                '',
-                '',
-                '',
-                '',
-                ''
+                q{},
+                q{},
+                q{},
+                q{},
+                q{}
             ];
             open $BOARDFILE, '>',
               "$convboardsdir/announcements.txt"
@@ -2271,7 +2271,7 @@ qq{$firstmstime|Welcome to your new YaBB 2.7 forum!|Administrator|webmaster\@you
     return;
 }
 
-sub ConvertBoards {
+sub convertboards {
     require "$boardsdir/forum.master";
 
     my %stickies;
@@ -2336,7 +2336,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
                 }
                 print {$BOARDFILE} @temparray or croak 'cannot print BOARDFILE';
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
-                $yySetLocation =
+                $yysetlocation =
                   qq~$set_cgi?action=cats2;st=~
                   . int( $INFO{'st'} +
                       time() -
@@ -2355,7 +2355,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
         close $BOARDFILE or croak 'cannot close BOARDFILE';
 
         if ( time() > $time_to_jump && ( $i + 1 ) < @boards ) {
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=cats2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;mtotal=~
@@ -2373,7 +2373,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
 
 # Message Conversion ##
 
-sub ConvertMessages {
+sub convertmessages {
     get_forum_master();
     my $ctbtime = ctbtime($date);
     my %stickies;
@@ -2435,7 +2435,7 @@ sub ConvertMessages {
                     if ( $message =~ /\[[qgs]/ixsm )
                     {    # too many RegExpr take too much time!!!
                         $message =~
-s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\](.*?)\[\/quote\]/QuoteFix($2,$3,$4,$5)/eigxsm;
+s/\[quote(\s+author=(.*?)\s+link=(.*?)\s+date=(.*?)\s*)?\](.*?)\[\/quote\]/quotefix($2,$3,$4,$5)/eigxsm;
                         $message =~
 s/\[(glow|shadow)=.*?\](.*?)\[\/(glow|shadow)\]/\[glb\]$2\[\/glb\]/igxsm;
                         $message =~
@@ -2527,7 +2527,7 @@ NEW
                         close $BOARDFILE or croak 'cannot close BOARDFILE';
                     }
 
-                    $yySetLocation =
+                    $yysetlocation =
                       qq~$set_cgi?action=messages2;st=~
                       . int( $INFO{'st'} +
                           time() -
@@ -2559,7 +2559,7 @@ NEW
             }
         }
         if ( time() > $time_to_jump && ( $next_board + 1 ) < $totalbdr ) {
-            $yySetLocation =
+            $yysetlocation =
               qq~$set_cgi?action=messages2;st=~
               . int(
                 $INFO{'st'} + time() - ( $time_to_jump - $max_process_time ) )
@@ -2573,7 +2573,7 @@ NEW
     return;
 }
 
-sub QuoteFix {
+sub quotefix {
     my ( $qauthor, $qlink, $qdate, $qmessage ) = @_;
     if ( $qauthor eq q{} || $qlink eq q{} || $qdate eq q{} ) {
         $quote = "\[quote\]$qmessage\[/quote\]";
@@ -2624,7 +2624,7 @@ sub writerecentlog {
 
 # Date Conversion ##
 
-sub ConvertTimeToString {
+sub converttimetostring {
     if ( $INFO{'timeconv'} < 1 ) {
         opendir DATADIR, $convdatadir
           || setup_fatal_error( "Directory: $convdatadir: ", 1 );
@@ -2663,7 +2663,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
             close $POLLFILE or croak 'cannot close POLLFILE';
 
             if ( time() > $time_to_jump && ( $i + 1 ) < $totalpolls ) {
-                $yySetLocation =
+                $yysetlocation =
                   qq~$set_cgi?action=dates2;st=~
                   . int(
                     $INFO{'st'} + time() - $time_to_jump + $max_process_time )
@@ -2709,7 +2709,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
             close $POLLEDFILE or croak 'cannot close POLLEDFILE';
 
             if ( time() > $time_to_jump && ( $i + 1 ) < $totalpolled ) {
-                $yySetLocation =
+                $yysetlocation =
                   qq~$set_cgi?action=dates2;st=~
                   . int(
                     $INFO{'st'} + time() - $time_to_jump + $max_process_time )
@@ -2726,7 +2726,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
 
 # Cleanup ##
 
-sub MyReCountTotals {
+sub myrecounttotals {
     @boards = sort keys %board;
 
     my $totalboards = @boards;
@@ -2746,15 +2746,15 @@ sub MyReCountTotals {
                 $messagecount += ( split /[|]/xsm, $threads[$i] )[5];
             }
         }
-        BoardTotals( 'load', $cntboard );
+        boardtotals( 'load', $cntboard );
         ${ $uid . $cntboard }{'threadcount'}  = $threadcount;
         ${ $uid . $cntboard }{'messagecount'} = $messagecount;
 
-        # &BoardTotals("update", ...) is done in &BoardSetLastInfo
-        BoardSetLastInfo( $cntboard, \@threads );
+        # &boardtotals("update", ...) is done in &BoardSetLastInfo
+        board_setlast_info( $cntboard, \@threads );
 
         if ( time() > $time_to_jump && ( $j + 1 ) < $totalboards ) {
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=cleanup2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;clean=1;total_boards=$INFO{'total_boards'};total_re_tot=$totalboards;my_re_tot=~
@@ -2767,7 +2767,7 @@ sub MyReCountTotals {
     return;
 }
 
-sub MyMemberIndex {
+sub mymemberindex {
     open $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
     my @memlist = <$MEMDIR>;
@@ -2783,7 +2783,7 @@ sub MyMemberIndex {
     close $MEMDIRLST or croak 'cannot close MEMDIRLST';
 
     if ( $INFO{'memb_index'} > 0 ) {
-        ManageMemberlist('load');
+        manage_memberlist('load');
         $siglength = $INFO{'siglength'};
     }
     else {
@@ -2802,9 +2802,9 @@ sub MyMemberIndex {
         $member = $members[$j];
         $member =~ s/[.]vars$//gxsm;
 
-        LoadUser($member);
+        load_user($member);
 
-        Recent_Load($member);
+        recent_load($member);
         ${ $uid . $member }{'postcount'} = 0;
         if ( $member eq 'admin' ) {
             ${ $uid . $member }{'postcount'} = 1;
@@ -2822,8 +2822,8 @@ sub MyMemberIndex {
         }
 
         if ( ${ $uid . $member }{'position'} ) {
-            for my $key ( keys %NoPost ) {
-                ( $NoPostname, undef ) = @{$NoPost{$key}};
+            for my $key ( keys %grp_nopost ) {
+                ( $NoPostname, undef ) = @{$grp_nopost{$key}};
                 if ( ${ $uid . $member }{'position'} eq $NoPostname ) {
                     ${ $uid . $member }{'position'} = $key;
                     last;
@@ -2832,15 +2832,15 @@ sub MyMemberIndex {
         }
         if ( !${ $uid . $member }{'position'} ) {
             ${ $uid . $member }{'position'} =
-              MyMemberPostGroup( ${ $uid . $member }{'postcount'} );
+              mymemberpostgroup( ${ $uid . $member }{'postcount'} );
         }
 
         if ( ${ $uid . $member }{'addgroups'} ) {
             my $newaddigrp = q{};
             for my $addigrp ( split /, ?/sm, ${ $uid . $member }{'addgroups'} )
             {
-                for my $key ( keys %NoPost ) {
-                    ( $NoPostname, undef ) = @{$NoPost{$key}};
+                for my $key ( keys %grp_nopost ) {
+                    ( $NoPostname, undef ) = @{$grp_nopost{$key}};
                     if ( $addigrp eq $NoPostname ) {
                         $addigrp = $key;
                         last;
@@ -2852,7 +2852,7 @@ sub MyMemberIndex {
             ${ $uid . $member }{'addgroups'} = $newaddigrp;
         }
 
-        UserAccount( $member, 'update' );
+        user_account( $member, 'update' );
 
         $memberlist{$member} = sprintf '%010d', ${ $uid . $member }{'regtime'};
         $memberinf{$member} = [
@@ -2863,9 +2863,9 @@ sub MyMemberIndex {
         ];
 
         if ( time() > $time_to_jump && ( $j + 1 ) < $totalmemb ) {
-            ManageMemberlist('save');
-            ManageMemberinfo('save');
-            $yySetLocation =
+            manage_memberlist('save');
+            manage_memberinfo('save');
+            $yysetlocation =
                 qq~$set_cgi?action=cleanup2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;clean=2;total_boards=$INFO{'total_boards'};total_re_tot=$INFO{'total_re_tot'};tmp_firstforum=$INFO{'tmp_firstforum'};firstforum=$INFO{'firstforum'};siglength=$siglength;total_memb=$totalmemb;memb_index=~
@@ -2873,8 +2873,8 @@ sub MyMemberIndex {
             redirectexit();
         }
     }
-    ManageMemberlist('save');
-    ManageMemberinfo('save');
+    manage_memberlist('save');
+    manage_memberinfo('save');
 
     $INFO{'total_memb'} = $totalmemb;
     $INFO{'clean'}      = 3;
@@ -2900,7 +2900,7 @@ sub MyMemberIndex {
     return;
 }
 
-sub MyMemberPostGroup {
+sub mymemberpostgroup {
     my ($userpostcnt) = @_;
     $grtitle = q{};
     for my $postamount ( reverse sort { $a <=> $b } keys %Post ) {
@@ -2912,9 +2912,9 @@ sub MyMemberPostGroup {
     return $grtitle;
 }
 
-sub MyMailNotify {
+sub mymailnotify {
     require Sources::Notify;
-    ManageMemberinfo('load');
+    manage_memberinfo('load');
 
     opendir DIRECTORY, $convdatadir
       || setup_fatal_error( "Directory: $convdatadir: ", 1 );
@@ -2935,7 +2935,7 @@ sub MyMailNotify {
         for my $mailaddress (@mailaddresses) {
             while ( ( $curuser, $value ) = each %memberinf ) {
                 if ( $mailaddress eq ${$value}[1] ) {
-                    ManageThreadNotify( 'add', $filename, $curuser,
+                    managethreadnotify( 'add', $filename, $curuser,
                         $language, 1, 1 );
                     if ( $curuser ne $username ) {
                         undef %{ $uid . $curuser };
@@ -2946,7 +2946,7 @@ sub MyMailNotify {
         }
 
         if ( time() > $time_to_jump && ( $j + 1 ) < $totalfiles ) {
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=cleanup2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;clean=3;total_boards=$INFO{'total_boards'};total_re_tot=$INFO{'total_re_tot'};total_memb=$INFO{'total_memb'};tmp_firstforum=$INFO{'tmp_firstforum'};firstforum=$INFO{'firstforum'};total_mail_n=$totalfiles;my_mail_n=~
@@ -2960,13 +2960,13 @@ sub MyMailNotify {
     return;
 }
 
-sub FixNopost {
-    if ( $NoPost{'1'} ) {
+sub fixnopost {
+    if ( $grp_nopost{'1'} ) {
         require "$boardsdir/forum.control";
-        my $totalnoposts = keys %NoPost;
+        my $totalnoposts = keys %grp_nopost;
         foreach my $cnt ( keys %control) {
             for my $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
-                ( $grptitle, undef ) = @{$NoPost{$i}};
+                ( $grptitle, undef ) = @{$grp_no_post{$i}};
 
                 for my $key ( keys %catinfo ) {
                     ( $catname, $catperms, $catcol ) =
@@ -3024,7 +3024,7 @@ sub FixNopost {
                 ${ $control{ $cnt } }[6] = $newpollperms;
                         }
             if ( time() > $time_to_jump && ( $i + 1 ) < $totalnoposts ) {
-                Write_ForumMaster();
+                write_forummaster();
                 foreach my $cnt ( sort keys %control ) {
                     my $prline = join q{', '}, @{ $control{$cnt} };
                     my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
@@ -3043,7 +3043,7 @@ sub FixNopost {
                   or croak 'cannot print FORUMCONTROL';
                 close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
 
-                $yySetLocation =
+                $yysetlocation =
                   qq~$set_cgi?action=cleanup2;st=~
                   . int(
                     $INFO{'st'} + time() - $time_to_jump + $max_process_time )
@@ -3052,7 +3052,7 @@ sub FixNopost {
                 redirectexit();
             }
         }
-        Write_ForumMaster();
+        write_forummaster();
         foreach my $cnt ( sort keys %control ) {
             my $prline = join q{', '}, @{ $control{$cnt} };
             my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
@@ -3178,7 +3178,7 @@ sub conv_stringtotime {
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.7.00';
+    $yabbversion = 'YaBB 2.7.00';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -3200,16 +3200,16 @@ sub tempstarter {
     }
     else { $convertdir = './Convert'; }
 
-    LoadCookie();    # Load the user's cookie (or set to guest)
-    LoadUserSettings();
-    WhatTemplate();
-    WhatLanguage();
+    load_cookie();    # Load the user's cookie (or set to guest)
+    load_usersettings();
+    what_template();
+    what_language();
     require Sources::Security;
-    WriteLog();
+    write_log();
     return;
 }
 
-sub CreateConvLock {
+sub createconvlock {
     my $lockfile = q~This is a lockfile for the Convert Utility.
 It prevents it being run again after it has been run once.
 Delete this file if you want to run the Convert Utility again.~;
@@ -3221,7 +3221,7 @@ Delete this file if you want to run the Convert Utility again.~;
     return;
 }
 
-sub SetupImgLoc {
+sub setupimglock {
     if ( !-e "$htmldir/Templates/Forum/$useimages/$_[0]" ) {
         $thisimgloc = qq~img src="$yyhtml_root/Templates/Forum/default/$_[0]"~;
     }
@@ -3270,7 +3270,7 @@ qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" st
     return;
 }
 
-sub FoundConvLock {
+sub foundconvlock {
     tempstarter();
     tabmenushow();
 
@@ -3307,7 +3307,7 @@ sub FoundConvLock {
 
     $yyim    = 'YaBB 2.7.00 Converter has already been run.';
     $yytitle = 'YaBB 2.7.00 Converter';
-    SetupTemplate();
+    setuptemplate();
     return;
 }
 
@@ -3336,14 +3336,14 @@ sub setup_fatal_error {
     $yyim    = 'YaBB 2.7.00 Convertor Error.';
     $yytitle = 'YaBB 2.7.00 Convertor Error.';
 
-    if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
+    if ( !-e "$vardir/Settings.pm" ) { simpleoutput(); }
 
     tempstarter();
-    SetupTemplate();
+    setuptemplate();
     return;
 }
 
-sub SimpleOutput {
+sub simpleoutput {
     $gzcomp = 0;
     print_output_header();
 
@@ -3365,7 +3365,7 @@ sub SimpleOutput {
     exit;
 }
 
-sub SetupTemplate {
+sub setuptemplate {
     $gzcomp = fileno $GZIP ? 1 : 0;
     print_output_header();
 
@@ -3435,7 +3435,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                     $message = $newsmessages[$j];
                     if ($enable_ubbc) {
                         enable_yabbc();
-                        DoUBBC();
+                        do_ubbc();
                     }
                     $message =~ s/\x22/\\\x22/gxsm;
                     $yynews .= qq~
@@ -3451,7 +3451,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
                 $message = $newsmessages[ int rand @newsmessages ];
                 if ($enable_ubbc) {
                     enable_yabbc();
-                    DoUBBC();
+                    do_ubbc();
                 }
                 $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
@@ -3465,7 +3465,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
-        $curline =~ s/img src\=\x22$imagesdir\/(.+?)\x22/SetupImgLoc($1)/eisgm;
+        $curline =~ s/img src\=\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eisgm;
         $output .= $curline;
     }
     if ( $yycopyin == 0 ) {
@@ -3494,14 +3494,14 @@ sub nicely_aligned_file {
 s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2 /gem;
     $setfile =~ s/\t+(#.+$)/$filler$1/gsm;
 
-    *cut_comment = sub {    # line break of too long comments
+    local *cut_comment = sub {    # line break of too long comments
         my @x = @_;
         my ( $comment, $length ) =
           ( q{}, 120 );     # 120 Col is the max width of page
         my $var_length = length $x[0];
         while ( $length < $var_length ) { $length += 120; }
         foreach ( split / +/sm, $x[1] ) {
-            if ( ( $var_length + length($comment) + length $_ ) > $length ) {
+            if ( ( $var_length + length($comment) + length ) > $length ) {
                 $comment =~ s/ $//sm;
                 $comment .= "\n$filler#  $_ ";
                 $length += 120;
@@ -3515,7 +3515,7 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
     return $setfile;
 }
 
-sub SetInstall2 {
+sub setinstall2 {
     $ret = 0;
     my $oldname = q{};
     if ( -e "$vardir/convSettings.txt" ) { require "$vardir/convSettings.txt"; }
@@ -3611,7 +3611,7 @@ sub SetInstall2 {
     $gzforce          = 0;
 
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
 
     $ret = 1;
     return;
@@ -3629,14 +3629,14 @@ sub ext_admin_convert_fixgroupnames {
         if (   $groups[$j] ne 'Administrator'
             && $groups[$j] ne 'Global Moderator'
             && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post\{\d+}$/xsm )
+            && $groups[$j] !~ m/^(?:grp_no)?post\{\d+}$/xsm )
         {
 
             # find best matching usergroup
-            for my $groupid ( sort { $a <=> $b } keys %NoPost ) {
-                if ( $groups[$j] eq ${$NoPost{$groupid}}[0] ) )
+            for my $groupid ( sort { $a <=> $b } keys %grp_nopost ) {
+                if ( $groups[$j] eq ${$grp_nopost{$groupid}}[0] )
                 {
-                    $groups[$j] = "NoPost{$groupid}";
+                    $groups[$j] = "grp_nopost{$groupid}";
 
                     # check for doubles
                     if ( $checkdoubles{ $groups[$j] } == 1 ) {
@@ -3654,7 +3654,7 @@ sub ext_admin_convert_fixgroupnames {
             for my $groupid ( reverse sort { $a <=> $b } keys %Post ) {
                 if ( $groups[$j] eq ${$Post{$groupid}}[0] )
                 {
-                    $groups[$j] = "Post{$groupid}";
+                    $groups[$j] = "grp_post{$groupid}";
 
                     # check for doubles
                     if ( $checkdoubles{ $groups[$j] } == 1 ) {
@@ -3678,7 +3678,7 @@ sub ext_admin_convert_fixgroupnames {
         if (   $groups[$j] ne 'Administrator'
             && $groups[$j] ne 'Global Moderator'
             && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post\{\d+}$/sm )
+            && $groups[$j] !~ m/^(?:grp_no)?post\{\d+}$/xsm )
         {
 
             #delete $groups[$j];
@@ -3727,7 +3727,7 @@ sub ext_settings {
 qq~$field[0]|$i|$field[1]|$field[2]|$field[3]|$field[4]|$field[5]|$field[6]|$field[7]|$field[8]|$field[9]|$field[10]|$field[11]|$field[12]|$field[13]|$field[14]|$field[15]|$field[16]|$field[17]|$field[18]|$field[19]|$field[20]|$field[21]~;
     }
     require Admin::NewSettings;
-    SaveSettingsTo('Settings.pm');
+    save_settings_to('Settings.pm');
     return;
 }
 

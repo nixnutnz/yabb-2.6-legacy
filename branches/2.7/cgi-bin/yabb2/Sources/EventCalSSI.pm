@@ -12,25 +12,29 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$eventcalssipmver  = 'YaBB 2.7.00 $Revision$';
-@eventcalssipmmods = ();
+our $eventcalssipmver  = 'YaBB 2.7.00 $Revision$';
+our @eventcalssipmmods = ();
+our $eventcalssipmmods = 0;
 if (@eventcalssipmmods) {
     $eventcalssipmmods = 1;
 }
 
-LoadLanguage('EventCal');
+our ( %croak, %INFO, $show_event_cal, $iamguest, %ml_txt );
+load_language('EventCal');
 
 sub get_cal_ssi {
-    $calssimode = $INFO{'calssimode'};
-    $calssidays = $INFO{'calssidays'};
+    my $calssimode = $INFO{'calssimode'};
+    my $calssidays = $INFO{'calssidays'};
 
     ## EventCal SSI Check START ##
     my $curcaldisplay;
-    if ($Show_EventCal) {
-        if ( !$iamguest || $Show_EventCal == 2 ) {
+    if ($show_event_cal) {
+        if ( !$iamguest || ( $show_event_cal && $show_event_cal == 2 ) ) {
             require Sources::EventCal;
             $curcaldisplay = eventcal( $calssimode, $calssidays );
         }

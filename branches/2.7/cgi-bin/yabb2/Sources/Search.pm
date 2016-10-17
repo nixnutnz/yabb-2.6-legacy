@@ -12,28 +12,68 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
+no warnings qw(uninitialized);
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$searchpmver  = 'YaBB 2.7.00 $Revision$';
-@searchpmmods = ();
+our $searchpmver  = 'YaBB 2.7.00 $Revision$';
+our @searchpmmods = ();
+our $searchpmmods = 0;
 if (@searchpmmods) {
     $searchpmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('Search');
+## language ##
+our ( %croak, %search_txt, %searchselector_txt, %img, %display_txt, %micon_bg,
+    %pmboxes_txt, %maintxt );
+## locations ##
+our ( $scripturl, $boardsdir, $datadir, $memberdir );
+## settings ##
+our (
+    $yymycharset, $ml_allowed,     $maxsearchdisplay,
+    $enable_ubbc, $cookiepassword, $do_scramble_id,
+    $forumstart,  $ip_lookup,      $enable_guestposting,
+    $enable_pm_search
+);
+## system ##
+our (
+    %FORM,         @categoryorder, %cat,             %catinfo,
+    %board,        %subboard,      $iamguest,        $uid,
+    $username,     $yymain,        $catid,           $iamadmin,
+    $staff,        $iamfmod,       $iamgmod,         %yy_cookies,
+    $curboard,     %catcol,        %gmod_access2,    $yytitle,
+    $yynavigation, $date,          $menusep,         $iammod,
+    %INFO,         %memberinf,     $qcksearchaccess, $advsearchaccess
+);
+## templates ##
+our (
+    $mysearch_template,  $mysearch_template2, $mysearch_template3,
+    $mysearch_template4, $mysearch_template5, $mysearch_template6,
+    $mysearch_template7, $mysearch_template9, $mysearch_template10,
+    $mysearch_pm
+);
+
+load_language('Search');
 get_micon();
 get_template('Search');
+
+## local ##
+my ( %found, $mname, $memail, $subfound, @search, );
 
 if ( $FORM{'searchboards'} && $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
     get_forum_master();
     foreach my $catid (@categoryorder) {
-        (@bdlist) = split /,/xsm, $cat{$catid};
+        my @bdlist = split /,/xsm, $cat{$catid};
         my ( $catname, $catperms, $catallowcol ) = split /[|]/xsm,
           $catinfo{$catid};
-        my $access = CatAccess($catperms);
+        my $access = cat_access($catperms);
         if ( !$access ) { next; }
 
         recursive_search(@bdlist);
@@ -41,21 +81,25 @@ if ( $FORM{'searchboards'} && $FORM{'searchboards'} =~ /\A\!/xsm ) {
 
     sub recursive_search {
         my @x = @_;
+        my %cat_boardcnt;
         foreach my $curboard (@x) {
             chomp $curboard;
 
             # don't add to count if it's a sub board
-            if ( !${ $uid . $curboard }{'parent'} && $catid ) {
-                $cat_boardcnt{$catid}++;
-            }
-            my ( $boardname, $boardperms, $boardview ) = split /[|]/xsm,
-              $board{$curboard};
-            my $access = AccessCheck( $curboard, q{}, $boardperms );
-            if ( !$iamadmin && $access ne 'granted' ) { next; }
-            $checklist .= qq~$curboard, ~;
+            {
+                no strict qw(refs);
+                if ( !${ $uid . $curboard }{'parent'} && $catid ) {
+                    $cat_boardcnt{$catid}++;
+                }
+                my ( $boardname, $boardperms, $boardview ) = split /[|]/xsm,
+                  $board{$curboard};
+                my $access = access_check( $curboard, q{}, $boardperms );
+                if ( !$iamadmin && $access ne 'granted' ) { next; }
+                $checklist .= qq~$curboard, ~;
 
-            if ( $subboard{$curboard} ) {
-                recursive_search( split /[|]/xsm, $subboard{$curboard} );
+                if ( $subboard{$curboard} ) {
+                    recursive_search( split /[|]/xsm, $subboard{$curboard} );
+                }
             }
         }
         return;
@@ -64,21 +108,26 @@ if ( $FORM{'searchboards'} && $FORM{'searchboards'} =~ /\A\!/xsm ) {
     $FORM{'searchboards'} = $checklist;
 }
 
-sub plushSearch1 {
+sub plush_search1 {
 
     # generate error if admin has disabled search options
     if ( $maxsearchdisplay < 0 )         { fatal_error('search_disabled'); }
     if ( $advsearchaccess ne 'granted' ) { fatal_error('no_access'); }
     my (
-        @categories, $curcat,   %catname, %cataccess, @membergroups,
-        %openmemgr,  $curboard, @threads, @boardinfo, $counter
+        @categories,   $curcat,  %catname,   %cataccess,
+        @membergroups, @threads, @boardinfo, $counter
     );
 
-    LoadCensorList();
+    load_censor_list();
     if ( !$iamguest ) {
-        Collapse_Load();
+        collapse_load();
     }
-    $rname = ${ $uid . $username }{'realname'} || q{};
+
+    my $rname = q{};
+    {
+        no strict qw(refs);
+        $rname = ${ $uid . $username }{'realname'} || q{};
+    }
     $yymain .= qq~
 <script type="text/javascript">
 function removeUser() {
@@ -123,11 +172,11 @@ function searchMe(chelem) {
         : q{}
     );
 
-    if (   !$ML_Allowed
-        || ( $ML_Allowed == 1 && !$iamguest )
-        || ( $ML_Allowed == 2 && $staff )
-        || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
+    if (   !$ml_allowed
+        || ( $ml_allowed == 1 && !$iamguest )
+        || ( $ml_allowed == 2 && $staff )
+        || ( $ml_allowed == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $ml_allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
     {
         $yymain .= $mysearch_template2;
         if ( !$iamguest ) {
@@ -146,60 +195,65 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
 
     $yymain .= $mysearch_template4;
 
-    $allselected = 0;
-    $isselected  = 0;
-    $boardscheck = q{};
+    my $allselected = 0;
+    my $isselected  = 0;
+    my $boardscheck = q{};
     get_forum_master();
-
+    my ($cataccess);
+    my $checklist = q{};
     foreach my $catid (@categoryorder) {
-        $boardlist = $cat{$catid};
-        (@bdlist) = split /,/xsm, $boardlist;
-        ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
-        $cataccess = CatAccess($catperms);
+        my $boardlist = $cat{$catid};
+        my @bdlist = split /,/xsm, $boardlist;
+        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
 
         foreach my $curboard (@bdlist) {
-            ( $boardname, $boardperms, $boardview ) = split /[|]/xsm,
-              $board{"$curboard"};
-            ToChars($boardname);
-            my $access = AccessCheck( $curboard, q{}, $boardperms );
+            my ( $boardname, $boardperms, $boardview ) = split /[|]/xsm,
+              $board{$curboard};
+            to_chars($boardname);
+            my $access = access_check( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
-            if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-                my $bdmods     = ${ $uid . $curboard }{'mods'};
-                my %moderators = ();
-                my $pswiammod  = 0;
-                foreach my $curuser ( split /\//xsm, $bdmods ) {
-                    if ( $username eq $curuser ) { $pswiammod = 1; }
-                }
-                my $bdmodgroups     = ${ $uid . $curboard }{'modgroups'};
-                my %moderatorgroups = ();
-                foreach my $curgroup ( split /\//xsm, $bdmodgroups ) {
-                    if ( ${ $uid . $username }{'position'} eq $curgroup ) {
-                        $pswiammod = 1;
+            {
+                no strict qw(refs);
+                if ( ${ $uid . $curboard }{'brdpasswr'} ) {
+                    my $bdmods     = ${ $uid . $curboard }{'mods'};
+                    my %moderators = ();
+                    my $pswiammod  = 0;
+                    foreach my $curuser ( split /\//xsm, $bdmods ) {
+                        if ( $username eq $curuser ) { $pswiammod = 1; }
                     }
-                    foreach my $memberaddgroups ( split /,\s/xsm,
-                        ${ $uid . $username }{'addgroups'} )
-                    {
-                        chomp $memberaddgroups;
-                        if ( $memberaddgroups eq $curgroup ) {
+                    my $bdmodgroups     = ${ $uid . $curboard }{'modgroups'};
+                    my %moderatorgroups = ();
+                    foreach my $curgroup ( split /\//xsm, $bdmodgroups ) {
+                        if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                             $pswiammod = 1;
-                            last;
+                        }
+                        foreach my $memberaddgroups ( split /,\s/xsm,
+                            ${ $uid . $username }{'addgroups'} )
+                        {
+                            chomp $memberaddgroups;
+                            if ( $memberaddgroups eq $curgroup ) {
+                                $pswiammod = 1;
+                                last;
+                            }
                         }
                     }
-                }
-                my $cookiename = "$cookiepassword$curboard$username";
-                my $crypass    = ${ $uid . $curboard }{'brdpassw'};
-                if (   !$iamadmin
-                    && !$iamgmod
-                    && !$pswiammod
-                    && $yyCookies{$cookiename} ne $crypass )
-                {
-                    next;
+                    my $cookiename = "$cookiepassword$curboard$username";
+                    my $crypass    = ${ $uid . $curboard }{'brdpassw'};
+                    if (   !$iamadmin
+                        && !$iamgmod
+                        && !$pswiammod
+                        && $yy_cookies{$cookiename} ne $crypass )
+                    {
+                        next;
+                    }
                 }
             }
 
             # Checks to see if category is expanded or collapsed
+            my $selected = q{};
             if ( $username ne 'Guest' ) {
                 if ( $catcol{$catid} ) {
                     $selected = q~selected="selected"~;
@@ -217,7 +271,7 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
             $checklist .=
 qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
             if ( !$subboard{$curboard} ) { next; }
-            my $indent;
+            my $indent = 0;
 
             local *get_subboards = sub {
                 my @x = @_;
@@ -225,9 +279,9 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
                 foreach my $childbd (@x) {
                     my $dash = q{};
                     if ( $indent > 0 ) { $dash = q{-}; }
-                    ( $chldboardname, undef, undef ) = split /[|]/xsm,
-                      $board{"$childbd"};
-                    ToChars($chldboardname);
+                    my ( $chldboardname, undef, undef ) = split /[|]/xsm,
+                      $board{$childbd};
+                    to_chars($chldboardname);
                     $checklist .=
                         qq~<option value="$childbd" $selected>~
                       . ( '&nbsp;' x $indent )
@@ -246,7 +300,8 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
     if ( $isselected == $allselected ) {
         $boardscheck = q~ checked="checked"~;
     }
-    if ( $iamadmin || $iamfmod || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
+    my $search_ip = q{};
+    if ( $iamadmin || $iamfmod || $iamgmod && $gmod_access2{'ipban2'} )
     {
         $search_ip =
 qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label for="search_ip"> $search_txt{'73'}</label>~;
@@ -295,7 +350,7 @@ qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label fo
     return;
 }
 
-sub plushSearch2 {
+sub plush_search2 {
 
     # generate error if admin has disabled search options
     if ( $maxsearchdisplay < 0 ) { fatal_error('search_disabled'); }
@@ -336,9 +391,9 @@ sub plushSearch2 {
         $userkind = 2;
         $userspec = $username;
     }
-    $searchtype = $FORM{'searchtype'};
-    my $search = $FORM{'search'};
-    FromChars($search);
+    my $searchtype = $FORM{'searchtype'};
+    my $search     = $FORM{'search'};
+    from_chars($search);
     my $one_per_thread = $FORM{'oneperthread'} || 0;
     if    ( $searchtype eq 'anywords' )  { $searchtype = 2; }
     elsif ( $searchtype eq 'asphrase' )  { $searchtype = 3; }
@@ -352,37 +407,38 @@ sub plushSearch2 {
     if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
     my $searchsubject = $FORM{'subfield'} eq 'on';
     my $searchmessage = $FORM{'msgfield'} eq 'on';
+    my $search_ip     = q{};
     if ( $FORM{'search_ip'} ) { $search_ip = $FORM{'search'}; }
-    ToHTML($search);
+    to_html($search);
     $search =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
     $search =~ s/\cM//gxsm;
     $search =~ s/\n/<br \/>/gxsm;
+
     if ( $searchtype != 3 ) { @search = split /\s+/xsm, $search; }
     else                    { @search = ($search); }
     my $case = $FORM{'casesensitiv'};
 
     my (
-        $curboard,  @threads,      $curthread, $tnum,      $tsub,
-        $tname,     $temail,       $tdate,     $treplies,  $tusername,
-        $ticon,     $tstate,       @messages,  $curpost,   $subfound,
-        $msgfound,  $numfound,     %data,      $i,         $board,
-        $curcat,    @categories,   %catid,     %catname,   %cataccess,
-        %openmemgr, @membergroups, %cats,      @boardinfo, %boardinfo,
-        @boards,    $counter,      $msgnum
+        @threads, $curthread, $tnum,      $tsub,         $tname,
+        $temail,  $tdate,     $treplies,  $tusername,    $ticon,
+        $tstate,  @messages,  $curpost,   $msgfound,     $numfound,
+        %data,    $i,         $board,     $curcat,       @categories,
+        %catid,   %catname,   %cataccess, @membergroups, @boardinfo,
+        @boards,  $counter,   $msgnum
     );
     my $maxtime = $date - ( $maxage * 86400 );
     my $oldestfound = 9999999999;
 
     get_forum_master();
     foreach my $catid (@categoryorder) {
-        $boardlist = $cat{$catid};
-        (@bdlist) = split /,/xsm, $boardlist;
-        ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
-        $cataccess = CatAccess($catperms);
+        my $boardlist = $cat{$catid};
+        my @bdlist = split /,/xsm, $boardlist;
+        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
 
         foreach my $cboard (@bdlist) {
-            ( $bname, $bperms, $bview ) = split /[|]/xsm, $board{$cboard};
+            my ( $bname, $bperms, $bview ) = split /[|]/xsm, $board{$cboard};
             $catid{$cboard}   = $catid;
             $catname{$cboard} = $catname;
         }
@@ -390,61 +446,67 @@ sub plushSearch2 {
 
     foreach my $cbdlist ( keys %subboard ) {
         foreach my $cboard ( split /[|]/xsm, $subboard{$cbdlist} ) {
-            my $catid = ${ $uid . $cboard }{'cat'};
-            ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
-            $cataccess = CatAccess($catperms);
+            {
+                no strict qw(refs);
+                $catid = ${ $uid . $cboard }{'cat'};
+            }
+            my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+            my $cataccess = cat_access($catperms);
             if ( !$cataccess ) { next; }
             $catid{$cboard}   = $catid;
             $catname{$cboard} = $catname;
         }
     }
-    if ($enable_ubbc) { require Sources::YaBBC; }
+    if ($enable_ubbc) { enable_yabbc(); }
 
     @boards = split /,\s/xsm, $FORM{'searchboards'};
+    my %boardname;
   BOARDCHECK: foreach my $curboard (@boards) {
+        my ( $boardperms, $boardview );
         ( $boardname{$curboard}, $boardperms, $boardview ) = split /[|]/xsm,
           $board{$curboard};
 
-        my $access = AccessCheck( $curboard, q{}, $boardperms );
+        my $access = access_check( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }
 
-        if ( ${ $uid . $curboard }{'brdpasswr'} ) {
-            my $bdmods     = ${ $uid . $curboard }{'mods'};
-            my %moderators = ();
-            my $pswiammod  = 0;
-            foreach my $curuser ( split /\//xsm, $bdmods ) {
-                if ( $username eq $curuser ) { $pswiammod = 1; }
-            }
-            my $bdmodgroups     = ${ $uid . $curboard }{'modgroups'};
-            my %moderatorgroups = ();
-            foreach my $curgroup ( split /\//xsm, $bdmodgroups ) {
-                if ( ${ $uid . $username }{'position'} eq $curgroup ) {
-                    $pswiammod = 1;
+        {
+            no strict qw(refs);
+            if ( ${ $uid . $curboard }{'brdpasswr'} ) {
+                my $bdmods    = ${ $uid . $curboard }{'mods'};
+                my $pswiammod = 0;
+                foreach my $curuser ( split /\//xsm, $bdmods ) {
+                    if ( $username eq $curuser ) { $pswiammod = 1; }
                 }
-                foreach my $memberaddgroups ( split /,\s/xsm,
-                    ${ $uid . $username }{'addgroups'} )
-                {
-                    chomp $memberaddgroups;
-                    if ( $memberaddgroups eq $curgroup ) {
+                my $bdmodgroups = ${ $uid . $curboard }{'modgroups'};
+                foreach my $curgroup ( split /\//xsm, $bdmodgroups ) {
+                    if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                         $pswiammod = 1;
-                        last;
+                    }
+                    foreach my $memberaddgroups ( split /,\s/xsm,
+                        ${ $uid . $username }{'addgroups'} )
+                    {
+                        chomp $memberaddgroups;
+                        if ( $memberaddgroups eq $curgroup ) {
+                            $pswiammod = 1;
+                            last;
+                        }
                     }
                 }
-            }
-            my $cookiename = "$cookiepassword$curboard$username";
-            my $crypass    = ${ $uid . $curboard }{'brdpassw'};
-            if (   !$iamadmin
-                && !$iamgmod
-                && !$pswiammod
-                && $yyCookies{$cookiename} ne $crypass )
-            {
-                next;
+                my $cookiename = "$cookiepassword$curboard$username";
+                my $crypass    = ${ $uid . $curboard }{'brdpassw'};
+                if (   !$iamadmin
+                    && !$iamgmod
+                    && !$pswiammod
+                    && $yy_cookies{$cookiename} ne $crypass )
+                {
+                    next;
+                }
             }
         }
 
-        fopen( FILE, "$boardsdir/$curboard.txt" ) || next;
-        @threads = <FILE>;
-        fclose(FILE);
+        open my $FILE, '<', "$boardsdir/$curboard.txt" || next;
+        @threads = <$FILE>;
+        close $FILE or croak "$croak{'close'} $curboard";
 
       THREADCHECK: foreach my $curthread (@threads) {
             chomp $curthread;
@@ -453,10 +515,10 @@ sub plushSearch2 {
                 $tnum,     $tsub,      $tname, $temail, $tdate,
                 $treplies, $tusername, $ticon, $tstate
             ) = split /[|]/xsm, $curthread;
-
-            if (   $tdate < $maxtime
-                || $tstate =~ /m/ism
-                || ( !$iamadmin && !$iamgmod && $tstate =~ /h/ixsm ) )
+            $tdate ||= $tnum;
+            if (   $tstate =~ /m/ixsm
+                || ( !$iamadmin && !$iamgmod && $tstate =~ /h/ixsm )
+                || $tdate < $maxtime )
             {
                 next THREADCHECK;
             }
@@ -473,15 +535,16 @@ sub plushSearch2 {
                 }
             }
 
-            fopen( FILE, "$datadir/$tnum.txt" ) || next;
-            @messages = <FILE>;
-            fclose(FILE);
+            open $FILE, '<', "$datadir/$tnum.txt" || next;
+            @messages = <$FILE>;
+            close $FILE or croak "$croak{'close'} $tnum.txt";
 
-          POSTCHECK: foreach my $msgnum ( reverse 0 .. $#messages ) {
-                $curpost = $messages[$msgnum];
+          POSTCHECK: foreach my $msnum ( reverse 0 .. $#messages ) {
+                $curpost = $messages[$msnum];
                 chomp $curpost;
-
-                my (
+                my ( $msub, $mdate, $musername, $micon, $mattach, $mip,
+                    $savedmessage, $ns );
+                (
                     $msub,         $mname, $memail,  $mdate,
                     $musername,    $micon, $mattach, $mip,
                     $savedmessage, $ns
@@ -498,16 +561,16 @@ sub plushSearch2 {
                     next POSTCHECK;
                 }
 
-                ToChars($msub);
-                ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
+                to_chars($msub);
+                ( $msub, undef ) = split_splice_move( $msub, 0 );
 
-                ToChars($savedmessage);
-                $message = $savedmessage;
+                to_chars($savedmessage);
+                my $message = $savedmessage;
                 if ( $FORM{'searchyabbtags'} && $message =~ /\[\w[^\[]*?\]/xsm )
                 {
                     wrap();
-                    ( $message, undef ) = Split_Splice_Move( $message, $tnum );
-                    if ($enable_ubbc) { DoUBBC(); }
+                    ( $message, undef ) = split_splice_move( $message, $tnum );
+                    if ($enable_ubbc) { do_ubbc(); }
                     wrap2();
                     $savedmessage = $message;
                     $message =~ s/<.+?>//gxsm;
@@ -557,17 +620,18 @@ sub plushSearch2 {
 
                 ## blank? try next = else => build list from found mess/sub
                 ## Search for IP Address start
+                my ( $ipfound, @mip, $mip_class );
                 if ( $search_ip && !$msgfound && !$subfound ) {
                     $ipfound   = 0;
                     @mip       = split / /sm, $mip;
                     $mip       = q{};
                     $mip_class = q{};
                     foreach (@mip) {
-                        if ( $_ =~ /\b$search_ip/xsm ) {
+                        if (/\b$search_ip/xsm) {
                             $ipfound = 1;
                         }
-                        if ($ipLookup) {
-                            if ( $_ =~ /\b$search_ip/xsm ) {
+                        if ($ip_lookup) {
+                            if (/\b$search_ip/xsm) {
                                 $mip_class = ' highlight';
                             }
                             $mip .=
@@ -581,7 +645,7 @@ qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small$mip_class">$_</
                 }
                 else {
                     @mip = split /\s/xsm, $mip;
-                    $mip = q~~;
+                    $mip = q{};
                     foreach (@mip) {
                         if ($ip_lookup) {
                             $mip .=
@@ -611,13 +675,13 @@ qq~<a href="$scripturl?action=iplookup;ip=$_"><span class="small">$_</span></a> 
     @messages = reverse sort { $a <=> $b } keys %data;
     if (@messages) {
         if ( @messages > $display ) { $#messages = $display - 1; }
-        LoadCensorList();
+        load_censor_list();
     }
     else {
         $yymain .=
 qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1)">$search_txt{'171'}</a></b><hr class="hr" />~;
     }
-    $search = Censor($search);
+    $search = do_censor($search);
 
     # Search for censored or uncensored search string and remove duplicate words
     my @tmpsearch;
@@ -626,33 +690,35 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
     push @tmpsearch, @search;
     undef %found;
     @search = grep { !$found{$_}++ } @tmpsearch;
-    my $icanbypass = checkUserLockBypass();
+    my $icanbypass = checkuser_lockbypass();
     for my $i ( 0 .. $#messages ) {
+        our ( $msub, $mdate, $musername, $micon, $mattach, $mip, $message, $ns,
+        );
         (
             $board, $tnum,    $msgnum, $tusername, $tname, $msub,
             $mname, $memail,  $mdate,  $musername, $micon, $mattach,
             $mip,   $message, $ns,     $tstate
         ) = @{ $data{ $messages[$i] } };
 
-        $tname = addMemberLink( $tusername, $tname, $tnum );
-        $mname = addMemberLink( $musername, $mname, $mdate );
+        $tname = add_memberlink( $tusername, $tname, $tnum );
+        $mname = add_memberlink( $musername, $mname, $mdate );
         $mdate = timeformat($mdate);
 
         if ( !$FORM{'searchyabbtags'} ) {
             wrap();
-            ( $message, undef ) = Split_Splice_Move( $message, $tnum );
-            if ($enable_ubbc) { DoUBBC(); }
+            ( $message, undef ) = split_splice_move( $message, $tnum );
+            if ($enable_ubbc) { do_ubbc(); }
             wrap2();
         }
-        ToChars($message);
+        to_chars($message);
 
-        $message = Censor($message);
-        $msub    = Censor($msub);
+        $message = do_censor($message);
+        $msub    = do_censor($msub);
 
-        Highlight( \$msub, \$message, \@search, $case );
+        $message = highlight( \$msub, \$message, \@search, $case );
 
-        ToChars( $catname{$board} );
-        ToChars( $boardname{$board} );
+        to_chars( $catname{$board} );
+        to_chars( $boardname{$board} );
 
         # generate a sub board tree
         my $boardtree   = q{};
@@ -660,17 +726,20 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
         while ($parentboard) {
             my ( $pboardname, undef, undef ) =
               split /[|]/xsm, $board{$parentboard};
-            ToChars($pboardname);
-            if ( ${ $uid . $parentboard }{'canpost'} ) {
-                $pboardname =
+            to_chars($pboardname);
+            {
+                no strict qw(refs);
+                if ( ${ $uid . $parentboard }{'canpost'} ) {
+                    $pboardname =
 qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
-            }
-            else {
-                $pboardname =
+                }
+                else {
+                    $pboardname =
 qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><u>$pboardname</u></a>~;
+                }
+                $boardtree   = qq~ / $pboardname$boardtree~;
+                $parentboard = ${ $uid . $parentboard }{'parent'};
             }
-            $boardtree   = qq~ / $pboardname$boardtree~;
-            $parentboard = ${ $uid . $parentboard }{'parent'};
         }
 
         ++$counter;
@@ -687,17 +756,20 @@ qq~<a href="$scripturl?catselect=$catid{$board}"><span class="under">$catname{$b
         if (   ( !$tstate || $tstate !~ m/1/xsm )
             && ( !$iamguest || ( $iamguest && $enable_guestposting ) ) )
         {
-            if ( !$iamguest ) {
-                if (   ${ $uid . $username }{'thread_notifications'}
-                    && ${ $uid . $username }{'thread_notifications'} =~
-                    m/\b$tnum\b/xsm )
-                {
-                    $notify =
+            {
+                no strict qw(refs);
+                if ( !$iamguest ) {
+                    if (   ${ $uid . $username }{'thread_notifications'}
+                        && ${ $uid . $username }{'thread_notifications'} =~
+                        m/\b$tnum\b/xsm )
+                    {
+                        $notify =
 qq~$menusep<a href="$scripturl?action=notify3;oldnotify=1;num=$tnum/$msgnum#$msgnum">$img{'del_notify'}</a>~;
-                }
-                else {
-                    $notify =
+                    }
+                    else {
+                        $notify =
 qq~$menusep<a href="$scripturl?action=notify2;oldnotify=1;num=$tnum/$msgnum#$msgnum">$img{'add_notify'}</a>~;
+                    }
                 }
             }
             $yymain .=
@@ -707,7 +779,7 @@ qq~<a href="$scripturl?board=$board;action=post;num=$tnum/$msgnum#$msgnum;title=
             && ( $icanbypass || $tstate !~ m/l/ixsm )
             && ( !$iammod || is_moderator( $username, $board ) ) )
         {
-            LoadLanguage('Display');
+            load_language('Display');
             $yymain .=
 qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$msgnum=$msgnum" onclick="return confirm('~
               . (
@@ -716,29 +788,22 @@ qq~$menusep<a href="$scripturl?action=multidel;recent=1;thread=$tnum;del$msgnum=
                 : q{}
               ) . qq~$display_txt{'rempost'}')">$img{'delete'}</a>~;
         }
+        my $my_ipfind = q{};
         if (   $iamadmin
             || $iamfmod
-            || $iamgmod && $gmod_access2{'ipban2'} eq 'on' )
+            || $iamgmod && $gmod_access2{'ipban2'} )
         {
             $my_ipfind = $mysearch_template10;
-            $ipimg     = qq~<img src="$micon_bg{'ip'}" alt="" />~;
+            my $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
             $my_ipfind =~ s/\Q{yabb ipimg}\E/$ipimg/xsm;
             $my_ipfind =~ s/\Q{yabb mip}\E/$mip/xsm;
         }
 
         $yymain .= $mysearch_template9;
         $my_ipfind ||= q{};
+        my $txtsz = txtsz();
         $yymain =~ s/\Q{yabb message}\E/$message/xsm;
         $yymain =~ s/\Q{yabb my_ipfind}\E/$my_ipfind/xsm;
-        if ( !${ $uid . $username }{'postlayout'} ) {
-            $txtsz = q{};
-        }
-        else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
-              ${ $uid . $username }{'postlayout'};
-            if ( $txtsz < 60 ) { $txtsz = 100; }
-            $txtsz = qq~; font-size:$txtsz%~;
-        }
         $yymain =~ s/\Q{yabb txtsze}\E/$txtsz/gxsm;
     }
 
@@ -757,32 +822,32 @@ $search_txt{'167'}<hr class="hr" />
 ## does a search of all member pm files
 
 sub pmsearch {
-    $enable_PMsearch ||= 0;
+    $enable_pm_search ||= 0;
 
     # generate error if admin has disabled search options
-    if ( $enable_PMsearch <= 0 ) { fatal_error('search_disabled'); }
+    if ( $enable_pm_search <= 0 ) { fatal_error('search_disabled'); }
 
-    my $display = $FORM{'numberreturned'} || $enable_PMsearch;
-    if ( $display =~ /\D/xsm )         { fatal_error('only_numbers_allowed'); }
-    if ( $display > $enable_PMsearch ) { fatal_error('result_too_high'); }
+    my $display = $FORM{'numberreturned'} || $enable_pm_search;
+    if ( $display =~ /\D/xsm )          { fatal_error('only_numbers_allowed'); }
+    if ( $display > $enable_pm_search ) { fatal_error('result_too_high'); }
 
-    $searchtype = $FORM{'searchtype'} || $INFO{'searchtype'};
-    my $search = $FORM{'search'} || $INFO{'search'};
-    my $pmbox  = $FORM{'pmbox'}  || '!all';
+    my $searchtype = $FORM{'searchtype'} || $INFO{'searchtype'};
+    my $search     = $FORM{'search'}     || $INFO{'search'};
+    my $pmbox      = $FORM{'pmbox'}      || '!all';
 
-    FromChars($search);
-    $searchtype ||=1;
+    from_chars($search);
+    $searchtype ||= 1;
+    my $usern = q{};
     if    ( $searchtype eq 'anywords' )  { $searchtype = 2; }
     elsif ( $searchtype eq 'asphrase' )  { $searchtype = 3; }
     elsif ( $searchtype eq 'aspartial' ) { $searchtype = 4; }
     elsif ( $searchtype eq 'user' ) {
         $searchtype = 5;
-        ManageMemberinfo('load');
-        my $username;
+        manage_memberinfo('load');
         foreach my $i ( keys %memberinf ) {
-            if ( $memberinf{$i}[0] eq $search ) { $username = $i; }
+            if ( ${ $memberinf{$i} }[0] eq $search ) { $usern = $i; }
         }
-        $search = $username;
+        $search = $usern;
     }
     else { $searchtype = 1; }
 
@@ -793,72 +858,67 @@ sub pmsearch {
         if ( $search eq q{} || $search eq q{ } ) { fatal_error('no_search'); }
         if ( $search =~ m{/}xsm )  { fatal_error('no_search_slashes'); }
         if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
-        ToHTML($search);
+        to_html($search);
         $search =~ s/\t/ &nbsp; &nbsp; &nbsp;/gxsm;
         $search =~ s/\cM//gxsm;
         $search =~ s/\n/<br \/>/gxsm;
     }
 
-    my $pmboxesCount = 1;
-    if ( $pmbox eq '!all' ) { $pmboxesCount = 3; }
-    if ( $searchtype == 5 ) { @search       = ($search); }
+    my $pmboxes_count = 1;
+    if ( $pmbox eq '!all' ) { $pmboxes_count = 3; }
+    if ( $searchtype == 5 ) { @search        = $search; }
     elsif ( $searchtype != 3 ) { @search = split /\s+/xsm, lc $search; }
     else                       { @search = ( lc $search ); }
 
-    my (
-        $curboard,  @threads,      $curthread,  $tnum,      $tsub,
-        $tname,     $temail,       $treplies,   $tusername, $ticon,
-        $tstate,    $musername,    $micon,      $mattach,   $userfound,
-        $subfound,  $msgfound,     $numfound,   %data,      $i,
-        $board,     $curcat,       @categories, %catname,   %cataccess,
-        %openmemgr, @membergroups, %cats,       @boardinfo, %boardinfo,
-        @boards,    $counter,      @scanthreads
-    );
+    my ( $userfound, $msgfound, $numfound, %data, $counter, @scanthreads );
     my $oldestfound = 9_999_999_999;
-
+    my @msgthreads;
     if ( $pmbox eq '!all' || $pmbox eq '1' ) {
-        if ( -e "$memberdir/$username.msg" ) {
-            fopen( FILE, "$memberdir/$username.msg" );
-            @msgthreads = <FILE>;
-            fclose(FILE);
+        if ( -e "$memberdir/$usern.msg" ) {
+            open my $FILE, '<', "$memberdir/$usern.msg"
+              or croak "$croak{'open'} msg";
+            @msgthreads = <$FILE>;
+            close $FILE or croak "$croak{'close'} msg";
         }
     }
-
+    my @outthreads;
     if ( $pmbox eq '!all' || $pmbox eq '2' ) {
-        if ( -e "$memberdir/$username.outbox" ) {
-            fopen( FILE, "$memberdir/$username.outbox" );
-            @outthreads = <FILE>;
-            fclose(FILE);
+        if ( -e "$memberdir/$usern.outbox" ) {
+            open my $FILE, '<', "$memberdir/$usern.outbox"
+              or croak "$croak{'open'} outbox";
+            @outthreads = <$FILE>;
+            close $FILE or croak "$croak{'close'} outbox";
         }
     }
-
+    my @storethreads;
     if ( $pmbox eq '!all' || $pmbox eq '3' ) {
-        if ( -e "$memberdir/$username.imstore" ) {
-            fopen( FILE, "$memberdir/$username.imstore" );
-            @storethreads = <FILE>;
-            fclose(FILE);
+        if ( -e "$memberdir/$usern.imstore" ) {
+            open my $FILE, '<', "$memberdir/$usern.imstore"
+              or croak "$croak{'open'} imstore";
+            @storethreads = <$FILE>;
+            close $FILE or croak "$croak{'open'} imstore";
         }
     }
 
-    if ($enable_ubbc) { require Sources::YaBBC; }
-
-    for my $boxCount ( 1 .. $pmboxesCount ) {
+    for my $boxcount ( 1 .. $pmboxes_count ) {
+        my $pmboxname = 1;
         if ( $pmbox eq '!all' ) { $pmbox = 0; }
-        if ( $boxCount == 1 || $pmbox == 1 ) {
+        if ( $boxcount == 1 || $pmbox == 1 ) {
             @scanthreads = @msgthreads;
-            $pmboxName   = 1;
+            $pmboxname   = 1;
         }
-        if ( $boxCount == 2 || $pmbox == 2 ) {
+        if ( $boxcount == 2 || $pmbox == 2 ) {
             @scanthreads = @outthreads;
-            $pmboxName   = 2;
+            $pmboxname   = 2;
         }
-        if ( $boxCount == 3 || $pmbox == 3 ) {
+        if ( $boxcount == 3 || $pmbox == 3 ) {
             @scanthreads = @storethreads;
-            $pmboxName   = 3;
+            $pmboxname   = 3;
         }
         chomp @scanthreads;
 
         ## reverse through messages
+        if ($enable_ubbc) { enable_yabbc(); }
       POSTCHECK: foreach my $msgnum ( reverse 0 .. $#scanthreads ) {
             my (
                 $messageid,  $mfromuser,    $mtouser, $mccuser,
@@ -873,17 +933,13 @@ sub pmsearch {
                 next POSTCHECK;
             }
 
-            ToChars($msub);
-
-            ToChars($savedmessage);
-            $message = $savedmessage;
-            if ( $message =~ /\[\w[^\[]*?\]/xsm ) {
+            to_chars($msub);
+            to_chars($savedmessage);
+            our $message = $savedmessage;
                 wrap();
-                if ($enable_ubbc) { DoUBBC(); }
+                if ($enable_ubbc) { do_ubbc(); }
                 wrap2();
                 $savedmessage = $message;
-                $message =~ s/<.+?>//gxsm;
-            }
 
             if ( $searchtype == 5 ) {
                 $userfound = 0;
@@ -892,7 +948,6 @@ sub pmsearch {
                         $userfound = 1;
                     }
                 }
-
             }
             elsif ( $searchtype == 2 || $searchtype == 4 ) {
                 $subfound = 0;
@@ -931,7 +986,7 @@ sub pmsearch {
             }
 
             $data{$mdate} = [
-                $pmboxName,    $msgnum,      $msub,
+                $pmboxname,    $msgnum,      $msub,
                 $mname,        $memail,      $mdate,
                 $mfromuser,    $mtouser,     $mccuser,
                 $mbccuser,     $mattachment, $mip,
@@ -944,10 +999,11 @@ sub pmsearch {
     }
 
     ## sort result
-    @messages = reverse sort { $a <=> $b } keys %data;
+    our @messages = reverse sort { $a <=> $b } keys %data;
+    our $yysearchmain = q{};
     if (@messages) {
         if ( @messages > $display ) { $#messages = $display - 1; }
-        LoadCensorList();
+        load_censor_list();
     }
     else {
         $yysearchmain .=
@@ -957,7 +1013,7 @@ sub pmsearch {
         $search = $FORM{'search'} || $INFO{'search'};
         @search = ($search);
     }    # not to display username
-    $search = Censor($search);
+    $search = do_censor($search);
 
     # Search for censored or uncensored search string and remove duplicate words
     my @tmpsearch;
@@ -972,113 +1028,104 @@ sub pmsearch {
     ## output results
     for my $i ( 0 .. $#messages ) {
         my (
-            $thispmbox, $msgnum,    $msub,         $mname,
-            $memail,    $mdate,     $mfromuser,    $mtouser,
+            $thispmbox, undef,      $msub,         undef,
+            undef,      $mdate,     $mfromuser,    $mtouser,
             $mccuser,   $mbccuser,  $mattachment,  $mip,
             $message,   $messageid, $mstorefolder, $mstatus
         ) = @{ $data{ $messages[$i] } };
-        my ( $MemberFromLink, $MemberToLink, $MemberCCLink, $MemberBCCLink );
-        my ( $fromTitle, $toTitle, $toTitleCC, $toTitleBCC, $FolderName );
+        my ( $member_fromlink, $member_tolink, $member_cclink,
+            $member_bcclink );
+        my ( $from_title, $to_title, $to_title_cc, $to_title_bcc,
+            $folder_name );
 
         if ($mfromuser) {
             for my $uname ( split /,/xsm, $mfromuser ) {
-                my ( $guestName, $guestEmail ) = split / /sm, $uname;
-                if ($guestEmail) { $uname = 'Guest'; }
-                $MemberFromLink .=
-                  addMemberLink( $uname, $guestName, $mdate ) . q{, };
+                my ( $guest_name, $guest_email ) = split / /sm, $uname;
+                if ($guest_email) { $uname = 'Guest'; }
+                $member_fromlink .=
+                  add_memberlink( $uname, $guest_name, $mdate ) . q{, };
             }
-            $MemberFromLink =~ s/,\s$//xsm;
-            $MemberFromLink =~ s/%20/ /gxsm;
-            $fromTitle = qq~$search_txt{'pmfrom'}: $MemberFromLink<br />~;
+            $member_fromlink =~ s/,\s$//xsm;
+            $member_fromlink =~ s/%20/ /gxsm;
+            $from_title = qq~$search_txt{'pmfrom'}: $member_fromlink<br />~;
         }
 
         if ($mtouser) {
             if ( $mstatus !~ m/b/xsm ) {
                 for my $uname ( split /,/xsm, $mtouser ) {
-                    $MemberToLink .=
-                      addMemberLink( $uname, $uname, $mdate ) . q{, };
+                    $member_tolink .=
+                      add_memberlink( $uname, $uname, $mdate ) . q{, };
                 }
-                $MemberToLink =~ s/,\s$//xsm;
-                $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
+                $member_tolink =~ s/,\s$//xsm;
+                $to_title = qq~$search_txt{'pmto'}: $member_tolink<br />~;
             }
             else {
                 require Sources::InstantMessage;
                 for my $uname ( split /,/xsm, $mtouser ) {
-                    $MemberToLink .= links_to($uname);
+                    $member_tolink .= links_to($uname);
                 }
-                $MemberToLink =~ s/,\s$//xsm;
-                $toTitle = qq~$search_txt{'pmto'}: $MemberToLink<br />~;
+                $member_tolink =~ s/,\s$//xsm;
+                $to_title = qq~$search_txt{'pmto'}: $member_tolink<br />~;
             }
         }
 
-        $toTitleCC  = q{};
-        $toTitleBCC = q{};
-        if ( $mccuser && $mfromuser eq $username ) {
+        $to_title_cc  = q{};
+        $to_title_bcc = q{};
+        if ( $mccuser && $mfromuser eq $usern ) {
             for my $uname ( split /,/xsm, $mccuser ) {
-                $MemberCCLink .=
-                  addMemberLink( $uname, $uname, $mdate ) . q{, };
+                $member_cclink .=
+                  add_memberlink( $uname, $uname, $mdate ) . q{, };
             }
-            $MemberCCLink =~ s/,\s$//xsm;
-            $toTitleCC = qq~$search_txt{'pmcc'}: $MemberCCLink<br />~;
+            $member_cclink =~ s/,\s$//xsm;
+            $to_title_cc = qq~$search_txt{'pmcc'}: $member_cclink<br />~;
         }
 
-        if ( $mbccuser && $mfromuser eq $username ) {
+        if ( $mbccuser && $mfromuser eq $usern ) {
             for my $uname ( split /,/xsm, $mbccuser ) {
-                $MemberBCCLink .=
-                  addMemberLink( $uname, $uname, $mdate ) . q{, };
+                $member_bcclink .=
+                  add_memberlink( $uname, $uname, $mdate ) . q{, };
             }
-            $MemberBCCLink =~ s/,\s$//xsm;
-            $toTitleBCC = qq~$search_txt{'pmbcc'}: $MemberBCCLink<br />~;
+            $member_bcclink =~ s/,\s$//xsm;
+            $to_title_bcc = qq~$search_txt{'pmbcc'}: $member_bcclink<br />~;
         }
 
         if ( $thispmbox == 1 ) {
-            $FolderName = $pmboxes_txt{'inbox'};
+            $folder_name = $pmboxes_txt{'inbox'};
         }
         elsif ( $thispmbox == 2 ) {
-            $FolderName = $pmboxes_txt{'outbox'};
+            $folder_name = $pmboxes_txt{'outbox'};
         }
         elsif ( $thispmbox == 3 ) {
-            if ( $mstorefolder eq 'in' ) { $FolderName = $pmboxes_txt{'in'}; }
+            if ( $mstorefolder eq 'in' ) { $folder_name = $pmboxes_txt{'in'}; }
             elsif ( $mstorefolder eq 'out' ) {
-                $FolderName = $pmboxes_txt{'out'};
+                $folder_name = $pmboxes_txt{'out'};
             }
-            else { $FolderName = $mstorefolder; }
-            $FolderName = qq~$pmboxes_txt{'store'} &raquo; $FolderName~;
+            else { $folder_name = $mstorefolder; }
+            $folder_name = qq~$pmboxes_txt{'store'} &raquo; $folder_name~;
         }
 
         $mdate = timeformat($mdate);
-        Highlight( \$msub, \$message, \@search, 0 );
-        if ( $enable_ubbc && $message !~ /\x23nosmileys/igxsm ) {
-            MakeSmileys();
-        }
 
-        $message = Censor($message);
-        $msub    = Censor($msub);
+        $message = highlight( \$msub, \$message, \@search, 0 );
+        $message = do_censor($message);
+        $msub    = do_censor($msub);
 
         ++$counter;
 
-        $yysearchmain .= $mysearch_PM;
+        $yysearchmain .= $mysearch_pm;
         $yysearchmain =~ s/\Q{yabb counter}\E/$counter/xsm;
-        $yysearchmain =~ s/\Q{yabb FolderName}\E/$FolderName/xsm;
+        $yysearchmain =~ s/\Q{yabb FolderName}\E/$folder_name/xsm;
         $yysearchmain =~ s/\Q{yabb msub}\E/$msub/xsm;
         $yysearchmain =~ s/\Q{yabb mdate}\E/$mdate/xsm;
         $yysearchmain =~ s/\Q{yabb thispmbox}\E/$thispmbox/gxsm;
         $yysearchmain =~ s/\Q{yabb messageid}\E/$messageid/gxsm;
         $yysearchmain =~ s/\Q{yabb message}\E/$message/xsm;
-        $yysearchmain =~ s/\Q{yabb fromTitle}\E/$fromTitle/xsm;
-        $yysearchmain =~ s/\Q{yabb toTitle}\E/$toTitle/xsm;
-        $yysearchmain =~ s/\Q{yabb toTitleCC}\E/$toTitleCC/xsm;
-        $yysearchmain =~ s/\Q{yabb toTitleBCC}\E/$toTitleBCC/xsm;
+        $yysearchmain =~ s/\Q{yabb fromTitle}\E/$from_title/xsm;
+        $yysearchmain =~ s/\Q{yabb toTitle}\E/$to_title/xsm;
+        $yysearchmain =~ s/\Q{yabb toTitleCC}\E/$to_title_cc/xsm;
+        $yysearchmain =~ s/\Q{yabb toTitleBCC}\E/$to_title_bcc/xsm;
 
-        if ( !${ $uid . $username }{'postlayout'} ) {
-            $txtsz = q{};
-        }
-        else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
-              ${ $uid . $username }{'postlayout'};
-            if ( $txtsz < 60 ) { $txtsz = 100; }
-            $txtsz = qq~; font-size:$txtsz%~;
-        }
+        my $txtsz = txtsz();
         $yysearchmain =~ s/\Q{yabb txtsze}\E/$txtsz/gxsm;
     }
 
@@ -1091,36 +1138,39 @@ sub pmsearch {
 
     $yynavigation = qq~&rsaquo; $search_txt{'166'}~;
     $yytitle      = $search_txt{'166'};
-    return;
+    return $yysearchmain;
 }
 
-sub addMemberLink {
+sub add_memberlink {
     my ( $user, $displayname, $mdate ) = @_;
-    if ( -e "$memberdir/$user.vars" ) { LoadUser($user); }
-    if ( ${ $uid . $user }{'regdate'}
-        && $mdate >= ( ${ $uid . $user }{'regtime'} || $date ) )
+    if ( -e "$memberdir/$user.vars" ) { load_user($user); }
     {
-        $mname = profile_view($user);
-    }
-    elsif ($user !~ m/Guest/xsm
-        && $mdate < ( ${ $uid . $user }{'regtime'} || $date ) )
-    {
-        $mname = qq~$displayname - $maintxt{'470a'}~;
-    }
-    else {
-        $mname = $displayname . " ($maintxt{'28'})";
+        no strict qw(refs);
+        if ( ${ $uid . $user }{'regdate'}
+            && $mdate >= ( ${ $uid . $user }{'regtime'} || $date ) )
+        {
+            $mname = profile_view($user);
+        }
+        elsif ($user !~ m/Guest/xsm
+            && $mdate < ( ${ $uid . $user }{'regtime'} || $date ) )
+        {
+            $mname = qq~$displayname - $maintxt{'470a'}~;
+        }
+        else {
+            $mname = $displayname . " ($maintxt{'28'})";
+        }
     }
     return $mname;
 }
 
-sub Highlight {
+sub highlight {
     my ( $msub, $message, $search, $case ) = @_;
     my $i = 0;
-    my @HTMLtags;
-    my $HTMLtag = 'HTML';
-    while ( ${$message} =~ /\[$HTMLtag\d+\]/xsm ) { $HTMLtag .= '1'; }
-    while ( ${$message} =~ s/(<.+?>)/[$HTMLtag$i]/xsm ) {
-        push @HTMLtags, $1;
+    my @html_tags;
+    my $html_tag = 'HTML';
+    while ( ${$message} =~ /\[$html_tag\d+\]/xsm ) { $html_tag .= '1'; }
+    while ( ${$message} =~ s/(<.+?>)/[$html_tag$i]/xsm ) {
+        push @html_tags, $1;
         $i++;
     }
 
@@ -1128,16 +1178,17 @@ sub Highlight {
         if ($case) {
             ${$msub} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gxsm;
             ${$message} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/gxsm;
-                }
+        }
         else {
             ${$msub} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igxsm;
-            ${$message} =~ s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igxsm;
+            ${$message} =~
+              s/(\Q$tmp\E)/<span class="highlight">$1<\/span>/igxsm;
         }
     }
 
     $i = 0;
-    while ( ${$message} =~ s/\[$HTMLtag$i\]/$HTMLtags[$i]/xsm ) { $i++; }
-    return;
+    while ( ${$message} =~ s/\[$html_tag$i\]/$html_tags[$i]/xsm ) { $i++; }
+    return ${$message};
 }
 
 sub case_subfound {
@@ -1196,7 +1247,7 @@ sub case_subfound2 {
 
 sub msgfnd {
     my ( $searchtype, $message ) = @_;
-    $msgfound = 0;
+    my $msgfound = 0;
     for (@search) {
         if ( $searchtype == 4 && $message =~ m{\Q$_\E}ixsm ) {
             $msgfound = 1;
@@ -1212,7 +1263,7 @@ sub msgfnd {
 
 sub msgfnd2 {
     my ($message) = @_;
-    $msgfound = 1;
+    my $msgfound = 1;
     for (@search) {
         if ( $message !~ m{(?:^|\W|_)\Q$_\E(?=$|\W|_)}ixsm ) {
             $msgfound = 0;

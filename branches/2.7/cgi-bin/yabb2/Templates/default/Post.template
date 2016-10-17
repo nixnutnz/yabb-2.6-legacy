@@ -184,7 +184,7 @@ $mypost_smiley1 = qq~
             {yabb smilieslist}
             </select></td>
             </tr><tr>
-            <td class="center h_70px"><img src="$imagesdir/$SmilieURL[0]" id="smiliextra_image" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>
+            <td class="center h_70px"><img src="{yabb smilie0}" id="smiliextra_image" alt="" onclick="javascript: Smiliextra();" class="cursor"></td>
             </tr><tr>
             <td class="center h_15px"><span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span></td>
             </tr></table>
@@ -209,8 +209,8 @@ $mypost_prevmain_error = qq~
         <div class="bordercolor" style="padding: 1px; width:45em; margin-left:0; margin-right: auto;">
             <div class="titlebg padd_3px"><img src="$post_error" alt="" /> {yabb error_occurred}</div>
             <div class="windowbg2 message" style=".5em 3px 1em 3px; overflow:auto; color: red">
-                        {yabb preverror}
-                        </div>
+                {yabb preverror}
+            </div>
         </div>~;
 
 $mypost_smilies = q~

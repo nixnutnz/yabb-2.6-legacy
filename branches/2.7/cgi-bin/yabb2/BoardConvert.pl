@@ -13,15 +13,17 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$boardconvertplver = 'YaBB 2.7.00 $Revision$';
-
+our $boardconvertplver = 'YaBB 2.7.00 $Revision$';
+my $yy_iis = 0;
+my $yypath = q{};
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
-    $yyIIS = 1;
-    if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
+    $yy_iis = 1;
+    if ( our $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
     }
     $yypath =~ s/\\/\//gxsm;
@@ -36,20 +38,26 @@ if ( !$script_root ) {
 }
 $script_root =~ s/\\/\//gxsm;
 $script_root =~ s/\/BoardConvert[.](pl|cgi)//igxsm;
-
+my $yyext = '.pl';
 if   ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
 else                   { $yyext = 'pl'; }
-if   ($boardurl) { $set_cgi = "$boardurl/BoardConvert.$yyext"; }
-else             { $set_cgi = "BoardConvert.$yyext"; }
-
 my $nxt = $yyext;
+our (
+    $boardurl, $sourcedir, $action, $boardsdir, $memberdir,
+    $uid,      $username,  $vardir, %FORM,
+);
+
 if ( -e './Paths.pm' ) {
     require Paths;
     $nxt = 'pm';
 }
 else { require "Paths.$yyext"; }
+our $set_cgi = "BoardConvert.$yyext";
+if   ($boardurl) { $set_cgi = "$boardurl/BoardConvert.$yyext"; }
+else             { $set_cgi = "BoardConvert.$yyext"; }
 require "$sourcedir/Subs.$nxt";
 require "$sourcedir/Load.$nxt";
+require "$sourcedir/DateTime.$nxt";
 
 if ( !$action ) {
     adminlogin();
@@ -59,7 +67,7 @@ if    ( $action eq 'adminlogin2' ) { adminlogin2(); }
 elsif ( $action eq 'convbrd' )     { convcontrol(); }
 
 sub convcontrol {
-    open $FORUMCONTROL, '<', "$boardsdir/forum.control"
+    open my $FORUMCONTROL, '<', "$boardsdir/forum.control"
       or croak 'cannot_open forum.control';
     my @boardcontrols = <$FORUMCONTROL>;
     close $FORUMCONTROL or croak 'cannot close forum.control';
@@ -67,7 +75,7 @@ sub convcontrol {
     my @allboards = ();
     for my $boardline (@boardcontrols) {
         $boardline =~ s/[\r\n]//gxsm;    # Built in chomp
-        ( undef, $cntboard ) = split /[|]/xsm, $boardline;
+        my ( undef, $cntboard ) = split /[|]/xsm, $boardline;
         ## create a global boards array
         push @allboards, $cntboard;
     }
@@ -76,35 +84,38 @@ sub convcontrol {
     my @mybrds = grep { !$seen{$_}++ } @allboards;
     LoadBoardControl();
     my $allboards = join q~', '~, @mybrds;
-    my $newbrds = qq{\@allboards = ('$allboards');\n};
-    $newbrds .= qq~\$nid = '$uid';\n~;
+    my $newbrds   = qq{\@allboards = ('$allboards');\n};
+    my $nid       = $uid;
+    $newbrds .= qq~\$nid = '$nid';\n~;
     for my $cntboard (@mybrds) {
-        $newbrds .= qq~\%{$uid . $cntboard} = (\n~;
-        foreach ( keys %{ $uid . $cntboard } ) {
-            $newbrds .= qq{'$_' => q~${ $uid . $cntboard }{$_}~,\n};
+        no strict qw(refs);
+        $newbrds .= qq~\%{$cntboard} = (\n~;
+        foreach ( keys %{ $nid . $cntboard } ) {
+            $newbrds .= qq{'$_' => q~${ $nid . $cntboard }{$_}~,\n};
         }
         $newbrds .= qq~);\n\n~;
     }
     $newbrds .= qq~\n1;\n~;
     $newbrds =~ s/-/FIX/gxsm;
 
-    open $BOARDCONV, '>', "$vardir/boardconv.txt"
-      or croak 'cannot open coardconv.txt';
+    open my $BOARDCONV, '>', "$vardir/boardconv.txt"
+      or croak 'cannot open boardconv.txt';
     print {$BOARDCONV} $newbrds or croak 'cannot print coardconv.txt';
     close $BOARDCONV or croak 'cannot close coardconv.txt';
 
-    $yymain .= qq~
+    my $screen = qq~
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
         Export of '$boardsdir/forum.control' settings to '$vardir/boardconv.txt' done.
         <p><a href="$boardurl/YaBB.$yyext">Return to YaBB</a></p>
     </div>
 ~;
 
-    return SimpleOutput();
+    return simpleoutput($screen);
 }
 
-sub SimpleOutput {
-    $gzcomp = 0;
+sub simpleoutput {
+    my ($screen) = @_;
+    my $gzcomp = 0;
     print_output_header();
 
     print qq~
@@ -119,7 +130,7 @@ sub SimpleOutput {
 </head>
 <body>
 <!-- Main Content -->
-$yymain
+$screen
 </body>
 </html>
     ~ or croak 'cannot print page to screen';
@@ -127,7 +138,7 @@ $yymain
 }
 
 sub adminlogin {
-    $yymain .= qq~
+    my $screen = qq~
     <form action="$set_cgi?action=adminlogin2" method="post" name="loginform">
     <div style="width:25em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
         <label for="password">Enter the password for user <b>admin</b> to gain access to the Forum Control Exporter Utility</label>
@@ -142,41 +153,51 @@ sub adminlogin {
     </script>
       ~;
 
-    return SimpleOutput();
+    return simpleoutput($screen);
 }
 
 sub adminlogin2 {
-    if ( $FORM{'password'} eq q{} ) {
-        setup_fatal_error('Setup Error: You should fill in your password!');
+    if ( !$FORM{'password'} || $FORM{'password'} eq q{} ) {
+        setup_error('Setup Error: You should fill in your password!');
     }
 
     # No need to pass a form variable setup is only used by user: admin
     $username = 'admin';
+    my $realname = q{};
 
     if ( -e "$memberdir/$username.vars" ) {
         LoadUser($username);
-        my $spass = ${ $uid . $username }{'password'};
-        $cryptpass = encode_password( $FORM{'password'} );
-        if ( $spass ne $cryptpass && $spass ne $FORM{'password'} ) {
-            setup_fatal_error('Setup Error: Login Failed!');
+        {
+            no strict qw(refs);
+            $realname = ${ $uid . $username }{'realname'};
+            my $spass     = ${ $uid . $username }{'password'};
+            my $cryptpass = encode_password( $FORM{'password'} );
+            if ( $spass ne $cryptpass && $spass ne $FORM{'password'} ) {
+                setup_error('Setup Error: Login Failed!');
+            }
         }
     }
     else {
-        setup_fatal_error(
-qq~Setup Error: Could not find the admin data file in $memberdir! Please check your access rights.~
+        setup_error(
+"Setup Error: Could not find the admin data file in $memberdir! Please check your access rights."
         );
     }
 
-    $yymain .= qq~
+    my $screen = qq~
     <form action="$set_cgi?action=convbrd" method="post">
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
-        You are now logged in, <i>${$uid.$username}{'realname'}</i>!<br />Click 'Run Exporter' to run the Forum Control Exporter Utility.
+        You are now logged in, <i>$realname</i>!<br />Click 'Run Exporter' to run the Forum Control Exporter Utility.
         <p><input type="submit" value="Run Exporter" /></p>
     </div>
     </form>
 ~;
 
-    return SimpleOutput();
+    return simpleoutput($screen);
+}
+
+sub setup_error {
+    my ($screen) = @_;
+    return simpleoutput($screen);
 }
 
 1;

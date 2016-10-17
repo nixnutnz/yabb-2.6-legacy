@@ -1,19 +1,19 @@
-$englishadmin_admin02_boardshelpver = 'YaBB 2.7.00 $Revision: 1808 $';
+$englishadmin_admin02_boardshelpver = 'YaBB 2.7.00 $Revision: 1818 $';
 if ( $action eq 'detailedversion' ) { return 1; }
-$SectionName = "Manage_Boards";
+$section_name = "Manage_Boards";
 
 ### Section 1
 #############################################
-$SectionSub1 = "Accessing_the_Board_Functions";
-$SectionBody1 = q~<p>Now that you have created your Categories, you can use YaBB's amazing Board-creation utilities to manage the post-able sections of your community. YaBB allows you to create an unlimited<b>*</b> number of boards in every category. In order to access these functions, you must be logged in as an Administrator or Global Moderator with proper access rights. Once you are, look at the main menu. You will notice a link titled &#8220;Admin&#8221;. Clicking this will bring up a password screen so you can verify that your are, in fact, authorized to work in the Admin Center. Once your password is confirmed, you will be taken to the Administrator's control panel. On the left hand menu, search for the section titled &#8220;Forum Controls&#8221; and click on the link titled &#8220;Boards&#8221;.</p>
+$section_sub1 = "Accessing_the_Board_Functions";
+$section_body1 = q~<p>Now that you have created your Categories, you can use YaBB's amazing Board-creation utilities to manage the post-able sections of your community. YaBB allows you to create an unlimited<b>*</b> number of boards in every category. In order to access these functions, you must be logged in as an Administrator or Global Moderator with proper access rights. Once you are, look at the main menu. You will notice a link titled &#8220;Admin&#8221;. Clicking this will bring up a password screen so you can verify that your are, in fact, authorized to work in the Admin Center. Once your password is confirmed, you will be taken to the Administrator's control panel. On the left hand menu, search for the section titled &#8220;Forum Controls&#8221; and click on the link titled &#8220;Boards&#8221;.</p>
 <p><i><b>*</b> YaBB is only limited by the space allocated to you on your web hosting server.</i></p>
 ~;
 #############################################
 
 ### Section 2
 #############################################
-$SectionSub2 = "Adding_New_Boards";
-$SectionBody2 = q~<p>YaBB gives Forum Administrators the ability to add multiple Boards from a single screen. To do this, access the forum's Board Management functions as explained above. Once there, scroll to the bottom of the list of existing boards &#40;if any&#41; and find the function titled &#8220;Add Boards&#8221;. Enter the number of new Boards you would like to create in the text box then press the button titled &#8220;Add&#8221;.</p>
+$section_sub2 = "Adding_New_Boards";
+$section_body2 = q~<p>YaBB gives Forum Administrators the ability to add multiple Boards from a single screen. To do this, access the forum's Board Management functions as explained above. Once there, scroll to the bottom of the list of existing boards &#40;if any&#41; and find the function titled &#8220;Add Boards&#8221;. Enter the number of new Boards you would like to create in the text box then press the button titled &#8220;Add&#8221;.</p>
 <p>On this Edit Boards page, you will be given a large set of options for each of the new Boards you are trying to add:</p>
 <ul>
     <li><b><span class="under">Board ID</span></b>
@@ -164,8 +164,8 @@ $SectionBody2 = q~<p>YaBB gives Forum Administrators the ability to add multiple
 
 ### Section 3
 #############################################
-$SectionSub3 = "Editing_a_Board";
-$SectionBody3 = q~<p>If you need to make changes to any of the boards you have created, simply follow the directions above to access your board management section. In the list of boards, you will notice a check box that corresponds to each title. Check this box for each and every board you wish to edit. Once selected, scroll to the bottom of the board listings and locate the set of radio buttons titled &#8220;With selected&#8221;. Click on the radio labeled &#8220;Edit&#8221; then press the button to the right titled &#8220;Go&#8221;.</p>
+$section_sub3 = "Editing_a_Board";
+$section_body3 = q~<p>If you need to make changes to any of the boards you have created, simply follow the directions above to access your board management section. In the list of boards, you will notice a check box that corresponds to each title. Check this box for each and every board you wish to edit. Once selected, scroll to the bottom of the board listings and locate the set of radio buttons titled &#8220;With selected&#8221;. Click on the radio labeled &#8220;Edit&#8221; then press the button to the right titled &#8220;Go&#8221;.</p>
 <p>On this Edit Boards page, you will be given a large set of options for each of the new Boards you are trying to edit:</p>
 <ul>
     <li><b><span class="under">Board ID</span></b>
@@ -315,8 +315,8 @@ $SectionBody3 = q~<p>If you need to make changes to any of the boards you have c
 
 ### Section 4
 #############################################
-$SectionSub4 = "Deleting_a_Board";
-$SectionBody4 = q~<p>If you would like to remove a Board, follow the directions in the Accessing the Board Functions section above to access your Board management page.</p>
+$section_sub4 = "Deleting_a_Board";
+$section_body4 = q~<p>If you would like to remove a Board, follow the directions in the Accessing the Board Functions section above to access your Board management page.</p>
 <h4>Deleting a Board</h4>
 <ul>
     <li>In the list of Boards, you will notice a check box that corresponds to each title. Check this box for each and every Board you wish to remove.</li>

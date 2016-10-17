@@ -17,30 +17,48 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-#use strict;
+use strict;
 use warnings;
-no warnings qw(once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 ### Version Info ###
-$YaBBversion = 'YaBB 2.7.00';
-$yabbplver   = 'YaBB 2.7.00 $Revision$';
-@yabbmods    = ();
+our $yabbversion = 'YaBB 2.7.00';
+our $yabbplver   = 'YaBB 2.7.00 $Revision$';
+our @yabbmods    = ();
+our $yabbmods    = 0;
 if (@yabbmods) {
     $yabbmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+our ( %error_txt, %maintxt,  %reg_txt );
+our ( $vardir,    $boardurl, $sourcedir, );
+our (
+    $debug,       $checkspace,   $maintenance,      $masterkey,
+    $mbname,      $use_guardian, $accept_permalink, $regtype,
+    $guestaccess, $referersecurity,
+);
+our (
+    $iamguest,       $iamgmod,          $iamadmin,       $yyadmin_alert,
+    %FORM,           $allow_gmod_admin, $formsession,    %gmod_access,
+    $username,       $user_ip,          %INFO,           $randaction,
+    $staff,          $currentboard,     $sessionvalid,   $cgi_query,
+    %director,       $is_perm,          $permtopicfound, $permtitle,
+    $permachecktime, $threadpermatime,  $permboardfound, $permboard,
+    $yyiis
+);
 
 BEGIN {
 
     # Make sure the module path is present
     push @INC, './Modules';
-
-    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
-        $yyIIS = 1;
+    if ( $ENV{'SERVER_SOFTWARE'} && $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+        $yyiis = 1;
+        my ($yypath);
         if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
             $yypath = $1;
         }
@@ -49,18 +67,20 @@ BEGIN {
         push @INC, $yypath;
     }
 
-    $yyexec      = 'YaBB';
-    $script_root = $ENV{'SCRIPT_FILENAME'};
+    our $yyexec      = 'YaBB';
+    our $script_root = $ENV{'SCRIPT_FILENAME'};
     if ( !$script_root ) {
-        $script_root = $ENV{'PATH_TRANSLATED'};
+        $script_root = $ENV{'PATH_TRANSLATED'} || q{};
     }
     $script_root =~ s/\/$yyexec[.](pl|cgi)//igxsm;
 
     require Paths;
-    if   ( -e ("$yyexec.cgi") ) { $yyxt = 'cgi'; }
-    else                        { $yyxt = 'pl'; }
+    my $yyext = 'pl';
+    if   ( -e ("$yyexec.cgi") ) { $yyext = 'cgi'; }
+    else                        { $yyext = 'pl'; }
+    my $back_url = q{};
     if ( -e "$vardir/backup.lock" ) {
-        $back_url = "$boardurl/BackupFix.$yyxt";
+        $back_url = "$boardurl/BackupFix.$yyext";
         print "Location: $back_url\n\n" or croak 'cannot print location';
         exit;
     }
@@ -73,8 +93,7 @@ BEGIN {
             import Time::HiRes qw(time);
         }
     }
-    $START_TIME = time;
-
+    our $START_TIME = time;
     require './Sources/Subs.pm';
     require Sources::System;
     require Sources::DateTime;
@@ -84,6 +103,7 @@ BEGIN {
 }    # END of BEGIN block
 
 # If enabled: check if hard drive has enough space to safely operate the board
+my $hostchecked = 0;
 if ($checkspace) {
     require Sources::Freespace;
     $hostchecked = freespace();
@@ -92,12 +112,13 @@ if ($checkspace) {
 # Auto Maintenance Hook
 if ( !$maintenance && -e "$vardir/maintenance.lock" ) { $maintenance = 2; }
 
-LoadCookie();          # Load the user's cookie (or set to guest)
-LoadUserSettings();    # Load user settings
-WhatTemplate();        # Figure out which template to be using.
-WhatLanguage();        # Figure out which language file we should be using! :D
+load_cookie();          # Load the user's cookie (or set to guest)
+load_usersettings();    # Load user settings
+what_template();        # Figure out which template to be using.
+what_language();        # Figure out which language file we should be using! :D
 
 # Do this now that language is available
+my $yyfreespace = q{};
 if ($hostchecked) {
     $yyfreespace =
         $hostchecked < 0
@@ -110,7 +131,9 @@ if ($hostchecked) {
         )
         ? q~<div>~
           . (
-            $hostchecked > 0 ? $maintxt{'freeuserspace'} : $maintxt{'freediskspace'}
+              $hostchecked > 0
+            ? $maintxt{'freeuserspace'}
+            : $maintxt{'freediskspace'}
           )
           . qq~ $yyfreespace</div>~
         : q{}
@@ -137,8 +160,8 @@ $formsession = cloak("$mbname$username");
 
 # check for valid form sessionid in any POST request
 if ( $ENV{REQUEST_METHOD} =~ /post/ism ) {
-    if ( $CGI_query && $CGI_query->cgi_error() ) {
-        fatal_error( 'denial_of_service', $CGI_query->cgi_error() );
+    if ( $cgi_query && $cgi_query->cgi_error() ) {
+        fatal_error( 'denial_of_service', $cgi_query->cgi_error() );
     }
     if ( decloak( $FORM{'formsession'} ) ne "$mbname$username" ) {
         if ( $action eq 'login2' && $username ne 'Guest' ) {
@@ -165,29 +188,12 @@ if ($use_guardian) {
 
 # Check if the action is allowed from an external domain
 if ($referersecurity) { referer_check(); }
-
-if ( $regtype == 1 || $regtype == 2 ) {
-    if ( -e 'Variables/meminactive.db' ) {
-        $inactive = -s 'Variables/meminactive.db';
-        if ( $inactive > 2 ) {
-            RegApprovalCheck();
-            activation_check();
-        }
-    }
-    elsif ( -e 'Variables/memapprove.db' ) {
-        $approve  = -s 'Variables/memapprove.db';
-            if ( $approve > 2 ) {
-            RegApprovalCheck();
-        }
-    }
-}
-
 require Sources::Security;
 
-banning();     # Check for banned people
-LoadIMs();     # Load IM's
-WriteLog();    # write into the logfile
-SearchAccess();
+banning();      # Check for banned people
+load_pms();     # Load IM's
+write_log();    # write into the logfile
+search_access();
 
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };
 if ( eval { yymain() } ) {
@@ -202,28 +208,28 @@ sub yymain {
 
         #admin login issues with sessions and maintenance mode fix.
         if ( $staff && $sessionvalid == 0 ) {
-            UpdateCookie('delete');
+            update_cookie('delete');
             require Sources::LogInOut;
-            InMaintenance();
+            in_maintenance();
         }
         if ( $action eq 'login2' ) {
             require Sources::LogInOut;
-            Login2();
+            login2();
         }
-        if ( !$iamadmin ) { require Sources::LogInOut; InMaintenance(); }
+        if ( !$iamadmin ) { require Sources::LogInOut; in_maintenance(); }
     }
 
     # Guest can do the very few following actions
     if (   $iamguest
         && !$guestaccess
         && $action !~
-/^(login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction)2?$/xsm
+/^[login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction]2?$/xsm
       )
     {
-        KickGuest();
+        kickguest();
     }
 
-    if ( $action ) {
+    if ($action) {
         if ( $action eq $randaction ) {
             require Sources::Decoder;
             convert();
@@ -231,27 +237,30 @@ sub yymain {
         else {
             require Sources::SubList;
             if ( $director{$action} ) {
-                my @act = split /&/xsm, $director{$action};
-                require "$sourcedir/$act[0]";
-                &{ $act[1] };
+                {
+                    no strict qw(refs);
+                    my @act = split /&/xsm, $director{$action};
+                    require "$sourcedir/$act[0]";
+                    &{ $act[1] };
+                }
             }
             else {
                 require Sources::BoardIndex;
-                BoardIndex();
+                board_index();
             }
         }
     }
     elsif ( $INFO{'num'} ) {
         require Sources::Display;
-        Display();
+        display_thread();
     }
     elsif ( !$currentboard ) {
         require Sources::BoardIndex;
-        BoardIndex();
+        board_index();
     }
     else {
         require Sources::MessageIndex;
-        MessageIndex();
+        message_index();
     }
     return;
 }

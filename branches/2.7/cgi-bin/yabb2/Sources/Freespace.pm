@@ -12,22 +12,29 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
+no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
-$freespacepmver  = 'YaBB 2.7.00 $Revision$';
-@freespacepmmods = ();
+our $freespacepmver  = 'YaBB 2.7.00 $Revision$';
+our @freespacepmmods = ();
+our $freespacepmmods = 0;
 if (@freespacepmmods) {
     $freespacepmmods = 1;
 }
 
+our (
+    $enable_freespace_check, $enable_quota,   $hostusername,
+    $findfile_maxsize,       $findfile_space, $findfile_root,
+    $findfile_time,          $date,           $hostchecked
+);
+
 sub freespace {
-    my ( $FreeBytes, $hostchecked );
-    if ( $OSNAME =~ /Win/sm ) {
+    my ( $free_bytes, $yyfreespace, $child_pid );
+    if ( $OSNAME =~ /Win/xsm ) {
         if ($enable_freespace_check) {
             my @x =
               qx{DIR /-C};  # Do an ordinary DOS dir command and grab the output
@@ -39,7 +46,7 @@ sub freespace {
 
            # error trapping if output fails. The word byte should be in the line
             if ( $lastline =~ /^\s+(\d+)\s+(.+?)\s+(\d+)\s+(.+?)\n$/xsm ) {
-                $FreeBytes = $3 - 100_000;    # 100000 bytes reserve
+                $free_bytes = $3 - 100_000;    # 100000 bytes reserve
             }
 
         }
@@ -60,15 +67,15 @@ sub freespace {
             # error trapping if output fails.
             @quota = split /[ ]+/xsm, $quota[$enable_quota], 5;
             $quota[2] =~ s/[*]//xsm;
-            $FreeBytes =
+            $free_bytes =
               ( ( $quota[3] - $quota[2] ) * 1024 ) -
               100_000;    # 100000 bytes reserve
             $hostchecked = 1;
 
         }
         elsif ($findfile_maxsize) {
-            ( $FreeBytes, $hostchecked ) = split /<>/xsm, $findfile_space;
-            if ( $FreeBytes < 1 || $hostchecked < $date ) {
+            ( $free_bytes, $hostchecked ) = split /<>/xsm, $findfile_space;
+            if ( $free_bytes < 1 || $hostchecked < $date ) {
 
                 # fork the process since the *nix find command can take a while
                 $child_pid = fork;
@@ -76,7 +83,7 @@ sub freespace {
                     $findfile_space = 0;
                     my @fnd = split /-/xsm,
                       qx(find $findfile_root -noleaf -type f -printf '%s-');
-                    foreach my $i ( @fnd ) { $findfile_space += $i; }
+                    foreach my $i (@fnd) { $findfile_space += $i; }
                     $findfile_space =
                       ( ( $findfile_maxsize * 1024 * 1024 ) - $findfile_space )
                       . '<>'
@@ -85,7 +92,7 @@ sub freespace {
                     # actual free host space <> time for next check
 
                     require Admin::NewSettings;
-                    SaveSettingsTo('Settings.pm');
+                    save_settings_to('Settings.pm');
                     exit 0;
                 }
             }
@@ -102,7 +109,7 @@ sub freespace {
             if ( $lastline !~ m/\%/xsm ) { return -1; }
 
             # error trapping if output fails. The % sign should be in the line
-            $FreeBytes =
+            $free_bytes =
               ( ( split /[ ]+/xsm, $lastline, 5 )[3] * 1024 ) -
               100000;    # 100000 bytes reserve
 
@@ -113,19 +120,19 @@ sub freespace {
 
         $yyfreespace = 'Unix/Linux/BSD';
     }
-    if ( $FreeBytes < 1 ) { automaintenance( 'on', 'low_disk' ); }
+    if ( $free_bytes < 1 ) { automaintenance( 'on', 'low_disk' ); }
 
-    if ( $FreeBytes >= 1073741824 ) {
+    if ( $free_bytes >= 1073741824 ) {
         $yyfreespace = sprintf '%.2f',
-          $FreeBytes / ( 1024 * 1024 * 1024 ) . " GB ($yyfreespace)";
+          $free_bytes / ( 1024 * 1024 * 1024 ) . " GB ($yyfreespace)";
     }
-    elsif ( $FreeBytes >= 1048576 ) {
+    elsif ( $free_bytes >= 1048576 ) {
         $yyfreespace = sprintf '%.2f',
-          $FreeBytes / ( 1024 * 1024 ) . " MB ($yyfreespace)";
+          $free_bytes / ( 1024 * 1024 ) . " MB ($yyfreespace)";
     }
     else {
         $yyfreespace =
-          sprintf( '%.2f', $FreeBytes / 1024 ) . " KB ($yyfreespace)";
+          sprintf( '%.2f', $free_bytes / 1024 ) . " KB ($yyfreespace)";
     }
     return $hostchecked;
 }

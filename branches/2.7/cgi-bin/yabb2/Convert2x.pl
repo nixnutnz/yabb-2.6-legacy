@@ -17,7 +17,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 # use strict;
-# use warnings;
+use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use File::Copy qw(copy);
@@ -25,7 +25,7 @@ use English qw(-no_match_vars);
 
 our $VERSION = '2.7.00';
 
-$convert2xplver = 'YaBB 2.7.00 $Revision$';
+our $convert2xplver = 'YaBB 2.7.00 $Revision$';
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     $yyIIS = 1;
@@ -54,7 +54,7 @@ else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 $convertlang = './ConvertLang';
 $convert     = './Convert';
 
-$thisscript = "$ENV{'SCRIPT_NAME'}";
+$thisscript = $ENV{'SCRIPT_NAME'};
 if   ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 else                     { $yyext = 'pl'; }
 if   ($boardurl) { $set_cgi = "$boardurl/Convert2x.$yyext"; }
@@ -76,7 +76,7 @@ $date = time;
 $px = 'px';
 
 if ( -e "$vardir/Setup.lock" ) {
-    if ( -e "$vardir/Convert2x.lock" ) { FoundConvert2xLock(); }
+    if ( -e "$vardir/Convert2x.lock" ) { foundconvert2xlock(); }
 
     tempstarter();
     tabmenushow();
@@ -161,7 +161,7 @@ INTRO
     }
 
     if ( $action eq 'prepare' ) {
-        UpdateCookie('delete');
+        update_cookie('delete');
 
         $username = 'Guest';
         $iamguest = '1';
@@ -259,9 +259,9 @@ START
     elsif ( $action eq 'members' ) {
         require q~Variables/ConvSettings.txt~;
         if ( !exists $INFO{'mstart1'} ) {
-            PrepareConv();
+            prepareconv();
         }
-        ConvertMembers();
+        convertmembers();
 
         $yytabmenu = $NavLink1 . $NavLink2a . $NavLink3 . $NavLink5 . $NavLink6;
         $infost    = int( ( $INFO{'st'} + 60 ) / 60 );
@@ -401,9 +401,9 @@ MEMBERS1
     elsif ( $action eq 'cats' ) {
         require q~Variables/ConvSettings.txt~;
         if ( !exists $INFO{'bstart'} ) {
-            MoveBoards();
+            moveboards();
         }
-        FixControl();
+        fixcontrol();
 
         $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3a . $NavLink5 . $NavLink6;
 
@@ -544,7 +544,7 @@ MEMBERS1
     }
     elsif ( $action eq 'messages' ) {
         require q~Variables/ConvSettings.txt~;
-        MoveMessages();
+        movemessages();
 
         $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5a . $NavLink6;
 
@@ -695,8 +695,8 @@ MEMBERS1
 
     elsif ( $action eq 'cleanup' ) {
         require q~Variables/ConvSettings.txt~;
-        MoveVariables();
-        FixNopost();
+        movevariables();
+        fixnopost();
 
         $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6a;
 
@@ -778,17 +778,17 @@ $convset
     </table>
     </div>~;
 
-        CreateConvLock();
+        createconvlock();
     }
 
     $yyim    = 'You are running the YaBB 2.7.00 Converter.';
     $yytitle = 'YaBB 2.7.00 Converter';
-    SetupTemplate();
+    setuptemplate();
 }
 
 # Prepare Conversion ##
 
-sub PrepareConv {
+sub prepareconv {
     open $FILE, '>',
       "$boardsdir/dummy.testfile"
       or setup_fatal_error(
@@ -878,7 +878,7 @@ sub PrepareConv {
 
 # Member Conversion ##
 
-sub ConvertMembers {
+sub convertmembers {
     open $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
     my @memlist = <$MEMDIR>;
@@ -1116,7 +1116,7 @@ sub ConvertMembers {
                     ## grab the current list of store folders
                     ## else, create an entry for the two 'default ones' for the in/out status stuff
                     my $storefolders = ${$user}{'PMfolders'} || 'in|out';
-                    my @currStoreFolders = split /[|]/xsm, $storefolders;
+                    my @currstorefolders = split /[|]/xsm, $storefolders;
                     if ( -e "$convmemberdir/$user.imstore" ) {
                         open '<', $STOREMESS,
                           "$convmemberdir/$user.imstore"
@@ -1125,31 +1125,31 @@ sub ConvertMembers {
                         @imstore = <$STOREMESS>;
                         close $STOREMESS or croak 'cannot close STOREMESS';
                         if (@imstore) {
-                            my ( $storeUpdated, $storeMessLine ) = ( 0, 0 );
+                            my ( $storeupdated, $storemessline ) = ( 0, 0 );
                             for my $message (@imstore) {
-                                my @messLine = split /[|]/xsm, $message;
+                                my @messline = split /[|]/xsm, $message;
                                 ## look through list for folder name
-                                if ( $messLine[13] eq q{} )
+                                if ( $messline[13] eq q{} )
                                 {    # some folder missing within imstore
-                                    if ( $messLine[1] ne q{} )
+                                    if ( $messline[1] ne q{} )
                                     {    # 'from' name so inbox
-                                        $messLine[13] = 'in';
+                                        $messline[13] = 'in';
                                     }
                                     else {    # no 'from' so outbox
-                                        $messLine[13] = 'out';
+                                        $messline[13] = 'out';
                                     }
-                                    $imstore[$storeMessLine] = join q{|},
-                                      @messLine;
-                                    $storeUpdated = 1;
+                                    $imstore[$storemessline] = join q{|},
+                                      @messline;
+                                    $storeupdated = 1;
                                 }
-                                if ( $storefolders !~ /\b$messLine[13]\b/sm ) {
-                                    push @currStoreFolders, $messLine[13];
+                                if ( $storefolders !~ /\b$messline[13]\b/xsm ) {
+                                    push @currstorefolders, $messline[13];
                                     $storefolders = join q{|},
-                                      @currStoreFolders;
+                                      @currstorefolders;
                                 }
-                                $storeMessLine++;
+                                $storemessline++;
                             }
-                            if ( $storeUpdated == 1 ) {
+                            if ( $storeupdated == 1 ) {
                                 open $STRMESS, '<',
                                   "$memberdir/$user.imstore"
                                   or fatal_error( 'cannot_open',
@@ -1159,15 +1159,15 @@ sub ConvertMembers {
                                 close $STRMESS or croak 'cannot close STRMESS';
                             }
                             $storetotal = @imstore;
-                            $storefolders = join q{|}, @currStoreFolders;
+                            $storefolders = join q{|}, @currstorefolders;
                         }
                     }
                     ## run through the messages and count against the folder name
-                    for my $y ( 0 .. $#currStoreFolders ) {
+                    for my $y ( 0 .. $#currstorefolders ) {
                         $storefoldersCount[$y] = 0;
                         for my $x ( 0 .. $#imstore ) {
                             if ( ( split /[|]/xsm, $imstore[$x] )[13] eq
-                                $currStoreFolders[$y] )
+                                $currstorefolders[$y] )
                             {
                                 $storefoldersCount[$y]++;
                             }
@@ -1227,7 +1227,7 @@ sub ConvertMembers {
 
 # Board + Category Conversion ##
 
-sub MoveBoards {
+sub moveboards {
     copy "$convboardsdir/forum.master", "$boardsdir/forum.master";
     open $FTOTALS, '<', "$convboardsdir/forum.totals" or setup_fatal_error(
                     "$maintext_23 $convboardsdir/forum.totals: ", 1 );
@@ -1273,16 +1273,18 @@ sub MoveBoards {
     return;
 }
 
-sub FixControl {
+sub fixcontrol {
     my $newboard = q{};
     my $brdpix   = q{};
     %newcontrol = ();
     if ( -e qq~$convvardir/boardconv.txt~ ) {
         require qq~$convvardir/boardconv.txt~;
         for my $i (@allboards) {
-            my $x = $nid . $i;
+            my $x = $i;
             ${$x}{'mypic'} = q{};
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
+            ${$x}{'mods'} =~ s/,\s/\//gxsm;
+            ${$x}{'modgroups'} =~ s/,\s/\//gxsm;
             $newcontrol{$i} = [${$x}{'cat'},${$x}{'mypic'}, ${$x}{'description'}, ${$x}{'mods'}, ${$x}{'modgroups'}, ${$x}{'topicperms'}, ${$x}{'replyperms'}, ${$x}{'pollperms'}, ${$x}{'zero'}, ${$x}{'membergroups'}, ${$x}{'ann'}, ${$x}{'rbin'}, ${$x}{'attperms'}, ${$x}{'minageperms'}, ${$x}{'maxageperms'}, ${$x}{'genderperms'}, ${$x}{'canpost'}, ${$x}{'parent'}, ${$x}{'rules'}, ${$x}{'rulestitle'}, ${$x}{'rulesdesc'}, ${$x}{'rulescollapse'}, ${$x}{'brdpasswr'}, ${$x}{'brdpassw'}, ${$x}{'brdrss'}];
             if ( ${$x}{'pic'} ) {
                 $brdpix .= qq~$i|default|${$x}{'pic'}\n~;
@@ -1311,7 +1313,7 @@ sub FixControl {
             if ($pic) { $mypic = 'y'; }
             $newcontrol{$oldboard} = [$cat, $mypic, $description, $mods, $modgroups, $topicperms, $replyperms, $pollperms, $zero, $membergroups, $ann, $rbin, $attperms, $minageperms, $maxageperms, $genderperms, $canpost, $parent, $rules, $rulestitle, $rulesdesc, $rulescollapse, $brdpasswr, $brdpassw, $brdrss];
             if ($pic) {
-                $brdpix .= qq~$board|default|$pic\n~;
+                $brdpix .= qq~$oldboard|default|$pic\n~;
             }
         }
     }
@@ -1339,13 +1341,13 @@ sub FixControl {
     return;
 }
 
-sub FixNopost {
-    if ( $NoPost{'1'} ) {
+sub fixnopost {
+    if ( $grp_nopost{'1'} ) {
         require "$boardsdir/forum.control";
-        my $totalnoposts = keys %NoPost;
+        my $totalnoposts = keys %grp_nopost;
         foreach my $cnt ( keys %control ) {
             for my $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
-                ( $grptitle, undef ) = @{$NoPost{$i}};
+                ( $grptitle, undef ) = @{$grp_nopost{$i}};
 
                 for my $key ( keys %catinfo ) {
                     ( $catname, $catperms, $catcol ) =
@@ -1423,7 +1425,7 @@ sub FixNopost {
 
 # Messages Conversion ##
 
-sub MoveMessages {
+sub movemessages {
     if ( -e "$convdatadir/movedthreads.cgi" ) {
         open $OLDMVFILE, '<', "$convdatadir/movedthreads.cgi"
           or setup_fatal_error( "$maintext_23 $convdatadir/movedthreads.cgi: ",
@@ -1563,7 +1565,7 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
 # / Messages Conversion ##
 
 # Variables Conversion ##
-sub MoveVariables {
+sub movevariables {
     my @mvvar = (
         'eventcal.db',     'eventcalbday.db',
         'Movedthreads.pm', 'registration.log',
@@ -1751,11 +1753,11 @@ EOF
         close $NEWVAR or croak 'cannot close news.txt';
     }
 
-    Convert_Settings();
+    convert_settings();
     return;
 }
 
-sub Convert_Settings {
+sub convert_settings {
     $ret = 0;
     my $setset  = 0;
     my $setfile = "$convvardir/Settings.pm";
@@ -1824,8 +1826,8 @@ sub Convert_Settings {
     }
     if ( -e "$convvardir/membergroups.txt" ) {
         require "$convvardir/membergroups.txt";
-        for ( keys %NoPost ) {
-            if ( $NoPost{$_} ) { push @new_nopostorder, $_; }
+        for ( keys %grp_nopost ) {
+            if ( $grp_nopost{$_} ) { push @new_nopostorder, $_; }
         }
         @nopostorder = @new_nopostorder;
     }
@@ -1987,17 +1989,17 @@ EOF
 qq~The Forum Start date was set to $forumstart but the first member was registered $firstmember. So we changed the Forum Start Date to $firstmember.~;
         $forumstart = timeformat($tmp_first);
     }
-
+    $settings_file_version = 'YaBB 2.7.00';
     ( undef, $rancook ) = split /\-/xsm, $cookieusername;
     $cookietsort           = qq~Y2tsort-$rancook~;
     $cookieview            = qq~Y2view-$rancook~;
     $cookieviewtime        = isempty( $cookieviewtime, 525600 );
-    $MaxIMMessLen          = isempty( $MaxIMMessLen, 2000 );
-    $AdMaxIMMessLen        = isempty( $AdMaxIMMessLen, 3000 );
-    $MaxCalMessLen         = isempty( $MaxCalMessLen, 200 );
-    $AdMaxCalMessLen       = isempty( $AdMaxCalMessLen, 300 );
-    $Show_EventCal         = isempty( $Show_EventCal, 0 );
-    $Event_TodayColor      = isempty( $Event_TodayColor, '#ff0000' );
+    $max_pm_messmen        = isempty( $MaxIMMessLen, 2000 );
+    $ad_max_pm_messlen     = isempty( $AdMaxIMMessLen, 3000 );
+    $cal_max_messlen       = isempty( $MaxCalMessLen, 200 );
+    $cal_admax_messlen     = isempty( $AdMaxCalMessLen, 300 );
+    $show_event_cal        = isempty( $Show_EventCal, 0 );
+    $event_todaycolor      = isempty( $Event_TodayColor, '#ff0000' );
     $fix_avatar_img_size   = isempty( $fix_avatar_img_size, 0 );
     $max_avatar_width      = isempty( $max_avatar_width, 65 );
     $max_avatar_height     = isempty( $max_avatar_height, 65 );
@@ -2020,16 +2022,16 @@ qq~The Forum Start date was set to $forumstart but the first member was register
     $show_online_ip_admin  = isempty( $show_online_ip_admin, 1 );
     $show_online_ip_gmod   = isempty( $show_online_ip_gmod, 1 );
     $show_online_ip_fmod   = isempty( $show_online_ip_fmod, 1 );
-    $ipLookup              = isempty( $ipLookup, 1 );
+    $ip_lookup             = isempty( $ipLookup, 1 );
     $bm_subcut             = isempty( $bm_subcut, 50 );
     $maxdays               = $mymaxdays || 365;
     $maxdaysattach         = $mymaxdaysattach || 0;
-    $pmMaxDaysAttach       = $mypmMaxDaysAttach || 0;
+    $pm_maxdaysattach      = $mypmMaxDaysAttach || 0;
     $maxsizeattach         = $mymaxsizeattach || 0;
-    $pmMaxSizeAttach       = $mypmMaxSizeAttach || 0;
+    $pm_maxsizeattach      = $mypmMaxSizeAttach || 0;
     my @adv =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
-    $settings{'AdvancedTabs'} = @adv;
+    $settings{'advanced_tabs'} = @adv;
     %templateset = ('Forum default' => ['default','default','default','default','default','default','default','2','0','0','0'],
     'Mobile' => ['mobile','mobile','mobile','mobile','mobile','mobile','mobile','0','0','0','1'],
     );
@@ -2046,28 +2048,29 @@ qq~The Forum Start date was set to $forumstart but the first member was register
     foreach ( keys %Group ) {
         if ( $Group{$_} =~ m/[|]/xsm ) {
             my @newgrp1 = split /[|]/xsm, $Group{$_};
-            $Group{$_} = [ "$newgrp1[0]", $newgrp1[1], "$newgrp1[2]", "$newgrp1[3]", $newgrp1[4], $newgrp1[5], $newgrp1[6], $newgrp1[7], $newgrp1[8], $newgrp1[9], $newgrp1[10] ];
+            $grp_staff{$_} = [ "$newgrp1[0]", $newgrp1[1], "$newgrp1[2]", "$newgrp1[3]", $newgrp1[4], $newgrp1[5], $newgrp1[6], $newgrp1[7], $newgrp1[8], $newgrp1[9], $newgrp1[10] ];
         }
     }
     foreach ( keys %NoPost ) {
         if ( $NoPost{$_} =~ m/[|]/xsm ) {
             my @newgrp2 = split /[|]/xsm, $NoPost{$_};
-            $NoPost{$_} = ["$newgrp2[0]", $newgrp2[1], "$newgrp2[2]", "$newgrp2[3]", $newgrp2[4], $newgrp2[5], $newgrp2[6], $newgrp2[7], $newgrp2[8], $newgrp2[9], $newgrp2[10]];
+            $grp_nopost{$_} = ["$newgrp2[0]", $newgrp2[1], "$newgrp2[2]", "$newgrp2[3]", $newgrp2[4], $newgrp2[5], $newgrp2[6], $newgrp2[7], $newgrp2[8], $newgrp2[9], $newgrp2[10]];
         }
     }
     foreach ( keys %Post ) {
         if ( $Post{$_} =~ m/[|]/xsm ) {
             my @newgrp3 = split /[|]/xsm, $Post{$_};
-            $Post{$_} = ["$newgrp3[0]", $newgrp3[1], "$newgrp3[2]", "$newgrp3[3]", $newgrp3[4], $newgrp3[5], $newgrp3[6], $newgrp3[7], $newgrp3[8], $newgrp3[9], $newgrp3[10]];
+            $grp_post{$_} = ["$newgrp3[0]", $newgrp3[1], "$newgrp3[2]", "$newgrp3[3]", $newgrp3[4], $newgrp3[5], $newgrp3[6], $newgrp3[7], $newgrp3[8], $newgrp3[9], $newgrp3[10]];
         }
     }
+    @smilieorder = ();
     foreach my $i ( 0 .. $#SmilieURL ) {
         $addedsmilies{$i + 1} = ["$SmilieURL[$i]", "$SmilieCode[$i]", "$SmilieDescription[$i]", "$SmilieLinebreak[$i]"];
         push @smilieorder, $i + 1;
     }
 
     require Admin::NewSettings;
-    SaveSettingsTo( 'Settings.pm', %settings );
+    save_settings_to( 'Settings.pm', %settings );
 
     $ret = 1;
     return;
@@ -2077,7 +2080,7 @@ qq~The Forum Start date was set to $forumstart but the first member was register
 
 #End Conversion#
 
-sub FoundConvert2xLock {
+sub foundconvert2xlock {
     tempstarter();
     require Sources::TabMenu;
 
@@ -2129,11 +2132,11 @@ $convlangset
 
     $yyim    = 'YaBB 2.7.00 Convert2x Utility has already been run.';
     $yytitle = 'YaBB 2.7.00 Convert2x Utility';
-    SetupTemplate();
+    setuptemplate();
     return;
 }
 
-sub CreateConvLock {
+sub createconvlock {
     my $lockfile = q~This is a lockfile for the Convert2x Utility.
 It prevents it being run again after it has been run once.
 Delete this file if you want to run the Convert2x Utility again.~;
@@ -2148,7 +2151,7 @@ Delete this file if you want to run the Convert2x Utility again.~;
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    $YaBBversion = 'YaBB 2.7.00';
+    $yabbversion = 'YaBB 2.7.00';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -2170,16 +2173,16 @@ sub tempstarter {
     }
     else { $convertdir = './Convert'; }
 
-    LoadCookie();    # Load the user's cookie (or set to guest)
-    LoadUserSettings();
-    WhatTemplate();
-    WhatLanguage();
+    load_cookie();    # Load the user's cookie (or set to guest)
+    load_usersettings();
+    what_template();
+    what_language();
     require Sources::Security;
-    WriteLog();
+    write_log();
     return;
 }
 
-sub SetupImgLoc {
+sub setupimglock {
     if ( !-e "$htmldir/Templates/Forum/$useimages/$_[0]" ) {
         $thisimgloc = qq~img src="$yyhtml_root/Templates/Forum/default/$_[0]"~;
     }
@@ -2255,11 +2258,11 @@ sub setup_fatal_error {
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
     tempstarter();
-    SetupTemplate();
+    setuptemplate();
     return;
 }
 
-sub SimpleOutput {
+sub simpleoutput {
     $gzcomp = 0;
     print_output_header();
 
@@ -2280,7 +2283,7 @@ sub SimpleOutput {
     exit;
 }
 
-sub SetupTemplate {
+sub setuptemplate {
     $gzcomp = fileno $GZIP ? 1 : 0;
     print_output_header();
 
@@ -2359,7 +2362,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
                     $message = $newsmessages[$j];
                     if ($enable_ubbc) {
                         enable_yabbc();
-                        DoUBBC();
+                        do_ubbc();
                     }
                     $message =~ s/\x22/\\\x22/gxsm;
                     $yynews .= qq~
@@ -2375,7 +2378,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
                 $message = $newsmessages[ int rand @newsmessages ];
                 if ($enable_ubbc) {
                     enable_yabbc();
-                    DoUBBC();
+                    do_ubbc();
                 }
                 $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
@@ -2389,7 +2392,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
-        $curline =~ s/\Qimg src=\E\x22$imagesdir\/(.+?)\x22/SetupImgLoc($1)/eigxsm;
+        $curline =~ s/\Qimg src=\E\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eigxsm;
         $output .= $curline;
     }
     if ( $yycopyin == 0 ) {
@@ -2427,7 +2430,7 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
         my $var_length = length $x[0];
         while ( $length < $var_length ) { $length += 120; }
         foreach ( split / +/sm, $x[1] ) {
-            if ( ( $var_length + length($comment) + length $_ ) > $length ) {
+            if ( ( $var_length + length($comment) + length ) > $length ) {
                 $comment =~ s/ $//sm;
                 $comment .= "\n$filler#  $_ ";
                 $length += 120;
@@ -2448,7 +2451,7 @@ sub checkattach {
 
     open $PMATTACHLOG, '<', "$vardir/pmattachments.db"
       or croak 'cannot open pmattach';
-    my @pmAttachments = <$PMATTACHLOG>;
+    my @pmattachments = <$PMATTACHLOG>;
     close $PMATTACHLOG or croak 'cannot close pmattach';
     my $checktxt = q{};
 
@@ -2466,7 +2469,7 @@ sub checkattach {
         $checktxt .=
 q~Attention: The number of attachments listed in the attachment log does not match the number of files in yabbfiles/Attachments. Perhaps you forgot to copy the attachments files into your new installation?<br />~;
     }
-    if ( scalar @pmAttachments > scalar @pmfiles ) {
+    if ( scalar @pmattachments > scalar @pmfiles ) {
         $checktxt .=
 q~Attention: The number of pm attachments listed in the pm attachment log does not match the number of files in yabbfiles/PMAttachments. Perhaps you forgot to copy the pm attachments files into your new installation?~;
     }

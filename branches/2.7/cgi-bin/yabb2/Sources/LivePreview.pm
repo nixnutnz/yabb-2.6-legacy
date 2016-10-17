@@ -15,28 +15,44 @@
 #                and added to YaBB core in Version 2.5.4/2.6.0                #
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     #
 ###############################################################################
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$livepreviewpmver  = 'YaBB 2.7.00 $Revision$';
-@livepreviewpmmods = ();
+our $livepreviewpmver  = 'YaBB 2.7.00 $Revision$';
+our @livepreviewpmmods = ();
+our $livepreviewpmmods = 0;
 if (@livepreviewpmmods) {
     $livepreviewpmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+our (
+    %croak,         %FORM,                  $enable_ubbc,
+    $yy_yabbloaded, $set_subject_maxlength, $yysetlocation,
+    $scripturl,     $date,                  $tmpmusername,
+    $uid,           %micon,                 %micon_bg,
+    %inmes_txt,     $mypm_liveprev_b,       $my_sig,
+    $my_attach,     $username,              %var_cal,
+    %cal_icon,      $messageblock,          $message
+);
+
 use URI::Escape;
-LoadCensorList();
+load_censor_list();
+require Sources::Guardian;
 guard();
 
 if ($enable_ubbc) {
-    if ( !$yyYaBBCloaded ) {
+    if ( !$yy_yabbloaded ) {
         require Sources::YaBBC;
     }
 }
 
-sub DoLiveMessage {
+sub dolive_message {
+    my ( $displayname, $csubject, $myname );
     if ( $FORM{'isprev'} ) {
         $displayname = $FORM{'musername'};
         $FORM{'message'} =~ s/\r//gxsm;
@@ -44,8 +60,8 @@ sub DoLiveMessage {
         uri_unescape($message);
         $message =~ s/\[ch8203\]//igxsm;
         $message =~ s/\&\x238203;//igxsm;
-        FromChars($message);
-        ToHTML($message);
+        from_chars($message);
+        to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
         $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
@@ -54,37 +70,41 @@ sub DoLiveMessage {
         $message =~ s/\n/<br \/>/gxsm;
         $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
         wrap();
-        if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
+        my $ns = q{};
+        if ( $FORM{'nscheck'} ) { $ns = 'NS'; }
 
-        if ($enable_ubbc) {
-            DoUBBC();
-            $message =~ s/\Q style="display:none"\E/ style="display:inline"/gxsm;
+        if ( $enable_ubbc && !$ns ) {
+            do_ubbc();
+            $message =~
+              s/\Q style="display:none"\E/ style="display:inline"/gxsm;
         }
+
         wrap2();
-        ToChars($message);
-        $message  = Censor($message);
+        to_chars($message);
+        $message  = do_censor($message);
         $csubject = $FORM{'subject'};
         uri_unescape($csubject);
 
         $csubject =~ s/[\r\n]//gxsm;
-        FromChars($csubject);
-        $convertstr = $csubject;
-        $convertcut =
-          $set_subjectMaxLength + ( $csubject =~ /^Re:\s+ /xsm ? 4 : 0 );
-        CountChars();
+        from_chars($csubject);
+        my $convertstr = $csubject;
+        $set_subject_maxlength ||= 50;
+        my $convertcut =
+          $set_subject_maxlength + ( $csubject =~ /^Re:\s+ /xsm ? 4 : 0 );
+        count_chars();
         $csubject = $convertstr;
-        ToHTML($csubject);
-        ToChars($csubject);
-        $csubject = Censor($csubject);
+        to_html($csubject);
+        to_chars($csubject);
+        $csubject = do_censor($csubject);
         liveimage_resize();
         $myname = $FORM{'guestname'};
         uri_unescape($myname);
 
         $myname =~ s/[\r\n]//gxsm;
-        FromChars($myname);
-        ToHTML($myname);
-        ToChars($myname);
-        $myname = Censor($myname);
+        from_chars($myname);
+        to_html($myname);
+        to_chars($myname);
+        $myname = do_censor($myname);
         print "Content-type: application/x-www-form-urlencoded\n\n"
           or croak "$croak{'print'} content-type";
         print qq~$csubject|$message|$myname~ or croak "$croak{'print'}";
@@ -92,22 +112,23 @@ sub DoLiveMessage {
         exit;
     }
     else {
-        $yySetLocation = $scripturl;
+        $yysetlocation = $scripturl;
         redirectexit();
     }
     return;
 }
 
-sub DoLiveIM {
-    $subjdate = timeformat( $date, 0, 0, 0, 1 );
+sub dolive_pm {
+    my ( $displayname, $csubject, $msgimg, $css, $liveipimg, $livemip );
+    my $subjdate = timeformat( $date, 0, 0, 0, 1 );
     if ( $FORM{'isprev'} ) {
         $FORM{'message'} =~ s/\r//gxsm;
         $message = $FORM{'message'};
         uri_unescape($message);
         $message =~ s/\[ch8203\]//igxsm;
         $message =~ s/\&\x238203;//igxsm;
-        FromChars($message);
-        ToHTML($message);
+        from_chars($message);
+        to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
         $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
@@ -116,43 +137,50 @@ sub DoLiveIM {
         $message =~ s/\n/<br \/>/gxsm;
         $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
         wrap();
+        my $ns = q{};
         if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
 
-        if ($enable_ubbc) {
+        if ( $enable_ubbc && !$ns ) {
             $displayname = q{};
-            if ( $tmpmusername ) {
-                $displayname = ${ $uid . $tmpmusername }{'realname'};
+            {
+                no strict qw(refs);
+                if ($tmpmusername) {
+                    $displayname = ${ $uid . $tmpmusername }{'realname'};
+                }
             }
-            DoUBBC();
-            $message =~ s/\Q style="display:none"\E/ style="display:inline"/gxsm;
+            do_ubbc();
+            $message =~
+              s/\Q style="display:none"\E/ style="display:inline"/gxsm;
         }
         wrap2();
-        ToChars($message);
-        $message  = Censor($message);
+        to_chars($message);
+        $message  = do_censor($message);
         $csubject = $FORM{'subject'};
         uri_unescape($csubject);
         $csubject =~ s/[\r\n]//gxsm;
-        FromChars($csubject);
-        $convertstr = $csubject;
-        $convertcut =
-          $set_subjectMaxLength + ( $csubject =~ /^Re:\s+ /xsm ? 4 : 0 );
-        CountChars();
+        from_chars($csubject);
+        my $convertstr = $csubject;
+        $set_subject_maxlength ||= 50;
+        my $convertcut =
+          $set_subject_maxlength + ( $csubject =~ /^Re:\s+ /xsm ? 4 : 0 );
+        count_chars();
         $csubject = $convertstr;
-        ToHTML($csubject);
-        ToChars($csubject);
-        $csubject = Censor($csubject);
-        $icon     = $FORM{'icon'};
-        CheckIcon();
+        to_html($csubject);
+        to_chars($csubject);
+        $csubject = do_censor($csubject);
+        our $icon = $FORM{'icon'} || 's';
+        check_icon();
         get_micon();
-        $msgimg = qq~$micon{$icon}~;
+        $msgimg = $micon{$icon};
         $css    = q~windowbg~;
-        LoadLanguage('InstantMessage');
+        load_language('InstantMessage');
 
         get_template('MyMessage');
         $liveipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
         $livemip   = $inmes_txt{'511'};
-
-        $messageblock = $myIM_liveprev_b;
+        $my_sig    ||= q{};
+        $my_attach ||= q{};
+        $messageblock = $mypm_liveprev_b;
         $messageblock =~ s/\Q{yabb css}\E/$css/gxsm;
         $messageblock =~ s/\Q{yabb msgimg}\E/$msgimg/gxsm;
         $messageblock =~ s/\Q{yabb subjdate}\E/$subjdate/gxsm;
@@ -161,15 +189,7 @@ sub DoLiveIM {
         $messageblock =~ s/\Q{yabb my_sig}\E/$my_sig/gxsm;
         $messageblock =~ s/\Q{yabb my_attach}\E/$my_attach/gxsm;
         $messageblock =~ s/\Q{yabb my_showIP}\E/$liveipimg $livemip/gxsm;
-        if ( !${ $uid . $username }{'postlayout'} ) {
-            $txtsz = q{};
-        }
-        else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
-              ${ $uid . $username }{'postlayout'};
-            if ( $txtsz < 60 ) { $txtsz = 100; }
-            $txtsz = qq~; font-size:$txtsz%~;
-        }
+        my $txtsz = txtsz();
         $messageblock =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
 
         liveimage_resize();
@@ -180,22 +200,23 @@ sub DoLiveIM {
         exit;
     }
     else {
-        $yySetLocation = $scripturl;
+        $yysetlocation = $scripturl;
         redirectexit();
     }
     return;
 }
 
-sub DoLiveCal {
+sub dolive_cal {
+    my ( $displayname, $myname, );
     if ( $FORM{'isprev'} ) {
-        LoadLanguage('EventCal');
+        load_language('EventCal');
         $message = $FORM{'message'};
         uri_unescape($message);
         $message =~ s/\r//gxsm;
         $message =~ s/\[ch8203\]//igxsm;
         $message =~ s/\&\x238203;//igxsm;
-        FromChars($message);
-        ToHTML($message);
+        from_chars($message);
+        to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
         $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
@@ -204,39 +225,46 @@ sub DoLiveCal {
         $message =~ s/\n/<br \/>/gxsm;
         $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
         wrap();
-        if ( $FORM{'nschecked'} == 1 ) { $ns = 'NS'; }
+        my $ns = q{};
+        if ( $FORM{'nschecked'} ) { $ns = 'NS'; }
 
-        if ($enable_ubbc) {
-            $tmpmusername ||= q{};
-            $displayname = ${ $uid . $tmpmusername }{'realname'};
-            DoUBBC();
-            $message =~ s/\Q style="display:none"\E/ style="display:inline"/gxsm;
+        {
+            no strict qw(refs);
+            if ( $enable_ubbc && !$ns ) {
+                $tmpmusername ||= q{};
+                $displayname = ${ $uid . $tmpmusername }{'realname'};
+                do_ubbc();
+                $message =~
+                  s/\Q style="display:none"\E/ style="display:inline"/gxsm;
+            }
         }
         wrap2();
-        ToChars($message);
-        $message = Censor($message);
+        to_chars($message);
+        $message = do_censor($message);
         liveimage_resize();
-        CountChars();
+        count_chars();
         $myname = $FORM{'guestname'};
         uri_unescape($myname);
 
         $myname =~ s/[\r\n]//gxsm;
-        FromChars($myname);
-        ToHTML($myname);
-        ToChars($myname);
-        $myname     = Censor($myname);
-        $d_year     = $FORM{'cal_year'};
-        $d_mon      = $FORM{'cal_mon'};
-        $d_day      = $FORM{'cal_day'};
-        $my_icontxt = $FORM{'icon_txt'};
-        $txt_icon   = $var_cal{$my_icontxt};
-        $my_caltype = $FORM{'cal_type'};
+        from_chars($myname);
+        to_html($myname);
+        to_chars($myname);
+        $myname = do_censor($myname);
+        my $d_year     = $FORM{'cal_year'};
+        my $d_mon      = $FORM{'cal_mon'};
+        my $d_day      = $FORM{'cal_day'};
+        my $my_icontxt = $FORM{'icon_txt'};
+        my $txt_icon   = $var_cal{$my_icontxt};
+        $txt_icon ||= q{};
+        my $my_caltype = $FORM{'cal_type'};
+        my $mycal_type = q{};
         get_micon();
-        if   ( $my_caltype == 2 ) { $mycal_type = $cal_icon{'eventprivate'}; }
-        else                      { $mycal_type = q{}; }
-        $mybtime   = stringtotime(qq~$d_mon/$d_day/$d_year~);
-        $mybtimein = timeformat($mybtime);
-        $cdate     = dtonly($mybtimein);
+        if   ( $my_caltype eq 'c' ) { $mycal_type = $cal_icon{'eventprivate'}; }
+        else                        { $mycal_type = q{}; }
+        my $mybtime   = stringtotime(qq~$d_mon/$d_day/$d_year~);
+        my $mybtimein = timeformat($mybtime);
+        my $cdate     = dtonly($mybtimein);
 
         print "Content-type: application/x-www-form-urlencoded\n\n"
           or croak "$croak{'print'} content-type";
@@ -246,7 +274,7 @@ sub DoLiveCal {
         exit;
     }
     else {
-        $yySetLocation = $scripturl;
+        $yysetlocation = $scripturl;
         redirectexit();
     }
     return;
@@ -261,11 +289,14 @@ sub liveimage_resize {
         return qq~"$x[0]"$x[1]~;
     };
 
-    if ($messageblock) {$messageblock =~
-      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gexsm;}
-    if ($message) {$message =~
-      s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gexsm;}
-
+    if ($messageblock) {
+        $messageblock =~
+          s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gexsm;
+    }
+    if ($message) {
+        $message =~
+          s/"(post_liveimg_resize)"([^>]*>)/ check_image_resize($1,$2) /gexsm;
+    }
     return;
 }
 

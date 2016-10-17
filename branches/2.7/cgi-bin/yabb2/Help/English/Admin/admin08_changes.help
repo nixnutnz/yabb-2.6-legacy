@@ -1,18 +1,18 @@
-$englishadmin_admin08_changeshelpver = 'YaBB 2.7.00 $Revision: 1808 $';
+$englishadmin_admin08_changeshelpver = 'YaBB 2.7.00 $Revision: 1818 $';
 if ( $action eq 'detailedversion' ) { return 1; }
-$SectionName = "What's_Changed";
+$section_name = "What's_Changed";
 
 ### Section 1
 #############################################
-$SectionSub1 = "General_Observations";
-$SectionBody1 = q~<p>YaBB is a 'living document'. It changes over time. Features are added, and occasionally removed, as YaBB evolves. The Sections below document many of the changes for the admin.</p>
+$section_sub1 = "General_Observations";
+$section_body1 = q~<p>YaBB is a 'living document'. It changes over time. Features are added, and occasionally removed, as YaBB evolves. The Sections below document many of the changes for the admin.</p>
 ~;
 #############################################
 
 ### Section 2
 #############################################
-$SectionSub2 = "Features_in_YaBB_2.2_and_later_versions";
-$SectionBody2 = q~<p>In the making of YaBB 2.2, we have done an overhaul to the admin center's various sections.
+$section_sub2 = "Features_in_YaBB_2.2_and_later_versions";
+$section_body2 = q~<p>In the making of YaBB 2.2, we have done an overhaul to the admin center's various sections.
     <br />As the number of functions has grown larger, we have re-grouped some of them a bit into tabs and some functions may have changed places.
     <br />These are some features in YaBB 2.2 that naturally need some adjusting on the admin level. These additions are as follows:</p>
 <ul>
@@ -46,8 +46,8 @@ $SectionBody2 = q~<p>In the making of YaBB 2.2, we have done an overhaul to the 
 
 ### Section 3
 #############################################
-$SectionSub3 = "New_Features_in_YaBB_2.3";
-$SectionBody3 = q~<p>These are some completely new features to YaBB 2.3 that were added by popular request of users. These additions are:</p>
+$section_sub3 = "New_Features_in_YaBB_2.3";
+$section_body3 = q~<p>These are some completely new features to YaBB 2.3 that were added by popular request of users. These additions are:</p>
 <ul>
     <li><b>Reverse Post in Topic Advanced Edition</b>
         <br />Allows the Admin to choose the default post order (oldest to newest or newest to oldest). The Admin can also enable a setting in the Admin Center to allow/not allow the individual user to choose their own post order. If allowed, each user can change the order of the posts by either clicking on the name of the topic on topic pages and/or set it in their own Profile/Options page.
@@ -121,8 +121,8 @@ $SectionBody3 = q~<p>These are some completely new features to YaBB 2.3 that wer
 #############################################
 ### Section 4
 #############################################
-$SectionSub4 = "New_Features_in_YaBB_2.5.2";
-$SectionBody4 = q~<p>These are some completely new features to YaBB 2.5.2 that were added by popular request of users. These additions are:</p>
+$section_sub4 = "New_Features_in_YaBB_2.5.2";
+$section_body4 = q~<p>These are some completely new features to YaBB 2.5.2 that were added by popular request of users. These additions are:</p>
 <ul>
     <li><b>Additional Anti-Spam Measures</b>
         <ul>
@@ -149,8 +149,8 @@ $SectionBody4 = q~<p>These are some completely new features to YaBB 2.5.2 that w
 #############################################
 ### Section 5
 #############################################
-$SectionSub5 = "New_Features_in_YaBB_2.6.0";
-$SectionBody5 = q~<p>These are some completely new features to YaBB 2.6.0 that were added by popular request of users. These additions include:</p>
+$section_sub5 = "New_Features_in_YaBB_2.6.0";
+$section_body5 = q~<p>These are some completely new features to YaBB 2.6.0 that were added by popular request of users. These additions include:</p>
 <ul>
     <li><b>Subboards</b>
         <br />YaBB now supports subboards. At the Admin's choice, the boards containing subboards can hold messages or simply hold subboards. Also new: Board and Subboard Message indexes can be viewed within the Board index.
@@ -212,8 +212,8 @@ $SectionBody5 = q~<p>These are some completely new features to YaBB 2.6.0 that w
 </ul>
 ~;
 
-$SectionSub6 = "New_Features_in_YaBB_2.7.0";
-$SectionBody6 = q~<p>These are some new features to YaBB 2.7.0 that were added by popular request of users. These additions include:</p>
+$section_sub6 = "New_Features_in_YaBB_2.7.0";
+$section_body6 = q~<p>These are some new features to YaBB 2.7.0 that were added by popular request of users. These additions include:</p>
 <ul>
     <li><b>Advanced Timed Bans</b>
         <br />This gives additional language separating temporary bans (suspensions) from permanent bans. When banning from a member's profile, the Administrator, Global Moderators, and Forum Moderators can choose to give reason for the ban and send an e-mail to the member letting them know how long they've been banned for and why.
@@ -244,8 +244,8 @@ $SectionBody6 = q~<p>These are some new features to YaBB 2.7.0 that were added b
 
 ### Section 7
 #############################################
-$SectionSub7 = "License_-_YaBB_Public_License_(YPL)";
-$SectionBody7 = q~
+$section_sub7 = "License_-_YaBB_Public_License_(YPL)";
+$section_body7 = q~
 <h2>YaBB Public License (YPL)</h2>
 <p>Below is the license YaBB has adopted for the software. It explains your extended rights and restrictions with the YaBB forum software. We basically ask that you leave the copyright intact and visible on the bottom of your forum at all times on all pages. If you wish to break the following license or remove the copyright, you may make an inquiry by visiting the following URL: <a href="http://www.yabbforum.com/licenses.php">http://www.yabbforum.com/licenses.php</a>.</p>
 <ul>

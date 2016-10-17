@@ -12,18 +12,29 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.7.00';
+our $VERSION = '2.6.12';
 
-$palettepmver  = 'YaBB 2.7.00 $Revision$';
-@palettepmmods = ();
+our $palettepmver  = 'YaBB 2.6.12 $Revision$';
+our @palettepmmods = ();
+our $palettepmmods = 0;
 if (@palettepmmods) {
     $palettepmmods = 1;
 }
-$action ||= q{};
+
+our ($action);
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub ColorPicker {
+## system ##
+our (
+    %INFO,      $iamadmin,    @pallist,     $gzcomp,
+    $abbr_lang, $yymycharset, $yyhtml_root, $usestyle,
+    $scripturl, $defaultimagesdir,
+);
+
+sub color_picker {
     my $picktask = $INFO{'task'};
 
     if ( $INFO{'palnr'} && $iamadmin ) {
@@ -42,18 +53,15 @@ sub ColorPicker {
 
     $gzcomp = 0;
     print_output_header();
-
-    print qq~
-<!DOCTYPE html>
+    my $hshcd = '\x23';    # \x23 = '#';
+    our $output = qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
-<meta charset="$yymycharset" />
+    <meta charset="$yymycharset">
 <title>Palette</title>
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-
 <script type="text/javascript">
 var picktask = '$picktask';
-
 function Pickshowcolor(color) {
     if ( c=color.match(/rgb\\((\\d+?)\\, (\\d+?)\\, (\\d+?)\\)/i) ) {
         var rhex = tohex(c[1]);
@@ -65,7 +73,7 @@ function Pickshowcolor(color) {
         newcolor = color;
     }
     if(picktask == "post") {
-        passcolor=newcolor.replace(/\x23/, "");
+        passcolor=newcolor.replace(/$hshcd/, "");
         if(document.getElementById("defpal1").checked) {
             opener.document.getElementById("defaultpal1").style.backgroundColor=newcolor;
             location.href='$scripturl?action=palette;palnr=1;palcolor=' + passcolor + ';task=$picktask';
@@ -100,21 +108,17 @@ function Pickshowcolor(color) {
         if(picktask == "templ_0") opener.previewColor_0(newcolor);
         if(picktask == "templ_1") opener.previewColor_1(newcolor);
     }
-//  window.close();
 }
-
 </script>
 </head>
-
 <body>
-<div class="windowbg" style="position: absolute; top: 0px; left: 0px; width: 300px; height: 308px; border: 1px black outset;">
-<div style="position: relative; top: 4px; left: 5px; width: 288px; height: 209px; padding-left: 1px; padding-top: 1px; border: 0px; background-color: black;">~
-      or croak "$croak{'print'} colorpicker";
+<div class="windowbg" style="position: absolute; top: 0px; left: 0px; width: 300px; height: 308px; border: 1px black outset; z-index:100002">
+<div style="position: relative; top: 4px; left: 5px; width: 288px; height: 209px; padding-left: 1px; padding-top: 1px; border: 0px; background-color: black;">~;
 
-    for my $z ( 0 .. 255 ) {
-        showcolor($z);
+    foreach my $z ( 0 .. 255 ) {
+        $output .= showcolor($z);
     }
-    print q~
+    $output .= q~
     <span class="showcolor" style="background-color: #222222;" onclick="Pickshowcolor('#222222')">&nbsp;</span>
     <span class="showcolor" style="background-color: #333333;" onclick="Pickshowcolor('#333333')">&nbsp;</span>
     <span class="showcolor" style="background-color: #444444;" onclick="Pickshowcolor('#444444')">&nbsp;</span>
@@ -127,31 +131,29 @@ function Pickshowcolor(color) {
     <span class="showcolor" style="background-color: #cccccc;" onclick="Pickshowcolor('#cccccc')">&nbsp;</span>
     <span class="showcolor" style="background-color: #dddddd;" onclick="Pickshowcolor('#dddddd')">&nbsp;</span>
     <span class="showcolor" style="background-color: #eeeeee;" onclick="Pickshowcolor('#eeeeee')">&nbsp;</span>
-    <form name="dodefpal" id="dodefpal" action="">~
-      or croak "$croak{'print'} input";
+    <form name="dodefpal" id="dodefpal" action="">~;
 
     if ( $iamadmin && $picktask eq 'post' ) {
-        print qq~
+        $output .= qq~
     <span id="defpal_1" class="defpalx" style="background-color: $pallist[0]"><input type="radio" name="defpal" id="defpal1" value="defcolor1" class="defpal_b" style="background-color: $pallist[0];" title="Default palette" /></span>
     <span id="defpal_2" class="defpalx" style="background-color:$pallist[1]"><input type="radio" name="defpal" id="defpal2" value="defcolor2" style="background-color:$pallist[1];" class="defpal_b" title="Default palette" /></span>
     <span id="defpal_3" style="background-color:$pallist[2]" class="defpalx"><input type="radio" name="defpal" id="defpal3" value="defcolor3" style="background-color:$pallist[2];" class="defpal_b" title="Default palette" /></span>
     <span id="defpal_4" style="background-color:$pallist[3]" class="defpalx"><input type="radio" name="defpal" id="defpal4" value="defcolor4" style="background-color:$pallist[3];" class="defpal_b" title="Default palette" /></span>
     <span id="defpal_5" style="background-color:$pallist[4]" class="defpalx"><input type="radio" name="defpal" id="defpal5" value="defcolor5" style="background-color:$pallist[4];" class="defpal_b" title="Default palette" /></span>
-    <span id="defpal_6" style="background-color:$pallist[5]" class="defpalx"><input type="radio" name="defpal" id="defpal6" value="defcolor6" style="background-color:$pallist[5];" class="defpal_b" title="Default palette" /></span>~
-          or croak "$croak{'print'} input";
+    <span id="defpal_6" style="background-color:$pallist[5]" class="defpalx"><input type="radio" name="defpal" id="defpal6" value="defcolor6" style="background-color:$pallist[5];" class="defpal_b" title="Default palette" /></span>~;
     }
     else {
-        print q~
+        $output .= q~
     <input type="hidden" id="defpal1" value="" />
     <input type="hidden" id="defpal2" value="" />
     <input type="hidden" id="defpal3" value="" />
     <input type="hidden" id="defpal4" value="" />
     <input type="hidden" id="defpal5" value="" />
     <input type="hidden" id="defpal6" value="" />
-    ~ or croak "$croak{'print'} input";
+    ~;
     }
 
-    print qq~
+    $output .= qq~
     <input type="submit" class="none" /></form>
 </div>
 <div style="position: relative; top: 9px; left: 5px; width: 289px; height: 17px; border: 1px black solid;">
@@ -169,32 +171,33 @@ function Pickshowcolor(color) {
     <img src="$defaultimagesdir/knapblue.gif" id="knapImg3" alt="" class="skyd" style="position:absolute; left:4px; top:34px; cursor:pointer; z-index:2; width:13px; height:15px;" />
 </div>
 </div>
-
 <script src="$yyhtml_root/palette.js" type="text/javascript"></script>
-
 </body>
-</html>~ or croak "$croak{'print'} body";
+</html>~;
+
+    print_html_output_and_finish();
     return;
 }
 
 sub showcolor {
     my ($z) = @_;
+    my $showcolor = q{};
     if ( $z % 51 == 0 ) {
         my $c1 = sprintf '%02x', $z;
-        for my $y ( 0 .. 255 ) {
+        foreach my $y ( 0 .. 255 ) {
             if ( $y % 51 == 0 ) {
                 my $c2 = sprintf '%02x', $y;
-                for my $x ( 0 .. 255 ) {
+                foreach my $x ( 0 .. 255 ) {
                     if ( $x % 51 == 0 ) {
                         my $c3 = sprintf '%02x', $x;
-                        print
-qq~\n    <span title="#$c3$c2$c1" class="deftrows" style="background-color: #$c3$c2$c1;" onclick="Pickshowcolor('#$c3$c2$c1')">&nbsp;</span>~
-                          or croak "$croak{'print'} span";
+                        $showcolor .=
+qq~\n    <span title="#$c3$c2$c1" class="deftrows" style="background-color: #$c3$c2$c1;" onclick="Pickshowcolor('#$c3$c2$c1')">&nbsp;</span>~;
                     }
                 }
             }
         }
     }
-    return;
+    return $showcolor;
 }
+
 1;

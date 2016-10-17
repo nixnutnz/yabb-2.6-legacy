@@ -1,19 +1,19 @@
-$englishadmin_admin01_catshelpver = 'YaBB 2.7.00 $Revision: 1808 $';
+$englishadmin_admin01_catshelpver = 'YaBB 2.7.00 $Revision: 1818 $';
 if ( $action eq 'detailedversion' ) { return 1; }
-$SectionName = "Manage_Categories";
+$section_name = "Manage_Categories";
 
 ### Section 1
 #############################################
-$SectionSub1 = "Accessing_the_Category_Functions";
-$SectionBody1 = q~<p>This YaBB version comes equipped with many powerful tools to manage and control the conversational flow of your community, the cornerstone of which is the ability to group Boards into an unlimited<b>*</b> number of Categories. In order to access these functions, you must, of course, be logged in as an Administrator (or Global Moderator with proper access rights). Once you are, look at the Main tabbed menu at the top of your forum under the logo. You will notice a link titled &#8220;Admin&#8221;. Clicking this will bring up a password screen so you can verify that your are, in fact, authorized to work in the Admin Center. Once your password is confirmed, you will be taken to the Administrator's control panel. On the left hand menu, search for the section titled &#8220;Forum Controls&#8221; and click on the link titled &#8220;Categories&#8221;.</p>
+$section_sub1 = "Accessing_the_Category_Functions";
+$section_body1 = q~<p>This YaBB version comes equipped with many powerful tools to manage and control the conversational flow of your community, the cornerstone of which is the ability to group Boards into an unlimited<b>*</b> number of Categories. In order to access these functions, you must, of course, be logged in as an Administrator (or Global Moderator with proper access rights). Once you are, look at the Main tabbed menu at the top of your forum under the logo. You will notice a link titled &#8220;Admin&#8221;. Clicking this will bring up a password screen so you can verify that your are, in fact, authorized to work in the Admin Center. Once your password is confirmed, you will be taken to the Administrator's control panel. On the left hand menu, search for the section titled &#8220;Forum Controls&#8221; and click on the link titled &#8220;Categories&#8221;.</p>
 <p><i><b>*</b> YaBB is only limited by the space allocated to you on your web hosting server.</i></p>
 ~;
 #############################################
 
 ### Section 2
 #############################################
-$SectionSub2 = "Adding_New_Categories";
-$SectionBody2 = q~<p>YaBB allows you to add many new Categories all at once or one at a time. To do this, access the forum's Category management functions as shown above. Once there, scroll to the bottom of the list and find the function titled &#8220;Add Categories&#8221;. Enter the number of new Categories you wish to create in the box and press the button titled &#8220;Add&#8221;.</p>
+$section_sub2 = "Adding_New_Categories";
+$section_body2 = q~<p>YaBB allows you to add many new Categories all at once or one at a time. To do this, access the forum's Category management functions as shown above. Once there, scroll to the bottom of the list and find the function titled &#8220;Add Categories&#8221;. Enter the number of new Categories you wish to create in the box and press the button titled &#8220;Add&#8221;.</p>
 <p>On this new page, you will be given a set of options for each of the new categories you want to create:</p>
 <ul>
       <li><b><span class="under">ID</span></b>
@@ -54,8 +54,8 @@ $SectionBody2 = q~<p>YaBB allows you to add many new Categories all at once or o
 
 ### Section 3
 #############################################
-$SectionSub3 = "Editing_a_Category";
-$SectionBody3 = q~<p>Editing a Category with YaBB is fast and easy thanks to the hard work our fantastic team of developers. While inside of the Categories function of your Admin Center &#40;see Accessing the Category Functions above for details&#41;, you will see a list of existing Categories, each with a corresponding check box. Clicking on a check box will flag that Category for editing.</p>
+$section_sub3 = "Editing_a_Category";
+$section_body3 = q~<p>Editing a Category with YaBB is fast and easy thanks to the hard work our fantastic team of developers. While inside of the Categories function of your Admin Center &#40;see Accessing the Category Functions above for details&#41;, you will see a list of existing Categories, each with a corresponding check box. Clicking on a check box will flag that Category for editing.</p>
 <p>Once you have checked all the Categories you wish to edit, scroll to the bottom of the list and look for the set of radio buttons titled &#8220;With selected&#8221;. Click on the radio button for &#8220;Edit&#8221; and then press the button to the right titled &#8220;Go&#8221;. Inside you will find the following items for <i>each</i> Category:</p>
 <ul>
     <li><b><span class="under">ID</span></b>
@@ -90,8 +90,8 @@ $SectionBody3 = q~<p>Editing a Category with YaBB is fast and easy thanks to the
 
 ### Section 4
 #############################################
-$SectionSub4 = "Deleting_a_Category";
-$SectionBody4 = q~<p>If you would like to remove a Category, follow the directions (see Accessing the Category Functions above for details) to access your Category management page.</p>
+$section_sub4 = "Deleting_a_Category";
+$section_body4 = q~<p>If you would like to remove a Category, follow the directions (see Accessing the Category Functions above for details) to access your Category management page.</p>
 <ul>
     <li class="help_attn_strong"><b><span class="under">Warning:</span> Deleting a Category will also delete any boards you have in that Category.</b> Move them to another Category first if you want to save them.</li>
     <li>In the list of Categories, you will notice a check box that corresponds to each title. Check this box for each and every Category you wish to remove. Once selected, scroll to the bottom of the Category listings and locate the set of radio buttons titled &#8220;With selected&#8221;. Click on the radio labeled &#8220;Remove&#8221; then press the button to the right titled &#8220;Go&#8221;.</li>

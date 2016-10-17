@@ -21,7 +21,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 $boardhandellist = qq~
     {yabb expand}{yabb collapse}{yabb markallread}
 ~;
-$bdpicExt = 'png';
+$bdpic_ext = 'png';
 ## for the default announcement, recycle, subboard and regular board markers ##
 $brd_dropdown = 'dropdown.png';
 $brd_dropup = 'dropup.png';

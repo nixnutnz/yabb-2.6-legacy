@@ -15,7 +15,8 @@ $defaultmicondefver = 'YaBB 2.7.00 $Revision$';
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';
-LoadLanguage('Micon');
+load_language('Micon');
+no warnings qw(uninitialized);
 
 %micon = (
 'pollicon' => qq~<img src="$imagesdir/poll_open.gif" alt="$img_polltxt_m{'44'}" />~,
@@ -266,39 +267,39 @@ $newload = qq~
         </script>~;
 
 #####################################################################
-#                   JS Variables for IMPost, Post                   #
+#                   JS Variables for im_post, post                  #
 #####################################################################
-@jsPostlist = qw( xx exclamation thumbup thumbdown question lamp smiley angry cheesy grin sad wink );
-$jsPostlist = q{};
-for (@jsPostlist) {
-        $jsPostlist .= qq~'$_', '$micon_bg{$_}',\n~;
+@jspostlist = qw( xx exclamation thumbup thumbdown question lamp smiley angry cheesy grin sad wink );
+$js_postlist = q{};
+for (@jspostlist) {
+        $js_postlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }
-$jsPostlist =~ s/\,\n\Z//xsm;
-$jsPost = qq~
-var jsPost = new Hash($jsPostlist);
+$js_postlist =~ s/\,\n\Z//xsm;
+$js_post = qq~
+var jsPost = new Hash($js_postlist);
 ~;
 
-@jsPstatlist = qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread);
+@jspstatlist = qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread);
 for (@jsPstatlist) {
-        $jsPstatlist .= qq~'$_', '$micon_bg{$_}',\n~;
+        $js_pstatlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }
-$jsPstatlist =~ s/\,\n\Z//xsm;
-$jsPstat = qq~
-var jsPstat = new Hash($jsPstatlist);
+$js_pstatlist =~ s/\,\n\Z//xsm;
+$js_pstat = qq~
+var jsPstat = new Hash($js_pstatlist);
 ~;
 
-@jsIMlist = qw( standard confidential urgent );
-$jsIMlist = q{};
-for (@jsIMlist) {
-        $jsIMlist .= qq~'$_', '$micon_bg{$_}',\n~;
+@js_imlist = qw( standard confidential urgent );
+$js_imlist = q{};
+for (@js_imlist) {
+        $js_imlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }
-$jsIMlist =~ s/\,\n\Z//xsm;
-$jsIM = qq~
-var jsIM = new Hash($jsIMlist);
+$js_imlist =~ s/\,\n\Z//xsm;
+$js_im = qq~
+var jsIM = new Hash($js_imlist);
 ~;
 
 $my_sep = q{ };
-if ( $UseMenuT && $UseMenuT == 1 ) {
+if ( $use_menu_type && $use_menu_type == 1 ) {
     $my_sep = q{ | };
 }
 1;

@@ -12,53 +12,79 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$downloadspmver  = 'YaBB 2.7.00 $Revision$';
-@downloadspmmods = ();
+our $downloadspmver  = 'YaBB 2.7.00 $Revision$';
+our @downloadspmmods = ();
+our $downloadspmmods = 0;
 if (@downloadspmmods) {
     $downloadspmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+## language ##
+our ( %croak, %fatxt, %att_img, %micon_bg, %amv_txt, %admin_txt, %maintxt, );
+## settings/template ##
+our (
+    $yymycharset, $guest_media_disallowed, $datadir,
+    $vardir,      $ttsureverse,            $ttsreverse,
+    $htmldir,     $imagesdir,              $uploaddir,
+    $uploadurl,
+);
+## system ##
+our (
+    $iamadmin, $iamgmod,  $iamguest,  $uid,
+    $username, $adminurl, $scripturl, $formsession,
+    %FORM,     %INFO,     $useimages, %thread_arrayref,
+);
+## template ##
+our (
+    $downloads_top,   $downloads_att,      $my_att_admin,
+    $downloads_att_b, $my_att_admin_b,     $my_att_admin_c,
+    $downloads_att_c, $my_out_att_admin_a, $downloads_att_out_a,
+    $my_att_sort,     $downloads_tbl_end,  $downloads_bottom,
+);
 
 get_template('Downloads');
 get_micon();
 
-sub DownloadView {
+sub downloadview {
     if ( $guest_media_disallowed && $iamguest ) { fatal_error('members_only'); }
-    LoadLanguage('FA');
+    load_language('FA');
     print_output_header();
 
-    $output = $downloads_top;
-    $output =~ s/\Q{yabb fatxt39}\E/$fatxt{'39'}/xsm;
+    $downloads_top =~ s/\Q{yabb fatxt39}\E/$fatxt{'39'}/xsm;
+    my $numshow   = q{};
+    my $pageindex = q{};
 
     my $thread = $INFO{'thread'};
     if ( !ref $thread_arrayref{$thread} ) {
-        fopen( MSGTXT, "$datadir/$thread.txt" )
+        open my $MSGTXT, '<', "$datadir/$thread.txt"
           or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
-        @{ $thread_arrayref{$thread} } = <MSGTXT>;
-        fclose(MSGTXT);
+        @{ $thread_arrayref{$thread} } = <$MSGTXT>;
+        close $MSGTXT or croak "$croak{'close'} MSGTXT";
     }
     my $threadname =
       ( split /[|]/xsm, ${ $thread_arrayref{$thread} }[0], 2 )[0];
     my @attachinput =
-      map { split /,/xsm, ( split /[|]/xsm, $_ )[12] }
+      map { split /,/xsm, ( split /[|]/xsm )[12] }
       @{ $thread_arrayref{$thread} };
     chomp @attachinput;
 
     my ( %attachinput, $viewattachments );
     map { $attachinput{$_} = 1; } @attachinput;
 
-    fopen( AML, "$vardir/attachments.db" )
+    open my $AML, '<', "$vardir/attachments.db"
       or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
     @attachinput =
-      grep {
-        $_ =~ /$thread[|].+[|](.+)[|]\d+\s+/xsm
-          && exists $attachinput{$1}
-      } <AML>;
-    fclose(AML);
+      grep { /$thread[|].+[|](.+)[|]\d+\s+/xsm && exists $attachinput{$1} }
+      <$AML>;
+    close $AML or croak "$croak{'close'} AML";
 
     my $max = @attachinput;
 
@@ -83,9 +109,9 @@ sub DownloadView {
     }
     else {
         if ( $iamadmin || $iamgmod ) {
-            LoadLanguage('Admin');
+            load_language('Admin');
 
-            $output .= qq~
+            $downloads_top .= qq~
         <script type="text/javascript">
             function checkAll() {
                 for (var i = 0; i < document.del_attachments.elements.length; i++) {
@@ -110,10 +136,10 @@ sub DownloadView {
         <form name="del_attachments" action="$scripturl?action=viewdownloads;thread=$thread" method="post" style="display: inline;" onsubmit="verify_delete();">~;
         }
         else {
-            $output .= qq~
+            $downloads_top .= qq~
         <form action="$scripturl?action=viewdownloads;thread=$thread" method="post" style="display: inline;">~;
         }
-        $output .= qq~
+        $downloads_top .= qq~
         <input type="hidden" name="oldsort" value="$sort" />
         <input type="hidden" name="formsession" value="$formsession" />~;
 
@@ -159,9 +185,11 @@ sub DownloadView {
             }
         }
 
-        $postdisplaynum = 8;
-        $newstart       = ( int( $newstart / 25 ) ) * 25;
-        $tmpa           = 1;
+        my $postdisplaynum = 8;
+        $newstart = ( int( $newstart / 25 ) ) * 25;
+        my $tmpa      = 1;
+        my $startpage = 0;
+        my $endpage   = 0;
         if ( $newstart >= ( ( $postdisplaynum - 1 ) * 25 ) ) {
             $startpage = $newstart - ( ( $postdisplaynum - 1 ) * 25 );
             $tmpa = int( $startpage / 25 ) + 1;
@@ -188,8 +216,8 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=0;sort=$sort
                 $tmpa++;
             }
         }
-        $lastpn  = int( $max / 25 ) + 1;
-        $lastptn = ( $lastpn - 1 ) * 25;
+        my $lastpn       = int( $max / 25 ) + 1;
+        my $lastptn      = ( $lastpn - 1 ) * 25;
         my $pageindexadd = q{};
         if ( $endpage < $max - (25) ) { $pageindexadd = q~...&nbsp;~; }
         if ( $endpage != $max ) {
@@ -200,8 +228,8 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
 
         $pageindex = qq~$fatxt{'64'}: $pageindex~;
 
-        $numbegin = ( $newstart + 1 );
-        $numend   = ( $newstart + 25 );
+        my $numbegin = ( $newstart + 1 );
+        my $numend   = ( $newstart + 25 );
         if   ( $numend > $max ) { $numend  = $max; }
         if   ( $max == 0 )      { $numshow = q{}; }
         else                    { $numshow = qq~($numbegin - $numend)~; }
@@ -231,7 +259,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
             if ( length($amthreadsub) > 20 ) {
                 $amthreadsub = substr( $amthreadsub, 0, 20 ) . q{...};
             }
-
+            my $att_admin = q{};
             if ( $iamadmin || $iamgmod ) {
                 $att_admin = $my_att_admin;
             }
@@ -251,6 +279,8 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
             $viewattachments =~ s/\Q{yabb amposter}\E/$amposter/gxsm;
         }
 
+        my $att_admin_b = q{};
+        my $att_admin_c = '&nbsp;';
         if ( $iamadmin || $iamgmod ) {
             $att_admin_b = $my_att_admin_b;
             $att_admin_c = $my_att_admin_c;
@@ -270,7 +300,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
         $viewattachments =~ s/\Q{yabb fatxt71}\E/$fatxt{'71'}/gxsm;
         $viewattachments =~ s/\Q{yabb pageindex}\E/$pageindex/gxsm;
 
-        $output .= qq~
+        $downloads_top .= qq~
         <input type="hidden" name="newstart" value="$newstart" />~;
     }
 
@@ -282,6 +312,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
     my $class_sortsubj   = $sort =~ /1$/xsm  ? 'windowbg2' : 'windowbg';
     my $class_sortuser   = $sort =~ /3/xsm   ? 'windowbg2' : 'windowbg';
 
+    my $att_out_admin_a = q{};
     if ( $iamadmin || $iamgmod ) {
         $att_out_admin_a = $my_out_att_admin_a;
     }
@@ -289,85 +320,80 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
         $att_out_admin_a = q{};
     }
 
-    $output .= $downloads_att_out_a;
-    $output =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
-    $output =~ s/\Q{yabb threadname}\E/$threadname/gxsm;
-    $output =~ s/\Q{yabb pageindex}\E/$pageindex/gxsm;
-    $output =~ s/\Q{yabb max}\E/$max/gxsm;
-    $output =~ s/\Q{yabb numshow}\E/$numshow/gxsm;
-    $output =~ s/\Q{yabb fatxt39}\E/$fatxt{'39'}/gxsm;
-    $output =~ s/\Q{yabb fatxt76}\E/$fatxt{'76'}/gxsm;
-    $output =~ s/\Q{yabb fatxt75}\E/$fatxt{'75'}/gxsm;
-    $output =~ s/\Q{yabb fatxt28}\E/$fatxt{'28'}/gxsm;
+    my $out_a = $downloads_att_out_a;
+    $out_a =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
+    $out_a =~ s/\Q{yabb threadname}\E/$threadname/gxsm;
+    $out_a =~ s/\Q{yabb pageindex}\E/$pageindex/gxsm;
+    $out_a =~ s/\Q{yabb max}\E/$max/gxsm;
+    $out_a =~ s/\Q{yabb numshow}\E/$numshow/gxsm;
+    $out_a =~ s/\Q{yabb fatxt39}\E/$fatxt{'39'}/gxsm;
+    $out_a =~ s/\Q{yabb fatxt76}\E/$fatxt{'76'}/gxsm;
+    $out_a =~ s/\Q{yabb fatxt75}\E/$fatxt{'75'}/gxsm;
+    $out_a =~ s/\Q{yabb fatxt28}\E/$fatxt{'28'}/gxsm;
 
-    $output .= $att_out_admin_a;
-    $output =~ s/\Q{yabb fatxt45}\E/$fatxt{'45'}/gxsm;
-    my $att_text;
+    $out_a .= $att_out_admin_a;
+    $out_a =~ s/\Q{yabb fatxt45}\E/$fatxt{'45'}/gxsm;
 
-    $rsort = ( $sort == 7 ? -7 : 7 );
-    $att_text = $my_att_sort;
+    my $rsort = ( $sort == 7 ? -7 : 7 );
+    my $att_text = $my_att_sort;
     $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
     $att_text =~ s/\Q{yabb attclass}\E/$class_sortattach/gxsm;
     $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'40'}/gxsm;
-    $output .= $att_text;
 
     $rsort = ( $sort == 100 ? -100 : 100 );
-    $att_text = $my_att_sort;
+    $att_text .= $my_att_sort;
     $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
     $att_text =~ s/\Q{yabb attclass}\E/$class_sorttype/gxsm;
     $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'40a'}/gxsm;
-    $output .= $att_text;
 
     $rsort = ( $sort == 5 ? -5 : 5 );
-    $att_text = $my_att_sort;
+    $att_text .= $my_att_sort;
     $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
     $att_text =~ s/\Q{yabb attclass}\E/$class_sortsize/gxsm;
     $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'41'}/gxsm;
-    $output .= $att_text;
 
     $rsort = ( $sort == -6 ? 6 : -6 );
-    $att_text = $my_att_sort;
+    $att_text .= $my_att_sort;
     $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
     $att_text =~ s/\Q{yabb attclass}\E/$class_sortdate/gxsm;
     $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'43'}/gxsm;
-    $output .= $att_text;
 
     $rsort = ( $sort == -8 ? 8 : -8 );
-    $att_text = $my_att_sort;
+    $att_text .= $my_att_sort;
     $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
     $att_text =~ s/\Q{yabb attclass}\E/$class_sorcount/gxsm;
     $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'41a'}/gxsm;
-    $output .= $att_text;
 
     $rsort = ( $sort == 1 ? -1 : 1 );
-    $att_text = $my_att_sort;
+    $att_text .= $my_att_sort;
     $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
     $att_text =~ s/\Q{yabb attclass}\E/$class_sortsubj/gxsm;
     $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'44'}/gxsm;
-    $output .= $att_text;
 
     $rsort = ( $sort == 3 ? -3 : 3 );
-    $att_text = $my_att_sort;
+    $att_text .= $my_att_sort;
     $att_text =~ s/\Q{yabb attsort}\E/$rsort/gxsm;
     $att_text =~ s/\Q{yabb attclass}\E/$class_sortuser/gxsm;
     $att_text =~ s/\Q{yabb atttext}\E/$fatxt{'42'}/gxsm;
-    $output .= $att_text;
+    $att_text =~ s/\Q{yabb thread}\E/$thread/gxsm;
 
-    $output .= $downloads_tbl_end;
+    if ( $max && ( $iamadmin || $iamgmod ) ) {
+        $downloads_tbl_end .= '</form>';
+    }
+    $downloads_tbl_end =~ s/\Q{yabb viewattachments}\E/$viewattachments/gxsm;
 
-    $output =~ s/\Q{yabb thread}\E/$thread/gxsm;
-    $output =~ s/\Q{yabb viewattachments}\E/$viewattachments/gxsm;
-
-    if ( $max && ( $iamadmin || $iamgmod ) ) { $output .= '</form>'; }
-
-    $output .= $downloads_bottom;
-
-    print_HTML_output_and_finish();
+    our $output =
+        $downloads_top
+      . $out_a
+      . $att_text
+      . $downloads_tbl_end
+      . $downloads_bottom;
+    print_html_output_and_finish();
     return;
 }
 
-sub DownloadFileCouter {
-    $dfile = $INFO{'file'};
+sub download_filecounter {
+    my $dfile = $INFO{'file'};
 
     if ( $guest_media_disallowed && $iamguest ) {
         fatal_error( q{}, $maintxt{'40'} );
@@ -377,20 +403,20 @@ sub DownloadFileCouter {
         fatal_error( q{}, "$maintxt{'23'} $dfile$maintxt{'23a'}" );
     }
 
-    fopen( ATM, '<Variables/attachments.db', 1 )
+    open my $ATM, '<', 'Variables/attachments.db'
       or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
-    my @attachments = <ATM>;
-    fclose(ATM);
+    my @attachments = <$ATM>;
+    close $ATM or croak "$croak{'close'} ATM";
 
     foreach my $i ( 0 .. $#attachments ) {
         $attachments[$i] =~
 s/(.+[|])(.+)[|](\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
     my $prnatt = join q{}, @attachments;
-    fopen( ATM, '>Variables/attachments.db', 1 )
+    open $ATM, '>', 'Variables/attachments.db'
       or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
-    print {ATM} $prnatt or croak "$croak{'print'} ATM";
-    fclose(ATM);
+    print {$ATM} $prnatt or croak "$croak{'print'} ATM";
+    close $ATM or croak "$croak{'close'} ATM";
 
     print "Location: $uploadurl/$dfile\n\r\n\r"
       or croak "$croak{'print'} Location";

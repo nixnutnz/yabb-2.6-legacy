@@ -12,15 +12,27 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 our $VERSION = '2.7.00';
 
-$decoderpmver  = 'YaBB 2.7.00 $Revision$';
-@decoderpmmods = ();
+our $decoderpmver  = 'YaBB 2.7.00 $Revision$';
+our @decoderpmmods = ();
+our $decoderpmmods = 0;
 if (@decoderpmmods) {
     $decoderpmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+our (
+    %croak,        %FORM,                %INFO,
+    %floodtxt,     $captcha_start_chars, $captcha_end_chars,
+    $codemaxchars, $captchastyle,        $masterkey,
+    $scripturl,    $randaction,          $flood_text,
+);
 
 sub scramble {
     my ( $input, $user ) = @_;
@@ -47,10 +59,12 @@ sub scramble {
     # making a mess of the input
     my $lastvalue = 3;
     for my $n ( 0 .. length $input ) {
-        my $str = ( substr $carrier, $n, 1) || 0;
-        $value = $str + $lastvalue + 1;
+        my $str = ( substr $carrier, $n, 1 ) || 0;
+        my $value = $str + $lastvalue + 1;
         $lastvalue = $value;
-        substr( $scramble, $value, 1 ) = substr $input, $n, 1;
+
+        #        substr( $scramble, $value, 1 ) = substr $input, $n, 1;
+        substr $scramble, $value, 1, ( substr $input, $n, 1 );
     }
 
     # adding code length to code
@@ -103,33 +117,33 @@ sub validation_check {
 sub validation_code {
 
     # set the max length of the shown verification code
-    my ( $firstCharsLen, $lastCharsLen );
-    if ($captchaStartChars) { $firstCharsLen = length $captchaStartChars; }
-    if ($captchaEndChars)   { $lastCharsLen  = length $captchaEndChars; }
-    if ( $captchaStartChars && $captchaEndChars ) {
+    my ( $first_charslen, $last_charslen, );
+    if ($captcha_start_chars) { $first_charslen = length $captcha_start_chars; }
+    if ($captcha_end_chars)   { $last_charslen  = length $captcha_end_chars; }
+    if ( $captcha_start_chars && $captcha_end_chars ) {
         $flood_text =
-qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $firstCharsLen $floodtxt{'casewarning_4'} $lastCharsLen $floodtxt{'casewarning_5'}~;
+qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $first_charslen $floodtxt{'casewarning_4'} $last_charslen $floodtxt{'casewarning_5'}~;
     }
-    elsif ($captchaStartChars) {
+    elsif ($captcha_start_chars) {
         $flood_text =
-qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $firstCharsLen $floodtxt{'casewarning_5'}~;
+qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $first_charslen $floodtxt{'casewarning_5'}~;
     }
-    elsif ($captchaEndChars) {
+    elsif ($captcha_end_chars) {
         $flood_text =
-qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_3'} $lastCharsLen $floodtxt{'casewarning_5'}~;
+qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_3'} $last_charslen $floodtxt{'casewarning_5'}~;
     }
     else {
-        $flood_text = qq~$floodtxt{'casewarning'}~;
+        $flood_text = $floodtxt{'casewarning'};
     }
     if ( !$codemaxchars || $codemaxchars < 3 ) { $codemaxchars = 3; }
-    $codemaxchars2 = $codemaxchars + int rand 2;
+    my $codemaxchars2 = $codemaxchars + int rand 2;
     ## Generate a random string
-    $captcha = keygen( $codemaxchars2, $captchastyle );
+    my $captcha = keygen( $codemaxchars2, $captchastyle );
     ## now we are going to spice the captcha with the formsession
-    $sessionid = scramble( $captcha, $masterkey );
+    our $sessionid = scramble( $captcha, $masterkey );
     chomp $sessionid;
 
-    $showcheck .=
+    our $showcheck =
 qq~<img src="$scripturl?action=$randaction;$randaction=$sessionid" alt="" /><input type="hidden" name="sessionid" value="$sessionid" />~;
     return $sessionid;
 }
@@ -145,12 +159,12 @@ sub testcaptcha {
 
 sub convert {
     require Sources::Captcha;
-    my $startChars = q{};
-    my $endChars = q{};
-    if ($captchaStartChars) { $startChars = $captchaStartChars; }
-    if ($captchaEndChars)   { $endChars   = $captchaEndChars; }
-    $captcha = testcaptcha( $INFO{$randaction} );
-    captcha( $startChars . $captcha . $endChars );
+    my $start_chars = q{};
+    my $end_chars   = q{};
+    if ($captcha_start_chars) { $start_chars = $captcha_start_chars; }
+    if ($captcha_end_chars)   { $end_chars   = $captcha_end_chars; }
+    my $captcha = testcaptcha( $INFO{$randaction} );
+    captcha( $start_chars . $captcha . $end_chars );
     return;
 }
 

@@ -32,7 +32,7 @@ $my_ipdiv = qq~
 </div>~;
 
 ## AddModerators
-$myshowProfile = qq~<tr class="windowbg">
+$myshowprofile = qq~<tr class="windowbg">
         <td><label for="addmod"><strong>{yabb addmod_txt_addmod_title}: </strong><br /><span class="small">{yabb addmod_txt_addmod_text}</span></label></td>
         <td>
             <select name="addmod" id="addmod" multiple="multiple" onchange="selectnum();">
@@ -82,7 +82,7 @@ $myselectmods = qq~<div style="position: relative; top: 0; left: 0; height: 1px;
         </tr>~;
 
 $myselectmods_b  =qq~<tr>
-            <td class="windowbg2"><span class="small"><strong>{yabb addmod_list}</strong></span></td>
+            <td class="windowbg2"><span class="small"><b>{yabb addmod_list}</b></span></td>
         </tr><tr>
             <td class="windowbg">
                 <select name="moderators" id="moderators" multiple="multiple" size="4" style="width: 340px;">
@@ -93,7 +93,7 @@ $myselectmods_b  =qq~<tr>
         ~;
 
 $myselectmods_c = qq~<tr>
-            <td class="windowbg2"><span class="small"><strong>{yabb addgrp_list}</strong></span></td>
+            <td class="windowbg2"><span class="small"><b>{yabb addgrp_list}</b></span></td>
         </tr><tr>
             <td class="windowbg">
                 <select multiple="multiple" name="moderatorgroups" id="moderatorgroups" size="4" style="width: 340px;">
@@ -144,7 +144,7 @@ $my_smiliebg_b = q~windowbg~;
 #in the event you want a banner for the smilies header #
 $my_banner = 'banner.gif';
 
-$smilie_window_a =
+$smilie_window_simple =
 qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
@@ -251,7 +251,7 @@ $my_smilie_banner_header = qq~<tr>
     </tr>~;
 
 $my_smilie_header = qq~<tr>
-        <td class="center" colspan="4"><strong><span class="small">$smiltxt{'21'}</span></strong></td>
+        <td class="center" colspan="4"><b><span class="small">$smiltxt{'21'}</span></b></td>
     </tr>~;
 
 $my_smilie_window_tr = qq~
@@ -262,7 +262,7 @@ $my_smilie_window_tr = qq~
 
 $my_show_error = qq~
 <div class="system-body">
-    <div class="system-info" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'error_description'}</div>
+    <div class="system-info"> &nbsp; <b>$maintxt{'error_description'}</b></div>
     <div class="system-info-body">{yabb errormessage}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
@@ -272,11 +272,66 @@ $my_show_error = qq~
 
 $my_profile_int = qq~
 <div class="system-body">
-    <div class="system-info" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">$maintxt{'members_only'}</div>
+    <div class="system-info"> &nbsp; <b>$maintxt{'members_only'}</b></div>
     <div class="system-info-body">$maintxt{'reg_please'}</div>
 </div>
 <p class="center"><a href="javascript:history.go(-1)">$maintxt{'193'}</a></p>
 ~;
+
+$myban_page = qq~
+<!DOCTYPE html>
+<html lang='{yabb xml_lang}'>
+<head>
+    <meta charset="{yabb mycharset}">
+    <title>{yabb profile_txt_ban_page}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <style type="text/css">
+        td {padding: 12px;}
+    </style>
+</head>
+<body style="min-width: 280px;">
+    <form action="$scripturl?action=ban_page_b" method="post">
+        <table class="tabtitle pad_3px" style="margin-top:2em">
+            <tr>
+                <th class="center">{yabb profile_txt_ban_page}</th>
+            </tr>
+        </table>
+        <table class="cs_thin">
+            <tr>
+                <td class="windowbg center" colspan="2">
+                    {yabb ban_item}
+                </td>
+            </tr></tr>
+                <td class="right windowbg"><label for="ban_reason"><b>{yabb profile_txt_ban_reason}: </b></label></td>
+                <td class="windowbg"><input type="text" maxlength="200" name="ban_reason" id="ban_reason" size="50" /></td>
+            </tr></tr>
+                <td class="right windowbg"><label for="email_ban"><b>{yabb profile_txt_email_ban}: </b></label></td>
+                <td class="windowbg"><input type="checkbox" name="email_ban" id="email_ban" value="1" /></td>
+            </tr><tr class="catbg">
+                <td style="height:30px" class="center" colspan="2"><input type="submit" value="{yabb profile_txt_ban_enter}" class="button" />&nbsp;<input type="button" name="closewindow" value="{yabb profile_txt_ban_cancel}" class="button" onclick="javascript:window.close();" /></td>
+            </tr>
+        </table>
+        <input type="hidden" name="formsession" value="$formsession" />
+        <input type="hidden" name="{yabb bantype}" value="{yabb bantypeval}" />
+        <input type="hidden" name="lev" value="{yabb banlev}" />
+        <input type="hidden" name="username" value="{yabb banuser}" />
+    </form>
+</body>
+</html>~;
+
+$myban_page2 = qq~<!DOCTYPE html>
+<html lang='{yabb xml_lang}'>
+<head>
+    <meta charset="{yabb mycharset}">
+    <title>{yabb profile_txt_ban_page}</title>
+</head>
+<body>
+<script type="text/javascript">
+    opener.location.reload(true);
+    self.close();
+</script>
+</body>
+</html>~;
 
 ## PrintPage ##
 
@@ -432,8 +487,8 @@ $myprint = qq~<!DOCTYPE html>
 $mythread = qq~<table class="pad_10px" style="border: 1px solid #000000; width:96%">
     <tr>
         <td style="font-family: arial, sans-serif; font-size: 12px;">
-            $maintxt{'196'}: <strong>{yabb threadtitle}</strong><br />
-            $maintxt{'197'} <strong>{yabb threadposter}</strong> $maintxt{'30'} <strong>{yabb threaddate}</strong>
+            $maintxt{'196'}: <b>{yabb threadtitle}</b><br />
+            $maintxt{'197'} <b>{yabb threadposter}</b> $maintxt{'30'} <b>{yabb threaddate}</b>
             <hr />
             <div style="font-family: arial, sans-serif; font-size: 12px;">
             {yabb threadpost}{yabb attach}

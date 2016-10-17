@@ -12,32 +12,47 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$advancedtabspmver  = 'YaBB 2.7.00 $Revision$';
-@advancedtabspmmods = ();
+our $advancedtabspmver  = 'YaBB 2.7.00 $Revision$';
+our @advancedtabspmmods = ();
+our $advancedtabspmmods = 0;
 if (@advancedtabspmmods) {
     $advancedtabspmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-sub AddNewTab {
-    GetTexttab();
+our (
+    %croak,       %tabmenu_txt, @advanced_tabs,
+    %texttab,     %tabtxt,      %micon,
+    %FORM,        %INFO,        $brd_advanced_tabs,
+    $iamadmin,    $yyexec,      $yyaext,
+    $boardurl,    $langdir,     $yysetlocation,
+    $scripturl,   $tabfill,     $iamguest,
+    $iamgmod,     %useraccount, $username,
+    $yymycharset, %micon_bg,    $brd_advanced_tabs_edit,
+    $language,    $lang,        %img_txt,
+    $tab_lang,    %admin_txt
+);
 
-    $edittabs = qq~<option value="thefront">$tabmenu_txt{'tabfront'}</option>~;
-    foreach (@AdvancedTabs) {
-        $_ =~ /^([^|]+)/xsm;
+sub add_new_tab {
+    get_texttab();
+
+    my $edittabs =
+      qq~<option value="thefront">$tabmenu_txt{'tabfront'}</option>~;
+    foreach (@advanced_tabs) {
+        /^([^|]+)/xsm;
         if ( $texttab{$1} ) {
             $edittabs .= qq~<option value="$1">$texttab{$1}</option>~;
         }
     }
 
-    $yyaddtab = qq~
+    our $yyaddtab = qq~
     <br />
     <script type="text/javascript">
     function submittab() {
@@ -78,7 +93,7 @@ sub AddNewTab {
     return $yyaddtab;
 }
 
-sub AddNewTab2 {
+sub add_new_tab2 {
     if ($iamadmin) {
         my $tabtext = $FORM{'tabtext'};
         my $taburl  = $FORM{'taburl'};
@@ -87,6 +102,8 @@ sub AddNewTab2 {
         my $tabview        = $FORM{'showto'};
         my $tabafter       = $FORM{'addafter'};
         my $tmpusernamereq = 0;
+        my ($tabaction);
+        my $tmpisaction = 0;
 
         #Carsten's fix - nice and neat/';#
         if ( $taburl !~ m{[ht|f]tps?://}xsm ) {
@@ -108,18 +125,18 @@ sub AddNewTab2 {
         }
         else {
             $tabaction = lc $tabtext;
-            $tabaction =~ s/\ /_/gxsm;
+            $tabaction =~ s/[ ]/_/gxsm;
             $tmpisaction = 0;
         }
         $tabaction =~ s/\W/_/gxsm;
-        foreach (@AdvancedTabs) {
-            if ( $_ =~ /^$tabaction[|]?/xsm ) {
+        foreach (@advanced_tabs) {
+            if (/^$tabaction[|]?/xsm) {
                 fatal_error( 'tabext', $tabaction );
                 last;
             }
         }
-
-        if ( $taburl == 1 || $taburl == 2 ) {
+        my ($exttaburl);
+        if ( $taburl =~ /\d/xsm && ( $taburl == 1 || $taburl == 2 ) ) {
             if ( $FORM{'taburl'} =~ m/username\=/ixsm ) { $tmpusernamereq = 1; }
             $exttaburl = $FORM{'taburl'};
             $exttaburl =~ s/(.*?)[?](.*?)/$2/gxsm;
@@ -130,15 +147,16 @@ sub AddNewTab2 {
             $exttaburl = q{};
         }
 
-        ToHTML($tabtext);
+        to_html($tabtext);
 
         opendir DIR, $langdir;
         my @languages = readdir DIR;
         closedir DIR;
         foreach my $lngdir (@languages) {
-            next
-              if $lngdir eq q{.} || $lngdir eq q{..} || !-d "$langdir/$lngdir";
-            undef %tabtxt;
+            if ( $lngdir eq q{.} || $lngdir eq q{..} || !-d "$langdir/$lngdir" )
+            {
+                next;
+            }
             if ( -e "$langdir/$lngdir/tabtext.txt" ) {
                 require "$langdir/$lngdir/tabtext.txt";
             }
@@ -146,12 +164,13 @@ sub AddNewTab2 {
             foreach ( keys %tabtxt ) {
                 $pnttxt .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
             }
+            $pnttxt .= "\$tabtxt{'$tabaction'} = '$tabtext';\n";
             $pnttxt .= "1;\n";
-            fopen( TABTXT, ">$langdir/$lngdir/tabtext.txt" )
+            open my $TABTXT, '>', "$langdir/$lngdir/tabtext.txt"
               or
               fatal_error( 'file_not_open', "$langdir/$lngdir/tabtext.txt", 1 );
-            print {TABTXT} $pnttxt or croak "$croak{'print'} TABTXT";
-            fclose(TABTXT);
+            print {$TABTXT} $pnttxt or croak "$croak{'print'} TABTXT";
+            close $TABTXT or croak "$croak{'close'} TABTXT";
         }
 
         my @new_tabs_order;
@@ -159,30 +178,30 @@ sub AddNewTab2 {
             push @new_tabs_order,
 qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
         }
-        foreach (@AdvancedTabs) {
+        foreach (@advanced_tabs) {
             push @new_tabs_order, $_;
             if (/^$tabafter[|]?/xsm) {
                 push @new_tabs_order,
 qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
             }
         }
-        @AdvancedTabs = @new_tabs_order;
+        @advanced_tabs = @new_tabs_order;
 
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pm');
+        save_settings_to('Settings.pm');
     }
 
-    $yySetLocation = $scripturl;
+    $yysetlocation = $scripturl;
     redirectexit();
     return;
 }
 
-sub EditTab {
+sub edit_tab {
     get_micon();
-    GetTexttab();
-    $tabsave = $micon{'tabsave'};
-    $tabdel  = $micon{'tabdel'};
-    %edittab = ();
+    get_texttab();
+    my $tabsave = $micon{'tabsave'};
+    my $tabdel  = $micon{'tabdel'};
+    my %edittab = ();
     my @tablist =
       qw(home help search ml eventcal birthdaylist admin revalidatesession login register guestpm mycenter logout);
 ## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
@@ -193,11 +212,15 @@ sub EditTab {
 
     my $selsize   = 0;
     my $isexttabs = 0;
-    foreach my $i ( 0 .. $#AdvancedTabs ) {
-        if ( $AdvancedTabs[$i] =~ /[|]/xsm ) {
+    my ($tab_url);
+    my $edittabmenu = q{};
+    my $edittabs    = q{};
+    foreach my $i ( 0 .. $#advanced_tabs ) {
+        my ($inputlength);
+        if ( $advanced_tabs[$i] =~ /[|]/xsm ) {
             my ( $tab_key, $tmptab_url, $isaction, $username_req, $tab_access,
-                $dummy )
-              = split /[|]/xsm, $AdvancedTabs[$i], 6;
+                undef )
+              = split /[|]/xsm, $advanced_tabs[$i], 6;
             my $enc_key = $tab_key;
             $enc_key =~ s/\&/%26/gxsm;
             $isexttabs++;
@@ -206,11 +229,11 @@ sub EditTab {
                 || ( $tab_access < 3 && $iamgmod )
                 || $iamadmin )
             {
-                if ( $tmptab_url == 1 ) { $tab_url = qq~$scripturl~; }
+                if ( $tmptab_url == 1 ) { $tab_url = $scripturl; }
                 elsif ( $tmptab_url == 2 ) {
                     $tab_url = qq~$boardurl/AdminIndex.$yyaext~;
                 }
-                else { $tab_url = qq~$tmptab_url~; }
+                else { $tab_url = $tmptab_url; }
                 if ($isaction) { $tab_url .= qq~?action=$tab_key~; }
                 if ($username_req) {
                     $tab_url .= qq~;username=$useraccount{$username}~;
@@ -234,20 +257,20 @@ qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key" style="padding:0; marg
                 $selsize++;
             }
         }
-        elsif ( $edittab{ $AdvancedTabs[$i] } ) {
-            $edittabs .= qq~<option value="$AdvancedTabs[$i]"~
+        elsif ( $edittab{ $advanced_tabs[$i] } ) {
+            $edittabs .= qq~<option value="$advanced_tabs[$i]"~
               . (
-                $AdvancedTabs[$i] eq $INFO{'thetab'}
+                $advanced_tabs[$i] eq $INFO{'thetab'}
                 ? ' selected="selected"'
                 : q{}
-              ) . qq~>$texttab{$AdvancedTabs[$i]}</option>~;
-            $edittabmenu .= qq~<li>$edittab{ $AdvancedTabs[$i] }</li>~;
+              ) . qq~>$texttab{$advanced_tabs[$i]}</option>~;
+            $edittabmenu .= qq~<li>$edittab{ $advanced_tabs[$i] }</li>~;
             $selsize++;
         }
     }
     if ( $selsize > 11 ) { $selsize = 11; }
 
-    $yyaddtab = $brd_advanced_tabs_edit;
+    our $yyaddtab = $brd_advanced_tabs_edit;
     $yyaddtab =~ s/\Q{yabb edittabmenu}\E/$edittabmenu/xsm;
     $yyaddtab =~ s/\Q{yabb reordertab}\E/$tabmenu_txt{'reordertab'}/xsm;
     $yyaddtab =~ s/\Q{yabb selsize}\E/$selsize/xsm;
@@ -266,12 +289,13 @@ qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key" style="padding:0; marg
     return;
 }
 
-sub EditTab2 {
+sub edit_tab2 {
+    my ( $tosave, $tosavetxt );
     if ($iamadmin) {
         $tosave = $INFO{'savetab'};
         $tosave =~ s/%26/&/gxsm;
         $tosavetxt = $FORM{$tosave};
-        ToHTML($tosavetxt);
+        to_html($tosavetxt);
         $tab_lang = $language ? $language : $lang;
         require "$langdir/$tab_lang/tabtext.txt";
         my $pnttxt = q{};
@@ -279,41 +303,41 @@ sub EditTab2 {
             $pnttxt .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
         }
         $pnttxt .= "1;\n";
-        fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" )
+        open my $TABTXT, '>', "$langdir/$tab_lang/tabtext.txt"
           or fatal_error( 'file_not_open', "$langdir/$tab_lang/tabtext.txt" );
-        print {TABTXT} $pnttxt or croak "$croak{'print'} TABTXT";
-        fclose(TABTXT);
+        print {$TABTXT} $pnttxt or croak "$croak{'print'} TABTXT";
+        close $TABTXT or croak "$croak{'close'} TABTXT";
     }
 
-    $yySetLocation = $scripturl;
+    $yysetlocation = $scripturl;
     redirectexit();
     return;
 }
 
-sub ReorderTab {
+sub reorder_tab {
     my $moveitem = $FORM{'ordertabs'};
     if ($iamadmin) {
         if ($moveitem) {
             if ( $FORM{'moveleft'} ) {
-                foreach my $i ( 0 .. $#AdvancedTabs ) {
-                    if ( $AdvancedTabs[$i] =~ /^$moveitem[|]?/xsm && $i > 0 ) {
+                foreach my $i ( 0 .. $#advanced_tabs ) {
+                    if ( $advanced_tabs[$i] =~ /^$moveitem[|]?/xsm && $i > 0 ) {
                         my $j = $i - 1;
-                        my $x = $AdvancedTabs[$i];
-                        $AdvancedTabs[$i] = $AdvancedTabs[$j];
-                        $AdvancedTabs[$j] = $x;
+                        my $x = $advanced_tabs[$i];
+                        $advanced_tabs[$i] = $advanced_tabs[$j];
+                        $advanced_tabs[$j] = $x;
                         last;
                     }
                 }
             }
             elsif ( $FORM{'moveright'} ) {
-                foreach my $i ( 0 .. $#AdvancedTabs ) {
-                    if (   $AdvancedTabs[$i] =~ /^$moveitem[|]?/xsm
-                        && $i < $#AdvancedTabs )
+                foreach my $i ( 0 .. $#advanced_tabs ) {
+                    if (   $advanced_tabs[$i] =~ /^$moveitem[|]?/xsm
+                        && $i < $#advanced_tabs )
                     {
                         my $j = $i + 1;
-                        my $x = $AdvancedTabs[$i];
-                        $AdvancedTabs[$i] = $AdvancedTabs[$j];
-                        $AdvancedTabs[$j] = $x;
+                        my $x = $advanced_tabs[$i];
+                        $advanced_tabs[$i] = $advanced_tabs[$j];
+                        $advanced_tabs[$j] = $x;
                         last;
                     }
                 }
@@ -321,21 +345,21 @@ sub ReorderTab {
         }
 
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pm');
+        save_settings_to('Settings.pm');
     }
 
-    $yySetLocation = qq~$scripturl?action=edittab;thetab=$moveitem~;
+    $yysetlocation = qq~$scripturl?action=edittab;thetab=$moveitem~;
     redirectexit();
     return;
 }
 
-sub DeleteTab {
+sub delete_tab {
     if ($iamadmin) {
         my $todelete = $INFO{'deltab'};
         $todelete =~ s/%26/&/gxsm;
 
         opendir DIR, $langdir;
-        @languages = readdir DIR;
+        my @languages = readdir DIR;
         closedir DIR;
         foreach my $lngdir (@languages) {
             if (   $lngdir eq q{.}
@@ -352,26 +376,27 @@ sub DeleteTab {
                 $pnttxt .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
             }
             $pnttxt .= "1;\n";
-            fopen( TABTXT, ">$langdir/$lngdir/tabtext.txt" );
-            print {TABTXT} $pnttxt or croak "$croak{'print'} TABTXT";
-            fclose(TABTXT);
+            open my $TABTXT, '>', "$langdir/$lngdir/tabtext.txt"
+              or croak "$croak{'open'} TABTXT";
+            print {$TABTXT} $pnttxt or croak "$croak{'print'} TABTXT";
+            close $TABTXT or croak "$croak{'close'} TABTXT";
         }
 
         my @new_tabs_order;
-        foreach (@AdvancedTabs) {
-            if ( $_ !~ /^$todelete[|]?/xsm ) { push @new_tabs_order, $_; }
+        foreach my $i (@advanced_tabs) {
+            if ( $i !~ /^$todelete[|]?/xsm ) { push @new_tabs_order, $i; }
         }
-        @AdvancedTabs = @new_tabs_order;
+        @advanced_tabs = @new_tabs_order;
         require Admin::NewSettings;
-        SaveSettingsTo('Settings.pm');
+        save_settings_to('Settings.pm');
     }
 
-    $yySetLocation = $scripturl;
+    $yysetlocation = $scripturl;
     redirectexit();
     return;
 }
 
-sub GetTexttab {
+sub get_texttab {
     $texttab{'home'}              = $img_txt{'103'};
     $texttab{'help'}              = $img_txt{'119'};
     $texttab{'search'}            = $img_txt{'182'};
@@ -386,7 +411,7 @@ sub GetTexttab {
     $texttab{'mycenter'}          = $img_txt{'mycenter'};
     $texttab{'logout'}            = $img_txt{'108'};
 
-    if ( !$tab_lang ) { GetTabtxt(); }
+    if ( !$tab_lang ) { get_tabtxt(); }
     foreach ( keys %tabtxt ) { $texttab{$_} = $tabtxt{$_}; }
     return;
 }

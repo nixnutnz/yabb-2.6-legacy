@@ -12,44 +12,67 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
+use strict;
+no strict qw(refs);
+use warnings;
 no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$recentpmver  = 'YaBB 2.7.00 $Revision$';
-@recentpmmods = ();
+our $recentpmver  = 'YaBB 2.7.00 $Revision$';
+our @recentpmmods = ();
+our $recentpmmods = 0;
 if (@recentpmmods) {
     $recentpmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-# Sub RecentTopics shows all the most recently posted topics
+## language ##
+our ( %croak, %img, %maintxt, );
+## settings/template ##
+our ( $yymycharset, $maxrecentdisplay, $cookiepassword, $boardsdir, $datadir,
+    $memberdir, );
+## system ##
+our (
+    $iamadmin,      $iamgmod,     $iamguest,            $uid,
+    $username,      $scripturl,   $formsession,         %FORM,
+    %INFO,          %board,       %yy_cookies,          %catid,
+    $catid,         %catname,     $catname,             %subboard,
+    @categoryorder, %cat,         %catinfo,             $yymain,
+    $date,          $enable_ubbc, $enable_guestposting, $menusep,
+    $yynavigation,  $yytitle,
+);
+## template ##
+our ( $myrecent_mess, $myrecent, );
+
+## local ##
+my ( @data, %boardname, $display, $numfound );
+
+# Sub recent_topics shows all the most recently posted topics
 # Meaning each thread will show up ONCE in the list.
 
-# Sub RecentPosts will show the X last POSTS
+# Sub recent_posts will show the X last POSTS
 # Even if they are all from the same thread
 get_template('Display');
 
-sub RecentPosts {
+sub recent_posts {
     spam_protection();
-
-    my $display = isempty( $FORM{'display'}, 10 );
+    $display = isempty( $FORM{'display'}, 10 );
     if ( $display < 0 ) { $display = 5; }
     elsif ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
 
     $numfound = 0;
-
     get_forum_master();
-
-    *recursive_check2 = sub {
+    my ( $boardperms, $boardview, @messages );
+    our ($message);
+    local *recursive_check2 = sub {
         for my $curboard (@_) {
             ( $boardname{$curboard}, $boardperms, $boardview ) =
               split /[|]/xsm, $board{$curboard};
 
-            my $access = AccessCheck( $curboard, q{}, $boardperms );
+            my $access = access_check( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
             if ( ${ $uid . $curboard }{'brdpasswr'} ) {
@@ -80,34 +103,33 @@ sub RecentPosts {
                 if (   !$iamadmin
                     && !$iamgmod
                     && !$pswiammod
-                    && $yyCookies{$cookiename} ne $crypass )
+                    && $yy_cookies{$cookiename} ne $crypass )
                 {
                     next;
                 }
             }
-
             $catid{$curboard}   = $catid;
             $catname{$curboard} = $catname;
-
-            fopen( REC_BDTXT, "$boardsdir/$curboard.txt" );
-            @buffer = <REC_BDTXT>;
+            open my $REC_BDTXT, '<', "$boardsdir/$curboard.txt"
+              or croak "$croak{'open'} $curboard.txt";
+            my @buffer = <$REC_BDTXT>;
+            close $REC_BDTXT or croak "$croak{'close'} $curboard.txt";
             for my $i ( 0 .. ( $display - 1 ) ) {
                 if ( $buffer[$i] ) {
-                    (
+                    my (
                         $tnum,      $tsub,  $tname,
                         $temail,    $tdate, $treplies,
                         $tusername, $ticon, $tstate
                     ) = split /[|]/xsm, $buffer[$i];
                     chomp $tstate;
                     if ( $tstate !~ /h/sm || $iamadmin || $iamgmod ) {
-                        $mtime = $tdate;
+                        my $mtime = $tdate;
                         $data[$numfound] =
 "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";
                         $numfound++;
                     }
                 }
             }
-            fclose(REC_BDTXT);
 
             if ( $subboard{$curboard} ) {
                 recursive_check2( split /[|]/xsm, $subboard{$curboard} );
@@ -116,11 +138,10 @@ sub RecentPosts {
     };
 
     for my $catid (@categoryorder) {
-
-        (@bdlist) = split /,/xsm, $cat{$catid};
-
+        my @bdlist = split /,/xsm, $cat{$catid};
+        my ($catperms);
         ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
-        $cataccess = CatAccess($catperms);
+        my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
 
         recursive_check2(@bdlist);
@@ -128,28 +149,28 @@ sub RecentPosts {
     @data = reverse sort { $a cmp $b } @data;
 
     $numfound = 0;
-    $threadfound = @data > $display ? $display : @data;
+    my $threadfound = @data > $display ? $display : @data;
 
     for my $i ( 0 .. ( $threadfound - 1 ) ) {
-        ( $mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate ) =
-          split /[|]/xsm, $data[$i];
+        my ( $mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate )
+          = split /[|]/xsm, $data[$i];
 
         # No need to check for hidden topics here, it was done above
-        $tstart = $mtime;
-        fopen( REC_THRETXT, "$datadir/$tnum.txt" ) || next;
-        @mess = <REC_THRETXT>;
-        fclose(REC_THRETXT);
+        my $tstart = $mtime;
+        open my $REC_THRETXT, '<', "$datadir/$tnum.txt" || next;
+        my @mess = <$REC_THRETXT>;
+        close $REC_THRETXT or croak "$croak{'open'} $tnum.txt";
 
-        $threadfrom = @mess > $display ? @mess - $display : 0;
+        my $threadfrom = @mess > $display ? @mess - $display : 0;
         for my $c ( $threadfrom .. @mess ) {
             if ( $mess[$c] ) {
-                (
-                    $msub,  $mname,   $memail, $mdate,   $musername,
-                    $micon, $mattach, $mip,    $message, $mns
+                my (
+                    $msub,  $mname,   $memail, $mdate, $musername,
+                    $micon, $mattach, $mip,    $mess,  $mns
                 ) = split /[|]/xsm, $mess[$c];
                 $mtime = $mdate < 1000000000 ? "0$mdate" : $mdate;
                 $messages[$numfound] =
-"$mtime|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mattach|$mip|$message|$mns|$tstate|$tstart";
+"$mtime|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mattach|$mip|$mess|$mns|$tstate|$tstart";
                 $numfound++;
             }
         }
@@ -159,30 +180,32 @@ sub RecentPosts {
 
     if ( $numfound > 0 ) {
         if ( $numfound > $display ) { $numfound = $display; }
-        LoadCensorList();
+        load_censor_list();
     }
     else {
         $yymain .= qq~<hr class="hr"><b>$maintxt{'170'}</b><hr />~;
     }
 
     for my $i ( 0 .. ( $numfound - 1 ) ) {
-        (
-            $dummy,   $board, $tnum,    $c,     $tusername, $tname,
-            $msub,    $mname, $memail,  $mdate, $musername, $micon,
-            $mattach, $mip,   $message, $mns,   $tstate,    $trstart
+        my (
+            undef,    $board, $tnum,   $c,     $tusername, $tname,
+            $msub,    $mname, $memail, $mdate, $musername, $micon,
+            $mattach, $mip,   $messge, $mns,   $tstate,    $trstart
         ) = split /[|]/xsm, $messages[$i];
-        $displayname = $mname;
+        my $displayname = $mname;
+        $message = $messge;
+        $trstart ||= $tnum;
 
         if ( $tusername ne 'Guest' && -e ("$memberdir/$tusername.vars") ) {
-            LoadUser($tusername);
+            load_user($tusername);
         }
+        my $registrationdate = $date;
         if ( ${ $uid . $tusername }{'regtime'} ) {
             $registrationdate = ${ $uid . $tusername }{'regtime'};
         }
         else {
             $registrationdate = $date;
         }
-        $trstart ||= 0;
         if ( ${ $uid . $tusername }{'regdate'} && $trstart > $registrationdate )
         {
             $tname = profile_view($tusername);
@@ -195,7 +218,7 @@ sub RecentPosts {
         }
 
         if ( $musername ne 'Guest' && -e ("$memberdir/$musername.vars") ) {
-            LoadUser($musername);
+            load_user($musername);
         }
         if ( ${ $uid . $musername }{'regtime'} ) {
             $registrationdate = ${ $uid . $musername }{'regtime'};
@@ -215,21 +238,23 @@ sub RecentPosts {
         }
 
         wrap();
-        $movedflag = q{};
-        ( $message, $movedflag ) = Split_Splice_Move( $message, $tnum );
+        my $movedflag = q{};
+        ( $message, $movedflag ) = split_splice_move( $message, $tnum );
+        my ($ns);
         if ($enable_ubbc) {
             $ns = $mns;
             enable_yabbc();
-            DoUBBC();
+            do_ubbc();
         }
         wrap2();
-        ToChars($message);
-        $message = Censor($message);
+        to_chars($message);
+        $message = do_censor($message);
 
-        ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
-        ToChars($msub);
-        $msub = Censor($msub);
+        ( $msub, undef ) = split_splice_move( $msub, 0 );
+        to_chars($msub);
+        $msub = do_censor($msub);
 
+        my $notify = q{};
         if ($iamguest) {
             $notify = q{};
         }
@@ -249,7 +274,9 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
 
         # generate a sub board tree
         my $boardtree   = q{};
+        my $my_cat      = q{};
         my $parentboard = $board;
+        my $my_tstate   = q{};
         while ($parentboard) {
             my ( $pboardname, undef, undef ) =
               split /[|]/xsm, $board{$parentboard};
@@ -267,7 +294,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under"
             $my_cat      = ${ $uid . $parentboard }{'cat'};
             $parentboard = ${ $uid . $parentboard }{'parent'};
         }
-        $counter = $i + 1;
+        my $counter = $i + 1;
 
         if ( $tstate !~ m/1/xsm && ( !$iamguest || $enable_guestposting ) ) {
             $my_tstate = $myrecent_mess;
@@ -290,15 +317,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under"
         $yymain =~ s/\Q{yabb my_tstate}\E/$my_tstate/xsm;
         $yymain =~ s/\Q{yabb message}\E/$message/xsm;
 
-        if ( !${ $uid . $username }{'postlayout'} ) {
-            $txtsz = q{};
-        }
-        else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
-              ${ $uid . $username }{'postlayout'};
-            if ( $txtsz < 60 ) { $txtsz = 100; }
-            $txtsz = qq~; font-size:$txtsz%~;
-        }
+        my $txtsz = txtsz();
         $yymain =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
     }
 
@@ -308,48 +327,48 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under"
     return;
 }
 
-sub RecentTopics {
+sub recent_topics {
     spam_protection();
-
-    $recent_topics = $action eq 'recenttopics' ? 1 : 0;
+    my $recent_topics = $action eq 'recenttopics' ? 1 : 0;
 
     $display = $FORM{'display'} || $INFO{'display'} || 10;
     if ( $display < 0 ) { $display = 5; }
     elsif ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
 
-    $numfound = 0;
     get_forum_master();
     for my $catid (@categoryorder) {
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
-        if ( !CatAccess($catperms) ) { next; }
-        (@bdlist) = split /,/xsm, $cat{$catid};
+        my ( undef, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        if ( !cat_access($catperms) ) { next; }
+        my (@bdlist) = split /,/xsm, $cat{$catid};
         recursive_check(@bdlist);
     }
 
     @data = reverse sort { $a cmp $b } @data;
 
     $numfound = 0;
-    $notify =
+    my (@messages);
+    our ($message);
+    my $notify =
       $recent_topics
       ? scalar @data
       : ( @data > $display ? $display : scalar @data );
     for my $i ( 0 .. ( $notify - 1 ) ) {
-        ( $mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate ) =
-          split /[|]/xsm, $data[$i];
+        my ( $mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate )
+          = split /[|]/xsm, $data[$i];
 
-        fopen( REC_THRETXT, "$datadir/$tnum.txt" ) || next;
-        @mess = <REC_THRETXT>;
-        fclose(REC_THRETXT);
+        open my $REC_THRETXT, '<', "$datadir/$tnum.txt" || next;
+        my @mess = <$REC_THRETXT>;
+        close $REC_THRETXT or croak "$croak{'close'} $tnum.txt";
 
         for my $c ( $#mess .. @mess ) {
             chomp $mess[$c];
             if ( $mess[$c] ) {
-                (
-                    $msub,  $mname,    $memail, $mdate,   $musername,
-                    $micon, $mreplyno, $mip,    $message, $mns
+                my (
+                    $msub,  $mname,    $memail, $mdate,  $musername,
+                    $micon, $mreplyno, $mip,    $messge, $mns
                 ) = split /[|]/xsm, $mess[$c];
                 $messages[$numfound] =
-"$mdate|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$message|$mns|$tstate|$mtime";
+"$mdate|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$messge|$mns|$tstate|$mtime";
                 $numfound++;
             }
         }
@@ -357,27 +376,29 @@ sub RecentTopics {
     }
 
     @messages = reverse sort { $a cmp $b } @messages;
-
+    my ($icanbypass);
     if ( $numfound > 0 ) {
         if ( $numfound > $display ) { $numfound = $display; }
-        LoadCensorList();
-        $icanbypass = checkUserLockBypass();
+        load_censor_list();
+        $icanbypass = checkuser_lockbypass();
     }
     else {
         $yymain .= qq~<hr class="hr" /><b>$maintxt{'170'}</b><hr />~;
     }
 
     for my $i ( 0 .. ( $numfound - 1 ) ) {
-        (
-            $dummy,   $board, $tnum,    $c,     $tusername, $tname,
-            $msub,    $mname, $memail,  $mdate, $musername, $micon,
-            $mattach, $mip,   $message, $mns,   $tstate,    $trstart
+        my (
+            undef,    $board, $tnum,   $c,     $tusername, $tname,
+            $msub,    $mname, $memail, $mdate, $musername, $micon,
+            $mattach, $mip,   $messge, $mns,   $tstate,    $trstart
         ) = split /[|]/xsm, $messages[$i];
-        $displayname = $mname;
-
+        my $displayname = $mname;
+        $message = $messge;
+        $trstart ||= $tnum;
         if ( $tusername ne 'Guest' && -e ("$memberdir/$tusername.vars") ) {
-            LoadUser($tusername);
+            load_user($tusername);
         }
+        my $registrationdate = $date;
         if ( ${ $uid . $tusername }{'regtime'} ) {
             $registrationdate = ${ $uid . $tusername }{'regtime'};
         }
@@ -397,7 +418,7 @@ sub RecentTopics {
         }
 
         if ( $musername ne 'Guest' && -e ("$memberdir/$musername.vars") ) {
-            LoadUser($musername);
+            load_user($musername);
         }
         if ( ${ $uid . $musername }{'regtime'} ) {
             $registrationdate = ${ $uid . $musername }{'regtime'};
@@ -417,20 +438,21 @@ sub RecentTopics {
         }
 
         wrap();
-        $movedflag = q{};
-        ( $message, $movedflag ) = Split_Splice_Move( $message, $tnum );
+        my $movedflag = q{};
+        ( $message, $movedflag ) = split_splice_move( $message, $tnum );
+        my $ns = q{};
         if ($enable_ubbc) {
             $ns = $mns;
             enable_yabbc();
-            DoUBBC();
+            do_ubbc();
         }
         wrap2();
-        ToChars($message);
-        $message = Censor($message);
+        to_chars($message);
+        $message = do_censor($message);
 
-        ( $msub, undef ) = Split_Splice_Move( $msub, 0 );
-        ToChars($msub);
-        $msub = Censor($msub);
+        ( $msub, undef ) = split_splice_move( $msub, 0 );
+        to_chars($msub);
+        $msub = do_censor($msub);
 
         if ($iamguest) {
             $notify = q{};
@@ -452,9 +474,10 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
         # generate a sub board tree
         my $boardtree   = q{};
         my $parentboard = $board;
+        my ( $my_cat, $my_catname );
         while ($parentboard) {
             my ( $pboardname, undef, undef ) =
-              split /[|]/xsm, $board{"$parentboard"};
+              split /[|]/xsm, $board{$parentboard};
             if ( ${ $uid . $parentboard }{'canpost'}
                 || !$subboard{$parentboard} )
             {
@@ -470,9 +493,10 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
             ( $my_catname, undef ) = split /[|]/xsm, $catinfo{$my_cat};
             $parentboard = ${ $uid . $parentboard }{'parent'};
         }
-        $counter = $i + 1;
+        my $counter = $i + 1;
 
-        if ( $tstate != 1 && ( !$iamguest || $enable_guestposting ) ) {
+        my $my_tstate = q{};
+        if ( $tstate !~ /1/xsm && ( !$iamguest || $enable_guestposting ) ) {
             $my_tstate = $myrecent_mess;
             $my_tstate =~ s/\Q{yabb tnum}\E/$tnum/gxsm;
             $my_tstate =~ s/\Q{yabb c}\E/$c/gxsm;
@@ -491,15 +515,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
         $yymain =~ s/\Q{yabb my_tstate}\E/$my_tstate/xsm;
         $yymain =~ s/\Q{yabb message}\E/$message/xsm;
 
-        if ( !${ $uid . $username }{'postlayout'} ) {
-            $txtsz = q{};
-        }
-        else {
-            ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
-              ${ $uid . $username }{'postlayout'};
-            if ( $txtsz < 60 ) { $txtsz = 100; }
-            $txtsz = qq~; font-size:$txtsz%~;
-        }
+        my $txtsz = txtsz();
         $yymain =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
     }
 
@@ -511,11 +527,12 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
 
 sub recursive_check {
     my @x = @_;
+    my ($boardperms);
     for my $curboard (@x) {
         ( $boardname{$curboard}, $boardperms, undef ) = split /[|]/xsm,
           $board{$curboard};
 
-        my $access = AccessCheck( $curboard, q{}, $boardperms );
+        my $access = access_check( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }
 
         if ( ${ $uid . $curboard }{'brdpasswr'} ) {
@@ -546,7 +563,7 @@ sub recursive_check {
             if (   !$iamadmin
                 && !$iamgmod
                 && !$pswiammod
-                && $yyCookies{$cookiename} ne $crypass )
+                && $yy_cookies{$cookiename} ne $crypass )
             {
                 next;
             }
@@ -555,14 +572,17 @@ sub recursive_check {
         $catid{$curboard}   = $catid;
         $catname{$curboard} = $catname;
 
-        fopen( REC_BDTXT, "$boardsdir/$curboard.txt" );
-        @buffer = <REC_BDTXT>;
+        open my $REC_BDTXT, '<', "$boardsdir/$curboard.txt"
+          or croak "$croak{'open'} $curboard.txt";
+        my @buffer = <$REC_BDTXT>;
+        close $REC_BDTXT or croak "$croak{'close'} $curboard.txt";
         if ( !$display ) {
             $display = scalar @buffer;
         }
+        my $mtime = $date;
         for my $i ( 0 .. ( $display - 1 ) ) {
             if ( $buffer[$i] ) {
-                (
+                my (
                     $tnum,     $tsub,      $tname, $temail, $tdate,
                     $treplies, $tusername, $ticon, $tstate
                 ) = split /[|]/xsm, $buffer[$i];
@@ -575,7 +595,6 @@ sub recursive_check {
                 }
             }
         }
-        fclose(REC_BDTXT);
         if ( $subboard{$curboard} ) {
             recursive_check( split /[|]/xsm, $subboard{$curboard} );
         }

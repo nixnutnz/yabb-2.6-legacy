@@ -1,18 +1,18 @@
-$englishmoderator_moderator03_banhelpver = 'YaBB 2.7.00 $Revision: 1808 $';
+$englishmoderator_moderator03_banhelpver = 'YaBB 2.7.00 $Revision: 1818 $';
 if ( $action eq 'detailedversion' ) { return 1; }
-$SectionName = "Forum_Moderator_and_Banning_Functions";
+$section_name = "Forum_Moderator_and_Banning_Functions";
 
 ### Section 1
 #############################################
-$SectionSub1 = "Forum_Moderator";
-$SectionBody1 = q~<p>The Forum Moderator position is new to YaBB 2.6.0. As Forum Moderator, you have all the abilities of a Moderator extending over nearly any post on the Forum outside of the sections reserved for Admins.</p>
+$section_sub1 = "Forum_Moderator";
+$section_body1 = q~<p>The Forum Moderator position is new to YaBB 2.6.0. As Forum Moderator, you have all the abilities of a Moderator extending over nearly any post on the Forum outside of the sections reserved for Admins.</p>
 <p>The Forum Moderator has an additional ability as well: You can ban users who break Forum rules, are disruptive or are spamming the Forum.</p>~;
 #############################################
 
 ### Section 2
 #############################################
-$SectionSub2 = "Banning_Members";
-$SectionBody2 = q~<p>To begin banning a Member, access the Member's Profile. This page will give you three methods for banning a Member:</p>
+$section_sub2 = "Banning_Members";
+$section_body2 = q~<p>To begin banning a Member, access the Member's Profile. This page will give you three methods for banning a Member:</p>
 <ol>
     <li>by IP address</li>
     <li>by E-mail address</li>
@@ -41,8 +41,8 @@ $SectionBody2 = q~<p>To begin banning a Member, access the Member's Profile. Thi
 
 ### Section 3
 #############################################
-$SectionSub3 = "Un-Banning";
-$SectionBody3 = q~<p>Circumstances sometimes warrant un-banning Members who have been banned. To un-ban a Member, access the Member's Profile. Beneath whichever method was used to ban the member, you will see an &#8220;Unban&#8221; link. Clicking this removes that Member's information from the banned list.</p>
+$section_sub3 = "Un-Banning";
+$section_body3 = q~<p>Circumstances sometimes warrant un-banning Members who have been banned. To un-ban a Member, access the Member's Profile. Beneath whichever method was used to ban the member, you will see an &#8220;Unban&#8221; link. Clicking this removes that Member's information from the banned list.</p>
 ~;
 #############################################
 

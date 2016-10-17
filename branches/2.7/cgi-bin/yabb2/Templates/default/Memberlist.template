@@ -233,7 +233,7 @@ $my_sel_box = q~<tr>
 
 $my_usersel_inst = qq~<tr>
             <td class="windowbg2" style="height:62px">
-                <span class="small">{yabb instruct_start} {yabb instruct_end} </span><br />
+                <span class="small">{yabb instruct_start} {yabb instruct_end}{yabb inst3}</span><br />
             </td>
         </tr>
     </table>
@@ -241,7 +241,7 @@ $my_usersel_inst = qq~<tr>
     {yabb pageindexjs}
 ~;
 
-$my_tableHeader = qq~<tr>
+$my_tableheader = qq~<tr>
             <td class="titlebg">
             <div class="small" style="float: left; width: 258px; padding-top: 3px;">
                 {yabb instructtext}
@@ -257,11 +257,11 @@ $my_tableHeader = qq~<tr>
             </td>
         </tr>{yabb TableHeader_lt}~;
 
-$my_tableHeader_lt = q~<tr>
+$my_tableheader_lt = q~<tr>
             <td class="titlebg">{yabb LetterLinks}</td>
         </tr>~;
 
-$my_quickSearch = qq~
+$my_quicksearch = qq~
     <script type="text/javascript">document.getElementById("select_body").className = "select_body_qsearch";</script>
     <div class="bordercolor" style="width:300px">
     <table class="pad_3px cs_thin">

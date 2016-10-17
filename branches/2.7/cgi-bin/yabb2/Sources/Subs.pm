@@ -12,47 +12,143 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+no strict qw(refs);
+use warnings;
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use URI::Escape;
 use English qw(-no_match_vars);
 use utf8;
 our $VERSION = '2.7.00';
 
-$subspmver  = 'YaBB 2.7.00 $Revision$';
-@subspmmods = ();
+our $subspmver  = 'YaBB 2.7.00 $Revision$';
+our @subspmmods = ();
+our $subspmmods = 0;
 if (@subspmmods) {
     $subspmmods = 1;
 }
 
 use subs 'exit';
 
-$yymain       = q{};
-$yyjavascript = q{};
-$langopt      = q{};
+our (
+    $abbr_lang,  %croak,               %debug_txt,
+    %dereftxt,   %error_txt,           %fatxt,
+    %guest_txt,  %img_txt,             %jumpto_txt,
+    %lngs,       %load_txt,            %maintxt,
+    %notify_txt, %pwstrengthmeter_txt, %recent_txt,
+    %refer_txt,  %reftxt,              @tranlist,
+    @uploadtranlist,
+);
+our (
+    $adminurl,  $boardsdir,    $boardurl, $datadir,
+    $htmldir,   $imagesdir,    $langdir,  $memberdir,
+    $scripturl, $templatesdir, $vardir,   $yyhtml_root
+);
+## settings ##
+our (
+    $accept_permafull,        $accept_permalink,
+    $allow_attach_im,         $allowattach,
+    $avatar_limit,            $banned_strings,
+    $bypass_lock_perm,        $cachebehaviour,
+    $click_logtime,           $cookiepassword,
+    $cookiesession_name,      $debug,
+    $default_tz,              $do_scramble_id,
+    $dynamic_clock,           $elenable,
+    $elmax,                   $elrotate,
+    $enable_guestlanguage,    $enable_mc_away,
+    $enable_news,             $enable_stealth,
+    $enable_ubbc,             $enableclicklog,
+    $enabletz,                $error_spd,
+    $extendedprofiles,        $fadelinks,
+    $fontsizemax,             $fontsizemin,
+    $getreversedns,           $guest_media_disallowed,
+    $guestaccess,             $gzcomp,
+    $gzforce,                 $img_greybox,
+    $lang,                    $lastbackup,
+    $limit,                   $maintenance,
+    $max_log_days_old,        $maxsearchdisplay,
+    $maxsteps,                $mbname,
+    $new_notification_alert,  $online_logtime,
+    $perm_domain,             $pm_file_limit,
+    $pm_level,                $profile_int,
+    $post_speed_count,        $pwstrengthmeter_common,
+    $pwstrengthmeter_minchar, $pwstrengthmeter_scores,
+    $qckage,                  $qcksearchtype,
+    $regtype,                 $rememberbackup,
+    $shownewsfader,           $stealthurl,
+    $stepdelay,               $string_on,
+    $symlink,                 $temp_switcher_allowed,
+    $templ_switcher,          $timecorrection,
+    $timeout,                 $upload_useravatar,
+    $use_guardian,            $yymycharset,
+    %fix_img_size,            %templateset,
+    $quick_post,
+);
+## system ##
+our (
+    $action,           $adminscreen,            $annboard,
+    $board_notify,     $cgi_query,              $child_pid,
+    $contenttype,      $curnum,                 $currentboard,
+    $defaultimagesdir, $detention_left,         $e_tag,
+    $fadedelay,        $findmember,             $formsession,
+    $guest_lang,       $header_already_printed, $headerstatus,
+    $hour,             $iamadmin,               $iamfmod,
+    $iamgmod,          $iamguest,               $iammod,
+    $language,         $last_modified,          $mday,
+    $message,          $mloaded,                $mon_num,
+    $morelang,         $mytimeselected,         $no_error_page,
+    $ns,               $output,                 $qcksearchaccess,
+    $regdate,          $spam_hits_left_count,   $spam_wrd,
+    $staff,            $tabsep,                 $templatejump,
+    $testenv,          $thread_notify,          $tmpregpasswrd1,
+    $tmpregpasswrd2,   $use_lang,               $use_mobile,
+    $useboard,         $usedisplay,             $usehead,
+    $useimages,        $usemessage,             $usemycenter,
+    $user,             $username,               $userreg,
+    $usestyle,         $viewnum,                $yy_setcookies1,
+    $yy_setcookies2,   $yy_setcookies3,         $yy_yabbloaded,
+    $yyexec,           $yyiis,                  $yynavigation,
+    $yysetlocation,    $yytitle,                %board,
+    %cat,              %catcol,                 %catinfo,
+    %control,          %FORM,                   %format_unbold,
+    %gmod_access,      %INFO,                   %memberinf,
+    %memberlist,       %moved_file,             %recent,
+    %referallow,       %subboard,               %totals,
+    %user_pm_level,    %useraccount,            %yy_cookies,
+    %yyuserlog,        @categoryorder,          @censored,
+    @logentries,       @other_cookies
+);
+our (
+    $boardindex_template, $boardname,  $boardpassw,
+    $boardpassw_g,        $loginform,  $my_profile_int,
+    $my_show_error,       $show_check, $show_check_bot,
+);
+
+our $yymain       = q{};
+our $yyjavascript = q{};
+our $langopt      = q{};
 
 # set line wrap limit in Display.
-$linewrap = 80;
-$newswrap = 0;
+our $linewrap = 80;
+our $newswrap = 0;
 
 # get the current date/time
 
-$date = int( time() + $timecorrection );
+our $date = int( time() + $timecorrection );
 
 # check if browser accepts encoded output
-$gzaccept = $ENV{'HTTP_ACCEPT_ENCODING'} =~ /\bgzip\b/xsm || $gzforce;
+our $gzaccept = $ENV{'HTTP_ACCEPT_ENCODING'} =~ /\bgzip\b/xsm || $gzforce;
 
 # parse the query string
 readform();
 
-$uid = substr $date, length($date) - 3, 3;
-$session_id = $cookiesession_name;
+our $uid = substr $date, length($date) - 3, 3;
+our $session_id = $cookiesession_name;
 
-$randaction = substr $date, 0, length($date) - 2;
+our $randaction = substr $date, 0, length($date) - 2;
 
-$user_ip = $ENV{'REMOTE_ADDR'};
+our $user_ip = $ENV{'REMOTE_ADDR'};
 if ( $user_ip eq '127.0.0.1' ) {
     if ( $ENV{'HTTP_CLIENT_IP'} && $ENV{'HTTP_CLIENT_IP'} ne '127.0.0.1' ) {
         $user_ip = $ENV{'HTTP_CLIENT_IP'};
@@ -67,6 +163,8 @@ if ( $user_ip eq '127.0.0.1' ) {
     }
 }
 
+our $yyext  = 'pl';
+our $yyaext = 'pl';
 if   ( -e "$yyexec.cgi" ) { $yyext = 'cgi'; }
 else                      { $yyext = 'pl'; }
 if   ( -e 'AdminIndex.cgi' ) { $yyaext = 'cgi'; }
@@ -74,21 +172,22 @@ else                         { $yyaext = 'pl'; }
 
 ## Repeated regexes; ##
 
-$invalmailchar = qr/[\w\-.+]+@[\w\-.+]+.\w{2,4}/xsm;
-$invalemaila   = qr/(@.*@)|(\.\.)|(@\.)|(\.@)|(^\.)|(\.$)/xsm;
-$invalemailb   = qr/^.+@\[?(\w|[-.])+\.[a-zA-Z]{2,4}|[0-9]{1,4}\]?$/xsm;
-$invalpass     = qr/[^\s\w!@#%\^&*()\$+|`~\-=\\:;'",.\/?\[\]{}]/xsm;
-$invalrname    = qr/[^ \w\x80-\xFF\[\]\(\)#\%\+,\-\|\.:=\?\@\^]/xsm;
+our $invalmailchar = qr/[\w\-.+]+@[\w\-.+]+.\w{2,4}/xsm;
+our $invalemaila   = qr/(@.*@)|([.][.])|(@[.])|([.]@)|(^[.])|([.]$ )/xsm;
+our $invalemailb   = qr/^.+@\[?(\w|[-.])+[.][[:alpha:]]{2,4}|\d{1,4}\]?$ /xsm;
+our $invalpass     = qr/[^\s\w!@#%\^&*()\$+|`~\-=\\:;'",.\/?\[\]{}]/xsm;
+our $invalrname    = qr/[^ \w\x80-\xFF\[\][(][)]\#%[+],-[|][.]:=[?]@\^]/xsm;
 
 sub automaintenance {
     my ( $maction, $mreason ) = @_;
-    if ( lc($maction) eq 'on' ) {
-        fopen( MAINT, ">$vardir/maintenance.lock" );
-        print {MAINT} qq~$maintxt{'maint'}\n~
+    if ( $maction ) {
+        open my $MAINT, '>', "$vardir/maintenance.lock"
+          or croak "$croak{'open'} maintenance.lock";
+        print {$MAINT} qq~$maintxt{'maint'}\n~
           or croak qq~$maintxt{'maint'}~;
-        fclose(MAINT);
+        close $MAINT or croak "$croak{'close'} maintenance.lock";
         if ( $mreason eq 'low_disk' ) {
-            LoadLanguage('Error');
+            load_language('Error');
             alertbox( $error_txt{'low_diskspace'} );
         }
         if ( !$maintenance ) { $maintenance = 2; }
@@ -132,29 +231,31 @@ sub exit {
 
 sub print_output_header {
     if ($header_already_printed) { return; }
-    $xml_lang               = $abbr_lang || 'en';
-    $yyxml_lang             = $xml_lang;
+    my $xml_lang = $abbr_lang || 'en';
+    our $yyxml_lang = $xml_lang;
     $header_already_printed = 1;
     $headerstatus ||= '200 OK';
     $contenttype  ||= 'text/html';
 
-    my $ret = $yyIIS ? "HTTP/1.0 $headerstatus\n" : "Status: $headerstatus\n";
+    my $ret = $yyiis ? "HTTP/1.0 $headerstatus\n" : "Status: $headerstatus\n";
 
-    foreach ( $yySetCookies1, $yySetCookies2, $yySetCookies3, @otherCookies ) {
+    foreach ( $yy_setcookies1, $yy_setcookies2, $yy_setcookies3,
+        @other_cookies )
+    {
         if ($_) { $ret .= "Set-Cookie: $_\n"; }
     }
 
     if ( !$no_error_page ) {
-        if ($yySetLocation) {
-            $ret .= "Location: $yySetLocation";
+        if ($yysetlocation) {
+            $ret .= "Location: $yysetlocation";
         }
         else {
             if ( !$cachebehaviour ) {
                 $ret .=
 "Cache-Control: no-cache, must-revalidate\nPragma: no-cache\n";
             }
-            if ($ETag)         { $ret .= "ETag: \"$ETag\"\n"; }
-            if ($LastModified) { $ret .= "Last-Modified: $LastModified\n"; }
+            if ($e_tag)         { $ret .= "ETag: \"$e_tag\"\n"; }
+            if ($last_modified) { $ret .= "Last-Modified: $last_modified\n"; }
             if ( $gzcomp && $gzaccept ) { $ret .= "Content-Encoding: gzip\n"; }
             $ret .= "Content-Type: $contenttype; charset=utf-8";
         }
@@ -163,16 +264,16 @@ sub print_output_header {
     return;
 }
 
-sub print_HTML_output_and_finish {
+sub print_html_output_and_finish {
     if ( $gzcomp && $gzaccept ) {
-        my $filehandle_exists = fileno GZIP;
+        my $filehandle_exists = fileno my $GZIP;
         if ( $gzcomp || $filehandle_exists ) {
             $OUTPUT_AUTOFLUSH = 1;
             if ( !$filehandle_exists ) {
-                open $GZIP, q{|}, 'gzip -f' or croak "$croak{'open'} GZIP";
+                open $GZIP, q{|-}, 'gzip -f' or croak "$croak{'open'} GZIP";
+                print {$GZIP} $output or croak "$croak{'print'} GZIP";
+                close $GZIP or croak "$croak{'close'}";
             }
-            print {$GZIP} $output or croak "$croak{'print'} GZIP";
-            close $GZIP or croak "$croak{'close'}";
         }
         else {
             require Compress::Zlib;
@@ -191,7 +292,7 @@ sub write_cookie {
     my %params = @_;
 
     if ( $params{'-expires'} =~ /[+](\d+)m/xsm ) {
-        my ( $sec, $min, $hour, $mday, $mon, $year, $wday ) =
+        my ( $sec, $min, $hr, $mdy, $mon, $year, $wday ) =
           gmtime( $date + $1 * 60 );
 
         $year += 1900;
@@ -203,7 +304,7 @@ sub write_cookie {
         $wday = $dys[$wday];
 
         $params{'-expires'} = sprintf '%s, %02i-%s-%04i %02i:%02i:%02i GMT',
-          $wday, $mday, $mon, $year, $hour, $min, $sec;
+          $wday, $mdy, $mon, $year, $hr, $min, $sec;
     }
 
     if ( $params{'-path'} ) { $params{'-path'} = " path=$params{'-path'};"; }
@@ -223,24 +324,25 @@ sub redirectexit {
 
 sub redirectmove {
     require Sources::MessageIndex;
-    MessageIndex();
+    message_index();
     return;
 }
 
 sub redirectinternal {
     if ($currentboard) {
-        if   ( $INFO{'num'} ) { require Sources::Display;      Display(); }
-        else                  { require Sources::MessageIndex; MessageIndex(); }
+        if ( $INFO{'num'} ) { require Sources::Display; display_thread(); }
+        else                { require Sources::MessageIndex; message_index(); }
     }
     else {
         require Sources::BoardIndex;
-        BoardIndex();
+        board_index();
     }
     return;
 }
 
-sub ImgLoc {
-    @img = @_;
+sub img_loc {
+    my @img = @_;
+    our %img_locs;
     if ( exists $img_locs{ $img[0] } ) {
         $img_locs{ $img[0] } = $img_locs{ $img[0] };
     }
@@ -255,6 +357,11 @@ sub ImgLoc {
 
 sub template {
     print_output_header();
+    our (
+        $yyforumjump,   $yyposition,     $yyimages,  $yydefaultimages,
+        $yysyntax_js,   $yygreyboxstyle, $yyjsstyle, $yyhigh,
+        $yyinlinestyle, $yygrayscript,   $yystyle,   $yynavback,
+    );
 
     if ( $yytitle ne $maintxt{'error_description'} ) {
         if ( ( !$iamguest || ( $iamguest && $guestaccess ) )
@@ -272,22 +379,25 @@ sub template {
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
 
-    if (   $INFO{'num'}
-        || $action eq 'post'
-        || $action eq 'modify'
-        || $action eq 'preview'
-        || $action eq 'search2'
-        || $action eq 'imshow'
-        || $action eq 'imsend'
-        || $action eq 'myviewprofile'
-        || $action eq 'eventcal'
-        || $action eq 'help'
-        || $action eq 'recenttopics'
-        || $action eq 'recent'
-        || $action eq 'usersrecentposts'
-        || $action eq 'myusersrecentposts' )
-    {
-        $yysyntax_js = qq~
+    #    if (   $INFO{'num'} || $action &&
+    #        ( $action eq 'post'
+    #        || $action eq 'modify'
+    #        || $action eq 'preview'
+    #        || $action eq 'search2'
+    #        || $action eq 'imshow'
+    #        || $action eq 'imsend'
+    #        || $action eq 'myviewprofile'
+    #        || $action eq 'eventcal'
+    #        || $action eq 'help'
+    #        || $action eq 'recenttopics'
+    #        || $action eq 'recent'
+    #        || $action eq 'usersrecentposts'
+    #        || $action eq 'myusersrecentposts' )
+    #        || ( $INFO{'board'} && $quick_post )
+    #        )
+    #    {
+
+    $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_css.js"></script>
@@ -299,17 +409,17 @@ sub template {
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
 ~;
-        $yyjsstyle =
+    $yyjsstyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
-        $yyhigh = q~<script type="text/javascript">
+    $yyhigh = q~<script type="text/javascript">
     sh_highlightDocument();
 </script>~;
 
-        if ($img_greybox) {
-            $yygreyboxstyle =
+    if ($img_greybox) {
+        $yygreyboxstyle =
 qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
 
-            $yygrayscript = qq~
+        $yygrayscript = qq~
 <script type="text/javascript">
     var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 </script>
@@ -317,8 +427,9 @@ qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/c
 <script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
 <script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
 ~;
-        }
     }
+
+#    }
 
     $yystyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
@@ -338,10 +449,16 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
     }
 
     # Carsten's 'backtotop';
-    if ( !$yynavback ) { $yynavback .= q~ ~; }
+    if ( !$yynavback ) { $yynavback .= q{ }; }
     $yynavback .=
 qq~$tabsep <span onclick="toTop(0)" class="cursor">$img_txt{'102'}</span> &nbsp; $tabsep~;
-    $yybottom = $img_txt{'102b'};
+    our $yybottom = $img_txt{'102b'};
+
+    our ( $yystyleswitch, $yytempswitcher ) = ( q{}, q{} );
+    my $template = ${ $uid . $username }{'template'} || 'Forum default';
+    if ( $iamguest && $yy_cookies{'yabb2template'} ) {
+        $template = $yy_cookies{'yabb2template'};
+    }
     if ( !$temp_switcher_allowed
         || ( $temp_switcher_allowed && !$iamguest ) )
     {
@@ -372,12 +489,12 @@ qq~            <form id="styleswitcher" action="$scripturl" method="post">
     }
 
     if ( !$usehead ) { $usehead = q~default~; }
-    $yytemplate = "$templatesdir/$usehead/$usehead.html";
-    fopen( TEMPLATE, $yytemplate ) or croak("$maintxt{'23'}: $yytemplate");
-    @whole_file = <TEMPLATE>;
+    our $yytemplate = "$templatesdir/$usehead/$usehead.html";
+    open my $TEMPLATE, '<', $yytemplate or croak("$maintxt{'23'}: $yytemplate");
+    my @whole_file = <$TEMPLATE>;
+    close $TEMPLATE or croak "$croak{'close'} $yytemplate";
     $output = join q{}, @whole_file;
-    fclose(TEMPLATE);
-
+    our $yyadmin_alert = q{};
     if ( $iamadmin || $iamgmod ) {
         if ($maintenance) {
             if   ($do_scramble_id) { $user = cloak($username); }
@@ -395,19 +512,43 @@ qq~            <form id="styleswitcher" action="$scripturl" method="post">
                   . q~</b></span>~;
             }
         }
+        if ( ( $regtype == 1 || $regtype == 2 ) ) {
+            my $check = 0;
+            if ( -e 'Variables/meminactive.db' || -e 'Variables/memapprove.db' )
+            {
+                if ( -e 'Variables/meminactive.db' ) {
+                    my $inactive = -s 'Variables/meminactive.db';
+                    if ( $inactive > 2 ) {
+                        $check = 1;
+                    }
+                }
+                if ( -e 'Variables/memapprove.db' ) {
+                    my $approve = -s 'Variables/memapprove.db';
+                    if ( $approve > 2 ) {
+                        $check = 2;
+                    }
+                }
+            }
+            if ( $check > 0 ) {
+                reg_approval_check();
+            }
+            if ( $check == 1 ) {
+                activation_check();
+            }
+        }
     }
 
     # to top button for fixed menu
-    $yyfixtop = qq~$img_txt{'to_top'}~;
+    our $yyfixtop = $img_txt{'to_top'};
 
-    $yyboardname = "$mbname";
-    $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
+    our $yyboardname = $mbname;
+    our $yyboardlink = qq~<a href="$scripturl">$mbname</a>~;
     if ($accept_permafull) {
         $yyboardlink = qq~<a href="$perm_domain/$symlink/">$mbname</a>~;
     }
 
     # static/dynamic clock
-    $yytime = timeformat( $date, 1 );
+    our $yytime = timeformat( $date, 1 );
     my $zone = q{};
     if (   ( $iamguest && $default_tz eq 'UTC' )
         || ( ${ $uid . $username }{'user_tz'} eq 'UTC' )
@@ -419,12 +560,14 @@ qq~            <form id="styleswitcher" action="$scripturl" method="post">
     if ($enabletz) {
         $toffs = toffs($date);
     }
+    our $yyjavascripta = q{};
     if (
         $mytimeselected != 7
         && ( ( $iamguest && $dynamic_clock )
             || ${ $uid . $username }{'dynamic_clock'} )
       )
     {
+        my ( $aa, $bb );
         if ( $yytime =~ /(.*?)\d+:\d+((\w+)|:\d+)?/xsm ) {
             ( $aa, $bb ) = ( $1, $3 );
         }
@@ -468,14 +611,16 @@ qq~&nbsp;<script  type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\
     }
     ~;
     require Sources::TabMenu;
-    mainMenu();
+    main_menu();
 
-    $yylangChooser = q{};
-    if ( ( $iamguest && !$guestLang ) && $enable_guestlanguage && $guestaccess )
+    our $yylang_chooser = q{};
+    if (   ( $iamguest && !$guest_lang )
+        && $enable_guestlanguage
+        && $guestaccess )
     {
-        if ( !$langopt ) { guestLangSel(); }
+        if ( !$langopt ) { guestlang_sel(); }
         if ( $morelang > 1 ) {
-            $yylangChooser =
+            $yylang_chooser =
 qq~$guest_txt{'sellanguage'}: <form action="$scripturl?action=guestlang" method="post" name="sellanguage">
             <select name="guestlang" onchange="submit();">
             $langopt
@@ -483,13 +628,13 @@ qq~$guest_txt{'sellanguage'}: <form action="$scripturl?action=guestlang" method=
             </form>~;
         }
     }
-    elsif (( $iamguest && $guestLang )
+    elsif (( $iamguest && $guest_lang )
         && $enable_guestlanguage
         && $guestaccess )
     {
-        if ( !$langopt ) { guestLangSel(); }
+        if ( !$langopt ) { guestlang_sel(); }
         if ( $morelang > 1 ) {
-            $yylangChooser =
+            $yylang_chooser =
 qq~$guest_txt{'changelanguage'}: <form action="$scripturl?action=guestlang" method="post" name="changelanguage">
             <select name="guestlang" onchange="submit();">
             $langopt
@@ -506,6 +651,7 @@ qq~$guest_txt{'changelanguage'}: <form action="$scripturl?action=guestlang" meth
         $wmessage = $maintxt{'247m'};
     }    # Morning
     else { $wmessage = $maintxt{'247e'}; }    # Evening
+    our $yyuname = q{};
     if ($iamguest) {
         $yyuname =
           qq~$maintxt{'248'} $maintxt{'28'}. $maintxt{'249'} <a href="~
@@ -529,19 +675,19 @@ qq~ $maintxt{'377'} <a href="$scripturl?action=register">$maintxt{'97'}</a>~;
             }
         }
         $yyuname =
-          (      $PM_level == 0
-              || ( $PM_level == 2 && !$staff )
-              || ( $PM_level == 3 && !$iamadmin && !$iamgmod )
-              || ( $PM_level == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
-          ? "$wmessage ${$uid.$username}{'realname'}"
-          : "$wmessage ${$uid.$username}{'realname'}, ";
+          (      $pm_level == 0
+              || ( $pm_level == 2 && !$staff )
+              || ( $pm_level == 3 && !$iamadmin && !$iamgmod )
+              || ( $pm_level == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
+          ? "$wmessage ${ $uid . $username }{'realname'}"
+          : "$wmessage ${ $uid . $username }{'realname'}, ";
     }
 
     # Add new notifications if allowed
-    if ( !$iamguest && $NewNotificationAlert ) {
+    if ( !$iamguest && $new_notification_alert ) {
         if ( !$board_notify && !$thread_notify ) {
             require Sources::Notify;
-            ( $board_notify, $thread_notify ) = NotificationAlert();
+            ( $board_notify, $thread_notify ) = notification_alert();
         }
         my ( $bo_num, $th_num );
         foreach ( keys %{$board_notify} ) {   # boardname, boardnotifytype , new
@@ -579,19 +725,20 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     }
 
 # check for copyright for special error - angle brackets no longer supported for yabb tags
+    my $yycopyin = 0;
     if ( $output =~ m/\Q{yabb copyright}\E/xsm ) {
         $yycopyin = 1;
     }
 
-    $yysearchbox = q{};
+    our $yysearchbox = q{};
     $qckage ||= 0;
-    $yysrch_no = ' style="display:none"';
+    our $yysrch_no = ' style="display:none"';
     if ( !$iamguest || $guestaccess != 0 ) {
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             my $blurb =
               qq~$maintxt{'searchimg'} $qckage $maintxt{'searchimg2'}~;
             if ( $qckage == 0 ) {
-                $blurb = qq~$maintxt{'searchimg3'}~;
+                $blurb = $maintxt{'searchimg3'};
             }
             $yysrch_no   = q{};
             $yysearchbox = qq~<div class="yabb_searchbox">
@@ -610,6 +757,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
 ~;
         }
     }
+    our ( $yynewstitle, $yynews, );
     if ($enable_news) {
         my $newsfile = "$langdir/English/news.txt";
         if ( -e "$langdir/$use_lang/news.txt" ) {
@@ -619,14 +767,15 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             $newsfile = "$langdir/$lang/news.txt";
         }
         if ( -s $newsfile > 5 ) {
-            fopen( NEWS, $newsfile ) or croak qq~cannot open "$newsfile"~;
-            my @newsmessages = <NEWS>;
-            fclose(NEWS);
+            open my $NEWS, '<', $newsfile or croak qq~cannot open "$newsfile"~;
+            my @newsmessages = <$NEWS>;
+            close $NEWS or croak "$croak{'close'} $newsfile";
             chomp @newsmessages;
             my $startnews = int rand @newsmessages;
             $yynewstitle =
               qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
-            $yynewstitle =~ s/\x27/\\\x27/gxsm;
+            my $apos = '\x27';
+            $yynewstitle =~ s/$apos/\\$apos/gxsm;
             $guest_media_disallowed = 0;
             $newswrap               = 40;
 
@@ -704,7 +853,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                             bcolor = window.getComputedStyle(document.getElementById('fadestylebak'), null).getPropertyValue('background-color');
                         }
                     }
-                    txtdecoration = txtdecoration.replace(/\x27/g, "");
+                    txtdecoration = txtdecoration.replace(/$apos/g, "");
                     var endcolor = convProp(tcolor);
                     var startcolor = convProp(bcolor);~;
                 my $greybox = $img_greybox;
@@ -715,13 +864,13 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
                     if ($enable_ubbc) {
                         enable_yabbc();
                         $ns = q{};
-                        DoUBBC();
+                        do_ubbc();
                         $message =~
 s/\Q style="display:none"\E/ style="display:block"/gxsm;
                     }
                     wrap2();
                     $message =~ s/\x22/\\\x22/gxsm;
-                    ToChars($message);
+                    to_chars($message);
                     $message =~ s/\x27/&\x2339;/xsm;
                     $yynews .=
                       qq~                  fcontent[$j] = '$message';\n~;
@@ -748,12 +897,12 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
                 wrap();
                 if ($enable_ubbc) {
                     enable_yabbc();
-                    DoUBBC();
+                    do_ubbc();
                     $message =~
                       s/\Q style="display:none"\E/ style="display:block"/gxsm;
                 }
                 wrap2();
-                ToChars($message);
+                to_chars($message);
                 $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
             <script type="text/javascript">
@@ -771,11 +920,11 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
 
     if ( $debug == 1 || ( $debug == 2 && $iamadmin ) || $debug == 3 ) {
         require Sources::Debug;
-        LoadLanguage('Debug');
-        Debug();
+        load_language('Debug');
+        debug();
     }
 
-    $yyurl = $scripturl;
+    our $yyurl = $scripturl;
     my $copyright = $output =~ m/\Q{yabb copyright}\E/xsm ? 1 : 0;
 
     while ( $output =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm ) { }
@@ -785,7 +934,7 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
         my %img_locs;
 
         $output =~
-s/(src|value|url)([=(])(["' ])$imagesdir\/([^'" ]+)./ "$1$2$3" . ImgLoc($4) . $3 /eigxsm;
+s/(src|value|url)([=(])(["' ])$imagesdir\/([^'" ]+)./ "$1$2$3" . img_loc($4) . $3 /eigxsm;
     }
 
     # add formsession to each <form ..>-tag
@@ -804,19 +953,19 @@ s/<\/form>/ <input type="hidden" name="formsession" value="$formsession" \/>\n  
 
     if ( !$copyright ) {
         $output =
-qq~<h1 class="center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 class="center"><b>Sorry, the copyright tag &ldquo;yabb copyright&rdquo; must be in the template.<br />Please notify this forum&rsquo;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
 
-    print_HTML_output_and_finish();
+    print_html_output_and_finish();
     return;
 }
 
-sub PMlev {
+sub pm_lev {
     my $pm_lev = 0;
-    if (   $PM_level == 1
-        || ( $PM_level == 2 && $staff )
-        || ( $PM_level == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $PM_level == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
+    if (   $pm_level == 1
+        || ( $pm_level == 2 && $staff )
+        || ( $pm_level == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $pm_level == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
     {
         $pm_lev = 1;
     }
@@ -853,7 +1002,12 @@ s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_r
         $output =~
           s/"((ext)_img_resize)"([^>]*>)/ check_image_resize($1,$2,$3) /egxsm;
     }
-
+    my (
+        $avatar_img_w, $avatar_img_h, $avatarml_img_w, $avatarml_img_h,
+        $post_img_w,   $post_img_h,   $attach_img_w,   $attach_img_h,
+        $signat_img_w, $signat_img_h, $brd_img_w,      $brd_img_h,
+        $ext_img_w,    $ext_img_h,    $fix_ext_size,
+    );
     if ($resize_num) {
         $avatar_img_w   = isempty( $fix_img_size{'avatar'}[1],   65 );
         $avatar_img_h   = isempty( $fix_img_size{'avatar'}[2],   65 );
@@ -926,7 +1080,7 @@ sub fatal_error {
     my @x       = @_;
     my $verbose = $OS_ERROR;
 
-    LoadLanguage('Error');
+    load_language('Error');
     get_template('Other');
 
     my $errormessage =
@@ -938,7 +1092,7 @@ sub fatal_error {
     if (   ( $debug == 1 || ( $debug == 2 && $iamadmin ) )
         && ( $filename || $line || $subroutine ) )
     {
-        LoadLanguage('Debug');
+        load_language('Debug');
         $errormessage .=
 qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $line<br />$maintxt{'error_subroutine'}: $subroutine~;
     }
@@ -964,7 +1118,7 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
     $yytitle = "$maintxt{'error_description'}";
 
     if ( $adminscreen && $action ne 'admincheck2' ) {
-        AdminTemplate();
+        admintemplate();
     }
     else {
         if ( $x[0] =~ /no_access|members_only|no_perm/xsm ) {
@@ -983,19 +1137,20 @@ sub fatal_error_logging {
 
 # This flaw was brought to our attention by S M <savy91@msn.com> Italy
 # Thanks! We couldn't make YaBB successful without the help from the bug testers.
-    ToHTML($action);
-    ToHTML( $INFO{'num'} );
-    ToHTML($currentboard);
+    to_html($action);
+    to_html( $INFO{'num'} );
+    to_html($currentboard);
 
     $tmperror =~ s/\n//igxsm;
     my @errorlog = ();
     if ( -e "$vardir/errorlog.log" ) {
-        fopen( ERRORLOG, "<$vardir/errorlog.log" );
-        @errorlog = <ERRORLOG>;
-        fclose(ERRORLOG);
+        open my $ERRORLOG, '<', "$vardir/errorlog.log"
+          or croak "$croak{'open'} errorlog.log";
+        @errorlog = <$ERRORLOG>;
+        close $ERRORLOG or croak "$croak{'close'} errorlog.log";
         chomp @errorlog;
     }
-    $errorcount = @errorlog;
+    our $errorcount = @errorlog;
 
     if ($elrotate) {
         while ( $errorcount >= $elmax ) {
@@ -1011,8 +1166,8 @@ sub fatal_error_logging {
 
     if ( $iamguest && $user_ip ne '127.0.0.1' ) {
         if ( $error_spd > 0 ) {
-            @erloga = split /[|]/xsm, $errorlog[-1];
-            @erlogb = split /[|]/xsm, $errorlog[-2];
+            my @erloga = split /[|]/xsm, $errorlog[-1];
+            my @erlogb = split /[|]/xsm, $errorlog[-2];
             if (   $erloga[2] eq $user_ip
                 && $erlogb[2] eq $user_ip
                 && ( $erloga[1] - $erlogb[1] ) < $error_spd
@@ -1032,29 +1187,31 @@ sub fatal_error_logging {
           int(time)
           . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$username|$FORM{'passwrd'}\n";
     }
-    fopen( ERRORLOG, ">$vardir/errorlog.log" );
+    open my $ERRORLOG, '>', "$vardir/errorlog.log"
+      or croak "$croak{'open'} errorlog.log";
     foreach my $i (@errorlog) {
         if ( $i ne q{} ) {
             chomp $i;
-            print {ERRORLOG} $i . "\n" or croak "$croak{'print'} ERRORLOG";
+            print {$ERRORLOG} $i . "\n" or croak "$croak{'print'} ERRORLOG";
         }
     }
-    fclose(ERRORLOG);
+    close $ERRORLOG or croak "$croak{'close'} errorlog.log";
     return;
 }
 
-sub FindPermalink {
+sub find_permalink {
     my ($old_env) = @_;
-    $old_env        = substr $old_env, 1, length $old_env;
-    $permtopicfound = 0;
-    $permboardfound = 0;
-    $is_perm        = 1;
+    $old_env = substr $old_env, 1, length $old_env;
+    my $permtopicfound = 0;
+    my $permboardfound = 0;
+    my $is_perm        = 1;
     ## strip off symlink for redirectlike e.g. /articles/ ##
     $old_env =~ s/$symlink//gxsm;
     ## get date/time/board/topic from permalink
 
-    ( $permyear, $permmonth, $permday, $permboard, $permnum ) =
+    my ( $permyear, $permmonth, $permday, $permboard, $permnum ) =
       split /\//xsm, $old_env;
+    my ($new_env);
     if ( -e "$boardsdir/$permboard.txt" ) {
         $permboardfound = 1;
         if ( $permnum && -e "$datadir/$permnum.txt" ) {
@@ -1083,10 +1240,10 @@ sub permtimer {
 }
 
 sub readform {
-    my ( @pairs, $pair, $name, $value );
+    my ( @pairs, $pair, $name, $value, $urlstart, $getpairs );
     my $qstring = $ENV{QUERY_STRING};
     if ( substr( $qstring, 0, 1 ) eq q{/} && $accept_permalink ) {
-        $qstring = FindPermalink($qstring);
+        $qstring = find_permalink($qstring);
     }
     if ( $qstring =~ m/action\=dereferer/xsm ) {
         $INFO{'action'} = 'dereferer';
@@ -1102,7 +1259,7 @@ sub readform {
         $testenv = $qstring;
         $testenv =~ s/&/;/gxsm;
         if ( $testenv && $debug ) {
-            LoadLanguage('Debug');
+            load_language('Debug');
             $getpairs =
 qq~<br /><span class="under">$debug_txt{'getpairs'}:</span><br />~;
         }
@@ -1116,9 +1273,10 @@ qq~<br /><span class="under">$debug_txt{'getpairs'}:</span><br />~;
 
     split_string( \$testenv, \%INFO, 1 );
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
-        ( undef, $IISver ) = split /\//xsm, $ENV{'SERVER_SOFTWARE'};
-        ( $IISver, $IISverM ) = split /./xsm, $IISver;
-        if ( int($IISver) < 6 && int($IISverM) < 1 ) {
+        my ( undef, $iisver ) = split /\//xsm, $ENV{'SERVER_SOFTWARE'};
+        my ($iisverm);
+        ( $iisver, $iisverm ) = split /./xsm, $iisver;
+        if ( int($iisver) < 6 && int($iisverm) < 1 ) {
             if ( eval { require CGI } ) {
                 require CGI;
             }
@@ -1126,7 +1284,7 @@ qq~<br /><span class="under">$debug_txt{'getpairs'}:</span><br />~;
     }
     if ( $ENV{REQUEST_METHOD} eq 'POST' ) {
         if ($debug) {
-            LoadLanguage('Debug');
+            load_language('Debug');
             $getpairs .=
 qq~<br /><span class="under">$debug_txt{'postpairs'}:</span><br />~;
         }
@@ -1148,20 +1306,21 @@ qq~<br /><span class="under">$debug_txt{'postpairs'}:</span><br />~;
            # "413 Request entity too large"
            # This value will affect both ordinary POSTs and multipart POSTs,
            # meaning that it limits the maximum size of file uploads as well.
-            $allowattach   ||= 0;
-            $allowAttachIM ||= 0;
-            $limit         ||= 0;
-            $pmFileLimit   ||= 0;
+            $allowattach     ||= 0;
+            $allow_attach_im ||= 0;
+            $limit           ||= 0;
+            $pm_file_limit   ||= 0;
             if (   $allowattach > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(post|modify)2\b/xsm )
             {
                 $CGI::POST_MAX = int( 1024 * $limit * $allowattach );
                 if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }
             }
-            elsif ($allowAttachIM > 0
+            elsif ($allow_attach_im > 0
                 && $ENV{'QUERY_STRING'} =~ /action=(imsend|imsend2)\b/xsm )
             {
-                $CGI::POST_MAX = int( 1024 * $pmFileLimit * $allowAttachIM );
+                $CGI::POST_MAX =
+                  int( 1024 * $pm_file_limit * $allow_attach_im );
                 if ($CGI::POST_MAX) { $CGI::POST_MAX += 1048576; }
             }
             elsif ($upload_useravatar
@@ -1180,17 +1339,17 @@ qq~<br /><span class="under">$debug_txt{'postpairs'}:</span><br />~;
 
         # * adds volume, if a upload limit is set, to not get error if the other
         # uploaded data is larger. Change this values if you get error messages.
-            $CGI_query = CGI->new;
+            $cgi_query = CGI->new;
 
-            # $CGI_query must be a global variable
+            #$cgi_query must be a global variable
             my @value = ();
-            foreach my $name ( $CGI_query->param ) {
+            foreach my $name ( $cgi_query->param ) {
                 if ( $name =~ /^file(\d+|_avatar)$/xsm ) { next; }
 
         # files are directly called in Profile.pm, Post.pm and ModifyMessages.pl
-                @value = $CGI_query->multi_param($name);
+                @value = $cgi_query->multi_param($name);
                 if ($debug) {
-                    LoadLanguage('Debug');
+                    load_language('Debug');
                     $getpairs .=
 qq~[$debug_txt{'name'}-&gt;]$name=@value\[&lt;-$debug_txt{'value'}]<br />~;
                 }
@@ -1233,7 +1392,7 @@ qq~[$debug_txt{'name'}-&gt;]$name=@value\[&lt;-$debug_txt{'value'}]<br />~;
 
 sub split_string {
     my ( $string, $hash, $altdelim ) = @_;
-
+    my ( $getpairs, @pairs, );
     if ( $altdelim && ${$string} =~ m{;}xsm ) {
         @pairs = split /;/xsm, ${$string};
     }
@@ -1245,7 +1404,7 @@ sub split_string {
         $value =~ tr/+/ /;
         $value =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
         if ($debug) {
-            LoadLanguage('Debug');
+            load_language('Debug');
             $getpairs .=
 qq~[$debug_txt{'name'}-&gt;]$name=$value\[&lt;-$debug_txt{'value'}]<br />~;
         }
@@ -1267,13 +1426,14 @@ sub getlog {
       || !-e "$memberdir/$username.log";
 
     %yyuserlog = ();
-    fopen( GETLOG, "$memberdir/$username.log" );
-    my @logentries = <GETLOG>;
-    fclose(GETLOG);
+    open my $GETLOG, '<', "$memberdir/$username.log"
+      or croak "$croak{'open'} $username.log";
+    @logentries = <$GETLOG>;
+    close $GETLOG or croak "$croak{'close'} $username.log";
     chomp @logentries;
 
     foreach (@logentries) {
-        my ( $name, $thistime ) = split /[|]/xsm, $_;
+        my ( $name, $thistime ) = split /[|]/xsm;
         if ( $name && $thistime ) { $yyuserlog{$name} = $thistime; }
     }
     return;
@@ -1288,17 +1448,17 @@ sub dumplog {
         $yyuserlog{ $dum[0] } = $dum[1] || $date;
     }
     if (%yyuserlog) {
-        my $name;
-        $date2 = $date;
-        fopen( DUMPLOG, ">$memberdir/$username.log" );
-        while ( ( $name, $date1 ) = each %yyuserlog ) {
-            $result = calcdtdiff( $date1, $date2 );    # output => $result
+        my $date2 = $date;
+        open my $DUMPLOG, '>', "$memberdir/$username.log"
+          or croak "$croak{'open'} $username.log";
+        while ( my ( $name, $date1 ) = each %yyuserlog ) {
+            my $result = calcdtdiff( $date1, $date2 );    # output => $result
             if ( $result <= $max_log_days_old ) {
-                print {DUMPLOG} qq~$name|$date1\n~
+                print {$DUMPLOG} qq~$name|$date1\n~
                   or croak "$croak{'print'} DUMPLOG";
             }
         }
-        fclose(DUMPLOG);
+        close $DUMPLOG or croak "$croak{'close'} $username.log";
     }
     return;
 }
@@ -1306,14 +1466,14 @@ sub dumplog {
 ## standard jump to menu
 sub jumpto {
     ## jump links to messages/favorites/notifications.
-    my $action = 'action=jump';
+    $action = 'action=jump';
     my $onchange =
 qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$scripturl?' + this.options[this.selectedIndex].value;"~;
     if ($templatejump) {
         $action   = 'action=';
         $onchange = q{};
     }
-    $selecthtml = qq~
+    our $selecthtml = qq~
             <form method="post" action="$scripturl?$action" style="display: inline;">
                 <select name="values"$onchange>
                     <option value="" class="forumjump">$jumpto_txt{'to'}</option>
@@ -1321,7 +1481,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
 
     ## as guests do not have these, why show them?
     if ( !$iamguest ) {
-        $pm_lev = PMlev();
+        my $pm_lev = pm_lev();
         if ( $pm_lev == 1 ) {
             $selecthtml .= qq~
                     <option value="action=im" class="forumjumpcatm">$jumpto_txt{'mess'}</option>~;
@@ -1339,11 +1499,11 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
     get_forum_master();
     foreach my $catid (@categoryorder) {
         my @bdlist = split /,/xsm, $cat{$catid};
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{"$catid"};
+        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
 
-        my $cataccess = CatAccess($catperms);
+        my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
-        ToChars($catname);
+        to_chars($catname);
 
         $selecthtml .=
           $INFO{'catselect'} eq $catid
@@ -1359,11 +1519,15 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                 my $dash;
                 if ( $indent > 0 ) { $dash = q{-}; }
 
-                my ( $boardname, $boardperms, $boardview ) =
+                my ( $boardnme, $boardperms, $boardview ) =
                   split /[|]/xsm, $board{$board};
-                ToChars($boardname);
-                my $access = AccessCheck( $board, q{}, $boardperms );
-                if ( !$iamadmin && $access ne 'granted' && $boardview != 1 ) {
+                $boardname = $boardnme;
+                to_chars($boardname);
+                my $access = access_check( $board, q{}, $boardperms );
+                if (  !$iamadmin
+                    && $access ne 'granted'
+                    && ( !$boardview || $boardview != 1 ) )
+                {
                     next;
                 }
                 if ( ${ $uid . $board }{'brdpasswr'} ) {
@@ -1396,7 +1560,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                     if (   !$iamadmin
                         && !$iamgmod
                         && !$pswiammod
-                        && $yyCookies{$cookiename} ne $crypass )
+                        && $yy_cookies{$cookiename} ne $crypass )
                     {
                         next;
                     }
@@ -1447,7 +1611,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
 }
 
 sub dojump {
-    $yySetLocation = $scripturl . $FORM{'values'};
+    $yysetlocation = $scripturl . $FORM{'values'};
     redirectexit();
     return;
 }
@@ -1457,11 +1621,12 @@ sub spam_protection {
     my ( $flood_ip, $flood_time, $flood, @floodcontrol );
 
     if ( -e "$vardir/flood.log" ) {
-        fopen( FLOOD, "<$vardir/flood.log" );
+        open my $FLOOD, '<', "$vardir/flood.log"
+          or croak "$croak{'open'} flood.log";
         push @floodcontrol, "$user_ip|$date\n";
-        while (<FLOOD>) {
-            chomp $_;
-            ( $flood_ip, $flood_time ) = split /[|]/xsm, $_;
+        while (<$FLOOD>) {
+            chomp;
+            ( $flood_ip, $flood_time ) = split /[|]/xsm;
             if ( $user_ip eq $flood_ip && $date - $flood_time <= $timeout ) {
                 $flood = 1;
             }
@@ -1469,31 +1634,37 @@ sub spam_protection {
                 push @floodcontrol, "$_\n";
             }
         }
-        fclose(FLOOD);
+        close $FLOOD or croak "$croak{'close'} flood.log";
     }
     if ( $flood && !$iamadmin ) {
         if ( $action eq 'post2' ) {
-            Preview("$maintxt{'409'} $timeout $maintxt{'410'}");
+            preview("$maintxt{'409'} $timeout $maintxt{'410'}");
         }
         else {
             fatal_error( 'post_flooding', "$timeout $maintxt{'410'}" );
         }
     }
     $flood = join q{}, @floodcontrol;
-    fopen( FLOOD, ">$vardir/flood.log", 1 );
-    print {FLOOD} $flood or croak "$croak{'print'} FLOOD";
-    fclose(FLOOD);
+    open my $FLOOD, '>', "$vardir/flood.log"
+      or croak "$croak{'open'} flood.log";
+    print {$FLOOD} $flood or croak "$croak{'print'} FLOOD";
+    close $FLOOD or croak "$croak{'close'} flood.log";
     return;
 }
+our (
+    $spam_question_id, $spam_question, $spam_questions_case,
+    $spam_image,       $verification_answer,
+);
 
-sub SpamQuestion {
+sub spam_question {
     srand;
-    fopen( SPAMQUESTIONS, "<$langdir/$language/spam.questions" )
+    my ($spam_question_rand);
+    open my $SPAMQUESTIONS, '<', "$langdir/$language/spam.questions"
       or fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
-    while (<SPAMQUESTIONS>) {
+    while (<$SPAMQUESTIONS>) {
         rand($INPUT_LINE_NUMBER) < 1 && ( $spam_question_rand = $_ );
     }
-    fclose(SPAMQUESTIONS);
+    close $SPAMQUESTIONS or croak "$croak{'close'} spam.questions";
     chomp $spam_question_rand;
     (
         $spam_question_id, $spam_question, undef, $spam_questions_case,
@@ -1506,12 +1677,12 @@ sub SpamQuestion {
     return;
 }
 
-sub SpamQuestionCheck {
+sub spam_question_check {
     my ( $verification_question, $verification_question_id ) = @_;
-    fopen( SPAMQUESTIONS, "<$langdir/$language/spam.questions" )
+    open my $SPAMQUESTIONS, '<', "$langdir/$language/spam.questions"
       or fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
-    @spam_questions = <SPAMQUESTIONS>;
-    fclose(SPAMQUESTIONS);
+    my @spam_questions = <$SPAMQUESTIONS>;
+    close $SPAMQUESTIONS or croak "$croak{'close'} spam.questions";
     foreach my $verification_question (@spam_questions) {
         chomp $verification_question;
         if ( $verification_question =~ /$verification_question_id/xsm ) {
@@ -1528,10 +1699,10 @@ sub SpamQuestionCheck {
     if ( !$verification_question ) {
         fatal_error('no_verification_question');
     }
-    @verificationanswer = split /,/xsm, $verification_answer;
+    my @verificationanswer = split /,/xsm, $verification_answer;
     foreach (@verificationanswer) {
-        $_ =~ s/\A\s+//xsm;
-        $_ =~ s/\s+\Z//xsm;
+        s/\A\s+//xsm;
+        s/\s+\Z//xsm;
     }
     if ( !grep { $verification_question eq $_ } @verificationanswer ) {
         fatal_error('wrong_verification_question');
@@ -1539,15 +1710,16 @@ sub SpamQuestionCheck {
     return;
 }
 
-sub CountChars {
-    $convertstr =~ s/&\x2332;/ /gxsm;    # why? where? (deti)
+sub count_chars {
+    our $convertstr =~ s/&\x2332;/ /gxsm;    # why? where? (deti)
      #length does not always function properly with UTF-8 - convert UTF-8 to internal Perl utf8
+    our ($convertcut);
     require utf8;
     require Encode;
-    Encode->import( decode_utf8, encode_utf8 );
+    Encode->import( 'decode_utf8', 'encode_utf8' );
     $convertstr = decode_utf8($convertstr);
 
-    $cliped = 0;
+    our $cliped = 0;
     my ( $string, $curstring, $stinglength, $teststring );
     foreach my $string ( split /\s+/xsm, $convertstr ) {
       CHECKAGAIN:
@@ -1583,7 +1755,7 @@ sub CountChars {
         $teststring  = $string;
 
         # correct length for HTML characters
-        FromHTML($teststring);
+        from_html($teststring);
         $convertcut += $stinglength - length $teststring;
 
         # correct length for special characters, YaBBC and HTML-Tags
@@ -1620,7 +1792,7 @@ sub CountChars {
     return $convertstr;
 }
 
-sub WrapChars {
+sub wrap_chars {
     my @x = @_;
     my ( $tmpwrapstr, $length, $char, $curword, $tmpwrapcut );
     my $wrapcut = $x[1];
@@ -1654,7 +1826,7 @@ sub WrapChars {
     return $tmpwrapstr;
 }
 
-sub enc_eMail {
+sub enc_email {
     my ( $title, $email, $subject, $body, $src ) = @_;
     my $email_length = length $email;
     my $code1        = generate_code($email_length);
@@ -1665,7 +1837,7 @@ sub enc_eMail {
     }
     $code2 = uri_escape($code2);
 
-    local *enc_eMail_x = sub {
+    local *enc_email_x = sub {
         my ( $x, $y, $z ) = @_;
         if ( !$y ) {
             $x = ord $x;
@@ -1682,10 +1854,10 @@ sub enc_eMail {
         $subject = uri_escape($subject);
         $body    = uri_escape($body);
         $subbody = "?subject=$subject&body=$body";
-        $subbody =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_eMail_x($1,$2,$3) /egxsm;
+        $subbody =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_email_x($1,$2,$3) /egxsm;
     }
-    $titlesp = $title;
-    $titlesp =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_eMail_x($1,$2,$3) /egxsm;
+    my $titlesp = $title;
+    $titlesp =~ s/(((<.+?>)|&\x23\d+;)|.)/ enc_email_x($1,$2,$3) /egxsm;
     if ($src) { $titlesp = $title; }
 
     return
@@ -1708,77 +1880,72 @@ sub generate_code {
     return $code;
 }
 
-sub FromChars {
-    ( $_[0] ) = @_;
-    ## This cannot be localized or unpacked ##
-    $_[0] =~ s/&\x23(\d{3,});/ $1>127 ? "[ch$1]" : $& /egixsm;
-
-    return $_[0];
+sub from_chars {
+    my @x = @_;
+    $x[0] =~ s/&\x23(\d{3,});/ $1>127 ? "[ch$1]" : $& /egixsm;
+    return $x[0];
 }
 
-sub ToChars {
-    ( $_[0] ) = @_;
-    ## This cannot be localized or unpacked ##
-    $_[0] =~ s/\[ch(\d{3,})\]/ $1>127 ? "\&\x23$1;" : q{} /egixsm;
-    return $_[0];
+sub to_chars {
+    my @x = @_;
+    $x[0] =~ s/\[ch(\d{3,})\]/ $1>127 ? "\&\x23$1;" : q{} /egixsm;
+    return $x[0];
 }
 
-sub ToHTML {
-    ( $_[0] ) = @_;
-    ## This cannot be localized or unpacked - damages smilies ##
-    $_[0] =~ s/&/&amp;/gxsm;
-    $_[0] =~ s/[}]/\&\x23125;/gxsm;
-    $_[0] =~ s/[{]/\&\x23123;/gxsm;
-    $_[0] =~ s/[|]/&\x23124;/gxsm;
-    $_[0] =~ s/>/&gt;/gxsm;
-    $_[0] =~ s/</&lt;/gxsm;
-    $_[0] =~ s/[ ]{3}/&nbsp; &nbsp;/gxsm;
-    $_[0] =~ s/[ ]{2}/&nbsp; /gxsm;
-    $_[0] =~ s/\x22/&quot;/gxsm;
-    return $_[0];
+sub to_html {
+    my @x = @_;
+    $x[0] =~ s/&/&amp;/gxsm;
+    $x[0] =~ s/[}]/\&\x23125;/gxsm;
+    $x[0] =~ s/[{]/\&\x23123;/gxsm;
+    $x[0] =~ s/[|]/&\x23124;/gxsm;
+    $x[0] =~ s/>/&gt;/gxsm;
+    $x[0] =~ s/</&lt;/gxsm;
+    $x[0] =~ s/[ ]{3}/&nbsp; &nbsp;/gxsm;
+    $x[0] =~ s/[ ]{2}/&nbsp; /gxsm;
+    $x[0] =~ s/\x22/&quot;/gxsm;
+    return $x[0];
 }
 
-sub FromHTML {
-    ( $_[0] ) = @_;
-    ## This cannot be localized or unpacked ##
-    $_[0] =~ s/&quot;/\x22/gxsm;
-    $_[0] =~ s/&nbsp;/ /gxsm;
-    $_[0] =~ s/&lt;/</gxsm;
-    $_[0] =~ s/&gt;/>/gxsm;
-    $_[0] =~ s/&\x23124;/\|/gxsm;
-    $_[0] =~ s/&\x23123;/\{/gxsm;
-    $_[0] =~ s/&\x23125;/\}/gxsm;
-    $_[0] =~ s/&euro;/€/gxsm;
-    $_[0] =~ s/&sbquo;/‚/gxsm;
-    $_[0] =~ s/&fnof;/ƒ/gxsm;
-    $_[0] =~ s/&bdquo;/„/gxsm;
-    $_[0] =~ s/&hellip;/…/gxsm;
-    $_[0] =~ s/&dagger;/†/gxsm;
-    $_[0] =~ s/&Dagger;/‡/gxsm;
-    $_[0] =~ s/&circ;/ˆ/gxsm;
-    $_[0] =~ s/&permil;/‰/gxsm;
-    $_[0] =~ s/&Scaron;/Š/gxsm;
-    $_[0] =~ s/&lsaquo;/‹/gxsm;
-    $_[0] =~ s/&OElig;/Œ/gxsm;
-    $_[0] =~ s/&Zcaron;/Ž/gxsm;
-    $_[0] =~ s/&lsquo;/‘/gxsm;
-    $_[0] =~ s/&rsquo;/’/gxsm;
-    $_[0] =~ s/&ldquo;/“/gxsm;
-    $_[0] =~ s/&rdquo;/”/gxsm;
-    $_[0] =~ s/&bull;/•/gxsm;
-    $_[0] =~ s/&ndash;/–/gxsm;
-    $_[0] =~ s/&mdash;/—/gxsm;
-    $_[0] =~ s/&tilde;/˜/gxsm;
-    $_[0] =~ s/&trade;/™/gxsm;
-    $_[0] =~ s/&scaron;/š/gxsm;
-    $_[0] =~ s/&rsaquo;/›/gxsm;
-    $_[0] =~ s/&oelig;/œ/gxsm;
-    $_[0] =~ s/&zcaron;/ž/gxsm;
-    $_[0] =~ s/&Yuml;/Ÿ/gxsm;
-    $_[0] =~ s/&eacute;/é/gxsm;
-    $_[0] =~ s/&copy;/©/gxsm;
-    $_[0] =~ s/&amp;/&/gxsm;
-    return $_[0];
+sub from_html {
+    my @x = @_;
+    $x[0] =~ s/&quot;/\x22/gxsm;
+    $x[0] =~ s/&nbsp;/ /gxsm;
+    $x[0] =~ s/&lt;/</gxsm;
+    $x[0] =~ s/&gt;/>/gxsm;
+    $x[0] =~ s/&\x23124;/\|/gxsm;
+    $x[0] =~ s/&\x23123;/\{/gxsm;
+    $x[0] =~ s/&\x23125;/\}/gxsm;
+    $x[0] =~ s/&euro;/€/gxsm;
+    $x[0] =~ s/&sbquo;/‚/gxsm;
+    $x[0] =~ s/&fnof;/ƒ/gxsm;
+    $x[0] =~ s/&bdquo;/„/gxsm;
+    $x[0] =~ s/&hellip;/…/gxsm;
+    $x[0] =~ s/&dagger;/†/gxsm;
+    $x[0] =~ s/&Dagger;/‡/gxsm;
+    $x[0] =~ s/&circ;/ˆ/gxsm;
+    $x[0] =~ s/&permil;/‰/gxsm;
+    $x[0] =~ s/&Scaron;/Š/gxsm;
+    $x[0] =~ s/&lsaquo;/‹/gxsm;
+    $x[0] =~ s/&OElig;/Œ/gxsm;
+    $x[0] =~ s/&Zcaron;/Ž/gxsm;
+    $x[0] =~ s/&lsquo;/‘/gxsm;
+    $x[0] =~ s/&rsquo;/’/gxsm;
+    $x[0] =~ s/&ldquo;/“/gxsm;
+    $x[0] =~ s/&rdquo;/”/gxsm;
+    $x[0] =~ s/&bull;/•/gxsm;
+    $x[0] =~ s/&ndash;/–/gxsm;
+    $x[0] =~ s/&mdash;/—/gxsm;
+    $x[0] =~ s/&tilde;/˜/gxsm;
+    $x[0] =~ s/&trade;/™/gxsm;
+    $x[0] =~ s/&scaron;/š/gxsm;
+    $x[0] =~ s/&rsaquo;/›/gxsm;
+    $x[0] =~ s/&oelig;/œ/gxsm;
+    $x[0] =~ s/&zcaron;/ž/gxsm;
+    $x[0] =~ s/&Yuml;/Ÿ/gxsm;
+    $x[0] =~ s/&eacute;/é/gxsm;
+    $x[0] =~ s/&copy;/©/gxsm;
+    $x[0] =~ s/&amp;/&/gxsm;
+    return $x[0];
 }
 
 sub dopre {
@@ -1787,7 +1954,7 @@ sub dopre {
     return $inp;
 }
 
-sub Split_Splice_Move {
+sub split_splice_move {
     my ( $s_s_m, $s_s_n ) = @_;
     my $ssm = 0;
     if ( !$s_s_n ) {    # Just for the subject of a message
@@ -1800,10 +1967,10 @@ sub Split_Splice_Move {
 
         # Who moved the topic; destination board; destination id number
         $mover = decloak($mover);
-        LoadUser($mover);
+        load_user($mover);
         $board{$destboard} =~ /^(.+?)[|]/xsm;
         return (
-qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a> $maintxt{'160b'}</b> <a href="$scripturl?board=$destboard"><i><b>$1</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,
+qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a> $maintxt{'160b'}</b> <a href="$scripturl?board=$destboard"><i><b>$1</b></i></a><b> $maintxt{'525'} <i>${ $uid . $mover }{'realname'}</i></b>~,
             $dest
         );
     }
@@ -1812,21 +1979,22 @@ qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a>
         my ( $mover, $dest ) =
           ( $1, $2 );    # Who moved the topic; destination id number
         $mover = decloak($mover);
-        LoadUser($mover);
+        load_user($mover);
         return (
-qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}</b></i></a><b> $maintxt{'525'} <i>${$uid.$mover}{'realname'}</i></b>~,
+qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}</b></i></a><b> $maintxt{'525'} <i>${ $uid . $mover }{'realname'}</i></b>~,
             $dest
         );
     }
     elsif ( $s_s_m =~ /^\[m\]/xsm )
     {    # Old style topic that was moved/spliced before this code
-        fopen( MOVEDFILE, "$datadir/$_[1].txt" );
+        open my $MOVEDFILE, '<', "$datadir/$_[1].txt"
+          or croak "$croak{'open'} oldmoved";
         (
             undef, undef, undef, undef,  undef,
             undef, undef, undef, $s_s_m, undef
-        ) = split /[|]/xsm, <MOVEDFILE>, 10;
-        fclose(MOVEDFILE);
-        ToChars($s_s_m);
+        ) = split /[|]/xsm, <$MOVEDFILE>, 10;
+        close $MOVEDFILE or croak "$croak{'close'} oldmoved";
+        to_chars($s_s_m);
         $ssm = 1;
     }
 
@@ -1878,7 +2046,7 @@ sub wrap {
     $message =~ s/<br.*?>/\n/gxsm;
     $message =~ s/((\[ch\d{3,}?\]){$linewrap})/$1\n/igxsm;
 
-    FromHTML($message);
+    from_html($message);
     $message =~ s/[\r\n]/ {yabbbr} /gxsm;
     my @words = split /\s/xsm, $message;
     $message = q{};
@@ -1897,7 +2065,7 @@ sub wrap {
             && $cur !~ m{\[img(?:\S*)\](?:\S*)\[\/img\]}xsm )
         {
             $cur =~ s/(\[\S*?\])/ $1 /gxsm;
-            @splitword = split /\s/xsm, $cur;
+            my @splitword = split /\s/xsm, $cur;
             $cur = q{};
             foreach my $splitcur (@splitword) {
                 if (   $splitcur !~ m{www[.](?:\S+?)[.]}xsm
@@ -1915,7 +2083,7 @@ sub wrap {
     $message =~ s/\s {yabbbr} /\n/gxsm;
     $message =~ s/{yabbwrap}/\n/gxsm;
 
-    ToHTML($message);
+    to_html($message);
     $message =~ s/\[tab\]/ &nbsp; &nbsp; &nbsp;/igxsm;
     $message =~ s/\n/<br \/>/gxsm;
     return;
@@ -1927,20 +2095,21 @@ s/\Q<a href=\E(\S*?)(\s[^>]*)?>(\S*?)<\/a>/ my ($mes,$out,$i) = ($3,q{},1); { wh
     return;
 }
 
-sub MembershipGet {
-    if ( fopen( FILEMEMGET, '<Variables/memttl.db' ) ) {
-        $_ = <FILEMEMGET>;
+sub membership_get {
+    if ( open my $FILEMEMGET, '<', 'Variables/memttl.db' ) {
+        $_ = <$FILEMEMGET>;
         chomp;
-        fclose(FILEMEMGET);
-        return split /[|]/xsm, $_;
+        close $FILEMEMGET or croak "$croak{'close'} memttl.db";
+        return split /[|]/xsm;
     }
     else {
-        my @ttlatest = MembershipCountTotal();
+        my @ttlatest = membership_count_total();
         return @ttlatest;
     }
 }
 
 {
+    no strict;
     my %yyOpenMode = (
         '+>>' => 5,
         '+>'  => 4,
@@ -1958,7 +2127,7 @@ sub MembershipGet {
         $file_open++;
         ## make life easier - spot a file that is not closed!
         if ($debug) {
-            LoadLanguage('Debug');
+            load_language('Debug');
             $openfiles .=
                 qq~$filehandle (~
               . sprintf( '%.4f', ( time - $START_TIME ) )
@@ -1968,7 +2137,7 @@ sub MembershipGet {
 
         $serveros = $OSNAME;    #"$^O";
                                 #magic punctuation variable BAD #
-        if ( $serveros =~ m/Win/sm && substr( $filename, 1, 1 ) eq q{:} ) {
+        if ( $serveros =~ m/Win/xsm && substr( $filename, 1, 1 ) eq q{:} ) {
             $filename =~ s/\\/\\\\/gxsm;
 
         # Translate windows-style \ slashes to windows-style \\ escaped slashes.
@@ -2122,7 +2291,7 @@ sub MembershipGet {
         my ( $pack, $file, $line ) = caller;
         $file_close++;
         if ($debug) {
-            LoadLanguage('Debug');
+            load_language('Debug');
             $openfiles .=
                 qq~     $filehandle (~
               . sprintf( '%.4f', ( time - $START_TIME ) )
@@ -2175,25 +2344,25 @@ qq~### ThreadID: $threadid, LastModified: $newtime ###\n\n%$threadid = (\n~;
         $newctb .= qq~$_ => "${$threadid}{$_}",\n~;
     }
     $newctb .= qq~);\n\n1;\n~;
-    fopen( UPDATE_CTB, ">$ctbfile", 1 )
+    open my $UPDATE_CTB, '>', "$ctbfile"
       or fatal_error( 'cannot_open', "$ctbfile", 1 );
-    print {UPDATE_CTB} $newctb or croak "$croak{'print'} UPDATE_CTB";
-    fclose(UPDATE_CTB);
+    print {$UPDATE_CTB} $newctb or croak "$croak{'print'} UPDATE_CTB";
+    close $UPDATE_CTB or croak "$croak{'close'} UPDATE_CTB";
     return;
 }
 
-sub KickGuest {
+sub kickguest {
     require Sources::LogInOut;
-    $sharedLogin_title = "$maintxt{'633'}";
-    $sharedLogin_text =
+    our $shared_login_title = $maintxt{'633'};
+    our $shared_login_text =
 qq~<br />$maintxt{'634'}<br />$maintxt{'635'} <a href="$scripturl?action=register">$maintxt{'636'}</a> $maintxt{'637'}<br /><br />~;
-    $yymain .= sharedLogin();
-    $yytitle = "$maintxt{'34'}";
+    $yymain .= shared_login();
+    $yytitle = $maintxt{'34'};
     template();
     return;
 }
 
-sub WriteLog {
+sub write_log {
     if (   $action eq 'ajxmessage'
         || $action eq 'ajximmessage'
         || $action eq 'ajxcal' )
@@ -2208,16 +2377,16 @@ sub WriteLog {
     }
 
     my ( $name, $logtime, @new_log );
-    my $onlinetime = $date - ( $OnlineLogTime * 60 );
+    my $onlinetime = $date - ( $online_logtime * 60 );
     my $field = $username;
     if ( $field eq 'Guest' ) {
         if ($guestaccess) { $field = 'guest'; }
         else              { return; }
     }
 
-    fopen( LOG, "<$vardir/user.log" );
-    @logentries = <LOG>;    # Global variable
-    fclose(LOG);
+    open my $LOG, '<', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    @logentries = <$LOG>;    # Global variable
+    close $LOG or croak "$croak{'close'} user.log";
     chomp @logentries;
     foreach (@logentries) {
         ( $name, $logtime, undef ) = split /[|]/xsm, $_, 3;
@@ -2231,8 +2400,8 @@ sub WriteLog {
     $hostin =~ s/[^\x20-\x7E]//gxsm;
     $hostin =~ s/\x7C//gxsm;
 
-    fopen( LOG, ">$vardir/user.log" );
-    print {LOG} (
+    open $LOG, '>', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    print {$LOG} (
         "$field|$date|$user_ip|$hostin|$username|$currentboard|"
           . (
             ( !$action && $INFO{'num'} && $currentboard )
@@ -2246,14 +2415,15 @@ sub WriteLog {
           )
           . "|$INFO{'username'}|$curnum\n",
         @new_log
-    ) or croak qq~$croak{'print'} user.log~;
-    fclose(LOG);
+    ) or croak "$croak{'print'} user.log";
+    close $LOG or croak "$croak{'close'} user.log";
 
     if ( !$action && $enableclicklog ) {
-        $onlinetime = $date - ( $ClickLogTime * 60 );
-        fopen( LOG, "<$vardir/clicklog.log", 1 );
-        @new_log = <LOG>;
-        fclose(LOG);
+        $onlinetime = $date - ( $click_logtime * 60 );
+        open $LOG, '<', "$vardir/clicklog.log"
+          or croak "$croak{'open'} clicklog.log";
+        @new_log = <$LOG>;
+        close $LOG or croak "$croak{'close'} clicklog.log";
         $hostin = $ENV{'HTTP_USER_AGENT'};
         $hostin =~ s/[^\x21-\x7E]//gxsm;
         $hostin =~ s/\x7C//gxsm;
@@ -2277,18 +2447,19 @@ sub WriteLog {
                 $clicks .= $_;
             }
         }
-        fopen( LOG, ">$vardir/clicklog.log", 1 );
-        print {LOG} $clicks or croak "$croak{'print'} LOG";
-        fclose(LOG);
+        open $LOG, '>', "$vardir/clicklog.log"
+          or croak "$croak{'open'} clicklog.log";
+        print {$LOG} $clicks or croak "$croak{'print'} LOG";
+        close $LOG or croak "$croak{'close'} clicklog.log";
     }
     return;
 }
 
-sub RemoveUserOnline {
-    my $user = shift;
-    fopen( LOG, "<$vardir/user.log", 1 );
-    @logentries = <LOG>;    # Global variable
-    fclose(LOG);
+sub remove_user_online {
+    $user = shift;
+    open my $LOG, '<', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    @logentries = <$LOG>;
+    close $LOG or croak "$croak{'close'} user.log";
 
     my $prnlog = q{};
     if ($user) {
@@ -2309,9 +2480,9 @@ sub RemoveUserOnline {
         $prnlog .= q{};
         @logentries = ();
     }
-    fopen( LOG, ">$vardir/user.log", 1 );
-    print {LOG} $prnlog or croak "$croak{'print'} LOG";
-    fclose(LOG);
+    open $LOG, '>', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    print {$LOG} $prnlog or croak "$croak{'print'} LOG";
+    close $LOG or croak "$croak{'close'} user.log";
     return;
 }
 
@@ -2323,7 +2494,7 @@ sub encode_password {
     return md5_base64($eol);
 }
 
-sub Censor {
+sub do_censor {
     my ($string) = @_;
     foreach my $censor (@censored) {
         my ( $tmpa, $tmpb, $tmpc ) = @{$censor};
@@ -2337,8 +2508,9 @@ sub Censor {
     return $string;
 }
 
-sub CheckCensor {
+sub check_censor {
     my ($string) = @_;
+    my $found_word = q{};
     foreach my $censor (@censored) {
         my ( $tmpa, $tmpb, $tmpc ) = @{$censor};
         if ( $string =~ m/(\Q$tmpa\E)/ixsm ) {
@@ -2357,11 +2529,9 @@ sub referer_check {
         && $ENV{QUERY_STRING}
         && length($refererdomain) > 0 )
     {
-        my $goodaction = 0;
         require Variables::Referer;
-        if ( $referallow{$action} eq 'on' ) { $goodaction = 1; }
-        if ( !$goodaction ) {
-            LoadLanguage('RefControl');
+        if ( !$referallow{$action} ) { 
+            load_language('RefControl');
             fatal_error( 'referer_violation',
 "$action ($refer_txt{$action})<br />$reftxt{'7'} $referencedomain<br />$reftxt{'6'} $refererdomain"
             );
@@ -2370,7 +2540,7 @@ sub referer_check {
     return;
 }
 
-sub Dereferer {
+sub dereferer {
     if ( !$stealthurl ) { fatal_error('no_access'); }
     print "Content-Type: text/html\n\n" or croak "$croak{'print'} content-type";
     print qq~<!DOCTYPE html>
@@ -2387,9 +2557,9 @@ sub Dereferer {
     exit;
 }
 
-sub LoadLanguage {
+sub load_language {
     my ($what_to_load) = @_;
-    my $use_lang = $language ? $language : $lang;
+    $use_lang = $language ? $language : $lang;
     if ( -e "$langdir/$use_lang/$what_to_load.lng" ) {
         require "$langdir/$use_lang/$what_to_load.lng";
     }
@@ -2417,13 +2587,14 @@ sub LoadLanguage {
     return;
 }
 
-sub Recent_Load {
+sub recent_load {
     my ($who_to_load) = @_;
     undef %recent;
     if ( -e "$memberdir/$who_to_load.rlog" ) {
-        fopen( RLOG, "$memberdir/$who_to_load.rlog" );
-        my %r = map { /(.*)[|](.*)/xsm } <RLOG>;
-        fclose(RLOG);
+        open my $RLOG, '<', "$memberdir/$who_to_load.rlog"
+          or croak "$croak{'open'} $who_to_load.rlog";
+        my %r = map { /(.*)[|](.*)/xsm } <$RLOG>;
+        close $RLOG or croak "$croak{'close'} RLOG";
         foreach ( keys %r ) {
             @{ $recent{$_} } = split /,/xsm, $r{$_};
         }
@@ -2431,9 +2602,9 @@ sub Recent_Load {
     return;
 }
 
-sub Recent_Write {
+sub recent_write {
     my ( $todo, $recentthread, $recentuser, $recenttime ) = @_;
-    Recent_Load($recentuser);
+    recent_load($recentuser);
     if ( $todo eq 'incr' ) {
         ${ $recent{$recentthread} }[0]++;
         ${ $recent{$recentthread} }[1] = $recenttime;
@@ -2445,11 +2616,11 @@ sub Recent_Write {
         }
         else { ${ $recent{$recentthread} }[1] = $recenttime; }
     }
-    Recent_Save($recentuser);
+    recent_save($recentuser);
     return;
 }
 
-sub Recent_Save {
+sub recent_save {
     my ($who_to_save) = @_;
     if ( !%recent ) {
         unlink "$memberdir/$who_to_save.rlog";
@@ -2459,9 +2630,10 @@ sub Recent_Save {
     foreach ( keys %recent ) {
         $recent .= qq~$_|~ . join( q{,}, @{ $recent{$_} } ) . qq~\n~;
     }
-    fopen( RLOG, ">$memberdir/$who_to_save.rlog" );
-    print {RLOG} $recent or croak "$croak{'print'} RLOG";
-    fclose(RLOG);
+    open my $RLOG, '>', "$memberdir/$who_to_save.rlog"
+      or croak "$croak{'open'} $who_to_save.rlog";
+    print {$RLOG} $recent or croak "$croak{'print'} RLOG";
+    close $RLOG or croak "$croak{'close'} RLOG";
     return;
 }
 
@@ -2474,28 +2646,28 @@ sub save_moved_file {
       . ");\n1;";
 
    # This sub saves the hash for the moved files: key == old id, value == new id
-    fopen( MOVEDFILE, ">$vardir/Movedthreads.pm" )
+    open my $MOVEDFILE, '>', "$vardir/Movedthreads.pm"
       or fatal_error( 'cannot_open', "$vardir/Movedthreads.pm", 1 );
-    print {MOVEDFILE} $moved or croak "$croak{'print'} MOVEDFILE";
-    fclose(MOVEDFILE);
+    print {$MOVEDFILE} $moved or croak "$croak{'print'} MOVEDFILE";
+    close $MOVEDFILE or croak "$croak{'close'} Movedthreads.pm";
     return;
 }
 
-sub Write_ForumMaster {
+sub write_forummaster {
     my $newforum = qq~\$mloaded = 1;\n~;
-    @catorder = undupe(@categoryorder);
-    $newforum .= qq~\@categoryorder = qw(@catorder);\n~;
-    my ( $key, $value );
-    while ( ( $key, $value ) = each %cat ) {
-        %seen   = ();
-        @catval = split /,/xsm, $value;
-        @unique = grep { !$seen{$_}++ } @catval;
-        $val2   = join q{,}, @unique;
+    my @catorder = undupe(@categoryorder);
+    my $catlist  = join q{ }, @catorder;
+    $newforum .= qq~\@categoryorder = qw($catlist);\n~;
+    while ( my ( $key, $value ) = each %cat ) {
+        my %seen   = ();
+        my @catval = split /,/xsm, $value;
+        my @unique = grep { !$seen{$_}++ } @catval;
+        my $val2   = join q{,}, @unique;
         if ( $key && $key ne q{} ) {
             $newforum .= qq~\$cat{'$key'} = qq\~$val2\~;\n~;
         }
     }
-    while ( ( $key, $value ) = each %catinfo ) {
+    while ( my ( $key, $value ) = each %catinfo ) {
         my ( $catname, $therest ) = split /[|]/xsm, $value, 2;
 
         $value = "$catname|$therest";
@@ -2503,59 +2675,60 @@ sub Write_ForumMaster {
         $value =~ s/\~//gxsm;
         $newforum .= qq~\$catinfo{'$key'} = qq\~$value\~;\n~;
     }
-    while ( ( $key, $value ) = each %board ) {
-        my ( $boardname, $therest ) = split /[|]/xsm, $value, 2;
+    while ( my ( $key, $value ) = each %board ) {
+        my ( $boardnme, $therest ) = split /[|]/xsm, $value, 2;
 
-        $value = "$boardname|$therest";
+        $value = "$boardnme|$therest";
         $value =~ s/\$/\\\$/gxsm;
         $value =~ s/\~//gxsm;
         $newforum .= qq~\$board{'$key'} = qq\~$value\~;\n~;
     }
-    while ( ( $key, $value ) = each %subboard ) {
+    while ( my ( $key, $value ) = each %subboard ) {
         if ( $value ne q{} ) {
             $newforum .= qq~\$subboard{'$key'} = qq\~$value\~;\n~;
         }
     }
     $newforum .= qq~\n1;~;
-    fopen( FORUMMASTER, ">$boardsdir/forum.master", 1 );
-    print {FORUMMASTER} $newforum or croak "$croak{'print'} FORUMMASTER";
-    fclose(FORUMMASTER);
+    open my $FORUMMASTER, '>', "$boardsdir/forum.master"
+      or croak "$croak{'open'} forum.master";
+    print {$FORUMMASTER} $newforum or croak "$croak{'print'} FORUMMASTER";
+    close $FORUMMASTER or croak "$croak{'close'} forum.master";
     return;
 }
 
 sub write_forum_control {
     my @boardcontrol = ();
     foreach my $cnt ( sort keys %control ) {
-        my $prline = join q{', '}, @{$control{$cnt}};
+        my $prline = join q{', '}, @{ $control{$cnt} };
         my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
         push @boardcontrol, $newline . "\n";
     }
     @boardcontrol = undupe(@boardcontrol);
-    my $prnbrd .= join q{}, @boardcontrol;
+    my $prnbrd = join q{}, @boardcontrol;
     $prnbrd .= qq~\n1;\n\n~;
-    fopen( FORUMCONTROL, ">$boardsdir/forum.control" )
+    open my $FORUMCONTROL, '>', "$boardsdir/forum.control"
       or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
-    print {FORUMCONTROL} $prnbrd or croak "$croak{'print'} FORUMCNT";
-    fclose(FORUMCONTROL);
+    print {$FORUMCONTROL} $prnbrd or croak "$croak{'print'} FORUMCNT";
+    close $FORUMCONTROL or croak "$croak{'close'} forum.control";
     return;
 }
 
 sub write_forum_totals {
     my @boardtotals = ();
     foreach my $cnt ( sort keys %totals ) {
-        ${$totals{$cnt}}[6] =~ s/\'/\&\#39;/gxsm;
-        my $prline = join q{', '}, @{$totals{$cnt}};
+        ${ $totals{$cnt} }[6] =~ s/\'/\&\#39;/gxsm;
+        my $prline = join q{', '}, @{ $totals{$cnt} };
         my $newline = qq~\$totals{'$cnt'} = ['$prline'];~;
         push @boardtotals, $newline . "\n";
     }
     @boardtotals = undupe(@boardtotals);
-    my $prnlines .= join q{}, @boardtotals;
+    my $prnlines = join q{}, @boardtotals;
     $prnlines .= qq~\n1;\n\n~;
-    fopen( FORUMTOTALS, ">$boardsdir/forum.totals" )
+    open my $FORUMTOTALS, '>', "$boardsdir/forum.totals"
       or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
-    print {FORUMTOTALS} $prnlines
+    print {$FORUMTOTALS} $prnlines
       or croak "$croak{'print'} FORUMTOTALS";
-    fclose(FORUMTOTALS);
+    close $FORUMTOTALS or croak "$croak{'close'} forum.totals";
     return;
 }
 
@@ -2568,7 +2741,7 @@ sub dirsize {
     return $dirsize;
 }
 
-sub MemberPageindex {
+sub memberpage_index {
     my ( $msindx, $trindx, $mbindx, $pmindx ) =
       split /[|]/xsm, ${ $uid . $username }{'pageindex'};
     if ( $INFO{'action'} eq 'memberpagedrop' ) {
@@ -2577,19 +2750,19 @@ sub MemberPageindex {
     if ( $INFO{'action'} eq 'memberpagetext' ) {
         ${ $uid . $username }{'pageindex'} = qq~$msindx|$trindx|1|$pmindx~;
     }
-    UserAccount( $username, 'update' );
-    my $SearchStr = $FORM{'member'} || $INFO{'member'};
-    if ($SearchStr) { $findmember = qq~;member=$SearchStr~; }
+    user_account( $username, 'update' );
+    my $searchstr = $FORM{'member'} || $INFO{'member'};
+    if ($searchstr) { $findmember = qq~;member=$searchstr~; }
     if ( !$INFO{'from'} ) {
-        $yySetLocation =
+        $yysetlocation =
 qq~$scripturl?action=ml;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}$findmember~;
     }
     elsif ( $INFO{'from'} eq 'imlist' ) {
-        $yySetLocation =
+        $yysetlocation =
 qq~$scripturl?action=imlist;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'};field=$INFO{'field'}~;
     }
     elsif ( $INFO{'from'} eq 'admin' ) {
-        $yySetLocation =
+        $yysetlocation =
 qq~$adminurl?action=ml;sort=$INFO{'sort'};letter=$INFO{'letter'};start=$INFO{'start'}~;
     }
 
@@ -2615,8 +2788,8 @@ sub check_existence {
     return ($filename);
 }
 
-sub ManageMemberlist {
-    my ( $todo, $user, $userreg ) = @_;
+sub manage_memberlist {
+    my ( $todo, $usr, $userrg ) = @_;
     if (   $todo eq 'load'
         || $todo eq 'update'
         || $todo eq 'delete'
@@ -2625,21 +2798,21 @@ sub ManageMemberlist {
         require Variables::Memberlist;
     }
     if ( $todo eq 'add' ) {
-        $memberlist{$user} = $userreg;
+        $memberlist{$usr} = $userrg;
 
     }
     elsif ( $todo eq 'update' ) {
-        $memberlist{$user} = $userreg ? $userreg : $memberlist{$user};
+        $memberlist{$usr} = $userrg ? $userrg : $memberlist{$usr};
 
     }
     elsif ( $todo eq 'delete' ) {
-        if ( $user =~ /,/xsm ) {    # been sent a list to kill, not a single
-            my @oldusers = split /,/xsm, $user;
-            foreach my $user (@oldusers) {
-                delete $memberlist{$user};
+        if ( $usr =~ /,/xsm ) {    # been sent a list to kill, not a single
+            my @oldusers = split /,/xsm, $usr;
+            foreach my $usr (@oldusers) {
+                delete $memberlist{$usr};
             }
         }
-        else { delete $memberlist{$user}; }
+        else { delete $memberlist{$usr}; }
     }
     if (   $todo eq 'save'
         || $todo eq 'update'
@@ -2650,19 +2823,22 @@ sub ManageMemberlist {
         foreach ( sort keys %memberlist ) {
             $update .= qq~\$memberlist{'$_'} = '$memberlist{$_}';\n~;
         }
-        fopen( MEMBLIST, '>Variables/Memberlist.pm' );
-        print {MEMBLIST} $update or croak "$croak{'print'} MEMBLIST";
-        fclose(MEMBLIST);
+        open my $MEMBLIST, '>', 'Variables/Memberlist.pm'
+          or croak "$croak{'open'} Memberlist.pm";
+        print {$MEMBLIST} $update or croak "$croak{'print'} MEMBLIST";
+        close $MEMBLIST or croak "$croak{'close'} Memberlist.pm";
         undef %memberlist;
     }
     return;
 }
 
 ## deal with basic member data in Memberinfo.pm
-sub ManageMemberinfo {
-    my ( $todo, $user, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp )
-      = @_;
+sub manage_memberinfo {
+    my @myargs = @_;
+    my ( $todo, $usr, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp ) =
+      @myargs;
     my $update = q{};
+    my @adminlst;
     ## pull hash of member name + other data
     if (   $todo eq 'load'
         || $todo eq 'update'
@@ -2670,24 +2846,24 @@ sub ManageMemberinfo {
         || $todo eq 'add' )
     {
         require Variables::Memberinfo;
-        fopen( ADMINLST, "$vardir/adminlst.db" );
-        @adminlst = <ADMINLST>;
-        fclose(ADMINLST);
+        open my $ADMINLST, '<', "$vardir/adminlst.db"
+          or croak "$croak{'open'} adminlst.db";
+        @adminlst = <$ADMINLST>;
+        close $ADMINLST or croak "$croak{'close'} adminlst.db";
         chomp @adminlst;
     }
     if ( $todo eq 'add' ) {
-        $memberinf{$user} =
+        $memberinf{$usr} =
           [ $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp, ];
         if ( $usergrp eq 'Administrator'
             || ( $usergrp eq 'Global Moderator' && $gmod_access{'backup'} ) )
         {
-            push @adminlst, $user;
+            push @adminlst, $usr;
         }
     }
     elsif ( $todo eq 'update' ) {
-        ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
-          @{ $memberinf{$user} };
-        if ($userreg)  { $regdate     = $userreg; }
+        my ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
+          @{ $memberinf{$usr} };
         if ($userdisp) { $memrealname = $userdisp; }
         if ($usermail) { $mememail    = $usermail; }
         if ($usergrp)  { $memposition = $usergrp; }
@@ -2698,11 +2874,11 @@ sub ManageMemberinfo {
             }
             $memaddgrp = $useraddgrp;
         }
-        $memberinf{$user} =
+        $memberinf{$usr} =
           [ $memrealname, $mememail, $memposition, $memposts, $memaddgrp ];
         foreach my $i (@adminlst) {
             if (
-                $i eq $user
+                $i eq $usr
                 && (
                     $memposition ne 'Administrator'
                     && ( $memposition ne 'Global Moderator'
@@ -2715,15 +2891,15 @@ sub ManageMemberinfo {
         }
     }
     elsif ( $todo eq 'delete' ) {
-        if ( $user =~ /,/xsm ) {    # been sent a list to kill, not a single
-            my @oldusers = split /,/xsm, $user;
-            foreach my $user (@oldusers) {
-                delete $memberinf{$user};
+        if ( $usr =~ /,/xsm ) {    # been sent a list to kill, not a single
+            my @oldusers = split /,/xsm, $usr;
+            foreach my $usr (@oldusers) {
+                delete $memberinf{$usr};
             }
         }
-        delete $memberinf{$user};
+        delete $memberinf{$usr};
         foreach my $i (@adminlst) {
-            if ( $i eq $user ) {
+            if ( $i eq $usr ) {
                 $i = q{};
             }
         }
@@ -2734,84 +2910,42 @@ sub ManageMemberinfo {
         || $todo eq 'add' )
     {
         foreach my $i ( sort keys %memberinf ) {
-            $val = join q~','~, @{ $memberinf{$i} };
+            my $val = join q~','~, @{ $memberinf{$i} };
             $update .= qq~\$memberinf{'$i'} = \['$val'\];\n~;
         }
-        fopen( MEMBINFO, '>Variables/Memberinfo.pm' );
-        print {MEMBINFO} $update or croak "$croak{'print'} MEMBINFO";
-        fclose(MEMBINFO);
+        open my $MEMBINFO, '>', 'Variables/Memberinfo.pm'
+          or croak "$croak{'open'} Memberinfo.pm";
+        print {$MEMBINFO} $update or croak "$croak{'print'} MEMBINFO";
+        close $MEMBINFO or croak "$croak{'close'} Memberinfo.pm";
         undef %memberinf;
-        fopen( ADMINLST, ">$vardir/adminlst.db" );
-        print {ADMINLST} join "\n", @adminlst
+        open my $ADMINLST, '>', 'Variables/adminlst.db'
+          or croak "$croak{'open'} adminlst.db";
+        print {$ADMINLST} join "\n", @adminlst
           or croak "$croak{'print'} ADMINLST";
-        fclose(ADMINLST);
+        close $ADMINLST or croak "$croak{'close'} adminlist.db";
     }
     return;
 }
 
-sub Collapse_Load {
+sub collapse_load {
     my ( %userhide, $catperms, $catallowcol, $access );
     my $i = 0;
     map { $userhide{$_} = 1; } split /,/xsm, ${ $uid . $username }{'cathide'};
     foreach my $key (@categoryorder) {
         ( undef, $catperms, $catallowcol ) = split /[|]/xsm, $catinfo{$key};
-        $access = CatAccess($catperms);
+        $access = cat_access($catperms);
         if ( $catallowcol && $access ) { $i++; }
         $catcol{$key} = 1;
         if ( $catallowcol && $userhide{$key} ) { $catcol{$key} = 0; }
     }
-    $colbutton = ( $i == keys %userhide ) ? 0 : 1;
-    $colloaded = 1;
-    return;
-}
-
-sub MailList {
-    my ($m_line) = @_;
-    is_admin_or_gmod();
-    my $delmailline = q{};
-    if ( !$INFO{'delmail'} ) {
-        $mailline = $m_line;
-        $mailline =~ s/\r//gxsm;
-        $mailline =~ s/\n/<br \/>/gxsm;
-    }
-    else {
-        $delmailline = $INFO{'delmail'};
-    }
-    if ( -e ("$vardir/maillist.dat") ) {
-        fopen( FILE, "$vardir/maillist.dat" );
-        @maillist = <FILE>;
-        fclose(FILE);
-
-        my $prnmail = q{};
-        if ( !$INFO{'delmail'} ) {
-            $prnmail .= "$mailline\n";
-        }
-        foreach my $curmail (@maillist) {
-            chomp $curmail;
-            $otime = ( split /[|]/xsm, $curmail )[0];
-            if ( $otime ne $delmailline ) {
-                $prnmail .= "$curmail\n";
-            }
-        }
-        fopen( FILE, ">$vardir/maillist.dat" );
-        print {FILE} $prnmail or croak "$croak{'print'} FILE";
-        fclose(FILE);
-    }
-    else {
-        fopen( FILE, ">$vardir/maillist.dat" );
-        print {FILE} "$mailline\n" or croak "$croak{'print'} FILE";
-        fclose(FILE);
-    }
-    if ( $INFO{'delmail'} ) {
-        $yySetLocation = qq~$adminurl?action=mailing~;
-        redirectexit();
-    }
+    our $colbutton = ( $i == keys %userhide ) ? 0 : 1;
+    our $colloaded = 1;
     return;
 }
 
 sub cloak {
     my ($input) = @_;
-    my $user = q{};
+    my $out = q{};
     my $key = substr $date, length($date) - 2, 2;
     my $hexkey = uc( unpack 'H2', pack 'V', $key );
     foreach my $n ( 0 .. ( length($input) - 1 ) ) {
@@ -2820,16 +2954,16 @@ sub cloak {
 
         # xor it instead of adding to prevent wide characters
         my $hex = uc( unpack 'H2', pack 'V', $ascii );
-        $user .= $hex;
+        $out .= $hex;
     }
-    $user .= $hexkey;
-    $user .= '0';
-    return $user;
+    $out .= $hexkey;
+    $out .= '0';
+    return $out;
 }
 
 sub decloak {
     my ($input) = @_;
-    my $user = q{};
+    my $out = q{};
     if ( $input !~ /\A[\dA-F]+\Z/xsm ) {
         return $input;
     }    # probably a non cloaked ID as it contains non hex code
@@ -2843,22 +2977,22 @@ sub decloak {
 
             # xor it to reverse it
             $ascii = chr $ascii;
-            $user .= $ascii;
+            $out .= $ascii;
         }
     }
-    return $user;
+    return $out;
 }
 
 # run through the user.log and return the online/offline/away string near by the username
 my %users_online;
 
-sub userOnLineStatus {
-    my ($userToCheck) = @_;
+sub user_onlinestatus {
+    my ($user_tocheck) = @_;
 
-    if ( $userToCheck eq 'Guest' ) { return; }
-    if ( exists $users_online{$userToCheck} ) {
-        if ( $users_online{$userToCheck} ) {
-            return $users_online{$userToCheck};
+    if ( $user_tocheck eq 'Guest' ) { return; }
+    if ( exists $users_online{$user_tocheck} ) {
+        if ( $users_online{$user_tocheck} ) {
+            return $users_online{$user_tocheck};
         }
     }
     else {
@@ -2867,62 +3001,66 @@ sub userOnLineStatus {
         }
     }
 
-    LoadUser($userToCheck);
-    @ubanned = split /[|]/xsm, ${ $uid . $userToCheck }{'banned'};
+    load_user($user_tocheck);
+    my @ubanned = split /[|]/xsm, ${ $uid . $user_tocheck }{'banned'};
 
     if (
-        exists $users_online{$userToCheck}
-        && (   ( !${ $uid . $userToCheck }{'stealth'} || $iamadmin || $iamgmod )
+        exists $users_online{$user_tocheck}
+        && ( ( !${ $uid . $user_tocheck }{'stealth'} || $iamadmin || $iamgmod )
             && ( $ubanned[0] != 1 && $ubanned[1] != 1 ) )
       )
     {
-        ${ $uid . $userToCheck }{'offlinestatus'} = 'online';
-        $users_online{$userToCheck} =
+        ${ $uid . $user_tocheck }{'offlinestatus'} = 'online';
+        $users_online{$user_tocheck} =
           qq~<span class="useronline">$maintxt{'60'}</span>~
-          . ( ${ $uid . $userToCheck }{'stealth'} ? q{*} : q{} );
+          . ( ${ $uid . $user_tocheck }{'stealth'} ? q{*} : q{} );
     }
     elsif ( $ubanned[0] == 1 || $ubanned[1] == 1 ) {
-        ( $is_banned, $eml ) =
-          check_banlist( "${$uid.$userToCheck}{'email'}", q{}, "$userToCheck" );
+        my ( $is_banned, $eml ) =
+          check_banlist( "${ $uid . $user_tocheck }{'email'}",
+            q{}, "$user_tocheck" );
         if ($is_banned) {
-            $users_online{$userToCheck} =
+            $users_online{$user_tocheck} =
               qq~<span class="userbanned">$maintxt{'banned'} $eml</span>~;
         }
         else {
-            $users_online{$userToCheck} =
+            $users_online{$user_tocheck} =
               qq~<span class="useroffline">$maintxt{'61'}</span>~;
-            ${ $uid . $userToCheck }{'banned'} = '0|0';
-            UserAccount( $userToCheck, 'update' );
+            ${ $uid . $user_tocheck }{'banned'} = '0|0';
+            user_account( $user_tocheck, 'update' );
         }
     }
     else {
-        $users_online{$userToCheck} =
+        $users_online{$user_tocheck} =
           qq~<span class="useroffline">$maintxt{'61'}</span>~;
     }
 
-# enable 'away' indicator $enable_MCaway: 0=Off; 1=Staff to Staff; 2=Staff to all; 3=Members
-    if (  !$iamguest
-        && $enable_MCstatusStealth
-        && ( ( $enable_MCaway == 1 && $staff ) || $enable_MCaway > 1 )
-        && ${ $uid . $userToCheck }{'offlinestatus'} eq 'away' )
+# enable 'away' indicator $enable_mc_away: 0=Off; 1=Staff to Staff; 2=Staff to all; 3=Members
+    if (
+        !$iamguest
+        && ( !$enable_stealth
+            || ( $enable_stealth && !${ $uid . $user_tocheck }{'stealth'} ) )
+        && ( ( $enable_mc_away == 1 && $staff ) || $enable_mc_away > 1 )
+        && ${ $uid . $user_tocheck }{'offlinestatus'} eq 'away'
+      )
     {
-        $users_online{$userToCheck} =
+        $users_online{$user_tocheck} =
           qq~<span class="useraway">$maintxt{'away'}</span>~;
     }
-    return $users_online{$userToCheck};
+    return $users_online{$user_tocheck};
 }
 
 ## moved from Register.pm so we can use for guest browsing
-sub guestLangSel {
+sub guestlang_sel {
     opendir DIR, $langdir;
     $morelang = 0;
-    my @langDir = readdir DIR;
+    my @lang_dir = readdir DIR;
     closedir DIR;
     require "$langdir/Lang.lng";
-    foreach my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
+    foreach my $langitems ( sort { lc($a) cmp lc $b } @lang_dir ) {
         chomp $langitems;
         if ( -e "$langdir/$langitems/Main.lng" ) {
-            $lngsel = q{};
+            my $lngsel = q{};
             if ( $langitems eq $language ) {
                 $lngsel = q~ selected="selected"~;
             }
@@ -2937,23 +3075,23 @@ sub guestLangSel {
 
 ##  control guest language selection.
 
-sub setGuestLang {
+sub guestlang_set {
     ## if either 'no guest access' or 'no guest lan sel', throw the user back to the login screen
     if ( !$guestaccess || !$enable_guestlanguage ) {
-        $yySetLocation = qq~$scripturl?action=login~;
+        $yysetlocation = qq~$scripturl?action=login~;
         redirectexit();
     }
 
   # otherwise, grab the selected language from the form and redirect to load it.
-    $guestLang     = $FORM{'guestlang'};
-    $language      = $guestLang;
-    $yySetLocation = qq~$scripturl~;
+    $guest_lang    = $FORM{'guestlang'};
+    $language      = $guest_lang;
+    $yysetlocation = $scripturl;
     redirectexit();
     return;
 }
 
 ##  check for locked post bypass status - user must be at least mod and bypass lock must be set right.
-sub checkUserLockBypass {
+sub checkuser_lockbypass {
     if (
         $staff
         && (
@@ -2979,8 +3117,8 @@ sub alertbox {
 }
 
 ## load buddy list for user, new version from sub isUserBuddy
-sub loadMyBuddy {
-    %mybuddie = ();
+sub load_mybuddy {
+    our %mybuddie = ();
     if ( ${ $uid . $username }{'buddylist'} ) {
         my @buddies = split /[|]/xsm, ${ $uid . $username }{'buddylist'};
         chomp @buddies;
@@ -2994,32 +3132,32 @@ sub loadMyBuddy {
 
 ## add user to buddy list
 ## this is only for the
-sub addBuddy {
-    my $newBuddy;
+sub add_buddy {
+    my $new_buddy = q{};
     if ( $INFO{'name'} ) {
-        if   ($do_scramble_id) { $newBuddy = decloak( $INFO{'name'} ); }
-        else                   { $newBuddy = $INFO{'name'}; }
-        chomp $newBuddy;
-        if ( $newBuddy eq $username ) { fatal_error('self_buddy'); }
-        ToHTML($newBuddy);
+        if   ($do_scramble_id) { $new_buddy = decloak( $INFO{'name'} ); }
+        else                   { $new_buddy = $INFO{'name'}; }
+        chomp $new_buddy;
+        if ( $new_buddy eq $username ) { fatal_error('self_buddy'); }
+        to_html($new_buddy);
         if ( !${ $uid . $username }{'buddylist'} ) {
-            ${ $uid . $username }{'buddylist'} = "$newBuddy";
+            ${ $uid . $username }{'buddylist'} = $new_buddy;
         }
         else {
-            my @currentBuddies =
+            my @current_buddies =
               split /[|]/xsm, ${ $uid . $username }{'buddylist'};
-            push @currentBuddies, $newBuddy;
-            @currentBuddies = sort @currentBuddies;
-            @newBuddies     = undupe(@currentBuddies);
-            $newBuddyList   = join q{|}, @newBuddies;
-            ${ $uid . $username }{'buddylist'} = $newBuddyList;
+            push @current_buddies, $new_buddy;
+            @current_buddies = sort @current_buddies;
+            my @new_buddies = undupe(@current_buddies);
+            my $new_buddylist = join q{|}, @new_buddies;
+            ${ $uid . $username }{'buddylist'} = $new_buddylist;
         }
-        UserAccount( $username, 'update' );
+        user_account( $username, 'update' );
     }
-    $yySetLocation =
+    $yysetlocation =
       qq~$scripturl?num=$INFO{'num'}/$INFO{'vpost'}#$INFO{'vpost'}~;
     if ( !$INFO{'vpost'} ) {
-        $yySetLocation =
+        $yysetlocation =
           qq~$scripturl?action=viewprofile;username=$INFO{'name'}~;
     }
     redirectexit();
@@ -3027,7 +3165,7 @@ sub addBuddy {
 }
 
 ## check to see if user can view a broadcast message based on group
-sub BroadMessageView {
+sub broadmessage_view {
     my ($imp) = @_;
     if ($iamadmin) { return 1; }
     if ($imp) {
@@ -3061,18 +3199,18 @@ sub BroadMessageView {
     return 0;
 }
 
-sub CheckUserPM_Level {
+sub checkuserpm_level {
     my ($checkuser) = @_;
-    return if $PM_level <= 1 || $UserPM_Level{$checkuser};
-    $UserPM_Level{$checkuser} = 1;
-    if ( !${ $uid . $checkuser }{'password'} ) { LoadUser($checkuser); }
+    return if $pm_level <= 1 || $user_pm_level{$checkuser};
+    $user_pm_level{$checkuser} = 1;
+    if ( !${ $uid . $checkuser }{'password'} ) { load_user($checkuser); }
     if ( ${ $uid . $checkuser }{'position'} eq 'Mid Moderator' ) {
-        $UserPM_Level{$checkuser} = 4;
+        $user_pm_level{$checkuser} = 4;
     }
     elsif (${ $uid . $checkuser }{'position'} eq 'Administrator'
         || ${ $uid . $checkuser }{'position'} eq 'Global Moderator' )
     {
-        $UserPM_Level{$checkuser} = 3;
+        $user_pm_level{$checkuser} = 3;
     }
     else {
       USERCHECK: foreach my $catid (@categoryorder) {
@@ -3081,7 +3219,7 @@ sub CheckUserPM_Level {
                   my $curuser ( split /\//xsm, ${ $uid . $checkboard }{'mods'} )
                 {
                     if ( $checkuser eq $curuser ) {
-                        $UserPM_Level{$checkuser} = 2;
+                        $user_pm_level{$checkuser} = 2;
                         last USERCHECK;
                     }
                 }
@@ -3089,14 +3227,14 @@ sub CheckUserPM_Level {
                     ${ $uid . $checkboard }{'modgroups'} )
                 {
                     if ( ${ $uid . $checkuser }{'position'} eq $curgroup ) {
-                        $UserPM_Level{$checkuser} = 2;
+                        $user_pm_level{$checkuser} = 2;
                         last USERCHECK;
                     }
                     foreach ( split /,/xsm,
                         ${ $uid . $checkuser }{'addgroups'} )
                     {
                         if ( $_ eq $curgroup ) {
-                            $UserPM_Level{$checkuser} = 2;
+                            $user_pm_level{$checkuser} = 2;
                             last USERCHECK;
                         }
                     }
@@ -3115,19 +3253,23 @@ sub get_forum_master {
 }
 
 sub get_micon {
+    my $micon_def = qq~$templatesdir/default/Micon.def~;
     if ( -e ("$templatesdir/$usestyle/Micon.def") ) {
-        $Micon_def = qq~$templatesdir/$usestyle/Micon.def~;
+        $micon_def = qq~$templatesdir/$usestyle/Micon.def~;
     }
-    else { $Micon_def = qq~$templatesdir/default/Micon.def~; }
-    require "$Micon_def";
+    require $micon_def;
     return;
 }
 
 sub get_template {
-    my ($templt) = @_;
+    my ( $templt, $atemplt ) = @_;
     my @templ_list = ( $useboard, $usemessage, $usedisplay, $usemycenter );
-    my @ld_list    = qw(BoardIndex MessageIndex Display MyCenter);
-    my $ld_cn      = 0;
+    if ($atemplt) {
+        require "$templatesdir/$atemplt/$templt.template";
+        return;
+    }
+    my @ld_list = qw(BoardIndex MessageIndex Display MyCenter);
+    my $ld_cn   = 0;
     foreach my $x ( 0 .. $#ld_list ) {
         if ( $templt eq $ld_list[$x] ) {
             require qq~$templatesdir/$templ_list[$x]/$ld_list[$x].template~;
@@ -3146,7 +3288,8 @@ sub get_template {
 }
 
 sub get_break {
-    if ($useMobile) {
+    my $brk = q{};
+    if ($use_mobile) {
         $brk = '<br />';
     }
     return $brk;
@@ -3160,7 +3303,7 @@ sub get_gmod {
 }
 
 sub enable_yabbc {
-    if ( $yyYaBBCloaded != 1 ) {
+    if ( $yy_yabbloaded != 1 ) {
         require Sources::YaBBC;
     }
     return;
@@ -3169,8 +3312,10 @@ sub enable_yabbc {
 sub format_url {
     my ( $txtfirst, $txturl ) = @_;
     my $lasttxt = q{};
-    if ( $txturl =~
-m{(.*?)(\.|\.\)|\)\.|\!|\!\)|\)\!|\,|\)\,|\)|\;|\&quot\;|\&quot\;\.|\.\&quot\;|\&quot\;\,|\,\&quot\;|\&quot\;\;|\<\/)\Z}xsm
+    if (
+        $txturl =~ m{(.*?)([.!,;)]|\&quot;|<\/)\Z}xsm
+
+#m{(.*?)(\.|\.\)|\)\.|\!|\!\)|\)\!|\,|\)\,|\)|\;|\&quot\;|\&quot\;\.|\.\&quot\;|\&quot\;\,|\,\&quot\;|\&quot\;\;|\<\/)\Z}xsm
       )
     {
         $txturl  = $1;
@@ -3219,50 +3364,50 @@ sub sizefont {
 }
 
 sub regex_1 {
-    my ($message) = @_;
-    $message =~ s/[\r\n ]//gxsm;
-    $message =~ s/\&nbsp;//gxsm;
-    $message =~ s/\[table\].*?\[tr\].*?\[td\]//gxsm;
-    $message =~ s/\[\/td\].*?\[\/tr\].*?\[\/table\]//gxsm;
-    $message =~ s/\[.*?\]//gxsm;
+    my ($messge) = @_;
+    $messge =~ s/[\r\n ]//gxsm;
+    $messge =~ s/\&nbsp;//gxsm;
+    $messge =~ s/\[table\].*?\[tr\].*?\[td\]//gxsm;
+    $messge =~ s/\[\/td\].*?\[\/tr\].*?\[\/table\]//gxsm;
+    $messge =~ s/\[.*?\]//gxsm;
 
-    return $message;
+    return $messge;
 }
 
 sub regex_2 {
-    my ($message) = @_;
-    $message =~ s/\cM//gxsm;
-    $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
-    $message =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
-    return $message;
+    my ($messge) = @_;
+    $messge =~ s/\cM//gxsm;
+    $messge =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
+    $messge =~ s/\[\/([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[\/$1$2\]/gxsm;
+    return $messge;
 }
 
 sub regex_3 {
-    my ($message) = @_;
-    $message =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
-    $message =~ s/\n/<br \/>/gxsm;
-    $message =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
-    return $message;
+    my ($messge) = @_;
+    $messge =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
+    $messge =~ s/\n/<br \/>/gxsm;
+    $messge =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
+    return $messge;
 }
 
 sub regex_4 {
-    my ($message) = @_;
-    $message =~ s/\[b\](.*?)\[\/b\]/*$1*/igxsm;
-    $message =~ s/\[i\](.*?)\[\/i\]/\/$1\//igxsm;
-    $message =~ s/\[u\](.*?)\[\/u\]/_$1_/igxsm;
-    $message =~ s/\[.*?\]//gxsm;
-    $message =~ s/<br.*?>/\n/igxsm;
-    return $message;
+    my ($messge) = @_;
+    $messge =~ s/\[b\](.*?)\[\/b\]/*$1*/igxsm;
+    $messge =~ s/\[i\](.*?)\[\/i\]/\/$1\//igxsm;
+    $messge =~ s/\[u\](.*?)\[\/u\]/_$1_/igxsm;
+    $messge =~ s/\[.*?\]//gxsm;
+    $messge =~ s/<br.*?>/\n/igxsm;
+    return $messge;
 }
 
 sub password_check {
-    LoadLanguage('Register');
-
+    load_language('Register');
+    my $class = 'windowbg';
     if ( $action eq 'myprofile' ) {
         get_template('MyProfile');
     }
     else { $class = 'windowbg2'; }
-    $check_js = qq~    <script type="text/javascript">
+    our $check_js = qq~    <script type="text/javascript">
                 // Password_strength_meter start
                 var verdects = new Array("$pwstrengthmeter_txt{'1'}","$pwstrengthmeter_txt{'2'}","$pwstrengthmeter_txt{'3'}","$pwstrengthmeter_txt{'4'}","$pwstrengthmeter_txt{'5'}","$pwstrengthmeter_txt{'6'}","$pwstrengthmeter_txt{'7'}","$pwstrengthmeter_txt{'8'}");
                 var colors = new Array("#8F8F8F","#BF0000","#FF0000","#00A0FF","#33EE00","#339900");
@@ -3358,7 +3503,7 @@ sub password_check {
                 }
                 // Password_strength_meter end
                         </script>~;
-    $check = $show_check;
+    my $check = $show_check;
     $check .= $show_check_bot;
     $check =~ s/\Q{yabb check_js}\E/$check_js/xsm;
     $check =~ s/\Q{yabb tmpregpasswrd1}\E/$tmpregpasswrd1/xsm;
@@ -3367,15 +3512,18 @@ sub password_check {
     return $check;
 }
 
-sub BoardPassw {
+sub boardpassw {
     $yymain .= $boardpassw;
+    $yymain =~ s/\Q{yabb viewnum}\E/$viewnum/gxsm;
+    $yymain =~ s/\Q{yabb currentboard}\E/$currentboard/gxsm;
+    $yymain =~ s/\Q{yabb maintxt900s}\E/$maintxt{'900s'}/gxsm;
 
     $yytitle = qq~$maintxt{'900pw'}: $boardname~;
     template();
     exit;
 }
 
-sub BoardPassw_g {
+sub boardpassw_g {
     $yymain .= $boardpassw_g;
     $yymain =~ s/\Q{yabb boardurl}\E/$scripturl/gxsm;
 
@@ -3384,47 +3532,48 @@ sub BoardPassw_g {
     exit;
 }
 
-sub BoardPasswCheck {
+sub boardpassw_check {
 
     my $returnnum   = $FORM{'pswviewnum'};
     my $returnboard = $FORM{'pswcurboard'};
     my $spass       = ${ $uid . $returnboard }{'brdpassw'};
     my $cryptpass   = encode_password("$FORM{'boardpw'}");
+    my %ck;
     if ( !$FORM{'boardpw'} ) { fatal_error( q{}, "$maintxt{'900pe'}" ); }
     if ( $spass ne $cryptpass ) { fatal_error('wrong_pass'); }
     $ck{'len'} = 'Sunday, 17-Jan-2030 00:00:00 GMT';
     my $cookiename = "$cookiepassword$returnboard$username";
-    push @otherCookies,
+    push @other_cookies,
       write_cookie(
         -name    => "$cookiename",
         -value   => "$cryptpass",
         -path    => q{/},
         -expires => "$ck{'len'}"
       );
-    WriteLog();
+    write_log();
     undef $FORM{'boardpw'};
 
     if ($returnnum) {
-        $yySetLocation = qq~$scripturl?num=$returnnum~;
+        $yysetlocation = qq~$scripturl?num=$returnnum~;
     }
     else {
-        $yySetLocation = qq~$scripturl?board=$returnboard~;
+        $yysetlocation = qq~$scripturl?board=$returnboard~;
     }
     redirectexit();
     return;
 }
 
-sub UploadFile {
+sub upload_file {
     my (
         $file_upload, $file_directory, $file_extensions,
         $file_size,   $directory_limit
     ) = @_;
     $file_directory = qq~$htmldir/$file_directory~;
 
-    LoadLanguage('FA');
+    load_language('FA');
     require Sources::SpamCheck;
-
-    if ($CGI_query) { $file = $CGI_query->upload("$file_upload"); }
+    my ( $file, $fixfile );
+    if ($cgi_query) { $file = $cgi_query->upload($file_upload); }
     if ($file) {
         $fixfile = $file;
         $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
@@ -3444,16 +3593,17 @@ sub UploadFile {
         }
 
         my $fixname = $fixfile;
+        my $fixext  = q{};
         if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
             $fixext = $2;
         }
 
-        $spamdetected = spamcheck($fixname);
+        my $spamdetected = spamcheck($fixname);
         if ( !$staff ) {
             if ($spamdetected) {
                 ${ $uid . $username }{'spamcount'}++;
                 ${ $uid . $username }{'spamtime'} = $date;
-                UserAccount( $username, 'update' );
+                user_account( $username, 'update' );
                 $spam_hits_left_count =
                   $post_speed_count - ${ $uid . $username }{'spamcount'};
                 unlink "$file_directory/$fixfile";
@@ -3461,9 +3611,9 @@ sub UploadFile {
             }
         }
         if ( $use_guardian && $string_on ) {
-            @bannedstrings = split /[|]/xsm, $banned_strings;
+            my @bannedstrings = split /[|]/xsm, $banned_strings;
             foreach (@bannedstrings) {
-                chomp $_;
+                chomp;
                 if ( $fixname =~ m/$_/ixsm ) {
                     fatal_error( 'attach_name_blocked', "($_)" );
                 }
@@ -3524,13 +3674,13 @@ sub UploadFile {
         }
 
  # create a new file on the server using the formatted ( new instance ) filename
-        if ( fopen( NEWFILE, ">$file_directory/$fixfile" ) ) {
-            binmode NEWFILE;
+        if ( open my $NEWFILE, '>', "$file_directory/$fixfile" ) {
+            binmode $NEWFILE;
 
             # needed for operating systems (OS) Windows, ignored by Linux
-            print {NEWFILE} $file_buffer
+            print {$NEWFILE} $file_buffer
               or croak "$croak{'print'} NEWFILE";    # write new file on HD
-            fclose(NEWFILE);
+            close $NEWFILE or croak "$croak{'close'} NEWFILE";
         }
         else
         { # return the server's error message if the new file could not be created
@@ -3539,6 +3689,7 @@ sub UploadFile {
         }
 
      # check if file has actually been uploaded, by checking the file has a size
+        my %filesizekb;
         $filesizekb{$fixfile} = -s "$file_directory/$fixfile";
         if ( !$filesizekb{$fixfile} ) {
             unlink "$file_directory/$fixfile";
@@ -3549,23 +3700,24 @@ sub UploadFile {
         if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
             my $okatt = 1;
             if ( $fixfile =~ /gif$/ixsm ) {
-                my $header;
-                fopen( ATTFILE, "$file_directory/$fixfile" );
-                read ATTFILE, $header, 10;
-                my $giftest;
-                ( $giftest, undef, undef, undef, undef, undef ) =
+                open my $ATTFILE, '<', "$file_directory/$fixfile"
+                  or croak "$croak{'open'} $file_directory/$fixfile";
+                read $ATTFILE, my $header, 10;
+                my ( $giftest, undef, undef, undef, undef, undef ) =
                   unpack 'a3a3C4', $header;
-                fclose(ATTFILE);
+                close $ATTFILE
+                  or croak "$croak{'close'} $file_directory/$fixfile";
                 if ( $giftest ne 'GIF' ) { $okatt = 0; }
             }
-            fopen( ATTFILE, "$file_directory/$fixfile" );
-            while ( read ATTFILE, $buffer, 1024 ) {
+            open my $ATTFILE, '<', "$file_directory/$fixfile"
+              or croak "$croak{'open'} $file_directory/$fixfile";
+            while ( read $ATTFILE, $buffer, 1024 ) {
                 if ( $buffer =~ /<(?:html|script|body)/igxsm ) {
                     $okatt = 0;
                     last;
                 }
             }
-            fclose(ATTFILE);
+            close $ATTFILE or croak "$croak{'close'} $file_directory/$fixfile";
             if ( !$okatt ) {    # delete the file as it contains illegal code
                 unlink "$file_directory/$fixfile";
                 fatal_error( 'file_not_uploaded', "$fixfile $fatxt{'20a'}" );
@@ -3586,6 +3738,7 @@ sub isempty {
 
 sub profile_view {
     my ($puser) = @_;
+    my $pname = q{};
     if ($iamguest) {
         $pname =
 qq~<span title="$maintxt{'members_only'}">$format_unbold{$puser}</span>~;
@@ -3605,7 +3758,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$puser}" rel="no
 sub link_profileview {
     get_template('Other');
     $yymain .= $my_profile_int;
-    $yytitle      = qq~$maintxt{'regplease'}~;
+    $yytitle      = $maintxt{'regplease'};
     $yynavigation = qq~&rsaquo; $maintxt{'regplease'}~;
     template();
 
@@ -3615,10 +3768,10 @@ sub link_profileview {
 sub loadtranlist {
     my %translist = ();
     opendir DIR, $langdir;
-    my @langDir = readdir DIR;
+    my @lang_dir = readdir DIR;
     closedir DIR;
-    @lang = ();
-    foreach my $langitems ( sort { lc($a) cmp lc $b } @langDir ) {
+    my @lang = ();
+    foreach my $langitems ( sort { lc($a) cmp lc $b } @lang_dir ) {
         chomp $langitems;
         if (   ( $langitems ne q{.} )
             && ( $langitems ne q{..} )
@@ -3640,17 +3793,17 @@ sub loadtranlist {
 ##    Many thanks to "Velocity" for his transliteration contribution. ##
 }
 
-sub getIMlist {
-    @messhsh =
+sub get_imlist {
+    my @messhsh =
       qw( messageid musername mtousers mccusers mbccusers msub mdate immessage mpmessageid mreplyno imip mstatus mflags mstorefolder mattach );
 ## IM/BM/GM Mod Hook ##
     return @messhsh;
 }
 
-sub getIMhash {
+sub get_imhash {
     my ($msg) = @_;
     chomp $msg;
-    my @messhsh = getIMlist();
+    my @messhsh = get_imlist();
     my %messlst = ();
     my @messim  = split /[|]/xsm, $msg;
     foreach my $i ( 0 .. $#messhsh ) {
@@ -3661,16 +3814,28 @@ sub getIMhash {
 
 sub ischecked {
     my ($inp) = @_;
-    # Return a ref so we can be used like ${ischecked($var)} inside a string
     if   ($inp) { return \' checked="checked"'; }
     else        { return \q{}; }
 }
 
 sub isselected {
     my ($inp) = @_;
-    # Return a ref so we can be used like ${isselected($var)} inside a string
     if   ($inp) { return \' selected="selected"'; }
     else        { return \q{}; }
+}
+
+sub txtsz {
+    my $txtsz = q{};
+    if ( !${ $uid . $username }{'postlayout'} ) {
+        $txtsz = q{};
+    }
+    else {
+        ( undef, undef, $txtsz, undef ) = split /[|]/xsm,
+          ${ $uid . $username }{'postlayout'};
+        if ( $txtsz < 60 ) { $txtsz = 100; }
+        $txtsz = qq~; font-size:$txtsz%~;
+    }
+    return $txtsz;
 }
 
 1;

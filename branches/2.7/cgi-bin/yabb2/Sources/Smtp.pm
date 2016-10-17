@@ -12,36 +12,51 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+#use strict;
+use warnings;
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
-$smtppmver  = 'YaBB 2.7.00 $Revision$';
-@smtppmmods = ();
+our $smtppmver  = 'YaBB 2.7.00 $Revision$';
+our @smtppmmods = ();
+our $smtppmmods = 0;
 if (@smtppmmods) {
     $smtppmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if (eval {
-    require IO::Socket::INET;
-    require Digest::HMAC_MD5} )
+if (
+    eval {
+        require IO::Socket::INET;
+        require Digest::HMAC_MD5;
+    }
+  )
 {
     require IO::Socket::INET;
     require Digest::HMAC_MD5;
     Digest::HMAC_MD5->import(hmac_md5_hex);
 }
+our (
+    $smtp_server,  $date,      $smtp_message, $toheader,
+    $smtp_charset, $i,         $smtp_subject, @days_short,
+    $smtpyday,     $smtpisdst, $fromheader
+);
 
-LoadLanguage('Smtp');
+load_language('Smtp');
 
 sub use_smtp {
     my ($smtpaddr);
     $OUTPUT_AUTOFLUSH = 1;
     my ($proto) = ( getprotobyname 'tcp' )[2];
     my ($port) = ( getservbyname 'smtp', 'tcp' )[2] || 25;
-    if ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm ) {
+    if ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
+    {
         $smtpaddr =
-          ( $smtp_server =~ /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
+          ( $smtp_server =~
+              /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/xsm )
           ? pack( 'C4', $1, $2, $3, $4 )
           : ( gethostbyname $smtp_server )[4];
     }

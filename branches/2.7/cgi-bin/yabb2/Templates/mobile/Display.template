@@ -36,7 +36,7 @@ $threadhandellist2 = qq~
     {yabb notify2}{yabb favorite2}{yabb sendtopic}{yabb print}{yabb markunread}
 ~;
 
-if($useThreadtools) {
+if($usethread_tools) {
     $threadhandelstyle = q~ class="post_tools center" style="width:10em"~;
     $my_fixed = q~ style="table-layout: fixed;"~;
 } else {
@@ -111,7 +111,10 @@ $posthandellist = qq~
     {yabb modalert}{yabb print_post}{yabb modify}{yabb split}{yabb delete}
 ~;
 
-if( $usePosttools ) {
+$posthandelstyle = q{};
+$padd_right = q{};
+$posthandeladmin = q{};
+if( $usepost_tools ) {
     $posthandelstyle = q~ class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle"~;
     $posthandeladmin = qq~<div style="float:right; vertical-align:bottom; height:100%;">{yabb admin}</div>~;
     $padd_right = q~; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle~;

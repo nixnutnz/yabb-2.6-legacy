@@ -18,90 +18,112 @@
 #  e-mail: post@carsten-dalgaard.dk                                           #
 #  Added to YaBB core with the writer's permission, January 22, 2013          #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$addmoderatorspmver  = 'YaBB 2.7.00 $Revision$';
-@addmoderatorspmmods = ();
+our $addmoderatorspmver  = 'YaBB 2.7.00 $Revision$';
+our @addmoderatorspmmods = ();
+our $addmoderatorspmmods = 0;
 if (@addmoderatorspmmods) {
     $addmoderatorspmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('AddModerators');
+our (
+    %INFO,          %FORM,           %board,            %subboard,
+    $uid,           $user,           @categoryorder,    %cat,
+    %catinfo,       $myshowprofile,  %addmod_txt,       $boardsdir,
+    %control,       $iamadmin,       $iamgmod,          $yymain,
+    $yyhtml_root,   $scripturl,      $imagesdir,        $currentboard,
+    $myselectmods,  $do_scramble_id, %messageindex_txt, $myselectmods_b,
+    @nopostorder,   %grp_nopost,     $myselectmods_c,   $myselectmods_d,
+    $yysetlocation, $show_profile
+);
+
+load_language('AddModerators');
 get_template('Other');
 
-sub AddModerators {
-    $addbdmod = q{};
+sub add_moderators {
+    my $addbdmod = q{};
+    my $indent   = 0;
+    my ($moderators);
 
     local *get_subboards = sub {
         my @x = @_;
         $indent += 2;
-        $modsel = q{};
-        for my $board (@x) {
-            my $dash;
-            if ( $indent > 2 ) { $dash = q{-}; }
-
-            ( $boardname, $boardperms, $boardview ) =
-              split /[|]/xsm, $board{$board};
-            if (   ${ $uid . $board }{'ann'}
-                || ${ $uid . $board }{'rbin'}
-                || $boardname =~ m{https?://}xsm )
-            {
-                next;
+        my $modsel = q{};
+        {
+            no strict qw(refs);
+            for my $board (@x) {
+                my $dash = q{};
+                if ( $indent > 2 ) { $dash = q{-}; }
+                my ( $boardname, $boardperms, $boardview ) =
+                  split /[|]/xsm, $board{$board};
+                if (   ${ $uid . $board }{'ann'}
+                    || ${ $uid . $board }{'rbin'}
+                    || $boardname =~ m{https?://}xsm )
+                {
+                    next;
+                }
+                to_chars($boardname);
+                $moderators = ${ $uid . $board }{'mods'};
+                my @boardmoderators = split /\//xsm, $moderators || q{};
+                $modsel = q{};
+                for my $this_mod (@boardmoderators) {
+                    if ( $this_mod eq $user ) {
+                        $modsel = q~ selected="selected"~;
+                    }
+                }
+                $addbdmod .=
+                    qq~<option value="$board"$modsel>~
+                  . ( '&nbsp;' x $indent )
+                  . ( $dash x ( $indent / 2 ) )
+                  . qq~$boardname</option>\n~;
+                if ( $subboard{$board} ) {
+                    get_subboards( split /[|]/xsm, $subboard{$board} );
+                }
             }
-            ToChars($boardname);
-            $moderators = ${ $uid . $board }{'mods'};
-            my @BoardModerators = split /\//xsm, $moderators;
-            $modsel = q{};
-            for my $thisMod (@BoardModerators) {
-                if ( $thisMod eq $user ) { $modsel = q~ selected="selected"~; }
-            }
-            $addbdmod .=
-                qq~<option value="$board"$modsel>~
-              . ( '&nbsp;' x $indent )
-              . ( $dash x ( $indent / 2 ) )
-              . qq~$boardname</option>\n~;
-            if ( $subboard{$board} ) {
-                get_subboards( split /[|]/xsm, $subboard{$board} );
-            }
+            $indent -= 2;
         }
-        $indent -= 2;
     };
 
     for my $catid (@categoryorder) {
-        (@bdlist) = split /,/xsm, $cat{$catid};
-        ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
-        ToChars($catname);
+        my @bdlist = split /,/xsm, $cat{$catid};
+        my ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
+        to_chars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
-        my $indent = -2;
+        $indent = -2;
         get_subboards(@bdlist);
     }
-    $showProfile .= $myshowProfile;
-    $showProfile =~ s/\Q{yabb addbdmod}\E/$addbdmod/xsm;
-    $showProfile =~ s/\Q{yabb addmod_txt_addmod_title}\E/$addmod_txt{'addmod_title'}/gxsm;
-    $showProfile =~ s/\Q{yabb addmod_txt_addmod_text}\E/$addmod_txt{'addmod_txt'}/gxsm;
-    $showProfile =~ s/\Q{yabb addmod_txt_addmod_all}\E/$addmod_txt{'addmod_all'}/gxsm;
+    $show_profile .= $myshowprofile;
+    $show_profile =~ s/\Q{yabb addbdmod}\E/$addbdmod/xsm;
+    $show_profile =~
+      s/\Q{yabb addmod_txt_addmod_title}\E/$addmod_txt{'addmod_title'}/gxsm;
+    $show_profile =~
+      s/\Q{yabb addmod_txt_addmod_text}\E/$addmod_txt{'addmod_text'}/gxsm;
+    $show_profile =~
+      s/\Q{yabb addmod_txt_addmod_all}\E/$addmod_txt{'addmod_all'}/gxsm;
     return;
 }
 
-sub AddModerators2 {
-    my @x    = @_;
-    my $user = $x[0];
+sub add_moderators2 {
+    my @x = @_;
+    $user = $x[0];
     my @boardcontrol = ();
+    $x[1] ||= q{};
     my @modbd = split /,\s*/xsm, $x[1];
     chomp @modbd;
     require "$boardsdir/forum.control";
 
-    for my $boardline (keys %control) {
-        my @bdmodlist = split /\//xsm, ${$control{$boardline}}[3];
+    for my $boardline ( keys %control ) {
+        my @bdmodlist = split /\//xsm, ${ $control{$boardline} }[3];
         chomp @bdmodlist;
-        ${$control{$boardline}}[3] = q{};
-        $bdi = 0;
+        ${ $control{$boardline} }[3] = q{};
+        my $bdi = 0;
         foreach (@bdmodlist) {
             if ( $_ eq $user ) { splice @bdmodlist, $bdi, 1; last; }
             $bdi++;
@@ -109,18 +131,22 @@ sub AddModerators2 {
         foreach (@modbd) {
             if ( $_ eq $boardline ) { push @bdmodlist, $user; last; }
         }
-        ${$control{$boardline}}[3] = join q{/}, @bdmodlist;
+        ${ $control{$boardline} }[3] = join q{/}, @bdmodlist;
     }
 
     write_forum_control();
     return;
 }
 
-sub ModSearch {
+sub mod_search {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
-    $to_board        = $currentboard;
-    $moderators      = ${ $uid . $currentboard }{'mods'};
-    $moderatorgroups = ${ $uid . $currentboard }{'modgroups'};
+    my $to_board = $currentboard;
+    my ( $moderators, $moderatorgroups, );
+    {
+        no strict qw(refs);
+        $moderators      = ${ $uid . $currentboard }{'mods'};
+        $moderatorgroups = ${ $uid . $currentboard }{'modgroups'};
+    }
 
     $yymain .= qq~
 <script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
@@ -182,39 +208,45 @@ function copy_option(to_select) {
     $yymain =~ s/\Q{yabb to_board}\E/$to_board/xsm;
     $yymain =~ s/\Q{yabb addmod_txt_modsearch}\E/$addmod_txt{'modsearch'}/xsm;
     $yymain =~ s/\Q{yabb addmod_txt_instruct}\E/$addmod_txt{'instruct'}/xsm;
-    $yymain =~ s/\Q{yabb addmod_txt_addselected}\E/$addmod_txt{'addselected'}/xsm;
+    $yymain =~
+      s/\Q{yabb addmod_txt_addselected}\E/$addmod_txt{'addselected'}/xsm;
 
-    $modmbrcnt = 0;
-    my $modmbr = q{};
-    my @thisBoardModerators = split /\//xsm, $moderators;
-    for my $thisMod (@thisBoardModerators) {
-        LoadUser($thisMod);
-        my $thisModname = ${ $uid . $thisMod }{'realname'};
-        if ( !$thisModname ) { $thisModname = $thisMod; }
-        if ($do_scramble_id) { $thisMod     = cloak($thisMod); }
-        if ( $thisMod eq q{} ) {
+    my $modmbrcnt = 0;
+    my $modmbr    = q{};
+    my ($this_modname);
+    my @thisboardmoderators = split /\//xsm, $moderators;
+    for my $this_mod (@thisboardmoderators) {
+        load_user($this_mod);
+        {
+            no strict qw(refs);
+            $this_modname = ${ $uid . $this_mod }{'realname'};
+        }
+        if ( !$this_modname ) { $this_modname = $this_mod; }
+        if ($do_scramble_id)  { $this_mod     = cloak($this_mod); }
+        if ( $this_mod eq q{} ) {
             $modmbr .=
 q{                <option value="" disabled="disabled">--</option>};
         }
         else {
             $modmbr .=
-qq~                <option value="$thisMod" selected="selected">$thisModname</option>~;
+qq~                <option value="$this_mod" selected="selected">$this_modname</option>~;
             $modmbrcnt++;
         }
     }
+    my $addmod_list = $messageindex_txt{'63'};
     if   ( $modmbrcnt == 1 ) { $addmod_list = $messageindex_txt{'298'}; }
     else                     { $addmod_list = $messageindex_txt{'63'}; }
     $yymain .= $myselectmods_b;
     $yymain =~ s/\Q{yabb addmod_list}\E/$addmod_list/gxsm;
     $yymain =~ s/\Q{yabb modmbr}\E/$modmbr/gxsm;
 
-    $modgrpcnt = 0;
-    my $modgrp = q{};
+    my $modgrpcnt = 0;
+    my $modgrp    = q{};
     for (@nopostorder) {
-        @groupinfo = @{$NoPost{$_}};
+        my @groupinfo = @{ $grp_nopost{$_} };
         $modgrp .= qq~<option value="$_"~;
         for ( split /\//xsm, $moderatorgroups ) {
-            ( $lineinfo, undef ) = @{$NoPost{$_}};
+            my ( $lineinfo, undef ) = @{ $grp_nopost{$_} };
             if ( $lineinfo eq $groupinfo[0] ) {
                 $modgrp .= q~ selected="selected" ~;
             }
@@ -222,6 +254,7 @@ qq~                <option value="$thisMod" selected="selected">$thisModname</op
         $modgrp .= qq~>$groupinfo[0]</option>~;
         $modgrpcnt++;
     }
+    my $addgrp_list = q{};
     if ( $modgrpcnt > 0 ) {
         if   ( $modgrpcnt == 1 ) { $addgrp_list = $messageindex_txt{'298a'}; }
         else                     { $addgrp_list = $messageindex_txt{'63a'}; }
@@ -231,13 +264,15 @@ qq~                <option value="$thisMod" selected="selected">$thisModname</op
     }
     $yymain .= $myselectmods_d;
     $yymain =~ s/\Q{yabb addmod_txt_pageclose}\E/$addmod_txt{'pageclose'}/gxsm;
-    $yymain =~ s/\Q{yabb addmod_txt_addmod_save}\E/$addmod_txt{'addmod_save'}/gxsm;
+    $yymain =~
+      s/\Q{yabb addmod_txt_addmod_save}\E/$addmod_txt{'addmod_save'}/gxsm;
     return;
 }
 
-sub ModSearch2 {
-    $modboard = $INFO{'toboard'};
+sub mod_search2 {
+    my $modboard = $INFO{'toboard'};
     my @mods = split /,\s*/xsm, $FORM{'moderators'};
+    $FORM{'moderatorgroups'} ||= q{};
     $FORM{'moderatorgroups'} =~ s/,\s+/\//xsm;
     if ($do_scramble_id) {
         for (@mods) {
@@ -245,12 +280,12 @@ sub ModSearch2 {
         }
     }
     require "$boardsdir/forum.control";
-    ${$control{$modboard}}[3] = join q{/}, @mods;
-    ${$control{$modboard}}[4] = $FORM{'moderatorgroups'};
+    ${ $control{$modboard} }[3] = join q{/}, @mods;
+    ${ $control{$modboard} }[4] = $FORM{'moderatorgroups'};
 
     write_forum_control();
 
-    $yySetLocation = qq~$scripturl?board=$INFO{'toboard'}~;
+    $yysetlocation = qq~$scripturl?board=$INFO{'toboard'}~;
     redirectexit();
     return;
 }

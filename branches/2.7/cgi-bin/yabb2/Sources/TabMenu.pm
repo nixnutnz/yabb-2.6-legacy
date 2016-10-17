@@ -12,23 +12,44 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+use strict;
+use warnings;
 our $VERSION = '2.7.00';
+use CGI::Carp qw(fatalsToBrowser);
 
-$tabmenupmver  = 'YaBB 2.7.00 $Revision$';
-@tabmenupmmods = ();
+our $tabmenupmver  = 'YaBB 2.7.00 $Revision$';
+our @tabmenupmmods = ();
+our $tabmenupmmods = 0;
 if (@tabmenupmmods) {
     $tabmenupmmods = 1;
 }
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('TabMenu');
+our (
+    %croak,            $iamadmin,             %INFO,
+    %tab,              %img_txt,              $scripturl,
+    $show_eventbutton, $maxsearchdisplay,     $advsearchaccess,
+    $iamguest,         $birthday_button_show, $ml_allowed,
+    $staff,            $iamgmod,              $iamfmod,
+    $user,             $username,             $yyaext,
+    $do_scramble_id,   $boardurl,             $sessionvalid,
+    $testenv,          %maintxt,              $regtype,
+    $enable_guest_pm,  $pm_level,             $perm_domain,
+    $symlink,          @advanced_tabs,        $allow_gmod_admin,
+    $enable_bm_level,  $loginform,            $accept_permafull,
+    %useraccount,      %tabtxt,               %micon,
+    $tab_lang,         %tabmenu_txt,          $langdir,
+    $addtab_on,        $lang,                 $language
+);
+load_language('TabMenu');
 get_micon();
 
-$tabsep  = q{};
-$tabfill = q{};
+my $tabsep  = q{};
+my $tabfill = q{};
 
-sub mainMenu {
+sub main_menu {
     my %acting = (
         'search2'            => 'search',
         'favorites'          => 'mycenter',
@@ -62,17 +83,17 @@ sub mainMenu {
     );
 
 ## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
-
+    my $tmpaction = 'home';
     if ( $action eq 'addtab' && $iamadmin ) {
         require Sources::AdvancedTabs;
-        AddNewTab();
+        add_new_tab();
     }
     elsif ( $action eq 'edittab' && $iamadmin ) {
         require Sources::AdvancedTabs;
-        EditTab();
+        edit_tab();
     }
     elsif ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
-    elsif ( $action ) {
+    elsif ($action) {
         $tmpaction = $acting{$action};
         if ( !$tmpaction ) { $tmpaction = $action; }
     }
@@ -87,27 +108,31 @@ qq~$tabhtml_l"$scripturl" title="$img_txt{'103'}">$img_txt{'103'}</a>$tabhtml_r~
     $tab{'help'} =
 qq~$tabhtml_l"$scripturl?action=help" title="$img_txt{'119'}" class="help">$img_txt{'119'}</a>$tabhtml_r~;
 
-    if ( $maxsearchdisplay && $maxsearchdisplay > -1 && $advsearchaccess && $advsearchaccess eq 'granted' ) {
+    if (   $maxsearchdisplay
+        && $maxsearchdisplay > -1
+        && $advsearchaccess
+        && $advsearchaccess eq 'granted' )
+    {
         $tab{'search'} =
 qq~$tabhtml_l"$scripturl?action=search" title="$img_txt{'182'}">$img_txt{'182'}</a>$tabhtml_r~;
     }
-    $Show_EventButton ||= 0;
-    if ( $Show_EventButton == 2 || ( !$iamguest && $Show_EventButton == 1 ) ) {
+    $show_eventbutton ||= 0;
+    if ( $show_eventbutton == 2 || ( !$iamguest && $show_eventbutton == 1 ) ) {
         $tab{'eventcal'} =
 qq~$tabhtml_l"$scripturl?action=eventcal;calshow=1" title="$img_txt{'eventcal'}">$img_txt{'eventcal'}</a>$tabhtml_r~;
     }
-    $Show_BirthdayButton ||= 0;
-    if ( $Show_BirthdayButton == 2
-        || ( !$iamguest && $Show_BirthdayButton == 1 ) )
+    $birthday_button_show ||= 0;
+    if ( $birthday_button_show == 2
+        || ( !$iamguest && $birthday_button_show == 1 ) )
     {
         $tab{'birthdaylist'} =
 qq~$tabhtml_l"$scripturl?action=birthdaylist" title="$img_txt{'birthdaylist'}">$img_txt{'birthdaylist'}</a>$tabhtml_r~;
     }
-    if (   !$ML_Allowed
-        || ( $ML_Allowed == 1 && !$iamguest )
-        || ( $ML_Allowed == 2 && $staff )
-        || ( $ML_Allowed == 3 && ( $iamadmin || $iamgmod ) )
-        || ( $ML_Allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
+    if (   !$ml_allowed
+        || ( $ml_allowed == 1 && !$iamguest )
+        || ( $ml_allowed == 2 && $staff )
+        || ( $ml_allowed == 3 && ( $iamadmin || $iamgmod ) )
+        || ( $ml_allowed == 4 && ( $iamadmin || $iamgmod || $iamfmod ) ) )
     {
         $tab{'ml'} =
 qq~$tabhtml_l"$scripturl?action=ml" title="$img_txt{'331'}">$img_txt{'331'}</a>$tabhtml_r~;
@@ -143,24 +168,25 @@ qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" tit
 qq~$tabhtml_l"$scripturl?action=revalidatesession$sesredir" title="$img_txt{'34a'}">$img_txt{'34a'}</a>$tabhtml_r~;
     }
     if ($iamguest) {
-        my $sesredir;
+        my $sesredir = q{};
         if ($testenv) {
             $sesredir = $testenv;
             $sesredir =~ s/\=/\~/gxsm;
             $sesredir =~ s/;/x3B/gxsm;
             $sesredir = qq~;sesredir=$sesredir~;
         }
-        $tab{'login'} = qq~$tabhtml_l"~
-          . (
-            $loginform
-            ? "javascript:if(jumptologin>1)alert('$maintxt{'35'}');jumptologin++;window.scrollTo(0,10000);document.loginform.username.focus();"
-            : "$scripturl?action=login$sesredir"
-          ) . qq~" title="$img_txt{'34'}">$img_txt{'34'}</a>$tabhtml_r~;
+        my $logredir = "$scripturl?action=login$sesredir";
+        if ($loginform) {
+            $logredir =
+"javascript:if(jumptologin>1)alert('$maintxt{'35'}');jumptologin++;window.scrollTo(0,10000);document.loginform.username.focus();";
+        }
+        $tab{'login'} =
+qq~$tabhtml_l"$logredir" title="$img_txt{'34'}">$img_txt{'34'}</a>$tabhtml_r~;
         if ($regtype) {
             $tab{'register'} =
 qq~$tabhtml_l"$scripturl?action=register" title="$img_txt{'97'}">$img_txt{'97'}</a>$tabhtml_r~;
         }
-        if ( $PMenableGuestButton && $PM_level > 0 && $PMenableBm_level > 0 ) {
+        if ( $enable_guest_pm && $pm_level > 0 && $enable_bm_level > 0 ) {
             $tab{'guestpm'} =
 qq~$tabhtml_l"$scripturl?action=guestpm" title="$img_txt{'pmadmin'}">$img_txt{'pmadmin'}</a>$tabhtml_r~;
         }
@@ -187,21 +213,22 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
             }
         }
     }
-    $yytabmenu = qq~<ul>\n~;
+    our $yytabmenu = qq~<ul>\n~;
 
     # Advanced Tabs starts here
-    for my $i ( 0 .. $#AdvancedTabs ) {
-        if ( $AdvancedTabs[$i] =~ /[|]/xsm ) {
+    my ($tab_url);
+    for my $i ( 0 .. $#advanced_tabs ) {
+        if ( $advanced_tabs[$i] =~ /[|]/xsm ) {
             my (
                 $tab_key,    $tmptab_url, $isaction, $username_req,
                 $tab_access, $tab_newwin, $exttab_url
-            ) = split /[|]/xsm, $AdvancedTabs[$i];
+            ) = split /[|]/xsm, $advanced_tabs[$i];
             if (   !$tab_access
                 || ( $tab_access < 2 && !$iamguest )
                 || ( $tab_access < 3 && $iamgmod )
                 || $iamadmin )
             {
-                if ( $tmptab_url =~ m/\d/xsm) {
+                if ( $tmptab_url =~ m/\d/xsm ) {
                     if ( $tmptab_url == 1 ) { $tab_url = $scripturl; }
                     elsif ( $tmptab_url == 2 ) {
                         $tab_url = qq~$boardurl/AdminIndex.$yyaext~;
@@ -214,32 +241,34 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
                 }
                 if ($exttab_url) { $tab_url .= qq~;$exttab_url~; }
                 my $newwin = $tab_newwin ? q~ target="_blank"~ : q{};
-                if ( !$tab_lang ) { GetTabtxt(); }
-
-                $yytabmenu .= q~                        <li><span~
-                  . (
-                    $AdvancedTabs[$i] eq $tmpaction
-                    ? q~ class="selected"~
-                    : q{}
-                  )
-                  . qq~><a href="$tab_url"$newwin title="$tabtxt{$tab_key}">$tabtxt{$tab_key}</a>$tabhtml_r~;
+                if ( !$tab_lang ) { get_tabtxt(); }
+                my $tab_sel = q{};
+                if ( $advanced_tabs[$i] eq $tmpaction ) {
+                    $tab_sel = q~ class="selected"~;
+                }
+                $yytabmenu .= qq~                        <li><span$tab_sel>~;
+                $yytabmenu .= qq~<a href="$tab_url"~;
+                $yytabmenu .= $newwin;
+                $yytabmenu .=
+qq~ title="$tabtxt{$tab_key}">$tabtxt{$tab_key}</a>$tabhtml_r~;
             }
         }
-        elsif ( $tab{ $AdvancedTabs[$i] } ) {
+        elsif ( $tab{ $advanced_tabs[$i] } ) {
             $tmpaction ||= q{};
-            my ( $tabfirst, $tablast ) = split /[|]/xsm, $tab{ $AdvancedTabs[$i] };
+            my ( $tabfirst, $tablast ) = split /[|]/xsm,
+              $tab{ $advanced_tabs[$i] };
             $yytabmenu .= $tabfirst
               . (
-                ( $AdvancedTabs[$i] eq $tmpaction && $tablast )
+                ( $advanced_tabs[$i] eq $tmpaction && $tablast )
                 ? q~ class="selected"~
                 : q{}
               ) . $tablast;
         }
     }
     $yytabmenu .= q~                   </ul>~;
-
+    our $yytabadd = q{};
     if ( $iamadmin && $addtab_on == 1 ) {
-        my $seladdtab = q{};
+        my $seladdtab  = q{};
         my $seledittab = q{};
         if    ( $action eq 'addtab' )  { $seladdtab  = q~ class="selected"~; }
         elsif ( $action eq 'edittab' ) { $seledittab = q~ class="selected"~; }
@@ -254,7 +283,7 @@ qq~<li id="edittab"><span$seledittab><a href="$scripturl?action=edittab" title="
     return;
 }
 
-sub GetTabtxt2 {
+sub get_tabtxt2 {
     $tab_lang = $language ? $language : $lang;
     if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
         require "$langdir/$tab_lang/tabtext.txt";
@@ -267,15 +296,16 @@ sub GetTabtxt2 {
                 $prntab .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
             }
             $prntab .= "1;\n";
-            fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-            print {TABTXT} $prntab or croak "$croak{'print'} TABTXT";
-            fclose(TABTXT);
+            open my $TABTXT, '>', "$langdir/$tab_lang/tabtext.txt"
+              or croak "$croak{'open'} $tab_lang/tabtext.txt";
+            print {$TABTXT} $prntab or croak "$croak{'print'} TABTXT";
+            close $TABTXT or croak "$croak{'close'} $tab_lang/tabtext.txt";
         }
     }
     return;
 }
 
-sub GetTabtxt {
+sub get_tabtxt {
     $tab_lang = $language ? $language : $lang;
     if ( -e "$langdir/$tab_lang/tabtext.txt" ) {
         require "$langdir/$tab_lang/tabtext.txt";
@@ -291,9 +321,10 @@ sub GetTabtxt {
                 $prntab .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
             }
             $prntab .= "1;\n";
-            fopen( TABTXT, ">$langdir/$tab_lang/tabtext.txt" );
-            print {TABTXT} $prntab or croak "$croak{'print'} TABTXT";
-            fclose(TABTXT);
+            open my $TABTXT, '>', "$langdir/$tab_lang/tabtext.txt"
+              or croak "$croak{'open'} $tab_lang/tabtext.txt";
+            print {$TABTXT} $prntab or croak "$croak{'print'} TABTXT";
+            close $TABTXT or croak "$croak{'close'} $tab_lang/tabtext.txt";
         }
     }
     return;

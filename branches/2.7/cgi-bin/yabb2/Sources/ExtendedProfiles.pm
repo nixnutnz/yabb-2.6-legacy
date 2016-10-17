@@ -15,53 +15,82 @@
 # Michael Prager. Last modification by him: 15.11.07                          #
 # Added to the YaBB default code on 07. September 2008                        #
 ###############################################################################
+use strict;
+use warnings;
+no warnings qw(uninitialized);
+use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$extendedprofilespmver  = 'YaBB 2.7.00 $Revision$';
-@extendedprofilespmmods = ();
+our $extendedprofilespmver  = 'YaBB 2.7.00 $Revision$';
+our @extendedprofilespmmods = ();
+our $extendedprofilespmmods = 0;
 if (@extendedprofilespmmods) {
     $extendedprofilespmmods = 1;
 }
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('ExtendedProfiles');
+## language ##
+our ( %croak, %lang_ext, %img_txt, %profile_txt );
+## folders ##
+our ($imagesdir);
+## system ##
+our (
+    $iamadmin,    $iamgmod, $invalmailchar, $invalemaila,
+    $invalemailb, $message, $pusername,     $uid,
+    $username,    %FORM,    %INFO,
+);
+## settings ##
+our ( $allow_gmod_profile, $timeselected, %grp_nopost, %grp_post, %grp_staff,
+    @ext_prof_fields, @ext_prof_order, @nopostorder );
+## template ##
+our (
+    $ext_endrow, $ext_memberlist_tableheader, $ext_memberlist_td, $ext_msg_cl,
+    $ext_output_a,  $ext_output_b, $ext_output_c, $ext_pre_output, $ext_spacer,
+    $ext_template1, $myreg_req,
 
-$ext_spacer_hr        = q~<hr class="hr" />~;
-$ext_spacer_br        = q~<br />~;
-$ext_max_email_length = 60;
-$ext_max_url_length   = 100;
-$ext_max_image_length = 200;
+);
 
-my %field;
+## local
+our (%field);
+
+load_language('ExtendedProfiles');
+
+my $ext_spacer_hr        = q~<hr class="hr" />~;
+my $ext_spacer_br        = q~<br />~;
+my $ext_max_email_length = 60;
+my $ext_max_url_length   = 100;
+my $ext_max_image_length = 200;
 
 # outputs the value of a user's extended profile field
 ## USAGE: $value = ext_get("admin","my_custom_fieldname");
 ##  or    $value_raw = ext_get("admin","my_custom_fieldname",1);
 ## pass the third argument if you want to get the raw content e.g. an unformatted date
 sub ext_get {
-    my (
-        $pusername, $fieldname, $no_parse,           @ext_profile,
-        @options,   $field,     $id,                 $value,
-        $width,     $height,    @allowed_extensions, $extension,
-        $match
-    ) = ( shift, shift, shift );
-    ext_get_profile($pusername);
-    $id    = ext_get_field_id($fieldname);
-    $value = ${ $uid . $pusername }{ 'ext_' . $id };
+    my ( $psername, $fieldname, $no_parse ) = @_;
+    my ( @ext_profile, @options, $field, $id, $value,
+        @allowed_extensions, $extension, $match );
+    ext_get_profile($psername);
+    $id = ext_get_field_id($fieldname);
+    {
+        no strict qw(refs);
+        $value = ${ $uid . $psername }{ 'ext_' . $id };
+    }
     if ( !$no_parse || $no_parse == 0 ) {
         %field = ext_get_field($id);
         if ( $field{'type'} eq 'text' ) {
             @options = split /\^/xsm, $field{'options'};
             if ( $options[3] && !$value ) { $value = $options[3]; }
             if ( $options[4] == 1 ) {
-                $value = ext_parse_ubbc( $value, $pusername );
+                $value = ext_parse_ubbc( $value, $psername );
             }
         }
         elsif ( $field{'type'} eq 'text_multi' && $value ) {
             @options = split /\^/xsm, $field{'options'};
             if ( $options[3] && $options[3] == 1 ) {
-                $value = ext_parse_ubbc( $value, $pusername );
+                $value = ext_parse_ubbc( $value, $psername );
             }
         }
         elsif ( $field{'type'} eq 'select' ) {
@@ -71,20 +100,21 @@ sub ext_get {
         }
         elsif ( $field{'type'} eq 'radiobuttons' ) {
             @options = split /\^/xsm, $field{'options'};
-            if ( !$value || ($value && $value > $#options))  { $value = 0; }
-            elsif ( $value && $value <= $#options) { $value = $options[$value]; }
-
+            if ( !$value || ( $value && $value > $#options ) ) { $value = 0; }
+            elsif ( $value && $value <= $#options ) {
+                $value = $options[$value];
+            }
         }
         elsif ( $field{'type'} eq 'date' && $value ) {
-            @mytime = split /\//xsm, $value;
-            $mytime =
+            my @mytime = split /\//xsm, $value;
+            my $mytime =
               timelocal( 0, 0, 0, $mytime[1], $mytime[0] - 1, $mytime[2] );
             $mytime = timeformatcal($mytime);
             $value  = dtonly($mytime);
         }
         elsif ( $field{'type'} eq 'checkbox' ) {
-            if   ( $value ) { $value = $lang_ext{'true'} }
-            else                 { $value = $lang_ext{'false'} }
+            if   ($value) { $value = $lang_ext{'true'} }
+            else          { $value = $lang_ext{'false'} }
         }
         elsif ( $field{'type'} eq 'spacer' ) {
             @options = split /\^/xsm, $field{'options'};
@@ -93,7 +123,7 @@ sub ext_get {
 
         }
         elsif ( $field{'type'} eq 'url' && $value ) {
-            if ( $value !~ m{\Ahttp(s)?://}xsm ) { $value = "http://$value"; }
+            if ( $value !~ m{\Ahttps?://}xsm ) { $value = "http://$value"; }
 
         }
         elsif ( $field{'type'} eq 'image' && $value ) {
@@ -115,7 +145,7 @@ sub ext_get {
 
 # loads the (extended) profile of a user
 sub ext_get_profile {
-    LoadUser(shift);
+    load_user(shift);
     return;
 }
 
@@ -132,6 +162,7 @@ sub ext_get_fields_array {
 # returns the id of a field through the fieldname
 sub ext_get_field_id {
     my ($fieldname) = @_;
+    my $id = q{};
     foreach my $current (@ext_prof_fields) {
         my ( $currentname, $count, undef ) = split /[|]/xsm, $current;
         if ( $currentname eq $fieldname ) { $id = $count; last; }
@@ -143,9 +174,10 @@ sub ext_get_field_id {
 
 sub ext_get_field {
     my ($id) = @_;
-    my %field = ();
-    my @fldlist = qw( name count type options active comment required_on_reg visible_in_viewprofile v_users v_groups visible_in_posts p_users p_groups p_displayfieldname visible_in_memberlist m_users m_groups editable_by_user visible_in_posts_popup pp_users pp_groups pp_displayfieldname radiounselect );
-    my @ext_fields = split /[|]/xsm, $ext_prof_fields[ $id ];
+    %field = ();
+    my @fldlist =
+      qw( name count type options active comment required_on_reg visible_in_viewprofile v_users v_groups visible_in_posts p_users p_groups p_displayfieldname visible_in_memberlist m_users m_groups editable_by_user visible_in_posts_popup pp_users pp_groups pp_displayfieldname radiounselect );
+    my @ext_fields = split /[|]/xsm, $ext_prof_fields[$id];
     foreach my $i ( 0 .. $#fldlist ) {
         $field{ $fldlist[$i] } = $ext_fields[$i];
     }
@@ -158,22 +190,32 @@ sub ext_has_access {
         $allowed_users, $allowed_groups, $access,  $usergroup,
         $useraddgroup,  $postcount,      $user,    @users,
         $group,         @groups,         $groupid, $postamount
-      )
-      = (
-        shift, shift, 0,
-        ${ $uid . $username }{'position'},
-        ${ $uid . $username }{'addgroups'},
-        ${ $uid . $username }{'postcount'}, undef,
-      );
+    );
+    {
+        no strict qw(refs);
+        (
+            $allowed_users, $allowed_groups, $access,  $usergroup,
+            $useraddgroup,  $postcount,      $user,    @users,
+            $group,         @groups,         $groupid, $postamount
+          )
+          = (
+            shift, shift, 0,
+
+            ${ $uid . $username }{'position'},
+            ${ $uid . $username }{'addgroups'},
+            ${ $uid . $username }{'postcount'}, undef,
+
+          );
+    }
 
     if ( $allowed_users || $allowed_groups ) {
-        if ( $allowed_users ) {
+        if ($allowed_users) {
             @users = split /,/xsm, $allowed_users;
             foreach my $user (@users) {
                 if ( $user eq $username ) { $access = 1; return $access; }
             }
         }
-        if ( $allowed_groups ) {
+        if ($allowed_groups) {
 
 # generate list of allowed groups
 # example: @groups = ('Administrator', 'Moderator', 'Global Moderator', 'Post{-1}', 'NoPost{1}');
@@ -188,13 +230,13 @@ sub ext_has_access {
                 {
                     if ( $group eq $usergroup ) { $access = 1; return $access; }
                 }
-                elsif ( $group =~ m/^NoPost\{(\d+)}$/xsm ) {
+                elsif ( $group =~ m/^grp_nopost[{](\d+)}$/xsm ) {
 
                     # check if user is on a post-independent group
                     $groupid = $1;
 
                     # check if group exists at all
-                    if ( exists $NoPost{$groupid} && $groupid ) {
+                    if ( exists $grp_nopost{$groupid} && $groupid ) {
 
                        # check if group id is in user position or addgroup field
                         if ( $usergroup eq $groupid ) {
@@ -209,11 +251,14 @@ sub ext_has_access {
                         }
                     }
                 }
-                elsif ( $group =~ m/^Post\{(\d+)}$/xsm ) {
+                elsif ( $group =~ m/^grp_post[{](\d+)}$/xsm ) {
 
                     # check if user is in one of the post-depending groups...
                     $groupid = $1;
-                    foreach my $postamount ( reverse sort { $a <=> $b } keys %Post )
+                    foreach my $postamount (
+                        reverse sort { $a <=> $b }
+                        keys %grp_post
+                      )
                     {
                         if ( $postcount > $postamount ) {
 
@@ -240,8 +285,8 @@ sub ext_parse_ubbc {
     $message = $source;
     require Sources::YaBBC;
     $displayname = $pusername;    # must be set for /me tag
-    DoUBBC();
-    ToChars($message);
+    do_ubbc();
+    to_chars($message);
     $source  = $message;
     $message = $temp;
     return $source;
@@ -249,18 +294,19 @@ sub ext_parse_ubbc {
 
 # returns the output for the viewprofile page
 sub ext_viewprofile {
+    ($pusername) = @_;
     my (
-        $pusername, @ext_profile, $field,         $id,
-        $output,    $fieldname,   @options,       $value,
-        $previous,  $count,       $last_field_id, $pre_output
-    ) = (shift);
+        @ext_profile, $field,         $id,    $output,
+        $fieldname,   @options,       $value, $previous,
+        $count,       $last_field_id, $pre_output
+    );
 
     if ( $#ext_prof_order > 0 ) {
         $last_field_id = ext_get_field_id( $ext_prof_order[-1] );
     }
 
     foreach my $fieldname (@ext_prof_order) {
-        $id = ext_get_field_id($fieldname);
+        $id    = ext_get_field_id($fieldname);
         %field = ext_get_field($id);
         $value = ext_get( $pusername, $fieldname );
 
@@ -276,8 +322,8 @@ sub ext_viewprofile {
 
             # format the output dependent on the field type
             if (   ( $field{'type'} eq 'text' && $value )
-                || ( $field{'type'} eq 'text_multi'   && $value )
-                || ( $field{'type'} eq 'select'       && $value && $value ne q{ } )
+                || ( $field{'type'} eq 'text_multi' && $value )
+                || ( $field{'type'} eq 'select' && $value && $value ne q{ } )
                 || ( $field{'type'} eq 'radiobuttons' && $value )
                 || ( $field{'type'} eq 'date'         && $value )
                 || $field{'type'} eq 'checkbox' )
@@ -323,7 +369,7 @@ sub ext_viewprofile {
             <b>$field{'name'}:</b>
             </div>
             <div class="ext_rgt">
-            ~ . enc_eMail( $img_txt{'69'}, $value, q{}, q{} ) . q~
+            ~ . enc_email( $img_txt{'69'}, $value, q{}, q{} ) . q~
             </div>~;
                 $previous = 0;
 
@@ -340,8 +386,10 @@ sub ext_viewprofile {
 
             }
             elsif ( $field{'type'} eq 'image' && $value ) {
-                if ( $value !~ m{\Ahttp(s)?://}xsm ) { $value = "http://$value"; }
-                $pix = qq~<img src="$value" id="ext_img_resize" alt="" />~;
+                if ( $value !~ m{\Ahttps?://}xsm ) {
+                    $value = "http://$value";
+                }
+                my $pix = qq~<img src="$value" id="ext_img_resize" alt="" />~;
                 $output .= qq~
             <div class="ext_lft">
             <b>$field{'name'}:</b>
@@ -355,7 +403,7 @@ sub ext_viewprofile {
     }
 
     # only add spacer if there there is at least one field displayed
-    if ( $output ) {
+    if ($output) {
         $output = $pre_output . $output . q~
         </td>
     </tr>~;
@@ -365,20 +413,21 @@ sub ext_viewprofile {
 
 # returns the output for the post page
 sub ext_viewinposts {
+    my ( $psername, $popup ) = @_;
     my (
-        $pusername, $popup,    @ext_profile, $field,
-        $id,        $output,   $fieldname,   @options,
-        $value,     $previous, $pre_output,  $visible,
-        $users,     $groups,   $displayfieldname
-    ) = ( shift, shift );
+        @ext_profile, $field,   $id,    $output,
+        $fieldname,   @options, $value, $previous,
+        $pre_output,  $visible, $users, $groups,
+        $displayfieldname
+    );
 
-    if ( $pusername ne 'Guest' ) {
+    if ( $psername ne 'Guest' ) {
         foreach my $fieldname (@ext_prof_order) {
             $id    = ext_get_field_id($fieldname);
             %field = ext_get_field($id);
-            $value = ext_get( $pusername, $fieldname );
+            $value = ext_get( $psername, $fieldname );
 
-            if ( $popup ) {
+            if ($popup) {
                 $visible          = $field{'visible_in_posts_popup'};
                 $users            = $field{'pp_users'};
                 $groups           = $field{'pp_groups'};
@@ -396,19 +445,24 @@ sub ext_viewinposts {
                 && $field{'active'}
                 && ext_has_access( $users, $groups ) )
             {
-                if ( $displayfieldname ) {
+                my $displayedfieldname = q{};
+                if ($displayfieldname) {
                     $displayedfieldname = "$field{'name'}: ";
                 }
                 else { $displayedfieldname = q{}; }
                 if ( !$output ) { $output = qq~$ext_spacer_br\n~; }
 
                 # format the output depending on the field type
-                if (   ( $field{'type'} eq 'text' && $value )
-                    || ( $field{'type'} eq 'text_multi'   && $value )
-                    || ( $field{'type'} eq 'select'       && $value && $value ne q{ } )
+                if (
+                       ( $field{'type'} eq 'text' && $value )
+                    || ( $field{'type'} eq 'text_multi' && $value )
+                    || (   $field{'type'} eq 'select'
+                        && $value
+                        && $value ne q{ } )
                     || ( $field{'type'} eq 'radiobuttons' && $value )
                     || ( $field{'type'} eq 'date'         && $value )
-                    || $field{'type'} eq 'checkbox' )
+                    || $field{'type'} eq 'checkbox'
+                  )
                 {
                     $output .= qq~$displayedfieldname$value<br />\n~;
                     $previous = q{};
@@ -424,7 +478,7 @@ sub ext_viewinposts {
                 elsif ( $field{'type'} eq 'email' && $value ) {
                     $output .=
                         $displayedfieldname
-                      . enc_eMail( $img_txt{'69'}, $value, q{}, q{} )
+                      . enc_email( $img_txt{'69'}, $value, q{}, q{} )
                       . qq~<br />\n~;
                     $previous = q{};
                 }
@@ -444,7 +498,7 @@ qq~$displayedfieldname<a href="$value" target="_blank">$value</a><br />\n~;
 # check if there we have any output (except spacers) at all. If so, return empty output
     $pre_output = $output || q{};
     $pre_output =~
-s/(?:\<\/small>(?:(?:$ext_spacer_hr)|(?:$ext_spacer_br))<small>)|\n|(?:\<br(?: \/)?>)//igsm;
+s/(?:\<\/small>(?:(?:$ext_spacer_hr)|(?:$ext_spacer_br))<small>)|\n|(?:\<br(?:\s\/)?>)//igxsm;
     if ( !$pre_output ) { $output = q{}; }
 
     return $output;
@@ -457,10 +511,10 @@ s/(?:\<\/small>(?:(?:$ext_spacer_hr)|(?:$ext_spacer_br))<small>)|\n|(?:\<br(?: \
 
     # returns the output for the post page (popup box)
     sub ext_viewinposts_popup {
-        my ( $pusername, $link, $output ) = ( shift, shift );
-        $output = ext_viewinposts( $pusername, 'popup' );
+        my ( $psername, $link ) = @_;
+        my $output = ext_viewinposts( $psername, 'popup' );
         $output =~ s/^$ext_spacer_br\n//igxsm;
-        if ( $output ) {
+        if ($output) {
             $link =~
 s/<a\s /<a onmouseover="document.getElementById('ext_$ext_usercount').style.visibility = 'visible'" onmouseout="document.getElementById('ext_$ext_usercount').style.visibility = 'hidden'" /igxsm;
             $output =
@@ -477,8 +531,7 @@ qq~$link<div id="ext_$ext_usercount" class="ext_code" style="visibility:hidden; 
 
 # returns the output for the table header in memberlist
 sub ext_memberlist_tableheader {
-    my ( $output, $fieldname );
-
+    my $output = q{};
     foreach my $fieldname (@ext_prof_order) {
         %field = ext_get_field( ext_get_field_id($fieldname) );
 
@@ -491,6 +544,7 @@ sub ext_memberlist_tableheader {
             $output =~ s/\Q{yabb ext_fieldname}\E/$field{'name'}/xsm;
         }
     }
+    $output ||= q{};
 
     return $output;
 }
@@ -506,12 +560,21 @@ sub ext_memberlist_get_headercount {
 
 # returns the output for the table tds in memberlist
 sub ext_memberlist_tds {
+    ($pusername) = @_;
     my (
-        $pusername, $usergroup, @ext_profile, $field,
-        $id,        $output,    $access,      @users,
-        $user,      @groups,    $group,       $fieldname,
-        @options,   $count,     $color,       $value
-    ) = ( shift, ${ $uid . $username }{'position'} );
+        $usergroup, @ext_profile, $field, $id,     $output,
+        $access,    @users,       $user,  @groups, $group,
+        $fieldname, @options,     $count, $color,  $value
+    );
+    {
+        no strict qw(refs);
+        (
+            $pusername, $usergroup, @ext_profile, $field,
+            $id,        $output,    $access,      @users,
+            $user,      @groups,    $group,       $fieldname,
+            @options,   $count,     $color,       $value
+        ) = ( shift, ${ $uid . $username }{'position'} );
+    }
 
     $count = 0;
     foreach my $fieldname (@ext_prof_order) {
@@ -526,16 +589,16 @@ sub ext_memberlist_tds {
         {
             $color = $count % 2 == 1 ? 'windowbg' : 'windowbg2';
 
-            $td_attributs = qq~class="$color"~;
+            my $td_attributs = qq~class="$color"~;
 
             #}
             if ( $field{'type'} eq 'email' ) {
-                if ( $value ) {
-                    $value = enc_eMail( $img_txt{'69'}, $value, q{}, q{} );
+                if ($value) {
+                    $value = enc_email( $img_txt{'69'}, $value, q{}, q{} );
                 }
             }
             elsif ( $field{'type'} eq 'url' ) {
-                if ( $value ) {
+                if ($value) {
                     $value = qq~<a href="$value" target="_blank">$value</a>~;
                 }
             }
@@ -551,14 +614,15 @@ sub ext_memberlist_tds {
 
 # returns the edit mask of a field (used on registration and edit profile page)
 sub ext_gen_editfield {
+    my ( $id, $psername ) = @_;
     my (
-        $id,              $pusername,  @ext_profile, $output,
-        $field,           @options,    $selected,    $count,
-        $required_prefix, $dayormonth, $dayormonthd, $dayormonthm,
-        $value,           $template1,  $template2
+        @ext_profile, $output,      $field,           @options,
+        $selected,    $count,       $required_prefix, $dayormonth,
+        $dayormonthd, $dayormonthm, $value,           $template1,
+        $template2
     ) = ( shift, shift );
 
-    LoadLanguage('Profile');
+    load_language('Profile');
     if ( $action eq 'register' ) {
         get_template('Register');
     }
@@ -569,11 +633,11 @@ sub ext_gen_editfield {
     $field = ext_get_field($id);
 
     # if username is omitted, we'll generate the code for the registration page
-    if ( $pusername ) {
-        $value = ext_get( $pusername, $field{'name'}, 1 );
+    if ($psername) {
+        $value = ext_get( $psername, $field{'name'}, 1 );
     }
 
-    FromHTML( $field{'comment'} );
+    from_html( $field{'comment'} );
 
     $template1 = $ext_template1;
     $template1 =~ s/\Q{yabb fieldname}\E/$field{'name'}/xsm;
@@ -608,7 +672,7 @@ sub ext_gen_editfield {
               . length( $options[0] )
               . q~" name="ext_~
               . $id
-              . qq~_msgCL" readonly="readonly" disabled="disabled"$ext_msgCL /></span>
+              . qq~_msgCL" readonly="readonly" disabled="disabled$ext_msg_cl /></span>
     <script type="text/javascript">
     var ext_~ . $id . q~_supportsKeys = false;
     function ext_~ . $id . q~_tick() {
@@ -642,9 +706,9 @@ sub ext_gen_editfield {
         }
         else { $field{'options'} = q{}; }
         if   ( $options[1] ) { $options[1] = qq~ rows="$options[1]"~; }
-        else                        { $options[1] = q~ rows="4"~; }
+        else                 { $options[1] = q~ rows="4"~; }
         if   ( $options[2] ) { $options[2] = qq~ cols="$options[2]"~; }
-        else                        { $options[2] = q~ cols="50"~; }
+        else                 { $options[2] = q~ cols="50"~; }
         $value ||= q{};
         $value =~ s/<br.*?>/\n/gxsm;
         $output .=
@@ -660,20 +724,21 @@ sub ext_gen_editfield {
         if ( !$value || $value > $#options ) { $ext_profile[$id] = 0; }
         $count = 0;
         foreach (@options) {
-            if   ( $value && $count == $value ) { $selected = ' selected="selected"'; }
-            else                      { $selected = q{}; }
+            if ( $value && $count == $value ) {
+                $selected = ' selected="selected"';
+            }
+            else { $selected = q{}; }
             $output .= qq~<option value="$count"$selected>$_</option>\n~;
             $count++;
         }
         $output .= q~</select>~ . $template2;
-
     }
     elsif ( $field{'type'} eq 'radiobuttons' ) {
         $output .= $template1;
         @options = split /\^/xsm, $field{'options'};
         if ( $value && $value > $#options ) { $value = 0; }
         if ( !$field{'radiounselect'} && !$value ) { $value = 0; }
-        foreach my $i (1 .. $#options) {
+        foreach my $i ( 1 .. $#options ) {
             if ( $value && $i == $value ) {
                 $selected = qq~ id="ext_$id" checked="checked"~;
             }
@@ -682,7 +747,6 @@ sub ext_gen_editfield {
 qq~<input type="radio" name="ext_$id" value="$i"$selected />$options[$i]\n~;
         }
         $output .= $template2;
-
     }
     elsif ( $field{'type'} eq 'date' ) {
         $value ||= q{};
@@ -696,23 +760,26 @@ qq~<input type="radio" name="ext_$id" value="$i"$selected />$options[$i]\n~;
 qq~ $profile_txt{'564'} <input type="text" name="ext_$id\_month" id="ext_$id\_month" size="2" maxlength="2" value="$options[0]" />~;
         $dayormonthd =
 qq~ $profile_txt{'565'} <input type="text" name="ext_$id\_day" id="ext_$id\_day" size="2" maxlength="2" value="$options[1]" />~;
-        if (
-            (
-                   ${ $uid . $pusername }{'timeselect'} == 2
-                || ${ $uid . $pusername }{'timeselect'} == 3
-                || ${ $uid . $pusername }{'timeselect'} == 6
-            )
-            || (   $timeselected == 2
-                || $timeselected == 3
-                || $timeselected == 6 )
-          )
         {
-            $dayormonth = $dayormonthd . $dayormonthm;
-            $name_id    = "ext_$id\_day";
-        }
-        else {
-            $dayormonth = $dayormonthm . $dayormonthd;
-            $name_id    = "ext_$id\_month";
+            no strict qw(refs);
+            if (
+                (
+                       ${ $uid . $psername }{'timeselect'} == 2
+                    || ${ $uid . $psername }{'timeselect'} == 3
+                    || ${ $uid . $psername }{'timeselect'} == 6
+                )
+                || (   $timeselected == 2
+                    || $timeselected == 3
+                    || $timeselected == 6 )
+              )
+            {
+                $dayormonth = $dayormonthd . $dayormonthm;
+                $name_id    = "ext_$id\_day";
+            }
+            else {
+                $dayormonth = $dayormonthm . $dayormonthd;
+                $name_id    = "ext_$id\_month";
+            }
         }
         $output .=
             $template1
@@ -721,8 +788,8 @@ qq~ $profile_txt{'565'} <input type="text" name="ext_$id\_day" id="ext_$id\_day"
 
     }
     elsif ( $field{'type'} eq 'checkbox' ) {
-        if   ( $value ) { $value = ' checked="checked"'; }
-        else                 { $value = q{}; }
+        if   ($value) { $value = ' checked="checked"'; }
+        else          { $value = q{}; }
 
 # we have to use a little trick here to get a value from a checkbox if it has been unchecked by adding a hidden <input value=""> before it
         $output .=
@@ -770,13 +837,20 @@ qq~ $profile_txt{'565'} <input type="text" name="ext_$id\_day" id="ext_$id\_day"
 ## USAGE: $value = ext_editprofile("admin","required");
 sub ext_editprofile {
     my (
-        $pusername, $part,      $usergroup, $field,    $id,
-        $output,    $fieldname, @options,   $selected, $count
-    ) = ( shift, shift, ${ $uid . $username }{'position'} );
+        $part,      $usergroup, $field,    $id, $output,
+        $fieldname, @options,   $selected, $count,
+    );
+    {
+        no strict qw(refs);
+        (
+            $pusername, $part,      $usergroup, $field,    $id,
+            $output,    $fieldname, @options,   $selected, $count
+        ) = ( shift, shift, ${ $uid . $username }{'position'} );
+    }
 
     get_gmod();
     foreach my $fieldname (@ext_prof_order) {
-        $id = ext_get_field_id($fieldname);
+        $id    = ext_get_field_id($fieldname);
         %field = ext_get_field($id);
 
 # make sure the field is visible, the user allowed to edit the current field and only the requested fields are returned
@@ -814,31 +888,38 @@ sub ext_register {
     my ( $id, $output, $fieldname, @options );
 
     foreach my $fieldname (@ext_prof_order) {
-        $id = ext_get_field_id($fieldname);
+
+        $id    = ext_get_field_id($fieldname);
         %field = ext_get_field($id);
         if ( $field{'active'} == 1 && $field{'required_on_reg'} != 0 ) {
             $output .= ext_gen_editfield($id);
         }
     }
-
     return $output;
 }
 
 # returns if the submitted profile is valid, if not, return error messages
 sub ext_validate_submition {
     my (
-        $username,   $pusername, $usergroup, %newprofile,
-        @oldprofile, $output,    $key,       $value,
-        $id,         $field,     @options
-    ) = ( shift, shift, ${ $uid . $username }{'position'}, %FORM );
-    %newp = %newprofile;
+        $usergroup, %newprofile, @oldprofile, $output, $key,
+        $value,     $id,         $field,      @options
+    );
+    {
+        no strict qw(refs);
+        (
+            $username,   $pusername, $usergroup, %newprofile,
+            @oldprofile, $output,    $key,       $value,
+            $id,         $field,     @options
+        ) = ( shift, shift, ${ $uid . $username }{'position'}, %FORM );
+    }
+    my %newp = %newprofile;
     get_gmod();
 
     while ( ( $key, $value ) = each %newp ) {
 
         # only validate fields with prefix "ext_"
         if ( $key =~ /^ext_(\d+)/xsm ) {
-            $id = $1;
+            $id    = $1;
             %field = ext_get_field($id);
 
             if ( !$field{'name'} ) {
@@ -901,22 +982,25 @@ sub ext_validate_submition {
                       . $lang_ext{'not_numeric'}
                       . "<br />\n";
                 }
-                FromChars($value);
-                ToHTML($value);
-                ToChars($value);
+                from_chars($value);
+                to_html($value);
+                to_chars($value);
 
             }
             elsif ( $field{'type'} eq 'text_multi' ) {
                 @options = split /\^/xsm, $field{'options'};
-                if ( $options[0] && $options[0] > 0 && length($value) > $options[0] ) {
+                if (   $options[0]
+                    && $options[0] > 0
+                    && length($value) > $options[0] )
+                {
                     $output .=
                         $field{'name'} . q{: }
                       . $lang_ext{'too_long'}
                       . "<br />\n";
                 }
-                FromChars($value);
-                ToHTML($value);
-                ToChars($value);
+                from_chars($value);
+                to_html($value);
+                to_chars($value);
                 $value =~ s/\n/<br \/>/gxsm;
                 $value =~ s/\r//gxsm;
 
@@ -953,7 +1037,7 @@ sub ext_validate_submition {
                             $field{'name'} . q{: }
                           . $lang_ext{'not_numeric'}
                           . "<br />\n";
-                   }
+                    }
                     elsif ( $value < 1 ) {
                         $output .=
                             $field{'name'} . q{: }
@@ -1011,7 +1095,8 @@ sub ext_validate_submition {
                     $newprofile{ 'ext_' . $id . '_month' } . q{/}
                   . $newprofile{ 'ext_' . $id . '_day' } . q{/}
                   . $newprofile{ 'ext_' . $id . '_year' };
-                if ( $newprofile{ 'ext_' . $id } !~ /^\d\d\/\d\d\/\d\d\d\d$/xsm )
+                if (
+                    $newprofile{ 'ext_' . $id } !~ /^\d\d\/\d\d\/\d\d\d\d$/xsm )
                 {
                     $newprofile{ 'ext_' . $id } = q{};
                 }
@@ -1019,8 +1104,8 @@ sub ext_validate_submition {
 
             }
             elsif ( $field{'type'} eq 'checkbox' ) {
-                if   ( $value ) { $newprofile{ 'ext_' . $id } = 1; }
-                else                   { $newprofile{ 'ext_' . $id } = 0; }
+                if   ($value) { $newprofile{ 'ext_' . $id } = 1; }
+                else          { $newprofile{ 'ext_' . $id } = 0; }
                 next;
 
             }
@@ -1034,10 +1119,8 @@ sub ext_validate_submition {
                       . $lang_ext{'invalid_char'}
                       . "<br />\n";
                 }
-                if (
-                    ( $value =~ /$invalemaila/xsm )
-                    || ( $value !~ /$invalemailb/xsm )
-                  )
+                if (   ( $value =~ /$invalemaila/xsm )
+                    || ( $value !~ /$invalemailb/xsm ) )
                 {
                     $output .=
                         $field{'name'} . q{: }
@@ -1056,8 +1139,8 @@ sub ext_validate_submition {
             {
                 $value = substr $value, 0, $ext_max_image_length;
                 if ( $field{'options'} ) {
-                    @allowed_extensions = split /[ ]/xsm, $field{'options'};
-                    $match = 0;
+                    my @allowed_extensions = split /[ ]/xsm, $field{'options'};
+                    my $match = 0;
                     foreach my $extension (@allowed_extensions) {
                         if ( grep { /$extension$/ixsm } $value ) {
                             $match = 1;
@@ -1073,9 +1156,7 @@ sub ext_validate_submition {
                 }
 
                 # filename check from Profile.pm:
-                if ( $value !~
-                    m{\A[\w.#%\-:+?$&~,@/]+\Z}xsm )
-                {
+                if ( $value !~ m{\A[\w.#%\-:+?\$&~,@\/]+\Z}xsm ) {
                     $output .=
                         $field{'name'} . q{: }
                       . $lang_ext{'invalid_char'}
@@ -1162,7 +1243,7 @@ sub ext_validate_submition {
         elsif ( $field{'type'} eq 'spacer' ) {
             $newprofile{ 'ext_' . $id } = q{};
         }
-        elsif ($field{'type'} eq 'select'
+        elsif ( $field{'type'} eq 'select'
             && !$newprofile{ 'ext_' . $id } )
         {
             $newprofile{ 'ext_' . $id } = 0;
@@ -1177,13 +1258,16 @@ sub ext_validate_submition {
 
 # stores the submitted profile on disk
 sub ext_saveprofile {
-    my ( $pusername ) = @_;
+    ($pusername) = @_;
 
     # note: we expect the new profile to be complete and validated already
 
     foreach my $i (@ext_prof_fields) {
-        my ( undef, $count, undef ) = split /[|]/xsm, $i;    
-        ${ $uid . $pusername }{ "ext_$count" } = $FORM{ "ext_$count" };
+        my ( undef, $count, undef ) = split /[|]/xsm, $i;
+        {
+            no strict qw(refs);
+            ${ $uid . $pusername }{"ext_$count"} = $FORM{"ext_$count"};
+        }
     }
     return;
 }
@@ -1222,7 +1306,7 @@ sub ext_saveprofile {
 #
 #  required_on_reg can have value 0 (disabled), 1 (required on registration) and 2 (not req. but display on reg. page anyway)
 #  editable_by_user can have value 0 (will only show on the "admin edits" page), 1 ("edit profile" page), 2 ("contact information" page), 3 ("Options" page) and 4 ("PM Preferences" page)
-#  allowed_extensions is a space-seperated list of file extensions, example: "jpg jpeg gif bmp png"
+#  allowed_extensions is a slash-separated list of file extensions, example: "jpg/jpeg/gif/bmp/png"
 #  v_groups, p_groups, m_groups, pp_groups format: "Administrator" or "Moderator" or "Global Moderator" or NoPost{...} or Post{...}
 #
 # NOTE: use prefix "ext_" in sub-, variable- and formnames to prevent conflicts with other mods

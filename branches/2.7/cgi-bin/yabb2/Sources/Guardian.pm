@@ -12,33 +12,55 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-# use strict;
-# use warnings;
-no warnings qw(uninitialized once redefine);
+use strict;
+no strict qw(refs);
+use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-$guardianpmver  = 'YaBB 2.7.00 $Revision$';
-@guardianpmmods = ();
+our $guardianpmver  = 'YaBB 2.7.00 $Revision$';
+our @guardianpmmods = ();
+our $guardianpmmods = 0;
 if (@guardianpmmods) {
     $guardianpmmods = 1;
 }
 
-$not_from = qq~$webmaster_email~;
-$not_to   = qq~$webmaster_email~;
+our (
+    %croak,            %guardian_txt,            %director,
+    $webmaster_email,  $use_guardian,            $whitelist,
+    $username,         $disallow_proxy_on,       $iamadmin,
+    $iamgmod,          $disallow_proxy_notify,   $mbname,
+    %maintxt,          $uid,                     $date,
+    $use_htaccess,     $disallow_proxy_htaccess, $user_ip,
+    $referer_on,       $banned_referers,         $referer_notify,
+    $referer_htaccess, $harvester_on,            $banned_harvesters,
+    $harvester_notify, $request_on,              $harvester_htaccess,
+    $banned_requests,  $request_notify,          $request_htaccess,
+    $string_on,        $banned_strings,          $string_notify,
+    $string_htaccess,  $action,                  $union_on,
+    $union_notify,     $union_htaccess,          $clike_on,
+    $clike_notify,     $clike_htaccess,          $script_on,
+    %INFO,             $script_notify,           $script_htaccess,
+    %FORM,
+);
+
+my $not_from = $webmaster_email;
+my $not_to   = $webmaster_email;
+my ( $not_subject, $not_body, $abuse_time, );
 
 sub guard {
     if ( !$use_guardian ) { return; }
 
     # Proxy Blocker
-    $proxy0 = get_remote_addr();
-    $proxy1 = get_x_ip_client();
-    $proxy2 = get_x_forwarded();
-    $proxy3 = get_http_via();
+    my $proxy0 = get_remote_addr();
+    my $proxy1 = get_x_ip_client();
+    my $proxy2 = get_x_forwarded();
+    my $proxy3 = get_http_via();
 
-    @white_list = split /[|]/xsm, $whitelist;
+    my @white_list = split /[|]/xsm, $whitelist;
+    my $whitelisted = 0;
     for (@white_list) {
-        chomp $_;
+        chomp;
         if (
             (
                    $proxy0 =~ m/$_/xsm
@@ -60,14 +82,14 @@ sub guard {
         && ( $proxy1 ne 'empty' || $proxy2 ne 'empty' || $proxy3 ne 'empty' ) )
     {
         if ($disallow_proxy_notify) {
-            LoadLanguage('Guardian');
+            load_language('Guardian');
             $abuse_time = timeformat( $date, 1, 'rfc', 1 );
             $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'}~;
             $not_body =
 qq~$guardian_txt{'proxy_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
             $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
             $not_body .=
 qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (HTTP_X_FORWARDED_FOR)->$proxy2, (HTTP_VIA)->$proxy3\n~;
             if (   $use_htaccess
@@ -94,7 +116,8 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
     }
 
     # Basic Value Setup
-    $remote = get_ip();
+    my $remote = get_ip();
+    my (@remotes);
     if ( index $remote, q{, } ) {
         @remotes = split /,\s*/xsm, $remote;
         if (   $remotes[0] ne 'unknown'
@@ -108,16 +131,16 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
             $remote = $remotes[1];
         }
     }
-    $querystring = get_query_string();
+    my $querystring = get_query_string();
 
     # Check for Referer
     if ($referer_on) {
-        @refererlist = split /[|]/xsm, lc $banned_referers;
-        $streferer = lc get_referer();
+        my @refererlist = split /[|]/xsm, lc $banned_referers;
+        my $streferer = lc get_referer();
         for (@refererlist) {
-            chomp $_;
+            chomp;
             if ( $streferer =~ m/$_/xsm && $_ ne q{} ) {
-                LoadLanguage('Guardian');
+                load_language('Guardian');
                 $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                 if ($referer_notify) {
                     $not_subject =
@@ -125,7 +148,7 @@ qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'referer_abuse'} $guardian_txt
                     $not_body =
 qq~$guardian_txt{'referer_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                     $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                     $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                     if (   $use_htaccess
                         && $referer_htaccess
@@ -157,20 +180,20 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
 
     # Check for Harvester
     if ($harvester_on) {
-        @harvesterlist = split /[|]/xsm, lc $banned_harvesters;
-        $agent = lc get_user_agent();
+        my @harvesterlist = split /[|]/xsm, lc $banned_harvesters;
+        my $agent = lc get_user_agent();
         for (@harvesterlist) {
-            chomp $_;
+            chomp;
             if ( $agent =~ m/$_/xsm && $_ ne q{} ) {
                 if ($harvester_notify) {
-                    LoadLanguage('Guardian');
+                    load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'harvester_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
 qq~$guardian_txt{'harvester_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                     $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                     $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                     if (   $use_htaccess
                         && $harvester_htaccess
@@ -202,20 +225,20 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
 
     # Check for Request
     if ($request_on) {
-        @requestlist = split /[|]/xsm, lc $banned_requests;
-        $method = lc get_request_method();
+        my @requestlist = split /[|]/xsm, lc $banned_requests;
+        my $method = lc get_request_method();
         for (@requestlist) {
-            chomp $_;
+            chomp;
             if ( $method =~ m/$_/xsm && $_ ne q{} ) {
                 if ($request_notify) {
-                    LoadLanguage('Guardian');
+                    load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'request_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
 qq~$guardian_txt{'request_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                     $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                     $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                     if (   $use_htaccess
                         && $request_htaccess
@@ -248,11 +271,10 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
     # Check for Strings
     if ($string_on) {
         require Sources::SubList;
-        my ( $temp_query, $testkey );
-        $temp_query = lc $querystring;
-        @stringlist = split /[|]/xsm, lc $banned_strings;
+        my $temp_query = lc $querystring;
+        my @stringlist = split /[|]/xsm, lc $banned_strings;
         for (@stringlist) {
-            chomp $_;
+            chomp;
             for my $testkey ( keys %director )
             { ## strip off all existing command strings from the temporary query ##
                 chomp $testkey;
@@ -260,14 +282,14 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             }
             if ( $temp_query =~ m/$_/xsm && $_ ne q{} ) {
                 if ($string_notify) {
-                    LoadLanguage('Guardian');
+                    load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'string_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
 qq~$guardian_txt{'string_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                     $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                     $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                     if (   $use_htaccess
                         && $string_htaccess
@@ -305,14 +327,14 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
             || $querystring =~ m/[*]\/union\/[*]/xsm )
         {
             if ($union_notify) {
-                LoadLanguage('Guardian');
+                load_language('Guardian');
                 $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                 $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'union_abuse'} $guardian_txt{'abuse'}~;
                 $not_body =
 qq~$guardian_txt{'union_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                 $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                 $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                 if (   $use_htaccess
                     && $union_htaccess
@@ -340,14 +362,14 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
     if ($clike_on) {
         if ( $querystring =~ m/\/[*]/xsm ) {
             if ($clike_notify) {
-                LoadLanguage('Guardian');
+                load_language('Guardian');
                 $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                 $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'clike_abuse'} $guardian_txt{'abuse'}~;
                 $not_body =
 qq~$guardian_txt{'clike_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                 $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                 $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                 if (   $use_htaccess
                     && $clike_htaccess
@@ -373,7 +395,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
 
     # Check for SCRIPTING attack
     if ($script_on) {
-        while ( ( $key, $secvalue ) = each %INFO ) {
+        while ( my ( $key, $secvalue ) = each %INFO ) {
             $secvalue = lc $secvalue;
             str_replace( '%3c', '<', $secvalue );
             str_replace( '%3e', '>', $secvalue );
@@ -388,14 +410,14 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 || ( $secvalue =~ m/\x22/xsm ) )
             {
                 if ($script_notify) {
-                    LoadLanguage('Guardian');
+                    load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'script_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
 qq~$guardian_txt{'script_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                     $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                     $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                     if (   $use_htaccess
                         && $script_htaccess
@@ -423,7 +445,8 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 fatal_error('script_reason');
             }
         }
-        while ( ( $key, $secvalue ) = each %FORM ) {
+        while ( my ( $key, $secvalue ) = each %FORM ) {
+            $secvalue ||= q{};
             $secvalue = lc $secvalue;
             if (    $key eq 'message'
                 and $action =~ /^(post|modify|imsend|eventcal)2$/xsm )
@@ -441,14 +464,14 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
                 || ( $secvalue =~ m/<[^>]style*\"?[^>]*>/xsm ) )
             {
                 if ($script_notify) {
-                    LoadLanguage('Guardian');
+                    load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                     $not_subject =
 qq~$guardian_txt{'main'}-($mbname): $guardian_txt{'script_abuse'} $guardian_txt{'abuse'}~;
                     $not_body =
 qq~$guardian_txt{'script_abuse'} $guardian_txt{'abuse'} $maintxt{'30'} $abuse_time\n\n~;
                     $not_body .=
-qq~$guardian_txt{'abuse_user'}: $username -> (${$uid.$username}{'realname'})\n~;
+qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})\n~;
                     $not_body .= qq~$guardian_txt{'abuse_ip'}: $user_ip\n~;
                     if (   $use_htaccess
                         && $script_htaccess
@@ -552,11 +575,11 @@ sub get_referer {
 }
 
 sub get_ip {
-    $client_ip   = get_client_ip();      ## HTTP_CLIENT_IP
-    $x_forwarded = get_x_forwarded();    ## HTTP_X_FORWARDED_FOR
-    $x_ip_client = get_x_ip_client();    ## X_IP_CLIENT
-    $http_via    = get_http_via();       ## HTTP_VIA
-    $remote_addr = get_remote_addr();    ## REMOTE_ADDR
+    my $client_ip   = get_client_ip();      ## HTTP_CLIENT_IP
+    my $x_forwarded = get_x_forwarded();    ## HTTP_X_FORWARDED_FOR
+    my $x_ip_client = get_x_ip_client();    ## X_IP_CLIENT
+    my $http_via    = get_http_via();       ## HTTP_VIA
+    my $remote_addr = get_remote_addr();    ## REMOTE_ADDR
     if (   $client_ip
         && $client_ip !~ m/empty/sm
         && $client_ip !~ m/unknown/sm )
@@ -646,29 +669,29 @@ sub str_replace {
 }
 
 sub update_htaccess {
-    my ( $action, $value ) = @_;
+    my ( $act, $value ) = @_;
     my ( $htheader, $htfooter, @denies, @htout );
-    if ( !$action ) { return 0; }
-    fopen( HTA, '.htaccess' );
-    my @htlines = <HTA>;
-    fclose(HTA);
+    if ( !$act ) { return 0; }
+    open my $HTA, '<', '.htaccess' or croak "$croak{'open'} .htaccess";
+    my @htlines = <$HTA>;
+    close $HTA or croak "$croak{'close'} .htaccess";
 
 # header to determine only who has access to the main script, not the admin script
     $htheader = q~<Files YaBB*>~;
     $htfooter = q~</Files>~;
-    $start    = 0;
-    for (@htlines) {
-        chomp $_;
-        if ( $_ eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $_ !~ m/\x23/xsm && $_ ne q{} ) {
-            push @htout, "$_\n";
+    my $start = 0;
+    for my $i (@htlines) {
+        chomp $i;
+        if ( $i eq $htheader ) { $start = 1; }
+        if ( $start == 0 && $i !~ m/\x23/xsm && $i ne q{} ) {
+            push @htout, "$i\n";
         }
-        if ( $_ eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $_ =~ s/Deny from //gsm ) {
-            push @denies, $_;
+        if ( $i eq $htfooter ) { $start = 0; }
+        if ( $start == 1 && $i =~ s/Deny from //gsm ) {
+            push @denies, $i;
         }
     }
-    if ( $use_htaccess && $action eq 'add' ) {
+    if ( $use_htaccess && $act eq 'add' ) {
         my $prhta =
           '# Last modified by The Guardian: ' . ctbtime( $date, 1 ) . " #\n\n";
         $prhta .= join q{}, @htout;
@@ -680,9 +703,9 @@ sub update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        fopen( HTA, '>.htaccess' );
-        print {HTA} $prhta or croak "$croak{'print'} HTA";
-        fclose(HTA);
+        open $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
+        print {$HTA} $prhta or croak "$croak{'print'} HTA";
+        close $HTA or croak "$croak{'close'} HTA";
     }
     return;
 }

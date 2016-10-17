@@ -18,7 +18,7 @@ if (@defaultmessageindexmods) {
 }
 if ( $action eq 'detailedversion' ) { return 1; }
 
-LoadLanguage('BoardIndex');
+load_language('BoardIndex');
 
 # When thread tools is turned off, these two lists will be combined to display the buttons in the order shown
 # When thread tools is on $outside_threadtools will show buttons normally, while the handle list will show in the thread tools' dropdown
@@ -31,7 +31,7 @@ $my_ttsep = $menusep;
 
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
-if($useThreadtools == 1) {
+if($usethread_tools == 1) {
     $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
     $threadhandelstyle2 = qq~ class="post_tools center" style="width:10em"~;
 }
@@ -39,7 +39,7 @@ else {
     $threadhandelstyle = qq~ class="right"~;
     $threadhandelstyle2 = qq~ class="right"~;
 }
-$bdpicExt = 'png';
+$bdpic_ext = 'png';
 $brdpicwidth = ($max_brd_img_width || 50) + 20;
 $hoveron = 'tpon.gif';
 $hoveroff = 'tpoff.gif';
@@ -47,7 +47,7 @@ $brd_notify_img = 'notify.gif';
 $actionlock = 'actionslock.png';
 
 if (!$messagelist) {
-    if (!$ShowBDescrip && $action ne 'favorites') {
+    if (!$show_brd_descrip && $action ne 'favorites') {
         $messageindex_template .= qq~
         <!-- Board Moderators start -->
             <div class="navbarcontainer small">{yabb moderators}</div>
@@ -129,7 +129,7 @@ $messageindex_template .= qq~
                     <td class="center" style="width:8%" colspan="2">{yabb topicpreview}</td>
                     <td style="width:42%"><span style="white-space: nowrap;">{yabb sortsubject} / {yabb sortstarter}</span></td>
                     <td class="center" style="width:10%"><span style="white-space: nowrap;">{yabb sortanswer}</span></td>
-                    <td class="center" style="width:10%">$messageindex_txt{'301'}</td>
+                    <td class="center" style="width:10%">{yabb messageindex_txt301}</td>
                     <td class="center" style="width:24%"><span style="white-space: nowrap;">{yabb sortlastpostim}</span></td>
                     {yabb admin column}
                 </tr>
@@ -220,13 +220,13 @@ $admincolumn = qq~<td class="center" style="white-space: nowrap">{yabb admin}</t
 # Sticky or global announcements header    #
 
 $stickyheader = qq~<tr>
-                    <td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'1'}</td>
+                    <td colspan="{yabb colspan}" class="catbg">&nbsp;{yabb messageindex_stickygrp_1}</td>
                 </tr>~;
 
 # Non sticky or global announcements header#
 
 $nonstickyheader = qq~<tr>
-                    <td colspan="{yabb colspan}" class="catbg">&nbsp;$messageindex_stickygrp{'2'}</td>
+                    <td colspan="{yabb colspan}" class="catbg">&nbsp;{yabb messageindex_stickygrp_2}</td>
                 </tr>~;
 
 # Thread bar                               #
@@ -240,7 +240,7 @@ $threadbar = qq~<tr class="{yabb altthdcolor}">
                             {yabb new}
                             {yabb poll}
                             {yabb subjectlink}
-                            <br /><span class="small">$messageindex_txt{'527'} {yabb starttime} $messageindex_txt{'526'} {yabb starter}{yabb pages}<br />{yabb permalink}</span>
+                            <br /><span class="small">{yabb messageindex_527} {yabb starttime} {yabb messageindex_526} {yabb starter}{yabb pages}<br />{yabb permalink}</span>
                         </div>
                         <div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
                     </td>
@@ -249,11 +249,11 @@ $threadbar = qq~<tr class="{yabb altthdcolor}">
                     <td>
                         <span class="small">
                         {yabb lastpostlink}<br />
-                        <b>$messageindex_txt{'525'}:</b> {yabb lastposter}</span></td>
+                        <b>{yabb messageindex_525}:</b> {yabb lastposter}</span></td>
                         {yabb admin column}
                 </tr>~;
 
-$threadbarMoved = qq~<tr class="{yabb altthdcolor}">
+$threadbarmoved = q~<tr class="{yabb altthdcolor}">
                     <td class="center">{yabb threadpic}</td>
                     <td class="center">{yabb icon}</td>
                     <td colspan="4">
@@ -266,7 +266,7 @@ $threadbarMoved = qq~<tr class="{yabb altthdcolor}">
 
 $subfooterbar = qq~<tr>
                     <td class="titlebg right" colspan="6">
-                        <span class="small">{yabb admin selector} <label for="checkall">$messageindex_txt{'737'}</label></span>
+                        <span class="small">{yabb admin selector} <label for="checkall">{yabb messageindex_txt_737}</label></span>
                     </td>
                     <td class="titlebg center" style="white-space: nowrap">
                         {yabb admin checkboxes}
@@ -274,7 +274,7 @@ $subfooterbar = qq~<tr>
                 </tr>~;
 
 $brd_tmptempbar = qq~<tr>
-                <td class="windowbg2 center" colspan="{yabb colspan}"><br />$messageindex_txt{'841'}<br /><br /></td>
+                <td class="windowbg2 center" colspan="{yabb colspan}"><br />{yabb messageindex_txt_841}<br /><br /></td>
             </tr>~;
 
 $msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread={yabb mnum}','_blank','width=818,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~;
@@ -323,7 +323,7 @@ $msg_listpages = qq~
 <html lang="$abbr_lang">
 <head>
     <meta charset="$yymycharset">
-<title>$messageindex_txt{'139'} $messageindex_txt{'18'}</title>
+<title>{yabb messageindex_139} {yabb messageindex_18}</title>
 <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 </head>
 <body style="min-width: 350px;">
@@ -333,11 +333,11 @@ $msg_listpages = qq~
         self.close();
     }
     </script>
-    <div class="tabtitle center" style="line-height:3em; vertical-align:bottom;">$messageindex_txt{'139'} $messageindex_txt{'18'}</div>
+    <div class="tabtitle center" style="line-height:3em; vertical-align:bottom;">{yabb messageindex_139} {yabb messageindex_18}</div>
     <div class="windowbg center" style="padding:4px 10px">
-                <p>&laquo; $messageindex_txt{'139'} {yabb pages} &raquo;</p>
+        <p>&laquo; {yabb messageindex_139} {yabb pages} &raquo;</p>
     </div>
-    <div class="catbg center padd_4px"><a href="javascript: window.close();">$messageindex_txt{'903'}</a></div>
+    <div class="catbg center padd_4px"><a href="javascript: window.close();">{yabb messageindex_903}</a></div>
 </body>
 </html>~;
 
@@ -357,10 +357,10 @@ $boardpassw = qq~
 </div>
 <div class="windowbg center padd_4px" style="width: 80%; margin:0 auto">
             <form action="$scripturl?action=checkboardpw" method="post" name="brdpass" onsubmit="return CheckPassField();">
-                <input type="hidden" name="pswviewnum" value="$viewnum" />
-                <input type="hidden" name="pswcurboard" value="$currentboard" />
+                <input type="hidden" name="pswviewnum" value="{yabb viewnum}" />
+                <input type="hidden" name="pswcurboard" value="{yabb currentboard}" />
                 <input type="password" name="boardpw" value="" size="25" />
-                <input type="submit" value="$maintxt{'900s'}" class="button" />
+                <input type="submit" value="{yabb maintxt900s}" class="button" />
             </form>
 </div>
 <script type="text/javascript">

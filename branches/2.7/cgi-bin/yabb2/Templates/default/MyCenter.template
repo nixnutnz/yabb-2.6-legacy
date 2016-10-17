@@ -21,20 +21,20 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 get_micon();
-$IM_callback = 'imcallback.gif';
-$IM_answered = 'answered.gif';
-$IM_callback2 = 'imcallback2.gif';
-$IM_callback3 = 'imcallback3.gif';
-$IM_imopen3 = 'imopen3.gif';
-$IM_usageempty = 'usageempty.gif';
-$IM_usage = 'usage.gif';
-$IM_usagebar ='usagebar.gif';
+$im_answered = 'answered.gif';
+$im_callback = 'imcallback.gif';
+$im_callback2 = 'imcallback2.gif';
+$im_callback3 = 'imcallback3.gif';
+$im_imopen3 = 'imopen3.gif';
+$im_usageempty = 'usageempty.gif';
+$im_usage = 'usage.gif';
+$im_usagebar ='usagebar.gif';
 $imstore = 'imstore.gif';
 $im_inbox = 'im_inbox.gif';
 $im_outbox ='im_outbox.gif';
-$IM_quote = 'quote.gif';
-$IM_code1 = 'code1.gif';
-$IM_imclose = 'imclose.gif';
+$im_quote = 'quote.gif';
+$im_code1 = 'code1.gif';
+$im_imclose = 'imclose.gif';
 $search = 'search.png';
 
 $imWinwidth_a = 500;
@@ -109,11 +109,13 @@ $myprofileblock = qq~
 
 $mypmmmenu_imsend = qq~<tr>
                 <td colspan="3"><span class="nav bold"><a href="$scripturl?action=imsend">$img{'im_send'}</a></span></td>
-            </tr><tr>~;
+            </tr>~;
+
 $mypmmmenu_imsend_low = qq~<tr>
                 <td colspan="3"><span class="nav">$inmes_txt{'im_low_postcount'}</span></td>
-            </tr><tr>~;
-$mypmmenu_inbox = qq~
+            </tr>~;
+
+$mypmmenu_inbox = qq~<tr>
                 <td class="windowbg2"><img src="$imagesdir/$im_inbox" alt="$inmes_txt{'inbox'}" title="$inmes_txt{'inbox'}" /></td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im">$inmes_txt{'inbox'}</a></span></td>
                 <td class="windowbg2"><span class="nav">{yabb username_PMmnum}{yabb inboxNewCount}</span></td>
@@ -131,20 +133,20 @@ $mypmmenu_gmbox = qq~<tr>
                 <td class="windowbg2"><span class="nav">{yabb GCount}{yabb inboxNewCount_gm}</span></td>
             </tr>~;
 
-$my_MCViewMenu = qq~
+$my_mc_viewmenu = qq~
         {yabb MCView_tab}
         <table>
             <tr>
                 {yabb MCViewMenu_mess}
                 <td style="width:{yabb tabWidth}" class="{yabb tabProfHighlighted} center" id="menu_prof"><a href="javascript:void(0);" onclick="changeToTab('prof'); return false;">{yabb mc_menus_profile}</a></td>
-                <td style="width:{yabb tabWidth}" class="{yabb tabNotifyHighlighted} center" id="menu_posts"><a href="javascript:void(0);" onclick="changeToTab('posts'); return false;">yabb mc_menus_posts}</a></td>
+                <td style="width:{yabb tabWidth}" class="{yabb tabNotifyHighlighted} center" id="menu_posts"><a href="javascript:void(0);" onclick="changeToTab('posts'); return false;">{yabb mc_menus_posts}</a></td>
             </tr>
         </table>
 ~;
 
-$my_MCViewMenu_mess =  qq~<td style="width:{yabb tabWidth}" class="{yabb tabPMHighlighted} center vtop" id="menu_pm"><a href="javascript:void(0);" onclick="changeToTab('pm'); return false;">{yabb mc_menus_messages}</a></td>~;
+$my_mc_viewmenu_mess =  qq~<td style="width:{yabb tabWidth}" class="{yabb tabPMHighlighted} center vtop" id="menu_pm"><a href="javascript:void(0);" onclick="changeToTab('pm'); return false;">{yabb mc_menus_messages}</a></td>~;
 
-$my_MCProfMenu = qq~
+$my_mc_profmenu = qq~
     <div id="cont_prof" style="display: {yabb display_prof}">
     <table id="prof" class="windowbg2 pad_4px">
         <tr>
@@ -173,11 +175,11 @@ $my_thislink_impref = qq~
         <span class="nav bold"><a href="$scripturl?{yabb thisLink_f}">$inmes_txt{'765'}</a></span>
         <br />~;
 
-$my_thisLink_admin = qq~
+$my_thislink_admin = qq~
             <span class="nav bold"><a href="$scripturl?{yabb thisLink_g}">$profile_txt{'820'}</a></span>
             <br />~;
 
-$my_MCPostsMenu = qq~
+$my_mc_postsmenu = qq~
     <div id="cont_posts" style="display: {yabb display_posts}">
     <table id="posts" class="windowbg2 center pad_4px">
         <tr>
@@ -192,7 +194,7 @@ $my_MCPostsMenu = qq~
     </div>
 ~;
 
-$my_MCPost_count = qq~
+$my_mc_postcount = qq~
         <br /><br />
         <form action="$scripturl?action=myusersrecentposts;username={yabb username}" method="post" style="display: inline;">
         <span class="small">$inmes_txt{'viewrecentposts'} <select name="viewscount" size="1">~;
@@ -200,7 +202,7 @@ $my_MCPost_count = qq~
 
 ## Right side ##
 ## Mini profile ##
-$my_MCContent = qq~
+$my_mc_content = qq~
         <table class="pad_4px cs_thin">
             <colgroup>
                 <col style="width:33%" />
@@ -232,7 +234,7 @@ $my_stealthstatus = qq~        <tr>
         </tr>~;
 
 
-$my_MCContent_PM = qq~
+$my_mc_content_pm = q~
         {yabb MCGlobalFormStart}
         <table class="pad_4px">
             {yabb imsend}
@@ -240,14 +242,14 @@ $my_MCContent_PM = qq~
         </form>~;
 
 ## IM Section  - left ##
-$my_MCPmMenu = qq~
+$my_mc_pmmenu = qq~
     <div id="cont_pm" style="display: {yabb display_pm}">
         <table id="pms" class="windowbg2 pad_2px">
             <colgroup>
                 <col style="width:15%" />
                 <col style="width:60%" />
                 <col style="width:25%" />
-            </colgroup>{yabb MCPmMenu_bm}
+            </colgroup>{yabb mypmmmenu}{yabb MCPmMenu_bm}
 {yabb mypmmenu_inbox}
 {yabb MCPmMenu_bmbox}
 {yabb MCPmMenu_gmbox}
@@ -278,20 +280,20 @@ $my_MCPmMenu = qq~
     </div>
 ~;
 
-$my_MCPmMenu_bm = qq~
+$my_mc_pmmenu_bm = qq~
             <tr>
                 <td colspan="3">
                     <span class="nav bold"><a href="$scripturl?action=imsend;bmess=yes">$img{'sendbmess'}</a></span>
                 </td>
             </tr>~;
 
-$my_MCPmMenuTemp = qq~<tr>
+$my_mc_pmmenu_temp = qq~<tr>
                 <td class="windowbg2" style="width:15%; padding-right:0">{yabb MCPmMenuTemp_chk}</td>
                 <td class="windowbg2 nav" style="width:60%">&nbsp; &nbsp;<b><a href="$scripturl?action=imstorage;viewfolder={yabb storefolderl}">{yabb storefolder}</a></b></td>
                 <td class="windowbg2"><span class="nav">{yabb foldercount}</span></td>
             </tr>~;
 
-$my_MCPmMenudeladd = qq~<tr>
+$my_mc_pmmenu_deladd = qq~<tr>
                 <td class="windowbg2" colspan="3">
                     <input type="submit" name="deladdfolder" id="deladdfolder" value="$inmes_txt{'delete'}" class="button" />
                     <input type="hidden" name="delfolders" id="delfolders" value="yes" />
@@ -376,7 +378,7 @@ $my_pmsearch_b = qq~
 
 ##IM right - main IM list ##
 
-$my_IMblock_top = q~
+$my_imblock_top = q~
 <table class="bordercolor cs_thin pad_3px" style="border-top:0; margin-top:-2px">
     <colgroup>
         <col style="width:65%" />
@@ -411,7 +413,7 @@ $my_uselegend = q~<tr>
         <td class="catbg" colspan="3"><span class="imgtitlebg">{yabb sorted_legend}</span></td>
     </tr>~;
 
-$my_IM_show = q~{yabb MCContent_BM}{yabb MCContent_from}{yabb MCContent_to_out}{yabb MCContent_to}</td>
+$my_im_show = q~{yabb MCContent_BM}{yabb MCContent_from}{yabb MCContent_to_out}{yabb MCContent_to}</td>
         <td class="{yabb class_PM_list}">{yabb mydate}</td>
     </tr><tr>
         <td class="{yabb class_PM_list}" style="height:21px" colspan="3">
@@ -421,18 +423,17 @@ $my_IM_show = q~{yabb MCContent_BM}{yabb MCContent_from}{yabb MCContent_to_out}{
         </td>
     </tr>~;
 
-
-$my_PMview_top = q~<tr>
+$my_pmview_top = q~<tr>
         <td class="catbg" style="padding:4px 4px 4px 7px;{yabb mytopdisp}" colspan="3">{yabb pageindex1}{yabb pageindexjs}</td>
     </tr>~;
 
-$my_PMview = qq~<tr>
+$my_pmview = qq~<tr>
         <td class="titlebg"><b>$inmes_txt{'70'}</b></td>
         <td class="titlebg"><b>{yabb senderinfo}</b></td>
         <td class="titlebg"><b><a href="$scripturl?action={yabb action}{yabb sbgpdate}{yabb vfolder}{yabb vbmess}">{yabb dateColhead}</a></b></td>
     </tr>~;
 
-$my_BM_mess = qq~{yabb MCContent_stk}{yabb MCContent_stk_i}{yabb MCContent_lgnd}<tr>
+$my_bm_mess = qq~{yabb MCContent_stk}{yabb MCContent_stk_i}{yabb MCContent_lgnd}<tr>
         <td class="{yabb class_PM_list}">{yabb BCnew}
         {yabb messageIcon}
         {yabb messIcon}<a href="$scripturl?action={yabb actString};caller={yabb callerid};id={yabb messageid}">{yabb msub}</a>
@@ -451,18 +452,18 @@ $my_immessage = q~
 
 ## Buddylist
 
-$my_buddiesCurrentStatus = qq~
+$my_buddies_currentstatus = qq~
     <table class="pad_2px cs_thin">
         <tr class="catbg">
             <td class="center">$profile_txt{'68a'}</td>
             <td class="center">$profile_txt{'68b'}</td>
-            <td class="center"><img src="$imagesdir/$IM_imclose" alt="$profile_txt{'69a'}" title="$profile_txt{'69a'}" /></td>
+            <td class="center"><img src="$imagesdir/$im_imclose" alt="$profile_txt{'69a'}" title="$profile_txt{'69a'}" /></td>
             <td class="center"><img src="$micon_bg{'email'}" alt="$profile_txt{'69'}" title="$profile_txt{'69'}" /></td>
             <td class="center"><img src="$micon_bg{'www'}" alt="$profile_txt{'96'}" title="$profile_txt{'96'}" /></td>
        </tr>{yabb buddiesCurrentStatus_a}
 </table>~;
 
-$my_buddiesCurrentStatus_a = qq~<tr class="{yabb css}">
+$my_buddies_currentstatus_a = qq~<tr class="{yabb css}">
             <td>{yabb usernamelink}</td>
             <td class="center">{yabb online}</td>
             <td class="center">{yabb buddypm}</td>
@@ -470,7 +471,7 @@ $my_buddiesCurrentStatus_a = qq~<tr class="{yabb css}">
             <td class="center">{yabb buddywww}</td>
         </tr>~;
 
-$my_IM_show2 = q~</td>
+$my_im_show2 = q~</td>
     </tr>~;
 
 1;

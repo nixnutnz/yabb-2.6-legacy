@@ -1,11 +1,11 @@
-$englishadmin_admin07_mischelpver = 'YaBB 2.7.00 $Revision: 1808 $';
+$englishadmin_admin07_mischelpver = 'YaBB 2.7.00 $Revision: 1818 $';
 if ( $action eq 'detailedversion' ) { return 1; }
-$SectionName = "Other_Settings";
+$section_name = "Other_Settings";
 
 ### Section 1
 #############################################
-$SectionSub1 = "Event_Calendar";
-$SectionBody1 = q~<p>YaBB 2.6 boasts the addition of an Event Calendar where members and staff can post holidays, special events, and meetings. In order to set up the Event Calendar, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Event Calendar&#8221;.</p>
+$section_sub1 = "Event_Calendar";
+$section_body1 = q~<p>YaBB 2.6 boasts the addition of an Event Calendar where members and staff can post holidays, special events, and meetings. In order to set up the Event Calendar, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Event Calendar&#8221;.</p>
 <ul>
     <li><b>Standard Settings</b>
         <br />Here the Admin can choose who (if anyone) sees the Event Calendar, who (if anyone) sees the Event Calendar link in the tabbed menu, whether or not member birthdays are displayed and other basic options.
@@ -35,8 +35,8 @@ $SectionBody1 = q~<p>YaBB 2.6 boasts the addition of an Event Calendar where mem
 
 ### Section 2
 #############################################
-$SectionSub2 = "Smiley_Options";
-$SectionBody2 = q~<p>In order to set up the Smiley Options, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Smiley Options&#8221;.</p>
+$section_sub2 = "Smiley_Options";
+$section_body2 = q~<p>In order to set up the Smiley Options, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Smiley Options&#8221;.</p>
 <ul>
     <li><b>Smiley Options</b>
         <br />This section allows the Admin to manage the smilies (emoticons) for use in posts, personal messages, and calendar events.
@@ -63,8 +63,8 @@ $SectionBody2 = q~<p>In order to set up the Smiley Options, you must be logged i
 #############################################
 ### Section 3
 #############################################
-$SectionSub3 = "Social_Bookmarks";
-$SectionBody3 = q~<p>Social Bookmarks allows members and visitors to easily share items on your forum by sharing Bookmarked items in their social media pages.</p>
+$section_sub3 = "Social_Bookmarks";
+$section_body3 = q~<p>Social Bookmarks allows members and visitors to easily share items on your forum by sharing Bookmarked items in their social media pages.</p>
 <p>In order to edit the Social Bookmarks Settings, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;General Controls&#8221;. Click on &#8220;Social Bookmarks&#8221;.</p>
 <ul>
     <li><b>Social Bookmarks Settings</b>
@@ -88,8 +88,8 @@ $SectionBody3 = q~<p>Social Bookmarks allows members and visitors to easily shar
 #############################################
 ### Section 4
 #############################################
-$SectionSub4 = "YaBMod";
-$SectionBody4 = q~<p>YaBMod allows admins to upload and install YaBMod compatible mods from within YaBB.</p>
+$section_sub4 = "YaBMod";
+$section_body4 = q~<p>YaBMod allows admins to upload and install YaBMod compatible mods from within YaBB.</p>
 <p>In order to add a Mod, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;BoardMod Mods&#8221;. Click on &#8220;YaBMods Admin Center&#8221;.</p>
 <ul>
     <li><strong>Mod List</strong>

@@ -64,6 +64,7 @@ $abbr_lang = 'en-us';
 '41' => q~(You need to~,
 '42' => q~or~,
 '42a' => q~to view media files and links)~,
+'noaudio' => q~Your browser does not support the audio element.~,
 '60' => q~Online~,
 '61' => q~Offline~,
 '62' => q~Topic Tools~,
@@ -187,7 +188,6 @@ $abbr_lang = 'en-us';
 'male' => q~Male~,
 '471' => q~message~,
 '616' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
-'616a' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
 '617' => q~Remember, last Backup was done on:~,
 '773' => qq~IP not found, please change \$user_ip in \$lang/Main.lng~,
 '805' => q~You~,
@@ -306,8 +306,14 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 'print' => q~Cannot print~,
 );
 
+%mailer = (
+'smtp' => qq~Unable to create Net::SMTP object. Server: '$smtp_server'\n\n~,
+'smtps1' => qq~Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n~,
+'smtps2' => q~Could not authenticate SMTPS credentials. Please provide credientials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
+);
+
 timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$YaBBversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$yabbversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
 
 $load_txt{'maint'} = 'Maintenance';
 $load_txt{'616c'} = q~This forum is in Maintenance Mode!~;
