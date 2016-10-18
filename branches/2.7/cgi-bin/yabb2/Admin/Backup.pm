@@ -43,7 +43,9 @@ our (
     $yymycharset,        %admin_img,     $rememberbackup,
     $bkmax_process_time, %admin_txt,     $boardurl,
     $username,           $uid,           $lastbackup,
-    $yysetlocation,      $date
+    $yysetlocation,      $date,          $mailtype,
+    $smtp_server,        $helloserv,     $authuser,
+    $authpass,
 );
 load_language('Admin');
 load_language('Backup');
@@ -849,6 +851,7 @@ sub deletebackup2 {
 }
 
 sub emailbackup {
+    no strict qw(refs);
 
     # Unfortunately, we cannot use &sendmail() for this.
     # So, we will load MIME::Lite and try that, as it should work.
@@ -872,17 +875,12 @@ sub emailbackup {
                 $filesize = int( $filesize / 1024 ) . ' MB';
             }    # Measure it in megabytes
             else { $filesize .= ' KB'; }    # Label it
-            my $backemail = q{};
-            {
-                no strict qw(refs);
-                $backemail = ${ $uid . $username }{'email'};
-            }
 
             $yymain = qq~
 $backup_txt{54}?<br />
 $backup_txt{55} <b>$filesize</b>!<br />
 <br />
-<a href="$adminurl?action=emailbackup;backupid=$INFO{'backupid'};passwarning=1">$backup_txt{56} <i>$backemail</i></a><br />
+<a href="$adminurl?action=emailbackup;backupid=$INFO{'backupid'};passwarning=1">$backup_txt{56} <i>${$uid.$username}{'email'}</i></a><br />
 <a href="$adminurl?action=emailbackup;backupid=$INFO{'backupid'};linkmail=1">$backup_txt{57}</a><br />
 <a href="$adminurl?action=downloadbackup;backupid=$INFO{'backupid'}">$backup_txt{58}</a><br />
 <a href="$adminurl?action=backup">$backup_txt{59}</a>
@@ -891,19 +889,14 @@ $backup_txt{55} <b>$filesize</b>!<br />
         }
 
         $mainmessage = $backup_txt{'mailmessage1'};
-        {
-            no strict qw(refs);
-            $mainmessage =~ s/USERNAME/${$uid.$username}{'realname'}/gxsm;
-        }
+        $mainmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/gsm;
         $mainmessage =~
-          s/LINK/$adminurl?action=downloadbackup;backupid=$filename/gxsm;
-        $mainmessage =~ s/FILENAME/$filename/gxsm;
+          s/LINK/$adminurl?action=downloadbackup;backupid=$filename/gsm;
+        $mainmessage =~ s/FILENAME/$filename/gsm;
 
-        if (
-            eval {
-                q~
+        eval q^
             my $msg = MIME::Lite->new(
-                To      => $backemail,
+                To      => ${ $uid . $username }{'email'},
                 From    => $backup_txt{'mailfrom'},
                 Subject => $backup_txt{'mailsubject'},
                 Type    => 'multipart/mixed'
@@ -926,12 +919,7 @@ $backup_txt{55} <b>$filesize</b>!<br />
                 push(@arg, AuthPass => "$authpass") if $authpass;
                 $msg->send('smtp', @arg);
             }
-        ~;
-            }
-          )
-        {
-        $yysetlocation = "$adminurl?action=backup&mailinfo=1";
-        }
+        ^;
     }
 
     if ( $EVAL_ERROR || $INFO{'linkmail'} ) {
@@ -946,13 +934,9 @@ $backup_txt{55} <b>$filesize</b>!<br />
         $mainmessage =~ s/SYSTEMINFO/$EVAL_ERROR/sm;
 
         require Sources::Mailer;
-        my $backemail = q{};
-        {
-            no strict qw(refs);
-            $backemail = ${ $uid . $username }{'email'};
-        }
         sendmail(
-            $backemail,   $backup_txt{'mailsubject'},
+            ${ $uid . $username }{'email'},
+            $backup_txt{'mailsubject'},
             $mainmessage, $backup_txt{'mailfrom'}
         );
 
