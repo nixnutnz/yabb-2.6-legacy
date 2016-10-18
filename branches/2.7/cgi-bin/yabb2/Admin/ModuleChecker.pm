@@ -35,6 +35,7 @@ my $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
+our ($dont_continue_setup); # Setup.pl;
 
 my @modules =
   qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
@@ -44,7 +45,7 @@ my $checker_output = q{};
 my ($i);
 
 for my $module (@modules) {
-    my $dont_continue_setup = q{};
+    $dont_continue_setup = q{};
     if ( eval { load($module); 1 } ) {
         if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {
             my $myversion = $module->VERSION || '<NO $VERSION>';

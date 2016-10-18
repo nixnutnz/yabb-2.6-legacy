@@ -105,14 +105,14 @@ sub section_decide {
                     fatal_error( 'no_access', 'HelpCentre->section_decide' );
                 }
                 ${ $INFO{'section'} . '_class' } = 'selected-bg';
-                $help_area = 'admin';
+                $help_area = 'Admin';
             }
             elsif ( $INFO{'section'} eq 'global_mod' ) {
                 if ( $usehelp_perms && !$iamgmod && !$iamadmin ) {
                     fatal_error( 'no_access', 'HelpCentre->section_decide' );
                 }
                 ${ $INFO{'section'} . '_class' } = 'selected-bg';
-                $help_area = 'gmod';
+                $help_area = 'Gmod';
             }
             elsif ( $INFO{'section'} eq 'moderator' ) {
                 if (   $usehelp_perms
@@ -124,17 +124,17 @@ sub section_decide {
                     fatal_error( 'no_access', 'HelpCentre->section_decide' );
                 }
                 ${ $INFO{'section'} . '_class' } = 'selected-bg';
-                $help_area = 'moderator';
+                $help_area = 'Moderator';
             }
             else {
                 $userclass = 'selected-bg';
-                $help_area = 'user';
+                $help_area = 'User';
             }
         }
     }
     else {
         $userclass = 'selected-bg';
-        $help_area = 'user';
+        $help_area = 'User';
     }
     return;
 }
@@ -209,15 +209,14 @@ sub get_helpfiles {
     if ( !$helptemplate_loaded ) {
         get_template('HelpCentre');
     }
-
     section_decide();
 
-    # This determines if the order file is present and if it isn't
+    # This determines if the order file is present and if it is not
     # It creates a new one, in default alphabetical order
     my (@helporderlist);
     {
         no strict qw(refs);
-        @helporderlist = @{$help_area};
+        @helporderlist = @{lc $help_area};
     }
     chomp @helporderlist;
 

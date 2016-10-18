@@ -53,7 +53,8 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
         redirectexit();
     }
     our ($section_name);
-    require "$helpfile/$help_language/$help_area/$page.help";
+    my $hlp_area = ucfirst $help_area;
+    require "$helpfile/$help_language/$hlp_area/$page.help";
     my $txtrevision = lc $help_language . $help_area . '_' . $page . 'helpver';
     my $mytxtrevision = q{};
     {
@@ -92,7 +93,7 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
     my $displang = $lngs{$help_language};
     $yymain .= qq~
 <form name="help_update" action="$adminurl?action=helpediting2" method="post" accept-charset="$yymycharset">
-    <input type="hidden" name="area" value="$help_area" />
+    <input type="hidden" name="area" value="$hlp_area" />
     <input type="hidden" name="page" value="$page" />
     <input type="hidden" name="help_language" value="$help_language" />
     <input type="hidden" name="txtrevision" value="$txtrevision" />
@@ -165,9 +166,9 @@ qq~\$$txtrevision = '$mytxtrevision';\nif ( \$action eq 'detailedversion' ) { re
         $aa++;
     }
     $prhelp .= qq~1;\n~;
-
+    $area = ucfirst $area;
     open my $HELPORDER, '>', "$helpfile/$help_language/$area/$page.help"
-      or croak "$croak{'open'} HELPFILE";
+      or croak "$croak{'open'} $helpfile/$help_language/$area/$page.help";
     print {$HELPORDER} $prhelp or croak "$croak{'print'} HELPORDER";
     close $HELPORDER or croak "$croak{'close'} HELPFILE";
 
@@ -179,7 +180,7 @@ qq~\$$txtrevision = '$mytxtrevision';\nif ( \$action eq 'detailedversion' ) { re
 }
 
 sub helpset2 {
-    $usehelp_perms = $FORM{'UseHelp_Perms'} ? 1 : 0;
+    $usehelp_perms = $FORM{'usehelp_perms'} ? 1 : 0;
 
     require Admin::NewSettings;
     save_settings_to('Settings.pm');
@@ -203,7 +204,7 @@ qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: i
                     </td>
                 </tr><tr>
                     <td class="windowbg2">
-                        <label for="usehelp_perms">$helptxt{'9'}</label> <input type="checkbox" name="usehelp_perms" id="usehelp_perms" value="1"${ischecked($usehelp_perms)}perms_check />
+                        <label for="usehelp_perms">$helptxt{'9'}</label> <input type="checkbox" name="usehelp_perms" id="usehelp_perms" value="1"${ischecked($usehelp_perms)} />
                     </td>
                 </tr><tr>
                     <td class="catbg center">
@@ -290,7 +291,7 @@ sub set_orderfile {
     }
     open my $HELPORDER, '>', "$helpfile/$help_language/HelpOrder.pm"
       or croak(
-"couldn't write order file - check permissions on $helpfile/$help_language"
+"could not write order file - check permissions on $helpfile/$help_language"
       );
     print {$HELPORDER} $prhlp or croak "$croak{'print'} HELPFILE";
     close $HELPORDER or croak "$croak{'close'} HELPORDER";
