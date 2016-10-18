@@ -55,7 +55,7 @@ Admin/ModList.pm
 </search for>
 
 <add before>
-    $apache24_a = q~Apache 2.4 fix for YaBB 2.7.00|Dandello|This mod updates code in Guardian that is deprecated in Apache 2.4.|0.2 alpha|09/01/15~;
+    my $apache24_a = q~Apache 2.4 fix for YaBB 2.7.00|Dandello|This mod updates code in Guardian that is deprecated in Apache 2.4.|0.2 alpha|09/01/15~;
     push @installed_mods, $apache24_a;
 </add before>
 
