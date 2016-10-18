@@ -610,6 +610,7 @@ $abbr_lang = 'en-us';
 'error_spd'=> q~ErrorLog speed banning. Minimum number of seconds between multiple error log entries from the same IP address. <br /><span class="small">Violators are banned through .htaccess if allowed. Set to '0' to disable</span>~,
 'profile_int'=> q~Redirect guest clicks on member name links to a 'Register or Login' page. Uncheck to disable member name links for guests.~,
 'modded' => q~(Modded)~,
+'nochng' => q~No changes~,
 'chngfle' => q~Changed on~,
 'ban_res' => q~You may add a short reason for the ban by using a '|' symbol to separate the IP address, e-mail address, or user ID and the reason for banning.~,
 'p_ban' => q~Permanent~,
