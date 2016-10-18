@@ -93,8 +93,9 @@ require Admin::ManageBoards;
 # Needed for attachment settings
 
 # Setting for gzip, if it is available
+## gzip needs magic open ##
 my $compressgzip =
-  ( -e "$backupprogbin/gzip" && open my $GZIP, q{|-}, 'gzip -f' )
+  ( -e "$backupprogbin/gzip" && open GZIP, '| gzip -f' )
   ? qq~\n  <option value="1" ${isselected($gzcomp == 1)}>$gztxt{'4'}</option>~
   : q{};
 
