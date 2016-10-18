@@ -46,7 +46,7 @@ my $admin_images = "$yyhtml_root/Templates/Admin/default";
 my (
     $searchfound, @modsearchstr, @modaddstr, $modeditfilename,
     $editdir,     @modeditfile,  $addoffset, $k,
-    $files_name,  @recallfiles
+    $files_name,  @recallfiles,  %modinstall,
 );
 
 load_language('Admin');
@@ -73,7 +73,6 @@ sub yabm_modlist {
     }
 
     #Get install date of Mods
-    get_mod_data('modinstall');
     $yymain .= qq~
     <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
@@ -93,9 +92,9 @@ sub yabm_modlist {
    </div>
 ~;
 
+    %modinstall = get_mod_data('modinstall');
     for my $line (@contents) {
         my ($status);
-        my (%modinstall);
         if ( $line =~ m/[.]mod\Z/xsm ) {
             if ( linepos( \@mods, $line ) != -1 ) {
                 $status =
@@ -1736,6 +1735,7 @@ qq~<br /><span style="color: #FF0000;"><b>$yabmtxt{'18'}!!!</b> $error</span>$re
 
 sub get_mod_data {
     my ($itag) = @_;
+    no strict qw(refs);
     if ( -e "$boarddir/Mods/Log/get_install.data" ) {
         open my $MLOG, '<', "$boarddir/Mods/Log/get_install.data"
           or croak "$croak{'open'} get_install.data";
@@ -1747,7 +1747,7 @@ sub get_mod_data {
             ${$itag}{$keys} = $values;
         }
     }
-    return;
+    return %{$itag};
 }
 
 sub update_mod_data {
