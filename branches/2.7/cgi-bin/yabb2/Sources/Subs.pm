@@ -1428,11 +1428,11 @@ sub getlog {
     %yyuserlog = ();
     open my $GETLOG, '<', "$memberdir/$username.log"
       or croak "$croak{'open'} $username.log";
-    @logentries = <$GETLOG>;
+    my @logent = <$GETLOG>;
     close $GETLOG or croak "$croak{'close'} $username.log";
-    chomp @logentries;
+    chomp @logent;
 
-    foreach (@logentries) {
+    foreach (@logent) {
         my ( $name, $thistime ) = split /[|]/xsm;
         if ( $name && $thistime ) { $yyuserlog{$name} = $thistime; }
     }

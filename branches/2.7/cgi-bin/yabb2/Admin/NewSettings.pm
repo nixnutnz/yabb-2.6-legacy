@@ -824,9 +824,10 @@ qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\
 ###############################################################################
 
 ########## Board Info ##########
-# Note: these settings must be properly changed for YaBB to work
+# Note: these settings must be properly set for YaBB to work
 
 \$settings_file_version = '$yabbversion';
+\$yabbversion = '$yabbversion';
 \$yymycharset = 'UTF-8';                 # character encoding now 'UTF-8' only;
 
 \%templateset = ($templateset);             # Forum templates settings

@@ -905,7 +905,6 @@ qq~<label for="debug">$admin_txt{'999'}<br /><span class="small">$admin_txt{'999
 <select name="use_flock" id="use_flock" size="1">
   <option value="0" ${isselected($use_flock == 0)}>$admin_txt{'401'}</option>
   <option value="1" ${isselected($use_flock == 1)}>$admin_txt{'402'}</option>
-  <option value="2" ${isselected($use_flock == 2)}>$admin_txt{'403'}</option>
 </select>~,
                 name     => 'use_flock',
                 validate => 'boolean',

@@ -1552,6 +1552,7 @@ qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
 qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$micon{$micon}</a>~;
         }
 
+        $template_ext_prof = q{};
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
             $template_ext_prof = ext_viewinposts($musername);
