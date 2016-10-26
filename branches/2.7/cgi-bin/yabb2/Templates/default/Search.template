@@ -22,24 +22,24 @@ $search_img = 'search.png';
 
 $mysearch_template = qq~
 <div style="width:90em; margin:0 auto">
-<div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$imagesdir/$search_img" alt="" /> $search_txt{'183'}</div>
-<table class="bordercolor pad_4px" style="border-spacing: 0 1px; border-collapse:separate">
-    <colgroup>
-        <col style="width:45%" />
-        <col style="width:55%" />
-    </colgroup>
-    <tr>
-        <td class="windowbg right vtop"><label for="search"><b>$search_txt{'582'}:</b></label></td>
-        <td class="windowbg padd_2px">
-            <input type="text" size="30" name="search" id="search" /> <label for="searchtype">$search_txt{'582'}</label>
-            <select name="searchtype" id="searchtype">
-                <option value="allwords" selected="selected">$search_txt{'343'}</option>
-                <option value="anywords">$search_txt{'344'}</option>
-                <option value="asphrase">$search_txt{'345'}</option>
-                <option value="aspartial">$search_txt{'345a'}</option>
-            </select>
-            <br />
-            <input type="checkbox" name="casesensitiv" id="casesensitiv" value="1" /><label for="casesensitiv">$search_txt{'casesensitiv'}</label>~;
+    <div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom"><img src="$imagesdir/$search_img" alt="" /> $search_txt{'183'}</div>
+    <table class="bordercolor pad_4px" style="border-spacing: 0 1px; border-collapse:separate">
+        <colgroup>
+            <col style="width:45%" />
+            <col style="width:55%" />
+        </colgroup>
+        <tr>
+            <td class="windowbg right vtop"><label for="search"><b>$search_txt{'582'}:</b></label></td>
+            <td class="windowbg padd_2px">
+                <input type="text" size="30" name="search" id="search" /> <label for="searchtype">$search_txt{'582'}</label>
+                <select name="searchtype" id="searchtype">
+                    <option value="allwords" selected="selected">$search_txt{'343'}</option>
+                    <option value="anywords">$search_txt{'344'}</option>
+                    <option value="asphrase">$search_txt{'345'}</option>
+                    <option value="aspartial">$search_txt{'345a'}</option>
+                </select>
+                <br />
+                <input type="checkbox" name="casesensitiv" id="casesensitiv" value="1" /><label for="casesensitiv">$search_txt{'casesensitiv'}</label>~;
 
 $mysearch_template2 = qq~
         </td>
@@ -49,13 +49,13 @@ $mysearch_template2 = qq~
         </td>
         <td class="windowbg">
             <div style="padding: 4px 0;">
-            <input type="text" size="30" style="width: 220px; padding-left: 3px;" name="userspectext" id="userspectext" value="" readonly="readonly" />
-            <input type="button" class="button" id="usrsel" style="border-left: 0; display: inline;" value="$searchselector_txt{'select'}" onclick="javascript:addUser();" />
-            <input type="button" class="button" id="usrrem" style="border-left: 0; display: none;" value="$searchselector_txt{'remove'}" onclick="javascript:removeUser();" />
+                <input type="text" size="30" style="width: 220px; padding-left: 3px;" name="userspectext" id="userspectext" value="" readonly="readonly" />
+                <input type="button" class="button" id="usrsel" style="border-left: 0; display: inline;" value="$searchselector_txt{'select'}" onclick="javascript:addUser();" />
+                <input type="button" class="button" id="usrrem" style="border-left: 0; display: none;" value="$searchselector_txt{'remove'}" onclick="javascript:removeUser();" />
             ~;
 
 $mysearch_template3 = qq~
-            <input type="hidden" name="userspec" id="userspec" value="" />
+                <input type="hidden" name="userspec" id="userspec" value="" />
             </div>
             <div style="padding: 4px 0;">
             <select name="userkind" id="userkind">

@@ -60,7 +60,7 @@ $boardindex_template .= qq~
             <div class="small padd_4px" style="float:right; text-align:right">{yabb boardhandellist}</div>
             <div class="clear"></div>
         </div>
- <!-- Board Index Button Bar end -->
+<!-- Board Index Button Bar end -->
 ~;
 }
 
@@ -96,8 +96,8 @@ $boardindex_template .= qq~
 <!-- ## End Event Cal ## -->
     {yabb sharedlogin}
 <!-- Info Center block end -->
-        {yabb new_load}
-        ~;
+{yabb new_load}
+~;
 }
 
 ## Category header ##

@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);    #save_settings;
 our $VERSION = '2.7.00';
 
 our $settings_securitypmver  = 'YaBB 2.7.00 $Revision$';
@@ -23,28 +22,29 @@ our $settings_securitypmmods = 0;
 if (@settings_securitypmmods) {
     $settings_securitypmmods = 1;
 }
-##  languages ##
-our (
-    %croak,        %admin_txt,   %admintxt, %iplookup, %dereftxt,
-    %settings_txt, %session_txt, %reftxt,   %floodtxt
-);
-## paths ##
-our ( $adminurl, $yyhtml_root, $scripturl );
-## settings ##
-our (
-    $enable_news,         $regcheck,            $do_scramble_id,
-    $stealthurl,          $sessions,            $show_online_ip_admin,
-    $show_online_ip_gmod, $show_online_ip_fmod, $ip_lookup,
-    $gpvalid_en,          $translayer,          $codemaxchars,
-    $captchastyle,        $captcha_start_chars, $captcha_end_chars,
-    $masterkey,           $rgb_foreground,      $referersecurity,
-    $rgb_shade,           $rgb_background,      $randomizer,
-    $distortion,          $showcheck,
-);
-## other ##
+
 our ( $action, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our (
+    %admin_txt, %admintxt, %croak,       %dereftxt, %floodtxt,
+    %iplookup,  %reftxt,   %session_txt, %settings_txt,
+);
+## paths ##
+our ( $adminurl, $scripturl, $yyhtml_root );
+## settings ##
+our (
+    $captcha_end_chars,   $captcha_start_chars, $captchastyle,
+    $codemaxchars,        $distortion,          $do_scramble_id,
+    $enable_news,         $gpvalid_en,          $ip_lookup,
+    $masterkey,           $randomizer,          $referersecurity,
+    $regcheck,            $rgb_background,      $rgb_foreground,
+    $rgb_shade,           $sessions,            $show_online_ip_admin,
+    $show_online_ip_fmod, $show_online_ip_gmod, $showcheck,
+    $stealthurl,          $translayer,
+);
 
 load_language('Admin');
 load_language('Sessions');
@@ -309,31 +309,35 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
 );
 
 # Routine to save them
-sub save_settings {
-    my %settings = @_;
-    my $newset   = q{};
-    for my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
-        if (   $iplookup_url =~ /:\/\//xsm
-            && $iplookup_url !~ /http(?:s|):\/\//xsm )
-        {
-            fatal_error( 'invalid_value',
-                $iplookup_url . $admin_txt{'iplookup_protocols'} );
+{
+    no warnings qw(redefine);    #save_settings;
+
+    sub save_settings {
+        my %settings = @_;
+        my $newset   = q{};
+        for my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
+            if (   $iplookup_url =~ /:\/\//xsm
+                && $iplookup_url !~ /http(?:s|):\/\//xsm )
+            {
+                fatal_error( 'invalid_value',
+                    $iplookup_url . $admin_txt{'iplookup_protocols'} );
+            }
+            my @ipset = split /[|]/xsm, $iplookup_url;
+            $ipset[0] =~ s/[ ]/_/xsm;
+            $newset .= qq~'$ipset[0]' => '$ipset[1]',\n~;
         }
-        my @ipset = split /[|]/xsm, $iplookup_url;
-        $ipset[0] =~ s/[ ]/_/xsm;
-        $newset .= qq~'$ipset[0]' => '$ipset[1]',\n~;
-    }
-    $settings{'iplookup_url'} = $newset;
+        $settings{'iplookup_url'} = $newset;
 
-    if (   length $settings{'masterkey'} < 8
-        || length $settings{'masterkey'} > 24 )
-    {
-        load_language('Error');
-        fatal_error('invalid_key');
-    }
+        if (   length $settings{'masterkey'} < 8
+            || length $settings{'masterkey'} > 24 )
+        {
+            load_language('Error');
+            fatal_error('invalid_key');
+        }
 
-    save_settings_to( 'Settings.pm', %settings );
-    return;
+        save_settings_to( 'Settings.pm', %settings );
+        return;
+    }
 }
 
 1;

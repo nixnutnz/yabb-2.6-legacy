@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine); #save_settings sub
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
@@ -25,55 +24,58 @@ our $settings_advancedpmmods = 0;
 if (@settings_advancedpmmods) {
     $settings_advancedpmmods = 1;
 }
-##  languages ##
-our (
-    %croak,        %admin_txt,    %admin_img,  %gztxt,
-    %settings_txt, %rss_txt,      %smtp_txt,   %edit_paths_txt,
-    %fatxt,        %fix_img_size, %settop_txt, %floodtxt,
-    %amv_txt,      %errorlog,     %afix_img_size
-);
-## paths ##
-our ( $adminurl, $yyhtml_root, $uploaddir, $pmuploaddir );
-## settings ##
-our (
-    $yymycharset,                  $rss_disabled,
-    $rss_limit,                    $rss_message,
-    $permdomain,                   $symlink,
-    $gzcomp,                       $backupprogbin,
-    $perm_domain,                  $rsssymrecent,
-    $rsssymboards,                 $checkspace,
-    $accept_permalink,             $accept_permafull,
-    $showauthor,                   $rssemail,
-    $showdate,                     $mailtype,
-    $mailprog,                     $smtp_server,
-    $smtp_auth_required,           $authuser,
-    $helloserv,                    $webmaster_email,
-    $authpass,                     $new_member_notification,
-    $new_member_notification_mail, $sendtopicmail,
-    $allowguestattach,             $allowattach,
-    $amdisplaypics,                $checkext,
-    @ext,                          $limit,
-    $dirlimit,                     $overwrite,
-    $allow_attach_im,              $pm_attach_groups,
-    $pm_display_pics,              $pm_checkext,
-    @pm_attachext,                 $pm_file_limit,
-    $pm_dirlimit,                  $pm_file_overwrite,
-    $img_greybox,                  $gzforce,
-    $cachebehaviour,               $enableclicklog,
-    $click_logtime,                $getreversedns,
-    $max_log_days_old,             $maxrecentdisplay,
-    $maxsearchdisplay,             $online_logtime,
-    $lastonlineinlink,             $elenable,
-    $elrotate,                     $elmax,
-    $debug,                        $maxrecentdisplay_t,
-    $use_flock,                    $faketruncation,
-    $extendedprofiles
-);
-## other ##
-our ( $action, $yymain, $yytitle, $yysetlocation, $action_area, $language,
-    %INFO, %FORM, );
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our (
+    %admin_img,  %admin_txt,      %afix_img_size, %amv_txt,
+    %croak,      %edit_paths_txt, %errorlog,      %fatxt,
+    %floodtxt,   %gztxt,          %rss_txt,       %settings_txt,
+    %settop_txt, %smtp_txt,
+);
+## paths ##
+our ( $adminurl, $pmuploaddir, $uploaddir, $yyhtml_root, );
+## settings ##
+our (
+    $accept_permafull,        $accept_permalink,
+    $allow_attach_im,         $allowattach,
+    $allowguestattach,        $amdisplaypics,
+    $authpass,                $authuser,
+    $backupprogbin,           $cachebehaviour,
+    $checkext,                $checkspace,
+    $click_logtime,           $debug,
+    $dirlimit,                $elenable,
+    $elmax,                   $elrotate,
+    $enableclicklog,          $extendedprofiles,
+    $faketruncation,          $getreversedns,
+    $gzcomp,                  $gzforce,
+    $helloserv,               $img_greybox,
+    $lastonlineinlink,        $limit,
+    $mailprog,                $mailtype,
+    $max_log_days_old,        $maxrecentdisplay,
+    $maxrecentdisplay_t,      $maxsearchdisplay,
+    $new_member_notification, $new_member_notification_mail,
+    $online_logtime,          $overwrite,
+    $perm_domain,             $pm_attach_groups,
+    $pm_checkext,             $pm_dirlimit,
+    $pm_display_pics,         $pm_file_limit,
+    $pm_file_overwrite,       $rss_disabled,
+    $rss_limit,               $rss_message,
+    $rssemail,                $rsssymboards,
+    $rsssymrecent,            $sendtopicmail,
+    $showauthor,              $showdate,
+    $smtp_auth_required,      $smtp_server,
+    $symlink,                 $use_flock,
+    $webmaster_email,         $yymycharset,
+    %fix_img_size,            @ext,
+    @pm_attachext,
+);
+## system ##
+our ( $action_area, $language, $yymain, $yysetlocation, $yytitle, %FORM, %INFO,
+);
 
 load_language('Admin');
 load_language('FA');
@@ -959,37 +961,41 @@ qq~<input type="checkbox" name="fix_ext_img_size" id="fix_ext_img_size" value="1
 }
 
 # Routine to save them
-sub save_settings {
-    my %settings = @_;
-    $settings{'extensions'} =~ s/[^\w ]//gxsm;
-    @ext = split /\s+/xsm, $settings{'extensions'};
-    $settings{'pmextensions'} =~ s/[^\w ]//gxsm;
-    @pm_attachext = split /\s+/xsm, $settings{'pmextensions'};
-    %afix_img_size = ();
-    $afix_img_size{'attach'}[0]   = $FORM{'fix_attach_img_size'}   || 0;
-    $afix_img_size{'attach'}[1]   = $FORM{'max_attach_img_width'}  || 0;
-    $afix_img_size{'attach'}[2]   = $FORM{'max_attach_img_height'} || 0;
-    $afix_img_size{'avatar'}[0]   = $FORM{'fix_avatar_img_size'}   || 0;
-    $afix_img_size{'avatar'}[1]   = $FORM{'max_avatar_width'}      || 0;
-    $afix_img_size{'avatar'}[2]   = $FORM{'max_avatar_height'}     || 0;
-    $afix_img_size{'avatarml'}[0] = $FORM{'fix_avatarml_img_size'} || 0;
-    $afix_img_size{'avatarml'}[1] = $FORM{'max_avatarml_width'}    || 0;
-    $afix_img_size{'avatarml'}[2] = $FORM{'max_avatarml_height'}   || 0;
-    $afix_img_size{'brd'}[0]      = $FORM{'fix_brd_img_size'}      || 0;
-    $afix_img_size{'brd'}[1]      = $FORM{'max_brd_img_width'}     || 0;
-    $afix_img_size{'brd'}[2]      = $FORM{'max_brd_img_height'}    || 0;
-    $afix_img_size{'post'}[0]     = $FORM{'fix_post_img_size'}     || 0;
-    $afix_img_size{'post'}[1]     = $FORM{'max_post_img_width'}    || 0;
-    $afix_img_size{'post'}[2]     = $FORM{'max_post_img_height'}   || 0;
-    $afix_img_size{'signat'}[0]   = $FORM{'fix_signat_img_size'}   || 0;
-    $afix_img_size{'signat'}[1]   = $FORM{'max_signat_img_width'}  || 0;
-    $afix_img_size{'signat'}[2]   = $FORM{'max_signat_img_height'} || 0;
-    $afix_img_size{'ext'}[0]      = $FORM{'fix_ext_img_size'}      || 0;
-    $afix_img_size{'ext'}[1]      = $FORM{'max_ext_img_width'}     || 0;
-    $afix_img_size{'ext'}[2]      = $FORM{'max_ext_img_height'}    || 0;
+{
+    no warnings qw(redefine);    #save_settings sub
 
-    save_settings_to( 'Settings.pm', %settings );
-    return;
+    sub save_settings {
+        my %settings = @_;
+        $settings{'extensions'} =~ s/[^\w ]//gxsm;
+        @ext = split /\s+/xsm, $settings{'extensions'};
+        $settings{'pmextensions'} =~ s/[^\w ]//gxsm;
+        @pm_attachext = split /\s+/xsm, $settings{'pmextensions'};
+        %afix_img_size = ();
+        $afix_img_size{'attach'}[0]   = $FORM{'fix_attach_img_size'}   || 0;
+        $afix_img_size{'attach'}[1]   = $FORM{'max_attach_img_width'}  || 0;
+        $afix_img_size{'attach'}[2]   = $FORM{'max_attach_img_height'} || 0;
+        $afix_img_size{'avatar'}[0]   = $FORM{'fix_avatar_img_size'}   || 0;
+        $afix_img_size{'avatar'}[1]   = $FORM{'max_avatar_width'}      || 0;
+        $afix_img_size{'avatar'}[2]   = $FORM{'max_avatar_height'}     || 0;
+        $afix_img_size{'avatarml'}[0] = $FORM{'fix_avatarml_img_size'} || 0;
+        $afix_img_size{'avatarml'}[1] = $FORM{'max_avatarml_width'}    || 0;
+        $afix_img_size{'avatarml'}[2] = $FORM{'max_avatarml_height'}   || 0;
+        $afix_img_size{'brd'}[0]      = $FORM{'fix_brd_img_size'}      || 0;
+        $afix_img_size{'brd'}[1]      = $FORM{'max_brd_img_width'}     || 0;
+        $afix_img_size{'brd'}[2]      = $FORM{'max_brd_img_height'}    || 0;
+        $afix_img_size{'post'}[0]     = $FORM{'fix_post_img_size'}     || 0;
+        $afix_img_size{'post'}[1]     = $FORM{'max_post_img_width'}    || 0;
+        $afix_img_size{'post'}[2]     = $FORM{'max_post_img_height'}   || 0;
+        $afix_img_size{'signat'}[0]   = $FORM{'fix_signat_img_size'}   || 0;
+        $afix_img_size{'signat'}[1]   = $FORM{'max_signat_img_width'}  || 0;
+        $afix_img_size{'signat'}[2]   = $FORM{'max_signat_img_height'} || 0;
+        $afix_img_size{'ext'}[0]      = $FORM{'fix_ext_img_size'}      || 0;
+        $afix_img_size{'ext'}[1]      = $FORM{'max_ext_img_width'}     || 0;
+        $afix_img_size{'ext'}[2]      = $FORM{'max_ext_img_height'}    || 0;
+
+        save_settings_to( 'Settings.pm', %settings );
+        return;
+    }
 }
 
 1;

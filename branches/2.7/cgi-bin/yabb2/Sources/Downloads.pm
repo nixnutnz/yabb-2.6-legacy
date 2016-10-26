@@ -28,26 +28,26 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
-our ( %croak, %fatxt, %att_img, %micon_bg, %amv_txt, %admin_txt, %maintxt, );
-## settings/template ##
+our ( %admin_txt, %amv_txt, %att_img, %croak, %fatxt, %maintxt, %micon_bg, );
+## paths ##
 our (
-    $yymycharset, $guest_media_disallowed, $datadir,
-    $vardir,      $ttsureverse,            $ttsreverse,
-    $htmldir,     $imagesdir,              $uploaddir,
-    $uploadurl,
+    $adminurl,  $datadir,   $htmldir,   $imagesdir,
+    $scripturl, $uploaddir, $uploadurl, $vardir,
 );
+## settings ##
+our ( $guest_media_disallowed, $ttsreverse, $ttsureverse, $yymycharset, );
 ## system ##
 our (
-    $iamadmin, $iamgmod,  $iamguest,  $uid,
-    $username, $adminurl, $scripturl, $formsession,
-    %FORM,     %INFO,     $useimages, %thread_arrayref,
+    $formsession, $iamadmin,  $iamgmod,  $iamguest,
+    $uid,         $useimages, $username, %FORM,
+    %INFO,        %thread_arrayref,
 );
 ## template ##
 our (
-    $downloads_top,   $downloads_att,      $my_att_admin,
-    $downloads_att_b, $my_att_admin_b,     $my_att_admin_c,
-    $downloads_att_c, $my_out_att_admin_a, $downloads_att_out_a,
-    $my_att_sort,     $downloads_tbl_end,  $downloads_bottom,
+    $downloads_att,       $downloads_att_b,  $downloads_att_c,
+    $downloads_att_out_a, $downloads_bottom, $downloads_tbl_end,
+    $downloads_top,       $my_att_admin,     $my_att_admin_b,
+    $my_att_admin_c,      $my_att_sort,      $my_out_att_admin_a,
 );
 
 get_template('Downloads');
@@ -56,7 +56,6 @@ get_micon();
 sub downloadview {
     if ( $guest_media_disallowed && $iamguest ) { fatal_error('members_only'); }
     load_language('FA');
-    print_output_header();
 
     $downloads_top =~ s/\Q{yabb fatxt39}\E/$fatxt{'39'}/xsm;
     my $numshow   = q{};
@@ -64,10 +63,11 @@ sub downloadview {
 
     my $thread = $INFO{'thread'};
     if ( !ref $thread_arrayref{$thread} ) {
-        open my $MSGTXT, '<', "$datadir/$thread.txt"
+        our ($MSGTXT);
+        fopen( 'MSGTXT', '<', "$datadir/$thread.txt" )
           or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
         @{ $thread_arrayref{$thread} } = <$MSGTXT>;
-        close $MSGTXT or croak "$croak{'close'} MSGTXT";
+        fclose('MSGTXT') or croak "$croak{'close'} MSGTXT";
     }
     my $threadname =
       ( split /[|]/xsm, ${ $thread_arrayref{$thread} }[0], 2 )[0];
@@ -79,12 +79,13 @@ sub downloadview {
     my ( %attachinput, $viewattachments );
     map { $attachinput{$_} = 1; } @attachinput;
 
-    open my $AML, '<', "$vardir/attachments.db"
+    our ($AML);
+    fopen( 'AML', '<', "$vardir/attachments.db" )
       or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
     @attachinput =
       grep { /$thread[|].+[|](.+)[|]\d+\s+/xsm && exists $attachinput{$1} }
       <$AML>;
-    close $AML or croak "$croak{'close'} AML";
+    fclose('AML') or croak "$croak{'close'} AML";
 
     my $max = @attachinput;
 
@@ -382,6 +383,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
     }
     $downloads_tbl_end =~ s/\Q{yabb viewattachments}\E/$viewattachments/gxsm;
 
+    print_output_header();
     our $output =
         $downloads_top
       . $out_a
@@ -403,20 +405,21 @@ sub download_filecounter {
         fatal_error( q{}, "$maintxt{'23'} $dfile$maintxt{'23a'}" );
     }
 
-    open my $ATM, '<', 'Variables/attachments.db'
+    our ($ATM);
+    fopen( 'ATM', '<', 'Variables/attachments.db', 1 )
       or fatal_error( 'cannot_open', "$vardir/attachments.db", 1 );
     my @attachments = <$ATM>;
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
 
     foreach my $i ( 0 .. $#attachments ) {
         $attachments[$i] =~
 s/(.+[|])(.+)[|](\d+)(\s+)$/ $1 . ($dfile eq $2 ? "$2|" . ($3 + 1) : "$2|$3") . $4 /exsm;
     }
     my $prnatt = join q{}, @attachments;
-    open $ATM, '>', 'Variables/attachments.db'
+    fopen( 'ATM', '>', 'Variables/attachments.db', 1 )
       or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
     print {$ATM} $prnatt or croak "$croak{'print'} ATM";
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
 
     print "Location: $uploadurl/$dfile\n\r\n\r"
       or croak "$croak{'print'} Location";

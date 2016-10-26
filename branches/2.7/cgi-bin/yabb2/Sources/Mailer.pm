@@ -30,13 +30,18 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language ##
+our ( %croak, %error_txt, %smtp_txt, );
+## paths ##
+our ( $adminurl, $scripturl, $vardir, );
+## settings ##
 our (
-    %croak,       %smtp_txt,        %error_txt,   $vardir,
-    $scripturl,   $adminurl,        $mbname,      $mailcharset,
-    $yymycharset, $webmaster_email, $from,        $to,
-    $mailtype,    $mailprog,        $smtp_server, $helloserv,
-    $authuser,    $authpass,        %mailer,
+    $authpass,    $authuser,        $helloserv,
+    $mailprog,    $mailtype,        $mbname,
+    $smtp_server, $webmaster_email, $yymycharset,
 );
+## system ##
+our ( $from, $mailcharset, $to, %mailer, );
 
 my $pre =
 q~style="padding:5px 40px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:100%; overflow-x:auto;"~;
@@ -107,8 +112,7 @@ sub sendmail {
                 if ($authpass) { push @arg, Password => "$authpass"; }
                 push @arg, Debug => 0;
                 $smtp = Net::SMTP->new(@arg)
-                  or croak $mailer{'smtp'}
-                  . $OS_ERROR;
+                  or croak $mailer{'smtp'} . $OS_ERROR;
             }
         }
         elsif ( eval { require Net::SMTPS } ) {
@@ -117,8 +121,7 @@ sub sendmail {
             push @arg, Port  => $port;
             push @arg, doSSL => $ssl;
             $smtp = Net::SMTPS->new(@arg)
-              or croak $mailer{'smtps1'}
-              . $OS_ERROR;
+              or croak $mailer{'smtps1'} . $OS_ERROR;
             $smtp->auth( $authuser, $authpass )
               or croak $mailer{'smtps2'};
         }
@@ -127,25 +130,28 @@ sub sendmail {
                 "$error_txt{'error_verbose'}: $EVAL_ERROR" );
         }
 
-        eval {
-            $subject =~ s/&amp;/&/xsm;
-            my $subject_encoded =
-              encode( 'MIME-Header', decode( 'UTF-8', $subject ) );
-            my $mail_body = qq~<pre $pre>$message</pre>~;
-            $smtp->mail($afrom);
-            for ( split /,\s/xsm, $ato ) { $smtp->to($_); }
-            $smtp->data();
-            $smtp->datasend("To: $toheader\r\n");
-            $smtp->datasend("From: $fromheader\r\n");
-            $smtp->datasend("X-Mailer: YaBB Net::SMTP\r\n");
-            $smtp->datasend("Subject: $subject_encoded\r\n");
-            $smtp->datasend("Content-Type: text/html\; charset=UTF-8\r\n");
-            $smtp->datasend("\r\n");
-            $smtp->datasend("$mail_body");
-            $smtp->dataend();
-            $smtp->quit();
-        };
-        if ($EVAL_ERROR) {
+        if (
+            !eval {
+                $subject =~ s/&amp;/&/xsm;
+                my $subject_encoded =
+                  encode( 'MIME-Header', decode( 'UTF-8', $subject ) );
+                my $mail_body = qq~<pre $pre>$message</pre>~;
+                $smtp->mail($afrom);
+                for ( split /,\s/xsm, $ato ) { $smtp->to($_); }
+                $smtp->data();
+                $smtp->datasend("To: $toheader\r\n");
+                $smtp->datasend("From: $fromheader\r\n");
+                $smtp->datasend("X-Mailer: YaBB Net::SMTP\r\n");
+                $smtp->datasend("Subject: $subject_encoded\r\n");
+                $smtp->datasend("Content-Type: text/html\; charset=UTF-8\r\n");
+                $smtp->datasend("\r\n");
+                $smtp->datasend("$mail_body");
+                $smtp->dataend();
+                $smtp->quit();
+                1;
+            }
+          )
+        {
             fatal_error( 'net_fatal',
                 "$error_txt{'error_verbose'}: $EVAL_ERROR" );
         }

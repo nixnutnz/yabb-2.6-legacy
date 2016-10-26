@@ -25,41 +25,44 @@ our $viewmemberspmmods = 0;
 if (@viewmemberspmmods) {
     $viewmemberspmmods = 1;
 }
-##  languages ##
-our (
-    %croak,  %admin_txt, %admintxt,  %admin_img, @alpha,
-    %ml_txt, %pidtxt,    %selchksel, %amv_txt,   %link
-);
-## paths ##
-our ( $adminurl, $yyhtml_root, $scripturl, $imagesdir );
-## settings ##
-our (
-    $yymycharset, $top_posters, $barmaxnumb, $barmaxdepend,
-    $barmax,      $defaultml,   %grp_staff,  %grp_nopost,
-    %grp_post,    $showallgroups,
-);
-## other ##
-our (
-    $action,   $yymain, $yytitle,     $yysetlocation,
-    %FORM,     %INFO,   $action_area, %memberinf,
-    $date,     $uid,    $iamgmod,     %gmod_access,
-    $username, $iamadmin,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our (
+    %admin_img, %admin_txt, %admintxt, %amv_txt,   %croak,
+    %link,      %ml_txt,    %pidtxt,   %selchksel, @alpha,
+);
+## paths ##
+our ( $adminurl, $imagesdir, $scripturl, $yyhtml_root, );
+## settings ##
+our (
+    $barmax,        $barmaxdepend, $barmaxnumb,  $defaultml,
+    $showallgroups, $top_posters,  $yymycharset, %grp_nopost,
+    %grp_post,      %grp_staff,
+);
+## system ##
+our (
+    $action_area, $date,     $iamadmin,    $iamgmod,
+    $uid,         $username, $yymain,      $yysetlocation,
+    $yytitle,     %FORM,     %gmod_access, %INFO,
+    %memberinf,
+);
 
 load_language('Admin');
 load_language('MemberList');
 is_admin_or_gmod();
-my ( $sortmode, $sortorder, $spages );
 
+## local ##
 my $membersperpage = $top_posters;
 my $maxbar         = 100;
 my (
-    $start,        $numshown,     $actualnum,   $memcount,   $letter,
-    $letterlinks,  $checking_all, $showpageall, $pageindex1, $bb,
-    $table_footer, $sel_reversed, $numshow,     $lastpn,     $lastptn,
-    $pageindexjs,  $pageindex2
+    $actualnum,  $bb,          $checking_all, $lastpn,       $lastptn,
+    $letter,     $letterlinks, $memcount,     $numshow,      $numshown,
+    $pageindex1, $pageindex2,  $pageindexjs,  $sel_reversed, $showpageall,
+    $sortmode,   $sortorder,   $spages,       $start,        $table_footer,
 );
 
 sub admin_ml {
@@ -634,6 +637,7 @@ qq~<span class="index-togl small">$admin_img{'index_togl'} $ml_txt{'139'}: $page
         $pageindex2 =
 qq~<span class="index-togl small">$admin_img{'index_togl'} $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
+
             if ( $usermemberpage == 1 ) {
                 $INFO{'letter'} ||= q{};
                 $INFO{'start'}  ||= q{};

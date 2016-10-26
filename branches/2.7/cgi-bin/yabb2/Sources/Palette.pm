@@ -29,9 +29,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## system ##
 our (
-    %INFO,      $iamadmin,    @pallist,     $gzcomp,
-    $abbr_lang, $yymycharset, $yyhtml_root, $usestyle,
-    $scripturl, $defaultimagesdir,
+    $abbr_lang, $defaultimagesdir, $gzcomp,      $iamadmin,
+    $scripturl, $usestyle,         $yyhtml_root, $yymycharset,
+    %INFO,      @pallist,
 );
 
 sub color_picker {

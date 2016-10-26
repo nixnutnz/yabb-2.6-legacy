@@ -120,23 +120,23 @@ my $pm_lev = pm_lev();
 ${ $uid . $username }{'realname'} ||= q{};
 $mycenter_txt{'welcometxt'} =~ s/USERLABEL/${$uid.$username}{'realname'}/gxsm;
 
-our ( $view, @dimmessages, @bmessages, @gmessages );
+our ( $mc_globalformstart, $view, @bmessages, @dimmessages, @gmessages,
+    @messages, $msubject, $message );
 
 my (
-    $callerid,           $destination,          $immessage,
-    $mc_content,         $mc_content_del,       $mc_content_dim,
-    $mc_content_im,      $mc_content_page,      $mc_content_selmen,
-    $mc_content_sort,    $mc_content_view,      $mc_globalformstart,
-    $mc_pmmenu,          $mc_pmmenu_bm,         $mc_pmmenu_bmbox,
-    $mc_pmmenu_gmbox,    $mc_pmmenu_markall,    $mc_pmmenu_newfolder,
-    $mc_pmmenu_pmsearch, $mc_pmmenu_pmsearch_b, $mc_pmmenu_strtot,
-    $mc_pmmenu_temp,     $mc_postcount,         $mc_postrecent,
-    $mc_postsmenu,       $mc_profmenu,          $mctitle,
-    $mc_view_tab,        $mc_viewmenu,          $mc_viewmenu_mess,
-    $message,            $movebutton,           $mc_content_mymess,
-    $mytopdisp,          $post,                 $acount,
-    $sender,             $senderinfo,           $mc_content_bm,
-    $norm_dateset,
+    $acount,               $callerid,            $destination,
+    $immessage,            $mc_content,          $mc_content_bm,
+    $mc_content_del,       $mc_content_dim,      $mc_content_im,
+    $mc_content_mymess,    $mc_content_page,     $mc_content_selmen,
+    $mc_content_sort,      $mc_content_view,     $mc_pmmenu,
+    $mc_pmmenu_bm,         $mc_pmmenu_bmbox,     $mc_pmmenu_gmbox,
+    $mc_pmmenu_markall,    $mc_pmmenu_newfolder, $mc_pmmenu_pmsearch,
+    $mc_pmmenu_pmsearch_b, $mc_pmmenu_strtot,    $mc_pmmenu_temp,
+    $mc_postcount,         $mc_postrecent,       $mc_postsmenu,
+    $mc_profmenu,          $mc_view_tab,         $mc_viewmenu,
+    $mc_viewmenu_mess,     $mctitle,             $movebutton,
+    $mytopdisp,            $norm_dateset,        $post,
+    $sender,               $senderinfo,
 );
 
 my $show_pm = q{};
@@ -147,6 +147,14 @@ our $send_bm_mess = q{};
 my $is_bm_mess = q{};
 our $show_favorites     = q{};
 our $show_notifications = q{};
+
+my %filetoopen = (
+    '2' => "$username.outbox",
+    '3' => "$username.imstore",
+    '4' => "$username.imdraft",
+    '5' => 'broadcast.messages',
+    '6' => 'guest.messages',
+);
 
 sub mycenter {
     if ($iamguest) { fatal_error('im_members_only'); }
@@ -292,10 +300,11 @@ qq~<input type="submit" name="imaction" value="$inmes_imtxt{'store'}" class="but
 
             my ( @threads, $folder, );
             if ( -e "$memberdir/$username.imstore" ) {
-                open my $THREADS, '<', "$memberdir/$username.imstore"
+                our ($THREADS);
+                fopen( 'THREADS', '<', "$memberdir/$username.imstore" )
                   or croak "$croak{'open'} $username.imstore";
                 @threads = <$THREADS>;
-                close $THREADS or croak "$croak{'close'} $username.imstore";
+                fclose('THREADS') or croak "$croak{'close'} $username.imstore";
                 my $threadid = $INFO{'id'};
                 foreach my $thread (@threads) {
                     chomp $thread;
@@ -511,10 +520,11 @@ sub call_back {
 sub call_backrec {
     my ( $receiver, $rid, $do_it ) = @_;
 
-    open my $RECMSG, '<', "$memberdir/$receiver.msg"
+    our ($RECMSG);
+    fopen( 'RECMSG', '<', "$memberdir/$receiver.msg" )
       or croak "$croak{'open'} RECMSG";
     my @rims = <$RECMSG>;
-    close $RECMSG or croak "$croak{'close'} RECMSG";
+    fclose('RECMSG') or croak "$croak{'close'} RECMSG";
 
     my ( $nodel, $rmessageid, $fromuser, $flags );
     ## run through and drop the message line
@@ -542,10 +552,11 @@ sub call_backrec {
         }
     }
     if ($do_it) {
-        open my $REVMSG, '>', "$memberdir/$receiver.msg"
+        our ($REVMSG);
+        fopen( 'REVMSG', '>', "$memberdir/$receiver.msg" )
           or croak "$croak{'open'} REVMSG";
         print {$REVMSG} $rims or croak "$croak{'print'} REVMSG";
-        close $REVMSG or croak "$croak{'close'} REVMSG";
+        fclose('REVMSG') or croak "$croak{'close'} REVMSG";
     }
     return $nodel;
 }
@@ -593,10 +604,11 @@ sub check_messageflag {
         }
     }
     elsif ( -e "$memberdir/$user.$pm_file" ) {
-        open my $USERMSG, '<', "$memberdir/$user.$pm_file"
+        our ($USERMSG);
+        fopen( 'USERMSG', '<', "$memberdir/$user.$pm_file" )
           or croak "$croak{'open'} $pm_file";
         my @usermessages = <$USERMSG>;
-        close $USERMSG or croak "$croak{'close'} $pm_file";
+        fclose('USERMSG') or croak "$croak{'close'} $pm_file";
         foreach (@usermessages) {
             my (
                 $umessage_id,    undef, undef, undef,
@@ -635,9 +647,10 @@ sub update_messageflag {
         && -e "$file"
       )
     {
-        open my $USERFILE, '<', $file or croak "$croak{'open'} $file";
+        our ($USERFILE);
+        fopen( 'USERFILE', '<', $file ) or croak "$croak{'open'} $file";
         my @user_file = <$USERFILE>;
-        close $USERFILE or croak "$croak{'close'} $file";
+        fclose('USERFILE') or croak "$croak{'close'} $file";
         chomp @user_file;
         my $newpmfile = q{};
         foreach my $usermessage (@user_file) {
@@ -666,9 +679,9 @@ sub update_messageflag {
             }
             else { $newpmfile .= $usermessage . "\n"; }
         }
-        open $USERFILE, '>', $file or croak "$croak{'open'} $file";
+        fopen( 'USERFILE', '>', $file ) or croak "$croak{'open'} $file";
         print {$USERFILE} $newpmfile or croak "$croak{'print'} USERFILE";
-        close $USERFILE or croak "$croak{'close'} $file";
+        fclose('USERFILE') or croak "$croak{'close'} $file";
     }
     return $message_foundflag;
 }
@@ -730,16 +743,15 @@ sub del_some_im {
     if ($iamguest) { fatal_error('im_members_only'); }
 
     my $file_toopen = "$username.msg";
-    if    ( $INFO{'caller'} == 2 ) { $file_toopen = "$username.outbox"; }
-    elsif ( $INFO{'caller'} == 3 ) { $file_toopen = "$username.imstore"; }
-    elsif ( $INFO{'caller'} == 4 ) { $file_toopen = "$username.imdraft"; }
-    elsif ( $INFO{'caller'} == 5 ) { $file_toopen = 'broadcast.messages'; }
-    elsif ( $INFO{'caller'} == 6 ) { $file_toopen = 'guest.messages'; }
+    if ( $INFO{'caller'} && exists $filetoopen{ $INFO{'caller'} } ) {
+        $file_toopen = $filetoopen{ $INFO{'caller'} };
+    }
 
-    open my $USRFILE, '<', "$memberdir/$file_toopen"
+    our ($USRFILE);
+    fopen( 'USRFILE', '<', "$memberdir/$file_toopen" )
       or croak "$croak{'open'} $file_toopen";
-    my @messages = <$USRFILE>;
-    close $USRFILE or croak "$croak{'close'} $file_toopen";
+    @messages = <$USRFILE>;
+    fclose('USRFILE') or croak "$croak{'close'} $file_toopen";
     my @delpost = ();
 
     # deleting
@@ -805,10 +817,10 @@ sub del_some_im {
             }
         }
         my $prndel = join q{}, @delpost;
-        open $USRFILE, '>', "$memberdir/$file_toopen"
+        fopen( 'USRFILE', '>', "$memberdir/$file_toopen" )
           or croak "$croak{'open'} $file_toopen";
         print {$USRFILE} $prndel or croak "$croak{'print'} USRFILE";
-        close $USRFILE or croak "$croak{'open'} $file_toopen";
+        fclose('USRFILE') or croak "$croak{'open'} $file_toopen";
 
         if ( $INFO{'caller'} == 3 ) {
             ${$username}{'PMfoldersCount'} = q{};
@@ -867,31 +879,33 @@ sub del_some_im {
             }
         }
         my $prndel = join q{}, @delpost;
-        open my $USRFILE, '>', "$memberdir/$file_toopen"
+        fopen( 'USRFILE', '>', "$memberdir/$file_toopen" )
           or croak "$croak{'open'} USRFILE";
         print {$USRFILE} $prndel or croak "$croak{'print'} USRFILE";
-        close $USRFILE or croak "$croak{'close'} USRFILE";
+        fclose('USRFILE') or croak "$croak{'close'} USRFILE";
 
         if (@newmessages) {
             if ( $INFO{'caller'} != 3 ) {
                 if ( -e "$memberdir/$username.imstore" ) {
-                    open my $IUSRFILE, '<', "$memberdir/$username.imstore"
+                    our ($IUSRFILE);
+                    fopen( 'IUSRFILE', '<', "$memberdir/$username.imstore" )
                       or croak "$croak{'open'} imstore";
                     while ( my $line = <$IUSRFILE> ) {
                         my @m = split /[|]/xsm, $line;
                         push @newmessages, [@m];
                         $countstore{ $m[13] }++;
                     }
-                    close $IUSRFILE or croak "$croak{'close'} imstore";
+                    fclose('IUSRFILE') or croak "$croak{'close'} imstore";
                 }
             }
-            open my $TRANSFER, '>', "$memberdir/$username.imstore"
+            our ($TRANSFER);
+            fopen( 'TRANSFER', '>', "$memberdir/$username.imstore" )
               or croak "$croak{'open'} TRANSFER";
             print {$TRANSFER}
               map { join q{|}, @{$_} }
               reverse sort { ${$a}[6] <=> ${$b}[6] } @newmessages
               or croak "$croak{'print'} TRANSFER";
-            close $TRANSFER or croak "$croak{'open'} TRANSFER";
+            fclose('TRANSFER') or croak "$croak{'open'} TRANSFER";
 
             ${$username}{'PMfoldersCount'} = q{};
             foreach ( split /[|]/xsm, ${$username}{'PMfolders'} ) {
@@ -1061,36 +1075,27 @@ sub im_post {
     {
         fatal_error('im_low_postcount');
     }
-    my ( $mdate, $mip, $msubject );
+    my ( $mdate, $mip, );
     ##  if the IM has a number assigned already, open the right IM file
-    if ( $INFO{'id'} ne q{} ) {
+    if ( $INFO{'id'} ) {
         if ( $INFO{'caller'} < 5 ) {
             update_pms( $username, $INFO{'id'}, 'inread' );
         }
 
         my $pm_filetype = "$username.msg";
-        if ( $INFO{'caller'} == 2 ) { $pm_filetype = "$username.outbox"; }
-        elsif ( $INFO{'caller'} == 3 ) {
-            $pm_filetype = "$username.imstore";
+        if ( $INFO{'caller'} && exists $filetoopen{ $INFO{'caller'} } ) {
+            $pm_filetype = $filetoopen{ $INFO{'caller'} };
         }
-        elsif ( $INFO{'caller'} == 4 ) {
-            $pm_filetype = "$username.imdraft";
-        }
-        elsif ( $INFO{'caller'} == 5 ) {
-            $pm_filetype = 'broadcast.messages';
-        }
-        elsif ( $INFO{'caller'} == 6 ) {
-            $pm_filetype = 'guest.messages';
-        }
-        my (
+        our (
             $qmessageid, $mfrom,    $mto,    $mtocc,  $mtobcc,
             $mparid,     $mreplyno, $mflags, $mstore, $mattach
         );
         if ( !$replyguest ) {
-            open my $FILE, '<', "$memberdir/$pm_filetype"
+            our ($FILE);
+            fopen( 'FILE', '<', "$memberdir/$pm_filetype" )
               or croak "$croak{'open'} FILE";
-            my @messages = <$FILE>;
-            close $FILE or croak "$croak{'open'} FILE";
+            @messages = <$FILE>;
+            fclose('FILE') or croak "$croak{'open'} FILE";
             ## split content of IM file up
             foreach my $checkthemessage (@messages) {
                 (
@@ -1153,10 +1158,11 @@ qq~[quote author=$cloaked_author link=impost date=$mdate\]$message\[/quote\]\n~;
             }
         }
         elsif ($replyguest) {
-            open my $FILE, '<', "$memberdir/$pm_filetype"
+            our ($FILE);
+            fopen( 'FILE', '<', "$memberdir/$pm_filetype" )
               or croak "$croak{'open'} FILE";
-            my @messages = <FILE>;
-            close $FILE or croak "$croak{'open'} FILE";
+            @messages = <FILE>;
+            fclose('FILE') or croak "$croak{'open'} FILE";
             ## split content of IM file up
             foreach my $checkthemessage (@messages) {
                 (
@@ -1214,10 +1220,11 @@ qq~[quote author=$cloaked_author link=impost date=$mdate\]$message\[/quote\]\n~;
 sub mark_all {
     if ($iamguest) { fatal_error('im_members_only'); }
 
-    open my $FILE, '<', "$memberdir/$username.msg"
+    our ($FILE);
+    fopen( 'FILE', '<', "$memberdir/$username.msg" )
       or croak "$croak{'open'} FILE";
-    my @messages = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    @messages = <$FILE>;
+    fclose('FILE') or croak "$croak{'close'} FILE";
     my @mymessages = ();
     my $newmsgs    = q{};
     foreach my $msg (@messages) {
@@ -1232,9 +1239,10 @@ sub mark_all {
         else { push @mymessages, $msg; }
     }
     my $prnmess = join q{}, @mymessages;
-    open $FILE, '>', "$memberdir/$username.msg" or croak "$croak{'open'} FILE";
+    fopen( 'FILE', '>', "$memberdir/$username.msg" )
+      or croak "$croak{'open'} FILE";
     print {$FILE} $prnmess or croak "$croak{'print'} FILE";
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
 
     ${$username}{'PMimnewcount'} = 0;
     build_ims( $username, 'update' );
@@ -1284,7 +1292,8 @@ sub draw_pmbox {
         if ( !$INFO{'focus'} ) {
             if ( $callerid < 5 ) {
                 if ( -e "$memberdir/$username.$pmfile_toopen" ) {
-                    open my $NFILE, '<', "$memberdir/$username.$pmfile_toopen "
+                    our ($NFILE);
+                    fopen( 'NFILE', '<', "$memberdir/$username.$pmfile_toopen" )
                       or croak "$croak{'open'} NFILE";
                     @dimmessages = <$NFILE>;
                     foreach ( reverse @dimmessages ) {
@@ -1298,36 +1307,40 @@ sub draw_pmbox {
                             $INFO{'id'} = $m_id;
                         }
                     }
-                    close $NFILE or croak "$croak{'close'} NFILE";
+                    fclose('NFILE') or croak "$croak{'close'} NFILE";
                 }
             }
             elsif ( $callerid == 6 ) {
-                open my $NFILE, '<', "$memberdir/guest.messages"
+                our ($NFILE);
+                fopen( 'NFILE', '<', "$memberdir/guest.messages" )
                   or croak "$croak{'open'} guest.messages";
                 @gmessages = <$NFILE>;
-                close $NFILE or croak "$croak{'close'} guest.messages";
+                fclose('NFILE') or croak "$croak{'close'} guest.messages";
             }
             else {
-                open my $NFILE, '<', "$memberdir/broadcast.messages"
+                our ($NFILE);
+                fopen( 'NFILE', '<', "$memberdir/broadcast.messages" )
                   or croak "$croak{'open'} broadcast.messages";
                 @bmessages = <$NFILE>;
-                close $NFILE or croak "$croak{'close'} broadcast.messages";
+                fclose('NFILE') or croak "$croak{'close'} broadcast.messages";
             }
         }
         elsif ( $INFO{'focus'} eq 'bmess' && $enable_bm_level > 0 ) {
-            open my $BFILE, '<', "$memberdir/broadcast.messages"
+            our ($BFILE);
+            fopen( 'BFILE', '<', "$memberdir/broadcast.messages" )
               or croak "$croak{'open'} broadcast.messages";
             @bmessages = <$BFILE>;
-            close $BFILE or croak "$croak{'close'} broadcast.messages";
+            fclose('BFILE') or croak "$croak{'close'} broadcast.messages";
         }
         elsif ($INFO{'focus'} eq 'gmess'
             && $enable_bm_level > 0
             && -e "$memberdir/guest.messages" )
         {
-            open my $BFILE, '<', "$memberdir/guest.messages"
+            our ($BFILE);
+            fopen( 'BFILE', '<', "$memberdir/guest.messages" )
               or croak "$croak{'open'} guest.messages";
             @gmessages = <$BFILE>;
-            close $BFILE or croak "$croak{'close'} guest.messages";
+            fclose('BFILE') or croak "$croak{'close'} guest.messages";
         }
         $stkmess = 0;
         my ( @stkbmessages, @tmpbmessages, @chbm );
@@ -2125,6 +2138,9 @@ qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_
             $mypmmmenu_imsend = $mypmmmenu_imsend;
         }
 
+        ${$username}{'PMmnum'}     ||= 0;
+        ${$username}{'PMdraftnum'} ||= 0;
+        ${$username}{'PMmoutnum'}  ||= 0;
         $mc_pmmenu .= $my_mc_pmmenu;
         $mc_pmmenu =~ s/\Q{yabb display_pm}\E/$display_pm/xsm;
         $mc_pmmenu =~ s/\Q{yabb mypmmmenu}\E/$mypmmmenu_imsend/xsm;

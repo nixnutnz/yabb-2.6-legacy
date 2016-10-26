@@ -28,10 +28,10 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 our (
-    %croak,        %FORM,                %INFO,
-    %floodtxt,     $captcha_start_chars, $captcha_end_chars,
-    $codemaxchars, $captchastyle,        $masterkey,
-    $scripturl,    $randaction,          $flood_text,
+    $captcha_end_chars, $captcha_start_chars, $captchastyle,
+    $codemaxchars,      $flood_text,          $masterkey,
+    $randaction,        $scripturl,           %croak,
+    %floodtxt,          %FORM,                %INFO,
 );
 
 sub scramble {

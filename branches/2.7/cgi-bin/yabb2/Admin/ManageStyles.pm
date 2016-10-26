@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -25,24 +24,24 @@ if (@managestylesmods) {
     $managestylesmods = 1;
 }
 
-##  languages ##
-our ( %croak, %admin_txt, %admin_img, %templ_txt, %img_txt, %maintxt,
-    %post_txt );
-## paths ##
-our ( $adminurl, $yyhtml_root, $htmldir, $imagesdir, $scripturl,
-    $defaultimagesdir );
-## settings ##
-our ( $yymycharset, %templateset, $enable_ubbc, @pallist, $abbr_lang, );
-## other ##
-our (
-    $action,      $yymain,   $yytitle, $yysetlocation,
-    $action_area, $language, %INFO,    %FORM,
-    $date,        $template, $message, $textcol,
-    $backcol,     $bordcol,  $backcol2
-);
-
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %croak, %img_txt, %maintxt, %post_txt,
+    %templ_txt, );
+## paths ##
+our ( $adminurl, $defaultimagesdir, $htmldir, $imagesdir, $scripturl,
+    $yyhtml_root, );
+## settings ##
+our ( $abbr_lang, $enable_ubbc, $yymycharset, %templateset, @pallist, );
+## system and local ##
+our (
+    $action_area,   $backcol, $backcol2, $bordcol, $date,
+    $language,      $message, $template, $textcol, $yymain,
+    $yysetlocation, $yytitle, %FORM,     %INFO,
+);
 
 load_language('Admin');
 load_language('Templates');
@@ -77,7 +76,7 @@ sub modify_style {
     for my $file ( sort @styles ) {
         my ( $name, $ext ) = split /[.]/xsm, $file;
         my $selected = q{};
-        if ( $ext eq 'css' ) {
+        if ( $ext && $ext eq 'css' ) {
             if ( $file eq $cssfile && !$admincs ) {
                 $selected = q~ selected="selected"~;
             }
@@ -92,7 +91,7 @@ sub modify_style {
     for my $file ( sort @astyles ) {
         my ( $name, $ext ) = split /[.]/xsm, $file;
         my $selected = q{};
-        if ( $ext eq 'css' ) {
+        if ( $ext && $ext eq 'css' ) {
             if ( $file eq $cssfile && $admincs ) {
                 $selected = q~ selected="selected"~;
             }
@@ -100,7 +99,8 @@ sub modify_style {
         }
     }
 
-    open my $CSS, '<', $csstype or fatal_error( 'cannot_open', "$csstype" );
+    our ($CSS);
+    fopen( 'CSS', '<', $csstype ) or fatal_error( 'cannot_open', "$csstype" );
     while ( $line = <$CSS> ) {
         $line =~ s/[\r\n]//gxsm;
         $line =~ s/&nbsp;/&\x2338;nbsp;/gxsm;
@@ -108,7 +108,7 @@ sub modify_style {
         from_html($line);
         $fullcss .= qq~$line\n~;
     }
-    close $CSS or croak "$croak{'close'} CSS";
+    fclose('CSS') or croak "$croak{'close'} CSS";
 
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -192,10 +192,11 @@ sub modify_style2 {
     if ( $FORM{'type'} ) {
         $newcss = "$htmldir/Templates/Admin/$cssfile";
     }
-    open my $CSS, '>', $newcss
+    our ($CSS);
+    fopen( 'CSS', '>', $newcss )
       or fatal_error( 'cannot_open', "$htmldir/Templates/Admin/$cssfile", 1 );
     print {$CSS} "$FORM{'css'}\n" or croak "$croak{'print'} CSS";
-    close $CSS or croak "$croak{'close'} CSS";
+    fclose('CSS') or croak "$croak{'close'} CSS";
 
     $yysetlocation = qq~$adminurl?action=modcss;cssfile=$cssfile~;
     redirectexit();
@@ -231,7 +232,7 @@ sub modify_css {
         if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
             my ( $name, $ext ) = split /[.]/xsm, $file;
             my $selected = q{};
-            if ( $ext eq 'css' ) {
+            if ( $ext && $ext eq 'css' ) {
                 if ( $file eq $cssfile ) {
                     $selected = q~ selected="selected"~;
                     $viewcss  = $name;
@@ -241,11 +242,11 @@ sub modify_css {
             }
         }
     }
-
-    open my $CSS, '<', "$htmldir/Templates/Forum/$cssfile"
+    our ($CSS);
+    fopen( 'CSS', '<', "$htmldir/Templates/Forum/$cssfile" )
       or fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     my @thecss = <$CSS>;
-    close $CSS or croak "$croak{'close'} CSS";
+    fclose('CSS') or croak "$croak{'close'} CSS";
     for my $style_sgl (@thecss) {
         $style_sgl =~ s/[\r\n]//gxsm;
         $style_sgl =~ s/\A\s*//xsm;
@@ -612,6 +613,10 @@ qq~                   <option value='$highlightstyle'>$templ_txt{'39'}</option>\
         $bodycontainerstyle = 1;
     }
 
+    $textcol  ||= q{};
+    $backcol  ||= q{};
+    $backcol2 ||= q{};
+    $bordcol  ||= q{};
     $yymain .= qq~
 <form action="$adminurl?action=modstyle" name="modstyles" id="modstyles" method="post" accept-charset="$yymycharset">
 <div class="bordercolor rightboxdiv">
@@ -733,7 +738,8 @@ qq~                   <option value='$highlightstyle'>$templ_txt{'39'}</option>\
         my ( $tmpname, $tmpside )   = split /\_/xsm,  $name;
         my $checked = q{};
         if ( $name eq $buttonbg ) { $checked = q~ checked = "checked"~; }
-        if ( ( $extension =~ m/[gif|png]/ixsm )
+        if (   ( $extension =~ m/[gif|png]/ixsm )
+            && $tmpside
             && $tmpside eq 'left' )
         {
             $bleft  = qq~_left.$extension~;
@@ -1129,7 +1135,7 @@ qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$i
             <textarea rows="4" cols="19">$templ_txt{'35'}</textarea><br />
             <input type="text" size="19" value="$templ_txt{'34a'}" />&nbsp;
             <select value="test">
-                <option>$templ_txt{'36'} $templ_txt{'61'}</option>
+                <option>$templ_txt{'36'}</option>
                 <option>$templ_txt{'36'} 2</option>
             </select>&nbsp;
             <input type="button" value="$templ_txt{'34b'}" class="button" />
@@ -1795,8 +1801,8 @@ sub modify_css2 {
         @style_arr = split /\n/xsm, $style_cnt;
         chomp @style_arr;
 
-        open my $TMPCSS, '>',
-          "$htmldir/Templates/Forum/$style_name.css"
+        our ($TMPCSS);
+        fopen( 'TMPCSS', '>', "$htmldir/Templates/Forum/$style_name.css" )
           or fatal_error( 'cannot_open',
             "$htmldir/Templates/Forum/$style_name.css", 1 );
         for my $style_sgl (@style_arr) {
@@ -1806,7 +1812,7 @@ sub modify_css2 {
             $style_sgl =~ s/$yyhtml_root/[.][.]\/[.][.]/gxsm;
             print {$TMPCSS} "$style_sgl\n" or croak "$croak{'print'} TMPCSS";
         }
-        close $TMPCSS or croak "$croak{'close'} TMPCSS";
+        fclose('TMPCSS') or croak "$croak{'close'} TMPCSS";
 
         $yysetlocation = qq~$adminurl?action=modcss;cssfile=$style_name.css~;
         redirectexit();

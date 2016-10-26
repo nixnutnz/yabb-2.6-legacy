@@ -28,21 +28,26 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## languages ##
+our ( $sendtopicemail, %croak, %floodtxt, %sendtopic_txt, );
+## paths ##
+our ( $datadir, $langdir, $scripturl, );
+## settings ##
 our (
-    $sendtopicmail,       $gpvalid_en,       $iamguest,
-    %INFO,                %floodtxt,         $flood_text,
-    $datadir,             $mysend_valcode,   $showcheck,
-    $spam_questions_gp,   $langdir,          $language,
-    $spam_questions_case, %sendtopic_txt,    $mysend_spam,
-    $spam_question,       $spam_question_id, $spam_questions_send,
-    $spam_image,          $regcheck,         $yymain,
-    $mysend_top,          $uid,              $username,
-    $yytitle,             $yynavigation,     %FORM,
-    $invalmailchar,       $invalemaila,      $invalemailb,
-    $scripturl,           $accept_permafull, $perm_domain,
-    $symlink,             $yysetlocation,    $sendtopicemail,
-    %croak,               %thread_arrayref,
+    $accept_permafull,  $gpvalid_en,          $perm_domain,
+    $regcheck,          $sendtopicmail,       $spam_questions_case,
+    $spam_questions_gp, $spam_questions_send, $symlink,
 );
+## system ##
+our (
+    $flood_text,    $iamguest,         $invalemaila,   $invalemailb,
+    $invalmailchar, $language,         $showcheck,     $spam_image,
+    $spam_question, $spam_question_id, $uid,           $username,
+    $yymain,        $yynavigation,     $yysetlocation, $yytitle,
+    %FORM,          %INFO,             %thread_arrayref,
+);
+## templates ##
+our ( $mysend_spam, $mysend_top, $mysend_valcode, );
 
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
 
@@ -70,10 +75,11 @@ sub send_topic {
     if ($iamguest) { $focus_y_name = q~document.sendtopic.y_name.focus();~; }
 
     if ( !ref $thread_arrayref{$topic} ) {
-        open my $FILE, '<', "$datadir/$topic.txt"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$topic.txt" )
           or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
         @{ $thread_arrayref{$topic} } = <$FILE>;
-        close $FILE or croak "$croak{'close'} $topic.txt";
+        fclose('FILE') or croak "$croak{'close'} $topic.txt";
     }
     my $subject    = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
     my $my_spam    = q{};
@@ -253,10 +259,11 @@ sub send_topic2 {
             $FORM{'verification_question_id'} );
     }
     if ( !ref $thread_arrayref{$topic} ) {
-        open my $FILE, '<', "$datadir/$topic.txt"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$topic.txt" )
           or fatal_error( 'cannot_open', "$datadir/$topic.txt", 1 );
         @{ $thread_arrayref{$topic} } = <$FILE>;
-        close $FILE or croak "$croak{'close'} $topic.txt";
+        fclose('FILE') or croak "$croak{'close'} $topic.txt";
     }
     my $topiclink = qq~$scripturl?num=$topic~;
     if ($accept_permafull) {

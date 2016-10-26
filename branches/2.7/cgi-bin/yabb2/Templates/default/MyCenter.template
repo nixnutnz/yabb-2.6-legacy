@@ -73,7 +73,7 @@ $mycenter_template = qq~
         {yabb mcpmmenu}
         {yabb mcprofmenu}
         {yabb mcpostsmenu}
-     </div>
+    </div>
     <div id="PMcontent" style="float: right; width: 70%; padding: 1px; overflow:auto;">
         <!-- content table start -->
         {yabb mcglobformstart}
@@ -122,13 +122,17 @@ $mypmmenu_inbox = qq~<tr>
             </tr>~;
 
 $mypmmenu_bmbox = qq~<tr>
-                <td class="windowbg2"><img src="$imagesdir/$im_inbox" alt="$inmes_txt{'broadcast'}" title="$inmes_txt{'broadcast'}" /></td>
+                <td class="windowbg2">
+                    <img src="$imagesdir/$im_inbox" alt="$inmes_txt{'broadcast'}" title="$inmes_txt{'broadcast'}" />
+                </td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im;focus=bmess">$inmes_txt{'broadcast'}</a></span></td>
                 <td class="windowbg2"><span class="nav">{yabb BCCount}{yabb inboxNewCount_bm}</span></td>
             </tr>~;
 
 $mypmmenu_gmbox = qq~<tr>
-                <td class="windowbg2"><img src="$imagesdir/$im_inbox" alt="$inmes_txt{'guest'}" title="$inmes_txt{'guest'}" /></td>
+                <td class="windowbg2">
+                    <img src="$imagesdir/$im_inbox" alt="$inmes_txt{'guest'}" title="$inmes_txt{'guest'}" />
+                </td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=im;focus=gmess">$inmes_txt{'guest'}</a></span></td>
                 <td class="windowbg2"><span class="nav">{yabb GCount}{yabb inboxNewCount_gm}</span></td>
             </tr>~;
@@ -254,17 +258,23 @@ $my_mc_pmmenu = qq~
 {yabb MCPmMenu_bmbox}
 {yabb MCPmMenu_gmbox}
             <tr>
-                <td class="windowbg2"><img src="$imagesdir/$im_outbox" alt="$inmes_txt{'draft'}" title="$inmes_txt{'draft'}" /></td>
+                <td class="windowbg2">
+                    <img src="$imagesdir/$im_outbox" alt="$inmes_txt{'draft'}" title="$inmes_txt{'draft'}" />
+                </td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=imdraft">$inmes_txt{'draft'}</a></span> </td>
                 <td class="windowbg2"><span class="nav">{yabb PMdraftnum}</span></td>
             </tr><tr>
-                <td class="windowbg2"><img src="$imagesdir/$im_outbox" alt="$inmes_txt{'outbox'}" title="$inmes_txt{'outbox'}" /></td>
+                <td class="windowbg2">
+                    <img src="$imagesdir/$im_outbox" alt="$inmes_txt{'outbox'}" title="$inmes_txt{'outbox'}" />
+                </td>
                 <td class="windowbg2"><span class="nav bold"><a href="$scripturl?action=imoutbox">$inmes_txt{'outbox'}</a></span></td>
                 <td class="windowbg2"><span class="nav">{yabb PMmoutnum}</span></td>
             </tr><tr>
                 <td colspan="3"><hr class="hr" /></td>
             </tr><tr>
-                <td class="windowbg2"><img src="$imagesdir/$imstore" alt="$inmes_txt{'storage'}" title="$inmes_txt{'storage'}" /></td>
+                <td class="windowbg2">
+                    <img src="$imagesdir/$imstore" alt="$inmes_txt{'storage'}" title="$inmes_txt{'storage'}" />
+                </td>
                 <td class="windowbg2"><span class="small">$inmes_txt{'storage'}</span></td>
                 <td class="windowbg2"><span class="nav">{yabb PMstorenum}</span></td>
             </tr><tr>

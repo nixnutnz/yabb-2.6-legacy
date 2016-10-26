@@ -27,22 +27,27 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language ##
+our ( %croak, %img_txt, %maintxt, %tabmenu_txt, );
+## paths ##
+our ( $boardurl, $langdir, $scripturl, );
+## settings ##
 our (
-    %croak,            $iamadmin,             %INFO,
-    %tab,              %img_txt,              $scripturl,
-    $show_eventbutton, $maxsearchdisplay,     $advsearchaccess,
-    $iamguest,         $birthday_button_show, $ml_allowed,
-    $staff,            $iamgmod,              $iamfmod,
-    $user,             $username,             $yyaext,
-    $do_scramble_id,   $boardurl,             $sessionvalid,
-    $testenv,          %maintxt,              $regtype,
-    $enable_guest_pm,  $pm_level,             $perm_domain,
-    $symlink,          @advanced_tabs,        $allow_gmod_admin,
-    $enable_bm_level,  $loginform,            $accept_permafull,
-    %useraccount,      %tabtxt,               %micon,
-    $tab_lang,         %tabmenu_txt,          $langdir,
-    $addtab_on,        $lang,                 $language
+    $accept_permafull, $addtab_on,        $birthday_button_show,
+    $do_scramble_id,   $enable_bm_level,  $enable_guest_pm,
+    $lang,             $maxsearchdisplay, $ml_allowed,
+    $perm_domain,      $pm_level,         $regtype,
+    $show_eventbutton, $symlink,          @advanced_tabs,
 );
+## system ##
+our (
+    $advsearchaccess, $allow_gmod_admin, $iamadmin, $iamfmod,
+    $iamgmod,         $iamguest,         $language, $loginform,
+    $sessionvalid,    $staff,            $tab_lang, $testenv,
+    $user,            $username,         $yyaext,   %INFO,
+    %micon,           %tab,              %tabtxt,   %useraccount,
+);
+
 load_language('TabMenu');
 get_micon();
 
@@ -296,10 +301,11 @@ sub get_tabtxt2 {
                 $prntab .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
             }
             $prntab .= "1;\n";
-            open my $TABTXT, '>', "$langdir/$tab_lang/tabtext.txt"
+            our ($TABTXT);
+            fopen( 'TABTXT', '>', "$langdir/$tab_lang/tabtext.txt" )
               or croak "$croak{'open'} $tab_lang/tabtext.txt";
             print {$TABTXT} $prntab or croak "$croak{'print'} TABTXT";
-            close $TABTXT or croak "$croak{'close'} $tab_lang/tabtext.txt";
+            fclose('TABTXT') or croak "$croak{'close'} $tab_lang/tabtext.txt";
         }
     }
     return;
@@ -321,10 +327,11 @@ sub get_tabtxt {
                 $prntab .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
             }
             $prntab .= "1;\n";
-            open my $TABTXT, '>', "$langdir/$tab_lang/tabtext.txt"
+            our ($TABTXT);
+            fopen( 'TABTXT', '>', "$langdir/$tab_lang/tabtext.txt" )
               or croak "$croak{'open'} $tab_lang/tabtext.txt";
             print {$TABTXT} $prntab or croak "$croak{'print'} TABTXT";
-            close $TABTXT or croak "$croak{'close'} $tab_lang/tabtext.txt";
+            fclose('TABTXT') or croak "$croak{'close'} $tab_lang/tabtext.txt";
         }
     }
     return;

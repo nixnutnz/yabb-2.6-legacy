@@ -26,24 +26,29 @@ if (@helpcentrepmmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
-
+## languages ##
+our (%helptxt);
+## paths ##
+our ( $helpfile, $scripturl, );
+## settings ##
+our ( $accept_permafull, $enable_ubbc, $guest_media_disallowed, $mbname,
+    $perm_domain, $showyabbcbutt, $symlink, $usehelp_perms, );
+## system ##
 our (
-    $helpfile,        %helptxt,                $language,
-    $yytitle,         $guest_media_disallowed, $use_menu_type,
-    $menusep,         $usehelp_perms,          %memberinfo,
-    $username,        @categoryorder,          %cat,
-    $uid,             %INFO,                   $iamadmin,
-    $iamgmod,         $iamfmod,                $ismod,
-    $help_area,       $scripturl,              $accept_permafull,
-    $symlink,         $help_navbar,            $userclass,
-    $perm_domain,     $yynavigation,           $mbname,
-    $moderator_class, $yymain,                 $global_mod_class,
-    $admin_class,     $helptemplate_loaded,    $section_name,
-    $section_nam,     $body_header,            $help_body,
-    $enable_ubbc,     $showyabbcbutt,          $body_subheader,
-    $body_item,       $main_layout,            $contents,
-    $top_img,         $body_footer,            $content_header,
-    $content_item
+    $contents,      $help_area,   $help_body,    $iamadmin,
+    $iamfmod,       $iamgmod,     $ismod,        $language,
+    $menusep,       $section_nam, $section_name, $uid,
+    $use_menu_type, $username,    $yymain,       $yynavigation,
+    $yytitle,       %cat,         %INFO,         %memberinfo,
+    @categoryorder,
+);
+## templates ##
+our (
+    $admin_class,         $body_footer,      $body_header,
+    $body_item,           $body_subheader,   $content_header,
+    $content_item,        $global_mod_class, $help_navbar,
+    $helptemplate_loaded, $main_layout,      $moderator_class,
+    $top_img,             $userclass,
 );
 
 load_language('HelpCentre');
@@ -216,7 +221,7 @@ sub get_helpfiles {
     my (@helporderlist);
     {
         no strict qw(refs);
-        @helporderlist = @{lc $help_area};
+        @helporderlist = @{ lc $help_area };
     }
     chomp @helporderlist;
 

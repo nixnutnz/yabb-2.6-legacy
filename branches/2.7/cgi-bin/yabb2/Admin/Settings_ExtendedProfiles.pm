@@ -26,23 +26,23 @@ our $settings_extendedprofilespmmods = 0;
 if (@settings_extendedprofilespmmods) {
     $settings_extendedprofilespmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
 our (
-    %croak,    %admin_txt, %admintxt, %admin_img,
-    %lang_ext, %img_txt,   %timetxt,  @months
+    %admin_img, %admin_txt, %admintxt, %croak,
+    %img_txt,   %lang_ext,  %timetxt,  @months,
 );
 ## paths ##
 our ( $adminurl, $memberdir );
 ## settings ##
-our (
-    @ext_prof_fields, $timeselected, @ext_prof_order, @nopostorder,
-    %grp_staff,       %grp_nopost,   %grp_post,       $yymycharset,
-);
+our ( $timeselected, $yymycharset, %grp_nopost, %grp_post, %grp_staff,
+    @ext_prof_fields, @ext_prof_order, @nopostorder, );
 ## other ##
-our ( $action, $action_area, $uid, $username, $yymain, $yytitle, $yysetlocation,
-    %FORM );
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
+our ( $action_area, $uid, $username, $yymain, $yysetlocation, $yytitle, %FORM );
 
 load_language('Admin');
 load_language('ExtendedProfiles');
@@ -904,7 +904,8 @@ qq~\n                <select name="editable_by_user" id="editable_by_user" size=
         closedir EXT_DIR;
 
         for (@contents) {
-            open my $EXT_FILE, '+<', "$memberdir/$_"
+            our ($EXT_FILE);
+            fopen( 'EXT_FILE', '+<', "$memberdir/$_" )
               or fatal_error( 'cannot_open', "$memberdir/$_" );
             seek $EXT_FILE, 0, 0;
             @old_content = <$EXT_FILE>;
@@ -913,7 +914,7 @@ qq~\n                <select name="editable_by_user" id="editable_by_user" size=
             seek $EXT_FILE, 0, 0;
             truncate $EXT_FILE, 0;
             print {$EXT_FILE} $new_content or croak "$croak{'print'} EXT_FILE";
-            close $EXT_FILE or croak "$croak{'close'} EXT_FILE";
+            fclose('EXT_FILE') or croak "$croak{'close'} EXT_FILE";
         }
 
         $yysetlocation = qq~$adminurl?action=ext_admin~;

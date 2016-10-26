@@ -22,21 +22,24 @@ our $smiliespmmods = 0;
 if (@smiliespmmods) {
     $smiliespmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %smiltxt, %asmtxt, );
-## paths ##
-our ( $adminurl, $yyhtml_root, $scripturl, $htmldir, $imagesdir, );
-## settings ##
-our (
-    $yymycharset, $showinbox, $removenormalsmilies, $smiliestyle,
-    $showadded,   $showsmdir, $detachblock,         $winwidth,
-    $winheight,   $popback,   $poptext,             @smilieorder,
-    %addedsmilies,
-);
-## other ##
-our ( $action, $yymain, $yytitle, $yysetlocation, %FORM, %INFO, $action_area );
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %admintxt, %asmtxt, %croak, %smiltxt, );
+## paths ##
+our ( $adminurl, $htmldir, $imagesdir, $scripturl, $yyhtml_root, );
+## settings ##
+our (
+    $detachblock, $popback,   $poptext,     $removenormalsmilies,
+    $showadded,   $showinbox, $showsmdir,   $smiliestyle,
+    $winheight,   $winwidth,  $yymycharset, %addedsmilies,
+    @smilieorder,
+);
+## other ##
+our ( $yymain, $yytitle, $yysetlocation, %FORM, %INFO, $action_area );
 
 load_language('Admin');
 

@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
@@ -25,21 +24,24 @@ our @checkspacepmmods = ();
 if (@checkspacepmmods) {
     $checkspacepmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admin_img, %settings_txt );
+our ( %admin_img, %admin_txt, %croak, %settings_txt, );
 ## paths ##
 our ( $adminurl, $vardir, );
 ## settings ##
-our ( $yymycharset, $hostusername, $findfile_time, $findfile_root,
-    $findfile_maxsize, $enable_freespace_check, );
-## other ##
+our ( $enable_freespace_check, $findfile_maxsize, $findfile_root,
+    $findfile_time, $hostusername, $yymycharset, );
+## system ##
 our (
-    $action,      $yymain,        $yytitle, %FORM,
-    $action_area, $yysetlocation, %INFO,    $yyfreespace,
-    $yyext,       $enable_quota,  @settings,
+    $action_area, $enable_quota,  $yyext,   $yyfreespace,
+    $yymain,      $yysetlocation, $yytitle, %FORM,
+    %INFO,        @settings,
 );
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
 
 load_language('Admin');
 

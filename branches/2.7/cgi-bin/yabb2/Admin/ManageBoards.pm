@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -24,30 +23,33 @@ our $manageboardspmmods = 0;
 if (@manageboardspmmods) {
     $manageboardspmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %selector_txt, %boardpass_txt,
-    %exptxt, %register_txt );
+our ( %admin_img, %admin_txt, %admintxt, %boardpass_txt, %croak, %exptxt,
+    %register_txt, %selector_txt, );
 ## paths ##
 our (
-    $adminurl, $yyhtml_root, $imagesdir, $boardsdir,
-    $datadir,  $upload_dir,  $htmldir,
+    $adminurl,  $boardsdir,  $datadir, $htmldir,
+    $imagesdir, $upload_dir, $yyhtml_root,
 );
 ## settings ##
 our (
-    $yymycharset, %templateset, $do_scramble_id, @nopostorder,
-    %grp_nopost,  %grp_staff,   %grp_post,
+    $do_scramble_id, $yymycharset, %grp_nopost, %grp_post,
+    %grp_staff,      %templateset, @nopostorder,
 );
-## other ##
+## system ##
 our (
-    $action,           $yymain,        $yytitle,     $yysetlocation,
-    $action_area,      $language,      %INFO,        %FORM,
-    $date,             $uid,           $myimgfolder, $cliped,
-    @del_updateparent, $annboard,      $binboard,    $scripturl,
-    %cat,              @categoryorder, %catinfo,     %catboardlist,
-    %subboard,         %board,         @editboards,
+    $action_area,      $annboard, $binboard,      $cliped,
+    $date,             $language, $myimgfolder,   $scripturl,
+    $uid,              $yymain,   $yysetlocation, $yytitle,
+    %board,            %cat,      %catboardlist,  %catinfo,
+    %FORM,             %INFO,     %subboard,      @categoryorder,
+    @del_updateparent, @editboards,
 );
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
 
 load_language('Admin');
 my $adminimages = "$yyhtml_root/Templates/Admin/default";
@@ -226,10 +228,11 @@ qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/
                     }
                     $descr =~ s/\<br\s \/>/\n/gxsm;
                     if ( -e "$boardsdir/brdpics.db" ) {
-                        open my $BRDPIC, '<', "$boardsdir/brdpics.db"
+                        our ($BRDPIC);
+                        fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
                           or croak "$croak{'open'} BRDPIC";
                         my @brdpics = <$BRDPIC>;
-                        close $BRDPIC or croak "$croak{'close'} BRDPIC";
+                        fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
                         chomp @brdpics;
                         for (@brdpics) {
                             my ( $brdnm, $style, $brdpic ) = split /[|]/xsm;
@@ -496,10 +499,11 @@ sub delete_boards {
     require "$boardsdir/forum.control";
     my @oldcontrols = keys %control;
     for my $board (@x) {
-        open my $BOARDDATA, '<', "$boardsdir/$board.txt"
+        our ($BOARDDATA);
+        fopen( 'BOARDDATA', '<', "$boardsdir/$board.txt" )
           or croak "$croak{'open'} BOARDDATA";
         my @messages = <$BOARDDATA>;
-        close $BOARDDATA or croak "$croak{'close'} BOARDDATA";
+        fclose('BOARDDATA') or croak "$croak{'close'} BOARDDATA";
         for my $curmessage (@messages) {
             my ( $id, undef ) = split /[|]/xsm, $curmessage, 2;
             unlink "$datadir/$id.txt";
@@ -516,7 +520,8 @@ sub delete_boards {
         unlink "$boardsdir/$board.poster";
         unlink "$boardsdir/$board.mail";
 
-        open my $ATM, '+<', 'Variables/attachments.db'
+        our ($ATM);
+        fopen( 'ATM', '+<', 'Variables/attachments.db' )
           or croak "$croak{'open'} ATM";
         seek $ATM, 0, 0;
         my @buffer = <$ATM>;
@@ -534,7 +539,7 @@ sub delete_boards {
         truncate $ATM, 0;
         seek $ATM, 0, 0;
         print {$ATM} @buffer or croak "$croak{'print'} ATM";
-        close $ATM or croak "$croak{'close'} ATM";
+        fclose('ATM') or croak "$croak{'close'} ATM";
 
         boardtotals( 'delete', $board );
     }
@@ -574,7 +579,7 @@ sub add_boards {
         my @x = @_;
         $indent += 2;
         for my $childbd (@x) {
-            my $dash;
+            my $dash = q{-};
             if ( $indent > 0 ) { $dash = q{-}; }
             my ( $chldboardname, undef, undef ) =
               split /[|]/xsm, $board{$childbd};
@@ -1078,10 +1083,11 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
         my $brdpic_loc     = q{};
         my $mystyle        = q{};
         if ( -e "$boardsdir/brdpics.db" ) {
-            open my $BRDPIC, '<', "$boardsdir/brdpics.db"
+            our ($BRDPIC);
+            fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
               or croak "$croak{'open'} BRDPIC";
             my @brdpics = <$BRDPIC>;
-            close $BRDPIC or croak "$croak{'close'} BRDPIC";
+            fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
             chomp @brdpics;
             for (@brdpics) {
                 my ( $brdnm, $style, $brdpica ) = split /[|]/xsm;
@@ -1429,11 +1435,12 @@ sub add_boards2 {
             $FORM{"pic$i"} =
               upload_file( "pic$i", qq~Templates/Forum/$myimgfolder/Boards~,
                 'png/jpg/jpeg/gif', '250', '0' );
-            open my $BRDPIC, '>>', "$boardsdir/brdpics.db"
+            our ($BRDPIC);
+            fopen( 'BRDPIC', '>>', "$boardsdir/brdpics.db" )
               or croak "$croak{'open'} BRDPIC";
             print {$BRDPIC} qq~$id|$FORM{"templt$i"}|$newpic\n~
               or croak "$croak{'print'} BRDPIC";
-            close $BRDPIC or croak "$croak{'close'} BRDPIC";
+            fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
 
             if ( $FORM{"cur_pic$i"} ) {
                 unlink
@@ -1448,11 +1455,12 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                 fatal_error('invalid_picture');
             }
             else {
-                open my $BRDPIC, '>>', "$boardsdir/brdpics.db"
+                our ($BRDPIC);
+                fopen( 'BRDPIC', '>>', "$boardsdir/brdpics.db" )
                   or croak "$croak{'open'} BRDPIC";
                 print {$BRDPIC} qq~$id|$FORM{"templt$i"}|$newpic\n~
                   or croak "$croak{'print'} BRDPIC";
-                close $BRDPIC or croak "$croak{'close'} BRDPIC";
+                fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
                 $FORM{"pic$i"} = $FORM{"mypic$i"};
             }
         }
@@ -1469,13 +1477,16 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                     unlink
                       qq~$htmldir/Templates/Forum/$pklst[1]/Boards/$pklst[2]~;
                 }
-                open my $BRDPIC, '<', "$boardsdir/brdpics.db"
+                our ($BRDPIC);
+                fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
                   or croak "$croak{'open'} BRDPIC";
                 my @piclist = <$BRDPIC>;
-                close $BRDPIC or croak "$croak{'close'} BRDPIC";
+                fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
                 chomp @piclist;
-                open my $BRDPIC2, '>', "$boardsdir/brdpics.db"
+                our ($BRDPIC2);
+                fopen( 'BRDPIC2', '>', "$boardsdir/brdpics.db" )
                   or croak "$croak{'open'} BRDPIC";
+
                 for (@piclist) {
                     if ( $_ ne $FORM{$lbl} ) {
                         print {$BRDPIC2} qq~$_\n~
@@ -1486,7 +1497,7 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                           or croak "$croak{'print'} BRDPIC2";
                     }
                 }
-                close $BRDPIC2 or croak "$croak{'close'} BRDPIC2";
+                fclose('BRDPIC2') or croak "$croak{'close'} BRDPIC2";
             }
             $FORM{"pic$i"} = q{};
         }
@@ -1513,10 +1524,11 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                     $subboard{ $FORM{"parent$i"} } = $id;
                 }
             }
-            open my $BOARDINFO, '>', "$boardsdir/$id.txt"
+            our ($BOARDINFO);
+            fopen( 'BOARDINFO', '>', "$boardsdir/$id.txt" )
               or croak "$croak{'open'} BOARDINFO";
             print {$BOARDINFO} q{} or croak "$croak{'print'}' BOARDINFO";
-            close $BOARDINFO or croak "$croak{'close'} BOARDINFO";
+            fclose('BOARDINFO') or croak "$croak{'close'} BOARDINFO";
         }
         if ( $FORM{'screenornot'} eq 'boardscreen' ) {
 
@@ -1638,10 +1650,11 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                 }
             }
             if ( -e "$boardsdir/$id.txt" ) { # fix a(nnboard) in the boardid.txt
-                open my $BOARDINFO, '<', "$boardsdir/$id.txt"
+                our ($BOARDINFO);
+                fopen( 'BOARDINFO', '<', "$boardsdir/$id.txt" )
                   or fatal_error( 'cannot_open', "openboard/$id.txt", 1 );
                 my @boardtomodify = <$BOARDINFO>;
-                close $BOARDINFO or croak "$croak{'close'} BOARDINFO";
+                fclose('BOARDINFO') or croak "$croak{'close'} BOARDINFO";
                 my $x;
                 if ( $FORM{"ann$i"}
                     && ( split /[|]/xsm, $boardtomodify[0] )[8] !~ /a/ism )
@@ -1663,11 +1676,11 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                     }
                 }
                 if ($x) {
-                    open $BOARDINFO, '>', "$boardsdir/$id.txt"
+                    fopen( 'BOARDINFO', '>', "$boardsdir/$id.txt" )
                       or fatal_error( 'cannot_open', "openboard/$id.txt", 1 );
                     print {$BOARDINFO} @boardtomodify
                       or croak "$croak{'print'} BOARDINFO";
-                    close $BOARDINFO or croak "$croak{'close'} BOARDINFO";
+                    fclose('BOARDINFO') or croak "$croak{'close'} BOARDINFO";
                 }
             }
         }

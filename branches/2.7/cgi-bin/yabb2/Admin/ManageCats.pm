@@ -23,20 +23,23 @@ our $managecatspmmods = 0;
 if (@managecatspmmods) {
     $managecatspmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admin_img, %exptxt, );
-## paths ##
-our ( $adminurl, $yyhtml_root, $imagesdir, $htmldir );
-## settings ##
-our ( $yymycharset, );
-## other ##
-our (
-    $action,      $yymain,   $yytitle, $yysetlocation,
-    $action_area, $language, %INFO,    %FORM,
-    $date,        %cat,      %catinfo, @categoryorder,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_txt, %admin_img, %croak, %exptxt, );
+## paths ##
+our ( $adminurl, $htmldir, $imagesdir, $yyhtml_root );
+## settings ##
+our ($yymycharset);
+## other ##
+our (
+    $action_area,   $date,    $language, $yymain,
+    $yysetlocation, $yytitle, %cat,      %catinfo,
+    %FORM,          %INFO,    @categoryorder,
+);
 
 load_language('Admin');
 

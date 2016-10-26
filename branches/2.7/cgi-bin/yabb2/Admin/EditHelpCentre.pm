@@ -23,20 +23,20 @@ our @edithelpcentrepmmods = ();
 if (@edithelpcentrepmmods) {
     $edithelpcentrepmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %helptxt, %lngs );
-## paths ##
-our ( $adminurl, $vardir, $langdir, $helpfile );
-## settings ##
-our ( $yymycharset, $usehelp_perms, );
-## other ##
-our (
-    $action,        $yymain,      $yytitle,
-    $yysetlocation, $action_area, $language,
-    $lang,          %INFO,        %FORM,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %admintxt, %croak, %helptxt, %lngs, );
+## paths ##
+our ( $adminurl, $helpfile, $langdir, $vardir );
+## settings ##
+our ( $lang, $usehelp_perms, $yymycharset, );
+## system ##
+our ( $action_area, $language, $yymain, $yysetlocation, $yytitle, %FORM, %INFO,
+);
 
 load_language('Admin');
 load_language('HelpCentre');
@@ -167,10 +167,11 @@ qq~\$$txtrevision = '$mytxtrevision';\nif ( \$action eq 'detailedversion' ) { re
     }
     $prhelp .= qq~1;\n~;
     $area = ucfirst $area;
-    open my $HELPORDER, '>', "$helpfile/$help_language/$area/$page.help"
+    our ($HELPORDER);
+    fopen( 'HELPORDER', '>', "$helpfile/$help_language/$area/$page.help" )
       or croak "$croak{'open'} $helpfile/$help_language/$area/$page.help";
     print {$HELPORDER} $prhelp or croak "$croak{'print'} HELPORDER";
-    close $HELPORDER or croak "$croak{'close'} HELPFILE";
+    fclose('HELPORDER') or croak "$croak{'close'} HELPFILE";
 
     $yymain .= $helptxt{'8'};
     $yytitle       = $helptxt{'7'};
@@ -289,12 +290,13 @@ sub set_orderfile {
             }
         }
     }
-    open my $HELPORDER, '>', "$helpfile/$help_language/HelpOrder.pm"
+    our ($HELPORDER);
+    fopen( 'HELPORDER', '>', "$helpfile/$help_language/HelpOrder.pm" )
       or croak(
 "could not write order file - check permissions on $helpfile/$help_language"
       );
     print {$HELPORDER} $prhlp or croak "$croak{'print'} HELPFILE";
-    close $HELPORDER or croak "$croak{'close'} HELPORDER";
+    fclose('HELPORDER') or croak "$croak{'close'} HELPORDER";
     $yytitle       = $helptxt{'7'};
     $yysetlocation = qq~$adminurl?action=edithelp;help_language=$help_language~;
     redirectexit();

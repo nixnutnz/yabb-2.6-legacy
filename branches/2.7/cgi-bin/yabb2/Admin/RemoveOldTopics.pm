@@ -23,20 +23,23 @@ our $removeoldtopicspmmods = 0;
 if (@removeoldtopicspmmods) {
     $removeoldtopicspmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admin_img, %removemess_txt );
-## paths ##
-our ( $adminurl, $yyhtml_root, $boardsdir, $datadir );
-## settings ##
-our ( $yymycharset, %settings );
-## other ##
-our (
-    $action,      $yymain,   $yytitle, $yysetlocation,
-    $action_area, $language, %INFO,    %FORM,
-    $date,        $max_process_time,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_txt, %admin_img, %croak, %removemess_txt );
+## paths ##
+our ( $adminurl, $boardsdir, $datadir, $yyhtml_root );
+## settings ##
+our ( $yymycharset, %settings );
+## system ##
+our (
+    $action_area,      $date,   $language,
+    $max_process_time, $yymain, $yysetlocation,
+    $yytitle,          %FORM,   %INFO,
+);
 
 my $time_to_jump = time() + $max_process_time;
 
@@ -73,10 +76,11 @@ sub remove_old_threads {
         if ( $checkboard && $checkboard == 1 ) {
             $keep_sticky = ( $FORM{'keep_them'} || $INFO{'keep_them'} ) ? 1 : 0;
 
-            open my $BOARDFILE, '<', "$boardsdir/$boards[$j].txt"
+            our ($BOARDFILE);
+            fopen( 'BOARDFILE', '<', "$boardsdir/$boards[$j].txt" )
               or croak "$croak{'open'} BOARDFILE";
             my @threads = <$BOARDFILE>;
-            close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
+            fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
 
             my $totalthreads = @threads;
             my ($boardname) = split /[|]/xsm, $board{ $boards[$j] }, 2;
@@ -146,13 +150,12 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
                     @temparray_1 =
                       reverse sort { lc($a) cmp lc $b } @temparray_1;
                     my $prnarray = join q{}, @temparray_1;
-                    open my $BOARDFILE, '>',
-                      "$boardsdir/$boards[$j].txt"
+                    fopen( 'BOARDFILE', '>', "$boardsdir/$boards[$j].txt", 1 )
                       or fatal_error( 'cannot_open',
                         "$boardsdir/$boards[$j].txt", 1 );
                     print {$BOARDFILE} $prnarray
                       or croak "$croak{'print'} BOARDFILE";
-                    close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
+                    fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
 
                     # remove attachments of removed topics
                     remove_attachments( \%attachfile );
@@ -167,10 +170,10 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
             }
             @temparray_1 = reverse sort { lc($a) cmp lc $b } @temparray_1;
             my $prnarray = join q{}, @temparray_1;
-            open $BOARDFILE, '>', "$boardsdir/$boards[$j].txt"
+            fopen( 'BOARDFILE', '>', "$boardsdir/$boards[$j].txt", 1 )
               or fatal_error( 'cannot_open', "$boardsdir/$boards[$j].txt", 1 );
             print {$BOARDFILE} $prnarray or croak "$croak{'print'} BOARDFILE";
-            close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
+            fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
 
             BoardCountTotals( $boards[$j] );
             $INFO{'total_rem_count'} += $tempcount;

@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);    #save_settings sub
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
@@ -25,24 +24,25 @@ our $settings_antispampmmods = 0;
 if (@settings_antispampmmods) {
     $settings_antispampmmods = 1;
 }
+
+our ( $action, );
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admintxt, %settings_txt, %tsc_txt,
-    %domain_filter_txt );
+our ( %admin_txt, %admintxt, %croak, %domain_filter_txt, %settings_txt,
+    %tsc_txt, );
 ## paths ##
 our ($adminurl);
 ## settings ##
 our (
-    @spamrules,          $min_reg_time,   $post_speed_count,
-    $minlinkpost,        $minlinksig,     $spd_detention_time,
-    $speedpostdetection, $min_post_speed, @adomains,
-    @bdomains,           $minlinkweb,     $timeout,
-    $honeypot,           $spamfruits,     $error_spd,
-    $spamr
+    $error_spd,    $honeypot,           $min_post_speed,
+    $min_reg_time, $minlinkpost,        $minlinksig,
+    $minlinkweb,   $post_speed_count,   $spamfruits,
+    $spamr,        $spd_detention_time, $speedpostdetection,
+    $timeout,      @adomains,           @bdomains,
+    @spamrules,
 );
-## other ##
-our ( $action, );
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
 
 load_language('Admin');
 
@@ -205,43 +205,47 @@ qq~<textarea cols="60" rows="35" name="bdomains" id="bdomains" style="width: 95%
 );
 
 # Routine to save them
-sub save_settings {
-    my %settings = @_;
+{
+    no warnings qw(redefine);    #save_settings sub
 
-    # TSC
-    $settings{'spamrules'} =~ s/\r(?=\n*)//gxsm;
-    my @spamr = split /\n/xsm, $settings{'spamrules'};
-    $spamr = join q~', '~, @spamr;
-    $settings{'spamrules'} = qq~'$spamr'~;
+    sub save_settings {
+        my %settings = @_;
 
-    # email domain filter
+        # TSC
+        $settings{'spamrules'} =~ s/\r(?=\n*)//gxsm;
+        my @spamr = split /\n/xsm, $settings{'spamrules'};
+        $spamr = join q~', '~, @spamr;
+        $settings{'spamrules'} = qq~'$spamr'~;
 
-    my $adomainsx = $settings{'adomains'};
-    my $bdomainsx = $settings{'bdomains'};
-    local *cleandomain = sub {
-        my ($x) = @_;
-        $x =~ s/\n/,/gxsm;
-        $x =~ s/\s+//gxsm;
-        $x =~ s/(^,+|,+$)//gxsm;
-        $x =~ s/,+/,/gxsm;
-        $x =~ s/\@/\\@/gxsm;
-        return $x;
-    };
-    if ($adomainsx) {
-        $adomainsx            = cleandomain($adomainsx);
-        @adomains             = split /,/xsm, $adomainsx;
-        $adomainsx            = join q~', '~, @adomains;
-        $settings{'adomains'} = qq~'$adomainsx'~;
+        # email domain filter
+
+        my $adomainsx = $settings{'adomains'};
+        my $bdomainsx = $settings{'bdomains'};
+        local *cleandomain = sub {
+            my ($x) = @_;
+            $x =~ s/\n/,/gxsm;
+            $x =~ s/\s+//gxsm;
+            $x =~ s/(^,+|,+$)//gxsm;
+            $x =~ s/,+/,/gxsm;
+            $x =~ s/\@/\\@/gxsm;
+            return $x;
+        };
+        if ($adomainsx) {
+            $adomainsx            = cleandomain($adomainsx);
+            @adomains             = split /,/xsm, $adomainsx;
+            $adomainsx            = join q~', '~, @adomains;
+            $settings{'adomains'} = qq~'$adomainsx'~;
+        }
+        if ($bdomainsx) {
+            $bdomainsx            = cleandomain($bdomainsx);
+            @bdomains             = split /,/xsm, $bdomainsx;
+            $bdomainsx            = join q~', '~, @bdomains;
+            $settings{'bdomains'} = qq~'$bdomainsx'~;
+        }
+
+        save_settings_to( 'Settings.pm', %settings );
+        return;
     }
-    if ($bdomainsx) {
-        $bdomainsx            = cleandomain($bdomainsx);
-        @bdomains             = split /,/xsm, $bdomainsx;
-        $bdomainsx            = join q~', '~, @bdomains;
-        $settings{'bdomains'} = qq~'$bdomainsx'~;
-    }
-
-    save_settings_to( 'Settings.pm', %settings );
-    return;
 }
 
 1;

@@ -24,24 +24,32 @@ our $guardianpmmods = 0;
 if (@guardianpmmods) {
     $guardianpmmods = 1;
 }
-
+##languages##
+our ( %croak, %guardian_txt, %maintxt, );
+## settings ##
 our (
-    %croak,            %guardian_txt,            %director,
-    $webmaster_email,  $use_guardian,            $whitelist,
-    $username,         $disallow_proxy_on,       $iamadmin,
-    $iamgmod,          $disallow_proxy_notify,   $mbname,
-    %maintxt,          $uid,                     $date,
-    $use_htaccess,     $disallow_proxy_htaccess, $user_ip,
-    $referer_on,       $banned_referers,         $referer_notify,
-    $referer_htaccess, $harvester_on,            $banned_harvesters,
-    $harvester_notify, $request_on,              $harvester_htaccess,
-    $banned_requests,  $request_notify,          $request_htaccess,
-    $string_on,        $banned_strings,          $string_notify,
-    $string_htaccess,  $action,                  $union_on,
-    $union_notify,     $union_htaccess,          $clike_on,
-    $clike_notify,     $clike_htaccess,          $script_on,
-    %INFO,             $script_notify,           $script_htaccess,
-    %FORM,
+    $banned_harvesters,     $banned_referers,
+    $banned_requests,       $banned_strings,
+    $clike_htaccess,        $clike_notify,
+    $clike_on,              $disallow_proxy_htaccess,
+    $disallow_proxy_notify, $disallow_proxy_on,
+    $harvester_htaccess,    $harvester_notify,
+    $harvester_on,          $mbname,
+    $referer_htaccess,      $referer_notify,
+    $referer_on,            $request_htaccess,
+    $request_notify,        $request_on,
+    $script_htaccess,       $script_notify,
+    $script_on,             $string_htaccess,
+    $string_notify,         $string_on,
+    $union_htaccess,        $union_notify,
+    $union_on,              $use_guardian,
+    $use_htaccess,          $webmaster_email,
+    $whitelist,
+);
+## system ##
+our (
+    $action,  $date,     $iamadmin, $iamgmod, $uid,
+    $user_ip, $username, %director, %FORM,    %INFO,
 );
 
 my $not_from = $webmaster_email;
@@ -672,9 +680,10 @@ sub update_htaccess {
     my ( $act, $value ) = @_;
     my ( $htheader, $htfooter, @denies, @htout );
     if ( !$act ) { return 0; }
-    open my $HTA, '<', '.htaccess' or croak "$croak{'open'} .htaccess";
+    our ($HTA);
+    fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} .htaccess";
     my @htlines = <$HTA>;
-    close $HTA or croak "$croak{'close'} .htaccess";
+    fclose('HTA') or croak "$croak{'close'} .htaccess";
 
 # header to determine only who has access to the main script, not the admin script
     $htheader = q~<Files YaBB*>~;
@@ -703,9 +712,9 @@ sub update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        open $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
+        fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        close $HTA or croak "$croak{'close'} HTA";
+        fclose('HTA') or croak "$croak{'close'} HTA";
     }
     return;
 }

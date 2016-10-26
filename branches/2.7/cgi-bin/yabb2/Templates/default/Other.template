@@ -165,11 +165,11 @@ qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
     <meta charset=$yymycharset">
-<title>$smiltxt{'1'}</title>
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
-<style type="text/css">
-.moresmiles {vertical-align:bottom; cursor:pointer;}
-</style>
+    <title>$smiltxt{'1'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <style type="text/css">
+    .moresmiles {vertical-align:bottom; cursor:pointer;}
+    </style>
 <script type="text/javascript">
 function AddText(text) {
     if (window.opener && !window.opener.closed) {
@@ -211,8 +211,8 @@ qq~<!DOCTYPE html>
 <html lang="$abbr_lang">
 <head>
     <meta charset=$yymycharset">
-<title>$smiltxt{'1'}</title>
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <title>$smiltxt{'1'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 <script type="text/javascript">
 function AddText(text) {
     if (window.opener && !window.opener.closed) {

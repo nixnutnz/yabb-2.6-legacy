@@ -235,7 +235,7 @@ $my_sel_box = q~<tr>
 
 $my_usersel_inst = qq~<tr>
             <td class="windowbg2" style="height:62px">
-                <span class="small">{yabb instruct_start} {yabb instruct_end} </span><br />
+                <span class="small">{yabb instruct_start} {yabb instruct_end}{yabb inst3}</span><br />
             </td>
         </tr>
     </table>

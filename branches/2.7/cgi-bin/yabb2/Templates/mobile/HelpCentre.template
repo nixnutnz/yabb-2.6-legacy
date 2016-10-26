@@ -34,7 +34,7 @@ $help_navbar = q~
 ~;
 
 ### The Main Layout for the whole page. ###
-$main_layout = qq~
+$main_layout = q~
     <div class="catbg padd_4px helpborder">{yabb helptxt2}</div>
     <div class="windowbg2 padd_4px" style="margin-bottom: 1em; height: 5em; overflow: auto">{yabb contents}</div>
 {yabb body}

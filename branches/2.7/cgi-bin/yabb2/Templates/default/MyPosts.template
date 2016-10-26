@@ -172,8 +172,8 @@ $my_boardnote = qq~
 </script>
     <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
     <div class="tabtitle" style="padding-left:1em; line-height:3em; vertical-align:bottom">
-         <img src="$imagesdir/$brd_notify_img" alt="{yabb notify_txt136}" title="{yabb notify_txt136}" /> <b>{yabb notify_txt136}</b>
-         {yabb note_brd}
+        <img src="$imagesdir/$brd_notify_img" alt="{yabb notify_txt136}" title="{yabb notify_txt136}" /> <b>{yabb notify_txt136}</b>
+        {yabb note_brd}
     </div>
     <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
         <colgroup>
@@ -185,8 +185,8 @@ $my_boardnote = qq~
     </form>
     <form action="$scripturl?action=notify4" method="post" name="threadnotify">
     <div class="tabtitle" style="padding-left:1em; line-height:3em; vertical-align:bottom">
-                <img src="$imagesdir/$brd_notify_img" alt="{yabb notify_txt118}" title="{yabb notify_txt118}" /> <b>{yabb notify_txt118}</b>
-     </div>
+        <img src="$imagesdir/$brd_notify_img" alt="{yabb notify_txt118}" title="{yabb notify_txt118}" /> <b>{yabb notify_txt118}</b>
+    </div>
     <table class="pad_4px cs_thin">
         <colgroup>
             <col style="85%" />

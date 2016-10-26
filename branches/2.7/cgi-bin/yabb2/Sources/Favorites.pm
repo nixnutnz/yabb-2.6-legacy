@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -28,28 +27,32 @@ if (@favoritespmmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
-
+##languages##
+our ( %croak, %favicon, %img, %img_txt, %messageindex_txt, %micon, %micon_bg,
+    %pidtxt, );
+##paths ##
+our ( $boardsdir, $datadir, $imagesdir, $memberdir, $scripturl, );
+## settings ##
 our (
-    %croak,              %INFO,             %moved_file,
-    $maxfavs,            $uid,              $username,
-    $datadir,            %board,            %catinfo,
-    $iamadmin,           $boardsdir,        $date,
-    $max_log_days_old,   %messageindex_txt, $hot_topic,
-    $very_hot_topic,     $annboard,         $perm_domain,
-    $symlink,            $iamguest,         $currentboard,
-    %yyuserlog,          $scripturl,        %micon,
-    %img,                %useraccount,      %format_unbold,
-    %pidtxt,             $createpoll_date,  $maxmessagedisplay,
-    $ttsreverse,         $showpageall,      $memberdir,
-    %micon_bg,           $threadbar,        $threadbarmoved,
-    %favicon,            %my_favs,          $accept_permalink,
-    $staff,              $admincolumn,      $no_favs,
-    $sessionvalid,       $subfooterbar,     $adminheader,
-    $favorites_template, $yynavigation,     %img_txt,
-    $bdpic_ext,          %FORM,             $boarddescription,
-    $imagesdir,          $yysetlocation,    $yytitle,
-    $yyjavascript,       $usethread_tools,  $menusep,
-    $my_favbrds,         $show_favorites,
+    $accept_permalink,  $hot_topic,   $max_log_days_old, $maxfavs,
+    $maxmessagedisplay, $perm_domain, $showpageall,      $symlink,
+    $ttsreverse,        $very_hot_topic
+);
+## system ##
+our (
+    $annboard,      $bdpic_ext,       $createpoll_date, $currentboard,
+    $date,          $iamadmin,        $iamguest,        $menusep,
+    $sessionvalid,  $show_favorites,  $staff,           $uid,
+    $username,      $usethread_tools, $yyjavascript,    $yynavigation,
+    $yysetlocation, $yytitle,         %board,           %catinfo,
+    %FORM,          %format_unbold,   %INFO,            %moved_file,
+    %my_favs,       %useraccount,     %yyuserlog,
+);
+##templates ##
+our (
+    $admincolumn,        $adminheader, $boarddescription,
+    $favorites_template, $my_favbrds,  $no_favs,
+    $subfooterbar,       $threadbar,   $threadbarmoved,
 );
 
 sub favorites {
@@ -133,14 +136,15 @@ sub favorites {
               );
         }
 
-        open my $BRDTXT, '<', "$boardsdir/$loadboard.txt"
+        our ($BRDTXT);
+        fopen( 'BRDTXT', '<', "$boardsdir/$loadboard.txt" )
           or fatal_error( 'cannot_open', "$boardsdir/$loadboard.txt", 1 );
         while ( my $brd = <$BRDTXT> ) {
             if ( ( split /[|]/xsm, $brd, 2 )[0] eq $loadfav ) {
                 push @threads, $brd;
             }
         }
-        close $BRDTXT or croak "$croak{'close'} BRDTXT";
+        fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
     }
 
     my $curfav = @threads;
@@ -150,12 +154,13 @@ sub favorites {
     my %attachments;
     my $att_length = -s 'Variables/attachments.db';
     if ( ( -s 'Variables/attachments.db' ) > 5 ) {
-        open my $ATM, '<', 'Variables/attachments.db'
+        our ($ATM);
+        fopen( 'ATM', '<', 'Variables/attachments.db' )
           or croak "$croak{'open'} ATM";
         while (<$ATM>) {
             $attachments{ ( split /[|]/xsm, $_, 2 )[0] }++;
         }
-        close $ATM or croak "$croak{'close'} ATM";
+        fclose('ATM') or croak "$croak{'close'} ATM";
     }
 
     # Print the header and board info.
@@ -245,11 +250,18 @@ qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_
             # Decide if thread should have the "NEW" indicator next to it.
             # Do this by reading the user's log for last read time on thread,
             # and compare to the last post time on the thread.
-            $dlp =
-              int( $yyuserlog{$mnum} ) >
-              int( $yyuserlog{"$currentboard--mark"} )
-              ? int( $yyuserlog{$mnum} )
-              : int $yyuserlog{"$currentboard--mark"};
+            if (
+                !$yyuserlog{"$currentboard--mark"}
+                || (   $yyuserlog{$mnum}
+                    && $yyuserlog{"$currentboard--mark"}
+                    && int( $yyuserlog{$mnum} ) >
+                    int $yyuserlog{"$currentboard--mark"} )
+              )
+            {
+                $dlp = int $yyuserlog{$mnum};
+            }
+            else { $dlp = int $yyuserlog{"$currentboard--mark"}; }
+
             if (   $yyuserlog{"$mnum--unread"}
                 || ( !$dlp && $mdate > $dmax )
                 || ( $dlp > $dmax && $dlp < $mdate ) )
@@ -276,10 +288,11 @@ qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
         my $mpoll = q{};
         if ( -e "$datadir/$mnum.poll" ) {
             $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
-            open my $POLL, '<', "$datadir/$mnum.poll"
+            our ($POLL);
+            fopen( 'POLL', '<', "$datadir/$mnum.poll" )
               or croak "$croak{'open'} POLL";
             my @poll = <$POLL>;
-            close $POLL or croak "$croak{'close'} POLL";
+            fclose('POLL') or croak "$croak{'close'} POLL";
             my (
                 $poll_question, $poll_locked, $poll_uname,   $poll_name,
                 $poll_email,    $poll_date,   $guest_vote,   $hide_results,
@@ -293,10 +306,10 @@ qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
                 $poll[0] =
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
                 my $prnpoll = join q{}, @poll;
-                open my $POLL, '>', "$datadir/$mnum.poll"
+                fopen( 'POLL', '>', "$datadir/$mnum.poll" )
                   or croak "$croak{'open'} POLL";
                 print {$POLL} $prnpoll or croak "$croak{'print'} POLL";
-                close $POLL or croak "$croak{'close'} POLL";
+                fclose('POLL') or croak "$croak{'close'} POLL";
             }
             $micon = $img{'pollicon'};
             if ($poll_locked) { $micon = $img{'polliconclosed'}; }
@@ -305,10 +318,11 @@ qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
                     $micon = $img{'polliconnew'};
                 }
                 else {
-                    open my $POLLED, '<', "$datadir/$mnum.polled"
+                    our ($POLLED);
+                    fopen( 'POLLED', '<', "$datadir/$mnum.polled" )
                       or croak "$croak{'open'} POLLED";
                     my $polled = <$POLLED>;
-                    close $POLLED or croak "$croak{'close'} POLLED";
+                    fclose('POLLED') or croak "$croak{'close'} POLLED";
                     if ( $dlp < ( split /[|]/xsm, $polled )[3] ) {
                         $micon = $img{'polliconnew'};
                     }
@@ -482,6 +496,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         my $admincol = $admincolumn;
         $admincol =~ s/\Q{yabb admin}\E/$adminbar/gxsm;
 
+        $favicon{$mnum} ||= q{};
         $tempbar =~ s/\Q{yabb admin column}\E/$admincol/gxsm;
         $tempbar =~ s/\Q{yabb threadpic}\E/$threadpic/gxsm;
         $tempbar =~ s/\Q{yabb icon}\E/$micon/gxsm;
@@ -544,6 +559,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
     $currentboard ||= q{};
     my $formstart =
 qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multiremfav" method="post" style="display: inline">~;
+    $INFO{'start'} ||= q{};
     my $formend =
       qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
 
@@ -625,7 +641,7 @@ qq~ <img src="$imagesdir/$my_favbrds" alt="$img_txt{'70'}" title="$img_txt{'70'}
 
 sub add_fav {
     my @x      = @_;
-    my $favo   = $INFO{'fav'} || $x[0];
+    my $favo   = $INFO{'fav'} || $x[0] || q{};
     my $goto   = $INFO{'start'} || $x[1] || 0;
     my $return = $x[2];
 
@@ -676,14 +692,14 @@ sub rem_fav {
     {
         no strict qw(refs);
         foreach ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
-            if ( $favo ne $_ ) { push @newfav, $_; }
+            if ( $favo && $favo ne $_ ) { push @newfav, $_; }
         }
 
         ${ $uid . $username }{'favorites'} = join q{,}, undupe(@newfav);
     }
     user_account( $username, 'update' );
 
-    return if $x[1] eq 'nonexist';
+    if (!$x[1] || $x[1] eq 'nonexist') { return;}
     if (   $INFO{'ref'} ne 'delete'
         && $action ne 'multiremfav'
         && $INFO{'oldaddfav'} )
@@ -701,7 +717,7 @@ sub rem_fav {
 
 sub is_fav {
     my @x         = @_;
-    my $favo      = $x[0];
+    my $favo      = $x[0] || q{};
     my $goto      = $x[1] || 0;
     my $postcheck = $x[2];
 

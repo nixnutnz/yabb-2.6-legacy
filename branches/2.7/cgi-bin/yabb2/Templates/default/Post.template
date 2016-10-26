@@ -23,7 +23,7 @@ $cat_exp = $newload{'brd_exp'};
 $post_error = qq~$imagesdir/exclamation.png~;
 
 $my_spacer = q{};
-if (!$enable_quickreply) {$my_spacer = 'style="margin-bottom:1em;"';}
+if (!$enable_quickreply) {$my_spacer = ' style="margin-bottom:1em;"';}
 $messageclass = 'message';
 $my_guestpost_col = 2;
 
@@ -312,7 +312,7 @@ $my_poll_comment_b = q~</td>
     </tr>~;
 
 $mypost_poll_pie = qq~<tr>
-        <td class="windowbg2" colspan="5" style="font-size: 3px;">
+        <td class="windowbg2" colspan="5" style="font-size: .3em;">
             <script type="text/javascript">
             var tmpslicecolor;
             var itohex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
@@ -549,7 +549,7 @@ $mypost_lastmod = qq~<tr class="windowbg">
     </tr>~;
 
 $my_spamchk = q~<table><tr><td>
-            {yabb verification_field} 
+            {yabb verification_field}
             {yabb verification_question_field}
             </td></tr></table>~;
 

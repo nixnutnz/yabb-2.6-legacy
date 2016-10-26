@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -24,37 +23,37 @@ our $guardianadminpmmods = 0;
 if (@guardianadminpmmods) {
     $guardianadminpmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admin_img, %guardian_txt );
+our ( %admin_img, %admin_txt, %croak, %guardian_txt );
 ## paths ##
 our ( $adminurl, $yyhtml_root );
 ## settings ##
 our (
-    $yymycharset,             $banned_harvesters,
-    $banned_referers,         $banned_requests,
-    $banned_strings,          $whitelist,
-    $use_guardian,            $use_htaccess,
-    $disallow_proxy_on,       $disallow_proxy_notify,
-    $disallow_proxy_htaccess, $referer_on,
-    $referer_notify,          $referer_htaccess,
-    $harvester_on,            $harvester_notify,
-    $harvester_htaccess,      $request_on,
-    $request_notify,          $request_htaccess,
-    $string_on,               $string_notify,
-    $string_htaccess,         $script_on,
-    $script_notify,           $script_htaccess,
-    $union_on,                $union_notify,
-    $union_htaccess,          $clike_on,
-    $clike_notify,            $clike_htaccess
+    $banned_harvesters,     $banned_referers,
+    $banned_requests,       $banned_strings,
+    $clike_htaccess,        $clike_notify,
+    $clike_on,              $disallow_proxy_htaccess,
+    $disallow_proxy_notify, $disallow_proxy_on,
+    $harvester_htaccess,    $harvester_notify,
+    $harvester_on,          $referer_htaccess,
+    $referer_notify,        $referer_on,
+    $request_htaccess,      $request_notify,
+    $request_on,            $script_htaccess,
+    $script_notify,         $script_on,
+    $string_htaccess,       $string_notify,
+    $string_on,             $union_htaccess,
+    $union_notify,          $union_on,
+    $use_guardian,          $use_htaccess,
+    $whitelist,             $yymycharset,
 );
-## other ##
-our (
-    $action,        $yymain,      $yytitle,
-    $yysetlocation, $action_area, $language,
-    %INFO,          %FORM,        $date
-);
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
+## system ##
+our ( $action_area, $date, $language, $yymain, $yysetlocation, $yytitle, %FORM,
+    %INFO, );
 
 load_language('Admin');
 load_language('Guardian');
@@ -425,9 +424,10 @@ sub gr_update_htaccess {
     if ( !$act ) { return 0; }
     my @htlines;
     if ( -e '.htaccess' ) {
-        open my $HTA, '<', '.htaccess' or croak "$croak{'open'} HTA";
+        our ($HTA);
+        fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} HTA";
         @htlines = <$HTA>;
-        close $HTA or croak "$croak{'close'} HTA";
+        fclose('HTA') or croak "$croak{'close'} HTA";
     }
 
 # header to determine only who has access to the main script, not the admin script
@@ -462,9 +462,10 @@ sub gr_update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
+        our ($HTA);
+        fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        close $HTA or croak "$croak{'close'} HTA";
+        fclose('HTA') or croak "$croak{'close'} HTA";
     }
     elsif ( $action eq 'add' ) {
         push @denies, @values;

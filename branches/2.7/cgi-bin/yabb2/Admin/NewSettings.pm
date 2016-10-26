@@ -636,17 +636,19 @@ sub save_settings_to {
     require "$langdir/Lang.lng";
     for ( keys %lngs ) {
         if ( ${ $_ . '_maintenancetext' } ) {
-            open my $MAINT, '>', "$langdir/$_/maintenancetext.txt"
+            our ($MAINT);
+            fopen( 'MAINT', '>', "$langdir/$_/maintenancetext.txt" )
               or croak "$croak{'open'} MAINT";
             print {$MAINT} ${ $_ . '_maintenancetext' }
               or croak "$croak{'print'} MAINT";
-            close $MAINT or croak "$croak{'close'} MAINT";
+            fclose('MAINT') or croak "$croak{'close'} MAINT";
         }
         if ( ${ $_ . '_news' } ) {
-            open my $NEWS, '>', "$langdir/$_/news.txt"
+            our ($NEWS);
+            fopen( 'NEWS', '>', "$langdir/$_/news.txt" )
               or fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
             print {$NEWS} ${ $_ . '_news' } or croak "$croak{'print'} NEWS";
-            close $NEWS or croak "$croak{'close'} NEWS";
+            fclose('NEWS') or croak "$croak{'close'} NEWS";
         }
     }
 
@@ -824,7 +826,7 @@ qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\
 ###############################################################################
 
 ########## Board Info ##########
-# Note: these settings must be properly set for YaBB to work
+# Note: these settings must be properly changed for YaBB to work
 
 \$settings_file_version = '$yabbversion';
 \$yabbversion = '$yabbversion';

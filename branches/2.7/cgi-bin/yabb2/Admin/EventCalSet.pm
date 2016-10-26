@@ -17,37 +17,40 @@ use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-our $eventcalsetpmver = 'YaBB 2.7.00 $Revision$';
+our $eventcalsetpmver  = 'YaBB 2.7.00 $Revision$';
 our @eventcalsetpmmods = ();
 our $eventcalsetpmmods = 0;
 if (@eventcalsetpmmods) {
     $eventcalsetpmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admin_img, %event_cal, %userlevel_txt, %var_cal );
-## paths ##
-our ( $adminurl, $vardir, $yyhtml_root, $imagesdir, $htmldir );
-## settings ##
-our (
-    $yymycharset,         $event_todaycolor,     $cal_event_perms,
-    $show_eventbutton,    $show_event_cal,       $show_event_birthdays,
-    $show_sunday,         $show_caltoday,        $show_mini_calicons,
-    $scroll_events,       $cal_event_display,    $display_events,
-    $cal_event_short,     $no_short_ubbc,        $delete_eventsuntil,
-    $show_colorlinks,     $cal_event_mods,       $cal_event_private,
-    $cal_event_noname,    $cal_max_messlen,      $cal_admax_messlen,
-    $birthday_list_show,  $birthday_button_show, $birthday_date_show,
-    $birthday_color_show, $birthday_sign_show,   $calsplit,
-    %newcalicon
-);
-## other ##
-our (
-    $action,      $yymain,        $yytitle, %FORM,
-    $action_area, $yysetlocation, $uid,     $username,
-    %INFO,        $scripturl,     $date,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %croak, %event_cal, %userlevel_txt, %var_cal );
+## paths ##
+our ( $adminurl, $htmldir, $imagesdir, $vardir, $yyhtml_root, );
+## settings ##
+our (
+    $birthday_button_show, $birthday_color_show, $birthday_date_show,
+    $birthday_list_show,   $birthday_sign_show,  $cal_admax_messlen,
+    $cal_event_display,    $cal_event_mods,      $cal_event_noname,
+    $cal_event_perms,      $cal_event_private,   $cal_event_short,
+    $cal_max_messlen,      $calsplit,            $delete_eventsuntil,
+    $display_events,       $event_todaycolor,    $no_short_ubbc,
+    $scroll_events,        $show_caltoday,       $show_colorlinks,
+    $show_event_birthdays, $show_event_cal,      $show_eventbutton,
+    $show_mini_calicons,   $show_sunday,         $yymycharset,
+    %newcalicon
+);
+## system ##
+our (
+    $yymain,        $yytitle, %FORM,     $action_area,
+    $yysetlocation, $uid,     $username, %INFO,
+    $scripturl,     $date,
+);
 
 load_language('Admin');
 load_language('EventCal');
@@ -377,10 +380,11 @@ sub event_calset2 {
                   qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~;
             }
         }
-        open my $FILE, '>', "$vardir/eventcalbday.db"
+        our ($FILE);
+        fopen( 'FILE', '>', "$vardir/eventcalbday.db" )
           or croak "$croak{'open'} eventcalbday";
         print {$FILE} $bdlist or croak "$croak{'print'} eventcalbday.db";
-        close $FILE or croak "$croak{'close'} eventcalbday";
+        fclose('FILE') or croak "$croak{'close'} eventcalbday";
 
         $yysetlocation = qq~$adminurl?action=eventcal_set;rebok=1~;
         redirectexit();
@@ -554,10 +558,11 @@ sub admin_del_old_events {
     $mon++;
     $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
 
-    open my $EVENTFILE, '<', "$vardir/eventcal.db"
+    our ($EVENTFILE);
+    fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
       or croak "$croak{'open'} eventcal";
     my @calinput = <$EVENTFILE>;
-    close $EVENTFILE or croak "$croak{'close'} eventcal";
+    fclose('EVENTFILE') or croak "$croak{'close'} eventcal";
     for my $i ( 0 .. $#calinput ) {
         my ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2,
             undef ) = split /[|]/xsm, $calinput[$i];
@@ -565,10 +570,10 @@ sub admin_del_old_events {
         if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
     }
     my $calinput = join q{}, @calinput;
-    open $EVENTFILE, '>', "$vardir/eventcal.db"
+    fopen( 'EVENTFILE', '>', "$vardir/eventcal.db" )
       or croak "$croak{'open'} EVENTFILE";
     print {$EVENTFILE} $calinput or croak "$croak{'print'} EVENTFILE";
-    close $EVENTFILE or croak "$croak{'close'} EVENTFILE";
+    fclose('EVENTFILE') or croak "$croak{'close'} EVENTFILE";
 
     $yysetlocation = qq~$adminurl?action=eventcal_set~;
     redirectexit();

@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -24,17 +23,22 @@ our $membergroupspmmods = 0;
 if (@membergroupspmmods) {
     $membergroupspmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %amgtxt );
-## paths ##
-our ( $adminurl, $yyhtml_root, $imagesdir, $defaultimagesdir, $htmldir );
-## settings ##
-our ( $yymycharset, %grp_staff, %grp_nopost, %grp_post, @nopostorder,
-    $addmemgroup_enabled, $scripturl, $iamgmod );
-## other ##
-our ( $action, $yymain, $yytitle, $yysetlocation, $action_area, %INFO, %FORM, );
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %admintxt, %amgtxt, %croak, );
+## paths ##
+our ( $adminurl, $defaultimagesdir, $htmldir, $imagesdir, $scripturl,
+    $yyhtml_root, );
+## settings ##
+our ( $addmemgroup_enabled, $yymycharset, %grp_nopost, %grp_post, %grp_staff,
+    @nopostorder, );
+## other ##
+our ( $action_area, $iamgmod, $yymain, $yysetlocation, $yytitle, %INFO, %FORM,
+);
 
 load_language('Admin');
 

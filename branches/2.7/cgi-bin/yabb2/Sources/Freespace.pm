@@ -14,7 +14,7 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized redefine);
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
@@ -27,9 +27,9 @@ if (@freespacepmmods) {
 }
 
 our (
-    $enable_freespace_check, $enable_quota,   $hostusername,
-    $findfile_maxsize,       $findfile_space, $findfile_root,
-    $findfile_time,          $date,           $hostchecked
+    $date,             $enable_freespace_check, $enable_quota,
+    $findfile_maxsize, $findfile_root,          $findfile_space,
+    $findfile_time,    $hostchecked,            $hostusername,
 );
 
 sub freespace {

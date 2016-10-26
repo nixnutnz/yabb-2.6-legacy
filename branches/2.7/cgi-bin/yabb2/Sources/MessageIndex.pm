@@ -15,7 +15,7 @@
 use strict;
 no strict qw(refs);
 use warnings;
-no warnings qw(uninitialized once);
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -31,12 +31,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
 our (
-    %addmod_txt,             %boardindex_exptxt, %croak,
-    %favicon,                %img,               %img_txt,
-    %index_togl,             %load_txt,          %maintxt,
-    %messageindex_stickygrp, %messageindex_tp,   %messageindex_txt,
-    %micon,                  %micon_bg,          %newload,
-    %notify_txt,             %pidtxt,            %tmpimg
+    %addmod_txt,       %boardindex_exptxt,      %croak,
+    %favicon,          %index_togl,             %load_txt,
+    %maintxt,          %messageindex_stickygrp, %messageindex_tp,
+    %messageindex_txt, %micon,                  %micon_bg,
+    %newload,          %notify_txt,             %pidtxt,
+    %tmpimg
 );
 ## locations ##
 our ( $boardsdir, $datadir, $htmldir, $imagesdir, $scripturl, $yyhtml_root );
@@ -65,22 +65,21 @@ our (
     $useimages,       $usermessagepage, $username,         $usethread_tools,
     $yy_yabbloaded,   $yyinlinestyle,   $yyjavascript,     $yymain,
     $yynavback,       $yynavigation,    $yytitle,          %board,
-    %cat,             %catinfo,         %FORM,             %INFO,
-    %memberinf,       %moderatorgroups, %moderators,       %subboard,
-    %user_info,       %yy_cookies,      %yyuserlog,        @categoryorder,
-    @other_cookies
+    %cat,             %catinfo,         %FORM,             %img,
+    %img_txt,         %INFO,            %memberinf,        %moderatorgroups,
+    %moderators,      %subboard,        %user_info,        %yy_cookies,
+    %yyuserlog,       @categoryorder,   @other_cookies
 );
 ## templates ##
 our (
-    $admincolumn,      $adminheader,         $bdpic_ext,
-    $boarddescription, $boardindex_template, $brd_tmptempbar,
-    $hoveroff,         $hoveron,             $messageindex_template,
-    $msg_attach_win,   $msg_listpages,       $my_ttsep,
-    $nonstickyheader,  $outside_threadtools, $subfooterbar,
-    $tabsep,           $threadbar,           $threadbarmoved,
-    $topichandellist,  $visel_0,             $visel_1a,
-    $visel_1b,         $visel_2a,            $visel_3a,
-    $visel_4
+    $admincolumn,         $adminheader,           $bdpic_ext,
+    $boarddescription,    $brd_tmptempbar,        $hoveroff,
+    $hoveron,             $messageindex_template, $msg_attach_win,
+    $msg_listpages,       $my_ttsep,              $nonstickyheader,
+    $outside_threadtools, $subfooterbar,          $tabsep,
+    $threadbar,           $threadbarmoved,        $topichandellist,
+    $visel_0,             $visel_1a,              $visel_1b,
+    $visel_2a,            $visel_3a,              $visel_4,
 );
 
 ## local ##
@@ -93,7 +92,7 @@ load_language('Notify');
 
 if ( !$INFO{'tsort'} ) {
     my $tsortcookie = "$cookietsort$currentboard$username";
-    $tsort = $yy_cookies{$tsortcookie};
+    $tsort = $yy_cookies{$tsortcookie} || q{};
     $tsort =~ s/[^a-h]//gxsm;
 }
 else {
@@ -195,10 +194,11 @@ sub message_index {
         && !${ $uid . $currentboard }{'rbin'} )
     {
         chomp $annboard;
-        open my $ANN, '<', "$boardsdir/$annboard.txt"
+        our ($ANN);
+        fopen( 'ANN', '<', "$boardsdir/$annboard.txt" )
           or croak "$croak{'open'} ANN";
         my @tmpanns = <$ANN>;
-        close $ANN or croak "$croak{'close'} ANN";
+        fclose('ANN') or croak "$croak{'close'} ANN";
         foreach my $realanns (@tmpanns) {
             my $threadstatus = ( split /[|]/xsm, $realanns )[8];
             if ( $threadstatus =~ /h/ism && !$staff ) { next; }
@@ -213,10 +213,11 @@ sub message_index {
     my ( $cat, undef ) = split /[|]/xsm, $catinfo{$catid};
     to_chars($cat);
 
-    open my $BRDTXT, '<', "$boardsdir/$currentboard.txt"
+    our ($BRDTXT);
+    fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @threadlist = <$BRDTXT>;
-    close $BRDTXT or croak "$croak{'close'} BRDTXT";
+    fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
     my $sort_subject =
 qq~<a href="$scripturl?board=$currentboard;tsort=d" rel="nofollow">$messageindex_txt{'70'}</a>~;
     my $sort_starter =
@@ -329,7 +330,8 @@ qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex
     undef @threadlist;
 
     $threadcount = $threadcount + $countsticky + $numanns;
-    my $maxindex = $INFO{'view'} eq 'all' ? $threadcount : $maxdisplay;
+    my $maxindex =
+      ( $INFO{'view'} && $INFO{'view'} eq 'all' ) ? $threadcount : $maxdisplay;
 
     # Construct the page links for this board.
     if ( !$iamguest ) {
@@ -372,7 +374,8 @@ qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex
 qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /> $messageindex_txt{'139'}: $pagenumb</span>~;
     my $pageindex2 = $pageindex1;
 
-    my ( $pagetxtindexst, $tstart, $pageindexjs );
+    my ( $pagetxtindexst, $tstart );
+    my $pageindexjs = q{};
     if ( $pagenumb > 1 || $all ) {
         if ( $usermessagepage == 1 || $iamguest ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
@@ -595,12 +598,13 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
 
     my %attachments;
     if ( ( -s 'Variables/attachments.db' ) > 5 ) {
-        open my $ATM, '<', 'Variables/attachments.db'
+        our ($ATM);
+        fopen( 'ATM', '<', 'Variables/attachments.db' )
           or croak "$croak{'open'} attachments";
         while (<$ATM>) {
             $attachments{ ( split /[|]/xsm, $_, 2 )[0] }++;
         }
-        close $ATM or croak "$croak{'close'} attachments";
+        fclose('ATM') or croak "$croak{'close'} attachments";
     }
 
     load_censor_list();
@@ -786,8 +790,9 @@ qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$message
 
     # check to display moderator column
     my $tmpstickyheader;
+    my $stickyheader = q{};
     if ($stkynum) {
-        my $stickyheader =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
+        $stickyheader =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
         $stickyheader =~
 s/\Q{yabb messageindex_stickygrp_1}\E/$messageindex_stickygrp{'1'}/gxsm;
         $tmpstickyheader = $stickyheader;
@@ -917,12 +922,18 @@ qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;
             # Decide if thread should have the "NEW" indicator next to it.
             # Do this by reading the user's log for last read time on thread,
             # and compare to the last post time on the thread.
-            $dlp =
-              int( $yyuserlog{$mnum} ) >
-              int( $yyuserlog{"$currentboard--mark"} )
-              ? int( $yyuserlog{$mnum} )
-              : int $yyuserlog{"$currentboard--mark"};
-            $mdate ||= 0;
+            if (
+                !$yyuserlog{"$currentboard--mark"}
+                || (   $yyuserlog{$mnum}
+                    && $yyuserlog{"$currentboard--mark"}
+                    && int( $yyuserlog{$mnum} ) >
+                    int $yyuserlog{"$currentboard--mark"} )
+              )
+            {
+                $dlp = int $yyuserlog{$mnum};
+            }
+            else { $dlp = int $yyuserlog{"$currentboard--mark"}; }
+            $mdate ||= $mnum;
             if (
                 !$moved_flag
                 && (   $yyuserlog{"$mnum--unread"}
@@ -948,10 +959,11 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
         my $mpoll = q{};
         if ( -e "$datadir/$mnum.poll" ) {
             $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
-            open my $POLL, '<', "$datadir/$mnum.poll"
+            our ($POLL);
+            fopen( 'POLL', '<', "$datadir/$mnum.poll" )
               or croak "$croak{'close'} POLL";
             my @poll = <$POLL>;
-            close $POLL or croak "$croak{'close'} POLL";
+            fclose('POLL') or croak "$croak{'close'} POLL";
             my (
                 $poll_question, $poll_locked, $poll_uname,   $poll_name,
                 $poll_email,    $poll_date,   $guest_vote,   $hide_results,
@@ -965,10 +977,10 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
                 $poll[0] =
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
                 my $prnpoll = join q{}, @poll;
-                open my $POLL, '>', "$datadir/$mnum.poll"
+                fopen( 'POLL', '>', "$datadir/$mnum.poll" )
                   or croak "$croak{'open'} POLL";
                 print {$POLL} $prnpoll or croak "$croak{'print'} POLL";
-                close $POLL or croak "$croak{'close'} POLL";
+                fclose('POLL') or croak "$croak{'close'} POLL";
             }
 
             $micon = $micon{'pollicon'};
@@ -982,10 +994,11 @@ qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
                 }
                 else {
                     if ( -e "$datadir/$mnum.polled" ) {
-                        open my $POLLED, '<', "$datadir/$mnum.polled"
+                        our ($POLLED);
+                        fopen( 'POLLED', '<', "$datadir/$mnum.polled" )
                           or croak "$croak{'open'} POLLED";
                         my $polled = <$POLLED>;
-                        close $POLLED or croak "$croak{'close'} POLLED";
+                        fclose('POLLED') or croak "$croak{'close'} POLLED";
                         my ( undef, undef, undef, $vote_date, undef ) =
                           split /[|]/xsm, $polled;
                         if ( $dlp < $vote_date ) {
@@ -1097,14 +1110,20 @@ qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &
         }
         else {
             load_user($lastposter);
+            if ( !${$mnum}{'lastpostdate'} || ${$mnum}{'lastpostdate'} eq q{} )
+            {
+                ${$mnum}{'lastpostdate'} = $mnum;
+            }
             if (
                 (
-                       ${ $uid . $lastposter }{'regdate'}
+                       ${ $uid . $lastposter }{'regtime'}
                     && ${$mnum}{'lastpostdate'} >
                     ${ $uid . $lastposter }{'regtime'}
                 )
-                || ${ $uid . $lastposter }{'position'} eq 'Administrator'
-                || ${ $uid . $lastposter }{'position'} eq 'Global Moderator'
+                || ${ $uid . $lastposter }{'position'}
+                && (   ${ $uid . $lastposter }{'position'} eq 'Administrator'
+                    || ${ $uid . $lastposter }{'position'} eq
+                    'Global Moderator' )
               )
             {
                 $lastposter = profile_view($lastposter);
@@ -1112,10 +1131,12 @@ qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &
             else {
 
             # Need to load thread to see lastposters DISPLAYname if is Ex-Member
-                open my $EXMEMBERTHREAD, '<', "$datadir/$mnum.txt"
+                our ($EXMEMBERTHREAD);
+                fopen( 'EXMEMBERTHREAD', '<', "$datadir/$mnum.txt" )
                   or fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
                 my @x = <$EXMEMBERTHREAD>;
-                close $EXMEMBERTHREAD or croak "$croak{'close'} EXMEMBERTHREAD";
+                fclose('EXMEMBERTHREAD')
+                  or croak "$croak{'close'} EXMEMBERTHREAD";
                 $lastposter =
                   ( split /[|]/xsm, $x[-1], 3 )[1]
                   . " - $messageindex_txt{'470a'}";
@@ -1124,7 +1145,7 @@ qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &
         my $lastpostername = $lastposter || $messageindex_txt{'470'};
 
         if (   ( $stkynum && ( $counter >= $stkynum ) )
-            && ( $stkyshowed < 1 ) )
+            && ( !$stkyshowed || $stkyshowed < 1 ) )
         {
             $nonstickyheader =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
             $nonstickyheader =~
@@ -1265,10 +1286,11 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
                 && !$messagelist
                 && ( ${ $uid . $username }{'topicpreview'} || $iamguest ) )
             {
-                open my $MNUM, '<', "$datadir/$mnum.txt"
+                our ($MNUM);
+                fopen( 'MNUM', '<', "$datadir/$mnum.txt" )
                   or croak "$croak{'open'} $mnum.txt";
                 my $thetopic = <$MNUM>;
-                close $MNUM or croak "$croak{'close'} MNUM";
+                fclose('MNUM') or croak "$croak{'close'} MNUM";
                 my $themessage    = ( split /[|]/xsm, $thetopic )[8];
                 my $clip          = 0;
                 my $msglength     = 200;
@@ -1631,10 +1653,11 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
 
     my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
     if ( -e "<$boardsdir/brdpics.db" ) {
-        open my $BRDPIC, '<', "$boardsdir/brdpics.db"
+        our ($BRDPIC);
+        fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
           or croak "$croak{'open'} brdpics.db";
         my @brdpics = <$BRDPIC>;
-        close $BRDPIC or croak "$croak{'close'} BRDPIC";
+        fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
         chomp @brdpics;
         foreach (@brdpics) {
             my ( $brdnm, $style, $brdpic ) = split /[|]/xsm;
@@ -1869,6 +1892,7 @@ qq~<form name="multiadmin" action="$scripturl?board=$currentboard;action=multiad
             <input type="hidden" name="formsession" value="$formsession" />
             ~;
         }
+        $INFO{'start'} ||= q{};
         $formend =
 qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
         $messageindex_template =~ s/\Q{yabb modupdate}\E/$formstart/gxsm;
@@ -1899,6 +1923,7 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
 
     # Show subboards
     our ( $show_subboards, $subboard_sel );
+    my $boardindex_template = q{};
     if ( $subboard{$currentboard} ) {
         $show_subboards = 1;
         $subboard_sel   = $currentboard;
@@ -1980,6 +2005,7 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$messageindex_txt
         }
     }
 
+    $tabsep ||= q{};
     if ( !$messagelist ) {
         $yynavback =
           qq~$tabsep <a href="$scripturl">&lsaquo; $img_txt{'103'}</a> &nbsp; ~;
@@ -2033,10 +2059,11 @@ sub mark_read {    # Mark all threads in this board as read.
     getlog();
 
     # Look for any threads marked unread in the current board and remove them
-    open my $BRDTXT, '<', "$boardsdir/$currentboard.txt"
+    our ($BRDTXT);
+    fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @threadlist = map { /^(\d+)[|]/xsm } <$BRDTXT>;
-    close $BRDTXT or croak "$croak{'close'} BRDTXT";
+    fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
 
     # Loop through @threadlist and delete the corresponding item from %yyuserlog
     foreach (@threadlist) { delete $yyuserlog{"$_--unread"}; }

@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw( redefine uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use File::Copy qw(copy);
 our $VERSION = '2.7.00';
@@ -25,49 +24,57 @@ our $managetemplatespmmods = 0;
 if (@managetemplatespmmods) {
     $managetemplatespmmods = 1;
 }
-##  languages ##
-our (
-    %croak,            %admin_txt,   %admin_img,
-    %templ_txt,        %img_txt,     %maintxt,
-    %boardindex_txt,   %img,         %boardindex_imtxt,
-    %messageindex_txt, %display_txt, %mc_menus,
-    %fatxt
-);
-## paths ##
-our ( $adminurl, $yyhtml_root, $templatesdir, $htmldir, $imagesdir, $vardir,
-    $facesurl, $boarddir );
-## settings ##
-our (
-    $yymycharset,      %templateset,     $mbname,
-    $showsearchboxnum, %grp_staff,       %grp_nopost,
-    %grp_post,         $use_threadtools, $accept_permalink,
-    $use_posttools,    $pm_level,        $post_speed_count,
-    $use_guardian,     $banned_strings,  $staff,
-);
-## other ##
-our (
-    $action,            $yymain,                 $yytitle,
-    $yysetlocation,     $action_area,            $language,
-    %INFO,              %FORM,                   $date,
-    $ext,               $INPUT_RECORD_SEPARATOR, $template,
-    $abbr_lang,         $yystyleswitch,          $yystyleswitcher,
-    $yytempswitcher,    $uid,                    $username,
-    $catheader,         $boardblock,             $boardviewers,
-    $catfooter,         $boardindex_template,    $use_menu_type,
-    $cal_display,       $messageindex_template,  $mycenter_template,
-    $temppageindex1,    $threadbar,              $menusep,
-    $posthandellist,    $messageblock,           $contactlist,
-    $display_template,  $iamadmin,               $iamgmod,
-    $iammod,            $yymcmenu,               $mc_viewmenu,
-    $mc_pmmenu,         $mc_profmenu,            $mc_postsmenu,
-    $mcglobalformstart, $mc_content,             $mctitle,
-    $selecthtml,        $cgi_query,              $string_on,
-    $size,              $buffer,                 $filesize,
-    $file_buffer,       $header,                 $my_mc_content,
-    $my_mc_viewmenu,    $my_mc_viewmenu_mess,    $myprofileblock,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our (
+    $abbr_lang,        %admin_img,      %admin_txt,
+    %boardindex_imtxt, %boardindex_txt, %croak,
+    %display_txt,      %fatxt,          %img,
+    %img_txt,          %maintxt,        %mc_menus,
+    %messageindex_txt, %templ_txt,
+);
+## paths ##
+our (
+    $adminurl,  $boarddir,     $facesurl, $htmldir,
+    $imagesdir, $templatesdir, $vardir,   $yyhtml_root,
+);
+## settings ##
+our (
+    $accept_permalink, $banned_strings,   $mbname,
+    $pm_level,         $post_speed_count, $showsearchboxnum,
+    $staff,            $use_guardian,     $use_posttools,
+    $use_threadtools,  $yymycharset,      %grp_nopost,
+    %grp_post,         %grp_staff,        %templateset,
+);
+## templates ##
+our (
+    $adminhandellist,  $boardhandellist,       $boardblock,
+    $boarddescription, $boardindex_template,   $catfooter,
+    $catheader,        $contactlist,           $display_template,
+    $messageblock,     $messageindex_template, $my_mc_content,
+    $my_mc_viewmenu,   $my_mc_viewmenu_mess,   $mycenter_template,
+    $myprofileblock,   $posthandellist,        $threadbar,
+);
+## system ##
+our (
+    $action_area,            $boardviewers,      $buffer,
+    $cgi_query,              $date,              $ext,
+    $file_buffer,            $filesize,          $header,
+    $iamadmin,               $iamgmod,           $iammod,
+    $INPUT_RECORD_SEPARATOR, $language,          $mc_content,
+    $mc_pmmenu,              $mc_postsmenu,      $mc_profmenu,
+    $mc_viewmenu,            $mcglobalformstart, $mctitle,
+    $menusep,                $selecthtml,        $size,
+    $string_on,              $template,          $temppageindex1,
+    $uid,                    $use_menu_type,     $username,
+    $yymain,                 $yymcmenu,          $yysetlocation,
+    $yystyleswitch,          $yystyleswitcher,   $yytempswitcher,
+    $yytitle,                %FORM,              %INFO,
+);
 
 load_language('Admin');
 load_language('Templates');
@@ -139,10 +146,11 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
         }
     }
 
-    open my $TMPL, '<', "$templatesdir/$templatefile"
+    our ($TMPL);
+    fopen( 'TMPL', '<', "$templatesdir/$templatefile" )
       or croak "$croak{'open'} TMPL";
     $line = do { local $INPUT_RECORD_SEPARATOR = undef; <$TMPL> };
-    close $TMPL or croak "$croak{'close'} TMPL";
+    fclose('TMPL') or croak "$croak{'close'} TMPL";
     for my $x ( 0 .. ( length($line) - 1 ) ) {
         $fulltemplate .=
           q{&#} . sprintf( q{%03d}, ord substr $line, $x, 1 ) . q{;};
@@ -210,10 +218,11 @@ sub modify_template2 {
     $FORM{'template'} =~ tr/\r//d;
     $FORM{'template'} =~ s/\A\n//xsm;
     $FORM{'template'} =~ s/\n\Z//xsm;
-    open my $TMPL, '>', "$templatesdir/$templatefile"
+    our ($TMPL);
+    fopen( 'TMPL', '>', "$templatesdir/$templatefile" )
       or croak "$croak{'open'} TMPL";
     print {$TMPL} "$FORM{'template'}" or croak "$croak{'print'} TMPL";
-    close $TMPL or croak "$croak{'close'} TMPL";
+    fclose('TMPL') or croak "$croak{'close'} TMPL";
 
     $yysetlocation = qq~$adminurl?action=modtemp;templatefile=$templatefile~;
     redirectexit();
@@ -294,6 +303,10 @@ sub modify_skin {
 
     my ( $boardsel, $messagesel, $displaysel, $mycentersel );
 
+    $boardsel    = q{};
+    $messagesel  = q{};
+    $displaysel  = q{};
+    $mycentersel = q{};
     if ( $selectedsection eq 'vboard' ) { $boardsel = q~ checked="checked"~; }
     elsif ( $selectedsection eq 'vmessage' ) {
         $messagesel = q~ checked="checked"~;
@@ -316,7 +329,7 @@ sub modify_skin {
         if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
             my ( $name, $exta, $bak ) = split /[.]/xsm, $file;
             $selected = q{};
-            if ( !$bak && $exta eq 'css' ) {
+            if ( !$bak && $exta && $exta eq 'css' ) {
                 if ( $file eq $cssfile ) {
                     $selected = q~ selected="selected"~;
                     $viewcss  = $name;
@@ -337,14 +350,15 @@ sub modify_skin {
         }
     }
 
-    open my $CSS, '<', "$htmldir/Templates/Forum/$cssfile"
+    our ($CSS);
+    fopen( 'CSS', '<', "$htmldir/Templates/Forum/$cssfile" )
       or fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     while ( $line = <$CSS> ) {
         $line =~ s/[\r\n]//gxsm;
         from_html($line);
         $fullcss .= qq~$line\n~;
     }
-    close $CSS or croak "$croak{'close'} CSS";
+    fclose('CSS') or croak "$croak{'close'} CSS";
 
     opendir TMPLDIR, $templatesdir;
     my @temptemplates = readdir TMPLDIR;
@@ -378,7 +392,7 @@ sub modify_skin {
             my $thefile = qq~$name/$file~;
             my ( $section, $extb ) = split /[.]/xsm, $file;
             my $hselected = q{};
-            if ( $extb eq 'html' && $section eq $name ) {
+            if ( $extb && $extb eq 'html' && $section eq $name ) {
                 if ( $file eq $headfile ) {
                     $hselected = q~ selected="selected"~;
                     $viewhead  = $name;
@@ -425,7 +439,8 @@ sub modify_skin {
         }
     }
 
-    open my $TMPL, '<', "$templatesdir/$viewhead/$viewhead.html"
+    our ($TMPL);
+    fopen( 'TMPL', '<', "$templatesdir/$viewhead/$viewhead.html" )
       or croak "$croak{'open'} TMPL";
     while ( $line = <$TMPL> ) {
         $line =~ s/^\s+//gxsm;
@@ -433,7 +448,7 @@ sub modify_skin {
         $line =~ s/[\r\n]//gxsm;
         $fulltemplate .= qq~$line\n~;
     }
-    close $TMPL or croak "$croak{'close'} TMPL";
+    fclose('TMPL') or croak "$croak{'close'} TMPL";
 
     my $tabsep  = q{};
     my $tabfill = q{};
@@ -467,6 +482,7 @@ s/img src\=\"$imagesdir\/(.+?)\"/tmp_imgloc($1, $tempimages, $tempimagesdir)/eig
     }
     my $tempuim = qq~$templ_txt{'70'} <a id="ims">0 $templ_txt{'71'}</a>.~;
     my $temptime = timeformat( $date, 1 );
+    $showsearchboxnum ||= 10;
     my $tempsearchbox =
 qq~<div class="yabb_searchbox"><input type="text" name="search" size="16" id="search1" value="$img_txt{'182'}" style="font-size: 11px;" onfocus="txtInFields(this, '$img_txt{'182'}');" onblur="txtInFields(this, '$img_txt{'182'}')" /><input type="image" src="$imagesdir/search.png" alt="$maintxt{'searchimg'} $showsearchboxnum $maintxt{'searchimg2'}" style="background-color: transparent; margin-right: 5px; vertical-align: middle;" /></div>
 ~;
@@ -475,6 +491,8 @@ qq~<div class="yabb_searchbox"><input type="text" name="search" size="16" id="se
     my $boardtable     = q~id="General"~;
     my $templatejump   = 1;
     my $tempforumjump  = jumpto();
+    $yystyleswitch  ||= q{};
+    $yytempswitcher ||= q{};
 
     $fulltemplate =~ s/\Q{yabb bottom}\E//gxsm;
     $fulltemplate =~ s/\Q{yabb fixtop}\E//gxsm;
@@ -826,16 +844,26 @@ sub modify_skin2 {
     is_admin_or_gmod();
     my $formattemp    = $FORM{'templateset'};
     my $mythreads     = 0;
+    my $mypost        = 0;
+    my $mymobile      = 0;
     my $template_name = 'default';
 
     format_tempname();
     if ( $FORM{'button'} == 1 ) {
         $mythreads = 1;
+        $mypost    = 1;
+        $mymobile  = 1;
         if ( !$FORM{'threadtools'} ) {
             $mythreads = 0;
         }
+        if ( !$FORM{'posttools'} ) {
+            $mypost = 0;
+        }
+        if ( !$FORM{'ismobile'} ) {
+            $mymobile = 0;
+        }
         $yysetlocation =
-qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};imgfolder=$FORM{'imgfolder'};headfile=$FORM{'headfile'};boardfile=$FORM{'boardfile'};messagefile=$FORM{'messagefile'};displayfile=$FORM{'displayfile'};mycenterfile=$FORM{'mycenterfile'};menutype=$FORM{'menutype'};selsection=$FORM{'selsection'};threadtools=$mythreads;posttools=$FORM{'posttools'};ismobile=$FORM{'ismobile'}~;
+qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};imgfolder=$FORM{'imgfolder'};headfile=$FORM{'headfile'};boardfile=$FORM{'boardfile'};messagefile=$FORM{'messagefile'};displayfile=$FORM{'displayfile'};mycenterfile=$FORM{'mycenterfile'};menutype=$FORM{'menutype'};selsection=$FORM{'selsection'};threadtools=$mythreads;posttools=$mypost;ismobile=$mymobile~;
 
     }
     elsif ( $FORM{'button'} == 2 ) {
@@ -869,7 +897,7 @@ qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};img
         format_tempname();
         update_templates( $template_name, 'save', \@toset );
         $yysetlocation =
-qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};imgfolder=$FORM{'imgfolder'};headfile=$FORM{'headfile'};boardfile=$FORM{'boardfile'};messagefile=$FORM{'messagefile'};displayfile=$FORM{'displayfile'};mycenterfile=$FORM{'mycenterfile'};menutype=$FORM{'menutype'};selsection=$FORM{'selsection'};threadtools=$mythreads;posttools=$FORM{'posttools'};ismobile=$FORM{'ismobile'}~;
+qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};imgfolder=$FORM{'imgfolder'};headfile=$FORM{'headfile'};boardfile=$FORM{'boardfile'};messagefile=$FORM{'messagefile'};displayfile=$FORM{'displayfile'};mycenterfile=$FORM{'mycenterfile'};menutype=$FORM{'menutype'};selsection=$FORM{'selsection'};threadtools=$template_threadtools;posttools=$template_posttools;ismobile=$template_ismobile~;
 
     }
     elsif ( $FORM{'button'} == 3 ) {
@@ -892,14 +920,16 @@ qq~$adminurl?action=modskin;templateset=$formattemp;cssfile=$FORM{'cssfile'};img
 
 sub format_tempname {
     my ($formattemp) = @_;
-    $formattemp =~ s/\%/%25/gxsm;
-    $formattemp =~ s/\#/%23/gxsm;
-    $formattemp =~ s/[+]/%2B/gxsm;
-    $formattemp =~ s/,/%2C/gxsm;
-    $formattemp =~ s/\-/%2D/gxsm;
-    $formattemp =~ s/[.]/%2E/gxsm;
-    $formattemp =~ s/\@/%40/gxsm;
-    $formattemp =~ s/\^/%5E/gxsm;
+    if ($formattemp) {
+        $formattemp =~ s/\%/%25/gxsm;
+        $formattemp =~ s/\#/%23/gxsm;
+        $formattemp =~ s/[+]/%2B/gxsm;
+        $formattemp =~ s/,/%2C/gxsm;
+        $formattemp =~ s/\-/%2D/gxsm;
+        $formattemp =~ s/[.]/%2E/gxsm;
+        $formattemp =~ s/\@/%40/gxsm;
+        $formattemp =~ s/\^/%5E/gxsm;
+    }
     return;
 }
 
@@ -925,10 +955,11 @@ sub board_templ {
         $themostguest,    $themostbots,
     );
     if ( -e ("$vardir/mostlog.log") ) {
-        open my $MOSTUSERS, '<', "$vardir/mostlog.log"
+        our ($MOSTUSERS);
+        fopen( 'MOSTUSERS', '<', "$vardir/mostlog.log" )
           or croak "$croak{'open'} MOSTUSERS";
         my @mostentries = <$MOSTUSERS>;
-        close $MOSTUSERS or croak "$croak{'close'} MOSTUSERS";
+        fclose('MOSTUSERS') or croak "$croak{'close'} MOSTUSERS";
         my ( $mostmemb,  $datememb )  = split /[|]/xsm, $mostentries[0];
         my ( $mostguest, $dateguest ) = split /[|]/xsm, $mostentries[1];
         my ( $mostusers, $dateusers ) = split /[|]/xsm, $mostentries[2];
@@ -1038,6 +1069,7 @@ qq~$boardindex_txt{'791'} <select style="font-size: 7pt;"><option>--</option><op
     my $tempboardpic =
       qq~ <img src="$imagesdir/boards.png" alt="$tempcurboard" />~;
 
+    $boardviewers ||= q{};
     for my $i ( 1 .. 2 ) {
         my $templateblock = $boardblock;
         $templateblock =~ s/\Q{yabb new}\E/$tempnew/gxsm;
@@ -1071,7 +1103,7 @@ qq~$boardindex_txt{'791'} <select style="font-size: 7pt;"><option>--</option><op
     my $templasttopiclink =
 qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
 
-    my $boardhandellist =~ s/\Q{yabb collapse}\E/$menusep$collapselink/gxsm;
+    $boardhandellist =~ s/\Q{yabb collapse}\E/$menusep$collapselink/gxsm;
     $boardhandellist =~ s/\Q{yabb expand}\E//gxsm;
     $boardhandellist =~ s/\Q{yabb markallread}\E/$menusep$markalllink/gxsm;
     $boardhandellist =~ s/\Q$menusep\E//ixsm;
@@ -1101,6 +1133,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~ s/\Q{yabb mostusersdate}\E/$themostuserdate/gxsm;
     $boardindex_template =~ s/\Q{yabb mostmembersdate}\E/$themostmembdate/gxsm;
     $boardindex_template =~ s/\Q{yabb mostguestsdate}\E/$themostguestdate/gxsm;
+    $themostbotsdate ||= q{};
     $boardindex_template =~ s/\Q{yabb mostbotsdate}\E/$themostbotsdate/gxsm;
     $boardindex_template =~ s/\Q{yabb groupcolors}\E/$grpcolors/gxsm;
 
@@ -1115,7 +1148,7 @@ qq~$boardindex_txt{'236'} <a href="javascript:;"><b>$templ_txt{'80'}</b></a>~;
     $boardindex_template =~ s/\Q{yabb onlineguests}\E//gxsm;
     $boardindex_template =~ s/\Q{yabb bots}\E/$tempbotson/gxsm;
     $boardindex_template =~ s/\Q{yabb onlinebots}\E/$tempbotlist/gxsm;
-    $boardindex_template =~ s/\Q{yabb caldisplay}\E/$cal_display/gxsm;
+    $boardindex_template =~ s/\Q{yabb caldisplay}\E//gxsm;
     $boardindex_template =~ s/\Q{yabb sharedlogin}\E//gxsm;
     $boardindex_template =~ s/\Q{yabb selecthtml}\E//gxsm;
     $boardindex_template =~ s/\Q{yabb new_load}\E//gxsm;
@@ -1169,7 +1202,7 @@ qq~<img src="$x[1]/hide.gif" alt="" /> $messageindex_txt{'458'}<br /><img src="$
     my $temp_attachment =
       qq~<img src="$x[1]/paperclip.gif" alt="$messageindex_txt{'5'}" />~;
 
-    my $boarddescription =~ s/\Q{yabb boarddescription}\E/$tempbdescrip/gxsm;
+    $boarddescription =~ s/\Q{yabb boarddescription}\E/$tempbdescrip/gxsm;
     $messageindex_template =~ s/\Q{yabb home}\E/$mbname/gxsm;
     $messageindex_template =~ s/\Q{yabb category}\E/$tempcatnm/gxsm;
     $messageindex_template =~ s/\Q{yabb board}\E/$tempboardnm/gxsm;
@@ -1188,6 +1221,7 @@ qq~<img src="$x[1]/hide.gif" alt="" /> $messageindex_txt{'458'}<br /><img src="$
     $messageindex_template =~ s/\Q{yabb description}\E/$boarddescription/gxsm;
     $messageindex_template =~ s/\Q{yabb colspan}\E/7/gxsm;
 
+    $temppageindex1 ||= q{};
     $messageindex_template =~ s/\Q{yabb pageindex top}\E/$temppageindex1/gxsm;
     $messageindex_template =~
       s/\Q{yabb pageindex bottom}\E/$temppageindex1/gxsm;
@@ -1396,7 +1430,7 @@ qq~<td class="post_tools center template" style="width:10em"><div class="post_to
     $template_split      = qq~$menusep$template_split~;
     $template_delete     = qq~$menusep$template_delete~;
     $template_print_post = qq~$menusep$template_print_post~;
-    my $memberinfo = qq~<span class="small"><b>$title</b></span>~;
+    my $memberinfo   = qq~<span class="small"><b>$title</b></span>~;
     my $usernamelink = q{};
     {
         no strict qw(refs);
@@ -1416,10 +1450,10 @@ qq~<span style="color: $color;"><b>${$uid.$username}{'realname'}</b></span><br /
     {
         no strict qw(refs);
         $template_postinfo =
-      qq~$display_txt{'21'}: ${$uid.$username}{'postcount'}<br />~;
+          qq~$display_txt{'21'}: ${$uid.$username}{'postcount'}<br />~;
         $template_usertext = qq~${ $uid . $username }{'usertext'}<br />~;
     }
-    my $px                = 'px';
+    my $px = 'px';
     my $avatar =
 qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height: 50px" />~;
     my $message =
@@ -1434,7 +1468,8 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
     $template_sticky = qq~$menusep$template_sticky~;
 
     my ($tempoutblock);
-    my $online = qq~<span class="useronline">$maintxt{'60'}</span>~;
+    my $postcol = 4;
+    my $online  = qq~<span class="useronline">$maintxt{'60'}</span>~;
     for my $i ( 0 .. 1 ) {
         my $outblock        = $messageblock;
         my $posthandelblock = $posthandellist;
@@ -1462,6 +1497,7 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
 q~{yabb modalert}{yabb print_post}{yabb modify}{yabb split}{yabb delete}~;
 
         if ($use_posttools) {
+            $postcol = 5;
             $template_alertmod = set_image( 'alertmod', 3 );
             my ( $template_alertmod_img, $template_alertmod_txt ) =
               split /[|]/xsm,
@@ -1561,7 +1597,7 @@ s/\Q<td class="dividerbot" colspan="3" style="vertical-align:middle;">\E/<td cla
 s/\Q<td class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle">\E/<td class="center dividerbot" style="height: 2em; vertical-align:middle">/gxsm;
     $threadhandellist =~ s/\Q$menusep\E//ixsm;
 
-    my $adminhandellist =~ s/\Q{yabb remove}\E/$template_remove/gxsm;
+    $adminhandellist =~ s/\Q{yabb remove}\E/$template_remove/gxsm;
     $adminhandellist =~ s/\Q{yabb splice}\E/$template_splice/gxsm;
     $adminhandellist =~ s/\Q{yabb lock}\E/$template_lock/gxsm;
     $adminhandellist =~ s/\Q{yabb hide}\E/$template_hide/gxsm;
@@ -1611,21 +1647,21 @@ s/\Q<td class="post_tools center dividerbot" style="width:100px; height: 2em; ve
     $display_template =~
       s/\Qclass="post_tools center" style="width:10em"\E/class="right"/gxsm;
     $display_template =~
-s/\Qclass="windowbg2 vtop" style="height:10em" colspan="3"\E/class="windowbg2 vtop" colspan="4" style="height:10em"/gxsm;
+s/\Qclass="windowbg2 vtop" style="height:10em" colspan="3"\E/class="windowbg2 vtop" colspan="$postcol" style="height:10em"/gxsm;
     $display_template =~
-s/\Qclass="windowbg vtop" style="height:10em" colspan="3"\E/class="windowbg vtop" colspan="4" style="height:10em"/gxsm;
+s/\Qclass="windowbg vtop" style="height:10em" colspan="3"\E/class="windowbg vtop" colspan="$postcol" style="height:10em"/gxsm;
     $display_template =~
-s/\Qclass="windowbg2 bottom" style="height:12px" colspan="3"\E/class="windowbg2 bottom" colspan="4" style="height:12px"/gxsm;
+s/\Qclass="windowbg2 bottom" style="height:12px" colspan="3"\E/class="windowbg2 bottom" colspan="$postcol" style="height:12px"/gxsm;
     $display_template =~
-s/\Qclass="windowbg bottom" style="height:12px" colspan="3"\E/class="windowbg bottom" colspan="4" style="height:12px"/gxsm;
+s/\Qclass="windowbg bottom" style="height:12px" colspan="3"\E/class="windowbg bottom" colspan="$postcol" style="height:12px"/gxsm;
     $display_template =~
-s/\Qclass="windowbg2 bottom" colspan="3"\E/class="windowbg2 bottom" colspan="4"/gxsm;
+s/\Qclass="windowbg2 bottom" colspan="3"\E/class="windowbg2 bottom" colspan="$postcol"/gxsm;
     $display_template =~
-s/\Qclass="windowbg bottom" colspan="3"\E/class="windowbg bottom" colspan="4"/gxsm;
+s/\Qclass="windowbg bottom" colspan="3"\E/class="windowbg bottom" colspan="$postcol"/gxsm;
     $display_template =~
-s/\Qclass="windowbg2 bottom dividertop" colspan="3"\E/class="windowbg2 bottom dividertop" colspan="4"/gxsm;
+s/\Qclass="windowbg2 bottom dividertop" colspan="3"\E/class="windowbg2 bottom dividertop" colspan="$postcol"/gxsm;
     $display_template =~
-s/\Qclass="windowbg bottom dividertop" colspan="3"\E/class="windowbg bottom dividertop" colspan="4"/gxsm;
+s/\Qclass="windowbg bottom dividertop" colspan="3"\E/class="windowbg bottom dividertop" colspan="$postcol"/gxsm;
     $display_template =~
       s/img\s src\=\"$tmpimagesdir\/(.+?)\"/tmp_imgloc($1, $x[1], $x[2])/eigxsm;
     $display_template =~
@@ -1676,14 +1712,13 @@ qq~<span style="color: $color;"><b>${$uid.$username}{'realname'}</b></span><br /
 
     $mycenter_template =~ s/\Q{yabb mcviewmenu}\E/$mc_viewmenu/gxsm;
     $mycenter_template =~ s/\Q{yabb mcmenu}\E/$yymcmenu/gxsm;
-    $mycenter_template =~ s/\Q{yabb mcpmmenu}\E/$mc_pmmenu/gxsm;
-    $mycenter_template =~ s/\Q{yabb mcprofmenu}\E/$mc_profmenu/gxsm;
-    $mycenter_template =~ s/\Q{yabb mcpostsmenu}\E/$mc_postsmenu/gxsm;
-    $mycenter_template =~ s/\Q{yabb mcglobformstart}\E/$mcglobalformstart/gxsm;
-    $mycenter_template =~
-      s/\Q{yabb mcglobformend}\E/ ($mcglobalformstart ? "<\/form>" : q{}) /exsm;
+    $mycenter_template =~ s/\Q{yabb mcpmmenu}\E//gxsm;
+    $mycenter_template =~ s/\Q{yabb mcprofmenu}\E//gxsm;
+    $mycenter_template =~ s/\Q{yabb mcpostsmenu}\E//gxsm;
+    $mycenter_template =~ s/\Q{yabb mcglobformstart}\E//gxsm;
+    $mycenter_template =~ s/\Q{yabb mcglobformend}\E//gxsm;
     $mycenter_template =~ s/\Q{yabb mccontent}\E/$mc_content/gxsm;
-    $mycenter_template =~ s/\Q{yabb mctitle}\E/$mctitle/gxsm;
+    $mycenter_template =~ s/\Q{yabb mctitle}\E//gxsm;
     $mycenter_template =~ s/\Q{yabb selecthtml}\E/$selecthtml/gxsm;
     $mycenter_template =~ s/\Q{yabb mc_menus_profile}\E//gxsm;
     $mycenter_template =~ s/\Q{yabb mc_menus_posts}\E//gxsm;
@@ -1701,14 +1736,14 @@ qq~<span style="color: $color;"><b>${$uid.$username}{'realname'}</b></span><br /
     $mycenter_template =~ s/\Q{yabb useronline}\E//gxsm;
     {
         no strict qw(refs);
+        my $gender = ${ $uid . $username }{'gender'} || q{};
+        my $zodiac = ${ $uid . $username }{'zodiac'} || q{};
         $mycenter_template =~
-s/\Q{yabb userpic}\E/<img src="${ $uid . $username }{'userpic'}" \/>/gxsm;
+          s/\Q{yabb userpic}\E/<img src="$facesurl\/elmerfudd.gif" \/>/gxsm;
         $mycenter_template =~
           s/\Q{yabb usertext}\E/${ $uid . $username }{'usertext'}/gxsm;
-        $mycenter_template =~
-          s/\Q{yabb gender}\E/${ $uid . $username }{'gender'}/gxsm;
-        $mycenter_template =~
-          s/\Q{yabb zodiac}\E/${ $uid . $username }{'zodiac'}/gxsm;
+        $mycenter_template =~ s/\Q{yabb gender}\E/$gender/gxsm;
+        $mycenter_template =~ s/\Q{yabb zodiac}\E/$zodiac/gxsm;
     }
     $mycenter_template =~ s/\Q{yabb postinfo}\E//gxsm;
     $mycenter_template =~ s/\Q{yabb location}\E//gxsm;
@@ -1973,13 +2008,14 @@ sub upload_file2 {
         }
 
  # create a new file on the server using the formatted ( new instance ) filename
-        if ( open my $NEWFILE, '>', "$file_directory/$fixfile" ) {
+        our ($NEWFILE);
+        if ( fopen( 'NEWFILE', '>', "$file_directory/$fixfile" ) ) {
             binmode $NEWFILE;
 
             # needed for operating systems (OS) Windows, ignored by Linux
             print {$NEWFILE} $file_buffer
               or croak "$croak{'print'} NEWFILE";    # write new file on HD
-            close $NEWFILE or croak "$croak{'open'} NEWFILE";
+            fclose('NEWFILE') or croak "$croak{'open'} NEWFILE";
         }
         else
         { # return the server's error message if the new file could not be created
@@ -1999,15 +2035,17 @@ sub upload_file2 {
         if ( $fixfile =~ /[.](jpe?g|gif|png)$/ixsm ) {
             my $okatt = 1;
             if ( $fixfile =~ /gif$/ixsm ) {
-                open my $ATTFILE, '<', "$file_directory/$fixfile"
+                our ($ATTFILE);
+                fopen( 'ATTFILE', '<', "$file_directory/$fixfile" )
                   or croak "$croak{'open'} ATTFILE";
                 read $ATTFILE, $header, 10;
                 my ( $giftest, undef, undef, undef, undef, undef ) =
                   unpack 'a3a3C4', $header;
-                close $ATTFILE or croak "$croak{'close'} ATTFILE";
+                fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
                 if ( $giftest ne 'GIF' ) { $okatt = 0; }
             }
-            open my $ATTFILE, '<', "$file_directory/$fixfile"
+            our ($ATTFILE);
+            fopen( 'ATTFILE', '<', "$file_directory/$fixfile" )
               or croak "$croak{'open'} ATTFILE";
             while ( read $ATTFILE, $buffer, 1024 ) {
                 if ( $buffer =~ /<(html|script|body)/igxsm ) {
@@ -2015,7 +2053,7 @@ sub upload_file2 {
                     last;
                 }
             }
-            close $ATTFILE or croak "$croak{'close'} ATTFILE";
+            fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
             if ( !$okatt ) {    # delete the file as it contains illegal code
                 unlink "$file_directory/$fixfile";
                 fatal_error( 'file_not_uploaded', "$fixfile $fatxt{'20a'}" );

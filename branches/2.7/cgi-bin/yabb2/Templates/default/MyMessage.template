@@ -242,17 +242,17 @@ $my_savedraft = qq~<tr>
         <td class="windowbg">
             <div class="bordercolor padd_4px">
                 <table class="windowbg pad_4px fixed">
-                            <tr>
-                                <td class="titlebg" colspan="2"><b>$inmes_txt{'70'}: {yabb msub}</b></td>
-                            </tr><tr>
-                                <td class="catbg"><span class="small">$inmes_txt{'318'}: {yabb musernameRealName}</span></td>
-                                <td class="catbg right"><span class="small">{yabb my_save_draft} {yabb tempdate}</span></td>
-                            </tr><tr>
-                                <td class="windowbg2" colspan="2">
-                                    <div class="message" style="float:left; width:100%;">{yabb message}</div>
-                                </td>
-                            </tr>
-                        </table>
+                    <tr>
+                        <td class="titlebg" colspan="2"><b>$inmes_txt{'70'}: {yabb msub}</b></td>
+                    </tr><tr>
+                        <td class="catbg"><span class="small">$inmes_txt{'318'}: {yabb musernameRealName}</span></td>
+                        <td class="catbg right"><span class="small">{yabb my_save_draft} {yabb tempdate}</span></td>
+                    </tr><tr>
+                        <td class="windowbg2" colspan="2">
+                            <div class="message" style="float:left; width:100%;">{yabb message}</div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </td>
     </tr>~;

@@ -28,8 +28,8 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our ( %croak, %INFO, %FORM, $staff, $currentboard, $boardsdir, $yysetlocation,
-    $scripturl, );
+our ( $boardsdir, $currentboard, $scripturl, $staff, $yysetlocation, %croak,
+    %FORM, %INFO, );
 
 sub set_status {
     if ( !$staff ) { fatal_error('no_access'); }
@@ -45,10 +45,11 @@ sub set_status {
         $currentboard = ${$threadid}{'board'};
     }
 
-    open my $BOARDFILE, '<', "$boardsdir/$currentboard.txt"
+    our ($BOARDFILE);
+    fopen( 'BOARDFILE', '<', "$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <$BOARDFILE>;
-    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
+    fclose('BOARDFILE') or croak "$croak{'close'} $currentboard.txt";
     for my $line ( 0 .. $#boardfile ) {
         if ( $boardfile[$line] =~ m/\A$threadid[|]/xsm ) {
             my (

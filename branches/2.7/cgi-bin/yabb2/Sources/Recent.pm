@@ -15,7 +15,6 @@
 use strict;
 no strict qw(refs);
 use warnings;
-no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -31,18 +30,21 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
 our ( %croak, %img, %maintxt, );
-## settings/template ##
-our ( $yymycharset, $maxrecentdisplay, $cookiepassword, $boardsdir, $datadir,
-    $memberdir, );
+## paths ##
+our ( $boardsdir, $datadir, $memberdir, $scripturl, );
+## settings ##
+our (
+    $cookiepassword,   $enable_guestposting, $enable_ubbc,
+    $maxrecentdisplay, $yymycharset,
+);
 ## system ##
 our (
-    $iamadmin,      $iamgmod,     $iamguest,            $uid,
-    $username,      $scripturl,   $formsession,         %FORM,
-    %INFO,          %board,       %yy_cookies,          %catid,
-    $catid,         %catname,     $catname,             %subboard,
-    @categoryorder, %cat,         %catinfo,             $yymain,
-    $date,          $enable_ubbc, $enable_guestposting, $menusep,
-    $yynavigation,  $yytitle,
+    $catid,    $catname,    $date,     $formsession,
+    $iamadmin, $iamgmod,    $iamguest, $menusep,
+    $uid,      $username,   $yymain,   $yynavigation,
+    $yytitle,  %board,      %cat,      %catid,
+    %catinfo,  %catname,    %FORM,     %INFO,
+    %subboard, %yy_cookies, @categoryorder,
 );
 ## template ##
 our ( $myrecent_mess, $myrecent, );
@@ -59,7 +61,9 @@ get_template('Display');
 
 sub recent_posts {
     spam_protection();
-    $display = isempty( $FORM{'display'}, 10 );
+    $display = $FORM{'display'} || $INFO{'display'} || 10;
+
+    #    $display = isempty( $FORM{'display'}, 10 );
     if ( $display < 0 ) { $display = 5; }
     elsif ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
 
@@ -110,11 +114,13 @@ sub recent_posts {
             }
             $catid{$curboard}   = $catid;
             $catname{$curboard} = $catname;
-            open my $REC_BDTXT, '<', "$boardsdir/$curboard.txt"
+            our ($REC_BDTXT);
+            fopen( 'REC_BDTXT', '<', "$boardsdir/$curboard.txt" )
               or croak "$croak{'open'} $curboard.txt";
             my @buffer = <$REC_BDTXT>;
-            close $REC_BDTXT or croak "$croak{'close'} $curboard.txt";
+            fclose('REC_BDTXT') or croak "$croak{'close'} $curboard.txt";
             for my $i ( 0 .. ( $display - 1 ) ) {
+
                 if ( $buffer[$i] ) {
                     my (
                         $tnum,      $tsub,  $tname,
@@ -157,9 +163,10 @@ sub recent_posts {
 
         # No need to check for hidden topics here, it was done above
         my $tstart = $mtime;
-        open my $REC_THRETXT, '<', "$datadir/$tnum.txt" || next;
+        our ($REC_THRETXT);
+        fopen( 'REC_THRETXT', '<', "$datadir/$tnum.txt" ) || next;
         my @mess = <$REC_THRETXT>;
-        close $REC_THRETXT or croak "$croak{'open'} $tnum.txt";
+        fclose('REC_THRETXT') or croak "$croak{'open'} $tnum.txt";
 
         my $threadfrom = @mess > $display ? @mess - $display : 0;
         for my $c ( $threadfrom .. @mess ) {
@@ -259,7 +266,8 @@ sub recent_posts {
             $notify = q{};
         }
         else {
-            if ( ${ $uid . $username }{'thread_notifications'} =~
+            if (   ${ $uid . $username }{'thread_notifications'}
+                && ${ $uid . $username }{'thread_notifications'} =~
                 /\b$tnum\b/xsm )
             {
                 $notify =
@@ -321,8 +329,8 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1"><span class="under"
         $yymain =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
     }
 
-    $yynavigation = qq~&rsaquo; $maintxt{'214'}~;
-    $yytitle      = $maintxt{'214'};
+    $yynavigation = qq~&rsaquo; $display $maintxt{'214'}~;
+    $yytitle      = qq~$display $maintxt{'214'}~;
     template();
     return;
 }
@@ -356,13 +364,14 @@ sub recent_topics {
         my ( $mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate )
           = split /[|]/xsm, $data[$i];
 
-        open my $REC_THRETXT, '<', "$datadir/$tnum.txt" || next;
+        our ($REC_THRETXT);
+        fopen( 'REC_THRETXT', '<', "$datadir/$tnum.txt" ) || next;
         my @mess = <$REC_THRETXT>;
-        close $REC_THRETXT or croak "$croak{'close'} $tnum.txt";
+        fclose('REC_THRETXT') or croak "$croak{'close'} $tnum.txt";
 
         for my $c ( $#mess .. @mess ) {
-            chomp $mess[$c];
             if ( $mess[$c] ) {
+                chomp $mess[$c];
                 my (
                     $msub,  $mname,    $memail, $mdate,  $musername,
                     $micon, $mreplyno, $mip,    $messge, $mns
@@ -458,7 +467,8 @@ sub recent_topics {
             $notify = q{};
         }
         else {
-            if ( ${ $uid . $username }{'thread_notifications'} =~
+            if (   ${ $uid . $username }{'thread_notifications'}
+                && ${ $uid . $username }{'thread_notifications'} =~
                 /\b$tnum\b/xsm )
             {
                 $notify =
@@ -519,8 +529,8 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
         $yymain =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
     }
 
-    $yynavigation = qq~&rsaquo; $maintxt{'214b'}~;
-    $yytitle      = $maintxt{'214b'};
+    $yynavigation = qq~&rsaquo; $display $maintxt{'214b'}~;
+    $yytitle      = qq~$display $maintxt{'214b'}~;
     template();
     return;
 }
@@ -572,14 +582,16 @@ sub recursive_check {
         $catid{$curboard}   = $catid;
         $catname{$curboard} = $catname;
 
-        open my $REC_BDTXT, '<', "$boardsdir/$curboard.txt"
+        our ($REC_BDTXT);
+        fopen( 'REC_BDTXT', '<', "$boardsdir/$curboard.txt" )
           or croak "$croak{'open'} $curboard.txt";
         my @buffer = <$REC_BDTXT>;
-        close $REC_BDTXT or croak "$croak{'close'} $curboard.txt";
+        fclose('REC_BDTXT') or croak "$croak{'close'} $curboard.txt";
         if ( !$display ) {
             $display = scalar @buffer;
         }
         my $mtime = $date;
+        $numfound = 0;
         for my $i ( 0 .. ( $display - 1 ) ) {
             if ( $buffer[$i] ) {
                 my (

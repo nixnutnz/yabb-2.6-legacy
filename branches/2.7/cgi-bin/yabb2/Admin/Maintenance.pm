@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -24,22 +23,25 @@ our $maintenancepmmods = 0;
 if (@maintenancepmmods) {
     $maintenancepmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admin_img, %rebuild_txt, %txt );
-## paths ##
-our ( $adminurl, $vardir, $boardsdir, $datadir, $memberdir );
-## settings ##
-our ( $yymycharset, %grp_staff, %grp_nopost, $forumstart, $update );
-## other ##
-our (
-    $action,      $yymain,           $yytitle,      $yysetlocation,
-    $action_area, $language,         %INFO,         %FORM,
-    $date,        $max_process_time, $binboard,     $uid,
-    $username,    %memberlist,       %newmemberinf, $OS_ERROR,
-    %theboard,    %thethread
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %croak, %rebuild_txt, %txt, );
+## paths ##
+our ( $adminurl, $boardsdir, $datadir, $memberdir, $vardir );
+## settings ##
+our ( $forumstart, $update, $yymycharset, %grp_nopost, %grp_staff, );
+## other ##
+our (
+    $action_area,      $binboard,      $date,         $language,
+    $max_process_time, $OS_ERROR,      $uid,          $username,
+    $yymain,           $yysetlocation, $yytitle,      %FORM,
+    %INFO,             %memberlist,    %newmemberinf, %theboard,
+    %thethread
+);
 
 load_language('Admin');
 
@@ -180,6 +182,7 @@ sub rebuild_messageindex {
             # rewrite/create a correct threadnumber.ctb
             {
                 no strict qw(refs);
+                $thread_status{$thread} ||= q{};
                 ${$thread}{'board'}   = $theboard;
                 ${$thread}{'replies'} = $#threaddata;
                 ${$thread}{'views'} = ${$thread}{'views'} || 1; # is never = 0 !
@@ -192,9 +195,9 @@ sub rebuild_messageindex {
             }
             message_totals( 'update', $thread );
 
-            push
-              @{ $rebuildboards{$theboard} },
+            my $mypushlst =
 qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|$#threaddata|$firstinfo[4]|$firstinfo[5]|$thread_status{$thread}\n~;
+            push @{ $rebuildboards{$theboard} }, $mypushlst;
 
             if ( time() > $time_to_jump && ( $j + 1 ) < $totalthreads ) {
                 foreach ( keys %rebuildboards ) {
@@ -667,7 +670,8 @@ sub rebuild_memlist {
 
     $update = q{};
     foreach my $i ( keys %memberlist ) {
-        my $val = join q~','~, @{ $newmemberinf{$i} };
+        my @values = map { defined $_ ? $_ : q{} } @{ $newmemberinf{$i} };
+        my $val = join q~','~, @values;
         $update .= qq~\$memberinf{'$i'} = \['$val'\];\n~;
     }
     open my $MEMBERINFO, '>>', "$memberdir/memberinfo.txt.rebuild"

@@ -15,7 +15,6 @@
 use strict;
 no strict qw(refs);
 use warnings;
-no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -32,90 +31,91 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## languages ##
 our (
-    %croak,                           %inmes_txt,
-    %post_txt,                        %guest_reply,
-    %pmiconlist,                      %im_message_status,
-    %micon_bg,                        $abbr_lang,
-    %post_smiltxt,                    %fatxt,
-    %newload,                         @months,
-    %error_txt,                       %notify_txt,
-    $privatemessagenotificationemail, $emailcharset,
-    %index_togl,                      %display_txt,
-    %pidtxt,                          %maintxt,
-    %inmes_imtxt,                     %img,
-    %micon,
+    $abbr_lang,                       $emailcharset,
+    $privatemessagenotificationemail, %croak,
+    %display_txt,                     %error_txt,
+    %fatxt,                           %guest_reply,
+    %im_message_status,               %img,
+    %index_togl,                      %inmes_imtxt,
+    %inmes_txt,                       %maintxt,
+    %micon,                           %micon_bg,
+    %newload,                         %notify_txt,
+    %pidtxt,                          %pmiconlist,
+    %post_smiltxt,                    %post_txt,
+    @months,
 );
-## locations ##
+## paths ##
 our (
-    $langdir,     $memberdir,   $scripturl,   $imagesdir, $htmldir,
-    $yyhtml_root, $pmuploaddir, $pmuploadurl, $pm_attachurl
-);
-## system ##
-our (
-    $iamadmin,         $iamgmod,               %FORM,
-    %INFO,             $error,                 $send_bm_mess,
-    $thestatus,        $staff,                 $is_preview,
-    $normalquot,       $simpelquot,            $simpelcode,
-    $edittext,         $mfrom,                 $mename,
-    $msubject,         $mc_globalformstart,    $ctmain,
-    $template_names,   $my_tosend,             %useraccount,
-    %grp_nopost,       $mto,                   $icon,
-    $my_send,          $use_mobile,            $onchange_text2,
-    $guest_name,       $subtitle,              $guest_email,
-    $js_im,            $threadid,              $postid,
-    $date,             $tmpmtext,              $yyinlinestyle,
-    $pm_attachext,     $flood_text,            $language,
-    $mattach,          $showcheck,             $spam_image,
-    $is_bm_mess,       $verification_question, $spam_question,
-    $spam_question_id, $draft,                 $verification,
-    $hidestatus,       $subittxt,              $iamguest,
-    $my_chars,         $post,                  $submittxt,
-    $cliped,           %memberlist,            $cgi_query,
-    @multiple,         @filelist,              @allto,
-    %messlst,          $useremail,             %format_unbold,
-    $yysetlocation,    $countmulti,            @dimmessages,
-    $callerid,         %gmod_access2,          $useimages,
-    $send_email,       $send_pm,               $memb_adinfo,
-    @messages,         %grps,
+    $htmldir,     $imagesdir,   $langdir,   $memberdir, $pm_attachurl,
+    $pmuploaddir, $pmuploadurl, $scripturl, $yyhtml_root,
 );
 ## settings ##
 our (
-    $set_subject_maxlength, $max_pm_messlen,     $ad_max_messlen,
-    $ad_max_pm_messlen,     $uid,                $username,
-    $max_messlen,           $enable_bm_level,    $iamfmod,
-    $replyguest,            $pm_spam_chk,        $fontsizemax,
-    $fontsizemin,           $numposts,           $do_scramble_id,
-    $pm_enable_cc,          $pm_enable_bcc,      $enable_ubbc,
-    $showyabbcbutt,         @smilieorder,        %addedsmilies,
-    $showadded,             $showsmdir,          $smiliestyle,
-    $winwidth,              $winheight,          $allow_attach_im,
-    $enable_spell_check,    $userdefaultlang,    $pm_file_limit,
-    $pm_checkext,           $pm_attach_groups,   @pm_attachext,
-    $nscheck,               $gpvalid_en,         $spam_questions_gp,
-    $spam_questions_case,   $speedpostdetection, $timeselected,
-    $imspam,                $checkspam,          $post_speed_count,
-    $use_guardian,          $string_on,          $banned_strings,
-    $pm_file_overwrite,     $pm_dirlimit,        $my_ispreview,
-    $enable_notifications,  $maxmessagedisplay,  $showpageall,
-    $signature,             $show_my_sig,        $pm_display_pics,
-    $img_greybox,           $use_menu_type,      $ip_lookup,
-    $menusep,
+    $ad_max_messlen,       $ad_max_pm_messlen,  $allow_attach_im,
+    $banned_strings,       $do_scramble_id,     $enable_bm_level,
+    $enable_notifications, $enable_spell_check, $enable_ubbc,
+    $fontsizemax,          $fontsizemin,        $gpvalid_en,
+    $img_greybox,          $imspam,             $ip_lookup,
+    $max_messlen,          $max_pm_messlen,     $maxmessagedisplay,
+    $numposts,             $pm_attach_groups,   $pm_checkext,
+    $pm_dirlimit,          $pm_display_pics,    $pm_enable_bcc,
+    $pm_enable_cc,         $pm_file_limit,      $pm_file_overwrite,
+    $pm_spam_chk,          $post_speed_count,   $set_subject_maxlength,
+    $showadded,            $showpageall,        $showsmdir,
+    $showyabbcbutt,        $smiliestyle,        $spam_questions_case,
+    $spam_questions_gp,    $speedpostdetection, $string_on,
+    $timeselected,         $use_guardian,       $winheight,
+    $winwidth,             %addedsmilies,       %grp_nopost,
+    @pm_attachext,         @smilieorder,
+);
+## system ##
+our (
+    $callerid,         $cgi_query,       $checkspam,
+    $cliped,           $countmulti,      $date,
+    $draft,            $edittext,        $error,
+    $flood_text,       $guest_email,     $guest_name,
+    $hidestatus,       $iamadmin,        $iamfmod,
+    $iamgmod,          $iamguest,        $icon,
+    $is_bm_mess,       $is_preview,      $js_im,
+    $language,         $mattach,         $mc_globalformstart,
+    $memb_adinfo,      $mename,          $menusep,
+    $mfrom,            $msubject,        $mto,
+    $my_chars,         $my_ispreview,    $my_send,
+    $my_tosend,        $normalquot,      $nscheck,
+    $onchange_text2,   $pm_attachext,    $post,
+    $postid,           $replyguest,      $send_bm_mess,
+    $send_email,       $send_pm,         $show_my_sig,
+    $showcheck,        $signature,       $simpelcode,
+    $simpelquot,       $spam_image,      $spam_question,
+    $spam_question_id, $staff,           $subittxt,
+    $submittxt,        $subtitle,        $template_names,
+    $thestatus,        $threadid,        $tmpmtext,
+    $uid,              $use_menu_type,   $use_mobile,
+    $useimages,        $userdefaultlang, $useremail,
+    $username,         $verification,    $verification_question,
+    $yyinlinestyle,    $yysetlocation,   %FORM,
+    %format_unbold,    %gmod_access2,    %grps,
+    %INFO,             %memberlist,      %messlst,
+    %useraccount,      @allto,           @dimmessages,
+    @filelist,         @messages,        @multiple,
+    $cloaked_author,
 );
 ## templates ##
 our (
-    $prevmain,        $myim_prevmain,       $myim_replyguest,
-    $myim_liveprev,   $us_winwidth_to,      $us_winwidth_cc,
-    $us_winhight_cc,  $us_winhight_to,      $my_imsend_im,
-    $my_imsend_guest, $my_postbox_notguest, $my_postbox_smilie,
-    $my_fa_show,      $my_fa_attach,        $my_fa_att,
-    $mypost_guest_c,  $mypost_veri_c,       $my_spamchk,
-    $imsend_send,     $my_imsend_jsin,      $my_postbox,
-    $im_smilies,      $visel_0,             $visel_1a,
-    $visel_1b,        $visel_2a,            $visel_3a,
-    $show_my_attach,  $visel_4,             $myim_show,
-    $my_show_ip,      $my_attach,           $my_savedraft,
-    $my_fa_browse,
+    $im_smilies,        $imsend_send,     $my_attach,
+    $my_fa_att,         $my_fa_attach,    $my_fa_browse,
+    $my_fa_show,        $my_imsend_guest, $my_imsend_im,
+    $my_imsend_jsin,    $my_postbox,      $my_postbox_notguest,
+    $my_postbox_smilie, $my_savedraft,    $my_show_ip,
+    $my_spamchk,        $myim_liveprev,   $myim_prevmain,
+    $myim_replyguest,   $myim_show,       $mypost_guest_c,
+    $mypost_veri_c,     $prevmain,        $show_my_attach,
+    $us_winhight_cc,    $us_winhight_to,  $us_winwidth_cc,
+    $us_winwidth_to,    $visel_0,         $visel_1a,
+    $visel_1b,          $visel_2a,        $visel_3a,
+    $visel_4,
 );
+
 require Sources::PostBox;
 require Sources::SpamCheck;
 load_language('FA');
@@ -138,7 +138,7 @@ if ( $iamadmin || $iamgmod ) { $max_messlen = $ad_max_messlen; }
 
 ## local ##
 my ( $displayname, @nouser, $mods, $allid, $nextid, $previd, );
-our ($message);
+our ( $message, $imsend );
 
 ## create the send IM section of the screen
 sub build_imsend {
@@ -156,14 +156,15 @@ sub build_imsend {
         $dstorefolder, $dmessageattachment
     );
 
-    if ( $INFO{'caller'} == 4 && $INFO{'id'} ) {
+    if ( $INFO{'caller'} && $INFO{'caller'} == 4 && $INFO{'id'} ) {
         if ( !-e "$memberdir/$username.imdraft" ) {
             fatal_error( 'cannot_open', "$username.imdraft" );
         }
-        open my $DRAFT, '<', "$memberdir/$username.imdraft"
+        our ($DRAFT);
+        fopen( 'DRAFT', '<', "$memberdir/$username.imdraft" )
           or croak "$croak{'open'} imdraft";
         my @draft_pm = <$DRAFT>;
-        close $DRAFT or croak "$croak{'close'} imdraft";
+        fclose('DRAFT') or croak "$croak{'close'} imdraft";
         chomp @draft_pm;
         my $flagfound;
         foreach my $draftmess (@draft_pm) {
@@ -245,16 +246,17 @@ sub build_imsend {
         # this defines what the top area of the post box will look like:
         ## if this is a reply , load the 'from' name off the message
         if ( $INFO{'reply'} || $INFO{'quote'} ) { $INFO{'to'} = $mfrom; }
-        if ( !$INFO{'to'} && $FORM{'to'} ne q{} ) { $INFO{'to'} = $FORM{'to'}; }
+        if ( !$INFO{'to'} && $FORM{'to'} ) { $INFO{'to'} = $FORM{'to'}; }
 
         ## if cloaking is enabled, and 'to' is not a blank
-        if ( $do_scramble_id && $INFO{'to'} ne q{} ) {
+        if ( $do_scramble_id && $INFO{'to'} ) {
             decloak( $INFO{'to'} );
         }
 
         if ( !$send_bm_mess ) { load_user( $INFO{'to'} ); }
     }
 
+    $message ||= q{};
     $message =~ s/<br.*?>/\n/igxsm;
     $message =~ s/&nbsp;/ /gxsm;
     to_chars($message);
@@ -275,7 +277,8 @@ sub build_imsend {
     }
     require Sources::ContextHelp;
     context_script('post');
-
+    our $ctmain = context_script();
+    $template_names ||= q{};
     $mc_globalformstart .= qq~
     $ctmain
     <script type="text/javascript">
@@ -285,6 +288,7 @@ sub build_imsend {
     ~;
     my $my_gimsend  = q{};
     my $my_tosend_a = q{};
+
     if ( !$replyguest ) {
         if ($prevmain) {
             $my_gimsend = $myim_prevmain;
@@ -343,8 +347,6 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
     # now uses a multi-line select
     proc_imrecs();
 
-    my $toname = $INFO{'forward'} ? q{} : $INFO{'to'};
-
     my $tousers_title = $inmes_txt{'torecepients'};
 
     my $onchangetext = q{};
@@ -382,20 +384,21 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
         <div id="usersto" class="usersto">
         <b>$inmes_txt{'324'} $tousers_title:</b>&nbsp;<a href="javascript: void(0);" onclick="imWin();" tabindex="1"><span class="small">$inmes_txt{'clickto1'} <i>$inmes_txt{'324'}</i> $tousers_title $inmes_txt{'clickto2'}</span></a><br />
         <select name="toshow" id="toshow" multiple="multiple" size="6" class="width_100" ondblclick="removeUser(this);">\n~;
-
+        my $toname = $INFO{'forward'} ? q{} : $INFO{'to'};
         if ( !$send_bm_mess ) {
             if ($toname) {
                 load_user($toname);
                 if ( ${ $uid . $toname }{'realname'} ) {
                     $im_winop .=
-qq~<option selected="selected" value="$useraccount{$toname}">${$uid.$toname}{'realname'}</option>\n~;
+qq~<option selected="selected" value="$useraccount{$toname}">${ $uid . $toname }{'realname'}</option>\n~;
                 }
-                my $mtousers = $INFO{'mid'};
-                foreach my $moreuser ( split /,/xsm, $mtousers ) {
-                    if ( $moreuser ne $username ) {
-                        load_user($moreuser);
-                        $im_winop .=
+                if ( $INFO{'mid'} ) {
+                    foreach my $moreuser ( split /,/xsm, $INFO{'mid'} ) {
+                        if ( $moreuser ne $username ) {
+                            load_user($moreuser);
+                            $im_winop .=
 qq~<option selected="selected" value="$moreuser">${$uid.$moreuser}{'realname'}</option>\n~;
+                        }
                     }
                 }
             }
@@ -537,6 +540,8 @@ qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'re
 qq~                            <option value="$img"$myic>$alt</option>\n~;
         }
         $imsend_send = $my_imsend_im;
+        $my_send        ||= q{};
+        $onchange_text2 ||= q{};
         $imsend_send =~ s/\Q{yabb my_send}\E/$my_send/xsm;
         $imsend_send =~ s/\Q{yabb my_gimsend}\E/$my_gimsend/xsm;
         $imsend_send =~ s/\Q{yabb imWinop}\E/$im_winop/xsm;
@@ -551,6 +556,7 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
     }
     else {
         $imsend_send = $my_imsend_guest;
+        $my_send ||= q{};
         $imsend_send =~ s/\Q{yabb my_gimsend}\E/$my_gimsend/xsm;
         $imsend_send =~ s/\Q{yabb my_send}\E/$my_send/xsm;
         $imsend_send =~ s/\Q{yabb toUsersTitle}\E/$tousers_title/xsm;
@@ -558,6 +564,7 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
         $imsend_send =~ s/\Q{yabb guestEmail}\E/$guest_email/xsm;
     }
 
+    $subject ||= q{};
     $subtitle = "<i>$subject</i>";
 
     #this is the end of the upper area of the post page.
@@ -573,7 +580,11 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
     }
     </script>
     ~;
-
+    $threadid     ||= q{};
+    $postid       ||= q{};
+    $mename       ||= q{};
+    $INFO{'id'}   ||= q{};
+    $FORM{'info'} ||= q{};
     $js_and_input .= qq~
     <input type="hidden" name="threadid" id="threadid" value="$threadid" />
     <input type="hidden" name="postid" id="postid" value="$postid" />
@@ -582,7 +593,7 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
     <input type="hidden" name="post_entry_time" id="post_entry_time" value="$date" />
     ~;
 
-    if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
+    if ( $FORM{'draftid'} || ( $INFO{'caller'} && $INFO{'caller'} == 4 ) ) {
         $js_and_input .=
           q~<input type="hidden" name="draftid" id="draftid" value="~
           . ( $FORM{'draftid'} || $INFO{'id'} ) . q~" />~;
@@ -850,11 +861,19 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
     my $my_isreply = q{};
     if ( $INFO{'quote'} || $INFO{'reply'} || $FORM{'reply'} )
     {    # if this is a reply, need to pass the reply # forward
+        $INFO{'quote'} ||= q{};
+        $INFO{'reply'} ||= q{};
+        $FORM{'reply'} ||= q{};
         $my_isreply = qq~
             <input type="hidden" name="reply" id="reply" value="$INFO{'quote'}$INFO{'reply'}$FORM{'reply'}" />~;
     }
     my $verification_field          = q{};
     my $verification_question_field = q{};
+
+    if ( !$nscheck ) {
+        $nscheck = q{};
+    }
+    else { $nscheck = ' checked="checked"'; }
     if ( !$replyguest ) {
         $my_isreply .= qq~
             <input type="checkbox" name="ns" id="ns" value="NS"$nscheck onchange="autoPreview();" /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
@@ -901,7 +920,7 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/gxsm;
             $my_isreply =~
 s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
         }
-        if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
+        if ( $FORM{'draftid'} || ( $INFO{'caller'} && $INFO{'caller'} == 4 ) ) {
             $my_isreply .= qq~
             <input type="checkbox" name="draftleave" id="draftleave" value="1" /> <span class="small"> $post_txt{'draftleave'}</span><br />~;
         }
@@ -923,6 +942,7 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
     }
     my $my_spdpost = q{};
     if ($speedpostdetection) {
+        $post       = 'imsend';
         $my_spdpost = q~
             <script type="text/javascript">~;
         $my_spdpost .= speedpost();
@@ -1012,7 +1032,10 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $jsmonths =~ s/,\Z//xsm;
     my $jstimeselected = ${ $uid . $username }{'timeselect'} || $timeselected;
 
-    our $imsend = $imsend_send;
+    $imsend = $imsend_send;
+    $my_ispreview ||= q{};
+    $hidestatus   ||= q{};
+    $my_chars     ||= q{};
     $imsend .= $my_imsend_jsin;
     $imsend .= $my_ubbc_yes;
     $imsend .= $my_postbox;
@@ -1108,7 +1131,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     }
     $message = $convertstr;
 
-    if ( $FORM{'ns'} eq 'NS' ) { $message .= '#nosmileys'; }
+    if ( $FORM{'ns'} && $FORM{'ns'} eq 'NS' ) { $message .= '#nosmileys'; }
 
     my $im_box = q{};
     if ($error) {
@@ -1261,13 +1284,14 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 }
 
  # create a new file on the server using the formatted ( new instance ) filename
-                if ( open my $NEWFILE, '>', "$pmuploaddir/$fixfile" ) {
+                our ($NEWFILE);
+                if ( fopen( 'NEWFILE', '>', "$pmuploaddir/$fixfile" ) ) {
                     binmode $NEWFILE;
 
                    # needed for operating systems (OS) Windows, ignored by Linux
                     print {$NEWFILE} $file_buffer
                       or croak "$croak{'print'} NEWFILE"; # write new file on HD
-                    close $NEWFILE or croak "$croak{'close'} NEWFILE";
+                    fclose('NEWFILE') or croak "$croak{'close'} NEWFILE";
                 }
                 else
                 { # return the server's error message if the new file could not be created
@@ -1288,15 +1312,17 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                 if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
                     my $okatt = 1;
                     if ( $fixfile =~ /gif$/ixsm ) {
-                        open my $ATTFILE, '<', "$pmuploaddir/$fixfile"
+                        our ($ATTFILE);
+                        fopen( 'ATTFILE', '<', "$pmuploaddir/$fixfile" )
                           or croak "$croak{'open'} ATTFILE";
                         read $ATTFILE, my $header, 10;
                         my ( $giftest, undef, undef, undef, undef, undef ) =
                           unpack 'a3a3C4', $header;
-                        close $ATTFILE or croak "$croak{'close'} ATTFILE";
+                        fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
                         if ( $giftest ne 'GIF' ) { $okatt = 0; }
                     }
-                    open my $ATTFILE, '<', "$pmuploaddir/$fixfile"
+                    our ($ATTFILE);
+                    fopen( 'ATTFILE', '<', "$pmuploaddir/$fixfile" )
                       or croak "$croak{'open'} ATTFILE";
                     while ( read $ATTFILE, $buffer, 1024 ) {
                         if ( $buffer =~ /<(?:html|script|body)/igxsm ) {
@@ -1304,7 +1330,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                             last;
                         }
                     }
-                    close $ATTFILE or croak "$croak{'close'} ATTFILE";
+                    fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
                     if ( !$okatt )
                     {    # delete the file as it contains illegal code
                         foreach (qw("@filelist" $fixfile)) {
@@ -1333,14 +1359,15 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
         $fixfile = join q{,}, @filelist;
         my $log_fixfile = join q{,}, @logfilelist;
         if (@filelist) {
-            open my $PMATTACHLOG, '>>', 'Variables/pmattachments.db'
+            our ($PMATTACHLOG);
+            fopen( 'PMATTACHLOG', '>>', 'Variables/pmattachments.db' )
               or fatal_error( 'cannot_open', 'Variables/pmattachments.db' );
             foreach my $log_fixfile (@logfilelist) {
                 print {$PMATTACHLOG}
 qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'realname'}|$username\n~
                   or croak "$croak{'print'} PMATTACHLOG";
             }
-            close $PMATTACHLOG or croak "$croak{'close'} PMATTACHLOG";
+            fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
         }
     }
 
@@ -1390,11 +1417,12 @@ qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'re
             }
             ## check and see if 1) username is marked 'away' 2) they left a message 3) you have not already had an auto-reply
             my $send_autoreply = 1;
-            if (   ${ $uid . $user_to }{'offlinestatus'} eq 'away'
-                && ${ $uid . $user_to }{'awayreply'} ne q{}
-                && ${ $uid . $user_to }{'awaysubj'} ne q{} )
+            if (   ${ $uid . $user_to }{'offlinestatus'}
+                && ${ $uid . $user_to }{'offlinestatus'} eq 'away'
+                && ${ $uid . $user_to }{'awayreply'}
+                && ${ $uid . $user_to }{'awaysubj'} )
             {
-                if ( ${ $uid . $user_to }{'awayreplysent'} eq q{} ) {
+                if ( ${ $uid . $user_to }{'awayreplysent'} ) {
                     ${ $uid . $user_to }{'awayreplysent'} = $username;
                     user_account( $user_to, 'update' );
                 }
@@ -1434,37 +1462,42 @@ qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'re
                 # Send message to user
                 my @inmessages = ();
                 if ( -e "$memberdir/$user_to.msg" ) {
-                    open my $INBOX, '<', "$memberdir/$user_to.msg"
+                    our ($INBOX);
+                    fopen( 'INBOX', '<', "$memberdir/$user_to.msg" )
                       or croak "$croak{'open'} INBOX";
                     @inmessages = <$INBOX>;
-                    close $INBOX or croak "$croak{'close'} INBOX";
+                    fclose('INBOX') or croak "$croak{'close'} INBOX";
                 }
-                unshift @inmessages,
+                $FORM{'status'} ||= 's';
+                $fixfile ||= q{};
+                my $mynewim =
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}|u||$fixfile|$mods\n";
+                unshift @inmessages, $mynewim;
                 my $prninmess = join q{}, @inmessages;
-                open my $INBOX, '>', "$memberdir/$user_to.msg"
+                our ($INBOX);
+                fopen( 'INBOX', '>', "$memberdir/$user_to.msg" )
                   or croak "$croak{'open'} INBOX";
                 print {$INBOX} $prninmess or croak "$croak{'print'} INBOX";
-                close $INBOX or croak "$croak{'close'} INBOX";
+                fclose('INBOX') or croak "$croak{'close'} INBOX";
 
                 # we've added the msg to the inbox, now update the ims file
                 update_pms( $user_to, $messageid, 'messagein' );
                 ## if we need to drop the 'away' reply in....
                 if ($send_autoreply) {
                     my $rmessageid = getnewid();
-                    open my $INBOX, '<', "$memberdir/$username.msg"
+                    fopen( 'INBOX', '<', "$memberdir/$username.msg" )
                       or croak "$croak{'open'} INBOX";
                     my @myinmessages = <$INBOX>;
-                    close $INBOX or croak "$croak{'close'} INBOX";
+                    fclose('INBOX') or croak "$croak{'close'} INBOX";
                     unshift @myinmessages,
 "$rmessageid|$user_to|$username|||${$uid.$user_to}{'awaysubj'}|$date|${$uid.$user_to}{'awayreply'}|$messageid|1|$ENV{'REMOTE_ADDR'}|s|u||$fixfile|$mods\n";
 
                     my $prnmyinmess = join q{}, @myinmessages;
-                    open $INBOX, '>', "$memberdir/$username.msg"
+                    fopen( 'INBOX', '>', "$memberdir/$username.msg" )
                       or croak "$croak{'open'} INBOX";
                     print {$INBOX} $prnmyinmess
                       or croak "$croak{'print'} INBOX";
-                    close $INBOX or croak "$croak{'close'} INBOX";
+                    fclose('INBOX') or croak "$croak{'close'} INBOX";
                 }
                 ## relocated sender msg out of the loop
 
@@ -1538,10 +1571,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
 ## IM Mod Hook B  (%messlst hash additions - values for added @messhsh list) ##
 
     if ( !$FORM{'draft'} && $is_bm_mess ) {
-        open my $INBOX, '<', "$memberdir/broadcast.messages"
+        our ($INBOX);
+        fopen( 'INBOX', '<', "$memberdir/broadcast.messages" )
           or croak "$croak{'open'} broadcast.messages";
         my @inmessages = <$INBOX>;
-        close $INBOX or croak "$croak{'close'} broadcast.messages";
+        fclose('INBOX') or croak "$croak{'close'} broadcast.messages";
         $mods = q{};
         my @messhsh = get_imlist();
         if ( $#messhsh > 14 ) {
@@ -1550,13 +1584,15 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
                 $mods .= q{|};
             }
         }
+        $FORM{'status'} ||= q{};
+        $fixfile ||= q{};
         unshift @inmessages,
 "$messageid|$username|$FORM{'toshow'}|||$subject|$date|$message|$messageid|0|$ENV{'REMOTE_ADDR'}|$FORM{'status'}b|u||$fixfile|$mods\n";
         my $prninmess = join q{}, @inmessages;
-        open $INBOX, '>', "$memberdir/broadcast.messages"
+        fopen( 'INBOX', '>', "$memberdir/broadcast.messages" )
           or croak "$croak{'open'} broadcast.messages";
         print {$INBOX} $prninmess or croak "$croak{'print'} INBOX";
-        close $INBOX or croak "$croak{'close'} broadcast.messages";
+        fclose('INBOX') or croak "$croak{'close'} broadcast.messages";
     }
 
     if ( $FORM{'reply'} && $FORM{'info'} ) {    # mark msg replied
@@ -1570,10 +1606,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     my $savetofile  = 'outbox';
     if ( $FORM{'draft'} ) { $savetofile = 'imdraft'; }
     if ( -e "$memberdir/$username.$savetofile" ) {
-        open my $OUTBOX, '<', "$memberdir/$username.$savetofile"
+        our ($OUTBOX);
+        fopen( 'OUTBOX', '<', "$memberdir/$username.$savetofile" )
           or croak "$croak{'open'} OUTBOX";
         @outmessages = <$OUTBOX>;
-        close $OUTBOX or croak "$croak{'close'} OUTBOX";
+        fclose('OUTBOX') or croak "$croak{'close'} OUTBOX";
     }
 
     # add the PM to the outbox
@@ -1619,6 +1656,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         }
         my $prnout = q{};
         if ( !$FORM{'draft'} || ( $FORM{'draft'} && !$FORM{'draftid'} ) ) {
+            $FORM{'toshowcc'}  ||= q{};
+            $FORM{'toshowbcc'} ||= q{};
+            $FORM{'reply'}     ||= q{};
+            $FORM{'status'}    ||= 's';
+            $fixfile           ||= q{};
             $prnout .=
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$mess_flag|||$fixfile|$mods\n";
             $prnout .= join q{}, @outmessages;
@@ -1637,11 +1679,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
                 }
             }
         }
-        open my $OUTBOX, '>', "$memberdir/$username.$savetofile"
+        our ($OUTBOX);
+        fopen( 'OUTBOX', '>', "$memberdir/$username.$savetofile" )
           or
           fatal_error( 'cannot_open', "+>$memberdir/$username.$savetofile", 1 );
         print {$OUTBOX} $prnout or croak "$croak{'print'} OUTBOX";
-        close $OUTBOX or croak "$croak{'close'} OUTBOX";
+        fclose('OUTBOX') or croak "$croak{'close'} OUTBOX";
 
         ## update ims for sent
         if ( !$FORM{'draft'} ) {
@@ -1655,10 +1698,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     ## if this is a draft being sent, remove it from the draft file
     if ( $FORM{'draftid'} && $FORM{'draft'} ne $inmes_txt{'savedraft'} ) {
         update_pms( $username, $messageid, 'draftsend' );
-        open my $DRAFTFILE, '<', "$memberdir/$username.imdraft"
+        our ($DRAFTFILE);
+        fopen( 'DRAFTFILE', '<', "$memberdir/$username.imdraft" )
           or croak "$croak{'open'} imdraft";
         my @draft_pm = <$DRAFTFILE>;
-        close $DRAFTFILE or croak "$croak{'close'} DRAFTFILE";
+        fclose('DRAFTFILE') or croak "$croak{'close'} DRAFTFILE";
         my $prndrft = q{};
         foreach my $draftmess (@draft_pm) {
             chomp $draftmess;
@@ -1670,10 +1714,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
 "$messageid|$username|$FORM{'toshow'}|$FORM{'toshowcc'}|$FORM{'toshowbcc'}|$subject|$date|$message|$messageid|$FORM{'reply'}|$ENV{'REMOTE_ADDR'}|$FORM{'status'}$mess_flag|||$fixfile|$mods\n";
             }
         }
-        open $DRAFTFILE, '>', "$memberdir/$username.imdraft"
+        fopen( 'DRAFTFILE', '>', "$memberdir/$username.imdraft" )
           or croak "$croak{'open'} DRAFT";
         print {$DRAFTFILE} $prndrft or croak "$croak{'print'} imdraft";
-        close $DRAFTFILE or croak "$croak{'close'} DRAFT";
+        fclose('DRAFTFILE') or croak "$croak{'close'} DRAFT";
     }
 
 # invalid users
@@ -1706,6 +1750,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
 
 ##  process the to/cc/bcc lists
 sub proc_imrecs {
+    $FORM{'toshow'} ||= q{};
     $FORM{'toshow'} =~ s/\s//gxsm;
     if ( !$is_bm_mess ) {
         $countmulti = 0;
@@ -1721,7 +1766,9 @@ sub proc_imrecs {
         $toshow_list =~ s/,/,to:/gxsm;
         push @allto, ( split /,/xsm, $toshow_list );
         $FORM{'toshow'} = join q{,}, @multiple;
+        $FORM{'toshowcc'} ||= q{};
         $FORM{'toshowcc'} =~ s/\s//gxsm;
+        $FORM{'toshowbcc'} ||= q{};
         $FORM{'toshowbcc'} =~ s/\s//gxsm;
 
         if ( $FORM{'toshowcc'} ) {
@@ -1764,6 +1811,8 @@ sub proc_imrecs {
 
 # Build the page links list.
 sub pagelinks_list {
+    our (%display_txt);
+    load_language('Display');
     $maxmessagedisplay ||= 10;
     my $userthreadpage =
       ( split /[|]/xsm, ${ $uid . $username }{'pageindex'} )[3];
@@ -1773,11 +1822,16 @@ sub pagelinks_list {
     my $dropdisplaynum = 10;
     my $startpage      = 0;
     my $viewfolderinfo = q{};
-    if ( $INFO{'viewfolder'} ne q{} ) {
+
+    if ( $INFO{'viewfolder'} ) {
         $viewfolderinfo = qq~;viewfolder=$INFO{'viewfolder'}~;
     }
-    if ( $INFO{'focus'} eq 'bmess' ) { $bmesslink = q~;focus=bmess~; }
-    if ( $INFO{'focus'} eq 'gmess' ) { $bmesslink = q~;focus=gmess~; }
+    if ( $INFO{'focus'} && $INFO{'focus'} eq 'bmess' ) {
+        $bmesslink = q~;focus=bmess~;
+    }
+    if ( $INFO{'focus'} && $INFO{'focus'} eq 'gmess' ) {
+        $bmesslink = q~;focus=gmess~;
+    }
     my @tempim = @dimmessages;
     if ( $action eq 'imstorage' ) {
         my $i = 0;
@@ -1791,7 +1845,7 @@ sub pagelinks_list {
     }
     my $max   = $#tempim + 1;
     my $start = 0;
-    if ( $INFO{'start'} eq 'all' ) {
+    if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
         $maxmessagedisplay = $max;
         $all               = 1;
         $allselected       = q~ selected="selected"~;
@@ -1989,7 +2043,9 @@ qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03
 sub doshow_im {
     my ($inp) = @_;
     my $messfound = 0;
-    if ( $callerid < 5 ) { update_pms( $username, $inp, 'inread' ); }
+    if ( !$callerid || $callerid < 5 ) {
+        update_pms( $username, $inp, 'inread' );
+    }
 
     my (
         $show_im,           $from_title,     $totitle,
@@ -2034,11 +2090,11 @@ sub doshow_im {
     $previd = q{};
     $nextid = q{};
     $allid  = q{};
-    if ( $INFO{'id'} > 0 && $prev_messid ne q{} ) {
+    if ( $INFO{'id'} > 0 && $prev_messid ) {
         $previd =
 qq~&laquo; <a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$prev_messid">$inmes_imtxt{'40'}</a>~;
     }
-    if ( $INFO{'id'} > 0 && $next_messid ne q{} ) {
+    if ( $INFO{'id'} > 0 && $next_messid ) {
         $nextid =
 qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$next_messid">$inmes_imtxt{'41'}</a> &raquo;~;
     }
@@ -2507,6 +2563,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
       )
     {
         chomp $messlst{'mattach'};
+        $attach_deletewarn = q{};
         if (   $INFO{'caller'} == 2
             || $INFO{'caller'} == 3
             || $INFO{'caller'} == 5 && $messlst{'mattach'} ne q{} )
@@ -2527,8 +2584,8 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
     $showim_link .= qq~
             $menusep<a href="javascript:void(window.open('$scripturl?action=imprint;caller=$INFO{'caller'};id=$messlst{'messageid'}','printwindow'))">$img{'print_im'}</a>
         ~;
-    my $my_notme     = q{};
-    my $notme        = q{};
+    my $my_notme = q{};
+    my $notme    = q{};
     my %mypmicon = (
         'c'  => 'confidential',
         'u'  => 'urgent',
@@ -2554,6 +2611,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
         );
     }
 
+    $my_attach ||= q{};
     $show_im .= $myim_show;
     $show_im =~ s/\Q{yabb my_title}\E/$my_title/xsm;
     $show_im =~ s/\Q{yabb msub}\E/$messlst{'msub'}/xsm;
@@ -2585,15 +2643,15 @@ sub build_pm_navigator {
     return $pm_nav;
 }
 
-## show original PM/BM or the PM/BM before Preview at the bottom of the message field
+## show original PM/BM or the PM/BM at the bottom of the message field
 sub doshowims {
     my $tempdate;
     %messlst = ();
+    my $message_count = 0;
     if ( $INFO{'id'} && !$INFO{'replyguest'} ) {
-        my $message_count     = 0;
         my $message_foundflag = 0;
-        foreach my $message (@messages) {
-            my $tmnum = ( split /[|]/xsm, $message )[0];
+        foreach my $messge (@messages) {
+            my $tmnum = ( split /[|]/xsm, $messge )[0];
             if ( $tmnum == $INFO{'id'} ) { $message_foundflag = 1; last; }
             else                         { $message_count++; }
         }
@@ -2611,8 +2669,10 @@ sub doshowims {
 
     wrap();
     if ($enable_ubbc) {
+        $message = $messlst{'immessage'};
         enable_yabbc();
         do_ubbc();
+        $messlst{'immessage'} = $message;
     }
     wrap2();
     to_chars( $messlst{'immessage'} );
@@ -2629,7 +2689,7 @@ sub doshowims {
         : ( $INFO{'id'} ? "$inmes_txt{'savedraft'} $inmes_txt{'30'}: " : q{} )
     );
 
-    our $imsend = $my_savedraft;
+    $imsend .= $my_savedraft;
     $imsend =~ s/\Q{yabb msub}\E/$messlst{'msub'}/xsm;
     $imsend =~ s/\Q{yabb musernameRealName}\E/$musername_realname/xsm;
     $imsend =~ s/\Q{yabb my_save_draft}\E/$my_save_draft/xsm;

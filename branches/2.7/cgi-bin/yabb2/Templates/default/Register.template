@@ -31,7 +31,7 @@ $myregister_fullagree = qq~
     <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/xx.gif" alt="" /> $register_txt{'764a'}</div>
     <div class="windowbg padd_8px">{yabb fullagree}</div>
     <div class="catbg center padd_8px">
-            <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" />
+        <input type="submit" value="$register_txt{'585'}" name="regagree" class="button" />&nbsp;&nbsp;<input type="submit" value="$register_txt{'586'}" name="regnoagree" class="button" />
     </div>
 </form>~;
 

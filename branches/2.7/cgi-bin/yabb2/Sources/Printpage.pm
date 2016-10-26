@@ -27,16 +27,22 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## languages ##
+our ( %croak, %fatxt, %inmes_txt, %load_imtxt, %maintxt, );
+## paths ##
 our (
-    $amdisplaypics, $currentboard,    $datadir,     $date,
-    $enable_ubbc,   $htmldir,         $iamguest,    $imagesdir,
-    $mbname,        $memberdir,       $myprint,     $myprint_im,
-    $mythread,      $pm_display_pics, $pmuploaddir, $pmuploadurl,
-    $scripturl,     $showprinturl,    $showurl,     $staff,
-    $threadpost,    $uid,             $uploaddir,   $uploadurl,
-    $useimages,     $username,        %att_img,     %attach_gif,
-    %croak,         %fatxt,           %INFO,        %inmes_txt,
-    %load_imtxt,    %maintxt,         %micon_bg,    %thread_arrayref
+    $datadir,     $htmldir,   $imagesdir, $memberdir, $pmuploaddir,
+    $pmuploadurl, $scripturl, $uploaddir, $uploadurl,
+);
+## settings ##
+our ( $amdisplaypics, $enable_ubbc, $mbname, $pm_display_pics, );
+## system ##
+our (
+    $currentboard, $date,       $iamguest,     $myprint,
+    $myprint_im,   $mythread,   $showprinturl, $showurl,
+    $staff,        $threadpost, $uid,          $useimages,
+    $username,     %att_img,    %attach_gif,   %INFO,
+    %micon_bg,     %thread_arrayref,
 );
 
 get_micon();
@@ -47,9 +53,9 @@ sub print_im {
     load_language('InstantMessage');
 
     my (
-        $from_title,    $to_title,      $username_from, $username_to,
-        $pm_attachment, $pm_showattach, $boxtitle,      $storetitle,
-        $folder,        $im_file,
+        $boxtitle,      $folder,        $from_title, $im_file,
+        $pm_attachment, $pm_showattach, $storetitle, $to_title,
+        $username_from, $username_to,
     );
     our ( $message, $displayname, );
     my %caller = (
@@ -66,9 +72,10 @@ sub print_im {
             $storetitle = ${ $caller{$call} }[2] || q{};
         }
     }
-    open my $THREADS, '<', "$memberdir/$im_file" or donoopen();
+    our ($THREADS);
+    fopen( 'THREADS', '<', "$memberdir/$im_file" ) or donoopen();
     my @threads = <$THREADS>;
-    close $THREADS or croak "$croak{'close'} $im_file";
+    fclose('THREADS') or croak "$croak{'close'} $im_file";
 
     my $threadid = $INFO{'id'};
     my (
@@ -498,9 +505,10 @@ sub print_post {
 
     # Lets open up the thread file itself
     if ( !ref $thread_arrayref{$num} ) {
-        open my $THREADS, '<', "$datadir/$num.txt" || donoopen();
+        our ($THREADS);
+        fopen( 'THREADS', '<', "$datadir/$num.txt" ) || donoopen();
         @{ $thread_arrayref{$num} } = <$THREADS>;
-        close $THREADS or croak "$croak{'close'} $num.txt";
+        fclose('THREADS') or croak "$croak{'close'} $num.txt";
     }
     $cat =~ s/\n//gxsm;
 
@@ -556,7 +564,8 @@ sub print_post {
             # store all downloadcounts in variable
             if ( !%attach_count ) {
                 my ( $atfile, $atcount );
-                open my $ATM, '<', 'Variables/attachments.db'
+                our ($ATM);
+                fopen( 'ATM', '<', 'Variables/attachments.db' )
                   or croak "$croak{'open'} attachments";
                 while (<$ATM>) {
                     (
@@ -565,7 +574,7 @@ sub print_post {
                     ) = split /[|]/xsm;
                     $attach_count{$atfile} = $atcount;
                 }
-                close $ATM or croak "$croak{'close'} attachments";
+                fclose('ATM') or croak "$croak{'close'} attachments";
                 if ( !%attach_count ) {
                     $attach_count{'no_attachments'} = 1;
                 }

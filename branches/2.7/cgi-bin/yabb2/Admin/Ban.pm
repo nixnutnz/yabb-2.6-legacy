@@ -26,20 +26,20 @@ our @banpmmods = ();
 if (@banpmmods) {
     $banpmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admin_img );
+our ( %admin_img, %admin_txt, %croak, );
 ## paths ##
 our ( $adminurl, $vardir, );
 ## settings ##
-our ( $yymycharset, $use_guardian, $use_htaccess, @timeban, @bandays, );
-## other ##
-our (
-    $action, $yymain,      $yytitle,
-    %FORM,   $action_area, $yysetlocation,
-    $uid,    $username,    %INFO,
-);
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
+our ( $use_guardian, $use_htaccess, $yymycharset, @bandays, @timeban, );
+## system ##
+our ( $action_area, $uid, $username, $yymain, $yysetlocation, $yytitle, %FORM,
+    %INFO, );
 
 my $today = time;
 load_language('Admin');
@@ -48,10 +48,11 @@ load_language('Admin');
 sub ipban {
     is_admin_or_gmod();
 
-    open my $BAN, '<', "$vardir/banlist.db"
-      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN);
+    fopen( 'BAN', '<', 'Variables/banlist.db' )
+      or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     our @banlist = <$BAN>;
-    close $BAN or croak "$croak{'close'} BAN";
+    fclose('BAN') or croak "$croak{'close'} BAN";
     my $tmb   = q{};
     my $timeb = q{};
     my $tma   = q{};
@@ -269,10 +270,11 @@ sub ipban2 {
     my %seen   = ();
     my @allban = ();
 
-    open my $BAN, '<', "$vardir/banlist.db"
-      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN);
+    fopen( 'BAN', '<', 'Variables/banlist.db' )
+      or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     my @oldban = <$BAN>;
-    close $BAN or croak "$croak{'close'} BAN";
+    fclose('BAN') or croak "$croak{'close'} BAN";
     chomp @oldban;
 
     for my $item (@myban) { $seen{$item} = 1 }
@@ -282,12 +284,13 @@ sub ipban2 {
         }
     }
 
-    open my $BAN2, '>', "$vardir/banlist.db"
-      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN2);
+    fopen( 'BAN2', '>', 'Variables/banlist.db' )
+      or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     for my $j (@allban) {
         print {$BAN2} qq~$j\n~ or croak "$croak{'print'} UNBAN";
     }
-    close $BAN2 or croak "$croak{'close'} BAN2";
+    fclose('BAN2') or croak "$croak{'close'} BAN2";
 
     $yysetlocation = qq~$adminurl?action=ipban~;
     redirectexit();
@@ -302,8 +305,9 @@ sub ipban_add {
 
     my @banin = split /\n/xsm, $ban_in;
 
-    open my $BAN, '<', "$vardir/banlist.db"
-      || fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN);
+    fopen( 'BAN', '<', 'Variables/banlist.db' )
+      || fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     my @myban = <$BAN>;
     close $BAN or croak "$croak{'close'} BAN";
     chomp @myban;
@@ -342,10 +346,11 @@ sub ipban_add {
 qq~$type|$ja|$time|${$uid.$username}{'realname'} ($username)|p|$jb|\n~;
             }
         }
-        open my $BAN2, '>>', "$vardir/banlist.db"
-          or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+        our ($BAN2);
+        fopen( 'BAN2', '>>', 'Variables/banlist.db' )
+          or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
         print {$BAN2} $printban or croak "$croak{'print'} BAN2";
-        close $BAN2 or croak "$croak{'close'} BAN";
+        fclose('BAN2') or croak "$croak{'close'} BAN";
     }
     $yysetlocation = qq~$adminurl?action=ipban~;
     redirectexit();
@@ -359,10 +364,11 @@ sub ban_clean {
     is_admin_or_gmod();
 
     my $time = time;
-    open my $BAN, '<', "$vardir/banlist.db"
-      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN);
+    fopen( 'BAN', '<', 'Variables/banlist.db' )
+      or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     my @myban = <$BAN>;
-    close $BAN or croak "$croak{'close'} BAN";
+    fclose('BAN') or croak "$croak{'close'} BAN";
     chomp @myban;
     my $printban = q{};
     local *time_ban = sub {
@@ -392,10 +398,11 @@ sub ban_clean {
             }
         }
     }
-    open my $BAN2, '>', "$vardir/banlist.db"
-      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN2);
+    fopen( 'BAN2', '>', 'Variables/banlist.db' )
+      or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     print {$BAN2} $printban or croak "$croak{'print'} BAN2";
-    close $BAN2 or croak "$croak{'close'} BAN2";
+    fclose('BAN2') or croak "$croak{'close'} BAN2";
     $yysetlocation = qq~$adminurl?action=ipban~;
     redirectexit();
     return;
@@ -404,10 +411,11 @@ sub ban_clean {
 sub banlog {
     my $banlog = q{};
     if ( -e 'Variables/ban.log' ) {
-        open my $BANLOG, '<', 'Variables/ban.log'
+        our ($BANLOG);
+        fopen( 'BANLOG', '<', 'Variables/ban.log' )
           or fatal_error( 'cannot_open', 'Variables/ban.log', 1 );
         my @mybanlog = <$BANLOG>;
-        close $BANLOG or croak "$croak{'close'} BANLOG";
+        fclose('BANLOG') or croak "$croak{'close'} BANLOG";
         chomp @mybanlog;
         my @myban = reverse sort @mybanlog;
         import Time::gmtime;
@@ -448,10 +456,11 @@ sub ipban_err {
 
     my $time  = time;
     my $ihave = 0;
-    open my $BAN, '<', "$vardir/banlist.db"
-      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN);
+    fopen( 'BAN', '<', 'Variables/banlist.db' )
+      or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     my @myban = <$BAN>;
-    close $BAN or croak "$croak{'close'} BAN";
+    fclose('BAN') or croak "$croak{'close'} BAN";
     chomp @myban;
 
     local *time_ban = sub {
@@ -483,10 +492,11 @@ sub ipban_err {
               qq~I|$ip_ban|$time|${$uid.$username}{'realname'}|$lev|\n~;
         }
     }
-    open my $BAN2, '>>', "$vardir/banlist.db"
-      or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+    our ($BAN2);
+    fopen( 'BAN2', '>>', 'Variables/banlist.db' )
+      or fatal_error( 'cannot_open', 'Variables/banlist.db', 1 );
     print {$BAN2} $printban or croak "$croak{'print'} BAN2";
-    close $BAN2 or croak "$croak{'close'} BAN2";
+    fclose('BAN2') or croak "$croak{'close'} BAN2";
 
     $yysetlocation = qq~$adminurl?action=$INFO{'return'}~;
     redirectexit();

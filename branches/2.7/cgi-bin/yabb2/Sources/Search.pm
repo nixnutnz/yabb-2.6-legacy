@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -30,33 +29,33 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
-our ( %croak, %search_txt, %searchselector_txt, %img, %display_txt, %micon_bg,
-    %pmboxes_txt, %maintxt );
+our ( %croak, %display_txt, %img, %maintxt, %micon_bg, %pmboxes_txt,
+    %search_txt, %searchselector_txt, );
 ## locations ##
-our ( $scripturl, $boardsdir, $datadir, $memberdir );
+our ( $boardsdir, $datadir, $memberdir, $scripturl, );
 ## settings ##
 our (
-    $yymycharset, $ml_allowed,     $maxsearchdisplay,
-    $enable_ubbc, $cookiepassword, $do_scramble_id,
-    $forumstart,  $ip_lookup,      $enable_guestposting,
-    $enable_pm_search
+    $cookiepassword,   $do_scramble_id,   $enable_guestposting,
+    $enable_pm_search, $enable_ubbc,      $forumstart,
+    $ip_lookup,        $maxsearchdisplay, $ml_allowed,
+    $yymycharset,
 );
 ## system ##
 our (
-    %FORM,         @categoryorder, %cat,             %catinfo,
-    %board,        %subboard,      $iamguest,        $uid,
-    $username,     $yymain,        $catid,           $iamadmin,
-    $staff,        $iamfmod,       $iamgmod,         %yy_cookies,
-    $curboard,     %catcol,        %gmod_access2,    $yytitle,
-    $yynavigation, $date,          $menusep,         $iammod,
-    %INFO,         %memberinf,     $qcksearchaccess, $advsearchaccess
+    $advsearchaccess, $catid,    $curboard,        $date,
+    $iamadmin,        $iamfmod,  $iamgmod,         $iamguest,
+    $iammod,          $menusep,  $qcksearchaccess, $staff,
+    $uid,             $username, $yymain,          $yynavigation,
+    $yytitle,         %board,    %cat,             %catcol,
+    %catinfo,         %FORM,     %gmod_access2,    %INFO,
+    %memberinf,       %subboard, %yy_cookies,      @categoryorder,
 );
 ## templates ##
 our (
-    $mysearch_template,  $mysearch_template2, $mysearch_template3,
-    $mysearch_template4, $mysearch_template5, $mysearch_template6,
-    $mysearch_template7, $mysearch_template9, $mysearch_template10,
-    $mysearch_pm
+    $mysearch_pm,        $mysearch_template,  $mysearch_template2,
+    $mysearch_template3, $mysearch_template4, $mysearch_template5,
+    $mysearch_template6, $mysearch_template7, $mysearch_template9,
+    $mysearch_template10,
 );
 
 load_language('Search');
@@ -301,8 +300,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
         $boardscheck = q~ checked="checked"~;
     }
     my $search_ip = q{};
-    if ( $iamadmin || $iamfmod || $iamgmod && $gmod_access2{'ipban2'} )
-    {
+    if ( $iamadmin || $iamfmod || $iamgmod && $gmod_access2{'ipban2'} ) {
         $search_ip =
 qq~<input type="checkbox" name="search_ip" id="search_ip" value="on" /><label for="search_ip"> $search_txt{'73'}</label>~;
     }
@@ -504,9 +502,10 @@ sub plush_search2 {
             }
         }
 
-        open my $FILE, '<', "$boardsdir/$curboard.txt" || next;
+        our ($FILE);
+        fopen( 'FILE', '<', "$boardsdir/$curboard.txt" ) || next;
         @threads = <$FILE>;
-        close $FILE or croak "$croak{'close'} $curboard";
+        fclose('FILE') or croak "$croak{'close'} $curboard";
 
       THREADCHECK: foreach my $curthread (@threads) {
             chomp $curthread;
@@ -535,20 +534,20 @@ sub plush_search2 {
                 }
             }
 
-            open $FILE, '<', "$datadir/$tnum.txt" || next;
+            fopen( 'FILE', '<', "$datadir/$tnum.txt" ) || next;
             @messages = <$FILE>;
-            close $FILE or croak "$croak{'close'} $tnum.txt";
+            fclose('FILE') or croak "$croak{'close'} $tnum.txt";
 
           POSTCHECK: foreach my $msnum ( reverse 0 .. $#messages ) {
                 $curpost = $messages[$msnum];
                 chomp $curpost;
-                my ( $msub, $mdate, $musername, $micon, $mattach, $mip,
-                    $savedmessage, $ns );
-                (
-                    $msub,         $mname, $memail,  $mdate,
+                my (
+                    $msub,         $mnme,  $mmail,   $mdate,
                     $musername,    $micon, $mattach, $mip,
                     $savedmessage, $ns
                 ) = split /[|]/xsm, $curpost;
+                $mname  = $mnme;
+                $memail = $mmail;
 
                 ## if either max to display or outside of filter, next
                 if (
@@ -699,6 +698,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
             $mname, $memail,  $mdate,  $musername, $micon, $mattach,
             $mip,   $message, $ns,     $tstate
         ) = @{ $data{ $messages[$i] } };
+        $msgnum ||= 0;
 
         $tname = add_memberlink( $tusername, $tname, $tnum );
         $mname = add_memberlink( $musername, $mname, $mdate );
@@ -837,7 +837,7 @@ sub pmsearch {
 
     from_chars($search);
     $searchtype ||= 1;
-    my $usern = q{};
+    my $usern = $username;
     if    ( $searchtype eq 'anywords' )  { $searchtype = 2; }
     elsif ( $searchtype eq 'asphrase' )  { $searchtype = 3; }
     elsif ( $searchtype eq 'aspartial' ) { $searchtype = 4; }
@@ -870,33 +870,36 @@ sub pmsearch {
     elsif ( $searchtype != 3 ) { @search = split /\s+/xsm, lc $search; }
     else                       { @search = ( lc $search ); }
 
-    my ( $userfound, $msgfound, $numfound, %data, $counter, @scanthreads );
+    our ( $userfound, $msgfound, $numfound, %data, $counter, @scanthreads );
     my $oldestfound = 9_999_999_999;
     my @msgthreads;
     if ( $pmbox eq '!all' || $pmbox eq '1' ) {
         if ( -e "$memberdir/$usern.msg" ) {
-            open my $FILE, '<', "$memberdir/$usern.msg"
+            our ($FILE);
+            fopen( 'FILE', '<', "$memberdir/$usern.msg" )
               or croak "$croak{'open'} msg";
             @msgthreads = <$FILE>;
-            close $FILE or croak "$croak{'close'} msg";
+            fclose('FILE') or croak "$croak{'close'} msg";
         }
     }
     my @outthreads;
     if ( $pmbox eq '!all' || $pmbox eq '2' ) {
         if ( -e "$memberdir/$usern.outbox" ) {
-            open my $FILE, '<', "$memberdir/$usern.outbox"
+            our ($FILE);
+            fopen( 'FILE', '<', "$memberdir/$usern.outbox" )
               or croak "$croak{'open'} outbox";
             @outthreads = <$FILE>;
-            close $FILE or croak "$croak{'close'} outbox";
+            fclose('FILE') or croak "$croak{'close'} outbox";
         }
     }
     my @storethreads;
     if ( $pmbox eq '!all' || $pmbox eq '3' ) {
         if ( -e "$memberdir/$usern.imstore" ) {
-            open my $FILE, '<', "$memberdir/$usern.imstore"
+            our ($FILE);
+            fopen( 'FILE', '<', "$memberdir/$usern.imstore" )
               or croak "$croak{'open'} imstore";
             @storethreads = <$FILE>;
-            close $FILE or croak "$croak{'open'} imstore";
+            fclose('FILE') or croak "$croak{'open'} imstore";
         }
     }
 
@@ -936,10 +939,10 @@ sub pmsearch {
             to_chars($msub);
             to_chars($savedmessage);
             our $message = $savedmessage;
-                wrap();
-                if ($enable_ubbc) { do_ubbc(); }
-                wrap2();
-                $savedmessage = $message;
+            wrap();
+            if ($enable_ubbc) { do_ubbc(); }
+            wrap2();
+            $savedmessage = $message;
 
             if ( $searchtype == 5 ) {
                 $userfound = 0;

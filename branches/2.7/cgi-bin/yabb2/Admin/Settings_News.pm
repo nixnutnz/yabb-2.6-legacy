@@ -14,8 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);    #save_settings;
-no warnings qw(uninitialized);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
@@ -25,16 +23,17 @@ our $settings_newspmmods = 0;
 if (@settings_newspmmods) {
     $settings_newspmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admintxt, %lngs, %settings_txt );
+our ( %admin_txt, %admintxt, %croak, %lngs, %settings_txt );
 ## paths ##
 our ( $adminurl, $langdir, $vardir );
 ## settings ##
-our ( $enable_news, $shownewsfader, $maxsteps, $stepdelay, $fadelinks );
-## other ##
-our ( $action, );
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
+our ( $enable_news, $fadelinks, $maxsteps, $shownewsfader, $stepdelay, );
 
 load_language('Admin');
 
@@ -114,11 +113,12 @@ require "$langdir/Lang.lng";
     no strict qw(refs);
     for ( sort keys %lngs ) {
         if ( -e "$langdir/$_/news.txt" ) {
-            open my $NEWS, '<', "$langdir/$_/news.txt"
+            our ($NEWS);
+            fopen( 'NEWS', '<', "$langdir/$_/news.txt" )
               or croak "$croak{'open'} NEWS";
             ${ $_ . '_news' } =
               do { local $INPUT_RECORD_SEPARATOR = undef; <$NEWS> };
-            close $NEWS or croak "$croak{'close'} NEWS";
+            fclose('NEWS') or croak "$croak{'close'} NEWS";
         }
         else { ${ $_ . '_news' } = q{}; }
         my $lbl = $_ . '_news';
@@ -140,19 +140,23 @@ qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl
 }
 
 # Routine to save them
-sub save_settings {
-    my %settings = @_;
-    require "$langdir/Lang.lng";
-    for ( sort keys %lngs ) {
-        my $lbl = $_ . '_news';
-        $settings{$lbl} =~ tr/\r//d;
-        chomp $settings{$lbl};
-        from_chars( $settings{$lbl} );
-    }
+{
+    no warnings qw(redefine);    #save_settings;
 
-    # Settings.pm stuff
-    save_settings_to( 'Settings.pm', %settings );
-    return;
+    sub save_settings {
+        my %settings = @_;
+        require "$langdir/Lang.lng";
+        for ( sort keys %lngs ) {
+            my $lbl = $_ . '_news';
+            $settings{$lbl} =~ tr/\r//d;
+            chomp $settings{$lbl};
+            from_chars( $settings{$lbl} );
+        }
+
+        # Settings.pm stuff
+        save_settings_to( 'Settings.pm', %settings );
+        return;
+    }
 }
 
 1;

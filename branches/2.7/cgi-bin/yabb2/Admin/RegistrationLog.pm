@@ -24,33 +24,35 @@ our $registrationlogpmmods = 0;
 if (@registrationlogpmmods) {
     $registrationlogpmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
 our (
-    %croak,                  %admin_txt,            %admin_img,
-    %prereg_txt,             %actkey,               %register_txt,
-    $admin_reason,           $reviewrejectedemail,  %mailreg_txt,
-    $emailcharset,           $instantrejectedemail, $pwreviewapprovedemail,
-    $pwinstantapprovedemail, $instantapprovedemail, $send_welcomeim,
-    $imsubject,              $imtext,               $reviewapprovedemail
+    $admin_reason,           $emailcharset,          $imsubject,
+    $imtext,                 $instantapprovedemail,  $instantrejectedemail,
+    $pwinstantapprovedemail, $pwreviewapprovedemail, $reviewapprovedemail,
+    $reviewrejectedemail,    $send_welcomeim,        %actkey,
+    %admin_img,              %admin_txt,             %croak,
+    %mailreg_txt,            %prereg_txt,            %register_txt,
 );
 ## paths ##
-our ( $adminurl, $vardir, $scripturl, $memberdir, $yyhtml_root );
+our ( $adminurl, $memberdir, $scripturl, $vardir, $yyhtml_root );
 ## settings ##
 our (
-    $yymycharset,      $do_scramble_id,      $ip_lookup,
-    $regtype,          $addmemgroup_enabled, %grp_nopost,
-    $extendedprofiles, $mbname,,
-    $nomailspammer,    $emailpassword,       $sendname
+    $addmemgroup_enabled, $do_scramble_id, $emailpassword,
+    $extendedprofiles,    $ip_lookup,      $mbname,
+    $nomailspammer,       $regtype,        $sendname,
+    $yymycharset,         %grp_nopost,
 );
 ## other ##
 our (
-    $action,     $yymain,  $yytitle, $yysetlocation,
-    %INFO,       %FORM,    $date,    $username,
-    @memberlist, $user_ip, $uid,     $language,
+    $date,     $language, $uid,           $user_ip,
+    $username, $yymain,   $yysetlocation, $yytitle,
+    %FORM,     %INFO,     @memberlist,
 );
-
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
 
 load_language('Admin');
 load_language('Register');
@@ -63,23 +65,26 @@ sub view_reglog {
     my ( @reglist,    @logentries );
     my ( $servertime, $pageindex );
     if ( -e "$vardir/registration.log" ) {
-        open my $LOGFILE, '<', "$vardir/registration.log"
+        our ($LOGFILE);
+        fopen( 'LOGFILE', '<', "$vardir/registration.log" )
           or croak "$croak{'open'} LOGFILE";
         @logentries = <$LOGFILE>;
-        close $LOGFILE or croak "$croak{'close'} LOGFILE";
+        fclose('LOGFILE') or croak "$croak{'close'} LOGFILE";
         @logentries = reverse @logentries;
 
-        open my $FILE, '<', 'Variables/Memberlist.pm'
+        our ($FILE);
+        fopen( 'FILE', '<', 'Variables/Memberlist.pm' )
           or croak "$croak{'open'} FILE";
         @memberlist = <$FILE>;
-        close $FILE or croak "$croak{'close'} FILE";
+        fclose('FILE') or croak "$croak{'close'} FILE";
 
         # If a pre-registration list exists load it
         if ( -e 'Variables/meminactive.db' ) {
-            open my $INACT, '<', 'Variables/meminactive.db'
+            our ($INACT);
+            fopen( 'INACT', '<', 'Variables/meminactive.db' )
               or croak "$croak{'open'} INACT";
             @reglist = <$INACT>;
-            close $INACT or croak "$croak{'close'} INACT";
+            fclose('INACT') or croak "$croak{'close'} INACT";
         }
 
         # grab pre regged user activationkey for admin activation
@@ -306,9 +311,11 @@ sub check_member {
 sub clean_reglog {
     is_admin_or_gmod();
     my (@outlist);
-    open my $REG, '<', "$vardir/registration.log" or croak "$croak{'open'} REG";
+    our ($REG);
+    fopen( 'REG', '<', "$vardir/registration.log", 1 )
+      or croak "$croak{'open'} REG";
     my @reglist = <$REG>;
-    close $REG or croak "$croak{'close'} REG";
+    fclose('REG') or croak "$croak{'close'} REG";
     ## depending on registration type only leave uncompleted entries in the log for completion and remove the failed or completed ones ##
     for (@reglist) {
         my ( undef, $regstatus, $reguser, undef ) = split /[|]/xsm;
@@ -325,9 +332,10 @@ sub clean_reglog {
             push @outlist, $_;
         }
     }
-    open $REG, '>', "$vardir/registration.log" or croak "$croak{'open'} REG";
+    fopen( 'REG', '>', "$vardir/registration.log", 1 )
+      or croak "$croak{'open'} REG";
     print {$REG} @outlist or croak "$croak{'print'} REG";
-    close $REG or croak "$croak{'close'} REG";
+    fclose('REG') or croak "$croak{'close'} REG";
 
     $yysetlocation = qq~$adminurl?action=view_reglog~;
     redirectexit();
@@ -341,10 +349,11 @@ sub kill_registration {
     my $deluser = $inp || $INFO{'username'};
     if ($do_scramble_id) { $deluser = decloak($deluser); }
 
-    open my $INFILE, '<', 'Variables/meminactive.db'
+    our ($INFILE);
+    fopen( 'INFILE', '<', 'Variables/meminactive.db' )
       or croak "$croak{'open'} INFILE";
     my @actlist = <$INFILE>;
-    close $INFILE or croak "$croak{'close'} INFILE";
+    fclose('INFILE') or croak "$croak{'close'} INFILE";
 
     # check if user is in pre-registration and check activation key
     my (@outlist);
@@ -355,11 +364,12 @@ sub kill_registration {
             unlink "$memberdir/$regmember.pre";
 
             # add entry to registration log
-            open my $REG, '>>', "$vardir/registration.log"
+            our ($REG);
+            fopen( 'REG', '>>', "$vardir/registration.log", 1 )
               or croak "$croak{'open'} REG";
             print {$REG} "$date|D|$regmember|$username|$user_ip\n"
               or croak "$croak{'print'} REG";
-            close $REG or croak "$croak{'close'} REG";
+            fclose('REG') or croak "$croak{'close'} REG";
         }
         else {
 
@@ -371,10 +381,11 @@ sub kill_registration {
     if ($changed) {
 
         # re-open inactive list for update if changed
-        open my $OUTFILE, '>', 'Variables/meminactive.db'
+        our ($OUTFILE);
+        fopen( 'OUTFILE', '>', 'Variables/meminactive.db', 1 )
           or croak "$croak{'open'} OUTFILE";
         print {$OUTFILE} @outlist or croak "$croak{'print'} OUTFILE";
-        close $OUTFILE or croak "$croak{'close'} OUTFILE";
+        fclose('OUTFILE') or croak "$croak{'close'} OUTFILE";
     }
     $yysetlocation = qq~$adminurl?action=view_reglog~;
     redirectexit();
@@ -569,10 +580,11 @@ sub reject_registration {
     if ($do_scramble_id) { $deluser = decloak($deluser); }
     my (@aprlist);
     if ( -e 'Variables/memapprove.db' && $regtype == 1 ) {
-        open my $APR, '<', 'Variables/memapprove.db'
+        our ($APR);
+        fopen( 'APR', '<', 'Variables/memapprove.db' )
           or croak "$croak{'open'} APR";
         @aprlist = <$APR>;
-        close $APR or croak "$croak{'close'} APR";
+        fclose('APR') or croak "$croak{'close'} APR";
     }
 
     # check if waiting user exists
@@ -638,17 +650,19 @@ sub reject_registration {
         }
 
         # update approval user list
-        open my $APR, '>', 'Variables/memapprove.db'
+        our ($APR);
+        fopen( 'APR', '>', 'Variables/memapprove.db' )
           or croak "$croak{'open'} APR";
         print {$APR} @aprchnglist or croak "$croak{'print'} APR";
-        close $APR or croak "$croak{'close'} APR";
+        fclose('APR') or croak "$croak{'close'} APR";
 
         ## add entry to registration log ##
-        open my $REG, '>>', "$vardir/registration.log"
+        our ($REG);
+        fopen( 'REG', '>>', "$vardir/registration.log", 1 )
           or croak "$croak{'open'} REG";
         print {$REG} "$date|AR|$deluser|$username|$user_ip\n"
           or croak "$croak{'print'} REG";
-        close $REG or croak "$croak{'close'} REG";
+        fclose('REG') or croak "$croak{'close'} REG";
     }
     $yysetlocation = qq~$adminurl?action=view_reglog~;
     redirectexit();
@@ -664,9 +678,11 @@ sub approve_registration {
     if ($do_scramble_id) { $apruser = decloak($apruser); }
 
     ## load the list with waiting approvals ##
-    open my $APR, '<', 'Variables/memapprove.db' or croak "$croak{'open'} APR";
+    our ($APR);
+    fopen( 'APR', '<', 'Variables/memapprove.db' )
+      or croak "$croak{'open'} APR";
     my @aprlist = <$APR>;
-    close $APR or croak "$croak{'close'} APR";
+    fclose('APR') or croak "$croak{'close'} APR";
 
     my (@aprchnglist);
     my ( $foundmember, $foundpassword );
@@ -704,17 +720,18 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         member_index( 'add', $apruser );
 
         # update approval user list
-        open my $APR, '>', 'Variables/memapprove.db'
+        fopen( 'APR', '>', 'Variables/memapprove.db' )
           or croak "$croak{'open'} APR";
         print {$APR} @aprchnglist or croak "$croak{'print'} APR";
-        close $APR or croak "$croak{'close'} APR";
+        fclose('APR') or croak "$croak{'close'} APR";
 
         ## add entry to registration log ##
-        open my $REG, '>>', "$vardir/registration.log"
+        our ($REG);
+        fopen( 'REG', '>>', "$vardir/registration.log", 1 )
           or croak "$croak{'open'} REG";
         print {$REG} "$date|AA|$apruser|$username|$user_ip\n"
           or croak "$croak{'print'} REG";
-        close $REG or croak "$croak{'close'} REG";
+        fclose('REG') or croak "$croak{'close'} REG";
 
         ## send a approval email ##
         my $templanguage = $language;
@@ -797,12 +814,13 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
 
         if ( $send_welcomeim == 1 ) {
             my $messageid = $BASETIME . $PROCESS_ID;
-            open my $INBOX, '>', "$memberdir/$apruser.msg"
+            our ($INBOX);
+            fopen( 'INBOX', '>', "$memberdir/$apruser.msg" )
               or croak "$croak{'open'} INBOX";
             print {$INBOX}
 "$messageid|$sendname|$apruser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
               or croak "$croak{'print'} INBOX";
-            close $INBOX or croak "$croak{'close'} INBOX";
+            fclose('INBOX') or croak "$croak{'close'} INBOX";
         }
     }
     $yysetlocation = qq~$adminurl?action=view_reglog~;

@@ -54,8 +54,8 @@ $boardindex_template .= qq~
 <!-- Board Index Button Bar start -->
         <div class="windowbg">
             <div class="small padd_4px" style="float:left; line-height:2em; vertical-align:bottom; padding-left:10px">
-                        <span class="small bold"><img src="$imagesdir/$newload{'brd_new'}" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
-                        <img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
+                <span class="small bold"><img src="$imagesdir/$newload{'brd_new'}" id="no_edit" alt="$boardindex_txt{'333'}" title="$boardindex_txt{'333'}" /> $boardindex_txt{'333'}&nbsp;&nbsp;
+                <img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title="$boardindex_txt{'334'}" /> $boardindex_txt{'334'}</span>
             </div>
             <div class="small padd_4px" style="float:right; text-align:right">{yabb boardhandellist}</div>
             <div class="clear"></div>

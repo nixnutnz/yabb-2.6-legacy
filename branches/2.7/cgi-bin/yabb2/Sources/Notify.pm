@@ -29,23 +29,28 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language ##
+our ( %croak, %img_txt, %notify_txt, );
+## paths ##
+our ( $boardsdir, $datadir, $imagesdir, $scripturl, );
+## settings ##
+our ( $elenable, $max_log_days_old, );
+## system ##
 our (
-    $boardblock,     $boardsdir,       $brd_notify,
-    $brdimg_new,     $brdimg_old,      $currentboard,
-    $datadir,        $date,            $iamguest,
-    $elenable,       $imagesdir,       $max_log_days_old,
-    $maxtnote,       $my_boardblock,   $my_boardnote,
-    $my_nonotes,     $my_notebrdlist,  $my_nothreads,
-    $my_threadblock, $my_threadnote_b, $my_threadnote_end,
-    $scripturl,      $selecthtml,      $threadblock,
-    $uid,            $username,        $view,
-    $yymain,         $yynavigation,    $yysetlocation,
-    $yytitle,        %board,           %cat,
-    %catinfo,        %croak,           %FORM,
-    %format_unbold,  %img_txt,         %INFO,
-    %moved_file,     %notify_txt,      %subboard,
-    %useraccount,    %yyuserlog,       @bmaildir,
-    @categoryorder,  @tmaildir,        %board_notify,
+    $boardblock,    $brd_notify,    $currentboard,      $date,
+    $iamguest,      $maxtnote,      $my_threadnote_end, $selecthtml,
+    $threadblock,   $uid,           $username,          $view,
+    $yymain,        $yynavigation,  $yysetlocation,     $yytitle,
+    %board,         %board_notify,  %cat,               %catinfo,
+    %FORM,          %format_unbold, %INFO,              %moved_file,
+    %subboard,      %useraccount,   %yyuserlog,         @bmaildir,
+    @categoryorder, @tmaildir,
+);
+## templates ##
+our (
+    $brdimg_new,   $brdimg_old,     $my_boardblock,
+    $my_boardnote, $my_nonotes,     $my_notebrdlist,
+    $my_nothreads, $my_threadblock, $my_threadnote_b,
 );
 
 load_language('Notify');
@@ -63,10 +68,11 @@ sub manageboardnotify {
         undef %theboard;
         ## open board mail file and build hash name / detail
         if ( -e "$boardsdir/$theboard.mail" ) {
-            open my $BOARDNOTE, '<', "$boardsdir/$theboard.mail"
+            our ($BOARDNOTE);
+            fopen( 'BOARDNOTE', '<', "$boardsdir/$theboard.mail" )
               or croak "$croak{'open'} $theboard.mail";
             %theboard = map { /(.*)\t(.*)/xsm } <$BOARDNOTE>;
-            close $BOARDNOTE or croak "$croak{'close'} $theboard.mail";
+            fclose('BOARDNOTE') or croak "$croak{'close'} $theboard.mail";
         }
     }
 
@@ -127,12 +133,13 @@ sub manageboardnotify {
         || $todo eq 'add' )
     {
         if (%theboard) {
-            open my $BOARDNOTE, '>', "$boardsdir/$theboard.mail"
+            our ($BOARDNOTE);
+            fopen( 'BOARDNOTE', '>', "$boardsdir/$theboard.mail" )
               or croak "$croak{'open'} $theboard.mail";
             print {$BOARDNOTE} map { "$_\t$theboard{$_}\n" }
               sort { $theboard{$a} cmp $theboard{$b} } keys %theboard
               or croak "$croak{'print'} BOARDNOTE";
-            close $BOARDNOTE or croak "$croak{'close'} $theboard.mail";
+            fclose('BOARDNOTE') or croak "$croak{'close'} $theboard.mail";
             undef %theboard;
         }
         else {
@@ -226,10 +233,11 @@ sub managethreadnotify {
         %thethread = ();
         ##  open mail file and build hash
         if ( -e "$datadir/$thethread.mail" ) {
-            open my $THREADNOTE, '<', "$datadir/$thethread.mail"
+            our ($THREADNOTE);
+            fopen( 'THREADNOTE', '<', "$datadir/$thethread.mail" )
               or croak "$croak{'open'} $thethread.mail";
             %thethread = map { /(.*)\t(.*)/xsm } <$THREADNOTE>;
-            close $THREADNOTE or croak "$croak{'close'} $thethread.mail";
+            fclose('THREADNOTE') or croak "$croak{'close'} $thethread.mail";
         }
     }
     if ( $todo eq 'add' ) {
@@ -277,12 +285,13 @@ sub managethreadnotify {
         || $todo eq 'add' )
     {
         if (%thethread) {
-            open my $THREADNOTE, '>', "$datadir/$thethread.mail"
+            our ($THREADNOTE);
+            fopen( 'THREADNOTE', '>', "$datadir/$thethread.mail" )
               or croak "$croak{'open'} $thethread.mail";
             print {$THREADNOTE} map { "$_\t$thethread{$_}\n" }
               sort { $thethread{$a} cmp $thethread{$b} } keys %thethread
               or croak "$croak{'print'} THREADNOTE";
-            close $THREADNOTE or croak "$croak{'close'} $thethread.mail";
+            fclose('THREADNOTE') or croak "$croak{'close'} $thethread.mail";
             undef %thethread;
         }
         else {
@@ -394,7 +403,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     # Show Javascript for 'check all' notifications
 
     our ( $board_notify, $thread_notify ) = notification_alert();
-    my ( $num, $new );
+    our ( $num, $new );
     getlog();
     my $dmax = $date - ( $max_log_days_old * 86400 );
 
@@ -477,24 +486,25 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
     }
 
     $num = 0;
-    for ( keys %{$thread_notify} ) {
+    my %thread_notify = %{$thread_notify};
+    for ( keys %thread_notify ) {
         $num++;
 
         ## build block for display
         $threadblock .= $my_threadblock;
-        $threadblock =~ s/\Q{yabb tnote0}\E/${$$thread_notify{$_}}[0]/gxsm;
-        $threadblock =~ s/\Q{yabb tnote1}\E/${$$thread_notify{$_}}[1]/gxsm;
-        $threadblock =~ s/\Q{yabb tnote2}\E/${$$thread_notify{$_}}[2]/gxsm;
-        $threadblock =~ s/\Q{yabb tnote3}\E/${$$thread_notify{$_}}[3]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote0}\E/${$thread_notify{$_}}[0]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote1}\E/${$thread_notify{$_}}[1]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote2}\E/${$thread_notify{$_}}[2]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote3}\E/${$thread_notify{$_}}[3]/gxsm;
         if ( ${ ${$thread_notify}{$_} }[7] ne q{} ) {
             $threadblock =~
-s/\Q{yabb tnote4}\E/${$$thread_notify{$_}}[4] &raquo; ${$$thread_notify{$_}}[7]/gxsm;
+s/\Q{yabb tnote4}\E/${$$thread_notify{$_}}[4] &raquo; ${$thread_notify{$_}}[7]/gxsm;
         }
         else {
-            $threadblock =~ s/\Q{yabb tnote4}\E/${$$thread_notify{$_}}[4]/gxsm;
+            $threadblock =~ s/\Q{yabb tnote4}\E/${$thread_notify{$_}}[4]/gxsm;
         }
-        $threadblock =~ s/\Q{yabb tnote5}\E/${$$thread_notify{$_}}[5]/gxsm;
-        $threadblock =~ s/\Q{yabb tnote6}\E/${$$thread_notify{$_}}[6]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote5}\E/${$thread_notify{$_}}[5]/gxsm;
+        $threadblock =~ s/\Q{yabb tnote6}\E/${$thread_notify{$_}}[6]/gxsm;
         $threadblock =~ s/\Q{yabb notify_txt120}\E/$notify_txt{'120'}/gxsm;
         $threadblock =~
           s/\Q{yabb notify_txtlastpost}\E/$notify_txt{'lastpost'}/gxsm;
@@ -652,7 +662,8 @@ sub notification_alert {
             if ( $action eq 'shownotify' ) {
                 if ( !${ ${ 'notify' . $boardid . $mythread } }[0] ) {
                     my ( $messageid, $messagesubject );
-                    open my $BOARDTXT, '<', "$boardsdir/$boardid.txt"
+                    our ($BOARDTXT);
+                    fopen( 'BOARDTXT', '<', "$boardsdir/$boardid.txt" )
                       or fatal_error( 'cannot_open', "$boardsdir/$boardid.txt",
                         1 );
                     while ( my $brd = <$BOARDTXT> ) {
@@ -663,7 +674,7 @@ sub notification_alert {
                         ${ 'notify' . $boardid . $messageid } =
                           [ $messagesubject, $mname, $musername ];
                     }
-                    close $BOARDTXT or croak "$croak{'close'} $boardid.txt";
+                    fclose('BOARDTXT') or croak "$croak{'close'} $boardid.txt";
                 }
                 $msub      = ${ ${ 'notify' . $boardid . $mythread } }[0];
                 $mname     = ${ ${ 'notify' . $boardid . $mythread } }[1];

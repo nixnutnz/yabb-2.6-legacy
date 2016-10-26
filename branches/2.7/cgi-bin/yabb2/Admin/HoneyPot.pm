@@ -23,20 +23,20 @@ our $honeypotpmmods = 0;
 if (@honeypotpmmods) {
     $honeypotpmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admin_img, %honeypot );
+our ( %admin_img, %admin_txt, %croak, %honeypot );
 ## paths ##
 our ( $adminurl, $langdir );
 ## settings ##
-our ( $yymycharset, );
-## other ##
-our (
-    $action,      $yymain,   $yytitle, $yysetlocation,
-    $action_area, $language, %INFO,    %FORM,
-    $date,        $lang
-);
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
+our ( $lang, $yymycharset );
+## system ##
+our ( $action_area, $date, $language, $yymain, $yysetlocation, $yytitle, %FORM,
+    %INFO, );
 
 load_language('Admin');
 
@@ -62,11 +62,12 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
     }
     my @honey_label;
     if ( -e "$langdir/$honey_language/honey.txt" ) {
-        open my $HONEYPOT, '<', "$langdir/$honey_language/honey.txt"
+        our ($HONEYPOT);
+        fopen( 'HONEYPOT', '<', "$langdir/$honey_language/honey.txt" )
           or
           fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
         @honey_label = <$HONEYPOT>;
-        close $HONEYPOT or croak "$croak{'close'} HONEYPOT";
+        fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
     }
 
     my $total_labels = @honey_label || 0;
@@ -168,11 +169,12 @@ sub honeypot_add {
         fatal_error( 'invalid_value', "$honeypot{'label'}" );
     }
 
-    open my $HONEYPOT, '>>', "$langdir/$honey_language/honey.txt"
-      || fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
+    our ($HONEYPOT);
+    fopen( 'HONEYPOT', '>>', "$langdir/$honey_language/honey.txt" )
+      or fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
     print {$HONEYPOT} "$FORM{'honey_add'}\n"
       or croak "$croak{'print'} HONEYPOT";
-    close $HONEYPOT or croak "$croak{'close'} HONEYPOT";
+    fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
 
     if ( $action eq 'honeypot_add' ) {
         $yysetlocation =
@@ -187,10 +189,11 @@ sub honeypot_edit {
 
     my $h_label = $FORM{'hon_label'};
 
-    open my $HONEYPOT, '<', "$langdir/$honey_language/honey.txt"
+    our ($HONEYPOT);
+    fopen( 'HONEYPOT', '<', "$langdir/$honey_language/honey.txt" )
       or fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
     my @h_labels = <$HONEYPOT>;
-    close $HONEYPOT or croak "$croak{'close'} HONEYPOT";
+    fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
     my $aa = 0;
     for my $id (@h_labels) {
         chomp $id;
@@ -245,10 +248,11 @@ sub honeypot_edit2 {
         fatal_error( 'invalid_value', "$honeypot{'label'}" );
     }
 
-    open my $HONEYPOT, '<', "$langdir/$honey_language/honey.txt"
+    our ($HONEYPOT);
+    fopen( 'HONEYPOT', '<', "$langdir/$honey_language/honey.txt" )
       or fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
     my @h_labels = <$HONEYPOT>;
-    close $HONEYPOT or croak "$croak{'close'} HONEYPOT";
+    fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
 
     my $aa       = 0;
     my $newhoney = q{};
@@ -260,11 +264,11 @@ sub honeypot_edit2 {
         else { $newhoney = "$i\n"; }
         $aa++;
     }
-    open $HONEYPOT, '>', "$langdir/$honey_language/honey.txt"
+    fopen( 'HONEYPOT', '>', "$langdir/$honey_language/honey.txt" )
       or fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
     print {$HONEYPOT} $newhoney
       or croak "$croak{'print'} HONEYPOT";
-    close $HONEYPOT
+    fclose('HONEYPOT')
       or croak "$croak{'close'} HONEYPOT";
 
     $yysetlocation =
@@ -277,10 +281,11 @@ sub honeypot_delete {
     is_admin_or_gmod();
     my $h_label = $FORM{'hon_label'};
 
-    open my $HONEYPOT, '<', "$langdir/$honey_language/honey.txt"
+    our ($HONEYPOT);
+    fopen( 'HONEYPOT', '<', "$langdir/$honey_language/honey.txt" )
       or fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
     my @h_labels = <$HONEYPOT>;
-    close $HONEYPOT or croak "$croak{'close'} HONEYPOT";
+    fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
     my $prhbl = q{};
     for my $i (@h_labels) {
         chomp $i;
@@ -289,10 +294,10 @@ sub honeypot_delete {
         }
         else { $prhbl .= "$i\n"; }
     }
-    open $HONEYPOT, '>', "$langdir/$honey_language/honey.txt"
+    fopen( 'HONEYPOT', '>', "$langdir/$honey_language/honey.txt" )
       or fatal_error( 'cannot_open', "$langdir/$honey_language/honey.txt", 1 );
     print {$HONEYPOT} $prhbl or croak "$croak{'print'} HONEYPOT";
-    close $HONEYPOT or croak "$croak{'close'} HONEYPOT";
+    fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
 
     $yysetlocation =
       qq~$adminurl?action=honeypot;honey_language=$FORM{'honey_language'}~;

@@ -23,28 +23,31 @@ our $attachmentspmmods = 0;
 if (@attachmentspmmods) {
     $attachmentspmmods = 1;
 }
-## languages ##
-our ( %croak, %fatxt, %admin_txt, %admin_img, %amv_txt, %rebuild_txt, );
-## paths ##
-our (
-    $adminurl,  $uploaddir, $vardir,  $htmldir,     $uploadurl,
-    $imagesdir, $boardsdir, $datadir, $pmuploadurl, $pmuploaddir,
-);
-## settings ##
-our ( %settings, $dirlimit, $pm_dirlimit, $maxdaysattach, $maxsizeattach,
-    $pm_maxdaysattach, $pm_maxsizeattach, $scripturl );
-## other ##
-our (
-    $action,        $yymain,                 $iamgmod,
-    %gmod_access,   %gmod_access2,           $allow_gmod_aprofile,
-    $action_area,   $yytitle,                %FORM,
-    %INFO,          $max_process_time,       $time_to_jump,
-    $yysetlocation, $INPUT_RECORD_SEPARATOR, $useimages,
-    @boardlist,     %boards,                 %board,
-);
 
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+## languages ##
+our ( %admin_img, %admin_txt, %amv_txt, %croak, %fatxt, %rebuild_txt, );
+## paths ##
+our (
+    $adminurl,  $boardsdir,   $datadir,     $htmldir,
+    $imagesdir, $pmuploaddir, $pmuploadurl, $scripturl,
+    $uploaddir, $uploadurl,   $vardir,
+);
+## settings ##
+our ( $dirlimit, $maxdaysattach, $maxsizeattach, $pm_dirlimit,
+    $pm_maxdaysattach, $pm_maxsizeattach, %settings, );
+## system ##
+our (
+    $action_area,            $allow_gmod_aprofile, $iamgmod,
+    $INPUT_RECORD_SEPARATOR, $max_process_time,    $time_to_jump,
+    $useimages,              $yymain,              $yysetlocation,
+    $yytitle,                %board,               %boards,
+    %FORM,                   %gmod_access,         %gmod_access2,
+    %INFO,                   @boardlist,
+);
 
 load_language('Admin');
 load_language('FA');
@@ -52,10 +55,11 @@ load_language('FA');
 sub attachments {
     is_admin_or_gmod();
 
-    open my $AMS, '<', 'Variables/attachments.db'
+    our ($AMS);
+    fopen( 'AMS', '<', 'Variables/attachments.db' )
       or croak "$croak{'open'} AMS";
     my @attachments = <$AMS>;
-    close $AMS or croak "$croak{'close'} AMS";
+    fclose('AMS') or croak "$croak{'close'} AMS";
 
     my $attachment_space = 0;
     foreach (@attachments) {
@@ -71,10 +75,11 @@ sub attachments {
           number_format( ( $dirlimit - $attachment_space ) ) . ' KB';
     }
 
-    open my $PMATTACHLOG, '<', 'Variables/pmattachments.db'
+    our ($PMATTACHLOG);
+    fopen( 'PMATTACHLOG', '<', 'Variables/pmattachments.db' )
       or croak "$croak{'open'} PMATTACHLOG";
     my @pm_attachments = <$PMATTACHLOG>;
-    close $PMATTACHLOG or croak "$croak{'close'} PMATTACHLOG";
+    fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
 
     my $pm_attachmentspace = 0;
     foreach (@pm_attachments) {
@@ -254,10 +259,11 @@ sub removeoldattachments {
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
 
-    open my $AML, '<', 'Variables/attachments.db'
+    our ($AML);
+    fopen( 'AML', '<', 'Variables/attachments.db' )
       or croak "$croak{'open'} AML";
     my @attachmentstxt = <$AML>;
-    close $AML or croak "$croak{'close'} AML";
+    fclose('AML') or croak "$croak{'close'} AML";
 
     my ( %att, @line );
     foreach (@attachmentstxt) {
@@ -267,10 +273,11 @@ sub removeoldattachments {
 
     my $info;
     if ( !@attachments ) {
-        open my $ATT, '>', 'Variables/attachments.db'
+        our ($ATT);
+        fopen( 'ATT', '>', 'Variables/attachments.db' )
           or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
         print {$ATT} q{} or croak "$croak{'print'} ATT";
-        close $ATT or croak "$croak{'close'} ATT";
+        fclose('ATT') or croak "$croak{'close'} ATT";
 
         $info = qq~<br /><i>$fatxt{'48'}.</i>~;
     }
@@ -300,11 +307,12 @@ qq~<br /><i>$attachments[$aa]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
             if ( $time_to_jump < time() && ( $aa + 1 ) < @attachments ) {
 
             # save the $info of this run until the end of 'RemoveOldAttachments'
-                open my $FILE, '>>', "$vardir/rem_old_attach.tmp"
+                our ($FILE);
+                fopen( 'FILE', '>>', 'Variables/rem_old_attach.tmp' )
                   or
                   fatal_error( 'cannot_open', "$vardir/rem_old_attach.tmp", 1 );
                 print $info or croak "$croak{'print'} rem_old_attach";
-                close $FILE or croak "$croak{'close'} FILE";
+                fclose('FILE') or croak "$croak{'close'} FILE";
 
                 $yysetlocation =
 qq~$adminurl?action=removeoldattachments;maxdaysattach=$maxdaysattach;next=~
@@ -319,12 +327,13 @@ qq~$adminurl?action=removeoldattachments;maxdaysattach=$maxdaysattach;next=~
 
     $yymain .= qq~<b>$fatxt{'32'} $maxdaysattach $fatxt{'58'}.</b><br />~;
 
-    open my $FILE, '<', "$vardir/rem_old_attach.tmp"
+    our ($FILE);
+    fopen( 'FILE', '<', 'Variables/rem_old_attach.tmp' )
       or croak "$croak{'open'} FILE";
 
     $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> }
       . $info;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
     unlink "$vardir/rem_old_attach.tmp";
 
     $settings{'maxdaysattach'} = $maxdaysattach || 0;
@@ -355,10 +364,11 @@ sub removebigattachments {
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
 
-    open my $FILE, '<', 'Variables/attachments.db'
+    our ($FILE);
+    fopen( 'FILE', '<', 'Variables/attachments.db' )
       or croak "$croak{'open'} FILE";
     my @attachmentstxt = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
 
     my ( %att, @line );
     for (@attachmentstxt) {
@@ -368,10 +378,11 @@ sub removebigattachments {
 
     my $info;
     if ( !@attachments ) {
-        open my $ATT, '>', 'Variables/attachments.db'
+        our ($ATT);
+        fopen( 'ATT', '>', 'Variables/attachments.db' )
           or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
         print {$ATT} q{} or croak "$croak{'print'} ATT";
-        close $ATT or croak "$croak{'close'} ATT";
+        fclose('ATT') or croak "$croak{'close'} ATT";
 
         $info = qq~<br /><i>$fatxt{'48'}.</i>~;
     }
@@ -386,7 +397,6 @@ sub removebigattachments {
 
                 # If the attachment is not too big
                 $info .= qq~<br />$attachments[$aa] = $size KB~;
-
             }
             elsif ( exists $att{ $attachments[$aa] } ) {
                 $rem_attachments{ $att{ $attachments[$aa] } } .=
@@ -399,11 +409,11 @@ sub removebigattachments {
             if ( $time_to_jump < time() && ( $aa + 1 ) < @attachments ) {
 
             # save the $info of this run until the end of 'RemoveBigAttachments'
-                open my $FILE, '>>', "$vardir/rem_big_attach.tmp"
+                fopen( 'FILE', '>>', "$vardir/rem_big_attach.tmp" )
                   or
                   fatal_error( 'cannot_open', "$vardir/rem_big_attach.tmp", 1 );
                 print $info or croak "$croak{'print'} rem_big_attach";
-                close $FILE or croak "$croak{'close'} FILE";
+                fclose('FILE') or croak "$croak{'close'} FILE";
 
                 $yysetlocation =
 qq~$adminurl?action=removebigattachments;maxsizeattach=$maxsizeattach;next=~
@@ -417,12 +427,12 @@ qq~$adminurl?action=removebigattachments;maxsizeattach=$maxsizeattach;next=~
 
     $yymain .= qq~<b>$fatxt{'33'} $maxsizeattach KB.</b><br />~;
 
-    open $FILE, '<', "$vardir/rem_big_attach.tmp"
+    fopen( 'FILE', '<', "$vardir/rem_big_attach.tmp" )
       or croak "$croak{'open'} FILE";
 
     $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> }
       . $info;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
     unlink "$vardir/rem_big_attach.tmp";
 
     $settings{'maxsizeattach'} = $maxsizeattach || 0;
@@ -441,10 +451,11 @@ qq~$adminurl?action=removebigattachments;maxsizeattach=$maxsizeattach;next=~
 sub attachments2 {
     is_admin_or_gmod();
 
-    open my $AML, '<', 'Variables/attachments.db'
+    our ($AML);
+    fopen( 'AML', '<', 'Variables/attachments.db' )
       or croak "$croak{'open'} AML";
     my @attachinput = <$AML>;
-    close $AML or croak "$croak{'close'} AML";
+    fclose('AML') or croak "$croak{'close'} AML";
     my $max = @attachinput;
 
     $action = $INFO{'action'};
@@ -766,7 +777,8 @@ sub fullrebuild_attachents {
     my %attachments;
     if ( ( -s 'Variables/attachments.db' ) > 5 ) {
         my ( $atfile, $atcount );
-        open my $ATM, '<', 'Variables/attachments.db'
+        our ($ATM);
+        fopen( 'ATM', '<', 'Variables/attachments.db' )
           or croak "$croak{'open'} ATM";
         while (<$ATM>) {
             (
@@ -776,23 +788,25 @@ sub fullrebuild_attachents {
             chomp $atcount;
             $attachments{$atfile} = $atcount;
         }
-        close $ATM or croak "$croak{'close'} ATM";
+        fclose('ATM') or croak "$croak{'close'} ATM";
     }
 
     # Get the topic list.
-    open my $BOARD, '<', "$boardsdir/$curboard.txt"
+    our ($BOARD);
+    fopen( 'BOARD', '<', "$boardsdir/$curboard.txt" )
       or croak "$croak{'open'} BOARD";
     my @topiclist = <$BOARD>;
-    close $BOARD or croak "$croak{'close'} BOARD";
+    fclose('BOARD') or croak "$croak{'close'} BOARD";
 
     my ( $topicnum, @newattachments, $mreplies, $msub, $mname, $mdate, $mfn,
         $nexttopic );
     foreach my $i ( $INFO{'topicnum'} .. $#topiclist ) {
         ( $topicnum, undef ) = split /[|]/xsm, $topiclist[$i], 2;
-        open my $TOPIC, '<', "$datadir/$topicnum.txt"
+        our ($TOPIC);
+        fopen( 'TOPIC', '<', "$datadir/$topicnum.txt" )
           or croak "$croak{'open'} TOPIC";
         my @topic = <$TOPIC>;
-        close $TOPIC or croak "$croak{'close'} TOPIC";
+        fclose('TOPIC') or croak "$croak{'close'} TOPIC";
         chomp @topic;
 
         $mreplies = 0;
@@ -820,10 +834,11 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
     }
 
     if (@newattachments) {
-        open my $NEWATM, '>>', "$vardir/newattachments.tmp"
-          or fatal_error( 'cannot_open', "$vardir/newattachments.tmp", 1 );
+        our ($NEWATM);
+        fopen( 'NEWATM', '>>', 'Variables/newattachments.tmp' )
+          or fatal_error( 'cannot_open', 'Variables/newattachments.tmp', 1 );
         print {$NEWATM} @newattachments or croak "$croak{'print'} NEWATM";
-        close $NEWATM or croak "$croak{'close'} NEWATM";
+        fclose('NEWATM') or croak "$croak{'close'} NEWATM";
     }
 
     # Prepare to continue...
@@ -832,18 +847,20 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
 
     my $numleft = @boardlist - $INFO{'boardnum'};
     if ( $numleft == 0 ) {
-        open my $NEWATM, '<', 'Variables/attachments.db'
+        our ($NEWATM);
+        fopen( 'NEWATM', '<', 'Variables/attachments.db' )
           or croak "$croak{'open'} NEWATM";
         @newattachments = <$NEWATM>;
-        close $NEWATM or croak "$croak{'close'} NEWATM";
+        fclose('NEWATM') or croak "$croak{'close'} NEWATM";
 
-        open my $ATM, '>', 'Variables/attachments.db'
+        our ($ATM);
+        fopen( 'ATM', '>', 'Variables/attachments.db' )
           or croak "$croak{'open'} ATM";
         print {$ATM}
           sort { ( split /[|]/xsm, $a )[6] <=> ( split /[|]/xsm, $b )[6] }
           @newattachments
           or croak "$croak{'print'} ATM";
-        close $ATM or croak "$croak{'close'} ATM";
+        fclose('ATM') or croak "$croak{'close'} ATM";
         unlink "$vardir/newattachments.tmp";
 
         automaintenance('off');
@@ -887,10 +904,11 @@ sub remove_ghostattach {
 
     $yymain .= qq~<b>$fatxt{'62'}</b><br /><br />~;
 
-    open my $ATM, '<', 'Variables/attachments.db'
+    our ($ATM);
+    fopen( 'ATM', '<', 'Variables/attachments.db' )
       or croak "$croak{'open'} ATM";
     my @attachmentstxt = <$ATM>;
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
 
     my %att;
     foreach (@attachmentstxt) {
@@ -929,8 +947,9 @@ sub remove_attachments
 
     if ( !%{$threadhashref} ) { return $count; }
 
-    open my $ATM, '+<', 'Variables/attachments.db'
-      || fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
+    our ($ATM);
+    fopen( 'ATM', '+<', 'Variables/attachments.db', 1 )
+      or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
     seek $ATM, 0, 0;
     my @attachments = <$ATM>;
     truncate $ATM, 0;
@@ -970,7 +989,7 @@ sub remove_attachments
             print {$ATM} $attachments[$i] or croak "$croak{'print'} ATM";
         }
     }
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
 
     return $count;
 }
@@ -978,10 +997,11 @@ sub remove_attachments
 sub pm_attachments2 {
     is_admin_or_gmod();
 
-    open my $PMATTACHLOG, '<', 'Variables/pmattachments.db'
+    our ($PMATTACHLOG);
+    fopen( 'PMATTACHLOG', '<', 'Variables/pmattachments.db' )
       or croak "$croak{'open'} PMATTACHLOG";
     my @pm_attachinput = <$PMATTACHLOG>;
-    close $PMATTACHLOG or croak "$croak{'close'} PMATTACHLOG";
+    fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
     my $max = @pm_attachinput;
 
     $action = $INFO{'action'};
@@ -1271,10 +1291,11 @@ sub removeold_pmattachments {
     my @pm_attachments = sort grep { /\w+$/xsm } readdir PMATTACHDIR;
     closedir PMATTACHDIR;
 
-    open my $PMATTACHLOG, '<', 'Variables/pmattachments.db'
+    our ($PMATTACHLOG);
+    fopen( 'PMATTACHLOG', '<', 'Variables/pmattachments.db' )
       or croak "$croak{'open'} PMATTACHLOG";
     my @pm_attachmentstxt = <$PMATTACHLOG>;
-    close $PMATTACHLOG or croak "$croak{'close'} PMATTACHLOG";
+    fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
 
     my ( %att, @line );
     for (@pm_attachmentstxt) {
@@ -1284,10 +1305,10 @@ sub removeold_pmattachments {
 
     my $info = q{};
     if ( !@pm_attachments ) {
-        open my $PMATTACHLOG, '>', 'Variables/pmattachments.db'
+        fopen( 'PMATTACHLOG', '>', 'Variables/pmattachments.db' )
           or fatal_error( 'cannot_open', 'Variables/pmattachments.db', 1 );
         print {$PMATTACHLOG} q{} or croak "$croak{'print'} ATT";
-        close $PMATTACHLOG or croak "$croak{'close'} PMATTACHLOG";
+        fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
 
         $info = qq~<br /><i>$fatxt{'48a'}.</i>~;
     }
@@ -1318,12 +1339,12 @@ qq~<br /><i>$pm_attachments[$aa]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
             if ( $time_to_jump < time() && ( $aa + 1 ) < @pm_attachments ) {
 
           # save the $info of this run until the end of 'RemoveOldPMAttachments'
-                open my $FILE, '>>',
-                  "$vardir/rem_old_pm_attach.tmp"
+                our ($FILE);
+                fopen( 'FILE', '>>', 'Variables/rem_old_pm_attach.tmp' )
                   or fatal_error( 'cannot_open',
-                    "$vardir/rem_old_pm_attach.tmp", 1 );
+                    'Variables/rem_old_pm_attach.tmp', 1 );
                 print $info or croak "$croak{'print'} rem_big_attach";
-                close $FILE or croak "$croak{'close'} FILE";
+                fclose('FILE') or croak "$croak{'close'} FILE";
 
                 $yysetlocation =
 qq~$adminurl?action=removeoldpmattachments;pmmaxdaysattach=$pm_maxdaysattach;next=~
@@ -1338,15 +1359,16 @@ qq~$adminurl?action=removeoldpmattachments;pmmaxdaysattach=$pm_maxdaysattach;nex
 
     $yymain .= qq~<b>$fatxt{'32a'} $pm_maxdaysattach $fatxt{'58'}.</b><br />~;
 
-    open my $FILE, '<', "$vardir/rem_old_pm_attach.tmp"
+    our ($FILE);
+    fopen( 'FILE', '<', 'Variables/rem_old_pm_attach.tmp' )
       or croak "$croak{'open'} FILE";
 
     $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> }
       . $info;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
     unlink "$vardir/rem_old_pm_attach.tmp";
 
-    $settings{'pmMaxDaysAttach'} = $pm_maxdaysattach || 0;
+    $settings{'pmmaxdaysattach'} = $pm_maxdaysattach || 0;
     require Admin::NewSettings;
     save_settings_to( 'Settings.pm', %settings );
 
@@ -1374,10 +1396,11 @@ sub removebig_pmattachments {
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
 
-    open my $FILE, '<', 'Variables/pmattachments.db'
+    our ($FILE);
+    fopen( 'FILE', '<', 'Variables/pmattachments.db' )
       or croak "$croak{'open'} FILE";
     my @pm_attachmentstxt = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
 
     my ( %att, @line );
     for (@pm_attachmentstxt) {
@@ -1387,10 +1410,11 @@ sub removebig_pmattachments {
 
     my $info = q{};
     if ( !@attachments ) {
-        open my $ATT, '>', 'Variables/pmattachments.db'
+        our ($ATT);
+        fopen( 'ATT', '>', 'Variables/pmattachments.db' )
           or fatal_error( 'cannot_open', 'Variables/pmattachments.db', 1 );
         print {$ATT} q{} or croak "$croak{'print'} ATT";
-        close $ATT or croak "$croak{'close'} ATT";
+        fclose('ATT') or croak "$croak{'close'} ATT";
 
         $info = qq~<br /><i>$fatxt{'48a'}.</i>~;
     }
@@ -1418,12 +1442,11 @@ sub removebig_pmattachments {
             if ( $time_to_jump < time() && ( $aa + 1 ) < @attachments ) {
 
           # save the $info of this run until the end of 'RemoveBigPMAttachments'
-                open my $FILE, '>>',
-                  "$vardir/rem_big_pm_attach.tmp"
+                fopen( 'FILE', '>>', 'Variables/rem_big_pm_attach.tmp' )
                   or fatal_error( 'cannot_open',
                     "$vardir/rem_big_pm_attach.tmp", 1 );
                 print $info or croak "$croak{'print'} rem_big_pm_attach";
-                close $FILE or croak "$croak{'open'} FILE";
+                fclose('FILE') or croak "$croak{'open'} FILE";
 
                 $yysetlocation =
 qq~$adminurl?action=removebigpmattachments;pmmaxsizeattach=$pm_maxsizeattach;next=~
@@ -1437,12 +1460,12 @@ qq~$adminurl?action=removebigpmattachments;pmmaxsizeattach=$pm_maxsizeattach;nex
 
     $yymain .= qq~<b>$fatxt{'33a'} $pm_maxsizeattach KB.</b><br />~;
 
-    open $FILE, '<', "$vardir/rem_big_pm_attach.tmp"
+    fopen( 'FILE', '<', 'Variables/rem_big_pm_attach.tmp' )
       or croak "$croak{'open'} FILE";
 
     $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> }
       . $info;
-    close $FILE or croak "$croak{'open'} FILE";
+    fclose('FILE') or croak "$croak{'open'} FILE";
     unlink "$vardir/rem_big_pm_attach.tmp";
 
     $settings{'pmmaxsizeattach'} = $pm_maxsizeattach;
@@ -1466,7 +1489,8 @@ sub remove_pmattachments {
 
     if ( !%{$threadhashref} ) { return $count; }
 
-    open my $ATM, '+<', 'Variables/pmattachments.db'
+    our ($ATM);
+    fopen( 'ATM', '+<', 'Variables/pmattachments.db' )
       or fatal_error( 'cannot_open', 'Variables/pmattachments.db', 1 );
     seek $ATM, 0, 0;
     my @pm_attachments = <$ATM>;
@@ -1505,7 +1529,7 @@ sub remove_pmattachments {
             print {$ATM} $pm_attachments[$i] or croak "$croak{'print'} ATM";
         }
     }
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
 
     return $count;
 }
@@ -1515,10 +1539,11 @@ sub fullrebuild_pmattachments {
 
     automaintenance('on');
 
-    open my $ATM, '<', 'Variables/pmattachments.db'
+    our ($ATM);
+    fopen( 'ATM', '<', 'Variables/pmattachments.db' )
       or croak "$croak{'open'} ATM";
     my @pm_attach = <$ATM>;
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
     my (@newattachments);
     for my $pmattach (@pm_attach) {
         chomp $pmattach;
@@ -1531,21 +1556,23 @@ sub fullrebuild_pmattachments {
     }
 
     if (@newattachments) {
-        open my $NEWATM, '>>', "$vardir/newpmattachments.tmp"
-          or fatal_error( 'cannot_open', "$vardir/newpmattachments.tmp", 1 );
+        our ($NEWATM);
+        fopen( 'NEWATM', '>>', 'Variables/newpmattachments.tmp' )
+          or fatal_error( 'cannot_open', 'Variables/newpmattachments.tmp', 1 );
         print {$NEWATM} @newattachments or croak "$croak{'print'} NEWATM";
-        close $NEWATM or croak "$croak{'close'} NEWATM";
+        fclose('NEWATM') or croak "$croak{'close'} NEWATM";
     }
 
-    open my $NEWATM, '<', "$vardir/newpmattachments.tmp"
+    our ($NEWATM);
+    fopen( 'NEWATM', '<', 'Variables/newpmattachments.tmp' )
       or croak "$croak{'open'} NEWATM";
     @newattachments = <$NEWATM>;
-    close $NEWATM or croak "$croak{'close'} NEWATM";
+    fclose('NEWATM') or croak "$croak{'close'} NEWATM";
 
-    open $ATM, '>', 'Variables/pmattachments.db'
+    fopen( 'ATM', '>', 'Variables/pmattachments.db' )
       or croak "$croak{'open'} ATM";
     print {$ATM} @newattachments or croak "$croak{'print'} ATM";
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
     unlink "$vardir/newpmattachments.tmp";
 
     automaintenance('off');
@@ -1560,10 +1587,11 @@ sub remove_ghostpmattach {
 
     $yymain .= qq~<b>$fatxt{'62a'}</b><br /><br />~;
 
-    open my $ATM, '<', 'Variables/pmattachments.db'
+    our ($ATM);
+    fopen( 'ATM', '<', 'Variables/pmattachments.db' )
       or croak "$croak{'open'} ATM";
     my @attachmentstxt = <$ATM>;
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
 
     my (%att);
     for (@attachmentstxt) {

@@ -33,15 +33,23 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+##  languages ##
+our ( %addmod_txt, %croak, %messageindex_txt, );
+## paths ##
+our ( $boardsdir, $imagesdir, $scripturl, $yyhtml_root, );
+## settings ##
+our ( $do_scramble_id, %grp_nopost, @nopostorder, );
+## template ##
 our (
-    %INFO,          %FORM,           %board,            %subboard,
-    $uid,           $user,           @categoryorder,    %cat,
-    %catinfo,       $myshowprofile,  %addmod_txt,       $boardsdir,
-    %control,       $iamadmin,       $iamgmod,          $yymain,
-    $yyhtml_root,   $scripturl,      $imagesdir,        $currentboard,
-    $myselectmods,  $do_scramble_id, %messageindex_txt, $myselectmods_b,
-    @nopostorder,   %grp_nopost,     $myselectmods_c,   $myselectmods_d,
-    $yysetlocation, $show_profile
+    $myselectmods,   $myselectmods_b, $myselectmods_c,
+    $myselectmods_d, $myshowprofile,
+);
+## system ##
+our (
+    $currentboard, $iamadmin, $iamgmod,  $show_profile,
+    $uid,          $user,     $yymain,   $yysetlocation,
+    %board,        %cat,      %catinfo,  %control,
+    %FORM,         %INFO,     %subboard, @categoryorder,
 );
 
 load_language('AddModerators');

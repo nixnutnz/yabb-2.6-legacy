@@ -47,8 +47,9 @@ $myborder
         <td class="windowbg center"><img src="$imagesdir/login.png" alt="" /></td>
         <td class="windowbg2 center">~;
 
-    $mylogintxt = $loginout_txt{'35'};
-    if ( $screenlogin ) { $mylogintxt = $loginout_txt{'35b'}; }
+$mylogintxt = $loginout_txt{'35'};
+
+if ( $screenlogin ) { $mylogintxt = $loginout_txt{'35b'}; }
 
 $mysharedlog_bodya = qq~
                 <div style="width: 600px;">
@@ -89,36 +90,36 @@ $mysharedlog_bodya = qq~
 $myremindera = qq~<div style="width: 600px; margin:0 auto;">
     <div class="tabtitle" style="padding-left:1%; margin-top:1em; line-height:3em; vertical-align:bottom">{yabb mbname} $loginout_txt{'36'} $loginout_txt{'194'}</div>
     <div class="windowbg padd_3px">
-            <label for="user"><b>$mylogintxt:</b></label>
-            <input type="text" name="user" id="user" maxlength="100" {yabb regstyle} size="50" />
+        <label for="user"><b>$mylogintxt:</b></label>
+        <input type="text" name="user" id="user" maxlength="100" {yabb regstyle} size="50" />
     </div>~;
 
 $myreminder_regcheck = qq~
     <div class="windowbg padd_3px">
-            <label for="verification"><b>$floodtxt{'1'}: </b>
-            {yabb showcheck}
-            <br /><span class="small">{yabb flood_text}</span></label>
+        <label for="verification"><b>$floodtxt{'1'}: </b>
+        {yabb showcheck}
+        <br /><span class="small">{yabb flood_text}</span></label>
     </div>
     <div class="windowbg padd_3px">
-            <div style="float:left; width:30%"><label for="verification"><b>$floodtxt{'3'}: </b></label></div>
-            <div style="float:left; width:70%"><input type="text" name="verification" id="verification" size="20" maxlength="30" />{yabb spam_question_image}</div>
-            <div class="clear"></div>
+        <div style="float:left; width:30%"><label for="verification"><b>$floodtxt{'3'}: </b></label></div>
+        <div style="float:left; width:70%"><input type="text" name="verification" id="verification" size="20" maxlength="30" />{yabb spam_question_image}</div>
+        <div class="clear"></div>
     </div>~;
 
 $myreminder_vericheck = qq~
     <div class="windowbg padd_3px">
-            <div style="float:left; width:30%"><label for="verification_question"><b>{yabb spam_question}</b>
+        <div style="float:left; width:30%"><label for="verification_question"><b>{yabb spam_question}</b>
             <br /><span class="small">$loginout_txt{'verification_question_desc'} {yabb verification_question_desc}</span></label>
             <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
             <input type="hidden" name="spam_question" value="{yabb spam_question}" />
         </div>
-            <div style="float:left; width:70%"><input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />{yabb spam_question_image}</div>
-            <div class="clear"></div>
+        <div style="float:left; width:70%"><input type="text" name="verification_question" id="verification_question" size="30" maxlength="50" />{yabb spam_question_image}</div>
+        <div class="clear"></div>
     </div>~;
 
 $myreminder_endform = qq~
     <div class="catbg center padd_8px">
-            <input type="submit" value="$loginout_txt{'339'}" class="button" />
+       <input type="submit" value="$loginout_txt{'339'}" class="button" />
     </div>
 </div>
 </form>

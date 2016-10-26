@@ -23,21 +23,23 @@ our $errorlogpmmods = 0;
 if (@errorlogpmmods) {
     $errorlogpmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %errorlog );
-## paths ##
-our ( $adminurl, $vardir, $yyhtml_root, $boardurl, );
-## settings ##
-our ( $yymycharset, $use_guardian, $use_htaccess, $ip_lookup );
-## other ##
-our (
-    $action,      $yymain,      $yytitle, $yysetlocation,
-    $action_area, %INFO,        %FORM,    $date,
-    $scripturl,   $yyext,       $yyaext,  $yyexec,
-    %useraccount, %userprofile, $OS_ERROR,
-);
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %admintxt, %croak, %errorlog );
+## paths ##
+our ( $adminurl, $boardurl, $vardir, $scripturl, $yyhtml_root, );
+## settings ##
+our ( $ip_lookup, $use_guardian, $use_htaccess, $yymycharset );
+## other ##
+our (
+    $action_area, $date,  $OS_ERROR, $yyaext,
+    $yyexec,      $yyext, $yymain,   $yysetlocation,
+    $yytitle,     %FORM,  %INFO,     %useraccount,
+    %userprofile,
+);
 
 load_language('Admin');
 
@@ -46,10 +48,11 @@ sub error_log {
     $yytitle = $errorlog{'1'};
     my (@errors);
     if ( -e "$vardir/errorlog.log" ) {
-        open my $ERRORFILE, '<', "$vardir/errorlog.log"
+        our ($ERRORFILE);
+        fopen( 'ERRORFILE', '<', "$vardir/errorlog.log" )
           or croak "$croak{'open'} ERRORFILE";
         @errors = <$ERRORFILE>;
-        close $ERRORFILE or croak "$croak{'close'} ERRORFILE";
+        fclose('ERRORFILE') or croak "$croak{'close'} ERRORFILE";
     }
     my $errorcount = @errors;
     my $date2      = $date;
@@ -387,11 +390,13 @@ sub delete_error {
     my ( $sortmode, $sortorder );
     chomp $FORM{'button'};
     if ( $FORM{'button'} ne '4' ) { fatal_error('no_access'); }
-    open my $FILE, '<', "$vardir/errorlog.log" or croak "$croak{'open'} FILE";
+    our ($FILE);
+    fopen( 'FILE', '<', "$vardir/errorlog.log" ) or croak "$croak{'open'} FILE";
     my @errors = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
     unlink "$vardir/errorlog.log";
-    open $FILE, '>>', "$vardir/errorlog.log" or croak "$croak{'open'} FILE";
+    fopen( 'FILE', '>>', "$vardir/errorlog.log" )
+      or croak "$croak{'open'} FILE";
 
     foreach my $line (@errors) {
         chomp $line;
@@ -403,7 +408,7 @@ sub delete_error {
             print {$FILE} $line . "\n" or croak "$croak{'print'} FILE";
         }
     }
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
     $yysetlocation = qq~$adminurl?action=errorlog~;
     redirectexit();
     return;
@@ -451,9 +456,10 @@ sub er_update_htaccess {
     my ( $act, @values ) = @_;
     my ( @denies, @htout );
     if ( !$act ) { return 0; }
-    open my $HTA, '<', '.htaccess' or croak "$croak{'open'} HTA";
+    our ($HTA);
+    fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} HTA";
     my @htlines = <$HTA>;
-    close $HTA or croak "$croak{'close'} HTA";
+    fclose('HTA') or croak "$croak{'close'} HTA";
 
 # header to determine only who has access to the main script, not the admin script
     my $htheader = q~<Files YaBB*>~;
@@ -487,9 +493,9 @@ sub er_update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        open my $HTA, '>', '.htaccess' or croak "$croak{'open'} HTA";
+        fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
-        close $HTA or croak "$croak{'close'} HTA";
+        fclose('HTA') or croak "$croak{'close'} HTA";
     }
     elsif ( $act eq 'add' ) {
         push @denies, @values;

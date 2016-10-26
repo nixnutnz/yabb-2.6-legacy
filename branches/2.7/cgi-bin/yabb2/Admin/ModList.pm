@@ -23,13 +23,15 @@ our $modlistpmmods = 0;
 if (@modlistpmmods) {
     $modlistpmmods = 1;
 }
-##  languages ##
-our ( %admin_txt, %admin_img, %mod_list );
-## other ##
-our ( $action, $action_area, $yymain, $yytitle, );
 
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %mod_list );
+## other ##
+our ( $action_area, $yymain, $yytitle, );
 
 load_language('Admin');
 

@@ -29,51 +29,51 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
-our ( %croak, %cal_icon, %cal_icon_bg, %var_cal, $abbr_lang, %post_smiltxt,
-    %var_calpost, %post_txt );
-## folders ##
-our ( $scripturl, $yyhtml_root, $langdir, $vardir, $memberdir, $imagesdir );
+our ( $abbr_lang, %cal_icon, %cal_icon_bg, %croak, %post_smiltxt, %post_txt,
+    %var_cal, %var_calpost, );
+## paths ##
+our ( $imagesdir, $langdir, $memberdir, $scripturl, $vardir, $yyhtml_root, );
 ## settings ##
 our (
-    %newcalicon,            $forum_default,       $timeselected,
-    $show_event_cal,        $show_sunday,         $show_colorlinks,
-    $enable_ubbc,           $showyabbcbutt,       $enable_spell_check,
-    $userdefaultlang,       $removenormalsmilies, $user_hide_smilies,
-    $user_hide_smilies_row, $smiliestyle,         $more_smilie_array,
-    $winwidth,              $winheight,           $gpvalid_en,
-    $spam_questions_gp,     $language,            $spam_questions_case,
-    $speedpostdetection,    $checkallcaps,        $show_event_birthdays,
-    $do_scramble_id,        $show_caltoday,       $showage,
-    $birthday_list_show,    $scroll_events,       $cal_event_short,
-    $no_short_ubbc,         $clipped,             $event_todaycolor,
-    $show_mini_calicons,    $cal_event_display,   $delete_eventsuntil,
-    $showadded,             @smilieorder,         %addedsmilies,
-    $ns,
+    $birthday_list_show, $cal_event_display,   $cal_event_mods,
+    $cal_event_noname,   $cal_event_perms,     $cal_event_private,
+    $cal_event_short,    $checkallcaps,        $delete_eventsuntil,
+    $do_scramble_id,     $enable_spell_check,  $enable_ubbc,
+    $event_todaycolor,   $enabletz,            $gpvalid_en,
+    $no_short_ubbc,      $removenormalsmilies, $scroll_events,
+    $show_caltoday,      $show_colorlinks,     $show_event_birthdays,
+    $show_event_cal,     $show_mini_calicons,  $show_sunday,
+    $showadded,          $showage,             $showyabbcbutt,
+    $smiliestyle,        $spam_questions_case, $spam_questions_gp,
+    $speedpostdetection, $timeselected,        $user_hide_smilies_row,
+    $winheight,          $winwidth,            $yymycharset,
+    %addedsmilies,       %newcalicon,          @smilieorder,
 );
 ## system ##
 our (
-    $uid,                  $username,
-    $iamguest,             $iamadmin,
-    %INFO,                 $cal_event_perms,
-    $cal_event_mods,       %FORM,
-    %memberaddgroup,       $yysetlocation,
-    $date,                 $enabletz,
-    $iamgmod,              $cal_event_private,
-    $cal_event_noname,     $calicon_eventinfo,
-    $calicon_eventholiday, $calicon_eventnote,
-    $calicon_eventparty,   $calicon_eventcelebration,
-    $calicon_eventsport,   $calicon_eventmedia,
-    $calicon_eventmeeting, $calicon_eventannounce,
-    $yyinlinestyle,        $showcheck,
-    $flood_text,           $spam_question,
-    $spam_image,           $spam_question_id,
-    %format,               $ctmain,
-    $css,                  $yymycharset,
-    $string,               %memberinf,
-    %link,                 $yymain,
-    $yytitle,              $invalmailchar,
-    $invalemaila,          $invalemailb,
-    $email,                $submittxt,
+    $calicon_eventannounce, $calicon_eventcelebration,
+    $calicon_eventholiday,  $calicon_eventinfo,
+    $calicon_eventmedia,    $calicon_eventmeeting,
+    $calicon_eventnote,     $calicon_eventparty,
+    $calicon_eventsport,    $clipped,
+    $css,                   $ctmain,
+    $date,                  $email,
+    $flood_text,            $forum_default,
+    $iamadmin,              $iamgmod,
+    $iamguest,              $invalemaila,
+    $invalemailb,           $invalmailchar,
+    $language,              $more_smilie_array,
+    $ns,                    $showcheck,
+    $spam_image,            $spam_question,
+    $spam_question_id,      $string,
+    $submittxt,             $uid,
+    $user_hide_smilies,     $userdefaultlang,
+    $username,              $yyinlinestyle,
+    $yymain,                $yysetlocation,
+    $yytitle,               %FORM,
+    %format,                %INFO,
+    %link,                  %memberaddgroup,
+    %memberinf,
 );
 ## templates ##
 our (
@@ -796,10 +796,11 @@ $mycalout_addevent
         || $show_event_birthdays == 2 )
     {
         if ( -e "$vardir/eventcalbday.db" ) {
-            open my $EVENTBIRTH, '<', "$vardir/eventcalbday.db"
+            our ($EVENTBIRTH);
+            fopen( 'EVENTBIRTH', '<', "$vardir/eventcalbday.db" )
               or croak "$croak{'open'} eventcalbday.db";
             my @birthmembers = <$EVENTBIRTH>;
-            close $EVENTBIRTH or croak "$croak{'close'} eventcalbday.db";
+            fclose('EVENTBIRTH') or croak "$croak{'close'} eventcalbday.db";
 
             my ( $bd_y, $bday_date, $age, );
             foreach my $x (@birthmembers) {
@@ -852,10 +853,11 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
 
     ## Get Events ##
     if ( -e "$vardir/eventcal.db" ) {
-        open my $EVENTFILE, '<', "$vardir/eventcal.db"
+        our ($EVENTFILE);
+        fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
           or croak "$croak{'open'} eventcal.db";
         my @calinput = <$EVENTFILE>;
-        close $EVENTFILE or croak "$croak{'close'} eventcal.db";
+        fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
         foreach my $eventline ( sort @calinput ) {
             chomp $eventline;
             my (
@@ -1774,16 +1776,17 @@ sub del_cal {
     if ($iamguest) { fatal_error('not_allowed'); }
     if ( $INFO{'caldel'} == 1 ) {
         if ( -e "$vardir/eventcal.db" ) {
-            open my $FILE, '<', "$vardir/eventcal.db"
+            our ($FILE);
+            fopen( 'FILE', '<', "$vardir/eventcal.db" )
               or croak "$croak{'open'} eventcal.db";
             my @caldata = <$FILE>;
-            close $FILE or croak "$croak{'close'} eventcal.db";
+            fclose('FILE') or croak "$croak{'close'} eventcal.db";
 
-            open $FILE, '>', "$vardir/eventcal.db"
+            fopen( 'FILE', '>', "$vardir/eventcal.db" )
               or croak "$croak{'open'} eventcal.db";
             print {$FILE} grep { !/$INFO{'calid'}/xsm } @caldata
               or croak "$croak{'print'} eventcal.db";
-            close $FILE or croak "$croak{'close'} eventcal.db";
+            fclose('FILE') or croak "$croak{'close'} eventcal.db";
         }
     }
 
@@ -1861,10 +1864,11 @@ sub add_cal {
         }
         my @calinput = ();
         if ( -e "$vardir/eventcal.db" ) {
-            open my $EVENTFILE, '<', "$vardir/eventcal.db"
+            our ($EVENTFILE);
+            fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
               or croak "$croak{'open'} eventcal.db";
             @calinput = <$EVENTFILE>;
-            close $EVENTFILE or croak "$croak{'close'} eventcal.db";
+            fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
         }
         if ( $FORM{'editid'} ) {
             foreach my $i ( 0 .. $#calinput ) {
@@ -1900,10 +1904,11 @@ qq~$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$username|$da
 
         }
         my $prncal = join q{}, @calinput;
-        open my $EVENTFILE, '>', "$vardir/eventcal.db"
+        our ($EVENTFILE);
+        fopen( 'EVENTFILE', '>', "$vardir/eventcal.db" )
           or croak "$croak{'open'} eventcal.db";
         print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
-        close $EVENTFILE or croak "$croak{'close'} eventcal.db";
+        fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
 
         {
             no strict qw(refs);
@@ -1940,10 +1945,11 @@ sub del_old_events {
         $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
     }
 
-    open my $EVENTFILE, '<', "$vardir/eventcal.db"
+    our ($EVENTFILE);
+    fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
       or croak "$croak{'open'} eventcal.db";
     my @calinput = <$EVENTFILE>;
-    close $EVENTFILE or croak "$croak{'close'} eventcal.db";
+    fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
     foreach my $i ( 0 .. $#calinput ) {
         my ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2,
             undef ) = split /[|]/xsm, $calinput[$i];

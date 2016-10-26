@@ -35,22 +35,22 @@ $my_session = 'session.png';
 $myprofile_a = qq~
 <div style="width:45em; margin:0 auto 1em">
     <div class="tabtitle center" style="line-height:3em; vertical-align:bottom"><b>{yabb profile_txt901}</b></div>
-<form action="{yabb prof_act}" method="post" name="confirmform">
+    <form action="{yabb prof_act}" method="post" name="confirmform">
     <div class="windowbg2 center">
-            <label for="passwrd"><span class="small"><br />{yabb sid_descript}<br /><br /></span></label>
+        <label for="passwrd"><span class="small"><br />{yabb sid_descript}<br /><br /></span></label>
     </div>
     <div class="windowbg2 center" style="padding-bottom:4px">
-            <input type="hidden" name="redir" value="{yabb redirsid}" />
-            <div style="padding-top: 4px;">
-                <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
+        <input type="hidden" name="redir" value="{yabb redirsid}" />
+        <div style="padding-top: 4px;">
+            <div><input type="password" name="passwrd" id="passwrd" size="15" style="width: 150px;" onkeypress="capsLock(event,'cappasswrd')" /></div>
                 <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd">{yabb profile_txtcapslock}</div>
                 <div style="color: #f00; font-weight: bold; display: none" id="cappasswrd_char">{yabb profile_txtwrong_char}: <span id="cappasswrd_character">&nbsp;</span></div>
-            </div>
+        </div>
     </div>
     <div class="catbg center padd_8px">
             <input type="submit" value="{yabb profile_txt900}" class="button" />
     </div>
-</form>
+    </form>
 </div>
 <script type="text/javascript">
         document.confirmform.passwrd.focus();
@@ -829,7 +829,7 @@ $ext_output_b = q~
 $ext_endrow = q~        </td>
     </tr>~;
 
-$ext_spacer = qq~<tr><td class="windowbg" colspan="2">{yabb fieldcomment}&nbsp;</td></tr>\n~;
+$ext_spacer = qq~<tr><td class="catbg" colspan="2">{yabb fieldcomment}&nbsp;</td></tr>\n~;
 
 $myprofile_fntsze = qq~<tr class="windowbg">
         <td><label for="userfntsize"><b>{yabb profile_txtfntsze}: </b></label></td>

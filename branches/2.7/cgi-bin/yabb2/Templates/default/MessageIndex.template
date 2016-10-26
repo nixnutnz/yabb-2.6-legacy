@@ -123,6 +123,7 @@ if ($action ne 'favorites') {
             </table>
 <!-- Button Bar end -->~;
 }
+
 $messageindex_template .= qq~
             <table class="bordercolor pad_3px cs_thin">
                 <tr class="titlebg message-sort">
@@ -324,7 +325,7 @@ $msg_listpages = qq~
 <head>
     <meta charset="$yymycharset">
 <title>{yabb messageindex_139} {yabb messageindex_18}</title>
-<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />
 </head>
 <body style="min-width: 350px;">
     <script type="text/javascript">
@@ -356,12 +357,12 @@ $boardpassw = qq~
     <img src="$imagesdir/$actionlock" alt="" /> <b>$maintxt{'900pw'}: $boardname</b>
 </div>
 <div class="windowbg center padd_4px" style="width: 80%; margin:0 auto">
-            <form action="$scripturl?action=checkboardpw" method="post" name="brdpass" onsubmit="return CheckPassField();">
-                <input type="hidden" name="pswviewnum" value="{yabb viewnum}" />
-                <input type="hidden" name="pswcurboard" value="{yabb currentboard}" />
-                <input type="password" name="boardpw" value="" size="25" />
-                <input type="submit" value="{yabb maintxt900s}" class="button" />
-            </form>
+    <form action="$scripturl?action=checkboardpw" method="post" name="brdpass" onsubmit="return CheckPassField();">
+        <input type="hidden" name="pswviewnum" value="{yabb viewnum}" />
+        <input type="hidden" name="pswcurboard" value="{yabb currentboard}" />
+        <input type="password" name="boardpw" value="" size="25" />
+        <input type="submit" value="{yabb maintxt900s}" class="button" />
+    </form>
 </div>
 <script type="text/javascript">
 document.brdpass.boardpw.focus();

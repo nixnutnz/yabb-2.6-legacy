@@ -29,7 +29,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
 our ( %croak, %fatxt, %timelocktxt, %post_txt, %post_polltxt, @uploadtranlist );
 ## folders ##
-our ( $scripturl, $datadir, $vardir, $uploaddir, $boardsdir );
+our ( $boardsdir, $datadir, $scripturl, $uploaddir, $vardir );
 ## system ##
 our (
     $bypass_lock_perm, $cgi_query,    $currentboard,     $date,
@@ -53,7 +53,7 @@ our (
     %grp_post,           @ext,
 );
 ## template ##
-our ( $mypost_lastmod, );
+our ($mypost_lastmod);
 
 if ( !$post_txt_loaded ) {
     load_language('Post');
@@ -143,10 +143,11 @@ sub modify_message {
     if ( $postid eq 'Poll' ) {
         if ( !-e "$datadir/$threadid.poll" ) { fatal_error('not_allowed'); }
 
-        open my $FILE, '<', "$datadir/$threadid.poll"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$threadid.poll" )
           or croak "$croak{'open'} polldata";
         my @poll_data = <$FILE>;
-        close $FILE or croak "$croak{'close'} polldata";
+        fclose('FILE') or croak "$croak{'close'} polldata";
         chomp @poll_data;
         our (
             $poll_question, $poll_locked, $poll_uname,   $poll_name,
@@ -176,10 +177,11 @@ sub modify_message {
     }
     else {
         if ( !ref $thread_arrayref{$threadid} ) {
-            open my $FILE, '<', "$datadir/$threadid.txt"
+            our ($FILE);
+            fopen( 'FILE', '<', "$datadir/$threadid.txt" )
               or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <$FILE>;
-            close $FILE or croak "$croak{'close'} $threadid";
+            fclose('FILE') or croak "$croak{'close'} $threadid";
         }
         (
             $sub,   $mname,   $memail, $mdate,   $musername,
@@ -250,14 +252,15 @@ sub modify_message2 {
             # showcase poll start
             # Look for a showcase.poll file to unlink.
             if ( -e "$datadir/showcase.poll" ) {
-                open my $FILE, '<', "$datadir/showcase.poll"
+                our ($FILE);
+                fopen( 'FILE', '<', "$datadir/showcase.poll" )
                   or croak "$croak{'open'} showcase";
                 if ( $threadid == <$FILE> ) {
-                    close $FILE or croak "$croak{'close'} showcase";
+                    fclose('FILE') or croak "$croak{'close'} showcase";
                     unlink "$datadir/showcase.poll";
                 }
                 else {
-                    close $FILE or croak "$croak{'close'} showcase";
+                    fclose('FILE') or croak "$croak{'close'} showcase";
                 }
             }
 
@@ -269,10 +272,11 @@ sub modify_message2 {
         }
         else {
             if ( !ref $thread_arrayref{$threadid} ) {
-                open my $FILE, '<', "$datadir/$threadid.txt"
+                our ($FILE);
+                fopen( 'FILE', '<', "$datadir/$threadid.txt" )
                   or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
                 @{ $thread_arrayref{$threadid} } = <$FILE>;
-                close $FILE or croak "$croak{'close'} $threadid";
+                fclose('FILE') or croak "$croak{'close'} $threadid";
             }
             my $msgcnt = @{ $thread_arrayref{$threadid} };
 
@@ -323,11 +327,11 @@ sub modify_message2 {
         $maxpc          ||= 0;
         $numpolloptions ||= 8;
         if ( !-e "$datadir/$threadid.poll" ) { fatal_error('not_allowed'); }
-
-        open my $FILE, '<', "$datadir/$threadid.poll"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$threadid.poll" )
           or croak "$croak{'open'} $threadid.poll";
         my @poll_data = <$FILE>;
-        close $FILE or croak "$croak{'close'} $threadid.poll";
+        fclose('FILE') or croak "$croak{'close'} $threadid.poll";
         chomp @poll_data;
         our (
             $poll_question, $poll_locked, $poll_uname,   $poll_name,
@@ -448,28 +452,30 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         if ( $iamadmin || $iamgmod || $iamfmod ) {
             my $scthreadid;
             if ( -e "$datadir/showcase.poll" ) {
-                open my $FILE, '<', "$datadir/showcase.poll"
+                fopen( 'FILE', '<', "$datadir/showcase.poll" )
                   or croak "$croak{'open'} showcase.poll";
                 $scthreadid = <$FILE>;
-                close $FILE or croak "$croak{'close'} showcase";
+                fclose('FILE') or croak "$croak{'close'} showcase";
             }
             if ( $scthreadid && $threadid == $scthreadid && !$FORM{'scpoll'} ) {
                 unlink "$datadir/showcase.poll";
             }
             elsif ( $FORM{'scpoll'} ) {
-                open my $SCFILE, '>', "$datadir/showcase.poll"
+                our ($SCFILE);
+                fopen( 'SCFILE', '>', "$datadir/showcase.poll" )
                   or croak "$croak{'open'} SCFILE";
                 print {$SCFILE} $threadid or croak "$croak{'print'} SCFILE";
-                close $SCFILE or croak "$croak{'close'} SCFILE";
+                fclose('SCFILE') or croak "$croak{'close'} SCFILE";
             }
         }
 
         # showcase poll end
         my $prnpoll = join q{}, @new_poll_data;
-        open my $POLL, '>', "$datadir/$threadid.poll"
+        our ($POLL);
+        fopen( 'POLL', '>', "$datadir/$threadid.poll" )
           or croak "$croak{'open'} $threadid.poll";
         print {$POLL} $prnpoll or croak "$croak{'print'} $threadid.poll";
-        close $POLL or croak "$croak{'close'} $threadid.poll";
+        fclose('POLL') or croak "$croak{'close'} $threadid.poll";
 
         $yysetlocation = qq~$scripturl?num=$threadid~;
 
@@ -477,10 +483,11 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
 
     if ( !ref $thread_arrayref{$threadid} ) {
-        open my $FILE, '<', "$datadir/$threadid.txt"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$threadid.txt" )
           or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
         @{ $thread_arrayref{$threadid} } = <$FILE>;
-        close $FILE or croak "$croak{'close'} $threadid";
+        fclose('FILE') or croak "$croak{'close'} $threadid";
     }
 
     # Make sure the user is allowed to edit this post.
@@ -646,7 +653,8 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     if ( $mip =~ /$user_ip/xsm ) { $useredit_ip = $mip; }
 
     my ( @attachments, %post_attach, %del_filename );
-    open my $ATM, '+<', "$vardir/attachments.db"
+    our ($ATM);
+    fopen( 'ATM', '+<', "$vardir/attachments.db" )
       or croak "$croak{'open'} attachments";
     seek $ATM, 0, 0;
     while (<$ATM>) {
@@ -792,13 +800,14 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
 
  # create a new file on the server using the formatted ( new instance ) filename
-            if ( open my $NEWFILE, '>', "$uploaddir/$fixfile" ) {
+            our ($NEWFILE);
+            if ( fopen( 'NEWFILE', '>', "$uploaddir/$fixfile" ) ) {
                 binmode $NEWFILE;
 
                 # needed for operating systems (OS) Windows, ignored by Linux
                 print {$NEWFILE} $file_buffer
                   or croak "$croak{'print'} $NEWFILE";    # write new file on HD
-                close $NEWFILE or croak "$croak{'close'} fixfile";
+                fclose('NEWFILE') or croak "$croak{'close'} fixfile";
 
             }
             else
@@ -820,15 +829,17 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
                 my $okatt = 1;
                 if ( $fixfile =~ /gif$/ixsm ) {
-                    open my $ATTFILE, '<', "$uploaddir/$fixfile"
+                    our ($ATTFILE);
+                    fopen( 'ATTFILE', '<', "$uploaddir/$fixfile" )
                       or croak "$croak{'open'} ATTFILE";
                     read $ATTFILE, my $header, 10;
                     my ( $giftest, undef, undef, undef, undef, undef ) =
                       unpack 'a3a3C4', $header;
-                    close $ATTFILE or croak "$croak{'close'} ATTFILE";
+                    fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
                     if ( $giftest ne 'GIF' ) { $okatt = 0; }
                 }
-                open my $ATTFILE, '<', "$uploaddir/$fixfile"
+                our ($ATTFILE);
+                fopen( 'ATTFILE', '<', "$uploaddir/$fixfile" )
                   or croak "$croak{'open'} ATTFILE";
                 while ( read $ATTFILE, $buffer, 1024 ) {
                     if ( $buffer =~ /<(?:html|script|body)/igxsm ) {
@@ -836,7 +847,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
                         last;
                     }
                 }
-                close $ATTFILE or croak "$croak{'close'} ATTFILE";
+                fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
                 if ( !$okatt ) {   # delete the file as it contains illegal code
                     foreach (qw("@newfilelist" $fixfile)) {
                         unlink "$uploaddir/$_";
@@ -873,7 +884,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
       sort { ( split /[|]/xsm, $a )[6] <=> ( split /[|]/xsm, $b )[6] }
       @attachments
       or croak "$croak{'print'} ATM";
-    close $ATM or croak "$croak{'close'} ATM";
+    fclose('ATM') or croak "$croak{'close'} ATM";
 
     # Create the list of files
     $fixfile = join q{,}, @filelist;
@@ -881,15 +892,17 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
     ${ $thread_arrayref{$threadid} }[$postid] =
 qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$date|$username|$fixfile\n~;
     my $prnarray = join q{}, @{ $thread_arrayref{$threadid} };
-    open my $FILE, '>', "$datadir/$threadid.txt"
+    our ($FILE);
+    fopen( 'FILE', '>', "$datadir/$threadid.txt" )
       or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
     print {$FILE} $prnarray or croak "$croak{'print'} 'FILE'";
-    close $FILE or croak "$croak{'close'} $threadid";
+    fclose('FILE') or croak "$croak{'close'} $threadid";
 
     if ( $postid == 0 || $staff ) {
 
 # Save the current board. icon, status or subject may have changed -> update board info
-        open my $BOARD, '+<', "$boardsdir/$currentboard.txt"
+        our ($BOARD);
+        fopen( 'BOARD', '+<', "$boardsdir/$currentboard.txt" )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @board = <$BOARD>;
         foreach my $c ( 0 .. $#board ) {
@@ -901,7 +914,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
         truncate $BOARD, 0;
         seek $BOARD, 0, 0;
         print {$BOARD} @board or croak "$croak{'print'} BOARD";
-        close $BOARD or croak "$croak{'close'} BOARD";
+        fclose('BOARD') or croak "$croak{'close'} BOARD";
 
         board_setlast_info( $currentboard, \@board );
 
@@ -909,10 +922,11 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
     elsif ( $postid == $#{ $thread_arrayref{$threadid} } ) {
 
         # maybe last message changed subject and/or icon -> update board info
-        open my $BOARD, '<', "$boardsdir/$currentboard.txt"
+        our ($BOARD);
+        fopen( 'BOARD', '<', "$boardsdir/$currentboard.txt" )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @board = <$BOARD>;
-        close $BOARD or croak "$croak{'close'} $currentboard.txt";
+        fclose('BOARD') or croak "$croak{'close'} $currentboard.txt";
         board_setlast_info( $currentboard, \@board );
     }
 
@@ -966,10 +980,11 @@ sub multi_del {    # deletes single- or multi-Posts
     my $thread = $INFO{'thread'};
 
     if ( !ref $thread_arrayref{$thread} ) {
-        open my $FILE, '<', "$datadir/$thread.txt"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$thread.txt" )
           or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
         @{ $thread_arrayref{$thread} } = <$FILE>;
-        close $FILE or croak "$croak{'close'} $thread";
+        fclose('FILE') or croak "$croak{'close'} $thread";
     }
     my @messages = @{ $thread_arrayref{$thread} };
 
@@ -1080,10 +1095,11 @@ sub multi_del {    # deletes single- or multi-Posts
 
 # if thread has not been deleted: update thread, update message index details ...
     my $prnmess = join q{}, @{ $thread_arrayref{$thread} };
-    open my $FILE, '>', "$datadir/$thread.txt"
+    our ($FILE);
+    fopen( 'FILE', '>', "$datadir/$thread.txt" )
       or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
     print {$FILE} $prnmess or croak "$croak{'print'} $thread.txt";
-    close $FILE or croak "$croak{'close'} $thread.txt";
+    fclose('FILE') or croak "$croak{'close'} $thread.txt";
 
     my ( @firstmessage, @lastmessage );
     {
@@ -1116,7 +1132,8 @@ sub multi_del {    # deletes single- or multi-Posts
     # &boardtotals("update", ...) is done later in &board_setlast_info
 
     my $threadline = q{};
-    open my $BOARDFILE, '+<', "$boardsdir/$currentboard.txt"
+    our ($BOARDFILE);
+    fopen( 'BOARDFILE', '+<', "$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <$BOARDFILE>;
 
@@ -1151,7 +1168,7 @@ sub multi_del {    # deletes single- or multi-Posts
     truncate $BOARDFILE, 0;
     seek $BOARDFILE, 0, 0;
     print {$BOARDFILE} @buffer or croak "$croak{'print'} BOARD";
-    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
+    fclose('BOARDFILE') or croak "$croak{'close'} $currentboard.txt";
 
     board_setlast_info( $currentboard, \@buffer );
 

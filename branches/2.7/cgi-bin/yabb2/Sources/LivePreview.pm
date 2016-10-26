@@ -30,15 +30,20 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language ##
+our ( %croak, %micon, %micon_bg, %inmes_txt, %var_cal, %cal_icon, );
+## paths ##
+our ($scripturl);
+## settings ##
+our ( $enable_ubbc, $set_subject_maxlength, );
+## system ##
 our (
-    %croak,         %FORM,                  $enable_ubbc,
-    $yy_yabbloaded, $set_subject_maxlength, $yysetlocation,
-    $scripturl,     $date,                  $tmpmusername,
-    $uid,           %micon,                 %micon_bg,
-    %inmes_txt,     $mypm_liveprev_b,       $my_sig,
-    $my_attach,     $username,              %var_cal,
-    %cal_icon,      $messageblock,          $message
+    $date,          $message,       $messageblock, $my_attach,
+    $my_sig,        $tmpmusername,  $uid,          $username,
+    $yy_yabbloaded, $yysetlocation, %FORM,
 );
+## templates ##
+our ($mypm_liveprev_b);
 
 use URI::Escape;
 load_censor_list();

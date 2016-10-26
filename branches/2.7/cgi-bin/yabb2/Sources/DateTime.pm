@@ -27,13 +27,15 @@ if (@datetimepmmods) {
     $datetimepmmods = 1;
 }
 
+##  languages ##
+our ( %admin_txt, %maintxt, %timetxt, @days_short, @days, @months, @months_m, );
+## settings ##
+our ( $default_tz, $enabletz, $forumnumberformat, $timeoffset, $timeselected, );
+## system ##
 our (
-    %maintxt,           $iamguest,     $forumdefault,  $uid,
-    $username,          $default_tz,   $timeoffset,    $dstoffset,
-    $enabletz,          $timeselected, @days_short,    @days,
-    $date,              %admin_txt,    $forum_default, $use_rfc,
-    $forumnumberformat, @months,       @months_m,      %timetxt,
-    $mytimeselected
+    $date,         $dstoffset, $forum_default,
+    $forumdefault, $iamguest,  $mytimeselected,
+    $uid,          $use_rfc,   $username,
 );
 
 load_language('Main');
@@ -55,7 +57,11 @@ sub toffs {
     my ($tzname);
     {
         no strict qw(refs);
-        if ( $iamguest || $forum_deflt || !$username || !${ $uid . $username }{'user_tz'} ) {
+        if (   $iamguest
+            || $forum_deflt
+            || !$username
+            || !${ $uid . $username }{'user_tz'} )
+        {
             $tzname = $default_tz || 'UTC';
         }
         else {
@@ -527,7 +533,7 @@ sub time_4 {
       @myargs;
     my $ampm = $newhour > 11 ? 'pm' : 'am';
     my $newhour2 = $newhour % 12 || 12;
-    my $newmonth2 = $months[ $newmonth - 1 ];;
+    my $newmonth2 = q{};
     if    ( !@months_m ) { @months_m  = @months; }
     if    ($use_rfc)     { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif ($lower)       { $newmonth2 = $months_m[ $newmonth - 1 ]; }
@@ -568,7 +574,7 @@ sub time_5 {
 sub time_6 {
     my @myargs = @_;
     my ( $dytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @myargs;
-    my $newmonth2 = $months[ $newmonth - 1 ];
+    my $newmonth2 = q{};
     if    ($use_rfc)  { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif (@months_m) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
     else              { $newmonth2 = $months[ $newmonth - 1 ]; }
@@ -585,7 +591,7 @@ sub time_8 {
     my ( $dytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @myargs;
     my $ampm = $newhour > 11 ? 'pm' : 'am';
     my $newhour2 = $newhour % 12 || 12;
-    my $newmonth2 = $months[ $newmonth - 1 ];
+    my $newmonth2 = q{};
     if    ($use_rfc)  { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif (@months_m) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
     else              { $newmonth2 = $months[ $newmonth - 1 ]; }

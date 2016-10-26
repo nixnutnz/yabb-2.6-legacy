@@ -18,14 +18,15 @@ use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
 our $yabmodsourcepmver = 'YaBB 2.7.00 $Revision$';
+
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 our (
-    %FORM,        $boarddir, $htmldir,   %memberunfo,
-    $username,    $iamadmin, $abbr_lang, $yymycharset,
-    $yyhtml_root, $usestyle, %croak,
+    $abbr_lang, $boarddir, $htmldir,     $iamadmin,
+    $username,  $usestyle, $yyhtml_root, $yymycharset,
+    %croak,     %FORM,     %memberunfo,
 );
 
 require Admin::AdminSubs;
@@ -42,7 +43,8 @@ sub yabmodsource {
     our $html = q{};
     if ($iamadmin) {
         my $file = "$editdir/$pickfile";
-        open my $TMPL, '<', $file or croak "$croak{'open'} '$file'";
+        our ($TMPL);
+        fopen( 'TMPL', '<', $file ) or croak "$croak{'open'} '$file'";
         while ( my $line = <$TMPL> ) {
             $line =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
             $line =~ s/\&nbsp;/ /igxsm;
@@ -50,7 +52,7 @@ sub yabmodsource {
             to_temphtml($line);
             $html .= qq~$line\n~;
         }
-        close $TMPL or croak "$croak{'close'} '$file'";
+        fclose('TMPL') or croak "$croak{'close'} '$file'";
     }
 
     our $output = << "PAGE";

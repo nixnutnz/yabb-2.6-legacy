@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -24,35 +23,38 @@ our $admineditpmmods = 0;
 if (@admineditpmmods) {
     $admineditpmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
 our (
-    %croak,            %gmod_settings, %admin_img, %admin_txt,
-    %lngs,             %register_txt,  %reftxt,    %gmod_access,
-    %gmodprivexpl_txt, %gmodpriv_txt,  %edit_paths_txt,
+    %admin_img,   %admin_txt,     %croak,        %edit_paths_txt,
+    %gmod_access, %gmod_settings, %gmodpriv_txt, %gmodprivexpl_txt,
+    %lngs,        %reftxt,        %register_txt,
 );
 ## paths ##
 our (
-    $adminurl,     $langdir,   $helpfile,  $vardir,      $boarddir,
-    $admindir,     $boardsdir, $memberdir, $datadir,     $sourcedir,
-    $templatesdir, $htmldir,   $uploaddir, $pmuploaddir, $pmuploadurl,
-    $uploadurl,    $modimgurl, $facesdir,  $modimgdir,   $boardurl,
-    $facesurl,
+    $admindir,    $adminurl,  $boarddir,     $boardsdir, $boardurl,
+    $datadir,     $facesdir,  $facesurl,     $helpfile,  $htmldir,
+    $langdir,     $memberdir, $modimgdir,    $modimgurl, $pmuploaddir,
+    $pmuploadurl, $sourcedir, $templatesdir, $uploaddir, $uploadurl,
+    $vardir,
 );
 ## settings ##
 our (
-    $yymycharset,   @reserved,  @reserve,   $matchword,
-    $matchcase,     $matchuser, $matchname, %settings,
-    $self_del_user, $extendedprofiles,
+    $extendedprofiles, $matchcase,     $matchname,   $matchuser,
+    $matchword,        $self_del_user, $yymycharset, %settings,
+    @reserve,          @reserved,
 );
 ## other ##
 our (
-    $action,      $yymain,    $yytitle,  $yyhtml_root,
-    $action_area, %FORM,      %INFO,     $yysetlocation,
-    $lang,        $uid,       $udername, $date,
-    $iamadmin,    $lastsaved, $lastdate, $username,
+    $action_area, $date,        $iamadmin, $lang,
+    $lastdate,    $lastsaved,   $udername, $uid,
+    $username,    $yyhtml_root, $yymain,   $yysetlocation,
+    $yytitle,     %FORM,        %INFO
 );
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
 
 load_language('Admin');
 load_language('Register');
@@ -114,9 +116,11 @@ sub editbots2 {
         $newbots .= qq~'$newbots[0]' => '$newbots[1]',\n~;
     }
     $newbots .= qq~);\n\n1;\n~;
-    open my $BOTS, '>', 'Variables/BotsHosts.pm' or croak "$croak{'open'} BOTS";
+    our ($BOTS);
+    fopen( 'BOTS', '>', 'Variables/BotsHosts.pm' )
+      or croak "$croak{'open'} BOTS";
     print {$BOTS} $newbots or croak "$croak{'print'} BOTS";
-    close $BOTS or croak "$croak{'close'} BOTS";
+    fclose('BOTS') or croak "$croak{'close'} BOTS";
 
     $yysetlocation = qq~$adminurl?action=editbots~;
     redirectexit();
@@ -145,10 +149,11 @@ sub set_censor {
         }
     }
 
-    open my $CENSOR, '<', "$langdir/$censorlanguage/censor.txt"
+    our ($CENSOR);
+    fopen( 'CENSOR', '<', "$langdir/$censorlanguage/censor.txt" )
       or croak "$croak{'open'} CENSOR";
     my @censored = <$CENSOR>;
-    close $CENSOR or croak "$croak{'close'} CENSOR";
+    fclose('CENSOR') or croak "$croak{'close'} CENSOR";
     foreach my $i (@censored) {
         $i =~ tr/\r//d;
         $i =~ tr/\n//d;
@@ -226,7 +231,8 @@ sub set_censor2 {    # don't use &from_chars() here!!!
         $censorlanguage = $FORM{'censorlanguage'};
     }
     my @lines = split /\n/xsm, $FORM{'censored'};
-    open my $CENSOR, '>', "$langdir/$censorlanguage/censor.txt"
+    our ($CENSOR);
+    fopen( 'CENSOR', '>', "$langdir/$censorlanguage/censor.txt", 1 )
       or croak "$croak{'open'} CENSOR";
 
     foreach my $i (@lines) {
@@ -234,7 +240,7 @@ sub set_censor2 {    # don't use &from_chars() here!!!
         if ( !$i || $i !~ m/.+[\=~].+/xsm ) { next; }
         print {$CENSOR} "$i\n" or croak "$croak{'print'} CENSOR";
     }
-    close $CENSOR or croak "$croak{'close'} CENSOR";
+    fclose('CENSOR') or croak "$croak{'close'} CENSOR";
     $yysetlocation = qq~$adminurl?action=setcensor~;
     redirectexit();
     return;
@@ -344,14 +350,15 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
     }
 
     my ( $fullagreement, $line );
-    open my $AGREE, '<', "$langdir/$agreementlanguage/agreement.txt"
+    our ($AGREE);
+    fopen( 'AGREE', '<', "$langdir/$agreementlanguage/agreement.txt" )
       or croak "$croak{'open'} AGREE";
     while ( $line = <$AGREE> ) {
         $line =~ tr/[\r\n]//d;
         from_html($line);
         $fullagreement .= qq~$line\n~;
     }
-    close $AGREE or croak "$croak{'close'} AGREE";
+    fclose('AGREE') or croak "$croak{'close'} AGREE";
     $INFO{'destination'} ||= q{};
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -419,10 +426,11 @@ sub modifyagreement2 {
     $FORM{'agreement'} =~ tr/\r//d;
     $FORM{'agreement'} =~ s/\A\n+//xsm;
     $FORM{'agreement'} =~ s/\n+\Z//xsm;
-    open my $AGREE, '>', "$langdir/$agreementlanguage/agreement.txt"
+    our ($AGREE);
+    fopen( 'AGREE', '>', "$langdir/$agreementlanguage/agreement.txt" )
       or croak "$croak{'open'} AGREE";
     print {$AGREE} $FORM{'agreement'} or croak "$croak{'print'} AGREE";
-    close $AGREE or croak "$croak{'close'} AGREE";
+    fclose('AGREE') or croak "$croak{'close'} AGREE";
 
     $FORM{'agreement'} =~ s/\n/<br \/>\n/gxsm;
     if ( -e "$helpfile/$agreementlanguage/User/user00_agreement.help" ) {
@@ -448,13 +456,14 @@ sub modifyagreement2 {
 
 1;^;
         if ( -e "$helpfile/$agreementlanguage/User/user00_agreement.help" ) {
-            open my $HELPAGREE,
-              '>', "$helpfile/$agreementlanguage/User/user00_agreement.help"
+            our ($HELPAGREE);
+            fopen( 'HELPAGREE',
+                '>', "$helpfile/$agreementlanguage/User/user00_agreement.help" )
               or croak "$croak{'open'} HELPAGREE";
             print {$HELPAGREE} qq~$prihelp~
               or croak
 "$croak{'print'} $helpfile/$agreementlanguage/User/user00_agreement.help";
-            close $HELPAGREE or croak "$croak{'close'} HELPAGREE";
+            fclose('HELPAGREE') or croak "$croak{'close'} HELPAGREE";
         }
     }
 
@@ -868,10 +877,11 @@ editbots2 => '$FORM{'editbots'}',
 1;
 EOF
 
-    open my $MODACCESS, '>', "$vardir/Gmodset.pm"
+    our ($MODACCESS);
+    fopen( 'MODACCESS', '>', 'Variables/Gmodset.pm' )
       or croak "$croak{'open'} MODACCESS";
     print {$MODACCESS} $setfile or croak "$croak{'print'} MODACCESS";
-    close $MODACCESS or croak "$croak{'closee'} MODACCESS";
+    fclose('MODACCESS') or croak "$croak{'close'} MODACCESS";
 
     $yysetlocation = qq~$adminurl?action=gmodaccess~;
     redirectexit();
@@ -1183,10 +1193,11 @@ sub edit_paths2 {
 1;
 EOF
 
-    open my $PATHS, '>', 'Paths.pm' or croak "$croak{'open'} PATHS";
+    our ($PATHS);
+    fopen( 'PATHS', '>', 'Paths.pm' ) or croak "$croak{'open'} PATHS";
     print {$PATHS} nicely_aligned_file($setfile)
       or croak "$croak{'print'} FILE";
-    close $PATHS or croak "$croak{'close'} PATHS";
+    fclose('PATHS') or croak "$croak{'close'} PATHS";
 
     $yysetlocation = qq~$adminurl?action=editpaths~;
     redirectexit();
@@ -1197,7 +1208,7 @@ sub nicely_aligned_file {
     my ($setfile) = @_;
     my $filler = q{ } x 70;
 
-        # Make files look nicely aligned. The comment starts after 70 Col
+    # Make files look nicely aligned. The comment starts after 70 Col
 
     $setfile =~
       s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;

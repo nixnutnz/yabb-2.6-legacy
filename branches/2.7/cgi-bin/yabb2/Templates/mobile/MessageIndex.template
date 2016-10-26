@@ -51,7 +51,7 @@ if (!$messagelist) {
         $messageindex_template .= qq~
         <!-- Board Moderators start -->
             <div class="navbarcontainer small">{yabb moderators}</div>
-        <!-- Board Moderators end -->
+<!-- Board Moderators end -->
 ~;
     }
     else {
@@ -106,21 +106,7 @@ if ($action ne 'favorites') {
     </div>
 <!-- Button Bar end -->~;
 }
-$Xmessageindex_template .= qq~
-            <table class="bordercolor pad_3px cs_thin">
-                <tr class="titlebg message-sort">
-                    <td class="center" style="width:auto"></td>
-                    <td style="width:auto"><span style="white-space: nowrap;">{yabb sortsubject} / {yabb sortstarter}</span></td>
-                    <td class="center" style="width:10%"><span style="white-space: nowrap;">{yabb sortanswer}</span></td>
-                    <td class="center" style="width:10%">$messageindex_txt{'301'}</td>
-                    <td class="center" style="width:24%"><span style="white-space: nowrap;">{yabb sortlastpostim}</span></td>
-                    {yabb admin column}
-                </tr>
-                {yabb stickyblock}
-                {yabb threadblock}
-                {yabb adminfooter}
-            </table>
-~;
+
 $messageindex_template .= qq~
                 {yabb stickyblock}
                 {yabb threadblock}
@@ -141,31 +127,9 @@ if ($action ne 'favorites') {
 <!-- Button Bar end -->
 ~;
 
-$xmessageindex_template .= $messagelist ? q{} : qq~
-<!-- Icon and access info start -->
-            <table class="pad_8px board-perms">
-                <colgroup>
-                    <col style="width:28%" />
-                    <col style="width:38%" />
-                    <col style="width:33%" />
-                </colgroup>
-                <tr>
-                    <td class="vtop">
-                        <span class="small">{yabb icons}</span>
-                    </td>
-                    <td class="vtop">
-                        <span class="small">{yabb admin icons}</span>
-                    </td>
-                    <td class="vtop">
-                        <span class="small">{yabb access}</span>
-                    </td>
-                </tr>
-            </table>
-<!-- Icon and access info end -->
-~;
 }
 
-if ($action eq "favorites") {
+if ($action eq 'favorites') {
     $messageindex_template .= qq~<!-- Icon and access info start -->
             <table class="pad_8px">
                 <colgroup>
@@ -192,7 +156,7 @@ $boarddescription = qq~                       {yabb boarddescription}
 
 # Column Header definition for multi admin        #
 
-$adminheader = qq~<div  class="small" style="white-space: nowrap; text-align:right">{yabb admin}</div>~;
+$adminheader = qq~<div class="small" style="white-space: nowrap; text-align:right">{yabb admin}</div>~;
 
 # Column definition for multi admin        #
 
@@ -294,7 +258,6 @@ $visel_2a = q~<td class="droppages pages">~;
 $visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
 $visel_4 = q~</tr></table>~;
 
-
 $boardpassw = qq~
 <div class="tabtitle center" style="line-height:3em; vertical-align:bottom; width: 80%; margin:0 auto">
     <img src="$imagesdir/$actionlock" alt="" /> <b>$maintxt{'900pw'}: $boardname</b>
@@ -326,4 +289,5 @@ $boardpassw_g = qq~
 <div class="tabtitle padd_3px" style="width: 80%;"><img src="$imagesdir/$actionlock" alt="" /> <strong>$maintxt{'900pw'}: $boardname</strong></div>
 <div class="windowbg center"><p>$maintxt{'900pg'}</p></div>
 <div class="center" style="margin-top: 1em;"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></div>~;
+
 1;

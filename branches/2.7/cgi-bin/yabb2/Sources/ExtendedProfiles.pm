@@ -17,7 +17,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -33,24 +32,26 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
-our ( %croak, %lang_ext, %img_txt, %profile_txt );
+our ( %img_txt, %lang_ext, %profile_txt, );
 ## folders ##
 our ($imagesdir);
+## settings ##
+our ( $timeselected, %grp_nopost, %grp_post, %grp_staff, @ext_prof_fields,
+    @ext_prof_order, @nopostorder, );
 ## system ##
 our (
-    $iamadmin,    $iamgmod, $invalmailchar, $invalemaila,
-    $invalemailb, $message, $pusername,     $uid,
-    $username,    %FORM,    %INFO,
+    $allow_gmod_profile, $iamadmin,      $iamgmod, $invalemaila,
+    $invalemailb,        $invalmailchar, $message, $pusername,
+    $uid,                $username,      %FORM,
 );
-## settings ##
-our ( $allow_gmod_profile, $timeselected, %grp_nopost, %grp_post, %grp_staff,
-    @ext_prof_fields, @ext_prof_order, @nopostorder );
 ## template ##
 our (
-    $ext_endrow, $ext_memberlist_tableheader, $ext_memberlist_td, $ext_msg_cl,
-    $ext_output_a,  $ext_output_b, $ext_output_c, $ext_pre_output, $ext_spacer,
-    $ext_template1, $myreg_req,
-
+    $ext_endrow,        $ext_memberlist_tableheader,
+    $ext_memberlist_td, $ext_msg_cl,
+    $ext_output_a,      $ext_output_b,
+    $ext_output_c,      $ext_pre_output,
+    $ext_spacer,        $ext_template1,
+    $myreg_req,
 );
 
 ## local

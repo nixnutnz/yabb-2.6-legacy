@@ -29,34 +29,33 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
-our ( %croak, %polltxt, %img, %boardindex_exptxt, %post_polltxt );
+our ( %boardindex_exptxt, %croak, %img, %polltxt, %post_polltxt, );
 ## folders ##
 our ( $boardurl, $datadir, $imagesdir, $memberdir, $scripturl, $yyhtml_root, );
 ## settings ##
-our ( $mbname, $ip_lookup, $showmodify, $enable_ubbc, );
+our ( $enable_ubbc, $ip_lookup, $mbname, $showmodify, $ubbcpolls, );
 ## system ##
 our (
-    %INFO,          %FORM,         $iamguest,      $user_ip,
-    $username,      $date,         $yysetlocation, $iamadmin,
-    %poll_nodelete, $poll_lock,    $staff,         %catinfo,
-    $cat,           $ubbcpolls,    $boardname,     $yytitle,
-    $currentboard,  $yynavigation, $yymain,        $brdpoll,
-    $iamgmod,       $menusep,      $yy_yabbloaded, @users_vote,
-    %yy_udloaded,   $uid,          $cat_exp,       $cat_col,
-    $pollnum,
+    $boardname,     $brdpoll,       $cat,         $cat_col,
+    $cat_exp,       $currentboard,  $date,        $iamadmin,
+    $iamgmod,       $iamguest,      $menusep,     $poll_lock,
+    $pollnum,       $staff,         $uid,         $user_ip,
+    $username,      $yy_yabbloaded, $yymain,      $yynavigation,
+    $yysetlocation, $yytitle,       %catinfo,     %FORM,
+    %INFO,          %poll_nodelete, %yy_udloaded, @users_vote,
 );
 ## templates ##
 our (
-    $mypoll_ip,      $mypoll_details,   $mypoll_ended, $mypoll_locked,
-    $mypoll_display, $mypoll_notlocked, $mypoll_hasvoted
+    $mypoll_details, $mypoll_display, $mypoll_ended, $mypoll_hasvoted,
+    $mypoll_ip,      $mypoll_locked,  $mypoll_notlocked,
 );
 
 load_language('Poll');
 get_micon();
 get_template('Poll');
 ## local ##
-our ( @votes, @options, @slicecols, @slicecolor, @split, %thread_arrayref,
-    $message, );
+our ( $message, %thread_arrayref, @options, @slicecolor, @slicecols, @split,
+    @votes, );
 
 my $start = 0;
 
@@ -69,11 +68,12 @@ sub do_vote {
 
     my $novote = q{};
     my $vote   = q{};
-    open my $FILE, '<', "$datadir/$pollnum.poll"
+    our ($FILE);
+    fopen( 'FILE', '<', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     my $poll_question = <$FILE>;
     my @poll_data     = <$FILE>;
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
     chomp $poll_question;
     my (
         undef, $poll_locked, undef,       undef,       undef,
@@ -107,10 +107,10 @@ sub do_vote {
 
     my (@polled);
     if ( -e "$datadir/$pollnum.polled" ) {
-        open my $FILE, '<', "$datadir/$pollnum.polled"
+        fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
           or croak "$croak{'open'} $pollnum.poll";
         @polled = <$FILE>;
-        close $FILE or croak "$croak{'close'} $pollnum.poll";
+        fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
 
         for my $i ( 0 .. $#polled ) {
             my ( $voters_ip, $voters_name, $voters_vote, $vote_time ) =
@@ -148,17 +148,17 @@ sub do_vote {
     for my $i ( 0 .. $#poll_data ) {
         $prnpoll .= "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n";
     }
-    open $FILE, '>', "$datadir/$pollnum.poll"
+    fopen( 'FILE', '>', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     print {$FILE} $prnpoll or croak "$croak{'print'} POLL FILE";
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
 
     unshift @polled, "$user_ip|$username|$vote|$date\n";
     my $prnpolled = join q{}, @polled;
-    open $FILE, '>', "$datadir/$pollnum.polled"
+    fopen( 'FILE', '>', "$datadir/$pollnum.polled" )
       or croak "$croak{'open'} $pollnum.poll";
     print {$FILE} $prnpolled or croak "$croak{'print'} POLL FILE";
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
 
     if   ($start) { $start = "/$start"; }
     else          { $start = q{}; }
@@ -181,11 +181,12 @@ sub undo_vote {
     check_deletepoll();
     if ( !$iamadmin && $poll_nodelete{$username} ) { fatal_error('no_access'); }
 
-    open my $FILE, '<', "$datadir/$pollnum.poll"
+    our ($FILE);
+    fopen( 'FILE', '<', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     my $poll_question = <$FILE>;
     my @poll_data     = <$FILE>;
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
     my $poll_locked = ( split /[|]/xsm, $poll_question, 2 )[1];
 
     for my $i ( 0 .. $#poll_data ) {
@@ -194,10 +195,10 @@ sub undo_vote {
           split /[|]/xsm, $poll_data[$i];
     }
 
-    open $FILE, '<', "$datadir/$pollnum.polled"
+    fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
       or croak "$croak{'open'} $pollnum.polled";
     my @polled = <$FILE>;
-    close $FILE or croak "$croak{'close'} $pollnum.polled";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
     my ($found);
     if ( $FORM{'multidel'} == 1 ) {
         is_admin();
@@ -238,16 +239,16 @@ sub undo_vote {
     for my $i ( 0 .. $#poll_data ) {
         $prnpolln .= "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n";
     }
-    open $FILE, '>', "$datadir/$pollnum.poll"
+    fopen( 'FILE', '>', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     print {$FILE} $prnpolln or croak "$croak{'print'} POLL FILE";
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
 
     my $prnpolled = join q{}, @polled;
-    open $FILE, '>', "$datadir/$pollnum.polled"
+    fopen( 'FILE', '>', "$datadir/$pollnum.polled" )
       or croak "$croak{'open'} $pollnum.polled";
     print {$FILE} $prnpolled or croak "$croak{'print'} POLL FILE";
-    close $FILE or croak "$croak{'close'} $pollnum.polled";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
 
     if   ($start) { $start = "/$start"; }
     else          { $start = q{}; }
@@ -267,11 +268,12 @@ sub lock_poll {
         fatal_error( 'poll_not_found', $pollnum );
     }
 
-    open my $FILE, '<', "$datadir/$pollnum.poll"
+    our ($FILE);
+    fopen( 'FILE', '<', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     my $poll_questiona = <$FILE>;
     my @poll_data      = <$FILE>;
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
     chomp $poll_questiona;
     my ( $poll_question, $poll_locked, $poll_uname, $poll_stuff ) =
       split /[|]/xsm,
@@ -283,10 +285,10 @@ sub lock_poll {
 
     unshift @poll_data, "$poll_question|$poll_locked|$poll_uname|$poll_stuff\n";
     my $prnpolldat = join q{}, @poll_data;
-    open $FILE, '>', "$datadir/$pollnum.poll"
+    fopen( 'FILE', '>', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     print {$FILE} $prnpolldat or croak "$croak{'print'} $pollnum.poll";
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
 
     if   ($start) { $start = "/$start"; }
     else          { $start = q{}; }
@@ -318,11 +320,12 @@ sub votedetails {
     my ( $curcat, $catperms ) = split /[|]/xsm, $catinfo{$cat};
     $curcat   ||= q{};
     $catperms ||= q{};
-    open my $FILE, '<', "$datadir/$pollnum.poll"
+    our ($FILE);
+    fopen( 'FILE', '<', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     my $poll_questiona = <$FILE>;
     my @poll_data      = <$FILE>;
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
     chomp $poll_questiona;
     my (
         $poll_question, $poll_locked, $poll_uname,   $poll_name,
@@ -332,10 +335,11 @@ sub votedetails {
     ) = split /[|]/xsm, $poll_questiona, 13;
 
     if ( !ref $thread_arrayref{$pollnum} ) {
-        open my $POLLTP, '<', "$datadir/$pollnum.txt"
+        our ($POLLTP);
+        fopen( 'POLLTP', '<', "$datadir/$pollnum.txt" )
           or croak "$croak{'open'} $pollnum.txt";
         @{ $thread_arrayref{$pollnum} } = <$POLLTP>;
-        close $POLLTP or croak "$croak{'close'} $pollnum.txt";
+        fclose('POLLTP') or croak "$croak{'close'} $pollnum.txt";
     }
     my $psub = ( split /[|]/xsm, ${ $thread_arrayref{$pollnum} }[0], 2 )[0];
     to_chars($psub);
@@ -366,10 +370,10 @@ sub votedetails {
         to_chars( $options[$i] );
     }
 
-    open $FILE, '<', "$datadir/$pollnum.polled"
+    fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
       or croak "$croak{'open'} $pollnum.polled";
     my @polled = <$FILE>;
-    close $FILE or croak "$croak{'close'} $pollnum.polled";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
 
     my $linkprofile = q{};
     my ( $displaydate, );
@@ -480,12 +484,13 @@ qq~&nbsp;/ <a href="$scripturl?action=scpolldel" class="altlink">$polltxt{'showc
         }
     }
     elsif ( -e "$datadir/showcase.poll" ) {
-        open my $FILE, '<', "$datadir/showcase.poll"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/showcase.poll" )
           or croak "$croak{'open'} showcase.poll";
         if ( $pollnum == <$FILE> ) {
             $boardpoll = qq~&nbsp;/ $polltxt{'showcased'}~;
         }
-        close $FILE or croak "$croak{'close'} showcase.poll";
+        fclose('FILE') or croak "$croak{'close'} showcase.poll";
         if ( $iamadmin || $iamgmod ) {
             $boardpoll =
               $boardpoll
@@ -503,12 +508,12 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
     # showcase poll end
 
     load_censor_list();
-
-    open my $FILE, '<', "$datadir/$pollnum.poll"
+    our ($FILE);
+    fopen( 'FILE', '<', "$datadir/$pollnum.poll" )
       or croak "$croak{'open'} $pollnum.poll";
     my $poll_questiona = <$FILE>;
     my @poll_data      = <$FILE>;
-    close $FILE or croak "$croak{'close'} $pollnum.poll";
+    fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
     chomp $poll_questiona;
     my (
         $poll_question, $poll_locked, $poll_uname,   $poll_name,
@@ -523,10 +528,10 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
         unshift @poll_data,
 "$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
         my $prnpolldat = join q{}, @poll_data;
-        open my $FILE, '>', "$datadir/$pollnum.poll"
+        fopen( 'FILE', '>', "$datadir/$pollnum.poll" )
           or croak "$croak{'open'} $pollnum.poll";
         print {$FILE} $prnpolldat or croak "$croak{'print'} $pollnum.poll";
-        close $FILE or croak "$croak{'close'} $pollnum.poll";
+        fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
     }
 
     $pie_radius  ||= 100;
@@ -537,10 +542,10 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
     if ( !$guest_vote && $iamguest ) { $has_voted = 4; }
     else {
         if ( -e "$datadir/$pollnum.polled" ) {
-            open my $FILE, '<', "$datadir/$pollnum.polled"
+            fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
               or croak "$croak{'open'} $pollnum.polled";
             my @polled = <$FILE>;
-            close $FILE or croak "$croak{'close'} $pollnum.polled";
+            fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
             for my $tmpline (@polled) {
                 my ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
                   split /[|]/xsm, $tmpline;
@@ -928,10 +933,11 @@ sub collapse_poll {
 sub check_deletepoll {
     my ($vote_limit);
     if ( -e "$datadir/$pollnum.poll" ) {
-        open my $FILE, '<', "$datadir/$pollnum.poll"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$pollnum.poll" )
           or croak "$croak{'open'} $pollnum.poll";
         my $poll_chech = <$FILE>;
-        close $FILE or croak "$croak{'closee'} $pollnum.poll";
+        fclose('FILE') or croak "$croak{'closee'} $pollnum.poll";
         chomp $poll_chech;
         $vote_limit = ( split /[|]/xsm, $poll_chech, 14 )[12];
         $poll_nodelete{$username} = 0;
@@ -941,10 +947,11 @@ sub check_deletepoll {
         }
     }
     if ( -e "$datadir/$pollnum.polled" ) {
-        open my $FILE, '<', "$datadir/$pollnum.polled"
+        our ($FILE);
+        fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
           or croak "$croak{'open'} $pollnum.polled";
         my @chpolled = <$FILE>;
-        close $FILE or croak "$croak{'close'} $pollnum.polled";
+        fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
         for my $chvoter (@chpolled) {
             my ( undef, $chvotersname, undef, $chvotedate ) = split /[|]/xsm,
               $chvoter;
@@ -963,10 +970,11 @@ sub check_deletepoll {
 sub showcase_poll {
     is_admin_or_gmod();
     my $thrdid = $INFO{'num'};
-    open my $SCFILE, '>', "$datadir/showcase.poll"
+    our ($SCFILE);
+    fopen( 'SCFILE', '>', "$datadir/showcase.poll" )
       or croak "$croak{'open'} showcase.poll";
     print {$SCFILE} $thrdid or croak "$croak{'print'} showcase.poll";
-    close $SCFILE or croak "$croak{'close'} showcase.poll";
+    fclose('SCFILE') or croak "$croak{'close'} showcase.poll";
     $yysetlocation = $scripturl;
     redirectexit();
     return;

@@ -26,19 +26,24 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## paths ##
+our ( $htmldir, $imagesdir, $yyhtml_root, );
+##settings ##
 our (
-    @smilieorder,              %addedsmilies,
-    $imagesdir,                $showsmdir,
-    $detachblock,              $htmldir,
-    $yyhtml_root,              $showadded,
-    $smilie_window_simple,     $popback,
-    $poptext,                  $my_smilie_window_tr,
-    $smiliescolor,             $my_smiliebg_a,
-    $my_smiliebg_b,            $my_smilie_window_td,
-    $my_smilie_window_td_line, $my_smilie_window_blnk,
-    $my_smilie_banner_header,  $my_banner,
-    $my_smilie_header,         $smilie_window_advanced,
+    $detachblock, $popback,      $poptext, $showadded,
+    $showsmdir,   %addedsmilies, @smilieorder,
 );
+## template ##
+our (
+    $my_banner,           $my_smilie_banner_header,
+    $my_smilie_header,    $my_smilie_window_blnk,
+    $my_smilie_window_td, $my_smilie_window_td_line,
+    $my_smilie_window_tr, $my_smiliebg_a,
+    $my_smiliebg_b,       $smilie_window_advanced,
+    $smilie_window_simple,
+);
+## local ##
+our ( $smiliescolor, );
 
 load_language('Main');
 get_template('Other');

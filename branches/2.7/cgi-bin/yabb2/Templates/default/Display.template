@@ -73,10 +73,10 @@ $display_template = qq~
     </table>
 <!-- Threads Button Bar end -->
 <!-- Threads Title Bar start -->
-        {yabb topicviewers}
+    {yabb topicviewers}
     <div class="titlebg">
         <div class="padd_4px">{yabb threadimage} {yabb threadurl} ({yabb display_txt_641} {yabb views} {yabb display_txt_642})</div>
-</div>
+    </div>
 
 <!-- Threads Title Bar end -->
 <!-- Threads block start, should be left as is -->
@@ -120,7 +120,7 @@ $posttoola = ' width:1%';
 $padd_right = q{};
 $posthandeladmin = q{};
 $postcol = 3;
-if($usepost_tools) {
+if ($usepost_tools) {
     $posthandelstyle = q~ class="post_tools center dividerbot" style="width:100px; height: 2em; vertical-align:middle"~;
     $posthandeladmin = q~<div style="float:right; vertical-align:bottom; height:100%;">{yabb admin}</div>~;
     $padd_right = q~; padding-right:0; padding-bottom:0; padding-top:0; vertical-align:middle~;
@@ -228,7 +228,7 @@ $myrecent = qq~
 </div>
 <div class="titlebg">
     <div class="search" style="padding:2px 5px; float:left">$maintxt{'109'} {yabb tname} | $maintxt{'197'} {yabb mname}</div>
-                    {yabb my_tstate}
+    {yabb my_tstate}
     <div class="clear"></div>
 </div>
 <div class="windowbg2 h_80px" style="padding:5px; margin-bottom:.5em">
@@ -256,7 +256,7 @@ $mymove_top = qq~<!DOCTYPE html>
     <script type="text/javascript" src="$yyhtml_root/ubbc.js" ></script>
 </head>
 <body>
-     <div id="maincontainer">
+    <div id="maincontainer">
 <script type="text/javascript">
 function NoPost(op) {
     if (document.getElementById("newboard").options[op].className == "nopost") {
@@ -265,39 +265,39 @@ function NoPost(op) {
     }
 }
 </script>
-<form action="$scripturl?action=split_splice;board={yabb currentboard};thread={yabb INFO_thread}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yymycharset">
+        <form action="$scripturl?action=split_splice;board={yabb currentboard};thread={yabb INFO_thread}" method="post" name="split_splice" onsubmit="return submitproc()" accept-charset="$yymycharset">
             <input type="hidden" name="formsession" value="{yabb formsession}" />
             <div style="width:90%; margin:0 auto">
                 <div class="tabtitle" style="line-height:3em; vertical-align:bottom; padding-left:.5em"><img src="$imagesdir/$admin_move" alt="{yabb sstxt_1}" /> <b>{yabb sstxt_1}</b></div>
                 <div class="catbg padd_8px"><b>{yabb sstxt_2}:</b></div>
                 <div class="windowbg padd_8px"><b>{yabb sstxt_3}</b></div>
                 <div class="windowbg2 padd_8px">
-                        <label for="oldposts">{yabb sstxt_14}<br />
+                    <label for="oldposts">{yabb sstxt_14}<br />
                     <select name="oldposts" id="oldposts" size="{yabb size1}" multiple="multiple">{yabb postlist}</select>
                     <br /><span class="small">{yabb sstxt_14a}</span></label>
                 </div>
                 <div class="windowbg padd_8px"><b>{yabb sstxt_4}</b></div>
                 <div class="windowbg2 padd_8px">
-                        <label for="leave">{yabb sstxt_15}</label><br />
-                        <select name="leave" id="leave">{yabb leavelist}</select>
+                    <label for="leave">{yabb sstxt_15}</label><br />
+                    <select name="leave" id="leave">{yabb leavelist}</select>
                 </div>
                 <div class="catbg padd_8px"><b>{yabb sstxt_5}:</b></div>
                 <div class="windowbg padd_8px"><b>{yabb sstxt_6}</b></div>
                 <div class="windowbg2 padd_8px">
-                        <label for="newcat">{yabb sstxt_16}</label><br />
-                        <select name="newcat" id="newcat" onchange="document.split_splice.submit();">{yabb catlist}</select>
+                    <label for="newcat">{yabb sstxt_16}</label><br />
+                    <select name="newcat" id="newcat" onchange="document.split_splice.submit();">{yabb catlist}</select>
                 </div>
                 <div class="windowbg padd_8px"><b>{yabb sstxt_7}</b></div>
                 <div class="windowbg2 padd_8px">
-                        <label for="newboard">{yabb sstxt_17}</label><br />
-                        <select name="newboard" id="newboard" onchange="NoPost(this.selectedIndex); document.split_splice.submit();">{yabb boardlist}</select>
+                    <label for="newboard">{yabb sstxt_17}</label><br />
+                    <select name="newboard" id="newboard" onchange="NoPost(this.selectedIndex); document.split_splice.submit();">{yabb boardlist}</select>
                 </div>
                 <div class="windowbg padd_8px"><b>{yabb sstxt_8}</b></div>
                 <div class="windowbg2 padd_8px">
                     <label for="newthread">{yabb sstxt_18}</label><br />
                     <select name="newthread" id="newthread" onchange="document.split_splice.submit();">{yabb threadlist}</select>
                 </div>
-                    {yabb my_output}
+                {yabb my_output}
                 <div class="windowbg padd_8px"><b>{yabb sstxt_4}</b></div>
                 <div class="windowbg2 padd_8px">
                     <input type="checkbox" name="newinfo" id="newinfo" value="1"{yabb my_checked} /> <label for="newinfo">{yabb sstxt_15a}</label>
@@ -306,11 +306,11 @@ function NoPost(op) {
                     <input type="submit" name="ss_submit" value="{yabb sstxt_24}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="{yabb sstxt_25}" />
                 </div>
             </div>
-            </form>
-            <br />
-            <br />
-            </div>
-    </body>
+        </form>
+        <br />
+        <br />
+    </div>
+</body>
 </html>~;
 
 $mymove_output_a = qq~

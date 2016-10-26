@@ -24,9 +24,8 @@ if (@debugpmmods) {
     $debugpmmods = 1;
 }
 our (
-    $debug,     $iamadmin,   $iamgmod,    %debug_txt,
-    $file_open, $file_close, $START_TIME, $openfiles,
-    $user_ip,   $yytrace,    $getpairs,
+    $debug,     $file_close, $file_open, $getpairs, $iamadmin, $iamgmod,
+    $openfiles, $START_TIME, $user_ip,   $yytrace,  %debug_txt,
 );
 load_language('Debug');
 

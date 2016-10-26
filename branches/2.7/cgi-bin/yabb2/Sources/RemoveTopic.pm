@@ -14,7 +14,7 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);
+no warnings qw(redefine);    ## called in Admincenter remove old topics ##
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -28,12 +28,14 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language/settings/paths ##
+our ( %croak, $adminbin, $maxdisplay, $boardsdir, $datadir, $scripturl, );
+## system ##
 our (
-    %croak,     %INFO,         %FORM,          $staff,
-    $iamposter, $currentboard, $boardsdir,     $datadir,
-    $uid,       %moved_file,   $yysetlocation, $scripturl,
-    $adminbin,  $iamadmin,     $iamgmod,       $iamfmod,
-    $binboard,  $maxdisplay,   %thread_arrayref
+    $binboard,      $currentboard, $iamadmin, $iamfmod,
+    $iamgmod,       $iamposter,    $staff,    $uid,
+    $yysetlocation, %FORM,         %INFO,     %moved_file,
+    %thread_arrayref,
 );
 
 sub remove_thread {
@@ -48,10 +50,11 @@ sub remove_thread {
         $currentboard = ${$thread}{'board'};
     }
     my $threadline = q{};
-    open my $BOARDFILE, '<', "$boardsdir/$currentboard.txt"
+    our ($BOARDFILE);
+    fopen( 'BOARDFILE', '<', "$boardsdir/$currentboard.txt", 1 )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <$BOARDFILE>;
-    close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
+    fclose('BOARDFILE') or croak "$croak{'close'} $currentboard.txt";
     for my $i ( 0 .. $#buffer ) {
         if ( $buffer[$i] =~ m{\A$thread[|]}xsm ) {
             $threadline = $buffer[$i];
@@ -60,7 +63,7 @@ sub remove_thread {
         }
     }
     my $prnbrd = join q{}, @buffer;
-    open $BOARDFILE, '>', "$boardsdir/$currentboard.txt"
+    fopen( 'BOARDFILE', '>', "$boardsdir/$currentboard.txt", 1 )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     print {$BOARDFILE} $prnbrd or croak "$croak{'print'} BOARDFILE";
     close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
@@ -68,10 +71,11 @@ sub remove_thread {
         {
             no strict qw(refs);
             if ( !ref $thread_arrayref{$thread} ) {
-                open my $FILE, '<', "$datadir/$thread.txt"
+                our ($FILE);
+                fopen( 'FILE', '<', "$datadir/$thread.txt" )
                   or fatal_error( 'cannot_open', "$datadir/$thread.txt", 1 );
                 @{ $thread_arrayref{$thread} } = <$FILE>;
-                close $FILE or croak "$croak{'close'} $thread.txt";
+                fclose('FILE') or croak "$croak{'close'} $thread.txt";
             }
 
             boardtotals( 'load', $currentboard );

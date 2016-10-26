@@ -29,7 +29,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
 our ( %croak, %loginout_txt, %maintxt );
-## settings/template ##
+## settings/paths ##
 our (
     $cookie_length, $do_scramble_id,      $guestaccess,
     $hide_passlink, $hide_reglink,        $langdir,
@@ -416,10 +416,11 @@ sub reminder2 {
         $forpasses .= qq~\$pass{'$key'} = '$value';\n~;
     }
     $forpasses .= '1;';
-    open my $FILE, '>', "$memberdir/forgotten.passes"
+    our ($FILE);
+    fopen( 'FILE', '>', "$memberdir/forgotten.passes" )
       or fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     print {$FILE} $forpasses or croak "$croak{'print'} forgotten.passes";
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
 
     my $cryptusername = $user;
     my ( $subject, $message, );
@@ -486,10 +487,11 @@ sub reminder3 {
         $forpasses .= qq~\$pass{'$key'} = '$value';\n~;
     }
     $forpasses .= '1;';
-    open my $FORGOTTEN, '>', "$memberdir/forgotten.passes"
+    our ($FORGOTTEN);
+    fopen( 'FORGOTTEN', '>', "$memberdir/forgotten.passes" )
       or fatal_error( 'cannot_open', "$memberdir/forgotten.passes", 1 );
     print {$FORGOTTEN} $forpasses or croak "$croak{'print'} FORGOTTEN";
-    close $FORGOTTEN or croak "$croak{'close'} FORGOTTEN";
+    fclose('FORGOTTEN') or croak "$croak{'close'} FORGOTTEN";
 
     # add newly generated password to user data
     ${ $uid . $user }{'password'} = encode_password($newpassword);
@@ -506,10 +508,11 @@ qq*action~profileCheck2;redir~myprofile;username~$INFO{'user'};passwrd~$newpassw
 
 sub in_maintenance {
     if ( -e "$langdir/$language/maintenancetext.txt" ) {
-        open my $MAINTTXT, '<', "$langdir/$language/maintenancetext.txt"
+        our ($MAINTTXT);
+        fopen( 'MAINTTXT', '<', "$langdir/$language/maintenancetext.txt" )
           or croak "$croak{'open'} MAINTTXT";
         my $maintenancetext = <$MAINTTXT>;
-        close $MAINTTXT or croak "$croak{'close'} MAINTTXT";
+        fclose('MAINTTXT') or croak "$croak{'close'} MAINTTXT";
         if ( $maintenancetext ne q{} ) { $maintxt{'157'} = $maintenancetext; }
     }
     $shared_login_title = $maintxt{'114'};

@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine);    #save_settings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -25,16 +24,16 @@ if (@settings_maintenancepmmods) {
     $settings_maintenancepmmods = 1;
 }
 
-##  languages ##
-our ( %croak, %admin_txt, %admintxt, %lngs );
-## paths ##
-our ( $adminurl, $langdir, $vardir );
-## settings ##
-our ( $maintenance, );
-## other ##
 our ( $action, );
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_txt, %admintxt, %croak, %lngs );
+## paths ##
+our ( $adminurl, $langdir, $vardir );
+## settings ##
+our ($maintenance);
 
 load_language('Admin');
 
@@ -63,10 +62,11 @@ require "$langdir/Lang.lng";
     no strict qw(refs);
     for ( sort keys %lngs ) {
         if ( -e "$langdir/$_/maintenancetext.txt" ) {
-            open my $MAINTTXT, '<', "$langdir/$_/maintenancetext.txt"
+            our ($MAINTTXT);
+            fopen( 'MAINTTXT', '<', "$langdir/$_/maintenancetext.txt" )
               or croak "$croak{'open'} MAINTTXT";
             ${ $_ . '_maintenancetext' } = <$MAINTTXT>;
-            close $MAINTTXT or croak "$croak{'close'} MAINTTXT";
+            fclose('MAINTTXT') or croak "$croak{'close'} MAINTTXT";
         }
         else { ${ $_ . '_maintenancetext' } = q{}; }
         my $lbl = $_ . '_maintenancetext';
@@ -84,16 +84,20 @@ qq~<textarea cols="30" rows="5" name="$lbl" id="$lbl" style="width: 98%">${$lbl}
 }
 
 # Routine to save them
-sub save_settings {
-    my %settings = @_;
+{
+    no warnings qw(redefine);    #save_settings;
 
-    if ( $settings{'maintenance'} != 1 ) {
-        unlink "$vardir/maintenance.lock"
-          || fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
+    sub save_settings {
+        my %settings = @_;
+
+        if ( $settings{'maintenance'} != 1 ) {
+            unlink "$vardir/maintenance.lock"
+              || fatal_error( 'cannot_open_dir', "$vardir/maintenance.lock" );
+        }
+
+        save_settings_to( 'Settings.pm', %settings );
+        return;
     }
-
-    save_settings_to( 'Settings.pm', %settings );
-    return;
 }
 
 1;

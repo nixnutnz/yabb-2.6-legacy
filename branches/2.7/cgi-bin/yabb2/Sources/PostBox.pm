@@ -27,28 +27,27 @@ if (@postboxpmmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
 ## languages ##
-our ( %croak, %post_txt, %npf_txt, %spell_check, %fatxt, %livepreview_txt,
-    %chrwarn, %maintxt );
-## locations ##
-our ( $yyhtml_root, $scripturl, $defaultimagesdir, $imagesdir, $boardurl,
-    $uploaddir, $uploadurl, $modimgurl );
-## system ##
+our ( %chrwarn, %croak, %fatxt, %livepreview_txt, %maintxt, %npf_txt,
+    %post_txt, %spell_check, );
+## paths ##
+our ( $boardurl, $defaultimagesdir, $imagesdir, $modimgurl, $scripturl,
+    $uploaddir, $uploadurl, $yyhtml_root, );
+## system/templates ##
 our (
-    $date,      $uid,      $username,   $col_row,
-    %INFO,      $yyext,    $cat_exp,    $cat_col,
-    %FORM,      $yymain,   $mfn,        $post,
-    $submittxt, $iamguest, $my_ajxcall, $displayname,
+    $cat_col,     $cat_exp,       $col_row,         $date,
+    $displayname, $filesize_info, $filetype_info,   $iamguest,
+    $message,     $mfn,           $moresmilieslist, $my_ajxcall,
+    $nolinkallow, $post,          $quick_post,      $replyguest,
+    $speedpost,   $submittxt,     $uid,             $username,
+    $yyext,       $yymain,        %FORM,            %INFO,
 );
 ## settings ##
 our (
-    $fontsizemin,       $fontsizemax,  @pallist,
-    $max_messlen,       $replyguest,   $img_greybox,
-    $moresmilieslist,   $allowattach,  $filetype_info,
-    $filesize_info,     $speedpost,    $min_post_speed,
-    $checkallcaps,      $nolinkallow,  $gpvalid_en,
-    $spam_questions_gp, %fix_img_size, $message,
-    $quick_post,
+    $allowattach,       $checkallcaps, $fontsizemax, $fontsizemin,
+    $gpvalid_en,        $img_greybox,  $max_messlen, $min_post_speed,
+    $spam_questions_gp, %fix_img_size, @pallist,
 );
 get_micon();
 
@@ -638,7 +637,7 @@ sub attach {
 
 sub speedpost {
     $submittxt ||= q{};
-    $post      ||= q{};
+    $post      ||= 'post';
     $speedpost = qq~
             var postdelay = $min_post_speed*1000;
             document.postmodify.$post.value = '$post_txt{"delay"}';

@@ -52,6 +52,37 @@ our (
     $boardsdir, $datadir,   $htmldir,   $imagesdir, $langdir,
     $memberdir, $scripturl, $uploaddir, $uploadurl, $yyhtml_root,
 );
+## settings ##
+our (
+    $accept_permafull,    $ad_max_messlen,      $ad_max_pm_messlen,
+    $allowattach,         $allowguestattach,    $banned_strings,
+    $bypass_lock_perm,    $cal_admax_messlen,   $cal_max_messlen,
+    $checkallcaps,        $checkext,            $cutamount,
+    $dirlimit,            $do_scramble_id,      $enable_alert,
+    $enable_bm_level,     $enable_guest_alert,  $enable_guest_pm,
+    $enable_guestposting, $enable_markquote,    $enable_notifications,
+    $enable_quickjump,    $enable_quickreply,   $enable_spell_check,
+    $enable_ubbc,         $fontsizemax,         $fontsizemin,
+    $gpvalid_en,          $hot_topic,           $limit,
+    $max_messlen,         $max_pm_messlen,      $maxmessagedisplay,
+    $maxpc,               $maxpo,               $maxpq,
+    $min_post_speed,      $minlinkpost,         $nestedquotes,
+    $numpolloptions,      $overwrite,           $parseflash,
+    $perm_domain,         $pm_level,            $post_speed_count,
+    $quick_quotelength,   $removenormalsmilies, $set_subject_maxlength,
+    $showadded,           $showage,             $showinbox,
+    $showmodify,          $showpageall,         $showregdate,
+    $showsmdir,           $showtopicrepliers,   $showuserage,
+    $showyabbcbutt,       $smiliestyle,         $spam_questions_case,
+    $spam_questions_gp,   $spd_detention_time,  $speedpostdetection,
+    $staff_reason,        $string_on,           $symlink,
+    $timeselected,        $tllastmodflag,       $tllastmodtime,
+    $tsreverse,           $use_guardian,        $user_hide_smilies_row,
+    $user_reason,         $useraddpoll,         $very_hot_topic,
+    $winheight,           $winwidth,            $yymycharset,
+    %addedsmilies,        %grp_post,            @ext,
+    @smilieorder
+);
 ## system ##
 our (
     $age,                  $annboard,        $boardname,
@@ -88,37 +119,6 @@ our (
     %thread_arrayref,      %threadid,        %useraccount,
     %usernames_life_quote, %yy_udloaded,     @options,
     @repliers,             @split,
-);
-## settings ##
-our (
-    $accept_permafull,    $ad_max_messlen,      $ad_max_pm_messlen,
-    $allowattach,         $allowguestattach,    $banned_strings,
-    $bypass_lock_perm,    $cal_admax_messlen,   $cal_max_messlen,
-    $checkallcaps,        $checkext,            $cutamount,
-    $dirlimit,            $do_scramble_id,      $enable_alert,
-    $enable_bm_level,     $enable_guest_alert,  $enable_guest_pm,
-    $enable_guestposting, $enable_markquote,    $enable_notifications,
-    $enable_quickjump,    $enable_quickreply,   $enable_spell_check,
-    $enable_ubbc,         $fontsizemax,         $fontsizemin,
-    $gpvalid_en,          $hot_topic,           $limit,
-    $max_messlen,         $max_pm_messlen,      $maxmessagedisplay,
-    $maxpc,               $maxpo,               $maxpq,
-    $min_post_speed,      $minlinkpost,         $nestedquotes,
-    $numpolloptions,      $overwrite,           $parseflash,
-    $perm_domain,         $pm_level,            $post_speed_count,
-    $quick_quotelength,   $removenormalsmilies, $set_subject_maxlength,
-    $showadded,           $showage,             $showinbox,
-    $showmodify,          $showpageall,         $showregdate,
-    $showsmdir,           $showtopicrepliers,   $showuserage,
-    $showyabbcbutt,       $smiliestyle,         $spam_questions_case,
-    $spam_questions_gp,   $spd_detention_time,  $speedpostdetection,
-    $staff_reason,        $string_on,           $symlink,
-    $timeselected,        $tllastmodflag,       $tllastmodtime,
-    $tsreverse,           $use_guardian,        $user_hide_smilies_row,
-    $user_reason,         $useraddpoll,         $very_hot_topic,
-    $winheight,           $winwidth,            $yymycharset,
-    %addedsmilies,        %grp_post,            @ext,
-    @smilieorder
 );
 ## templates ##
 our (
@@ -310,10 +310,11 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
     $settofield = 'subject';
     if ($threadid) {
         if ( !ref $thread_arrayref{$threadid} ) {
-            open my $FILE, '<', "$datadir/$threadid.txt"
+            our ($FILE);
+            fopen( 'FILE', '<', "$datadir/$threadid.txt" )
               or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <$FILE>;
-            close $FILE or croak "$croak{'close'} $threadid.txt";
+            fclose('FILE') or croak "$croak{'close'} $threadid.txt";
         }
         $nscheck = q{};
         if ( $quotemsg ne q{} ) {
@@ -834,10 +835,11 @@ $iconliveprev
         my ( $scchecked, $gvchecked, $hrchecked, $mcchecked, $legchecked ) =
           ( q{}, q{}, q{}, q{}, q{} );
         if ( ( $iamadmin || $iamgmod ) && -e "$datadir/showcase.poll" ) {
-            open my $FILE, '<', "$datadir/showcase.poll"
+            our ($FILE);
+            fopen( 'FILE', '<', "$datadir/showcase.poll" )
               or croak "$croak{'open'} showcase";
             if ( $threadid == <$FILE> ) { $scchecked = ' checked="checked"'; }
-            close $FILE or croak "$croak{'close'} showcase";
+            fclose('FILE') or croak "$croak{'close'} showcase";
         }
         if ($guest_vote)   { $gvchecked  = ' checked="checked"'; }
         if ($hide_results) { $hrchecked  = ' checked="checked"'; }
@@ -2038,13 +2040,14 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                 }
 
  # create a new file on the server using the formatted ( new instance ) filename
-                if ( open my $NEWFILE, '>', "$uploaddir/$fixfile" ) {
+                our ($NEWFILE);
+                if ( fopen( 'NEWFILE', '>', "$uploaddir/$fixfile" ) ) {
                     binmode $NEWFILE;
 
                    # needed for operating systems (OS) Windows, ignored by Linux
                     print {$NEWFILE} $file_buffer
                       or croak "$croak{'print'} NEWFILE"; # write new file on HD
-                    close $NEWFILE or croak "$croak{'close'} NEWFILE";
+                    fclose('NEWFILE') or croak "$croak{'close'} NEWFILE";
                 }
                 else
                 { # return the server's error message if the new file could not be created
@@ -2066,15 +2069,17 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                     my $okatt = 1;
                     if ( $fixfile =~ /gif$/ixsm ) {
                         my $header;
-                        open my $ATTFILE, '<', "$uploaddir/$fixfile"
+                        our ($ATTFILE);
+                        fopen( 'ATTFILE', '<', "$uploaddir/$fixfile" )
                           or croak "$croak{'open'} $fixfile";
                         read $ATTFILE, $header, 10;
                         my ( $giftest, undef, undef, undef, undef, undef ) =
                           unpack 'a3a3C4', $header;
-                        close $ATTFILE or croak "$croak{'close'} $fixfile";
+                        fclose('ATTFILE') or croak "$croak{'close'} $fixfile";
                         if ( $giftest ne 'GIF' ) { $okatt = 0; }
                     }
-                    open my $ATTFILE, '<', "$uploaddir/$fixfile"
+                    our ($ATTFILE);
+                    fopen( 'ATTFILE', '<', "$uploaddir/$fixfile" )
                       or croak "$croak{'open'} $fixfile";
                     while ( read $ATTFILE, $buffer, 1024 ) {
                         if ( $buffer =~ /<(html|script|body)/igxsm ) {
@@ -2082,7 +2087,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                             last;
                         }
                     }
-                    close $ATTFILE or croak "$croak{'close'} $fixfile";
+                    fclose('ATTFILE') or croak "$croak{'close'} $fixfile";
                     if ( !$okatt )
                     {    # delete the file as it contains illegal code
                         foreach (qw("@filelist" $fixfile)) {
@@ -2120,25 +2125,26 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         else { $mstate = '0'; }
 
         # This is a new thread. Save it.
-        open my $FILE, '<', "$boardsdir/$currentboard.txt"
+        our ($FILE);
+        fopen( 'FILE', '<', "$boardsdir/$currentboard.txt", 1 )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @buffer = <$FILE>;
-        fclose $FILE or croak "$croak{'close'} $currentboard.txt";
+        fclose('FILE') or croak "$croak{'close'} $currentboard.txt";
 
         unshift @buffer,
 qq~$newthreadid|$subject|$name|$email|$date|$mreplies|$username|$icon|$mstate\n~;
-        open $FILE, '>', "$boardsdir/$currentboard.txt"
+        fopen( 'FILE', '>', "$boardsdir/$currentboard.txt", 1 )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my $prnbuff = join q{}, @buffer;
         print {$FILE} $prnbuff or croak "$croak{'print'} FILE";
-        close $FILE or croak "$croak{'close'} $currentboard.txt";
+        fclose('FILE') or croak "$croak{'close'} $currentboard.txt";
 
-        open $FILE, '>', "$datadir/$newthreadid.txt"
+        fopen( 'FILE', '>', "$datadir/$newthreadid.txt" )
           or fatal_error( 'cannot_open', "$datadir/$newthreadid.txt", 1 );
         print {$FILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
           or croak "$croak{'print'} FILE";
-        close $FILE or croak "$croak{'close'} $newthreadid.txt";
+        fclose('FILE') or croak "$croak{'close'} $newthreadid.txt";
 
         if (@filelist) {
             my $prnfile = q{};
@@ -2146,24 +2152,27 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
                 $prnfile .=
 qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~;
             }
-            open my $AMP, '>>', 'Variables/attachments.db'
+            our ($AMP);
+            fopen( 'AMP', '>>', 'Variables/attachments.db' )
               or fatal_error( 'cannot_open', 'Variables/attachments.db' );
             print {$AMP} $prnfile or croak "$croak{'print'} AMP";
-            close $AMP or croak "$croak{'close'} attachments.db";
+            fclose('AMP') or croak "$croak{'close'} attachments.db";
         }
         if ($pollthread) {    # Save Poll data for new thread
             if ( ( $iamadmin || $iamgmod ) && $FORM{'scpoll'} )
             {                 # Save ShowcasePoll
-                open my $SCFILE, '>', "$datadir/showcase.poll"
+                our ($SCFILE);
+                fopen( 'SCFILE', '>', "$datadir/showcase.poll" )
                   or croak "$croak{'open'} showcase";
                 print {$SCFILE} $newthreadid or croak "$croak{'print'} SCFILE";
-                close $SCFILE or croak "$croak{'close'} showcase";
+                fclose('SCFILE') or croak "$croak{'close'} showcase";
             }
             my $prnpolldat = join q{}, @poll_data;
-            open my $POLL, '>', "$datadir/$newthreadid.poll"
+            our ($POLL);
+            fopen( 'POLL', '>', "$datadir/$newthreadid.poll" )
               or croak "$croak{'close'} $newthreadid.txt";
             print {$POLL} $prnpolldat or croak "$croak{'print'} POLL";
-            close $POLL or croak "$croak{'close'} $newthreadid.txt";
+            fclose('POLL') or croak "$croak{'close'} $newthreadid.txt";
         }
         ## write the ctb file for the new thread
         ${$newthreadid}{'board'}        = $currentboard;
@@ -2228,21 +2237,24 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         if ($pollthread) {    # Save new Poll data
             if ( ( $iamadmin || $iamgmod ) && $FORM{'scpoll'} )
             {                 # Save ShowcasePoll
-                open my $SCFILE, '>', "$datadir/showcase.poll"
+                our ($SCFILE);
+                fopen( 'SCFILE', '>', "$datadir/showcase.poll" )
                   or croak "$croak{'open'} showcase";
                 print {$SCFILE} $threadid or croak "$croak{'print'} SCFILE";
-                fclose $SCFILE;
+                fclose('SCFILE') or croak "$croak{'close'} SCFILE";
             }
             my $prnpolldat = join q{}, @poll_data;
-            open my $POLL, '>', "$datadir/$threadid.poll"
+            our ($POLL);
+            fopen( 'POLL', '>', "$datadir/$threadid.poll" )
               or croak "$croak{'open'} $threadid.poll";
             print {$POLL} $prnpolldat or croak "$croak{'print'} POLL";
-            close $POLL or croak "$croak{'close'} POLL";
+            fclose('POLL') or croak "$croak{'close'} POLL";
         }
-        open my $BOARDFILE, '<', "$boardsdir/$currentboard.txt"
+        our ($BOARDFILE);
+        fopen( 'BOARDFILE', '<', "$boardsdir/$currentboard.txt", 1 )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         my @buffer = <$BOARDFILE>;
-        close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
+        fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
 
         foreach my $i ( 0 .. $#buffer ) {
             if ( $buffer[$i] =~ m{\A$mnum[|]}oxsm ) { $buffer[$i] = q{}; last; }
@@ -2250,17 +2262,18 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         unshift @buffer,
 qq~$mnum|$msub|$mname|$memail|$date|$mreplies|$musername|$micon|$mstate\n~;
         my $prnbuff = join q{}, @buffer;
-        open $BOARDFILE, '>', "$boardsdir/$currentboard.txt"
+        fopen( 'BOARDFILE', '>', "$boardsdir/$currentboard.txt", 1 )
           or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
         print {$BOARDFILE} $prnbuff or croak "$croak{'print'} BOARDFILE";
-        close $BOARDFILE or croak "$croak{'close'} BOARDFILE";
+        fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
 
-        open my $THREADFILE, '>>', "$datadir/$threadid.txt"
+        our ($THREADFILE);
+        fopen( 'THREADFILE', '>>', "$datadir/$threadid.txt", 1 )
           or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
         print {$THREADFILE}
 qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfile\n~
           or croak "$croak{'print'} THREADFILE";
-        close $THREADFILE or croak "$croak{'close'} THREADFILE";
+        fclose('THREADFILE') or croak "$croak{'close'} THREADFILE";
 
         if (@filelist) {
             my $prnfix = q{};
@@ -2268,10 +2281,11 @@ qq~$subject|$name|$email|$date|$username|$icon|0|$user_ip|$message|$ns|||$fixfil
                 $prnfix .=
 qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fixfile|0\n~;
             }
-            open my $AMP, '>>', 'Variables/attachments.db'
+            our ($AMP);
+            fopen( 'AMP', '>>', 'Variables/attachments.db' )
               or fatal_error( 'cannot_open', 'Variables/attachments.db' );
             print {$AMP} $prnfix or croak "$croak{'print'} AMP";
-            close $AMP or croak "$croak{'close'} attachments.db";
+            fclose('AMP') or croak "$croak{'close'} attachments.db";
         }
 
         to_chars($subject);
@@ -2603,10 +2617,11 @@ sub doshowthread {
     if ( $INFO{'start'} ) { $INFO{'start'} = "/$INFO{'start'}"; }
 
     if ( !ref( $thread_arrayref{$threadid} ) && $threadid ) {
-        open my $THREADFILE, '<', "$datadir/$threadid.txt"
+        our ($THREADFILE);
+        fopen( 'THREADFILE', '<', "$datadir/$threadid.txt" )
           or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
         @{ $thread_arrayref{$threadid} } = <$THREADFILE>;
-        close $THREADFILE or croak "$croak{'close'} $threadid.txt";
+        fclose('THREADFILE') or croak "$croak{'close'} $threadid.txt";
     }
     my @messages = @{ $thread_arrayref{$threadid} };
 
@@ -2902,18 +2917,20 @@ sub send_guest_pm2 {
     # set announcement flag according to status of current board
     my @gmessages;
     if ( -e "$memberdir/guest.messages" ) {
-        open my $INBOX, '<', "$memberdir/guest.messages"
+        our ($INBOX);
+        fopen( 'INBOX', '<', "$memberdir/guest.messages" )
           or croak "$croak{'open'} guest.messages";
         @gmessages = <$INBOX>;
-        close $INBOX or croak "$croak{'close'} guest.messages";
+        fclose('INBOX') or croak "$croak{'close'} guest.messages";
     }
     unshift @gmessages,
 "$newthreadid|$name $email|admin|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|g|||\n";
     my $prngmess = join q{}, @gmessages;
-    open my $INBOX, '>', "$memberdir/guest.messages"
+    our ($INBOX);
+    fopen( 'INBOX', '>', "$memberdir/guest.messages" )
       or croak "$croak{'open'} guest.messages";
     print {$INBOX} $prngmess or croak "$croak{'print'} INBOX";
-    close $INBOX or croak "$croak{'close'} guest.messages";
+    fclose('INBOX') or croak "$croak{'close'} guest.messages";
     undef @gmessages;
 
     # The thread ID, regardless of whether it's a new thread or not
@@ -2999,10 +3016,11 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/gxsm;
     $settofield = 'subject';
     if ( $threadid ne q{} ) {
         if ( !ref $thread_arrayref{$threadid} ) {
-            open my $FILE, '<', "$datadir/$threadid.txt"
+            our ($FILE);
+            fopen( 'FILE', '<', "$datadir/$threadid.txt" )
               or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
             @{ $thread_arrayref{$threadid} } = <$FILE>;
-            close $FILE or croak "$croak{'close'} $threadid.txt";
+            fclose('FILE') or croak "$croak{'close'} $threadid.txt";
         }
         if ( $quotemsg ne q{} ) {
             (
@@ -3256,18 +3274,19 @@ sub mod_alert2 {
             else             { $mstatus = q~a~; }
 
             # Send message to user
-            open my $INBOX, '<', "$memberdir/$toBoardMod.msg"
+            our ($INBOX);
+            fopen( 'INBOX', '<', "$memberdir/$toBoardMod.msg" )
               or croak "$croak{'open'} alertmsg";
             my @inmessages = <$INBOX>;
-            close $INBOX or croak "$croak{'close'} alertmsg";
+            fclose('INBOX') or croak "$croak{'close'} alertmsg";
 
             unshift @inmessages,
 "$newthreadid|$name|$toBoardMod|||$subject|$date|$message|$newthreadid|0|$user_ip|$mstatus|u||\n";
             my $prninmess = join q{}, @inmessages;
-            open $INBOX, '>', "$memberdir/$toBoardMod.msg"
+            fopen( 'INBOX', '>', "$memberdir/$toBoardMod.msg" )
               or croak "$croak{'open'} alertmsg";
             print {$INBOX} $prninmess or croak "$croak{'print'} INBOX";
-            close $INBOX or croak "$croak{'close'} alertmsg";
+            fclose('INBOX') or croak "$croak{'close'} alertmsg";
             require Sources::MyCenter;
             update_pms( $toBoardMod, $newthreadid, 'messagein' );
         }
@@ -3284,17 +3303,18 @@ sub mod_alert2 {
         else { $mstatus = q~ab~; }
 
         #if sender is guest and Alert is going to ModGroup
-        open my $INBOX, '<', $msgfile
+        our ($INBOX);
+        fopen( 'INBOX', '<', $msgfile )
           or fatal_error( 'cannot_open', $msgfile );
         my @inmessages = <$INBOX>;
-        close $INBOX or croak "$croak{'close'} $msgfile";
+        fclose('INBOX') or croak "$croak{'close'} $msgfile";
 
         unshift @inmessages,
 "$newthreadid|$name|$modgrps|||$subject|$date|$message|$newthreadid|0|$ENV{'REMOTE_ADDR'}|$mstatus|||\n";
         my $prninmess = join q{}, @inmessages;
-        open $INBOX, '>', $msgfile or croak "$croak{'open'} $msgfile";
+        fopen( 'INBOX', '>', $msgfile ) or croak "$croak{'open'} $msgfile";
         print {$INBOX} $prninmess or croak "$croak{'print'} INBOX";
-        close $INBOX or croak "$croak{'close'} $msgfile";
+        fclose('INBOX') or croak "$croak{'close'} $msgfile";
     }
 
     $yysetlocation = qq~$scripturl?num=$threadid/$postid#$postid~;

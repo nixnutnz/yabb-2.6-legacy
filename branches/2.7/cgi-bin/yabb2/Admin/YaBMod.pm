@@ -26,27 +26,30 @@ our $yabmodpmmods = 0;
 if (@yabmodpmmods) {
     $yabmodpmmods = 1;
 }
-##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %yabmtxt, %maintxt );
-## paths ##
-our ( $adminurl, $yyhtml_root, $scripturl, $imagesdir, $boarddir, $htmldir );
-## settings ##
-our ( $yymycharset, $settings_file_version, $mbname );
-## other ##
-our (
-    $action,   $yymain, $yytitle,     $yysetlocation,
-    %FORM,     %INFO,   $action_area, $formsession,
-    $username, $date,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %admintxt, %croak, %maintxt, %yabmtxt, );
+## paths ##
+our ( $adminurl, $boarddir, $htmldir, $imagesdir, $scripturl, $yyhtml_root, );
+## settings ##
+our ( $mbname, $settings_file_version, $yymycharset, );
+## other ##
+our (
+    $action_area, $date,   $formsession,
+    $username,    $yymain, $yysetlocation,
+    $yytitle,     %FORM,   %INFO,
+);
 
 my $admin_images = "$yyhtml_root/Templates/Admin/default";
 
 my (
-    $searchfound, @modsearchstr, @modaddstr, $modeditfilename,
-    $editdir,     @modeditfile,  $addoffset, $k,
-    $files_name,  @recallfiles,  %modinstall,
+    $addoffset,       $editdir,      $files_name, $k,
+    $modeditfilename, $searchfound,  %modinstall, @modaddstr,
+    @modeditfile,     @modsearchstr, @recallfiles,
 );
 
 load_language('Admin');
@@ -60,10 +63,11 @@ sub yabm_modlist {
     my ($umod);
     my (@mods);
     if ( -e "$boarddir/Mods/Log/install.log" ) {
-        open my $FILE, '<', "$boarddir/Mods/Log/install.log"
+        our ($FILE);
+        fopen( 'FILE', '<', "$boarddir/Mods/Log/install.log" )
           or croak "$croak{'open'} install.log";
         @mods = <$FILE>;
-        close $FILE or croak "$croak{'close'} install.log";
+        fclose('FILE') or croak "$croak{'close'} install.log";
         $umod = 0;
         for my $i ( 0 .. $#mods ) {
             $mods[$i] =~ s/\A[^\\\/]+[\\\/]//xsm;
@@ -205,11 +209,11 @@ sub yabm_modinfo {
     my $link_a  = qq~$adminurl?action=yabmapplymod;file=$file~;
     my $linkt_a = $yabmtxt{'6'};
     my $del_but = q{};
-    my (%modinstall);
     my (@mods);
 
     if ( -e "$boarddir/Mods/Log/install.log" ) {
-        open my $FILE, '<', "$boarddir/Mods/Log/install.log"
+        our ($FILE);
+        fopen( 'FILE', '<', "$boarddir/Mods/Log/install.log" )
           or croak "$croak{'open'} install.log";
         @mods = <$FILE>;
         close $FILE or croak "$croak{'close'} install.log";
@@ -243,7 +247,8 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
     else { $installdate = q{}; }
     my ( $par, $tag );
     our ( $modid, $modauthor, $modversion, $modhomepage, $modmod );
-    open my $FILE, '<', "$boarddir/Mods/$file"
+    our ($FILE);
+    fopen( 'FILE', '<', "$boarddir/Mods/$file" )
       or fatal_error( 'cannot_open', "Mods/$file", 1 );
     {
         no strict qw(refs);
@@ -321,7 +326,8 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
    </div>
 ~;
     my $html = q{};
-    open my $TMPL, '<', "$boarddir/Mods/$file"
+    our ($TMPL);
+    fopen( 'TMPL', '<', "$boarddir/Mods/$file" )
       or croak "$croak{'open'} '$boarddir/Mods/$file'";
     while ( my $line = <$TMPL> ) {
         $line =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
@@ -331,7 +337,7 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
         to_temphtml($line);
         $html .= qq~$line\n~;
     }
-    close $TMPL or croak "$croak{'close'} TMPL";
+    fclose('TMPL') or croak "$croak{'close'} TMPL";
 
     $yymain .= qq~
    <div class="bordercolor rightboxdiv">
@@ -371,10 +377,11 @@ sub yabm_applymod {
     my $file        = $INFO{'file'};
     my (@mods);
     if ( -e "$boarddir/Mods/Log/install.log" ) {
-        open my $FILE, '<', "$boarddir/Mods/Log/install.log"
+        our ($FILE);
+        fopen( 'FILE', '<', "$boarddir/Mods/Log/install.log" )
           or croak "$croak{'open'} install.log";
         @mods = <$FILE>;
-        close $FILE or croak "$croak{'close'} install.log";
+        fclose('FILE') or croak "$croak{'close'} install.log";
         for (@mods) {
             s/.*?\\//xsm;
             chomp;
@@ -404,10 +411,11 @@ sub yabm_applymod {
 
     $yymain .= qq~$yabmtxt{'39'} <b>$file</b>...<br />~;
 
-    open my $FILE, '<', "$boarddir/Mods/$file"
+    our ($FILE);
+    fopen( 'FILE', '<', "$boarddir/Mods/$file" )
       or fatal_error( 'cannot_open', "$boarddir/Mods/$file", 1 );
     my @modfile = <$FILE>;
-    close $FILE or croak "$croak{'close'} install.log";
+    fclose('FILE') or croak "$croak{'close'} install.log";
 
     $yymain .= qq~$yabmtxt{'40'}<br />~;
 
@@ -434,13 +442,12 @@ sub yabm_applymod {
 qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $yabmtxt{'43'} $modeditfilename.bak...<br />~;
             $i += 3;
 
-            open my $FILE, '<',
-              "$editdir/$modeditfilename"
+            fopen( 'FILE', '<', "$editdir/$modeditfilename" )
               or install_error(
                 "$yabmtxt{'no_file'} '$editdir/$modeditfilename'<br />",
                 "$file", $installtest );
             @modeditfile = <$FILE>;
-            close $FILE or croak "$croak{'close'} FILE";
+            fclose('FILE') or croak "$croak{'close'} FILE";
 
             # If "install_error" -> recall Backup File
             push @recallfiles, qq~$modeditfilename\n~;
@@ -456,14 +463,13 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
                         copy "$editdir/$modeditfilename",
                           "$editdir/$modeditfilename.bak";
                         $yymain .= qq~$yabmtxt{'44'} $modeditfilename...<br>~;
-                        open my $FILE, '>',
-                          "$editdir/$modeditfilename"
+                        fopen( 'FILE', '>', "$editdir/$modeditfilename" )
                           or install_error(
                             "$yabmtxt{'no_write'} '$modeditfilename'<br />",
                             "$file", $installtest );
                         print {$FILE} @modeditfile
                           or croak 'cannot print modeditfile';
-                        close $FILE or croak "$croak{'close'} FILE";
+                        fclose('FILE') or croak "$croak{'close'} FILE";
                     }
                     redo EDITSEARCH1;
                 }
@@ -625,18 +631,17 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
                               # Backup File
         copy "$editdir/$modeditfilename", "$editdir/$modeditfilename.bak";
         $yymain .= qq~$yabmtxt{'44'} $modeditfilename...<br><br />~;
-        open my $FILE, '>',
-          "$editdir/$modeditfilename"
+        fopen( 'FILE', '>', "$editdir/$modeditfilename" )
           or install_error( "$yabmtxt{'no_write'} '$modeditfilename'<br />",
             "$file", $installtest );
         print {$FILE} @modeditfile or croak 'cannot print modedit';
-        close $FILE or croak "$croak{'close'} FILE";
+        fclose('FILE') or croak "$croak{'close'} FILE";
     }    #Installtest
     if ( !$installtest ) {    #Installtest
         push @mods, $file;
 
-        open my $IN, '>',
-          "$boarddir/Mods/Log/install.log"
+        our ($IN);
+        fopen( 'IN', '>', "$boarddir/Mods/Log/install.log" )
           or install_error(
             "$yabmtxt{'no_open'} '$boarddir/Mods/Log/install.log'<br />",
             "$file", $installtest );
@@ -645,7 +650,7 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
             print {$IN} "$settings_file_version\\$_\n"
               or croak 'cannot print settings';
         }
-        close $IN or croak "$croak{'close'} IN";
+        fclose('IN') or croak "$croak{'close'} IN";
         update_mod_data($file);
     }    #Installtest
 
@@ -682,10 +687,11 @@ sub yabm_uninstallmod {
     my $file        = $INFO{'file'};
     my (@mods);
     if ( -e "$boarddir/Mods/Log/install.log" ) {
-        open my $FILE, '<', "$boarddir/Mods/Log/install.log"
+        our ($FILE);
+        fopen( 'FILE', '<', "$boarddir/Mods/Log/install.log" )
           or croak "$croak{'open'} install.log";
         @mods = <$FILE>;
-        close $FILE or croak "$croak{'close'} install.log";
+        fclose('FILE') or croak "$croak{'close'} install.log";
         for (@mods) {
             s/.*?\\//xsm;
             chomp;
@@ -715,10 +721,11 @@ sub yabm_uninstallmod {
 
     $yymain .= qq~$yabmtxt{'39'} <b>$file</b>...<br />~;
 
-    open my $FILE, '<', "$boarddir/Mods/$file"
+    our ($FILE);
+    fopen( 'FILE', '<', "$boarddir/Mods/$file" )
       or fatal_error( 'cannot_open', "$boarddir/Mods/$file", 1 );
     my @modfile = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
 
     $yymain .= qq~$yabmtxt{'40'}<br />~;
 
@@ -746,13 +753,12 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
             $i += 3;
 
             undef @modeditfile;
-            open my $FILE, '<',
-              "$editdir/$modeditfilename"
+            fopen( 'FILE', '<', "$editdir/$modeditfilename" )
               or install_error(
                 "$yabmtxt{'no_file'} '$editdir/$modeditfilename'<br />",
                 "$file", $installtest );
             @modeditfile = <$FILE>;
-            close $FILE or croak "$croak{'close'} FILE";
+            fclose('FILE') or croak "$croak{'close'} FILE";
 
             # If "install_error" -> recall Backup File
             push @recallfiles, qq~$modeditfilename\n~;
@@ -768,14 +774,13 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
                         copy "$editdir/$modeditfilename",
                           "$editdir/$modeditfilename.bak";
                         $yymain .= qq~$yabmtxt{'44'} $modeditfilename...<br>~;
-                        open my $FILE, '>',
-                          "$editdir/$modeditfilename"
+                        fopen( 'FILE', '>', "$editdir/$modeditfilename" )
                           or install_error(
                             "$yabmtxt{'no_write'} '$modeditfilename'<br />",
                             "$file", $installtest );
                         print {$FILE} @modeditfile
                           or croak 'cannot print modedit';
-                        close $FILE or croak "$croak{'close'} FILE";
+                        fclose('FILE') or croak "$croak{'close'} FILE";
                     }
                     redo EDITSEARCH2;
                 }
@@ -973,18 +978,17 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
         # Backup File
         copy "$editdir/$modeditfilename", "$editdir/$modeditfilename.bak";
         $yymain .= qq~$yabmtxt{'44'} $modeditfilename...<br><br />~;
-        open my $FILE, '>',
-          "$editdir/$modeditfilename"
+        fopen( 'FILE', '>', "$editdir/$modeditfilename" )
           or install_error( "$yabmtxt{'no_write'} '$modeditfilename'<br />",
             "$file", $installtest );
         print {$FILE} @modeditfile or croak 'cannot print modedit';
-        close $FILE or croak "$croak{'close'} FILE";
+        fclose('FILE') or croak "$croak{'close'} FILE";
     }
 
     if ( !$installtest ) {
         splice @mods, linepos( \@mods, $file ), 1;
-        open my $IN, '>',
-          "$boarddir/Mods/Log/install.log"
+        our ($IN);
+        fopen( 'IN', '>', "$boarddir/Mods/Log/install.log" )
           or install_error(
             "$yabmtxt{'no_open'} '$boarddir/Mods/Log/install.log'<br />",
             "$file", $installtest );
@@ -993,7 +997,7 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
             print {$IN} "$settings_file_version\\$_\n"
               or croak 'cannot print settings';
         }
-        close $IN or croak "$croak{'close'}IN";
+        fclose('IN') or croak "$croak{'close'} IN";
         update_mod_data( $file, 'uninstall' );
         $del_button =
 qq~<input type="button" value="$yabmtxt{'24'}" onClick="self.location.href='$adminurl?action=yabmdeletemod;file=$file'">~;
@@ -1355,11 +1359,12 @@ qq~$html_main$html_main1$system_main$system_main1$boardmod_main$boardmod_main1<b
     }
 
     # Print Uninstall info
-    open my $UNMOD, '>', "$boarddir/Mods/Uninstall/uninstall_$files_name_mod"
+    our ($UNMOD);
+    fopen( 'UNMOD', '>', "$boarddir/Mods/Uninstall/uninstall_$files_name_mod" )
       or croak "$croak{'open'} UNMOD";
     print {$UNMOD} @uninstall
       or croak "$croak{'print'} UNMOD";
-    close $UNMOD or croak "$croak{'close'} UNMOD";
+    fclose('UNMOD') or croak "$croak{'close'} UNMOD";
 
     $yymain .= qq~
             </td>
@@ -1426,10 +1431,11 @@ qq~<option value="$cmp_templatefile"$selected>$cmp_templatefile</option>\n~;
         }
     }
 
-    open my $FILE, '<', "$modfilesdir/$templatefile"
+    our ($FILE);
+    fopen( 'FILE', '<', "$modfilesdir/$templatefile" )
       or fatal_error( 'cannot_open', "$boarddir/$templatefile", 1 );
     my @modfile = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
 
     # print edit file list
     my $the_edit_file = q{};
@@ -1542,10 +1548,11 @@ sub yabm_modifymod2 {
     my $templatefile = q{};
     if ( $FORM{'filename'} ) { $templatefile = $FORM{'filename'}; }
     else { fatal_error( 'cannot_open', " <b>$templatefile</b>!", 1 ); }
-    open my $TMPL, '>', "$modfilesdir/$templatefile"
+    our ($TMPL);
+    fopen( 'TMPL', '>', "$modfilesdir/$templatefile" )
       or croak "$croak{'open'} TMPL";
     print {$TMPL} "$FORM{'template'}" or croak "$croak{'print'} TMPL";
-    close $TMPL or croak "$croak{'close'} TMPL";
+    fclose('TMPL') or croak "$croak{'close'} TMPL";
     $yysetlocation =
       qq~$adminurl?action=yabmmodifymod;templatefile=$templatefile~;
     redirectexit();
@@ -1558,11 +1565,12 @@ sub yabm_deletemod {
     my $modfilesdir = "$boarddir/Mods";
     my $file        = $INFO{'file'};
 
-    open my $FILE, '<', "$modfilesdir/Uninstall/uninstall_$file"
+    our ($FILE);
+    fopen( 'FILE', '<', "$modfilesdir/Uninstall/uninstall_$file" )
       or
       fatal_error( 'cannot_open', "$modfilesdir/Uninstall/uninstall_$file", 1 );
     my @uninstall = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
 
     $yymain .= qq~
    <div class="bordercolor rightboxdiv">
@@ -1737,10 +1745,11 @@ sub get_mod_data {
     my ($itag) = @_;
     no strict qw(refs);
     if ( -e "$boarddir/Mods/Log/get_install.data" ) {
-        open my $MLOG, '<', "$boarddir/Mods/Log/get_install.data"
+        our ($MLOG);
+        fopen( 'MLOG', '<', "$boarddir/Mods/Log/get_install.data" )
           or croak "$croak{'open'} get_install.data";
         my @data = <$MLOG>;
-        close $MLOG or croak "$croak{'close'} get_install.data";
+        fclose('MLOG') or croak "$croak{'close'} get_install.data";
         for (@data) {
             chop;
             my ( $keys, $values ) = split /\t/xsm;
@@ -1755,22 +1764,24 @@ sub update_mod_data {
     $act ||= q{};
 
     if ( $act eq 'uninstall' ) {
-        open my $FILE, '<', "$boarddir/Mods/Log/get_install.data"
+        our ($FILE);
+        fopen( 'FILE', '<', "$boarddir/Mods/Log/get_install.data" )
           or croak "$croak{'open'} get_install.data";
         my @moddata = <$FILE>;
-        close $FILE or croak "$croak{'close'} get_install.data";
+        fclose('FILE') or croak "$croak{'close'} get_install.data";
         my @hilfmod = grep { !/$mod/xsm } @moddata;
 
-        open $FILE, '>', "$boarddir/Mods/Log/get_install.data"
+        fopen( 'FILE', '>', "$boarddir/Mods/Log/get_install.data" )
           or croak "$croak{'open'} installdata";
         print {$FILE} @hilfmod or croak "$croak{'print'} installdata";
-        close $FILE or croak "$croak{'close'} installdata";
+        fclose('FILE') or croak "$croak{'close'} installdata";
     }
     else {
-        open my $FILE, '>>', "$boarddir/Mods/Log/get_install.data"
+        our ($FILE);
+        fopen( 'FILE', '>>', "$boarddir/Mods/Log/get_install.data" )
           or croak "$croak{'open'} installdata";
         print {$FILE} "$mod\t$date\n" or croak "$croak{'print'}' installdata";
-        close $FILE or croak "$croak{'close'} installdata";
+        fclose('FILE') or croak "$croak{'close'} installdata";
     }
     return;
 }

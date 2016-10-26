@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode_utf8 encode_utf8);
@@ -31,23 +30,31 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language ##
+our ( %croak, %var_cal, %zodiac_txt, @alpha, );
+## paths ##
+our ( $boardurl, $scripturl, $vardir, );
+## settings ##
+our ( $birthday_color_show, $birthday_date_show, $birthday_list_show,
+    $birthday_sign_show, $calsplit, $enabletz, $showage, $timeselected, );
+## system ##
 our (
-    %croak,              $birthday_list_show,  $iamguest,
-    $date,               $enabletz,            $forum_default,
-    $uid,                $username,            $timeselected,
-    %var_cal,            $sel_day,             $sel_mon,
-    $sel_year,           $scripturl,           %INFO,
-    %FORM,               $class_sortuser,      $class_sortage,
-    $class_sortstarsign, $class_sortdate,      $birthday_sign_show,
-    $cal_col_no_ss,      $cal_col_ss,          $cal_col_ss_sort,
-    $cal_col_ss_top,     $vardir,              %memberinf,
-    $calsplit,           $mybdlist_notbmember, $birthday_color_show,
-    %link,               $showage,             $mybdlist_calinfoheader,
-    $mybd_months,        $boardurl,            @alpha,
-    $mybdlist_viewmont2, $birthday_date_show,  $mybdlist_viewmont,
-    $yymain,             %zodiac_txt,          $yytitle,
-    $mybdlist_calgoto,   $mybdlist_nobd,
+    $class_sortage,  $class_sortdate, $class_sortstarsign,
+    $class_sortuser, $date,           $forum_default,
+    $iamguest,       $sel_day,        $sel_mon,
+    $sel_year,       $uid,            $username,
+    $yymain,         $yytitle,        %FORM,
+    %format,         %INFO,           %link,
+    %memberaddgroup, %memberinf,
 );
+## templates ##
+our (
+    $cal_col_no_ss,          $cal_col_ss,    $cal_col_ss_sort,
+    $cal_col_ss_top,         $mybd_months,   $mybdlist_calgoto,
+    $mybdlist_calinfoheader, $mybdlist_nobd, $mybdlist_notbmember,
+    $mybdlist_viewmont,      $mybdlist_viewmont2,
+);
+
 load_language('EventCal');
 get_template('Bdaylist');
 
@@ -230,10 +237,14 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
       qw( null calmon_01 calmon_02 calmon_03 calmon_04 calmon_05 calmon_06 calmon_07 calmon_08 calmon_09 calmon_10 calmon_11 calmon_12 );
 
     manage_memberinfo('load');
-    open my $EVENTBIRTH, '<', "$vardir/eventcalbday.db"
-      or croak "$croak{'open'} birthday";
-    my @birthmembers = <$EVENTBIRTH>;
-    close $EVENTBIRTH or croak "$croak{'close'} birthday";
+    our ($EVENTBIRTH);
+    my @birthmembers = ();
+    if ( -e "$vardir/eventcalbday.db" ) {
+        fopen( 'EVENTBIRTH', '<', "$vardir/eventcalbday.db" )
+          or croak "$croak{'open'} birthday";
+        @birthmembers = <$EVENTBIRTH>;
+        fclose('EVENTBIRTH') or croak "$croak{'close'} birthday";
+    }
 
     my @birthmembers1 = ();
     my @birthmembers2 = ();
@@ -324,7 +335,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 
     my $no_bd_found = 0;
     foreach my $i ( 1 .. 12 ) {
-        if ( $no_bd[$i] == 0 ) {
+        if ( !$no_bd[$i] || $no_bd[$i] == 0 ) {
             $no_birthday_found[$i] .= qq~&bull; $var_cal{$calmont[$i]} ~;
             $no_bd_found = 1;
         }
@@ -641,8 +652,8 @@ s/\Q{yabb user_linkprofile}\E/$user_linkprofile/xsm;
     $yymain .= $mybdlist_calgoto;
     $yymain .= $my_alpha_a;
     $yymain .= $viewbirthdays;
-    $yymain .= $bdmonths;
-    $yymain .= $yyvmon;
+    $yymain .= $bdmonths || q{};
+    $yymain .= $yyvmon || q{};
     $yymain =~ s/\Q{yabb calgotobox}\E/$calgotobox/xsm;
     $yymain =~ s/\Q{yabb cal_colspan}\E/$cal_colspan/gxsm;
     $yymain =~ s/\Q{yabb my_bdtoday}\E/$my_bdtoday/gxsm;

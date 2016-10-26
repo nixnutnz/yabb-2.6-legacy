@@ -30,7 +30,7 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our ( %contextxt, $displayname );
+our ( $displayname, %contextxt, $ctmain );
 
 sub context_script {
     my ($inp) = @_;
@@ -51,7 +51,7 @@ sub context_script {
 var contexthash = new Hash($contextlst);
 ~;
     $displayname ||= q{};
-    our $ctmain = qq~
+    $ctmain = qq~
     <script type="text/javascript">
     $contextmain
     </script>

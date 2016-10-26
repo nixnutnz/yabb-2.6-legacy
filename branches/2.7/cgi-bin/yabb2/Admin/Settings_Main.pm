@@ -14,7 +14,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized redefine);    #save_settings sub
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
@@ -25,122 +24,120 @@ our $settings_mainpmmods = 0;
 if (@settings_mainpmmods) {
     $settings_mainpmmods = 1;
 }
-##  languages ##
-our (
-    %croak,           %admin_txt,  %admintxt,      @months,
-    %countrytime_txt, $timeoffset, $imtext,        %timelocktxt,
-    %settings_txt,    %maintxt,    %userlevel_txt, %amv_txt,
-    %cutts,           %polltxt,    %qrb_txt,       %imtxt,
-    %amgtxt,          %rtype_text, %prereg_txt,    %register_txt,
-    %mdintxt,         %matxt
-);
-## paths ##
-our ( $adminurl, $yyhtml_root, $langdir, $facesdir, $htmldir );
-## settings ##
-our (
-    $forumstart,              $timeselected,
-    $default_tz,              $dstoffset,
-    %templateset,             $default_template,
-    $guest_view_limit,        $enable_pm_search,
-    $set_subject_maxlength,   $reg_reason_len,
-    $ml_allowed,              $default_userpic,
-    $enable_mc_away,          $enable_spell_check,
-    $qcksearchtype,           $qckage,
-    $usertxtwrap,             $tlnomodday,
-    $timelck,                 $temp_switcher_allowed,
-    $ppostperms,              $ptopicperms,
-    $edit_genderlimit,        $edit_agelimit,
-    $addmemgroup_enabled,     $birthday_on_reg,
-    $bypass_lock_perm,        $mbname,
-    $templ_switcher,          $forumnumberformat,
-    $dynamic_clock,           $timecorrection,
-    $profilebutton,           $usertools,
-    $showlatestmember,        $show_recentbar,
-    $showpageall,             $show_brd_descrip,
-    $showmodify,              $showuserpic,
-    $showusertext,            $showgenderimage,
-    $showregdate,             $hide_signat_for_guests,
-    $showallgroups,           $showzodiac,
-    $showuserage,             $showtopicviewers,
-    $showtopicrepliers,       $showimageinquote,
-    $enabletopichover,        $addtab_on,
-    $enable_ubbc,             $showyabbcbutt,
-    $parseflash,              $nestedquotes,
-    $autolinkurls,            $checkallcaps,
-    $ad_max_messlen,          $max_messlen,
-    $fontsizemin,             $fontsizemax,
-    $hot_topic,               $very_hot_topic,
-    $maxdisplay,              $maxmessagedisplay,
-    $user_reason,             $tlnomodflag,
-    $tlnomodtime,             $tlnodelflag,
-    $tlnodeltime,             $tllastmodflag,
-    $tllastmodtime,           $ttsureverse,
-    $tsreverse,               $ttsreverse,
-    $cutamount,               $numpolloptions,
-    $maxpq,                   $maxpo,
-    $maxpc,                   $useraddpoll,
-    $ubbcpolls,               $enablequickpost,
-    $enablequickreply,        $enablequoteuser,
-    $enabletz,                $quoteuser_color,
-    $enable_quickpost,        $enable_quickreply,
-    $enable_markquote,        $enable_quoteuser,
-    $enable_quickjump,        $maxsearchdisplay,
-    $quick_quotelength,       $mgadvsearch,
-    $enableguestsearch,       $mgqcksearch,
-    $enableguestquicksearch,  $enable_guest_view_limit,
-    $guestaccess,             $enable_guestposting,
-    $enable_guestlanguage,    $guest_media_disallowed,
-    $guest_view_limit_block,  $profile_int,
-    $allowpics,               $upload_useravatar,
-    $upload_avatargroup,      $avatar_limit,
-    $avatar_dirlimit,         $default_avatar,
-    $enable_notifications,    $allow_hide_email,
-    $user_hide_avatars,       $user_hide_user_text,
-    $user_hide_img,           $user_hide_attach,
-    $user_hide_attach_img,    $new_notification_alert,
-    $allowattach,             $user_hide_signat,
-    $user_hide_smilies_row,   $removenormalsmilies,
-    $showage,                 $emailnewpass,
-    $enable_buddylist,        $defaultusertxt,
-    $max_siglen,              $maxfavs,
-    $self_del_user,           $extendedprofiles,
-    $cookie_length,           $cookieusername,
-    $cookiepassword,          $cookietsort,
-    $cookieview,              $cookieviewtime,
-    $screenlogin,             $cookiesession_name,
-    $regtype,                 $preregspan,
-    $emailpassword,           $emailwelcome,
-    $name_cannot_be_userid,   $gender_on_reg,
-    $pwstrengthmeter_scores,  $pwstrengthmeter_common,
-    $pwstrengthmeter_minchar, $reg_agree,
-    $imp_email_check,         $nomailspammer,
-    $defaultml,               $top_posters,
-    $barmaxnumb,              $barmaxdepend,
-    $showuserpicml,           $group_stars_ml,
-    $mdadmin,                 $mdglobal,
-    $mdfmod,                  $mdmod,
-    $adminbin,                $adminview,
-    $gmodview,                $fmodview,
-    $modview,                 $enable_stealth,
-    $staff_reason,            $maxadminlog,
-    $pm_level,                $numposts,
-    $pm_spam_chk,             $imspam,
-    $send_welcomeim,          $sendname,
-    $imsubject,               $enable_bm_level,
-    $enable_guest_pm,         $enable_alert,
-    $enable_guest_alert,      $enable_imlimit,
-    $numobox,                 $numstore,
-    $numdraft,                $numibox,
-    $pm_enable_cc,            $pm_enable_bcc,
-    $enable_storefolders,     $max_pm_messlen,
-    $ad_max_pm_messlen,       $max_awaylen,
-    $cur_default_userpic
-);
-## other ##
-our ( $action, $lang, $modulLWP, $modulCrypt, $modulHTTP, $date, $scripturl,
-    %FORM );
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our (
+    %admin_txt,       %admintxt,    %amgtxt,        %amv_txt,
+    %countrytime_txt, %croak,       %cutts,         %imtxt,
+    %maintxt,         %matxt,       %mdintxt,       %polltxt,
+    %prereg_txt,      %qrb_txt,     %register_txt,  %rtype_text,
+    %settings_txt,    %timelocktxt, %userlevel_txt, @months,
+);
+## paths ##
+our ( $adminurl, $facesdir, $htmldir, $langdir, $scripturl, $yyhtml_root, );
+## settings ##
+our (
+    $ad_max_messlen,          $ad_max_pm_messlen,
+    $addmemgroup_enabled,     $addtab_on,
+    $adminbin,                $adminview,
+    $allow_hide_email,        $allowattach,
+    $allowpics,               $autolinkurls,
+    $avatar_dirlimit,         $avatar_limit,
+    $barmaxdepend,            $barmaxnumb,
+    $birthday_on_reg,         $bypass_lock_perm,
+    $checkallcaps,            $cookie_length,
+    $cookiepassword,          $cookiesession_name,
+    $cookietsort,             $cookieusername,
+    $cookieview,              $cookieviewtime,
+    $cutamount,               $default_avatar,
+    $default_template,        $default_tz,
+    $default_userpic,         $defaultml,
+    $defaultusertxt,          $dynamic_clock,
+    $edit_agelimit,           $edit_genderlimit,
+    $emailnewpass,            $emailpassword,
+    $emailwelcome,            $enable_alert,
+    $enable_bm_level,         $enable_buddylist,
+    $enable_guest_alert,      $enable_guest_pm,
+    $enable_guest_view_limit, $enable_guestlanguage,
+    $enable_guestposting,     $enable_imlimit,
+    $enable_markquote,        $enable_mc_away,
+    $enable_notifications,    $enable_pm_search,
+    $enable_quickjump,        $enable_quickpost,
+    $enable_quickreply,       $enable_quoteuser,
+    $enable_spell_check,      $enable_stealth,
+    $enable_storefolders,     $enable_ubbc,
+    $enableguestquicksearch,  $enableguestsearch,
+    $enabletopichover,        $enabletz,
+    $extendedprofiles,        $fmodview,
+    $fontsizemax,             $fontsizemin,
+    $forumnumberformat,       $forumstart,
+    $gender_on_reg,           $gmodview,
+    $group_stars_ml,          $guest_media_disallowed,
+    $guest_view_limit,        $guest_view_limit_block,
+    $guestaccess,             $hide_signat_for_guests,
+    $hot_topic,               $imp_email_check,
+    $imspam,                  $imsubject,
+    $imtext,                  $max_awaylen,
+    $max_messlen,             $max_pm_messlen,
+    $max_siglen,              $maxadminlog,
+    $maxdisplay,              $maxfavs,
+    $maxmessagedisplay,       $maxpc,
+    $maxpo,                   $maxpq,
+    $maxsearchdisplay,        $mbname,
+    $mdadmin,                 $mdfmod,
+    $mdglobal,                $mdmod,
+    $mgadvsearch,             $mgqcksearch,
+    $ml_allowed,              $modview,
+    $name_cannot_be_userid,   $nestedquotes,
+    $new_notification_alert,  $nomailspammer,
+    $numdraft,                $numibox,
+    $numobox,                 $numpolloptions,
+    $numposts,                $numstore,
+    $parseflash,              $pm_enable_bcc,
+    $pm_enable_cc,            $pm_level,
+    $pm_spam_chk,             $ppostperms,
+    $preregspan,              $profile_int,
+    $profilebutton,           $ptopicperms,
+    $pwstrengthmeter_common,  $pwstrengthmeter_minchar,
+    $pwstrengthmeter_scores,  $qckage,
+    $qcksearchtype,           $quick_quotelength,
+    $quoteuser_color,         $reg_agree,
+    $reg_reason_len,          $regtype,
+    $removenormalsmilies,     $screenlogin,
+    $self_del_user,           $send_welcomeim,
+    $sendname,                $set_subject_maxlength,
+    $show_brd_descrip,        $show_recentbar,
+    $showage,                 $showallgroups,
+    $showgenderimage,         $showimageinquote,
+    $showlatestmember,        $showmodify,
+    $showpageall,             $showregdate,
+    $showtopicrepliers,       $showtopicviewers,
+    $showuserage,             $showuserpic,
+    $showuserpicml,           $showusertext,
+    $showyabbcbutt,           $showzodiac,
+    $staff_reason,            $temp_switcher_allowed,
+    $templ_switcher,          $timecorrection,
+    $timeoffset,              $timeselected,
+    $tllastmodflag,           $tllastmodtime,
+    $tlnodelflag,             $tlnodeltime,
+    $tlnomodday,              $tlnomodflag,
+    $tlnomodtime,             $top_posters,
+    $tsreverse,               $ttsreverse,
+    $ttsureverse,             $ubbcpolls,
+    $upload_avatargroup,      $upload_useravatar,
+    $user_hide_attach_img,    $user_hide_avatars,
+    $user_hide_img,           $user_hide_signat,
+    $user_hide_smilies_row,   $user_hide_user_text,
+    $user_reason,             $useraddpoll,
+    $usertools,               $usertxtwrap,
+    $very_hot_topic,          %templateset
+);
+## system ##
+our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM );
 
 # Language requirements
 load_language('Admin');
@@ -397,8 +394,8 @@ my @ppperms = qw(pp0 pp1 pp2 pt0 pt1 pt2);
     }
 }
 
-if   ($tlnomodday) { $timelck = $timelocktxt{'09'}; }
-else               { $timelck = $timelocktxt{'10'}; }
+my $timelck = $timelocktxt{'10'};
+if ($tlnomodday) { $timelck = $timelocktxt{'09'}; }
 $temp_switcher_allowed ||= 0;
 $ppostperms            ||= 0;
 $ptopicperms           ||= 0;
@@ -2196,109 +2193,113 @@ qq~<input type="text" name="max_awaylen" id="max_awaylen" size="5" value="$max_a
 );
 
 # Routine to save them
-sub save_settings {
-    my %settings = @_;
+{
+    no warnings qw(redefine);    #save_settings sub
 
-    # Validate forum_start stuff
-    for (
-        qw(forumstart_month forumstart_day forumstart_year forumstart_hour forumstart_minute forumstart_secund)
-      )
-    {
-        $FORM{$_} =~ s/\D//gxsm;
-    }
-    $forumstart_month  = $FORM{'forumstart_month'};
-    $forumstart_day    = $FORM{'forumstart_day'};
-    $forumstart_year   = $FORM{'forumstart_year'};
-    $forumstart_hour   = $FORM{'forumstart_hour'};
-    $forumstart_minute = $FORM{'forumstart_minute'};
-    $forumstart_secund = $FORM{'forumstart_secund'};
-    my $max_days = 31;
+    sub save_settings {
+        my %settings = @_;
 
-    if (   $forumstart_month == 4
-        || $forumstart_month == 6
-        || $forumstart_month == 9
-        || $forumstart_month == 11 )
-    {
-        $max_days = 30;
-    }
-    elsif ($forumstart_month == 2
-        && $forumstart_year % 4 == 0
-        && $forumstart_year != 0 )
-    {
-        $max_days = 29;
-    }
-    elsif ( $forumstart_month == 2
-        && ( $forumstart_year % 4 != 0 || $forumstart_year == 0 ) )
-    {
-        $max_days = 28;
-    }
-    if ( $forumstart_day > $max_days ) { $forumstart_day = $max_days; }
-    $forumstart =
+        # Validate forum_start stuff
+        for (
+            qw(forumstart_month forumstart_day forumstart_year forumstart_hour forumstart_minute forumstart_secund)
+          )
+        {
+            $FORM{$_} =~ s/\D//gxsm;
+        }
+        $forumstart_month  = $FORM{'forumstart_month'};
+        $forumstart_day    = $FORM{'forumstart_day'};
+        $forumstart_year   = $FORM{'forumstart_year'};
+        $forumstart_hour   = $FORM{'forumstart_hour'};
+        $forumstart_minute = $FORM{'forumstart_minute'};
+        $forumstart_secund = $FORM{'forumstart_secund'};
+        my $max_days = 31;
+
+        if (   $forumstart_month == 4
+            || $forumstart_month == 6
+            || $forumstart_month == 9
+            || $forumstart_month == 11 )
+        {
+            $max_days = 30;
+        }
+        elsif ($forumstart_month == 2
+            && $forumstart_year % 4 == 0
+            && $forumstart_year != 0 )
+        {
+            $max_days = 29;
+        }
+        elsif ( $forumstart_month == 2
+            && ( $forumstart_year % 4 != 0 || $forumstart_year == 0 ) )
+        {
+            $max_days = 28;
+        }
+        if ( $forumstart_day > $max_days ) { $forumstart_day = $max_days; }
+        $forumstart =
 qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstart_hour:$forumstart_minute:$forumstart_secund~;
 
-    # Validate Timezone
-    if ($enabletz) {
-        if ( $FORM{'default_tz'} eq q{-} ) {
-            $default_tz = 'UTC';
+        # Validate Timezone
+        if ($enabletz) {
+            if ( $FORM{'default_tz'} eq q{-} ) {
+                $default_tz = 'UTC';
+            }
+            else { $default_tz = $FORM{'default_tz'}; }
         }
-        else { $default_tz = $FORM{'default_tz'}; }
-    }
-    else { $default_tz = 'UTC'; }
+        else { $default_tz = 'UTC'; }
 
-    $FORM{'usertimesign'} ||= q{};
-    $FORM{'usertimehour'} ||= 0;
-    $FORM{'usertimemin'}  ||= 0;
-    $timeoffset = $FORM{'usertimesign'} =~ /^-$/xsm ? q{-} : q{};
-    $timeoffset .=
-      $FORM{'usertimehour'} =~ /^\d+$/xsm ? $FORM{'usertimehour'} : '0';
-    $timeoffset .= q{.};
-    $timeoffset .=
-      $FORM{'usertimemin'} =~ /^\d+$/xsm ? $FORM{'usertimemin'} : '0';
+        $FORM{'usertimesign'} ||= q{};
+        $FORM{'usertimehour'} ||= 0;
+        $FORM{'usertimemin'}  ||= 0;
+        $timeoffset = $FORM{'usertimesign'} =~ /^-$/xsm ? q{-} : q{};
+        $timeoffset .=
+          $FORM{'usertimehour'} =~ /^\d+$/xsm ? $FORM{'usertimehour'} : '0';
+        $timeoffset .= q{.};
+        $timeoffset .=
+          $FORM{'usertimemin'} =~ /^\d+$/xsm ? $FORM{'usertimemin'} : '0';
 
-    # Get barmaxnumb
-    $settings{'barmaxnumb'} = $FORM{'barmaxnumb'};
-    $settings{'barmaxnumb'} =~ s/\D//gxsm;
+        # Get barmaxnumb
+        $settings{'barmaxnumb'} = $FORM{'barmaxnumb'};
+        $settings{'barmaxnumb'} =~ s/\D//gxsm;
 
-    # Fix guestaccess
-    $settings{'guestaccess'} = !$settings{'guestaccess'} || 0;
-    $settings{'imtext'} =~ s/\r(?=\n*)//gxsm;
-    $settings{'imtext'} =~ s/\n/<br \/>/gxsm;
+        # Fix guestaccess
+        $settings{'guestaccess'} = !$settings{'guestaccess'} || 0;
+        $settings{'imtext'} =~ s/\r(?=\n*)//gxsm;
+        $settings{'imtext'} =~ s/\n/<br \/>/gxsm;
 
-    # Fix $pwstrengthmeter_common
-    $settings{'pwstrengthmeter_common'} =~ s/\x27//gxsm;
-    if (
-        (
-               $settings{'set_subject_maxlength'} < 10
-            && $settings{'set_subject_maxlength'} != 0
-        )
-        || $settings{'set_subject_maxlength'} > 255
-      )
-    {
-        fatal_error( 'invalid_value',
-            "set_subject_maxlength ($admin_txt{'498a'})" );
-    }
-
-    # Convert unwanted tags in Board Name
-    to_html( $settings{'mbname'} );
-
-    # Upload default avatar
-    $cur_default_userpic = $FORM{'cur_default_userpic'};
-    if ( $settings{'default_userpic'} ne q{} ) {
-        $settings{'default_userpic'} = upload_file(
-            'default_userpic',  'Templates/Forum/default',
-            'png/jpg/jpeg/gif', '250',
-            '0'
-        );
-        if ( $cur_default_userpic ne 'nn.gif' ) {
-            unlink "$htmldir/Templates/Forum/default/$cur_default_userpic";
+        # Fix $pwstrengthmeter_common
+        $settings{'pwstrengthmeter_common'} =~ s/\x27//gxsm;
+        if (
+            (
+                   $settings{'set_subject_maxlength'} < 10
+                && $settings{'set_subject_maxlength'} != 0
+            )
+            || $settings{'set_subject_maxlength'} > 255
+          )
+        {
+            fatal_error( 'invalid_value',
+                "set_subject_maxlength ($admin_txt{'498a'})" );
         }
-    }
-    else {
-        $settings{'default_userpic'} = $cur_default_userpic;
-    }
 
-    save_settings_to( 'Settings.pm', %settings );
-    return;
+        # Convert unwanted tags in Board Name
+        to_html( $settings{'mbname'} );
+
+        # Upload default avatar
+        my $cur_default_userpic = $FORM{'cur_default_userpic'};
+        if ( $settings{'default_userpic'} ne q{} ) {
+            $settings{'default_userpic'} = upload_file(
+                'default_userpic',  'Templates/Forum/default',
+                'png/jpg/jpeg/gif', '250',
+                '0'
+            );
+            if ( $cur_default_userpic ne 'nn.gif' ) {
+                unlink "$htmldir/Templates/Forum/default/$cur_default_userpic";
+            }
+        }
+        else {
+            $settings{'default_userpic'} = $cur_default_userpic;
+        }
+
+        save_settings_to( 'Settings.pm', %settings );
+        return;
+    }
 }
 
 1;

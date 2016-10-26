@@ -40,16 +40,12 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our (
-    %croak,      $rgb_foreground, $rgb_shade, $rgb_background,
-    $translayer, $distortion,     $randomizer,
-);
+our ( $distortion, $randomizer, $rgb_background, $rgb_foreground, $rgb_shade,
+    $translayer, %croak, );
 my $OUTPUT_AUTOFLUSH = 1;
 
 $rgb_foreground ||= '0000EE';
-
-$rgb_shade ||= '999999';
-
+$rgb_shade      ||= '999999';
 $rgb_background ||= 'FFFFFF';
 ## no critic
 sub captcha {

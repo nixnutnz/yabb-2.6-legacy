@@ -22,6 +22,7 @@ $cat_col = $newload{'brd_col'};
 $cat_exp = $newload{'brd_exp'};
 $post_error = qq~$imagesdir/exclamation.png~;
 
+$my_spacer = q{};
 if (!$enable_quickreply) {$my_spacer = ' style="margin-bottom:1em;"';}
 $messageclass = 'message';
 $palwidth = 308;
@@ -58,8 +59,8 @@ $mypost_postblock = qq~
 </div>
 <div class="padd_3px vtop">
 {yabb mypost_smilie_array}
-    {yabb my_post_smilies}
 {yabb my_post_feata}
+{yabb my_post_smilies}
 {yabb my_feat5}
 {yabb my_is_prev}
 {yabb notification}
@@ -184,7 +185,7 @@ $my_poll_options = qq~<tr>
             <input type="text" size="30" maxlength="{yabb maxpo}" name="option{yabb i}" id="option{yabb i}" value="{yabb options_i}" />
         </td>
         <td class="windowbg2 center">
-            <input type="text" size="2" name="slicecolor{yabb i}" id="slicecolor{yabb i}" value="" style="background-color: {yabb slicecolor_i}; border: 1px outset {yabb slicecolor_i}; cursor: pointer;" readonly="readonly" />
+            <input type="text" size="3" name="slicecolor{yabb i}" id="slicecolor{yabb i}" value="" style="background-color: {yabb slicecolor_i}; border: 1px outset {yabb slicecolor_i}; cursor: pointer;" readonly="readonly" />
             <input type="hidden" name="slicecol{yabb i}" id="slicecol{yabb i}" value="{yabb slicecolor_i}" />
         </td>
         <td class="windowbg2 center">
@@ -304,14 +305,14 @@ $mypost_guest_fields = qq~{yabb alertnote}<tr>
 
 $mypost_guest_c = qq~<tr>
                 <td class="windowbg vtop">
-                    <label for="verification"><strong>$floodtxt{'1'}:</strong></label>
+                    <label for="verification"><b>$floodtxt{'1'}:</b></label>
                 </td>
                 <td class="windowbg vtop" colspan="3">{yabb showcheck}
                     <br /><span class="small">{yabb flood_text}</span>
                 </td>
             </tr><tr>
                 <td class="windowbg vtop">
-                    <label for="verification"><strong>$floodtxt{'3'}:</strong></label>
+                    <label for="verification"><b>$floodtxt{'3'}:</b></label>
                 </td>
                 <td class="windowbg vtop" colspan="3">
                     <input type="text" maxlength="30" name="verification" id="verification" size="30" onchange="autoPreview()" />
@@ -321,7 +322,7 @@ $mypost_guest_c = qq~<tr>
 $mypost_guest_e = qq~<tr>
                 <td class="windowbg vtop">
                    <label for="verification_question">
-                       <strong>{yabb spam_question}</strong>
+                       <b>{yabb spam_question}</b>
                        <br /><span class="small">$post_txt{'verification_question_desc'} {yabb verification_question_desc}</span>
                    </label>
                    <input type="hidden" name="verification_question_id" value="{yabb spam_question_id}" />
@@ -334,7 +335,7 @@ $mypost_guest_e = qq~<tr>
 
 $mypost_veri_a = qq~<tr>
                 <td class="windowbg vtop">
-                    <label for="verification"><strong>$floodtxt{'3'}:</strong></label>
+                    <label for="verification"><b>$floodtxt{'3'}:</b></label>
                 </td>
                 <td class="windowbg vtop" colspan="3">{yabb showcheck}
                     <br /><span class="small">{yabb flood_text}</span>
@@ -345,7 +346,7 @@ $mypost_veri_a = qq~<tr>
 
 $mypost_veri_b = qq~<tr>
                 <td class="windowbg vtop">
-                    <label for="verification_question"><strong>{yabb spam_question}</strong></label>
+                    <label for="verification_question"><b>{yabb spam_question}</b></label>
                 </td>
                 <td class="windowbg" colspan="3">{yabb verification_question}
                     <input type="hidden" name="verification_question" value="{yabb verification_question}" />
@@ -356,7 +357,7 @@ $mypost_veri_b = qq~<tr>
 
 $mypost_veri_c = qq~<tr>
                 <td class="windowbg vtop">
-                    <label for="verification_question"><strong>{yabb spam_question}</strong>
+                    <label for="verification_question"><b>{yabb spam_question}</b>
                         <br /><span class="small">$post_txt{'verification_question_desc'} {yabb verification_question_desc}</span>
                     </label>
                 </td>
@@ -369,7 +370,7 @@ $mypost_veri_c = qq~<tr>
 
 ## ModifyPost insert
 $mypost_lastmod = qq~<tr class="windowbg">
-        <td class="vtop"><strong>$post_txt{'211'}:</strong></td>
+        <td class="vtop"><b>$post_txt{'211'}:</b></td>
         <td>{yabb lastmod_a}</td>
     </tr>~;
 

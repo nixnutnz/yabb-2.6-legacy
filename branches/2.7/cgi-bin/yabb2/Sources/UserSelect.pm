@@ -15,7 +15,6 @@
 use strict;
 no strict qw(refs);
 use warnings;
-no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode_utf8 encode_utf8);
@@ -35,27 +34,26 @@ if ( $action eq 'detailedversion' ) { return 1; }
 our ( %croak, %pidtxt, %register_txt, %usersel_txt, @alpha );
 ## locations ##
 our ( $memberdir, $scripturl, $imagesdir );
-## system ##
-our (
-    $iamguest,       $username,       %INFO,            %FORM,
-    $uid,            %memberinf,      $staff,           $iamadmin,
-    $iamgmod,        $iamfmod,        %user_pm_level,   $yymain,
-    $yytitle,        $ml_index_left0, $ml_index_right0, $ml_index_left,
-    $ml_index_right, $formsession,    $yytrace,
-);
 ## settings ##
 our (
-    $pm_enable_cc, $pm_enable_bcc,  @nopostorder, $pm_level,
-    $ml_allowed,   $do_scramble_id, %grp_nopost,  $showpageall,
-    $yymycharset,  $matchcase,      $matchname,   $matchword,
-    $matchuser,    @reserve,
+    $do_scramble_id, $matchcase,   $matchname,     $matchuser,
+    $matchword,      $ml_allowed,  $pm_enable_bcc, $pm_enable_cc,
+    $pm_level,       $showpageall, $yymycharset,   %grp_nopost,
+    @nopostorder,    @reserve,
+);
+## system ##
+our (
+    $formsession,     $iamadmin,      $iamfmod,        $iamgmod,
+    $iamguest,        $ml_index_left, $ml_index_left0, $ml_index_right,
+    $ml_index_right0, $staff,         $uid,            $username,
+    $yymain,          $yytitle,       $yytrace,        %FORM,
+    %INFO,            %memberinf,     %user_pm_level,
 );
 ## templates ##
 our (
-    $my_bcc_radio,      $my_quicksearch, $my_sel_box,
-    $my_tableheader_lt, $my_tableheader, $my_usersel,
-    $my_usersel_inst,   $my_usersel_tem, $visel_0,
-    $visel_1a,          $visel_1b,       $visel_2a,
+    $my_bcc_radio,      $my_quicksearch, $my_sel_box,      $my_tableheader,
+    $my_tableheader_lt, $my_usersel,     $my_usersel_inst, $my_usersel_tem,
+    $visel_0,           $visel_1a,       $visel_1b,        $visel_2a,
     $visel_3a,          $visel_4,
 );
 
@@ -114,8 +112,8 @@ sub member_list {
     if ( -e "$memberdir/$username.usctmp" && $INFO{'sort'} ne 'pmsearch' ) {
         unlink "$memberdir/$username.usctmp";
     }
-    if   ( $INFO{'start'} eq q{} ) { $start = 0; }
-    else                           { $start = $INFO{'start'}; }
+    if ( !$INFO{'start'} || $INFO{'start'} eq q{} ) { $start = 0; }
+    else                                            { $start = $INFO{'start'}; }
 
     $to_id = $INFO{'toid'};
     my $radiobuttons = q{};
@@ -208,8 +206,10 @@ qq~<div class="letterlinks_c"><span class="small"><b>$usersel_txt{'allsearch'}</
 qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=all"><span class="small"><b>$usersel_txt{'allsearch'}</b></span></a></div>~;
         }
     }
-    if ( $to_id eq 'groups' )       { $letterlinks = q{}; }
-    if ( $INFO{'letter'} ne 'all' ) { $letter      = $INFO{'letter'}; }
+    if ( $to_id eq 'groups' ) { $letterlinks = q{}; }
+    if ( $INFO{'letter'} && $INFO{'letter'} ne 'all' ) {
+        $letter = $INFO{'letter'};
+    }
 
     my $i = 0;
     $recent_exist = 1;
@@ -266,20 +266,22 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
                     }
                 }
             }
-            open my $FILE, '>', "$memberdir/$username.usctmp"
+            our ($FILE);
+            fopen( 'FILE', '>', "$memberdir/$username.usctmp" )
               or croak "$croak{'open'} usctmp";
             print {$FILE} $prnusctmp or croak "$croak{'print'} usctmp";
-            close $FILE or croak "$croak{'close'} usctmp";
+            fclose('FILE') or croak "$croak{'close'} usctmp";
             undef %memberinf;
         }
-        open my $FILE, '<', "$memberdir/$username.usctmp"
+        our ($FILE);
+        fopen( 'FILE', '<', "$memberdir/$username.usctmp" )
           or croak "$croak{'open'} usctmp";
         while ( my $line = <FILE> ) {
             chomp $line;
             my ( $recentname, $realinfo ) = split /,/xsm, $line;
             $memberinf{$recentname} = $realinfo;
         }
-        close $FILE or croak "$croak{'close'} usctmp";
+        fclose('FILE') or croak "$croak{'close'} usctmp";
 
     }
     elsif ( $to_id eq 'groups' ) {
@@ -518,13 +520,15 @@ sub build_index_us {
         my ( $pagetxtindex, $pagedropindex, $all, $allselected );
         my $indexdisplaynum = 3;
         my $dropdisplaynum  = 10;
-        if ( $FORM{'sortform'} eq q{} ) { $FORM{'sortform'} = $INFO{'sort'}; }
+        if ( !$FORM{'sortform'} || $FORM{'sortform'} eq q{} ) {
+            $FORM{'sortform'} = $INFO{'sort'};
+        }
         my $postdisplaynum = 3;
         my $startpage      = 0;
         my $max            = $memcount;
         my ($endpage);
 
-        if ( $INFO{'start'} eq 'all' ) {
+        if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
             $members_perpage = $max;
             $all             = 1;
             $allselected     = q~ selected="selected"~;
@@ -715,7 +719,8 @@ sub build_pages_us {
         $instructtext =
           qq~<label for="member">$usersel_txt{'instruct2'}</label>~;
     }
-    my ( $not_groups, $not_groups_b );
+    my $not_groups   = q{};
+    my $not_groups_b = q{};
     if ( $to_id ne 'groups' ) {
         $not_groups = qq~
             <form action="$scripturl?action=findmember;sort=pmsearch;toid=$to_id" method="post" id="form1" name="form1" enctype="application/x-www-form-urlencoded" style="display:inline; vertical-align:middle;" accept-charset="$yymycharset">
@@ -757,7 +762,7 @@ sub build_pages_us {
     if ( $numend > $memcount ) { $numend  = $memcount; }
     if ( $memcount == 0 )      { $numshow = q{}; }
     else { $numshow = qq~($numbegin - $numend $usersel_txt{'of'} $memcount)~; }
-    my ($my_inst3);
+    my $my_inst3 = q{};
     if ( $x[0] ) {
         $yymain .= $my_usersel;
         $yymain =~ s/\Q{yabb TableHeader}\E/$table_header/xsm;
@@ -767,6 +772,7 @@ sub build_pages_us {
         if ( $to_id ne 'groups' ) {
             $my_inst3 = $usersel_txt{'instruct3'};
         }
+        $pageindexjs ||= q{};
         $yymain .= $my_usersel_inst;
         $yymain =~ s/\Q{yabb instruct_start}\E/$instruct_start/xsm;
         $yymain =~ s/\Q{yabb inst3}\E/$my_inst3/xsm;
@@ -825,26 +831,29 @@ qq~<br />loadrecentpms from ($pack, $file, $line)<br />=========================
     ## harvest already-used membernames
     my ( @userinbox, @useroutbox, @userstore, @usermessages );
     if ( -e "$memberdir/$username.msg" ) {
-        open my $USERMSG, '<', "$memberdir/$username.msg"
+        our ($USERMSG);
+        fopen( 'USERMSG', '<', "$memberdir/$username.msg" )
           or croak "$croak{'open'} msg";
         @userinbox = <$USERMSG>;
-        close $USERMSG or croak "$croak{'close'} msg";
+        fclose('USERMSG') or croak "$croak{'close'} msg";
         if (@userinbox) { push @usermessages, @userinbox; }
         undef @userinbox;
     }
     if ( -e "$memberdir/$username.outbox" ) {
-        open my $USEROUT, '<', "$memberdir/$username.outbox"
+        our ($USEROUT);
+        fopen( 'USEROUT', '<', "$memberdir/$username.outbox" )
           or croak "$croak{'open'} outbox";
         @useroutbox = <$USEROUT>;
-        close $USEROUT or croak "$croak{'close'} outbox";
+        fclose('USEROUT') or croak "$croak{'close'} outbox";
         if (@useroutbox) { push @usermessages, @useroutbox; }
         undef @useroutbox;
     }
     if ( -e "$memberdir/$username.imstore" ) {
-        open my $USERSTR, '<', "$memberdir/$username.imstore"
+        our ($USERSTR);
+        fopen( 'USERSTR', '<', "$memberdir/$username.imstore" )
           or croak "$croak{'open'} imstore";
         @userstore = <$USERSTR>;
-        close $USERSTR or croak "$croak{'close'} imstore";
+        fclose('USERSTR') or croak "$croak{'close'} imstore";
         if (@userstore) { push @usermessages, @userstore; }
         undef @userstore;
     }

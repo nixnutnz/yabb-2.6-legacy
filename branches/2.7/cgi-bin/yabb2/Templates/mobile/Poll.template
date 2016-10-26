@@ -65,7 +65,7 @@ $mypoll_display = qq~
             {yabb poll_icon} <b>{yabb polltxt_16}</b>: {yabb poll_question}
         </div>
         <div style="float: left; width: 50%; text-align: right;">
-            <span class="small">{yabb lockpoll}{yabb modifypoll}{yabb deletepoll}</span>
+            {yabb lockpoll}{yabb modifypoll}{yabb deletepoll}
         </div>
         <div class="clear"></div>
     </div>
@@ -105,8 +105,8 @@ $mypoll_hasvoted = q~
 
 $mypoll_notlocked = qq~
            <div style="float: right; width: 55px; text-align: right; margin-right:4px">
-                <a href="$scripturl?num=$viewnum" style="margin:right:2em;">{yabb pollbar}</a><a href="$scripturl?num=$viewnum;view=pie">$poll_pie</a>
-           </div>
-~;
+                <a href="$scripturl?num=$viewnum">$poll_bar</a> &nbsp;
+                <a href="$scripturl?num=$viewnum;view=pie">$poll_pie</a>
+           </div>~;
 
 1;

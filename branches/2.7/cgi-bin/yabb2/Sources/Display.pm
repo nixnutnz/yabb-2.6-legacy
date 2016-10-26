@@ -1,6 +1,6 @@
 ###############################################################################
 # Display.pm                                                                  #
-# $Date: 12.31.15 $                                                           #
+# $Date: 06.01.16 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -31,9 +31,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
 our (
-    %croak,   %display_txt, %img,       %index_togl,    %pidtxt,
-    %maintxt, %micon,       %att_img,   %micon_bg,      %fatxt,
-    %img_txt, %tmpimg,      %bookmarks, %sendtopic_txt, $abbr_lang
+    $abbr_lang,   %att_img,       %bookmarks, %croak,
+    %display_txt, %fatxt,         %img,       %img_txt,
+    %index_togl,  %maintxt,       %micon,     %micon_bg,
+    %pidtxt,      %sendtopic_txt, %tmpimg,
 );
 ## locations ##
 our (
@@ -228,10 +229,11 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
           : $date - ( $max_log_days_old * 86400 );
 
         if ( !ref $thread_arrayref{$mnum} ) {
-            open my $MNUM, '<', "$datadir/$mnum.txt"
+            our ($MNUM);
+            fopen( 'MNUM', '<', "$datadir/$mnum.txt" )
               or croak "$croak{'open'} $mnum.txt";
             @{ $thread_arrayref{$mnum} } = <$MNUM>;
-            close $MNUM or croak "$croak{'close'} $mnum.txt";
+            fclose('MNUM') or croak "$croak{'close'} $mnum.txt";
         }
         my $i = -1;
         foreach ( @{ $thread_arrayref{$mnum} } ) {
@@ -889,10 +891,11 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
     if ( !$use_menu_type ) { $sm = 1; }
 
     if ( !ref $thread_arrayref{$viewnum} ) {
-        open my $MSGTXT, '<', "$datadir/$viewnum.txt"
+        our ($MSGTXT);
+        fopen( 'MSGTXT', '<', "$datadir/$viewnum.txt" )
           or fatal_error( 'cannot_open', "$datadir/$viewnum.txt", 1 );
         @{ $thread_arrayref{$viewnum} } = <$MSGTXT>;
-        close $MSGTXT or croak "$croak{'close'} $viewnum.txt";
+        fclose('MSGTXT') or croak "$croak{'close'} $viewnum.txt";
     }
     my $counter = 0;
     my @messages;
@@ -994,7 +997,8 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
 
             # store all downloadcounts in variable
             if ( !%attach_count ) {
-                open my $ATM, '<', "$vardir/attachments.db"
+                our ($ATM);
+                fopen( 'ATM', '<', "$vardir/attachments.db" )
                   or croak "$croak{'open'} attach";
                 while (<$ATM>) {
                     chomp;
@@ -1004,7 +1008,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                     ) = split /[|]/xsm;
                     $attach_count{$atfile} = $atcount;
                 }
-                close $ATM or croak "$croak{'open'} attach";
+                fclose('ATM') or croak "$croak{'open'} attach";
                 if ( !%attach_count ) { $attach_count{'no_attachments'} = 1; }
             }
             my ($ext);

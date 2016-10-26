@@ -28,24 +28,28 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language/ paths ##
 our (
-    %croak,         $rss_disabled,     $enable_ubbc,
-    %INFO,          $rss_limit,        $currentboard,
-    $boardperms,    $annboard,         $iamadmin,
-    $iamgmod,       $uid,              $cookiepassword,
-    $username,      $staff,            %yy_cookies,
-    $boardsdir,     $rss_message,      $mbname,
-    $boardname,     $accept_permalink, $accept_permafull,
-    $yymain,        $perm_domain,      $symlink,
-    $scripturl,     $datadir,          $showauthor,
-    $memberdir,     $showdate,         %maintxt,
-    $yytitle,       $yydesc,           $rssemail,
-    @categoryorder, $curboard,         %cat,
-    %catinfo,       %board,            %subboard,
-    $perm_spacer,   $date,             $mydesc,
-    $yymycharset,   %error_txt,        $debug,
-    $elenable,      $script_root,      %director,
-    $gzcomp
+    $boardsdir, $datadir,   $memberdir, $scripturl,
+    %croak,     %error_txt, %maintxt,
+);
+## settings ##
+our (
+    $accept_permafull, $accept_permalink, $cookiepassword,
+    $debug,            $elenable,         $enable_ubbc,
+    $gzcomp,           $mbname,           $perm_domain,
+    $perm_spacer,      $rss_disabled,     $rss_limit,
+    $rss_message,      $rssemail,         $showauthor,
+    $showdate,         $symlink,          $yymycharset,
+);
+## system ##
+our (
+    $annboard,     $boardname,   $boardperms, $curboard,
+    $currentboard, $date,        $iamadmin,   $iamgmod,
+    $mydesc,       $script_root, $staff,      $uid,
+    $username,     $yydesc,      $yymain,     $yytitle,
+    %board,        %cat,         %catinfo,    %director,
+    %INFO,         %subboard,    %yy_cookies, @categoryorder,
 );
 
 # Change the error routine for here.
@@ -187,7 +191,8 @@ sub rss_board {
         }
 
         my $post;
-        open my $TOPIC, '<', "$datadir/$curnum.txt"
+        our ($TOPIC);
+        fopen( 'TOPIC', '<', "$datadir/$curnum.txt" )
           || rss_error( 'cannot_open', "$datadir/$curnum.txt", 1 );
         if ( $rss_message == 1 ) {
 
@@ -202,7 +207,7 @@ sub rss_board {
             # Open up the thread and read the first post.
             $post = <$TOPIC>;
         }
-        close $TOPIC or croak "$croak{'close'} $curnum.txt";
+        fclose('TOPIC') or croak "$croak{'close'} $curnum.txt";
         our ($message);
         if ($post) {
             (
@@ -338,7 +343,8 @@ sub rss_recent {
                         }
                     }
                 }
-                open my $BOARD, '<', "$boardsdir/$brd.txt"
+                our ($BOARD);
+                fopen( 'BOARD', '<', "$boardsdir/$brd.txt", 1 )
                   || rss_error( 'cannot_open', "$boardsdir/$brd.txt", 1 );
                 for my $i ( 0 .. ( $topics - 1 ) ) {
                     my $buffer = <$BOARD>;
@@ -447,7 +453,8 @@ sub rss_recent {
         }
 
         my $post;
-        open my $TOPIC, '<', "$datadir/$curnum.txt"
+        our ($TOPIC);
+        fopen( 'TOPIC', '<', "$datadir/$curnum.txt" )
           || rss_error( 'cannot_open', "$datadir/$curnum.txt", 1 );
         if ( $rss_message == 1 ) {
 
@@ -462,7 +469,7 @@ sub rss_recent {
             # Open up the thread and read the first post.
             $post = <$TOPIC>;
         }
-        close $TOPIC or croak "$croak{'close'} $curnum.txt";
+        fclose('TOPIC') or croak "$croak{'close'} $curnum.txt";
         our ($message);
         my ($ns);
         if ($post) {

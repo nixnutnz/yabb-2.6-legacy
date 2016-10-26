@@ -26,21 +26,22 @@ if (@mailmemberspmmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %amv_txt, %ml_txt );
+our ( %admin_txt, %admintxt, %admin_img, %amv_txt, %croak, %ml_txt );
 ## paths ##
-our ( $adminurl, $yyhtml_root, $vardir );
+our ( $adminurl, $vardir, $yyhtml_root );
 ## settings ##
 our (
-    $yymycharset, %grp_staff, @nopostorder,
-    %grp_nopost,  %grp_post,  $do_scramble_id
+    $do_scramble_id, $yymycharset, %grp_nopost,
+    %grp_post,       %grp_staff,   @nopostorder,
 );
-## other ##
+## system ##
 our (
-    $yymain,   $yytitle, $yysetlocation, $action_area,
-    $language, %INFO,    %FORM,          $date,
-    $iamguest, $uid,     $username,      $scripturl,
-    $checking_all
+    $action_area, $checking_all,  $date,    $iamguest,
+    $language,    $scripturl,     $uid,     $username,
+    $yymain,      $yysetlocation, $yytitle, %FORM,
+    %INFO,
 );
 
 if ($iamguest) { fatal_error('no_access'); }
@@ -175,10 +176,11 @@ sub mailing {
     ~;
         my @maillist;
         if ( -e ("$vardir/maillist.dat") ) {
-            open my $FILE, '<', "$vardir/maillist.dat"
+            our ($FILE);
+            fopen( 'FILE', '<', "$vardir/maillist.dat" )
               or croak "$croak{'open'} maillist.dat";
             @maillist = <$FILE>;
-            close $FILE or croak "$croak{'close'} maillist.dat";
+            fclose('FILE') or croak "$croak{'close'} maillist.dat";
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
             <colgroup>
@@ -317,10 +319,11 @@ sub mailing2 {
     if (@convlist) {
         my $prlist = "Name;E-mail Address\n";
         $prlist .= join q{}, @convlist;
-        open my $ADDRESSLIST, '>', "$vardir/yabbaddress.csv"
+        our ($ADDRESSLIST);
+        fopen( 'ADDRESSLIST', '>', "$vardir/yabbaddress.csv", 1 )
           or croak "$croak{'open'} yabbaddress";
         print {$ADDRESSLIST} $prlist or croak "$croak{'print'} ADDRESSLIST";
-        close $ADDRESSLIST or croak "$croak{'close'} yabbaddress";
+        fclose('ADDRESSLIST') or croak "$croak{'close'} yabbaddress";
     }
     elsif ( $FORM{'convert'} ) {
         unlink "$vardir/yabbaddress.csv";
@@ -332,10 +335,11 @@ sub mailing2 {
 }
 
 sub mailing3 {
-    open my $FILE, '<', "$vardir/yabbaddress.csv"
+    our ($FILE);
+    fopen( 'FILE', '<', "$vardir/yabbaddress.csv" )
       or croak "$croak{'open'} yabbaddress";
     my @addlist = <$FILE>;
-    close $FILE or croak "$croak{'close'} yabbaddress";
+    fclose('FILE') or croak "$croak{'close'} yabbaddress";
     print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~
       or croak "$croak{'print'} yabbaddress";
     for my $curadd (@addlist) {
@@ -604,10 +608,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     ~;
         my @maillist;
         if ( -e ("$vardir/maillist.dat") ) {
-            open my $FILE, '<', "$vardir/maillist.dat"
+            our ($FILE);
+            fopen( 'FILE', '<', "$vardir/maillist.dat" )
               or croak "$croak{'open'} maillist.dat";
             @maillist = <$FILE>;
-            close $FILE or croak "$croak{'close'} maillist.dat";
+            fclose('FILE') or croak "$croak{'close'} maillist.dat";
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
             <colgroup>

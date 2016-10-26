@@ -23,20 +23,23 @@ our $antispamquestionspmmods = 0;
 if (@antispamquestionspmmods) {
     $antispamquestionspmmods = 1;
 }
-## languages ##
-our ( %croak, %spam_question_txt, %admin_txt, %admin_img, %admintxt );
-## paths ##
-our ( $langdir, $adminurl, $defaultimagesdir, $htmldir, );
-## settings ##
-our ( $en_spam_questions, $spam_questions_send, $spam_questions_gp, );
-## other ##
-our (
-    $action,        %FORM,        %INFO,    $lang,
-    $yymain,        $yymycharset, $yytitle, $data,
-    $yysetlocation, $action_area, $date,
-);
+
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+## languages ##
+our ( %admin_img, %admin_txt, %admintxt, %croak, %spam_question_txt, );
+## paths ##
+our ( $adminurl, $defaultimagesdir, $htmldir, $langdir, );
+## settings ##
+our ( $en_spam_questions, $lang, $spam_questions_gp, $spam_questions_send, );
+## system ##
+our (
+    $action_area, $data,        $date,
+    $yymain,      $yymycharset, $yysetlocation,
+    $yytitle,     %FORM,        %INFO,
+);
 
 load_language('Admin');
 
@@ -62,12 +65,13 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
     }
     my (@spam_questions);
     if ( -e "$langdir/$questions_language/spam.questions" ) {
-        open my $SPAMQUESTIONS, '<',
-          "$langdir/$questions_language/spam.questions"
+        our ($SPAMQUESTIONS);
+        fopen( 'SPAMQUESTIONS', '<',
+            "$langdir/$questions_language/spam.questions" )
           or fatal_error( 'cannot_open',
             "$langdir/$questions_language/spam.questions", 1 );
         @spam_questions = <$SPAMQUESTIONS>;
-        close $SPAMQUESTIONS
+        fclose('SPAMQUESTIONS')
           or croak
           "$croak{'close'} '$langdir/$questions_language/spam.questions'";
     }
@@ -261,14 +265,15 @@ sub spam_questionsadd {
     my $spam_answer   = $FORM{'spam_answer'};
     my $spam_case     = $FORM{'spam_case'} || '0';
 
-    open my $SPAMQUESTIONS, '>>',
-      "$langdir/$questions_language/spam.questions"
+    our ($SPAMQUESTIONS);
+    fopen( 'SPAMQUESTIONS', '>>',
+        "$langdir/$questions_language/spam.questions" )
       or fatal_error( 'cannot_open',
         "$langdir/$questions_language/spam.questions", 1 );
     print {$SPAMQUESTIONS}
       "$date|$spam_question|$spam_answer|$spam_case|$spam_image\n"
       or croak "$croak{'print'} SPAMQUESTIONS";
-    close $SPAMQUESTIONS
+    fclose('SPAMQUESTIONS')
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
 
     if ( $action eq 'spam_questions_add' ) {
@@ -285,12 +290,12 @@ sub spam_questionsedit {
     my $id            = $FORM{'spam_question_id'};
     my $question_edit = q{};
 
-    open my $SPAMQUESTIONS, '<',
-      "$langdir/$questions_language/spam.questions"
+    our ($SPAMQUESTIONS);
+    fopen( 'SPAMQUESTIONS', '<', "$langdir/$questions_language/spam.questions" )
       or fatal_error( 'cannot_open',
         "$langdir/$questions_language/spam.questions", 1 );
     my @spam_questions = <$SPAMQUESTIONS>;
-    close $SPAMQUESTIONS
+    fclose('SPAMQUESTIONS')
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
 
     for my $question (@spam_questions) {
@@ -388,12 +393,12 @@ sub spam_questionsedit2 {
         $spam_image = q{};
     }
 
-    open my $SPAMQUESTIONS, '<',
-      "$langdir/$questions_language/spam.questions"
+    our ($SPAMQUESTIONS);
+    fopen( 'SPAMQUESTIONS', '<', "$langdir/$questions_language/spam.questions" )
       or fatal_error( 'cannot_open',
         "$langdir/$questions_language/spam.questions", 1 );
     my @spam_questions = <$SPAMQUESTIONS>;
-    close $SPAMQUESTIONS
+    fclose('SPAMQUESTIONS')
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
 
     my @question = grep { !/$spam_question_id/xsm } @spam_questions;
@@ -401,13 +406,12 @@ sub spam_questionsedit2 {
       "$spam_question_id|$spam_question|$spam_answer|$spam_case|$spam_image";
     my $question = join q{}, @question;
 
-    open $SPAMQUESTIONS, '>',
-      "$langdir/$questions_language/spam.questions"
+    fopen( 'SPAMQUESTIONS', '>', "$langdir/$questions_language/spam.questions" )
       or fatal_error( 'cannot_open',
         "$langdir/$questions_language/spam.questions", 1 );
     print {$SPAMQUESTIONS} "$question\n"
       or croak "$croak{'print'} SPAMQUESTIONS";
-    close $SPAMQUESTIONS
+    fclose('SPAMQUESTIONS')
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
 
     if ( $action eq 'spam_questions_edit2' ) {
@@ -421,22 +425,21 @@ qq~$adminurl?action=spam_questions;questions_language=$FORM{'questions_language'
 sub spam_questionsdelete {
     is_admin_or_gmod();
 
-    open my $SPAMQUESTIONS, '<',
-      "$langdir/$questions_language/spam.questions"
+    our ($SPAMQUESTIONS);
+    fopen( 'SPAMQUESTIONS', '<', "$langdir/$questions_language/spam.questions" )
       or fatal_error( 'cannot_open',
         "$langdir/$questions_language/spam.questions", 1 );
     my @spam_questions = <$SPAMQUESTIONS>;
-    close $SPAMQUESTIONS
+    fclose('SPAMQUESTIONS')
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
 
-    open $SPAMQUESTIONS, '>',
-      "$langdir/$questions_language/spam.questions"
+    fopen( 'SPAMQUESTIONS', '>', "$langdir/$questions_language/spam.questions" )
       or fatal_error( 'cannot_open',
         "$langdir/$questions_language/spam.questions", 1 );
     print {$SPAMQUESTIONS}
       grep { !/$FORM{'spam_question_id'}/xsm } @spam_questions
       or croak "$croak{'print'} SPAMQUESTIONS";
-    close $SPAMQUESTIONS
+    fclose('SPAMQUESTIONS')
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
     my $spam_image_delete = q{};
 

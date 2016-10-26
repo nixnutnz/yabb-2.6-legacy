@@ -17,7 +17,6 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 use Module::Load;
@@ -34,19 +33,22 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 # Add in support for Archive::Tar in the Modules directory and binaries in different places
 my @envpaths = split /\:/xsm, $ENV{'PATH'};
+##  languages ##
+our ( %admin_img, %admin_txt, %backup_txt, %croak, );
+## paths ##
+our ( $adminurl, $boarddir, $boardurl, $vardir, );
+## settings ##
 our (
-    %croak,              %backup_txt,    $backupsettingsloaded,
-    @backup_paths,       $backupmethod,  $compressmethod,
-    $backupprogusr,      $backupprogbin, $vardir,
-    $yyexec,             $yyext,         $backupdir,
-    $boarddir,           $yymain,        $adminurl,
-    $yymycharset,        %admin_img,     $rememberbackup,
-    $bkmax_process_time, %admin_txt,     $boardurl,
-    $username,           $uid,           $lastbackup,
-    $yysetlocation,      $date,          $mailtype,
-    $smtp_server,        $helloserv,     $authuser,
-    $authpass,
+    $authpass,             $authuser,           $backupdir,
+    $backupmethod,         $backupprogbin,      $backupprogusr,
+    $backupsettingsloaded, $bkmax_process_time, $compressmethod,
+    $helloserv,            $lastbackup,         $mailtype,
+    $rememberbackup,       $smtp_server,        $yymycharset,
+    @backup_paths
 );
+## system ##
+our ( $date, $uid, $username, $yyexec, $yyext, $yymain, $yysetlocation, );
+
 load_language('Admin');
 load_language('Backup');
 our $yytitle     = $backup_txt{1};
@@ -70,12 +72,9 @@ my %dirs = (
 is_admin_or_gmod();
 
 sub backupsettings {
-    my (
-        $module,        $allchecked,      $item,
-        %pathchecklist, %methodchecklist, $presetjavascriptcode,
-        $file,          @backups,         $newcommand,
-        $style,         $disabledtext,    $input
-    );
+    my ( $module, $item, %pathchecklist, %methodchecklist,
+        $presetjavascriptcode, $file, @backups, $newcommand, $style,
+        $disabledtext, $input );
     our ( $iamgmod, $yymainnosettings, $allow_gmod_aprofile, );
     my $gmod_disable = q{};
     my $gmod_perms   = q{};
@@ -94,10 +93,14 @@ sub backupsettings {
             <td>&nbsp;</td>
         </tr>~;
     }
-
-    for my $item (@backup_paths) {
+    my @backup_path_all = qw(src bo lan mem mes temp var html upld);
+    foreach (@backup_path_all) {
+        $pathchecklist{$_} = q{};
+    }
+    foreach my $item (@backup_paths) {
         $pathchecklist{$item} = 'checked="checked" ';
     }
+    my $allchecked = q{};
     if ( @backup_paths == 9 ) { $allchecked = 'checked="checked" '; }
 
     $methodchecklist{$backupmethod}   = 'checked="checked" ';
@@ -127,7 +130,7 @@ sub backupsettings {
     # Make a list of modules that we can use with Tar::Archive
     my $tarcompress1 = qq~<tr>
             <td class="windowbg">
-                <input type="radio" name="tarmodulecompress" id="tarmodulecompress" value="none" $methodchecklist{'none'}/> <label for="tarmodulecompress">$backup_txt{17}</label>
+                <input type="radio" name="tarmodulecompress" id="tarmodulecompress" value="none" $methodchecklist{$compressmethod}/> <label for="tarmodulecompress">$backup_txt{17}</label>
             </td>
         </tr>~;
 
@@ -141,7 +144,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
         if ( eval { load($module); 1 } ) {
             $eval = 1;
         }
-        if ($eval == 0) {
+        if ( $eval == 0 ) {
             $input        = qq~disabled="disabled" id="label_$label_id"~;
             $style        = q~backup-disabled~;
             $disabledtext = $backup_txt{41};
@@ -163,7 +166,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
     # Make a list of compression commands we can use with /usr/bin/tar
     my $tarcompress2 = qq~<tr>
             <td class="windowbg">
-                <input type="radio" name="bintarcompress" id="bintarcompress" value="none" onclick="domodulecheck('$backupprogusr/tar') $methodchecklist{'none'} /> <label for="bintarcompress">$backup_txt{17}</label>
+                <input type="radio" name="bintarcompress" id="bintarcompress" value="none" onclick="domodulecheck('$backupprogusr/tar') $methodchecklist{$compressmethod}/> <label for="bintarcompress">$backup_txt{17}</label>
             </td>
         </tr>~;
 
@@ -889,37 +892,47 @@ $backup_txt{55} <b>$filesize</b>!<br />
         }
 
         $mainmessage = $backup_txt{'mailmessage1'};
-        $mainmessage =~ s/USERNAME/${ $uid . $username }{'realname'}/gsm;
+        $mainmessage =~ s/USERNAME/${$uid.$username}{'realname'}/gsm;
         $mainmessage =~
           s/LINK/$adminurl?action=downloadbackup;backupid=$filename/gsm;
         $mainmessage =~ s/FILENAME/$filename/gsm;
 
-        eval q^
-            my $msg = MIME::Lite->new(
-                To      => ${ $uid . $username }{'email'},
-                From    => $backup_txt{'mailfrom'},
-                Subject => $backup_txt{'mailsubject'},
-                Type    => 'multipart/mixed'
+        if (
+            eval {
+                my $msg = MIME::Lite->new(
+                    To      => ${ $uid . $username }{'email'},
+                    From    => $backup_txt{'mailfrom'},
+                    Subject => $backup_txt{'mailsubject'},
+                    Type    => 'multipart/mixed'
                 );
-            $msg->attach(
-                Type => 'TEXT',
-                Data => $mainmessage
-            );
-            $msg->attach(
-                Type     => 'AUTO', # Let it be auto-detected.
-                Filename => $filename,
-                Path     => "$backupdir/$filename",
-            );
-            if (!$mailtype) {
-                $msg->send();
+                $msg->attach(
+                    Type => 'TEXT',
+                    Data => $mainmessage
+                );
+                $msg->attach(
+                    Type     => 'AUTO',      # Let it be auto-detected.
+                    Filename => $filename,
+                    Path => "$backupdir/$filename",
+                );
+                if ( !$mailtype ) {
+                    $msg->send();
+                }
+                else {
+                    my @arg = (
+                        "$smtp_server",
+                        Hello   => "$smtp_server",
+                        Timeout => 30,
+                    );
+                    if ($authuser) { push @arg, AuthUser => "$authuser"; }
+                    if ($authpass) { push @arg, AuthPass => "$authpass"; }
+                    $msg->send( 'smtp', @arg );
+                }
             }
-            else {
-                my @arg = ("$smtp_server", Hello => "$helloserv", Timeout => 30);
-                push(@arg, AuthUser => "$authuser") if $authuser;
-                push(@arg, AuthPass => "$authpass") if $authpass;
-                $msg->send('smtp', @arg);
-            }
-        ^;
+            && !$INFO{'linkmail'}
+          )
+        {
+            $yysetlocation = "$adminurl?action=backup&mailinfo=1";
+        }
     }
 
     if ( $EVAL_ERROR || $INFO{'linkmail'} ) {

@@ -14,7 +14,7 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(redefine uninitialized);
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
@@ -24,44 +24,45 @@ our $loadpmmods = 0;
 if (@loadpmmods) {
     $loadpmmods = 1;
 }
-
+##languages ##
+our ( %croak, %load_txt, %maintxt, %zodiac_txt, );
+## paths ##
 our (
-    %croak,            $boardsdir,          $uid,
-    $iamguest,         $pm_level,           $maintenance,
-    $iamadmin,         $staff,              $iamgmod,
-    $iamfmod,          $iammod,             $username,
-    $scripturl,        %load_txt,           $user_ip,
-    $langdir,          $language,           @censored,
-    $sessions,         $cookiesession,      $yysetlocation,
-    $guestaccess,      $ttsureverse,        $ttsreverse,
-    $password,         $action,             %useraccount,
-    $do_scramble_id,   $regtype,            $memberdir,
-    $adminscreen,      %lng,                %INFO,
-    $date,             %yy_udloaded,        $minlinkweb,
-    %img,              $enable_ubbc,        $use_menu_type,
-    %load_con,         %zodiac_txt,         $showgenderimage,
-    $showzodiac,       $showusertext,       $usertxtwrap,
-    $showuserpic,      $allowpics,          $my_blank_avatar,
-    $default_avatar,   $imagesdir,          $facesurl,
-    $default_userpic,  %grp_staff,          %grp_nopost,
-    %grp_post,         %memberunfo,         %moderators,
-    $yyext,            %memberinfo,         %format_unbold,
-    $boardurl,         $yyexec,             %maintxt,
-    %gmod_access2,     %FORM,               $topicstarter,
-    $datadir,          %format,             $lastonlineinlink,
-    $usertools,        %user_pm_level,      %mybuddie,
-    $enable_buddylist, $ppostperms,         $ptopicperms,
-    %tmpimg,           $menusep,            $cookiepassword,
-    $cookieusername,   $session_id,         $enable_guestlanguage,
-    $guest_lang,       $cookiesession_name, %yy_cookies,
-    @other_cookies,    @categoryorder,      %cat,
-    $cookietsort,      %templateset,        $default_template,
-    $sessionvalid,     $pathval,            $htmldir,
-    $templatesdir,     $yyhtml_root,        $defaultimagesdir,
-    $lang,             %ims,                %vars,
-    $extpagstyle
+    $boardsdir, $boardurl,     $datadir, $facesurl,
+    $htmldir,   $imagesdir,    $langdir, $memberdir,
+    $scripturl, $templatesdir, $yyhtml_root,
 );
-
+## settings ##
+our (
+    $allowpics,        $cookiepassword,       $cookiesession_name,
+    $cookietsort,      $cookieusername,       $default_avatar,
+    $default_template, $default_userpic,      $do_scramble_id,
+    $enable_buddylist, $enable_guestlanguage, $enable_ubbc,
+    $guestaccess,      $lang,                 $lastonlineinlink,
+    $maintenance,      $minlinkweb,           $pm_level,
+    $ppostperms,       $ptopicperms,          $regtype,
+    $sessions,         $showgenderimage,      $showuserpic,
+    $showusertext,     $showzodiac,           $ttsreverse,
+    $ttsureverse,      $usertools,            $usertxtwrap,
+    %grp_nopost,       %grp_post,             %grp_staff,
+    %templateset,
+);
+## system ##
+our (
+    $action,           $adminscreen, $cookiesession,   $date,
+    $defaultimagesdir, $extpagstyle, $guest_lang,      $iamadmin,
+    $iamfmod,          $iamgmod,     $iamguest,        $iammod,
+    $language,         $menusep,     $my_blank_avatar, $password,
+    $pathval,          $session_id,  $sessionvalid,    $staff,
+    $topicstarter,     $uid,         $use_menu_type,   $user_ip,
+    $username,         $yyexec,      $yyext,           $yysetlocation,
+    %cat,              %FORM,        %format,          %format_unbold,
+    %gmod_access2,     %img,         %ims,             %INFO,
+    %lng,              %load_con,    %memberinfo,      %memberunfo,
+    %moderators,       %mybuddie,    %tmpimg,          %user_pm_level,
+    %useraccount,      %vars,        %yy_cookies,      %yy_udloaded,
+    @categoryorder,    @censored,    @other_cookies,
+);
 ## local ##
 our ( @allboards, %control, $yyim, $yyuname, %board, %thread_arrayref );
 
@@ -112,7 +113,8 @@ sub load_pms {
         }
 
         my ( $imnewtext, );
-        if ( ${$username}{'PMimnewcount'} == 1 ) {
+        if ( ${$username}{'PMimnewcount'} && ${$username}{'PMimnewcount'} == 1 )
+        {
             $imnewtext =
 qq~<a href="$scripturl?action=imshow;caller=1;id=-1">1 $load_txt{'155'}</a>~;
         }
@@ -136,7 +138,7 @@ qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_
         }
         elsif ( !${$username}{'PMmnum'} && !${$username}{'PMimnewcount'} ) {
             $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>~;
+qq~$load_txt{'152'} <a href="$scripturl?action=im">0 $load_txt{'153'}</a>~;
         }
         elsif ( ${$username}{'PMmnum'} == ${$username}{'PMimnewcount'} ) {
             $yyim =
@@ -183,7 +185,8 @@ sub load_censor_list {
     }
     foreach my $langd (@lang) {
         if ( -e "$langdir/$langd/censor.txt" ) {
-            open my $CENSOR, '<', "$langdir/$langd/censor.txt"
+            our ($CENSOR);
+            fopen( 'CENSOR', '<', "$langdir/$langd/censor.txt" )
               or croak "$croak{'open'} CENSOR";
             while ( my $buffer = <$CENSOR> ) {
                 $buffer =~ s/\r(?=\n*)//gxsm;
@@ -198,7 +201,7 @@ sub load_censor_list {
                 }
                 push @censored, [ $tmpa, $tmpb, $tmpc ];
             }
-            close $CENSOR or croak "$croak{'close'} CENSOR";
+            fclose('CENSOR') or croak "$croak{'close'} CENSOR";
         }
     }
     return;
@@ -308,10 +311,11 @@ sub load_user {
     if ( -e "$memberdir/$user.$userextension" ) {
         if ( $user ne $username ) {
             require "$memberdir/$user.$userextension";
-            open my $LOADUSER, '<', "$memberdir/$user.lst"
+            our ($LOADUSER);
+            fopen( 'LOADUSER', '<', "$memberdir/$user.lst" )
               or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
             my $mylastonline = <$LOADUSER>;
-            close $LOADUSER or croak "$croak{'close'} LOADUSER";
+            fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
             {
                 no strict qw(refs);
                 %{ $uid . $user } = %vars;
@@ -320,10 +324,11 @@ sub load_user {
         }
         else {
             require "$memberdir/$user.$userextension";
-            open my $LOADUSER, '<', "$memberdir/$user.lst"
+            our ($LOADUSER);
+            fopen( 'LOADUSER', '<', "$memberdir/$user.lst" )
               or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
             my $mylastonline = <$LOADUSER>;
-            close $LOADUSER or croak "$croak{'open'} LOADUSER";
+            fclose('LOADUSER') or croak "$croak{'open'} LOADUSER";
 
             my @settings = keys %vars;
             {
@@ -341,13 +346,12 @@ sub load_user {
                     if ( $INFO{'action'} ne 'login2'
                         && !${ $uid . $user }{'stealth'} )
                     {
-                        open my $LOADUSER, '>',
-                          "$memberdir/$user.lst"
+                        fopen( 'LOADUSER', '>', "$memberdir/$user.lst" )
                           or fatal_error( 'cannot_open', "$memberdir/$user.lst",
                             1 );
                         print {$LOADUSER} $date
                           or croak "$croak{'print'} LOADUSER";
-                        close $LOADUSER or croak "$croak{'close'} LOADUSER";
+                        fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
                     }
                 }
             }
@@ -882,10 +886,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
         if ( !$topicstarter ) {
             if ( -e "$datadir/$viewnum.txt" ) {
                 if ( !ref $thread_arrayref{$viewnum} ) {
-                    open my $TOPSTART, '<', "$datadir/$viewnum.txt"
+                    our ($TOPSTART);
+                    fopen( 'TOPSTART', '<', "$datadir/$viewnum.txt" )
                       or croak "$croak{'open'} TOPSTART";
                     @{ $thread_arrayref{$viewnum} } = <$TOPSTART>;
-                    close $TOPSTART or croak "$croak{'close'} TOPSTART";
+                    fclose('TOPSTART') or croak "$croak{'close'} TOPSTART";
                 }
                 ( undef, undef, undef, undef, $topicstarter, undef ) =
                   split /[|]/xsm, ${ $thread_arrayref{$viewnum} }[0], 6;
@@ -917,7 +922,7 @@ sub quick_links {
     if ($iamguest) {
         return ( $online ? $format_unbold{$user} : $format{$user} );
     }
-    my ($lastonline);
+    my $lastonline = q{};
     if ( $iamadmin || $iamgmod || $lastonlineinlink ) {
         {
             no strict qw(refs);
@@ -1384,12 +1389,13 @@ sub build_ims {
 
     ## inbox if it exists, either load and count totals or parse and update format.
     if ( -e "$memberdir/$builduser.msg" ) {
-        open my $USERMSG, '<', "$memberdir/$builduser.msg"
+        our ($USERMSG);
+        fopen( 'USERMSG', '<', "$memberdir/$builduser.msg" )
           or fatal_error( 'cannot_open', "$memberdir/$builduser.msg", 1 );
 
         # open inbox
         my @messages = <$USERMSG>;
-        close $USERMSG or croak "$croak{'close'} USERMSG";
+        fclose('USERMSG') or croak "$croak{'close'} USERMSG";
 
         foreach my $message (@messages) {
 
@@ -1397,23 +1403,24 @@ sub build_ims {
             if ( ( split /[|]/xsm, $message )[12] =~ /u/sm ) { $inunr++; }
         }
         $incurr = @messages;
-
     }
 
     ## do the outbox
     if ( -e "$memberdir/$builduser.outbox" ) {
-        open my $OUTMESS, '<', "$memberdir/$builduser.outbox"
+        our ($OUTMESS);
+        fopen( 'OUTMESS', '<', "$memberdir/$builduser.outbox" )
           or fatal_error( 'cannot_open', "$memberdir/$builduser.outbox", 1 );
         my @outmessages = <$OUTMESS>;
-        close $OUTMESS or croak "$croak{'close'} OUTMESS";
+        fclose('OUTMESS') or croak "$croak{'close'} OUTMESS";
         $outcurr = @outmessages;
     }
 
     if ( -e "$memberdir/$builduser.imdraft" ) {
-        open my $DRAFTMESS, '<', "$memberdir/$builduser.imdraft"
+        our ($DRAFTMESS);
+        fopen( 'DRAFTMESS', '<', "$memberdir/$builduser.imdraft" )
           or fatal_error( 'cannot_open', "$memberdir/$builduser.imdraft", 1 );
         my @d = <$DRAFTMESS>;
-        close $DRAFTMESS or croak "$croak{'closee'} DRAFTMESS";
+        fclose('DRAFTMESS') or croak "$croak{'closee'} DRAFTMESS";
         $draftcount = @d;
     }
 
@@ -1426,10 +1433,11 @@ sub build_ims {
     }
     my @currstorefolders = split /[|]/xsm, $storefolders;
     if ( -e "$memberdir/$builduser.imstore" ) {
-        open my $STOREMESS, '<', "$memberdir/$builduser.imstore"
+        our ($STOREMESS);
+        fopen( 'STOREMESS', '<', "$memberdir/$builduser.imstore" )
           or fatal_error( 'cannot_open', "$memberdir/$builduser.imstore", 1 );
         @imstore = <$STOREMESS>;
-        close $STOREMESS or croak "$croak{'close'} STOREMESS";
+        fclose('STOREMESS') or croak "$croak{'close'} STOREMESS";
         if (@imstore) {
             my ( $store_updated, $store_messline ) = ( 0, 0 );
             foreach my $message (@imstore) {
@@ -1454,12 +1462,12 @@ sub build_ims {
             }
             if ( $store_updated == 1 ) {
                 my $prnstr = join q{}, @imstore;
-                open my $STRMESS, '>',
-                  "$memberdir/$builduser.imstore"
+                our ($STRMESS);
+                fopen( 'STRMESS', '>', "$memberdir/$builduser.imstore" )
                   or fatal_error( 'cannot_open',
                     "$memberdir/$builduser.imstore", 1 );
                 print {$STRMESS} $prnstr or croak "$croak{'print'} STRMESS";
-                close $STRMESS or croak "$croak{'close'} STRMESS";
+                fclose('STRMESS') or croak "$croak{'close'} STRMESS";
             }
             $storetotal = @imstore;
             $storefolders = join q{|}, @currstorefolders;
@@ -1508,14 +1516,16 @@ sub update_ims {
     {
         no strict qw(refs);
         foreach my $cnt ( 0 .. $#tag ) {
-            $updateims .= qq~'$tag[$cnt]' => "${$builduser}{$tag[$cnt]}",\n~;
+            my $newtag = ${$builduser}{ $tag[$cnt] } || q{};
+            $updateims .= qq~'$tag[$cnt]' => "$newtag",\n~;
         }
     }
     $updateims .= qq~);\n\n1;\n~;
-    open my $UPDATE_IMS, '>', "$memberdir/$builduser.ims"
+    our ($UPDATE_IMS);
+    fopen( 'UPDATE_IMS', '>', "$memberdir/$builduser.ims", 1 )
       or fatal_error( 'cannot_open', "$memberdir/$builduser.ims", 1 );
     print {$UPDATE_IMS} $updateims or croak "$croak{'print'} update IMS";
-    close $UPDATE_IMS or croak "$croak{'close'} UPDATE_IMS";
+    fclose('UPDATE_IMS') or croak "$croak{'close'} UPDATE_IMS";
     return;
 }
 
@@ -1554,11 +1564,12 @@ sub load_broadcastmessages {    #check broadcast messages
             foreach ( split /,/xsm, ${$builduser}{'PMbcRead'} || q{} ) {
                 $pm_bc_read{$_} = 1;
             }
-            open my $BCMESS, '<', "$memberdir/broadcast.messages"
+            our ($BCMESS);
+            fopen( 'BCMESS', '<', "$memberdir/broadcast.messages" )
               or
               fatal_error( 'cannot_open', "$memberdir/broadcast.messages", 1 );
             my @bcmessages = <$BCMESS>;
-            close $BCMESS or croak "$croak{'close'} BCMESS";
+            fclose('BCMESS') or croak "$croak{'close'} BCMESS";
             chomp @bcmessages;
             foreach my $msg (@bcmessages) {
                 %messlst = get_imhash($msg);
@@ -1612,10 +1623,11 @@ sub load_guestmessages {    #check guest messages
             foreach ( split /,/xsm, ${$builduser}{'PMgRead'} ) {
                 $pm_g_read{$_} = 1;
             }
-            open my $GMESS, '<', "$memberdir/guest.messages"
+            our ($GMESS);
+            fopen( 'GMESS', '<', "$memberdir/guest.messages" )
               or fatal_error( 'cannot_open', "$memberdir/guest.messages", 1 );
             my @gmessages = <$GMESS>;
-            close $GMESS or croak "$croak{'close'} GMESS";
+            fclose('GMESS') or croak "$croak{'close'} GMESS";
             chomp @gmessages;
             foreach my $msg (@gmessages) {
                 %gmesslst = get_imhash($msg);

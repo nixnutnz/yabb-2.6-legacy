@@ -83,7 +83,7 @@ our (
     $timeout,                 $upload_useravatar,
     $use_guardian,            $yymycharset,
     %fix_img_size,            %templateset,
-    $quick_post,
+    $quick_post,              $faketruncation,
 );
 ## system ##
 our (
@@ -117,7 +117,8 @@ our (
     %referallow,       %subboard,               %totals,
     %user_pm_level,    %useraccount,            %yy_cookies,
     %yyuserlog,        @categoryorder,          @censored,
-    @logentries,       @other_cookies
+    @logentries,       @other_cookies,          $openfiles,
+    $START_TIME,       $file_close,             $file_open,
 );
 our (
     $boardindex_template, $boardname,  $boardpassw,
@@ -180,13 +181,14 @@ our $invalrname    = qr/[^ \w\x80-\xFF\[\][(][)]\#%[+],-[|][.]:=[?]@\^]/xsm;
 
 sub automaintenance {
     my ( $maction, $mreason ) = @_;
-    if ( $maction ) {
-        open my $MAINT, '>', "$vardir/maintenance.lock"
+    if ( $maction && lc($maction) ne 'off' ) {
+        our ($MAINT);
+        fopen( 'MAINT', '>', "$vardir/maintenance.lock" )
           or croak "$croak{'open'} maintenance.lock";
         print {$MAINT} qq~$maintxt{'maint'}\n~
           or croak qq~$maintxt{'maint'}~;
-        close $MAINT or croak "$croak{'close'} maintenance.lock";
-        if ( $mreason eq 'low_disk' ) {
+        fclose('MAINT') or croak "$croak{'close'} maintenance.lock";
+        if ( $mreason && $mreason eq 'low_disk' ) {
             load_language('Error');
             alertbox( $error_txt{'low_diskspace'} );
         }
@@ -429,7 +431,7 @@ qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/c
 ~;
     }
 
-#    }
+    #    }
 
     $yystyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
@@ -490,11 +492,14 @@ qq~            <form id="styleswitcher" action="$scripturl" method="post">
 
     if ( !$usehead ) { $usehead = q~default~; }
     our $yytemplate = "$templatesdir/$usehead/$usehead.html";
-    open my $TEMPLATE, '<', $yytemplate or croak("$maintxt{'23'}: $yytemplate");
+    our ($TEMPLATE);
+    fopen( 'TEMPLATE', '<', $yytemplate )
+      or croak("$maintxt{'23'}: $yytemplate");
     my @whole_file = <$TEMPLATE>;
-    close $TEMPLATE or croak "$croak{'close'} $yytemplate";
+    fclose('TEMPLATE') or croak "$croak{'close'} $yytemplate";
     $output = join q{}, @whole_file;
     our $yyadmin_alert = q{};
+
     if ( $iamadmin || $iamgmod ) {
         if ($maintenance) {
             if   ($do_scramble_id) { $user = cloak($username); }
@@ -767,9 +772,10 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
             $newsfile = "$langdir/$lang/news.txt";
         }
         if ( -s $newsfile > 5 ) {
-            open my $NEWS, '<', $newsfile or croak qq~cannot open "$newsfile"~;
+            our ($NEWS);
+            fopen( 'NEWS', '<', $newsfile ) or croak "$croak{'open'} $newsfile";
             my @newsmessages = <$NEWS>;
-            close $NEWS or croak "$croak{'close'} $newsfile";
+            fclose('NEWS') or croak "$croak{'close'} $newsfile";
             chomp @newsmessages;
             my $startnews = int rand @newsmessages;
             $yynewstitle =
@@ -1144,10 +1150,11 @@ sub fatal_error_logging {
     $tmperror =~ s/\n//igxsm;
     my @errorlog = ();
     if ( -e "$vardir/errorlog.log" ) {
-        open my $ERRORLOG, '<', "$vardir/errorlog.log"
+        our ($ERRORLOG);
+        fopen( 'ERRORLOG', '<', "$vardir/errorlog.log" )
           or croak "$croak{'open'} errorlog.log";
         @errorlog = <$ERRORLOG>;
-        close $ERRORLOG or croak "$croak{'close'} errorlog.log";
+        fclose('ERRORLOG') or croak "$croak{'close'} errorlog.log";
         chomp @errorlog;
     }
     our $errorcount = @errorlog;
@@ -1187,7 +1194,8 @@ sub fatal_error_logging {
           int(time)
           . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$username|$FORM{'passwrd'}\n";
     }
-    open my $ERRORLOG, '>', "$vardir/errorlog.log"
+    our ($ERRORLOG);
+    fopen( 'ERRORLOG', '>', "$vardir/errorlog.log" )
       or croak "$croak{'open'} errorlog.log";
     foreach my $i (@errorlog) {
         if ( $i ne q{} ) {
@@ -1195,7 +1203,7 @@ sub fatal_error_logging {
             print {$ERRORLOG} $i . "\n" or croak "$croak{'print'} ERRORLOG";
         }
     }
-    close $ERRORLOG or croak "$croak{'close'} errorlog.log";
+    fclose('ERRORLOG') or croak "$croak{'close'} errorlog.log";
     return;
 }
 
@@ -1426,10 +1434,11 @@ sub getlog {
       || !-e "$memberdir/$username.log";
 
     %yyuserlog = ();
-    open my $GETLOG, '<', "$memberdir/$username.log"
+    our ($GETLOG);
+    fopen( 'GETLOG', '<', "$memberdir/$username.log" )
       or croak "$croak{'open'} $username.log";
     my @logent = <$GETLOG>;
-    close $GETLOG or croak "$croak{'close'} $username.log";
+    fclose('GETLOG') or croak "$croak{'close'} $username.log";
     chomp @logent;
 
     foreach (@logent) {
@@ -1449,7 +1458,8 @@ sub dumplog {
     }
     if (%yyuserlog) {
         my $date2 = $date;
-        open my $DUMPLOG, '>', "$memberdir/$username.log"
+        our ($DUMPLOG);
+        fopen( 'DUMPLOG', '>', "$memberdir/$username.log" )
           or croak "$croak{'open'} $username.log";
         while ( my ( $name, $date1 ) = each %yyuserlog ) {
             my $result = calcdtdiff( $date1, $date2 );    # output => $result
@@ -1458,7 +1468,7 @@ sub dumplog {
                   or croak "$croak{'print'} DUMPLOG";
             }
         }
-        close $DUMPLOG or croak "$croak{'close'} $username.log";
+        fclose('DUMPLOG') or croak "$croak{'close'} $username.log";
     }
     return;
 }
@@ -1621,7 +1631,8 @@ sub spam_protection {
     my ( $flood_ip, $flood_time, $flood, @floodcontrol );
 
     if ( -e "$vardir/flood.log" ) {
-        open my $FLOOD, '<', "$vardir/flood.log"
+        our ($FLOOD);
+        fopen( 'FLOOD', '<', "$vardir/flood.log" )
           or croak "$croak{'open'} flood.log";
         push @floodcontrol, "$user_ip|$date\n";
         while (<$FLOOD>) {
@@ -1634,7 +1645,7 @@ sub spam_protection {
                 push @floodcontrol, "$_\n";
             }
         }
-        close $FLOOD or croak "$croak{'close'} flood.log";
+        fclose('FLOOD') or croak "$croak{'close'} flood.log";
     }
     if ( $flood && !$iamadmin ) {
         if ( $action eq 'post2' ) {
@@ -1645,10 +1656,11 @@ sub spam_protection {
         }
     }
     $flood = join q{}, @floodcontrol;
-    open my $FLOOD, '>', "$vardir/flood.log"
+    our ($FLOOD);
+    fopen( 'FLOOD', '>', "$vardir/flood.log" )
       or croak "$croak{'open'} flood.log";
     print {$FLOOD} $flood or croak "$croak{'print'} FLOOD";
-    close $FLOOD or croak "$croak{'close'} flood.log";
+    fclose('FLOOD') or croak "$croak{'close'} flood.log";
     return;
 }
 our (
@@ -1659,12 +1671,13 @@ our (
 sub spam_question {
     srand;
     my ($spam_question_rand);
-    open my $SPAMQUESTIONS, '<', "$langdir/$language/spam.questions"
+    our ($SPAMQUESTIONS);
+    fopen( 'SPAMQUESTIONS', '<', "$langdir/$language/spam.questions" )
       or fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
     while (<$SPAMQUESTIONS>) {
         rand($INPUT_LINE_NUMBER) < 1 && ( $spam_question_rand = $_ );
     }
-    close $SPAMQUESTIONS or croak "$croak{'close'} spam.questions";
+    fclose('SPAMQUESTIONS') or croak "$croak{'close'} spam.questions";
     chomp $spam_question_rand;
     (
         $spam_question_id, $spam_question, undef, $spam_questions_case,
@@ -1679,10 +1692,11 @@ sub spam_question {
 
 sub spam_question_check {
     my ( $verification_question, $verification_question_id ) = @_;
-    open my $SPAMQUESTIONS, '<', "$langdir/$language/spam.questions"
+    our ($SPAMQUESTIONS);
+    fopen( 'SPAMQUESTIONS', '<', "$langdir/$language/spam.questions" )
       or fatal_error( 'cannot_open', "$langdir/$language/spam.questions", 1 );
     my @spam_questions = <$SPAMQUESTIONS>;
-    close $SPAMQUESTIONS or croak "$croak{'close'} spam.questions";
+    fclose('SPAMQUESTIONS') or croak "$croak{'close'} spam.questions";
     foreach my $verification_question (@spam_questions) {
         chomp $verification_question;
         if ( $verification_question =~ /$verification_question_id/xsm ) {
@@ -1987,13 +2001,14 @@ qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}
     }
     elsif ( $s_s_m =~ /^\[m\]/xsm )
     {    # Old style topic that was moved/spliced before this code
-        open my $MOVEDFILE, '<', "$datadir/$_[1].txt"
+        our ($MOVEDFILE);
+        fopen( 'MOVEDFILE', '<', "$datadir/$_[1].txt" )
           or croak "$croak{'open'} oldmoved";
         (
             undef, undef, undef, undef,  undef,
             undef, undef, undef, $s_s_m, undef
         ) = split /[|]/xsm, <$MOVEDFILE>, 10;
-        close $MOVEDFILE or croak "$croak{'close'} oldmoved";
+        fclose('MOVEDFILE') or croak "$croak{'close'} oldmoved";
         to_chars($s_s_m);
         $ssm = 1;
     }
@@ -2096,10 +2111,11 @@ s/\Q<a href=\E(\S*?)(\s[^>]*)?>(\S*?)<\/a>/ my ($mes,$out,$i) = ($3,q{},1); { wh
 }
 
 sub membership_get {
-    if ( open my $FILEMEMGET, '<', 'Variables/memttl.db' ) {
+    our ($FILEMEMGET);
+    if ( fopen( 'FILEMEMGET', '<', 'Variables/memttl.db' ) ) {
         $_ = <$FILEMEMGET>;
         chomp;
-        close $FILEMEMGET or croak "$croak{'close'} memttl.db";
+        fclose('FILEMEMGET') or croak "$croak{'close'} memttl.db";
         return split /[|]/xsm;
     }
     else {
@@ -2110,7 +2126,7 @@ sub membership_get {
 
 {
     no strict;
-    my %yyOpenMode = (
+    my %yy_open_mode = (
         '+>>' => 5,
         '+>'  => 4,
         '+<'  => 3,
@@ -2120,10 +2136,10 @@ sub membership_get {
         q{}   => 0,
     );
 
-    # fopen: opens a file. Allows for file locking and better error-handling.
+# fopen: opens a file. Allows for file locking and better error-handling (deprecated Win file-locking removed YaBB 2.7.00).
     sub fopen {
-        my ( $filehandle, $filename, $usetmp ) = @_;
-        my ( $pack,       $file,     $line )   = caller;
+        my ( $filehandle, $open_sig, $filename, $usetmp ) = @_;
+        my ( $pack, $file, $line ) = caller;
         $file_open++;
         ## make life easier - spot a file that is not closed!
         if ($debug) {
@@ -2133,10 +2149,9 @@ sub membership_get {
               . sprintf( '%.4f', ( time - $START_TIME ) )
               . qq~)     $filename~;
         }
-        my ( $flockCorrected, $cmdResult, $openMode, $openSig );
+        my ( $flock_corrected, $cmd_result, $open_mode );
 
-        $serveros = $OSNAME;    #"$^O";
-                                #magic punctuation variable BAD #
+        $serveros = $OSNAME;
         if ( $serveros =~ m/Win/xsm && substr( $filename, 1, 1 ) eq q{:} ) {
             $filename =~ s/\\/\\\\/gxsm;
 
@@ -2155,12 +2170,7 @@ sub membership_get {
         $LOCK_SH     = 1; # You can probably keep this as it is set now.
         $usetempfile = 0; # Write to a temporary file when updating large files.
 
-        # Check whether we want write, append, or read.
-        if ( $filename =~ m/\A([<>+]*)(.+)/xsm ) {
-            $openSig  = $1 || q{};
-            $filename = $2 || $filename;
-        }
-        $openMode = $yyOpenMode{$openSig} || 0;
+        $open_mode = $yy_open_mode{$open_sig} || 0;
 
         $filename =~ s/[^\/\\\w#%+,\- .:@^]//gxsm;
 
@@ -2178,114 +2188,103 @@ sub membership_get {
             rename "$filename.bak", "$filename";
         }
 
-        $testfile = $filename;
-        if ( $use_flock == 2 && $openMode ) {
-            my $count;
-            while ( $count < 15 ) {
-                if   ( -e $filehandle ) { sleep 2; }
-                else                    { last; }
-                ++$count;
-            }
-            if ( $count == 15 ) { unlink $filehandle; }
-            *LFH = undef;
-            CORE::open( LFH, ">$filehandle" );
-            $yyLckFile{$filehandle} = *LFH;
-        }
-
+        my $testfile = $filename;
         if (   $use_flock
-            && $openMode == 1
+            && $open_mode == 1
             && $usetmp
             && $usetempfile
             && -e $filename )
         {
-            $yyTmpFile{$filehandle} = $filename;
+            $yyTmpFile{ ${$filehandle} } = $filename;
             $filename .= '.tmp';
         }
 
-        if ( $openMode > 2 ) {
-            if ( $openMode == 5 ) {
-                $cmdResult = CORE::open( $filehandle, "+>>$filename" );
+        if ( $open_mode > 2 ) {
+            if ( $open_mode == 5 ) {
+                $cmd_result = CORE::open( ${$filehandle}, '+>>', $filename );
             }
             elsif ( $use_flock == 1 ) {
-                if ( $openMode == 4 ) {
+                if ( $open_mode == 4 ) {
                     if ( -e $filename ) {
 
                      # We are opening for output and file locking is enabled...
                      # read-open() the file rather than write-open()ing it.
                      # This is to prevent open() from clobbering the file before
                      # checking if it is locked.
-                        $flockCorrected = 1;
-                        $cmdResult = CORE::open( $filehandle, "+<$filename" );
+                        $flock_corrected = 1;
+                        $cmd_result =
+                          CORE::open( ${$filehandle}, '+<', $filename );
                     }
                     else {
-                        $cmdResult = CORE::open( $filehandle, "+>$filename" );
+                        $cmd_result =
+                          CORE::open( ${$filehandle}, '+>', $filename );
                     }
                 }
                 else {
-                    $cmdResult = CORE::open( $filehandle, "+<$filename" );
+                    $cmd_result = CORE::open( ${$filehandle}, '+<', $filename );
                 }
             }
-            elsif ( $openMode == 4 ) {
-                $cmdResult = CORE::open( $filehandle, "+>$filename" );
+            elsif ( $open_mode == 4 ) {
+                $cmd_result = CORE::open( ${$filehandle}, '+>', $filename );
             }
             else {
-                $cmdResult = CORE::open( $filehandle, "+<$filename" );
+                $cmd_result = CORE::open( ${$filehandle}, '+<', $filename );
             }
         }
-        elsif ( $openMode == 1 && $use_flock == 1 ) {
+        elsif ( $open_mode == 1 && $use_flock == 1 ) {
             if ( -e $filename ) {
 
                 # We are opening for output and file locking is enabled...
                 # read-open() the file rather than write-open()ing it.
                 # This is to prevent open() from clobbering the file before
                 # checking if it is locked.
-                $flockCorrected = 1;
-                $cmdResult = CORE::open( $filehandle, "+<$filename" );
+                $flock_corrected = 1;
+                $cmd_result = CORE::open( ${$filehandle}, '+<', $filename );
             }
             else {
-                $cmdResult = CORE::open( $filehandle, ">$filename" );
+                $cmd_result = CORE::open( ${$filehandle}, '>', $filename );
             }
         }
-        elsif ( $openMode == 1 ) {
-            $cmdResult = CORE::open( $filehandle, ">$filename" );
+        elsif ( $open_mode == 1 ) {
+            $cmd_result = CORE::open( ${$filehandle}, '>', $filename );
 
             # Open the file for writing
         }
-        elsif ( $openMode == 2 ) {
-            $cmdResult = CORE::open( $filehandle, ">>$filename" );
+        elsif ( $open_mode == 2 ) {
+            $cmd_result = CORE::open( ${$filehandle}, '>>', $filename );
 
             # Open the file for append
         }
-        elsif ( $openMode == 0 ) {
-            $cmdResult =
-              CORE::open( $filehandle, $filename );    # Open the file for input
+        elsif ( $open_mode == 0 ) {
+            $cmd_result =
+              CORE::open( ${$filehandle}, $filename ); # Open the file for input
         }
-        if ( !$cmdResult ) { return 0; }
-        if ($flockCorrected) {
+        if ( !$cmd_result ) { return 0; }
+        if ($flock_corrected) {
 
 # The file was read-open()ed earlier, and we have now verified an exclusive lock.
 # We shall now clobber it.
-            flock $filehandle, $LOCK_EX;
+            flock ${$filehandle}, $LOCK_EX;
             if ($faketruncation) {
                 CORE::open( OFH, ">$filename" );
-                if ( !$cmdResult ) { return 0; }
+                if ( !$cmd_result ) { return 0; }
                 print {OFH} q{} or croak "$croak{'print'} OFH";
                 CORE::close(OFH);
             }
             else {
-                truncate *{$filehandle}, 0
+                truncate *{ ${$filehandle} }, 0
                   or fatal_error( 'truncation_error', "$filename" );
             }
-            seek $filehandle, 0, 0;
+            seek ${$filehandle}, 0, 0;
         }
         elsif ( $use_flock == 1 ) {
-            if   ($openMode) { flock $filehandle, $LOCK_EX; }
-            else             { flock $filehandle, $LOCK_SH; }
+            if   ($open_mode) { flock ${$filehandle}, $LOCK_EX; }
+            else              { flock ${$filehandle}, $LOCK_SH; }
         }
         return 1;
     }
 
-# fclose: closes a file, using Windows 95/98/ME-style file locking if necessary.
+# fclose: closes a file, (Windows 95/98/ME-style file locking removed YaBB 2.7.00).
     sub fclose {
         my ($filehandle) = @_;
         my ( $pack, $file, $line ) = caller;
@@ -2297,31 +2296,24 @@ sub membership_get {
               . sprintf( '%.4f', ( time - $START_TIME ) )
               . qq~)\n[$pack, $file, $line]\n\n~;
         }
-        CORE::close($filehandle);
+        CORE::close( ${$filehandle} );
         if ( $use_flock == 2 ) {
-            if ( exists $yyLckFile{$filehandle} && -e $filehandle ) {
-                CORE::close( $yyLckFile{$filehandle} );
-                unlink $filehandle;
-                delete $yyLckFile{$filehandle};
+            if ( exists $yyLckFile{ ${$filehandle} }
+                && -e ${$filehandle} )
+            {
+                CORE::close( $yyLckFile{ ${$filehandle} } );
+                unlink ${$filehandle};
+                delete $yyLckFile{ ${$filehandle} };
             }
         }
-        if ( $yyTmpFile{$filehandle} ) {
-            my $bakfile = $yyTmpFile{$filehandle};
-            if ( $use_flock == 1 ) {
-
-                # Obtain an exclusive lock on the file.
-                # ie: wait for other processes to finish...
-                *FH = undef;
-                CORE::open( FH, $bakfile );
-                flock FH, $LOCK_EX;
-                CORE::close(FH);
-            }
+        if ( $yyTmpFile{ ${$filehandle} } ) {
+            my $bakfile = $yyTmpFile{ ${$filehandle} };
 
             # Switch the temporary file with the original.
             if ( -e "$bakfile.bak" ) { unlink "$bakfile.bak"; }
             rename $bakfile, "$bakfile.bak";
             rename "$bakfile.tmp", $bakfile;
-            delete $yyTmpFile{$filehandle};
+            delete $yyTmpFile{ ${$filehandle} };
             if ( -e $bakfile ) {
                 unlink "$bakfile.bak";
 
@@ -2330,8 +2322,7 @@ sub membership_get {
         }
         return 1;
     }
-
-}    # / my %yyOpenMode
+}
 
 sub write_ctb {
     my ( $ctbfile, $threadid, %threadid ) = @_;
@@ -2344,10 +2335,11 @@ qq~### ThreadID: $threadid, LastModified: $newtime ###\n\n%$threadid = (\n~;
         $newctb .= qq~$_ => "${$threadid}{$_}",\n~;
     }
     $newctb .= qq~);\n\n1;\n~;
-    open my $UPDATE_CTB, '>', "$ctbfile"
-      or fatal_error( 'cannot_open', "$ctbfile", 1 );
+    our ($UPDATE_CTB);
+    fopen( 'UPDATE_CTB', '>', $ctbfile )
+      or fatal_error( 'cannot_open', $ctbfile, 1 );
     print {$UPDATE_CTB} $newctb or croak "$croak{'print'} UPDATE_CTB";
-    close $UPDATE_CTB or croak "$croak{'close'} UPDATE_CTB";
+    fclose('UPDATE_CTB') or croak "$croak{'close'} UPDATE_CTB";
     return;
 }
 
@@ -2384,9 +2376,10 @@ sub write_log {
         else              { return; }
     }
 
-    open my $LOG, '<', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    our ($LOG);
+    fopen( 'LOG', '<', "$vardir/user.log" ) or croak "$croak{'open'} user.log";
     @logentries = <$LOG>;    # Global variable
-    close $LOG or croak "$croak{'close'} user.log";
+    fclose('LOG') or croak "$croak{'close'} user.log";
     chomp @logentries;
     foreach (@logentries) {
         ( $name, $logtime, undef ) = split /[|]/xsm, $_, 3;
@@ -2400,7 +2393,7 @@ sub write_log {
     $hostin =~ s/[^\x20-\x7E]//gxsm;
     $hostin =~ s/\x7C//gxsm;
 
-    open $LOG, '>', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    fopen( 'LOG', '>', "$vardir/user.log" ) or croak "$croak{'open'} user.log";
     print {$LOG} (
         "$field|$date|$user_ip|$hostin|$username|$currentboard|"
           . (
@@ -2416,14 +2409,14 @@ sub write_log {
           . "|$INFO{'username'}|$curnum\n",
         @new_log
     ) or croak "$croak{'print'} user.log";
-    close $LOG or croak "$croak{'close'} user.log";
+    fclose('LOG') or croak "$croak{'close'} user.log";
 
     if ( !$action && $enableclicklog ) {
         $onlinetime = $date - ( $click_logtime * 60 );
-        open $LOG, '<', "$vardir/clicklog.log"
+        fopen( 'LOG', '<', "$vardir/clicklog.log" )
           or croak "$croak{'open'} clicklog.log";
         @new_log = <$LOG>;
-        close $LOG or croak "$croak{'close'} clicklog.log";
+        fclose('LOG') or croak "$croak{'close'} clicklog.log";
         $hostin = $ENV{'HTTP_USER_AGENT'};
         $hostin =~ s/[^\x21-\x7E]//gxsm;
         $hostin =~ s/\x7C//gxsm;
@@ -2447,19 +2440,20 @@ sub write_log {
                 $clicks .= $_;
             }
         }
-        open $LOG, '>', "$vardir/clicklog.log"
+        fopen( 'LOG', '>', "$vardir/clicklog.log" )
           or croak "$croak{'open'} clicklog.log";
         print {$LOG} $clicks or croak "$croak{'print'} LOG";
-        close $LOG or croak "$croak{'close'} clicklog.log";
+        fclose('LOG') or croak "$croak{'close'} clicklog.log";
     }
     return;
 }
 
 sub remove_user_online {
     $user = shift;
-    open my $LOG, '<', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    our ($LOG);
+    fopen( 'LOG', '<', "$vardir/user.log" ) or croak "$croak{'open'} user.log";
     @logentries = <$LOG>;
-    close $LOG or croak "$croak{'close'} user.log";
+    fclose('LOG') or croak "$croak{'close'} user.log";
 
     my $prnlog = q{};
     if ($user) {
@@ -2480,9 +2474,9 @@ sub remove_user_online {
         $prnlog .= q{};
         @logentries = ();
     }
-    open $LOG, '>', "$vardir/user.log" or croak "$croak{'open'} user.log";
+    fopen( 'LOG', '>', "$vardir/user.log" ) or croak "$croak{'open'} user.log";
     print {$LOG} $prnlog or croak "$croak{'print'} LOG";
-    close $LOG or croak "$croak{'close'} user.log";
+    fclose('LOG') or croak "$croak{'close'} user.log";
     return;
 }
 
@@ -2530,7 +2524,7 @@ sub referer_check {
         && length($refererdomain) > 0 )
     {
         require Variables::Referer;
-        if ( !$referallow{$action} ) { 
+        if ( !$referallow{$action} ) {
             load_language('RefControl');
             fatal_error( 'referer_violation',
 "$action ($refer_txt{$action})<br />$reftxt{'7'} $referencedomain<br />$reftxt{'6'} $refererdomain"
@@ -2591,10 +2585,11 @@ sub recent_load {
     my ($who_to_load) = @_;
     undef %recent;
     if ( -e "$memberdir/$who_to_load.rlog" ) {
-        open my $RLOG, '<', "$memberdir/$who_to_load.rlog"
+        our ($RLOG);
+        fopen( 'RLOG', '<', "$memberdir/$who_to_load.rlog" )
           or croak "$croak{'open'} $who_to_load.rlog";
         my %r = map { /(.*)[|](.*)/xsm } <$RLOG>;
-        close $RLOG or croak "$croak{'close'} RLOG";
+        fclose('RLOG') or croak "$croak{'close'} RLOG";
         foreach ( keys %r ) {
             @{ $recent{$_} } = split /,/xsm, $r{$_};
         }
@@ -2630,10 +2625,11 @@ sub recent_save {
     foreach ( keys %recent ) {
         $recent .= qq~$_|~ . join( q{,}, @{ $recent{$_} } ) . qq~\n~;
     }
-    open my $RLOG, '>', "$memberdir/$who_to_save.rlog"
+    our ($RLOG);
+    fopen( 'RLOG', '>', "$memberdir/$who_to_save.rlog" )
       or croak "$croak{'open'} $who_to_save.rlog";
     print {$RLOG} $recent or croak "$croak{'print'} RLOG";
-    close $RLOG or croak "$croak{'close'} RLOG";
+    fclose('RLOG') or croak "$croak{'close'} RLOG";
     return;
 }
 
@@ -2646,10 +2642,11 @@ sub save_moved_file {
       . ");\n1;";
 
    # This sub saves the hash for the moved files: key == old id, value == new id
-    open my $MOVEDFILE, '>', "$vardir/Movedthreads.pm"
-      or fatal_error( 'cannot_open', "$vardir/Movedthreads.pm", 1 );
+    our ($MOVEDFILE);
+    fopen( 'MOVEDFILE', '>', 'Variables/Movedthreads.pm', 1 )
+      or fatal_error( 'cannot_open', 'Variables/Movedthreads.pm', 1 );
     print {$MOVEDFILE} $moved or croak "$croak{'print'} MOVEDFILE";
-    close $MOVEDFILE or croak "$croak{'close'} Movedthreads.pm";
+    fclose('MOVEDFILE') or croak "$croak{'close'} Movedthreads.pm";
     return;
 }
 
@@ -2689,10 +2686,12 @@ sub write_forummaster {
         }
     }
     $newforum .= qq~\n1;~;
-    open my $FORUMMASTER, '>', "$boardsdir/forum.master"
+
+    our ($FORUMMASTER);
+    fopen( 'FORUMMASTER', '>', "$boardsdir/forum.master" )
       or croak "$croak{'open'} forum.master";
     print {$FORUMMASTER} $newforum or croak "$croak{'print'} FORUMMASTER";
-    close $FORUMMASTER or croak "$croak{'close'} forum.master";
+    fclose('FORUMMASTER') or croak "$croak{'close'} forum.master";
     return;
 }
 
@@ -2706,10 +2705,11 @@ sub write_forum_control {
     @boardcontrol = undupe(@boardcontrol);
     my $prnbrd = join q{}, @boardcontrol;
     $prnbrd .= qq~\n1;\n\n~;
-    open my $FORUMCONTROL, '>', "$boardsdir/forum.control"
+    our ($FORUMCONTROL);
+    fopen( 'FORUMCONTROL', '>', "$boardsdir/forum.control" )
       or fatal_error( 'cannot_open', "$boardsdir/forum.control", 1 );
     print {$FORUMCONTROL} $prnbrd or croak "$croak{'print'} FORUMCNT";
-    close $FORUMCONTROL or croak "$croak{'close'} forum.control";
+    fclose('FORUMCONTROL') or croak "$croak{'close'} forum.control";
     return;
 }
 
@@ -2724,11 +2724,13 @@ sub write_forum_totals {
     @boardtotals = undupe(@boardtotals);
     my $prnlines = join q{}, @boardtotals;
     $prnlines .= qq~\n1;\n\n~;
-    open my $FORUMTOTALS, '>', "$boardsdir/forum.totals"
+
+    our ($FORUMTOTALS);
+    fopen( 'FORUMTOTALS', '>', "$boardsdir/forum.totals" )
       or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
     print {$FORUMTOTALS} $prnlines
       or croak "$croak{'print'} FORUMTOTALS";
-    close $FORUMTOTALS or croak "$croak{'close'} forum.totals";
+    fclose('FORUMTOTALS') or croak "$croak{'close'} forum.totals";
     return;
 }
 
@@ -2823,10 +2825,11 @@ sub manage_memberlist {
         foreach ( sort keys %memberlist ) {
             $update .= qq~\$memberlist{'$_'} = '$memberlist{$_}';\n~;
         }
-        open my $MEMBLIST, '>', 'Variables/Memberlist.pm'
+        our ($MEMBLIST);
+        fopen( 'MEMBLIST', '>', 'Variables/Memberlist.pm' )
           or croak "$croak{'open'} Memberlist.pm";
         print {$MEMBLIST} $update or croak "$croak{'print'} MEMBLIST";
-        close $MEMBLIST or croak "$croak{'close'} Memberlist.pm";
+        fclose('MEMBLIST') or croak "$croak{'close'} Memberlist.pm";
         undef %memberlist;
     }
     return;
@@ -2846,10 +2849,11 @@ sub manage_memberinfo {
         || $todo eq 'add' )
     {
         require Variables::Memberinfo;
-        open my $ADMINLST, '<', "$vardir/adminlst.db"
+        our ($ADMINLST);
+        fopen( 'ADMINLST', '<', "$vardir/adminlst.db" )
           or croak "$croak{'open'} adminlst.db";
         @adminlst = <$ADMINLST>;
-        close $ADMINLST or croak "$croak{'close'} adminlst.db";
+        fclose('ADMINLST') or croak "$croak{'close'} adminlst.db";
         chomp @adminlst;
     }
     if ( $todo eq 'add' ) {
@@ -2913,16 +2917,18 @@ sub manage_memberinfo {
             my $val = join q~','~, @{ $memberinf{$i} };
             $update .= qq~\$memberinf{'$i'} = \['$val'\];\n~;
         }
-        open my $MEMBINFO, '>', 'Variables/Memberinfo.pm'
+        our ($MEMBINFO);
+        fopen( 'MEMBINFO', '>', 'Variables/Memberinfo.pm' )
           or croak "$croak{'open'} Memberinfo.pm";
         print {$MEMBINFO} $update or croak "$croak{'print'} MEMBINFO";
-        close $MEMBINFO or croak "$croak{'close'} Memberinfo.pm";
+        fclose('MEMBINFO') or croak "$croak{'close'} Memberinfo.pm";
         undef %memberinf;
-        open my $ADMINLST, '>', 'Variables/adminlst.db'
+        our ($ADMINLST);
+        fopen( 'ADMINLST', '>', 'Variables/adminlst.db' )
           or croak "$croak{'open'} adminlst.db";
         print {$ADMINLST} join "\n", @adminlst
           or croak "$croak{'print'} ADMINLST";
-        close $ADMINLST or croak "$croak{'close'} adminlist.db";
+        fclose('ADMINLST') or croak "$croak{'close'} adminlist.db";
     }
     return;
 }
@@ -3674,13 +3680,14 @@ sub upload_file {
         }
 
  # create a new file on the server using the formatted ( new instance ) filename
-        if ( open my $NEWFILE, '>', "$file_directory/$fixfile" ) {
+        our ($NEWFILE);
+        if ( fopen( 'NEWFILE', '>', "$file_directory/$fixfile" ) ) {
             binmode $NEWFILE;
 
             # needed for operating systems (OS) Windows, ignored by Linux
             print {$NEWFILE} $file_buffer
               or croak "$croak{'print'} NEWFILE";    # write new file on HD
-            close $NEWFILE or croak "$croak{'close'} NEWFILE";
+            fclose('NEWFILE') or croak "$croak{'close'} NEWFILE";
         }
         else
         { # return the server's error message if the new file could not be created
@@ -3700,16 +3707,18 @@ sub upload_file {
         if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
             my $okatt = 1;
             if ( $fixfile =~ /gif$/ixsm ) {
-                open my $ATTFILE, '<', "$file_directory/$fixfile"
+                our ($ATTFILE);
+                fopen( 'ATTFILE', '<', "$file_directory/$fixfile" )
                   or croak "$croak{'open'} $file_directory/$fixfile";
                 read $ATTFILE, my $header, 10;
                 my ( $giftest, undef, undef, undef, undef, undef ) =
                   unpack 'a3a3C4', $header;
-                close $ATTFILE
+                fclose('ATTFILE')
                   or croak "$croak{'close'} $file_directory/$fixfile";
                 if ( $giftest ne 'GIF' ) { $okatt = 0; }
             }
-            open my $ATTFILE, '<', "$file_directory/$fixfile"
+            our ($ATTFILE);
+            fopen( 'ATTFILE', '<', "$file_directory/$fixfile" )
               or croak "$croak{'open'} $file_directory/$fixfile";
             while ( read $ATTFILE, $buffer, 1024 ) {
                 if ( $buffer =~ /<(?:html|script|body)/igxsm ) {
@@ -3717,7 +3726,8 @@ sub upload_file {
                     last;
                 }
             }
-            close $ATTFILE or croak "$croak{'close'} $file_directory/$fixfile";
+            fclose('ATTFILE')
+              or croak "$croak{'close'} $file_directory/$fixfile";
             if ( !$okatt ) {    # delete the file as it contains illegal code
                 unlink "$file_directory/$fixfile";
                 fatal_error( 'file_not_uploaded', "$fixfile $fatxt{'20a'}" );

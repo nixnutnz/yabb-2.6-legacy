@@ -27,12 +27,14 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our (
-    $guest_media_disallowed, $iamguest,  $enable_ubbc,
-    %maintxt,                $scrupturl, $curnum,
-    %img,                    $scripturl, $regtype,
-    $player_version,         $yyhtml_root,
-);
+## language ##
+our ( %img, %maintxt, );
+## paths ##
+our ( $scripturl, $yyhtml_root, );
+## settings ##
+our ( $enable_ubbc, $guest_media_disallowed, $regtype, );
+## system ##
+our ( $curnum, $iamguest, $player_version, );
 my (
     $embed_wmv6,         $embed_wmv10,   $embed_ra,
     $embed_flash,        $embed_flv,     $embed_wma6,

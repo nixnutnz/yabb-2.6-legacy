@@ -33,11 +33,15 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
+## language ##
+## paths ##
+our ( $htmldir, $modimgurl, $scripturl, $yyhtml_root, );
+## settings ##
+## system/template ##
 our (
-    $usestyle,    %img_set, %img,        $modimgurl,
-    $yyhtml_root, $htmldir, $use_mobile, $use_menu_type,
-    $menusep,     $my_sep,  $scripturl,  $thegtalkuser,
-    $thegtalkname
+    $menusep,      $my_sep,        $thegtalkname,
+    $thegtalkuser, $use_menu_type, $use_mobile,
+    $usestyle,     %img,           %img_set,
 );
 
 get_micon();

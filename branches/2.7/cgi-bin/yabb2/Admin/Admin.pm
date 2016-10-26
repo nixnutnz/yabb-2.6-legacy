@@ -14,14 +14,13 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw(:standard);
 use English qw(-no_match_vars);
 use Time::Local;
 our $VERSION = '2.7.00';
 
-our $adminpmver = 'YaBB 2.7.00 $Revision$';
+our $adminpmver  = 'YaBB 2.7.00 $Revision$';
 our @adminpmmods = ();
 our $adminpmmods = 0;
 if (@adminpmmods) {
@@ -29,17 +28,18 @@ if (@adminpmmods) {
 }
 ##  languages ##
 our (
-    %croak,            %admin_txt,          %admintxt,
-    %errorlog,         %boardindex_txt,     %clicklog_txt,
-    %aduptxt,          %reftxt,             %refer_settings,
-    %refer_txt,        %refexpl_txt,        %register_txt,
-    %admin_img,        %mailreg_txt,        %versiontxt,
     $deleteduseremail, $deletedusersybject, $emailcharset,
-    $passwordregemail, $emailwelcome,       $welcomeregemail,
-    %credits_txt,
+    $emailwelcome,     $passwordregemail,   $welcomeregemail,
+    %admin_img,        %admin_txt,          %admintxt,
+    %aduptxt,          %boardindex_txt,     %clicklog_txt,
+    %credits_txt,      %croak,              %errorlog,
+    %mailreg_txt,      %refer_settings,     %refer_txt,
+    %refexpl_txt,      %reftxt,             %register_txt,
+    %versiontxt,
 );
 ## paths ##
-our ( $convdir, $htmldir, $vardir, $adminurl, $memberdir, $boardurl, $langdir );
+our ( $adminurl, $boardurl, $convdir, $htmldir, $langdir, $memberdir, $vardir,
+);
 ## settings ##
 our (
     $allow_hide_email, $cookieusername, $default_template,
@@ -54,17 +54,17 @@ our (
 ## template ##
 our ( $convert_box, $convertlang_box, $front_page,
     $last_div, $my_admin_login, $versionchk, $yabb_update );
-## other ##
+## system ##
 our (
-    $date,        $formsession,   $invalemaila,   $invalpass,
-    $uid,         $user,          $yytitle,       $yyuname,
-    $action_area, $cliped,        $iamadmin,      $iamgmod,
-    $invalemailb, $invalmailchar, $invalrname,    $language,
-    $regdate,     $rna,           $scripturl,     $sessionid,
-    $username,    $yabbversion,   $yyhtml_root,   $yymain,
-    $yymycharset, $yynavigation,  $yysetlocation, %cat,
-    %catinfo,     %FORM,          %INFO,          %referallow,
-    %yy_cookies,  @categoryorder, @other_cookies,
+    $action_area,   $cliped,        $date,        $formsession,
+    $iamadmin,      $iamgmod,       $invalemaila, $invalemailb,
+    $invalmailchar, $invalpass,     $invalrname,  $language,
+    $regdate,       $rna,           $scripturl,   $sessionid,
+    $uid,           $user,          $username,    $yabbversion,
+    $yyhtml_root,   $yymain,        $yymycharset, $yynavigation,
+    $yysetlocation, $yytitle,       $yyuname,     %cat,
+    %catinfo,       %FORM,          %INFO,        %referallow,
+    %yy_cookies,    @categoryorder, @other_cookies,
 );
 
 load_language('Admin');
@@ -196,10 +196,11 @@ sub deletelangconverterfiles {
 }
 
 sub getlastlogins {
-    open my $ADMINLOG, '<', "$vardir/adminlog.log"
+    our ($ADMINLOG);
+    fopen( 'ADMINLOG', '<', "$vardir/adminlog.log" )
       or croak "$croak{'open'} adminlog.log";
     my @adminlog = <$ADMINLOG>;
-    close $ADMINLOG or croak "$croak{'close'} adminlog.log";
+    fclose('ADMINLOG') or croak "$croak{'close'} adminlog.log";
     @adminlog = reverse sort @adminlog;
     my $loginadmin = q{};
     our (%useraccount);
@@ -272,10 +273,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
     my $yyclicklink = q{};
     my $yyclicks    = q{};
     if ($enableclicklog) {
-        open my $LOG, '<', "$vardir/clicklog.log"
+        our ($LOG);
+        fopen( 'LOG', '<', "$vardir/clicklog.log" )
           or croak "$croak{'open'} clicklog.log";
         my @log = <$LOG>;
-        close $LOG or croak "$croak{'close'} clicklog.log";
+        fclose('LOG') or croak "$croak{'close'} clicklog.log";
         $yyclicks    = @log;
         $yyclicks    = number_format($yyclicks);
         $yyclicktext = $admin_txt{'692'};
@@ -287,10 +289,11 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
         $yyclicklink = q{};
         $yyclicks    = q{};
     }
-    open my $ELOG, '<', "$vardir/errorlog.log"
+    our ($ELOG);
+    fopen( 'ELOG', '<', "$vardir/errorlog.log" )
       or croak "$croak{'open'} error.log";
     my @elog = <$ELOG>;
-    close $ELOG or croak "$croak{'close'} error.log";
+    fclose('ELOG') or croak "$croak{'close'} error.log";
     my $errorslog = @elog;
     $memcount  = number_format($memcount);
     $totalt    = number_format($totalt);
@@ -487,10 +490,11 @@ sub showclicklog {
     if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; }
     else                   { $logtimetext = $admin_txt{'698a'}; }
 
-    open my $LOG, '<', "$vardir/clicklog.log"
+    our ($LOG);
+    fopen( 'LOG', '<', "$vardir/clicklog.log" )
       or croak "$croak{'open'} clicklog.log";
     my @log = <$LOG>;
-    close $LOG or croak "$croak{'close'} clicklog.log";
+    fclose('LOG') or croak "$croak{'close'} clicklog.log";
     chomp @log;
     my ( @iplist, @to, @from, @info, @ip, %iplist, $key, $val, @newiplist );
     for my $i ( 0 .. $#log ) {
@@ -866,7 +870,8 @@ sub deletemultimembers {
         require Sources::Mailer;
     }
 
-    open my $FILE, '<', 'Variables/Memberlist.pm'
+    our ($FILE);
+    fopen( 'FILE', '<', 'Variables/Memberlist.pm' )
       or croak "$croak{'open'} Memberlist";
     my @memnum = <$FILE>;
     close $FILE or croak "$croak{'open'} Memberlist";
@@ -1077,10 +1082,11 @@ sub refcontrol2 {
 1;
 EOF
 
-    open my $REFERRERACCESS, '>', "$vardir/Referer.pm"
+    our ($REFERRERACCESS);
+    fopen( 'REFERRERACCESS', '>', "$vardir/Referer.pm" )
       or croak "$croak{'open'} Referer";
     print {$REFERRERACCESS} $setfile or croak "$croak{'print'} Referer";
-    close $REFERRERACCESS or croak "$croak{'close'} Referer";
+    fclose('REFERRERACCESS') or croak "$croak{'close'} Referer";
     $yysetlocation = qq~$adminurl?action=referer_control~;
     redirectexit();
     return;
@@ -1371,12 +1377,13 @@ sub addmember2 {
 
     if ($send_welcomeim) {
         my $messageid = $BASETIME . $PROCESS_ID;
-        open my $IM, '>', "$memberdir/$member{'regusername'}.msg"
+        our ($IM);
+        fopen( 'IM', '>', "$memberdir/$member{'regusername'}.msg", 1 )
           or croak "$croak{'open'} IM";
         print {$IM}
 "$messageid|$sendname|$member{'regusername'}|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
           or croak "$croak{'print'} IM";
-        close $IM or croak "$croak{'close'} IM";
+        fclose('IM') or croak "$croak{'close'} IM";
     }
     my $encryptopass = encode_password( $member{'passwrd1'} );
     my $reguser      = $member{'regusername'};

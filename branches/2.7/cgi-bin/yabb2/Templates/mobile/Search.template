@@ -71,7 +71,7 @@ $mysearch_template4 = qq~
         </td>
     </tr><tr>
         <td class="windowbg right vtop"><b>$search_txt{'189'}:</b><br /><span class="small">$search_txt{'190'}</span></td>
-        <td class="windowbg" >~;
+        <td class="windowbg">~;
 
 $mysearch_template5 = qq~
         </td>

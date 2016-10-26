@@ -25,18 +25,20 @@ if (@editemailtemplatespmmods) {
     $editemailtemplatespmmods = 1;
 }
 
-##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %emaildesc, %emaileditor,
-    %yabbtagdesc, %yabbtags, );
-## paths ##
-our ( $adminurl, $vardir, $langdir, %lngs );
-## settings ##
-our ( $yymycharset, );
-## other ##
-our ( $action, $yymain, $yytitle, $yysetlocation, $action_area, $language,
-    %INFO, %FORM, );
+our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
+##  languages ##
+our ( %admin_img, %admin_txt, %admintxt, %croak, %emaildesc, %emaileditor,
+    %yabbtagdesc, %yabbtags, );
+## paths ##
+our ( $adminurl, $langdir, $vardir, %lngs );
+## settings ##
+our ($yymycharset);
+## other ##
+our ( $action_area, $language, $yymain, $yysetlocation, $yytitle, %FORM, %INFO,
+);
 
 load_language('Admin');
 
@@ -214,11 +216,12 @@ sub editemailtemplates2 {
     if ( !$message || !$string ) { fatal_error('no_info'); }
 
     # Read the current file
-    open my $LANG, '<', "$langdir/$editlang/Email.lng"
+    our ($LANG);
+    fopen( 'LANG', '<', "$langdir/$editlang/Email.lng" )
       or
       fatal_error( 'cannot_open_language', "$langdir/$editlang/Email.lng", 1 );
     my $langfile = do { local $INPUT_RECORD_SEPARATOR = undef; <$LANG> };
-    close $LANG or croak "$croak{'close'} LANG";
+    fclose('LANG') or croak "$croak{'close'} LANG";
 
     # Vague hardcoded error since it was tampered with
     if ( $string !~ /\Q$string\E/xsm ) {
@@ -229,11 +232,11 @@ sub editemailtemplates2 {
     $langfile =~ s/\$\Q$string\E\s =\s q~.+?~;/\$$string = q~$message~;/xsm;
 
     # Write it out
-    open $LANG, '>', "$langdir/$editlang/Email.lng"
+    fopen( 'LANG', '>', "$langdir/$editlang/Email.lng" )
       or
       fatal_error( 'cannot_open_language', "$langdir/$editlang/Email.lng", 1 );
     print {$LANG} $langfile or croak "$croak{'print'} LANG";
-    close $LANG or croak "$croak{'close'} LANG";
+    fclose('LANG') or croak "$croak{'close'} LANG";
 
     $yysetlocation = qq~$adminurl?action=editemailtemplates&lang=$editlang~;
     redirectexit();

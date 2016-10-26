@@ -224,13 +224,15 @@ $myprofile_minlinkweb = qq~<tr class="windowbg">
     </tr>~;
 
 $myprofile_away = qq~<tr class="windowbg">
-        <td><label for="offlinestatus"><b>{yabb profile_txtshowstatus}: </b>
-            <br /><span class="small">{yabb profile_txtstatusexplain}<br />{yabb profile_txtawaydescription}</span></label></td>
-        <td>
+        <td><label for="offlinestatus"><b>{yabb profile_txtshowstatus}: </b><br /><span class="small">{yabb profile_txtstatusexplain}</span><td>
            <select name="offlinestatus" id="offlinestatus">
                <option value="offline"{yabb offChecked}>$maintxt{'61'}</option>
                <option value="away"{yabb awayChecked}>$maintxt{'away'}</option>
-             </select><br /><br />
+             </select>
+        </td>
+    </tr><tr class="windowbg">
+        <td class="vtop"><b>{yabb profile_txtawaydesc}</b><br /><span class="small">{yabb profile_txtawaydescription}</span></label></td>
+        <td>
              <label for="awaysubj"><span class="small">{yabb profile_txtasubj}</span></label><br />
              <input type="text" name="awaysubj" id="awaysubj" size="50" maxlength="50" value="{yabb awaysubj}" /><br /><br />
              <label for="awayreply"><span class="small">{yabb profile_txtamess}</span></label><br />~;

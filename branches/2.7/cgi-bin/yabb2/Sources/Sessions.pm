@@ -27,13 +27,13 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our (
-    %croak,         %session_txt, %sesquest_txt, %img_txt,
-    %INFO,          %FORM,        $uid,          $username,
-    $yymain,        $yytitle,     $iamguest,     $iamadmin,
-    $iamgmod,       $my_sessions, $mbname,       $cookie_length,
-    $yysetlocation, $user_ip,     $scripturl,    $shared_login_text,
-);
+## paths/language ##
+our ( $scripturl, %croak, %img_txt, %sesquest_txt, %session_txt, );
+## settings/templates ##
+our ( $cookie_length, $mbname, $my_sessions, );
+## system ##
+our ( $iamadmin, $iamgmod, $iamguest, $shared_login_text, $uid, $user_ip,
+    $username, $yymain, $yysetlocation, $yytitle, %FORM, %INFO, );
 
 load_language('Sessions');
 get_micon();
@@ -41,10 +41,11 @@ get_template('Other');
 
 sub session_reval {
     my $sesremark   = q{};
-    my $sesquestion = ${ $uid . $username }{'sesquest'};
+    my $sesquestion = q{};
     my $sestype     = 'text';
     {
         no strict qw(refs);
+        $sesquestion = ${ $uid . $username }{'sesquest'};
         if (  !${ $uid . $username }{'sesquest'}
             || ${ $uid . $username }{'sesquest'} eq 'password' )
         {
@@ -59,7 +60,7 @@ sub session_reval {
             $sestype     = 'text';
         }
     }
-
+    $INFO{'sesredir'} ||= q{};
     $yymain .= $my_sessions;
     $yymain =~ s/\Q{yabb sesremark}\E/$sesremark/xsm;
     $yymain =~ s/\Q{yabb sestype}\E/$sestype/xsm;
@@ -81,11 +82,10 @@ sub session_reval2 {
         no strict qw(refs);
         if ( $FORM{'sesanswer'} eq q{} ) { fatal_error('no_secret_answer'); }
 
-        if (   ${ $uid . $username }{'sesquest'} eq q{}
-            || ${ $uid . $username }{'sesquest'} eq 'password' )
+        if (   !${ $uid . $username }{'sesquest'} || ${ $uid . $username }{'sesquest'} eq 'password' )
         {
             $question = ${ $uid . $username }{'password'};
-            $answer   = encode_password("$FORM{'sesanswer'}");
+            $answer   = encode_password($FORM{'sesanswer'});
             chomp $answer;
         }
         else {

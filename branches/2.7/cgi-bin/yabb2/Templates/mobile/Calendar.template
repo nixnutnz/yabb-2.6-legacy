@@ -34,7 +34,6 @@ $mycalout_goto_main = qq~<tr>
 </table>
 <table class="pad_3px">
     <colgroup>
-        <col style="width:6%" />
         <col style="width:30%" />
         <col style="width:64%" />
     </colgroup>~;
@@ -91,9 +90,6 @@ $mycal_displayssi = qq~
 </table>~;
 
 $mycal_show_ssi = qq~{yabb cal_display_show}<tr>
-        <td class="windowbg center" style="border-right:1px solid #fff">
-            <img src="$imagesdir/$cal_eventcal" alt="" />
-        </td>
         <td class="windowbg2">{yabb cal_displayssi}{yabb ShowBirthdaysLink}{yabb ShowEventAddLink}</td>
         <td class="windowbg2 vtop">{yabb cal_display_calevent} &nbsp;</td>
     </tr>
@@ -270,14 +266,7 @@ $mycal_endaddform = q~</td>
 
 $mycal_addnew_left = qq~</table>
 <table class="bordercolor pad_3px" style="border-top:1px solid #fff">
-    <colgroup>
-        <col style="width:6%" />
-        <col style="width:94%" />
-    </colgroup>
     <tr>
-        <td class="windowbg center" style="border-right:1px solid #fff">
-            {yabb cal_modify}
-        </td>
         <td class="windowbg2">{yabb mycalout_post}</td>
     </tr>~;
 

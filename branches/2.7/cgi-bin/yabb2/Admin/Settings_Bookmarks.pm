@@ -23,22 +23,22 @@ our $settings_bookmarkspmmods = 0;
 if (@settings_bookmarkspmmods) {
     $settings_bookmarkspmmods = 1;
 }
+
+our ($action);
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
 ##  languages ##
-our ( %croak, %admin_txt, %admintxt, %admin_img, %bookmark_txt );
+our ( %admin_img, %admin_txt, %admintxt, %bookmark_txt, %croak, );
 ## paths ##
 our ($adminurl);
 ## settings ##
-our (
-    $en_bookmarks, $bm_boards, $show_bookmarks,
-    %settings,     %bookmarks, $bm_subcut,
-);
+our ( $bm_boards, $bm_subcut, $en_bookmarks, $show_bookmarks, %bookmarks,
+    %settings, );
 ## template ##
-our ( $yyhtml_root, $htmldir );
+our ( $htmldir, $yyhtml_root, );
 ## other ##
-our ( $action, $action_area, $uid, $yymain, $yytitle, $yysetlocation, %FORM,
-    $date );
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
+our ( $action_area, $date, $uid, $yymain, $yysetlocation, $yytitle, %FORM, );
 
 load_language('Admin');
 load_language('Bookmarks');

@@ -14,7 +14,7 @@
 ###############################################################################
 use strict;
 use warnings;
-no warnings qw(uninitialized redefine);
+no warnings qw(redefine);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 our $VERSION = '2.7.00';
@@ -26,22 +26,23 @@ if (@systempmmods) {
     $systempmmods = 1;
 }
 
+## language ##
+our ( %croak, %messageindex_txt, %reg_txt, );
+## paths ##
+our ( $boardsdir, $boardurl, $datadir, $memberdir, $scripturl, $vardir, );
+## settings ##
+our ( $extendedprofiles, $preregspan, $regtype, $screenlogin, $stealthurl,
+    $ttsreverse, %grp_post, );
+## system ##
 our (
-    %croak,      @allboards,        $boardsdir,
-    $uid,        $datadir,          $date,
-    $username,   $memberdir,        $ttsreverse,
-    %vars,       $extendedprofiles, %memberlist,
-    %memberinf,  $screenlogin,      %grp_post,
-    $wantarray,  $regtype,          $iamadmin,
-    $iamgmod,    $allow_gmod_admin, %gmod_access,
-    %reg_txt,    $boardurl,         $yyaext,
-    $preregspan, $vardir,           $stealthurl,
-    $yyexec,     $yyext,            @chararray,
-    %INFO,       %messageindex_txt, $yysetlocation,
-    $scripturl,  $currentboard,
+    $allow_gmod_admin, $currentboard, $date,      $iamadmin,
+    $iamgmod,          $uid,          $username,  $wantarray,
+    $yyaext,           $yyexec,       $yyext,     $yysetlocation,
+    %gmod_access,      %INFO,         %memberinf, %memberlist,
+    %vars,             @allboards,    @chararray,
 );
 ## local ##
-our ( %totals, @repliers, $yyadmin_alert );
+our ( $yyadmin_alert, %totals, @repliers, );
 
 sub boardtotals {
     my ( $job, @updateboards ) = @_;
@@ -101,10 +102,11 @@ sub boardcount_totals {
     my ($cntboard) = @_;
     if ( !$cntboard ) { return; }
 
-    open my $BOARD, '<', "$boardsdir/$cntboard.txt"
+    our ($BOARD);
+    fopen( 'BOARD', '<', "$boardsdir/$cntboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$cntboard.txt", 1 );
     my @threads = <$BOARD>;
-    close $BOARD or croak "$croak{'close'} BOARD";
+    fclose('BOARD') or croak "$croak{'close'} BOARD";
     my $threadcount  = @threads;
     my $messagecount = $threadcount;
     for my $i ( 0 .. $#threads ) {
@@ -138,11 +140,12 @@ sub board_setlast_info {
             ) = split /[|]/xsm, $lastthread;
             if ( $lastthreadstate !~ /m/sm ) {
                 chomp $lastthreadstate;
-                open my $FILE, '<', "$datadir/$lastthreadid.txt"
+                our ($FILE);
+                fopen( 'FILE', '<', "$datadir/$lastthreadid.txt" )
                   or
                   fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt", 1 );
                 @lastthreadmessages = <$FILE>;
-                close $FILE or croak "$croak{'close'} FILE";
+                fclose('FILE') or croak "$croak{'close'} FILE";
                 @lastmessage =
                   split /[|]/xsm, $lastthreadmessages[-1], 7;
                 last;
@@ -234,7 +237,8 @@ sub message_totals {
         {
             no strict qw(refs);
             $openboard = ${$updatethread}{'board'};
-            open my $TESTBOARD, '<', "$boardsdir/$openboard.txt"
+            our ($TESTBOARD);
+            fopen( 'TESTBOARD', '<', "$boardsdir/$openboard.txt" )
               or fatal_error( 'cannot_open', "$boardsdir/$openboard.txt", 1 );
             while ( my $threadline = <$TESTBOARD> ) {
                 if ( $updatethread == ( split /[|]/xsm, $threadline, 2 )[0] ) {
@@ -243,13 +247,14 @@ sub message_totals {
                     last;
                 }
             }
-            close $TESTBOARD or croak "$croak{'close'} TESTBOARD";
+            fclose('TESTBOARD') or croak "$croak{'close'} TESTBOARD";
 
             # storing thread other info
-            open my $MSG, '<', "$datadir/$updatethread.txt"
+            our ($MSG);
+            fopen( 'MSG', '<', "$datadir/$updatethread.txt" )
               or fatal_error( 'cannot_open', "$datadir/$updatethread.txt", 1 );
             my @threaddata = <$MSG>;
-            close $MSG or croak "$croak{'close'} MSG";
+            fclose('MSG') or croak "$croak{'close'} MSG";
             my @lastinfo = split /[|]/xsm, $threaddata[-1];
             my $lastpostdate = sprintf '%010d', $lastinfo[3];
             my $lastposter =
@@ -289,10 +294,12 @@ qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n%$updatethread = (
             }
         }
         $prnctb .= qq~);\n\n1;\n~;
-        open my $UPDATE_CTB, '>', "$datadir/$updatethread.ctb"
-          or fatal_error( 'cannot_open', "$datadir/$updatethread.ctb", 1 );
-        print {$UPDATE_CTB} $prnctb or croak "$croak{'print'} UPDATE_CTB";
-        close $UPDATE_CTB or croak "$croak{'close'} CTB";
+        our ($UPDATE_CTB);
+        fopen( 'UPDATE_CTB', '>', "$datadir/$updatethread.ctb" )
+          or fatal_error( 'cannot_open', "$datadir/$updatethread.ctb" );
+        print {$UPDATE_CTB} $prnctb
+          or croak "$croak{'print'} $updatethread.ctb";
+        fclose('UPDATE_CTB') or croak "$croak{'close'} $updatethread.ctb";
     }
     return;
 }
@@ -301,12 +308,13 @@ qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n%$updatethread = (
 
 sub user_account {
     my ( $user, $action, $pars ) = @_;
+    no warnings qw(uninitialized);
     {
         no strict qw(refs);
         return if !${ $uid . $user }{'password'};
     }
     my ($userext);
-    if ( $action eq 'update' ) {
+    if ( $action && $action eq 'update' ) {
         {
             no strict qw(refs);
             if ($pars) {
@@ -324,13 +332,13 @@ sub user_account {
             }
         }
     }
-    elsif ( $action eq 'preregister' ) {
+    elsif ( $action && $action eq 'preregister' ) {
         $userext = 'pre';
     }
-    elsif ( $action eq 'register' ) {
+    elsif ( $action && $action eq 'register' ) {
         $userext = 'vars';
     }
-    elsif ( $action eq 'delete' ) {
+    elsif ( $action && $action eq 'delete' ) {
         unlink "$memberdir/$user.vars";
         return;
     }
@@ -345,6 +353,7 @@ sub user_account {
         push @tags, ext_get_fields_array();
     }
     ## Mod hook ##
+
     my $fix = 0;
     if ( -e "$memberdir/$user.$userext" ) {
         require "$memberdir/$user.$userext";
@@ -370,20 +379,21 @@ qq~'$tags[$cnt]' => q\~${ $uid . $user }{$tags[$cnt]}\~,\n~;
             }
         }
         $newvars .= qq~);\n\n1;\n~;
-        open my $UPDATEUSER, '>', "$memberdir/$user.$userext"
+        our ($UPDATEUSER);
+        fopen( 'UPDATEUSER', '>', "$memberdir/$user.$userext" )
           or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
         print {$UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
-        close $UPDATEUSER or croak "$croak{'close'} UPDATEUSER";
+        fclose('UPDATEUSER') or croak "$croak{'close'} UPDATEUSER";
     }
     {
         no strict qw(refs);
         ${ $uid . $user }{'lastonline'} ||= q{};
-
-        open my $UPDTUSER, '>', "$memberdir/$user.lst"
+        our ($UPDTUSER);
+        fopen( 'UPDTUSER', '>', "$memberdir/$user.lst" )
           or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
         print {$UPDTUSER} ${ $uid . $user }{'lastonline'}
           or croak "$croak{'print'} UPDTUSER";
-        close $UPDTUSER or croak "$croak{'close'} UPDTUSER";
+        fclose('UPDTUSER') or croak "$croak{'close'} UPDTUSER";
     }
     return;
 }
@@ -413,18 +423,19 @@ sub member_index {
             ${ $uid . $user }{'postcount'}
         );
 
-        open my $TTL, '<', 'Variables/memttl.db'
+        our ($TTL);
+        fopen( 'TTL', '<', 'Variables/memttl.db' )
           or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         my $buffer = <$TTL>;
-        close $TTL or croak "$croak{'close'} TTL";
+        fclose('TTL') or croak "$croak{'close'} TTL";
 
         my ( $membershiptotal, undef ) = split /[|]/xsm, $buffer;
         $membershiptotal++;
 
-        open $TTL, '>', 'Variables/memttl.db'
+        fopen( 'TTL', '>', 'Variables/memttl.db' )
           or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         print {$TTL} qq~$membershiptotal|$user~ or croak "$croak{'print'} TTL";
-        close $TTL or croak "$croak{'close'} TTL";
+        fclose('TTL') or croak "$croak{'close'} TTL";
         $return = 0;
 
     }
@@ -447,11 +458,12 @@ sub member_index {
         undef %hash2;
         undef @nkey;
 
-        open my $TTL, '>', 'Variables/memttl.db'
+        our ($TTL);
+        fopen( 'TTL', '>', 'Variables/memttl.db' )
           or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         print {$TTL} qq~$membershiptotal|$latestmember~
           or croak "$croak{'print'} TTL";
-        close $TTL or croak "$croak{'close'} TTL";
+        fclose('TTL') or croak "$croak{'close'} TTL";
         $return = 0;
     }
     elsif ( ( $memaction eq 'check_exist' || $memaction eq 'who_is' ) && $user )
@@ -513,11 +525,12 @@ sub membership_count_total {
     undef %hash2;
     undef @nkey;
 
-    open my $MEMTTL, '>', 'Variables/memttl.db'
+    our ($MEMTTL);
+    fopen( 'MEMTTL', '>', 'Variables/memttl.db' )
       or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
     print {$MEMTTL} qq~$membertotal|$latestmember~
       or croak "$croak{'print'} MEMTTL";
-    close $MEMTTL or croak "$croak{'close'} MEMTTL";
+    fclose('MEMTTL') or croak "$croak{'close'} MEMTTL";
 
     if ($wantarray) {
         manage_memberinfo('load');
@@ -586,10 +599,11 @@ qq~<div class="editbg">$reg_txt{'admin_alert_start_more'} $preregged_waiting $re
 sub activation_check {
     my ( $changed, $regtime, $regmember );
     my $timespan = $preregspan * 3600;
-    open my $INACT, '<', 'Variables/meminactive.db'
+    our ($INACT);
+    fopen( 'INACT', '<', 'Variables/meminactive.db' )
       or croak "$croak{'open'} meminactive";
     my @actlist = <$INACT>;
-    close $INACT or croak "$croak{'close'} INACT";
+    fclose('INACT') or croak "$croak{'close'} INACT";
     my (@outlist);
 
     # check if user is in pre-registration and check activation key
@@ -600,11 +614,12 @@ sub activation_check {
             unlink "$memberdir/$regmember.pre";
 
             # add entry to registration log
-            open my $REGLOG, '>>', "$vardir/registration.log"
+            our ($REGLOG);
+            fopen( 'REGLOG', '>>', "$vardir/registration.log", 1 )
               or croak "$croak{'open'} REGLOG";
             print {$REGLOG} "$date|T|$regmember|\n"
               or croak "$croak{'print'} REGLOG";
-            close $REGLOG or croak "$croak{'close'} REGLOG";
+            fclose('REGLOG') or croak "$croak{'close'} REGLOG";
         }
         else {
 
@@ -617,10 +632,10 @@ sub activation_check {
 
         # re-open inactive list for update if changed
         my $prnout = join q{}, @outlist;
-        open my $INACT, '>', 'Variables/meminactive.db'
+        fopen( 'INACT', '>', 'Variables/meminactive.db', 1 )
           or croak "$croak{'open'} INACT";
         print {$INACT} $prnout or croak "$croak{'print'} INACT";
-        close $INACT or croak "$croak{'close'} INACT";
+        fclose('INACT') or croak "$croak{'close'} INACT";
     }
     return;
 }
@@ -675,11 +690,12 @@ sub rearrange_sticky {
     $stkynum = $INFO{'num'};
     my $direction = $INFO{'direction'};
     $oldboard = $INFO{'oldboard'};
-    open my $FILE, '<', "$boardsdir/$board.txt"
+    our ($FILE);
+    fopen( 'FILE', '<', "$boardsdir/$board.txt" )
       or fatal_error(
         "300 $messageindex_txt{'106'}: $messageindex_txt{'23'} $board.txt");
     my @threads = <$FILE>;
-    close $FILE or croak "$croak{'close'} FILE";
+    fclose('FILE') or croak "$croak{'close'} FILE";
     my $n = 0;
 
     for (@threads) {
@@ -712,7 +728,7 @@ sub rearrange_sticky {
     if (   ( $direction ne 'up' || $stky != 0 )
         && ( $direction ne 'down' || $stky != $#stickies ) )
     {
-        open my $FILE, '>', "$boardsdir/$board.txt"
+        fopen( 'FILE', '>', "$boardsdir/$board.txt" )
           or fatal_error(
             "300 $messageindex_txt{'106'}: $messageindex_txt{'23'} $board.txt");
         for (@threads) {
@@ -720,7 +736,7 @@ sub rearrange_sticky {
             next if /^(\s)*$/xsm;
             print {$FILE} "$_\n" or croak "$croak{'print'} FILE";
         }
-        close $FILE or croak "$croak{'close'} FILE";
+        fclose('FILE') or croak "$croak{'close'} FILE";
     }
     $yysetlocation = qq~$scripturl?board=$currentboard;~;
     redirectexit();

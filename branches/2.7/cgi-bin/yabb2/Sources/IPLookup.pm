@@ -28,8 +28,9 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 our (
-    $ip_lookup, %INFO,   $iamadmin, $iamgmod,      $iamfmod,
-    %iplookup,  $yymain, $yytitle,  $yynavigation, %lookup_txt,
+    $iamadmin, $iamfmod,  $iamgmod,      $ip_lookup,
+    $my_ipdiv, $yymain,   $yynavigation, $yytitle,
+    %INFO,     %iplookup, %lookup_txt,
 );
 
 if ( !$ip_lookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamfmod ) ) {
@@ -38,7 +39,6 @@ if ( !$ip_lookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamfmod ) ) {
 
 load_censor_list();
 get_micon();
-our ($my_ipdiv);
 get_template('Other');
 
 sub ip_lookup {
