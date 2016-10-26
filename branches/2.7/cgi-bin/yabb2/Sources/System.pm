@@ -186,8 +186,8 @@ sub message_totals {
     # usage: &message_totals("task",<threadid>)
     # tasks: update, load, incview, incpost, decpost, recover
     my ( $job, $updatethread ) = @_;
-    chomp $updatethread;
     if ( !$updatethread ) { return; }
+    chomp $updatethread;
 
     if ( $job eq 'update' ) {
         {

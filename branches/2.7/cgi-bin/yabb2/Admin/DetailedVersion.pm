@@ -250,11 +250,11 @@ qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'
     fopen( 'DEFHTML', '<', "$templatesdir/default/default.html" )
       or croak "$croak{'open'} default.html";
     my @defaulthtmlver = <$DEFHTML>;
-    fclose('DEFHTML') or croak "$croak{'open'} default.html";
+    fclose('DEFHTML') or croak "$croak{'close'} default.html";
     for my $x (@defaulthtmlver) {
         if ( $x =~ /\Q<!-- YaBB \E/xsm ) {
             $x =~
-              s/<!-- YaBB (.*?) \$Revision: (.*?) \$ -->/YaBB $1 Build $2/igxsm;
+              s/<!-- YaBB (.*?) \$Revision: (.*?) \$ -->/YaBB $1 Build $2/igsm;
             $defaulthtmlver = $x;
             our ($DAT);
             fopen( 'DAT', '<', "$templatesdir/default/default.html" )

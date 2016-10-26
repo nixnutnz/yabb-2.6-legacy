@@ -1,5 +1,5 @@
 ###############################################################################
-# default.AdminCentre.template                                                #
+# admin.AdminCentre.template                                                  #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,10 +11,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$defaultadmincentretemver = 'YaBB 2.7.00 $Revision: 1829 $';
-@defaultadmincentremods = ();
-if (@defaultadmincentremods) {
-    $defaultadmincentremods = 1;
+$adminadmincentretemver = 'YaBB 2.7.00 $Revision: 1829 $';
+@adminadmincentremods = ();
+$adminadmincentremods = 0;
+if (@adminadmincentremods) {
+    $adminadmincentremods = 1;
 }
 
 $adminlogo    = 'adminlogo.png';
