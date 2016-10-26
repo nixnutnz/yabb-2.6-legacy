@@ -200,7 +200,8 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
             $checkverb = 1;
         }
     }
-    my ( $datebackupfix, $backupfixmatch );
+    my ( $datebackupfix );
+    my $backupfixmatch = $admin_txt{'nochng'};
     my $backupfixplver    = q{};
     my $backupfixmodcheck = q{};
     if ($checkverb) {

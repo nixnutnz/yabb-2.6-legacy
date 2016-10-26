@@ -370,10 +370,13 @@ sub votedetails {
         to_chars( $options[$i] );
     }
 
-    fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
-      or croak "$croak{'open'} $pollnum.polled";
-    my @polled = <$FILE>;
-    fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
+    my @polled;
+    if ( -e "$datadir/$pollnum.polled") {
+        fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
+          or croak "$croak{'open'} $pollnum.polled";
+        @polled = <$FILE>;
+        fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
+    }
 
     my $linkprofile = q{};
     my ( $displaydate, );

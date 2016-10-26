@@ -414,7 +414,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                   access_check( ${$scthreadnum}{'board'}, q{}, $boardperms ) eq
                   'granted' ? $pollthread : 0;
             }
-            if ( ${ $uid . $scboard }{'brdpasswr'} && !$iamadmin && !$iamgmod )
+            if ( ${ $uid . $scthreadnum }{'brdpasswr'} && !$iamadmin && !$iamgmod )
             {
                 my $pswiammod = 0;
                 my $bdmods    = ${ $uid . $curboard }{'mods'};
@@ -422,7 +422,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 foreach my $curuser ( split /\//xsm, $bdmods ) {
                     if ( $username eq $curuser ) { $pswiammod = 1; last; }
                 }
-                my $bdmodgroups = ${ $uid . $scboard }{'modgroups'};
+                my $bdmodgroups = ${ $uid . $scthreadnum }{'modgroups'};
                 foreach my $curgroup ( split /\//xsm, $bdmodgroups ) {
                     if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                         $pswiammod = 1;
@@ -439,8 +439,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     }
                 }
                 my $bpasscookie =
-                  "$cookiepassword$scboard$username$cookieother_name";
-                my $crypass = ${ $uid . $scboard }{'brdpassw'};
+                  "$cookiepassword$scthreadnum$username$cookieother_name";
+                my $crypass = ${ $uid . $scthreadnum }{'brdpassw'};
                 if ( !$pswiammod && $yy_cookies{$bpasscookie} ne $crypass ) {
                     $pollthread = 0;
                 }

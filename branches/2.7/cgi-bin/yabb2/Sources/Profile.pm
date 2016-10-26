@@ -4221,7 +4221,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
 
         if ( $tstate !~ m/1/xsm ) {
             my $notify = q{};
-            if ( ${ $uid . $username }{'thread_notifications'} =~
+            if ( ${ $uid . $username }{'thread_notifications'} && ${ $uid . $username }{'thread_notifications'} =~
                 /\b$tnum\b/xsm )
             {
                 $notify =
