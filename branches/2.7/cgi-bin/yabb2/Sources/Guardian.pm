@@ -689,15 +689,15 @@ sub update_htaccess {
     $htheader = q~<Files YaBB*>~;
     $htfooter = q~</Files>~;
     my $start = 0;
-    for my $i (@htlines) {
-        chomp $i;
-        if ( $i eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $i !~ m/\x23/xsm && $i ne q{} ) {
-            push @htout, "$i\n";
+    for my $chk (@htlines) {
+        chomp $chk;
+        if ( $chk eq $htheader ) { $start = 1; }
+        if ( $start == 0 && $chk !~ m/\x23/xsm && $chk ne q{} ) {
+            push @htout, "$chk\n";
         }
-        if ( $i eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $i =~ s/Deny from //gsm ) {
-            push @denies, $i;
+        if ( $chk eq $htfooter ) { $start = 0; }
+        if ( $start == 1 && $chk =~ s/Deny from //gsm ) {
+            push @denies, $chk;
         }
     }
     if ( $use_htaccess && $act eq 'add' ) {

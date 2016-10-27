@@ -3229,6 +3229,7 @@ qq~<img src="$facesurl/${ $uid . $user }{'userpic'}" id="avatar_img_resize" alt=
     }
     my $memberzodiac = q{};
     $myage = q{};
+    $isbday ||= q{};
     if ($age) {
         if ( $showage == 1 && ${ $uid . $user }{'hideage'} && !$iamadmin ) {
             $myage = qq~$profile_txt{'722'} &nbsp;~;

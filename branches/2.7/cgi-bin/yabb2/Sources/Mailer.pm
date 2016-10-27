@@ -46,6 +46,8 @@ our ( $from, $mailcharset, $to, %mailer, );
 my $pre =
 q~style="padding:5px 40px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:100%; overflow-x:auto;"~;
 
+load_language('Smtp');
+
 sub sendmail {
     my ( $ato, $subject, $message, $afrom, $amailcharset ) = @_;
 

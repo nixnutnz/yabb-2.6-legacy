@@ -697,7 +697,7 @@ sub email_domain_check {
             elsif ( $i !~ /^[.]/xsm ) { $i = ".$i"; }
             my @my_ch   = split /[.]/xsm, $my_x;
             my @my_ch_e = split /[.]/xsm, $checkdomain;
-            if ( $checkdomain =~ m/$_/ixsm
+            if ( $checkdomain =~ m/$i/ixsm
                 || ( $my_ch[0] eq q{} && $my_ch[-1] eq $my_ch_e[-1] ) )
             {
                 fatal_error( 'domain_not_allowed', $i );

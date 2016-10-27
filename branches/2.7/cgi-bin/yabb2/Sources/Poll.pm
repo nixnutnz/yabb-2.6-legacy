@@ -40,7 +40,7 @@ our (
     $cat_exp,       $currentboard,  $date,        $iamadmin,
     $iamgmod,       $iamguest,      $menusep,     $poll_lock,
     $pollnum,       $staff,         $uid,         $user_ip,
-    $username,      $yy_yabbloaded, $yymain,      $yynavigation,
+    $username,      $viewnum,       $yy_yabbloaded, $yymain,      $yynavigation,
     $yysetlocation, $yytitle,       %catinfo,     %FORM,
     %INFO,          %poll_nodelete, %yy_udloaded, @users_vote,
 );
@@ -767,6 +767,7 @@ qq~<img src="$imagesdir/$cat_col" id="scpollcollapse" alt="$boardindex_exptxt{'2
     if ($has_voted) {
         if ( !$hide_results || $poll_locked ) {
             $poll_notlocked = $mypoll_notlocked;
+            $poll_notlocked =~ s/\Q{yabb viewnum}\E/$viewnum/gxsm;
         }
     }
 

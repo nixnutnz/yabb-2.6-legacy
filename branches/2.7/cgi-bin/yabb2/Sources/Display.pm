@@ -270,14 +270,20 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
 
     # Figure out the name of the category
     get_forum_master();
-    my ( $vircurcat, $vircat, $virboardname, );
+    my $vircurcat = q{};
+    my $vircat = q{};
+    my $virboardname = q{};
     if ( $currentboard eq $annboard ) {
         $vircurrentboard = $INFO{'virboard'};
         $vircurcat       = ${ $uid . $vircurrentboard }{'cat'};
-        ( $vircat, undef ) = split /[|]/xsm, $catinfo{$vircurcat};
-        to_chars($vircat);
-        ( $virboardname, undef ) = split /[|]/xsm, $board{$vircurrentboard}, 2;
-        to_chars($virboardname);
+        if ($vircurcat) {
+            ( $vircat, undef ) = split /[|]/xsm, $catinfo{$vircurcat};
+            to_chars($vircat);
+        }
+        if ($vircurrentboard) {
+            ( $virboardname, undef ) = split /[|]/xsm, $board{$vircurrentboard}, 2;
+            to_chars($virboardname);
+        }
     }
 
     my ( $cat, $catperms ) = split /[|]/xsm, $catinfo{$curcat};

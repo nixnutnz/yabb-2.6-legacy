@@ -17,7 +17,7 @@ use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
 
-our $antispamwquestionspmver  = 'YaBB 2.7.00 $Revision$';
+our $antispamquestionspmver  = 'YaBB 2.7.00 $Revision$';
 our @antispamquestionspmmods = ();
 our $antispamquestionspmmods = 0;
 if (@antispamquestionspmmods) {

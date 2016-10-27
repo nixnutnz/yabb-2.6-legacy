@@ -57,7 +57,7 @@ our (
     $visel_3a,          $visel_4,
 );
 
-if ( $iamguest && $INFO{'toid'} ne 'userspec' && $action ne 'checkavail' ) {
+if ( $iamguest && ( !$INFO{'toid'} || $INFO{'toid'} ne 'userspec') && $action ne 'checkavail' ) {
     fatal_error('members_only');
 }
 load_language('UserSelect');
@@ -117,13 +117,20 @@ sub member_list {
 
     $to_id = $INFO{'toid'};
     my $radiobuttons = q{};
-    my ( $page_title, $tosel, $ccsel, $bccsel, @to_show, $my_radio_to,
-        $my_radio_cc, $my_radio_bcc, );
+    my $my_radio_to = q{};
+    my $my_radio_cc = q{};
+    my $my_radio_bcc = q{};
+    my ( $page_title, @to_show, );
+    $INFO{'sort'} ||= q{};
+    $INFO{'letter'} ||= q{};
+    $start ||= q{};
     if ( $to_id =~ /toshow/sm ) {
         $page_title     = $usersel_txt{'pmpagetitle'};
         $instruct_start = $usersel_txt{'instruct'};
         $instruct_end   = $usersel_txt{'reciepientlist'};
-
+        my $ccsel = q{};
+        my $bccsel = q{};
+        my $tosel = q{};
         if    ( $to_id eq 'toshowcc' )  { $ccsel  = q~ checked="checked"~; }
         elsif ( $to_id eq 'toshowbcc' ) { $bccsel = q~ checked="checked"~; }
         else                            { $tosel  = q~ checked="checked"~; }

@@ -885,10 +885,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
             require Sources::Decoder;
             if ($gpvalid_en) {
                 validation_code();
-                $verification_field =
-                    $verification eq q{}
-                  ? $mypost_guest_c
-                  : q{};
+                $verification_field = $mypost_guest_c;
                 $verification_field =~ s/\Q{yabb showcheck}\E/$showcheck/xsm;
                 $verification_field =~ s/\Q{yabb flood_text}\E/$flood_text/xsm;
             }
@@ -1696,7 +1693,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     }
 
     ## if this is a draft being sent, remove it from the draft file
-    if ( $FORM{'draftid'} && $FORM{'draft'} ne $inmes_txt{'savedraft'} ) {
+    if ( $FORM{'draftid'} && $FORM{'draft'} && $FORM{'draft'} ne $inmes_txt{'savedraft'} ) {
         update_pms( $username, $messageid, 'draftsend' );
         our ($DRAFTFILE);
         fopen( 'DRAFTFILE', '<', "$memberdir/$username.imdraft" )

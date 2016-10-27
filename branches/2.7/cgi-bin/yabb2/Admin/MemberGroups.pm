@@ -319,10 +319,10 @@ sub hextoname {
 sub edit_add_group {
     is_admin_or_gmod();
     my @memstats = ();
-    my ( $viewtitle, $posts, $noposts, $choosable, );
+    my ( $viewtitle, $posts, $noposts, $choosable, $type, $element );
     if ( $INFO{'group'} ) {
         $viewtitle = $admintxt{'18a'};
-        my ( $type, $element ) = split /[|]/xsm, $INFO{'group'};
+        ( $type, $element ) = split /[|]/xsm, $INFO{'group'};
         if ($element) {
             if ( $type eq 'P' ) {
                 $posts    = $element;
@@ -492,7 +492,18 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
     $post1   ||= q{};
     $post2   ||= q{};
     $noposts ||= q{};
-    if ( !exists $grp_staff{ $INFO{'group'} } ) {
+    if ( exists $grp_staff{ $INFO{'group'} } ){
+        $yymain .= qq~<tr>
+        <td class="windowbg"><label for="viewpublic"><b>$amgtxt{'42'}</b> <br /><b>$amgtxt{'43'}</b></label></td>
+        <td class="windowbg2">
+            <input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" />
+        </td>
+    </tr>~;
+    }
+    elsif ( exists $grp_post{$element} ) {
+        $yymain .= q{};
+    }
+    else {
         $yymain .= qq~<tr>
         <td class="windowbg"><label for="postindepend">$amgtxt{'39a'}</label></td>
         <td class="windowbg2">
@@ -508,14 +519,6 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
             <input type="radio" name="postdepend" id="postdepend" value="Yes" $post1 class="windowbg2" style="border: 0; vertical-align: middle;" onclick="depend(this.value)" />
             <br />
             <label for="posts"><b>$amgtxt{'04'}</b></label> <input type="text" name="posts" id="posts" size="5" value="$posts"$pt style="vertical-align: middle;" />
-        </td>
-    </tr>~;
-    }
-    else {
-        $yymain .= qq~<tr>
-        <td class="windowbg"><label for="viewpublic"><b>$amgtxt{'42'}</b> <br /><b>$amgtxt{'43'}</b></label></td>
-        <td class="windowbg2">
-            <input type="checkbox" name="viewpublic" id="viewpublic" value="1"$pc$pd style="vertical-align: middle;" />
         </td>
     </tr>~;
     }
@@ -801,7 +804,7 @@ sub edit_add_group2 {
 
             $grp_post{$posts} = [
                 $name,   $FORM{'numstars'}, $star,
-                $color,  $viewpublic,       $view,
+                $color,  0,                 $view,
                 $topics, $reply,            $polls,
                 $attach, $additional
             ];

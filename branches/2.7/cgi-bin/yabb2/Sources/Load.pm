@@ -1185,7 +1185,7 @@ sub update_cookie {
     }
 
     if ($valid) {
-        if ( $expire eq 'persistent' ) {
+        if ( $expire && $expire eq 'persistent' ) {
             $expiration = 'Sunday, 17-Jan-2038 00:00:00 GMT';
         }
         $yy_setcookies1 = write_cookie(

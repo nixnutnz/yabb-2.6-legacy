@@ -48,7 +48,7 @@ our (
 load_language('Smtp');
 
 sub use_smtp {
-    my ($smtpaddr);
+    my $smtpaddr = q{};
     $OUTPUT_AUTOFLUSH = 1;
     my ($proto) = ( getprotobyname 'tcp' )[2];
     my ($port) = ( getservbyname 'smtp', 'tcp' )[2] || 25;
@@ -90,6 +90,8 @@ sub use_smtp {
             send_line("AUTH CRAM-MD5\r\n");
             ( $code, $text, $more ) = get_line();
             if ( $code != 334 && $smtp_auth_required != 4 ) {
+                $smtp_txt{$code} =~ s/{yabb smtpaddr}/$smtpaddr/gxsm; 
+                $smtp_txt{$code} =~ s/{yabb port}/$port/gxsm; 
                 fatal_error( 'smtp_error',
 "[$code]: $smtp_txt{$code}<br /><br /><b>$smtp_txt{'5'}</b><br />$sendlog"
                 );

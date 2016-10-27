@@ -21,9 +21,9 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %smtp_txt = (
-'1' => qq~SERVER ERROR:Could not find $smtpaddr~,
+'1' => qq~SERVER ERROR:Could not find {yabb smtpaddr}~,
 '2' => q~SERVER ERROR: Could not open a socket connection~,
-'3' => qq~SERVER ERROR: Could not connect to $smtpaddr at port $port~,
+'3' => qq~SERVER ERROR: Could not connect to {yabb smtpaddr} at port {yabb port}~,
 '4' => q~SYSTEM ERROR: The To address is empty~,
 '5' => q~Mail Server communication log:~,
 'no_to' => q~The 'To' variable (recipient address) is empty and is needed in the SMTP protocol~,

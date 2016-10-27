@@ -678,11 +678,14 @@ sub approve_registration {
     if ($do_scramble_id) { $apruser = decloak($apruser); }
 
     ## load the list with waiting approvals ##
+    my @aprlist;
     our ($APR);
-    fopen( 'APR', '<', 'Variables/memapprove.db' )
-      or croak "$croak{'open'} APR";
-    my @aprlist = <$APR>;
-    fclose('APR') or croak "$croak{'close'} APR";
+    if ( -e 'Variables/memapprove.db' ) {
+        fopen( 'APR', '<', 'Variables/memapprove.db' )
+          or croak "$croak{'open'} APR";
+        @aprlist = <$APR>;
+        fclose('APR') or croak "$croak{'close'} APR";
+    }
 
     my (@aprchnglist);
     my ( $foundmember, $foundpassword );

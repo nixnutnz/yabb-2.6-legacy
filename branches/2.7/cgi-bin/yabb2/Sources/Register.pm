@@ -241,7 +241,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     $yymain .= $email2;
 
     if ($birthday_on_reg) {
-        my $edit_agetxt;
+        my $edit_agetxt = q{};
         if ( $edit_agelimit == 1 ) {
             $edit_agetxt =
               qq~<br /><span class="small">$register_txt{'birthday_c'}</span>~;
@@ -259,6 +259,9 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
               . ( $birthday_on_reg == 2 ? $myreg_req : q{} )
               . qq~ <span class="small">$register_txt{'birthday_b'}</span>~;
         }
+        $birthdate[0] ||= q{};
+        $birthdate[1] ||= q{};
+        $birthdate[2] ||= q{};
         $yymain =~ s/\Q{yabb editAgeTxt}\E/$edit_agetxt/xsm;
         $yymain =~ s/\Q{yabb birthdate0}\E/$birthdate[0]/xsm;
         $yymain =~ s/\Q{yabb birthdate1}\E/$birthdate[1]/xsm;
@@ -268,7 +271,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     }
 
     if ($gender_on_reg) {
-        my $edit_gendertxt;
+        my $edit_gendertxt = q{};
         my $nongen_opt = q{};
         if ( $edit_genderlimit == 1 ) {
             $edit_gendertxt =
@@ -314,6 +317,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
     }
 
     if ( $regtype == 1 ) {
+        $reason ||= q{};
         $yymain .=
             $myregister_regreason_a
           . qq~            <textarea cols="60" rows="7" name="reason" id="reason">$reason</textarea>~
@@ -675,7 +679,7 @@ sub register2 {
     if ( -e ("$memberdir/$member{'regusername'}.vars") ) {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
-    if ( $member{'regusername'} eq $member{'passwrd1'} ) {
+    if ( $member{'passwrd1'} && $member{'regusername'} eq $member{'passwrd1'} ) {
         fatal_error('password_is_userid');
     }
     if ( $regtype == 1 && ( !$member{'reason'} || $member{'reason'} eq q{} ) ) {
@@ -1035,7 +1039,7 @@ sub register2 {
         if ($extendedprofiles) {
             require Sources::ExtendedProfiles;
             my $error = ext_validate_submition( $reguser, $reguser );
-            if ( $error ne q{} ) {
+            if ($error) {
                 fatal_error( 'extended_profiles_validation', $error );
             }
             ext_saveprofile($reguser);

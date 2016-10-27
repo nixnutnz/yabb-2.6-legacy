@@ -1667,9 +1667,9 @@ qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></s
             }
         }
         foreach my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
-            my ( $title, undef, undef, $color, $noshow, undef ) =
+            my ( $title, undef, undef, $color, undef, undef ) =
               @{ $grp_post{$postamount} };
-            if ( $color && $noshow != 1 ) {
+            if ($color) {
                 $tmpcnt++;
                 $tmpcolors{$tmpcnt} =
 qq~<div class="grpcolors"><span style="color: $color;"><strong>lllll</strong></span> $title</div>~;
@@ -1825,6 +1825,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
             $boardindex_template =~ s/\Q{yabb latestmember}\E//gxsm;
         }
         $ims ||= q{};
+        $users ||= q{};
         $boardindex_template =~ s/\Q{yabb ims}\E/$ims/gxsm;
         $boardindex_template =~ s/\Q{yabb guests}\E/$guestson/gxsm;
         $boardindex_template =~ s/\Q{yabb users}\E/$userson/gxsm;

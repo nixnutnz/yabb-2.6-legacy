@@ -2103,19 +2103,18 @@ s/\Q{yabb MCPmMenuTemp_chk}\E/$mc_pmmenu_temp_chk/gxsm;
                   s/\Q{yabb MCPmMenuTemp}\E/$mc_pmmenu_temp/xsm;
             }
 
-            $mc_pmmenu_markall = $my_markall;
-            $mc_pmmenu_markall =~
-              s/\Q{yabb MCPmMenu_strtot}\E/$mc_pmmenu_strtot/xsm;
-            $mc_pmmenu_markall =~ s/\Q{yabb new_load}\E/$newload/xsm;
-
-            $yyjavascript .=
-qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_txt{'500a'}';~;
-
             ## this allows user to add a new folder on the fly
             if ( $storefolders_total < $enable_storefolders ) {
                 $mc_pmmenu_newfolder = $my_newfolder;
             }
         }
+        $mc_pmmenu_markall = $my_markall;
+        $mc_pmmenu_markall =~
+          s/\Q{yabb MCPmMenu_strtot}\E/$mc_pmmenu_strtot/xsm;
+        $mc_pmmenu_markall =~ s/\Q{yabb new_load}\E/$newload/xsm;
+
+        $yyjavascript .=
+qq~\nvar markallreadlang = '$inmes_txt{'500'}';\nvar markfinishedlang = '$inmes_txt{'500a'}';~;
 
         $enable_pm_search ||= 0;
         if ( $enable_pm_search > 0 ) {
