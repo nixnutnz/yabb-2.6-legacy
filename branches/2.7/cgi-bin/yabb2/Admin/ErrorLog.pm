@@ -244,7 +244,7 @@ function uncheckAll() {
         my $ip_block  = q{};
         my $lookup_ip = qq{$tmp_userip};
         my $ip_ban    = q{};
-        if ( $tmp_userip ne '127.0.0.1' ) {
+        if ( $tmp_userip ne '127.0.0.1' && $tmp_userip ne '::1' ) {
             $ip_block =
               ( $use_guardian && $use_htaccess )
               ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~

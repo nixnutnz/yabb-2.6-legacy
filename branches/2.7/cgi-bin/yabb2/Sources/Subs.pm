@@ -150,15 +150,15 @@ our $session_id = $cookiesession_name;
 our $randaction = substr $date, 0, length($date) - 2;
 
 our $user_ip = $ENV{'REMOTE_ADDR'};
-if ( $user_ip eq '127.0.0.1' ) {
-    if ( $ENV{'HTTP_CLIENT_IP'} && $ENV{'HTTP_CLIENT_IP'} ne '127.0.0.1' ) {
+if ( $user_ip eq '127.0.0.1' || $user_ip eq '::1' ) {
+    if ( $ENV{'HTTP_CLIENT_IP'} && $ENV{'HTTP_CLIENT_IP'} ne '127.0.0.1' && $ENV{'HTTP_CLIENT_IP'} ne '::1' ) {
         $user_ip = $ENV{'HTTP_CLIENT_IP'};
     }
-    elsif ( $ENV{'X_CLIENT_IP'} && $ENV{'X_CLIENT_IP'} ne '127.0.0.1' ) {
+    elsif ( $ENV{'X_CLIENT_IP'} && $ENV{'X_CLIENT_IP'} ne '127.0.0.1' && $ENV{'X_CLIENT_IP'} ne '::1') {
         $user_ip = $ENV{'X_CLIENT_IP'};
     }
     elsif ($ENV{'HTTP_X_FORWARDED_FOR'}
-        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '127.0.0.1' )
+        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '127.0.0.1' && $ENV{'HTTP_X_FORWARDED_FOR'} ne '::1' )
     {
         $user_ip = $ENV{'HTTP_X_FORWARDED_FOR'};
     }
@@ -1171,7 +1171,7 @@ sub fatal_error_logging {
         $FORM{$formdata} =~ s/\n//igxsm;
     }
 
-    if ( $iamguest && $user_ip ne '127.0.0.1' ) {
+    if ( $iamguest && $user_ip ne '127.0.0.1' && $user_ip ne '::1' ) {
         if ( $error_spd > 0 ) {
             my @erloga = split /[|]/xsm, $errorlog[-1];
             my @erlogb = split /[|]/xsm, $errorlog[-2];

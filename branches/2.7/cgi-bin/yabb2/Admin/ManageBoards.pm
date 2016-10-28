@@ -227,6 +227,7 @@ qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/
                         $descr = ${ $uid . $curboard }{'description'};
                     }
                     $descr =~ s/\<br\s \/>/\n/gxsm;
+                    my $brdpicchk = 0;
                     if ( -e "$boardsdir/brdpics.db" ) {
                         our ($BRDPIC);
                         fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
@@ -234,6 +235,7 @@ qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/
                         my @brdpics = <$BRDPIC>;
                         fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
                         chomp @brdpics;
+                        $bicon = q{};
                         for (@brdpics) {
                             my ( $brdnm, $style, $brdpic ) = split /[|]/xsm;
                             if ( $brdnm eq $curboard ) {
@@ -242,13 +244,14 @@ qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/
                                         if ( $brdpic =~ /\//ixsm ) {
                                             $bicon .=
 qq~$style: <img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                                            $brdpicchk = 1;
                                         }
                                         else {
-                                            my @mytempst = split /[|]/xsm,
-                                              $templateset{$style};
+                                            my @mytempst = @{$templateset{$style}};
                                             $myimgfolder = $mytempst[1];
                                             $bicon .=
 qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                                            $brdpicchk = 1;
                                         }
                                         $tmpwidth2 = 80 - $indent;
                                         $tmpwidth3 = 15;
@@ -256,6 +259,9 @@ qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" i
                                 }
                             }
                         }
+                    }
+                    if ( !$brdpicchk ) {
+                        $bicon = qq~<img src="$imagesdir/boards.png" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
                     }
                     {
                         no strict qw(refs);
@@ -1099,8 +1105,7 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                                 $brdpic_addr = $brdpica;
                             }
                             else {
-                                my @mytempst = split /[|]/xsm,
-                                  $templateset{$style};
+                                my @mytempst = @{$templateset{$style}};
                                 $myimgfolder = $mytempst[1];
                                 $brdpic_addr =
 qq~$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpica~;

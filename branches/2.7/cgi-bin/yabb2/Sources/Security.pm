@@ -633,7 +633,7 @@ sub access_check {
         $memberinform = $memberunfo{$username};
         for my $element (@allowed_groups) {
             chomp $element;
-            if ( $element eq $memberinform ) { $access = 'granted'; }
+            if ( $memberinform && $element eq $memberinform ) { $access = 'granted'; }
             for ( split /,/xsm, $memberaddgroup{$username} || q{} ) {
                 if ( $element eq $_ ) { $access = 'granted'; last; }
             }
@@ -819,7 +819,7 @@ qq~$banned[0]|$banned[1]|$banned[2]|$banned[3]|$banned[4]|\n~;
                 }
             }
             my $add_ban = q{};
-            if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' ) {
+            if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' && $banned ne '::1' ) {
                 $add_ban =
 qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|$lev|\n~;
             }
@@ -961,7 +961,7 @@ sub ban_page_b {
         }
         load_user($user);
         my $add_ban = q{};
-        if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' ) {
+        if ( $banned && $ihave != 1 && $banned ne '127.0.0.1' && $banned ne '::1' ) {
             $add_ban =
 qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|$lev|$ban_reason|\n~;
             if ( $lev eq 'p' ) {

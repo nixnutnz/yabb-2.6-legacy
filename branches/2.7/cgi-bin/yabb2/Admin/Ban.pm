@@ -338,7 +338,7 @@ sub ipban_add {
         }
 
         my $printban = q{};
-        if ( $ja && $ihave == 0 && $ja ne '127.0.0.1' ) {
+        if ( $ja && $ihave == 0 && $ja ne '127.0.0.1' && $ja ne '::1' ) {
             $jb ||= q{};
             {
                 no strict qw(refs);
@@ -485,7 +485,7 @@ sub ipban_err {
         }
     }
     my $printban = q{};
-    if ( $ip_ban && $ihave == 0 && $ip_ban ne '127.0.0.1' ) {
+    if ( $ip_ban && $ihave == 0 && $ip_ban ne '127.0.0.1' && $ip_ban ne '::1' ) {
         {
             no strict qw(refs);
             $printban =

@@ -1068,8 +1068,10 @@ sub load_tools {
 
     foreach my $i ( 0 .. $#tools ) {
         my ( $img_url, $img_txt ) = split /[|]/xsm, $tools[$i];
-        $tools[$i] =
+        if ( $img_url ) {
+            $tools[$i] =
 qq~[tool=$buttons[$i]]<div class="toolbutton_a" style="background-image: url($img_url)">$img_txt</div>[/tool]~;
+        }
     }
 
     foreach my $i ( 0 .. $#tools ) {
@@ -1257,7 +1259,7 @@ sub update_cookie {
 sub what_template {
     my $found = 0;
     our ($yy_setcookies1);
-    my $template = 'Forum default';
+    our $template = 'Forum default';
     while ( my ( $curtemplate, $value ) = each %templateset ) {
         if ( $curtemplate eq $default_template ) {
             $template = $curtemplate;
