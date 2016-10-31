@@ -90,8 +90,8 @@ sub use_smtp {
             send_line("AUTH CRAM-MD5\r\n");
             ( $code, $text, $more ) = get_line();
             if ( $code != 334 && $smtp_auth_required != 4 ) {
-                $smtp_txt{$code} =~ s/{yabb smtpaddr}/$smtpaddr/gxsm; 
-                $smtp_txt{$code} =~ s/{yabb port}/$port/gxsm; 
+                $smtp_txt{$code} =~ s/\Q{yabb smtpaddr}\E/$smtpaddr/gxsm;
+                $smtp_txt{$code} =~ s/\Q{yabb port}\E/$port/gxsm;
                 fatal_error( 'smtp_error',
 "[$code]: $smtp_txt{$code}<br /><br /><b>$smtp_txt{'5'}</b><br />$sendlog"
                 );

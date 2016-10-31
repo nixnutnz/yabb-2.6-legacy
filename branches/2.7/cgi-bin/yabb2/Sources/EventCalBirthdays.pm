@@ -251,38 +251,39 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 
     my @no_birthday_found = ();
     $no_birthday_found[0] = q{};
-    my @no_bd = ();
-    my ($string);
+    my @no_bd  = ();
+    my $string = q{};
     $no_bd[0] = 0;
     foreach my $user_name (@birthmembers) {
         chomp $user_name;
         my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname,
             $user_bdhide ) = split /[|]/xsm, $user_name;
-
-        my $memrealname = $memberinf{$user_bdname}[0];
-        my ($age);
-        if (
-            ( $user_bdmon < $actualmon )
-            || (   ( $user_bdmon == $actualmon )
-                && ( $user_bdday <= $actualday ) )
-          )
-        {
-            $age = $year - $user_bdyear;
-        }
-        else { $age = $year - $user_bdyear; $age-- }
-        my $sternzeichen = q{};
-        if ($birthday_sign_show) {
-            $sternzeichen = starsign( $user_bdday, $user_bdmon );
-        }
-        if ( $age && $user_bdyear > 1904 && $user_bdmon && $user_bdday ) {
-            $string =
-"$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
-            push @birthmembers1, $string;
-            $calsplit ||= 0;
-            if ( $calsplit > 0 && $vmonth eq $mont[$user_bdmon] ) {
+        if ( $user_bdyear && $user_bdmon && $user_bdday ) {
+            my $memrealname = $memberinf{$user_bdname}[0];
+            my $age         = 0;
+            if (
+                ( $user_bdmon < $actualmon )
+                || (   ( $user_bdmon == $actualmon )
+                    && ( $user_bdday <= $actualday ) )
+              )
+            {
+                $age = $year - $user_bdyear;
+            }
+            else { $age = $year - $user_bdyear; $age-- }
+            my $sternzeichen = q{};
+            if ($birthday_sign_show) {
+                $sternzeichen = starsign( $user_bdday, $user_bdmon );
+            }
+            if ( $age && $user_bdyear > 1904 && $user_bdmon && $user_bdday ) {
                 $string =
 "$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
-                push @birthmembers2, $string;
+                push @birthmembers1, $string;
+                $calsplit ||= 0;
+                if ( $calsplit > 0 && $vmonth eq $mont[$user_bdmon] ) {
+                    $string =
+"$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
+                    push @birthmembers2, $string;
+                }
             }
         }
     }
@@ -603,7 +604,7 @@ qq~<a href="$scripturl?action=$action;newstart=$lastptn;vmonth=$vmonth$b_sort">$
                             $showviewbd = 1;
                         }
                         if ($showviewbd) {
-                            $cdate = $var_cal{'hiddens'};
+                            $cdate = $var_cal{'hidden'};
                             if ( $birthday_date_show == 2
                                 || ( $birthday_date_show == 1 && !$iamguest ) )
                             {

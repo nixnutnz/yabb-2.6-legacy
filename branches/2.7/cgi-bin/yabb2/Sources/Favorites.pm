@@ -699,7 +699,7 @@ sub rem_fav {
     }
     user_account( $username, 'update' );
 
-    if (!$x[1] || $x[1] eq 'nonexist') { return;}
+    if ( !$x[1] || $x[1] eq 'nonexist' ) { return; }
     if (   $INFO{'ref'} ne 'delete'
         && $action ne 'multiremfav'
         && $INFO{'oldaddfav'} )

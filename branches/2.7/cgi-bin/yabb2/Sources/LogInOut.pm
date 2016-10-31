@@ -40,7 +40,7 @@ our (
 ## system ##
 our (
     $flood_text, $iamadmin,     $iamgmod,       $iamguest,
-    $language,   $mbname,       $scripturl,     $sessionvalid,
+    $invaluser,  $language,   $mbname,       $scripturl,     $sessionvalid,
     $showcheck,  $spam_image,   $spam_question, $spam_question_id,
     $uid,        $user,         $user_ip,       $username,
     $yymain,     $yynavigation, $yysetlocation, $yytitle,
@@ -460,10 +460,10 @@ sub reminder3 {
     if   ($do_scramble_id) { $user = decloak( $INFO{'user'} ); }
     else                   { $user = $INFO{'user'}; }
 
-    if ( $id !~ /[[:alnum]]+/xsm ) {
+    if ( $id =~ /[^[:alnum]]/xsm) {
         fatal_error( 'invalid_character', "ID $loginout_txt{'241'}" );
     }
-    if ( $user =~ /[^\w#%+\-.@\^]/xsm ) {
+    if ( $user =~ /$invaluser/xsm ) {
         fatal_error( 'invalid_character', "User $loginout_txt{'241'}" );
     }
 
@@ -480,10 +480,11 @@ sub reminder3 {
 
     # update forgotten passwords database
     require "$memberdir/forgotten.passes";
-    if ( $pass{$user} ne $id ) { fatal_error('wrong_id'); }
+    if ( $pass{$user} && $pass{$user} ne $id ) { fatal_error('wrong_id'); }
     delete $pass{$user};
     my $forpasses = q{};
     while ( my ( $key, $value ) = each %pass ) {
+        no strict qw(refs);
         $forpasses .= qq~\$pass{'$key'} = '$value';\n~;
     }
     $forpasses .= '1;';
@@ -494,7 +495,9 @@ sub reminder3 {
     fclose('FORGOTTEN') or croak "$croak{'close'} FORGOTTEN";
 
     # add newly generated password to user data
+    {         no strict qw(refs);
     ${ $uid . $user }{'password'} = encode_password($newpassword);
+    }
     user_account( $user, 'update' );
 
     $FORM{'username'}     = $user;

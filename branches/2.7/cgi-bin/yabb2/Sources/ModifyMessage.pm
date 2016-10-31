@@ -702,18 +702,15 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
 
             ( $spamdetected, $spamword ) = spamcheck($fixname);
             if ( !$staff ) {
-                {
-                    no strict qw(refs);
-                    if ($spamdetected) {
-                        ${ $uid . $username }{'spamcount'}++;
-                        ${ $uid . $username }{'spamtime'} = $date;
-                        user_account( $username, 'update' );
-                        $spam_hits_left_count =
-                          $post_speed_count -
-                          ${ $uid . $username }{'spamcount'};
-                        foreach (@newfilelist) { unlink "$uploaddir/$_"; }
-                        fatal_error('tsc_alert');
-                    }
+                no strict qw(refs);
+                if ($spamdetected) {
+                    ${ $uid . $username }{'spamcount'}++;
+                    ${ $uid . $username }{'spamtime'} = $date;
+                    user_account( $username, 'update' );
+                    $spam_hits_left_count =
+                      $post_speed_count - ${ $uid . $username }{'spamcount'};
+                    foreach (@newfilelist) { unlink "$uploaddir/$_"; }
+                    fatal_error('tsc_alert');
                 }
             }
             if ( $use_guardian && $string_on ) {

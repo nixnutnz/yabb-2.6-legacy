@@ -55,7 +55,7 @@ our (
     $enable_mc_away,       $enable_notifications,  $enable_stealth,
     $enable_ubbc,          $enabletz,              $extendedprofiles,
     $forumnumberformat,    $forumstart,            $ip_lookup,
-    $language,             $matchcase,             $matchname,
+    $lang,                 $matchcase,             $matchname,
     $matchword,            $max_awaylen,           $max_siglen,
     $maxrecentdisplay,     $mbname,                $minlinksig,
     $minlinkweb,           $name_cannot_be_userid, $new_notification_alert,
@@ -77,6 +77,7 @@ our (
     $iamadmin,      $iamfmod,              $iamgmod,
     $iamguest,      $invalemaila,          $invalemailb,
     $invalmailchar, $invalpass,            $invalrname,
+    $language,
     $menusep,       $my_blank_avatar,      $sessionvalid,
     $show_confidel, $spam_hits_left_count, $staff,
     $template,      $uday,                 $uid,
@@ -605,7 +606,8 @@ $myprofile_edit~;
         my $questsel  = qq~<select name="sesquest" id="sesquest" size="1">\n~;
         my $sessel    = q{};
         while ( my ( $key, $val ) = each %sesquest_txt ) {
-            if ( ${ $uid . $user }{'sesquest'} && ${ $uid . $user }{'sesquest'} eq $key )
+            if (   ${ $uid . $user }{'sesquest'}
+                && ${ $uid . $user }{'sesquest'} eq $key )
             {
                 $sessel = q~ selected="selected"~;
             }
@@ -692,7 +694,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
 
     if ( !$minlinkweb ) { $minlinkweb = 0; }
     ${ $uid . $user }{'webtitle'} ||= q{};
-    ${ $uid . $user }{'weburl'} ||= q{};
+    ${ $uid . $user }{'weburl'}   ||= q{};
     my $my_minlinkweb = q{};
     if (
            ${ $uid . $user }{'postcount'}
@@ -1593,7 +1595,9 @@ sub modify_profile_admin {
     my $mygrp   = 0;
     my ( $tt, $ttgrp );
     for (@grps) {
-        if ( ${ $uid . $user }{'position'} && ${ $uid . $user }{'position'} eq $_ ) {
+        if (   ${ $uid . $user }{'position'}
+            && ${ $uid . $user }{'position'} eq $_ )
+        {
             @memstat = @{ $grp_staff{$_} };
             $tt      = $memstat[0];
             $mygrp   = 1;
@@ -1793,9 +1797,9 @@ qq~                        <option value="$minute_val">$minute_val</option>\n~;
 qq~<textarea rows="4" cols="50" name="regreason" id="regreason">$regreason</textarea>~;
     $show_profile .= $myprofile_admin_bb;
 
-    $my_extprofile ||= q{};
+    $my_extprofile                ||= q{};
     ${ $uid . $user }{'position'} ||= q{};
-    $tt ||= q{};
+    $tt                           ||= q{};
     $show_profile =~ s/\Q{yabb profiletitle}\E/$profiletitle/xsm;
     $show_profile =~ s/\Q{yabb myprofile_userinfo}\E/$myprofile_userinfo/xsm;
     $show_profile =~ s/\Q{yabb postcount}\E/${ $uid . $user }{'postcount'}/xsm;
@@ -1976,10 +1980,11 @@ sub modify_profile2 {
         }
 
         # EventCal Begin
+        $member{'hideage'} ||= q{};
+        ${ $uid . $user }{'hideage'} ||= q{};
         if (   ${ $uid . $user }{'bday'}
             && ${ $uid . $user }{'bday'} ne $member{'bday'}
-            || ${ $uid . $user }{'hideage'}
-            && ${ $uid . $user }{'hideage'} ne $member{'hideage'} )
+            || ${ $uid . $user }{'hideage'} ne $member{'hideage'} )
         {
             $update_eventcal = 1;
         }
@@ -2692,7 +2697,7 @@ sub modify_profile_options2 {
         fatal_error('invalid_template');
     }
     if ( !$member{'userlanguage'} ) {
-        $member{'userlanguage'} = $language;
+        $member{'userlanguage'} = $lang;
     }
     if ( $member{'userlanguage'}
         && !-e "$langdir/$member{'userlanguage'}/Main.lng" )
@@ -2710,7 +2715,7 @@ sub modify_profile_options2 {
     }
 
     # update notifications if users language is changed
-    if ( ${ $uid . $user }{'language'} ne "$member{'userlanguage'}" ) {
+    if ( ${ $uid . $user }{'language'} ne $member{'userlanguage'} ) {
         require Sources::Notify;
         update_language( $user, $member{'userlanguage'} );
     }
@@ -3132,7 +3137,7 @@ sub view_profile {
     if ( $user eq $username ) { load_miniuser($user); }
 
     my ( $modify, $gender );
-    my ( $pic_row, $row_gender, $row_age, $row_location, $row_zodiac );
+    my ( $pic_row, $row_age, $row_location, $row_zodiac );
 
     # Convert forum start date to string, if there is no date set,
     # Defaults to 1st Jan, 2005
@@ -3212,6 +3217,7 @@ qq~<img src="$facesurl/${ $uid . $user }{'userpic'}" id="avatar_img_resize" alt=
         $showaddgr =~ s/,\s$//xsm;
         $row_addgrp = qq~$showaddgr<br />~;
     }
+    my $row_gender = q{};
     if ( ${ $uid . $user }{'gender'} ) {
         if ( ${ $uid . $user }{'gender'} eq 'Male' ) {
             $gender = $profile_txt{'238'};
@@ -3561,8 +3567,8 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
     }
     my $my_gender = q{};
     if ( $row_gender || $row_age || $row_location ) {
-        $row_age ||= q{};
-        $row_zodiac ||= q{};
+        $row_age      ||= q{};
+        $row_zodiac   ||= q{};
         $row_location ||= q{};
         $my_gender = $myshow_gender;
         $my_gender =~ s/\Q{yabb row_gender}\E/$row_gender/xsm;
@@ -3603,11 +3609,12 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 <a href="$scripturl?action=imsend;to=$useraccount{$user}">$profile_txt{'688'} ${ $uid . $user }{'realname'}</a>
             </div>~;
     }
+
+    my $userlastpost =
+      timeformat( ${ $uid . $user }{'lastpost'} ) || $profile_txt{'470'};
     my $userlastlogin = timeformat( ${ $uid . $user }{'lastonline'} );
-    my $userlastpost  = timeformat( ${ $uid . $user }{'lastpost'} );
     my $userlastim    = timeformat( ${ $uid . $user }{'lastim'} );
     if ( !$userlastlogin ) { $userlastlogin = $profile_txt{'470'}; }
-    if ( !$userlastpost )  { $userlastpost  = $profile_txt{'470'}; }
     if ( !$userlastim )    { $userlastim    = $profile_txt{'470'}; }
     my ( $lastonline, $lastpost, $last_pm );
     ## MF-B code fix for lpd
@@ -3615,6 +3622,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
     {
         $userlastpost = usersrecentposts(1);
     }
+    $userlastpost ||= $profile_txt{'470'};
     ####
     if ( !$view ) {
         $lastonline = $profile_amv_txt{'9'};
@@ -3851,7 +3859,7 @@ s/\Q{yabb profile_txtpass_reminder_3}\E/$profile_txt{'pass_reminder_3'}/xsm;
 }
 
 sub usersrecentposts {
-    my @x = @_;
+    my ($x) = @_;
     if ($iamguest)                      { fatal_error('members_only'); }
     if ( $INFO{'username'} =~ /\//xsm ) { fatal_error('no_user_slash'); }
     if ( $INFO{'username'} =~ /\\/xsm ) {
@@ -3865,7 +3873,7 @@ sub usersrecentposts {
     my $curuser = $INFO{'username'};
     load_user($curuser);
 
-    my $display = $FORM{'viewscount'} ? $FORM{'viewscount'} : $x[0];
+    my $display = $FORM{'viewscount'} ? $FORM{'viewscount'} : $x;
     if ( !$display ) { $display = 5; }
     elsif ( $display =~ /\D/xsm ) { fatal_error('only_numbers_allowed'); }
     if ( $display > $maxrecentdisplay ) { $display = $maxrecentdisplay; }
@@ -4016,7 +4024,9 @@ sub usersrecentposts {
         }
     }
 
-    if ( $recentfound < $display && $numfound < $recentcount ) {
+    if (   ( $recentfound && $recentfound < $display )
+        && ( $numfound && $numfound < $recentcount ) )
+    {
       CATEGORYCHECK: for my $catid (@categoryorder) {
             if ( !cat_access( ( split /[|]/xsm, $catinfo{$catid}, 3 )[1] ) ) {
                 next CATEGORYCHECK;
@@ -4222,7 +4232,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
 
         if ( $tstate !~ m/1/xsm ) {
             my $notify = q{};
-            if ( ${ $uid . $username }{'thread_notifications'} && ${ $uid . $username }{'thread_notifications'} =~
+            if (   ${ $uid . $username }{'thread_notifications'}
+                && ${ $uid . $username }{'thread_notifications'} =~
                 /\b$tnum\b/xsm )
             {
                 $notify =

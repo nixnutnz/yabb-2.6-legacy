@@ -156,6 +156,7 @@ our $cookiepassword     = $cookinfo[1];
 our $cookiesession_name = $cookinfo[2];
 our $cookietsort        = $cookinfo[3];
 our $cookieview         = $cookinfo[4];
+$session_id = $cookiesession_name;
 
 my %dispatch_table = (
     adminlogin2 => \&adminlogin2,
@@ -186,7 +187,7 @@ simpleoutput();
 #############################################
 # setup subroutines start here              #
 #############################################
-
+our $firstmstime = time;
 sub adminlogin {
     open my $LICENSE, '<', 'license.txt' or croak 'cannot load License.';
     my $license = do { local $INPUT_RECORD_SEPARATOR = undef; <$LICENSE>; };
@@ -493,7 +494,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     }
     $lastdate ||= time;
     my $mylastdate = timeformat($lastdate);
-
+    $realname ||= 'Administrator';
     $yymain .= qq~
 <form action="$set_cgi?action=setup2" method="post" name="auto_settings" style="display: inline;">
 <script type="text/javascript">
@@ -852,24 +853,24 @@ EOF
 
 sub brdinstall {
     $no_brddir = 0;
-    if ( !-d "$boardsdir" ) { $no_brddir = 1; return 1; }
+    if ( !-d $boardsdir ) { $no_brddir = 1; return 1; }
 }
 
 sub mesinstall {
     $no_mesdir = 0;
-    if ( !-d "$datadir" ) { $no_mesdir = 1; return 1; }
+    if ( !-d $datadir ) { $no_mesdir = 1; return 1; }
 }
 
 sub meminstall {
     $no_memdir = 0;
-    if ( !-d "$memberdir" ) { $no_memdir = 1; return 1; }
+    if ( !-d $memberdir ) { $no_memdir = 1; return 1; }
 }
 
 sub varinstall {
     my $varsdir = $vardir;
     $no_vardir = 0;
 
-    if ( !-d "$varsdir" ) { $no_vardir = 1; return 1; }
+    if ( !-d $varsdir ) { $no_vardir = 1; return 1; }
 
     if ( !-e "$varsdir/adminlog.log" ) {
         open my $ADMLOGFILE, '>', "$varsdir/adminlog.log"
@@ -1347,11 +1348,7 @@ sub setinstall2 {
         $forumnumberformat = $FORM{'forumnumberformat'} || 1;
         $timeselected      = $FORM{'timeselect'} || 0;
 
-        # gzip requires magic #
-        if ( -e '/bin/gzip' && open GZIP, '|, gzip -f' ) {
-            $gzcomp = 1;
-        }
-        else { $gzcomp = 0; }
+       $gzcomp = 0;
 
         # Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
@@ -1383,6 +1380,7 @@ sub setinstall2 {
 # Note: these settings must be properly changed for YaBB to work
 
 \$settings_file_version = 'YaBB 2.7.00';
+\$yabbversion = 'YaBB 2.7.00';
 \$yymycharset = 'UTF-8';                           # character encoding now 'UTF-8' only;
 
 \%templateset = ('Forum default' => ['default','default','default','default','default','default','default','2','0','0','0'],
@@ -2039,10 +2037,14 @@ EOF
             ${ $uid . 'admin' }{'regtime'}    = $date;
             ${ $uid . 'admin' }{'timeselect'} = $timeselected;
             ${ $uid . 'admin' }{'language'}   = $lang;
+            ${ $uid . 'admin' }{'lastpost'}   = $firstmstime;
         }
         user_account( 'admin', 'update' );
         manage_memberinfo( 'update', 'admin', 'Administrator',
             $webmaster_email, 'Forum Administrator' );
+        open my $RLOG, '>', "$memberdir/admin.rlog":
+        print {$RLOG} qq~$firstmstime|1,$firstmstime\n~;
+        close $RLOG;
         our $yysetlocation = qq~$set_cgi?action=setup3~;
         redirectexit();
     }
@@ -2080,7 +2082,6 @@ sub tempstarter {
 
 sub checkinstall {
     tempstarter();
-    my $firstmstime = time;
     $windowbg = '#fafafa';
     $header   = '#5488ba';
     $catbg    = '#ddd';
@@ -2124,19 +2125,20 @@ sub checkinstall {
         ${ $uid . 'general' }{'lastreply'}    = 0;
         ${ $uid . 'general' }{'lastsubject'} =
           'Welcome to your new YaBB 2.7.00 forum!';
-        ${ $uid . 'general' }{'lasttopicstate'} = 'xx';
-        ${ $uid . 'general' }{'lasticon'}       = 0;
+        ${ $uid . 'general' }{'lasticon'} = 'xx';
+        ${ $uid . 'general' }{'lasttopicstate'}       = 0;
+        ${ $uid . 'general' }{'threadcount'}       = 1;
+        ${ $uid . 'general' }{'messagecount'}       = 1;
     }
     boardtotals( 'update', 'general' );
 
     open my $FIRSTMS, '>', "$datadir/$firstmstime.txt"
       or croak "cannot open $datadir/$firstmstime.txt";
     print {$FIRSTMS}
-qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|webmaster\@mysite.com|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~
+qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$webmaster_email|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~
       or croak "cannot print $datadir/$firstmstime.txt";
     close $FIRSTMS or croak "cannot close $datadir/$firstmstime.txt";
-    open my $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
-      or croak "cannot print $datadir/$firstmstime.txt";
+
     require Sources::DateTime;
     my $msgdat  = ctbtime($firstmstime);
     my $frstctb = qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
@@ -2152,7 +2154,7 @@ qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|webmaster\@mysite.com|$f
 1;
 ~;
 
-    open $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
+    open my $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
       or croak "cannot open $datadir/$firstmstime.ctb";
     print {$FIRSTMSC} $frstctb
       or croak "cannot print $datadir/$firstmstime.ctb";

@@ -73,7 +73,7 @@ our (
     $admin,       $cliped,          $date,             $emailcharset,
     $extpagstyle, $flood_text,      $iamadmin,         $iamgmod,
     $iamguest,    $invalemaila,     $invalemailb,      $invalmailchar,
-    $invalpass,   $invalrname,      $langopt,          $language,
+    $invalpass,   $invalrname,      $invaluser,        $langopt,          $language,
     $morelang,    $my_blank_avatar, $sessionid,        $showcheck,
     $spam_image,  $spam_question,   $spam_question_id, $uid,
     $user_ip,     $username,        $year,             $yyhtml_root,
@@ -272,7 +272,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
 
     if ($gender_on_reg) {
         my $edit_gendertxt = q{};
-        my $nongen_opt = q{};
+        my $nongen_opt     = q{};
         if ( $edit_genderlimit == 1 ) {
             $edit_gendertxt =
               qq~<br /><span class="small">$register_txt{'gender_edit'}</span>~;
@@ -650,12 +650,6 @@ sub register2 {
     if ( length( $member{'regusername'} ) > 25 ) {
         fatal_error( 'id_to_long', "($member{'regusername'})" );
     }
-    if ( $imp_email_check && $member{'email'} ne $member{'email2'} ) {
-        fatal_error('email_mismatch');
-    }
-    if ( length( $member{'email'} ) > 100 ) {
-        fatal_error( 'email_to_long', "($member{'email'})" );
-    }
     if ( $member{'regusername'} eq q{} ) {
         fatal_error( 'no_username', "($member{'regusername'})" );
     }
@@ -665,7 +659,7 @@ sub register2 {
     if ( $member{'regusername'} =~ /guest/ixsm ) {
         fatal_error( 'id_reserved', "$member{'regusername'}" );
     }
-    if ( $member{'regusername'} =~ /[^\w+\-@.]/xsm ) {
+    if ( $member{'regusername'} =~ /$invaluser/xsm ) {
         fatal_error( 'invalid_character',
             "$register_txt{'35'} $register_txt{'241e'}" );
     }
@@ -673,13 +667,20 @@ sub register2 {
         fatal_error( 'all_numbers',
             "$register_txt{'35'} $register_txt{'241n'}" );
     }
+    if ( $imp_email_check && $member{'email'} ne $member{'email2'} ) {
+        fatal_error('email_mismatch');
+    }
+    if ( length( $member{'email'} ) > 100 ) {
+        fatal_error( 'email_to_long', "($member{'email'})" );
+    }
     if ( $member{'email'} eq q{} ) {
         fatal_error( 'no_email', "($member{'regusername'})" );
     }
     if ( -e ("$memberdir/$member{'regusername'}.vars") ) {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
-    if ( $member{'passwrd1'} && $member{'regusername'} eq $member{'passwrd1'} ) {
+    if ( $member{'passwrd1'} && $member{'regusername'} eq $member{'passwrd1'} )
+    {
         fatal_error('password_is_userid');
     }
     if ( $regtype == 1 && ( !$member{'reason'} || $member{'reason'} eq q{} ) ) {

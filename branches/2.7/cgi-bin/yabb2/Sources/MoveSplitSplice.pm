@@ -931,10 +931,12 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
         {
             ${ $uid . $curboard }{'lastposttime'} =
               ${ $board_totals{$curthreadid} }[0];
-            ${ $uid . $curboard }{'lastposter'} =
-              ${ $board_totals{$curthreadid} }[1] eq 'Guest'
-              ? "Guest-${$board_totals{$curthreadid}}[4]"
-              : ${ $board_totals{$curthreadid} }[1];
+            if ( ${ $board_totals{$curthreadid} }[1] ) {
+                ${ $uid . $curboard }{'lastposter'} =
+                  ${ $board_totals{$curthreadid} }[1] eq 'Guest'
+                  ? "Guest-${$board_totals{$curthreadid}}[4]"
+                  : ${ $board_totals{$curthreadid} }[1];
+            }
             ${ $uid . $curboard }{'lastpostid'} = $curthreadid;
             ${ $uid . $curboard }{'lastreply'} =
               ${ $board_totals{$curthreadid} }[2]--;

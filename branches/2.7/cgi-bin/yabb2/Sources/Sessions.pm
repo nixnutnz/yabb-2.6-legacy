@@ -82,10 +82,11 @@ sub session_reval2 {
         no strict qw(refs);
         if ( $FORM{'sesanswer'} eq q{} ) { fatal_error('no_secret_answer'); }
 
-        if (   !${ $uid . $username }{'sesquest'} || ${ $uid . $username }{'sesquest'} eq 'password' )
+        if (  !${ $uid . $username }{'sesquest'}
+            || ${ $uid . $username }{'sesquest'} eq 'password' )
         {
             $question = ${ $uid . $username }{'password'};
-            $answer   = encode_password($FORM{'sesanswer'});
+            $answer   = encode_password( $FORM{'sesanswer'} );
             chomp $answer;
         }
         else {

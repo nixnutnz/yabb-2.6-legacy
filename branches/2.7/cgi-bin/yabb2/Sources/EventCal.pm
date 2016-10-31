@@ -66,14 +66,13 @@ our (
     $ns,                    $showcheck,
     $spam_image,            $spam_question,
     $spam_question_id,      $string,
-    $submittxt,             $uid,
-    $user_hide_smilies,     $userdefaultlang,
-    $username,              $yyinlinestyle,
-    $yymain,                $yysetlocation,
-    $yytitle,               %FORM,
-    %format,                %INFO,
-    %link,                  %memberaddgroup,
-    %memberinf,
+    $uid,                   $user_hide_smilies,
+    $userdefaultlang,       $username,
+    $yyinlinestyle,         $yymain,
+    $yysetlocation,         $yytitle,
+    %FORM,                  %format,
+    %INFO,                  %link,
+    %memberaddgroup,        %memberinf,
 );
 ## templates ##
 our (
@@ -437,7 +436,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
         $mycalout_send,      $mycalout_post2,        $mycalout_post3,
         $col_row,            $my_postsection_ajx,
     );
-    our ( $messageblock, $message, $mycalout_post, $my_ajxcall, $post );
+    our ( $messageblock, $message, $mycalout_post, $my_ajxcall );
     if ( $INFO{'addnew'} ) {
         if ( $INFO{'edit_cal_even'} ) {
             $var_cal{'calevent'} = "$var_cal{'caledit'}:";
@@ -669,15 +668,14 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
         }
 
         if ( !$INFO{'edit_cal_even'} ) {
-            $submittxt     = $var_calpost{'event_send'};
+            my $submittxt = $var_calpost{'event_send'};
             $mycalout_send = qq~
             <input id="calsubmit" class="button" type="submit" name="calsubmit" value="$submittxt" accesskey="s" />
             ~;
             if ($speedpostdetection) {
-                $post = 'calsubmit';
                 $mycalout_send .= q~
                     <script type="text/javascript">~
-                  . speedpost() . q~</script>~;
+                  . speedpost( $submittxt, 'calsubmit' ) . q~</script>~;
             }
             $mycalout_send .= $mycal_endaddform;
         }
@@ -703,7 +701,7 @@ qq~<br /><b>$var_cal{'by'}</b> <span id="savename"></span> ($var_cal{'guest'})~;
         $my_postsection_ajx = my_check_prev();
     }
 
-    $post ||= 'calsubmit';
+    my $post        = 'calsubmit';
     my $my_subcheck = qq~
 <script type="text/javascript">
     var postas = '$post';
@@ -1717,6 +1715,7 @@ qq~<span class="small" style="color:$event_todaycolor"><b>$i</b></span>~;
     if ( $action eq 'eventcal' && !$INFO{'calshow'} ) { $INFO{'calshow'} = 1; }
     my ($cal_display_calevent);
     if ( $cal_event_display || $INFO{'calshow'} ) {
+        $event_index ||= q{};
         $cal_display_calevent = qq~
                 <b>$event_index</b><br />
                 $outstring~;
@@ -1957,10 +1956,10 @@ sub del_old_events {
         if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
     }
     my $prncal = join q{}, @calinput;
-    open $EVENTFILE, '>', "$vardir/eventcal.db"
+    fopen( 'EVENTFILE', '>', "$vardir/eventcal.db" )
       or croak "$croak{'open'} eventcal.db";
     print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
-    close $EVENTFILE or croak "$croak{'close'} eventcal.db";
+    fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
     return;
 }
 

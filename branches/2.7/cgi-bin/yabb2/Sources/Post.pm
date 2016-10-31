@@ -1468,7 +1468,7 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
 
     my $my_spdpost = q{};
     if ($speedpostdetection) {
-        $my_spdpost = speedpost();
+        $my_spdpost = speedpost( $submittxt, $post );
     }
 
     if ( !$yyinlinestyle =~ /cookiesupport[.]js/xsm ) {

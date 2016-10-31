@@ -58,7 +58,7 @@ our (
     $username,         $yyexec,      $yyext,           $yysetlocation,
     %cat,              %FORM,        %format,          %format_unbold,
     %gmod_access2,     %img,         %ims,             %INFO,
-    %lng,              %load_con,    %memberinfo,      %memberunfo,
+    %lngs,             %load_con,    %memberinfo,      %memberunfo,
     %moderators,       %mybuddie,    %tmpimg,          %user_pm_level,
     %useraccount,      %vars,        %yy_cookies,      %yy_udloaded,
     @categoryorder,    @censored,    @other_cookies,
@@ -126,8 +126,10 @@ qq~<a href="$scripturl?action=imshow;caller=1;id=-1">1 $load_txt{'155'}</a>~;
 qq~<a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'} $load_txt{'154'}</a>~;
         }
 
-        if ( ${$username}{'PMmnum'} == 1 ) {
-            if ( ${$username}{'PMimnewcount'} == 1 ) {
+        if ( ${$username}{'PMmnum'} && ${$username}{'PMmnum'} == 1 ) {
+            if (   ${$username}{'PMimnewcount'}
+                && ${$username}{'PMimnewcount'} == 1 )
+            {
                 $yyim =
 qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'155b'}</a>~;
             }
@@ -228,7 +230,7 @@ sub load_usersettings {
                 else { $staff = 0; }
                 $sessionvalid = 1;
                 my $cursession = q{};
-                if ( $sessions == 1 && $staff == 1 ) {
+                if ( $sessions && $staff ) {
                     $cursession = encode_password($user_ip);
                     chomp $cursession;
                     if (   ${ $uid . $username }{'session'} ne $cursession
@@ -302,10 +304,13 @@ sub load_user {
     }
 
     if ( !$userextension ) { $userextension = 'vars'; }
-    if ( ( $regtype == 1 || $regtype == 2 ) && -e "$memberdir/$user.pre" ) {
+    if (   $regtype
+        && ( $regtype == 1 || $regtype == 2 )
+        && -e "$memberdir/$user.pre" )
+    {
         $userextension = 'pre';
     }
-    elsif ( $regtype == 1 && -e "$memberdir/$user.wait" ) {
+    elsif ( $regtype && $regtype == 1 && -e "$memberdir/$user.wait" ) {
         $userextension = 'wait';
     }
     if ( -e "$memberdir/$user.$userextension" ) {
@@ -336,14 +341,15 @@ sub load_user {
                 %{ $uid . $user } = %vars;
                 ${ $uid . $user }{'lastonline'} = $mylastonline;
                 require "$langdir/Lang.lng";
-                if ( !$lng{ ${ $uid . $user }{'language'} } ) {
+                if ( !exists $lngs{ ${ $uid . $user }{'language'} } ) {
                     ${ $uid . $user }{'language'} = 'English';
                 }
             }
             if ( scalar @settings != 0 ) {
                 {
                     no strict qw(refs);
-                    if ( $INFO{'action'} ne 'login2'
+                    if (   $INFO{'action'}
+                        && $INFO{'action'} ne 'login2'
                         && !${ $uid . $user }{'stealth'} )
                     {
                         fopen( 'LOADUSER', '>', "$memberdir/$user.lst" )
@@ -739,7 +745,7 @@ sub load_miniuser {
         }
     }
 
-    if ( $memstat[4] == 1 ) {
+    if ( $memstat[4] && $memstat[4] == 1 ) {
         $temptitle = $memstat[0];
         foreach my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
             {
@@ -762,6 +768,9 @@ sub load_miniuser {
         my (@myperms);
         if ($tempgroup) {
             @myperms = @{$tempgroup};
+        }
+        foreach my $i ( 4 .. 10 ) {
+            $myperms[$i] ||= q{};
         }
         {
             no strict qw(refs);
@@ -909,6 +918,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
     my $memberstartemp = q{};
     my $starpic        = q{};
     our (%memberstar);
+    if ( !$imagesdir ) { $imagesdir = "$yyhtml_root/Templates/Forum/default"; }
     if ( $memstat[2] !~ /\//xsm ) { $starpic = "$imagesdir/$memstat[2]"; }
     while ( $starnum-- > 0 ) {
         $memberstartemp .= qq~<img src="$starpic" alt="*" />~;
@@ -1068,7 +1078,7 @@ sub load_tools {
 
     foreach my $i ( 0 .. $#tools ) {
         my ( $img_url, $img_txt ) = split /[|]/xsm, $tools[$i];
-        if ( $img_url ) {
+        if ($img_url) {
             $tools[$i] =
 qq~[tool=$buttons[$i]]<div class="toolbutton_a" style="background-image: url($img_url)">$img_txt</div>[/tool]~;
         }
@@ -1343,6 +1353,7 @@ sub what_template {
     else { $imagesdir = "$yyhtml_root/Templates/Forum/default"; }
     $defaultimagesdir = "$yyhtml_root/Templates/Forum/default";
 
+    $extpagstyle ||= q{};
     $extpagstyle =~ s/$usestyle\///gxsm;
     return;
 }
@@ -1350,7 +1361,7 @@ sub what_template {
 sub what_language {
     {
         no strict qw(refs);
-        if ( ${ $uid . $username }{'language'} ne q{} ) {
+        if ( ${ $uid . $username }{'language'} ) {
             $language = ${ $uid . $username }{'language'};
         }
         elsif ( $FORM{'guestlang'} && $enable_guestlanguage ) {
@@ -1371,7 +1382,7 @@ sub what_language {
         load_language('Admin');
         load_language('FA');
     }
-    return;
+    return $language;
 }
 
 sub build_ims {

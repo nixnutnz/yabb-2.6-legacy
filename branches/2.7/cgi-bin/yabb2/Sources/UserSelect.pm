@@ -57,7 +57,10 @@ our (
     $visel_3a,          $visel_4,
 );
 
-if ( $iamguest && ( !$INFO{'toid'} || $INFO{'toid'} ne 'userspec') && $action ne 'checkavail' ) {
+if (   $iamguest
+    && ( !$INFO{'toid'} || $INFO{'toid'} ne 'userspec' )
+    && $action ne 'checkavail' )
+{
     fatal_error('members_only');
 }
 load_language('UserSelect');
@@ -117,23 +120,24 @@ sub member_list {
 
     $to_id = $INFO{'toid'};
     my $radiobuttons = q{};
-    my $my_radio_to = q{};
-    my $my_radio_cc = q{};
+    my $my_radio_to  = q{};
+    my $my_radio_cc  = q{};
     my $my_radio_bcc = q{};
     my ( $page_title, @to_show, );
-    $INFO{'sort'} ||= q{};
+    $INFO{'sort'}   ||= q{};
     $INFO{'letter'} ||= q{};
-    $start ||= q{};
+    $start          ||= q{};
     if ( $to_id =~ /toshow/sm ) {
         $page_title     = $usersel_txt{'pmpagetitle'};
         $instruct_start = $usersel_txt{'instruct'};
         $instruct_end   = $usersel_txt{'reciepientlist'};
-        my $ccsel = q{};
+        my $ccsel  = q{};
         my $bccsel = q{};
-        my $tosel = q{};
+        my $tosel  = q{};
         if    ( $to_id eq 'toshowcc' )  { $ccsel  = q~ checked="checked"~; }
         elsif ( $to_id eq 'toshowbcc' ) { $bccsel = q~ checked="checked"~; }
         else                            { $tosel  = q~ checked="checked"~; }
+
         if ( $pm_enable_cc || $pm_enable_bcc ) {
             $my_radio_to = qq~
             <label for="toshow" class="small">$usersel_txt{'pmto'}</label><input type="radio" name="selreciepients" id="toshow" value="toshow" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshow;start=$start;letter=$INFO{'letter'}';"$tosel />

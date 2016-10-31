@@ -80,11 +80,11 @@ $mypoll_display = qq~
                 <br />{yabb footer}
             </div>
             {yabb my_pollcomment}
-            <div class="windowbg2 padd_4px" style="height:22px">
+            <div class="windowbg2 padd_4px">
                 <div class="small vtop" style="float: right; width: 25%; text-align: right; height:22px">
                     {yabb viewthread}{yabb deletevote}{yabb displayvoters}
                 </div>
-                <div class="small" style="overflow:hidden; text-align: left; height:22px">
+                <div class="small" style="overflow:hidden; text-align: left;">
                     {yabb poll_end}{yabb displaydate}
                 </div>
             </div>
@@ -105,8 +105,8 @@ $mypoll_hasvoted = q~
 
 $mypoll_notlocked = qq~
            <div style="float: right; width: 55px; text-align: right; margin-right:4px">
-                <a href="$scripturl?num=$viewnum">$poll_bar</a> &nbsp;
-                <a href="$scripturl?num=$viewnum;view=pie">$poll_pie</a>
+                <a href="$scripturl?num={yabb viewnum}">$poll_bar</a> &nbsp;
+                <a href="$scripturl?num={yabb viewnum};view=pie">$poll_pie</a>
            </div>~;
 
 1;

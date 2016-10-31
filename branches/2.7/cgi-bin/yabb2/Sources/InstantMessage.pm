@@ -33,16 +33,15 @@ if ( $action eq 'detailedversion' ) { return 1; }
 our (
     $abbr_lang,                       $emailcharset,
     $privatemessagenotificationemail, %croak,
-    %display_txt,                     %error_txt,
-    %fatxt,                           %guest_reply,
-    %im_message_status,               %img,
-    %index_togl,                      %inmes_imtxt,
-    %inmes_txt,                       %maintxt,
-    %micon,                           %micon_bg,
-    %newload,                         %notify_txt,
-    %pidtxt,                          %pmiconlist,
-    %post_smiltxt,                    %post_txt,
-    @months,
+    %error_txt,                       %fatxt,
+    %guest_reply,                     %im_message_status,
+    %img,                             %index_togl,
+    %inmes_imtxt,                     %inmes_txt,
+    %maintxt,                         %micon,
+    %micon_bg,                        %newload,
+    %notify_txt,                      %pidtxt,
+    %pmiconlist,                      %post_smiltxt,
+    %post_txt,                        @months,
 );
 ## paths ##
 our (
@@ -942,7 +941,7 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
         $post       = 'imsend';
         $my_spdpost = q~
             <script type="text/javascript">~;
-        $my_spdpost .= speedpost();
+        $my_spdpost .= speedpost( $submittxt, $post );
         $my_spdpost .= q~</script>~;
     }
     my $my_draft = q{};
@@ -1693,7 +1692,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
     }
 
     ## if this is a draft being sent, remove it from the draft file
-    if ( $FORM{'draftid'} && $FORM{'draft'} && $FORM{'draft'} ne $inmes_txt{'savedraft'} ) {
+    if (   $FORM{'draftid'}
+        && $FORM{'draft'}
+        && $FORM{'draft'} ne $inmes_txt{'savedraft'} )
+    {
         update_pms( $username, $messageid, 'draftsend' );
         our ($DRAFTFILE);
         fopen( 'DRAFTFILE', '<', "$memberdir/$username.imdraft" )

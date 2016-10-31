@@ -270,8 +270,8 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
 
     # Figure out the name of the category
     get_forum_master();
-    my $vircurcat = q{};
-    my $vircat = q{};
+    my $vircurcat    = q{};
+    my $vircat       = q{};
     my $virboardname = q{};
     if ( $currentboard eq $annboard ) {
         $vircurrentboard = $INFO{'virboard'};
@@ -281,7 +281,8 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
             to_chars($vircat);
         }
         if ($vircurrentboard) {
-            ( $virboardname, undef ) = split /[|]/xsm, $board{$vircurrentboard}, 2;
+            ( $virboardname, undef ) = split /[|]/xsm,
+              $board{$vircurrentboard}, 2;
             to_chars($virboardname);
         }
     }
@@ -400,6 +401,9 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
     }
 
     my $threadclass = 'thread';
+    if    ( !$mstate )                     { $threadclass = 'thread'; }
+    if    ( $mreplies >= $very_hot_topic ) { $threadclass = 'veryhotthread'; }
+    elsif ( $mreplies >= $hot_topic )      { $threadclass = 'hotthread'; }
     ## hidden threads
     if ( $mstate =~ /h/ixsm ) {
         $threadclass = 'hide';
@@ -412,9 +416,6 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
         if   ($icanbypass) { $replybutton = $bypass_reply_button; }
         else               { $replybutton = q{}; }
     }
-    elsif ( $mreplies >= $very_hot_topic ) { $threadclass = 'veryhotthread'; }
-    elsif ( $mreplies >= $hot_topic )      { $threadclass = 'hotthread'; }
-    elsif ( $mstate eq q{} )               { $threadclass = 'thread'; }
 
     ## stickies
     if ( $mstate =~ /s/ixsm ) {
@@ -2104,17 +2105,18 @@ s/(\Q<!-- Threads Admin Button Bar start -->\E.*?<\/td>)/$1<td class="right">{ya
 
 sub next_prev {
     my ( $name, $lastvisit ) = @_;
-    open my $MSGTXT, '<', "$boardsdir/$currentboard.txt"
+    our ($MSGTXT);
+    fopen( 'MSGTXT', '<', "$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @threadlist = <$MSGTXT>;
-    close $MSGTXT or croak "$croak{'close'} $currentboard.txt";
+    fclose('MSGTXT') or croak "$croak{'close'} $currentboard.txt";
 
     my $thevirboard = q~num=~;
     if ($vircurrentboard) {
-        open my $MSGTXT, '<', "$boardsdir/$vircurrentboard.txt"
+        fopen( 'MSGTXT', '<', "$boardsdir/$vircurrentboard.txt" )
           or fatal_error( 'cannot_open', "$boardsdir/$vircurrentboard.txt", 1 );
         my @virthreadlist = <$MSGTXT>;
-        close $MSGTXT or croak "$croak{'close'} $vircurrentboard.txt";
+        fclose('MSGTXT') or croak "$croak{'close'} $vircurrentboard.txt";
         push @threadlist, @virthreadlist;
         undef @virthreadlist;
         $thevirboard = qq~virboard=$vircurrentboard;num=~;

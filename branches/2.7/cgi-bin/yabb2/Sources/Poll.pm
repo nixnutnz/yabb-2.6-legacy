@@ -36,13 +36,14 @@ our ( $boardurl, $datadir, $imagesdir, $memberdir, $scripturl, $yyhtml_root, );
 our ( $enable_ubbc, $ip_lookup, $mbname, $showmodify, $ubbcpolls, );
 ## system ##
 our (
-    $boardname,     $brdpoll,       $cat,         $cat_col,
-    $cat_exp,       $currentboard,  $date,        $iamadmin,
-    $iamgmod,       $iamguest,      $menusep,     $poll_lock,
-    $pollnum,       $staff,         $uid,         $user_ip,
-    $username,      $viewnum,       $yy_yabbloaded, $yymain,      $yynavigation,
-    $yysetlocation, $yytitle,       %catinfo,     %FORM,
-    %INFO,          %poll_nodelete, %yy_udloaded, @users_vote,
+    $boardname,    $brdpoll,       $cat,           $cat_col,
+    $cat_exp,      $currentboard,  $date,          $iamadmin,
+    $iamgmod,      $iamguest,      $menusep,       $poll_lock,
+    $pollnum,      $staff,         $uid,           $user_ip,
+    $username,     $viewnum,       $yy_yabbloaded, $yymain,
+    $yynavigation, $yysetlocation, $yytitle,       %catinfo,
+    %FORM,         %INFO,          %poll_nodelete, %yy_udloaded,
+    @users_vote,
 );
 ## templates ##
 our (
@@ -371,7 +372,7 @@ sub votedetails {
     }
 
     my @polled;
-    if ( -e "$datadir/$pollnum.polled") {
+    if ( -e "$datadir/$pollnum.polled" ) {
         fopen( 'FILE', '<', "$datadir/$pollnum.polled" )
           or croak "$croak{'open'} $pollnum.polled";
         @polled = <$FILE>;

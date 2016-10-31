@@ -64,11 +64,11 @@ Admin/ErrorLog.pm
 </edit file>
 
 <search for>
-        if ( $start == 1 && $ln =~ s/Deny from //gsm ) {
+        if ( $start == 1 && $ln =~ s/\QDeny from \E//gxsm ) {
 </search for>
 
 <replace>
-        if ( $start == 1 && ($ln =~ s/Deny from //gsm || $ln =~ s/Require not ip //gsm) ) {
+        if ( $start == 1 && ($ln =~ s/\QDeny from \E//gxsm || $ln =~ s/\QRequire not ip \Q//gxsm) ) {
 </replace>
 
 <search for>
@@ -84,11 +84,11 @@ Admin/GuardianAdmin.pm
 </edit file>
 
 <search for>
-        if ( $start == 1 && $chk =~ s/Deny from //gsm ) {
+        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
 </search for>
 
 <replace>
-        if ( $start == 1 && ($chk =~ s/Deny from //gsm || $chk =~ s/Require not ip //gsm) ) {
+        if ( $start == 1 && ($chk =~ s/\QDeny from \E//gxsm || $chk =~ s/\QRequire not ip \E//gxsm) ) {
 </replace>
 
 <search for>
@@ -104,11 +104,11 @@ Sources/Guardian.pm
 </edit file>
 
 <search for>
-        if ( $start == 1 && $i =~ s/Deny from //gsm ) {
+        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
 </search for>
 
 <replace>
-        if ( $start == 1 && $_ =~ s/Require not ip //gsm ) {
+        if ( $start == 1 && $chk =~ s/\QRequire not ip \E//gxsm ) {
 </replace>
 
 <search for>

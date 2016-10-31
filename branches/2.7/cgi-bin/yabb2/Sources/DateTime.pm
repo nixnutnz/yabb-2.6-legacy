@@ -638,22 +638,23 @@ sub tmonly {
 sub bdayno_year {
     my ($newformat) = @_;
     my $date_noyear = $newformat;
-    my (@date_noyear);
-    if ( $mytimeselected == 4 || $mytimeselected == 8 ) {
-        ( $date_noyear, undef ) = split /,/xsm, $newformat;
+
+    my %timesel = (
+        '1' => [ q{/}, q{/} ],
+        '5' => [ q{/}, q{/} ],
+        '4' => [ q{,}, q{} ],
+        '8' => [ q{,}, q{} ],
+        '2' => [ q{.}, q{/} ],
+        '3' => [ q{.}, q{/} ],
+        '6' => [ q{ }, q{} ],
+    );
+
+    my (@date_noyear) = split /${$timesel{$mytimeselected}}[0]/xsm, $newformat;
+    if ( $mytimeselected != 4 && $mytimeselected != 8 ) {
+        $date_noyear =
+          $date_noyear[0] . ${ $timesel{$mytimeselected} }[1] . $date_noyear[1];
     }
-    elsif ( $mytimeselected == 1 || $mytimeselected == 5 ) {
-        @date_noyear = split /\//xsm, $newformat;
-        $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
-    }
-    elsif ( $mytimeselected == 2 || $mytimeselected == 3 ) {
-        @date_noyear = split /[.]/xsm, $newformat;
-        $date_noyear = qq~$date_noyear[0]~ . q{/} . qq~$date_noyear[1]~;
-    }
-    elsif ( $mytimeselected == 6 ) {
-        @date_noyear = split / /sm, $newformat;
-        $date_noyear = qq~$date_noyear[0] $date_noyear[1]~;
-    }
+    else { $date_noyear = $date_noyear[0]; }
 
     return $date_noyear;
 }

@@ -636,8 +636,8 @@ sub attach {
 }
 
 sub speedpost {
+    ( $submittxt, $post ) = @_;
     $submittxt ||= q{};
-    $post      ||= 'post';
     $speedpost = qq~
             var postdelay = $min_post_speed*1000;
             document.postmodify.$post.value = '$post_txt{"delay"}';

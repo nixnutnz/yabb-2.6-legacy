@@ -383,7 +383,9 @@ function hideMods(id) {
                     my $txtrevision = lc $filein_dir;
                     $txtrevision =~ s/[.]lng/lngver/igxsm;
                     $txtrevision = $flda . $txtrevision;
-                    ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
+                    if ( ${$txtrevision} ) {
+                        ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
+                    }
                     my $modrevision = lc $filein_dir;
                     $modrevision =~ s/[.]lng/lngmods/igxsm;
                     $modrevision = $flda . $modrevision;

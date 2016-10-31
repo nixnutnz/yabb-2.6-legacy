@@ -625,7 +625,10 @@ sub get_ip {
 }
 
 sub get_client_ip {
-    if ( $ENV{'HTTP_CLIENT_IP'} && $ENV{'HTTP_CLIENT_IP'} ne '127.0.0.1' && $ENV{'HTTP_CLIENT_IP'} ne '::1' ) {
+    if (   $ENV{'HTTP_CLIENT_IP'}
+        && $ENV{'HTTP_CLIENT_IP'} ne '127.0.0.1'
+        && $ENV{'HTTP_CLIENT_IP'} ne '::1' )
+    {
         return $ENV{'HTTP_CLIENT_IP'};
     }
     else {
@@ -634,7 +637,10 @@ sub get_client_ip {
 }
 
 sub get_x_ip_client {
-    if ( $ENV{'X_CLIENT_IP'} && $ENV{'X_CLIENT_IP'} ne '127.0.0.1' && $ENV{'X_CLIENT_IP'} ne '::1' ) {
+    if (   $ENV{'X_CLIENT_IP'}
+        && $ENV{'X_CLIENT_IP'} ne '127.0.0.1'
+        && $ENV{'X_CLIENT_IP'} ne '::1' )
+    {
         return $ENV{'X_CLIENT_IP'};
     }
     else {
@@ -643,7 +649,10 @@ sub get_x_ip_client {
 }
 
 sub get_http_via {
-    if ( $ENV{'HTTP_VIA'} && $ENV{'HTTP_VIA'} ne '127.0.0.1' && $ENV{'HTTP_VIA'} ne '::1' ) {
+    if (   $ENV{'HTTP_VIA'}
+        && $ENV{'HTTP_VIA'} ne '127.0.0.1'
+        && $ENV{'HTTP_VIA'} ne '::1' )
+    {
         return $ENV{'HTTP_VIA'};
     }
     else {
@@ -653,7 +662,8 @@ sub get_http_via {
 
 sub get_x_forwarded {
     if (   $ENV{'HTTP_X_FORWARDED_FOR'}
-        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '127.0.0.1' && $ENV{'HTTP_X_FORWARDED_FOR'} ne '::1' )
+        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '127.0.0.1'
+        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '::1' )
     {
         return $ENV{'HTTP_X_FORWARDED_FOR'};
     }
@@ -697,7 +707,7 @@ sub update_htaccess {
             push @htout, "$chk\n";
         }
         if ( $chk eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $chk =~ s/Deny from //gsm ) {
+        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
             push @denies, $chk;
         }
     }

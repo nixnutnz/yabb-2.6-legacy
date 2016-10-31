@@ -154,7 +154,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
               ? qq~<a href="$scripturl?action=iplookup;ip=$last_ip">$last_ip</a>~
               : qq~$last_ip~;
 
-            $is_a_bot = is_bot($last_host);
+            $is_a_bot  = is_bot($last_host);
             $guestlist = q{};
             if ($is_a_bot) {
                 $numbots++;
@@ -280,7 +280,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
     }
 
 # first get all the boards based on the categories found in forum.master or the provided sub board
-    my ( %cat_boardcnt, @bdlist, $access, $catname, $catperms, $catallowcol, $catimage, $catrss );
+    my ( %cat_boardcnt, @bdlist, $access, $catname, $catperms, $catallowcol,
+        $catimage );
     foreach my $catid (@tmplist) {
         if (   $INFO{'catselect'}
             && $INFO{'catselect'} ne $catid
@@ -406,7 +407,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             }
             else {
                 my $curcat = ${ $uid . ${$scthreadnum}{'board'} }{'cat'};
-                my $catperms = ( split /[|]/xsm, $catinfo{$curcat} )[1];
+                $catperms = ( split /[|]/xsm, $catinfo{$curcat} )[1];
                 if ( cat_access($catperms) ) { $pollthread = 1; }
                 my $boardperms =
                   ( split /[|]/xsm, $board{ ${$scthreadnum}{'board'} } )[1];
@@ -414,7 +415,9 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                   access_check( ${$scthreadnum}{'board'}, q{}, $boardperms ) eq
                   'granted' ? $pollthread : 0;
             }
-            if ( ${ $uid . ${$scthreadnum}{'board'} }{'brdpasswr'} && !$iamadmin && !$iamgmod )
+            if (   ${ $uid . ${$scthreadnum}{'board'} }{'brdpasswr'}
+                && !$iamadmin
+                && !$iamgmod )
             {
                 my $pswiammod = 0;
                 my $bdmods    = ${ $uid . ${$scthreadnum}{'board'} }{'mods'};
@@ -422,7 +425,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 foreach my $curuser ( split /\//xsm, $bdmods ) {
                     if ( $username eq $curuser ) { $pswiammod = 1; last; }
                 }
-                my $bdmodgroups = ${ $uid . ${$scthreadnum}{'board'} }{'modgroups'};
+                my $bdmodgroups =
+                  ${ $uid . ${$scthreadnum}{'board'} }{'modgroups'};
                 foreach my $curgroup ( split /\//xsm, $bdmodgroups ) {
                     if ( ${ $uid . $username }{'position'} eq $curgroup ) {
                         $pswiammod = 1;
@@ -438,9 +442,15 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                         }
                     }
                 }
-                my $bpasscookie = $cookiepassword . ${$scthreadnum}{'board'} . $username;
+                my $bpasscookie =
+                  $cookiepassword . ${$scthreadnum}{'board'} . $username;
                 my $crypass = ${ $uid . ${$scthreadnum}{'board'} }{'brdpassw'};
-                if ( !$pswiammod && ( !$yy_cookies{$bpasscookie} || $yy_cookies{$bpasscookie} ne $crypass ) ) {
+                if (
+                    !$pswiammod
+                    && (  !$yy_cookies{$bpasscookie}
+                        || $yy_cookies{$bpasscookie} ne $crypass )
+                  )
+                {
                     $pollthread = 0;
                 }
             }
@@ -491,7 +501,8 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
             && !$iamadmin
             && !$iamgmod
             && !$iamfmod
-            && ${ $uid . $curboard }{'lasttopicstate'} && ${ $uid . $curboard }{'lasttopicstate'} =~ /h/ixsm )
+            && ${ $uid . $curboard }{'lasttopicstate'}
+            && ${ $uid . $curboard }{'lasttopicstate'} =~ /h/ixsm )
         {
             ${ $uid . $curboard }{'lastpostid'}   = q{};
             ${ $uid . $curboard }{'lastsubject'}  = q{};
@@ -615,7 +626,15 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                 $lastthreadtime = ${ $uid . $curboard }{'lastposttime'};
                 $lspostbd       = $curboard;
             }
-            elsif ( ($crypass && $yy_cookies{$cookiename} && $yy_cookies{$cookiename} eq $crypass) || $staff ) {
+            elsif (
+                (
+                       $crypass
+                    && $yy_cookies{$cookiename}
+                    && $yy_cookies{$cookiename} eq $crypass
+                )
+                || $staff
+              )
+            {
                 if ( !$curboard2 ) { $curboard2 = $curboard; }
                 $lsdatetime     = $lastposttime{$curboard2};
                 $lsposter       = ${ $uid . $curboard }{'lastposter'};
@@ -875,40 +894,7 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 my $zero  = q{};
                 my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
                 if ( -e "$boardsdir/brdpics.db" ) {
-                    our ($BRDPIC);
-                    fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
-                      or croak "$croak{'open'} brdpics";
-                    my @brdpics = <$BRDPIC>;
-                    fclose('BRDPIC') or croak "$croak{'close'} brdpics";
-                    chomp @brdpics;
-                    foreach (@brdpics) {
-                        my ( $brdnm, $style, $brdpic ) = split /[|]/xsm;
-                        if ( $brdnm eq $curboard && $template eq $style ) {
-                            if ( $brdpic =~ /\//ixsm ) {
-                                $bdpic = $brdpic;
-                                last;
-                            }
-                            else {
-                                if (
-                                    -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic"
-                                  )
-                                {
-                                    $bdpic = qq~$imagesdir/Boards/$brdpic~;
-                                }
-                                else {
-                                    $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
-                                }
-                                last;
-                            }
-                        }
-                        else {
-                            if ( $boardname =~ m/[ht|f]tps?\:\/\//xsm ) {
-                                $bdpic = qq~$imagesdir/$extern~;
-                            }
-                            else { $bdpic = qq~$imagesdir/boards.$bdpic_ext~; }
-                            last;
-                        }
-                    }
+                    $bdpic = getbrdpics();
                 }
                 if ( ${ $uid . $curboard }{'ann'} ) {
                     $bdpic = qq~$imagesdir/ann.$bdpic_ext~;
@@ -1094,8 +1080,7 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                       $board{$curboard};
                     if (
                         access_check( $curboard, q{}, $boardperms ) eq 'granted'
-                        && ${ $uid . $curboard }{'brdrss'}
-                        && ${ $uid . $curboard }{'brdrss'} == 1 )
+                        && ${ $uid . $curboard }{'brdrss'} )
                     {
                         $rss_boardlink =
 qq~<a href="$scripturl?action=RSSboard;board=$curboard" target="_blank"><img src="$micon_bg{'boardrss'}" alt="$maintxt{'rssfeed'} - $boardname" title="$maintxt{'rssfeed'} - $boardname" /></a>~;
@@ -1257,24 +1242,27 @@ qq~<a href="javascript:void(0)" id="subdropa_$curboard" style="font-weight:bold"
                 my $lasttopiclink =
 qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'lastreply'}#${$uid.$curboard}{'lastreply'}" title="$fulltopictext">$lasttopictxt</a>~;
                 my $boardpwpic = q{};
-				my $getpass = 0;
+                my $getpass    = 0;
                 my ( $crypass, $cookiename );
                 if ( ${ $uid . $curboard }{'brdpasswr'} ) {
                     $cookiename = "$cookiepassword$curboard$username";
                     $crypass    = ${ $uid . $curboard }{'brdpassw'};
-                    if (  !$staff
-                        && (!$yy_cookies{$cookiename} || $yy_cookies{$cookiename} ne $crypass) )
+                    if (
+                        !$staff
+                        && (  !$yy_cookies{$cookiename}
+                            || $yy_cookies{$cookiename} ne $crypass )
+                      )
                     {
                         $boardpwpic    = $micon{'lockimg'};
                         $lastpostlink  = $maintxt{'900pr'};
                         $lasttopiclink = q{};
                         $lastposter    = q{};
                         $templateblock = $boardblockpw;
-						$getpass = 1;
+                        $getpass       = 1;
                     }
                     else {
                         $boardpwpic = $micon{'lockopen'};
-                        $getpass = 0;
+                        $getpass    = 0;
                     }
                 }
                 if ( ${ $uid . $curboard }{'threadcount'} < 0 ) {
@@ -1311,12 +1299,16 @@ s/\Q{yabb boardurl}\E/$scripturl\?boardselect\=$curboard/gxsm;
                   split /[|]/xsm, $board{$curboard};
                 $access = access_check( $curboard, q{}, $boardperms );
                 my $messagedropdown = q{};
-                if (  !$getpass && ( $boardperms eq q{} || ( !$iamguest && $access eq 'granted' ) ) )
+                if (
+                    !$getpass
+                    && ( $boardperms eq q{}
+                        || ( !$iamguest && $access eq 'granted' ) )
+                  )
                 {
                     $messagedropdown =
 qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?board\=$curboard;messagelist=1','$yyhtml_root','$curboard', 0)" id="dropbutton_$curboard" class="cursor" alt="" />~;
                 }
-                else { $messagedropdown = q{}; $tmp_sublist = q{};}
+                else { $messagedropdown = q{}; $tmp_sublist = q{}; }
 
                 my $imgid = $brd_img_id{$curboard};
                 $bdpic =
@@ -1422,7 +1414,10 @@ s/\Q{yabb messagecount}\E/${$uid.$curboard}{'messagecount'}/gxsm;
 </script>~;
         }
         my $imsweredeleted = 0;
-        if ( ${$username}{'PMmnum'} > $numibox && $numibox && $enable_imlimit )
+        if (   ${$username}{'PMmnum'}
+            && $numibox
+            && ${$username}{'PMmnum'} > $numibox
+            && $enable_imlimit )
         {
             del_max_im( 'msg', $numibox );
             $imsweredeleted = ${$username}{'PMmnum'} - $numibox;
@@ -1466,8 +1461,8 @@ if (confirm('$boardindex_imtxt{'11'} ${$username}{'PMstorenum'} $boardindex_imtx
             ${$username}{'PMmnum'} ||= 0;
             $ims =
 qq~$boardindex_txt{'795'} <a href="$scripturl?action=im"><strong>${$username}{'PMmnum'}</strong></a> $boardindex_txt{'796'}~;
-            if ( ${$username}{'PMmnum'} > 0 ) {
-                if ( ${$username}{'PMimnewcount'} == 1 ) {
+            if ( ${$username}{'PMmnum'} && ${$username}{'PMmnum'} > 0 ) {
+                if ( ${$username}{'PMimnewcount'} && ${$username}{'PMimnewcount'} == 1 ) {
                     $ims .=
 qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><strong>${$username}{'PMimnewcount'}</strong></a> $boardindex_imtxt{'25'}.</span>~;
                 }
@@ -1824,7 +1819,7 @@ qq~</select> <input type="submit" style="display:none" /></form> $recenttxt_t $b
         else {
             $boardindex_template =~ s/\Q{yabb latestmember}\E//gxsm;
         }
-        $ims ||= q{};
+        $ims   ||= q{};
         $users ||= q{};
         $boardindex_template =~ s/\Q{yabb ims}\E/$ims/gxsm;
         $boardindex_template =~ s/\Q{yabb guests}\E/$guestson/gxsm;
@@ -2286,6 +2281,42 @@ sub find_latest_data {
         $childcnt{$parentbd}++;
     }
     return;
+}
+
+sub getbrdpics {
+    my $bdpic = q{};
+    our ($BRDPIC);
+    fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
+      or croak "$croak{'open'} brdpics";
+    my @brdpics = <$BRDPIC>;
+    fclose('BRDPIC') or croak "$croak{'close'} brdpics";
+    chomp @brdpics;
+    foreach (@brdpics) {
+        my ( $brdnm, $style, $brdpix ) = split /[|]/xsm;
+        if ( $brdnm eq $curboard && $template eq $style ) {
+            if ( $brdpix =~ /\//ixsm ) {
+                $bdpic = $brdpix;
+                last;
+            }
+            else {
+                if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpix" ) {
+                    $bdpic = qq~$imagesdir/Boards/$brdpix~;
+                }
+                else {
+                    $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
+                }
+                last;
+            }
+        }
+        else {
+            if ( $boardname =~ m/[ht|f]tps?\:\/\//xsm ) {
+                $bdpic = qq~$imagesdir/$extern~;
+            }
+            else { $bdpic = qq~$imagesdir/boards.$bdpic_ext~; }
+            last;
+        }
+    }
+    return $bdpic;
 }
 
 1;

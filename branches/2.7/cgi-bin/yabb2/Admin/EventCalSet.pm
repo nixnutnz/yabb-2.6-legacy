@@ -361,6 +361,7 @@ sub event_calset2 {
 
         my $bdlist = q{};
         foreach my $user_xy (@birthmembers) {
+            no strict qw(refs);
             chomp $user_xy;
             load_user($user_xy);
             my $user_xy_bd = ${ $uid . $user_xy }{'bday'};

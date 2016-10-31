@@ -151,14 +151,21 @@ our $randaction = substr $date, 0, length($date) - 2;
 
 our $user_ip = $ENV{'REMOTE_ADDR'};
 if ( $user_ip eq '127.0.0.1' || $user_ip eq '::1' ) {
-    if ( $ENV{'HTTP_CLIENT_IP'} && $ENV{'HTTP_CLIENT_IP'} ne '127.0.0.1' && $ENV{'HTTP_CLIENT_IP'} ne '::1' ) {
+    if (   $ENV{'HTTP_CLIENT_IP'}
+        && $ENV{'HTTP_CLIENT_IP'} ne '127.0.0.1'
+        && $ENV{'HTTP_CLIENT_IP'} ne '::1' )
+    {
         $user_ip = $ENV{'HTTP_CLIENT_IP'};
     }
-    elsif ( $ENV{'X_CLIENT_IP'} && $ENV{'X_CLIENT_IP'} ne '127.0.0.1' && $ENV{'X_CLIENT_IP'} ne '::1') {
+    elsif ($ENV{'X_CLIENT_IP'}
+        && $ENV{'X_CLIENT_IP'} ne '127.0.0.1'
+        && $ENV{'X_CLIENT_IP'} ne '::1' )
+    {
         $user_ip = $ENV{'X_CLIENT_IP'};
     }
     elsif ($ENV{'HTTP_X_FORWARDED_FOR'}
-        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '127.0.0.1' && $ENV{'HTTP_X_FORWARDED_FOR'} ne '::1' )
+        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '127.0.0.1'
+        && $ENV{'HTTP_X_FORWARDED_FOR'} ne '::1' )
     {
         $user_ip = $ENV{'HTTP_X_FORWARDED_FOR'};
     }
@@ -178,6 +185,7 @@ our $invalemaila   = qr/(@.*@)|([.][.])|(@[.])|([.]@)|(^[.])|([.]$ )/xsm;
 our $invalemailb   = qr/^.+@\[?(\w|[-.])+[.][[:alpha:]]{2,4}|\d{1,4}\]?$ /xsm;
 our $invalpass     = qr/[^\s\w!@#%\^&*()\$+|`~\-=\\:;'",.\/?\[\]{}]/xsm;
 our $invalrname    = qr/[^ \w\x80-\xFF\[\][(][)]\#%[+],-[|][.]:=[?]@\^]/xsm;
+our $invaluser     = qr/[^\w+\-@.]/xsm;
 
 sub automaintenance {
     my ( $maction, $mreason ) = @_;

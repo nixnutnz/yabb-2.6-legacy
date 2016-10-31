@@ -346,7 +346,7 @@ sub notify4 {
 
 sub update_language {
     my ( $user, $newlang ) = @_;
-    getMailFiles();
+    get_mail_files();
     foreach (@bmaildir) {
         manageboardnotify( 'update', $_, $user, $newlang, q{}, q{} );
     }
@@ -358,7 +358,7 @@ sub update_language {
 
 sub remove_notifications {
     my $user_s = shift;
-    getMailFiles();
+    get_mail_files();
     foreach (@bmaildir) {
         manageboardnotify( 'delete', $_, $user_s );
     }
