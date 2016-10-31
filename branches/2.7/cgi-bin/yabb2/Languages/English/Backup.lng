@@ -167,8 +167,8 @@ if( ! $script_root ) {
 'mailsuccess' => q~Sent e-mail successfully.~,
 'mailfail' => q~Sending e-mail failed. See the error message in the info e-mail you will receive.~,
 'no_perm' => q~You do not have permission to change the above settings.~,
-'no_dnload' => q~DOWNLOAD not permited.~,
-'no_delete' => q~DELETE not permited.~,
+'no_dnload' => q~DOWNLOAD not permitted.~,
+'no_delete' => q~DELETE not permitted.~,
 '542' => q~If nothing happens in 5 seconds~,
 '543' => q~click here to continue~,
 # The actual messages are here.

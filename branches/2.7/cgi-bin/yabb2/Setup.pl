@@ -26,8 +26,9 @@ our $VERSION = '2.7.00';
 my $setupplver  = 'YaBB 2.7.00 $Revision$';
 my $yymycharset = 'UTF-8';
 our $yabbversion = 'YaBB 2.7.00';
-our ( $yytitle, $yyim, $yysetlocation, $yyimages, $yydefaultimages, $yystyle, );
+our ( $yytitle, $yyim, $yysetlocation, $yyimages, $yydefaultimages, $yystyle,);
 our $mbname = 'My Perl YaBB Forum';
+our $firstmstime = time;
 
 # conversion will stop after $max_process_time
 # in seconds, than the browser will call the script
@@ -156,7 +157,7 @@ our $cookiepassword     = $cookinfo[1];
 our $cookiesession_name = $cookinfo[2];
 our $cookietsort        = $cookinfo[3];
 our $cookieview         = $cookinfo[4];
-$session_id = $cookiesession_name;
+our $session_id = $cookiesession_name;
 
 my %dispatch_table = (
     adminlogin2 => \&adminlogin2,
@@ -187,7 +188,7 @@ simpleoutput();
 #############################################
 # setup subroutines start here              #
 #############################################
-our $firstmstime = time;
+
 sub adminlogin {
     open my $LICENSE, '<', 'license.txt' or croak 'cannot load License.';
     my $license = do { local $INPUT_RECORD_SEPARATOR = undef; <$LICENSE>; };
@@ -2042,7 +2043,7 @@ EOF
         user_account( 'admin', 'update' );
         manage_memberinfo( 'update', 'admin', 'Administrator',
             $webmaster_email, 'Forum Administrator' );
-        open my $RLOG, '>', "$memberdir/admin.rlog":
+        open my $RLOG, '>', "$memberdir/admin.rlog";
         print {$RLOG} qq~$firstmstime|1,$firstmstime\n~;
         close $RLOG;
         our $yysetlocation = qq~$set_cgi?action=setup3~;
