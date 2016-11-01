@@ -336,23 +336,16 @@ function hideMods(id) {
                 <td class="windowbg2">Dobackup.pl</td>
                 <td class="windowbg2"><i>$dobackupplver</i>$dobackupmodcheck$dobackupmatch</td>
             </tr>~;
-
-    opendir LNGDIR, $langdir;
-    my @lfilesanddirs = readdir LNGDIR;
-    closedir LNGDIR;
-    @lfilesanddirs = sort @lfilesanddirs;
-    my ($mylang_top);
-    for my $fld (@lfilesanddirs) {
-        if (   -d "$langdir/$fld"
-            && $fld =~ m{\A[\w#%\-:+?\$&~,@\/]+\Z}xsm
-            && -e "$langdir/$fld/Main.lng" )
-        {
-            our ($FILE);
-            fopen( 'FILE', '<', "$langdir/$fld/version.txt" )
-              or croak "$croak{'open'} version";
+    our %lngs;
+    require "$langdir/Lang.lng";
+    my @langflds = sort keys %lngs;
+    for my $fld ( @langflds ) {
+        if ( -e "$langdir/$fld/version.txt" ) {
+            open my $FILE, '<', "$langdir/$fld/version.txt"
+              or croak "$croak{'open'} $langdir/$fld/version.txt";
             my @ver = <$FILE>;
-            fclose('FILE') or croak "$croak{'close'} version";
-            $mylang_top = qq~<tr>
+            close $FILE or croak "$croak{'close'} version";
+            my $mylang_top = qq~<tr>
                     <td class="windowbg2">
                     $fld $admin_txt{'langpack'} <a href="#" onclick="showStufflangrow('$fld', 'col$fld'); return false;" id="col$fld">$admin_txt{'view'}</a></td>
                     <td class="windowbg2"><i>$ver[0]</i></td>
@@ -369,11 +362,11 @@ function hideMods(id) {
                         </tr>~;
             $mylang_top =~ s/\Q{yabb fld}\E/$fld/gxsm;
             $yymain .= $mylang_top;
+
             opendir LNGDIRF, "$langdir/$fld";
             my @lfilesanddirsf = readdir LNGDIRF;
             closedir LNGDIRF;
             @lfilesanddirsf = sort @lfilesanddirsf;
-
             for my $filein_dir (@lfilesanddirsf) {
                 chomp $filein_dir;
                 if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
@@ -381,6 +374,7 @@ function hideMods(id) {
                     require "$langdir/$fld/$filein_dir";
                     my $flda        = lc $fld;
                     my $txtrevision = lc $filein_dir;
+                    my $modmatch = q{};
                     $txtrevision =~ s/[.]lng/lngver/igxsm;
                     $txtrevision = $flda . $txtrevision;
                     if ( ${$txtrevision} ) {
@@ -389,13 +383,12 @@ function hideMods(id) {
                     my $modrevision = lc $filein_dir;
                     $modrevision =~ s/[.]lng/lngmods/igxsm;
                     $modrevision = $flda . $modrevision;
-                    my $modmatch = mod_link($modrevision);
-                    our ($DAT);
-                    fopen( 'DAT', '<', "$langdir/$fld/$filein_dir" )
+                    $modmatch = mod_link($modrevision);
+                    open( my $DAT, '<', "$langdir/$fld/$filein_dir" )
                       or croak "$croak{'open'} $filein_dir: $OS_ERROR";
                     binmode $DAT;
                     my $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                    fclose('DAT') or croak "$croak{'close'} $filein_dir";
+                    close( $DAT) or croak "$croak{'close'} $filein_dir";
                     my $chkmatch = q{};
 
                     my $age = ( stat("$langdir/$fld/$filein_dir")->mtime );
@@ -437,14 +430,13 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                             $txtrevision =~ s/[.]help/helpver/igxsm;
                             ${$txtrevision} =~
                               s/\$Revision: (.*?) \$/Build $1/igxsm;
-                            our ($DAT);
-                            fopen( 'DAT', '<',
+                            open( my $DAT, '<',
                                 "$helpfile/$fld/$area/$helpin_dir" )
                               or croak "$croak{'open'} $helpin_dir: $OS_ERROR";
                             binmode $DAT;
                             my $linec =
                               Digest::MD5->new->addfile($DAT)->hexdigest;
-                            fclose('DAT') or croak "$croak{'close'} DAT";
+                            close( $DAT) or croak "$croak{'close'} DAT";
                             my $chkmatch = q{};
 
                             my $age = (
@@ -472,6 +464,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                     }
                 }
             }
+
             $yymain .= q~
                     </table>
                 </td>

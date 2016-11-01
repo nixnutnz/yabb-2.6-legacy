@@ -749,7 +749,6 @@ qq~             <textarea name="awayreply" id="awayreply" rows="4" cols="50">$aw
         $my_away .= $myprofile_away_b;
         $my_away =~ s/\Q{yabb offChecked}/$offchecked/xsm;
         $my_away =~ s/\Q{yabb awayChecked}/$awaychecked/xsm;
-        $my_away =~ s/\Q{yabb max_awaylen}/$max_awaylen/gxsm;
         $my_away =~
           s/\Q{yabb profile_txtshowstatus}\E/$profile_txt{'showstatus'}/xsm;
         $my_away =~
@@ -761,6 +760,7 @@ s/\Q{yabb profile_txtawaydescription}\E/$profile_txt{'awaydescription'}/xsm;
         $my_away =~ s/\Q{yabb profile_txtasubj}\E/$profile_txt{'asubj'}/xsm;
         $my_away =~ s/\Q{yabb profile_txtamess}\E/$profile_txt{'amess'}/xsm;
         $my_away =~ s/\Q{yabb profile_txt664a}\E/$profile_txt{'664a'}/xsm;
+        $my_away =~ s/\Q{yabb max_awaylen}/$max_awaylen/gxsm;
     }
     my $my_stealth = q{};
     if (
@@ -1334,7 +1334,6 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="
     $show_profile =~ s/\Q{yabb usertext}\E/${ $uid . $user }{'usertext'}/xsm;
     $show_profile =~ s/\Q{yabb profiletitle}\E/$profiletitle/xsm;
     $show_profile =~ s/\Q{yabb my_show_avatar}\E/$my_show_avatar/xsm;
-    $show_profile =~ s/\Q{yabb max_siglen}\E/$max_siglen/gxsm;
     $show_profile =~ s/\Q{yabb my_addmemgroup}\E/$my_addmemgroup/xsm;
     $show_profile =~ s/\Q{yabb my_time}\E/$my_time/xsm;
     $show_profile =~ s/\Q{yabb my_notify}\E/$my_notify/xsm;
@@ -1351,7 +1350,8 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="
     $show_profile =~ s/\Q{yabb profile_txt664}\E/$profile_txt{'664'}/xsm;
     $show_profile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
     $show_profile =~ s/\Q{yabb profile_txt228}\E/$profile_txt{'228'}/xsm;
-
+    $show_profile =~ s/\Q{yabb max_siglen}\E/$max_siglen/gxsm;
+  
 ## Mod Hook showProfile_options ##
 
     if ( !$view ) {
@@ -2367,6 +2367,7 @@ sub modify_profile_contacts2 {
     to_html( $member{'awaysubj'} );
     to_chars( $member{'awaysubj'} );
 
+    $member{'awayreply'} ||= q{};
     from_chars( $member{'awayreply'} );
     to_html( $member{'awayreply'} );
     $member{'awayreply'} =~ s/\n/<br \/>/gxsm;
@@ -2403,7 +2404,7 @@ sub modify_profile_contacts2 {
     }
 
     # if user is switching 'away' to 'off/on', clean out the away-sent list
-    if ( $FORM{'offlinestatus'} eq 'offline' ) {
+    if ( $FORM{'offlinestatus'} && $FORM{'offlinestatus'} eq 'offline' ) {
         ${ $uid . $user }{'awayreplysent'} = q{};
     }
 

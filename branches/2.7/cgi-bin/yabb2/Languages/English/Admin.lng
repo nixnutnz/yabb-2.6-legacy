@@ -17,6 +17,7 @@ $englishadminlngver = 'YaBB 2.7.00 $Revision$';
 if (@englishadminlngmods) {
     $englishadminlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'English' ) { return 1; }
 
 @days = ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
@@ -148,7 +149,7 @@ $abbr_lang = 'en-us';
 '122' => q~days old~,
 '123' => q~REMOVED~,
 '124' => q~Remove posts older than~,
-'130' => qq~Regards,\nThe $mbname team~,
+'130' => qq~Regards,\nThe {yabb mbname} team~,
 '135' => q~Set Censored Words~,
 '136' => q{One word or phrase per line in the form:<br />fuck=f**ck or fuck~f**ck<br /><br /><span class="small">Use = if you want to censor whole words only, or ~ to censor words which form parts of larger words</span>},
 '139' => q~Pages~,
@@ -222,7 +223,7 @@ $abbr_lang = 'en-us';
 '364' => q~Help File~,
 '366' => q~Settings for New Member Notification E-mail~,
 '367' => q~Notification e-mail for new member?<br /><span class="small">If checked, a notification concerning the registration of a new member will be sent to the e-mail address below.</span>~,
-'368' => qq~Notification e-mail address:<br /><span class='small'>If left blank, the e-mail will be sent to: $webmaster_email</span>~,
+'368' => q~Notification e-mail address:<br /><span class='small'>If left blank, the e-mail will be sent to: {yabb webmaster_email}</span>~,
 '371' => q~Current Forum Time~,
 '371d' => q~Select Forum Time Zone:<br /><span class="small">Choose the country and city that represents your preferred default Time Zone.<br />If the only choices are UTC and 'local', you do not have the necessary Modules to use country/city based Time Zones. In that case, use 'local' and manually set your Forum Time Offset to set your Forum's Time difference from UTC, or choose UTC.</span>~,
 '371a' => q~Enable Time Zone choices for Users:<br /><span class="small">If the necessary <strong>DateTime::TimeZone</strong> Perl Module is not installed, users will only be able to choose 'UTC'. If the forum default Time Zone is 'local' users will also have 'Forum Default Time Offset' as an option.</span>~,
@@ -418,18 +419,18 @@ $abbr_lang = 'en-us';
 '689a' => q~Maximum allowed characters in Away message~,
 '690' => q~Time in minutes to log each click in your forum<br />(must be less than 1440, which is 24 hours)~,
 '691' => q~Total Clicks~,
-'692' => qq~in the last $click_logtime minutes~,
+'692' => q~in the last {yabb click_logtime} minutes~,
 '692a' => q~disabled~,
 '693' => q~View forum access log~,
 '694' => q~IP Access~,
 '695' => q~Browsers~,
 '696' => q~Operating Systems~,
 '696a' => q~Script calls~,
-'697' => qq~This is a simple system that analyzes the log YaBB creates with each click someone makes in your forum. Use this as a rough estimate of the traffic, browser, and operating system of $mbname visitors. The numbers in parentheses beside each item are the number of occurrences of that item in your log.~,
-'698' => qq~<br /><br />You currently have logging set for $click_logtime minutes.~,
+'697' => q~This is a simple system that analyzes the log YaBB creates with each click someone makes in your forum. Use this as a rough estimate of the traffic, browser, and operating system of {yabb mbname} visitors. The numbers in parentheses beside each item are the number of occurrences of that item in your log.~,
+'698' => q~<br /><br />You currently have logging set for {yabb click_logtime}.~,
 '698a' => qq~<br /><br />You currently have logging disabled. To turn on logging, go to <a href="$boarddir/AdminIndex.pl?action=newsettings;page=advanced">Advanced Settings (Advanced)</a>~,
 '699' => q~Reserved names will keep members from registering certain user IDs or using these words in their screen names. Choose the options you wish to use from the bottom before submitting.~,
-'702' => q~E-mail Random Password to New Member Upon Registration?~,
+'702' => q~E-mail Random Password to New Member upon registration?~,
 '710' => q~Password-Strength-Meter Scores<br /><span class ="small">Here you can define when the line jumps to the next higher level. Default is <em>10,15,30,40</em>. <span style="color:red">Insert only numbers and commas or you can get into trouble.</span><br />Set to <em>-1,-1,-1,-1</em> to disable the Password-Strength-Meter feature. Then it will show only if the Password is too short or if it is OK.</span>~,
 '711' => q~Password-Strength-Meter common words<br /><span class ="small">Enter all words that will be shown as "Unsafe Password.". The words must be between "" and separated by commas. Example:<br />"123456","abcdef","password"</span>~,
 '712' => q~Password-Strength-Meter minimum characters<br /><span class ="small">Enter the minimum number of characters required for the password to be considered "not too short."</span>~,
@@ -636,12 +637,12 @@ $abbr_lang = 'en-us';
 '355b' => q~Test webmaster e-mail settings on Save~,
 'testemail' => q~Test E-mail~,
 'testsubject' => q~YaBB e-mail settings test~,
-'testmessage' => qq~Hi $mbname Webmaster
+'testmessage' => q~Hi {yabb mbname} Webmaster
 
-This is a test of your $mbname Forum's e-mail settings.
+This is a test of your {yabb mbname} Forum's e-mail settings.
 
 Thanks for using YaBB!~,
-'mailfrom' => qq~"$mbname E-Mail Test" <$webmaster_email>~,
+'mailfrom' => q~"{yabb mbname} E-Mail Test" <{yabb webmaster_email}>~,
 
 ## Template Editor ###
 'modfolder' => q~Create New Template Folder~,
@@ -745,7 +746,7 @@ Thanks for using YaBB!~,
 );
 
 %admintxt = (
-'1' => qq~Welcome to your '$mbname' Administration Center~,
+'1' => q~Welcome to your '{yabb mbname}' Administration Center~,
 '2' => q~This is your 'YaBB Admin Center'. You can modify your forum preferences, edit your template and run maintenance on your forum from here. Please be careful with these functions.<br /><br />Please read the Quick-Guide or refer to the info in the Help section of your forum before you contact any form of support. If you need further help you may find answers to your problems on the YaBB Support Codex or the YaBB Chat and Support Community forum.<br /><br />We thank you for using YaBB.~,
 '3' => q~Version Information~,
 '4' => q~What's new at YaBB?~,
@@ -1146,7 +1147,7 @@ Thanks for using YaBB!~,
 '42' => q~All Members~,
 '42a' => q~All Member Groups~,
 '43' => q~Account deleted~,
-'44' => qq~[name], Your account ([username]) on $mbname has been deleted.~,
+'44' => q~[name], Your account ([username]) on {yabb mbname} has been deleted.~,
 '45' => q~Send e-mail to deleted members~,
 '46' => q~Here you can select Member Groups that will receive your e-mail. Use Ctrl or Shift to select/deselect multiple Groups.~,
 '47' => q~Sent E-mails~,
@@ -1178,7 +1179,7 @@ Thanks for using YaBB!~,
 'allowbcc' => q~Allow 'Bcc' list for PMs?<br /><span class="small">('Bcc' - member is 'copied' but doesn't see other recipients.)</span>~,
 'away' => q~Enable 'Away' indicator for members, works alongside 'Online/Offline'<br /><span class="small">Staff to Staff - Only forum Staff can use and see<br />Staff to All - Only forum Staff can use, All members can see<br />Members - All members can use and see</span>~,
 'extrastore' => q~Enable additional Store Folders<br /><span class="small">(In/Out are default for All, set to 0 to disable, max 25)</span>~,
-'Newnotification_alert' => q~Allow member's new board and post notifications to appear at the top of each page, and permit pop-ups for these new notifications on the Board Index (based on the member's individual settings)?~,
+'NewNotificationAlert' => q~Allow member's new board and post notifications to appear at the top of each page, and permit pop-ups for these new notifications on the Board Index (based on the member's individual settings)?~,
 'enable_PMsearch' => q~Allow members to be able to search their PMs<br /><span class="small">(Set to 0 to disable; maximum 50 results returned)</span>~,
 'enablePM' => q~Enable Personal Messaging for~,
 '87' => q~Enable Broadcast Messaging for~,
@@ -1186,14 +1187,14 @@ Thanks for using YaBB!~,
 '89' => q~Enable Alert Moderator button in threads?<br /><span class="small">(Sends Personal Message to Moderators of a board with a link to the thread)</span>~,
 '90' => q~Show Alert Moderator button in threads for Guests?~,
 '381' => q~Allow users to enable e-mail notification when new PMs are received?~,
-'pmspamchk'=> qq~Allow members with fewer than $numposts posts to send PMs using anti-spam measures.~,
+'pmspamchk' => qq~Allow members with fewer than {yabb numposts} posts to send PMs using anti-spam measures.~,
 );
 
 %reftxt = (
 '1' => q~Referrer Security~,
 '1a' => q~Command Explanation:~,
 '2' => q~Select Board Actions (<em>action=...</em> in the URL) which are allowed from outside your own board domain name.<br />"Activate Referrer Security Checking?" must be checked in <em>Security Center</em> =&gt; <em>Security Settings</em> =&gt; <em>General</em> for it to work.~,
-'3' => qq~These commands are derived from $vardir/Referr.pm<br />Hover over the Question Mark to see the command explanation~,
+'3' => q~These commands are derived from Variables/Referer.pm<br />Hover over the Question Mark to see the command explanation~,
 '4' => q~Save Settings~,
 '8' => q~Activate Referrer Security Checking?<br /><span class="small">Fine tuning can be done in <em>Security Center</em> =&gt; <em>Referrer Security</em></span>~,
 );
@@ -1710,7 +1711,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 );
 
 timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$yabbversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$yabbversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
 $rna = 'Remote Server not available.';
 

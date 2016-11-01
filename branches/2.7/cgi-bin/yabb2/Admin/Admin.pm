@@ -42,7 +42,7 @@ our ( $adminurl, $boardurl, $convdir, $htmldir, $langdir, $memberdir, $vardir,
 );
 ## settings ##
 our (
-    $allow_hide_email, $cookieusername, $default_template,
+    $allow_hide_email, $click_logtime,  $cookieusername, $default_template,
     $defaultusertxt,   $do_scramble_id, $dstoffset,
     $emailpassword,    $enableclicklog, $imsubject,
     $imtext,           $ip_lookup,      $matchcase,
@@ -281,6 +281,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
         $yyclicks    = @log;
         $yyclicks    = number_format($yyclicks);
         $yyclicktext = $admin_txt{'692'};
+        $yyclicktext =~ s/\Q{yabb click_logtime}\E/$click_logtime/gxsm;
         $yyclicklink =
 qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     }
@@ -487,7 +488,7 @@ qq~ <a href="$scripturl?action=viewprofile;username=$membernamecloaked">$memberi
 sub showclicklog {
     is_admin_or_gmod();
     my $logtimetext = $admin_txt{'698a'};
-    if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; }
+    if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; $logtimetext =~ s/\Q{yabb click_logtime}\E/$click_logtime/gxsm; }
     else                   { $logtimetext = $admin_txt{'698a'}; }
 
     our ($LOG);

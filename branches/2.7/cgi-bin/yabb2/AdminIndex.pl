@@ -409,8 +409,6 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
         }
     }
 
-    print_output_header();
-    
     $yyadmin_alert ||= q{};
     $yytitle = qq~$mbname $admin_txt{'208'}: $yytitle~;
     $header =~ s/\Q{yabb title}\E/$yytitle/gxsm;
@@ -438,6 +436,7 @@ s/img src\=\&quot;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . admimgloc2($1) .
 
     # For the template editing Javascript images
 
+    print_output_header();
     our $output =
         $header
       . $leftmenutop
@@ -447,6 +446,7 @@ s/img src\=\&quot;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . admimgloc2($1) .
       . $mainbody;
 
     image_resize();
+    $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
 
     print_html_output_and_finish();
     return;

@@ -325,6 +325,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
           . length($reg_reason_len)
           . $myregister_regreason_b;
         $yymain =~ s/\Q{yabb reason}\E/$reason/xsm;
+        $yymain =~ s/\Q{yabb prereg_txt16}\E/$prereg_txt{'16'}/gxsm;
         $yymain =~ s/\Q{yabb reg_reason_len}\E/$reg_reason_len/gxsm;
     }
 
@@ -1090,6 +1091,9 @@ sub register2 {
         );
         $language = $templanguage;
         $yymain .= $myregister_pending;
+        $yymain =~ s/\Q{yabb prereg_txt1}\E/$prereg_txt{'1'}/xsm;
+        $yymain =~ s/\Q{yabb preregspan}\E/$preregspan/gxsm;
+        $yymain =~ s/\Q{yabb prereg_txt1a}\E/$prereg_txt{'1a'}/gxsm;
         $yytitle = $prereg_txt{'1a'};
 
     }
@@ -1438,6 +1442,8 @@ sub user_activation {
 
     if ( $regtype == 1 ) {
         $yymain .= $myregister_prereg1;
+        $yymain =~ s/\Q{yabb prereg_txt1a}\E/$prereg_txt{'1a'}/gxsm;
+        $yymain =~ s/\Q{yabb prereg_txt13}\E/$prereg_txt{'13'}/gxsm;
         $yytitle = $prereg_txt{'1b'};
 
     }
@@ -1448,6 +1454,8 @@ sub user_activation {
         if ($emailpassword) {
             $yymain .= qq~$register_txt{'703'}<br /> <br />~;
         }
+        $yymain =~ s/\Q{yabb prereg_txt1a}\E/$prereg_txt{'1a'}/gxsm;
+        $yymain =~ s/\Q{yabb prereg_txt5}\E/$prereg_txt{'5'}/gxsm;
         $yymain .= $myregister_enddiv;
 
         if ( !$iamadmin && !$iamgmod ) {

@@ -162,7 +162,7 @@ if( ! $script_root ) {
 '132' => q~Back to YaBB Backup main page~,
 
 # Begin e-mail stuff.
-'mailsubject' => qq~YaBB 2 Backup from $mbname~,
+'mailsubject' => q~YaBB 2 Backup from {yabb mbname}~,
 'mailfrom' => qq~"YaBB 2 Backup Mailer" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
 'mailsuccess' => q~Sent e-mail successfully.~,
 'mailfail' => q~Sending e-mail failed. See the error message in the info e-mail you will receive.~,

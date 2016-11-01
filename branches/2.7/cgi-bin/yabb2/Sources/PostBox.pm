@@ -47,7 +47,7 @@ our (
 our (
     $allowattach,       $checkallcaps, $fontsizemax, $fontsizemin,
     $gpvalid_en,        $img_greybox,  $max_messlen, $min_post_speed,
-    $spam_questions_gp, %fix_img_size, @pallist,
+    $spam_questions_gp, %fix_img_size, @pallist,     $minlinkpost,
 );
 get_micon();
 
@@ -720,7 +720,8 @@ sub my_check_prev {
             }
         }
         </script>~;
-
+    $minlinkpost ||= q{};
+    $x =~ s/\Q{yabb minlinkpost}\E/$minlinkpost/gxsm;
     return $x;
 }
 

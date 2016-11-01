@@ -182,7 +182,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '01' => q~Open Preview~,
 '02' => q~Close Preview~,
 '03' => q~Max~,
-'03a' => qq~characters.{yabb_getbreak} Remaining characters: ~,
+'03a' => q~characters.{yabb_getbreak} Remaining characters: ~,
 '04' => q~Preview~,
 '05' => q~<strong>Font Family / Size</strong>~,
 'default' => q~Default~,

@@ -384,6 +384,8 @@ qq~                <li id="button_$tab->{'id'}" onclick="changeToTab('$tab->{'id
         $yymain .= q~
    </table>
   </div>~;
+        $yymain =~ s/\Q{yabb webmaster_email}\E/$webmaster_email/gxsm;
+        $yymain =~ s/\Q{yabb numposts}\E/$numposts/gxsm;
     }
 
     my %requirejs;

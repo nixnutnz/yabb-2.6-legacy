@@ -3,8 +3,8 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.6.20                                                 #
-# Packaged:       December 31, 2015                                           #
+# Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2016                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -12,7 +12,7 @@
 #              with assistance from the YaBB community.                       #
 ###############################################################################
 
-$englishrefcontrollngver = 'YaBB 2.6.20 $Revision$';
+$englishrefcontrollngver = 'YaBB 2.7.00 $Revision$';
 @englishrefcontrollngmods = ();
 if(@englishrefcontrollngmods){
     $englishrefcontrollngmods = 1;
@@ -47,6 +47,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'search' => q~Enter the search screen~,
 'viewdownloads' => q~View Downloads~,
 'viewprofile' => q~View a User Profile~,
+'refer_controls' => q~General~,
+'refer_mods' => q~Mods~,
 );
 
 %refer_txt = (

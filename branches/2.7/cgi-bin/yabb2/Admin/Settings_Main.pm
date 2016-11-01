@@ -1350,7 +1350,7 @@ qq~<input type="checkbox" name="enable_notifications_n" id="enable_notifications
             },
             {
                 description =>
-qq~<label for="new_notification_alert">$imtxt{'Newnotification_alert'}</label>~,
+qq~<label for="new_notification_alert">$imtxt{'NewNotificationAlert'}</label>~,
                 input_html =>
 qq~<input type="checkbox" name="new_notification_alert" id="new_notification_alert" value="1"${ischecked($new_notification_alert)} />~,
                 name     => 'new_notification_alert',

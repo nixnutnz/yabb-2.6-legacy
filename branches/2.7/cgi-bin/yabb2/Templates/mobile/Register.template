@@ -177,7 +177,7 @@ $myregister_regreason_a = qq~<tr>
         <td class="windowbg vtop">~;
 
 $myregister_regreason_c = qq~$myreg_req<br />
-            <span class="small">$prereg_txt{'16'}</span><input value="{yabb RegReasonSymbols}" size="~;
+            <span class="small">{yabb prereg_txt16}</span><input value="{yabb RegReasonSymbols}" size="~;
 
 $myregister_regreason_b = qq~" name="msgCL" class="windowbg small" style="border: 0; padding: 1px; font-size: 11px;" readonly="readonly" />
 <script type="text/javascript">
@@ -302,12 +302,12 @@ $myregister_pending = qq~
             <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
                 <table class="tabtitle">
                     <tr>
-                        <td style="padding-left:1%; height:25px"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b></td>
+                        <td style="padding-left:1%; height:25px"><img src="$imagesdir/register.gif" alt="{yabb prereg_txt1a}" title="{yabb prereg_txt1a}" /><b>{yabb prereg_txt1a}</b></td>
                     </tr>
                 </table>
                 <table class="pad_4px cs_thin">
                     <tr>
-                        <td class="windowbg">$prereg_txt{'1'}</td>
+                        <td class="windowbg">{yabb prereg_txt1}</td>
                     </tr>
                 </table>
             </div>~;
@@ -356,16 +356,16 @@ $myregister_welcome = qq~
 $myregister_prereg1 = qq~
                 <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
                     <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom">
-                        <img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /><b>$prereg_txt{'1a'}</b>
+                        <img src="$imagesdir/register.gif" alt="{yabb prereg_txt1a}" title="{yabb prereg_txt1a}" /><b>{yabb prereg_txt1a}</b>
                     </div>
-                    <div class="windowbg padd_4px">$prereg_txt{'13'}</div>
+                    <div class="windowbg padd_4px">{yabb prereg_txt13}</div>
                 </div>~;
 
 $myregister_prereg2 = qq~
                 <div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">
-                    <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/register.gif" alt="$prereg_txt{'1a'}" title="$prereg_txt{'1a'}" /> <b>$prereg_txt{'1a'}</b>
+                    <div class="tabtitle" style="padding-left:1%; line-height:3em; vertical-align:bottom"><img src="$imagesdir/register.gif" alt="{yabb prereg_txt1a}" title="{yabb prereg_txt1a}" /> <b>{yabb prereg_txt1a}</b>
                     </div>
-                    <div class="windowbg padd_4px">$prereg_txt{'5'}~;
+                    <div class="windowbg padd_4px">{yabb prereg_txt5}~;
 
 $myregister_div_a =
 q~<div class="bordercolor" style="width: 650px; margin-bottom: 8px; margin-left: auto; margin-right: auto;">~;

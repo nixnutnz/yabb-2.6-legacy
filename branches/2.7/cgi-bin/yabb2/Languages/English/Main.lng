@@ -132,7 +132,7 @@ $abbr_lang = 'en-us';
 '634' => q~Only Registered Members are allowed to access this forum.~,
 '635' => q~Please login below or click~,
 '636' => q~-here-~,
-'637' => qq~to register an account with $mbname.~,
+'637' => q~to register an account with {yabb mbname}.~,
 '668' => q~Print Page~,
 '668a' => q~Print Post~,
 '669a' => q~Hide Images~,
@@ -313,12 +313,12 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 );
 
 timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">$mbname</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$yabbversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
+$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$yabbversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
 
 $load_txt{'maint'} = 'Maintenance';
 $load_txt{'616c'} = q~This forum is in Maintenance Mode!~;
-
 $load_txt{'tmod'} = 'modify Topics in this Board';
+
 $maintxt{'backup'} = 'Remove this file if your board is in backup-lock for no reason.';
 $maintxt{'tmpchange'} = 'Change Template:';
 

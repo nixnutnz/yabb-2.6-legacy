@@ -65,6 +65,7 @@ sub session_reval {
     $yymain =~ s/\Q{yabb sesremark}\E/$sesremark/xsm;
     $yymain =~ s/\Q{yabb sestype}\E/$sestype/xsm;
     $yymain =~ s/\Q{yabb sesstext3}\E/$session_txt{'3'}/xsm;
+    $yymain =~ s/\Q{yabb sessip}\E/$user_ip/xsm;
     $yymain =~ s/\Q{yabb sesstext4}\E/$session_txt{'4'}/xsm;
     $yymain =~ s/\Q{yabb sesquestion}\E/$sesquest_txt{$sesquestion}/xsm;
     $yymain =~ s/\Q{yabb sesredir}\E/$INFO{'sesredir'}/xsm;

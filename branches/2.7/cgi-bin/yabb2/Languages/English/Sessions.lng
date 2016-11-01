@@ -23,7 +23,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 %session_txt = (
 '1' => q~Activate Session ID's?~,
 '2' => q~This protects the Administrative Functions by using a three part Session Key based on IP address.~,
-'3' => qq~Your Session has expired as you entered the forum from a different IP address ($user_ip).~,
+'3' => q~Your Session has expired as you entered the forum from a different IP address ({yabb sessip}).~,
 '4' => q~To check your credentials answer the following question with the answer you entered in your profile.~,
 '6' => q~You failed to validate your credentials and are logged out.~,
 '8' => q~Select your Session Revalidation Question here~,

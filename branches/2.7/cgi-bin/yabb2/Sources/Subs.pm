@@ -84,6 +84,8 @@ our (
     $use_guardian,            $yymycharset,
     %fix_img_size,            %templateset,
     $quick_post,              $faketruncation,
+    $numposts,                $preregspan,
+    $minlinkpost,             $minlinksig,
 );
 ## system ##
 our (
@@ -389,24 +391,6 @@ sub template {
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
 
-    #    if (   $INFO{'num'} || $action &&
-    #        ( $action eq 'post'
-    #        || $action eq 'modify'
-    #        || $action eq 'preview'
-    #        || $action eq 'search2'
-    #        || $action eq 'imshow'
-    #        || $action eq 'imsend'
-    #        || $action eq 'myviewprofile'
-    #        || $action eq 'eventcal'
-    #        || $action eq 'help'
-    #        || $action eq 'recenttopics'
-    #        || $action eq 'recent'
-    #        || $action eq 'usersrecentposts'
-    #        || $action eq 'myusersrecentposts' )
-    #        || ( $INFO{'board'} && $quick_post )
-    #        )
-    #    {
-
     $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
@@ -438,8 +422,6 @@ qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/c
 <script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
 ~;
     }
-
-    #    }
 
     $yystyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
@@ -942,6 +924,7 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
     my $copyright = $output =~ m/\Q{yabb copyright}\E/xsm ? 1 : 0;
 
     while ( $output =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm ) { }
+    $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
 
     # check if image exists, otherwise use the default template image
     if ( $imagesdir ne $defaultimagesdir ) {
@@ -1129,6 +1112,10 @@ qq~<br />$maintxt{'error_location'}: $filename<br />$maintxt{'error_line'}: $lin
     $yymain =~ s/\Q{yabb spam_hits_left_count}\E/$spam_hits_left_count/gxsm;
     $yymain =~ s/\Q{yabb spamwrd}\E/$spam_wrd/gxsm;
     $yymain =~ s/\Q{yabb detention_left}\E/$detention_left/gxsm;
+    $yymain =~ s/\Q{yabb numposts}\E/$numposts/gxsm;
+    $yymain =~ s/\Q{yabb preregspan}\E/$preregspan/gxsm;
+    $yymain =~ s/\Q{yabb minlinkpost}\E/$minlinkpost/gxsm;
+    $yymain =~ s/\Q{yabb minlinksig}\E/$minlinksig/gxsm;
     $yytitle = "$maintxt{'error_description'}";
 
     if ( $adminscreen && $action ne 'admincheck2' ) {

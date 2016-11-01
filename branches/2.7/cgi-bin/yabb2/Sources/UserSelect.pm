@@ -964,7 +964,9 @@ sub doquicksearch {
 sub checkuser_avail {
     load_language('Register');
     my $taken = 'false';
+    $INFO{'user'} ||= q{};
     my $namecheck = $matchcase ? $INFO{'user'} : lc $INFO{'user'};
+    $INFO{'display'} ||= q{};
     my $realnamecheck =
       $matchcase eq 'checked' ? $INFO{'display'} : lc $INFO{'display'};
     my ( $type, $reservecheck, $avail );
