@@ -881,7 +881,7 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
 
             if ( !$cal_icon ) { $cal_icon = 'eventinfo'; }
 
-            if ( $cal_type2 == 2 || $cal_type2 == 3 ) {
+            if ( $cal_type2 == 2 ) {
                 $c_mon  = $st_mon;
                 $c_year = $bd_year;
                 if (   ( $c_mon < $view_mon )
@@ -894,10 +894,11 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
                 else {
                     $cd_year = $bd_year;
                 }
-                if ( $cal_type2 == 2 ) {
-                    $cal_date = "$cd_year$st_mon$c_day";
-                }
-                else { $cal_date = "$cd_year$c_mon$c_day"; }
+                $cal_date = "$cd_year$st_mon$c_day";
+            }
+            elsif ( $cal_type2 == 3 ) {
+                $c_year = $bd_year;
+                $cal_date = "$bd_year$c_mon$c_day";
             }
 
             if ( $cal_event_noname == 2 ) { $cal_noname = 1; }
