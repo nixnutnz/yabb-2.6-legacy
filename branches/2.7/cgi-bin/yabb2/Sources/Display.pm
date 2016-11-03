@@ -125,7 +125,7 @@ get_gmod();
 
 ## local ##
 my ( $permbrd, $permcat );
-our ($quick_post);
+our ($quick_post, $mnum);
 
 if ($accept_permafull) {
     $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
@@ -211,7 +211,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         # determining where the redirect should go. It is done by
         # comparing times in the username.log and the boardnumber.txt files.
         getlog();
-        my $mnum = $INFO{'num'};
+        $mnum = $INFO{'num'};
         my $dlp  = 0;
         if (
             $yyuserlog{$mnum}
@@ -300,6 +300,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         $mnum,     $msubthread, undef, undef, undef,
         $mreplies, undef,       undef, $mstate
     ) = split /[|]/xsm, $yy_threadline;
+	$mstate ||= q{};
     my ($newnum);
     if ( $mstate =~ /m/xsm ) {
         if ( $msubthread =~ /\s dest=(\d+)\]/xsm ) {
@@ -2127,6 +2128,7 @@ sub next_prev {
     my ( @stickythreadlist, @nostickythreadlist );
     foreach my $i ( 0 .. $#threadlist ) {
         my $threadstatus = ( split /[|]/xsm, $threadlist[$i] )[8];
+        $threadstatus ||= q{};
         if ( $threadstatus =~ /h/ixsm
             && !$staff )
         {

@@ -27,6 +27,7 @@ load_language('BoardIndex');
 @outside_threadtools = ('{yabb new post button}', '{yabb new poll button}');
 $outside_threadtools = join '', @outside_threadtools;
 $outside_ttsep = q~~;
+
 $my_ttsep = $menusep;
 
 
@@ -195,7 +196,7 @@ $threadbarmoved = qq~<div class="{yabb altthdcolor} padd_4px">{yabb threadpic} {
 # Admin dependent subfooter                #
 
 $subfooterbar = qq~<div class="titlebg right">
-                        <span class="small">{yabb admin selector} <label for="checkall">$messageindex_txt{'737'}</label></span>
+                    <span class="small">{yabb admin selector}</span>{yabb admin selectorb}<span class="small">{yabb admin selectorc} <label for="checkall">{yabb messageindex_txt_737}</label></span>
                     <span class="titlebg center" style="white-space: nowrap">{yabb admin checkboxes}</span>
                 </div>~;
 

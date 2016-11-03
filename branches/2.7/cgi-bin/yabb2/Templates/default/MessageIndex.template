@@ -267,7 +267,7 @@ $threadbarmoved = q~<tr class="{yabb altthdcolor}">
 
 $subfooterbar = qq~<tr>
                     <td class="titlebg right" colspan="6">
-                        <span class="small">{yabb admin selector} <label for="checkall">{yabb messageindex_txt_737}</label></span>
+                        <span class="small">{yabb admin selector}</span>{yabb admin selectorb}<span class="small">{yabb admin selectorc} <label for="checkall">{yabb messageindex_txt_737}</label></span>
                     </td>
                     <td class="titlebg center" style="white-space: nowrap">
                         {yabb admin checkboxes}

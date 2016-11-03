@@ -1484,6 +1484,8 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
     }
     my $tempfooter      = q{};
     my $adminselector   = q{};
+    my $adminselectorb  = q{};
+    my $adminselectorc  = q{};
     my $admincheckboxes = q{};
     if ( $multiview >= 2 ) {
         my $boardlist = moveto();
@@ -1512,6 +1514,8 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
             ~;
             }
             $tempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorb\E//gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorc}\E//gxsm;
             $tempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
         }
         elsif ( $multiview eq '2' ) {
@@ -1521,9 +1525,10 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
                 <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
                 <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
                 <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />
-                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[3].checked=true;">$boardlist</select>
-                <input type="hidden" name="fromboard" value="$currentboard" />
+                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />~;
+                $adminselectorb = qq~
+                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[3].checked=true;">$boardlist</select>~;
+                $adminselectorc = qq~<input type="hidden" name="fromboard" value="$currentboard" />
                 <input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
             }
@@ -1533,8 +1538,10 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
                 <input type="radio" name="multiaction" id="multiactionstick" value="stick" class="titlebg" /> <label for="multiactionstick">$messageindex_txt{'781'}</label>
                 <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
                 <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />
-                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[4].checked=true;">$boardlist</select>
+                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />~;
+                $adminselectorb = qq~
+                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[4].checked=true;">$boardlist</select>~;
+                $adminselectorc = qq~
                 <input type="hidden" name="fromboard" value="$currentboard" />
                 <input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
@@ -1543,10 +1550,14 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
                 <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
             ~;
             $tempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorb}\E/$adminselectorb/gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorc}\E/$adminselectorc/gxsm;
             $tempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
         }
         $tmptempfooter = $subfooterbar;
         $tmptempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
+        $tmptempfooter =~ s/\Q{yabb admin selectorb}\E/$adminselectorb/gxsm;
+        $tmptempfooter =~ s/\Q{yabb admin selectorc}\E/$adminselectorc/gxsm;
         $tmptempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
         $tmptempfooter =~
           s/\Q{yabb messageindex_txt_737}\E/$messageindex_txt{'737'}/gxsm;

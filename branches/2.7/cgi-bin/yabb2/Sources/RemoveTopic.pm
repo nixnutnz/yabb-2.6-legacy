@@ -139,6 +139,7 @@ sub delete_thread {
     my $delete = $FORM{'thread'} || $INFO{'thread'} || $x[0];
 
     if ( !$currentboard ) {
+        no strict qw(refs);
         message_totals( 'load', $delete );
         $currentboard = ${$delete}{'board'};
     }

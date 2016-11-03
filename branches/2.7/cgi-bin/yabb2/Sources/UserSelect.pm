@@ -462,7 +462,7 @@ qq~<option value="$cloaked_username"$colorstyle>${$uid.$user}{'realname'}</optio
                 my $groupdisabled = q{};
                 if ( $user ne q{} ) {
                     $group_name = $usersel_txt{$user};
-                    if ( $group_name eq q{} ) {
+                    if ( !$group_name ) {
                         $group_name = ${ $grp_nopost{$user} }[0];
                     }
                     $user =

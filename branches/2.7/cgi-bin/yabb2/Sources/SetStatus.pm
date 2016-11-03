@@ -56,6 +56,7 @@ sub set_status {
                 $mnum,     $msub,      $mname, $memail, $mdate,
                 $mreplies, $musername, $micon, $mstate
             ) = split /[|]/xsm, $boardfile[$line];
+            $mstate ||= q{};
             chomp $mstate;
 
             if ( $mstate !~ /0/xsm ) { $mstate .= '0'; }
@@ -89,7 +90,9 @@ sub set_status {
     close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
 
     message_totals( 'load', $threadid );
-    ${$threadid}{'threadstatus'} = $thisstatus;
+    { no strict qw(refs);
+        ${$threadid}{'threadstatus'} = $thisstatus;
+    }
     message_totals( 'update', $threadid );
 
     board_setlast_info( $currentboard, \@boardfile );

@@ -218,9 +218,9 @@ sub modify_message {
             $reason = $1;
         }
     }
-    $submittxt = $post_txt{'10'};
+    $submittxt   = $post_txt{'10'};
     our $destination = 'modify2';
-    $post = 'postmodify';
+    $post        = 'postmodify';
     require Sources::Post;
     $yytitle       = $post_txt{'66'};
     $mename        = $mname;
@@ -974,6 +974,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
 }
 
 sub multi_del {    # deletes single- or multi-Posts
+    no warnings qw(uninitialized);
     my $thread = $INFO{'thread'};
 
     if ( !ref $thread_arrayref{$thread} ) {
@@ -988,7 +989,7 @@ sub multi_del {    # deletes single- or multi-Posts
     # check all checkboxes, delete posts if checkbox is ticked
     my $kill = 0;
     foreach my $count ( reverse 0 .. $#messages ) {
-        if ( $FORM{"del$count"} ) {
+        if ( $FORM{"del$count"} ne q{} ) {
             chomp $messages[$count];
             @message = split /[|]/xsm, $messages[$count];
             $musername = $message[4];
@@ -1172,7 +1173,7 @@ sub multi_del {    # deletes single- or multi-Posts
     {
         no strict q(refs);
         $postid =
-          ( $postid && $postid > ${$thread}{'replies'} )
+          ( $postid > ${$thread}{'replies'} )
           ? ${$thread}{'replies'}
           : ( $postid - 1 );
     }

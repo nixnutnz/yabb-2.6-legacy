@@ -138,7 +138,7 @@ sub board_setlast_info {
                 undef,         undef, undef,
                 undef,         undef, $lastthreadstate
             ) = split /[|]/xsm, $lastthread;
-            if ( $lastthreadstate !~ /m/sm ) {
+            if ( $lastthreadstate && $lastthreadstate !~ /m/xsm ) {
                 chomp $lastthreadstate;
                 our ($FILE);
                 fopen( 'FILE', '<', "$datadir/$lastthreadid.txt" )

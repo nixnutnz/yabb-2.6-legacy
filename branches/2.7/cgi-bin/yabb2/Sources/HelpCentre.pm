@@ -31,7 +31,7 @@ our (%helptxt);
 ## paths ##
 our ( $helpfile, $scripturl, );
 ## settings ##
-our ( $accept_permafull, $enable_ubbc, $guest_media_disallowed, $mbname,
+our ( $accept_permafull, $enable_ubbc, $guest_media_disallowed, $lang, $mbname,
     $perm_domain, $showyabbcbutt, $symlink, $usehelp_perms, );
 ## system ##
 our (
@@ -53,7 +53,11 @@ our (
 
 load_language('HelpCentre');
 require Sources::Menu;
-require qq~$helpfile/$language/HelpOrder.pm~;
+if ( -e "$helpfile/$language/HelpOrder.pm" ) {
+    require "$helpfile/$language/HelpOrder.pm";  }
+elsif ( -e "$helpfile/$lang/HelpOrder.pm" ) {
+    require "$helpfile/$lang/HelpOrder.pm"; }
+else { require "$helpfile/English/HelpOrder.pm"; }
 $yytitle = $helptxt{'1'};
 undef $guest_media_disallowed;
 
