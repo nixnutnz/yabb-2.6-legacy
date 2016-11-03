@@ -1878,6 +1878,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $yynavigation = qq~&rsaquo; $template_cat$boardtree &rsaquo; $msubthread~;
 
     # Create link to modify displayed post order if allowed
+    $ttsreverse ||= 0;
     my $curthreadurl =
       ( !$iamguest && $ttsureverse )
       ? qq~<a title="$display_txt{'reverse'}" href="$scripturl?num=$viewnum;start=~
@@ -2204,6 +2205,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
 sub threadpage_index {
     my ( $msindx, $trindx, $mbindx, $pmindx ) =
       split /[|]/xsm, ${ $uid . $username }{'pageindex'};
+    $pmindx ||= q{};
     if ( $INFO{'action'} eq 'threadpagedrop' ) {
         ${ $uid . $username }{'pageindex'} = qq~$msindx|0|$mbindx|$pmindx~;
     }
