@@ -44,15 +44,15 @@ our (
 );
 ## system ##
 our (
-    $action,        $age,             $annboard,   $date,
-    $email_banlist, $iamadmin,        $iamfmod,    $iamgmod,
-    $iamguest,      $iammod,          $ip_banlist, $staff,
-    $uid,           $user_banlist,    $user_ip,    $username,
-    $yyaext,        $yyexec,          $yyext,      $yysetlocation,
-    %board,         %cat,             %catinfo,    %FORM,
-    %gmod_access,   %gmod_access2,    %INFO,       %memberaddgroup,
-    %memberunfo,    %moderatorgroups, %moderators, %moved_file,
-    %topicstart,    @banlist,         @banned,
+    $action,         $age,         $annboard,        $date,
+    $email_banlist,  $iamadmin,    $iamfmod,         $iamgmod,
+    $iamguest,       $iammod,      $icon,            $ip_banlist,
+    $staff,          $uid,         $user_banlist,    $user_ip,
+    $username,       $yyaext,      $yyexec,          $yyext,
+    $yysetlocation,  %board,       %cat,             %catinfo,
+    %FORM,           %gmod_access, %gmod_access2,    %INFO,
+    %memberaddgroup, %memberunfo,  %moderatorgroups, %moderators,
+    %moved_file,     %topicstart,  @banlist,         @banned,
 );
 ## templates ##
 our ( $myban_page, $myban_page2 );
@@ -452,12 +452,14 @@ sub check_banlist {
 }
 
 sub check_icon {
+    $icon ||= q{};
 
     # Check the icon so HTML cannot be exploited.
-    our $icon =~ s/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/$1/xsm;
+    $icon =~ s/\Ahttp:\/\/.*\/(.*?)[.].*?\Z/$1/xsm;
     $icon =~ s/[[:^alpha]]//gxsm;
     $icon =~ s/\\//gxsm;
     $icon =~ s/\///gxsm;
+
     my @iconlist =
       qw( xx thumbup thumbdown exclamation question lamp smiley angry cheesy grin sad wink standard confidential urgent alert );
     my $isicon = 0;
@@ -468,8 +470,7 @@ sub check_icon {
             last;
         }
     }
-    if   ( $isicon == 0 ) { $icon = 'xx'; }
-    else                  { $icon = $icon; }
+    if ( $isicon == 0 ) { $icon = 'xx'; }
     return;
 }
 
@@ -516,13 +517,15 @@ sub access_check {
 
     # Put whether it's a zero post count board in global variable
     # to save need to reopen file many times.
+    $curboard ||= q{};
     $username ||= q{};
     if ( !exists $memberunfo{$username} ) { load_user($username); }
     my $boardmod = 0;
-    for my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} ) {
+    for my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} || q{} ) {
         if ( $username eq $curuser ) { $boardmod = 1; }
     }
-    my @board_modgrps = split /\//xsm, ${ $uid . $curboard }{'modgroups'};
+    my @board_modgrps = split /\//xsm,
+      ${ $uid . $curboard }{'modgroups'} || q{};
     ${ $uid . $username }{'addgroups'} ||= q{};
     my @user_addgrps = split /,/xsm, ${ $uid . $username }{'addgroups'};
     for my $curgroup (@board_modgrps) {
@@ -617,12 +620,14 @@ sub access_check {
         {
             $access = 'notgranted';
         }
-        elsif (${ $uid . $curboard }{'genderperms'} eq 'M'
+        elsif (${ $uid . $curboard }{'genderperms'}
+            && ${ $uid . $curboard }{'genderperms'} eq 'M'
             && ${ $uid . $username }{'gender'} eq 'Female' )
         {
             $access = 'notgranted';
         }
-        elsif (${ $uid . $curboard }{'genderperms'} eq 'F'
+        elsif (${ $uid . $curboard }{'genderperms'}
+            && ${ $uid . $curboard }{'genderperms'} eq 'F'
             && ${ $uid . $username }{'gender'} eq 'Male' )
         {
             $access = 'notgranted';
