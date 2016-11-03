@@ -72,26 +72,25 @@ our (
 );
 ## system ##
 our (
-    $age,           $allow_gmod_profile,   $cgi_query,
-    $cliped,        $date,                 $ext,
-    $iamadmin,      $iamfmod,              $iamgmod,
-    $iamguest,      $invalemaila,          $invalemailb,
-    $invalmailchar, $invalpass,            $invalrname,
-    $language,
-    $menusep,       $my_blank_avatar,      $sessionvalid,
-    $show_confidel, $spam_hits_left_count, $staff,
-    $template,      $uday,                 $uid,
-    $umonth,        $user,                 $user_ip,
-    $username,      $uyear,                $view,
-    $year,          $yyim,                 $yyjavascript,
-    $yymain,        $yynavigation,         $yysetlocation,
-    $yytitle,       $yyuname,              %addmembergroup,
-    %board,         %boardname,            %cat,
-    %catinfo,       %col_title,            %FORM,
-    %format_unbold, %gmod_access2,         %INFO,
-    %memberstar,    %mybuddie,             %recent,
-    %subboard,      %user_pm_level,        %useraccount,
-    %yy_cookies,    @categoryorder,
+    $age,            $allow_gmod_profile, $cgi_query,
+    $cliped,         $date,               $ext,
+    $iamadmin,       $iamfmod,            $iamgmod,
+    $iamguest,       $invalemaila,        $invalemailb,
+    $invalmailchar,  $invalpass,          $invalrname,
+    $language,       $menusep,            $my_blank_avatar,
+    $sessionvalid,   $show_confidel,      $spam_hits_left_count,
+    $staff,          $template,           $uday,
+    $uid,            $umonth,             $user,
+    $user_ip,        $username,           $uyear,
+    $view,           $year,               $yyim,
+    $yyjavascript,   $yymain,             $yynavigation,
+    $yysetlocation,  $yytitle,            $yyuname,
+    %addmembergroup, %board,              %boardname,
+    %cat,            %catinfo,            %col_title,
+    %FORM,           %format_unbold,      %gmod_access2,
+    %INFO,           %memberstar,         %mybuddie,
+    %recent,         %subboard,           %user_pm_level,
+    %useraccount,    %yy_cookies,         @categoryorder,
 );
 ## templates ##
 our (
@@ -1026,8 +1025,9 @@ qq~                <option value="$line"$checked>$name</option>\n~;
                         <option value="1"~
               . (
                 (
-                         ${ $uid . $user }{'notify_me'} == 1
-                      || ${ $uid . $user }{'notify_me'} == 3
+                    ${ $uid . $user }{'notify_me'}
+                      && ( ${ $uid . $user }{'notify_me'} == 1
+                        || ${ $uid . $user }{'notify_me'} == 3 )
                 ) ? ' selected="selected"' : q{}
               )
               . qq~>$profile_txt{'163'}</option>
@@ -1351,7 +1351,7 @@ qq~         <textarea name="signature" id="signature" rows="4" cols="30" class="
     $show_profile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
     $show_profile =~ s/\Q{yabb profile_txt228}\E/$profile_txt{'228'}/xsm;
     $show_profile =~ s/\Q{yabb max_siglen}\E/$max_siglen/gxsm;
-  
+
 ## Mod Hook showProfile_options ##
 
     if ( !$view ) {

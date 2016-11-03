@@ -1528,6 +1528,7 @@ sub admincheck2 {
         elsif ( $iamadmin
             && encode_password('admin') eq ${ $uid . $user }{'password'} )
         {
+            our $mysid = cloak( reverse substr $date, 5, 5 );
             fatal_error('default_password');
         }
     }

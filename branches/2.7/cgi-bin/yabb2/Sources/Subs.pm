@@ -126,6 +126,7 @@ our (
     $boardindex_template, $boardname,  $boardpassw,
     $boardpassw_g,        $loginform,  $my_profile_int,
     $my_show_error,       $show_check, $show_check_bot,
+    $yycopyright,
 );
 
 our $yymain       = q{};
@@ -922,7 +923,7 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
 
     our $yyurl = $scripturl;
     my $copyright = $output =~ m/\Q{yabb copyright}\E/xsm ? 1 : 0;
-
+    $yycopyright =~ s/\Q{yabb mbname}/$mbname/gxsm;
     while ( $output =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm ) { }
     $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
 
