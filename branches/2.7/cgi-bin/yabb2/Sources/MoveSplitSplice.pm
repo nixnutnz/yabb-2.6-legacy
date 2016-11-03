@@ -400,6 +400,9 @@ sub split_splice_2 {
     if ( ${$curthreadid}{'lastpostdate'} eq 'N/A' ) {
         ${$curthreadid}{'lastpostdate'} = 0;
     }
+    if ( !${ $uid . $curboard }{'lastposttime'} || ${ $uid . $curboard }{'lastposttime'} eq 'N/A' ) {
+        ${ $uid . $curboard }{'lastposttime'} = 0;
+    }
     if (
         ${$curthreadid}{'lastpostdate'} == ${ $uid . $curboard }{'lastposttime'}
         && $leavemess
@@ -917,15 +920,15 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
             || (
                 (
                     (
-                        ${ $uid . $curboard }{'threadcount'} == 1
+                        ${ $uid . $curboard }{'threadcount'} && ${ $uid . $curboard }{'threadcount'} == 1
                         && @utdcurthread
                     )
-                    || ${ $board_totals{$curthreadid} }[0] >=
-                    ${ $uid . $curboard }{'lastposttime'}
+                    || (${ $board_totals{$curthreadid} }[0] && ${ $board_totals{$curthreadid} }[0] >=
+                    ${ $uid . $curboard }{'lastposttime'})
                 )
                 && ( $curboard ne $newboard
-                    || ${ $board_totals{$curthreadid} }[0] >=
-                    ${ $board_totals{$newthreadid} }[0] )
+                    || (${ $board_totals{$curthreadid} }[0] && ${ $board_totals{$curthreadid} }[0] >=
+                    ${ $board_totals{$newthreadid} }[0] ) )
             )
           )
         {
@@ -1139,7 +1142,8 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
           $newthreadid;
         redirectinternal();
     }
-    if ( $debug == 1 or ( $debug == 2 && $iamadmin ) ) {
+    $yydebug = q{};
+    if ( $debug == 1 || ( $debug == 2 && $iamadmin ) ) {
         require Sources::Debug;
         debug();
         $yydebug =
