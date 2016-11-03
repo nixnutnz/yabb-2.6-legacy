@@ -55,7 +55,7 @@ our (
 
 load_language('Notify');
 ## local ##
-my ( %theboard, %thethread, @allboards );
+our ( %theboard, %thethread, @allboards );
 
 sub manageboardnotify {
     my @myargs = @_;

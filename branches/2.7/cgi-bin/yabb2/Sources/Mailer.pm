@@ -90,7 +90,7 @@ sub sendmail {
         @mailout =
           ( $fromheader, $toheader, $subject, $message, $charsetheader );
         tomail( $MAIL, \@mailout );
-        close $MAIL;    # or croak "$croak{'close'} MAIL";
+        close $MAIL or croak "$croak{'close'} MAIL";
 
         return 1;
     }
