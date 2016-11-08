@@ -2646,6 +2646,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
             $curline =~ s/img src="$imagesdir\/(.+?)"/setupimgloc($1)/eigxsm;
         }
         $output .= $curline || q{};
+        $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
     }
     if ( $yycopyin == 0 ) {
         $output =

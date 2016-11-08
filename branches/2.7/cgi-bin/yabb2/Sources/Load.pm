@@ -322,6 +322,7 @@ sub load_user {
             my $mylastonline = <$LOADUSER>;
             fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
             {
+                chomp $mylastonline;
                 no strict qw(refs);
                 %{ $uid . $user } = %vars;
                 ${ $uid . $user }{'lastonline'} = $mylastonline;
@@ -334,7 +335,7 @@ sub load_user {
               or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
             my $mylastonline = <$LOADUSER>;
             fclose('LOADUSER') or croak "$croak{'open'} LOADUSER";
-
+            chomp $mylastonline;
             my @settings = keys %vars;
             {
                 no strict qw(refs);
@@ -932,43 +933,43 @@ sub quick_links {
     if ($iamguest) {
         return ( $online ? $format_unbold{$user} : $format{$user} );
     }
-    my $lastonline = q{};
+    my $lastnline = q{};
     if ( $iamadmin || $iamgmod || $lastonlineinlink ) {
         {
             no strict qw(refs);
             if ( ${ $uid . $user }{'lastonline'} ) {
-                $lastonline = abs( $date - ${ $uid . $user }{'lastonline'} );
-                my $days  = int( $lastonline / 86400 );
+                $lastnline = abs( $date - ${ $uid . $user }{'lastonline'} );
+                my $days  = int( $lastnline / 86400 );
                 my $hours = sprintf '%02d',
-                  int( ( $lastonline - ( $days * 86400 ) ) / 3600 );
+                  int( ( $lastnline - ( $days * 86400 ) ) / 3600 );
                 my $mins = sprintf
                   '%02d',
                   int(
-                    ( $lastonline - ( $days * 86400 ) - ( $hours * 3600 ) ) /
+                    ( $lastnline - ( $days * 86400 ) - ( $hours * 3600 ) ) /
                       60 );
                 my $secs = sprintf
                   '%02d',
-                  ( $lastonline -
+                  ( $lastnline -
                       ( $days * 86400 ) -
                       ( $hours * 3600 ) -
                       ( $mins * 60 ) );
                 if ( !$mins ) {
-                    $lastonline = "00:00:$secs";
+                    $lastnline = "00:00:$secs";
                 }
                 elsif ( !$hours ) {
-                    $lastonline = "00:$mins:$secs";
+                    $lastnline = "00:$mins:$secs";
                 }
                 elsif ( !$days ) {
-                    $lastonline = "$hours:$mins:$secs";
+                    $lastnline = "$hours:$mins:$secs";
                 }
                 else {
-                    $lastonline = "$days $maintxt{'11'} $hours:$mins:$secs";
+                    $lastnline = "$days $maintxt{'11'} $hours:$mins:$secs";
                 }
-                $lastonline =
-                  qq~ title="$maintxt{'10'} $lastonline $maintxt{'12'}."~;
+                $lastnline =
+                  qq~ title="$maintxt{'10'} $lastnline $maintxt{'12'}."~;
             }
             else {
-                $lastonline = qq~ title="$maintxt{'13'}."~;
+                $lastnline = qq~ title="$maintxt{'13'}."~;
             }
         }
     }
@@ -1040,13 +1041,13 @@ qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
         }
         $quicklinks .=
-qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastonline>~;
+qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastnline>~;
         $quicklinks .= $online ? $format_unbold{$user} : $format{$user};
         $quicklinks .= q~</a></div>~;
     }
     else {
         $quicklinks =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastonline>~
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastnline>~
           . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</a>~;
     }
 
@@ -1313,11 +1314,14 @@ sub what_template {
                     redirectexit();
                 }
                 elsif ($iamguest
+                    && $yy_cookies{'yabb2template'}
                     && $curtemplate eq $yy_cookies{'yabb2template'} )
                 {
                     $template = $curtemplate;
                 }
-                elsif ( $curtemplate eq ${ $uid . $username }{'template'} ) {
+                elsif ( ${ $uid . $username }{'template'}
+                    && $curtemplate eq ${ $uid . $username }{'template'} )
+                {
                     $template = $curtemplate;
                 }
             }

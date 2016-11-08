@@ -127,7 +127,7 @@ sub message_index {
     boardtotals( 'load', $currentboard );
 
     # See if we just want a message list from ajax
-    my $messagelist   = q{};
+    our $messagelist = q{};
     my $showmods      = q{};
     my $showmodgroups = q{};
     if ( $INFO{'messagelist'} ) { $messagelist = $INFO{'messagelist'}; }
@@ -1528,7 +1528,8 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
                 <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />~;
                 $adminselectorb = qq~
                 <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[3].checked=true;">$boardlist</select>~;
-                $adminselectorc = qq~<input type="hidden" name="fromboard" value="$currentboard" />
+                $adminselectorc =
+qq~<input type="hidden" name="fromboard" value="$currentboard" />
                 <input type="submit" value="$messageindex_txt{'462'}" class="button" />
             ~;
             }

@@ -39,12 +39,12 @@ our (
 );
 ## system ##
 our (
-    $flood_text, $iamadmin,     $iamgmod,       $iamguest,
-    $invaluser,  $language,   $mbname,       $scripturl,     $sessionvalid,
-    $showcheck,  $spam_image,   $spam_question, $spam_question_id,
-    $uid,        $user,         $user_ip,       $username,
-    $yymain,     $yynavigation, $yysetlocation, $yytitle,
-    %FORM,       %INFO,
+    $flood_text,       $iamadmin,  $iamgmod,      $iamguest,
+    $invaluser,        $language,  $mbname,       $scripturl,
+    $sessionvalid,     $showcheck, $spam_image,   $spam_question,
+    $spam_question_id, $uid,       $user,         $user_ip,
+    $username,         $yymain,    $yynavigation, $yysetlocation,
+    $yytitle,          %FORM,      %INFO,
 );
 ## template ##
 our (
@@ -460,7 +460,7 @@ sub reminder3 {
     if   ($do_scramble_id) { $user = decloak( $INFO{'user'} ); }
     else                   { $user = $INFO{'user'}; }
 
-    if ( $id =~ /[^[:alnum]]/xsm) {
+    if ( $id =~ /[^[:alnum]]/xsm ) {
         fatal_error( 'invalid_character', "ID $loginout_txt{'241'}" );
     }
     if ( $user =~ /$invaluser/xsm ) {
@@ -495,8 +495,9 @@ sub reminder3 {
     fclose('FORGOTTEN') or croak "$croak{'close'} FORGOTTEN";
 
     # add newly generated password to user data
-    {         no strict qw(refs);
-    ${ $uid . $user }{'password'} = encode_password($newpassword);
+    {
+        no strict qw(refs);
+        ${ $uid . $user }{'password'} = encode_password($newpassword);
     }
     user_account( $user, 'update' );
 

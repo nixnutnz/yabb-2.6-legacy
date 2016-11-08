@@ -897,7 +897,7 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
                 $cal_date = "$cd_year$st_mon$c_day";
             }
             elsif ( $cal_type2 == 3 ) {
-                $c_year = $bd_year;
+                $c_year   = $bd_year;
                 $cal_date = "$bd_year$c_mon$c_day";
             }
 

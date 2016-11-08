@@ -90,7 +90,8 @@ sub set_status {
     close $BOARDFILE or croak "$croak{'close'} $currentboard.txt";
 
     message_totals( 'load', $threadid );
-    { no strict qw(refs);
+    {
+        no strict qw(refs);
         ${$threadid}{'threadstatus'} = $thisstatus;
     }
     message_totals( 'update', $threadid );

@@ -70,15 +70,15 @@ our (
 );
 ## system ##
 our (
-    $admin,       $cliped,          $date,             $emailcharset,
-    $extpagstyle, $flood_text,      $iamadmin,         $iamgmod,
-    $iamguest,    $invalemaila,     $invalemailb,      $invalmailchar,
-    $invalpass,   $invalrname,      $invaluser,        $langopt,          $language,
-    $morelang,    $my_blank_avatar, $sessionid,        $showcheck,
-    $spam_image,  $spam_question,   $spam_question_id, $uid,
-    $user_ip,     $username,        $year,             $yyhtml_root,
-    $yymain,      $yynavigation,    $yysetlocation,    $yytitle,
-    %FORM,        %INFO,
+    $admin,       $cliped,      $date,            $emailcharset,
+    $extpagstyle, $flood_text,  $iamadmin,        $iamgmod,
+    $iamguest,    $invalemaila, $invalemailb,     $invalmailchar,
+    $invalpass,   $invalrname,  $invaluser,       $langopt,
+    $language,    $morelang,    $my_blank_avatar, $sessionid,
+    $showcheck,   $spam_image,  $spam_question,   $spam_question_id,
+    $uid,         $user_ip,     $username,        $year,
+    $yyhtml_root, $yymain,      $yynavigation,    $yysetlocation,
+    $yytitle,     %FORM,        %INFO,
 );
 ## template ##
 our (

@@ -125,7 +125,7 @@ get_gmod();
 
 ## local ##
 my ( $permbrd, $permcat );
-our ($quick_post, $mnum);
+our ($quick_post);
 
 if ($accept_permafull) {
     $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
@@ -211,7 +211,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         # determining where the redirect should go. It is done by
         # comparing times in the username.log and the boardnumber.txt files.
         getlog();
-        $mnum = $INFO{'num'};
+        my $mnum = $INFO{'num'};
         my $dlp  = 0;
         if (
             $yyuserlog{$mnum}
@@ -274,8 +274,8 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
     my $vircat       = q{};
     my $virboardname = q{};
     if ( $currentboard eq $annboard ) {
-        $vircurrentboard = $INFO{'virboard'};
-        $vircurcat       = ${ $uid . $vircurrentboard }{'cat'};
+        $vircurrentboard = $INFO{'virboard'} || q{};
+        $vircurcat = ${ $uid . $vircurrentboard }{'cat'};
         if ($vircurcat) {
             ( $vircat, undef ) = split /[|]/xsm, $catinfo{$vircurcat};
             to_chars($vircat);
@@ -300,7 +300,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         $mnum,     $msubthread, undef, undef, undef,
         $mreplies, undef,       undef, $mstate
     ) = split /[|]/xsm, $yy_threadline;
-	$mstate ||= q{};
+    $mstate ||= q{};
     my ($newnum);
     if ( $mstate =~ /m/xsm ) {
         if ( $msubthread =~ /\s dest=(\d+)\]/xsm ) {

@@ -2594,9 +2594,8 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
     );
     my $messiconname = 'standard';
     if ( $messlst{'mstatus'} =~ /(c|u|a|gr|g)/xsm ) {
-        $messiconname = $mypmicon{ $1 };
+        $messiconname = $mypmicon{$1};
     }
-    $messiconname ||= 'standard';
     if ( $messlst{'mstatus'} ne 'ga' && $messlst{'mstatus'} ne 'g' ) {
         $notme =
             $messlst{'musername'} eq $username

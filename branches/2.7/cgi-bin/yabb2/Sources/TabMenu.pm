@@ -88,23 +88,23 @@ sub main_menu {
     );
 
 ## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
-    my $tmpaction = 'home';
-    if ( $action eq 'addtab' && $iamadmin ) {
-        require Sources::AdvancedTabs;
-        add_new_tab();
+    $action = $INFO{'action'} || q{};
+    my $tmpaction = q{};
+    if ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
+    elsif ( $action && !$INFO{'board'} && !$INFO{'num'} ) {
+        $tmpaction = $acting{$action} || $action;
     }
-    elsif ( $action eq 'edittab' && $iamadmin ) {
-        require Sources::AdvancedTabs;
-        edit_tab();
+    elsif ( $action && $iamadmin ) {
+        if ( $action eq 'addtab' ) {
+            require Sources::AdvancedTabs;
+            add_new_tab();
+        }
+        elsif ( $action eq 'edittab' ) {
+            require Sources::AdvancedTabs;
+            edit_tab();
+        }
     }
-    elsif ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
-    elsif ($action) {
-        $tmpaction = $acting{$action};
-        if ( !$tmpaction ) { $tmpaction = $action; }
-    }
-    else {
-        $tmpaction = 'home';
-    }
+    else { $tmpaction = 'home'; }
 
     my $tabhtml_l = q~                        <li><span|><a href=~;
     my $tabhtml_r = qq~</span></li>\n~;
@@ -248,7 +248,7 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
                 my $newwin = $tab_newwin ? q~ target="_blank"~ : q{};
                 if ( !$tab_lang ) { get_tabtxt(); }
                 my $tab_sel = q{};
-                if ( $advanced_tabs[$i] eq $tmpaction ) {
+                if ( $tmpaction && $advanced_tabs[$i] eq $tmpaction ) {
                     $tab_sel = q~ class="selected"~;
                 }
                 $yytabmenu .= qq~                        <li><span$tab_sel>~;
@@ -275,8 +275,12 @@ qq~ title="$tabtxt{$tab_key}">$tabtxt{$tab_key}</a>$tabhtml_r~;
     if ( $iamadmin && $addtab_on == 1 ) {
         my $seladdtab  = q{};
         my $seledittab = q{};
-        if    ( $action eq 'addtab' )  { $seladdtab  = q~ class="selected"~; }
-        elsif ( $action eq 'edittab' ) { $seledittab = q~ class="selected"~; }
+        if ( $action && $action eq 'addtab' ) {
+            $seladdtab = q~ class="selected"~;
+        }
+        elsif ( $action && $action eq 'edittab' ) {
+            $seledittab = q~ class="selected"~;
+        }
         $yytabadd =
 qq~<ul class="advtabs"><li id="addtab"><span$seladdtab><a href="$scripturl?action=addtab" title="$tabmenu_txt{'newtab'}">$micon{'tabadd'}</a>$tabhtml_r~;
         $yytabadd .=

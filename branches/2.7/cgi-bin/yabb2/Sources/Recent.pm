@@ -104,10 +104,13 @@ sub recent_posts {
                 }
                 my $cookiename = "$cookiepassword$curboard$username";
                 my $crypass    = ${ $uid . $curboard }{'brdpassw'};
-                if (   !$iamadmin
+                if (
+                       !$iamadmin
                     && !$iamgmod
                     && !$pswiammod
-                    && $yy_cookies{$cookiename} ne $crypass )
+                    && (  !$yy_cookies{$cookiename}
+                        || $yy_cookies{$cookiename} ne $crypass )
+                  )
                 {
                     next;
                 }
@@ -570,10 +573,13 @@ sub recursive_check {
             }
             my $cookiename = "$cookiepassword$curboard$username";
             my $crypass    = ${ $uid . $curboard }{'brdpassw'};
-            if (   !$iamadmin
+            if (
+                   !$iamadmin
                 && !$iamgmod
                 && !$pswiammod
-                && $yy_cookies{$cookiename} ne $crypass )
+                && (  !$yy_cookies{$cookiename}
+                    || $yy_cookies{$cookiename} ne $crypass )
+              )
             {
                 next;
             }
@@ -591,8 +597,8 @@ sub recursive_check {
             $display = scalar @buffer;
         }
         my $mtime = $date;
-        $numfound = 0;
         for my $i ( 0 .. ( $display - 1 ) ) {
+            no warnings qw(uninitialized);
             if ( $buffer[$i] ) {
                 my (
                     $tnum,     $tsub,      $tname, $temail, $tdate,

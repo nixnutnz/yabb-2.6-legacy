@@ -64,8 +64,9 @@ my ( $banned, $checktype, $curboard );
 if (  !${ $uid . $username }{'lastips'}
     || ${ $uid . $username }{'lastips'} !~ /^$user_ip[|]/xsm )
 {
-    ${ $uid . $username }{'lastips'} =
-      "$user_ip|${ $uid . $username }{'lastips'}";
+    my $check = $user_ip;
+    $check .= "|${ $uid . $username }{'lastips'}" || q{};
+    ${ $uid . $username }{'lastips'} = $check;
     ${ $uid . $username }{'lastips'} =~ s/^(.*?[|].*?[|].*?)[|].*/$1/xsm;
 }
 

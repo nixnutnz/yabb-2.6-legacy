@@ -362,8 +362,6 @@ newnotify => qq~New post alert.~,
 replynotify => qq~Reply alert.~,
 );
 
-
-
 $yabbtags{'replyguestmail'} = q~sender email sendto date subject message~;
 $emaildesc{'replyguestmail'} = q~The Reply Guest PM to Admin E-mail~;
 $replyguestmail = q~Dear {yabb sender},
@@ -381,7 +379,6 @@ Subject: {yabb subject}
 
 {yabb message}
 ~;
-
 
 $yabbtags{'deleteduseremail'} = q~displayname~;
 $emaildesc{'deleteduseremail'} = q~The Deleted User Notification E-mail~;

@@ -2455,9 +2455,11 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
         my ( $curlang, undef ) = split /[|]/xsm, $value, 2;
         if ( $curuser ne $username ) {
             load_user($curuser);
-            if (   ${ $uid . $curuser }{'notify_me'} 
-              && ( ${ $uid . $curuser }{'notify_me'} == 1
-                || ${ $uid . $curuser }{'notify_me'} == 3 ) )
+            if (
+                ${ $uid . $curuser }{'notify_me'}
+                && (   ${ $uid . $curuser }{'notify_me'} == 1
+                    || ${ $uid . $curuser }{'notify_me'} == 3 )
+              )
             {
                 my $curmail   = $memberinf{$curuser}[1];
                 my $permdate  = permtimer($thisthread);

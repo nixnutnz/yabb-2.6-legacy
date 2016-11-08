@@ -689,11 +689,12 @@ sub rem_fav {
     if ( !$goto ) { $goto = 0; }
 
     my @newfav;
-    {  no strict qw(refs);
-    if ( ${ $uid . $username }{'favorites'} ) {
-        foreach ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
-            if ( $favo && $favo ne $_ ) { push @newfav, $_; }
-        }
+    {
+        no strict qw(refs);
+        if ( ${ $uid . $username }{'favorites'} ) {
+            foreach ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
+                if ( $favo && $favo ne $_ ) { push @newfav, $_; }
+            }
 
             ${ $uid . $username }{'favorites'} = join q{,}, undupe(@newfav);
             user_account( $username, 'update' );

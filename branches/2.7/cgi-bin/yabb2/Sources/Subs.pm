@@ -391,8 +391,24 @@ sub template {
     $yysyntax_js     = q{};
     $yygreyboxstyle  = q{};
     $yygrayscript    = q{};
+    $action          = $INFO{'action'} || q{};
 
-    $yysyntax_js = qq~
+    if (   $INFO{'num'}
+        || $action eq 'post'
+        || $action eq 'modify'
+        || $action eq 'preview'
+        || $action eq 'search2'
+        || $action eq 'imshow'
+        || $action eq 'imsend'
+        || $action eq 'myviewprofile'
+        || $action eq 'eventcal'
+        || $action eq 'help'
+        || $action eq 'recenttopics'
+        || $action eq 'recent'
+        || $action eq 'usersrecentposts'
+        || $action eq 'myusersrecentposts' )
+    {
+        $yysyntax_js = qq~
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_main.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_cpp.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_css.js"></script>
@@ -404,17 +420,17 @@ sub template {
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_php.js"></script>
 <script type="text/javascript" src="$yyhtml_root/shjs/sh_sql.js"></script>
 ~;
-    $yyjsstyle =
+        $yyjsstyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/shjs/styles/sh_style.css" type="text/css" />\n~;
-    $yyhigh = q~<script type="text/javascript">
+        $yyhigh = q~<script type="text/javascript">
     sh_highlightDocument();
 </script>~;
 
-    if ($img_greybox) {
-        $yygreyboxstyle =
+        if ($img_greybox) {
+            $yygreyboxstyle =
 qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/css" />\n~;
 
-        $yygrayscript = qq~
+            $yygrayscript = qq~
 <script type="text/javascript">
     var GB_ROOT_DIR = "$yyhtml_root/greybox/";
 </script>
@@ -422,6 +438,7 @@ qq~<link href="$yyhtml_root/greybox/gb_styles.css" rel="stylesheet" type="text/c
 <script type="text/javascript" src="$yyhtml_root/AJS_fx.js"></script>
 <script type="text/javascript" src="$yyhtml_root/greybox/gb_scripts.js"></script>
 ~;
+        }
     }
 
     $yystyle =
@@ -570,7 +587,7 @@ qq~            <form id="styleswitcher" action="$scripturl" method="post">
         $aa =~ s/<.+?>//gxsm;
         if ( $mytimeselected == 6 ) { $bb = q{ }; }
         $yytime =
-qq~&nbsp;<script  type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n</script>~;
+qq~&nbsp;<script type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n</script>~;
         $yyjavascripta .= q~
         var OurTime = ~
           . sprintf( '%d', ( $date + $toffs ) )

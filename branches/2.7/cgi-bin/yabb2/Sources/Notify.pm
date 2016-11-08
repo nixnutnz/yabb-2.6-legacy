@@ -415,6 +415,9 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
             if ( $subboard{$_} ) {
                 my @brd = split /[|]/xsm, $subboard{$_};
                 for my $i (@brd) {
+                    if ( ${ $uid . $i }{'lastposttime'} eq 'N/A' ) {
+                        ${ $uid . $i }{'lastposttime'} = 0;
+                    }
                     if (
                         $max_log_days_old
                         && ( ${ $uid . $i }{'lastposttime'}

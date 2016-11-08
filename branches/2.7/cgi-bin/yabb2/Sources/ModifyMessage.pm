@@ -218,9 +218,9 @@ sub modify_message {
             $reason = $1;
         }
     }
-    $submittxt   = $post_txt{'10'};
+    $submittxt = $post_txt{'10'};
     our $destination = 'modify2';
-    $post        = 'postmodify';
+    $post = 'postmodify';
     require Sources::Post;
     $yytitle       = $post_txt{'66'};
     $mename        = $mname;

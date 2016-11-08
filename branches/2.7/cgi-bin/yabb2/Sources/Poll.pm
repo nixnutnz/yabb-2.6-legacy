@@ -605,8 +605,10 @@ qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate
         }
         to_chars( $options[$i] );
         $piearray .= qq~"$votes[$i]|$options[$i]|$slicecolor[$i]|$split[$i]", ~;
-        $totalvotes += int $votes[$i];
-        if ( int( $votes[$i] ) >= $maxvote ) { $maxvote = int $votes[$i]; }
+        if ( $votes[$i] !~ /\D/xsm ) {
+            $totalvotes += int $votes[$i];
+            if ( int( $votes[$i] ) >= $maxvote ) { $maxvote = int $votes[$i]; }
+        }
     }
     $piearray =~ s/,\s$//ixsm;
     $piearray .= q~]~;

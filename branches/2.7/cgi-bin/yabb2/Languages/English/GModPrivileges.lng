@@ -89,23 +89,6 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'emailbackup' => q~Allow to e-mail backup to webmaster~,
 );
 
-%gmod_settings = (
-'1' => q~Global Mod Access Privileges~,
-'2' => q~Allow Global Moderators Access to the Admin Center?~,
-'3' => q~Allow Global Moderators Access to edit User Profiles?~,
-'3a' => q~Allow Global Moderators Access to Admin Edits for User Profiles?~,
-'4' => q~Select which actions <em>(action= in URLs)</em> Global Moderators are allowed to access~,
-'gmodmember_controls' => q~Member Controls~,
-'gmodforumsettings' => q~Forum Configuration~,
-'gmodmaintence_controls' => q~Maintenance Controls~,
-'gmodgeneral_controls' => q~General Controls~,
-'gmodforum_layout' => q~Forum Layout~,
-'gmodforum_stats' => q~Forum Stats~,
-'gmodboardmod_mods' => q~BoardMod Mods~,
-'gmodsecurity_settings' => q~Security Center~,
-'gmodforum_controls' => q~Forum Controls~,
-);
-
 %gmodpriv_txt = (
 'ext_admin' => q~Extended Profiles~,
 'main' => q~Forum Settings~,
