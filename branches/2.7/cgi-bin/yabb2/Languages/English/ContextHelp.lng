@@ -4,10 +4,10 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       June 1, 2016                                                #
+# Packaged:       January 6, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
-# Copyright (c) 2000-2016 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
@@ -36,7 +36,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'tr' =>  q~Insert a table row:<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong> [tr][/tr]~,
 'td' =>  q~Insert a table cell:<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong> [td][/td]~,
 'hr' =>  q~Insert a Horizontal Rule:<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong> [hr]~,
-'teletype' =>  q~Change text to Teletype:<br /><br />Select the text: bla bla [SELECT]Hello World[/SELECT] bla bla<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong> bla bla [tt]Hello World[/tt] bla bla<br /><br /><strong>Result:</strong> bla bla <tt>Hello World</tt> bla bla~,
+'tele' =>  q~Change text to Teletype:<br /><br />Select the text: bla bla [SELECT]Hello World[/SELECT] bla bla<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong> bla bla [tt]Hello World[/tt] bla bla<br /><br /><strong>Result:</strong> bla bla <tt>Hello World</tt> bla bla~,
 'code' =>  q~Insert Code in a box:<br /><br />Select the Code:<br /><br />[SELECT]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hello World&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/SELECT]<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong><br /><br />[code]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hello World&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/code]<br /><br /><strong>Result:</strong><br /><br /><strong>Code:</strong>[CODE]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hello World&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/CODE]~,
 'quote2' =>  q~Insert a Quote in a box:<br /><br />Select the Quote: [SELECT]To be or not to be...[/SELECT]<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong> [quote]To be or not to be...[/quote]<br /><br /><strong>Result:</strong><br /><br /><strong>Quote:</strong>[QUOTE]To be or not to be...[/QUOTE]~,
 'edit' =>  q~Insert an Edit message in a box:<br /><br />Select the Edit message: [SELECT]Attached new zip package.[/SELECT]<br /><br />Click on the "[TITLE]" button: [BUTTON]<br /><br /><strong>YaBBC Code:</strong> [edit]Attached new zip package.[/edit]<br /><br /><strong>Result:</strong><br /><br /><strong>Edited:</strong>[EDIT]Attached new zip package.[/EDIT]~,

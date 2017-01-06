@@ -1,11 +1,11 @@
 ###############################################################################
 # Settings_Bookmarks.pm                                                       #
-# $Date: 06.01.16 $                                                           #
+# $Date: 01.06.17 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       June 1, 2016                                                #
+# Packaged:       January 6, 2016                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2010 YaBB (www.yabbforum.com) - All Rights Reserved.     #
