@@ -24,7 +24,7 @@ use File::stat;
 use Digest::MD5;
 our $VERSION = '2.7.00';
 
-our $detailedversionpmver  = 'YaBB 2.7.00 $Revision$';
+our $detailedversionpmver  = 'YaBB 2.7.00 $Revision: 1760 $';
 our @detailedversionpmmods = ();
 our $detailedversionpmmods = 0;
 if (@detailedversionpmmods) {
@@ -126,7 +126,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
         $vercheck = 1;
         $ver_age  = ( stat("$langdir/English/version.txt")->mtime );
     }
-    $adminindexplver =~ s/\$Revision$1/igxsm;
+    $adminindexplver =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
     my $adminindexmodcheck = q{};
     my $adminchkmatch      = q{};
     if ($adminindexmods) {
@@ -156,7 +156,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
           qq~<span class="small"> $admin_txt{'chngfle'} $dateadmin</span>~;
     }
 
-    $yabbplver =~ s/\$Revision$1/igxsm;
+    $yabbplver =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
     my $yabbmodcheck = q{};
     my $yabbmodslist = q{};
     if ($yabbmods) {
@@ -211,7 +211,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
     }
     our ( $dobackupplver, $dobackupplmods, @dobackupplmods );
     require "$boarddir/Dobackup.$yyext";
-    $dobackupplver =~ s/\$Revision$1/igxsm;
+    $dobackupplver =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
     my $dobackupmodcheck = q{};
     my $dobackupmodslist = q{};
     if ($dobackupplmods) {
@@ -254,7 +254,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'
     for my $x (@defaulthtmlver) {
         if ( $x =~ /\Q<!-- YaBB \E/xsm ) {
             $x =~
-              s/<!-- YaBB (.*?) \$Revision$1 Build $2/igsm;
+              s/<!-- YaBB (.*?) \$Revision: (.*?) \$ -->/YaBB $1 Build $2/igsm;
             $defaulthtmlver = $x;
             our ($DAT);
             fopen( 'DAT', '<', "$templatesdir/default/default.html" )
@@ -378,7 +378,7 @@ function hideMods(id) {
                     $txtrevision =~ s/[.]lng/lngver/igxsm;
                     $txtrevision = $flda . $txtrevision;
                     if ( ${$txtrevision} ) {
-                        ${$txtrevision} =~ s/\$Revision$1/igxsm;
+                        ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
                     }
                     my $modrevision = lc $filein_dir;
                     $modrevision =~ s/[.]lng/lngmods/igxsm;
@@ -429,7 +429,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                               lc $fld . $area . '_' . $helpin_dir;
                             $txtrevision =~ s/[.]help/helpver/igxsm;
                             ${$txtrevision} =~
-                              s/\$Revision$1/igxsm;
+                              s/\$Revision: (.*?) \$/Build $1/igxsm;
                             open( my $DAT, '<',
                                 "$helpfile/$fld/$area/$helpin_dir" )
                               or croak "$croak{'open'} $helpin_dir: $OS_ERROR";
@@ -503,7 +503,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             require "$admindir/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pl/plver/igxsm;
-            ${$txtrevision} =~ s/\$Revision$1/igxsm;
+            ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
             my $modrevision = lc $filein_dir;
             $modrevision =~ s/[.]pl/plmods/igxsm;
             my $modmatch = mod_link($modrevision);
@@ -536,7 +536,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             if (   ${$txtrevision}
                 && ${$txtrevision} =~ /\$Revision: (.*?) \$/ixsm )
             {
-                ${$txtrevision} =~ s/\$Revision$1/igxsm;
+                ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
                 $txtrev = ${$txtrevision};
             }
             my $modrevision = lc $filein_dir;
@@ -595,7 +595,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             require "$sourcedir/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pl/plver/igxsm;
-            ${$txtrevision} =~ s/\$Revision$1/igxsm;
+            ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
             my $modrevision = lc $filein_dir;
             $modrevision =~ s/[.]pl/plmods/igxsm;
             my $modmatch = mod_link($modrevision);
@@ -624,7 +624,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             require "$sourcedir/$filein_dir";
             my $txtrevision = lc $filein_dir;
             $txtrevision =~ s/[.]pm/pmver/igxsm;
-            ${$txtrevision} =~ s/\$Revision$1/igxsm;
+            ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
             my $modrevision = lc $filein_dir;
             $modrevision =~ s/[.]pm/pmmods/igxsm;
             my $modmatch = mod_link($modrevision);
@@ -703,7 +703,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 if (   ${$txtrevision}
                     && ${$txtrevision} =~ /\$Revision: (.*?) \$/ixsm )
                 {
-                    ${$txtrevision} =~ s/\$Revision$1/igxsm;
+                    ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
                     $txtrev = ${$txtrevision};
                 }
                 my $modrevision = lc $filein_dir;
@@ -738,7 +738,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 my $flda        = lc $folderindir;
                 $txtrevision =~ s/[.]def/defver/igxsm;
                 $txtrevision = $flda . $txtrevision;
-                ${$txtrevision} =~ s/\$Revision$1/igxsm;
+                ${$txtrevision} =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
                 my $modrevision = lc $filein_dir;
                 $modrevision =~ s/[.]def/defmods/igxsm;
                 $modrevision = $flda . $modrevision;
