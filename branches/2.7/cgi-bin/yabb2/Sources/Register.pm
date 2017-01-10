@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2016                                             #
+# Packaged:       January 6, 2017                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -95,6 +95,7 @@ our (
     $myregister_spamquest,   $myregister_table_a,     $myregister_table_b,
     $myregister_welcome,
 );
+## our Mod Hook ##
 
 if ( !$iamguest
     && ( !$admin && $action ne 'activate' && $action ne 'admin_descision' ) )

@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2016                                             #
+# Packaged:       January 6, 2017                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -50,6 +50,7 @@ our (
     $mypoll_details, $mypoll_display, $mypoll_ended, $mypoll_hasvoted,
     $mypoll_ip,      $mypoll_locked,  $mypoll_notlocked,
 );
+## our Mod Hook ##
 
 load_language('Poll');
 get_micon();

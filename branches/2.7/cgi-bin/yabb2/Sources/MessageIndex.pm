@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2016                                             #
+# Packaged:       January 6, 2017                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -85,6 +85,7 @@ our (
 ## local ##
 my ( $permbrd, $permcat, $tsort, );
 our ( $default_or_ajax, );
+## our Mod Hook ##
 
 get_micon();
 load_language('MessageIndex');
@@ -216,7 +217,7 @@ sub message_index {
     our ($BRDTXT);
     fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    my @threadlist = <$BRDTXT>;
+    our @threadlist = <$BRDTXT>;
     fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
     my $sort_subject =
 qq~<a href="$scripturl?board=$currentboard;tsort=d" rel="nofollow">$messageindex_txt{'70'}</a>~;

@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2016                                             #
+# Packaged:       January 6, 2017                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -54,6 +54,7 @@ our (
 );
 ## template ##
 our ($mypost_lastmod);
+## our Mod Hook ##
 
 if ( !$post_txt_loaded ) {
     load_language('Post');
@@ -941,7 +942,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
     }
     {
         no strict qw(refs);
-        if ( ${ $uid . $username }{'postlayout'} ne
+        if ( !${ $uid . $username }{'postlayout'} || ${ $uid . $username }{'postlayout'} ne
 "$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'}"
           )
         {

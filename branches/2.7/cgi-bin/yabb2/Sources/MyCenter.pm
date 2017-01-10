@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2016                                             #
+# Packaged:       January 6, 2017                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -39,7 +39,7 @@ our (
 );
 ## locations ##
 our ( $imagesdir, $langdir, $memberdir, $pmuploaddir, $scripturl,
-    $yyhtml_root );
+    $yyhtml_root, $modimgurl, $vardir );
 ##settings##
 our (
     $allow_attach_im,  $allow_hide_email,  $do_scramble_id,
@@ -108,6 +108,8 @@ our (
     $mypmmmenu_imsend_low,       $myprofileblock,
     $im_callback2,               $im_callback3,
 );
+
+## our Mod Hook ##
 
 load_language('InstantMessage');
 load_language('MyCenter');

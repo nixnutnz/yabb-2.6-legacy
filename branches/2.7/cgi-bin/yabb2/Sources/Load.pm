@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2016                                             #
+# Packaged:       January 6, 2017                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -30,7 +30,7 @@ our ( %croak, %load_txt, %maintxt, %zodiac_txt, );
 our (
     $boardsdir, $boardurl,     $datadir, $facesurl,
     $htmldir,   $imagesdir,    $langdir, $memberdir,
-    $scripturl, $templatesdir, $yyhtml_root,
+    $scripturl, $templatesdir, $yyhtml_root, $vardir, $modimgurl,
 );
 ## settings ##
 our (
@@ -65,6 +65,7 @@ our (
 );
 ## local ##
 our ( @allboards, %control, $yyim, $yyuname, %board, %thread_arrayref );
+## our Mod Hook ##
 
 sub load_boardcontrol {
     our $binboard = q{};
@@ -322,10 +323,9 @@ sub load_user {
             my $mylastonline = <$LOADUSER>;
             fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
             {
-                chomp $mylastonline;
                 no strict qw(refs);
                 %{ $uid . $user } = %vars;
-                ${ $uid . $user }{'lastonline'} = $mylastonline;
+                ${ $uid . $user }{'lastonline'} = $mylastonline || q{};
             }
         }
         else {
@@ -335,12 +335,11 @@ sub load_user {
               or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
             my $mylastonline = <$LOADUSER>;
             fclose('LOADUSER') or croak "$croak{'open'} LOADUSER";
-            chomp $mylastonline;
             my @settings = keys %vars;
             {
                 no strict qw(refs);
                 %{ $uid . $user } = %vars;
-                ${ $uid . $user }{'lastonline'} = $mylastonline;
+                ${ $uid . $user }{'lastonline'} = $mylastonline || q{};
                 require "$langdir/Lang.lng";
                 if ( !exists $lngs{ ${ $uid . $user }{'language'} } ) {
                     ${ $uid . $user }{'language'} = 'English';

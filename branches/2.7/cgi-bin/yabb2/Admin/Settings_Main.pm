@@ -5,7 +5,7 @@
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2016                                             #
+# Packaged:       January 6, 2017                                             #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -138,8 +138,8 @@ our (
 );
 ## system ##
 our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM );
+## our Mod Hook ##
 
-# Language requirements
 load_language('Admin');
 load_language('Register');
 my $adminimages = "$yyhtml_root/Templates/Admin/default";
