@@ -51,10 +51,10 @@ our (
 );
 ## our Mod Hook ##
 
-get_micon();
-
 ## local ##
 my ( $jsdragwpos, $jsdraghpos, $textsize, %smiley_bar, );
+
+get_micon();
 
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
 

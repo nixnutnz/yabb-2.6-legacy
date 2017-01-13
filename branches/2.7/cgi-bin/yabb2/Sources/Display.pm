@@ -40,7 +40,7 @@ our (
 our (
     $scripturl,   $datadir,   $imagesdir, $memberdir,
     $vardir,      $htmldir,   $uploaddir, $uploadurl,
-    $yyhtml_root, $boardsdir, $sendtopicemail
+    $yyhtml_root, $boardsdir, $sendtopicemail, $modimgurl
 );
 ## settings ##
 our (

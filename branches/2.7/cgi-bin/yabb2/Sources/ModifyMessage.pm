@@ -53,7 +53,7 @@ our (
     %grp_post,           @ext,
 );
 ## template ##
-our ($mypost_lastmod);
+
 ## our Mod Hook ##
 
 if ( !$post_txt_loaded ) {
@@ -134,7 +134,7 @@ sub modify_message {
         if ($bypass_lock_perm) { $icanbypass = checkuser_lockbypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
-    elsif (!$staff
+    elsif ( !$staff
         && !$modtopic_chk
         && $tlnomodflag
         && $date > $mdate + ( $tlnomodtime * $timeset ) )

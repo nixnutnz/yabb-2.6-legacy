@@ -15,7 +15,7 @@
 use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
-our $VERSION = '2.6.12';
+our $VERSION = '2.7.00';
 
 our $palettepmver  = 'YaBB 2.6.12 $Revision$';
 our @palettepmmods = ();

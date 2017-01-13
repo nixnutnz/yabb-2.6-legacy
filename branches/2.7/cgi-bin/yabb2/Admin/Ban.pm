@@ -41,6 +41,7 @@ our ( $use_guardian, $use_htaccess, $yymycharset, @bandays, @timeban, );
 our ( $action_area, $uid, $username, $yymain, $yysetlocation, $yytitle, %FORM,
     %INFO, );
 ## our Mod Hook ##
+
 my $today = time;
 load_language('Admin');
 

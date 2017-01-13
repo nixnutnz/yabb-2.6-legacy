@@ -51,6 +51,7 @@ our (
 our (
     $boardsdir, $datadir,   $htmldir,   $imagesdir, $langdir,
     $memberdir, $scripturl, $uploaddir, $uploadurl, $yyhtml_root,
+    $vardir,    $modimgurl
 );
 ## settings ##
 our (

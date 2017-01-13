@@ -91,6 +91,7 @@ our (
     $mycalout_gottobox,  $mycalout_noevent,     $mycalout_notboard,
     $mycalout_showevent, $myevent_link,
 );
+## our Mod Hook ##
 
 load_language('EventCal');
 load_language('Post');

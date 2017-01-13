@@ -184,7 +184,7 @@ $messageindex_template .= $messagelist ? q{} : qq~
 ~;
 }
 
-if ($action eq "favorites") {
+if ($action eq 'favorites') {
     $messageindex_template .= qq~<!-- Icon and access info start -->
             <table class="pad_8px">
                 <colgroup>

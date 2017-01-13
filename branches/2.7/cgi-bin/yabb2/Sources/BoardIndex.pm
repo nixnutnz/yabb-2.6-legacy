@@ -36,7 +36,7 @@ our ( %boardindex_exptxt, %boardindex_imtxt, %boardindex_txt, %croak, %img,
 ## locations ##
 our (
     $boarddir,  $boardsdir, $datadir, $htmldir, $imagesdir,
-    $memberdir, $scripturl, $vardir,  $yyhtml_root,
+    $memberdir, $scripturl, $vardir,  $yyhtml_root, $modimgurl
 );
 ## settings ##
 our (

@@ -31,7 +31,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ##  languages ##
 our ( %admin_img, %admin_txt, %mod_list );
 ## other ##
-our ( $action_area, $yymain, $yytitle, );
+our ( $action_area, $yymain, $yytitle, $adminurl);
 
 load_language('Admin');
 

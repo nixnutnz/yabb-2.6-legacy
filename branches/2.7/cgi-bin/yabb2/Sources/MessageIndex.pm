@@ -39,7 +39,10 @@ our (
     %tmpimg
 );
 ## locations ##
-our ( $boardsdir, $datadir, $htmldir, $imagesdir, $scripturl, $yyhtml_root );
+our ( 
+    $boardsdir, $datadir,     $htmldir, $imagesdir, 
+    $scripturl, $yyhtml_root, $vardir,  $modimgurl
+);
 ## settings ##
 our (
     $accept_permafull,  $accept_permalink, $adminview,

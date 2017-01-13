@@ -32,7 +32,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
 our ( %croak, %img_txt, %micon_bg, %ml_txt, %pidtxt, @alpha );
 ## folders ##
-our ( $boardurl, $facesurl, $imagesdir, $scripturl );
+our ( $boardurl, $facesurl, $imagesdir, $scripturl, $vardir, $modimgurl );
 ## system ##
 our (
     $iamadmin, $iamfmod,      $iamgmod,    $iamguest,

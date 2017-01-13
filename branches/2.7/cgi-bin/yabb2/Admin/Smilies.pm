@@ -40,6 +40,7 @@ our (
 );
 ## other ##
 our ( $yymain, $yytitle, $yysetlocation, %FORM, %INFO, $action_area );
+
 ## our Mod Hook ##
 
 load_language('Admin');

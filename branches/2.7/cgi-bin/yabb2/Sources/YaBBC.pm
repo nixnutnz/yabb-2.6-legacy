@@ -30,7 +30,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
 our ( %croak, %display_txt, %maintxt, %post_txt, );
 ## folders ##
-our ( $boardurl, $imagesdir, $memberdir, $scripturl, $yyhtml_root, );
+our ( $boardurl, $imagesdir, $memberdir, $scripturl, $yyhtml_root, $modimgdir );
 ## settings ##
 our (
     $autolinkurls,  $guest_media_disallowed, $img_greybox,

@@ -1036,7 +1036,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $imsend .= $my_imsend_jsin;
     $imsend .= $my_ubbc_yes;
     $imsend .= $my_postbox;
-    $imsend .= $im_smilies;
+    $imsend .= $im_smilies || q{};
     $imsend .= $my_imfa;
     $imsend .= $my_fa_browse;
     $imsend =~ s/\Q{yabb JSandInput}\E/$js_and_input/xsm;

@@ -76,6 +76,8 @@ our (
     $yytitle,                %FORM,              %INFO,
 );
 
+## our Mod Hook ##
+
 load_language('Admin');
 load_language('Templates');
 load_language('Menu');

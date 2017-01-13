@@ -74,7 +74,7 @@ our (
 our (
     $age,            $allow_gmod_profile, $cgi_query,
     $cliped,         $date,               $ext,
-    $iamadmin,       $iamfmod,            $iamgmod,
+    $iamadmin,       $iamfmod,            $iamgmod,    $iammod,
     $iamguest,       $invalemaila,        $invalemailb,
     $invalmailchar,  $invalpass,          $invalrname,
     $language,       $menusep,            $my_blank_avatar,

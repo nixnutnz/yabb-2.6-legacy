@@ -41,6 +41,8 @@ our (
     %gmod_access,      %INFO,         %memberinf, %memberlist,
     %vars,             @allboards,    @chararray,
 );
+## our Mod Hook ##
+
 ## local ##
 our ( $yyadmin_alert, %totals, @repliers, );
 

@@ -272,8 +272,8 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
             }
             if ($par) {
                 to_html($_);
-                ${"mod$par"} = $_;
-                if ( $par eq 'mod' ) { $modmod = '<br />'; }
+                ${"mod$par"} .= $_;
+                if ( $par eq 'mod' ) { $modmod .= '<br />'; }
             }
         }
     }

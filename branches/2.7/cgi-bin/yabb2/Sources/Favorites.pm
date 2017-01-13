@@ -54,6 +54,7 @@ our (
     $favorites_template, $my_favbrds,  $no_favs,
     $subfooterbar,       $threadbar,   $threadbarmoved,
 );
+## our Mod Hook ##
 
 sub favorites {
     load_language('MessageIndex');

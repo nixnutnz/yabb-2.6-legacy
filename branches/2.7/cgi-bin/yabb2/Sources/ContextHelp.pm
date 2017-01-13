@@ -31,6 +31,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 our ( $displayname, %contextxt, $ctmain );
+## our Mod Hook ##
 
 sub context_script {
     my ($inp) = @_;

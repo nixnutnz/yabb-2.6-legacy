@@ -1,6 +1,6 @@
 ###############################################################################
 # DetailedVersion.pm                                                          #
-# $Date: 6.01.16 $                                                            #
+# $Date: 01.06.17 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -24,7 +24,7 @@ use File::stat;
 use Digest::MD5;
 our $VERSION = '2.7.00';
 
-our $detailedversionpmver  = 'YaBB 2.7.00 $Revision: 1760 $';
+our $detailedversionpmver  = 'YaBB 2.7.00 $Revision: 1764 $';
 our @detailedversionpmmods = ();
 our $detailedversionpmmods = 0;
 if (@detailedversionpmmods) {
