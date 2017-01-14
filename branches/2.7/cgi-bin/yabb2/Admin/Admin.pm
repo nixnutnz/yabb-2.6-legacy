@@ -96,6 +96,7 @@ sub admin {
     $yymain =~
       s/\Q{yabb credits_txt_noBytesHarmed}\E/$credits_txt{'noBytesHarmed'}/xsm;
     $yymain =~ s/\Q{yabb images}\E/$adminimages/gxsm;
+    $yymain =~ s/\Q{yabb yabb_dnloads}\E/$yabb_dnloads/gxsm;
 
     if ( -d './Convert' ) {
         $yymain .= $convert_box;

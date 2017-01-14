@@ -1390,8 +1390,7 @@ sub what_language {
 
 sub build_ims {
     my ( $builduser, $job ) = @_;
-    our ( $incurr, $inunr, $outcurr, $draftcount, @imstore, $storetotal,
-        @storefolders_count, $store_counts );
+    our ( @storefolders_count, @imstore );
 
     if ($job) {
         if ( $job eq 'load' ) {
@@ -1404,6 +1403,8 @@ sub build_ims {
     }
 
     ## inbox if it exists, either load and count totals or parse and update format.
+    my $inunr = 0;
+    my $incurr = 0;
     if ( -e "$memberdir/$builduser.msg" ) {
         our ($USERMSG);
         fopen( 'USERMSG', '<', "$memberdir/$builduser.msg" )
@@ -1416,12 +1417,13 @@ sub build_ims {
         foreach my $message (@messages) {
 
             # If the message is flagged as u(nopened), add to the new count
-            if ( ( split /[|]/xsm, $message )[12] =~ /u/sm ) { $inunr++; }
+            if ( ( split /[|]/xsm, $message )[12] =~ /u/xsm ) { $inunr++; }
         }
         $incurr = @messages;
     }
 
     ## do the outbox
+    my $outcurr = 0;
     if ( -e "$memberdir/$builduser.outbox" ) {
         our ($OUTMESS);
         fopen( 'OUTMESS', '<', "$memberdir/$builduser.outbox" )
@@ -1431,6 +1433,7 @@ sub build_ims {
         $outcurr = @outmessages;
     }
 
+    my $draftcount = 0;
     if ( -e "$memberdir/$builduser.imdraft" ) {
         our ($DRAFTMESS);
         fopen( 'DRAFTMESS', '<', "$memberdir/$builduser.imdraft" )
@@ -1448,6 +1451,7 @@ sub build_ims {
         $storefolders = ${$builduser}{'PMfolders'} || 'in|out';
     }
     my @currstorefolders = split /[|]/xsm, $storefolders;
+    my $storetotal = 0;
     if ( -e "$memberdir/$builduser.imstore" ) {
         our ($STOREMESS);
         fopen( 'STOREMESS', '<', "$memberdir/$builduser.imstore" )
@@ -1503,7 +1507,7 @@ sub build_ims {
             }
         }
     }
-    $store_counts = join q{|}, @storefolders_count;
+    my $store_counts = join q{|}, @storefolders_count;
 
     load_broadcastmessages($builduser);
     load_guestmessages($builduser);
@@ -1593,7 +1597,7 @@ sub load_broadcastmessages {    #check broadcast messages
                     $bc_count++;
                     $pm_bc_read{ $messlst{'messageid'} } = 1;
                 }
-                elsif ( broadmessage_view( $messlst{'mtousers'} ) ) {
+                elsif ( broadmessage_view($messlst{'mtousers'} ) && ( !$messlst{'mexpire'} || $date < ( $messlst{'messageid'} + $messlst{'mexpire'} * 86400 ) ) ) {
                     $bc_count++;
                     if ( exists $pm_bc_read{ $messlst{'messageid'} } ) {
                         $pm_bc_read{ $messlst{'messageid'} } = 1;

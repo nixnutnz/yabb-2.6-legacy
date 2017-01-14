@@ -53,6 +53,7 @@ our (
     %grp_post,           @ext,
 );
 ## template ##
+our ($mypost_lastmod);
 
 ## our Mod Hook ##
 

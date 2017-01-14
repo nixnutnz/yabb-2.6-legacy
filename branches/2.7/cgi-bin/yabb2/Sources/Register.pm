@@ -15,6 +15,7 @@
 use strict;
 no strict qw(refs);
 use warnings;
+no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
@@ -38,6 +39,7 @@ our (
     %flood_txt,             %fruittxt,
     %mail_check,            %mailreg_txt,
     %prereg_txt,            %register_txt,
+    %maintxt,
 );
 ## paths ##
 our ( $adminurl, $boardurl, $defaultimagesdir, $langdir, $memberdir,
@@ -78,7 +80,7 @@ our (
     $showcheck,   $spam_image,  $spam_question,   $spam_question_id,
     $uid,         $user_ip,     $username,        $year,
     $yyhtml_root, $yymain,      $yynavigation,    $yysetlocation,
-    $yytitle,     %FORM,        %INFO,
+    $yytitle,     %FORM,        %INFO,            %memberinf,
 );
 ## template ##
 our (
@@ -1189,6 +1191,7 @@ sub register2 {
             $yymain =~ s/\Q{yabb regusername}\E/$member{'regusername'}/xsm;
             $yymain =~ s/\Q{yabb passwrd1}\E/$member{'passwrd1'}/xsm;
             $yymain =~ s/\Q{yabb cookie_length}\E/$cookie_length/xsm;
+            build_ims( $reguser, 'load' );    # isn't loaded because was Guest before
         }
         $yytitle = $register_txt{'245'};
     }

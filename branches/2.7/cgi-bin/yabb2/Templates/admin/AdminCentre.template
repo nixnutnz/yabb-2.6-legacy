@@ -24,6 +24,7 @@ $yabb_update = 'http://www.yabbforum.com/update';
 $versionchk   = $yabb_update . '/versioncheck.js';
 $versionimg   = 'http://www.yabbforum.com/images/version/versioncheck.gif';
 $aarea = 'aarea.jpg';
+$yabb_dnloads = 'http://www.yabbforum.com/?page_id=32';
 
 $header = qq~<!DOCTYPE html>
 <html lang='en-US'>
