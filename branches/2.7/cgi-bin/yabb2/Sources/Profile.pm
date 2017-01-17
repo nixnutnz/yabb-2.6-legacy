@@ -90,7 +90,8 @@ our (
     %FORM,           %format_unbold,      %gmod_access2,
     %INFO,           %memberstar,         %mybuddie,
     %recent,         %subboard,           %user_pm_level,
-    %useraccount,    %yy_cookies,         @categoryorder,
+    %useraccount,    %yy_cookies,         %link,
+    @categoryorder,
 );
 ## templates ##
 our (
@@ -1608,7 +1609,9 @@ sub modify_profile_admin {
     if ( $mygrp != 1 ) {
         if ( ${ $uid . $user }{'position'} ) {
             $ttgrp = ${ $uid . $user }{'position'};
-            ( $tt, undef ) = @{ $grp_nopost{$ttgrp} };
+            if ( $grp_nopost{$ttgrp} ) {
+                ( $tt, undef ) = @{ $grp_nopost{$ttgrp} };
+            }
         }
         else { $tt = ${ $uid . $user }{'position'}; }
     }

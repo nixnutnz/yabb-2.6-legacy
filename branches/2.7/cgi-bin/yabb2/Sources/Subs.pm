@@ -137,6 +137,7 @@ our $langopt      = q{};
 our $linewrap = 80;
 our $newswrap = 0;
 
+## our Mod Hook ##
 # get the current date/time
 
 our $date = int( time() + $timecorrection );
@@ -2843,6 +2844,23 @@ sub manage_memberlist {
           or croak "$croak{'open'} Memberlist.pm";
         print {$MEMBLIST} $update or croak "$croak{'print'} MEMBLIST";
         fclose('MEMBLIST') or croak "$croak{'close'} Memberlist.pm";
+
+        my $membershiptotal = keys %memberlist;
+        my (%hash2);
+        while ( my ( $key, $value ) = each %memberlist ) {
+            $hash2{$value} = $key;
+        }
+        my @nkey         = sort keys %hash2;
+        my $latestmember = $hash2{ $nkey[-1] };
+        undef %hash2;
+        undef @nkey;
+
+        our ($TTL);
+        fopen( 'TTL', '>', 'Variables/memttl.db' )
+          or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
+        print {$TTL} qq~$membershiptotal|$latestmember~
+          or croak "$croak{'print'} TTL";
+        fclose('TTL') or croak "$croak{'close'} TTL";
         undef %memberlist;
     }
     return;

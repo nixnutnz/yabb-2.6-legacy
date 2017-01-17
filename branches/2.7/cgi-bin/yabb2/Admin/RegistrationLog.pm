@@ -51,8 +51,10 @@ our (
 our (
     $date,     $language, $uid,           $user_ip,
     $username, $yymain,   $yysetlocation, $yytitle,
-    %FORM,     %INFO,     @memberlist,
+    %FORM,     %INFO,     @memberlist, $iamadmin,
 );
+
+## our Mod Hook ##
 
 load_language('Admin');
 load_language('Register');

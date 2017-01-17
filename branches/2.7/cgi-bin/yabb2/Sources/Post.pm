@@ -82,7 +82,7 @@ our (
     $user_reason,         $useraddpoll,         $very_hot_topic,
     $winheight,           $winwidth,            $yymycharset,
     %addedsmilies,        %grp_post,            @ext,
-    @smilieorder
+    @smilieorder,         %gmod_access,
 );
 ## system ##
 our (

@@ -63,6 +63,8 @@ our (
 our ( $admin_template, $header, $leftmenu, $leftmenubottom, $leftmenutop,
     $mainbody, $topnav );
 
+## our Mod Hook ##
+
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     my ($yypath);
     $yyiis = 1;

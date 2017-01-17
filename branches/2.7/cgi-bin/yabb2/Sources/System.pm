@@ -286,13 +286,15 @@ sub message_totals {
 # Changes here on @tag must also be done in Post.pm -> sub Post2 -> my @tag = ...
         my @tag =
           qw(board replies views lastposter lastpostdate threadstatus repliers);
+## ctb Mods ##
         my $prnctb =
 qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n%$updatethread = (\n~;
         {
             no strict qw(refs);
             for my $cnt ( 0 .. $#tag ) {
+                my $val = ${$updatethread}{$tag[$cnt]} || q{};
                 $prnctb .=
-                  qq~'$tag[$cnt]' => "${$updatethread}{$tag[$cnt]}",\n~;
+                  qq~'$tag[$cnt]' => "$val",\n~;
             }
         }
         $prnctb .= qq~);\n\n1;\n~;
@@ -447,25 +449,6 @@ sub member_index {
 
         require Sources::Notify;
         remove_notifications($user);
-
-        require Variables::Memberlist;
-
-        my $membershiptotal = keys %memberlist;
-        my (%hash2);
-        while ( my ( $key, $value ) = each %memberlist ) {
-            $hash2{$value} = $key;
-        }
-        my @nkey         = sort keys %hash2;
-        my $latestmember = $hash2{ $nkey[-1] };
-        undef %hash2;
-        undef @nkey;
-
-        our ($TTL);
-        fopen( 'TTL', '>', 'Variables/memttl.db' )
-          or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
-        print {$TTL} qq~$membershiptotal|$latestmember~
-          or croak "$croak{'print'} TTL";
-        fclose('TTL') or croak "$croak{'close'} TTL";
         $return = 0;
     }
     elsif ( ( $memaction eq 'check_exist' || $memaction eq 'who_is' ) && $user )

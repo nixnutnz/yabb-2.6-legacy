@@ -862,14 +862,11 @@ sub deletemultimembers {
     automaintenance('on');
 
     my @userslist = ();
-    chomp $FORM{'button'};
-    chomp $FORM{'emailsubject'};
-    chomp $FORM{'emailtext'};
     if ( $FORM{'button'} != 1 && $FORM{'button'} != 2 ) {
         fatal_error('no_access');
     }
 
-    if ( $FORM{'del_mail'} || $FORM{'emailtext'} ne q{} ) {
+    if ( $FORM{'del_mail'} || $FORM{'emailtext'} ) {
         require Sources::Mailer;
     }
 
@@ -898,7 +895,7 @@ sub deletemultimembers {
         if ( exists $FORM{"member$count"} ) {
             if ( -e "$memberdir/$currentmem.vars" ) {    # Bypass dead entries.
                 load_user($currentmem);
-                if ( $FORM{'emailtext'} ne q{} ) {
+                if ( $FORM{'emailtext'} ) {
                     $emailsubject = $FORM{'emailsubject'};
                     $emailtext    = $FORM{'emailtext'};
                     {

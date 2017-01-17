@@ -32,7 +32,7 @@ our ( %croak, %fatxt, %timelocktxt, %post_txt, %post_polltxt, @uploadtranlist );
 our ( $boardsdir, $datadir, $scripturl, $uploaddir, $vardir );
 ## system ##
 our (
-    $bypass_lock_perm, $cgi_query,    $currentboard,     $date,
+    $annboard, $bypass_lock_perm, $cgi_query,    $currentboard,     $date,
     $header,           $iamadmin,     $iamfmod,          $iamgmod,
     $iamguest,         $iamposter,    $post_speed_count, $post_txt_loaded,
     $posttime,         $sessionvalid, $staff,            $uid,
@@ -50,7 +50,7 @@ our (
     $speedpostdetection, $string_on,      $tlnodelflag,
     $tlnodeltime,        $tlnomodday,     $tlnomodflag,
     $tlnomodtime,        $ttsreverse,     $use_guardian,
-    %grp_post,           @ext,
+    %grp_post,           @ext
 );
 ## template ##
 our ($mypost_lastmod);

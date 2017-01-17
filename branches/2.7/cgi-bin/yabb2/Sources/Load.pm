@@ -876,7 +876,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
     $addmembergroup{$user} =~ s/<br\s\/>\Z//xsm;
 
     if ( $username eq 'Guest' ) { $memberunfo{$user} = 'Guest'; }
-    my (%topicstart);
+    our (%topicstart);
     $topicstart{$user} = q{};
     our $viewnum = q{};
     if ( $INFO{'num'} || $FORM{'threadid'} && $user eq $username ) {

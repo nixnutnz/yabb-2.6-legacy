@@ -43,7 +43,7 @@ our (
 );
 ## paths ##
 our ( $adminurl, $boardurl, $defaultimagesdir, $langdir, $memberdir,
-    $scripturl, $vardir, );
+    $scripturl, $vardir, $imagesdir );
 ## settings ##
 our (
     $addmemgroup_enabled,     $allow_hide_email,

@@ -38,7 +38,7 @@ our (
     %settings_txt,    %timelocktxt, %userlevel_txt, @months,
 );
 ## paths ##
-our ( $adminurl, $facesdir, $htmldir, $langdir, $scripturl, $yyhtml_root, );
+our ( $adminurl, $boardsdir, $facesdir, $htmldir, $langdir, $scripturl, $yyhtml_root, );
 ## settings ##
 our (
     $ad_max_messlen,          $ad_max_pm_messlen,
@@ -134,10 +134,11 @@ our (
     $user_hide_smilies_row,   $user_hide_user_text,
     $user_reason,             $useraddpoll,
     $usertools,               $usertxtwrap,
-    $very_hot_topic,          %templateset
+    $very_hot_topic,          %templateset,
 );
 ## system ##
-our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM );
+our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM, $username );
+
 ## our Mod Hook ##
 
 load_language('Admin');

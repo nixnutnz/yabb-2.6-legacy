@@ -40,7 +40,8 @@ our (
 our (
     $scripturl,   $datadir,   $imagesdir, $memberdir,
     $vardir,      $htmldir,   $uploaddir, $uploadurl,
-    $yyhtml_root, $boardsdir, $sendtopicemail, $modimgurl
+    $yyhtml_root, $boardsdir, $sendtopicemail, $modimgurl,
+    $boardurl
 );
 ## settings ##
 our (
@@ -100,10 +101,10 @@ our (
     %grp_nopost,      %INFO,                 %link,
     %memberinfo,      %memberstar,           %moderatorgroups,
     %moderators,      %moved_file,           %mybuddie,
-    %subboard,        %thread_arrayref,      %user_pm_level,
+    %subboard,        %thread_arrayref,      %topicstart, %user_pm_level,
     %useraccount,     %usernames_life_quote, %yy_cookies,
     %yy_udloaded,     %yyuserlog,            @logentries,
-    @repliers,
+    @repliers,        %memberunfo,
 );
 ## templates ##
 our (
@@ -139,7 +140,6 @@ sub display_thread {
     if ( access_check( $currentboard, q{}, $boardperms ) ne 'granted' ) {
         fatal_error('no_access');
     }
-
     my $iambot = 0;
     if ( $enable_guest_view_limit && $guestaccess ) {
         my $user_host =
