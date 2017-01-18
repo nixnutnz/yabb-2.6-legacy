@@ -128,8 +128,7 @@ sub smilie_panel {
         <td class="windowbg2" colspan="4"><input type="text" size="10" name="winheight" id="winheight" value='$winheight' /></td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="showinbox">$smiltxt{'23'}</label></td>
-        <td class="windowbg2" colspan="4"><input type="radio" name="showinbox" id="showinbox" value=""~
-      . ( !$showinbox ? ' checked="checked"' : q{} ) . qq~ /></td>
+        <td class="windowbg2" colspan="4"><input type="radio" name="showinbox" id="showinbox" value=""${ischecked($showinbox)} /></td>
     </tr><tr>
         <td class="windowbg2" colspan="4">$smiltxt{'18'}</td>
         <td class="windowbg2" colspan="4">$yyhtml_root/Smilies</td>

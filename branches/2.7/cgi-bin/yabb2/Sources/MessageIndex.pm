@@ -1668,7 +1668,7 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
     }
 
     my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
-    if ( -e "<$boardsdir/brdpics.db" ) {
+    if ( -e "$boardsdir/brdpics.db" ) {
         our ($BRDPIC);
         fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
           or croak "$croak{'open'} brdpics.db";

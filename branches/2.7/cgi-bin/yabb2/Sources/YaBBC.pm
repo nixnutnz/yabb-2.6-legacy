@@ -41,7 +41,7 @@ our (
 our (
     $attachment, $curname,   $curnum, $daytxt, $displayname,
     $iamguest,   $movedflag, $ns,     $uid,    $username,
-    $yyexec,     $yyext,     %useraccount
+    $yyexec,     $yyext,     %useraccount,     $date
 );
 ## templates ##
 our ( $showattach, $showattachhr, );

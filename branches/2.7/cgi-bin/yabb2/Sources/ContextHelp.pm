@@ -30,7 +30,7 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our ( $displayname, %contextxt, $ctmain );
+our ( $displayname, %contextxt, $ctmain, %post_txt );
 ## our Mod Hook ##
 
 sub context_script {

@@ -995,6 +995,9 @@ sub register2 {
     ${ $uid . $reguser }{'language'}   = $language;
     ${ $uid . $reguser }{'hideage'}    = $member{'hide_age'} ? 1 : 0;
     ${ $uid . $reguser }{'pageindex'}  = q~1|1|1|1~;
+    ${ $uid . $reguser }{'referrer'} = $member{'referrer'};
+
+## reguser Mod Hook ##
 
     if ( ( $addmemgroup_enabled == 1 || $addmemgroup_enabled == 3 )
         && $member{'joinmemgroup'} ne q{} )

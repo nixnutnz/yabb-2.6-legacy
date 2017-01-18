@@ -14,6 +14,7 @@
 ###############################################################################
 use strict;
 use warnings;
+use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.7.00';
 
@@ -148,6 +149,7 @@ qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl
         require "$langdir/Lang.lng";
         for ( sort keys %lngs ) {
             my $lbl = $_ . '_news';
+            $settings{$lbl} ||= q{};
             $settings{$lbl} =~ tr/\r//d;
             chomp $settings{$lbl};
             from_chars( $settings{$lbl} );

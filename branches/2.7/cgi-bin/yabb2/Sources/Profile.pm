@@ -38,7 +38,7 @@ our (
     %profile_display_options, %profile_imtxt,   %profile_txt,
     %register_txt,            %return_to_txt,   %sesquest_txt,
     %session_txt,             %zodiac_txt,      @months,
-    @uploadtranlist,
+    @uploadtranlist,          $abbr_lang,
 );
 ## paths ##
 our (
@@ -69,6 +69,7 @@ our (
     $usertxtwrap,          $yymycharset,           %grp_nopost,
     %grp_post,             %grp_staff,             %templateset,
     @nopostorder,          @reserve,               @timeban,
+    $enable_spell_check
 );
 ## system ##
 our (
@@ -91,7 +92,7 @@ our (
     %INFO,           %memberstar,         %mybuddie,
     %recent,         %subboard,           %user_pm_level,
     %useraccount,    %yy_cookies,         %link,
-    @categoryorder,
+    @categoryorder,  $yyinlinestyle
 );
 ## templates ##
 our (
@@ -844,6 +845,8 @@ $myprofile_contact
     $show_profile =~ s/\Q{yabb profile_txt580}\E/$profile_txt{'580'}/xsm;
     $show_profile =~ s/\Q{yabb profile_txt581}\E/$profile_txt{'581'}/xsm;
     $show_profile =~ s/\Q{yabb profile_txt88}\E/$profile_txt{'88'}/xsm;
+
+## Mod Hook showProfile_contacts ##
 
     if ( !$view ) {
         $yymain .= $show_profile;
@@ -2547,14 +2550,17 @@ sub modify_profile_options2 {
         }
     }
     my ($file);
+
     if ($cgi_query) { $file = $cgi_query->upload('file_avatar'); }
     if ( $allowpics && $upload_useravatar && $file ) {
-        if ( $file !~ /[.](?:gif|png|jpe?g)$/ixsm ) {
+        if ( $file =~ /[.](gif|png|jpe?g)$/ixsm ) {
+            $ext = $1;
+        }
+        else {
             load_language('FA');
             fatal_error( 'file_not_uploaded',
                 "$file $fatxt{'20'} gif png jpeg jpg" );
         }
-        else { $ext = $1; }
         my $fixfile = ${ $uid . $user }{'realname'};
         if ( $fixfile =~ /[^\w+\-.:]/xsm )
         {    # replace all inappropriate characters

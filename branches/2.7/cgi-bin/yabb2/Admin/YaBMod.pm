@@ -280,6 +280,8 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
     my $text = do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> };
     close $FILE or croak "$croak{'close'} FILE";
 
+    $modhomepage ||= q{};
+    $modid ||= q{};
     $yymain .= qq~
    <div class="bordercolor rightboxdiv">
    <table class="border-space pad-cell" style="margin-bottom: .5em;">

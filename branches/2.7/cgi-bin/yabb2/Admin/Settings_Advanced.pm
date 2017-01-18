@@ -77,6 +77,8 @@ our (
 our ( $action_area, $language, $yymain, $yysetlocation, $yytitle, %FORM, %INFO,
 );
 
+## our Mod Hook ##
+
 load_language('Admin');
 load_language('FA');
 

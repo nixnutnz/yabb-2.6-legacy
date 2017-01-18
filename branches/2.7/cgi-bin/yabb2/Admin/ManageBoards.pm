@@ -1769,11 +1769,14 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         }
         my @modhook = ();
         ## BRD Mod Hook ##
+        foreach my $i ( 0 .. $#modhook ) {
+            $modhook[$i] ||= q{};
+        }
 
         my $modchk  = @modhook;
         my $modhook = q{};
         if ( $modchk > 0 ) {
-            $modhook .= join q{', '}, @modhook;
+             $modhook .= join q{', '}, @modhook;
         }
         $FORM{"moderators$i"} ||= q{};
         $FORM{"moderators$i"} =~ s/,\s*/\//xsm;

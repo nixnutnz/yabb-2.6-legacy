@@ -33,10 +33,10 @@ our ( %chrwarn, %croak, %fatxt, %livepreview_txt, %maintxt, %npf_txt,
     %post_txt, %spell_check, );
 ## paths ##
 our ( $boardurl, $defaultimagesdir, $imagesdir, $modimgurl, $scripturl,
-    $uploaddir, $uploadurl, $yyhtml_root, );
+    $uploaddir, $uploadurl, $yyhtml_root, $vardir);
 ## system/templates ##
 our (
-    $cat_col,     $cat_exp,       $col_row,         $date,
+    $iamadmin,    $cat_col,     $cat_exp,       $col_row,         $date,
     $displayname, $filesize_info, $filetype_info,   $iamguest,
     $message,     $mfn,           $moresmilieslist, $my_ajxcall,
     $nolinkallow, $post,          $quick_post,      $replyguest,

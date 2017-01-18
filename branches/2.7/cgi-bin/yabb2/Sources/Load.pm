@@ -61,7 +61,7 @@ our (
     %lngs,             %load_con,    %memberinfo,      %memberunfo,
     %moderators,       %mybuddie,    %tmpimg,          %user_pm_level,
     %useraccount,      %vars,        %yy_cookies,      %yy_udloaded,
-    @categoryorder,    @censored,    @other_cookies,
+    @categoryorder,    @censored,    @other_cookies,   $user
 );
 ## local ##
 our ( @allboards, %control, $yyim, $yyuname, %board, %thread_arrayref );
