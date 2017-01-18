@@ -292,9 +292,8 @@ qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n%$updatethread = (
         {
             no strict qw(refs);
             for my $cnt ( 0 .. $#tag ) {
-                my $val = ${$updatethread}{$tag[$cnt]} || q{};
-                $prnctb .=
-                  qq~'$tag[$cnt]' => "$val",\n~;
+                my $val = ${$updatethread}{ $tag[$cnt] } || q{};
+                $prnctb .= qq~'$tag[$cnt]' => "$val",\n~;
             }
         }
         $prnctb .= qq~);\n\n1;\n~;

@@ -38,8 +38,10 @@ our (
     %usersel_txt
 );
 ## locations ##
-our ( $imagesdir, $langdir, $memberdir, $pmuploaddir, $scripturl,
-    $yyhtml_root, $modimgurl, $vardir );
+our (
+    $imagesdir, $langdir,     $memberdir, $pmuploaddir,
+    $scripturl, $yyhtml_root, $modimgurl, $vardir
+);
 ##settings##
 our (
     $allow_attach_im,  $allow_hide_email,  $do_scramble_id,

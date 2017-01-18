@@ -38,10 +38,9 @@ our (
 );
 ## locations ##
 our (
-    $scripturl,   $datadir,   $imagesdir, $memberdir,
-    $vardir,      $htmldir,   $uploaddir, $uploadurl,
-    $yyhtml_root, $boardsdir, $sendtopicemail, $modimgurl,
-    $boardurl
+    $scripturl,      $datadir,   $imagesdir, $memberdir,   $vardir,
+    $htmldir,        $uploaddir, $uploadurl, $yyhtml_root, $boardsdir,
+    $sendtopicemail, $modimgurl, $boardurl
 );
 ## settings ##
 our (
@@ -80,31 +79,31 @@ our (
 );
 ## system ##
 our (
-    $annboard,        $boardperms,           $bot_name,
-    $cliped,          $cookieview,           $currentboard,
-    $date,            $gtalker,              $gtalkuser,
-    $iamadmin,        $iamfmod,              $iamgmod,
-    $iamguest,        $iammod,               $mdadmin,
-    $mdfmod,          $mdglobal,             $mdmod,
-    $menusep,         $messageclass,         $msgcontrol,
-    $nextlink,        $prevlink,             $selecthtml,
-    $sendtopicmail,   $sessionvalid,         $showusertext,
-    $staff,           $staff_reason,         $tabsep,
-    $uid,             $urlname,              $use_menu_type,
-    $useimages,       $usepost_tools,        $user_ip,
-    $user_reason,     $username,             $usestyle,
-    $usethread_tools, $vircurrentboard,      $yy_setcookies,
-    $yy_setcookies1,  $yy_threadline,        $yyjavascript,
-    $yymain,          $yynavigation,         $yysetlocation,
-    $yytitle,         %addmembergroup,       %board,
-    %catinfo,         %FORM,                 %gmod_access2,
-    %grp_nopost,      %INFO,                 %link,
-    %memberinfo,      %memberstar,           %moderatorgroups,
-    %moderators,      %moved_file,           %mybuddie,
-    %subboard,        %thread_arrayref,      %topicstart, %user_pm_level,
-    %useraccount,     %usernames_life_quote, %yy_cookies,
-    %yy_udloaded,     %yyuserlog,            @logentries,
-    @repliers,        %memberunfo,
+    $annboard,        $boardperms,      $bot_name,
+    $cliped,          $cookieview,      $currentboard,
+    $date,            $gtalker,         $gtalkuser,
+    $iamadmin,        $iamfmod,         $iamgmod,
+    $iamguest,        $iammod,          $mdadmin,
+    $mdfmod,          $mdglobal,        $mdmod,
+    $menusep,         $messageclass,    $msgcontrol,
+    $nextlink,        $prevlink,        $selecthtml,
+    $sendtopicmail,   $sessionvalid,    $showusertext,
+    $staff,           $staff_reason,    $tabsep,
+    $uid,             $urlname,         $use_menu_type,
+    $useimages,       $usepost_tools,   $user_ip,
+    $user_reason,     $username,        $usestyle,
+    $usethread_tools, $vircurrentboard, $yy_setcookies,
+    $yy_setcookies1,  $yy_threadline,   $yyjavascript,
+    $yymain,          $yynavigation,    $yysetlocation,
+    $yytitle,         %addmembergroup,  %board,
+    %catinfo,         %FORM,            %gmod_access2,
+    %grp_nopost,      %INFO,            %link,
+    %memberinfo,      %memberstar,      %moderatorgroups,
+    %moderators,      %moved_file,      %mybuddie,
+    %subboard,        %thread_arrayref, %topicstart,
+    %user_pm_level,   %useraccount,     %usernames_life_quote,
+    %yy_cookies,      %yy_udloaded,     %yyuserlog,
+    @logentries,      @repliers,        %memberunfo,
 );
 ## templates ##
 our (

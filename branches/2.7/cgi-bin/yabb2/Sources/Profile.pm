@@ -42,8 +42,9 @@ our (
 );
 ## paths ##
 our (
-    $boardsdir, $datadir,   $facesdir,    $facesurl,  $imagesdir,
-    $langdir,   $memberdir, $pmuploaddir, $scripturl, $vardir, $modimgurl
+    $boardsdir, $datadir, $facesdir,  $facesurl,
+    $imagesdir, $langdir, $memberdir, $pmuploaddir,
+    $scripturl, $vardir,  $modimgurl
 );
 ## settings ##
 our (
@@ -73,26 +74,26 @@ our (
 );
 ## system ##
 our (
-    $age,            $allow_gmod_profile, $cgi_query,
-    $cliped,         $date,               $ext,
-    $iamadmin,       $iamfmod,            $iamgmod,    $iammod,
-    $iamguest,       $invalemaila,        $invalemailb,
-    $invalmailchar,  $invalpass,          $invalrname,
-    $language,       $menusep,            $my_blank_avatar,
-    $sessionvalid,   $show_confidel,      $spam_hits_left_count,
-    $staff,          $template,           $uday,
-    $uid,            $umonth,             $user,
-    $user_ip,        $username,           $uyear,
-    $view,           $year,               $yyim,
-    $yyjavascript,   $yymain,             $yynavigation,
-    $yysetlocation,  $yytitle,            $yyuname,
-    %addmembergroup, %board,              %boardname,
-    %cat,            %catinfo,            %col_title,
-    %FORM,           %format_unbold,      %gmod_access2,
-    %INFO,           %memberstar,         %mybuddie,
-    %recent,         %subboard,           %user_pm_level,
-    %useraccount,    %yy_cookies,         %link,
-    @categoryorder,  $yyinlinestyle
+    $age,                  $allow_gmod_profile, $cgi_query,
+    $cliped,               $date,               $ext,
+    $iamadmin,             $iamfmod,            $iamgmod,
+    $iammod,               $iamguest,           $invalemaila,
+    $invalemailb,          $invalmailchar,      $invalpass,
+    $invalrname,           $language,           $menusep,
+    $my_blank_avatar,      $sessionvalid,       $show_confidel,
+    $spam_hits_left_count, $staff,              $template,
+    $uday,                 $uid,                $umonth,
+    $user,                 $user_ip,            $username,
+    $uyear,                $view,               $year,
+    $yyim,                 $yyjavascript,       $yymain,
+    $yynavigation,         $yysetlocation,      $yytitle,
+    $yyuname,              %addmembergroup,     %board,
+    %boardname,            %cat,                %catinfo,
+    %col_title,            %FORM,               %format_unbold,
+    %gmod_access2,         %INFO,               %memberstar,
+    %mybuddie,             %recent,             %subboard,
+    %user_pm_level,        %useraccount,        %yy_cookies,
+    %link,                 @categoryorder,      $yyinlinestyle
 );
 ## templates ##
 our (

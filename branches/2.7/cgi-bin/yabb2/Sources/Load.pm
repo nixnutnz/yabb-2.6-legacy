@@ -28,9 +28,9 @@ if (@loadpmmods) {
 our ( %croak, %load_txt, %maintxt, %zodiac_txt, );
 ## paths ##
 our (
-    $boardsdir, $boardurl,     $datadir, $facesurl,
-    $htmldir,   $imagesdir,    $langdir, $memberdir,
-    $scripturl, $templatesdir, $yyhtml_root, $vardir, $modimgurl,
+    $boardsdir,   $boardurl, $datadir,   $facesurl,  $htmldir,
+    $imagesdir,   $langdir,  $memberdir, $scripturl, $templatesdir,
+    $yyhtml_root, $vardir,   $modimgurl,
 );
 ## settings ##
 our (
