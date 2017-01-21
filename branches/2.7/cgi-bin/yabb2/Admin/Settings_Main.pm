@@ -38,7 +38,10 @@ our (
     %settings_txt,    %timelocktxt, %userlevel_txt, @months,
 );
 ## paths ##
-our ( $adminurl, $boardsdir, $facesdir, $htmldir, $langdir, $scripturl, $yyhtml_root, );
+our (
+    $adminurl, $boardsdir, $facesdir, $htmldir,
+    $langdir,  $scripturl, $yyhtml_root,
+);
 ## settings ##
 our (
     $ad_max_messlen,          $ad_max_pm_messlen,
@@ -137,7 +140,8 @@ our (
     $very_hot_topic,          %templateset,
 );
 ## system ##
-our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM, $username );
+our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM,
+    $username );
 
 ## our Mod Hook ##
 
@@ -293,7 +297,7 @@ q~<select name="usertimesign" id="usertimesign"><option value="">+</option><opti
     $timeoffsetselect .= q~</select>~;
     $dstoffsetlabel = qq~<label for="dstoffset">$admin_txt{'371e'}</label>~;
     $dstoffsetinput =
-qq~<input type="checkbox" name="dstoffset" id="dstoffset" value="1"${ischecked($dstoffset)}/>~;
+qq~<input type="checkbox" name="dstoffset" id="dstoffset" value="1"${ischecked($dstoffset)} />~;
 }
 $tz_select .= '</select>';
 
@@ -408,6 +412,7 @@ $bypass_lock_perm      ||= '0';
 $enable_mc_away        ||= 0;
 
 ## Mod values ##
+
 # List of settings
 
 our @settings = (

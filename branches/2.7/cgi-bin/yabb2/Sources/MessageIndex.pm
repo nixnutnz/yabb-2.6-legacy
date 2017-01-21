@@ -39,8 +39,8 @@ our (
     %tmpimg
 );
 ## locations ##
-our ( 
-    $boardsdir, $datadir,     $htmldir, $imagesdir, 
+our (
+    $boardsdir, $datadir,     $htmldir, $imagesdir,
     $scripturl, $yyhtml_root, $vardir,  $modimgurl
 );
 ## settings ##
@@ -1806,6 +1806,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
     $outside_threadtools =~ s/\Q{yabb markall button}\E/$threadout[1]/gxsm;
     $outside_threadtools =~ s/\Q{yabb new post button}\E/$threadout[2]/gxsm;
     $outside_threadtools =~ s/\Q{yabb new poll button}\E/$threadout[3]/gxsm;
+
 ## Mod Hook outside_threadtools ##
     if ( $my_ttsep ne q{ } ) {
         $outside_threadtools =~ s/\Q$my_ttsep\E//ixsm;

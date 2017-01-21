@@ -13,6 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
+no strict qw(refs);
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
@@ -223,10 +224,7 @@ qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/
                       split /[|]/xsm, $board{$curboard};
                     $boardname =~ s/\&quot\;/&\x2334;/gxsm;
                     to_chars($boardname);
-                    {
-                        no strict qw(refs);
-                        $descr = ${ $uid . $curboard }{'description'};
-                    }
+                    $descr = ${ $uid . $curboard }{'description'};
                     $descr =~ s/\<br\s \/>/\n/gxsm;
                     my $brdpicchk = 0;
                     if ( -e "$boardsdir/brdpics.db" ) {
@@ -248,7 +246,8 @@ qq~$style: <img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5
                                             $brdpicchk = 1;
                                         }
                                         else {
-                                            my @mytempst = @{$templateset{$style}};
+                                            my @mytempst =
+                                              @{ $templateset{$style} };
                                             $myimgfolder = $mytempst[1];
                                             $bicon .=
 qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
@@ -262,25 +261,20 @@ qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" i
                         }
                     }
                     if ( !$brdpicchk ) {
-                        $bicon = qq~<img src="$imagesdir/boards.png" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                        $bicon =
+qq~<img src="$imagesdir/boards.png" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
                     }
-                    {
-                        no strict qw(refs);
-                        if ( ${ $uid . $curboard }{'ann'} ) {
-                            $bicon =
+                    if ( ${ $uid . $curboard }{'ann'} ) {
+                        $bicon =
 qq~ <img src="$imagesdir/ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
-                            $tmpwidth2 = 90 - $indent;
-                            $tmpwidth3 = 5;
-                        }
+                        $tmpwidth2 = 90 - $indent;
+                        $tmpwidth3 = 5;
                     }
-                    {
-                        no strict qw(refs);
-                        if ( ${ $uid . $curboard }{'rbin'} ) {
-                            $bicon =
+                    if ( ${ $uid . $curboard }{'rbin'} ) {
+                        $bicon =
 qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
-                            $tmpwidth2 = 90 - $indent;
-                            $tmpwidth3 = 5;
-                        }
+                        $tmpwidth2 = 90 - $indent;
+                        $tmpwidth3 = 5;
                     }
                     my $convertstr = $descr;
                     if ( $convertstr !~ /<.+?>/xsm )
@@ -303,16 +297,13 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
 
                     my $del_txt  = $admin_txt{'251'};
                     my $edit_txt = $admin_txt{'253'};
-                    {
-                        no strict qw(refs);
-                        if ( ${ $uid . $curboard }{'parent'} ) {
-                            $del_txt =~ s/{(.*?)}/$admin_txt{'254'}$1/gxsm;
-                            $edit_txt =~ s/{(.*?)}/$admin_txt{'254'}$1/gxsm;
-                        }
-                        else {
-                            $del_txt =~ s/{(.*?)}/$1/gxsm;
-                            $edit_txt =~ s/{(.*?)}/$1/gxsm;
-                        }
+                    if ( ${ $uid . $curboard }{'parent'} ) {
+                        $del_txt =~ s/{(.*?)}/$admin_txt{'254'}$1/gxsm;
+                        $edit_txt =~ s/{(.*?)}/$admin_txt{'254'}$1/gxsm;
+                    }
+                    else {
+                        $del_txt =~ s/{(.*?)}/$1/gxsm;
+                        $edit_txt =~ s/{(.*?)}/$1/gxsm;
                     }
 
                     $yymain .= q~
@@ -427,31 +418,28 @@ sub board_screen {
         for my $bd (@editbrd) {
 
 # Remove Board from category it belongs to unless it's a sub board, then it's not in the cat list
-            {
-                no strict qw(refs);
-                if ( !${ $uid . $bd }{'parent'} ) {
-                    my $category = ${ $uid . $bd }{'cat'};
-                    my @bdlist   = split /,/xsm, $cat{$category};
-                    my $c        = 0;
-                    for (@bdlist) {
-                        if ( $_ eq $bd ) { splice @bdlist, $c, 1; last; }
-                        $c++;
-                    }
-                    $cat{$category} = join q{,}, undupe(@bdlist);
+            if ( !${ $uid . $bd }{'parent'} ) {
+                my $category = ${ $uid . $bd }{'cat'};
+                my @bdlist   = split /,/xsm, $cat{$category};
+                my $c        = 0;
+                for (@bdlist) {
+                    if ( $_ eq $bd ) { splice @bdlist, $c, 1; last; }
+                    $c++;
                 }
-                else
-                { # if it has a parent, remove it from its parent's child board list
-                    my @bdlist =
-                      split /[|]/xsm, $subboard{ ${ $uid . $bd }{'parent'} };
+                $cat{$category} = join q{,}, undupe(@bdlist);
+            }
+            else
+            { # if it has a parent, remove it from its parent's child board list
+                my @bdlist =
+                  split /[|]/xsm, $subboard{ ${ $uid . $bd }{'parent'} };
 
-                    # Remove Board from old parent board
-                    my $k = 0;
-                    for (@bdlist) {
-                        if ( $bd eq $_ ) { splice @bdlist, $k, 1; }
-                        $k++;
-                    }
-                    $subboard{ ${ $uid . $bd }{'parent'} } = join q{|}, @bdlist;
+                # Remove Board from old parent board
+                my $k = 0;
+                for (@bdlist) {
+                    if ( $bd eq $_ ) { splice @bdlist, $k, 1; }
+                    $k++;
                 }
+                $subboard{ ${ $uid . $bd }{'parent'} } = join q{|}, @bdlist;
             }
 
 # remove the $subboard{} hash that contains children list, since it's a parent board and move children up
@@ -459,29 +447,26 @@ sub board_screen {
                 for my $childbd ( split /[|]/xsm, $subboard{$bd} ) {
 
 # if this one has a parent board, move its children up to that, otherwise to category.
-                    {
-                        no strict qw(refs);
-                        if ( ${ $uid . $bd }{'parent'} ) {
-                            if ( $subboard{ ${ $uid . $bd }{'parent'} } ) {
-                                $subboard{ ${ $uid . $bd }{'parent'} } .=
-                                  qq~|$childbd~;
-                            }
-                            else {
-                                $subboard{ ${ $uid . $bd }{'parent'} } =
-                                  $childbd;
-                            }
-                            ${ $uid . $childbd }{'parent'} =
-                              ${ $uid . $bd }{'parent'};
+                    if ( ${ $uid . $bd }{'parent'} ) {
+                        if ( $subboard{ ${ $uid . $bd }{'parent'} } ) {
+                            $subboard{ ${ $uid . $bd }{'parent'} } .=
+                              qq~|$childbd~;
                         }
                         else {
-                            $cat{ ${ $uid . $bd }{'cat'} } .= ",$childbd";
-                            ${ $uid . $childbd }{'parent'} = q{};
+                            $subboard{ ${ $uid . $bd }{'parent'} } =
+                              $childbd;
                         }
-                        push @del_updateparent, $childbd;
+                        ${ $uid . $childbd }{'parent'} =
+                          ${ $uid . $bd }{'parent'};
                     }
+                    else {
+                        $cat{ ${ $uid . $bd }{'cat'} } .= ",$childbd";
+                        ${ $uid . $childbd }{'parent'} = q{};
+                    }
+                    push @del_updateparent, $childbd;
                 }
-                delete $subboard{$bd};
             }
+            delete $subboard{$bd};
             delete $board{$bd};
             $yymain .= qq~$admin_txt{'55'}$bd <br />~;
         }
@@ -552,13 +537,10 @@ sub delete_boards {
     }
 
     # Update parents for subboards that had a parent deleted.
-    {
-        no strict qw(refs);
-        if (@del_updateparent) {
-            for my $changedboard (@del_updateparent) {
-                ${ $control{$changedboard} }[17] =
-                  ${ $uid . $changedboard }{'parent'};
-            }
+    if (@del_updateparent) {
+        for my $changedboard (@del_updateparent) {
+            ${ $control{$changedboard} }[17] =
+              ${ $uid . $changedboard }{'parent'};
         }
     }
     write_forum_control();
@@ -790,24 +772,21 @@ function checkParent(id, board) {
         else {
             $boardtext = "$admin_txt{'58'} $i:";
         }
-        $editboards[$i] ||= q{};
-        {
-            no strict qw(refs);
-            ${ $uid . $editboards[$i] }{'parent'} ||= q{};
-            ${ $uid . $editboards[$i] }{'cat'}    ||= q{};
+        $editboards[$i]                       ||= q{};
+        ${ $uid . $editboards[$i] }{'parent'} ||= q{};
+        ${ $uid . $editboards[$i] }{'cat'}    ||= q{};
 
-            # print javascript hash of board names and their equivalent category
-            if ( !$INFO{'parent'} ) {
-                $brd_javascript .=
+        # print javascript hash of board names and their equivalent category
+        if ( !$INFO{'parent'} ) {
+            $brd_javascript .=
 qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editboards[$i]}{'parent'}";\n~;
-            }
-            else {
-                $brd_javascript .=
-                  qq~editbrds[$i] = "$INFO{'category'}||$INFO{'parent'}";\n~;
-            }
-
-            $boardcat = ${ $uid . $editboards[$i] }{'cat'};
         }
+        else {
+            $brd_javascript .=
+              qq~editbrds[$i] = "$INFO{'category'}||$INFO{'parent'}";\n~;
+        }
+
+        $boardcat = ${ $uid . $editboards[$i] }{'cat'};
         my (%catsel);
         for my $catid (@categoryorder) {
             $catid ||= q{};
@@ -838,27 +817,16 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
         $boardview  ||= q{};
         to_chars($boardname);
         if ( $INFO{'action'} eq 'boardscreen' ) { $boardtext = $boardname; }
-        my (
-            $description, $moderators,  $moderatorgroups,
-            $boardminage, $boardmaxage, $boardgender
-        );
-        {
-            no strict qw(refs);
-            $description = ${ $uid . $editboards[$i] }{'description'} || q{};
-            $description =~ s/<br\s \/>/\n/gxsm;
-            to_chars($description);
-            $moderators      = ${ $uid . $editboards[$i] }{'mods'}      || q{};
-            $moderatorgroups = ${ $uid . $editboards[$i] }{'modgroups'} || q{};
-            $boardminage = ${ $uid . $editboards[$i] }{'minageperms'} || q{};
-            $boardmaxage = ${ $uid . $editboards[$i] }{'maxageperms'} || q{};
-            $boardgender = ${ $uid . $editboards[$i] }{'genderperms'} || q{};
-        }
-        my $genselect = qq~<select name="gender$i" id="gender$i">~;
-        my (@gentag);
-        $gentag[0] = q{};
-        $gentag[1] = 'M';
-        $gentag[2] = 'F';
-        $gentag[3] = 'B';
+        my $description = ${ $uid . $editboards[$i] }{'description'} || q{};
+        $description =~ s/<br\s \/>/\n/gxsm;
+        to_chars($description);
+        my $moderators      = ${ $uid . $editboards[$i] }{'mods'}        || q{};
+        my $moderatorgroups = ${ $uid . $editboards[$i] }{'modgroups'}   || q{};
+        my $boardminage     = ${ $uid . $editboards[$i] }{'minageperms'} || q{};
+        my $boardmaxage     = ${ $uid . $editboards[$i] }{'maxageperms'} || q{};
+        my $boardgender     = ${ $uid . $editboards[$i] }{'genderperms'} || q{};
+        my $genselect       = qq~<select name="gender$i" id="gender$i">~;
+        my @gentag = ( q{}, 'M', 'F', 'B', );
 
         for my $genlabel (@gentag) {
             my $gentext = '99';
@@ -874,13 +842,10 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         }
         $genselect .= q~</select>~;
         my $canpostch = q{};
+        if ( ${ $uid . $id }{'canpost'}
+            || $INFO{'action'} ne 'boardscreen' )
         {
-            no strict qw(refs);
-            if ( ${ $uid . $id }{'canpost'}
-                || $INFO{'action'} ne 'boardscreen' )
-            {
-                $canpostch = q~ checked="checked"~;
-            }
+            $canpostch = q~ checked="checked"~;
         }
 
         # Make children list if it contains sub boards
@@ -898,102 +863,42 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         if ( !$childrenlist ) { $childrenlist = $admin_txt{'246'}; }
 
         # Retrieve Optional Details
-        my $ann       = q{};
-        my $rbin      = q{};
-        my $zeroch    = q{};
-        my $attch     = q{};
-        my $showpriv  = q{};
         my $brdpic    = q{};
-        my $brdrssch  = q{};    ### RSS on Board Index ###
-        my $brdpasswr = q{};
-        my ($brdpassw);
-        {
-            no strict qw(refs);
-            $brdpassw = ${ $uid . $editboards[$i] }{'brdpassw'};
-        }
+        my $brdpassw  = ${ $uid . $editboards[$i] }{'brdpassw'};
         my $brdpassw3 = q{};
         my $brdpassw2 = q{};
         if ($brdpassw) { $brdpassw2 = $boardpass_txt{'900pt'}; }
-        {
-            no strict qw(refs);
-            if ( ${ $uid . $editboards[$i] }{'brdpasswr'} ) {
-                $brdpasswr = q~ checked="checked"~;
-            }
-        }
-        if ($boardview) { $showpriv = q~ checked="checked"~; }
-        {
-            no strict qw(refs);
-            if ( ${ $uid . $id }{'zero'} ) {
-                $zeroch = q~ checked="checked"~;
-            }
-        }
-        {
-            no strict qw(refs);
-            if ( ${ $uid . $id }{'attperms'} ) {
-                $attch = q~ checked="checked"~;
-            }
-            if ( ${ $uid . $id }{'brdrss'} ) {
-                $brdrssch = q~ checked="checked"~;
-            }    ### RSS on Board Index ###
-        }
+
         my $annch = q{};
-        {
-            no strict qw(refs);
-            if ( ${ $uid . $id }{'ann'} ) {
-                $annch  = q~ checked="checked"~;
-                $brdpic = q~ disabled="disabled"~;
-            }
-            elsif ($annboard) {
-                $annch    = q~ disabled="disabled"~;
-                $annexist = 1;
-            }
+        if ( ${ $uid . $id }{'ann'} ) {
+            $annch  = q~ checked="checked"~;
+            $brdpic = q~ disabled="disabled"~;
+        }
+        elsif ($annboard) {
+            $annch    = q~ disabled="disabled"~;
+            $annexist = 1;
+        }
+        my $rbinch = q{};
+        if ( ${ $uid . $id }{'rbin'} ) {
+            $rbinch = q~ checked="checked"~;
+            $brdpic = q~ disabled="disabled"~;
+        }
+        elsif ($binboard) {
+            $rbinch    = q~ disabled="disabled"~;
+            $rbinexist = 1;
         }
 
-        my $rbinch = q{};
-        {
-            no strict qw(refs);
-            if ( ${ $uid . $id }{'rbin'} ) {
-                $rbinch = q~ checked="checked"~;
-                $brdpic = q~ disabled="disabled"~;
-            }
-            elsif ($binboard) {
-                $rbinch    = q~ disabled="disabled"~;
-                $rbinexist = 1;
-            }
-        }
-        my $en_rules = q{};
-        {
-            no strict qw(refs);
-            if ( ${ $uid . $id }{'rules'} ) {
-                $en_rules = q~ checked="checked"~;
-            }
-        }
-        my $en_rulescoll = q{};
-        {
-            no strict qw(refs);
-            if ( ${ $uid . $id }{'rulescollapse'} ) {
-                $en_rulescoll = q~ checked="checked"~;
-            }
-        }
-        my ( $rulestitle, $rulesdesc );
-        {
-            no strict qw(refs);
-            $rulestitle = ${ $uid . $editboards[$i] }{'rulestitle'};
-            $rulesdesc = ${ $uid . $editboards[$i] }{'rulesdesc'} || q{};
-        }
+        my $rulestitle = ${ $uid . $editboards[$i] }{'rulestitle'} || q{};
+        my $rulesdesc  = ${ $uid . $editboards[$i] }{'rulesdesc'}  || q{};
         to_chars($rulestitle);
         $rulesdesc =~ s/<br\s \/>/\n/gxsm;
         to_chars($rulesdesc);
 
         #Get Board permissions here
-        my ( $startperms, $replyperms, $pollperms, );
-        {
-            no strict qw(refs);
-            $startperms = draw_perms( ${ $uid . $id }{'topicperms'}, 0 );
-            $replyperms = draw_perms( ${ $uid . $id }{'replyperms'}, 1 );
-            $pollperms  = draw_perms( ${ $uid . $id }{'pollperms'},  0 );
-        }
-        my $viewperms = draw_perms( $boardperms, 0 );
+        my $startperms = draw_perms( ${ $uid . $id }{'topicperms'}, 0 );
+        my $replyperms = draw_perms( ${ $uid . $id }{'replyperms'}, 1 );
+        my $pollperms  = draw_perms( ${ $uid . $id }{'pollperms'},  0 );
+        my $viewperms  = draw_perms( $boardperms,                   0 );
 
         $yymain .= qq~                  <tr>
                         <td class="titlebg" colspan="4"> <b>$boardtext</b></td>
@@ -1032,10 +937,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         my ($this_modname);
         for my $this_mod (@this_boardmonitors) {
             load_user($this_mod);
-            {
-                no strict qw(refs);
-                $this_modname = ${ $uid . $this_mod }{'realname'};
-            }
+            $this_modname = ${ $uid . $this_mod }{'realname'};
             if ( !$this_modname ) { $this_modname = $this_mod; }
             if ($do_scramble_id)  { $this_mod     = cloak($this_mod); }
             $yymain .= qq~
@@ -1106,7 +1008,7 @@ qq~                     <select multiple="multiple" name="moderatorgroups$i" id=
                                 $brdpic_addr = $brdpica;
                             }
                             else {
-                                my @mytempst = @{$templateset{$style}};
+                                my @mytempst = @{ $templateset{$style} };
                                 $myimgfolder = $mytempst[1];
                                 $brdpic_addr =
 qq~$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpica~;
@@ -1155,16 +1057,16 @@ qq~               <div class="small bold"><input type="checkbox" name="$lbl" id=
                          </td>
                     </tr><tr>
                         <td class="windowbg2"><label for="brdrss$i"><b>$admin_txt{'brdrss1'}:</b></label></td>
-                        <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"$brdrssch /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="brdrss$i" id="brdrss$i" value="1"${ischecked(${ $uid . $id }{'brdrss'})} /> <label for="brdrss$i"><span class="small">$admin_txt{'brdrss3'}</span></label></td>
                     </tr><tr>
                         <td class="windowbg2"><label for="zero$i"><b>$admin_txt{'64c'}</b></label></td>
-                        <td class="windowbg2" colspan="3"><input type="checkbox" name="zero$i" id="zero$i" value="1"$zeroch /> <label for="zero$i">$admin_txt{'64d'}</label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="zero$i" id="zero$i" value="1"${ischecked(${ $uid . $id }{'zero'})} /> <label for="zero$i">$admin_txt{'64d'}</label></td>
                     </tr><tr>
                         <td class="windowbg2"><label for="show$i"><b>$admin_txt{'64e'}</b></label></td>
-                        <td class="windowbg2" colspan="3"><input type="checkbox" name="show$i" id="show$i" value="1"$showpriv /> <label for="show$i">$admin_txt{'64f'}</label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="show$i" id="show$i" value="1"${ischecked($boardview)} /> <label for="show$i">$admin_txt{'64f'}</label></td>
                     </tr><tr>
                         <td class="windowbg2"><label for="att$i"><b>$admin_txt{'64k'}</b></label></td>
-                        <td class="windowbg2" colspan="3"><input type="checkbox" name="att$i" id="att$i" value="1"$attch /> <label for="att$i">$admin_txt{'64l'}</label></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="att$i" id="att$i" value="1"${ischecked(${ $uid . $id }{'attperms'})} /> <label for="att$i">$admin_txt{'64l'}</label></td>
                     </tr><tr>
                         <td class="windowbg2"><label for="ann$i"><b>$admin_txt{'64g'}</b></label></td>
                         <td class="windowbg2" colspan="3"><input type="checkbox" id="ann$i" name="ann$i" value="1" $annch onclick="javascript: if (this.checked) checkann(true, '$i'); else checkann(false, '$i');" /> <label for="ann$i">$admin_txt{'64h'}</label></td>
@@ -1175,10 +1077,10 @@ qq~               <div class="small bold"><input type="checkbox" name="$lbl" id=
                         <td class="catbg"  colspan="4"><b>$admin_txt{'rules'}:</b></td>
                     </tr><tr>
                         <td class="windowbg2"><label for="rules$i"><b>$admin_txt{'rules1'}:</b></label></td>
-                        <td class="windowbg2" colspan="3"><input type="checkbox" name="rules$i" id="rules$i" value="1"$en_rules /></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="rules$i" id="rules$i" value="1"${ischecked(${ $uid . $id }{'rules'})} /></td>
                     </tr><tr>
                         <td class="windowbg2"><label for="rulescollapse$i"><b>$exptxt{'6'}</b></label></td>
-                        <td class="windowbg2" colspan="3"><input type="checkbox" name="rulescollapse$i" id="rulescollapse$i" value="1"$en_rulescoll /></td>
+                        <td class="windowbg2" colspan="3"><input type="checkbox" name="rulescollapse$i" id="rulescollapse$i" value="1"${ischecked(${ $uid . $id }{'rulescollapse'})} /></td>
                     </tr><tr>
                         <td class="windowbg2"><label for="rulestitle$i"><b>$admin_txt{'rules2'}:</b></label></td>
                         <td class="windowbg2" colspan="3"><input type="text" name="rulestitle$i" id="rulestitle$i" value="$rulestitle" size="50" maxlength="100" /></td>
@@ -1199,7 +1101,7 @@ qq~               <div class="small bold"><input type="checkbox" name="$lbl" id=
                     </tr><tr>
                         <td class="windowbg2"><label for="pasww$i"><b>$boardpass_txt{'900pw'}:</b><br /><br />$boardpass_txt{'900pwb'}</label></td>
                         <td class="windowbg2" colspan="3">
-                            <input type="checkbox" name="paswwr$i" id="paswwr$i" value="1"$brdpasswr /> <input type="text" size="15" name="pasww$i" id="pasww$i" value="$brdfpassw3" />
+                            <input type="checkbox" name="paswwr$i" id="paswwr$i" value="1"${ischecked(${ $uid . $editboards[$i] }{'brdpasswr'})} /> <input type="text" size="15" name="pasww$i" id="pasww$i" value="$brdfpassw3" />
                             <br /><label for="paswwr$i">$boardpass_txt{'900pf'}</label>
                             <br /><span class="important">$brdpassw2</span>
                             <input type="hidden" name="brdpassw$i" value="$brdpassw" />
@@ -1539,18 +1441,11 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
         if ( $FORM{'screenornot'} eq 'boardscreen' ) {
 
             # editing a board
-            my ($category);
-            {
-                no strict qw(refs);
-                $category = ${ $uid . $id }{'cat'};
-            }
+            my $category = ${ $uid . $id }{'cat'};
 
             # move category of board
             if ( $category ne $FORM{"cat$i"} ) {
-                {
-                    no strict qw(refs);
-                    ${ $uid . $id }{'cat'} = $FORM{"cat$i"};
-                }
+                ${ $uid . $id }{'cat'} = $FORM{"cat$i"};
 
                 # recursively change the category of child boards.
                 if ( $subboard{$id} ) {
@@ -1558,11 +1453,8 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                     local *cat_change = sub {
                         my @x = @_;
                         for my $childbd (@x) {
-                            {
-                                no strict qw(refs);
-                                ${ $uid . $childbd }{'cat'} =
-                                  $FORM{"cat$i"};
-                            }
+                            ${ $uid . $childbd }{'cat'} =
+                              $FORM{"cat$i"};
                             push @updatecats, $childbd;
                             if ( $subboard{$childbd} ) {
                                 cat_change( split /[|]/xsm,
@@ -1574,19 +1466,16 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                 }
 
                 # if it's not a sub board, remove from the old category
-                {
-                    no strict qw(refs);
-                    if ( !${ $uid . $id }{'parent'} ) {
-                        my @bdlist = split /,/xsm, $cat{$category};
+                if ( !${ $uid . $id }{'parent'} ) {
+                    my @bdlist = split /,/xsm, $cat{$category};
 
-                        # Remove Board from old Category
-                        my $k = 0;
-                        for my $bd (@bdlist) {
-                            if ( $id eq $bd ) { splice @bdlist, $k, 1; }
-                            $k++;
-                        }
-                        $cat{$category} = join q{,}, @bdlist;
+                    # Remove Board from old Category
+                    my $k = 0;
+                    for my $bd (@bdlist) {
+                        if ( $id eq $bd ) { splice @bdlist, $k, 1; }
+                        $k++;
                     }
+                    $cat{$category} = join q{,}, @bdlist;
                 }
 
                 # Add Category to new Category, but only if it isn't a sub board
@@ -1598,60 +1487,56 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
             }
 
             # move parent board of board
-            {
-                no strict qw(refs);
-                if ( ${ $uid . $id }{'parent'} ne $FORM{"parent$i"} ) {
+            if ( ${ $uid . $id }{'parent'} ne $FORM{"parent$i"} ) {
 
 # if it had a parent, remove it from that list, otherwise it didnt have a parent so remove it from cat list
-                    if ( ${ $uid . $id }{'parent'} ) {
-                        my @bdlist =
-                          split /[|]/xsm,
-                          $subboard{ ${ $uid . $id }{'parent'} };
+                if ( ${ $uid . $id }{'parent'} ) {
+                    my @bdlist =
+                      split /[|]/xsm,
+                      $subboard{ ${ $uid . $id }{'parent'} };
 
-                        # Remove Board from old parent board
-                        my $k = 0;
-                        for my $bd (@bdlist) {
-                            if ( $id eq $bd ) { splice @bdlist, $k, 1; }
-                            $k++;
-                        }
-                        $subboard{ ${ $uid . $id }{'parent'} } = join q{|},
-                          @bdlist;
+                    # Remove Board from old parent board
+                    my $k = 0;
+                    for my $bd (@bdlist) {
+                        if ( $id eq $bd ) { splice @bdlist, $k, 1; }
+                        $k++;
                     }
+                    $subboard{ ${ $uid . $id }{'parent'} } = join q{|}, @bdlist;
+                }
 
 # only remove from old category if it now has a parent and its in the same cat as before, otherwise
 # cat had to have been changed to get a parent in a different cat, and the cat change takes care of
 # removing it from the previous category
-                    elsif ( $category eq $FORM{"cat$i"} ) {
-                        my @bdlist = split /,/xsm, $cat{$category};
+                elsif ( $category eq $FORM{"cat$i"} ) {
+                    my @bdlist = split /,/xsm, $cat{$category};
 
-                        # Remove Board from old Category
-                        my $k = 0;
-                        for my $bd (@bdlist) {
-                            if ( $id eq $bd ) { splice @bdlist, $k, 1; }
-                            $k++;
-                        }
-                        $cat{$category} = join q{,}, @bdlist;
+                    # Remove Board from old Category
+                    my $k = 0;
+                    for my $bd (@bdlist) {
+                        if ( $id eq $bd ) { splice @bdlist, $k, 1; }
+                        $k++;
                     }
+                    $cat{$category} = join q{,}, @bdlist;
+                }
 
 # if we're removing the parent board, move it back up to it's category, otherwise add to new parent board
-                    if ( !$FORM{"parent$i"} ) {
+                if ( !$FORM{"parent$i"} ) {
 
-                        # only move up to cat if cat is the same as previously
-                        if ( $category eq $FORM{"cat$i"} ) {
-                            my @bdlist = split /\,/xsm, $cat{ $FORM{"cat$i"} };
-                            push @bdlist, "$id";
-                            $cat{ $FORM{"cat$i"} } = join q{,}, @bdlist;
-                        }
+                    # only move up to cat if cat is the same as previously
+                    if ( $category eq $FORM{"cat$i"} ) {
+                        my @bdlist = split /\,/xsm, $cat{ $FORM{"cat$i"} };
+                        push @bdlist, "$id";
+                        $cat{ $FORM{"cat$i"} } = join q{,}, @bdlist;
+                    }
+                }
+                else {
+
+                    # Add to new parent board
+                    if ( $subboard{ $FORM{"parent$i"} } ) {
+                        $subboard{ $FORM{"parent$i"} } .= qq~|$id~;
                     }
                     else {
-
-                        # Add to new parent board
-                        if ( $subboard{ $FORM{"parent$i"} } ) {
-                            $subboard{ $FORM{"parent$i"} } .= qq~|$id~;
-                        }
-                        else {
-                            $subboard{ $FORM{"parent$i"} } = $id;
-                        }
+                        $subboard{ $FORM{"parent$i"} } = $id;
                     }
                 }
             }
@@ -1776,7 +1661,7 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         my $modchk  = @modhook;
         my $modhook = q{};
         if ( $modchk > 0 ) {
-             $modhook .= join q{', '}, @modhook;
+            $modhook .= join q{', '}, @modhook;
         }
         $FORM{"moderators$i"} ||= q{};
         $FORM{"moderators$i"} =~ s/,\s*/\//xsm;
@@ -1819,10 +1704,7 @@ qq~<i>'$FORM{"name$i"}'</i> $admin_txt{'48'} <br /><a href="$adminurl?action=man
     for my $cnt ( keys %control ) {
         for my $changedboard (@updatecats) {
             if ( $changedboard eq $cnt ) {
-                {
-                    no strict qw(refs);
-                    ${ $control{$cnt} }[0] = ${ $uid . $changedboard }{'cat'};
-                }
+                ${ $control{$cnt} }[0] = ${ $uid . $changedboard }{'cat'};
                 last;
             }
         }

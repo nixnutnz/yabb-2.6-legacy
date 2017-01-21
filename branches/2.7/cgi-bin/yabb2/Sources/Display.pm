@@ -75,7 +75,7 @@ our (
     $user_hide_attach_img,   $user_hide_avatars,
     $user_hide_signat,       $user_hide_user_text,
     $useraddpoll,            $very_hot_topic,
-    $yymycharset,
+    $yymycharset,            $cookieusername,
 );
 ## system ##
 our (
@@ -141,20 +141,29 @@ sub display_thread {
     }
     my $iambot = 0;
     if ( $enable_guest_view_limit && $guestaccess ) {
+        no warnings;
         my $user_host =
           ( gethostbyaddr pack( 'C4', split /[.]/xsm, $user_ip ), 2 )[0];
+        our (%botname);
         if ( -e 'Variables/BotsHosts.pm' ) {
             require Variables::BotsHosts;
-            if ( $bot_name && $user_host =~ /$bot_name/ixsm ) { $iambot = 1; }
+            my @botlist = keys %botname;
+            foreach (@botlist) {
+                if ( $botname{$_} && $user_host =~ /$botname{$_}/ixsm ) {
+                    $iambot = 1;
+                    last;
+                }
+            }
         }
     }
     my $gtvlcount             = 1;
     my $guest_view_limit_warn = q{};
     if (
-           $iamguest
+           $enable_guest_view_limit
+        && $iamguest
         && !$iambot
-        && (   $yy_cookies{$cookieview}
-            && $yy_cookies{$cookieview} < $guest_view_limit )
+        && (   !$yy_cookies{$cookieview}
+            || $yy_cookies{$cookieview} < $guest_view_limit )
       )
     {
         if ( $yy_cookies{$cookieview} ) {
@@ -174,7 +183,8 @@ sub display_thread {
         );
     }
     elsif (
-           $iamguest
+           $enable_guest_view_limit
+        && $iamguest
         && !$iambot
         && (   $yy_cookies{$cookieview}
             && $yy_cookies{$cookieview} >= $guest_view_limit )
@@ -359,7 +369,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
     ## can this user bypass locks?
     ## work out who can bypass locked thread post only if bypass switched on
     my $icanbypass = q{};
-    if ( $mstate =~ /l/ism ) {
+    if ( $mstate =~ /l/ixsm ) {
         if ($bypass_lock_perm) { $icanbypass = checkuser_lockbypass(); }
         $enable_quickreply = 0;
     }
@@ -1408,7 +1418,7 @@ qq~$menusep<a href="$scripturl?board=$currentboard;action=modify;message=$counte
         my $template_print_post = q{};
         my $template_quote      = q{};
 
-        if ( $mstate !~ /l/ism ) {
+        if ( $mstate !~ /l/ixsm ) {
             if ($replybutton) {
                 my $quote_mname = $displayname || q{};
                 $quote_mname =~ s/\x27/\\\x27/gxsm;
@@ -1780,7 +1790,7 @@ qq~$menusep<a href="$scripturl?action=sticky;thread=$viewnum">$img{'admin_sticky
         && $sessionvalid == 1
       )
     {
-        if ( $mstate !~ /l/ism ) {
+        if ( $mstate !~ /l/ixsm ) {
             $template_multidelete =
 qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return confirm('$display_txt{'739'}')">$img{'admin_del'}</a>~;
         }
@@ -1843,6 +1853,7 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
 
     # Template it
     $tabsep ||= q{};
+    $navback ||= q{};
     my $yynavback =
 qq~$tabsep <a href="$scripturl">&laquo; $img_txt{'103'}</a> $tabsep $navback $tabsep~;
 
@@ -1980,7 +1991,6 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $display_template =~ s/\Q{yabb pageindex top}\E/$pageindex1/gxsm;
     $display_template =~ s/\Q{yabb pageindex bottom\E}/$pageindex2/gxsm;
     $display_template =~ s/\Q{yabb bookmarks}\E/$bookmarks/gxsm;
-
     $display_template =~
       s/\Q{yabb outsidethreadtools}\E/$outside_threadtools/gxsm;
     $display_template =~ s/\Q{yabb threadhandellist}\E/$threadhandellist/gxsm;
@@ -1988,6 +1998,8 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     $display_template =~ s/\Q{yabb threadhandellist1}\E/$threadhandellist1/gxsm;
     $display_template =~ s/\Q{yabb threadimage}\E/$template_threadimage/gxsm;
     $display_template =~ s/\Q{yabb threadurl}\E/$curthreadurl/gxsm;
+
+## Mod Hook Display_temp ##
     my $tmpviews = ${$viewnum}{'views'} - 1;
     $tmpviews = number_format($tmpviews);
     $display_template =~ s/\Q{yabb views}\E/ $tmpviews /egxsm;

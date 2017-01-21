@@ -53,7 +53,7 @@ our (
 );
 ## template ##
 our ( $convert_box, $convertlang_box, $front_page,
-    $last_div, $my_admin_login, $versionchk, $yabb_update );
+    $last_div, $my_admin_login, $versionchk, $yabb_update, $yabb_dnloads );
 ## system ##
 our (
     $action_area,   $cliped,        $date,        $formsession,

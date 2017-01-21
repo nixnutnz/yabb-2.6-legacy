@@ -1177,7 +1177,7 @@ qq~[quote author=$cloaked_author link=impost date=$mdate\]$message\[/quote\]\n~;
                 ) = split /[|]/xsm, $checkthemessage;
                 if ( $qmessageid == $INFO{'id'} ) { last; }
             }
-            our( $guest_name, $guest_email ) = split /\s/xsm, $mfrom;
+            our ( $guest_name, $guest_email ) = split /\s/xsm, $mfrom;
             $guest_name =~ s/%20/ /gxsm;
             $message =~ s/<br.*?>/\n/igxsm;
             $message =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;

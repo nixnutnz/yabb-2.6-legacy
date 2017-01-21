@@ -32,16 +32,20 @@ if ( $action eq 'detailedversion' ) { return 1; }
 our ( %chrwarn, %croak, %fatxt, %livepreview_txt, %maintxt, %npf_txt,
     %post_txt, %spell_check, );
 ## paths ##
-our ( $boardurl, $defaultimagesdir, $imagesdir, $modimgurl, $scripturl,
-    $uploaddir, $uploadurl, $yyhtml_root, $vardir);
+our (
+    $boardurl,  $defaultimagesdir, $imagesdir,
+    $modimgurl, $scripturl,        $uploaddir,
+    $uploadurl, $yyhtml_root,      $vardir
+);
 ## system/templates ##
 our (
-    $iamadmin,    $cat_col,     $cat_exp,       $col_row,         $date,
-    $displayname, $filesize_info, $filetype_info,   $iamguest,
-    $message,     $mfn,           $moresmilieslist, $my_ajxcall,
-    $nolinkallow, $post,          $quick_post,      $replyguest,
-    $speedpost,   $submittxt,     $uid,             $username,
-    $yyext,       $yymain,        %FORM,            %INFO,
+    $iamadmin,   $cat_col,     $cat_exp,       $col_row,
+    $date,       $displayname, $filesize_info, $filetype_info,
+    $iamguest,   $message,     $mfn,           $moresmilieslist,
+    $my_ajxcall, $nolinkallow, $post,          $quick_post,
+    $replyguest, $speedpost,   $submittxt,     $uid,
+    $username,   $yyext,       $yymain,        %FORM,
+    %INFO,
 );
 ## settings ##
 our (
@@ -553,10 +557,10 @@ sub attach {
     <tr id="feature_status_6">
         <td colspan="2">~;
 
-    my $startcount;
+    my $startcount = 0;
     foreach my $y ( 1 .. $allowattach ) {
         if (   ( $action eq 'modify' || $action eq 'modify2' )
-            && $files[ $y - 1 ] ne q{}
+            && $files[ $y - 1 ]
             && -e "$uploaddir/$files[$y-1]" )
         {
             $startcount++;
@@ -640,6 +644,7 @@ sub attach {
 sub speedpost {
     ( $submittxt, $post ) = @_;
     $submittxt ||= q{};
+    $post      ||= q{};
     $speedpost = qq~
             var postdelay = $min_post_speed*1000;
             document.postmodify.$post.value = '$post_txt{"delay"}';

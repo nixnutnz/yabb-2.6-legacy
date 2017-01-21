@@ -49,9 +49,9 @@ our (
 );
 ## locations ##
 our (
-    $boardsdir, $datadir,   $htmldir,   $imagesdir, $langdir,
-    $memberdir, $scripturl, $uploaddir, $uploadurl, $yyhtml_root,
-    $vardir,    $modimgurl
+    $boardsdir, $datadir,     $htmldir,   $imagesdir,
+    $langdir,   $memberdir,   $scripturl, $uploaddir,
+    $uploadurl, $yyhtml_root, $vardir,    $modimgurl
 );
 ## settings ##
 our (
@@ -478,7 +478,6 @@ sub post_page {
     my $guest_vote = 0;
     if ( $pollthread && $iamguest ) { $guest_vote = 1; }
     if ( $pollthread == 2 ) { $settofield = 'question'; }
-
     # this defines if the notify on reply is shown or not.
     my $notification = q{};
     if (  !$iamguest
@@ -1302,12 +1301,12 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             <img src="$imagesdir/$newload{'brd_col'}" id="attform_sub" alt="$fatxt{'80s'}" title="$fatxt{'80s'}" class="cursor" style="visibility:hidden;" onclick="enabPrev2(-1);" />~;
             }
 
-            my $startcount;
+            my $startcount = 0;
             my $mypoll_att = q{};
             foreach my $y ( 1 .. $allowattach ) {
                 my $my_att_a = q{};
                 if (   ( $action eq 'modify' || $action eq 'modify2' )
-                    && $files[ $y - 1 ] ne q{}
+                    && $files[ $y - 1 ]
                     && -e "$uploaddir/$files[$y-1]" )
                 {
                     $startcount++;
@@ -1343,12 +1342,12 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                       )
                       . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span></div>~;
                 }
-                $mypoll_att .= $my_att_a;
+                $mypoll_att = $my_att_a;
 
             }
             if ( !$startcount ) { $startcount = 1; }
 
-            my $my_att_b = {};
+            my $my_att_b = q{};
             if ( $allowattach > 1 ) {
                 $my_att_b = qq~
             <script type="text/javascript">

@@ -39,9 +39,9 @@ our (
 );
 ## system ##
 our (
-    $attachment, $curname,   $curnum, $daytxt, $displayname,
-    $iamguest,   $movedflag, $ns,     $uid,    $username,
-    $yyexec,     $yyext,     %useraccount,     $date
+    $attachment, $curname,   $curnum,      $daytxt, $displayname,
+    $iamguest,   $movedflag, $ns,          $uid,    $username,
+    $yyexec,     $yyext,     %useraccount, $date
 );
 ## templates ##
 our ( $showattach, $showattachhr, );
@@ -499,6 +499,7 @@ s/\[color=([[:alnum:]# ]+)\](.+?)\[\/color\]/<span style="color: $1;">$2<\/span>
     $message =~
 s/\[font=([\w# -]+)\](.+?)\[\/font\]/<span style="font-family: $1;">$2<\/span><!--font-->/igxsm;
 
+## Mod Hook YaBBC ##
     while ( $message =~
         s/\[size=([[:alnum:]# ]+)\](.+?)\[\/size\]/sizefont($1,$2)/eigxsm )
     {

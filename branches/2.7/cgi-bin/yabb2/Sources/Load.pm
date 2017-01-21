@@ -1597,7 +1597,7 @@ sub load_broadcastmessages {    #check broadcast messages
                     $bc_count++;
                     $pm_bc_read{ $messlst{'messageid'} } = 1;
                 }
-                elsif ( broadmessage_view($messlst{'mtousers'} ) && ( !$messlst{'mexpire'} || $date < ( $messlst{'messageid'} + $messlst{'mexpire'} * 86400 ) ) ) {
+                elsif ( broadmessage_view( $messlst{'mtousers'} ) ) {
                     $bc_count++;
                     if ( exists $pm_bc_read{ $messlst{'messageid'} } ) {
                         $pm_bc_read{ $messlst{'messageid'} } = 1;

@@ -138,7 +138,6 @@ our $linewrap = 80;
 our $newswrap = 0;
 
 ## our Mod Hook ##
-# get the current date/time
 
 our $date = int( time() + $timecorrection );
 

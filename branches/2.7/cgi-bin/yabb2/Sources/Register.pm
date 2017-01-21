@@ -995,7 +995,6 @@ sub register2 {
     ${ $uid . $reguser }{'language'}   = $language;
     ${ $uid . $reguser }{'hideage'}    = $member{'hide_age'} ? 1 : 0;
     ${ $uid . $reguser }{'pageindex'}  = q~1|1|1|1~;
-    ${ $uid . $reguser }{'referrer'} = $member{'referrer'};
 
 ## reguser Mod Hook ##
 

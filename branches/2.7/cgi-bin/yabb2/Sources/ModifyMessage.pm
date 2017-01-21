@@ -32,12 +32,13 @@ our ( %croak, %fatxt, %timelocktxt, %post_txt, %post_polltxt, @uploadtranlist );
 our ( $boardsdir, $datadir, $scripturl, $uploaddir, $vardir );
 ## system ##
 our (
-    $annboard, $bypass_lock_perm, $cgi_query,    $currentboard,     $date,
-    $header,           $iamadmin,     $iamfmod,          $iamgmod,
-    $iamguest,         $iamposter,    $post_speed_count, $post_txt_loaded,
-    $posttime,         $sessionvalid, $staff,            $uid,
-    $user_ip,          $username,     $yysetlocation,    $yy_threadline,
-    $yytitle,          %FORM,         %INFO,             %thread_arrayref,
+    $annboard,        $bypass_lock_perm, $cgi_query,    $currentboard,
+    $date,            $header,           $iamadmin,     $iamfmod,
+    $iamgmod,         $iamguest,         $iamposter,    $post_speed_count,
+    $post_txt_loaded, $posttime,         $sessionvalid, $staff,
+    $uid,             $user_ip,          $username,     $yysetlocation,
+    $yy_threadline,   $yytitle,          %FORM,         %INFO,
+    %thread_arrayref,
 );
 ## settings ##
 our (
@@ -943,7 +944,8 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
     }
     {
         no strict qw(refs);
-        if ( !${ $uid . $username }{'postlayout'} || ${ $uid . $username }{'postlayout'} ne
+        if (  !${ $uid . $username }{'postlayout'}
+            || ${ $uid . $username }{'postlayout'} ne
 "$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'}"
           )
         {
