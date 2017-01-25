@@ -413,7 +413,7 @@ sub postbox3 {
     #// Collapse/Expand additional features
     #//var col_row = $col_row;
     my @noneedrow = qw(imsend eventcal);
-    my $needrow   = 1;
+    my $needrow = 1;
     foreach (@noneedrow) {
         if ( $action eq $_ ) {
             $needrow = 0;

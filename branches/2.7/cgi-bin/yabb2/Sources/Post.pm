@@ -558,9 +558,11 @@ sub post_page {
     else           { $subtitle = "<i>$sub</i>"; }
 
     # this is shown every post page except the IM area.
-    if (   $destination ne 'modalert2'
+    if (
+           $destination ne 'modalert2'
         && $destination ne 'guestpm2'
-        && !$quick_post )
+        && !$quick_post
+      )
     {
         my $threadlink = $subtitle;
         if ($threadid) {
@@ -784,7 +786,8 @@ $iconliveprev
 
     our $my_pollsection = q{};
     our $my_tview       = q{};
-    if (   $threadid
+    if (
+           $threadid
         && ( !$quick_post )
         && $postthread == 2
         && $username ne 'Guest' )
