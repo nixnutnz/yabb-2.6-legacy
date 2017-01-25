@@ -162,7 +162,7 @@ sub display_thread {
            $enable_guest_view_limit
         && $iamguest
         && !$iambot
-        && (   !$yy_cookies{$cookieview}
+        && (  !$yy_cookies{$cookieview}
             || $yy_cookies{$cookieview} < $guest_view_limit )
       )
     {
@@ -1852,7 +1852,7 @@ qq~$menusep<a href="$scripturl?action=markunread;thread=$viewnum;board=$currentb
     }
 
     # Template it
-    $tabsep ||= q{};
+    $tabsep  ||= q{};
     $navback ||= q{};
     my $yynavback =
 qq~$tabsep <a href="$scripturl">&laquo; $img_txt{'103'}</a> $tabsep $navback $tabsep~;

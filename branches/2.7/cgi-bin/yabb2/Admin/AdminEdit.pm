@@ -680,8 +680,9 @@ sub gmod_settings2 {
     }
 
     my $setfile = q{};
-    { no warnings qw(uninitialized);
-    $setfile = << "EOF";
+    {
+        no warnings qw(uninitialized);
+        $setfile = << "EOF";
 ### Gmod Related Settings ###
 
 \$allow_gmod_admin = '$FORM{'allow_gmod_admin'}';
@@ -880,7 +881,7 @@ editbots2 => '$FORM{'editbots'}',
 
 1;
 EOF
-}
+    }
 
     our ($MODACCESS);
     fopen( 'MODACCESS', '>', 'Variables/Gmodset.pm' )

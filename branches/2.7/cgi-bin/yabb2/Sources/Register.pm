@@ -1193,7 +1193,7 @@ sub register2 {
             $yymain =~ s/\Q{yabb regusername}\E/$member{'regusername'}/xsm;
             $yymain =~ s/\Q{yabb passwrd1}\E/$member{'passwrd1'}/xsm;
             $yymain =~ s/\Q{yabb cookie_length}\E/$cookie_length/xsm;
-            build_ims( $reguser, 'load' );    # isn't loaded because was Guest before
+            build_ims( $reguser, 'load' );
         }
         $yytitle = $register_txt{'245'};
     }

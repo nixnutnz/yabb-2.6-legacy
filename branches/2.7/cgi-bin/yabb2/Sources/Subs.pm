@@ -2344,8 +2344,9 @@ sub write_ctb {
     my $newtime = ctbtime();
     my $newctb =
 qq~### ThreadID: $threadid, LastModified: $newtime ###\n\n%$threadid = (\n~;
-    foreach (@tag) {
-        $newctb .= qq~$_ => "${$threadid}{$_}",\n~;
+    foreach my $cnt ( 0 .. $#tag ) {
+        my $val = ${$threadid}{ $tag[$cnt] } || q{};
+        $newctb .= qq~'$tag[$cnt]' => '$val',\n~;
     }
     $newctb .= qq~);\n\n1;\n~;
     our ($UPDATE_CTB);

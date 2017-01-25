@@ -44,6 +44,8 @@ our (
     @spamrules,
 );
 
+## our Mod Hook ##
+
 load_language('Admin');
 
 # TSC

@@ -478,6 +478,7 @@ sub post_page {
     my $guest_vote = 0;
     if ( $pollthread && $iamguest ) { $guest_vote = 1; }
     if ( $pollthread == 2 ) { $settofield = 'question'; }
+
     # this defines if the notify on reply is shown or not.
     my $notification = q{};
     if (  !$iamguest

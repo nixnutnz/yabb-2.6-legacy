@@ -216,6 +216,7 @@ sub edit_tab {
     my $edittabmenu = q{};
     my $edittabs    = q{};
     foreach my $i ( 0 .. $#advanced_tabs ) {
+        no warnings qw(uninitialized);
         my ($inputlength);
         if ( $advanced_tabs[$i] =~ /[|]/xsm ) {
             my ( $tab_key, $tmptab_url, $isaction, $username_req, $tab_access,
@@ -239,15 +240,12 @@ sub edit_tab {
                     $tab_url .= qq~;username=$useraccount{$username}~;
                 }
                 $inputlength = length $tabtxt{$tab_key};
-                $edittab{$tab_key} =
-qq~<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;" accept-charset="$yymycharset">~;
-                $edittab{$tab_key} .=
-qq~<input type="text" name="$tab_key" id="$tab_key" value="$tabtxt{$tab_key}" size="$inputlength" class="edittab" />~;
-                $edittab{$tab_key} .=
-qq~<input type="image" src="$micon_bg{'tabsave'}" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" class="editttab_img" />~;
-                $edittab{$tab_key} .=
-qq~ <a href="$scripturl?action=deletetab;deltab=$enc_key" style="padding:0; margin:0">$tabdel</a>~;
-                $edittab{$tab_key} .= q~</form>~;
+                $edittab{$tab_key} = << "TAB";
+<form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;" accept-charset="$yymycharset">
+    <input type="text" name="$tab_key" id="$tab_key" value="$tabtxt{$tab_key}" size="$inputlength" class="edittab" />
+    <input type="image" src="$micon_bg{'tabsave'}" alt="$tabmenu_txt{'savetab'}" title="$tabmenu_txt{'savetab'}" class="editttab_img" /><a href="$scripturl?action=deletetab;deltab=$enc_key" style="padding:0; margin:0">$tabdel</a>
+</form>
+TAB
                 $edittabs .=
                   qq~<option value="$tab_key"~
                   . (

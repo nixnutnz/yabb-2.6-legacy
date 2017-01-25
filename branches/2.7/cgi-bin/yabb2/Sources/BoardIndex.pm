@@ -35,7 +35,7 @@ our ( %boardindex_exptxt, %boardindex_imtxt, %boardindex_txt, %croak, %img,
     %maintxt, %micon, %micon_bg, );
 ## locations ##
 our (
-    $boarddir,  $boardsdir, $datadir, $htmldir, $imagesdir,
+    $boarddir,  $boardsdir, $datadir, $htmldir,     $imagesdir,
     $memberdir, $scripturl, $vardir,  $yyhtml_root, $modimgurl
 );
 ## settings ##
@@ -782,10 +782,13 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                             && ${ $uid . $curboard }{'lastposttime'} >
                             ${ $uid . $lastposter }{'regtime'}
                         )
-                        || ${ $uid . $lastposter }{'position'} eq
-                        'Administrator'
-                        || ${ $uid . $lastposter }{'position'} eq
-                        'Global Moderator'
+                        || (
+                            ${ $uid . $lastposter }{'position'}
+                            && ( ${ $uid . $lastposter }{'position'} eq
+                                'Administrator'
+                                || ${ $uid . $lastposter }{'position'} eq
+                                'Global Moderator' )
+                        )
                       )
                     {
                         $lastposter = profile_view($lastposter);

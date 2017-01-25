@@ -39,7 +39,7 @@ our (
     $iamgmod,          $uid,          $username,  $wantarray,
     $yyaext,           $yyexec,       $yyext,     $yysetlocation,
     %gmod_access,      %INFO,         %memberinf, %memberlist,
-    %vars,             @allboards,    @chararray,
+    %vars,             @allboards,    @chararray, %updatethread,
 );
 ## our Mod Hook ##
 
@@ -282,27 +282,8 @@ sub message_totals {
             no strict qw(refs);
             ${$updatethread}{'repliers'} = join q{,}, @repliers;
         }
-
-# Changes here on @tag must also be done in Post.pm -> sub Post2 -> my @tag = ...
-        my @tag =
-          qw(board replies views lastposter lastpostdate threadstatus repliers);
-## ctb Mods ##
-        my $prnctb =
-qq~### ThreadID: $updatethread, LastModified: $newtime ###\n\n%$updatethread = (\n~;
-        {
-            no strict qw(refs);
-            for my $cnt ( 0 .. $#tag ) {
-                my $val = ${$updatethread}{ $tag[$cnt] } || q{};
-                $prnctb .= qq~'$tag[$cnt]' => "$val",\n~;
-            }
-        }
-        $prnctb .= qq~);\n\n1;\n~;
-        our ($UPDATE_CTB);
-        fopen( 'UPDATE_CTB', '>', "$datadir/$updatethread.ctb" )
-          or fatal_error( 'cannot_open', "$datadir/$updatethread.ctb" );
-        print {$UPDATE_CTB} $prnctb
-          or croak "$croak{'print'} $updatethread.ctb";
-        fclose('UPDATE_CTB') or croak "$croak{'close'} $updatethread.ctb";
+        my $myctb = qq~$datadir/$updatethread.ctb~;
+        write_ctb( $myctb, $updatethread, %updatethread );
     }
     return;
 }

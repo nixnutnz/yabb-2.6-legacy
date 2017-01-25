@@ -90,10 +90,7 @@ sub main_menu {
 ## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
     $action = $INFO{'action'} || q{};
     my $tmpaction = q{};
-    if ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
-    elsif ( $action && !$INFO{'board'} && !$INFO{'num'} ) {
-        $tmpaction = $acting{$action} || $action;
-    }
+    if ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }    
     elsif ( $action && $iamadmin ) {
         if ( $action eq 'addtab' ) {
             require Sources::AdvancedTabs;
@@ -103,6 +100,9 @@ sub main_menu {
             require Sources::AdvancedTabs;
             edit_tab();
         }
+    }
+    elsif ( $action && !$INFO{'board'} && !$INFO{'num'} ) {
+         $tmpaction = $acting{$action} || $action;
     }
     else { $tmpaction = 'home'; }
 
@@ -254,6 +254,7 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
                 $yytabmenu .= qq~                        <li><span$tab_sel>~;
                 $yytabmenu .= qq~<a href="$tab_url"~;
                 $yytabmenu .= $newwin;
+                $tabtxt{$tab_key} ||= q{};
                 $yytabmenu .=
 qq~ title="$tabtxt{$tab_key}">$tabtxt{$tab_key}</a>$tabhtml_r~;
             }

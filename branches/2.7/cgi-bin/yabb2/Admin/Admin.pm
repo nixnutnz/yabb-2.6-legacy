@@ -42,14 +42,14 @@ our ( $adminurl, $boardurl, $convdir, $htmldir, $langdir, $memberdir, $vardir,
 );
 ## settings ##
 our (
-    $allow_hide_email, $click_logtime,  $cookieusername, $default_template,
-    $defaultusertxt,   $do_scramble_id, $dstoffset,
-    $emailpassword,    $enableclicklog, $imsubject,
-    $imtext,           $ip_lookup,      $matchcase,
-    $matchname,        $matchuser,      $matchword,
-    $maxdays,          $mbname,         $name_cannot_be_userid,
-    $send_welcomeim,   $sendname,       $timeoffset,
-    $timeselected,     @reserve
+    $allow_hide_email,      $click_logtime,  $cookieusername,
+    $default_template,      $defaultusertxt, $do_scramble_id,
+    $dstoffset,             $emailpassword,  $enableclicklog,
+    $imsubject,             $imtext,         $ip_lookup,
+    $matchcase,             $matchname,      $matchuser,
+    $matchword,             $maxdays,        $mbname,
+    $name_cannot_be_userid, $send_welcomeim, $sendname,
+    $timeoffset,            $timeselected,   @reserve
 );
 ## template ##
 our ( $convert_box, $convertlang_box, $front_page,
@@ -66,6 +66,7 @@ our (
     %catinfo,       %FORM,          %INFO,        %referallow,
     %yy_cookies,    @categoryorder, @other_cookies,
 );
+
 ## our Mod Hook ##
 
 load_language('Admin');
@@ -490,8 +491,11 @@ qq~ <a href="$scripturl?action=viewprofile;username=$membernamecloaked">$memberi
 sub showclicklog {
     is_admin_or_gmod();
     my $logtimetext = $admin_txt{'698a'};
-    if   ($enableclicklog) { $logtimetext = $admin_txt{'698'}; $logtimetext =~ s/\Q{yabb click_logtime}\E/$click_logtime/gxsm; }
-    else                   { $logtimetext = $admin_txt{'698a'}; }
+    if ($enableclicklog) {
+        $logtimetext = $admin_txt{'698'};
+        $logtimetext =~ s/\Q{yabb click_logtime}\E/$click_logtime/gxsm;
+    }
+    else { $logtimetext = $admin_txt{'698a'}; }
 
     our ($LOG);
     fopen( 'LOG', '<', "$vardir/clicklog.log" )

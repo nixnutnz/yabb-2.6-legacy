@@ -217,6 +217,9 @@ sub load_usersettings {
         {
             no strict qw(refs);
             load_user($username);
+            if ( !${ $uid . $username }{'realname'} ) {
+                $iamguest = 1;
+            }
             if ( !$maintenance
                 || ${ $uid . $username }{'position'} eq 'Administrator' )
             {
@@ -1045,9 +1048,12 @@ qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$
         $quicklinks .= q~</a></div>~;
     }
     else {
-        $quicklinks =
+        if ( $format{$user} ) {
+            $quicklinks =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastnline>~
-          . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</a>~;
+              . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</a>~;
+        }
+        else { $quicklinks = q{}; }
     }
 
     return $quicklinks;
@@ -1403,7 +1409,7 @@ sub build_ims {
     }
 
     ## inbox if it exists, either load and count totals or parse and update format.
-    my $inunr = 0;
+    my $inunr  = 0;
     my $incurr = 0;
     if ( -e "$memberdir/$builduser.msg" ) {
         our ($USERMSG);

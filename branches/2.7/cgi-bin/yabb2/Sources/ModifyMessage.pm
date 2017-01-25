@@ -136,7 +136,7 @@ sub modify_message {
         if ($bypass_lock_perm) { $icanbypass = checkuser_lockbypass(); }
         if ( !$icanbypass ) { fatal_error('topic_locked'); }
     }
-    elsif ( !$staff
+    elsif (!$staff
         && !$modtopic_chk
         && $tlnomodflag
         && $date > $mdate + ( $tlnomodtime * $timeset ) )
@@ -225,8 +225,8 @@ sub modify_message {
     our $destination = 'modify2';
     $post = 'postmodify';
     require Sources::Post;
-    $yytitle       = $post_txt{'66'};
-    $mename        = $mname;
+    $yytitle = $post_txt{'66'};
+    $mename  = $mname;
     $thismusername = $musername;
     $tmpmdate      = $mdate;
     post_page();

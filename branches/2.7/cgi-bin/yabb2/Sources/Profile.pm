@@ -2251,11 +2251,14 @@ qq~$scripturl?action=$script_action;username=$useraccount{$member{'username'}};s
         member_index( 'remove', $noteuser );
 
         # EventCalbday Begin
+        my @birthmembers = ();
         our ($FILE);
-        fopen( 'FILE', '<', "$vardir/eventcalbday.db" )
-          or croak "$croak{'open'} birthday";
-        my @birthmembers = <$FILE>;
-        fclose('FILE') or croak "$croak{'close'} birthday";
+        if ( -e "$vardir/eventcalbday.db" ) {
+            fopen( 'FILE', '<', "$vardir/eventcalbday.db" )
+              or croak "$croak{'open'} birthday";
+            @birthmembers = <$FILE>;
+            fclose('FILE') or croak "$croak{'close'} birthday";
+        }
 
         my $prnx = q{};
         for my $x (@birthmembers) {
