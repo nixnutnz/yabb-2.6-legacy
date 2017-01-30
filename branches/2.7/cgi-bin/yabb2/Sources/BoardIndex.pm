@@ -390,10 +390,11 @@ sub board_index {
             && $lastpostrealtime{$curboard}
             && (
                 (
-                      !$yyuserlog{$curboard}
-                    && $lastpostrealtime{$curboard} > $dmax
+                    !$yyuserlog{$curboard}
+                    && (   $lastpostrealtime{$curboard}
+                        && $lastpostrealtime{$curboard} > $dmax )
                 )
-                || (   $yyuserlog{$curboard} > $dmax
+                || $yyuserlog{$curboard} && ( $yyuserlog{$curboard} > $dmax
                     && $yyuserlog{$curboard} < $lastpostrealtime{$curboard} )
             )
           )

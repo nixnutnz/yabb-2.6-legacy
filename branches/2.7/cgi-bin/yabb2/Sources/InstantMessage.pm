@@ -1419,7 +1419,7 @@ qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'re
                 && ${ $uid . $user_to }{'awayreply'}
                 && ${ $uid . $user_to }{'awaysubj'} )
             {
-                if ( ${ $uid . $user_to }{'awayreplysent'} ) {
+                if ( !${ $uid . $user_to }{'awayreplysent'} ) {
                     ${ $uid . $user_to }{'awayreplysent'} = $username;
                     user_account( $user_to, 'update' );
                 }
@@ -1495,6 +1495,7 @@ qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'re
                     print {$INBOX} $prnmyinmess
                       or croak "$croak{'print'} INBOX";
                     fclose('INBOX') or croak "$croak{'close'} INBOX";
+                    update_pms( $username, $rmessageid, 'messagein' );
                 }
                 ## relocated sender msg out of the loop
 

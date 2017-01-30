@@ -2453,7 +2453,7 @@ sub modify_profile_contacts2 {
 
     user_account( $user, 'update' );
 
-    if ( $emailnewpass && $newpassemail == 1 ) {
+    if ( $emailnewpass && $newpassemail && $newpassemail == 1 ) {
         remove_user_online($user);    # Remove user from online log
 
         if ( $username eq $user ) {

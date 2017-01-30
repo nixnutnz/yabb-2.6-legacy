@@ -1646,7 +1646,7 @@ sub load_guestmessages {    #check guest messages
         no strict qw(refs);
         if ( -e "$memberdir/guest.messages" ) {
 
-            foreach ( split /,/xsm, ${$builduser}{'PMgRead'} ) {
+            foreach ( split /,/xsm, ${$builduser}{'PMgRead'} || q{} ) {
                 $pm_g_read{$_} = 1;
             }
             our ($GMESS);
