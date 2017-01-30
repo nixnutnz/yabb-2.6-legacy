@@ -319,10 +319,10 @@ qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex
     my @nostickythreadlist;
     foreach my $threadlist (@threadlist) {
         my $threadstatus = ( split /[|]/xsm, $threadlist )[8];
-        if ( $threadstatus =~ /h/ism && !$staff ) {
+        if ( $threadstatus =~ /h/ixsm && !$staff ) {
             next;
         }
-        if ( $threadstatus =~ /s/ism ) {
+        if ( $threadstatus =~ /s/ixsm ) {
             push @threads, $threadlist;
             $countsticky++;
         }

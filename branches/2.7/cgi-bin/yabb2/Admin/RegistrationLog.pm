@@ -51,7 +51,7 @@ our (
 our (
     $date,     $language, $uid,           $user_ip,
     $username, $yymain,   $yysetlocation, $yytitle,
-    %FORM,     %INFO,     @memberlist, $iamadmin,
+    %FORM,     %INFO,     @memberlist,    $iamadmin,
 );
 
 ## our Mod Hook ##

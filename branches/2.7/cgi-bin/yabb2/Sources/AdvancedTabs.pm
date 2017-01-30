@@ -239,6 +239,7 @@ sub edit_tab {
                 if ($username_req) {
                     $tab_url .= qq~;username=$useraccount{$username}~;
                 }
+                $tabtxt{$tab_key} ||= qq~$img_txt{'no_text'}$tab_key~;
                 $inputlength = length $tabtxt{$tab_key};
                 $edittab{$tab_key} = << "TAB";
 <form action="$scripturl?action=edittab2;savetab=$enc_key" method="post" name="$tab_key$isexttabs" style="display: inline; white-space: nowrap;" accept-charset="$yymycharset">

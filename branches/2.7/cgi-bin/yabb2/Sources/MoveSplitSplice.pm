@@ -728,8 +728,8 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$msub'~;
                 {
                     $mstate .= 'a';
                 }
-                if ( $mstate !~ /l/ism ) { $mstate .= 'l'; }
-                if ( $mstate !~ /m/ism ) { $mstate .= 'm'; }
+                if ( $mstate !~ /l/ixsm ) { $mstate .= 'l'; }
+                if ( $mstate !~ /m/ixsm ) { $mstate .= 'm'; }
                 ${$curthreadid}{'threadstatus'} = $mstate;
             }
             else {
@@ -767,7 +767,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
     if ( $curboard eq $newboard && $FORM{'newthread'} eq 'new' ) {
         ( $msub, $mname, $memail, undef, $musername, $micon, undef ) =
           split /[|]/xsm, $utdnewthread[0], 7;
-        if ( $old_mstate !~ /0/ism ) { $old_mstate .= '0'; }
+        if ( $old_mstate !~ /0/ixsm ) { $old_mstate .= '0'; }
         $yy_threadline =
 qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$old_mstate\n~;
         unshift @curmessindex, $yy_threadline;
@@ -821,7 +821,7 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
                 if ( $annboard && $newboard eq $annboard ) {
                     $old_mstate .= 'a';
                 }
-                else { $old_mstate =~ s/a//gism; }
+                else { $old_mstate =~ s/a//gixsm; }
             }
 
             if ( $old_mstate !~ /0/ixsm ) { $old_mstate .= '0'; }

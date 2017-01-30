@@ -243,6 +243,10 @@ sub postbox2 {
     $message ||= q{};
     if ( $INFO{'edit_cal_even'} ) { $message = q~{yabb calevent}~; }
 
+    my $autoprev =
+q~onclick="storeCaret(this);" onkeyup="storeCaret(this); autoPreview()" onchange="storeCaret(this);"~;
+## Mod Hook no autoprev ##
+
     my $box = qq~
             <div id="spell_container"></div>
             <div class="left99">
@@ -251,7 +255,7 @@ sub postbox2 {
                     <input type="hidden" name="messagewidth" id="messagewidth" value="$pwidth" />
                     <input type="hidden" name="messageheight" id="messageheight" value="$pheight" />
                     <div id="dragcanvas" style="height: $dheight; width: $dwidth;">
-                        <textarea name="message" id="message" rows="8" cols="68" style="height: $mheight; width: $mwidth; font-size: $mtextsize;" onclick="storeCaret(this);" onkeyup="storeCaret(this); autoPreview()" onchange="storeCaret(this);" tabindex="4">$message</textarea>
+                        <textarea name="message" id="message" rows="8" cols="68" style="height: $mheight; width: $mwidth; font-size: $mtextsize;" $autoprev tabindex="4">$message</textarea>
                         <div id="dragbgw" style="height: $dheight;">
                             <img src="$defaultimagesdir/resize_wb.gif" id="dragImg1" class="drag" style="left: $dragwpos; height: $dheight" alt="resize_wb" />
                         </div>

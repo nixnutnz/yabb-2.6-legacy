@@ -49,6 +49,8 @@ our (
 ## templates ##
 our ( $mysend_spam, $mysend_top, $mysend_valcode, );
 
+## our Mod Hook ##
+
 if ( !$sendtopicmail || $sendtopicmail == 2 ) { fatal_error('not_allowed'); }
 
 if ( $gpvalid_en && $iamguest ) { require Sources::Decoder; }

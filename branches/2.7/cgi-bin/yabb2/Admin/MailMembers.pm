@@ -60,7 +60,7 @@ sub mailing {
         <tr>
             <td class="titlebg">
                 $admin_img{'register'}<b> $admintxt{'19'}</b>
-                <form action="$adminurl?action=mailinggrps" method="post" name="mailgrps" style="display: inline;" accept-charset="$yymycharset">
+                <form action="$adminurl?action=mailing" method="post" style="display: inline;" accept-charset="$yymycharset">
                     <span style="float: right;">
                     <input type="submit" value="$amv_txt{'53'}" class="button" />
                     </span>
@@ -199,11 +199,16 @@ sub mailing {
                 to_js($jsubject);
                 to_js($jtext);
 
+                my $rname = q{};
+                {
+                    no strict qw(refs);
+                    $rname = ${ $uid . $osender }{'realname'};
+                }
                 $yymain .= qq~<tr>
                 <td class="windowbg2">
                     <input type="radio" name="usemail" value="$otime" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="showMail('$jsubject', '$jtext', '$otime');" />
                 </td>
-                <td class="windowbg2 vtop"><span class="small">$thetime<br />${$uid.$osender}{'realname'}</span></td>
+                <td class="windowbg2 vtop"><span class="small">$thetime<br />$rname</span></td>
                 <td class="windowbg2 vtop"><span class="small">$osubject</span></td>
                 <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$admin_img{'admin_rem'}" alt="del" /></a></td>
             </tr>~;
@@ -221,12 +226,12 @@ sub mailing {
     </div>
     <div class="windowbg2" style="float: left; width: 50%; margin: 1%; margin-top: 0; border: 0;">
         <table>
-    <tr>
+            <tr>
                 <td class="center">
-        <input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
-    </td>
-    </tr>
-    </table>
+                <input type="submit" name="mailsend" value="$amv_txt{'41'}" style="width: 100%;" class="button" />
+                </td>
+            </tr>
+        </table>
     </div>
     <div style="clear: both;"></div>
 </div>
@@ -234,11 +239,14 @@ sub mailing {
 
 <script type="text/javascript">
 function checkIfSelected() {
-    for(var x = 0; x < document.adv_membermail.field1.options.length; x++) {
-        if(document.adv_membermail.field1.options[x].selected) return true;
-        alert("$amv_txt{'48a'}"); return false;
+    if( document.adv_membermail.field1.options.selectedIndex == -1 ) {
+        alert("$amv_txt{'48a'}");
+        return false;
+    } else {
+    return true;
     }
 }
+
 function selectCheckAll(tchecked) {
     for(var x = 0; x < document.adv_membermail.field1.options.length; x++) document.adv_membermail.field1.options[x].selected = tchecked;
 }
@@ -255,7 +263,7 @@ function showMail(thesubject, thetext, thetime) {
     }
 
     $yytitle     = $admin_txt{'6'};
-    $action_area = 'mailing';
+    $action_area = 'mailinggrps';
     admintemplate();
     return;
 }
@@ -368,24 +376,22 @@ sub mailing_members {
     $yymain .= qq~
 <div class="rightboxdiv">
     <table class="bordercolor border-space pad-cell">
-    <tr>
+        <tr>
             <td class="titlebg">
-        <span style="float: left;">
-             $admin_img{'register'}<b> $admintxt{'19'}</b>
-        </span>
-                <form action="$adminurl?action=mailinggrps" method="post" name="selsort" style="display: inline" accept-charset="$yymycharset">
-        <span style="float: right;">
-        <label for="sortform"><b>$ml_txt{'1'}</b></label>
-        <select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
-            <option value="username"$sel_user>$ml_txt{'35'}</option>
-            <option value="position"$sel_pos>$ml_txt{'87'}</option>
-        </select>
-        &nbsp;
-        <input type="button" value="$amv_txt{'54'}" class="button" onclick="window.location.href=\'$adminurl?action=mailing\'" />
-        </span>
-        </form>
-        </td>
-    </tr>
+                <span style="float: left;">$admin_img{'register'}<b> $admintxt{'19'}</b></span>
+                <form action="$adminurl?action=mailing" method="post" name="selsort" style="display: inline" accept-charset="$yymycharset">
+                <span style="float: right;">
+                    <label for="sortform"><b>$ml_txt{'1'}</b></label>
+                    <select name="sortform" id="sortform" style="font-size: 9pt;" onchange="submit()">
+                        <option value="username"$sel_user>$ml_txt{'35'}</option>
+                        <option value="position"$sel_pos>$ml_txt{'87'}</option>
+                    </select>
+                    &nbsp;
+                    <input type="button" value="$amv_txt{'54'}" class="button" onclick="window.location.href=\'$adminurl?action=mailinggrps\'" />
+                </span>
+                </form>
+            </td>
+        </tr>
     </table>
     <script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>
     <form name="adv_membermail" action="$adminurl?action=mailmultimembers;$sortmode" method="post" style="display: inline" onsubmit="return checkIfChecked(this); return submitproc()" accept-charset="$yymycharset">
@@ -436,7 +442,6 @@ sub mailing_members {
                 if ( !$sortgroups ) {
                     $sortgroups = "eee.$pstsort.$memposition.$memberrealname";
                 }
-
             }
             else {
                 $sortgroups = $memberrealname;
@@ -632,11 +637,16 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
                 to_js($jsubject);
                 to_js($jtext);
 
+                my $rname = q{};
+                {
+                    no strict qw(refs);
+                    $rname = ${ $uid . $osender }{'realname'};
+                }
                 $yymain .= qq~<tr>
                 <td class="windowbg2">
                     <input type="radio" name="usemail" value="$otime" class="windowbg2" style="border: 0; vertical-align: middle;" onclick="showMailmemb('$jsubject', '$jtext', '$otime');" />
                 </td>
-                <td class="windowbg2 vtop"><span class="small">$thetime<br />${$uid.$osender}{'realname'}</span></td>
+                <td class="windowbg2 vtop"><span class="small">$thetime<br />$rname</span></td>
                 <td class="windowbg2 vtop"><span class="small">$osubject</span></td>
                 <td class="windowbg2"><a href="$adminurl?action=deletemail;delmail=$otime"><img src="$admin_img{'admin_rem'}" alt="del" /></a></td>
             </tr>~;

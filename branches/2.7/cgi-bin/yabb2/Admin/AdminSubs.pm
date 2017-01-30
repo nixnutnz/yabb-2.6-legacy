@@ -48,7 +48,7 @@ sub mail_list {
     my ($m_line) = @_;
     is_admin_or_gmod();
     my $delmailline = q{};
-    my ( $mailline, );
+    my ($mailline);
     if ( !$INFO{'delmail'} ) {
         $mailline = $m_line;
         $mailline =~ s/\r//gxsm;

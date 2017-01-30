@@ -173,6 +173,8 @@ $abbr_lang = 'en-us';
 'reg_please' => q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
 'regplease' => q~Please Register~,
 'banned' => q~Banned~,
+'backup' => 'Remove this file if your board is in backup-lock for no reason.',
+'tmpchange' => 'Change Template:',
 );
 
 %load_txt = (
@@ -199,6 +201,9 @@ $abbr_lang = 'en-us';
 '811' => q~start Polls in this Board.~,
 '812' => q~post towards your Post Count in this Board.~,
 '813' => q~post Attachments in this Board.~,
+'maint' => 'Maintenance',
+'616c' => q~This forum is in Maintenance Mode!~,
+'tmod' => 'modify Topics in this Board',
 );
 
 %load_imtxt = (
@@ -314,12 +319,5 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 
 timetostring($date);
 $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$yabbversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
-
-$load_txt{'maint'} = 'Maintenance';
-$load_txt{'616c'} = q~This forum is in Maintenance Mode!~;
-$load_txt{'tmod'} = 'modify Topics in this Board';
-
-$maintxt{'backup'} = 'Remove this file if your board is in backup-lock for no reason.';
-$maintxt{'tmpchange'} = 'Change Template:';
 
 1;

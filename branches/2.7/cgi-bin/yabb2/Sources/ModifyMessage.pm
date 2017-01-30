@@ -917,7 +917,6 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
         fclose('BOARD') or croak "$croak{'close'} BOARD";
 
         board_setlast_info( $currentboard, \@board );
-
     }
     elsif ( $postid == $#{ $thread_arrayref{$threadid} } ) {
 

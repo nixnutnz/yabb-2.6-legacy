@@ -190,9 +190,9 @@ if ($use_guardian) {
 if ($referersecurity) { referer_check(); }
 require Sources::Security;
 
-banning();      # Check for banned people
-load_pms();     # Load IM's
-write_log();    # write into the logfile
+banning();
+load_pms();
+write_log();
 search_access();
 
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };

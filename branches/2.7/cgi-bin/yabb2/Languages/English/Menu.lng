@@ -102,6 +102,7 @@ if (!$language){$language = $lang;}
 'birthdaylist' => q~Birthday List~,
 'eventcal' => q~Calendar~,
 'to_top' => q~To Top of Page~,
+'no_text' => q~no text - ~,
 );
 
 %img_polltxt = (
