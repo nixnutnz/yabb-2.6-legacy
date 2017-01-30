@@ -2219,7 +2219,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
 # or you can get wrong .ctb files if two users save at the exact same moment.
 # Therefore we can't use &message_totals("load", $threadid); here.
 # File locking should be enabled in AdminCenter!
-# Changes here on @tag must also be done in System.pm -> sub message_totals -> my @tag = ...
+# Changes in @ctb_tag now done in only in Subs.pm -> sub write_ctb -> my @ctb_tag = ...
         my $newtime = ctbtime();
         if ( ${$threadid}{'board'} ne $currentboard ) {
             if ( access_check( ${$threadid}{'board'}, 2 ) ne 'granted' ) {

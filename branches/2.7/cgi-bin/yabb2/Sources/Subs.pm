@@ -2339,14 +2339,14 @@ sub membership_get {
 
 sub write_ctb {
     my ( $ctbfile, $threadid, %threadid ) = @_;
-    my @tag =
+    my @ctb_tag =
       qw(board replies views lastposter lastpostdate threadstatus repliers);
     my $newtime = ctbtime();
     my $newctb =
 qq~### ThreadID: $threadid, LastModified: $newtime ###\n\n%$threadid = (\n~;
-    foreach my $cnt ( 0 .. $#tag ) {
-        my $val = ${$threadid}{ $tag[$cnt] } || q{};
-        $newctb .= qq~'$tag[$cnt]' => '$val',\n~;
+    foreach my $i ( 0 .. $#ctb_tag ) {
+        my $val = ${$threadid}{ $ctb_tag[$i] } || q{};
+        $newctb .= qq~'$ctb_tag[$i]' => '$val',\n~;
     }
     $newctb .= qq~);\n\n1;\n~;
     our ($UPDATE_CTB);

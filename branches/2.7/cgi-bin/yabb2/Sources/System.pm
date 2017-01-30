@@ -53,16 +53,16 @@ sub boardtotals {
     my (@boardvars);
     if (@updateboards) {
         require "$boardsdir/forum.totals";
-        my @tags =
+        my @brd_tags =
           qw(threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate);
         if ( $job eq 'load' ) {
             {
                 no strict qw(refs);
                 for my $updateboard (@updateboards) {
                     @boardvars = @{ $totals{$updateboard} };
-                    for my $cnt ( 0 .. $#tags ) {
-                        ${ $uid . $updateboard }{ $tags[$cnt] } =
-                          $boardvars[$cnt];
+                    for my $i ( 0 .. $#brd_tags ) {
+                        ${ $uid . $updateboard }{ $brd_tags[$i] } =
+                          $boardvars[$i];
                     }
                 }
             }
@@ -73,11 +73,11 @@ sub boardtotals {
                 for my $updateboard (@updateboards) {
                     @boardvars = @{ $totals{$updateboard} };
                     chomp @boardvars;
-                    for my $cnt ( 0 .. $#tags ) {
-                        if ( exists( ${ $uid . $updateboard }{ $tags[$cnt] } ) )
+                    for my $i ( 0 .. $#brd_tags ) {
+                        if ( exists( ${ $uid . $updateboard }{ $brd_tags[$i] } ) )
                         {
-                            ${ $totals{$updateboard} }[$cnt] =
-                              ${ $uid . $updateboard }{ $tags[$cnt] };
+                            ${ $totals{$updateboard} }[$i] =
+                              ${ $uid . $updateboard }{ $brd_tags[$i] };
                         }
                     }
                 }
@@ -329,12 +329,12 @@ sub user_account {
     else { $userext = 'vars'; }
 
     # using sequential tag writing as hashes do not sort the way we like them to
-    my @tags =
+    my @var_tags =
       qw(realname password position addgroups email hidemail regdate regtime regreason location bday hideage disableage gender disablegender userpic usertext signature template language stealth webtitle weburl icq aim yim skype myspace facebook twitter youtube msn gtalk timeselect user_tz dynamic_clock postcount lastpost lastim im_ignorelist im_popup im_imspop pmviewMess notify_me board_notifications thread_notifications favorites buddylist cathide pageindex reversetopic postlayout sesquest sesanswer session lastips onlinealert offlinestatus awaysubj awayreply awayreplysent spamcount spamtime hide_avatars hide_user_text hide_img hide_attach_img hide_signat hide_smilies_row numberformat collapsebdrules return_to topicpreview collapsescpoll banned);
 
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        push @tags, ext_get_fields_array();
+        push @var_tags, ext_get_fields_array();
     }
     ## Mod hook ##
 
@@ -343,8 +343,8 @@ sub user_account {
         require "$memberdir/$user.$userext";
         {
             no strict qw(refs);
-            for my $cn ( 0 .. $#tags ) {
-                if ( $vars{ $tags[$cn] } ne ${ $uid . $user }{ $tags[$cn] } ) {
+            for my $i ( 0 .. $#var_tags ) {
+                if ( $vars{ $var_tags[$i] } ne ${ $uid . $user }{ $var_tags[$i] } ) {
                     $fix = 1;
                     last;
                 }
@@ -355,10 +355,10 @@ sub user_account {
         my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
         {
             no strict qw(refs);
-            for my $cnt ( 0 .. $#tags ) {
-                if ( ${ $uid . $user }{ $tags[$cnt] } ) {
+            for my $i ( 0 .. $#var_tags ) {
+                if ( ${ $uid . $user }{ $var_tags[$i] } ) {
                     $newvars .=
-qq~'$tags[$cnt]' => q\~${ $uid . $user }{$tags[$cnt]}\~,\n~;
+qq~'$var_tags[$i]' => q\~${ $uid . $user }{$var_tags[$i]}\~,\n~;
                 }
             }
         }

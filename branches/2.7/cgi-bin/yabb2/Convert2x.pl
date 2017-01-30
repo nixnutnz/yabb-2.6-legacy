@@ -1308,7 +1308,7 @@ sub fixcontrol {
                 $genderperms, $canpost,   $parent,        $rules,
                 $rulestitle,  $rulesdesc, $rulescollapse, $brdpasswr,
                 $brdpassw,    $bdrss
-            ) = split /[|]/xsm, $_;
+            ) = split /[|]/xsm;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
             $newcontrol{$oldboard} = [$cat, $mypic, $description, $mods, $modgroups, $topicperms, $replyperms, $pollperms, $zero, $membergroups, $ann, $rbin, $attperms, $minageperms, $maxageperms, $genderperms, $canpost, $parent, $rules, $rulestitle, $rulesdesc, $rulescollapse, $brdpasswr, $brdpassw, $brdrss];

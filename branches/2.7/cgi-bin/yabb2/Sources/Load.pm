@@ -1534,16 +1534,16 @@ sub build_ims {
 
 sub update_ims {
     my $builduser = shift;
-    my @tag =
+    my @im_tag =
       qw(PMmnum PMimnewcount PMmoutnum PMstorenum PMdraftnum PMfolders PMfoldersCount PMbcRead PMgRead);
 
     my $updateims =
       qq~### UserIMS YaBB 2.7.00 Version $builduser ###\n\n%ims = (\n~;
     {
         no strict qw(refs);
-        foreach my $cnt ( 0 .. $#tag ) {
-            my $newtag = ${$builduser}{ $tag[$cnt] } || q{};
-            $updateims .= qq~'$tag[$cnt]' => "$newtag",\n~;
+        foreach my $i ( 0 .. $#im_tag ) {
+            my $newtag = ${$builduser}{ $im_tag[$i] } || q{};
+            $updateims .= qq~'$im_tag[$i]' => '$newtag',\n~;
         }
     }
     $updateims .= qq~);\n\n1;\n~;
