@@ -434,6 +434,7 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
 
     }
     $yymain .= $myregister_endform;
+    $yymain =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
     $yymain .= qq~
 <script type="text/javascript">
     document.creator.regusername.focus();
@@ -1099,6 +1100,7 @@ sub register2 {
         $yymain =~ s/\Q{yabb prereg_txt1}\E/$prereg_txt{'1'}/xsm;
         $yymain =~ s/\Q{yabb preregspan}\E/$preregspan/gxsm;
         $yymain =~ s/\Q{yabb prereg_txt1a}\E/$prereg_txt{'1a'}/gxsm;
+        $yymain =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
         $yytitle = $prereg_txt{'1a'};
 
     }

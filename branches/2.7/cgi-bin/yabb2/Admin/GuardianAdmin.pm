@@ -441,7 +441,7 @@ sub gr_update_htaccess {
             push @htout, "$chk\n";
         }
         if ( $_ eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $chk =~ s/Deny from //gsm ) {
+        if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
             push @denies, $chk;
         }
     }

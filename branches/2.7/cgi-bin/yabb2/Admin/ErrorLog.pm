@@ -472,7 +472,7 @@ sub er_update_htaccess {
             push @htout, "$ln\n";
         }
         if ( $ln eq $htfooter ) { $start = 0; }
-        if ( $start == 1 && $ln =~ s/Deny from //gsm ) {
+        if ( $start == 1 && $ln =~ s/\QDeny from \E//gxsm ) {
             push @denies, $ln;
         }
     }
