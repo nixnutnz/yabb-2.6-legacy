@@ -965,6 +965,9 @@ sub deletemultimembers {
     automaintenance('off');
 
     $language = $templanguage;
+    $INFO{'sort'}     ||= q{};
+    $INFO{'reversed'} ||= q{};
+    $INFO{'start'} ||= 0;
     if ( $FORM{'button'} == 1 ) {
         $yysetlocation = qq~$adminurl?action=mailing;sort=$INFO{'sort'}~;
     }

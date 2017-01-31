@@ -322,7 +322,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/default.css" type="
         "view_reglog|$admintxt{'a8_sub5'}|$admintxt{'a8_label5'}|",
         "viewmembers|$admintxt{'a6_sub2'}|$admintxt{'a6_label2'}|",
         "modmemgr|$admintxt{'a6_sub3'}|$admintxt{'a6_label3'}|",
-        "mailing|$admintxt{'a6_sub4'}|$admintxt{'a6_label4'}|",
+        "mailinggrps|$admintxt{'a6_sub4'}|$admintxt{'a6_label4'}|",
         "ipban|$admintxt{'a6_sub5'}|$admintxt{'a6_label5'}|",
     );
 
