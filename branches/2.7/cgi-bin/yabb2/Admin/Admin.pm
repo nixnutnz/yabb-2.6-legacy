@@ -886,7 +886,9 @@ sub deletemultimembers {
         $FORM{'emailtext'} =~ s/[|]/&verbar;/gxsm;
         $FORM{'emailtext'} =~ s/\r(?=\n*)//gxsm;
         $mailline =
-          qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
+          qq~\$maillist{'$date'} = ['$FORM{'emailsubject'}', '$FORM{'emailtext'}', '$username'];~;
+        $mailline =~ s/\r//gxsm;
+        $mailline =~ s/\n/<br \/>/gxsm;
         require Admin::AdminSubs;
         mail_list($mailline);
     }

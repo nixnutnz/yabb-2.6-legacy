@@ -45,50 +45,34 @@ sub to_temphtml {
 }
 
 sub mail_list {
-    my ($m_line) = @_;
+    my ($mailline) = @_;
     is_admin_or_gmod();
-    my $delmailline = q{};
-    my ($mailline);
-    if ( !$INFO{'delmail'} ) {
-        $mailline = $m_line;
-        $mailline =~ s/\r//gxsm;
-        $mailline =~ s/\n/<br \/>/gxsm;
-    }
-    else {
-        $delmailline = $INFO{'delmail'};
-    }
+    my $delmailline = $INFO{'delmail'} || 0;
+    my $prnmail = q{};
+        if ($mailline) {
+                $prnmail = qq~$mailline\n~;
+        }
     if ( -e ('Variables/maillist.dat') ) {
-        our ($FILE);
-        fopen( 'FILE', '<', 'Variables/maillist.dat' )
-          or croak "$croak{'open'} maillist.dat";
-        my @maillist = <$FILE>;
-        fclose('FILE') or croak "$croak{'close'} maillist.dat";
+        our (%maillist);
+        require "Variables/maillist.dat";
 
-        my $prnmail = q{};
-        if ( !$INFO{'delmail'} ) {
-            $prnmail .= "$mailline\n";
+        if ( $delmailline ) {
+            delete $maillist{$delmailline};
         }
-        foreach my $curmail (@maillist) {
-            chomp $curmail;
-            my $otime = ( split /[|]/xsm, $curmail )[0];
-            if ( $otime ne $delmailline ) {
-                $prnmail .= "$curmail\n";
-            }
+        foreach my $otime (keys %maillist) {
+            my ( $osubject, $otext, $osender ) = @{$maillist{$otime}};
+            $prnmail .=
+          qq~\$maillist{'$otime'} = ['$osubject', '$otext', '$osender'];\n~;
         }
-        fopen( 'FILE', '>', 'Variables/maillist.dat' )
-          or croak "$croak{'open'} maillist.dat";
-        print {$FILE} $prnmail or croak "$croak{'print'} FILE";
-        fclose('FILE') or croak "$croak{'close'} maillist.dat";
     }
-    else {
-        our ($FILE);
-        fopen( 'FILE', '>', 'Variables/maillist.dat' )
+    our ($FILE);
+    fopen( 'FILE', '>', 'Variables/maillist.dat' )
           or croak "$croak{'open'} maillist.dat";
-        print {$FILE} "$mailline\n" or croak "$croak{'print'} FILE";
-        fclose('FILE') or croak "$croak{'close'} maillist.dat";
-    }
+    print {$FILE} $prnmail or croak "$croak{'print'} FILE";
+    fclose('FILE') or croak "$croak{'close'} maillist.dat";
+
     if ( $INFO{'delmail'} ) {
-        $yysetlocation = qq~$adminurl?action=mailing~;
+        $yysetlocation = qq~$adminurl?action=mailinggrps~;
         redirectexit();
     }
     return;

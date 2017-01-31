@@ -174,23 +174,17 @@ sub mailing {
 </script>
 <div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:145px">
     ~;
-        my @maillist;
         if ( -e ("$vardir/maillist.dat") ) {
-            our ($FILE);
-            fopen( 'FILE', '<', "$vardir/maillist.dat" )
-              or croak "$croak{'open'} maillist.dat";
-            @maillist = <$FILE>;
-            fclose('FILE') or croak "$croak{'close'} maillist.dat";
+            our (%maillist);
+            require "$vardir/maillist.dat";
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
             <colgroup>
                 <col span="4" style="width:auto" />
             </colgroup>
 ~;
-            foreach my $curmail (@maillist) {
-                chomp $curmail;
-                my ( $otime, $osubject, $otext, $osender ) = split /[|]/xsm,
-                  $curmail;
+            foreach my $otime (reverse sort keys %maillist) {
+                my ( $osubject, $otext, $osender ) = @{$maillist{$otime}};
                 load_user($osender);
                 my $thetime = timeformat($otime);
 
@@ -278,7 +272,9 @@ sub mailing2 {
         $FORM{'emailtext'} =~ s/[|]/&\x23124;/gxsm;
         $FORM{'emailtext'} =~ s/\r//gxsm;
         $mailline =
-          qq~$date|$FORM{'emailsubject'}|$FORM{'emailtext'}|$username~;
+          qq~\$maillist{'$date'} = ['$FORM{'emailsubject'}', '$FORM{'emailtext'}', '$username'];~;
+        $mailline =~ s/\r//gxsm;
+        $mailline =~ s/\n/<br \/>/gxsm;
         require Admin::AdminSubs;
         mail_list($mailline);
     }
@@ -611,13 +607,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     </div>
     <div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:115px">
     ~;
-        my @maillist;
         if ( -e ("$vardir/maillist.dat") ) {
-            our ($FILE);
-            fopen( 'FILE', '<', "$vardir/maillist.dat" )
-              or croak "$croak{'open'} maillist.dat";
-            @maillist = <$FILE>;
-            fclose('FILE') or croak "$croak{'close'} maillist.dat";
+            our (%maillist);
+            require "$vardir/maillist.dat";
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
             <colgroup>
@@ -625,10 +617,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
             </colgroup>
         ~;
 
-            foreach my $curmail (@maillist) {
-                chomp $curmail;
-                my ( $otime, $osubject, $otext, $osender ) = split /[|]/xsm,
-                  $curmail;
+            foreach my $otime (reverse sort keys %maillist) {
+                my ( $osubject, $otext, $osender ) = @{$maillist{$otime}};
                 load_user($osender);
                 my $thetime = timeformat($otime);
 
