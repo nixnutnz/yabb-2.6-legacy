@@ -1227,17 +1227,19 @@ sub mark_all {
     our ($FILE);
     fopen( 'FILE', '<', "$memberdir/$username.msg" )
       or croak "$croak{'open'} FILE";
-    @messages = <$FILE>;
+    our @messim = <$FILE>;
     fclose('FILE') or croak "$croak{'close'} FILE";
     my @mymessages = ();
     my $newmsgs    = q{};
-    foreach my $msg (@messages) {
-        @mymessages = ();
+    foreach my $msg (@messim) {
         my %messlst = get_imhash($msg);
-        if ( $messlst{'imflags'} =~ s/u//ism ) {
-            foreach my $i (@messim) {
-                $newmsgs .= $messlst{$i} . q{|};
+        if ( $messlst{'mflags'} =~ /u/xsm ) {
+            $messlst{'mflags'} =~ s/u//xsm;
+            my @messhsh = get_imlist();
+            foreach my $i (@messhsh) {
+                $newmsgs .= $messlst{$i} . '|';
             }
+            $newmsgs .= qq~\n~;
             push @mymessages, $newmsgs;
         }
         else { push @mymessages, $msg; }
