@@ -227,10 +227,8 @@ qq~$scripturl?action=eventcal;calshow=1;calmon=$gomon;calyear=$goyear~;
 
     my ( $sel_year, $sel_mon, $sel_day );
     my $event_date = $INFO{'eventdate'};
-    if ($event_date) {
-        if ( $event_date =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
-            ( $sel_year, $sel_mon, $sel_day ) = ( $1, $2, $3 );
-        }
+    if ($event_date && $event_date =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
+        ( $sel_year, $sel_mon, $sel_day ) = ( $1, $2, $3 );
     }
 
     my $newdate = $date;
@@ -361,12 +359,9 @@ qq~<a href="$scripturl?action=eventcal;calshow=1;calmon=$last_mon;calyear=$last_
           . qq~"$sel>$i</option>\n~;
     }
 
-    my $gyears3 = $year - 3;
-    my $gyears2 = $year - 2;
-    my $gyears1 = $year - 1;
-    foreach my $i ( $year .. ( $year + 3 ) ) {
+    foreach my $i ( ( $year - 3 ) .. ( $year + 3 ) ) {
         my $sel = q{};
-        if ( $year == $i && !$sel_year ) {
+        if ( !$sel_year && $year == $i ) {
             $sel = ' selected="selected"';
         }
         elsif ( $sel_year && $sel_year == $i ) {
@@ -401,9 +396,6 @@ qq~ <label for="calmon"><span class="small">$var_cal{'calmonth'}</span></label>
     my $boxyears =
 qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></label>
     <select class="input" name="calyear" id="calyear">
-        <option value="$gyears3">$gyears3</option>
-        <option value="$gyears2">$gyears2</option>
-        <option value="$gyears1">$gyears1</option>
         $boxyears_inner
     </select>~;
 
@@ -1776,11 +1768,11 @@ sub del_cal {
             $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
         }
         $prncal .= qq~\n1;\n~;
-            our ($FILE);
+        our ($FILE);
         fopen( 'FILE', '>', 'Variables/eventcal.db' )
-              or croak "$croak{'open'} eventcal.db";
+          or croak "$croak{'open'} eventcal.db";
         print {$FILE} $prncal or croak "$croak{'print'} eventcal.db";
-            fclose('FILE') or croak "$croak{'close'} eventcal.db";
+        fclose('FILE') or croak "$croak{'close'} eventcal.db";
     }
 
     del_old_events();
@@ -1861,8 +1853,8 @@ sub add_cal {
             require 'Variables/eventcal.db';
         }
         if ( $FORM{'editid'} ) {
-                    $FORM{'calnoname'} ||= q{};
-                    $FORM{'ns'}        ||= q{};
+            $FORM{'calnoname'} ||= q{};
+            $FORM{'ns'}        ||= q{};
             $event{ $FORM{'editid'} } = [
                 "$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}",
                 "$FORM{'caltype'}",
