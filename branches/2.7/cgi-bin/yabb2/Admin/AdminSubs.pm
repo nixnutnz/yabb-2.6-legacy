@@ -65,6 +65,7 @@ sub mail_list {
           qq~\$maillist{'$otime'} = ['$osubject', '$otext', '$osender'];\n~;
         }
     }
+    $prnmail .= qq~\n1;\n~;
     our ($FILE);
     fopen( 'FILE', '>', 'Variables/maillist.dat' )
           or croak "$croak{'open'} maillist.dat";

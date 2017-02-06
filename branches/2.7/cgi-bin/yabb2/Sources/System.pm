@@ -31,8 +31,11 @@ our ( %croak, %messageindex_txt, %reg_txt, );
 ## paths ##
 our ( $boardsdir, $boardurl, $datadir, $memberdir, $scripturl, $vardir, );
 ## settings ##
-our ( $extendedprofiles, $preregspan, $regtype, $screenlogin, $stealthurl,
-    $ttsreverse, %grp_post, );
+our (
+    $birthday_list_show, $extendedprofiles, $preregspan,
+    $regtype,            $screenlogin,      $show_event_birthdays,
+    $stealthurl,         $ttsreverse,       %grp_post,
+);
 ## system ##
 our (
     $allow_gmod_admin, $currentboard, $date,      $iamadmin,
@@ -74,7 +77,9 @@ sub boardtotals {
                     @boardvars = @{ $totals{$updateboard} };
                     chomp @boardvars;
                     for my $i ( 0 .. $#brd_tags ) {
-                        if ( exists( ${ $uid . $updateboard }{ $brd_tags[$i] } ) )
+                        if (
+                            exists( ${ $uid . $updateboard }{ $brd_tags[$i] } )
+                          )
                         {
                             ${ $totals{$updateboard} }[$i] =
                               ${ $uid . $updateboard }{ $brd_tags[$i] };
@@ -321,9 +326,16 @@ sub user_account {
     }
     elsif ( $action && $action eq 'register' ) {
         $userext = 'vars';
+        no strict qw(refs);
+        if ( ${ $uid . $user }{'bday'}
+            && ( $show_event_birthdays || $birthday_list_show ) )
+        {
+            eventcalbday( $user, ${ $uid . $user }{'bday'}, 1 );
+        }
     }
     elsif ( $action && $action eq 'delete' ) {
         unlink "$memberdir/$user.vars";
+        unlink "$memberdir/$user.lst";
         return;
     }
     else { $userext = 'vars'; }
@@ -344,7 +356,9 @@ sub user_account {
         {
             no strict qw(refs);
             for my $i ( 0 .. $#var_tags ) {
-                if ( $vars{ $var_tags[$i] } ne ${ $uid . $user }{ $var_tags[$i] } ) {
+                if ( $vars{ $var_tags[$i] } ne
+                    ${ $uid . $user }{ $var_tags[$i] } )
+                {
                     $fix = 1;
                     last;
                 }
@@ -645,6 +659,41 @@ sub keygen {
     if    ( $type eq 'U' ) { return uc $randid; }
     elsif ( $type eq 'L' ) { return lc $randid; }
     else                   { return $randid; }
+}
+
+sub eventcalbday {
+    my ( $bduser, $bday, $hideage ) = @_;
+    our (%calbday);
+    if ( -e 'Variables/eventcalbday.db' ) {
+        require 'Variables/eventcalbday.db';
+    }
+    my ( $user_montha, $user_daya, $user_yeara ) = split /\//xsm, $bday;
+    if ( $user_montha < 10 && length($user_montha) == 1 ) {
+        $user_montha = "0$user_montha";
+    }
+    if ( $user_daya < 10 && length($user_daya) == 1 ) {
+        $user_daya = "0$user_daya";
+    }
+    my $nuser_hide = q{};
+    if   ($hideage) { $nuser_hide = 1; }
+    else            { $nuser_hide = q{}; }
+
+    $calbday{$bduser} =
+      [ "$user_yeara", "$user_montha", "$user_daya", "$nuser_hide" ];
+
+    my $prnx = q{};
+    foreach ( keys %calbday ) {
+        $prnx .=
+qq~\$calbday{'$_'} = ['${$calbday{$_}}[0]', '${$calbday{$_}}[1]', '${$calbday{$_}}[2]', '${$calbday{$_}}[3]'];\n~;
+    }
+    $prnx .= qq~1;\n~;
+    our ($FILE);
+    fopen( 'FILE', '>', 'Variables/eventcalbday.db' )
+      or croak "$croak{'open'} birthday";
+    print {$FILE} $prnx or croak "$croak{'print'} birthday";
+    fclose('FILE') or croak "$croak{'close'} birthday";
+
+    return;
 }
 
 ## Sticky Shimmy Shuffle by astro-pilot ##

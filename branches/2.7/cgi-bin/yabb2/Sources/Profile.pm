@@ -48,29 +48,30 @@ our (
 );
 ## settings ##
 our (
-    $addmemgroup_enabled,  $allow_hide_email,      $allowattach,
-    $allowpics,            $avatar_dirlimit,       $avatar_limit,
-    $birthday_on_reg,      $cookiepassword,        $cookiesession_name,
-    $default_avatar,       $default_tz,            $default_userpic,
-    $do_scramble_id,       $emailnewpass,          $enable_buddylist,
-    $enable_mc_away,       $enable_notifications,  $enable_stealth,
-    $enable_ubbc,          $enabletz,              $extendedprofiles,
-    $forumnumberformat,    $forumstart,            $ip_lookup,
-    $lang,                 $matchcase,             $matchname,
-    $matchword,            $max_awaylen,           $max_siglen,
-    $maxrecentdisplay,     $mbname,                $minlinksig,
-    $minlinkweb,           $name_cannot_be_userid, $new_notification_alert,
-    $nn_avatar,            $pm_level,              $post_speed_count,
-    $removenormalsmilies,  $self_del_user,         $sessions,
-    $showage,              $showuserpic,           $showusertext,
-    $showzodiac,           $timeselected,          $ttsreverse,
-    $ttsureverse,          $upload_avatargroup,    $upload_useravatar,
-    $user_hide_attach_img, $user_hide_avatars,     $user_hide_img,
-    $user_hide_signat,     $user_hide_smilies_row, $user_hide_user_text,
-    $usertxtwrap,          $yymycharset,           %grp_nopost,
-    %grp_post,             %grp_staff,             %templateset,
-    @nopostorder,          @reserve,               @timeban,
-    $enable_spell_check
+    $addmemgroup_enabled,    $allow_hide_email,     $allowattach,
+    $allowpics,              $avatar_dirlimit,      $avatar_limit,
+    $birthday_on_reg,        $birthday_list_show,   $cookiepassword,
+    $cookiesession_name,     $default_avatar,       $default_tz,
+    $default_userpic,        $do_scramble_id,       $edit_agelimit,
+    $edit_genderlimit,       $emailnewpass,         $enable_buddylist,
+    $enable_mc_away,         $enable_notifications, $enable_spell_check,
+    $enable_stealth,         $enable_ubbc,          $enabletz,
+    $extendedprofiles,       $forumnumberformat,    $forumstart,
+    $ip_lookup,              $lang,                 $matchcase,
+    $matchname,              $matchword,            $max_awaylen,
+    $max_siglen,             $maxrecentdisplay,     $mbname,
+    $minlinksig,             $minlinkweb,           $name_cannot_be_userid,
+    $new_notification_alert, $nn_avatar,            $pm_level,
+    $post_speed_count,       $removenormalsmilies,  $self_del_user,
+    $sessions,               $show_event_birthdays, $showage,
+    $showuserpic,            $showusertext,         $showzodiac,
+    $timeselected,           $ttsreverse,           $ttsureverse,
+    $upload_avatargroup,     $upload_useravatar,    $user_hide_attach_img,
+    $user_hide_avatars,      $user_hide_img,        $user_hide_signat,
+    $user_hide_smilies_row,  $user_hide_user_text,  $usertxtwrap,
+    $yymycharset,            %grp_nopost,           %grp_post,
+    %grp_staff,              %templateset,          @nopostorder,
+    @reserve,                @timeban,
 );
 ## system ##
 our (
@@ -142,10 +143,9 @@ get_gmod();
 
 ## local ##
 my (
-    $bdlist,           $pmlevel,       @menucolors,    $showadmin,
-    $confdel_text,     $passtext,      $script_action, $profiletitle,
-    $edit_genderlimit, $edit_agelimit, $password,      %member,
-    $msub,             $myage,
+    $bdlist,       $pmlevel,  @menucolors,    $showadmin,
+    $confdel_text, $passtext, $script_action, $profiletitle,
+    $password,     %member,   $msub,          $myage,
 );
 our ( $show_profile, $expiretxt, $message );
 
@@ -445,10 +445,11 @@ qq~ $profile_txt{'gender_edit_2'} $edit_gendercount $profile_txt{'dob_edit_4'}~;
         && !$iamadmin
         && ( !$iamgmod || !$allow_gmod_profile ) )
     {
-        if ( $edit_agelimit == 1 && !${ $uid . $user }{'disableage'} ) {
+        if ( !${ $uid . $user }{'disableage'} && $edit_agelimit == 1 ) {
             $edit_agetxt = $profile_txt{'dob_edit_1'};
         }
-        elsif (${ $uid . $user }{'disableage'} >= $edit_agelimit
+        elsif (${ $uid . $user }{'disableage'}
+            && ${ $uid . $user }{'disableage'} >= $edit_agelimit
             && ${ $uid . $user }{'bday'} )
         {
             $edit_agetxt         = $profile_txt{'dob_edit_7'};
@@ -727,10 +728,13 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
             $enable_mc_away > 2
             || (
                 $enable_mc_away
-                && (   ${ $uid . $user }{'position'} eq 'Administrator'
-                    || ${ $uid . $user }{'position'} eq 'Global Moderator'
-                    || ${ $uid . $user }{'position'} eq 'Mid Moderator'
-                    || is_moderator($user) )
+                && (
+                    ${ $uid . $user }{'position'}
+                    && (   ${ $uid . $user }{'position'} eq 'Administrator'
+                        || ${ $uid . $user }{'position'} eq 'Global Moderator'
+                        || ${ $uid . $user }{'position'} eq 'Mid Moderator' )
+                    || is_moderator($user)
+                )
             )
         )
       )
@@ -1897,11 +1901,14 @@ sub modify_profile2 {
             }
         }
 
-        if (   ${ $uid . $user }{'bday'}
+        if (
+               ${ $uid . $user }{'bday'}
             && $edit_agelimit
-            && ${ $uid . $user }{'disableage'} >= $edit_agelimit
+            && (   ${ $uid . $user }{'disableage'}
+                && ${ $uid . $user }{'disableage'} >= $edit_agelimit )
             && !$iamadmin
-            && ( !$iamgmod || !$allow_gmod_profile ) )
+            && ( !$iamgmod || !$allow_gmod_profile )
+          )
         {
             my ( $user_birth_month, $user_birth_day, $user_birth_year ) =
               split /\//xsm, ${ $uid . $user }{'bday'};
@@ -1959,8 +1966,8 @@ sub modify_profile2 {
         }
         else { $member{'bday'} = q{}; }
         my $update_eventcal = 0;
-        if (   ${ $uid . $user }{'bday'}
-            && ${ $uid . $user }{'bday'} ne $member{'bday'} )
+        if (  !${ $uid . $user }{'bday'} && $member{'bday'} ne q{}
+            || ${ $uid . $user }{'bday'} ne $member{'bday'} )
         {
             $update_eventcal = 1;
         }
@@ -1975,17 +1982,6 @@ sub modify_profile2 {
                 ${ $uid . $user }{'disablegender'} = 1;
             }
             else { ${ $uid . $user }{'disablegender'}++; }
-        }
-        if (
-            $edit_agelimit
-            && ( ${ $uid . $user }{'bday'} ne $member{'bday'}
-                || !${ $uid . $user }{'bday'} )
-          )
-        {
-            if ( !${ $uid . $user }{'disableage'} ) {
-                ${ $uid . $user }{'disableage'} = 1;
-            }
-            else { ${ $uid . $user }{'disableage'}++; }
         }
 
         # EventCal Begin
@@ -2111,6 +2107,18 @@ s/^(\d+[|]\d+[|].*?)[|](.*?)[|]/ ($2 eq ${ $uid . $user }{'realname'} ? "$1|$mem
         to_html( $member{'sesquest'} );
         to_chars( $member{'sesquest'} );
 
+        if (
+            $edit_agelimit
+            && (  !${ $uid . $user }{'bday'} && $member{'bday'} ne q{}
+                || ${ $uid . $user }{'bday'} ne $member{'bday'} )
+          )
+        {
+            if ( !${ $uid . $user }{'disableage'} ) {
+                ${ $uid . $user }{'disableage'} = 1;
+            }
+            else { ${ $uid . $user }{'disableage'}++; }
+        }
+
         # Time to print the changes to the username.vars file
         if ( $member{'passwrd1'} ) {
             ${ $uid . $user }{'password'} =
@@ -2125,70 +2133,17 @@ s/^(\d+[|]\d+[|].*?)[|](.*?)[|]/ ($2 eq ${ $uid . $user }{'realname'} ? "$1|$mem
 
         ${ $uid . $user }{'sesanswer'} = $member{'sesanswer'};
 
-        # EventCal Begin
-        if ( $update_eventcal && $update_eventcal == 1 ) {
-            my @birthmembers = ();
-            if ( -e "$vardir/eventcalbday.db" ) {
-                our ($FILE);
-                fopen( 'FILE', '<', "$vardir/eventcalbday.db" )
-                  or croak "$croak{'open'} birthday";
-                @birthmembers = <$FILE>;
-                fclose('FILE') or croak "$croak{'close'} birthday";
-            }
-            my $cn   = 0;
-            my $prnx = q{};
-            foreach my $x (@birthmembers) {
-                chomp $x;
-                my ( $user_year, $user_month, $user_day, $user_xy, $user_hide )
-                  = split /[|]/xsm, $x;
-                if ( $user_xy eq $user ) {
-                    my ( $user_montha, $user_daya, $user_yeara ) =
-                      split /\//xsm, $member{'bday'};
-                    if ( $user_montha < 10 && length($user_montha) == 1 ) {
-                        $user_montha = "0$user_montha";
-                    }
-                    if ( $user_daya < 10 && length($user_daya) == 1 ) {
-                        $user_daya = "0$user_daya";
-                    }
-                    my $nuser_hide = q{};
-                    if   ( $member{'hideage'} ) { $nuser_hide = 1; }
-                    else                        { $nuser_hide = q{}; }
-                    $prnx .=
-qq~$user_yeara|$user_montha|$user_daya|$user_xy|$nuser_hide\n~;
-                    $cn++;
-                }
-                else {
-                    $prnx .= qq~$x\n~;
-                }
-            }
-            our ($FILE);
-            fopen( 'FILE', '>', "$vardir/eventcalbday.db" )
-              or croak "$croak{'open'} birthday";
-            print {$FILE} $prnx or croak "$croak{'print'} birthday";
-            fclose('FILE') or croak "$croak{'close'} birthday";
-
-            if ( $cn == 0 ) {
-                my ( $user_montha, $user_daya, $user_yeara ) = split /\//xsm,
-                  $member{'bday'};
-                if ( $user_montha < 10 && length($user_montha) == 1 ) {
-                    $user_montha = "0$user_montha";
-                }
-                if ( $user_daya < 10 && length($user_daya) == 1 ) {
-                    $user_daya = "0$user_daya";
-                }
-                my ($nuser_hide);
-                if   ( $member{'hideage'} ) { $nuser_hide = 1; }
-                else                        { $nuser_hide = q{}; }
-                fopen( 'FILE', '>>', "$vardir/eventcalbday.db" )
-                  or croak "$croak{'open'} birthday";
-                print {$FILE}
-                  qq~$user_yeara|$user_montha|$user_daya|$user|$nuser_hide\n~
-                  or croak "$croak{'print'} birthday";
-                fclose('FILE') or croak "$croak{'close'} birthday";
-            }
+        if (   $update_eventcal
+            && $update_eventcal == 1
+            && ( $show_event_birthdays || $birthday_list_show ) )
+        {
+            eventcalbday(
+                $user,
+                ${ $uid . $user }{'bday'},
+                ${ $uid . $user }{'hideage'}
+            );
         }
 
-        # EventCal End
         user_account( $user, 'update' );
 
         if ( $member{'passwrd1'} && $username eq $user ) {
@@ -2251,31 +2206,22 @@ qq~$scripturl?action=$script_action;username=$useraccount{$member{'username'}};s
         member_index( 'remove', $noteuser );
 
         # EventCalbday Begin
-        my @birthmembers = ();
-        our ($FILE);
-        if ( -e "$vardir/eventcalbday.db" ) {
-            fopen( 'FILE', '<', "$vardir/eventcalbday.db" )
+        if ( -e 'Variables/eventcalbday.db' ) {
+            our (%calbday);
+            require 'Variables/eventcalbday.db';
+            delete $calbday{$user};
+            my $prnx = q{};
+            foreach ( keys %calbday ) {
+                $prnx .=
+qq~\$calbday{'$_'} = ['${$calbday{$_}}[0]', '${$calbday{$_}}[1]', '${$calbday{$_}}[2]', '${$calbday{$_}}[3]'];\n~;
+            }
+            $prnx .= qq~1;\n~;
+            our ($FILE);
+            fopen( 'FILE', '>', 'Variables/eventcalbday.db' )
               or croak "$croak{'open'} birthday";
-            @birthmembers = <$FILE>;
+            print {$FILE} $prnx or croak "$croak{'print'} birthday";
             fclose('FILE') or croak "$croak{'close'} birthday";
         }
-
-        my $prnx = q{};
-        for my $x (@birthmembers) {
-            chomp $x;
-            my ( undef, undef, undef, $user_xy, undef ) =
-              split /[|]/xsm, $x;
-            if ( $user_xy ne $user ) {
-                $prnx .= qq~$x\n~;
-            }
-            else {
-                $prnx .= q{};
-            }
-        }
-        fopen( 'FILE', '>', "$vardir/eventcalbday.db" )
-          or croak "$croak{'open'} birthday";
-        print {$FILE} $prnx or croak "$croak{'print'} birthday";
-        fclose('FILE') or croak "$croak{'close'} birthday";
 
         # EventCalbday End
 

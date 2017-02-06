@@ -183,10 +183,10 @@ sub attachments {
         $iamgmod
         && (
             (
-                   $gmod_access{'managepmattachments'} ne 'on'
-                && $gmod_access2{'managepmattachments2'} ne 'on'
+                   !$gmod_access{'managepmattachments'}
+                && !$gmod_access2{'managepmattachments2'}
             )
-            || $allow_gmod_aprofile ne 'on'
+            || !$allow_gmod_aprofile
         )
       )
     {

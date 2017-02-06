@@ -794,20 +794,13 @@ $mycalout_addevent
     if ( ( $show_event_birthdays == 1 && !$iamguest )
         || $show_event_birthdays == 2 )
     {
-        if ( -e "$vardir/eventcalbday.db" ) {
-            our ($EVENTBIRTH);
-            fopen( 'EVENTBIRTH', '<', "$vardir/eventcalbday.db" )
-              or croak "$croak{'open'} eventcalbday.db";
-            my @birthmembers = <$EVENTBIRTH>;
-            fclose('EVENTBIRTH') or croak "$croak{'close'} eventcalbday.db";
-
+        our (%calbday);
+        if ( -e 'Variables/eventcalbday.db' ) {
+            require 'Variables/eventcalbday.db';
             my ( $bd_y, $bday_date, $age, );
-            foreach my $x (@birthmembers) {
-                chomp $x;
-                my (
-                    $user_bdyear, $user_bdmon, $user_bdday,
-                    $user_bdname, $user_bdhide
-                ) = split /[|]/xsm, $x;
+            foreach my $user_bdname ( keys %calbday ) {
+                my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdhide ) =
+                  @{ $calbday{$user_bdname} };
                 if (
                     (
                            ( $user_bdmon < $view_mon )
@@ -851,19 +844,16 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
     }
 
     ## Get Events ##
-    if ( -e "$vardir/eventcal.db" ) {
-        our ($EVENTFILE);
-        fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
-          or croak "$croak{'open'} eventcal.db";
-        my @calinput = <$EVENTFILE>;
-        fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
-        foreach my $eventline ( sort @calinput ) {
-            chomp $eventline;
+    if ( -e 'Variables/eventcal.db' ) {
+        our (%event);
+        require 'Variables/eventcal.db';
+        my @sorted =
+          sort { ${ $event{$a} }[0] <=> ${ $event{$b} }[0] } keys %event;
+        foreach my $cal_time (@sorted) {
             my (
-                $cal_date,  $cal_type,  $cal_name, $cal_time,
-                $cal_hide,  $cal_event, $cal_icon, $cal_noname,
-                $cal_type2, $nsa,       $g
-            ) = split /[|]/xsm, $eventline;
+                $cal_date, $cal_type,   $cal_name,  $cal_hide, $cal_event,
+                $cal_icon, $cal_noname, $cal_type2, $nsa,      $g
+            ) = @{ $event{$cal_time} };
             $ns = $nsa;
             my ( $c_year, $c_mon, $c_day, $cd_year );
             if ( $cal_date =~ /(\d{4})(\d{2})(\d{2})/xsm ) {
@@ -1775,20 +1765,22 @@ qq~<span class="small" style="color:$event_todaycolor"><b>$i</b></span>~;
 
 sub del_cal {
     if ($iamguest) { fatal_error('not_allowed'); }
-    if ( $INFO{'caldel'} == 1 ) {
-        if ( -e "$vardir/eventcal.db" ) {
-            our ($FILE);
-            fopen( 'FILE', '<', "$vardir/eventcal.db" )
-              or croak "$croak{'open'} eventcal.db";
-            my @caldata = <$FILE>;
-            fclose('FILE') or croak "$croak{'close'} eventcal.db";
-
-            fopen( 'FILE', '>', "$vardir/eventcal.db" )
-              or croak "$croak{'open'} eventcal.db";
-            print {$FILE} grep { !/$INFO{'calid'}/xsm } @caldata
-              or croak "$croak{'print'} eventcal.db";
-            fclose('FILE') or croak "$croak{'close'} eventcal.db";
+    if ( $INFO{'caldel'} == 1 && -e 'Variables/eventcal.db' ) {
+        our (%event);
+        require 'Variables/eventcal.db';
+        delete $event{ $INFO{'calid'} };
+        my $prncal = q{};
+        foreach ( keys %event ) {
+            ${ $event{$_} }[4] =~ s/"/\\x22/gxsm;
+            my $event = join q{", "}, @{ $event{$_} };
+            $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
         }
+        $prncal .= qq~\n1;\n~;
+            our ($FILE);
+        fopen( 'FILE', '>', 'Variables/eventcal.db' )
+              or croak "$croak{'open'} eventcal.db";
+        print {$FILE} $prncal or croak "$croak{'print'} eventcal.db";
+            fclose('FILE') or croak "$croak{'close'} eventcal.db";
     }
 
     del_old_events();
@@ -1856,6 +1848,7 @@ sub add_cal {
         $calmessage =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
         $calmessage =~ s/\n/<br \/>/gxsm;
         $calmessage =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
+        $calmessage =~ s/"/\\x22/gxsm;
         my ($guestname);
 
         if ($iamguest) {
@@ -1863,50 +1856,53 @@ sub add_cal {
             from_chars($guestname);
             to_html($guestname);
         }
-        my @calinput = ();
-        if ( -e "$vardir/eventcal.db" ) {
-            our ($EVENTFILE);
-            fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
-              or croak "$croak{'open'} eventcal.db";
-            @calinput = <$EVENTFILE>;
-            fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
+        our (%event);
+        if ( -e 'Variables/eventcal.db' ) {
+            require 'Variables/eventcal.db';
         }
         if ( $FORM{'editid'} ) {
-            foreach my $i ( 0 .. $#calinput ) {
-                chomp $calinput[$i];
-                my (
-                    $c_date,  $c_type,  $c_name, $c_time,
-                    $c_hide,  $c_event, $c_icon, $c_noname,
-                    $c_type2, $nsa,     $g
-                ) = split /[|]/xsm, $calinput[$i];
-                $ns = $nsa || q{};
-                $g        ||= q{};
-                $c_noname ||= q{};
-                if ( $c_time == $FORM{'editid'} ) {
                     $FORM{'calnoname'} ||= q{};
                     $FORM{'ns'}        ||= q{};
-                    $calinput[$i] =
-"$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$c_name|$c_time||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}|$g\n";
-                }
-                else {
-                    $calinput[$i] =
-"$c_date|$c_type|$c_name|$c_time|$c_hide|$c_event|$c_icon|$c_noname|$c_type2|$ns|$g\n";
-                }
-            }
+            $event{ $FORM{'editid'} } = [
+                "$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}",
+                "$FORM{'caltype'}",
+                "${$event{$FORM{'editid'}}}[2]",
+                '',
+                "$calmessage",
+                "$FORM{'calicon'}",
+                "$FORM{'calnoname'}",
+                "$FORM{'caltype2'}",
+                "$FORM{'ns'}",
+                "${$event{$FORM{'editid'}}}[9]"
+            ];
         }
         else {
             my $g = q{};
             if ($iamguest) { $username = $guestname; $g = 'g' }
             $FORM{'calnoname'} ||= q{};
             $FORM{'ns'}        ||= q{};
-            my $calin_put =
-qq~$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}|$FORM{'caltype'}|$username|$date||$calmessage|$FORM{'calicon'}|$FORM{'calnoname'}|$FORM{'caltype2'}|$FORM{'ns'}|$g\n~;
-            push @calinput, $calin_put;
-
+            $event{$date} = [
+                "$FORM{'selyear'}$FORM{'selmon'}$FORM{'selday'}",
+                "$FORM{'caltype'}",
+                "$username",
+                '',
+                "$calmessage",
+                "$FORM{'calicon'}",
+                "$FORM{'calnoname'}",
+                "$FORM{'caltype2'}",
+                "$FORM{'ns'}",
+                "$g"
+            ];
         }
-        my $prncal = join q{}, @calinput;
+        my $prncal = q{};
+        foreach ( keys %event ) {
+            ${ $event{$_} }[4] =~ s/"/\\x22/gxsm;
+            my $event = join q{", "}, @{ $event{$_} };
+            $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
+        }
+        $prncal .= qq~\n1;\n~;
         our ($EVENTFILE);
-        fopen( 'EVENTFILE', '>', "$vardir/eventcal.db" )
+        fopen( 'EVENTFILE', '>', 'Variables/eventcal.db' )
           or croak "$croak{'open'} eventcal.db";
         print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
         fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
@@ -1946,19 +1942,21 @@ sub del_old_events {
         $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
     }
 
-    our ($EVENTFILE);
-    fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
-      or croak "$croak{'open'} eventcal.db";
-    my @calinput = <$EVENTFILE>;
-    fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
-    foreach my $i ( 0 .. $#calinput ) {
-        my ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2,
-            undef ) = split /[|]/xsm, $calinput[$i];
-        chop $c_type2;
-        if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
+    our (%event);
+    require 'Variables/eventcal.db';
+    foreach my $c_type2 ( keys %event ) {
+        my ($c_date) = ${ $event{$c_type2} }[0];
+        if ( $c_date < $caltoday && $c_type2 < 2 ) { delete $event{$c_type2}; }
     }
-    my $prncal = join q{}, @calinput;
-    fopen( 'EVENTFILE', '>', "$vardir/eventcal.db" )
+    my $prncal = q{};
+    foreach ( keys %event ) {
+        ${ $event{$_} }[4] =~ s/"/\\x22/gxsm;
+        my $event = join q{", "}, @{ $event{$_} };
+        $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
+    }
+    $prncal .= qq~\n1;\n~;
+    our ($EVENTFILE);
+    fopen( 'EVENTFILE', '>', 'Variables/eventcal.db' )
       or croak "$croak{'open'} eventcal.db";
     print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
     fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";

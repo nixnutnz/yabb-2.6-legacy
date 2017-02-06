@@ -1229,14 +1229,17 @@ sub convertmembers {
 
 sub moveboards {
     copy "$convboardsdir/forum.master", "$boardsdir/forum.master";
-    open $FTOTALS, '<', "$convboardsdir/forum.totals" or setup_fatal_error(
-                    "$maintext_23 $convboardsdir/forum.totals: ", 1 );
+    open $FTOTALS, '<', "$convboardsdir/forum.totals"
+      or setup_fatal_error( "$maintext_23 $convboardsdir/forum.totals: ", 1 );
     my @ftotals = <$FTOTALS>;
     close $FTOTALS;
     %totals = ();
     foreach my $cnt (@ftotals) {
         my @tconv = split /[|]/xsm, $cnt;
-        $totals{$tconv[0]} = [ $tconv[1], $tconv[2], $tconv[3], $tconv[4], $tconv[5], $tconv[6], $tconv[7], $tconv[8], $tconv[9] ];
+        $totals{ $tconv[0] } = [
+            $tconv[1], $tconv[2], $tconv[3], $tconv[4], $tconv[5],
+            $tconv[6], $tconv[7], $tconv[8], $tconv[9]
+        ];
     }
     write_forum_totals();
 
@@ -1285,7 +1288,21 @@ sub fixcontrol {
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
             ${$x}{'mods'} =~ s/,\s/\//gxsm;
             ${$x}{'modgroups'} =~ s/,\s/\//gxsm;
-            $newcontrol{$i} = [${$x}{'cat'},${$x}{'mypic'}, ${$x}{'description'}, ${$x}{'mods'}, ${$x}{'modgroups'}, ${$x}{'topicperms'}, ${$x}{'replyperms'}, ${$x}{'pollperms'}, ${$x}{'zero'}, ${$x}{'membergroups'}, ${$x}{'ann'}, ${$x}{'rbin'}, ${$x}{'attperms'}, ${$x}{'minageperms'}, ${$x}{'maxageperms'}, ${$x}{'genderperms'}, ${$x}{'canpost'}, ${$x}{'parent'}, ${$x}{'rules'}, ${$x}{'rulestitle'}, ${$x}{'rulesdesc'}, ${$x}{'rulescollapse'}, ${$x}{'brdpasswr'}, ${$x}{'brdpassw'}, ${$x}{'brdrss'}];
+            $newcontrol{$i} = [
+                ${$x}{'cat'},         ${$x}{'mypic'},
+                ${$x}{'description'}, ${$x}{'mods'},
+                ${$x}{'modgroups'},   ${$x}{'topicperms'},
+                ${$x}{'replyperms'},  ${$x}{'pollperms'},
+                ${$x}{'zero'},        ${$x}{'membergroups'},
+                ${$x}{'ann'},         ${$x}{'rbin'},
+                ${$x}{'attperms'},    ${$x}{'minageperms'},
+                ${$x}{'maxageperms'}, ${$x}{'genderperms'},
+                ${$x}{'canpost'},     ${$x}{'parent'},
+                ${$x}{'rules'},       ${$x}{'rulestitle'},
+                ${$x}{'rulesdesc'},   ${$x}{'rulescollapse'},
+                ${$x}{'brdpasswr'},   ${$x}{'brdpassw'},
+                ${$x}{'brdrss'}
+            ];
             if ( ${$x}{'pic'} ) {
                 $brdpix .= qq~$i|default|${$x}{'pic'}\n~;
             }
@@ -1311,7 +1328,15 @@ sub fixcontrol {
             ) = split /[|]/xsm;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
-            $newcontrol{$oldboard} = [$cat, $mypic, $description, $mods, $modgroups, $topicperms, $replyperms, $pollperms, $zero, $membergroups, $ann, $rbin, $attperms, $minageperms, $maxageperms, $genderperms, $canpost, $parent, $rules, $rulestitle, $rulesdesc, $rulescollapse, $brdpasswr, $brdpassw, $brdrss];
+            $newcontrol{$oldboard} = [
+                $cat,       $mypic,         $description, $mods,
+                $modgroups, $topicperms,    $replyperms,  $pollperms,
+                $zero,      $membergroups,  $ann,         $rbin,
+                $attperms,  $minageperms,   $maxageperms, $genderperms,
+                $canpost,   $parent,        $rules,       $rulestitle,
+                $rulesdesc, $rulescollapse, $brdpasswr,   $brdpassw,
+                $brdrss
+            ];
             if ($pic) {
                 $brdpix .= qq~$oldboard|default|$pic\n~;
             }
@@ -1319,7 +1344,7 @@ sub fixcontrol {
     }
     my @boardcontrol = ();
     foreach my $cnt ( sort keys %newcontrol ) {
-        my $prline = join q{', '}, @{$newcontrol{$cnt}};
+        my $prline = join q{', '}, @{ $newcontrol{$cnt} };
         my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
         $newline =~ s/FIX/-/gxsm;
         push @boardcontrol, $newline . "\n";
@@ -1346,8 +1371,9 @@ sub fixnopost {
         require "$boardsdir/forum.control";
         my $totalnoposts = keys %grp_nopost;
         foreach my $cnt ( keys %control ) {
-            for my $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
-                ( $grptitle, undef ) = @{$grp_nopost{$i}};
+            for my $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) )
+            {
+                ( $grptitle, undef ) = @{ $grp_nopost{$i} };
 
                 for my $key ( keys %catinfo ) {
                     ( $catname, $catperms, $catcol ) =
@@ -1399,10 +1425,10 @@ sub fixnopost {
                 }
                 $newpollperms =~ s/, $//sm;
 
-                ${ $control{ $cnt } }[4] = $newmodgroups;
-                ${ $control{ $cnt } }[5] = $newtopicperms;
-                ${ $control{ $cnt } }[6] = $newreplyperms;
-                ${ $control{ $cnt } }[7] = $newpollperms;
+                ${ $control{$cnt} }[4] = $newmodgroups;
+                ${ $control{$cnt} }[5] = $newtopicperms;
+                ${ $control{$cnt} }[6] = $newreplyperms;
+                ${ $control{$cnt} }[7] = $newpollperms;
             }
             if ( time() > $time_to_jump && ( $i + 1 ) < $totalnoposts ) {
                 write_forum_control();
@@ -1566,52 +1592,19 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
 
 # Variables Conversion ##
 sub movevariables {
-    my @mvvar = (
-        'eventcal.db',     'eventcalbday.db',
-        'Movedthreads.pm', 'registration.log',
-    );
+    my @mvvar = ( 'Movedthreads.pm', 'registration.log', );
     my @oldvar = ();
     for my $varfl (@mvvar) {
-        if ( -e "$convvardir/$varfl" ) {
-            if ( $varfl eq 'eventcal.db' ) {
-                open $OLDVAR, '<', "$convvardir/$varfl"
-                  or croak 'cannot open OLDVAR';
-                @oldvar = <$OLDVAR>;
-                close $OLDVAR or croak 'cannot close OLDVAR';
-                chomp @oldvar;
-                my @newvar;
-                for my $eventline (@oldvar) {
-                    my @eventline = split /[|]/xsm, $eventline;
-                    if ( scalar(@eventline) < 9 ) {
-                        my $g = q{};
-                        if ( lc $eventline[2] eq 'guest' ) {
-                            $g = 'g';
-                        }
-                        push @newvar,
-qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$eventline[5]|$eventline[6]|$eventline[7]||$g\n~;
-                    }
-                    else { push @newvar, qq~$eventline\n~; }
-                }
+        open $OLDVAR, '<', "$convvardir/$varfl"
+          or croak 'cannot open OLDVAR';
+        @oldvar = <$OLDVAR>;
+        close $OLDVAR or croak 'cannot close OLDVAR';
 
-                open $NEWVAR, '>', "$vardir/$varfl"
-                  or croak 'cannot open NEWVAR';
-                print {$NEWVAR} @newvar
-                  or croak "cannot print $vardir/$varfl";
-                close $NEWVAR or croak 'cannot close NEWVAR';
-            }
-            else {
-                open $OLDVAR, '<', "$convvardir/$varfl"
-                  or croak 'cannot open OLDVAR';
-                @oldvar = <$OLDVAR>;
-                close $OLDVAR or croak 'cannot close OLDVAR';
-
-                open $NEWVAR, '>', "$vardir/$varfl"
-                  or croak 'cannot open NEWVAR';
-                print {$NEWVAR} @oldvar
-                  or croak "cannot print $vardir/$varfl";
-                close $NEWVAR or croak 'cannot close NEWVAR';
-            }
-        }
+        open $NEWVAR, '>', "$vardir/$varfl"
+          or croak 'cannot open NEWVAR';
+        print {$NEWVAR} @oldvar
+          or croak "cannot print $vardir/$varfl";
+        close $NEWVAR or croak 'cannot close NEWVAR';
     }
     if ( -e "$convvardir/allow.txt" ) {
         open $OLDVAR, '<', "$convvardir/allow.txt"
@@ -1727,6 +1720,25 @@ EOF
         close $NEWVAR or croak 'cannot close banlist.db';
     }
 
+    if ( -e "$convvardir/maillist.dat" ) {
+        open $OLDVAR, '<', "$convvardir/maillist.dat"
+          or croak 'cannot open maillist.dat';
+        my @mail = <$OLDVAR>;
+        close $OLDVAR or croak 'cannot close maillist.dat';
+        my $mail = q{};
+        foreach my $curmail (@mail) {
+            my ( $otime, $osubject, $otext, $osender ) = split /[|]/xsm,
+              $curmail;
+            $mail .=
+              qq~\$maillist{'$otime'} = ['$osubject', '$otext', '$osender'];\n~;
+        }
+        $mail .= qq~\n1;\n~;
+        open $NEWVAR, '>', "$vardir/maillist.dat"
+          or croak 'cannot open maillist.dat';
+        print {$NEWVAR} $mail or croak "cannot print $vardir/maillist.dat";
+        close $NEWVAR or croak 'cannot close maillist.dat';
+    }
+
     open $OLDVAR, '<', "$convvardir/bots.hosts"
       or croak "cannot open $convvardir/bots.hosts";
     @mybots = <$OLDVAR>;
@@ -1751,6 +1763,79 @@ EOF
           or croak 'cannot open news.txt';
         print {$NEWVAR} @att or croak "cannot print $langdir/English/news.txt";
         close $NEWVAR or croak 'cannot close news.txt';
+    }
+
+    if ( -e "$convvardir/eventcalbday.db" ) {
+        open $BDAY, '<', "$convvardir/eventcalbday.db"
+          or croak "cannot open $convvardir/eventcalbday.db";
+        @bdays = <$BDAY>;
+        close $BDAY or croak "cannot close $convvardir/eventcalbday.db";
+        my $prnx = q{};
+        foreach my $user_name (@bdays) {
+            chomp $user_name;
+            my (
+                $user_bdyear, $user_bdmon, $user_bdday,
+                $user_bdname, $user_bdhide
+            ) = split /[|]/xsm, $user_name;
+            $prnx .=
+qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$user_bdhide'];\n~;
+        }
+        $prnx .= qq~1;\n~;
+        open $FILE, '>', "$vardir/eventcalbday.db"
+          or croak 'cannot open birthday';
+        print {$FILE} $prnx or croak 'cannot print birthday';
+        close $FILE or croak 'cannot close birthday';
+    }
+
+    if ( -e "$convvardir/eventcal.db" ) {
+        open $OLDVAR, '<', "$convvardir/eventcal.db"
+          or croak 'cannot open OLDVAR';
+        @oldvar = <$OLDVAR>;
+        close $OLDVAR or croak 'cannot close OLDVAR';
+        chomp @oldvar;
+        my (
+            $cal_date,  $cal_type, $cal_name,   $cal_time, $cal_hide,
+            $cal_event, $cal_icon, $cal_noname, $cal_type2
+        );
+        my %event;
+        for my $eventline (@oldvar) {
+            if ( scalar(@eventline) < 9 ) {
+                (
+                    $cal_date,  $cal_type, $cal_name,   $cal_time,
+                    $cal_event, $cal_icon, $cal_noname, $cal_type2
+                ) = split /[|]/xsm, $eventline;
+                $g = q{};
+                if ( lc $eventline[2] eq 'guest' ) {
+                    $g = 'g';
+                }
+            }
+            else {
+                (
+                    $cal_date,  $cal_type,  $cal_name, $cal_time,
+                    $cal_hide,  $cal_event, $cal_icon, $cal_noname,
+                    $cal_type2, $nsa,       $g
+                ) = split /[|]/xsm, $eventline;
+            }
+            $nsa ||= q{};
+            $g   ||= q{};
+            $event{$cal_time} = [
+                "$cal_date",  "$cal_type", "$cal_name",   "$cal_hide",
+                "$cal_event", "$cal_icon", "$cal_noname", "$cal_type2",
+                "$nsa",       "$g"
+            ];
+        }
+        my $prncal = q{};
+        foreach ( keys %event ) {
+            ${ $event{$_} }[4] =~ s/"/\\x22/gxsm;
+            my $event = join q{", "}, @{ $event{$_} };
+            $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
+        }
+        $prncal .= qq~\n1;\n~;
+        our ($FILE);
+        fopen( 'FILE', '>', 'Variables/eventcal.db' )
+          or croak "$croak{'open'} eventcal.db";
+        print {$FILE} $prncal or croak "$croak{'print'} eventcal.db";
+        fclose('FILE') or croak "$croak{'close'} eventcal.db";
     }
 
     convert_settings();
@@ -1824,6 +1909,7 @@ sub convert_settings {
         }
         if ( !$imspan || $imspam eq 'off' ) { $imspam = 0; }
     }
+
     if ( -e "$convvardir/membergroups.txt" ) {
         require "$convvardir/membergroups.txt";
         for ( keys %grp_nopost ) {
@@ -1831,6 +1917,7 @@ sub convert_settings {
         }
         @nopostorder = @new_nopostorder;
     }
+
     if ( -e "$convvardir/oldestmes.txt" ) {
         open $OLM, '<', "$convvardir/oldestmes.txt"
           or croak "cannot open $convvardir/oldestmes.txt";
@@ -2032,40 +2119,64 @@ qq~The Forum Start date was set to $forumstart but the first member was register
     my @adv =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
     $settings{'advanced_tabs'} = @adv;
-    %templateset = ('Forum default' => ['default','default','default','default','default','default','default','2','0','0','0'],
-    'Mobile' => ['mobile','mobile','mobile','mobile','mobile','mobile','mobile','0','0','0','1'],
+    %templateset = (
+        'Forum default' => [
+            'default', 'default', 'default', 'default', 'default', 'default',
+            'default', '2',       '0',       '0',       '0'
+        ],
+        'Mobile' => [
+            'mobile', 'mobile', 'mobile', 'mobile', 'mobile', 'mobile',
+            'mobile', '0',      '0',      '0',      '1'
+        ],
     );
     my @newfields = ();
+
     if (@ext_prof_fields) {
-        foreach my $i (0 .. $#ext_prof_fields) {
+        foreach my $i ( 0 .. $#ext_prof_fields ) {
             @fields = split /[|]/xsm, $ext_prof_fields[$i];
-            $newfields[$i] = qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[6]|$fields[7]|$fields[8]|$fields[9]|$fields[10]|$fields[11]|$fields[12]|$fields[13]|$fields[14]|$fields[15]|$fields[16]|$fields[16]|$fields[18]|$fields[19]|$fields[20]|$fields[21]~;
-       }
+            $newfields[$i] =
+qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[6]|$fields[7]|$fields[8]|$fields[9]|$fields[10]|$fields[11]|$fields[12]|$fields[13]|$fields[14]|$fields[15]|$fields[16]|$fields[16]|$fields[18]|$fields[19]|$fields[20]|$fields[21]~;
+        }
     }
-    @ext_prof_fields = @newfields;
+    @ext_prof_fields  = @newfields;
     $default_template = 'Forum default';
 
     foreach ( keys %Group ) {
         if ( $Group{$_} =~ m/[|]/xsm ) {
             my @newgrp1 = split /[|]/xsm, $Group{$_};
-            $grp_staff{$_} = [ "$newgrp1[0]", $newgrp1[1], "$newgrp1[2]", "$newgrp1[3]", $newgrp1[4], $newgrp1[5], $newgrp1[6], $newgrp1[7], $newgrp1[8], $newgrp1[9], $newgrp1[10] ];
+            $grp_staff{$_} = [
+                "$newgrp1[0]", $newgrp1[1], "$newgrp1[2]", "$newgrp1[3]",
+                $newgrp1[4],   $newgrp1[5], $newgrp1[6],   $newgrp1[7],
+                $newgrp1[8],   $newgrp1[9], $newgrp1[10]
+            ];
         }
     }
     foreach ( keys %NoPost ) {
         if ( $NoPost{$_} =~ m/[|]/xsm ) {
             my @newgrp2 = split /[|]/xsm, $NoPost{$_};
-            $grp_nopost{$_} = ["$newgrp2[0]", $newgrp2[1], "$newgrp2[2]", "$newgrp2[3]", $newgrp2[4], $newgrp2[5], $newgrp2[6], $newgrp2[7], $newgrp2[8], $newgrp2[9], $newgrp2[10]];
+            $grp_nopost{$_} = [
+                "$newgrp2[0]", $newgrp2[1], "$newgrp2[2]", "$newgrp2[3]",
+                $newgrp2[4],   $newgrp2[5], $newgrp2[6],   $newgrp2[7],
+                $newgrp2[8],   $newgrp2[9], $newgrp2[10]
+            ];
         }
     }
     foreach ( keys %Post ) {
         if ( $Post{$_} =~ m/[|]/xsm ) {
             my @newgrp3 = split /[|]/xsm, $Post{$_};
-            $grp_post{$_} = ["$newgrp3[0]", $newgrp3[1], "$newgrp3[2]", "$newgrp3[3]", $newgrp3[4], $newgrp3[5], $newgrp3[6], $newgrp3[7], $newgrp3[8], $newgrp3[9], $newgrp3[10]];
+            $grp_post{$_} = [
+                "$newgrp3[0]", $newgrp3[1], "$newgrp3[2]", "$newgrp3[3]",
+                $newgrp3[4],   $newgrp3[5], $newgrp3[6],   $newgrp3[7],
+                $newgrp3[8],   $newgrp3[9], $newgrp3[10]
+            ];
         }
     }
     @smilieorder = ();
     foreach my $i ( 0 .. $#SmilieURL ) {
-        $addedsmilies{$i + 1} = ["$SmilieURL[$i]", "$SmilieCode[$i]", "$SmilieDescription[$i]", "$SmilieLinebreak[$i]"];
+        $addedsmilies{ $i + 1 } = [
+            "$SmilieURL[$i]",         "$SmilieCode[$i]",
+            "$SmilieDescription[$i]", "$SmilieLinebreak[$i]"
+        ];
         push @smilieorder, $i + 1;
     }
 
@@ -2392,7 +2503,8 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
         $yyurl = $scripturl;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
-        $curline =~ s/\Qimg src=\E\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eigxsm;
+        $curline =~
+          s/\Qimg src=\E\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eigxsm;
         $output .= $curline;
     }
     if ( $yycopyin == 0 ) {
@@ -2426,7 +2538,7 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
     local *cut_comment = sub {    # line break of too long comments
         my @x = @_;
         my ( $comment, $length ) =
-          ( q{}, 120 );     # 120 Col is the max width of page
+          ( q{}, 120 );           # 120 Col is the max width of page
         my $var_length = length $x[0];
         while ( $length < $var_length ) { $length += 120; }
         foreach ( split / +/sm, $x[1] ) {

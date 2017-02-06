@@ -77,7 +77,7 @@ if( ! $script_root ) {
 '25a' => q~Run Incremental Backup - only files changed/created since~,
 
 # Not used
-# '26' => q~', Not used
+# '26' => q{}, Not used
 
 # Text used for the actual backup output
 '27' => q~Backed up~,

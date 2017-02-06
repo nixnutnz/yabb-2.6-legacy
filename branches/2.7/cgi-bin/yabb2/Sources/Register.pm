@@ -46,28 +46,29 @@ our ( $adminurl, $boardurl, $defaultimagesdir, $langdir, $memberdir,
     $scripturl, $vardir, $imagesdir );
 ## settings ##
 our (
-    $addmemgroup_enabled,     $allow_hide_email,
-    $birthday_on_reg,         $cookie_length,
-    $default_template,        $defaultusertxt,
-    $do_scramble_id,          $edit_agelimit,
-    $edit_genderlimit,        $emailpassword,
-    $emailwelcome,            $en_spam_questions,
-    $extendedprofiles,        $gender_on_reg,
-    $honeypot,                $imp_email_check,
-    $imsubject,               $lang,
-    $imtext,                  $matchcase,
-    $matchname,               $matchuser,
-    $matchword,               $mbname,
-    $min_reg_time,            $name_cannot_be_userid,
-    $new_member_notification, $new_member_notification_mail,
-    $preregspan,              $reg_agree,
-    $reg_reason_len,          $regcheck,
-    $regtype,                 $send_welcomeim,
-    $sendname,                $spam_questions_case,
-    $spamfruits,              $timeselected,
-    $webmaster_email,         $yymycharset,
-    %grp_nopost,              @adomains,
-    @bdomains,                @nopostorder,
+    $addmemgroup_enabled,          $allow_hide_email,
+    $birthday_list_show,           $birthday_on_reg,
+    $cookie_length,                $default_template,
+    $defaultusertxt,               $do_scramble_id,
+    $edit_agelimit,                $edit_genderlimit,
+    $emailpassword,                $emailwelcome,
+    $en_spam_questions,            $extendedprofiles,
+    $gender_on_reg,                $honeypot,
+    $imp_email_check,              $imsubject,
+    $lang,                         $imtext,
+    $matchcase,                    $matchname,
+    $matchuser,                    $matchword,
+    $mbname,                       $min_reg_time,
+    $name_cannot_be_userid,        $new_member_notification,
+    $new_member_notification_mail, $preregspan,
+    $reg_agree,                    $reg_reason_len,
+    $regcheck,                     $regtype,
+    $send_welcomeim,               $sendname,
+    $show_event_birthdays,         $spam_questions_case,
+    $spamfruits,                   $timeselected,
+    $webmaster_email,              $yymycharset,
+    %grp_nopost,                   @adomains,
+    @bdomains,                     @nopostorder,
     @reserve,
 );
 ## system ##
@@ -1319,12 +1320,18 @@ sub user_activation {
                     )
                   )
                 {
-                    fatal_error( 'email_taken', "(${$uid.$reguser}{'email'})" );
+                    fatal_error( 'email_taken',
+                        "(${ $uid . $reguser }{'email'})" );
                 }
 
                 # user is in list and the keys match, so let him/her in
                 rename "$memberdir/$reguser.pre", "$memberdir/$reguser.vars";
                 member_index( 'add', $reguser );
+                if ( ${ $uid . $reguser }{'bday'}
+                    && ( $show_event_birthdays || $birthday_list_show ) )
+                {
+                    eventcalbday( $reguser, ${ $uid . $reguser }{'bday'}, 1 );
+                }
                 my $actuser = $reguser;
                 if   ( $iamadmin || $iamgmod ) { $actuser = $username; }
                 else                           { $actuser = $reguser; }

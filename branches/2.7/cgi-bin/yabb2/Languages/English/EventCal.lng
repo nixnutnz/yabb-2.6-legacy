@@ -186,6 +186,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_desc' => q~Please enter a description for the Event Icon.~,
 'del' => q~Delete old events~,
 'showtoday' => q~Use "Today", "Yesterday", and "Tomorrow" in event and birthday displays.~,
+'new' => q~If turning on 'Show Birthdays' or 'Show Member Birthdays List' you will need to run 'Rebuild Birthday List' below.~,  
 );
 
 1;

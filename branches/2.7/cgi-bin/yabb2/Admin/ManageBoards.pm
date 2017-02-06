@@ -1560,7 +1560,7 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
                     && ( split /[|]/xsm, $boardtomodify[0] )[8] =~ /a/ism )
                 {
                     local *take_a_off =
-                      sub { my $y = shift; $y =~ s/a//gsm; return $y; };
+                      sub { my $y = shift; $y =~ s/a//gxsm; return $y; };
                     for my $x ( 0 .. $#boardtomodify ) {
                         $boardtomodify[$x] =~
                           s/(.*[|])(.*)/ $1 . take_a_off($2) /exsm;
@@ -1654,8 +1654,8 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         }
         my @modhook = ();
         ## BRD Mod Hook ##
-        foreach my $i ( 0 .. $#modhook ) {
-            $modhook[$i] ||= q{};
+        foreach my $k ( 0 .. $#modhook ) {
+            $modhook[$k] ||= q{};
         }
 
         my $modchk  = @modhook;

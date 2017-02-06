@@ -42,10 +42,11 @@ our (
 our ( $adminurl, $memberdir, $scripturl, $vardir, $yyhtml_root );
 ## settings ##
 our (
-    $addmemgroup_enabled, $do_scramble_id, $emailpassword,
-    $extendedprofiles,    $ip_lookup,      $mbname,
-    $nomailspammer,       $regtype,        $sendname,
-    $yymycharset,         %grp_nopost,
+    $addmemgroup_enabled, $birthday_list_show,   $do_scramble_id,
+    $emailpassword,       $extendedprofiles,     $ip_lookup,
+    $mbname,              $nomailspammer,        $regtype,
+    $sendname,            $show_event_birthdays, $yymycharset,
+    %grp_nopost,
 );
 ## other ##
 our (
@@ -723,6 +724,11 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         ## user is approved, so let him/her in ##
         rename "$memberdir/$apruser.wait", "$memberdir/$apruser.vars";
         member_index( 'add', $apruser );
+        if ( ${ $uid . $apruser }{'bday'}
+            && ( $show_event_birthdays || $birthday_list_show ) )
+        {
+            eventcalbday( $apruser, ${ $uid . $apruser }{'bday'}, 1 );
+        }
 
         # update approval user list
         fopen( 'APR', '>', 'Variables/memapprove.db' )

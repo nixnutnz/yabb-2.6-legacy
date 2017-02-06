@@ -237,13 +237,9 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
       qw( null calmon_01 calmon_02 calmon_03 calmon_04 calmon_05 calmon_06 calmon_07 calmon_08 calmon_09 calmon_10 calmon_11 calmon_12 );
 
     manage_memberinfo('load');
-    our ($EVENTBIRTH);
-    my @birthmembers = ();
-    if ( -e "$vardir/eventcalbday.db" ) {
-        fopen( 'EVENTBIRTH', '<', "$vardir/eventcalbday.db" )
-          or croak "$croak{'open'} birthday";
-        @birthmembers = <$EVENTBIRTH>;
-        fclose('EVENTBIRTH') or croak "$croak{'close'} birthday";
+    our (%calbday);
+    if ( -e 'Variables/eventcalbday.db' ) {
+        require 'Variables/eventcalbday.db';
     }
 
     my @birthmembers1 = ();
@@ -254,10 +250,9 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     my @no_bd  = ();
     my $string = q{};
     $no_bd[0] = 0;
-    foreach my $user_name (@birthmembers) {
-        chomp $user_name;
-        my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname,
-            $user_bdhide ) = split /[|]/xsm, $user_name;
+    foreach my $user_bdname ( keys %calbday ) {
+        my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdhide ) =
+          @{ $calbday{$user_bdname} };
         if ( $user_bdyear && $user_bdmon && $user_bdday ) {
             my $memrealname = $memberinf{$user_bdname}[0];
             my $age         = 0;
@@ -276,18 +271,19 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
             }
             if ( $age && $user_bdyear > 1904 && $user_bdmon && $user_bdday ) {
                 $string =
-"$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
+qq~$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide~;
                 push @birthmembers1, $string;
                 $calsplit ||= 0;
                 if ( $calsplit > 0 && $vmonth eq $mont[$user_bdmon] ) {
                     $string =
-"$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide\n";
+qq~$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide~;
                     push @birthmembers2, $string;
                 }
             }
         }
     }
     undef %memberinf;
+    undef %calbday;
 
     my $viewbirthdays = q{};
     my ( $user_linkprofile, $user_linkname, $myage, $bd_today, $showviewbd, );

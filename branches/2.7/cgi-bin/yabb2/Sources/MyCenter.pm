@@ -541,7 +541,7 @@ sub call_backrec {
         ) = split /[|]/xsm, $_, 14;
         if ( !$do_it ) {
             if ( $rmessageid == $rid && $fromuser eq $username ) {
-                if ( $flags !~ /u/ism ) { $nodel = 1; }
+                if ( $flags !~ /u/ixsm ) { $nodel = 1; }
                 last;
             }
         }
@@ -549,7 +549,7 @@ sub call_backrec {
             if ( $rmessageid != $rid || $fromuser ne $username ) {
                 $rims .= $_;
             }
-            elsif ( $flags !~ /u/ism ) {
+            elsif ( $flags !~ /u/ixsm ) {
                 $rims .= $_;
                 $nodel = 1;
             }

@@ -229,6 +229,7 @@ sub event_calset {
                     <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
                 </tr><tr>
                     <td class="catbg center">
+                        <p>$event_cal{'new'}</p>
                         <input type="submit" name="savesetting" value="$event_cal{'31'}" class="button" />&nbsp;<input type="submit" name="rebuiltbd" value="$event_cal{'54'}" class="button" />
                         <br /><input type="submit" name="del_old_events" value="$event_cal{'del'}" class="button" />
                     </td>
@@ -354,7 +355,7 @@ sub event_calset2 {
     is_admin_or_gmod();
 
     if ( $FORM{'rebuiltbd'} && $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
-        unlink "$vardir/eventcalbday.db";
+        unlink 'Variables/eventcalbday.db';
         our (%memberlist);
         require Variables::Memberlist;
         my @birthmembers = keys %memberlist;
@@ -378,11 +379,12 @@ sub event_calset2 {
                 if   ( ${ $uid . $user_xy }{'hideage'} ) { $user_hide = 1; }
                 else                                     { $user_hide = q{}; }
                 $bdlist .=
-                  qq~$user_year|$user_month|$user_day|$user_xy|$user_hide\n~;
+qq~\$calbday{'$user_xy'} = ['$user_year', '$user_month', '$user_day', '$user_hide'];\n~;
             }
         }
+        $bdlist .= qq~\n1;\n~;
         our ($FILE);
-        fopen( 'FILE', '>', "$vardir/eventcalbday.db" )
+        fopen( 'FILE', '>', 'Variables/eventcalbday.db' )
           or croak "$croak{'open'} eventcalbday";
         print {$FILE} $bdlist or croak "$croak{'print'} eventcalbday.db";
         fclose('FILE') or croak "$croak{'close'} eventcalbday";
@@ -553,28 +555,30 @@ sub eventcal_save {
 
 sub admin_del_old_events {
     my $caltoday = 1;
-    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst ) =
+    my ( undef, undef, undef, $mday, $mon, $year, undef, undef, undef ) =
       gmtime $date;
     $year += 1900;
     $mon++;
     $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
 
-    our ($EVENTFILE);
-    fopen( 'EVENTFILE', '<', "$vardir/eventcal.db" )
-      or croak "$croak{'open'} eventcal";
-    my @calinput = <$EVENTFILE>;
-    fclose('EVENTFILE') or croak "$croak{'close'} eventcal";
-    for my $i ( 0 .. $#calinput ) {
-        my ( $c_date, undef, undef, undef, undef, undef, undef, $c_type2,
-            undef ) = split /[|]/xsm, $calinput[$i];
-        chop $c_type2;
-        if ( $c_date < $caltoday && $c_type2 < 2 ) { $calinput[$i] = q{}; }
+    our (%event);
+    require 'Variables/eventcal.db';
+    foreach my $c_type2 ( keys %event ) {
+        my ($c_date) = ${ $event{$c_type2} }[0];
+        if ( $c_date < $caltoday && $c_type2 < 2 ) { delete $event{$c_type2}; }
     }
-    my $calinput = join q{}, @calinput;
-    fopen( 'EVENTFILE', '>', "$vardir/eventcal.db" )
-      or croak "$croak{'open'} EVENTFILE";
-    print {$EVENTFILE} $calinput or croak "$croak{'print'} EVENTFILE";
-    fclose('EVENTFILE') or croak "$croak{'close'} EVENTFILE";
+    my $prncal = q{};
+    foreach ( keys %event ) {
+        ${ $event{$_} }[4] =~ s/"/\\x22/gxsm;
+        my $event = join q{", "}, @{ $event{$_} };
+        $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
+    }
+    $prncal .= qq~\n1;\n~;
+    our ($EVENTFILE);
+    fopen( 'EVENTFILE', '>', 'Variables/eventcal.db' )
+      or croak "$croak{'open'} eventcal.db";
+    print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
+    fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
 
     $yysetlocation = qq~$adminurl?action=eventcal_set~;
     redirectexit();
