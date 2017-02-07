@@ -355,7 +355,7 @@ sub event_calset2 {
     is_admin_or_gmod();
 
     if ( $FORM{'rebuiltbd'} && $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
-        unlink 'Variables/eventcalbday.db';
+        unlink 'Variables/Eventcalbday.pm';
         our (%memberlist);
         require Variables::Memberlist;
         my @birthmembers = keys %memberlist;
@@ -384,10 +384,10 @@ qq~\$calbday{'$user_xy'} = ['$user_year', '$user_month', '$user_day', '$user_hid
         }
         $bdlist .= qq~\n1;\n~;
         our ($FILE);
-        fopen( 'FILE', '>', 'Variables/eventcalbday.db' )
-          or croak "$croak{'open'} eventcalbday";
-        print {$FILE} $bdlist or croak "$croak{'print'} eventcalbday.db";
-        fclose('FILE') or croak "$croak{'close'} eventcalbday";
+        fopen( 'FILE', '>', 'Variables/Eventcalbday.pm' )
+          or croak "$croak{'open'} Eventcalbday";
+        print {$FILE} $bdlist or croak "$croak{'print'} Eventcalbday";
+        fclose('FILE') or croak "$croak{'close'} Eventcalbday";
 
         $yysetlocation = qq~$adminurl?action=eventcal_set;rebok=1~;
         redirectexit();
@@ -562,7 +562,7 @@ sub admin_del_old_events {
     $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
 
     our (%event);
-    require 'Variables/eventcal.db';
+    require Variables::Eventcal;
     foreach my $c_type2 ( keys %event ) {
         my ($c_date) = ${ $event{$c_type2} }[0];
         if ( $c_date < $caltoday && $c_type2 < 2 ) { delete $event{$c_type2}; }
@@ -575,10 +575,10 @@ sub admin_del_old_events {
     }
     $prncal .= qq~\n1;\n~;
     our ($EVENTFILE);
-    fopen( 'EVENTFILE', '>', 'Variables/eventcal.db' )
-      or croak "$croak{'open'} eventcal.db";
-    print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
-    fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
+    fopen( 'EVENTFILE', '>', 'Variables/Eventcal.pm' )
+      or croak "$croak{'open'} Eventcal";
+    print {$EVENTFILE} $prncal or croak "$croak{'print'} Eventcal";
+    fclose('EVENTFILE') or croak "$croak{'close'} Eventcal";
 
     $yysetlocation = qq~$adminurl?action=eventcal_set~;
     redirectexit();

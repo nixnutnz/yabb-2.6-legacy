@@ -238,8 +238,8 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
 
     manage_memberinfo('load');
     our (%calbday);
-    if ( -e 'Variables/eventcalbday.db' ) {
-        require 'Variables/eventcalbday.db';
+    if ( -e 'Variables/Eventcalbday.pm' ) {
+        require Variables::Eventcalbday;
     }
 
     my @birthmembers1 = ();
@@ -248,7 +248,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     my @no_birthday_found = ();
     $no_birthday_found[0] = q{};
     my @no_bd  = ();
-    my $string = q{};
+    my @string = ();
     $no_bd[0] = 0;
     foreach my $user_bdname ( keys %calbday ) {
         my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdhide ) =
@@ -270,14 +270,12 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
                 $sternzeichen = starsign( $user_bdday, $user_bdmon );
             }
             if ( $age && $user_bdyear > 1904 && $user_bdmon && $user_bdday ) {
-                $string =
-qq~$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide~;
-                push @birthmembers1, $string;
+                @string = ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age, $sternzeichen, $memrealname, $user_bdhide );
+                push @birthmembers1, [@string];
                 $calsplit ||= 0;
                 if ( $calsplit > 0 && $vmonth eq $mont[$user_bdmon] ) {
-                    $string =
-qq~$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memrealname|$user_bdhide~;
-                    push @birthmembers2, $string;
+                    @string = ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age, $sternzeichen, $memrealname, $user_bdhide );
+                    push @birthmembers2, [@string];
                 }
             }
         }
@@ -292,10 +290,9 @@ qq~$user_bdyear|$user_bdmon|$user_bdday|$user_bdname|$age|$sternzeichen|$memreal
     }
     else {
         foreach my $user_name (@birthmembers1) {
-            chomp $user_name;
             my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age,
                 $sternzeichen, $user_bdrealname, $user_bdhide )
-              = split /[|]/xsm, $user_name;
+              = @{$user_name};
 
             # what birthday should we show begin
 
@@ -486,10 +483,9 @@ qq~<a href="$scripturl?action=$action;newstart=$lastptn;vmonth=$vmonth$b_sort">$
             $yyvmon =~ s/\Q{yabb input_letters}\E//xsm;
 
             foreach my $user_name (@birthmembers2) {
-                chomp $user_name;
                 my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age,
                     $sternzeichen, $user_bdrealname, $user_bdhide )
-                  = split /[|]/xsm, $user_name;
+                  = @{$user_name};
                 $showviewbd = 0;
                 if ($letter) {
                     my $searchbdname = $user_bdrealname;
@@ -572,10 +568,9 @@ qq~<a href="$scripturl?action=$action;newstart=$lastptn;vmonth=$vmonth$b_sort">$
                 for my $user_name ( sort { &{$sortiert}( $a, $b ); }
                     @birthmembers1 )
                 {
-                    chomp $user_name;
                     my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname,
                         $age, $sternzeichen, $user_bdrealname, $user_bdhide )
-                      = split /[|]/xsm, $user_name;
+                      = @{$user_name};
                     if ( $user_bdmon == $j || $user_bdmon eq "$j" ) {
                         $showviewbd = 0;
                         if ($letter) {
@@ -686,15 +681,15 @@ s/\Q{yabb user_linkprofile}\E/$user_linkprofile/xsm;
 # sort area begin
 
 sub sortdate {
-    my @zahl1 = split /[|]/xsm, $a;
-    my @zahl2 = split /[|]/xsm, $b;
+    my @zahl1 = @{$a};
+    my @zahl2 = @{$b};
 
     return ( $zahl1[2] . $zahl1[0] <=> $zahl2[2] . $zahl2[0] );
 }
 
 sub sortage {
-    my @zahl1 = split /[|]/xsm, $a;
-    my @zahl2 = split /[|]/xsm, $b;
+    my @zahl1 = @{$a};
+    my @zahl2 = @{$b};
 
     return ($zahl1[4]
           . $zahl1[2]
@@ -704,15 +699,15 @@ sub sortage {
 }
 
 sub sortstarsign {
-    my @name1 = split /[|]/xsm, $a;
-    my @name2 = split /[|]/xsm, $b;
+    my @name1 = @{$a};
+    my @name2 = @{$b};
 
     return ( $name1[5] cmp $name2[5] );
 }
 
 sub sortuser {
-    my @name1 = split /[|]/xsm, $a;
-    my @name2 = split /[|]/xsm, $b;
+    my @name1 = @{$a};
+    my @name2 = @{$b};
     return ( lc $name1[6] cmp lc $name2[6] );
 }
 

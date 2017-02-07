@@ -664,8 +664,8 @@ sub keygen {
 sub eventcalbday {
     my ( $bduser, $bday, $hideage ) = @_;
     our (%calbday);
-    if ( -e 'Variables/eventcalbday.db' ) {
-        require 'Variables/eventcalbday.db';
+    if ( -e 'Variables/Eventcalbday.pm' ) {
+        require Variables::Eventcalbday;
     }
     my ( $user_montha, $user_daya, $user_yeara ) = split /\//xsm, $bday;
     if ( $user_montha < 10 && length($user_montha) == 1 ) {
@@ -688,7 +688,7 @@ qq~\$calbday{'$_'} = ['${$calbday{$_}}[0]', '${$calbday{$_}}[1]', '${$calbday{$_
     }
     $prnx .= qq~1;\n~;
     our ($FILE);
-    fopen( 'FILE', '>', 'Variables/eventcalbday.db' )
+    fopen( 'FILE', '>', 'Variables/Eventcalbday.pm' )
       or croak "$croak{'open'} birthday";
     print {$FILE} $prnx or croak "$croak{'print'} birthday";
     fclose('FILE') or croak "$croak{'close'} birthday";

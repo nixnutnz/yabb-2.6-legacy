@@ -787,8 +787,8 @@ $mycalout_addevent
         || $show_event_birthdays == 2 )
     {
         our (%calbday);
-        if ( -e 'Variables/eventcalbday.db' ) {
-            require 'Variables/eventcalbday.db';
+        if ( -e 'Variables/Eventcalbday.pm' ) {
+            require Variables::Eventcalbday;
             my ( $bd_y, $bday_date, $age, );
             foreach my $user_bdname ( keys %calbday ) {
                 my ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdhide ) =
@@ -836,9 +836,9 @@ qq~$bday_date|0|$user_bdname|$user_bdname|$user_bdhide|<span class="small">$age<
     }
 
     ## Get Events ##
-    if ( -e 'Variables/eventcal.db' ) {
+    if ( -e 'Variables/Eventcal.pm' ) {
         our (%event);
-        require 'Variables/eventcal.db';
+        require Variables::Eventcal;
         my @sorted =
           sort { ${ $event{$a} }[0] <=> ${ $event{$b} }[0] } keys %event;
         foreach my $cal_time (@sorted) {
@@ -1757,9 +1757,9 @@ qq~<span class="small" style="color:$event_todaycolor"><b>$i</b></span>~;
 
 sub del_cal {
     if ($iamguest) { fatal_error('not_allowed'); }
-    if ( $INFO{'caldel'} == 1 && -e 'Variables/eventcal.db' ) {
+    if ( $INFO{'caldel'} == 1 && -e 'Variables/Eventcal.pm' ) {
         our (%event);
-        require 'Variables/eventcal.db';
+        require Variables::Eventcal;
         delete $event{ $INFO{'calid'} };
         my $prncal = q{};
         foreach ( keys %event ) {
@@ -1769,10 +1769,10 @@ sub del_cal {
         }
         $prncal .= qq~\n1;\n~;
         our ($FILE);
-        fopen( 'FILE', '>', 'Variables/eventcal.db' )
-          or croak "$croak{'open'} eventcal.db";
-        print {$FILE} $prncal or croak "$croak{'print'} eventcal.db";
-        fclose('FILE') or croak "$croak{'close'} eventcal.db";
+        fopen( 'FILE', '>', 'Variables/Eventcal.pm' )
+          or croak "$croak{'open'} Eventcal";
+        print {$FILE} $prncal or croak "$croak{'print'} Eventcal";
+        fclose('FILE') or croak "$croak{'close'} Eventcal";
     }
 
     del_old_events();
@@ -1849,8 +1849,8 @@ sub add_cal {
             to_html($guestname);
         }
         our (%event);
-        if ( -e 'Variables/eventcal.db' ) {
-            require 'Variables/eventcal.db';
+        if ( -e 'Variables/Eventcal.pm' ) {
+            require Variables::Eventcal;
         }
         if ( $FORM{'editid'} ) {
             $FORM{'calnoname'} ||= q{};
@@ -1894,10 +1894,10 @@ sub add_cal {
         }
         $prncal .= qq~\n1;\n~;
         our ($EVENTFILE);
-        fopen( 'EVENTFILE', '>', 'Variables/eventcal.db' )
-          or croak "$croak{'open'} eventcal.db";
-        print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
-        fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
+        fopen( 'EVENTFILE', '>', 'Variables/Eventcal.pm' )
+          or croak "$croak{'open'} Eventcal";
+        print {$EVENTFILE} $prncal or croak "$croak{'print'} Eventcal";
+        fclose('EVENTFILE') or croak "$croak{'close'} Eventcal";
 
         {
             no strict qw(refs);
@@ -1935,7 +1935,7 @@ sub del_old_events {
     }
 
     our (%event);
-    require 'Variables/eventcal.db';
+    require Variables::Eventcal;
     foreach my $c_type2 ( keys %event ) {
         my ($c_date) = ${ $event{$c_type2} }[0];
         if ( $c_date < $caltoday && $c_type2 < 2 ) { delete $event{$c_type2}; }
@@ -1948,10 +1948,10 @@ sub del_old_events {
     }
     $prncal .= qq~\n1;\n~;
     our ($EVENTFILE);
-    fopen( 'EVENTFILE', '>', 'Variables/eventcal.db' )
-      or croak "$croak{'open'} eventcal.db";
-    print {$EVENTFILE} $prncal or croak "$croak{'print'} EVENTFILE";
-    fclose('EVENTFILE') or croak "$croak{'close'} eventcal.db";
+    fopen( 'EVENTFILE', '>', 'Variables/Eventcal.pm' )
+      or croak "$croak{'open'} Eventcal";
+    print {$EVENTFILE} $prncal or croak "$croak{'print'} Eventcal";
+    fclose('EVENTFILE') or croak "$croak{'close'} Eventcal";
     return;
 }
 

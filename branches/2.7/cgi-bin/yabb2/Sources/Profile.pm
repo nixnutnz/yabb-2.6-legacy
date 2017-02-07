@@ -2206,9 +2206,9 @@ qq~$scripturl?action=$script_action;username=$useraccount{$member{'username'}};s
         member_index( 'remove', $noteuser );
 
         # EventCalbday Begin
-        if ( -e 'Variables/eventcalbday.db' ) {
+        if ( -e 'Variables/Eventcalbday.pm' ) {
             our (%calbday);
-            require 'Variables/eventcalbday.db';
+            require Variables::Eventcalbday;
             delete $calbday{$user};
             my $prnx = q{};
             foreach ( keys %calbday ) {
@@ -2217,7 +2217,7 @@ qq~\$calbday{'$_'} = ['${$calbday{$_}}[0]', '${$calbday{$_}}[1]', '${$calbday{$_
             }
             $prnx .= qq~1;\n~;
             our ($FILE);
-            fopen( 'FILE', '>', 'Variables/eventcalbday.db' )
+            fopen( 'FILE', '>', 'Variables/Eventcalbday.pm' )
               or croak "$croak{'open'} birthday";
             print {$FILE} $prnx or croak "$croak{'print'} birthday";
             fclose('FILE') or croak "$croak{'close'} birthday";

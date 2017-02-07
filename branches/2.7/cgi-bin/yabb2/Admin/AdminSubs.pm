@@ -49,9 +49,9 @@ sub mail_list {
     is_admin_or_gmod();
     my $delmailline = $INFO{'delmail'} || 0;
     my $prnmail = q{};
-        if ($mailline) {
+    if ($mailline) {
                 $prnmail = qq~$mailline\n~;
-        }
+    }
     if ( -e ('Variables/maillist.dat') ) {
         our (%maillist);
         require "Variables/maillist.dat";

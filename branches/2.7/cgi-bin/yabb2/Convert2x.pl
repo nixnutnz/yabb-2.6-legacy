@@ -1781,10 +1781,10 @@ EOF
 qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$user_bdhide'];\n~;
         }
         $prnx .= qq~1;\n~;
-        open $FILE, '>', "$vardir/eventcalbday.db"
-          or croak 'cannot open birthday';
-        print {$FILE} $prnx or croak 'cannot print birthday';
-        close $FILE or croak 'cannot close birthday';
+        open $FILE, '>', "$vardir/Eventcalbday.pm"
+          or croak 'cannot open Eventcalbday';
+        print {$FILE} $prnx or croak 'cannot print Eventcalbday';
+        close $FILE or croak 'cannot close Eventcalbday';
     }
 
     if ( -e "$convvardir/eventcal.db" ) {
@@ -1818,6 +1818,7 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
             }
             $nsa ||= q{};
             $g   ||= q{};
+            $cal_event =~ s/"/\\x22/gxsm;
             $event{$cal_time} = [
                 "$cal_date",  "$cal_type", "$cal_name",   "$cal_hide",
                 "$cal_event", "$cal_icon", "$cal_noname", "$cal_type2",
@@ -1826,16 +1827,15 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
         }
         my $prncal = q{};
         foreach ( keys %event ) {
-            ${ $event{$_} }[4] =~ s/"/\\x22/gxsm;
             my $event = join q{", "}, @{ $event{$_} };
             $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
         }
         $prncal .= qq~\n1;\n~;
         our ($FILE);
-        fopen( 'FILE', '>', 'Variables/eventcal.db' )
-          or croak "$croak{'open'} eventcal.db";
-        print {$FILE} $prncal or croak "$croak{'print'} eventcal.db";
-        fclose('FILE') or croak "$croak{'close'} eventcal.db";
+        fopen( 'FILE', '>', 'Variables/Eventcal.pm' )
+          or croak "$croak{'open'} Eventcal";
+        print {$FILE} $prncal or croak "$croak{'print'} Eventcal";
+        fclose('FILE') or croak "$croak{'close'} Eventcal";
     }
 
     convert_settings();
