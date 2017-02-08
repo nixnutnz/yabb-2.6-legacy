@@ -207,6 +207,7 @@ function uncheckAll() {
     my $bb             = 0;
     my $print_errorlog = q{};
     my (%userlist);
+    my (%iplist);
 
     while ( $numshown <= $errorcount ) {
         my ( $tmp_user, $username, $numb, $ids, $all ) = q{};
@@ -239,6 +240,8 @@ function uncheckAll() {
             $tmp_user = $tmp_username;
         }
         $userlist{$tmp_user}++;
+        $iplist{$tmp_userip}++;
+
         $tmp_date = timeformat($tmp_date);
         load_user($tmp_user);
         my $ip_block  = q{};
@@ -329,8 +332,16 @@ $print_errorlog
     $errmember ||= q{};
     $errmember =~ s/,\s\Z//xsm;
 
+    my $errip = q{};
+    my @iplist =
+      reverse sort { $iplist{$a} <=> $iplist{$b} } keys %iplist;
+    foreach my $memip (@iplist) {
+        $errip .= qq~$memip ($iplist{$memip}), ~;
+    }
+    $errip ||= q{};
+    $errip =~ s/,\s\Z//xsm;
     $yymain .= qq~          <tr>
-                <td class="windowbg2" colspan="5"><div class="pad-more"><b>$errorlog{'26'}</b> $errmember</div></td>
+                <td class="windowbg2" colspan="5"><div class="pad-more"><b>$errorlog{'26'}</b> $errmember<br />$errip</div></td>
             </tr><tr>
                 <td class="windowbg right" colspan="4">&nbsp;~;
     if ( $errorcount > 0 ) {

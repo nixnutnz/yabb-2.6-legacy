@@ -52,6 +52,8 @@ our (
     $scripturl,     $date,
 );
 
+## our Mod Hook ##
+
 load_language('Admin');
 load_language('EventCal');
 my $adminimages = "$yyhtml_root/Templates/Admin/default";
