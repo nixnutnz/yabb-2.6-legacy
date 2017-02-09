@@ -343,8 +343,8 @@ $print_errorlog
         if ( $memip ne '127.0.0.1' && $memip ne '::1' ) {
             $ip_block =
               ( $use_guardian && $use_htaccess )
-              ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock'}</a>~
-              : qq~<br /><a href="$adminurl?action=blockip;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock2'}</a>~;
+              ? qq~ / <a href="$adminurl?action=guardian_block;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock'}</a>~
+              : qq~ / <a href="$adminurl?action=blockip;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock2'}</a>~;
 
             $lookup_ip =
               ($ip_lookup)
@@ -353,7 +353,7 @@ $print_errorlog
             $ip_ban =
 qq~ - <a href="$adminurl?action=ipban_err;ban=$memip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$memip');">$admin_txt{'725f'}</a>~;
         }
-        $errip .= qq~$lookup_ip$ip_ban$ip_block ($iplist{$memip}), ~;
+        $errip .= qq~$lookup_ip ($iplist{$memip}) $ip_ban$ip_block, ~;
     }
     $errip ||= q{};
     $errip =~ s/,\s\Z//xsm;

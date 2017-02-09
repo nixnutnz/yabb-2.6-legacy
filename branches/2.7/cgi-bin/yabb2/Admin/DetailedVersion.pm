@@ -413,38 +413,40 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 </tr>~;
                 }
             }
-            opendir LNGDIRM, "$langdir/$fld/Mods";
-            my @lfilesanddirsm = readdir LNGDIRM;
-            closedir LNGDIRM;
-            @lfilesanddirsm = sort @lfilesanddirsm;
-            for my $filein_dir (@lfilesanddirsm) {
-                chomp $filein_dir;
-                if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
-                    require "$langdir/$fld/Mods/$filein_dir";
-                    my $flda        = lc $fld;
-                    my $txtrevision = lc $filein_dir;
-                    my $modmatch    = q{};
-                    $txtrevision =~ s/[.]lng/lngver/igxsm;
-                    $txtrevision = $flda . $txtrevision;
-                    if ( ${$txtrevision} ) {
-                        ${$txtrevision} =~
-                          s/\$Revision: (.*?) \$/Build $1/igxsm;
-                    }
-                    else { ${$txtrevision} = q{}; }
-                    open( my $DAT, '<', "$langdir/$fld/Mods/$filein_dir" )
-                      or croak "$croak{'open'} Mods/$filein_dir: $OS_ERROR";
-                    binmode $DAT;
-                    my $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                    close($DAT) or croak "$croak{'close'} Mods/$filein_dir";
+            if (-e "$langdir/$fld/Mods") {
+                opendir LNGDIRM, "$langdir/$fld/Mods";
+                my @lfilesanddirsm = readdir LNGDIRM;
+                closedir LNGDIRM;
+                @lfilesanddirsm = sort @lfilesanddirsm;
+                for my $filein_dir (@lfilesanddirsm) {
+                    chomp $filein_dir;
+                    if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
+                        require "$langdir/$fld/Mods/$filein_dir";
+                        my $flda        = lc $fld;
+                        my $txtrevision = lc $filein_dir;
+                        my $modmatch    = q{};
+                        $txtrevision =~ s/[.]lng/lngver/igxsm;
+                        $txtrevision = $flda . $txtrevision;
+                        if ( ${$txtrevision} ) {
+                            ${$txtrevision} =~
+                              s/\$Revision: (.*?) \$/Build $1/igxsm;
+                        }
+                        else { ${$txtrevision} = q{}; }
+                        open( my $DAT, '<', "$langdir/$fld/Mods/$filein_dir" )
+                          or croak "$croak{'open'} Mods/$filein_dir: $OS_ERROR";
+                        binmode $DAT;
+                        my $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
+                        close($DAT) or croak "$croak{'close'} Mods/$filein_dir";
 
-                    my $age = ( stat("$langdir/$fld/Mods/$filein_dir")->mtime );
-                    my $date = scalar localtime $age;
-                    my $chkmatch =
-                      qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
-                    $yymain .= qq~<tr>
+                        my $age = ( stat("$langdir/$fld/Mods/$filein_dir")->mtime );
+                        my $date = scalar localtime $age;
+                        my $chkmatch =
+                          qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
+                        $yymain .= qq~<tr>
                     <td class="windowbg2">Mods/$filein_dir</td>
                     <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
                 </tr>~;
+                    }
                 }
             }
 

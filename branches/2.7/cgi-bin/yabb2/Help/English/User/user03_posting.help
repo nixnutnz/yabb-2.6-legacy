@@ -183,16 +183,12 @@ Most YaBBC tags can be wrapped around text, by first <span class="highlight">hig
             <br />Result:
         </td>
         <td>[code]&lt;script language="javascript"&gt;
-            <br />&lt;!--
             <br />alert("Hello YaBB 2!");
-            <br />//--&gt;
             <br />&lt;/script&gt; [/code]
             <br />
-            <br />[yabbc][code]<script language="javascript">
-            <!--
-            alert("Hello YaBB 2!");
-            //-->
-            </script>[/code][/yabbc]
+            <br />[yabbc][code]&lt;script language="javascript"&gt;
+alert("Hello YaBB 2!");
+&lt;/script&gt; [/code][/yabbc]
         </td>
     </tr><tr>
         <td colspan="2"><hr /></td>

@@ -496,7 +496,7 @@ sub plush_search2 {
                 if (   !$iamadmin
                     && !$iamgmod
                     && !$pswiammod
-                    && $yy_cookies{$cookiename} ne $crypass )
+                    && ( !$yy_cookies{$cookiename} || $yy_cookies{$cookiename} ne $crypass ) )
                 {
                     next;
                 }

@@ -135,6 +135,7 @@ sub quotemsg {
     my ( $qauthor, $qlink, $qdate, $qmessage ) = @_;
     my ( $testauthor, $fqauthor );
     $qauthor ||= q{};
+    $qlink   ||= q{};
     my $qid = $qauthor . $qid_cnt;
     $qid_cnt++;
 
