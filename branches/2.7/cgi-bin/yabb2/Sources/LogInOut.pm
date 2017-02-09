@@ -130,7 +130,7 @@ sub login2 {
         if ( -e "$memberdir/$username.vars" ) {
             load_user($username);
             my $spass     = ${ $uid . $username }{'password'};
-            my $cryptpass = encode_password("$FORM{'passwrd'}");
+            my $cryptpass = encode_password($FORM{'passwrd'});
 
             # convert non encrypted password to MD5 encrypted one
             if ( $spass eq $FORM{'passwrd'} && $spass ne $cryptpass ) {

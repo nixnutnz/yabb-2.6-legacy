@@ -335,8 +335,25 @@ $print_errorlog
     my $errip = q{};
     my @iplist =
       reverse sort { $iplist{$a} <=> $iplist{$b} } keys %iplist;
+
     foreach my $memip (@iplist) {
-        $errip .= qq~$memip ($iplist{$memip}), ~;
+        my $ip_block  = q{};
+        my $lookup_ip = $memip;
+        my $ip_ban    = q{};
+        if ( $memip ne '127.0.0.1' && $memip ne '::1' ) {
+            $ip_block =
+              ( $use_guardian && $use_htaccess )
+              ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock'}</a>~
+              : qq~<br /><a href="$adminurl?action=blockip;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock2'}</a>~;
+
+            $lookup_ip =
+              ($ip_lookup)
+              ? qq~<a href="$scripturl?action=iplookup;ip=$memip">$memip</a>~
+              : qq~$memip~;
+            $ip_ban =
+qq~ - <a href="$adminurl?action=ipban_err;ban=$memip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$memip');">$admin_txt{'725f'}</a>~;
+        }
+        $errip .= qq~$lookup_ip$ip_ban$ip_block ($iplist{$memip}), ~;
     }
     $errip ||= q{};
     $errip =~ s/,\s\Z//xsm;

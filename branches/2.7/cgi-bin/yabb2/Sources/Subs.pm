@@ -1200,12 +1200,12 @@ sub fatal_error_logging {
         }
         push @errorlog,
           int(time)
-          . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$FORM{'username'}|$FORM{'passwrd'}\n";
+          . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$FORM{'username'}|redacted\n";
     }
     else {
         push @errorlog,
           int(time)
-          . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$username|$FORM{'passwrd'}\n";
+          . "|$date|$user_ip|$tmperror|$action|$INFO{'num'}|$currentboard|$username|redacted\n";
     }
     our ($ERRORLOG);
     fopen( 'ERRORLOG', '>', "$vardir/errorlog.log" )

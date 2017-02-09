@@ -66,7 +66,7 @@ get_template('Search');
 ## local ##
 my ( %found, $mname, $memail, $subfound, @search, );
 
-if ( $FORM{'searchboards'} && $FORM{'searchboards'} =~ /\A\!/xsm ) {
+if ( !$FORM{'searchboards'} || $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
     get_forum_master();
     foreach my $catid (@categoryorder) {
