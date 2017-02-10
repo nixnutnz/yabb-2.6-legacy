@@ -654,6 +654,21 @@ sub save_settings_to {
             print {$NEWS} ${ $_ . '_news' } or croak "$croak{'print'} NEWS";
             fclose('NEWS') or croak "$croak{'close'} NEWS";
         }
+        if ( ${ $_ . '_welcome_subject'} && ${ $_ . '_welcome_txt' } ) {
+            our ($WELL);
+            fopen( 'WELL', '>', "$langdir/$_/welcome.txt" )
+              or fatal_error( 'cannot_open', "$langdir/$_/welcome.txt", 1 );
+            print {$WELL} qq~${ $_ . '_welcome_subject'}|${ $_ . '_welcome_txt' }\n~ or croak "$croak{'print'} WELL";
+            fclose('WELL') or croak "$croak{'close'} WELL";
+        }
+        if ( ${ $_ . '_guestnote' } && ${ $_ . '_guestnote' } ne q{} ) {
+            our ($GN);
+            fopen( 'GN', '>', "$langdir/$_/guestnote.txt" )
+              or fatal_error( 'cannot_open', "$langdir/$_/guestnote.txt", 1 );
+            print {$GN} ${ $_ . '_guestnote' } or croak "$croak{'print'} GN";
+            fclose('GN') or croak "$croak{'close'} GN";
+        }
+        else { unlink "$langdir/$_/guestnote.txt"; }
     }
 
     if ( $codemaxchars > 15 ) { $codemaxchars = 15; }
@@ -1213,8 +1228,6 @@ $bookmarks
 
 \$send_welcomeim = $send_welcomeim;     # enable auto-welcome message from forum to new member. 1=yes, 0=no
 \$sendname = '$sendname';           # username 'from' for welcome message. Defaults to fa.
-\$imsubject = q~$imsubject~;         # title of welcome message.
-\$imtext = q~$imtext~;           # message sent to new member
 
 \$numposts = $numposts;             # Number of posts required to send Instant Messages
 \$pm_spam_chk = $pm_spam_chk;       # Allow PMs when less than numposts number with added anti-spam checks (0 disables)
@@ -1413,7 +1426,6 @@ $addedsmilies
 ###############################################################################
 # Mod Settings                                                                #
 ###############################################################################
-
 
 1;
 EOF

@@ -135,7 +135,7 @@ our (
     $mypost_showmessages,   $mypost_showmessages_a, $mypost_smiley1,
     $mypost_smilies,        $mypost_smilies_c,      $mypost_submit,
     $mypost_title,          $mypost_topicstatus,    $mypost_topview,
-    $mypost_ubbc,           $mypost_veri_c,
+    $mypost_ubbc,           $mypost_veri_c,         $mypost_notice,
 );
 
 ## our Mod Hook ##
@@ -2766,9 +2766,19 @@ sub send_guest_pm {
     $INFO{'title'} = 'PostReply';
     $postthread = 2;
 
-    $guestpost_fields = $mypost_guest_fields;
+    if ( -e "$langdir/$language/guestnote.txt") {
+        $guestpost_fields = $mypost_notice;
+		our ($NOTE);
+		fopen( 'NOTE' , '<', "$langdir/$language/guestnote.txt" );
+		my @note = <$NOTE>;
+		fclose('NOTE');
+		my $notice = join q{}, @note;
+        $guestpost_fields =~ s/\Q{yabb notice}\E/$notice/xsm;
+    }
+    $guestpost_fields .= $mypost_guest_fields;
     $guestpost_fields =~ s/\Q{yabb name}\E/$FORM{'name'}/xsm;
     $guestpost_fields =~ s/\Q{yabb email}\E/$FORM{'email'}/xsm;
+    $guestpost_fields =~ s/\Q{yabb notice}\E/notice/xsm;
 
     $verification_field = q{};
     if ($gpvalid_en) {

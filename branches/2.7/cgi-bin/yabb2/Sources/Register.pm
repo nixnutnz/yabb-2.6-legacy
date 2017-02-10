@@ -54,8 +54,7 @@ our (
     $emailpassword,                $emailwelcome,
     $en_spam_questions,            $extendedprofiles,
     $gender_on_reg,                $honeypot,
-    $imp_email_check,              $imsubject,
-    $lang,                         $imtext,
+    $imp_email_check,              $lang,
     $matchcase,                    $matchname,
     $matchuser,                    $matchword,
     $mbname,                       $min_reg_time,
@@ -969,13 +968,13 @@ sub register2 {
     }
     if ($gender_on_reg) {
         ${ $uid . $reguser }{'gender'} = $member{'gender'};
-        if ( $edit_genderlimit && ${ $uid . $reguser }{'gender'} ne q{} ) {
+        if ( $edit_genderlimit && ${ $uid . $reguser }{'gender'} ) {
             ${ $uid . $reguser }{'disablegender'} = 1;
         }
     }
     if (   $birthday_on_reg
         && $edit_agelimit
-        && ${ $uid . $reguser }{'bday'} ne q{} )
+        && ${ $uid . $reguser }{'bday'} )
     {
         ${ $uid . $reguser }{'disableage'} = 1;
     }
@@ -1120,6 +1119,15 @@ sub register2 {
 
         if ($send_welcomeim) {
             my $messageid = $BASETIME . $PROCESS_ID;
+            my $imsubject = $register_txt{'imsubject'};
+            my $imtext = $register_txt{'imtext'};
+            if ( -e "$langdir/$language/welcome.txt" ) {
+                our ($WELL);
+                fopen( 'WELL', '<', "$langdir/$language/welcome.txt");
+                my $txt = <$WELL>;
+                fclose('WELL');
+                ($imsubject, $imtext) = split /[|]/xsm, $txt;
+            }
             our ($IM);
             fopen( 'IM', '>', "$memberdir/$member{'regusername'}.msg", 1 )
               or croak "$croak{'open'} IM";
@@ -1392,6 +1400,15 @@ sub user_activation {
 
             if ($send_welcomeim) {
                 my $messageid = $BASETIME . $PROCESS_ID;
+                my $imsubject = $register_txt{'imsubject'};
+                my $imtext = $register_txt{'imtext'};
+                if ( -e "$langdir/$language/welcome.txt") {
+                    our ($WELL);
+                    fopen( 'WELL', '<', "$langdir/$language/welcome.txt");
+                    my $txt = <$WELL>;
+                    fclose('WELL');
+                    ($imsubject, $imtext) = split /[|]/xsm, $txt;
+                }
                 our ($INBOX);
                 fopen( 'INBOX', '>', "$memberdir/$reguser.msg" )
                   or croak "$croak{'open'} INBOX";

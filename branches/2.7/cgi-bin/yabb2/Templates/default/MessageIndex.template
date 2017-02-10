@@ -46,6 +46,8 @@ $hoveroff = 'tpoff.gif';
 $brd_notify_img = 'notify.gif';
 $actionlock = 'actionslock.png';
 
+## graphics Mod Hook ##
+
 if (!$messagelist) {
     if (!$show_brd_descrip && $action ne 'favorites') {
         $messageindex_template .= qq~

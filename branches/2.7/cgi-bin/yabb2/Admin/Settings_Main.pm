@@ -343,8 +343,6 @@ qq~<option value="$curtemplate" ${isselected($curtemplate eq $default_template)}
 # imspam conversion
 $guest_view_limit ||= 15;
 
-$imtext =~ s/<br\s \/>/\n/gxsm;
-
 # max / min for PM search
 if ( !$enable_pm_search ) { $enable_pm_search = 0; }
 $enable_pm_search =~ s/\D//igxsm;
@@ -2000,71 +1998,6 @@ qq~<input type="text" name="sendname" id="sendname" size="35" value="$sendname" 
                 validate   => 'text,null',
                 depends_on => [ 'pm_level!=0', 'send_welcomeim' ],
             },
-            {
-                description => qq~<label for="imsubject">$imtxt{'36'}</label>~,
-                input_html =>
-qq~<input type="text" name="imsubject" id="imsubject" size="35" value="$imsubject" />~,
-                name       => 'imsubject',
-                validate   => 'text,null',
-                depends_on => [ 'pm_level!=0', 'send_welcomeim' ],
-            },
-            {
-                description => qq~<label for="imtext">$imtxt{'35'}</label>~,
-                input_html =>
-qq~<textarea name="imtext" id="imtext" cols="35" rows="5">$imtext</textarea>~,
-                name       => 'imtext',
-                validate   => 'fulltext,null',
-                depends_on => [ 'pm_level!=0', 'send_welcomeim' ],
-            },
-            {
-                header => $settings_txt{'bmessages'},
-            },
-            {
-                description =>
-                  qq~<label for="enable_bm_level">$imtxt{'87'}</label>~,
-                input_html => qq~
-<select name="enable_bm_level" id="enable_bm_level">
-  <option value="0" ${isselected($enable_bm_level == 0)}>$userlevel_txt{'none'}</option>
-  <option value="1" ${isselected($enable_bm_level == 1)}>$userlevel_txt{'modgmodadmin'}</option>
-  <option value="4" ${isselected($enable_bm_level == 4)}>$userlevel_txt{'fmodgmodadmin'}</option>
-  <option value="2" ${isselected($enable_bm_level == 2)}>$userlevel_txt{'gmodadmin'}</option>
-  <option value="3" ${isselected($enable_bm_level == 3)}>$userlevel_txt{'admin'}</option>
-</select>~,
-                name       => 'enable_bm_level',
-                validate   => 'number',
-                depends_on => ['pm_level!=0'],
-            },
-            {
-                header => $settings_txt{'alertmessages'},
-            },
-            {
-                description =>
-                  qq~<label for="enable_guest_pm">$imtxt{'88'}</label>~,
-                input_html =>
-qq~<input type="checkbox" name="enable_guest_pm" id="enable_guest_pm" value="1"${ischecked($enable_guest_pm)} />~,
-                name       => 'enable_guest_pm',
-                validate   => 'boolean',
-                depends_on => [ 'pm_level!=0', 'enable_bm_level!=0' ],
-            },
-            {
-                description =>
-                  qq~<label for="enable_alert">$imtxt{'89'}</label>~,
-                input_html =>
-qq~<input type="checkbox" name="enable_alert" id="enable_alert" value="1"${ischecked($enable_alert)} />~,
-                name       => 'enable_alert',
-                validate   => 'boolean',
-                depends_on => [ 'pm_level!=0', 'enable_bm_level!=0' ],
-            },
-            {
-                description =>
-                  qq~<label for="enable_guest_alert">$imtxt{'90'}</label>~,
-                input_html =>
-qq~<input type="checkbox" name="enable_guest_alert" id="enable_guest_alert" value="1"${ischecked($enable_guest_alert)} />~,
-                name     => 'enable_guest_alert',
-                validate => 'boolean',
-                depends_on =>
-                  [ 'enable_alert', 'pm_level!=0', 'enable_bm_level!=0' ],
-            },
 
             {
                 header => $settings_txt{'members'},
@@ -2167,7 +2100,6 @@ qq~<input type="text" size="5" name="ad_max_pm_messlen" id="ad_max_pm_messlen" v
                 name     => 'ad_max_pm_messlen',
                 validate => 'number',
             },
-
             {
                 header => $settings_txt{'mycenter'},
             },
@@ -2194,9 +2126,121 @@ qq~<input type="text" name="max_awaylen" id="max_awaylen" size="5" value="$max_a
                 validate   => 'number,null',
                 depends_on => [ 'enable_mc_away!=0', 'pm_level!=0' ],
             },
+            {
+                header => $settings_txt{'bmessages'},
+            },
+            {
+                description =>
+                  qq~<label for="enable_bm_level">$imtxt{'87'}</label>~,
+                input_html => qq~
+<select name="enable_bm_level" id="enable_bm_level">
+  <option value="0" ${isselected($enable_bm_level == 0)}>$userlevel_txt{'none'}</option>
+  <option value="1" ${isselected($enable_bm_level == 1)}>$userlevel_txt{'modgmodadmin'}</option>
+  <option value="4" ${isselected($enable_bm_level == 4)}>$userlevel_txt{'fmodgmodadmin'}</option>
+  <option value="2" ${isselected($enable_bm_level == 2)}>$userlevel_txt{'gmodadmin'}</option>
+  <option value="3" ${isselected($enable_bm_level == 3)}>$userlevel_txt{'admin'}</option>
+</select>~,
+                name       => 'enable_bm_level',
+                validate   => 'number',
+                depends_on => ['pm_level!=0'],
+            },
+            {
+                header => $settings_txt{'alertmessages'},
+            },
+            {
+                description =>
+                  qq~<label for="enable_guest_pm">$imtxt{'88'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="enable_guest_pm" id="enable_guest_pm" value="1"${ischecked($enable_guest_pm)} />~,
+                name       => 'enable_guest_pm',
+                validate   => 'boolean',
+                depends_on => [ 'pm_level!=0', 'enable_bm_level!=0' ],
+            },
+            {
+                description =>
+                  qq~<label for="enable_alert">$imtxt{'89'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="enable_alert" id="enable_alert" value="1"${ischecked($enable_alert)} />~,
+                name       => 'enable_alert',
+                validate   => 'boolean',
+                depends_on => [ 'pm_level!=0', 'enable_bm_level!=0' ],
+            },
+            {
+                description =>
+                  qq~<label for="enable_guest_alert">$imtxt{'90'}</label>~,
+                input_html =>
+qq~<input type="checkbox" name="enable_guest_alert" id="enable_guest_alert" value="1"${ischecked($enable_guest_alert)} />~,
+                name     => 'enable_guest_alert',
+                validate => 'boolean',
+                depends_on =>
+                  [ 'enable_alert', 'pm_level!=0', 'enable_bm_level!=0' ],
+            },
         ],
     },
 );
+
+{
+    no strict qw(refs);
+    for ( reverse sort keys %lngs ) {
+        if ( -e "$langdir/$_/guestnote.txt" ) {
+            our ($MAINTTXT);
+            fopen( 'MAINTTXT', '<', "$langdir/$_/guestnote.txt" )
+              or croak "$croak{'open'} MAINTTXT";
+            ${ $_ . '_guestnote' } = <$MAINTTXT>;
+            fclose('MAINTTXT') or croak "$croak{'close'} MAINTTXT";
+        }
+        else { ${ $_ . '_guestnote' } = q{}; }
+        my $lbl = $_ . '_guestnote';
+
+        push @{ $settings[5]{'items'} }, 
+          {
+            description =>
+              qq~<label for="$lbl">$admin_txt{'wel_text'} - $_</label>~,
+            input_html =>
+qq~<textarea cols="30" rows="2" name="$lbl" id="$lbl" style="width: 98%">${$lbl}</textarea>~,
+            name     => "$lbl",
+            validate => 'fulltext,null',
+          };
+    }
+}
+
+{
+    no strict qw(refs);
+    for ( reverse sort keys %lngs ) {
+        ${$_ . 'lbl_a'} = q{};
+        ${$_ . 'lbl_b'} = q{};
+        if ( -e "$langdir/$_/welcome.txt" ) {
+            our ($WELL);
+            fopen( 'WELL', '<', "$langdir/$_/welcome.txt" )
+              or croak "$croak{'open'} WELL";
+            ${ $_ . '_welcome' } = <$WELL>;
+            fclose('WELL') or croak "$croak{'close'} WELL";
+            ( ${$_ . 'lbl_a'}, ${$_ . 'lbl_b'} ) = split /[|]/xsm, ${ $_ . '_welcome' };    
+        }
+        my $lbl_imsub = $_ . '_welcome_subject';
+        my $lbl_imtxt = $_ . '_welcome_txt';
+
+        splice @{ $settings[5]{'items'} }, 8, 0, 
+          {
+            description =>
+              qq~<label for="$lbl_imsub">$imtxt{'36'} - $_</label>~,
+            input_html =>
+qq~<textarea cols="30" rows="1" name="$lbl_imsub" id="$lbl_imsub" style="width: 98%">${$_ . 'lbl_a'}</textarea>~,
+            name     => "$lbl_imsub",
+            validate => 'fulltext,null',
+            depends_on => [ 'pm_level!=0', 'send_welcomeim' ],
+          },
+          {
+            description =>
+              qq~<label for="$lbl_imsub">$imtxt{'35'} - $_</label>~,
+            input_html =>
+qq~<textarea cols="30" rows="2" name="$lbl_imtxt" id="$lbl_imtxt" style="width: 98%">${$_ . 'lbl_b'}</textarea>~,
+            name     => "$lbl_imtxt",
+            validate => 'fulltext,null',
+            depends_on => [ 'pm_level!=0', 'send_welcomeim' ],
+          };
+    }
+}
 
 # Routine to save them
 {
@@ -2267,8 +2311,11 @@ qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstar
 
         # Fix guestaccess
         $settings{'guestaccess'} = !$settings{'guestaccess'} || 0;
-        $settings{'imtext'} =~ s/\r(?=\n*)//gxsm;
-        $settings{'imtext'} =~ s/\n/<br \/>/gxsm;
+        for ( keys %lngs ) {
+            my $lbl = $_ . '_welcome_txt';
+            $settings{$lbl} =~ s/\r(?=\n*)//gxsm;
+            $settings{$lbl} =~ s/\n/<br \/>/gxsm;
+        }
 
         # Fix $pwstrengthmeter_common
         $settings{'pwstrengthmeter_common'} =~ s/\x27//gxsm;

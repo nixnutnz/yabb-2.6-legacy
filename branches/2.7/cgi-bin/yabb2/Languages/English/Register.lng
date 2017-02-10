@@ -117,6 +117,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_verification_question' => q~You must answer the verification question.~,
 'error_email2' => q~You must verify your e-mail.~,
 'error_email3' => q~Your e-mail is not equal the confirmation e-mail.~,
+'imsubject' => q~Hey Hey :)~,
+'imtext' => q~Welcome to my boards~,
 );
 
 %pwstrengthmeter_txt = (

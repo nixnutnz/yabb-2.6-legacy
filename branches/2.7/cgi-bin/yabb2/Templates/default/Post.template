@@ -394,6 +394,11 @@ $my_poll_hide = qq~<tr>
 $mypoll_tablefix = q~<table class="pad_3px">~;
 
 #guest posting
+
+$mypost_notice = q~<tr>
+                 <td class="windowbg" colspan="4">{yabb notice}</td>
+            </tr>~;
+
 $mypost_guest_fields = qq~<tr>
                 <td class="windowbg">
                     <label for="name"><b>$post_txt{'68'}:</b></label>
