@@ -1800,8 +1800,6 @@ ext => [0, 0, 0],
 
 \$send_welcomeim = 1;                              # enable auto-welcome message from forum to new member. 1=yes, 0=no
 \$sendname = 'admin';                              # username 'from' for welcome message. Defaults to fa.
-\$imsubject = 'Hey Hey :)';                        # title of welcome message.
-\$imtext = 'Welcome to my boards';                 # message sent to new member
 
 \$numposts = 1;                                    # Number of posts required to send Instant Messages
 \$pm_spam_chk = 0;                                 # Allow PMs when less than numposts number with added anti-spam checks (0 disables)

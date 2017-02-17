@@ -1247,6 +1247,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                     }
                 }
             }
+            $mycalout_greet ||= q{};
             $yymain .= $mycalout_edit;
             $yymain =~ s/\Q{yabb mycalout_top}\E/$mycalout_top/xsm;
             $yymain =~ s/\Q{yabb calgotobox}\E/$calgotobox/xsm;
