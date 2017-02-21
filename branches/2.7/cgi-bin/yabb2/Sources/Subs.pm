@@ -86,6 +86,7 @@ our (
     $quick_post,              $faketruncation,
     $numposts,                $preregspan,
     $minlinkpost,             $minlinksig,
+    $enable_quickpost,
 );
 ## system ##
 our (
@@ -394,6 +395,7 @@ sub template {
     $action          = $INFO{'action'} || q{};
 
     if (   $INFO{'num'}
+        || ( $INFO{'board'} && $enable_quickpost )
         || $action eq 'post'
         || $action eq 'modify'
         || $action eq 'preview'
