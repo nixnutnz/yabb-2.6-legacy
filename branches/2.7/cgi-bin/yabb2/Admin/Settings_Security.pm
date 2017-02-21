@@ -66,6 +66,8 @@ if ($regcheck) {
     validation_code();
 }
 $showcheck ||= q{};
+$captcha_start_chars ||= 0;
+$captcha_end_chars ||= 0;
 
 # List of settings
 our @settings = (
@@ -204,7 +206,7 @@ qq~<label for="captcha_start_chars">$floodtxt{'extra_chars_start'}<br /><span cl
                 input_html =>
 qq~<input type="text" name="captcha_start_chars" id="captcha_start_chars" size="5" value="$captcha_start_chars" />~,
                 name       => 'captcha_start_chars',
-                validate   => 'text,null',
+                validate   => 'number',
                 depends_on => [ 'regcheck||', 'gpvalid_en||' ],
             },
             {
@@ -213,7 +215,7 @@ qq~<label for="captcha_end_chars">$floodtxt{'extra_chars_end'}<br /><span class=
                 input_html =>
 qq~<input type="text" name="captcha_end_chars" id="captcha_end_chars" size="5" value="$captcha_end_chars" />~,
                 name       => 'captcha_end_chars',
-                validate   => 'text,null',
+                validate   => 'number',
                 depends_on => [ 'regcheck||', 'gpvalid_en||' ],
             },
             {

@@ -320,7 +320,7 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
             fclose('FILE') or croak "$croak{'close'} $threadid.txt";
         }
         $nscheck = q{};
-        if ( $quotemsg ne q{} ) {
+        if ( $quotemsg && $quotemsg ne q{} ) {
             (
                 $msubject, $mname,   $memail, $mdate,    $musername,
                 $micon,    $mattach, $mip,    $mmessage, $mns

@@ -108,8 +108,15 @@ sub validation_check {
     if ( $checkcode !~ /\A[[:alnum:]]+\Z/xsm ) {
         fatal_error('invalid_verification_code');
     }
-    if ( testcaptcha( $FORM{'sessionid'} ) ne $checkcode ) {
-        fatal_error('wrong_verification_code');
+    my $checker = testcaptcha( $FORM{'sessionid'} );
+    if ( $captcha_start_chars && $captcha_start_chars > 0 ) {
+        $checker = substr $checker, $captcha_start_chars;
+    }
+    if ( $captcha_end_chars && $captcha_end_chars > 0 ) {
+        $checker = substr $checker, 0, -$captcha_end_chars;
+    }
+    if ( $checker ne $checkcode ) {
+        fatal_error('wrong_verification_code',"$checkcode - $checker");
     }
     return;
 }
@@ -117,10 +124,11 @@ sub validation_check {
 sub validation_code {
 
     # set the max length of the shown verification code
-    my ( $first_charslen, $last_charslen, );
-    if ($captcha_start_chars) { $first_charslen = length $captcha_start_chars; }
-    if ($captcha_end_chars)   { $last_charslen  = length $captcha_end_chars; }
-    if ( $captcha_start_chars && $captcha_end_chars ) {
+    my $first_charslen = 0,
+    my $last_charslen = 0;
+    if ($captcha_start_chars) { $first_charslen = $captcha_start_chars; }
+    if ($captcha_end_chars)   { $last_charslen  = $captcha_end_chars; }
+    if ( $captcha_start_chars || $captcha_end_chars ) {
         $flood_text =
 qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_2'} $first_charslen $floodtxt{'casewarning_4'} $last_charslen $floodtxt{'casewarning_5'}~;
     }
@@ -137,6 +145,7 @@ qq~$floodtxt{'casewarning_1'}$floodtxt{'casewarning_3'} $last_charslen $floodtxt
     }
     if ( !$codemaxchars || $codemaxchars < 3 ) { $codemaxchars = 3; }
     my $codemaxchars2 = $codemaxchars + int rand 2;
+    $codemaxchars2 = $codemaxchars2 + $captcha_start_chars + $captcha_end_chars;
     ## Generate a random string
     my $captcha = keygen( $codemaxchars2, $captchastyle );
     ## now we are going to spice the captcha with the formsession
@@ -159,12 +168,12 @@ sub testcaptcha {
 
 sub convert {
     require Sources::Captcha;
-    my $start_chars = q{};
-    my $end_chars   = q{};
-    if ($captcha_start_chars) { $start_chars = $captcha_start_chars; }
-    if ($captcha_end_chars)   { $end_chars   = $captcha_end_chars; }
+#    my $start_chars = q{};
+#    my $end_chars   = q{};
+#    if ($captcha_start_chars) { $start_chars = $captcha_start_chars; }
+#    if ($captcha_end_chars)   { $end_chars   = $captcha_end_chars; }
     my $captcha = testcaptcha( $INFO{$randaction} );
-    captcha( $start_chars . $captcha . $end_chars );
+    captcha( $captcha );
     return;
 }
 

@@ -641,6 +641,7 @@ qq~<img src="$tmpurl" class="bottom pointer" alt="${$addedsmilies{$smilieorder[$
                 $verification_question_desc =
                   qq~<br />$var_cal{'verification_question_case'}~;
             }
+            $verification_question_desc ||= q{};
             $mycalout_spamquestion = $mycal_spamquest;
             $mycalout_spamquestion =~
               s/\Q{yabb spam_question}\E/$spam_question/xsm;
@@ -1826,7 +1827,7 @@ sub add_cal {
     }
     email_domain_check($email);
     my ($calmessage);
-    if ( length( $FORM{'message'} ) > 0 ) {
+    if ( $FORM{'message'} && length( $FORM{'message'} ) > 0 ) {
         $calmessage = $FORM{'message'};
         $calmessage =~ s/[|]//gxsm;
         $calmessage =~ s/\cM//gxsm;
@@ -1915,6 +1916,10 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     }
 
     del_old_events();
+    my ( undef, undef, undef, $mday, $mon, $year, undef, undef, undef ) = gmtime $date;
+    $year += 1900;
+    $FORM{'selmon'} ||= $mon + 1;
+    $FORM{'selyear'} ||= $year;
     $yysetlocation =
 qq~$scripturl?action=eventcal;calshow=1;calmon=$FORM{'selmon'};calyear=$FORM{'selyear'}~;
     redirectexit();

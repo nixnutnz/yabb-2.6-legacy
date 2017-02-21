@@ -1156,7 +1156,7 @@ qq~                 $menusep<a href="$scripturl?action=modalert;num=$viewnum;tit
         }
 
         ## is member a buddy of mine?
-        if ( $enable_buddylist && !$iamguest && $musername ne $username ) {
+        if ( $enable_buddylist && !$iamguest && $musername ne 'Guest' && $musername ne $username ) {
             $isbuddy =
 qq~<br /><img src="$micon_bg{'buddylist'}" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
             $addbuddylink =
@@ -1434,8 +1434,10 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                     || $staff )
                 {
                     if ($enable_quickreply) {
+                        if ( $musername ne 'Guest' ) {
                         $quote_mname = $useraccount{$musername};
                         $quote_mname =~ s/\x27/\\\x27/gxsm;
+                        }
                         my $quoteinfo = q{};
                         if ($enable_markquote) {
                             my $quotesmess = $postmessage;

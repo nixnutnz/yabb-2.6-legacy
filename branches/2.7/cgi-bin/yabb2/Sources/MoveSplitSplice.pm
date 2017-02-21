@@ -809,7 +809,7 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
             # For: Mark boards as read
             foreach (@newmessindex) {
                 my $chk = ( split /[|]/xsm, $_, 6 )[4];
-                if ( $chk && $chk > $yyuserlog{$newboard} ) {
+                if ( $yyuserlog{$newboard} && $chk && $chk > $yyuserlog{$newboard} ) {
                     $boardlog = 0;
                 }
                 last if !$boardlog;
