@@ -83,10 +83,9 @@ our (
     $timeout,                 $upload_useravatar,
     $use_guardian,            $yymycharset,
     %fix_img_size,            %templateset,
-    $quick_post,              $faketruncation,
+    $faketruncation,          $enable_quickpost,
     $numposts,                $preregspan,
     $minlinkpost,             $minlinksig,
-    $enable_quickpost,
 );
 ## system ##
 our (
@@ -405,6 +404,7 @@ sub template {
         || $action eq 'myviewprofile'
         || $action eq 'eventcal'
         || $action eq 'help'
+        || $action eq 'guestpm'
         || $action eq 'recenttopics'
         || $action eq 'recent'
         || $action eq 'usersrecentposts'

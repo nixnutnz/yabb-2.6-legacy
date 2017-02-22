@@ -151,7 +151,7 @@ $abbr_lang = 'en-us';
 '900pw' => q~Enter Password for~,
 '900pd' => q~Password Access Board~,
 '900pe' => q~Please enter a password.~,
-'900pg' => q~Password Access Boards are for Members only. Please <a href={yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
+'900pg' => q~Password Access Boards are for Members only. Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
 '900pr' => q~Private~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,

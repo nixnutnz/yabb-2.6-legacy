@@ -39,7 +39,7 @@ our (
     %mailreg_txt,            %prereg_txt,            %register_txt,
 );
 ## paths ##
-our ( $adminurl, $memberdir, $scripturl, $vardir, $yyhtml_root );
+our ( $adminurl, $memberdir, $scripturl, $vardir, $yyhtml_root, $langdir );
 ## settings ##
 our (
     $addmemgroup_enabled, $birthday_list_show,   $do_scramble_id,
@@ -724,10 +724,12 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         ## user is approved, so let him/her in ##
         rename "$memberdir/$apruser.wait", "$memberdir/$apruser.vars";
         member_index( 'add', $apruser );
+        { no strict qw(refs);
         if ( ${ $uid . $apruser }{'bday'}
             && ( $show_event_birthdays || $birthday_list_show ) )
         {
             eventcalbday( $apruser, ${ $uid . $apruser }{'bday'}, 1 );
+        }
         }
 
         # update approval user list
@@ -823,8 +825,17 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         }
         $language = $templanguage;
 
-        if ( $send_welcomeim == 1 ) {
+        if ($send_welcomeim) {
             my $messageid = $BASETIME . $PROCESS_ID;
+            my $imsubject = $register_txt{'imsubject'};
+            my $imtext = $register_txt{'imtext'};
+            if ( -e "$langdir/$language/welcome.txt" ) {
+                our ($WELL);
+                fopen( 'WELL', '<', "$langdir/$language/welcome.txt");
+                my $txt = <$WELL>;
+                fclose('WELL');
+                ($imsubject, $imtext) = split /[|]/xsm, $txt;
+            }
             our ($INBOX);
             fopen( 'INBOX', '>', "$memberdir/$apruser.msg" )
               or croak "$croak{'open'} INBOX";
