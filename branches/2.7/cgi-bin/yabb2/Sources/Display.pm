@@ -1435,8 +1435,8 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                 {
                     if ($enable_quickreply) {
                         if ( $musername ne 'Guest' ) {
-                        $quote_mname = $useraccount{$musername};
-                        $quote_mname =~ s/\x27/\\\x27/gxsm;
+                            $quote_mname = $useraccount{$musername};
+                            $quote_mname =~ s/\x27/\\\x27/gxsm;
                         }
                         my $quoteinfo = q{};
                         if ($enable_markquote) {

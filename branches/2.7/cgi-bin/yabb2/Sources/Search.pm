@@ -875,9 +875,9 @@ sub pmsearch {
     my $oldestfound = 9_999_999_999;
     my @msgthreads;
     if ( $pmbox eq '!all' || $pmbox eq '1' ) {
-        if ( -e "$memberdir/$usern.msg" ) {
+        if ( -e "$memberdir/$username.msg" ) {
             our ($FILE);
-            fopen( 'FILE', '<', "$memberdir/$usern.msg" )
+            fopen( 'FILE', '<', "$memberdir/$username.msg" )
               or croak "$croak{'open'} msg";
             @msgthreads = <$FILE>;
             fclose('FILE') or croak "$croak{'close'} msg";
@@ -885,9 +885,9 @@ sub pmsearch {
     }
     my @outthreads;
     if ( $pmbox eq '!all' || $pmbox eq '2' ) {
-        if ( -e "$memberdir/$usern.outbox" ) {
+        if ( -e "$memberdir/$username.outbox" ) {
             our ($FILE);
-            fopen( 'FILE', '<', "$memberdir/$usern.outbox" )
+            fopen( 'FILE', '<', "$memberdir/$username.outbox" )
               or croak "$croak{'open'} outbox";
             @outthreads = <$FILE>;
             fclose('FILE') or croak "$croak{'close'} outbox";
@@ -895,9 +895,9 @@ sub pmsearch {
     }
     my @storethreads;
     if ( $pmbox eq '!all' || $pmbox eq '3' ) {
-        if ( -e "$memberdir/$usern.imstore" ) {
+        if ( -e "$memberdir/$username.imstore" ) {
             our ($FILE);
-            fopen( 'FILE', '<', "$memberdir/$usern.imstore" )
+            fopen( 'FILE', '<', "$memberdir/$username.imstore" )
               or croak "$croak{'open'} imstore";
             @storethreads = <$FILE>;
             fclose('FILE') or croak "$croak{'open'} imstore";

@@ -725,11 +725,11 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         rename "$memberdir/$apruser.wait", "$memberdir/$apruser.vars";
         member_index( 'add', $apruser );
         { no strict qw(refs);
-        if ( ${ $uid . $apruser }{'bday'}
-            && ( $show_event_birthdays || $birthday_list_show ) )
-        {
-            eventcalbday( $apruser, ${ $uid . $apruser }{'bday'}, 1 );
-        }
+            if ( ${ $uid . $apruser }{'bday'}
+                && ( $show_event_birthdays || $birthday_list_show ) )
+            {
+                eventcalbday( $apruser, ${ $uid . $apruser }{'bday'}, 1 );
+            }
         }
 
         # update approval user list
