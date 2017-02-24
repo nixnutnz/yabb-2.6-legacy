@@ -27,7 +27,7 @@ our $VERSION = '2.7.00';
 
 our $convert2xplver = 'YaBB 2.7.00 $Revision$';
 
-if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
     $yyIIS = 1;
     if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
@@ -1211,7 +1211,7 @@ sub convertmembers {
         }
 
         if ( time() > $time_to_jump && ( $i + 1 ) < @memlist ) {
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=members2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;mtotal=~
@@ -1258,14 +1258,30 @@ sub moveboards {
                     "$maintext_23 $convboardsdir/$boards[$i].ext: ", 1 );
                 @brdinfo = <$BOARDFILE>;
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
-                open $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
-                  or croak 'cannot open NEWBRD';
-                print {$NEWBRD} @brdinfo or croak 'cannot print NEWBRD';
-                close $NEWBRD or croak 'cannot close NEWBRD';
+                if ( $ext ne 'mail' ) {
+                    open $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
+                      or croak 'cannot open NEWBRD';
+                    print {$NEWBRD} @brdinfo or croak 'cannot print NEWBRD';
+                    close $NEWBRD or croak 'cannot close NEWBRD';
+                }
+                else {
+                    %theboard = map { /(.*)\t(.*)/xsm } <$BOARDFILE>;
+                    my $prnbrd = q{};
+                    foreach (keys %theboard) {
+                        my ( $memlang, $memtype, $memview ) =
+                        split /[|]/xsm, $theboard{$_};
+                        $prnbrd .= "\$theboard{'$_'} = [ '$memlang', $memtype, $memview ]";
+                    }
+                    $prnbrd .= "\n1;\n";
+                    open $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
+                      or croak 'cannot open NEWBRD';
+                    print {$NEWBRD} $prnbrd or croak 'cannot print NEWBRD';
+                    close $NEWBRD or croak 'cannot close NEWBRD';
+                }
             }
         }
         if ( time() > $time_to_jump && ( $i + 1 ) < @boards ) {
-            $yySetLocation =
+            $yysetlocation =
                 qq~$set_cgi?action=cats2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;bstart=$i;btotal=~
@@ -1433,7 +1449,7 @@ sub fixnopost {
             if ( time() > $time_to_jump && ( $i + 1 ) < $totalnoposts ) {
                 write_forum_control();
 
-                $yySetLocation =
+                $yysetlocation =
                   qq~$set_cgi?action=cleanup2;st=~
                   . int(
                     $INFO{'st'} + time() - $time_to_jump + $max_process_time )
@@ -1551,18 +1567,36 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
                             "$maintext_23 $convdatadir/$thread.$ext: ", 1 );
                         @messagelines = <$MSGFILE>;
                         close $MSGFILE or croak 'cannot close MSGFILE';
-                        open $MSGFILE, '>',
-                          "$datadir/$thread.$ext"
-                          or setup_fatal_error(
-                            "$maintext_23 $datadir/$thread.$ext: ", 1 );
-                        print {$MSGFILE} @messagelines
-                          or croak "cannot print $datadir/$thread.$ext";
-                        close $MSGFILE or croak 'cannot close MSGFILE';
+                        if ( $ext ne 'mail' ) {
+                            open $MSGFILE, '>',
+                              "$datadir/$thread.$ext"
+                              or setup_fatal_error(
+                                "$maintext_23 $datadir/$thread.$ext: ", 1 );
+                            print {$MSGFILE} @messagelines
+                              or croak "cannot print $datadir/$thread.$ext";
+                            close $MSGFILE or croak 'cannot close MSGFILE';
+                        }
+                        else {
+                            %thethread = map { /(.*)\t(.*)/xsm } <$MSGFILE>;
+                            my $prnthread = q{};
+                            foreach (keys %thethread) {
+                                my ( $memlang, $memtype, $memview ) =
+                                split /[|]/xsm, $thethread{$_};
+                                $prnthread .= "\$thethread{'$_'} = [ '$memlang', $memtype, $memview ]";
+                            }
+                            $prnthread .= "\n1;\n";
+                            open $MSGFILE, '>',
+                              "$datadir/$thread.$ext"
+                              or setup_fatal_error(
+                                "$maintext_23 $datadir/$thread.$ext: ", 1 );
+                            print {$MSGFILE} $prnthread or croak 'cannot print MSGFILE';
+                            close $MSGFILE or croak 'cannot close MSGFILE';
+                        }
                     }
                 }
             }
             if ( time() > $time_to_jump && ( $tops + 1 ) < $totalmess ) {
-                $yySetLocation =
+                $yysetlocation =
                   qq~$set_cgi?action=messages2;st=~
                   . int( $INFO{'st'} +
                       time() -
@@ -1574,7 +1608,7 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
             }
         }
         if ( time() > $time_to_jump && ( $next_board + 1 ) < $totalbdr ) {
-            $yySetLocation =
+            $yysetlocation =
               qq~$set_cgi?action=messages2;st=~
               . int(
                 $INFO{'st'} + time() - ( $time_to_jump - $max_process_time ) )

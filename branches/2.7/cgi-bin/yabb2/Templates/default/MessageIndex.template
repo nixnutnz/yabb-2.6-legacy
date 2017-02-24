@@ -305,7 +305,7 @@ $brd_notify = qq~
         <tr>
             <td class="windowbg" style="padding:1em 4px">{yabb my_delopt}</td>
             <td class="windowbg">
-                <select name="{yabb currentboard}">
+                <select name="notify">
                     <option value="1"{yabb selected1}>$notify_txt{'132'}</option>
                     <option value="2"{yabb selected2}>$notify_txt{'133'}</option>
                     {yabb deloption}
@@ -313,6 +313,7 @@ $brd_notify = qq~
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
+                <input type="hidden" name="upbrd" value="{yabb currentboard}" />
                 <input type="submit" value="$notify_txt{'124'}" class="button" />
             </td>
         </tr>

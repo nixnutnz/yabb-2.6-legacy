@@ -67,13 +67,9 @@ sub manageboardnotify {
         || $todo eq 'add' )
     {
         undef %theboard;
-        ## open board mail file and build hash name / detail
+        ## open board mail file
         if ( -e "$boardsdir/$theboard.mail" ) {
-            our ($BOARDNOTE);
-            fopen( 'BOARDNOTE', '<', "$boardsdir/$theboard.mail" )
-              or croak "$croak{'open'} $theboard.mail";
-            %theboard = map { /(.*)\t(.*)/xsm } <$BOARDNOTE>;
-            fclose('BOARDNOTE') or croak "$croak{'close'} $theboard.mail";
+            require "$boardsdir/$theboard.mail";
         }
     }
 
@@ -81,7 +77,7 @@ sub manageboardnotify {
         no strict qw(refs);
         if ( $todo eq 'add' ) {
             if ( !$maxtnote ) { $maxtnote = 10; }
-            $theboard{$user} = "$userlang|$notetype|$noteview";
+            $theboard{$user} = "[ '$userlang', $notetype, $noteview ]";
             load_user($user);
             my %bb;
             my @oldnote = split /,/xsm,
@@ -99,12 +95,11 @@ sub manageboardnotify {
         }
         elsif ( $todo eq 'update' ) {
             if ( exists $theboard{$user} ) {
-                my ( $memlang, $memtype, $memview ) =
-                  split /[|]/xsm, $theboard{$user};
+                my ( $memlang, $memtype, $memview ) = @{$theboard{$user}};
                 if ($userlang) { $memlang = $userlang; }
                 if ($notetype) { $memtype = $notetype; }
                 if ($noteview) { $memview = $noteview; }
-                $theboard{$user} = "$memlang|$memtype|$memview";
+                $theboard{$user} = "[ '$memlang', $memtype, $memview ]";
             }
         }
         elsif ( $todo eq 'delete' ) {
@@ -134,12 +129,15 @@ sub manageboardnotify {
         || $todo eq 'add' )
     {
         if (%theboard) {
+            my $printbrd = q{};
+            foreach ( sort keys %theboard) {
+                $printbrd .=  "\$theboard{'$_'} = $theboard{$_};\n"
+            }
+            $printbrd .= "\n1;\n";
             our ($BOARDNOTE);
             fopen( 'BOARDNOTE', '>', "$boardsdir/$theboard.mail" )
               or croak "$croak{'open'} $theboard.mail";
-            print {$BOARDNOTE} map { "$_\t$theboard{$_}\n" }
-              sort { $theboard{$a} cmp $theboard{$b} } keys %theboard
-              or croak "$croak{'print'} BOARDNOTE";
+            print {$BOARDNOTE} $printbrd or croak "$croak{'print'} BOARDNOTE";
             fclose('BOARDNOTE') or croak "$croak{'close'} $theboard.mail";
             undef %theboard;
         }
@@ -167,11 +165,12 @@ sub boardnotify {
     get_template('MessageIndex');
 
     if ( exists $theboard{$username} ) {
-        my ( $memlang, $memtype, $memview ) = split /[|]/xsm,
-          $theboard{$username};
-        {
-            no strict qw(refs);
-            ${ 'selected' . $memtype } = q~ selected="selected"~;
+        my ( $memlang, $memtype, $memview ) = @{$theboard{$username}};
+        if ( $memtype == 1 ) {    # new topics
+                $selected1 = q~ selected="selected"~;
+        }
+        else {                                        # all new posts
+            $selected2 = q~ selected="selected"~;
         }
         $deloption = qq~<option value="3">$notify_txt{'134'}</option>~;
         $my_delopt = qq~$notify_txt{'137'} &nbsp;~;
@@ -199,17 +198,15 @@ sub boardnotify2 {
     if ($iamguest) { fatal_error('members_only'); }
     {
         no strict qw(refs);
-        foreach my $variable ( keys %FORM ) {
-            if ( $variable eq 'formsession' ) { next; }
-            my $notify_type = $FORM{$variable};
-            if ( $notify_type == 1 || $notify_type == 2 ) {
-                manageboardnotify( 'add', $variable, $username,
-                    ${ $uid . $username }{'language'},
-                    $notify_type, '1' );
-            }
-            elsif ( $notify_type == 3 ) {
-                manageboardnotify( 'delete', $variable, $username );
-            }
+        my $notify_type = $FORM{'notify'};
+        my $upbrd = $FORM{'upbrd'};
+        if ( $notify_type == 1 || $notify_type == 2 ) {
+            manageboardnotify( 'add', $upbrd, $username,
+                ${ $uid . $username }{'language'},
+                $notify_type, '1' );
+        }
+        elsif ( $notify_type == 3 ) {
+            manageboardnotify( 'delete', $upbrd, $username );
         }
     }
     if ( $action eq 'boardnotify3' ) {
@@ -234,15 +231,11 @@ sub managethreadnotify {
         %thethread = ();
         ##  open mail file and build hash
         if ( -e "$datadir/$thethread.mail" ) {
-            our ($THREADNOTE);
-            fopen( 'THREADNOTE', '<', "$datadir/$thethread.mail" )
-              or croak "$croak{'open'} $thethread.mail";
-            %thethread = map { /(.*)\t(.*)/xsm } <$THREADNOTE>;
-            fclose('THREADNOTE') or croak "$croak{'close'} $thethread.mail";
+            require "$datadir/$thethread.mail";
         }
     }
     if ( $todo eq 'add' ) {
-        $thethread{$user} = "$userlang|$notetype|$noteview";
+        $thethread{$user} = "[ '$userlang', $notetype, $noteview ]";
         load_user($user);
         my %t;
         foreach ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} ) {
@@ -254,12 +247,11 @@ sub managethreadnotify {
     }
     elsif ( $todo eq 'update' ) {
         if ( exists $thethread{$user} ) {
-            my ( $memlang, $memtype, $memview ) = split /[|]/xsm,
-              $thethread{$user};
+            my ( $memlang, $memtype, $memview ) = @{$thethread{$user}};
             if ($userlang) { $memlang = $userlang; }
             if ($notetype) { $memtype = $notetype; }
             if ($noteview) { $memview = $noteview; }
-            $thethread{$user} = "$memlang|$memtype|$memview";
+            $thethread{$user} = "[ '$memlang', $memtype, $memview ]";
         }
     }
     elsif ( $todo eq 'delete' ) {
@@ -286,12 +278,15 @@ sub managethreadnotify {
         || $todo eq 'add' )
     {
         if (%thethread) {
+            my $prnthread =  q{};
+            foreach ( sort keys %thethread ) {
+                $prnthread .=  "\$thethread{'$_'} = $thethread{$_};\n";
+            }
+            $prnthread .= "\n1;\n";
             our ($THREADNOTE);
             fopen( 'THREADNOTE', '>', "$datadir/$thethread.mail" )
               or croak "$croak{'open'} $thethread.mail";
-            print {$THREADNOTE} map { "$_\t$thethread{$_}\n" }
-              sort { $thethread{$a} cmp $thethread{$b} } keys %thethread
-              or croak "$croak{'print'} THREADNOTE";
+            print {$THREADNOTE} $prnthread  or croak "$croak{'print'} THREADNOTE";
             fclose('THREADNOTE') or croak "$croak{'close'} $thethread.mail";
             undef %thethread;
         }
@@ -301,8 +296,6 @@ sub managethreadnotify {
     }
     return;
 }
-
-# sub Notify { deleted because not needed since YaBB 2.3 (deti)
 
 sub notify2 {
     if ($iamguest) { fatal_error('members_only'); }
@@ -595,8 +588,7 @@ sub notification_alert {
 
                 $board_notify{$myboard} = [
                     $boardname,
-                    ( split /[|]/xsm, $theboard{$username} )[1]
-                    ,    # boardnotifytype
+                    ${$theboard{$username}}[1],
                     (
                         $max_log_days_old
                           && (

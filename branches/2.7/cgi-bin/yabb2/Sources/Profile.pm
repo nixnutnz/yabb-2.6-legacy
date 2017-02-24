@@ -3165,7 +3165,7 @@ qq~<img src="$facesurl/${ $uid . $user }{'userpic'}" id="avatar_img_resize" alt=
         $buddybutton = q~<br />~
           . (
             $mybuddie{$user}
-            ? qq~<img src="$micon_bg{'buddylist'}" alt="$display_txt{'isbuddy'}" /> $display_txt{'isbuddy'}~
+            ? qq~<img src="$micon_bg{'buddylist'}" alt="$profile_txt{'isbuddy'}"" /> $profile_txt{'isbuddy'}"~
             : qq~<a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$img{'addbuddy'}</a>~
           );
     }

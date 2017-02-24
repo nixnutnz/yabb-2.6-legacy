@@ -1859,8 +1859,8 @@ qq~$mycenter_txt{'posts'}: <a href="$scripturl?action=myusersrecentposts;usernam
 
         my $buddies_currentstatus = q{};
         if ($enable_buddylist) {
-            if ( ${ $uid . $username }{'buddylist'} ) {
-                load_buddylist();
+            if ( ${ $uid . $username }{'buddylist'} && ${ $uid . $username }{'buddylist'} ne q{} ) {
+                $buddies_currentstatus= load_buddylist();
                 $buddies_currentstatus =
 qq~$mycenter_txt{'buddylisttitle'}:<br />$buddies_currentstatus~;
             }
@@ -3340,7 +3340,7 @@ sub load_buddylist {
 
     foreach my $buddyname (@buddies) {
         $css = $cssvalues[ ( $counter % $cssnum ) ];
-        my ($buddyrealname);
+        my $buddyrealname = q{};
         my ( $online, $buddyemail, $buddypm, $buddywww ) = '&nbsp;';
         if ( -e "$memberdir/$buddyname.vars" ) {
             load_user($buddyname);
