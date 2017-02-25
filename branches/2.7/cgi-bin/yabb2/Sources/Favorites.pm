@@ -208,33 +208,33 @@ qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_
             {
                 no strict qw(refs);
                 if (   $threadclass eq 'hide'
-                    && $mstate =~ /s/ism
-                    && $mstate !~ /l/ism )
+                    && $mstate =~ /s/ixsm
+                    && $mstate !~ /l/ixsm )
                 {
                     $threadclass = 'hidesticky';
                 }
                 elsif ($threadclass eq 'hide'
-                    && $mstate =~ /l/ism
-                    && $mstate !~ /s/ism )
+                    && $mstate =~ /l/ixsm
+                    && $mstate !~ /s/ixsm )
                 {
                     $threadclass = 'hidelock';
                 }
                 elsif ($threadclass eq 'hide'
-                    && $mstate =~ /s/ism
-                    && $mstate =~ /l/ism )
+                    && $mstate =~ /s/ixsm
+                    && $mstate =~ /l/ixsm )
                 {
                     $threadclass = 'hidestickylock';
                 }
                 elsif ($threadclass eq 'locked'
-                    && $mstate =~ /s/ism
-                    && $mstate !~ /h/ism )
+                    && $mstate =~ /s/ixsm
+                    && $mstate !~ /h/ixsm )
                 {
                     $threadclass = 'stickylock';
                 }
-                elsif ( $mstate =~ /s/ism && $mstate !~ /h/ism ) {
+                elsif ( $mstate =~ /s/ixsm && $mstate !~ /h/ixsm ) {
                     $threadclass = 'sticky';
                 }
-                elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/ism ) {
+                elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/ixsm ) {
                     $threadclass =
                       $threadclass eq 'locked'
                       ? 'announcementlock'

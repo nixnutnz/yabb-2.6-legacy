@@ -353,7 +353,7 @@ $print_errorlog
             $ip_ban =
 qq~ - <a href="$adminurl?action=ipban_err;ban=$memip;lev=p;return=errorlog" onclick="return confirm('$admin_txt{'ipban_confirm'}$memip');">$admin_txt{'725f'}</a>~;
         }
-        $errip .= qq~$lookup_ip ($iplist{$memip}) $ip_ban$ip_block, ~;
+        $errip .= qq~$lookup_ip ($iplist{$memip}) $ip_ban$ip_block<br />~;
     }
     $errip ||= q{};
     $errip =~ s/,\s\Z//xsm;

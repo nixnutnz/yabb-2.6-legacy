@@ -1156,7 +1156,7 @@ qq~                 $menusep<a href="$scripturl?action=modalert;num=$viewnum;tit
         }
 
         ## is member a buddy of mine?
-        if ( $enable_buddylist && !$iamguest && $musername ne 'Guest' && $musername ne $username ) {
+        if ( $enable_buddylist && !$iamguest && $musername ne 'Guest' && $musername ne $username && $useraccount{$musername} ) {
             $isbuddy =
 qq~<br /><img src="$micon_bg{'buddylist'}" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
             $addbuddylink =
@@ -1434,7 +1434,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                     || $staff )
                 {
                     if ($enable_quickreply) {
-                        if ( $musername ne 'Guest' ) {
+                        if ( $musername ne 'Guest' && $useraccount{$musername} ) {
                             $quote_mname = $useraccount{$musername};
                             $quote_mname =~ s/\x27/\\\x27/gxsm;
                         }
@@ -1905,6 +1905,8 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
       : $msubthread;
 
     my $tool_sep = $usethread_tools ? '|||' : q{};
+    $template_favorite ||= q{};
+    $template_favorite2 ||= q{};
 
     $threadhandellist =~ s/\Q{yabb markunread}\E/$mark_unread$tool_sep/gxsm;
     $threadhandellist =~ s/\Q{yabb reply}\E/$replybutton$tool_sep/gxsm;

@@ -173,7 +173,6 @@ $my_boardnote = qq~
     <form action="$scripturl?action=boardnotify2" method="post" name="boardnotify">
     <div class="tabtitle" style="padding-left:1em; line-height:3em; vertical-align:bottom">
         <img src="$imagesdir/$brd_notify_img" alt="{yabb notify_txt136}" title="{yabb notify_txt136}" /> <b>{yabb notify_txt136}</b>
-        {yabb note_brd}
     </div>
     <table class="pad_4px cs_thin" style="margin-bottom: .5em;">
         <colgroup>

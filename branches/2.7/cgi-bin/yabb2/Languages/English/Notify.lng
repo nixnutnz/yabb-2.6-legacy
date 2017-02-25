@@ -54,10 +54,6 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'lastpost' => q~last post~,
 'lft' => qq~&lsaquo;~,
 'rgt' => qq~&rsaquo;~,
-'75' => q~This is your Notification Board selection.~,
-'76' => q~It now holds~,
-'77' => q~of~,
-'78' => q~maximum allowed Notification Boards.~,
 );
 
 1;

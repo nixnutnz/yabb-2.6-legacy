@@ -76,22 +76,19 @@ sub manageboardnotify {
     {
         no strict qw(refs);
         if ( $todo eq 'add' ) {
-            if ( !$maxtnote ) { $maxtnote = 10; }
             $theboard{$user} = "[ '$userlang', $notetype, $noteview ]";
             load_user($user);
             my %bb;
             my @oldnote = split /,/xsm,
               ${ $uid . $username }{'board_notifications'} || q{};
-            if ( @oldnote < ( $maxtnote || 10 ) ) {
-                foreach ( split /,/xsm,
-                    ${ $uid . $user }{'board_notifications'} || q{} )
-                {
-                    $bb{$_} = 1;
-                }
-                $bb{$theboard} = 1;
-                ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
-                user_account($user);
+            foreach ( split /,/xsm,
+                ${ $uid . $user }{'board_notifications'} || q{} )
+            {
+                $bb{$_} = 1;
             }
+            $bb{$theboard} = 1;
+            ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
+            user_account($user);
         }
         elsif ( $todo eq 'update' ) {
             if ( exists $theboard{$user} ) {
@@ -167,7 +164,7 @@ sub boardnotify {
     if ( exists $theboard{$username} ) {
         my ( $memlang, $memtype, $memview ) = @{$theboard{$username}};
         if ( $memtype == 1 ) {    # new topics
-                $selected1 = q~ selected="selected"~;
+            $selected1 = q~ selected="selected"~;
         }
         else {                                        # all new posts
             $selected2 = q~ selected="selected"~;
@@ -528,7 +525,6 @@ s/\Q{yabb tnote4}\E/${$$thread_notify{$_}}[4] &raquo; ${$thread_notify{$_}}[7]/g
     }
     our $show_notifications = $my_boardnote;
 
-    $show_notifications =~ s/\Q{yabb note_brd}\E//xsm;
     $show_notifications =~ s/\Q{yabb notify_txt136}\E/$notify_txt{'136'}/gxsm;
     $show_notifications =~ s/\Q{yabb notify_txt118}\E/$notify_txt{'118'}/gxsm;
     $show_notifications =~
@@ -592,7 +588,9 @@ sub notification_alert {
                     (
                         $max_log_days_old
                           && (
-                               ${ $uid . $myboard }{'lastposttime'}
+                               ( ${ $uid . $myboard }{'lastposttime'} 
+                                 && ${ $uid . $myboard }{'lastposttime'} ne 'N/A'
+                               )
                             && int( ${ $uid . $myboard }{'lastposttime'} )
                             && (
                                 (
