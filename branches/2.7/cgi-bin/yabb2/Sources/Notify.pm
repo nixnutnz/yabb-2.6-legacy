@@ -76,7 +76,7 @@ sub manageboardnotify {
     {
         no strict qw(refs);
         if ( $todo eq 'add' ) {
-            $theboard{$user} = "[ '$userlang', $notetype, $noteview ]";
+            $theboard{$user} = [ $userlang, $notetype, $noteview ];
             load_user($user);
             my %bb;
             my @oldnote = split /,/xsm,
@@ -96,7 +96,7 @@ sub manageboardnotify {
                 if ($userlang) { $memlang = $userlang; }
                 if ($notetype) { $memtype = $notetype; }
                 if ($noteview) { $memview = $noteview; }
-                $theboard{$user} = "[ '$memlang', $memtype, $memview ]";
+                $theboard{$user} = [ $memlang, $memtype, $memview ];
             }
         }
         elsif ( $todo eq 'delete' ) {
@@ -127,8 +127,8 @@ sub manageboardnotify {
     {
         if (%theboard) {
             my $printbrd = q{};
-            foreach ( sort keys %theboard) {
-                $printbrd .=  "\$theboard{'$_'} = $theboard{$_};\n"
+            foreach ( sort keys %theboard ) {
+                $printbrd .= "\$theboard{'$_'} = [ '${$theboard{$_}}[0]', ${$theboard{$_}}[1], ${$theboard{$_}}[2] ];\n";
             }
             $printbrd .= "\n1;\n";
             our ($BOARDNOTE);
@@ -162,11 +162,11 @@ sub boardnotify {
     get_template('MessageIndex');
 
     if ( exists $theboard{$username} ) {
-        my ( $memlang, $memtype, $memview ) = @{$theboard{$username}};
+        my ( $memlang, $memtype, $memview ) = @{ $theboard{$username} };
         if ( $memtype == 1 ) {    # new topics
             $selected1 = q~ selected="selected"~;
         }
-        else {                                        # all new posts
+        else {                    # all new posts
             $selected2 = q~ selected="selected"~;
         }
         $deloption = qq~<option value="3">$notify_txt{'134'}</option>~;
@@ -195,15 +195,17 @@ sub boardnotify2 {
     if ($iamguest) { fatal_error('members_only'); }
     {
         no strict qw(refs);
-        my $notify_type = $FORM{'notify'};
-        my $upbrd = $FORM{'upbrd'};
-        if ( $notify_type == 1 || $notify_type == 2 ) {
-            manageboardnotify( 'add', $upbrd, $username,
-                ${ $uid . $username }{'language'},
-                $notify_type, '1' );
-        }
-        elsif ( $notify_type == 3 ) {
-            manageboardnotify( 'delete', $upbrd, $username );
+        foreach my $variable ( keys %FORM ) {
+            if ( $variable eq 'formsession' ) { next; }
+            my $notify_type = $FORM{$variable};
+            if ( $notify_type == 1 || $notify_type == 2 ) {
+                manageboardnotify( 'add', $variable, $username,
+                    ${ $uid . $username }{'language'},
+                    $notify_type, '1' );
+            }
+            elsif ( $notify_type == 3 ) {
+                manageboardnotify( 'delete', $variable, $username );
+            }
         }
     }
     if ( $action eq 'boardnotify3' ) {
@@ -232,7 +234,7 @@ sub managethreadnotify {
         }
     }
     if ( $todo eq 'add' ) {
-        $thethread{$user} = "[ '$userlang', $notetype, $noteview ]";
+        $thethread{$user} = [ $userlang, $notetype, $noteview ];
         load_user($user);
         my %t;
         foreach ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} ) {
@@ -248,7 +250,7 @@ sub managethreadnotify {
             if ($userlang) { $memlang = $userlang; }
             if ($notetype) { $memtype = $notetype; }
             if ($noteview) { $memview = $noteview; }
-            $thethread{$user} = "[ '$memlang', $memtype, $memview ]";
+            $thethread{$user} = [ $memlang, $memtype, $memview ];
         }
     }
     elsif ( $todo eq 'delete' ) {
@@ -275,15 +277,16 @@ sub managethreadnotify {
         || $todo eq 'add' )
     {
         if (%thethread) {
-            my $prnthread =  q{};
+            my $prnthread = q{};
             foreach ( sort keys %thethread ) {
-                $prnthread .=  "\$thethread{'$_'} = $thethread{$_};\n";
+                $prnthread .= "\$thethread{'$_'} = [ '${$thethread{$_}}[0]', ${$thethread{$_}}[1], ${$thethread{$_}}[2] ];\n";
             }
             $prnthread .= "\n1;\n";
             our ($THREADNOTE);
             fopen( 'THREADNOTE', '>', "$datadir/$thethread.mail" )
               or croak "$croak{'open'} $thethread.mail";
-            print {$THREADNOTE} $prnthread  or croak "$croak{'print'} THREADNOTE";
+            print {$THREADNOTE} $prnthread
+              or croak "$croak{'print'} THREADNOTE";
             fclose('THREADNOTE') or croak "$croak{'close'} $thethread.mail";
             undef %thethread;
         }
@@ -584,13 +587,14 @@ sub notification_alert {
 
                 $board_notify{$myboard} = [
                     $boardname,
-                    ${$theboard{$username}}[1],
+                    ${ $theboard{$username} }[1],
                     (
                         $max_log_days_old
                           && (
-                               ( ${ $uid . $myboard }{'lastposttime'} 
-                                 && ${ $uid . $myboard }{'lastposttime'} ne 'N/A'
-                               )
+                            (
+                                   ${ $uid . $myboard }{'lastposttime'}
+                                && ${ $uid . $myboard }{'lastposttime'} ne 'N/A'
+                            )
                             && int( ${ $uid . $myboard }{'lastposttime'} )
                             && (
                                 (
