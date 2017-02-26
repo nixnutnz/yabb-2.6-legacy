@@ -689,12 +689,14 @@ sub str_replace {
 
 sub update_htaccess {
     my ( $act, $value ) = @_;
-    my ( $htheader, $htfooter, @denies, @htout );
+    my ( $htheader, $htfooter, @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
-    our ($HTA);
-    fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} .htaccess";
-    my @htlines = <$HTA>;
-    fclose('HTA') or croak "$croak{'close'} .htaccess";
+    if ( -e '.htaccess') {
+        our ($HTA);
+        fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} .htaccess";
+        @htlines = <$HTA>;
+        fclose('HTA') or croak "$croak{'close'} .htaccess";
+    }
 
 # header to determine only who has access to the main script, not the admin script
     $htheader = q~<Files YaBB*>~;
@@ -723,6 +725,7 @@ sub update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
+        our ($HTA);
         fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
         fclose('HTA') or croak "$croak{'close'} HTA";

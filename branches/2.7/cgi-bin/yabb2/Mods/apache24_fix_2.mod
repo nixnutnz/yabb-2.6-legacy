@@ -64,6 +64,37 @@ Admin/ErrorLog.pm
 </edit file>
 
 <search for>
+    $htheader = q~<Files YaBB*>~;
+    $htfooter = q~</Files>~;
+</search for>
+
+<replace>
+    $htheader = q~<Files YaBB*>
+<RequireAll>
+Require all granted~;
+    $htfooter = q~</RequireAll>
+</Files>~;
+    my $htheader2 = q~<Files YaBB*>~;
+    my $htfooter2 = q~</Files>~;
+</replace>
+
+<search for>
+        if ( $_ eq $htheader ) { $start = 1; }
+</search for>
+
+<replace>
+        if ( $_ eq $htheader || $_ eq $htheader2 ) { $start = 1; }
+</replace>
+
+<search for>
+        if ( $_ eq $htfooter ) { $start = 0; }
+</search for>
+
+<replace>
+        if ( $_ eq $htfooter || $_ eq $htfooter2 ) { $start = 0; }
+</replace>
+
+<search for>
         if ( $start == 1 && $ln =~ s/\QDeny from \E//gxsm ) {
 </search for>
 
@@ -82,6 +113,41 @@ Admin/ErrorLog.pm
 <edit file>
 Admin/GuardianAdmin.pm
 </edit file>
+
+<search for>
+    $htheader = q~<Files YaBB*>~;
+    $htfooter = q~</Files>~;
+</search for>
+
+<replace>
+    $htheader = q~<Files YaBB*>
+<RequireAll>
+Require all granted~;
+    $htfooter = q~</RequireAll>
+</Files>~;
+    my $htheader2 = q~<Files YaBB*>~;
+    my $htfooter2 = q~</Files>~;
+</replace>
+
+<search for>
+        if ( $_ eq $htheader ) { $start = 1; }
+</search for>
+
+<replace>
+        if ( $_ eq $htheader || $_ eq $htheader2 ) { $start = 1; }
+</replace>
+
+<search for>
+        if ( $_ eq $htfooter ) { $start = 0; }
+</search for>
+
+<replace>
+        if ( $_ eq $htfooter || $_ eq $htfooter2 ) { $start = 0; }
+</replace>
+
+<search for>
+        if ( $start == 1 && $ln =~ s/\QDeny from \E//gxsm ) {
+</search for>
 
 <search for>
         if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {

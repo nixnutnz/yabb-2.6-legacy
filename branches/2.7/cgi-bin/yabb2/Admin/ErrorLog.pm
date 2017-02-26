@@ -482,12 +482,14 @@ sub yabb_sort {
 
 sub er_update_htaccess {
     my ( $act, @values ) = @_;
-    my ( @denies, @htout );
+    my ( @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
-    our ($HTA);
-    fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} HTA";
-    my @htlines = <$HTA>;
-    fclose('HTA') or croak "$croak{'close'} HTA";
+    if ( -e '.htaccess' ) {
+        our ($HTA);
+        fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} HTA";
+        @htlines = <$HTA>;
+        fclose('HTA') or croak "$croak{'close'} HTA";
+    }
 
 # header to determine only who has access to the main script, not the admin script
     my $htheader = q~<Files YaBB*>~;
@@ -521,6 +523,7 @@ sub er_update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
+        our ($HTA);
         fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
         fclose('HTA') or croak "$croak{'close'} HTA";
@@ -531,6 +534,7 @@ sub er_update_htaccess {
     }
     return;
 }
+
 
 sub blockip {
     is_admin_or_gmod();

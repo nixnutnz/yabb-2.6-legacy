@@ -391,18 +391,16 @@ sub setup_guardian2 {
     chomp $banned_strings;
     chomp $whitelist;
     $banned_harvesters =~ s/\r//gxsm;
-    $banned_referers =~ s/\r//gxsm;
-    $banned_requests =~ s/\r//gxsm;
-    $banned_strings =~ s/\r//gxsm;
-    $access_denied =~ s/\r//gxsm;
-    $whitelist =~ s/\r//gxsm;
     $banned_harvesters =~ s/\n/|/gxsm;
+    $banned_referers =~ s/\r//gxsm;
     $banned_referers =~ s/\n/|/gxsm;
+    $banned_requests =~ s/\r//gxsm;
     $banned_requests =~ s/\n/|/gxsm;
+    $banned_strings =~ s/\r//gxsm;
     $banned_strings =~ s/\n/|/gxsm;
-    $access_denied =~ s/\n/,/gxsm;
+    $whitelist =~ s/\r//gxsm;
     $whitelist =~ s/\n/|/gxsm;
-
+ 
     # We shouldn't let them block POST and GET since it'll mess things up.
     $banned_requests =~ s/post//igxsm;
     $banned_requests =~ s/get//igxsm;
@@ -410,7 +408,7 @@ sub setup_guardian2 {
 
     require Admin::NewSettings;
     save_settings_to('Settings.pm');
-    my @access_denied = split /,/xsm, $access_denied;
+    my @access_denied = split /[\r\n]/xsm, $access_denied;
     gr_update_htaccess( 'save', @access_denied );
 
     $yysetlocation = qq~$adminurl?action=setup_guardian~;
@@ -420,9 +418,8 @@ sub setup_guardian2 {
 
 sub gr_update_htaccess {
     my ( $act, @values ) = @_;
-    my ( $htheader, $htfooter, @denies, @htout );
+    my ( $htheader, $htfooter, @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
-    my @htlines;
     if ( -e '.htaccess' ) {
         our ($HTA);
         fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} HTA";
@@ -435,20 +432,17 @@ sub gr_update_htaccess {
     $htfooter = q~</Files>~;
     my $start = 0;
     foreach my $chk (@htlines) {
-        chomp;
+        chomp $chk;
         if ( $chk eq $htheader ) { $start = 1; }
-        if ( $start == 0 && $chk !~ m{#}xsm && $_ ne q{} ) {
+        if ( $start == 0 && $chk !~ m{#}xsm && $chk ne q{} ) {
             push @htout, "$chk\n";
         }
-        if ( $_ eq $htfooter ) { $start = 0; }
+        if ( $chk eq $htfooter ) { $start = 0; }
         if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
             push @denies, $chk;
         }
     }
-    if ( $action eq 'load' ) {
-        return @denies;
-    }
-    elsif ( $action eq 'save' ) {
+    if ( $act eq 'save' ) {
         my $prhta =
           '# Last modified by The Guardian: ' . ctbtime( $date, 1 ) . " #\n\n";
         $prhta .= join q{}, @htout;
@@ -467,9 +461,12 @@ sub gr_update_htaccess {
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
         fclose('HTA') or croak "$croak{'close'} HTA";
     }
-    elsif ( $action eq 'add' ) {
+    elsif ( $act eq 'add' ) {
         push @denies, @values;
         gr_update_htaccess( 'save', @denies );
+    }
+    else {
+        return @denies;
     }
     return;
 }
