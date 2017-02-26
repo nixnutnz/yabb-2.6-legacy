@@ -38,7 +38,7 @@ our ( $elenable, $max_log_days_old, );
 ## system ##
 our (
     $boardblock,    $brd_notify,    $currentboard,      $date,
-    $iamguest,      $maxtnote,      $my_threadnote_end, $selecthtml,
+    $iamguest,      $my_threadnote_end, $selecthtml,
     $threadblock,   $uid,           $username,          $view,
     $yymain,        $yynavigation,  $yysetlocation,     $yytitle,
     %board,         %board_notify,  %cat,               %catinfo,
@@ -52,6 +52,7 @@ our (
     $my_boardnote, $my_nonotes,     $my_notebrdlist,
     $my_nothreads, $my_threadblock, $my_threadnote_b,
 );
+
 ## our Mod Hook ##
 
 load_language('Notify');

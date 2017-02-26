@@ -172,7 +172,7 @@ $front_page = qq~<div class="bordercolor rightboxdiv">
                 </td>
             </tr><tr>
                 <td class="catbg center small">
-                    YaBB 2.7.00
+                    YaBB 2.6 &amp; 2.7
                 </td>
             </tr><tr>
                 <td class="windowbg2">
