@@ -523,7 +523,6 @@ sub er_update_htaccess {
             }
             $prhta .= "$htfooter\n";
         }
-        our ($HTA);
         fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
         fclose('HTA') or croak "$croak{'close'} HTA";
@@ -534,7 +533,6 @@ sub er_update_htaccess {
     }
     return;
 }
-
 
 sub blockip {
     is_admin_or_gmod();

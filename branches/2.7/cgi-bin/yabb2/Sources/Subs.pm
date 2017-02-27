@@ -1196,7 +1196,7 @@ sub fatal_error_logging {
                 && ( $date - $erloga[1] ) < $error_spd )
             {
                 require Admin::ErrorLog;
-                update_htaccess( 'add', $user_ip );
+                er_update_htaccess( 'add', $user_ip );
                 $tmperror .= q~<br />IP blocked~;
             }
         }

@@ -603,6 +603,8 @@ table.fixed {
 
 .message table td { border: #000 solid thin; }
 
+div.message {float: left; width: 99%; overflow: auto; }
+
 .droppageindex {
     background-color: #eee;
     /*border: 2px inset;*/

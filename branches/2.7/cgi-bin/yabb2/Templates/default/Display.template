@@ -180,7 +180,7 @@ $messageblock = qq~
                 <td$posthandelstyle>{yabb posthandellist}</td>
             </tr><tr>
                 <td class="{yabb css} vtop" style="height:10em{yabb txtsz}" colspan="$postcol">
-                    <div class="$messageclass" style="float: left; width: 99%; overflow: auto;">
+                    <div class="$messageclass">
                         {yabb message}
                     </div>
                 </td>
@@ -232,7 +232,7 @@ $myrecent = qq~
     <div class="clear"></div>
 </div>
 <div class="windowbg2 h_80px" style="padding:5px; margin-bottom:.5em">
-    <div class="message" style="float: left; width: 99%; overflow: auto; max-height:80px{yabb txtsz}">{yabb message}</div>
+    <div class="message" style="max-height:80px;{yabb txtsz}">{yabb message}</div>
 </div>
 ~;
 
