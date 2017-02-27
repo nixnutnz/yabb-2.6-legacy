@@ -136,7 +136,7 @@ sub add_new_tab2 {
             }
         }
         my ($exttaburl);
-        if ( $taburl =~ /\d/xsm && ( $taburl == 1 || $taburl == 2 ) ) {
+        if ( $taburl !~ /\D/xsm && ( $taburl == 1 || $taburl == 2 ) ) {
             if ( $FORM{'taburl'} =~ m/username\=/ixsm ) { $tmpusernamereq = 1; }
             $exttaburl = $FORM{'taburl'};
             $exttaburl =~ s/(.*?)[?](.*?)/$2/gxsm;

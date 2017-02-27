@@ -233,7 +233,7 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
                 || ( $tab_access < 3 && $iamgmod )
                 || $iamadmin )
             {
-                if ( $tmptab_url =~ m/\d/xsm ) {
+                if ( $tmptab_url !~ m/\D/xsm ) {
                     if ( $tmptab_url == 1 ) { $tab_url = $scripturl; }
                     elsif ( $tmptab_url == 2 ) {
                         $tab_url = qq~$boardurl/AdminIndex.$yyaext~;
