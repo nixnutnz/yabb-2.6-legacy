@@ -1966,8 +1966,8 @@ sub modify_profile2 {
         }
         else { $member{'bday'} = q{}; }
         my $update_eventcal = 0;
-        if (  !${ $uid . $user }{'bday'} && $member{'bday'} ne q{}
-            || ${ $uid . $user }{'bday'} ne $member{'bday'} )
+        if (  $member{'bday'} && ( !${ $uid . $user }{'bday'}
+            || ${ $uid . $user }{'bday'} ne $member{'bday'} ) )
         {
             $update_eventcal = 1;
         }
