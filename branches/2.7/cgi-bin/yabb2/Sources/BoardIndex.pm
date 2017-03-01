@@ -2130,6 +2130,7 @@ qq~$boardindex_txt{'795'} <a href="$scripturl?action=im"><strong>${$username}{'P
 qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><strong>${$username}{'PMimnewcount'}</strong></a> $boardindex_imtxt{'25'}.</span>~;
             }
             else {
+                ${$username}{'PMimnewcount'} ||= 0;
                 $ims .=
 qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><strong>${$username}{'PMimnewcount'}</strong></a> $boardindex_imtxt{'26'}.</span>~;
             }
