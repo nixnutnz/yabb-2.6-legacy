@@ -4237,6 +4237,7 @@ qq~<p><a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}"><b
 sub draw_groups {
     my ( $availgroups, $position, $show_additional ) = @_;
     my ( %groups, $groupsel );
+    $availgroups ||= q{};
     map { $groups{$_} = 1; } split /,/xsm, $availgroups;
     my $selsize = 0;
     for my $key (@nopostorder) {

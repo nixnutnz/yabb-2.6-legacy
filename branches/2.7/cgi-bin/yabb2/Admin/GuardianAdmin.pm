@@ -418,7 +418,7 @@ sub setup_guardian2 {
 
 sub gr_update_htaccess {
     my ( $act, @values ) = @_;
-    my ( $htheader, $htfooter, @denies, @htout, @htlines );
+    my ( @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
     if ( -e '.htaccess' ) {
         our ($HTA);
@@ -428,8 +428,8 @@ sub gr_update_htaccess {
     }
 
 # header to determine only who has access to the main script, not the admin script
-    $htheader = q~<Files YaBB*>~;
-    $htfooter = q~</Files>~;
+    my $htheader = q~<Files YaBB*>~;
+    my $htfooter = q~</Files>~;
     my $start = 0;
     foreach my $chk (@htlines) {
         chomp $chk;
@@ -450,7 +450,7 @@ sub gr_update_htaccess {
             $prhta .= "\n$htheader\n";
             for (@values) {
                 chomp;
-                if ( $_ ne q{} ) {
+                if ( $_ && $_ ne q{} ) {
                     $prhta .= "Deny from $_\n";
                 }
             }
@@ -460,15 +460,16 @@ sub gr_update_htaccess {
         fopen( 'HTA', '>', '.htaccess' ) or croak "$croak{'open'} HTA";
         print {$HTA} $prhta or croak "$croak{'print'} HTA";
         fclose('HTA') or croak "$croak{'close'} HTA";
+        return;
     }
     elsif ( $act eq 'add' ) {
         push @denies, @values;
         gr_update_htaccess( 'save', @denies );
+        return;
     }
     else {
         return @denies;
     }
-    return;
 }
 
 sub guardian_block {

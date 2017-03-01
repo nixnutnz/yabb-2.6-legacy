@@ -1584,7 +1584,7 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
                             foreach (keys %thethread) {
                                 my ( $memlang, $memtype, $memview ) =
                                 split /[|]/xsm, $thethread{$_};
-                                $prnthread .= "\$thethread{'$_'} = [ '$memlang', $memtype, $memview ]";
+                                $prnthread .= "\$thethread{'$_'} = [ '$memlang', $memtype, $memview ];\n";
                             }
                             $prnthread .= "\n1;\n";
                             open $MSGFILE, '>',

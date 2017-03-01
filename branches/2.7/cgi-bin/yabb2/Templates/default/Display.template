@@ -221,7 +221,7 @@ $messageblock = qq~
 #Recent Posts/Topics
 $myrecent = qq~
 <div class="tabtitle">
-    <div class="center" style="float:left; width:5%; line-height:3em; vertical-align:top">{yabb counter}</div>
+    <div class="center" style="float:left; width:3%; line-height:3em; vertical-align:top">{yabb counter}</div>
     <div class="padd_4px" style="float:right; width:94%">&nbsp;<a href="$scripturl?catselect={yabb catbrd}"><span class="under">{yabb catname}</span></a>{yabb boardtree} / <a href="$scripturl?num={yabb tnum}"><span class="under">{yabb msub}</span></a>
     <br />&nbsp;<span class="small">$maintxt{'30'}: {yabb mdate}</span>&nbsp;</div>
     <div class="clear"></div>

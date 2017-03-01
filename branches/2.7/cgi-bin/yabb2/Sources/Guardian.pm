@@ -689,7 +689,7 @@ sub str_replace {
 
 sub update_htaccess {
     my ( $act, $value ) = @_;
-    my ( $htheader, $htfooter, @denies, @htout, @htlines );
+    my ( @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
     if ( -e '.htaccess') {
         our ($HTA);
@@ -699,8 +699,8 @@ sub update_htaccess {
     }
 
 # header to determine only who has access to the main script, not the admin script
-    $htheader = q~<Files YaBB*>~;
-    $htfooter = q~</Files>~;
+    my $htheader = q~<Files YaBB*>~;
+    my $htfooter = q~</Files>~;
     my $start = 0;
     for my $chk (@htlines) {
         chomp $chk;

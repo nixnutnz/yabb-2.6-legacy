@@ -279,7 +279,7 @@ qq~                <option value="$this_mod" selected="selected">$this_modname</
 
 sub mod_search2 {
     my $modboard = $INFO{'toboard'};
-    my @mods = split /,\s*/xsm, $FORM{'moderators'};
+    my @mods = split /,\s*/xsm, $FORM{'moderators'} || q{};
     $FORM{'moderatorgroups'} ||= q{};
     $FORM{'moderatorgroups'} =~ s/,\s+/\//xsm;
     if ($do_scramble_id) {

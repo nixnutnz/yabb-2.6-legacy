@@ -959,7 +959,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         my $box = q{};
         for my $i (@nopostorder) {
             my @groupinfo = @{ $grp_nopost{$i} };
-            $box .= qq~<option value="$_"~;
+            $box .= qq~<option value="$i"~;
             for my $j ( split /\//xsm, $moderatorgroups ) {
                 my ( $lineinfo, undef ) = @{ $grp_nopost{$j} };
                 if ( $lineinfo eq $groupinfo[0] ) {

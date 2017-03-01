@@ -1425,9 +1425,9 @@ sub build_ims {
         fclose('USERMSG') or croak "$croak{'close'} USERMSG";
 
         foreach my $message (@messages) {
-
+            my $chk = ( split /[|]/xsm, $message )[12] || q{};
             # If the message is flagged as u(nopened), add to the new count
-            if ( ( split /[|]/xsm, $message )[12] =~ /u/xsm ) { $inunr++; }
+            if ( $chk =~ /u/xsm ) { $inunr++; }
         }
         $incurr = @messages;
     }

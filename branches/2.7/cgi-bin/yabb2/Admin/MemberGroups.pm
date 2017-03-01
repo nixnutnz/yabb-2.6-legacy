@@ -492,6 +492,7 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
     $post1   ||= q{};
     $post2   ||= q{};
     $noposts ||= q{};
+    $element ||= q{};
     if ( exists $grp_staff{ $INFO{'group'} } ){
         $yymain .= qq~<tr>
         <td class="windowbg"><label for="viewpublic"><b>$amgtxt{'42'}</b> <br /><b>$amgtxt{'43'}</b></label></td>
