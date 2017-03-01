@@ -4179,7 +4179,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$curuser}" rel="
         }
 
         $show_profile .= $myshow_recent_a;
-
+        $boardcat{$board} ||= q{};
+        ${$catinfos{$board}}[0] ||= q{};
         $show_profile =~ s/\Q{yabb counter}\E/$counter/xsm;
         $show_profile =~ s/\Q{yabb brdcat}\E/$boardcat{$board}/xsm;
         $show_profile =~ s/\Q{yabb brd}\E/$boardcat{$board}/xsm;

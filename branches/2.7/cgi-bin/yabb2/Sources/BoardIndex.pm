@@ -1793,7 +1793,7 @@ sub redirect_externalshow {
     }
     chomp $excount;
 
-    if ( $INFO{'action'} eq 'showexternal' ) {
+    if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' ) {
         my $link = ( split /[|]/xsm, $board{$exboard} )[0];
         if   ($excount) { $excount++; }
         else            { $excount = 1; }

@@ -705,7 +705,7 @@ sub load_miniuser {
     }
 
     my @memstat        = ();
-    my %addmembergroup = ();
+    our %addmembergroup = ();
 
     if ( $tempgroupcheck && $grp_staff{$tempgroupcheck} ) {
 
@@ -842,16 +842,20 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
     my ( $viewperms, $topicperms, $replyperms, $pollperms, $attachperms, );
     {
         no strict qw(refs);
-        foreach my $addgrptitle ( split /,/xsm,
-            ${ $uid . $user }{'addgroups'} || q{} )
-        {
-            foreach my $key ( sort { $a <=> $b } keys %grp_nopost ) {
-                my (
+        if (${ $uid . $user }{'addgroups'}) {
+            foreach my $addgrptitle ( split /,/xsm, ${ $uid . $user }{'addgroups'} )
+            {
+                 my (
                     $atitle,     undef,       undef,        undef,
                     $anoshow,    $aviewperms, $atopicperms, $areplyperms,
                     $apollperms, $aattachperms
-                ) = @{ $grp_nopost{$key} };
-                if ( $addgrptitle eq $key && $atitle ne $memstat[0] ) {
+                ) = @{ $grp_nopost{$addgrptitle} };
+                $viewperms = 0;
+                $topicperms = 0;
+                $replyperms = 0;
+                $pollperms = 0;
+                $attachperms = 0;
+                if ( $atitle ne $memstat[0] ) {
                     if ( $user eq $username && !$iamadmin ) {
                         if ( $aviewperms == 1 )   { $viewperms   = 1; }
                         if ( $atopicperms == 1 )  { $topicperms  = 1; }

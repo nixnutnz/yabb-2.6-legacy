@@ -2531,7 +2531,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
     if ( -e "$boardsdir/$currentboard.mail" ) {
         manageboardnotify( 'load', $currentboard );
         foreach ( keys %theboard ) {
-            $languages{ ( split /[|]/xsm, $theboard{$_}, 2 )[0] } = 1;
+            $languages{ ${$theboard{$_}}[0] } = 1;
         }
         load_notifymessages( \%languages );
         while ( my ( $curuser, $value ) = each %theboard ) {
@@ -2574,13 +2574,12 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
     if ( -e "$datadir/$thisthread.mail" ) {
         managethreadnotify( 'load', $thisthread );
         foreach ( keys %thethread ) {
-            $languages{ ( split /[|]/xsm, $thethread{$_}, 2 )[0] } = 1;
+            $languages{ ${$thethread{$_}}[0] } = 1;
         }
         load_notifymessages( \%languages );
 
         while ( my ( $curuser, $value ) = each %thethread ) {
-            my ( $curlang, $notify_type, $hasviewed ) =
-              split /[|]/xsm, $value;
+            my ( $curlang, $notify_type, $hasviewed ) = @{$value};
             if (   $curuser ne $username
                 && !exists $mailsent{$curuser}
                 && $hasviewed )
@@ -2611,7 +2610,7 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
                         q{},
                         $notifycharset{$curlang}{'emailcharset'}
                     );
-                    $thethread{$curuser} = qq~$curlang|$notify_type|0~;
+                    $thethread{$curuser} = [ $curlang, $notify_type, 0 ];
                 }
                 undef %{ $uid . $curuser };
             }

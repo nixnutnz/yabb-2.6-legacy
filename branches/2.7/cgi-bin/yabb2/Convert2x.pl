@@ -101,16 +101,16 @@ if ( -e "$vardir/Setup.lock" ) {
                 <td class="windowbg2 fontbigger">
                     Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs.
                     <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
-                    <br />Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.6.12.<br />
-                    <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.6.12 installation:
+                    <br />Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.7.<br />
+                    <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.7 installation:
                     <ol>
                         <li>Insert the paths to your YaBB 2x forum folders in the input fields below - do <strong>not</strong> include trailing slash (/)</li>
                         <li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
-                    <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.6.12 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
+                    <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.7 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
                     <ol>
-                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.6.12 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
+                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.7 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <table style="width:auto; margin-left:0">
@@ -1021,6 +1021,7 @@ sub convertmembers {
                 my $newvars =
                   qq~### User variables for ID: $user ###\n\n%vars = (\n~;
                 for my $cnt ( 0 .. $#tags ) {
+                    ${$uid.$user}{$tags[$cnt]} =~ s/~/\\~/gxsm;
                     $newvars .=
                       qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                 }
@@ -1344,6 +1345,7 @@ sub fixcontrol {
             ) = split /[|]/xsm;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
+            $description =~ s/'/&#39;/gxsm;
             $newcontrol{$oldboard} = [
                 $cat,       $mypic,         $description, $mods,
                 $modgroups, $topicperms,    $replyperms,  $pollperms,
@@ -2553,6 +2555,7 @@ qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyr
     else {
         $mycopy = qq~2000-$newyear~;
         $output =~ s/2000-1900/$mycopy/xsm;
+        $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
         print $output or croak 'cannot print page';
     }
     exit;

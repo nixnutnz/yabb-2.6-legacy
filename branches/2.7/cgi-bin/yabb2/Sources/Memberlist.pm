@@ -378,6 +378,7 @@ sub show_rows {
         my $group_stars = q{};
         if ($group_stars_ml) {
             if ( $user eq $username ) { load_miniuser($user); }
+            $memberstar{$user} ||= q{};
             $memberstar{$user} =~ s/<br.*?>//gxsm;
             $group_stars = qq~<br />$memberstar{$user}~;
         }

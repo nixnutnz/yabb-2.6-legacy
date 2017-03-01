@@ -621,7 +621,7 @@ sub check_messageflag {
                 $umessage_flags, undef
             ) = split /[|]/xsm, $_, 14;
             ${ 'MF' . $user . $pm_file }{$umessage_id} = $umessage_flags;
-            if ( $umessage_id == $id && $umessage_flags =~ /$message_flag/ixsm )
+            if ( $umessage_id && $umessage_id == $id && $umessage_flags =~ /$message_flag/ixsm )
             {
                 $message_foundflag = 1;
             }
@@ -660,7 +660,7 @@ sub update_messageflag {
         foreach my $usermessage (@user_file) {
             my $newmsgs = q{};
             my %messlst = get_imhash($usermessage);
-            if ( $messlst{'messageid'} == $id ) {
+            if ( $messlst{'messageid'} && $messlst{'messageid'} == $id ) {
                 if ( $newmessage_flag ne q{} ) {
                     $messlst{'mflags'} =~ s/$newmessage_flag//igxsm;
                 }
