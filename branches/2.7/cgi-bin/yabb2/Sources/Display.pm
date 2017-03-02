@@ -1451,7 +1451,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                                 $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
                             }
                             $outblock =~
-s/(<div)(\Q class="$messageclass" style="float: left; width: 99%; overflow: auto;">\E)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
+s/(<div)(\Q class="$messageclass getcounter">\E)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
 
                             $template_quote =
 qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;

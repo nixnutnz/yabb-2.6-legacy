@@ -180,7 +180,7 @@ $messageblock = qq~
                 <td$posthandelstyle>{yabb posthandellist}</td>
             </tr><tr>
                 <td class="{yabb css} vtop" style="height:10em{yabb txtsz}" colspan="$postcol">
-                    <div class="$messageclass">
+                    <div class="$messageclass getcounter">
                         {yabb message}
                     </div>
                 </td>
