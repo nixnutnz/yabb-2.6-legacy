@@ -2641,16 +2641,17 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
             }
         }
         our $yyurl = $scripturl;
-        if ( $curline =~ /[{]yabb\s+(\w+)[}]/xsm ) {
+        if ( $curline =~ /{yabb\s+(\w+)}/xsm ) {
             no strict qw(refs);
             no warnings qw(uninitialized);
-            $curline =~ s/[{]yabb\s+(\w+)[}]/${"yy$1"}/gxsm;
+            $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         }
         if ( $curline =~ /img src="$imagesdir\/(.+?)"/ixsm ) {
             $curline =~ s/img src="$imagesdir\/(.+?)"/setupimgloc($1)/eigxsm;
         }
         $output .= $curline || q{};
         $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
+        $output =~ s/\Q{yabb version}\E/$yabbversion/xsm;
     }
     if ( $yycopyin == 0 ) {
         $output =
