@@ -69,8 +69,7 @@ sub add_moderators {
             for my $board (@x) {
                 my $dash = q{};
                 if ( $indent > 2 ) { $dash = q{-}; }
-                my ( $boardname, $boardperms, $boardview ) =
-                  split /[|]/xsm, $board{$board};
+                my ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
                 if (   ${ $uid . $board }{'ann'}
                     || ${ $uid . $board }{'rbin'}
                     || $boardname =~ m{https?://}xsm )
@@ -92,7 +91,7 @@ sub add_moderators {
                   . ( $dash x ( $indent / 2 ) )
                   . qq~$boardname</option>\n~;
                 if ( $subboard{$board} ) {
-                    get_subboards( split /[|]/xsm, $subboard{$board} );
+                    get_subboards( @{$subboard{$board}} );
                 }
             }
             $indent -= 2;
@@ -100,12 +99,11 @@ sub add_moderators {
     };
 
     for my $catid (@categoryorder) {
-        my @bdlist = split /,/xsm, $cat{$catid};
-        my ( $catname, undef, undef, undef ) = split /[|]/xsm, $catinfo{$catid};
+        my $catname = ${$catinfo{$catid}}[0];
         to_chars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
         $indent = -2;
-        get_subboards(@bdlist);
+        get_subboards(@{$cat{$catid}});
     }
     $show_profile .= $myshowprofile;
     $show_profile =~ s/\Q{yabb addbdmod}\E/$addbdmod/xsm;

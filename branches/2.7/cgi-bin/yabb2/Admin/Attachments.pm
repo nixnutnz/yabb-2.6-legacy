@@ -64,7 +64,9 @@ sub attachments {
 
     my $attachment_space = 0;
     foreach (@attachments) {
-        $attachment_space += number_format( ( split /[|]/xsm, $_, 7 )[5] );
+        my $space = ( split /[|]/xsm, $_, 7 )[5];
+        $attachment_space += $space;
+        $attachment_space = number_format($attachment_space);
     }
 
     my $remaining_space;
@@ -84,7 +86,9 @@ sub attachments {
 
     my $pm_attachmentspace = 0;
     foreach (@pm_attachments) {
-        $pm_attachmentspace += number_format( ( split /[|]/xsm, $_, 4 )[2] );
+        my $pmspace = ( split /[|]/xsm, $_, 4 )[2];
+        $pm_attachmentspace += $pmspace;
+        $pm_attachmentspace = number_format($pm_attachmentspace); 
     }
 
     my $pm_remainingspace;
@@ -1076,8 +1080,8 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="6"><b><i>$fatxt{'48a'}</i
         }
 
         my $postdisplaynum = 8;
-        my $startpage      = q{};
-        my $endpage        = q{};
+        my $startpage      = 0;
+        my $endpage        = 0;
         $newstart = ( int( $newstart / 25 ) ) * 25;
         my $tmpa = 1;
         if ( $newstart >= ( ( $postdisplaynum - 1 ) * 25 ) ) {

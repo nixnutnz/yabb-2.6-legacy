@@ -91,6 +91,12 @@ if ( !$lastsaved ) {
     $vardir    = './Variables';
     $datadir   = './Messages';
 }
+
+$boardurl ||= q{};
+$scripturl ||= q{};
+$yyhtml_root ||= q{};
+$username ||= q{};
+
 my $yyext = 'pl';
 our $set_cgi = "Setup.$yyext";
 our $yyexec  = 'YaBB';
@@ -146,8 +152,8 @@ EOF
     adminlogin();
 }
 
-open my $COOKFILE, '<', "$vardir/cook.txt"
-  || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
+open my $COOKFILE, '<', 'Variables/cook.txt'
+  || setup_fatal_error( "$maintext_23 Variables/cook.txt: ", 1 );
 my @cookinfo = <$COOKFILE>;
 close $COOKFILE or croak 'cannot close cook.txt';
 chomp @cookinfo;

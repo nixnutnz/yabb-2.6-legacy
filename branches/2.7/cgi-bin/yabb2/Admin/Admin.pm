@@ -248,13 +248,10 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
     get_forum_master();
     my (@loadboards);
     for my $catid (@categoryorder) {
-        my $boardlist = $cat{$catid};
         $numcats++;
-        my @bdlist = split /,/xsm, $boardlist;
-        my ( $catname, $catperms, $catallowcol ) =
-          split /[|]/xsm, $catinfo{$catid};
+        my ( $catname, $catperms, $catallowcol ) = @{$catinfo{$catid}};
 
-        for my $curboard (@bdlist) {
+        for my $curboard (@{$cat{$catid}}) {
             chomp $curboard;
             $numboards++;
             push @loadboards, $curboard;
@@ -363,9 +360,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     get_forum_master();
     my (@goodboards);
     for my $catid (@categoryorder) {
-        my $boardlist = $cat{$catid};
-        my @bdlist = split /,/xsm, $boardlist;
-        for my $curboard (@bdlist) {
+        for my $curboard (@{$cat{$catid}}) {
             push @goodboards, $curboard;
         }
     }
@@ -808,23 +803,18 @@ sub deleteoldmessages {
     get_forum_master();
 
     for my $catid (@categoryorder) {
-        my $boardlist = $cat{$catid};
-        my @bdlist = split /,/xsm, $boardlist;
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
-
-        for my $curboard (@bdlist) {
-            my ( $boardname, $boardperms, $boardview ) =
-              split /[|]/xsm, $board{$curboard};
+        my ( $catname, $catperms ) = @{$catinfo{$catid}};
+        for my $curboard (@{$cat{$catid}}) {
+            my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
             my $selectname = q{};
             if ( $boardname !~ m/[ht|f]tp[s ]{0,1}:\/\//xsm ) {
                 $selectname = $curboard . 'check';
                 $yymain .= qq~
                     <input type="checkbox" name="$selectname" id="$selectname" value="1" />&nbsp;<label for="$selectname">$boardname</label><br />~;
                 if ( $subboard{$curboard} ) {
-                    my @childboards = split /[|]/xsm, $subboard{$curboard};
+                    my @childboards = @{$subboard{$curboard}};
                     for my $childbd (@childboards) {
-                        my ( $chldboardname, $chldboardperms, $chldboardview )
-                          = split /[|]/xsm, $board{$childbd};
+                        my ( $chldboardname, $chldboardperms, $chldboardview ) = @{$board{$childbd}};
                         if ( $chldboardname !~ m/[ht|f]tp[s ]{0,1}:\/\//xsm ) {
                             $selectname = $childbd . 'check';
                             $yymain .= qq~

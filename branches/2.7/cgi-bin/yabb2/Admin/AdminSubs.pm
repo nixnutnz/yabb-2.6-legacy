@@ -28,7 +28,7 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our ( $adminurl, $yysetlocation, %croak, %FORM, %INFO, );
+our ( $adminurl, $yysetlocation, %croak, %FORM, %INFO, $boarddir, $sourcedir, $admindir, $vardir, $langdir, $helpfile, $templatesdir, $yymain, %admintxt );
 
 sub to_temphtml {
     ( $_[0] ) = @_;
@@ -115,6 +115,31 @@ s/(.+;)[ \t]+([#].+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . 
       or fatal_error( $croak{'open'}, 'SETTINGS', 1 );
     print {$SETTINGS} $setfile or croak "$croak{'print'} SETTINGS";
     close $SETTINGS or croak "$croak{'close'} SETTINGS";
+    return;
+}
+
+sub clean_bak {
+    my @folders = ( $boarddir, $sourcedir, $admindir, $vardir, $helpfile, "$templatesdir/default" );
+    our %lngs;
+    require "$langdir/Lang.lng";
+    foreach my $key (%lngs) {
+        push @folders, "$langdir/$key";
+    }
+    foreach my $folder (@folders) {
+        opendir 'CNVDIR', $folder
+          || fatal_error( 'cannot_open_dir', "$folder" );
+        my @convlist = readdir 'CNVDIR';
+        closedir 'CNVDIR';
+        foreach my $file (@convlist) {
+            if ($file =~ m/\.(?:tdy|bak)$/xsm) {
+                unlink "$folder/$file";
+            }
+        }
+    }
+    load_language('Admin');
+    $yymain .= qq~<b>$admintxt{'10bak'}</b>~;
+    our $yytitle = $admintxt{'10bak'};
+    admintemplate();
     return;
 }
 

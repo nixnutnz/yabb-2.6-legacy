@@ -83,15 +83,19 @@ sub convcontrol {
     my %seen = ();
     my @mybrds = grep { !$seen{$_}++ } @allboards;
     LoadBoardControl();
-    my $allboards = join q~', '~, @mybrds;
-    my $newbrds   = qq{\@allboards = ('$allboards');\n};
+    my $allboards = join q~ ~, @mybrds;
+    my $newbrds   = qq{\@allboards = qw($allboards);\n};
     my $nid       = $uid;
     $newbrds .= qq~\$nid = '$nid';\n~;
     for my $cntboard (@mybrds) {
         no strict qw(refs);
-        $newbrds .= qq~\%{$cntboard} = (\n~;
-        foreach ( keys %{ $nid . $cntboard } ) {
-            $newbrds .= qq{'$_' => q~${ $nid . $cntboard }{$_}~,\n};
+        $newbrds .= qq~\%{'$cntboard'} = (\n~;
+        foreach my $key ( keys %{ $nid . $cntboard } ) {
+            if ( $key eq 'description' || $key eq 'rulesdesc' ) {
+                ${ $nid . $cntboard }{$key} =~ s/'/\\'/gxsm;;
+                ${ $nid . $cntboard }{$key} =~ s/~/\\~/gxsm;
+            }
+            $newbrds .= qq{'$key' => q~${ $nid . $cntboard }{$key}~,\n};
         }
         $newbrds .= qq~);\n\n~;
     }

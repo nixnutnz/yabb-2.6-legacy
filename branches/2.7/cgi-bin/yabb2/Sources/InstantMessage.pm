@@ -1868,17 +1868,18 @@ sub pagelinks_list {
     else { $endpage = $max; }
     my $lastpn  = int( $#tempim / $maxmessagedisplay ) + 1;
     my $lastptn = ( $lastpn - 1 ) * $maxmessagedisplay;
-    my $pageindex1 =
+    our $pageindex1 =
 qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
-    my $pagetxtindexst = q{};
-    my $pageindexadd   = q{};
-    my $pageindex2     = q{};
+    our $pagetxtindexst = q{};
+    our $pageindexadd   = q{};
+    our $pageindex2     = q{};
     my $tstart         = q{};
     my $pagejsindex    = q{};
 
     if ( $pagenumb > 1 || $all ) {
         if ( $userthreadpage == 1 ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
+            $bmesslink ||= q{};
             $pagetxtindexst .=
 qq~<a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagetext$viewfolderinfo"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             if ( $startpage > 0 ) {
@@ -1894,7 +1895,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo"><span cl
                     $pagetxtindex .=
                       $start == $counter
                       ? qq~<b>[$tmpa]</b>&nbsp;~
-                      : qq~<a href="$scripturl?action=$action$bmesslink;start=$counter$viewfolderinfo"><span class="small">$tmpa</span></a>&nbsp;~;
+                      : qq~<a href="$scripturl?action=$action$bmesslink;start=$counter$viewfolderinfo">$tmpa</a>&nbsp;~;
                     $tmpa++;
                 }
             }
@@ -1903,7 +1904,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo"><span cl
             }
             if ( $endpage != $max ) {
                 $pageindexadd .=
-qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo"><span class="small">$lastpn</span></a>~;
+qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo">$lastpn</a>~;
             }
             $pagetxtindex .= $pageindexadd;
             $pageindex1 = qq~$pagetxtindexst$pagetxtindex</span>~;
@@ -1911,6 +1912,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo"><
         }
         else {
             $pagedropindex1 = q~<span class="pagedropindex">~;
+            $bmesslink ||= q{};
             $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
@@ -1993,7 +1995,7 @@ qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
 qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor"" onclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=$action$bmesslink;start=$lastptn\\'" />~;
             }
             $pageindex1 = qq~$pagedropindex1</span>~;
-            my $pageindexjs = qq~
+            our $pageindexjs = qq~
             <script type="text/javascript">
             function SelDec(decparam, visel) {
                 splitparam = decparam.split("|");

@@ -400,7 +400,7 @@ sub setup_guardian2 {
     $banned_strings =~ s/\n/|/gxsm;
     $whitelist =~ s/\r//gxsm;
     $whitelist =~ s/\n/|/gxsm;
- 
+
     # We shouldn't let them block POST and GET since it'll mess things up.
     $banned_requests =~ s/post//igxsm;
     $banned_requests =~ s/get//igxsm;

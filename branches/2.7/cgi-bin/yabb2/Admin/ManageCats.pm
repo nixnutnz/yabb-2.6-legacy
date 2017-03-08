@@ -61,7 +61,7 @@ sub do_cats {
             ##Check if category has any boards, and if it does remove them.
             if ( $cat{$catid} ) {
                 require Admin::ManageBoards;
-                delete_boards( split /,/xsm, $cat{$catid} );
+                delete_boards( @{$cat{$catid}} );
             }
 
             delete $cat{$catid};
@@ -131,9 +131,8 @@ sub add_cats {
             $id = $editcats[$i];
             for my $catid (@categoryorder) {
                 if ( $id ne $catid ) { next; }
-                @bdlist = split /,/xsm, $cat{$catid};
-                ( $curcatname, $catperms, $catallowcol, $catimage, $catrss ) =
-                  split /[|]/xsm, $catinfo{$catid};
+                @bdlist = @{$cat{$catid}};
+                ( $curcatname, $catperms, $catallowcol, $catimage, $catrss ) = @{$catinfo{$catid}};
                 to_chars($curcatname);
                 $cattext = $curcatname;
                 if ( !$catallowcol || $catallowcol eq '1' ) {
@@ -262,7 +261,7 @@ sub add_cats2 {
         }
         if ( !$FORM{"theid$i"} ) { next; }
         my $id = $FORM{"theid$i"};
-        if ( $id !~ /^\w[.#%+-@^]+$/xsm ) {
+        if ( $id !~ /^[\w.#%+-@^]+$/xsm ) {
             fatal_error( 'invalid_character',
                 "$admin_txt{'44'} $admin_txt{'241'}" );
         }
@@ -287,14 +286,15 @@ sub add_cats2 {
         else { $FORM{"catrss$i"} = 0; }
 
         $FORM{"catperms$i"} ||= q{};
+        $FORM{"catperms$i"} =~ s/,\s/\//gxsm;
 
-        $catinfo{$id} =
-qq~$cname|$FORM{"catperms$i"}|$FORM{"allowcol$i"}|$FORM{"catimage$i"}|$FORM{"catrss$i"}~;
+        $catinfo{$id} = [ $cname, $FORM{"catperms$i"}, $FORM{"allowcol$i"}, $FORM{"catimage$i"}, $FORM{"catrss$i"} ];
 
         $yymain .= qq~$admin_txt{'830'} <i>$id</i> $admin_txt{'48'}<br />~;
     }
     write_forummaster();
 
+    $yytitle     = $admin_txt{'3'};
     $action_area = 'managecats';
     admintemplate();
     return;
@@ -312,8 +312,7 @@ sub reorder_cats {
 qq~<select name="selectcats" id="selectcats" size="$catcnt" style="width: 190px;">~;
         for my $category (@categoryorder) {
             chomp $category;
-            my ( $categoryname, undef ) = split /[|]/xsm, $catinfo{$category},
-              2;
+            my $categoryname = ${$catinfo{$category}}[0];
             to_chars($categoryname);
             if ( $INFO{'thecat'} && $category eq $INFO{'thecat'} ) {
                 $categorylist .=

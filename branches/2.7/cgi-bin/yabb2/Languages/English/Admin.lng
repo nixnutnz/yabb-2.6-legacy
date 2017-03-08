@@ -663,7 +663,6 @@ Thanks for using YaBB!~,
 'langpack' => q~Language and Help Files~,
 'view' => q~View {yabb fld} files~,
 'hide' => q~Hide {yabb fld} files~,
-'wel_text' => q~Guest Alert Message Notice text<br /><span class="small">(leave blank to disable)</span>~,
 );
 
 %floodtxt = (
@@ -1716,5 +1715,9 @@ timetostring($date);
 $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$yabbversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
 $rna = 'Remote Server not available.';
+$admintxt{'cleanbak'} = 'Mod .bak files';
+$admintxt{'cleanbak2'} = q~To save space, once your mods have been installed, you can remove the mod backup files. <strong>Note</strong>: This does not remove files in the Mods folders.~;
+$admintxt{'cleansub'} = q~Delete old *.bak files.~;
+$admintxt{'10bak'} = q~*.bak files deleted~;
 
 1;

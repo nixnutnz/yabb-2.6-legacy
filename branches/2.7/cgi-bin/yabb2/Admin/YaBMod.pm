@@ -183,6 +183,26 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
    </div>
 </form>~;
 
+    $yymain .= qq~
+<form name="backdelete" action="$adminurl?action=clean_bak" method="post">
+    <div class="bordercolor rightboxdiv">        
+    <table class="border-space pad-cell">
+        <tr>
+            <td class="titlebg"><b>$admintxt{'cleanbak'}</b></td>
+        </tr><tr>
+            <td class="windowbg2">
+                <div class="pad-more">$admintxt{'cleanbak2'}</div>
+            </td>
+        </tr><tr>
+            <td class="catbg center">
+                <input type="submit" value="$admintxt{'cleansub'}" class="button" />
+            </td>
+        </tr>
+    </table>
+    </div>
+</form>
+~;
+
     $yytitle     = $yabmtxt{'1'};
     $action_area = 'yabmmodlist';
     admintemplate();

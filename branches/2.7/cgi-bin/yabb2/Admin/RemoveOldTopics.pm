@@ -83,7 +83,7 @@ sub remove_old_threads {
             fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
 
             my $totalthreads = @threads;
-            my ($boardname) = split /[|]/xsm, $board{ $boards[$j] }, 2;
+            my $boardname = ${$board{ $boards[$j] }}[0];
             $yymain .=
 qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'6'})<br />~;
 

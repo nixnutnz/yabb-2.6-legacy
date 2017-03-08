@@ -86,8 +86,7 @@ sub section_decide {
         if ( !exists $memberinfo{$username} ) { load_user($username); }
         foreach my $catid (@categoryorder) {
             if ($ismod) { last; }
-            $boardlist = $cat{$catid};
-            my (@bdlist) = split /,/xsm, $boardlist;
+            my @bdlist = @{$cat{$catid}};
             {
                 no strict qw(refs);
                 foreach my $curboard (@bdlist) {

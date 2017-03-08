@@ -3482,8 +3482,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 my $dash = q{};
                 if ( $indent > 2 ) { $dash = q{-}; }
 
-                my ( $boardname, $boardperms, $boardview ) =
-                  split /[|]/xsm, $board{$board};
+                my ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
                 if (   ${ $uid . $board }{'ann'}
                     || ${ $uid . $board }{'rbin'} )
                 {
@@ -3493,8 +3492,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 my @boardmoderators = split /\//xsm, $moderators;
                 for my $thismod (@boardmoderators) {
                     if ( $thismod eq $user ) {
-                        ( $boardname, $boardperms, $boardview ) =
-                          split /[|]/xsm, $board{$board};
+                        ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
                         to_chars($boardname);
                         my ($my_brd);
                         if ( !${ $uid . $board }{'canpost'}
@@ -3510,16 +3508,15 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                     }
                 }
                 if ( $subboard{$board} ) {
-                    get_subboards( split /[|]/xsm, $subboard{$board} );
+                    get_subboards( @{$subboard{$board}} );
                 }
             }
             $indent -= 2;
         };
 
         for my $catid (@categoryorder) {
-            my @bdlist = split /,/xsm, $cat{$catid};
             $indent = -2;
-            get_subboards(@bdlist);
+            get_subboards(@{$cat{$catid}});
         }
 
         $my_star = $myshow_star;
@@ -3863,9 +3860,9 @@ sub usersrecentposts {
 
     get_forum_master();
     foreach my $catid (@categoryorder) {
-        foreach ( split /,/xsm, $cat{$catid} ) {
+        foreach ( @{$cat{$catid}} ) {
             $boardcat{$_} = $catid;
-            @{ $catinfos{$_} } = split /[|]/xsm, $catinfo{$catid}, 3;
+            @{ $catinfos{$_} } = @{$catinfo{$catid}};
         }
     }
 
@@ -3880,8 +3877,7 @@ sub usersrecentposts {
         $curboard = ${$thread}{'board'};
 
         if ( !$boardtxt{$curboard} ) {
-            ( $boardname{$curboard}, $boardperms, undef ) = split /[|]/xsm,
-              $board{$curboard};
+            ( $boardname{$curboard}, $boardperms, undef ) = @{$board{$curboard}};
 
             if (
                 !$iamadmin
@@ -3990,15 +3986,14 @@ sub usersrecentposts {
         && ( $numfound && $numfound < $recentcount ) )
     {
       CATEGORYCHECK: for my $catid (@categoryorder) {
-            if ( !cat_access( ( split /[|]/xsm, $catinfo{$catid}, 3 )[1] ) ) {
+            if ( !cat_access( ${$catinfo{$catid}}[1] ) ) {
                 next CATEGORYCHECK;
             }
 
           BOARDCHECK:
-            for my $curboard ( split /,/xsm, $cat{$catid} ) {
+            for my $curboard ( @{$cat{$catid}} ) {
                 if ( !$boardtxt{$curboard} ) {
-                    ( $boardname{$curboard}, $boardperms, undef ) =
-                      split /[|]/xsm, $board{$curboard};
+                    ( $boardname{$curboard}, $boardperms, undef ) = @{$board{$curboard}};
 
                     if ( !$iamadmin
                         && access_check( $curboard, q{}, $boardperms ) ne

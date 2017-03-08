@@ -661,14 +661,6 @@ sub save_settings_to {
             print {$WELL} qq~${ $_ . '_welcome_subject'}|${ $_ . '_welcome_txt' }\n~ or croak "$croak{'print'} WELL";
             fclose('WELL') or croak "$croak{'close'} WELL";
         }
-        if ( ${ $_ . '_guestnote' } && ${ $_ . '_guestnote' } ne q{} ) {
-            our ($GN);
-            fopen( 'GN', '>', "$langdir/$_/guestnote.txt" )
-              or fatal_error( 'cannot_open', "$langdir/$_/guestnote.txt", 1 );
-            print {$GN} ${ $_ . '_guestnote' } or croak "$croak{'print'} GN";
-            fclose('GN') or croak "$croak{'close'} GN";
-        }
-        else { unlink "$langdir/$_/guestnote.txt"; }
     }
 
     if ( $codemaxchars > 15 ) { $codemaxchars = 15; }

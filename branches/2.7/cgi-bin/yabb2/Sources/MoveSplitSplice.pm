@@ -143,7 +143,7 @@ sub split_splice {
     # Get categories and make the current one the default selection
     my $catlist = qq~<option value="cats" >$sstxt{'28'}</option>\n~;
     foreach (@categoryorder) {
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$_}, 3;
+        my ( $catname, $catperms ) = @{$catinfo{$_}};
         next if !cat_access($catperms);
         $catlist .=
             qq~<option value="$_" ~
@@ -161,8 +161,7 @@ sub split_splice {
         foreach my $childbd (@x) {
             my $dash = q{};
             if ( $indent > 0 ) { $dash = q{-}; }
-            my ( $boardname, $boardperms ) = split /[|]/xsm, $board{$childbd},
-              3;
+            my ( $boardname, $boardperms, undef ) = @{$board{$childbd}};
             to_chars($boardname);
             my $access = access_check( $childbd, q{}, $boardperms );
             next
@@ -182,13 +181,13 @@ sub split_splice {
               . qq~&nbsp;$boardname</option>\n~;
 
             if ( $subboard{$childbd} ) {
-                get_subboards( split /[|]/xsm, $subboard{$childbd} );
+                get_subboards( @{$subboard{$childbd}} );
             }
         }
         $indent -= 2;
         return;
     };
-    get_subboards( split /,/xsm, $cat{$newcat} );
+    get_subboards( @{$cat{$newcat}} );
 
     # Get threads and make the current one the default selection
     my ( $threadlist, $threadids, $positionlist );
@@ -541,7 +540,7 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
 
     if ($forcenewinfo) {
         my ( $boardtitle, $tmpsub, $tmpmessage );
-        ( $boardtitle, undef ) = split /[|]/xsm, $board{$curboard}, 2;
+        $boardtitle = ${$board{$curboard}}[0];
         $tmpmessage = (
             $#postnum == $#utdnewthread
             ? '[b][movedhere]'

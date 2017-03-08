@@ -371,6 +371,9 @@ sub user_account {
             no strict qw(refs);
             for my $i ( 0 .. $#var_tags ) {
                 if ( ${ $uid . $user }{ $var_tags[$i] } ) {
+                    if ( $var_tags[$i] ne 'password' ) {
+                        ${ $uid . $user }{$var_tags[$i]} =~ s/~/\\~/gxsm;
+                    }
                     $newvars .=
 qq~'$var_tags[$i]' => q\~${ $uid . $user }{$var_tags[$i]}\~,\n~;
                 }

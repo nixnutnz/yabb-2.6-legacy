@@ -15,7 +15,7 @@
 use strict;
 no strict qw(refs);
 use warnings;
-no warnings qw(uninitialized);
+no warnings qw(uninitialized once);
 use CGI::Carp qw(fatalsToBrowser);
 use URI::Escape;
 use English qw(-no_match_vars);
@@ -85,7 +85,7 @@ our (
     %fix_img_size,            %templateset,
     $faketruncation,          $enable_quickpost,
     $numposts,                $preregspan,
-    $minlinkpost,             $minlinksig,
+    $minlinkpost,             $minlinksig, $yabbversion,
 );
 ## system ##
 our (
@@ -944,7 +944,8 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
     my $copyright = $output =~ m/\Q{yabb copyright}\E/xsm ? 1 : 0;
     $yycopyright =~ s/\Q{yabb mbname}/$mbname/gxsm;
     while ( $output =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm ) { }
-    $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
+    $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
+    $output =~ s/\Q{yabb version}\E/$yabbversion/gxsm;
 
     # check if image exists, otherwise use the default template image
     if ( $imagesdir ne $defaultimagesdir ) {
@@ -1523,8 +1524,8 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
 
     get_forum_master();
     foreach my $catid (@categoryorder) {
-        my @bdlist = split /,/xsm, $cat{$catid};
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        my @bdlist = @{$cat{$catid}};
+        my ( $catname, $catperms ) = @{$catinfo{$catid}};
 
         my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
@@ -1544,8 +1545,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                 my $dash;
                 if ( $indent > 0 ) { $dash = q{-}; }
 
-                my ( $boardnme, $boardperms, $boardview ) =
-                  split /[|]/xsm, $board{$board};
+                my ( $boardnme, $boardperms, $boardview ) = @{$board{$board}};
                 $boardname = $boardnme;
                 to_chars($boardname);
                 my $access = access_check( $board, q{}, $boardperms );
@@ -1623,7 +1623,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
                 }
 
                 if ( $subboard{$board} ) {
-                    jump_subboards( split /[|]/xsm, $subboard{$board} );
+                    jump_subboards( @{$subboard{$board}} );
                 }
             }
             $indent -= 2;
@@ -2672,33 +2672,27 @@ sub write_forummaster {
     my $catlist  = join q{ }, @catorder;
     $newforum .= qq~\@categoryorder = qw($catlist);\n~;
     while ( my ( $key, $value ) = each %cat ) {
-        my %seen   = ();
-        my @catval = split /,/xsm, $value;
-        my @unique = grep { !$seen{$_}++ } @catval;
-        my $val2   = join q{,}, @unique;
-        if ( $key && $key ne q{} ) {
-            $newforum .= qq~\$cat{'$key'} = qq\~$val2\~;\n~;
-        }
+        my $val2   = join q{', '}, @{$value};
+        $val2 = qq~['$val2']~;
+        $newforum .= qq~\$cat{'$key'} = $val2;\n~;
     }
     while ( my ( $key, $value ) = each %catinfo ) {
-        my ( $catname, $therest ) = split /[|]/xsm, $value, 2;
-
-        $value = "$catname|$therest";
         $value =~ s/\$/\\\$/gxsm;
-        $value =~ s/\~//gxsm;
-        $newforum .= qq~\$catinfo{'$key'} = qq\~$value\~;\n~;
+        my $values = join q{', '}, @{$value};
+        $newforum .= qq~\$catinfo{'$key'} = ['$values'];\n~;
     }
     while ( my ( $key, $value ) = each %board ) {
-        my ( $boardnme, $therest ) = split /[|]/xsm, $value, 2;
-
-        $value = "$boardnme|$therest";
         $value =~ s/\$/\\\$/gxsm;
         $value =~ s/\~//gxsm;
-        $newforum .= qq~\$board{'$key'} = qq\~$value\~;\n~;
+        my $val2   = join q{', '}, @{$value};
+        $val2 = qq~['$val2']~;
+        $newforum .= qq~\$board{'$key'} = $val2;\n~;
     }
     while ( my ( $key, $value ) = each %subboard ) {
-        if ( $value ne q{} ) {
-            $newforum .= qq~\$subboard{'$key'} = qq\~$value\~;\n~;
+        if ( @{$value} ) {
+            my $val2   = join q{', '}, @{$value};
+            $val2 = qq~['$val2']~;
+            $newforum .= qq~\$subboard{'$key'} = $val2;\n~;
         }
     }
     $newforum .= qq~\n1;~;
@@ -2714,6 +2708,9 @@ sub write_forummaster {
 sub write_forum_control {
     my @boardcontrol = ();
     foreach my $cnt ( sort keys %control ) {
+        ${ $control{$cnt} }[2] =~ s/'/&#39;/gxsm;
+        ${ $control{$cnt} }[18] =~ s/'/&#39;/gxsm;
+        ${ $control{$cnt} }[19] =~ s/'/&#39;/gxsm;
         my $prline = join q{', '}, @{ $control{$cnt} };
         my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
         push @boardcontrol, $newline . "\n";
@@ -2971,7 +2968,7 @@ sub collapse_load {
     my $i = 0;
     map { $userhide{$_} = 1; } split /,/xsm, ${ $uid . $username }{'cathide'};
     foreach my $key (@categoryorder) {
-        ( undef, $catperms, $catallowcol ) = split /[|]/xsm, $catinfo{$key};
+        ( undef, $catperms, $catallowcol ) = @{$catinfo{$key}};
         $access = cat_access($catperms);
         if ( $catallowcol && $access ) { $i++; }
         $catcol{$key} = 1;
@@ -3253,7 +3250,7 @@ sub checkuserpm_level {
     }
     else {
       USERCHECK: foreach my $catid (@categoryorder) {
-            foreach my $checkboard ( split /,/xsm, $cat{$catid} ) {
+            foreach my $checkboard ( @{$cat{$catid}} ) {
                 foreach
                   my $curuser ( split /\//xsm, ${ $uid . $checkboard }{'mods'} )
                 {

@@ -17,6 +17,7 @@
     <li><b>Version 2.6.0</b>, Adopted On February 20, 2014</li>
     <li><b>Version 2.6.1</b>, Adopted On September 1, 2014</li>
     <li><b>Version 2.6.11</b>, Adopted On December 2, 2014</li>
+    <li><b>Version 2.7.00</b>, Adopted On January 6, 2017</li>
 </ul>
 <h4>Definitions</h4>
 <p><b>You:</b>  This is you, if you are considering distributing, modifying or using this Package.</p>

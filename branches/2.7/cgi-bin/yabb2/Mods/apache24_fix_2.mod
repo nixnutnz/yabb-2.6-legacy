@@ -64,34 +64,42 @@ Admin/ErrorLog.pm
 </edit file>
 
 <search for>
-    $htheader = q~<Files YaBB*>~;
-    $htfooter = q~</Files>~;
+if (@errorlogpmmods) {
+</search for>
+
+<add before>
+push @errorlogpmmods, 'Apache 2.4 fix';
+</add before>
+
+<search for>
+    my $htheader = q~<Files YaBB*>~;
+    my $htfooter = q~</Files>~;
 </search for>
 
 <replace>
-    $htheader = q~<Files YaBB*>
+    my $htheader = q~<Files YaBB*>
 <RequireAll>
 Require all granted~;
-    $htfooter = q~</RequireAll>
+    my $htfooter = q~</RequireAll>
 </Files>~;
     my $htheader2 = q~<Files YaBB*>~;
     my $htfooter2 = q~</Files>~;
 </replace>
 
 <search for>
-        if ( $_ eq $htheader ) { $start = 1; }
+        if ( $ln eq $htheader ) { $start = 1; }
 </search for>
 
 <replace>
-        if ( $_ eq $htheader || $_ eq $htheader2 ) { $start = 1; }
+        if ( $ln eq $htheader || $ln eq $htheader2 ) { $start = 1; }
 </replace>
 
 <search for>
-        if ( $_ eq $htfooter ) { $start = 0; }
+        if ( $ln eq $htfooter ) { $start = 0; }
 </search for>
 
 <replace>
-        if ( $_ eq $htfooter || $_ eq $htfooter2 ) { $start = 0; }
+        if ( $ln eq $htfooter || $ln eq $htfooter2 ) { $start = 0; }
 </replace>
 
 <search for>
@@ -115,39 +123,43 @@ Admin/GuardianAdmin.pm
 </edit file>
 
 <search for>
-    $htheader = q~<Files YaBB*>~;
-    $htfooter = q~</Files>~;
+if (@guardianadminpmmods) {
+</search for>
+
+<add before>
+push @guardianadminpmmods, 'Apache 2.4 fix';
+</add before>
+
+<search for>
+    my $htheader = q~<Files YaBB*>~;
+    my $htfooter = q~</Files>~;
 </search for>
 
 <replace>
-    $htheader = q~<Files YaBB*>
+    my $htheader = q~<Files YaBB*>
 <RequireAll>
 Require all granted~;
-    $htfooter = q~</RequireAll>
+    my $htfooter = q~</RequireAll>
 </Files>~;
     my $htheader2 = q~<Files YaBB*>~;
     my $htfooter2 = q~</Files>~;
 </replace>
 
 <search for>
-        if ( $_ eq $htheader ) { $start = 1; }
+        if ( $chk eq $htheader ) { $start = 1; }
 </search for>
 
 <replace>
-        if ( $_ eq $htheader || $_ eq $htheader2 ) { $start = 1; }
+        if ( $chk eq $htheader || $chk eq $htheader2 ) { $start = 1; }
 </replace>
 
 <search for>
-        if ( $_ eq $htfooter ) { $start = 0; }
+        if ( $chk eq $htfooter ) { $start = 0; }
 </search for>
 
 <replace>
-        if ( $_ eq $htfooter || $_ eq $htfooter2 ) { $start = 0; }
+        if ( $chk eq $htfooter || $chk eq $htfooter2 ) { $start = 0; }
 </replace>
-
-<search for>
-        if ( $start == 1 && $ln =~ s/\QDeny from \E//gxsm ) {
-</search for>
 
 <search for>
         if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
@@ -168,6 +180,14 @@ Require all granted~;
 <edit file>
 Sources/Guardian.pm
 </edit file>
+
+<search for>
+if (@guardianpmmods) {
+</search for>
+
+<add before>
+push @guardianpmmods, 'Apache 2.4 fix';
+</add before>
 
 <search for>
         if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {

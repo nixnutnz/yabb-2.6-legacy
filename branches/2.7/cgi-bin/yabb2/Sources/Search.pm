@@ -70,9 +70,8 @@ if ( !$FORM{'searchboards'} || $FORM{'searchboards'} =~ /\A\!/xsm ) {
     my $checklist = q{};
     get_forum_master();
     foreach my $catid (@categoryorder) {
-        my @bdlist = split /,/xsm, $cat{$catid};
-        my ( $catname, $catperms, $catallowcol ) = split /[|]/xsm,
-          $catinfo{$catid};
+        my @bdlist = @{$cat{$catid}};
+        my ( $catname, $catperms, $catallowcol ) = @{$catinfo{$catid}};
         my $access = cat_access($catperms);
         if ( !$access ) { next; }
 
@@ -91,14 +90,13 @@ if ( !$FORM{'searchboards'} || $FORM{'searchboards'} =~ /\A\!/xsm ) {
                 if ( !${ $uid . $curboard }{'parent'} && $catid ) {
                     $cat_boardcnt{$catid}++;
                 }
-                my ( $boardname, $boardperms, $boardview ) = split /[|]/xsm,
-                  $board{$curboard};
+                my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
                 my $access = access_check( $curboard, q{}, $boardperms );
                 if ( !$iamadmin && $access ne 'granted' ) { next; }
                 $checklist .= qq~$curboard, ~;
 
                 if ( $subboard{$curboard} ) {
-                    recursive_search( split /[|]/xsm, $subboard{$curboard} );
+                    recursive_search( @{$subboard{$curboard}} );
                 }
             }
         }
@@ -202,15 +200,12 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
     my ($cataccess);
     my $checklist = q{};
     foreach my $catid (@categoryorder) {
-        my $boardlist = $cat{$catid};
-        my @bdlist = split /,/xsm, $boardlist;
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        my ( $catname, $catperms ) = @{$catinfo{$catid}};
         $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
 
-        foreach my $curboard (@bdlist) {
-            my ( $boardname, $boardperms, $boardview ) = split /[|]/xsm,
-              $board{$curboard};
+        foreach my $curboard (@{$cat{$catid}}) {
+            my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
             to_chars($boardname);
             my $access = access_check( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -279,8 +274,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
                 foreach my $childbd (@x) {
                     my $dash = q{};
                     if ( $indent > 0 ) { $dash = q{-}; }
-                    my ( $chldboardname, undef, undef ) = split /[|]/xsm,
-                      $board{$childbd};
+                    my $chldboardname = ${$board{$childbd}}[0];
                     to_chars($chldboardname);
                     $checklist .=
                         qq~<option value="$childbd" $selected>~
@@ -288,13 +282,13 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
                       . ( $dash x ( $indent / 2 ) )
                       . qq~ $chldboardname</option>\n          ~;
                     if ( $subboard{$childbd} ) {
-                        get_subboards( split /[|]/xsm, $subboard{$childbd} );
+                        get_subboards( @{$subboard{$childbd}} );
                     }
                 }
                 $indent -= 2;
                 return;
             };
-            get_subboards( split /[|]/xsm, $subboard{$curboard} );
+            get_subboards( @{$subboard{$curboard}} );
         }
     }
     if ( $isselected == $allselected ) {
@@ -430,26 +424,24 @@ sub plush_search2 {
 
     get_forum_master();
     foreach my $catid (@categoryorder) {
-        my $boardlist = $cat{$catid};
-        my @bdlist = split /,/xsm, $boardlist;
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        my ( $catname, $catperms ) = @{$catinfo{$catid}};
         my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
 
-        foreach my $cboard (@bdlist) {
-            my ( $bname, $bperms, $bview ) = split /[|]/xsm, $board{$cboard};
+        foreach my $cboard (@{$cat{$catid}}) {
+            my ( $bname, $bperms, $bview ) = @{$board{$cboard}};
             $catid{$cboard}   = $catid;
             $catname{$cboard} = $catname;
         }
     }
 
     foreach my $cbdlist ( keys %subboard ) {
-        foreach my $cboard ( split /[|]/xsm, $subboard{$cbdlist} ) {
+        foreach my $cboard ( @{$subboard{$cbdlist}} ) {
             {
                 no strict qw(refs);
                 $catid = ${ $uid . $cboard }{'cat'};
             }
-            my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+            my ( $catname, $catperms ) = @{$catinfo{$catid}};
             my $cataccess = cat_access($catperms);
             if ( !$cataccess ) { next; }
             $catid{$cboard}   = $catid;
@@ -462,8 +454,7 @@ sub plush_search2 {
     my %boardname;
   BOARDCHECK: foreach my $curboard (@boards) {
         my ( $boardperms, $boardview );
-        ( $boardname{$curboard}, $boardperms, $boardview ) = split /[|]/xsm,
-          $board{$curboard};
+        ( $boardname{$curboard}, $boardperms, $boardview ) = @{$board{$curboard}};
 
         my $access = access_check( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -725,8 +716,7 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
         my $boardtree   = q{};
         my $parentboard = $board;
         while ($parentboard) {
-            my ( $pboardname, undef, undef ) =
-              split /[|]/xsm, $board{$parentboard};
+            my $pboardname = ${$board{$parentboard}}[0];
             to_chars($pboardname);
             {
                 no strict qw(refs);

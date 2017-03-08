@@ -3150,6 +3150,7 @@ qq~<input type="checkbox" name="message$messlst{'messageid'}" id="message$messls
 qq~/<label for="message$messlst{'messageid'}">$inmes_imtxt{'store'}</label>~;
                 }
             }
+            my $mc_content_mymess = q{};
             if ( ${ $uid . $username }{'pmviewMess'} ) {
                 $immessage = $messlst{'immessage'};
                 if ( $immessage =~ /\[quote(.*?)\]/igxsm ) {
@@ -3179,7 +3180,7 @@ qq~<img src="$imagesdir/$im_code1" alt="$inmes_imtxt{'84'}" title="$inmes_imtxt{
                 if ( $immessage !~ /\x23nosmileys/ixsm ) {
                     $message = $immessage;
                     enable_yabbc();
-                    make_smileys();
+                    $message = make_smileys($message);
                     $immessage = $message;
                 }
                 $mc_content_mymess = $my_immessage;

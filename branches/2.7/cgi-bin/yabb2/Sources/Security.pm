@@ -68,7 +68,8 @@ if (  !${ $uid . $username }{'lastips'}
     || ${ $uid . $username }{'lastips'} !~ /^$user_ip[|]/xsm )
 {
     my $check = $user_ip;
-    $check .= "|${ $uid . $username }{'lastips'}" || q{};
+    my $getips = ${ $uid . $username }{'lastips'} || q{};
+    $check .= "|$getips";
     ${ $uid . $username }{'lastips'} = $check;
     ${ $uid . $username }{'lastips'} =~ s/^(.*?[|].*?[|].*?)[|].*/$1/xsm;
 }
@@ -128,8 +129,7 @@ if ($currentboard) {
     if ( !-e "$boardsdir/$currentboard.txt" ) {
         fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt" );
     }
-    ( $boardname, $boardperms, $boardview ) =
-      split /[|]/xsm, $board{$currentboard};
+    ( $boardname, $boardperms, $boardview ) = @{$board{$currentboard}};
     my $access = access_check( $currentboard, q{}, $boardperms );
     if (  !$iamadmin
         && $access ne 'granted'
@@ -140,7 +140,7 @@ if ($currentboard) {
 
     # Determine what category we are in.
     my $catid = ${ $uid . $currentboard }{'cat'};
-    ( $cat, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+    ( $cat, $catperms ) = @{$catinfo{$catid}};
     my $cataccess = cat_access($catperms);
     if ( !$annboard || $currentboard ne $annboard ) {
         if ( !$cataccess ) { fatal_error('no_access'); }
@@ -561,7 +561,7 @@ sub access_check {
     $checktype ||= 0;
     my @allowed_groups;
     if ( $checktype == 1 ) {    # Post access check
-        @allowed_groups = split /,\s/xsm, ${ $uid . $curboard }{'topicperms'};
+        @allowed_groups = split /\//xsm, ${ $uid . $curboard }{'topicperms'};
         if ( !${ $uid . $curboard }{'topicperms'} ) {
             $access = 'granted';
         }
@@ -571,7 +571,7 @@ sub access_check {
         if ( $iamgmod || $iamfmod || $boardmod ) { $access = 'granted'; }
         else {
             @allowed_groups =
-              split /,\s/xsm, ${ $uid . $curboard }{'replyperms'};
+              split /\//xsm, ${ $uid . $curboard }{'replyperms'};
             if ( !${ $uid . $curboard }{'replyperms'} ) {
                 $access = 'granted';
             }
@@ -581,7 +581,7 @@ sub access_check {
         }
     }
     elsif ( $checktype == 3 ) {    # Poll access check
-        @allowed_groups = split /,\s/xsm, ${ $uid . $curboard }{'pollperms'};
+        @allowed_groups = split /\//xsm, ${ $uid . $curboard }{'pollperms'};
         if ( !${ $uid . $curboard }{'pollperms'} ) {
             $access = 'granted';
         }
@@ -593,7 +593,7 @@ sub access_check {
     }
     else {                         # Board access check
         if   ( !$boardperms ) { $access         = 'granted'; }
-        else                  { @allowed_groups = split /,\s/xsm, $boardperms; }
+        else                  { @allowed_groups = split /\//xsm, $boardperms; }
         if ( $myperms[0] && $myperms[0] == 1 ) { $access = 'notgranted'; }
     }
 
@@ -625,14 +625,13 @@ sub access_check {
             $access = 'notgranted';
         }
         elsif (${ $uid . $curboard }{'genderperms'}
-            && ${ $uid . $curboard }{'genderperms'} eq 'M'
-            && ${ $uid . $username }{'gender'} eq 'Female' )
-        {
-            $access = 'notgranted';
-        }
-        elsif (${ $uid . $curboard }{'genderperms'}
-            && ${ $uid . $curboard }{'genderperms'} eq 'F'
-            && ${ $uid . $username }{'gender'} eq 'Male' )
+            && (
+                ( ${ $uid . $curboard }{'genderperms'} eq 'M'
+                    && ${ $uid . $username }{'gender'} eq 'Female' )
+                || ( ${ $uid . $curboard }{'genderperms'} eq 'F'
+                    && ${ $uid . $username }{'gender'} eq 'Male' )
+            )
+        )
         {
             $access = 'notgranted';
         }
@@ -682,7 +681,7 @@ sub cat_access {
     if ( $iamadmin || !$cataccess ) { return 1; }
 
     my $access = 0;
-    my @allow_groups = split /,\s/xsm, $cataccess;
+    my @allow_groups = split /\//xsm, $cataccess;
     if ($iamguest) { $username = q{}; }
     if ( !exists $memberunfo{$username} ) { load_user($username); }
     my $memberinform = $memberunfo{$username} || q{};

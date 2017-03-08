@@ -214,7 +214,7 @@ sub message_index {
 
     # Determine what category we are in.
     my $catid = ${ $uid . $currentboard }{'cat'};
-    my ( $cat, undef ) = split /[|]/xsm, $catinfo{$catid};
+    my $cat = ${$catinfo{$catid}}[0];
     to_chars($cat);
 
     our ($BRDTXT);
@@ -640,7 +640,7 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     }
 
     # Print the header and board info.
-    my ( $boardname, undef ) = split /[|]/xsm, $board{$currentboard};
+    my $boardname = ${$board{$currentboard}}[0];
     my $curboardname = $boardname;
     to_chars($curboardname);
     if ( $multiview == 1 ) {
@@ -680,8 +680,7 @@ qq~<a href="$scripturl?board=$currentboard" class="a"><b>$curboardname</b></a>~;
     my $parentboard = $currentboard;
     my $pboardname  = q{};
     while ($parentboard) {
-        ( $pboardname, undef, undef ) =
-          split /[|]/xsm, $board{$parentboard};
+        $pboardname = ${$board{$parentboard}}[0];
         to_chars($pboardname);
 
         if ( ${ $uid . $parentboard }{'canpost'}
@@ -2170,8 +2169,7 @@ sub moveto {
             my $dash = q{};
             if ( $indent > 0 ) { $dash = q{-}; }
 
-            ( $boardname, $boardperms, $boardview ) =
-              split /[|]/xsm, $board{$board};
+            ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
             to_chars($boardname);
             $access = access_check( $board, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -2190,24 +2188,22 @@ sub moveto {
                   . qq~$boardname</option>\n~;
             }
             if ( $subboard{$board} ) {
-                move_subboards( split /[|]/xsm, $subboard{$board} );
+                move_subboards( @{$subboard{$board}} );
             }
         }
         $indent -= 2;
     };
 
     foreach my $catid (@categoryorder) {
-        $brdlist = $cat{$catid};
-        if ( !$brdlist ) { next; }
-        (@bdlist) = split /,/xsm, $cat{$catid};
-        ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        if ( !$cat{$catid} ) { next; }
+        ( $catname, $catperms ) = @{$catinfo{$catid}};
 
         $access = cat_access($catperms);
         if ( !$access ) { next; }
         to_chars($catname);
         $boardlist .= qq~<optgroup label="$catname">~;
         $indent = -2;
-        move_subboards(@bdlist);
+        move_subboards(@{$cat{$catid}});
         $boardlist .= q~</optgroup>~;
     }
     return $boardlist;

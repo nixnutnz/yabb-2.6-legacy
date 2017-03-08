@@ -710,7 +710,7 @@ sub edit_add_group2 {
         # Ignoring Administrative groups.
         if ($element) {
             if ( $type eq 'P' ) {
-                if ( $element != $posts || $postdepend eq 'No' ) {
+                if ( !$posts || $element != $posts || !$postdepend || $postdepend eq 'No' ) {
                     if ($iamgmod) { fatal_error('newpostdep_gmod'); }
 
                     delete $grp_post{$element};
@@ -789,7 +789,7 @@ sub edit_add_group2 {
     else {
 
         # post dependent group.
-        if ( $postdepend eq 'Yes' ) {
+        if ( $postdepend && $postdepend eq 'Yes' ) {
             for my $key ( keys %grp_post ) {
                 if (
                     $posts == $key

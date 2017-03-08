@@ -319,7 +319,7 @@ sub votedetails {
     # Figure out the name of the category
     get_forum_master();
     $catinfo{$cat} ||= q{};
-    my ( $curcat, $catperms ) = split /[|]/xsm, $catinfo{$cat};
+    my ( $curcat, $catperms ) = @{$catinfo{$cat}};
     $curcat   ||= q{};
     $catperms ||= q{};
     our ($FILE);

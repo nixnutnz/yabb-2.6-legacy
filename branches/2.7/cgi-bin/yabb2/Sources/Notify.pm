@@ -153,7 +153,7 @@ sub boardnotify {
     my $selected2 = q{};
     my $deloption = q{};
     my $my_delopt = q{};
-    my ( $boardname, undef ) = split /[|]/xsm, $board{$currentboard}, 2;
+    my $boardname = ${$board{$currentboard}}[0];
     to_chars($boardname);
     manageboardnotify( 'load', $currentboard );
 
@@ -408,7 +408,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         foreach ( keys %{$board_notify} ) {   # boardname, boardnotifytype , new
             $num++;
             if ( $subboard{$_} ) {
-                my @brd = split /[|]/xsm, $subboard{$_};
+                my @brd = @{$subboard{$_}};
                 for my $i (@brd) {
                     if ( ${ $uid . $i }{'lastposttime'} eq 'N/A' ) {
                         ${ $uid . $i }{'lastposttime'} = 0;
@@ -584,7 +584,7 @@ sub notification_alert {
             no strict qw(refs);
             if ( exists $theboard{$username} ) {
                 ## grab board name
-                my $boardname = ( split /[|]/xsm, $board{$myboard} )[0];
+                my $boardname = ${$board{$myboard}}[0];
 
                 $board_notify{$myboard} = [
                     $boardname,
@@ -685,18 +685,17 @@ sub notification_alert {
 
                 ## run through the categories until we hit the match for category name
                 my ( $catname, $thiscatid, $catid, $parent, $parent_name );
-                my $boardname = ( split /[|]/xsm, $board{$boardid} )[0];
+                my $boardname = ${$board{$boardid}}[0];
 
                 # grab boardname from list
                 $parentboard_link = q{};
               CHECKPARENT:
                 for my $par ( keys %subboard ) {
-                    for ( split /[|]/xsm, $subboard{$par} ) {
+                    for ( @{$subboard{$par}}) {
                         ## find the match, grab data and jump out
                         if ( $_ eq $boardid ) {
                             $parent = $par;
-                            $parent_name =
-                              ( split /[|]/xsm, $board{$parent} )[0];
+                            $parent_name = ${$board{$parent}}[0];
                             $parentboard_link =
 qq~<a href="$scripturl?board=$parent">$parent_name</a>~;
                             last CHECKPARENT;
@@ -705,10 +704,10 @@ qq~<a href="$scripturl?board=$parent">$parent_name</a>~;
                 }
               CHECKBOARDNAME:
                 for my $catid (@categoryorder) {
-                    for ( split /,/xsm, $cat{$catid} ) {
+                    for ( @{$cat{$catid}} ) {
                         ## find the match, grab data and jump out
                         if ( $_ eq $boardid || $_ eq $parent ) {
-                            $catname = ( split /[|]/xsm, $catinfo{$catid} )[0];
+                            $catname = ${$catinfo{$catid}}[0];
                             $thiscatid = $catid;
                             last CHECKBOARDNAME;
                         }

@@ -2182,31 +2182,6 @@ qq~<input type="checkbox" name="enable_guest_alert" id="enable_guest_alert" valu
 {
     no strict qw(refs);
     for ( reverse sort keys %lngs ) {
-        if ( -e "$langdir/$_/guestnote.txt" ) {
-            our ($MAINTTXT);
-            fopen( 'MAINTTXT', '<', "$langdir/$_/guestnote.txt" )
-              or croak "$croak{'open'} MAINTTXT";
-            ${ $_ . '_guestnote' } = <$MAINTTXT>;
-            fclose('MAINTTXT') or croak "$croak{'close'} MAINTTXT";
-        }
-        else { ${ $_ . '_guestnote' } = q{}; }
-        my $lbl = $_ . '_guestnote';
-
-        push @{ $settings[5]{'items'} }, 
-          {
-            description =>
-              qq~<label for="$lbl">$admin_txt{'wel_text'} - $_</label>~,
-            input_html =>
-qq~<textarea cols="30" rows="2" name="$lbl" id="$lbl" style="width: 98%">${$lbl}</textarea>~,
-            name     => "$lbl",
-            validate => 'fulltext,null',
-          };
-    }
-}
-
-{
-    no strict qw(refs);
-    for ( reverse sort keys %lngs ) {
         ${$_ . 'lbl_a'} = q{};
         ${$_ . 'lbl_b'} = q{};
         if ( -e "$langdir/$_/welcome.txt" ) {

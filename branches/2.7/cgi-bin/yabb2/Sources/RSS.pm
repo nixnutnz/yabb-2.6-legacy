@@ -316,8 +316,8 @@ sub rss_recent {
     # and add them to a giant array
     for my $catid (@categoryorder) {
 
-        my @bdlist = split /,/xsm, $cat{$catid};
-        my ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        my @bdlist = @{$cat{$catid}};
+        my ( $catname, $catperms ) = @{$catinfo{$catid}};
         my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
         if ( $INFO{'catselect'} ) {
@@ -328,8 +328,7 @@ sub rss_recent {
         local *get_subboards = sub {
             my @brd = @_;
             for my $brd (@brd) {
-                ( $boardname{$brd}, $boardperms, $boardview ) = split /[|]/xsm,
-                  $board{$brd};
+                ( $boardname{$brd}, $boardperms, $boardview ) = @{$board{$brd}};
 
                 my $access = access_check( $brd, q{}, $boardperms );
                 if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -370,7 +369,7 @@ sub rss_recent {
                 close $BOARD or croak "$croak{'close'} $brd.txt";
 
                 if ( $subboard{$brd} ) {
-                    get_subboards( split /[|]/xsm, $subboard{$brd} );
+                    get_subboards( @{$subboard{$brd}} );
                 }
             }
         };

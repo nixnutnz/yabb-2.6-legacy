@@ -497,10 +497,9 @@ sub print_post {
     # Figure out the name of the category
     our ( %catinfo, %board, );
     get_forum_master();
-    my ( $cat, $catperms ) = split /[|]/xsm, $catinfo{$curcat};
+    my ( $cat, $catperms ) = @{$catinfo{$curcat}};
 
-    my ( $boardname, $boardperms, $boardview ) =
-      split /[|]/xsm, $board{$currentboard};
+    my ( $boardname, $boardperms, $boardview ) = @{$board{$currentboard}};
 
     load_censor_list();
 

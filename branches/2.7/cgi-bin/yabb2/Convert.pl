@@ -67,7 +67,7 @@ else {
 
 # Make sure the module path is present
 push @INC, './Modules';
-
+$yabbversion = 'YaBB 2.7.00';
 require Sources::Subs;
 require Sources::System;
 require Sources::Load;
@@ -85,7 +85,7 @@ our ( $catfile,       $boardfile, $key,     $value,     $cnt );
 $convertlang = './ConvertLang';
 
 if ( -e "$vardir/Setup.lock" ) {
-    if ( -e "$vardir/Converter.lock" ) { FoundConvLock(); }
+    if ( -e "$vardir/Converter.lock" ) { foundconvlock(); }
 
     if ( -e "$vardir/fixusers.txt" ) {
         open '<', $FIXUSER, "$vardir/fixusers.txt"
@@ -1001,7 +1001,7 @@ EOF
         %totals = ();
         if ( !$INFO{'clean'} ) {
             my $brdttls = q{};
-            foreach my $testboard (@allboards) {
+            foreach my $testboard (keys %board) {
                 $testboard =~ s/[\r\n]//gxsm;
                 chomp $testboard;
                 if ( -e "$convboardsdir/$testboard.ttl" ) {
@@ -1014,7 +1014,7 @@ EOF
                       or croak "cannot close $convboardsdir/$testboard.ttl";
                     chomp $line;
                     $line =~ s/[\r\n]//gxsm;
-                    @myline =~ split /[|]/xsm, $line;
+                    @myline = split /[|]/xsm, $line;
                     $totals{$testboard} = [ $myline[0], $myline[1], conv_stringtotime($myline[2]), $myline[3], q{}, q{}, q{}, q{} ];
                 }
             }
@@ -1996,15 +1996,16 @@ sub getcats {
         }
         chomp @catdata;
 
-        $catinfo{$fcat} = qq~$catdata[0]|$catdata[1]|1~;
+        $catinfo{$fcat} = [ $catdata[0], $catdata[1], 1 ];
 
         @catboards = ();
         for my $cnt ( 2 .. $#catdata ) {
             if ( $catdata[$cnt] ) { push @catboards, $catdata[$cnt]; }
         }
         push @allboards, @catboards;
-        $cat{$fcat} = join q{,}, @catboards;
+        $cat{$fcat} = \@catboards;
     }
+
     for my $fboard (@allboards) {
         if ( -e "$convboardsdir/$fboard.dat" ) {
             open $VBRD, '<',
@@ -2022,67 +2023,75 @@ sub getcats {
             if ( -e "$convboardsdir/$fboard.mbo" ) {
                 require "$convboardsdir/$fboard.mbo";
             }
-            $board{$fboard} =
-              qq~$bdata[0]|$view_groups{$fboard}|$showprivboards{$fboard}~;
+            $view_groups{$fboard} ||= 0;
+            $showprivboards{$fboard} ||= 0;
+            $board{$fboard} = [ $bdata[0], $view_groups{$fboard}, $showprivboards{$fboard} ];
         }
     }
 
     # add trash if not exists
     if ( !exists $cat{'staff'} ) {
         push @categoryorder, 'staff';
-        $cat{'staff'}     = 'announcements,recycle';
-        $catinfo{'staff'} = 'Forum Staff|Administrator, Global Moderator|0';
+        $cat{'staff'}     = [ 'announcements', 'recycle' ];
+        $catinfo{'staff'} = [ 'Forum Staff', 'Administrator/Global Moderator', 0 ];
     }
     else {
         my @temp;
-        for ( split /,/xsm, $cat{'staff'} ) {
+        for ( @{$cat{'staff'}} ) {
             if ( $_ ne 'recycle' && $_ ne 'announcements' ) { push @temp, $_; }
         }
         push @temp, 'recycle';
         push @temp, 'announcements';
-        $cat{'staff'} = join q{,}, @temp;
+        $cat{'staff'} = \@temp;
     }
     if ( !exists $cat{'general'} ) {
         push @categoryorder, 'general';
         $cat{'general'}     = 'general';
-        $catinfo{'general'} = 'General Category||0|';
+        $catinfo{'general'} = [ 'General Category', '', 0 ];
     }
     else {
         my @temp;
-        for ( split /,/xsm, $cat{'general'} ) {
+        for ( @{$cat{'general'}} ) {
             if ( $_ ne 'general' ) { push @temp, $_; }
         }
         push @temp, 'general';
-        $cat{'general'} = join q{,}, @temp;
+        $cat{'general'} = \@temp;
     }
-    if ( !exists $board{'recycle'} ) { $board{'recycle'} = 'Recycle Bin||'; }
+    if ( !exists $board{'recycle'} ) { $board{'recycle'} = [ 'Recycle Bin', '', '']; }
     if ( !exists $board{'announcements'} ) {
-        $board{'announcements'} = 'Global Announcements||';
+        $board{'announcements'} = ['Global Announcements', '', ''];
     }
-    if ( !exists $board{'general'} ) { $board{'general'} = 'General Board||1'; }
+    if ( !exists $board{'general'} ) { $board{'general'} = [ 'General Board', '', 1]; }
 
     my $temparray = q{};
     while ( ( $key, $value ) = each %cat ) {
-
-        # Strip membergroups with a ~ from them
-        $value =~ s/~//gxsm;
-        $temparray .= qq~\$cat{$key} = q\~$value\~;\n~;
+        my @values = @{$value};
+        foreach (@values) {
+            s/~//gxsm;
+            s/,\s/\//gxsm;
+        }
+        my $val = join q~', '~, @values;
+        $temparray .= qq~\$cat{$key} = ['$val'];\n~;
     }
     while ( ( $key, $value ) = each %catinfo ) {
-
-        # Strip membergroups with a ~ from them
-        $value =~ s/~//gxsm;
-        $value =~ s/,/\//gxsm;
-        $temparray .= qq~\$catinfo{$key} = q\~$value\~;\n~;
+        my @values = @{$value};
+         foreach (@values) {
+            s/~//gxsm;
+            s/,\s/\//gxsm;
+            s/'/&#39;/gxsm;
+        }
+        my $values = join q~', '~, @values;
+        $temparray .= qq~\$catinfo{$key} = ['$values'];\n~;
     }
     while ( ( $key, $value ) = each %board ) {
-
-        # Strip membergroups with a ~ from them
-        $value =~ s/~//gxsm;
-        $value =~ s/,/\//gxsm;
-        if ( $key ne q{} ) {
-            $temparray .= qq~\$board{'$key'} = q\~$value\~;\n~;
+        my @values = @{$value};
+        foreach (@values) {
+            s/~//gxsm;
+            s/,\s/\//gxsm; 
+            s/'/&#39;/gxsm;
         }
+        my $val = join q~', '~, @values;
+        $temparray .= qq~\$board{'$key'} = ['$val'];\n~;
     }
     my $newmaster = qq~\$mloaded = 1;
 \@categoryorder = qw(@categoryorder);
@@ -2091,7 +2100,7 @@ $temparray
 ~;
     $newmaster =~ s/\\n//gxsm;
     open my $FILE, '>', "$boardsdir/forum.master"
-      || setup_fatal_error( "$maintext_23 $boardsdir/forum.master: ", 1 );
+      or setup_fatal_error( "$maintext_23 $boardsdir/forum.master: ", 1 );
     print {$FILE} $newmaster or croak 'cannot print master';
     close $FILE or croak 'cannot close FILE';
     return;
@@ -2385,7 +2394,7 @@ sub convertmessages {
         foreach (@stickies) { $stickies{$_} = 1; }
     }
 
-    my @boards = sort keys %board;
+    @boards = sort keys %board;
 
     my $totalbdr = @boards;
     for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
@@ -2895,7 +2904,7 @@ sub mymemberindex {
       or croak "$croak{'print'} TTL";
     close $TTL or croak 'cannot close TTL';
     if ( $INFO{'tmp_firstforum'} > $INFO{'firstforum'} || $siglength > 200 ) {
-        SetInstall2();
+        setinstall2();
     }
     return;
 }
@@ -2966,66 +2975,64 @@ sub fixnopost {
         my $totalnoposts = keys %grp_nopost;
         foreach my $cnt ( keys %control) {
             for my $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
-                ( $grptitle, undef ) = @{$grp_no_post{$i}};
+                $grptitle = ${$grp_no_post{$i}}[0];
 
                 for my $key ( keys %catinfo ) {
-                    ( $catname, $catperms, $catcol ) =
-                      split /[|]/xsm, $catinfo{$key}, 3;
-                    $newperm = q{};
-                    for my $theperm ( split /, /sm, $catperms ) {
+                    ( $catname, $catperms, $catcol ) = @{$catinfo{$key}};
+                    my @newperm = ();
+                    for my $theperm ( split /\//xsm, $catperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
-                        $newperm .= qq~$theperm, ~;
+                        push @newperm, $newperm;
                     }
-                    $newperm =~ s/, $//sm;
-                    $catinfo{$key} = qq~$catname|$newperm|$catcol~;
+                    my $newperm = join q~/~, @newperm;
+                    $catinfo{$key} = [ $catname, $newperm, $catcol ];
                 }
                 for my $key ( keys %board ) {
-                    ( $boardname, $boardperms, $boardshow ) =
-                      split /[|]/xsm, $board{$key}, 3;
-                    $newperm = q{};
-                    foreach my $theperm ( split /, /sm, $boardperms ) {
+                    ( $boardname, $boardperms, $boardshow ) = @{$board{$key}};
+                    my @theperm = ();
+                    foreach my $theperm ( split /\//xsm, $boardperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
-                        $newperm .= qq~$theperm, ~;
+                        push  @theperm, $theperm;
                     }
-                    $newperm =~ s/, $//sm;
-                    $board{$key} = qq~$boardname|$newperm|$boardshow~;
+                    my $newperm = join q~/~, @theperm;
+                    $board{$key} = [ $boardname, $newperm, $boardshow ];
                 }
-                $newmodgroups = q{};
+
+                my @newmodgroups = ();
                 for my $theperm ( split /, /sm, $cntmodgroups ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
-                    $newmodgroups .= qq~$theperm, ~;
+                    push @newmodgroups, $theperm;
                 }
-                $newmodgroups =~ s/, $//sm;
+                my $newmodgroups = join q~/~, @newmodgroups; 
 
-                $newtopicperms = q{};
+                my @newtopicperms = ();
                 for my $theperm ( split /, /sm, $cnttopicperms ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
-                    $newtopicperms .= qq~$theperm, ~;
+                    push @newtopicperms, $theperm;
                 }
-                $newtopicperms =~ s/, $//sm;
+                my $newtopicperms = join q~/~, @newtopicperms;
 
-                $newreplyperms = q{};
+                my @newreplyperms = ();
                 for my $theperm ( split /, /sm, $cntreplyperms ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
-                    $newreplyperms .= qq~$theperm, ~;
+                    push @newreplyperms, $theperm;
                 }
-                $newreplyperms =~ s/, $//sm;
+                my $newreplyperms = join q~/~, @newreplyperms;
 
-                $newpollperms = q{};
+                my @newpollperms = ();
                 for my $theperm ( split /, /sm, $cntpollperms ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
-                    $newpollperms .= qq~$theperm, ~;
+                    push @newpollperms, $theperm;
                 }
-                $newpollperms =~ s/, $//sm;
+                my $newpollperms = join q~/~, @newpollperms;
 
                 ${ $control{ $cnt } }[3] = $newmodgroups;
                 ${ $control{ $cnt } }[4] = $newtopicperms;
                 ${ $control{ $cnt } }[5] = $newreplyperms;
                 ${ $control{ $cnt } }[6] = $newpollperms;
-                        }
+            }
             if ( time() > $time_to_jump && ( $i + 1 ) < $totalnoposts ) {
-                write_forummaster();
-                foreach my $cnt ( sort keys %control ) {
+                foreach my $cnt ( keys %control ) {
                     my $prline = join q{', '}, @{ $control{$cnt} };
                     my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
                     push @fixcontrol, $newline . "\n";
@@ -3052,7 +3059,6 @@ sub fixnopost {
                 redirectexit();
             }
         }
-        write_forummaster();
         foreach my $cnt ( sort keys %control ) {
             my $prline = join q{', '}, @{ $control{$cnt} };
             my $newline = qq~\$control{'$cnt'} = ['$prline'];~;
@@ -3177,8 +3183,6 @@ sub conv_stringtotime {
 
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
-
-    $yabbversion = 'YaBB 2.7.00';
 
     # Make sure the module path is present
     push @INC, './Modules';
@@ -3462,9 +3466,10 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
             </script>~;
             }
         }
-        $yyurl = $scripturl;
+        $scripturl = "$boardurl/YaBB.$yyext";
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
-        $curline =~ s/<yabb\s+(\w+)>/${"yy$1"}/gxsm;
+        $curline =~ s/\Q{yabb mbname}/$mbname/gxsm;
+        $curline =~ s/\Q{yabb url}\E/$scripturl/gxsm;
         $curline =~ s/img src\=\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eisgm;
         $output .= $curline;
     }
@@ -3594,7 +3599,7 @@ sub setinstall2 {
     $ipLookup              = 1;
     $bm_subcut             = 50;
     $screenlogin           = 1;
-    $gzcomp                = fileno $GZIP ? 1 : 0;
+    $gzcomp                = 0;
     @AdvancedTabs =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
     %templateset = (

@@ -126,15 +126,12 @@ sub favorites {
 
         next
           if !$iamadmin
-          && access_check( $loadboard, q{},
-            ( split /[|]/xsm, $board{$loadboard} )[1] ) ne 'granted';
+          && access_check( $loadboard, q{}, ${$board{$loadboard}}[1] ) ne 'granted';
         {
             no strict qw(refs);
             next
               if !$iamadmin
-              && !cat_access(
-                ( split /[|]/xsm, $catinfo{ ${ $uid . $loadboard }{'cat'} } )[1]
-              );
+              && !cat_access( ${$catinfo{ ${ $uid . $loadboard }{'cat'} }}[1] );
         }
 
         our ($BRDTXT);

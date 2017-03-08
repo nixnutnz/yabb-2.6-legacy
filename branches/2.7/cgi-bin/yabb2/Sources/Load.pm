@@ -73,7 +73,7 @@ sub load_boardcontrol {
     require "$boardsdir/forum.control";
     @allboards = keys %control;
     my @brdlist =
-      qw( cat pic description mods modgroups topicperms replyperms pollperms zero membergroups ann rbin attperms minageperms maxageperms genderperms canpost parent rules rulestitle rulesdesc rulescollapse brdpasswr brdpassw brdrss );
+      qw( cat pic description mods modgroups topicperms replyperms pollperms zero ann rbin attperms minageperms maxageperms genderperms canpost parent rules rulestitle rulesdesc rulescollapse brdpasswr brdpassw brdrss );
 ## BoardList Mod Hook ##
     {
         no strict qw(refs);
@@ -81,19 +81,18 @@ sub load_boardcontrol {
             my @boardline = @{ $control{$boardline} };
             ## create a global boards array
             $boardline[2] =~ s/[&][ ]/&amp; /gxsm;
-            if ( substr( $boardline[3], 0, 1 ) eq q{/} ) {
-                substr $boardline[3], 0, 1, q{};
-            }
-            if ( substr( $boardline[4], 0, 1 ) eq q{/} ) {
-                substr $boardline[4], 0, 1, q{};
+            foreach my $i ( 3 .. 7 ) {
+                if ( substr( $boardline[$i], 0, 1 ) eq q{/} ) {
+                    substr $boardline[$i], 0, 1, q{};
+                }
             }
 
             %{ $uid . $boardline } = ();
             foreach my $i ( 0 .. $#brdlist ) {
                 ${ $uid . $boardline }{ $brdlist[$i] } = $boardline[$i];
             }
-            if ( $boardline[10] ) { $annboard = $boardline; }
-            if ( $boardline[11] ) { $binboard = $boardline; }
+            if ( $boardline[9] ) { $annboard = $boardline; }
+            if ( $boardline[10] ) { $binboard = $boardline; }
         }
     }
     return;
@@ -143,7 +142,7 @@ qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_
             $yyim =
 qq~$load_txt{'152'} <a href="$scripturl?action=im">0 $load_txt{'153'}</a>~;
         }
-        elsif ( ${$username}{'PMmnum'} == ${$username}{'PMimnewcount'} ) {
+        elsif ( ${$username}{'PMimnewcount'} && ${$username}{'PMmnum'} == ${$username}{'PMimnewcount'} ) {
             $yyim =
 qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'154b'}</a>~;
         }
@@ -318,7 +317,7 @@ sub load_user {
         $userextension = 'wait';
     }
     if ( -e "$memberdir/$user.$userextension" ) {
-        if ( $user ne $username ) {
+        if ( $username && $user ne $username ) {
             require "$memberdir/$user.$userextension";
             our ($LOADUSER);
             fopen( 'LOADUSER', '<', "$memberdir/$user.lst" )
@@ -424,8 +423,7 @@ sub is_moderator_b {
             foreach ( split /\//xsm, ${ $uid . $i }{'mods'} ) {
                 if ( $_ eq $user ) {
                     get_forum_master();
-                    my ( $boardname, $boardperms, $boardview ) =
-                      split /[|]/xsm, $board{$i};
+                    my $boardname = ${$board{$i}}[0];
                     $mybrds .= qq~$boardname<br />~;
                     return 1;
                 }
@@ -1244,9 +1242,8 @@ sub update_cookie {
 
         foreach my $catid (@categoryorder) {
             if ( !$catid ) { next; }
-            my $boardlist = $cat{$catid};
-            my @bdlist = split /,/xsm, $boardlist;
-            foreach my $curboard (@bdlist) {
+#            no strict qw(refs);
+            foreach my $curboard (@{$cat{$catid}}) {
                 chomp $curboard;
                 my $tsortcookie = "$cookietsort$curboard$username";
                 if ( $yy_cookies{$tsortcookie} ) {

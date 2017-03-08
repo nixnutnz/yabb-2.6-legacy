@@ -163,7 +163,7 @@ sub runbackup {
 
     %pathconvert = (
         'src' =>
-          "!$boarddir|$boarddir/Admin|$boarddir/Sources|$boarddir/Modules",
+          "!$boarddir|$boarddir/Admin|$boarddir/Sources|$boarddir/Modules|$boarddir/Mods",
         'bo'   => $boardsdir,
         'lan'  => "$langdir|$helpfile",
         'mem'  => $memberdir,

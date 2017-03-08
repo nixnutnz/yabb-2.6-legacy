@@ -74,8 +74,7 @@ sub recent_posts {
     our ($message);
     local *recursive_check2 = sub {
         for my $curboard (@_) {
-            ( $boardname{$curboard}, $boardperms, $boardview ) =
-              split /[|]/xsm, $board{$curboard};
+            ( $boardname{$curboard}, $boardperms, $boardview ) = @{$board{$curboard}};
 
             my $access = access_check( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -142,19 +141,18 @@ sub recent_posts {
             }
 
             if ( $subboard{$curboard} ) {
-                recursive_check2( split /[|]/xsm, $subboard{$curboard} );
+                recursive_check2( @{$subboard{$curboard}} );
             }
         }
     };
 
     for my $catid (@categoryorder) {
-        my @bdlist = split /,/xsm, $cat{$catid};
         my ($catperms);
-        ( $catname, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        ( $catname, $catperms ) = @{$catinfo{$catid}};
         my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
 
-        recursive_check2(@bdlist);
+        recursive_check2(@{$cat{$catid}});
     }
     @data = reverse sort { $a cmp $b } @data;
 
@@ -290,8 +288,7 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
         my $parentboard = $board;
         my $my_tstate   = q{};
         while ($parentboard) {
-            my ( $pboardname, undef, undef ) =
-              split /[|]/xsm, $board{$parentboard};
+            my $pboardname = ${$board{$parentboard}}[0];
             if ( ${ $uid . $parentboard }{'canpost'}
                 || !$subboard{$parentboard} )
             {
@@ -349,10 +346,9 @@ sub recent_topics {
 
     get_forum_master();
     for my $catid (@categoryorder) {
-        my ( undef, $catperms ) = split /[|]/xsm, $catinfo{$catid};
+        my $catperms = ${$catinfo{$catid}}[1];
         if ( !cat_access($catperms) ) { next; }
-        my (@bdlist) = split /,/xsm, $cat{$catid};
-        recursive_check(@bdlist);
+        recursive_check(@{$cat{$catid}});
     }
 
     @data = reverse sort { $a cmp $b } @data;
@@ -490,8 +486,7 @@ qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'ad
         my $parentboard = $board;
         my ( $my_cat, $my_catname );
         while ($parentboard) {
-            my ( $pboardname, undef, undef ) =
-              split /[|]/xsm, $board{$parentboard};
+            my $pboardname = ${$board{$parentboard}}[0];
             if ( ${ $uid . $parentboard }{'canpost'}
                 || !$subboard{$parentboard} )
             {
@@ -504,7 +499,7 @@ qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under"
             }
             $boardtree = qq~ / $pboardname$boardtree~;
             $my_cat    = ${ $uid . $parentboard }{'cat'};
-            ( $my_catname, undef ) = split /[|]/xsm, $catinfo{$my_cat};
+            $my_catname = ${$catinfo{$my_cat}}[0];
             $parentboard = ${ $uid . $parentboard }{'parent'};
         }
         my $counter = $i + 1;
@@ -543,8 +538,7 @@ sub recursive_check {
     my @x = @_;
     my ($boardperms);
     for my $curboard (@x) {
-        ( $boardname{$curboard}, $boardperms, undef ) = split /[|]/xsm,
-          $board{$curboard};
+        ( $boardname{$curboard}, $boardperms, undef ) = @{$board{$curboard}};
 
         my $access = access_check( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }

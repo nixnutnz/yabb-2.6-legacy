@@ -287,21 +287,19 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         $vircurrentboard = $INFO{'virboard'} || q{};
         $vircurcat = ${ $uid . $vircurrentboard }{'cat'};
         if ($vircurcat) {
-            ( $vircat, undef ) = split /[|]/xsm, $catinfo{$vircurcat};
+            $vircat = ${$catinfo{$vircurcat}}[0];
             to_chars($vircat);
         }
         if ($vircurrentboard) {
-            ( $virboardname, undef ) = split /[|]/xsm,
-              $board{$vircurrentboard}, 2;
+            $virboardname =  ${$board{$vircurrentboard}}[0];
             to_chars($virboardname);
         }
     }
 
-    my ( $cat, $catperms ) = split /[|]/xsm, $catinfo{$curcat};
+    my ( $cat, $catperms ) = @{$catinfo{$curcat}};
     to_chars($cat);
 
-    my ( $boardname, $boardview ) =
-      split /[|]/xsm, $board{$currentboard};
+    my ( $boardname, $boardview ) = @{$board{$currentboard}};
 
     to_chars($boardname);
 
@@ -1568,12 +1566,13 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
             }
         }
 
+        $micon = $micon{$micon} || $micon{'xx'};
         my $msgimg =
-qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon{$micon}</a>~;
+qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon</a>~;
         my $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
         if ($accept_permafull) {
             $msgimg =
-qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$micon{$micon}</a>~;
+qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$micon</a>~;
         }
 
         $template_ext_prof = q{};
@@ -1862,7 +1861,7 @@ qq~$tabsep <a href="$scripturl">&laquo; $img_txt{'103'}</a> $tabsep $navback $ta
     my $boardtree   = q{};
     my $parentboard = $currentboard;
     while ($parentboard) {
-        my ( $pboardname, undef, undef ) = split /[|]/xsm, $board{$parentboard};
+        my $pboardname = ${$board{$parentboard}}[0];
         to_chars($pboardname);
         my $pboardlink = $pboardname;
         if (   $parentboard eq 'announcements'
