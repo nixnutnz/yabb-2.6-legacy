@@ -82,12 +82,11 @@ if ( !$FORM{'searchboards'} || $FORM{'searchboards'} =~ /\A\!/xsm ) {
         my @x = @_;
         my %cat_boardcnt;
         foreach my $curboard (@x) {
-            chomp $curboard;
+            if ( $curboard) {
+                chomp $curboard;
 
             # don't add to count if it's a sub board
-            {
-                no strict qw(refs);
-                if ( !${ $uid . $curboard }{'parent'} && $catid ) {
+                if ($catid &&  !${ $uid . $curboard }{'parent'} ) {
                     $cat_boardcnt{$catid}++;
                 }
                 my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
@@ -95,7 +94,7 @@ if ( !$FORM{'searchboards'} || $FORM{'searchboards'} =~ /\A\!/xsm ) {
                 if ( !$iamadmin && $access ne 'granted' ) { next; }
                 $checklist .= qq~$curboard, ~;
 
-                if ( $subboard{$curboard} ) {
+                if ( exists $subboard{$curboard} ) {
                     recursive_search( @{$subboard{$curboard}} );
                 }
             }
@@ -205,13 +204,13 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
         if ( !$cataccess ) { next; }
 
         foreach my $curboard (@{$cat{$catid}}) {
+            no strict qw(refs);
+            no warnings qw(uninitialized);
             my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
             to_chars($boardname);
             my $access = access_check( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
-            {
-                no strict qw(refs);
                 if ( ${ $uid . $curboard }{'brdpasswr'} ) {
                     my $bdmods     = ${ $uid . $curboard }{'mods'};
                     my %moderators = ();
@@ -245,7 +244,6 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
                         next;
                     }
                 }
-            }
 
             # Checks to see if category is expanded or collapsed
             my $selected = q{};
@@ -429,9 +427,11 @@ sub plush_search2 {
         if ( !$cataccess ) { next; }
 
         foreach my $cboard (@{$cat{$catid}}) {
-            my ( $bname, $bperms, $bview ) = @{$board{$cboard}};
-            $catid{$cboard}   = $catid;
-            $catname{$cboard} = $catname;
+            if ($cboard) {
+                my ( $bname, $bperms, $bview ) = @{$board{$cboard}};
+                $catid{$cboard}   = $catid;
+                $catname{$cboard} = $catname;
+            }
         }
     }
 
