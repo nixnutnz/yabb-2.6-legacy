@@ -70,11 +70,11 @@ sub recent_posts {
 
     $numfound = 0;
     get_forum_master();
-    my ( $boardperms, $boardview, @messages );
+    my ( $boardperms, @messages );
     our ($message);
     local *recursive_check2 = sub {
         for my $curboard (@_) {
-            ( $boardname{$curboard}, $boardperms, $boardview ) = @{$board{$curboard}};
+            $boardperms = ${$board{$curboard}}[1];
 
             my $access = access_check( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -538,7 +538,7 @@ sub recursive_check {
     my @x = @_;
     my ($boardperms);
     for my $curboard (@x) {
-        ( $boardname{$curboard}, $boardperms, undef ) = @{$board{$curboard}};
+        $boardperms = ${$board{$curboard}}[1];
 
         my $access = access_check( $curboard, q{}, $boardperms );
         if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -600,7 +600,7 @@ sub recursive_check {
                     $treplies, $tusername, $ticon, $tstate
                 ) = split /[|]/xsm, $buffer[$i];
                 chomp $tstate;
-                if ( $tstate !~ /h/sm || $iamadmin || $iamgmod ) {
+                if ( $tstate !~ /h/xsm || $iamadmin || $iamgmod ) {
                     $mtime = $tdate;
                     $data[$numfound] =
 "$mtime|$curboard|$tnum|$treplies|$tusername|$tname|$tstate";

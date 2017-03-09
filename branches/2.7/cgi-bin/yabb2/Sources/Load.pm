@@ -236,8 +236,8 @@ sub load_usersettings {
                 if ( $sessions && $staff ) {
                     $cursession = encode_password($user_ip);
                     chomp $cursession;
-                    if (   ${ $uid . $username }{'session'} ne $cursession
-                        || ${ $uid . $username }{'session'} ne $cookiesession )
+                    if (   $cursession && ${ $uid . $username }{'session'} ne $cursession
+                        || $cookiesession && ${ $uid . $username }{'session'} ne $cookiesession )
                     {
                         $sessionvalid = 0;
                     }
@@ -1133,6 +1133,7 @@ sub load_cookie {
         my ( $cookie, $value ) = split /=/xsm;
         $yy_cookies{$cookie} = $value;
     }
+    $session_id ||= $cookiesession_name;
     if ( $yy_cookies{$cookiepassword} ) {
         $password      = $yy_cookies{$cookiepassword};
         $username      = $yy_cookies{$cookieusername} || 'Guest';

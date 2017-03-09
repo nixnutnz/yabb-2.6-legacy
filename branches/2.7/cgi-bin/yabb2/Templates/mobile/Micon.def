@@ -280,7 +280,7 @@ var jsPost = new Hash($js_postlist);
 ~;
 
 @jspstatlist = qw( thread hide locked sticky announcement stickylock hidesticky hidelock hidestickylock announcementlock veryhotthread hotthread);
-for (@jsPstatlist) {
+for (@jspstatlist) {
         $js_pstatlist .= qq~'$_', '$micon_bg{$_}',\n~;
 }
 $js_pstatlist =~ s/\,\n\Z//xsm;

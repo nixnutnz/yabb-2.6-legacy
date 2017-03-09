@@ -27,6 +27,7 @@ use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 our $convert2xplver = 'YaBB 2.7.00 $Revision$';
+our $yabbversion = 'YaBB 2.7.00';
 our (
     $action,                $AdMaxCalMessLen,      $AdMaxIMMessLen,
     $adomains,              $bdomains,             $bm_subcut,
@@ -106,6 +107,7 @@ my $set_cgi    = "Convert2x.$yyext";
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 if ($boardurl) { $set_cgi = "$boardurl/Convert2x.$yyext"; }
 
+our $yyexec  = 'YaBB';
 my $scripturl = "$boardurl/YaBB.$yyext";
 
 # Make sure the module path is present
@@ -157,7 +159,9 @@ if ( -e "$vardir/Setup.lock" ) {
                 <td class="windowbg2 fontbigger">
                     Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods, install the 2.7 versions - if available - before converting your old forum.
                     <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
-                    <br />Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.7.<br />
+                    <br />In the event your old forum had 'Activate .htaccess to add IP blocks on server level?' activated in Guardian, go to "The Guardian&trade; Setup" in the Admin Center of <strong>your old forum</strong> and copy the lists of items being blocked. You will need these to rebuild your IP blocks in .htaccess once the conversion is finished.
+                    <p>Put your old forum into Maintenance Mode and do all necessary maintenance on your <strong>old forum</strong>.</p>
+                    <p>Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.7.<br />
                     <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.7 installation:
                     <ol>
                         <li>Insert the paths to your YaBB 2x forum folders in the input fields below - do <strong>not</strong> include trailing slash (/)</li>
@@ -168,7 +172,7 @@ if ( -e "$vardir/Setup.lock" ) {
                     <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.7 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
                     <ol>
                         <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.7 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
-                        <li><strong>Do not fill in the paths for your old attachments, PMattachments, and member avatars folders.</strong>  You will need copy any attachments, PMattachments, and member avatars fro there old location into their equivalent folders in your 2.7 installation.</li>
+                        <li><strong>Do not fill in the paths for your old attachments, PMattachments, and member avatars folders.</strong>  You will need copy any attachments, PMattachments, and member avatars from their old locations into their equivalent folders in your 2.7 installation.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <table style="width:auto; margin-left:0">
@@ -362,6 +366,7 @@ START
         convertmembers();
 
         $yytabmenu = $NavLink1 . $NavLink2a . $NavLink3 . $NavLink5 . $NavLink6;
+        $INFO{'st'} ||= 0;
         my $infost = int( ( $INFO{'st'} + 60 ) / 60 );
         my $members1 = << "MEMBERS1";
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -505,6 +510,7 @@ MEMBERS1
 
         $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3a . $NavLink5 . $NavLink6;
 
+        $INFO{'st'} ||= 0;
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -646,6 +652,7 @@ MEMBERS1
 
         $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5a . $NavLink6;
 
+        $INFO{'st'} ||= 0;
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -816,6 +823,7 @@ q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
 
         }
         my $checkattach = checkattach();
+        $INFO{'st'} ||= 0;
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -857,7 +865,9 @@ q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
                 - Rebuild Members History<br />
                 - Rebuild Notifications Files<br />
                 - Clean Users Online Log<br />
-                - Attachment Functions => Rebuild Attachments<br /></span>
+                - Attachment Functions => Rebuild Attachments<br />
+                Also, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.
+                </span>
                 <br />
 $checkattach
                 <br />
@@ -1366,6 +1376,7 @@ sub moveboards {
                     "$maintext_23 $convboardsdir/$boards[$i].ext: ", 1 );
                 my @brdinfo = <$BOARDFILE>;
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
+                chomp @brdinfo;
                 if ( $ext ne 'mail' ) {
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                       or croak 'cannot open NEWBRD';
@@ -1373,13 +1384,12 @@ sub moveboards {
                     close $NEWBRD or croak 'cannot close NEWBRD';
                 }
                 else {
-                    my %theboard = map { /(.*)\t(.*)/xsm } <$BOARDFILE>;
+                    my %theboard =();
                     my $prnbrd = q{};
-                    foreach ( keys %theboard ) {
-                        my ( $memlang, $memtype, $memview ) =
-                          split /[|]/xsm, $theboard{$_};
-                        $prnbrd .=
-"\$theboard{'$_'} = [ '$memlang', $memtype, $memview ]";
+                    foreach my $line (@brdinfo) {
+                        my ( $key, $value) = split /\t/xsm, $line;
+                        my ( $memlang, $memtype, $memview ) = split /[|]/xsm, $value;
+                        $prnbrd .= qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
                     }
                     $prnbrd .= "\n1;\n";
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
@@ -1531,7 +1541,7 @@ sub fixnopost {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newmodgroups, $theperm;
                 }
-                my $newmodgroups = join q~/~, @newmodgroups; 
+                my $newmodgroups = join q~/~, @newmodgroups;
 
                 my @newtopicperms = ();
                 foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[5] ) {
@@ -1691,7 +1701,11 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
                             close $MSGFILE or croak 'cannot close MSGFILE';
                         }
                         else {
-                            my %thethread = map { /(.*)\t(.*)/xsm } <$MSGFILE>;
+                            my %thethread = ();
+                            foreach my $line (@messagelines) {
+                                my ($key, $value ) = split /\t/xsm, $line;
+                                $thethread{$key} = $value;
+                            }
                             my $prnthread = q{};
                             foreach ( keys %thethread ) {
                                 my ( $memlang, $memtype, $memview ) =
@@ -2423,8 +2437,6 @@ Delete this file if you want to run the Convert2x Utility again.~;
 sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
-    my $yabbversion = 'YaBB 2.7.00';
-
     # Make sure the module path is present
     push @INC, './Modules';
 
@@ -2666,7 +2678,9 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~
           s/\Qimg src=\E\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eigxsm;
-        $output .= $curline;
+        $output .= $curline || q{};
+        $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
+        $output =~ s/\Q{yabb version}\E/$yabbversion/xsm;
     }
     if ( $yycopyin == 0 ) {
         $output =
@@ -2674,9 +2688,8 @@ qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyr
     }
     my $mycopy = qq~2000-$newyear~;
     $output =~ s/2000-1900/$mycopy/xsm;
-    $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
-    $output =~ s/\Q{yabb version}\E/YaBB $VERSION/gxsm;
+
     print $output or croak 'cannot print page';
     exit;
 }

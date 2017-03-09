@@ -517,7 +517,7 @@ qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','
                           qq~id="col$catid" style="display:none"~;
                     }
                     else {
-                        $my_brdrow = $brd_newrow;
+                        $my_brdrow = $brd_newrow || q{};
                         $my_brdrow =~ s/\Q{yabb new_msg_bg}\E/$new_msg_bg/xsm;
                         $my_brdrow =~
                           s/\Q{yabb new_msg_class}\E/$new_msg_class/xsm;

@@ -2698,6 +2698,7 @@ sub foundsetuplock {
     $scripturl = "$boardurl/YaBB.$yyext";
     my $conv  = q{};
     my $conv2 = q{};
+    our $formsession = cloak("$mbname$username");
     if ( -e "$vardir/Converter.lock" ) {
         $conv = q{};
         $conv2 =
