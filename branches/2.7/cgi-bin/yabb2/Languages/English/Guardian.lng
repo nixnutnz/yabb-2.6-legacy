@@ -30,7 +30,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'general' => q~Global and Server Settings~,
 'use_guardian' => q~Use The Guardian&trade; to protect your board?~,
 'use_htaccess' => q~Activate .htaccess to add IP blocks on server level?~,
-'use_htaccess_support' => q~<span class="small"><em>(Only works if your server supports /.htaccess files.)</em></span>~,
+'use_htaccess_support' => q~<span class="small"><em>(Only works if your server supports .htaccess files.)</em></span>~,
 'htaccess_support' => q~<span class="small"><em>(Only works if your server supports it and "Activate .htaccess to add IP blocks on server level?" from first item above is enabled.)</em></span>~,
 'htaccess_add' => q~Auto add abusing IP addresses to .htaccess?~,
 'htaccess_added' => q~Auto added abusing IP address to .htaccess file. (You can remove it from the list manually from the Guardian Admin)~,
@@ -73,7 +73,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'harvester_list' => q~Enter harvester agent strings you want blocked?<br /><em>(whole or partial agent string, one per line)</em>~,
 'request_list' => q~Enter Request Methods you want blocked?<br /><em>(whole or partial method string, one per line)</em><br /><br /><strong><span class="under">ATTENTION!</span><br />NEVER BLOCK POST and GET!<br />It will render your board useless.</strong>~,
 'string_list' => q~Enter 'bad words' you want blocked?<br /><em>(whole or partial string, one per line)</em>~,
-'htaccess_list' => q~Enter IP addresses or (partial) domain names you want blocked on server level?<br /><span class="small"><em>(* wild-cards allowed, one per line)</em></span>~,
+'htaccess_list' => q~Enter IP addresses or (partial) domain names you want blocked on server level?<br /><em>(* wild-cards allowed, one per line)</em>~,
 'save' => q~Save Guardian Changes~,
 );
 

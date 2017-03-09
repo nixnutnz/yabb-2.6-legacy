@@ -943,6 +943,7 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
     our $yyurl = $scripturl;
     my $copyright = $output =~ m/\Q{yabb copyright}\E/xsm ? 1 : 0;
     $yycopyright =~ s/\Q{yabb mbname}/$mbname/gxsm;
+    $yycopyright =~ s/\Q{yabb version}\E/$yabbversion/gxsm;
     while ( $output =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm ) { }
     $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
     $output =~ s/\Q{yabb version}\E/$yabbversion/gxsm;
@@ -3051,7 +3052,7 @@ sub user_onlinestatus {
           qq~<span class="useronline">$maintxt{'60'}</span>~
           . ( ${ $uid . $user_tocheck }{'stealth'} ? q{*} : q{} );
     }
-    elsif ( $ubanned[0] == 1 || $ubanned[1] == 1 ) {
+    elsif ( ($ubanned[0] && $ubanned[0] == 1) || ($ubanned[1] && $ubanned[1] == 1) ) {
         my ( $is_banned, $eml ) =
           check_banlist( "${ $uid . $user_tocheck }{'email'}",
             q{}, "$user_tocheck" );

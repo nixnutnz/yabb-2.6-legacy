@@ -1866,13 +1866,22 @@ sub find_latest_data {
 
 sub getbrdpics {
     my ($curboard) = @_;
-    my $bdpic = q{};
+    my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
     our ($BRDPIC);
     fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
       or croak "$croak{'open'} brdpics";
     my @brdpics = <$BRDPIC>;
     fclose('BRDPIC') or croak "$croak{'close'} brdpics";
     chomp @brdpics;
+    my @sublist = ();
+    foreach (keys %subboard) {
+        push @sublist, @{$subboard{$_}};
+    }
+    foreach (@sublist) {
+        if ($curboard eq $_) {
+            $bdpic = qq~$imagesdir/subboards.$bdpic_ext~;
+        }
+    }
     foreach (@brdpics) {
         my ( $brdnm, $style, $brdpix ) = split /[|]/xsm;
         if ( $brdnm eq $curboard && $template eq $style ) {
@@ -1884,13 +1893,9 @@ sub getbrdpics {
                 if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpix" ) {
                     $bdpic = qq~$imagesdir/Boards/$brdpix~;
                 }
-                else {
-                    $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
-                }
                 last;
             }
         }
-        else { $bdpic = qq~$imagesdir/boards.$bdpic_ext~; }
     }
     return $bdpic;
 }

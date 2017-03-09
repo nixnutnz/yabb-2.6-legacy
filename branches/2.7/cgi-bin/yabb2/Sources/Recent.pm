@@ -609,9 +609,284 @@ sub recursive_check {
             }
         }
         if ( $subboard{$curboard} ) {
-            recursive_check( split /[|]/xsm, $subboard{$curboard} );
+            recursive_check( @{$subboard{$curboard}} );
         }
     }
+    return;
+}
+
+sub recenttopicsmem {
+    spam_protection();
+    our ( %messageindex_txt, %yyuserlog, $myunreadindex, $maxdisplay, $logcount, $myunread );
+    load_language('MessageIndex');
+
+    my $recent_topics = $action eq 'recenttopicsmem' ? 1 : 0;
+
+    my $dmax = $date - ( 365 * 86400 );
+    if ( $max_log_days_old ) {
+        $dmax = $date - ( $max_log_days_old * 86400 );
+    }
+
+    get_forum_master();
+    for my $catid (@categoryorder) {
+        my ( $catname, $catperms ) = @{$catinfo{$catid}};
+        if ( !cat_access($catperms) ) { next; }
+        my @bdlist = @{$cat{$catid}};
+        recursive_check(@bdlist);
+    }
+
+    @data = reverse sort { $a cmp $b } @data;
+    getlog();
+    $numfound = 0;
+    my (@messages);
+    our ($message);
+    for my $i ( 0 .. $#data ) {
+        my ( $mtime, $curboard, $tnum, $treplies, $tusername, $tname, $tstate )
+          = split /[|]/xsm, $data[$i];
+
+        my $dlp = 0;
+        $yyuserlog{"$curboard--mark"} ||= 0;
+        if ( $yyuserlog{$tnum} && int( $yyuserlog{$tnum} ) > int( $yyuserlog{"$curboard--mark"} ) ) {
+            $dlp = int( $yyuserlog{$tnum} )
+        }
+        else { $dlp = int $yyuserlog{"$curboard--mark"}; }
+        if (
+               $yyuserlog{"$tnum--unread"}
+                || ( !$dlp && $mtime > $dmax )
+                || ( $dlp > $dmax && $dlp < $mtime )
+         ) {
+                my $tstart = $mtime;
+                our ($REC_THRETXT);
+                fopen( 'REC_THRETXT', '<', "$datadir/$tnum.txt" ) || next;
+                my @mess = <$REC_THRETXT>;
+                fclose('REC_THRETXT') or croak "$croak{'open'} $tnum.txt";
+
+                for my $c ( $#mess .. @mess ) {
+                    if ( $mess[$c] ) {
+                    my (
+                        $msub,  $mname,    $memail, $mdate,  $musername,
+                        $micon, $mreplyno, $mip,    $messge, $mns
+                    ) = split /[|]/xsm, $mess[$c];
+                    $mtime = $mdate < 1000000000 ? "0$mdate" : $mdate;
+                    $messages[$numfound] =
+"$mdate|$curboard|$tnum|$c|$tusername|$tname|$msub|$mname|$memail|$mdate|$musername|$micon|$mreplyno|$mip|$messge|$mns|$tstate|$mtime";
+                    $numfound++;
+                }
+            }
+            if ( $recent_topics && $numfound == $display ) { last; }
+        }
+    }
+
+    @messages = reverse sort { $a cmp $b } @messages;
+    my ($icanbypass);
+    if ( $numfound > 0 ) {
+        if ( $numfound > $display ) { $numfound = $display; }
+        load_censor_list();
+        $icanbypass = checkuser_lockbypass();
+        $yymain .= $myunreadindex;
+    }
+    else {
+        $yymain .= qq~<hr class="hr" /><b>$maintxt{'170'}</b><hr />~;
+    }
+    my $datanum = @messages;
+    my $pageindex = q{};
+    my $numshow = q{};
+    if ( @messages > 0 ) {
+        my $newstart = $INFO{'newstart'} || 0;
+
+        my $postdisplaynum = 8;
+        my $max = $datanum;
+        my $dnprpage = $maxdisplay;
+        my $startpage = 0;
+        my $endpage = $max;
+        my $tmpa           = 1;
+        if ( $newstart >= ( ( $postdisplaynum - 1 ) * $dnprpage ) ) {
+            $startpage =
+              $newstart - ( ( $postdisplaynum - 1 ) * $dnprpage );
+            $tmpa = int( $startpage / $dnprpage ) + 1;
+        }
+        if ( $max >= $newstart + ( $postdisplaynum * $dnprpage ) ) {
+            $endpage = $newstart + ( $postdisplaynum * $dnprpage );
+        }
+        else { $endpage = $max }
+        if ( $startpage > 0 ) {
+            $pageindex =
+qq~<a href="$scripturl?action=$action;newstart=0" class="norm">1</a>&nbsp;...&nbsp;~;
+        }
+        if ( $startpage == $dnprpage ) {
+            $pageindex =
+qq~<a href="$scripturl?action=$action;newstart=0" class="norm">1</a>&nbsp;~;
+        }
+        foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
+            if ( $counter % $dnprpage == 0 ) {
+                $pageindex .=
+                  $newstart == $counter
+                  ? qq~<span class="norm small">[$tmpa]</span>&nbsp;~
+                  : qq~<a href="$scripturl?action=$action;newstart=$counter" class="norm small">$tmpa</a>&nbsp;~;
+                $tmpa++;
+            }
+        }
+        my $pageindexadd = q{};
+        $logcount ||= 0;
+        my $lastpn  = int( $logcount / $dnprpage ) + 1;
+        my $lastptn = ( $lastpn - 1 ) * $dnprpage;
+        if ( $endpage < ($max - $dnprpage) ) {
+            $pageindexadd = q~...&nbsp;~;
+        }
+        if ( $endpage != $max ) {
+            $pageindexadd .=
+qq~<a href="$scripturl?action=$action;newstart=$lastptn">$lastpn</a>~;
+        }
+        $pageindex .= $pageindexadd;
+
+        $pageindex = qq~<span class="small" style="float: left;">$messageindex_txt{'139'}: $pageindex</span>~;
+
+        my $numbegin = ( $newstart + 1 );
+        my $numend   = ( $newstart + $dnprpage );
+        if   ( $numend > $logcount ) { $numend  = $logcount; }
+        if   ( $logcount == 0 )      { $numshow = q{}; }
+        else                         { $numshow = qq~($numbegin - $numend)~; }
+        @messages = splice @messages, $newstart, $dnprpage;
+    }
+
+    for my $i ( 0 .. $#messages ) {
+        my (
+            undef,    $board, $tnum,   $c,     $tusername, $tname,
+            $msub,    $mname, $memail, $mdate, $musername, $micon,
+            $mattach, $mip,   $messge, $mns,   $tstate,    $trstart
+        ) = split /[|]/xsm, $messages[$i];
+        my $displayname = $mname;
+        $message = $messge;
+        $trstart ||= $tnum;
+        if ( $tusername ne 'Guest' && -e ("$memberdir/$tusername.vars") ) {
+            load_user($tusername);
+        }
+        my $registrationdate = $date;
+        if ( ${ $uid . $tusername }{'regtime'} ) {
+            $registrationdate = ${ $uid . $tusername }{'regtime'};
+        }
+        else {
+            $registrationdate = $date;
+        }
+
+        if ( ${ $uid . $tusername }{'regdate'} && $trstart >= $registrationdate )
+        {
+            $tname = profile_view($tusername);
+        }
+        elsif ( $tusername !~ m{Guest}sm && $trstart < $registrationdate ) {
+            $tname = qq~$tname - $maintxt{'470a'}~;
+        }
+        else {
+            $tname = "$tname ($maintxt{'28'})";
+        }
+
+        if ( $musername ne 'Guest' && -e ("$memberdir/$musername.vars") ) {
+            load_user($musername);
+        }
+        if ( ${ $uid . $musername }{'regtime'} ) {
+            $registrationdate = ${ $uid . $musername }{'regtime'};
+        }
+        else {
+            $registrationdate = $date;
+        }
+
+        if ( ${ $uid . $musername }{'regdate'} && $mdate >= $registrationdate ) {
+            $mname = profile_view($musername);
+        }
+        elsif ( $musername !~ m{Guest}xsm && $mdate < $registrationdate ) {
+            $mname = qq~$mname - $maintxt{'470a'}~;
+        }
+        else {
+            $mname = "$mname ($maintxt{'28'})";
+        }
+
+        wrap();
+        my $movedflag = q{};
+        ( $message, $movedflag ) = split_splice_move( $message, $tnum );
+        my $ns = q{};
+        if ($enable_ubbc) {
+            $ns = $mns;
+            enable_yabbc();
+            do_ubbc();
+        }
+        wrap2();
+        to_chars($message);
+        $message = do_censor($message);
+
+        ( $msub, undef ) = split_splice_move( $msub, 0 );
+        to_chars($msub);
+        $msub = do_censor($msub);
+
+        my $notify = q{};
+        if ($iamguest) {
+            $notify = q{};
+        }
+        else {
+            if (   ${ $uid . $username }{'thread_notifications'}
+                && ${ $uid . $username }{'thread_notifications'} =~
+                /\b$tnum\b/xsm )
+            {
+                $notify =
+qq~$menusep<a href="$scripturl?action=notify3;num=$tnum/$c;oldnotify=1">$img{'del_notify'}</a>~;
+            }
+            else {
+                $notify =
+qq~$menusep<a href="$scripturl?action=notify2;num=$tnum/$c;oldnotify=1">$img{'add_notify'}</a>~;
+            }
+        }
+        $mdate = timeformat($mdate);
+
+        # generate a sub board tree
+        my $boardtree   = q{};
+        my $parentboard = $board;
+        my ( $my_cat, $my_catname );
+        while ($parentboard) {
+            my $pboardname = ${$board{$parentboard}}[0];
+            if ( ${ $uid . $parentboard }{'canpost'}
+                || !$subboard{$parentboard} )
+            {
+                $pboardname =
+qq~<a href="$scripturl?board=$parentboard"><span class="under">$pboardname</span></a>~;
+            }
+            else {
+                $pboardname =
+qq~<a href="$scripturl?boardselect=$parentboard&subboards=1"><span class="under">$pboardname</span></a>~;
+            }
+            $boardtree = qq~ / $pboardname$boardtree~;
+            $my_cat    = ${ $uid . $parentboard }{'cat'};
+            $my_catname = ${$catinfo{$my_cat}}[0];
+            $parentboard = ${ $uid . $parentboard }{'parent'};
+        }
+        my $counter = $i + 1;
+
+        my $my_tstate = q{};
+        if ( $tstate !~ /1/xsm && ( !$iamguest || $enable_guestposting ) ) {
+            $my_tstate = $myrecent_mess;
+            $my_tstate =~ s/\Q{yabb tnum}\E/$tnum/gxsm;
+            $my_tstate =~ s/\Q{yabb c}\E/$c/gxsm;
+        }
+
+        $yymain .= $myunread;
+        $yymain =~ s/\Q{yabb counter}\E/$counter/xsm;
+        $yymain =~ s/\Q{yabb catbrd}\E/$my_cat/xsm;
+        $yymain =~ s/\Q{yabb catname}\E/$my_catname/xsm;
+        $yymain =~ s/\Q{yabb boardtree\E}/$boardtree/xsm;
+        $yymain =~ s/\Q{yabb tnum}\E/$tnum\/$c#$c/xsm;
+        $yymain =~ s/\Q{yabb msub}\E/$msub/xsm;
+        $yymain =~ s/\Q{yabb mdate}\E/$mdate/xsm;
+        $yymain =~ s/\Q{yabb tname}\E/$tname/xsm;
+        $yymain =~ s/\Q{yabb mname}\E/$mname/xsm;
+        $yymain =~ s/\Q{yabb my_tstate}\E/$my_tstate/xsm;
+        $yymain =~ s/\Q{yabb message}\E/$message/xsm;
+        $yymain =~ s/\Q{yabb pageindex}\E/$pageindex/xsm;
+
+        my $txtsz = txtsz();
+        $yymain =~ s/\Q{yabb txtsz}\E/$txtsz/gxsm;
+    }
+
+    $yynavigation = qq~&rsaquo; $numfound $maintxt{'unread'} (${ $uid . $username }{'realname'} ) ~;
+    $yytitle      = qq~$maintxt{'unread'} (${ $uid . $username }{'realname'})~;
+    template();
     return;
 }
 
