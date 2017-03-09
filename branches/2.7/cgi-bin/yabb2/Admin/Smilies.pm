@@ -57,7 +57,7 @@ sub smilie_panel {
 
     foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
         my ( $name, $extension ) = split /[.]/xsm, $line;
-        if ( $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
+        if ( $extension && $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
             if ( $line !~ /banner/ixsm ) {
                 $smilieslist .= qq~<tr>
     <td class="windowbg2 center">
@@ -85,7 +85,7 @@ sub smilie_panel {
         <col span="2" style="width: 5%" />
     </colgroup>
     <tr>
-        <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'3'}</b><br /></td>
+        <td class="titlebg" colspan="8" style="height:22px">&nbsp;<img src="$yyhtml_root/Smilies/grin.gif" alt="" /><b>&nbsp;$smiltxt{'3'}</b><br /></td>
     </tr><tr>
         <td class="windowbg2" colspan="4"><label for="removenormalsmilies">$smiltxt{'24'}</label></td>
         <td class="windowbg2" colspan="4"><input type="checkbox" name="removenormalsmilies" id="removenormalsmilies" value="1"${ischecked($removenormalsmilies)} /></td>
@@ -159,7 +159,7 @@ sub smilie_panel {
             </script>
         </td>
     </tr><tr>
-        <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'11'}</b></td>
+        <td class="titlebg" colspan="8">&nbsp;<img src="$yyhtml_root/Smilies/grin.gif" alt="" /><b>&nbsp;$asmtxt{'11'}</b></td>
     </tr><tr>
         <td class="catbg center small">$smiltxt{'22'}</td>
         <td class="catbg center small">$asmtxt{'02'}</td>
@@ -201,7 +201,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
     <td class="windowbg2 center" style="white-space: nowrap;">
         <input type="file" name="smimg[$smilieorder[$j]]" id="smimg[$smilieorder[$j]]" size="35" />
         <input type="hidden" name="cur_smimg[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[0]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$smilieorder[$j]]').value='';">X</span>
-        <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Templates/Forum/default/${$addedsmilies{$smilieorder[$j]}}[0]" target="_blank">${$addedsmilies{$smilieorder[$j]}}[0]</a></div>
+        <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Smilies/added//${$addedsmilies{$smilieorder[$j]}}[0]" target="_blank">${$addedsmilies{$smilieorder[$j]}}[0]</a></div>
     </td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[2]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$smilieorder[$j]]" value="1"~
@@ -215,7 +215,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
           . (
               ${ $addedsmilies{ $smilieorder[$j] } }[0] =~ /\//ixsm
             ? ${ $addedsmilies{ $smilieorder[$j] } }[0]
-            : qq~$imagesdir/${$addedsmilies{$smilieorder[$j]}}[0]~
+            : qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$j]}}[0]~
           )
           . qq~" alt="" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="delbox[$smilieorder[$j]]" value="1" /></td>
@@ -227,7 +227,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
     my $i             = $ck[-1] + 1;
     my $added_smilies = $i;
     $yymain .= qq~<tr>
-    <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$asmtxt{'08'}</b></td>
+    <td class="titlebg" colspan="8">&nbsp;<img src="$yyhtml_root/Smilies/grin.gif" alt="" /><b>&nbsp;$asmtxt{'08'}</b></td>
   </tr><tr>
     <td class="windowbg2 center">&nbsp;</td>
     <td class="windowbg2 center"><input type="text" name="scd[$i]" /></td>
@@ -255,7 +255,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
   </tr>~;
     }
     $yymain .= qq~<tr>
-    <td class="titlebg" colspan="8">&nbsp;<img src="$imagesdir/grin.gif" alt="" /><b>&nbsp;$smiltxt{'2'}</b></td>
+    <td class="titlebg" colspan="8">&nbsp;<img src="$yyhtml_root/Smilies/grin.gif" alt="" /><b>&nbsp;$smiltxt{'2'}</b></td>
   </tr><tr>
     <td class="catbg center small">$smiltxt{'22'}</td>
     <td class="catbg center small">$asmtxt{'02'}</td>
@@ -370,7 +370,7 @@ sub add_smilies {
         {
             if ( $FORM{"smimg[$temp_a]"} ) {
                 $FORM{"smimg[$temp_a]"} = upload_file(
-                    "smimg[$temp_a]",   'Templates/Forum/default',
+                    "smimg[$temp_a]",   'Smilies/added',
                     'png/jpg/jpeg/gif', '100',
                     '0'
                 );
@@ -398,12 +398,8 @@ sub add_smilies {
             foreach my $i (@smilieorder) {
                 if ( $i ne $temp_a ) { push @neworder, $i }
             }
-            if ( $FORM{"cur_smimg[$temp_a]"} !~
-                /^(?:exclamation|question).png$/xsm )
-            {
-                unlink
-"$htmldir/Templates/Forum/default/$FORM{\"cur_smimg[$temp_a]\"}";
-            }
+            unlink
+"$htmldir/Smilies/added/$FORM{\"cur_smimg[$temp_a]\"}";
         }
         ++$temp_a;
     }

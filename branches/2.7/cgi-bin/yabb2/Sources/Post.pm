@@ -683,7 +683,7 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
                 $tmpurl = ${ $addedsmilies{ $smilieorder[$i] } }[0];
             }
             else {
-                $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~;
+                $tmpurl = qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
             }
             $moresmilieslist .=
 qq~             <img src="$tmpurl" class="bottom pointer" alt="${$addedsmilies{$smilieorder[$i]}}[2]" title="${$addedsmilies{$smilieorder[$i]}}[2]" onclick="javascript: MoreSmilies($i);" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
@@ -1191,7 +1191,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     }
                     else {
                         $tmpurl =
-                          qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~;
+                          qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
                     }
                     $smilie_url_array .= qq~"$tmpurl", ~;
                     $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
@@ -1209,7 +1209,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 closedir DIR;
                 foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
                     my ( $name, $extension ) = split /[.]/xsm, $line;
-                    if ( $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
+                    if ( $extension && $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
                         if ( $line !~ /banner/ixsm ) {
                             $smilieslist .= qq~   <option value="$i"~
                               . (
@@ -1239,7 +1239,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             ~;
             $mypost_smilie_array =~ s/\Q{yabb smilieslist}\E/$smilieslist/xsm;
             $mypost_smilie_array =~
-              s/\Q{yabb smilie0}\E/$imagesdir\/$smilie_sel/xsm;
+              s/\Q{yabb smilie0}\E/$yyhtml_root\/Smilies\/$smilie_sel/xsm;
         }
         else {
             $mypost_smilie_array .= q~

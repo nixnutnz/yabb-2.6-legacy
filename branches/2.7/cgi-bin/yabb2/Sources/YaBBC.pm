@@ -64,46 +64,47 @@ sub make_smileys {
     if ( $message =~ /\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/igxsm ) {
         ( $smileydesc, undef ) = split /[.]/xsm, $2;
     }
+    my $smiledir = qq~$yyhtml_root/Smilies~;
     $message =~
-s/(\W|^)\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/$1<img class="smil" data-rel="\[smil$2=$3\]" src="$yyhtml_root\/Smilies\/$3" alt="$post_txt{'287'}" title="$smileydesc" \/>/igxsm;
+s/(\W|^)\[smil(ie|ey)=(\S+?[.](gif|jpg|png|bmp))\]/$1<img class="smil" data-rel="\[smil$2=$3\]" src="$smiledir\/$3" alt="$post_txt{'287'}" title="$smileydesc" \/>/igxsm;
     $message =~
-s/(\W|^);-?[)]/$1<img class="smil" data-rel=";&#45;&#41;" src="$imagesdir\/wink.gif" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/gxsm;
+s/(\W|^);-?[)]/$1<img class="smil" data-rel=";&#45;&#41;" src="$smiledir\/wink.gif" alt="$post_txt{'292'}" title="$post_txt{'292'}" \/>/gxsm;
     $message =~
-s/(\W|^);D/$1<img class="smil" data-rel=";D" src="$imagesdir\/grin.gif" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/gxsm;
+s/(\W|^);D/$1<img class="smil" data-rel=";D" src="$smiledir\/grin.gif" alt="$post_txt{'293'}" title="$post_txt{'293'}" \/>/gxsm;
     $message =~
-s/(\W|^):\x27[(]/$1<img class="smil" data-rel="&#58;\x27&#40;" src="$imagesdir\/cry.gif" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/gxsm;
+s/(\W|^):\x27[(]/$1<img class="smil" data-rel="&#58;\x27&#40;" src="$smiledir\/cry.gif" alt="$post_txt{'530'}" title="$post_txt{'530'}" \/>/gxsm;
     $message =~
-s/(\W|^):-\//$1<img class="smil" data-rel="&#58;&#45;\/" src="$imagesdir\/undecided.gif" alt="$post_txt{'528'}" title="$post_txt{'528'}" \/>/gxsm;
+s/(\W|^):-\//$1<img class="smil" data-rel="&#58;&#45;\/" src="$smiledir\/undecided.gif" alt="$post_txt{'528'}" title="$post_txt{'528'}" \/>/gxsm;
     $message =~
-s/(\W|^):-X/$1<img class="smil" data-rel="&#58;&#45;X" src="$imagesdir\/lipsrsealed.gif" alt="$post_txt{'527'}" title="$post_txt{'527'}" \/>/gxsm;
+s/(\W|^):-X/$1<img class="smil" data-rel="&#58;&#45;X" src="$smiledir\/lipsrsealed.gif" alt="$post_txt{'527'}" title="$post_txt{'527'}" \/>/gxsm;
     $message =~
-s/(\W|^):-\[/$1<img class="smil" data-rel="&#58;&#45;\[" src="$imagesdir\/embarassed.gif" alt="$post_txt{'526'}" title="$post_txt{'526'}" \/>/gxsm;
+s/(\W|^):-\[/$1<img class="smil" data-rel="&#58;&#45;\[" src="$smiledir\/embarassed.gif" alt="$post_txt{'526'}" title="$post_txt{'526'}" \/>/gxsm;
     $message =~
-s/(\W|^):-[*]/$1<img class="smil" data-rel="&#58;&#45;\*" src="$imagesdir\/kiss.gif" alt="$post_txt{'529'}" title="$post_txt{'529'}" \/>/gxsm;
+s/(\W|^):-[*]/$1<img class="smil" data-rel="&#58;&#45;\*" src="$smiledir\/kiss.gif" alt="$post_txt{'529'}" title="$post_txt{'529'}" \/>/gxsm;
     $message =~
-s/(\W|^)(&gt;|>):[(]/$1<img class="smil" data-rel="&gt;:&#40;" src="$imagesdir\/angry.gif" alt="$post_txt{'288'}" title="$post_txt{'288'}" \/>/gxsm;
+s/(\W|^)(&gt;|>):[(]/$1<img class="smil" data-rel="&gt;:&#40;" src="$smiledir\/angry.gif" alt="$post_txt{'288'}" title="$post_txt{'288'}" \/>/gxsm;
     $message =~
-s/(\W|^)::[)]/$1<img class="smil" data-rel="&#58;&#58;&#41;" src="$imagesdir\/rolleyes.gif" alt="$post_txt{'450'}" title="$post_txt{'450'}" \/>/gxsm;
+s/(\W|^)::[)]/$1<img class="smil" data-rel="&#58;&#58;&#41;" src="$smiledir\/rolleyes.gif" alt="$post_txt{'450'}" title="$post_txt{'450'}" \/>/gxsm;
     $message =~
-s/(\W|^):P/$1<img class="smil" data-rel=":P" src="$imagesdir\/tongue.gif" alt="$post_txt{'451'}" title="$post_txt{'451'}" \/>/gxsm;
+s/(\W|^):P/$1<img class="smil" data-rel=":P" src="$smiledir\/tongue.gif" alt="$post_txt{'451'}" title="$post_txt{'451'}" \/>/gxsm;
     $message =~
-s/(\W|^):-?[)]/$1<img class="smil" data-rel="&#58;&#45;&#41;" src="$imagesdir\/smiley.gif" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/gxsm;
+s/(\W|^):-?[)]/$1<img class="smil" data-rel="&#58;&#45;&#41;" src="$smiledir\/smiley.gif" alt="$post_txt{'287'}" title="$post_txt{'287'}" \/>/gxsm;
     $message =~
-s/(\W|^):D/$1<img class="smil" data-rel="&#58;D" src="$imagesdir\/cheesy.gif" alt="$post_txt{'289'}" title="$post_txt{'289'}" \/>/gxsm;
+s/(\W|^):D/$1<img class="smil" data-rel="&#58;D" src="$smiledir\/cheesy.gif" alt="$post_txt{'289'}" title="$post_txt{'289'}" \/>/gxsm;
     $message =~
-s/(\W|^):-?[(]/$1<img class="smil" data-rel="&#58;&#45;&#40;" src="$imagesdir\/sad.gif" alt="$post_txt{'291'}" title="$post_txt{'291'}" \/>/gxsm;
+s/(\W|^):-?[(]/$1<img class="smil" data-rel="&#58;&#45;&#40;" src="$smiledir\/sad.gif" alt="$post_txt{'291'}" title="$post_txt{'291'}" \/>/gxsm;
     $message =~
-s/(\W|^):o/$1<img class="smil" data-rel="&#58;o" src="$imagesdir\/shocked.gif" alt="$post_txt{'294'}" title="$post_txt{'294'}" \/>/igxsm;
+s/(\W|^):o/$1<img class="smil" data-rel="&#58;o" src="$smiledir\/shocked.gif" alt="$post_txt{'294'}" title="$post_txt{'294'}" \/>/igxsm;
     $message =~
-s/(\W|^)8-[)]/$1<img class="smil" data-rel="8-&#41;" src="$imagesdir\/cool.gif" alt="$post_txt{'295'}" title="$post_txt{'295'}" \/>/gxsm;
+s/(\W|^)8-[)]/$1<img class="smil" data-rel="8-&#41;" src="$smiledir\/cool.gif" alt="$post_txt{'295'}" title="$post_txt{'295'}" \/>/gxsm;
     $message =~
-s/(\W|^):-[?]/$1<img class="smil" data-rel="&#58;-\?" src="$imagesdir\/huh.gif" alt="$post_txt{'296'}" title="$post_txt{'296'}" \/>/gxsm;
+s/(\W|^):-[?]/$1<img class="smil" data-rel="&#58;-\?" src="$smiledir\/huh.gif" alt="$post_txt{'296'}" title="$post_txt{'296'}" \/>/gxsm;
     $message =~
-s/(\W|^)\^_\^/$1<img class="smil" data-rel="\^_\^" src="$imagesdir\/happy.gif" alt="$post_txt{'801'}" title="$post_txt{'801'}" \/>/gxsm;
+s/(\W|^)\^_\^/$1<img class="smil" data-rel="\^_\^" src="$smiledir\/happy.gif" alt="$post_txt{'801'}" title="$post_txt{'801'}" \/>/gxsm;
     $message =~
-s/(\W|^):thumb/$1<img class="smil" data-rel="&#58;thumb" src="$imagesdir\/thumbup.gif" alt="$post_txt{'282'}" title="$post_txt{'282'}" \/>/gxsm;
+s/(\W|^):thumb/$1<img class="smil" data-rel="&#58;thumb" src="$smiledir\/thumbup.gif" alt="$post_txt{'282'}" title="$post_txt{'282'}" \/>/gxsm;
     $message =~
-s/(\W|^)&gt;:-D/$1<img class="smil" data-rel="&gt;&#58;-D" src="$imagesdir\/evil.gif" alt="$post_txt{'802'}" title="$post_txt{'802'}" \/>/gxsm;
+s/(\W|^)&gt;:-D/$1<img class="smil" data-rel="&gt;&#58;-D" src="$smiledir\/evil.gif" alt="$post_txt{'802'}" title="$post_txt{'802'}" \/>/gxsm;
 
     my $j = 0;
     while ( $smilieorder[$j] ) {
@@ -111,7 +112,7 @@ s/(\W|^)&gt;:-D/$1<img class="smil" data-rel="&gt;&#58;-D" src="$imagesdir\/evil
         if ( ${ $addedsmilies{ $smilieorder[$j] } }[0] =~ /\//ixsm ) {
             $tmpurl = ${ $addedsmilies{ $smilieorder[$j] } }[0];
         }
-        else { $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$j]}}[0]~; }
+        else { $tmpurl = qq~$smiledir/added/${$addedsmilies{$smilieorder[$j]}}[0]~; }
         my $tmpcode = ${ $addedsmilies{ $smilieorder[$j] } }[1];
         $tmpcode =~ s/&\x2336;/\$/gxsm;
         $tmpcode =~ s/&\x2364;/\@/gxsm;

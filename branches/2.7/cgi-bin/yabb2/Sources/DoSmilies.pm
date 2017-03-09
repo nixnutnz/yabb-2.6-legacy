@@ -27,7 +27,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## paths ##
-our ( $htmldir, $imagesdir, $yyhtml_root, );
+our ( $htmldir, $yyhtml_root, );
 ##settings ##
 our (
     $detachblock, $popback,      $poptext, $showadded,
@@ -65,7 +65,7 @@ sub smilie_put {
                 $tmpurl = ${ $addedsmilies{ $smilieorder[$i] } }[0];
             }
             else {
-                $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~;
+                $tmpurl = qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
             }
             if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
                 $moresmilieslist .= q~<br />~;
@@ -88,7 +88,7 @@ qq~<img src="$tmpurl" class="moresmiles" alt="${$addedsmilies{$smilieorder[$i]}}
         closedir DIR;
         foreach my $line ( sort { uc $a cmp uc $b } @contents ) {
             my ( $name, $extension ) = split /[.]/xsm, $line;
-            if ( $extension =~ m/[gif|jpg|jpeg|png]/ixsm ) {
+            if ( $extension && $extension =~ m/[gif|jpg|jpeg|png]/ixsm ) {
                 if ( $line !~ /banner/ixsm ) {
                     if ( $i && ( $i / 10 ) == int( $i / 10 ) ) {
                         $evenmoresmilies .= q~<br />~;
@@ -141,7 +141,7 @@ sub smilie_index {
                 $tmpurl = ${ $addedsmilies{ $smilieorder[$i] } }[0];
             }
             else {
-                $tmpurl = qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~;
+                $tmpurl = qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
             }
 
             $smilieslist .= $my_smilie_window_td;
@@ -168,7 +168,7 @@ s/\Q{yabb SmilieDescription}\E/${$addedsmilies{$smilieorder[$i]}}[2]/gxsm;
         closedir DIR;
         foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
             my ( $name, $extension ) = split /[.]/xsm, $line;
-            if ( $extension =~ m/[gif|jpg|jpeg|png]/ixsm ) {
+            if ( $extension  && $extension =~ m/[gif|jpg|jpeg|png]/ixsm ) {
                 if ( $line !~ /banner/ixsm ) {
                     if ( $i % 4 == 0 && $i != 0 ) {
                         $smilieslist .= $my_smilie_window_tr;

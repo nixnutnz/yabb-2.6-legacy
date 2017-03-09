@@ -635,7 +635,7 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
                 }
                 else {
                     $tmpurl =
-                      qq~$imagesdir/${$addedsmilies{$smilieorder[$i]}}[0]~;
+                      qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
                 }
                 $moresmilieslist .=
 qq~             <img src="$tmpurl" alt="${$addedsmilies{$smilieorder[$i]}}[2]" onclick="javascript: MoreSmilies($i);" class="bottom cursor" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
@@ -961,7 +961,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             }
             else {
                 $tmpurl =
-                  qq~$imagesdir/${ $addedsmilies{ $smilieorder[$i] } }[0]~;
+                  qq~$yyhtml_root/Smilies/added/${ $addedsmilies{ $smilieorder[$i] } }[0]~;
             }
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
@@ -979,7 +979,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
         closedir DIR;
         foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
             my ( $name, $extension ) = split /[.]/xsm, $line;
-            if ( $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
+            if ( $extension && $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
                 if ( $line !~ /banner/ixsm ) {
                     $smilie_url_array  .= qq~"$yyhtml_root/Smilies/$line", ~;
                     $smilie_code_array .= qq~" [smiley=$line]", ~;

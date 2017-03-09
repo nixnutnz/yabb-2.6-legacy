@@ -528,7 +528,7 @@ sub smilies_list {
     foreach my $i ( sort keys %smiley_bar ) {
         my ( $img, $click, $alt ) = split /[|]/xsm, $smiley_bar{$i};
         $smilies_list .=
-qq~<img src='$imagesdir/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
+qq~<img src='$yyhtml_root/Smilies/$img' onclick='$click' $hand alt='$alt' title='$alt' />\n~;
     }
     $moresmilieslist ||= q{};
     $smilies_list .= $moresmilieslist;
