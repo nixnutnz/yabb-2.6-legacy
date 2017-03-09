@@ -263,10 +263,10 @@ sub board_index {
         foreach
           my $curgroup ( split /\//xsm, ${ $uid . $curboard }{'modgroups'} )
         {
-            if ( ${ $uid . $username }{'position'} eq $curgroup ) {
+            if ( ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq $curgroup ) {
                 $iammodhere = 1;
             }
-            foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} ) {
+            foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} || q{} ) {
                 if ( $_ eq $curgroup ) { $iammodhere = 1; last; }
             }
         }
@@ -1035,6 +1035,15 @@ qq~    <img src="$imagesdir/$brd_dropdown" onclick="MessageList('$scripturl\?boa
                 }
                 else { $messagedropdown = q{}; $tmp_sublist = q{}; }
                 my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
+                my @sublist = ();
+                foreach (keys %subboard) {
+                  push @sublist, @{$subboard{$_}};
+                }
+                foreach (@sublist) {
+                    if ($curboard eq $_) {
+                        $bdpic = qq~$imagesdir/subboards.$bdpic_ext~;
+                    }
+                }
                 if ( ${ $uid . $curboard }{'ann'} ) {
                     $bdpic = qq~$imagesdir/ann.$bdpic_ext~;
                 }

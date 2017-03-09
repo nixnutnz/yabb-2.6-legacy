@@ -501,7 +501,7 @@ sub post_page {
 
             manageboardnotify( 'load', $currentboard );
             if ( exists $theboard{$username}
-                && ( split /[|]/xsm, $theboard{$username} )[1] == 2 )
+                && ${$theboard{$username}}[1] == 2 )
             {
                 $notify     = q~ disabled="disabled" checked="checked"~;
                 $hasnotify  = 2;
@@ -2453,12 +2453,12 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
     manage_memberinfo('load');
     manageboardnotify( 'load', $currentboard );
     foreach ( keys %theboard ) {
-        $languages{ ( split /[|]/xsm, $theboard{$_}, 2 )[0] } = 1;
+        $languages{ ${$theboard{$_}}[0] } = 1;
     }
     load_notifymessages( \%languages );
 
     while ( my ( $curuser, $value ) = each %theboard ) {
-        my ( $curlang, undef ) = split /[|]/xsm, $value, 2;
+        my $curlang = ${$value}[0];
         if ( $curuser ne $username ) {
             load_user($curuser);
             if (
@@ -2517,7 +2517,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
     from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
-    ( $boardname, undef ) = split /[|]/xsm, $board{$currentboard}, 2;
+    $boardname = ${$board{$currentboard}}[0];
     to_chars($boardname);
 
     $thissubject .= " ($boardname)";
@@ -2535,8 +2535,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
         }
         load_notifymessages( \%languages );
         while ( my ( $curuser, $value ) = each %theboard ) {
-            my ( $curlang, $notify_type, undef ) =
-              split /[|]/xsm, $value;
+            my ( $curlang, $notify_type, undef ) = @{$value};
             if ( $curuser ne $username && $notify_type == 2 ) {
                 load_user($curuser);
                 if (   ${ $uid . $curuser }{'notify_me'} == 1
