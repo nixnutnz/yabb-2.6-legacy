@@ -41,7 +41,7 @@ if (!$language){$language = $lang;}
 '79' => 'Правка Профиля', # Edit Profile
 '97' => 'Регистрация',
 '102' => qq~<img src="$imagesdir/back_to_top.png" alt="Вверх" title="Вверх" />~,
-'102b' => qq~<img src="$modimgurl/back_to_bot.png" alt="снизу" title="снизу" />~,
+'102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="снизу" title="снизу" />~,
 '103' => 'Главная',
 '104' => 'Запереть/Открыть',
 '105' => 'Последнее сообщение', # Last Post
