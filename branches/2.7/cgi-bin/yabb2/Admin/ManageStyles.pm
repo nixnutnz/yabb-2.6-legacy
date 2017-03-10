@@ -29,7 +29,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ##  languages ##
-our ( %admin_img, %admin_txt, %croak, %img_txt, %maintxt, %post_txt,
+our ( %admin_img, %croak, %img_txt, %maintxt, %post_txt,
     %templ_txt, );
 ## paths ##
 our ( $adminurl, $defaultimagesdir, $htmldir, $imagesdir, $scripturl,
@@ -165,10 +165,10 @@ sub modify_style {
 <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
         <tr>
-            <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+            <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'13'}</th>
         </tr><tr>
             <td class="catbg center">
-                <input type="submit" value="$admin_txt{'10'} $cssfile" class="button" />
+                <input type="submit" value="$templ_txt{'13'} $cssfile" class="button" />
             </td>
         </tr>
     </table>
@@ -1208,7 +1208,7 @@ qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$i
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell">
     <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'13'}</th>
     </tr><tr>
         <td class="catbg center">
             <input type="hidden" name="stylestart" value="$viewstylestart" />

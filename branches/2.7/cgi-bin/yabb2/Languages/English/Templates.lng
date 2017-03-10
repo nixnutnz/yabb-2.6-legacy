@@ -135,6 +135,22 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'mobile' => q~Is this a mobile template? (Mobile templates have certain functions - such as context helps and preview - disabled.)~,
 'newlinks' => q~New links back~,
 'newlinks_c' => q~New Links text~,
+'521a' => q~Icon + Text~,
+'521b' => q~Text Only~,
+'521c' => q~Buttons Only~,
+'modfolder' => q~Create New Template Folder~,
+'modfoldername' => q~New Template Folder Name~,
+'modgfolder' => q~Create New Template Graphics Folder~,
+'modgfoldername' => q~New Template Graphics Folder Name~,
+'foldercreated' => q~created~,
+'foldernotcreated' => q~<span class="important">not created</span>~,
+'modfolderup' => q~Upload New Template files~,
+'modgfolderup' => q~Upload New Template Graphics files~,
+'modfolderup2' => q~Select Files to Upload~,
+'modfolderfolder' => q~Select Folder to upload to~,
+'newfolder' => q~New Folder~,
+'uploadedg' => q~New Graphics File Uploads~,
+'uploaded' => q~New Template File Uploads~,
 );
 
 1;

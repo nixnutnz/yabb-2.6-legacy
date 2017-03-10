@@ -118,29 +118,4 @@ s/(.+;)[ \t]+([#].+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . 
     return;
 }
 
-sub clean_bak {
-    my @folders = ( $boarddir, $sourcedir, $admindir, $vardir, $helpfile, "$templatesdir/default" );
-    our %lngs;
-    require "$langdir/Lang.lng";
-    foreach my $key (%lngs) {
-        push @folders, "$langdir/$key";
-    }
-    foreach my $folder (@folders) {
-        opendir 'CNVDIR', $folder
-          || fatal_error( 'cannot_open_dir', "$folder" );
-        my @convlist = readdir 'CNVDIR';
-        closedir 'CNVDIR';
-        foreach my $file (@convlist) {
-            if ($file =~ m/\.(?:tdy|bak)$/xsm) {
-                unlink "$folder/$file";
-            }
-        }
-    }
-    load_language('Admin');
-    $yymain .= qq~<b>$admintxt{'10bak'}</b>~;
-    our $yytitle = $admintxt{'10bak'};
-    admintemplate();
-    return;
-}
-
 1;

@@ -352,7 +352,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Admin/default.css" type="
     my @boardmod_mods = (
         "|$admintxt{'a9_title'}|$admintxt{'a9_label'} - $admintxt{'34'}|a9",
         "modlist|$mod_list{'6'}|$mod_list{'7'}|",
-        "yabmmodlist|$yabmtxt{'20'}|$yabmtxt{'19'}|",
+        "yabmmodlist|$mod_list{'20'}|$mod_list{'19'}|",
     );
 
     # To add new items for your mods settings, add a new row below here, pushing

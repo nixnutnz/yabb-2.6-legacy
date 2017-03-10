@@ -31,7 +31,7 @@ if (@detailedversionpmmods) {
     $detailedversionpmmods = 1;
 }
 ##  languages ##
-our ( $rna, %admin_img, %admin_txt, %croak, %load_txt, %versiontxt, );
+our ( $rna, %admin_img, %croak, %load_txt, %versiontxt, %detailed);
 ## paths ##
 our (
     $adminurl, $yyhtml_root,  $scripturl, $vardir,   $boarddir,
@@ -136,7 +136,7 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
         }
         $adminmodslist =~ s/<br\s \/>\Z//xsm;
         $adminindexmodcheck =
-qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'); return false;">$admin_txt{'modded'}</a></span> <div id="adminindexmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('adminindexmods'); return false;" class="small">$adminmodslist</div>~;
+qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'); return false;">$detailed{'modded'}</a></span> <div id="adminindexmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('adminindexmods'); return false;" class="small">$adminmodslist</div>~;
     }
     my $ageadmin = ( stat("$boarddir/AdminIndex.$yyaext")->mtime );
     my $checkver = 0;
@@ -153,7 +153,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
     if ($checkver) {
         my $dateadmin = scalar localtime $ageadmin;
         $adminchkmatch =
-          qq~<span class="small"> $admin_txt{'chngfle'} $dateadmin</span>~;
+          qq~<span class="small"> $detailed{'chngfle'} $dateadmin</span>~;
     }
 
     $yabbplver =~ s/\$Revision: (.*?) \$/Build $1/igxsm;
@@ -165,7 +165,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
         }
         $yabbmodslist =~ s/<br\s \/>\Z//xsm;
         $yabbmodcheck =
-qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); return false;">$admin_txt{'modded'}</a></span> <div id="yabbmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('yabbmods'); return false;" class="small">$yabbmodslist</div>~;
+qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); return false;">$detailed{'modded'}</a></span> <div id="yabbmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('yabbmods'); return false;" class="small">$yabbmodslist</div>~;
     }
     my $ageyabb = ( stat("$boarddir/$yyexec.$yyext")->mtime );
     my ( $checkvery, $dateyabb, $yabbchkmatch );
@@ -183,7 +183,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
     if ($checkvery) {
         $dateyabb = scalar localtime $ageyabb;
         $yabbchkmatch =
-          qq~<span class="small"> $admin_txt{'chngfle'} $dateyabb</span>~;
+          qq~<span class="small"> $detailed{'chngfle'} $dateyabb</span>~;
     }
 
     # opening BackupFix to get the version breaks the detail version script;
@@ -201,13 +201,13 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
         }
     }
     my ($datebackupfix);
-    my $backupfixmatch    = $admin_txt{'nochng'};
+    my $backupfixmatch    = $detailed{'nochng'};
     my $backupfixplver    = q{};
     my $backupfixmodcheck = q{};
     if ($checkverb) {
         $datebackupfix = scalar localtime $agebackupfix;
         $backupfixmatch =
-          qq~<span class="small"> $admin_txt{'chngfle'} $datebackupfix</span>~;
+          qq~<span class="small"> $detailed{'chngfle'} $datebackupfix</span>~;
     }
     our ( $dobackupplver, $dobackupplmods, @dobackupplmods );
     require "$boarddir/Dobackup.$yyext";
@@ -221,7 +221,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
         }
         $dobackupmodslist =~ s/<br\s \/>\Z//xsm;
         $dobackupmodcheck =
-qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'); return false;">$admin_txt{'modded'}</a></span> <div id="dobackupplmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('adminindexmods'); return false;" class="small">$dobackupmodslist</div>~;
+qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'); return false;">$detailed{'modded'}</a></span> <div id="dobackupplmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('adminindexmods'); return false;" class="small">$dobackupmodslist</div>~;
     }
     my $agedobackup = ( stat("$boarddir/Dobackup.$yyext")->mtime );
     my $checkverd   = 0;
@@ -239,7 +239,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'
     if ($checkverd) {
         my $datedobackup = scalar localtime $agedobackup;
         $dobackupmatch =
-          qq~<span class="small"> $admin_txt{'chngfle'} $datedobackup</span>~;
+          qq~<span class="small"> $detailed{'chngfle'} $datedobackup</span>~;
     }
 
     my (
@@ -304,7 +304,7 @@ function hideMods(id) {
                 <col span="2" style="width: 50%" />
             </colgroup>
             <tr>
-                <td class="titlebg" colspan="2">$admin_img{'infoimg'} <b>$admin_txt{'429'}</b></td>
+                <td class="titlebg" colspan="2">$admin_img{'infoimg'} <b>$detailed{'429'}</b></td>
             </tr><tr>
                 <td class="windowbg2" colspan="2">
                     <script src="$versionchk" type="text/javascript"></script>
@@ -318,10 +318,10 @@ function hideMods(id) {
                     </script>
                 </td>
             </tr><tr>
-                <td class="catbg center"><b>$admin_txt{'495'}</b><br /></td>
-                <td class="catbg center"><b>$admin_txt{'494'}</b><br /></td>
+                <td class="catbg center"><b>$detailed{'495'}</b><br /></td>
+                <td class="catbg center"><b>$detailed{'494'}</b><br /></td>
             </tr><tr>
-                <td class="windowbg2">$admin_txt{'496'}</td>
+                <td class="windowbg2">$detailed{'496'}</td>
                 <td class="windowbg2"><i>$yabbversion</i></td>
             </tr><tr>
                 <td class="windowbg2">$yyexec.$yyext</td>
@@ -347,7 +347,7 @@ function hideMods(id) {
             close $FILE or croak "$croak{'close'} version";
             my $mylang_top = qq~<tr>
                     <td class="windowbg2">
-                    $fld $admin_txt{'langpack'} <a href="#" onclick="showStufflangrow('$fld', 'col$fld'); return false;" id="col$fld">$admin_txt{'view'}</a></td>
+                    $fld $detailed{'langpack'} <a href="#" onclick="showStufflangrow('$fld', 'col$fld'); return false;" id="col$fld">$detailed{'view'}</a></td>
                     <td class="windowbg2"><i>$ver[0]</i></td>
                 </tr><tr id="$fld" style="display: none;">
                     <td colspan="2">
@@ -357,7 +357,7 @@ function hideMods(id) {
                         </colgroup>
                         <tr>
                             <td class="windowbg" colspan="2">
-                                <a href="#" onclick="showStufflang('col$fld', '$fld'); return false;">$admin_txt{'hide'}</a>
+                                <a href="#" onclick="showStufflang('col$fld', '$fld'); return false;">$detailed{'hide'}</a>
                             </td>
                         </tr>~;
             $mylang_top =~ s/\Q{yabb fld}\E/$fld/gxsm;
@@ -405,7 +405,7 @@ function hideMods(id) {
                       )
                     {
                         $chkmatch =
-qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                     }
                     $yymain .= qq~<tr>
                     <td class="windowbg2">$filein_dir</td>
@@ -441,7 +441,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                         my $age = ( stat("$langdir/$fld/Mods/$filein_dir")->mtime );
                         my $date = scalar localtime $age;
                         my $chkmatch =
-                          qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
+                          qq~<span class="small"> $detailed{'upped'} $date</span>~;
                         $yymain .= qq~<tr>
                     <td class="windowbg2">Mods/$filein_dir</td>
                     <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
@@ -492,7 +492,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                               )
                             {
                                 $chkmatch =
-qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                             }
                             $yymain .= qq~<tr>
                     <td class="windowbg2">$area/$helpin_dir</td>
@@ -515,8 +515,8 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
         <table class="border-space pad-cell" style="border-bottom: .5em #dfe4e9 solid" id="coladmin">
             <tr>
                 <td class="titlebg">
-                    <a href="#admin" onclick="showStuff('admin', 'coladmin'); return false;"><img src="$adminimages/cat_expand.png" alt="$admin_txt{'exp'}" title="$admin_txt{'exp'}" /></a>
-                    <b>$admin_txt{'430'}</b>
+                    <a href="#admin" onclick="showStuff('admin', 'coladmin'); return false;"><img src="$adminimages/cat_expand.png" alt="$detailed{'exp'}" title="$detailed{'exp'}" /></a>
+                    <b>$detailed{'430'}</b>
                 </td>
             </tr>
         </table>
@@ -526,8 +526,8 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             </colgroup>
             <tr>
                 <td class="titlebg" colspan="2">
-                    <a href="#coladmin" onclick="showStuff('coladmin', 'admin'); return false;"><img src="$adminimages/cat_collapse.png" alt="$admin_txt{'exp'}" title="$admin_txt{'exp'}" /></a>
-                    <b>$admin_txt{'430'}</b>
+                    <a href="#coladmin" onclick="showStuff('coladmin', 'admin'); return false;"><img src="$adminimages/cat_collapse.png" alt="$detailed{'col'}" title="$detailed{'col'}" /></a>
+                    <b>$detailed{'430'}</b>
                 </td>
             </tr>~;
 
@@ -559,7 +559,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 || ( $vercheck == 1 && $age > $ver_age ) )
             {
                 $chkmatch =
-                  qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+                  qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             }
             $yymain .= qq~<tr>
                 <td class="windowbg2">$filein_dir</td>
@@ -590,7 +590,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 || ( $vercheck == 1 && $age > $ver_age ) )
             {
                 $chkmatch =
-                  qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+                  qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             }
             $yymain .= qq~<tr>
                 <td class="windowbg2">$filein_dir</td>
@@ -621,7 +621,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             my $age = ( stat("$admindir/Mods/$filein_dir")->mtime );
             $date = scalar localtime $age;
             my $chkmatch =
-              qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
+              qq~<span class="small"> $detailed{'upped'} $date</span>~;
             $yymain .= qq~<tr>
                 <td class="windowbg2">Mods/$filein_dir</td>
                 <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
@@ -645,7 +645,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             my $age = ( stat("$admindir/Mods/$filein_dir")->mtime );
             $date = scalar localtime $age;
             my $chkmatch =
-              qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
+              qq~<span class="small"> $detailed{'upped'} $date</span>~;
             $yymain .= qq~<tr>
                 <td class="windowbg2">Mods/$filein_dir</td>
                 <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
@@ -657,8 +657,8 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
         <table class="border-space pad-cell" style="border-bottom: .5em #dfe4e9 solid" id="colsources">
             <tr>
                 <td class="titlebg">
-                    <a href="#sources" onclick="showStuff('sources', 'colsources'); return false;"><img src="$adminimages/cat_expand.png" alt="$admin_txt{'exp'}" title="$admin_txt{'exp'}" /></a>
-                    <b>$admin_txt{'431'}</b>
+                    <a href="#sources" onclick="showStuff('sources', 'colsources'); return false;"><img src="$adminimages/cat_expand.png" alt="$detailed{'exp'}" title="$detailed{'exp'}" /></a>
+                    <b>$detailed{'431'}</b>
                 </td>
             </tr>
         </table>
@@ -668,8 +668,8 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             </colgroup>
             <tr>
                 <td class="titlebg" colspan="2">
-                    <a href="#colsources" onclick="showStuff('colsources', 'sources'); return false;"><img src="$adminimages/cat_collapse.png" alt="$admin_txt{'exp'}" title="$admin_txt{'exp'}" /></a>
-                    <b>$admin_txt{'431'}</b>
+                    <a href="#colsources" onclick="showStuff('colsources', 'sources'); return false;"><img src="$adminimages/cat_collapse.png" alt="$detailed{'col'}" title="$detailed{'col'}" /></a>
+                    <b>$detailed{'431'}</b>
                 </td>
             </tr>~;
 
@@ -701,7 +701,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 || ( $vercheck == 1 && $age > $ver_age ) )
             {
                 $chkmatch =
-                  qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+                  qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             }
             $yymain .= qq~<tr>
                 <td class="windowbg2">$filein_dir</td>
@@ -730,7 +730,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                 || ( $vercheck == 1 && $age > $ver_age ) )
             {
                 $chkmatch =
-                  qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+                  qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             }
             $yymain .= qq~<tr>
                 <td class="windowbg2">$filein_dir</td>
@@ -762,7 +762,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             my $age = ( stat("$sourcedir/Mods/$filein_dir")->mtime );
             $date = scalar localtime $age;
             my $chkmatch =
-              qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+              qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             $yymain .= qq~<tr>
                 <td class="windowbg2">$filein_dir</td>
                 <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
@@ -786,7 +786,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             my $age = ( stat("$sourcedir/Mods/$filein_dir")->mtime );
             $date = scalar localtime $age;
             my $chkmatch =
-              qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
+              qq~<span class="small"> $detailed{'upped'} $date</span>~;
             $yymain .= qq~<tr>
                 <td class="windowbg2">Mods/$filein_dir</td>
                 <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
@@ -810,8 +810,8 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
         <table class="border-space pad-cell" style="border-bottom: .5em #dfe4e9 solid" id="coltemplates">
             <tr>
                 <td class="titlebg">
-                    <a href="#templates" onclick="showStuff('templates', 'coltemplates'); return false;"><img src="$adminimages/cat_expand.png" alt="$admin_txt{'exp'}" title="$admin_txt{'exp'}" /></a>
-                    <b>$admin_txt{'431b'} ($temp_dir)</b>
+                    <a href="#templates" onclick="showStuff('templates', 'coltemplates'); return false;"><img src="$adminimages/cat_expand.png" alt="$detailed{'exp'}" title="$detailed{'exp'}" /></a>
+                    <b>$detailed{'431b'} ($temp_dir)</b>
                 </td>
             </tr>
         </table>
@@ -821,8 +821,8 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
             </colgroup>
             <tr>
                 <td class="titlebg" colspan="2">
-                    <a href="#coltemplates" onclick="showStuff('coltemplates', 'templates'); return false;"><img src="$adminimages/cat_collapse.png" alt="$admin_txt{'exp'}" title="$admin_txt{'exp'}" /></a>
-                    <b>$admin_txt{'431b'} ($temp_dir)</b>
+                    <a href="#coltemplates" onclick="showStuff('coltemplates', 'templates'); return false;"><img src="$adminimages/cat_collapse.png" alt="$detailed{'col'}" title="$detailed{'col'}" /></a>
+                    <b>$detailed{'431b'} ($temp_dir)</b>
                 </td>
             </tr><tr>
                 <td class="windowbg2">default/default.html</td>
@@ -866,7 +866,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                     || ( $vercheck == 1 && $age > $ver_age ) )
                 {
                     $chkmatch =
-qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 }
                 $yymain .= qq~<tr>
                 <td class="windowbg2">$folderindir/$filein_dir</td>
@@ -899,7 +899,7 @@ qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
                     || ( $vercheck == 1 && $age > $ver_age ) )
                 {
                     $chkmatch =
-qq~<span class="small"> $admin_txt{'chngfle'} $date</span>~;
+qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 }
                 $yymain .= qq~<tr>
                 <td class="windowbg2">$folderindir/$filein_dir</td>
@@ -989,7 +989,7 @@ s/<!--\s YaBB\s (.*?)\s \$Revision\:\s (.*?)\s \$\s -->/YaBB $1 Build $2/igxsm;
                               ->mtime );
                         $date = scalar localtime $age;
                         my $chkmatch =
-qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
+qq~<span class="small"> $detailed{'upped'} $date</span>~;
                         $yymain .= qq~<tr>
                 <td class="windowbg2">$folderindir/Mods/$filein_dir</td>
                 <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
@@ -1004,7 +1004,7 @@ qq~<span class="small"> $admin_txt{'upped'} $date</span>~;
         </table>
         </div>
 ~;
-    our $yytitle     = $admin_txt{'429'};
+    our $yytitle     = $detailed{'429'};
     our $action_area = 'detailedversion';
     admintemplate();
     return;
@@ -1021,7 +1021,7 @@ sub mod_link {
         }
         $modslist =~ s/<br\s \/>\Z//xsm;
         $modmatch =
-qq~<span class="small important"> <a href="#" onclick="showMods('$modrevision'); return false;">$admin_txt{'modded'}</a></span> <div id="$modrevision" style="position:absolute; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('$modrevision'); return false;" class="small">$modslist</div>~;
+qq~<span class="small important"> <a href="#" onclick="showMods('$modrevision'); return false;">$detailed{'modded'}</a></span> <div id="$modrevision" style="position:absolute; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('$modrevision'); return false;" class="small">$modslist</div>~;
     }
     return $modmatch;
 }

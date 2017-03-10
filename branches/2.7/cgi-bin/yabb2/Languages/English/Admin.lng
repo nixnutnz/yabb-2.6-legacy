@@ -272,10 +272,6 @@ $abbr_lang = 'en-us';
 '409' => q~Hide signatures from Guests?<br /><span class="small">If checked, only registered members can see signatures.</span>~,
 '410' => q~NFSLock based File-Locking (Unix only)~,
 '425' => q~Your Version/Current Version~,
-'429' => q~Detailed Version Check~,
-'430' => q~Files in Admin Dir:~,
-'431' => q~Files in Source Dir:~,
-'431b' => q~Files in Templates Dir:~,
 '432' => q~Default lifetime of login cookies.<br /><span class="small">If checked, the default lifetime is 'forever', otherwise the login cookies will expire when the user's browser is closed.</span>~,
 '432b' => q~Allow members to Login with their Screen Name as well as their User ID or e-mail address?~,
 '462' => q~GO!~,
@@ -319,9 +315,6 @@ $abbr_lang = 'en-us';
 '489' => q~Total Posts:~,
 '490' => q~Total Topics:~,
 '493' => q~YaBB Current Version~,
-'494' => q~User's Version~,
-'495' => q~YaBB File~,
-'496' => q~YaBB Package~,
 '497' => q~Logged in for~,
 '497a' => q~hour~,
 '497b' => q~hours~,
@@ -349,9 +342,6 @@ $abbr_lang = 'en-us';
 '509b' => q~Show Posts~,
 '509c' => q~Show Topics~,
 '509d' => q~Show both Topics and Posts~,
-'521a' => q~Icon + Text~,
-'521b' => q~Text Only~,
-'521c' => q~Buttons Only~,
 '522' => q~Show current position in forum as link instead of text?~,
 '523' => q~Show "View Profile" button under each post?~,
 '524' => q~Auto-link URLs?~,
@@ -491,7 +481,6 @@ $abbr_lang = 'en-us';
 '804' => q~Parse Flash tags?<br /><span class="small">Enabling this may leave your board open to vulnerabilities</span>~,
 '813' => q~Select the default forum template for Guests or new members:~,
 '816' => q~Select default language for Guests or new members:~,
-'816a' => q~Default character encoding (Choose UTF-8 for new English only forums, otherwise choose ISO-8859-1.)<br /><span class="small"><strong>Note</strong>: This setting only affects the default English language encoding. The add-on Language Packs have their own default character encoding embedded in the Language Packs. This setting <strong>does not</strong> affect the character encoding for the additional Language Packs. However, mixing UTF-8 encoded language packs with ISO-8859-1 encoded language packs can create display issues.</span>~,
 '825' => q~Original Order~,
 '826' => q~New Order~,
 '827' => q~The 'New Order' boards list contains boards that aren't in the 'Original Order' list, or visa versa.~,
@@ -609,16 +598,10 @@ $abbr_lang = 'en-us';
 'no_imp_email_check' => q~<br /><span class="important">Improved email check not available. Needs Net::DNS</span>~,
 'error_spd'=> q~ErrorLog speed banning. Minimum number of seconds between multiple error log entries from the same IP address. <br /><span class="small">Violators are banned through .htaccess if allowed. Set to '0' to disable</span>~,
 'profile_int'=> q~Redirect guest clicks on member name links to a 'Register or Login' page. Uncheck to disable member name links for guests.~,
-'modded' => q~(Modded)~,
-'nochng' => q~No changes~,
-'chngfle' => q~Changed on~,
-'upped' => q~Uploaded/Changed on~,
 'ban_res' => q~You may add a short reason for the ban by using a '|' symbol to separate the IP address, e-mail address, or user ID and the reason for banning.~,
 'p_ban' => q~Permanent~,
 'expired' => q~Expired~,
 'expireon' => q~Expires on~,
-'col' => q~Collapse~,
-'exp' => q~Expand~,
 'close_box' => q~Close~,
 'dupbrd' => q~<span class="important">Warning: There are duplicate Boards: </span>~,
 'dupbrdlnk' => qq~<span class="important"><a href="$boardurl/AdminIndex.$yyaext?action=fixboarddupes">Fix duplicate boards</a></span>~,
@@ -633,6 +616,7 @@ $abbr_lang = 'en-us';
 'ptopicperms' => q~Print Thread Permissions<br /><span class="small">Disable Print Thread or set it to "All Members" if you have spambot problems with this function.</span>~,
 '813a' => 'Enable Style Switcher Dropdown Field?<br /><span class="small">If enabled, selected groups have the have the option to quickly select and change the forum layout, assuming other templates or css stylesheets are available.</span>',
 '813b' => 'Select the membergroups allowed to use the Style Switcher:</span>',
+'10bak' => q~*.bak files deleted~,
 
 ## email settings test ##
 '355b' => q~Test webmaster e-mail settings on Save~,
@@ -645,24 +629,25 @@ This is a test of your {yabb mbname} Forum's e-mail settings.
 Thanks for using YaBB!~,
 'mailfrom' => q~"{yabb mbname} E-Mail Test" <{yabb webmaster_email}>~,
 
-## Template Editor ###
-'modfolder' => q~Create New Template Folder~,
-'modfoldername' => q~New Template Folder Name~,
-'modgfolder' => q~Create New Template Graphics Folder~,
-'modgfoldername' => q~New Template Graphics Folder Name~,
-'foldercreated' => q~created~,
-'foldernotcreated' => q~<span class="important">not created</span>~,
-'modfolderup' => q~Upload New Template files~,
-'modgfolderup' => q~Upload New Template Graphics files~,
-'modfolderup2' => q~Select Files to Upload~,
-'modfolderfolder' => q~Select Folder to upload to~,
-'newfolder' => q~New Folder~,
-'uploadedg' => q~New Graphics File Uploads~,
-'uploaded' => q~New Template File Uploads~,
-'error_spd' => q~ErrorLog speed banning. Minimum number of seconds between multiple error log entries from the same IP address. <br /><span class="small">Violators are banned through .htaccess if allowed. Set to '0' to disable</span>~,
+);
+
+%detailed = (
+'429' => q~Detailed Version Check~,
+'430' => q~Files in Admin Dir:~,
+'431' => q~Files in Source Dir:~,
+'431b' => q~Files in Templates Dir:~,
 'langpack' => q~Language and Help Files~,
 'view' => q~View {yabb fld} files~,
 'hide' => q~Hide {yabb fld} files~,
+'modded' => q~(Modded)~,
+'nochng' => q~No changes~,
+'chngfle' => q~Changed on~,
+'upped' => q~Uploaded/Changed on~,
+'494' => q~User's Version~,
+'495' => q~YaBB File~,
+'496' => q~YaBB Package~,
+'col' => q~Collapse~,
+'exp' => q~Expand~,
 );
 
 %floodtxt = (
@@ -1306,6 +1291,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '7' => q~View a list of all Installed Mods~,
 '8' => q~No mods are currently installed. You can get new mods at~,
 '9' => q~BoardMod~,
+'19' => q~Add/Remove mods~,
+'20' => q~YaBMods Admin Center~,
 );
 
 %smtp_txt = (
@@ -1624,88 +1611,6 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'print' => q~Cannot print~,
 );
 
-# YaBM
-%yabmtxt = (
-'1' => q~Mod list~,
-'2' => q~Click on the filename to view details and test/(un)install mod.~,
-'5' => q~Not installed~,
-'6' => q~Apply Mod~,
-'7' => q~Installed~,
-'8' => q~Uninstall Mod~,
-'9' => q~Back to Mod Info page~, #page title
-'10' => q~ID~,
-'11' => q~Status~,
-'12' => q~Version~,
-'13' => q~Author~,
-'14' => q~Homepage~,
-'15' => q~Mod Info~, #tag name
-'16' => q~Back to Mod list~,
-'17' => q~Processing mod~,
-'18' => q~Error~,
-'19' => q~Add/Remove mods~,
-'20' => q~YaBMods Admin Center~,
-'21' => q~Test~,
-'22' => q~Upload new Mod file~,
-'23' => q~Add Mod file~,
-'24' => q~Delete Mod and Mod Sources File(s)~,
-'25' => q~<strong>Allowed File Extensions:</strong> mod zip~,
-'26' => q~The <strong>Modfile</strong> you are trying to upload on the server already exists with that name.~,
-'28' => q~Couldn't load the module~,
-'29' => q~Source Code~,
-'30' => q~Edit Mod file~,
-'31' => q~YaBMods - Zip/Mod installer.~,
-'32' => q~Read~,
-'33' => q~Status OK!~,
-'34' => q~Extracting HTML file(s):~,
-'35' => q~Extracting YaBB System file(s):~,
-'36' => q~Extracting BoardMod file(s):~,
-'37' => q~<strong>Success!</strong> All Mod files on the Server.~,
-'38' => q~Uninstall Mod~,
-'39' => q~Opening mod file~,
-'40' => q~Parsing mod file...~,
-'41' => q~Editing file~,
-'42' => q~Backing up~,
-'43' => q~to~,
-'44' => q~Saving~,
-'45' => q~Step~,
-'46' => q~complete...~,
-'47' => q~Files to edit in this Mod~,
-'48' => q~View~,
-'49' => q~Select File~,
-'50' => q~Read uninstall file...~,
-'51' => q~Delete used Mod files...~,
-'52' => q~Delete used Mod folders...~,
-'53' => q~Delete Mod file~,
-'54' => q~<strong>Success!</strong> All Mod files deleted.~,
-'55' => q~Mod installation Success! All Done!~,
-'56' => q~Modtest Success! All Done!~,
-'57' => q~Delete Mod file~,
-'58' => q~<strong>Success!</strong> All Mod files deleted.~,
-'59' => q~Get Mod file from Directory~,
-'60' => q~Get Mod file from URL~,
-'61' => q~Wait...~,
-'62' => q~Upload Date~,
-'63' => q~Modfile Edit Date~,
-'64' => q~Install Date~,
-'65' => q~Unable to open~,
-'66' => q~The Request Method you tried to use (LWP::Simple)~,
-'67' => q~... try with "wget" function.~,
-'68' => q~is not success on this domain.~,
-
-# Uninstall Install Error
-'no' => q~No~,
-'tag' => q~tag correspond to~,
-'no_tag' => q~tag found at line~,
-'no_s_string' => q~No search strings matched!<br /><br /><span class="under">Search string</span>:<br />~,
-'no_file' => q~File not found!<br />~,
-'no_write' => q~Unable to write file:<br />~,
-'no_open' => q~Unable to open:<br />~,
-'recall' => q~<strong>Recall all edited Backup files...</strong><br />~,
-'mod' => q~Mod file~,
-'install' => q~has already been installed!~,
-'n_install' => q~has not been installed!~,
-);
-
 %load_txt = (
 '616a' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
 '617' => q~Remember, last Backup was done on:~,
@@ -1715,9 +1620,5 @@ timetostring($date);
 $yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
 $rna = 'Remote Server not available.';
-$admintxt{'cleanbak'} = 'Mod .bak files';
-$admintxt{'cleanbak2'} = q~To save space, once your mods have been installed, you can remove the mod backup files. <strong>Note</strong>: This does not remove files in the Mods folders.~;
-$admintxt{'cleansub'} = q~Delete old *.bak files.~;
-$admintxt{'10bak'} = q~*.bak files deleted~;
 
 1;

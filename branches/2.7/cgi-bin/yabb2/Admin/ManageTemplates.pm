@@ -196,10 +196,10 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'13'}</th>
     </tr><tr>
         <td class="catbg center">
-            <input type="submit" value="$admin_txt{'10'} $templatefile" class="button" />
+            <input type="submit" value="$templ_txt{'13'} $templatefile" class="button" />
         </td>
     </tr>
 </table>
@@ -619,9 +619,9 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
                     <div style="float: left; width: 32%; text-align: left;">
                         <label for="menutype"><span class="small">$templ_txt{'521'}</span></label><br />
                             <select name="menutype" id="menutype" size="1" style="width: 90%;">
-                                <option value="0"${isselected($use_menu_type == 0)}>$admin_txt{'521a'}</option>
-                                <option value="1"${isselected($use_menu_type == 1)}>$admin_txt{'521b'}</option>
-                                <option value="2"${isselected($use_menu_type == 2)}>$admin_txt{'521c'}</option>
+                                <option value="0"${isselected($use_menu_type == 0)}>$templ_txt{'521a'}</option>
+                                <option value="1"${isselected($use_menu_type == 1)}>$templ_txt{'521b'}</option>
+                                <option value="2"${isselected($use_menu_type == 2)}>$templ_txt{'521c'}</option>
                             </select>
                         </div>
                         <div style="float: left; width: 32%; text-align: left;">
@@ -684,7 +684,7 @@ qq~                        <input type="submit" value="$templ_txt{'14'}" onclick
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'10'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'13'}</th>
     </tr><tr>
         <td class="catbg center">
            <label for="saveas"><b>$templ_txt{'12'}</b></label>
@@ -718,10 +718,10 @@ document.onload = updateTemplate();
         <form action="$adminurl?action=modfolder" name="modfolder" method="post" style="display: inline;" accept-charset="$yymycharset">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <tr>
-                    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'modfolder'}</th>
+                    <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'modfolder'}</th>
                 </tr><tr>
                     <td class="catbg center">
-                        <label for="modfolder"><b>$admin_txt{'modfoldername'}</b></label>
+                        <label for="modfolder"><b>$templ_txt{'modfoldername'}</b></label>
                         <input type="text" name="modfolder" id="modfolder" value="" size="30" maxlength="50" />
                         <input type="submit" value="$templ_txt{'13'}" class="button" />
                         <input type="hidden" value="$templatesdir" name="locus" />
@@ -735,10 +735,10 @@ document.onload = updateTemplate();
         <input type="hidden" value="1" name="locale" />
             <table class="border-space pad-cell">
                 <tr>
-                    <th class="titlebg" colspan="2">$admin_img{'prefimg'} $admin_txt{'modfolderup'}</th>
+                    <th class="titlebg" colspan="2">$admin_img{'prefimg'} $templ_txt{'modfolderup'}</th>
                 </tr><tr>
                     <td class="catbg right">
-                        <label for="modfolderfolder"><b>$admin_txt{'modfolderfolder'}</b></label>
+                        <label for="modfolderfolder"><b>$templ_txt{'modfolderfolder'}</b></label>
                     </td><td class="catbg">
                         <select name="modfolderfolder"><option value="">--</option>
 ~;
@@ -763,7 +763,7 @@ document.onload = updateTemplate();
                     </td>
                 </tr><tr>
                     <td class="catbg right">
-                        <label for="newtemfiles"><b>$admin_txt{'modfolderup2'}</b></label>
+                        <label for="newtemfiles"><b>$templ_txt{'modfolderup2'}</b></label>
                     </td><td class="catbg">
                         <input type="file" name="newtemfiles" size="35" />
                     </td>
@@ -781,10 +781,10 @@ document.onload = updateTemplate();
         <form action="$adminurl?action=modgfolder" name="modgfolder" method="post" style="display: inline;" accept-charset="$yymycharset">
             <table class="border-space pad-cell" style="margin-bottom: .5em;">
                 <tr>
-                    <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'modgfolder'}</th>
+                    <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'modgfolder'}</th>
                 </tr><tr>
                     <td class="catbg center">
-                        <label for="modfolder"><b>$admin_txt{'modgfoldername'}</b></label>
+                        <label for="modfolder"><b>$templ_txt{'modgfoldername'}</b></label>
                         <input type="text" name="modfolder" value="" size="30" maxlength="50" />
                         <input type="submit" value="$templ_txt{'13'}" class="button" />
                         <input type="hidden" value="$htmldir/Templates/Forum" name="locus" />
@@ -797,10 +797,10 @@ document.onload = updateTemplate();
         <form action="$adminurl?action=modfolderup" name="modfolderup" method="post" style="display: inline;" enctype="multipart/form-data" accept-charset="$yymycharset">
             <table class="border-space pad-cell">
                 <tr>
-                    <th class="titlebg" colspan="2">$admin_img{'prefimg'} $admin_txt{'modgfolderup'}</th>
+                    <th class="titlebg" colspan="2">$admin_img{'prefimg'} $templ_txt{'modgfolderup'}</th>
                 </tr><tr>
                     <td class="catbg right">
-                        <label for="modfolderfolder"><b>$admin_txt{'modfolderfolder'}</b></label>
+                        <label for="modfolderfolder"><b>$templ_txt{'modfolderfolder'}</b></label>
                     </td><td class="catbg">
                         <select name="modfolderfolder"><option value="">--</option>
 ~;
@@ -821,7 +821,7 @@ document.onload = updateTemplate();
                     </td>
                 </tr><tr>
                     <td class="catbg right">
-                        <label for="newtemfiles"><b>$admin_txt{'modfolderup2'}</b></label>
+                        <label for="newtemfiles"><b>$templ_txt{'modfolderup2'}</b></label>
                     </td><td class="catbg">
                         <input type="file" name="newtemfiles" id="newtemfiles" size="35" />
                     </td>
@@ -1811,15 +1811,15 @@ sub new_template_folder2 {
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'newfolder'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'newfolder'}</th>
     </tr><tr class="windowbg2 vtop bold">
-        <td>$newfolder $admin_txt{'foldercreated'}</td>
+        <td>$newfolder $templ_txt{'foldercreated'}</td>
     </tr>
 </table>
 </div>
 <div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1);">$maintxt{'193'}</a></div>
 ~;
-            $yytitle = qq~$admin_txt{'newfolder'} $admin_txt{'foldercreated'}~;
+            $yytitle = qq~$templ_txt{'newfolder'} $templ_txt{'foldercreated'}~;
             admintemplate();
             exit;
         }
@@ -1828,15 +1828,15 @@ sub new_template_folder2 {
 <div class="bordercolor rightboxdiv">
 <table class="border-space pad-cell" style="margin-bottom: .5em;">
     <tr>
-        <th class="titlebg">$admin_img{'prefimg'} $admin_txt{'newfolder'}</th>
+        <th class="titlebg">$admin_img{'prefimg'} $templ_txt{'newfolder'}</th>
     </tr><tr class="windowbg2 vtop bold">
-        <td>$newfolder $admin_txt{'foldernotcreated'}</td>
+        <td>$newfolder $templ_txt{'foldernotcreated'}</td>
     </tr>
 </table>
 </div>
 <div style="width: 100%; text-align: center;"><a href="javascript:history.go(-1);">$maintxt{'193'}</a></div>
 ~;
-            $yytitle = qq~$admin_txt{'newfolder'} Error~;
+            $yytitle = qq~$templ_txt{'newfolder'} Error~;
             admintemplate();
             exit;
         }
@@ -1874,14 +1874,14 @@ sub new_template_upload {
         $FORM{'newtemfiles'} =
           upload_file2( 'newtemfiles', $uploadto, 'def|html|template',
             '50', '0', '1' );
-        $uplabel = $admin_txt{'uploaded'};
+        $uplabel = $templ_txt{'uploaded'};
     }
     else {
         $newfolder = qq~$htmldir/Templates/Forum/$uploadto~;
         $FORM{'newtemfiles'} =
           upload_file2( 'newtemfiles', $uploadto, 'png|jpg|jpeg|gif',
             '250', '0', '0' );
-        $uplabel = $admin_txt{'uploadedg'};
+        $uplabel = $templ_txt{'uploadedg'};
     }
 
     $yymain = qq~

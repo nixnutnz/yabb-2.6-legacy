@@ -32,9 +32,9 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ##  languages ##
-our ( %admin_img, %admin_txt, %admintxt, %croak, %maintxt, %yabmtxt, );
+our ( %admin_txt, %croak, %maintxt, %yabmtxt, %mod_list );
 ## paths ##
-our ( $adminurl, $boarddir, $htmldir, $imagesdir, $scripturl, $yyhtml_root, );
+our ( $adminurl, $boarddir, $htmldir, $imagesdir, $scripturl, $yyhtml_root, $sourcedir, $admindir, $vardir, $helpfile, $templatesdir, $langdir );
 ## settings ##
 our ( $mbname, $settings_file_version, $yymycharset, );
 ## other ##
@@ -53,6 +53,7 @@ my (
 );
 
 load_language('Admin');
+load_language('YabMod');
 
 sub yabm_modlist {
     is_admin();
@@ -81,7 +82,7 @@ sub yabm_modlist {
     <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
-            <td class="titlebg"> <img src="$admin_images/boardmod_icon.png" alt="$yabmtxt{'20'}" /> <b>$yabmtxt{'20'}</b></td>
+            <td class="titlebg"> <img src="$admin_images/boardmod_icon.png" alt="$mod_list{'20'}" /> <b>$mod_list{'20'}</b></td>
         </tr><tr>
             <td class="windowbg2" style="padding:8px 4px 12px 4px">
                 $yabmtxt{'2'}
@@ -188,14 +189,14 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
     <div class="bordercolor rightboxdiv">        
     <table class="border-space pad-cell">
         <tr>
-            <td class="titlebg"><b>$admintxt{'cleanbak'}</b></td>
+            <td class="titlebg"><b>$yabmtxt{'cleanbak'}</b></td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="pad-more">$admintxt{'cleanbak2'}</div>
+                <div class="pad-more">$yabmtxt{'cleanbak2'}</div>
             </td>
         </tr><tr>
             <td class="catbg center">
-                <input type="submit" value="$admintxt{'cleansub'}" class="button" />
+                <input type="submit" value="$yabmtxt{'cleansub'}" class="button" />
             </td>
         </tr>
     </table>
@@ -1805,6 +1806,30 @@ sub update_mod_data {
         print {$FILE} "$mod\t$date\n" or croak "$croak{'print'}' installdata";
         fclose('FILE') or croak "$croak{'close'} installdata";
     }
+    return;
+}
+
+sub clean_bak {
+    my @folders = ( $boarddir, $sourcedir, $admindir, $vardir, $helpfile, "$templatesdir/default" );
+    our %lngs;
+    require "$langdir/Lang.lng";
+    foreach my $key (%lngs) {
+        push @folders, "$langdir/$key";
+    }
+    foreach my $folder (@folders) {
+        opendir 'CNVDIR', $folder
+          || fatal_error( 'cannot_open_dir', "$folder" );
+        my @convlist = readdir 'CNVDIR';
+        closedir 'CNVDIR';
+        foreach my $file (@convlist) {
+            if ($file =~ m/\.(?:tdy|bak)$/xsm) {
+                unlink "$folder/$file";
+            }
+        }
+    }
+    $yymain .= qq~<b>$admin_txt{'10bak'}</b>~;
+    our $yytitle = $admin_txt{'10bak'};
+    admintemplate();
     return;
 }
 

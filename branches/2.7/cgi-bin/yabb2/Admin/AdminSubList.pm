@@ -194,8 +194,7 @@ our %director = (
     'yabmmodifymod'          => 'YaBMod.pm&yabm_modifymod',
     'yabmmodifymod2'         => 'YaBMod.pm&yabm_modifymod2',
     'yabmdeletemod'          => 'YaBMod.pm&yabm_deletemod',
-
+    'clean_bak'              => 'YaBMod.pm&clean_bak',     ## Clean up .bak files ##
 );
-$director{'clean_bak'} = 'AdminSubs.pm&clean_bak'; ## Clean up .bak files ##
 
 1;
