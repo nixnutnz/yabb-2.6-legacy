@@ -1,0 +1,195 @@
+###############################################################################
+#EventCal.lng                                                                 #
+#By XTC: http://www.yabbserver.com                                            #
+###############################################################################
+#German/Sie - Translation by Pyragony                                         #
+#and other members of the YaBB community                                      #
+#review & changes by Pyragony (webmaster@yabbtest.de)                         #
+###############################################################################
+#YaBB: Yet another Bulletin Board                                             #
+#Open-Source Community Software for Webmasters                                #
+#Version:       YaBB 2.6.11                                                   #
+#Packaged:      2. Dezember 2014                                              #
+#Distributed by: http://www.yabbforum.com                                     #
+#=============================================================================#
+#Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.      #
+#Software by: The YaBB Development Team                                       #
+#             with assistance from the YaBB community.                        #
+###############################################################################
+
+$germaneventcallngver = 'YaBB 2.7.00 $Revision: 1724 $';
+@germaneventcallngmods = ();
+if(@germaneventcallngmods){
+    $germaneventcallngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+## Event Kalender ###
+
+%var_cal = (
+'calgo' => q~Los~,
+'calname' => q~Name~,
+'calmon_01' => q~Januar~,
+'calmon_02' => q~Februar~,
+'calmon_03' => q~März~,
+'calmon_04' => q~April~,
+'calmon_05' => q~Mai~,
+'calmon_06' => q~Juni~,
+'calmon_07' => q~Juli~,
+'calmon_08' => q~August~,
+'calmon_09' => q~September~,
+'calmon_10' => q~Oktober~,
+'calmon_11' => q~November~,
+'calmon_12' => q~Dezember~,
+'calday_1' => q~Mo~,
+'calday_2' => q~Di~,
+'calday_3' => q~Mi~,
+'calday_4' => q~Do~,
+'calday_5' => q~Fr~,
+'calday_6' => q~Sa~,
+'calday_7' => q~So~,
+'calday' => q~Tag~,
+'calmonth' => q~Monat~,
+'calyear' => q~Jahr~,
+'caltitle' => qq~<a href="$scripturl?action=eventcal;calshow=1">Event-Kalender</a>~,
+'yytitle' => q~Event-Kalender~,
+'calsubtitle' => q~Event(s)~,
+'calevent' => q~Neues Ereignis:~,
+'calbirthday' => q~Geburtstag~,
+'calbirthday1' => q~Keine Geburtstag(e)~,
+'calbirthdays' => q~Geburtstagsliste~,
+'calbirthdayinfo' => q~Die Geburtstagsliste zeigt alle eingetragenen Mitglieder-Geburtstage.<br />Sie können die Geburtstage nach <i>Name</i>, <i>Alter</i>, <i>Sternzeichen</i> (wenn angezeigt), oder nach <i>Geburtsdatum</i> sortieren.~,
+'calbirthdaytoday' => q~Heute haben folgende Mitglieder Geburtstag~,
+'calnobdlist' => q~Die Geburtstagsliste wurde vom Administrator deaktiviert.~,
+'calbdaylist' => q~Zeige Mitglieder-Geburtstage~,
+'calstarsign' => q~Sternzeichen~,
+'calage' => q~Alter~,
+'calbddate' => q~Geburtsdatum~,
+'Pisces' => qq~<img src="$imagesdir/pisces.png" alt="Fische" class="zodiac" />~,
+'Virgo' => qq~<img src="$imagesdir/virgo.png" alt="Jungfrau" class="zodiac" />~,
+'Cancerian' => qq~<img src="$imagesdir/cancer.png" alt="Krebs" class="zodiac" />~,
+'Leo' => qq~<img src="$imagesdir/leo.png" alt="Löwe" class="zodiac" />~,
+'Sagittarius' => qq~<img src="$imagesdir/sagittarius.png" alt="Schütze" class="zodiac" />~,
+'Scorpio' => qq~<img src="$imagesdir/scorpio.png" alt="Skorpion" class="zodiac" />~,
+'Capricorn' => qq~<img src="$imagesdir/capricorn.png" alt="Steinbock" class="zodiac" />~,
+'Taurus' => qq~<img src="$imagesdir/taurus.png" alt="Stier" class="zodiac" />~,
+'Libra' => qq~<img src="$imagesdir/libra.png" alt="Waage" class="zodiac" />~,
+'Aquarius' => qq~<img src="$imagesdir/aquarius.png" alt="Wassermann" class="zodiac" />~,
+'Aries' => qq~<img src="$imagesdir/aries.png" alt="Widder" class="zodiac" />~,
+'Gemini' => qq~<img src="$imagesdir/gemini.png" alt="Zwillinge" class="zodiac" />~,
+'calnoevent' => q~Keine Ereignisse/Events vorhanden.~,
+'calsubmit' => q~Gehe zu:~,
+'calview' => q~Anzeige~,
+'calprivate' => q~Privat~,
+'calmembers' => q~Nur für Mitglieder~,
+'calpublic' => q~Öffentlich~,
+'calclickinfo' => q~(Zeige Event durch klick auf das Datum)~,
+'caldel' => q~Löschen~,
+'caldelalert' => q~Sind Sie sicher, dass Sie dieses Event entfernen wollen?~, # Inside JavaScript!
+'caledit' => q~Event editieren~,
+'calsave' => q~Event speichern~,
+'calshowmini' => q~Event(s) des Tages anzeigen~,
+'calshowevent' => q~Event anzeigen~,
+'calmore' => q~MEHR LESEN~,
+'calnoname' => q~Mitgliedsnamen-Link ausschalten~,
+'caltoday' => q~Heutige~,
+'calcoming' => q~Kommende~,
+'caldays' => q~Tage~,
+'calis' => q~wird~,
+'calold' => q~Jahre alt!~,
+'date' => q~Datum~,
+'onlyone' => q~Einmaliger Event~,
+'weekly' => q~Wöchentlich~,
+'monthly' => q~Monatlich~,
+'yearly' => q~Jährlich~,
+'event_icon' => q~Event Icon~,
+'eventinfo' => q~Event~,
+'eventholiday' => q~Feiertag~,
+'eventannounce' => q~Ankündigung~,
+'eventnote' => q~Ausrufezeichen~,
+'eventparty' => q~Party~,
+'eventcelebration' => q~Feier~,
+'eventsport' => q~Sport~,
+'eventmedia' => q~Medien (TV)~,
+'eventmeeting' => q~Sitzung~,
+'hidden' => q~<em>Versteckt</em>~,
+'verification_question_desc' => q~Bitte beantworten Sie die oben genannte Überprüfungsfrage.~,
+'verification_question_case' => q~Antworten sind Groß- und Kleinschreibung.~,
+'bdayhide' => q~hat heute Geburtstag.~,
+'other' => q~123 (Sonstige)~,
+'guest' => q~Gast~,
+'exmem' => q~Ex-Mitglied~,
+'by' => q~Von:~,
+'getaddevent' => q~Neuen Event hinzufügen~,
+);
+
+## Event Kalender YaBBC ###
+
+%var_calpost = (
+'getaddevent' => q~Neuen Event hinzufügen~,
+'event_send' => q~Event hinzufügen~,
+);
+
+### Event Calendar Settings ###
+
+%event_cal = (
+'1' => q~Event-Kalender Einstellungen~,
+'3' => q~Event-Kalender im BoardIndex anzeigen für~,
+'4' => q~'Event-Kalender'-Button im YaBB-Menü anzeigen für~,
+'5' => q~Geburtstage im Kalender/Events anzeigen für~,
+'6' => q~Länge der Events im BoardIndex und KalenderIndex?~,
+'7' => q~Wieviele Zeichen sollen pro Event angezeigt werden?<br />Zeigt einen 'MEHR LESEN' Link zum Eventeintrag<br />(0 = deaktiviert)~,
+'8' => q~In welcher Farbe soll der heutige Tag angezeigt werden?~,
+'9' => q~'Event-Scroll' Funktion aktivieren?~,
+'10' => q~Sehr nützlich, wenn Du viele Events hast.~,
+'11' => q~Aus~,
+'12' => q~Auto Scroll~,
+'13' => q~Manuel Scroll~,
+'14' => q~Welche Mitgliedergruppen dürfen Events hinzufügen?~,
+'15' => q~Keine Auswahl (Alle Mitglieder und Gäste)<br /><br />{yabb admin_txt14}~,
+'16' => q~Welche Mitglieder dürfen Events hinzufügen?~,
+'17' => q~Mehrere Mitglieder können mit 'username1,username2' angegeben werden (die Namen müssen die internen YaBB-Namen sein)~,
+'18' => q~Dürfen Mitglieder 'Privat Events' hinzufügen?~,
+'19' => q~Deaktiviert = nur der Administrator darf 'Privat Events' hinzufügen~,
+'20' => q~Events (Event-Scroll) im BoardIndex anzeigen?~,
+'21' => q~Standard Event-Kalender-Einstellungen~,
+'22' => q~Eventeinstellungen~,
+'23' => q~Eventberechtigungen~,
+'24' => q~Zeige die Checkbox "Username-Link nicht anzeigen" für~,
+'26' => q~Kalender Event-Icon Einstellungen~,
+'27' => q~Bild auswählen~,
+'28' => q~Beschreibung~,
+'29' => q~Bild~,
+'30' => q~Neue Event-Icons hier hinzufügen~,
+'31' => q~Kalender-Einstellungen speichern~,
+'32' => q~Event-Icon-Einstellungen speichern~,
+'33' => q~In diesem Abschnitt können Sie Ihre Kalender Ereignisse bearbeiten, indem Sie Ihre eigenen Event-Icons anpassen.<br />Bilder sehen am besten aus, wenn sie nicht grösser sind als 25x25px.<br />Erlaubte Dateinamen sind: png jpg jpeg gif<br />Max. Dateigrösse: 100KB~,
+'34' => q~Angezeigte Event(s)-Tage im Board-Kalender-Index?~,
+'35' => q~(0 = Aktueller Monat)~,
+'36' => q~Erster Tag der Woche (Mini Kalender)?~,
+'37' => q~(nicht gewählt = Montag / gewählt = Sonntag)~,
+'42' => q~Zeige Mitglieder-Geburtstagsliste für?~,
+'42a' => q~Zeige Sternzeichen in der Geburtstagsliste?~,
+'43' => q~Keine 'Event-Icons' im Mini Kalender anzeigen?~,
+'44' => q~Anwenden von Gruppenfarben beim Anzeigen von Mitgliederlinks?~,
+'44a' => q~Anwenden von Gruppenfarben beim Anzeigen von Mitgliederlinks in der Geburtstagsliste?~,
+'45' => q~Benötigt mehr Forum-Ressourcen.~,
+'48' => q~'Geburtstagsliste'-Button im YaBB-Menü anzeigen für~,
+'49' => q~Geburtstagsliste-Einstellungen~,
+'50' => q~Geburtstagsdatum anzeigen für~,
+'52' => q~Alte Events löschen<br /><span class="small">Prüfen Sie Ereignisse, die älter sind als das aktuelle Datum.</span>~,
+'54' => q~Geburtstagsliste neuaufbauen~,
+'56' => q~Marquee~,
+'57' => q~XHTML~,
+'58' => q~YaBBC Tags im <i>Snack-Text</i> deaktivieren?~,
+'59' => q~Event-Icon hinzufügen~,
+'60' => q~Event-Icon entfernen~,
+'error_image' => q~Bitte wählen Sie ein Bild für den Event-Icon.~,
+'error_desc' => q~Bitte geben Sie eine Beschreibung für den Event-Icon ein.~,
+'del' => q~Lösche alte Events~,
+'showtoday' => q~Verwenden Sie "Heute", "Gestern" und "Morgen" in Veranstaltungs- und Geburtstagsanzeigen.~,
+'new' => q~Wenn Sie 'Geburtstage anzeigen' oder 'Geburtstagsliste anzeigen' aktivieren, müssen Sie die unten aufgeführte 'Wiederherstellen Geburtstagsliste' ausführen.~,  
+);
+
+1;

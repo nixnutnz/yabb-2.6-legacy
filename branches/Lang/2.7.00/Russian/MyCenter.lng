@@ -1,0 +1,83 @@
+###############################################################################
+# MyCenter.lng (My Center text definitions)                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+#     Локализация: Васильев Д.В. (http://www.mysopromat.ru)                   #
+#           $Date: 2009/04/22 03:04:56 $                                      #
+#   Copyright (c): Васильев Д.В. 2005                                         #
+###############################################################################
+
+$russianmycenterlngver = 'YaBB 2.7.00 $Revision: 1427 $';
+@russianmycenterlngmods = ();
+if(@russianmycenterlngmods){
+    $russianmycenterlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+## LEAVE USERLABEL intact. Move within the string for correct language syntax!
+
+%mycenter_txt = (
+'welcometxt' => 'USERLABEL: Панель Управления',
+'buddylisttitle' => 'Ваши друзья',
+'buddylistnone' => 'Список Ваших друзей пуст',
+'buddydeleted' => 'Этот Друг был удален. Это имя более недоступно на форуме!',
+'hiddenemail' => 'Скрытый E-mail',
+'currentsettings' => 'Текущие настройки:',
+'onoffstatus' => 'Статус работы с форумом:', 
+'onoffstatuson' => 'На форуме/Вне форума',
+'onoffstatusaway' => 'Отлучился',
+'view' => 'просмотр',
+'stealth' => 'Скрытый режим:',
+'stealth_off' => 'Режим скрытности отключен',
+'stealth_on' => 'Режим скрытности включен',
+'posts' => 'Сообщения',
+'location' => 'Местонахождение', 
+'mylastposts' => 'Просмотреть мои последние 5 сообщений', 
+);
+
+%display_txt = (
+'139' => 'Страницы',
+
+);
+
+%mc_menus = (
+'messages' => 'Почта',
+'profile' => 'Профиль',
+'posts' => 'Личное',
+);
+
+%pm_search = (
+'all' => 'все',
+'justthis' => 'в текущей папке',
+'byuser' => 'по имени Пользователя',
+'desc' => 'Поиск моих ЛС',
+'search' => 'Поиск',
+);
+
+%mc_folders = (
+'foldername' => 'Имя папки',
+);
+
+%my_favs = (
+'70' => 'Название',
+'109' => 'Автор',
+'110' => 'Ответов',
+'301' => 'Просмотров',
+'330' => 'Тем',
+'21' => 'Сообщений',
+'22' => 'Последнее сообщение',
+'525' => 'От',
+'526' => '', # by
+'527' => 'Автор:',
+'737' => 'Выбрать все',
+);
+
+1;
