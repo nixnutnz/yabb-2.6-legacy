@@ -127,7 +127,7 @@ if (!$language){$language = $lang;}
 );
 
 require Sources::Menu;
-SetMenu();
+set_menu();
 
 
 1;
