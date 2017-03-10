@@ -186,7 +186,7 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
 
     $yymain .= qq~
 <form name="backdelete" action="$adminurl?action=clean_bak" method="post">
-    <div class="bordercolor rightboxdiv">        
+    <div class="bordercolor rightboxdiv">
     <table class="border-space pad-cell">
         <tr>
             <td class="titlebg"><b>$yabmtxt{'cleanbak'}</b></td>
@@ -1278,28 +1278,10 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 if ( $status != AZ_OK ) {
                     fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
                 }
-                if (   $files_name_html ne q{}
-                    && $files_name_html ne 'Attachments/'
-                    && $files_name_html ne 'avatar/'
-                    && $files_name_html ne 'avatar/UserAvatars/'
-                    && $files_name_html ne 'Bookmarks/'
-                    && $files_name_html ne 'Buttoms/'
-                    && $files_name_html ne 'EventIcons/'
-                    && $files_name_html ne 'googiespell/'
-                    && $files_name_html ne 'greybox/'
-                    && $files_name_html ne 'ModImages/'
-                    && $files_name_html ne 'PMAttachments/'
-                    && $files_name_html ne 'shjs/'
-                    && $files_name_html ne 'shjs/styles/'
-                    && $files_name_html ne 'Smilies/'
-                    && $files_name_html ne 'Templates/'
-                    && $files_name_html ne 'Templates/Admin/'
-                    && $files_name_html ne 'Templates/Admin/default/'
-                    && $files_name_html ne 'Templates/Forum/'
-                    && $files_name_html ne 'Templates/Forum/default/'
-                    && $files_name_html ne 'Templates/Forum/default/Boards/'
-                    && $files_name_html ne 'UBBCbuttons/' )
-                {
+                my @htmlfold = ('Attachments/', 'avatar/', 'avatar/UserAvatars/', 'Bookmarks/', 'Buttoms/', 'EventIcons/', 'googiespell/', 'greybox/', 'ModImages/', 'PMAttachments/', 'shjs/', 'shjs/styles/', 'Smilies/', 'Smilies/added', 'Templates/', 'Templates/Admin/', 'Templates/Admin/default/', 'Templates/Forum/', 'Templates/Forum/default/', 'Templates/Forum/default/Boards/', 'UBBCbuttons/');
+## html mod hook ##
+                my %htmlhash = map { $_, 1 } @htmlfold;
+                if( $files_name_html && $files_name_html ne q{} && !exists $htmlhash{ $files_name_html } ){
                     push @uninstall, qq~html|$files_name_html\n~;
                 }
                 $html_main1 .= qq~$files_name_html<br />~;
@@ -1314,35 +1296,10 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 if ( $status != AZ_OK ) {
                     fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
                 }
-                if (   $files_name_cgi ne q{}
-                    && $files_name_cgi ne 'Admin/'
-                    && $files_name_cgi ne 'Admin/Mods/'
-                    && $files_name_cgi ne 'Backups/'
-                    && $files_name_cgi ne 'Boards/'
-                    && $files_name_cgi ne 'Convert/'
-                    && $files_name_cgi ne 'Help/'
-                    && $files_name_cgi ne 'Help/English/'
-                    && $files_name_cgi ne 'Languages/'
-                    && $files_name_cgi ne 'Languages/English/'
-                    && $files_name_cgi ne 'Languages/English/Mods/'
-                    && $files_name_cgi ne 'Members/'
-                    && $files_name_cgi ne 'Messages/'
-                    && $files_name_cgi ne 'Mods/'
-                    && $files_name_cgi ne 'Modules/'
-                    && $files_name_cgi ne 'Modules/Archive/Tar/'
-                    && $files_name_cgi ne 'Modules/Archive/Zip/'
-                    && $files_name_cgi ne 'Modules/Digest/'
-                    && $files_name_cgi ne 'Modules/Email/'
-                    && $files_name_cgi ne 'Modules/Email/Date/'
-                    && $files_name_cgi ne 'Modules/Mail/'
-                    && $files_name_cgi ne 'Modules/MIME/'
-                    && $files_name_cgi ne 'Sources/'
-                    && $files_name_cgi ne 'Sources/Mods/'
-                    && $files_name_cgi ne 'Templates/'
-                    && $files_name_cgi ne 'Templates/default/'
-                    && $files_name_cgi ne 'Templates/default/Mods/'
-                    && $files_name_cgi ne 'Variables/' )
-                {
+                my @srcfolders = ( 'Admin/', 'Admin/Mods/', 'Backups/', 'Boards/', 'Convert/', 'Help/', 'Help/English/', 'Languages/', 'Languages/English/', 'Languages/English/Mods/', 'Members/', 'Messages/', 'Mods/', 'Modules/', 'Modules/Archive/Tar/', 'Modules/Archive/Zip/', 'Modules/Digest/', 'Modules/Email/', 'Modules/Email/Date/', 'Modules/Mail/', 'Modules/MIME/', 'Sources/', 'Sources/Mods/', 'Templates/', 'Templates/default/', 'Templates/default/Mods/', 'Variables/' );
+## src mod hook ##
+                my %srchash = map { $_, 1 } @srcfolders;
+                if( $files_name_cgi && $files_name_cgi ne q{} && !exists $srchash{ $files_name_cgi } ){
                     push @uninstall, qq~cgi|$files_name_cgi\n~;
                 }
 
