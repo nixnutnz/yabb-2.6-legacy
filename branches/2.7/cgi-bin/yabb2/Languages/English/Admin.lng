@@ -347,7 +347,6 @@ $abbr_lang = 'en-us';
 '524' => q~Auto-link URLs?~,
 '525' => q~Check for ALL CAPS?<br /><span class="small">If set to 0, no checking is done. Otherwise, the number determines how many characters in all caps are required to open a JavaScript alert on submission of the post.</span>~,
 '526' => q~Show User Tools (QuickLinks) for member name links?~,
-'529' => q~User Info style:<br /><span class="small">When checked, User Info will display to the left of posts as in previous versions. When unchecked User Info will be displayed above each post in the new format.</span>~,
 '530' => q~Rebuilding the Message Index can take a long time in Boards with many Threads.<br />Do you really want to do this?<br />~,
 '531' => q~Click here to start now.~,
 '532' => q~The process step-time is set to~,

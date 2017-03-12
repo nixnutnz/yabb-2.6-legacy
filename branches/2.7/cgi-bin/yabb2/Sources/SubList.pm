@@ -187,6 +187,8 @@ our %director = (
     'ban_page_a'          => 'Security.pm&ban_page_a',
     'ban_page_b'          => 'Security.pm&ban_page_b',
     'yabmodsource'        => 'YaBModSource.pm&yabmodsource',          # YaBMod
+    'guardian_blck'       => 'Guardian.pm&guardian_blck',
+    'ipban_gip'           => 'Security.pm&ipban_gip',
 );
 
 1;

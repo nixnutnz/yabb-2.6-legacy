@@ -148,6 +148,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'guest_taken'          => q~The user ID or e-mail address given is already taken by a member.<br />Conflicting name or e-mail: ~,
 'quote_too_long'       => q~The text you have tried to quote is too long. Please shorten it.~,
 'no_links_allowed'     => q~Sorry, you are not allowed to post messages containing active links to websites or images before you have posted {yabb minlinkpost} normal messages.~,
+'no_glinks_allowed'    => q~Sorry, guests are not allowed to post messages containing active links to websites or images.~,
 'no_siglinks_allowed'  => q~Sorry, you are not allowed to create a signature containing active links to websites or images before you have posted {yabb minlinksig} normal messages.~,
 'attach_name_blocked'         => q~Your attachment name contains a word which is not allowed on this forum.~,
 'attach_file_blocked'         => q~Sorry, you cannot upload an attachment with that file name.~,

@@ -337,7 +337,7 @@ sub rss_recent {
                     if ( ${ $uid . $brd }{'brdpasswr'} ) {
                         my $cookiename = "$cookiepassword$brd$username";
                         my $crypass    = ${ $uid . $brd }{'brdpassw'};
-                        if ( !$staff && $yy_cookies{$cookiename} ne $crypass ) {
+                        if ( !$staff && ( !$yy_cookies{$cookiename} || $yy_cookies{$cookiename} ne $crypass ) ) {
                             next;
                         }
                     }

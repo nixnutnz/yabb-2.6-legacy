@@ -1801,7 +1801,12 @@ sub post2 {
             || $message =~ m{\[img}xsm
             || $message =~ m{\[ftp}xsm )
         {
-            fatal_error('no_links_allowed');
+            if ($iamguest) {
+                fatal_error('no_glinks_allowed');
+            }
+            else {
+                fatal_error('no_links_allowed');
+            }
         }
     }
 
@@ -2441,7 +2446,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
     from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
-    ( $boardname, undef ) = split /[|]/xsm, $board{$currentboard}, 2;
+    $boardname = ${$board{$currentboard}}[0];
     to_chars($boardname);
 
     $thissubject .= " ($boardname)";

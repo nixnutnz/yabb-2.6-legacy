@@ -76,6 +76,7 @@ our (
     $user_hide_signat,       $user_hide_user_text,
     $useraddpoll,            $very_hot_topic,
     $yymycharset,            $cookieusername,
+    $use_guardian,           $use_htaccess
 );
 ## system ##
 our (
@@ -1114,8 +1115,8 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ 
               . qq~ $display_txt{'525'} $mlmb</i> &raquo;~;
         }
         my $lookup_ip = q{};
+        my ( $mip_one, $mip_two, $mip_three ) = split /\s/xsm, $mip;
         if ($ip_lookup) {
-            my ( $mip_one, $mip_two, $mip_three ) = split /\s/xsm, $mip;
             if ($mip_one) {
                 $lookup_ip =
 qq~<a href="$scripturl?action=iplookup;ip=$mip_one">$mip_one</a>~;
@@ -1136,7 +1137,18 @@ qq~ <a href="$scripturl?action=iplookup;ip=$mip_three">$mip_three</a>~;
             || $iamfmod
             || $iamgmod && $gmod_access2{'ipban2'} )
         {
-            $mip = $lookup_ip;
+            my $ip_block = q{};
+            my $ip_ban = q{};
+            if ( $musername eq 'Guest') {
+                if ( $mip_one ne '127.0.0.1' && $mip_one ne '::1' ) {
+                    if ( $use_guardian && $use_htaccess ) {
+                       $ip_block = qq~<a href="$scripturl?action=guardian_blck;ip=$mip_one;return=$mnum" onclick="return confirm('$display_txt{'ipblock_confirm'}$mip_one');">$display_txt{'ipblock'}</a> - ~;
+                    }
+                    $ip_ban =
+qq~<a href="$scripturl?action=ipban_gip;ban=$mip_one;lev=p;return=$mnum" onclick="return confirm('$display_txt{'ipban_confirm'}$mip_one');">$display_txt{'725f'}</a> - ~;
+                }
+            }
+            $mip = $ip_block . $ip_ban . $lookup_ip;
         }
         else { $mip = $display_txt{'511'}; }
 

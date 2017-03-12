@@ -1059,4 +1059,59 @@ qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|$lev|$ban_r
     return;
 }
 
+sub ipban_gip {
+
+    # This is for quick updating for banning + unbanning
+    if ( $iamadmin || $iamgmod || $iamfmod ) {
+        my $banned       = $INFO{'ban'};
+        my $time  = time;
+        my $ihave = 0;
+        our ($BAN);
+        fopen( 'BAN', '<', "$vardir/banlist.db" )
+          or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+        my @myban = <$BAN>;
+        fclose('BAN') or croak "$croak{'close'} banlist";
+        chomp @myban;
+
+        my $type = 'I';
+        $ihave = 0;
+        my $tmb = 0;
+        for my $i (@myban) {
+            @banned = split /[|]/xsm, $i;
+            for my $j ( 0 .. 3 ) {
+                if ( $banned[4] eq $timeban[$j] ) {
+                    $tmb = $banned[2] + ( $bandays[$j] * 86400 );
+                }
+            }
+            if ( $banned eq $banned[1]
+                && ( $banned[4] eq 'p' || $tmb > $time ) )
+            {
+                $ihave = 1;
+            }
+            my $add_ban = q{};
+            if (   $banned
+                && $ihave != 1
+                && $banned ne '127.0.0.1'
+                && $banned ne '::1' )
+            {
+                $add_ban =
+qq~$type|$banned|$time|${ $uid . $username }{'realname'} ($username)|p|\n~;
+            }
+            our ($BAN2);
+            fopen( 'BAN2', '>>', "$vardir/banlist.db" )
+              or fatal_error( 'cannot_open', "$vardir/banlist.db", 1 );
+            print {$BAN2} $add_ban or croak "$croak{'print'} BAN2";
+            fclose('BAN2') or croak "$croak{'close'} banlist";
+        }
+        my $return = q{action=mycenter};
+        if ($INFO{'return'} && $INFO{'return'} !~ /\D/xsm ) {
+            $return = qq~num=$INFO{'return'}~;
+        }
+        $yysetlocation = qq~$scripturl?$return~;
+        redirectexit();
+    }
+    return;
+}
+
+
 1;

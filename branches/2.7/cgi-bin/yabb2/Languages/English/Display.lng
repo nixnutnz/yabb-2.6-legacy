@@ -84,6 +84,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'guest_message_warn' => q~Hi there Guest,<br><br>It looks like you are enjoying reading our forum, so why don't you <a href="$scripturl?action=register" style="font-weight: bold;">register an account with us</a> to stop seeing this message and benefit from many more features. Registration is easy and will only take you a few minutes.<br><br>If you already have an account with us, then <a href="$scripturl?action=login" style="font-weight: bold;">click here to log in.</a><br><br>Thank you,<br><br>The {yabb mbname} Team~,
 'bookmarks' => q~Bookmarks~, # Social Bookmarks
 'google' => q~Google Hangout~,
+'ipblock' => q~Block IP in Guardian~,
+'ipblock2' => q~Block IP in .htaccess~,
+'ipblock_confirm' => q~Are you sure you want to block this IP?\n\n~,
+'ipban_confirm' => q~Are you sure you want to ban this IP?\n\n~,
+'725f' => q~Ban IP~,
 );
 
 %zodiac_txt = (   #YaBB Zodiac

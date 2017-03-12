@@ -733,4 +733,21 @@ sub update_htaccess {
     return;
 }
 
+sub guardian_blck {
+    is_admin_or_gmod();
+
+    if ( $use_guardian && $use_htaccess ) {
+        my $block_ip = $INFO{'ip'};
+        update_htaccess( 'add', $block_ip );
+
+        my $return = q{action=mycenter};
+        if ($INFO{'return'} && $INFO{'return'} !~ /\D/xsm ) {
+			$return = qq~num=$INFO{'return'}~;
+		}
+        our $yysetlocation = qq~$scripturl?$return~;
+        redirectexit();
+    }
+    return;
+}
+
 1;

@@ -63,7 +63,7 @@ our (
     $showadded,            $showpageall,        $showsmdir,
     $showyabbcbutt,        $smiliestyle,        $spam_questions_case,
     $spam_questions_gp,    $speedpostdetection, $string_on,
-    $timeselected,         $use_guardian,       $winheight,
+    $timeselected,         $use_guardian,       $use_htaccess, $winheight,
     $winwidth,             %addedsmilies,       %grp_nopost,
     @pm_attachext,         @smilieorder,
 );
@@ -2157,7 +2157,7 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=0">$inmes_txt{'19
         }
 
         if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
-            ( $guest_name, $guest_email ) = split / /sm, $messlst{'musername'};
+            ( $guest_name, $guest_email ) = split /[ ]/xsm, $messlst{'musername'};
             $guest_name =~ s/%20/ /gxsm;
             $usernamelinkfrom =
               qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
@@ -2314,7 +2314,7 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
         $usernamelinkto =~ s/,\s$//xsm;
 
         if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
-            ( $guest_name, $guest_email ) = split / /sm, $messlst{'musername'};
+            ( $guest_name, $guest_email ) = split /[ ]/xsm, $messlst{'musername'};
             $guest_name =~ s/%20/ /gxsm;
             $usernamelinkfrom =
               qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
@@ -2336,7 +2336,7 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
     elsif ( $INFO{'caller'} == 6
         && ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) )
     {
-        ( $guest_name, $guest_email ) = split / /sm, $messlst{'musername'};
+        ( $guest_name, $guest_email ) = split /[ ]/xsm, $messlst{'musername'};
         $guest_name =~ s/%20/ /gxsm;
         $usernamelinkfrom =
           qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
@@ -2486,7 +2486,20 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
       : qq~$messlst{'imip'}~;
     my $imip = q{};
     if ( $iamadmin || $iamgmod && $gmod_access2{'ipban2'} ) {
-        $imip = $lookup_ip;
+        my $ip_block = q{};
+        my $ip_ban = q{};
+        if ( $messlst{'mstatus'} eq 'ga' || $messlst{'mstatus'} eq 'g') {
+            our %display_txt;
+            load_language('Display');
+                if ( $messlst{'imip'} ne '127.0.0.1' && $messlst{'imip'} ne '::1' ) {
+                    if ( $use_guardian && $use_htaccess ) {
+                    $ip_block = qq~<a href="$scripturl?action=guardian_blck;ip=$messlst{'imip'};" onclick="return confirm('$display_txt{'ipblock_confirm'}$messlst{'imip'}');">$display_txt{'ipblock'}</a> - ~;
+                    }
+                    $ip_ban =
+qq~<a href="$scripturl?action=ipban_gip;ban=$messlst{'imip'};lev=p;" onclick="return confirm('$display_txt{'ipban_confirm'}$messlst{'imip'}');">$display_txt{'725f'}</a> - ~;
+                }
+            }
+        $imip = $ip_block . $ip_ban . $lookup_ip;
     }
     else { $imip = $inmes_txt{'511'}; }
 
