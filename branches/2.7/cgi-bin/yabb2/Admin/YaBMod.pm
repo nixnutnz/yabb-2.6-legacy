@@ -1556,7 +1556,7 @@ sub yabm_deletemod {
    <div class="bordercolor rightboxdiv">
    <table class="border-space pad-cell" style="margin-bottom: .5em;">
      <tr>
-        <td class="titlebg"> <img src="$admin_images/boardmod_icon.png" alt="$yabmtxt{'20'}" /> <b>$yabmtxt{'20'}</b></td>
+        <td class="titlebg"> <img src="$admin_images/boardmod_icon.png" alt="$mod_list{'20'}" /> <b>$mod_list{'20'}</b></td>
      </tr>
      <tr>
     <td class="windowbg2">
