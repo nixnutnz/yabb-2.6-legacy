@@ -105,7 +105,7 @@ sub split_splice {
         $message = $convertstr;
         if ($cliped) { $message .= ' ...'; }
 
-        to_chars($message);
+        $message = to_chars($message);
         $message = do_censor($message);
 
         $messages[$counter] = qq~<option value="$counter" ~
@@ -162,7 +162,7 @@ sub split_splice {
             my $dash = q{};
             if ( $indent > 0 ) { $dash = q{-}; }
             my ( $boardname, $boardperms, undef ) = @{$board{$childbd}};
-            to_chars($boardname);
+            $boardname = to_chars($boardname);
             my $access = access_check( $childbd, q{}, $boardperms );
             next
               if !$iamadmin
@@ -213,7 +213,7 @@ sub split_splice {
         $message = $convertstr;
         if ($cliped) { $message .= ' ...'; }
 
-        to_chars($message);
+        $message = to_chars($message);
         $message =~ s/<(p|br|div).*?>/ /gxsm;
         $message =~ s/<.*?>//gxsm;    # remove HTML-tags
         $message = do_censor($message);
@@ -245,7 +245,7 @@ sub split_splice {
             $message = $convertstr;
             if ($cliped) { $message .= ' ...'; }
 
-            to_chars($message);
+            $message = to_chars($message);
             $message =~ s/<(p|br|div).*?>/ /gxsm;
             $message =~ s/<.*?>//gxsm;    # remove HTML-tags
             $message = do_censor($message);
@@ -507,7 +507,7 @@ qq~[m by=$hidename destboard=$newboard dest=$newthreadid/$linkcount#$linkcount]~
                 $tmpsub =
 qq~[m by=$hidename destboard=$newboard dest=$newthreadid]: '$tmpsub'~;
             }
-            from_chars($tmpmessage);
+            $tmpmessage = from_chars($tmpmessage);
             $utdcurthread[0] =
 qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
 
@@ -547,7 +547,7 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
             : '[b][postsmovedhere1] ' . @postnum . ' [postsmovedhere2]'
           )
           . " [i]$boardtitle\[/i] [move by] [i]${$uid.$username}{'realname'}\[/i].[/b]";
-        from_chars($tmpmessage);
+        $tmpmessage = from_chars($tmpmessage);
         ( $tmpsub, undef, undef, undef, undef, undef, undef ) =
           split /[|]/xsm, $utdnewthread[0], 7;
         splice @utdnewthread, ( $linkcount + @postnum ), 0,

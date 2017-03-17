@@ -158,14 +158,14 @@ sub modify_message {
             $multi_choice,  $poll_mod,    $poll_modname, $poll_comment,
             $vote_limit,    $pie_radius,  $pie_legends,  $poll_end
         ) = split /[|]/xsm, $poll_data[0];
-        to_chars($poll_question);
-        to_chars($poll_comment);
+        $poll_question = to_chars($poll_question);
+        $poll_comment = to_chars($poll_comment);
         our ( @votes, @options, @slicecolor, @split, );
 
         foreach my $i ( 1 .. $#poll_data ) {
             ( $votes[$i], $options[$i], $slicecolor[$i], $split[$i] ) =
               split /[|]/xsm, $poll_data[$i];
-            to_chars( $options[$i] );
+            $options[$i] = to_chars( $options[$i] );
         }
 
         if ( $poll_uname ne $username && !$staff ) {
@@ -358,7 +358,7 @@ sub modify_message2 {
         }
 
         $poll_question = $FORM{'question'};
-        from_chars($poll_question);
+        $poll_question = from_chars($poll_question);
         my $convertstr = $poll_question;
         my $convertcut = $maxpq;
         count_chars();
@@ -368,7 +368,7 @@ sub modify_message2 {
 "$post_polltxt{'40'} $post_polltxt{'34a'} $maxpq $post_polltxt{'34b'} $post_polltxt{'36'}"
             );
         }
-        to_html($poll_question);
+        $poll_question = to_html($poll_question);
 
         $guest_vote   = $FORM{'guest_vote'}   || 0;
         $hide_results = $FORM{'hide_results'} || 0;
@@ -389,7 +389,7 @@ sub modify_message2 {
             fatal_error( 'only_numbers_allowed', "$post_polltxt{'62'}" );
         }
 
-        from_chars($poll_comment);
+        $poll_comment = from_chars($poll_comment);
         $convertstr = $poll_comment;
         $convertcut = $maxpc;
         count_chars();
@@ -399,7 +399,7 @@ sub modify_message2 {
 "$post_polltxt{'57'} $post_polltxt{'34a'} $maxpc $post_polltxt{'34b'} $post_polltxt{'36'}"
             );
         }
-        to_html($poll_comment);
+        $poll_comment = to_html($poll_comment);
         $poll_comment =~ s/\n/<br \/>/gxsm;
         $poll_comment =~ s/\r//gxsm;
 
@@ -429,7 +429,7 @@ qq~$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$gu
                     fatal_error( 'useless_post', "$testspaces" );
                 }
 
-                from_chars( $FORM{"option$i"} );
+                $FORM{"option$i"} = from_chars( $FORM{"option$i"} );
                 $convertstr = $FORM{"option$i"};
                 $convertcut = $maxpo;
                 count_chars();
@@ -440,7 +440,7 @@ qq~$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$gu
                     );
                 }
 
-                to_html( $FORM{"option$i"} );
+                $FORM{"option$i"} = to_html( $FORM{"option$i"} );
                 $numcount++;
                 $FORM{"split$i"} ||= 0;
                 my $newdata =
@@ -582,23 +582,23 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
     undef $mess_len;
 
-    from_chars($subject);
+    $subject = from_chars($subject);
     my $convertstr = $subject;
     $set_subject_maxlength ||= 50;
     my $convertcut =
       $set_subject_maxlength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
     count_chars();
     $subject = $convertstr;
-    to_html($subject);
+    $subject = to_html($subject);
 
-    to_html($name);
+    $name = to_html($name);
     $email =~ s/[|]//gxsm;
-    to_html($email);
+    $email = to_html($email);
     if ( !$subject || $subject =~ m{\A[\s_.,]+\Z}xsm ) {
         fatal_error('no_subject');
     }
     my $testmessage = $message;
-    to_chars($testmessage);
+    $testmessage = to_chars($testmessage);
     $testmessage = regex_1($testmessage);
 
     if ( $testmessage eq q{} && $message ne q{} && $pollthread != 2 ) {
@@ -625,9 +625,9 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         }
     }
 
-    from_chars($message);
+    $message = from_chars($message);
     $message = regex_2($message);
-    to_html($message);
+    $message = to_html($message);
     $message = regex_3($message);
     if ( $postid == 0 ) {
         $tsub  = $subject;

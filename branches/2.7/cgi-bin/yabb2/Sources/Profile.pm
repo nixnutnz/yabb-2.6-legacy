@@ -2026,7 +2026,7 @@ sub modify_profile2 {
             fatal_error('password_is_userid');
         }
 
-        from_chars( $member{'name'} );
+        $member{'name'} = from_chars( $member{'name'} );
         my $convertstr = $member{'name'};
         my $convertcut = 30;
         count_chars();
@@ -2037,7 +2037,7 @@ sub modify_profile2 {
                 "$profile_txt{'68'} $profile_txt{'241re'}" );
         }
 
-        to_html( $member{'name'} );
+        $member{'name'} = to_html( $member{'name'} );
         if ( $user ne 'admin' ) {
 
             # Check to see if name is reserved
@@ -2072,7 +2072,7 @@ sub modify_profile2 {
             && ( lc $member{'name'} ne lc $member{'username'} )
           )
         {
-            to_chars( $member{'name'} );
+            $member{'name'} = to_chars( $member{'name'} );
             fatal_error( 'name_taken', "($member{'name'})" );
         }
 
@@ -2098,14 +2098,14 @@ s/^(\d+[|]\d+[|].*?)[|](.*?)[|]/ ($2 eq ${ $uid . $user }{'realname'} ? "$1|$mem
             manage_memberinfo( 'update', $user, $member{'name'} );
         }
 
-        to_html( $member{'gender'} );
-        from_chars( $member{'location'} );
-        to_html( $member{'location'} );
-        to_chars( $member{'location'} );
-        to_html( $member{'bday'} );
-        from_chars( $member{'sesquest'} );
-        to_html( $member{'sesquest'} );
-        to_chars( $member{'sesquest'} );
+        $member{'gender'} = to_html( $member{'gender'} );
+        $member{'location'} = from_chars( $member{'location'} );
+        $member{'location'} = to_html( $member{'location'} );
+        $member{'location'} = to_chars( $member{'location'} );
+        $member{'bday'} = to_html( $member{'bday'} );
+        $member{'sesquest'} = from_chars( $member{'sesquest'} );
+        $member{'sesquest'} = to_html( $member{'sesquest'} );
+        $member{'sesquest'} = to_chars( $member{'sesquest'} );
 
         if (
             $edit_agelimit
@@ -2306,34 +2306,34 @@ sub modify_profile_contacts2 {
     $member{'yim'} =~ s/[ ]/+/gxsm;
 
     $member{'weburl'} ||= q{};
-    to_html( $member{'email'} );
-    to_html( $member{'icq'} );
-    to_html( $member{'aim'} );
-    to_html( $member{'yim'} );
-    to_html( $member{'gtalk'} );
-    to_html( $member{'skype'} );
-    to_html( $member{'myspace'} );
-    to_html( $member{'facebook'} );
-    to_html( $member{'twitter'} );
-    to_html( $member{'youtube'} );
-    to_html( $member{'weburl'} );
-    from_chars( $member{'webtitle'} );
-    to_html( $member{'webtitle'} );
-    to_chars( $member{'webtitle'} );
-    to_html( $member{'offlinestatus'} );
-    from_chars( $member{'awaysubj'} );
-    to_html( $member{'awaysubj'} );
-    to_chars( $member{'awaysubj'} );
+    $member{'email'} = to_html( $member{'email'} );
+    $member{'icq'} = to_html( $member{'icq'} );
+    $member{'aim'} = to_html( $member{'aim'} );
+    $member{'yim'} = to_html( $member{'yim'} );
+    $member{'gtalk'} = to_html( $member{'gtalk'} );
+    $member{'skype'} = to_html( $member{'skype'} );
+    $member{'myspace'} = to_html( $member{'myspace'} );
+    $member{'facebook'} = to_html( $member{'facebook'} );
+    $member{'twitter'} = to_html( $member{'twitter'} );
+    $member{'youtube'} = to_html( $member{'youtube'} );
+    $member{'weburl'} = to_html( $member{'weburl'} );
+    $member{'webtitle'} = from_chars( $member{'webtitle'} );
+    $member{'webtitle'} = to_html( $member{'webtitle'} );
+    $member{'webtitle'} = to_chars( $member{'webtitle'} );
+    $member{'offlinestatus'} = to_html( $member{'offlinestatus'} );
+    $member{'awaysubj'} = from_chars( $member{'awaysubj'} );
+    $member{'awaysubj'} = to_html( $member{'awaysubj'} );
+    $member{'awaysubj'} = to_chars( $member{'awaysubj'} );
 
     $member{'awayreply'} ||= q{};
-    from_chars( $member{'awayreply'} );
-    to_html( $member{'awayreply'} );
+    $member{'awayreply'} = from_chars( $member{'awayreply'} );
+    $member{'awayreply'} = to_html( $member{'awayreply'} );
     $member{'awayreply'} =~ s/\n/<br \/>/gxsm;
     my $convertstr = $member{'awayreply'};
     my $convertcut = $max_awaylen;
     count_chars();
     $member{'awayreply'} = $convertstr;
-    to_chars( $member{'awayreply'} );
+    $member{'awayreply'} = to_chars( $member{'awayreply'} );
 
     if ($extendedprofiles) {    # run this before you start to save something!
         require Sources::ExtendedProfiles;
@@ -2471,13 +2471,13 @@ sub modify_profile_options2 {
             fatal_error('no_siglinks_allowed');
         }
     }
-    from_chars( $member{'usertext'} );
+    $member{'usertext'} = from_chars( $member{'usertext'} );
     my $convertstr = $member{'usertext'};
     my $convertcut = 51;
     count_chars();
     $member{'usertext'} = $convertstr;
-    to_html( $member{'usertext'} );
-    to_chars( $member{'usertext'} );
+    $member{'usertext'} = to_html( $member{'usertext'} );
+    $member{'usertext'} = to_chars( $member{'usertext'} );
 
     if ($allowpics) {
         opendir DIR,
@@ -2621,7 +2621,7 @@ sub modify_profile_options2 {
         fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
         if ($illegal) {    # delete the file as it contains illegal code
             unlink "$facesdir/UserAvatars/$fixfile";
-            to_html($illegal);
+            $illegal = to_html($illegal);
             fatal_error( 'file_not_uploaded',
                 "$fixfile <= illegal code ($illegal) inside image file!" );
         }
@@ -2712,19 +2712,19 @@ sub modify_profile_options2 {
         ${ $uid . $user }{'addgroups'} = $member{'joinmemgroup'};
     }
 
-    from_chars( $member{'signature'} );
-    to_html( $member{'signature'} );
+    $member{'signature'} = from_chars( $member{'signature'} );
+    $member{'signature'} = to_html( $member{'signature'} );
     $member{'signature'} =~ s/\n/<br \/>/gxsm;
     $convertstr = $member{'signature'};
     $convertcut = $max_siglen;
     count_chars();
     $member{'signature'} = $convertstr;
-    to_chars( $member{'signature'} );
+    $member{'signature'} = to_chars( $member{'signature'} );
 
-    to_html( $member{'userpic'} );
-    to_html( $member{'usertemplate'} );
-    to_html( $member{'userlanguage'} );
-    to_html( $member{'timeformat'} );
+    $member{'userpic'} = to_html( $member{'userpic'} );
+    $member{'usertemplate'} = to_html( $member{'usertemplate'} );
+    $member{'userlanguage'} = to_html( $member{'userlanguage'} );
+    $member{'timeformat'} = to_html( $member{'timeformat'} );
 
     my ( $pheight, $pwidth, $textsize, $col_row ) =
       split /[|]/xsm, ${ $uid . $user }{'postlayout'} || q{};
@@ -2831,7 +2831,7 @@ sub modify_profile_buddy2 {
         foreach my $cloaked_buddy (@buddies) {
             $cloaked_buddy =~ s/^[ ]//xsm;
             $cloaked_buddy = decloak($cloaked_buddy);
-            to_html($cloaked_buddy);
+            $cloaked_buddy = to_html($cloaked_buddy);
             $member{'buddylist'} = qq~$member{'buddylist'}|$cloaked_buddy~;
         }
         $member{'buddylist'} =~ s/^[|]//xsm;
@@ -2883,8 +2883,8 @@ sub modify_profile_pm2 {
             $cloakedignore =~ s/\A\s //xsm;
             $cloakedignore =~ s/\s \Z//xsm;
             $cloakedignore = decloak($cloakedignore);
-            to_html($cloakedignore);
-            $ignorelist .= qq~|$cloakedignore~;
+            $cloakedignore = to_html($cloakedignore);
+            $cloakedignore = $ignorelist .= qq~|$cloakedignore~;
         }
         $ignorelist =~ s/\A[|]//xsm;
     }
@@ -3048,9 +3048,9 @@ qq~$dr_month/$dr_day/$dr_year $maintxt{'107'} $dr_hour:$dr_minute:$dr_secund~;
     }
 
     if ( !$iamadmin ) { $member{'dr'} = ${ $uid . $user }{'regdate'}; }
-    from_chars( $member{'regreason'} );
-    to_html( $member{'regreason'} );
-    to_chars( $member{'regreason'} );
+    $member{'regreason'} = from_chars( $member{'regreason'} );
+    $member{'regreason'} = to_html( $member{'regreason'} );
+    $member{'regreason'} = to_chars( $member{'regreason'} );
     $member{'regreason'} =~ s/[\r\n]{1,2}/<br \/>/gxsm;
     ${ $uid . $user }{'regreason'} = $member{'regreason'};
     ${ $uid . $user }{'postcount'} = $member{'settings6'};
@@ -3397,7 +3397,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
             do_ubbc(1);
         }
 
-        to_chars($message);
+        $message = to_chars($message);
 
         # Censor the signature.
         load_censor_list();
@@ -3493,7 +3493,7 @@ qq~$profile_txt{'notshowingemail'} $admtitle$profile_txt{'notshowingemailend'}~;
                 for my $thismod (@boardmoderators) {
                     if ( $thismod eq $user ) {
                         ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
-                        to_chars($boardname);
+                        $boardname = to_chars($boardname);
                         my ($my_brd);
                         if ( !${ $uid . $board }{'canpost'}
                             && $subboard{$board} )
@@ -4113,7 +4113,7 @@ sub usersrecentposts {
             $musername, $micon, $mattach, $mip,
             $message,   $mns,   $tstate,  $tusername
         ) = @{ $data{ $data[0] } };
-        to_chars($msub);
+        $msub = to_chars($msub);
         ( $msub, undef ) = split_splice_move( $msub, 0 );
         return ( timeformat($mdate)
               . qq~<br />$profile_txt{'view'} &rsaquo; <a href="$scripturl?num=$tnum/$c#$c">$msub</a>~
@@ -4141,16 +4141,16 @@ sub usersrecentposts {
             do_ubbc();
         }
         wrap2();
-        to_chars($msub);
-        to_chars($message);
+        $msub = to_chars($msub);
         $msub    = do_censor($msub);
+        $message = to_chars($message);
         $message = do_censor($message);
-        to_chars( ${ $catinfos{$board} }[0] );
-        to_chars( $boardname{$board} );
+        ${ $catinfos{$board} }[0] = to_chars( ${ $catinfos{$board} }[0] );
+        $boardname{$board} = to_chars( $boardname{$board} );
 
         $counter++;
         my $mytname = "$tname ($maintxt{'28'})";
-        if ( $tusername !~ m{Guest}xsm ) {
+        if ( $tusername !~ m/Guest/xsm ) {
             if ( -e ("$memberdir/$tusername.vars") ) {
                 load_user($tusername);
                 $mytname =

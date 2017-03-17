@@ -347,7 +347,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$fo
 
         # Censor the subject of the thread.
         $msub = do_censor($msub);
-        to_chars($msub);
+        $msub = to_chars($msub);
 
         # Build the page links list.
         $pages = q{};
@@ -589,7 +589,7 @@ qq~$messageindex_txt{'75'}<br />$messageindex_txt{'76'} $curfav $messageindex_tx
     $treplies = number_format($treplies);
     $bdpic_ext ||= 'gif';
 
-    to_chars($bdescrip);
+    $bdescrip = to_chars($bdescrip);
     $boarddescription =~ s/\Q{yabb boarddescription}\E/$bdescrip/gxsm;
     $favorites_template =~ s/\Q{yabb description}\E/$boarddescription/gxsm;
     my $bdpic =

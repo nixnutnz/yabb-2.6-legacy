@@ -43,7 +43,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'no_recipient'         => q~The Recipient field was not filled out. It is required~,
 'no_email'             => q~The e-mail field was not filled out. It is required.~,
 'no_name'              => q~The Name field was not filled out. It is required.~,
-'no_ip'                => qq~IP not found, please change \$user_ip in $lang~,
+'no_ip'                => qq~IP not found~,
 'no_username'          => q~The User ID field was not filled out. It is required.~,
 'no_password'          => q~Password field is empty~,
 'no_action'            => q~No action specified.~,

@@ -123,8 +123,8 @@ require "$langdir/Lang.lng";
         }
         else { ${ $_ . '_news' } = q{}; }
         my $lbl = $_ . '_news';
-        to_html( ${$lbl} );
-        to_chars( ${$lbl} );
+        ${$lbl} = to_html( ${$lbl} );
+        ${$lbl} = to_chars( ${$lbl} );
 
         push @{ $settings[1]{items} },
           {
@@ -152,7 +152,7 @@ qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl
             $settings{$lbl} ||= q{};
             $settings{$lbl} =~ tr/\r//d;
             chomp $settings{$lbl};
-            from_chars( $settings{$lbl} );
+            $settings{$lbl} = from_chars( $settings{$lbl} );
         }
 
         # Settings.pm stuff

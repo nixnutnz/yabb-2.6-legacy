@@ -23,8 +23,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 %yabbtagdesc = (
 # Constant tags
-'scripturl' => qq~The URL to YaBB. Example: $scripturl~,
-'adminurl' => qq~The URL to YaBB Admin Center. Example: $boardurl/AdminIndex.$yyaext~,
+'scripturl' => q~The URL to YaBB. Example: {yabb scripturl}~,
+'adminurl' => q~The URL to YaBB Admin Center. Example: {yabb adminurl}~,
 'mbname' => q~This forum's name. Example: {yabb mbname}~,
 
 # New Member related
@@ -47,7 +47,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 # Registration/Password
 'activationcode' => q~The Activation Link sent in a Register e-mail.~,
 'remindercode' => q~The Password Link sent in a Reminder e-mail.~,
-'preregspan' => qq~The time allowed before the Pre-Registration expires. Current value: $preregspan~,
+'preregspan' => q~The time allowed before the Pre-Registration expires. Current value: {yabb preregspan}~,
 'reason' => q~Admin reason behind a decision made on a registering User while in 'register with Admin Approval' mode~,
 
 # Sending a Topic

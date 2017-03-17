@@ -344,7 +344,7 @@ sub votedetails {
         fclose('POLLTP') or croak "$croak{'close'} $pollnum.txt";
     }
     my $psub = ( split /[|]/xsm, ${ $thread_arrayref{$pollnum} }[0], 2 )[0];
-    to_chars($psub);
+    $psub = to_chars($psub);
 
     # Censor the options.
     $poll_question = do_censor($poll_question);
@@ -354,7 +354,7 @@ sub votedetails {
         do_ubbc();
         $poll_question = $message;
     }
-    to_chars($poll_question);
+    $poll_question = to_chars($poll_question);
 
     my $totalvotes = 0;
     my $maxvote    = 0;
@@ -369,7 +369,7 @@ sub votedetails {
             do_ubbc();
             $options[$i] = $message;
         }
-        to_chars( $options[$i] );
+        $options[$i] = to_chars( $options[$i] );
     }
 
     my @polled;
@@ -402,7 +402,7 @@ qq~<span class="small">&laquo; $polltxt{'45a'}: $linkprofile $polltxt{'46'}: $po
 qq~<span class="small">&laquo; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_date &raquo;</span>~;
         }
     }
-    to_chars($boardname);
+    $boardname = to_chars($boardname);
     $yytitle = $polltxt{'42'};
 
     my $template_home = qq~<a href="$scripturl">$mbname</a>~;
@@ -433,7 +433,7 @@ qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $curthreadurl~;
                 do_ubbc();
                 $options[$oldvote] = $message;
             }
-            to_chars( $options[$oldvote] );
+            $options[$oldvote] = to_chars( $options[$oldvote] );
             $voted .= qq~$options[$oldvote]<br />~;
         }
 
@@ -604,7 +604,7 @@ qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate
             do_ubbc();
             $options[$i] = $message;
         }
-        to_chars( $options[$i] );
+        $options[$i] = to_chars( $options[$i] );
         $piearray .= qq~"$votes[$i]|$options[$i]|$slicecolor[$i]|$split[$i]", ~;
         if ( $votes[$i] !~ /\D/xsm ) {
             $totalvotes += int $votes[$i];
@@ -692,7 +692,7 @@ qq~<span class="small">&laquo; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_
         do_ubbc();
         $poll_question = $message;
     }
-    to_chars($poll_question);
+    $poll_question = to_chars($poll_question);
 
     our $deletevote = q{};
     our $footer     = q{};
@@ -713,7 +713,7 @@ qq~<span class="small">&laquo; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_
                     do_ubbc();
                     $options[$optnum] = $message;
                 }
-                to_chars( $options[$optnum] );
+                $options[$optnum] = to_chars( $options[$optnum] );
                 $footer .= qq~$options[$optnum], ~;
             }
         }
@@ -856,7 +856,7 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
             do_ubbc();
         }
         $poll_comment = $message;
-        to_chars($poll_comment);
+        $poll_comment = to_chars($poll_comment);
         $my_pollcomment = qq~
     <div style="width: 100%;"><br />$poll_comment</div>~;
     }

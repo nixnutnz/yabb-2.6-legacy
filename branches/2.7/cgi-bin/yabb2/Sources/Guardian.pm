@@ -44,7 +44,7 @@ our (
     $union_htaccess,        $union_notify,
     $union_on,              $use_guardian,
     $use_htaccess,          $webmaster_email,
-    $whitelist,
+    $whitelist,             $scripturl,
 );
 ## system ##
 our (

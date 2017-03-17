@@ -2679,16 +2679,18 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
         $curline =~
           s/\Qimg src=\E\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eigxsm;
         $output .= $curline || q{};
+        my $year = (gmtime)[5];
+        $year += 1900;
         $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
         $output =~ s/\Q{yabb version}\E/$yabbversion/xsm;
+        $output =~ s/\Q{yabb year}\E/$year/xsm;
     }
     if ( $yycopyin == 0 ) {
         $output =
 qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
-    my $mycopy = qq~2000-$newyear~;
-    $output =~ s/2000-1900/$mycopy/xsm;
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
+    $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
 
     print $output or croak 'cannot print page';
     exit;

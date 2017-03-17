@@ -379,11 +379,11 @@ sub add_smilies {
                 $FORM{"smimg[$temp_a]"} = $FORM{"cur_smimg[$temp_a]"};
             }
 
-            to_html( $FORM{"scd[$temp_a]"} );
+            $FORM{"scd[$temp_a]"} = to_html( $FORM{"scd[$temp_a]"} );
             $FORM{"scd[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
             $FORM{"scd[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
 
-            to_html( $FORM{"sdescr[$temp_a]"} );
+            $FORM{"sdescr[$temp_a]"} = to_html( $FORM{"sdescr[$temp_a]"} );
             $FORM{"sdescr[$temp_a]"} =~ s/\$/&\x2336;/gxsm;
             $FORM{"sdescr[$temp_a]"} =~ s/\@/&\x2364;/gxsm;
             my $smbox = $FORM{"smbox[$temp_a]"} ? '<br />' : q{};

@@ -1206,8 +1206,8 @@ qq~[quote author=$cloaked_author link=impost date=$mdate\]$message\[/quote\]\n~;
         }
     }
 
-    if ( $INFO{'forward'} || $INFO{'quote'} ) { from_html($message); }
-    from_html($msubject);
+    if ( $INFO{'forward'} || $INFO{'quote'} ) { $message = from_html($message); }
+    $msubject = from_html($msubject);
 
     our $submittxt = $inmes_txt{'sendmess'};
     if ( $INFO{'forward'} == 1 ) { $submittxt = $inmes_txt{'forward'}; }
@@ -2491,7 +2491,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$messlst{'mtouse
             my $checkz = 0;
 
             $messlst{'msub'} = do_censor( $messlst{'msub'} );
-            to_chars( $messlst{'msub'} );
+            $messlst{'msub'} = to_chars( $messlst{'msub'} );
 
             my $mydate = timeformat( $messlst{'mdate'} );
             ## start of message row 1
@@ -3165,14 +3165,14 @@ qq~<img src="$imagesdir/$im_code1" alt="$inmes_imtxt{'84'}" title="$inmes_imtxt{
                 }
                 $immessage =~ s/<br.*?>/&nbsp;/igxsm;
                 $immessage =~ s/&nbsp;&nbsp;/ /gxsm;
-                to_chars($immessage);
+                $immessage = to_chars($immessage);
                 $immessage =~ s/\[.*?\]//gxsm;
-                from_chars($immessage);
+                $immessage = from_chars($immessage);
                 my $convertstr = $immessage;
                 my $convertcut = 100;
                 count_chars();
                 $immessage = $convertstr;
-                to_chars($immessage);
+                $immessage = to_chars($immessage);
                 if ($cliped) { $immessage .= q{...}; }
                 $immessage = qq~$quoteimg$codeimg $immessage~;
                 $immessage = do_censor($immessage);

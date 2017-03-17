@@ -718,7 +718,7 @@ sub register2 {
         }
     }
 
-    from_chars( $member{'regrealname'} );
+    $member{'regrealname'} = from_chars( $member{'regrealname'} );
     my $convertstr = $member{'regrealname'};
     my $convertcut = 30;
     count_chars();
@@ -775,9 +775,9 @@ sub register2 {
         count_chars();
         $member{'reason'} = $convertstr;
 
-        from_chars( $member{'reason'} );
-        to_html( $member{'reason'} );
-        to_chars( $member{'reason'} );
+        $member{'reason'} = from_chars( $member{'reason'} );
+        $member{'reason'} = to_html( $member{'reason'} );
+        $member{'reason'} = to_chars( $member{'reason'} );
         $member{'reason'} =~ s/[\r\n]{1,2}/<br \/>/igxsm;
     }
 
@@ -1127,6 +1127,7 @@ sub register2 {
                 my $txt = <$WELL>;
                 fclose('WELL');
                 ($imsubject, $imtext) = split /[|]/xsm, $txt;
+                chomp $imtext;
             }
             our ($IM);
             fopen( 'IM', '>', "$memberdir/$member{'regusername'}.msg", 1 )
@@ -1408,6 +1409,7 @@ sub user_activation {
                     my $txt = <$WELL>;
                     fclose('WELL');
                     ($imsubject, $imtext) = split /[|]/xsm, $txt;
+                    chomp $imtext;
                 }
                 our ($INBOX);
                 fopen( 'INBOX', '>', "$memberdir/$reguser.msg" )

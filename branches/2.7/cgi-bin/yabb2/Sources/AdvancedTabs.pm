@@ -147,7 +147,7 @@ sub add_new_tab2 {
             $exttaburl = q{};
         }
 
-        to_html($tabtext);
+        $tabtext = to_html($tabtext);
 
         opendir DIR, $langdir;
         my @languages = readdir DIR;
@@ -294,7 +294,7 @@ sub edit_tab2 {
         $tosave = $INFO{'savetab'};
         $tosave =~ s/%26/&/gxsm;
         $tosavetxt = $FORM{$tosave};
-        to_html($tosavetxt);
+        $tosavetxt = to_html($tosavetxt);
         $tab_lang = $language ? $language : $lang;
         require "$langdir/$tab_lang/tabtext.txt";
         my $pnttxt = q{};

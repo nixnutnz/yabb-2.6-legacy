@@ -284,10 +284,10 @@ sub ext_parse_ubbc {
     my ( $source, $displayname ) = @_;
     my $temp = $message;
     $message = $source;
-    require Sources::YaBBC;
     $displayname = $pusername;    # must be set for /me tag
+    enable_yabbc();
     do_ubbc();
-    to_chars($message);
+    $message = to_chars($message);
     $source  = $message;
     $message = $temp;
     return $source;
@@ -638,7 +638,7 @@ sub ext_gen_editfield {
         $value = ext_get( $psername, $field{'name'}, 1 );
     }
 
-    from_html( $field{'comment'} );
+    $field{'comment'} = from_html( $field{'comment'} );
 
     $template1 = $ext_template1;
     $template1 =~ s/\Q{yabb fieldname}\E/$field{'name'}/xsm;
@@ -983,9 +983,9 @@ sub ext_validate_submition {
                       . $lang_ext{'not_numeric'}
                       . "<br />\n";
                 }
-                from_chars($value);
-                to_html($value);
-                to_chars($value);
+                $value = from_chars($value);
+                $value = to_html($value);
+                $value = to_chars($value);
 
             }
             elsif ( $field{'type'} eq 'text_multi' ) {
@@ -999,9 +999,9 @@ sub ext_validate_submition {
                       . $lang_ext{'too_long'}
                       . "<br />\n";
                 }
-                from_chars($value);
-                to_html($value);
-                to_chars($value);
+                $value = from_chars($value);
+                $value = to_html($value);
+                $value = to_chars($value);
                 $value =~ s/\n/<br \/>/gxsm;
                 $value =~ s/\r//gxsm;
 

@@ -2649,9 +2649,13 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
         if ( $curline =~ /img src="$imagesdir\/(.+?)"/ixsm ) {
             $curline =~ s/img src="$imagesdir\/(.+?)"/setupimgloc($1)/eigxsm;
         }
+
+        my $year = (gmtime)[5];
+        $year += 1900;
         $output .= $curline || q{};
         $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
         $output =~ s/\Q{yabb version}\E/$yabbversion/xsm;
+        $output =~ s/\Q{yabb year}\E/$year/xsm;
     }
     if ( $yycopyin == 0 ) {
         $output =

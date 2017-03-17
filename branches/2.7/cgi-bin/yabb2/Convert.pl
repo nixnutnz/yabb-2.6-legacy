@@ -3468,23 +3468,21 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
         }
         $scripturl = "$boardurl/YaBB.$yyext";
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
-        $curline =~ s/\Q{yabb mbname}/$mbname/gxsm;
         $curline =~ s/\Q{yabb url}\E/$scripturl/gxsm;
+        $curline =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
         $curline =~ s/img src\=\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eisgm;
         $output .= $curline;
+        my $year = (gmtime)[5];
+        $year += 1900;
+        $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
+        $output =~ s/\Q{yabb version}\E/$yabbversion/xsm;
+        $output =~ s/\Q{yabb year}\E/$year/xsm;
     }
     if ( $yycopyin == 0 ) {
         $output =
 qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
-    if ( fileno $GZIP ) {
-        $OUTPUT_AUTOFLUSH = 1;
-        print {$GZIP} $output or croak 'cannot print compressed page';
-        close $GZIP or croak 'cannot close GZIP';
-    }
-    else {
-        print $output or croak 'cannot print page';
-    }
+    print $output or croak 'cannot print page';
     exit;
 }
 

@@ -835,6 +835,7 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
                 my $txt = <$WELL>;
                 fclose('WELL');
                 ($imsubject, $imtext) = split /[|]/xsm, $txt;
+                chomp $imtext;
             }
             our ($INBOX);
             fopen( 'INBOX', '>', "$memberdir/$apruser.msg" )

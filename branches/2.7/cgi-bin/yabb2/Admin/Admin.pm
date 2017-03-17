@@ -424,7 +424,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
         }
     }
     ( $lssub, undef ) = split_splice_move( $lssub, 0 );
-    to_chars($lssub);
+    $lssub = to_chars($lssub);
     $yymain .=
 qq~<a href="$scripturl?num=$lspostid/$lsreply#$lsreply">$lssub</a> ($lsdatetime)</div>
                     <br />
@@ -1254,7 +1254,7 @@ sub addmember2 {
         fatal_error('password_is_userid');
     }
 
-    from_chars( $member{'regrealname'} );
+    $member{'regrealname'} = from_chars( $member{'regrealname'} );
     my $convertstr = $member{'regrealname'};
     my $convertcut = 30;
     count_chars();
@@ -1391,7 +1391,7 @@ sub addmember2 {
     if   ($default_template) { $new_template = $default_template; }
     else                     { $new_template = 'default'; }
 
-    to_html( $member{'regrealname'} );
+    $member{'regrealname'} = to_html( $member{'regrealname'} );
     {
         no strict qw(refs);
         ${ $uid . $reguser }{'password'}      = $encryptopass;

@@ -168,7 +168,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
 qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); return false;">$detailed{'modded'}</a></span> <div id="yabbmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('yabbmods'); return false;" class="small">$yabbmodslist</div>~;
     }
     my $ageyabb = ( stat("$boarddir/$yyexec.$yyext")->mtime );
-    my ( $checkvery, $dateyabb, $yabbchkmatch );
+    my ( $checkvery, $dateyabb, $yabbchkmatch ) = (q{}, q{}, q{});
     if ( !$vercheck || $vercheck == 0 ) {
         if ( $lineyabb ne $checksum{"$yyexec.$yyext"} ) {
             $checkvery = 1;

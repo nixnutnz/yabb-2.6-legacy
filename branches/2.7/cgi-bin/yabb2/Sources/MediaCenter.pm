@@ -84,7 +84,7 @@ qq~ $maintxt{'42'} <a href="$scripturl?action=register">$img{'register'}</a>~;
         }
         else { $media_url = 'media://' . $media_url; }
 
-        to_html($media_url);    ## convert url to html
+        $media_url = to_html($media_url);    ## convert url to html
         my $controlheight = 0;
 
         # file extensions that open windows media player for video

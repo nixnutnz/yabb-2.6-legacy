@@ -43,8 +43,7 @@ our (
     $yymain,        $yynavigation,  $yysetlocation,     $yytitle,
     %board,         %board_notify,  %cat,               %catinfo,
     %FORM,          %format_unbold, %INFO,              %moved_file,
-    %subboard,      %useraccount,   %yyuserlog,         @bmaildir,
-    @categoryorder, @tmaildir,
+    %subboard,      %useraccount,   %yyuserlog,         @categoryorder, 
 );
 ## templates ##
 our (
@@ -59,6 +58,8 @@ load_language('Notify');
 ## local ##
 our ( %theboard, %thethread, @allboards );
 
+my $dmax = $date - ( $max_log_days_old * 86400 );
+
 sub manageboardnotify {
     my @myargs = @_;
     my ( $todo, $theboard, $user, $userlang, $notetype, $noteview ) = @myargs;
@@ -67,7 +68,7 @@ sub manageboardnotify {
         || $todo eq 'delete'
         || $todo eq 'add' )
     {
-        undef %theboard;
+        %theboard = ();
         ## open board mail file
         if ( -e "$boardsdir/$theboard.mail" ) {
             require "$boardsdir/$theboard.mail";
@@ -154,7 +155,7 @@ sub boardnotify {
     my $deloption = q{};
     my $my_delopt = q{};
     my $boardname = ${$board{$currentboard}}[0];
-    to_chars($boardname);
+    $boardname = to_chars($boardname);
     manageboardnotify( 'load', $currentboard );
 
 ##  popup from MessageIndex
@@ -341,7 +342,7 @@ sub notify4 {
 
 sub update_language {
     my ( $user, $newlang ) = @_;
-    get_mail_files();
+    my (@bmaildir, @tmaildir) = get_mail_files();
     foreach (@bmaildir) {
         manageboardnotify( 'update', $_, $user, $newlang, q{}, q{} );
     }
@@ -353,7 +354,7 @@ sub update_language {
 
 sub remove_notifications {
     my $user_s = shift;
-    get_mail_files();
+    my (@bmaildir, @tmaildir) = get_mail_files();
     foreach (@bmaildir) {
         manageboardnotify( 'delete', $_, $user_s );
     }
@@ -364,16 +365,16 @@ sub remove_notifications {
 }
 
 sub get_mail_files {
-    opendir BOARDNOT, "$boardsdir";
-    @bmaildir =
+    opendir BOARDNOT, $boardsdir;
+    my @bmaildir =
       map { ( split /[.]/xsm )[0] } grep { /[.]mail$/xsm } readdir BOARDNOT;
     closedir BOARDNOT;
-    opendir THREADNOT, "$datadir";
-    @tmaildir =
+    opendir THREADNOT, $datadir;
+    my @tmaildir =
       map  { ( split /[.]/xsm )[0] }
       grep { /[.]mail$/xsm } readdir THREADNOT;
     closedir THREADNOT;
-    return;
+    return (@bmaildir, @tmaildir);
 }
 
 sub show_notifications {
@@ -400,7 +401,6 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
     our ( $board_notify, $thread_notify ) = notification_alert();
     our ( $num, $new );
     getlog();
-    my $dmax = $date - ( $max_log_days_old * 86400 );
 
     # Board notifications
     {
@@ -455,7 +455,7 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
             $boardblock .= $my_boardblock;
             $boardblock =~ s/\Q{yabb brd}\E/$_/gxsm;
             $boardblock =~ s/\Q{yabb new}\E/$new/gxsm;
-            $boardblock =~ s/\Q{yabb brdnote0}\E/${$$board_notify{$_}}[0]/gxsm;
+            $boardblock =~ s/\Q{yabb brdnote0}\E/${${$board_notify}{$_}}[0]/gxsm;
             $boardblock =~ s/\Q{yabb selected1}\E/$selected1/gxsm;
             $boardblock =~ s/\Q{yabb selected2}\E/$selected2/gxsm;
             $boardblock =~ s/\Q{yabb notify_txt132}\E/$notify_txt{'132'}/gxsm;
@@ -551,13 +551,12 @@ s/\Q{yabb tnote4}\E/${$$thread_notify{$_}}[4] &raquo; ${$thread_notify{$_}}[7]/g
 
 sub notification_alert {
     my ( $myboard, $mythread, %thread_notify );
-
+    my @bmaildir = ();
+    my @tmaildir = ();
     {
         no strict qw(refs);
-        @bmaildir = split /,/xsm,
-          ${ $uid . $username }{'board_notifications'} || q{};
-        @tmaildir = split /,/xsm,
-          ${ $uid . $username }{'thread_notifications'} || q{};
+        if ( ${ $uid . $username }{'board_notifications'} ) { @bmaildir = split /,/xsm, ${ $uid . $username }{'board_notifications'}; }
+        if ( ${ $uid . $username }{'thread_notifications'}) { @tmaildir = split /,/xsm, ${ $uid . $username }{'thread_notifications'};}
 
         # needed for $new - icon (on/off/new)
         my @noloadboard =
@@ -567,7 +566,6 @@ sub notification_alert {
 
     # to get ${$uid.$myboard}{'lastposttime'}
     getlog();    # sub in Subs.pm, for $yyuserlog{$myboard}
-    my $dmax = $date - ( $max_log_days_old * 86400 );
 
     ## run through boards list
     for my $myboard (@bmaildir) {    # board name from file name
@@ -585,7 +583,6 @@ sub notification_alert {
             if ( exists $theboard{$username} ) {
                 ## grab board name
                 my $boardname = ${$board{$myboard}}[0];
-
                 $board_notify{$myboard} = [
                     $boardname,
                     ${ $theboard{$username} }[1],
@@ -679,7 +676,7 @@ sub notification_alert {
                 $mname     = ${ ${ 'notify' . $boardid . $mythread } }[1];
                 $musername = ${ ${ 'notify' . $boardid . $mythread } }[2];
 
-                to_chars($msub);
+                $msub = to_chars($msub);
                 ( $msub, undef ) = split_splice_move( $msub, 0 );
                 $msub = do_censor($msub);    # censor subject text !
 

@@ -50,6 +50,7 @@ our (
     $username,     $yydesc,      $yymain,     $yytitle,
     %board,        %cat,         %catinfo,    %director,
     %INFO,         %subboard,    %yy_cookies, @categoryorder,
+    $iamguest,
 );
 
 # Change the error routine for here.
@@ -150,8 +151,8 @@ sub rss_board {
         }
 
         ( $msub, undef ) = split_splice_move( $msub, 0 );
-        from_html($msub);
-        to_chars($msub);
+        $msub = from_html($msub);
+        $msub = to_chars($msub);
 
         # Censor the subject of the thread.
         $msub = do_censor($msub);
@@ -160,7 +161,7 @@ sub rss_board {
         if ( $rss_message == 2 ) { $postid = '0#0'; }
 
         my $category = "$mbname/$boardname";
-        from_html($category);
+        $category = from_html($category);
 
         # Show the minimum stuff (topic title, link to it)
         my ($permdate);
@@ -259,8 +260,8 @@ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/$maintxt{'rsscode'}/eigxsm;
                     do_ubbc();
                 }
             }
-            from_html($message);
-            to_chars($message);
+            $message = from_html($message);
+            $message = to_chars($message);
             $message = do_censor($message);
 
             $yymain .=
@@ -277,7 +278,7 @@ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/$maintxt{'rsscode'}/eigxsm;
         $i++;    # Increment
     }
 
-    to_chars($boardname);
+    $boardname = to_chars($boardname);
     $yytitle = $boardname;
     $curboard ||= q{};
     {
@@ -334,7 +335,7 @@ sub rss_recent {
                 if ( !$iamadmin && $access ne 'granted' ) { next; }
                 {
                     no strict qw(refs);
-                    if ( ${ $uid . $brd }{'brdpasswr'} ) {
+                    if ( !$iamguest && ${ $uid . $brd }{'brdpasswr'} ) {
                         my $cookiename = "$cookiepassword$brd$username";
                         my $crypass    = ${ $uid . $brd }{'brdpassw'};
                         if ( !$staff && ( !$yy_cookies{$cookiename} || $yy_cookies{$cookiename} ne $crypass ) ) {
@@ -361,7 +362,7 @@ sub rss_recent {
                     $mdate = sprintf '%010d', $mdate;
 
                     # Check if it's hidden. If so, don't show it
-                    if ( $mstate =~ /h/sm && !$iamadmin && !$iamgmod ) { next; }
+                    if ( $mstate =~ /h/xsm && !$iamadmin && !$iamgmod ) { next; }
 
      # Add it to an array, using $mdate as the first value so we can easily sort
                     push @threadlist, "$mdate|$brd|$buffer";
@@ -391,8 +392,8 @@ sub rss_recent {
         my $curnum = $mnum;
 
         ( $msub, undef ) = split_splice_move( $msub, 0 );
-        from_html($msub);
-        to_chars($msub);
+        $msub = from_html($msub);
+        $msub = to_chars($msub);
 
         # Censor the subject of the thread.
         $msub = do_censor($msub);
@@ -420,9 +421,9 @@ sub rss_recent {
         if ( $rss_message == 2 ) { $postid = '0#0'; }
 
         my $category = "$mbname/$boardname{$board}";
-        from_html($category);
+        $category = from_html($category);
         my $bn = $boardname{$board};
-        from_html($bn);
+        $bn = from_html($bn);
         if ( $accept_permalink || $accept_permafull ) {
             my $permsub = $msub;
             $permdate = permtimer($curnum);
@@ -520,8 +521,8 @@ sub rss_recent {
                     $displayname = ${ $uid . $musername }{'realname'};
                     do_ubbc();
                 }
-                from_html($message);
-                to_chars($message);
+                $message = from_html($message);
+                $message = to_chars($message);
                 $message = do_censor($message);
                 $yymain .=
                     q~           <description>~
@@ -535,7 +536,7 @@ sub rss_recent {
         $yymain =~ s/data-rel/rel/gxsm;
     }
 
-    to_chars($boardname);
+    $boardname = to_chars($boardname);
     $curboard ||= q{};
     {
         no strict qw(refs);
@@ -574,10 +575,10 @@ sub rss_template {    # print RSS output
         $descr = qq{$mydesc - $mbname};
     }
 
-    from_html($tit);
-    from_html($descr);
+    $tit = from_html($tit);
+    $descr = from_html($descr);
     my $mn = $mbname;
-    from_html($mn);
+    $mn = from_html($mn);
     our $output = qq~<?xml version="1.0" encoding="$yymycharset" ?>
 <!-- IF YOU'RE SEEING THIS AND ARE USING CHROME GO TO https://chrome.google.com/webstore/detail/rss-subscription-extensio/nlbjncdgjeocebhnmkbbbdekmmmcbfjd AND GET THE ADD-IN -->
 <!-- IF YOU'RE SEEING THIS AND ARE USING OPERA GO TO https://addons.opera.com/en/extensions/ and search for 'RSS' to get an add-in -->
@@ -636,11 +637,11 @@ sub rss_error {
     }
 
     my $tit = $error_txt{'error_occurred'};
-    from_html($tit);
+    $tit = from_html($tit);
     my $ed = "$ot$l$v";
-    from_html($ed);
+    $ed = from_html($ed);
     my $mn = $mbname;
-    from_html($mn);
+    $mn = from_html($mn);
     $yymain = q~
     <item>
         <title>~ . rss_description_trim($tit) . q~</title>

@@ -144,7 +144,9 @@ sub editemailtemplates {
             no strict qw(refs);
             $message = ${$string};
         }
-        to_html($message);
+        $message = to_html($message);
+        $message =~ s/{/&#123;/gxsm;
+        $message =~ s/}/&#125;/gxsm;
         my $comment = $emaildesc{$string};
 
         $yymain .= qq~
@@ -165,15 +167,15 @@ sub editemailtemplates {
             <td class="windowbg2">
                 $emaileditor{'7'}
                 <ul>
-                    <li>{yabb scripturl} $yabbtagdesc{'scripturl'}</li>
-                    <li>{yabb adminurl} $yabbtagdesc{'adminurl'}</li>
-                    <li>{yabb mbname} $yabbtagdesc{'mbname'}</li>~;
+                    <li>&#123;yabb scripturl&#125; $yabbtagdesc{'scripturl'}</li>
+                    <li>&#123;yabb adminurl&#125; $yabbtagdesc{'adminurl'}</li>
+                    <li>&#123;yabb mbname&#125; $yabbtagdesc{'mbname'}</li>~;
 
         # Find the list of usable YaBB tags
         for my $yabbtag ( split /\s+/xsm, $yabbtags{$string} ) {
             if ( $yabbtag !~ /\w/xsm ) { next; }
             $yymain .= qq~
-                    <li>{yabb $yabbtag} $yabbtagdesc{$yabbtag}</li>~;
+                    <li>&#123;yabb $yabbtag&#125; $yabbtagdesc{$yabbtag}</li>~;
         }
 
         $yymain .= qq~

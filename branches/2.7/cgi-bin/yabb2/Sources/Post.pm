@@ -247,7 +247,7 @@ sub post {
     get_forum_master();
     my ( $ct, $catperms ) = @{$catinfo{$curcat}};
     $cat = $ct;
-    to_chars($cat);
+    $cat = to_chars($cat);
 
     $pollthread = 0;
     $postthread = 0;
@@ -345,7 +345,7 @@ s/\n{0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\]\n{0,1}/\n/igxsm;
 qq~[quote author=$hidename link=$threadid/$quotemsg#$quotemsg date=$mdate\]\[/quote\]\n~
               ) - 3;
             my $mess_len = $message;
-            to_chars($mess_len);
+            $mess_len = to_chars($mess_len);
             $mess_len =~ s/[\r\n ]//igxsm;
             $mess_len =~ s/&\x23\d{3,}?;/X/igxsm;
 
@@ -414,9 +414,9 @@ sub post_page {
     if ( $postid eq 'Poll' ) { $sub = $post_txt{'66a'}; }
 
     $message =~ s/<\//&lt;\//igxsm;
-    to_chars($message);
+    $message = to_chars($message);
     $message = do_censor($message);
-    to_chars($sub);
+    $sub = to_chars($sub);
     $sub             = do_censor($sub);
     $displayname     = q{};
     $moddate         = 0;
@@ -568,8 +568,8 @@ sub post_page {
         if ($threadid) {
             $threadlink = qq~<a href="$scripturl?num=$threadid">$subtitle</a>~;
         }
-        to_chars($boardname);
-        to_chars($cat);
+        $boardname = to_chars($boardname);
+        $cat = to_chars($cat);
         $yynavigation =
 qq~&rsaquo; <a href="$scripturl?catselect=$catid">$cat</a> &rsaquo; <a href="$scripturl?board=$currentboard">$boardname</a> &rsaquo; $t_title ( $threadlink )~;
     }
@@ -690,7 +690,7 @@ qq~             <img src="$tmpurl" class="bottom pointer" alt="${$addedsmilies{$
             $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
             $tmpcode =~ s/\&quot;/\x22/gxsm;
 
-            from_html($tmpcode);
+            $tmpcode = from_html($tmpcode);
             $tmpcode =~ s/&\x2336;/\$/gxsm;
             $tmpcode =~ s/&\x2364;/\@/gxsm;
             $more_smilie_array .= qq~" $tmpcode", ~;
@@ -753,7 +753,7 @@ $iconliveprev
         document.images.icons.src = icon_show;
     }~;
     }
-    to_html($moddate);
+    $moddate = to_html($moddate);
     my $my_topper = qq~
 </script>
 <input type="hidden" name="threadid" value="$threadid" />
@@ -1027,7 +1027,7 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
           qq~<img src="$micon_bg{$icon}" id="liveicons" alt="" />~;
         get_template('Post');
 
-        from_html($moddate);
+        $moddate = from_html($moddate);
         my $messageblock = $mypost_liveprev;
         $messageblock =~ s/\Q{yabb images}\E/$imagesdir/gxsm;
         $messageblock =~ s/\Q{yabb css}\E/$css/gxsm;
@@ -1196,7 +1196,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     $smilie_url_array .= qq~"$tmpurl", ~;
                     $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
                     $tmpcode =~ s/\&quot;/\x22/gxsm;
-                    from_html($tmpcode);
+                    $tmpcode = from_html($tmpcode);
                     $tmpcode =~ s/&\x2336;/\$/gxsm;
                     $tmpcode =~ s/&\x2364;/\@/gxsm;
                     $smilie_code_array .= qq~" $tmpcode", ~;
@@ -1606,7 +1606,7 @@ if(document.getElementById('toshowbcc').length > 0) document.getElementById('tos
 ##  show Error
 sub preview {
     my ($error) = @_;
-    to_html($error);
+    $error = to_html($error);
 
     # allows the following HTML-tags in error messages: <br /> <strong>
     $error =~ s/&lt;br(\s \/)&gt;/<br \/>/igxsm;
@@ -1765,9 +1765,9 @@ sub post2 {
 
     ## clean name and email - remove | from name and turn any _ to spaces for mail
     if ( $name && $email ) {
-        to_html($name);
+        $name = to_html($name);
         $email =~ s/[|]//gxsm;
-        to_html($email);
+        $email = to_html($email);
         $tempname = $name;
         $name =~ s/_/ /gxsm;
     }
@@ -1777,15 +1777,13 @@ sub post2 {
 
     spam_protection();
 
-    $subject =~ s/[\r\n]//gxsm;
-    my $testsub = $subject;
-    $testsub =~ s/\s |\&nbsp;//gxsm;
-    if ( $testsub eq q{} && $pollthread != 2 ) {
+     my $testsub = regex_1($subject);
+     if ( ( !$testsub || $testsub eq q{} ) && $pollthread != 2 ) {
         fatal_error( 'useless_post', "$testsub" );
     }
 
     my $testmessage = regex_1($message);
-    if ( $testmessage eq q{} && $message ne q{} && $pollthread != 2 ) {
+    if ( ( !$testmessage || $testmessage eq q{} ) && $message ne q{} && $pollthread != 2 ) {
         fatal_error( 'useless_post', "$testmessage" );
     }
 
@@ -1810,19 +1808,19 @@ sub post2 {
         }
     }
 
-    from_chars($subject);
+    $subject = from_chars($subject);
     my $convertstr = $subject;
     my $convertcut =
       $set_subject_maxlength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
     count_chars();
     $subject = $convertstr;
-    to_html($subject);
+    $subject = to_html($subject);
     my $doadsubject = $subject;
 
     $message = regex_2($message);
 
-    from_chars($message);
-    to_html($message);
+    $message = from_chars($message);
+    $message = to_html($message);
     $message = regex_3($message);
     check_icon();
 
@@ -1860,13 +1858,13 @@ sub post2 {
             fatal_error( 'useless_post', "$testspaces" );
         }
 
-        from_chars( $FORM{'question'} );
+        $FORM{'question'} = from_chars( $FORM{'question'} );
         $convertstr = $FORM{'question'};
         $convertcut = $maxpq;
         count_chars();
         $FORM{'question'} = $convertstr;
 
-        to_html( $FORM{'question'} );
+        $FORM{'question'} = to_html( $FORM{'question'} );
 
         my $guest_vote = $FORM{'guest_vote'} || 0;
         $hide_results = $FORM{'hide_results'} || 0;
@@ -1882,13 +1880,13 @@ sub post2 {
         if ( $pie_radius < 100 )      { $pie_radius = 100; }
         if ( $pie_radius > 200 )      { $pie_radius = 200; }
 
-        from_chars($poll_comment);
+        $poll_comment = from_chars($poll_comment);
         $convertstr = $poll_comment;
         $convertcut = $maxpc;
         count_chars();
         $poll_comment = $convertstr;
 
-        to_html($poll_comment);
+        $poll_comment = to_html($poll_comment);
         $poll_comment =~ s/\n/<br \/>/gxsm;
         $poll_comment =~ s/\r//gxsm;
         if ( !$poll_end_days || $poll_end_days =~ /\D/xsm ) {
@@ -1914,13 +1912,13 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                     fatal_error( 'useless_post', "$testspaces" );
                 }
 
-                from_chars( $FORM{"option$i"} );
+                $FORM{"option$i"} = from_chars( $FORM{"option$i"} );
                 $convertstr = $FORM{"option$i"};
                 $convertcut = $maxpo;
                 count_chars();
                 $FORM{"option$i"} = $convertstr;
 
-                to_html( $FORM{"option$i"} );
+                $FORM{"option$i"} = to_html( $FORM{"option$i"} );
 
                 $numcount++;
                 $split[$i] = $FORM{"split$i"} || 0;
@@ -2197,7 +2195,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         if ( ( $enable_notifications == 1 || $enable_notifications == 3 )
             && -e "$boardsdir/$currentboard.mail" )
         {
-            to_chars($subject);
+            $subject = to_chars($subject);
             $subject = do_censor($subject);
             new_notify( $newthreadid, $subject );
         }
@@ -2299,7 +2297,7 @@ qq~$mnum|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$date|$fix
             fclose('AMP') or croak "$croak{'close'} attachments.db";
         }
 
-        to_chars($subject);
+        $subject = to_chars($subject);
         $subject = do_censor($subject);
         if ( $enable_notifications == 1 || $enable_notifications == 3 ) {
             reply_notify( $threadid, $subject, $mreplies );
@@ -2443,15 +2441,15 @@ sub new_notify {
     $thismessage =~ s/<(br|p).*?>/\n/igxsm;
     $thismessage =~
 s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
-    from_html($thismessage);
+    $thismessage = from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
     $boardname = ${$board{$currentboard}}[0];
-    to_chars($boardname);
+    $boardname = to_chars($boardname);
 
     $thissubject .= " ($boardname)";
     $thissubject =~ s/<.*?>//gxsm;
-    from_html($thissubject);
+    $thissubject = from_html($thissubject);
 
     require Sources::Mailer;
 
@@ -2519,15 +2517,15 @@ sub reply_notify {
     $thismessage =~ s/<(br|p).*?>/\n/igxsm;
     $thismessage =~
 s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
-    from_html($thismessage);
+    $thismessage = from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
     $boardname = ${$board{$currentboard}}[0];
-    to_chars($boardname);
+    $boardname = to_chars($boardname);
 
     $thissubject .= " ($boardname)";
     $thissubject =~ s/<.*?>//gxsm;
-    from_html($thissubject);
+    $thissubject = from_html($thissubject);
 
     require Sources::Mailer;
 
@@ -2717,7 +2715,7 @@ qq~$post_cutts{'3'} $post_cutts{'3a'} <a href="$scripturl?action=post;num=$threa
                 do_ubbc();
             }
             wrap2();
-            to_chars($message);
+            $message = to_chars($message);
             $message = do_censor($message);
 
             if ( $message && $message ne q{} ) {
@@ -2866,11 +2864,11 @@ sub send_guest_pm2 {
 
     ## clean name and email - remove | from email and turn any _ to spaces in name
     if ( $name && $email ) {
-        to_html($name);
+        $name = to_html($name);
         $tempname = $name;
         $name =~ s/_/ /gxsm;
         $email =~ s/[|]//gxsm;
-        to_html($email);
+        $email = to_html($email);
     }
 
     # Fixes a bug with posting hexed characters.
@@ -2895,17 +2893,17 @@ sub send_guest_pm2 {
     }
 
     $subject =~ s/[\r\n]//gxsm;
-    from_chars($subject);
+    $subject = from_chars($subject);
     my $convertstr = $subject;
     my $convertcut =
       $set_subject_maxlength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
     count_chars();
     $subject = $convertstr;
-    to_html($subject);
-    $message = regex_2($message);
+    $subject = to_html($subject);
 
-    from_chars($message);
-    to_html($message);
+    $message = regex_2($message);
+    $message = from_chars($message);
+    $message = to_html($message);
     $message = regex_3($message);
     check_icon();
 
@@ -2980,7 +2978,7 @@ sub mod_alert {
     get_forum_master();
     my ( $ct, $catperms ) = @{$catinfo{$curcat}};
     $cat = $ct;
-    to_chars($cat);
+    $cat = to_chars($cat);
 
     $INFO{'title'} =~ tr/+/ /;
     $postthread = 2;
@@ -3125,11 +3123,11 @@ sub mod_alert2 {
         $name =~ s/\A\s+//xsm;
         $name =~ s/\s+\Z//xsm;
         ## clean name and email - remove | from name and turn any _ to spaces for email
-        to_html($name);
+        $name = to_html($name);
         $tempname = $name;
         $name =~ s/_/ /gxsm;
         $email =~ s/[|]//gxsm;
-        to_html($email);
+        $email = to_html($email);
 
         # Fixes a bug with posting hexed characters
         $name =~ s/amp;//gxsm;
@@ -3184,18 +3182,18 @@ sub mod_alert2 {
         fatal_error( 'useless_post', $testmessage );
     }
 
-    from_chars($subject);
+    $subject = from_chars($subject);
     my $convertstr = $subject;
     my $convertcut =
       $set_subject_maxlength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
 
     count_chars();
     $subject = $convertstr;
-    to_html($subject);
+    $subject = to_html($subject);
     $message = regex_2($message);
 
-    from_chars($message);
-    to_html($message);
+    $message = from_chars($message);
+    $message = to_html($message);
     $message = regex_3($message);
 
     if ( -e ("$datadir/.txt") ) { unlink "$datadir/.txt"; }
@@ -3253,9 +3251,9 @@ sub mod_alert2 {
                 load_language('Notify');
                 load_language('InstantMessage');
                 $msubject = $tstsubject ? $tstsubject : $inmes_txt{'767'};
-                to_chars($msubject);
+                $msubject = to_chars($msubject);
                 my $chmessage = $message;
-                to_chars($chmessage);
+                $chmessage = to_chars($chmessage);
                 $chmessage = regex_4($chmessage);
                 $chmessage = template_email(
                     $privatemessagenotificationemail,

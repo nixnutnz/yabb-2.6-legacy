@@ -273,7 +273,7 @@ sub send_topic2 {
         $topiclink = qq~$perm_domain/$symlink/$permdate/$board/$topic~;
     }
     my $subject = ( split /[|]/xsm, ${ $thread_arrayref{$topic} }[0], 2 )[0];
-    from_html($subject);
+    $subject = from_html($subject);
     require Sources::Mailer;
     load_language('Email');
     my $message = template_email(

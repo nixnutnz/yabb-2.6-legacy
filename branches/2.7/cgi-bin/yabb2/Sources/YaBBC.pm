@@ -144,7 +144,7 @@ sub quotemsg {
     if ($qauthor) {
         $usernames_life_quote{'temp_quote_autor'} =
           $qauthor;    # for display names in Quotes in LivePreview
-        to_chars($qauthor);
+        $qauthor = to_chars($qauthor);
         if ( !-e "$memberdir/$qauthor.vars" )
         {              # if the file is there it is an unencrypted user ID
             $qauthor = decloak($qauthor);
@@ -289,7 +289,7 @@ s/\[img\](?:\s[\t\n]|$hardspace|$char_160)*(https?\:\/\/)*(.+?)(?:\s[\t\n]|$hard
             $insclass = ${ $codeclass{$myclass} }[0];
             $prclass  = ${ $codeclass{$myclass} }[1];
         }
-        to_chars($code);
+        $code = to_chars($code);
         if ( $code !~ /&\S*;/gxsm ) { $code =~ s/;/&\x23059;/gxsm; }
         $code =~ s/([()\-:\\\/?!\]\[.\^[.]D])/$killhash{$1}/gxsm;
         $code =~
@@ -361,7 +361,7 @@ sub imagemsg {
     }
 
     my %parameter;
-    from_html($attribut);
+    $attribut = from_html($attribut);
     $attribut =~ s/(\s|$char_160)+/ /gxsm;
 
     local *altconv = sub {

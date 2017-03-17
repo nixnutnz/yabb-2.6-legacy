@@ -133,7 +133,7 @@ sub add_cats {
                 if ( $id ne $catid ) { next; }
                 @bdlist = @{$cat{$catid}};
                 ( $curcatname, $catperms, $catallowcol, $catimage, $catrss ) = @{$catinfo{$catid}};
-                to_chars($curcatname);
+                $curcatname = to_chars($curcatname);
                 $cattext = $curcatname;
                 if ( !$catallowcol || $catallowcol eq '1' ) {
                     $allow_checked = 'checked="checked"';
@@ -273,8 +273,8 @@ sub add_cats2 {
         if ( !$FORM{"name$i"} ) { $FORM{"name$i"} = $id; }
 
         my $cname = $FORM{"name$i"};
-        from_chars($cname);
-        to_html($cname);
+        $cname = from_chars($cname);
+        $cname = to_html($cname);
         if ( $FORM{"allowcol$i"} && $FORM{"allowcol$i"} eq 'on' ) {
             $FORM{"allowcol$i"} = 1;
         }
@@ -313,7 +313,7 @@ qq~<select name="selectcats" id="selectcats" size="$catcnt" style="width: 190px;
         for my $category (@categoryorder) {
             chomp $category;
             my $categoryname = ${$catinfo{$category}}[0];
-            to_chars($categoryname);
+            $categoryname = to_chars($categoryname);
             if ( $INFO{'thecat'} && $category eq $INFO{'thecat'} ) {
                 $categorylist .=
 qq~<option value="$category" selected="selected">$categoryname</option>~;

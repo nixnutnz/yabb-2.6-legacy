@@ -53,8 +53,8 @@ sub sendmail {
 
     # Do a from_html here for $to, and for $mbname
     # Just in case has special chars like & in addresses
-    from_html($ato);
-    from_html($mbname);
+    $ato = from_html($ato);
+    $mbname = from_html($mbname);
 
 # Change commas to HTML entity - ToHTML doesn't catch this
 # It's only a problem when sending emails, so no change to ToHTML.

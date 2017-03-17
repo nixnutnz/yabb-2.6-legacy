@@ -286,7 +286,7 @@ sub mailing2 {
     for my $user ( keys %memberinf ) {
         my ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
           @{ $memberinf{$user} };
-        from_html($memrealname);
+        $memrealname = from_html($memrealname);
 
         if ( $FORM{'mailsend'} && $FORM{'emailtext'} ne q{} ) {
             $emailsubject = $FORM{'emailsubject'};
@@ -497,7 +497,7 @@ qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg"
             my $cloakusername = $user;
             if   ($do_scramble_id) { $cloakusername = cloak($user); }
             else                   { $cloakusername = $user; }
-            to_chars($memrealname);
+            $memrealname = to_chars($memrealname);
             my $linkuser =
 qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealname</b></a>~;
 

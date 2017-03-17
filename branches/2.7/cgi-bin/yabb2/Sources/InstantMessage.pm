@@ -182,8 +182,8 @@ sub build_imsend {
             }
         }
         if ( !$flagfound ) { fatal_error('cannot_find_draftmess'); }
-        from_html($message);
-        from_html($subject);
+        $message = from_html($message);
+        $subject = from_html($subject);
     }
 
     my $pmicon = 'standard';
@@ -259,15 +259,15 @@ sub build_imsend {
     $message ||= q{};
     $message =~ s/<br.*?>/\n/igxsm;
     $message =~ s/&nbsp;/ /gxsm;
-    to_chars($message);
+    $message = to_chars($message);
     $message = do_censor($message);
-    to_html($message);
+    $message = to_html($message);
     $message =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
 
     if ($msubject) { $subject = $msubject; }
-    to_chars($subject);
+    $subject = to_chars($subject);
     $subject = do_censor($subject);
-    to_html($subject);
+    $subject = to_html($subject);
 
     if ( $action eq 'modify' || $action eq 'modify2' ) {
         $displayname = $mename;
@@ -642,7 +642,7 @@ qq~             <img src="$tmpurl" alt="${$addedsmilies{$smilieorder[$i]}}[2]" o
                 $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
                 $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
 
-                from_html($tmpcode);
+                $tmpcode = from_html($tmpcode);
                 $tmpcode =~ s/&\x2336;/\$/gxsm;
                 $tmpcode =~ s/&\x2364;/\@/gxsm;
                 $more_smilie_array .= qq~" $tmpcode", ~;
@@ -966,7 +966,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
             $tmpcode =~ s/\&quot;/"+'"'+"/gxsm;
-            from_html($tmpcode);
+            $tmpcode = from_html($tmpcode);
             $tmpcode =~ s/&\x2336;/\$/gxsm;
             $tmpcode =~ s/&\x2364;/\@/gxsm;
             $smilie_code_array .= qq~" $tmpcode", ~;
@@ -1099,11 +1099,11 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     if ( !$subject ) { $error = $error_txt{'no_subject'}; }
     if ( !$message ) { $error = $error_txt{'no_message'}; }
 
-    from_chars($subject);
-    from_chars($message);
+    $subject = from_chars($subject);
+    $message = from_chars($message);
 
-    to_html($subject);
-    to_html($message);
+    $subject = to_html($subject);
+    $message = to_html($message);
 
     # manage line returns and tabs
     $subject =~ s/\s+/ /gxsm;
@@ -1515,12 +1515,12 @@ qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'re
                     if ( $useremail ne q{} ) {
                         $msubject = $subject ? $subject : $inmes_txt{'767'};
                         my $fromname = ${ $uid . $username }{'realname'};
-                        from_html($msubject);
-                        to_chars($msubject);
+                        $msubject = from_html($msubject);
+                        $msubject = to_chars($msubject);
                         $msubject = do_censor($msubject);
                         my $chmessage = $message;
-                        from_html($chmessage);
-                        to_chars($chmessage);
+                        $chmessage = from_html($chmessage);
+                        $chmessage = to_chars($chmessage);
                         $chmessage = do_censor($chmessage);
                         $chmessage = regex_4($chmessage);
 
@@ -1626,12 +1626,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         my $fromname = ${ $uid . $username }{'realname'};
 
         $msubject = $subject;
-        from_html($msubject);
-        to_chars($msubject);
+        $msubject = from_html($msubject);
+        $msubject = to_chars($msubject);
 
         my $chmessage = $message;
-        from_html($chmessage);
-        to_chars($chmessage);
+        $chmessage = from_html($chmessage);
+        $chmessage = to_chars($chmessage);
         $chmessage = regex_4($chmessage);
         $chmessage =~ s/\r(?=\n*)//gxsm;
 
@@ -2369,7 +2369,7 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
 
     $pm_nav = build_pm_navigator();
 
-    to_chars( $messlst{'msub'} );
+    $messlst{'msub'} = to_chars( $messlst{'msub'} );
     $messlst{'msub'} = do_censor( $messlst{'msub'} );
 
     $message = $messlst{'immessage'};
@@ -2379,7 +2379,7 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
         do_ubbc();
     }
     wrap2();
-    to_chars($message);
+    $message = to_chars($message);
     $message = do_censor($message);
 
     my $avstyle  = q{};
@@ -2679,7 +2679,7 @@ sub doshowims {
         return;
     }
 
-    to_chars( $messlst{'msub'} );
+    $messlst{'msub'} = to_chars( $messlst{'msub'} );
     $messlst{'msub'} = do_censor( $messlst{'msub'} );
 
     wrap();
@@ -2690,7 +2690,7 @@ sub doshowims {
         $messlst{'immessage'} = $message;
     }
     wrap2();
-    to_chars( $messlst{'immessage'} );
+    $messlst{'immessage'} = to_chars( $messlst{'immessage'} );
     $messlst{'immessage'} = do_censor( $messlst{'immessage'} );
 
     if ( !${ $uid . $messlst{'musername'} }{'password'} ) {

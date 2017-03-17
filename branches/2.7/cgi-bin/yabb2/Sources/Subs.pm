@@ -85,7 +85,8 @@ our (
     %fix_img_size,            %templateset,
     $faketruncation,          $enable_quickpost,
     $numposts,                $preregspan,
-    $minlinkpost,             $minlinksig, $yabbversion,
+    $minlinkpost,             $minlinksig, 
+    $yabbversion,             $year
 );
 ## system ##
 our (
@@ -886,7 +887,7 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
                     }
                     wrap2();
                     $message =~ s/\x22/\\\x22/gxsm;
-                    to_chars($message);
+                    $message = to_chars($message);
                     $message =~ s/\x27/&\x2339;/xsm;
                     $yynews .=
                       qq~                  fcontent[$j] = '$message';\n~;
@@ -918,7 +919,7 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
                       s/\Q style="display:none"\E/ style="display:block"/gxsm;
                 }
                 wrap2();
-                to_chars($message);
+                $message = to_chars($message);
                 $message =~ s/\x27/&\x2339;/xsm;
                 $yynews = qq~
             <script type="text/javascript">
@@ -940,13 +941,13 @@ s/\Q style="display:none"\E/ style="display:block"/gxsm;
         debug();
     }
 
-    our $yyurl = $scripturl;
+    $year ||= (gmtime)[5] + 1900;
     my $copyright = $output =~ m/\Q{yabb copyright}\E/xsm ? 1 : 0;
     $yycopyright =~ s/\Q{yabb mbname}/$mbname/gxsm;
     $yycopyright =~ s/\Q{yabb version}\E/$yabbversion/gxsm;
+    $yycopyright =~ s/\Q{yabb year}\E/$year/gxsm;
     while ( $output =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm ) { }
     $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
-    $output =~ s/\Q{yabb version}\E/$yabbversion/gxsm;
 
     # check if image exists, otherwise use the default template image
     if ( $imagesdir ne $defaultimagesdir ) {
@@ -1160,9 +1161,9 @@ sub fatal_error_logging {
 
 # This flaw was brought to our attention by S M <savy91@msn.com> Italy
 # Thanks! We couldn't make YaBB successful without the help from the bug testers.
-    to_html($action);
-    to_html( $INFO{'num'} );
-    to_html($currentboard);
+    $action = to_html($action);
+    $INFO{'num'} = to_html( $INFO{'num'} );
+    $currentboard = to_html($currentboard);
 
     $tmperror =~ s/\n//igxsm;
     my @errorlog = ();
@@ -1530,7 +1531,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
 
         my $cataccess = cat_access($catperms);
         if ( !$cataccess ) { next; }
-        to_chars($catname);
+        $catname = to_chars($catname);
 
         $selecthtml .=
           $INFO{'catselect'} eq $catid
@@ -1548,7 +1549,7 @@ qq~ onchange="if(this.options[this.selectedIndex].value) window.location.href='$
 
                 my ( $boardnme, $boardperms, $boardview ) = @{$board{$board}};
                 $boardname = $boardnme;
-                to_chars($boardname);
+                $boardname = to_chars($boardname);
                 my $access = access_check( $board, q{}, $boardperms );
                 if (  !$iamadmin
                     && $access ne 'granted'
@@ -1785,7 +1786,7 @@ sub count_chars {
         $teststring  = $string;
 
         # correct length for HTML characters
-        from_html($teststring);
+        $teststring = from_html($teststring);
         $convertcut += $stinglength - length $teststring;
 
         # correct length for special characters, YaBBC and HTML-Tags
@@ -1998,7 +1999,6 @@ sub split_splice_move {
         # Who moved the topic; destination board; destination id number
         $mover = decloak($mover);
         load_user($mover);
-        $board{$destboard} =~ /^(.+?)[|]/xsm;
         return (
 qq~<b>$maintxt{'160'} <a href="$scripturl?num=$dest"><b>$maintxt{'160a'}</b></a> $maintxt{'160b'}</b> <a href="$scripturl?board=$destboard"><i><b>$1</b></i></a><b> $maintxt{'525'} <i>${ $uid . $mover }{'realname'}</i></b>~,
             $dest
@@ -2025,7 +2025,7 @@ qq~<b>$maintxt{'160c'}</b> <a href="$scripturl?num=$dest"><i><b>$maintxt{'160d'}
             undef, undef, undef, $s_s_m, undef
         ) = split /[|]/xsm, <$MOVEDFILE>, 10;
         fclose('MOVEDFILE') or croak "$croak{'close'} oldmoved";
-        to_chars($s_s_m);
+        $s_s_m = to_chars($s_s_m);
         $ssm = 1;
     }
 
@@ -2077,7 +2077,7 @@ sub wrap {
     $message =~ s/<br.*?>/\n/gxsm;
     $message =~ s/((\[ch\d{3,}?\]){$linewrap})/$1\n/igxsm;
 
-    from_html($message);
+    $message = from_html($message);
     $message =~ s/[\r\n]/ {yabbbr} /gxsm;
     my @words = split /\s/xsm, $message;
     $message = q{};
@@ -2114,7 +2114,7 @@ sub wrap {
     $message =~ s/\s {yabbbr} /\n/gxsm;
     $message =~ s/{yabbwrap}/\n/gxsm;
 
-    to_html($message);
+    $message = to_html($message);
     $message =~ s/\[tab\]/ &nbsp; &nbsp; &nbsp;/igxsm;
     $message =~ s/\n/<br \/>/gxsm;
     return;
@@ -2640,6 +2640,7 @@ sub recent_save {
     }
     my $recent = q{};
     foreach ( keys %recent ) {
+        chomp @{ $recent{$_} };
         $recent .= qq~$_|~ . join( q{,}, @{ $recent{$_} } ) . qq~\n~;
     }
     our ($RLOG);
@@ -3176,7 +3177,7 @@ sub add_buddy {
         else                   { $new_buddy = $INFO{'name'}; }
         chomp $new_buddy;
         if ( $new_buddy eq $username ) { fatal_error('self_buddy'); }
-        to_html($new_buddy);
+        $new_buddy = to_html($new_buddy);
         if ( !${ $uid . $username }{'buddylist'} ) {
             ${ $uid . $username }{'buddylist'} = $new_buddy;
         }
@@ -3402,7 +3403,7 @@ sub sizefont {
 
 sub regex_1 {
     my ($messge) = @_;
-    $messge =~ s/[\r\n ]//gxsm;
+    $messge =~ s/[\r\n\s]//gxsm;
     $messge =~ s/\&nbsp;//gxsm;
     $messge =~ s/\[table\].*?\[tr\].*?\[td\]//gxsm;
     $messge =~ s/\[\/td\].*?\[\/tr\].*?\[\/table\]//gxsm;

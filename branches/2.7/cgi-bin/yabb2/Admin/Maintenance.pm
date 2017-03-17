@@ -605,7 +605,7 @@ sub rebuild_memlist {
         load_user($member);
         {
             no strict qw(refs);
-            from_chars( ${ $uid . $member }{'realname'} );
+            ${ $uid . $member }{'realname'} = from_chars( ${ $uid . $member }{'realname'} );
 
             $savesettings = 0;
             @grpexist     = ();
@@ -1051,7 +1051,7 @@ sub rebuild_notifications {
         closedir MEMBNOTIF;
 
         # get list of board (@bmaildir) and post (@tmaildir) .mail files
-        get_mail_files();
+        (@bmaildir, @tmaildir) = get_mail_files();
 
         $start_time = $begin_time;
         $sumuser    = keys %members;

@@ -106,7 +106,7 @@ sub modify_style {
         $line =~ s/[\r\n]//gxsm;
         $line =~ s/&nbsp;/&\x2338;nbsp;/gxsm;
         $line =~ s/&amp;/&\x2338;amp;/gxsm;
-        from_html($line);
+        $line = from_html($line);
         $fullcss .= qq~$line\n~;
     }
     fclose('CSS') or croak "$croak{'close'} CSS";
@@ -1793,7 +1793,7 @@ sub modify_css2 {
             fatal_error('invalid_template');
         }
         $style_cnt = $FORM{'stylelink'};
-        from_html($style_cnt);
+        $style_cnt = from_html($style_cnt);
         $style_cnt =~ s/([*]\/)/$1\n/gxsm;
         $style_cnt =~ s/(\/[*])/$1/gxsm;
         $style_cnt =~ s/([{])/$1\n/gxsm;

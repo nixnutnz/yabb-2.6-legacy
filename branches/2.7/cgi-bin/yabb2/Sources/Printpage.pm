@@ -517,7 +517,7 @@ sub print_post {
 
     my $startedby = $poster;
     my $startedon = timeformat( $dte, 1 );
-    to_chars($messagetitle);
+    $messagetitle = to_chars($messagetitle);
     ( $messagetitle, undef ) = split_splice_move( $messagetitle, 0 );
     my $page_title = $post ? $maintxt{'668a'} : $maintxt{'668'};
 

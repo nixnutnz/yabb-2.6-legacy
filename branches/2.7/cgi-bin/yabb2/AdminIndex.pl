@@ -57,7 +57,7 @@ our (
     $useimages,     $user_ip,          $username,     $yyadmin_alert,
     $yydebug,       $yyext,            $yyjavascript, $yymain,
     $yysetlocation, $yytitle,          %director,     %gmod_access,
-    %INFO,          %mod_list,         $yyiis,
+    %INFO,          %mod_list,         $yyiis,        $year,
 );
 ## template ##
 our ( $admin_template, $header, $leftmenu, $leftmenubottom, $leftmenutop,
@@ -89,6 +89,8 @@ require Paths;
 my $yyaext = 'pl';
 if   ( -e ("$yyexec.cgi") ) { $yyaext = 'cgi'; }
 else                        { $yyaext = 'pl'; }
+$adminurl = qq~$boardurl/AdminIndex.$yyaext~;
+
 my $back_url = q{};
 if ( -e "$vardir/backup.lock" ) {
     $back_url = "$boardurl/BackupFix.$yyaext";
@@ -435,6 +437,9 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
     $mainbody =~ s/img src\=\"$imagesdir\/(.+?)\"/admimgloc($1)/eigxsm;
     $mainbody =~
 s/img src\=\&quot;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . admimgloc2($1) . "\&quot;"/eigxsm;
+    $mainbody =~ s/\Q{yabb adminurl}\E/$adminurl/gxsm;
+    $mainbody =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
+    $mainbody =~ s/\Q{yabb admintxt_35}\E/$admintxt{'35'}/gxsm;
 
     # For the template editing Javascript images
 
@@ -449,6 +454,7 @@ s/img src\=\&quot;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . admimgloc2($1) .
 
     image_resize();
     $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
+    $output =~ s/\Q{yabb year}/$year/gxsm;
 
     print_html_output_and_finish();
     return;

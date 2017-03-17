@@ -366,8 +366,8 @@ sub board_index {
         }
 
         ${ $uid . $curboard }{'lastposter'} =
-          ${ $uid . $curboard }{'lastposter'} eq 'N/A'
-          || !${ $uid . $curboard }{'lastposter'}
+          (${ $uid . $curboard }{'lastposter'} eq 'N/A'
+          || !${ $uid . $curboard }{'lastposter'})
           ? $boardindex_txt{'470'}
           : ${ $uid . $curboard }{'lastposter'};
 
@@ -442,7 +442,7 @@ sub board_index {
         if ( !$subboard_sel ) {
             @bdlist = @{$cat{$catid}};
             ( $catname, $catperms, $catallowcol, $catimage, $catrss ) = @{ $catinfo{$catid}};
-            to_chars($catname);
+            $catname = to_chars($catname);
 
             # Category Permissions Check
             my $cataccess = cat_access($catperms);
@@ -451,7 +451,7 @@ sub board_index {
         else {
             @bdlist = @{$subboard{$catid}};
             $boardname = ${$board{$catid}}[0];
-            to_chars($boardname);
+            $boardname = to_chars($boardname);
             ( $catname, $catperms, $catallowcol, $catimage ) =
               ( qq~$boardindex_txt{'65'} '$boardname'~, 0, 0, q{} );
         }
@@ -655,13 +655,13 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 }
 
                 $boardname = ${$board{$curboard}}[0];
-                to_chars($boardname);
+                $boardname = to_chars($boardname);
                 $INFO{'zeropost'} = 0;
                 my $zero  = q{};
                 $bddescr = q{};
                 if ( ${ $uid . $curboard }{'description'} ) {
                     $bddescr = $brk . ${ $uid . $curboard }{'description'};
-                    to_chars($bddescr);
+                    $bddescr = to_chars($bddescr);
                 }
                 $iammod     = q{};
                 %moderators = ();
@@ -821,10 +821,10 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
                 $lasttopictxt = $convertstr;
                 if ($cliped) { $lasttopictxt .= q{...}; }
 
-                to_chars($lasttopictxt);
+                $lasttopictxt = to_chars($lasttopictxt);
                 $lasttopictxt = do_censor($lasttopictxt);
 
-                to_chars($fulltopictext);
+                $fulltopictext = to_chars($fulltopictext);
                 $fulltopictext = do_censor($fulltopictext);
 
                 if ( ${ $uid . $curboard }{'lastreply'} ne q{} ) {
@@ -873,7 +873,7 @@ qq~<a href="$mysymboard/$curboard" target="_blank"><img src="$micon_bg{'boardrss
                         {
                             next;
                         }
-                        to_chars($chldboardname);
+                        $chldboardname = to_chars($chldboardname);
                         $sub_count++;
                         my $sub_lock = sub_lock($childbd);
 
@@ -898,7 +898,7 @@ qq~<img src="$imagesdir/$newload{'sub_brd_old'}" alt="$boardindex_txt{'334'}" ti
                             my $my_bddescr =
                               ${ $uid . $childbd }{'description'};
                             my @bname = split /<br.*?>/xsm, $my_bddescr;
-                            to_chars( $bname[0] );
+                            $bname[0] = to_chars( $bname[0] );
                             my $brrdname =
 qq~$scripturl?action=showexternal;exboard=$childbd~;
                             $tmp_sublinks =~
@@ -1070,8 +1070,8 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                     my $imgid = $brd_img_id{$curboard};
                     $boardname =
                       qq~$scripturl?action=showexternal;exboard=$curboard~;
-                    to_chars( $bname[0] );
-                    to_chars($bdd);
+                    $bname[0] = to_chars( $bname[0] );
+                    $bdd = to_chars($bdd);
                     my $my_blankext = q{--};
                     $templateblock =~ s/\Q{yabb boardurl}\E/$boardname/gxsm;
                     $templateblock =~ s/\Q{yabb boardpic}\E/$bdpic/gxsm;
@@ -1095,7 +1095,7 @@ qq~ <img src="$bdpic" alt="$boardname" title="$boardname" id="brd_id_$imgid" onl
                       s/\Q{yabb expandmessages}\E/$expandmessages/gxsm;
                     $templateblock =~
                       s/\Q{yabb messagedropdown}\E/$messagedropdown/gxsm;
-                    to_chars($boardname);
+                    $boardname = to_chars($boardname);
                     $templateblock =~
                       s/\Q{yabb boardanchor}\E/$boardanchor/gxsm;
                     $templateblock =~ s/\Q{yabb new}\E/$new/gxsm;
@@ -1532,7 +1532,7 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'
             my $boardtree = q{};
             my $mycat     = ${ $uid . $subboard_sel }{'cat'};
             my $mynamecat = ${$catinfo{$mycat}}[0];
-            to_chars($mynamecat);
+            $mynamecat = to_chars($mynamecat);
             my $catlinkb =
               qq~<a href="$scripturl?catselect=$mycat">$mynamecat</a>~;
             if ($accept_permafull) {
@@ -1542,7 +1542,7 @@ qq~    <link rel="alternate" type="application/rss+xml" title="$boardindex_txt{'
 
             while ($parentboard) {
                 my $pboardname = ${$board{$parentboard}}[0];
-                to_chars($pboardname);
+                $pboardname = to_chars($pboardname);
                 $yytitle = $pboardname;
                 if ( ${ $uid . $parentboard }{'canpost'}
                     || !$subboard{$parentboard} )
@@ -2158,7 +2158,7 @@ qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{
 sub load_recentbar {
     my ( $lssub, $lsdatetime, $lspostid, $lsreply ) = @_;
     ( $lssub, undef ) = split_splice_move( $lssub, 0 );
-    to_chars($lssub);
+    $lssub = to_chars($lssub);
     $lssub = do_censor($lssub);
     my ( $tmlsdatetime, $recentl, $recenttxt );
     if ($lsdatetime) {
@@ -2338,7 +2338,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
         }
         else {
             my $tmpcat = ${$catinfo{ $INFO{'catselect'} } }[0];
-            to_chars($tmpcat);
+            $tmpcat = to_chars($tmpcat);
             $yytitle      = $tmpcat;
             $yynavigation = qq~&rsaquo; $tmpcat~;
         }

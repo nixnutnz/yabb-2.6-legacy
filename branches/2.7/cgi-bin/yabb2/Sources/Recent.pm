@@ -256,11 +256,11 @@ sub recent_posts {
             do_ubbc();
         }
         wrap2();
-        to_chars($message);
+        $message = to_chars($message);
         $message = do_censor($message);
 
         ( $msub, undef ) = split_splice_move( $msub, 0 );
-        to_chars($msub);
+        $msub = to_chars($msub);
         $msub = do_censor($msub);
 
         my $notify = q{};
@@ -456,11 +456,11 @@ sub recent_topics {
             do_ubbc();
         }
         wrap2();
-        to_chars($message);
+        $message = to_chars($message);
         $message = do_censor($message);
 
         ( $msub, undef ) = split_splice_move( $msub, 0 );
-        to_chars($msub);
+        $msub = to_chars($msub);
         $msub = do_censor($msub);
 
         if ($iamguest) {

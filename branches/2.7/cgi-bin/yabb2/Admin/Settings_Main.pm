@@ -2307,7 +2307,7 @@ qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstar
         }
 
         # Convert unwanted tags in Board Name
-        to_html( $settings{'mbname'} );
+        $settings{'mbname'} = to_html( $settings{'mbname'} );
 
         # Upload default avatar
         my $cur_default_userpic = $FORM{'cur_default_userpic'};

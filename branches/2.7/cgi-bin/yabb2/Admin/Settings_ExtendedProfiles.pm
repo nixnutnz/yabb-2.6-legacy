@@ -488,7 +488,7 @@ sub ext_admin_reorder {
     $FORM{'reorder'} =~ s/\A[\s\n]+//xsm;
     $FORM{'reorder'} =~ s/[\s\n]+\Z//xsm;
     $FORM{'reorder'} =~ s/\n\s*\n/\n/gxsm;
-    to_html( $FORM{'reorder'} );
+    $FORM{'reorder'} = to_html( $FORM{'reorder'} );
 
     @ext_prof_order = split /\n/xsm, $FORM{'reorder'};
 
@@ -504,7 +504,7 @@ sub ext_admin_reorder {
 sub ext_admin_create {
     is_admin_or_gmod();
 
-    to_html( $FORM{'name'} );
+    $FORM{'name'} = to_html( $FORM{'name'} );
     my @count = ();
     foreach my $i (@ext_prof_fields) {
         my ( undef, $cn, undef ) = split /[|]/xsm, $i;
@@ -589,8 +589,8 @@ sub ext_admin_edit {
     );
 
     if ( $FORM{'apply'} ) {
-        to_html( $FORM{'name'} );
         $name   = $FORM{'name'};
+        $name = to_html( $name );
         $id     = $FORM{'id'};
         $type   = $FORM{'type'};
         $active = $FORM{'active'} ? 1 : 0;
@@ -932,8 +932,8 @@ sub ext_admin_edit2 {
     my ( @fields, @options );
     is_admin_or_gmod();
 
-    to_html( $FORM{'name'} );
-    to_html( $FORM{'comment'} );
+    $FORM{'name'} = to_html( $FORM{'name'} );
+    $FORM{'comment'} = to_html( $FORM{'comment'} );
     if ( !$FORM{'active'} )          { $FORM{'active'}          = 0; }
     if ( !$FORM{'required_on_reg'} ) { $FORM{'required_on_reg'} = 0; }
     if ( !$FORM{'visible_in_viewprofile'} ) {

@@ -357,7 +357,7 @@ sub modify_skin {
       or fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     while ( $line = <$CSS> ) {
         $line =~ s/[\r\n]//gxsm;
-        from_html($line);
+        $line = from_html($line);
         $fullcss .= qq~$line\n~;
     }
     fclose('CSS') or croak "$croak{'close'} CSS";

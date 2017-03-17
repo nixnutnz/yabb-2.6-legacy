@@ -289,20 +289,20 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         $vircurcat = ${ $uid . $vircurrentboard }{'cat'};
         if ($vircurcat) {
             $vircat = ${$catinfo{$vircurcat}}[0];
-            to_chars($vircat);
+            $vircat = to_chars($vircat);
         }
         if ($vircurrentboard) {
             $virboardname =  ${$board{$vircurrentboard}}[0];
-            to_chars($virboardname);
+            $virboardname = to_chars($virboardname);
         }
     }
 
     my ( $cat, $catperms ) = @{$catinfo{$curcat}};
-    to_chars($cat);
+    $cat = to_chars($cat);
 
     my ( $boardname, $boardview ) = @{$board{$currentboard}};
 
-    to_chars($boardname);
+    $boardname = to_chars($boardname);
 
     # Check to make sure this thread isn't locked.
     my (
@@ -332,7 +332,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
     }
 
     ( $msubthread, undef ) = split_splice_move( $msubthread, 0 );
-    to_chars($msubthread);
+    $msubthread = to_chars($msubthread);
     $msubthread = do_censor($msubthread);
 
     # Build a list of this board's moderators.
@@ -521,7 +521,7 @@ qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$displa
     );
     my $pageindexjs = q{};
 
-    if ( $pagenumb > 1 || $all ) {
+    if ( ( $pagenumb && $pagenumb > 1 ) || $all ) {
         if ( $userthreadpage == 1 || $iamguest ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
             if ( !$iamguest ) {
@@ -1396,7 +1396,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
 
         ( $msub, undef ) = split_splice_move( $msub, 0 );
         $msub = isempty( $msub, $display_txt{'24'} );
-        to_chars($msub);
+        $msub = to_chars($msub);
         my $reason = q{};
         if (   $lastmodified
             && ( $staff_reason || $user_reason )
@@ -1404,7 +1404,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
         {
             $reason = qq~<br /><i><b>$display_txt{'211a'}:</b> $1</i>~;
             $reason = do_censor($reason);
-            to_chars($reason);
+            $reason = to_chars($reason);
         }
         $msub = do_censor($msub);
 
@@ -1416,7 +1416,7 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
             do_ubbc();
         }
         wrap2();
-        to_chars($message);
+        $message = to_chars($message);
         my $template_modify = q{};
         if ($icanbypass) {
             $template_modify =
@@ -1874,7 +1874,7 @@ qq~$tabsep <a href="$scripturl">&laquo; $img_txt{'103'}</a> $tabsep $navback $ta
     my $parentboard = $currentboard;
     while ($parentboard) {
         my $pboardname = ${$board{$parentboard}}[0];
-        to_chars($pboardname);
+        $pboardname = to_chars($pboardname);
         my $pboardlink = $pboardname;
         if (   $parentboard eq 'announcements'
             && !$iamadmin

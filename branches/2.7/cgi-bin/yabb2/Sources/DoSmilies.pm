@@ -75,7 +75,7 @@ qq~<img src="$tmpurl" class="moresmiles" alt="${$addedsmilies{$smilieorder[$i]}}
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
             $tmpcode =~ s/\&quot;/\x22/gxsm;
-            from_html($tmpcode);
+            $tmpcode = from_html($tmpcode);
             $tmpcode =~ s/&\x2336;/\$/gxsm;
             $tmpcode =~ s/&\x2364;/\@/gxsm;
             $more_smilie_array .= qq~" $tmpcode", ~;
@@ -155,7 +155,7 @@ s/\Q{yabb SmilieDescription}\E/${$addedsmilies{$smilieorder[$i]}}[2]/gxsm;
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
             $tmpcode =~ s/\&quot;/\x22/gxsm;
-            from_html($tmpcode);
+            $tmpcode = from_html($tmpcode);
             $tmpcode =~ s/&\x2336;/\$/gxsm;
             $tmpcode =~ s/&\x2364;/\@/gxsm;
             $more_smilie_array .= qq~" $tmpcode", ~;

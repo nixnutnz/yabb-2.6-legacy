@@ -223,9 +223,10 @@ sub load_usersettings {
                 || ${ $uid . $username }{'position'} eq 'Administrator' )
             {
                 $iammod = is_moderator($username);
-                if (   ${ $uid . $username }{'position'} eq 'Administrator'
+                if (   ${ $uid . $username }{'position'} 
+                    && ( ${ $uid . $username }{'position'} eq 'Administrator'
                     || ${ $uid . $username }{'position'} eq 'Global Moderator'
-                    || ${ $uid . $username }{'position'} eq 'Mid Moderator'
+                    || ${ $uid . $username }{'position'} eq 'Mid Moderator')
                     || $iammod )
                 {
                     $staff = 1;
@@ -370,7 +371,7 @@ sub load_user {
         }
         {
             no strict qw(refs);
-            to_chars( ${ $uid . $user }{'realname'} );
+            ${ $uid . $user }{'realname'} = to_chars( ${ $uid . $user }{'realname'} );
         }
         format_username($user);
         load_miniuser($user);
@@ -497,9 +498,9 @@ sub load_user_display {
           (
             ${ $uid . $user }{'weburl'}
               && ( ${ $uid . $user }{'postcount'} >= $minlinkweb
-                || ${ $uid . $user }{'position'} eq 'Administrator'
+                || ${ $uid . $user }{'position'} && ( ${ $uid . $user }{'position'} eq 'Administrator'
                 || ${ $uid . $user }{'position'} eq 'Mid Moderator'
-                || ${ $uid . $user }{'position'} eq 'Global Moderator' )
+                || ${ $uid . $user }{'position'} eq 'Global Moderator' ) )
           )
           ? qq~<a href="${ $uid . $user }{'weburl'}" target="_blank">~
           . ( $sm ? $img{'website_sm'} : $img{'website'} ) . '</a>'
@@ -515,7 +516,7 @@ sub load_user_display {
                 do_ubbc(1);
             }
 
-            to_chars($message);
+            $message = to_chars($message);
 
             ${ $uid . $user }{'signature'} = do_censor($message);
 

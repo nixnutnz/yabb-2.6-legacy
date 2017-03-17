@@ -122,7 +122,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'moveicon2' => q~Icon Position (horizontal)~,
 'iconspace' => q~Icon-Text space~,
 'movetext' => q~Text Position (vertical)~,
-'noedit' => qq~You are not allowed to edit the default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename. You can then choose this new stylesheet as the stylesheet for the default skin from the <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a> screen.~,
+'noedit' => q~You are not allowed to edit the default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename. You can then choose this new stylesheet as the stylesheet for the default skin from the <a href="{yabb adminurl}?action=modskin">Template Configuration</a> screen.~,
 '10b' => q~<br /><span class="small"><strong>Note</strong>: The Forum default template cannot be deleted.</span>~,
 '521' => q~Select Template Menu Style~,
 '527' => q~Enable Template Post Tools?~,

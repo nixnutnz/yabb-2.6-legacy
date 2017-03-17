@@ -163,7 +163,7 @@ if( ! $script_root ) {
 
 # Begin e-mail stuff.
 'mailsubject' => q~YaBB 2 Backup from {yabb mbname}~,
-'mailfrom' => qq~"YaBB 2 Backup Mailer" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
+'mailfrom' => q~"YaBB 2 Backup Mailer" <{yabb webmaster_email}>~, # do NOT modify anything left or right from *YaBB 2 Backup Mailer*!
 'mailsuccess' => q~Sent e-mail successfully.~,
 'mailfail' => q~Sending e-mail failed. See the error message in the info e-mail you will receive.~,
 'no_perm' => q~You do not have permission to change the above settings.~,

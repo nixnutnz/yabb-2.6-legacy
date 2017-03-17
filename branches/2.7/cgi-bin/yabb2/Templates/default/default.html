@@ -4,18 +4,15 @@
     <meta charset="{yabb mycharset}">
 <!-- YaBB 2.7.00 $Revision$ -->
     <title>{yabb title}</title>
-<meta name="description" content="Web Forum: {yabb title}" />
+    <meta name="description" content="Web Forum: {yabb title}" />
     {yabb style}
-    <script type="text/javascript" src="{yabb html_root}/YaBB.js"></script>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="{yabb html_root}/element.js"></script>
     <![endif]-->
+    <script type="text/javascript" src="{yabb html_root}/YaBB.js"></script>
     <script type="text/javascript">
-        {yabb javascript}
-        {yabb javascripta}
+    {yabb javascripta}
     </script>
-    {yabb syntax_js}
-    {yabb grayscript}
 </head>
 <body>
 <div id="ImageAlert" class="center">
@@ -70,7 +67,6 @@
         <br /><br />
     </div>
 </div>
-{yabb high}
 <script type="text/javascript">
 // Many thanks to Carsten for the fixmenu code.
 
@@ -97,7 +93,13 @@ if (screen.width > 1024) {
 }
 
 </script>
+{yabb syntax_js}
+{yabb grayscript}
 <script type="text/javascript" src="{yabb html_root}/ajax.js"></script>
 {yabb news}
+<script type="text/javascript">
+    {yabb javascript}
+</script>
+{yabb high}
 </body>
 </html>

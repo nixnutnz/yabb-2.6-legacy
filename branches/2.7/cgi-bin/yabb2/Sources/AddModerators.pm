@@ -76,7 +76,7 @@ sub add_moderators {
                 {
                     next;
                 }
-                to_chars($boardname);
+                $boardname = to_chars($boardname);
                 $moderators = ${ $uid . $board }{'mods'};
                 my @boardmoderators = split /\//xsm, $moderators || q{};
                 $modsel = q{};
@@ -100,7 +100,7 @@ sub add_moderators {
 
     for my $catid (@categoryorder) {
         my $catname = ${$catinfo{$catid}}[0];
-        to_chars($catname);
+        $catname = to_chars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
         $indent = -2;
         get_subboards(@{$cat{$catid}});

@@ -171,7 +171,7 @@ qq~<br />$admin_txt{'dupbrd'} @chkbrds<br />$admin_txt{'dupbrdlnk'}~;
     for my $catid (@categoryorder) {
         my @bdlist = @{$cat{$catid}};
         my ( $curcatname, $catperms, undef, $catpic ) = @{$catinfo{$catid}};
-        to_chars($curcatname);
+        $curcatname = to_chars($curcatname);
         my $temppic = q{};
         my ( $tempcolspan, $tempclass, $temphrefclass );
         if ( $INFO{'action'} eq 'managecats' ) {
@@ -221,7 +221,7 @@ qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/
                 for my $curboard (@brdlist) {
                     my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
                     $boardname =~ s/\&quot\;/&\x2334;/gxsm;
-                    to_chars($boardname);
+                    $boardname = to_chars($boardname);
                     $descr = ${ $uid . $curboard }{'description'};
                     $descr =~ s/\<br\s \/>/\n/gxsm;
                     my $brdpicchk = 0;
@@ -281,7 +281,7 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
                         count_chars();
                     }
                     $descr = $convertstr;
-                    to_chars($descr);
+                    $descr = to_chars($descr);
                     if ($cliped) { $descr .= q{...}; }
 
                     my $tmpwidth = 100 - $indent;
@@ -481,7 +481,7 @@ sub board_screen {
     else {
         fatal_error( 'no_action', "$FORM{'baction'}" );
     }
-
+    $yytitle = $admin_txt{'55'};
     $action_area = 'manageboards';
     admintemplate();
     return;
@@ -574,7 +574,7 @@ sub add_boards {
             my $dash = q{-};
             if ( $indent > 0 ) { $dash = q{-}; }
             my $chldboardname = ${$board{$childbd}}[0];
-            to_chars($chldboardname);
+            $chldboardname = to_chars($chldboardname);
             $catboardlist{$thiscat} .=
                 qq~$childbd|~
               . ( q{ } x $indent )
@@ -805,7 +805,7 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
                     $selected = q~ selected="selected"~;
                 }
             }
-            to_chars($curcatname);
+            $curcatname = to_chars($curcatname);
             $catsel{$i} .=
               qq~<option value="$catid"$selected>$curcatname</option>~;
         }
@@ -816,11 +816,11 @@ qq~editbrds[$i] = "${$uid.$editboards[$i]}{'cat'}|$editboards[$i]|${$uid.$editbo
         $boardname  ||= q{};
         $boardperms ||= q{};
         $boardview  ||= q{};
-        to_chars($boardname);
+        $boardname = to_chars($boardname);
         if ( $INFO{'action'} eq 'boardscreen' ) { $boardtext = $boardname; }
         my $description = ${ $uid . $editboards[$i] }{'description'} || q{};
         $description =~ s/<br\s \/>/\n/gxsm;
-        to_chars($description);
+        $description = to_chars($description);
         my $moderators      = ${ $uid . $editboards[$i] }{'mods'}        || q{};
         my $moderatorgroups = ${ $uid . $editboards[$i] }{'modgroups'}   || q{};
         my $boardminage     = ${ $uid . $editboards[$i] }{'minageperms'} || q{};
@@ -854,7 +854,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         if ( $subboard{$id} ) {
             for my $childbd ( @{$subboard{$id}} ) {
                 my $chldboardname = ${$board{$childbd}}[0];
-                to_chars($chldboardname);
+                $chldboardname = to_chars($chldboardname);
                 $childrenlist .= qq~$chldboardname, ~;
             }
             $childrenlist =~ s/,\s $//gxsm;
@@ -890,9 +890,9 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
 
         my $rulestitle = ${ $uid . $editboards[$i] }{'rulestitle'} || q{};
         my $rulesdesc  = ${ $uid . $editboards[$i] }{'rulesdesc'}  || q{};
-        to_chars($rulestitle);
+        $rulestitle = to_chars($rulestitle);
         $rulesdesc =~ s/<br\s \/>/\n/gxsm;
-        to_chars($rulesdesc);
+        $rulesdesc = to_chars($rulesdesc);
 
         #Get Board permissions here
         my $startperms = draw_perms( ${ $uid . $id }{'topicperms'}, 0 );
@@ -1425,12 +1425,12 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                 $cat{ $FORM{"cat$i"} } = \@bdlist;
             }
             else {
+                my @plist = ();
                 if ( $subboard{ $FORM{"parent$i"} } ) {
-                    push @{$subboard{ $FORM{"parent$i"} }}, $id;
+                    @plist = @{$subboard{ $FORM{"parent$i"} }};
                 }
-                else {
-                    $subboard{ $FORM{"parent$i"} } = $id;
-                }
+                push @plist, $id;
+                $subboard{ $FORM{"parent$i"} } = \@plist;
             }
             our ($BOARDINFO);
             fopen( 'BOARDINFO', '>', "$boardsdir/$id.txt" )
@@ -1574,8 +1574,8 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         }
 
         my $bname = $FORM{"name$i"};
-        from_chars($bname);
-        to_html($bname);
+        $bname = from_chars($bname);
+        $bname = to_html($bname);
 
       # If someone has the bright idea of starting a membergroup with a $
       # We need to escape it for them, to prevent us interpreting it as a var...
@@ -1585,7 +1585,7 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
 
         $board{$id} = [ $bname, $FORM{"viewperms$i"}, $FORM{"show$i"} ];
         my $bdescription = $FORM{"description$i"} || q{};
-        from_chars($bdescription);
+        $bdescription = from_chars($bdescription);
         $bdescription =~ s/\r//gxsm;
         $bdescription =~ s/\n/<br \/>/gxsm;
         $bdescription =~ s/'/&#39;/gxsm;
@@ -1624,9 +1624,9 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         if ( !$FORM{"rules$i"} )         { $FORM{"rules$i"}         = 0; }
         if ( !$FORM{"rulescollapse$i"} ) { $FORM{"rulescollapse$i"} = 0; }
         my $brulestitle = $FORM{"rulestitle$i"};
-        from_chars($brulestitle);
+        $brulestitle = from_chars($brulestitle);
         my $brulesdesc = $FORM{"rulesdesc$i"};
-        from_chars($brulesdesc);
+        $brulesdesc = from_chars($brulesdesc);
         $brulesdesc =~ s/\r//gxsm;
         $brulesdesc =~ s/\n/<br \/>/gxsm;
         $brulestitle =~ s/'/&#39;/gxsm;
@@ -1728,7 +1728,7 @@ sub reorder_boards {
         for my $category (@categoryorder) {
             chomp $category;
             my $categoryname = ${$catinfo{$category}}[0];
-            to_chars($categoryname);
+            $categoryname = to_chars($categoryname);
             my $catselect = q{};
             if (
                 ( $category eq $INFO{'item'} && !$INFO{'subboards'} )
@@ -1752,7 +1752,7 @@ sub reorder_boards {
                     my $dash = q{};
                     if ( $indent > 0 ) { $dash = q{-}; }
                     my $chldboardname = ${$board{$childbd}}[0];
-                    to_chars($chldboardname);
+                    $chldboardname = to_chars($chldboardname);
                     $catboardlist{$category} .=
                         qq~<option value='$childbd'>~
                       . ( '&nbsp;' x $indent )
@@ -1787,13 +1787,13 @@ sub reorder_boards {
         $INFO{'subboards'} = ';subboards=1';
         ( $curname, $boardperms, $boardview ) =
           split /[|]/xsm, $board{ $INFO{'item'} };
-        to_chars($curname);
+        $curname = to_chars($curname);
         $cur_txt = $admin_txt{'832a'};
     }
     else {
         @bdlist = @{$cat{ $INFO{'item'} }};
         ( $curname, $catperms ) = @{$catinfo{ $INFO{'item'} }};
-        to_chars($curname);
+        $curname = to_chars($curname);
         $cur_txt = $admin_txt{'832'};
     }
     my $bdcnt = @bdlist;
@@ -1806,7 +1806,7 @@ qq~<select name="selectboards" id="selectboards" size="$bdcnt" style="width: 190
     for my $board (@bdlist) {
         chomp $board;
         my $boardname = ${$board{$board}}[0] || q{};
-        to_chars($boardname);
+        $boardname = to_chars($boardname);
         if ( $INFO{'theboard'} && $board eq $INFO{'theboard'} ) {
             $boardslist .=
 qq~<option value="$board" selected="selected">$boardname</option>~;

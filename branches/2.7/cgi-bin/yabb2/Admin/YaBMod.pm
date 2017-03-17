@@ -292,7 +292,7 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
                 next;
             }
             if ($par) {
-                to_html($_);
+                $_ = to_html($_);
                 ${"mod$par"} .= $_;
                 if ( $par eq 'mod' ) { $modmod .= '<br />'; }
             }

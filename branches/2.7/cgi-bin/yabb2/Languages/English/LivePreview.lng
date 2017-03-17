@@ -36,7 +36,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'subj_allcaps' => q~It appears that you are trying to write using ALL CAPS in the Subject field. This is against forum rules.~,
 'mess_allcaps' => q~It appears that you are trying to write using ALL CAPS in the Message field. This is against forum rules.~,
 'pm_recipient' => q~You must fill in the recipient field.~,
-'no_links'     => q~You are not allowed to include links until you have created {yabb minlinkpost} posts.~,
+'no_links'     => q~Guests are not allowed to include links. Members are not allowed to include links until they have created {yabb minlinkpost} posts.~,
 );
 
 1;

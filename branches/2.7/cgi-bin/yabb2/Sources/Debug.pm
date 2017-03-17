@@ -60,7 +60,7 @@ sub debug {
             $yyfileactions =
 "$debug_txt{'opened'} $file_open $debug_txt{'closed'} $file_close $debug_txt{'equal'}";
 
-            to_html($openfiles);
+            $openfiles = to_html($openfiles);
             $openfiles =~ s/\n/<br \/>/gxsm;
             $yytrace                ||= q{};
             $yyfileactions          ||= q{};

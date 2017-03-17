@@ -337,7 +337,7 @@ $abbr_lang = 'en-us';
 '505' => q~Membership Total has been recounted.~,
 '506' => q~Rebuild Message Index~,
 '507' => q~Message Index has been rebuilt.~,
-'509' => qq~Show Recent Topics and/or Posts on Board Index? (To set number of items shown go to <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=advanced">Advanced Settings - Advanced</a>)~,
+'509' => q~Show Recent Topics and/or Posts on Board Index? (To set number of items shown go to <a href="{yabb adminurl}?action=newsettings;page=advanced">Advanced Settings - Advanced</a>)~,
 '509a' => q~Show neither~,
 '509b' => q~Show Posts~,
 '509c' => q~Show Topics~,
@@ -376,7 +376,7 @@ $abbr_lang = 'en-us';
 '594' => q~The membership list (Memberinfo.pm) has been rebuilt and is holding~,
 '594a' => q~registered members.~,
 '595' => q~Cleaned users online log~,
-'596' => qq~The online user log ($vardir/user.log) has been cleaned.~,
+'596' => q~The online user log (Variables/user.log) has been cleaned.~,
 '597' => q~Rebuild Member History~,
 '598' => q~All member history logs (.rlog) have been rebuilt.~,
 '600' => q~Topic E-mail Setting~,
@@ -417,10 +417,10 @@ $abbr_lang = 'en-us';
 '696a' => q~Script calls~,
 '697' => q~This is a simple system that analyzes the log YaBB creates with each click someone makes in your forum. Use this as a rough estimate of the traffic, browser, and operating system of {yabb mbname} visitors. The numbers in parentheses beside each item are the number of occurrences of that item in your log.~,
 '698' => q~<br /><br />You currently have logging set for {yabb click_logtime}.~,
-'698a' => qq~<br /><br />You currently have logging disabled. To turn on logging, go to <a href="$boarddir/AdminIndex.pl?action=newsettings;page=advanced">Advanced Settings (Advanced)</a>~,
+'698a' => q~<br /><br />You currently have logging disabled. To turn on logging, go to <a href={yabb adminurl}?action=newsettings;page=advanced">Advanced Settings (Advanced)</a>~,
 '699' => q~Reserved names will keep members from registering certain user IDs or using these words in their screen names. Choose the options you wish to use from the bottom before submitting.~,
 '702' => q~E-mail Random Password to New Member upon registration?~,
-'710' => q~Password-Strength-Meter Scores<br /><span class ="small">Here you can define when the line jumps to the next higher level. Default is <em>10,15,30,40</em>. <span style="color:red">Insert only numbers and commas or you can get into trouble.</span><br />Set to <em>-1,-1,-1,-1</em> to disable the Password-Strength-Meter feature. Then it will show only if the Password is too short or if it is OK.</span>~,
+'710' => q~Password-Strength-Meter Scores<br /><span class ="small">Here you can define when the line jumps to the next higher level. Default is <em>10,15,30,40</em>. <span class="important">Insert only numbers and commas or you can get into trouble.</span><br />Set to <em>-1,-1,-1,-1</em> to disable the Password-Strength-Meter feature. Then it will show only if the Password is too short or if it is OK.</span>~,
 '711' => q~Password-Strength-Meter common words<br /><span class ="small">Enter all words that will be shown as "Unsafe Password.". The words must be between "" and separated by commas. Example:<br />"123456","abcdef","password"</span>~,
 '712' => q~Password-Strength-Meter minimum characters<br /><span class ="small">Enter the minimum number of characters required for the password to be considered "not too short."</span>~,
 '723' => q~Allow users to hide their e-mail from public view (except from Administrators)?~,
@@ -546,7 +546,7 @@ $abbr_lang = 'en-us';
 'extendedprofiles' => q~Use Extended Profiles?<br /><span class="small">If enabled, an additional item called "Profile Fields" will be shown in the sidebar to the left. There, you can add functions to the users' profiles.<br />Leave this unchecked if you don't use this feature to save server load.</span>~,
 'forumnumbformat' => q~Select default number format:~,
 'nospammer' => q~Send default e-mail to rejected users even when no reason is given when registration is by Admin approval. Check for 'yes'~,
-'honeypot' => qq~Activate Honeypot Spambot catcher. Check for 'yes' (<a href="$boardurl/AdminIndex.$yyaext?action=honeypot">Edit Honeypot</a>)~,
+'honeypot' => q~Activate Honeypot Spambot catcher. Check for 'yes' (<a href="{yabb adminurl}?action=honeypot">Edit Honeypot</a>)~,
 'spamfruits' => q~Activate SpamFruits Spambot catcher. Check for 'yes'~,
 'eventcal_set' => q~Event Calendar Settings~,
 'eventcal_set1' => q~Edit your Event Calendar Settings~,
@@ -603,7 +603,7 @@ $abbr_lang = 'en-us';
 'expireon' => q~Expires on~,
 'close_box' => q~Close~,
 'dupbrd' => q~<span class="important">Warning: There are duplicate Boards: </span>~,
-'dupbrdlnk' => qq~<span class="important"><a href="$boardurl/AdminIndex.$yyaext?action=fixboarddupes">Fix duplicate boards</a></span>~,
+'dupbrdlnk' => q~<span class="important"><a href="{yabb adminurl}?action=fixboarddupes">Fix duplicate boards</a></span>~,
 'fixdupbrd' => q~Fix Duplicates~,
 'fixduprem' => q~Duplicate Boards removed~,
 'subbrd' => q~Sub-Board~,
@@ -1155,7 +1155,7 @@ Thanks for using YaBB!~,
 '35' => q~&nbsp;&nbsp;&nbsp; - PM Text here:<br /><span class="small">Leave blank to use default text</span>~,
 '36' => q~&nbsp;&nbsp;&nbsp; - PM Subject:<br /><span class="small">Leave blank to use default text</span>~,
 '46' => q~Storage~,
-'52' => qq~Spam Protect - Enter Percent<br /><span class="small">(Read Administrator Help - <a href="$scripturl?action=help;section=admin#Spam_Protect_-_Enter_Percent">Spam Protect - Enter Percent</a> for Info, 0 to disable)</span>~,
+'52' => q~Spam Protect - Enter Percent<br /><span class="small">(Read Administrator Help - <a href="{yabb scripturl}?action=help;section=admin#Spam_Protect_-_Enter_Percent">Spam Protect - Enter Percent</a> for Info, 0 to disable)</span>~,
 '75' => q~Number of Posts Required to send Personal Messages?~,
 '84' => q~Inbox~,
 '85' => q~Sent box~,
@@ -1196,7 +1196,7 @@ Thanks for using YaBB!~,
 %versiontxt = (
 '1' => q~Either your browser doesn't support JavaScript or you need to enable it to allow the versioncheck to work.~,
 '2' => q~<span class="important">There is a new release version available.</span><br />If you would like to download ~,
-'3' => qq~, please go to <a href="{yabb yabb_dnloads}">{yabb yabb_dnloads}</a>.~,
+'3' => q~, please go to <a href="{yabb yabb_dnloads}">{yabb yabb_dnloads}</a>.~,
 '4' => q~YOUR version:~,
 '5' => q~Latest RELEASE version:~,
 '6' => q~You are running the latest release version.~,
@@ -1205,7 +1205,7 @@ Thanks for using YaBB!~,
 );
 
 %gztxt = (
-'1' => qq~Use Output Compression?<br /><span class="small">Output Compression reduces the bandwidth used in communicating with a user's browser.<br />Option(s) are only available if the server supports them. You can set the path to your server's gzip utility in <a href="$boardurl/AdminIndex.$yyaext?action=backupsettings">Backup Utility</a></span>~,
+'1' => q~Use Output Compression?<br /><span class="small">Output Compression reduces the bandwidth used in communicating with a user's browser.<br />Option(s) are only available if the server supports them. You can set the path to your server's gzip utility in <a href="{yabb adminurl}?action=backupsettings">Backup Utility</a></span>~,
 '2' => q~Send Output always compressed?<br /><span class="small">Checked = YaBB does not check if the browser supports Compression, and always compresses output. ** This could render your forum unusable for older browsers. **<br />Not Checked = YaBB checks if browser supports Compression and uses Compression (if selected above) only when supported by the browser.</span>~,
 '3' => q~No Output Compression~,
 '4' => q~Compression with external GZip Program~,
@@ -1218,7 +1218,7 @@ Thanks for using YaBB!~,
 '04' => q~Time limit for normal members to modify their posts:~,
 '05' => q~Permit users to modify posts up to the specified time limit (below) without showing 'Last Edit' message?~,
 '06' => q~Time limit to modify posts without 'Last Edit' message (in minutes):~,
-'07' => q~Enable a time limit for users to delete posts?<br /><span class="small">If disabled, a member can delete his post whenever he wants.</span>~,
+'07' => q~Enable a time limit for users to delete posts?<br /><span class="small">If disabled, members can delete their posts whenever they want.</span>~,
 '08' => q~Time limit for normal members to delete their posts:~,
 '09' => q~ (in minutes)~,
 '10' => q~ (in days)~,
@@ -1421,10 +1421,10 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'CGI2' => q~<strong>Your version</strong>:~,
 'Net::SMTP' => q~Used to send e-mails via SMTP.<br />This module is only needed if you want to send your e-mails via Net::SMTP. Otherwise you do not need this module.<br /><strong>Your version</strong>:~,
 'Net::SMTPS' => q~Used to send e-mails via SMTPS.<br />This module is only needed if you want to send your e-mails via Net::SMTPS (usually if you need to use an external mail server such as Gmail). Otherwise you do not need this module.~,
-'Compress::Zlib' => qq~Used for the Backup feature and browser Output Compression.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details) and/or if you want to enable "Use GZip-Compression?". Otherwise you do not need this module.~,
-'Compress::Bzip2' => qq~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
-'Archive::Tar' => qq~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
-'Archive::Zip' => qq~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="$boardurl/AdminIndex.$yyaext?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
+'Compress::Zlib' => q~Used for the Backup feature and browser Output Compression.<br />This module is only needed if you do not have other Backup methods available (see the <a href="{yabb adminurl}?action=backup">Backup feature</a> for details) and/or if you want to enable "Use GZip-Compression?". Otherwise you do not need this module.~,
+'Compress::Bzip2' => q~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="{yabb adminurl}?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
+'Archive::Tar' => q~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="{yabb adminurl}?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
+'Archive::Zip' => q~Used for the Backup feature.<br />This module is only needed if you do not have other Backup methods available (see the <a href="{yabb adminurl}?action=backup">Backup feature</a> for details). Otherwise you do not need this module.~,
 'MIME::Lite' => q~Used to send Backups attached to an e-mail.<br />This module is only needed if you want to get the Backup file by e-mail and not by direct download from the Admin Center. Otherwise you do not need this module.~,
 'LWP::UserAgent' => q~Used by "GoogieSpell", our Spell Checker.<br />If this module is not installed, you cannot enable the Spell Checker. Otherwise you do not need this module.~,
 'HTTP::Request::Common' => q~Used by "GoogieSpell", our Spell Checker.<br />If this module is not installed, you can not enable the Spell Checker. Otherwise you do not need this module.~,
@@ -1459,7 +1459,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 
 # Forum settings
 'generalforum' => q~General~,
-'forumtime' => qq~Forum Time Settings (<a href="$scripturl?action=help;section=admin#time">$admintxt{'35'}</a>)~,
+'forumtime' => q~Forum Time Settings (<a href="{yabb scripturl}?action=help;section=admin#time">{yabb admintxt_35}</a>)~,
 'showhide' => q~Show / Hide Items~,
 'posting' => q~Posting~,
 'user' => q~Members~,
@@ -1513,7 +1513,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'freedisk' => q~<span class="small">You can enable <span class="under">one</span> of these options. <strong>Note</strong> that not all options are available on all servers.</span>~,
 'freedisk2' => q~Free Disk Space Options <span class="small"><strong>Note</strong>: not all options are available on all servers.</span>~,
 'checkspace' => q~Free Disk Space~,
-'advhelp' => qq~ (see <a href="$scripturl?action=help;section=admin#Advanced_Settings" target="_blank">Advanced Settings Help</a>)~,
+'advhelp' => q~ (see <a href="{yabb scripturl}?action=help;section=admin#Advanced_Settings" target="_blank">Advanced Settings Help</a>)~,
 
 # Security Settings
 'generalsec' => q~General~,
@@ -1522,7 +1522,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 # Anti-spam Settings
 'generalspam' => q~General Anti-spam Controls~,
 'speedban' => q~Speed-Posting Ban~,
-'spambot' => qq~Spambot Registration Deterrents (Also see: <a href="$boardurl/AdminIndex.$yyaext?action=spam_questions">Anti-spam Questions</a> and <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=security">Security Settings</a>)~,
+'spambot' => q~Spambot Registration Deterrents (Also see: <a href="{yabb adminurl}?action=spam_questions">Anti-spam Questions</a> and <a href="{yabb adminurl}?action=newsettings;page=security">Security Settings</a>)~,
 );
 
 #HoneyPot
@@ -1611,12 +1611,11 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 );
 
 %load_txt = (
-'616a' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
+'616a' => q~Remember, this forum is in <a href="{yabb adminurl}?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
 '617' => q~Remember, last Backup was done on:~,
 );
 
-timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
+$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
 $rna = 'Remote Server not available.';
 

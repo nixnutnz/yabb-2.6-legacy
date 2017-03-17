@@ -215,7 +215,7 @@ sub message_index {
     # Determine what category we are in.
     my $catid = ${ $uid . $currentboard }{'cat'};
     my $cat = ${$catinfo{$catid}}[0];
-    to_chars($cat);
+    $cat = to_chars($cat);
 
     our ($BRDTXT);
     fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
@@ -642,7 +642,7 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     # Print the header and board info.
     my $boardname = ${$board{$currentboard}}[0];
     my $curboardname = $boardname;
-    to_chars($curboardname);
+    $curboardname = to_chars($curboardname);
     if ( $multiview == 1 ) {
         $yymain .= qq~<script type="text/javascript">
 function NoPost(op) {
@@ -681,7 +681,7 @@ qq~<a href="$scripturl?board=$currentboard" class="a"><b>$curboardname</b></a>~;
     my $pboardname  = q{};
     while ($parentboard) {
         $pboardname = ${$board{$parentboard}}[0];
-        to_chars($pboardname);
+        $pboardname = to_chars($pboardname);
 
         if ( ${ $uid . $parentboard }{'canpost'}
             || !$subboard{$parentboard} )
@@ -1282,7 +1282,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         }
 
         $msub = do_censor($msub);
-        to_chars($msub);
+        $msub = to_chars($msub);
         my $msublink = q{};
         if ( !$moved_flag ) {
             if (   $enabletopichover
@@ -1299,7 +1299,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
                 my $msglength     = 200;
                 my $testlength    = 0;
                 my $pretextlength = 0;
-                from_html($themessage);
+                $themessage = from_html($themessage);
                 $themessage =~
 s/\[img\].*?\[\/img\]/[b][$messageindex_tp{'image_tp'}][\/b]/igxsm;
                 $themessage =~
@@ -1363,7 +1363,7 @@ s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eig
                 wrap2();
                 $themessage = $message;
                 $message    = q{};
-                to_chars($themessage);
+                $themessage = to_chars($themessage);
                 $themessage =~ s/XCODE/$messageindex_tp{'code_tp'}/gxsm;
 
                 $themessage = do_censor($themessage);
@@ -1655,7 +1655,7 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
     if ($show_brd_descrip) {
         if ( ${ $uid . $currentboard }{'description'} ne q{} ) {
             $bdescrip = ${ $uid . $currentboard }{'description'};
-            to_chars($bdescrip);
+            $bdescrip = to_chars($bdescrip);
             $boarddescription =~
               s/\Q{yabb boarddescription}\E/$brk$bdescrip/gxsm;
             $messageindex_template =~
@@ -1714,8 +1714,8 @@ qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resi
     my $rulestitle = q{};
     ### Board Rules Start ###
     if ( ${ $uid . $currentboard }{'rules'} == 1 ) {
-        to_chars( ${ $uid . $currentboard }{'rulestitle'} );
-        to_chars( ${ $uid . $currentboard }{'rulesdesc'} );
+        ${ $uid . $currentboard }{'rulestitle'} = to_chars( ${ $uid . $currentboard }{'rulestitle'} );
+        ${ $uid . $currentboard }{'rulesdesc'} = to_chars( ${ $uid . $currentboard }{'rulesdesc'} );
         $tmpruletxt = qq~${$uid.$currentboard}{'rulesdesc'}~;
 
         if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} ) {
@@ -2170,7 +2170,7 @@ sub moveto {
             if ( $indent > 0 ) { $dash = q{-}; }
 
             ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
-            to_chars($boardname);
+            $boardname = to_chars($boardname);
             $access = access_check( $board, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
             my $bdnopost = q{};
@@ -2200,7 +2200,7 @@ sub moveto {
 
         $access = cat_access($catperms);
         if ( !$access ) { next; }
-        to_chars($catname);
+        $catname = to_chars($catname);
         $boardlist .= qq~<optgroup label="$catname">~;
         $indent = -2;
         move_subboards(@{$cat{$catid}});

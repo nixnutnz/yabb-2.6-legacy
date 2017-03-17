@@ -207,7 +207,7 @@ q~<input type="checkbox" name="searchme" id="searchme" style="visibility: hidden
             no strict qw(refs);
             no warnings qw(uninitialized);
             my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
-            to_chars($boardname);
+            $boardname = to_chars($boardname);
             my $access = access_check( $curboard, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
 
@@ -273,7 +273,7 @@ qq~<option value="$curboard" $selected>$boardname</option>\n          ~;
                     my $dash = q{};
                     if ( $indent > 0 ) { $dash = q{-}; }
                     my $chldboardname = ${$board{$childbd}}[0];
-                    to_chars($chldboardname);
+                    $chldboardname = to_chars($chldboardname);
                     $checklist .=
                         qq~<option value="$childbd" $selected>~
                       . ( '&nbsp;' x $indent )
@@ -384,7 +384,7 @@ sub plush_search2 {
     }
     my $searchtype = $FORM{'searchtype'};
     my $search     = $FORM{'search'};
-    from_chars($search);
+    $search = from_chars($search);
     my $one_per_thread = $FORM{'oneperthread'} || 0;
     if    ( $searchtype eq 'anywords' )  { $searchtype = 2; }
     elsif ( $searchtype eq 'asphrase' )  { $searchtype = 3; }
@@ -400,7 +400,7 @@ sub plush_search2 {
     my $searchmessage = $FORM{'msgfield'} eq 'on';
     my $search_ip     = q{};
     if ( $FORM{'search_ip'} ) { $search_ip = $FORM{'search'}; }
-    to_html($search);
+    $search = to_html($search);
     $search =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
     $search =~ s/\cM//gxsm;
     $search =~ s/\n/<br \/>/gxsm;
@@ -552,10 +552,10 @@ sub plush_search2 {
                     next POSTCHECK;
                 }
 
-                to_chars($msub);
+                $msub = to_chars($msub);
                 ( $msub, undef ) = split_splice_move( $msub, 0 );
 
-                to_chars($savedmessage);
+                $savedmessage = to_chars($savedmessage);
                 my $message = $savedmessage;
                 if ( $FORM{'searchyabbtags'} && $message =~ /\[\w[^\[]*?\]/xsm )
                 {
@@ -702,22 +702,21 @@ qq~<hr class="hr" /><b>$search_txt{'170'}<br /><a href="javascript:history.go(-1
             if ($enable_ubbc) { do_ubbc(); }
             wrap2();
         }
-        to_chars($message);
-
+        $message = to_chars($message);
         $message = do_censor($message);
         $msub    = do_censor($msub);
 
         $message = highlight( \$msub, \$message, \@search, $case );
 
-        to_chars( $catname{$board} );
-        to_chars( $boardname{$board} );
+        $catname{$board} = to_chars( $catname{$board} );
+        $boardname{$board} = to_chars( $boardname{$board} );
 
         # generate a sub board tree
         my $boardtree   = q{};
         my $parentboard = $board;
         while ($parentboard) {
             my $pboardname = ${$board{$parentboard}}[0];
-            to_chars($pboardname);
+            $pboardname = to_chars($pboardname);
             {
                 no strict qw(refs);
                 if ( ${ $uid . $parentboard }{'canpost'} ) {
@@ -826,7 +825,7 @@ sub pmsearch {
     my $search     = $FORM{'search'}     || $INFO{'search'};
     my $pmbox      = $FORM{'pmbox'}      || '!all';
 
-    from_chars($search);
+    $search = from_chars($search);
     $searchtype ||= 1;
     my $usern = $username;
     if    ( $searchtype eq 'anywords' )  { $searchtype = 2; }
@@ -849,7 +848,7 @@ sub pmsearch {
         if ( $search eq q{} || $search eq q{ } ) { fatal_error('no_search'); }
         if ( $search =~ m{/}xsm )  { fatal_error('no_search_slashes'); }
         if ( $search =~ m{\\}xsm ) { fatal_error('no_search_slashes'); }
-        to_html($search);
+        $search = to_html($search);
         $search =~ s/\t/ &nbsp; &nbsp; &nbsp;/gxsm;
         $search =~ s/\cM//gxsm;
         $search =~ s/\n/<br \/>/gxsm;
@@ -927,8 +926,8 @@ sub pmsearch {
                 next POSTCHECK;
             }
 
-            to_chars($msub);
-            to_chars($savedmessage);
+            $msub = to_chars($msub);
+            $savedmessage = to_chars($savedmessage);
             our $message = $savedmessage;
             wrap();
             if ($enable_ubbc) { do_ubbc(); }

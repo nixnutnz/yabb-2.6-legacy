@@ -357,7 +357,7 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
       or croak "$croak{'open'} AGREE";
     while ( $line = <$AGREE> ) {
         $line =~ tr/[\r\n]//d;
-        from_html($line);
+        $line = from_html($line);
         $fullagreement .= qq~$line\n~;
     }
     fclose('AGREE') or croak "$croak{'close'} AGREE";

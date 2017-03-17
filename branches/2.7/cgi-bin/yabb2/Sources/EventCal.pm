@@ -573,7 +573,7 @@ qq~<img src="$tmpurl" class="bottom pointer" alt="${$addedsmilies{$smilieorder[$
                         $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
                         $tmpcode =~ s/\&quot;/\x22/gxsm;
 
-                        from_html($tmpcode);
+                        $tmpcode = from_html($tmpcode);
                         $tmpcode =~ s/&\x2336;/\$/gxsm;
                         $tmpcode =~ s/&\x2364;/\@/gxsm;
                         $more_smilie_array .= qq~" $tmpcode", ~;
@@ -1233,7 +1233,7 @@ qq~$cal_icon{$cico} $cdate <b>$icon_text</b> $eventuserlink~;
                         $editmessage =~ s/<\//\&lt;\//igxsm;
                         $editmessage =~ s/<br.*?>/\n/gxsm;
                         $editmessage =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
-                        to_chars($editmessage);
+                        $editmessage = to_chars($editmessage);
                         my $nsc = q{};
                         if ($ns) { $nsc = 'checked="checked"'; }
                         $mycalout_greet .= $mycalout_edit_box;
@@ -1837,8 +1837,8 @@ sub add_cal {
         $calmessage =~ s/\[\/([^\]]{0,30})\n([^\]]{0,30})\]/\[\/$1$2\]/gxsm;
         $calmessage =~
           s/(\w+:\/\/[^<>\s\n\"\]\[]+)\n([^<>\s\n\"\]\[]+)/$1\n$2/gxsm;
-        from_chars($calmessage);
-        to_html($calmessage);
+        $calmessage = from_chars($calmessage);
+        $calmessage = to_html($calmessage);
         $calmessage =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
         $calmessage =~ s/\n/<br \/>/gxsm;
         $calmessage =~ s/([\000-\x09\x0b\x0c\x0e-\x1f\x7f])/\x0d/gxsm;
@@ -1847,8 +1847,8 @@ sub add_cal {
 
         if ($iamguest) {
             $guestname = $FORM{'name'};
-            from_chars($guestname);
-            to_html($guestname);
+            $guestname = from_chars($guestname);
+            $guestname = to_html($guestname);
         }
         our (%event);
         if ( -e 'Variables/Eventcal.pm' ) {

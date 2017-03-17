@@ -189,9 +189,9 @@ $abbr_lang = 'en-us';
 'female' => q~Female~,
 'male' => q~Male~,
 '471' => q~message~,
-'616' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
+'616' => q~Remember, this forum is in <a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
 '617' => q~Remember, last Backup was done on:~,
-'773' => qq~IP not found, please change \$user_ip in \$lang/Main.lng~,
+'773' => q~IP not found~,
 '805' => q~You~,
 '806' => q~<strong>can</strong>~,
 '807' => q~<strong>cannot</strong>~,
@@ -227,7 +227,7 @@ $abbr_lang = 'en-us';
 %reftxt=(
 '1' => q~Referer Security~,
 '2' => q~Select Board Actions which are allowed from outside your domain~,
-'3' => qq~(These commands are derived from $vardir/Referer.pm)~,
+'3' => q~(These commands are derived from Variables/Referer.pm)~,
 '4' => q~Save Settings~,
 '6' => q~Referer Domain:~,
 '7' => q~Your Domain:~,
@@ -317,7 +317,6 @@ $forwardedpm = qq~This alert was forwarded as e-mail~;
 'smtps2' => q~Could not authenticate SMTPS credentials. Please provide credientials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
 );
 
-timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$yabbversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.~; 
+$yycopyright = qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.~; 
 
 1;

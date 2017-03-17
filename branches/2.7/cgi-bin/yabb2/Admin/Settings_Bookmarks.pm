@@ -71,7 +71,7 @@ sub book_marks {
                 {
                     next;
                 }
-                to_chars($boardname);
+                $boardname = to_chars($boardname);
                 $sel_board = q{};
                 foreach ( split /,\s/xsm, $bm_boards ) {
                     if ( $_ eq $board ) {
@@ -93,7 +93,7 @@ sub book_marks {
 
     foreach my $catid (@categoryorder) {
         my $catname = ${$catinfo{$catid}}[0];
-        to_chars($catname);
+        $catname = to_chars($catname);
         $board_list .= qq~<option disabled="disabled">$catname</option>\n~;
         {
             no strict qw(refs);
@@ -107,7 +107,7 @@ sub book_marks {
                     next;
                 }
 
-                to_chars($boardname);
+                $boardname = to_chars($boardname);
                 $sel_board = q{};
             }
         }

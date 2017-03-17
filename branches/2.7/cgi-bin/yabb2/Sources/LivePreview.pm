@@ -65,8 +65,8 @@ sub dolive_message {
         uri_unescape($message);
         $message =~ s/\[ch8203\]//igxsm;
         $message =~ s/\&\x238203;//igxsm;
-        from_chars($message);
-        to_html($message);
+        $message = from_chars($message);
+        $message = to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
         $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
@@ -85,30 +85,30 @@ sub dolive_message {
         }
 
         wrap2();
-        to_chars($message);
+        $message = to_chars($message);
         $message  = do_censor($message);
         $csubject = $FORM{'subject'};
         uri_unescape($csubject);
 
         $csubject =~ s/[\r\n]//gxsm;
-        from_chars($csubject);
+        $csubject = from_chars($csubject);
         my $convertstr = $csubject;
         $set_subject_maxlength ||= 50;
         my $convertcut =
           $set_subject_maxlength + ( $csubject =~ /^Re:\s+ /xsm ? 4 : 0 );
         count_chars();
         $csubject = $convertstr;
-        to_html($csubject);
-        to_chars($csubject);
+        $csubject = to_html($csubject);
+        $csubject = to_chars($csubject);
         $csubject = do_censor($csubject);
         liveimage_resize();
         $myname = $FORM{'guestname'};
         uri_unescape($myname);
 
         $myname =~ s/[\r\n]//gxsm;
-        from_chars($myname);
-        to_html($myname);
-        to_chars($myname);
+        $myname = from_chars($myname);
+        $myname = to_html($myname);
+        $myname = to_chars($myname);
         $myname = do_censor($myname);
         print "Content-type: application/x-www-form-urlencoded\n\n"
           or croak "$croak{'print'} content-type";
@@ -132,8 +132,8 @@ sub dolive_pm {
         uri_unescape($message);
         $message =~ s/\[ch8203\]//igxsm;
         $message =~ s/\&\x238203;//igxsm;
-        from_chars($message);
-        to_html($message);
+        $message = from_chars($message);
+        $message = to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
         $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
@@ -158,20 +158,20 @@ sub dolive_pm {
               s/\Q style="display:none"\E/ style="display:inline"/gxsm;
         }
         wrap2();
-        to_chars($message);
+        $message = to_chars($message);
         $message  = do_censor($message);
         $csubject = $FORM{'subject'};
         uri_unescape($csubject);
         $csubject =~ s/[\r\n]//gxsm;
-        from_chars($csubject);
+        $csubject = from_chars($csubject);
         my $convertstr = $csubject;
         $set_subject_maxlength ||= 50;
         my $convertcut =
           $set_subject_maxlength + ( $csubject =~ /^Re:\s+ /xsm ? 4 : 0 );
         count_chars();
         $csubject = $convertstr;
-        to_html($csubject);
-        to_chars($csubject);
+        $csubject = to_html($csubject);
+        $csubject = to_chars($csubject);
         $csubject = do_censor($csubject);
         our $icon = $FORM{'icon'} || 's';
         check_icon();
@@ -220,8 +220,8 @@ sub dolive_cal {
         $message =~ s/\r//gxsm;
         $message =~ s/\[ch8203\]//igxsm;
         $message =~ s/\&\x238203;//igxsm;
-        from_chars($message);
-        to_html($message);
+        $message = from_chars($message);
+        $message = to_html($message);
         my $mess = $message;
         $message =~ s/\cM//gxsm;
         $message =~ s/\[([^\]\[]{0,30})\n([^\]\[]{0,30})\]/\[$1$2\]/gxsm;
@@ -244,7 +244,7 @@ sub dolive_cal {
             }
         }
         wrap2();
-        to_chars($message);
+        $message = to_chars($message);
         $message = do_censor($message);
         liveimage_resize();
         count_chars();
@@ -252,9 +252,9 @@ sub dolive_cal {
         uri_unescape($myname);
 
         $myname =~ s/[\r\n]//gxsm;
-        from_chars($myname);
-        to_html($myname);
-        to_chars($myname);
+        $myname = from_chars($myname);
+        $myname = to_html($myname);
+        $myname = to_chars($myname);
         $myname = do_censor($myname);
         my $d_year     = $FORM{'cal_year'};
         my $d_mon      = $FORM{'cal_mon'};
