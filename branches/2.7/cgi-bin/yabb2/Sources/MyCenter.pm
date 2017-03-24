@@ -1150,7 +1150,7 @@ qq~[quote author=$cloaked_author link=impost date=$mdate\]$message\[/quote\]\n~;
                 our $nscheck = q{};
                 if ( $message =~ /\x23nosmileys/ixsm ) {
                     $message =~ s/\x23nosmileys//igxsm;
-                    $nscheck = 'checksd = "checked"';
+                    $nscheck = 'checked = "checked"';
                 }
             }
             if ( $INFO{'reply'} || $INFO{'quote'} ) {
@@ -2782,10 +2782,9 @@ qq~<img src="$micon_bg{'paperclip'}" alt="$inmes_txt{'attach_1'} $im_attachcount
             if ( $action eq 'im'
                 || ( $action eq 'imstorage' && $INFO{'viewfolder'} eq 'in' ) )
             {
-                if (   $messlst{'mstatus'} eq 'g'
-                    || $messlst{'mstatus'} eq 'ga' )
+                if (   $messlst{'mstatus'} =~ /g/xsm )
                 {
-                    my ( $guest_name, $guest_email ) = split / /sm,
+                    my ( $guest_name, $guest_email ) = split /[ ]/xsm,
                       $messlst{'musername'};
                     $guest_name =~ s/%20/ /gxsm;
                     $usernamefrom =
@@ -2813,8 +2812,8 @@ qq~$guest_name<br />(<a href="mailto:$guest_email">$guest_email</a>)~;
               )
             {
                 my @usernameto = ();
-                if ( $messlst{'mstatus'} eq 'gr' ) {
-                    my ( $guest_name, $guest_email ) = split / /sm,
+                if ( $messlst{'mstatus'} =~ /gr/xsm ) {
+                    my ( $guest_name, $guest_email ) = split /[ ]/xsm,
                       $messlst{'mtousers'};
                     $guest_name =~ s/%20/ /gxsm;
                     $usernameto[0] =
@@ -2901,10 +2900,9 @@ qq~$guest_name<br />(<a href="mailto:$guest_email">$guest_email</a>)~;
             }
             else {
                 my @usernameto = ();
-                if (   $messlst{'mstatus'} eq 'g'
-                    || $messlst{'mstatus'} eq 'ga' )
+                if (   $messlst{'mstatus'} =~ /g/xsm )
                 {
-                    my ( $guest_name, $guest_email ) = split / /sm,
+                    my ( $guest_name, $guest_email ) = split /[ ]/xsm,
                       $messlst{'musername'};
                     $guest_name =~ s/%20/ /gxsm;
                     $usernamefrom =
@@ -2943,8 +2941,8 @@ qq~$guest_name<br />(<a href="mailto:$guest_email">$guest_email</a>)~;
                     $usernameto = join q{, }, @usernameto;
 
                 }
-                elsif ( $messlst{'mstatus'} eq 'gr' ) {
-                    my ( $guest_name, $guest_email ) = split / /sm,
+                elsif ( $messlst{'mstatus'} =~ /gr/xsm ) {
+                    my ( $guest_name, $guest_email ) = split /[ ]/xsm,
                       $messlst{'mtousers'};
                     $guest_name =~ s/%20/ /gxsm;
                     $usernameto =
@@ -3055,9 +3053,8 @@ qq~$guest_name<br />(<a href="mailto:$guest_email">$guest_email</a>)~;
             my ( $actions_menu, $actions_menuselect, $storefolder_view );
             $messlst{'mreplyno'}++;
             ## build actionsMenu for output
-            if ( $action eq 'im' && !$view_bmess ) {
-                if (   $messlst{'mstatus'} eq 'g'
-                    || $messlst{'mstatus'} eq 'ga' )
+            if ( $action eq 'im' && !$view_bmess && !$view_gmess ) {
+                if (   $messlst{'mstatus'} =~ /g/xsm )
                 {
                     $actions_menu =
 qq~<a href="$scripturl?action=imsend;caller=$callerid;reply=$messlst{'mreplyno'};replyguest=1;id=$messlst{'messageid'}">$inmes_txt{'146'}</a>
@@ -3126,8 +3123,7 @@ qq~$call_back<a href="$scripturl?action=deletemultimessages;caller=$callerid;del
                     $actions_menu =
 qq~<a href="$scripturl?action=deletemultimessages;caller=$callerid;deleteid=$messlst{'messageid'}$storefolder_view" onclick="return confirm('$inmes_txt{'770'}')">$inmes_txt{'remove'}</a>~;
                 }
-                elsif ($messlst{'mstatus'} eq 'g'
-                    || $messlst{'mstatus'} eq 'ga' )
+                elsif ($messlst{'mstatus'} =~ /g/xsm && $messlst{'mstatus'} !~ /gr/xsm)
                 {
                     $actions_menu =
 qq~<a href="$scripturl?action=imsend;caller=$callerid;quote=$messlst{'mreplyno'};replyguest=1;id=$messlst{'messageid'}">$inmes_txt{'146'}</a>~;
