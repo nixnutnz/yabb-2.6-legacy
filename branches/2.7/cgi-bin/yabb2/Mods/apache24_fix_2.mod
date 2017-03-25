@@ -190,6 +190,19 @@ push @guardianpmmods, 'Apache 2.4 fix';
 </add before>
 
 <search for>
+    my $htheader = q~<Files YaBB*>~;
+    my $htfooter = q~</Files>~;
+</search for>
+
+<replace>
+    my $htheader = q~<Files YaBB*>
+<RequireAll>
+Require all granted~;
+    my $htfooter = q~</RequireAll>
+</Files>~;
+</replace>
+
+<search for>
         if ( $start == 1 && $chk =~ s/\QDeny from \E//gxsm ) {
 </search for>
 
