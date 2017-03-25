@@ -147,9 +147,9 @@ $abbr_lang = 'ru';
 '122' => 'Дни назад',
 '123' => 'Удалён',
 '124' => 'Удалить сообщения старше, чем',
-'130' => "С наилучшими пожеланиями,\nАдминистрация Форума '$mbname'",
+'130' => qq~С наилучшими пожеланиями,\nАдминистрация Форума '{yabb mbname}'~,
 '135' => 'Настройка фильтра Запрещенных Слов',
-'136' => 'Одно слово или фраза на каждую строчку формы\:<br /> fuck=f\*\*ck или fuck~f\*\*ck<br /><span style="font-size: 10px">Используйте = если Вы хотите заблокировать только слово<br />Используйте ~ чтобы запретить появление данного выражения в однокоренных словах</span>',
+'136' => 'Одно слово или фраза на каждую строчку формы\:<br /> fuck=f\*\*ck или fuck~f\*\*ck<br /><span class="small">Используйте = если Вы хотите заблокировать только слово<br />Используйте ~ чтобы запретить появление данного выражения в однокоренных словах</span>',
 '139' => 'Страниц',
 '163' => 'Да',
 '164' => 'Нет',
@@ -196,7 +196,7 @@ $abbr_lang = 'ru';
 '342' => 'Одно слово на строку.',
 '347' => 'Эта страница позволяет поменять любую из настроек Форума YaBB. Обращайтесь с ними обдуманно - неправильная настройка параметров может сделать работу Вашего форума нестабильной. Учтите также, что некоторые из настроек задают параметры по умолчанию для Профилей Участников (например, формат времени).',
 '348' => 'Установить режим Тех-Обслуживания?',
-'348Text' => 'Сообщения для Посетителей о режиме &quot;Тех-Обслуживания&quot;<br /><span style="font-size: 10px">(очистите поле ввода текста для вывода сообщения, заданного по умолчанию)</span>',
+'348Text' => 'Сообщения для Посетителей о режиме &quot;Тех-Обслуживания&quot;<br /><span class="small">(очистите поле ввода текста для вывода сообщения, заданного по умолчанию)</span>',
 '348lang' => q~Language for User-defined "Maintenance Mode" text<br /><span class="small">(current user language)</span>~,
 '350' => 'Имя Форума',
 '350a' => 'Дата начала работы Форума',
@@ -221,7 +221,7 @@ $abbr_lang = 'ru';
 '364' => 'Папка Help',
 '366' => 'Настройки Уведомлений по E-mail для новых Участников',
 '367' => 'Уведомления по E-mail для новых Участников?<br /><span class="small">Если отмечено, то будет послано уведомление касательно регистрации нового Участника на его E-mail адресс.</span>',
-'368' => "E-mail адрес для отправки Уведомлений:<br /><span class='small'>Если здесь ничего не написано, сообщение будет отправлено на адрес: $webmaster_email</span>",
+'368' => q~E-mail адрес для отправки Уведомлений:<br /><span class='small'>Если здесь ничего не написано, сообщение будет отправлено на адрес: {yabb webmaster_email}</span>~,
 '371' => 'Выбор часового пояса Форума:',
 '371d' => q~Select Forum Time Zone:<br /><span class="small">Choose the country and city that represents your preferred default Time Zone.<br />If the only choices are UTC and 'local', you do not have the necessary Modules to use country/city based Time Zones. In that case, use 'local' and manually set your Forum Time Offset to set your Forum's Time difference from UTC, or choose UTC.</span>~,
 '371a' => q~Enable Time Zone choices for Users:<br /><span class="small">If the necessary <strong>DateTime::TimeZone</strong> and <strong>Locale::Country</strong> Perl Modules are not installed, users will only be able to choose 'UTC'. If the forum default Time Zone is 'local' users will also have 'Forum Default Time Offset' as an option.</span>~,
@@ -300,13 +300,13 @@ $abbr_lang = 'ru';
 '479b' => 'Отключить "GreyBox"',
 '479c' => 'Использовать "GreyBox" для показа одного изображения',
 '479d' => 'Использовать "GreyBox" для отображения всех картинок из вложений',
-'480' => "01/31/01 $admin_txt{'107'} 13:15:17",
-'481' => "31.01.01 $admin_txt{'107'} 13:15:17",
-'482' => "31.01.2001 $admin_txt{'107'} 13:15:17",
+'480' => "01/31/01 13:15:17",
+'481' => "31.01.01 13:15:17",
+'482' => "31.01.2001 13:15:17",
 '483' => "Янв. 12-ое, 2001, 1:15pm",
 '483a' => '12ого янв., 2001 в 1:15pm',
-'484' => "01/31/01 $admin_txt{'107'} 1:15pm",
-'485' => "31. Янв. $admin_txt{'107'} 13:15",
+'484' => "01/31/01 1:15pm",
+'485' => "31. Янв. 13:15",
 '486' => 'Формат Времени',
 '487' => 'Смещение по времени должно быть в пределах от -23.5 до 23.5!',
 '488' => 'Всего Участников:',
@@ -335,7 +335,7 @@ $abbr_lang = 'ru';
 '505' => 'Все Участники были пересчитаны.',
 '506' => 'Перестроить индексы сообщений',
 '507' => 'Индексы сообщений были перестроены.',
-'509' => qq~Show Recent Topics and/or Posts on Board Index? (To set number of items shown go to <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=advanced">Advanced Settings - Advanced</a>)~,
+'509' => qq~Show Recent Topics and/or Posts on Board Index? (To set number of items shown go to <a href="{yabb adminurl}?action=newsettings;page=advanced">Advanced Settings - Advanced</a>)~,
 '509a' => 'Show neither',
 '509b' => 'Show Posts',
 '509c' => 'Show Topics',
@@ -345,7 +345,6 @@ $abbr_lang = 'ru';
 '524' => 'Автолинковка URL?',
 '525' => 'Проверять ЗАГЛАВНЫЕ СИМВОЛЫ?<br /><span class="small">Если установлено 0, то проверка символов не производится. В противном случае - число, которое Вы укажете, будет восприниматься как допустимое количество всех заглавных символов в сообщении. При превышении этого числа будет открыто окно предупреждения при попытке отправки сообщения.</span>',
 '526' => 'Показывать панель "Инструменты Пользователя" при нажатии на ссылку с его именем?',
-'529' => 'Benutzer-Info-Stil:<br /><span class="small">Wenn diese Option aktiviert ist, werden Benutzerinfos links vom Beitrag wie in den vorherigen Versionen angezeigt. Wenn diese Option deaktiviert ist, werden die Beutzerinfos ьber jeden Beitrag im neuen Format angezeigt.</span>',
 '530' => 'Переиндексация Сообщений может занять длительное время на Разделах с большим количеством Тем!<br />Вы уверены, что хотите сделать это сейчас?<br />',
 '531' => 'Кликните здесь для запуска процесса!',
 '532' => 'Временной шаг равен',
@@ -375,7 +374,7 @@ $abbr_lang = 'ru';
 '594' => 'Список участников (memberlist.txt) был перестроен и сжат',
 '594a' => 'зарегистрированных участников.',
 '595' => 'Очистка Журнала активных Участников',
-'596' => 'Файл Журнала активных пользователей Форума ($vardir/log.txt) очищен.',
+'596' => 'Файл Журнала активных пользователей Форума (Variables/log.txt) очищен.',
 '597' => 'Перестроить архивы Участников',
 '598' => 'Все архивные файлы с информацией о деятельности участников (.rlog) были перестроены.',
 '600' => 'Настройки функции "Отправки Темы по E-mail"',
@@ -415,11 +414,11 @@ $abbr_lang = 'ru';
 '696' => 'Операционные Системы',
 '696a' => 'Вызовы скриптов',
 '697' => "Это простая система анализа доступа, которая анализирует log-файлы, создаваемые форумом при каждом клике, сделанном на Вашем форуме. Используйте эти данные, чтобы приблизительно оценить трафик, тип браузера и операционной системы посетителей $mbname. Числа наследуются, числа в скобках - это количество повторяющихся пунктов в логе, рядом с которыми они стоят.",
-'698' => "<p>Согласно текущим настройкам, логи хранятся $ClickLogTime минут.",
+'698' => '<p>Согласно текущим настройкам, логи хранятся {yabb click_logtime} минут.',
 '698a' => '<p>В настоящее время функция ведения журнала Форума заблокирована.',
 '699' => 'Зарезервированные имена будут препятствовать участникам регистрироваться под некоторыми специфическими именами или использовать эти слова в отображаемых именах. Перед запуском Форума в эксплуатацию, укажите здесь список слов, которые Вы желаете зарезервировать.',
 '702' => 'Высылать Новым Участникам во время Регистрации случайно сгенерированный Пароль?',
-'710' => 'Счетчики контроля сложности пароля.<br /><span class ="small">Здесь Вы можете определить когда строка достигнет следующего более высого уровня. По умолчанию это <i>10,15,30,40</i>. <font color="red">Вставьте только цифры и запятые!!!</font><br />Установите <i>-1,-1,-1,-1</i> чтобы отключить контроль сложности пароля. Затем это будет показываться только если пароль короткий или если пароль в порядке.</span>',
+'710' => 'Счетчики контроля сложности пароля.<br /><span class ="small">Здесь Вы можете определить когда строка достигнет следующего более высого уровня. По умолчанию это <i>10,15,30,40</i>. <span class="important">Вставьте только цифры и запятые!!!</span><br />Установите <i>-1,-1,-1,-1</i> чтобы отключить контроль сложности пароля. Затем это будет показываться только если пароль короткий или если пароль в порядке.</span>',
 '711' => 'Запрещенные слова для использования в пароле.<br /><span class ="small">Введите слова, которые нельзя использовать в качестве пароля. Слова должны быть между "" и разделены запятыми. Например:<br />"123456","abcdef","password"</span>',
 '712' => 'Минимум символов пароля.<br /><span class ="small">Количество (не менее) символов пароля.</span>',
 '723' => 'Разрешить участникам прятать свой E-mail от посетителей (кроме Администратора)?',
@@ -545,7 +544,7 @@ $abbr_lang = 'ru';
 'extendedprofiles' => 'Использовать Расширенные Профили?<br /><span class="small">При включении этой функции будут в главном меню форума появится новая строка "Поля Профиля". Перейдя в этот раздел Вы сможете добавить новый функционал для Пользовательских Профилей.<br />Если Вы не используете Расширенные Профили отключите эту функцию, чтобы снизить нагрузку на сервер!</span>',
 'forumnumbformat' => 'Select default number format:',
 'nospammer' => 'Send default e-mail to rejected users even when no reason is given when registration is by Admin approval. Check for &#39;yes&#39;',
-'honeypot' => qq~Activate Honeypot Spambot catcher. Check for &#39;yes&#39; (<a href="$boardurl/AdminIndex.$yyaext?action=honeypot">Edit Honeypot</a>)~,
+'honeypot' => qq~Activate Honeypot Spambot catcher. Check for &#39;yes&#39; (<a href="{yabb adminurl}?action=honeypot">Edit Honeypot</a>)~,
 'spamfruits' => 'Activate SpamFruits Spambot catcher. Check for &#39;yes&#39;',
 'eventcal_set' => 'Event Calendar Settings',
 'eventcal_set1' => 'Edit your Event Calendar Settings',
@@ -602,7 +601,7 @@ $abbr_lang = 'ru';
 '813b' => 'Select the membergroups allowed to use the Style Switcher:</span>',
 'close_box' => q~Close~,
 'dupbrd' => q~<span class="important">Warning: There are duplicate Boards: </span>~,
-'dupbrdlnk' => qq~<span class="important"><a href="$boardurl/AdminIndex.$yyaext?action=fixboarddupes">Fix duplicate boards</a></span>~,
+'dupbrdlnk' => qq~<span class="important"><a href="{yabb adminurl}?action=fixboarddupes">Fix duplicate boards</a></span>~,
 'fixdupbrd' => q~Fix Duplicates~,
 'fixduprem' => q~Duplicate Boards removed~,
 'subbrd' => q~Sub-Board~,
@@ -1129,7 +1128,7 @@ Thanks for using YaBB!~,
 '42' => 'Все Участники',
 '42a' => 'Все Группы Участников',
 '43' => 'Аккаунт удален',
-'44' => "[name], Ваш аккаунт ([username]) на Форуме '$mbname' был удален.",
+'44' => "[name], Ваш аккаунт ([username]) на Форуме '{yabb mbname}' был удален.",
 '45' => 'Послать E-mail удаленным Участникам',
 '46' => 'Здесь Вы можете выбрать Группы Участников, которые получат Ваше электронное сообщение. Используйте клавиши Ctrl или Shift, чтобы выбрать/снять выделение с выбранных групп.',
 '47' => 'Сообщения отправлены',
@@ -1192,8 +1191,8 @@ Thanks for using YaBB!~,
 
 %versiontxt = (
 '1' => 'Возможно Ваш браузер не поддерживает работу с JavaScript. Если это не так, то Вам необходимо разрешить поддержку Javascript в Вашем браузере, чтобы разрешить работу функции проверки версий форума!',
-'2' => '<b><font color="red">Стабильная версия!</font></b><br />Если Вы захотите её загрузить ',
-'3' => ', перейдите на <a href="http://www.yabbforum.com/downloads.php" target="_blank">http://www.yabbforum.com/downloads.php<\/a>.',
+'2' => '<b><span class="important">Стабильная версия!</span></b><br />Если Вы захотите её загрузить ',
+'3' => ', перейдите на <a href="{yabb yabb_dnloads}" target="_blank">{yabb yabb_dnloads}<\/a>.',
 '4' => 'ВАША версия:',
 '5' => 'Последняя СТАБИЛЬНАЯ версия:',
 '6' => 'Вы используете последнюю стабильную версию.',
@@ -1456,7 +1455,7 @@ $maintxt {'dst'} = "<sup>*</sup>"; ## needed to show Today in registration log
 
 # Forum settings
 'generalforum' => 'Основные',
-'forumtime' => qq~Forum Time Settings (<a href="$scripturl?action=help;section=admin#time">$admintxt{'35'}</a>)~,
+'forumtime' => q~Forum Time Settings (<a href="{yabb scripturl}?action=help;section=admin#time">{yabb admintxt_35}</a>)~,
 'showhide' => 'Показать / спрятать пункты',
 'posting' => 'Сообщения',
 'user' => 'Участники',
@@ -1510,7 +1509,7 @@ $maintxt {'dst'} = "<sup>*</sup>"; ## needed to show Today in registration log
 'freedisk' => 'Проверка свободного места на диске<br /><span class="small">Вы можете задействовать <b>одну</b> из трёх опций.</span>',
 'freedisk2' => 'Free Disk Space Options <span class="small"><b>Note</b>: not all options are available on all servers.</span>',
 'checkspace' => 'Free Disk Space',
-'advhelp' => qq~ (see <a href="$scripturl?action=help;section=admin#Advanced_Settings" target="_blank">Advanced Settings Help</a>)~,
+'advhelp' => q~ (see <a href="{yabb scripturl}?action=help;section=admin#Advanced_Settings" target="_blank">Advanced Settings Help</a>)~,
 
 # Security Settings
 'generalsec' => 'Основные',
@@ -1519,7 +1518,7 @@ $maintxt {'dst'} = "<sup>*</sup>"; ## needed to show Today in registration log
 # Antispam Settings
 'generalspam' => 'Настройки АнтиСПАМА',
 'speedban' => 'Блокировка по скорости отправки сообщений',
-'spambot' => qq~Spambot Registration Deterrents (Also see: <a href="$boardurl/AdminIndex.$yyaext?action=spam_questions">Anti-spam Questions</a> and <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=security">Security Settings</a>)~,
+'spambot' => q~Spambot Registration Deterrents (Also see: <a href="{yabb adminurl}?action=spam_questions">Anti-spam Questions</a> and <a href="{yabb adminurl}?action=newsettings;page=security">Security Settings</a>)~,
 );
 
 #HoneyPot
@@ -1610,12 +1609,11 @@ $maintxt {'dst'} = "<sup>*</sup>"; ## needed to show Today in registration log
 );
 
 %load_txt = (
-'616a' => qq~Remember, this forum is in <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
+'616a' => q~Remember, this forum is in <a href="{yabb adminurl}?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
 '617' => q~Remember, last Backup was done on:~,
 );
 
-timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">$mbname</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">$YaBBversion</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. All Rights Reserved.</span>~;
+$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
 $iFrameSupport = 'Извините, но для просмотра последних новостей o YABB Вы должны использовать браузер, который поддерживает работу с фреймами.';
 $rna = 'Удаленный сервер недоступен!';
 

@@ -123,7 +123,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'moveicon2' => 'Icon Position (horizontal)',
 'iconspace' => 'Icon-Text space',
 'movetext' => 'Text Position (vertical)',
-'noedit' => qq~For security reasons you are not allowed to edit the default template or default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename then choose that new file as your default stylesheet in <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template Configuration</a>~,
+'noedit' => q~For security reasons you are not allowed to edit the default template or default stylesheet except by directly editing the source.<br />To make changes from this screen: save your work to a new filename then choose that new file as your default stylesheet in <a href="{yabb adminurl}?action=modskin">Template Configuration</a>~,
 'edit_files' => 'Go to Edit Template Files',
 'configure' => 'Go to Configure Templates',
 '21g' => q~Background Grad.~,

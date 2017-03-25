@@ -26,8 +26,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 %yabbtagdesc = (
 # Constant tags
-'scripturl' => qq~Die URL zum YaBB Forum. Beispiel: $scripturl~,
-'adminurl' => qq~Die URL zum YaBB Admin-Center. Beispiel: $boardurl/AdminIndex.$yyaext~,
+'scripturl' => qq~Die URL zum YaBB Forum. Beispiel: {yabb scripturl}~,
+'adminurl' => qq~Die URL zum YaBB Admin-Center. Beispiel: {yabb adminurl}~,
 'mbname' => q~Name des Forums. Beispiel: {yabb mbname}~,
 
 # New Member related

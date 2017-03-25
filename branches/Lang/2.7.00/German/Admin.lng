@@ -340,7 +340,7 @@ $abbr_lang = 'de-de';
 '505' => q~Mitgliederdaten wurden aktualisiert.~,
 '506' => q~Themen-Index neuaufbauen~,
 '507' => q~Themen-Index wurde neu aufgebaut.~,
-'509' => qq~Die neuesten Beiträge oder Themen im Forenindex anzeigen?<br />(Um die Anzahl einzustellen, gehen Sie zu <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=advanced">Erweiterte Einstellungen - Erweitert</a>)~,
+'509' => q~Die neuesten Beiträge oder Themen im Forenindex anzeigen?<br />(Um die Anzahl einzustellen, gehen Sie zu <a href="{yabb adminurl}?action=newsettings;page=advanced">Erweiterte Einstellungen - Erweitert</a>)~,
 '509a' => q~Zeige weder~,
 '509b' => q~Zeige Beiträge~,
 '509c' => q~Zeige Themen~,
@@ -350,7 +350,6 @@ $abbr_lang = 'de-de';
 '524' => q~URLs automatisch verlinken?~,
 '525' => q~Auf GROSSBUCHSTABEN prüfen?<br /><span class="small">Wenn 0, wird nichts überprüft. Bei einem anderen Wert ist die hier eingetragene Zahl die Anzahl von aufeinanderfolgenden Großbuchstaben, die einen JavaScript Hinweis beim abschicken der Nachricht öffnen in dem steht, daß so viele aufeinanderfolgende Großbuchstaben nicht erlaubt sind.</span>~,
 '526' => q~Benutzertools in den Links (QuickLinks) der Benutzernamen anzeigen?~,
-'529' => q~Benutzer-Info-Stil:<br /><span class="small">Wenn diese Option aktiviert ist, werden Benutzerinfos links vom Beitrag wie in den vorherigen Versionen angezeigt. Wenn diese Option deaktiviert ist, werden die Benutzerinfos über jeden Beitrag im neuen Format angezeigt.</span>~,
 '530' => q~Der Neuaufbau des Themen-Index kann bei Foren mit sehr vielen Themen einige Zeit in Anspruch nehmen.<br />Sind Sie sicher, dass Sie einen Neuaufbau jetzt durchführen wollen?<br />~,
 '531' => q~Klicken Sie hier, um den Prozess zu starten.~,
 '532' => q~Die Ausführung des Prozesses erfolgt in einzelnen Zeitschritten zu je~,
@@ -380,7 +379,7 @@ $abbr_lang = 'de-de';
 '594' => q~Die Mitgliederliste (memberlist.txt) wurde neu aufgebaut und enthält~,
 '594a' => q~registrierte Mitglieder.~,
 '595' => q~Benutzer-Onlinelog zurücksetzen~,
-'596' => qq~Das Benutzer-Onlinelog ($vardir/log.txt) wurde zurückgesetzt.~,
+'596' => q~Das Benutzer-Onlinelog (Variables/log.txt) wurde zurückgesetzt.~,
 '597' => q~Mitglieder-Historie neu aufbauen ~,
 '598' => q~Alle Mitglieder-Historie-Logs (.rlog) wurden neu aufgebaut.~,
 '600' => q~eMail-Einstellungen für den Versand von Foren-Themen~,
@@ -550,7 +549,7 @@ $abbr_lang = 'de-de';
 'extendedprofiles' => q~Erweiterte Profilfelder nutzen?<br /><span class="small">Wenn aktiviert, wird ein zusätzlicher Menuepunkt namens "Profil Felder" auf der linken Seite angezeigt. Hier können Sie weitere Funktionen den Benutzer Profilen hinzufügen.<br />Demarkieren Sie die Checkbox, wenn Sie diese Funktion nicht nutzen möchten und eine sichere Ladegeschwindigkeit Ihres Servers gewährleisten wollen.</span>~,
 'forumnumbformat' => q~Standard-Nummern-Format auswählen:~,
 'nospammer' => q~Senden einer Standard-eMail an abgelehnten Nutzer, auch wenn kein Grund angegeben wird. Funktioniert nur, wenn Anmeldung ist Admin-Zulassung. Prüfen Sie mit 'Ja'~,
-'honeypot' => qq~Aktivieren des Honeypot Spam-Bot-Fängers. Prüfe Sie ob 'ja' (<a href="$boardurl/AdminIndex.$yyaext?action=honeypot">Editiere Honeypot</a>)~,
+'honeypot' => q~Aktivieren des Honeypot Spam-Bot-Fängers. Prüfe Sie ob 'ja' (<a href="{yabb adminurl}?action=honeypot">Editiere Honeypot</a>)~,
 'spamfruits' => q~Aktivieren des Spam-Fruits Spam-Bot-Fängers. Prüfen Sie ob 'ja'~,
 'eventcal_set' => q~Event-Kalender-Einstellungen~,
 'eventcal_set1' => q~Ihre Event-Kalender Einstellungen bearbeiten~,
@@ -607,7 +606,7 @@ $abbr_lang = 'de-de';
 'expireon' => q~Läuft aus am~,
 'close_box' => q~Schließen~,
 'dupbrd' => q~<span class="important">Warnung: Es gibt doppelte Foren: </span>~,
-'dupbrdlnk' => qq~<span class="important"><a href="$boardurl/AdminIndex.$yyaext?action=fixboarddupes">Repariere und fixiere doppelte Foren</a></span>~,
+'dupbrdlnk' => q~<span class="important"><a href="{yabb adminurl}?action=fixboarddupes">Repariere und fixiere doppelte Foren</a></span>~,
 'fixdupbrd' => q~Repariere und fixiere doppeltes~,
 'fixduprem' => q~Doppelte Foren entfernt~,
 'subbrd' => q~Unterforum~,
@@ -1208,7 +1207,7 @@ Danke für die Benutzung von YaBB!~,
 );
 
 %gztxt = (
-'1' => qq~Ausgabe-Komprimierung benutzen?<br /><span class="small">Die Ausgabe-Komprimierung reduziert das Übertragungsvolumen des Browsers.<br />Auswählbare Optionen stehen nur dann zur Verfügung, wenn Serverseitig einige unterstützt werden. Einstellung des Pfades zum Server Ihres gzip-Dienstrogrammes in der Rubrik <a href="$boardurl/AdminIndex.$yyaext?action=backupsettings">Backup Utility</span>~,
+'1' => qq~Ausgabe-Komprimierung benutzen?<br /><span class="small">Die Ausgabe-Komprimierung reduziert das Übertragungsvolumen des Browsers.<br />Auswählbare Optionen stehen nur dann zur Verfügung, wenn Serverseitig einige unterstützt werden. Einstellung des Pfades zum Server Ihres gzip-Dienstrogrammes in der Rubrik <a href="{yabb adminurl}?action=backupsettings">Backup Utility</span>~,
 '2' => q~Ausgabe immer komprimiert senden?<br /><span class="small">Wenn aktiviert = YaBB prüft nicht, ob der verwendete Browser eine Komprimierung unterstützt. Es wird immer komprimiert gesendet, wenn die Funktion oberhalb aktiviert ist.<br />Wenn deaktiviert = YaBB prüft, ob der verwendete Broswer eine Komprimierung zulässt und nutzt eine Komprimierung entsprechend den Browserfähigkeiten wenn oberhalb aktiviert.</span>~,
 '3' => q~Keine Ausgabe-Komprimierung~,
 '4' => q~Komprimierung mit GZip Programm~,
@@ -1462,7 +1461,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 
 # Forum settings
 'generalforum' => q~Allgemein~,
-'forumtime' => qq~Forum-Zeit-Einstellung (<a href="$scripturl?action=help;section=admin#time">$admintxt{'35'}</a>)~,
+'forumtime' => q~Forum-Zeit-Einstellung (<a href="{yabb scripturl}?action=help;section=admin#time">{yabb admintxt_35}</a>)~,
 'showhide' => q~Elemente Zeigen / Verstecken~,
 'posting' => q~Beitrag~,
 'user' => q~Mitglieder~,
@@ -1516,7 +1515,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'freedisk' => q~Freie Speicherplatzüberprüfung<br /><span class="small">Sie können <u>eine</u> der folgenden drei Methoden auswählen.</span>~,
 'freedisk2' => q~Freie Speicherplatzüberprüfung-Option <span class="small"><b>Note</b>: Nicht alle Optionen sind auf dem Server verfügbar.</span>~,
 'checkspace' => q~Freier Speicherplatz~,
-'advhelp' => qq~ (Sehe <a href="$scripturl?action=help;section=admin#Advanced_Settings" target="_blank">Erweiterte Einstellungen</a>)~,
+'advhelp' => qq~ (Sehe <a href="{yabb scripturl}?action=help;section=admin#Advanced_Settings" target="_blank">Erweiterte Einstellungen</a>)~,
 
 # Security settings
 'generalsec' => q~Allgemein~,
@@ -1525,7 +1524,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 # Anti-Spam settings
 'generalspam' => q~Allgemeine Antispam-Kontrolle~,
 'speedban' => q~Schnelles Posting verhindern~,
-'spambot' => qq~Spambot Registrierungs-Abschreckungsmaßnahmen (Siehe auch: <a href="$boardurl/AdminIndex.$yyaext?action=spam_questions">Anti-Spam-Fragen</a>) und <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=security">Sicherheits-Einstellungen</a>)~,
+'spambot' => qq~Spambot Registrierungs-Abschreckungsmaßnahmen (Siehe auch: <a href="{yabb adminurl}?action=spam_questions">Anti-Spam-Fragen</a>) und <a href="{yabb adminurl}?action=newsettings;page=security">Sicherheits-Einstellungen</a>)~,
 );
 
 #HoneyPot
@@ -1614,12 +1613,11 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 );
 
 %load_txt = (
-'616a' => qq~Denken Sie daran, dieses Forum ist im <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
+'616a' => q~Denken Sie daran, dieses Forum ist im <a href="{yabb adminurl}?action=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
 '617' => q~Denken Sie daran, letzte Sicherung wurde durchgeführt am:~,
 );
 
-timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-$year. Alle Rechte vorbehalten.</span>~;
+$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.</span>~;
 $iFrameSupport = q~Sorry, um die letzten Neuigkeiten zu sehen, müssen Sie einen Browser verwenden, der iframes unterstützt~;
 $rna = q~Remote Server nicht verfügbar.~;
 

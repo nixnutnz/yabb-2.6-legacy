@@ -1,0 +1,444 @@
+###############################################################################
+# Email.lng (Email templating and text declarations)                          #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomiemaillngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@suomiemaillngmods = ();
+if(@suomiemaillngmods){
+    $suomiemaillngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+$emailcharset = 'UTF-8';
+
+%yabbtagdesc = (
+# Constant tags
+'scripturl' => q~Osoite YaBB-foorumille. Esimerkki: {yabb scripturl}~,
+'adminurl' => q~YaBB ylläpitokeskuksen osoite. Esimerkki: {yabb adminurl}~,
+'mbname' => q~Foorumin nimi. Esimerkki: {yabb mbname}~,
+
+# New Member related
+'userip' => "Käyttäjän IP-osoite.",
+'useremail' => "Käyttäjän sähköpostiosoite.",
+
+# User-related
+'username' => "Käyttäjän käyttäjätunnus.",
+'displayname' => "Käyttäjän näyttönimi.",
+'cryptusername' => "Käyttäjätunnus, joka on salattu URL:eissa käytettäessä.",
+'reviewer' => "Ylläpitäjän/yleisen valvojan todellinen nimi, rekisteröintien tarkistaja.",
+
+# Topic/PM-related
+'sender' => "Yksityisviestin lähettäjä.",
+'num' => "Aiheen tunniste (käytetään URL:eissa)",
+'start' => "Viestin tunniste (käytetään URL:eissa)",
+'tmessage' => "Uuden aiheen teksti",
+'tauthor' => "Kirjoittajan nimi",
+
+# Registration/Password
+'activationcode' => "Rekisteröitymisviestin mukana lähetetty aktivointitunniste.",
+'remindercode' => "Salasanamuistutinviestin mukana lähetetty tunniste.",
+'preregspan' => "Esirekisteröitymisen umpeutumisen aika. Tällä hetkellä käytössä oleva: $preregspan",
+'reason' => "Ylläpitäjän antama lisäselvitys rekisteröinnin hyväksymisessä (mikäli käytössä)",
+
+# Sending a Topic
+'toname' => "Aiheen vastaanottaja.",
+
+# PMs
+'sendto' => "Yksityisviestin vastaanottaja.",
+'email' => "Sähköpostia käyttäjältä.",
+'date' => "Lähetyspäivä.",
+'subject' => "Viestin aihe.",
+'message' => "Yksityisviestin sisältö.",
+);
+
+# Pre registration subject lines
+%mailreg_txt=(
+'apr_result_activate' => "Aktivointitiedot",
+'apr_result_validate' => "Onnistunut rekisteröinti",
+'apr_result_info' => "Rekisteröitymistiedot",
+'apr_result_wait' => "Rekisteröinti odottaa hyväksymistä",
+'apr_result_reject' => "Rekisteröityminen hylätty",
+'apr_result_approved' => "Rekisteröityminen hyväksytty",
+'new_member_info' => "Uusi rekisteröityminen!",
+);
+
+$yabbtags{'preregemail'} = q~displayname preregspan cryptusername activationcode~;
+$emaildesc{'preregemail'} = q~Rekisteröinnin vahvistusviesti joka lähetetään esirekisteröinnin tunnisteen kanssa.~;
+$preregemail = q~Tervetuloa, {yabb displayname}!
+Tässä sinulle tunnuksesi varmistustunniste {yabb displayname}.
+
+Tunnuksesi on nyt esirekisteröity foorumille: {yabb mbname}.
+Muistathan vahvistaa rekisteröitymisen {yabb preregspan} tunnin sisällä!
+
+Ole hyvä ja napsauta allaolevaa linkkiä aktivoidaksesi tunnuksesi
+
+<a href="{yabb scripturl}?action=activate&username={yabb cryptusername}&activationkey={yabb activationcode}">{yabb scripturl}?action=activate&username={yabb cryptusername}&activationkey={yabb activationcode}</a>
+
+Jos linkki ei toimi (tai käytät selainpohjaista sähköpostiohjelmaa) kopioi linkki selaimesi osoiteriville itse.
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'approveregemail'} = q~username displayname~;
+$emaildesc{'approveregemail'} = q~Hyväksymistä odottavan tunnuksen viesti, silloin kun ei lähetetä salasanaa tai ennakkorekisteröintitunnistetta~;
+$approveregemail = q~Hei, {yabb displayname}!
+
+Hakemuksesi käyttäjätunnukselle "{yabb username}" odottaa hyväksymistä, jonka suorittaa {yabb mbname} ylläpito.
+
+Prosessi voi viedä jonkin aikaa ennenkuin ylläpito ehtii paneutua asiaan, joten odota kärsivällisesti.
+Saat tiedon heti kun hakemuksesi on käsitelty.
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'instantapprovedemail'} = q~username displayname reviewer~;
+$emaildesc{'instantapprovedemail'} = q~Välittömästi hyväksyttävän rekisteröinnin viesti kun salasanaa tai ennakkorekisteröintitunnistetta ei lähetetä~;
+$instantapprovedemail = q~Hei, {yabb displayname}!
+
+Onnittelut ja tervetuloa.
+
+Rekisteröitymisesi on hyväksytty (käsittelijä: {yabb reviewer}).
+
+Voit nyt kirjautua foorumille käyttäen joko nimimerkkiäsi ({yabb displayname}), sähköpostiosoitettasi tai käyttäjätunnustasi ({yabb username}).
+
+Voit muuttaa salasanaasi kirjautumisen jälkeen menemällä omaan profiiliisi. Napsauta Käyttäjäasetukset painiketta foorumin {yabb mbname} etusivulla osoitteessa <a href="{yabb scripturl}">{yabb scripturl}</a>
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'pwinstantapprovedemail'} = q~username displayname reviewer password~;
+$emaildesc{'pwinstantapprovedemail'} = q~Välittömästi hyväksyttävän rekisteröinnin viesti kun salasana lähetetään~;
+$pwinstantapprovedemail = q~Hei, {yabb displayname}!
+
+Onnittelut ja tervetuloa.
+
+Rekisteröitymisesi on hyväksytty (käsittelijä: {yabb reviewer}).
+
+Voit nyt kirjautua foorumille käyttäen joko nimimerkkiäsi ({yabb displayname}), sähköpostiosoitettasi tai käyttäjätunnustasi ({yabb username}).
+Tämänhetkinen salasanasi on: {yabb password}
+
+Voit muuttaa salasanaasi kirjautumisen jälkeen menemällä omaan profiiliisi. Napsauta Käyttäjäasetukset painiketta foorumin {yabb mbname} etusivulla osoitteessa <a href="{yabb scripturl}">{yabb scripturl}</a>
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'instantrejectedemail'} = q~username displayname reviewer~;
+$emaildesc{'instantrejectedemail'} = q~Välittömän hylkäämisen viesti~;
+$instantrejectedemail = q~Hei, {yabb displayname}!
+
+Valitettavasti rekisteröimääsi tunnusta ei voitu hyväksyä (käsittelijä: {yabb reviewer}).
+Mitä erityistä syytä ei annettu päätöstä tehdessä, mutta luultavasti kyseessä olivat puutteelliset tai väärät rekisteröintitiedot.
+
+Jos päätös on mielestäsi virheellinen, voit luonnollisesti yrittää rekisteröityä uudelleen uusilla tiedoilla.
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'reviewapprovedemail'} = q~username displayname reviewer~;
+$emaildesc{'reviewapprovedemail'} = q~Erikseen käsiteltävän rekisteröinnin viesti kun salasanaa tai ennakkorekisteröintitunnistetta ei lähetetä~;
+$reviewapprovedemail = q~Hei, {yabb displayname}!
+
+Onnittelut ja tervetuloa.
+
+Hakemuksesi on hyväksytty {yabb reviewer} :n toimesta {yabb mbname} Foorumille.
+{yabb reviewer} antoi syyksi:
+
+{yabb reason}
+
+Voit nyt kirjautua foorumille käyttäen joko nimimerkkiäsi ({yabb displayname}), sähköpostiosoitettasi tai käyttäjätunnustasi ({yabb username}).
+
+Voit vaihtaa salasanasi käyttäjäprofiilissasi, kun olet kirjautunut sisään. Napsauta Hallintapaneeli-välilehteä {yabb mbname} foorumin pääsivulla: <a href="{yabb scripturl}">{yabb scripturl}</a> ja napsauta "Muuta profiilia" (turvallisuussyistä sinun täytyy antaa salasanasi).
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'pwreviewapprovedemail'} = qq~username displayname reviewer password~;
+$emaildesc{'pwreviewapprovedemail'} = qq~Hyväksyntäsähköposti lähetettäessä salasanaa~;
+$pwreviewapprovedemail = qq~Hei, {yabb displayname}!
+
+Onnittelut ja tervetuloa.
+
+Hakemuksesi on hyväksytty {yabb reviewer} :n toimesta {yabb mbname} Foorumille.
+
+{yabb reviewer} antoi syyksi:
+
+{yabb reason} 
+
+Voit kirjautua sisään käyttämällä käyttäjänimeäsi ({yabb displayname}), sähköpostiosoitettasi, tai käyttäjätunnustasi ({yabb username}).
+Salasanasi on: {yabb password}
+
+Voit vaihtaa salasanasi käyttäjäprofiilissasi, kun olet kirjautunut sisään. Napsauta Hallintapaneeli-välilehteä {yabb mbname} foorumin pääsivulla: <a href="{yabb scripturl}">{yabb scripturl}</a> ja napsauta "Muuta profiilia" (turvallisuussyistä sinun täytyy antaa salasanasi).
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'reviewrejectedemail'} = q~username displayname reviewer reason~;
+$emaildesc{'reviewrejectedemail'} = q~Käsitellyn, mutta hylätyn rekisteröinnin ilmoitusviesti~;
+$reviewrejectedemail = q~Hei, {yabb displayname}!
+
+Hakemuksesi {yabb mbname} foorumille on hylätty {yabb reviewer} :n toimesta.
+
+{yabb reviewer} antoi syyksi:
+
+{yabb reason} 
+
+Jos päätös on mielestäsi virheellinen, voit luonnollisesti yrittää rekisteröityä uudelleen uusilla tiedoilla.
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'passwordregemail'} = qq~username password displayname~;
+$emaildesc{'passwordregemail'} = qq~Rekisteröinnin ilmoitusviesti kun käyttäjälle lähetetään satunnainen salasana~;
+$passwordregemail = qq~Tervetuloa, {yabb displayname}!
+
+Käyttäjätunnuksesi on {yabb username}, ja salasanasi on {yabb password}.
+
+Voit kirjautua sisään käyttämällä käyttäjänimeäsi ({yabb displayname}), sähköpostiosoitettasi, tai käyttäjätunnustasi ({yabb username}).
+
+Voit vaihtaa salasanasi käyttäjäprofiilissasi, kun olet kirjautunut sisään. Napsauta Hallintapaneeli-välilehteä {yabb mbname} foorumin pääsivulla: <a href="{yabb scripturl}">{yabb scripturl}</a> ja napsauta "Muuta profiilia" (turvallisuussyistä sinun täytyy antaa salasanasi).
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'welcomeregemail'} = qq~username password displayname~;
+$emaildesc{'welcomeregemail'} = q~Rekisteröinnin ilmoitusviesti kun salasanaa tai ennakkorekisteröintitunnistetta ei lähetetä~;
+$welcomeregemail = q~Tervetuloa, {yabb displayname}!
+
+Käyttäjätunnuksesi on {yabb username} ja salasanasi on {yabb password}.
+
+Voit nyt kirjautua foorumille käyttäen joko nimimerkkiäsi ({yabb displayname}), sähköpostiosoitettasi tai käyttäjätunnustasi ({yabb username}).
+
+Voit vaihtaa salasanasi käyttäjäprofiilissasi, kun olet kirjautunut sisään. Napsauta Hallintapaneeli-välilehteä {yabb mbname} foorumin pääsivulla: <a href="{yabb scripturl}">{yabb scripturl}</a> ja napsauta "Muuta profiilia" (turvallisuussyistä sinun täytyy antaa salasanasi).
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'activatedpassregemail'} = q~username password displayname~;
+$emaildesc{'activatedpassregemail'} = q~Rekisteröinnin aktivoinnin ilmoitusviesti kun salasana lähetetään~;
+$activatedpassregemail = q~Tervetuloa, {yabb displayname}!
+
+Käyttäjätunnuksesi on {yabb username} ja salasanasi on {yabb password}.
+
+Voit nyt kirjautua foorumille käyttäen joko nimimerkkiäsi ({yabb displayname}), sähköpostiosoitettasi tai käyttäjätunnustasi ({yabb username}).
+
+Voit vaihtaa salasanasi käyttäjäprofiilissasi, kun olet kirjautunut sisään. Napsauta Hallintapaneeli-välilehteä {yabb mbname} foorumin pääsivulla: <a href="{yabb scripturl}">{yabb scripturl}</a> ja napsauta "Muuta profiilia" (turvallisuussyistä sinun täytyy antaa salasanasi).
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'activatedwelcomeregemail'} = q~username password displayname~;
+$emaildesc{'activatedwelcomeregemail'} = q~Rekisteröinnin aktivoinnin ilmoitusviesti kun salasanaa ei lähetetä~;
+$activatedwelcomeregemail = q~Tervetuloa, {yabb displayname}!
+
+Käyttäjätunnuksesi on {yabb username} ja salasanasi on {yabb password}.
+
+Voit nyt kirjautua foorumille käyttäen joko nimimerkkiäsi ({yabb displayname}), sähköpostiosoitettasi tai käyttäjätunnustasi ({yabb username}).
+
+Voit vaihtaa salasanasi käyttäjäprofiilissasi, kun olet kirjautunut sisään. Napsauta Hallintapaneeli-välilehteä {yabb mbname} foorumin pääsivulla: <a href="{yabb scripturl}">{yabb scripturl}</a> ja napsauta "Muuta profiilia" (turvallisuussyistä sinun täytyy antaa salasanasi).
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'newmemberemail'} = q~displayname username userip useremail~;
+$emaildesc{'newmemberemail'} = q~Uudesta käyttäjästä ylläpitoa muistuttava viesti~;
+$newmemberemail = q~Uusi käyttäjä on rekisteröitynyt foorumille!
+
+Käyttäjätunnus: {yabb displayname}
+Käyttäjänimi: {yabb username}
+IP-osoite: {yabb userip}
+Sähköpostiosoite: {yabb useremail}
+
+Uuden käyttäjän rekisteröinnin tarkastamiseksi kirjaudu foorumille ja napauta alla olevaa linkkiä.
+{yabb adminurl}?action=view_reglog
+
+Jos linkki ei toimi (tai käytät selainpohjaista sähköpostiohjelmaa) kopioi linkki osoiteriville itse.
+
+Tarkastaaksesi uuden käyttäjän profiilin, kirjaudu foorumille.
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'passwordreminderemail'} = q~displayname mbname remindercode cryptusername~;
+$emaildesc{'passwordreminderemail'} = q~Salasanan palautusviesti~;
+$passwordreminderemail = q~Hei, {yabb displayname},
+
+Tätä toimintoa käytettiin seuraavalla foorumilla: {yabb mbname}. Mikäli sen teki joku muu, ole hyvä äläkä välitä tästä viestistä.
+
+Jos pyysit uutta salasanaa, ole hyvä ja siirry osoitteeseen <a href="{yabb scripturl}?action=resetpass&ID={yabb remindercode}&user={yabb cryptusername}">{yabb scripturl}?action=resetpass&ID={yabb remindercode}&user={yabb cryptusername}</a>
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'boardnewtopicnotificationemail'} = qq~num subject tmessage tauthor~;
+$emaildesc{'boardnewtopicnotificationemail'} = qq~Ilmoitus uudesta aiheesta (aihealuetason ilmoitukset)~;
+$boardnewtopicnotificationemail = qq~Uusi aihe, "{yabb subject}", jonka kirjoitti {yabb tauthor}, on luettavissa aihealueella josta olet tilannut ilmoitukset.
+
+########################################
+
+{yabb tmessage}
+
+########################################
+
+Tarkista aihe osoitteessa <a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={yabb num}</a>
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'boardnotificationemail'} = q~num start subject tmessage tauthor~;
+$emaildesc{'boardnotificationemail'} = q~Ilmoitus uudesta viestistä olemassa olevassa aiheessa (aihealuetason ilmoitukset)~;
+$boardnotificationemail = q~Aiheeseen, "{yabb subject}", joka sijaitsee seuraamallasi aihealueella, on vastannut käyttäjä {yabb tauthor}.
+
+########################################
+
+{yabb tmessage}
+
+########################################
+
+Tarkista uusi viesti osoitteessa <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scripturl}?num={yabb num}/{yabb start}</a>
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'topicnotificationemail'} = q~num subject start tmessage tauthor~;
+$emaildesc{'topicnotificationemail'} = q~Ilmoitus vanhan aiheen uudesta viestistä~;
+$topicnotificationemail = q~Seuraamaasi aiheeseen, "{yabb subject}", on vastannut käyttäjä {yabb tauthor}.
+
+########################################
+
+{yabb tmessage}
+
+########################################
+
+Tarkista uusi viesti osoitteessa <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scripturl}?num={yabb num}/{yabb start}</a>
+
+Saat seuraavan ilmoituksen uudesta viestistä vasta kun olet käynyt tarkistamassa aiheen.
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'profilenewpasswordemail'} = q~displayname password~;
+$emaildesc{'profilenewpasswordemail'} = q~Ilmoitus salasanan muuttamisesta~;
+$profilenewpasswordemail = q~Hei, {yabb displayname},
+
+Salasanasi on vaihdettu. Uusi salasanasi on {yabb password}.
+
+Voit vaihtaa sen uudelleen oman käyttäjäprofiilisi kautta.
+
+Terveisin,
+Ylläpito
+{yabb mbname}~;
+
+$yabbtags{'sendtopicemail'} = q~toname subject displayname num~;
+$emaildesc{'sendtopicemail'} = q~Aiheen ilmoittamisesta kaverille~;
+$sendtopicemail = q~Hei {yabb toname},
+
+Luulen että haluaisit nähdä tämän aiheen, "{yabb subject}", löydät sen täältä: {yabb mbname}. 
+Nähdäksesi aiheen, ole hyvä ja napsauta allaolevaa linkkiä:
+
+<a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={yabb num}</a>
+
+Terveisin,
+{yabb displayname}~;
+
+$yabbtags{'privatemessagenotificationemail'} = q~sender subject message~;
+$emaildesc{'privatemessagenotificationemail'} = q~The Private Message Notification Email~;
+$privatemessagenotificationemail = q~{yabb sender} lähetti sinulle yksityisviestin.
+
+Aihe: {yabb subject}
+Viesti: {yabb message}
+{yabb attachments}
+
+Löydät viestin omien yksityisviestiesi saapuneet-kansiosta {yabb mbname}\: <a href="{yabb scripturl}">{yabb scripturl}</a>~;
+
+## for online alert pms. 
+%online_alert = (
+newnotify => "Uusi viesti!",
+replynotify => "Uusi vastaus!",
+);
+
+
+
+$yabbtags{'replyguestmail'} = q~sender email sendto date subject message~;
+$emaildesc{'replyguestmail'} = q~Vieraiden ylläpidolle lähettämän viestin sähköpostitekstit~;
+$replyguestmail = q~Hyvä {yabb sender},
+
+Terveisin,
+Ylläpito
+{yabb mbname}
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+
+-----------------------------
+----- Original Message -----
+From: "{yabb sender}" <{yabb email}>
+To: "{yabb sendto}", <{yabb scripturl}>
+Sent: {yabb date}
+Subject: {yabb subject}
+
+{yabb message}
+~;
+
+
+$yabbtags{'deleteduseremail'} = q~displayname~;
+$emaildesc{'deleteduseremail'} = q~Ilmoitus tunnuksen poistamisesta~;
+$deletedusersybject = q~Tunnuksesi on poistettu~;
+$deleteduseremail = q~Hei, {yabb displayname}!
+
+{yabb mbname} käyttäjätunnuksesi on nyt poistettu eikä sitä voi enää käyttää!
+
+Terveisin,
+Ylläpito
+{yabb mbname}
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+~;
+
+$yabbtags{'banneduseremail'} = q~displayname~;
+$emaildesc{'banneduseremail'} = q~The Banned User Notification E-mail~;
+$bannedusersybject = q~Your account banned on~;
+$banneduseremail = q~Hello, {yabb displayname}:
+
+You have been banned from {yabb mbname} {yabb ban_time} by {yabb banner}{yabb ban_reason}.
+
+Regards,
+The {yabb mbname} team
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+~;
+
+$yabbtags{'suspendeduseremail'} = q~displayname~;
+$emaildesc{'suspendeduseremail'} = q~The Suspended User Notification E-mail~;
+$suspendusersybject = q~Your account suspended on~;
+$suspendeduseremail = q~Hello, {yabb displayname}:
+
+Your account on {yabb mbname} has been suspended {yabb ban_time} by {yabb banner}{yabb ban_reason}.
+
+Regards,
+The {yabb mbname} team
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+~;
+
+1;

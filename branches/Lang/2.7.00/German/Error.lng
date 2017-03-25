@@ -46,7 +46,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'no_recipient'         => q~Das Empfängerfeld wurde nicht wie erforderlich ausgefüllt.~,
 'no_email'             => q~Das eMailfeld ist nicht wie erforderlich ausgefüllt.~,
 'no_name'              => q~Das Namensfeld wurde nicht wie erforderlich ausgefüllt.~,
-'no_ip'                => qq~IP wurde nicht gefunden, ändern Sie bitte \$user_ip in $lang~,
+'no_ip'                => qq~IP wurde nicht gefunden~,
 'no_username'          => q~Sie müssen einen Benutzernamen eintragen.~,
 'no_password'          => q~Das Passwortfeld ist leer~,
 'no_action'            => q~Es wurde kein Vorgang gewählt, aber~,
@@ -76,7 +76,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'wrong_pass'           => q~Das eingegebene Passwort ist nicht korrekt~,
 'corrupt_member_file'  => q~Die Mitglieder Datei ist beschädigt. Bitte informieren Sie den Andministrator über diesen Fehler!~,
 'no_admin_passwrd'    => q~Sie müssen das richtige Admin-PASSWORT angeben, um in das Admin-Center zu gelangen.~,
-'default_password'    => qq~Sie sind immer noch mit dem Standard-Passwort, mit dem Sie YaBB eingerichtet haben, angemeldet. Bitte loggen Sie sich in Ihr <a href="$scripturl?action=myprofile;username=$username"> Benutzerprofil</a> ein und ändern Sie Ihr Kennwort, um es etwas sicherer zu machen.~,
+'default_password'    => qq~Sie sind immer noch mit dem Standard-Passwort, mit dem Sie YaBB eingerichtet haben, angemeldet. Bitte loggen Sie sich in Ihr <a href="$scripturl?action=myprofile;username=$username;sid=$mysid"> Benutzerprofil</a> ein und ändern Sie Ihr Kennwort, um es etwas sicherer zu machen.~,
 'missingvars'         => q~Etwas Schlimmes ist passiert. Bitte informieren Sie den Webmaster dieses Forums von dem, was Sie taten, als dieser Fehler aufgetreten ist.~,
 
 ## BoardIndex ##
@@ -151,6 +151,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'guest_taken'          => q~Der Benutzername oder eMail-Adresse werden bereits von einem Mitglied verwendet.<br />Konflikter Name oder eMail: ~,
 'quote_too_long'       => q~Die Nachricht, die Sie zu zitieren versucht haben, ist zu lang. Bitte kürzen Sie sie.~,
 'no_links_allowed'     => q~Sorry, Sie sind nicht berechtigt, Signatur zu erstellen oder Beitrag zu schreiben, die aktive Links zu Webseiten oder Bildern enthalten, bevor Sie nicht mindestens {yabb minlinkpost} normale Beiträge geschrieben haben.~,
+'no_glinks_allowed'    => q~Es tut uns leid, dass Gäste keine Nachrichten mit aktiven Links zu Webseiten oder Bildern veröffentlichen dürfen.~,
 'no_siglinks_allowed'  => q~Sorry, Sie sind nicht berechtigt, Signatur zu erstellen oder Beitrag zu schreiben, die aktive Links zu Webseiten oder Bildern enthalten, bevor Sie nicht mindestens {yabb minlinksig} normale Nachricht geschrieben haben.~,
 'attach_name_blocked'         => q~Der Name des Anhangs enthält ein Wort, das nicht in diesem Forum erlaubt ist.~,
 'attach_file_blocked'         => q~Sorry, aber Sie können leider keinen Anhang mit diesen Dateinamen hochladen.~,

@@ -160,8 +160,8 @@ if( ! $script_root ) {
 '132' => 'Back to YaBB Backup main page',
 
 # Begin e-mail stuff.
-'mailsubject' => "YaBB 2 Backup from $mbname",
-'mailfrom' => qq~"YaBB 2 Backup Mailer" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
+'mailsubject' => "YaBB 2 Backup from {yabb mbname}",
+'mailfrom' => q~"YaBB 2 Backup Mailer" <{yabb webmaster_email}>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
 'mailsuccess' => 'Sent e-mail successfully.',
 'mailfail' => 'Sending e-mail failed. See the error message in the info e-mail you will receive.',
 'no_perm' => q~You do not have permission to change the above settings.~,
@@ -173,7 +173,7 @@ if( ! $script_root ) {
 
 # The actual messages are here.
 # Don't translate WORDS IN ALL CAPITALS from here to the end of the file
-$backup_txt{'mailmessage1'} = qq~Доброго времени суток, USERNAME
+$backup_txt{'mailmessage1'} = q~Доброго времени суток, USERNAME
 
 Резервная копия данных форума FILENAME должна быть прикреплена к этому письму.
 
@@ -183,14 +183,14 @@ LINK
 Спасибо за использование форума на движке YaBB!
 ~;
 
-$backup_txt{'mailmessage2'} = qq~
+$backup_txt{'mailmessage2'} = q~
 Приветствую Вас, USERNAME
 
 Посетите следующую ссылку, чтобы загрузить файл FILENAME с резервной копией данных форума вручную:
 LINK.
 
 Спасибо за использование форума на движке YaBB!~;
-$backup_txt{'mailmessage3'} = qq~Hi USERNAME!
+$backup_txt{'mailmessage3'} = q~Hi USERNAME!
 
 Sending the e-mail with the attached backup failed.
 

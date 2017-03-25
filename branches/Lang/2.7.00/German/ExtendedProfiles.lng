@@ -132,7 +132,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'page_im' => q~Mitglied kann das Feld bearbeiten, zeige es in 'PN Einstellungen' Seite~,
 'converter_title' => q~Konvertiere alte erweiterte Profilfelder~,
 'convlock' => q~Erweiteter Profilkonverter~,
-'convlock_desc' => qq~Der erweiterte Profilkonverter wurde bereits ausgeführt. Der Versuch, es noch einmal laufen zu lassen, kann zu Schäden an Ihren Dateien führen.<br /><br />Um den erweiterten Profilkonverter erneut auszuführen, enfernen Sie die Datei "$vardir/Extended.lock," und besuchen Sie die Seite erneut.~,
+'convlock_desc' => q~Der erweiterte Profilkonverter wurde bereits ausgeführt. Der Versuch, es noch einmal laufen zu lassen, kann zu Schäden an Ihren Dateien führen.<br /><br />Um den erweiterten Profilkonverter erneut auszuführen, enfernen Sie die Datei "Variables/Extended.lock," und besuchen Sie die Seite erneut.~,
 'converter_description' => q~Hier können Sie Ihre alten 'Erweiterte Profile' nach YaBB 2.7.0 konvertieren. Bevor Sie damit beginnen, sollten Sie sicherstellen, dass Ihre alten \'Members\' und \'Variables\' Verzeichnisse auf diesem Server sind. Setzen Sie anschließend die entsprechenden Pfade unten ein. Danach müssen Sie nur noch auf den \'Konvertiere jetzt\' Button klicken. <b>BEACHTEN Sie:</b> Starten Sie den Konverter erst, wenn Sie bereits die normalen Profile mit dem YaBB 2 Konverter umgewandelt haben. Dieser Konverter wird die alten .ext Dateien in das neue Y2 Format umwandeln und die alten <i>extended_profiles_fields.txt</i> und <i>extended_profiles_order.txt</i> Dateien ins neue Variables Verzeichnis kopieren.~,
 'converter_button' => q~Konvertiere jetzt~,
 'cannot_open_file' => q~Kann Datei nicht öffnen~,

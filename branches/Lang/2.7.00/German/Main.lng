@@ -155,7 +155,7 @@ $abbr_lang = 'de-de';
 '900pw' => q~Geben Sie das Passwort ein für~,
 '900pd' => q~Forum-Zugriffspasswort~,
 '900pe' => q~Bitte geben Sie ein Passwort ein.~,
-'900pg' => qq~Forum-Zugriffspasswort nur für Mitglieder. Bitte <a href="$scripturl?action=register" style="font-weight: bold;">registrieren Sie sich bei uns</a> oder <a href="$scripturl?action=login" style="font-weight: bold;">logen Sie sich ein.</a>.~,
+'900pg' => q~Forum-Zugriffspasswort nur für Mitglieder. Bitte <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrieren Sie sich bei uns</a> oder <a href="{yabb scripturl}?action=login" style="font-weight: bold;">logen Sie sich ein.</a>.~,
 '900pr' => q~Privat~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
@@ -193,9 +193,9 @@ $abbr_lang = 'de-de';
 'female' => q~weiblich~,
 'male' => q~männlich~,
 '471' => q~Nachricht~,
-'616' => qq~Achtung, das Forum ist im <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
+'616' => q~Achtung, das Forum ist im <a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
 '617' => q~Erinnerung: Das letzte Backup wurde erstellt am:~,
-'773' => qq~IP wurde nicht gefunden, bitte ändern Sie \$user_ip in \$lang/Main.lng~,
+'773' => qq~IP wurde nicht gefunden~,
 '805' => q~Sie~,
 '806' => q~<b>können</b> hier:~,
 '807' => q~können hier <b>nicht</b>:~,
@@ -321,7 +321,6 @@ $forwardedpm = qq~Diese Alarmierung wurde als eMail weitergeleitet~;
 'smtps2' => q~SMTPS-Anmeldeinformationen konnten nicht authentifiziert werden. Geben Sie bitte die folgenden Informationen an: Admin-Center -> Forum-Konfiguration -> Erweiterte Einstellungen -> Registerkarte eMail. Geben Sie Ihren SMTP-Berechtigungsbenutzernamen, Ihr SMTP-Berechtigungskennwort und Ihren SMTP-Server ein.~,
 );
 
-timetostring($date);
-$yycopyright = qq~<a href="$boardurl/$yyexec.$yyext">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">$yabbversion</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-$year. Alle Rechte vorbehalten.~;
+$yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.~;
 
 1;

@@ -36,7 +36,7 @@ Admin/ModList.pm
 </search for>
 
 <add before>
-    my $add_russian = q~Add Russian Language for YaBB 2.7.00|Dandello|This mod adds the internal references for the German Language Pack.|0.2|3/09/2017~;
+    my $add_russian = q~Add Russian Language for YaBB 2.7.00|Dandello|This mod adds the internal references for the Russian Language Pack.|0.2|3/09/2017~;
     push @installed_mods, $add_russian;
 </add before>
 

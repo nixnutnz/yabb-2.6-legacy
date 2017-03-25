@@ -22,42 +22,42 @@ $emailcharset = 'UTF-8';
 
 %yabbtagdesc = (
 # Constant tags
-'scripturl', "URL Форума. Например: $scripturl",
-'adminurl', "URL Центра Управления Форумом. Example: $boardurl/AdminIndex.$yyaext",
-'mbname', "Имя Форума. Например: $mbname",
+'scripturl' => "URL Форума. Например: {yabb scripturl}",
+'adminurl' => "URL Центра Управления Форумом. Example: {yabb adminurl}",
+'mbname' => "Имя Форума. Например: {yabb mbname}",
 
 # New Member related
-'userip', "IP-адрес Пользователя.",
-'useremail', "E-mail адрес Пользователя.",
+'userip' => "IP-адрес Пользователя.",
+'useremail' => "E-mail адрес Пользователя.",
 
 # User-related
-'username', "Логин (ID) Пользователя.",
-'displayname', "Отображаемое Имя Пользователя.",
-'cryptusername', "Логин (ID) Пользователя, преобразованный для использования в качестве URL.",
-'reviewer', "Реальное имя Администратора/Координатора, рассматривавшего регистрационные данные.",
+'username' => "Логин (ID) Пользователя.",
+'displayname' => "Отображаемое Имя Пользователя.",
+'cryptusername' => "Логин (ID) Пользователя, преобразованный для использования в качестве URL.",
+'reviewer' => "Реальное имя Администратора/Координатора, рассматривавшего регистрационные данные.",
 
 # Topic/PM-related
-'sender', "Отправитель Личного Сообщения.",
-'num', "Номер Темы (для URL)",
-'start', "Номер Сообщения в Теме (для URL)",
+'sender' => "Отправитель Личного Сообщения.",
+'num' => "Номер Темы (для URL)",
+'start' => "Номер Сообщения в Теме (для URL)",
 'tmessage' => "Текст новую тему",
 'tauthor' => "Название Автор",
 
 # Registration/Password
-'activationcode', "Код активации отправлен по указанному адресу E-mail.",
-'remindercode', "Код отправлен в напоминании по E-mail.",
-'preregspan', "Промежуток времени, в течение которого будет активна предварительная регистрация. Текущее значение: $preregspan",
+'activationcode' => "Код активации отправлен по указанному адресу E-mail.",
+'remindercode' => "Код отправлен в напоминании по E-mail.",
+'preregspan' => "Промежуток времени, в течение которого будет активна предварительная регистрация. Текущее значение: {yabb preregspan}",
 'reason', "Админ причиной решения, принятого на регистрирующий пользователя в реестре с режимом одобрения администратором",
 
 # Sending a topic
-'toname', "Имя получателя Сообщения.",
+'toname' => "Имя получателя Сообщения.",
 
 # PMs
-'sendto', "Получатель этого ЛС.",
-'email', "E-mail от пользователя.",
-'date', "Дата отправки Личного Сообщения.",
-'subject', "Заголовок для Личного Сообщения.",
-'message', "Текст Личного Сообщения.",
+'sendto' => "Получатель этого ЛС.",
+'email' => "E-mail от пользователя.",
+'date' => "Дата отправки Личного Сообщения.",
+'subject' => "Заголовок для Личного Сообщения.",
+'message' => "Текст Личного Сообщения.",
 );
 
 # Pre registration subject lines
@@ -365,7 +365,7 @@ $replyguestmail = qq~<pre>Уважаемый {yabb sender},
 </pre>~;
 
 
-$yabbtags{'deleteduseremail'} = qq~displayname~;
+$yabbtags{'deleteduseremail'} = q~displayname~;
 $emaildesc{'deleteduseremail'} = qq~Информационное письмо об удалении пользователя~;
 $deletedusersybject = qq~{yabb mbname} - Ваш аккаунт был удален~;
 $deleteduseremail = qq~<pre>Здравствуйте, {yabb displayname}!

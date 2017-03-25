@@ -83,10 +83,15 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'rgt' => q~&rsaquo;~,
 'upt' => q~&#710;~,
 'guest_message' => q~Besucher-Nachricht~,
-'guest_message_block' => qq~Hallo Besucher,<br><br>sorry, aber Sie haben die Menge an Themen, die Sie berechtigt sind als Gast zu besichtigen, überschritten. Um möglichst viele Themen anzuzeigen wie Sie möchten und von vielen weiteren Features zu profitieren, warum <a href="$scripturl?action=register" style="font-weight: bold;">registrieren sie sich nicht bei uns?</a>. Die Registration ist leicht und dauert nur ein paar Minuten.<br><br>Sie sind bei uns bereits Mitglied, dann können sie sich <a href="$scripturl?action=login" style="font-weight: bold;">hier einloggen</a> um diese Nachricht zu stoppen.<br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
-'guest_message_warn' => qq~Hallo Besucher,<br><br>wie es aussieht, genießen sie das Lesen in unserem Forum. Also warum <a href="$scripturl?action=register" style="font-weight: bold;">registrieren sie sich nicht bei uns,</a> um diese Nachricht zu stoppen und profitieren von den vielen weiteren Features? Die Registrierung ist einfach und dauert nur ein paar Minuten.<br><br>Wenn Sie bereits Mitglied bei uns sind, dann <a href="$scripturl?action=login" style="font-weight: bold;">klicken sie hier zum einloggen.</a><br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
+'guest_message_block' => qq~Hallo Besucher,<br><br>sorry, aber Sie haben die Menge an Themen, die Sie berechtigt sind als Gast zu besichtigen, überschritten. Um möglichst viele Themen anzuzeigen wie Sie möchten und von vielen weiteren Features zu profitieren, warum <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrieren sie sich nicht bei uns?</a>. Die Registration ist leicht und dauert nur ein paar Minuten.<br><br>Sie sind bei uns bereits Mitglied, dann können sie sich <a href="{yabb scripturl}?action=login" style="font-weight: bold;">hier einloggen</a> um diese Nachricht zu stoppen.<br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
+'guest_message_warn' => qq~Hallo Besucher,<br><br>wie es aussieht, genießen sie das Lesen in unserem Forum. Also warum <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrieren sie sich nicht bei uns,</a> um diese Nachricht zu stoppen und profitieren von den vielen weiteren Features? Die Registrierung ist einfach und dauert nur ein paar Minuten.<br><br>Wenn Sie bereits Mitglied bei uns sind, dann <a href="{yabb scripturl}?action=login" style="font-weight: bold;">klicken sie hier zum einloggen.</a><br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
 'bookmarks' => q~Bookmarks~, # Social Bookmarks
 'google' => q~Google Hangout~,
+'725f' => q~Verbanne IP~,
+'ipblock' => q~Blocke IP im Guardian~,
+'ipblock2' => q~Blocke IP in .htaccess~,
+'ipblock_confirm' => q~Sind Sie sicher, dass Sie diese IP blockieren wollen?\n\n~,
+'ipban_confirm' => q~Sind Sie sicher, dass Sie diese IP verbannen wollen?\n\n~,
 );
 
 %zodiac_txt = (   #YaBB Zodiac

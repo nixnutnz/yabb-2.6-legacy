@@ -89,7 +89,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '36' => q~Dateianhänge verwalten~,
 '37' => q~Dateianhänge verwalten : Log anzeigen~,
 '37a' => q~PN-Dateianhänge verwalten : Log anzeigen~,
-'38' => qq~Das Anhangslog zeigt Ihnen Informationen über sämtliche Anhänge in Ihrem Forum. Sie können von hier aus Anhänge herunterladen, löschen oder direkt zu dem zugehörigen Beitrag springen. (Gehen Sie zu <a href="$boardurl/AdminIndex.$yyaext?action=manageattachments">Dateianhänge verwalten</a>)~,
+'38' => q~Das Anhangslog zeigt Ihnen Informationen über sämtliche Anhänge in Ihrem Forum. Sie können von hier aus Anhänge herunterladen, löschen oder direkt zu dem zugehörigen Beitrag springen. (Gehen Sie zu <a href="{yabb adminurl}?action=manageattachments">Dateianhänge verwalten</a>)~,
 '38a' => q~Das PN-Anhangslog zeigt Ihnen Informationen über sämtliche PN-Anhänge in Ihrem Forum. Sie können von hier aus PN-Anhänge in dieser Sektion herunterladen oder löschen.~,
 '39' => q~Anhangslog~,
 '39a' => q~PN-Anhangslog~,

@@ -125,7 +125,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'moveicon2' => q~Icon-Position (horizontal)~,
 'iconspace' => q~Icon-Text-Space~,
 'movetext' => q~Text-Position (vertical)~,
-'noedit' => qq~Aus Sicherheitsgründen ist es nicht erlaubt, das default-Template oder den default-Stylesheet zu bearbeiten, mit Ausnahme durch direktes Bearbeiten des Quelltextes.<br />Um Änderungen in diesem Template vorzunehmen, speichern Sie Ihre Arbeit mit einem neuen Dateinamen und wählen Sie dann die neue Datei als Standard-Stylesheet. <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template-Konfiguration</a>~,
+'noedit' => q~Aus Sicherheitsgründen ist es nicht erlaubt, das default-Template oder den default-Stylesheet zu bearbeiten, mit Ausnahme durch direktes Bearbeiten des Quelltextes.<br />Um Änderungen in diesem Template vorzunehmen, speichern Sie Ihre Arbeit mit einem neuen Dateinamen und wählen Sie dann die neue Datei als Standard-Stylesheet. <a href="{yabb adminurl}?action=modskin">Template-Konfiguration</a>~,
 '10b' => q~<br /><span class="small"><strong>Hinweis</strong>: Das default-Template des Forums kann nicht gelöscht werden.</span>~,
 '521' => q~Wählen Sie Template-Menüstil~,
 '527' => q~Template-Post-Tools aktivieren?~,

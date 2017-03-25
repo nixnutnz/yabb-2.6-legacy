@@ -50,7 +50,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'calday' => 'День',
 'calmonth' => 'Месяц',
 'calyear' => 'Год',
-'caltitle' => qq~<a href="$scripturl?action=eventcal;calshow=1">Календарь Событий</a>~,
+'caltitle' => q~<a href="{yabb scripturl}?action=eventcal;calshow=1">Календарь Событий</a>~,
 'yytitle' => 'Event Calendar',
 'calsubtitle' => 'Событие(я)',
 'calevent' => 'Новое событие:',

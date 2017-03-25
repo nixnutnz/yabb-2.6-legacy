@@ -81,10 +81,15 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'rgt' => "&rsaquo;",
 'upt' => '&#710;',
 'guest_message' => 'Гость Сообщение',
-'guest_message_block' =>  qq~Привет там гостей, Болгария Извините, но вы превысили количество вопросов, которые вы, разрешенных для просмотра в качестве гостя. Для просмотра столько темы, как вам нравится, и извлечь выгоду из многих больше возможностей, поэтому вы <a href="$scripturl?action=register" style="font-weight: bold;">не зарегистрироваться у нас</а>. Процесс регистрации прост и займет всего несколько минут Каталог <br> Если вы уже имеете учетную запись у нас, то вы можете <a href="$scripturl?action=register" style="font-weight: bold;">Войти здесь</a> перестать видеть это сообщение Каталог <br> Спасибо, <br> The $mbname Team~,
-'guest_message_warn' => qq~Привет там гостей, <BR> Похоже, что вы наслаждаетесь чтением наш форум, так почему бы вам не <a href="$scripturl?action=register" style="font-weight: bold;"> регистр счет с нами </a> перестать видеть это сообщение и выгоду от гораздо больше возможностей. Процесс регистрации прост и займет всего несколько минут Каталог <br> Если вы уже зарегистрированы у нас, то <a href="$scripturl?action=register" style="font-weight: bold;">нажмите здесь, чтобы войти.</a> Каталог <br> Спасибо, Болгария в $mbname команды~,
+'guest_message_block' =>  q~Привет там гостей, Болгария Извините, но вы превысили количество вопросов, которые вы, разрешенных для просмотра в качестве гостя. Для просмотра столько темы, как вам нравится, и извлечь выгоду из многих больше возможностей, поэтому вы <a href="{yabb scripturl}?action=register" style="font-weight: bold;">не зарегистрироваться у нас</а>. Процесс регистрации прост и займет всего несколько минут Каталог <br> Если вы уже имеете учетную запись у нас, то вы можете <a href="{yabb scripturl}?action=register" style="font-weight: bold;">Войти здесь</a> перестать видеть это сообщение Каталог <br> Спасибо, <br> The {yabb mbname} Team~,
+'guest_message_warn' => q~Привет там гостей, <BR> Похоже, что вы наслаждаетесь чтением наш форум, так почему бы вам не <a href="{yabb scripturl}?action=register" style="font-weight: bold;"> регистр счет с нами </a> перестать видеть это сообщение и выгоду от гораздо больше возможностей. Процесс регистрации прост и займет всего несколько минут Каталог <br> Если вы уже зарегистрированы у нас, то <a href="{yabb scripturl}?action=register" style="font-weight: bold;">нажмите здесь, чтобы войти.</a> Каталог <br> Спасибо, Болгария в {yabb mbname} команды~,
 'bookmarks' => 'закладки', # Social Bookmarks
 'google' => 'Google Hangout',
+'725f' => 'Ссылать IP',
+'ipblock' => 'Block IP in Guardian',
+'ipblock2' => 'Block IP in .htaccess',
+'ipblock_confirm' => 'Are you sure you want to block this IP?\n\n',
+'ipban_confirm' => 'Are you sure you want to ban this IP?\n\n',
 );
 
 %zodiac_txt = (   #YaBB Zodiac
