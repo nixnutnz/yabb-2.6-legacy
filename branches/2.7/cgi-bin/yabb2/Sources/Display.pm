@@ -522,7 +522,7 @@ qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$displa
     my $pageindexjs = q{};
 
     if ( ( $pagenumb && $pagenumb > 1 ) || $all ) {
-        if ( $userthreadpage == 1 || $iamguest ) {
+        if ( ( $userthreadpage && $userthreadpage == 1 ) || $iamguest ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
             if ( !$iamguest ) {
                 $pagetxtindexst .=
