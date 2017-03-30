@@ -159,7 +159,7 @@ qq~$tabhtml_l"$boardurl/AdminIndex.$yyaext?action=admincheck;username=$user" tit
     }
     $sessionvalid ||= 0;
     if ( $sessionvalid == 0 && !$iamguest && !$INFO{'set'} ) {
-        my $sesredir;
+        my $sesredir = q{};
         if (   $testenv
             && $action ne 'revalidatesession'
             && $action ne 'revalidatesession2' )
