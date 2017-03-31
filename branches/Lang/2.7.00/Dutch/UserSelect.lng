@@ -1,0 +1,70 @@
+﻿###############################################################################
+# UserSelect.lng (UserSelect text definitions)                                #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchuserselectlngver = 'YaBB 2.7.00 $Revision$';
+
+@dutchuserselectlngmods = ();
+if (@dutchuserselectlngmods) {
+    $dutchuserselectlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%usersel_txt = (
+'addselected' => 'Voeg selectie toe',
+'instruct' => 'Dubbelklik op een naam of selecteer een of meer namen in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de',
+'instruct0' => 'Typ de eerste tekens van de nieuwe moderator in het bovenste formulierveld, dubbelklik vervolgens op de naam of selecteer een of meer namen in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de',
+'instruct1' => 'Dubbelklik op een naam of selecteer een naam in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de',
+'instruct2' => 'Zoek lid op naam of email:',
+'instruct3' => 'In het bovenste zoekvak  kunt u een jokerteken gebruiken (alleen een *) in uw zoekreeks.',
+'instruct4' => 'Selecteer Leden Groepen',
+'wildcardinfo' => 'Gebruik * voor jokerteken',
+'searchresult' => 'Zoek Resultaat:',
+'nofound' => 'Sorry - geen resultaten gevonden voor',
+'pmpagetitle' => 'Selecteer PM geadresseerden',
+'grouppagetitle' => 'Selecter BC Geadresseerden Groepen',
+'modpagetitle' => 'Selecteer Moderatoren',
+'buddypagetitle' => 'Selecteer uw vrienden',
+'ignorepagetitle' => 'Selecteer leden om te negeren',
+'searchpagetitle' => 'Selecteer lid om naar te zoeken',
+'pageclose' => 'Sluiten',
+'recentlist' => 'Recente Lijst',
+'alllist' => 'Leden Lijst',
+'gobutton' => 'Ga',
+'reciepientlist' => 'Lijst met geadresseerden',
+'moderatorlist' => 'Moderator Lijst',
+'buddylist' => 'Vrienden Lijst',
+'groups' => 'Leden Groepen',
+'ignorelist' => 'PM Negeer lijst',
+'searchlist' => 'Zoek met de Gebruikersveld',
+'pmto' => 'Naar',
+'pmcc' => 'Cc',
+'pmbcc' => 'Bcc',
+'allsearch' => 'Allen',
+'bmallmembers' => 'Alle forum leden',
+'bmadmins' => 'Beheerders',
+'bmgmods' => 'Global moderatoren',
+'bmfmods' => 'Forum moderatoren',
+'bmmods' => 'Alle board moderatoren / mod groepen',
+'pages' => 'Pagina\'s',
+'of' => 'van',
+'noentries' => 'Er zijn geen gegevens beschikbaar voor deze brief.',
+'other' => 'Ander',
+'noresults' => 'Geen Resultaten',
+'qsearch' => 'Zoek Leden',
+'illegal' => q~Invalid character~,
+);
+
+1;

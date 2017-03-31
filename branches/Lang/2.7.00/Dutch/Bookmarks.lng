@@ -1,0 +1,48 @@
+﻿###############################################################################
+# Bookmarks.lng (Social Bookmarks text definitions)                           #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+$dutchbookmarkslngver = 'YaBB 2.7.00 $Revision$';
+
+@dutchbookmarkslngmods = ();
+push @dutchbookmarkslngmods, 'Advanced Timed Banning';
+if (@dutchbookmarkslngmods) {
+    $dutchbookmarkslngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%bookmark_txt = (
+'01' => 'Afbeelding',
+'02' => 'Titel',
+'03' => 'Volgorde',
+'05' => 'Weet u zeker dat u deze bladwijzer wilt verwijderen?',
+'08' => 'Er zijn momenteel geen Sociale Bladwijzers.',
+'09' => 'instellingen sociale Bladwijzers',
+'10' => 'Bladwijzers inschakelen?',
+'11' => 'Selecteer de boards wiens bladwijzers worden getoond in:<br /><span class="small">- Als er geen boards geselecteerd zijn zullen alle boards worden ingeschakeld.<br />- Gebruik Ctrl, Shift of Apple toets om boards te selecteren/deselecteren.</span>',
+'12' => 'Sociale Bladwijzers',
+'13' => 'Voeg nieuwe Bladwijzer toe',
+'14' => 'URL',
+'15' => 'Voeg Bladwijzer toe',
+'16' => 'Bewerk Bladwijzer',
+'17' => 'Annuleren',
+'18' => '- Dit is de titel van de bladwijzer plaats.',
+'19' => '- Toegestane bestand types: png jpg jpeg gif<br />- Max. bestandsgrootte: 250KB',
+'20' => '- Dit is de link naar de Bookmark plaats.<br />- Gebruik {url} voor de pagina URL en {title} voor de pagina titel.',
+'21' => '- Dit is de volgorde waarin de bladwijzers worden getoond.<br />- Lagere  getallen zullen het eerst worden weergegeven.',
+'22' => 'Maximale tekens in onderwerp',
+);
+
+1;
+ 
