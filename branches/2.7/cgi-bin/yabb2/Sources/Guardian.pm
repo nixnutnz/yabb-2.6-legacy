@@ -405,6 +405,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
     # Check for SCRIPTING attack
     if ($script_on) {
         while ( my ( $key, $secvalue ) = each %INFO ) {
+            $secvalue ||= q{};
             $secvalue = lc $secvalue;
             str_replace( '%3c', '<', $secvalue );
             str_replace( '%3e', '>', $secvalue );
