@@ -1,0 +1,129 @@
+﻿###############################################################################
+# Menu.lng (Image text/images definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomimenulngver = 'YaBB 2.7.00 $Revision$';
+@suomimenulngmods = ();
+if(@suomimenulngmods){
+    $suomimenulngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+if (!$language){$language = $lang;}
+
+%img_txt =(
+'2' => 'Ylläpito',
+'27' => 'Näytä profiili',
+'31' => 'Poista',
+'33' => 'Aloita uusi aihe',
+'34' => 'Kirjaudu',
+'34a' => 'Päivitä istunto',
+'54' => 'Poista',
+'55' => 'Poista valitut',
+'63' => 'Moderaattorit',
+'66' => 'Muokkaa',
+'69' => 'Sähköposti',
+'70' => 'Omat suosikit',
+'71' => 'Lisää suosikkeihin',
+'72' => 'Poista suosikeista',
+'79' => 'Muokkaa profiilia',
+'97' => 'Rekisteröidy',
+'102' => qq~<img src="$imagesdir/back_to_top.png" alt="Alkuun" title="Sivun alkuun" />~,
+'102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="Loppuun" title="Sivun loppuun" />~,
+'103' => 'Koti',
+'104' => 'Lukitse/Avaa aihe',
+'105' => 'Viimeisin viesti',
+'108' => 'Kirjaudu ulos',
+'119' => 'Ohjeita',
+'121' => 'Poista',
+'131' => 'Ilmoita vastauksista',
+'131a' => 'Lisää aiheen ilmoitukset',
+'131d' => 'Poista aiheen ilmoitukset',
+'132' => 'Siirrä aihe',
+'144' => 'Yksityisviesti',
+'144a' => 'Yksityisviesti',
+'145' => 'Lainaa',
+'145q' => 'Merkitse &amp; lainaa',
+'146' => 'Vastaa',
+'182' => 'Haku',
+'300' => 'Merkitse aihe luetuksi',
+'316' => 'Saapuneet',
+'320' => 'Lähetetyt',
+'321' => 'Uusi viesti',
+'323' => 'Asetukset',
+'331' => 'Jäsenet',
+'418' => 'Ilmoitus',
+'452' => 'Merkitse kaikki viestit luetuiksi',
+'465' => 'Tulosta',
+'465a' => 'Tulosta viesti',
+'467' => 'Profiili',
+'515' => 'WWW',
+'707' => 'Lähetä aihe',
+'781' => 'Tärkeä',
+'620' => 'Jaa',
+'621' => 'Siirrä, Jaa ja Liitä',
+'620a' => 'Jaa tämä aihe alkaen tästä viestistä.',
+'621a' => 'Avaa ikkuna siirtääksesi, jakaaksesi tai liittääksesi aiheita.',
+'622' => 'Piilota',
+'623' => 'Supista',
+'624' => 'Laajenna',
+'625' => 'Lisää suosikeihin',
+'626' => 'Poista suosikeista',
+'627' => 'Merkitse lukemattomaksi',
+'mycenter' => "Hallintapaneeli",
+'addbuddy' => 'Lisää kaverilistalle',
+'pmadmin' => 'Yksityisviesti ylläpitäjille',
+'alertmod' => 'Ilmoita tämä viesti alueen moderaattoreilla!',
+'alertmodtext' => 'Ilmoita moderaattorille',
+'forward' => 'Edelleenlähetä',
+'sendpm' => 'Lähetä viesti',
+'sendbmess' => 'Lähetä yleisviesti',
+'aim' => 'AIM',
+'facebook' => 'Facebook',
+'gtalk' => 'GTalk',
+'icq' => 'ICQ',
+'msn' => 'MSN',
+'myspace' => 'MySpace',
+'skype' => 'Skype/VoIP',
+'yim' => 'YIM',
+'twitter' => 'Twitter',
+'youtube' => 'YouTube',
+'birthdaylist' => 'Syntymäpäiväluettelo',
+'eventcal' => 'Kalenteri',
+'to_top' => 'Sivun alkuun',
+'no_text' => q~no text - ~,
+);
+
+%img_polltxt = (
+'1' => 'Luo äänestys',
+'2' => 'Lisää äänestys',
+'20' => 'Avaa',
+'21' => 'Sulje',
+'27' => 'Poista',
+'33' => 'Selaa äänestystuloksia',
+'33a' => 'Katso aihetta',
+'39' => 'Muokkaa',
+'43' => 'Poista ääni',
+'44' => 'Äänestys',
+'45' => 'Uusi äänestys',
+'46' => 'Äänestys suljettu',
+);
+
+%img_imtxt = (
+'42' => 'Kaverilista',
+'46' => 'Varasto',
+);
+
+require Sources::Menu;
+set_menu();
+
+1;
