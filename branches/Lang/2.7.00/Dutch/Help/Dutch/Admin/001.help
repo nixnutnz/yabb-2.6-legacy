@@ -1,0 +1,19 @@
+﻿$dutchadmin_001helpver = 'YaBB 2.7.00 $Revision: 1818 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Administratoren_Help_Centrum";
+
+### Section 1
+#############################################
+$section_sub1 = "Introduktie";
+$section_body1 = qq~<p> Zoals u weet, is YaBB een fantastische community platform. Eenvoudig te installeren; eenvoudig te beheren. Het is de perfecte oplossing voor het laten groeien en onderhouden van een goede, proactieve relatie met uw gebruikers basis.Deze Help sectie zal u helpen enkele van de vele nieuwe en krachtige functies te begrijpen die u nu binnen handbereik heeft.</p>
+<p>Voor meer informatie, bezoek alstublieft <a href="http://www.yabbforum.com/codex/" target="_blank"><b>De YaBB Codex</b></a>.
+<br />Voor <strong>software</strong> ondersteuning en probleemoplossing, bezoek alstublieft <a href="http://www.yabbforum.com/community/" target="_blank"><b>YaBB's Support Gemeenschap</b></a></p>
+<p>Gelieve te verwijzen naar de YaBB Terminologie / woordenlijst in de Gebruiker Help over de verschillende paginaweergaven beschreven in de onderstaande secties.</p>
+<p>De volgende afbeeldingen van het Moderator Menu worden geleverd voor verwijzing.</p>
+<p>{yabb mymoding}</p>
+<p>Je kan het menu aan de linkerzijde gebruiken om snel naar elk onderwerp hieronder te springen.</p>
+<p>U kunt de <img src="{top_img}" alt="Back to Top" title="Back to Top" /> button aan de onderkant rechts van elke Help sectie gebruiken om terug te keren naar de top van de Moderator Help-pagina</p> 
+~;
+#############################################
+
+1;

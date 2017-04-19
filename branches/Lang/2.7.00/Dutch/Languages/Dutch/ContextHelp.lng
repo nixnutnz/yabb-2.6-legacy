@@ -1,0 +1,65 @@
+﻿###############################################################################
+# ContextHelp.lng                                                             #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+# Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
+# for his contribution to the YaBB community                                  #
+###############################################################################
+
+$dutchcontexthelplngver = 'YaBB 2.7.00 $Revision$';
+
+@dutchcontexthelplngmods = ();
+if (@dutchcontexthelplngmods) {
+    $dutchcontexthelplngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+### Do not translate uppercase words in sharp brackets
+
+%contextxt = (
+'clicktip' => "Klik met de rechtermuisknop voor hulp",
+'url' => "Voeg een \"URL\" link in:<br /><br />Selecteer de URL: [SELECT]http://www.yabbforum.com[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url]http://www.yabbforum.com[/url]<hr />Voeg een \"Tekst\" link in:<br /><br />Selecteer de URL <u>en</u> de tekst: [SELECT]http://www.yabbforum.com YaBB Forum[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url=http://www.yabbforum.com]YaBB Forum[/url]<hr />De [link] YaBBC tags werken op de zelfde manier als de [url] tags, met de uitzondering dat de [link] tag (er is geen plaatsingsknop voor deze tag) de aangeklikte link zal openen in het huidige venster, overwegende dat de [url] tag de aangeklikte link in een nieuw venster opent.",
+'ftp' => "Voeg een \"FTP\" link in:<br /><br />Selecteer het FTP adres: [SELECT]ftp://ftpdom[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [ftp]ftp://ftpdom[/ftp]",
+'img' => "Voer een afbeelding in:<br /><br />Selecteer de afbeelding directory: [SELECT]http://imagedirectory/image.gif[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [img]http://imagedirectory/image.gif[/img]",
+'email2' => "Voer een \"Address\" mail link in:<br /><br />Selecteer het mail adres: [SELECT]myname\@domain.com[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [email]myname\@domain.com[/email]<hr />Voer een \"Text\" mail link in:<br /><br />Selecteer het mail adres <u>en</u> de tekst: [SELECT]myname\@domain.com Mail me[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [email=myname\@domain.com]Mail mij[/email]",
+'media' => "Voeg een Media bestand in: <br /><br />Selecteer de URL naar het Media bestand: [SELECT]http://www.your-domain.com/yabbchelp.swf[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [media]http://www.your-domain.com/yabbchelp.swf[/media]",
+'table' => "Voeg een lege één-cel tabel in:<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [table][tr][td][/td][/tr][/table]<hr />Sluit een tekst of een afbeelding in een één-cel-tabel in:<br /><br />Selecteer de tekst of afbeelding directory: [SELECT]Hello World[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [table][tr][td]Hello World[/td][/tr][/table]",
+'tr' => "Voeg een tabel  rij in:<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [tr][/tr]",
+'td' => "Voeg een tabel cel in:<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [td][/td]",
+'hr' => "Voeg een horizontale regel in:<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [hr]",
+'tele' => "Verander Tekst naar Teletype:<br /><br />Selecteer de tekst: bla bla [SELECT]Hello World[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [tt]Hello World[/tt] bla bla<br />br /><b>Resultaat:</b> bla bla <tt>Hello World</tt> bla bla",
+'code' => "Voer Code in een vak in:<br /><br />Selecteer de Code:<br /><br />[SELECT]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hello World&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b><br /><br />[code]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hello World&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/code]<br /><br /><b>Resultaat:</b><br /><br /><b>Code:</b>[CODE]&lt\;table&gt\;<br />&nbsp\; &lt\;tr&gt\;&lt\;td&gt\;Hello World&lt\;/td&gt\;&lt\;/tr&gt\;<br />&lt\;/table&gt\;[/CODE]",
+'quote2' => "Voeg een citaat in, in een vak:<br /><br />Selecteer het citaat: [SELECT]Te zijn of niet te zijn...[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [quote]Te zijn of niet te zijn...[/quote]<br /><br /><b>Resultaat:</b><br /><br /><b>Quote:</b>[QUOTE]Te zijn of niet te zijn...[/QUOTE]",
+'edit' => "Voeg een bericht in en bewerk het in een vak:<br /><br />Selecteer het bewerkte bericht: [SELECT]Bijgevoegd nieuw zip-pakket.[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [edit]Bijgevoegd nieuw zip-pakket.[/edit]<br /><br /><b>Resultaat:</b><br /><br /><b>Bewerkt:</b>[EDIT]Bijgevoegd nieuw zip-pakket.[/EDIT]",
+'sup' => "Verander tekst naar superscript:<br /><br />Selecteer de tekst: bla bla [SELECT]Hello World[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [sup]Hello World[/sup] bla bla<br /><br /><b>Resultaat:</b> bla bla <sup>Hello World</sup> bla bla",
+'sub' => "Verander tekst naar Subscript:<br /><br />Selecteer de tekst: bla bla [SELECT]Hello World[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [sub]Hello World[/sub] bla bla<br /><br /><b>Resultaat:</b> bla bla <sub>Hello World</sub> bla bla",
+'list' => "Voeg ongeordende lijst in met één item:<br /><br />Selecteer de item tekst van de lijst: [SELECT]Item 1[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b><br /><br />[list][*]Item 1<br />[/list]<br /><br />Om meer lijst items toe te voegenm moet je de item tags ([*]) met de hand intypen:<br /><br />[list][*]Item 1<br />[*]Item 2<br />[*]Item 3<br />[/list]<br /><br /><b>Resultaat:</b><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>U kunt 2 of 3 niveau lijsten maken door een lijst in een andere lijst te maken:<br /><br />[list][*]Item 1<br />[*]Item 2[list][*]Sub Item 1<br />[*]Sub Item 2<br />[/list][*]Item 3<br />[/list]<br /><br /><b>Resultaat:</b><ul><li>Item 1</li><li>Item 2<ul><li>Sub Item 1</li><li>Sub Item 2</li></ul></li><li>Item 3</li></ul><hr />De [olist][*][/olist] YaBBC tags worken op dezelfde manier als de [list][*][/list] tags maar zullen een geordende lijst maken met cijfers inplaats van bullets (Er is geen knop invoegen voor de [/list] tags).",
+'me' => "voer uw naam in (schermnaam):<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> /me says Hello World<br /><br /><b>Resultaat:</b> [ME] says Hello World<br />",
+'move' => "Verplaats een tekst of afbeelding door de boodschap van rechts naar links:<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> Verplaats de wereld [move]Hallo Wereld[/move]<br /><br /><b>Resultaat:</b><br />Verplaats de wereld [MOVE]Hallo Wereld[/MOVE]",
+'timestamp' => "Voeg een tijdstempel in:<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> [timestamp=1121602762]<br /><br />Deze tag zal zal een tijdstempel invoegen in de door het lid geselecteerde tijdformaat\.",
+'bold' => "Tekst omzetten naar vet:<br /><br />Selecteer de tekst: bla bla [SELECT]Hallo Wereld[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [b]Hallo Wereld[/b] bla bla<br /><br /><b>Resultaat:</b> bla bla <b>Hallo Wereld</b> bla bla",
+'italicize' => "Tekst wijzigen naar cursief:<br /><br />Selecteer de tekst: bla bla [SELECT]Hallo Wereld[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [i]Hallo Wereld[/i] bla bla<br /><br /><b>Resultaat:</b> bla bla <i>Hallo Wereld</i> bla bla",
+'underline' => "Onderstreep tekst:<br /><br />Selecteer de tekst: bla bla [SELECT]Hallo Wereld[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [u]Hallo Wereld[/u] bla bla<br /><br /><b>Resultaat:</b> bla bla <u>Hallo Wereld</u> bla bla",
+'strike' => "Streep tekst door:<br /><br />Selecteer de tekst: bla bla [SELECT]Hallo Wereld[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [s]Hallo Wereld[/s] bla bla<br /><br /><b>Resultaat:</b> bla bla <s>Hallo Wereld</s> bla bla",
+'highlight' => "Markeer tekst:<br /><br />Selecteer de tekst: bla bla [SELECT]Hallo Wereld[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b> bla bla [highlight]Hallo Wereld[/highlight] bla bla<br /><br /><b>Resultaat:</b> bla bla [HIGHLIGHT]Hallo Wereld[/HIGHLIGHT] bla bla",
+'palette1' => "Kies tekst kleur:<br /><br />Selecteer de tekst: bla bla [SELECT]Hallo Wereld[/SELECT] bla bla<br /><br />Klik op de \"[TITLE]\" knop [BUTTON] en pak een van de 228 reeds gemaakte kleuren of creëer een aangepaste kleur tag\.<br /><br /><b>YaBBC Code:</b> bla bla [color=#ff0000]Hallo Wereld[/color] bla bla<br /><br /><b>Resultaat:</b> bla bla [RED]Hallo Wereld[/RED] bla bla",
+'pre' => "Voeg vooraf opgemaakte tekst in:<br /><br />Selecteer de tekst: [SELECT]Deze &nbsp\;tekst is &nbsp\; &nbsp\;vooraf opgemaakt[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b>[pre]Deze &nbsp\;tekst is &nbsp\; &nbsp\;vooraf opgemaakt[/pre]<br /><br /><b>Resultaat:</b>[PRE]Deze  tekst is    vooraf opgemaakt[/PRE]",
+'left' => "Links uitgelijnde tekst:<br /><br />Selecteer de tekst:<br />[SELECT]Deze tekst<br />is links uitgelijnd[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[left]Deze tekst<br />is links uitgelijnd[/left]<br /><br /><b>Resultaat:</b><br />[LEFT]Deze tekst<br />is links uitgelijnd[/LEFT]",
+'center' => "Centreer tekst:<br /><br />Selecteer de tekst:<br />[SELECT]Deze tekst<br />is gecentreerd[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[center]Deze tekst<br />is gecentreerd[/center]<br /><br /><b>Resultaat:</b><br />[CENTER]Deze tekst<br />is gecentreerd[/CENTER]",
+'right' => "Rechts uitgelijnde tekst:<br /><br />Selecteer de tekst:<br />[SELECT]Deze tekst<br />is rechts uitgelijnd[/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[right]Deze tekst<br />is rechts uitgelijnd[/right]<br /><br /><b>Resultaat:</b><br />[RIGHT]Deze tekst<br />is rechts uitgelijnd[/RIGHT]",
+'noparse' => "Niet Parseren:<br /><br />Selecteer de YaBBC Code:<br />[SELECT][table][tr][td]Deze tabel zal niet geparseerd worden[/td][/tr][/table][/SELECT]<br /><br />Klik op de \"[TITLE]\" knop: [BUTTON]<br /><br /><b>YaBBC Code:</b><br />[noparse][table][tr][td]Deze tabel zal niet geparseerd worden[/td][/tr][/table][/noparse]<br /><br /><b>Resultaat:</b><br />[table][tr][td]Deze tabel zal niet geparseerd worden[/td][/tr][/table]",
+);
+
+1;

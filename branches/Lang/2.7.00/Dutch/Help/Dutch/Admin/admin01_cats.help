@@ -1,0 +1,103 @@
+﻿$dutchadmin_admin01_catshelpver = 'YaBB 2.7.00 $Revision: 1818 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Categorie&#235;n_Beheren";
+
+### Section 1
+#############################################
+$section_sub1 = "Toegang tot de categorie Functies";
+$section_body1 = q~<p>Deze YaBB versie komt compleet met krachtige gereedschappen om uw forum te beheren en er voor te zorgen dat de communictiestroom van uw forum op hoog peil blijft. De hoeksteen van deze software is de mogelijkheid om boards te groeperen in een ongelimiteerd<b>*</b> aantal categorie&#235;n. Om deze functies te benaderen moet u, natuurlijk, ingelogd zijn als Administrator (of Global Moderator met de juiste toegangsrechten). Als u bent ingelogd, kijk dan eens naar het hoofd menu. U ziet daar een link of knop met de titel "Admin centrum". Door hier op te klikken komt er een wachtwoordscherm omhoog zodat u kunt controleren dat u het in feite bent, die gemachtigd is om in het Admin Centrum te werken. Zodra uw wachtwoord wordt bevestigd, zal u naar de Admins Configuratiescherm worden gebracht. Aan de kinkerkant is een menu, zoek voor de sectie getiteld 'Forum Controls' en klik op de link met de titel "Categorie&#235;n".</p>
+<p><i>* YaBB is alleen beperkt door de schijfruimte die u beschikbaar heeft bij uw webhosting server.</i></p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$section_sub2 = "Nieuwe_Categorie&#235;n_toevoegen";
+$section_body2 = qq~<p>YaBB geeft u de gelegenheid om meerdere nieuwe categorie&#235;n in &#233;&#233;n keer toe te voegen. Om dit te doen gaaat u naar de forum categorie beheer functies zoals boven omschreven. Daar aangekomen scrollt u naar onderaan de lijst en zoekt u de functie "Voeg Categorie&#235;n Toe:". Vul het aantal gewenste categorie&#235;n in dat u wilt aanmaken en druk op de knop "Voeg Toe".</p>
+<p>Op deze nieuwe pagina, ziet u een aantal opties voor elk van de nieuwe categorie&#235;n die u wenst te cre&#235;ren:</p>
+<ul>
+      <li><b><span class="under">ID</span></b>
+            <ul>
+                  <li>Elke categorie&#235;n ID moet uniek zijn. Dit is alleen voor intern gebruik. Het zorgt er voor dat YaBB de dingen kan terugvinden, en het zal worden gebruikt in de URL van de categorie te bekijken. Invoer moet bestaan uit letters en/of cijfers (Geen symbolen en of spaties). Alle Categorie id's worden opgeslagen in kleine letters, dus hoofdletters doen er niet toe.</li>
+            </ul>
+      </li>
+      <li><b><span class="under">Naam</span></b>
+            <ul>
+                  <li>Dit is de titel van u categorie. Het is de naam die de gebruikers zullen zien. U mag hier invullen wat u maar wilt.</li>
+            </ul>
+      </li>
+      <li><b><span class="under">Categorie Afbeelding</span></b>
+            <ul>
+                  <li>Als u een afbeelding voor uw categorie wenst te gebruiken, kunt u een afbeelding uploaden die gebruikt kan worden</li>
+            </ul>
+            <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> Bestandstypen toegestaan voor categorie foto's zijn .bmp, .gif, .jpg, and .png. Om bandbreedte bij downloaden te besparen, zullen Categorie Pictures ongeveer 25px in de hoogte moeten worden. Als u afbeeldinggrootte voor Board beelden hebt ingesteld in "Geavanceerde instellingen -> afbeeldingen", zal over-sized Categoriebeelden worden aangepast aan dezelfde grootte als de afbeeldingen van de Boardafbeeldingen.</p>
+      </li>
+      <li><b><span class="under">Wie mag deze categorie zien</span></b>
+            <ul>
+                  <li>Als u wenst om deze categorie totaal priv&#233; te maken, kunt u hier kiezen welke Leden Groepen deze categorie&#235;n mogen zien. Laat dit blank om toegang aan iedereen (inclusief gasten) te verlenen, OF als u van plan bent om een board in deze categorie neer te zetten die de gasten kunnen bekijken.</li>
+            </ul>
+      </li>
+      <li><b><span class="under">Sta samenvouwen toe</span></b>
+            <ul>
+                  <li>Markeer deze checkbox als u de gebruikers toestemming geeft om categorie&#235;n samen- of uit te vouwen op de hoofd pagina van het forum.</li>
+            </ul>
+            <p class="help_attn"><b><span class="under">Administrator Tip:</span></b> Uw nieuwe categorie zal niet zichtbaar zijn in de Board Index (hoofd)pagina van het forum, totdat zich er ten minste &#233;&#233;n board in bevindt.</p>
+      </li>
+      <li><b><span class="under">RSS</span></b>
+            <ul>
+                  <li>Als u RSS (Really Simple Syndication) heeft ingeschakeld ("geavanceerde instellingen-> Permalinks/RSS"), door dit vak te selecteren brengt u een RSS-knop in de categorie. RSS staat gebruikers toe up to date te blijven over de nieuwste informatie op een board zonder zich op het forum te bevinden.</li>
+            </ul>
+       </li> 
+</ul>
+~;
+#############################################
+
+### Section 3
+#############################################
+$section_sub3 = "Een_Categorie_Bewerken";
+$section_body3 = qq~<p>Een categorie bewerken met Yabb is snel en gemakkelijk dankzij het harde werk van ons fantastische team van software ontwikkelaars. Als u in de Categorie&#235;n functie zit van uw Admin Centrum (zie hierboven voor details), ziet u een lijst van bestaande categorie&#235;n, elk met een corresponderende checkbox. Als u hierop klikt wordt de categorie gemarkeerd voor bewerking.</p>
+<p>Als u alle categorie&#235;n heeft gemarkeerd die u wenst te bewerken, scrollt u naar de bodem van de pagina en zoek naar een set van radio buttons getiteld "Met geselecteerde". Klik op de radio button voor "Bewerk", en druk dan op de knop aan de rechterzijde met als opschrift "Ga". Als u dan in het volgende scherm bent aangekomen vindt u de volgende items voor <i>elke</i> categorie:</p>
+<ul>
+    <li><b><span class="under">ID</span></b>
+        <ul>
+            <li>Dit is alleen voor intern gebruik. Het zorgt er voor dat YaBB de dingen kan terugvinden, en het wordt gebruikt in de URL om die categorie te bekijken</li>
+        </ul>
+    </li>
+    <li><b><span class="under">Naam</span></b>
+        <ul>
+            <li>Dit is de titel van uw categorie. Het is de naam die de gebruikers zullen zien. U mag hier invullen wat u maar wilt.</li>
+        </ul>
+    </li>
+    <li><b><span class="under">Wie mag deze categorie zien</span></b>
+        <ul>
+            <li>Als u van dit board een priv&#233; board wilt maken kunt u hier kiezen welke Leden Groepen deze categorie&#235;n mogen zien. Laat dit open om toegang te verlenen aan iedereen (inclusief gasten)om het te zien, OF als u <span class="under">enig</span>  boards in deze categorie heeft en u wilt dat allen (met inbegrip van gasten) in staat zijn om het te zien.</li>
+        </ul>
+    </li>
+    <li><b><span class="under">Sta samenvouwen toe</span></b>
+        <ul>
+            <li>Markeer deze checkbox als u de gebruikers toestemming geeft om categorie&#235;n samen- of uit te vouwen op de hoofd pagina van het forum.</li>
+        </ul>
+    </li>
+    <li><b><span class="under">RSS</span></b>
+            <ul>
+                  <li>Als u RSS (Really Simple Syndication) heeft ingeschakeld ("geavanceerde instellingen-> Permalinks/RSS"), door dit vak te selecteren brengt u een RSS-knop in de categorie. RSS staat gebruikers toe up to date te blijven over de nieuwste informatie op een board zonder zich op het forum te bevinden.</li>
+            </ul>
+       </li> 
+</ul>
+<p>Als u klaar bent met de bewerkingen, zoek dan naar de knop met de titel "Bewaar" onderaan de pagina en klik er op om de instellingen te bewaren.</p>
+~;
+#############################################
+
+### Section 4
+#############################################
+$section_sub4 = "Een_Categorie_Verwijderen";
+$section_body4 = qq~<p>Als u een categorie wilt verwijderen, volg bovenstaande beschrijving (Zie Toegang tot de categorie Functies hierboven voor details) toegang tot uw Categorie management pagina.</p>
+<ul>
+    <li class="help_attn_strong"><b><span class="under">Waarschuwing:</span> Als u een categorie verwijdert, worden ook alle boards die u in die categorie had verwijdert.</b> Verplaats ze eerst naar een andere categorie als u hen wilt redden.</li>
+    <li>In de categorie&#235;n lijst, zult u check box bemerken dat correspondeert met elke titel. Selecteer dit vakje voor elke categorie die u wilt verwijderen. Eenmaal geselecteerd, gaat u naar de onderkant van de categorie lijst en zoekt de set radio knoppen getiteld "Met geselecteerde". Klik op de radio button "Verwijder" en druk dan op de button aan de rechterzijde getiteld "Go".</li>
+    <li>Een kleine pop-up zal u vragen om te bevestigen dat u deze categorie&#235;n wilt verwijderen. Klik op "OK" om ze te verwijderen of "Annuleren" om ze te houden.</li>
+</ul>
+~;
+#############################################
+
+1;

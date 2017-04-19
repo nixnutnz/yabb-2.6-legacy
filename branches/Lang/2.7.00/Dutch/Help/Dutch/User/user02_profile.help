@@ -1,0 +1,151 @@
+$dutchuser_user02_profilehelpver = 'YaBB 2.7.00 $Revision: 1818 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Gebruikerscentrum_en_Profiel";
+
+### Section 1
+#############################################
+$section_sub1 = "Gebruikers_Centrum";
+$section_body1 = qq~ YaBB&#39;s Gebruiker Centrum (User Control Panel) is een combinatie van uw gebruikersprofiel met Buddy Lijst. u kunt uw naam, leeftijd, instant messenger informatie, persoonlijke avatar (figuur), en veel meer invullen!
+<p>Wanner u het \'Gebruikers Centrum\' binnengaat, hebt u meerdere keuzes van wat te doen:</p> 
+<ul>
+    <li>Boven het deelvenster aan de linker zijde, zie je een tabs menu bevattende \'Berichten\', \'Profiel\', en \'Posts\'.</li>
+    <li>In <b>Berichten</b>, u controleert al uw persoonlijke berichten: u kunt hen sorteren in uw mappen (indien ingeschakeld) of zowel nieuwe berichten verzendne als zoeken naar een bepaald bericht.</li>
+    <li>In <b>Profiel</b>, u kunt uw profiel weergave weergeven en haar inhoud bewerken. Met de 'Buddy List' kunt u snel de on-line status van  uw vrienden, berichten naar hen sturen, en hun gegevens controleren.</li> 
+    <li>In <b>Posts</b>, u kunt controleren: bijwerken van uw berichten en favorieten, evenals uw eigen laatste berichten raadplegen.</li> 
+    <li>In het rechter deelvenster ziet u een onderdeel van uw profiel zoals deze wordt weergegeven in de Display Posts pagina, uw Buddy lijst, informatie over uw online/offline verschijning, en uw Board en Topic notificaties.</li>
+</ul>
+~;
+#############################################
+
+### Section 2
+#############################################
+$section_sub2 = "Overzicht_van_profiel";
+$section_body2 = qq~YaBB staat u toe een profiel in te vullen die mensen vertelt over u. U kunt uw naam hebben, leeftijd, instant messenger informatie, persoonlijke avatar (plaatje), en meer.
+<p><b>Stap 1:</b> Om uw profiel te veranderen, klik de \'Gebruikers Centrum\' optie in het forum menu hierboven. Dan Klik \'Profiel\' in de kleine tabs menu onder de hoofdmenu tabbladen. Dit brengt u naar de weergave profielpagina.</p>
+<p><b>Step 2:</b> Op uw bekijk profiel pagina, ziet u verschillende links die u toegang toestaan tot elk deel van uw gebruiker profiel, die is onderverdeeld in vijf secties: Profiel bewerken, Contact informatie, Opties, Buddy List en PB Voorkeuren. Klik op de desbetreffende link voor toegang tot dat deel van uw profiel.</p>
+<p><b>Step 3:</b> Om veliligheidsredenen, zal u dan gevraagd worden een wachtwoord in te voeren. Doe dat en klik dan op \'Confirm Password\'.</p>
+<p> U heeft nu toegang tot al uw accountinstellingen en opties voor dit YaBB forum. Details over elk van deze instellingen worden hieronder beschreven.</p>
+~; 
+############################################
+
+### Section 3
+############################################
+$section_sub3 = "Edit_Profile";
+$section_body3 = qq~De sectie profiel bewerken geeft u snelle toegang tot uw basis profiel instellingen voor uw account op dit YaBB forum.
+<h4 class="help">Wachtwoord</h4> 
+<p>Als u uw Wachtwoord wil wijzigen, kunt u dit doen door dit veld in te vullen. Het is hoogst aanbevolen dat uw wachtwoord ten <i>minste</i> 6 karakters heeft en gebruik maakt van een combinatie van letters en cijfers.</p> 
+<h4 class="help">Bevestig Wachtwoord</h4>
+<p>Om te voorkomen dat u per ongeluk wordt afgesloten van het forum, controleert Yabb om zeker te zijn dat u het nieuwe wachtwoord correct gespeld heeft Voer uw nieuwe wachtwoord nogmaals in dit vak in.</p>
+<h4 class="help">Naam</h4> 
+<p>Dit is uw weergegeven naam. Dit is de naam die iedereen in dit YaBB forum te zien krijgt. De meeste BB-systemen geven enkel uw gebruikersnaam (waarmee u inlogt) weer, maar bij YaBB is dit niet het geval!</p> 
+<h4 class="help">Geslacht</h4>
+<p>Als u anderen wilt laten weten wat uw sekse is, kunt u \'Man\' of \'vrouw\' kiezen dan dit drop-down menu. Houdt er rekening mee dat dit forum eventueel boards heeft wat enkel toegang verleend aan een bepaald geslacht.</p> 
+<h4 class="help">Verjaardag</h4>
+<p>Als u een ander wilt laten weten hoe oud u bent, en een speciaal ikoon wilt in uw profiel als u jarig bent, geef dan hier uw verjaardag in volgens het formaat DD (dag), MM (maand), JJJJ (jaar). U bent ook in sytaat uw geboorte jaar en leeftijd voor gasten en andere leden te verbergen.</p>
+<h4 class="help">Locatie</h4>
+<p>Optioneel. Dit invullen zal weergeven waar u woont, waar u vandaan bent, of iets anders wat u kiest.</p>
+<p class="help_attn"><b><span class="under">Gebruikers Tip:</span></b> Houdt er rekening mee dat sommige Boards een leeftijd of geslacht beperking voor toegang kunnen bevatten. Bijvoorbeeld, als u geen leeftijd invoert in uw profiel, zal er geen manier om te weten of u toegang heeft tot een board met een limiet voor de leeftijd van ouder dan 21. Eveneens met geslacht, als een board is ingericht voor vrouwen alleen, u zult geen toegang krijgen, als u geen vrouw als geslacht selecteert in het profiel. In sommige gevallen kan de Admin hebben besloten om Geslacht en/of geboorte-datum informatie verplicht te maken en kan beperking opgelegd hebben hoe vaak u dit kunt aanpassen.</p> 
+~;
+#############################################
+
+### Section 4
+#############################################
+$section_sub4 = "Contact_Informatie";
+$section_body4 = qq~<p>Als u wilt dat andere leden van de YaBB gemeenschap u kunnen contacteren, kunt u in dit deel deze informatie geven, zodat het in uw profiel komt.</p>
+<h4 class="help">E-mail</h4>
+<p>Dit moet een geldig e-mail adres zijn. Het wordt gebruikt voor systeem-notificaties zoals een vergeten Wachtwoord, onderwerp notificaties, en forum e-mails.</p>
+<h4 class="help">E-mail voor het publiek verbergen</h4> 
+<p>Schakel dit selectievakje in als u niet wilt dat andere leden van de YaBB gemeenschap uw email adres zien. <b>Opmerking:</b> dit verbergt het niet voor de Admins.</p>
+<h4 class="help">ICQ</h4>
+<p>Als u een ICQ account heeft, kunt u hier uw UIN ingeven.</p>
+<h4 class="help">AIM</h4>
+<p>Als u AOL Instant Messenger (AIM) heeft, kan u hier uw gebruikersnaam hier ingeven.</p> 
+<h4 class="help">YIM</h4>
+<p>Als u Yahoo! Instant Messenger heeft, kunt u hier uw schermnaam ingeven.</p>
+<h4 class="help">Google Talk</h4>
+<p>Als u Google Talk heeftt, kunt u hier uw adres ingeven.</p>
+<h4 class="help">Skype or VoIP</h4>
+<p>Als u een Skype of VoIP adres heeft, kunt u het hier invoeren.</p>
+<h4 class="help">MySpace</h4>
+<p>Als u een MySpace pagina heeft, kan u het hier invoeren. Merk op dat u alleen het laatste deel van de URL hoeft te vullen in. Bijvoorbeeld, als uw MySpace pagina 'http://myspace.com/yourname' is, hoeft u alleen in te vullen 'yourname'.</p> 
+<h4 class="help">Twitter</h4>
+<p>Als u een Twitter account heeft, kunt u het hier invoeren. Merk op dat u alleen het laatste deel van de URL hoeft te vullen in. Bijvoorbeeld, als uw Twitter pagina 'http://twitter.com/yourname' is, hoeft u alleen in te vullen 'yourname'.</p>
+<h4 class="help">YouTube</h4>
+<p>Als u een YouTube account heeft, kunt u het hier invoeren. Merk op dat u alleen het laatste deel van de URL hoeft te vullen in. Bijvoorbeeld, als uw YouTube pagina 'http://www.youtube.com/yourname' is, hoeft u alleen in te vullen 'yourname'.</p>
+<h4 class="help">Facebook</h4>
+<p>Als u een Facebook account heeft, kunt u het hier invoeren. Merk op dat u  uw profiel-id-nummer of uw gebruikersnaam kunt. Bijvcorbeeld, om uw profiel ID nummer te gebruiken, als uw Facebook URL is 'http://facebook.com/profile.php?id=123456', hoeft u alleen '123456' in te voeren, en uw gebruikersnaam te gebruiken, als uw Facebook URL is 'http://facebook.com/yourname', hoeft u alleen in te vullen 'yourname'.</p>
+<h4 class="help">Website Titel</h4>
+<p>Als u een website heeft, kan u hier de titel ervan ingeven. Dit is de tekst waaraan de URL (hieronder) gekoppeld zal wordeno.</p>
+<h4 class="help">Website URL</h4>
+<p>Hier kunt u de URL van uw website ingeven. <b>Nota</b> dit moet een volledige URL zijn. (dus inclusief http://)</p>
+~;
+#############################################
+
+### Section 5
+#############################################
+$section_sub5 = "Opties";
+$section_body5 = qq~De opties sectie van uw YaBB profiel laat u toe de instellingen te wijzigen die met jouw account te maken hebben.
+<h4 class="help">Persoonlijke afbeelding</h4>
+<p>YaBB geeft u de mogelijkheid om een kleine foto (avatar genoemd) te defini&#235;ren die afgebeeld zal worden onder uw naam naast uw berichten. Dit forum heeft al een aantal avatars ge&#239;nstalleerd, waaruit u er eentje kunt kiezen. Als u een eigen avatar hebt, bekijk dan de optie hieronder aub.</p>
+<p>De Forum Administrator kan ook een of beide van de volgende opties inschakelen:</p>
+<ul>
+    <li><span class="under"><b>Linken naar uw eigen avatar afbeelding</b></span>
+        <br />Als u een eigen avatar hebt en deze wil gebruiken op dit forum, kunt u hier de URL ingeven.</li>        
+    <li><span class="under"><b>Uw eigen avatar uploaden</b></span>
+        <br />Als u wilt uw eigen afbeelding uploaden en wil om het te gebruiken op deze YaBB als een avatar, klik op de knop Bladeren en selecteer een bestand op uw computer om te uploaden.</li>
+</ul> 
+<h4 class="help">Persoonlijke Tekst</h4>
+<p>Dit is een korte tekst die onder uw avatar getoond zal worden.</p>
+<h4 class="help">Handtekening</h4>
+<p>Uw handtekening wordt getoond onder elk berichtje dat u post en in uw profiel.</p>
+<h4 class="help">Tijd Formaat</h4>
+<p>Deze optie laat u toe te veranderen, hoe datums en tijd in deze YaBB community aan u gepresenteerd worden.</p>
+<h4 class="help">Tijd Zone</h4>
+<p>Als de Administrator het toestaat, kunt u uw tijdzone per land en stad kiezen. Dit stelt niet alleen uw persoonlijke time-offset in maar staat YaBBtoe automatisch te wordt aangepast aan de zomertijd tijd voor die tijd Zone.</p>
+<h4 class="help">Template</h4>
+<p>Als de webmaster van dit YaBB forum verschillende templates ge&#239;nstalleerd heeft, kan u hier er een kiezen van deze lijst.</p>
+<h4 class="help">Taal</h4>
+<p>Hier kunt u uw moedertaal selecteren om dit forum  te bekijken, als de taal beschikbaar is.</p> 
+<h4 class="help">Verberg Leden Avatars in Topics?</h4>
+<p>Het kiezen van deze optie zal alle leden avatars er van weerhouden te verschijnen wanneer u dit topic bekijkt.</p>
+<h4 class="help">Verberg Leden Tekst in Topics?</h4>
+<p>Het kiezen van deze optie zal alle leden tekst er van weerhouden te verschijnen wanneer u dit topic bekijkt.</p>
+<h4 class="help">Verberg bijgevoegde afbeeldingen in topics?</h4>
+<p>Het kiezen van deze optie zal alle bijgevoegde afbeeldingen ervan weerhouden te verschijnen wanneer u dit topic bekijkt.</p>
+<h4 class="help">Verberg Leden handtekeningen in Topics?</h4>
+<p>Het kiezen van deze optie zal alle leden handtekeningen er van weerhouden te verschijnen wanneer u dit topic bekijkt.</p>
+<h4 class="help">Verberg Smiley-rij onder de Post/antwoord gebied?</h4>
+<p>Het kiezen van deze optie zal alle smiley images er van weerhouden te verschijnen als u een nieuwe topic aan het maken bent of een topic antwoord maakt.</p> 
+~;
+#############################################
+
+### Section 6
+#############################################
+$section_sub6 = "Vrienden_Lijst";
+$section_body6 = qq~De <span class="under"><b>Vrienden lijst</b></span> sectie van het profiel geeft u de mogelijkheid om andere leden toe te voegen waar u vaak contact mee heeft op een lijst die getoond zal worden in uw gebruikers centrum. Uw Vrienden-lijst zal elke naam, hun Online/Offline status, weergeven en link opties de gebruiker een PB, een e-mail te sturen, of naar de link van hun website te gaan.<br />
+<ul>
+    <li>Voeg gebruikers toe aan de vriendenlijst door te klikken op de link onder de Buddy-lijst weergave box.</li>
+    <li>Gebruikers van uw Buddy-lijst verwijderen kan door dubbel op de naam te klikken van de gebruiker binnen het Buddy-lijst weergave box.</li>
+</ul>
+~;
+############################################# 
+
+### Section 7
+#############################################
+$section_sub7 = "PB_Voorkeuren";
+$section_body7 = qq~Het laatste deel van het profiel geeft u de mogelijkheid uw instellingen te personaliseren hoe u persoonlijke berichten bekijkt en ontvangt van andere leden.
+<p class="help_attn"><b><span class="under">Gebruikers Tip:</span></b> Houd er rekening mee dat Persoonlijke Berichten een optionele functie is en alleen beschikbaar zullen zijn als de beheerder ervoor kiest om het aan te zetten. Dat ook misschien enkele van de opties hieronder die onderstreept zijn niet worden gezien in uw lijst met PB voorkeuren omdat ze ook optioneel zijn en naar eigen goeddunken van de beheerder en  mogelijk zijn uitgeschakeld.</p>
+<h4 class="help">Negeerlijst</h4>
+<p>Deze functie laat u toe andere leden te negeren zodat u geen enkel bericht krijgt wat zij verzenden. Bovendien krijgt u een selectievakje optie voor het uitschakelen van alle PBs als u daarvoor kiest.</p>
+<h4 class="help">Email notificatie:</h4>
+<p>Als u een e-mail zou willen ontvangen wanneer een lid u een Persoonlijk Bericht stuurt, kunt u deze instelling hier activeren.</p>
+<h4 class="help">Activeer Persoonlijk Bericht popup?</h4>
+<p>Dit aanvinken zal een kleine popup tonen wanneer u nieuwe Persoonlijk Berichten hebt. Wanneer <span class="under">niet</span> geselecteerd, zult u nieuwe berichten zien in de \'Begroeting\' aan de bovenkant van het forum in dit formaat: U heeft X bericht(en), en Y nieuwe bericht(en).</p>
+<h4 class="help">PB-Popup toont PB'en in een nieuw venster?</h4>
+<p>Als je PB popups geactiveerd hebt, zullen je PBs in een nieuw venster openen, als je dit aanvinkt. Anders zullen ze geopend worden in het huidige venster.</p>
+<h4 class="help">Bekijk bericht tekst de lijstweergave van persoonlijke berichten?</h4>
+</p>Als u het selectievakje inschakelt kunt u de eerste regel van de tekst van het bericht bekijken in de lijstweergaven. Om weer te geven dan alleen de datum enz en zender/ontvanger, schakel dit vakje niet in</p>
+~;
+#############################################
+
+1;

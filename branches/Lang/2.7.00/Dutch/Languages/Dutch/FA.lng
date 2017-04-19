@@ -1,0 +1,148 @@
+﻿###############################################################################
+# FA.lng (File Attachment text definitions)                                   #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchfalngver = 'YaBB 2.7.00 $Revision$';
+
+@dutchfalngmods = ();
+if (@dutchfalngmods) {
+    $dutchfalngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%fatxt = (
+'1' => 'Bijlage verwijderd',
+'2' => 'Toegestane bestandstypes:',
+'3' => 'Maximale grootte bijlage:',
+'4' => 'Alle types.',
+'5' => 'Geen limiet.',
+'6' => 'Bijlage',
+'6a' => 'Handhaven van bijlage',
+'6b' => 'Nieuwe bestand bijvoegen',
+'6c' => 'Bijgevoegde bestand verwijderen',
+'6d' => 'Bestand naar voren',
+'6e' => 'Bestand niet naar voren',
+'6f' => 'Behoud bestand',
+'7' => 'NOTITIE: Als u een bijlage in uw post had, moet u om veiligheidsredenen de bijlage opnieuw in het Browser vak selecteren.',
+'7a' => 'NOTITIE: Als u een bijlage in uw bericht had, moet u om veiligheidsredenen de bijlage opnieuw in het Browser vak selecteren.',
+'9' => 'Bijlage Functies',
+'10' => 'Bijlagen Directory',
+'10a' => 'PM Bijlagen Directory',
+'11' => 'URL voor bijlagen',
+'11a' => 'URL voor PM Bijlagen',
+'12' => 'Bestandsgrootte limiet voor Bijlagen:<br /><span class ="small">Stel op 0 in om controle uit te schakelen (niet aanbevolen) of tot een redelijk hoge waarde, zoals 500 KB.</span>',
+'12a' => 'Bestandsgrootte limiet voor iedere PM Bijlage:<br /><span class ="small">Stel op 0 in om controle uit te schakelen (niet aanbevolen) of tot een redelijk hoge waarde, zoals 500 KB.</span>',
+'13' => 'Maximale grootte van de map voor bestandsbijlagen:<br /><span class ="small">Stel op 0 in om controle uit te schakelen (niet aanbevolen).</span>',
+'13a' => 'Maximale grootte van de map voor PM bestandsbijlagen:<br /><span class ="small">Stel op 0 in om controle uit te schakelen (niet aanbevolen).</span>',
+'14' => 'Sta bestandstypen voor bijlagen met deze extenties toe (bijv: \'jpg gif bmp\')',
+'14a' => 'Sta bestandstypen voor PM bijlagen met deze extenties toe (bijv: \'jpg gif bmp\')',
+'15' => 'Bestandstype controle aanzetten? (Uitzetten wanneer u alle bestandstypen toe staat)<br /><span class ="small important">Het is aanbevolen dat u ALTIJD de bestandstype controle aanzet. Het uitschakelen kan hackers toestaan om scripts uit te voeren die schade aan uw forum kunnen toebrengen.</span>',
+'16' => 'Bijlagen met afbeeldingen weergeven in berichten?',
+'16a' => 'Toon afbeeldingsbijlagen in PMs?',
+'17' => '<label for="allowattach">Aantal bestandsbijlagen toegestaan in berichten:<br /><span class ="small">Zet op 0 om bestandsbijlagen in Posts uit te schakelen.</span></label><div class ="small important"><label for="allowattach"><span class="under">Let op:</span> Het toestaan van teveel bijlagen kan er de oorzaak van zijn dat uw forum trager gaat draaien. Wanneer u dit instelt, hou dan ook uw instellingen voor maximale grootte bestandsbijlage en maximale toegestane opslagruimte voor bijlagen in overweging.</label></div>',
+'17a' => 'Aantal bestandsbijlagen toegestaan in Persoonlijke berichten:<br /><span class ="small">Zet op 0 om bestandsbijlagen in Persoonlijke berichten uit te schakelen.<br /><span class="important">Wanneer u dit instelt, neem dan ook uw instellingen in overweging voor de maximale grootte van de bestandbijlage en de maximaal toegestane opslagruimte voor bijlagen.</span></span>',
+'17b' => 'Specificeer de Ledengroepen die het is toegestaan PM Bijlagen te uploaden:<br /><span class ="small">Als er geen ledengroep geselecteerd is, zijn alle ledengroepen ingeschakeld.<br />Gebruik Ctrl of Shift om meerdere groepen te selecteren/deselecteren.</span>',
+'18' => 'Mogen gasten bijlagen koppelen?',
+'19' => 'Kan niet geopend worden',
+'20' => '<= Bestandsextensie niet toegestaan. Toegestane bestandsextensies zijn:',
+'20a' => '<= Illegale code binnen afbeeldingsbestand.',
+'21' => 'Het bestand',
+'21b' => 'is te groot. De maximaal toegestane bestandsgrootte in KB bedraagt:',
+'22' => 'Met dit bestand',
+'22b' => 'u overschrijdt het maximale toegestane upload directory volume.',
+'23' => 'Momenteel geen maximale map grootte voor bijlagen ingesteld.',
+'23a' => 'Momenteel geen maximale map grootte voor PM bijlagen ingesteld.',
+'24' => 'Beheer bestandsbijlagen',
+'25' => 'Vanaf hier kunt u de bestanden op uw systeem die gekoppeld zijn aan berichten en persoonlijke berichten in uw forum beheren. U kunt bijlagen door grootte en datum uit uw systeem verwijderen en statistieken over bijlagen worden ook weergegeven onder.',
+'26' => 'Statistiek van de bijlagen',
+'27' => 'Overzicht',
+'28' => 'Totaal aan Bijlagen:',
+'28a' => 'Totaal PM Bijlagen:',
+'29' => 'Totale grootte van Bijlage Directory:',
+'29a' => 'Totale grootte van PM Bijlage Directory:',
+'30' => 'Totale beschikbare ruimte in Bijlagen Directory :',
+'30a' => 'Totale beschikbare ruimte in PM Bijlagen Directory:',
+'31' => 'Post Bijlage opties',
+'31a' => 'Bekijk Bijlagen logboek',
+'31b' => 'PM Bijlage opties',
+'31c' => 'Bekijk PM Bijlage Log',
+'32' => 'Verwijder Bijlagen ouder dan',
+'32a' => 'Verwijder PM Bijlagen ouder dan',
+'33' => 'Verwijder Bijagen groter dan',
+'33a' => 'Verwijder PM bijlagen groter dan',
+'34' => 'Verwijder Bijlagen ouder dan het aantal dagen:',
+'35' => 'Verwijder Bijlagen groter dan',
+'35a' => 'Verwijder PM Bijlagen groter dan',
+'36' => 'Beheer bestandsbijlagen',
+'37' => 'Beheer Post Bijlagen : Bekijk Log',
+'37a' => 'Beheer PM Bijlagen : Bekijk Log',
+'38' => qq~Het Bijlagen log laat alle informatie zien van elke bijlage op uw forum. U kunt de bijlagen van hieruit downloaden, bijlagen wissen, of naar het bericht springen waaraan de bijlage gekoppeld is. (Ga naar <a href="{yabb adminurl}?action=manageattachments">Beheer Bestandsbijlagen</a>)~,
+'38a' => 'Het PM Bijlagen log laat alle informatie zien van elke bijlage op uw forum. U kunt PM Bijlagen downloaden en wissen van deze sectie.',
+'39' => 'Bijlagen Log',
+'39a' => 'PM Bijlagen Log',
+'40' => 'Bijlagen naam',
+'40a' => 'Type',
+'41' => 'Bestandsgrootte',
+'41a' => 'Downloads',
+'41b' => 'Download',
+'41c' => q{}, #reserved for lowercase support
+'42' => 'Gepost door',
+'42a' => 'Gekoppeld door',
+'43' => 'Datum',
+'44' => 'Post Onderwerp',
+'45' => 'Wissen',
+'46' => 'Weet u zeker dat u alle bijlagen wilt verwijderen?',
+'46a' => 'Weet u zeker dat u de geselecteerde bijlage(n) wilt verwijderen?',
+'47' => 'Webserver Type',
+'48' => 'Er zijn momenteel geen bijlagen geüpload',
+'48a' => 'Er zijn momenteel geen PM bijlagen geüpload.',
+'49' => 'Illegale poging om een bestand te koppelen.',
+'49a' => 'downloads',
+'49b' => 'Bestand',
+'49c' => 'bestaat niet.',
+'49d' => 'Download log',
+'49e' => 'IP',
+'50' => 'Standaard',
+'51' => 'Unix/Linux/BSD',
+'52' => 'Windows',
+'53' => 'Bestand  Hernoemen/Overschrijven',
+'54o' => 'Overschrijf bestaande',
+'54r' => 'Automatisch Herbenoemen',
+'54n' => 'Bestand niet uploaden',
+'55' => 'Huidige Post Bijlagen',
+'55a' => 'Huidige PM bijlagen',
+'56' => 'Bestandspad niet gevonden.',
+'57' => 'Bestand Bijlagen',
+'58' => 'dagen',
+'61' => 'Ongebruikte bijlagen worden nu verwijdert',
+'61a' => '... voltooid.',
+'61b' => 'Verwijder nu ongebruikte bijlagen',
+'61c' => 'Verwijder nu ongebruikte PM bijlagen',
+'62' => 'Bijlagen logbestand (attachments.txt) is opnieuw opgebouwd',
+'62a' => 'PM Bijlagen logbestand (pm.attachments) is opnieuw opgebouwd',
+'63' => 'Opnieuw opgebouwde Bijlagen',
+'63a' => 'Opnieuw opgebouwde PM Bijlagen',
+'64' => q~Pagina's~,
+'70' => 'Bekijk Topic',
+'71' => 'Sluit venster',
+'75' => 'Dit Bijlagen log toont informatie over elke bijlage in de topic met het Onderwerp',
+'76' => 'U kunt hier vandaan bijlagen downloaden,<br />ga naar de post waar het bestand is gekoppeld of<br />ga naar de top van de topic.',
+'80' => 'Bijlagen',
+'80a' => 'Meer bijlagen',
+'80s' => 'Minder bijlagen',
+'81' => 'Verwijder bestand',
+);
+
+1;
