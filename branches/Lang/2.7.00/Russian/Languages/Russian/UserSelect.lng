@@ -1,0 +1,69 @@
+###############################################################################
+# UserSelect.lng (UserSelect text definitions)                                #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+#                                                                             #
+# translated by Elexio (elexio@yandex.ru)                                     #
+###############################################################################
+
+$russianuserselectlngver = 'YaBB 2.7.00 $Revision$';
+@russianuserselectlngmods = ();
+if(@russianuserselectlngmods){
+    $russianuserselectlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%usersel_txt = (
+'addselected' => 'Добавить выбранное',
+'instruct' => 'Сделайте двойной клик на Имени или выберите одно и более Имен из списка и нажмите на кнопку "Добавить выбранное" чтобы добавить их в',
+'instruct0' => 'Напечатайте первые символы имени нового модератора в верхней области формы, затем двойным щелчком выберети имя или несколько имен в списке и нажмите на кнопку "Добавить выбранных", чтобы добавить их ',
+'instruct1' => 'Двойной клик на имени или выбор одного имени в списке и нажатие кнопки &quot;Добавить выбранных&quot; добавит их в',
+'instruct2' => 'Найти по Имени или e-mail:',
+'instruct3' => 'В поле поиска Вы можете использовать символ групповой замены (только один *) в любом месте строки запроса.',
+'instruct4' => 'Выбор членов групп',
+'wildcardinfo' => 'Use * for wild-card',
+'searchresult' => 'Результаты поиска:',
+'nofound' => 'Не найдено совпадений для',
+'pmpagetitle' => 'Выберите получателей ЛС',
+'grouppagetitle' => 'Выберите Группы получателей BC',
+'modpagetitle' => 'Выберите Модераторов',
+'buddypagetitle' => 'Выберите Ваших Друзей',
+'ignorepagetitle' => 'Выберите игнорируемых Участников',
+'searchpagetitle' => 'Выберите Участника для поиска',
+'pageclose' => 'Закрыть',
+'recentlist' => 'Недавний Список',
+'alllist' => 'Список Пользователей',
+'gobutton' => 'Сделай!',
+'reciepientlist' => 'Список Получателей',
+'moderatorlist' => 'Список Модераторов', # Moderator List
+'buddylist' => 'Список друзей', # Buddy List
+'groups' => 'Члены групп',
+'ignorelist' => 'Список игнорируемых ЛС.',
+'searchlist' => 'Поиск по полю Пользователь.',
+'pmto' => 'Кому',
+'pmcc' => 'Копия',
+'pmbcc' => 'Скрытая копия',
+'allsearch' => 'Все',
+'bmallmembers' => 'Все участники форума',
+'bmadmins' => 'Администраторы',
+'bmgmods' => 'Координаторы',
+'bmfmods' => 'Модераторы',
+'bmmods' => 'Все координаторы/модераторы',
+'pages' => 'Страницы',
+'of' => '',
+'noentries' => 'Не найдено записей для этой буквы.',
+'other' => 'Другие',
+'noresults' => 'Ничего оне найдено',
+'qsearch' => 'Искать Пользователей',
+'illegal' => q~Неправильный символ~,
+);
+
+1;

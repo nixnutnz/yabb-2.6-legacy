@@ -1,0 +1,115 @@
+###############################################################################
+# Micon.lng (Image text/images definitions)                                   #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$russianmiconlngver = 'YaBB 2.7.00 $Revision$';
+
+if (!$language){$language = $lang;}
+
+%img_txt_m =(
+'70' => 'Мои любимые',
+);
+
+%img_polltxt_m = (
+'44' => 'Голосование',
+'45' => 'Новое голосование',
+'46' => 'Опрос закрыт',
+);
+
+%messageindex_txt_m = (
+'302' => 'новый',
+'303' => 'Перейти к первому непрочитанному сообщению',
+'454' => 'Горячая тема (более',
+'454a' => 'ответов)',
+'455' => 'Очень популярная тема (более',
+'456' => 'Закрытая тема',
+'457' => 'Обычная тема',
+'458' => 'Скрытая тема',
+'459' => 'Скрытая Важная тема',
+'460' => 'Скрытые Закрытая тема',
+'461' => 'Скрытая Важная Закрытая тема',
+'779' => 'Важная тема',
+'779a' => 'Глобальный Объявление',
+'779b' => 'Закрытая Глобальный Объявление',
+'780' => 'Важная Закрытая тема',
+'781' => 'Sticky',
+'845' => 'Тема перемещена',
+);
+
+%messageindex_sort_m = (
+'sort_az' => "Sort (A-Z)",
+'sort_za' => "Sort (Z-A)",
+'sort_min' => "Sort (min answer)",
+'sort_max' => "Sort (max answer)",
+'sort_last' => "Sort (new answer)",
+'sort_first' => "Sort (old answer)",
+);
+
+%im_message_status_m = (
+'confidential' => 'конфиденциальная',
+'urgent' => 'Срочно!',
+'standard' => 'стандарт',
+'alertmod' => 'Предупреждение Модератор.',
+'guestpm' => 'PM от Гость',
+'guestpmreply' => 'Ответить на PM от Гость',
+'imopen' => q~PM opened~,
+);
+
+%tabmenu_txt_m = (
+'edittab' => 'Edit tabs',
+'tabdel' => 'Delete this tab',
+'savetab' => 'Save Text',
+'newtab' => 'Add a tab',
+);
+
+%maintxt_m = (
+'900pd' => 'Пароль доступа Совет',
+);
+
+%var_cal_m = (
+'calbirthday' => 'день рождения',
+'calprivate' => 'Private',
+'caldel' => 'Delete',
+'caledit' => 'Edit Event',
+'calsave' => 'Save Event',
+'getaddevent' => 'Add a new Event',
+'eventinfo' => 'Event',
+'eventannounce' => 'Announcement',
+'eventholiday' => 'Holiday',
+'eventnote' => 'Exclamation',
+'eventparty' => 'Party',
+'eventcelebration' => 'Celebration',
+'eventsport' => 'Sport',
+'eventmedia' => 'Media (TV)',
+'eventmeeting' => 'Meeting',
+);
+
+%mess_icon_txt = (
+'281' => 'Standard',
+'282' => 'Thumbs Up',
+'283' => 'Thumbs Down',
+'284' => 'Exclamation Point',
+'285' => 'Question Mark',
+'286' => 'Lamp',
+'287' => 'Smiley',
+'288' => 'Angry',
+'289' => 'Cheesy',
+'290' => 'Laugh',
+'291' => 'Sad',
+'292' => 'Wink',
+'293' => 'Grin',
+'294' => 'Shocked',
+'295' => 'Cool',
+'296' => 'Huh',
+);
+
+1;
