@@ -1,0 +1,106 @@
+###############################################################################
+# YabMod.lng (YaBMod text definitions)                                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$germanyabmodlngver = 'YaBB 2.7.00 $Revision$';
+@germanyabmodlngmods = ();
+if (@germanyabmodlngmods) {
+    $germanyabmodlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%yabmtxt = (
+'1' => q~Mod-Liste~,
+'2' => q~Klicken Sie auf den Dateinamen, um Details anzuzeigen und testen Sie / (un) install mod.~,
+'5' => q~Nicht installiert~,
+'6' => q~Anwenden von Mod~,
+'7' => q~Installiert~,
+'8' => q~Deinstalliere Mod~,
+'9' => q~Zurück zur Mod-Info-Seite~, #page title
+'10' => q~ID~,
+'11' => q~Status~,
+'12' => q~Version~,
+'13' => q~Author~,
+'14' => q~Webseite~,
+'15' => q~Mod-Information~, #tag name
+'16' => q~Zurück zur Mod-Liste~,
+'17' => q~Bearbeite Mod~,
+'18' => q~Fehler~,
+'21' => q~Test~,
+'22' => q~Neue Mod-Datei hochladen~,
+'23' => q~Hinzufügen einer Mod-Datei~,
+'24' => q~Löschen von Mod- und Mod-Quelldateien~,
+'25' => q~<strong>Erlaubte Dateierweiterungen:</strong> mod zip~,
+'26' => q~Das <strong>Modfile</strong>, welches Sie auf dem Server hochladen möchten, ist bereits mit diesem Namen vorhanden.~,
+'28' => q~Das Modul konnte nicht geladen werden~,
+'29' => q~Quellcode~,
+'30' => q~Mod-Datei bearbeiten~,
+'31' => q~YaBMods - Zip/Mod installierer.~,
+'32' => q~Lesen~,
+'33' => q~Status OK!~,
+'34' => q~Extrahiere HTML file(s):~,
+'35' => q~Extrahiere YaBB System file(s):~,
+'36' => q~Extrahiere BoardMod file(s):~,
+'37' => q~<strong>Erfolgreich!</strong> Alle Mod-Dateien auf dem Server.~,
+'38' => q~Deinstalliere Mod~,
+'39' => q~Mod-Datei öffnen~,
+'40' => q~Mod-Datei analysieren...~,
+'41' => q~Datei bearbeiten~,
+'42' => q~Sichern~,
+'43' => q~zu~,
+'44' => q~Speichern~,
+'45' => q~Schritt~,
+'46' => q~komplett...~,
+'47' => q~Zu bearbeitende Dateien in diesem Mod~,
+'48' => q~Ansicht~,
+'49' => q~Datei aussuchen~,
+'50' => q~Lesen Sie die Deinstallationsdatei...~,
+'51' => q~Löschen Sie benutzte Mod-Dateien...~,
+'52' => q~Löschen Sie benutzte Mod-Ordner...~,
+'53' => q~Löschen Sie die Mod-Datei~,
+'54' => q~<strong>Erfolgreich!</strong> Alle Mod-Dateien gelöscht.~,
+'55' => q~Mod-Installation erfolg! Alles erledigt!~,
+'56' => q~Mod Test erfolgreich! Alles erledigt!~,
+'57' => q~Löschen Sie die Mod-Datei~,
+'58' => q~<strong>Erfolgreich!</strong> Alle Mod-Dateien gelöscht.~,
+'59' => q~Mod-Datei vom Verzeichnis abrufen~,
+'60' => q~Mod-Datei von URL abrufen~,
+'61' => q~Warte...~,
+'62' => q~Datum des Hochladens~,
+'63' => q~Mod-File Datum bearbeiten~,
+'64' => q~Installationsdatum~,
+'65' => q~Außer Stande zu öffnen~,
+'66' => q~Die Methode, die Sie angefordert haben, benutzt (LWP::Simple)~,
+'67' => q~... versuchen Sie es mit der "wget" -Funktion.~,
+'68' => q~Ist kein Erfolg auf dieser Domain.~,
+
+# Uninstall Install Error
+'no' => q~No~,
+'tag' => q~tag correspond to~,
+'no_tag' => q~tag found at line~,
+'no_s_string' => q~No search strings matched!<br /><br /><span class="under">Search string</span>:<br />~,
+'no_file' => q~File not found!<br />~,
+'no_write' => q~Unable to write file:<br />~,
+'no_open' => q~Unable to open:<br />~,
+'recall' => q~<strong>Recall all edited Backup files...</strong><br />~,
+'mod' => q~Mod file~,
+'install' => q~has already been installed!~,
+'n_install' => q~has not been installed!~,
+
+# .bak cleanup
+'cleanbak' => 'Mod .bak Dateien',
+'cleanbak2' => q~Um Platz zu sparen, können Sie die Mod-Backup-Dateien entfernen, sobald Ihre Mods installiert sind. <strong> Hinweis </strong>: Das entfernt keine Dateien in den Mods-Ordnern.~,
+'cleansub' => q~Löschen Sie alte *.bak Dateien.~,
+);
+
+1;

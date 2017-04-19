@@ -1,0 +1,82 @@
+###############################################################################
+# Guardian.lng (Guardian text definitions)                                    #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germanguardianlngver = 'YaBB 2.7.00 $Revision$';
+@germanguardianlngmods = ();
+if(@germanguardianlngmods){
+    $germanguardianlngmods = 1;
+}
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%guardian_txt = (
+'main' => q~The Guardian&trade;~,
+'admin' => q~The Guardian&trade; Administrator~,
+'setup' => q~The Guardian&trade; Einstellungen~,
+'title' => q~Willkommen zu 'The Guardian&trade;' - Ihr Türsteher gegen Eindringlinge.~,
+'description' => q~Mit 'The Guardian&trade;' können Sie auf unterschiedlichen Ebenen Eindringlinge abwehren und damit eine größere Sicherheit für Ihr Forum erreichen.~,
+'notify' => q~Wollen Sie bei aufgedeckten Versuchen eine eMail erhalten ?~,
+'general' => q~Allgemeine- und Servereinstellungen~,
+'use_guardian' => q~The Guardian&trade; zum Schutz Ihres Forums einsetzen?~,
+'use_htaccess' => q~.htaccess zum Blockieren von IP's auf Serverniveau verwenden?~,
+'use_htaccess_support' => q~<span class="small"><i>(funktioniert nur, wenn .htaccess-Dateien vom Server unterstützt werden)</i></span>~,
+'htaccess_support' => q~<span class="small"><i>(funktioniert nur, wenn vom Server unterstützt und ganz oben, im ersten Block, ".htaccess zum Blockieren von IP's auf Serverniveau verwenden?" angeklickt ist.)</i></span>~,
+'htaccess_add' => q~Gegen Regel verstossende IP automatisch zur .htaccess-Datei hinzufügen?~,
+'htaccess_added' => q~Gegen Regel verstossende IP automatisch zur .htaccess-Datei hinzugefügt. (Sie können vom Guardian-Admin aus die IP manuell von der Liste löschen)~,
+'proxy' => q~Proxy blockieren~,
+'referer' => q~Referrer blockieren~,
+'harvester' => q~Harvester blockieren~,
+'request' => q~Request Methode blockieren~,
+'string' => q~Environment String blockieren~,
+'clike' => q~MySQL CLIKE blockieren~,
+'union' => q~MySQL UNION blockieren~,
+'script' => q~Scripting blockieren~,
+'proxy_on' => q~Den Zugang von Proxy-Servern verbieten ?~,
+'referer_on' => q~Referrer blocking aktivieren?~,
+'harvester_on' => q~Harvester blocking aktivieren?~,
+'request_on' => q~Request Method blocking aktivieren?~,
+'string_on' => q~'verbotene Wörter' in URL Environment aktivieren?~,
+'clike_on' => q~CLIKE blocking aktivieren (nur MySQL) ?~,
+'union_on' => q~UNION blocking aktivieren (nur MySQL) ?~,
+'script_on' => q~Scripting blocking aktivieren?<br /><span class="small">Filtert &lt;script&gt; aus dem Query-String.</span>~,
+'proxy_abuse' => q~Proxy Zugang~,
+'referer_abuse' => q~Referrer~,
+'harvester_abuse' => q~Harvester~,
+'request_abuse' => q~Request Methode~,
+'string_abuse' => q~Url verbotene Wörter~,
+'clike_abuse' => q~CLIKE~,
+'union_abuse' => q~UNION~,
+'script_abuse' => q~Scripting~,
+'abuse' => q~Verstoss entdeckt~,
+'abuse_user' => q~Verstossende Benutzer-ID~,
+'abuse_ip' => q~Verstoss entdeckt von IP~,
+'abuse_referer' => q~Blockierter Referrer~,
+'abuse_string' => q~Blockiertes Wort~,
+'abuse_environment' => q~Environmentformel~,
+'abuse_form_environment' => q~Blockiertes Skript im Formular~,
+'abuse_url_environment' => q~Blockiertes Skript in URL-Daten~,
+'abuse_harvester' => q~Blockierter Harvester~,
+'abuse_request' => q~Blockierte Request Methode~,
+'white_list' => q~Geben Sie hier die IP's, Benutzer ID's oder Proxyidentifikationen ein, die zugangsberechtigt sind (weiße Liste):<br /><i>(ganz oder partiell, eine pro Zeile)</i>~,
+'referer_list' => q~Geben Sie die Referrer URLs ein, die blockiert werden sollen<br /><i>(ganz oder partiell, eine pro Zeile)</i>~,
+'harvester_list' => q~Geben Sie die Harvester ein, die blockiert werden sollen<br /><i>(ganz oder partiell, einen pro Zeile)</i>~,
+'request_list' => q~Geben Sie die Request Methoden ein, die blockiert werden sollen<br /><i>(ganz oder partiell, eine pro Zeile)</i><br /><br /><b><span class="under">ACHTUNG!</span><br />Blockieren Sie NIEMALS POST oder GET!<br />Das würde Ihr Forum unbrauchbar machen.</b>~,
+'string_list' => q~Geben Sie 'verbotene Wörter' ein, die blockiert werden sollen<br /><i>(ganz oder partiell, eins pro Zeile)</i>~,
+'htaccess_list' => q~Geben Sie die IP-Adressen oder (partielle) Domainnamen an, die auf Serverniveau blockiert werden sollen<br /><span class="small"><i>(eine pro Zeile, * wildcards sind erlaubt)</i></span>~,
+'save' => q~Guardian-Änderungen speichern~,
+);
+
+1;
