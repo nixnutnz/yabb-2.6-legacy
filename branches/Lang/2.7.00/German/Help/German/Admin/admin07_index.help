@@ -1,0 +1,97 @@
+﻿$germanadmin_admin07_indexhelpver = 'YaBB 2.7.00 $Revision$';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Themen_Hilfe_Index";
+
+### Section 1
+#############################################
+$section_sub1 = "Themen_Hilfe_Index_Intro";
+$section_body1 = qq~Dieser Themen Hilfe Index soll Ihnen die neuen YaBB Funktionen schnell und einfach näher bringen und unterstützt Sie mit den dazugehörigen Hilfe Themen im YaBB Codex.
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$section_sub2 = "Wie_mache_ich_..._Themen";
+$section_body2 = qq~Dies sind die am häufigsten gestellten Fragen neuer Forum Administratoren in Zusammenhang mit der Verwendung der neuen Foren Features.
+<p><b>WIE GEHT...</b></p>
+<ul>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217217800" target = "_blank">Ein neues Forum erstellen</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217217419" target = "_blank">Eine neue Kategorie erstellen</a></li>  
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217294882" target = "_blank">Einen Moderator ernennen</a></li> 
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217400265" target = "_blank">Einen Global Moderator ernennen</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217819051" target = "_blank">Eine neue beitragsabhängige Benutzergruppe erstellen</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218345096" target = "_blank">Eine neue beitragsunabhängige Benutzergruppe erstellen</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217819515" target = "_blank">Einen Benutzer in eine andere beitragsabhänige Benutzergruppe verschieben</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218429222" target = "_blank">Einen Benutzer in eine andere beitragsunabhängige Benutzergruppe verschieben</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217261075" target = "_blank">Die Suche Funktion deaktivieren</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217258547" target = "_blank">Die Optionen der Registrierung verwenden</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218776684" target = "_blank">Das Forum-Logo ändern</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217706934" target = "_blank">Meine eigene Grafik als Avatar verwenden</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=templates" target = "_blank">Die Arbeit mit Templates</a></li>
+</ul>
+~;
+#############################################
+
+
+### Section 3
+#############################################
+$section_sub3 = "Was_ist_zu_tun_..._Themen";
+$section_body3 = qq~Dies sind die am häufigsten gestellten Fragen neuer Foren Administratoren in Zusammenhang mit auftretenden Problemen oder festgestellten Fehlern/Fehlermeldungen und was zu machen ist.
+<p><b>WAS SOLL ICH MACHEN BEI...</b></p>
+<ul>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=errors" target = "_blank">Ich bekomme einen Server Fehler (Server Error)</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217258342" target = "_blank">Ich habe Probleme mich als Administrator einzuloggen</a></li>  
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1202251271" target = "_blank">Einige Mitglieder werden als Ex-Mitglied angezeigt</a></li>  
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1192485451" target = "_blank">Ich bekomme eine Forum Fehlermeldung</a></li>  
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1212249372" target = "_blank">Die Ladezeit meines Forum ist extrem langsam</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217258894" target = "_blank">Mein Forum ist gesperrt und befindet sich im Wartungsmodus</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218835928" target = "_blank">Meine Forum Grafiken werden nicht richtig dargestellt</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217951488" target = "_blank">Ich kann keinen Button für den Admin Center sehen</a></li> 
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1217810041" target = "_blank">Ich bin mir nicht sicher, ob meine Pfadangaben richtig sind &#40;Standard Installation&#41;</a></li> 
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190671650" target = "_blank">Ich bin mir nicht sicher, ob meine Pfadangaben richtig sind &#40;cPanel Installation&#41;</a></li> 
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190669204" target = "_blank">Ich benötige weitere Hilfe mit Pfaden</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190674425" target = "_blank">Ich möchte mein Forum verschieben/mit dem Forum umziehen</a></li>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1218648482" target = "_blank">Es haben sich neue Benutzer registriert, aber sie können keine Beiträge schreiben</a></li>
+</ul>
+~;
+#############################################
+
+
+### Section 4
+#############################################
+$section_sub4 = "Dein_Forum_modifizieren/erweitern";
+$section_body4 = qq~Dieser Abschnitt enthält Informationen darüber, wie Sie Ihr Forum modifizieren können. Bevor Sie jedoch eine noch so kleine Änderung vornehmen, sollten Sie immer ein Backup durchführen für den Fall, dass etwas schief geht. Beachten Sie außerdem, dass einige grundlegende Informationen über das BoardMod Programm für YaBB Benutzer zur Verfügung stehen. Das YaBB Team leistet <b>keinen</b> Support in Verbindung mit dem BoardMod Programm oder den dort veröffentlichten und zur Verfügung stehenden Mods/Hacks oder Templates. Wenn Sie also eine Support Anfrage zu BoardMod oder den Mods/Hacks haben, so gehen Sie bitte auf die <a href="http://www.boardmod.org" target = "_blank">BoardMOD</a> Webseite und stellen Sie Ihre Frage hier.   
+<p><b>Informative Links in Verbindung mit Modifikationen</b></p>
+<ul>
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=lng_1" target = "_blank">Eine weitere Sprache hinzufügen</a></li>
+  <li><a href="http://www.yabbforum.com/community/YaBB.pl?board=languagepack" target = "_blank">Support für die Sprachpakete</a></li>  
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?board=modification" target = "_blank">Kleinere Änderungen an Ihrem Forum vornehmen</a></li>  
+  <li><a href="http://www.yabbforum.com/codex/YaBB.pl?num=1190677475" target = "_blank">Das BoardMOD Programm nutzen</a></li>
+</ul>
+~;
+#############################################
+
+
+### Section 5
+#############################################
+$section_sub5 = "YaBB_Support_in_Anspruch_nehmen";
+$section_body5 = qq~Dieser Abschnitt enthält einige Tips und Ratschläge die Ihnen helfen sollen, bei Problemen und Fehlern schnellstmögliche Abhilfe zu schaffen und eine Supportanfrage im <a href="http://www.yabbforum.com/community/YaBB.pl" target = "_blank">YaBB Support Forum</a> zu stellen.
+<p><b>Wie erhalte ich Support/Unterstützung von YaBB</b></p>
+<ul>
+  <li><font color="#FF0000">Schreiben Sie <b>niemals</b> Ihre Admin Zugangsdaten für Ihr Forum oder FTP Details in einen Beitrag.</font> Sollten diese Daten/Informationen erforderlich sein, um das Problem zu lokalisieren und um Ihnen zu helfen, wird Ihnen ein Mitglied des Forum Personal kontaktieren und Sie darum bitten, die nötigen Angaben mittels einer Persönlichen Nachricht &#40;PM&#41; zu übersenden.</li>
+  <li>Bevor Sie eine Supportanfrage stellen, schauen Sie bitte im <a href="http://www.yabbforum.com/codex/" target = "_blank">YaBB Codex</a> &#40;er ist durchsuchbar&#41; und führen Sie eine Suche im Supportforum durch um festzustellen, ob eine Antwort auf Ihr Problem bereits in einem anderen Beitrag vorhanden ist. Probieren Sie auch, die Suche mit verschiedenen Suchparametern durchzuführen.</li>
+  <li>Bitte stellen Sie Ihre Supportanfrage im richtigen Forum. Alle Foren sind anhand der Beschreibung eindeutig den Themenbereichen zugeordnet. Sind Sie sich nicht sicher in welchem Forum Ihre Supportanfrage am besten aufgehoben ist, nutzen Sie das Forum <a href="http://www.yabbforum.com/community/YaBB.pl?board=featuretroub" target="_blank">General Usage and Feature Troubleshooting</a> oder den <a href="http://www.yabbforum.com/community/YaBB.pl?board=german" target="_blank">deutschsprachigen Supportbereich</a>.</li>
+  <li>Bitte <b>keine</b> Supportanfrage in der YaBB 2 Development Kategorie und den darin enthaltenen &quot;Bugs&quot; Foren stellen. Wenn Sie einen &quot;Bug&quot; in Deinem Forum vermuten, stellen Sie Ihre Anfrage in einem der anderen Supportforen und beschreiben Sie, welche Schritte im einzelnen erforderlich sind damit der Fehler (der Bug) reproduziert werden kann. Handelt es sich tatsächlich um einen Bug, wird ein Mitglied des Support Team Ihre Anfrage in die YaBB 2 Bugs Sektion verschieben.</li>
+  <li>Es gibt viele wertvolle Informationen in den Sticky (Wichtige Themen) Bereichen eines jeden Supportforum, die jeweils am Anfang der Foren gelistet sind. Bitte lesen Sie die &quot;Wichtigen Themen&quot; aufmerksam durch.</li>
+  <li>Bitte starten Sie eine eigene Suportanfrage indem Sie ein neues Thema erstellen und springen Sie nicht an das Ende einer anderen Anfrage, um hier Ihren Beitrag zu schreiben. Auch wenn die selben oder ähnliche Symtome einer bereits gestellten Anfrage auch bei Ihnen vorliegen, kommt ein möglicher Fehler nicht immer zum gleichen Zeitpunkt vor. Es ist daher besser, wenn eine Anfrage separat gestellt wird.</li>
+  <li>Vermeiden Sie unbedingt sog. Cross-Postings. Das heisst, beschreiben Sie Ihr Problem nur in einem Forum und nicht gleichzeitig in verschiedenen Foren des Supportboard. Das Support Team liest alle Beiträge und Ihre Anfrage wird nicht deswegen schneller beantwortet, weil Sie in verschiedenen Foren fragen. Im Gegenteil - Es ist mehr zu lesen, als wenn Sie nur einmal schreiben.</li>
+  <li>Funktionen, Dateien und Optionen variieren bei den verschiedenen Versionen. Bitte stellen Sie sicher, dass Sie im ersten Beitrag Ihrer Supportanfrage mitteilen, welche YaBB Version Sie benutzen. Andere Informationen, die ebenfalls sehr hilfreich sein können, sind zum Beispiel Angaben zur Art des Server &#40;Unix, Windows, etc.&#41;, ob Sie Ihren eigenen Server zu Hause verwenden, ein Webhostingpaket eines externen Anbieters nutzen, oder Sie Ihr Forum durch Änderungen jeglicher Art modifiziert haben.</li>
+  <li>Wählen Sie einen aussagekräftigen Titel für Ihre Supportanfrage! &quot;Mein Auto fährt nicht&quot; wird keinem Mechaniker helfen den Fehler zu finden oder gar zu beheben. Wir wollen damit sagen, dass ein Titel wie &quot;Mein Forum arbeitet nicht korrekt&quot; keine Aussagekraft hat. Sie müssen uns genau mitteilen, was nicht funktioniert und welche Schritte Sie durchgeführt haben, bis das Problem oder der Fehler auftrat. Bei wem tritt der Fehler/das Problem auf: Bei allen Benutzer? Nur bei einigen Benutzern? Nur bei einem Benutzer? All das sind Angaben die erforderlich sind, damit wir Ihr Problem nachvollziehen können.</li>
+  <li>Am wichtigsten aber ist, dass Sie Geduld haben. Probleme und Fehler können die unterschiedlichsten Ursachen haben. So kann es durchaus vorkommen, dass die Lösung zu dem einen Problem schneller gefunden wird als die zu einem anderen. Sollten Sie Gedanken machen warum niemand Ihre Supportanfrage beantwortet, so kann es sein, dass das Support Team den Quellcode durchsucht oder versucht, Ihr Problem in ihren eigenen Boards zu reproduzieren. Die meisten der Anfragen werden in kürzester Zeit, meist innerhalb eines Tages beantwortet.<br /><br /><b><span class="under">Bedenken Sie und sei Ihnen dessen stets bewusst:</span></b> Auch die Mitglieder des Support Team gehen ihrer &quot;normalen&quot; Arbeit nach, haben Familie und ein reales Leben.</li>
+</ul>
+~;
+#############################################
+
+
+1;
