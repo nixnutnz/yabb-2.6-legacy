@@ -1,10 +1,11 @@
 ###############################################################################
 # YaBMod.pm - Yet another BoardMod                                            #
-# $Date: 01.06.17 $                                                           #
+# $Date: 06.01.17 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
+# Packaged:       June 1, 2017                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -18,6 +19,8 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 use File::Copy;
 use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
+use utf8;
+use Encode;
 our $VERSION = '2.7.00';
 
 our $yabmodpmver  = 'YaBB 2.7.00 $Revision$';
@@ -1436,6 +1439,7 @@ qq~<option value="$modeditfilename">$editdir$file_name</option>\n~;
 
     # print mod file to textarea
     $line = join q{}, @modfile;
+	$line = decode_utf8($line);
 
     for my $x ( 0 .. ( length($line) - 1 ) ) {
         $fulltemplate .=

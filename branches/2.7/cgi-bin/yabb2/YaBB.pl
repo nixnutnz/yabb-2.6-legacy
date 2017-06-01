@@ -5,12 +5,12 @@
 # $Source: /YaBB.pl $
 ###############################################################################
 # YaBB.pl                                                                     #
-# $Date: 01.06.17 $                                                           #
+# $Date: 06.01.17 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2017                                             #
+# Packaged:       June 1, 2017                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -159,7 +159,7 @@ if ( !$masterkey ) {
 $formsession = cloak("$mbname$username");
 
 # check for valid form sessionid in any POST request
-if ( $ENV{REQUEST_METHOD} =~ /post/ism ) {
+if ( $ENV{REQUEST_METHOD} =~ /post/ixsm ) {
     if ( $cgi_query && $cgi_query->cgi_error() ) {
         fatal_error( 'denial_of_service', $cgi_query->cgi_error() );
     }

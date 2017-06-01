@@ -1,11 +1,11 @@
 ﻿###############################################################################
 # Subs.pm                                                                     #
-# $Date: 01.06.17 $                                                           #
+# $Date: 06.01.17 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2017                                             #
+# Packaged:       June 1, 2017                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -251,7 +251,7 @@ sub print_output_header {
     $headerstatus ||= '200 OK';
     $contenttype  ||= 'text/html';
 
-    my $ret = $yyiis ? "HTTP/1.0 $headerstatus\n" : "Status: $headerstatus\n";
+    my $ret = $yyiis ? "HTTP/1.1 $headerstatus\n" : "Status: $headerstatus\n";
 
     foreach ( $yy_setcookies1, $yy_setcookies2, $yy_setcookies3,
         @other_cookies )

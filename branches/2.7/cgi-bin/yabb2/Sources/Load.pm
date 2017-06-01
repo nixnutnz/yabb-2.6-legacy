@@ -1,11 +1,11 @@
 ###############################################################################
 # Load.pm                                                                     #
-# $Date: 01.06.17 $                                                           #
+# $Date: 06.01.17 $                                                           #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
-# Packaged:       January 6, 2017                                             #
+# Packaged:       June 1, 2017                                                #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -218,12 +218,23 @@ sub load_usersettings {
             load_user($username);
             if ( !${ $uid . $username }{'realname'} ) {
                 $iamguest = 1;
+                format_username(q{});
+                update_cookie('delete');
+                $username = 'Guest';
+                $iamguest = '1';
+                $iamadmin = q{};
+                $iamgmod  = q{};
+                $iamfmod  = q{};
+                $password = q{};
+                local $ENV{'HTTP_COOKIE'} = q{};
+                $yyim    = q{};
+                $yyuname = q{};
             }
             if ( !$maintenance
                 || ${ $uid . $username }{'position'} eq 'Administrator' )
             {
                 $iammod = is_moderator($username);
-                if (   ${ $uid . $username }{'position'} 
+                if (   ${ $uid . $username }{'position'}
                     && ( ${ $uid . $username }{'position'} eq 'Administrator'
                     || ${ $uid . $username }{'position'} eq 'Global Moderator'
                     || ${ $uid . $username }{'position'} eq 'Mid Moderator')
