@@ -245,7 +245,7 @@ sub post {
 
     # Figure out the name of the category
     get_forum_master();
-    my ( $ct, $catperms ) = @{$catinfo{$curcat}};
+    my ( $ct, $catperms ) = @{ $catinfo{$curcat} };
     $cat = $ct;
     $cat = to_chars($cat);
 
@@ -403,7 +403,9 @@ sub post_page {
       : qq~$fatxt{'2'} $fatxt{'4'}~;
     $limit ||= 0;
     my $filesize_info =
-      $limit != 0 ? qq~$fatxt{'3'} $limit KB~ : qq~$fatxt{'3'} $fatxt{'5'}~;
+      $limit != 0
+      ? qq~$fatxt{'3'} $limit KB~ 
+      : qq~$fatxt{'3'} $fatxt{'5'}~;
     $normalquot = $post_txt{'599'};
     $simpelquot = $post_txt{'601'};
     $simpelcode = $post_txt{'602'};
@@ -414,9 +416,9 @@ sub post_page {
     if ( $postid eq 'Poll' ) { $sub = $post_txt{'66a'}; }
 
     $message =~ s/<\//&lt;\//igxsm;
-    $message = to_chars($message);
-    $message = do_censor($message);
-    $sub = to_chars($sub);
+    $message         = to_chars($message);
+    $message         = do_censor($message);
+    $sub             = to_chars($sub);
     $sub             = do_censor($sub);
     $displayname     = q{};
     $moddate         = 0;
@@ -481,9 +483,11 @@ sub post_page {
 
     # this defines if the notify on reply is shown or not.
     my $notification = q{};
-    if (  !$iamguest
+    if (
+          !$iamguest
         && $destination ne 'modalert2'
-        && $destination ne 'guestpm2' )
+        && $destination ne 'guestpm2'
+      )
     {
 
      # check if you are already being notified and if so we check the checkbox.
@@ -501,7 +505,7 @@ sub post_page {
 
             manageboardnotify( 'load', $currentboard );
             if ( exists $theboard{$username}
-                && ${$theboard{$username}}[1] == 2 )
+                && ${ $theboard{$username} }[1] == 2 )
             {
                 $notify     = q~ disabled="disabled" checked="checked"~;
                 $hasnotify  = 2;
@@ -569,7 +573,7 @@ sub post_page {
             $threadlink = qq~<a href="$scripturl?num=$threadid">$subtitle</a>~;
         }
         $boardname = to_chars($boardname);
-        $cat = to_chars($cat);
+        $cat       = to_chars($cat);
         $yynavigation =
 qq~&rsaquo; <a href="$scripturl?catselect=$catid">$cat</a> &rsaquo; <a href="$scripturl?board=$currentboard">$boardname</a> &rsaquo; $t_title ( $threadlink )~;
     }
@@ -683,7 +687,8 @@ qq~<form action="$scripturl?$thecurboard" method="post" name="postmodify" enctyp
                 $tmpurl = ${ $addedsmilies{ $smilieorder[$i] } }[0];
             }
             else {
-                $tmpurl = qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
+                $tmpurl =
+qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
             }
             $moresmilieslist .=
 qq~             <img src="$tmpurl" class="bottom pointer" alt="${$addedsmilies{$smilieorder[$i]}}[2]" title="${$addedsmilies{$smilieorder[$i]}}[2]" onclick="javascript: MoreSmilies($i);" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
@@ -737,7 +742,9 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
     ~;
 
     my $my_modalert = q{};
-    if ( $destination ne 'modalert2' && $destination ne 'guestpm2' ) {
+    if (   $destination ne 'modalert2'
+        && $destination ne 'guestpm2' )
+    {
         my $iconliveprev = q{};
         if ($ismobile) {
             $iconliveprev =
@@ -1191,7 +1198,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                     }
                     else {
                         $tmpurl =
-                          qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
+qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
                     }
                     $smilie_url_array .= qq~"$tmpurl", ~;
                     $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
@@ -1209,7 +1216,8 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
                 closedir DIR;
                 foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
                     my ( $name, $extension ) = split /[.]/xsm, $line;
-                    if ( $extension && $extension =~ /[gif|jpg|jpeg|png]/ixsm ) {
+                    if ( $extension && $extension =~ /[gif|jpg|jpeg|png]/ixsm )
+                    {
                         if ( $line !~ /banner/ixsm ) {
                             $smilieslist .= qq~   <option value="$i"~
                               . (
@@ -2444,7 +2452,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
     $thismessage = from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
-    $boardname = ${$board{$currentboard}}[0];
+    $boardname = ${ $board{$currentboard} }[0];
     $boardname = to_chars($boardname);
 
     $thissubject .= " ($boardname)";
@@ -2456,7 +2464,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//gxsm;
     manage_memberinfo('load');
     manageboardnotify( 'load', $currentboard );
     foreach ( keys %theboard ) {
-        $languages{ ${$theboard{$_}}[0] } = 1;
+        $languages{ ${ $theboard{$_} }[0] } = 1;
     }
     load_notifymessages( \%languages );
 
@@ -2520,7 +2528,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
     $thismessage = from_html($thismessage);
     $thismessage =~ s/>/&gt;/gxsm;
     $thismessage =~ s/</&lt;/gxsm;
-    $boardname = ${$board{$currentboard}}[0];
+    $boardname = ${ $board{$currentboard} }[0];
     $boardname = to_chars($boardname);
 
     $thissubject .= " ($boardname)";
@@ -2534,7 +2542,7 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
     if ( -e "$boardsdir/$currentboard.mail" ) {
         manageboardnotify( 'load', $currentboard );
         foreach ( keys %theboard ) {
-            $languages{ ${$theboard{$_}}[0] } = 1;
+            $languages{ ${ $theboard{$_} }[0] } = 1;
         }
         load_notifymessages( \%languages );
         while ( my ( $curuser, $value ) = each %theboard ) {
@@ -2576,7 +2584,7 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
     if ( -e "$datadir/$thisthread.mail" ) {
         managethreadnotify( 'load', $thisthread );
         foreach ( keys %thethread ) {
-            $languages{ ${$thethread{$_}}[0] } = 1;
+            $languages{ ${ $thethread{$_} }[0] } = 1;
         }
         load_notifymessages( \%languages );
 
@@ -2864,7 +2872,7 @@ sub send_guest_pm2 {
 
     ## clean name and email - remove | from email and turn any _ to spaces in name
     if ( $name && $email ) {
-        $name = to_html($name);
+        $name     = to_html($name);
         $tempname = $name;
         $name =~ s/_/ /gxsm;
         $email =~ s/[|]//gxsm;
@@ -2976,7 +2984,7 @@ sub mod_alert {
 
     # Figure out the name of the category
     get_forum_master();
-    my ( $ct, $catperms ) = @{$catinfo{$curcat}};
+    my ( $ct, $catperms ) = @{ $catinfo{$curcat} };
     $cat = $ct;
     $cat = to_chars($cat);
 
@@ -3123,7 +3131,7 @@ sub mod_alert2 {
         $name =~ s/\A\s+//xsm;
         $name =~ s/\s+\Z//xsm;
         ## clean name and email - remove | from name and turn any _ to spaces for email
-        $name = to_html($name);
+        $name     = to_html($name);
         $tempname = $name;
         $name =~ s/_/ /gxsm;
         $email =~ s/[|]//gxsm;

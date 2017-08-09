@@ -1121,13 +1121,13 @@ sub yabm_uploadmod {
 
     # Upload <form> .mod or .zip
     my ( $upload_modfile, $mod_name, $mod_extension );
-    if ( $FORM{'upload_mod'} ne q{} ) {
+    if ( $FORM{'upload_mod'} && $FORM{'upload_mod'} ne q{} ) {
         $upload_modfile = $FORM{'upload_mod'};
         ( $mod_name, $mod_extension ) = split /[.]/xsm, $upload_modfile;
     }
 
     # Upload <form> install from Directory
-    if ( $FORM{'upload_mod'} eq q{}
+    if ( !$FORM{'upload_mod'} || $FORM{'upload_mod'} eq q{}
         && ( $FORM{'use_dir'} == 1 || $INFO{'use_dir'} == 1 ) )
     {
 
@@ -1150,7 +1150,7 @@ sub yabm_uploadmod {
     }
 
     # Upload <form> install from URL
-    if ( $FORM{'upload_mod'} eq q{} && $FORM{'use_url'} == 1 ) {
+    if ( (!$FORM{'upload_mod'} || $FORM{'upload_mod'} eq q{} )  && $FORM{'use_url'} && $FORM{'use_url'} == 1 ) {
         my $mod_url = $FORM{'upload_mod_url'};
 
         # This we use for the YaBB intern Download Counter Links
@@ -1239,7 +1239,7 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
 
     # Upload file function
     my ( $anhang, @uninstall );
-    if ( $FORM{'upload_mod'} ne q{} ) {
+    if ( $FORM{'upload_mod'} && $FORM{'upload_mod'} ne q{} ) {
         $FORM{'upload_mod'} =
           upload_file( 'upload_mod', 'YaBMod/temp', 'mod/zip', '2000', '0' );
         $anhang = 1;
