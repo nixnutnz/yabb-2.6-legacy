@@ -1379,6 +1379,8 @@ sub addmember2 {
         our ($IM);
         fopen( 'IM', '>', "$memberdir/$member{'regusername'}.msg", 1 )
           or croak "$croak{'open'} IM";
+        $imsubject = $register_txt{'imsubject'};
+        $imtext = $register_txt{'imtext'};
         print {$IM}
 "$messageid|$sendname|$member{'regusername'}|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
           or croak "$croak{'print'} IM";

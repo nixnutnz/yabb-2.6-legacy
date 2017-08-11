@@ -48,6 +48,8 @@ our (
     %micon,           %tab,              %tabtxt,   %useraccount,
 );
 
+## our Mod Hook ##
+
 load_language('TabMenu');
 get_micon();
 
