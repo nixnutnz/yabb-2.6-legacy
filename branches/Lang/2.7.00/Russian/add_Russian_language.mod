@@ -3,16 +3,16 @@ Add Russian Language for YaBB 2.7.00
 </id>
 
 <version>
-0.1
+0.3
 </version>
 
 <mod info>
-This mod adds the internal references for the Russian Language Pack.
-Note: The Russian Language pack must be uploaded to the Languages folder first. 
+This mod adds the Russian Language Pack.
 
 Version History
 ---------------
-0.2 - First release - MarchFeb 18, 2016
+0.2 - First release - March 18, 2016
+0.3 - Updated - Aug 11, 2017
 
 Instructions:
 
@@ -36,7 +36,7 @@ Admin/ModList.pm
 </search for>
 
 <add before>
-    my $add_russian = q~Add Russian Language for YaBB 2.7.00|Dandello|This mod adds the internal references for the Russian Language Pack.|0.2|3/09/2017~;
+    my $add_russian = q~Add Russian Language for YaBB 2.7.00|Dandello|This mod adds the Russian Language Pack.|0.3|08/11/2017~;
     push @installed_mods, $add_russian;
 </add before>
 
