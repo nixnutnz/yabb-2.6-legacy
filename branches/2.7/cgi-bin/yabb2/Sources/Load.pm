@@ -1255,7 +1255,6 @@ sub update_cookie {
 
         foreach my $catid (@categoryorder) {
             if ( !$catid ) { next; }
-#            no strict qw(refs);
             foreach my $curboard (@{$cat{$catid}}) {
                 chomp $curboard;
                 my $tsortcookie = "$cookietsort$curboard$username";

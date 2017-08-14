@@ -1150,7 +1150,7 @@ sub yabm_uploadmod {
     }
 
     # Upload <form> install from URL
-    if ( (!$FORM{'upload_mod'} || $FORM{'upload_mod'} eq q{} )  && $FORM{'use_url'} && $FORM{'use_url'} == 1 ) {
+    if ( (!$FORM{'upload_mod'} || $FORM{'upload_mod'} eq q{} ) && $FORM{'use_url'} && $FORM{'use_url'} == 1 ) {
         my $mod_url = $FORM{'upload_mod_url'};
 
         # This we use for the YaBB intern Download Counter Links

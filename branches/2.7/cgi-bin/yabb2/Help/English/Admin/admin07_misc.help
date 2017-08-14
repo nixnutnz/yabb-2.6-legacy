@@ -93,17 +93,19 @@ $section_body4 = q~<p>YaBMod allows admins to upload and install YaBMod compatib
 <p>In order to add a Mod, you must be logged in as a Forum Administrator or Global Moderator with proper access rights. In the &#8220;Admin Center&#8221; find the section in the left hand menu titled &#8220;BoardMod Mods&#8221;. Click on &#8220;YaBMods Admin Center&#8221;.</p>
 <ul>
     <li><strong>Mod List</strong>
-        <br />This section lists the mods that have been uploaded to the server, with date of upload, last edit time, and when (if) that mods was installed. Clicking on the Mod listing opens the Mod Info Screen.
+        <br />This section lists the mods that have been uploaded to the server, with date of upload, last edit time, and when (if) a mod was installed. Clicking on the Mod listing opens the Mod Info Screen.
     </li>
     <li><strong>Upload Section</strong>
         <br />Here you can select and upload *.mod and *.zip files from your computer onto your server for installation. You can also get files in other folders on your server and other websites.
     </li>
     <li><strong>Mod Info</strong>
         <br />This section shows specific information from the Mod. From here you can test install (or uninstall) the Mod to make sure it will install (or uninstall) properly and install (uninstall) the mod. You can also access the Mod Editor screen to fix any install glitches that may arise. (While Mods are generally well tested by the Mod writers, occasionally Mods need to be 'adjusted', especially on forums where there are already Mods installed.)
+        <br />Before installing (or uninstalling) a Mod, make sure you have a backup of your forum. Also <strong>test</strong> the install/uninstall before actually installing/uninstalling the mod.
     </li>
 </ul>
 <p class="help_attn">On forums with several Mods installed, there may be conflicts between Mods that make it difficult to uninstall a Mod. In this case, you may need to uninstall other Mods in the <strong>reverse order</strong> with which they were installed. YaBMod will not remove the actual Mods from your server so you can reinstall them once you're ready.</p>
 <p class="help_attn"><span class="under">YaBMod is unable to remove Mods that have been installed by other means.</span></p>
+<p class="help_attn"><span class="under">YaBMod requires that the Perl Module CGI.pm package be installed in the server's Perl installation. This Module must be version 4 or greater otherwise YaBMod will be unable to upload files. If your Perl installation does not include CGI.pm or has an old version of it, contact your hosting service to install or update it for you.</span></p>
 ~;
 
 1;

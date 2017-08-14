@@ -486,7 +486,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                             if (
                                 (
                                        $vercheck == 0
-                                    && $linec ne $checksum{$helpin_dir}
+                                    && ( !$checksum{$helpin_dir} || $linec ne $checksum{$helpin_dir} )
                                 )
                                 || ( $vercheck == 1 && $age > $ver_age )
                               )

@@ -237,7 +237,7 @@ $section_body6 = q~<p>These are some new features to YaBB 2.7.0 that were added 
         <br />Created by YaBB modder XTC, YabMod allows admins to upload and install YaBB Mods from within YaBB itself.
     </li>
     <li><strong>Under the Hood</strong>
-        <br />Many of the data files have been reconfigured, more UTF-8 encoding support has been added. <strong>YaBB 2.7.00 does not support other language encodings.</strong> Many Buttons and links that threw errors for guests have been coded to not show at all for visitors not authorized to use them.
+        <br />Many of the data files have been reconfigured, some graphics have been moved, more UTF-8 encoding support has been added. <strong>YaBB 2.7.00 does not support other language encodings.</strong> Many Buttons and links that threw errors for guests have been coded to not show at all for visitors not authorized to use them.
     </li>
 </ul>
 ~;
@@ -263,6 +263,7 @@ $section_body7 = q~
     <li><b>Version 2.5.2</b>, Adopted On October 21, 2012</li>
     <li><b>Version 2.5.4 RC1</b>, Adopted On September 1, 2013</li>
     <li><b>Version 2.6.0</b>, Adopted On February 20, 2014</li>
+    <li><b>Version 2.7.0</b>, Adopted On June 1, 2017</li>
 </ul>
 <h4>Definitions</h4>
 <p><b>You:</b>  This is you, if you are considering distributing, modifying or using this Package.</p>
