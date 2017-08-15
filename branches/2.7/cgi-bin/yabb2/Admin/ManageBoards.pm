@@ -573,7 +573,7 @@ sub add_boards {
         for my $childbd (@x) {
             my $dash = q{-};
             if ( $indent > 0 ) { $dash = q{-}; }
-            my $chldboardname = ${$board{$childbd}}[0];
+            my $chldboardname = ${$board{$childbd}}[0] || q{};
             $chldboardname = to_chars($chldboardname);
             $catboardlist{$thiscat} .=
                 qq~$childbd|~

@@ -257,17 +257,17 @@ sub board_index {
         chomp $curboard;
         $brd_pass{$curboard} = ${ $uid . $curboard }{'brdpasswr'};
         my $iammodhere = q{};
-        foreach my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} ) {
-            if ( $username eq $curuser ) { $iammodhere = 1; }
+        foreach my $curuser ( split /\//xsm, ${ $uid . $curboard }{'mods'} || q{} ) {
+            if ( $curuser && $username eq $curuser ) { $iammodhere = 1; }
         }
         foreach
-          my $curgroup ( split /\//xsm, ${ $uid . $curboard }{'modgroups'} )
+          my $curgroup ( split /\//xsm, ${ $uid . $curboard }{'modgroups'} || q{} )
         {
-            if ( ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq $curgroup ) {
+            if ( $curgroup && ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq $curgroup ) {
                 $iammodhere = 1;
             }
             foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} || q{} ) {
-                if ( $_ eq $curgroup ) { $iammodhere = 1; last; }
+                if ( $curgroup && $_ && $_ eq $curgroup ) { $iammodhere = 1; last; }
             }
         }
 
@@ -665,10 +665,10 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 }
                 $iammod     = q{};
                 %moderators = ();
-                my $curmods = ${ $uid . $curboard }{'mods'};
+                my $curmods = ${ $uid . $curboard }{'mods'} || q{};
 
                 foreach my $curuser ( split /\//xsm, $curmods ) {
-                    if ( $username eq $curuser ) { $iammod = 1; }
+                    if ( $curuser && $username eq $curuser ) { $iammod = 1; }
                     load_user($curuser);
                     $moderators{$curuser} = ${ $uid . $curuser }{'realname'};
                 }
@@ -690,19 +690,21 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 load_user($username);
                 %moderatorgroups = ();
                 foreach my $curgroup ( split /\//xsm,
-                    ${ $uid . $curboard }{'modgroups'} )
+                    ${ $uid . $curboard }{'modgroups'} || q{} )
                 {
-                    if (   ${ $uid . $username }{'position'}
+                    if (   $curgroup && ${ $uid . $username }{'position'}
                         && ${ $uid . $username }{'position'} eq $curgroup )
                     {
                         $iammod = 1;
                     }
-                    foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} )
+                    foreach ( split /,/xsm, ${ $uid . $username }{'addgroups'} || q{} )
                     {
-                        if ( $_ eq $curgroup ) { $iammod = 1; last; }
+                        if ( $_ && $_ eq $curgroup ) { $iammod = 1; last; }
                     }
-                    my ( $thismodgrp, undef ) = @{ $grp_nopost{$curgroup} };
-                    $moderatorgroups{$curgroup} = $thismodgrp;
+                    if ($grp_nopost{$curgroup}) {
+                        my ( $thismodgrp, undef ) = @{ $grp_nopost{$curgroup} };
+                        $moderatorgroups{$curgroup} = $thismodgrp;
+                    }
                 }
 
                 my $showmodgroups = q{};

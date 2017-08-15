@@ -1376,7 +1376,6 @@ sub moveboards {
                     "$maintext_23 $convboardsdir/$boards[$i].ext: ", 1 );
                 my @brdinfo = <$BOARDFILE>;
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
-                chomp @brdinfo;
                 if ( $ext ne 'mail' ) {
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                       or croak 'cannot open NEWBRD';
@@ -1389,7 +1388,9 @@ sub moveboards {
                     foreach my $line (@brdinfo) {
                         my ( $key, $value) = split /\t/xsm, $line;
                         my ( $memlang, $memtype, $memview ) = split /[|]/xsm, $value;
-                        $prnbrd .= qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
+                        if ($memlang) {
+                            $prnbrd .= qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
+                        }
                     }
                     $prnbrd .= "\n1;\n";
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"

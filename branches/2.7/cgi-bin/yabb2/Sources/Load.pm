@@ -409,7 +409,7 @@ sub is_moderator {
             # check if user is member of a moderatorgroup
             foreach my $testline ( split /\//xsm, ${ $uid . $_ }{'modgroups'} )
             {
-                if ( ${ $uid . $user }{'position'}
+                if ( ${ $uid . $user }{'position'} && $testline
                     && $testline eq ${ $uid . $user }{'position'} )
                 {
                     return 1;
@@ -417,7 +417,7 @@ sub is_moderator {
 
                 foreach ( split /,/xsm, ${ $uid . $user }{'addgroups'} || q{} )
                 {
-                    if ( $testline eq $_ ) { return 1; }
+                    if ( !$testline || $testline eq $_ ) { return 1; }
                 }
             }
         }
@@ -432,8 +432,8 @@ sub is_moderator_b {
     foreach my $i (@allboards) {
         {
             no strict qw(refs);
-            foreach ( split /\//xsm, ${ $uid . $i }{'mods'} ) {
-                if ( $_ eq $user ) {
+            foreach ( split /\//xsm, ${ $uid . $i }{'mods'} || q{} ) {
+                if ( $_ && $_ eq $user ) {
                     get_forum_master();
                     my $boardname = ${$board{$i}}[0];
                     $mybrds .= qq~$boardname<br />~;
