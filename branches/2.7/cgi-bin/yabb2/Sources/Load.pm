@@ -402,12 +402,12 @@ sub is_moderator {
     foreach (@checkboards) {
         {
             no strict qw(refs);
-            foreach ( split /\//xsm, ${ $uid . $_ }{'mods'} ) {
-                if ( $_ eq $user ) { return 1; }
+            foreach ( split /\//xsm, ${ $uid . $_ }{'mods'} || q{} ) {
+                if ( $_ && $_ eq $user ) { return 1; }
             }
 
             # check if user is member of a moderatorgroup
-            foreach my $testline ( split /\//xsm, ${ $uid . $_ }{'modgroups'} )
+            foreach my $testline ( split /\//xsm, ${ $uid . $_ }{'modgroups'} || q{} )
             {
                 if ( ${ $uid . $user }{'position'} && $testline
                     && $testline eq ${ $uid . $user }{'position'} )
@@ -417,7 +417,7 @@ sub is_moderator {
 
                 foreach ( split /,/xsm, ${ $uid . $user }{'addgroups'} || q{} )
                 {
-                    if ( !$testline || $testline eq $_ ) { return 1; }
+                    if ( $testline && $testline eq $_ ) { return 1; }
                 }
             }
         }

@@ -120,8 +120,8 @@ sub ml {
     }
 
     if (   $FORM{'sortform'} eq 'username'
-        || $INFO{'sort'} eq 'mlletter'
-        || $INFO{'sort'} eq 'username' )
+        || $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
+        || $INFO{'sort'} eq 'username' ) )
     {
         foreach my $x ( 0 .. $#alpha ) {
             my $page     = $alpha[$x];
@@ -260,7 +260,7 @@ sub ml_top {
         my ( $memrealname, undef, undef, $mempsts ) = @{$value};
         $mempsts     ||= 0;
         $memrealname ||= q{};
-        $mempsts = sprintf '%06d', ( 999_999 - $memposts );
+        $mempsts = sprintf '%06d', ( 999_999 - $mempsts );
         $top_list{$membername} = qq~$mempsts|$memrealname~;
     }
     undef %memberinf;

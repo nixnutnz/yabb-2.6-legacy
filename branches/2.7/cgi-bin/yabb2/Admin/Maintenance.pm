@@ -757,7 +757,7 @@ sub rebuild_memlist {
 
         $time_left = "$hour:$min:$sec";
 
-        if ( $INFO{'actiononfinish'} eq 'modmemgr' ) {
+        if ( $INFO{'actiononfinish'} && $INFO{'actiononfinish'} eq 'modmemgr' ) {
             $yymain .= $rebuild_txt{'20'};
             $yytitle     = $admin_txt{'8'};
             $action_area = 'modmemgr';
@@ -767,6 +767,7 @@ sub rebuild_memlist {
             $action_area = 'rebuildmemlist';
         }
 
+        my $nextact = $INFO{'actiononfinish'} || q{};
         $yymain .= qq~
 <br />
 $rebuild_txt{'1'}
@@ -785,7 +786,7 @@ $rebuild_txt{'8'} $time_left
 <br />
 <br />
 <div id="memcontinued">
-$rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemlist;actiononfinish=$INFO{'actiononfinish'}" onclick="clearMeminfo();">$rebuild_txt{'3'}</a>
+$rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemlist;actiononfinish=$nextact" onclick="clearMeminfo();">$rebuild_txt{'3'}</a>
 </div>
 <script type="text/javascript">
     function clearMeminfo() {
@@ -794,7 +795,7 @@ $rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemlist;actiononfinish=$INFO{
 
     function membtick() {
         clearMeminfo();
-        location.href="$adminurl?action=rebuildmemlist;actiononfinish=$INFO{'actiononfinish'}";
+        location.href="$adminurl?action=rebuildmemlist;actiononfinish=$nextact";
     }
 
     setTimeout("membtick()", 2000)

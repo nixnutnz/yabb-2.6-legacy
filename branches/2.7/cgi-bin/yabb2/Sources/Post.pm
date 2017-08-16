@@ -2547,10 +2547,10 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
         load_notifymessages( \%languages );
         while ( my ( $curuser, $value ) = each %theboard ) {
             my ( $curlang, $notify_type, undef ) = @{$value};
-            if ( $curuser ne $username && $notify_type == 2 ) {
+            if ( $curuser && $curuser ne $username && $notify_type == 2 ) {
                 load_user($curuser);
-                if (   ${ $uid . $curuser }{'notify_me'} == 1
-                    || ${ $uid . $curuser }{'notify_me'} == 3 )
+                if (   ${ $uid . $curuser }{'notify_me'} && ( ${ $uid . $curuser }{'notify_me'} == 1
+                    || ${ $uid . $curuser }{'notify_me'} == 3 ) )
                 {
                     my $curmail   = $memberinf{$curuser}[1];
                     my $topiclink = qq~$scripturl?num=$thisthread~;

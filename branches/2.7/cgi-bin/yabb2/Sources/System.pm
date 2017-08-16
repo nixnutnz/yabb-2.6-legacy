@@ -118,7 +118,7 @@ sub boardcount_totals {
     my $messagecount = $threadcount;
     for my $i ( 0 .. $#threads ) {
         my @threadline = split /[|]/xsm, $threads[$i];
-        if ( $threadline[8] =~ /m/sm ) {
+        if ( $threadline[8] && $threadline[8] =~ /m/xsm ) {
             $threadcount--;
             $messagecount--;
             next;
