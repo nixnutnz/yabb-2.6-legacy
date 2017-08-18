@@ -427,7 +427,7 @@ sub banlog {
             my $mon       = $tm->mon + 1;
             my $day       = $tm->mday;
             my @banned_ip = ();
-            if ( $banned[1] =~ m/[(]/xsm ) {
+            if ( $banned[1] && $banned[1] =~ m/[(]/xsm ) {
                 @banned_ip = split /[(]/xsm, $banned[1];
                 $banned_ip[1] =~ s/[)]//xsm;
                 if ( $banned_ip[0] ) {
@@ -435,7 +435,7 @@ sub banlog {
                 }
                 else { $banned_ip[0] = q~~; }
             }
-            else { $banned_ip[1] = $banned[1]; }
+            else { $banned_ip[1] = $banned[1] || q{}; }
             my $ip_block =
               ( $use_guardian && $use_htaccess )
               ? qq~<a href="$adminurl?action=guardian_block;ip=$banned_ip[1];return=ipban" onclick="return confirm('$admin_txt{'ipblock_confirm'}$banned_ip[1]');">$admin_txt{'ipblock'}</a>~

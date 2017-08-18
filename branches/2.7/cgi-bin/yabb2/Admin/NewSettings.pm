@@ -810,7 +810,7 @@ qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\
             ${$i} ||= q{};
         }
         my @setlistb =
-          qw(timeoffset imspam ppostperms ptopicperms enable_pm_search edit_agelimit edit_genderlimit allow_attach_im captcha_end_chars captcha_start_chars);
+          qw(timeoffset imspam ppostperms ptopicperms enable_pm_search edit_agelimit edit_genderlimit allow_attach_im captcha_end_chars captcha_start_chars ttsreverse );
         foreach my $i (@setlistb) {
             ${$i} ||= 0;
         }

@@ -13,7 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
-use warnings;
+#use warnings;
 no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);

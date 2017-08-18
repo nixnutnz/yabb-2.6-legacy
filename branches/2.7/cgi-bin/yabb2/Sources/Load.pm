@@ -312,6 +312,9 @@ sub format_username {
 
 sub load_user {
     my ( $user, $userextension ) = @_;
+    if ($userextension) {
+        chomp $userextension;
+    }
     return 0 if !$user || $user eq 'Guest';
     {
         no strict qw(refs);

@@ -174,6 +174,7 @@ sub mailing {
 </script>
 <div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:145px">
     ~;
+        my $rname = q{};
         if ( -e ("$vardir/maillist.dat") ) {
             our (%maillist);
             require "$vardir/maillist.dat";
@@ -193,10 +194,9 @@ sub mailing {
                 to_js($jsubject);
                 to_js($jtext);
 
-                my $rname = q{};
                 {
                     no strict qw(refs);
-                    $rname = ${ $uid . $osender }{'realname'};
+                    $rname = ${ $uid . $osender }{'realname'} || q{};
                 }
                 $yymain .= qq~<tr>
                 <td class="windowbg2">
@@ -616,7 +616,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
                 <col span="4" style="width:auto" />
             </colgroup>
         ~;
-
+            my $rname = q{};
             foreach my $otime (reverse sort keys %maillist) {
                 my ( $osubject, $otext, $osender ) = @{$maillist{$otime}};
                 load_user($osender);
@@ -627,10 +627,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
                 to_js($jsubject);
                 to_js($jtext);
 
-                my $rname = q{};
                 {
                     no strict qw(refs);
-                    $rname = ${ $uid . $osender }{'realname'};
+                    $rname = ${ $uid . $osender }{'realname'} || q{};
                 }
                 $yymain .= qq~<tr>
                 <td class="windowbg2">

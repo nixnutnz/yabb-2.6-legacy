@@ -63,7 +63,7 @@ our ( @caliconurl, @calicondesc );
 
 sub event_calset {
     is_admin_or_gmod();
-    $event_todaycolor = lc $event_todaycolor;
+    $event_todaycolor = lc $event_todaycolor || '#f00';
 
     require Admin::ManageBoards;
     $cal_event_perms =~ s/,/, /gxsm;

@@ -31,7 +31,7 @@ our $yabbversion = 'YaBB 2.7.00';
 our (
     $action,                $AdMaxCalMessLen,      $AdMaxIMMessLen,
     $adomains,              $bdomains,             $bm_subcut,
-    $ConvDone,              $ConvNotDone,          $cookieusername,
+    $convdone,              $convnotdone,          $cookieusername,
     $cookieviewtime,        $default_tz,           $defaultimagesdir,
     $email_banlist,         $enable_news,          $enable_notification,
     $enable_notifications,  $enable_ubbc,          $enabletz,
@@ -63,10 +63,11 @@ our (
     @SmilieLinebreak,       @SmilieURL,
 );
 
-my $yyIIS  = 0;
+my $yyiis  = 0;
 my $yypath = q{};
+
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
-    $yyIIS = 1;
+    $yyiis = 1;
     if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
     }
@@ -88,30 +89,29 @@ $script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
 our (
     $boardurl,  $vardir,      $imagesdir, $datadir,      $boardsdir,
     $memberdir, $langdir,     $htmldir,   $templatesdir, $yyhtml_root,
-    $uploaddir, $pmuploaddir, $facesdir
+    $uploaddir, $pmuploaddir, $facesdir, $boarddir
 );
+our $smiliesdir = $htmldir .'/Smilies';
 our (
     $convlang,      $convertdir,      $convboardsdir,
     $convmemberdir, $convdatadir,     $convvardir,
-    $convattachdir, $convpmattachdir, $convavatardir
+    $convattachdir, $convpmattachdir, $convavatardir, $convsmiliesdir
 );
 if ( -e './Paths.pm' ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
-my $convertlang = './ConvertLang';
-my $convert     = './Convert';
-
 my $thisscript = $ENV{'SCRIPT_NAME'};
 my $yyext      = 'pl';
-my $set_cgi    = "Convert2x.$yyext";
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
+my $set_cgi    = "Convert2x.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/Convert2x.$yyext"; }
+my $convert     = "$boarddir/Convert";
 
 our $yyexec  = 'YaBB';
 my $scripturl = "$boardurl/YaBB.$yyext";
 
 # Make sure the module path is present
-push @INC, './Modules';
+push @INC, "$boarddir/Modules";
 
 require Sources::Subs;
 require Sources::System;
@@ -130,25 +130,27 @@ our $formsession = q{};
 #############################################
 my $px = 'px';
 my (
-    $NavLink1,  $NavLink2,  $NavLink3,  $NavLink5,  $NavLink6, $NavLink1a,
-    $NavLink2a, $NavLink3a, $NavLink5a, $NavLink6a, $intro
+    $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6, $navlink1a,
+    $navlink2a, $navlink3a, $navlink5a, $navlink6a, $intro
 );
 if ( -e "$vardir/Setup.lock" ) {
-    if ( -e "$vardir/Convert2x.lock" ) { foundconvert2xlock(); }
+    if ( -e "$vardir/ConvertLang.lock" ) {
+        foundconvertlanglock();
+    }
 
     tempstarter();
     tabmenushow();
 
     if ( !$action ) {
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         $intro = << "INTRO";
     <div class="bordercolor borderbox">
     <form action="$set_cgi?action=prepare" id="prepare" method="post">
         <table class="cs_thin pad_4px" style="margin-top:.5em">
             <colgroup>
-            <col style="width:5%" />
-            <col style="width:95%" />
+                <col style="width:5%" />
+                <col style="width:95%" />
             </colgroup>
             <tr>
                 <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
@@ -157,16 +159,17 @@ if ( -e "$vardir/Setup.lock" ) {
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods, install the 2.7 versions - if available - before converting your old forum.
-                    <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
-                    <br />In the event your old forum had 'Activate .htaccess to add IP blocks on server level?' activated in Guardian, go to "The Guardian&trade; Setup" in the Admin Center of <strong>your old forum</strong> and copy the lists of items being blocked. You will need these to rebuild your IP blocks in .htaccess once the conversion is finished.
+                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods, install the 2.7 versions - if available - before converting your old forum.
+                        <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
+                        <br />In the event your old forum had 'Activate .htaccess to add IP blocks on server level?' activated in Guardian, go to "The Guardian&trade; Setup" in the Admin Center of <strong>your old forum</strong> and copy the lists of items being blocked. You will need these to rebuild your IP blocks in .htaccess once the conversion is finished.
+                    </p>
                     <p>Put your old forum into Maintenance Mode and do all necessary maintenance on your <strong>old forum</strong>.</p>
                     <p>Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.7.<br />
                     <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.7 installation:
                     <ol>
                         <li>Insert the paths to your YaBB 2x forum folders in the input fields below - do <strong>not</strong> include trailing slash (/)</li>
                         <li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li>
-                        <li>Also fill in the paths to your old attachments, PMattachments, and UserAvatars folders.</li>
+                        <li>Also fill in the paths to your old attachments, PMattachments, Smilies, and UserAvatars folders.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.7 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
@@ -205,6 +208,9 @@ if ( -e "$vardir/Setup.lock" ) {
                             <td><label for="convpmattachdir"><b>Path to your YaBB 2x PM attachments (\$pmuploaddir): </b></label></td>
                             <td><input type="text" id="convpmattachdir" name="convpmattachdir" value="" size="50" /></td>
                         </tr><tr>
+                            <td><label for="convsmiliesdir"><b>Path to your YaBB 2x Smilies (\$smiliesdir): </b></label></td>
+                            <td><input type="text" id="convsmiliesdir" name="convsmiliesdir" value="" size="50" /></td>
+                        </tr><tr>
                             <td><label for="convavatardir"><b>Path to your YaBB 2x member avatars (\$facesdir): </b></label></td>
                             <td><input type="text" id="convavatardir" name="convavatardir" value="" size="50" /></td>
                         </tr>
@@ -235,6 +241,7 @@ oFormObject = document.forms['prepare'];
 htmlval = oFormObject.elements["convhtml"].value;
 oFormObject.elements["convattachdir"].value = htmlval + "/Attachments";
 oFormObject.elements["convpmattachdir"].value = htmlval + "/PMAttachments";
+oFormObject.elements["convsmiliesdir"].value = htmlval + "/Smilies";
 oFormObject.elements["convavatardir"].value = htmlval + "/avatars";
 }
 </script>
@@ -262,6 +269,7 @@ INTRO
         $convvardir      = $FORM{'convvardir'} || qq~$convertdir/Variables~;
         $convattachdir   = $FORM{'convattachdir'} || q{};
         $convpmattachdir = $FORM{'convpmattachdir'} || q{};
+        $convsmiliesdir  = $FORM{'convsmiliesdir'} || q{};
         $convavatardir   = $FORM{'convavatardir'} || q{};
         if ( !-d $convboardsdir ) {
             setup_fatal_error( "Directory: $convboardsdir", 1 );
@@ -285,6 +293,9 @@ INTRO
 
         if ( $convpmattachdir ne q{} && !-d $convpmattachdir ) {
             setup_fatal_error( "Directory: $convpmattachdir", 1 );
+        }
+        if ( $convsmiliesdir ne q{} && !-d $convsmiliesdir ) {
+            setup_fatal_error( "Directory: $convsmiliesdir", 1 );
         }
 
         if ( $convavatardir ne q{} && !-d $convavatardir ) {
@@ -313,7 +324,7 @@ EOF
           or croak 'cannot print SETTING';
         close $SETTING or croak 'cannot close SETTING';
 
-        $yytabmenu = $NavLink1a . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
+        $yytabmenu = $navlink1a . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         my $start = << "START";
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -363,10 +374,11 @@ START
         if ( !exists $INFO{'mstart1'} ) {
             prepareconv();
         }
+        $INFO{'st'} ||= 0;
         convertmembers();
 
-        $yytabmenu = $NavLink1 . $NavLink2a . $NavLink3 . $NavLink5 . $NavLink6;
-        $INFO{'st'} ||= 0;
+        $yytabmenu = $navlink1 . $navlink2a . $navlink3 . $navlink5 . $navlink6;
+
         my $infost = int( ( $INFO{'st'} + 60 ) / 60 );
         my $members1 = << "MEMBERS1";
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -383,13 +395,13 @@ START
             </td>
             <td class="windowbg2">
                 <div class="convdone">Member Conversion.</div>
-                $ConvDone
+                $convdone
                 <div class="convnotdone">Board and Category Conversion.</div>
-                $ConvNotDone
+                $convnotdone
                 <div class="convnotdone">Message Conversion.</div>
-                $ConvNotDone
-                <div class="convnotdone">Variables &amp; Clean Up</div>
-                $ConvNotDone
+                $convnotdone
+                <div class="convnotdone">Variables</div>
+                $convnotdone
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -430,7 +442,7 @@ MEMBERS1
 "Member conversion (members2) 'mstart1' ($INFO{'mstart1'})) error!"
             );
         }
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         my $mwidth =
           int( ( ( $INFO{'mstart1'} ) / 2 ) / $INFO{'mtotal'} * 100 );
@@ -455,11 +467,11 @@ MEMBERS1
                 <div class="divvary2">$mwidth %</div>
                 <br />
                 <div class="convnotdone">Board and Category Conversion.</div>
-                $ConvNotDone
+                $convnotdone
                 <div class="convnotdone">Message Conversion.</div>
-                $ConvNotDone
+                $convnotdone
                 <div class="convnotdone">Final Cleanup.</div>
-                $ConvNotDone
+                $convnotdone
                 </td>
             </tr><tr>
                 <td class="windowbg center">
@@ -508,7 +520,7 @@ MEMBERS1
         }
         fixcontrol();
 
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3a . $NavLink5 . $NavLink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
 
         $INFO{'st'} ||= 0;
         $yymain = qq~
@@ -526,13 +538,13 @@ MEMBERS1
             </td>
             <td class="windowbg2">
                 <div class="convdone">Member Conversion.</div>
-                $ConvDone
+                $convdone
                 <div class="convdone">Board &amp; Category Conversion.</div>
-                $ConvDone
+                $convdone
                 <div class="convnotdone">Message Conversion.</div>
-                $ConvNotDone
+                $convnotdone
                 <div class="convnotdone">Variables &amp; Clean Up.</div>
-                $ConvNotDone
+                $convnotdone
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -576,7 +588,7 @@ MEMBERS1
             );
         }
 
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3a . $NavLink5 . $NavLink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
 
         my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
 
@@ -595,7 +607,7 @@ MEMBERS1
             </td>
             <td class="windowbg2">
                 <div class="convdone">Member Conversion.</div>
-                $ConvDone
+                $convdone
                 <div class="convdone">Board and Category Conversion.</div>
                 <div class="divouter">
                     <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
@@ -603,9 +615,9 @@ MEMBERS1
                 <div class="divvary2">$bwidth %</div>
                 <br />
                 <div class="convnotdone">Message Conversion.</div>
-                $ConvNotDone
-                <div class="convnotdone">Variables &amp; Clean Up.</div>
-                $ConvNotDone
+                $convnotdone
+                <div class="convnotdone">Variables.</div>
+                $convnotdone
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -650,14 +662,16 @@ MEMBERS1
         require q~Variables/ConvSettings.txt~;
         movemessages();
 
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5a . $NavLink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
 
         $INFO{'st'} ||= 0;
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
-        <col style="width:5%" />
-        <col style="width:95%" />
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="2">YaBB 2.7.00 Converter</td>
        </tr><tr>
@@ -666,13 +680,13 @@ MEMBERS1
            </td>
            <td class="windowbg2">
                <div class="convdone">Member Conversion.</div>
-               $ConvDone
+               $convdone
                <div class="convdone">Board and Category Conversion.</div>
-               $ConvDone
+               $convdone
                <div class="convdone">Message Conversion.</div>
-               $ConvDone
-               <div class="convnotdone">Variables &amp; Clean Up.</div>
-               $ConvNotDone
+               $convdone
+               <div class="convnotdone">Variables.</div>
+               $convnotdone
            </td>
        </tr><tr>
            <td class="windowbg center">
@@ -723,13 +737,15 @@ MEMBERS1
           ? int( $INFO{'tcount'} / $INFO{'totmess'} * 100 )
           : 0;
 
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
-        <col style="width:5%" />
-        <col style="width:95%" />
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
             <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
         </tr><tr>
@@ -738,16 +754,16 @@ MEMBERS1
             </td>
             <td class="windowbg2">
                 <div class="convdone">Member Conversion.</div>
-                $ConvDone
+                $convdone
                 <div class="convdone">Board and Category Conversion.</div>
-                $ConvDone
+                $convdone
                 <div class="convdone">Message Conversion.</div>
                 <div class="divouter">
                     <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
                 </div>
                 <div class="divvary2">$bwidth %</div><br />
                 <div class="convnotdone">Variables &amp; Clean Up.</div>
-                $ConvNotDone
+                $convnotdone
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -802,10 +818,9 @@ MEMBERS1
         require q~Variables/ConvSettings.txt~;
         movevariables();
         fixnopost();
-
-        $yytabmenu = $NavLink1 . $NavLink2 . $NavLink3 . $NavLink5 . $NavLink6a;
-
         $formsession = cloak("$mbname$username");
+
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
 
         $convtext .=
 q~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents.~;
@@ -835,13 +850,13 @@ q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
             </td>
             <td class="windowbg2">
                 <div class="convdone">Member Import.</div>
-                $ConvDone
+                $convdone
                 <div class="convdone">Board and Category Import.</div>
-                $ConvDone
+                $convdone
                 <div class="convdone">Message Import.</div>
-                $ConvDone
-                <div class="convdone">Variables &amp; Clean Up.</div>
-                $ConvDone
+                $convdone
+                <div class="convdone">Variables.</div>
+                $convdone
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -1297,7 +1312,7 @@ sub convertmembers {
 # Board + Category Conversion ##
 
 sub moveboards {
-    our (@categoryorder, %cat, %catinfor, %board, %subboard);
+    our (@categoryorder, %cat, %catinfo, %board, %subboard);
     require "$convboardsdir/forum.master";
     my $newforum = qq~\$mloaded = 1;\n~;
     my @catorder = undupe(@categoryorder);
@@ -2439,10 +2454,10 @@ sub tempstarter {
     return if !-e "$vardir/Settings.pm";
 
     # Make sure the module path is present
-    push @INC, './Modules';
+    push @INC, "$boarddir/Modules";
 
     if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
-        $yyIIS = 1;
+        $yyiis = 1;
         if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
             $yypath = $1;
         }
@@ -2479,37 +2494,37 @@ sub tabmenushow {    # used by the converter
     my $tabsep  = q{ &nbsp; };
     my $tabfill = q{ &nbsp; };
 
-    $NavLink1 = qq~<span>$tabfill Members $tabfill</span>~;
-    $NavLink2 =
+    $navlink1 = qq~<span>$tabfill Members $tabfill</span>~;
+    $navlink2 =
       qq~$tabsep<span>$tabfill Boards &amp; Categories $tabfill</span>~;
-    $NavLink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
-    $NavLink5 = qq~$tabsep<span>$tabfill Variables $tabfill</span>~;
-    $NavLink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
+    $navlink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
+    $navlink5 = qq~$tabsep<span>$tabfill Variables $tabfill</span>~;
+    $navlink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
     if ($convlang) {
-        $NavLink6 =
+        $navlink6 =
 qq~$tabsep<span>$tabfill UTF-8 Converter $tabfill</span>$tabsep&nbsp;~;
     }
 
-    $NavLink1a =
+    $navlink1a =
 qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
-    $NavLink2a =
+    $navlink2a =
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Boards &amp; Categories $tabfill</a></span>~;
-    $NavLink3a =
+    $navlink3a =
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
-    $NavLink5a =
+    $navlink5a =
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Variables $tabfill</a></span>~;
-    $NavLink6a =
+    $navlink6a =
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
     if ($convlang) {
-        $NavLink6a =
+        $navlink6a =
 qq~$tabsep<span class="selected"><a href="$boardurl/ConvertLang.$yyext" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
     }
-    $ConvDone = q~
+    $convdone = q~
             <div class="divvary_m">&nbsp;</div>
             <div class="divvary2">100 %</div><br />
             ~;
 
-    $ConvNotDone = q~
+    $convnotdone = q~
             <div class="divouter">&nbsp;</div>
             <div class="divvary3">0 %</div><br />
             ~;
@@ -2537,8 +2552,8 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.7.00 Convertor Error.';
-    $yytitle = 'YaBB 2.7.00 Convertor Error.';
+    $yyim    = 'YaBB 2.7.00 Converter Error.';
+    $yytitle = 'YaBB 2.7.00 Converter Error.';
 
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
@@ -2555,8 +2570,8 @@ sub simpleoutput {
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+    <meta charset="utf-8">
     <title>YaBB 2.7.00 Setup</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 <!-- Main Content -->
@@ -2564,7 +2579,7 @@ sub simpleoutput {
     <div style="text-align:center">$yymain</div>
 </body>
 </html>
-      ~ or croak 'cannot print output screen';
+~ or croak 'cannot print output screen';
     exit;
 }
 
@@ -2578,10 +2593,9 @@ sub setuptemplate {
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
     $yystyle =
-qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/setup.css" type="text/css" />\n ~;
-    $yystyle =~ s/$usestyle\///gxsm;
+qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="text/css" />\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/setup.css" type="text/css" />\n ~;
 
-    my $yytemplate = "$templatesdir/$usehead/$usehead.html";
+    my $yytemplate = "$templatesdir/default/default.html";
     open my $TEMPLATE, '<', "$yytemplate"
       or setup_fatal_error( "$maintext_23 $yytemplate: ", 1 );
     our @yytemplate = <$TEMPLATE>;
@@ -2781,6 +2795,16 @@ sub copyattach {
         closedir ATTDIR;
         foreach my $file (@attfiles) {
             copy "$convpmattachdir/$file", "$pmuploaddir/$file";
+        }
+    }
+    if ( $convsmiliesdir ne q{} ) {
+        opendir ATTDIR, "$convsmiliesdir/";
+        my @attfiles =
+          grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' }
+          readdir ATTDIR;
+        closedir ATTDIR;
+        foreach my $file (@attfiles) {
+            copy "$convsmiliesdir/$file", "$smiliesdir/$file";
         }
     }
     if ( $convavatardir ne q{} ) {

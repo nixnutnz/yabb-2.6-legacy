@@ -17,37 +17,37 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
+
 #use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
+use File::Copy qw(copy);
 use English qw(-no_match_vars);
 use Encode qw(decode encode);
-use Encode::Guess;
-use File::Copy;
 use utf8;
 our $VERSION = '2.7.00';
 
 my $convertlangplver = 'YaBB 2.7.00 $Revision$';
 our (
-    $action,           %FORM,        %INFO,         %board,
-    %maintxt,          %subboard,    $yymain,       $yytabmenu,
-    $boardurl,         $imagesdir,   $templatesdir, $username,
-    $yyim,             $mbname,      $yytitle,      $htmldir,
-    $thisimgloc,       $yyhtml_root, $yymenu,       $gzcomp,
-    $useimages,        $formsession, $yyimages,     $yydefaultimages,
-    $defaultimagesdir, $iamguest,    $iamadmin,     $iamgmod,
-    $password,         $yycopyin,    $yyuname,      $yypath, $boarddir, $vardir,
-    $boardsdir, $memberdir, @minpack, @minbrds, @mincats, $datadir, $lang2,
+    $action,      %FORM,            %INFO,             %board,
+    %maintxt,     %subboard,        $yymain,           $yytabmenu,
+    $boardurl,    $imagesdir,       $templatesdir,     $username,
+    $yyim,        $mbname,          $yytitle,          $htmldir,
+    $yyhtml_root, $yymenu,          $useimages,        $formsession,
+    $yyimages,    $yydefaultimages, $defaultimagesdir, $iamguest,
+    $iamadmin,    $iamgmod,         $password,         $yycopyin,
+    $yyuname,     $yypath,          $boarddir,         $vardir,
+    $boardsdir,   $memberdir,       @minpack,          @minbrds,
+    @mincats,     $datadir,         $lang2,            $yyposition,
+    $time,
 );
 my (
-    $convdone,  $convnotdone, $navlink1,  $navlink2,
-    $navlink3,  $navlink5,    $navlink6,  $navlink1a,
-    $navlink2a, $navlink3a,   $navlink5a, $navlink6a,
-    $yySetLocation,
+    $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6, $navlink1a,
+    $navlink2a, $navlink3a, $navlink5a, $navlink6a, $navlink4, $navlink4a
 );
 my $yyiis = 0;
 
-if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
     $yyiis = 1;
     if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
@@ -57,11 +57,11 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
     push @INC, $yypath;
 }
 
-my $max_process_time = 20;
-my $time_to_jump     = time() + $max_process_time;
-my $date             = time;
+my $date = time;
+my $buff = 500;    #'refresh' for Members
+my $duff = 100;    #'refresh for Messages
 our $uid = substr $date, length($date) - 3, 3;
-
+my $yabbversion = 'YaBB 2.7.00';
 ### Requirements and Errors ###
 my $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
@@ -74,15 +74,14 @@ require Paths;
 
 my $thisscript = "$ENV{'SCRIPT_NAME'}";
 my $yyext      = 'pl';
-our $yyexec      = 'YaBB';
-our $yabbversion = 'YaBB 2.7.00';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
-my $set_cgi = "Convert2x.$yyext";
+my $set_cgi = "ConvertLang.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
-my $scripturl = "$boardurl/$yyexec.$yyext";
-
+my $convertlang = $boarddir . 'ConvertLang';
 my $lang        = 'ISO-8859-1';
-my $convertlang = "$boarddir/ConvertLang";
+
+our $yyexec = 'YaBB';
+my $scripturl = "$boardurl/YaBB.$yyext";
 
 # Make sure the module path is present
 push @INC, "$boarddir/Modules";
@@ -94,7 +93,35 @@ require Sources::DateTime;
 require Variables::Settings;
 my $upfrom = $FORM{'upfrom'};
 
-$gzcomp = 0;
+opendir my $MBDIR, "$convertlang/Members";
+my @memlista =
+  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+  readdir $MBDIR;
+closedir $MBDIR;
+my $memnuma = scalar @memlista;
+opendir my $BRDS, "$convertlang/Boards";
+my @toboardsa =
+  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+  readdir $BRDS;
+closedir $BRDS;
+my $toboardsa = scalar @toboardsa;
+opendir my $MESG, "$convertlang/Messages";
+my @tomessa =
+  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+  readdir $MESG;
+closedir $MESG;
+my $tomessa = scalar @tomessa;
+opendir my $VARS, "$convertlang/Variables";
+my @tovarsa = grep {
+         $_ ne q{.}
+      && $_ ne q{..}
+      && $_ ne 'index.html'
+      && $_ ne '.htaccess'
+      && $_ ne 'Mods'
+} readdir $VARS;
+closedir $VARS;
+my $tovarsa = scalar @tovarsa;
+
 my $maintext_23 = 'Unable to open';
 #############################################
 # Conversion starts here                    #
@@ -103,15 +130,16 @@ my $px = 'px';
 
 if ( -e "$vardir/Setup.lock" ) {
     if ( -e "$vardir/ConvertLang.lock" ) {
-        FoundConvertLangLock();
+        foundconvertlanglock();
     }
 
     tempstarter();
     tabmenushow();
-    fixlang();
 
     if ( !$action ) {
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
+        $yytabmenu =
+          $navlink1 . $navlink2 . $navlink3 . $navlink4 . $navlink5 . $navlink6;
+
         my $langtxt = q{};
         if ( $upfrom == 1 ) {
             $langtxt = << "TXT";
@@ -151,19 +179,22 @@ TXT
                     </p>
 TXT
         }
-        $yymain = qq~
+        my $intro = <<"INTRO";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <form action="$set_cgi?action=prepare" method="post">
         <table class="cs_thin pad_4px">
-            <col style="width:5%" />
+            <colgroup>
+                <col style="width:5%" />
+                <col style="width:95%" />
+            </colgroup>
             <tr>
                 <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
-                <td class="windowbg2" style="font-size:11px">
-                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. The folder 'ConvertLang' should have been installed with your YaBB 2.7.00 installation. This folder will act as a backup for the files being converted. Be sure 'ConvertLang' and the folders inside it are all CHMODed to '755'.
+                <td class="windowbg2 fontbigger">
+                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. The folder 'ConvertLang' should have been installed with your YaBB 2.7.00 installation. CopyLang should have already been run and copied the files to be converted into the ConvertLang folder.
                         <br />Proceed through the following steps to convert your existing data files to UTF-8.
                         <br /><strong>If your old forum had a custom UTF-8 encoded language pack(s), do not proceed but login to your forum now at <a href="$boardurl/YaBB.$yyext">$mbname</a></strong>
                     </p>
@@ -177,7 +208,8 @@ $langtxt
         </table>
     </form>
     </div>
-            ~;
+INTRO
+        $yymain = $intro;
     }
 
     if ( $action eq 'prepare' ) {
@@ -192,14 +224,14 @@ $langtxt
         local $ENV{'HTTP_COOKIE'} = q{};
         $yyuname = q{};
         my $minbrds = q{};
-        my $minpack = q{};
-
         my @langmin = split /\n/xsm, $FORM{'langmin'};
+
         foreach my $j (@langmin) {
             $j =~ tr/\r//d;
             $j =~ tr/\n//d;
             $minbrds .= $j . q{ };
         }
+
         my @langcat = split /\n/xsm, $FORM{'langcat'};
         my $mincats = q{};
 
@@ -208,19 +240,23 @@ $langtxt
             $j =~ tr/\n//d;
             $mincats .= $j . q{ };
         }
+
         my @langpack = split /\n/xsm, $FORM{'langpack'};
+        my $minpack = q{};
         foreach my $j (@langpack) {
             $j =~ tr/\r//d;
             $j =~ tr/\n//d;
             $minpack .= $j . q{ };
         }
 
+        $time = time;
         my $langfile = << "EOF";
 \$lang = '$FORM{'lang'}';
 \$lang2 = '$FORM{'minlang'}';
 \@minbrds = qw( $minbrds );
 \@mincats = qw( $mincats );
 \@minpack = qw( $minpack );
+\$time = $time;
 
 1;
 EOF
@@ -232,59 +268,71 @@ EOF
         close $SETTING
           or croak 'cannot close SETTING';
 
-        $yytabmenu = $navlink1a . $navlink2 . $navlink3 . $navlink5 . $navlink6;
+        $yytabmenu =
+            $navlink1a
+          . $navlink2
+          . $navlink3
+          . $navlink4
+          . $navlink5
+          . $navlink6;
 
-        $yymain = qq~
+        my $start = << "START";
     <div class="bordercolor borderbox" style="margin-top:.5em">
         <table class="cs_thin pad_4px">
-            <col style="width:5%" />
+            <colgroup>
+                <col style="width:5%" />
+                <col style="width:95%" />
+            </colgroup>
             <tr>
                 <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
-                <td class="windowbg2" style="font-size:11px">
+                <td class="windowbg2 fontbigger">
                     <ul>
-                        <li>Members info found in: <b>$convertlang/Members</b></li>
-                        <li>Board and Category info found in: <b>$convertlang/Boards</b></li>
-                        <li>Messages info found in: <b>$convertlang/Messages</b></li>
-                        <li>Variables info found in: <b>$convertlang/Variables</b></li>
+                        <li>Members info found in: <b>$convertlang/Members</b> ($memnuma files)</li>
+                        <li>Board and Category info found in: <b>$convertlang/Boards</b> ($toboardsa  files)</li>
+                        <li>Messages info found in: <b>$convertlang/Messages</b> ($tomessa  files)</li>
+                        <li>Variables info found in: <b>$convertlang/Variables</b> ($tovarsa  files)</li>
                     </ul>
                 </td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/info.png" alt="" />
                 </td>
-                <td class="windowbg2" style="font-size:11px">
+                <td class="windowbg2 fontbigger">
                   - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
-                  - Your browser will be refreshed automatically every $max_process_time seconds and you will see the ongoing process in the status bar.<br />
-                  - Some internet connections refresh their IP-Address automatically every 24 hours.<br />
+                   - Some internet connections refresh their IP-Address automatically every 24 hours.<br />
                   &nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion. <br />
                   - Your forum will be set to maintenance while converting.
-                  <p id="memcontinued">Click on 'Members' in the menu to start.<br />&nbsp;</p>
+                  <p>Click on 'Members' in the menu to start.<br />&nbsp;</p>
                 </td>
             </tr>
         </table>
     </div>
-    <script type="text/javascript">
-            function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
-            }
-      </script>
-            ~;
+START
+        $yymain = $start;
     }
     elsif ( $action eq 'members' ) {
         require 'Variables/LangSettings.txt';
         if ( !exists $INFO{'mstart1'} ) { prepareconv(); }
-        convertmembers();
 
-        $yytabmenu = $navlink1 . $navlink2a . $navlink3 . $navlink5 . $navlink6;
+        $yytabmenu =
+            $navlink1
+          . $navlink2a
+          . $navlink3
+          . $navlink4
+          . $navlink5
+          . $navlink6;
 
-        $yymain = qq~
+        my $memtext = << "MEMBERS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
-        <col style="width:5%" />
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
             <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
         </tr><tr>
@@ -292,136 +340,38 @@ EOF
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
-                $convdone
-                <div class="convnotdone">Board and Category Conversion.</div>
-                $convnotdone
-                <div class="convnotdone">Message Conversion.</div>
-                $convnotdone
-                <div class="convnotdone">Variables</div>
-                $convnotdone
+                <p>Member Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
             </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2" style="font-size:11px">
-                    To prevent server time-out due to the amount of members to be converted, the conversion is split into more steps.<br />
-                <br />
-                    The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                 Conversion took <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.
-                <br />
-                <br />
-                <p id="memcontinued">Click on 'Boards &amp; Categories' in the menu to continue.<br />
-                    If you do not do that the script will continue itself in 5 minutes.</p>
+            <td class="windowbg2 fontbigger">
+                 <p>To prevent server time-out due to the number of members to be copied, the conversion may be split into more steps.</p>
             </td>
         </tr>
     </table>
     </div>
-    <script type="text/javascript">
-            function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
-            }
-
-            function membtick() {
-                   PleaseWait();
-                   location.href="$set_cgi?action=cats;st=$INFO{'st'}";
-            }
-
-            setTimeout("membtick()",300000);
-    </script>
-            ~;
+MEMBERS
+        $yymain = $memtext;
     }
 
-    elsif ( $action eq 'members2' ) {
-        if ( $INFO{'mstart1'} < 0 ) {
-            setup_fatal_error(
-"Member conversion (members2) 'mstart1' ($INFO{'mstart1'})) error!"
-            );
-        }
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
-
-        my $mwidth =
-          int( ( ( $INFO{'mstart1'} ) / 2 ) / $INFO{'mtotal'} * 100 );
-        $yymain = qq~
-    <div class="bordercolor borderbox" style="margin-top:.5em">
-    <table class="cs_thin pad_4px">
-        <col style="width:5%" />
-        <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/thread.gif" alt="" />
-            </td>
-            <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
-                <div class="divouter">
-                    <div class="divvary" style="width: $mwidth$px;">&nbsp;</div>
-                </div>
-                <div class="divvary2">$mwidth %</div>
-                <br />
-                <div class="convnotdone">Board and Category Conversion.</div>
-                $convnotdone
-                <div class="convnotdone">Message Conversion.</div>
-                $convnotdone
-                <div class="convnotdone">Final Cleanup.</div>
-                $convnotdone
-                </td>
-            </tr><tr>
-                <td class="windowbg center">
-                    <img src="$imagesdir/info.png" alt="" />
-                </td>
-                <td class="windowbg2" style="font-size:11px">
-                    To prevent server time-out due to the amount of members to be converted, the conversion is split into more steps.<br />
-                    <br />
-                    The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                    The last step took <i>~
-          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.
-                    <br />
-                    Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . q~ minutes</i>.
-                  <br />
-                  <br />
-                  There are <b>~
-          . int( $INFO{'mtotal'} - ( $INFO{'mstart1'} / 2 ) )
-          . qq~/$INFO{'mtotal'}</b> Members left to be converted.
-                  <br />
-                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser address and type it in when you want to continue the conversion.</p>
-              </td>
-          </tr>
-      </table>
-      </div>
-      <script type="text/javascript">
-            function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
-            }
-
-            function stoptick() { stop = 1; }
-
-            stop = 0;
-            function membtick() {
-                  if (stop != 1) {
-                        PleaseWait();
-                        location.href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'}";
-                  }
-            }
-
-            setTimeout("membtick()",2000);
-      </script>
-            ~;
-    }
     elsif ( $action eq 'cats' ) {
-        if ( !exists $INFO{'bstart'} ) {
-            moveboards();
-        }
+        $yytabmenu =
+            $navlink1
+          . $navlink2
+          . $navlink3a
+          . $navlink4
+          . $navlink5
+          . $navlink6;
 
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
-
-        $yymain = qq~
+        my $catstext = << "CATS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
-        <col style="width:5%" />
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
             <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
         </tr><tr>
@@ -429,136 +379,40 @@ EOF
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
-                $convdone
-                <div class="convdone">Board &amp; Category Conversion.</div>
-                $convdone
-                <div class="convnotdone">Message Conversion.</div>
-                $convnotdone
-                <div class="convnotdone">Variables</div>
-                $convnotdone
-            </td>
+                <p>Member Conversion done.</p
+                <p>Board &amp; Category Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
+             </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2" style="font-size:11px">
-                All Boards and Subboards moved.<br />
-                <br />
-                Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
-                <br />
-                <p id="memcontinued">Click on 'Messages' in the menu to continue.<br />
-                    If you do not do that the script will continue by itself in 5 minutes.</p>
+            <td class="windowbg2 fontbigger">
+                 <p>To prevent server time-out due to the number of boards to be copied, the conversion may be split into 1 or more steps.</p>
             </td>
         </tr>
     </table>
     </div>
-
-    <script type="text/javascript">
-            function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
-            }
-
-            function membtick() {
-                   PleaseWait();
-                   location.href="$set_cgi?action=messages;st=$INFO{'st'}";
-            }
-
-            setTimeout("membtick()",300000);
-      </script>
-            ~;
+CATS
+        $yymain = $catstext;
     }
 
-    elsif ( $action eq 'cats2' ) {
-        if (   ( !$INFO{'bstart'} && !$INFO{'bfstart'} )
-            || $INFO{'bstart'} < 0
-            || $INFO{'bfstart'} < 0 )
-        {
-            setup_fatal_error(
-"Boards conversion (cats2) 'bstart' ($INFO{'bstart'}) or 'bfstart' ($INFO{'bfstart'}) error!"
-            );
-        }
-
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
-
-        my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
-
-        $yymain = qq~
-    <div class="bordercolor borderbox" style="margin-top:.5em">
-    <table class="cs_thin pad_4px">
-        <col style="width:5%" />
-        <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/thread.gif" alt="" />
-            </td>
-            <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
-                $convdone
-                <div class="convdone">Board and Category Conversion.</div>
-                <div class="divouter">
-                    <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
-                </div>
-                <div class="divvary2">$bwidth %</div>
-                <br />
-                <div class="convnotdone">Message Conversion.</div>
-                $convnotdone
-                <div class="convnotdone">Variables.</div>
-                $convnotdone
-            </td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/info.png" alt="" />
-            </td>
-            <td class="windowbg2" style="font-size:11px">
-                  To prevent server time-out due to the amount of boards to be converted, the conversion is split into more steps.<br />
-                  <br />
-                  The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                  The last step took <i>~
-          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.<br />
-                  Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . q~ minutes</i>.<br />
-                  <br />
-                  There are <b>~
-          . ( $INFO{'btotal'} - $INFO{'bstart'} )
-          . qq~/$INFO{'btotal'}</b> Boards left to be converted.<br />
-                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=cats;st=$INFO{'st'};bstart=$INFO{'bstart'};bfstart=$INFO{'bfstart'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Boards & Categories' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
-            </td>
-        </tr>
-    </table>
-    </div>
-
-    <script type="text/javascript">
-            function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
-            }
-
-            function stoptick() { stop = 1; }
-
-            stop = 0;
-            function membtick() {
-                  if (stop != 1) {
-                        PleaseWait();
-                        location.href="$set_cgi?action=cats;st=$INFO{'st'};bstart=$INFO{'bstart'};bfstart=$INFO{'bfstart'}";
-                  }
-            }
-
-            setTimeout("membtick()",2000);
-      </script>
-            ~;
-    }
     elsif ( $action eq 'messages' ) {
         require 'Variables/LangSettings.txt';
-        movemessages();
+        $yytabmenu =
+            $navlink1
+          . $navlink2
+          . $navlink3
+          . $navlink4a
+          . $navlink5
+          . $navlink6;
 
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
-
-        $yymain = qq~
+        my $messtext = << "MESS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
-        <col style="width:5%" />
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
        </tr><tr>
@@ -566,70 +420,40 @@ EOF
                <img src="$imagesdir/thread.gif" alt="" />
            </td>
            <td class="windowbg2">
-               <div class="convdone">Member Conversion.</div>
-               $convdone
-               <div class="convdone">Board and Category Conversion.</div>
-               $convdone
-               <div class="convdone">Message Conversion.</div>
-               $convdone
-               <div class="convnotdone">Variables.</div>
-               $convnotdone
-           </td>
-       </tr><tr>
-           <td class="windowbg center">
-               <img src="$imagesdir/info.png" alt="" />
-           </td>
-           <td class="windowbg2" style="font-size:11px">
-               <i>$INFO{'total_threads'}</i> Threads have been converted.<br />
-               <i>$INFO{'total_mess'}</i> Messages have been converted.<br />
-               <br />
-               Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
-               <br />
-                <p id="memcontinued">Click on 'Variables' in the menu to continue.<br />
-                    If you do not do that the script will continue by itself in 5 minutes.</p>
+               <p>Member Conversion done.</p>
+               <p>Board and Category Conversion done.</p>
+               <p>Message Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/info.png" alt="" />
+            </td>
+            <td class="windowbg2 fontbigger">
+                 <p>To prevent server time-out due to the number of messages to be copied, the conversion may be split into 1 or more steps.</p>
             </td>
         </tr>
     </table>
     </div>
-
-    <script type="text/javascript">
-            function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Variables\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
-            }
-
-            function membtick() {
-                   PleaseWait();
-                   location.href="$set_cgi?action=cleanup;st=$INFO{'st'}";
-            }
-
-            setTimeout("membtick()",300000);
-    </script>
-            ~;
+MESS
+        $yymain = $messtext;
     }
-    elsif ( $action eq 'messages2' ) {
-        if (   ( !$INFO{'count'} && !$INFO{'tcount'} )
-            || $INFO{'count'} < 0
-            || $INFO{'tcount'} < 0 )
-        {
-            setup_fatal_error(
-"Message conversion (messages2) 'count' ($INFO{'count'}) or 'tcount' ($INFO{'tcount'}) error!",
-                1
-            );
-        }
 
-        my $bwidth = int( $INFO{'count'} / $INFO{'totboard'} * 100 );
-        my $mwidth =
-          $INFO{'totmess'}
-          ? int( $INFO{'tcount'} / $INFO{'totmess'} * 100 )
-          : 0;
+    elsif ( $action eq 'variables' ) {
+        require 'Variables/LangSettings.txt';
+        $yytabmenu =
+            $navlink1
+          . $navlink2
+          . $navlink3
+          . $navlink4
+          . $navlink5a
+          . $navlink6;
 
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
-
-        $yymain = qq~
+        my $varstext = <<"VARS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
-        <col style="width:5%" />
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
             <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
         </tr><tr>
@@ -637,79 +461,34 @@ EOF
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
-                $convdone
-                <div class="convdone">Board and Category Conversion.</div>
-                $convdone
-                <div class="convdone">Message Conversion.</div>
-                <div class="divouter">
-                    <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
-                </div>
-                <div class="divvary2">$bwidth %</div><br />
-                <div class="convnotdone">Variables</div>
-                $convnotdone
-            </td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/info.png" alt="" />
-            </td>
-            <td class="windowbg2" style="font-size:11px">
-                To prevent server time-out due to the amount of messages to be converted, the conversion is split into more steps.<br />
-                <br />
-                The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                The last step took <i>~
-          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.<br />
-                  Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
-                <br />
-                <i>$INFO{'total_threads'}</i> Threads have been converted.<br />
-                <i>$INFO{'total_mess'}</i> Messages have been converted.<br />
-                There are <b>~
-          . ( $INFO{'totboard'} - $INFO{'count'} )
-          . qq~/$INFO{'totboard'}</b> Boards left with Messages to be converted.<br />
-                <div style="float: left;">There are <b>~
-          . ( $INFO{'totmess'} - $INFO{'tcount'} )
-          . qq~/$INFO{'totmess'}</b> Threads left to be converted. &nbsp; </div>
-                <div class="divouter">
-                    <div class="divvary" style="width: $mwidth$px;">&nbsp;</div>
-                </div>
-                <div class="divvary2">$mwidth %</div>
-                <br />
-                <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=messages;st=$INFO{'st'};totboard=$INFO{'totboard'};count=$INFO{'count'};tcount=$INFO{'tcount'};total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Messages' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
+                <p>Member Convert Done.</p>
+                <p>Board and Category Convert Done.</p>
+                <p>Message Convert Done.</p>
+                <p>Variable Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=vars','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
             </td>
         </tr>
     </table>
     </div>
-
-    <script type="text/javascript">
-            function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
-            }
-
-            function stoptick() { stop = 1; }
-
-            stop = 0;
-            function membtick() {
-                  if (stop != 1) {
-                        PleaseWait();
-                        location.href="$set_cgi?action=messages;st=$INFO{'st'};count=$INFO{'count'};tcount=$INFO{'tcount'};total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'}";
-                  }
-            }
-
-            setTimeout("membtick()",2000);
-      </script>
-            ~;
+VARS
+        $yymain = $varstext;
     }
 
     elsif ( $action eq 'cleanup' ) {
         require 'Variables/LangSettings.txt';
-        movevariables();
+        my $newtime = time;
+        my $elapse  = ( $newtime - $time ) / 60;
 
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
+        $yytabmenu =
+            $navlink1
+          . $navlink2
+          . $navlink3
+          . $navlink4
+          . $navlink5
+          . $navlink6a;
 
         $formsession = cloak("$mbname$username");
 
-        $yymain = qq~
+        my $done = << "DONE";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <tr>
@@ -719,25 +498,18 @@ EOF
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Import.</div>
-                $convdone
-                <div class="convdone">Board and Category Import.</div>
-                $convdone
-                <div class="convdone">Message Import.</div>
-                $convdone
-                <div class="convdone">Variables.</div>
-                $convdone
+                <p>Member Convert done.</p>
+                <p>Board and Category Convert done.</p>
+                <p>Message Convert done.</p>
+                <p>Variables Convert done.</p>
+                <p>Elapsed Time: $elapse minutes.</p>
             </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2" style="font-size:11px">
-                The conversion took <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minute(s)</i>.<br />
-                <br />
-                <br />
-                <span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, Check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the error in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br />
+            <td class="windowbg2 fontbigger">
+                <p><span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, Check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the error in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br />
                 <br />
                 Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
@@ -761,9 +533,24 @@ EOF
             </td>
         </tr>
     </table>
-    </div>~;
-
+    </div>
+DONE
+        $yymain = $done;
         createfixlock();
+    }
+    elsif ( $action eq 'convert' ) {
+        if ( $INFO{'section'} eq 'members' ) {
+            convertmembers();
+        }
+        elsif ( $INFO{'section'} eq 'boards' ) {
+            convertboards();
+        }
+        elsif ( $INFO{'section'} eq 'messages' ) {
+            convertmessages();
+        }
+        elsif ( $INFO{'section'} eq 'vars' ) {
+            convertvariables();
+        }
     }
 
     $yyim    = 'You are running the YaBB 2.7.00 UTF-8 Converter.';
@@ -783,21 +570,21 @@ sub prepareconv {
 # Member Conversion ##
 
 sub convertmembers {
-   our (%memberlist);
+    our (%memberlist);
     my %minmems = ();
-    if ( @minpack ) {
+    if (@minpack) {
         require "$convertlang/Variables/Memberlist.pm";
         my @mlst = keys %memberlist;
         foreach my $j (@mlst) {
             load_user($j);
             $minmems{$j} = 0;
-            foreach ( @minpack ) {
+            foreach (@minpack) {
                 if ( ${ $uid . $j }{'language'} eq $_ ) {
                     $minmems{$j} = 1;
                 }
             }
         }
-     }
+    }
     else {
         require "$convertlang/Variables/Memberlist.pm";
         my @mlst = keys %memberlist;
@@ -805,8 +592,21 @@ sub convertmembers {
             $minmems{$j} = 0;
         }
     }
-    my @memlist = keys %minmems;
-
+    my @memlist = sort keys %minmems;
+    print_output_header();
+    print qq~<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="utf">
+    <title>Language Conversion File Convert - Members</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <style type="text/css">
+        td {padding: 12px;}
+    </style>
+</head>
+<body>
+<h1>Language Conversion File Convert - Members</h1>
+<p>~ or croak 'cannot print top';
     if ( -e "$convertlang/Members/broadcast.messages" ) {
         open my $MEMDIR, '<',
           "$convertlang/Members/broadcast.messages"
@@ -820,24 +620,27 @@ sub convertmembers {
           setup_fatal_error( "$maintext_23 $memberdir/broadcast.messages:", 1 );
         print {$NMEMFILE} $memfile or croak 'cannot print NMEMFILE';
         close $NMEMFILE or croak 'cannot close NMEMFILE';
+        print qq~/Members/broadcast.messages done<br />\n~
+          or croak 'cannot print line';
     }
     our %memberinf;
     require "$convertlang/Variables/Memberinfo.pm";
     my @memfile = keys %memberinf;
-    my $langua = 'ISO-8859-1';
+    my $langua  = 'ISO-8859-1';
     for my $user (@memfile) {
         if ( $minmems{$user} == 1 ) {
             $langua = 'CP1251';
         }
         else { $langua = 'ISO-8859-1'; }
-        my @meminf = @{$memberinf{$user}};
+        my @meminf = @{ $memberinf{$user} };
         encode( 'utf8', decode( $langua, $meminf[0] ) );
         encode( 'utf8', decode( $langua, $meminf[1] ) );
-        $memberinf{$user} = [$meminf[0], $meminf[1], $meminf[2], $meminf[3], $meminf[4]];
+        $memberinf{$user} =
+          [ $meminf[0], $meminf[1], $meminf[2], $meminf[3], $meminf[4] ];
     }
     my @memberinf = ();
     foreach my $cnt ( sort keys %memberinf ) {
-        my $prline = join q{', '}, @{$memberinf{$cnt}};
+        my $prline = join q{', '}, @{ $memberinf{$cnt} };
         my $newline = qq~\$memberinf{'$cnt'} = ['$prline'];~;
         push @memberinf, $newline . "\n";
     }
@@ -848,56 +651,113 @@ sub convertmembers {
       or setup_fatal_error( "$maintext_23 Variables/Memberinfo.pm:", 1 );
     print {$NMEMFILE} $meminfo or croak 'cannot print NMEMFILE';
     close $NMEMFILE or croak "cannot close $NMEMFILE";
+    print q~/Variables/Memberinfo.pm done<br />~ or croak 'cannot print line';
 
     my @xtn = qw(vars msg ims imstore log outbox rlog imdraft pre wait lst);
-    for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) {
-        for my $cnt (@xtn) {
-            if ( -e "$convertlang/Members/$memlist[$i].$cnt" ) {
-                open my $FILEUSER, '<',
-                  "$convertlang/Members/$memlist[$i].$cnt"
-                  or setup_fatal_error(
-                    "$maintext_23 $convertlang/Members/$memlist[$i].$cnt: ",
-                    1 );
-                my $fileuser =
-                  do { local $INPUT_RECORD_SEPARATOR = undef; <$FILEUSER> };
-                close $FILEUSER or croak 'cannot close FILEUSER';
-                if ( $minmems{ $memlist[$i] } == 1 ) {
-                    $langua = 'CP1251';
+    if ( $#memlist > $buff ) {
+        my $j = int( $#memlist / $buff );
+        for my $k ( 0 .. $j ) {
+            print qq~Batch $k<br />\n~ or croak 'cannot print line';
+            my $l = $k * $buff;
+            for my $i ( $l .. ( $l + $buff ) ) {
+                for my $cnt (@xtn) {
+                    if ( -e "$convertlang/Members/$memlist[$i].$cnt" ) {
+                        open my $FILEUSER, '<',
+                          "$convertlang/Members/$memlist[$i].$cnt"
+                          or setup_fatal_error(
+"$maintext_23 $convertlang/Members/$memlist[$i].$cnt: ",
+                            1
+                          );
+                        my $fileuser = do {
+                            local $INPUT_RECORD_SEPARATOR = undef;
+                            <$FILEUSER>;
+                        };
+                        close $FILEUSER or croak 'cannot close FILEUSER';
+                        if ( $minmems{ $memlist[$i] } == 1 ) {
+                            $langua = 'CP1251';
+                        }
+                        else { $langua = 'ISO-8859-1'; }
+                        $fileuser =
+                          encode( 'utf8', decode( $langua, $fileuser ) );
+                        open my $FILEUSERB, '>',
+                          "$memberdir/$memlist[$i].$cnt"
+                          or setup_fatal_error(
+                            "$maintext_23 $memberdir/$memlist[$i].$cnt: ", 1 );
+                        print {$FILEUSERB} $fileuser
+                          or croak "cannot print $FILEUSERB";
+                        close $FILEUSERB or croak "cannot close $FILEUSERB";
+                        print qq~/Members/$memlist[$i].$cnt done<br />\n~
+                          or croak 'cannot print line';
+                    }
                 }
-                else { $langua = 'ISO-8859-1'; }
-                $fileuser = encode( 'utf8', decode( $langua, $fileuser ) );
-                open my $FILEUSERB, '>',
-                  "$memberdir/$memlist[$i].$cnt"
-                  or setup_fatal_error(
-                    "$maintext_23 $memberdir/$memlist[$i].$cnt: ", 1 );
-                print {$FILEUSERB} $fileuser or croak "cannot print $FILEUSERB";
-                close $FILEUSERB or croak "cannot close $FILEUSERB";
             }
         }
-        if ( time() > $time_to_jump && ( $i + 1 ) < @memlist ) {
-            $yySetLocation =
-                qq~$set_cgi?action=members2;st=~
-              . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
-              . qq~;starttime=$time_to_jump;mtotal=~
-              . @memlist
-              . qq~;mstart1=$i~;
-            redirectexit();
+    }
+    else {
+        for my $i ( 0 .. $#memlist ) {
+            for my $cnt (@xtn) {
+                if ( -e "$convertlang/Members/$memlist[$i].$cnt" ) {
+                    open my $FILEUSER, '<',
+                      "$convertlang/Members/$memlist[$i].$cnt"
+                      or setup_fatal_error(
+                        "$maintext_23 $convertlang/Members/$memlist[$i].$cnt: ",
+                        1
+                      );
+                    my $fileuser =
+                      do { local $INPUT_RECORD_SEPARATOR = undef; <$FILEUSER> };
+                    close $FILEUSER or croak 'cannot close FILEUSER';
+                    if ( $minmems{ $memlist[$i] } == 1 ) {
+                        $langua = 'CP1251';
+                    }
+                    else { $langua = 'ISO-8859-1'; }
+                    $fileuser = encode( 'utf8', decode( $langua, $fileuser ) );
+                    open my $FILEUSERB, '>',
+                      "$memberdir/$memlist[$i].$cnt"
+                      or setup_fatal_error(
+                        "$maintext_23 $memberdir/$memlist[$i].$cnt: ", 1 );
+                    print {$FILEUSERB} $fileuser
+                      or croak "cannot print $FILEUSERB";
+                    close $FILEUSERB or croak "cannot close $FILEUSERB";
+                    print qq~/Members/$memlist[$i].$cnt done<br />\n~
+                      or croak 'cannot print line';
+                }
+            }
         }
     }
-    return;
+    print q~</p>
+<button type="button"
+        onclick="window.open('', '_self', ''); window.close();">Close</button>
+</body>
+</html>~ or croak 'cannot print line';
+    exit;
 }
 
 # / Member Conversion ##
 
 # Board + Category Conversion ##
 
-sub moveboards {
+sub convertboards {
     require 'Variables/LangSettings.txt';
-    our (@categoryorder, %cat, %catinfo);
+    our ( @categoryorder, %cat, %catinfo );
     require "$convertlang/Boards/forum.master";
     my @boards    = sort keys %board;
     my @subboards = sort keys %subboard;
     push @boards, @subboards;
+    print_output_header();
+    print qq~<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="utf">
+    <title>Language Conversion File Convert - Boards</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <style type="text/css">
+        td {padding: 12px;}
+    </style>
+</head>
+<body>
+<h1>Language Conversion File Convert - Boards</h1>
+<p>~ or croak 'cannot print top';
+
     if ( scalar @minbrds > 0 ) {
         my $brdinfo  = qq~\$mloaded = 1;\n~;
         my @catorder = undupe(@categoryorder);
@@ -973,24 +833,26 @@ sub moveboards {
           or croak 'cannot close NEWBRD';
         print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
         close $NEWBRD or croak 'cannot close NEWBRD';
+        print qq~/Boards/forum.master done<br />\n~
+          or croak 'cannot print line';
 
         our %totals;
         require "$convertlang/Boards/forum.totals";
- 
+
         my @brdtot2 = ();
         my %brdtot  = ();
 
         foreach my $cnt ( keys %totals ) {
-            $brdtot{ $cnt } = [ 0, ${$totals{$cnt}}[6] ];
+            $brdtot{$cnt} = [ 0, ${ $totals{$cnt} }[6] ];
             for my $line (@minbrds) {
                 if ( $cnt eq $line ) {
-                    $brdtot{ $cnt } = [ 1, ${$totals{$cnt}}[6] ];
+                    $brdtot{$cnt} = [ 1, ${ $totals{$cnt} }[6] ];
                 }
             }
         }
-        for my $i (keys %brdtot) {
+        for my $i ( keys %brdtot ) {
             my $linga2 = $lang;
-            my ( $isling, $brdtotline2 ) = @{$brdtot{$i}};
+            my ( $isling, $brdtotline2 ) = @{ $brdtot{$i} };
             if ( $isling == 1 ) {
                 $linga2 = $lang2;
             }
@@ -998,11 +860,11 @@ sub moveboards {
                 $brdtotline2 = ansi($brdtotline2);
             }
             $brdtotline2 = encode( 'utf8', decode( $linga2, $brdtotline2 ) );
-            ${$totals{$i}}[6] = $brdtotline2;
+            ${ $totals{$i} }[6] = $brdtotline2;
         }
-        my (@brdinfo2);
+        my @brdinfo2 = ();
         foreach my $cnt ( sort keys %totals ) {
-            my $prline = join q{', '}, @{$totals{$cnt}};
+            my $prline = join q{', '}, @{ $totals{$cnt} };
             my $newline = qq~\$totala{'$cnt'} = ['$prline']\n;~;
             push @brdinfo2, $newline;
         }
@@ -1010,6 +872,8 @@ sub moveboards {
           or croak 'cannot close NEWBD';
         print {$NEWBD} @brdinfo2 or croak 'cannot print NEWBD';
         close $NEWBD or croak 'cannot close NEWBD';
+        print qq~/Boards/forum.totals done<br />\n~
+          or croak 'cannot print line';
 
         our (%control);
         require "$convertlang/Boards/forum.control";
@@ -1018,16 +882,16 @@ sub moveboards {
         my %brdcon  = ();
 
         foreach my $cnt ( keys %control ) {
-            $brdcon{ $cnt } = [ 0, ${$control{$cnt}}[2] ];
+            $brdcon{$cnt} = [ 0, ${ $control{$cnt} }[2] ];
             for my $line (@minbrds) {
                 if ( $cnt eq $line ) {
-                    $brdcon{ $cnt } = [ 1, ${$control{$cnt}}[2] ];
+                    $brdcon{$cnt} = [ 1, ${ $control{$cnt} }[2] ];
                 }
             }
         }
-        for my $i (keys %brdcon) {
+        for my $i ( keys %brdcon ) {
             my $linga2 = $lang;
-            my ( $isling, $brdconline2 ) = @{$brdcon{$i}};
+            my ( $isling, $brdconline2 ) = @{ $brdcon{$i} };
             if ( $isling == 1 ) {
                 $linga2 = $lang2;
             }
@@ -1035,18 +899,19 @@ sub moveboards {
                 $brdconline2 = ansi($brdconline2);
             }
             $brdconline2 = encode( 'utf8', decode( $linga2, $brdconline2 ) );
-            ${$control{$i}}[2] = $brdconline2;
+            ${ $control{$i} }[2] = $brdconline2;
         }
         my (@boardcontrol);
         foreach my $cnt ( sort keys %control ) {
-            ${$control{$cnt}}[2] =~ s/'/&#39;/gxsm;
-            ${$control{$cnt}}[19] =~ s/'/&#39;/gxsm;
-            ${$control{$cnt}}[20] =~ s/'/&#39;/gxsm;
-            my $prline = join q{', '}, @{$control{$cnt}};
+            ${ $control{$cnt} }[2] =~ s/'/&#39;/gxsm;
+            ${ $control{$cnt} }[19] =~ s/'/&#39;/gxsm;
+            ${ $control{$cnt} }[20] =~ s/'/&#39;/gxsm;
+            my $prline = join q{', '}, @{ $control{$cnt} };
             my $newline = qq~\$control{'$cnt'} = ['$prline']\n;~;
             push @boardcontrol, $newline;
         }
         write_forum_control();
+        print q~/Boards/forum.control done</p>~ or croak 'cannot print line';
     }
     else {
         my @brdlst = ( 'forum.master', 'forum.totals', 'forum.control', );
@@ -1065,144 +930,250 @@ sub moveboards {
               or croak 'cannot close NEWBRD';
             print {$NEWBRD} "$brdinfo\n" or croak 'cannot print NEWBRD';
             close $NEWBRD or croak 'cannot close NEWBRD';
+            print qq~/Boards/$newbrd done<br />\n~ or croak 'cannot print line';
         }
+        print q~</p>~ or croak 'cannot print line';
     }
     my @brdtype = qw(txt mail exhits);
     my $lingua  = $lang;
-    for my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
-        for my $ext (@brdtype) {
-            if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
-                for (@minbrds) {
-                    if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
-                }
-                open my $BOARDFILE, '<',
-                  "$convertlang/Boards/$boards[$i].$ext"
-                  or setup_fatal_error(
-                    "$maintext_23 $convertlang/Boards/$boards[$i].ext: ", 1 );
-                my $brdinfo =
-                  do { local $INPUT_RECORD_SEPARATOR = undef; <$BOARDFILE> };
-                close $BOARDFILE
-                  or croak 'cannot close BOARDFILE';
+    if ( $#boards > $buff ) {
+        my $j = int( $#boards / $buff );
+        for my $k ( 0 .. $j ) {
+            print qq~Batch $k<br />~ or croak 'cannot print line';
+            my $l = $k * 500;
+            for my $i ( $l .. ( $l + $duff ) ) {
+                for my $ext (@brdtype) {
+                    if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
+                        for (@minbrds) {
+                            if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
+                        }
+                        open my $BOARDFILE, '<',
+                          "$convertlang/Boards/$boards[$i].$ext"
+                          or setup_fatal_error(
+"$maintext_23 $convertlang/Boards/$boards[$i].ext: ",
+                            1
+                          );
+                        my $brdinfo = do {
+                            local $INPUT_RECORD_SEPARATOR = undef;
+                            <$BOARDFILE>;
+                        };
+                        close $BOARDFILE
+                          or croak 'cannot close BOARDFILE';
 
-                if ( $lingua eq 'ISO-8859-1' ) {
-                    $brdinfo = ansi($brdinfo);
+                        if ( $lingua eq 'ISO-8859-1' ) {
+                            $brdinfo = ansi($brdinfo);
+                        }
+                        $brdinfo =
+                          encode( 'utf8', decode( $lingua, $brdinfo ) );
+                        open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
+                          or croak 'cannot open NEWBRD';
+                        print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
+                        close $NEWBRD
+                          or croak 'cannot open NEWBRD';
+                        print qq~/Boards/$boards[$i].$ext done<br />\n~
+                          or croak 'cannot print line';
+                    }
                 }
-                $brdinfo = encode( 'utf8', decode( $lingua, $brdinfo ) );
-                open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
-                  or croak 'cannot open NEWBRD';
-                print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
-                close $NEWBRD
-                  or croak 'cannot open NEWBRD';
             }
         }
-        if ( time() > $time_to_jump && ( $i + 1 ) < @boards ) {
-            $yySetLocation =
-                qq~$set_cgi?action=cats2;st=~
-              . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
-              . qq~;starttime=$time_to_jump;bstart=$i~
-              . @boards;
-            redirectexit();
+    }
+    else {
+        for my $i ( 0 .. $#boards ) {
+            for my $ext (@brdtype) {
+                if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
+                    for (@minbrds) {
+                        if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
+                    }
+                    open my $BOARDFILE, '<',
+                      "$convertlang/Boards/$boards[$i].$ext"
+                      or setup_fatal_error(
+                        "$maintext_23 $convertlang/Boards/$boards[$i].ext: ",
+                        1 );
+                    my $brdinfo =
+                      do { local $INPUT_RECORD_SEPARATOR = undef; <$BOARDFILE> };
+                    close $BOARDFILE
+                      or croak 'cannot close BOARDFILE';
+
+                    if ( $lingua eq 'ISO-8859-1' ) {
+                        $brdinfo = ansi($brdinfo);
+                    }
+                    $brdinfo = encode( 'utf8', decode( $lingua, $brdinfo ) );
+                    open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
+                      or croak 'cannot open NEWBRD';
+                    print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
+                    close $NEWBRD
+                      or croak 'cannot open NEWBRD';
+                    print qq~/Boards/$boards[$i].$ext done<br />\n~
+                      or croak 'cannot print line';
+                }
+            }
         }
     }
-    return;
+    print q~</p>
+<button type="button"
+        onclick="window.open('', '_self', ''); window.close();">Close</button>
+</body>
+</html>~ or croak 'cannot print bot';
+
+    exit;
 }
 
 # / Board + Category Conversion ##
 
 # Messages Conversion ##
 
-sub movemessages {
+sub convertmessages {
     require "$boardsdir/forum.master";
     my @boards    = sort keys %board;
     my @subboards = sort keys %subboard;
     push @boards, @subboards;
     my $totalbdr  = @boards;
     my @threadext = qw(txt ctb mail poll polled);
+    print_output_header();
+    print qq~<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="utf">
+    <title>Language Conversion File Convert - Messages</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <style type="text/css">
+        td {padding: 12px;}
+    </style>
+</head>
+<body>
+<h1>Language Conversion File Convert - Messages</h1>
+<p>~ or croak 'cannot print line';
 
-    for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
+    for my $next_board ( 0 .. $totalbdr ) {
         my $lingua    = $lang;
         my $boardname = $boards[$next_board];
-        open my $BRDFILE, '<', "$boardsdir/$boardname.txt"
-          or setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ", 1 );
-        my @brdmessageline = <$BRDFILE>;
-        close $BRDFILE
-          or croak 'cannot close BRDFILE';
-        chomp @brdmessageline;
-        my $totalmess = @brdmessageline;
-        for (@minbrds) {
-            if   ( $boardname eq $_ ) { $lingua = $lang2; }
-            else                      { $lingua = $lang; }
+        if ($boardname) {
+            print qq~<br />Board: $boardname<br />\n~ or croak 'cannot print line';
         }
-
-        for my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
-            my @thread = split /[|]/xsm, $brdmessageline[$tops];
-            my $thread = $thread[0];
-            for my $ext (@threadext) {
-                if ( -e "$convertlang/Messages/$thread.$ext" ) {
-                    open my $MSGFILE, '<',
-                      "$convertlang/Messages/$thread.$ext"
-                      or setup_fatal_error(
-                        "$maintext_23 $convertlang/Messages/$thread.$ext: ",
-                        1 );
-                    my $messagelines =
-                      do { local $INPUT_RECORD_SEPARATOR = undef; <$MSGFILE> };
-                    close $MSGFILE
-                      or croak 'cannot close MSGFILE';
-
-                    if ( $lingua eq 'ISO-8859-1' ) {
-                        $messagelines = ansi($messagelines);
+        if ( -e "$boardsdir/$boardname.txt" ) {
+            open my $BRDFILE, '<', "$boardsdir/$boardname.txt"
+              or setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ",
+                1 );
+            my @brdmessageline = <$BRDFILE>;
+            close $BRDFILE or croak 'cannot close BRDFILE';
+            chomp @brdmessageline;
+            my $totalmess = @brdmessageline;
+            for (@minbrds) {
+                if   ( $boardname eq $_ ) { $lingua = $lang2; }
+                else                      { $lingua = $lang; }
+            }
+            if ( $totalmess > $duff ) {
+                my $j = int( $totalmess / $duff );
+                for my $k ( 0 .. $j ) {
+                    print qq~Batch $k<br />\n~ or croak 'cannot print line';
+                    my $l = $k * 100;
+                    for my $tops ( $l .. ( $l + $duff ) ) {
+                        my @thread = split /[|]/xsm, $brdmessageline[$tops];
+                        my $thread = $thread[0];
+                        for my $ext (@threadext) {
+                            if ( -e "$convertlang/Messages/$thread.$ext" ) {
+                                open my $MSGFILE, '<',
+                                  "$convertlang/Messages/$thread.$ext"
+                                  or setup_fatal_error(
+"$maintext_23 $convertlang/Messages/$thread.$ext: ",
+                                    1
+                                  );
+                                my $messagelines = do {
+                                    local $INPUT_RECORD_SEPARATOR = undef;
+                                    <$MSGFILE>;
+                                };
+                                close $MSGFILE or croak 'cannot close MSGFILE';
+                                if ( $lingua eq 'ISO-8859-1' ) {
+                                    $messagelines = ansi($messagelines);
+                                }
+                                $messagelines =
+                                  encode( 'utf8',
+                                    decode( $lingua, $messagelines ) );
+                                open my $NMSGFILE, '>',
+                                  "$datadir/$thread.$ext"
+                                  or setup_fatal_error(
+                                    "$maintext_23 $datadir/$thread.$ext: ", 1 );
+                                print {$NMSGFILE} $messagelines
+                                  or croak "cannot print $datadir/$thread.$ext";
+                                close $NMSGFILE
+                                  or croak 'cannot close NMSGFILE';
+                                print qq~/Messages/$thread.$ext done<br />\n~
+                                  or croak 'cannot print line';
+                            }
+                        }
                     }
-                    $messagelines = encode( 'utf8', decode( $lingua, $messagelines ) );
-                    open my $NMSGFILE, '>',
-                      "$datadir/$thread.$ext"
-                      or
-                      setup_fatal_error( "$maintext_23 $datadir/$thread.$ext: ",
-                        1 );
-                    print {$NMSGFILE} $messagelines
-                      or croak "cannot print $datadir/$thread.$ext";
-                    close $NMSGFILE
-                      or croak 'cannot close NMSGFILE';
-                    $INFO{'total_mess'} += @brdmessageline;
-                    $INFO{'total_threads'}++;
                 }
             }
-            if ( time() > $time_to_jump && ( $tops + 1 ) < $totalmess ) {
-                $yySetLocation =
-                  qq~$set_cgi?action=messages2;st=~
-                  . int( $INFO{'st'} +
-                      time() -
-                      ( $time_to_jump - $max_process_time ) )
-                  . qq~;starttime=$time_to_jump;count=$next_board;tcount=~
-                  . ( $tops + 1 )
-                  . qq~;total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'};totboard=$totalbdr;totmess=$totalmess;~;
-                redirectexit();
+            else {
+                for my $tops ( 0 .. $totalmess ) {
+                    my @thread = split /[|]/xsm, $brdmessageline[$tops];
+                    my $thread = $thread[0];
+                    for my $ext (@threadext) {
+                        if ( -e "$convertlang/Messages/$thread.$ext" ) {
+                            open my $MSGFILE, '<',
+                              "$convertlang/Messages/$thread.$ext"
+                              or setup_fatal_error(
+"$maintext_23 $convertlang/Messages/$thread.$ext: ",
+                                1
+                              );
+                            my $messagelines = do {
+                                local $INPUT_RECORD_SEPARATOR = undef;
+                                <$MSGFILE>;
+                            };
+                            close $MSGFILE or croak 'cannot close MSGFILE';
+
+                            if ( $lingua eq 'ISO-8859-1' ) {
+                                $messagelines = ansi($messagelines);
+                            }
+                            $messagelines =
+                              encode( 'utf8',
+                                decode( $lingua, $messagelines ) );
+                            open my $NMSGFILE, '>',
+                              "$datadir/$thread.$ext"
+                              or setup_fatal_error(
+                                "$maintext_23 $datadir/$thread.$ext: ", 1 );
+                            print {$NMSGFILE} $messagelines
+                              or croak "cannot print $datadir/$thread.$ext";
+                            close $NMSGFILE or croak 'cannot close NMSGFILE';
+                            print qq~/Messages/$thread.$ext done<br />\n~
+                              or croak 'cannot print line';
+                        }
+                    }
+                }
             }
         }
-        if ( time() > $time_to_jump && ( $next_board + 1 ) < $totalbdr ) {
-            $yySetLocation =
-              qq~$set_cgi?action=messages2;st=~
-              . int(
-                $INFO{'st'} + time() - ( $time_to_jump - $max_process_time ) )
-              . qq~;starttime=$time_to_jump;count=~
-              . ( $next_board + 1 )
-              . qq~;tcount=0;total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'};totboard=$totalbdr;totmess=0~;
-            redirectexit();
-        }
     }
-    $INFO{'tcount'} = 0;
-
-    return;
+    print q~</p>
+<button type="button"
+        onclick="window.open('', '_self', ''); window.close();">Close</button>
+</body>
+</html>~ or croak 'cannot print line';
+    exit;
 }
 
 # / Messages Conversion ##
 
 # Variables Conversion ##
 
-sub movevariables {
+sub convertvariables {
     require q~Variables/LangSettings.txt~;
     opendir my $BDIR, "$convertlang/Variables";
     my @varlist = readdir $BDIR;
     closedir $BDIR;
+    print_output_header();
+    print qq~<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="utf">
+    <title>Language Conversion File Convert - Variables</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <style type="text/css">
+        td {padding: 12px;}
+    </style>
+</head>
+<body style="min-width: 280px;">
+<h1>Language Conversion File Convert - Variables</h1>
+<p>~ or croak 'cannot print line';
 
     foreach my $file (@varlist) {
         if (   $file ne '.htaccess'
@@ -1225,12 +1196,20 @@ sub movevariables {
                 $oldvar = encode( 'utf8', decode( $lang, $oldvar ) );
                 open my $NEWVAR, '>', "$vardir/$file"
                   or croak 'cannot open NEWVAR';
-                print {$NEWVAR} $oldvar or croak "cannot print $vardir/$file";
+                print {$NEWVAR} $oldvar
+                  or croak "cannot print $vardir/$file";
                 close $NEWVAR or croak 'cannot close NEWVAR';
+                print "$vardir/$file done<br />\n" or croak 'cannot print line';
             }
         }
     }
-    return;
+    print q~</p>
+<button type="button"
+        onclick="window.open('', '_self', ''); window.close();">Close</button>
+</body>
+</html>~ or croak 'cannot print line';
+
+    exit;
 }
 
 # / Variables Conversion ##
@@ -1267,7 +1246,10 @@ qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again,
     $yymain = qq~
 <div class="bordercolor" style="padding: 0px; width: 100%; margin-left: 0px; margin-right: 0px;">
     <table class="cs_thin pad_4px">
-        <col style="width:5%" />
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
             <td class="titlebg" colspan="2">
                 YaBB 2.7.00 UTF-8 Converter
@@ -1328,10 +1310,10 @@ sub tempstarter {
 }
 
 sub setupimglock {
+    my $thisimgloc = qq~img src="$imagesdir/$_[0]"~;
     if ( !-e "$htmldir/Templates/Forum/$useimages/$_[0]" ) {
         $thisimgloc = qq~img src="$yyhtml_root/Templates/Forum/default/$_[0]"~;
     }
-    else { $thisimgloc = qq~img src="$imagesdir/$_[0]"~; }
     return $thisimgloc;
 }
 
@@ -1343,29 +1325,23 @@ sub tabmenushow {    # used by the converter
     $navlink2 =
       qq~$tabsep<span>$tabfill Boards &amp; Categories $tabfill</span>~;
     $navlink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
-    $navlink5 = qq~$tabsep<span>$tabfill Variables $tabfill</span>~;
+    $navlink4 = qq~$tabsep<span>$tabfill Variables $tabfill</span>~;
+    $navlink5 = qq~$tabsep<span>$tabfill Finish $tabfill</span>~;
     $navlink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
 
     $navlink1a =
-qq~<span class="selected"><a href="$set_cgi?action=members;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
+qq~<span class="selected"><a href="$set_cgi?action=members" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Members $tabfill</a></span>~;
     $navlink2a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Boards &amp; Categories $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cats" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Boards &amp; Categories $tabfill</a></span>~;
     $navlink3a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Messages $tabfill</a></span>~;
+    $navlink4a =
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=variables" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Variables $tabfill</a></span>~;
     $navlink5a =
-qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Variables $tabfill</a></span>~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Finish $tabfill</a></span>~;
     $navlink6a =
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
 
-    $convdone = q~
-            <div class="divvary_m">&nbsp;</div>
-            <div class="divvary2">100 %</div><br />
-            ~;
-
-    $convnotdone = q~
-            <div class="divouter">&nbsp;</div>
-            <div class="divvary3">0 %</div><br />
-            ~;
     return;
 }
 
@@ -1390,42 +1366,18 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.7.00 Convertor Error.';
-    $yytitle = 'YaBB 2.7.00 Convertor Error.';
-
-    if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
+    $yyim    = 'YaBB 2.7.00 Converter Error.';
+    $yytitle = 'YaBB 2.7.00 Converter Error.';
 
     tempstarter();
     setuptemplate();
     return;
 }
 
-sub simpleoutput {
-    $gzcomp = 0;
-    print_output_header();
-
-    print qq~
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <meta charset="utf-8">
-    <title>YaBB 2.7.00 Setup</title>
-</head>
-<body>
-<!-- Main Content -->
-<div style="height: 40px;">&nbsp;</div>
-<div style="text-align:center">$yymain</div>
-</body>
-</html>
-~ or croak 'cannot print output screen';
-    exit;
-}
-
 sub setuptemplate {
-    print_output_header();
-
-    my $yyposition = $yytitle;
-    $yytitle = "$mbname - $yytitle";
+    our $gzcomp = 0;
+    $yyposition = $yytitle;
+    $yytitle    = "$mbname - $yytitle";
 
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
@@ -1435,36 +1387,47 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     my $yytemplate = "$templatesdir/default/default.html";
     open my $TEMPLATE, '<', "$yytemplate"
       or setup_fatal_error( "$maintext_23 $yytemplate: ", 1 );
-    my @yytemplate = <$TEMPLATE>;
-    close $TEMPLATE
-      or croak 'cannot close TEMPLATE';
+    our @yytemplate = <$TEMPLATE>;
+    close $TEMPLATE or croak 'cannot close TEMPLATE';
 
-    my $output = q{};
+    our $output      = q{};
     our $yyboardname = $mbname;
-    my $yytime = timeformat( $date, 1 );
-
-    { no strict qw(refs);
+    our $yytime      = timeformat( $date, 1 );
+    my $curline = q{};
+    {
+        no strict qw(refs);
         $yyuname =
-          $iamguest ? q{} : qq~$maintxt{'247'} ${$uid.$username}{'realname'},~;
+          $iamguest
+          ? q{}
+          : qq~$maintxt{'247'} ${ $uid . $username }{'realname'},~;
         for my $i ( 0 .. $#yytemplate ) {
-            my $curline = $yytemplate[$i];
+            $curline .= $yytemplate[$i];
             if ( !$yycopyin
                 && ( $curline =~ m/\Q{yabb copyright}\E/xsm ) )
             {
                 $yycopyin = 1;
             }
-
-            my $yyurl = $scripturl;
-            $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
-            $curline =~ s/\Qimg src=\E\"$imagesdir\/(.+?)\"/setupimglock($1)/eigxsm;
-            $output .= $curline;
         }
+        my $yyurl = $scripturl;
+        $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
+        $curline =~
+          s/\Qimg src=\E\x22$imagesdir\/(.+?)\x22/setupimglock($1)/eigxsm;
+        $output .= $curline || q{};
+        my $year = (gmtime)[5];
+        $year += 1900;
+        $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
+        $output =~ s/\Q{yabb version}\E/$yabbversion/xsm;
+        $output =~ s/\Q{yabb year}\E/$year/xsm;
     }
     if ( $yycopyin == 0 ) {
         $output =
-q~<h1 style="text-align:center"><b>Sorry, the copyright tag &#123;yabb copyright&#125; must be in the template.<br />Please notify this forum&#39;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
-    print $output or croak 'cannot print page';
+    $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
+    $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
+
+    print_output_header();
+    print_html_output_and_finish();
     exit;
 }
 
@@ -1501,123 +1464,6 @@ sub ansi {
     $line =~ s/\xe9/&eacute;/gxsm;
     $line =~ s/\xa9/&copy;/gxsm;
     return $line;
-}
-
-sub fixlang {
-    open my $FILE, '>',
-      "$convertlang/Boards/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Boards is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE or croak 'cannot close dummy test';
-    opendir my $BDIR,
-      "$convertlang/Boards"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Boards is not set correctly! Cannot read this directory! ",
-        1
-      );
-    my @boardlist = grep { -f "$convertlang/Boards/$_" } readdir $BDIR;
-    closedir $BDIR;
-
-    open $FILE, '>',
-      "$convertlang/Members/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Members is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE or croak 'cannot close dummy test';
-    opendir my $MBDIR,
-      "$convertlang/Members"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Members is not set correctly! Cannot read this directory! ",
-        1
-      );
-    my @memblist = grep { -f "$convertlang/Members/$_" } readdir $MBDIR;
-    closedir $MBDIR;
-
-    open $FILE, '>',
-      "$convertlang/Messages/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Messages is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE or croak 'cannot close dummy test';
-    opendir my $MSDIR,
-      "$convertlang/Messages"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Messages is not set correctly! Cannot read this directory! ",
-        1
-      );
-    my @msglist = grep { -f "$convertlang/Messages/$_" } readdir $MSDIR;
-    closedir $MSDIR;
-
-    open $FILE, '>',
-      "$convertlang/Variables/dummy.testfile"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Variables is not set correctly! Cannot write this directory!",
-        1
-      );
-    print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
-    close $FILE or croak 'cannot close dummy test';
-    opendir my $VDIR,
-      "$convertlang/Variables"
-      or setup_fatal_error(
-"The CHMOD of the $convertlang/Variables is not set correctly! Cannot read this directory! ",
-        1
-      );
-    my @varlist = grep { -f "$convertlang/Variables/$_" } readdir $VDIR;
-    closedir $VDIR or croak 'cannot close dummy test';
-
-    for my $file (@boardlist) {
-        unlink "$convertlang/Boards/$file";
-    }
-    for my $file (@memblist) {
-        unlink "$convertlang/Members/$file";
-    }
-    for my $file (@msglist) {
-        unlink "$convertlang/Messages/$file";
-    }
-    for my $file (@varlist) {
-        unlink "$convertlang/Variables/$file";
-    }
-    opendir $BDIR, "$boardsdir"
-      or setup_fatal_error( "Cannot open $boardsdir! ", 1 );
-    my @bdlist = grep { -f "$boardsdir/$_" } readdir $BDIR;
-    closedir $BDIR;
-    for (@bdlist) {
-        copy( "$boardsdir/$_", "$convertlang/Boards/$_" )
-          or croak "Cannot copy $_";
-    }
-    opendir $MSDIR, "$datadir"
-      or setup_fatal_error( "Cannot open $datadir! ", 1 );
-    my @mslist = grep { -f "$datadir/$_" } readdir $MSDIR;
-    closedir $MSDIR;
-    for (@mslist) {
-        copy( "$datadir/$_", "$convertlang/Messages/$_" )
-          or croak "Cannot copy $_";
-    }
-    opendir my $MDIR, "$memberdir"
-      or setup_fatal_error( "Cannot open $memberdir! ", 1 );
-    my @mlist = grep { -f "$memberdir/$_" } readdir $MDIR;
-    closedir $MDIR;
-    for (@mlist) {
-        copy( "$memberdir/$_", "$convertlang/Members/$_" )
-          or croak "Cannot copy $_";
-    }
-    opendir $VDIR, "$vardir"
-      or setup_fatal_error( "Cannot open $vardir! ", 1 );
-    @varlist = grep { -f "$vardir/$_" } readdir $VDIR;
-    closedir $VDIR;
-    for (@varlist) {
-        copy( "$vardir/$_", "$convertlang/Variables/$_" )
-          or croak "Cannot copy $_";
-    }
-
-    return;
 }
 
 1;

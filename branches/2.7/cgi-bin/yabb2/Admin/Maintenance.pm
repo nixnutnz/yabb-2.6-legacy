@@ -13,6 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
+no strict qw(refs);
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
@@ -129,29 +130,20 @@ sub rebuild_messageindex {
             }
 
             my (@repliers);
-            {
-                no strict qw(refs);
-                if ( !-e "$datadir/$thread.ctb" ) {
-                    ${$thread}{'board'} = q{};
-                }
-                else {
-                    require "$datadir/$thread.ctb";
-                    {
-                        no strict qw(refs);
-                        @repliers = split /,/xsm, ${$thread}{'repliers'} || q{};
-                    }
-                }
+            if ( !-e "$datadir/$thread.ctb" ) {
+                ${$thread}{'board'} = q{};
+            }
+            else {
+                require "$datadir/$thread.ctb";
+                @repliers = split /,/xsm, ${$thread}{'repliers'} || q{};
             }
 
             # set correct board
             my ($theboard);
-            {
-                no strict qw(refs);
-                $theboard =
-                  exists $thread_boards{$thread}
-                  ? $thread_boards{$thread}
-                  : ${$thread}{'board'};
-            }
+            $theboard =
+              exists $thread_boards{$thread}
+              ? $thread_boards{$thread}
+              : ${$thread}{'board'};
 
             # if boardname is wrong - > put to recycle
             if ( !exists $board{$theboard} ) {
@@ -180,19 +172,16 @@ sub rebuild_messageindex {
             my $lastpostdate = sprintf '%010d', $lastinfo[3];
 
             # rewrite/create a correct threadnumber.ctb
-            {
-                no strict qw(refs);
-                $thread_status{$thread} ||= q{};
-                ${$thread}{'board'}   = $theboard;
-                ${$thread}{'replies'} = $#threaddata;
-                ${$thread}{'views'} = ${$thread}{'views'} || 1; # is never = 0 !
-                ${$thread}{'lastposter'} =
-                  $lastinfo[4] eq 'Guest'
-                  ? qq~Guest-$lastinfo[1]~
-                  : $lastinfo[4];
-                ${$thread}{'lastpostdate'} = $lastpostdate;
-                ${$thread}{'threadstatus'} = $thread_status{$thread};
-            }
+            $thread_status{$thread} ||= q{};
+            ${$thread}{'board'}   = $theboard;
+            ${$thread}{'replies'} = $#threaddata;
+            ${$thread}{'views'}   = ${$thread}{'views'} || 1;   # is never = 0 !
+            ${$thread}{'lastposter'} =
+              $lastinfo[4] eq 'Guest'
+              ? qq~Guest-$lastinfo[1]~
+              : $lastinfo[4];
+            ${$thread}{'lastpostdate'} = $lastpostdate;
+            ${$thread}{'threadstatus'} = $thread_status{$thread};
             message_totals( 'update', $thread );
 
             my $mypushlst =
@@ -448,18 +437,15 @@ sub admin_board_recount {
 
             my @lastmessage = split /[|]/xsm, $messages[-1];
             message_totals( 'load', $filename );
-            {
-                no strict qw(refs);
-                ${$filename}{'replies'} = $#messages;
-                if ( $lastmessage[0] =~ /^\[m.*?\]/xsm ) {
-                    ${$filename}{'lastposter'} = $lastmessage[11];
-                }
-                else {
-                    ${$filename}{'lastposter'} =
-                      $lastmessage[4] eq 'Guest'
-                      ? qq~Guest-$lastmessage[1]~
-                      : $lastmessage[4];
-                }
+            ${$filename}{'replies'} = $#messages;
+            if ( $lastmessage[0] =~ /^\[m.*?\]/xsm ) {
+                ${$filename}{'lastposter'} = $lastmessage[11];
+            }
+            else {
+                ${$filename}{'lastposter'} =
+                  $lastmessage[4] eq 'Guest'
+                  ? qq~Guest-$lastmessage[1]~
+                  : $lastmessage[4];
             }
             message_totals( 'update', $filename );
 
@@ -603,60 +589,58 @@ sub rebuild_memlist {
         chomp $member;
 
         load_user($member);
-        {
-            no strict qw(refs);
-            ${ $uid . $member }{'realname'} = from_chars( ${ $uid . $member }{'realname'} );
+        ${ $uid . $member }{'realname'} =
+          from_chars( ${ $uid . $member }{'realname'} );
 
-            $savesettings = 0;
-            @grpexist     = ();
-            if ( ${ $uid . $member }{'addgroups'} ) {
-                for ( split /,\s?/xsm, ${ $uid . $member }{'addgroups'} ) {
-                    if ( !$grp_nopost{$_} ) { $savesettings = 1; }
-                    else                    { push @grpexist, $_; }
-                }
+        $savesettings = 0;
+        @grpexist     = ();
+        if ( ${ $uid . $member }{'addgroups'} ) {
+            for ( split /,\s?/xsm, ${ $uid . $member }{'addgroups'} ) {
+                if ( !$grp_nopost{$_} ) { $savesettings = 1; }
+                else                    { push @grpexist, $_; }
             }
-            if ($savesettings) {
-                ${ $uid . $member }{'addgroups'} = join q{,}, @grpexist;
-            }
-            if (
-                !${ $uid . $member }{'position'}
-                || (   !$grp_staff{ ${ $uid . $member }{'position'} }
-                    && !exists $grp_nopost{ ${ $uid . $member }{'position'} } )
-              )
-            {
-                ${ $uid . $member }{'position'} = q{};
-            }
-            if ( !${ $uid . $member }{'position'} ) {
-                ${ $uid . $member }{'position'} =
-                  member_postgroup( ${ $uid . $member }{'postcount'} );
-                $savesettings = 1;
-            }
-            if ( $savesettings == 1 ) { user_account( $member, 'update' ); }
-
-            $memberlist{$member} = sprintf
-              '%010d',
-              (      stringtotime( ${ $uid . $member }{'regdate'} )
-                  || stringtotime($forumstart) );
-            $newmemberinf{$member} = [
-                ${ $uid . $member }{'realname'},
-                ${ $uid . $member }{'email'},
-                ${ $uid . $member }{'position'},
-                ${ $uid . $member }{'postcount'},
-                ${ $uid . $member }{'addgroups'}
-            ];
-
-            if (
-                ${ $uid . $member }{'position'} eq 'Administrator'
-                || ( ${ $uid . $member }{'position'} eq 'Global Moderator'
-                    && $gmod_access{'backup'} )
-              )
-            {
-                push @adminlst, $member;
-            }
-            if ( $member ne $username ) { undef %{ $uid . $member }; }
         }
-        last if time() > ( $begin_time + $max_process_time );
+        if ($savesettings) {
+            ${ $uid . $member }{'addgroups'} = join q{,}, @grpexist;
+        }
+        if (
+            !${ $uid . $member }{'position'}
+            || (   !$grp_staff{ ${ $uid . $member }{'position'} }
+                && !exists $grp_nopost{ ${ $uid . $member }{'position'} } )
+          )
+        {
+            ${ $uid . $member }{'position'} = q{};
+        }
+        if ( !${ $uid . $member }{'position'} ) {
+            ${ $uid . $member }{'position'} =
+              member_postgroup( ${ $uid . $member }{'postcount'} );
+            $savesettings = 1;
+        }
+        if ( $savesettings == 1 ) { user_account( $member, 'update' ); }
+
+        $memberlist{$member} = sprintf
+          '%010d',
+          (      stringtotime( ${ $uid . $member }{'regdate'} )
+              || stringtotime($forumstart) );
+        $newmemberinf{$member} = [
+            ${ $uid . $member }{'realname'},
+            ${ $uid . $member }{'email'},
+            ${ $uid . $member }{'position'},
+            ${ $uid . $member }{'postcount'},
+            ${ $uid . $member }{'addgroups'}
+        ];
+
+        if (
+            ${ $uid . $member }{'position'} eq 'Administrator'
+            || ( ${ $uid . $member }{'position'} eq 'Global Moderator'
+                && $gmod_access{'backup'} )
+          )
+        {
+            push @adminlst, $member;
+        }
+        if ( $member ne $username ) { undef %{ $uid . $member }; }
     }
+    last if time() > ( $begin_time + $max_process_time );
 
     # Save what we have rebuilt so far
     $update = q{};
@@ -757,7 +741,8 @@ sub rebuild_memlist {
 
         $time_left = "$hour:$min:$sec";
 
-        if ( $INFO{'actiononfinish'} && $INFO{'actiononfinish'} eq 'modmemgr' ) {
+        if ( $INFO{'actiononfinish'} && $INFO{'actiononfinish'} eq 'modmemgr' )
+        {
             $yymain .= $rebuild_txt{'20'};
             $yytitle     = $admin_txt{'8'};
             $action_area = 'modmemgr';
@@ -1052,7 +1037,7 @@ sub rebuild_notifications {
         closedir MEMBNOTIF;
 
         # get list of board (@bmaildir) and post (@tmaildir) .mail files
-        (@bmaildir, @tmaildir) = get_mail_files();
+        ( @bmaildir, @tmaildir ) = get_mail_files();
 
         $start_time = $begin_time;
         $sumuser    = keys %members;
@@ -1086,13 +1071,15 @@ sub rebuild_notifications {
 
             # update Board-Notifications
             load_user( $user, $members{$user} );
-            my %bb;
-            for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
-                $bb{$_} = 1;
+            my %bb = ();
+            if ( ${ $uid . $user }{'board_notifications'} ) {
+                for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
+                    $bb{$_} = 1;
+                }
+                $bb{$myboard} = 1;
+                ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
+                user_account($user);
             }
-            $bb{$myboard} = 1;
-            ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
-            user_account($user);
 
             if ( $user ne $username ) { undef %{ $uid . $user }; }
         }
@@ -1151,39 +1138,31 @@ sub rebuild_notifications {
             load_user( $user, $members{$user} );
 
             # update notification method. Not used by YaBB versions >= 2.2.3
-            {
-                no strict qw(refs);
-                if ( exists ${ $uid . $user }{'im_notify'} ) {
-                    ${ $uid . $user }{'notify_me'} =
-                      ${ $uid . $user }{'im_notify'} ? 3 : 0;
-                }
-
-                # Control Notifications
-                my ( %bb, %t );
-                if ( ${ $uid . $user }{'board_notifications'} ) {
-                    for ( split /,/xsm,
-                        ${ $uid . $user }{'board_notifications'} )
-                    {
-                        manageboardnotify( 'load', $_ );
-                        if ( $theboard{$user} ) { $bb{$_} = 1; }
-                    }
-                    ${ $uid . $user }{'board_notifications'} = join q{,},
-                      keys %bb;
-                }
-                if ( ${ $uid . $user }{'thread_notifications'} ) {
-                    for ( split /,/xsm,
-                        ${ $uid . $user }{'thread_notifications'} )
-                    {
-                        managethreadnotify( 'load', $_ );
-                        if ( $thethread{$user} ) { $t{$_} = 1; }
-                    }
-                    ${ $uid . $user }{'thread_notifications'} = join q{,},
-                      keys %t;
-                }
-                user_account($user);
-
-                if ( $user ne $username ) { undef %{ $uid . $user }; }
+            if ( exists ${ $uid . $user }{'im_notify'} ) {
+                ${ $uid . $user }{'notify_me'} =
+                  ${ $uid . $user }{'im_notify'} ? 3 : 0;
             }
+
+            # Control Notifications
+            my ( %bb, %t );
+            if ( ${ $uid . $user }{'board_notifications'} ) {
+                for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
+                    manageboardnotify( 'load', $_ );
+                    if ( $theboard{$user} ) { $bb{$_} = 1; }
+                }
+                ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
+            }
+            if ( ${ $uid . $user }{'thread_notifications'} ) {
+                for ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} )
+                {
+                    managethreadnotify( 'load', $_ );
+                    if ( $thethread{$user} ) { $t{$_} = 1; }
+                }
+                ${ $uid . $user }{'thread_notifications'} = join q{,}, keys %t;
+            }
+            user_account($user);
+
+            if ( $user ne $username ) { undef %{ $uid . $user }; }
             delete $members{$user};
 
             if ( time() > ( $begin_time + $max_process_time ) ) {
