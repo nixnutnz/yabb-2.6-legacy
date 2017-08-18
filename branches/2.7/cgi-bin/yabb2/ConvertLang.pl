@@ -77,7 +77,7 @@ my $yyext      = 'pl';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 my $set_cgi = "ConvertLang.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
-my $convertlang = $boarddir . 'ConvertLang';
+my $convertlang = $boarddir . '/ConvertLang';
 my $lang        = 'ISO-8859-1';
 
 our $yyexec = 'YaBB';

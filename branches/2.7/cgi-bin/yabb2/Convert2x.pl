@@ -827,7 +827,7 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
 
         if ($convlang) {
             $convset = qq~
-                <form action="$boardurl/ConvertLang.$yyext" method="post" style="display: inline;">
+                <form action="$boardurl/CopyLang.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to Convert Language" />
                     <input type="hidden" name="formsession" value="$formsession" />
                 </form>~;
@@ -2517,7 +2517,7 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
     if ($convlang) {
         $navlink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/ConvertLang.$yyext" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$boardurl/CopyLang.$yyext" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
     }
     $convdone = q~
             <div class="divvary_m">&nbsp;</div>
