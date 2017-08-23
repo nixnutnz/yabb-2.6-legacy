@@ -16,6 +16,7 @@ $suomiuserselectlngver = 'YaBB 2.7.00 $Revision$';
 if(@suomiuserselectlngmods){
     $suomiuserselectlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %usersel_txt = (

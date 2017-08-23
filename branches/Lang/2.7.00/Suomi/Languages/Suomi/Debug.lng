@@ -16,6 +16,7 @@ $suomidebuglngver = 'YaBB 2.7.00 $Revision$';
 if(@suomidebuglngmods){
     $suomidebuglngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'Suomi' ) { return 1; }
 
 %debug_txt = (

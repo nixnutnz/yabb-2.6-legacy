@@ -19,6 +19,7 @@ $dutcherrorlngver = 'YaBB 2.7.00 $Revision$';
 if (@dutcherrorlngmods) {
     $dutcherrorlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %error_txt = (
@@ -224,6 +225,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'announcement_defined'   => q~Het forum kan slechts één board bevatten dat gedefinieerd is als Global Announcement board~,
 'recycle_bin_defined'    => q~Het forum kan slechts één board bevatten dat gedefinieerd is als Prullenbak~,
 'board_defined'          => q~Een board met dit ID bestaat al~,
+'no_board_admin'         => q~You cannot use 'admin' as a board ID.~,
 'cat_defined'            => q~Een categorie met dit ID bestaat al~,
 'no_delete_default'      => q~Om veiligheidsredenen mag u de 'default' template niet wijzigen of verwijderen.~,
 'invalid_template'       => q~Ongeldige template naam.~,

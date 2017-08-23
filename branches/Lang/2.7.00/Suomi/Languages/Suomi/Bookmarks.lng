@@ -16,6 +16,7 @@ $suomibookmarkslngver = 'YaBB 2.7.00 $Revision$';
 if(@suomibookmarkslngmods){
     $suomibookmarkslngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %bookmark_txt = (

@@ -12,6 +12,12 @@
 ###############################################################################
 
 $russianmiconlngver = 'YaBB 2.7.00 $Revision$';
+@russianmiconlngmods = ();
+if (@russianmiconlngmods) {
+    $russianmmiconlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
 
 if (!$language){$language = $lang;}
 

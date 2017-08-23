@@ -16,6 +16,7 @@ $russiangmodprivilegeslngver = 'YaBB 2.7.00 $Revision$';
 if(@russiangmodprivilegeslngmods){
     $russiangmodprivilegeslngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %gmod_settings=(

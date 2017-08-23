@@ -20,6 +20,7 @@ push @dutchbookmarkslngmods, 'Advanced Timed Banning';
 if (@dutchbookmarkslngmods) {
     $dutchbookmarkslngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %bookmark_txt = (

@@ -22,6 +22,7 @@ $russiancontexthelplngver = 'YaBB 2.7.00 $Revision$';
 if(@russiancontexthelplngmods){
     $russiancontexthelplngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ### Do not translate uppercase words in sharp brackets

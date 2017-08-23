@@ -19,6 +19,7 @@ $russianmemberlistlngver = 'YaBB 2.7.00 $Revision$';
 if(@russianmemberlistlngmods){
     $russianmemberlistlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %ml_txt = (

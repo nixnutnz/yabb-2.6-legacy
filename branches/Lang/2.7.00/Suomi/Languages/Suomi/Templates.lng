@@ -16,6 +16,7 @@ $suomitemplateslngver = 'YaBB 2.7.00 $Revision$';
 if(@suomitemplateslngmods){
     $suomitemplateslngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %templ_txt=(

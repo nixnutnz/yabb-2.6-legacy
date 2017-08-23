@@ -16,6 +16,7 @@ $russiandebuglngver = 'YaBB 2.7.00 $Revision$';
 if(@russiandebuglngmods){
     $russiandebuglngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'Russian' ) { return 1; }
 
 %debug_txt = (

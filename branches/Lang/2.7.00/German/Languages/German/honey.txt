@@ -1,5 +1,5 @@
-Your Postal (Zip) Code?
-Your Location?
-Your Occupation?
-Who referred you?
-Your pet's name?
+Ihre Postleitzahl?
+Ihr Wohnort?
+Ihr Beruf?
+Wer hat Sie geschickt?
+Der Name Ihres Haustieres?

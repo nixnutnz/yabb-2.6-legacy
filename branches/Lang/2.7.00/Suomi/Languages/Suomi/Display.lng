@@ -16,6 +16,7 @@ $suomidisplaylngver = 'YaBB 2.7.00 $Revision$';
 if(@suomidisplaylngmods){
     $suomidisplaylngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %display_txt = (

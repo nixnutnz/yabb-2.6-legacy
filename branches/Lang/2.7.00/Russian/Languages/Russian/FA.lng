@@ -16,6 +16,7 @@ $russianfalngver = 'YaBB 2.7.00 $Revision$',
 if(@russianfalngmods){
     $russianfalngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %fatxt = (

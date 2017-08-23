@@ -16,6 +16,7 @@ $suomiadminlngver = 'YaBB 2.7.00 $Revision$';
 if(@suomiadminlngmods){
     $suomiadminlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'Suomi' ) { return 1; }
 
 @days = ('Sunnuntai','Maanantai','Tiistai','Keskiviikko','Torstai','Perjantai','Lauantai');

@@ -16,6 +16,7 @@ $suomimainlngver = 'YaBB 2.7.00 $Revision$';
 if(@suomimainlngmods){
     $suomimainlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'Suomi' ) { return 1; }
 
 $abbr_lang = 'fi-fi';

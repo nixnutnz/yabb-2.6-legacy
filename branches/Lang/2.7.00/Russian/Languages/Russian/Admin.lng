@@ -16,6 +16,7 @@ $russianadminlngver = 'YaBB 2.7.00 $Revision$';
 if(@russianadminlngmods){
     $russianadminlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'Russian') { return 1; }
 
 @days = ('Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота');
@@ -1613,7 +1614,7 @@ $maintxt {'dst'} = "<sup>*</sup>"; ## needed to show Today in registration log
 '617' => q~Remember, last Backup was done on:~,
 );
 
-$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
+$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
 $iFrameSupport = 'Извините, но для просмотра последних новостей o YABB Вы должны использовать браузер, который поддерживает работу с фреймами.';
 $rna = 'Удаленный сервер недоступен!';
 

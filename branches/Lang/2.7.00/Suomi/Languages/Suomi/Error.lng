@@ -16,6 +16,7 @@ $suomierrorlngver = 'YaBB 2.7.00 $Revision$';
 if(@suomierrorlngmods){
     $suomierrorlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %error_txt = (
@@ -220,11 +221,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'sendname_too_long'         => "Lyhennä nimeäsi, se on liian pitkä.",
 
 ## Admin Stuff ##
-'announcement_defined'      => "Vain yksi aihealue voi olla nimetty yleisiä ilmoituksia varten.",
-'recycle_bin_defined'       => "Vain yksi aihealue voi olla nimetty roskakoriksi.",
+'announcement_defined'  => "Vain yksi aihealue voi olla nimetty yleisiä ilmoituksia varten.",
+'recycle_bin_defined'   => "Vain yksi aihealue voi olla nimetty roskakoriksi.",
 'board_defined'         => "Aihealue jolla on tämä tunnus on jo olemassa.",
+'no_board_admin'        => q~You cannot use 'admin' as a board ID.~,
 'cat_defined'           => "Kategoria jolla on tämä tunnus on jo olemassa.",
-'no_delete_default'         => "Turvallisuussyistä et voi muuttaa tai poistaa oletussivupohjaa.",
+'no_delete_default'     => "Turvallisuussyistä et voi muuttaa tai poistaa oletussivupohjaa.",
 'invalid_template'      => "Virheellinen sivupohjan nimi!",
 'no_group_name'         => "Anna nimi",
 'no_post_number'        => "Anna luku",

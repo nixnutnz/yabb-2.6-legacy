@@ -20,6 +20,7 @@ $russianregisterlngver = 'YaBB 2.7.00 $Revision$';
 if(@russianregisterlngmods){
     $russianregisterlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %register_txt = (

@@ -19,6 +19,7 @@ $suomicontexthelplngver = 'YaBB 2.7.00 $Revision$';
 if(@suomicontexthelplngmods){
     $suomicontexthelplngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ### Do not translate uppercase words in sharp brackets

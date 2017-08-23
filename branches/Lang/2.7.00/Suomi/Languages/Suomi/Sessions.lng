@@ -16,6 +16,7 @@ $suomisessionslngver = 'YaBB 2.7.00 $Revision$';
 if(@suomisessionslngmods){
     $suomisessionslngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %session_txt = (

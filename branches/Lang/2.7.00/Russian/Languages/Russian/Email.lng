@@ -16,6 +16,7 @@ $russianemaillngver = 'YaBB 2.7.00 $Revision$';
 if(@russianemaillngmods){
     $russianemaillngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $emailcharset = 'UTF-8';

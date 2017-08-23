@@ -19,6 +19,7 @@ $russianerrorlngver = 'YaBB 2.7.00 $Revision$';
 if(@russianerrorlngmods){
     $russianerrorlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %error_txt = (
@@ -226,6 +227,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'announcement_defined'      => "Форум может иметь только один Раздел, определенный как Global Announcement (Общие Сообщения)",
 'recycle_bin_defined'       => "Форум может иметь только один Раздел, определенный как Recycle Bin (Корзина)",
 'board_defined'             => "Раздел с таким ID уже существует",
+'no_board_admin'            => q~You cannot use 'admin' as a board ID.~,
 'cat_defined'               => "Категория с таким ID уже существует",
 'no_delete_default'         => "По соображениям безопасности, Вы не можете удалить или изменить базовый шаблон Форума (шаблон 'default').",
 'invalid_template'          => "Недопустимое Имя Шаблона!",
@@ -250,9 +252,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## MemberGroups ##
 'newpostdep_gmod'       => 'Извините, Координаторы не могут модифицировать Postdependent users, который требует запуска "Rebuild Memberlist", который может быть запущен только в режиме Техобслуживания, в котором блокируется логины !',
 
-'rename'               => q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
+'rename'   => q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
 'nofolder' => q~No Template Folder Name~,
-'suspend' => q~Suspension Notification.~,
+'suspend'  => q~Suspension Notification.~,
 
 );
 

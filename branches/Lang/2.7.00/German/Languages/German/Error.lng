@@ -228,6 +228,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'announcement_defined'  => q~Es darf nur ein Forum für globale Ankündigungen geben~,
 'recycle_bin_defined'   => q~Es darf nur ein Forum als Papierkorb definiert werden~,
 'board_defined'         => q~Ein Forum mit der ID existiert schon!~,
+'no_board_admin'         => q~You cannot use 'admin' as a board ID.~,
 'cat_defined'           => q~Es gibt bereits eine Kategorie mit dieser ID~,
 'no_delete_default'     => q~Aus Sicherheitsgründen dürfen Sie das 'default' Template weder löschen noch ändern.~,
 'invalid_template'      => q~Kein gültiger Template-Name!~,

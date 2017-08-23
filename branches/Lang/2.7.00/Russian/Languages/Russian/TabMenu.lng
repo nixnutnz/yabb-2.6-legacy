@@ -20,6 +20,7 @@ $russiantabmenulngver = 'YaBB 2.7.00 $Revision$';
 if(@russiantabmenulngmods){
     $russiantabmenulngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %tabmenu_txt=(

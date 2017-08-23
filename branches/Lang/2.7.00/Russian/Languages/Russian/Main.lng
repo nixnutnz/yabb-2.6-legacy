@@ -19,6 +19,7 @@ $russianmainlngver = 'YaBB 2.7.00 $Revision$';
 if(@russianmainlngmods){
     $russianmainlngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion'  && $language ne 'Russian' ) { return 1; }
 
 $yycharset= 'UTF-8';
@@ -321,6 +322,6 @@ $forwardedpm = qq~Это предупреждение было послано п
 'smtps2' => q~Could not authenticate SMTPS credentials. Please provide credientials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
 );
 
-$yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.~;
+$yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.~;
 
 1;
