@@ -62,10 +62,12 @@ sub boardtotals {
             {
                 no strict qw(refs);
                 for my $updateboard (@updateboards) {
-                    @boardvars = @{ $totals{$updateboard} };
-                    for my $i ( 0 .. $#brd_tags ) {
-                        ${ $uid . $updateboard }{ $brd_tags[$i] } =
-                          $boardvars[$i];
+                    if ($updateboard) {
+                        @boardvars = @{ $totals{$updateboard} };
+                        for my $i ( 0 .. $#brd_tags ) {
+                            ${ $uid . $updateboard }{ $brd_tags[$i] } =
+                            $boardvars[$i];
+                        }
                     }
                 }
             }
@@ -114,6 +116,7 @@ sub boardcount_totals {
       or fatal_error( 'cannot_open', "$boardsdir/$cntboard.txt", 1 );
     my @threads = <$BOARD>;
     fclose('BOARD') or croak "$croak{'close'} BOARD";
+    chomp @threads;
     my $threadcount  = @threads;
     my $messagecount = $threadcount;
     for my $i ( 0 .. $#threads ) {
@@ -131,6 +134,7 @@ sub boardcount_totals {
         ${ $uid . $cntboard }{'messagecount'} = $messagecount;
     }
     board_setlast_info( $cntboard, \@threads );
+
     return;
 }
 
@@ -145,23 +149,25 @@ sub board_setlast_info {
                 undef,         undef, undef,
                 undef,         undef, $lastthreadstate
             ) = split /[|]/xsm, $lastthread;
-            if ( $lastthreadstate && $lastthreadstate !~ /m/xsm ) {
+            if ( !$lastthreadstate || $lastthreadstate !~ /m/xsm ) {
                 chomp $lastthreadstate;
                 our ($FILE);
-                fopen( 'FILE', '<', "$datadir/$lastthreadid.txt" )
-                  or
-                  fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt", 1 );
-                @lastthreadmessages = <$FILE>;
-                fclose('FILE') or croak "$croak{'close'} FILE";
-                @lastmessage =
-                  split /[|]/xsm, $lastthreadmessages[-1], 7;
-                last;
+                if ( -e "$datadir/$lastthreadid.txt" ) {
+                    fopen( 'FILE', '<', "$datadir/$lastthreadid.txt" )
+                      or
+                      fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt", 1 );
+                    @lastthreadmessages = <$FILE>;
+                    fclose('FILE') or croak "$croak{'close'} FILE";
+                    @lastmessage = split /[|]/xsm, $lastthreadmessages[-1];
+                    last;
+                }
+                $lastthreadid = q{};
             }
-            $lastthreadid = q{};
         }
     }
     {
         no strict qw(refs);
+        no warnings qw(uninitialized);
         ${ $uid . $setboard }{'lastposttime'} =
           $lastthreadid ? $lastmessage[3] : 0;
         ${ $uid . $setboard }{'lastposter'} =
@@ -258,23 +264,25 @@ sub message_totals {
 
             # storing thread other info
             our ($MSG);
-            fopen( 'MSG', '<', "$datadir/$updatethread.txt" )
-              or fatal_error( 'cannot_open', "$datadir/$updatethread.txt", 1 );
-            my @threaddata = <$MSG>;
-            fclose('MSG') or croak "$croak{'close'} MSG";
-            my @lastinfo = split /[|]/xsm, $threaddata[-1];
-            my $lastpostdate = sprintf '%010d', $lastinfo[3];
-            my $lastposter =
-              $lastinfo[4] eq 'Guest' ? qq~Guest-$lastinfo[1]~ : $lastinfo[4];
+            if ( -e "$datadir/$updatethread.txt" ) {
+                fopen( 'MSG', '<', "$datadir/$updatethread.txt" )
+                  or fatal_error( 'cannot_open', "$datadir/$updatethread.txt", 1 );
+                my @threaddata = <$MSG>;
+                fclose('MSG') or croak "$croak{'close'} MSG";
+                my @lastinfo = split /[|]/xsm, $threaddata[-1];
+                my $lastpostdate = sprintf '%010d', $lastinfo[3];
+                my $lastposter =
+                  $lastinfo[4] eq 'Guest' ? qq~Guest-$lastinfo[1]~ : $lastinfo[4];
 
             # rewrite/create a correct thread.ctb
-            ${$updatethread}{'replies'}      = $#threaddata;
-            ${$updatethread}{'views'}        = ${$updatethread}{'views'} || 0;
-            ${$updatethread}{'lastposter'}   = $lastposter;
-            ${$updatethread}{'lastpostdate'} = $lastpostdate;
-            ${$updatethread}{'threadstatus'} = $threadstatus;
+                ${$updatethread}{'replies'}      = $#threaddata;
+                ${$updatethread}{'views'}        = ${$updatethread}{'views'} || 0;
+                ${$updatethread}{'lastposter'}   = $lastposter;
+                ${$updatethread}{'lastpostdate'} = $lastpostdate;
+                ${$updatethread}{'threadstatus'} = $threadstatus;
+            }
+            @repliers = ();
         }
-        @repliers = ();
     }
     else {
         return;

@@ -968,6 +968,7 @@ sub ext_validate_submition {
 
 # don't fill it with default value yet, it might be required on registration
 # if ($options[3] ne q{} && $value eq "") { $value = $options[3]; $newprofile{'ext_'.$id} = $value; }
+                $options[0] ||= 0;
                 if ( $options[0] + 0 > 0 && length($value) > $options[0] ) {
                     $output .=
                         $field{'name'} . q{: }

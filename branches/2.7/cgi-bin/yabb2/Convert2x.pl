@@ -89,7 +89,7 @@ $script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
 our (
     $boardurl,  $vardir,      $imagesdir, $datadir,      $boardsdir,
     $memberdir, $langdir,     $htmldir,   $templatesdir, $yyhtml_root,
-    $uploaddir, $pmuploaddir, $facesdir, $boarddir
+    $uploaddir, $pmuploaddir, $facesdir,  $boarddir
 );
 our $smiliesdir = $htmldir .'/Smilies';
 our (
@@ -131,7 +131,7 @@ our $formsession = q{};
 my $px = 'px';
 my (
     $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6, $navlink1a,
-    $navlink2a, $navlink3a, $navlink5a, $navlink6a, $intro
+    $navlink2a, $navlink3a, $navlink5a, $navlink6a, $intro, $brdfix
 );
 if ( -e "$vardir/Setup.lock" ) {
     if ( -e "$vardir/ConvertLang.lock" ) {
@@ -159,9 +159,10 @@ if ( -e "$vardir/Setup.lock" ) {
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods, install the 2.7 versions - if available - before converting your old forum.
+                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods or Languages, install the 2.7 versions - if available - before converting your old forum.
                         <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
                         <br />In the event your old forum had 'Activate .htaccess to add IP blocks on server level?' activated in Guardian, go to "The Guardian&trade; Setup" in the Admin Center of <strong>your old forum</strong> and copy the lists of items being blocked. You will need these to rebuild your IP blocks in .htaccess once the conversion is finished.
+                        <br />In the event your old forum had additional language packs installed, <strong>set the default language of your old forum to English</strong>.
                     </p>
                     <p>Put your old forum into Maintenance Mode and do all necessary maintenance on your <strong>old forum</strong>.</p>
                     <p>Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.7.<br />
@@ -175,7 +176,7 @@ if ( -e "$vardir/Setup.lock" ) {
                     <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.7 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
                     <ol>
                         <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.7 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
-                        <li><strong>Do not fill in the paths for your old attachments, PMattachments, and member avatars folders.</strong>  You will need copy any attachments, PMattachments, and member avatars from their old locations into their equivalent folders in your 2.7 installation.</li>
+                        <li><strong>Do not fill in the paths for your old attachments, PMattachments, Smilies, and member avatars folders.</strong>  You will need copy any attachments, PMattachments, Smilies, and member avatars from their old locations into their equivalent folders in your 2.7 installation.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <table style="width:auto; margin-left:0">
@@ -215,7 +216,9 @@ if ( -e "$vardir/Setup.lock" ) {
                             <td><input type="text" id="convavatardir" name="convavatardir" value="" size="50" /></td>
                         </tr>
                     </table>
-                    <b>Do you need to convert your files to UTF-8?</b> (If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.)  <input type="checkbox" name="convertlang" checked="checked" value="1" />
+                    <p class="fontbigger"><strong>Do you need to convert your files to UTF-8?</strong> Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.
+                        <br /><strong>If the box below is checked, the UTF-8 conversion process must be completed before you can use your converted forum.</strong>
+                        <br />Convert to UTF-8: <input type="checkbox" name="convertlang" checked="checked" value="1" /></p>
                 </td>
             </tr><tr>
                 <td class="catbg center" colspan="2">
@@ -408,7 +411,7 @@ START
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                    To prevent server time-out due to the amount of members to be converted, the conversion is split into more steps.<br />
+                    To prevent server time-out due to the amount of members to be converted, the conversion is split into one or more steps.<br />
                 <br />
                     The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
                  Conversion took <i>$infost minutes</i>.
@@ -478,7 +481,7 @@ MEMBERS1
                     <img src="$imagesdir/info.png" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    To prevent server time-out due to the amount of members to be converted, the conversion is split into more steps.<br />
+                    To prevent server time-out due to the amount of members to be converted, the conversion is split into one or more steps.<br />
                     <br />
                     The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
                     The last step took <i>~
@@ -515,6 +518,9 @@ MEMBERS1
     }
     elsif ( $action eq 'cats' ) {
         require q~Variables/ConvSettings.txt~;
+        if ($convlang) {
+            $boardsdir = "$boarddir/ConvertLang/Boards";
+        }
         if ( !exists $INFO{'bstart'} ) {
             moveboards();
         }
@@ -551,7 +557,7 @@ MEMBERS1
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                All Boards and Subboards moved.<br />
+                All Boards and Subboards moved.$brdfix<br />
                 <br />
                 Conversion has taken <i>~
           . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
@@ -616,7 +622,7 @@ MEMBERS1
                 <br />
                 <div class="convnotdone">Message Conversion.</div>
                 $convnotdone
-                <div class="convnotdone">Variables.</div>
+                <div class="convnotdone">Variables &amp; Clean Up.</div>
                 $convnotdone
             </td>
         </tr><tr>
@@ -624,7 +630,7 @@ MEMBERS1
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                  To prevent server time-out due to the amount of boards to be converted, the conversion is split into more steps.<br />
+                  To prevent server time-out due to the amount of boards to be converted, the conversion is split into one or more steps.<br />
                   <br />
                   The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
                   The last step took <i>~
@@ -660,6 +666,10 @@ MEMBERS1
     }
     elsif ( $action eq 'messages' ) {
         require q~Variables/ConvSettings.txt~;
+        if ( $convlang) {
+            $boardsdir = "$boarddir/ConvertLang/Boards";
+            $datadir = "$boarddir/ConvertLang/Messages";
+        }
         movemessages();
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
@@ -685,7 +695,7 @@ MEMBERS1
                $convdone
                <div class="convdone">Message Conversion.</div>
                $convdone
-               <div class="convnotdone">Variables.</div>
+               <div class="convnotdone">Variables &amp; Clean Up.</div>
                $convnotdone
            </td>
        </tr><tr>
@@ -770,7 +780,7 @@ MEMBERS1
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                To prevent server time-out due to the amount of messages to be converted, the conversion is split into more steps.<br />
+                To prevent server time-out due to the amount of messages to be converted, the conversion is split into one or more steps.<br />
                 <br />
                 The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
                 The last step took <i>~
@@ -816,6 +826,9 @@ MEMBERS1
 
     elsif ( $action eq 'cleanup' ) {
         require q~Variables/ConvSettings.txt~;
+        if ( $convlang) {
+            $vardir = "$boarddir/ConvertLang/Variables";
+        }
         movevariables();
         fixnopost();
         $formsession = cloak("$mbname$username");
@@ -823,11 +836,11 @@ MEMBERS1
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
 
         $convtext .=
-q~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents.~;
-
+q~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents. ~;
+        my $finish = q{};
         if ($convlang) {
             $convset = qq~
-                <form action="$boardurl/CopyLang.$yyext" method="post" style="display: inline;">
+                <form action="$boardurl/ConvertLang.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to Convert Language" />
                     <input type="hidden" name="formsession" value="$formsession" />
                 </form>~;
@@ -835,7 +848,16 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
         else {
             $convset =
 q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
-
+            $finish = q~                <br />Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
+                - Rebuild Message Index<br />
+                - Recount Board Totals<br />
+                - Rebuild Members List<br />
+                - Recount Membership<br />
+                - Rebuild Members History<br />
+                - Rebuild Notifications Files<br />
+                - Clean Users Online Log<br />
+                - Attachment Functions => Rebuild Attachments<br />
+                Also, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.~;
         }
         my $checkattach = checkattach();
         $INFO{'st'} ||= 0;
@@ -855,7 +877,7 @@ q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
                 $convdone
                 <div class="convdone">Message Import.</div>
                 $convdone
-                <div class="convdone">Variables.</div>
+                <div class="convdone">Variables &amp; Clean Up.</div>
                 $convdone
             </td>
         </tr><tr>
@@ -871,17 +893,7 @@ q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
                 <br />
                 <br />
                 <span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
-                <br />
-                Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
-                - Rebuild Message Index<br />
-                - Recount Board Totals<br />
-                - Rebuild Members List<br />
-                - Recount Membership<br />
-                - Rebuild Members History<br />
-                - Rebuild Notifications Files<br />
-                - Clean Users Online Log<br />
-                - Attachment Functions => Rebuild Attachments<br />
-                Also, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.
+$finish
                 </span>
                 <br />
 $checkattach
@@ -907,7 +919,13 @@ $convset
 # Prepare Conversion ##
 
 sub prepareconv {
+    if ( $convlang) {
+        $memberdir = "$boarddir/ConvertLang/Members";
+        $datadir = "$boarddir/ConvertLang/Messages";
+        $boardsdir = "$boarddir/ConvertLang/Boards";
+    }
     my @foldercheck = ( $boardsdir, $memberdir, $datadir );
+
     foreach my $i ( 0 .. $#foldercheck ) {
         open my $FILE, '>',
           "$foldercheck[$i]/dummy.testfile"
@@ -952,6 +970,10 @@ sub prepareconv {
 # Member Conversion ##
 
 sub convertmembers {
+    if ($convlang) {
+        $vardir = "$boarddir/ConvertLang/Variables";
+        $memberdir = "$boarddir/ConvertLang/Members";
+    }
     open my $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
     my @memlist = <$MEMDIR>;
@@ -975,8 +997,6 @@ sub convertmembers {
     chomp @meminfo;
     my $meminfo = q{};
     for (@meminfo) {
-        $_ =~ s/[\n\r]//gxsm;
-        chomp $_;
         my @nml     = split /\t/xsm,  $_;
         my @varinfo = split /[|]/xsm, $nml[1];
         my $val = join q~','~, @varinfo;
@@ -1012,9 +1032,11 @@ sub convertmembers {
             1 );
         my @approve = <$BMEMDIRA>;
         close $BMEMDIRA or croak 'cannot close BMEMDIRA';
+        chomp @approve;
+        my $approve = join "\n", @approve;
         open my $NBMEMDIRA, '>', "$vardir/memapprove.db"
           or setup_fatal_error( "$maintext_23 $vardir/memapprove.db: ", 1 );
-        print {$NBMEMDIRA} @approve or croak 'cannot print NBMEMDIRA';
+        print {$NBMEMDIRA} $approve or croak 'cannot print NBMEMDIRA';
         close $NBMEMDIRA or croak 'cannot close NBMEMDIRA';
     }
     if ( -e "$convmemberdir/memberlist.inactive" ) {
@@ -1024,9 +1046,11 @@ sub convertmembers {
             "$maintext_23 $convmemberdir/memberlist.inactive: ", 1 );
         my @inactive = <$BMEMDIRIN>;
         close $BMEMDIRIN or croak 'cannot close BMEMDIRIN';
+        chomp @inactive;
+        my $inactive = join "\n", @inactive;
         open my $NBMEMDIRIN, '>', "$vardir/meminactive.db"
           or setup_fatal_error( "$maintext_23 $vardir/meminactive.db: ", 1 );
-        print {$NBMEMDIRIN} @inactive or croak 'cannot print NBMEMDIRIN';
+        print {$NBMEMDIRIN} $inactive or croak 'cannot print NBMEMDIRIN';
         close $NBMEMDIRIN or croak 'cannot closeNBMEMDIRIN';
     }
 
@@ -1050,28 +1074,32 @@ sub convertmembers {
             1 );
         my @passes = <$BMEMDIRP>;
         close $BMEMDIRP or croak 'cannot close BMEMDIRP';
+        chomp @passes;
+        my $passes = join "\n", @passes;
 
         open my $NBMEMDIRP, '>', "$memberdir/forgotten.passes"
           or
           setup_fatal_error( "$maintext_23 $memberdir/forgotten.passes: ", 1 );
-        print {$NBMEMDIRP} @passes or croak 'cannot print NBMEMDIRP';
+        print {$NBMEMDIRP} $passes or croak 'cannot print NBMEMDIRP';
         close $NBMEMDIRP or croak 'cannot close NBMEMDIRP';
     }
-
+    our %memberlist;
+    require "$vardir/Memberlist.pm";
+    my @getmem = sort keys %memberlist;
     for (@approve) {
         my ( undef, undef, $regmember, undef, undef ) =
           split /[|]/xsm, $_;
-        push @memlist, $regmember;
+        push @getmem, $regmember;
     }
     for (@inactive) {
         my ( undef, undef, $regmember, undef, undef ) =
           split /[|]/xsm, $_;
-        push @memlist, $regmember;
+        push @getmem, $regmember;
     }
     my @xtn = qw(msg imstore log outbox rlog imdraft);
     my @xta = qw(vars pre wait);
-    for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) {
-        my ( $user, undef ) = split /\t/xsm, $memlist[$i];
+    for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#getmem ) {
+        my $user = $getmem[$i];
 
         for my $userext (@xta) {
             if ( -e "$convmemberdir/$user.$userext" ) {
@@ -1097,8 +1125,10 @@ sub convertmembers {
                     {
                         ${ $uid . $user }{ $tags[$cnt] } =~ s/~/\\~/gxsm;
                     }
+                    if ( $tags[$cnt] ne 'lastonline' ) {
                     $newvars .=
                       qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
+                    }
                 }
                 $newvars .= qq~);\n\n1;\n~;
                 open my $UPDATEUSER, '>', "$memberdir/$user.$userext"
@@ -1294,12 +1324,12 @@ sub convertmembers {
             }
         }
 
-        if ( time() > $time_to_jump && ( $i + 1 ) < @memlist ) {
+        if ( time() > $time_to_jump && ( $i + 1 ) < @getmem ) {
             $yysetlocation =
                 qq~$set_cgi?action=members2;st=~
               . int( $INFO{'st'} + time() - $time_to_jump + $max_process_time )
               . qq~;starttime=$time_to_jump;mtotal=~
-              . @memlist
+              . @getmem
               . qq~;mstart1=$i~;
             redirectexit();
         }
@@ -1319,23 +1349,39 @@ sub moveboards {
     my $catlist  = join q{ }, @catorder;
     $newforum .= qq~\@categoryorder = qw($catlist);\n~;
     while ( my ( $key, $value ) = each %cat ) {
-        my $val2   = join q{', '}, ( split /,/xsm, $value );
+        my @val2   = split /,/xsm, $value;
+        foreach (@val2) {
+            if ( $_ eq 'admin') {$_ = 'admin_fix';}
+        }
+        my $val2   = join q{', '}, @val2;
         $newforum .= qq~\$cat{'$key'} = ['$val2'];\n~;
     }
     while ( my ( $key, $value ) = each %catinfo ) {
         $value =~ s/\$/\\\$/gxsm;
         $value =~ s/'/&#39;/gxsm;
-        my $values = join q{', '}, ( split /[|]/xsm, $value);
+        my @val2   = split /[|]/xsm, $value;
+        my @mods = split /,\s/xsm, $val2[1];
+        $val2[1] = join q{/},@mods;
+        my $values = join q{', '}, @val2;
         $newforum .= qq~\$catinfo{'$key'} = ['$values'];\n~;
     }
     while ( my ( $key, $value ) = each %board ) {
+        if ( $key eq 'admin') {$key = 'admin_fix';}
         $value =~ s/\$/\\\$/gxsm;
         $value =~ s/'/&#39;/gxsm;
-                my $val2   = join q{', '}, ( split /[|]/xsm, $value );
+        my @val2 = split /[|]/xsm, $value;
+        my @mods = split /,\s/xsm, $val2[1];
+        $val2[1] = join q{/}, @mods;
+        my $val2   = join q{', '}, @val2;
         $newforum .= qq~\$board{'$key'} = ['$val2'];\n~;
     }
     while ( my ( $key, $value ) = each %subboard ) {
-        my $val2   = join q{', '}, ( split /[|]/xsm, $value );
+        if ( $key eq 'admin') {$key = 'admin_fix';}
+        my @val2   = split /[|]/xsm, $value;
+        foreach (@val2) {
+            if ( $_ eq 'admin') {$_ = 'admin_fix';}
+        }
+        my $val2   = join q{', '}, @val2;
         $newforum .= qq~\$subboard{'$key'} = ['$val2'];\n~;
     }
     $newforum .= qq~\n1;~;
@@ -1355,6 +1401,7 @@ sub moveboards {
     my %totals = ();
     foreach my $cnt (@ftotals) {
         my @tconv = split /[|]/xsm, $cnt;
+        if ( $tconv[0] eq 'admin' ) {$tconv[0] = 'admin_fix';}
         $tconv[7] =~ s/'/&#39;/gxsm;
         $totals{ $tconv[0] } = [
             $tconv[1], $tconv[2], $tconv[3], $tconv[4], $tconv[5],
@@ -1384,17 +1431,21 @@ sub moveboards {
 
     for my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
         for my $ext (@brdtype) {
+            if ( $boards[$i] eq 'admin_fix') {$boards[$i] = 'admin';}
             if ( -e "$convboardsdir/$boards[$i].$ext" ) {
                 open my $BOARDFILE, '<',
                   "$convboardsdir/$boards[$i].$ext"
                   or setup_fatal_error(
                     "$maintext_23 $convboardsdir/$boards[$i].ext: ", 1 );
                 my @brdinfo = <$BOARDFILE>;
+                chomp @brdinfo;
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
                 if ( $ext ne 'mail' ) {
+                    my $newbrd = join qq~\n~, @brdinfo;
+                    if ( $boards[$i] eq 'admin') { $boards[$i] = 'admin_fix'; }
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                       or croak 'cannot open NEWBRD';
-                    print {$NEWBRD} @brdinfo or croak 'cannot print NEWBRD';
+                    print {$NEWBRD} $newbrd or croak 'cannot print NEWBRD';
                     close $NEWBRD or croak 'cannot close NEWBRD';
                 }
                 else {
@@ -1408,6 +1459,7 @@ sub moveboards {
                         }
                     }
                     $prnbrd .= "\n1;\n";
+                    if ( $boards[$i] eq 'admin') {$boards[$i] = 'admin_fix';}
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                       or croak 'cannot open NEWBRD';
                     print {$NEWBRD} $prnbrd or croak 'cannot print NEWBRD';
@@ -1436,6 +1488,7 @@ sub fixcontrol {
         require qq~$convvardir/boardconv.txt~;
         for my $i (@allboards) {
             my $x = $i;
+            if ($x eq 'admin') { $x = 'admin_fix'; }
             ${$x}{'mypic'} = q{};
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
             ${$x}{'mods'} =~ s/,\s/\//gxsm;
@@ -1480,6 +1533,12 @@ sub fixcontrol {
             ) = split /[|]/xsm;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
+            if ($oldboard eq 'admin') { $oldboard = 'admin_fix'; }
+            $mods =~ s/,\s/\//gxsm;
+            $modgroups =~ s/,\s/\//gxsm;
+            $topicperms =~ s/,\s/\//gxsm;
+            $replyperms =~ s/,\s/\//gxsm;
+            $pollperms =~ s/,\s/\//gxsm;
             $newcontrol{$oldboard} = [
                 $cat,       $mypic,         $description, $mods,
                 $modgroups, $topicperms,    $replyperms,  $pollperms,
@@ -1494,8 +1553,30 @@ sub fixcontrol {
             }
         }
     }
+    $brdfix = q{};
+    my $brdfixl = q{};
+    my %hash = ();
+    my $adminbrd = q{};
+    foreach (keys %newcontrol) {
+        push @{$hash{lc $_}}, $_;
+        if ( $_ eq 'admin_fix') {
+            $adminbrd = q~<br />There was a board named 'admin'. That board has been renamed to 'admin_fix'.~;
+        }
+    }
+    for my $key (keys %hash) {
+        if ( scalar @{$hash{$key}} > 1 ) {
+            foreach (@{$hash{$key}}) {
+                $brdfixl .= qq~$_<br />~;
+            }
+        }
+    }
+    if ( $brdfixl ne q{} ) {
+        $brdfix = qq~<br />There appear to be multiple Boards with this name (converted to lowercase). If these are not external link boards, these boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
+    }
+    $brdfix .= $adminbrd ;
     my @boardcontrol = ();
     foreach my $cnt ( sort keys %newcontrol ) {
+        if ($cnt eq 'admin') { $cnt = 'admin_fix'; }
         if ( $cnt ne 'brdpasswr' ) {
             $newcontrol{$cnt} =~ s/'/&#39;/gxsm;
         }
@@ -1518,7 +1599,7 @@ sub fixcontrol {
     print {$BRDPIC} $brdpix or croak 'cannot print BRDPIC';
     close $BRDPIC or croak 'cannot close BRDPIC';
 
-    return;
+    return $brdfix;
 }
 
 sub fixnopost {
@@ -1535,7 +1616,7 @@ sub fixnopost {
                 for my $key ( keys %catinfo ) {
                     my ( $catname, $catperms, $catcol ) = @{$catinfo{$key}};
                     my @newperm = ();
-                    for my $theperm ( split /\//xsm, $catperms ) {
+                    for my $theperm ( split /,\s/xsm, $catperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
                         push @newperm, $theperm;
                     }
@@ -1545,7 +1626,7 @@ sub fixnopost {
                 for my $key ( keys %board ) {
                     my ( $boardname, $boardperms, $boardshow ) = @{$board{$key}};
                     my @newperm = ();
-                    foreach my $theperm ( split /\//xsm, $boardperms ) {
+                    foreach my $theperm ( split /,\s/xsm, $boardperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
                         push @newperm, $theperm;
                     }
@@ -1553,28 +1634,28 @@ sub fixnopost {
                     $board{$key} = [ $boardname, $newperm, $boardshow ];
                 }
                 my @newmodgroups = ();
-                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[4] ) {
+                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[4] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newmodgroups, $theperm;
                 }
                 my $newmodgroups = join q~/~, @newmodgroups;
 
                 my @newtopicperms = ();
-                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[5] ) {
+                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[5] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newtopicperms, $theperm;
                 }
                 my $newtopicperms  = join q~/~, @newtopicperms;
 
                 my @newreplyperms = ();
-                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[6] ) {
+                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[6] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newreplyperms, $theperm;
                 }
                 my $newreplyperms = join q~/~, @newreplyperms;
 
                 my @newpollperms = ();
-                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[7] ) {
+                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[7] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newpollperms, $theperm;
                 }
@@ -1629,6 +1710,9 @@ sub movemessages {
     my @threadext = qw(mail poll polled);
     for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
         my $boardname = $boards[$next_board];
+        if ($boardname eq 'admin') {
+            $boardname = 'admin_fix'
+        }
         open my $BRDFILE, '<', "$boardsdir/$boardname.txt"
           or setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ", 1 );
         my @brdmessageline = <$BRDFILE>;
@@ -1883,9 +1967,10 @@ EOF
           or croak 'cannot open ban_log.txt';
         my @ban = <$OLDVAR>;
         close $OLDVAR or croak 'cannot close ban_log.txt';
-
+        chomp @ban;
+        my $banlog = join "\n", @ban;
         open $NEWVAR, '>', "$vardir/ban.log" or croak 'cannot open ban.log';
-        print {$NEWVAR} @ban or croak "cannot print $vardir/ban_log.log";
+        print {$NEWVAR} $banlog or croak "cannot print $vardir/ban_log.log";
         close $NEWVAR or croak 'cannot close ban_log.log';
     }
 
@@ -1894,10 +1979,11 @@ EOF
           or croak 'cannot open banlist.txt';
         my @ban = <$OLDVAR>;
         close $OLDVAR or croak 'cannot close banlist.txt';
-
+        chomp @ban;
+        my $banlist = join "\n", @ban;
         open $NEWVAR, '>', "$vardir/banlist.db"
           or croak 'cannot open banlist.db';
-        print {$NEWVAR} @ban or croak "cannot print $vardir/banlist.db";
+        print {$NEWVAR} $banlist or croak "cannot print $vardir/banlist.db";
         close $NEWVAR or croak 'cannot close banlist.db';
     }
 
@@ -1906,6 +1992,7 @@ EOF
           or croak 'cannot open maillist.dat';
         my @mail = <$OLDVAR>;
         close $OLDVAR or croak 'cannot close maillist.dat';
+        chomp @mail;
         my $mail = q{};
         foreach my $curmail (@mail) {
             my ( $otime, $osubject, $otext, $osender ) = split /[|]/xsm,
@@ -2245,7 +2332,7 @@ EOF
     }
     our %memberlist;
     our %hash2;
-    require Variables::Memberlist;
+    require "$vardir/Memberlist.pm";
     while ( my ( $key, $value ) = each %memberlist ) {
         $hash2{$value} = $key;
     }
@@ -2473,12 +2560,6 @@ sub tempstarter {
     }
     else { $convertdir = './Convert'; }
 
-    load_cookie();    # Load the user's cookie (or set to guest)
-    load_usersettings();
-    what_template();
-    what_language();
-    require Sources::Security;
-    write_log();
     return;
 }
 
@@ -2517,7 +2598,7 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
     if ($convlang) {
         $navlink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/CopyLang.$yyext" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$boardurl/ConvertLang.$yyext" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
     }
     $convdone = q~
             <div class="divvary_m">&nbsp;</div>
@@ -2614,81 +2695,12 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     our $yytime =
 qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
 
-    $yyuname =
-      $iamguest
-      ? q{}
-      : qq~$maintxt{'247'} ${$uid.$username}{'realname'}, ~;
-    my @newsmessages;
-    if ($enable_news) {
-        open my $NEWS, '<', "$langdir/English/news.txt"
-          or croak 'cannot open NEWS';
-        @newsmessages = <$NEWS>;
-        close $NEWS or croak 'cannot close NEWS';
-    }
-    my ( $yycopyin, $yynewstitle, $yynews );
+    $yyuname = q{};
+    my ($yycopyin);
     for my $i ( 0 .. $#yytemplate ) {
         my $curline = $yytemplate[$i];
         if ( !$yycopyin && $curline =~ m/\Q{yabb copyright}\E/xsm ) {
             $yycopyin = 1;
-        }
-        if ( $curline =~ m/\Q{yabb newstitle}\E/xsm && $enable_news ) {
-            $yynewstitle =
-              qq~<b>$maintxt{'102'}:</b>  <span id="newsdiv"></span>~;
-        }
-        my $message = q{};
-        if ( $curline =~ m/\Q{yabb news}\E/xsm && $enable_news ) {
-            srand;
-            if ( $shownewsfader == 1 ) {
-
-                my $fadedelay = ( $maxsteps * $stepdelay );
-                $yynews .= qq~
-                    <script type="text/javascript">
-                        var maxsteps = "$maxsteps";
-                        var stepdelay = "$stepdelay";
-                        var fadelinks = $fadelinks;
-                        var delay = "$fadedelay";
-                        var bcolor = "$color{'faderbg'}";
-                        var tcolor = "$color{'fadertext'}";
-                        var fcontent = new Array();
-                        var begintag = "";
-                    ~;
-                open my $NEWS, '<', "$langdir/English/news.txt"
-                  or croak 'cannot open NEWS';
-                @newsmessages = <$NEWS>;
-                close $NEWS or croak 'cannot close NEWS';
-                for my $j ( 0 .. $#newsmessages ) {
-                    $newsmessages[$j] =~ s/[\r\n]//gxsm;
-                    if ( $newsmessages[$j] eq q{} ) { next; }
-                    if ( $i != 0 ) { $yymain .= qq~\n~; }
-                    $message = $newsmessages[$j];
-                    if ($enable_ubbc) {
-                        enable_yabbc();
-                        do_ubbc();
-                    }
-                    $message =~ s/\x22/\\\x22/gxsm;
-                    $yynews .= qq~
-                                    fcontent[$j] = "$message";\n
-                              ~;
-                }
-                $yynews .= q~
-                            var closetag = '';
-                        </script>
-                        ~;
-            }
-            else {
-                $message = $newsmessages[ int rand @newsmessages ];
-                if ($enable_ubbc) {
-                    enable_yabbc();
-                    do_ubbc();
-                }
-                $message =~ s/\x27/&\x2339;/xsm;
-                $yynews = qq~
-            <script type="text/javascript">
-                if (ie4 || DOM2) var news = '$message';
-                var div = document.getElementById("newsdiv");
-                div.innerHTML = news;
-            </script>~;
-            }
         }
         $curline =~ s/{yabb\s+(\w+)}/${"yy$1"}/gxsm;
         $curline =~

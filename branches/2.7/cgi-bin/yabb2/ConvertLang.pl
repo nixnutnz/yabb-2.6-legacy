@@ -17,7 +17,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
-
+no strict qw(refs);
 #use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
@@ -61,7 +61,6 @@ my $date = time;
 my $buff = 500;    #'refresh' for Members
 my $duff = 100;    #'refresh for Messages
 our $uid = substr $date, length($date) - 3, 3;
-my $yabbversion = 'YaBB 2.7.00';
 ### Requirements and Errors ###
 my $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
@@ -72,16 +71,22 @@ $script_root =~ s/\/ConvertLang[.](pl|cgi)//igxsm;
 
 require Paths;
 
-my $thisscript = "$ENV{'SCRIPT_NAME'}";
+my $convertlang = "$boarddir/ConvertLang";
+our $convvardir = "$boarddir/ConvertLang/Variables";
+our $convdatadir = "$boarddir/ConvertLang/Messages";
+our $convboardsdir = "$boarddir/ConvertLang/Boards";
+our $convmemberdir = "$boarddir/ConvertLang/Members";
+
+my $thisscript = $ENV{'SCRIPT_NAME'};
 my $yyext      = 'pl';
+our $yyexec      = 'YaBB';
+our $yabbversion = 'YaBB 2.7.00';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 my $set_cgi = "ConvertLang.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
-my $convertlang = $boarddir . '/ConvertLang';
-my $lang        = 'ISO-8859-1';
+my $scripturl = "$boardurl/$yyexec.$yyext";
 
-our $yyexec = 'YaBB';
-my $scripturl = "$boardurl/YaBB.$yyext";
+my $lang        = 'ISO-8859-1';
 
 # Make sure the module path is present
 push @INC, "$boarddir/Modules";
@@ -91,7 +96,7 @@ require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
 require Variables::Settings;
-my $upfrom = $FORM{'upfrom'};
+my $upfrom = $INFO{'upfrom'};
 
 opendir my $MBDIR, "$convertlang/Members";
 my @memlista =
@@ -122,14 +127,14 @@ my @tovarsa = grep {
 closedir $VARS;
 my $tovarsa = scalar @tovarsa;
 
-my $maintext_23 = 'Unable to open';
+my $maintext_23 = 'Cannot process';
 #############################################
 # Conversion starts here                    #
 #############################################
 my $px = 'px';
 
-if ( -e "$vardir/Setup.lock" ) {
-    if ( -e "$vardir/ConvertLang.lock" ) {
+if ( -e 'Variables/Setup.lock' ) {
+    if ( -e 'Variables/ConvertLang.lock' ) {
         foundconvertlanglock();
     }
 
@@ -137,8 +142,7 @@ if ( -e "$vardir/Setup.lock" ) {
     tabmenushow();
 
     if ( !$action ) {
-        $yytabmenu =
-          $navlink1 . $navlink2 . $navlink3 . $navlink4 . $navlink5 . $navlink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink4 . $navlink5 . $navlink6;
 
         my $langtxt = q{};
         if ( $upfrom == 1 ) {
@@ -194,9 +198,8 @@ TXT
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. The folder 'ConvertLang' should have been installed with your YaBB 2.7.00 installation. CopyLang should have already been run and copied the files to be converted into the ConvertLang folder.
+                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. The folder 'ConvertLang' should have been installed with your YaBB 2.7.00 installation.
                         <br />Proceed through the following steps to convert your existing data files to UTF-8.
-                        <br /><strong>If your old forum had a custom UTF-8 encoded language pack(s), do not proceed but login to your forum now at <a href="$boardurl/YaBB.$yyext">$mbname</a></strong>
                     </p>
 $langtxt
                 </td>
@@ -223,15 +226,14 @@ INTRO
         $yyim     = q{};
         local $ENV{'HTTP_COOKIE'} = q{};
         $yyuname = q{};
+
         my $minbrds = q{};
         my @langmin = split /\n/xsm, $FORM{'langmin'};
-
         foreach my $j (@langmin) {
             $j =~ tr/\r//d;
             $j =~ tr/\n//d;
             $minbrds .= $j . q{ };
         }
-
         my @langcat = split /\n/xsm, $FORM{'langcat'};
         my $mincats = q{};
 
@@ -263,8 +265,7 @@ EOF
         open my $SETTING, '>', 'Variables/LangSettings.txt'
           or
           setup_fatal_error( "$maintext_23 Variables/LangSettings.txt: ", 1 );
-        print {$SETTING} $langfile
-          or croak 'cannot print SETTING';
+        print {$SETTING} $langfile  or croak 'cannot print SETTING';
         close $SETTING
           or croak 'cannot close SETTING';
 
@@ -303,7 +304,7 @@ EOF
                 </td>
                 <td class="windowbg2 fontbigger">
                   - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
-                   - Some internet connections refresh their IP-Address automatically every 24 hours.<br />
+                  - Some internet connections refresh their IP-Address automatically every 24 hours.<br />
                   &nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion. <br />
                   - Your forum will be set to maintenance while converting.
                   <p>Click on 'Members' in the menu to start.<br />&nbsp;</p>
@@ -313,10 +314,10 @@ EOF
     </div>
 START
         $yymain = $start;
+        prepareconv();
     }
     elsif ( $action eq 'members' ) {
         require 'Variables/LangSettings.txt';
-        if ( !exists $INFO{'mstart1'} ) { prepareconv(); }
 
         $yytabmenu =
             $navlink1
@@ -325,6 +326,17 @@ START
           . $navlink4
           . $navlink5
           . $navlink6;
+
+        opendir my $MBDIR, "$memberdir";
+        my @memlistn =
+  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+        readdir $MBDIR;
+        closedir $MBDIR;
+        my $memnumn = scalar @memlistn;
+        my $memdone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        if ($memnumn > 5) {
+            $memdone = qq~ <span class="important">$memnumn Files Processed</span>. You can now proceed to <strong><a href="$set_cgi?action=cats">Boards</a></strong>~;
+        }
 
         my $memtext = << "MEMBERS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -340,14 +352,14 @@ START
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <p>Member Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
+                <p>Member Conversion. -&gt; $memdone</p>
             </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                 <p>To prevent server time-out due to the number of members to be copied, the conversion may be split into more steps.</p>
+                 <p>To prevent server time-out due to the number of members to be copied, the conversion will take place in a separate window.</p>
             </td>
         </tr>
     </table>
@@ -364,7 +376,16 @@ MEMBERS
           . $navlink4
           . $navlink5
           . $navlink6;
-
+        opendir my $MBDIR, "$boardsdir";
+        my @bdlistn =
+  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+        readdir $MBDIR;
+        closedir $MBDIR;
+        my $brdnumn = scalar @bdlistn;
+        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        if ($brdnumn > 1) {
+            $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=messages">Messages</a></strong>~;
+        }
         my $catstext = << "CATS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -380,14 +401,14 @@ MEMBERS
             </td>
             <td class="windowbg2">
                 <p>Member Conversion done.</p
-                <p>Board &amp; Category Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
+                <p>Board &amp; Category Conversion. -&gt; $brddone</p>
              </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                 <p>To prevent server time-out due to the number of boards to be copied, the conversion may be split into 1 or more steps.</p>
+                 <p>To prevent server time-out due to the number of boards to be copied, the conversion will take place in a separate window.</p>
             </td>
         </tr>
     </table>
@@ -405,7 +426,16 @@ CATS
           . $navlink4a
           . $navlink5
           . $navlink6;
-
+        opendir my $MBDIR, "$datadir";
+        my @bdlistn =
+  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+        readdir $MBDIR;
+        closedir $MBDIR;
+        my $brdnumn = scalar @bdlistn;
+        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        if ($brdnumn > 1) {
+            $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=variables">Variables</a></strong>~;
+        }
         my $messtext = << "MESS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -422,13 +452,14 @@ CATS
            <td class="windowbg2">
                <p>Member Conversion done.</p>
                <p>Board and Category Conversion done.</p>
-               <p>Message Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
+               <p>Message Conversion. -&gt; $brddone</p>
+            </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                 <p>To prevent server time-out due to the number of messages to be copied, the conversion may be split into 1 or more steps.</p>
+                 <p>To prevent server time-out due to the number of messages to be copied, the conversion will take place in a separate window.</p>
             </td>
         </tr>
     </table>
@@ -446,6 +477,16 @@ MESS
           . $navlink4
           . $navlink5a
           . $navlink6;
+       opendir my $VDIR, "$vardir";
+        my @bdlistn =
+  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+        readdir $VDIR;
+        closedir $VDIR;
+        my $brdnumn = scalar @bdlistn;
+        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=variables','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        if ($brdnumn > 5) {
+            $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=cleanup">Finish</a></strong>~;
+        }
 
         my $varstext = <<"VARS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -464,7 +505,7 @@ MESS
                 <p>Member Convert Done.</p>
                 <p>Board and Category Convert Done.</p>
                 <p>Message Convert Done.</p>
-                <p>Variable Conversion. -&gt; <a href="javascript:void(window.open('$set_cgi?action=convert;section=vars','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a></p>
+                <p>Variable Conversion. -&gt; $brddone</p>
             </td>
         </tr>
     </table>
@@ -509,7 +550,7 @@ VARS
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                <p><span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, Check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the error in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br />
+                <p><span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the error in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br />
                 <br />
                 Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
@@ -548,7 +589,7 @@ DONE
         elsif ( $INFO{'section'} eq 'messages' ) {
             convertmessages();
         }
-        elsif ( $INFO{'section'} eq 'vars' ) {
+        elsif ( $INFO{'section'} eq 'variables' ) {
             convertvariables();
         }
     }
@@ -561,6 +602,37 @@ DONE
 # Prepare Conversion ##
 
 sub prepareconv {
+    my @foldercheck = ( $boardsdir, $memberdir, $datadir );
+
+    foreach my $i ( 0 .. $#foldercheck ) {
+        open my $FILE, '>',
+          "$foldercheck[$i]/dummy.testfile"
+          or setup_fatal_error(
+"The CHMOD of the $foldercheck[$i] is not set correctly! Cannot write this directory!",
+            1
+          );
+        print {$FILE} "dummy testfile\n" or croak 'cannot print FILE';
+        close $FILE or croak 'cannot close FILE';
+        opendir my $DIR,
+          "$foldercheck[$i]/"
+          or setup_fatal_error(
+"The CHMOD of the $foldercheck[$i] is not set correctly! Cannot read this directory!",
+            1
+          );
+        my @folderlist = readdir $DIR;
+        closedir $DIR;
+        foreach my $file (@folderlist) {
+            if (   $file ne '.htaccess'
+                && $file ne 'index.html'
+                && $file ne 'forum.control'
+                && $file ne 'admin.vars'
+                && $file ne q{.}
+                && $file ne q{..} )
+            {
+                unlink "$foldercheck[$i]/$file";
+            }
+        }
+    }
     automaintenance('on');
     return;
 }
@@ -572,9 +644,9 @@ sub prepareconv {
 sub convertmembers {
     our (%memberlist);
     my %minmems = ();
+    require "$convvardir/Memberlist.pm";
+    my @mlst = keys %memberlist;
     if (@minpack) {
-        require "$convertlang/Variables/Memberlist.pm";
-        my @mlst = keys %memberlist;
         foreach my $j (@mlst) {
             load_user($j);
             $minmems{$j} = 0;
@@ -586,8 +658,6 @@ sub convertmembers {
         }
     }
     else {
-        require "$convertlang/Variables/Memberlist.pm";
-        my @mlst = keys %memberlist;
         for my $j (@mlst) {
             $minmems{$j} = 0;
         }
@@ -607,6 +677,7 @@ sub convertmembers {
 <body>
 <h1>Language Conversion File Convert - Members</h1>
 <p>~ or croak 'cannot print top';
+    copy "$convvardir/Memberlist.pm", "$vardir/Memberlist.pm";
     if ( -e "$convertlang/Members/broadcast.messages" ) {
         open my $MEMDIR, '<',
           "$convertlang/Members/broadcast.messages"
@@ -624,7 +695,7 @@ sub convertmembers {
           or croak 'cannot print line';
     }
     our %memberinf;
-    require "$convertlang/Variables/Memberinfo.pm";
+    require "$convvardir/Memberinfo.pm";
     my @memfile = keys %memberinf;
     my $langua  = 'ISO-8859-1';
     for my $user (@memfile) {
@@ -652,8 +723,11 @@ sub convertmembers {
     print {$NMEMFILE} $meminfo or croak 'cannot print NMEMFILE';
     close $NMEMFILE or croak "cannot close $NMEMFILE";
     print q~/Variables/Memberinfo.pm done<br />~ or croak 'cannot print line';
+    copy "$convvardir/Memberlist.pm", "$vardir/Memberlist.pm";
+    print q~/Variables/Memberlist.pm done<br />~ or croak 'cannot print line';
 
-    my @xtn = qw(vars msg ims imstore log outbox rlog imdraft pre wait lst);
+    my @xtn = qw(vars msg ims imstore outbox imdraft pre wait);
+    my @xta = qw(log rlog lst);
     if ( $#memlist > $buff ) {
         my $j = int( $#memlist / $buff );
         for my $k ( 0 .. $j ) {
@@ -690,6 +764,11 @@ sub convertmembers {
                           or croak 'cannot print line';
                     }
                 }
+                for my $cnt (@xta) {
+                    if ( -e "$convmemberdir/$memlist[$i].$cnt" ) {
+                        copy "$convmemberdir/$memlist[$i].$cnt", "$memberdir/$memlist[$i].$cnt";
+                    }
+                }
             }
         }
     }
@@ -722,9 +801,15 @@ sub convertmembers {
                       or croak 'cannot print line';
                 }
             }
+            for my $cnt (@xta) {
+                if ( -e "$convmemberdir/$memlist[$i].$cnt" ) {
+                    copy "$convmemberdir/$memlist[$i].$cnt", "$memberdir/$memlist[$i].$cnt";
+                }
+            }
         }
     }
     print q~</p>
+<p>Remember to refresh main page after closing this window.</p>
 <button type="button"
         onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
@@ -934,7 +1019,9 @@ sub convertboards {
         }
         print q~</p>~ or croak 'cannot print line';
     }
-    my @brdtype = qw(txt mail exhits);
+    my @brdext = qw(txt);
+    my @brdexx = qw(mail exhits);
+
     my $lingua  = $lang;
     if ( $#boards > $buff ) {
         my $j = int( $#boards / $buff );
@@ -942,7 +1029,7 @@ sub convertboards {
             print qq~Batch $k<br />~ or croak 'cannot print line';
             my $l = $k * 500;
             for my $i ( $l .. ( $l + $duff ) ) {
-                for my $ext (@brdtype) {
+                for my $ext (@brdext) {
                     if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
                         for (@minbrds) {
                             if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
@@ -974,12 +1061,17 @@ sub convertboards {
                           or croak 'cannot print line';
                     }
                 }
+                for my $ext (@brdexx) {
+                    if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
+                        copy "$convertlang/Boards/$boards[$i].$ext", "$boardsdir/$boards[$i].$ext";
+                    }
+				}
             }
         }
     }
     else {
         for my $i ( 0 .. $#boards ) {
-            for my $ext (@brdtype) {
+            for my $ext (@brdext) {
                 if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
                     for (@minbrds) {
                         if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
@@ -1007,9 +1099,15 @@ sub convertboards {
                       or croak 'cannot print line';
                 }
             }
+            for my $ext (@brdexx) {
+                if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
+                    copy "$convertlang/Boards/$boards[$i].$ext", "$boardsdir/$boards[$i].$ext";
+                }
+            }
         }
     }
     print q~</p>
+    <p>Remember to refresh main page after closing this window.</p>
 <button type="button"
         onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
@@ -1028,7 +1126,8 @@ sub convertmessages {
     my @subboards = sort keys %subboard;
     push @boards, @subboards;
     my $totalbdr  = @boards;
-    my @threadext = qw(txt ctb mail poll polled);
+    my @thrext = qw(txt poll);
+    my @threxx = qw(ctb mail polled);
     print_output_header();
     print qq~<!DOCTYPE html>
 <html lang="utf-8">
@@ -1043,7 +1142,6 @@ sub convertmessages {
 <body>
 <h1>Language Conversion File Convert - Messages</h1>
 <p>~ or croak 'cannot print line';
-
     for my $next_board ( 0 .. $totalbdr ) {
         my $lingua    = $lang;
         my $boardname = $boards[$next_board];
@@ -1070,7 +1168,7 @@ sub convertmessages {
                     for my $tops ( $l .. ( $l + $duff ) ) {
                         my @thread = split /[|]/xsm, $brdmessageline[$tops];
                         my $thread = $thread[0];
-                        for my $ext (@threadext) {
+                        for my $ext (@thrext) {
                             if ( -e "$convertlang/Messages/$thread.$ext" ) {
                                 open my $MSGFILE, '<',
                                   "$convertlang/Messages/$thread.$ext"
@@ -1101,6 +1199,11 @@ sub convertmessages {
                                   or croak 'cannot print line';
                             }
                         }
+						for my $ext (@threxx) {
+							if ( -e "$convertlang/Messages/$thread.$ext" ) {
+								copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
+							}
+						}
                     }
                 }
             }
@@ -1108,7 +1211,7 @@ sub convertmessages {
                 for my $tops ( 0 .. $totalmess ) {
                     my @thread = split /[|]/xsm, $brdmessageline[$tops];
                     my $thread = $thread[0];
-                    for my $ext (@threadext) {
+                    for my $ext (@thrext) {
                         if ( -e "$convertlang/Messages/$thread.$ext" ) {
                             open my $MSGFILE, '<',
                               "$convertlang/Messages/$thread.$ext"
@@ -1139,11 +1242,17 @@ sub convertmessages {
                               or croak 'cannot print line';
                         }
                     }
+					for my $ext (@threxx) {
+						if ( -e "$convertlang/Messages/$thread.$ext" ) {
+							copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
+						}
+					}
                 }
             }
         }
     }
     print q~</p>
+<p>Remember to refresh main page after closing this window.</p>
 <button type="button"
         onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
@@ -1157,9 +1266,13 @@ sub convertmessages {
 
 sub convertvariables {
     require q~Variables/LangSettings.txt~;
-    opendir my $BDIR, "$convertlang/Variables";
-    my @varlist = readdir $BDIR;
-    closedir $BDIR;
+	my @varlist = ();
+    opendir my $VDIR, "$convertlang/Variables";
+	while (my $file = readdir $VDIR ) {
+        next if ( $file =~ m/^\./ || $file eq 'index.html' );
+		push @varlist, $file;   
+    }
+    closedir $VDIR;
     print_output_header();
     print qq~<!DOCTYPE html>
 <html lang="utf-8">
@@ -1176,11 +1289,6 @@ sub convertvariables {
 <p>~ or croak 'cannot print line';
 
     foreach my $file (@varlist) {
-        if (   $file ne '.htaccess'
-            && $file ne 'index.html'
-            && $file ne q{.}
-            && $file ne q{..} )
-        {
             if (   $file ne 'LangSettings.txt'
                 && $file ne 'Memberinfo.pm'
                 && $file ne 'Memberlist.pm' )
@@ -1200,10 +1308,10 @@ sub convertvariables {
                   or croak "cannot print $vardir/$file";
                 close $NEWVAR or croak 'cannot close NEWVAR';
                 print "$vardir/$file done<br />\n" or croak 'cannot print line';
-            }
         }
     }
     print q~</p>
+<p>Remember to refresh main page after closing this window.</p>
 <button type="button"
         onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
@@ -1298,14 +1406,6 @@ sub tempstarter {
         push @INC, $yypath;
     }
 
-    # Requirements and Errors
-    require Variables::Settings;
-    load_cookie();    # Load the user's cookie (or set to guest)
-    load_usersettings();
-    what_template();
-    what_language();
-    require Sources::Security;
-    write_log();
     return;
 }
 
@@ -1396,10 +1496,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     my $curline = q{};
     {
         no strict qw(refs);
-        $yyuname =
-          $iamguest
-          ? q{}
-          : qq~$maintxt{'247'} ${ $uid . $username }{'realname'},~;
+        $yyuname = q{};
         for my $i ( 0 .. $#yytemplate ) {
             $curline .= $yytemplate[$i];
             if ( !$yycopyin

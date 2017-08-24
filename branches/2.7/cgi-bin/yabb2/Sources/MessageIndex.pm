@@ -203,6 +203,7 @@ sub message_index {
           or croak "$croak{'open'} ANN";
         my @tmpanns = <$ANN>;
         fclose('ANN') or croak "$croak{'close'} ANN";
+        chomp @tmpanns;
         foreach my $realanns (@tmpanns) {
             my $threadstatus = ( split /[|]/xsm, $realanns )[8];
             if ( $threadstatus =~ /h/ism && !$staff ) { next; }
@@ -2080,6 +2081,7 @@ sub mark_read {    # Mark all threads in this board as read.
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @threadlist = map { /^(\d+)[|]/xsm } <$BRDTXT>;
     fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
+    chomp @threadlist;
 
     # Loop through @threadlist and delete the corresponding item from %yyuserlog
     foreach (@threadlist) { delete $yyuserlog{"$_--unread"}; }

@@ -225,6 +225,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'announcement_defined'   => q~The forum can only have one board defined as a Global Announcement board~,
 'recycle_bin_defined'    => q~The forum can only have one board defined as a Recycle Bin~,
 'board_defined'          => q~A board with this ID already exists~,
+'no_board_admin'         => q~You cannot use 'admin' as a board ID.~,
 'cat_defined'            => q~A category with this ID already exists~,
 'no_delete_default'      => q~For security reasons you are not allowed to delete or change the 'default' template. You may edit the default template by editing the source. Be sure to have a backup of the file you are editing before editing it.~,
 'invalid_template'       => q~Not a valid Template Name.~,

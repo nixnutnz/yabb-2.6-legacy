@@ -116,7 +116,7 @@ sub validation_check {
         $checker = substr $checker, 0, -$captcha_end_chars;
     }
     if ( $checker ne $checkcode ) {
-        fatal_error('wrong_verification_code',"$checkcode - $checker");
+        fatal_error('wrong_verification_code');
     }
     return;
 }

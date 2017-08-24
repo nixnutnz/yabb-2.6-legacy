@@ -310,9 +310,15 @@ require "$langdir/Lang.lng";
 my $drawnldirs = q{};
 for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
     if ( -e "$langdir/$fld/Main.lng" ) {
-        my $displang = $lngs{$fld};
-        $drawnldirs .=
+        my $displang = $lngs{$fld} || q{Missing Language};
+        if ($displang eq q{Missing Language}) {
+            $drawnldirs .=
+qq~<option disabled="disabled">$displang</option>~;
+        }
+        else {
+            $drawnldirs .=
 qq~<option value="$fld" ${isselected($fld eq $lang)}>$displang</option>~;
+        }
     }
 }
 
@@ -2190,12 +2196,12 @@ qq~<input type="checkbox" name="enable_guest_alert" id="enable_guest_alert" valu
               or croak "$croak{'open'} WELL";
             ${ $_ . '_welcome' } = <$WELL>;
             fclose('WELL') or croak "$croak{'close'} WELL";
-            ( ${$_ . 'lbl_a'}, ${$_ . 'lbl_b'} ) = split /[|]/xsm, ${ $_ . '_welcome' };    
+            ( ${$_ . 'lbl_a'}, ${$_ . 'lbl_b'} ) = split /[|]/xsm, ${ $_ . '_welcome' };
         }
         my $lbl_imsub = $_ . '_welcome_subject';
         my $lbl_imtxt = $_ . '_welcome_txt';
 
-        splice @{ $settings[5]{'items'} }, 8, 0, 
+        splice @{ $settings[5]{'items'} }, 8, 0,
           {
             description =>
               qq~<label for="$lbl_imsub">$imtxt{'36'} - $_</label>~,

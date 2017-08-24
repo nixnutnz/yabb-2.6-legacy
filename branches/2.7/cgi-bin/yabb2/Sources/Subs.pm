@@ -85,7 +85,7 @@ our (
     %fix_img_size,            %templateset,
     $faketruncation,          $enable_quickpost,
     $numposts,                $preregspan,
-    $minlinkpost,             $minlinksig, 
+    $minlinkpost,             $minlinksig,
     $yabbversion,             $year
 );
 ## system ##

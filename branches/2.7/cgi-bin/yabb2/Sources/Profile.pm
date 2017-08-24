@@ -558,7 +558,7 @@ qq~<option value="$d" ${isselected($uday && $uday == $aa)}>$d</option>\n~;
     my $my_show_ext_prof = q{};
     if ($extendedprofiles) {
         require Sources::ExtendedProfiles;
-        $my_show_ext_prof = ext_editprofile( $user, 'edit' );
+        $my_show_ext_prof = ext_editprofile( $user, 'edit' ) || q{};
     }
     my $myrequirebd = q{};
     if ( $birthday_on_reg > 1 ) {
@@ -1120,10 +1120,12 @@ qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'t
     my $drawnldirs = q{};
     for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
         if ( -e "$langdir/$fld/Main.lng" ) {
-            my $displang = $lngs{$fld};
-            $drawnldirs .=
+            if ($lngs{$fld}) {
+                my $displang = $lngs{$fld};
+                $drawnldirs .=
 qq~<option value="$fld" ${isselected(${ $uid . $user }{'language'} eq $fld)}>$displang</option>~;
-            $lngcnt++;
+                $lngcnt++;
+             }
         }
     }
 
@@ -1529,9 +1531,9 @@ qq~\n                        <option value="$ignore_name">$ignore_user</option>~
     my $my_pm_notify = q{};
     if ( $enable_notifications > 1 ) {
         my $my_pm_notifyme =
-          ${ $uid . $user }{'notify_me'} < 2 ? ' selected="selected"' : q{};
+          (${ $uid . $user }{'notify_me'} && ${ $uid . $user }{'notify_me'} < 2) ? ' selected="selected"' : q{};
         my $my_pm_notifyme_2 =
-          ${ $uid . $user }{'notify_me'} > 1 ? ' selected="selected"' : q{};
+          (${ $uid . $user }{'notify_me'} && ${ $uid . $user }{'notify_me'} > 1) ? ' selected="selected"' : q{};
 
         $my_pm_notify = $myprofile_pmnotify;
         $my_pm_notify =~ s/\Q{yabb my_PM_notifyme}\E/$my_pm_notifyme/xsm;
@@ -2658,13 +2660,8 @@ sub modify_profile_options2 {
     {
         fatal_error('invalid_template');
     }
-    if ( !$member{'userlanguage'} ) {
+    if ( !$member{'userlanguage'} || !-e "$langdir/$member{'userlanguage'}/Main.lng" ) {
         $member{'userlanguage'} = $lang;
-    }
-    if ( $member{'userlanguage'}
-        && !-e "$langdir/$member{'userlanguage'}/Main.lng" )
-    {
-        fatal_error('invalid_language');
     }
 
     if ($extendedprofiles) {    # run this before you start to save something!

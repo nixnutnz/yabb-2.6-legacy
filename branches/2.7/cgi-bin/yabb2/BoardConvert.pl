@@ -21,7 +21,7 @@ our $VERSION = '2.7.00';
 our $boardconvertplver = 'YaBB 2.7.00 $Revision$';
 my $yy_iis = 0;
 my $yypath = q{};
-if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
     $yy_iis = 1;
     if ( our $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
@@ -101,6 +101,22 @@ sub convcontrol {
     }
     $newbrds .= qq~\n1;\n~;
     $newbrds =~ s/-/FIX/gxsm;
+    my $brdfix = q{};
+    my $brdfixl = q{};
+    my %hash = ();
+    foreach (@mybrds) {
+        push @{$hash{lc $_}}, $_;
+    }
+    for my $key (keys %hash) {
+        if ( scalar @{$hash{$key}} > 1 ) {
+            foreach (@{$hash{$key}}) {
+                $brdfixl .= qq~$_<br />~;
+            }
+        }
+    }
+    if ( $brdfixl ne q{} ) {
+        $brdfix = qq~<br />There appear to be multiple Boards with the same name when converted to lowercase. If these are not external link boards, these boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
+    }
 
     open my $BOARDCONV, '>', "$vardir/boardconv.txt"
       or croak 'cannot open boardconv.txt';
@@ -109,7 +125,7 @@ sub convcontrol {
 
     my $screen = qq~
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
-        Export of '$boardsdir/forum.control' settings to '$vardir/boardconv.txt' done.
+        Export of '$boardsdir/forum.control' settings to '$vardir/boardconv.txt' done.$brdfix
         <p><a href="$boardurl/YaBB.$yyext">Return to YaBB</a></p>
     </div>
 ~;

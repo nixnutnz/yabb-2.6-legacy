@@ -223,7 +223,7 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
     our $yytabmenu = qq~<ul>\n~;
 
     # Advanced Tabs starts here
-    my ($tab_url);
+    my $tab_url = q{};
     for my $i ( 0 .. $#advanced_tabs ) {
         if ( $advanced_tabs[$i] =~ /[|]/xsm ) {
             my (

@@ -139,8 +139,7 @@ sub rebuild_messageindex {
             }
 
             # set correct board
-            my ($theboard);
-            $theboard =
+            my $theboard =
               exists $thread_boards{$thread}
               ? $thread_boards{$thread}
               : ${$thread}{'board'};
@@ -301,7 +300,7 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
         my @ftotals = <$TOTALS>;
         close $TOTALS or croak "$croak{'close'} TOTALS";
         chomp @ftotals;
-        $ftotals = @ftotals;
+        $ftotals = scalar @ftotals;
 
         if ( !$ftotals ) {
             $msgtot     = 0;
@@ -564,7 +563,7 @@ sub rebuild_memlist {
         # Get the list
         opendir MEMBERS, $memberdir
           or croak "$txt{'230'} ($memberdir) :: $OS_ERROR";
-        my @vars = grep { /.[.]vars$/xsm } readdir MEMBERS;
+        my @vars = grep { /[.]vars$/xsm } readdir MEMBERS;
         closedir MEMBERS;
         foreach (@vars) {
             s/[.]vars$//xsm;
@@ -639,8 +638,8 @@ sub rebuild_memlist {
             push @adminlst, $member;
         }
         if ( $member ne $username ) { undef %{ $uid . $member }; }
+        last if time() > ( $begin_time + $max_process_time );
     }
-    last if time() > ( $begin_time + $max_process_time );
 
     # Save what we have rebuilt so far
     $update = q{};

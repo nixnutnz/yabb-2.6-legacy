@@ -2139,6 +2139,7 @@ sub next_prev {
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @threadlist = <$MSGTXT>;
     fclose('MSGTXT') or croak "$croak{'close'} $currentboard.txt";
+    chomp @threadlist;
 
     my $thevirboard = q~num=~;
     if ($vircurrentboard) {
@@ -2149,6 +2150,7 @@ sub next_prev {
         push @threadlist, @virthreadlist;
         undef @virthreadlist;
         $thevirboard = qq~virboard=$vircurrentboard;num=~;
+        chomp @threadlist;
     }
 
     my ( $countsticky, $countnosticky ) = ( 0, 0 );

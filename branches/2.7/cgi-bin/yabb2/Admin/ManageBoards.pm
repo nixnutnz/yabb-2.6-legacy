@@ -1328,7 +1328,7 @@ sub add_boards2 {
     for my $i ( 1 .. $FORM{'amount'} ) {
         ##### Dealing with Required Info here #####
         if ( !$FORM{"id$i"} ) { next; }
-        my $id = $FORM{"id$i"};
+        my $id = lc $FORM{"id$i"};
         if ( $FORM{"ann$i"} )  { $anncount++; }
         if ( $FORM{"rbin$i"} ) { $rbincount++; }
         if ( $anncount > 1 )   { fatal_error('announcement_defined'); }
@@ -1416,8 +1416,13 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
 
             # adding a board
             # make sure no board already exists with that id
-            if ( exists $board{$id} ) {
+            my %hash = ();
+            $hash{lc $_}++ for (keys %board);
+            if ( exists $hash{$id}  ) {
                 fatal_error( 'board_defined', "$id" );
+            }
+            if ( $id eq 'admin' ) {
+               fatal_error( 'no_board_admin' );
             }
 
 # add to category if it's not a sub board, otherwise add it to subboard list for its parent
@@ -1546,7 +1551,7 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
                 my @boardtomodify = <$BOARDINFO>;
                 fclose('BOARDINFO') or croak "$croak{'close'} BOARDINFO";
                 my $x;
-                if ( $FORM{"ann$i"}
+                if ( $FORM{"ann$i"} && $boardtomodify[0]
                     && ( split /[|]/xsm, $boardtomodify[0] )[8] !~ /a/ixsm )
                 {
                     for my $x ( 0 .. $#boardtomodify ) {
@@ -1668,7 +1673,7 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         my @permchks = qw( moderators moderatorgroups topicperms replyperms pollperms);
         foreach my $chk (@permchks) {
             $FORM{"$chk$i"} ||= q{};
-            $FORM{"$chk$i"} =~ s/,\s*/\//xsm;
+            $FORM{"$chk$i"} =~ s/,\s*/\//gxsm;
         }
         my @frmchks =
           qw( zero ann rbin minage maxage paswwr);

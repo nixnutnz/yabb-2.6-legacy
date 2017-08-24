@@ -396,9 +396,7 @@ qq~<a href="http://www.yabbforum.com" target="_blank">$admintxt{'36'}</a>~;
 qq~<a href="$boardurl/$yyexec.$yyext?action=mycenter" target="_blank">$admin_txt{'usercp'}</a> ~;
     {
         no strict qw(refs);
-        my $realname = ${ $uid . $username }{'realname'} || q{USER};
-        $topmenu_five =~ s/USER/$realname/xsm;
-#        $topmenu_five =~ s/USER/${ $uid . $username }{'realname'}/xsm;
+        $topmenu_five =~ s/USER/${ $uid . $username }{'realname'}/xsm;
     }
 
     if ( $maintenance && $action ne 'detailedversion' ) {

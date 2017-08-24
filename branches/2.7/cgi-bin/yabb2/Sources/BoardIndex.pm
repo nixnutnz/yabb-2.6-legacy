@@ -306,6 +306,7 @@ sub board_index {
               or croak "$croak{'open'} $curboard.txt";
             my @threadlist = <$MNUM>;
             fclose('MNUM') or croak "$croak{'close'} $curboard.txt";
+            chomp @threadlist;
 
             foreach my $i (@threadlist) {
                 my (
@@ -667,7 +668,7 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 %moderators = ();
                 my $curmods = ${ $uid . $curboard }{'mods'} || q{};
 
-                foreach my $curuser ( split /\//xsm, $curmods ) {
+                foreach my $curuser ( split /\//xsm, $curmods || q{} ) {
                     if ( $curuser && $username eq $curuser ) { $iammod = 1; }
                     load_user($curuser);
                     $moderators{$curuser} = ${ $uid . $curuser }{'realname'};
@@ -780,20 +781,22 @@ qq~<img src="$imagesdir/$newload{'brd_old'}" alt="$boardindex_txt{'334'}" title=
 
             # Need to load thread to see lastposters DISPLAYname if is Ex-Member
                         our ($EXMEMBERTHREAD);
-                        fopen( 'EXMEMBERTHREAD', '<',
-                            "$datadir/${$uid.$curboard}{'lastpostid'}.txt" )
-                          or fatal_error( 'cannot_open',
-                            "$datadir/${$uid.$curboard}{'lastpostid'}.txt", 1 );
-                        my @x = <$EXMEMBERTHREAD>;
-                        fclose('EXMEMBERTHREAD')
-                          or croak "$croak{'close'} EXMEMBERTHREAD";
-                        my @lstp = split /[|]/xsm, $x[-1];
-                        if ( $lstp[4] eq 'Guest' ) {
-                            $lastposter = qq~$lstp[1] ($maintxt{'28'})~;
-                        }
-                        else {
-                            $lastposter =
-                              qq~$lstp[1] - $boardindex_txt{'470a'}~;
+                        if ( -e "$datadir/${$uid.$curboard}{'lastpostid'}.txt" ) {
+                            fopen( 'EXMEMBERTHREAD', '<',
+                                "$datadir/${$uid.$curboard}{'lastpostid'}.txt" )
+                              or fatal_error( 'cannot_open',
+                                "$datadir/${$uid.$curboard}{'lastpostid'}.txt", 1 );
+                            my @x = <$EXMEMBERTHREAD>;
+                            fclose('EXMEMBERTHREAD')
+                              or croak "$croak{'close'} EXMEMBERTHREAD";
+                            my @lstp = split /[|]/xsm, $x[-1];
+                            if ( $lstp[4] eq 'Guest' ) {
+                                $lastposter = qq~$lstp[1] ($maintxt{'28'})~;
+                            }
+                            else {
+                                $lastposter =
+                                  qq~$lstp[1] - $boardindex_txt{'470a'}~;
+                            }
                         }
                     }
                 }
@@ -993,10 +996,10 @@ qq~<a href="$scripturl?num=${$uid.$curboard}{'lastpostid'}/${$uid.$curboard}{'la
                         $getpass    = 0;
                     }
                 }
-                if ( ${ $uid . $curboard }{'threadcount'} < 0 ) {
+                if ( !${ $uid . $curboard }{'threadcount'} || ${ $uid . $curboard }{'threadcount'} < 0 ) {
                     ${ $uid . $curboard }{'threadcount'} = 0;
                 }
-                if ( ${ $uid . $curboard }{'messagecount'} < 0 ) {
+                if ( !${ $uid . $curboard }{'messagecount'} || ${ $uid . $curboard }{'messagecount'} < 0 ) {
                     ${ $uid . $curboard }{'messagecount'} = 0;
                 }
                 ${ $uid . $curboard }{'threadcount'} =

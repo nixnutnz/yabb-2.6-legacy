@@ -435,6 +435,7 @@ s/\Q{yabb verification_question_desc}\E/$verification_question_desc/xsm;
     }
     $yymain .= $myregister_endform;
     $yymain =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
+    $yymain =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
     $yymain .= qq~
 <script type="text/javascript">
     document.creator.regusername.focus();

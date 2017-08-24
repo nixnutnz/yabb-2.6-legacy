@@ -381,6 +381,7 @@ function hideMods(id) {
                         ${$txtrevision} =~
                           s/\$Revision: (.*?) \$/Build $1/igxsm;
                     }
+                    else { ${$txtrevision} = 'No revision data';}
                     my $modrevision = lc $filein_dir;
                     $modrevision =~ s/[.]lng/lngmods/igxsm;
                     $modrevision = $flda . $modrevision;

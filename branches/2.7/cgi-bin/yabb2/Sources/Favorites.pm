@@ -144,7 +144,7 @@ sub favorites {
         }
         fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
     }
-
+    chomp @threads;
     my $curfav = @threads;
 
     load_censor_list();
