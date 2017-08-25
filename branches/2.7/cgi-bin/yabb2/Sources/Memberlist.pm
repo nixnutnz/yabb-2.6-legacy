@@ -113,8 +113,8 @@ sub ml {
     }
 
     $FORM{'sortform'} ||=
-      $INFO{'sortform'} || q{};    # Fix for Javascript disabled
-    if ( !$INFO{'sort'} && !$FORM{'sortform'} ) {
+      $INFO{'sort'} || q{};  # Fix for Javascript disabled
+    if ( !$INFO{'sort'} && $FORM{'sortform'} eq q{} ) {
         $INFO{'sort'}     = $defaultml;
         $FORM{'sortform'} = $defaultml;
     }
@@ -139,33 +139,33 @@ qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$lettercla
     foreach my $i (@selchksel) {
         $selchksel{$i} = [ qq~class="$header_class"~, q{} ];
     }
-    if ( $FORM{'sortform'} eq 'posts' || $INFO{'sort'} eq 'posts' ) {
+    if ( $FORM{'sortform'} eq 'posts' || ( $INFO{'sort'} && $INFO{'sort'} eq 'posts' ) ) {
         $selchksel{'posts'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_top();
     }
-    if ( $FORM{'sortform'} eq 'regdate' || $INFO{'sort'} eq 'regdate' ) {
+    if ( $FORM{'sortform'} eq 'regdate' || ( $INFO{'sort'} && $INFO{'sort'} eq 'regdate') ) {
         $selchksel{'regdate'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_date();
     }
-    if ( $FORM{'sortform'} eq 'position' || $INFO{'sort'} eq 'position' ) {
+    if ( $FORM{'sortform'} eq 'position' || ( $INFO{'sort'} && $INFO{'sort'} eq 'position') ) {
         $selchksel{'position'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_position();
     }
     if (   $FORM{'sortform'} eq 'username'
-        || $INFO{'sort'} eq 'mlletter'
-        || $INFO{'sort'} eq 'username' )
+        || $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
+        || $INFO{'sort'} eq 'username' ) )
     {
         $selchksel{'user'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
     }
 
-    if ( $FORM{'sortform'} eq 'memsearch' || $INFO{'sort'} eq 'memsearch' ) {
+    if ( $FORM{'sortform'} eq 'memsearch' || ( $INFO{'sort'} && $INFO{'sort'} eq 'memsearch') ) {
         find_members();
     }
-    if (   $INFO{'sort'} eq q{}
+    if (   !$INFO{'sort'} || $INFO{'sort'} eq q{}
         || $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' )
     {
@@ -191,7 +191,7 @@ sub ml_by_letter {
         $memrealname = decode_utf8($memrealname);
         my $alpha = decode_utf8( $alpha[0] );
         my $omega = decode_utf8( $alpha[-1] );
-        my ($search_name);
+        my $search_name = q{};
         if ($letter) {
             $search_name = lc( substr $memrealname, 0, 1 );
             if ( $search_name eq lc $letter ) {
