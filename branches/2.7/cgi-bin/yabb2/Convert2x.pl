@@ -1118,6 +1118,10 @@ sub convertmembers {
                         push @tags, $1;
                     }
                 }
+                if ( exists ${ $uid . $user }{'im_notify'} ) {
+                    ${ $uid . $user }{'notify_me'} =
+                      ${ $uid . $user }{'im_notify'} ? 3 : 0;
+                }
                 my $newvars =
                   qq~### User variables for ID: $user ###\n\n%vars = (\n~;
                 for my $cnt ( 0 .. $#tags ) {
@@ -2102,7 +2106,7 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
             $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
         }
         $prncal .= qq~\n1;\n~;
-        open my $FILE, '>', 'Variables/Eventcal.pm'
+        open my $FILE, '>', "$vardir/Eventcal.pm"
           or croak "$croak{'open'} Eventcal";
         print {$FILE} $prncal or croak "$croak{'print'} Eventcal";
         close $FILE or croak "$croak{'close'} Eventcal";

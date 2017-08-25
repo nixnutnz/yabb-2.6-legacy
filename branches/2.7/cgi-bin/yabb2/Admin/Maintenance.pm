@@ -1024,22 +1024,22 @@ sub rebuild_notifications {
     }
 
     if ( !%members ) {
-        opendir MEMBNOTIF,
-          $memberdir || fatal_error( 'cannot_open', "$memberdir", 1 );
-        my @mems = grep { /.[.](vars|wait|pre)$/xsm } readdir MEMBNOTIF;
-        for (@mems) {
-            /(.+)[.](vars|wait|pre)$/xsm;
-            if ( $1 && $2 ) {
-                $members{$1} = $2;
-            }
-        }
-        closedir MEMBNOTIF;
-
+        require Variables::Memberlist;
+        %members = %memberlist;
         # get list of board (@bmaildir) and post (@tmaildir) .mail files
-        ( @bmaildir, @tmaildir ) = get_mail_files();
+        opendir BOARDNOT, "$boardsdir";
+        @bmaildir =
+          map { ( split /\./xsm, $_ )[0] } grep { /\.mail$/xsm } readdir BOARDNOT;
+        closedir BOARDNOT;#
+
+        opendir THREADNOT, "$datadir";
+        @tmaildir =
+          map { ( split /\./xsm, $_ )[0] } grep { /\.mail$/xsm } readdir THREADNOT;
+        closedir THREADNOT;
 
         $start_time = $begin_time;
-        $sumuser    = keys %members;
+        my @members = sort keys %members;
+        $sumuser    = @members;
         $sumbo      = @bmaildir;
         $sumthr     = @tmaildir;
         $sumtotal   = $sumuser + $sumbo + $sumthr;
@@ -1054,32 +1054,31 @@ sub rebuild_notifications {
 
     # Loop through each -rest- board-mail
     while (@bmaildir) {
-
-        # board name
         my $myboard = pop @bmaildir;
-
-        # load in hash of name / detail
-        manageboardnotify( 'load', $myboard );
-
-        my @temp = keys %theboard;
+        ##  open mail file and build hash
+        if ( -e "$boardsdir/$myboard.mail" ) {
+            require "$boardsdir/$myboard.mail";
+            }
+        my @tempa = keys %theboard;
         undef %theboard;
-        for my $user (@temp) {
+        for my $user (@tempa) {
+            if ( $user ne $username ) { undef %{ $uid . $user }; }
             if ( !exists $members{$user} ) {
                 manageboardnotify( 'delete', $myboard, $user );
+                    next;
             }
 
             # update Board-Notifications
-            load_user( $user, $members{$user} );
+                load_user( $user);
             my %bb = ();
-            if ( ${ $uid . $user }{'board_notifications'} ) {
-                for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
+            for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} || q{} )
+                {
                     $bb{$_} = 1;
                 }
                 $bb{$myboard} = 1;
                 ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
-                user_account($user);
-            }
 
+#            user_account($user);
             if ( $user ne $username ) { undef %{ $uid . $user }; }
         }
 
@@ -1093,12 +1092,11 @@ sub rebuild_notifications {
 
         # Loop through each -rest- thread-mail
         while (@tmaildir) {
-
-            # number of the thread
             my $mythread = pop @tmaildir;
-
-            # load in hash of name / detail
-            managethreadnotify( 'load', $mythread );
+        ##  open mail file and build hash
+            if ( -e "$datadir/$mythread.mail" ) {
+                require "$datadir/$mythread.mail";
+            }
 
             my @temp = keys %thethread;
             undef %thethread;
@@ -1109,16 +1107,16 @@ sub rebuild_notifications {
                 }
 
                 # update Thread-Notifications
-                load_user( $user, $members{$user} );
-                my %t;
-                for ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} )
+                load_user( $user);
+                my %t = ();
+                for ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} || q{} )
                 {
                     $t{$_} = 1;
                 }
                 $t{$mythread} = 1;
                 ${ $uid . $user }{'thread_notifications'} = join q{,}, keys %t;
-                user_account($user);
 
+                user_account($user);
                 if ( $user ne $username ) { undef %{ $uid . $user }; }
             }
 
@@ -1134,13 +1132,7 @@ sub rebuild_notifications {
         while (@temp) {
             my $user = pop @temp;
 
-            load_user( $user, $members{$user} );
-
-            # update notification method. Not used by YaBB versions >= 2.2.3
-            if ( exists ${ $uid . $user }{'im_notify'} ) {
-                ${ $uid . $user }{'notify_me'} =
-                  ${ $uid . $user }{'im_notify'} ? 3 : 0;
-            }
+            load_user( $user );
 
             # Control Notifications
             my ( %bb, %t );
@@ -1159,8 +1151,8 @@ sub rebuild_notifications {
                 }
                 ${ $uid . $user }{'thread_notifications'} = join q{,}, keys %t;
             }
-            user_account($user);
 
+            user_account($user);
             if ( $user ne $username ) { undef %{ $uid . $user }; }
             delete $members{$user};
 
@@ -1189,7 +1181,7 @@ sub rebuild_notifications {
           "$memberdir/NotificationsRebuild.txt.rebuild"
           or fatal_error( 'cannot_open',
             "$memberdir/NotificationsRebuild.txt.rebuild", 1 );
-        print {$MEMBNOTIF} map { "$_\t$members{$_}\n" } keys %members
+        print {$MEMBNOTIF} map { "$_\t'vars'\n" } keys %members
           or croak "$croak{'print'} MEMBNOTIF";
         close $MEMBNOTIF or croak "$croak{'close'} MEMBNOTIF";
 
@@ -1209,7 +1201,8 @@ sub rebuild_notifications {
           or croak "$croak{'print'} THREADNOTIF";
         close $THREADNOTIF or croak "$croak{'close'} THREADNOTIF";
 
-        my $restuser  = keys %members;
+        my @members = sort keys %members;
+        my $restuser  = @members;
         my $restbo    = @bmaildir;
         my $restthr   = @tmaildir;
         my $resttotal = $restuser + $restbo + $restthr;
