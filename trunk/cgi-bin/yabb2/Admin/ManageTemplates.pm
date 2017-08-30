@@ -476,7 +476,7 @@ s/img src\=\"$tempimages\/(.+?)\"/TmpImgLoc($1, $tempimages, $tempimagesdir)/eis
     $fulltemplate =~
       s/<a href="http:\/\/validator.w3.org\/check\/referer">.+?<\/a>//gsm;
     $fulltemplate =~
-s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\={yabb url}">.+?<\/a>//gsm;
+s/<a href="http:\/\/jigsaw.w3.org\/css\-validator\/validator\?uri\=\{yabb url}">.+?<\/a>//gsm;
     $fulltemplate =~ s/[\n\r]//gxsm;
     ToHTML($fulltemplate);
 

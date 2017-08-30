@@ -541,7 +541,7 @@ sub GmodSettings2 {
 
     my $filler =
 q~                                                                               ~;
-    my $setfile = <<EOF;
+    my $setfile = <<"EOF";
 ### Gmod Related Settings ###
 
 \$allow_gmod_admin = "$FORM{'allow_gmod_admin'}"; #
