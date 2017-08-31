@@ -1178,7 +1178,7 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
                     }
                     $fixfile =~ s/[^\w+\-.:]/_/gxsm;
                 }
-                my $fixname = $fixfile;
+                my $fixname = lc $fixfile;
                 my $fixext  = q{};
                 if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
                     $fixext = $2;

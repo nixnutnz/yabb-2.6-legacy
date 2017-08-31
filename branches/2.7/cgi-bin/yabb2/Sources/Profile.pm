@@ -2526,6 +2526,7 @@ sub modify_profile_options2 {
             $fixfile =~ s/[^\w+\-.:]/_/gxsm;
         }
         $fixfile .= ".$ext";
+        $fixfile = lc $fixfile;
 
         require Sources::SpamCheck;
         my ( $spamdetected, $spamword ) = spamcheck($fixfile);

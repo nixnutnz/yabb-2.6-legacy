@@ -1899,15 +1899,15 @@ sub getbrdpics {
     foreach (@brdpics) {
         my ( $brdnm, $style, $brdpix ) = split /[|]/xsm;
         if ( $brdnm eq $curboard && $template eq $style ) {
-            if ( $brdpix =~ /\//ixsm ) {
+            if ( $brdpix =~ m/[ht|f]tp[s]{0,1}:\/\//ixsm ) {
                 $bdpic = $brdpix;
                 last;
             }
             else {
                 if ( -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpix" ) {
                     $bdpic = qq~$imagesdir/Boards/$brdpix~;
-                }
                 last;
+                }
             }
         }
     }

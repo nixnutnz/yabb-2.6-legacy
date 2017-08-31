@@ -43,7 +43,7 @@ our (
     $yymain,        $yynavigation,  $yysetlocation,     $yytitle,
     %board,         %board_notify,  %cat,               %catinfo,
     %FORM,          %format_unbold, %INFO,              %moved_file,
-    %subboard,      %useraccount,   %yyuserlog,         @categoryorder, 
+    %subboard,      %useraccount,   %yyuserlog,         @categoryorder,
 );
 ## templates ##
 our (
@@ -342,7 +342,9 @@ sub notify4 {
 
 sub update_language {
     my ( $user, $newlang ) = @_;
-    my (@bmaildir, @tmaildir) = get_mail_files();
+    my ($bmaildir, $tmaildir) = get_mail_files();
+    my @bmaildir = @{$bmaildir};
+    my @tmaildir = @{$tmaildir};
     foreach (@bmaildir) {
         manageboardnotify( 'update', $_, $user, $newlang, q{}, q{} );
     }
@@ -354,7 +356,9 @@ sub update_language {
 
 sub remove_notifications {
     my $user_s = shift;
-    my (@bmaildir, @tmaildir) = get_mail_files();
+    my ($bmaildir, $tmaildir) = get_mail_files();
+    my @bmaildir = @{$bmaildir};
+    my @tmaildir = @{$tmaildir};
     foreach (@bmaildir) {
         manageboardnotify( 'delete', $_, $user_s );
     }
@@ -374,7 +378,7 @@ sub get_mail_files {
       map  { ( split /[.]/xsm )[0] }
       grep { /[.]mail$/xsm } readdir THREADNOT;
     closedir THREADNOT;
-    return (@bmaildir, @tmaildir);
+    return (\@bmaildir, \@tmaildir);
 }
 
 sub show_notifications {

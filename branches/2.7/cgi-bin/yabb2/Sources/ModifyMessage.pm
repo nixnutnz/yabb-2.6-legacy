@@ -694,7 +694,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
             }
 
             # replace . with _ in the filename except for the extension
-            my $fixname = $fixfile;
+            my $fixname = lc $fixfile;
             if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
                 $fixext = $2;
             }
@@ -881,7 +881,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
     truncate $ATM, 0;
     seek $ATM, 0, 0;
     print {$ATM}
-      sort { ( split /[|]/xsm, $a )[6] <=> ( split /[|]/xsm, $b )[6] }
+      sort { ( split /[|]/xsm, $a )[6] cmp ( split /[|]/xsm, $b )[6] }
       @attachments
       or croak "$croak{'print'} ATM";
     fclose('ATM') or croak "$croak{'close'} ATM";

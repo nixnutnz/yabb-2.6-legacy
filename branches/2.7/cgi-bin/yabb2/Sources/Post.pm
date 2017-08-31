@@ -1953,7 +1953,7 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
                     }
                     $fixfile =~ s/[^\w+\-.:]/_/gxsm;
                 }
-                my $fixname = $fixfile;
+                my $fixname = lc $fixfile;
                 my $fixext  = q{};
                 if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
                     $fixext = $2;

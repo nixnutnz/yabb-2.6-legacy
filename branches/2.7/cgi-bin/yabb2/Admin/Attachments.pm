@@ -494,7 +494,7 @@ qq~<tr><td class="windowbg2 padd-cell center" colspan="8"><b><i>$fatxt{'48'}</i>
             if ( $sort == 5 || $sort == 6 || $sort == 8 ) {
                 @attachments = sort {
                     ( split /[|]/xsm, $a )[$sort]
-                      <=> ( split /[|]/xsm, $b )[$sort];
+                      cmp ( split /[|]/xsm, $b )[$sort];
                 } @attachinput;    # sort size, date, count numerically
             }
             elsif ( $sort == 100 ) {

@@ -514,6 +514,7 @@ sub delete_boards {
         unlink "$boardsdir/$board.ttl";
         unlink "$boardsdir/$board.poster";
         unlink "$boardsdir/$board.mail";
+        unlink "$boardsdir/$board.exhits";
 
         our ($ATM);
         fopen( 'ATM', '+<', 'Variables/attachments.db' )
@@ -913,7 +914,7 @@ qq~<option value="$genlabel" selected="selected">$admin_txt{$gentext}</option>~;
         else {
             $yymain .= qq~
                         <td class="windowbg2"><label for="id$i"><b>$admin_txt{'61'}</b><br />$admin_txt{'61b'}</label></td>
-                        <td class="windowbg2" colspan="3"><input type="text" name="id$i" id="id$i" /></td>~;
+                        <td class="windowbg2" colspan="3"><input type="text" name="id$i" id="id$i" /><input type="hidden" name="chk$i" id="chk$i" value="1" /></td>~;
         }
         $yymain .= qq~
                     </tr><tr>
@@ -1328,7 +1329,10 @@ sub add_boards2 {
     for my $i ( 1 .. $FORM{'amount'} ) {
         ##### Dealing with Required Info here #####
         if ( !$FORM{"id$i"} ) { next; }
-        my $id = lc $FORM{"id$i"};
+        my $id = $FORM{"id$i"};
+		if ($FORM{"chk$i"}) {
+			$id = lc $FORM{"id$i"};
+		}
         if ( $FORM{"ann$i"} )  { $anncount++; }
         if ( $FORM{"rbin$i"} ) { $rbincount++; }
         if ( $anncount > 1 )   { fatal_error('announcement_defined'); }
@@ -1359,8 +1363,8 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
         }
         elsif ( $FORM{"mypic$i"} ) {
             $newpic = $FORM{"mypic$i"};
-            if ( $newpic !~
-                m{^[\w.\x23%\-:+?\$&~.,@\/]+[.][gif|png|bmp|jpg]$}xsm )
+
+            if ( $newpic !~ m{^[\w.#%-:+?$&~/]+\.(gif|png|jpg|jpeg)$}xsm )
             {
                 fatal_error('invalid_picture');
             }
@@ -1451,7 +1455,7 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
             my $category = ${ $uid . $id }{'cat'};
 
             # move category of board
-            if ( $category ne $FORM{"cat$i"} ) {
+            if ( $category && $category ne $FORM{"cat$i"} ) {
                 ${ $uid . $id }{'cat'} = $FORM{"cat$i"};
 
                 # recursively change the category of child boards.
@@ -1493,7 +1497,7 @@ qq~$htmldir/Templates/Forum/$myimgfolder/Boards/$FORM{"cur_pic$i"}~;
             }
 
             # move parent board of board
-            if ( ${ $uid . $id }{'parent'} ne $FORM{"parent$i"} ) {
+            if ( ${ $uid . $id }{'parent'} && ${ $uid . $id }{'parent'} ne $FORM{"parent$i"} ) {
 
 # if it had a parent, remove it from that list, otherwise it didnt have a parent so remove it from cat list
                 if ( ${ $uid . $id }{'parent'} ) {

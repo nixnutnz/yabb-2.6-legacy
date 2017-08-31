@@ -39,13 +39,15 @@ our (
     $yyuname,     $yypath,          $boarddir,         $vardir,
     $boardsdir,   $memberdir,       @minpack,          @minbrds,
     @mincats,     $datadir,         $lang2,            $yyposition,
-    $time,
+    $time,        %setdone,
 );
 my (
     $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6, $navlink1a,
     $navlink2a, $navlink3a, $navlink5a, $navlink6a, $navlink4, $navlink4a
 );
-my $yyiis = 0;
+
+my $yyiis  = 0;
+my $yypath = q{};
 
 if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
     $yyiis = 1;
@@ -79,7 +81,7 @@ our $convmemberdir = "$boarddir/ConvertLang/Members";
 
 my $thisscript = $ENV{'SCRIPT_NAME'};
 my $yyext      = 'pl';
-our $yyexec      = 'YaBB';
+our $yyexec    = 'YaBB';
 our $yabbversion = 'YaBB 2.7.00';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 my $set_cgi = "ConvertLang.$yyext";
@@ -252,7 +254,7 @@ INTRO
         }
 
         $time = time;
-        my $langfile = << "EOF";
+        my $setfile = << "EOF";
 \$lang = '$FORM{'lang'}';
 \$lang2 = '$FORM{'minlang'}';
 \@minbrds = qw( $minbrds );
@@ -262,12 +264,12 @@ INTRO
 
 1;
 EOF
+
         open my $SETTING, '>', 'Variables/LangSettings.txt'
           or
           setup_fatal_error( "$maintext_23 Variables/LangSettings.txt: ", 1 );
-        print {$SETTING} $langfile  or croak 'cannot print SETTING';
-        close $SETTING
-          or croak 'cannot close SETTING';
+        print {$SETTING} $setfile or croak 'cannot print SETTING';
+        close $SETTING or croak 'cannot close SETTING';
 
         $yytabmenu =
             $navlink1a
@@ -327,14 +329,22 @@ START
           . $navlink5
           . $navlink6;
 
-        opendir my $MBDIR, "$memberdir";
-        my @memlistn =
-  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-        readdir $MBDIR;
-        closedir $MBDIR;
-        my $memnumn = scalar @memlistn;
+        my $memchk = 0;
+        my $memnumn = 0;
+        if (-e 'Variables/ConvVar.txt') {
+            require 'Variables/ConvVar.txt';
+            if ( exists $setdone{'mem'} ) {
+                $memchk = 1;
+                opendir my $MBDIR, "$memberdir";
+                my @memlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+                readdir $MBDIR;
+                closedir $MBDIR;
+                $memnumn = scalar @memlistn;
+            }
+        }
+
         my $memdone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
-        if ($memnumn > 5) {
+        if ($memchk) {
             $memdone = qq~ <span class="important">$memnumn Files Processed</span>. You can now proceed to <strong><a href="$set_cgi?action=cats">Boards</a></strong>~;
         }
 
@@ -346,7 +356,7 @@ START
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -376,14 +386,22 @@ MEMBERS
           . $navlink4
           . $navlink5
           . $navlink6;
-        opendir my $MBDIR, "$boardsdir";
-        my @bdlistn =
-  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-        readdir $MBDIR;
-        closedir $MBDIR;
-        my $brdnumn = scalar @bdlistn;
+
+        my $brdchk = 0;
+        my $brdnumn = 0;
+        if (-e 'Variables/ConvVar.txt') {
+            require 'Variables/ConvVar.txt';
+            if ( $setdone{'brd'} ) {
+                $brdchk = 1;
+                opendir my $MBDIR, "$boardsdir";
+                my @bdlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+                readdir $MBDIR;
+                closedir $MBDIR;
+                $brdnumn = scalar @bdlistn;
+            }
+        }
         my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
-        if ($brdnumn > 1) {
+        if ($brdchk) {
             $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=messages">Messages</a></strong>~;
         }
         my $catstext = << "CATS";
@@ -426,14 +444,23 @@ CATS
           . $navlink4a
           . $navlink5
           . $navlink6;
-        opendir my $MBDIR, "$datadir";
-        my @bdlistn =
-  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-        readdir $MBDIR;
-        closedir $MBDIR;
-        my $brdnumn = scalar @bdlistn;
+
+        my $messchk = 0;
+        my $brdnumn = 0;
+        if (-e 'Variables/ConvVar.txt') {
+            require 'Variables/ConvVar.txt';
+            if ( exists $setdone{'mess'} ) {
+                $messchk = 1;
+                opendir my $MBDIR, "$datadir";
+                my @bdlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+                readdir $MBDIR;
+                closedir $MBDIR;
+                $brdnumn = scalar @bdlistn;
+            }
+        }
+
         my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
-        if ($brdnumn > 1) {
+        if ($messchk) {
             $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=variables">Variables</a></strong>~;
         }
         my $messtext = << "MESS";
@@ -445,11 +472,11 @@ CATS
         </colgroup>
         <tr>
             <td class="titlebg" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
-       </tr><tr>
-           <td class="windowbg center">
-               <img src="$imagesdir/thread.gif" alt="" />
-           </td>
-           <td class="windowbg2">
+        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/thread.gif" alt="" />
+            </td>
+            <td class="windowbg2">
                <p>Member Conversion done.</p>
                <p>Board and Category Conversion done.</p>
                <p>Message Conversion. -&gt; $brddone</p>
@@ -477,14 +504,22 @@ MESS
           . $navlink4
           . $navlink5a
           . $navlink6;
-       opendir my $VDIR, "$vardir";
-        my @bdlistn =
-  grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-        readdir $VDIR;
-        closedir $VDIR;
-        my $brdnumn = scalar @bdlistn;
+
+        my $varchk = 0;
+        my $brdnumn = 0;
+        if (-e 'Variables/ConvVar.txt') {
+            require 'Variables/ConvVar.txt';
+            if ( exists $setdone{'var'} ) {
+                $varchk = 1;
+                opendir my $VDIR, "$vardir";
+                my @bdlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
+                readdir $VDIR;
+                closedir $VDIR;
+                $brdnumn = scalar @bdlistn;
+            }
+        }
         my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=variables','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
-        if ($brdnumn > 5) {
+        if ($varchk) {
             $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=cleanup">Finish</a></strong>~;
         }
 
@@ -668,14 +703,14 @@ sub convertmembers {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion File Convert - Members</title>
+    <title>Language Conversion - Members</title>
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Language Conversion File Convert - Members</h1>
+<h1>Language Conversion - Members</h1>
 <p>~ or croak 'cannot print top';
     copy "$convvardir/Memberlist.pm", "$vardir/Memberlist.pm";
     if ( -e "$convertlang/Members/broadcast.messages" ) {
@@ -760,8 +795,9 @@ sub convertmembers {
                         print {$FILEUSERB} $fileuser
                           or croak "cannot print $FILEUSERB";
                         close $FILEUSERB or croak "cannot close $FILEUSERB";
-                        print qq~/Members/$memlist[$i].$cnt done<br />\n~
-                          or croak 'cannot print line';
+                        if ($cnt eq 'vars') {
+							print qq~/Members/$memlist[$i].$cnt done<br />\n~ or croak 'cannot print line';
+						}
                     }
                 }
                 for my $cnt (@xta) {
@@ -797,8 +833,10 @@ sub convertmembers {
                     print {$FILEUSERB} $fileuser
                       or croak "cannot print $FILEUSERB";
                     close $FILEUSERB or croak "cannot close $FILEUSERB";
-                    print qq~/Members/$memlist[$i].$cnt done<br />\n~
+					if ($cnt eq 'vars') {
+						print qq~/Members/$memlist[$i].$cnt done<br />\n~
                       or croak 'cannot print line';
+					}
                 }
             }
             for my $cnt (@xta) {
@@ -810,10 +848,12 @@ sub convertmembers {
     }
     print q~</p>
 <p>Remember to refresh main page after closing this window.</p>
-<button type="button"
-        onclick="window.open('', '_self', ''); window.close();">Close</button>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
 </html>~ or croak 'cannot print line';
+    open my $VARCH, '>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
+    print {$VARCH} "\$setdone{'mem'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    close $VARCH or croak 'cannot close ConvVar';
     exit;
 }
 
@@ -833,14 +873,14 @@ sub convertboards {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion File Convert - Boards</title>
+    <title>Language Conversion - Boards</title>
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Language Conversion File Convert - Boards</h1>
+<h1>Language Conversion - Boards</h1>
 <p>~ or croak 'cannot print top';
 
     if ( scalar @minbrds > 0 ) {
@@ -1019,6 +1059,9 @@ sub convertboards {
         }
         print q~</p>~ or croak 'cannot print line';
     }
+    if (-e "$convertlang/Boards/brdpics.db") {
+        copy "$convertlang/Boards/brdpics.db", "$boardsdir/brdpics.db";
+    }
     my @brdext = qw(txt);
     my @brdexx = qw(mail exhits);
 
@@ -1065,7 +1108,7 @@ sub convertboards {
                     if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
                         copy "$convertlang/Boards/$boards[$i].$ext", "$boardsdir/$boards[$i].$ext";
                     }
-				}
+                }
             }
         }
     }
@@ -1108,10 +1151,12 @@ sub convertboards {
     }
     print q~</p>
     <p>Remember to refresh main page after closing this window.</p>
-<button type="button"
-        onclick="window.open('', '_self', ''); window.close();">Close</button>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
 </html>~ or croak 'cannot print bot';
+    open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
+    print {$VARCH} "\$setdone{'brd'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    close $VARCH or croak 'cannot close ConvVar';
 
     exit;
 }
@@ -1133,14 +1178,14 @@ sub convertmessages {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion File Convert - Messages</title>
+    <title>Language Conversion - Messages</title>
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Language Conversion File Convert - Messages</h1>
+<h1>Language Conversion - Messages</h1>
 <p>~ or croak 'cannot print line';
     for my $next_board ( 0 .. $totalbdr ) {
         my $lingua    = $lang;
@@ -1199,11 +1244,11 @@ sub convertmessages {
                                   or croak 'cannot print line';
                             }
                         }
-						for my $ext (@threxx) {
-							if ( -e "$convertlang/Messages/$thread.$ext" ) {
-								copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
-							}
-						}
+                        for my $ext (@threxx) {
+                            if ( -e "$convertlang/Messages/$thread.$ext" ) {
+                                copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
+                            }
+                        }
                     }
                 }
             }
@@ -1242,21 +1287,23 @@ sub convertmessages {
                               or croak 'cannot print line';
                         }
                     }
-					for my $ext (@threxx) {
-						if ( -e "$convertlang/Messages/$thread.$ext" ) {
-							copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
-						}
-					}
+                    for my $ext (@threxx) {
+                        if ( -e "$convertlang/Messages/$thread.$ext" ) {
+                            copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
+                        }
+                    }
                 }
             }
         }
     }
     print q~</p>
 <p>Remember to refresh main page after closing this window.</p>
-<button type="button"
-        onclick="window.open('', '_self', ''); window.close();">Close</button>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
 </html>~ or croak 'cannot print line';
+    open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
+    print {$VARCH} "\$setdone{'mess'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    close $VARCH or croak 'cannot close ConvVar';
     exit;
 }
 
@@ -1266,11 +1313,11 @@ sub convertmessages {
 
 sub convertvariables {
     require q~Variables/LangSettings.txt~;
-	my @varlist = ();
+    my @varlist = ();
     opendir my $VDIR, "$convertlang/Variables";
-	while (my $file = readdir $VDIR ) {
+    while (my $file = readdir $VDIR ) {
         next if ( $file =~ m/^\./ || $file eq 'index.html' );
-		push @varlist, $file;   
+        push @varlist, $file;
     }
     closedir $VDIR;
     print_output_header();
@@ -1278,14 +1325,14 @@ sub convertvariables {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion File Convert - Variables</title>
+    <title>Language Conversion - Variables</title>
     <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body style="min-width: 280px;">
-<h1>Language Conversion File Convert - Variables</h1>
+<h1>Language Conversion - Variables</h1>
 <p>~ or croak 'cannot print line';
 
     foreach my $file (@varlist) {
@@ -1302,21 +1349,23 @@ sub convertvariables {
                     $oldvar = ansi($oldvar);
                 }
                 $oldvar = encode( 'utf8', decode( $lang, $oldvar ) );
-                open my $NEWVAR, '>', "$vardir/$file"
+                open my $NEWVAR, '>', "Variables/$file"
                   or croak 'cannot open NEWVAR';
                 print {$NEWVAR} $oldvar
-                  or croak "cannot print $vardir/$file";
+                  or croak "cannot print Variables/$file";
                 close $NEWVAR or croak 'cannot close NEWVAR';
-                print "$vardir/$file done<br />\n" or croak 'cannot print line';
+                print "Variables/$file done<br />\n" or croak 'cannot print line';
         }
     }
     print q~</p>
 <p>Remember to refresh main page after closing this window.</p>
-<button type="button"
-        onclick="window.open('', '_self', ''); window.close();">Close</button>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
 </body>
 </html>~ or croak 'cannot print line';
 
+    open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
+    print {$VARCH} "\$setdone{'var'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    close $VARCH or croak 'cannot close ConvVar';
     exit;
 }
 
@@ -1340,7 +1389,7 @@ sub foundconvertlanglock {
     require Sources::TabMenu;
     my $fixa = q{};
     my $fixa2 =
-qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/ConvertLang.lock," then re-visit this page.~;
+qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/ConvertLang.lock" and the file"$vardir/ConvVar.txt" then re-visit this page.~;
 
     $formsession = cloak("$mbname$username");
     if ( !-e "$vardir/ConvertLang.lock" ) {

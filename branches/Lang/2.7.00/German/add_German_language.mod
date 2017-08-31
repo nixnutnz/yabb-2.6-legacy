@@ -3,16 +3,16 @@ Add German Language for YaBB 2.7.00
 </id>
 
 <version>
-0.2
+0.3
 </version>
 
 <mod info>
-This mod adds the internal references for the German Language Pack.
-Note: The German Language pack must be uploaded first.
+This mod adds the 2.7 German Language Pack.
 
 Version History
 ---------------
 0.1 - First release - Feb 18, 2016
+0.3 - Mod language corrections - Aug 24, 2017
 
 Instructions:
 
@@ -36,7 +36,7 @@ Admin/ModList.pm
 </search for>
 
 <add before>
-    my $add_german = q~Add German Language for YaBB 2.7.00|Dandello|This mod adds the internal references for the German Language Pack.|0.2|3/09/2017~;
+    my $add_german = q~Add German Language for YaBB 2.7.00|Dandello|This mod adds the German Language Pack.|0.3|8/24/2017~;
     push @installed_mods, $add_german;
 </add before>
 

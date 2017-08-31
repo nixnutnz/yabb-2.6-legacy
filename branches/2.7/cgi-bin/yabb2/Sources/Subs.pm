@@ -297,6 +297,7 @@ sub print_html_output_and_finish {
         }
     }
     else {
+        $output =~ s/[^\x00-\xFF]//gxsm;
         print $output or croak "$croak{'print'} output";
     }
     exit;
@@ -3391,13 +3392,13 @@ sub sizefont {
     ## limit minimum and maximum font pitch as CSS does not restrict it at all. ##
     ## converted to percent of css keyword: 'small' for 2.7.00. ##
     my ( $tsize, $ttext ) = @_;
-    if ( !$fontsizemax ) { $fontsizemax = 600; }
-    if ( !$fontsizemin ) { $fontsizemin = 55; }
+    $fontsizemax ||= 600;
+    $fontsizemin ||= 55;
     if ( $tsize < 55 ) {
-        $tsize = int( $tsize / 12 * 100 );
+        $tsize = ( 100 * $tsize ) / 12;
     }
-    if    ( $tsize < $fontsizemin ) { $tsize = $fontsizemin; }
-    elsif ( $tsize > $fontsizemax ) { $tsize = $fontsizemax; }
+    if    ( $tsize <= $fontsizemin ) { $tsize = $fontsizemin; }
+    elsif ( $tsize >= $fontsizemax ) { $tsize = $fontsizemax; }
     return qq~<span style="font-size: ${tsize}%;">$ttext</span><!--size-->~;
 }
 
@@ -3630,7 +3631,7 @@ sub upload_file {
             }
         }
 
-        my $fixname = $fixfile;
+        my $fixname = lc $fixfile;
         my $fixext  = q{};
         if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
             $fixext = $2;

@@ -460,6 +460,7 @@ sub DeleteBoards {
         unlink "$boardsdir/$board.ttl";
         unlink "$boardsdir/$board.poster";
         unlink "$boardsdir/$board.mail";
+        unlink "$boardsdir/$board.exhits";
 
         fopen( ATM, "+<$vardir/attachments.txt", 1 );
         seek ATM, 0, 0;

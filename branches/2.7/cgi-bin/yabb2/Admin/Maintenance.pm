@@ -41,7 +41,7 @@ our (
     $max_process_time, $OS_ERROR,      $uid,          $username,
     $yymain,           $yysetlocation, $yytitle,      %FORM,
     %INFO,             %memberlist,    %newmemberinf, %theboard,
-    %thethread
+    %thethread,        %vars
 );
 
 load_language('Admin');
@@ -605,7 +605,7 @@ sub rebuild_memlist {
         if (
             !${ $uid . $member }{'position'}
             || (   !$grp_staff{ ${ $uid . $member }{'position'} }
-                && !exists $grp_nopost{ ${ $uid . $member }{'position'} } )
+                && !$grp_nopost{ ${ $uid . $member }{'position'} } )
           )
         {
             ${ $uid . $member }{'position'} = q{};
@@ -662,7 +662,7 @@ sub rebuild_memlist {
     print {$MEMBERINFO} $update or croak "$croak{'print'} MEMBERINFO";
     close $MEMBERINFO or croak "$croak{'close'} MEMBERINBFO";
 
-## For New Backup permissions ##
+## For Backup permissions ##
     my $newadminlist = join "\n", @adminlst;
     open my $ADMINLST, '>', "$vardir/adminlst.db"
       or croak "$croak{'open'} ADMINLST";
@@ -968,13 +968,13 @@ $rebuild_txt{'2'} <a href="$adminurl?action=rebuildmemhist" onclick="clearMeminf
 sub rebuild_notifications {
     is_admin_or_gmod();
     automaintenance('on');
-
+    require Variables::Memberlist;
     # Set up the multi-step action
     my $begin_time = time;
-    my ( %members, $sumuser, $sumbo, $sumthr, $sumtotal, $start_time,
-        $exitloop );
+    my ( $sumuser, $sumbo, $sumthr, $sumtotal, $start_time,
+        $exitloop, %brdmail, %thrmail, %members );
     require Sources::Notify;
-    my ( @bmaildir, @tmaildir );
+
     if ( -e "$memberdir/NotificationsRebuild.txt.rebuild"
         && ( -M "$memberdir/NotificationsRebuild.txt.rebuild" ) < 1 )
     {
@@ -1004,17 +1004,28 @@ sub rebuild_notifications {
           "$boardsdir/NotificationsBmaildir.txt.rebuild"
           or fatal_error( 'cannot_open',
             "$boardsdir/NotificationsBmaildir.txt.rebuild", 1 );
-        @bmaildir = <$BOARDNOTIF>;
+        my @bmailarr = <$BOARDNOTIF>;
         close $BOARDNOTIF or croak "$croak{'close'} BOARDNOTIF";
-        chomp @bmaildir;
+        chomp @bmailarr;
+        @bmailarr = reverse sort @bmailarr;
+        foreach my $i (@bmailarr) {
+            my @getarr = split /\t/xsm, $i;
+            my @newarr = split /,/xsm, $getarr[1];
+            $brdmail{$getarr[0]} = [@newarr];
+        }
 
         open my $THREADNOTIF, '<',
           "$datadir/NotificationsTmaildir.txt.rebuild"
           or fatal_error( 'cannot_open',
             "$datadir/NotificationsTmaildir.txt.rebuild", 1 );
-        @tmaildir = <$THREADNOTIF>;
+        my @tmailarr = <$THREADNOTIF>;
         close $THREADNOTIF or croak "$croak{'close'} THREADNOTIF";
-        chomp @tmaildir;
+        chomp @tmailarr;
+        foreach my $i (@tmailarr) {
+            my @getarr = split /\t/xsm, $i;
+            my @newarr = split /,/xsm, $getarr[1];
+            $thrmail{$getarr[0]} = [@newarr];
+        }
     }
     else {
         unlink "$memberdir/NotificationsRebuild.txt.rebuild";
@@ -1024,24 +1035,51 @@ sub rebuild_notifications {
     }
 
     if ( !%members ) {
-        require Variables::Memberlist;
         %members = %memberlist;
-        # get list of board (@bmaildir) and post (@tmaildir) .mail files
-        opendir BOARDNOT, "$boardsdir";
-        @bmaildir =
-          map { ( split /\./xsm, $_ )[0] } grep { /\.mail$/xsm } readdir BOARDNOT;
-        closedir BOARDNOT;#
-
-        opendir THREADNOT, "$datadir";
-        @tmaildir =
-          map { ( split /\./xsm, $_ )[0] } grep { /\.mail$/xsm } readdir THREADNOT;
-        closedir THREADNOT;
+        my ($bmaildir, $tmaildir ) = get_mail_files();
+        my @bmaildir = reverse sort @{$bmaildir};
+        for my $myboard(@bmaildir) {
+            if ( -e "$boardsdir/$myboard.mail" ) {
+                require "$boardsdir/$myboard.mail";
+                my @temp = sort keys %theboard;
+                undef %theboard;
+                foreach my $u (@temp) {
+                    my @myboard = ();
+                    if ( !exists $brdmail{$u} ) {
+                        $brdmail{$u} = [$myboard];
+                    }
+                    else {
+                        @myboard = @{$brdmail{$u}};
+                        push @myboard, $myboard;
+                        $brdmail{$u} = [@myboard];
+                    }
+                }
+            }
+        }
+        my @tmaildir = reverse sort @{$tmaildir};
+        for my $mythread(@tmaildir) {
+            if ( -e "$datadir/$mythread.mail" ) {
+                require "$datadir/$mythread.mail";
+                my @temp = sort keys %thethread;
+                undef %thethread;
+                foreach my $u (@temp) {
+                    my @mythread = ();
+                    if ( !exists $thrmail{$u} ) {
+                        $thrmail{$u} = [$mythread];
+                    }
+                    else {
+                        @mythread = @{$thrmail{$u}};
+                        push @mythread, $mythread;
+                        $thrmail{$u} = [@mythread];
+                    }
+                }
+            }
+        }
 
         $start_time = $begin_time;
-        my @members = sort keys %members;
-        $sumuser    = @members;
-        $sumbo      = @bmaildir;
-        $sumthr     = @tmaildir;
+        $sumuser    = keys %members;
+        $sumbo      = keys %brdmail;
+        $sumthr     = keys %thrmail;
         $sumtotal   = $sumuser + $sumbo + $sumthr;
         open my $CALCNOTIF, '>',
           "$vardir/NotificationsCalc.txt.rebuild"
@@ -1053,73 +1091,40 @@ sub rebuild_notifications {
     }
 
     # Loop through each -rest- board-mail
-    while (@bmaildir) {
-        my $myboard = pop @bmaildir;
-        ##  open mail file and build hash
-        if ( -e "$boardsdir/$myboard.mail" ) {
-            require "$boardsdir/$myboard.mail";
-            }
-        my @tempa = keys %theboard;
-        undef %theboard;
-        for my $user (@tempa) {
-            if ( $user ne $username ) { undef %{ $uid . $user }; }
-            if ( !exists $members{$user} ) {
-                manageboardnotify( 'delete', $myboard, $user );
-                    next;
-            }
-
-            # update Board-Notifications
-                load_user( $user);
-            my %bb = ();
-            for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} || q{} )
-                {
-                    $bb{$_} = 1;
-                }
-                $bb{$myboard} = 1;
-                ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
-
-#            user_account($user);
-            if ( $user ne $username ) { undef %{ $uid . $user }; }
-        }
-
-        if ( time() > ( $begin_time + $max_process_time ) ) {
-            $exitloop = 1;
-            last;
-        }
-    }
-
     if ( !$exitloop ) {
-
-        # Loop through each -rest- thread-mail
-        while (@tmaildir) {
-            my $mythread = pop @tmaildir;
-        ##  open mail file and build hash
-            if ( -e "$datadir/$mythread.mail" ) {
-                require "$datadir/$mythread.mail";
-            }
-
-            my @temp = keys %thethread;
-            undef %thethread;
-            for my $user (@temp) {
-                if ( !exists $members{$user} ) {
-                    managethreadnotify( 'delete', $mythread, $user );
-                    next;
+        for my $u (sort keys %brdmail) {
+            if ( !-e "$memberdir/$u.vars" ) {
+                foreach my $i ( @{ $brdmail{$u} } ) {
+                    manageboardnotify( 'delete', $i, $u );
                 }
-
-                # update Thread-Notifications
-                load_user( $user);
-                my %t = ();
-                for ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} || q{} )
-                {
-                    $t{$_} = 1;
-                }
-                $t{$mythread} = 1;
-                ${ $uid . $user }{'thread_notifications'} = join q{,}, keys %t;
-
-                user_account($user);
-                if ( $user ne $username ) { undef %{ $uid . $user }; }
             }
-
+            else {
+                require "$memberdir/$u.vars";
+                %{ $uid . $u } = %vars;
+                my $realname = 'not loaded';
+                my $boardnot = 'not loaded';
+                my %bb = ();
+                if (%{ $uid . $u }) {
+                    for ( split /,/xsm, ${ $uid . $u }{'board_notifications'} || q{} )
+                    {
+                        $bb{$_} = 1;
+                    }
+                    for (@{ $brdmail{$u} }){
+                        $bb{$_} = 1;
+                    }
+                    $realname = ${ $uid . $u }{'realname'};
+                    ${ $uid . $u }{'board_notifications'} = join q{,}, keys %bb;
+                    $boardnot = ${ $uid . $u }{'board_notifications'};
+                     user_account($u);
+                }
+#                open my $CHECKER, '>>', "$vardir/checkera.txt" or fatal_error( 'cannot_open', 'checkera.txt', 1 );
+#                print {$CHECKER} "'$u'\t'$realname'\t'$boardnot'\n" or croak "$croak{'print'} CHECKER";
+#                close $CHECKER or croak "$croak{'close'} CHECKER";
+                undef %bb;
+                undef %vars;
+            }
+            delete $brdmail{$u};
+            if ( $u ne $username ) { undef %{ $uid . $u }; }
             if ( time() > ( $begin_time + $max_process_time ) ) {
                 $exitloop = 1;
                 last;
@@ -1128,34 +1133,94 @@ sub rebuild_notifications {
     }
 
     if ( !$exitloop ) {
-        my @temp = keys %members;
-        while (@temp) {
-            my $user = pop @temp;
 
-            load_user( $user );
-
-            # Control Notifications
-            my ( %bb, %t );
-            if ( ${ $uid . $user }{'board_notifications'} ) {
-                for ( split /,/xsm, ${ $uid . $user }{'board_notifications'} ) {
-                    manageboardnotify( 'load', $_ );
-                    if ( $theboard{$user} ) { $bb{$_} = 1; }
+        # Loop through each -rest- thread-mail
+        for my $u (sort keys %thrmail) {
+            if ( !-e "$memberdir/$u.vars" ) {
+                foreach my $i ( @{ $thrmail{$u} } ) {
+                    managethreadnotify( 'delete', $i, $u );
                 }
-                ${ $uid . $user }{'board_notifications'} = join q{,}, keys %bb;
             }
-            if ( ${ $uid . $user }{'thread_notifications'} ) {
-                for ( split /,/xsm, ${ $uid . $user }{'thread_notifications'} )
-                {
-                    managethreadnotify( 'load', $_ );
-                    if ( $thethread{$user} ) { $t{$_} = 1; }
+            else {
+                require "$memberdir/$u.vars";
+                %{ $uid . $u } = %vars;
+                my $realname = 'not loaded';
+                my $threadnot = 'not loaded';
+                my %t = ();
+                if (%{ $uid . $u }) {
+                    for ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} || q{} )
+                    {
+                        $t{$_} = 1;
+                    }
+                    for ( @{ $thrmail{$u} } ){
+                        $t{$_} = 1;
+                    }
+                    $realname = ${ $uid . $u }{'realname'};
+                    ${ $uid . $u }{'thread_notifications'} = join q{,}, keys %t;
+                    $threadnot = ${ $uid . $u }{'thread_notifications'};
+                    user_account($u);
+                    undef %t;
+                    undef %vars;
                 }
-                ${ $uid . $user }{'thread_notifications'} = join q{,}, keys %t;
+#                open my $CHECKER, '>>', "$vardir/checkerb.txt" or fatal_error( 'cannot_open', 'checkerb.txt', 1 );
+#                print {$CHECKER} "'$u'\t'$realname'\t'$threadnot'\n" or croak "$croak{'print'} CHECKER";
+#                close $CHECKER or croak "$croak{'close'} CHECKER";
+
             }
+            delete $thrmail{$u};
+            if ( $u ne $username ) { undef %{ $uid . $u }; }
+            if ( time() > ( $begin_time + $max_process_time ) ) {
+                $exitloop = 1;
+                last;
+            }
+        }
+    }
 
-            user_account($user);
-            if ( $user ne $username ) { undef %{ $uid . $user }; }
-            delete $members{$user};
+    if ( !$exitloop ) {
+        for my $u( sort keys %members) {
+            my $realname = 'name not loaded';
+            my $brdnot = 'boards not loaded';
+            my $threadnot = 'threads not loaded';
+            if (-e "$memberdir/$u.vars") {
+                require "$memberdir/$u.vars";
+                %{ $uid . $u } = %vars;
+                # Control Notifications
+                my %bb = ();
+                my %t = ();
+                if (%{ $uid . $u } ) {
+                    if (${ $uid . $u }{'board_notifications'} ) {
+                        for ( split /,/xsm, ${ $uid . $u }{'board_notifications'} ) {
+                            if ( -e "$boardsdir/$_.mail" ) {
+                                require "$boardsdir/$_.mail";
+                                if ( exists $theboard{$u} ) { $bb{$_} = 1; }
+                            }
+                        }
+                    }
+                    if (${ $uid . $u }{'thread_notifications'}) {
+                        for ( split /,/xsm, ${ $uid . $u }{'thread_notifications'} ) {
+                            if ( -e "$datadir/$_.mail" ) {
+                                require "$datadir/$_.mail";
+                                if ( exists $thethread{$u} ) { $t{$_} = 1; }
+                            }
+                        }
+                    }
+                    ${ $uid . $u }{'board_notifications'} = join q{,}, keys %bb;
+                    ${ $uid . $u }{'thread_notifications'} = join q{,}, keys %t;
+                    $realname = ${ $uid . $u }{'realname'};
+                    $brdnot = ${ $uid . $u }{'board_notifications'};
+                    $threadnot = ${ $uid . $u }{'thread_notifications'};
+                    undef %bb;
+                    undef %t;
+                    undef %vars;
 
+                    user_account($u);
+                }
+#                open my $CHECKER, '>>', "$vardir/checkermem.txt" or fatal_error( 'cannot_open', 'checkermem.txt', 1 );
+#                print {$CHECKER} "'$u'\t'$realname'\t'$brdnot'\t'$threadnot'\n" or croak "$croak{'print'} CHECKER";
+#                close $CHECKER or croak "$croak{'close'} CHECKER";
+            }
+            delete $members{$u};
+            if ( $u ne $username ) { undef %{ $uid . $u }; }
             if ( time() > ( $begin_time + $max_process_time ) ) {
                 $exitloop = 1;
                 last;
@@ -1185,26 +1250,33 @@ sub rebuild_notifications {
           or croak "$croak{'print'} MEMBNOTIF";
         close $MEMBNOTIF or croak "$croak{'close'} MEMBNOTIF";
 
+        my $brddarr = q{};
+        for my $i (keys %brdmail) {
+            my $arr = join q{,}, @{$brdmail{$i}};
+            $brddarr .=  "$i\t$arr\n";
+        }
         open my $BOARDNOTIF, '>',
           "$boardsdir/NotificationsBmaildir.txt.rebuild"
           or fatal_error( 'cannot_open',
             "$boardsdir/NotificationsBmaildir.txt.rebuild", 1 );
-        print {$BOARDNOTIF} map { "$_\n" } @bmaildir
-          or croak "$croak{'print'} BOARDNOTIF";
+        print {$BOARDNOTIF} $brddarr or croak "$croak{'print'} BOARDNOTIF";
         close $BOARDNOTIF or croak "$croak{'close'} BOARDNOTIF";
 
+        my $thrdarr = q{};
+        for my $i (keys %thrmail) {
+            my $arr = join q{,}, @{$thrmail{$i}};
+            $thrdarr .=  "$i\t$arr\n";
+        }
         open my $THREADNOTIF, '>',
           "$datadir/NotificationsTmaildir.txt.rebuild"
           or fatal_error( 'cannot_open',
             "$datadir/NotificationsTmaildir.txt.rebuild", 1 );
-        print {$THREADNOTIF} map { "$_\n" } @tmaildir
-          or croak "$croak{'print'} THREADNOTIF";
+        print {$THREADNOTIF} $thrdarr or croak "$croak{'print'} THREADNOTIF";
         close $THREADNOTIF or croak "$croak{'close'} THREADNOTIF";
 
-        my @members = sort keys %members;
-        my $restuser  = @members;
-        my $restbo    = @bmaildir;
-        my $restthr   = @tmaildir;
+        my $restuser  = keys %members;
+        my $restbo    = keys %brdmail;;
+        my $restthr   = keys %thrmail;
         my $resttotal = $restuser + $restbo + $restthr;
 
         my $run_time = int( time() - $start_time );

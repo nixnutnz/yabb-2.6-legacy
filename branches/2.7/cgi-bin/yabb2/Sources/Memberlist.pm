@@ -471,15 +471,16 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$my_user
             }
             else {
                 if ( !$iamguest ) {
+                    my $email = ${ $uid . $user }{'email'} || $img_txt{'69'};
                     $lock = enc_email(
 qq~<img src="$micon_bg{'email'}" alt="$img_txt{'69'}" title="~
                           . (
                             $iamadmin
-                            ? ${ $uid . $user }{'email'}
+                            ? $email
                             : $img_txt{'69'}
                           )
                           . q~" />~,
-                        ${ $uid . $user }{'email'},
+                        $email,
                         q{}, q{}
                     );
                 }

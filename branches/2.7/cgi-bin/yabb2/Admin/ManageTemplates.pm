@@ -1931,7 +1931,7 @@ sub upload_file2 {
         }
 
         # replace . with _ in the filename except for the extension
-        my $fixname = $fixfile;
+        my $fixname = lc $fixfile;
         if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
             $fixext = $2;
         }

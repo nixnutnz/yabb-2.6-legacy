@@ -27,7 +27,7 @@ use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 our $convert2xplver = 'YaBB 2.7.00 $Revision$';
-our $yabbversion = 'YaBB 2.7.00';
+our $yabbversion    = 'YaBB 2.7.00';
 our (
     $action,                $AdMaxCalMessLen,      $AdMaxIMMessLen,
     $adomains,              $bdomains,             $bm_subcut,
@@ -63,6 +63,23 @@ our (
     @SmilieLinebreak,       @SmilieURL,
 );
 
+our (
+    $boardurl,     $vardir,      $imagesdir,  $datadir,
+    $boardsdir,    $memberdir,   $langdir,    $htmldir,
+    $templatesdir, $yyhtml_root, $uploaddir,  $pmuploaddir,
+    $facesdir,     $boarddir,    $smiliesdir, $boardpixdir
+);
+our (
+    $convlang,      $convertdir,     $convboardsdir, $convmemberdir,
+    $convdatadir,   $convvardir,     $convattachdir, $convpmattachdir,
+    $convavatardir, $convsmiliesdir, $convboardpixdir
+);
+my (
+    $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6,
+    $navlink1a, $navlink2a, $navlink3a, $navlink5a, $navlink6a,
+    $intro,     $brdfix,    $memfix,
+);
+
 my $yyiis  = 0;
 my $yypath = q{};
 
@@ -78,7 +95,8 @@ if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
 
 my $max_process_time = 20;
 my $time_to_jump     = time() + $max_process_time;
-
+my $date             = time;
+my $lim              = 500;
 ### Requirements and Errors ###
 my $script_root = $ENV{'SCRIPT_FILENAME'};
 if ( !$script_root ) {
@@ -86,29 +104,18 @@ if ( !$script_root ) {
     $script_root =~ s/\\/\//gxsm;
 }
 $script_root =~ s/\/Convert2x[.](pl|cgi)//igxsm;
-our (
-    $boardurl,  $vardir,      $imagesdir, $datadir,      $boardsdir,
-    $memberdir, $langdir,     $htmldir,   $templatesdir, $yyhtml_root,
-    $uploaddir, $pmuploaddir, $facesdir,  $boarddir
-);
-our $smiliesdir = $htmldir .'/Smilies';
-our (
-    $convlang,      $convertdir,      $convboardsdir,
-    $convmemberdir, $convdatadir,     $convvardir,
-    $convattachdir, $convpmattachdir, $convavatardir, $convsmiliesdir
-);
+
 if ( -e './Paths.pm' ) { require Paths; }
 else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 
 my $thisscript = $ENV{'SCRIPT_NAME'};
 my $yyext      = 'pl';
+our $yyexec = 'YaBB';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
-my $set_cgi    = "Convert2x.$yyext";
+my $set_cgi = "Convert2x.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/Convert2x.$yyext"; }
-my $convert     = "$boarddir/Convert";
-
-our $yyexec  = 'YaBB';
-my $scripturl = "$boardurl/YaBB.$yyext";
+my $convert   = "$boarddir/Convert";
+my $scripturl = "$boardurl/$yyexec.$yyext";
 
 # Make sure the module path is present
 push @INC, "$boarddir/Modules";
@@ -118,21 +125,21 @@ require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
 
-my $date           = time;
-my $maintext_23    = 'Cannot process';
 my $convtext       = q{};
 my $convset        = q{};
 my $convseta       = q{};
 my $forumstarttext = q{};
 our $formsession = q{};
+my $maintext_23 = 'Cannot process';
+
+$smiliesdir  = "$htmldir/Smilies";
+$boardpixdir = "$htmldir/Templates/Forum/default/Board";
+
 #############################################
 # Conversion starts here                    #
 #############################################
 my $px = 'px';
-my (
-    $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6, $navlink1a,
-    $navlink2a, $navlink3a, $navlink5a, $navlink6a, $intro, $brdfix
-);
+
 if ( -e "$vardir/Setup.lock" ) {
     if ( -e "$vardir/ConvertLang.lock" ) {
         foundconvertlanglock();
@@ -160,25 +167,28 @@ if ( -e "$vardir/Setup.lock" ) {
                 </td>
                 <td class="windowbg2 fontbigger">
                     <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods or Languages, install the 2.7 versions - if available - before converting your old forum.
+                        <br /><strong>Set the default language of your old forum to English.</strong>
                         <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
                         <br />In the event your old forum had 'Activate .htaccess to add IP blocks on server level?' activated in Guardian, go to "The Guardian&trade; Setup" in the Admin Center of <strong>your old forum</strong> and copy the lists of items being blocked. You will need these to rebuild your IP blocks in .htaccess once the conversion is finished.
-                        <br />In the event your old forum had additional language packs installed, <strong>set the default language of your old forum to English</strong>.
                     </p>
                     <p>Put your old forum into Maintenance Mode and do all necessary maintenance on your <strong>old forum</strong>.</p>
-                    <p>Proceed through the following steps to convert your YaBB 2x forum to YaBB 2.7.<br />
+                    <p>Proceed through the following steps to import and convert your YaBB 2x forum to YaBB 2.7.<br />
                     <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.7 installation:
                     <ol>
                         <li>Insert the paths to your YaBB 2x forum folders in the input fields below - do <strong>not</strong> include trailing slash (/)</li>
                         <li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li>
-                        <li>Also fill in the paths to your old attachments, PMattachments, Smilies, and UserAvatars folders.</li>
+                        <li>Also fill in the paths to your old Attachments, PMattachments, Smilies, and avatars/UserAvatars folders.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
                     <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.7 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
                     <ol>
                         <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.7 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
-                        <li><strong>Do not fill in the paths for your old attachments, PMattachments, Smilies, and member avatars folders.</strong>  You will need copy any attachments, PMattachments, Smilies, and member avatars from their old locations into their equivalent folders in your 2.7 installation.</li>
+                        <li><strong>Do not fill in the paths for your old Attachments, PMattachments, Smilies, and avatars/UserAvatars folders.</strong>  You will need copy any attachments, PMattachments, Smilies, and avatars/UserAvatars from their old locations into their equivalent folders in your 2.7 installation.</li>
                         <li>Click on the 'Continue' button</li>
                     </ol>
+                    <p class="fontbigger"><strong>Do you need to convert your files to UTF-8?</strong> Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.
+                        <br /><strong>If the box below is checked, the UTF-8 conversion process must be completed before you can use your imported/converted forum.</strong>
+                        <br />Convert to UTF-8: <input type="checkbox" name="convertlang" checked="checked" value="1" /></p>
                     <table style="width:auto; margin-left:0">
                         <colgroup>
                             <col style="width:auto" />
@@ -214,11 +224,11 @@ if ( -e "$vardir/Setup.lock" ) {
                         </tr><tr>
                             <td><label for="convavatardir"><b>Path to your YaBB 2x member avatars (\$facesdir): </b></label></td>
                             <td><input type="text" id="convavatardir" name="convavatardir" value="" size="50" /></td>
+                        </tr><tr>
+                            <td><label for="convboardpixdir"><b>Path to your YaBB 2x Board Pics (Forum default only): </b></label></td>
+                            <td><input type="text" id="convboardpixdir" name="convboardpixdir" value="" size="50" /></td>
                         </tr>
                     </table>
-                    <p class="fontbigger"><strong>Do you need to convert your files to UTF-8?</strong> Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.
-                        <br /><strong>If the box below is checked, the UTF-8 conversion process must be completed before you can use your converted forum.</strong>
-                        <br />Convert to UTF-8: <input type="checkbox" name="convertlang" checked="checked" value="1" /></p>
                 </td>
             </tr><tr>
                 <td class="catbg center" colspan="2">
@@ -246,6 +256,7 @@ oFormObject.elements["convattachdir"].value = htmlval + "/Attachments";
 oFormObject.elements["convpmattachdir"].value = htmlval + "/PMAttachments";
 oFormObject.elements["convsmiliesdir"].value = htmlval + "/Smilies";
 oFormObject.elements["convavatardir"].value = htmlval + "/avatars";
+oFormObject.elements["convboardpixdir"].value = htmlval + "Templates/Forum/default/Boards";
 }
 </script>
 INTRO
@@ -274,6 +285,7 @@ INTRO
         $convpmattachdir = $FORM{'convpmattachdir'} || q{};
         $convsmiliesdir  = $FORM{'convsmiliesdir'} || q{};
         $convavatardir   = $FORM{'convavatardir'} || q{};
+        $convboardpixdir = $FORM{'convboardpixdir'} || q{};
         if ( !-d $convboardsdir ) {
             setup_fatal_error( "Directory: $convboardsdir", 1 );
         }
@@ -304,6 +316,9 @@ INTRO
         if ( $convavatardir ne q{} && !-d $convavatardir ) {
             setup_fatal_error( "Directory: $convavatardir", 1 );
         }
+        if ( $convboardpixdir ne q{} && !-d $convboardpixdir ) {
+            setup_fatal_error( "Directory: $convboardpixdir", 1 );
+        }
 
         my $setfile = << "EOF";
 \$convertdir = q~$convertdir~;
@@ -316,6 +331,8 @@ INTRO
 \$convattachdir = q~$convattachdir~;
 \$convpmattachdir = q~$convpmattachdir~;
 \$convavatardir = q~$convavatardir~;
+\$convsmiliesdir = q~$convsmiliesdir~;
+\$convboardpixdir = q~$convboardpixdir~;
 
 1;
 EOF
@@ -323,8 +340,7 @@ EOF
         open my $SETTING, '>', 'Variables/ConvSettings.txt'
           or
           setup_fatal_error( "$maintext_23 Variables/ConvSettings.txt: ", 1 );
-        print {$SETTING} nicely_aligned_file($setfile)
-          or croak 'cannot print SETTING';
+        print {$SETTING} $setfile or croak 'cannot print SETTING';
         close $SETTING or croak 'cannot close SETTING';
 
         $yytabmenu = $navlink1a . $navlink2 . $navlink3 . $navlink5 . $navlink6;
@@ -337,7 +353,7 @@ EOF
                 <col style="width:95%" />
             </colgroup>
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+                <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
@@ -391,7 +407,7 @@ START
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -457,7 +473,7 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -486,6 +502,8 @@ MEMBERS1
                     The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
                     The last step took <i>~
           . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.
+                    <br />
+                    Possible data issues: $memfix<br />
                     <br />
                     Conversion has taken <i>~
           . int( ( $INFO{'st'} + 60 ) / 60 ) . q~ minutes</i>.
@@ -520,6 +538,7 @@ MEMBERS1
         require q~Variables/ConvSettings.txt~;
         if ($convlang) {
             $boardsdir = "$boarddir/ConvertLang/Boards";
+            $vardir    = "$boarddir/ConvertLang/Variables";
         }
         if ( !exists $INFO{'bstart'} ) {
             moveboards();
@@ -537,7 +556,7 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -606,7 +625,7 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -666,9 +685,9 @@ MEMBERS1
     }
     elsif ( $action eq 'messages' ) {
         require q~Variables/ConvSettings.txt~;
-        if ( $convlang) {
+        if ($convlang) {
             $boardsdir = "$boarddir/ConvertLang/Boards";
-            $datadir = "$boarddir/ConvertLang/Messages";
+            $datadir   = "$boarddir/ConvertLang/Messages";
         }
         movemessages();
 
@@ -757,7 +776,7 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -826,20 +845,31 @@ MEMBERS1
 
     elsif ( $action eq 'cleanup' ) {
         require q~Variables/ConvSettings.txt~;
-        if ( $convlang) {
+        if ($convlang) {
             $vardir = "$boarddir/ConvertLang/Variables";
         }
         movevariables();
         fixnopost();
+        getbadmem();
         $formsession = cloak("$mbname$username");
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
-
+        my $fixn = q{};
+        if ( -e "$vardir/datacheck.txt" ) {
+            if ($convlang) {
+                $fixn =
+qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/ConvertLang/Variables/datacheck.txt">datacheck.txt</a> for more details.~;
+            }
+            else {
+                $fixn =
+qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/Variables/datacheck.txt">datacheck.txt</a> for more details.~;
+            }
+        }
         $convtext .=
-q~<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents. ~;
+qq~$fixn<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents. ~;
         my $finish = q{};
         if ($convlang) {
-            $convset = qq~
+            $convset = qq~$fixn
                 <form action="$boardurl/ConvertLang.$yyext" method="post" style="display: inline;">
                     <input type="submit" value="Go to Convert Language" />
                     <input type="hidden" name="formsession" value="$formsession" />
@@ -847,8 +877,9 @@ q~<br /><br />After you have tested your forum and made sure everything was conv
         }
         else {
             $convset =
-q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
-            $finish = q~                <br />Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
+qq~$fixn<br/>                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
+            $finish =
+q~                <br />Furthermore, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
                 - Recount Board Totals<br />
                 - Rebuild Members List<br />
@@ -859,13 +890,13 @@ q~                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
                 - Attachment Functions => Rebuild Attachments<br />
                 Also, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.~;
         }
-        my $checkattach = checkattach();
         $INFO{'st'} ||= 0;
+        my $checkattach = checkattach();
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
@@ -910,18 +941,26 @@ $convset
 
         createconvlock();
     }
+    elsif ( $action eq 'convert' ) {
+        if ( $INFO{'section'} eq 'getatt' ) {
+            getattfiles();
+        }
+        elsif ( $INFO{'section'} eq 'getpmatt' ) {
+            getpmattfiles();
+        }
+    }
 
-    $yyim    = 'You are running the YaBB 2.7.00 Converter.';
-    $yytitle = 'YaBB 2.7.00 Converter';
+    $yyim    = 'You are running the YaBB 2.7.00 Importer/Converter.';
+    $yytitle = 'YaBB 2.7.00 Importer/Converter';
     setuptemplate();
 }
 
 # Prepare Conversion ##
 
 sub prepareconv {
-    if ( $convlang) {
+    if ($convlang) {
         $memberdir = "$boarddir/ConvertLang/Members";
-        $datadir = "$boarddir/ConvertLang/Messages";
+        $datadir   = "$boarddir/ConvertLang/Messages";
         $boardsdir = "$boarddir/ConvertLang/Boards";
     }
     my @foldercheck = ( $boardsdir, $memberdir, $datadir );
@@ -956,12 +995,6 @@ sub prepareconv {
         }
     }
     automaintenance('on');
-    if (   $convattachdir ne q{}
-        || $convpmattachdir ne q{}
-        || $convavatardir ne q{} )
-    {
-        copyattach();
-    }
     return;
 }
 
@@ -971,7 +1004,7 @@ sub prepareconv {
 
 sub convertmembers {
     if ($convlang) {
-        $vardir = "$boarddir/ConvertLang/Variables";
+        $vardir    = "$boarddir/ConvertLang/Variables";
         $memberdir = "$boarddir/ConvertLang/Members";
     }
     open my $MEMDIR, '<', "$convmemberdir/memberlist.txt"
@@ -1125,13 +1158,19 @@ sub convertmembers {
                 my $newvars =
                   qq~### User variables for ID: $user ###\n\n%vars = (\n~;
                 for my $cnt ( 0 .. $#tags ) {
-                    if ( $tags[$cnt] ne 'password' )
-                    {
+                    if ( $tags[$cnt] ne 'password' ) {
                         ${ $uid . $user }{ $tags[$cnt] } =~ s/~/\\~/gxsm;
                     }
+                    if ( $tags[$cnt] eq 'password' ) {
+                        ${ $uid . $user }{ $tags[$cnt] } =~ s/~//gxsm;
+                        if (${ $uid . $user }{ $tags[$cnt] } eq q{}) {
+                            ${ $uid . $user }{ $tags[$cnt] }
+                        }
+
+                    }
                     if ( $tags[$cnt] ne 'lastonline' ) {
-                    $newvars .=
-                      qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
+                        $newvars .=
+qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                     }
                 }
                 $newvars .= qq~);\n\n1;\n~;
@@ -1198,7 +1237,7 @@ sub convertmembers {
                         for my $message (@messages) {
 
                  # If the message is flagged as u(nopened), add to the new count
-                            if ( ( split /[|]/xsm, $message )[12] =~ /u/sm ) {
+                            if ( ( split /[|]/xsm, $message )[12] =~ /u/xsm ) {
                                 $inunr++;
                             }
                         }
@@ -1338,6 +1377,41 @@ sub convertmembers {
             redirectexit();
         }
     }
+    return $memfix;
+}
+
+sub getbadmem {
+    $memfix = q{};
+    my %memhash = ();
+    my $memfixl = q{};
+    our %memberinf;
+    require "$vardir/Memberinfo.pm";
+    foreach ( keys %memberinf ) {
+        push @{ $memhash{ lc $_ } }, $_;
+        if ( !${ $memberinf{$_} }[1] || ${ $memberinf{$_} }[1] eq q{} ) {
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX} "'$_' -> 'no e-mail'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
+        }
+    }
+    for my $key ( keys %memhash ) {
+        if ( scalar @{ $memhash{$key} } > 1 ) {
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX} "'multiple members - possible data loss:'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
+            foreach ( @{ $memhash{$key} } ) {
+                $memfixl .= qq~$_<br />~;
+                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
+            }
+        }
+    }
     return;
 }
 
@@ -1346,46 +1420,46 @@ sub convertmembers {
 # Board + Category Conversion ##
 
 sub moveboards {
-    our (@categoryorder, %cat, %catinfo, %board, %subboard);
+    our ( @categoryorder, %cat, %catinfo, %board, %subboard );
     require "$convboardsdir/forum.master";
     my $newforum = qq~\$mloaded = 1;\n~;
     my @catorder = undupe(@categoryorder);
     my $catlist  = join q{ }, @catorder;
     $newforum .= qq~\@categoryorder = qw($catlist);\n~;
     while ( my ( $key, $value ) = each %cat ) {
-        my @val2   = split /,/xsm, $value;
+        my @val2 = split /,/xsm, $value;
         foreach (@val2) {
-            if ( $_ eq 'admin') {$_ = 'admin_fix';}
+            if ( $_ eq 'admin' ) { $_ = 'admin_fix'; }
         }
-        my $val2   = join q{', '}, @val2;
+        my $val2 = join q{', '}, @val2;
         $newforum .= qq~\$cat{'$key'} = ['$val2'];\n~;
     }
     while ( my ( $key, $value ) = each %catinfo ) {
         $value =~ s/\$/\\\$/gxsm;
         $value =~ s/'/&#39;/gxsm;
-        my @val2   = split /[|]/xsm, $value;
+        my @val2 = split /[|]/xsm, $value;
         my @mods = split /,\s/xsm, $val2[1];
-        $val2[1] = join q{/},@mods;
+        $val2[1] = join q{/}, @mods;
         my $values = join q{', '}, @val2;
         $newforum .= qq~\$catinfo{'$key'} = ['$values'];\n~;
     }
     while ( my ( $key, $value ) = each %board ) {
-        if ( $key eq 'admin') {$key = 'admin_fix';}
+        if ( $key eq 'admin' ) { $key = 'admin_fix'; }
         $value =~ s/\$/\\\$/gxsm;
         $value =~ s/'/&#39;/gxsm;
         my @val2 = split /[|]/xsm, $value;
         my @mods = split /,\s/xsm, $val2[1];
         $val2[1] = join q{/}, @mods;
-        my $val2   = join q{', '}, @val2;
+        my $val2 = join q{', '}, @val2;
         $newforum .= qq~\$board{'$key'} = ['$val2'];\n~;
     }
     while ( my ( $key, $value ) = each %subboard ) {
-        if ( $key eq 'admin') {$key = 'admin_fix';}
-        my @val2   = split /[|]/xsm, $value;
+        if ( $key eq 'admin' ) { $key = 'admin_fix'; }
+        my @val2 = split /[|]/xsm, $value;
         foreach (@val2) {
-            if ( $_ eq 'admin') {$_ = 'admin_fix';}
+            if ( $_ eq 'admin' ) { $_ = 'admin_fix'; }
         }
-        my $val2   = join q{', '}, @val2;
+        my $val2 = join q{', '}, @val2;
         $newforum .= qq~\$subboard{'$key'} = ['$val2'];\n~;
     }
     $newforum .= qq~\n1;~;
@@ -1405,7 +1479,7 @@ sub moveboards {
     my %totals = ();
     foreach my $cnt (@ftotals) {
         my @tconv = split /[|]/xsm, $cnt;
-        if ( $tconv[0] eq 'admin' ) {$tconv[0] = 'admin_fix';}
+        if ( $tconv[0] eq 'admin' ) { $tconv[0] = 'admin_fix'; }
         $tconv[7] =~ s/'/&#39;/gxsm;
         $totals{ $tconv[0] } = [
             $tconv[1], $tconv[2], $tconv[3], $tconv[4], $tconv[5],
@@ -1422,7 +1496,8 @@ sub moveboards {
     my $prnlines = join q{}, @boardtotals;
     $prnlines .= qq~\n1;\n\n~;
 
-    open my $FORUMTOTALS, '>', "$boardsdir/forum.totals" or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
+    open my $FORUMTOTALS, '>', "$boardsdir/forum.totals"
+      or fatal_error( 'cannot_open', "$boardsdir/forum.totals", 1 );
     print {$FORUMTOTALS} $prnlines
       or croak "$croak{'print'} FORUMTOTALS";
     close $FORUMTOTALS or croak "$croak{'close'} forum.totals";
@@ -1435,7 +1510,7 @@ sub moveboards {
 
     for my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
         for my $ext (@brdtype) {
-            if ( $boards[$i] eq 'admin_fix') {$boards[$i] = 'admin';}
+            if ( $boards[$i] eq 'admin_fix' ) { $boards[$i] = 'admin'; }
             if ( -e "$convboardsdir/$boards[$i].$ext" ) {
                 open my $BOARDFILE, '<',
                   "$convboardsdir/$boards[$i].$ext"
@@ -1446,24 +1521,26 @@ sub moveboards {
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
                 if ( $ext ne 'mail' ) {
                     my $newbrd = join qq~\n~, @brdinfo;
-                    if ( $boards[$i] eq 'admin') { $boards[$i] = 'admin_fix'; }
+                    if ( $boards[$i] eq 'admin' ) { $boards[$i] = 'admin_fix'; }
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                       or croak 'cannot open NEWBRD';
                     print {$NEWBRD} $newbrd or croak 'cannot print NEWBRD';
                     close $NEWBRD or croak 'cannot close NEWBRD';
                 }
                 else {
-                    my %theboard =();
-                    my $prnbrd = q{};
+                    my %theboard = ();
+                    my $prnbrd   = q{};
                     foreach my $line (@brdinfo) {
-                        my ( $key, $value) = split /\t/xsm, $line;
-                        my ( $memlang, $memtype, $memview ) = split /[|]/xsm, $value;
+                        my ( $key, $value ) = split /\t/xsm, $line;
+                        my ( $memlang, $memtype, $memview ) = split /[|]/xsm,
+                          $value;
                         if ($memlang) {
-                            $prnbrd .= qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
+                            $prnbrd .=
+qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
                         }
                     }
                     $prnbrd .= "\n1;\n";
-                    if ( $boards[$i] eq 'admin') {$boards[$i] = 'admin_fix';}
+                    if ( $boards[$i] eq 'admin' ) { $boards[$i] = 'admin_fix'; }
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                       or croak 'cannot open NEWBRD';
                     print {$NEWBRD} $prnbrd or croak 'cannot print NEWBRD';
@@ -1492,35 +1569,34 @@ sub fixcontrol {
         require qq~$convvardir/boardconv.txt~;
         for my $i (@allboards) {
             my $x = $i;
-            if ($x eq 'admin') { $x = 'admin_fix'; }
+            if ( $x eq 'admin' ) { $x = 'admin_fix'; }
             ${$x}{'mypic'} = q{};
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
             ${$x}{'mods'} =~ s/,\s/\//gxsm;
             ${$x}{'modgroups'} =~ s/,\s/\//gxsm;
             $newcontrol{$i} = [
-                ${$x}{'cat'},         ${$x}{'mypic'},
-                ${$x}{'description'}, ${$x}{'mods'},
-                ${$x}{'modgroups'},   ${$x}{'topicperms'},
-                ${$x}{'replyperms'},  ${$x}{'pollperms'},
-                ${$x}{'zero'},
-                ${$x}{'ann'},         ${$x}{'rbin'},
-                ${$x}{'attperms'},    ${$x}{'minageperms'},
-                ${$x}{'maxageperms'}, ${$x}{'genderperms'},
-                ${$x}{'canpost'},     ${$x}{'parent'},
-                ${$x}{'rules'},       ${$x}{'rulestitle'},
-                ${$x}{'rulesdesc'},   ${$x}{'rulescollapse'},
-                ${$x}{'brdpasswr'},   ${$x}{'brdpassw'},
-                ${$x}{'brdrss'}
+                ${$x}{'cat'},           ${$x}{'mypic'},
+                ${$x}{'description'},   ${$x}{'mods'},
+                ${$x}{'modgroups'},     ${$x}{'topicperms'},
+                ${$x}{'replyperms'},    ${$x}{'pollperms'},
+                ${$x}{'zero'},          ${$x}{'ann'},
+                ${$x}{'rbin'},          ${$x}{'attperms'},
+                ${$x}{'minageperms'},   ${$x}{'maxageperms'},
+                ${$x}{'genderperms'},   ${$x}{'canpost'},
+                ${$x}{'parent'},        ${$x}{'rules'},
+                ${$x}{'rulestitle'},    ${$x}{'rulesdesc'},
+                ${$x}{'rulescollapse'}, ${$x}{'brdpasswr'},
+                ${$x}{'brdpassw'},      ${$x}{'brdrss'}
             ];
             if ( ${$x}{'pic'} ) {
-                $brdpix .= qq~$i|default|${$x}{'pic'}\n~;
+                $brdpix .= qq~$i|Forum default|${$x}{'pic'}\n~;
             }
         }
     }
     else {
         open my $OLDFORUMCONTROL, '<', "$convboardsdir/forum.control"
-          or setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ",
-            1 );
+          or
+          setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
         my @oldboardcontrols = <$OLDFORUMCONTROL>;
         close $OLDFORUMCONTROL or croak 'cannot close OLDFORMCONTROL';
 
@@ -1537,50 +1613,77 @@ sub fixcontrol {
             ) = split /[|]/xsm;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
-            if ($oldboard eq 'admin') { $oldboard = 'admin_fix'; }
+            if ( $oldboard eq 'admin' ) { $oldboard = 'admin_fix'; }
             $mods =~ s/,\s/\//gxsm;
             $modgroups =~ s/,\s/\//gxsm;
             $topicperms =~ s/,\s/\//gxsm;
             $replyperms =~ s/,\s/\//gxsm;
             $pollperms =~ s/,\s/\//gxsm;
+            $description =~ s/\'/&#39;/gxsm;
             $newcontrol{$oldboard} = [
-                $cat,       $mypic,         $description, $mods,
-                $modgroups, $topicperms,    $replyperms,  $pollperms,
-                $zero,      $ann,           $rbin,
-                $attperms,  $minageperms,   $maxageperms, $genderperms,
-                $canpost,   $parent,        $rules,       $rulestitle,
-                $rulesdesc, $rulescollapse, $brdpasswr,   $brdpassw,
-                $brdrss
+                $cat,           $mypic,       $description, $mods,
+                $modgroups,     $topicperms,  $replyperms,  $pollperms,
+                $zero,          $ann,         $rbin,        $attperms,
+                $minageperms,   $maxageperms, $genderperms, $canpost,
+                $parent,        $rules,       $rulestitle,  $rulesdesc,
+                $rulescollapse, $brdpasswr,   $brdpassw,    $brdrss
             ];
+
             if ($pic) {
-                $brdpix .= qq~$oldboard|default|$pic\n~;
+                $brdpix .= qq~$oldboard|Forum default|$pic\n~;
             }
         }
     }
+    $brdpix =~ s/FIX/-/gxsm;
+    if ( -e "$convboardsdir/brdpics.db" ) {
+        copy "$convboardsdir/brdpics.db", "$boardsdir/brdpics.db";
+    }
+    else {
+        open my $BRDPIC, '>', "$boardsdir/brdpics.db"
+          or croak 'cannot open BRDIC';
+        print {$BRDPIC} $brdpix or croak 'cannot print BRDPIC';
+        close $BRDPIC or croak 'cannot close BRDPIC';
+    }
     $brdfix = q{};
-    my $brdfixl = q{};
-    my %hash = ();
+    my $brdfixl  = q{};
+    my %hash     = ();
     my $adminbrd = q{};
-    foreach (keys %newcontrol) {
-        push @{$hash{lc $_}}, $_;
-        if ( $_ eq 'admin_fix') {
-            $adminbrd = q~<br />There was a board named 'admin'. That board has been renamed to 'admin_fix'.~;
+    foreach ( keys %newcontrol ) {
+        push @{ $hash{ lc $_ } }, $_;
+        if ( $_ eq 'admin_fix' ) {
+            $adminbrd =
+q~<br />There was a board named 'admin'. That board has been renamed to 'admin_fix'.~;
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX} "'admin' -> 'admin_fix'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
         }
     }
-    for my $key (keys %hash) {
-        if ( scalar @{$hash{$key}} > 1 ) {
-            foreach (@{$hash{$key}}) {
+    for my $key ( keys %hash ) {
+        if ( scalar @{ $hash{$key} } > 1 ) {
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX} "'multiple boards - possible data loss:'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
+            foreach ( @{ $hash{$key} } ) {
                 $brdfixl .= qq~$_<br />~;
+                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
             }
         }
     }
     if ( $brdfixl ne q{} ) {
-        $brdfix = qq~<br />There appear to be multiple Boards with this name (converted to lowercase). If these are not external link boards, these boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
+        $brdfix =
+qq~<br />There appear to be multiple Boards with this name (converted to lowercase). If these are not external link boards, these boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
     }
-    $brdfix .= $adminbrd ;
+    $brdfix .= $adminbrd;
     my @boardcontrol = ();
     foreach my $cnt ( sort keys %newcontrol ) {
-        if ($cnt eq 'admin') { $cnt = 'admin_fix'; }
+        if ( $cnt eq 'admin' ) { $cnt = 'admin_fix'; }
         if ( $cnt ne 'brdpasswr' ) {
             $newcontrol{$cnt} =~ s/'/&#39;/gxsm;
         }
@@ -1598,11 +1701,6 @@ sub fixcontrol {
       or croak 'cannot print FORUMCONTROL';
     close $FORUMCONTROL or croak 'cannot close FORUMCONTROL';
 
-    $brdpix =~ s/FIX/-/gxsm;
-    open my $BRDPIC, '>', "$boardsdir/brdpics.db" or croak 'cannot open BRDIC';
-    print {$BRDPIC} $brdpix or croak 'cannot print BRDPIC';
-    close $BRDPIC or croak 'cannot close BRDPIC';
-
     return $brdfix;
 }
 
@@ -1618,7 +1716,7 @@ sub fixnopost {
                 my $grptitle = ${ $grp_nopost{$i} }[0];
 
                 for my $key ( keys %catinfo ) {
-                    my ( $catname, $catperms, $catcol ) = @{$catinfo{$key}};
+                    my ( $catname, $catperms, $catcol ) = @{ $catinfo{$key} };
                     my @newperm = ();
                     for my $theperm ( split /,\s/xsm, $catperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
@@ -1628,7 +1726,8 @@ sub fixnopost {
                     $catinfo{$key} = [ $catname, $newperm, $catcol ];
                 }
                 for my $key ( keys %board ) {
-                    my ( $boardname, $boardperms, $boardshow ) = @{$board{$key}};
+                    my ( $boardname, $boardperms, $boardshow ) =
+                      @{ $board{$key} };
                     my @newperm = ();
                     foreach my $theperm ( split /,\s/xsm, $boardperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
@@ -1649,7 +1748,7 @@ sub fixnopost {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newtopicperms, $theperm;
                 }
-                my $newtopicperms  = join q~/~, @newtopicperms;
+                my $newtopicperms = join q~/~, @newtopicperms;
 
                 my @newreplyperms = ();
                 for my $theperm ( split /\//xsm, ${ $control{$cnt} }[6] ) {
@@ -1663,7 +1762,7 @@ sub fixnopost {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newpollperms, $theperm;
                 }
-                my $newpollperms  = join q~/~, @newpollperms;
+                my $newpollperms = join q~/~, @newpollperms;
 
                 ${ $control{$cnt} }[4] = $newmodgroups;
                 ${ $control{$cnt} }[5] = $newtopicperms;
@@ -1714,8 +1813,8 @@ sub movemessages {
     my @threadext = qw(mail poll polled);
     for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
         my $boardname = $boards[$next_board];
-        if ($boardname eq 'admin') {
-            $boardname = 'admin_fix'
+        if ( $boardname eq 'admin' ) {
+            $boardname = 'admin_fix';
         }
         open my $BRDFILE, '<', "$boardsdir/$boardname.txt"
           or setup_fatal_error( "$maintext_23 $boardsdir/$boardname.txt: ", 1 );
@@ -1807,7 +1906,7 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
                         else {
                             my %thethread = ();
                             foreach my $line (@messagelines) {
-                                my ($key, $value ) = split /\t/xsm, $line;
+                                my ( $key, $value ) = split /\t/xsm, $line;
                                 $thethread{$key} = $value;
                             }
                             my $prnthread = q{};
@@ -1925,10 +2024,19 @@ EOF
           or croak 'cannot open OLDVAR';
         my @att = <$OLDVAR>;
         close $OLDVAR or croak 'cannot close OLDVAR';
-
+        chomp @att;
+        my $newatt = q();
+        foreach my $line (@att) {
+            my @line = split /[|]/xsm, $line;
+            if ( $#line > 8 ) {
+                $newatt .=
+qq~$line[0]|$line[1]|$line[2]|$line[5]|$line[6]|$line[7]|$line[8]|$line[9]|$line[10]\n~;
+            }
+            else { $newatt .= $line . "\n"; }
+        }
         open my $NEWVAR, '>', "$vardir/attachments.db"
           or croak 'cannot open attachments.db';
-        print {$NEWVAR} @att or croak "cannot print $vardir/attachments.db";
+        print {$NEWVAR} $newatt or croak "cannot print $vardir/attachments.db";
         close $NEWVAR or croak 'cannot close attachments.db';
     }
 
@@ -1960,10 +2068,11 @@ EOF
       or croak 'cannot open OLDVAR';
     my @gmod = <$OLDVAR>;
     close $OLDVAR or croak 'cannot close OLDVAR';
-
+    chomp @gmod;
+    my $gmod = join "\n", @gmod;
     open my $NEWVAR, '>', "$vardir/Gmodset.pm"
       or croak 'cannot open Gmodset.pm';
-    print {$NEWVAR} @gmod or croak "cannot print $vardir/Gmodset.pm";
+    print {$NEWVAR} $gmod or croak "cannot print $vardir/Gmodset.pm";
     close $NEWVAR or croak 'cannot close Gmodset.pm';
 
     if ( -e "$convvardir/ban_log.txt" ) {
@@ -2095,15 +2204,14 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
 
             $cal_event =~ s/"/\\"/gxsm;
             $event{$cal_time} = [
-                "$cal_date",  "$cal_type", "$cal_name",   "$cal_hide",
-                "$cal_event", "$cal_icon", "$cal_noname", "$cal_type2",
-                "$nsa",       "$g"
+                $cal_date, $cal_type,   $cal_name,  $cal_hide, $cal_event,
+                $cal_icon, $cal_noname, $cal_type2, $nsa,      $g
             ];
         }
         my $prncal = q{};
         foreach ( keys %event ) {
-            my $event = join q{", "}, @{ $event{$_} };
-            $prncal .= qq~\$event{'$_'} = ["$event"];\n~;
+            my $event = join q{', '}, @{ $event{$_} };
+            $prncal .= qq~\$event{'$_'} = ['$event'];\n~;
         }
         $prncal .= qq~\n1;\n~;
         open my $FILE, '>', "$vardir/Eventcal.pm"
@@ -2385,6 +2493,8 @@ qq~The Forum Start date was set to $forumstart but the first member was register
     $show_online_ip_admin = isempty( $show_online_ip_admin, 1 );
     $show_online_ip_gmod  = isempty( $show_online_ip_gmod, 1 );
     $show_online_ip_fmod  = isempty( $show_online_ip_fmod, 1 );
+    our $fontsizemin = int( ($fontsizemin * 100) / 12);                                 # Minimum Allowed Font height in pixels
+    our $fontsizemax = int( ($fontsizemax * 100) / 12);                                 # Maximum Allowed Font height in pixels
     our $ip_lookup = isempty( $ipLookup, 1 );
     $bm_subcut = isempty( $bm_subcut, 50 );
     our $maxdays          = $mymaxdays         || 365;
@@ -2392,10 +2502,10 @@ qq~The Forum Start date was set to $forumstart but the first member was register
     our $pm_maxdaysattach = $mypmMaxDaysAttach || 0;
     our $maxsizeattach    = $mymaxsizeattach   || 0;
     our $pm_maxsizeattach = $mypmMaxSizeAttach || 0;
-    our $backupdir = q{};
-    our $backupprogbin = q{};
-    our $backupmethod = q{};
-    our $compressmethod = 'none';
+    our $backupdir        = q{};
+    our $backupprogbin    = q{};
+    our $backupmethod     = q{};
+    our $compressmethod   = 'none';
     my @adv =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
     $settings{'advanced_tabs'} = @adv;
@@ -2425,9 +2535,9 @@ qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[
         if ( $Group{$_} =~ m/[|]/xsm ) {
             my @newgrp1 = split /[|]/xsm, $Group{$_};
             $grp_staff{$_} = [
-                "$newgrp1[0]", $newgrp1[1], "$newgrp1[2]", "$newgrp1[3]",
-                $newgrp1[4],   $newgrp1[5], $newgrp1[6],   $newgrp1[7],
-                $newgrp1[8],   $newgrp1[9], $newgrp1[10]
+                $newgrp1[0], $newgrp1[1], $newgrp1[2], $newgrp1[3],
+                $newgrp1[4], $newgrp1[5], $newgrp1[6], $newgrp1[7],
+                $newgrp1[8], $newgrp1[9], $newgrp1[10]
             ];
         }
     }
@@ -2435,9 +2545,9 @@ qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[
         if ( $NoPost{$_} =~ m/[|]/xsm ) {
             my @newgrp2 = split /[|]/xsm, $NoPost{$_};
             $grp_nopost{$_} = [
-                "$newgrp2[0]", $newgrp2[1], "$newgrp2[2]", "$newgrp2[3]",
-                $newgrp2[4],   $newgrp2[5], $newgrp2[6],   $newgrp2[7],
-                $newgrp2[8],   $newgrp2[9], $newgrp2[10]
+                $newgrp2[0], $newgrp2[1], $newgrp2[2], $newgrp2[3],
+                $newgrp2[4], $newgrp2[5], $newgrp2[6], $newgrp2[7],
+                $newgrp2[8], $newgrp2[9], $newgrp2[10]
             ];
         }
     }
@@ -2445,9 +2555,9 @@ qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[
         if ( $Post{$_} =~ m/[|]/xsm ) {
             my @newgrp3 = split /[|]/xsm, $Post{$_};
             $grp_post{$_} = [
-                "$newgrp3[0]", $newgrp3[1], "$newgrp3[2]", "$newgrp3[3]",
-                $newgrp3[4],   $newgrp3[5], $newgrp3[6],   $newgrp3[7],
-                $newgrp3[8],   $newgrp3[9], $newgrp3[10]
+                $newgrp3[0], $newgrp3[1], $newgrp3[2], $newgrp3[3],
+                $newgrp3[4], $newgrp3[5], $newgrp3[6], $newgrp3[7],
+                $newgrp3[8], $newgrp3[9], $newgrp3[10]
             ];
         }
     }
@@ -2455,8 +2565,8 @@ qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[
     our %addedsmilies;
     foreach my $i ( 0 .. $#SmilieURL ) {
         $addedsmilies{ $i + 1 } = [
-            "$SmilieURL[$i]",         "$SmilieCode[$i]",
-            "$SmilieDescription[$i]", "$SmilieLinebreak[$i]"
+            $SmilieURL[$i],         $SmilieCode[$i],
+            $SmilieDescription[$i], $SmilieLinebreak[$i]
         ];
         push @smilieorder, $i + 1;
     }
@@ -2487,7 +2597,7 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
         $fixa =
           qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <form action="Convert2x.$yyext" method="post" style="display: inline;">
-                    <input type="submit" value="Fix 2.0-2.5 files" />
+                    <input type="submit" value="Import 2.0-2.5 files" />
                 </form>~;
     }
 
@@ -2559,8 +2669,8 @@ sub tempstarter {
 
     # Requirements and Errors
     require Variables::Settings;
-    if ( -e "$vardir/ConvSettings.txt" ) {
-        require "$vardir/ConvSettings.txt";
+    if ( -e 'Variables/ConvSettings.txt' ) {
+        require 'Variables/ConvSettings.txt';
     }
     else { $convertdir = './Convert'; }
 
@@ -2760,17 +2870,117 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 }
 
 sub checkattach {
+    my $getatt = q{};
+    if (   $convattachdir ne q{}
+        || $convpmattachdir ne q{}
+        || $convsmiliesdir ne q{}
+        || $convboardpixdir ne q{}
+        || $convavatardir ne q{} )
+    {
+        $getatt = copyattach();
+    }
+    if ($convlang) {
+        $vardir = "$boarddir/ConvertLang/Variables";
+    }
     open my $AMS, '<', "$vardir/attachments.db"
       or croak 'cannot open oldattach';
     my @attachments = <$AMS>;
     close $AMS or croak 'cannot open oldattach';
+    my $chkatt1 = q{};
+    my %hashatt = ();
+    my %hashlng = ();
+    foreach my $att (@attachments) {
+        my @chkatt = split /[|]/xsm, $att;
+        my $chkfile = $chkatt[7];
+        push @{ $hashatt{ lc $chkfile } }, $chkfile;
+        if ( length $chkfile > 255 ) {
+            push @{ $hashlng{$chkfile} }, length $chkfile;
+        }
+    }
+    for my $key ( keys %hashatt ) {
+        if ( scalar @{ $hashatt{$key} } > 1 ) {
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX} "'multiple attachments - possible data loss:'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
+            foreach ( @{ $hashatt{$key} } ) {
+                $chkatt1 .= qq~$_<br />~;
+                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
+            }
+        }
+    }
+    for my $key ( keys %hashlng ) {
+        if ( scalar @{ $hashatt{$key} } > 1 ) {
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX}
+              "'long file name attachments - possible data loss:'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
+            foreach ( @{ $hashatt{$key} } ) {
+                $chkatt1 .= qq~$_ : $hashatt{$_}<br />~;
+                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
+                  or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
+            }
+        }
+    }
 
     open my $PMATTACHLOG, '<', "$vardir/pmattachments.db"
       or croak 'cannot open pmattach';
     my @pmattachments = <$PMATTACHLOG>;
     close $PMATTACHLOG or croak 'cannot close pmattach';
-    my $checktxt = q{};
-
+    my $chkpmatt1 = q{};
+    my %hashpmatt = ();
+    my %hashpmlng = ();
+    foreach my $att (@pmattachments) {
+        my @chkatt = split /[|]/xsm, $att;
+        my $chkfile = $chkatt[7];
+        push @{ $hashpmatt{ lc $chkfile } }, $chkfile;
+        if ( length $chkfile > 255 ) {
+            push @{ $hashpmlng{$chkfile} }, length $chkfile;
+        }
+    }
+    for my $key ( keys %hashpmatt ) {
+        if ( scalar @{ $hashpmatt{$key} } > 1 ) {
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX} "'multiple PMattachments - possible data loss:'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
+            foreach ( @{ $hashpmatt{$key} } ) {
+                $chkpmatt1 .= qq~$_<br />~;
+                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
+            }
+        }
+    }
+    for my $key ( keys %hashpmlng ) {
+        if ( scalar @{ $hashpmlng{$key} } > 1 ) {
+            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+              or croak 'cannot open BRDFIX';
+            print {$BRDFIX}
+              "'long file name PMattachments- possible data loss:'\n"
+              or croak 'cannot print BRDFIX';
+            close $BRDFIX or croak 'cannot close BRDFIX';
+            foreach ( @{ $hashatt{$key} } ) {
+                $chkpmatt1 .= qq~$_ : $hashpmatt{$_}<br />~;
+                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                  or croak 'cannot open BRDFIX';
+                print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
+                  or croak 'cannot print BRDFIX';
+                close $BRDFIX or croak 'cannot close BRDFIX';
+            }
+        }
+    }
     opendir DIR, "$uploaddir/";
     my @attfiles =
       grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;
@@ -2781,26 +2991,42 @@ sub checkattach {
       grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir PMDIR;
     closedir PMDIR;
 
+    my $checktxt = $getatt;
     if ( scalar @attachments > scalar @attfiles ) {
         $checktxt .=
 q~Attention: The number of attachments listed in the attachment log does not match the number of files in yabbfiles/Attachments. Perhaps you forgot to copy the attachments files into your new installation?<br />~;
+    }
+    if ( $chkatt1 ne q{} ) {
+        $checktxt .=
+qq~Attention: These files listed in the attachment log may not transfer if copied into a Windows system.<br />$chkatt1~;
     }
     if ( scalar @pmattachments > scalar @pmfiles ) {
         $checktxt .=
 q~Attention: The number of pm attachments listed in the pm attachment log does not match the number of files in yabbfiles/PMAttachments. Perhaps you forgot to copy the pm attachments files into your new installation?~;
     }
+    if ( $chkpmatt1 ne q{} ) {
+        $checktxt .=
+qq~Attention: These files listed in the PMattachment log may not transfer if copied into a Windows system.<br />$chkpmatt1 ~;
+    }
     return $checktxt;
 }
 
 sub copyattach {
+    my $getatt = q{};
     if ( $convattachdir ne q{} ) {
         opendir ATTDIR, "$convattachdir/";
         my @attfiles =
           grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' }
           readdir ATTDIR;
         closedir ATTDIR;
-        foreach my $file (@attfiles) {
-            copy "$convattachdir/$file", "$uploaddir/$file";
+        if ( $#attfiles >= $lim ) {
+            $getatt .=
+qq~There are more than $lim files in old Attachments Folder. <a href="javascript:void(window.open('$set_cgi?action=convert;section=getatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import Attachments</a><br />\n~;
+        }
+        else {
+            foreach my $file (@attfiles) {
+                copy "$convattachdir/$file", "$uploaddir/$file";
+            }
         }
     }
     if ( $convpmattachdir ne q{} ) {
@@ -2809,8 +3035,14 @@ sub copyattach {
           grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' }
           readdir ATTDIR;
         closedir ATTDIR;
-        foreach my $file (@attfiles) {
-            copy "$convpmattachdir/$file", "$pmuploaddir/$file";
+        if ( $#attfiles >= $lim ) {
+            $getatt .=
+qq~There are more than $lim files in old PMattachments Folder. <a href="javascript:void(window.open('$set_cgi?action=convert;section=getpmatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import Attachments</a><br />\n~;
+        }
+        else {
+            foreach my $file (@attfiles) {
+                copy "$convpmattachdir/$file", "$pmuploaddir/$file";
+            }
         }
     }
     if ( $convsmiliesdir ne q{} ) {
@@ -2833,7 +3065,111 @@ sub copyattach {
             copy "$convavatardir/$file", "$facesdir/UserAvatars/$file";
         }
     }
-    return;
+    if ( $convboardpixdir ne q{} ) {
+        opendir ATTDIR, "$convboardpixdir/";
+        my @attfiles =
+          grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' }
+          readdir ATTDIR;
+        closedir ATTDIR;
+        if (@attfiles) {
+            foreach my $file (@attfiles) {
+                copy "$convboardpixdir/$file", "$boardpixdir/$file";
+            }
+        }
+    }
+    return $getatt;
+}
+
+sub getattfiles {
+    if ($convlang) {
+        $vardir = "$boarddir/ConvertLang/Variables";
+    }
+    open my $AMS, '<', "$vardir/attachments.db"
+      or croak 'cannot open oldattach';
+    my @attachments = <$AMS>;
+    close $AMS or croak 'cannot open oldattach';
+    chomp @attachments;
+    my @files = ();
+    foreach my $get (@attachments) {
+        my @file = split /[|]/xsm, $get;
+        push @files, $file[7];
+    }
+    print_output_header();
+    print qq~<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="utf">
+    <title>Import - Attachments</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <style type="text/css">
+        td {padding: 12px;}
+    </style>
+</head>
+<body>
+<h1>Import - Attachments</h1>
+<p>~ or croak 'cannot print top';
+    my $j = int( $#files / $lim );
+    for my $k ( 0 .. $j ) {
+        print qq~Batch $k<br />\n~ or croak 'cannot print line';
+        my $l = $k * $lim;
+        for my $i ( $l .. ( $l + $lim ) ) {
+            if ( -e "$convattachdir/$files[$i]" ) {
+                copy "$convattachdir/$files[$i]", "$uploaddir/$files[$i]";
+                print "$files[$i] done<br />\n";
+            }
+        }
+    }
+    print q~</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+</body>
+</html>~ or croak 'cannot print line';
+    exit;
+}
+
+sub getpmattfiles {
+    if ($convlang) {
+        $vardir = "$boarddir/ConvertLang/Variables";
+    }
+    open my $AMS, '<', "$vardir/pmattachments.db"
+      or croak 'cannot open oldattach';
+    my @attachments = <$AMS>;
+    close $AMS or croak 'cannot open oldattach';
+    chomp @attachments;
+    my @files = ();
+    foreach my $get (@attachments) {
+        my @file = split /[|]/xsm, $get;
+        push @files, $file[3];
+    }
+    print_output_header();
+    print qq~<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="utf">
+    <title>Import - PM Attachments</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <style type="text/css">
+        td {padding: 12px;}
+    </style>
+</head>
+<body>
+<h1>Import - PM Attachments</h1>
+<p>~ or croak 'cannot print top';
+    my $j = int( $#files / $lim );
+    for my $k ( 0 .. $j ) {
+        print qq~Batch $k<br />\n~ or croak 'cannot print line';
+        my $l = $k * $lim;
+        for my $i ( $l .. ( $l + $lim ) ) {
+            if ( -e "$convpmattachdir/$files[$i]" ) {
+                copy "$convpmattachdir/$files[$i]", "$pmuploaddir/$files[$i]";
+                print "$files[$i] done<br />\n";
+            }
+        }
+    }
+    print q~</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+</body>
+</html>~ or croak 'cannot print line';
+    exit;
 }
 
 1;
