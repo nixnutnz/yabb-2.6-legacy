@@ -132,7 +132,7 @@ if ( !$maintenance && -e "$vardir/maintenance.lock" ) { $maintenance = 2; }
 # in seconds, than the browser will call the script again
 # until all is done. Don't put it too high or you will run
 # into server or browser timeout.
-$max_process_time = 5;
+$max_process_time = 20;
 
 our $action = $INFO{'action'};
 local $SIG{__WARN__} = sub { fatal_error( 'error_occurred', "@_" ); };

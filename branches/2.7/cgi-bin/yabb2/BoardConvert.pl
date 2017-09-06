@@ -92,7 +92,7 @@ sub convcontrol {
         $newbrds .= qq~\%{'$cntboard'} = (\n~;
         foreach my $key ( keys %{ $nid . $cntboard } ) {
             if ( $key eq 'description' || $key eq 'rulesdesc' ) {
-                ${ $nid . $cntboard }{$key} =~ s/'/\\'/gxsm;;
+                ${ $nid . $cntboard }{$key} =~ s/'/\\'/gxsm;
                 ${ $nid . $cntboard }{$key} =~ s/~/\\~/gxsm;
             }
             $newbrds .= qq{'$key' => q~${ $nid . $cntboard }{$key}~,\n};
@@ -115,12 +115,12 @@ sub convcontrol {
         }
     }
     if ( $brdfixl ne q{} ) {
-        $brdfix = qq~<br />There appear to be multiple Boards with the same name when converted to lowercase. If these are not external link boards, these boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
+        $brdfix = qq~<br />There appear to be multiple Boards with the same name when converted to lowercase. These boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
     }
 
     open my $BOARDCONV, '>', "$vardir/boardconv.txt"
       or croak 'cannot open boardconv.txt';
-    print {$BOARDCONV} $newbrds or croak 'cannot print coardconv.txt';
+    print {$BOARDCONV} $newbrds or croak 'cannot print boardconv.txt';
     close $BOARDCONV or croak 'cannot close coardconv.txt';
 
     my $screen = qq~

@@ -13,6 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
+no strict qw(refs);
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 our $VERSION = '2.7.00';
@@ -236,7 +237,8 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
         if   ( $max == 0 )      { $numshow = q{}; }
         else                    { $numshow = qq~($numbegin - $numend)~; }
 
-        my ( %attach_gif, $ext );
+        my %attach_gif = ();
+        my $ext = q{};
         foreach my $row ( splice @attachments, $newstart, 25 ) {
             chomp $row;
             my (
@@ -246,15 +248,15 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
             ) = split /[|]/xsm, $row;
 
             if ( $amfn =~ /[.](.+?)$/xsm ) {
-                $ext = $1;
+                $ext = lc $1;
             }
             if ( !exists $attach_gif{$ext} ) {
-                $attach_gif{$ext} =
-                  ( $ext
-                      && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
-                  )
-                  ? "$imagesdir/$att_img{$ext}"
-                  : "$micon_bg{'paperclip'}";
+                if ( $ext && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}" ) {
+                    $attach_gif{$ext} = "$imagesdir/$att_img{$ext}";
+                }
+                else {
+                    $attach_gif{$ext} = "$micon_bg{'paperclip'}";
+                }
             }
 
             $amdate = timeformat($amdate);

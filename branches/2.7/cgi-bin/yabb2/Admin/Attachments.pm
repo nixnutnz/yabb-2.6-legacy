@@ -62,12 +62,75 @@ sub attachments {
     my @attachments = <$AMS>;
     fclose('AMS') or croak "$croak{'close'} AMS";
 
+    opendir DIR, "$uploaddir/";
+    my @attachfile =
+      grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;
+    closedir DIR;
+    if ( !-e "$vardir/attfilechk.txt" ) {
+    my $attfilechk = q{};
+    foreach (@attachfile) {
+        my $size = int( ( -s "$uploaddir/$_" ) / 1024 ) || 1;
+        my $age = sprintf '%.2f', -M "$uploaddir/$_";
+        $attfilechk .= "$_\t$size|$age\n";
+    }
+    open my $CHK, '>', "$vardir/attfilechk.txt"
+      or fatal_error( "$vardir/attfilechk.txt: ", 1 );
+    print {$CHK} $attfilechk
+      or croak 'cannot print CHK';
+    close $CHK or croak 'cannot close CHK';
+    }
+    else {
+        open my $CHK, '<', "$vardir/attfilechk.txt" or fatal_error( "$vardir/attfilechk.txt: ", 1 );
+        my @chk = <$CHK>;
+        close $CHK or croak 'cannot close CHK';
+        if ( scalar @attachfile != scalar @chk ) {
+            my $attfilechk = q{};
+            foreach (@attachfile) {
+                my $size = int( ( -s "$uploaddir/$_" ) / 1024 ) || 1;
+                my $age = sprintf '%.2f', -M "$uploaddir/$_";
+                $attfilechk .= "$_\t$size|$age\n";
+            }
+            open my $CHK, '>', "$vardir/attfilechk.txt" or fatal_error( "$vardir/attfilechk.txt: ", 1 );
+            print {$CHK} $attfilechk or croak 'cannot print CHK';
+            close $CHK or croak 'cannot close CHK';
+        }
+    }
+
     my $attachment_space = 0;
     foreach (@attachments) {
-        my $space = ( split /[|]/xsm, $_, 7 )[5];
+        my $space = ( split /[|]/xsm, $_ )[5];
         $attachment_space += $space;
         $attachment_space = number_format($attachment_space);
     }
+
+    my $attachment_space2 = 0;
+    open my $CHK, '<', "$vardir/attfilechk.txt" or fatal_error( "$vardir/attfilechk.txt: ", 1 );;
+    my @chk = <$CHK>;
+    close $CHK or croak 'cannot close CHK';
+    chomp @chk;
+    my @sizechk = ();
+    my @agechk = ();
+    foreach my $i (@chk) {
+        my ($file, $value) = split /\t/xsm, $i;
+        my ($size, $age) = split /[|]/xsm, $value;
+        $attachment_space2 += $size;
+        $attachment_space2 = number_format($attachment_space2);
+        push @sizechk, $size;
+        push @agechk, $age;
+    }
+    my $biggest = 0;
+    @sizechk = reverse sort { $a <=> $b } @sizechk;
+    if ($sizechk[0] && $sizechk[0] > 0) {
+        $biggest = number_format($sizechk[0]);
+    }
+    undef @sizechk;
+
+    my $oldest = 0;
+    @agechk =  reverse sort { $a <=> $b } @agechk;
+    if ($agechk[0] && $agechk[0] > 0) {
+        $oldest = number_format($agechk[0]);
+    }
+    undef @agechk;
 
     my $remaining_space;
     if ( !$dirlimit ) {
@@ -84,12 +147,73 @@ sub attachments {
     my @pm_attachments = <$PMATTACHLOG>;
     fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
 
+    opendir DIR, "$pmuploaddir/";
+    my @pm_attachfile =
+      grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;
+    closedir DIR;
+    if ( !-e "$vardir/pmattfilechk.txt" ) {
+    my $pmattfilechk = q{};
+    foreach (@pm_attachfile) {
+        my $size = int( ( -s "$pmuploaddir/$_" ) / 1024 ) || 1;
+        my $age = sprintf '%.2f', -M "$pmuploaddir/$_";
+        $pmattfilechk .= "$_\t$size|$age\n";
+    }
+    open my $CHK, '>', "$vardir/pmattfilechk.txt"
+      or fatal_error( "$vardir/pmattfilechk.txt: ", 1 );
+    print {$CHK} $pmattfilechk
+      or croak 'cannot print CHK2';
+    close $CHK or croak 'cannot close CHK2';
+    }
+    else {
+        open my $CHK, '<', "$vardir/pmattfilechk.txt" or fatal_error( "$vardir/pmattfilechk.txt: ", 1 );
+        my @pmchk = <$CHK>;
+        close $CHK or croak 'cannot close CHK';
+        if ( scalar @pm_attachfile != scalar @pmchk ) {
+            my $pmattfilechk = q{};
+            foreach (@pm_attachfile) {
+                my $size = int( ( -s "$pmuploaddir/$_" ) / 1024 ) || 1;
+                my $age = sprintf '%.2f', -M "$pmuploaddir/$_";
+                $pmattfilechk .= "$_\t$size|$age\n";
+            }
+            open my $CHK, '>', "$vardir/pmattfilechk.txt" or fatal_error( "$vardir/pmattfilechk.txt: ", 1 );
+            print {$CHK} $pmattfilechk or croak 'cannot print CHK';
+            close $CHK or croak 'cannot close CHK';
+        }
+    }
     my $pm_attachmentspace = 0;
     foreach (@pm_attachments) {
         my $pmspace = ( split /[|]/xsm, $_, 4 )[2];
         $pm_attachmentspace += $pmspace;
-        $pm_attachmentspace = number_format($pm_attachmentspace); 
+        $pm_attachmentspace = number_format($pm_attachmentspace);
     }
+    my $pm_attachment_space2 = 0;
+    open $CHK, '<', "$vardir/pmattfilechk.txt" or fatal_error( "$vardir/pmattfilechk.txt: ", 1 );;
+    my @pmchk = <$CHK>;
+    close $CHK or croak 'cannot close CHK';
+    chomp @pmchk;
+    my @pmsizechk = ();
+    my @pmagechk = ();
+    foreach my $i (@pmchk) {
+        my ($file, $value) = split /\t/xsm, $i;
+        my ($size, $age) = split /[|]/xsm, $value;
+        $pm_attachment_space2 += $size;
+        $pm_attachment_space2 = number_format($pm_attachment_space2);
+        push @pmsizechk, $size;
+        push @pmagechk, $age;
+    }
+    my $pmbiggest = 0;
+    @pmsizechk = reverse sort { $a <=> $b } @pmsizechk;
+    if ($pmsizechk[0] && $pmsizechk[0] > 0) {
+        $pmbiggest = number_format($pmsizechk[0]);
+    }
+    undef @pmsizechk;
+
+    my $pmoldest = 0;
+    @pmagechk =  reverse sort { $a <=> $b } @pmagechk;
+    if ($pmagechk[0] && $pmagechk[0] > 0) {
+        $pmoldest = number_format($pmagechk[0]);
+    }
+    undef @pmagechk;
 
     my $pm_remainingspace;
     if ( !$pm_dirlimit ) {
@@ -101,7 +225,9 @@ sub attachments {
     }
 
     my $totalattachnum   = @attachments;
+    my $totalattachnum2   = @attachfile;
     my $pmtotalattachnum = @pm_attachments;
+    my $pmtotalattachnum2 = @pm_attachfile;
     $pm_maxsizeattach ||= 0;
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -123,10 +249,10 @@ sub attachments {
             <table class="left pad-cell" style="margin-bottom:.5em">
                 <tr>
                     <td class="small"><b>$fatxt{'28'}</b></td>
-                    <td class="small">$totalattachnum</td>
+                    <td class="small">$totalattachnum  ($totalattachnum2 $fatxt{'actf'})</td>
                 </tr><tr>
                     <td class="small"><b>$fatxt{'29'}</b></td>
-                    <td class="small">$attachment_space KB<br /></td>
+                    <td class="small">$attachment_space KB ($attachment_space2 KB $fatxt{'acts'})<br /></td>
                 </tr><tr>
                     <td class="small"><b>$fatxt{'30'}</b></td>
                     <td class="small">$remaining_space</td>
@@ -134,10 +260,10 @@ sub attachments {
                     <td colspan="2"><hr /></td>
                 </tr><tr>
                     <td class="small"><b>$fatxt{'28a'}</b></td>
-                    <td class="small">$pmtotalattachnum</td>
+                    <td class="small">$pmtotalattachnum ($pmtotalattachnum2 $fatxt{'pactf'})</td>
                 </tr><tr>
                     <td class="small"><b>$fatxt{'29a'}</b></td>
-                    <td class="small">$pm_attachmentspace KB<br /></td>
+                    <td class="small">$pm_attachmentspace KB ($pm_attachment_space2 KB $fatxt{'pacts'})<br /></td>
                 </tr><tr>
                     <td class="small"><b>$fatxt{'30a'}</b></td>
                     <td class="small">$pm_remainingspace</td>
@@ -157,7 +283,7 @@ sub attachments {
                     <col style="width:20%" span="2" />
                 </colgroup>
                 <tr>
-                    <td class="small">$fatxt{'32'}</td>
+                    <td class="small">$fatxt{'32'}<br />($fatxt{'old'}$oldest $fatxt{'58'})</td>
                     <td class="small"><input type="text" name="maxdaysattach" size="2" value="$maxdaysattach" /> $fatxt{'58'}&nbsp;</td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
                 </tr>
@@ -170,7 +296,7 @@ sub attachments {
                     <col style="width:20%" span="2" />
                 </colgroup>
                 <tr>
-                    <td><span class="small">$fatxt{'33'}</span></td>
+                    <td><span class="small">$fatxt{'33'}<br />($fatxt{'larg'}$biggest KB)</span></td>
                     <td><span class="small"><input type="text" name="maxsizeattach" size="2" value="$maxsizeattach" /> KB&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
                 </tr><tr>
@@ -210,7 +336,7 @@ sub attachments {
                     <col style="width:20%" span="2" />
                 </colgroup>
                 <tr>
-                    <td><span class="small">$fatxt{'32a'}</span></td>
+                    <td><span class="small">$fatxt{'32a'}<br />($fatxt{'old'}$pmoldest $fatxt{'58'})</span></td>
                     <td><span class="small"><input type="text" name="pmmaxdaysattach" size="2" value="$pm_maxdaysattach" /> $fatxt{'58'}&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
                 </tr>
@@ -223,7 +349,7 @@ sub attachments {
                     <col style="width:20%" span="2" />
                 </colgroup>
                 <tr>
-                    <td><span class="small">$fatxt{'33a'}</span></td>
+                    <td><span class="small">$fatxt{'33a'}<br />($fatxt{'larg'}$pmbiggest KB)</span></td>
                     <td><span class="small"><input type="text" name="pmmaxsizeattach" size="2" value="$pm_maxsizeattach" /> KB&nbsp;</span></td>
                     <td><input type="submit" value="$admin_txt{'32'}" class="button" /></td>
                 </tr><tr>
@@ -259,10 +385,17 @@ sub removeoldattachments {
 
     automaintenance('on');
 
-    opendir ATT, $uploaddir
-      || fatal_error( 'cannot_open', "$uploaddir", 1 );
-    my @attachments = sort grep { /\w+$/xsm } readdir ATT;
-    closedir ATT;
+    my %winups = ();
+    open my $CHK, '<', "$vardir/attfilechk.txt" or fatal_error( "$vardir/attfilechk.txt: ", 1 );
+    my @chk = <$CHK>;
+    close $CHK or croak 'cannot close CHK';
+    chomp @chk;
+    foreach my $i (@chk) {
+        my ($file, $value) = split /\t/xsm, $i;
+        my (undef, $age) = split /[|]/xsm, $value;
+        $winups{$file} = $age;
+    }
+    my @attachments = keys %winups;
 
     our ($AML);
     fopen( 'AML', '<', 'Variables/attachments.db' )
@@ -270,13 +403,13 @@ sub removeoldattachments {
     my @attachmentstxt = <$AML>;
     fclose('AML') or croak "$croak{'close'} AML";
 
-    my ( %att, @line );
+    my %att = ();
     foreach (@attachmentstxt) {
-        @line = split /[|]/xsm;
+        my @line = split /[|]/xsm;
         $att{ $line[7] } = $line[0];
     }
 
-    my $info;
+    my $info = q{};
     if ( !@attachments ) {
         our ($ATT);
         fopen( 'ATT', '>', 'Variables/attachments.db' )
@@ -284,44 +417,44 @@ sub removeoldattachments {
         print {$ATT} q{} or croak "$croak{'print'} ATT";
         fclose('ATT') or croak "$croak{'close'} ATT";
 
-        $info = qq~<br /><i>$fatxt{'48'}.</i>~;
+        $info .= qq~<br /><i>$fatxt{'48'}.</i>~;
     }
     else {
-        if ( !exists $INFO{'next'} ) { unlink "$vardir/rem_old_attach.tmp"; }
+        if ( !exists $INFO{'next'} ) { unlink "Variables/rem_old_attach.tmp"; }
 
         my %rem_attachments;
-        for my $aa ( ( $INFO{'next'} || 0 ) .. $#attachments ) {
+        for my $i ( ( $INFO{'next'} || 0 ) .. $#attachments ) {
 
             # -M => Script start time minus file modification time, in days.
-            my $age = sprintf '%.2f', -M "$uploaddir/$attachments[$aa]";
+            my $age = $winups{$attachments[$i]};
             if ( $maxdaysattach > 0 && $age <= $maxdaysattach ) {
 
                 # If the attachment is not too old
-                $info .= qq~<br />$attachments[$aa] = $age $admin_txt{'122'}.~;
+                $info .= qq~<br />$attachments[$i] = $age $admin_txt{'122'}.~;
 
             }
-            elsif ( exists $att{ $attachments[$aa] } ) {
-                $rem_attachments{ $att{ $attachments[$aa] } } .=
-                  $rem_attachments{ $att{ $attachments[$aa] } }
-                  ? "|$attachments[$aa]"
-                  : $attachments[$aa];
+            elsif ( $att{ $attachments[$i] } ) {
+                $rem_attachments{ $att{ $attachments[$i] } } .=
+                  $rem_attachments{ $att{ $attachments[$i] } }
+                  ? "|$attachments[$i]"
+                  : $attachments[$i];
                 $info .=
-qq~<br /><i>$attachments[$aa]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
+qq~<br /><i>$attachments[$i]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
             }
 
-            if ( $time_to_jump < time() && ( $aa + 1 ) < @attachments ) {
+            if ( $time_to_jump < time() && ( $i + 1 ) < @attachments ) {
 
             # save the $info of this run until the end of 'RemoveOldAttachments'
                 our ($FILE);
                 fopen( 'FILE', '>>', 'Variables/rem_old_attach.tmp' )
                   or
                   fatal_error( 'cannot_open', "$vardir/rem_old_attach.tmp", 1 );
-                print $info or croak "$croak{'print'} rem_old_attach";
+                print {$FILE} $info or croak "$croak{'print'} rem_old_attach";
                 fclose('FILE') or croak "$croak{'close'} FILE";
 
                 $yysetlocation =
 qq~$adminurl?action=removeoldattachments;maxdaysattach=$maxdaysattach;next=~
-                  . ( $aa + 1 - remove_attachments( \%rem_attachments ) );
+                  . ( $i + 1 - remove_attachments( \%rem_attachments ) );
                 redirectexit();
             }
         }
@@ -332,18 +465,20 @@ qq~$adminurl?action=removeoldattachments;maxdaysattach=$maxdaysattach;next=~
 
     $yymain .= qq~<b>$fatxt{'32'} $maxdaysattach $fatxt{'58'}.</b><br />~;
 
-    our ($FILE);
-    fopen( 'FILE', '<', 'Variables/rem_old_attach.tmp' )
-      or croak "$croak{'open'} FILE";
+    if ( -e 'Variables/rem_old_attach.tmp') {
+        our ($FILE);
+        fopen( 'FILE', '<', 'Variables/rem_old_attach.tmp' ) or croak "$croak{'open'} FILE";
 
-    $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> }
-      . $info;
-    fclose('FILE') or croak "$croak{'close'} FILE";
-    unlink "$vardir/rem_old_attach.tmp";
+        $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> } . $info;
+        fclose('FILE') or croak "$croak{'close'} FILE";
+        unlink "$vardir/rem_old_attach.tmp";
+    }
 
     $settings{'maxdaysattach'} = $maxdaysattach || 0;
     require Admin::NewSettings;
     save_settings_to( 'Settings.pm', %settings );
+
+    undef %winups;
 
     $yytitle     = "$fatxt{'34'} $maxdaysattach";
     $action_area = 'removeoldattachments';
@@ -364,10 +499,17 @@ sub removebigattachments {
 
     automaintenance('on');
 
-    opendir ATT, $uploaddir
-      || fatal_error( 'cannot_open', "$uploaddir", 1 );
-    my @attachments = sort grep { /\w+$/xsm } readdir ATT;
-    closedir ATT;
+    my %winups = ();
+    open my $CHK, '<', "$vardir/attfilechk.txt" or fatal_error( "$vardir/attfilechk.txt: ", 1 );;
+    my @chk = <$CHK>;
+    close $CHK or croak 'cannot close CHK';
+    chomp @chk;
+    foreach my $i (@chk) {
+        my ($file, $value) = split /\t/xsm, $i;
+        my ($size, undef) = split /[|]/xsm, $value;
+        $winups{$file} = $size;
+    }
+    my @attachments = keys %winups;
 
     our ($FILE);
     fopen( 'FILE', '<', 'Variables/attachments.db' )
@@ -375,13 +517,13 @@ sub removebigattachments {
     my @attachmentstxt = <$FILE>;
     fclose('FILE') or croak "$croak{'close'} FILE";
 
-    my ( %att, @line );
+    my %att = ();
     for (@attachmentstxt) {
-        @line = split /[|]/xsm;
+        my @line = split /[|]/xsm;
         $att{ $line[7] } = $line[0];
     }
 
-    my $info;
+    my $info = q{};
     if ( !@attachments ) {
         our ($ATT);
         fopen( 'ATT', '>', 'Variables/attachments.db' )
@@ -389,7 +531,7 @@ sub removebigattachments {
         print {$ATT} q{} or croak "$croak{'print'} ATT";
         fclose('ATT') or croak "$croak{'close'} ATT";
 
-        $info = qq~<br /><i>$fatxt{'48'}.</i>~;
+        $info .= qq~<br /><i>$fatxt{'48'}.</i>~;
     }
     else {
         if ( !exists $INFO{'next'} ) { unlink "$vardir/rem_big_attach.tmp"; }
@@ -417,7 +559,7 @@ sub removebigattachments {
                 fopen( 'FILE', '>>', "$vardir/rem_big_attach.tmp" )
                   or
                   fatal_error( 'cannot_open', "$vardir/rem_big_attach.tmp", 1 );
-                print $info or croak "$croak{'print'} rem_big_attach";
+                print {$FILE} $info or croak "$croak{'print'} rem_big_attach";
                 fclose('FILE') or croak "$croak{'close'} FILE";
 
                 $yysetlocation =
@@ -432,19 +574,22 @@ qq~$adminurl?action=removebigattachments;maxsizeattach=$maxsizeattach;next=~
 
     $yymain .= qq~<b>$fatxt{'33'} $maxsizeattach KB.</b><br />~;
 
-    fopen( 'FILE', '<', "$vardir/rem_big_attach.tmp" )
-      or croak "$croak{'open'} FILE";
+    if ( -e "$vardir/rem_big_attach.tmp" ) {
+        fopen( 'FILE', '<', "$vardir/rem_big_attach.tmp" )
+          or croak "$croak{'open'} FILE";
 
-    $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> }
-      . $info;
-    fclose('FILE') or croak "$croak{'close'} FILE";
-    unlink "$vardir/rem_big_attach.tmp";
+        $yymain .= do { local $INPUT_RECORD_SEPARATOR = undef; <$FILE> }
+          . $info;
+        fclose('FILE') or croak "$croak{'close'} FILE";
+        unlink "$vardir/rem_big_attach.tmp";
+    }
 
     $settings{'maxsizeattach'} = $maxsizeattach || 0;
 
     require Admin::NewSettings;
     save_settings_to( 'Settings.pm', %settings );
 
+    undef %winups;
     automaintenance('off');
 
     $yytitle     = "$fatxt{'35'} $maxsizeattach KB";
@@ -775,62 +920,86 @@ sub fullrebuild_attachents {
     get_forum_master();
     @boardlist = sort keys %board;
 
+    my %winups = ();
+    open my $CHK, '<', "$vardir/attfilechk.txt" or fatal_error( "$vardir/attfilechk.txt: ", 1 );;
+    my @chk = <$CHK>;
+    close $CHK or croak 'cannot close CHK';
+    chomp @chk;
+    foreach my $i (@chk) {
+        my($file, undef) = split /\t/xsm, $i;
+        $winups{$file} = 1;
+    }
+
     # Find the current board:
     my $curboard = $boardlist[ $INFO{'boardnum'} ];
 
     # store all downloadcounts in variable
-    my %attachments;
+    my %attachments = ();
     if ( ( -s 'Variables/attachments.db' ) > 5 ) {
-        my ( $atfile, $atcount );
         our ($ATM);
         fopen( 'ATM', '<', 'Variables/attachments.db' )
           or croak "$croak{'open'} ATM";
         while (<$ATM>) {
-            (
+            my (
                 undef, undef, undef,   undef, undef,
                 undef, undef, $atfile, $atcount
             ) = split /[|]/xsm;
             chomp $atcount;
-            $attachments{$atfile} = $atcount;
+            if ( exists $winups{$atfile}) {
+                $attachments{$atfile} = $atcount;
+            }
         }
         fclose('ATM') or croak "$croak{'close'} ATM";
     }
 
     # Get the topic list.
+    opendir DIR, "$boardsdir/";
+    my @brds =
+      grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;
+    closedir DIR;
+    my %winbrds = ();
+    foreach (@brds) {
+        my ( $brd, $ext ) = split /[.]/xsm;
+        if ($ext eq 'txt' ) {
+            $winbrds{$brd} = 1;
+        }
+    }
     our ($BOARD);
-    fopen( 'BOARD', '<', "$boardsdir/$curboard.txt" )
-      or croak "$croak{'open'} BOARD";
-    my @topiclist = <$BOARD>;
-    fclose('BOARD') or croak "$croak{'close'} BOARD";
-
     my ( $topicnum, @newattachments, $mreplies, $msub, $mname, $mdate, $mfn,
         $nexttopic );
-    foreach my $i ( $INFO{'topicnum'} .. $#topiclist ) {
-        ( $topicnum, undef ) = split /[|]/xsm, $topiclist[$i], 2;
-        our ($TOPIC);
-        fopen( 'TOPIC', '<', "$datadir/$topicnum.txt" )
-          or croak "$croak{'open'} TOPIC";
-        my @topic = <$TOPIC>;
-        fclose('TOPIC') or croak "$croak{'close'} TOPIC";
-        chomp @topic;
+    my @topiclist;
+    if ( exists $winbrds{$curboard} ) {
+        fopen( 'BOARD', '<', "$boardsdir/$curboard.txt" ) or croak "$croak{'open'} BOARD";
+        @topiclist = <$BOARD>;
+        fclose('BOARD') or croak "$croak{'close'} BOARD";
+        }
 
-        $mreplies = 0;
-        foreach (@topic) {
-            (
-                $msub, $mname, undef, $mdate, undef, undef, undef,
-                undef, undef,  undef, undef,  undef, $mfn
-            ) = split /[|]/xsm;
-            $mfn ||= q{};
-            foreach ( split /,/xsm, $mfn ) {
-                if ( -e "$uploaddir/$_" ) {
-                    my $asize = int( ( -s "$uploaddir/$_" ) / 1024 ) || 1;
-                    push @newattachments,
+        foreach my $i ( $INFO{'topicnum'} .. $#topiclist ) {
+            ( $topicnum, undef ) = split /[|]/xsm, $topiclist[$i], 2;
+            our ($TOPIC);
+            fopen( 'TOPIC', '<', "$datadir/$topicnum.txt" )
+            or croak "$croak{'open'} TOPIC";
+            my @topic = <$TOPIC>;
+            fclose('TOPIC') or croak "$croak{'close'} TOPIC";
+            chomp @topic;
+
+            $mreplies = 0;
+            foreach (@topic) {
+                (
+                    $msub, $mname, undef, $mdate, undef, undef, undef,
+                    undef, undef,  undef, undef,  undef, $mfn
+                ) = split /[|]/xsm;
+                $mfn ||= q{};
+                foreach ( split /,/xsm, $mfn ) {
+                    if ( exists $winups{$_} ) {
+                        my $asize = $winups{$_};
+                        push @newattachments,
 qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
                       . ( $attachments{$_} || 0 ) . qq~\n~;
+                    }
                 }
+                $mreplies++;
             }
-            $mreplies++;
-        }
 
         if ( time() > $time_to_jump && ( $i + 1 ) < @topiclist ) {
             $nexttopic = $i + 1;
@@ -853,7 +1022,7 @@ qq~$topicnum|$mreplies|$msub|$mname|$curboard|$asize|$mdate|$_|~
     my $numleft = @boardlist - $INFO{'boardnum'};
     if ( $numleft == 0 ) {
         our ($NEWATM);
-        fopen( 'NEWATM', '<', 'Variables/attachments.db' )
+        fopen( 'NEWATM', '<', 'Variables/newattachments.tmp' )
           or croak "$croak{'open'} NEWATM";
         @newattachments = <$NEWATM>;
         fclose('NEWATM') or croak "$croak{'close'} NEWATM";
@@ -1348,7 +1517,7 @@ qq~<br /><i>$pm_attachments[$aa]</i> $fatxt{'1'} = $age $admin_txt{'122'}.~;
                 fopen( 'FILE', '>>', 'Variables/rem_old_pm_attach.tmp' )
                   or fatal_error( 'cannot_open',
                     'Variables/rem_old_pm_attach.tmp', 1 );
-                print $info or croak "$croak{'print'} rem_big_attach";
+                print {$FILE}$info or croak "$croak{'print'} rem_big_attach";
                 fclose('FILE') or croak "$croak{'close'} FILE";
 
                 $yysetlocation =
@@ -1450,7 +1619,7 @@ sub removebig_pmattachments {
                 fopen( 'FILE', '>>', 'Variables/rem_big_pm_attach.tmp' )
                   or fatal_error( 'cannot_open',
                     "$vardir/rem_big_pm_attach.tmp", 1 );
-                print $info or croak "$croak{'print'} rem_big_pm_attach";
+                print {$FILE} $info or croak "$croak{'print'} rem_big_pm_attach";
                 fclose('FILE') or croak "$croak{'open'} FILE";
 
                 $yysetlocation =

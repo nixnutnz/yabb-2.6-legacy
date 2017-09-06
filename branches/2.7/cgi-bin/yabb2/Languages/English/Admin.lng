@@ -1359,10 +1359,10 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '10a' => q~Members remaining:~,
 '13' => q~Topic found:~,
 '14' => q~Topic remaining:~,
-'15' => q~Board-Notifications found:~,
-'15a' => q~Board-Notifications remaining:~,
-'16' => q~Thread-Notifications found:~,
-'16a' => q~Thread-Notifications remaining:~,
+'15' => q~Members with Board Notifications found:~,
+'15a' => q~Members with Board Notifications remaining:~,
+'16' => q~Members with Thread Notifications found:~,
+'16a' => q~Members with Thread Notifications remaining:~,
 '20' => q~<strong>Rebuilding Memberlist after change in "Member Groups".</strong><br />~,
 '150a' => q~Rebuilding Board- and Thread-Notifications~,
 '150b' => q~All Board- and Thread-Notifications has been rebuilt.~,
@@ -1615,7 +1615,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '617' => q~Remember, last Backup was done on:~,
 );
 
-$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
+$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
 $iFrameSupport = 'Sorry, to see the latest news, you must use a browser that supports iframes';
 $rna = 'Remote Server not available.';
 

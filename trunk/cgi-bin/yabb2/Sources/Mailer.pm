@@ -16,10 +16,15 @@ use CGI::Carp qw(fatalsToBrowser);
 use English '-no_match_vars';
 our $VERSION = '2.6.12';
 
-$mailerpmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$mailerpmver = 'YaBB 2.6.12 $Revision: 1722 $';
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $pre = q~style="padding:5px 40px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; width:100%; overflow-x:auto;"~;
+$charsetheader = $mailcharset ? $mailcharset : $yymycharset;
+my $cte = "Content-Transfer-Encoding: 7bit\r";
+if ( $charsetheader eq 'UTF-8') {
+    $cte = "Content-Transfer-Encoding: 8bit\r";
+}
 
 sub sendmail {
     my ( $to, $subject, $message, $from, $mailcharset ) = @_;
@@ -33,12 +38,6 @@ sub sendmail {
 # It's only a problem when sending emails, so no change to ToHTML.
 # Changed to dash - &#144; misread in mail clients that use semi-colons as a delimiter
     $mbname =~ s/,/-/igsm;
-
-    $charsetheader = $mailcharset ? $mailcharset : $yymycharset;
-    my $cte = "Content-Transfer-Encoding: 7bit\r";
-    if ( $charsetheader eq 'UTF-8') {
-        $cte = "Content-Transfer-Encoding: 8bit\r";
-    }
 
     if ( !$from ) {
         $from       = $webmaster_email;
@@ -173,7 +172,9 @@ sub tomail {
     print {$MAIL} "From: $fromheader\n"       or croak "$croak{'print'} mail";
     print {$MAIL} "X-Mailer: YaBB Sendmail\n" or croak "$croak{'print'} mail";
     print {$MAIL} "Subject: $subject\n"       or croak "$croak{'print'} mail";
-    print {$MAIL} "MIME-Version: 1.0\n\n$cte\nContent-Type: text/html\; charset=$charsetheader\n\n"
+    print {$MAIL} "MIME-Version: 1.0\r\n" or croak "$croak{'print'} mail";
+    print {$MAIL} "$cte\n" or croak "$croak{'print'} mail";
+    print {$MAIL} "Content-Type: text/html\; charset=$charsetheader\r\n"
       or croak "$croak{'print'} mail";
     $message =~ s/\r\n/\n/gsm;
     print {$MAIL} "<pre $pre>$message</pre>\n" or croak "$croak{'print'} mail";

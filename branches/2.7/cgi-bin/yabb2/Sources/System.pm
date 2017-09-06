@@ -76,15 +76,17 @@ sub boardtotals {
             {
                 no strict qw(refs);
                 for my $updateboard (@updateboards) {
-                    @boardvars = @{ $totals{$updateboard} };
-                    chomp @boardvars;
-                    for my $i ( 0 .. $#brd_tags ) {
-                        if (
-                            exists( ${ $uid . $updateboard }{ $brd_tags[$i] } )
-                          )
-                        {
+                    if ($totals{$updateboard}) {
+                        @boardvars = @{ $totals{$updateboard} };
+                        chomp @boardvars;
+                        for my $i ( 0 .. $#brd_tags ) {
+                            if (
+                                exists( ${ $uid . $updateboard }{ $brd_tags[$i] } )
+                            )
+                            {
                             ${ $totals{$updateboard} }[$i] =
                               ${ $uid . $updateboard }{ $brd_tags[$i] };
+                            }
                         }
                     }
                 }

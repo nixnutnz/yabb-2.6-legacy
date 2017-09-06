@@ -79,6 +79,8 @@ my $newbrds = qq{\@allboards = ('$allboards');\n};
 foreach my $cntboard (@mybrds) {
     $newbrds .= qq~\%{$cntboard} = (\n~;
     foreach (keys %{ $uid . $cntboard } ) {
+        ${ $uid . $cntboard }{$_} =~ s/'/\\'/gxsm;
+        ${ $uid . $cntboard }{$_} =~ s/~/\\~/gxsm;
         $newbrds .= qq{'$_' => q~${ $uid . $cntboard }{$_}~,\n};
     }
         $newbrds .= qq~);\n~;

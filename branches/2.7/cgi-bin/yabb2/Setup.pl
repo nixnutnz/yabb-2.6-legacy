@@ -2414,13 +2414,12 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
     }
 
     if ( !$install_error ) {
-
         $yymain .= qq~<tr>
             <td class="catbg center" colspan="2">
       <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
             <input type="submit" value="Continue" />
       </form>
-            <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center</p>
+            <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center.</p>
             </td>
         </tr>~;
     }

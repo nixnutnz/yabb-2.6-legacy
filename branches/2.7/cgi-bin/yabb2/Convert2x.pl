@@ -256,7 +256,7 @@ oFormObject.elements["convattachdir"].value = htmlval + "/Attachments";
 oFormObject.elements["convpmattachdir"].value = htmlval + "/PMAttachments";
 oFormObject.elements["convsmiliesdir"].value = htmlval + "/Smilies";
 oFormObject.elements["convavatardir"].value = htmlval + "/avatars";
-oFormObject.elements["convboardpixdir"].value = htmlval + "Templates/Forum/default/Boards";
+oFormObject.elements["convboardpixdir"].value = htmlval + "/Templates/Forum/default/Boards";
 }
 </script>
 INTRO
@@ -286,6 +286,7 @@ INTRO
         $convsmiliesdir  = $FORM{'convsmiliesdir'} || q{};
         $convavatardir   = $FORM{'convavatardir'} || q{};
         $convboardpixdir = $FORM{'convboardpixdir'} || q{};
+
         if ( !-d $convboardsdir ) {
             setup_fatal_error( "Directory: $convboardsdir", 1 );
         }
@@ -501,7 +502,7 @@ MEMBERS1
                     <br />
                     The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
                     The last step took <i>~
-          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.
+          . ( $time_to_jump - $INFO{'starttime'} ) . qq~ seconds</i>.
                     <br />
                     Possible data issues: $memfix<br />
                     <br />
@@ -858,15 +859,15 @@ MEMBERS1
         if ( -e "$vardir/datacheck.txt" ) {
             if ($convlang) {
                 $fixn =
-qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/ConvertLang/Variables/datacheck.txt">datacheck.txt</a> for more details.~;
+qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/ConvertLang/Variables/datacheck.txt" target="_new">datacheck.txt</a> for more details.~;
             }
             else {
                 $fixn =
-qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/Variables/datacheck.txt">datacheck.txt</a> for more details.~;
+qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/Variables/datacheck.txt" target="_new">datacheck.txt</a> for more details.~;
             }
         }
         $convtext .=
-qq~$fixn<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents. ~;
+qq~$fixn<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents, if any. ~;
         my $finish = q{};
         if ($convlang) {
             $convset = qq~$fixn
@@ -1164,7 +1165,7 @@ sub convertmembers {
                     if ( $tags[$cnt] eq 'password' ) {
                         ${ $uid . $user }{ $tags[$cnt] } =~ s/~//gxsm;
                         if (${ $uid . $user }{ $tags[$cnt] } eq q{}) {
-                            ${ $uid . $user }{ $tags[$cnt] }
+                            ${ $uid . $user }{ $tags[$cnt] } = 'password';
                         }
 
                     }
@@ -1502,7 +1503,7 @@ sub moveboards {
       or croak "$croak{'print'} FORUMTOTALS";
     close $FORUMTOTALS or croak "$croak{'close'} forum.totals";
 
-    require "$convboardsdir/forum.master";
+    require "$boardsdir/forum.master";
     my @boards    = sort keys %board;
     my @subboards = sort keys %subboard;
     my @brdtype   = qw(txt mail exhits);
@@ -1561,13 +1562,57 @@ qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
 }
 
 sub fixcontrol {
+    opendir DIR, "$boardsdir/";
+    my @brds =
+      grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' } readdir DIR;
+    closedir DIR;
+    my %winbrds = ();
+    foreach (@brds) {
+        my ( $brd, $ext ) = split /[.]/xsm;
+        if ($ext eq 'txt') {
+            $winbrds{$brd} = 1;
+        }
+    }
+    our (%cat, %boards, %subboard);
+    require "$boardsdir/forum.master";
+    my @newbrds = ();
+    while ( my ( $key, $value ) = each %cat ) {
+        my @new = ();
+        foreach my $old ( @{$value}) {
+            if ( exists $winbrds{$old}) {
+                push @new, $old;
+            }
+            $cat{$key} = [@new];
+            push @newbrds, @new;
+        }
+    }
+    while ( my ( $key, $value ) = each %subboard ) {
+        my @new = ();
+        foreach my $old ( @{$value}) {
+            if (exists $winbrds{$old}) {
+                push @new, $old;
+            }
+        $subboard{$key} = [@new];
+        push @newbrds, @new;
+        }
+    }
+    my %newbrds = ();
+    foreach my $i (@newbrds) {
+        if ( exists $boards{$i} ) {
+            $newbrds{$i} = $boards{$i};
+        }
+    }
+    delete $newbrds{'admin'};
+    %boards = %newbrds;
+    write_forummaster();
+
     my $newboard   = q{};
     my $brdpix     = q{};
     my %newcontrol = ();
     if ( -e qq~$convvardir/boardconv.txt~ ) {
-        our (@allboards);
+#        our (@allboards);
         require qq~$convvardir/boardconv.txt~;
-        for my $i (@allboards) {
+        for my $i (@newbrds) {
             my $x = $i;
             if ( $x eq 'admin' ) { $x = 'admin_fix'; }
             ${$x}{'mypic'} = q{};
@@ -1599,7 +1644,6 @@ sub fixcontrol {
           setup_fatal_error( "$maintext_23 $convboardsdir/forum.control: ", 1 );
         my @oldboardcontrols = <$OLDFORUMCONTROL>;
         close $OLDFORUMCONTROL or croak 'cannot close OLDFORMCONTROL';
-
         chomp @oldboardcontrols;
         foreach (@oldboardcontrols) {
             my (
@@ -1620,23 +1664,50 @@ sub fixcontrol {
             $replyperms =~ s/,\s/\//gxsm;
             $pollperms =~ s/,\s/\//gxsm;
             $description =~ s/\'/&#39;/gxsm;
-            $newcontrol{$oldboard} = [
+            if ( exists $winbrds{$oldboard}) {
+                $newcontrol{$oldboard} = [
                 $cat,           $mypic,       $description, $mods,
                 $modgroups,     $topicperms,  $replyperms,  $pollperms,
                 $zero,          $ann,         $rbin,        $attperms,
                 $minageperms,   $maxageperms, $genderperms, $canpost,
                 $parent,        $rules,       $rulestitle,  $rulesdesc,
                 $rulescollapse, $brdpasswr,   $brdpassw,    $brdrss
-            ];
+                ];
 
-            if ($pic) {
-                $brdpix .= qq~$oldboard|Forum default|$pic\n~;
+                if ($pic) {
+                    $brdpix .= qq~$oldboard|Forum default|$pic\n~;
+                }
             }
         }
     }
+    our (%totals, %newtotals);
+    require "$boardsdir/forum.totals";
+    for my $i (keys %totals) {
+        if (exists $winbrds{$i} ) {
+            $newtotals{$i} = $totals{$i};
+        }
+    }
+    %totals = %newtotals;
+    write_forum_totals();
+
     $brdpix =~ s/FIX/-/gxsm;
     if ( -e "$convboardsdir/brdpics.db" ) {
-        copy "$convboardsdir/brdpics.db", "$boardsdir/brdpics.db";
+        open my $BRDPIC, '<', "$convboardsdir/brdpics.db"
+          or croak 'cannot open BRDIC';
+        my @oldbrd = <$BRDPIC>;
+        close $BRDPIC or croak 'cannot close BRDPIC';
+        chomp @oldbrd;
+        my $newbrdpix  = q{};
+        foreach my $line (@oldbrd) {
+            $line =~ s/\Q|default|\E/|Forum default|/xsm;
+            if ( $line =~ /\QForum default\Q/xsm) {
+                $newbrdpix .= $line . "\n";
+            }
+        }
+        open $BRDPIC, '>', "$boardsdir/brdpics.db"
+          or croak 'cannot open BRDIC';
+        print {$BRDPIC} $newbrdpix or croak 'cannot print BRDPIC';
+        close $BRDPIC or croak 'cannot close BRDPIC';
     }
     else {
         open my $BRDPIC, '>', "$boardsdir/brdpics.db"
@@ -1678,19 +1749,21 @@ q~<br />There was a board named 'admin'. That board has been renamed to 'admin_f
     }
     if ( $brdfixl ne q{} ) {
         $brdfix =
-qq~<br />There appear to be multiple Boards with this name (converted to lowercase). If these are not external link boards, these boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
+qq~<br />There appear to be multiple Boards with this name (converted to lowercase). These boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
     }
     $brdfix .= $adminbrd;
     my @boardcontrol = ();
-    foreach my $cnt ( sort keys %newcontrol ) {
+    foreach my $cnt ( sort {lc $a cmp lc $b} keys %newcontrol ) {
         if ( $cnt eq 'admin' ) { $cnt = 'admin_fix'; }
-        if ( $cnt ne 'brdpasswr' ) {
-            $newcontrol{$cnt} =~ s/'/&#39;/gxsm;
+        if ( $winbrds{$cnt} ) {
+            if ( $cnt ne 'brdpasswr' ) {
+                $newcontrol{$cnt} =~ s/'/&#39;/gxsm;
+            }
+            my $rline = join q{', '}, @{ $newcontrol{$cnt} };
+            my $newline = qq~\$control{'$cnt'} = ['$rline'];\n~;
+            $newline =~ s/FIX/-/gxsm;
+            push @boardcontrol, $newline;
         }
-        my $prline = join q{', '}, @{ $newcontrol{$cnt} };
-        my $newline = qq~\$control{'$cnt'} = ['$prline'];\n~;
-        $newline =~ s/FIX/-/gxsm;
-        push @boardcontrol, $newline;
     }
     @boardcontrol = undupe(@boardcontrol);
     my $prnbrd = join q{}, @boardcontrol;
@@ -2020,36 +2093,11 @@ EOF
     }
 
     if ( -e "$convvardir/attachments.txt" ) {
-        open my $OLDVAR, '<', "$convvardir/attachments.txt"
-          or croak 'cannot open OLDVAR';
-        my @att = <$OLDVAR>;
-        close $OLDVAR or croak 'cannot close OLDVAR';
-        chomp @att;
-        my $newatt = q();
-        foreach my $line (@att) {
-            my @line = split /[|]/xsm, $line;
-            if ( $#line > 8 ) {
-                $newatt .=
-qq~$line[0]|$line[1]|$line[2]|$line[5]|$line[6]|$line[7]|$line[8]|$line[9]|$line[10]\n~;
-            }
-            else { $newatt .= $line . "\n"; }
-        }
-        open my $NEWVAR, '>', "$vardir/attachments.db"
-          or croak 'cannot open attachments.db';
-        print {$NEWVAR} $newatt or croak "cannot print $vardir/attachments.db";
-        close $NEWVAR or croak 'cannot close attachments.db';
+        copy "$convvardir/attachments.txt", "$vardir/attachments.db";
     }
 
     if ( -e "$convvardir/pm.attachments" ) {
-        open my $OLDVAR, '<', "$convvardir/pm.attachments"
-          or croak 'cannot open pm.attachments';
-        my @att = <$OLDVAR>;
-        close $OLDVAR or croak 'cannot close OLDVAR';
-
-        open my $NEWVAR, '>', "$vardir/pmattachments.db"
-          or croak 'cannot open pmattachments.db';
-        print {$NEWVAR} @att or croak "cannot print $vardir/pmattachments.db";
-        close $NEWVAR or croak 'cannot close pmattachments.db';
+        copy "$convvardir/pm.attachments", "$vardir/pmattachments.db";
     }
 
     if ( -e "$convvardir/mostlog.txt" ) {
@@ -2171,7 +2219,7 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
     if ( -e "$convvardir/eventcal.db" ) {
         open $OLDVAR, '<', "$convvardir/eventcal.db"
           or croak 'cannot open OLDVAR';
-        @oldvar = <$OLDVAR>;
+        my @oldvar = <$OLDVAR>;
         close $OLDVAR or croak 'cannot close OLDVAR';
         chomp @oldvar;
         my (
@@ -2455,10 +2503,10 @@ EOF
 
     my $tmp_first = stringtotime($forumstart);
     if ( $firstmem < $tmp_first ) {
-        my $firstmember = timeformat($tmp_first);
+        my $firstmember = timeformat($tmp_first, 1, 0,1);
         $forumstarttext =
 qq~The Forum Start date was set to $forumstart but the first member was registered $firstmember. So we changed the Forum Start Date to $firstmember.~;
-        $forumstart = timeformat($tmp_first);
+        $forumstart = timeformat($tmp_first, 1, 0, 1);
     }
     our $settings_file_version = 'YaBB 2.7.00';
     my ( undef, $rancook ) = split /\-/xsm, $cookieusername;
@@ -2887,13 +2935,14 @@ sub checkattach {
     my @attachments = <$AMS>;
     close $AMS or croak 'cannot open oldattach';
     my $chkatt1 = q{};
+    my $chkatt2 = q{};
     my %hashatt = ();
     my %hashlng = ();
     foreach my $att (@attachments) {
         my @chkatt = split /[|]/xsm, $att;
         my $chkfile = $chkatt[7];
         push @{ $hashatt{ lc $chkfile } }, $chkfile;
-        if ( length $chkfile > 255 ) {
+        if ( length $chkfile > 150 ) {
             push @{ $hashlng{$chkfile} }, length $chkfile;
         }
     }
@@ -2914,15 +2963,16 @@ sub checkattach {
         }
     }
     for my $key ( keys %hashlng ) {
-        if ( scalar @{ $hashatt{$key} } > 1 ) {
+        if ( scalar @{ $hashlng{$key} } > 1 ) {
+            $chkatt2 .= 'long file name attachments - possible data loss:<br />';
             open my $BRDFIX, '>>', "$vardir/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX}
               "'long file name attachments - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
-            foreach ( @{ $hashatt{$key} } ) {
-                $chkatt1 .= qq~$_ : $hashatt{$_}<br />~;
+            foreach ( @{ $hashlng{$key} } ) {
+                $chkatt2 .= qq~$_ : $hashlng{$_}<br />~;
                 open my $BRDFIX, '>>', "$vardir/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
@@ -2943,7 +2993,7 @@ sub checkattach {
         my @chkatt = split /[|]/xsm, $att;
         my $chkfile = $chkatt[7];
         push @{ $hashpmatt{ lc $chkfile } }, $chkfile;
-        if ( length $chkfile > 255 ) {
+        if ( length $chkfile > 150 ) {
             push @{ $hashpmlng{$chkfile} }, length $chkfile;
         }
     }
@@ -2955,14 +3005,17 @@ sub checkattach {
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hashpmatt{$key} } ) {
-                $chkpmatt1 .= qq~$_<br />~;
-                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
-                  or croak 'cannot open BRDFIX';
-                print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
-                close $BRDFIX or croak 'cannot close BRDFIX';
+                if ($_) {
+                    $chkpmatt1 .= qq~$_<br />~;
+                    open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                      or croak 'cannot open BRDFIX';
+                    print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
+                    close $BRDFIX or croak 'cannot close BRDFIX';
+                }
             }
         }
     }
+    my $chkpmatt2 = q{};
     for my $key ( keys %hashpmlng ) {
         if ( scalar @{ $hashpmlng{$key} } > 1 ) {
             open my $BRDFIX, '>>', "$vardir/datacheck.txt"
@@ -2972,12 +3025,14 @@ sub checkattach {
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hashatt{$key} } ) {
-                $chkpmatt1 .= qq~$_ : $hashpmatt{$_}<br />~;
-                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
-                  or croak 'cannot open BRDFIX';
-                print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
-                  or croak 'cannot print BRDFIX';
-                close $BRDFIX or croak 'cannot close BRDFIX';
+                if ($_) {
+                    $chkpmatt2 .= qq~$_ : $hashpmatt{$_}<br />~;
+                    open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                      or croak 'cannot open BRDFIX';
+                    print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
+                      or croak 'cannot print BRDFIX';
+                    close $BRDFIX or croak 'cannot close BRDFIX';
+                }
             }
         }
     }
@@ -2996,17 +3051,23 @@ sub checkattach {
         $checktxt .=
 q~Attention: The number of attachments listed in the attachment log does not match the number of files in yabbfiles/Attachments. Perhaps you forgot to copy the attachments files into your new installation?<br />~;
     }
-    if ( $chkatt1 ne q{} ) {
+    if ( $chkatt1 ne q{} || $chkatt2 ne q{} ) {
         $checktxt .=
-qq~Attention: These files listed in the attachment log may not transfer if copied into a Windows system.<br />$chkatt1~;
+qq~Attention: These files listed in the attachment log may not transfer if copied into a Windows system.<br />~;
+        if ($chkatt1 ne q{} ) {
+            $checktxt .= qq~multiple attachments - possible data loss:<br />$chkatt1~;
+        }
+        if ($chkatt2 ne q{} ) {
+            $checktxt .= qq~long file name attachments - possible data loss<br />$chkatt2~;
+        }
     }
     if ( scalar @pmattachments > scalar @pmfiles ) {
         $checktxt .=
 q~Attention: The number of pm attachments listed in the pm attachment log does not match the number of files in yabbfiles/PMAttachments. Perhaps you forgot to copy the pm attachments files into your new installation?~;
     }
-    if ( $chkpmatt1 ne q{} ) {
+    if ( $chkpmatt1 ne q{} || $chkpmatt2  ne q{} ) {
         $checktxt .=
-qq~Attention: These files listed in the PMattachment log may not transfer if copied into a Windows system.<br />$chkpmatt1 ~;
+qq~<br />Attention: These files listed in the PMattachment log may not transfer if copied into a Windows system.<br />$chkpmatt1$chkpmatt1 ~;
     }
     return $checktxt;
 }
@@ -3089,11 +3150,12 @@ sub getattfiles {
     my @attachments = <$AMS>;
     close $AMS or croak 'cannot open oldattach';
     chomp @attachments;
-    my @files = ();
+    my %files = ();
     foreach my $get (@attachments) {
         my @file = split /[|]/xsm, $get;
-        push @files, $file[7];
+        $files{$file[7]} = 1;
     }
+    my @files = sort keys %files;
     print_output_header();
     print qq~<!DOCTYPE html>
 <html lang="utf-8">
@@ -3113,7 +3175,7 @@ sub getattfiles {
         print qq~Batch $k<br />\n~ or croak 'cannot print line';
         my $l = $k * $lim;
         for my $i ( $l .. ( $l + $lim ) ) {
-            if ( -e "$convattachdir/$files[$i]" ) {
+            if ( $files[$i] && -e "$convattachdir/$files[$i]" ) {
                 copy "$convattachdir/$files[$i]", "$uploaddir/$files[$i]";
                 print "$files[$i] done<br />\n";
             }

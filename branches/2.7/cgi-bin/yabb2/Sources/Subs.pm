@@ -2710,7 +2710,7 @@ sub write_forummaster {
 
 sub write_forum_control {
     my @boardcontrol = ();
-    foreach my $cnt ( sort keys %control ) {
+    foreach my $cnt ( sort {lc $a cmp lc $b} keys %control ) {
         ${ $control{$cnt} }[2] =~ s/'/&#39;/gxsm;
         ${ $control{$cnt} }[18] =~ s/'/&#39;/gxsm;
         ${ $control{$cnt} }[19] =~ s/'/&#39;/gxsm;
@@ -2731,7 +2731,7 @@ sub write_forum_control {
 
 sub write_forum_totals {
     my @boardtotals = ();
-    foreach my $cnt ( sort keys %totals ) {
+    foreach my $cnt ( sort {lc $a cmp lc $b} keys %totals ) {
         ${ $totals{$cnt} }[6] =~ s/\'/\&\#39;/gxsm;
         my $prline = join q{', '}, @{ $totals{$cnt} };
         my $newline = qq~\$totals{'$cnt'} = ['$prline'];~;

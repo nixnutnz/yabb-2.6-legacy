@@ -19,7 +19,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
 our $VERSION = '2.6.12';
 
-$subspmver = 'YaBB 2.6.12 $Revision: 1710 $';
+$subspmver = 'YaBB 2.6.12 $Revision: 1717 $';
 
 use subs 'exit';
 
@@ -780,10 +780,10 @@ sub image_resize {
             && $x[1] eq 'avatarml' )
         {
             if ( $max_avatarml_width && $x[2] !~ / width=./sm ) {
-                $x[2] =~ s/( style=.)/$1width:$max_avatarml_width\px;/sm;
+                $x[2] =~ s/( style=.)/$1width:$max_avatarml_width$px;/sm;
             }
             if ( $max_avatarml_height && $x[2] !~ / height=./sm ) {
-                $x[2] =~ s/( style=.)/$1height:$max_avatarml_height\px;/sm;
+                $x[2] =~ s/( style=.)/$1height:$max_avatarml_height$px;/sm;
             }
             $x[2] =~ s/display:none/display:inline/sm;
         }
@@ -1858,7 +1858,7 @@ sub wrap {
         $message .= "$cur ";
     }
     $message =~ s/\[code((?:\s*).*?)\](.*?)\[\/code\]/unwrap($1,$2)/eisgm;
-    $message =~ s/ {yabbbr} /\n/gsm;
+    $message =~ s/\Q{yabbbr} \E/\n/gsm;
     $message =~ s/{yabbwrap}/\n/gsm;
 
     ToHTML($message);
