@@ -1573,7 +1573,7 @@ sub fixcontrol {
             $winbrds{$brd} = 1;
         }
     }
-    our (%cat, %boards, %subboard);
+    our (%cat, %board, %subboard);
     require "$boardsdir/forum.master";
     my @newbrds = ();
     while ( my ( $key, $value ) = each %cat ) {
@@ -1598,12 +1598,12 @@ sub fixcontrol {
     }
     my %newbrds = ();
     foreach my $i (@newbrds) {
-        if ( exists $boards{$i} ) {
-            $newbrds{$i} = $boards{$i};
+        if ( exists $board{$i} ) {
+            $newbrds{$i} = $board{$i};
         }
     }
     delete $newbrds{'admin'};
-    %boards = %newbrds;
+    %board = %newbrds;
     write_forummaster();
 
     my $newboard   = q{};
