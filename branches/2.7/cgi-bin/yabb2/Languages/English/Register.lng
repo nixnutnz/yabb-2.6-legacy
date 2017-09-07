@@ -112,7 +112,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_pass2' => q~Your password is not equal the confirmation password.~,
 'error_verification' => q~The verification code is missing.~,
 'error_reason' => q~You must fill in the reason(s) for registering at our forum.~,
-'error_agree' => q~You must agree to the "User Agreement" before you can be registered.~,
+'error_agree' => q~You must agree to the \"User Agreement\" before you can be registered.~,
 'error_gender' => q~You must select your gender.~,
 'error_verification_question' => q~You must answer the verification question.~,
 'error_email2' => q~You must verify your e-mail.~,
