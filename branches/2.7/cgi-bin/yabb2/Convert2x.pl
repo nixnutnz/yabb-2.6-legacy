@@ -3055,7 +3055,7 @@ q~Attention: The number of attachments listed in the attachment log does not mat
         $checktxt .=
 qq~Attention: These files listed in the attachment log may not transfer if copied into a Windows system.<br />~;
         if ($chkatt1 ne q{} ) {
-            $checktxt .= qq~multiple attachments - possible data loss:<br />$chkatt1~;
+            $checktxt .= qq~multiple attachments - possible data loss or possibly the same attachments listed in multiple places :<br />$chkatt1~;
         }
         if ($chkatt2 ne q{} ) {
             $checktxt .= qq~long file name attachments - possible data loss<br />$chkatt2~;
