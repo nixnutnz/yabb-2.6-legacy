@@ -19,8 +19,6 @@ if(@russianemaillngmods){
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-$emailcharset = 'UTF-8';
-
 %yabbtagdesc = (
 # Constant tags
 'scripturl' => "URL Форума. Например: {yabb scripturl}",

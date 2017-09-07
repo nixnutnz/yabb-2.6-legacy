@@ -16,6 +16,8 @@ $germancountrieslngver = 'YaBB 2.7.00 $Revision$';
 if (@germancountrieslngmods) {
     $germancountrieslngmods = 1;
 }
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
 
 #NOTE: DO NOT translate the left hand items.
 #This version corresponds with DateTime version 1.81.

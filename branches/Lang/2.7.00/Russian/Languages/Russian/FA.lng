@@ -127,8 +127,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '61a' => '... завершено.',
 '61b' => 'Удаленные битые файлы',
 '61c' => 'Now remove ghost PM attachment files',
-'62' => 'Журнал прикрепленных файлов (attachments.txt) был перестроен',
-'62a' => 'PM Attachments log file (pm.attachments) has been rebuilt',
+'62' => 'Журнал прикрепленных файлов (attachments.db) был перестроен',
+'62a' => 'PM Attachments log file (pmattachments.db) has been rebuilt',
 '63' => 'Перестроить вложения',
 '63a' => 'Rebuild PM Attachments',
 '64' => 'Страницы',
@@ -140,6 +140,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '80a' => 'Больше вложений',
 '80s' => 'Меньше вложений',
 '81' => 'Remove File',
+'actf' => q~Files in Attachments folder~,
+'acts' => q~Total Size in Attachments folder~,
+'larg' => q~Largest File: ~,
+'old' => q~Oldest File: ~,
+'pactf' => q~Files in PMAttachments folder~,
+'pacts' => q~Total Size in PMAttachments folder~,
 );
 
 1;

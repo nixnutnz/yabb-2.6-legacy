@@ -20,7 +20,7 @@ if(@russianmainlngmods){
     $russianmainlngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion'  && $language ne 'Russian' ) { return 1; }
+if ( $action eq 'detailedversion' && $language ne 'Russian' ) { return 1; }
 
 $yycharset= 'UTF-8';
 $abbr_lang = 'ru';
@@ -279,7 +279,6 @@ $abbr_lang = 'ru';
 );
 
 ## recent lists
-
 %recent_txt = (
 'recenttopic' => ' &raquo; 10 последних Тем',
 'recentposts' => ' &raquo; 10 последних Сообщений',

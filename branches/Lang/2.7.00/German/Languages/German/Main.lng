@@ -321,6 +321,6 @@ $forwardedpm = qq~Diese Alarmierung wurde als eMail weitergeleitet~;
 'smtps2' => q~SMTPS-Anmeldeinformationen konnten nicht authentifiziert werden. Geben Sie bitte die folgenden Informationen an: Admin-Center -> Forum-Konfiguration -> Erweiterte Einstellungen -> Registerkarte eMail. Geben Sie Ihren SMTP-Berechtigungsbenutzernamen, Ihr SMTP-Berechtigungskennwort und Ihren SMTP-Server ein.~,
 );
 
-$yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.~;
+$yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.~;
 
 1;
