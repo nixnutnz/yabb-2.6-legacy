@@ -438,9 +438,11 @@ sub is_moderator_b {
             foreach ( split /\//xsm, ${ $uid . $i }{'mods'} || q{} ) {
                 if ( $_ && $_ eq $user ) {
                     get_forum_master();
-                    my $boardname = ${$board{$i}}[0];
-                    $mybrds .= qq~$boardname<br />~;
-                    return 1;
+                    if (${$board{$i}}[0]) {
+                        my $boardname = ${$board{$i}}[0];
+                        $mybrds .= qq~$boardname<br />~;
+                        return 1;
+                    }
                 }
             }
         }

@@ -1006,6 +1006,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
         }
 
         # Do we have an attachment file?
+        $mfn ||= q{};
         chomp $mfn;
         my $attachment   = q{};
         my $showattach   = q{};

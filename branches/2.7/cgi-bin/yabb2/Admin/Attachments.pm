@@ -97,8 +97,15 @@ sub attachments {
     }
 
     my $attachment_space = 0;
-    foreach (@attachments) {
-        my $space = ( split /[|]/xsm, $_ )[5];
+    foreach my $i (0 .. $#attachments) {
+        my @check = split /[|]/xsm, $attachments[$i];
+        if (scalar @check != 9) {
+            fatal_error( 'bad data', "attachments.db bad line $i", 1 );
+        }
+        my $space = $check[5];
+        if ($space =~ /\D/xsm || $space eq q{} ) {
+            fatal_error( 'bad data', "attachments.db line $i", 1 );
+        }
         $attachment_space += $space;
         $attachment_space = number_format($attachment_space);
     }

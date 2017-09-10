@@ -151,7 +151,7 @@ sub board_setlast_info {
                 undef,         undef, undef,
                 undef,         undef, $lastthreadstate
             ) = split /[|]/xsm, $lastthread;
-            if ( !$lastthreadstate || $lastthreadstate !~ /m/xsm ) {
+            if ( $lastthreadstate && $lastthreadstate !~ /m/xsm ) {
                 chomp $lastthreadstate;
                 our ($FILE);
                 if ( -e "$datadir/$lastthreadid.txt" ) {

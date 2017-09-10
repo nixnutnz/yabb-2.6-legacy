@@ -2246,6 +2246,7 @@ sub get_info {
         foreach (@logentries) {
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /[|]/xsm, $_, 7;
+            $boardv ||= q{};
             if ( !$last_ip ) {
                 $last_ip =
 qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="small"><i>~;

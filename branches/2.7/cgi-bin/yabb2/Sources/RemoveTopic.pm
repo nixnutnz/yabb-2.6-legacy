@@ -80,7 +80,7 @@ sub remove_thread {
             }
 
             boardtotals( 'load', $currentboard );
-            if ( ( split /[|]/xsm, $threadline )[8] !~ /m/sm ) {
+            if ( ( split /[|]/xsm, $threadline )[8] && ( split /[|]/xsm, $threadline )[8] !~ /m/xsm ) {
                 ${ $uid . $currentboard }{'threadcount'}--;
                 ${ $uid . $currentboard }{'messagecount'} -=
                   @{ $thread_arrayref{$thread} };

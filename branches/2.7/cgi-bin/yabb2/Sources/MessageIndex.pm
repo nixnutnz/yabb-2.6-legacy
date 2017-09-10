@@ -248,7 +248,10 @@ qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex
         if ( $tsort eq 'b' ) {
             $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_first'}~;
-            @threadlist = reverse @temp_list;
+            @threadlist = reverse sort {
+                 (split /[|]/xsm, $a )[4] <=>
+                   (split /[|]/xsm, $b )[4]
+            } @temp_list;
         }
         elsif ( $tsort eq 'c' ) {
             $sort_subject =
@@ -306,11 +309,19 @@ qq~<a href="$scripturl?board=$currentboard;tsort=g" rel="nofollow">$messageindex
         else {
             $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
+            @threadlist = sort {
+                ( split /[|]/xsm, $a )[4] <=>
+                  ( split /[|]/xsm, $b )[4]
+            } @temp_list;
         }
     }
     else {
         $sort_lastpostim =
 qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
+        @threadlist = sort {
+            ( split /[|]/xsm, $a )[4] <=>
+              ( split /[|]/xsm, $b )[4]
+        } @temp_list;
     }
     undef @temp_list;
     undef %starter;

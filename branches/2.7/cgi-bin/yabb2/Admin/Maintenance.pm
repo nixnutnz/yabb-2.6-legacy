@@ -168,6 +168,9 @@ sub rebuild_messageindex {
 
             my @firstinfo = split /[|]/xsm, $threaddata[0];
             my @lastinfo  = split /[|]/xsm, $threaddata[-1];
+            if ($lastinfo[3] =~ /\D/xsm || $lastinfo[3] eq q{}) {
+                fatal_error( 'bad data', "$datadir/$thread.txt", 1 );
+            }
             my $lastpostdate = sprintf '%010d', $lastinfo[3];
 
             # rewrite/create a correct threadnumber.ctb
