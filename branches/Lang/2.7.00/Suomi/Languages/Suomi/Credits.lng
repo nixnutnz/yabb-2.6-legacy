@@ -21,13 +21,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 %credits_txt = (
 'yabb2' => 'Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman',
-'yabb252' => 'Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />Omistettu Ron Hartendorpin, eli Spikecity:n muistolle. H‰n j‰tti meid‰t aivan liian aikaisin.',
-'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />YaBB 2.6:n mukana olevat modaukset kirjoitti AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, ja D.A. Rorabaugh, mukana myˆs lis‰‰ koodia ja modauksia YaBB 3.0-kehitystiimilt‰. Emme olisi miss‰‰n ilman modausten kirjoittajien panosta.<br />Eik‰ myˆsk‰‰n unohdeta buginmets‰st‰ji‰ ja erehdystenlˆyt‰ji‰, jotka osoittivat miss‰ asiat eiv‰t toimineet ihan oikein. Kiitokset Monni:lle ja Pyragony:lle ja kaikille muille buginmets‰st‰jille, jotka ilmoittivat lˆydˆksist‰‰n.~,
+'yabb252' => 'Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />Omistettu Ron Hartendorpin, eli Spikecity:n muistolle. H√§n j√§tti meid√§t aivan liian aikaisin.',
+'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />YaBB 2.6:n mukana olevat modaukset kirjoitti AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, ja D.A. Rorabaugh, mukana my√∂s lis√§√§ koodia ja modauksia YaBB 3.0-kehitystiimilt√§. Emme olisi miss√§√§n ilman modausten kirjoittajien panosta.<br />Eik√§ my√∂sk√§√§n unohdeta buginmets√§st√§ji√§ ja erehdystenl√∂yt√§ji√§, jotka osoittivat miss√§ asiat eiv√§t toimineet ihan oikein. Kiitokset Monni:lle ja Pyragony:lle ja kaikille muille buginmets√§st√§jille, jotka ilmoittivat l√∂yd√∂ksist√§√§n.~,
 'yabb' => 'Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko',
 'Thanks' => 'Erikoiskiitokset',
 'yabbBeta' => 'ja kaikille betatestaajillemme.',
-'yabb2Credits' => 'tukitiimille, meid‰n pelottomalle perustajallemme, Zef Hemel, ja kaikille, jotka ovat auttaneet YaBB:in tekemisess‰ viimeisen 12 vuoden aikana!',
-'noBytesHarmed' => 'Yht‰‰n bitti‰ tai tavua ei vahingoitettu YaBB:n kehitt‰misen aikana!',
+'yabb2Credits' => 'tukitiimille, meid√§n pelottomalle perustajallemme, Zef Hemel, ja kaikille, jotka ovat auttaneet YaBB:in tekemisess√§ viimeisen 12 vuoden aikana!',
+'noBytesHarmed' => 'Yht√§√§n bitti√§ tai tavua ei vahingoitettu YaBB:n kehitt√§misen aikana!',
 );
 
 1;

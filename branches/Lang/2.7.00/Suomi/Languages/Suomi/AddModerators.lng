@@ -24,16 +24,16 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 %addmod_txt = (
 'addmod_title' => q~Moderaattori~,
-'addmod_text' => q~Täällä voit antaa käyttäjälle moderaattorioikeudet yhdelle tai kaikille alueille. Pidä pohjassa Ctrl- tai Shift-näppäin (Apple-näppäin Mac:issa) ja napauta valitaksesi lisää alueita.~,
+'addmod_text' => q~TÃ¤Ã¤llÃ¤ voit antaa kÃ¤yttÃ¤jÃ¤lle moderaattorioikeudet yhdelle tai kaikille alueille. PidÃ¤ pohjassa Ctrl- tai Shift-nÃ¤ppÃ¤in (Apple-nÃ¤ppÃ¤in Mac:issa) ja napauta valitaksesi lisÃ¤Ã¤ alueita.~,
 'addmod_all' => q~Valitse kaikki.~,
 'addmod_save' => q~Tallenna~,
-'remove' => q~Oletko varma, että haluat poistaa käyttäjän luettelosta?~,
+'remove' => q~Oletko varma, ettÃ¤ haluat poistaa kÃ¤yttÃ¤jÃ¤n luettelosta?~,
 'modpagetitle' => q~Valitse moderattorit~,
 'instructions' => q~Kaksoisnapauta poistaaksesi nimen listalta~,
-'modsearch' => q~Lisää/poista moderaattoreita~,
-'addselected' => q~Lisää valitut~,
+'modsearch' => q~LisÃ¤Ã¤/poista moderaattoreita~,
+'addselected' => q~LisÃ¤Ã¤ valitut~,
 'pageclose' => q~Sulje~,
-'instruct' => q~Kirjoita muutama merkki uuden moderaattorin nimen alusta, ja sitten valitse yksi tai useampi nimi listalta ja napauta "Lisää valitut".~,
+'instruct' => q~Kirjoita muutama merkki uuden moderaattorin nimen alusta, ja sitten valitse yksi tai useampi nimi listalta ja napauta "LisÃ¤Ã¤ valitut".~,
 'noresults' => q~Ei tuloksia~,
 );
 
