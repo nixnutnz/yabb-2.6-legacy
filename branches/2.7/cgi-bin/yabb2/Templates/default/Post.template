@@ -94,7 +94,7 @@ $mypost_postblock = qq~
             {yabb my_postsec_b}
         </td>
     </tr><tr>
-        <td class="windowbg2 vtop">{yabb my_googie}
+        <td class="windowbg2 vtop">
 {yabb mypost_smilie_array}
 {yabb my_post_feata}
 {yabb my_post_smilies}

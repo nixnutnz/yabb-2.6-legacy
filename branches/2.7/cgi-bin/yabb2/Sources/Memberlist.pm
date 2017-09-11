@@ -112,15 +112,9 @@ sub ml {
         $barmax = $barmaxnumb;
     }
 
-    $FORM{'sortform'} ||=
-      $INFO{'sort'} || q{};  # Fix for Javascript disabled
-    if ( !$INFO{'sort'} && $FORM{'sortform'} eq q{} ) {
-        $INFO{'sort'}     = $defaultml;
-        $FORM{'sortform'} = $defaultml;
-    }
+    $INFO{'sort'} ||= $defaultml;  # Fix for Javascript disabled
 
-    if (   $FORM{'sortform'} eq 'username'
-        || $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
+    if ( $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' ) )
     {
         foreach my $x ( 0 .. $#alpha ) {
@@ -139,30 +133,29 @@ qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$lettercla
     foreach my $i (@selchksel) {
         $selchksel{$i} = [ qq~class="$header_class"~, q{} ];
     }
-    if ( $FORM{'sortform'} eq 'posts' || ( $INFO{'sort'} && $INFO{'sort'} eq 'posts' ) ) {
+    if ( $INFO{'sort'} && $INFO{'sort'} eq 'posts' ) {
         $selchksel{'posts'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_top();
     }
-    if ( $FORM{'sortform'} eq 'regdate' || ( $INFO{'sort'} && $INFO{'sort'} eq 'regdate') ) {
+    if ( $INFO{'sort'} && $INFO{'sort'} eq 'regdate') {
         $selchksel{'regdate'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_date();
     }
-    if ( $FORM{'sortform'} eq 'position' || ( $INFO{'sort'} && $INFO{'sort'} eq 'position') ) {
+    if ( $INFO{'sort'} && $INFO{'sort'} eq 'position' ) {
         $selchksel{'position'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_position();
     }
-    if (   $FORM{'sortform'} eq 'username'
-        || $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
+    if ( $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' ) )
     {
         $selchksel{'user'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
     }
 
-    if ( $FORM{'sortform'} eq 'memsearch' || ( $INFO{'sort'} && $INFO{'sort'} eq 'memsearch') ) {
+    if ( $INFO{'sort'} && $INFO{'sort'} eq 'memsearch' ) {
         find_members();
     }
     if (   !$INFO{'sort'} || $INFO{'sort'} eq q{}
@@ -528,7 +521,6 @@ sub build_index {
         # Build the page links list.
         my $indexdisplaynum = 3;
         my $dropdisplaynum  = 10;
-        if ( !$FORM{'sortform'} ) { $FORM{'sortform'} = $INFO{'sort'}; }
         my $postdisplaynum = 3;
         my $startpage      = 0;
         my $max            = $memcount;
@@ -574,7 +566,7 @@ sub build_index {
                     $letter     ||= q{};
                     $findmember ||= q{};
                     $pagetxtindexst .=
-qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
+qq~<a href="$scripturl?sort=$INFO{'sort'};letter=$letter;start=$start;action=memberpagedrop$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a> $ml_txt{'139'}: ~;
                 }
                 else {
                     $pagetxtindexst .=
@@ -582,18 +574,18 @@ qq~<a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action
                 }
                 if ( $startpage > 0 ) {
                     $pagetxtindex =
-qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember">1</a>&nbsp;...&nbsp;~;
+qq~<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter$findmember">1</a>&nbsp;...&nbsp;~;
                 }
                 if ( $startpage == $members_per_page ) {
                     $pagetxtindex =
-qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmember">1</a>&nbsp;~;
+qq~<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter$findmember">1</a>&nbsp;~;
                 }
                 foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
                     if ( $counter % $members_per_page == 0 ) {
                         $pagetxtindex .=
                           $start == $counter
                           ? qq~<b>[$tmpa]</b>&nbsp;~
-                          : qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$counter$findmember">$tmpa</a>&nbsp;~;
+                          : qq~<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=$counter$findmember">$tmpa</a>&nbsp;~;
                         $tmpa++;
                     }
                 }
@@ -603,7 +595,7 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter$findmembe
                 }
                 if ( $endpage != $memcount ) {
                     $pageindexadd .=
-qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember">$lastpn</a>~;
+qq~<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=$lastptn$findmember">$lastpn</a>~;
                 }
                 $pagetxtindex .= $pageindexadd || q{};
                 $pageindex1 = qq~$pagetxtindexst$pagetxtindex</span>~;
@@ -612,7 +604,7 @@ qq~<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$la
             else {
                 $pagedropindex1 = q~<span class="pagedropindex">~;
                 $pagedropindex1 .=
-qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$FORM{'sortform'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
+qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$INFO{'sort'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;
                 my $tstart = $start;
                 if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
@@ -683,7 +675,7 @@ qq~<img src="$index_togl{'index_left0'}" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexpv .=
-qq~<img src="$index_togl{'index_left'}" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=0$findmember\\'" />~;
+qq~<img src="$index_togl{'index_left'}" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=$prevpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=0$findmember\\'" />~;
                 }
                 if ( $nextpage > $lastptn ) {
                     $pagedropindexnx .=
@@ -691,7 +683,7 @@ qq~<img src="$index_togl{'index_right0'}" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexnx .=
-qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=$lastptn$findmember\\'" />~;
+qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=$nextpage$findmember\\'" ondblclick="location.href=\\'$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=$lastptn$findmember\\'" />~;
                 }
                 $pageindex1 = qq~$pagedropindex1</span>~;
                 $pageindex2 = qq~$pagedropindex2</span>~;
@@ -709,7 +701,7 @@ qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03
         var pagedropindex = '$visel_0';
         for(i=vistart; i<=viend; i++) {
             if(visel == pagstart) pagedropindex += '$visel_1a<b>' + i + '</b>$visel_1b';
-            else pagedropindex += '$visel_2a<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=' + pagstart + '$findmember">' + i + '</a>$visel_1b';
+            else pagedropindex += '$visel_2a<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=' + pagstart + '$findmember">' + i + '</a>$visel_1b';
             pagstart += maxpag;
         }
         ~;
@@ -717,7 +709,7 @@ qq~<img src="$index_togl{'index_right'}" height="14" width="13" alt="$pidtxt{'03
                     $pageindexjs .= qq~
             if (vistart != viend) {
                 if(visel == 'all') pagedropindex += '$visel_1a<b>$pidtxt{'01'}</b>$visel_1b';
-                else pagedropindex += '$visel_2a<a href="$scripturl?action=ml;sort=$FORM{'sortform'};letter=$letter;start=all-' + allpagstart + '$findmember">$pidtxt{'01'}</a>$visel_1b';
+                else pagedropindex += '$visel_2a<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=all-' + allpagstart + '$findmember">$pidtxt{'01'}</a>$visel_1b';
             }
             ~;
                 }
@@ -758,18 +750,7 @@ sub build_pages {
     $selc_post ||= q{};
     $selc_reg  ||= q{};
 
-    $sort_jump .= qq~
-            <label for="sortform">$ml_txt{'1'}</label>
-           <form action="$scripturl?action=ml" method="get" style="display: inline;">
-            <select name="sortform" id="sortform" onchange="submit()">
-            <option value="username"$selchksel{'user'}[1]>$ml_txt{'35'}</option>
-            <option value="position"$selchksel{'position'}[1]>$ml_txt{'87'}</option>
-            <option value="posts"$selchksel{'posts'}[1]>$ml_txt{'21'}</option>
-            <option value="regdate"$selchksel{'regdate'}[1]>$ml_txt{'233'}</option>
-            </select>
-            <input type="hidden" name="action" value="ml" />
-           </form>
-        ~;
+    $sort_jump .= q{};
 
     if ( $showuserpicml && $allowpics ) {
         $headertop = 8;

@@ -31,7 +31,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'display' => q~Display a message in a thread~,
 'downloadfile' => q~Download a Attachment File~,
 'eventcal' => q~View Event Calendar~,
-'get_cal_ssi' => q~Allow Cal in other pages~,
+'get_cal_ssi' => q~Allow Calendar in other pages~,
 'help' => q~Show forum Help page~,
 'login' => q~Log In entry screen~,
 'logout' => q~Log Out~,

@@ -467,41 +467,6 @@ sub postbox3 {
     return $box;
 }
 
-sub googiea {
-    my $googiea =
-qq~<link rel="stylesheet" href="$yyhtml_root/googiespell/googiespell.css" type="text/css" />
-<script type="text/javascript" src="$yyhtml_root/googiespell/googiespell.js"></script>
-<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
-    if (  !$img_greybox
-        || $action eq 'guestpm'
-        || ( $INFO{'board'} && $quick_post )
-        || $action eq 'eventcal'
-        || $action eq 'modify' )
-    {
-        $googiea .=
-qq~\n<script type="text/javascript" src="$yyhtml_root/AJS.js"></script>~;
-    }
-    return $googiea;
-}
-
-sub googie {
-    my ($userdefaultlang) = @_;
-    my $googie = qq~
-            <script type="text/javascript">
-            GOOGIE_DEFAULT_LANG = '$userdefaultlang';
-            var googie1 = new GoogieSpell("$yyhtml_root/googiespell/", "$boardurl/Sources/SpellChecker.$yyext?lang=");
-            googie1.lang_chck_spell = '$spell_check{'chck_spell'}';
-            googie1.lang_revert = '$spell_check{'revert'}';
-            googie1.lang_close = '$spell_check{'close'}';
-            googie1.lang_rsm_edt = '$spell_check{'rsm_edt'}';
-            googie1.lang_no_error_found = '$spell_check{'no_error_found'}';
-            googie1.lang_no_suggestions = '$spell_check{'no_suggestions'}';
-            googie1.setSpellContainer("spell_container");
-            googie1.decorateTextarea("message");
-            </script>~;
-
-    return $googie;
-}
 
 sub smilies_list {
     %smiley_bar = (

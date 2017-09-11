@@ -1157,16 +1157,7 @@ qq~<input type="hidden" value="$thestatus" name="topicstatus" />~;
             $my_ubbc = postbox();
         }
 
-        # SpellChecker start
-        my $my_googie = q{};
-        if ($enable_spell_check) {
-            $yyinlinestyle .= googiea();
-            $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
-            $userdefaultlang ||= 'en';
-            $my_googie = googie($userdefaultlang);
-        }
-
-        # SpellChecker end
+        # SpellChecker removed
 
         my $mypost_smilie_array     = q{};
         my $mypost_smilie_array_top = q{};
@@ -1455,7 +1446,6 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
         $my_postsection =~ s/\Q{yabb my_rem_smilies}\E/$my_rem_smilies/xsm;
         $my_postsection =~ s/\Q{yabb my_ubbc}\E/$my_ubbc/xsm;
         $my_postsection =~ s/\Q{yabb my_postsec_b}\E/$my_postsec_b/xsm;
-        $my_postsection =~ s/\Q{yabb my_googie}\E/$my_googie/xsm;
         $my_postsection =~
           s/\Q{yabb mypost_smilie_array}\E/$mypost_smilie_array/xsm;
         $my_postsection =~ s/\Q{yabb my_post_feata}\E/$my_post_feata/xsm;
@@ -1483,11 +1473,6 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
     my $my_spdpost = q{};
     if ($speedpostdetection) {
         $my_spdpost = speedpost( $submittxt, $post );
-    }
-
-    if ( !$yyinlinestyle =~ /cookiesupport[.]js/xsm ) {
-        $yyinlinestyle .=
-qq~<script type="text/javascript" src="$yyhtml_root/googiespell/cookiesupport.js"></script>~;
     }
 
     my $my_tclass = q{};
@@ -2595,8 +2580,8 @@ qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
                 && $hasviewed )
             {
                 load_user($curuser);
-                if (   ${ $uid . $curuser }{'notify_me'} == 1
-                    || ${ $uid . $curuser }{'notify_me'} == 3 )
+                if (   ${ $uid . $curuser }{'notify_me'} && ( ${ $uid . $curuser }{'notify_me'} == 1
+                    || ${ $uid . $curuser }{'notify_me'} == 3 ) )
                 {
                     my $curmail   = $memberinf{$curuser}[1];
                     my $topiclink = qq~$scripturl?num=$thisthread~;
@@ -3249,7 +3234,7 @@ sub mod_alert2 {
 
 # Send notification (Will only work if Admin has allowed the Email Notification)
             load_user($toBoardMod);
-            if (   ${ $uid . $toBoardMod }{'notify_me'} > 1
+            if (   ${ $uid . $toBoardMod }{'notify_me'} && ${ $uid . $toBoardMod }{'notify_me'} > 1
                 && $enable_notifications > 1
                 && ${ $uid . $toBoardMod }{'email'} ne q{} )
             {

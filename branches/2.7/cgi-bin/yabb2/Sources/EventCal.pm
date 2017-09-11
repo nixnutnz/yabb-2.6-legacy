@@ -423,7 +423,7 @@ qq~ <label for="calyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     my (
         $calicon,            $class,                 $cecknonam,
         $option_noname,      $option_private,        $mycalout_caltype,
-        $mycalout_calicon,   $mycalout_cthelp,       $mycalout_googie,
+        $mycalout_calicon,   $mycalout_cthelp,
         $mycalout_smilies,   $mycalout_chars,        $guestpost_fields,
         $verification_field, $mycalout_spamquestion, $liveusernamelink,
         $mycalout_send,      $mycalout_post2,        $mycalout_post3,
@@ -530,15 +530,7 @@ qq~<script src="$yyhtml_root/ubbc.js" type="text/javascript"></script>~;
             $mycalout_cthelp .= postbox();
         }
 
-        # SpellChecker start
-        if ($enable_spell_check) {
-            $yyinlinestyle .= googiea();
-            $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
-            $userdefaultlang ||= 'en';
-            $mycalout_googie = googie($userdefaultlang);
-        }
-
-        # SpellChecker end
+        # SpellChecker removed
 
         {
             no strict qw(refs);
@@ -743,7 +735,6 @@ $mycalout_addevent
     $mycalout_calicon      ||= q{};
     $mycalout_cthelp       ||= q{};
     $mycalout_post2        ||= q{};
-    $mycalout_googie       ||= q{};
     $mycalout_smilies      ||= q{};
     $mycalout_post3        ||= q{};
     $mycalout_chars        ||= q{};
@@ -763,7 +754,6 @@ $mycalout_addevent
     $mycalout_post =~ s/\Q{yabb caliconimg}\E/$cal_icon_bg{$calicon}/gxsm;
     $mycalout_post =~ s/\Q{yabb mycalout_cthelp}\E/$mycalout_cthelp/xsm;
     $mycalout_post =~ s/\Q{yabb mycalout_post2}\E/$mycalout_post2/xsm;
-    $mycalout_post =~ s/\Q{yabb mycalout_googie}\E/$mycalout_googie/xsm;
     $mycalout_post =~ s/\Q{yabb mycalout_smilies}\E/$mycalout_smilies/xsm;
     $mycalout_post =~ s/\Q{yabb mycalout_post3}\E/$mycalout_post3/xsm;
     $mycalout_post =~ s/\Q{yabb mycalout_chars}\E/$mycalout_chars/xsm;

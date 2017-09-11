@@ -208,7 +208,7 @@ $mycalout_addevent = qq~
             {yabb mycalout_post2}
         </td>
     </tr><tr>
-        <td class="windowbg2" colspan="2">{yabb mycalout_googie}{yabb mycalout_smilies}
+        <td class="windowbg2" colspan="2">{yabb mycalout_smilies}
             {yabb mycalout_post3}
             {yabb mycalout_chars}
         </td>

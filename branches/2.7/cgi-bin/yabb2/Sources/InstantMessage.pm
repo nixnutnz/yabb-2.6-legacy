@@ -688,16 +688,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
         $im_smilies .= qq~
         <span class="small"><a href="javascript: smiliewin();">$post_smiltxt{'17'}</a></span>\n~;
 
-        # SpellChecker start
-        if ( $enable_spell_check && !$use_mobile ) {
-            $yyinlinestyle .= googiea();
-            $userdefaultlang = ( split /-/xsm, $abbr_lang )[0];
-            $userdefaultlang ||= 'en';
-            $im_smilies .= googie($userdefaultlang);
-        }
-
-        # SpellChecker end
-
+        # SpellChecker removed
         $im_smilies .= $my_postbox_smilie;
     }
 

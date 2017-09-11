@@ -71,7 +71,7 @@ our (
     $enable_notifications,    $enable_pm_search,
     $enable_quickjump,        $enable_quickpost,
     $enable_quickreply,       $enable_quoteuser,
-    $enable_spell_check,      $enable_stealth,
+    $enable_stealth,
     $enable_storefolders,     $enable_ubbc,
     $enableguestquicksearch,  $enableguestsearch,
     $enabletopichover,        $enabletz,
@@ -362,35 +362,7 @@ $enable_mc_away ||= 0;
 
 require Admin::ManageBoards;    # needed for avatar upload settings
 
-# googiespell start
-my $googiehtml =
-qq~<input type="checkbox" name="enable_spell_check" id="enable_spell_check" value="1"${ischecked($enable_spell_check)} />~;
-if (   eval { require LWP::UserAgent }
-    && eval { require HTTP::Request::Common }
-    && eval { require Crypt::SSLeay } )
-{
-    require LWP::UserAgent;
-    require HTTP::Request::Common;
-    require Crypt::SSLeay;
-}
-else {
-    $googiehtml =
-        q~<input type="hidden" name="enable_spell_check" value="0" />~
-      . $admin_txt{'377a'}
-      . '- LWP::UserAgent &lt;- <b>'
-      . ( $modulLWP ? $modulLWP : $admin_txt{'377b'} )
-      . '</b><br />'
-      . '- HTTP::Request::Common &lt;- <b>'
-      . ( $modulHTTP ? $modulHTTP : $admin_txt{'377b'} )
-      . '</b><br />'
-      . '- Crypt::SSLeay &lt;- <b>'
-      . ( $modulCrypt ? $modulCrypt : $admin_txt{'377b'} )
-      . '</b><br />'
-      . $admin_txt{'377c'};
-}
-
-# googiespell end
-
+# googiespell removed
 $qcksearchtype ||= 'allwords';
 $qckage = $qckage ? $qckage : 31;
 $usertxtwrap ||= 20;
@@ -732,13 +704,6 @@ qq~<input type="checkbox" name="addtab_on" id="addtab_on" value="1"${ischecked($
         items => [
             {
                 header => $settings_txt{'posting'},
-            },
-            {
-                description =>
-                  qq~<label for="enable_spell_check">$admin_txt{'377'}</label>~,
-                input_html => $googiehtml,
-                name       => 'enable_spell_check',
-                validate   => 'boolean',
             },
             {
                 description =>

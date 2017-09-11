@@ -25,6 +25,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_occurred'       => q~An Error Has Occurred.~,
 'untrapped'            => q~Untrapped Error~,
 'cannot_open'          => q~Unable to open~,
+'bad data'             => q~File with bad data~,
 'cannot_open_dir'      => q~Can't open directory~,
 'cannot_open_language' => q~Can't find required language file. Please inform the administrator about this problem.~,
 'cannot_delete'        => q~Unable to delete~,

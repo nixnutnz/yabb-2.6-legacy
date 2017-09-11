@@ -288,7 +288,7 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
         our ($FILE);
         fopen( 'FILE', '<', "$memberdir/$username.usctmp" )
           or croak "$croak{'open'} usctmp";
-        while ( my $line = <FILE> ) {
+        while ( my $line = <$FILE> ) {
             chomp $line;
             my ( $recentname, $realinfo ) = split /,/xsm, $line;
             $memberinf{$recentname} = $realinfo;
@@ -342,7 +342,7 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
       )
     {
         for my $membername (
-            sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
+            sort { lc $memberinf{$a}[0] cmp lc $memberinf{$b}[0] }
             keys %memberinf
           )
         {
@@ -440,7 +440,7 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
             my $color      = q{};
             my $colorstyle = q~ style="font-weight: bold;~;
             if ( $to_id ne 'groups' ) {
-                if ( $user ne q{} ) {
+                if ( $user && $user ne q{} ) {
                     $color      = q{};
                     $colorstyle = q~ style="font-weight: bold;~;
                     !${ $uid . $user }{'password'}
@@ -504,6 +504,7 @@ qq~<option value="$cloaked_username"$colorstyle>${$uid.$user}{'realname'}</optio
             $yymain_inner .= qq~<b>$usersel_txt{'noentries'}</b><br />~;
         }
         elsif ( $INFO{'sort'} eq 'pmsearch' ) {
+            $searchstr ||= q{};
             $yymain_inner .=
               qq~<b>$usersel_txt{'nofound'} <i>$searchstr</i></b>~;
         }
@@ -563,7 +564,7 @@ sub build_index_us {
         else { $endpage = $memcount }
         my $lastpn = int( ( $memcount - 1 ) / $members_perpage ) + 1;
         my $lastptn = ( $lastpn - 1 ) * $members_perpage;
-        my ( $pagetxtindexst, $pageindexadd, $indexpages );
+        my ( $pagetxtindexst, $pageindexadd, $indexpages ) = ( q{}, q{}, q{} );
         $pageindex =
 qq~<span class="small pgindex">$usersel_txt{'pages'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
@@ -580,6 +581,7 @@ qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$lett
                 }
                 for my $counter ( $startpage .. ( $endpage - 1 ) ) {
                     if ( $counter % $members_perpage == 0 ) {
+                        $letter ||= q{};
                         $pagetxtindex .=
                           $start == $counter
                           ? qq~<b>[$tmpa]</b>&nbsp;~
@@ -768,6 +770,7 @@ sub build_pages_us {
     $table_header =~ s/\Q{yabb not_groups_b}\E/$not_groups_b/xsm;
     $table_header =~ s/\Q{yabb TableHeader_lt}\E/$table_header_lt/xsm;
 
+    $start ||= 0;
     my $numbegin = ( $start + 1 );
     my $numend   = ( $start + $members_perpage );
     my $numshow  = q{};
@@ -776,6 +779,7 @@ sub build_pages_us {
     else { $numshow = qq~($numbegin - $numend $usersel_txt{'of'} $memcount)~; }
     my $my_inst3 = q{};
     if ( $x[0] ) {
+        $pageindex ||= q{};
         $yymain .= $my_usersel;
         $yymain =~ s/\Q{yabb TableHeader}\E/$table_header/xsm;
         $yymain =~ s/\Q{yabb pageindex}\E/$pageindex/xsm;

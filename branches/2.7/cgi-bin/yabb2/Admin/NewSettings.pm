@@ -95,7 +95,7 @@ our (
     $nestedquotes,                 $parseflash,
     $enableclicklog,               $showimageinquote,
     $enabletopichover,             $staff_reason,
-    $user_reason,                  $enable_spell_check,
+    $user_reason,
     $enable_ubbc,                  $enable_news,
     $allowpics,                    $upload_useravatar,
     $upload_avatargroup,           $avatar_limit,
@@ -804,7 +804,7 @@ qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\
         my $extensions   = q{'} . join( q{', '}, @ext ) . q{'};
         my $pm_attachext = q{'} . join( q{', '}, @pm_attachext ) . q{'};
         my @setlist =
-          qw( accept_permafull accept_permalink addmemgroup_enabled birthday_on_reg enable_buddylist bypass_lock_perm cal_event_mods cal_event_noname cal_event_perms cal_event_private calsplit  captchastyle clike_htaccess delete_eventsuntil detachblock disallow_proxy_htaccess cal_event_display distortion en_spam_questions enable_guest_view_limit enable_mc_away enable_stealth  enable_quota enable_spell_check enabletopichover findfile_maxsize findfile_root findfile_space findfile_time getreversedns gpvalid_en group_stars_ml guest_view_limit guest_view_limit_block harvester_htaccess helloserv hide_signat_for_guests hostusername imp_email_check ip_lookup maxdays maxdaysattach maxsizeattach min_reg_time no_short_ubbc nomailspammer perm_domain perm_spacer pm_spam_chk enable_guest_alert pm_attach_groups pm_checkext pm_display_pics pm_enable_bcc pm_enable_cc enable_alert enable_guest_pm pm_maxdaysattach pm_maxsizeattach posttools profile_int referer_htaccess removenormalsmilies request_htaccess rssperm rsssymboards rsssymrecent script_htaccess scroll_events self_del_user birthday_color_show birthday_sign_show birthday_button_show birthday_date_show birthday_list_show show_caltoday show_colorlinks show_event_birthdays show_eventbutton show_mini_calicons showage showinbox showpageall show_sunday showuserage showuserpicml showzodiac spam_questions_case spam_questions_gp spam_questions_send spamfruits staff_reason string_htaccess symlink temp_switcher_allowed templ_switcher threadtools tlnomodday union_htaccess usehelp_perms user_hide_attach_img user_hide_avatars user_hide_img user_hide_signat user_hide_smilies_row user_hide_user_text user_reason usertools );
+          qw( accept_permafull accept_permalink addmemgroup_enabled birthday_on_reg enable_buddylist bypass_lock_perm cal_event_mods cal_event_noname cal_event_perms cal_event_private calsplit  captchastyle clike_htaccess delete_eventsuntil detachblock disallow_proxy_htaccess cal_event_display distortion en_spam_questions enable_guest_view_limit enable_mc_away enable_stealth  enable_quota enabletopichover findfile_maxsize findfile_root findfile_space findfile_time getreversedns gpvalid_en group_stars_ml guest_view_limit guest_view_limit_block harvester_htaccess helloserv hide_signat_for_guests hostusername imp_email_check ip_lookup maxdays maxdaysattach maxsizeattach min_reg_time no_short_ubbc nomailspammer perm_domain perm_spacer pm_spam_chk enable_guest_alert pm_attach_groups pm_checkext pm_display_pics pm_enable_bcc pm_enable_cc enable_alert enable_guest_pm pm_maxdaysattach pm_maxsizeattach posttools profile_int referer_htaccess removenormalsmilies request_htaccess rssperm rsssymboards rsssymrecent script_htaccess scroll_events self_del_user birthday_color_show birthday_sign_show birthday_button_show birthday_date_show birthday_list_show show_caltoday show_colorlinks show_event_birthdays show_eventbutton show_mini_calicons showage showinbox showpageall show_sunday showuserage showuserpicml showzodiac spam_questions_case spam_questions_gp spam_questions_send spamfruits staff_reason string_htaccess symlink temp_switcher_allowed templ_switcher threadtools tlnomodday union_htaccess usehelp_perms user_hide_attach_img user_hide_avatars user_hide_img user_hide_signat user_hide_smilies_row user_hide_user_text user_reason usertools );
 
         foreach my $i (@setlist) {
             ${$i} ||= q{};
@@ -954,7 +954,6 @@ $member_groups
 
 ########## Feature Settings ##########
 
-\$enable_spell_check = $enable_spell_check; # Set to 1 if you want to enable SpellChecker. By doing this you agree to the terms of license under which googiespell runs. See: /yabbfiles/googiespell/GPL.txt and http://creativecommons.org/licenses/by-nc-sa/3.0/
 \$enable_ubbc = $enable_ubbc;               # Set to 1 if you want to enable UBBC (Uniform Bulletin Board Code)
 \$enable_news = $enable_news;               # Set to 1 to turn news on, or 0 to set news off
 \$allowpics = $allowpics;                   # set to 1 to allow members to choose avatars in their profile
