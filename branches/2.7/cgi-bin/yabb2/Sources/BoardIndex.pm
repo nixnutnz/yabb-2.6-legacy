@@ -2242,11 +2242,10 @@ sub get_info {
         my $lastonline = $date - ( $online_logtime * 60 );
         my %bot_count;
         my ( $is_a_bot, $lookup_ip );
-        my ( $name, $date1, $last_ip, $last_host, $boardv );
+        my ( $name, $date1, $last_ip, $last_host, $boardv ) = ( q{}, q{}, q{}, q{}, q{} );
         foreach (@logentries) {
             ( $name, $date1, $last_ip, $last_host, undef, $boardv, undef ) =
               split /[|]/xsm, $_, 7;
-            $boardv ||= q{};
             if ( !$last_ip ) {
                 $last_ip =
 qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="small"><i>~;
@@ -2313,6 +2312,7 @@ qq~</i></span><span class="error">$boardindex_txt{'no_ip'}</span><span class="sm
                     || ( $iamgmod && $show_online_ip_gmod )
                     || ( $iamfmod && $show_online_ip_fmod ) )
                 {
+                    $lookup_ip ||= q{};
                     $users .= "&nbsp;<i>($user_ip)</i>";
                     $guestlist =~ s/<i>$lookup_ip<\/i>,\s//oxsm;
                 }

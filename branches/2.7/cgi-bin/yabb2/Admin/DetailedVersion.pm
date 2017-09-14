@@ -863,7 +863,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 my $age =
                   ( stat("$templatesdir/$folderindir/$filein_dir")->mtime );
                 $date = scalar localtime $age;
-                if (   ( $vercheck == 0 && $linec ne $checksum{$filein_dir} )
+                if (   ( $vercheck == 0 && ($checksum{$filein_dir} && $linec ne $checksum{$filein_dir} ) )
                     || ( $vercheck == 1 && $age > $ver_age ) )
                 {
                     $chkmatch =

@@ -36,10 +36,11 @@ our (
     $yyhtml_root, $yymenu,          $useimages,        $formsession,
     $yyimages,    $yydefaultimages, $defaultimagesdir, $iamguest,
     $iamadmin,    $iamgmod,         $password,         $yycopyin,
-    $yyuname,     $yypath,          $boarddir,         $vardir,
+    $yyuname,     $boarddir,        $vardir,           $langdir,
     $boardsdir,   $memberdir,       @minpack,          @minbrds,
     @mincats,     $datadir,         $lang2,            $yyposition,
-    $time,        %setdone,
+    $time,        %setdone,         $language,         $lang,
+    $mylang,
 );
 my (
     $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6, $navlink1a,
@@ -72,6 +73,20 @@ if ( !$script_root ) {
 $script_root =~ s/\/ConvertLang[.](pl|cgi)//igxsm;
 
 require Paths;
+require Sources::Subs;
+my $uselang = $INFO{'lang'} || $FORM{'getlang'} || 'English';
+
+our %convlang_txt;
+$lang = $language = $uselang;
+my $mygetlang = q{};
+if ( -e "$langdir/$uselang/Mods/Convert.lng" && -e "$langdir/$uselang/Main.lng" ) {
+    load_language('Main');
+    load_language('Mods/Convert');
+     $mygetlang = qq~                    <input type="hidden" id="mylang" name="mylang" value="$uselang" />~;
+}
+elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
+    load_language('Mods/Convert');
+}
 
 my $convertlang = "$boarddir/ConvertLang";
 our $convvardir = "$boarddir/ConvertLang/Variables";
@@ -84,11 +99,15 @@ my $yyext      = 'pl';
 our $yyexec    = 'YaBB';
 our $yabbversion = 'YaBB 2.7.00';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
+my $getlang = q{};
+if ($uselang ne 'English') {
+    $getlang = qq~;lang=$uselang~;
+}
 my $set_cgi = "ConvertLang.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
 my $scripturl = "$boardurl/$yyexec.$yyext";
 
-my $lang        = 'ISO-8859-1';
+my $lang1        = 'ISO-8859-1';
 
 # Make sure the module path is present
 push @INC, "$boarddir/Modules";
@@ -98,7 +117,10 @@ require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
 require Variables::Settings;
-my $upfrom = $INFO{'upfrom'};
+my $upfrom = 0;
+if ( $FORM{'upfrom'} || $INFO{'upfrom'} ) {
+    $upfrom = 1;
+}
 
 opendir my $MBDIR, "$convertlang/Members";
 my @memlista =
@@ -129,7 +151,7 @@ my @tovarsa = grep {
 closedir $VARS;
 my $tovarsa = scalar @tovarsa;
 
-my $maintext_23 = 'Cannot process';
+my $maintext_23 = $convlang_txt{'maintext_23'};
 #############################################
 # Conversion starts here                    #
 #############################################
@@ -147,40 +169,40 @@ if ( -e 'Variables/Setup.lock' ) {
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink4 . $navlink5 . $navlink6;
 
         my $langtxt = q{};
-        if ( $upfrom == 1 ) {
+        if ( $upfrom ) {
             $langtxt = << "TXT";
-                    <p>Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). <strong>Encoding</strong>: If your Forum had a windows-1251 Language Pack installed, choose that encoding. Otherwise, choose ISO-8859-1. Messages in non-Western Languages, such as Chinese and Arabic, were saved as HTML Entities and should not be damaged by conversion from ISO-8859-1.
-                        <br /><b>Language:</b>
-                        <br /><select name="lang">
-                            <option value="ISO-8859-1">ISO-8859-1 (old YaBB default)</option>
-                            <option value="CP1251">windows-1251 (Cyrillic)</option>
+                    <p>$convlang_txt{'start1'}
+                        <br /><b>$convlang_txt{'start1a'}</b>
+                        <br /><select name="lang1">
+                            <option value="ISO-8859-1">$convlang_txt{'old'}</option>
+                            <option value="CP1251">$convlang_txt{'alt'}</option>
                         </select>
 TXT
         }
         else {
             $langtxt = << "TXT";
-                    <p>Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). <strong>Majority encoding</strong>: If your Forum had a windows-1251 Language Pack installed, choose the encoding that reflects the <strong>majority</strong> of the posts in your forum. The <strong>Minority encoding</strong> will be the other available choice. Messages in non-Western Languages, such as Chinese and Arabic, were saved as HTML Entities and should not be damaged by conversion from ISO-8859-1.)
-                        <br /><b>Majority language:</b>
-                        <br /><select name="lang">
-                            <option value="ISO-8859-1">ISO-8859-1 (old YaBB default)</option>
-                            <option value="CP1251">windows-1251 (Cyrillic)</option>
+                    <p>$convlang_txt{'start2'}
+                        <br /><b>$convlang_txt{'major'}</b>
+                        <br /><select name="lang1">
+                            <option value="ISO-8859-1">$convlang_txt{'old'}</option>
+                            <option value="CP1251">$convlang_txt{'alt'}</option>
                         </select>
-                        <br /><b>Minority language:</b>
+                        <br /><b>$convlang_txt{'minor'}</b>
                         <br /><select name="minlang">
-                            <option value="ISO-8859-1">ISO-8859-1 (old YaBB default)</option>
-                            <option value="CP1251">windows-1251 (Cyrillic)</option>
+                            <option value="ISO-8859-1">$convlang_txt{'old'}</option>
+                            <option value="CP1251">$convlang_txt{'alt'}</option>
                         </select>
                     </p>
-                    <p>If your forum used <b>both</b> ISO-8859-1 and windows-1251 (Cyrillic) encodings, type in the <b>IDs</b> of the categories using <strong>minority language</strong> in their titles/descriptions (one ID per line). Otherwise leave this blank.</p>
-                    <p>IDs of the categories <strong>not</strong> in the majority language:
+                    <p>$convlang_txt{'cats'}</p>
+                    <p>$convlang_txt{'cats2'}
                         <br /><textarea name="langcat" cols="20" rows="2" /></textarea>
                     </p>
-                    <p>If your forum used <b>both</b> ISO-8859-1 and windows-1251 (Cyrillic) encodings, type in the <b>IDs</b> of the boards the <strong>minority language</strong> is found in (one ID per line). Otherwise leave this blank.</p>
-                    <p>IDs of the boards <strong>not</strong> in the majority language:
+                    <p>$convlang_txt{'brds'}</p>
+                    <p>$convlang_txt{'brds2'}
                         <br /><textarea name="langmin" cols="20" rows="2" /></textarea>
                     </p>
-                    <p>If your forum used <b>both</b> ISO-8859-1 and windows-1251 (Cyrillic) encodings, type in the <b>Name/Folder</b> of the Language Pack(s) in the <strong>minority language</strong>  (one Language per line). Otherwise leave this blank.</p>
-                    <p>Names of the Languages <strong>not</strong> in the majority language:
+                    <p>$convlang_txt{'lngs'}</p>
+                    <p>$convlang_txt{'lngs2'}
                         <br /><textarea name="langpack" cols="20" rows="2" /></textarea>
                     </p>
 TXT
@@ -194,20 +216,19 @@ TXT
                 <col style="width:95%" />
             </colgroup>
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
+                <td class="tabtitle" colspan="2">$convlang_txt{'title'}</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. The folder 'ConvertLang' should have been installed with your YaBB 2.7.00 installation.
-                        <br />Proceed through the following steps to convert your existing data files to UTF-8.
-                    </p>
+                    <p>$convlang_txt{'start3'}</p>
 $langtxt
                 </td>
             </tr><tr>
                 <td class="catbg center" colspan="2">
-                    <input type="submit" value="Continue" />
+$mygetlang
+                    <input type="submit" value="$convlang_txt{'cont'}" />
                 </td>
             </tr>
         </table>
@@ -219,6 +240,8 @@ INTRO
 
     if ( $action eq 'prepare' ) {
         update_cookie('delete');
+        my $myuselang = $FORM{'mylang'} || 'English';
+        getlang($myuselang);
 
         $username = 'Guest';
         $iamguest = '1';
@@ -255,12 +278,13 @@ INTRO
 
         $time = time;
         my $setfile = << "EOF";
-\$lang = '$FORM{'lang'}';
+\$lang1 = '$FORM{'lang1'}';
 \$lang2 = '$FORM{'minlang'}';
 \@minbrds = qw( $minbrds );
 \@mincats = qw( $mincats );
 \@minpack = qw( $minpack );
 \$time = $time;
+\$mylang = q~$myuselang~;
 
 1;
 EOF
@@ -287,17 +311,17 @@ EOF
                 <col style="width:95%" />
             </colgroup>
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
+                <td class="tabtitle" colspan="2">$convlang_txt{'title'}</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
                     <ul>
-                        <li>Members info found in: <b>$convertlang/Members</b> ($memnuma files)</li>
-                        <li>Board and Category info found in: <b>$convertlang/Boards</b> ($toboardsa  files)</li>
-                        <li>Messages info found in: <b>$convertlang/Messages</b> ($tomessa  files)</li>
-                        <li>Variables info found in: <b>$convertlang/Variables</b> ($tovarsa  files)</li>
+                        <li>$convlang_txt{'mems'} <b>$convertlang/Members</b> ($memnuma $convlang_txt{'files'})</li>
+                        <li>$convlang_txt{'brdsf'} <b>$convertlang/Boards</b> ($toboardsa $convlang_txt{'files'})</li>
+                        <li>$convlang_txt{'mess'} <b>$convertlang/Messages</b> ($tomessa $convlang_txt{'files'})</li>
+                        <li>$convlang_txt{'vars'} <b>$convertlang/Variables</b> ($tovarsa $convlang_txt{'files'})</li>
                     </ul>
                 </td>
             </tr><tr>
@@ -305,11 +329,7 @@ EOF
                     <img src="$imagesdir/info.png" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                  - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
-                  - Some internet connections refresh their IP-Address automatically every 24 hours.<br />
-                  &nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion. <br />
-                  - Your forum will be set to maintenance while converting.
-                  <p>Click on 'Members' in the menu to start.<br />&nbsp;</p>
+$convlang_txt{'start4'}
                 </td>
             </tr>
         </table>
@@ -320,6 +340,7 @@ START
     }
     elsif ( $action eq 'members' ) {
         require 'Variables/LangSettings.txt';
+        getlang($mylang);
 
         $yytabmenu =
             $navlink1
@@ -343,9 +364,18 @@ START
             }
         }
 
-        my $memdone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        my $memdone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
+        my $mymore = qq~        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/info.png" alt="" />
+            </td>
+            <td class="windowbg2 fontbigger">
+                 <p>$convlang_txt{'mems2'}</p>
+            </td>~;
+
         if ($memchk) {
-            $memdone = qq~ <span class="important">$memnumn Files Processed</span>. You can now proceed to <strong><a href="$set_cgi?action=cats">Boards</a></strong>~;
+            $memdone = qq~ <span class="important">$memnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=cats$getlang">Boards</a></strong>~;
+            $mymore = q{};
         }
 
         my $memtext = << "MEMBERS";
@@ -356,21 +386,14 @@ START
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
+            <td class="tabtitle" colspan="2">$convlang_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <p>Member Conversion. -&gt; $memdone</p>
-            </td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/info.png" alt="" />
-            </td>
-            <td class="windowbg2 fontbigger">
-                 <p>To prevent server time-out due to the number of members to be copied, the conversion will take place in a separate window.</p>
-            </td>
+                <p>$convlang_txt{'mems3'} $memdone</p>
+            </td>$mymore
         </tr>
     </table>
     </div>
@@ -379,6 +402,8 @@ MEMBERS
     }
 
     elsif ( $action eq 'cats' ) {
+        require 'Variables/LangSettings.txt';
+		getlang($mylang);
         $yytabmenu =
             $navlink1
           . $navlink2
@@ -400,9 +425,17 @@ MEMBERS
                 $brdnumn = scalar @bdlistn;
             }
         }
-        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
+        my $mymore = qq~        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/info.png" alt="" />
+            </td>
+            <td class="windowbg2 fontbigger">
+                 <p>$convlang_txt{'brds4'}</p>
+            </td>~;
         if ($brdchk) {
-            $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=messages">Messages</a></strong>~;
+            $brddone = qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=messages">Messages</a></strong>~;
+            $mymore = q{};
         }
         my $catstext = << "CATS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -412,22 +445,15 @@ MEMBERS
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="tabtitle" colspan="2">$convlang_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <p>Member Conversion done.</p
-                <p>Board &amp; Category Conversion. -&gt; $brddone</p>
-             </td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/info.png" alt="" />
-            </td>
-            <td class="windowbg2 fontbigger">
-                 <p>To prevent server time-out due to the number of boards to be copied, the conversion will take place in a separate window.</p>
-            </td>
+                <p>$convlang_txt{'memdn'}</p
+                <p>$convlang_txt{'brds3'} $brddone</p>
+             </td>$mymore
         </tr>
     </table>
     </div>
@@ -437,6 +463,8 @@ CATS
 
     elsif ( $action eq 'messages' ) {
         require 'Variables/LangSettings.txt';
+        getlang($mylang);
+
         $yytabmenu =
             $navlink1
           . $navlink2
@@ -459,9 +487,17 @@ CATS
             }
         }
 
-        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
+        my $mymore = qq~        </tr><tr>
+            <td class="windowbg center">
+                <img src="$imagesdir/info.png" alt="" />
+            </td>
+            <td class="windowbg2 fontbigger">
+                 <p>$convlang_txt{'mess3'}</p>
+            </td>~;
         if ($messchk) {
-            $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=variables">Variables</a></strong>~;
+            $brddone = qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=variables">Variables</a></strong>~;
+            $mymore = q{};
         }
         my $messtext = << "MESS";
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -471,23 +507,17 @@ CATS
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="titlebg" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
+            <td class="titlebg" colspan="2">$convlang_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-               <p>Member Conversion done.</p>
-               <p>Board and Category Conversion done.</p>
-               <p>Message Conversion. -&gt; $brddone</p>
-            </td>
-        </tr><tr>
-            <td class="windowbg center">
-                <img src="$imagesdir/info.png" alt="" />
-            </td>
-            <td class="windowbg2 fontbigger">
-                 <p>To prevent server time-out due to the number of messages to be copied, the conversion will take place in a separate window.</p>
-            </td>
+               <p>$convlang_txt{'memdn'}</p>
+               <p>$convlang_txt{'brddn'}</p>
+               <p>$convlang_txt{'mess2'} $brddone</p>
+            </td>$mymore
+
         </tr>
     </table>
     </div>
@@ -497,6 +527,8 @@ MESS
 
     elsif ( $action eq 'variables' ) {
         require 'Variables/LangSettings.txt';
+        getlang($mylang);
+
         $yytabmenu =
             $navlink1
           . $navlink2
@@ -518,9 +550,9 @@ MESS
                 $brdnumn = scalar @bdlistn;
             }
         }
-        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=variables','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Start Conversion</a>};
+        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=variables','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
         if ($varchk) {
-            $brddone = qq~ <span class="important">$brdnumn Files Processed</span> You can now proceed to <strong><a href="$set_cgi?action=cleanup">Finish</a></strong>~;
+            $brddone = qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=cleanup">Finish</a></strong>~;
         }
 
         my $varstext = <<"VARS";
@@ -531,16 +563,16 @@ MESS
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
+            <td class="tabtitle" colspan="2">$convlang_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <p>Member Convert Done.</p>
-                <p>Board and Category Convert Done.</p>
-                <p>Message Convert Done.</p>
-                <p>Variable Conversion. -&gt; $brddone</p>
+                <p>$convlang_txt{'memdn'}</p>
+                <p>$convlang_txt{'brddn'}</p>
+                <p>$convlang_txt{'messdn'}</p>
+                <p>$convlang_txt{'vars2'} $brddone</p>
             </td>
         </tr>
     </table>
@@ -551,6 +583,8 @@ VARS
 
     elsif ( $action eq 'cleanup' ) {
         require 'Variables/LangSettings.txt';
+        getlang($mylang);
+
         my $newtime = time;
         my $elapse  = ( $newtime - $time ) / 60;
 
@@ -568,42 +602,29 @@ VARS
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 UTF-8 Converter</td>
+            <td class="tabtitle" colspan="2">$convlang_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <p>Member Convert done.</p>
-                <p>Board and Category Convert done.</p>
-                <p>Message Convert done.</p>
-                <p>Variables Convert done.</p>
-                <p>Elapsed Time: $elapse minutes.</p>
+                <p>$convlang_txt{'memdn'}</p>
+                <p>$convlang_txt{'brddn'}</p>
+                <p>$convlang_txt{'messdn'}</p>
+                <p>$convlang_txt{'varsdn'}</p>
+                <p>$convlang_txt{'time'}</p>
             </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2 fontbigger">
-                <p><span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the error in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br />
-                <br />
-                Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
-                - Rebuild Message Index<br />
-                - Recount Board Totals<br />
-                - Rebuild Members List<br />
-                - Recount Membership<br />
-                - Rebuild Members History<br />
-                - Rebuild Notifications Files<br />
-                - Clean Users Online Log<br />
-                - Attachment Functions => Rebuild Attachments<br /></span>
-                <br />
-                <br />
-                You may now login to your forum. Enjoy using YaBB 2.7.00!
+            <td class="windowbg2">
+                $convlang_txt{'finish'}
             </td>
         </tr><tr>
             <td class="catbg center" colspan="2">
                 <form action="YaBB.$yyext" method="post" style="display: inline;">
-                    <input type="submit" value="Start" />
+                    <input type="submit" value="$convlang_txt{'strt'}" />
                     <input type="hidden" name="formsession" value="$formsession" />
                 </form>
             </td>
@@ -611,6 +632,7 @@ VARS
     </table>
     </div>
 DONE
+        $done =~ s/\Q{elapse}\E/$elapse/gxsm;
         $yymain = $done;
         createfixlock();
     }
@@ -629,8 +651,8 @@ DONE
         }
     }
 
-    $yyim    = 'You are running the YaBB 2.7.00 UTF-8 Converter.';
-    $yytitle = 'YaBB 2.7.00 UTF-8  Converter';
+    $yyim    = $convlang_txt{'yyim'};
+    $yytitle = $convlang_txt{'title'};
     setuptemplate();
 }
 
@@ -703,14 +725,14 @@ sub convertmembers {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion - Members</title>
-    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <title>$convlang_txt{'lmem'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default/convsetup.css" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Language Conversion - Members</h1>
+<h1>$convlang_txt{'lmem'}</h1>
 <p>~ or croak 'cannot print top';
     copy "$convvardir/Memberlist.pm", "$vardir/Memberlist.pm";
     if ( -e "$convertlang/Members/broadcast.messages" ) {
@@ -720,13 +742,13 @@ sub convertmembers {
             "$maintext_23 $convertlang/Members/broadcast.messages: ", 1 );
         my $memfile = do { local $INPUT_RECORD_SEPARATOR = undef; <$MEMDIR> };
         close $MEMDIR or croak 'cannot close MEMDIR';
-        $memfile = encode( 'utf8', decode( $lang, $memfile ) );
+        $memfile = encode( 'utf8', decode( $lang1, $memfile ) );
         open my $NMEMFILE, '>', "$memberdir/broadcast.messages"
           or
           setup_fatal_error( "$maintext_23 $memberdir/broadcast.messages:", 1 );
         print {$NMEMFILE} $memfile or croak 'cannot print NMEMFILE';
         close $NMEMFILE or croak 'cannot close NMEMFILE';
-        print qq~/Members/broadcast.messages done<br />\n~
+        print qq~/Members/broadcast.messages $convlang_txt{'done'}<br />\n~
           or croak 'cannot print line';
     }
     our %memberinf;
@@ -757,9 +779,9 @@ sub convertmembers {
       or setup_fatal_error( "$maintext_23 Variables/Memberinfo.pm:", 1 );
     print {$NMEMFILE} $meminfo or croak 'cannot print NMEMFILE';
     close $NMEMFILE or croak "cannot close $NMEMFILE";
-    print q~/Variables/Memberinfo.pm done<br />~ or croak 'cannot print line';
+    print qq~/Variables/Memberinfo.pm $convlang_txt{'done'}<br />~ or croak 'cannot print line';
     copy "$convvardir/Memberlist.pm", "$vardir/Memberlist.pm";
-    print q~/Variables/Memberlist.pm done<br />~ or croak 'cannot print line';
+    print qq~/Variables/Memberlist.pm $convlang_txt{'done'}<br />~ or croak 'cannot print line';
 
     my @xtn = qw(vars msg ims imstore outbox imdraft pre wait);
     my @xta = qw(log rlog lst);
@@ -796,8 +818,8 @@ sub convertmembers {
                           or croak "cannot print $FILEUSERB";
                         close $FILEUSERB or croak "cannot close $FILEUSERB";
                         if ($cnt eq 'vars') {
-							print qq~/Members/$memlist[$i].$cnt done<br />\n~ or croak 'cannot print line';
-						}
+                            print qq~/Members/$memlist[$i].$cnt $convlang_txt{'done'}<br />\n~ or croak 'cannot print line';
+                        }
                     }
                 }
                 for my $cnt (@xta) {
@@ -833,10 +855,10 @@ sub convertmembers {
                     print {$FILEUSERB} $fileuser
                       or croak "cannot print $FILEUSERB";
                     close $FILEUSERB or croak "cannot close $FILEUSERB";
-					if ($cnt eq 'vars') {
-						print qq~/Members/$memlist[$i].$cnt done<br />\n~
+                    if ($cnt eq 'vars') {
+                        print qq~/Members/$memlist[$i].$cnt $convlang_txt{'done'}<br />\n~
                       or croak 'cannot print line';
-					}
+                    }
                 }
             }
             for my $cnt (@xta) {
@@ -846,9 +868,9 @@ sub convertmembers {
             }
         }
     }
-    print q~</p>
-<p>Remember to refresh main page after closing this window.</p>
-<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+    print qq~</p>
+<p>$convlang_txt{'refr'}</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">$convlang_txt{'clse'}</button>
 </body>
 </html>~ or croak 'cannot print line';
     open my $VARCH, '>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
@@ -873,14 +895,14 @@ sub convertboards {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion - Boards</title>
-    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <title>$convlang_txt{'lbrds'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default/convsetup.css" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Language Conversion - Boards</h1>
+<h1>$convlang_txt{'lbrds'}</h1>
 <p>~ or croak 'cannot print top';
 
     if ( scalar @minbrds > 0 ) {
@@ -910,9 +932,9 @@ sub convertboards {
             $value =~ s/\$/\\\$/gxsm;
             $value =~ s/\~//gxsm;
             my @langvala = split /[|]/xsm, $value;
-            my $lingua = $lang;
+            my $lingua = $lang1;
             if ( $langvala[-1] != 1 ) {
-                $lingua = $lang;
+                $lingua = $lang1;
             }
             else { $lingua = $lang2; }
             if ( $lingua eq 'ISO-8859-1' ) {
@@ -935,9 +957,9 @@ sub convertboards {
             $value =~ s/\$/\\\$/gxsm;
             $value =~ s/\~//gxsm;
             my @langvalb = split /[|]/xsm, $value;
-            my $lingua = $lang;
+            my $lingua = $lang1;
             if ( $langvalb[-1] != 1 ) {
-                $lingua = $lang;
+                $lingua = $lang1;
             }
             else { $lingua = $lang2; }
             if ( $lingua eq 'ISO-8859-1' ) {
@@ -958,7 +980,7 @@ sub convertboards {
           or croak 'cannot close NEWBRD';
         print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
         close $NEWBRD or croak 'cannot close NEWBRD';
-        print qq~/Boards/forum.master done<br />\n~
+        print qq~/Boards/forum.master $convlang_txt{'done'}<br />\n~
           or croak 'cannot print line';
 
         our %totals;
@@ -976,7 +998,7 @@ sub convertboards {
             }
         }
         for my $i ( keys %brdtot ) {
-            my $linga2 = $lang;
+            my $linga2 = $lang1;
             my ( $isling, $brdtotline2 ) = @{ $brdtot{$i} };
             if ( $isling == 1 ) {
                 $linga2 = $lang2;
@@ -997,7 +1019,7 @@ sub convertboards {
           or croak 'cannot close NEWBD';
         print {$NEWBD} @brdinfo2 or croak 'cannot print NEWBD';
         close $NEWBD or croak 'cannot close NEWBD';
-        print qq~/Boards/forum.totals done<br />\n~
+        print qq~/Boards/forum.totals $convlang_txt{'done'}<br />\n~
           or croak 'cannot print line';
 
         our (%control);
@@ -1015,7 +1037,7 @@ sub convertboards {
             }
         }
         for my $i ( keys %brdcon ) {
-            my $linga2 = $lang;
+            my $linga2 = $lang1;
             my ( $isling, $brdconline2 ) = @{ $brdcon{$i} };
             if ( $isling == 1 ) {
                 $linga2 = $lang2;
@@ -1036,7 +1058,7 @@ sub convertboards {
             push @boardcontrol, $newline;
         }
         write_forum_control();
-        print q~/Boards/forum.control done</p>~ or croak 'cannot print line';
+        print qq~/Boards/forum.control $convlang_txt{'done'}</p>~ or croak 'cannot print line';
     }
     else {
         my @brdlst = ( 'forum.master', 'forum.totals', 'forum.control', );
@@ -1047,15 +1069,15 @@ sub convertboards {
               do { local $INPUT_RECORD_SEPARATOR = undef; <$OLDBRD> };
             close $OLDBRD or croak 'cannot close OLDBRD';
 
-            if ( $lang eq 'ISO-8859-1' ) {
+            if ( $lang1 eq 'ISO-8859-1' ) {
                 $brdinfo = ansi($brdinfo);
             }
-            $brdinfo = encode( 'utf8', decode( $lang, $brdinfo ) );
+            $brdinfo = encode( 'utf8', decode( $lang1, $brdinfo ) );
             open my $NEWBRD, '>', "$boardsdir/$newbrd"
               or croak 'cannot close NEWBRD';
             print {$NEWBRD} "$brdinfo\n" or croak 'cannot print NEWBRD';
             close $NEWBRD or croak 'cannot close NEWBRD';
-            print qq~/Boards/$newbrd done<br />\n~ or croak 'cannot print line';
+            print qq~/Boards/$newbrd $convlang_txt{'done'}<br />\n~ or croak 'cannot print line';
         }
         print q~</p>~ or croak 'cannot print line';
     }
@@ -1065,7 +1087,7 @@ sub convertboards {
     my @brdext = qw(txt);
     my @brdexx = qw(mail exhits);
 
-    my $lingua  = $lang;
+    my $lingua  = $lang1;
     if ( $#boards > $buff ) {
         my $j = int( $#boards / $buff );
         for my $k ( 0 .. $j ) {
@@ -1100,7 +1122,7 @@ sub convertboards {
                         print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
                         close $NEWBRD
                           or croak 'cannot open NEWBRD';
-                        print qq~/Boards/$boards[$i].$ext done<br />\n~
+                        print qq~/Boards/$boards[$i].$ext $convlang_txt{'done'}<br />\n~
                           or croak 'cannot print line';
                     }
                 }
@@ -1138,7 +1160,7 @@ sub convertboards {
                     print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
                     close $NEWBRD
                       or croak 'cannot open NEWBRD';
-                    print qq~/Boards/$boards[$i].$ext done<br />\n~
+                    print qq~/Boards/$boards[$i].$ext $convlang_txt{'done'}<br />\n~
                       or croak 'cannot print line';
                 }
             }
@@ -1149,11 +1171,11 @@ sub convertboards {
             }
         }
     }
-    print q~</p>
-    <p>Remember to refresh main page after closing this window.</p>
-<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+    print qq~</p>
+<p>$convlang_txt{'refr'}</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">$convlang_txt{'clse'}</button>
 </body>
-</html>~ or croak 'cannot print bot';
+</html>~ or croak 'cannot print line';
     open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
     print {$VARCH} "\$setdone{'brd'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
     close $VARCH or croak 'cannot close ConvVar';
@@ -1178,17 +1200,17 @@ sub convertmessages {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion - Messages</title>
-    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <title>$convlang_txt{'lmess'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default/convsetup.css" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Language Conversion - Messages</h1>
+<h1>$convlang_txt{'lmess'}</h1>
 <p>~ or croak 'cannot print line';
     for my $next_board ( 0 .. $totalbdr ) {
-        my $lingua    = $lang;
+        my $lingua    = $lang1;
         my $boardname = $boards[$next_board];
         if ($boardname) {
             print qq~<br />Board: $boardname<br />\n~ or croak 'cannot print line';
@@ -1203,7 +1225,7 @@ sub convertmessages {
             my $totalmess = @brdmessageline;
             for (@minbrds) {
                 if   ( $boardname eq $_ ) { $lingua = $lang2; }
-                else                      { $lingua = $lang; }
+                else                      { $lingua = $lang1; }
             }
             if ( $totalmess > $duff ) {
                 my $j = int( $totalmess / $duff );
@@ -1240,7 +1262,7 @@ sub convertmessages {
                                   or croak "cannot print $datadir/$thread.$ext";
                                 close $NMSGFILE
                                   or croak 'cannot close NMSGFILE';
-                                print qq~/Messages/$thread.$ext done<br />\n~
+                                print qq~/Messages/$thread.$ext $convlang_txt{'done'}<br />\n~
                                   or croak 'cannot print line';
                             }
                         }
@@ -1283,7 +1305,7 @@ sub convertmessages {
                             print {$NMSGFILE} $messagelines
                               or croak "cannot print $datadir/$thread.$ext";
                             close $NMSGFILE or croak 'cannot close NMSGFILE';
-                            print qq~/Messages/$thread.$ext done<br />\n~
+                            print qq~/Messages/$thread.$ext $convlang_txt{'done'}<br />\n~
                               or croak 'cannot print line';
                         }
                     }
@@ -1296,9 +1318,9 @@ sub convertmessages {
             }
         }
     }
-    print q~</p>
-<p>Remember to refresh main page after closing this window.</p>
-<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+    print qq~</p>
+<p>$convlang_txt{'refr'}</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">$convlang_txt{'clse'}</button>
 </body>
 </html>~ or croak 'cannot print line';
     open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
@@ -1325,14 +1347,14 @@ sub convertvariables {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Language Conversion - Variables</title>
-    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <title>$convlang_txt{'lvars'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default/convsetup.css" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body style="min-width: 280px;">
-<h1>Language Conversion - Variables</h1>
+<h1>$convlang_txt{'lvars'}</h1>
 <p>~ or croak 'cannot print line';
 
     foreach my $file (@varlist) {
@@ -1345,21 +1367,21 @@ sub convertvariables {
                 my $oldvar =
                   do { local $INPUT_RECORD_SEPARATOR = undef; <$OLDVAR> };
                 close $OLDVAR or croak 'cannot close OLDVAR';
-                if ( $lang eq 'ISO-8859-1' ) {
+                if ( $lang1 eq 'ISO-8859-1' ) {
                     $oldvar = ansi($oldvar);
                 }
-                $oldvar = encode( 'utf8', decode( $lang, $oldvar ) );
+                $oldvar = encode( 'utf8', decode( $lang1, $oldvar ) );
                 open my $NEWVAR, '>', "Variables/$file"
                   or croak 'cannot open NEWVAR';
                 print {$NEWVAR} $oldvar
                   or croak "cannot print Variables/$file";
                 close $NEWVAR or croak 'cannot close NEWVAR';
-                print "Variables/$file done<br />\n" or croak 'cannot print line';
+                print "Variables/$file $convlang_txt{'done'}<br />\n" or croak 'cannot print line';
         }
     }
-    print q~</p>
-<p>Remember to refresh main page after closing this window.</p>
-<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+    print qq~</p>
+<p>$convlang_txt{'refr'}</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">$convlang_txt{'clse'}</button>
 </body>
 </html>~ or croak 'cannot print line';
 
@@ -1388,8 +1410,7 @@ sub foundconvertlanglock {
     tempstarter();
     require Sources::TabMenu;
     my $fixa = q{};
-    my $fixa2 =
-qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/ConvertLang.lock" and the file"$vardir/ConvVar.txt" then re-visit this page.~;
+    my $fixa2 = $convlang_txt{'fixa'};
 
     $formsession = cloak("$mbname$username");
     if ( !-e "$vardir/ConvertLang.lock" ) {
@@ -1409,7 +1430,7 @@ qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again,
         </colgroup>
         <tr>
             <td class="titlebg" colspan="2">
-                YaBB 2.7.00 UTF-8 Converter
+                $convlang_txt{'title'}
             </td>
         </tr><tr>
             <td class="windowbg center">
@@ -1431,8 +1452,8 @@ qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again,
 </div>
       ~;
 
-    $yyim    = 'YaBB 2.7.00 UTF-8 Utility has already been run.';
-    $yytitle = 'YaBB 2.7.00 UTF-8 Convert Utility';
+    $yyim    = $convlang_txt{'yyim2'};
+    $yytitle = $convlang_txt{'title'};
     template();
     return;
 }
@@ -1515,8 +1536,8 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.7.00 Converter Error.';
-    $yytitle = 'YaBB 2.7.00 Converter Error.';
+    $yyim    = $convlang_txt{'error'};
+    $yytitle = $convlang_txt{'error'};
 
     tempstarter();
     setuptemplate();
@@ -1575,6 +1596,19 @@ qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyr
     print_output_header();
     print_html_output_and_finish();
     exit;
+}
+
+sub getlang {
+    my ($lng) = @_;
+    $lang = $language = $lng;
+    if ( -e "$langdir/$lng/Mods/Convert.lng" && -e "$langdir/$lng/Main.lng" ) {
+        load_language('Main');
+        load_language('Mods/Convert');
+    }
+    elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
+        load_language('Mods/Convert');
+    }
+    return;
 }
 
 sub ansi {

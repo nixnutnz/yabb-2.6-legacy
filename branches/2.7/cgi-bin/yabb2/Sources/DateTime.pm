@@ -621,7 +621,7 @@ sub time_8 {
 sub dtonly {
     my ($newformat) = @_;
     our ($dateonly);
-    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
+    if ( $newformat && $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
         $dateonly = $1;
     }
 
@@ -631,7 +631,7 @@ sub dtonly {
 sub tmonly {
     my ($newformat) = @_;
     our ($timeonly);
-    if ( $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
+    if ( $newformat && $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
         $timeonly = $2;
     }
 
@@ -640,7 +640,7 @@ sub tmonly {
 
 sub bdayno_year {
     my ($newformat) = @_;
-    my $date_noyear = $newformat;
+    my $date_noyear = $newformat || q{};
 
     my %timesel = (
         '1' => [ q{/}, q{/} ],
@@ -651,13 +651,13 @@ sub bdayno_year {
         '3' => [ q{.}, q{/} ],
         '6' => [ q{ }, q{} ],
     );
-
-    my (@date_noyear) = split /${$timesel{$mytimeselected}}[0]/xsm, $newformat;
-    if ( $mytimeselected != 4 && $mytimeselected != 8 ) {
-        $date_noyear =
-          $date_noyear[0] . ${ $timesel{$mytimeselected} }[1] . $date_noyear[1];
+    if ($newformat) {
+        my (@date_noyear) = split /${$timesel{$mytimeselected}}[0]/xsm, $newformat;
+        if ( $mytimeselected != 4 && $mytimeselected != 8 ) {
+            $date_noyear =  $date_noyear[0] . ${ $timesel{$mytimeselected} }[1] . $date_noyear[1];
+        }
+        else { $date_noyear = $date_noyear[0]; }
     }
-    else { $date_noyear = $date_noyear[0]; }
 
     return $date_noyear;
 }

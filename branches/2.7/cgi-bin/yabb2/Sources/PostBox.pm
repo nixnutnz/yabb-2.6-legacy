@@ -224,8 +224,11 @@ sub postbox2 {
               split /[|]/xsm, ${ $uid . $username }{'postlayout'};
         }
     }
+    $pheight  ||= 130;
+    $pwidth   ||= 448;
+    $textsize ||= 100;
     $col_row ||= 0;
-    if ( !$textsize || $textsize < 60 ) { $textsize = 60; }
+    if ( $textsize < 60 ) { $textsize = 60; }
     if ( $textsize > 160 ) { $textsize = 160; }
     if ( $pheight > 400 )  { $pheight  = 400; }
     if ( $pheight < 130 )  { $pheight  = 130; }
@@ -503,7 +506,7 @@ qq~<img src='$yyhtml_root/Smilies/$img' onclick='$click' $hand alt='$alt' title=
 sub attach {
 
     # File Attachment's Browse Box Code
-    $mfn = $mfn || $FORM{'oldattach'};
+    $mfn = $mfn || $FORM{'oldattach'} || q{};
     my @files = split /,/xsm, $mfn;
 
     $yymain .= qq~

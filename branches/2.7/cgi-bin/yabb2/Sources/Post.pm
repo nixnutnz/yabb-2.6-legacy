@@ -1306,14 +1306,14 @@ qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
 
             my $startcount = 0;
             my $mypoll_att = q{};
+            my $my_att_a = q{};
             foreach my $y ( 1 .. $allowattach ) {
-                my $my_att_a = q{};
                 if (   ( $action eq 'modify' || $action eq 'modify2' )
                     && $files[ $y - 1 ]
                     && -e "$uploaddir/$files[$y-1]" )
                 {
                     $startcount++;
-                    $my_att_a = qq~
+                    $my_att_a .= qq~
             <div id="attform_a_$y" class="att_lft~
                       . ( $y > 1 ? q~_b~ : q{} )
                       . qq~"><strong>$fatxt{'6'} $y:</strong></div>
@@ -1329,7 +1329,7 @@ qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
                     </div>~;
                 }
                 else {
-                    $my_att_a = qq~
+                    $my_att_a .= qq~
             <div id="attform_a_$y" class="att_lft"~
                       . (
                         $y > 1
@@ -2122,9 +2122,9 @@ qq~$FORM{'question'}|0|$username|$name|$email|$date|$guest_vote|$hide_results|$m
         $mreplies = 0;
         if ($staff) {
             $mstate =
-              $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus";
+              $currentboard eq $annboard ? "xa$thestatus" : "x$thestatus";
         }
-        else { $mstate = '0'; }
+        else { $mstate = 'x'; }
 
         # This is a new thread. Save it.
         our ($FILE);

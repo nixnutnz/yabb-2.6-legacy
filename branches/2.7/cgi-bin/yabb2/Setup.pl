@@ -66,7 +66,7 @@ our (
     $boarddir,    $uploaddir, $uploadurl, $pmuploaddir,
     $pmuploadurl, $admindir,  $helpfile,  $templatesdir,
     $facesdir,    $facesurl,  $modimgdir, $modimgurl,
-    $yyhtml_root, $no_brddir, $no_memdir, $yySetLocation,
+    $yyhtml_root, $no_brddir, $no_memdir, $yysetlocation,
     $no_mesdir,   $no_vardir, $imagesdir,
 );
 our (
@@ -2064,7 +2064,7 @@ sub tempstarter {
     # Make sure the module path is present
     push @INC, './Modules';
 
-    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
         $yy_iis = 1;
         if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
             $yypath = $1;
@@ -2153,7 +2153,7 @@ qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$webmaster_email|$firstm
 'views' => '1',
 'lastposter' => 'admin',
 'lastpostdate' => '$firstmstime',
-'threadstatus' => '0',
+'threadstatus' => 'x',
 'repliers' => '$firstmstime|admin|0',
 );
 1;
@@ -2168,7 +2168,7 @@ qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$webmaster_email|$firstm
     open my $FIRSTBRD, '>>', "$boardsdir/general.txt"
       or croak 'cannot open general.txt';
     print {$FIRSTBRD}
-qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_email|$firstmstime|0|admin|xx|0\n~
+qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_email|$firstmstime|0|admin|xx|x\n~
       or croak 'cannot print general.txt';
     close $FIRSTBRD or croak 'cannot close general.txt';
 
@@ -2531,7 +2531,6 @@ sub simpleoutput {
     </style>
 </head>
 <body>
-<!-- Main Content -->
 $yymain
 </body>
 </html>
@@ -2697,42 +2696,34 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 }
 
 sub foundsetuplock {
+    my $mylang = q{};
+    if ( $INFO{'lang'} ) {
+        $mylang = qq~\n                    <input type="hidden" name="lang" value="$INFO{'lang'}" />~,
+    }
     tempstarter();
     $scripturl = "$boardurl/YaBB.$yyext";
     my $conv  = q{};
     my $conv2 = q{};
     our $formsession = cloak("$mbname$username");
-    if ( -e "$vardir/Converter.lock" ) {
-        $conv = q{};
+    if ( -e "$vardir/Convert.lock" || -e 'Variables/ConvertLang.lock') {
         $conv2 =
-qq~The 1x to 2.7.00 Converter has already been run.<br />To run the Converter again, remove the file "$vardir/Converter.lock," then re-visit this page.~;
+qq~<p>A Conversion Utility has already been run.<br />To run the Converter again, remove the file '$vardir/Convert.lock' and '$vardir/ConvLang.lock', if it exists, then re-visit this page.</p>~;
 
     }
     else {
         $conv =
           qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="Convert.$yyext" method="post" style="display: inline;">
-                    <input type="submit" value="Convert 1x files" />
-                </form>~;
-    }
-    my $fixa  = q{};
-    my $fixa2 = q{};
-    if ( -e "$vardir/Convert2x.lock" ) {
-        $fixa = q{};
-        $fixa2 =
-qq~The 2x Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/Convert2x.lock," then re-visit this page.~;
-
-    }
-    else {
-        $fixa =
-          qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="Convert2x.$yyext" method="post" style="display: inline;">
-                    <input type="submit" value="Convert 2x files" />
+                <form action="Convert1x.$yyext" method="post" style="display: inline;">$mylang
+                    <input type="submit" value="Import 1x files" />
+                </form>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <form action="Convert2x.$yyext" method="post" style="display: inline;">$mylang
+                    <input type="submit" value="Import 2x files" />
                 </form>~;
     }
 
     $yymain = qq~
-<div class="bordercolor borderbox">
+<div class="bordercolor borderbox" style="width:800px">
     <table class="tabtitle">
         <tr>
             <td style="padding-left:1%; text-shadow: 1px 1px 1px #2d2d2d;">
@@ -2747,12 +2738,11 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
             <td class="windowbg2 center" style="padding: 4px">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2 center" style="padding: 4px">
-                Setup has already been run.
+            <td class="windowbg2" style="padding: 4px">
+                <p>Setup has already been run.
                 <br />
-                To run Setup again, remove the file "$vardir/Setup.lock" then re-visit this page.<br />
+                To run Setup again, remove the file "$vardir/Setup.lock" then re-visit this page.</p>
                 $conv2
-                $fixa2
             </td>
         </tr><tr>
             <td class="catbg center"  style="padding: 4px" colspan="2">
@@ -2760,7 +2750,6 @@ qq~The 2x Conversion Utility has already been run.<br />To run Utility again, re
                     <input type="submit" value="Go to your Forum" />
                 </form>
                 $conv
-                $fixa
             </td>
         </tr>
     </table>

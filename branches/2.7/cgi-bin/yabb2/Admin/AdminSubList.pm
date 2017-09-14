@@ -17,9 +17,8 @@ use warnings;
 no warnings qw(once);
 our $VERSION            = '2.7.00';
 our $adminsublistpmver  = 'YaBB 2.7.00 $Revision$';
-our $adminsublistpmmods = 0;
 our @adminsublistpmmods = ();
-
+our $adminsublistpmmods = 0;
 if (@adminsublistpmmods) {
     $adminsublistpmmods = 1;
 }
@@ -56,8 +55,6 @@ our %director = (
     'clean_log'            => 'Maintenance.pm&clean_log',
     'clean_reglog'         => 'RegistrationLog.pm&clean_reglog',
     'cleanerrorlog'        => 'ErrorLog.pm&clean_error_log',
-    'convdelete'           => 'Admin.pm&deleteconverterfiles',
-    'convdeletelang'       => 'Admin.pm&deletelangconverterfiles',
     'del_regentry'         => 'RegistrationLog.pm&kill_registration',
     'deleteattachment'     => 'Attachments.pm&delete_attachments',
     'deletepmattachment'   => 'Attachments.pm&delete_pmattachments',
@@ -195,6 +192,9 @@ our %director = (
     'yabmmodifymod2'         => 'YaBMod.pm&yabm_modifymod2',
     'yabmdeletemod'          => 'YaBMod.pm&yabm_deletemod',
     'clean_bak'              => 'YaBMod.pm&clean_bak',     ## Clean up .bak files ##
+    'remsetup'               => 'Admin.pm&remsetup',
+    'convdelete'             => 'Admin.pm&deleteconverterfiles',
+    'convdeletelang'         => 'Admin.pm&deletelangconverterfiles',
 );
 
 1;

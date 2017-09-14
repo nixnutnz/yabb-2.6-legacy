@@ -234,12 +234,16 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
               or fatal_error( 'cannot_open', "$boardsdir/$boardname.tmp", 1 );
             my @tempboard = <$FILETXT>;
             close $FILETXT or croak "$croak{'close'} FILETXT";
-
+            chomp @tempboard;
             for (@tempboard) {
                 s/^.*?[|]//xsm;
             }
-            @tempboard = reverse sort { lc($a) cmp lc $b } @tempboard;
-            my $prnbrd = join q{}, @tempboard;
+            @tempboard = reverse sort {
+                 (split /[|]/xsm, $a )[4] <=>
+                   (split /[|]/xsm, $b )[4]
+            } @tempboard;
+
+            my $prnbrd = join qq{\n}, @tempboard;
             open my $NEWBOARD, '>', "$boardsdir/$boardname.txt"
               or fatal_error( 'cannot_open', "$boardsdir/$boardname.txt", 1 );
             print {$NEWBOARD} $prnbrd or croak "$croak{'print'} NEWBOARD";
@@ -303,6 +307,10 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
         my @ftotals = <$TOTALS>;
         close $TOTALS or croak "$croak{'close'} TOTALS";
         chomp @ftotals;
+        @ftotals = reverse sort {
+                 (split /[|]/xsm, $a )[4] <=>
+                   (split /[|]/xsm, $b )[4]
+            } @ftotals;
         $ftotals = scalar @ftotals;
 
         if ( !$ftotals ) {
@@ -327,6 +335,7 @@ qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|
               or croak "$croak{'open'} TOTALSN";
             my @ftotalsn = <$TOTALSN>;
             close $TOTALSN or croak "$croak{'close'} TOTALSN";
+            chomp @ftotalsn;
             @mesg = split /[|]/xsm, $ftotalsn[-1];
             $messby = $myline1[6];
             if ( $messby eq 'Guest' ) {

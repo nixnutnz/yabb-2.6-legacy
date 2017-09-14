@@ -69,15 +69,18 @@ our (
     $templatesdir, $yyhtml_root, $uploaddir,  $pmuploaddir,
     $facesdir,     $boarddir,    $smiliesdir, $boardpixdir
 );
-our (
-    $convlang,      $convertdir,     $convboardsdir, $convmemberdir,
-    $convdatadir,   $convvardir,     $convattachdir, $convpmattachdir,
-    $convavatardir, $convsmiliesdir, $convboardpixdir
-);
+
 my (
     $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6,
     $navlink1a, $navlink2a, $navlink3a, $navlink5a, $navlink6a,
     $intro,     $brdfix,    $memfix,
+);
+
+our (
+    $convlang,      $convertdir,     $convboardsdir,   $convmemberdir,
+    $convdatadir,   $convvardir,     $convattachdir,   $convpmattachdir,
+    $convavatardir, $convsmiliesdir, $convboardpixdir, $myuselang,
+    $language,      $lang,
 );
 
 my $yyiis  = 0;
@@ -111,9 +114,11 @@ else { setup_fatal_error( 'This YaBB Forum is not properly configured.', 1 ); }
 my $thisscript = $ENV{'SCRIPT_NAME'};
 my $yyext      = 'pl';
 our $yyexec = 'YaBB';
-if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
+if ( -e 'YaBB.cgi' ) { $yyext = 'cgi'; }
 my $set_cgi = "Convert2x.$yyext";
-if ($boardurl) { $set_cgi = "$boardurl/Convert2x.$yyext"; }
+if ($boardurl) {
+    $set_cgi = "$boardurl/Convert2x.$yyext";
+}
 my $convert   = "$boarddir/Convert";
 my $scripturl = "$boardurl/$yyexec.$yyext";
 
@@ -124,13 +129,30 @@ require Sources::Subs;
 require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
+our %conv2x_txt;
+my $mygetlang = q{};
+if ( $INFO{'lang'} ) {
+    if (   -e "$langdir/$INFO{'lang'}/Mods/Convert.lng"
+        && -e "$langdir/$INFO{'lang'}/Main.lng" )
+    {
+        $lang = $language = $INFO{'lang'};
+        load_language('Main');
+        load_language('Mods/Convert');
+        $mygetlang =
+qq~                    <input type="hidden" id="mylang" name="mylang" value="$INFO{'lang'}" />~;
+    }
+    elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
+        load_language('Mods/Convert');
+    }
+}
+else { load_language('Mods/Convert'); }
 
 my $convtext       = q{};
 my $convset        = q{};
 my $convseta       = q{};
 my $forumstarttext = q{};
 our $formsession = q{};
-my $maintext_23 = 'Cannot process';
+my $maintext_23 = $conv2x_txt{'maintext_23'};
 
 $smiliesdir  = "$htmldir/Smilies";
 $boardpixdir = "$htmldir/Templates/Forum/default/Board";
@@ -141,8 +163,8 @@ $boardpixdir = "$htmldir/Templates/Forum/default/Board";
 my $px = 'px';
 
 if ( -e "$vardir/Setup.lock" ) {
-    if ( -e "$vardir/ConvertLang.lock" ) {
-        foundconvertlanglock();
+    if ( -e "$vardir/Convert.lock" || -e 'Variables/ConvertLang.lock' ) {
+        foundconvertlock();
     }
 
     tempstarter();
@@ -160,79 +182,58 @@ if ( -e "$vardir/Setup.lock" ) {
                 <col style="width:95%" />
             </colgroup>
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.7.00 Converter</td>
+                <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
-                <td class="windowbg2 fontbigger">
-                    <p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods or Languages, install the 2.7 versions - if available - before converting your old forum.
-                        <br /><strong>Set the default language of your old forum to English.</strong>
-                        <br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl.
-                        <br />In the event your old forum had 'Activate .htaccess to add IP blocks on server level?' activated in Guardian, go to "The Guardian&trade; Setup" in the Admin Center of <strong>your old forum</strong> and copy the lists of items being blocked. You will need these to rebuild your IP blocks in .htaccess once the conversion is finished.
-                    </p>
-                    <p>Put your old forum into Maintenance Mode and do all necessary maintenance on your <strong>old forum</strong>.</p>
-                    <p>Proceed through the following steps to import and convert your YaBB 2x forum to YaBB 2.7.<br />
-                    <br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.7 installation:
-                    <ol>
-                        <li>Insert the paths to your YaBB 2x forum folders in the input fields below - do <strong>not</strong> include trailing slash (/)</li>
-                        <li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li>
-                        <li>Also fill in the paths to your old Attachments, PMattachments, Smilies, and avatars/UserAvatars folders.</li>
-                        <li>Click on the 'Continue' button</li>
-                    </ol>
-                    <b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.7 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:
-                    <ol>
-                        <li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.7 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li>
-                        <li><strong>Do not fill in the paths for your old Attachments, PMattachments, Smilies, and avatars/UserAvatars folders.</strong>  You will need copy any attachments, PMattachments, Smilies, and avatars/UserAvatars from their old locations into their equivalent folders in your 2.7 installation.</li>
-                        <li>Click on the 'Continue' button</li>
-                    </ol>
-                    <p class="fontbigger"><strong>Do you need to convert your files to UTF-8?</strong> Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.
-                        <br /><strong>If the box below is checked, the UTF-8 conversion process must be completed before you can use your imported/converted forum.</strong>
-                        <br />Convert to UTF-8: <input type="checkbox" name="convertlang" checked="checked" value="1" /></p>
+                <td class="windowbg2">$conv2x_txt{'intro1'}
+                    <input type="checkbox" name="convertlang" checked="checked" value="1" /></p>
                     <table style="width:auto; margin-left:0">
                         <colgroup>
                             <col style="width:auto" />
                             <col style="width:auto" />
                         </colgroup>
                         <tr>
-                            <td><label for="convertdir"><b>Path to your YaBB 2x folders: </b></label></td>
+                            <td><label for="convertdir"><b>$conv2x_txt{'convertdir'}</b></label></td>
                             <td><input type="text" id="convertdir" name="convertdir" value="./Convert" size="50" onchange="setconvdir()" /></td>
                         </tr><tr>
-                            <td><label for="convboardsdir"><b>Path to your YaBB 2x Boards: </b></label></td>
+                            <td><label for="convboardsdir"><b>$conv2x_txt{'convboardsdir'}</b></label></td>
                             <td><input type="text" id="convboardsdir" name="convboardsdir" value="./Convert/Boards" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convmemberdir"><b>Path to your YaBB 2x Members: </b></label></td>
-                            <td><input type="text" id="convmemberdir"name="convmemberdir" value="./Convert/Members" size="50" /></td>
+                            <td><label for="convmemberdir"><b>$conv2x_txt{'convmemberdir'}</b></label></td>
+                            <td><input type="text" id="convmemberdir" name="convmemberdir" value="./Convert/Members" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convdatadir"><b>Path to your YaBB 2x Messages: </b></label></td>
+                            <td><label for="convdatadir"><b>$conv2x_txt{'convdatadir'}</b></label></td>
                             <td><input type="text" id="convdatadir" name="convdatadir" value="./Convert/Messages" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convvardir"><b>Path to your YaBB 2x Variables: </b></label></td>
+                            <td><label for="convvardir"><b>$conv2x_txt{'convvardir'}</b></label></td>
                             <td><input type="text" id="convvardir" name="convvardir" value="./Convert/Variables" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convhtml"><b>Path to your YaBB 2x yabbfiles: </b></label></td>
+                            <td><label for="convhtml"><b>$conv2x_txt{'convhtml'}</b></label></td>
                             <td><input type="text" id="convhtml" name="convhtml" value="" size="50"  onchange="setconvhtml()" /></td>
                         </tr><tr>
-                            <td><label for="convattachdir"><b>Path to your YaBB 2x attachments (\$uploaddir): </b></label></td>
+                            <td><label for="convattachdir"><b>$conv2x_txt{'convattachdir'}</b></label></td>
                             <td><input type="text" id="convattachdir" name="convattachdir" value="" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convpmattachdir"><b>Path to your YaBB 2x PM attachments (\$pmuploaddir): </b></label></td>
+                            <td><label for="convpmattachdir"><b>$conv2x_txt{'convpmattachdir'}</b></label></td>
                             <td><input type="text" id="convpmattachdir" name="convpmattachdir" value="" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convsmiliesdir"><b>Path to your YaBB 2x Smilies (\$smiliesdir): </b></label></td>
+                            <td><label for="convsmiliesdir"><b>$conv2x_txt{'convsmiliesdir'}</b></label></td>
                             <td><input type="text" id="convsmiliesdir" name="convsmiliesdir" value="" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convavatardir"><b>Path to your YaBB 2x member avatars (\$facesdir): </b></label></td>
+                            <td><label for="convavatardir"><b>$conv2x_txt{'convavatardir'}</b></label></td>
                             <td><input type="text" id="convavatardir" name="convavatardir" value="" size="50" /></td>
                         </tr><tr>
-                            <td><label for="convboardpixdir"><b>Path to your YaBB 2x Board Pics (Forum default only): </b></label></td>
+                            <td><label for="convboardpixdir"><b>$conv2x_txt{'convboardpixdir'}</b></label></td>
                             <td><input type="text" id="convboardpixdir" name="convboardpixdir" value="" size="50" /></td>
                         </tr>
                     </table>
                 </td>
             </tr><tr>
                 <td class="catbg center" colspan="2">
-                    <input type="submit" value="Continue" />
+$mygetlang
+                    <input type="submit" value="$conv2x_txt{'cont'}" />
                 </td>
             </tr>
         </table>
@@ -275,17 +276,18 @@ INTRO
         local $ENV{'HTTP_COOKIE'} = q{};
         $yyuname = q{};
 
-        $convlang        = $FORM{'convertlang'};
-        $convertdir      = $FORM{'convertdir'} || q~Convert~;
-        $convboardsdir   = $FORM{'convboardsdir'} || qq~$convertdir/Boards~;
-        $convmemberdir   = $FORM{'convmemberdir'} || qq~$convertdir/Members~;
-        $convdatadir     = $FORM{'convdatadir'} || qq~$convertdir/Messages~;
-        $convvardir      = $FORM{'convvardir'} || qq~$convertdir/Variables~;
-        $convattachdir   = $FORM{'convattachdir'} || q{};
+        $convlang      = $FORM{'convertlang'}   || 0;
+        $convertdir    = $FORM{'convertdir'}    || q~Convert~;
+        $convboardsdir = $FORM{'convboardsdir'} || qq~$convertdir/Boards~;
+        $convmemberdir = $FORM{'convmemberdir'} || qq~$convertdir/Members~;
+        $convdatadir   = $FORM{'convdatadir'}   || qq~$convertdir/Messages~;
+        $convvardir    = $FORM{'convvardir'}    || qq~$convertdir/Variables~;
+        $convattachdir = $FORM{'convattachdir'} || q{};
         $convpmattachdir = $FORM{'convpmattachdir'} || q{};
-        $convsmiliesdir  = $FORM{'convsmiliesdir'} || q{};
-        $convavatardir   = $FORM{'convavatardir'} || q{};
+        $convsmiliesdir  = $FORM{'convsmiliesdir'}  || q{};
+        $convavatardir   = $FORM{'convavatardir'}   || q{};
         $convboardpixdir = $FORM{'convboardpixdir'} || q{};
+        $myuselang       = $FORM{'mylang'}          || q{};
 
         if ( !-d $convboardsdir ) {
             setup_fatal_error( "Directory: $convboardsdir", 1 );
@@ -321,7 +323,7 @@ INTRO
             setup_fatal_error( "Directory: $convboardpixdir", 1 );
         }
 
-        my $setfile = << "EOF";
+        my $setfile = <<"EOF";
 \$convertdir = q~$convertdir~;
 \$convboardsdir = q~$convboardsdir~;
 \$convmemberdir = q~$convmemberdir~;
@@ -334,6 +336,7 @@ INTRO
 \$convavatardir = q~$convavatardir~;
 \$convsmiliesdir = q~$convsmiliesdir~;
 \$convboardpixdir = q~$convboardpixdir~;
+\$myuselang = q~$myuselang~;
 
 1;
 EOF
@@ -343,7 +346,49 @@ EOF
           setup_fatal_error( "$maintext_23 Variables/ConvSettings.txt: ", 1 );
         print {$SETTING} $setfile or croak 'cannot print SETTING';
         close $SETTING or croak 'cannot close SETTING';
-
+        mkdir "$boarddir/tmp", 0755;
+        if ( !-d "$boarddir/tmp" ) {
+            setup_fatal_error( "Directory: $boarddir/tmp", 1 );
+        }
+        if ($convlang) {
+            mkdir "$boarddir/ConvertLang", 0755;
+            if ( !-d "$boarddir/ConvertLang" ) {
+                setup_fatal_error( "Directory: $boarddir/ConvertLang", 1 );
+            }
+            mkdir "$boarddir/ConvertLang/Boards", 0755;
+            if ( !-d "$boarddir/ConvertLang/Boards" ) {
+                setup_fatal_error( "Directory: $boarddir/ConvertLang/Boards",
+                    1 );
+            }
+            mkdir "$boarddir/ConvertLang/Members", 0755;
+            if ( !-d "$boarddir/ConvertLang/Members" ) {
+                setup_fatal_error( "Directory: $boarddir/ConvertLang/Members",
+                    1 );
+            }
+            mkdir "$boarddir/ConvertLang/Messages", 0755;
+            if ( !-d "$boarddir/ConvertLang/Messages" ) {
+                setup_fatal_error( "Directory: $boarddir/ConvertLang/Messages",
+                    1 );
+            }
+            mkdir "$boarddir/ConvertLang/Variables", 0755;
+            if ( !-d "$boarddir/ConvertLang/Variables" ) {
+                setup_fatal_error( "Directory: $boarddir/ConvertLang/Variables",
+                    1 );
+            }
+        }
+        if ($myuselang) {
+            if (   -e "$langdir/$myuselang/Mods/Convert.lng"
+                && -e "$langdir/$myuselang/Main.lng" )
+            {
+                $lang = $language = $myuselang;
+                load_language('Main');
+                load_language('Mods/Convert');
+            }
+            elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
+                load_language('Mods/Convert');
+            }
+        }
+        else { load_language('Mods/Convert'); }
         $yytabmenu = $navlink1a . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         my $start = << "START";
@@ -354,52 +399,48 @@ EOF
                 <col style="width:95%" />
             </colgroup>
             <tr>
-                <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
+                <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/thread.gif" alt="" />
                 </td>
-                <td class="windowbg2 fontbigger">
+                <td class="windowbg2">
                     <ul>
-                        <li>Members info found in: <b>$convmemberdir</b></li>
-                        <li>Board and Category info found in: <b>$convboardsdir</b></li>
-                        <li>Messages info found in: <b>$convdatadir</b></li>
+                        <li>$conv2x_txt{'1mems'} <b>$convmemberdir</b></li>
+                        <li>$conv2x_txt{'1brds'} <b>$convboardsdir</b></li>
+                        <li>$conv2x_txt{'1mess'} <b>$convdatadir</b></li>
                     </ul>
                 </td>
             </tr><tr>
                 <td class="windowbg center">
                     <img src="$imagesdir/info.png" alt="" />
                 </td>
-                <td class="windowbg2 fontbigger">
-                  - Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />
-                  - Your browser will be refreshed automatically every $max_process_time seconds and you will see the ongoing process in the status bar.<br />
-                  - Some internet connections refresh their IP-Address automatically every 24 hours.<br />
-                  &nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion. <br />
-                  - Your forum will be set to maintenance while converting.
-                  <p id="memcontinued">Click on 'Members' in the menu to start.<br />&nbsp;</p>
+                <td class="windowbg2">
+$conv2x_txt{'info2'}
                 </td>
             </tr>
         </table>
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>$conv2x_txt{'2mems'}</b></span>';
             }
       </script>
 START
+        $start =~ s/\Q{max_process_time}\E/$max_process_time/gxsm;
         $yymain = $start;
     }
     elsif ( $action eq 'members' ) {
         require q~Variables/ConvSettings.txt~;
-        if ( !exists $INFO{'mstart1'} ) {
-            prepareconv();
-        }
+        getlang($myuselang);
+        if ( !exists $INFO{'mstart1'} ) { prepareconv(); }
         $INFO{'st'} ||= 0;
         convertmembers();
 
         $yytabmenu = $navlink1 . $navlink2a . $navlink3 . $navlink5 . $navlink6;
 
         my $infost = int( ( $INFO{'st'} + 60 ) / 60 );
+        my $took   = int( ( $INFO{'st'} + 60 ) / 60 );
         my $members1 = << "MEMBERS1";
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -408,41 +449,34 @@ START
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
+            <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
+                <div class="convdone">$conv2x_txt{'memsdn'}</div>
                 $convdone
-                <div class="convnotdone">Board and Category Conversion.</div>
+                <div class="convnotdone">$conv2x_txt{'brdsdn'}</div>
                 $convnotdone
-                <div class="convnotdone">Message Conversion.</div>
+                <div class="convnotdone">$conv2x_txt{'messdn'}</div>
                 $convnotdone
-                <div class="convnotdone">Variables</div>
+                <div class="convnotdone">$conv2x_txt{'varsdn'}</div>
                 $convnotdone
             </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2 fontbigger">
-                    To prevent server time-out due to the amount of members to be converted, the conversion is split into one or more steps.<br />
-                <br />
-                    The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                 Conversion took <i>$infost minutes</i>.
-                <br />
-                <br />
-                <p id="memcontinued">Click on 'Boards &amp; Categories' in the menu to continue.<br />
-                    If you do not do that the script will continue itself in 5 minutes.</p>
+            <td class="windowbg2">
+$conv2x_txt{'3mems'}
             </td>
         </tr>
     </table>
     </div>
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>$conv2x_txt{'2brds'}</b></span>';
             }
 
             function membtick() {
@@ -453,17 +487,24 @@ START
             setTimeout("membtick()",300000);
     </script>
 MEMBERS1
+        $members1 =~ s/\Q{max_process_time}\E/$max_process_time/gxsm;
+        $members1 =~ s/\Q{infost}\E/$infost/gxsm;
+        $members1 =~ s/\Q{starttme}\E/$infost/gxsm;
+        $members1 =~ s/\Q{took}\E/$took/gxsm;
         $yymain = $members1;
     }
 
     elsif ( $action eq 'members2' ) {
+        require q~Variables/ConvSettings.txt~;
+        getlang($myuselang);
         if ( $INFO{'mstart1'} < 0 ) {
             setup_fatal_error(
 "Member conversion (members2) 'mstart1' ($INFO{'mstart1'})) error!"
             );
         }
         $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
-
+        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
+        my $starttme = $time_to_jump - $INFO{'starttime'};
         my $mwidth =
           int( ( ( $INFO{'mstart1'} ) / 2 ) / $INFO{'mtotal'} * 100 );
         $yymain = qq~
@@ -474,23 +515,23 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
+            <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
+                <div class="convdone">$conv2x_txt{'memsdn'}</div>
                 <div class="divouter">
                     <div class="divvary" style="width: $mwidth$px;">&nbsp;</div>
                 </div>
                 <div class="divvary2">$mwidth %</div>
                 <br />
-                <div class="convnotdone">Board and Category Conversion.</div>
+                <div class="convnotdone">$conv2x_txt{'brdsdn'}</div>
                 $convnotdone
-                <div class="convnotdone">Message Conversion.</div>
+                <div class="convnotdone">$conv2x_txt{'messdn'}</div>
                 $convnotdone
-                <div class="convnotdone">Final Cleanup.</div>
+                <div class="convnotdone">$conv2x_txt{'varsdn'}</div>
                 $convnotdone
                 </td>
             </tr><tr>
@@ -498,30 +539,14 @@ MEMBERS1
                     <img src="$imagesdir/info.png" alt="" />
                 </td>
                 <td class="windowbg2 fontbigger">
-                    To prevent server time-out due to the amount of members to be converted, the conversion is split into one or more steps.<br />
-                    <br />
-                    The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                    The last step took <i>~
-          . ( $time_to_jump - $INFO{'starttime'} ) . qq~ seconds</i>.
-                    <br />
-                    Possible data issues: $memfix<br />
-                    <br />
-                    Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . q~ minutes</i>.
-                  <br />
-                  <br />
-                  There are <b>~
-          . int( $INFO{'mtotal'} - ( $INFO{'mstart1'} / 2 ) )
-          . qq~/$INFO{'mtotal'}</b> Members left to be converted.
-                  <br />
-                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser address and type it in when you want to continue the conversion.</p>
+$conv2x_txt{'4mems'}
               </td>
           </tr>
       </table>
       </div>
       <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>Converting - please wait!<br />If you want to stop \\'Members\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f33"><b>$conv2x_txt{'2mems'}</b></span>';
             }
             function stoptick() { stop = 1; }
             stop = 0;
@@ -534,9 +559,14 @@ MEMBERS1
             setTimeout("membtick()",2000);
       </script>
             ~;
+        $yymain =~ s/\Q{max_process_time}\E/$max_process_time/gxsm;
+        $yymain =~ s/\Q{took}\E/$took/gxsm;
+        $yymain =~ s/\Q{set_cgi}\E/$set_cgi/gxsm;
+        $yymain =~ s/\Q{starttme}\E/$starttme/gxsm;
     }
     elsif ( $action eq 'cats' ) {
         require q~Variables/ConvSettings.txt~;
+        getlang($myuselang);
         if ($convlang) {
             $boardsdir = "$boarddir/ConvertLang/Boards";
             $vardir    = "$boarddir/ConvertLang/Variables";
@@ -549,6 +579,7 @@ MEMBERS1
         $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
 
         $INFO{'st'} ||= 0;
+        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -557,19 +588,19 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
+            <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
+                <div class="convdone">$conv2x_txt{'memsdn'}</div>
                 $convdone
-                <div class="convdone">Board &amp; Category Conversion.</div>
+                <div class="convdone">$conv2x_txt{'brdsdn'}</div>
                 $convdone
-                <div class="convnotdone">Message Conversion.</div>
+                <div class="convnotdone">$conv2x_txt{'messdn'}</div>
                 $convnotdone
-                <div class="convnotdone">Variables &amp; Clean Up.</div>
+                <div class="convnotdone">$conv2x_txt{'varsdn'}</div>
                 $convnotdone
             </td>
         </tr><tr>
@@ -577,21 +608,16 @@ MEMBERS1
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                All Boards and Subboards moved.$brdfix<br />
+                $conv2x_txt{'5brds'}$brdfix<br />
                 <br />
-                Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
-                <br />
-                <p id="memcontinued">Click on 'Messages' in the menu to continue.<br />
-                    If you do not do that the script will continue by itself in 5 minutes.</p>
+$conv2x_txt{'3brds'}
             </td>
         </tr>
     </table>
     </div>
-
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>$conv2x_txt{'2mess'}</b></span>';
             }
 
             function membtick() {
@@ -602,9 +628,12 @@ MEMBERS1
             setTimeout("membtick()",300000);
       </script>
             ~;
+        $yymain =~ s/\Q{took}\E/$took/gxsm;
     }
 
     elsif ( $action eq 'cats2' ) {
+        require q~Variables/ConvSettings.txt~;
+        getlang($myuselang);
         if (   ( !$INFO{'bstart'} && !$INFO{'bfstart'} )
             || $INFO{'bstart'} < 0
             || $INFO{'bfstart'} < 0 )
@@ -617,6 +646,8 @@ MEMBERS1
         $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
 
         my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
+        my $starttme = $time_to_jump - $INFO{'starttime'};
+        my $took     = int( ( $INFO{'st'} + 60 ) / 60 );
 
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -626,50 +657,38 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
+            <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
+                <div class="convdone">$conv2x_txt{'memsdn'}</div>
                 $convdone
-                <div class="convdone">Board and Category Conversion.</div>
+                <div class="convdone">$conv2x_txt{'brdsdn'}</div>
                 <div class="divouter">
                     <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
                 </div>
                 <div class="divvary2">$bwidth %</div>
                 <br />
-                <div class="convnotdone">Message Conversion.</div>
+                <div class="convnotdone">$conv2x_txt{'messdn'}</div>
                 $convnotdone
-                <div class="convnotdone">Variables &amp; Clean Up.</div>
+                <div class="convnotdone">$conv2x_txt{'varsdn'}</div>
                 $convnotdone
             </td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
             </td>
-            <td class="windowbg2 fontbigger">
-                  To prevent server time-out due to the amount of boards to be converted, the conversion is split into one or more steps.<br />
-                  <br />
-                  The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                  The last step took <i>~
-          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.<br />
-                  Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . q~ minutes</i>.<br />
-                  <br />
-                  There are <b>~
-          . ( $INFO{'btotal'} - $INFO{'bstart'} )
-          . qq~/$INFO{'btotal'}</b> Boards left to be converted.<br />
-                  <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=cats;st=$INFO{'st'};bstart=$INFO{'bstart'};bfstart=$INFO{'bfstart'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Boards & Categories' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
+            <td class="windowbg2">
+$conv2x_txt{'4brds'}
             </td>
         </tr>
     </table>
     </div>
-
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Boards & Categories\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>$conv2x_txt{'2brds'}</b></span>';
             }
 
             function stoptick() { stop = 1; }
@@ -683,17 +702,28 @@ MEMBERS1
             setTimeout("membtick()",2000);
       </script>
             ~;
+        $yymain =~ s/\Q{max_process_time}\E/$max_process_time/gxsm;
+        $yymain =~ s/\Q{took}\E/$took/gxsm;
+        $yymain =~ s/\Q{set_cgi}\E/$set_cgi/gxsm;
+        $yymain =~ s/\Q{start}\E/$starttme/gxsm;
     }
     elsif ( $action eq 'messages' ) {
         require q~Variables/ConvSettings.txt~;
+        getlang($myuselang);
         if ($convlang) {
             $boardsdir = "$boarddir/ConvertLang/Boards";
             $datadir   = "$boarddir/ConvertLang/Messages";
         }
         movemessages();
 
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
+        $yytabmenu =
+            $navlink1
+          . $navlink2
+          . $navlink3
+          . $navlink5a
+          . $navlink6;
 
+        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         $INFO{'st'} ||= 0;
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
@@ -703,19 +733,19 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="titlebg" colspan="2">YaBB 2.7.00 Converter</td>
+            <td class="titlebg" colspan="2">$conv2x_txt{'title'}</td>
        </tr><tr>
            <td class="windowbg center">
                <img src="$imagesdir/thread.gif" alt="" />
            </td>
            <td class="windowbg2">
-               <div class="convdone">Member Conversion.</div>
+               <div class="convdone">$conv2x_txt{'memsdn'}</div>
                $convdone
-               <div class="convdone">Board and Category Conversion.</div>
+               <div class="convdone">$conv2x_txt{'brdsdn'}</div>
                $convdone
-               <div class="convdone">Message Conversion.</div>
+               <div class="convdone">$conv2x_txt{'messdn'}</div>
                $convdone
-               <div class="convnotdone">Variables &amp; Clean Up.</div>
+               <div class="convnotdone">$conv2x_txt{'varsdn'}</div>
                $convnotdone
            </td>
        </tr><tr>
@@ -723,34 +753,31 @@ MEMBERS1
                <img src="$imagesdir/info.png" alt="" />
            </td>
            <td class="windowbg2 fontbigger">
-               <i>$INFO{'total_threads'}</i> Threads have been converted.<br />
-               <i>$INFO{'total_mess'}</i> Messages have been converted.<br />
+               <i>$INFO{'total_threads'}</i> $conv2x_txt{'thrds'}<br />
+               <i>$INFO{'total_mess'}</i> $conv2x_txt{'5mess'}<br />
                <br />
-               Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
-               <br />
-                <p id="memcontinued">Click on 'Variables' in the menu to continue.<br />
-                    If you do not do that the script will continue by itself in 5 minutes.</p>
+$conv2x_txt{'3mess'}
             </td>
         </tr>
     </table>
     </div>
-
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Clean Up\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>$conv2x_txt{'clean1'}</b></span>';
             }
 
             function membtick() {
                    PleaseWait();
                    location.href="$set_cgi?action=cleanup;st=$INFO{'st'}";
             }
-
             setTimeout("membtick()",300000);
     </script>
             ~;
+        $yymain =~ s/\Q{took}\E/$took/gxsm;
     }
     elsif ( $action eq 'messages2' ) {
+        require q~Variables/ConvSettings.txt~;
+        getlang($myuselang);
         if (   ( !$INFO{'count'} && !$INFO{'tcount'} )
             || $INFO{'count'} < 0
             || $INFO{'tcount'} < 0 )
@@ -767,8 +794,10 @@ MEMBERS1
           ? int( $INFO{'tcount'} / $INFO{'totmess'} * 100 )
           : 0;
 
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
-
+        $yytabmenu =
+          $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
+        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
+        my $starttme = $time_to_jump - $INFO{'starttime'};
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -777,22 +806,22 @@ MEMBERS1
             <col style="width:95%" />
         </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
+            <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Conversion.</div>
+                <div class="convdone">$conv2x_txt{'memsdn'}</div>
                 $convdone
-                <div class="convdone">Board and Category Conversion.</div>
+                <div class="convdone">$conv2x_txt{'brdsdn'}</div>
                 $convdone
-                <div class="convdone">Message Conversion.</div>
+                <div class="convdone">$conv2x_txt{'messdn'}</div>
                 <div class="divouter">
                     <div class="divvary" style="width: $bwidth$px;">&nbsp;</div>
                 </div>
                 <div class="divvary2">$bwidth %</div><br />
-                <div class="convnotdone">Variables &amp; Clean Up.</div>
+                <div class="convnotdone">$conv2x_txt{'varsdn'}</div>
                 $convnotdone
             </td>
         </tr><tr>
@@ -800,28 +829,13 @@ MEMBERS1
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2 fontbigger">
-                To prevent server time-out due to the amount of messages to be converted, the conversion is split into one or more steps.<br />
-                <br />
-                The time-step (\$max_process_time) is set to <i>$max_process_time seconds</i>.<br />
-                The last step took <i>~
-          . ( $time_to_jump - $INFO{'starttime'} ) . q~ seconds</i>.<br />
-                  Conversion has taken <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minutes</i>.<br />
-                <br />
-                <i>$INFO{'total_threads'}</i> Threads have been converted.<br />
-                <i>$INFO{'total_mess'}</i> Messages have been converted.<br />
-                There are <b>~
-          . ( $INFO{'totboard'} - $INFO{'count'} )
-          . qq~/$INFO{'totboard'}</b> Boards left with Messages to be converted.<br />
-                <div style="float: left;">There are <b>~
-          . ( $INFO{'totmess'} - $INFO{'tcount'} )
-          . qq~/$INFO{'totmess'}</b> Threads left to be converted. &nbsp; </div>
+$conv2x_txt{'4mess'}
                 <div class="divouter">
                     <div class="divvary" style="width: $mwidth$px;">&nbsp;</div>
                 </div>
                 <div class="divvary2">$mwidth %</div>
                 <br />
-                <p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=messages;st=$INFO{'st'};totboard=$INFO{'totboard'};count=$INFO{'count'};tcount=$INFO{'tcount'};total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Messages' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>
+                <p id="memcontinued">$conv2x_txt{'2messb'}</p>
             </td>
         </tr>
     </table>
@@ -829,7 +843,7 @@ MEMBERS1
 
     <script type="text/javascript">
             function PleaseWait() {
-                  document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>Converting - please wait!<br />If you want to stop \\'Messages\\' conversion, click here on STOP before this red message appears again on next page.</b></span>';
+                document.getElementById("memcontinued").innerHTML = '<span style="color:#f00"><b>$conv2x_txt{'2mess'}</b></span>';
             }
             function stoptick() { stop = 1; }
             stop = 0;
@@ -842,10 +856,16 @@ MEMBERS1
             setTimeout("membtick()",2000);
       </script>
             ~;
+        $yymain =~ s/\Q{max_process_time}\E/$max_process_time/gxsm;
+        $yymain =~ s/\Q{took}\E/$took/gxsm;
+        $yymain =~ s/\Q{starttme}\E/$starttme/gxsm;
+        $yymain =~ s/\Q{set_cgi}\E/$set_cgi/gxsm;
     }
 
     elsif ( $action eq 'cleanup' ) {
         require q~Variables/ConvSettings.txt~;
+        getlang($myuselang);
+
         if ($convlang) {
             $vardir = "$boarddir/ConvertLang/Variables";
         }
@@ -853,63 +873,60 @@ MEMBERS1
         fixnopost();
         getbadmem();
         $formsession = cloak("$mbname$username");
+        my $took = int( ( $INFO{'st'} + 60 ) / 60 );
 
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
+        $yytabmenu =
+            $navlink1
+          . $navlink2
+          . $navlink3
+          . $navlink5
+          . $navlink6a;
         my $fixn = q{};
-        if ( -e "$vardir/datacheck.txt" ) {
-            if ($convlang) {
-                $fixn =
-qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/ConvertLang/Variables/datacheck.txt" target="_new">datacheck.txt</a> for more details.~;
-            }
-            else {
-                $fixn =
-qq~The 2x Conversion Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/Variables/datacheck.txt" target="_new">datacheck.txt</a> for more details.~;
-            }
+        if ( -e "$boarddir/tmp/datacheck.txt" ) {
+            $fixn = $conv2x_txt{'fixn'};
         }
-        $convtext .=
-qq~$fixn<br /><br />After you have tested your forum and made sure everything was converted correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents, if any. ~;
+        $convtext .= $fixn . $conv2x_txt{'conv1'};
         my $finish = q{};
         if ($convlang) {
+            my $langform = q{};
+            if ($myuselang) {
+                $langform =
+qq~                    <input type="hidden" name="getlang" value="$myuselang" />~;
+            }
             $convset = qq~$fixn
                 <form action="$boardurl/ConvertLang.$yyext" method="post" style="display: inline;">
-                    <input type="submit" value="Go to Convert Language" />
+                    <input type="submit" value="$conv2x_txt{'goto'}" />
                     <input type="hidden" name="formsession" value="$formsession" />
+$langform
                 </form>~;
         }
         else {
-            $convset =
-qq~$fixn<br/>                You may now login to your forum. Enjoy using YaBB 2.7.00!~;
-            $finish =
-q~                <br />Furthermore, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
-                - Rebuild Message Index<br />
-                - Recount Board Totals<br />
-                - Rebuild Members List<br />
-                - Recount Membership<br />
-                - Rebuild Members History<br />
-                - Rebuild Notifications Files<br />
-                - Clean Users Online Log<br />
-                - Attachment Functions => Rebuild Attachments<br />
-                Also, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.~;
+            $convset = $fixn . $conv2x_txt{'conv2'};
+            $finish  = $conv2x_txt{'finish'};
         }
         $INFO{'st'} ||= 0;
         my $checkattach = checkattach();
         $yymain = qq~
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
+        <colgroup>
+            <col style="width:5%" />
+            <col style="width:95%" />
+        </colgroup>
         <tr>
-            <td class="tabtitle" colspan="2">YaBB 2.7.00 Importer/Converter</td>
+            <td class="tabtitle" colspan="2">$conv2x_txt{'title'}</td>
         </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/thread.gif" alt="" />
             </td>
             <td class="windowbg2">
-                <div class="convdone">Member Import.</div>
+                <div class="convdone">$conv2x_txt{'memsdn'}</div>
                 $convdone
-                <div class="convdone">Board and Category Import.</div>
+                <div class="convdone">$conv2x_txt{'brdsdn'}</div>
                 $convdone
-                <div class="convdone">Message Import.</div>
+                <div class="convdone">$conv2x_txt{'messdn'}</div>
                 $convdone
-                <div class="convdone">Variables &amp; Clean Up.</div>
+                <div class="convdone">$conv2x_txt{'varsdn'}</div>
                 $convdone
             </td>
         </tr><tr>
@@ -919,16 +936,14 @@ q~                <br />Furthermore, we strongly recommend to run the following 
             <td class="windowbg2 fontbigger">
                 $forumstarttext
                 $convtext<br />
+                <br />$conv2x_txt{'alldn'}
                 <br />
-                The conversion took <i>~
-          . int( ( $INFO{'st'} + 60 ) / 60 ) . qq~ minute(s)</i>.<br />
-                <br />
-                <br />
-                <span style="color:#f33">We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.<br />
-$finish
-                </span>
                 <br />
 $checkattach
+                <br />
+                <span style="color:#f33">$conv2x_txt{'recdel'}<br />
+$finish
+                </span>
                 <br />
 $convseta
             </td>
@@ -939,8 +954,7 @@ $convset
         </tr>
     </table>
     </div>~;
-
-        createconvlock();
+        $yymain =~ s/\Q{took}\E/$took/gxsm;
     }
     elsif ( $action eq 'convert' ) {
         if ( $INFO{'section'} eq 'getatt' ) {
@@ -950,9 +964,17 @@ $convset
             getpmattfiles();
         }
     }
+    elsif ( $action eq 'finish' ) {
+        if ($convlang) {
+            $vardir = "$boarddir/ConvertLang/Variables";
+        }
+        createconvlock();
+        $yysetlocation = $boardurl;
+        redirectexit();
+    }
 
-    $yyim    = 'You are running the YaBB 2.7.00 Importer/Converter.';
-    $yytitle = 'YaBB 2.7.00 Importer/Converter';
+    $yyim    = $conv2x_txt{'yyim'};
+    $yytitle = $conv2x_txt{'title'};
     setuptemplate();
 }
 
@@ -1011,7 +1033,7 @@ sub convertmembers {
     open my $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
     my @memlist = <$MEMDIR>;
-    close $MEMDIR or croak 'cannot close FILE';
+    close $MEMDIR or croak 'cannot close MEMDIR';
     my $memlist = q{};
     for (@memlist) {
         $_ =~ s/[\n\r]//gxsm;
@@ -1164,7 +1186,7 @@ sub convertmembers {
                     }
                     if ( $tags[$cnt] eq 'password' ) {
                         ${ $uid . $user }{ $tags[$cnt] } =~ s/~//gxsm;
-                        if (${ $uid . $user }{ $tags[$cnt] } eq q{}) {
+                        if ( ${ $uid . $user }{ $tags[$cnt] } eq q{} ) {
                             ${ $uid . $user }{ $tags[$cnt] } = 'password';
                         }
 
@@ -1390,7 +1412,7 @@ sub getbadmem {
     foreach ( keys %memberinf ) {
         push @{ $memhash{ lc $_ } }, $_;
         if ( !${ $memberinf{$_} }[1] || ${ $memberinf{$_} }[1] eq q{} ) {
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'$_' -> 'no e-mail'\n"
               or croak 'cannot print BRDFIX';
@@ -1399,14 +1421,14 @@ sub getbadmem {
     }
     for my $key ( keys %memhash ) {
         if ( scalar @{ $memhash{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple members - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $memhash{$key} } ) {
                 $memfixl .= qq~$_<br />~;
-                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                 close $BRDFIX or croak 'cannot close BRDFIX';
@@ -1480,8 +1502,8 @@ sub moveboards {
     my %totals = ();
     foreach my $cnt (@ftotals) {
         my @tconv = split /[|]/xsm, $cnt;
-        if ( $tconv[0] eq 'admin' ) { $tconv[0] = 'admin_fix'; }
         $tconv[7] =~ s/'/&#39;/gxsm;
+        $tconv[9] =~ s/0/x/gxsm;
         $totals{ $tconv[0] } = [
             $tconv[1], $tconv[2], $tconv[3], $tconv[4], $tconv[5],
             $tconv[6], $tconv[7], $tconv[8], $tconv[9]
@@ -1520,15 +1542,7 @@ sub moveboards {
                 my @brdinfo = <$BOARDFILE>;
                 chomp @brdinfo;
                 close $BOARDFILE or croak 'cannot close BOARDFILE';
-                if ( $ext ne 'mail' ) {
-                    my $newbrd = join qq~\n~, @brdinfo;
-                    if ( $boards[$i] eq 'admin' ) { $boards[$i] = 'admin_fix'; }
-                    open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
-                      or croak 'cannot open NEWBRD';
-                    print {$NEWBRD} $newbrd or croak 'cannot print NEWBRD';
-                    close $NEWBRD or croak 'cannot close NEWBRD';
-                }
-                else {
+                if ( $ext eq 'mail' ) {
                     my %theboard = ();
                     my $prnbrd   = q{};
                     foreach my $line (@brdinfo) {
@@ -1545,6 +1559,30 @@ qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
                     open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
                       or croak 'cannot open NEWBRD';
                     print {$NEWBRD} $prnbrd or croak 'cannot print NEWBRD';
+                    close $NEWBRD or croak 'cannot close NEWBRD';
+                }
+                elsif ( $ext eq 'txt' ) {
+                    my @fixer = ();
+                    foreach (@brdinfo) {
+                        my @fix = split /[|]/xsm;
+                        $fix[8] =~ s/0/x/gxsm;
+                        $fix[8] ||= 'x';
+                        my $fix = join '|', @fix;
+                        push @fixer, $fix;
+                    }
+                    my $newbrd = join qq{\n}, @fixer;
+                    if ( $boards[$i] eq 'admin' ) { $boards[$i] = 'admin_fix'; }
+                    open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
+                      or croak 'cannot open NEWBRD';
+                    print {$NEWBRD} $newbrd or croak 'cannot print NEWBRD';
+                    close $NEWBRD or croak 'cannot close NEWBRD';
+                }
+                else {
+                    my $newbrd = join qq~\n~, @brdinfo;
+                    if ( $boards[$i] eq 'admin' ) { $boards[$i] = 'admin_fix'; }
+                    open my $NEWBRD, '>', "$boardsdir/$boards[$i].$ext"
+                      or croak 'cannot open NEWBRD';
+                    print {$NEWBRD} $newbrd or croak 'cannot print NEWBRD';
                     close $NEWBRD or croak 'cannot close NEWBRD';
                 }
             }
@@ -1569,32 +1607,42 @@ sub fixcontrol {
     my %winbrds = ();
     foreach (@brds) {
         my ( $brd, $ext ) = split /[.]/xsm;
-        if ($ext eq 'txt') {
+        if ( $ext eq 'txt' ) {
             $winbrds{$brd} = 1;
         }
     }
-    our (%cat, %board, %subboard);
+    my $bdbrds = q{};
+    our ( %cat, %board, %subboard );
     require "$boardsdir/forum.master";
     my @newbrds = ();
     while ( my ( $key, $value ) = each %cat ) {
         my @new = ();
-        foreach my $old ( @{$value}) {
-            if ( exists $winbrds{$old}) {
+        foreach my $old ( @{$value} ) {
+            if ( exists $winbrds{$old} ) {
                 push @new, $old;
             }
+            else { $bdbrds .= "$old\n"; }
             $cat{$key} = [@new];
             push @newbrds, @new;
         }
     }
     while ( my ( $key, $value ) = each %subboard ) {
         my @new = ();
-        foreach my $old ( @{$value}) {
-            if (exists $winbrds{$old}) {
+        foreach my $old ( @{$value} ) {
+            if ( exists $winbrds{$old} ) {
                 push @new, $old;
             }
-        $subboard{$key} = [@new];
-        push @newbrds, @new;
+            else { $bdbrds .= "$old\n"; }
+            $subboard{$key} = [@new];
+            push @newbrds, @new;
         }
+    }
+    if ( $bdbrds ne q{} ) {
+        open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+          or croak 'cannot open BRDFIX';
+        print {$BRDFIX} "Duplicate or non-imported boards\n$bdbrds"
+          or croak 'cannot print BRDFIX';
+        close $BRDFIX or croak 'cannot close BRDFIX';
     }
     my %newbrds = ();
     foreach my $i (@newbrds) {
@@ -1609,32 +1657,34 @@ sub fixcontrol {
     my $newboard   = q{};
     my $brdpix     = q{};
     my %newcontrol = ();
+    push @newbrds, 'admin';
     if ( -e qq~$convvardir/boardconv.txt~ ) {
-#        our (@allboards);
         require qq~$convvardir/boardconv.txt~;
         for my $i (@newbrds) {
             my $x = $i;
-            if ( $x eq 'admin' ) { $x = 'admin_fix'; }
             ${$x}{'mypic'} = q{};
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
             ${$x}{'mods'} =~ s/,\s/\//gxsm;
             ${$x}{'modgroups'} =~ s/,\s/\//gxsm;
-            $newcontrol{$i} = [
-                ${$x}{'cat'},           ${$x}{'mypic'},
-                ${$x}{'description'},   ${$x}{'mods'},
-                ${$x}{'modgroups'},     ${$x}{'topicperms'},
-                ${$x}{'replyperms'},    ${$x}{'pollperms'},
-                ${$x}{'zero'},          ${$x}{'ann'},
-                ${$x}{'rbin'},          ${$x}{'attperms'},
-                ${$x}{'minageperms'},   ${$x}{'maxageperms'},
-                ${$x}{'genderperms'},   ${$x}{'canpost'},
-                ${$x}{'parent'},        ${$x}{'rules'},
-                ${$x}{'rulestitle'},    ${$x}{'rulesdesc'},
-                ${$x}{'rulescollapse'}, ${$x}{'brdpasswr'},
-                ${$x}{'brdpassw'},      ${$x}{'brdrss'}
-            ];
-            if ( ${$x}{'pic'} ) {
-                $brdpix .= qq~$i|Forum default|${$x}{'pic'}\n~;
+            if ( exists $winbrds{$i} || $i eq 'admin' ) {
+                $newcontrol{$i} = [
+                    ${$x}{'cat'},           ${$x}{'mypic'},
+                    ${$x}{'description'},   ${$x}{'mods'},
+                    ${$x}{'modgroups'},     ${$x}{'topicperms'},
+                    ${$x}{'replyperms'},    ${$x}{'pollperms'},
+                    ${$x}{'zero'},          ${$x}{'ann'},
+                    ${$x}{'rbin'},          ${$x}{'attperms'},
+                    ${$x}{'minageperms'},   ${$x}{'maxageperms'},
+                    ${$x}{'genderperms'},   ${$x}{'canpost'},
+                    ${$x}{'parent'},        ${$x}{'rules'},
+                    ${$x}{'rulestitle'},    ${$x}{'rulesdesc'},
+                    ${$x}{'rulescollapse'}, ${$x}{'brdpasswr'},
+                    ${$x}{'brdpassw'},      ${$x}{'brdrss'}
+                ];
+                if ( ${$x}{'pic'} ) {
+                    if ( $i eq 'admin' ) { $i = 'admin_fix'; }
+                    $brdpix .= qq~$i|Forum default|${$x}{'pic'}\n~;
+                }
             }
         }
     }
@@ -1657,36 +1707,43 @@ sub fixcontrol {
             ) = split /[|]/xsm;
             my $mypic = q{};
             if ($pic) { $mypic = 'y'; }
-            if ( $oldboard eq 'admin' ) { $oldboard = 'admin_fix'; }
             $mods =~ s/,\s/\//gxsm;
             $modgroups =~ s/,\s/\//gxsm;
             $topicperms =~ s/,\s/\//gxsm;
             $replyperms =~ s/,\s/\//gxsm;
             $pollperms =~ s/,\s/\//gxsm;
             $description =~ s/\'/&#39;/gxsm;
-            if ( exists $winbrds{$oldboard}) {
+
+            if ( exists $winbrds{$oldboard} || $oldboard eq 'admin' ) {
                 $newcontrol{$oldboard} = [
-                $cat,           $mypic,       $description, $mods,
-                $modgroups,     $topicperms,  $replyperms,  $pollperms,
-                $zero,          $ann,         $rbin,        $attperms,
-                $minageperms,   $maxageperms, $genderperms, $canpost,
-                $parent,        $rules,       $rulestitle,  $rulesdesc,
-                $rulescollapse, $brdpasswr,   $brdpassw,    $brdrss
+                    $cat,         $mypic,       $description,
+                    $mods,        $modgroups,   $topicperms,
+                    $replyperms,  $pollperms,   $zero,
+                    $ann,         $rbin,        $attperms,
+                    $minageperms, $maxageperms, $genderperms,
+                    $canpost,     $parent,      $rules,
+                    $rulestitle,  $rulesdesc,   $rulescollapse,
+                    $brdpasswr,   $brdpassw,    $brdrss
                 ];
 
                 if ($pic) {
+                    if ( $oldboard eq 'admin' ) { $oldboard = 'admin_fix'; }
                     $brdpix .= qq~$oldboard|Forum default|$pic\n~;
                 }
             }
         }
     }
-    our (%totals, %newtotals);
+    $newcontrol{'admin_fix'} = $newcontrol{'admin'};
+    delete $newcontrol{'admin'};
+    our ( %totals, %newtotals );
     require "$boardsdir/forum.totals";
-    for my $i (keys %totals) {
-        if (exists $winbrds{$i} ) {
+    for my $i ( keys %totals ) {
+        if ( exists $winbrds{$i} || $i eq 'admin' ) {
             $newtotals{$i} = $totals{$i};
         }
     }
+    $newtotals{'admin_fix'} = $newtotals{'admin'};
+    delete $newtotals{'admin'};
     %totals = %newtotals;
     write_forum_totals();
 
@@ -1697,10 +1754,10 @@ sub fixcontrol {
         my @oldbrd = <$BRDPIC>;
         close $BRDPIC or croak 'cannot close BRDPIC';
         chomp @oldbrd;
-        my $newbrdpix  = q{};
+        my $newbrdpix = q{};
         foreach my $line (@oldbrd) {
             $line =~ s/\Q|default|\E/|Forum default|/xsm;
-            if ( $line =~ /\QForum default\Q/xsm) {
+            if ( $line =~ /\QForum default\Q/xsm ) {
                 $newbrdpix .= $line . "\n";
             }
         }
@@ -1722,9 +1779,8 @@ sub fixcontrol {
     foreach ( keys %newcontrol ) {
         push @{ $hash{ lc $_ } }, $_;
         if ( $_ eq 'admin_fix' ) {
-            $adminbrd =
-q~<br />There was a board named 'admin'. That board has been renamed to 'admin_fix'.~;
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            $adminbrd = $conv2x_txt{'adminbrd'};
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'admin' -> 'admin_fix'\n"
               or croak 'cannot print BRDFIX';
@@ -1733,14 +1789,14 @@ q~<br />There was a board named 'admin'. That board has been renamed to 'admin_f
     }
     for my $key ( keys %hash ) {
         if ( scalar @{ $hash{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple boards - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hash{$key} } ) {
                 $brdfixl .= qq~$_<br />~;
-                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                 close $BRDFIX or croak 'cannot close BRDFIX';
@@ -1753,7 +1809,7 @@ qq~<br />There appear to be multiple Boards with this name (converted to lowerca
     }
     $brdfix .= $adminbrd;
     my @boardcontrol = ();
-    foreach my $cnt ( sort {lc $a cmp lc $b} keys %newcontrol ) {
+    foreach my $cnt ( sort { lc $a cmp lc $b } keys %newcontrol ) {
         if ( $cnt eq 'admin' ) { $cnt = 'admin_fix'; }
         if ( $winbrds{$cnt} ) {
             if ( $cnt ne 'brdpasswr' ) {
@@ -2503,10 +2559,10 @@ EOF
 
     my $tmp_first = stringtotime($forumstart);
     if ( $firstmem < $tmp_first ) {
-        my $firstmember = timeformat($tmp_first, 1, 0,1);
+        my $firstmember = timeformat( $tmp_first, 1, 0, 1 );
         $forumstarttext =
 qq~The Forum Start date was set to $forumstart but the first member was registered $firstmember. So we changed the Forum Start Date to $firstmember.~;
-        $forumstart = timeformat($tmp_first, 1, 0, 1);
+        $forumstart = timeformat( $tmp_first, 1, 0, 1 );
     }
     our $settings_file_version = 'YaBB 2.7.00';
     my ( undef, $rancook ) = split /\-/xsm, $cookieusername;
@@ -2630,15 +2686,15 @@ qq~$fields[0]|$i|$fields[1]|$fields[2]|$fields[3]|$fields[4]|$fields[5]|$fields[
 
 #End Conversion#
 
-sub foundconvert2xlock {
+sub foundconvertlock {
     tempstarter();
     require Sources::TabMenu;
     my $fixa  = q{};
     my $fixa2 = q{};
-    if ( -e "$vardir/Convert2x.lock" ) {
+    if ( -e "$vardir/Convert.lock" ) {
         $fixa = q{};
         $fixa2 =
-qq~The 2x Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/Convert2x.lock," then re-visit this page.~;
+qq~A Conversion Utility has already been run.<br />To run the Conversion Utility again, remove the file "$vardir/Convert.lock," then re-visit this page.~;
 
     }
     else {
@@ -2691,10 +2747,10 @@ sub createconvlock {
     my $lockfile = q~This is a lockfile for the Convert2x Utility.
 It prevents it being run again after it has been run once.
 Delete this file if you want to run the Convert2x Utility again.~;
-    open my $LOCKFILE, '>', 'Variables/Convert2x.lock'
-      or setup_fatal_error( "$maintext_23 Variables/Convert2x.lock: ", 1 );
+    open my $LOCKFILE, '>', "$vardir/Convert.lock"
+      or setup_fatal_error( "$maintext_23 $vardir/Convert.lock: ", 1 );
     print {$LOCKFILE} $lockfile
-      or croak 'cannot print to Convert2x.lock';
+      or croak 'cannot print to Convert.lock';
     close $LOCKFILE or croak 'cannot close LOCKFILE';
     return;
 }
@@ -2742,7 +2798,7 @@ sub tabmenushow {    # used by the converter
       qq~$tabsep<span>$tabfill Boards &amp; Categories $tabfill</span>~;
     $navlink3 = qq~$tabsep<span>$tabfill Messages $tabfill</span>~;
     $navlink5 = qq~$tabsep<span>$tabfill Variables $tabfill</span>~;
-    $navlink6 = qq~$tabsep<span>$tabfill Login $tabfill</span>$tabsep&nbsp;~;
+    $navlink6 = qq~$tabsep<span>$tabfill Finish $tabfill</span>$tabsep&nbsp;~;
     if ($convlang) {
         $navlink6 =
 qq~$tabsep<span>$tabfill UTF-8 Converter $tabfill</span>$tabsep&nbsp;~;
@@ -2757,10 +2813,14 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=messages;st=$INFO{'st'
     $navlink5a =
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f33; padding:0" class="selected" onClick="PleaseWait();">$tabfill Variables $tabfill</a></span>~;
     $navlink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$set_cgi?action=finish" style="color: #f33; padding:0" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
     if ($convlang) {
+        my $getlang = q{};
+        if ($myuselang) {
+            $getlang = qq~?lang=$myuselang~;
+        }
         $navlink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/ConvertLang.$yyext" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$boardurl/ConvertLang.$yyext?$getlang" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
     }
     $convdone = q~
             <div class="divvary_m">&nbsp;</div>
@@ -2795,8 +2855,8 @@ sub setup_fatal_error {
     </table>
     <p class="center"><a href="javascript:history.go(-1)">Back</a></p>
       ~;
-    $yyim    = 'YaBB 2.7.00 Converter Error.';
-    $yytitle = 'YaBB 2.7.00 Converter Error.';
+    $yyim    = $conv2x_txt{'error'};
+    $yytitle = $conv2x_txt{'error'};
 
     if ( !-e "$vardir/Settings.pm" ) { SimpleOutput(); }
 
@@ -2934,8 +2994,6 @@ sub checkattach {
       or croak 'cannot open oldattach';
     my @attachments = <$AMS>;
     close $AMS or croak 'cannot open oldattach';
-    my $chkatt1 = q{};
-    my $chkatt2 = q{};
     my %hashatt = ();
     my %hashlng = ();
     foreach my $att (@attachments) {
@@ -2948,14 +3006,13 @@ sub checkattach {
     }
     for my $key ( keys %hashatt ) {
         if ( scalar @{ $hashatt{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple attachments - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hashatt{$key} } ) {
-                $chkatt1 .= qq~$_<br />~;
-                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                 close $BRDFIX or croak 'cannot close BRDFIX';
@@ -2964,16 +3021,14 @@ sub checkattach {
     }
     for my $key ( keys %hashlng ) {
         if ( scalar @{ $hashlng{$key} } > 1 ) {
-            $chkatt2 .= 'long file name attachments - possible data loss:<br />';
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX}
               "'long file name attachments - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hashlng{$key} } ) {
-                $chkatt2 .= qq~$_ : $hashlng{$_}<br />~;
-                open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
                   or croak 'cannot print BRDFIX';
@@ -2999,7 +3054,7 @@ sub checkattach {
     }
     for my $key ( keys %hashpmatt ) {
         if ( scalar @{ $hashpmatt{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple PMattachments - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
@@ -3007,7 +3062,7 @@ sub checkattach {
             foreach ( @{ $hashpmatt{$key} } ) {
                 if ($_) {
                     $chkpmatt1 .= qq~$_<br />~;
-                    open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                    open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
                       or croak 'cannot open BRDFIX';
                     print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                     close $BRDFIX or croak 'cannot close BRDFIX';
@@ -3018,7 +3073,7 @@ sub checkattach {
     my $chkpmatt2 = q{};
     for my $key ( keys %hashpmlng ) {
         if ( scalar @{ $hashpmlng{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX}
               "'long file name PMattachments- possible data loss:'\n"
@@ -3027,7 +3082,7 @@ sub checkattach {
             foreach ( @{ $hashatt{$key} } ) {
                 if ($_) {
                     $chkpmatt2 .= qq~$_ : $hashpmatt{$_}<br />~;
-                    open my $BRDFIX, '>>', "$vardir/datacheck.txt"
+                    open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
                       or croak 'cannot open BRDFIX';
                     print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
                       or croak 'cannot print BRDFIX';
@@ -3048,26 +3103,10 @@ sub checkattach {
 
     my $checktxt = $getatt;
     if ( scalar @attachments > scalar @attfiles ) {
-        $checktxt .=
-q~Attention: The number of attachments listed in the attachment log does not match the number of files in yabbfiles/Attachments. Perhaps you forgot to copy the attachments files into your new installation?<br />~;
-    }
-    if ( $chkatt1 ne q{} || $chkatt2 ne q{} ) {
-        $checktxt .=
-qq~Attention: These files listed in the attachment log may not transfer if copied into a Windows system.<br />~;
-        if ($chkatt1 ne q{} ) {
-            $checktxt .= qq~multiple attachments - possible data loss or possibly the same attachments listed in multiple places :<br />$chkatt1~;
-        }
-        if ($chkatt2 ne q{} ) {
-            $checktxt .= qq~long file name attachments - possible data loss<br />$chkatt2~;
-        }
+        $checktxt .= $conv2x_txt{'chk1'};
     }
     if ( scalar @pmattachments > scalar @pmfiles ) {
-        $checktxt .=
-q~Attention: The number of pm attachments listed in the pm attachment log does not match the number of files in yabbfiles/PMAttachments. Perhaps you forgot to copy the pm attachments files into your new installation?~;
-    }
-    if ( $chkpmatt1 ne q{} || $chkpmatt2  ne q{} ) {
-        $checktxt .=
-qq~<br />Attention: These files listed in the PMattachment log may not transfer if copied into a Windows system.<br />$chkpmatt1$chkpmatt1 ~;
+        $checktxt .= $conv2x_txt{'pmchk1'};
     }
     return $checktxt;
 }
@@ -3081,8 +3120,9 @@ sub copyattach {
           readdir ATTDIR;
         closedir ATTDIR;
         if ( $#attfiles >= $lim ) {
-            $getatt .=
-qq~There are more than $lim files in old Attachments Folder. <a href="javascript:void(window.open('$set_cgi?action=convert;section=getatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import Attachments</a><br />\n~;
+            $getatt .= $conv2x_txt{'getatt'};
+            $getatt =~ s/\Q{lim}\E/$lim/gxsm;
+            $getatt =~ s/\Q{set_cgi}\E/$set_cgi/gxsm;
         }
         else {
             foreach my $file (@attfiles) {
@@ -3097,8 +3137,9 @@ qq~There are more than $lim files in old Attachments Folder. <a href="javascript
           readdir ATTDIR;
         closedir ATTDIR;
         if ( $#attfiles >= $lim ) {
-            $getatt .=
-qq~There are more than $lim files in old PMattachments Folder. <a href="javascript:void(window.open('$set_cgi?action=convert;section=getpmatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import Attachments</a><br />\n~;
+            $getatt .= $conv2x_txt{'getpmatt'};
+            $getatt =~ s/\Q{lim}\E/$lim/gxsm;
+            $getatt =~ s/\Q{set_cgi}\E/$set_cgi/gxsm;
         }
         else {
             foreach my $file (@attfiles) {
@@ -3142,6 +3183,9 @@ qq~There are more than $lim files in old PMattachments Folder. <a href="javascri
 }
 
 sub getattfiles {
+    require q~Variables/ConvSettings.txt~;
+    getlang($myuselang);
+
     if ($convlang) {
         $vardir = "$boarddir/ConvertLang/Variables";
     }
@@ -3153,7 +3197,7 @@ sub getattfiles {
     my %files = ();
     foreach my $get (@attachments) {
         my @file = split /[|]/xsm, $get;
-        $files{$file[7]} = 1;
+        $files{ $file[7] } = 1;
     }
     my @files = sort keys %files;
     print_output_header();
@@ -3161,14 +3205,14 @@ sub getattfiles {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Import - Attachments</title>
-    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <title>$conv2x_txt{'atttitle'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default/convsetup.css" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Import - Attachments</h1>
+<h1>$conv2x_txt{'atttitle'}</h1>
 <p>~ or croak 'cannot print top';
     my $j = int( $#files / $lim );
     for my $k ( 0 .. $j ) {
@@ -3177,18 +3221,21 @@ sub getattfiles {
         for my $i ( $l .. ( $l + $lim ) ) {
             if ( $files[$i] && -e "$convattachdir/$files[$i]" ) {
                 copy "$convattachdir/$files[$i]", "$uploaddir/$files[$i]";
-                print "$files[$i] done<br />\n";
+                print "$files[$i] $conv2x_txt{'done'}<br />\n";
             }
         }
     }
-    print q~</p>
-<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+    print qq~</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">$conv2x_txt{'clse'}</button>
 </body>
 </html>~ or croak 'cannot print line';
     exit;
 }
 
 sub getpmattfiles {
+    require q~Variables/ConvSettings.txt~;
+    getlang($myuselang);
+
     if ($convlang) {
         $vardir = "$boarddir/ConvertLang/Variables";
     }
@@ -3207,14 +3254,14 @@ sub getpmattfiles {
 <html lang="utf-8">
 <head>
     <meta charset="utf">
-    <title>Import - PM Attachments</title>
-    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default" type="text/css" />
+    <title>$conv2x_txt{'pmtitle'}</title>
+    <link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default/convsetup.css" type="text/css" />
     <style type="text/css">
         td {padding: 12px;}
     </style>
 </head>
 <body>
-<h1>Import - PM Attachments</h1>
+<h1>$conv2x_txt{'pmtitle'}</h1>
 <p>~ or croak 'cannot print top';
     my $j = int( $#files / $lim );
     for my $k ( 0 .. $j ) {
@@ -3223,15 +3270,32 @@ sub getpmattfiles {
         for my $i ( $l .. ( $l + $lim ) ) {
             if ( -e "$convpmattachdir/$files[$i]" ) {
                 copy "$convpmattachdir/$files[$i]", "$pmuploaddir/$files[$i]";
-                print "$files[$i] done<br />\n";
+                print "$files[$i] $conv2x_txt{'done'}<br />\n";
             }
         }
     }
-    print q~</p>
-<button type="button" onclick="window.open('', '_self', ''); window.close();">Close</button>
+    print qq~</p>
+<button type="button" onclick="window.open('', '_self', ''); window.close();">$conv2x_txt{'clse'}</button>
 </body>
 </html>~ or croak 'cannot print line';
     exit;
+}
+
+sub getlang {
+    my ($lng) = @_;
+    if ($lng) {
+        if (   -e "$langdir/$lng/Mods/Convert.lng"
+            && -e "$langdir/$lng/Main.lng" )
+        {
+            $lang = $language = $lng;
+            load_language('Main');
+            load_language('Mods/Convert');
+        }
+        elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
+            load_language('Mods/Convert');
+        }
+    }
+    else { load_language('Mods/Convert'); }
 }
 
 1;

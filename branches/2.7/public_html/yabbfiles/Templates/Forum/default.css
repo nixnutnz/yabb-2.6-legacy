@@ -1000,7 +1000,7 @@ input.chrsize {
     font-style: normal;
     font-weight: 400;
     padding: 1px;
-    width: 20px;
+    width: 2.5em;
 }
 
 div#spell_container { float: left; }

@@ -52,8 +52,8 @@ our (
     $timeoffset,            $timeselected,   @reserve
 );
 ## template ##
-our ( $convert_box, $convertlang_box, $front_page,
-    $last_div, $my_admin_login, $versionchk, $yabb_update, $yabb_dnloads );
+our ( $front_page, $last_div, $my_admin_login, $versionchk, $yabb_update, $yabb_dnloads );
+our ($convert_box, $convertlang_box, $remsetup);
 ## system ##
 our (
     $action_area,   $cliped,        $date,        $formsession,
@@ -62,7 +62,7 @@ our (
     $regdate,       $rna,           $scripturl,   $sessionid,
     $uid,           $user,          $username,    $yabbversion,
     $yyhtml_root,   $yymain,        $yymycharset, $yynavigation,
-    $yysetlocation, $yytitle,       $yyuname,     %cat,
+    $yysetlocation, $yytitle,       $yyuname,     $boarddir,    %cat,
     %catinfo,       %FORM,          %INFO,        %referallow,
     %yy_cookies,    @categoryorder, @other_cookies,
 );
@@ -90,6 +90,7 @@ sub admin {
     $yymain =~ s/\Q{yabb credits_txt_yabb2}\E/$credits_txt{'yabb2'}/xsm;
     $yymain =~ s/\Q{yabb credits_txt_yabb252}\E/$credits_txt{'yabb252'}/xsm;
     $yymain =~ s/\Q{yabb credits_txt_yabb260}\E/$credits_txt{'yabb260'}/xsm;
+    $yymain =~ s/\Q{yabb credits_txt_yabb270}\E/$credits_txt{'yabb270'}/xsm;
     $yymain =~ s/\Q{yabb credits_txt_Thanks}\E/$credits_txt{'Thanks'}/xsm;
     $yymain =~ s/\Q{yabb credits_txt_yabb}\E/$credits_txt{'yabb'}/xsm;
     $yymain =~
@@ -100,9 +101,16 @@ sub admin {
     $yymain =~ s/\Q{yabb yabb_dnloads}\E/$yabb_dnloads/gxsm;
 
     if ( -d './Convert' ) {
+        get_template( 'Convert', 'admin' );  
         $yymain .= $convert_box;
+        my $getdata = q{};
+        if (-e './tmp/datacheck.txt') {
+            $getdata = $admintxt{'conv3'};
+        }
+        $yymain =~ s/\Q{yabb datacheck}\E/$getdata/xsm;
     }
     if ( !-d './Convert' && -d './ConvertLang' ) {
+        get_template( 'Convert', 'admin' );  
         $yymain .= $convertlang_box;
     }
 
@@ -111,89 +119,6 @@ sub admin {
     require Admin::ModuleChecker;
 
     $yytitle = $admin_txt{'208'};
-    admintemplate();
-    return;
-}
-
-sub deleteconverterfiles {
-    my @convertdir = qw~Boards Members Messages Variables~;
-
-    foreach my $cnvdir (@convertdir) {
-        $convdir = "./Convert/$cnvdir";
-        if ( -d "$convdir" ) {
-            opendir 'CNVDIR', $convdir
-              || fatal_error( 'cannot_open_dir', "$convdir" );
-            my @convlist = readdir 'CNVDIR';
-            closedir 'CNVDIR';
-            foreach my $file (@convlist) {
-                unlink "$convdir/$file"
-                  || fatal_error( 'cannot_open_dir', "$convdir/$file" );
-            }
-            rmdir "$convdir";
-        }
-    }
-    $convdir = './Convert';
-    if ( -d "$convdir" ) {
-        opendir 'CNVDIR', $convdir
-          || fatal_error( 'cannot_open_dir', "$convdir" );
-        my @convlist = readdir 'CNVDIR';
-        closedir 'CNVDIR';
-        foreach my $file (@convlist) {
-            unlink "$convdir/$file";
-        }
-        rmdir "$convdir";
-    }
-    if ( -e './Setup.pl' )        { unlink './Setup.pl'; }
-    if ( -e './Convert.pl' )      { unlink './Convert.pl'; }
-    if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
-    if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
-    if ( -e './LangConvert.pl' )  { unlink './LangConvert.pl'; }
-
-    if ( -e "$htmldir/Templates/Forum/setup.css" ) {
-        unlink "$htmldir/Templates/Forum/setup.css";
-    }
-    if ( -e './Variables/ConvSettings.txt' ) {
-        unlink './Variables/ConvSettings.txt';
-    }
-
-    $yymain .= qq~<b>$admintxt{'10'}</b>~;
-    $yytitle = $admintxt{'10'};
-    admintemplate();
-    return;
-}
-
-sub deletelangconverterfiles {
-    my @convertdir = qw~Boards Members Messages Variables~;
-
-    for my $cnvdir (@convertdir) {
-        $convdir = "./ConvertLang/$cnvdir";
-        if ( -d "$convdir" ) {
-            opendir 'CNVDIR', $convdir
-              || fatal_error( 'cannot_open_dir', "$convdir" );
-            my @convlist = readdir 'CNVDIR';
-            closedir 'CNVDIR';
-            for my $file (@convlist) {
-                unlink "$convdir/$file"
-                  || fatal_error( 'cannot_open_dir', "$convdir/$file" );
-            }
-            rmdir "$convdir";
-        }
-    }
-    $convdir = './ConvertLang';
-    if ( -d "$convdir" ) {
-        opendir 'CNVDIR', $convdir
-          || fatal_error( 'cannot_open_dir', "$convdir" );
-        my @convlist = readdir 'CNVDIR';
-        closedir 'CNVDIR';
-        for my $file (@convlist) {
-            unlink "$convdir/$file";
-        }
-        rmdir "$convdir";
-    }
-
-    if ( -e './ConvertLang.pl' ) { unlink './ConvertLang.pl'; }
-    $yymain .= qq~<b>$admintxt{'10a'}</b>~;
-    $yytitle = $admintxt{'10a'};
     admintemplate();
     return;
 }
@@ -1545,6 +1470,106 @@ sub admincheck2 {
 
     $yysetlocation = qq~$adminurl$my_query$my_action$my_page~;
     redirectexit();
+    return;
+}
+
+sub deleteconverterfiles {
+    my @convertdir = qw~Boards Members Messages Variables~;
+
+    foreach my $cnvdir (@convertdir) {
+        $convdir = "./Convert/$cnvdir";
+        if ( -d "$convdir" ) {
+            opendir 'CNVDIR', $convdir
+              || fatal_error( 'cannot_open_dir', "$convdir" );
+            my @convlist = readdir 'CNVDIR';
+            closedir 'CNVDIR';
+            foreach my $file (@convlist) {
+                unlink "$convdir/$file"
+                  || fatal_error( 'cannot_open_dir', "$convdir/$file" );
+            }
+            rmdir "$convdir";
+        }
+    }
+    $convdir = './Convert';
+    if ( -d "$convdir" ) {
+        opendir 'CNVDIR', $convdir
+          || fatal_error( 'cannot_open_dir', "$convdir" );
+        my @convlist = readdir 'CNVDIR';
+        closedir 'CNVDIR';
+        foreach my $file (@convlist) {
+            unlink "$convdir/$file";
+        }
+        rmdir "$convdir";
+    }
+    $convdir = './tmp';
+    if ( -d "$convdir" ) {
+        opendir 'CNVDIR', $convdir
+          || fatal_error( 'cannot_open_dir', "$convdir" );
+        my @convlist = readdir 'CNVDIR';
+        closedir 'CNVDIR';
+        foreach my $file (@convlist) {
+            unlink "$convdir/$file";
+        }
+        rmdir "$convdir";
+    }
+    if ( -e './Setup.pl' )        { unlink './Setup.pl'; }
+    if ( -e './Convert.pl' )      { unlink './Convert.pl'; }
+    if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
+    if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
+    if ( -e './ConvertLang.pl' )  { unlink './ConvertLang.pl'; }
+    if ( -e './Languages/English/Mods/Convert.lng' )  { unlink './Languages/English/Mods/Convert.lng'; }
+
+    if ( -e "$htmldir/Templates/Forum/setup.css" ) {
+        unlink "$htmldir/Templates/Forum/setup.css";
+    }
+    if ( -e './Variables/ConvSettings.txt' ) {
+        unlink './Variables/ConvSettings.txt';
+    }
+    if ( -e './Variables/ConvVar.txt' ) {
+        unlink './Variables/ConvVar.txt';
+    }
+
+    $yymain .= qq~<b>$admintxt{'10'}</b>~;
+    $yytitle = $admintxt{'10'};
+    admintemplate();
+    return;
+}
+
+sub deletelangconverterfiles {
+    my @convertdir = qw~Boards Members Messages Variables~;
+
+    for my $cnvdir (@convertdir) {
+        $convdir = "./ConvertLang/$cnvdir";
+        if ( -d "$convdir" ) {
+            opendir 'CNVDIR', $convdir
+              || fatal_error( 'cannot_open_dir', "$convdir" );
+            my @convlist = readdir 'CNVDIR';
+            closedir 'CNVDIR';
+            for my $file (@convlist) {
+                unlink "$convdir/$file"
+                  || fatal_error( 'cannot_open_dir', "$convdir/$file" );
+            }
+            rmdir "$convdir";
+        }
+    }
+    $convdir = './ConvertLang';
+    if ( -d "$convdir" ) {
+        opendir 'CNVDIR', $convdir
+          || fatal_error( 'cannot_open_dir', "$convdir" );
+        my @convlist = readdir 'CNVDIR';
+        closedir 'CNVDIR';
+        for my $file (@convlist) {
+            unlink "$convdir/$file";
+        }
+        rmdir "$convdir";
+    }
+
+    if ( -e './ConvertLang.pl' ) { unlink './ConvertLang.pl'; }
+    if ( -e './Templates/admin/Convert.template' )  { unlink './Templates/admin/Convert.template'; }
+
+    $yymain .= qq~<b>$admintxt{'10a'}</b>~;
+    $yytitle = $admintxt{'10a'};
+    admintemplate();
     return;
 }
 

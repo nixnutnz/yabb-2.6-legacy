@@ -733,14 +733,6 @@ Thanks for using YaBB!~,
 '4' => q~What's new at YaBB?~,
 '5' => q~Last Logins:~,
 '6' => q~Credits~,
-'7' => q~Setup and Converter Back-up files~,
-'7a' => q~Language Encoding Converter Back-up files~,
-'8' => q~When you have tested your forum and made sure everything has been converted correctly, you can remove the Setup Utility and your old YaBB back-up files in the Converter folders (if any exist).  This will also delete the conversion programs so they cannot be run again. <strong>Note</strong>: This does not remove files in the ConvertLang folders.~,
-'8a' => q~When you have confirmed that the Language encoding has converted correctly, you can the delete the ConvertLang folders.~,
-'9' => q~Delete old Back-up files, setup, and conversion utilities~,
-'9a' => q~Delete Language Conversion Back-up files~,
-'10' => q~Old Back-up files deleted~,
-'10a' => q~Language Conversion Back-up files deleted~,
 '11' => q~Detailed Version Check~,
 '15' => q~Return to~,
 '17' => q~View/Delete Members~,
@@ -894,8 +886,6 @@ Thanks for using YaBB!~,
 
 'a9_title' => q~BoardMod Mods~,
 'a9_label' => q~BoardMod Mods Section~,
-'conv' => q~To convert 1x or 2x files to 2.7.00~,
-'conv2' => qq~<strong><a href="$boardurl/Setup.pl?set=1">Go to Setup/Convert</a></strong>~,
 'bookmarks' => q~Social Bookmarks~, # Social Bookmarks
 'bookmarks1' => q~Social Bookmark Settings~, # Social Bookmarks
 );
@@ -1606,6 +1596,19 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 %load_txt = (
 '616a' => q~Remember, this forum is in <a href="{yabb adminurl}?action=newsettings;page=maintenance" style="font-weight: bold;">'Maintenance Mode'</a>.~,
 '617' => q~Remember, last Backup was done on:~,
+);
+
+%setup = (
+'7' => q~Setup and Converter Back-up files~,
+'7a' => q~Language Encoding Converter Back-up files~,
+'8' => q~When you have tested your forum and made sure everything has been converted correctly, you can remove the Setup Utility and your old YaBB back-up files in the Converter folders (if any exist).  This will also delete the conversion programs so they cannot be run again. <strong>Note</strong>: This does not remove files in the ConvertLang folders.~,
+'8a' => q~When you have confirmed that the Language encoding has converted correctly, you can the delete the ConvertLang folders.~,
+'9' => q~Delete old Back-up files, setup, and conversion utilities~,
+'9a' => q~Delete Language Conversion Back-up files~,
+'10' => q~Old Back-up files deleted~,
+'10a' => q~Language Conversion Back-up files deleted~,
+'conv' => q~To convert 1x or 2x files to 2.7.00~,
+'conv2' => qq~<strong><a href="$boardurl/Setup.pl">Go to Setup/Convert</a></strong>~,
 );
 
 $yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
