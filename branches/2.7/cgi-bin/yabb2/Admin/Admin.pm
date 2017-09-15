@@ -1513,11 +1513,12 @@ sub deleteconverterfiles {
         rmdir "$convdir";
     }
     if ( -e './Setup.pl' )        { unlink './Setup.pl'; }
-    if ( -e './Convert.pl' )      { unlink './Convert.pl'; }
+    if ( -e './Convert1x.pl' )      { unlink './Convert1x.pl'; }
     if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
     if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
     if ( -e './ConvertLang.pl' )  { unlink './ConvertLang.pl'; }
-    if ( -e './Languages/English/Mods/Convert.lng' )  { unlink './Languages/English/Mods/Convert.lng'; }
+    if ( -e './Languages/English/Convert.lng' )  { unlink './Languages/English/Convert.lng'; }
+    if ( -e './Templates/admin/Convert.template' )  { unlink './Templates/admin/Convert.template'; }
 
     if ( -e "$htmldir/Templates/Forum/setup.css" ) {
         unlink "$htmldir/Templates/Forum/setup.css";

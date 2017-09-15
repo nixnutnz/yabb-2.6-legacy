@@ -132,20 +132,20 @@ require Sources::DateTime;
 our %conv2x_txt;
 my $mygetlang = q{};
 if ( $INFO{'lang'} ) {
-    if (   -e "$langdir/$INFO{'lang'}/Mods/Convert.lng"
+    if (   -e "$langdir/$INFO{'lang'}/Convert.lng"
         && -e "$langdir/$INFO{'lang'}/Main.lng" )
     {
         $lang = $language = $INFO{'lang'};
         load_language('Main');
-        load_language('Mods/Convert');
+        load_language('Convert');
         $mygetlang =
 qq~                    <input type="hidden" id="mylang" name="mylang" value="$INFO{'lang'}" />~;
     }
-    elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
-        load_language('Mods/Convert');
+    elsif ( -e "$langdir/English/Convert.lng" ) {
+        load_language('Convert');
     }
 }
-else { load_language('Mods/Convert'); }
+else { load_language('Convert'); }
 
 my $convtext       = q{};
 my $convset        = q{};
@@ -377,18 +377,18 @@ EOF
             }
         }
         if ($myuselang) {
-            if (   -e "$langdir/$myuselang/Mods/Convert.lng"
+            if (   -e "$langdir/$myuselang/Convert.lng"
                 && -e "$langdir/$myuselang/Main.lng" )
             {
                 $lang = $language = $myuselang;
                 load_language('Main');
-                load_language('Mods/Convert');
+                load_language('Convert');
             }
-            elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
-                load_language('Mods/Convert');
+            elsif ( -e "$langdir/EnglishConvert.lng" ) {
+                load_language('Convert');
             }
         }
-        else { load_language('Mods/Convert'); }
+        else { load_language('Convert'); }
         $yytabmenu = $navlink1a . $navlink2 . $navlink3 . $navlink5 . $navlink6;
 
         my $start = << "START";
@@ -3284,18 +3284,18 @@ sub getpmattfiles {
 sub getlang {
     my ($lng) = @_;
     if ($lng) {
-        if (   -e "$langdir/$lng/Mods/Convert.lng"
+        if (   -e "$langdir/$lng/Convert.lng"
             && -e "$langdir/$lng/Main.lng" )
         {
             $lang = $language = $lng;
             load_language('Main');
-            load_language('Mods/Convert');
+            load_language('Convert');
         }
-        elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
-            load_language('Mods/Convert');
+        elsif ( -e "$langdir/English/Convert.lng" ) {
+            load_language('Convert');
         }
     }
-    else { load_language('Mods/Convert'); }
+    else { load_language('Convert'); }
 }
 
 1;

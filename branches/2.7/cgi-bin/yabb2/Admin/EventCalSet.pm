@@ -356,17 +356,17 @@ function removeIcons(remic_id) {
 sub event_calset2 {
     is_admin_or_gmod();
 
-    if ( $FORM{'rebuiltbd'} && $FORM{'rebuiltbd'} eq "$event_cal{'54'}" ) {
+    if ( $FORM{'rebuiltbd'} && $FORM{'rebuiltbd'} eq $event_cal{'54'} ) {
         unlink 'Variables/Eventcalbday.pm';
         our (%memberlist);
         require Variables::Memberlist;
         my @birthmembers = keys %memberlist;
-
         my $bdlist = q{};
-        foreach my $user_xy (@birthmembers) {
-            no strict qw(refs);
+        while (@birthmembers) {
+            my $user_xy = pop @birthmembers;
             chomp $user_xy;
             load_user($user_xy);
+            no strict qw(refs);
             my $user_xy_bd = ${ $uid . $user_xy }{'bday'};
             if ($user_xy_bd) {
                 my ( $user_month, $user_day, $user_year ) =

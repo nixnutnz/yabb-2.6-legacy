@@ -79,13 +79,13 @@ my $uselang = $INFO{'lang'} || $FORM{'getlang'} || 'English';
 our %convlang_txt;
 $lang = $language = $uselang;
 my $mygetlang = q{};
-if ( -e "$langdir/$uselang/Mods/Convert.lng" && -e "$langdir/$uselang/Main.lng" ) {
+if ( -e "$langdir/$uselang/Convert.lng" && -e "$langdir/$uselang/Main.lng" ) {
     load_language('Main');
-    load_language('Mods/Convert');
+    load_language('Convert');
      $mygetlang = qq~                    <input type="hidden" id="mylang" name="mylang" value="$uselang" />~;
 }
-elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
-    load_language('Mods/Convert');
+elsif ( -e "$langdir/English/Convert.lng" ) {
+    load_language('Convert');
 }
 
 my $convertlang = "$boarddir/ConvertLang";
@@ -1601,12 +1601,12 @@ qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyr
 sub getlang {
     my ($lng) = @_;
     $lang = $language = $lng;
-    if ( -e "$langdir/$lng/Mods/Convert.lng" && -e "$langdir/$lng/Main.lng" ) {
+    if ( -e "$langdir/$lng/Convert.lng" && -e "$langdir/$lng/Main.lng" ) {
         load_language('Main');
-        load_language('Mods/Convert');
+        load_language('Convert');
     }
-    elsif ( -e "$langdir/English/Mods/Convert.lng" ) {
-        load_language('Mods/Convert');
+    elsif ( -e "$langdir/English/Convert.lng" ) {
+        load_language('Convert');
     }
     return;
 }
