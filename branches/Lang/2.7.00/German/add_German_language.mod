@@ -41,6 +41,26 @@ Admin/ModList.pm
 </add before>
 
 <edit file>
+Admin/Admin.pm
+</edit file>
+
+<search for>
+if (@germanadminlngmods) {
+</search for>
+
+<add before>
+push @germanadminlngmods, 'German Informal Lang';
+</add before>
+
+<search for>
+    if ( -e './Languages/English/Convert.lng' )  { unlink './Languages/English/Convert.lng'; }
+</search for>
+
+<add after>
+    if ( -e './Languages/German/Convert.lng' )  { unlink './Languages/German/Convert.lng'; }
+</add after>
+
+<edit file>
 Admin/YaBMod.pm
 </edit file>
 
