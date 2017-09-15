@@ -1,0 +1,209 @@
+﻿###############################################################################
+# Backup.lng                                                                  #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$dutchbackuplngver = 'YaBB 2.7.00 $Revision$';
+@dutchbackuplngmods = ();
+if (@dutchbackuplngmods) {
+    $dutchackuplngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+$script_root = $ENV{'SCRIPT_FILENAME'};
+if( ! $script_root ) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+($support_env_path = $script_root) =~ s~/\w+\.pl~~;
+
+%backup_txt = (
+'1' => 'YaBB Backup',
+'2' => 'U heeft uw back-up instellingen nog niet opgeslagen. U moet kiezen en uw instellingen opslaan voordat u een backup van uw forum kunt maken.',
+'3' => 'Kies welke directories u wilt back-uppen. Opmerking: de back-routines gebruiken de directory paden uit Forum configuratie -&gt; Pad instellingen; verzeker u ervan dat deze correct zijn.',
+'4' => 'Directories voor Backup',
+'5' => 'Selecteer/Deselecteer Allen',
+'6' => 'Als u elke map selecteert, hebt u een volledige kopie van uw forum. Dit is de aanbevolen instelling voor de meeste forums<br/ > voor <i>zeer</i> grote forums, kan een volledige back-up echter herstel problemen veroorzaken (bijvoorbeeld time-outs). Voor dergelijke grote forums, is het wellicht beter om een back-up te maken van alleen de "statische" kader-directories (die zeer weinig veranderen) en afzonderlijke back-ups voor elk van de Boards, Leden en Berichten directories.',
+'path1' => 'Pad naar Tar en Zip:',
+'path2' => 'Pad naar gzip en bzip2 (stelt ook pad in naar gzip in geavanceerde instellingen):',
+'path3' => 'Vul de paden in <b>alleen</b> als YaBB niet automatisch Tar, Zip, gzip, and bzip2 kan vinden. Anders, laat de ruimte erboven blank.',
+
+# Begin description of directories
+# We don't translate directory names like Boards/.
+'7' => '-- (bevat categorie en de board informatie en indexen)',
+'8' => '-- (bevat alle onderwerpen/Topics en opgenomen berichten)',
+'9' => '-- (bevat leden profielen, leden logboeken, en persoonlijke berichten)',
+'10' => 'en stylesheets', # This one comes right after "Templates/ "
+'10a' => '-- (bevat alle template bestanden en afbeeldingen)',
+'11' => '-- (bevat alle gelokaliseerde tekst en ondersteuning bestanden die door YaBB gebruikt worden)',
+'12' => '-- (bevat de forum instellingen, voorkeuren, en Logboeken)',
+'and' => 'en', # Odd name, yes, but could be useful in more then one place
+'13' => 'plus alle andere broncode--(bevat de volledige broncode van YaBB)',
+'14' => '-- (bevat de afbeeldingen en stylesheets voor alle templates, maar <i>sluit uit</i> de bijlagen en Avatars van gebruiker-upload directories uit [Zie volgende regel])',
+'14a' => '-- (bevat door gebruiker geüploade bestanden: bijlagen en avatars)',
+
+# Begin de backup method selection
+'15' => 'Backup en Compressie Methoden',
+
+# Don't translate command names (such as /bin/tar) or 'tar'.
+'16' => q~<i>Backup:</i> Tar (met compressie) of Zip, met behulp van de Standalone UNIX-hulpprogramma's, zijn de aanbevolen keuzes. Archive::Tar (met compressie) of Archive::Zip zou alleen gebruikt moeten worden als Tar/Zip niet beschikbaar zijn, Als de Perl modules trager zijn de standalone hulpprogramma's.<br /><br /><i>Compressie:</i> Als u Tar gebruikt, wordt compressie sterk aanbevolen om archief maten klein te houden. (Zip is al gecomprimeerd.) Bzip2 maakt kleinere archieven dan Gzip of Zip, maar duurt langer; Dit wordt mogelijk het probleem voor trage servers met grote forums.<br /><br /><span style="color: red;"><b>Opmerking:</b></span> Sommige servers bieden geen ondersteuning voor grote back-up bestanden. Als u een foutmelding als 'interne serverfout' of zelfs een lege pagina ziet, probeer een andere back-up en/of compressie methode. Als dat nog steeds niet lukt, probeert u meerdere kleinere back-ups te maken door een afzonderlijk back-up van minder mappen (geselecteerd hierboven).<br /><span style="color: red;"><b>Opmerking:</b></span>: Tar zal mogelijk bestanden in de 'root' van de yabb2 of yabbfiles map niet opslaan. In dat geval, als het voor u nodig is <i>alle<?i> bestanden te archiveren of benodigd een archief/back-up in voorbereiding voor het verplaatsen van uw forum, gebruik Zip- of Archive::Tar in plaats daarvan.~,
+'17' => 'Geen Tar compressie',
+'18' => '(voor Tar compressie)',
+'19' => 'Archief Bestemming Directory (om backup bestanden te bewaren)',
+'19a' => "Gebruik het volledige pad (bijvoorbeeld $support_env_path/backups), niet een relatief pad (bijvoorbeeld ./Backups)",
+'19b' => 'Back-ip Herinnering',
+'19c' => 'Toon een waarschuwing als geen backup heeft plaatsgevonden in',
+'19d' => 'dagen. voeg zero in of laat blank om de herinnering uit te schakelen.',
+'20' => 'Bewaar Instellingen',
+
+# Begin run backup area
+'21' => 'Backup starten',
+'22' => 'Klik op de knop hieronder om een backup uit te voeren. Backups worden opgeslagen in de Archief Doel Directory (',
+'23' => '), stel in hierboven.',
+'24' => '<span style="color: red;">Tijdens de backup, wordt uw forum automatisch in de onderhoudsmodus gezet.<br /><br /><b>Opmerking:</b></span>Voor Backups van erg grote forums, het kan een tijdje duren voor dat de pagina wordt vernieuwd - wees bereid om ten minste 5 minuten te wachten. Als u een time-out ondervindt of er gebeurt na 5 minuten niets, overweeg de <span style="color:red;">OPMERKING:</span> boven in &#39;backup methode&#39; met betrekking tot grote backup bestanden.<br /><br />Na het uitvoeren van tenminste één regelmatige backup, kunt u selecteren of daaropvolgende backups volledig zijn (alle bestanden in de geselecteerde directories hierboven) of toegevoegd (alleen die bestanden die sinds de laatste backup gewijzigd zijn). Als u  enige van de hierboven weergegeven instellingen wijzigt (en opslaat), <i>moet</i> de volgende backup  een volledige backup worden. Voor toegevoegde backups, wordt het tijdsinterval voor het bepalen van gewijzigde bestanden gemeten in <i>seconden</i> voor Tar, Archive::Tar en Archive::Zip, maar in de <i>dagen</i> voor Zip.',
+'25' => 'Voer volledige Backup uit - alle bestanden in geselecteerde directories',
+'25a' => 'Voer toegevoegde backup uit - alleen bestanden die sindsdien verandert/gecreëerd zijn',
+
+# Not used
+# '26' => '', Niet gebruikt
+
+# Text used for the actual backup output
+'27' => 'Backed up',
+
+# Text used in the support subroutines
+'28' => 'Kan de module niet laden',
+'29' => 'Het is niet mogelijk de backup methode te testen',
+'30' => 'Het is niet mogelijk compressie methode te vinden',
+'31' => 'kan niet gebruikt worden',
+'32' => 'Foutcode:',
+
+# Text used for timing the backup
+'33' => 'De backup duurde ',
+'34' => 'seconden',
+
+# Begin manage backups area
+'35' => 'Backups beheren',
+'36' => 'Backups beschikbaar in',
+'37' => 'Voor elke beschikbare backup, kunt u:<ul><li>Het Backup archief DOWNLOADEN</li><li>Het backup archief E-Mailen naar',
+'37a' => '</li><li>Voer een nieuwe (volledige) backup met identieke instellingen uit</li><li>voeren een TOEVOEGENDE backup met identieke instellingen uit (alleen voor bestanden die gewijzigd zijn sinds de laatste backup)</li><li>HERSTELLEN van de backup naar het live forum, wanneer ondersteund</li><li>VERWIJDER de Backup</li></ul>',
+'38' => 'Geen backups Gevonden',
+
+'39' => 'De module',
+'40' => 'De opdracht',
+'41' => 'is niet beschikbaar op deze server.',
+'42' => 'Kan niet schrijven naar',
+'43' => 'Controleer de rechten en paden.',
+
+'44' => 'Kan directories niet veranderen naar',
+'45' => 'Ongeldig backup bestand.',
+'46' => 'Kan niet lezen van',
+'47' => 'Weet u zeker dat u wilt verwijderen',
+'48' => '? Deze actie kan niet teruggedraaid worden.',
+'49' => 'JA, Ik ben zeker',
+'50' => 'Nee, verwijder het niet',
+'51' => 'Kan niet verwijderen',
+'52' => 'E-MAIL',
+'53' => 'VERWIJDEREN',
+'54' => 'Weet u zeker dat u deze email wilt verzenden',
+'55' => 'De grootte van de bijlage bedraagt',
+'56' => 'Ja, mail de bijlage naar',
+'57' => 'Nee, voeg de bijlage niet toe, mail alleen de link.',
+'58' => 'Nee, de mail niet verzenden.  Download in plaats daarvan het archief.',
+'59' => 'Nee, de mail niet verzenden. Keer terug naar YaBB backup.',
+'60' => 'DOWNLOAD',
+'61' => 'BACKUP',
+'62' => 'TOEVOEGEND',
+'62a' => 'INC',
+'63' => 'HERSTELLEN',
+
+'70' => 'Opslag datum',
+'71' => 'Grootte',
+'72' => 'Backup Inhoud (opgeslagen directories)',
+'73' => 'Type',
+'74' => 'Functies',
+
+# Loop stuff to prevent running into server time out
+'90' => q~<a href="javascript:stoptick();">Klik hier om de backup te STOPPEN</a>.~,
+'91' => 'Backing up - please wait.<br />Als u wilt stoppen, klik op STOPPEN voor het rode bericht weer verschijnt op de volgende pagina.',
+
+# Recover stuff
+'100' => 'Herstel Backup',
+'101' => '<b>De automatische herstelfunctie wordt alleen aangeraden voor de volgende directories:<br /><i>Boards</i>, <i>Leden</i>, <i>Berichten</i>, <i>Variabelen</i>, en <i>yabbbestanden/Bijlagen en yabbbestanden/avatars/GebruikerAvatars</i>.<br /><br />Herstelde bestanden kunnen niet de juiste eigendom of rechten hebben, en daarom kunnen toegangsproblemen optreden. Als dit gebeurt, moet u alle andere bestanden herstellen door het downloaden van het archiefbestand van de vorige pagina, daarna de backup  bestanden via FTP van uw computer uploaden.</b><br /><br />Ben u zeker dat u de volgende directories wilt herstellen?',
+'102' => 'van het archief bestand:',
+'103' => 'van',
+'104' => 'Wanneer Ja, dan',
+'105' => "Wanneer aangevinkt, worden bestanden uit het archief rechtstreeks teruggezet hun oorspronkelijke (live) directories. Dit overschrijft de bestaande bestanden in deze directories en herstelt verwijderde bestanden, indien nodig. Echter, bestanden die zijn gemaakt na de back-up datum (die daarom geen deel uitmaken van het archief) zullen echter niet worden verwijderd of gewijzigd. Directories die u wilt herstellen moeten vóór herstel worden ingesteld op CHMOD X [2|3|6|7] X , d.w.z. ze moeten tenminste 'groep' schrijfrechten hebben. Voorbeelden: CHMOD 775 of 765. Als u enige directories uit hun vorige locatie heeft verplaatst sinds dit back-up archief is gemaakt, mislukt deze methode waarschijnlijk - als dit het geval is, Vink dit vakje dan niet aan. < br / > wanneer niet aangevinkt, zullen bestanden hersteld van het archief worden opgeslagen in een nieuwe \"hersteld\" directory binnen uw Archief Bestemming Directory, met de werkelijke tijdstempel toegevoegd; bijvoorbeeld:<br /><tt>$backupdir/recovered_$date</tt>  -- (de tijdstempel is meer een voorbeeld).",
+'106' => 'In de volgende mappen, moet u de rechten voor de herstelde bestanden instellen. Afhankelijk van uw serverconfiguratie, kunnen de herstelde bestanden eigendom worden van de server daemon gebruiker. Als dat het geval is, kunt u achteraf niet in staat zijn de rechten te wijzigen. Om ervoor te zorgen dat u kunt wijzigen en/of uw bestanden na herstel kunt verwijderen, moet de "groep" rechten 6 of 7 zijn; gebruik geen lager nummer. De eigenaren rechten moet ook 6 of 7 zijn. < br / > < br / > Als u onzeker bent over het bovenstaande, gebruik dan niet deze automatische herstelfunctie en in plaats daarvan downloaden het archiefbestand handmatig (vanaf de vorige pagina) en zet de bestanden terug via FTP vanaf uw computer.',
+'107' => 'Bestanden en Directories',
+'108' => 'Rechten<br />(CHMOD)<br />Eigenaar|Groep|Allen',
+'110' => 'Deze rechten kunnen niet ingesteld worden hieronder', # Gebruikt in JavaScript!
+'111' => 'Deze rechten kunnen niet hoger gezet worden dan 7.', # Gebruikt in JavaScript!
+'112' => 'Alleen cijfers zijn toegestaan.', # Gebruikt in JavaScript!
+'114' => '(alle bestanden)',
+'115' => 'Alle',
+'116' => 'bestanden',
+'120' => 'Als nieuwe directories worden gemaakt, stel hen in op',
+'125' => 'Nee, Keer terug naar de YaBB Backup pagina',
+'126' => 'Ja, Ik ben klaar - Herstel nu.',
+'130' => '<b><u>Uitvoer:</u><br /><br />Als de CHMOD succesvol was, kunt u aan het eerste teken zien. Ziet u een <i>1</i> dan is het gelukt; als het <i>0</i> is, heeft de CHMOD gefaald.</b><br />Als de CHMOD is mislukt, is het meest voorkomende probleem dat een of meer directories niet ingesteld zijn op <i>groep</i> schrijfrechten.',
+'131' => '<b>Controleer nu de CHMODs opnieuw met uw FTP-programma, gewoon om zeker te zijn &nbsp; ;-)</b>',
+'132' => 'Terug naar de YaBB Backup hoofdpagina',
+
+# Begin email stuff.
+'mailsubject' => "YaBB 2 Backup van {yabb mbname}",
+'mailfrom' => qq~"YaBB 2 Backup Mailer" <{yabb webmaster_email}>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
+'mailsuccess' => 'email succesvol verzonden.',
+'mailfail' => 'Verzending email mislukt. Zie het foutbericht in de info email die u zult ontvangen.',
+'19e' => q~Max Process Time~,
+'19f' => q~Max Process Time is currently set for~,
+'19g' => q~seconds - adjust this up or down to prevent server timeouts~,
+'no_perm' => q~You do not have permission to change the above settings.~,
+'no_dnload' => q~DOWNLOAD not permited.~,
+'no_delete' => q~DELETE not permited.~,
+'542' => q~If nothing happens in 5 seconds~,
+'543' => q~click here to continue~,
+);
+
+# The actual messages are here.
+# Don't translate WORDS IN ALL CAPITALS from here to the end of the file
+$backup_txt{'mailmessage1'} = qq~Hi USERNAME!
+
+De backup-kopie FILENAME moet worden gekoppeld aan dit bericht.
+
+Als dit niet het geval is, kunt u LINK bezoeken voor handmatig downloaden.
+
+
+Bedankt voor het gebruik van YaBB!~;
+
+$backup_txt{'mailmessage2'} = qq~Hi USERNAME!
+
+U kunt LINK bezoeken om backup te downloaden FILENAME.
+
+
+Bedankt voor het gebruik van YaBB!~;
+
+$backup_txt{'mailmessage3'} = qq~Hi USERNAME!
+
+Het verzenden van de email met de aangekoppelde backup is mislukt.
+
+Maar, u kunt LINK bezoeken om de backup handmatig te downloaden FILENAME.
+
+Het systeem verstrekt de volgende info in verband met de verzonden fout:
+"SYSTEMINFO"
+
+U moet MIME::Lite geinstalleerd hebben op uw server om backups via email te kunnen ontvangen; mogelijk heeft u ook andere modules nodig (Zie de bovenstaande info). Vraag uw serverbeheerder om de modules op uw server te installeren. U vindt meer informatie over het installeren van modules op: http://codex.yabbforum.com/YaBB.pl?num=1225217016
+
+Bedankt voor het gebruik van YaBB!~;
+
+1;

@@ -1,0 +1,51 @@
+﻿###############################################################################
+# Sessions.lng (Sessions text definitions)                                    #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchsessionslngver = 'YaBB 2.7.00 $Revision$';
+
+@dutchsessionslngmods = ();
+if (@dutchsessionslngmods) {
+    $dutchsessionslngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%session_txt = (
+'1' => 'Sessie ID\'s activeren?',
+'2' => 'Dit beschermt de administratieve functies met behulp van een driedelige sessiesleutel op basis van een IP-adres.',
+'3' => "Uw sessie is verlopen, u het forum heeft geopend vanuit een ander IP-adres ({yabb user_ip}).",
+'4' => 'Om uw referenties te controleren beantwoordt de volgende vraag met het antwoord dat u hebt ingevoerd in uw profiel.',
+'6' => 'U slaagde er niet in uw referenties te valideren en bent uitgelogd.',
+'8' => 'Selecteer hier uw vraag voor de sessie revalidatie',
+'9' => 'Om uw referenties te controleren Selecteer een vraag en geef een antwoord om uw sessie opnieuw te valideren.',
+'9a' => 'Als u uw wachtwoord als validatie selecteert, kunt u het veld leeg laten.',
+'10' => 'U heeft in uw profiel geen sessie vraag geselecteerd zodat u uw wachtwoord moet gebruiken om uw referenties te verifiëren.',
+);
+
+%sesquest_txt = (
+'password' => 'Gebruik uw wachtwoord als validatie',
+'1' => 'Mijn favoriete dier is een',
+'2' => 'De naam van mijn favoriete dier is',
+'3' => 'Mijn telefoonnummer is',
+'4' => 'Mijn geboortedatum is',
+'5' => 'Mijn beste vriend is',
+'6' => 'Ik ben verliefd op',
+'7' => 'De persoon die ik het meeste haat ',
+'8' => 'Mijn postcode is',
+'9' => 'Mijn favoriete sport is',
+'10' => 'Mijn favoriete drank is',
+);
+
+1;

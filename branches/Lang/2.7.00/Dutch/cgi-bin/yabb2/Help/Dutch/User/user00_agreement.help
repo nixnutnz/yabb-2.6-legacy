@@ -1,0 +1,24 @@
+$dutchuser_user00_agreementhelpver = '';
+if ( modagreement2 eq 'detailedversion' ) { return 1; }
+$section_name = "User_Agreement";
+
+### Section 1
+#############################################
+$section_sub1 = "{yabb_boardname}_User_Agreement";
+$section_body1 = qq~<p>U stemt ermee in, door middel van het gebruik van deze forums, die je elk materiaal dat is vals, lasterlijk, onjuist, beledigend, vulgair, hatelijk, kwetsend, obsceen niet zal plaatsen, godslasterlijk, seksueel georiënteerd, bedreigend, invasief van de privacy van een persoon, of anderszins in strijd is met <i> elke </i> recht. U aanvaardt tevens geen auteursrechtelijk beschermd materiaal te posten, tenzij het copyright eigendom is van u of u toestemming hebben van de eigenaar van het auteursrechtelijk beschermde materiaal. Spam, flooding, advertenties, kettingbrieven, piramidespelen, en verzoeken zijn ook ongepast op dit forum.<br />
+<br />
+Merk op dat het onmogelijk is voor ons om de geldigheid van berichten te bevestigen op dit forum. Vergeet niet dat wij niet actief de geplaatste berichten niet controleren en zijn niet verantwoordelijk voor de inhoud. Wij garanderen niet de juistheid, volledigheid of bruikbaarheid van de gepresenteerde informatie. De berichten komen voor rekening van de auteur, niet noodzakelijk de mening van dit forum. Iedereen die meent dat een gepost bericht is verwerpelijk wordt aangemoedigd om een ​​beheerder van dit forum onmiddellijk. We hebben het recht om aanstootgevende inhoud te verwijderen, binnen een redelijke termijn, als we vaststellen dat verwijdering noodzakelijk is. Dit is een handmatig proces, echter, dus beseffen dat we niet in staat zijn om te verwijderen of bepaalde berichten onmiddellijk te bewerken. Dit beleid geldt voor lid profiel informatie ook.<br />
+<br />
+U blijft zelf verantwoordelijk voor de inhoud van uw berichten, en gaat u ermee akkoord te vrijwaren dit forum, en alle gerelateerde websites op dit forum. We op dit forum behouden ook het recht om je identiteit (of enige informatie die we hebben over u) in het geval van een klacht of juridische stappen als gevolg van de informatie geplaatst door u te onthullen. U hebt de mogelijkheid, als u zich registreert, om te kiezen uw gebruikersnaam en een schermnaam, het laatste zal op alle berichten, berichten worden weergegeven en antwoordt u auteur. Wij adviseren dat u de juiste naam te houden. Met de gebruikersaccount die u op het punt om te registreren bent, gaat u ermee akkoord om nooit je wachtwoord te geven aan een ander lid, voor uw bescherming en voor de geldigheid redenen. Tevens verklaart u <i> nooit </i> gebruiken rekening van een ander lid om berichten te plaatsen of blader dit forum. Nadat u zich registreert en inlogt op dit forum, kun je invullen van een gedetailleerd profiel. Het is uw verantwoordelijkheid om schone en accurate informatie te presenteren. Alle informatie die we achten onjuist of vulgair zullen worden verwijderd.<br />
+<br />
+Houdt u er rekening mee dat met elk bericht, uw IP-adres geregistreerd, in het geval dat je nodig hebt om te worden verbannen van dit forum of uw ISP gecontacteerd. Dit zal alleen gebeuren in het geval van een ernstige schending van deze overeenkomst.<br />
+<br />
+<b> Privacy </b>: Om te kunnen functioneren, dit forum maakt gebruik van cookies op uw computer opgeslagen. Door zich te registreren u bent ook het geven van expliciete toestemming voor die cookies op uw computer worden geplaatst.<br />
+<br />
+YaBBForumSoftware.com is een ontwikkeling en het testen forum voor YaBB forum software. Het is <i> niet </i> een geschikte locatie voor discussies over het beheer van het beleid, personeel, of leden van een ander forum.<br />
+<br />
+Dank u voor het samenvoegen en ons te helpen bouwen aan een succesvolle online community.</p>~;
+#############################################
+
+
+1;

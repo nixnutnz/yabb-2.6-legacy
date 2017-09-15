@@ -1,0 +1,134 @@
+﻿$dutchadmin_admin06_advancedhelpver = 'YaBB 2.7.00 $Revision$';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Geavanceerde_instellingen";
+
+### Section 1
+#############################################
+$section_sub1 = "Opzetten_van_Permalinks_en_RSS";
+$section_body1 = q~<p>YaBB geeft u de mogelijkheid om permalinks in te stellen (zoek zoekmachine vriendelijk en bladwijzer vriendelijke URIs) evenals RSS-feeds van uw gehele forum, specifieke categorieën en specifieke Boards. Om deze functies in te stellen, moet u als een ForumAdmin of globale Moderator zijn ingelogd met de juiste toegangsrechten. In het "Admin Center" zoekt u het gedeelte in het linkermenu met de titel "Forum configuratie". Klik op "geavanceerde instellingen".</p>
+<ul>
+    <li><b>Permalinks</b>
+        <br />Voor het gebruik van permalinks, moet uw forum op een server zijn die "FollowSymLinks" en "RedirectMatch" of "RewriteEngine" toestaat in een .htaccess bestand of als een server instelling. Neem contact op met uw hosting service om te zien of deze server niveau functies voor u beschikbaar zijn.
+        <br />Als deze functies beschikbaar zijn: <a href="http://www.yabbforum.com/codex/YaBB.pl?num=1191988956" target="_blank">Opzetten van Permalinks</a> heeft instructies over het instellen van dat deel van permalinks.
+        <br />Zodra de server niveau-instellingen zijn ingesteld, kunt u Permalinks binnen YaBB activerenen vertellen <strong>hoe</strong> u de nieuwe permalink maakt URI's door het invoeren van de naam van de  'virtuele URI' map die in de "RedirectMatch" of "RewriteRule" of in het .htaccess bestand is.
+    </li>
+    <li><b>RSS</b>
+        <br />Voor u RSS op het Forum, Categorie of Board niveau activeert, zorg ervoor dat het niet is <strong>uitgeschakeld</strong> in "geavanceerde instellingen". Vervolgens stelt u het aantal onderwerpen in dat getoond wordt in de feed (de standaardwaarde is 10). Ook kies al dan niet of de Postings datums worden getoond en in welke volgorde de Topic onderwerpen in de feed worden getoond.
+        <br />Selecteer of auteur schermnamen en e-mailadressen worden getoond (ervan uitgaande dat de auteur ervoor heeft gekozen deze informatie niet te verbergen).
+        <br />De RSS-specificatie vereist dat auteurs e-mailadressen hebben. Voer het standaard e-mailadres in wat wordt getoond in de RSS-feed als het email adres van de auteur verborgen wordt of "Toon de schermnaam van de auteur en e-mailadres (als niet verborgen)?" niet aangevinkt is. Als dit veld leeg gelaten is, zal het standaard e-mailadres het "Webmaster E-mail adres" worden van "geavanceerde instellingen-> E-Mail".
+        <br /><span class="help_attn"><b><span class="under">Administrator Tip:</span></b> Om te voorkomen dat het e-mailadres van Webmaster wordt overspoeld met spam, maak een apart RSS standaard e-mailadres zoals '-noreply@yourforum.com'. Dit hoeft niet het echte adres te worden omdat niemand het zal gaan controleren.</span>
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 2
+#############################################
+$section_sub2 = "E-Mail_Instellingen";
+$section_body2 = q~<p>Instellen hoe YaBB e-mails verstuurt.</p>
+<ul>
+    <li><b>E-Mail</b>
+        <br />YaBB geeft u meerdere wegen voor YaBB om e-mails sturen naar ledenTe versturen. Als uw forum op een BSD/*nix systeem is, is sendmail  meestal de beste optie. Als sendmail vanaf uw host beschikbaar is, verkrijg zijn locatie en plaats de gegevens in het tekstvak onder de dropdown selectie. (Deze locatie is vaak '/usr/sbin/sendmail'.) Als sendmail niet beschikbaar is, kiest u een van de andere opties uit de dropdown-selectie.
+            <ul>
+                <li><strong>SMTP-Server</strong>: the <em>URL</em> of the SMTP server you will be using. On many hosts this is on the order of 'smtp.yourdomain.com' or 'mail.yourdomain.com'.</li>
+                <li><strong>SMTP-server Autorisatie</strong>: Dit heeft meerdere delen: Autorisatie type (meestal Auto), SMTP gebruikersnaam en wachtwoord.</li>
+            </ul>
+        <span class="help_attn"><b><span class="under">Administrator Tip:</span></b> Als u een e-mail adres instelling hebt met behulp van uw gastheer's SMTP-server, het autorisatie type, de gebruikersnaam en het wachtwoord zijn waarschijnlijk in uw persoonlijke e-mailprogramma e-mail instellingen opgeslagen.</span>
+    </li>
+    <li><b>Instellingen voor nieuw lid notificatie e-mailbericht</b>
+        <br />Selecteer of een 'nieuw lid notificatie' aan het aangewezen e-mailadres moet worden gezonden.
+    </li>
+    <li><b>Topic E-mail instelling</b>
+        <br />Selecteer of/hoe 'Topic Notificatie' e-mails worden verzonden.
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 3
+#############################################
+$section_sub3 = "Bestand_Bijlagen";
+$section_body3 = q~<p>Controleer de machtigingen voor de Bijlage en PMAttachment mappen en stel gebruikersrechten, bestandstypen, en andere parameters in.</p>
+<ul>
+    <li><b>Post Bijlagen</b>
+        <br />Controleer de map en machtigingen (server permissies)
+        <br />Stel aantal bijlagen in die toegestaan zijn in posts. (Al dan niet worden bijlagen toegestaan in berichten die in een bepaald board voor elk bord is ingesteld in "Beheer Boards".)
+        <ul>
+            <li><strong>Afbeeldingsbijlagen tonen in Posts?</strong>: Indien aangevinkt, zullen bijlagen die afbeeldingen zijn ook worden weergegeven in de bijlagen sectie van de post (De grootte van dit weergegeven beeld wordt ingesteld onder "Geavanceerde instellingen -> Smart Afbeelding Formaat wijzigen -> Attachment beelden".)</li>
+            <li><strong>Bestand Extensies</strong>: zet aan de Inschakelen bestand extensie Controleer en kies welk type bestanden worden toegestaan.
+                <br /><span class="help_attn important"><span class="under"><b>NOTE:</b></span> het uitschakelen van de bestandsextensie controle kan bestanden met schadelijke inhoud toestaan zich uit te voeren op uw server. Als u het uploaden van zulke dingen als html-bestanden, JavaScript-bestanden of uitvoerbare bestanden wilt toestaan, vereist dat ze worden verpakt en geüpload als een zip of tar-bestand.</span>
+            </li>
+            <li><strong>Bestand en directory grootte</strong>: Stel de maximale grootte van de bijgevoegde bestanden in en de grootte van de bijlage map. Stel beide limieten op iets redelijks voor uw forum.</li>
+            <li><strong>Bestand andere naam geven/overschrijven</strong>: Kies hoe YaBB bestanden zal behandelen die dezelfde naam hebben als reeds bestaande bestanden.</li>
+        </ul>
+    </li>
+    <li><b>PM Bijlagen</b>
+        <br />Selecteer Map pad en machtigingen (server permissions)
+        <br />Stel aantal bijlagen in toegestaan in persoonlijke berichten.
+        <ul>
+            <li><strong>Bilagen afbeelding tonen in PMs?</strong>: Indien aangevinkt, zullen ook bijlagen die foto's zijn worden weergegeven in de sectie van de bijlagen van het bericht (De grootte van dit weergegeven beeld wordt ingesteld onder "Geavanceerde instellingen -> Smart Afbeelding Formaat wijzigen -> Attachment beelden".)</li>
+            <li><strong>Bestand Extensties</strong>: zet de schakel de nbestand extentie controle aan en kies welk type bestanden worden toegestaan.
+            <br /><span class="help_attn important"><span class="under"><b>NOTE:</b></span> het uitschakelen van de bestandsextensie controle kan bestanden met schadelijke inhoud toestaan zich uit te voeren op uw server. Als u het uploaden van zulke dingen als html-bestanden, JavaScript-bestanden of uitvoerbare bestanden wilt toestaan, vereist dat ze worden verpakt en geüpload als een zip of tar-bestand.</span>
+            </li>
+            <li><strong>Bestand en directory grootte</strong>: Stel de maximale grootte van de bijgevoegde bestanden in en de grootte van de bijlage map. Stel beide limieten op iets redelijks voor uw forum.</li>
+            <li><strong>Bestand andere naam geven/overschrijven</strong>: Kies hoe YaBB bestanden zal behandelen die dezelfde naam hebben als reeds bestaande bestanden.</li>
+        </ul>
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 4
+#############################################
+$section_sub4 = "Slimme_Afbeelding_formaat_wijzigen";
+$section_body4 = q~<p>Stel de parameters in voor het wijzigen van Avatars, post foto's, Handtekening afbeeldingen, Bijlagen afbeeldingen, en Board/Categorie afbeeldingen</p>
+<ul>
+    <li><b>Voor elk type afbeelding</b>
+        <br />U kunt de maximale hoogte en breedte van elk type afbeelding in pixels kiezen of schakel het aanpassen van het beeld typen helemaal uit. Grotere afbeeldingen zullen "krimpen" om  binnen de maximale gestelde grenzen te passen.
+        <br /><span class="help_attn"><span class="under"><b>NOTE:</b></span> Een afbeelding hoger dan het breed is wordt beperkt door de maximale hoogte en de breedte proportioneel te passen, die minder zal zijn de maximale breedte. Een afbeeldiing breder dan hoger wordt beperkt door de maximale breedte en hoogte proportioneel te passen, welke minder wordt dan de maximale hoogte.</span>
+    </li>
+    <li><strong>Greybox</strong>
+        <br />Bijgevoegde foto's en afbeeldingen in berichten kunnen worden getoond op een licht doorschijnend oppervlak in plaats van in een nieuw venster. De Admin kan kiezen tussen een enkelvoudige weergave en een galerie stijl weergave voor bijgevoegde afbeeldingen.
+    </li>
+</ul>
+~;
+#############################################
+
+### Section 5
+#############################################
+$section_sub5 = "Geavanceerd";
+$section_body5 = q~<p>Hier kunt u de verschillende parameters opzetten voor de diverse gebruikers/klik/error logs en andere items.</p>
+<ul>
+    <li><b>Output Compressie</b>
+        <br />Uitgang compressie comprimeert de gegevens naar de browser, bespaart bandbreedte. YaBB zal detecteren welk type uitgang compressie beschikbaar is op uw server.
+        <br />U kunt ook kiezen of YaBB controleert om te zien of de gebruiker's browser de uitgang compressie ondersteunt. Het is aanbevolen dat YaBB deze controle doet omdat sommige oudere en minderheids browsers geen uitgang compressie ondersteunen en niet in staat om de pagina's van uw forum te maken als die gecomprimeerd worden verstuurd.
+    </li>
+    <li><strong>Browser Cache Gedrag</strong>
+        <br />Deze instelling plaatst een 'meta tag' in het forum pagina's en vertelt de browser van de gebruiker of het wel of niet items/gegevens (zoals stylesheets en afbeeldingen) dient op te slaan die in de tijd niet veranderen.
+        <br /><span class="help_attn"><span class="under"><b>NOTE:</b></span> Hoewel de meeste browsers de cache instructies in afzonderlijke documenten volgen, is dit een verouderde functie in HTML 5.</span>
+    </li>
+    <li><strong>Klik Logboek (Forum toegang Log)</strong>
+        <br />Wanneer geactiveerd, logt YaBB de gebruikersnaam en het IP-adres, alsook welke pagina's bezocht werden (en hoe vaak ze werden bezocht) in het aantal minuten in te stellen in 'Tijd in minuten om  elke klik in je forum in te loggen'.
+    </li>
+    <li><strong>Fout Logger</strong>
+        <br />Schakel de Error Log in, stel in of oude fouten verwijderd worden als er nieuwe worden gelogd en hoeveel fouten in het foutenlogboek zullen verschijnen.
+        <br /><span class="help_attn"><span class="under"><b>NOTE:</b></span> Het uitschakelen van het Fouten log betekent dat u hebt geen enkele manier heeft om te controleren welke fouten zich voordoen op het forum - Dit omvat zaken als leden die problemen hebben met inloggen, pogingen van zoekmachines om in gebieden te komen die niet zijn toegestaan voor gasten, en andere problemen op uw forum. Het instellen van het aantal fouten getoond aan een zeer klein aantal betekent dat je misschien niet belangrijk foutmeldingen te zien krijgt omdat ze overschreven zullen worden door nieuwe. (Misdragende zoekmachines en mislukte registratie/login pogingen kunnen een error log heel snel vullen.)</span>
+    </li>
+    <li><strong>Debug</strong>
+        <br />Voor gebruik in het geval dit forum problemen heeft met bestanden die niet goed openen en/of goed sluiten of u op dient te sporen welke bestanden worden gebruikt in een bepaald gedeelte, zodat u problemen kunt aanpakken.
+        <br />U kunt kiezen, of alleen de Admin ziet de uitkomst, iedereen ziet de volledige uitkomst, iedereen ziet hoe lang het duurt voor een pagina om te laden (handig als probeert op te sporen of trage pagina lading  een server probleem is of een Internet probleem), of debugging is uitgeschakeld.
+    </li>
+    <li><strong>Bestanden</strong>
+        <br />Kies welk type bestand vergrendeling (indien aanwezig) YaBB moet gebruiken, afhankelijk van wat OS uw forum host heeft draaien.
+        <br /><span class="help_attn"><span class="under"><b>NOTE:</b></span> Met ingang van 2015, is het onwaarschijnlijk dat uw host een server heeft draaien waarop Windows 9x file-vergrendeling nodig is.</span>
+    </li>
+    <li><strong>Vrije schijf ruimte opties</strong>
+        <br />Door dit aan te zetten wordt u een link gegeven om toegang te krijgen tot de verschillende vrije schijfruimte controles die beschikbaar zijn op sommige Unix/Linux/BSD-servers.
+        <br />Als uw forum draait op meerdere gebruikers host-systeem, kan "Free Disk Space functies" grotere beschikbare ruimte aan u melden dan eigenlijk beschikbaar is voor u.
+        <br /><span class="help_attn"><span class="under"><b>NOTE:</b></span> Als de pagina "Free Disk Space functies" niet kan worden geladen of als een functie op de pagina "Free Disk Space functies" grijs wordt weergegeven of niet kan worden gecontroleerd, ondersteunt uw server  deze functies niet. Als de pagina niet kan worden geladen, schakel het "Free Disk Space opties" vakje uit.</span>
+    </li>
+</ul>
+~;
+#############################################
+
+1;

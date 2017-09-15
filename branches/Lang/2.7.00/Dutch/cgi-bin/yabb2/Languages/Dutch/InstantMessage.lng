@@ -1,0 +1,206 @@
+﻿###############################################################################
+# InstantMessage.lng (InstantMessage text definitions)                        #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchinstantmessagelngver = 'YaBB 2.7.00 $Revision$';
+
+@dutchinstantmessagelngmods = ();
+if (@dutchinstantmessagelngmods) {
+    $dutchinstantmessagelngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%inmes_txt = (
+'21' => q~Bijdragen~,
+'30' => q~aan~,
+'remove' => q~Verwijder~,
+'70' => q~Onderwerp~,
+'118' => q~Topic~,
+'143' => q~PB berichten Index~,
+'144' => q~Persoonlijk bericht~,
+'145' => q~Citeer~,
+'146' => q~Reageer~,
+'147' => q~Doorsturen~,
+'sendmess' => q~Send Message~,
+'sendbroadmess' => q~Broadcastbericht verzenden~,
+'151' => q~Geen berichten...~,
+'190' => q~Allen~,
+'inbox' => q~Inbox~,
+'outbox' => q~Uitbox~,
+'draft' => q~Concepten~,
+'storage' => q~Archief~,
+'folder' => q~map~,
+'317' => q~Datum~,
+'318' => q~Afzender~,
+'320' => q~Sla geen kopie van dit bericht in uitbox op na verzenden.~,
+'321' => q~Let op, dat de bijlagen samen met berichten in uw uitbox verwijdert worden, Dus als u bestanden wilt toevoegen is de bovenstaande optie niet van toepassing.~,
+'datesave' => q~Bewaar datum~,
+'forward' => q~Bericht doorsturen~,
+'replymess' => q~Bericht beantwoorden~,
+'error' => q~Fout~,
+'selectrecent' => q~Nieuwe privé berichten selecteren of toevoegen:<br />dubbelklikken om te kopieëren naar &#39;aan&#39;~,
+'selectgroups' => q~Van ledengroep(en) slecteren of toevoegen:<br />dubbelklikken om te kopieëren naar &#39;aan&#39;~,
+'allmembers' => q~alle leden~,
+'324' => q~Aan~,
+'325' => q~CC~,
+'326' => q~BCC~,
+'327' => q~Groep~,
+'bmallmembers' => q~Alle forum leden~,
+'bmadmins' => q~Administratoren~,
+'bmgmods' => q~Global moderatoren~,
+'bmymods' => q~Forum moderatoren~,
+'bmmods' => q~Alle board moderators / mod groepen~,
+'470' => q~Niet aanwezig~,
+'500' => q~Alle berichten als gelezen markeren~, # inside JavaScript!
+'500a' => q~Uitgevoerd~, # inside JavaScript!
+'507' => q~voorvertoning~,
+'511' => q~IP opgeslagen~,
+'preview' => q~Voorvertoning tekst~,
+'savedraft' => q~Bewaar als concept~,
+'536' => q~Uw bijdrage was te lang door~,
+'537' => q~tekens. Kort uw berich alstublieft in~,
+'737' => q~Ales markeren~,
+'739' => q~Bent u zeker dat u deze bijdrage wilt verwijderen?~,
+'761' => q~De gebruiker ~,
+'762' => q~accepteert geen PBs~,
+'763' => q~en~,
+'764' => q~Markeer nieuwe berichten als gelezen~,
+'765' => q~PB Instelligen~,
+'766' => q~Gebruiker bestaat niet~,
+'767' => q~(Geen Onderwerp)~,
+'770' => q~Weet u zeker dat u deze PB wilt verwijderen?~,
+'770a' => q~\n\nLet op, dat alle bestanden die u aan dit bericht hebt toegevoegd ook verwijdert zullen worden.~,
+'770b' => q~\n\nLet op, dat alle bestanden die u heeft aangesloten op de geselecteerde berichten ook verwijdert worden.~,
+'delmultipms' => q~Weet u zeker dat u deze PBs wilt verwijderen?~,
+'773' => q~Verzenden~,
+'774' => q~Opslag~,
+'775' => q~Nieuw Bericht~,
+'775a' => q~Nieuw Broadcastbericht~,
+'storeor' => q~of~,
+'storein' => q~in~,
+'777' => q~Verwijder bericht(en)~, #do not remove or translate any CAPITAL text
+'status' => q~Berichten status~,
+'addfolder' => q~Voeg toe~,
+'foldererror' => q~veld,~,
+'messages' => q~Mijn persoonlijke berichten~,
+'center' => q~Mij Centrum~,
+'profile' => q~Mijn Profiel~,
+'favs' => q~Mijn Favorieten~,
+'notify' => q~Mijn Notificaties~,
+'viewprofile' => q~Bekijk mijn Profiel~,
+'viewnotify' => q~Bekijk mijn Notificaties~,
+'viewfavs' => q~Bekijk mijn Favorieten~,
+'viewrecentposts' => q~Bekijk mijn laatste~,
+'viewrecentposts2' => q~Berichten~,
+'goviewrecent' => q~GA!~,
+'broadcast' => q~Broadcastberichten~,
+'alert' => q~Alarm berichten~,
+'new' => q~nieuw~,
+'delete' => q~Verwijder~,
+'clickto1' => q~Klik hier, om te selecteren~,
+'clickto2' => q~~, # used for other languages
+'torecepients' => q~ontvanger(s)~,
+'togroups' => q~groep(en)~,
+'usercp' => q~Gebruiker Centrum~,
+'attach_1' => q~Dit bericht bevat~,
+'attach_2' => q~Bijlagen~,
+'attach_3' => q~Bijlage~,
+'im_low_postcount' => qq~You are only allowed to read Personal Messages until you've reached a post count of {yabb numposts}.~,
+'guest' => q~Guest Messages~,
+);
+
+%inmes_imtxt = (
+'01' => q~vanuit de~,
+'07' => q~Dit is een nieuw bericht.~,
+'08' => q~U heeft dit bericht beantwoord.~,
+'09' => q~Dit bericht werd gelezen.~,
+'13' => q~U heeft~,
+'19' => q~berichten in uw~,
+'status' => q~Status~,
+'39' => q~Geen PB~,
+'40' => q~Vorige PB~,
+'41' => q~Volgende PB~,
+'42' => q~Toon alle PBs naar en van~,
+'49' => q~Stuur naar ledengroepen:~,
+'store' => q~Opslaan~,
+'60' => q~Online~,
+'61' => q~Offline~,
+'67' => q~Gebruik~,
+'69' => q~Citaat werd verwijdert~,
+'73' => q~Wilt u dit bericht werkelijk verwijderen bij ontvanger(s) PBs?~,
+'83' => q~Terug roepen~,
+'84' => q~Code werd verwijderd~,
+'callallback' => q~Allen terug roepen~,
+'outread' => q~Dit bericht is geopend door de ontvanger,~,
+'callback' => q~Dit bericht werd teruggeroepen en is dus door de ontvanger niet gelezen.~,
+'outmulticallback' => q~Dit bericht werd teruggeroepen en dus door de ontvangers niet gelezen.~,
+'outsomemulticallback' => q~Dit bericht werd teruggeroepen van sommige ontvangers, dus het werd door sommigen gezien en door anderen niet.~,
+'outnotread' => q~Dit bericht is nog niet door de ontvanger geopend.~,
+'inread' => q~U heeft dit bericht geopend~,
+'innotread' => q~U heeft dit bericht nog niet geopend ~,
+'outmultinotread' => q~Dit bericht is nog niet geopend door een van de ontvangers.~,
+'outmultiread' => q~Dit bericht is geopend door een van de ontvangers.~,
+'outmultisomeread' => q~Dit bericht is geopend door een of meer van de ontvangers.~,
+'multicallback' => q~Open bericht om te beantwoorden~,
+'newstorefolder' => q~Voeg nieuwe opslag map toe~,
+);
+
+## message status
+%im_message_status = (
+'confidential' => q~Vertrouwelijk~,
+'urgent' => q~Urgent!~,
+'standard' => q~Standaard~,
+'alertmod' => q~Alarmeer Moderator.~,
+'guestpm' => q~PB van Gast~,
+'guestpmreply' => q~Antwoord op PB van Gast~,
+);
+
+##  names for default storage folders
+%im_folders_txt = (
+'in' => q~In~,
+'out' => q~Uit~,
+);
+
+## sorted views
+%im_sorted = (
+'latest' => q~Laatste berichten~,
+'oneweek' => q~Laatste week~,
+'twoweeks' => q~Twee weken geleden~,
+'threeweeks' => q~Drie weken geleden~,
+'fourweeks' => q~Vier weken geleden~,
+'older' => q~Meer dan een maand geleden~,
+'important' => q~Belangrijke berichten~,
+'standart' => q~Berichten~,
+);
+
+%guest_reply = (
+'guesttext' => q~Deze functie zal u toestaan de gast zijn bericht te beantwoorden. Het zal naar haar/zijn e-mailadres verzonden worden. Gebruik alstublieft geen smilies of BB code, omdat ze niet verwerkt worden.~,
+'origmess' => q~----- Original Message -----~,
+'from' => q~Van~,
+'to' => q~Naar~,
+'sent' => q~Verzend~,
+'subject' => q~Onderwerp~,
+);
+
+## Do not edit %grps ##
+%grps = (
+all    => 'bmallmembers',
+mods   => 'bmmods',
+fmods  => 'bmfmods',
+gmods  => 'bmgmods',
+admins => 'bmadmins',
+);
+
+1;
