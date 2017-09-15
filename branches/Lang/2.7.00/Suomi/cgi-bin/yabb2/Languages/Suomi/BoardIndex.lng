@@ -1,0 +1,118 @@
+###############################################################################
+# BoardIndex.lng (BoardIndex text definitions)                                #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomiboardindexlngver = 'YaBB 2.7.00 $Revision$';
+@suomiboardindexlngmods = ();
+if(@suomiboardindexlngmods){
+    $suomiboardindexlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%boardindex_txt = (
+'18' => 'Etusivu',
+'20' => 'Foorumin nimi',
+'21' => 'viestejä',
+'21l' => 'viestiä',
+'22' => 'Viimeisin viesti',
+'34' => 'Kirjaudu',
+'63' => 'Moderaattorit',
+'63a' => 'Moderaattoriryhmät',
+'64'  => 'Alialueet',
+'65'  => 'Alialueet alueella',
+'66'  => 'Alialue',
+'67'  => 'Tämä alue sisältää uusia viestejä.',
+'68'  => 'Tämä alue ei sisällä uusia viestejä.',
+'69'  => 'alialuetta', #'of the',
+'70'  => 'alialueesta sisältää uusia viestejä.',
+'71'  => 'alialue sisältää uusia viestejä.',
+'72'  => 'alialue ei sisällä uusia viestejä.',
+'141' => 'Vieraita',
+'142' => 'Jäseniä',
+'bviews' => 'katselee',
+'143' => 'Hakukoneita',
+'158' => 'Paikalla olevat käyttäjät',
+'200' => 'Foorumin tilastot',
+'201' => 'Uusin jäsen on',
+'235' => 'Viimeisin viesti',
+'236' => 'Viimeisin viesti on',
+'298' => 'Moderaattori',
+'298a' => 'Moderaattoriryhmä',
+'315' => 'Unohtuiko salasana?',
+'316' => 'Saapuneet',
+'320' => 'Lähteneet',
+'330' => 'aiheita',
+'330l' => 'aihetta',
+'333' => 'Uusia viestejä',
+'334' => 'Ei uusia viestejä',
+'470' => 'Ei tiedossa',
+'470a' => '<i>Ex-jäsen</i>',
+'487' => 'Meillä on',
+'488' => 'jäsentä', #rekisteröityä jäsentä
+'489' => 'Jäsenemme ovat kirjoittaneet',
+'490' => 'ja käsitelleet',
+'500' => 'Merkitään kaikki aihealueet luetuksi', # inside JavaScript!
+'500a' => 'Valmis', # inside JavaScript!
+'500b' => 'Merkitään kaikki aiheet luetuksi', # inside JavaScript!
+'524' => 'Aihe',
+'525' => 'Kirjoittaja',
+'526' => 'Uudelleenohjatut osumat',
+'643' => 'Ylös',
+'685' => 'Tietokeskus',
+'791' => 'Näytä',
+'792' => 'viimeisintä viestiä',
+'792a' => 'viimeisintä aihetta',
+'793' => 'tästä foorumista.',
+'795' => 'Sinulla on',
+'796' => 'yksityisviesti(ä)',
+'797' => 'Näytä',
+'800' => 'Eniten käyttäjiä paikalla oli',
+'801' => 'Eniten jäseniä paikalla oli',
+'802' => 'Eniten vieraita paikalla oli',
+'803' => 'Eniten hakukoneita paikalla oli',
+'no_ip' => 'IP-numeroa ei kirjattu',
+'guest_ip' => 'Vierailijoiden IP-numerot',
+'recenttopic' => '10 viimeisintä aihetta',
+);
+
+%boardindex_imtxt = (
+'11' => 'Sinulla oli',
+'12' => 'viestiä',
+'14' => 'Uusia viestejä:',
+'15' => '!\nHaluatko avata Saapuneet?',
+'16' => 'Mutta vain',
+'18' => 'on sallittu!',
+'19' => 'Vanhimmat viestit poistettiin automaattisesti!\n\nHaluatko mennä yksitysviesteihin?',
+'20' => 'viestiä poistettiin automaattisesti.\n\nHaluatko katsoa yksityisviestisi',
+'21' => 'nyt?',
+'24' => 'joista',
+'25' => 'on uusi',
+'26' => 'on uusia',
+'46' => 'Varasto',
+'47' => 'niitä',
+'48' => 'viesti',
+'50' => 'Uusia henkilökohtaisia yleisviestejä!',
+'51' => '\nHaluatko avata yleisviestilaatikon',
+'50a' => 'Uudet varoitusviestit:',
+'50g' => q~New Guest Personal Messages.~,
+'51g' => q~\nWould you like to view the Guest PM box~,
+);
+
+%boardindex_exptxt = (
+'1' => 'Laajenna',
+'2' => 'Supista',
+'5' => 'Tässä kategoriassa on uusia viestejä.',
+'6' => 'Tässä kategoriassa ei ole uusia viestejä.',
+);
+
+1;

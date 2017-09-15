@@ -1,0 +1,48 @@
+###############################################################################
+# Sessions.lng (Sessions text definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomisessionslngver = 'YaBB 2.7.00 $Revision$';
+@suomisessionslngmods = ();
+if(@suomisessionslngmods){
+    $suomisessionslngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%session_txt = (
+'1' => 'Aktivoi istuntotunnisteet?',
+'2' => 'Tämä suojaa ylläpitotoimintoja koostuen kolmiosaisesta avaimesta, joka perustuu käyttäjän IP-osoitteeseen',
+'3' => "Istuntosi on vanhentunut, sillä olet kirjautunut sisään eri IP-osoitteesta ($user_ip)",
+'4' => 'Varmistaaksesi henkilöllisyytesi vastaa kysymykseen, jonka olet asettanut omassa profiilissasi',
+'6' => 'Varmistus epäonnistui ja sinut on kirjattu ulos',
+'8' => 'Valitse istunnon varmistuskysymys',
+'9' => 'Varmista henkilöllisyytesi valitsemalla kysymys ja antamalla siihen oikea vastaus',
+'9a' => 'Jos haluat käyttää salasanaasi varmistuksessa, jätä kenttä tyhjäksi.',
+'10' => 'Et valinnut istunnon vahvistuskysymystä profiilissasi<br />joten varmistus tapahtuu salasanan avulla.',
+);
+
+%sesquest_txt = (
+'password' => 'Käytä salasanaani varmistuksessa',
+'1' => 'Suosikkieläimeni on',
+'2' => 'Lemmikkieläimeni nimi on',
+'3' => 'Puhelinnumeroni on',
+'4' => 'Syntymäpäiväni on',
+'5' => 'Paras ystäväni on',
+'6' => 'Rakastan',
+'7' => 'Henkilö, jota vihaan eniten',
+'8' => 'Postinumeroni on',
+'9' => 'Suosikkiurheilulajini on',
+'10' => 'Suosikkijuomani on',
+);
+
+1;

@@ -7,12 +7,12 @@ Add Suomi Language for YaBB 2.7.00
 </version>
 
 <mod info>
-This mod adds the internal references for the Suomi Language Pack.
-Note: The Suomi Language pack must be uploaded to the Languages folder first. 
+This mod adds the Suomi Language Pack.
 
 Version History
 ---------------
-0.2 - First release - March 24, 2016
+0.1 - First release - March 24, 2016
+0.2 - Convert.lng added
 
 Instructions:
 
@@ -36,9 +36,29 @@ Admin/ModList.pm
 </search for>
 
 <add before>
-    my $add_suomi = q~Add Suomi Language for YaBB 2.7.00|Dandello|This mod adds the internal references for the Suomi Language Pack.|0.2|3/24/2017~;
+    my $add_suomi = q~Add Suomi Language for YaBB 2.7.00|Dandello|This mod adds the internal references for the Suomi Language Pack.|0.2|9/15/2017~;
     push @installed_mods, $add_suomi;
 </add before>
+
+<edit file>
+Admin/Admin.pm
+</edit file>
+
+<search for>
+if (@adminpmmods) {
+</search for>
+
+<add before>
+push @adminpmmods, 'Suomi Lang';
+</add before>
+
+<search for>
+    if ( -e './Languages/English/Convert.lng' )  { unlink './Languages/English/Convert.lng'; }
+</search for>
+
+<add after>
+    if ( -e './Languages/Suomi/Convert.lng' )  { unlink './Languages/Suomi/Convert.lng'; }
+</add after>
 
 <edit file>
 Admin/YaBMod.pm

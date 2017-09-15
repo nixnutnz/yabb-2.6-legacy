@@ -1,0 +1,45 @@
+###############################################################################
+# Bookmarks.lng (Social Bookmarks text definitions)                           #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomibookmarkslngver = 'YaBB 2.7.00 $Revision$';
+@suomibookmarkslngmods = ();
+if(@suomibookmarkslngmods){
+    $suomibookmarkslngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%bookmark_txt = (
+'01' => 'Kuva',
+'02' => 'Otsikko',
+'03' => 'Järjestys',
+'05' => 'Oletko varma, että haluat poistaa tämän kirjanmerkin?',
+'08' => 'Tällä hetkellä ei ole yhtään sosiaalista kirjanmerkkiä.',
+'09' => 'Sosiaalisten kirjanmerkkien asetukset',
+'10' => 'Ota käyttöön kirjanmerkit?',
+'11' => 'Valitse alueet, joissa kirjanmerkit näytetään:<br /><span class="small">- Jos yhtään aluetta ei ole valittuna, näytetään kaikkilla alueilla.<br />- Käytä Ctrl-, Shift- tai Apple-näppäintä valitaksesi/poistaaksesi valinnan alueilta.</span>',
+'12' => 'Sosiaaliset kirjanmerkit',
+'13' => 'Lisää uusi kirjanmerkki',
+'14' => 'URL',
+'15' => 'Lisää kirjanmerkki',
+'16' => 'Muokkaa kirjanmerkkiä',
+'17' => 'Peruuta',
+'18' => '- Tämä on kirjanmerkkisivuston otsikko.',
+'19' => '- Sallitut tiedostotyypit: png jpg jpeg gif<br />- Suurin tiedostokoko: 250kt',
+'20' => '- Tämä on kirjanmerkkisivuston linkki.<br />- Käytä {url} sivun URL:n kohdalla ja {title} sivun otsikon kohdalla.',
+'21' => '- Tämä on järjestys, jossa kirjanmerkit näytetään.<br />- Pienemmät numerot näytetään ensin.',
+'22' => 'Aiheen maksimipituus',
+);
+
+1;
+ 

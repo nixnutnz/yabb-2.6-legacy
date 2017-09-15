@@ -1,0 +1,54 @@
+###############################################################################
+# SendTopic.lng (SendTopic text definitions)                                  #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomisendtopiclngver = 'YaBB 2.7.00 $Revision$';
+@suomisendtopiclngmods = ();
+if(@suomisendtopiclngmods){
+    $suomisendtopiclngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%sendtopic_txt = (
+'118' => 'Aihe',
+'241' => '-kentässä.',
+'318' => 'Lähettäjä',
+'335' => 'Nimesi',
+'336' => 'Sähköpostiosoitteesi',
+'339' => 'Lähetä',
+'707' => 'Lähetä aihe',
+'708' => 'kaverillesi!',
+'717' => 'Vastaanottajan nimi',
+'718' => 'Vastaanottajan sähköpostiosoite',
+'error_sender_name' => 'Sinun täytyy kirjoittaa nimesi.',
+'error_sender_email' => 'Sinun täytyy kirjoittaa sähköpostiosoitteesi.',
+'error_recipient_name' => 'Sinun täytyy kirjoittaa vastaanottajan nimi.',
+'error_recipient_email' => 'Sinun täytyy kirjoittaa vastaanottajan sähköpostiosoite.',
+'error_verification' => 'Tarkistuskoodi puuttuu.', 
+'verification_question_desc' => 'Ole hyvä ja vastaa ylläolevaan tarkistuskysymykseen.',
+'verification_question_case' => 'Vastauksissa kirjainkoolla on merkitystä.',
+'error_verification_question' => 'Sinun täytyy vastata tarkistuskysymykseen.',
+);
+
+%floodtxt = (
+'1' => 'varmistuskoodisi on',
+'3' => 'Varmistuskoodi',
+'casewarning' => 'Kirjoita teksti täsmälleen samoin kuin se kuvassa näkyy. Isoilla ja pienillä kirjaimilla on merkitystä.',
+'casewarning_1' => 'Ole hyvä ja kirjoita merkit niin kuin ne näkyvät kuvassa,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">ilman ensimmäistä',
+'casewarning_3' => '<br /><span style="font-weight: bold;">ilman viimeistä',
+'casewarning_4' => 'ja viimeistä',
+'casewarning_5' => 'merkkiä.</span><br />Merkit täytyy kirjoittaa samassa järjestyksessä,<br />ja kirjainkoolla on merkitystä.',
+);
+
+1;
