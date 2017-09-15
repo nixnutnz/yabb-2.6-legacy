@@ -1,0 +1,46 @@
+###############################################################################
+# HelpCentre.lng (Language Strings for the Help Centre                        #
+###############################################################################
+# German_Informal - Translation by Pyragony                                   #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (info@anti-scam.de)                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Packaged:     11. September 2017                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$german_informalhelpcentrelngver = 'YaBB 2.7.00 $Revision: 1874 $';
+@german_informalhelpcentrelngmods = ();
+if(@german_informalhelpcentrelngmods){
+    $german_informalhelpcentrelngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%helptxt = (
+'1' => q~Hilfebereich~,
+'2' => q~Inhalte~,
+'3' => q~Hilfe für Benutzer~,
+'4' => q~Hilfe für Moderatoren~,
+'5' => q~Hilfe für Global-Moderatoren~,
+'6' => q~Hilfe für den Administrator~,
+'7' => q~Hilfecenter bearbeiten~,
+'7c' => q~Wähle die Sprache für das Hilfe-Center~,
+'7d' => q~Editiere Hilfe-Centereinträge~,
+'8' => q~erledigt.~,
+'9' => q~Hilfe benutzerspezifisch anzeigen (Benutzergruppe beachten)~,
+'10' => q~Hier kannst Du die Hilfedateien verwalten, die Deinen Benutzern unter dem Menüpunkt Hilfe angezeigt werden. In den Feldern auf der linken Seite siehst Du die verfügbaren Hilfebereiche. Du kannst sie markieren und bearbeiten, oder zu den Feldern auf der rechten Seite hinzufügen, indem Du sie markierst und auf den Pfeil klickst. Sie werden dann im Hilfebereich sichtbar.~,
+'643' => q~Zurück zum Anfang~,
+'769' => q~Flashlocation~,
+'7a' => q~     Bereichstitel~,
+'7b' => q~Unterbereichstitel~,
+);
+
+1;

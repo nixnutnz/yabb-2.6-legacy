@@ -1,0 +1,50 @@
+###############################################################################
+# Bookmarks.lng (Social Bookmarks text definitions)                           #
+###############################################################################
+# German_Informal - Translation by Pyragony                                   #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (info@anti-scam.de)                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Packaged:     11. September 2017                                            #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$german_informalbookmarkslngver = 'YaBB 2.7.00 $Revision: 1874 $';
+@german_informalbookmarkslngmods = ();
+if(@german_informalbookmarkslngmods){
+    $german_informalbookmarkslngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%bookmark_txt = (
+'01' => q~Bild~,
+'02' => q~Titel~,
+'03' => q~Reihenfolge~,
+'05' => q~Bist Du sicher, dass Du dieses Bookmark löschen willst?~,
+'08' => q~Es liegen noch keine Social Bookmarks vor.~,
+'09' => q~Social-Bookmark-Einstellungen~,
+'10' => q~Bookmarks einschalten?~,
+'11' => q~Wähle die Foren, wo die Bookmarks in gezeigt werden sollen:<br /><span class="small">- Wird kein Forum ausgewählt, sind alle Foren eingeschaltet.<br />- Wähle Ctrl, Shift oder Apple Key zum aktivieren/deaktivieren der Foren.</span>~,
+'12' => q~Social-Bookmarks~,
+'13' => q~Editiere einen neuen Bookmark~,
+'14' => q~URL~,
+'15' => q~Neuer Bookmark~,
+'16' => q~Editiere Bookmark~,
+'17' => q~Abbruch~,
+'18' => q~- Das ist der Titel der Bookmark-Seite~,
+'19' => q~- Erlaubte Dateitypen: png jpg jpeg gif<br />- Max. Dateigrösse: 250KB~,
+'20' => q~- Das ist der Link zur Bookmark-Seite<br />- Verwenden Sie {url} URL für die Seite und {title} für den Seitentitel.~,
+'21' => q~- Dies ist die Reihenfolge, wie die Bookmarks angezeigt werden<br />- Niedrigere Nummern werden zuerst angezeigt.~,
+'22' => q~Maximale Zeichen im Betreff~,
+);
+
+1;
+ 
