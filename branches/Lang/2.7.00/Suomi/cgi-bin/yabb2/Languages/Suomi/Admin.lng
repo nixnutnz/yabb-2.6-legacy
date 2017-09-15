@@ -1607,7 +1607,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '10' => 'Vanhat varmuuskopiot poistettu',
 '10a' => q~Language Conversion Back-up files deleted~,
 'conv' => 'Muuntaaksesi 1x- tai 2x-tiedostot 2.6.11-muotoon',
-'conv2' => qq~<b><a href="$boardurl/Setup.pl">Siirry Setup/Convert</a></b>~,
+'conv2' => qq~<b><a href="$boardurl/Setup.pl?lang="Suomi">Siirry Setup/Convert</a></b>~,
 );
 
 $yycopyright = qq~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb scripturl}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">!<br />\n<a href="http://www.yabbforum.com">YaBB</a> &copy; 2000-{yabb year}. Kaikki oikeudet pidätetään.</span>~;

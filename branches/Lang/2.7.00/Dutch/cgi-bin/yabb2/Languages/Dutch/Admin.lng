@@ -1605,7 +1605,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '9' => q~Oude Back-up bestanden, setup, en converteerprogramma's verwijderen~,
 '10' => q~Oude Back-up bestanden verwijderd~,
 'conv' => q~Converteer 1x of 2x bestanden naar 2.6.11~,
-'conv2' => qq~<b><a href="$boardurl/Setup.pl">Ga naar Setup/Converteer</a></b>~,
+'conv2' => qq~<b><a href="$boardurl/Setup.pl?lang=Dutch">Ga naar Setup/Converteer</a></b>~,
 '7a' => q~Language Encoding Converter Back-up files~,
 '8a' => q~When you have confirmed that the Language encoding has converted correctly, you can the delete the ConvertLang folders.~,
 '9a' => q~Delete Language Conversion Back-up files~,

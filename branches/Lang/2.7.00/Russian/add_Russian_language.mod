@@ -13,6 +13,7 @@ Version History
 ---------------
 0.2 - First release - March 18, 2016
 0.3 - Updated - Aug 11, 2017
+0.4 - Convert.lng added - Sep 15, 2017
 
 Instructions:
 
@@ -36,9 +37,25 @@ Admin/ModList.pm
 </search for>
 
 <add before>
-    my $add_russian = q~Add Russian Language for YaBB 2.7.00|Dandello|This mod adds the Russian Language Pack.|0.3|08/11/2017~;
+    my $add_russian = q~Add Russian Language for YaBB 2.7.00|Dandello|This mod adds the Russian Language Pack.|0.4|09/15/2017~;
     push @installed_mods, $add_russian;
 </add before>
+
+<search for>
+if (@adminpmmods) {
+</search for>
+
+<add before>
+push @adminpmmods, 'Russian Lang';
+</add before>
+
+<search for>
+    if ( -e './Languages/English/Convert.lng' )  { unlink './Languages/English/Convert.lng'; }
+</search for>
+
+<add after>
+    if ( -e './Languages/Russian/Convert.lng' )  { unlink './Languages/Russian/Convert.lng'; }
+</add after>
 
 <edit file>
 Admin/YaBMod.pm

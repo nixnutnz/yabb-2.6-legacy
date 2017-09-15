@@ -1610,7 +1610,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '10' => q~Alte Backup-Dateien gelöscht~,
 '10a' => q~Language Conversion Back-up files deleted~,
 'conv' => q~Um 1x oder 2x Dateien zu konvertieren nach 2.7.00~,
-'conv2' => qq~<strong><a href="$boardurl/Setup.pl?set=1">Gehen Sie zu Setup/Convert</a></strong>~,
+'conv2' => qq~<strong><a href="$boardurl/Setup.pl?lang=German">Gehen Sie zu Setup/Convert</a></strong>~,
 );
 
 $yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.</span>~;
