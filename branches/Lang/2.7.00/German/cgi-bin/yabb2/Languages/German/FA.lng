@@ -144,6 +144,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '80a' => q~Mehr Dateianhänge~,
 '80s' => q~Weniger Dateianhänge~,
 '81' => q~Datei entfernen~,
+'actf' => q~Files in Attachments folder~,
+'acts' => q~Total Size in Attachments folder~,
+'larg' => q~Largest File: ~,
+'old' => q~Oldest File: ~,
+'pactf' => q~Files in PMAttachments folder~,
+'pacts' => q~Total Size in PMAttachments folder~,
 );
 
 1;

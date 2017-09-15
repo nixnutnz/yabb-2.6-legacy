@@ -240,10 +240,6 @@ $abbr_lang = 'de-de';
 '374' => q~Maximale Anzahl der Themen pro Seite in der Themenübersicht~,
 '375' => q~Maximale Anzahl der Beiträge pro Seite eines Themas~,
 '376' => q~Anzahl Tage, nachdem Nachrichten in der Board- und Themenübersicht NICHT mehr als "neu" angesehen werden.~,
-'377' => q~Rechtschreibprüfung aktivieren?<br /><span class="small">Die Rechtschreibprüfung beruht auf der Anwendung einer externen Google-Webseite (GoogieSpell). Berücksichtigen Sie daher, Ihre Firewall und Content-Blocker-Einstellungen bei der Verwendung dieser Funktion.</span><br /><b><u>Lizenz:</u></b><br />Die Scripte im Verzeichnis /yabbfiles/googiespell haben eine sog. duale Lizenz. Eine Lizenz bezieht sich auf die Nutzung in Verbindung mit freier Software ("Open Source") und die andere auf die Nutzung in Verbindung mit geschützter Software.<br />Die freie Lizenz basiert auf <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank"">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 license</a>. Mit dieser Lizenzart kann die Rechtschreibprüfung (GoogieSpell) mit/in freier Software verwendet werden (d.h. Software deren Sourcen veröffentlicht sind). Sie können die Rechtschreibprüfung (GoogieSpell) nicht mit geschützter Software verwenden, auch dann nicht, wenn Sie Ihre Software nicht vertreiben.<br />Weitere Details finden Sie auf <a href="http://orangoo.com/labs/GoogieSpell/Buy_License/" target="_blank">orangoo.com/labs/GoogieSpell/Buy_License/</a>.~,
-'377a' => q~Wenn Sie diese Nachricht sehen, sind die erforderlichen Module zur Nutzung der Rechtschreibprüfung auf Ihrem Server <b>nicht</b> installiert.<br />Falls eine Fehlermeldung wie "Can\'t locate ..." erscheint, dann sind die erforderlichen Module auf Ihrem Server <b>nicht</b> installiert.<br /><br />~,
-'377b' => q~Installiert~,
-'377c' => q~<br />Wenn Sie die Rechtschreibprüfung nutzen möchten ist es erforderlich, dass die nachfolgenden Module auf Ihrem Server installiert sind. Fragen Sie Ihren Internet-Service-Provider (ISP), ob er die Installation ggf. für Sie vornehmen kann.<br />Bitte installiere:<br />- Bundle::LWP (für LWP::UserAgent und HTTP::Request::Common)<br />- Crypt::SSLeay~,
 '378' => q~YaBBC-Tags erlauben? (bulletin board code)~,
 '378a' => q~Zitate in Zitaten erlauben?~,
 '379' => q~News aktivieren?~,
@@ -739,14 +735,6 @@ Danke für die Benutzung von YaBB!~,
 '4' => q~Was ist neu bei YaBB?~,
 '5' => q~Letzte Logins:~,
 '6' => q~Ehre, wem Ehre gebührt:~,
-'7' => q~Setup und Konverter-Backup-Dateien~,
-'7a' => q~Language Encoding Converter Back-up files~,
-'8' => q~Wenn Sie Ihr Forum getestet haben und sicher sind, dass alles korrekt konvertiert ist, dann können Sie die alten YaBB-Backup-Dateien im Convert-Ordner löschen, falls es existiert. (Dies löscht auch die Konvertierungsprogramme, damit sie nicht erneut ausgeführt werden.)~,
-'8a' => q~When you have confirmed that the Language encoding has converted correctly, you can the delete the ConvertLang folders.~,
-'9' => q~Alte Backup-Dateien, Setup und Konvertierungsdienstprogramme löschen?~,
-'9a' => q~Delete Language Conversion Back-up files~,
-'10' => q~Alte Backup-Dateien gelöscht~,
-'10a' => q~Language Conversion Back-up files deleted~,
 '11' => q~Detaillierter Versionscheck~,
 '15' => q~Zurück zum~,
 '17' => q~Mitglieder anzeigen/löschen~,
@@ -900,8 +888,6 @@ Danke für die Benutzung von YaBB!~,
 
 'a9_title' => q~BoardMod-Mods~,
 'a9_label' => q~BoardMod-Mods-Sektion~,
-'conv' => q~Um 1x oder 2x Dateien zu konvertieren nach 2.7.00~,
-'conv2' => qq~<strong><a href="$boardurl/Setup.pl?set=1">Gehen Sie zu Setup/Convert</a></strong>~,
 'bookmarks' => q~Social-Bookmarks~, # Social Bookmarks
 'bookmarks1' => q~Social-Bookmark-Einstellungen~, # Social Bookmarks
 );
@@ -1428,9 +1414,6 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Archive::Tar' => q~Genutzt für die Backup-Funktion in Verbindung mit der Komprimierung des HTML-Code der von YaBB and den Browser gesendet wird.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (schauen Sie auf die Seite der Backup Funktion für weitere Details) und Sie eine "Use GZip-Compression?" möchten.~,
 'Archive::Zip' => q~Genutzt für die Backup-Funktion in Verbindung mit der Komprimierung des HTML-Code der von YaBB and den Browser gesendet wird.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (schauen Sie auf die Seite der Backup Funktion für weitere Details) und Sie eine "Use GZip-Compression?" möchten.~,
 'MIME::Lite' => q~Genutzt zum Versenden von Backups per eMail.<br />Dieses Modul ist nur erforderlich, wenn Sie ein Backup per eMail erhalten möchten und nicht den direkten Download über den Admin-Center wollen.~,
-'LWP::UserAgent' => q~Genutzt von "GoogieSpell", Ihrem Rechtschreibprüfprogram.<br />Ist dieses Modul nicht installiert, können Sie das Rechtsschreibprüfprogram nicht aktivieren.~,
-'HTTP::Request::Common' => q~Genutzt von "GoogieSpell", Ihrem Rechtschreibprüfprogram.<br />Ist dieses Modul nicht installiert, können Sie das Rechtsschreibprüfprogram nicht aktivieren.~,
-'Crypt::SSLeay' => q~Genutzt von "GoogieSpell", Ihrem Rechtschreibprüfprogram.<br />Ist dieses Modul nicht installiert, können Sie das Rechtsschreibprüfprogram nicht aktivieren.~,
 'IO::Socket::INET' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
 'Digest::HMAC_MD5' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
 'Carp' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
@@ -1615,6 +1598,19 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 %load_txt = (
 '616a' => q~Denken Sie daran, dieses Forum ist im <a href="{yabb adminurl}?action=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
 '617' => q~Denken Sie daran, letzte Sicherung wurde durchgeführt am:~,
+);
+
+%setup = (
+'7' => q~Setup und Konverter-Backup-Dateien~,
+'7a' => q~Language Encoding Converter Back-up files~,
+'8' => q~Wenn Sie Ihr Forum getestet haben und sicher sind, dass alles korrekt konvertiert ist, dann können Sie die alten YaBB-Backup-Dateien im Convert-Ordner löschen, falls es existiert. (Dies löscht auch die Konvertierungsprogramme, damit sie nicht erneut ausgeführt werden.)~,
+'8a' => q~When you have confirmed that the Language encoding has converted correctly, you can the delete the ConvertLang folders.~,
+'9' => q~Alte Backup-Dateien, Setup und Konvertierungsdienstprogramme löschen?~,
+'9a' => q~Delete Language Conversion Back-up files~,
+'10' => q~Alte Backup-Dateien gelöscht~,
+'10a' => q~Language Conversion Back-up files deleted~,
+'conv' => q~Um 1x oder 2x Dateien zu konvertieren nach 2.7.00~,
+'conv2' => qq~<strong><a href="$boardurl/Setup.pl?set=1">Gehen Sie zu Setup/Convert</a></strong>~,
 );
 
 $yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.</span>~;

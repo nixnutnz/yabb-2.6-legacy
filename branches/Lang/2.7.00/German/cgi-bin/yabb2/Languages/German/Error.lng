@@ -28,6 +28,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_occurred'       => q~Ein Fehler ist aufgetreten!~,
 'untrapped'            => q~Nicht abgefangene Fehler~,
 'cannot_open'          => q~Kann nicht geöffnet werden:~,
+'bad_data'             => q~File with bad data~,
 'cannot_open_dir'      => q~Ordner kann nicht geöffnet werden~,
 'cannot_open_language' => q~Benötigte Sprachdatei konnte nicht gefunden werden. Bitte informieren Sie den Webmaster über dieses Problem.~,
 'cannot_delete'        => q~Kann nicht gelöscht werden~,
