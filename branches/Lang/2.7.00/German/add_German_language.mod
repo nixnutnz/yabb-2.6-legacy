@@ -45,11 +45,11 @@ Admin/Admin.pm
 </edit file>
 
 <search for>
-if (@germanadminlngmods) {
+if (@adminpmmods) {
 </search for>
 
 <add before>
-push @germanadminlngmods, 'German Informal Lang';
+push @adminpmmods, 'German Lang';
 </add before>
 
 <search for>
