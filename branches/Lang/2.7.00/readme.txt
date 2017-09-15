@@ -3,4 +3,4 @@ The language items in this section are for translation and test purposes only. M
 
 Yabb 2.7.00 is in UTF-8 only. Other encodings will cause the language files to fail.
 
-To install a language pack for testing, you must upload the folder and files for the language into the Languages folder of your YaBB 2.7.00 forum. You must also run the associated mod file to the new language pack withh be recognized.
+To install a language pack for testing, you must upload the folder and files for the language into the Languages folder of your YaBB 2.7.00 forum. You must also run the associated mod file so the new language pack will be recognized. (Or use the YabMod utility to install the Language pack for you from the zip file.
