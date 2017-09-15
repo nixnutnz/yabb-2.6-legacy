@@ -1,0 +1,97 @@
+###############################################################################
+# Search.lng (Search text definitions)                                        #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germansearchlngver = 'YaBB 2.7.00 $Revision$';
+@germansearchlngmods = ();
+if (@germansearchlngmods) {
+    $germansearchlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%search_txt = (
+'1' => q~Beiträge aus der/dem/den letzten...~,
+'2' => q~Woche~,
+'3' => q~Monat~,
+'4' => q~3 Monaten~,
+'5' => q~Jahr~,
+'6' => q~(Alle Beiträge)~,
+'30' => q~am~,
+'70' => q~Betreff~,
+'72' => q~Nachricht~,
+'73' => q~IP-Adresse~,
+'105' => q~Beitrag~,
+'107' => q~um~,
+'109' => q~Begonnen von~,
+'166' => q~Suchergebnisse~,
+'167' => q~Ende der Ergebnisse~,
+'170' => q~Leider keine Treffer.~,
+'171' => q~Zurück zur Suchmaske.~,
+'182' => q~Suchen~,
+'183' => q~Suchparameter festlegen~,
+'186' => q~Suche in Themen, die von diesem Mitglied begonnen wurden~,
+'187' => q~Suche nach Beirägen, die von diesem Mitglied geschrieben wurden~,
+'189' => q~In folgenden Foren suchen~,
+'190' => q~ Bitte halten Sie die [STRG]- oder Umschalttaste gedrückt, um mehrere zu selektieren.~,
+'191' => q~Wieviele Ergebnisse anzeigen?~,
+'191a' => q~Nur ein Ergebnis pro Thema zeigen?~,
+'191b' => q~Maximal erlaubte Ergebnisse: {yabb maxsearchdisplay}~,
+'191x' => q~Es ist Ihnen erlaubt, maximal {yabb maxsearchdisplay} Resulate anzeigen zu lassen. Bitte ändern Sie Ihre Werte.~,
+'236' => q~Zurück~,
+'237' => q~zum Forenindex.~,
+'343' => q~Übereinstimmung aller Wörter~,
+'344' => q~Übereinstimmung eines Wortes~,
+'345' => q~Übereinstimmung als Phrase~,
+'345a' => q~Übereinstimmung als Wortteil~,
+'346' => q~Suche nach Beiträgen von allen Mitgliedern~,
+'525' => q~von~,
+'572' => q~Suche nach Beiträgen von Gästen~,
+'573' => q~Folgende Felder in die Suche einbeziehen~,
+'574' => q~Zeit seit dem letzten Beitrag~,
+'575' => q~Min.~,
+'576' => q~Max.~,
+'577' => q~Irgendeinem Autor~,
+'578' => q~Stunden~,
+'579' => q~Tage~,
+'582' => q~Suche nach~,
+'583' => q~Von Mitglied~,
+'737' => q~Alle auswählen~,
+'pmfrom' => q~Von~,
+'pmto' => q~An~,
+'pmcc' => q~CC~,
+'pmbcc' => q~BCC~,
+'pmgroup' => q~Gruppe~,
+'searchme' => q~Eigene Beiträge suchen~,
+'casesensitiv' => q~Gross-/Kleinschreibung~,
+'searchyabbtags' => q~Auch in den YaBBCode-tags suchen <span class="small">(in den eckigen Klammern wie diesen [...]. Braucht viel Zeit.)</span>~,
+);
+
+%pmboxes_txt = (
+'in' => q~Eingang~,
+'inbox' => q~Posteingang~,
+'out' => q~Ausgang~,
+'outbox' => q~Gesendete Nachrichten~,
+'store' => q~Archiv~,
+);
+
+%searchselector_txt = (
+'select' => q~Auswählen~,
+'remove' => q~Entfernen~,
+'removeconfirm' => q~Sind Sie sicher, dass Sie den Mitgliedsnamen entfernen wollen?~,
+);
+
+1;

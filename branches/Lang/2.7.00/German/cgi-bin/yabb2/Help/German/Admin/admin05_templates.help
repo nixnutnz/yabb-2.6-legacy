@@ -1,0 +1,28 @@
+﻿$germanadmin_admin05_templateshelpver = 'YaBB 2.7.00 $Revision$';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Templates_verwalten";
+
+### Section 1
+#############################################
+$section_sub1 = "Zugriff_auf_den_Template_Editor";
+$section_body1 = qq~<p>YaBB gibt Ihnen die Möglichkeit, schnell und einfach durch hinzufügen/ändern das Aussehen und das Gefühl von Ihrem Forum anzupassen. Um auf diese Funktion zuzugreifen, müssen Sie sich als Administrator oder Global-Moderator mit den korrekten Zugriffsrechten anmelden. Im Admin Center finden Sie den Abschnitt in der linken Menüleiste unter dem Titel „Forum Layout“. Es sind drei Links zu sehen: „Template-Konfiguration“,“Style Sheet“ und Template.</p>
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$section_sub2 = "Template_Konfiguration";
+$section_body2 = qq~Wenn Sie ein anderes Template (auch als Skin bekannt), für Ihr Forum nutzen möchten, können Sie das unter der Rubrik „Style Sheet“ hinzufügen. Das „default“ Template können Sie nicht ändern.
+<p><b>Hinzufügen eines neuen Skin´s</b></p>
+<ul>
+    <li>Erstellen Sie einen Ordner in "yabbfiles/Templates/Forum" (diese Position kann unterschiedlich sein) für die Grafiken Ihres neuen Skin´s und uploaden Sie Ihre Grafik. Uploaden Sie auch Ihren neuen Style-Sheet an die gleiche Stelle, an der sich Ihr „default“-Style-Sheet (default.css) befindet (Sie sollten <b>nicht</b> ihr Standard Style-Sheet überschreiben). Ihr neuer Style-Sheet sollte einen Namen bekommen, der leicht Ihrer Grafik zugeordnet werden kann.
+Beispiel: Sie möchten einen Skin mit dem Namen „noir“ verwenden, dann benennen Sie den Grafikordner „noir“ und den Style-Sheet „noir.css“.</li>
+    <li>Erstellen Sie einen Ordner im Verzeichnis "Templates" (zu finden in der cgi-bin) für die neue Template-Datei. Stellen Sie sicher, dass der Name ist etwas, welches Sie leicht mit Ihrem neuen Skin verknüpfen können. Lade Deine neue Template-Datei in dieses Verzeichnis. Die *.html-Datei darf <b>nicht</b> den gleichen Namen haben wie die „default.html“. Geben Sie ihr den gleichen Namen wie den Namen Ihres neuen Ordners. Mit Hilfe des oben genannten Beispiels, benennen Sie den Ordner 'noir' und die „*.html“-Datei „noir.html“.</li>
+    <li>In der Template-Konfiguration sollte jetzt im Dropdown-Auswahlfeld der neue Name (noir) von Style-Sheet und Ordner stehen. Wählen Sie den neuen Ordner, das Template und den neuen Style-Sheet für Ihren neuen Skin. Erstellen Sie einen neuen Namen für Ihren neuen Skin (in unserem Fallbeispiel „noir“) und speichern Sie diesen Skin. Jetzt können Sie Ihre neue Grafik als Standard für neue Mitglieder und Gäste in der Forum-Einstellung wählen.</li>
+</ul>
+~;
+#############################################
+
+
+1;

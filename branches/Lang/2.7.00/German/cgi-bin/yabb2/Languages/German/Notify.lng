@@ -1,0 +1,62 @@
+###############################################################################
+# Notify.lng (Notify text definitions)                                        #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germannotifylngver = 'YaBB 2.7.00 $Revision$';
+@germannotifylngmods = ();
+if (@germannotifylngmods) {
+    $germannotifylngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%notify_txt = (
+'118' => q~Themenbenachrichtigung~,
+'119' => q~Sie haben für kein Thema eine Benachrichtigungsmail bestellt.~,
+'120' => q~von~,
+'121' => q~Zurücksetzen~,
+'122' => q~Sie werden benachrichtigt, wenn es Antworten auf die folgenden Beiträge gibt~,
+'123' => q~Aktivieren Sie das Kontrollkästchen, um die Benachrichtigung im Thema zu <strong><em>deaktivieren</em></strong>.~,
+'124' => q~Benachrichtigungen ändern~,
+'125' => q~Benachrichtigung~,
+'126' => q~Wünschen Sie eine Benachrichtigung, wenn jemand in diesem Forum antwortet?~,
+'127' => q~Thema wurde beantwortet~,
+'132' => q~Nur neue Themen~,
+'133' => q~Alle neuen Beiträge~,
+'134' => q~Löschen~,
+'135' => q~Im Forum:~,
+'136' => q~Forenbenachrichtigung~,
+'137' => q~Möchten Sie die Benachrichtigungsart für dieses Forum ändern oder löschen?~,
+'138' => q~Benachrichtigungsart ändern~,
+'139' => q~Sie haben für kein Forum eine Benachrichtigungsmail bestellt.~,
+'140' => q~Thema~,
+'144' => q~Alle auswählen~,
+'145' => q~Neue Privatnachricht von~,
+'200' => q~Sie haben~,
+'201' => q~neue~,
+'202' => q~und~,
+'203' => q~Möchten Sie Ihre Benachrichtigungen jetzt ansehen?~,
+'205' => q~Forenbenachrichtigungen~,
+'206' => q~Themenbenachrichtigungen~,
+'333' => q~Neue Beiträge~,
+'334' => q~Keine neuen Beiträge~,
+'335' => q~Neu~,
+'lastpost' => q~letzter Beitrag~,
+'lft' => qq~&lsaquo;~,
+'rgt' => qq~&rsaquo;~,
+);
+
+1;

@@ -1,0 +1,92 @@
+﻿$germanadmin_admin04_securityhelpver = 'YaBB 2.7.00 $Revision$';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Sicherheit";
+
+### Section 1
+#############################################
+$section_sub1 = "Sicherheit_Intro";
+$section_body1 = qq~YaBB ist gegen Hacker und andere Eindringlinge jeglicher Art sehr gut geschützt. Aufgrund der vielen integrierten Features besteht ein hoher Schutz für Ihr Forum. Nehmen Sie zur Kenntnis, dass viele der Sicherheitsfunktionen auswählbar sind. Wenn Sie sie nicht aktivieren, kann dies ein erhöhtes Sicherheitsrisiko darstellen. Beispiele dafür sind unter anderem, wenn Sie die Validierung (Captcha) Grafik für die Registrierung nicht nutzt oder es Gästen erlaubt wird Beiträge zu schreiben ohne das sie den Sicherheitscode der Validierung (Captcha) Grafik eintragen müssen.
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$section_sub2 = "Sessions";
+$section_body2 = qq~YaBB verfügt über eine Funktion, mit der die Durchführung administrativer Aufgaben geschützt wird. Diese Funktion wird <b>Sessions</b> genannt. Wenn diese Funktion aktiviert ist, werden Administratoren aufgefordert, sich zu verifizieren, falls Sie mit einer geänderten IP-Adresse in das Board kommen.
+<p>Um die Session erneut zu bestätigen (sich zu verifizieren), muss der Button &quot;Update Session&quot; angeklickt werden. Wenn dieser Button nicht präsent ist, ist keine Bestätigung erforderlich.</p>
+<p>Standardmäßig wird gefordert, durch Eingabe des Passwortes sich zu authentifizieren. Sie können das jedoch in Ihrem Profil, unter &quot;Profil bearbeiten&quot;, im unteren Bereich der Liste der Einstellungen ändern.</p>
+<p>Um zu prüfen, ob die Funktion &quot;Sessions&quot; eingeschaltet ist, gehen Sie bitte in das Admin Center und schauen Sie unter &quot;Sicherheitscenter&#47;Sicherheit Einstellungen&quot; nach, ob der Haken in der Checkbox bei &quot;Session ID's aktivieren&quot; gesetzt ist. Die Funktion ist aktiv, wenn die Checkbox markiert ist.</p>
+~;
+#############################################
+
+
+### Section 3
+#############################################
+$section_sub3 = "Geist_Modus";
+$section_body3 = qq~<b>Geist Modus</b> ist eine YaBB Funktion die entwickelt wurde, um Administratoren und Global Moderatoren die Fähigkeit zu verleihen, den Betrieb innerhalb des Forum für andere unsichtbar und diskret zu überwachen. Ist diese Option aktiviert ist, wird der &quot;Online&quot; Status für Administratoren und Global Moderatoren vor allen Mitgliedergruppen und Gästen verborgen.
+<p>Diese Option wird aktiviert, indem Sie die entsprechende Checkbox &quot;Geist-Modus für Administratoren / Global Moderatoren aktivieren?&quot; im Admin Center unter Forum Konfiguration - Tab &quot;Forum Personal&quot; markieren.</p>
+~;
+#############################################
+
+
+### Section 4
+#############################################
+$section_sub4 = "Benutzer_IDs_verschluesseln";
+$section_body4 = qq~Diese Funktion wurde entwickelt, um die Sicherheit zu erhöhen und gibt Administratoren die Auswahlmöglichkeit den Benutzer <span class="under">Login</span> Namen zum Link seines Profil zu verbergen. Das ist der Link der beim Überfahren mit der Maus auf den <span class="under">angezeigten</span> Namen des Benutzers, egal an welcher Stelle im Forum, angezeigt wird.
+<ul><li><span class="under"><b>Option deaktiviert:</b></span> Ist die Option deaktiviert, endet der Link in der Form: &quot;username=(Benutzername)&quot;</li>
+<li><span class="under"><b>Option aktiviert:</b></span> Ist die Option aktiviert, endet der Link in der Form: &quot;username=(Verschlüsselte ID)&quot;</li></ul>
+<p>Diese Funktion ist standardmäßig aktiviert. Sie können diese Funktion deaktivieren indem Sie die Checkbox &quot;Benutzer ID verschlüsseln&quot; demarkieren, die Sie im Admin Center unter dem Menüpunkt Sicherheitscenter/Sicherheit Einstellungen finden.</p>
+~;
+#############################################
+
+
+### Section 5
+#############################################
+$section_sub5 = "Administrative_Funktionen";
+$section_body5 = qq~Der Adminstrator kann auswählen, welche adminsitrativen Rechte ein Globaler Moderator erhält. Er kann das Admin Center komplett sperren, oder auch Teile darin erlauben. Das beinhaltet z.B. auch das Bearbeiten von Mitglieder-Profilen, das Anlegen und Löschen von Mitgliedern oder das Bearbeiten der Foren Neuigkeiten. Auch Einstellungen für die Forum-Sicherheit können erlaubt werden sowie vieles mehr.
+<p>Ein Gespräch mit dem künftigen Global Moderator ist der beste Weg um ihm aufzuzeigen, welche Funktionen für ihn erlaubt sind.</p>
+<p>Wenn Sie es dem Global Moderator ermöglicht haben, das Admin Center aufzurufen, werden ihm verschiedenen Menüs auf der linken Seite dargestellt, was er (unter Umständen) kontrollieren kann.</p>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Der Zugriff auf manche Seiten erweckt für Global Moderatoren den Anschein, dass <b><i>sie eine entsprechende Berechtigung haben könnten eine Funktion auszuführen</i></b>. Zum Beispiel haben Sie es ihnen erlaubt, Mitglieder anzulegen und Ihre Profile anzusehen, aber <span class="under">nicht</span>, diese zu LÖSCHEN. Den Global Moderatoren wird dennoch die Möglichkeit angezeigt, das Mitglied zu löschen. Wenn sie den entsprechenden Button ohne die entsprechende Berechtigung anklicken, werden sie jedoch eine Fehlermeldung erhalten. Das ist KEIN Fehler im Board, Sie haben ihnen einfach nicht das entsprechende Recht eingeräumt.</font></p>
+~;
+#############################################
+
+
+### Section 6
+#############################################
+$section_sub6 = "Kontrolle_von_Fremdseitenzugriffen_aktivieren";
+$section_body6 = qq~Die Funktion wurde entwickelt, um die Sicherheit zu erhöhen und gibt Administratoren die Möglichkeit zu bestimmen, welche Aktionen in einer Url erlaubt sind, die außerhalb des Forum Domainnamen liegt. Wenn diese Funktion aktiviert ist, ist es dem Administrator erlaubt individuelle Aktionen aus einer Liste auszuwählen, die Sie im Admin Center unter Sicherheitscenter/Referer Sicherheit finden.
+<p>Diese Option wird aktiviert, indem Sie die Checkbox &quot;Kontrolle von Fremdseitenzugriffen aktivieren?&quot; in den Grundeinstellungen des Admin Center/Sicherheitscenter/Sicherheit Einstellungen markieren.</p>
+~;
+#############################################
+
+
+### Section 7
+#############################################
+$section_sub7 = "Anzeige_der_IP_in_der_Board_Uebersicht";
+$section_body7 = qq~Diese Funktion erlaubt dem Administrator in den Bereichen &quot;Benutzer Online&quot; und im unteren rechten Bereich eines jeden Beitrag die Anzeige der Gast oder Benutzer IP.
+<p>Diese Option kann zur Nutzung durch Administratoren, Global Modertaoren oder für beide vorgewählt werden.</p> 
+<p>Diese Funktion wird durch Auswahl der entsprechenden Checkbox(en) im Admin Center/Sicherheitscenter/Sicherheit Einstellungen aktiviert.</p>
+~;
+#############################################
+
+
+### Section 8
+#############################################
+$section_sub8 = "Spam_Schutz_-_Prozent_angeben";
+$section_body8 = qq~Die Funktion wurde entwickelt um Spam zu minimieren. Durch eine Begrenzung wird festgelegt, an wieviele andere Mitglieder ein Benutzer zur gleichen Zeit eine persönliche Nachricht verschicken kann. Der Wert den Sie eintragen repräsentiert <b>die maximale <span class="under">Prozentzahl</span> der Mitglieder</b>, an die zeitgleich von ein und demselben Benutzer eine persönliche Nachrichten geschickt werden darf.
+<p>Die Option wird aktiviert, indem Sie die gewünschte Prozentanzahl in das entsprechende Eingabefeld eintragen, dass Sie im Admin Center/Forum Konfiguration/Forum Einstellungen unter dem Tab (Reiter) &quot;Persönliche Nachrichten&quot; finden.</p>
+~;
+#############################################
+
+
+### Section 9
+#############################################
+$section_sub9 = "Andere Anti-Spam-Maßnahmen";
+$section_body9 = qq~YaBB 2.5.2 hat zusätzliche Besonderheiten zur Hilfe im Kampf gegen Spamregistrierungen. Zwei dieser Besonderheiten sind Honeypot und SpamFruits, die beide vom Admin Center&#47;Sicherheitscenter&#47;Antispam Einstellungen an- und ausgeschaltet werden können. Honeypot ist ein 'passiver' Spambot Catcher, der Spambots fängt, wenn diese ein Registrationsfeld ausfüllen, das von Spambots gesehen werden kann, aber nicht von Personen, die einen Browser benutzen. SpamFruits arbeitet mit dem Erfordernis einer Mausbewegung, um ein richtiges Bild auszuwählen. Ein anderes effektives Anti-Spam Zubehör ist Anti-Spam-Frage(n), das im  Admin Center&#47;Sicherheitscenter&#47;Anti-Spam-Frage(n) gefunden wird.
+<p>Diese Option muss eingeschaltet werden und es ist dringend angeraten, dass sie Fragen, die die Eigenart des Forums beinhalten, ändern und/oder hinzufügen. Nehmen sie keine Fragen, die zu leicht über Google zu finden sind..</p>
+<p>Zur Zeit kann die forenspezifische Sprache für Honeypot nach Herunterladen der Datei 'Languages/German/honey.txt' bearbeitet werden und dann wieder hochgeladen werden. Der Text in der Honeypot Sprache sollte dem ähneln, das sie als Registrierungserfordernis haben <b>könnten</b>.</p>
+~;
+#############################################
+
+1;

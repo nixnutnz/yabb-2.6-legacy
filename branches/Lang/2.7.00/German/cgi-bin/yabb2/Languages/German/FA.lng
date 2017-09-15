@@ -1,0 +1,149 @@
+###############################################################################
+# FA.lng (File Attachment text definitions)                                   #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germanfalngver = 'YaBB 2.7.00 $Revision$';
+@germanfalngmods = ();
+if (@germanfalngmods) {
+    $germanfalngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%fatxt = (
+'1' => q~Anhang gelöscht~,
+'2' => q~Erlaubte Dateitypen:~,
+'3' => q~Max. Größe der Datei:~,
+'4' => q~Alle Typen.~,
+'5' => q~Kein Limit.~,
+'6' => q~Anhang~,
+'6a' => q~Angehängte Datei beibehalten~,
+'6b' => q~Neue Datei anhängen~,
+'6c' => q~Angehängte Datei löschen~,
+'6d' => q~Datei vorwärts~,
+'6e' => q~Datei nicht vorwärts~,
+'6f' => q~Datei beibehalten~,
+'7' => q~ACHTUNG: Wenn Sie bereits einen Dateianhang an Ihrem Beitrag hatten, müssen Sie diesen aus Sicherheitsgründen erneut anhängen.~,
+'7a' => q~ACHTUNG: Wenn Sie bereits einen Dateianhang in Ihrer Nachricht hatten, müssen Sie diesen aus Sicherheitsgründen erneut anhängen.~,
+'9' => q~Dateianhangsfunktionen~,
+'10' => q~Ordner für Anhänge~,
+'10a' => q~PN-Ordner für Anhänge~,
+'11' => q~URL für Anhänge~,
+'11a' => q~URL für PN-Anhänge~,
+'12' => q~Größenlimit für Dateianhänge:<br /><span class ="small">Setzen Sie den Wert 0 zum deaktivieren der Prüfung (nicht empfohlen) oder einen Wert in der Größe von beispielsweise 500 KB.</span>~,
+'12a' => q~Größenlimit für PN-Dateianhänge:<br /><span class ="small">Setzen Sie den Wert 0 zum deaktivieren der Prüfung (nicht empfohlen) oder einen Wert in der Größe von beispielsweise 500 KB.</span>~,
+'13' => q~Größenlimit des Verzeichnisses für Dateianhänge:<br /><span class ="small">Setzen Sie den Wert 0 zum deativieren der Prüfung (nicht empfohlen).</span>~,
+'13a' => q~Größenlimit des Verzeichnisses für PN-Dateianhänge:<br /><span class ="small">Setzen Sie den Wert 0 zum deativieren der Prüfung (nicht empfohlen).</span>~,
+'14' => q~Erlaubte Dateitypen für Anhänge (z.B.: 'jpg gif bmp')~,
+'14a' => q~Erlaubte Dateitypen für PN-Anhänge (z.B.: 'jpg gif bmp')~,
+'15' => q~Dateitypen prüfen? (ohne Prüfung werden alle Typen akzeptiert)<br /><span class ="small" style="color: red;">Es wird empfohlen, die Dateitypen Prüfung IMMER aktiviert zu haben! Wird diese Option deaktiviert, haben potenzielle Hacker die Möglichkeit, Ihr Forum durch Einschleusen von schädlichem Script Code unbrauchbar zu machen!</span>~,
+'16' => q~Angehängte Bilddateien unter dem Beitrag anzeigen?~,
+'16a' => q~Angehängte Bilddateien unter der PN anzeigen?~,
+'17' => q~<label for="allowattach">Erlaubte Anzahl von Dateianhängen in Beiträgen:<br /><span class ="small">Setzen Sie den Wert 0 zum deaktivieren von Dateianhängen.</span></label><div class ="small" style="color: red;"><label for="allowattach"><span class="under">Achtung:</span> Wenn Sie die Möglichkeit zur Verfügung stellen, viele Dateianhänge hochzuladen, kann die Ladegeschwindigkeit des Forum beeinflusst werden. Berücksichtigen Sie bei der Festlegung dieser Einstellungen auch die Werte für das Größenlimit von Dateianhängen und den zur Verfügung stehenden Speicherplatz des Verzeichnisses für Dateianhänge.</label></div>~,
+'17a' => q~Anzahl von Dateianhängen in persönlichen Nachrichten erlaubt:<br /><span class ="small">Setzen Sie den Wert 0 zum deaktivieren von PN-Anhängen.<br /><span style="color: #FF0000;">Wenn Sie die Möglichkeit zur Verfügung stellen, viele PN-Dateianhänge hochzuladen, kann die Ladegeschwindigkeit des Forum beeinflusst werden. Berücksichtigen Sie bei der Festlegung dieser Einstellungen auch die Werte für das Größenlimit von PN-Dateianhängen und den zur Verfügung stehenden Speicherplatz des Verzeichnisses für PN-Dateianhänge.</span></span>~,
+'17b' => q~Geben Sie die Mitglieder-Gruppen an, denen es erlaubt ist, PN-Anhänge hochzuladen:<br /><span class ="small">Wenn keine Mitgliedergruppe ausgewählt ist, werden alle Mitgliedergruppen aktiviert.<br />Verwenden Sie Strg oder Umschalt zum aktivieren / deaktivieren mehrerer Gruppen.</span>~,
+'18' => q~Dürfen Gäste Dateien anhängen?~,
+'19' => q~Kann nicht geöffnet werden:~,
+'20' => q~<= Dateiendung ist nicht erlaubt! Erlaubt ist nur die Verwendung folgender Dateiendungen:~,
+'20a' => q~<= Ungültiger Code in der Bild-Datei!~,
+'21' => q~Die Datei~,
+'21b' => q~ist zu groß. Die maximal erlaubte Dateigröße in KB beträgt:~,
+'22' => q~Mit dieser Datei~,
+'22b' => q~wird das erlaubte Größenlimit des Verzeichnisses für Dateianhänge überschritten.~,
+'23' => q~Kein Größenlimit für den Anhangsordner festgelegt.~,
+'23a' => q~Keine Größenlimit für den PN-Anhangsordner festgelegt.~,
+'24' => q~Dateianhänge verwalten~,
+'25' => q~Von hier aus können Sie die an Beiträgen angehängten Dateien in Ihrem YaBB verwalten. Sie können nach Größe oder Datum von Ihrem System gelöscht werden. Eine Statistik der Anhänge ist ebenfalls vorhanden.~,
+'26' => q~Statistik der Anhänge~,
+'27' => q~Übersicht~,
+'28' => q~Anhänge insgesamt:~,
+'28a' => q~PN-Anhänge insgesamt:~,
+'29' => q~Größe des Anhangsordners insgesamt:~,
+'29a' => q~Größe des PN-Anhangsordners insgesamt:~,
+'30' => q~Verfügbarer Platz im Anhangsverzeichnis insgesamt:~,
+'30a' => q~Verfügbarer Platz im PN-Anhangsverzeichnis insgesamt:~,
+'31' => q~Optionen der Dateianhänge~,
+'31a' => q~Dateianhangslog zeigen~,
+'31b' => q~Optionen für PN-Dateianhänge~,
+'31c' => q~Zeige Log-Datei für PN-Dateianhänge~,
+'32' => q~Anhänge löschen, wenn älter als~,
+'32a' => q~PN-Anhänge löschen, wenn älter als~,
+'33' => q~Anhänge löschen, wenn größer als~,
+'33a' => q~PN-Anhänge löschen, wenn älter als~,
+'34' => q~Anhänge löschen, wenn älter als _ Tage:~,
+'35' => q~Anhang löschen, wenn größer als~,
+'35a' => q~PN-Anhänge löschen, wenn größer als~,
+'36' => q~Dateianhänge verwalten~,
+'37' => q~Dateianhänge verwalten : Log anzeigen~,
+'37a' => q~PN-Dateianhänge verwalten : Log anzeigen~,
+'38' => q~Das Anhangslog zeigt Ihnen Informationen über sämtliche Anhänge in Ihrem Forum. Sie können von hier aus Anhänge herunterladen, löschen oder direkt zu dem zugehörigen Beitrag springen. (Gehen Sie zu <a href="{yabb adminurl}?action=manageattachments">Dateianhänge verwalten</a>)~,
+'38a' => q~Das PN-Anhangslog zeigt Ihnen Informationen über sämtliche PN-Anhänge in Ihrem Forum. Sie können von hier aus PN-Anhänge in dieser Sektion herunterladen oder löschen.~,
+'39' => q~Anhangslog~,
+'39a' => q~PN-Anhangslog~,
+'40' => q~Name des Anhangs~,
+'40a' => q~Typ~,
+'41' => q~Dateigröße~,
+'41a' => q~Downloads~,
+'41b' => q~Download~,
+'41c' => q{}, #reserved for lowercase support
+'42' => q~Hochgeladen von~,
+'42a' => q~Angehängt von~,
+'43' => q~Datum~,
+'44' => q~Thema~,
+'45' => q~Löschen~,
+'46' => q~Sind Sie sicher, dass Sie alle Anhänge löschen wollen?~,
+'46a' => q~Sind Sie sicher, dass Sie die gewählten Anhänge löschen wollen?~,
+'47' => q~Webserver-Typ~,
+'48' => q~Derzeit gibt es keine Anhänge~,
+'48a' => q~derzeit gibt es keine PN-Anhänge.~,
+'49' => q~Ungültiger Versuch, eine Datei anzuhängen.~,
+'49a' => q~mal herunter geladen~,
+'49b' => q~Datei~,
+'49c' => q~existiert nicht!~,
+'49d' => q~Download-Log~,
+'49e' => q~IP~,
+'50' => q~Standard~,
+'51' => q~Unix/Linux/BSD~,
+'52' => q~Windows~,
+'53' => q~Bei gleichem Dateinamen die Datei umbenennen oder überschreiben?~,
+'54o' => q~Existierende Datei überschreiben~,
+'54r' => q~Automatisch umbenennen~,
+'54n' => q~Datei nicht hochladen~,
+'55' => q~Ihre derzeitigen Anhänge~,
+'55a' => q~Ihre derzeitigen PN-Anhänge~,
+'56' => q~Pfad für Anhänge nicht gefunden !!~,
+'57' => q~Dateianhänge~,
+'58' => q~Tage~,
+'61' => q~Nicht verwendete Dateien werden nun gelöscht~,
+'61a' => q~... beendet.~,
+'61b' => q~Löschung nicht verwendeter Dateien~,
+'61c' => q~Löschung nicht verwendeter PN-Dateien~,
+'62' => q~Anhangslog Datei (attachments.txt) wurde neu aufgebaut.~,
+'62a' => q~PN-Anhangslog Datei (pm.attachments) wurde neu aufgebaut.~,
+'63' => q~Dateianhänge neuaufbauen~,
+'63a' => q~PN-Dateianhänge neu aufbauen~,
+'64' => q~Seiten~,
+'70' => q~Thema anzeigen~,
+'71' => q~Fenster schließen~,
+'75' => q~Dieses Dateianhangs Protokoll zeigt Informationen über jeden Dateianhang im Thema mit dem Betreff~,
+'76' => q~Sie können Dateianhänge hier herunterladen,<br />im Beitrag, in welchem der Anhang hinzugefügt wurde oder<br />Sie gehen an den Anfang des Themas.~,
+'80' => q~Anhänge~,
+'80a' => q~Mehr Dateianhänge~,
+'80s' => q~Weniger Dateianhänge~,
+'81' => q~Datei entfernen~,
+);
+
+1;
