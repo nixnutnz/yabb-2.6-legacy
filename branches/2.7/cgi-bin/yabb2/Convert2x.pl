@@ -1713,6 +1713,8 @@ sub fixcontrol {
             $replyperms =~ s/,\s/\//gxsm;
             $pollperms =~ s/,\s/\//gxsm;
             $description =~ s/\'/&#39;/gxsm;
+            $rulestitle =~ s/\'/&#39;/gxsm;
+            $rulesdesc =~ s/\'/&#39;/gxsm;
 
             if ( exists $winbrds{$oldboard} || $oldboard eq 'admin' ) {
                 $newcontrol{$oldboard} = [
@@ -2307,6 +2309,8 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
             }
 
             $cal_event =~ s/"/\\"/gxsm;
+            $cal_event =~ s/'/\&#39;/gxsm;
+
             $event{$cal_time} = [
                 $cal_date, $cal_type,   $cal_name,  $cal_hide, $cal_event,
                 $cal_icon, $cal_noname, $cal_type2, $nsa,      $g

@@ -11,7 +11,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germansetuplngver = 'YaBB 2.7.00 $Revision$';
+$englishsetuplngver = 'YaBB 2.7.00 $Revision$';
 
 %mylang     = (
     'loggedin' => q~You are now logged in, <i>{realname}</i>.<br />Click 'Continue' to proceed with the Setup.~,
@@ -65,7 +65,7 @@ $germansetuplngver = 'YaBB 2.7.00 $Revision$';
     'seterr'  => q~A problem has occurred while creating Settings.pm.~,
     'setgd1'  => q~Successfully checked Settings.pm.~,
     'setgd2' => q~Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.7.00 forum.~,
-    'noerr1' => q~If you are planning to import/upgrade an older YaBB forum, install any additional Language Packs and other Mods prior to upgrading. 2.7 Language packs can be downloaded from <a href="https://sourceforge.net/p/yabb/svn/HEAD/tree/branches/Lang/2.7.00/">YaBB Languages</a> - choose your language and download the zip. You can install the Language Pack using the new YaBMod utility.~,
+    'noerr1' => q~If you are planning to import/upgrade an older YaBB forum, install any additional Language Packs and other Mods prior to upgrading. 2.7 Language packs can be downloaded from <a href="https://sourceforge.net/p/yabb/svn/HEAD/tree/branches/Lang/2.7.00/">YaBB Languages</a> - choose your language, download the zip, then upload the new Language and Help (if available) files into their appropriate folders inside the Language or Help Folders.~,
     'noerr2' => q~You can access the 1x and 2x Conversion Utilities through the Admin Center.~,
     'bigerr' => q~One or more errors occurred while checking the system files. The problems must be solved before you can continue.~,
     'erryyim' => q~YaBB 2.7.00 Setup Error.~,

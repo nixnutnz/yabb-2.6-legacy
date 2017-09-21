@@ -38,7 +38,7 @@ if ( !$script_root ) {
 our ($dont_continue_setup);    # Setup.pl;
 
 my @modules =
-  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
+  qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
 
 @modules = sort @modules;
 my $checker_output = q{};

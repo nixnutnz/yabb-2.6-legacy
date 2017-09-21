@@ -1390,10 +1390,10 @@ sub what_language {
         if ( ${ $uid . $username }{'language'} ) {
             $language = ${ $uid . $username }{'language'};
         }
-        elsif ( $FORM{'guestlang'} && $enable_guestlanguage ) {
+        elsif ( $iamguest && $FORM{'guestlang'} && $enable_guestlanguage ) {
             $language = $FORM{'guestlang'};
         }
-        elsif ( $guest_lang && $enable_guestlanguage ) {
+        elsif ( $iamguest && $guest_lang && $enable_guestlanguage ) {
             $language = $guest_lang;
         }
         else {

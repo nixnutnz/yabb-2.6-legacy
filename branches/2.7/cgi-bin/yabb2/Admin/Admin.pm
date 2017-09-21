@@ -35,7 +35,7 @@ our (
     %credits_txt,      %croak,              %errorlog,
     %mailreg_txt,      %refer_settings,     %refer_txt,
     %refexpl_txt,      %reftxt,             %register_txt,
-    %versiontxt,
+    %versiontxt,       %setup,
 );
 ## paths ##
 our ( $adminurl, $boardurl, $convdir, $htmldir, $langdir, $memberdir, $vardir,
@@ -1517,7 +1517,6 @@ sub deleteconverterfiles {
     if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
     if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
     if ( -e './ConvertLang.pl' )  { unlink './ConvertLang.pl'; }
-    if ( -e './Templates/admin/Convert.template' )  { unlink './Templates/admin/Convert.template'; }
     foreach my $lng ( keys %lngs ) {
         if ( -e "$langdir/$lng/Setup.lng" )  { unlink "$langdir/$lng/Setup.lng"; }
         if ( -e "$langdir/$lng/Convert.lng" )  { unlink "$langdir/$lng/Convert.lng"; }
@@ -1533,8 +1532,8 @@ sub deleteconverterfiles {
         unlink './Variables/ConvVar.txt';
     }
 
-    $yymain .= qq~<b>$admintxt{'10'}</b>~;
-    $yytitle = $admintxt{'10'};
+    $yymain .= qq~<b>$setup{'10'}</b>~;
+    $yytitle = $setup{'10'};
     admintemplate();
     return;
 }
@@ -1571,8 +1570,8 @@ sub deletelangconverterfiles {
     if ( -e './ConvertLang.pl' ) { unlink './ConvertLang.pl'; }
     if ( -e './Templates/admin/Convert.template' )  { unlink './Templates/admin/Convert.template'; }
 
-    $yymain .= qq~<b>$admintxt{'10a'}</b>~;
-    $yytitle = $admintxt{'10a'};
+    $yymain .= qq~<b>$setup{'10a'}</b>~;
+    $yytitle = $setup{'10a'};
     admintemplate();
     return;
 }
