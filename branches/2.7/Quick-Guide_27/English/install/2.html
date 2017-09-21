@@ -51,10 +51,6 @@
                         <li>cgi-bin/yabb2/Convert/Members</li>
                         <li>cgi-bin/yabb2/Convert/Messages</li>
                         <li>cgi-bin/yabb2/Convert/Variables</li>
-                        <li>cgi-bin/yabb2/ConvertLang/Boards</li>
-                        <li>cgi-bin/yabb2/ConvertLang/Members</li>
-                        <li>cgi-bin/yabb2/ConvertLang/Messages</li>
-                        <li>cgi-bin/yabb2/ConvertLang/Variables</li>
                         <li>cgi-bin/yabb2/Help/English/Admin</li>
                         <li>cgi-bin/yabb2/Help/English/Gmod</li>
                         <li>cgi-bin/yabb2/Help/English/Moderator</li>
@@ -80,7 +76,7 @@
                     </ul>
                 </li>
                 <li>Then, in a section of your webspace (outside the cgi-bin, generally in a 'public_html' or 'htdocs' folder, as suggested in the package's folders), create another directory called 'yabbfiles.'</li>
-                <li>Upload all of the files from the 'public_html/yabbfiles' folder (<b>DO NOT use the AUTO Transfer mode!</b>) into your new folder. All files should be uploaded using ASCII except for these file types: .gif, .jpg, .png, and .swf, which must be transferred using Binary mode.  Do not rename any of these folders for now, or the automatic path detection will not work when you run the setup script.** Note: <i>Three of the folder names do not begin with capital letters</i>.  You should have a folder structure similar to the following when this is complete:
+                <li>Upload all of the files from the 'public_html/yabbfiles' folder (<b>DO NOT use the AUTO Transfer mode!</b>) into your new folder. All files should be uploaded using ASCII except for these file types: .gif, .jpg, .png, and .swf, which must be transferred using Binary mode. Note: <i>Three of the folder names do not begin with capital letters</i>. You should have a folder structure similar to the following when this is complete:
                     <ul>
                         <li>yabbfiles/</li>
                         <li>yabbfiles/Attachments</li>
@@ -88,7 +84,6 @@
                         <li>yabbfiles/Bookmarks</li>
                         <li>yabbfiles/Buttons</li>
                         <li>yabbfiles/EventIcons</li>
-                        <li>yabbfiles/googiespell</li>
                         <li>yabbfiles/greybox</li>
                         <li>yabbfiles/ModImages</li>
                         <li>yabbfiles/PMAttachments</li>
@@ -104,7 +99,15 @@
                 </li>
             </ol>
             <p>* YaBB 2.7 requires that certain folders <b>not</b> be renamed. These folders (in the cgi-bin) are: Admin, Modules, Sources, and Variables. Members, Boards, and Messages <b>can</b> be renamed so long as you remember to make the appropriate changes in Paths.pm.</p>
-            <p>** Once your YaBB 2.7 installation is complete we suggest you rename the yabb2 folder to something unique. This will require hand editing your Paths.pm file to point to your new YaBB folder name. Changing the name of the folder will make it much harder for spammers and spambots to locate and attack your forum.</p>
+            <p>If you want your members to be able to use languages other than English, now is the time to download additional language Packs from <a href="https://sourceforge.net/p/yabb/svn/HEAD/tree/branches/Lang/2.7.00/">YaBB 2.7 Languages</a>. Upload the contents of the zipped file to either Languages or Help.</p>
+            <ul>
+                <li>cgi-bin/yabb2/Help/*newlanguage*/Admin</li>
+                <li>cgi-bin/yabb2/Help/*newlanguage*/Gmod</li>
+                <li>cgi-bin/yabb2/Help/*newlanguage*/Moderator</li>
+                <li>cgi-bin/yabb2/Help/*newlanguage*/User</li>
+                <li>cgi-bin/yabb2/Language/*newlanguage*</li>
+            </ul>
+            <p>Installing additional Language Packs will also give you the option of running the Setup and Convert utilities in your chosen Language.</p>
         </div>
         <div class="clr"></div>
     </div>

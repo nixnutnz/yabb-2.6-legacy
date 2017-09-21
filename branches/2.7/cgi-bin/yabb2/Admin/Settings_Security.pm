@@ -317,6 +317,7 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
     sub save_settings {
         my %settings = @_;
         my $newset   = q{};
+        my @iplist  = ();
         for my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
             if (   $iplookup_url =~ /:\/\//xsm
                 && $iplookup_url !~ /http(?:s|):\/\//xsm )
@@ -325,10 +326,14 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
                     $iplookup_url . $admin_txt{'iplookup_protocols'} );
             }
             my @ipset = split /[|]/xsm, $iplookup_url;
-            $ipset[0] =~ s/[ ]/_/xsm;
-            $newset .= qq~'$ipset[0]' => '$ipset[1]',\n~;
+            if ( $ipset[0] && $ipset[1] ) {
+                $ipset[0] =~ s/[ ]/_/gxsm;
+                $newset .= qq~'$ipset[0]' => '$ipset[1]',\n~;
+                push @iplist, $ipset[0];
+            }
         }
         $settings{'iplookup_url'} = $newset;
+        $settings{'iplookup_list'} = join q{ }, @iplist;
 
         if (   length $settings{'masterkey'} < 8
             || length $settings{'masterkey'} > 24 )

@@ -46,7 +46,7 @@ our (
 our (
     $action,         $age,         $annboard,        $date,
     $email_banlist,  $iamadmin,    $iamfmod,         $iamgmod,
-    $iamguest,       $iammod,      $icon,            $ip_banlist,
+    $iamguest,       $iammod,      $ip_banlist,
     $staff,          $uid,         $user_banlist,    $user_ip,
     $username,       $yyaext,      $yyexec,          $yyext,
     $yysetlocation,  %board,       %cat,             %catinfo,
@@ -456,6 +456,7 @@ sub check_banlist {
 }
 
 sub check_icon {
+    my ($icon) = @_;
     $icon ||= q{};
 
     # Check the icon so HTML cannot be exploited.
@@ -475,7 +476,7 @@ sub check_icon {
         }
     }
     if ( $isicon == 0 ) { $icon = 'xx'; }
-    return;
+    return $icon;
 }
 
 sub search_access {

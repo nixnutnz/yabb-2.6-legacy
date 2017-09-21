@@ -38,7 +38,7 @@ our (
     $langdir,  $templatesdir, $helpfile,  $admindir, $sourcedir,
 );
 ## settings ##
-our ( $lastbackup, $maintenance, $rememberbackup, $yymycharset, );
+our ( $lastbackup, $maintenance, $rememberbackup, $yymycharset, %lngs);
 ## system ##
 our (
     $action,        $iamadmin, $yabbversion, $yyadmin_alert,
@@ -336,8 +336,7 @@ function hideMods(id) {
                 <td class="windowbg2">Dobackup.pl</td>
                 <td class="windowbg2"><i>$dobackupplver</i>$dobackupmodcheck$dobackupmatch</td>
             </tr>~;
-    our %lngs;
-    require "$langdir/Lang.lng";
+
     my @langflds = sort keys %lngs;
     for my $fld (@langflds) {
         if ( -e "$langdir/$fld/version.txt" ) {

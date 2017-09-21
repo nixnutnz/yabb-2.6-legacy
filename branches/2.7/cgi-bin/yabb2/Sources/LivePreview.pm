@@ -173,8 +173,8 @@ sub dolive_pm {
         $csubject = to_html($csubject);
         $csubject = to_chars($csubject);
         $csubject = do_censor($csubject);
-        our $icon = $FORM{'icon'} || 's';
-        check_icon();
+        my $icon = $FORM{'icon'} || 's';
+        $icon = check_icon($icon);
         get_micon();
         $msgimg = $micon{$icon};
         $css    = q~windowbg~;

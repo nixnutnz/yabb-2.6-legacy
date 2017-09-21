@@ -21,25 +21,19 @@ use warnings;
 no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
 use English qw(-no_match_vars);
+use Module::Load;
 our $VERSION = '2.7.00';
 
 my $setupplver  = 'YaBB 2.7.00 $Revision$';
 my $yymycharset = 'UTF-8';
 our $yabbversion = 'YaBB 2.7.00';
-our ( $yytitle, $yyim, $yysetlocation, $yyimages, $yydefaultimages, $yystyle,);
-our $mbname = 'My Perl YaBB Forum';
+our ( $yytitle, $yyim, $yysetlocation, $yyimages, $yydefaultimages, $yystyle, );
+our $mbname      = 'My Perl YaBB Forum';
 our $firstmstime = time;
-
-# conversion will stop after $max_process_time
-# in seconds, than the browser will call the script
-# again until all is done. Don't put it too high
-# or you will run into server or browser timeout
-my $max_process_time = 20;
-my $time_to_jump     = time() + $max_process_time;
 
 my $yy_iis = 0;
 my $yypath = q{};
-if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
     $yy_iis = 1;
     if ( $PROGRAM_NAME =~ m{(.*)([\\/])}xsm ) {
         $yypath = $1;
@@ -59,28 +53,27 @@ $script_root =~ s/\/Setup[.](pl|cgi)//igxsm;
 
 if    ( -e './Paths.pm' )            { require Paths; }
 elsif ( -e "$script_root/Paths.pm" ) { require "$script_root/Paths.pm"; }
-my $langdir = './Languages';
+
 our (
-    $lastsaved,   $boardsdir, $sourcedir, $memberdir,
-    $vardir,      $datadir,   $boardurl,  $htmldir,
-    $boarddir,    $uploaddir, $uploadurl, $pmuploaddir,
-    $pmuploadurl, $admindir,  $helpfile,  $templatesdir,
-    $facesdir,    $facesurl,  $modimgdir, $modimgurl,
-    $yyhtml_root, $no_brddir, $no_memdir, $yysetlocation,
-    $no_mesdir,   $no_vardir, $imagesdir,
+    $lastsaved,    $boardsdir,   $sourcedir,   $memberdir, $vardir,
+    $datadir,      $boardurl,    $htmldir,     $boarddir,  $uploaddir,
+    $uploadurl,    $pmuploaddir, $pmuploadurl, $admindir,  $helpfile,
+    $templatesdir, $facesdir,    $facesurl,    $modimgdir, $modimgurl,
+    $yyhtml_root,  $no_brddir,   $no_memdir,   $no_mesdir, $no_vardir,
+    $imagesdir,    $langdir
 );
 our (
-    %FORM,          $username,            $uid,
-    $cookie_length, $user_ip,             $iamadmin,
-    $language,      $lang,                $lastdate,
-    $date,          $dont_continue_setup, $webmaster_email,
-    %INFO,          $useimages,           $gzcomp,
-    $yyposition,    $defaultimagesdir,
-    $usestyle,      $usehead,             $iamguest,
-    $enable_news,   $shownewsfader,       $maxsteps,
-    $stepdelay,     $fadelinks,           $fadedelay,
-    $enable_ubbc,   %color,               $message,
-    $scripturl,     $realname,
+    %FORM,                $username,        $uid,
+    $cookie_length,       $user_ip,         $iamadmin,
+    $language,            $lang,            $lastdate,
+    $dont_continue_setup, $webmaster_email, %INFO,
+    $useimages,           $gzcomp,          $yyposition,
+    $defaultimagesdir,    $usestyle,        $usehead,
+    $iamguest,            $enable_news,     $shownewsfader,
+    $maxsteps,            $stepdelay,       $fadelinks,
+    $fadedelay,           $enable_ubbc,     %color,
+    $message,             $scripturl,       $realname,
+    $mylang,              %mylang,
 );
 
 # Check if it's blank Paths.pm or filled in one
@@ -90,12 +83,13 @@ if ( !$lastsaved ) {
     $memberdir = './Members';
     $vardir    = './Variables';
     $datadir   = './Messages';
+    $langdir   = './Languages';
 }
-
-$boardurl ||= q{};
-$scripturl ||= q{};
+my $date = time;
+$boardurl    ||= q{};
+$scripturl   ||= q{};
 $yyhtml_root ||= q{};
-$username ||= q{};
+$username    ||= q{};
 
 my $yyext = 'pl';
 our $set_cgi = "Setup.$yyext";
@@ -113,14 +107,27 @@ require Sources::System;
 require Sources::Load;
 require Sources::DateTime;
 
-my $windowbg    = '#dee4ec';
-my $windowbg2   = '#edeff4';
-my $header      = '#3673b3';
-my $catbg       = '#195392';
+my $windowbg  = '#dee4ec';
+my $windowbg2 = '#edeff4';
+my $header    = '#3673b3';
+my $catbg     = '#195392';
+
+my $yymenu      = q{};
+my $yytabmenu   = q~&nbsp;~;
 my $maintext_23 = 'Unable to open';
 
-my $yymenu    = q{};
-my $yytabmenu = q~&nbsp;~;
+opendir LNGDIR, $langdir;
+my @lfilesanddirs = readdir LNGDIR;
+closedir LNGDIR;
+our %lngs = ();
+for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+    if ( -e "$langdir/$fld/Main.lng" && -e "$langdir/$fld/$fld.txt" ) {
+        open my $LANG, '<', "$langdir/$fld/$fld.txt" or croak 'cannot load Lang.txt.';
+        my $displang = <$LANG>;
+        close $LANG or croak "cannot close $fld.txt.";
+        $lngs{$fld}  = $displang;
+    }
+}
 
 if ( -e "$vardir/Setup.lock" ) {
     foundsetuplock();
@@ -136,7 +143,7 @@ if ( !$action ) {
     my $rand_cook_sess = "Y2Sess-$rand_integer";
     my $rand_cook_sort = "Y2tsort-$rand_integer";
     my $rand_cook_view = "Y2view-$rand_integer";
-    my $cooks          = << "EOF";
+    my $cooks          = <<"EOF";
 $rand_cook_user
 $rand_cook_pass
 $rand_cook_sess
@@ -145,7 +152,7 @@ $rand_cook_view
 EOF
 
     open my $COOKFILE, '>', "$vardir/cook.txt"
-      || setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
+      or setup_fatal_error( "$maintext_23 $vardir/cook.txt: ", 1 );
     print {$COOKFILE} $cooks or croak 'cannot print cook.txt';
     close $COOKFILE or croak 'cannot close cook.txt';
 
@@ -153,7 +160,7 @@ EOF
 }
 
 open my $COOKFILE, '<', 'Variables/cook.txt'
-  || setup_fatal_error( "$maintext_23 Variables/cook.txt: ", 1 );
+  or setup_fatal_error( "$maintext_23 Variables/cook.txt: ", 1 );
 my @cookinfo = <$COOKFILE>;
 close $COOKFILE or croak 'cannot close cook.txt';
 chomp @cookinfo;
@@ -163,7 +170,9 @@ our $cookiepassword     = $cookinfo[1];
 our $cookiesession_name = $cookinfo[2];
 our $cookietsort        = $cookinfo[3];
 our $cookieview         = $cookinfo[4];
-our $session_id = $cookiesession_name;
+our $session_id         = $cookiesession_name;
+
+$mylang = $FORM{'getlang'} || $INFO{'getlang'} || 'English';
 
 my %dispatch_table = (
     adminlogin2 => \&adminlogin2,
@@ -181,7 +190,10 @@ if ( $action eq 'setup2' ) {
     varinstall();
     save_paths();
 }
-elsif ( $action eq 'checkmodules' ) { setinstall2(); checkmodules(); }
+elsif ( $action eq 'checkmodules' ) {
+    setinstall2($mylang);
+    checkmodules($mylang);
+}
 else {
     $dispatch_table{$action}
       or croak "ERROR: attempt to dispatch non-existing entry: '$action'";
@@ -199,6 +211,22 @@ sub adminlogin {
     open my $LICENSE, '<', 'license.txt' or croak 'cannot load License.';
     my $license = do { local $INPUT_RECORD_SEPARATOR = undef; <$LICENSE>; };
     close $LICENSE or croak 'cannot close License';
+    opendir LNGDIR, $langdir;
+    my @lfilesanddirs = readdir LNGDIR;
+    closedir LNGDIR;
+    my $drawnldirs = q{};
+    for my $x ( sort keys %lngs ) {
+        my $sel = q{};
+        if ($lngs{$x} eq 'English') {$sel = ' selected="selected"';}
+        $drawnldirs .=
+qq~<option value="$x"$sel>$lngs{$x}</option>~;
+    }
+
+    my $getlangs =
+          qq~\n<br />Select your language:<br /><select name="getlang" size="2">
+$drawnldirs
+</select>
+~;
 
     $yymain .= qq~
     <div id="license" style="width:50em; height:40em; overflow:auto; margin:2em auto 0 auto; border:thin #000 solid; padding:1em; background-color:#fff">$license</div>
@@ -206,6 +234,7 @@ sub adminlogin {
     <div style="width:25em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
         <label for="password">Enter the password for user <b>admin</b> to acknowledge acceptance of the above license and to gain access to the Setup Utility</label>
         <p><input type="password" name="password" id="password" size="30" />
+$getlangs
          <input type="hidden" name="username" value="admin" />
          <input type="hidden" name="cookielength" value="1500" /></p>
         <p><input type="submit" value="Submit" /></p>
@@ -220,8 +249,9 @@ sub adminlogin {
 }
 
 sub adminlogin2 {
+    getlang($FORM{'getlang'});
     if ( !$FORM{'password'} ) {
-        setup_fatal_error('Setup Error: You should fill in your password!');
+        setup_fatal_error( $mylang{'logerr2'} );
     }
 
     # No need to pass a form variable setup is only used by user: admin
@@ -239,13 +269,11 @@ sub adminlogin2 {
         }
         my $cryptpass = encode_password( $FORM{'password'} );
         if ( $spass ne $cryptpass && $spass ne $FORM{'password'} ) {
-            setup_fatal_error('Setup Error: Login Failed!');
+            setup_fatal_error( $mylang{'logerr3'} );
         }
     }
     else {
-        setup_fatal_error(
-qq~Setup Error: Could not find the admin data file in $memberdir. Please check your access rights.~
-        );
+        setup_fatal_error( $mylang{'logerr'} );
     }
 
     if ( $FORM{'cookielength'} < 1 || $FORM{'cookielength'} > 9999 ) {
@@ -265,7 +293,7 @@ qq~Setup Error: Could not find the admin data file in $memberdir. Please check y
 
 # check if forum.control can be open (needed in &load_boardcontrol used by &load_usersettings)
     open my $FORUMCONTROL, '<', "$boardsdir/forum.control"
-      || setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
+      or setup_fatal_error( "$maintext_23 $boardsdir/forum.control: ", 1 );
     close $FORUMCONTROL or croak 'cannot close forum.control';
     {
         no strict qw(refs);
@@ -277,22 +305,23 @@ qq~Setup Error: Could not find the admin data file in $memberdir. Please check y
     $yymain .= qq~
     <form action="$set_cgi?action=setup1" method="post">
     <div style="width:50em; border: thin #000 solid; margin:2em auto; padding:1em; text-align:center; background-color:#fff">
-        You are now logged in, <i>$realname</i>.<br />Click 'Continue Set Up' to proceed with the Setup.
-        <p><input type="submit" value="Continue Set Up" /></p>
+$mylang{'loggedin'}
+        <input type="hidden" name="getlang" value="$mylang" />
+        <p><input type="submit" value="$mylang{'cont'}" /></p>
     </div>
     </form>
 ~;
+    $yymain =~ s/{realname}/$realname/gxsm;
 
     return simpleoutput();
 }
 
 sub autoconfig {
+    getlang($mylang);
     load_cookie();    # Load the user's cookie (or set to guest)
     load_usersettings();
     if ( !$iamadmin ) {
-        setup_fatal_error(
-q~Setup Error: You have no access rights to this function. Only user "admin" has this right, if logged in.~
-        );
+        setup_fatal_error( $mylang{'noright'} );
     }
 
     # do some fancy auto sensing
@@ -315,7 +344,7 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     ## find the webroot ##
     my $this_script = q{};
     my $searchroot  = q{};
-    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/sm ) {
+    if ( $ENV{'SERVER_SOFTWARE'} =~ /IIS/xsm ) {
         $this_script = "$ENV{'SCRIPT_NAME'}";
         my $x = $PROGRAM_NAME;
         $x =~ s/\\/\//gxsm;
@@ -326,150 +355,6 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
         $searchroot = $ENV{'DOCUMENT_ROOT'};
         $searchroot =~ s/\\/\//gxsm;
     }
-    my $firstslash = index $tempboardurl, q{/}, 8;
-    my $html_baseurl = substr $tempboardurl, 0, $firstslash;
-
-    # try to find the yabb html basedir directly
-    my $fnd_facesdir     = q{};
-    my $fnd_facesurl     = q{};
-    my $fnd_uploaddir    = q{};
-    my $fnd_uploadurl    = q{};
-    my $fnd_pmuploaddir  = q{};
-    my $fnd_pmuploadurl  = q{};
-    my $fnd_modimgdir    = q{};
-    my $fnd_modimgurl    = q{};
-    my $fnd_htmldir      = q{};
-    my $fnd_html_root    = q{};
-    my $fnd_boardsdir    = q{};
-    my $fnd_datadir      = q{};
-    my $fnd_memberdir    = q{};
-    my $fnd_sourcedir    = q{};
-    my $fnd_admindir     = q{};
-    my $fnd_vardir       = q{};
-    my $fnd_langdir      = q{};
-    my $fnd_helpfile     = q{};
-    my $fnd_templatesdir = q{};
-    if ( -d "$searchroot/$yabbfiles" ) {
-        $fnd_html_root = "$html_baseurl/$yabbfiles";
-        $fnd_htmldir   = "$searchroot/$yabbfiles";
-        $fnd_htmldir =~ s/\/\//\//gxsm;
-        opendir HTMLDIR, $fnd_htmldir;
-        my @contents = readdir HTMLDIR;
-        closedir HTMLDIR;
-        foreach my $name (@contents) {
-            if ( lc($name) eq 'avatars' && -d "$fnd_htmldir/$name" ) {
-                $fnd_facesdir = "$fnd_htmldir/$name";
-                $fnd_facesurl = "$fnd_html_root/$name";
-            }
-
-            if ( lc($name) eq 'attachments' && -d "$fnd_htmldir/$name" ) {
-                $fnd_uploaddir = "$fnd_htmldir/$name";
-                $fnd_uploadurl = "$fnd_html_root/$name";
-            }
-
-            if ( lc($name) eq 'pmattachments' && -d "$fnd_htmldir/$name" ) {
-                $fnd_pmuploaddir = "$fnd_htmldir/$name";
-                $fnd_pmuploadurl = "$fnd_html_root/$name";
-            }
-            if ( lc($name) eq 'modimages' && -d "$fnd_htmldir/$name" ) {
-                $fnd_modimgdir = "$fnd_htmldir/$name";
-                $fnd_modimgurl = "$fnd_html_root/$name";
-            }
-        }
-    }
-    else {
-        opendir HTMLDIR, $searchroot;
-        my @contents = readdir HTMLDIR;
-        closedir HTMLDIR;
-        foreach my $name (@contents) {
-            if ( -d "$searchroot/$name" ) {
-                opendir HTMLDIR, "$searchroot/$name";
-                my @subcontents = readdir HTMLDIR;
-                closedir HTMLDIR;
-                foreach my $subname (@subcontents) {
-                    if ( lc($subname) eq lc($yabbfiles)
-                        && ( -d "$searchroot/$name/$subname" ) )
-                    {
-                        $fnd_htmldir = "$searchroot/$name/$subname";
-                        $fnd_htmldir =~ s/\/\//\//gxsm;
-                        $fnd_html_root = "$html_baseurl/$name/$subname";
-                    }
-                }
-            }
-        }
-        opendir HTMLDIR, $fnd_htmldir;
-        my @tcontents = readdir HTMLDIR;
-        closedir HTMLDIR;
-        for my $tname (@tcontents) {
-            if ( lc($tname) eq 'avatars' && -d "$fnd_htmldir/$tname" ) {
-                $fnd_facesdir = "$fnd_htmldir/$tname";
-                $fnd_facesurl = "$fnd_html_root/$tname";
-            }
-
-            if ( lc($tname) eq 'attachments' && -d "$fnd_htmldir/$tname" ) {
-                $fnd_uploaddir = "$fnd_htmldir/$tname";
-                $fnd_uploadurl = "$fnd_html_root/$tname";
-            }
-            if ( lc($tname) eq 'pmattachments' && -d "$fnd_htmldir/$tname" ) {
-                $fnd_pmuploaddir = "$fnd_htmldir/$tname";
-                $fnd_pmuploadurl = "$fnd_html_root/$tname";
-            }
-            if ( lc($tname) eq 'modimages' && -d "$fnd_htmldir/$tname" ) {
-                $fnd_modimgdir = "$fnd_htmldir/$tname";
-                $fnd_modimgurl = "$fnd_html_root/$tname";
-            }
-        }
-    }
-    my $fnd_boardurl = $foundboardurl;
-    my $fnd_boarddir = q{.};
-    if ( -d "$fnd_boarddir/Boards" ) {
-        $fnd_boardsdir = "$fnd_boarddir/Boards";
-    }
-    if ( -d "$fnd_boarddir/Messages" ) {
-        $fnd_datadir = "$fnd_boarddir/Messages";
-    }
-    if ( -d "$fnd_boarddir/Members" ) {
-        $fnd_memberdir = "$fnd_boarddir/Members";
-    }
-    if ( -d "$fnd_boarddir/Sources" ) {
-        $fnd_sourcedir = "$fnd_boarddir/Sources";
-    }
-    if ( -d "$fnd_boarddir/Admin" ) { $fnd_admindir = "$fnd_boarddir/Admin"; }
-    if ( -d "$fnd_boarddir/Variables" ) {
-        $fnd_vardir = "$fnd_boarddir/Variables";
-    }
-    if ( -d "$fnd_boarddir/Languages" ) {
-        $fnd_langdir = "$fnd_boarddir/Languages";
-    }
-    if ( -d "$fnd_boarddir/Help" ) { $fnd_helpfile = "$fnd_boarddir/Help"; }
-    if ( -d "$fnd_boarddir/Templates" ) {
-        $fnd_templatesdir = "$fnd_boarddir/Templates";
-    }
-
-    if ( !$lastsaved ) {
-        $boardurl     = $fnd_boardurl;
-        $boarddir     = $fnd_boarddir;
-        $htmldir      = $fnd_htmldir;
-        $uploaddir    = $fnd_uploaddir;
-        $uploadurl    = $fnd_uploadurl;
-        $pmuploaddir  = $fnd_pmuploaddir;
-        $pmuploadurl  = $fnd_pmuploadurl;
-        $yyhtml_root  = $fnd_html_root;
-        $datadir      = $fnd_datadir;
-        $boardsdir    = $fnd_boardsdir;
-        $memberdir    = $fnd_memberdir;
-        $sourcedir    = $fnd_sourcedir;
-        $admindir     = $fnd_admindir;
-        $vardir       = $fnd_vardir;
-        $langdir      = $fnd_langdir;
-        $helpfile     = $fnd_helpfile;
-        $templatesdir = $fnd_templatesdir;
-
-        $facesdir  = $fnd_facesdir;
-        $facesurl  = $fnd_facesurl;
-        $modimgdir = $fnd_modimgdir;
-        $modimgurl = $fnd_modimgurl;
-    }
     my $support_env_path = q{};
 
     # Simple output of env variables, for troubleshooting
@@ -478,6 +363,25 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     }
     elsif ( $ENV{'PATH_TRANSLATED'} ne q{} ) {
         $support_env_path = $ENV{'PATH_TRANSLATED'};
+    }
+    my @getslash = split /\//xsm, $tempboardurl;
+    splice @getslash, -3, 3;
+    my $html_baseurl = join q~/~, @getslash;
+    my @getslash2 = split /\//xsm, $support_env_path;
+    splice @getslash2, -3, 3;
+    my $searchroot2 = join q~/~, @getslash2;
+
+    my $fnd_boardurl  = $foundboardurl;
+    my $fnd_boarddir  = q{.};
+    my $fnd_html_root = "$html_baseurl/$yabbfiles";
+    my $fnd_htmldir   = "$searchroot2/$yabbfiles";
+    $fnd_htmldir =~ s/\/\//\//gxsm;
+
+    if ( !$lastsaved ) {
+        $boardurl    = $fnd_boardurl;
+        $boarddir    = $fnd_boarddir;
+        $htmldir     = $fnd_htmldir;
+        $yyhtml_root = $fnd_html_root;
     }
 
     # Remove Setup.pl and cgi - and also nph- for buggy IIS.
@@ -488,272 +392,66 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
     $support_env_path =~ s/\\/\//gxsm;
 
     # Generate Screen
-    if ( !$language ) { $language = 'English'; }
-    if ( !$lang )     { $lang     = 'English'; }
-    if ( -e "$langdir/$language/Main.lng" ) {
-        require "$langdir/$language/Main.lng";
-    }
-    elsif ( -e "$langdir/$lang/Main.lng" ) {
-        require "$langdir/$lang/Main.lng";
-    }
-    elsif ( -e "$langdir/English/Main.lng" ) {
-        require "$langdir/English/Main.lng";
-    }
-    $lastdate ||= time;
-    my $mylastdate = timeformat($lastdate);
     $realname ||= 'Administrator';
     $yymain .= qq~
 <form action="$set_cgi?action=setup2" method="post" name="auto_settings" style="display: inline;">
-<script type="text/javascript">
-function abspathfill(brddir) {
-      document.auto_settings.preboarddir.value = brddir;
-}
-function autofill() {
-      var boardurl = document.auto_settings.preboardurl.value || "$boardurl";
-      var boarddir = document.auto_settings.preboarddir.value || ".";
-      var htmldir = document.auto_settings.prehtmldir.value || "";
-      var htmlurl = document.auto_settings.prehtml_root.value || "";
-      if(!htmldir) {return 0;}
-      if(!htmlurl) {return 0;}
-      var confirmvalue = confirm("Do autofill the forms in the right column below (Saved:) with the basic values in here?");
-      if(!confirmvalue) {return 0;}
-      else {
-            // Board URL
-            document.auto_settings.boardurl.value = boardurl;
-
-            // cgi Directories
-            document.auto_settings.boarddir.value = boarddir;
-            document.auto_settings.boardsdir.value = boarddir + "/Boards";
-            document.auto_settings.datadir.value = boarddir + "/Messages";
-            document.auto_settings.vardir.value = boarddir + "/Variables";
-            document.auto_settings.memberdir.value = boarddir + "/Members";
-            document.auto_settings.sourcedir.value = boarddir + "/Sources";
-            document.auto_settings.admindir.value = boarddir + "/Admin";
-            document.auto_settings.langdir.value = boarddir + "/Languages";
-            document.auto_settings.templatesdir.value = boarddir + "/Templates";
-            document.auto_settings.helpfile.value = boarddir + "/Help";
-
-            // HTML URLs
-            document.auto_settings.html_root.value = htmlurl;
-            document.auto_settings.uploadurl.value = htmlurl + "/Attachments";
-            document.auto_settings.pmuploadurl.value = htmlurl + "/PMAttachments";
-            document.auto_settings.facesurl.value = htmlurl + "/avatars";
-            document.auto_settings.modimgurl.value = htmlurl + "/ModImages";
-
-            // HTML Directories
-            document.auto_settings.htmldir.value = htmldir;
-            document.auto_settings.uploaddir.value = htmldir + "/Attachments";
-            document.auto_settings.pmuploaddir.value = htmldir + "/PMAttachments";
-            document.auto_settings.facesdir.value = htmldir + "/avatars";
-            document.auto_settings.modimgdir.value = htmldir + "/ModImages";
-      }
-}
-</script>
 <div id="folderfind">
     <table>
         <col style="width:43%" />
         <col style="width:57%" />
       <tr>
             <td class="header" colspan="2">
-                <span style="color: #fefefe;">&nbsp;<b>Absolute Path to the main script directory</b></span>
+                <span style="color:#fefefe;">&nbsp;<b>$mylang{'abspath'}</b></span>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div style="float: left; width: 80%; text-align: left; font-size: 11px;">Only click on the insert button if your server needs the absolute path to the YaBB main script</div>
-                  <div style="float: left; width: 20%; text-align: right;"><input type="button" onclick="abspathfill('$support_env_path')" value="Insert" style="font-size: 11px;" /></div>
+                <div style="float: left; width: 80%; text-align: left; font-size: 11px;">$mylang{'abspath2'}</div>
+                <div style="float: left; width: 20%; text-align: right;"><input type="button" onclick="abspathfill('$support_env_path')" value="$mylang{'insert'}" style="font-size: 11px;" /></div>
             </td>
             <td class="windowbg2">$support_env_path</td>
         </tr><tr>
             <td class="header" colspan="2">
-                <span style="color: #fefefe;">&nbsp;<b>Change this form if changes are necessary.</b></span>
+                <span style="color:#fefefe;">&nbsp;<b>$mylang{'change'}</b></span>
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <label for="preboarddir">
-                  Main Script Directory:
-                <br />
-                <span style="font-size: 11px;">
-                    The server path to the board&#39;s folder (usually can be left as '.')
-                </span>
-                </label>
+                <label for="boarddir">$mylang{'prebrddir'}</label>
             </td>
             <td class="windowbg2">
                   <input type="text" size="60" name ="preboarddir" id ="preboarddir" value="$boarddir" />
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <label for="preboardurl">Board URL:
-                <br />
-                <span style="font-size: 11px;">
-                URL of your board&#39;s folder (without trailing '/')
-                  </span></label>
+                <label for="oreboardurl">$mylang{'prebrdurl'}</label>
             </td>
             <td class="windowbg2">
                   <input type="text" size="60" name ="preboardurl" id ="preboardurl" value="$boardurl" />
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <label for="prehtmldir">HTML Root Directory:
-                <br />
-                <span style="font-size: 11px;">
-                  Base Path for all /html/css files and folders
-                  </span></label>
+                <label for="prehtmldir">$mylang{'prehtmldir'}</label>
             </td>
             <td class="windowbg2">
                   <input type="text" size="60" name ="prehtmldir" id ="prehtmldir" value="$htmldir" />
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <label for="prehtml_root">
-                  HTML Root URL:
-                <br />
-                <span style="font-size: 11px;">
-                  Base URL for all /html/css files and folders
-                  </span></label>
+                <label for="prehtml_root">$mylang{'prehtml_root'}</label>
             </td>
             <td class="windowbg2">
                   <input type="text" size="60" name ="prehtml_root" id ="prehtml_root" value="$yyhtml_root" />
             </td>
         </tr><tr>
-            <td style="background-color:$catbg; text-align:center; padding:15px 3px 30px 3px" colspan="2">
-                  <input type="button" onclick="autofill()" value="Autofill the forms below" style="width: 200px;" />
-            </td>
+            <td class="catbg" style="margin-top:.5em; margin-bottom:1em;" colspan="2">
+            <input type="hidden" name="getlang" value="$mylang" />
+            <input type="hidden" name="lastsaved" value="$realname" />
+            <input type="submit" value="$mylang{'save'}" /></td>
+        </tr>
       </tr>
 </table>
-    <table style="margin-top:1em">
-        <col style="width:20%" />
-        <col style="width:35%" />
-        <col style="width:10%" />
-        <col style="width:35%" />
-      <tr>
-            <td class="header" colspan="4">
-            <input type="hidden" name="lastsaved" value="$realname" />
-            <input type="hidden" name="lastdate" value="$date" />
-                <span style="color: #fefefe;">&nbsp;<b>These are the settings detected on your server and the last saved settings.</b></span>
-            </td>
-        </tr><tr>
-            <td class="catbg">&nbsp;</td>
-            <td class="catbg"><b>Detected Values</b></td>
-            <td class="catbg"><b>Transfer</b></td>
-            <td class="catbg"><b>Saved: $mylastdate</b></td>
-        </tr><tr>
-            <td class="header" colspan="4">
-            <span style="color: #fefefe;">&nbsp; <b>CGI-BIN Settings</b></span>
-            </td>
-        </tr><tr>
-            <td class="windowbg2">Board URL:</td>
-            <td class="windowbg">$fnd_boardurl</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.boardurl.value = '$fnd_boardurl';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="boardurl" value="$boardurl" /></td>
-        </tr><tr>
-            <td class="windowbg2">Main Script Dir.:</td>
-            <td class="windowbg">$fnd_boarddir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.boarddir.value = '$fnd_boarddir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="boarddir" value="$boarddir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Admin Dir.:</td>
-            <td class="windowbg">$fnd_admindir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.admindir.value = '$fnd_admindir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="admindir" value="$admindir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Boards Dir.:</td>
-            <td class="windowbg">$fnd_boardsdir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.boardsdir.value = '$fnd_boardsdir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="boardsdir" value="$boardsdir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Help Dir.:</td>
-            <td class="windowbg">$fnd_helpfile</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.helpfile.value = '$fnd_helpfile';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="helpfile" value="$helpfile" /></td>
-        </tr><tr>
-            <td class="windowbg2">Languages Dir.:</td>
-            <td class="windowbg">$fnd_langdir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.langdir.value = '$fnd_langdir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="langdir" value="$langdir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Member Dir.:</td>
-            <td class="windowbg">$fnd_memberdir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.memberdir.value = '$fnd_memberdir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="memberdir" value="$memberdir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Message Dir.:</td>
-            <td class="windowbg">$fnd_datadir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.datadir.value = '$fnd_datadir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="datadir" value="$datadir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Sources Dir.:</td>
-            <td class="windowbg">$fnd_sourcedir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.sourcedir.value = '$fnd_sourcedir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="sourcedir" value="$sourcedir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Template Dir.:</td>
-            <td class="windowbg">$fnd_templatesdir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.templatesdir.value = '$fnd_templatesdir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="templatesdir" value="$templatesdir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Variables Dir.:</td>
-            <td class="windowbg">$fnd_vardir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.vardir.value = '$fnd_vardir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="vardir" value="$vardir" /></td>
-        </tr><tr>
-            <td class="header" style="color: #fefefe;" colspan="4">&nbsp; <b>HTML Settings</b></td>
-        </tr><tr>
-            <td class="windowbg2">HTML Root Dir.:</td>
-            <td class="windowbg">$fnd_htmldir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.htmldir.value = '$fnd_htmldir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="htmldir" value="$htmldir" /></td>
-        </tr><tr>
-            <td class="windowbg2">HTML Root URL:</td>
-            <td class="windowbg">$fnd_html_root</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.html_root.value = '$fnd_html_root';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="html_root" value="$yyhtml_root" /></td>
-        </tr><tr>
-            <td class="windowbg2">Attachment Dir.:</td>
-            <td class="windowbg">$fnd_uploaddir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.uploaddir.value = '$fnd_uploaddir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="uploaddir" value="$uploaddir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Attachment URL:</td>
-            <td class="windowbg">$fnd_uploadurl</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.uploadurl.value = '$fnd_uploadurl';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="uploadurl" value="$uploadurl" /></td>
-        </tr><tr>
-            <td class="windowbg2">PMAttachment Dir.:</td>
-            <td class="windowbg">$fnd_pmuploaddir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.pmuploaddir.value = '$fnd_pmuploaddir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="pmuploaddir" value="$pmuploaddir" /></td>
-        </tr><tr>
-            <td class="windowbg2">PMAttachment URL:</td>
-            <td class="windowbg">$fnd_pmuploadurl</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.pmuploadurl.value = '$fnd_pmuploadurl';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="pmuploadurl" value="$pmuploadurl" /></td>
-        </tr><tr>
-            <td class="windowbg2">Avatar Dir.:</td>
-            <td class="windowbg">$fnd_facesdir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.facesdir.value = '$fnd_facesdir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="facesdir" value="$facesdir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Avatar URL:</td>
-            <td class="windowbg">$fnd_facesurl</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.facesurl.value = '$fnd_facesurl';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="facesurl" value="$facesurl" /></td>
-        </tr><tr>
-            <td class="windowbg2">Mod Images Dir.:</td>
-            <td class="windowbg">$fnd_modimgdir</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.modimgdir.value = '$fnd_modimgdir';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="modimgdir" value="$modimgdir" /></td>
-        </tr><tr>
-            <td class="windowbg2">Mod Images URL:</td>
-            <td class="windowbg">$fnd_modimgurl</td>
-            <td class="catbg"><input type="button" onclick="javascript: document.auto_settings.modimgurl.value = '$fnd_modimgurl';return false;" value="->" /></td>
-            <td class="windowbg"><input type="text" size="60" name ="modimgurl" value="$modimgurl" /></td>
-        </tr><tr>
-            <td class="catbg" style="margin-top:.5em; margin-bottom:1em;" colspan="4"><input type="submit" value="Save Settings" /></td>
-        </tr>
-    </table>
 </div>
 </form>
-      ~;
+~;
 
     $yytitle = 'Results of Auto-Sensing';
     simpleoutput();
@@ -761,40 +459,38 @@ function autofill() {
 }
 
 sub save_paths {
+    getlang($mylang);
     load_cookie();    # Load the user's cookie (or set to guest)
     load_usersettings();
     if ( !$iamadmin ) {
-        setup_fatal_error(
-q~Setup Error: You have no access rights to this function. Only user "admin" has rights, if logged in.~
-        );
+        setup_fatal_error( $mylang{'noright'} );
     }
 
     $lastsaved    = $FORM{'lastsaved'} || 'admin';
-    $lastdate     = $FORM{'lastdate'};
-    $boardurl     = $FORM{'boardurl'};
-    $boarddir     = $FORM{'boarddir'};
-    $htmldir      = $FORM{'htmldir'};
-    $uploaddir    = $FORM{'uploaddir'};
-    $uploadurl    = $FORM{'uploadurl'};
-    $pmuploaddir  = $FORM{'pmuploaddir'};
-    $pmuploadurl  = $FORM{'pmuploadurl'};
-    $yyhtml_root  = $FORM{'html_root'};
-    $datadir      = $FORM{'datadir'} || './Messages';
-    $boardsdir    = $FORM{'boardsdir'} || './Boards';
-    $memberdir    = $FORM{'memberdir'} || './Members';
-    $sourcedir    = $FORM{'sourcedir'} || './Sources';
-    $admindir     = $FORM{'admindir'} || './Admin';
-    $vardir       = $FORM{'vardir'} || './Variables';
-    $langdir      = $FORM{'langdir'} || './Langauges';
-    $helpfile     = $FORM{'helpfile'} || './Help';
-    $templatesdir = $FORM{'templatesdir'} || '/Templates';
+    $lastdate     = time;
+    $boardurl     = $FORM{'preboardurl'};
+    $boarddir     = $FORM{'preboarddir'};
+    $htmldir      = $FORM{'prehtmldir'};
+    $yyhtml_root  = $FORM{'prehtml_root'};
+    $datadir      = "$boarddir/Messages";
+    $boardsdir    = "$boarddir/Boards";
+    $memberdir    = "$boarddir/Members";
+    $sourcedir    = "$boarddir/Sources";
+    $admindir     = "$boarddir/Admin";
+    $vardir       = "$boarddir/Variables";
+    $langdir      = "$boarddir/Languages";
+    $helpfile     = "$boarddir/Help";
+    $templatesdir = "$boarddir/Templates";
+    $pmuploaddir  = "$htmldir/PMAttachments";
+    $pmuploadurl  = "$yyhtml_root/PMAttachments";
+    $uploaddir    = "$htmldir/Attachments";
+    $uploadurl    = "$yyhtml_root/Attachments";
+    $facesdir     = "$htmldir/avatars";
+    $facesurl     = "$yyhtml_root/avatars";
+    $modimgdir    = "$htmldir/ModImages";
+    $modimgurl    = "$yyhtml_root/ModImages";
 
-    $facesdir  = $FORM{'facesdir'};
-    $facesurl  = $FORM{'facesurl'};
-    $modimgdir = $FORM{'modimgdir'};
-    $modimgurl = $FORM{'modimgurl'};
-
-    my $setfile = << "EOF";
+    my $setfile = <<"EOF";
 ###############################################################################
 # Paths.pm                                                                    #
 ###############################################################################
@@ -843,17 +539,18 @@ q~Setup Error: You have no access rights to this function. Only user "admin" has
 EOF
 
     my $filler = q{ } x 70;
-    $setfile =~ s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;
+    $setfile =~
+      s/(.+\;)\s+(\#.+$)/$1 . substr( $filler, 0, (70-(length $1)) ) . $2 /gexm;
     $setfile =~ s/(.{64,}\;)\s+(\#.+$)/$1 . "\n   " . $2/gexm;
     $setfile =~ s/^\s\s\s+(\#.+$)/substr( $filler, 0, 70 ) . $1/gexm;
 
     open my $FILE, '>', "$boarddir/Paths.pm"
-      || setup_fatal_error( "$maintext_23 ./Paths.pm: ", 1 );
+      or setup_fatal_error( "$maintext_23 ./Paths.pm: ", 1 );
     print {$FILE} $setfile
       or croak 'cannot print nicely aligned Paths.pm';
     close $FILE or croak 'cannot close Paths.pm';
 
-    our $yysetlocation = qq~$set_cgi?action=checkmodules~;
+    $yysetlocation = qq~$set_cgi?action=checkmodules;getlang=$mylang~;
     redirectexit();
     return;
 }
@@ -878,348 +575,40 @@ sub varinstall {
     $no_vardir = 0;
 
     if ( !-d $varsdir ) { $no_vardir = 1; return 1; }
-
-    if ( !-e "$varsdir/adminlog.log" ) {
-        open my $ADMLOGFILE, '>', "$varsdir/adminlog.log"
-          || setup_fatal_error( "$maintext_23 $varsdir/adminlog.log: ", 1 );
-        print {$ADMLOGFILE} q{} or croak 'cannot print ADMLOGFILE';
-        close $ADMLOGFILE or croak 'cannot close adminlog.log';
-    }
-
-    if ( !-e "$varsdir/Referer.pm" ) {
-        my $allowed = << "EOF";
-# Referrer Control #
-
-%referallow = (
-'RSSboard' => 'on',
-'RSSrecent' => 'on',
-'birthdaylist' => '',
-'display' => 'on',
-'downloadfile' => 'on',
-'eventcal' => 'on',
-'get_cal_ssi' => '',
-'help' => '',
-'login' => '',
-'logout' => '',
-'messageindex' => 'on',
-'ml' => '',
-'mycenter' => '',
-'recent' => 'on',
-'recenttopics' => 'on',
-'register' => 'on',
-'reminder' => '',
-'search' => '',
-'viewdownloads' => 'on',
-'viewprofile' => '',
-);
-
-## MOD Hook ##
-1;
-EOF
-        open my $ALLOWFILE, '>', "$varsdir/Referer.pm"
-          || setup_fatal_error( "$maintext_23 $varsdir/Referer.pm: ", 1 );
-        print {$ALLOWFILE} $allowed or croak 'cannot print ALLOWFILE';
-        close $ALLOWFILE or croak 'cannot close ALLOWFILE';
-    }
-
-    if ( !-e "$varsdir/attachments.db" ) {
-        open my $ATTFILE, '>', "$varsdir/attachments.db"
-          || setup_fatal_error( "$maintext_23 $varsdir/attachments.db: ", 1 );
-        print {$ATTFILE} q{} or croak 'cannot print ATTFILE';
-        close $ATTFILE or croak 'cannot print ATTFILE';
-    }
-    if ( !-e "$varsdir/pm.attachments" ) {
-        open my $PMATTFILE, '>', "$varsdir/pmattachments.db"
-          || setup_fatal_error( "$maintext_23 $varsdir/pmattachments.db: ", 1 );
-        print {$PMATTFILE} q{} or croak 'cannot print PMATTFILE';
-        close $PMATTFILE or croak 'cannot close PMATTFILE';
-    }
-
-    if ( !-e "$varsdir/ban.log" ) {
-        open my $BANFILE, '>', "$varsdir/ban.log"
-          || setup_fatal_error( "$maintext_23 $varsdir/ban.log: ", 1 );
-        print {$BANFILE} q{} or croak 'cannot print ban.log';
-        close $BANFILE or croak 'cannot close ban.log';
-    }
-
-    if ( !-e "$varsdir/banlist.db" ) {
-        open my $BANLIST, '>', "$varsdir/banlist.db"
-          || setup_fatal_error( "$maintext_23 $varsdir/banlist.db: ", 1 );
-        print {$BANLIST} q{} or croak 'cannot print banlist.db';
-        close $BANLIST or croak 'cannot close banlist.db';
-    }
-    if ( !-e "$varsdir/clicklog.log" ) {
-        open my $CLICKFILE, '>', "$varsdir/clicklog.log"
-          || setup_fatal_error( "$maintext_23 $varsdir/clicklog.log: ", 1 );
-        print {$CLICKFILE} q{} or croak 'cannot print clicklog.log';
-        close $CLICKFILE or croak 'cannot close clicklog.log';
-    }
-
-    if ( !-e "$varsdir/errorlog.log" ) {
-        open my $ERRORFILE, '>', "$varsdir/errorlog.log"
-          || setup_fatal_error( "$maintext_23 $varsdir/errorlog.log: ", 1 );
-        print {$ERRORFILE} q{} or croak 'cannot print errorlog.log';
-        close $ERRORFILE or croak 'cannot close errorlog.log';
-    }
-
-    if ( !-e "$varsdir/flood.log" ) {
-        open my $FLOODFILE, '>', "$varsdir/flood.log"
-          || setup_fatal_error( "$maintext_23 $varsdir/flood.log: ", 1 );
-        print {$FLOODFILE} '255.255.255.255|1119313741'
-          or croak 'cannot print flood.log';
-        close $FLOODFILE or croak 'cannot close flood.log';
-    }
-
-    if ( !-e "$varsdir/Gmodset.pm" ) {
-        my $setfile = << "EOF";
-### Gmod Related Settings ###
-
-\$allow_gmod_admin = "on";
-\$gmod_newfile = "on";
-\$allow_gmod_aprofile = '';
-\$gmod_newfile = 'on';
-
-### Areas Gmods can Access ###
-
-\%gmod_access = (
-'ext_admin' => '',
-
-'newsettings;page=main' => '',
-'newsettings;page=advanced' => 'on',
-'editbots' => '',
-
-'newsettings;page=news' => 'on',
-'smilies' => 'on',
-'setcensor' => 'on',
-'modagreement' => 'on',
-'eventcal_set' => '',
-'bookmarks' => '',
-
-'referer_control' => '',
-'newsettings;page=security' => '',
-'setup_guardian' => '',
-'newsettings;page=antispam' => '',
-'spam_questions' => '',
-'honeypot' => '',
-
-'managecats' => '',
-'manageboards' => '',
-'helpadmin' => 'on',
-'editemailtemplates' => '',
-
-'addmember' => '',
-'viewmembers' => 'on',
-'modmemgr' => '',
-'mailing' => 'on',
-'ipban' => 'on',
-'setreserve' => 'on',
-
-'modskin' => '',
-'modcss' => '',
-'modtemp' => '',
-
-'clean_log' => 'on',
-'boardrecount' => '',
-'rebuildmesindex' => '',
-'membershiprecount' => '',
-'rebuildmemlist' => '',
-'rebuildmemhist' => '',
-'deleteoldthreads' => '',
-'manageattachments' => 'on',
-'backupsettings' => '',
-
-'detailedversion' => 'on',
-'stats' => 'on',
-'showclicks' => 'on',
-'errorlog' => 'on',
-'view_reglog' => 'on',
-
-'modlist' => '',
-);
-
-\%gmod_access2 = (
-admin => 'on',
-
-newsettings => 'on',
-newsettings2 => 'on',
-
-eventcal_set2 => '',
-eventcal_set3 => '',
-bookmarks2 => '',
-bookmarks_add => '',
-bookmarks_add2 => '',
-bookmarks_edit => '',
-bookmarks_edit2 => '',
-bookmarks_delete => '',
-bookmarks_delete2 => '',
-spam_questions2 => '',
-spam_questions_add => '',
-spam_questions_add2 => '',
-spam_questions_edit => '',
-spam_questions_edit2 => '',
-spam_questions_delete => '',
-spam_questions_delete2 => '',
-honeypot2 => '',
-honeypot_add => '',
-honeypot_add2 => '',
-honeypot_edit => '',
-honeypot_edit2 => '',
-honeypot_delete => '',
-honeypot_delete2 => '',
-
-deleteattachment => 'on',
-manageattachments2 => 'on',
-removeoldattachments => 'on',
-removebigattachments => 'on',
-rebuildattach => 'on',
-remghostattach => 'on',
-
-profile => '',
-profile2 => '',
-profileAdmin => '',
-profileAdmin2 => '',
-profileContacts => '',
-profileContacts2 => '',
-profileIM => '',
-profileIM2 => '',
-profileOptions => '',
-profileOptions2 => '',
-
-ext_edit => '',
-ext_edit2 => '',
-ext_create => '',
-ext_reorder => '',
-ext_convert => '',
-
-myprofileAdmin => '',
-myprofileAdmin2 => '',
-
-delgroup => '',
-editgroup => '',
-editAddGroup2 => '',
-modmemgr2 => '',
-assigned => '',
-assigned2 => '',
-
-reordercats => '',
-modifycatorder => '',
-modifycat => '',
-createcat => '',
-catscreen => '',
-reordercats2 => '',
-addcat => '',
-addcat2 => '',
-
-modtemplate2 => '',
-modtemp2 => '',
-modstyle => '',
-modstyle2 => '',
-modcss => '',
-modcss2 => '',
-
-modifyboard => '',
-addboard => '',
-addboard2 => '',
-reorderboards2 => '',
-boardscreen => '',
-
-smilieput => 'on',
-smilieindex => 'on',
-smiliemove => 'on',
-addsmilies => 'on',
-
-addmember => 'on',
-addmember2 => 'on',
-deletemultimembers => 'on',
-ml => 'on',
-
-mailmultimembers => 'on',
-mailing2 => 'on',
-
-activate => 'on',
-admin_descision => 'on',
-apr_regentry => 'on',
-del_regentry => 'on',
-rej_regentry => 'on',
-view_regentry => 'on',
-clean_reglog => 'on',
-
-cleanerrorlog => 'on',
-deleteerror => 'on',
-
-modagreement2 => 'on',
-modsettings2 => 'on',
-advsettings2 => 'on',
-referer_control2 => '',
-removeoldthreads => '',
-ipban2 => 'on',
-ipban3 => 'on',
-setcensor2 => 'on',
-setreserve2 => 'on',
-
-editbots2 => '',
-);
-
-1;
-EOF
-
-        open my $SETTING, '>', "$varsdir/Gmodset.pm"
-          || setup_fatal_error( "$maintext_23 $varsdir/Gmodset.pm: ", 1 );
-        print {$SETTING} $setfile
-          or croak 'cannot print gmodsetting.txt';
-        close $SETTING or croak 'cannot close Gmodset.pm';
-    }
-
-    if ( !-e "$varsdir/user.log" ) {
-        open my $LOGFILE, '>', "$varsdir/user.log"
-          || setup_fatal_error( "$maintext_23 $varsdir/user.log: ", 1 );
-        print {$LOGFILE} 'admin|1105634411|127.0.0.1|'
-          or croak 'cannot print user.log';
-        close $LOGFILE or croak 'cannot close user.log';
-    }
-
-    if ( !-e "$varsdir/registration.log" ) {
-        open my $REGLOG, '>', "$varsdir/registration.log"
-          || setup_fatal_error( "$maintext_23 $varsdir/registration.log: ", 1 );
-        print {$REGLOG} q{} or croak 'cannot print registration.log';
-        close $REGLOG or croak 'cannot close registration.log';
-    }
-
-    return;
 }
 
 sub checkmodules {
-    load_language('Admin');
+    ($mylang) = @_;
+    my $mlang = $INFO{'getlang'} || $mylang;
+    getlang($mlang);
     tempstarter();
 
     $yymain .= qq~
 <form action="$set_cgi?action=setinstall" method="post">
-<p class="none"><strong>If this page is on a white background, go back and check your path settings - the url for yabbfiles is configured wrong or yabbfiles/Templates/Forum/default.css is missing.</strong></p>~;
-
-    require Admin::ModuleChecker;
+<p class="none"><strong>$mylang{'white'}</strong></p>~;
+    $yymain .= modules($mlang);
     $yymain =~ s/\Qfloat: left; \E|<\/div>$//gxsm;
 
     if ($dont_continue_setup) {
-        $yymain .= q~
+        $yymain .= qq~
     <table class="border-space pad-cell">
         <tr>
             <td class="windowbg2 center" style="margin-top:.5em; margin-bottom:1em; color:red; font-size:large;">
-                Sorry, you cannot continue until you have installed at least the "Digest::MD5" module.
+                $mylang{'nogo'}
             </td>
-      </tr>
+        </tr>
       </table>~;
     }
     else {
-        $yymain .= q~
+        $yymain .= qq~
     <table class="border-space pad-cell">
         <tr >
             <td class="catbg center" style="margin-top:.5em; margin-bottom:1em">
-                  You can always see the above information on the start page of your AdminCenter.<br />
-                  Therefore you can continue now and install missing modules later if you really need them.<br />
-                  <br />
-                <input type="submit" value="Continue" />
+                $mylang{'yesgo'}
+                <input type="hidden" name="getlang" value="$mlang" />
+                <input type="submit" value="$mylang{'cont2'}" />
             </td>
-      </tr>
+        </tr>
       </table>~;
     }
 
@@ -1228,94 +617,65 @@ sub checkmodules {
 </form>
 ~;
 
-    $yyim    = 'You are running YaBB 2.7.00 Setup.';
-    $yytitle = 'YaBB 2.7.00 Setup';
+    $yyim    = $mylang{'yyim'};
+    $yytitle = $mylang{'yytitle'};
     setuptemplate();
     return;
 }
 
 sub setinstall {
-    load_language('Admin');
+    getlang($mylang);
+    our %maintxt;
+    $maintxt{'107'} = $mylang{'107'};
     tempstarter();
 
-    # show available languages
-    opendir LNGDIR, $langdir
-      || setup_fatal_error( "Directory: $langdir: ", 1 );
-    my @lfilesanddirs = readdir LNGDIR;
-    closedir LNGDIR;
-    our %lngs;
-    require "$langdir/Lang.lng";
-    my $drawnldirs = q{};
-    foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
-        if ( -e "$langdir/$fld/Main.lng" ) {
-            my $displang = $lngs{$fld};
-            $drawnldirs .=
-qq~<option value="$fld" ${isselected($fld eq $lang)}>$displang</option>~;
-        }
+    my $morlang = q{};
+    if ( $mylang ne 'English' ) {
+        $morlang = $mylang{'morlang'};
+        $morlang =~ s/{langpack}/$mylang/xsm;
     }
-
     $yymain .= qq~
 <form action="$set_cgi?action=setinstall2" method="post">
 <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="tabtitle">
         <tr>
-            <td style="padding-left:1%">System Setup</td>
+            <td style="padding-left:1%">$mylang{'sysset'}</td>
         </tr>
     </table>
     <table class="border-space pad-cell">
         <tr>
-            <td class="windowbg">
-                Here you can set some of the default settings for your new YaBB 2.7.00 forum.<br />
-                After finishing the setup procedure, you should login to your forum and go to your 'Admin Center' -&gt; 'Forum Settings' where you can modify this and other settings.
-            </td>
+            <td class="windowbg">$mylang{'sysset2'}$morlang</td>
         </tr><tr>
             <td class="windowbg2">
-                <div class="div45">
-                    <label for="mbname">Message Board Name</label>
-                </div>
+                <div class="div45"><label for="mbname">$mylang{'sysset3'}</label></div>
                 <div class="div55">
                     <input type="text" name="mbname" id="mbname" size="35" value="My Perl YaBB Forum" />
                 </div>
                 <br style="clear:both" />
-                <div class="div45">
-                    <label for="webmaster_email">Webmaster E-mail Address</label>
-                </div>
-                <div class="div55">
-                    <input type="text" name="webmaster_email" id="webmaster_email" size="35" value="webmaster\@mysite.com" />
-                </div>
+                <div class="div45"><label for="webmaster_email">$mylang{'sysset4'}</label></div>
+                <div class="div55"><input type="text" name="webmaster_email" id="webmaster_email" size="35" value="webmaster\@mysite.com" /></div>
                 <br style="clear:both" />
-                <div class="div45">
-                    <label for="defaultlanguage">Admin Language / Forum Default Language</label>
-                </div>
-                <div class="div55">
-                    <select name="defaultlanguage" id="defaultlanguage">$drawnldirs</select>
-                </div>
-                <br style="clear:both" />
-                <div class="div45">
-                    <label for="timeselect">Default Time Format</label>
-                </div>
+                <div class="div45"><label for="timeselect">$mylang{'sysset5'}</label></div>
                 <div class="div55">
                     <select name="timeselect" id="timeselect" size="1">
-                        <option value="1">01/31/01 at 13:15:17</option>
-                        <option value="5">01/31/01 at 1:15pm</option>
-                        <option value="4" selected="selected">Jan 12th, 2001 at 1:15pm</option>
-                        <option value="8"> 12th Jan, 2001 at 1:15pm</option>
-                        <option value="2">31.01.01 at 13:15:17</option>
-                        <option value="3">31.01.2001 at 13:15:17</option>
-                        <option value="6">31. Jan at 13:15</option>
+                        <option value="1">$mylang{'480'}</option>
+                        <option value="5">$mylang{'484'}</option>
+                        <option value="4" selected="selected">$mylang{'483'}</option>
+                        <option value="8">$mylang{'483a'}</option>
+                        <option value="2">$mylang{'481'}</option>
+                        <option value="3">$mylang{'482'}</option>
+                        <option value="6">$mylang{'485'}</option>
                     </select>
                 </div>
                 <br style="clear:both" />
-                <div class="div45">
-                    Forum Time: (Your actual displayed UTC time). The Forum Time Zone can be changed in the Admin Center.
-                </div>
+                <div class="div45">$mylang{'sysset6'}</div>
                 <div class="div55">
                     <b>~
-      . timeformat( $date, 4 ) . q~</b>
+      . timeformat( $date, 4 ) . qq~</b>
             </div>
                 <br style="clear:both" />
                 <div class="div45">
-                    <label for="$forumnumberformat">Default Number Format</label>
+                    <label for="forumnumberformat">$mylang{'sysset7'}</label>
                 </div>
                 <div class="div55">
                     <select name="forumnumberformat" id="forumnumberformat" size="1">
@@ -1327,35 +687,36 @@ qq~<option value="$fld" ${isselected($fld eq $lang)}>$displang</option>~;
                     </select>
                 </div>
             </td>
-    </tr><tr>
-        <td class="catbg center">
-            <input type="submit" value="Continue" />
+        </tr><tr>
+            <td class="catbg center">
+                <input type="hidden" name="getlang" value="$mylang" />
+                <input type="submit" value="$mylang{'cont2'}" />
             </td>
-      </tr>
-      </table>
+         </tr>
+    </table>
 </div>
 </form>
 ~;
 
-    $yyim    = 'You are running YaBB 2.7.00 Setup.';
-    $yytitle = 'YaBB 2.7.00 Setup';
+    $yyim    = $mylang{'yyim'};
+    $yytitle = $mylang{'yytitle'};
     setuptemplate();
     return;
 }
 
 sub setinstall2 {
+    getlang($mylang);
     my ( $forumstart, $forumnumberformat, $timeselected, $masterkey,
-        $max_siglen, $siglength, $settings_file_version );
+        $max_siglen );
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
         $mbname = $FORM{'mbname'} || 'My Perl YaBB Forum';
         $mbname =~ s/\x22/\x27/gxsm;
         $forumstart        = timetostring( int time );
-        $lang              = $FORM{'defaultlanguage'} || 'English';
         $webmaster_email   = $FORM{'webmaster_email'} || 'webmaster@mysite.com';
         $forumnumberformat = $FORM{'forumnumberformat'} || 1;
         $timeselected      = $FORM{'timeselect'} || 0;
 
-       $gzcomp = 0;
+        $gzcomp = 0;
 
         # Let's generate a masterkey at setup time.
         my @chars = ( 'A' .. 'Z', 'a' .. 'z', 0 .. 9 );
@@ -1365,10 +726,13 @@ sub setinstall2 {
     }
     else {
         $forumstart = timetostring( $INFO{'firstforum'} );
-        $max_siglen = $siglength || 200;
+    }
+    my $mylangs = q{};
+    foreach my $i ( sort keys %lngs ) {
+        $mylangs .= qq~'$i' => '$lngs{$i}',\n~;
     }
 
-    my $setfile = << "EOF";
+    my $setfile = <<"EOF";
 ###############################################################################
 # Settings.pm                                                                 #
 ###############################################################################
@@ -1393,6 +757,8 @@ sub setinstall2 {
 \%templateset = ('Forum default' => ['default','default','default','default','default','default','default','2','0','0','0'],
 'Mobile' => ['mobile','mobile','mobile','mobile','mobile','mobile','mobile','0','0','0','1'],
 );                                                # Forum templates settings
+
+\%lngs = ($mylangs);
 
 \$maintenance = 1;                                 # Set to 1 to enable Maintenance mode
 \$rememberbackup = 0;                              # seconds past since last backup until alert is displayed
@@ -1432,7 +798,7 @@ sub setinstall2 {
                                             # 1: ask for gender, no input required
                                             # 2: ask for gender, input required
 \$nomailspammer = 0;                               # 1: send deleted account email
-\$lang = '$lang';                                # Default Forum Language
+\$lang = '$mylang';                                # Default Forum Language
 \$default_template = 'Forum default';              # Default Forum Template
 \$templ_switcher = '';                             # Set to 1 to display the template switcher dropdown field and allow a quick style switch
 \$temp_switcher_allowed = 0;                       # minimum user level for show Style Switcher: 0 = all, 1 = only members
@@ -1950,13 +1316,14 @@ ext => [0, 0, 0],
 \$show_online_ip_gmod = 1;                         # Set to 1 to show online IP's to global moderators.
 \$show_online_ip_fmod = 1;                         # Set to 1 to show online IP's to yabb moderators.
 \$ip_lookup = 1;                                   # Set to 1 to enable IP Lookup.
-\$masterkey = 'mmPJKfEWyaE4IfzpklIEJ5Ll';          # Seed for encryption of captchas
+\$masterkey = '$masterkey';          # Seed for encryption of captchas
 
+\@iplookup_url = qw(AfriNIC APNIC ARIN LACNIC RIPE_NCC);
 \%iplookup = ('AfriNIC' => "www.afrinic.net/cgi-bin/whois?searchtext={ip}",
-'RIPE_NCC' => "https://apps.db.ripe.net/search/query.html?searchtext={ip}",
-'LACNIC' => "lacnic.net/cgi-bin/lacnic/whois?query={ip}",
-'ARIN' => "whois.arin.net/rest/nets;q={ip}?showDetails=true&showARIN=false&ext=netref2",
 'APNIC' => "wq.apnic.net/apnic-bin/whois.pl?searchtext={ip}",
+'ARIN' => "whois.arin.net/rest/nets;q={ip}?showDetails=true&showARIN=false&ext=netref2",
+'LACNIC' => "lacnic.net/cgi-bin/lacnic/whois?query={ip}",
+'RIPE_NCC' => "https://apps.db.ripe.net/search/query.html?searchtext={ip}",
 );                                                #IPlookup url list
 
 ###############################################################################
@@ -2029,7 +1396,7 @@ ext => [0, 0, 0],
 EOF
 
     open my $SETTING, '>', "$vardir/Settings.pm"
-      || setup_fatal_error( "$maintext_23 $vardir/Settings.pm: ", 1 );
+      or setup_fatal_error( "$maintext_23 $vardir/Settings.pm: ", 1 );
     print {$SETTING} nicely_aligned_file($setfile)
       or croak 'cannot print Settings.pm';
     close $SETTING or croak 'cannot close Settings.pm';
@@ -2041,16 +1408,17 @@ EOF
             ${ $uid . 'admin' }{'regdate'}    = timetostring($date);
             ${ $uid . 'admin' }{'regtime'}    = $date;
             ${ $uid . 'admin' }{'timeselect'} = $timeselected;
-            ${ $uid . 'admin' }{'language'}   = $lang;
+            ${ $uid . 'admin' }{'language'}   = $mylang;
             ${ $uid . 'admin' }{'lastpost'}   = $firstmstime;
         }
         user_account( 'admin', 'update' );
         manage_memberinfo( 'update', 'admin', 'Administrator',
             $webmaster_email, 'Forum Administrator' );
-        open my $RLOG, '>', "$memberdir/admin.rlog";
-        print {$RLOG} qq~$firstmstime|1,$firstmstime\n~;
-        close $RLOG;
-        our $yysetlocation = qq~$set_cgi?action=setup3~;
+        open my $RLOG, '>', "$memberdir/admin.rlog" or croak 'cannot open rlog';
+        print {$RLOG} qq~$firstmstime|1,$firstmstime\n~
+          or croak 'cannot pring rlog';
+        close $RLOG or croak 'cannot close rlog';
+        $yysetlocation = qq~$set_cgi?action=setup3;getlang=$mylang~;
         redirectexit();
     }
     return;
@@ -2086,6 +1454,7 @@ sub tempstarter {
 }
 
 sub checkinstall {
+    getlang($mylang);
     tempstarter();
     $windowbg = '#fafafa';
     $header   = '#5488ba';
@@ -2130,10 +1499,10 @@ sub checkinstall {
         ${ $uid . 'general' }{'lastreply'}    = 0;
         ${ $uid . 'general' }{'lastsubject'} =
           'Welcome to your new YaBB 2.7.00 forum!';
-        ${ $uid . 'general' }{'lasticon'} = 'xx';
-        ${ $uid . 'general' }{'lasttopicstate'}       = 0;
-        ${ $uid . 'general' }{'threadcount'}       = 1;
-        ${ $uid . 'general' }{'messagecount'}       = 1;
+        ${ $uid . 'general' }{'lasticon'}       = 'xx';
+        ${ $uid . 'general' }{'lasttopicstate'} = 0;
+        ${ $uid . 'general' }{'threadcount'}    = 1;
+        ${ $uid . 'general' }{'messagecount'}   = 1;
     }
     boardtotals( 'update', 'general' );
 
@@ -2256,10 +1625,10 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
 
     user_account( 'admin', 'update', 'lastpost+lastonline' );
 
-    $yymain .= q~
+    $yymain .= qq~
     <table class="tabtitle" style="margin-top:.5em">
         <tr>
-             <td class="shadow" style="padding-left:1%">Checking System Files</td>
+             <td class="shadow" style="padding-left:1%">$mylang{'set2_a'}</td>
         </tr>
     </table>
 <div class="boardcontainer">
@@ -2271,34 +1640,31 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
     my $install_error = 0;
     if ($no_brddir) {
         $install_error = 1;
-        $yymain .= qq~A problem has occurred in the /Boards folder.</td>
+        $yymain .= qq~$mylang{'brderr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">No /Boards folder available.</td>
+            <td class="windowbg2">$mylang{'brderr2'}</td>
         </tr>~;
     }
     else {
         if ($brd_missing) {
             $install_error = 1;
-            $yymain .= qq~A problem has occurred in the /Boards folder.</td>
+            $yymain .= qq~$mylang{'brderr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">
-                <b>Missing: </b>
-                <br />$brd_missing
-            </td>
+            <td class="windowbg2"><b>$mylang{'missing'}</b><br />$brd_missing</td>
         </tr>~;
         }
         if ($brd_created) {
             if ( !$brd_missing ) {
-                $yymain .= q~Successfully checked the /Boards folder.</td>
+                $yymain .= qq~$mylang{'brdgd1'}</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center">
       <img src="$imagesdir/check.png" alt="" />
             </td>
-            <td class="windowbg2"><b>Installed: </b><br />$brd_created</td>
+            <td class="windowbg2"><b>$mylang{'inst'}</b><br />$brd_created</td>
         </tr>~;
         }
     }
@@ -2307,29 +1673,29 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
 
     if ($no_memdir) {
         $install_error = 1;
-        $yymain .= qq~A Problem has occurred in the /Members folder.</td>
+        $yymain .= qq~$mylang{'memerr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">No /Members folder available.</td>
+            <td class="windowbg2">$mylang{'memerr2'}</td>
         </tr>~;
     }
     else {
         if ($mem_missing) {
             $install_error = 1;
-            $yymain .= qq~A problem has occurred in the /Members folder.</td>
+            $yymain .= qq~$mylang{'memerr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2"><b>Missing: </b><br />$mem_missing</td>
+            <td class="windowbg2"><b>$mylang{'missing'}</b><br />$mem_missing</td>
         </tr>~;
         }
         if ($mem_created) {
             if ( !$mem_missing ) {
-                $yymain .= q~Successfully checked the /Members folder.</td>
+                $yymain .= qq~$mylang{'memgd1'}</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
-            <td class="windowbg2"><b>Installed: </b><br />$mem_created</td>
+            <td class="windowbg2"><b>$mylang{'inst'}</b><br />$mem_created</td>
         </tr>~;
         }
     }
@@ -2338,29 +1704,29 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
 
     if ($no_mesdir) {
         $install_error = 1;
-        $yymain .= qq~A problem has occurred in the /Messages folder.</td>
+        $yymain .= qq~$mylang{'meserr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">No /Messages folder available.</td>
+            <td class="windowbg2">$mylang{'meserr2'}</td>
         </tr>~;
     }
     else {
         if ($msg_missing) {
             $install_error = 1;
-            $yymain .= qq~A problem has occurred in the /Messages folder.</td>
+            $yymain .= qq~$mylang{'meserr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2"><b>Missing: </b><br />$msg_missing</td>
+            <td class="windowbg2"><b>$mylang{'missing'}</b><br />$msg_missing</td>
         </tr>~;
         }
         if ($msg_created) {
             if ( !$msg_missing ) {
-                $yymain .= q~Successfully checked the /Messages folder.</td>
+                $yymain .= qq~$mylang{'mesgd1'}</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
-            <td class="windowbg2"><b>Installed: </b><br />$msg_created</td>
+            <td class="windowbg2"><b>$mylang{'inst'}</b><br />$msg_created</td>
         </tr>~;
         }
     }
@@ -2368,29 +1734,29 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
             <td class="catbg" colspan="2">~;
     if ($no_vardir) {
         $install_error = 1;
-        $yymain .= qq~A problem has occurred in the /Variables folder.</td>
+        $yymain .= qq~$mylang{'varerr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2">No /Variables folder available.</td>
+            <td class="windowbg2">$mylang{'varerr2'}</td>
         </tr>~;
     }
     else {
         if ($var_missing) {
             $install_error = 1;
-            $yymain .= qq~A problem has occurred in the /Variables folder.</td>
+            $yymain .= qq~$mylang{'varerr1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/cross.png" alt="" /></td>
-            <td class="windowbg2"><b>Missing: </b><br />$var_missing</td>
+            <td class="windowbg2"><b>$mylang{'missing'}</b><br />$var_missing</td>
         </tr>~;
         }
         if ($var_created) {
             if ( !$var_missing ) {
-                $yymain .= q~Successfully checked the /Variables folder.</td>
+                $yymain .= qq~$mylang{'vargd1'}</td>
         </tr>~;
             }
             $yymain .= qq~<tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
-            <td class="windowbg2"><b>Installed: </b><br />$var_created</td>
+            <td class="windowbg2"><b>$mylang{'inst'}</b><br />$var_created</td>
         </tr>~;
         }
     }
@@ -2400,33 +1766,34 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
 
     if ($set_missing) {
         $install_error = 1;
-        $yymain .= q~A problem has occurred while creating Settings.pm.</td>
+        $yymain .= qq~$mylang{'seterr'}</td>
         </tr>~;
     }
     if ($set_created) {
-        $yymain .= qq~Successfully checked Settings.pm.</td>
+        $yymain .= qq~$mylang{'setgd1'}</td>
         </tr><tr>
             <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
-            <td class="windowbg2">
-                Click on 'Continue' and go to your <i>Admin Center - Forum Settings</i> to set the options for your YaBB 2.7.00 forum.<br />Or to convert a 1x or 2x Forum to 2.7.00
-            </td>
+            <td class="windowbg2">$mylang{'setgd2'}</td>
         </tr>~;
     }
 
     if ( !$install_error ) {
         $yymain .= qq~<tr>
+            <td class="windowbg center"><img src="$imagesdir/check.png" alt="" /></td>
+            <td class="windowbg2">$mylang{'noerr1'}</td>
+        </tr><tr>
             <td class="catbg center" colspan="2">
-      <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
-            <input type="submit" value="Continue" />
-      </form>
-            <p class="center">You can access the 1x and 2x Conversion Utilities through the Admin Center.</p>
+            <form action="$set_cgi?action=ready;nextstep=YaBB" method="post" style="display: inline;">
+                <input type="submit" value="$mylang{'cont2'}" />
+            </form>
+            <p class="center">$mylang{'noerr2'}</p>
             </td>
         </tr>~;
     }
     else {
-        $yymain .= q~<tr>
+        $yymain .= qq~<tr>
             <td class="titlebg" colspan="2">
-                <div class="div98"><b>One or more errors occurred while checking the system files. The problems must be solved before you can continue.</b></div>
+                <div class="div98"><b>$mylang{'bigerr'}</b></div>
             </td>
         </tr>~;
     }
@@ -2434,8 +1801,8 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
       </table>
 </div>
       ~;
-    $yyim    = 'You are running YaBB 2.7.00 Setup.';
-    $yytitle = 'YaBB 2.7.00 Setup';
+    $yyim    = $mylang{'yyim'};
+    $yytitle = $mylang{'yytitle'};
     setuptemplate();
     return;
 }
@@ -2459,7 +1826,7 @@ It prevents it being run again after it has been run once.
 Delete this file if you want to run the Setup Utility again.
 LOCK
     open my $LOCKFILE, '>', "$vardir/Setup.lock"
-      || setup_fatal_error( "$maintext_23 $vardir/Setup.lock: ", 1 );
+      or setup_fatal_error( "$maintext_23 $vardir/Setup.lock: ", 1 );
     print {$LOCKFILE} $lock or croak 'cannot print to Setup.lock';
     close $LOCKFILE or croak 'cannot close Setup.lock';
     return;
@@ -2481,6 +1848,7 @@ sub setup_fatal_error {
     $e .= "\n";
     if ($v) { $e .= $OS_ERROR . "\n"; }
 
+    getlang($mylang);
     $yymenu = q~Boards &amp; Categories | ~;
     $yymenu .= q~Members | ~;
     $yymenu .= q~Messages | ~;
@@ -2491,15 +1859,16 @@ sub setup_fatal_error {
     $yymain .= qq~
 <table class="bordercolor center border-space pad-cell" width="80%" >
     <tr>
-        <td class="titlebg text1"><b>An Error Has Occurred!</b></td>
+        <td class="titlebg text1"><b>$mylang{'logerr1'}</b></td>
   </tr><tr>
         <td class="windowbg text1" style="padding:1em 1em 2em 1em">$e</td>
     </tr>
 </table>
-<p style="text-align:center"><a href="javascript:history.go(-1)">Back</a></p>
+<p style="text-align:center"><a href="javascript:history.go(-1)">$mylang{'back'}</a></p>
 ~;
-    $yyim    = 'YaBB 2.7.00 Setup Error.';
-    $yytitle = 'YaBB 2.7.00 Setup Error.';
+    $yymain =~ s/{memberdir}/$memberdir/gxsm;
+    $yyim    = $mylang{'erryyim'};
+    $yytitle = $mylang{'erryyim'};
 
     if ( !-e "$vardir/Settings.pm" ) { simpleoutput(); }
 
@@ -2512,7 +1881,7 @@ sub simpleoutput {
     $gzcomp = 0;
     print_output_header();
 
-    print qq~
+    my $start = <<"STR";
 <!DOCTYPE html>
 <html lang='en-US'>
 <head>
@@ -2529,16 +1898,37 @@ sub simpleoutput {
         #folderfind .header {background-color:$header;}
         #folderfind .catbg {background-color:$catbg; text-align:center; color:#fff; }
     </style>
+<script type="text/javascript">
+function abspathfill(brddir) {
+    document.auto_settings.preboarddir.value = brddir;
+}
+function autofill() {
+    var boardurl = document.auto_settings.preboardurl.value || "$boardurl";
+    var boarddir = document.auto_settings.preboarddir.value || ".";
+    var htmldir = document.auto_settings.prehtmldir.value || "";
+    var htmlurl = document.auto_settings.prehtml_root.value || "";
+    if(!htmldir) {return 0;}
+    if(!htmlurl) {return 0;}
+}
+</script>
 </head>
 <body>
 $yymain
 </body>
 </html>
-    ~ or croak 'cannot print page to screen';
+STR
+
+    print_output_header();
+    print $start or croak 'cannot print page';
+
     exit;
 }
 
 sub setuptemplate {
+    getlang($mylang);
+    our %maintxt;
+    $maintxt{'107'} = $mylang{'107'};
+    our $yycopyright = $mylang{'yycopyright'};
     $gzcomp = 0;
     $usestyle ||= 'default';
     print_output_header();
@@ -2549,94 +1939,25 @@ sub setuptemplate {
     $yyimages        = $imagesdir;
     $yydefaultimages = $defaultimagesdir;
     $yystyle =
-qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/setup.css" type="text/css" />\n~;
+qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="text/css" />\n<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/setup.css" type="text/css" />\n~;
     $yystyle =~ s/$usestyle\///gxsm;
 
-    my $yytemplate = "$templatesdir/$usehead/$usehead.html";
+    my $yytemplate = "$templatesdir/default/default.html";
     open my $TEMPLATE, '<', "$yytemplate"
-      || setup_fatal_error( "$maintext_23 $yytemplate: ", 1 );
+      or setup_fatal_error( "$maintext_23 $yytemplate: ", 1 );
     my @yytemplate = <$TEMPLATE>;
     close $TEMPLATE or croak 'cannot close TEMPLATE';
 
     our $output      = q{};
     our $yyboardname = $mbname;
     our $yytime      = timeformat( $date, 1 );
-    our ($yyuname);
-    {
-        no strict qw(refs);
-        $yyuname =
-          $iamguest ? q{} : qq~Hello ${ $uid . $username }{'realname'}, ~;
-    }
+    our $yyuname     = q{};
 
-    my @newsmessages = ();
-    if ($enable_news) {
-        open my $NEWS, '<', "$langdir/English/news.txt"
-          or croak 'cannot open NEWS';
-        @newsmessages = <$NEWS>;
-        close $NEWS or croak 'cannot close NEWS';
-    }
-    our $yycopyin    = 0;
-    our $yynewstitle = q{};
-    our $yynews      = q{};
+    our $yycopyin = 0;
     for my $i ( 0 .. $#yytemplate ) {
         our $curline = $yytemplate[$i];
         if ( !$yycopyin && $curline =~ m/\Q{yabb copyright}\E/xsm ) {
             $yycopyin = 1;
-        }
-        if ($enable_news) {
-            if ( $curline =~ m/\Q{yabb newstitle}\E/xsm ) {
-                $yynewstitle = q~<b>News:</b>  <span id="newsdiv"></span>~;
-            }
-            if ( $curline =~ m/\Q{yabb news}\E/xsm ) {
-                srand;
-                if ( $shownewsfader == 1 ) {
-
-                    $fadedelay = ( $maxsteps * $stepdelay );
-                    $yynews .= qq~
-                        <script type="text/javascript">
-                                    var maxsteps = "$maxsteps";
-                                    var stepdelay = "$stepdelay";
-                                    var fadelinks = $fadelinks;
-                                    var delay = "$fadedelay";
-                                    var bcolor = "$color{'faderbg'}";
-                                    var tcolor = "$color{'fadertext'}";
-                                    var fcontent = new Array();
-                                    var begintag = "";
-                        ~;
-                    for my $j ( 0 .. $#newsmessages ) {
-                        $newsmessages[$j] =~ s/[\r\n]//gxsm;
-                        if ( $newsmessages[$j] eq q{} ) { next; }
-                        if ( $i != 0 ) { $yymain .= qq~\n~; }
-                        $message = $newsmessages[$j];
-                        if ($enable_ubbc) {
-                            enable_yabbc();
-                            do_ubbc();
-                        }
-                        $message =~ s/\x22/\\\x22/gxsm;
-                        $yynews .= qq~
-                                    fcontent[$j] = "$message";\n
-                              ~;
-                    }
-                    $yynews .= q~
-                                    var closetag = '';
-                        </script>
-                        ~;
-                }
-                else {
-                    $message = $newsmessages[ int rand @newsmessages ];
-                    if ($enable_ubbc) {
-                        enable_yabbc();
-                        do_ubbc();
-                    }
-                    $message =~ s/\x27/&\x2339;/xsm;
-                    $yynews = qq~
-            <script type="text/javascript">
-                if (ie4 || DOM2) var news = '$message';
-                var div = document.getElementById("newsdiv");
-                div.innerHTML = news;
-            </script>~;
-                }
-            }
         }
         our $yyurl = $scripturl;
         if ( $curline =~ /{yabb\s+(\w+)}/xsm ) {
@@ -2696,16 +2017,16 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 }
 
 sub foundsetuplock {
-    my $mylang = q{};
     if ( $INFO{'lang'} ) {
-        $mylang = qq~\n                    <input type="hidden" name="lang" value="$INFO{'lang'}" />~,
+        $mylang =
+qq~\n                    <input type="hidden" name="lang" value="$INFO{'lang'}" />~;
     }
     tempstarter();
     $scripturl = "$boardurl/YaBB.$yyext";
     my $conv  = q{};
     my $conv2 = q{};
     our $formsession = cloak("$mbname$username");
-    if ( -e "$vardir/Convert.lock" || -e 'Variables/ConvertLang.lock') {
+    if ( -e "$vardir/Convert.lock" || -e 'Variables/ConvertLang.lock' ) {
         $conv2 =
 qq~<p>A Conversion Utility has already been run.<br />To run the Converter again, remove the file '$vardir/Convert.lock' and '$vardir/ConvLang.lock', if it exists, then re-visit this page.</p>~;
 
@@ -2759,6 +2080,117 @@ qq~<p>A Conversion Utility has already been run.<br />To run the Converter again
     $yyim    = 'YaBB 2.7.00 Setup has already been run.';
     $yytitle = 'YaBB 2.7.00 Setup';
     template();
+    return;
+}
+
+sub modules {
+    ($mylang) = @_;
+    getlang($mylang);
+    my @modules =
+      qw(Digest::MD5 Time::HiRes Time::Local DateTime DateTime::TimeZone File::Find CGI Net::SMTP Net::SMTPS Net::DNS Mail::CheckUser Compress::Zlib Compress::Bzip2 Archive::Tar Archive::Zip MIME::Lite LWP::UserAgent HTTP::Request::Common Crypt::SSLeay IO::Socket::INET Digest::HMAC_MD5 Carp bytes integer English URI::Escape Module::Load );
+
+    @modules = sort @modules;
+    my $checker_output = q{};
+    my ($i);
+
+    for my $module (@modules) {
+        $dont_continue_setup = q{};
+        if ( eval { load($module); 1 } ) {
+            if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {
+                my $myversion = $module->VERSION || '<NO $VERSION>';
+                $checker_output .= qq~<tr>
+                    <td class="windowbg2"><span class="good">$module</span></td>
+                    <td class="windowbg2" colspan="2">$mylang{'6'} $mylang{$module . '2'} $myversion</td>
+                </tr>~;
+            }
+            else {
+                $checker_output .= qq~<tr>
+                    <td class="windowbg2"><span class="good">$module</span></td>
+                    <td class="windowbg2" colspan="2">$mylang{'6'}</td>
+                </tr>~;
+            }
+        }
+        else {
+            if ( $module eq 'Digest::MD5' ) { $dont_continue_setup = 1; }
+            $i = $mylang{'8'};
+            my $e = $EVAL_ERROR;
+
+            # IE displays the @INC path in one line  :-(
+            # If you use IE and don't like what you see, remove the
+            # comment (#) in next line.
+            # $e =~ s/\//\\/g;
+            $checker_output .= qq~<tr>
+                    <td class="windowbg2"><span class="important">$module</span></td>
+                    <td class="windowbg2">
+                        $mylang{'5'}<br />
+                        <br />$e
+                    </td>
+                    <td class="windowbg2">$mylang{$module}</td>
+                </tr>~;
+        }
+    }
+
+    my $perlver = $];
+    if ( $perlver gt '5.009' ) {
+        $perlver = $PERL_VERSION;
+    }
+    my $server = $ENV{'SERVER_SOFTWARE'} || $mylang{'noserver'};
+
+    my $modchk = qq~
+        <div class="bordercolor rightboxdiv" style="float: left; margin-top:.5em">
+            <table class="border-space pad-cell">
+                <tr>
+                    <td class="titlebg" colspan="3"><b>$mylang{'1'}</b></td>
+                </tr><tr>
+                    <td class="catbg" colspan="3">
+                        <span class="small">$mylang{'2'}</span>
+                    </td>
+                </tr><tr>
+                    <td class="catbg" colspan="3">
+                        $mylang{'perlver'}: <em>$perlver</em>
+                        <br />$mylang{'server'}: <em>$server</em>
+                        <br />$mylang{'mod_access_compat'}
+                    </td>
+                </tr>~ . (
+        $i
+        ? qq~<tr>
+                    <td class="windowbg2">
+                        <span class="important"><b>$mylang{'7'}</b></span>
+                    </td>
+                    <td class="windowbg2" colspan="2">$i</td>
+                </tr>~
+        : q{}
+      )
+      . qq~<tr>
+                    <td class="catbg center"><b>$mylang{'3'}</b></td>
+                    <td class="catbg center" colspan="2"><b>$mylang{'4'}</b></td>
+                </tr>
+            $checker_output
+            </table>
+        </div>~;
+
+    return $modchk;
+}
+
+sub getlang {
+    my ($use_lang) = @_;
+    $use_lang ||= 'English';
+    if ( -e "$langdir/$use_lang/Setup.lng" ) {
+        require "$langdir/$use_lang/Setup.lng";
+    }
+    elsif ( -e "$langdir/English/Setup.lng" ) {
+        require "$langdir/English/Setup.lng";
+    }
+    else {
+
+       # Catches deep recursion problems
+       # We can simply return to the error routine once we add the needed string
+        if ( $use_lang eq 'Error' ) {
+            setup_fatal_error( 'cannot_open_language - Cannot find required language file. Please inform the administrator about this problem.');
+            return;
+        }
+        setup_fatal_error( 'cannot_open_language', "$use_lang/Setup.lng" );
+    }
     return;
 }
 

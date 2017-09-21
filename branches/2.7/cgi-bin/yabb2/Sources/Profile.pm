@@ -1116,7 +1116,6 @@ qq~<option value="$curtemplate"${isselected($curtemplate eq ${ $uid . $user }{'t
     my @lfilesanddirs = readdir DIR;
     closedir DIR;
     my $lngcnt = 0;
-    require "$langdir/Lang.lng";
     my $drawnldirs = q{};
     for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
         if ( -e "$langdir/$fld/Main.lng" ) {

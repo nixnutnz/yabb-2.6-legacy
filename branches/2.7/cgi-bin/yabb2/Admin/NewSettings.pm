@@ -34,7 +34,7 @@ our (
     $yymycharset,                  $codemaxchars,
     $fadertext,                    %color,
     $faderbackground,              %templateset,
-    $iplookup_url,                 %iplookup,
+    $iplookup_url, $iplookup_list,                %iplookup,
     $ext_prof_order,               @ext_prof_order,
     $ext_prof_fields,              @ext_prof_fields,
     $adomains,                     @adomains,
@@ -637,7 +637,6 @@ sub save_settings_to {
     foreach my $key ( keys %settings ) {
         ${$key} = delete $settings{$key};
     }
-    require "$langdir/Lang.lng";
     for ( keys %lngs ) {
         if ( ${ $_ . '_maintenancetext' } ) {
             our ($MAINT);
@@ -677,6 +676,10 @@ sub save_settings_to {
         if ( !$iplookup_url ) {
             $iplookup_url = join q{},
               map { qq~'$_' => "$iplookup{$_}",\n~; } keys %iplookup;
+        }
+
+        if ( !$iplookup_list ) {
+            $iplookup_list = join q{ }, keys %iplookup;
         }
 
         if ( !$ext_prof_order && $ext_prof_order[0] ) {
@@ -803,6 +806,21 @@ qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\
         }
         my $extensions   = q{'} . join( q{', '}, @ext ) . q{'};
         my $pm_attachext = q{'} . join( q{', '}, @pm_attachext ) . q{'};
+# %lng hash out of Languages
+        opendir LNGDIR, $langdir;
+        my @lfilesanddirs = readdir LNGDIR;
+        closedir LNGDIR;
+        my $mylangs = q{};
+        for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+            if ( -e "$langdir/$fld/Main.lng" && -e "$langdir/$fld/$fld.txt" ) {
+                open my $LANG, '<', "$langdir/$fld/$fld.txt" or croak "cannot load $fld.txt";
+                my $displang = <$LANG>;
+                close $LANG or croak 'cannot close Lang.txt.';
+                chomp $displang;
+                $mylangs .= qq~'$fld' => '$displang',\n~;
+            }
+        }
+
         my @setlist =
           qw( accept_permafull accept_permalink addmemgroup_enabled birthday_on_reg enable_buddylist bypass_lock_perm cal_event_mods cal_event_noname cal_event_perms cal_event_private calsplit  captchastyle clike_htaccess delete_eventsuntil detachblock disallow_proxy_htaccess cal_event_display distortion en_spam_questions enable_guest_view_limit enable_mc_away enable_stealth  enable_quota enabletopichover findfile_maxsize findfile_root findfile_space findfile_time getreversedns gpvalid_en group_stars_ml guest_view_limit guest_view_limit_block harvester_htaccess helloserv hide_signat_for_guests hostusername imp_email_check ip_lookup maxdays maxdaysattach maxsizeattach min_reg_time no_short_ubbc nomailspammer perm_domain perm_spacer pm_spam_chk enable_guest_alert pm_attach_groups pm_checkext pm_display_pics pm_enable_bcc pm_enable_cc enable_alert enable_guest_pm pm_maxdaysattach pm_maxsizeattach posttools profile_int referer_htaccess removenormalsmilies request_htaccess rssperm rsssymboards rsssymrecent script_htaccess scroll_events self_del_user birthday_color_show birthday_sign_show birthday_button_show birthday_date_show birthday_list_show show_caltoday show_colorlinks show_event_birthdays show_eventbutton show_mini_calicons showage showinbox showpageall show_sunday showuserage showuserpicml showzodiac spam_questions_case spam_questions_gp spam_questions_send spamfruits staff_reason string_htaccess symlink temp_switcher_allowed templ_switcher threadtools tlnomodday union_htaccess usehelp_perms user_hide_attach_img user_hide_avatars user_hide_img user_hide_signat user_hide_smilies_row user_hide_user_text user_reason usertools );
 
@@ -845,6 +863,7 @@ qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\
 
 \%templateset = ($templateset);             # Forum templates settings
 
+\%lngs = ($mylangs);
 \$maintenance = $maintenance;               # Set to 1 to enable Maintenance mode
 \$rememberbackup = $rememberbackup;         # seconds past since last backup until alert is displayed
 
@@ -1342,7 +1361,7 @@ $addedsmilies
 \$randomizer = $randomizer;         # Set 0 to 3 to create background random noise based on foreground or shade color or both
 \$distortion = $distortion;         # Set 1 to distort the captcha image even more
 \$stealthurl = $stealthurl;         # Set to 1 to mask referer url to hosts if a hyperlink is clicked.
-\$do_scramble_id = $do_scramble_id;     # Set to 1 scambles all visible links containing user ID's
+\$do_scramble_id = $do_scramble_id;     # Set to 1 scrambles all visible links containing user ID's
 \$referersecurity = $referersecurity;       # Set to 1 to activate referer security checking.
 \$sessions = $sessions;             # Set to 1 to activate session id protection.
 \$show_online_ip_admin = $show_online_ip_admin; # Set to 1 to show online IP's to admins.
@@ -1351,6 +1370,7 @@ $addedsmilies
 \$ip_lookup = $ip_lookup;                        # Set to 1 to enable IP Lookup.
 \$masterkey = '$masterkey';         # Seed for encryption of captchas
 
+\@iplookup_url = qw($iplookup_list);
 \%iplookup = ($iplookup_url);           #IPlookup url list
 
 ###############################################################################

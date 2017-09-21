@@ -137,7 +137,6 @@ sub set_censor {
     opendir LNGDIR, $langdir;
     my @langitems = readdir LNGDIR;
     closedir LNGDIR;
-    require "$langdir/Lang.lng";
     my $drawnldirs = q{};
 
     foreach my $fld ( sort { lc($a) cmp lc $b } @langitems ) {

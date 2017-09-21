@@ -137,7 +137,7 @@ our (
     $user_hide_smilies_row,   $user_hide_user_text,
     $user_reason,             $useraddpoll,
     $usertools,               $usertxtwrap,
-    $very_hot_topic,          %templateset,
+    $very_hot_topic,          %templateset, %lngs
 );
 ## system ##
 our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM,
@@ -305,19 +305,22 @@ $tz_select .= '</select>';
 opendir LNGDIR, $langdir;
 my @lfilesanddirs = readdir LNGDIR;
 closedir LNGDIR;
-our %lngs;
-require "$langdir/Lang.lng";
 my $drawnldirs = q{};
 for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
     if ( -e "$langdir/$fld/Main.lng" ) {
-        my $displang = $lngs{$fld} || q{Missing Language};
-        if ($displang eq q{Missing Language}) {
-            $drawnldirs .=
-qq~<option disabled="disabled">$displang</option>~;
-        }
+        if ($fld eq 'English' && !exists $lngs{$fld} ) {
+        $drawnldirs .=
+qq~<option value="$fld" selected="selected">English</option>~;}
         else {
-            $drawnldirs .=
+            my $displang = $lngs{$fld} || q{Missing Language};
+            if ($displang eq q{Missing Language}) {
+                $drawnldirs .=
+qq~<option disabled="disabled">$displang</option>~;
+            }
+            else {
+                $drawnldirs .=
 qq~<option value="$fld" ${isselected($fld eq $lang)}>$displang</option>~;
+            }
         }
     }
 }

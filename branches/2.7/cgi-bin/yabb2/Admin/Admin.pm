@@ -49,7 +49,7 @@ our (
     $matchcase,             $matchname,      $matchuser,
     $matchword,             $maxdays,        $mbname,
     $name_cannot_be_userid, $send_welcomeim, $sendname,
-    $timeoffset,            $timeselected,   @reserve
+    $timeoffset,            $timeselected,   @reserve, %lngs,
 );
 ## template ##
 our ( $front_page, $last_div, $my_admin_login, $versionchk, $yabb_update, $yabb_dnloads );
@@ -1513,12 +1513,15 @@ sub deleteconverterfiles {
         rmdir "$convdir";
     }
     if ( -e './Setup.pl' )        { unlink './Setup.pl'; }
-    if ( -e './Convert1x.pl' )      { unlink './Convert1x.pl'; }
+    if ( -e './Convert1x.pl' )    { unlink './Convert1x.pl'; }
     if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
     if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
     if ( -e './ConvertLang.pl' )  { unlink './ConvertLang.pl'; }
-    if ( -e './Languages/English/Convert.lng' )  { unlink './Languages/English/Convert.lng'; }
     if ( -e './Templates/admin/Convert.template' )  { unlink './Templates/admin/Convert.template'; }
+    foreach my $lng ( keys %lngs ) {
+        if ( -e "$langdir/$lng/Setup.lng" )  { unlink "$langdir/$lng/Setup.lng"; }
+        if ( -e "$langdir/$lng/Convert.lng" )  { unlink "$langdir/$lng/Convert.lng"; }
+    }
 
     if ( -e "$htmldir/Templates/Forum/setup.css" ) {
         unlink "$htmldir/Templates/Forum/setup.css";

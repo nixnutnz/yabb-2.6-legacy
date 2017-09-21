@@ -57,7 +57,6 @@ qq~<input type="checkbox" name="maintenance" id="maintenance" value="1" ${ischec
     }
 );
 
-require "$langdir/Lang.lng";
 {
     no strict qw(refs);
     for ( sort keys %lngs ) {

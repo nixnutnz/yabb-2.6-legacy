@@ -30,7 +30,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 our (
     $iamadmin, $iamfmod,  $iamgmod,      $ip_lookup,
     $my_ipdiv, $yymain,   $yynavigation, $yytitle,
-    %INFO,     %iplookup, %lookup_txt,
+    %INFO,     %iplookup, %lookup_txt,   @iplookup_url,
 );
 
 if ( !$ip_lookup || !$INFO{'ip'} || ( !$iamadmin && !$iamgmod && !$iamfmod ) ) {
@@ -44,9 +44,8 @@ get_template('Other');
 sub ip_lookup {
     my $ip            = $INFO{'ip'};
     my $lookuplink    = q{};
-    my @iplookup_urls = keys %iplookup;
 
-    foreach my $i (@iplookup_urls) {
+    foreach my $i (@iplookup_url) {
         my $iplookup_name = $i;
         $iplookup_name =~ s/_/ /xsm;
         $iplookup_name = do_censor($iplookup_name);

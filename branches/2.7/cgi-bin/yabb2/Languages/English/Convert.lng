@@ -1,5 +1,5 @@
 ###############################################################################
-# Convert.lng                                                                #
+# Convert.lng                                                                 #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -51,7 +51,7 @@ $englishconvertlngver = 'YaBB 2.7.00 $Revision$';
 '4doneb' => q~There are <b>~ . ( $INFO{'total_re_tot'} - $INFO{'my_re_tot'} ) . qq~/$INFO{'total_re_tot'}</b> Boards (2) left to be recounted. &nbsp; </div>~,
 '4donec' => q~There are <b>~ . ( $INFO{'total_memb'} - $INFO{'memb_index'} ) . qq~/$INFO{'total_memb'}</b> Members left to be recounted. &nbsp;~,
 '4doned' => q~There are <b>~ . ( $INFO{'total_mail_n'} - $INFO{'my_mail_n'} ) . qq~/$INFO{'total_mail_n'}</b> Notifications left to be re-written. &nbsp;~,
-'4donee' => q~There are <b>~ . ( $INFO{'total_nopost'} - $INFO{'fix_nopost'} ) . qq~/$INFO{'total_nopost'}</b> NoPost-Membergroups left to be updated. &nbsp;~, 
+'4donee' => q~There are <b>~ . ( $INFO{'total_nopost'} - $INFO{'fix_nopost'} ) . qq~/$INFO{'total_nopost'}</b> NoPost-Membergroups left to be updated. &nbsp;~,
 '5mess' => q~Messages have been imported.~,
 'mess5' => q~New style message files have been created.~,
 'thrds' => q~Threads have been imported.~,
@@ -120,7 +120,7 @@ $englishconvertlngver = 'YaBB 2.7.00 $Revision$';
 'convsmiliesdir' => q~Path to your YaBB 2x Smilies (\$smiliesdir): ~,
 'convvardir' => q~Path to your YaBB 2x Variables: ~,
 'done' => q~done~,
-'finish' => q~<br />Furthermore, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />- Rebuild Message Index<br />- Recount Board Totals<br />- Rebuild Members List<br />- Recount Membership<br />- Rebuild Members History<br />- Rebuild Notifications Files<br />- Clean Users Online Log<br />- Attachment Functions => Rebuild Attachments<br />Also, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.~,
+'finish' => q~<br />Furthermore, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />- Rebuild Message Index<br />- Recount Board Totals<br />- Rebuild Members List<br />- Recount Membership<br />- Rebuild Members History<br />- Rebuild Notifications Files<br />- Clean Users Online Log<br />- Attachment Functions => Rebuild Attachments<br />Also double check Member Groups, and, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.~,
 'fixn' => qq~The 2x Import Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/tmp/datacheck.txt" target="_new">datacheck.txt</a> for more details.~,
 'getatt' => q~There are more than {lim} files in old Attachments Folder. <a href="javascript:void(window.open('{set_cgi}?action=convert;section=getatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import Attachments</a><br />~,
 'getpmatt' => q~There are more than {lim} files in old PMattachments Folder. <a href="javascript:void(window.open('{set_cgi}?action=convert;section=getpmatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import PMAttachments</a><br />~,
@@ -140,7 +140,6 @@ $englishconvertlngver = 'YaBB 2.7.00 $Revision$';
 'error' => q~YaBB 2.7.00 Converter Error.~,
 'finish' => qq~<p>Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
-                - Member Groups<br />
                 - Rebuild Members List<br />
                 - Recount Membership<br />
                 - Rebuild Members History<br />
@@ -148,8 +147,7 @@ $englishconvertlngver = 'YaBB 2.7.00 $Revision$';
                 - Clean Users Online Log<br />
                 - Attachment Functions => Rebuild Attachments<br />
                 <br />
-                If your old forum had Extended Profiles installed, you should turn on Extended Profiles in Admin Center -&gt; Forum Settings -&gt; Members and run the Extended Profiles converter from Admin Center -&gt; Profile Fields.
-                <br />
+                Also double check Member Groups, and, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.<br /><br />
                 You may now login to your forum. Enjoy using YaBB 2.7.00!</p>~,
 );
 
@@ -194,19 +192,16 @@ $englishconvertlngver = 'YaBB 2.7.00 $Revision$';
 'vars2' => q~Variable Conversion. -&gt;~,
 'varsdn' => q~Variables Convert done.~,
 'time' => qq~Elapsed Time: {elapse} minutes.~,
-'finish' => qq~<p>We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the error in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br />
-                <br />
+'finish' => qq~<p>We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the errors in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br /><br />
                 Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
                 - Rebuild Message Index<br />
-                - Member Groups<br />
                 - Rebuild Members List<br />
                 - Recount Membership<br />
                 - Rebuild Members History<br />
                 - Rebuild Notifications Files<br />
                 - Clean Users Online Log<br />
-                - Attachment Functions => Rebuild Attachments<br />
-                <br />
-                <br />
+                - Attachment Functions => Rebuild Attachments<br /><br />
+                Also double check Member Groups, and, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.<br /><br />
                 You may now login to your forum. Enjoy using YaBB 2.7.00!</p>~,
 'strt' => q~Start~,
 'done' => q~done~,

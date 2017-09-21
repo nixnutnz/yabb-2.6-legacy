@@ -1815,7 +1815,7 @@ sub post2 {
     $message = from_chars($message);
     $message = to_html($message);
     $message = regex_3($message);
-    check_icon();
+    $icon = check_icon($icon);
 
     if ( -e ("$datadir/.txt") ) { unlink "$datadir/.txt"; }
 
@@ -2898,7 +2898,7 @@ sub send_guest_pm2 {
     $message = from_chars($message);
     $message = to_html($message);
     $message = regex_3($message);
-    check_icon();
+    $icon = check_icon($icon);
 
     if ( -e ("$datadir/.txt") ) { unlink "$datadir/.txt"; }
 

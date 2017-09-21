@@ -532,11 +532,12 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     my $subject = $FORM{'subject'};
     $message = $FORM{'message'};
     $icon    = $FORM{'icon'};
+    $icon = check_icon($icon);
     our $ns = $FORM{'ns'} || q{};
     my $notify = $FORM{'notify'};
     our $thestatus = $FORM{'topicstatus'} || q{};
     $thestatus =~ s/,\s//gxsm;
-    check_icon();
+    
 
     if ( $FORM{'reason'} ) {
         $reason  = $FORM{'reason'};

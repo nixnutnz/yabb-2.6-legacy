@@ -357,7 +357,6 @@ sub load_user {
                 no strict qw(refs);
                 %{ $uid . $user } = %vars;
                 ${ $uid . $user }{'lastonline'} = $mylastonline || q{};
-                require "$langdir/Lang.lng";
                 if ( !exists $lngs{ ${ $uid . $user }{'language'} } ) {
                     ${ $uid . $user }{'language'} = 'English';
                 }

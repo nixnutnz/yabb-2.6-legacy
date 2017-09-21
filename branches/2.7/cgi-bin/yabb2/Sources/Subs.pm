@@ -96,7 +96,7 @@ our (
     $defaultimagesdir, $detention_left,         $e_tag,
     $fadedelay,        $findmember,             $formsession,
     $guest_lang,       $header_already_printed, $headerstatus,
-    $hour,             $iamadmin,               $iamfmod,
+    $iamadmin,         $iamfmod,
     $iamgmod,          $iamguest,               $iammod,
     $language,         $last_modified,          $mday,
     $message,          $mloaded,                $mon_num,
@@ -660,7 +660,9 @@ qq~$guest_txt{'changelanguage'}: <form action="$scripturl?action=guestlang" meth
         }
     }
 
-    my $wmessage;
+    my $wmessage = q{};
+    $toffs = toffs($date);
+    my ( undef, undef, $hour, undef, undef, undef, undef, undef, undef ) = gmtime($date + $toffs);
     if ( $hour >= 12 && $hour < 18 ) {
         $wmessage = $maintxt{'247a'};
     }    # Afternoon
@@ -3095,7 +3097,6 @@ sub guestlang_sel {
     $morelang = 0;
     my @lang_dir = readdir DIR;
     closedir DIR;
-    require "$langdir/Lang.lng";
     foreach my $langitems ( sort { lc($a) cmp lc $b } @lang_dir ) {
         chomp $langitems;
         if ( -e "$langdir/$langitems/Main.lng" ) {

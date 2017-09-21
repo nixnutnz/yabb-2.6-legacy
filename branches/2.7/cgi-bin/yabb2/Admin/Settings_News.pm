@@ -109,7 +109,6 @@ qq~<input type="checkbox" name="fadelinks" id="fadelinks" value="1" ${ischecked(
     }
 );
 
-require "$langdir/Lang.lng";
 {
     no strict qw(refs);
     for ( sort keys %lngs ) {
@@ -146,7 +145,6 @@ qq~<textarea cols="80" rows="10" name="$lbl" id="$lbl" style="width: 99%">${$lbl
 
     sub save_settings {
         my %settings = @_;
-        require "$langdir/Lang.lng";
         for ( sort keys %lngs ) {
             my $lbl = $_ . '_news';
             $settings{$lbl} ||= q{};

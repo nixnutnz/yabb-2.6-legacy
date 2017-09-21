@@ -39,7 +39,7 @@ our ( %admin_txt, %croak, %maintxt, %yabmtxt, %mod_list );
 ## paths ##
 our ( $adminurl, $boarddir, $htmldir, $imagesdir, $scripturl, $yyhtml_root, $sourcedir, $admindir, $vardir, $helpfile, $templatesdir, $langdir );
 ## settings ##
-our ( $mbname, $settings_file_version, $yymycharset, );
+our ( $mbname, $settings_file_version, $yymycharset, %lngs);
 ## other ##
 our (
     $action_area, $date,   $formsession,
@@ -1299,7 +1299,16 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 if ( $status != AZ_OK ) {
                     fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
                 }
-                my @srcfolders = ( 'Admin/', 'Admin/Mods/', 'Backups/', 'Boards/', 'Convert/', 'Help/', 'Help/English/', 'Languages/', 'Languages/English/', 'Languages/English/Mods/', 'Members/', 'Messages/', 'Mods/', 'Modules/', 'Modules/Archive/Tar/', 'Modules/Archive/Zip/', 'Modules/Digest/', 'Modules/Email/', 'Modules/Email/Date/', 'Modules/Mail/', 'Modules/MIME/', 'Sources/', 'Sources/Mods/', 'Templates/', 'Templates/default/', 'Templates/default/Mods/', 'Variables/' );
+                my @srcfolders = ( 'Admin/', 'Admin/Mods/', 'Backups/', 'Boards/', 'Convert/', 'Help/', 'Languages/', 'Members/', 'Messages/', 'Mods/', 'Modules/', 'Modules/Archive/Tar/', 'Modules/Archive/Zip/', 'Modules/Digest/', 'Modules/Email/', 'Modules/Email/Date/', 'Modules/Mail/', 'Modules/MIME/', 'Sources/', 'Sources/Mods/', 'Templates/', 'Templates/default/', 'Templates/default/Mods/', 'Variables/' );
+                foreach my $lng (keys %lngs) {
+                    if (-d "$langdir/$lng" ) {
+                        push @srcfolders, "Languages/$lng/";
+                        push @srcfolders, "Languages/$lng/Mods/";
+                    }
+                    if (-d "$helpfile/$lng" ) {
+                        push @srcfolders, "Help/$lng/";
+                    }
+                }
 ## src mod hook ##
                 my %srchash = map { $_, 1 } @srcfolders;
                 if( $files_name_cgi && $files_name_cgi ne q{} && !exists $srchash{ $files_name_cgi } ){
@@ -1439,7 +1448,7 @@ qq~<option value="$modeditfilename">$editdir$file_name</option>\n~;
 
     # print mod file to textarea
     $line = join q{}, @modfile;
-	$line = decode_utf8($line);
+    $line = decode_utf8($line);
 
     for my $x ( 0 .. ( length($line) - 1 ) ) {
         $fulltemplate .=
@@ -1772,8 +1781,6 @@ sub update_mod_data {
 
 sub clean_bak {
     my @folders = ( $boarddir, $sourcedir, $admindir, $vardir, $helpfile, "$templatesdir/default" );
-    our %lngs;
-    require "$langdir/Lang.lng";
     foreach my $key (%lngs) {
         push @folders, "$langdir/$key";
     }

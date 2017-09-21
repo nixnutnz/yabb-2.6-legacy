@@ -89,7 +89,6 @@ qq~$adminurl?action=modagreement;agreementlanguage=$help_language;destination=he
             $aa++;
         }
     }
-    require "$langdir/Lang.lng";
     my $displang = $lngs{$help_language};
     $yymain .= qq~
 <form name="help_update" action="$adminurl?action=helpediting2" method="post" accept-charset="$yymycharset">
