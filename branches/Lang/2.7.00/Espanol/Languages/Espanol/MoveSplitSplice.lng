@@ -1,0 +1,67 @@
+###############################################################################
+# MoveSplitSplice.lng (Move, Split and Splice text definitions)               #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$espanolmovesplitsplicelngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@espanolmovesplitsplicelngmods = ();
+if (@espanolmovesplitsplicelngmods) {
+    $espanolmovesplitsplicelngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; };
+
+%sstxt=(
+'1' => 'Mover, Partir y Ensamblar',
+'2' => 'Partir Mensajes',
+'3' => 'Mensajes',
+'4' => 'Dejar',
+'5' => 'Ensamblar a',
+'6' => 'Categoría',
+'7' => 'Foro',
+'8' => 'Tema',
+'9' => 'Nuevo Título de Tema',
+'10' => 'Posición',
+'11' => "'Movido/Ensamblado a...' Info",
+'12' => 'Dejar los Mensajes originales',
+'13' => 'No dejar nada',
+'14' => 'Seleccionar qué mensajes mover del tema actual:',
+'14a' => 'Pulsa las teclas SHIFT o CTRL mientras pulsas para seleccionar múltiples mensajes.',
+'15' => 'Elije qué dejar en lugar del mensaje, siempre y cuando quieras dejar algo.<br />Si quieres mover &raquo;&raquo; Todos los Mensajes &laquo;&laquo;, se dejará un aviso.',
+'15a' => 'Inserta un nuevo Mensaje detrás del Mensaje movido, conteniendo la información de dónde viene y quién lo ha movido.',
+'16' => 'Selecciona la categoría a la que se moverán los Mensajes seleccionados.',
+'17' => 'Selecciona el foro al que se moverán los Mensajes seleccionados.',
+'18' => 'Selecciona el Título al que se moverán los mensajes seleccionados.',
+'19' => 'Selecciona la posición en la que se ensamblarán los mensajes seleccionados.<br />Los mensajes se colocarán debajo de la posición indicada.',
+'20' => 'Introduce el título del nuevo tema aquí.<br />Deja esta casilla en blanco si quieres usar el título del primer mensaje seleccionado.',
+'21' => 'Re:',
+'22' => 'Debes designar una Categoría.',
+'22a' => 'Debes designar un Foro.',
+'22b' => 'Debes designar un',
+'23' => 'mensaje para mover.',
+'24' => 'Enviar',
+'25' => 'Resetear',
+'26' => '&raquo;&raquo; Todos los Mensajes &laquo;&laquo;',
+'27' => 'Esta tarjeta no puede ser publicado y no hay envíos se debe mover en ella.',
+'28' => '&raquo;&raquo; Categorías &laquo;&laquo;',
+'29' => '&raquo;&raquo; Foros &laquo;&laquo;',
+'30' => '&raquo;&raquo; Tema Nuevo &laquo;&laquo;',
+'31' => '&raquo;&raquo; Fin del Tema &laquo;&laquo;',
+'32' => '&raquo;&raquo; Principio del Tema &laquo;&laquo;',
+
+'40' => 'Responder',
+'41' => 'Iniciar Tema',
+
+'50' => 'Por favor, vuelve atrás y recarga esa página primero, o no te será posible Enviar.',
+'51' => 'No está permitido ensamblar dos Encuestas.',
+);
+
+1;

@@ -1,0 +1,71 @@
+###############################################################################
+# MoveSplitSplice.lng (Move, Split and Splice text definitions)               #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germanmovesplitsplicelngver = 'YaBB 2.7.00 $Revision: 1879 $';
+@germanmovesplitsplicelngmods = ();
+if (@germanmovesplitsplicelngmods) {
+    $germanmovesplitsplicelngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%sstxt=(
+'1' => q~Thema verschieben, teilen &amp; verbinden~,
+'2' => q~Beiträge teilen~,
+'3' => q~Beiträge~,
+'4' => q~Behalten~,
+'5' => q~Verbinden zu~,
+'6' => q~Kategorie~,
+'7' => q~Forum~,
+'8' => q~Thema~,
+'9' => q~Titel des neuen Themas eingeben~,
+'10' => q~Position~,
+'11' => q~'Verschoben/Verbunden nach....' Hinweis~,
+'12' => q~Originale Beiträge behalten~,
+'13' => q~Keinen Hinweis~,
+'14' => q~Wählen Sie hier, welche Beiträge verschoben oder verbunden werden sollen:~,
+'14a' => q~Halten Sie die SHIFT- oder STRG Taste gedrückt, um mehrere Beiträge auszuwählen. ~,
+'15' => q~Wählen Sie aus, was Sie, wenn überhaupt, anstelle des Beitrages hinterlassen möchten.<br />Wenn Sie &raquo;&raquo; Alle Beiträge &laquo;&laquo; verschieben möchten, wird ohnehin eine automatisierte Nachricht generiert.~,
+'15a' => q~Einen neuen Beitrag hinter den verschobenen Beiträgen hinzufügen, der Informationen dazu enthält, von woher der verschobene Beitrag ursprünglich stammt und wer ihn verschoben hat.~,
+'16' => q~Wählen Sie die Kategorie, in welche die gewählten Beiträge verschoben werden sollen.~,
+'17' => q~Wählen Sie das Forum, in welches die gewählten Beiträge verschoben werden sollen. ~,
+'18' => q~Wählen Sie das Thema, in welches die gewählten Beiträge verschoben werden sollen. ~,
+'19' => q~Wählen Sie die Position, um die gewählten Beiträge zu verbinden.<br />Die Beiträge werden unterhalb der angezeigten Position gestellt.~,
+'20' => q~Wenn Sie die ausgewählten Beiträge in ein neues Thema verschieben, können Sie hier eine neue Titelzeile festlegen.<br />Wenn Sie nichts eintragen, wird die vorhandene Titelzeile des ersten Beiträge angezeigt.~,
+'21' => q~Re:~,
+'22' => q~Sie müssen mindestens eine Kategorie auswählen.~,
+'22a' => q~Sie müssen mindestens ein Forum auswählen.~,
+'22b' => q~Sie müssen mindestens einen~,
+'23' => q~Beitrag auswählen, um verschieben zu können.~,
+'24' => q~Ausführen~,
+'25' => q~Zurücksetzen~,
+'26' => q~&raquo;&raquo; Alle Beiträge &laquo;&laquo;~,
+'27' => q~In dieses Forum kann nicht geschrieben werden und keine Beiträge können verschoben werden.~,
+'28' => q~&raquo;&raquo; Kategorien &laquo;&laquo;~,
+'29' => q~&raquo;&raquo; Foren &laquo;&laquo;~,
+'30' => q~&raquo;&raquo; Neues Thema &laquo;&laquo;~,
+'31' => q~&raquo;&raquo; Thema Ende &laquo;&laquo;~,
+'32' => q~&raquo;&raquo; Thema Anfang &laquo;&laquo;~,
+
+'40' => q~Antwort~,
+'41' => q~Thema Anfang~,
+
+'50' => q~Bitte gehen Sie zurück und aktualisieren Sie zunächst die Seite. Andernfalls ist ein 'Ausführen' nicht möglich.~,
+'51' => q~Es ist nicht erlaubt, zwei Umfragen miteinander zu verbinden.~,
+);
+
+1;

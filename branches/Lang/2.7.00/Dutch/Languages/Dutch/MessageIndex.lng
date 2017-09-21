@@ -1,0 +1,119 @@
+﻿###############################################################################
+# MessageIndex.lng (MessageIndex text definitions)                            #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchmessageindexlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutchmessageindexlngmods = ();
+if (@dutchmessageindexlngmods) {
+    $dutchmessageindexlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%messageindex_txt = (
+'2' => 'Admin',
+'3' => 'Dit onderwerp bevat',
+'4' => 'bijlagen',
+'5' => 'bijlage',
+'10' => 'Permalink voor dit artikel',
+'15' => 'Peiling',
+'18' => 'Index',
+'19' => 'Pagina Index wisselen',
+'22' => 'Laatste Bericht',
+'31' => 'Verwijder',
+'54' => 'Verwijder',
+'63' => 'Moderatoren',
+'63a' => 'Moderator Groepen',
+'70' => 'Onderwerp',
+'71' => 'Bericht ikoon',
+'75' => 'Dit is uw favoriete discussie Selectie.',
+'76' => 'Deze bevat nu',
+'77' => 'van',
+'78' => 'maximaal toegestane favoriete discussies.',
+'104' => 'Sluit/Open',
+'109' => 'Gestart door',
+'110' => 'Reacties',
+'132' => 'Verplaats',
+'133' => 'Verplaats naar',
+'139' => 'Pagina\'s',
+'162' => 'Weet u zeker dat u dit onderwerp wilt verwijderen?',
+'199' => 'Dubbelklik dit aankruisvak voor meer info over de functie.', # don't use " inside!
+'200' => 'Vink dit selectievakje aan om een Nieuwe Post op te nemen aan het eind van de topic . Dit bericht de info zal tonen van waar de discussie kwam en wie het verplaatste. Vink uit om te verplaatsen zonder dat een nieuwe Post wordt opgenomen.', # inside JavaScript!
+'251' => 'Forum Keuze',
+'298' => 'Moderator',
+'298a' => 'Moderator Groep',
+'301' => 'Gelezen',
+'302' => 'Nieuw',
+'303' => 'Ga naar eerste ongelezen bijdrage',
+'454' => 'Hot Topic (Meer dan',
+'454a' => 'Reacties)',
+'455' => 'Erg Hot Topic (Meer dan',
+'456' => 'Gesloten Topic',
+'457' => 'Normaal Topic',
+'458' => 'Verborgen Topic',
+'459' => 'Verborgen Sticky Topic',
+'460' => 'Verborgen gesloten Topic',
+'461' => 'Verborgen Sticky gesloten Topic',
+'462' => 'GA!',
+'470' => 'Niet beschikbaar',
+'470a' => '<i>Ex Lid</i>',
+'500' => 'Markeer alle topics als gelezen', # inside JavaScript!
+'500a' => 'Uitgevoerd', # inside JavaScript!
+'525' => 'Door',
+'526' => 'door',
+'527' => 'Gestart',
+'737' => 'Vink allen aan',
+'779' => 'Sticky Topic',
+'779a' => 'Globale Aankondiging',
+'779b' => 'Gesloten Globale Aankondiging',
+'780' => 'Sticky Gesloten Topic',
+'781' => 'Sticky',
+'837' => 'Forum Permissies',
+'840' => 'Geen favorieten gevonden',
+'841' => 'Geen Berichten gevonden',
+'842' => 'Geselecteerde favorieten verwijderen',
+'843' => 'RSS feed voor dit board',
+'844' => 'Verbergen',
+'845' => 'Verplaatste Topic',
+'903' => 'Sluit Venster',
+'collruletext' => 'Board Regels samenvouwen',
+'nopost' => 'In dit board kan niet gepost worden en er kunnen geen berichten naar verplaatst worden.',
+'move_up' => 'Omhoog',
+'move_down' => 'Omlaag',
+);
+
+%messageindex_sort = (
+'sort_az' => "Sorteren (A-Z)",
+'sort_za' => "Sorteren (Z-A)",
+'sort_min' => "Sorteren (min antwoord)",
+'sort_max' => "Sorteren (max antwoord)",
+'sort_last' => "Sorteren (nieuw antwoord)",
+'sort_first' => "Sorteren (oud antwoord)",
+);
+
+%messageindex_stickygrp = (
+'1' => 'Belangrijke Topics',
+'2' => 'Board Topics',
+);
+
+%messageindex_tp = (
+'enabletp' => 'Inschakelen Topic Preview',
+'disabletp' => 'Uitschakelen Topic Preview',
+'code_tp' => 'CODE',
+'image_tp' => 'IMAGE',
+'media_tp' => 'MEDIA',
+);
+
+1;

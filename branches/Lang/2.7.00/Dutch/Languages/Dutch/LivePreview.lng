@@ -1,0 +1,44 @@
+﻿###############################################################################
+# LivePreview.lng                                                             #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+# Mod created by Carsten Dalgaard                                             #
+#                and added to YaBB core in Version 2.5.4                      #
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     #
+###############################################################################
+$dutchlivepreviewlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutchlivepreviewlngmods = ();
+if (@dutchlivepreviewlngmods) {
+    $dutchlivepreviewlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%livepreview_txt = (
+'info_missing' => 'Ontbrekende of onjuiste informatie:',
+'name_empty' => 'Het naamveld is niet ingevuld.',
+'long_name' => 'Alstublieft maak uw naam korter. Hij is te lang',
+'mail_empty' => 'Het E-mailveld is niet ingevuld.',
+'valid_mail' => 'Alstublieft vul een valide E-mail adres in.',
+'veri_code' => 'Het Verificatieveld is niet ingevuld.',
+'veri_quest' => 'Het Verificatie Vraagveld is niet ingevuld.',
+'subj_empty' => 'Het onderwerpveld is niet ingevuld.',
+'mess_empty' => 'Het berichtenveld is leeg.',
+'subj_allcaps' => 'Het lijkt erop dat u probeert te schrijven met behulp van HOOFDLETTERS in het onderwerpveld. Dit is tegen de forumregels.',
+'mess_allcaps' => 'Het lijkt erop dat u probeert te schrijven met behulp van HOOFDLETTERS in het berichtenveld. Dit is tegen de forumregels.',
+'pm_recipient' => 'U moet het ontvanger veld invullen  .',
+'no_links'     => "Het is u niet toegestaan links op te nemen totdat minstens $minlinkpost posts heeft.",
+);
+
+1;

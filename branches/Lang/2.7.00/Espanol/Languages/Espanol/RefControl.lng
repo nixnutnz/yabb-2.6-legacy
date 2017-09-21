@@ -1,0 +1,78 @@
+###############################################################################
+# RefControl.lng (Referrer Control text definitions)                          #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$espanolrefcontrollngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@espanolrefcontrollngmods = ();
+if (@espanolrefcontrollngmods) {
+    $espanolrefcontrollngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%refer_settings = (
+'gen' => q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
+'refer_controls' => q~General~,
+'refer_mods' => q~Mods~,
+);
+
+%refexpl_txt = (
+'birthdaylist' => q~View Birthday List~,
+'display' => 'Mostrar un mensaje en un tema',
+'downloadfile' => 'Bajar un Fichero Adjunto',
+'eventcal' => q~View Event Calendar~,
+'get_cal_ssi' => q~Allow Calendar in other pages~,
+'help' => 'Mostrar la Página de Ayuda del foro',
+'login' => 'Ventana de Entrada',
+'logout' => 'Salir',
+'messageindex' => 'Mostrar mensaje del índice',
+'ml' => 'Show Memberlist',
+'mycenter' => 'Mostrar página principal en Mi Centro',
+'recent' => 'Show recent posts',
+'recenttopics' => 'Mostrar todos los temas publicados más recientes',
+'register' => 'Entrar en la pantalla de entrada de Registro de Nuevo Usuario',
+'reminder' => 'Entrar en la pantalla de entrada de "Olvidé mi Contraseña"',
+'RSSboard' => 'Ver temas recientes de un foro a través de RSS feed',
+'RSSrecent' => 'Ver temas recientes de todo el foro o de una categoría a través de RSS feed',
+'search' => 'Entrar en la pantalla de búsqueda',
+'viewdownloads' => 'Ver Archivos Bajados (Downloads)',
+'viewprofile' => 'Ver Perfil de Usuario',
+'refer_controls' => q~General~,
+'refer_mods' => q~Mods~,
+);
+
+%refer_txt = (
+'birthdaylist' => q~View Birthday List~,
+'display' =>  q~Display Threads~,
+'downloadfile' =>  q~Download Attachment~,
+'eventcal' => q~View Event Calendar~,
+'get_cal_ssi' => q~Allow Calendar in other pages~,
+'help' =>  q~Show Help~,
+'login' =>  q~Log In screen~,
+'logout' =>  q~Log Out~,
+'messageindex' =>  q~Display Message index~,
+'ml' =>  q~Show Memberlist~,
+'mycenter' =>  q~MyCenter main page~,
+'recent' =>  q~Show recent posts~,
+'recenttopics' =>  q~Show recent topics~,
+'register' =>  q~Registration~,
+'reminder' =>  q~Password reset~,
+'RSSboard' =>  q~RSS Board~,
+'RSSrecent' =>  q~RSS Recent Topics~,
+'search' =>  q~Search Screen~,
+'viewdownloads' =>  q~View Downloads~,
+'viewprofile' =>  q~View a User Profile~,
+);
+
+## Mod Hook ##
+
+1;

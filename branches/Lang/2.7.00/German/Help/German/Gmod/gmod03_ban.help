@@ -1,0 +1,45 @@
+﻿$germangmod_gmod03_banhelpver = 'YaBB 2.7.00 $Revision: 1879 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Verbannungsfunktionen";
+
+### Section 1
+#############################################
+$section_sub1 = "Mitglieder_verbannen";
+$section_body1 = qq~<p>YaBB 2.6.0 ermöglicht Global-Moderatoren und Foren-Moderatoren eine zusätzliche Fähigkeit:
+Sie können Mitglieder, die gegen die Forenregeln verstoßen, stören oder spammen vom Forum verbannen.</p>
+<p>Um die Verbannung eines Mitgliedes durchzuführen, werden drei Methoden angeboten:</p>
+<ol>
+      <li>nach IP-Adressen</li>
+      <li>nach eMail-Adresse</li>
+      <li>nach Benutzername (<b>nicht</b> angezeigter Name)</li>
+</ol>
+<p><b><span class="under"><span class="under">Verbannung eines Mitglieds:</span></b></p></span>
+<ul>
+      <li><b>IP-Adressen</b>
+            <ul>
+                  <li>Die letzten drei IP-Adressen eines Mitgliedes werden auf der Profilseite angezeigt. Sie haben die Möglichkeit, mit der Maustaste auf eine der IP zu klicken und über den „IP-Look-Up-Service“ den Bestimmungsort abzufragen. Dies kann hilfreich sein, wenn das Mitglied eigentlich nur ein Spammer ist und stört. Sie haben auch die Möglichkeit, die Verbannung der IP-Adresse für einen Tag, eine Woche, einen Monat oder permanent einzustellen.</li>
+            </ul>
+      </li>
+      <li><b>eMail-Adresse</b>
+            <ul>
+                  <li>Mit dieser zweiten Methode können Sie verhindern, dass sich jemand mit einer bestimmten eMail-Adresse (Beispiel: bad\@user.com) registrieren oder anmelden kann. Wie bei der IP-Adresse haben Sie auch hier die Möglichkeit, die Verbannung der eMail-Adresse für einen Tag, eine Woche, einen Monat oder permanent einzustellen.</li>
+            </ul>
+      </li>
+      <li><b>Benutzername</b>
+            <ul>
+                  <li>Der einfachste Weg, einen Benutzer zu verbannen, ist seine Benutzer-ID. Dies ist <i><b>nicht</b></i> der angezeigte Name. Auch hier haben Sie die Wahl, die Verbannung für einen Tag, eine Woche, einen Monat oder permanent einzustellen.</li>
+            </ul>
+      </li>
+</ul>
+~;
+#############################################
+
+### Section 2
+#############################################
+$section_sub2 = "Verbannung_aufheben";
+$section_body2 = qq~<p>Umstände rechtfertigen manchmal, die Verbannung aufzuheben. Um diese aufzuheben, gehen Sie auf das Profil des verbannten. Egal unter welcher Methode verbannt wurde, Sie erhalten einen Link, um die Verbannung aufzuheben. Durch klicken auf diesen Link wird die Verbannung aufgehoben.</p>
+~;
+#############################################
+
+
+1;

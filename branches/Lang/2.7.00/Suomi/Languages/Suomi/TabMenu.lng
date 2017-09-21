@@ -1,0 +1,51 @@
+###############################################################################
+# TabMenu.lng (TabMenu text definitions)                                      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomitabmenulngver = 'YaBB 2.7.00 $Revision: 1890 $';
+@suomitabmenulngmods = ();
+if(@suomitabmenulngmods){
+    $suomitabmenulngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%tabmenu_txt=(
+'texterr' => 'Tekstikenttä on tyhjä!!',
+'tabext' => 'Samalla nimellä tai toiminnolla on jo välilehti!!',
+'tabfront' => 'Etusivu',
+'taburl' => 'URL',
+'tabwin' => 'Uusi ikkuna',
+'edittab' => 'Muokkaa välilehteä',
+'tabdel' => 'Poista tämä välilehti',
+'viewgm' => 'GMod +',
+'viewadm' => 'Admin',
+'tabtext' => 'Teksti',
+'taberr' => 'Vaadittuja tietoja puuttuu:',
+'addtab' => 'Lisää',
+'savetab' => 'Tallenna teksti',
+'reordertab' => 'Uudellenjärjestele välilehdet:',
+'tableft' => '&lt;',
+'tabright' => '&gt;',
+'edittext1' => 'Yllä näet välilehdet siten, kuten ne näkyisivät jos olisivat esillä yhtäaikaa. Jos olet lisännyt välilehtiä on sinulla mahdollisuus muokata niiden sisältämää tekstiä.',
+'edittext2' => 'Lopuksi paina ikonia tallentaaksesi uuden teksti. Voit poistaa välilehden painamalla',
+'edittext3' => 'ikonia.',
+'reordertext' => 'Oikealla näet listan välilehdistä. Voit muuttaa niiden järjestystä valikossa palitsemalla halutun välilehden ja painamalla "&lt;"- tai "&gt;"-nappia kunnes välilehti on haluamassasi paikassa.',
+'urlerr' => 'URL-kenttä on tyhjä!!',
+'viewmem' => 'Jäsenet +',
+'viewall' => 'Vieraat +',
+'newtab' => 'Lisää välilehti',
+'tabinsert' => 'Lisää jälkeen',
+'tabview' => 'Näkyvissä',
+);
+
+1;

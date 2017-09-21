@@ -1,0 +1,72 @@
+###############################################################################
+# Poll.lng (Poll text definitions)                                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$suomipolllngver = 'YaBB 2.7.00 $Revision: 1890 $';
+@suomipolllngmods = ();
+if(@suomipolllngmods){
+    $suomipolllngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%polltxt = (
+'4' => 'Kysymys',
+'6' => 'Kysymys',
+'7' => 'Valinnat',
+'15' => 'Äänestys',
+'16' => 'Kysymys',
+'17' => 'Äänimäärä',
+'18' => 'Lähetä',
+'19' => 'Katso tuloksia',
+'20' => 'Avaa',
+'21' => 'Sulje',
+'22' => '*** Tämä äänestys on päättynyt ***',
+'23' => 'Äänestyksen tiedot:',
+'24' => 'Ääntä',
+'25' => 'Tätä vaihtoehtoa ei äänestetty.',
+'26' => 'Piilota tulokset:',
+'27' => 'Poista',
+'30' => 'IP-osoite',
+'31' => 'Päiviä äänestyksestä',
+'32' => 'Salli vieraiden äänestäminen:',
+'33' => 'Selaa äänestyksiä',
+'35' => 'Nimi',
+'39' => 'Muokkaa',
+'40' => 'Äänestyskysymys',
+'41' => 'Äänestyskysymyksessä on kielletty merkki. Yritä uudelleen.',
+'42' => 'Äänestyksen tiedot',
+'43' => 'Poista ääni',
+'44' => 'Haluatko varmasti poistaa tämä äänestyksen?',
+'45' => 'Tekijä',
+'45a' => 'Viimeisin muokkaaja',
+'46' => 'on',
+'47' => 'Kiitos osallistumisesta.',
+'48' => 'Tulokset pysyvät salaisina kunnes kaikki äänet on laskettu.',
+'49' => 'Poista äänet',
+'53' => '*** Muut eivät pysty katsomaan tuloksia ennen äänestyksen sulkemista ***',
+'54' => 'Valitse tämä jos haluat antaa vieraille mahdollisuuden äänestää.',
+'55' => 'Valitse tämä jos haluat piiloittaa tulokset ennen äänestyksen sulkemista.',
+'56' => 'Valitse tämä jos haluat antaa mahdollisuuden valita useamman kuin yhden vaihtoehton.',
+'57' => 'Äänestyskommentti',
+'58' => 'Monivalinta',
+'59' => 'Äänestyskommentti',
+'64' => 'Äänesi',
+'65' => 'Valintasi oli',
+'66' => 'Äänestysvaihtoehdot olivat',
+'showcased' => 'Tällä hetkellä nostettu esille',
+'setshowcased' => 'Nosta äänestys etusivulle?',
+'showcaserem' => 'Poista äänestys etusivulta?',
+'confirm' => 'Haluatko varmasti nostaa tämän äänestyksen etusivulle?\\nToinen äänestys on jo etusivulla!', # Test before changing! It's inside a javascript. Do not use " or ' inside parenteses.
+);
+
+1;

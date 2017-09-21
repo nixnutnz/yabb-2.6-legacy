@@ -1,0 +1,53 @@
+﻿$dutchadmin_admin05_templateshelpver = 'YaBB 2.7.00 $Revision: 1888 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Beheer_Templates";
+
+### Section 1
+#############################################
+$section_sub1 = "Toegang_tot_de_Template_Editor";
+$section_body1 = q~<p>YaBB geeft u de mogelijkheid om snel en eenvoudig toe te voegen en/of het uiterlijk en het gevoel van uw Forum te veranderen. Om toegang te krijgen tot deze functies, moet u ingelogd zijn als een forum Administrator of Global Moderator met de juiste toegangsrechten. In de "Admin Centrum" vindt de sectie in het linker menu getiteld "Forum Lay-out". Daar zult u twee links zien: "Template Configuratie", "Style Sheet".</p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$section_sub2 = "Template_Configuratie";
+$section_body2 = qq~Als u graag een Template (ook bekend als een skin)wilt toevoegen, verander met stylesheet bestand dat u wilt gebruiken voor uw Forum, of gebruik maken van andere Template dan de standaard Template, deze sectie stelt u dan in staat om dat te doen.
+<p><b>Een_nieuwe_skin_toevoegen</b></p>
+<ul>
+    <li>Creëer een map in 'yabbfiles/Templates/Forum' voor de afbeeldingen voor uw nieuwe skin (deze locatie kunnen verschillend voor u zijn) en upload uw graphics. Ook uploaden uw nieuwe stylesheet naar dezelfde plaats, waar uw standaard stylesheet (default.css) is. (Absoluut <b> NIET </b> uw standaard stylesheet overschrijven.) Uw nieuwe stylesheet moet een naam hebben die gemakkelijk zal worden geassocieerd met uw nieuwe grafische map. (Bijvoorbeeld, zou u graag een 'Noir' huid gebruiken. Noem de graphics map  'noir' en de stylesheet 'noir.css'.)</li>
+    <li>Creëer een map in uw 'yabb2/Templates' directory voor uw nieuwe template bestanden. (Nogmaals, zorg ervoor dat de naam iets is wat u makkelijk associeert met een nieuwe skin.) Upload uw nieuwe Template bestanden in deze directory. Het bestand '.html' moet <b>niet</b> de naam 'default.html' – geef het dezelfde naam als de nieuwe map. (Gebruik het bovenstaande voorbeeld, noem de map 'noir' en het HTML-bestand 'noire.html'.)</li>
+    <li>In "Template configuratie" zouden de namen van uw nieuwe stylesheet en mappen moeten worden  weergegeven in de drop-down selectie box. Kies de nieuwe mappen, templates en stylesheet voor uw nieuwe skin. Creëer een naam voor de nieuwe skin en typ deze in het tekstvak aan de onderkant van de "Template Configuratie" pagina. Sla uw nieuwe skin op onder haar nieuwe naam. Nu kunt u uw nieuwe skin kiezen als de standaard voor nieuwe leden en gasten in het "Forum instellingen en voorkeuren" gebied.</li>
+</ul>
+~;
+#############################################
+
+### Section 3
+#############################################
+$section_sub3 = "Templates_bewerken";
+$section_body3 = q~YaBB geeft u de mogelijkheid de HTML-code te bewerken voor alle grote Forum secties behalve het Admin Center.
+<p><b>Bewerk een Template</b></p>
+<ul>
+    <li>Aan de bovenkant van de "Template Configuratie" sectie is een link "Ga naar bewerken Template bestanden". Dit opent de bewerk Templates sectie. De de drop-down selectie lijst toont alle verschillende template bestanden in alle templatemappen. De inhoud van het geselecteerde bestand wordt weergegeven in het venster en kan worden bewerkt. Opmerking: met uitzondering van bestanden met de extensie '.html' zijn al de Templatebestanden perl gecodeerde bestanden. Bewerk of wijzig geen van de variabele namen. ( <span style="background-color:yellow">$variable</span> = q\~html code here\~;) Het wijzigen van variabelen namen kan uw forum onbruikbaar maken
+.</li>
+</ul>
+~;
+#############################################
+
+### Section 4
+#############################################
+$section_sub4 = "Bewerken_Style_Sheets";
+$section_body4 = q~YaBB geeft u ook de mogelijkheid om de stylesheet van het forum te bewerken, kies knop achtergronden en achtergronden voor de UBBC-knoppen.
+<p><b>Bewerk een Style Sheet</b></p>
+<ul>
+    <li>De "Style Sheet" knop brengt u naar de "WYSIWYG Style Sheet brengt" sectie waar u kenmerken kunt veranderen, zoals kleur en achtergrondkleur voor items zoals de Board Index titel, categorie Bar, bericht weergegave secties. </li>
+</ul>
+<p class="help_attn">Het standaard stylesheet kan niet worden bewerkt vanuit het WYSIWYG scherm. Echter, kunt u uw wijzigingen opslaan naar een nieuwe stylesheet en vervolgens die stylesheet kiezen als de stylesheet voor uw standaard Template in de "Template configuratie" sectie.</p>
+<h4>Editing a Stylesheet file</h4>
+<ul>
+    <li>Op de top van de "WYSIWYG Style Sheet" sectie is een knop 'Bron'. Hiermee opent u de "Bewerk Stylesheet" sectie. De drop-down selectie lijst toont u alle beschikbare stylesheets, inclusief de speciale functies zoals de 'calscroller'. De inhoud van het geselecteerde bestand wordt weergegeven in het venster en kan bewerkt worden.</li>
+</ul>
+~;
+###########################################
+
+1;

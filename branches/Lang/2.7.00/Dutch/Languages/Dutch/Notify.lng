@@ -1,0 +1,61 @@
+﻿###############################################################################
+# Notify.lng (Notify text definitions)                                        #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchnotifylngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutchnotifylngmods = ();
+if (@dutchnotfylngmods) {
+    $dutchnotifylngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%notify_txt = (
+'118' => 'Topic Notificatie',
+'119' => 'Er zijn geen onderwerpen voor notificatie gemarkeerd.',
+'120' => 'door',
+'121' => 'Herstel',
+'122' => 'Je krijgt een notificatie wanneer er reacties zijn op de volgende topics.',
+'123' => 'Activeer checkbox om de notificatie te<b><i>deactiveren</i></b> in dit Topic.',
+'124' => 'Ververs Notificaties',
+'125' => 'Notificeer',
+'126' => 'Ontvang notificaties bij reacties op dit board.',
+'127' => 'Topic reactie',
+'132' => 'Alleen nieuwe Topics',
+'133' => 'Alle nieuwe Posts',
+'134' => 'Verwijder',
+'135' => 'Board',
+'136' => 'Board Notificatie',
+'137' => 'Wijzig of verwijder de notificatie op dit board.',
+'138' => 'Wijzig',
+'139' => 'Er zijn geen boards met notificatie op actief.',
+'140' => 'Topic',
+'144' => 'Selecteer allen',
+'145' => 'Nieuwe persoonlijke boodschap van',
+'200' => 'U hebt',
+'201' => 'nieuw',
+'202' => 'en',
+'203' => 'Wilt u uw notificaties bekijken?',
+'205' => 'Board Notificaties',
+'206' => 'Topic Notificaties',
+'333' => 'Nieuwe Posts',
+'334' => 'Geen nieuwe Posts',
+'335' => 'Nieuw',
+'lastpost' => 'laatste post',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+);
+
+1;

@@ -1,0 +1,67 @@
+###############################################################################
+# UserSelect.lng (UserSelect text definitions)                                #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$espanoluserselectlngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@espanoluserselectlngmods = ();
+if (@espanoluserselectlngmods) {
+    $espanoluserselectlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%usersel_txt = (
+'addselected' => 'Añadir Seleccionados',
+'instruct' => 'Doble click en un nombre o selecciona uno o más nombres en la lista y pincha en "Añadir seleccionados" para añadir a: ',
+'instruct0' => 'Introduce los prineros caracteres del nuevo moderador en el campo del formulario de la parte superior, después haz doble click en el nombre o selecciona uno o más nombres de la lista y haz click en el botón "Añadir Seleccionados" para añadirlos a',
+'instruct1' => 'Doble click en un nombre o selecciona uno en la lista y pincha en "Añadir seleccionados" para añadir a: ',
+'instruct2' => 'Busca miembros por nombre o email:',
+'instruct3' => 'El la caja de búsqueda se pueden usar comodines (sólo un *) en cualquier parte de la cadena.',
+'instruct4' => 'Selecciona Grupos de Miembros',
+'wildcardinfo' => 'Use * for wild-card',
+'searchresult' => 'Resultados:',
+'nofound' => 'Disculpa - no hay resultados para',
+'pmpagetitle' => 'Selecciona Destinatarios MP',
+'grouppagetitle' => 'Selecciona BC Grupos de Destinatarios',
+'modpagetitle' => 'Selecciona Moderadores',
+'buddypagetitle' => 'Selecciona a tus amigos',
+'ignorepagetitle' => 'Selecciona miembros para Ignorar',
+'searchpagetitle' => 'Selecciona miembro para buscar por',
+'pageclose' => 'Cerrar',
+'recentlist' => 'Lista de Recientes',
+'alllist' => 'Lista de Miembros',
+'gobutton' => 'Ir',
+'reciepientlist' => 'Lista de Destinatarios',
+'moderatorlist' => 'Lista de Moderadores',
+'buddylist' => 'Lista de Amigos',
+'groups' => 'Grupos de Miembros',
+'ignorelist' => 'Lista de Ignorados (PMs)',
+'searchlist' => 'Buscar por usuario',
+'pmto' => 'A',
+'pmcc' => 'Cc',
+'pmbcc' => 'Bcc',
+'allsearch' => 'Todos',
+'bmallmembers' => 'Todos los miembros del foro',
+'bmadmins' => 'Administradores',
+'bmgmods' => 'Moderadores Globales',
+'bmfmods' => 'Moderadores del Foros',
+'bmmods' => 'Todos los moderadors / grupos de moderación de todos los foros',
+'pages' => 'Páginas',
+'of' => 'de',
+'noentries' => 'No hay entradas por esta letra.',
+'other' => 'Otros',
+'noresults' => 'No hay resultados',
+'qsearch' => 'Buscar Miembros',
+'illegal' => q~Invalid character~,
+);
+
+1;

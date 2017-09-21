@@ -1,0 +1,36 @@
+﻿###############################################################################
+# Credits.lng (YaBB General Credits)                                          #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+$dutchcreditslngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutchcreditslngmods = ();
+if (@dutchcreditslngmods) {
+    $dutchcreditslngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%credits_txt = (
+'yabb2' => 'Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman',
+'yabb252' => 'Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Opgenomen Mods in YaBB 2.5.2 geschreven door Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />Gewijd aan de nagedachtenis van Ron Hartendorp, AKA Spikecity. Hij verliet ons te vlug.',
+'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.met aanvullende code en Mods van het YaBB 3.0. ontwikkelingsteam. We zouden nergens zijn zonder de bijdragen van Mod-schrijvers.<br />En laten we niet vergeten de bug jagers en fouten vinders die er op wijzen waar dingen terecht niet goed werken. Bedankt Monni en Pyragony en alle andere bug jagers die hun bevindingen gerapporteerd hebben.~,
+'yabb' => 'Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko',
+'Thanks' => 'Speciale dank aan',
+'yabbBeta' => 'en alle beta testers.',
+'yabb2Credits' => 'tHet ondersteuning team, onze onverschrokken oprichter: Zef Hemel en iedereen die heeft bijgedragen aan YaBB in de loop van de afgelopen 12 jaar!',
+'noBytesHarmed' => 'Geen bits of bytes werden geschaad tijdens het maken van YaBB!',
+);
+
+1;

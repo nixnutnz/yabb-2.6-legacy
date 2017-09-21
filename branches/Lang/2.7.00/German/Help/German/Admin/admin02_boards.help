@@ -1,0 +1,137 @@
+﻿$germanadmin_admin02_boardshelpver = 'YaBB 2.7.00 $Revision: 1879 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Foren_verwalten";
+
+### Section 1
+#############################################
+$section_sub1 = "Foren-Funktionen_aufrufen";
+$section_body1 = qq~Nun haben Sie gelernt Kategorien angelegen. Jetzt können Sie die YaBB-Funktionen zur Erstellung einzelner Foren verwenden. Diese werden dann Teil Ihrer angelegten Kategorien. Die Anzahl ist nicht beschränkt. Auch hier müssen Sie wieder als Administrator oder Global Moderator - mit entsprechenden Rechten - angemeldet sein. Auf der Forum Übersichtsseite klicken Sie wieder auf &quot;Admin Center&quot;, bewegen Sie sich im Menü auf der linken Seite zum Abschnitt &quot;Forum Einstellungen&quot; und klicken Sie auf den Menüpunkt &quot;Foren&quot;.
+<p><i><b>*</b> Es gilt weiterhin: YaBB ist hinsichtlich der Speicherkapazitäten nicht limitiert, allenfalls durch die Vorgaben Ihres Web-Servers.</i></p>
+~;
+#############################################
+
+
+### Section 2
+#############################################
+$section_sub2 = "Neue_Foren_anlegen";
+$section_body2 = qq~YaBB gibt Ihnen die Möglichkeit, mehrere Foren gleichzeitig anzulegen. Gehe bitten Sie in die Foren-Verwaltung, wie oben beschrieben. Scrollen Sie zum Ende der Seite und geben Sie nun die Anzahl der anzulegenden Foren ein. Anschließend klicken Sie den Button &quot;Hinzufügen&quot;.
+<p>Auf der nächsten Seite gibt es wieder ein Vielzahl von Eintragsmöglichkeiten:</p>
+<ul>
+<li><b><span class="under">Forum ID</span></b>
+<ul><li>Die Foren ID ist wiederum nur für den internen, technischen Gebrauch. Bitte geben Sie nur Zahlen oder Buchstaben ein, keine Sonderzeichen.</li></ul></li>
+<li><b><span class="under">Name</span></b>
+<ul><li>Dies ist der Name des Forum, der auch für jeden sichtbar ist. Sie können jeden beliebigen Namen eingeben.</li></ul></li>
+<li><b><span class="under">Beschreibung</span></b>
+<ul><li>Hinterlegen Sie eine genauere Beschreibung zum Thema des Forum. Je besser Sie beschreiben um was es inhaltlich im Forum geht, desto besser können sich Ihre Benutzer orientieren. Auch stellen Sie sicher, dass Beiträge unter dem richtigen Betreff/Thema verfasst werden.</li></ul></li>
+<li><b><span class="under">Moderatoren</span></b>
+<ul><li>Klicken Sie auf den Link unterhalb des Wortes &quot;Moderator&quot;, wenn Sie Mitgliedern Moderatoren Zugriff für <b>dieses Forum</b> einräumen wollen.</li></ul></li>
+<li><b><span class="under">Mitgliedergruppe Moderatoren</span></b>
+<ul><li>Wenn Sie möchten, dass alle Mitglieder einer oder mehrerer bestimmten Mitgliedergruppen als Moderatoren für <b>dieses Forum</b> fungieren sollen, dann wählen Sie die Mitgliedergruppe&#40;n&#41; hier aus.</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Wenn Sie einem Forum eine bestimmte Mitgliedergruppe als Moderatorengruppe zuweisen ist es am einfachtsten, wenn Sie einen neuen Modearator nicht dem Forum zuweisen, sondern ihn der Mitgliedergruppe hinzufügen, die den Moderatorenstatus inne hat.</font></p></li>
+<li><b><span class="under">Kategorie</span></b>
+<ul><li>Hier können Sie eine andere Kategorie ausgewählen, unter der das Forum angezeigt werden soll.</li></ul></li>
+<li><b><span class="under">Bild für das Forum</span></b>
+<ul><li>Hier können Sie ein kleines, möglichst repräsentatives Bild dem Forum hinzufügen. Tragen Sie die komplette Url zur Grafik unter Verwendung des Standard Eingabeformates in das vorgesehene Feld ein: http:www.domain.de/Verzeichnis/bildname.jpg. Die erlaubten Grafikformate sind .gif, .jpg, .png, und .bmp.</li></ul></li>
+<li><b><span class="under">Anzahl der Beiträge hier nicht erhöhen?</span></b>
+<ul><li>Die Auswahl dieser Checkbox bewirkt, dass ein in diesem Forum verfasster Beitrag nicht die Gesamtzahl der Beiträge des Benutzers erhöht.</li></ul></li>
+<li><b><span class="under">Allen zeigen?</span></b>
+<ul><li>Die Auswahl dieser Box bewirkt, dass dieses Forum in der Foren-Übersicht auch denen angezeigt wird, die dort keine Zugangsberechtigung haben.</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Dies ein ein guter Weg um den Gästen Ihres Forum zu zeigen, dass noch wesentlich mehr Inhalte zur Verfügung stehen, wenn sie sich registrieren und Mitglied Deiner Community werden.</font></p></li>
+<li><b><span class="under">Dateianhänge erlauben?</span></b>
+<ul><li>Wenn Sie diese Option zulassen, erlauben Sie es Ihren Benutzern Dateianhänge ihren Beiträgen hinzuzufügen, vorausgesetzt, es ist ein gültiger Wert unter &quot;Erlaubte Anzahl für Dateianhäge in Beiträgen&quot; im Bereich Admin Center&#47;Forum Konfiguration&#47;Erweiterte Einstellungen unter dem Tabulator (Reiter) &quot;Dateianhänge&quot; gesetzt. Ist hier der Wert &quot;0&quot; eingetragen, ist das Hinzufügen von Dateianhängen nicht gestattet.</li></ul></li>
+<li><b><span class="under">Globale Ankündigungen</span></b>
+<ul><li>Die Auswahl dieser Option bewirkt, dass Nachrichten in diesem Forum als wichtige Nachricht ganz oben in jedem einzelnen Forum angezeigt werden. Dabei ist es völlig unerheblich, wie die Berechtigungen gesetzt sind, nur Administratoren und Globale Moderatoren können neue Themen starten und darauf antworten.<br /><br /> <b><span class="under">Hinweis:</span> YaBB erlaubt, dass nur einem Forum das Privileg &quot;Globale Ankündigungen&quot; zugwiesen werden kann.</b></li></ul></li>
+<li><b><span class="under">Papierkorb</span></b>
+<ul><li>Wenn Sie diese Option durch Markieren der Checkbox aktivieren, erhält dieses Forum die Funktion eines Papierkorb. Beiträge, die durch Moderatoren gelöscht worden sind werden in diesem Forum weiterhin vorgehalten und können ggf. wieder hergestellt werden können. Es kann auch als Papierkorb für den Administrator verwendet werden, wenn Sie die eventuell vorhandene Markierung der Checkbox entfernen, die Sie im Admin Center&#47;Konfiguration&#47;Forum Einstellungen im Bereich des Tabulator (Reiter) &quot;Forum Personal&quot; finden.<br /><br /><b><span class="under">Hinweis:</span> YaBB erlaubt, dass nur einem Forum das Privileg &quot;Papierkorb&quot; zugewiesen werden kann.</b></li></ul></li>
+<li><b><span class="under">Mindestalter für dieses Forum</span></b>
+<ul><li>Begrenzt den Zugriff auf ein Mindestalter, welches sich aus dem Profil der Mitglieder ergibt.</li></ul></li>
+<li><b><span class="under">Höchstalter für dieses Forum</span></b>
+<ul><li>Begrenzt den Zugriff auf ein Höchstalter.</li></ul></li>
+<li><b><span class="under">Wähle welches Geschlecht Zugang zu diesem Forum haben darf</span></b>
+<ul><li>Zugangsberechtigung nach Geschlecht (Tupper-Ware-Mode)</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Die Alter&#47;Geschlecht Beschränkung basiert auf Informationen, die der Benutzer in seinem Profil für den Geburtstag und das Geschlecht eingetragen hat. Hat der Benutzer keine Daten/Auswahl Geburtstag/Geschlecht vorgenommen, hat YaBB keine Möglichkeit das Alter oder das Geschlecht anderweitig zu erkennen oder zu prüfen. <i>Diesen Benutzern wird es nicht erlaubt sein auf Foren zuzugreifen, die diese Beschränkungen verwenden.</i></font></p></li>
+<li><b><span class="under">Dürfen Themen beginnen</span></b>
+<ul><li>Hier wird angegeben, welche Mitgliedergruppe Themen starten darf.</li></ul></li>
+<li><b><span class="under">Dürfen auf Beiträge antworten</span></b>
+<ul><li>Markieren Sie die Mitgliedergruppen, die auf Beiträge anderer antworten dürfen.</li></ul></li>
+<li><b><span class="under">Dürfen Beiträge lesen</span></b>
+<ul><li>Hier wird festgelegt, wer Themen lesen darf.</li></ul></li>
+<li><b><span class="under">Dürfen Umfragen erstellen</span></b>
+<ul><li>Welche Mitgliedergruppen Umfragen erstellen dürfen, wird hier festgelegt.</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Um Gästen zu erlauben, <span class="under">eine</span> der oben genannten 4 Funktionen auszuführen, <i><b>wählen Sie keine Mitgliedergruppe aus</b></i>.</font></p></li>
+</ul>
+<p>Wenn Sie alle Informationen für das neue Forum hinterlegt haben, scrolle an das Ende der Seite und klicken Sie auf den Button &quot;Speichern&quot;. Das neue Forum ist nun erstellt und ist für Beiträge offen!</p>
+~;
+#############################################
+
+
+### Section 3
+#############################################
+$section_sub3 = "Ein_Forum_bearbeiten";
+$section_body3 = qq~Wenn Sie Änderungen an Ihren Foren vornehmen möchten, folgen Sie bitte wiederum den oben stehenden Anweisungen um in die Foren-Verwaltung zu gelangen. Sie können jetzt die Checkbox neben den Foren-Titeln, die Sie verändern wollen, markieren. Anschließend scrollen Sie an das Ende der Seite und markieren Sie den Radio-Button &quot;bearbeiten&quot;. Anschließend klicken Sie auf &quot;Los&quot;.
+<p>Auf der nächsten Seite erhalten Sie eine größere Anzahl von Optionen zur Bearbeitung des Forums:</p>
+<ul>
+<li><b><span class="under">Forum ID</span></b>
+<ul><li>Die Foren ID ist nur für den internen, technischen Gebrauch und kann nicht geändert werden.</li></ul></li>
+<li><b><span class="under">Name</span></b>
+<ul><li>Dies ist der Name des Forum, der auch für jeden sichtbar ist. Sie können jeden beliebigen Namen eingeben.</li></ul></li>
+<li><b><span class="under">Beschreibung</span></b>
+<ul><li>Hinterlegen Sie eine genauere Beschreibung zum Thema des Forum. Je besser Sie beschreiben um was es inhaltlich im Forum geht, desto besser können sich Ihre Benutzer orientieren. Auch stellen Sie sicher, dass Beiträge unter dem richtigen Betreff/Thema verfasst werden.</li></ul></li>
+<li><b><span class="under">Moderatoren</span></b>
+<ul><li>Klicken Sie auf den Link unterhalb des Wortes &quot;Moderators&quot;, wenn Sie Mitgliedern Moderatoren Zugriff für <b>dieses Forum</b> einräumen wollen.</li></ul></li>
+<li><b><span class="under">Mitgliedergruppe Moderatoren</span></b>
+<ul><li>Wenn Sie möchten, dass alle Mitglieder einer oder mehrerer bestimmten Mitgliedergruppen als Moderatoren für <b>dieses Forum</b> fungieren sollen, dann wählen Sie die Mitgliedergruppe&#40;n&#41; hier aus.</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Wenn Sie einem Forum eine bestimmte Mitgliedergruppe als Moderatorengruppe zuweist ist es am einfachtsten, wenn Sie einen neuen Modearator nicht dem Forum zuweisen, sondern ihn der Mitgliedergruppe hinzufügen, die den Moderatorenstatus inne hat.</font></p></li>
+<li><b><span class="under">Kategorie</span></b>
+<ul><li>Hier können Sie eine andere Kategorie ausgewählen, unter der das Forum angezeigt werden soll.</li></ul></li>
+<li><b><span class="under">Bild für das Forum</span></b>
+<ul><li>Hier können Sie ein kleines, möglichst repräsentatives Bild dem Forum hinzufügen. Tragen Sie die komplette Url zur Grafik unter Verwendung des Standrad Eingabeformates in das vorgesehene Feld ein: http:www.domain.de/Verzeichnis/bildnamename.jpg. Die erlaubten Grafikformate sind .gif, .jpg, .png, und .bmp.</li></ul></li>
+<li><b><span class="under">Anzahl der Beiträge hier nicht erhöhen?</span></b>
+<ul><li>Die Auswahl dieser Checkbox bewirkt, dass ein in diesem Forum verfasster Beitrag nicht die Gesamtzahl der Beiträge des Benutzers erhöht.</li></ul></li>
+<li><b><span class="under">Allen zeigen?</span></b>
+<ul><li>Die Auswahl dieser Box bewirkt, dass dieses Forum in der Forem-Übersicht auch denen angezeigt wird, die dort keine Zugangsberechtigung haben.</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Dies ein ein guter Weg um den Gästen Ihres Forum zu zeigen, dass noch wesentlich mehr Inhalte zur verfügung stehen, wenn sie sich registrieren und Mitglied Ihrer Comunnity werden.</font></p></li>
+<li><b><span class="under">Dateianhänge erlauben?</span></b>
+<ul><li>Wenn Sie diese Option zulassen, erlauben Sie es Ihren Benutzern Dateianhänge ihren Beiträgen hinzuzufügen, vorausgesetzt, es ist ein gültiger Wert unter &quot;Erlaubte Anzahl für Dateianhäge in Beiträgen&quot; im Bereich Admin Center&#47;Forum Konfiguration&#47;Erweiterte Einstellungen unter dem Tabulator (Reiter) &quot;Dateianhänge&quot; gesetzt. Ist hier der Wert &quot;0&quot; eingetragen, ist das Hinzufügen von Dateianhängen nicht gestattet.</li></ul></li>
+<li><b><span class="under">Globale Ankündigungen</span></b>
+<ul><li>Die Auswahl dieser Option bewirkt, dass Nachrichten in diesem Forum als wichtige Nachricht ganz oben in jedem einzelnen Forum angezeigt werden. Dabei ist es völlig unerheblich, wie die Berechtigungen gesetzt sind, nur Administratoren und Globale Moderatoren können neue Themen starten und darauf antworten.<br /><br /> <b><span class="under">Hinweis:</span> YaBB erlaubt, dass nur einem Forum das Privileg &quot;Globale Ankündigungen&quot; zugwiesen werden kann.</b></li></ul></li>
+<li><b><span class="under">Papierkorb</span></b>
+<ul><li>Wenn Sie diese Option durch Markieren der Checkbox aktivieren, erhält dieses Forum die Funktion eines Papierkorb. Beiträge, die durch Moderatoren gelöscht worden sind werden in diesem Forum weiterhin vorgehalten und können ggf. wieder hergestellt werden können. Es kann auch als Papierkorb für den Administrator verwendet werden, wenn Sie die eventuell vorhandene Markierung der Checkbox entfernen, die Sie im Admin Center&#47;Konfiguration&#47;Forum Einstellungen im Bereich des Tabulator (Reiter) &quot;Forum Personal&quot; finden.<br /><br /><b><span class="under">Hinweis:</span> YaBB erlaubt, dass nur einem Forum das Privileg &quot;Papierkorb&quot; zugewiesen werden kann.</b></li></ul></li>
+<li><b><span class="under">Mindestalter für dieses Forum</span></b><br />
+<ul><li>Begrenzt den Zugriff auf ein Mindestalter, welches sich aus dem Profil der Mitglieder ergibt.</li></ul></li>
+<li><b><span class="under">Höchstalter für dieses Forum</span></b>
+<ul><li>Begrenzt den Zugriff auf ein Höchstalter.</li></ul></li>
+<li><b><span class="under">Wählen Sie welches Geschlecht Zugang zu diesem Forum haben darf</span></b>
+<ul><li>Zugangsberechtigung nach Geschlecht (Tupper-Ware-Mode)</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Die Alter&#47;Geschlecht Beschränkung basiert auf Informationen, die der Benutzer in seinem Profil für den Geburtstag und das Geschlecht eingetragen hat. Hat der Benutzer keine Daten/Auswahl Geburtstag/Geschlecht vorgenommen, hat YaBB keine Möglichkeit das Alter oder das Geschlecht anderweitig zu erkennen oder zu prüfen. <i>Diesen Benutzern wird es nicht erlaubt sein auf Foren zuzugreifen, die diese Beschränkungen verwenden.</i></font></p></li>
+<li><b><span class="under">Dürfen Themen beginnen</span></b>
+<ul><li>Hier wird angegeben, welche Mitgliedergruppe Themen starten darf.</li></ul></li>
+<li><b><span class="under">Dürfen auf Beiträge antworten</span></b>
+<ul><li>Markiere die Mitgliedergruppen, die auf Beiträge anderer antworten dürfen.</li></ul></li>
+<li><b><span class="under">Dürfen Beiträge lesen</span></b>
+<ul><li>Hier wird festgelegt, wer Themen lesen darf.</li></ul></li>
+<li><b><span class="under">Dürfen Umfragen erstellen</span></b>
+<ul><li>Welche Mitgliedergruppen Umfragen erstellen dürfen, wird hier festgelegt.</li></ul>
+<p><font color="#0099CC"><b><span class="under">ADMINISTRATOR TIP:</span></b> Um Gästen zu erlauben, <span class="under">eine</span> der oben genannten 4 Funktionen auszuführen, <i><b>wählen Sie keine Mitgliedergruppe aus</b></i>.</font></p></li>
+</ul>
+<p>Wenn Sie alle Informationen für das bearbeitete Forum hinterlegt haben, scrollen Sie an das Ende der Seite und klicken Sie auf den Button &quot;Speichern&quot;. Das bearbeitete Forum ist nun erstellt und ist für Beiträge offen!</p>
+~;
+#############################################
+
+
+### Section 4
+#############################################
+$section_sub4 = "Ein_Forum_loeschen";
+$section_body4 = qq~Wenn Sie ein Forum dauerhaft entfernen/löschen möchten, folgen Sie den Anweisungen oberhalb, um zunächst in die Foren-Verwaltung zu gelangen. 
+<p><b>Ein Forum löschen</b></p>
+<ul>
+<li>In der Übersichtsliste der vorhandenen Foren sehen Sie eine Checkbox neben jedem Forennamen. Markieren Sie die Checkbox für jedes Forum, dass Sie entfernen/löschen möchten.</li>
+<li>Anschließend scrollen Sie an das Ende der Forenübersichtsseite, wo Sie eine Passage mit der Bezeichnung &quot;mit den ausgewählten:&quot; finden.</li>
+<li>Markieren Sie den Radiobutton mit der Bezeichnung &quot;Löschen&quot; und klicken Sie im Anschluß auf den rechts daneben liegenden Button &quot;Los&quot;.</li>
+<li>Ein kleines Popup-Fenster wird sich öffnen und über eine Sicherheitsabfrage müssen Sie die Absicht, das Forum zu löschen, nochmals bestätigen. Mit Klick auf &quot;OK&quot; wird das markierte Forum/werden die markierten Foren endgültig gelöscht, mit &quot;Abbrechen&quot; wird der Vorgang gestoppt.</li>
+</ul>
+~;
+#############################################
+
+
+1;

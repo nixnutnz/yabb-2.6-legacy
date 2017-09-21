@@ -1,0 +1,55 @@
+﻿###############################################################################
+# MemberList.lng (Member List text definitions)                               #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchmemberlistlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutchmemberlistlngmods = ();
+if (@dutchmemberlistlngmods) {
+    $dutchmemberlistlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%ml_txt = (
+'1' => 'Gesorteerd op:',
+'2' => 'GA!',
+'3' => 'Bekijk de',
+'4' => 'Leden geordend op',
+'19' => 'Pagina Index In-/uitklappen',
+'21' => 'Berichten',
+'34' => 'Avatar',
+'35' => 'Gebruikersnaam',
+'87' => 'Positie',
+'96' => 'Website',
+'139' => 'Pagina\s',
+'233' => 'Registratie datum',
+'234' => 'Reg. Datum',
+'307' => 'e-mail',
+'308' => 'verborgen E-mail adres',
+'309' => 'van',
+'312' => 'Toon leden geordend op alfabet',
+'313' => 'Bekijk de',
+'314' => 'Leden geordend naar het aantal bijdragen',
+'331' => 'Leden',
+'759' => 'Kies alsjeblieft een letter.',
+'760' => 'Er zijn geen leden die met deze letter beginnen.',
+'800' => 'Andere',
+'801' => 'Zoek op Naam onder E-mail',
+'802' => 'Sorry - geen resultaten gevonden voor',
+'dr_warning' => '* Account ouder dan forum - Verifieer alstublieft start datum Forum:',
+'dr_warnurl' => 'Hier',
+);
+
+1;

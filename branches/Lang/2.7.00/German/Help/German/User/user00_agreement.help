@@ -1,0 +1,22 @@
+$germanuser_user00_agreementhelpver = 'YaBB 2.7.00 $Revision: 1879 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "User_Agreement";
+
+### Section 1
+#############################################
+$section_sub1 = "{yabb_boardname}_User_Agreement";
+$section_body1 = qq~<p>Sie stimmen zu, dass Sie durch die Nutzung dieses Forum  keine Materialien veröffentlichen, die falsch, verleumderisch, ungenau, beleidigend, vulgär, hasserfüllt, belästigend, obszön, profan, sexuell orientiert, bedrohlich sind, die die Privatsphäre einer Person verletzen, oder anderweitig gegen jegliche Gesetze verstoßen. Sie stimmen auch zu, kein urheberrechtlich geschütztes Material zu veröffentlichen, es sei denn, das Copyright gehört Ihnen  oder Sie haben die Zustimmung des Eigentümers des urheberrechtlich geschützten Materials. Spam, Massenmails, Werbung, Kettenbriefe, Schneeballsysteme und Bettelei sind auch unpassend für dieses Forum.<br />
+<br />
+Beachten Sie, dass es für uns unmöglich ist, die Gültigkeit der Beiträge dieses Forums zu bestätigen. Bitte bedenken Sie, dass wir die geposteten Nachrichten nicht aktiv überwachen und  nicht verantwortlich für deren Inhalt sind. Wir übernehmen keine Gewähr für die Richtigkeit, Vollständigkeit oder Nützlichkeit der aufgeführten Informationen. Die Nachrichten drücken die Ansichten des Autors aus, nicht unbedingt die Ansichten dieses Forums. Jeder der glaubt, eine gepostete Nachricht sei anstößig, wird aufgefordert, einen Administrator dieses Forums unverzüglich zu benachrichtigen. Wir haben das Recht, anstößige Inhalte innerhalb einer angemessenen Frist zu entfernen, wenn wir feststellen, dass die Entfernung notwendig ist. Da dieses ein manueller Prozess ist, sollten Sie wissen, dass wir möglicherweise nicht in der Lage sind, bestimmte Nachrichten sofort zu löschen oder zu bearbeiten. Diese Richtlinie gilt gleichermaßen für die Mitgliederprofil-Informationen.<br />
+<br />
+Sie allein bleiben verantwortlich für den Inhalt Ihrer Nachrichten und Sie stimmen zu, das Forum schadlos und unbedenklich zu halten und alle mit diesem Forum verbundenen Webseiten. Wir als Forum behalten uns das Recht vor, Ihre Identität (oder jegliche Informationen, die wir über Sie haben) im Falle einer Beschwerde oder Klage, die aus jeglicher von Ihnen geschriebenen Information offen zu legen. Sie haben die Möglichkeit, bei der Registrierung Ihre Benutzer-ID und einen Screennamen zu wählen, der bei allen Nachrichten, Beiträgen und Antworten Sie als Autor anzeigt. Wir empfehlen, dass Sie den Namen angemessen halten. Mit diesem Benutzerkonto, für dass Sie sich hier registrieren, stimmen Sie zu, niemals Ihr Passwort einem anderen Mitglied zu geben, zu Ihrem eigenen Schutz und für rechtliche Gründe. Sie stimmen auch zu, NIEMALS andere Mitglieder-Accounts zu benutzen, um Nachrichten zu schreiben oder sich in diesem Forum zu bewegen. Nachdem Sie sich in diesem Forum registriert und einloggt haben, können Sie Ihr Profil detailliert ausfüllen. Es liegt in Ihrer Verantwortung, saubere und präzise Informationen zu präsentieren. Alle Informationen, die wir als ungenau oder vulgär sehen, werden entfernt.<br />
+<br />
+Bitte beachten Sie, dass mit jedem Beitrag Ihre IP-Adresse aufgezeichnet wird für den Fall, dass Sie aus diesem Forum gebannt werden oder Ihr ISP kontaktiert werden muss. Dies wird nur im Falle eines schweren Verstoßes gegen diese Vereinbarung geschehen.<br />
+<br />
+<b>Datenschutz </b>: Um zu funktionieren, nutzt dieses Forum gespeicherte Cookies auf Ihrem Computer. Mit der Registrierung geben Sie auch <b>explizit</ b>  die Genehmigung zum speichern von  Cookies auf Ihrem Computer.<br />
+<br />
+YaBBForumSoftware.com ist ein Entwicklungs- und Testforum Forensoftware YaBB. Es ist <i>nicht</i> ein geeigneter Ort für Diskussionen über Managementstrategien, Mitarbeiter oder Mitglieder einer anderen Forum.</p>~;
+#############################################
+
+
+1;

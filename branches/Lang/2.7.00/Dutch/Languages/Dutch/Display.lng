@@ -1,0 +1,100 @@
+﻿###############################################################################
+# Display.lng (Display text definitions)                                      #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchdisplaylngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutchdisplaylngmods = ();
+if (@dutchdisplaylngmods) {
+    $dutchdisplaylngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%display_txt = (
+'10' => 'Permalink voor dit artikel',
+'19' => 'Pagina index wisselen',
+'21' => 'Posts',
+'24' => '(Geen onderwerp)',
+'28' => 'Gast',
+'29' => 'Auteur',
+'30' => 'op',
+'63' => 'Moderatoren',
+'63a' => 'Moderator Groepen',
+'116' => 'Bijdrage beantwoorden',
+'118' => 'Topic',
+'139' => 'Pagina\'s',
+'146' => 'Reageer',
+'146n' => 'Naam van lid in snelle antwoordvak toevoegen',
+'162' => 'Weet je zeker dat je dit Topic wilt verwijderen?',
+'rempost' => 'Weet je zeker dat je dit onderwerp wilt verwijderen?',
+'211' => 'Laatste Wijziging',
+'211a' => 'Reden',
+'298' => 'Moderator',
+'298a' => 'Moderator Groep',
+'470' => 'Niet beschikbaar',
+'470a' => '<i>Ex Lid</i>',
+'511' => 'IP Gelogd',
+'525' => 'van',
+'526' => 'Toevoegen Favorieten',
+'527' => 'Uit Favorieten verwijderen',
+'528' => 'Voltooid',
+'529' => 'Notificatie toevoegen',
+'530' => 'Notificatieverwijderen ',
+'641' => 'Gelezen',
+'642' => 'keer',
+'643' => 'Terug naar de Top',
+'644' => 'Lezende leden',
+'645' => 'reagerende leden',
+'646' => 'Leden die reageren op dit bericht',
+'739' => 'Weet je zeker dat je dit bericht wilt verwijderen?',
+'739a' => 'Verwijder deze Post',
+'766' => 'Geen Topic',
+'767' => 'Volgende Topic',
+'768' => 'Vorige Topic',
+'769' => 'Flash Lokatie',
+'888' => 'Bladeren in Topic',
+'999' => 'Bord aankondiging',
+'posttolocked' => 'Waarschuwing: U probeert te posten op een vergrendeld onderwerp. Klik [OK] om dit te bevestigen of [Annuleren] om terug te keren naar het onderwerp.',
+'modifyinlocked' => 'Waarschuwing: U probeert een vergendeld onderwerp te wijzigen. Klik [OK] om dit te bevestigen of [Annuleren] om terug te keren naar het onderwerp.',
+'isbuddy' => 'In mijn Vriendenlijst.',
+'split_confirm' => 'Bent u zeker dat u deze topic wilt splitsen?',
+'alertmod_confirm' => 'Weet u zeker dat u de Moderator wilt waarschuwen over deze post?',
+'reverse' => 'Klik hier als u de volgorde van de Topics wilt wijzigen.',
+'sendtopicemail' => 'Klik [OK] als u een e-mail via uw e-mail programma wilt versturen, anders wordt het e-mailprogramma van het forum gebruikt.',  ## in javascript
+'location' => 'Locatie',
+'age' => 'Leeftijd',
+'regdate' => 'Sloot zich aan bij: ',
+'mylastposts' => 'Bekijk mijn laatste 5 posts',
+'lastposts' => 'Bekijk de laatste 5 posts door ',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+'upt' => '&#710;',
+'guest_message' => 'Gasten boodschap',
+'guest_message_block' => qq~Hallo Gast,<br><br>Sorry, maar u heeft het aantal topic dat u als gast mag bekijken overschreden. Om zo veel topics te bekijken als u wilt en te profiteren van veel meer functies, is het misschien handig <a href="{yabb scripturl}?action=register" style="font-weight: bold;">een account bij ons te registreren</a>. Registratie is eenvoudig en duurt slechts een paar minuten.<br><br>Als u reeds een account bij ons heeft, kunt u <a href="{yabb scripturl}?action=login" style="font-weight: bold;">hier inloggen</a> om het zien van dit bericht te stoppen.<br><br>Dank u,<br><br>Het {yabb mbname} Team~,
+'guest_message_warn' => qq~Hallo Gast,<br><br>Het ziet er naar uit dat u ervan geniet ons forum te lezen, dus waarom <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registreert u niet bij ons</a> Om het zien van dit bericht te stoppen en van veel meer functies te profiteren. Registratie is eenvoudig en duurt slechts een paar minuten.<br><br>Als u al een account bij ons heeft, dan <a href="{yabb scripturl}?action=login" style="font-weight: bold;">Klik dan hier om in te loggen.</a><br><br>Dank u,<br><br>Het {yabb mbname} Team~,
+'bookmarks' => 'Bladwijzers', # Social Bookmarks
+'google' => 'Google Hangout',
+'ipblock' => q~Block IP in Guardian~,
+'ipblock2' => q~Block IP in .htaccess~,
+'ipblock_confirm' => q~Are you sure you want to block this IP?\n\n~,
+'ipban_confirm' => q~Are you sure you want to ban this IP?\n\n~,
+'725f' => q~Ban IP~,
+);
+
+%zodiac_txt = (   #YaBB Dierenriem
+'sign' => 'Dierenriem teken',
+);
+
+1;

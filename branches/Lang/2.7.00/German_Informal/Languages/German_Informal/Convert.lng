@@ -1,0 +1,217 @@
+###############################################################################
+# Convert.lng                                                                 #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$german_informalconvertlngver = 'YaBB 2.7.00 $Revision: 1882 $';
+
+%conv1x_txt = (
+'title' => q~YaBB 2.7.00 Importer/Converter~,
+'intro1' => q~Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs.<br />Proceed through the following steps to convert your YaBB 1 Gold - SP 1.x forum to YaBB 2.7.00.<br /><br /><b>If</b> your YaBB 1 Gold - SP 1.x forum is located on the same server/cgi-bin as your YaBB 2.7.00 installation:<ol><li>Insert the path to your YaBB 1 Gold - SP 1.x forum and the paths to /Boards, /Members, /Messages, and /Variables in the input fields below.</li><li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li><li>Click on the 'Continue' button.</li></ol><b>OR</b> if your YaBB 1 Gold - SP 1.x forum is located on a different server than your YaBB 2.7 installation or if you do not know the path to your SP 1.x forum:<ol><li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your YaBB 1 Gold - SP 1.x installation, to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your YaBB 2.7 installation, and chmod them 755. In this case the Path to your YaBB 1x folders is './Convert'.</li><li>Copy Settings.pl from the yabb folder of your YaBB 1 Gold - SP 1.x installation to the Convert/Variables folder of your YaBB 2.7 installation, and CHMOD it 644.</li><li>Click on the 'Continue' button</li></ol><b>Do you need to convert your files to UTF-8?</b> (Unless you had a custom Language pack installed that had a 'UTF-8' character encoding, you will need to convert to UTF-8.)~,
+'convboardsdir' => q~Path to your YaBB 1 Gold - SP 1.x Boards: ~,
+'convdatadir' => q~Path to your YaBB 1 Gold - SP 1.x Messages: ~,
+'convertdir' => q~Path to your YaBB 1 Gold - SP 1.x files: ~,
+'convmemberdir' => q~Path to your YaBB 1 Gold - SP 1.x Members: ~,
+'convvardir' => q~Path to your YaBB 1 Gold - SP 1.x Variables: : ~,
+'convhtml' => q~Path to your YaBB 1 Gold - SP 1.x yabb graphics: ~,
+'convattachdir' => q~Path to your YaBB 1 Gold - SP 1.x attachments: ~,
+'clse' => q~Close~,
+'cont' => q~Continue~,
+'1brds' => q~Board &amp; Category info found in:~,
+'1mems' => q~Members info found in:~,
+'1mess' => q~Messages info found in:~,
+'1cat' => q~cat.txt found in:~,
+'2brds' => q~Importing - please wait!<br />If you want to stop \'Boards & Categories\' importation, click here on STOP before this red message appears again on next page.~,
+'brds2' => q~New forum.master file has been created.<br />New forum.control file has been created.<br />All dates in files have been converted to timestamps.<br />All threads have been converted.<br />~,
+'2mems' => q~Importing - please wait!<br />If you want to stop \'Members\' importation, click here on STOP before this red message appears again on next page.~,
+'2mess' => q~Importing - please wait!<br />If you want to stop \'Messages\' importation, click here on STOP before this red message appears again on next page.~,
+'2messb' => qq~If nothing happens in 5 seconds <a href="{set_cgi}?action=messages;st=$INFO{'st'};count=$INFO{'count'};tcount=$INFO{'tcount'};total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Messages' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.~,
+'2date' => q~Importing - please wait!<br />If you want to stop \'Date &amp; Time\' importation, click here on STOP before this red message appears again on next page.~,
+'2dateb' => qq~If nothing happens in 5 seconds <a href="{set_cgi}?action=dates;st=$INFO{'st'};timeconv=$INFO{'timeconv'};pollfile=$INFO{'pollfile'};totalpolls=$INFO{'totalpolls'};polledfile=$INFO{'polledfile'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Date &amp; Time' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.~,
+'2done' => q~Importing - please wait!<br />If you want to stop \'Clean Up\', click here on STOP before this red message appears again on next page.~,
+'2doneb' => q~If nothing happens in 5 seconds <a href="{set_cgi}?action=cleanup;st=$INFO{'st'};clean=$INFO{'clean'};total_boards=$INFO{'total_boards'};total_re_tot=$INFO{'total_re_tot'};my_re_tot=$INFO{'my_re_tot'};tmp_firstforum=$INFO{'tmp_firstforum'};firstforum=$INFO{'firstforum'};siglength=$INFO{'siglength'};total_memb=$INFO{'total_memb'};memb_index=$INFO{'memb_index'};total_mail_n=$INFO{'total_mail_n'};my_mail_n=$INFO{'my_mail_n'};total_nopost=$INFO{'total_nopost'};fix_nopost=$INFO{'fix_nopost'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Clean Up' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.~,
+'3brds' => q~Processing has taken <i>{took} minutes</i>.<br /><br /><p id="memcontinued">Click on 'Messages' in the menu to continue. Otherwise the script will continue by itself in 5 minutes.</p>~,
+'3mems' => q~New User data files have been created.<br />Password encryption is done for each user the first time he/she logs in.<br /><br />Processing has taken <i>{took} minutes</i>.<br /><br /><p id="memcontinued">Click on 'Boards &amp; Categories' in the menu to continue.<br />Otherwise the script will continue automatically in 5 minutes.</p>~,
+'3mess' => q~Processing has taken <i>{took} minutes</i>.<br /><br /><p id="memcontinued">Click on 'Variables' in the menu to continue.<br />Otherwise the script will continue by itself in 5 minutes.</p>~,
+'3date' => q~New style timestamps have been created throughout the board. All old style dates have been converted.<br /><br />Processing has taken <i>{took} minutes</i>.<br /><br /><p id="memcontinued">Click on 'Clean Up' in the menu to continue.<br />Otherwise the script will continue by itself in 5 minutes.</p>~,
+'4brds' => qq~To prevent server time-out due to the number of boards to be imported, the process is split into one or more steps.<br /><br />The time-step ($max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i>{starttme} seconds</i>.<br />Conversion has taken <i>{took} minutes</i>.<br /><br />There are <b>~ . ( $INFO{'btotal'} - $INFO{'bstart'} ) . qq~/$INFO{'btotal'}</b> Boards left to be converted.<br /><p id="memcontinued">If nothing happens in 5 seconds <a href="{set_cgi}?action=cats;st=$INFO{'st'};bstart=$INFO{'bstart'};bfstart=$INFO{'bfstart'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Boards & Categories' import click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>~,
+'4mems' => qq~To prevent server time-out due to the number of members to be imported, the process is split into one or more steps.<br /><br />The time-step ($max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i>{starttme} seconds</i>.<br />Processing has taken <i>{took} minutes</i>.<br /><br />There are <b>~ . int( $INFO{'mtotal'} - ( ( $INFO{'mstart2'} + $INFO{'mstart1'} ) / 2 ) ) . qq~/$INFO{'mtotal'}</b> Members left to be converted. <br /><p id="memcontinued">If nothing happens in 5 seconds <a href="$set_cgi?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'};mstart2=$INFO{'mstart2'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser address and type it in when you want to continue the conversion.</p>~,
+'4mess' => qq~To prevent server time-out due to the number of messages to be imported, the process is split into one or more steps.<br /><br />The time-step (\$max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i>{starttme} seconds</i>.<br />Processing has taken <i>{took} minutes</i>.<br /><br /><i>$INFO{'total_threads'}</i> Threads have been imported.<br /><i>$INFO{'total_mess'}</i> Messages have been imported.<br />There are <b>~ . ( $INFO{'totboard'} - $INFO{'count'} ) . qq~/$INFO{'totboard'}</b> Boards left with Messages to be imported.<br /><div style="float: left;">There are <b>~ . ( $INFO{'totmess'} - $INFO{'tcount'} ) . qq~/$INFO{'totmess'}</b> Threads left in the actual Board to be converted.</div>~,
+'4date' => qq~To prevent server time-out due to the number of Date &amp; Time items to be processes, the conversion is split into multiple steps.<br /><br />The time-step (\$max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i>{starttme} seconds</i>.<br />Processing has taken <i>{took} minutes</i>.<br /><br /><div class="totals">There are <b>~ . ( $INFO{'totalpolls'} - $INFO{'pollfile'} ) . qq~/$INFO{'totalpolls'}</b> Polls left to be converted. &nbsp; </div>~,
+'4dateb' => qq~There are <b>~ . ( $INFO{'totalpolled'} - $INFO{'polledfile'} ) . qq~/$INFO{'totalpolled'}</b> Polled-Files left to be converted. &nbsp;~,
+'4done' => qq~To prevent server time-out due to the amount to Clean Up, the Clean Up is split into multiple steps.<br /><br />The time-step (\$max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i>{starttme} seconds</i>.<br />Processing has taken <i>{took} minutes</i>.<br /><br /><div class="totals">There are <b>0/$INFO{'total_boards'}</b> Boards (1) left to be recounted. &nbsp; </div>~,
+'4doneb' => q~There are <b>~ . ( $INFO{'total_re_tot'} - $INFO{'my_re_tot'} ) . qq~/$INFO{'total_re_tot'}</b> Boards (2) left to be recounted. &nbsp; </div>~,
+'4donec' => q~There are <b>~ . ( $INFO{'total_memb'} - $INFO{'memb_index'} ) . qq~/$INFO{'total_memb'}</b> Members left to be recounted. &nbsp;~,
+'4doned' => q~There are <b>~ . ( $INFO{'total_mail_n'} - $INFO{'my_mail_n'} ) . qq~/$INFO{'total_mail_n'}</b> Notifications left to be re-written. &nbsp;~,
+'4donee' => q~There are <b>~ . ( $INFO{'total_nopost'} - $INFO{'fix_nopost'} ) . qq~/$INFO{'total_nopost'}</b> NoPost-Membergroups left to be updated. &nbsp;~,
+'5mess' => q~Messages have been imported.~,
+'mess5' => q~New style message files have been created.~,
+'thrds' => q~Threads have been imported.~,
+'info2' => q~- Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />- Your browser will be refreshed automatically every {max_process_time} seconds and you will see the ongoing process in the status bar.<br />- Some internet connections refresh their IP-Address automatically every 24 hours.<br />&nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion after that! <br />- Your forum will be set to maintenance while converting.<p id="memcontinued">Click on 'Members' in the menu to start.<br />&nbsp;</p>~,
+'brdsdn' => q~Board &amp; Category Import.~,
+'memsdn' => q~Members Import.~,
+'messdn' => q~Messages Import.~,
+'varsdn' => q~Variables.~,
+'datedn' => q~Date &amp; Time Conversion.~,
+'donedn' => q~Final Cleanup.~,
+'illmem1' => q~Member(s) with illegal username(s) were found and converted to legal name(s).<br />You can find this information in the <i>tmp/fixusers.txt</i> file. If you do not need it, you can delete it later.~,
+'illmem2' => q~Invalid name~,
+'illmem3' => q~Fixed name~,
+'illmem4' => q~Reg. date~,
+'illmem5' => q~Displayed name~,
+'illmem6' => q~E-mail~,
+'illmem7' => qq~<br /><br />There were some illegal user IDs. These have been changed. Please inform those users of these changes. You can find the list in the $tmpdir/fixusers.txt~,
+'see' => q~See info below!~,
+'alldn' => q~The conversion took <i>{took} minute(s)</i>.<br />~,
+'yyim' => q~You are running the YaBB 2.7.00 Importer/Converter.~,
+'goto' => q~Go to Convert Language~,
+);
+
+%conv2x_txt = (
+'1brds' => q~Board &amp; Category info found in:~,
+'1mems' => q~Members info found in:~,
+'1mess' => q~Messages info found in:~,
+'2brds' => q~Importing - please wait!<br />If you want to stop \'Boards & Categories\' import, click here on STOP before this red message appears again on next page.~,
+'2mems' => q~Importing - please wait!<br />If you want to stop \'Members\' import, click here on STOP before this red message appears again on next page.~,
+'2mess' => q~Importing - please wait!<br />If you want to stop \'Messages\' importation, click here on STOP before this red message appears again on next page.~,
+'2memsb' => qq~If nothing happens in 5 seconds <a href="{set_cgi}?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' conversion click here</a>. Then copy the actual browser address and type it in when you want to continue the conversion.~,
+'2messb' => qq~If nothing happens in 5 seconds <a href="{set_cgi}?action=messages;st=$INFO{'st'};totboard=$INFO{'totboard'};count=$INFO{'count'};tcount=$INFO{'tcount'};total_mess=$INFO{'total_mess'};total_threads=$INFO{'total_threads'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Messages' conversion click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.~,
+'3brds' => q~Processing has taken <i>{took} minutes</i>.<br /><br /><p id="memcontinued">Click on 'Messages' in the menu to continue.<br />If you do not do that the script will continue by itself in 5 minutes.</p>~,
+'3mems' => q~Processing has taken <i>{took} minutes</i>.<br /><br /><p id="memcontinued">Click on 'Boards &amp; Categories' in the menu to continue.<br />If you do not do that the script will continue itself in 5 minutes.</p>~,
+'3mess' => q~Processing has taken <i>{took} minutes</i>.<br /><br /><p id="memcontinued">Click on 'Variables' in the menu to continue.<br />If you do not do that the script will continue by itself in 5 minutes.</p>~,
+'4brds' => qq~To prevent server time-out due to the number of boards to be imported, the process is split into one or more steps.<br /><br />The time-step ($max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i>{starttme} seconds</i>.<br />Conversion has taken <i>{took} minutes</i>.<br /><br />There are <b>~ . ( $INFO{'btotal'} - $INFO{'bstart'} ) . qq~/$INFO{'btotal'}</b> Boards left to be converted.<br /><p id="memcontinued">If nothing happens in 5 seconds <a href="{set_cgi}?action=cats;st=$INFO{'st'};bstart=$INFO{'bstart'};bfstart=$INFO{'bfstart'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Boards & Categories' import click here</a>. Then copy the actual browser address and type it in when you are going to continue the conversion.</p>~,
+'4mems' => qq~To prevent server time-out due to the number of members to be imported, the process is split into one or more steps.<br /><br />The time-step ($max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i>{starttme} seconds</i>.<br /><br />Processing has taken <i>{took} minutes</i>.<br /><br />There are <b>~ . int( $INFO{'mtotal'} - ( $INFO{'mstart1'} / 2 ) ) . qq~/$INFO{'mtotal'}</b> Members left to be imported.<br /><p id="memcontinued">If nothing happens in 5 seconds <a href="{set_cgi}?action=members;st=$INFO{'st'};mstart1=$INFO{'mstart1'}" onclick="PleaseWait();">click here to continue</a>...<br />If you want to <a href="javascript:stoptick();">STOP 'Members' import click here</a>. Then copy the actual browser address and type it in when you want to continue the importation.</p>~,
+'4mess' => qq~To prevent server time-out due to the number of messages to be imported, the process is split into one or more steps.<br /><br />The time-step (\$max_process_time) is set to <i>{max_process_time} seconds</i>.<br />The last step took <i> {starttme} seconds</i>.<br />Processing has taken <i>{took} minutes</i>.<br /><br /><i>$INFO{'total_threads'}</i> Threads have been imported.<br /><i>$INFO{'total_mess'}</i> Messages have been imported.<br />There are <b>~ . ( $INFO{'totboard'} - $INFO{'count'} ) . qq~/$INFO{'totboard'}</b> Boards left with Messages to be imported.<br /><div style="float: left;">There are <b>~ . ( $INFO{'totmess'} - $INFO{'tcount'} ) . qq~/$INFO{'totmess'}</b> Threads left to be imported. &nbsp; </div>~,
+'5brds' => q~All Boards and Subboards have been imported.~,
+'5mems' => q~Members have been imported~,
+'5mess' => q~Messages have been imported.~,
+'adminbrd' => q~<br />There was a board named 'admin'. That board has been renamed to 'admin_fix'.~,
+'atttitle' => q~Import - Attachments~,
+'brdsdn' => q~Board &amp; Category Import.~,
+'memsdn' => q~Members Import.~,
+'messdn' => q~Messages Import.~,
+'varsdn' => q~Variables.~,
+'chk1' => q~Attention: The number of attachments listed in the attachment log does not match the number of files in yabbfiles/Attachments. Perhaps you need to copy your attachments files into your new installation?<br />~,
+'chk2' => q~Attention: These files listed in the attachment log may not transfer if copied into a Windows system.<br />~,
+'chk3' => q~multiple attachments - possible data loss or possibly the same attachments listed in multiple places :<br />~,
+'chk4' => q~long file name attachments - possible data loss<br />~,
+'clean1' => q~Importing - please wait!<br />If you want to stop \'Variables\' import, click here on STOP before this red message appears again on next page.~,
+'clse' => q~Close~,
+'cont' => q~Continue~,
+'conv1' => q~<br /><br />After you have tested your forum and made sure everything was imported correctly you can go to your Admin Center and delete /Convert/Boards, /Convert/Members, /Convert/Messages and /Convert/Variables folders and their contents, if any. ~,
+'conv2' => q~<br/>You may now login to your forum. Enjoy using YaBB 2.7.00!~,
+'convattachdir' => q~Path to your YaBB 2x attachments (\$uploaddir): ~,
+'convavatardir' => q~Path to your YaBB 2x member avatars (\$facesdir): ~,
+'convboardpixdir' => q~Path to your YaBB 2x Board Pics (Forum default only): ~,
+'convboardsdir' => q~Path to your YaBB 2x Boards: ~,
+'convdatadir' => q~Path to your YaBB 2x Messages: ~,
+'convertdir' => q~Path to your YaBB 2x folders: ~,
+'convhtml' => q~Path to your YaBB 2x yabbfiles: ~,
+'convmemberdir' => q~Path to your YaBB 2x Members: ~,
+'convpmattachdir' => q~Path to your YaBB 2x PM attachments (\$pmuploaddir): ~,
+'convsmiliesdir' => q~Path to your YaBB 2x Smilies (\$smiliesdir): ~,
+'convvardir' => q~Path to your YaBB 2x Variables: ~,
+'done' => q~done~,
+'finish' => q~<br />Furthermore, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />- Rebuild Message Index<br />- Recount Board Totals<br />- Rebuild Members List<br />- Recount Membership<br />- Rebuild Members History<br />- Rebuild Notifications Files<br />- Clean Users Online Log<br />- Attachment Functions => Rebuild Attachments<br />Also double check Member Groups, and, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.~,
+'fixn' => qq~The 2x Import Utility has detected potential problems with the imported/converted data. See <a href="$boardurl/tmp/datacheck.txt" target="_new">datacheck.txt</a> for more details.~,
+'getatt' => q~There are more than {lim} files in old Attachments Folder. <a href="javascript:void(window.open('{set_cgi}?action=convert;section=getatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import Attachments</a><br />~,
+'getpmatt' => q~There are more than {lim} files in old PMattachments Folder. <a href="javascript:void(window.open('{set_cgi}?action=convert;section=getpmatt','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">Import PMAttachments</a><br />~,
+'goto' => q~Go to Convert Language~,
+'info2' => q~- Importing can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />- Your browser will be refreshed automatically every {max_process_time} seconds and you will see the ongoing process in the status bar.<br />- Some internet connections refresh their IP-Address automatically every 24 hours.<br />&nbsp; Make sure that your IP-Address will not change during importing, or you must restart the import. <br />- Your forum will be set to maintenance while importing.<p id="memcontinued">Click on 'Members' in the menu to start.<br />&nbsp;</p>~,
+'intro1' => q~<p>Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. Also, if your old forum had added Mods or Languages, install the 2.7 versions  - if available - into your new forum before importing/converting your old forum.<br /><strong>Set the default language of your old forum to English.</strong><br />In the event your old forum had 'Activate .htaccess to add IP blocks on server level?' activated in Guardian, go to "The Guardian&trade; Setup" in the Admin Center of <strong>your old forum</strong> and copy the lists of items being blocked. You will need these to rebuild your IP blocks in .htaccess once the conversion is finished.</p><p>Put your old forum into Maintenance Mode and do all necessary maintenance on your <strong>old forum</strong>.<br />In the event your old Forum had Mods installed that made changes/additions to the Boards/forum.control file, you will need to copy the <em>BoardConvert.pl</em> file into cgi-bin/yabb2 of your <strong>old forum</strong>. CHMOD this file to 755 and run it from your browser. ie.: http://oldYaBBdomainhere/cgi-bin/yabb2/BoardConvert.pl. This needs to be run by user 'admin'.</p><p>Proceed through the following steps to import and convert your YaBB 2x forum to YaBB 2.7.<br /><br /><b>If</b> your YaBB 2x forum is located on the same server as your new YaBB 2.7 installation:<ol><li>Insert the paths to your YaBB 2x forum folders in the input fields below - do <strong>not</strong> include trailing slash (/)</li><li>Use your 'tab' key to move to the next text-box. The other text-boxes should fill in automatically with the new paths. Check to make sure these are correct for <strong>your</strong> old forum.</li><li>Also fill in the paths to your old Attachments, PMattachments, Smilies, and avatars/UserAvatars folders.</li><li>Click on the 'Continue' button</li></ol><b>Else</b> if your old YaBB 2x forum is located on a different server than your new YaBB 2.7 installation <strong>or</strong> if you do not know the path to your YaBB 2x forum:<ol><li>Copy all files in the /Boards, /Members, /Messages, and /Variables folders from your old YaBB 2x installation to the corresponding Convert/Boards, Convert/Members, Convert/Messages, and Convert/Variables folders of your new YaBB 2.7 installation, and CHMOD them to 755. In this case the Path to your YaBB 2x folders is './Convert'.</li><li><strong>Do not fill in the paths for your old Attachments, PMattachments, Smilies, and avatars/UserAvatars folders.</strong> You will need copy any attachments, PMattachments, Smilies, and avatars/UserAvatars from their old locations into their equivalent folders in your 2.7 installation.</li><li>Click on the 'Continue' button</li> </ol><p><strong>Do you need to convert your files to UTF-8?</strong> Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). If you are converting a YaBB forum older than version 2.6x and you are using standard language packs, you will need to convert to UTF-8. If your old forum is 2.6.11/2.6.12, check the your forum settings.<br /><strong>If the box below is checked, the UTF-8 conversion process must be completed before you can use your imported/converted forum.<br />Convert to UTF-8: </strong>~,
+'maintext_23' => 'Cannot process',
+'pmchk1' => q~Attention: The number of pm attachments listed in the pm attachment log does not match the number of files in yabbfiles/PMAttachments. Perhaps you need to copy your pm attachments files into your new installation?<br />~,
+'pmchk2' => q~<br />Attention: These files listed in the PMattachment log may not transfer if copied into a Windows system.<br />~,
+'pmtitle' => q~Import - PM Attachments~,
+'recdel' => qq~We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files.~,
+'thrds' => q~Threads have been imported.~,
+'title' => q~YaBB 2.7.00 Importer/Converter~,
+'varsdn' => q~Variables &amp; Clean Up.~,
+'yyim' => q~You are running the YaBB 2.7.00 Importer/Converter.~,
+'alldn' => q~The conversion took <i>{took} minute(s)</i>.<br />~,
+'error' => q~YaBB 2.7.00 Converter Error.~,
+'finish' => qq~<p>Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
+                - Rebuild Message Index<br />
+                - Rebuild Members List<br />
+                - Recount Membership<br />
+                - Rebuild Members History<br />
+                - Rebuild Notifications Files<br />
+                - Clean Users Online Log<br />
+                - Attachment Functions => Rebuild Attachments<br />
+                <br />
+                Also double check Member Groups, and, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.<br /><br />
+                You may now login to your forum. Enjoy using YaBB 2.7.00!</p>~,
+);
+
+%convlang_txt = (
+'maintext_23' => 'Cannot process',
+'start1' => q~Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). <strong>Encoding</strong>: If your Forum had a windows-1251 Language Pack installed, choose that encoding. Otherwise, choose ISO-8859-1. Messages in non-Western Languages, such as Chinese and Arabic, were saved as HTML Entities and should not be damaged by conversion from ISO-8859-1.~,
+'start2' => q~Messages and other information in previous versions of YaBB were encoded as ISO-8859-1 <strong>with the exception</strong> of those YaBB Forums using the few Language Packs, such as Russian, encoded as windows-1251 (Cyrillic). <strong>Majority encoding</strong>: If your Forum had a windows-1251 Language Pack installed, choose the encoding that reflects the <strong>majority</strong> of the posts in your forum. The <strong>Minority encoding</strong> will be the other available choice. Messages in non-Western Languages, such as Chinese and Arabic, were saved as HTML Entities and should not be damaged by conversion from ISO-8859-1.)~,
+'start1_a' => q~Language:~,
+'old' => q~ISO-8859-1 (old YaBB default)~,
+'alt' => q~windows-1251 (Cyrillic)~,
+'major' => q~Majority language:~,
+'minor' => q~Minority language:~,
+'cats' =>q~If your forum used <b>both</b> ISO-8859-1 and windows-1251 (Cyrillic) encodings, type in the <b>IDs</b> of the categories using <strong>minority language</strong> in their titles/descriptions (one ID per line). Otherwise leave this blank.~,
+'cats2' => q~IDs of the categories <strong>not</strong> in the majority language:~,
+'brds' => q~If your forum used <b>both</b> ISO-8859-1 and windows-1251 (Cyrillic) encodings, type in the <b>IDs</b> of the boards the <strong>minority language</strong> is found in (one ID per line). Otherwise leave this blank.~,
+'brds2' => q~IDs of the boards <strong>not</strong> in the majority language:~,
+'lngs' => q~If your forum used <b>both</b> ISO-8859-1 and windows-1251 (Cyrillic) encodings, type in the <b>Name (folder name)</b> of the Language Pack(s) in the <strong>minority language</strong>  (one Language per line). Otherwise leave this blank.~,
+'lngs2' => q~Names of the Languages <strong>not</strong> in the majority language:~,
+'title' => q~YaBB 2.7.00 UTF-8 Converter~,
+'yyim' => q~You are running the YaBB 2.7.00 UTF-8 Converter.~,
+'yyim2' => q~YaBB 2.7.00 UTF-8 Converter has already been run.~,
+'error' => q~YaBB 2.7.00 UTF-8 Converter Error.~,
+'start3' => q~Make sure your YaBB 2.7.00 installation is running and that it has all the correct folder paths and URLs. The folder 'ConvertLang' should have been installed with the Import/Conversion Mod.<br />Proceed through the following steps to convert your existing data files to UTF-8.~,
+'cont' => q~Continue~,
+'mems' => q~Members info found in:~,
+'brdsf' => q~Board and Category info found in:~,
+'mess' => q~Messages info found in:~,
+'vars' => q~Variables info found in:~,
+'files' => q~files~,
+'start4' => q~- Conversion can take a long time depending on the size of your forum (30 seconds to a couple hours).<br />- Some internet connections refresh their IP-Address automatically every 24 hours.<br />&nbsp; Make sure that your IP-Address will not change during conversion, or you must restart the conversion. <br />- Your forum will be set to maintenance while converting.<p>Click on 'Members' in the menu to start.<br />&nbsp;</p>~,
+'stconv' => q~Start Conversion~,
+'next' => q~Files Processed</span>. You can now proceed to~,
+'mems2' => q~To prevent server time-out due to the number of members to be copied, the conversion will take place in a separate window.~,
+'mems3' => q~Member Conversion. -&gt;~,
+'memdn' => q~Member Conversion done.~,
+'brds3' => q~Board &amp; Category Conversion. -&gt;~,
+'brds4' => q~To prevent server time-out due to the number of boards to be copied, the conversion will take place in a separate window.~,
+'brddn' => q~Board and Category Conversion done.~,
+'mess2' => q~Message Conversion. -&gt;~,
+'mess3' => q~To prevent server time-out due to the number of messages to be copied, the conversion will take place in a separate window.~,
+'messdn' => q~Message Convert Done.~,
+'vars2' => q~Variable Conversion. -&gt;~,
+'varsdn' => q~Variables Convert done.~,
+'time' => qq~Elapsed Time: {elapse} minutes.~,
+'finish' => qq~<p>We recommend you delete the file "$ENV{'SCRIPT_NAME'}". This is to prevent someone else running the converter and damaging your files. However, if you had 2 language encodings in your old forum: before deleting the Language Conversion files, check your new '$boardsdir/forum.control' file to make sure the board descriptions were correctly converted to UTF-8. If not, you can correct the errors in Admin -&gt; Forum Controls -&gt; Boards -&gt; board to be edited OR you can hand edit '$boardsdir/forum.control' in a text editor such as Notepad++ by copying the description from your old forum's '$boardsdir/forum.control' into your new forum.control. Be sure to save your edited file with UTF-8 encoding.<br /><br />
+                Further more, we strongly recommend to run the following "Maintenance Controls" in the "Admin Center" before you start doing other things:<br />
+                - Rebuild Message Index<br />
+                - Rebuild Members List<br />
+                - Recount Membership<br />
+                - Rebuild Members History<br />
+                - Rebuild Notifications Files<br />
+                - Clean Users Online Log<br />
+                - Attachment Functions => Rebuild Attachments<br /><br />
+                Also double check Member Groups, and, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.<br /><br />
+                You may now login to your forum. Enjoy using YaBB 2.7.00!</p>~,
+'strt' => q~Start~,
+'done' => q~done~,
+'clse' => q~Close~,
+'refr' => q~Remember to refresh main page after closing this window.~,
+'lmem' => q~Language Conversion - Members~,
+'lbrds' => q~Language Conversion - Boards~,
+'lmess' => q~Language Conversion - Messages~,
+'lvars' => q~Language Conversion - Variables~,
+'fixa' => qq~The UTF-8 Conversion Utility has already been run.<br />To run Utility again, remove the file "$vardir/ConvertLang.lock" and the file"$vardir/ConvVar.txt" then re-visit this page.~,
+);
+
+1;

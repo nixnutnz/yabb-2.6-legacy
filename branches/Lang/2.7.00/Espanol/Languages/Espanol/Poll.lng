@@ -1,0 +1,72 @@
+###############################################################################
+# Poll.lng (Poll text definitions)                                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$espanolpolllngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@espanolpolllngmods = ();
+if (@espanolpolllngmods) {
+    $espanolpolllngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; };
+
+%polltxt = (
+'4' => 'Pregunta de la encuesta',
+'6' => 'Pregunta',
+'7' => 'Opción',
+'15' => 'Encuesta',
+'16' => 'Pregunta',
+'17' => 'Total de votos',
+'18' => 'Enviar voto',
+'19' => 'Ver resultados',
+'20' => 'Abrir',
+'21' => 'Cerrar',
+'22' => '*** Esta encuesta ha sido cerrada ***',
+'23' => 'Detalles de la encuesta:',
+'24' => 'Votos',
+'25' => 'Nadie voto por esa opción.',
+'26' => 'Resultados ocultos:',
+'27' => 'Borrar',
+'30' => 'Dirección IP',
+'31' => 'Fecha de Voto',
+'32' => 'Permitir votar a Invitados:',
+'33' => 'Ver Votos',
+'35' => 'Cáracter no válido en la opción',
+'39' => 'Modificar',
+'40' => 'Pregunta de la encuesta',
+'41' => 'Cáracter no válido en la pregunta de la encuesta. Por favor, intenta de nuevo.',
+'42' => 'Detalles',
+'43' => 'Borrar Voto',
+'44' => '¿Estás seguro que quieres borrar esta encuesta?',
+'45' => 'Creada por',
+'45a' => 'Última modificación por',
+'46' => 'el',
+'47' => 'Gracias tu voto.',
+'48' => 'Los resultados permanecerán ocultos mientras se realiza el recuento de votos.',
+'49' => 'Borrar Votos',
+'53' => '*** Nadie puede ver los resultados hasta que la encuesta este cerrada ***',
+'54' => 'Marca aquí si quieres que los Invitados puedan votar en esta encuesta.',
+'55' => 'Marca aquí si no quieres que los resultados sean mostrados hasta que la encuesta este cerrada.',
+'56' => 'Marca aquí si quieres que los usuarios puedan votar por más de una opción.',
+'57' => 'Comentarios',
+'58' => 'Elección multiple',
+'59' => 'Comentarios de la encuesta',
+'64' => 'Tu voto ha sido',
+'65' => 'Tu voto fue para',
+'66' => 'Tus votos fueron para',
+'showcased' => 'Actualmente Siendo Mostrados',
+'setshowcased' => '¿Configurar Visualización de Encuesta?',
+'showcaserem' => '¿Borrar Encuesta de Visualización?',
+'confirm' => '¿Estás seguro que quieres mostrar esta Encuesta?\\n¡Otra encuesta está siendo mostrada!', # Test before changing! It's inside a javascript. Do not use " or ' inside parenteses.
+);
+
+1;

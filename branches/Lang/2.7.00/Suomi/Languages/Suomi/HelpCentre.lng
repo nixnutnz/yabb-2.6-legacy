@@ -1,0 +1,41 @@
+###############################################################################
+# HelpCentre.lng (Language Strings for the Help Centre                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomihelpcentrelngver = 'YaBB 2.7.00 $Revision: 1890 $';
+@suomihelpcentrelngmods = ();
+if(@suomihelpcentrelngmods){
+    $suomihelpcentrelngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%helptxt = (
+'1' => "Foorumin käyttöohjeet",
+'2' => "Sisältö",
+'3' => "Käyttäjäohje",
+'4' => "Moderaattoriohje",
+'5' => "Yleismoderaattoriohje",
+'6' => "Ylläpito-ohje",
+'7' => "Muokkaa käyttöohjeita",
+'7c' => q~Choose Help Language~,
+'7d' => q~Edit Help Center Entries~,
+'8' => "Tehty!",
+'9' => "Käyttöoikeudet",
+'10' => "Täällä muokkaat, lisää poistat tai uudelleen järjestelet foorumisi käyttöohjeita. Vasemmassa reunassa näet käytettävissä olevat osiot. Voit valita ja muokata tai lisätä niitä siirtämällä nuolta painamalla oikean puoleisiin kenttiin.",
+'643' => 'Takaisin ylös',
+'769' => "Flash-tiedoston sijainti",
+'7a' => '   Osion otsikko',
+'7b' => 'Aliosion otsikko',
+);
+
+1;

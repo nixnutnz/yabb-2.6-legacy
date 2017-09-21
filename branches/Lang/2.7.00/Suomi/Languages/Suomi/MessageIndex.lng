@@ -1,0 +1,116 @@
+###############################################################################
+# MessageIndex.lng (MessageIndex text definitions)                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suomimessageindexlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+@suomimessageindexlngmods = ();
+if(@suomimessageindexlngmods){
+    $suomimessageindexlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%messageindex_txt = (
+'2' => 'Ylläpito',
+'3' => 'Tässä aiheessa on',
+'4' => 'liitettä',
+'5' => 'liite',
+'10' => 'Pysyväislinkki aiheeseen',
+'15' => 'Äänestys',
+'18' => 'Etusivu',
+'19' => 'Sivunvalintanappi',
+'22' => 'Viimeisin viesti',
+'31' => 'Poista',
+'54' => 'Poista',
+'63' => 'Moderaattorit',
+'63a' => 'Moderaattoriryhmät',
+'70' => 'Aihe',
+'71' => 'Viestikuvake',
+'75' => 'Täällä näet valitsemasi suosikkiaiheet.',
+'76' => 'Sinulla on tällä hetkellä',
+'77' => 'suosikkia',
+'78' => 'sallituista.',
+'104' => 'Lukitse/Avaa',
+'109' => 'Aloittaja',
+'110' => 'Vastauksia',
+'132' => 'Siirrä aihe',
+'133' => 'Siirrä kohteeseen',
+'139' => 'Sivu',
+'162' => 'Haluatko varmasti poistaa tämän aiheen?',
+'199' => 'Kaksoisnapsauta valintaruutua saadaksesi lisää tietoa sen toiminnasta.', # don't use " inside!
+'200' => 'Paina [OK] lisätäksesi uuden viestin siirrettävään aiheeseen. Viestissä kerrotaan mistä aihe siirrettiin ja kuka sen siirsi. \\nPaina [Cancel] siirtääksesi aiheen ilman uutta viestiä.\\n\\nPaina [Hae!] kun palaat siirtoon.', # inside JavaScript! Screen = ikkunaan?
+'251' => 'Foorumihyppy',
+'298' => 'Moderaattori',
+'298a' => 'Moderointiriryhmä',
+'301' => 'Näyttöjä',
+'302' => 'Uusi',
+'303' => 'Siirry ensimmäiseen lukemattomaan viestiin',
+'454' => 'Kuuma aihe (Enemmän kuin',
+'454a' => 'vastausta)',
+'455' => 'Erittäin kuuma aihe (Enemmän kuin',
+'456' => 'Lukittu aihe',
+'457' => 'Normaali aihe',
+'458' => 'Piilotettu aihe',
+'459' => 'Piilotettu tärkeä aihe',
+'460' => 'Piilotettu lukittu aihe',
+'461' => 'Piilotettu tärkeä lukittu aihe',
+'462' => 'Hae!',
+'470' => 'Ei tiedossa',
+'470a' => '<i>Ex-jäsen</i>',
+'500' => 'Merkitse kaikki aiheet luetuiksi', # inside JavaScript!
+'500a' => 'Valmis', # inside JavaScript!
+'525' => 'Kirjoittaja',
+'526' => 'käyttäjä',
+'527' => 'Aiheen aloitti',
+'737' => 'Valitse kaikki',
+'779' => 'Tärkeä aihe',
+'779a' => 'Yleisilmoitus',
+'779b' => 'Lukittu yleisilmoitus',
+'780' => 'Tärkeä lukittu aihe',
+'781' => 'Tärkeä',
+'837' => 'Käyttöoikeudet',
+'840' => 'Suosikkeja ei löytynyt',
+'841' => 'Viestejä ei löytynyt',
+'842' => 'Poista valitut suosikit',
+'843' => 'RSS-syöte tälle alueelle',
+'844' => 'Piilota',
+'845' => 'Siirretty aihe',
+'903' => 'Sulje ikkuna',
+'collruletext' => 'Alueen säännöt kutistettu',
+'nopost' => 'Tähän alueeseen ei voi kirjoitta, eikä siihen voi siirtää viestejä.',
+'move_up' => 'Siirrä ylös',
+'move_down' => 'Siirrä alas', 
+);
+
+%messageindex_sort = (
+'sort_az' => "Lajittele (A-Z)",
+'sort_za' => "Lajittele (Z-A)",
+'sort_min' => "Lajittele (vähiten vastauksia)",
+'sort_max' => "Lajittele (eniten vastauksia)",
+'sort_last' => "Lajittele (uusin vastaus)",
+'sort_first' => "Lajittele (vanhin vastaus)",
+);
+
+%messageindex_stickygrp = (
+'1' => 'Tärkeät aiheet',
+'2' => 'Muut aiheet',
+);
+
+%messageindex_tp = (
+'enabletp' => 'Ota käyttöön aiheen esikatselu',
+'disabletp' => 'Ota pois käytöstä aiheen esikatselu',
+'code_tp' => 'CODE',
+'image_tp' => 'IMAGE',
+'media_tp' => 'MEDIA',
+);
+
+1;

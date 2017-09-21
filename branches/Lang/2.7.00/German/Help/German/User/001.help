@@ -1,0 +1,18 @@
+﻿$germanuser_001helpver = 'YaBB 2.7.00 $Revision: 1879 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "YaBB_Help_Center";
+
+### Section 1
+#############################################
+$section_sub1 = "Willkommen_in_der_YaBB_Familie";
+$section_body1 = qq~YaBB ist eines der weltweit führenden Anbieter eines kostenlos zur Verfügung stehenden, auf Perl basierenden Forensystems für Webmaster. Unser innovatives System ist stabil in der Benutzung, einfach in der Handhabung und in leicht verständlichem Format gehalten. Komm und sehe, was hunderttausende von Webmastern und Millionen von registrierten Mitgliedern bereits jetzt nutzen!
+<p>Für zusätzliche Hilfe besuchen Sie bitte die <a href="http://www.codex.yabbforum.com"><b>YaBB Codex</b></a> Seite.
+<br />Für <strong>software</strong> Unterstützung und Fehlersuche besuchen Sie bitte die <a href="http://www.yabbforum.com/community/"><b>YaBB Support Community</b></a>.</p>
+<p>In diesem Hilfe Abschnitt erhalten Sie Informationen, die Ihnen schnell die Funktionen Ihres YaBB Forums näherbringen. Hier wird Ihnen erklärt, wie Sie einen Benutzeraccount einrichten, das Login, wie Sie Profilfelder bearbeiten, Beiträge schreiben und vieles mehr. Wenn Sie einen Abschnitt überspringen wollen, benutzen Sie bitte das Menü auf der linken Seite.</p>
+<p>Seit der letzten Veröffentlichung unseres YaBB Forensystems wurde <b>eine Vielzahl neuer Features hinzugefügt</b>.<br />Nehmen Sie sich also etwas Zeit, um diese Hilfe Dateien aufmerksam zu lesen.</p>
+<p>Sie können das Menü auf der linken Seite verwenden, um schnell zu einem beliebigen Thema zu wechseln.</p>
+<p>Sie können den ^ Button am unteren rechten Rand eines jeden Hilfe Abschnittes verwenden, um wieder an den Anfang der Benutzer Hilfe Seite zu gelangen.</p>
+~;
+#############################################
+
+1;

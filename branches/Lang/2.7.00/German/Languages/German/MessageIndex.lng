@@ -1,0 +1,120 @@
+###############################################################################
+# MessageIndex.lng (MessageIndex text definitions)                            #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germanmessageindexlngver = 'YaBB 2.7.00 $Revision: 1879 $';
+@germanmessageindexlngmods = ();
+if (@germanmessageindexlngmods) {
+    $germanmessageindexlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%messageindex_txt = (
+'2' => q~Administrator~,
+'3' => q~Dieses Thema enthält~,
+'4' => q~Dateianhänge~,
+'5' => q~Dateianhang~,
+'10' => q~Permalink für diesen Artikel~,
+'15' => q~Umfrage~,
+'18' => q~Index~,
+'19' => q~Seitenindex umschalten~,
+'22' => q~Letzter Beitrag~,
+'31' => q~Löschen~,
+'54' => q~Löschen~,
+'63' => q~Moderatoren~,
+'63a' => q~Moderatorgruppe~,
+'70' => q~Betreff~,
+'71' => q~Nachrichtsymbol~,
+'75' => q~Dies ist Ihre Favoritenliste.~,
+'76' => q~Sie enthält derzeit~,
+'77' => q~von~,
+'78' => q~max. erlaubten Favoriten.~,
+'104' => q~Sperren/Öffnen~,
+'109' => q~Begonnen von~,
+'110' => q~Antworten~,
+'132' => q~Verschieben~,
+'133' => q~Verschieben nach~,
+'139' => q~Seiten~,
+'162' => q~Sind Sie sicher, dass Sie dieses Thema löschen wollen?~,
+'199' => q~Doppelklick um mehr Infos über diese Funktion zu erhalten.~, # don't use " inside!
+'200' => q~Markieren Sie dieses Kästchen, um am Ende des verschobenen Themas einen Beitrag anzufügen, in dem steht, von wo dieses Thema her verschoben wurde und wer dies gemacht hat. Lassen Sie das Kästchen frei, um keinen neuen Beitrag hinzuzufügen.~, # inside JavaScript!
+'251' => q~Forensprung~,
+'298' => q~Moderator~,
+'298a' => q~Moderatorgruppe~,
+'301' => q~Gelesen~,
+'302' => q~Neu~,
+'303' => q~Gehe zum ersten ungelesenen Beitrag~,
+'454' => q~Heißes Thema (mehr als~,
+'454a' => q~Antworten)~,
+'455' => q~Sehr heißes Thema (mehr als~,
+'456' => q~Geschlossenes Thema~,
+'457' => q~Normales Thema~,
+'458' => q~Verstecktes Thema~,
+'459' => q~Verstecktes, angepinntes Thema~,
+'460' => q~Verstecktes, geschlossenes Thema~,
+'461' => q~Verstecktes, angepinntes, geschlossenes Thema~,
+'462' => q~LOS!~,
+'470' => q~N/V~,
+'470a' => q~<em>Ex-Mitglied</em>~,
+'500' => q~Alle Themen als gelesen markieren~, # inside JavaScript!
+'500a' => q~Ausgeführt~, # inside JavaScript!
+'525' => q~Von~,
+'526' => q~von~,
+'527' => q~Gestartet~,
+'737' => q~Alle auswählen~,
+'779' => q~Angepinntes Thema~,
+'779a' => q~Globale Ankündigung~,
+'779b' => q~Geschlossene Globale Ankündigung~,
+'780' => q~Angepinntes, geschlossenes Thema~,
+'781' => q~Anpinnen~,
+'837' => q~Rechte im Forum~,
+'840' => q~Keine Favoriten gefunden~,
+'841' => q~Keine Nachrichten gefunden~,
+'842' => q~Gewählte Favoriten entfernen~,
+'843' => q~RSS-Feed für dieses Forum~,
+'844' => q~Verstecken~,
+'845' => q~Verschobenes Thema~,
+'903' => q~Schließe Fenster~,
+'collruletext' => q~Board-Regeln einklappen~,
+'nopost' => q~In dieses Forum kann nicht geschrieben werden und keine Beiträge können verschoben werden.~,
+'move_up' => q~Nach oben~,
+'move_down' => q~Nach unten~,
+);
+
+%messageindex_sort = (
+'sort_az' => q~Sortieren (A-Z)~,
+'sort_za' => q~Sortieren (Z-A)~,
+'sort_min' => q~Sortieren (min Antwort)~,
+'sort_max' => q~Sortieren (max Antwort)~,
+'sort_last' => q~Sortieren (neue Antwort)~,
+'sort_first' => q~Sortieren (alte Antwort)~,
+);
+
+%messageindex_stickygrp = (
+'1' => q~Wichtige Themen~,
+'2' => q~Forenthemen~,
+);
+
+%messageindex_tp = (
+'enabletp' => q~Aktivieren der Themenvorschau~,
+'disabletp' => q~Deaktivieren der Themenvorschau~,
+'code_tp' => q~CODE~,
+'image_tp' => q~IMAGE~,
+'media_tp' => q~MEDIA~,
+);
+
+1;

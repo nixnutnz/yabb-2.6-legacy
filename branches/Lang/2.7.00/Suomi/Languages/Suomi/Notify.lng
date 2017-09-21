@@ -1,0 +1,58 @@
+###############################################################################
+# Notify.lng (Notify text definitions)                                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$suominotifylngver = 'YaBB 2.7.00 $Revision: 1890 $';
+@suominotifylngmods = ();
+if(@suominotifylngmods){
+    $suominotifylngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%notify_txt = (
+'118' => 'Viestiketjukohtaiset ilmoitukset',
+'119' => 'Et saa viestiketjukohtaisia ilmoituksia!',
+'120' => 'Kirjoittaja',
+'121' => 'Tyhjennä',
+'122' => 'Saat ilmoituksen seuraavista viestiketjuista.',
+'123' => 'Napsauta valintaruutua <b><i>poistaaksesi</i></b> viestiketjun ilmoitukset!',
+'124' => 'päivitä ilmoitusten tila',
+'125' => 'Ilmoita',
+'126' => 'Vastaanota muistutuksia vastauksista tällä alueella.',
+'127' => 'Viestiketjuun on vastattu',
+'132' => 'Vain uudet aiheet',
+'133' => 'Kaikki uudet viestot',
+'134' => 'Poista',
+'135' => 'Alueella:',
+'136' => 'Alueen ilmoitus',
+'137' => 'Muuta tai poista tämän alueen ilmoituksia.',
+'138' => 'Muuta',
+'139' => 'Et saa aihealuekotaisia ilmoituksia!',
+'140' => 'Aihe',
+'144' => 'Valitse kaikki',
+'145' => 'Uusi yksityisviesti',
+'200' => 'Sinulla on',
+'201' => 'uutta',
+'202' => 'ja',
+'203' => 'Haluatko tarkastella ilmoituksiasi?',
+'205' => 'Alueilmoitukset',
+'206' => 'Aiheilmoitukset',
+'333' => 'Uusia viestejä',
+'334' => 'Ei uusia viestejä',
+'335' => 'Uusi',
+'lastpost' => 'viimeinen viesti',
+'lft' => "&lsaquo;",
+'rgt' => "&rsaquo;",
+);
+
+1;

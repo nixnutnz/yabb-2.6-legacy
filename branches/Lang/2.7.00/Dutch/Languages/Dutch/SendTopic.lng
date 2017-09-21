@@ -1,0 +1,57 @@
+﻿###############################################################################
+# SendTopic.lng (SendTopic text definitions)                                  #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+$dutchsendtopiclngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutchsendtopiclngmods = ();
+if (@dutchsendtopiclngmods) {
+    $dutchsendtopiclngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%sendtopic_txt = (
+'118' => 'Topic',
+'241' => 'veld.',
+'318' => 'Van',
+'335' => 'Uw naam',
+'336' => 'Uw e-mail adres',
+'339' => 'Verzend',
+'707' => 'Topic verzenden',
+'708' => 'naar een vriend.',
+'717' => 'Naam ontvanger',
+'718' => 'E-mail adres ontvanger',
+'error_sender_name' => 'U moet uw naam invoegen.',
+'error_sender_email' => 'U moet uw e-mailadres invoegen.',
+'error_recipient_name' => 'U moet de naam van de ontvanger invoegen.',
+'error_recipient_email' => 'U moet de e-mail van de ontvanger invoegen.',
+'error_verification' => 'De verificatiecode ontbreekt.',
+'verification_question_desc' => 'Beantwoord de bovenstaande verificatie vraag.',
+'verification_question_case' => 'Antwoorden zijn hoofdlettergevoelig.',
+'error_verification_question' => 'U moet de verificatie vraag beantwoorden.',
+);
+
+%floodtxt = (
+'1' => 'Uw Verificatie Code is',
+'3' => 'Verificatie Code',
+'casewarning' => 'Typ alstublieft exact de tekens die worden weergegeven in de afbeelding. De tekens moeten worden getypt in dezelfde volgorde, en ze zijn hoofdlettergevoelig.',
+'casewarning_1' => 'Typ alstublieft de tekens exact zoals ze worden weergegeven in de afbeelding,',
+'casewarning_2' => '<br /><span style="font-weight: bold;">zonder de eerste',
+'casewarning_3' => '<br /><span style="font-weight: bold;">zonder de laatste',
+'casewarning_4' => 'en de laatste',
+'casewarning_5' => 'tekens.</span><br />De tekens moeten worden getypt in dezelfde volgorde,<br />en ze zijn hoofdlettergevoelig.',
+);
+
+1;

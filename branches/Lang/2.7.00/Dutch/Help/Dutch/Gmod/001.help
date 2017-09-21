@@ -1,0 +1,19 @@
+$dutchgmod_001helpver = 'YaBB 2.7.00 $Revision: 1888 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Global_Moderater_Help_Centrum";
+
+### Section 1
+#############################################
+$section_sub1 = "Je_Global_Moderator_Status";
+$section_body1 = qq~<p>Een Global Moderator is een administrator-achtige positie. Je hebt de mogelijkheid om moderator functies uit te voeren op elk board in het hele forum, en als de administrator het toestaat, kan je zelfs een aantal core instellingen van het forum aanpassen. Je hebt het vertrouwen gekregen om te zorgen dat deze gemeenschap kan blijven bestaan en verder kan uitgroeien.</p>
+<p>Voor meer informatie, bezoek alstublieft <a href="http://www.yabbforum.com/codex/" target="_blank"><b>De YaBB Codex</b></a>.
+<br />Voor ondersteuning en probleemoplossing, bezoek alstublieft <a href="http://www.yabbforum.com/community/" target="_blank"><b>YaBB's Support Gemeenschap</b></a></p>
+<p>Gelieve te verwijzen naar de YaBB Terminologie / woordenlijst in de Gebruiker Help over de verschillende paginaweergaven beschreven in de onderstaande secties.</p>
+<p>De volgende afbeeldingen van het Moderator Menu worden geleverd voor verwijzing.</p>
+<p>{yabb mymoding}</p>
+<p>Je kan het menu aan de linkerzijde gebruiken om snel naar elk onderwerp hieronder te springen.</p>
+<p>U kunt de <img src="{top_img}" alt="Back to Top" title="Back to Top" /> button aan de onderkant rechts van elke Help sectie gebruiken om terug te keren naar de top van de Moderator Help-pagina</p> 
+~;
+#############################################
+
+1;

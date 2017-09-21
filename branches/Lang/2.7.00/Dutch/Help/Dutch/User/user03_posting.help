@@ -1,0 +1,499 @@
+$dutchuser_user03_postinghelpver = 'YaBB 2.7.00 $Revision: 1888 $';
+if ( $action eq 'detailedversion' ) { return 1; }
+$section_name = "Posten";
+
+### Section 1
+#############################################
+$section_sub1 = "Het_starten_van_een_Topic";
+$section_body1 = qq~Nadat u een account geregistreerd hebt, zult u de mogelijkheid hebben om nieuwe onderwerpen te starten. Om dit te doen, navigeert u naar de categorie waar u een conversatie wil beginnen. Wees zeker dat dit de correcte categorie is voor het onderwerp van uw bericht. Als u in deze categorie bent, zoekt u naar de link of de button getiteld &#8221;Start nieuw onderwerp&#8221; en klik hierop. De exacte locatie van deze button zal vari&#235;ren van de template die gebruikt wordt, maar zal meestal net boven de lijst met onderwerpen staan.
+<p>Nu zult u een nieuwe pagina te zien krijgen, waar u kunt beginnen een bericht te typen. Hieronder vind u een beschrijving van de items op deze pagina.</p>
+<h4 class="help">Voorbeeld:</h4>
+<p>Dit geeft u een beeld van hoe het bericht eruit zaln zien zodra het Gepost wordt</p>
+<h4 class="help">Onderwerp:</h4>
+<p>Dit is de titel van uw onderwerp en dit zal getoond worden op de categorie pagina.</p>
+<h4 class="help">Berichten pictogram:</h4>
+<p>Als u een speciaal ikoon wil toevoegen aan uw bericht, kunt u er hier een kiezen uit de lijst.</p>
+<h4 class="help">Voeg YaBBC labels toe:</h4>
+<p> YaBBC labels geven u de mogelijkheid de tekst te formatteren zoals u wilt in u bericht. Om een label toe te voegen moet u enkel op de button van uw keuze klikken. zie <a href="#YaBBC_Reference">YaBBC Reference</a> v0or een complete referentie.</p>
+<h4 class="help">Voeg Smilies toe</h4>
+<p>Personaliseer uw bericht door een emoticon, of smilie, &nbsp;toe te voegen. Klik gewoon op diegene die u wil toevoegen en YaBB zet het automatisch in uw bericht.</p>
+<h4 class="help">Koppel:</h4>
+<p> Als de Administrator het toelaat, kunt u een bijlage aan uw bericht koppelen door op de <i>Bladeren</i> knop te klikken om het bestand te vinden op uw harde schijf om te uploaden. Let wel op de toegelaten bestandstypes en de maximum bestandsgrootte.</p>
+<h4 class="help">Post:</h4>  
+<p> Deze knop doet precies wat u zou verwachten. Druk op de <b>Post</b> knop als u klaar bent voor de Gemeenschap om uw bericht weer te geven.</p>
+~;
+#############################################
+
+### Section 2
+#############################################
+$section_sub2 = "Reageren_op_een_post";
+$section_body2 = qq~<p>Naast nieuwe berichten plaatsen, kunt u ook snel en gemakkelijk reageren op een bestaand bericht of onderwerp. Als u een onderwerp vindt waar u graag op zou reageren, zoek dan de knop getiteld <i>Reageer</i> of <u>Citeer</u>. Als u <i>Reageer</i> gebruikt gaat u naar een berichtpagina die lijkt op degene hierboven beschreven. <u>Citeer</u> doet exact hetzelfde, maar voegt toe wat een andere gebruiker heeft gezegd aan uw bericht, in een speciaal veld zoals u hieronder ziet.</p>
+[yabbc][quote]Dit is een citaat[/quote][/yabbc]
+~;
+#############################################
+
+### Section 3
+#############################################
+$section_sub3 = "Een_peiling_plaatsen";
+$section_body3 = qq~<p>Als u een vraag heeft die u zou willen stellen aan deze gemeenschap, geeft YaBB u de mogelijkheid een peiling aan te maken samen met uw onderwerp. Dit is een fantastische manier om een goed idee te krijgen over wat de forumleden denken over uw vraag. Om een peiling te plaatsen, zoekt u de knop getiteld <i>Start Nieuwe Peiling</i> van de categorie-pagina en klikt erop. De exacte locatie van deze knop is afhankelijk van de template die je gebruikt, maar zal zich meestal net boven de lijst onderwerpen bevinden. Op deze speciale berichtenpagina, kan u uw vraag ingeven en opties. &nbsp;Typ hierna je bericht in zoals hierboven beschreven.</p>
+~;
+#############################################
+
+### Section 4
+#############################################
+$section_sub4 = "Een_gebeurtenis_plaatsen";
+$section_body4 = q~<p>Als de Evenementen kalender geactiveerd is en Admin staat het toe, kunnen leden en zelfs gasten speciale evenementen aankondigen, en vakanties, vergaderingen en herinneringen toevoegen aan de evenementen kalender. De Evenementen kalender, gebeurtenis posten sectie heeft veel van dezelfde functies die gevonden worden bij het posten van een onderwerp. U kunt smilies toevoegen en YaBBC gebruiken voor het opmaken van uw evenement post. Vervolgens kunt u een voorbeeld bekijken om te kijken hoe het eruitziet als het gepost is..</p>
+~;
+#############################################
+
+### Section 5
+#############################################
+$section_sub5 = "YaBBC_Referentie";
+$section_body5 = qq~<p>Om veiligheidsredenen kan standaard HTML niet gebruikt worden in berichten van YaBB. In de plaats hiervan laat YaBB het gebruik van YaBBC (YaBB Code) toe. YaBBC is gelijkaardig aan HTML, maar veilig en gestandaardiseerd voor bulletin board gebruik. om deze code te gebruiken, kunt u ofwel op de YaBBC button van uw keuze klikken op alle post pagina's ofwel kunt u ze manueel ingeven. Hieronder is een lijst weergegeven met elke tag en zijn functie.</p>
+<h4 class="help">Wat is YaBBC?</h4>
+<p>YaBBC is een set labels gebaseerd op de HTML taal. Het laat u toe uw berichten aan te passen op dezelfde manier dat HTML dit doet, maar heeft een simpelere syntax en zal nooit de layout breken van de pagina's die u bekijkt.
+De meeste YaBBC labels kunnen rond tekst geplaatst worden, door eerst de tekst te <span class="highlight">markeren</span>, en dan de YaBBC knop aan te klikken met de gewenste aanpassing.</p>
+<div class="yabbc center"> 
+<table>
+    <tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/url.png" alt="url"/></span> Invoegen URL, Link</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+            <br />Syntax:
+            <br />Resultaat:
+        </td> 
+        <td>[url]http://www.yabbforum.com[/url]
+            <br />[yabbc][url]http://www.yabbforum.com[/url][/yabbc]
+            <br />[url=http://www.yabbforum.com]YaBB Forum[/url]
+            <br />[yabbc][url=http://www.yabbforum.com]YaBB Forum[/url][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2">
+            <ul>
+                <li>Type URL and text: www.yabbforum.com YaBB Forum</li>
+                <li>Highlight all of it: <span class="highlight">www.yabbforum.com YaBB Forum</span></li>
+                <li>Klik op deknop: [yabbc][url=www.yabbforum.com]YaBB Forum[/url][/yabbc]</li>
+            </ul> 
+            De [link] YaBBC labels werken op dezelfde manier als de [url] labels. Met de uitzondering dat het [link] label (hier is geen invoeg knop voor) de aangeklikte link in het huidige venster zal openen, waar het [url] label de aangeklikte link in een nieuw venster opent.
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/ftp.png" alt="FTP Button" /></span> Invoegen FTP</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[ftp]ftp://ftpdom[/ftp]
+            <br />[yabbc][ftp]ftp://ftpdom[/ftp][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/img.png" alt="Image Button" /></span> Invoegen Afbeelding</th>
+    </tr><tr>
+        <td>Syntax:
+                <br />
+                <br />Resultaat:
+        </td> 
+<td>[img]$imagesdir/on.png[/img]
+                <br />
+                <br />[yabbc][img]$imagesdir/on.png[/img][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/email2.png" alt="Email Button" /></span> Invoegen Email</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+            <br />Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[email]myname\@domain.com[/email]
+            <br />[yabbc][email]myname\@domain.com[/email][/yabbc]
+            <br />[email=myname\@domain.com]Klik om mij te Emailen[/email]
+            <br />[yabbc][email=myname\@domain.com]Klik om mij te mailen[/email][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2">
+            <ul>
+                <li>Type e-mail address and text: myname\@domain.com Klik om mij te Emailen</li>
+                <li>Markeer alles: <span class="highlight">myname\@domain.com Klik om mij te Emailen</span></li>
+                <li>Klik op de knop: [yabbc][email=myname\@domain.com]Klik om mij te mailen[/email][/yabbc]</li>
+            </ul>
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/media.png" alt="Add media files" /></span> Invoegen multi media bestanden</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Voorbeeld:
+            <br />Resultaat: 
+        </td>
+        <td>[media]url naar flash bestand[/media]
+            <br />[media]http://www.your-domain.com/yabbchelp.swf[/media]
+            <br />[yabbc][media]$imagesdir/yabbchelp.swf[/media][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/table.png" alt="Table Button" /></span> <span class="ubbcbutton ubbcbuttonback" style="margin:0 4px"><img src="$yyhtml_root/UBBCbuttons/td.png" alt="Table Data Button" /></span> <span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/tr.png" alt="Table Row Button" /></span> Invoegen Tabel - Kolom - Rij</th>
+    </tr><tr>
+        <td>Syntax:</td>
+        <td>[table][tr][td]tekst voorbeeld[/td][/tr][/table]</td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/hr.png" alt="Horizontal Rule Button" /></span> Invoegen Horizontale Lijn</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[hr]
+            <br /><hr />
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/tele.png" alt="Teletype Button" /></span> Invoegen Teletype</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[tt]text example[/tt]
+            <br />[yabbc][tt]tekst voorbeeld[/tt][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/code.png" alt="Code Button" /></span> Invoegen Code</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />
+            <br />
+            <br />
+            <br /><!-- This is the break matching the blank break below -->
+            <br />Resultaat:
+        </td>
+        <td>[code]&lt;script language="javascript"&gt;
+            <br />&lt;!--
+            <br />alert("Hello YaBB 2!");
+            <br />//--&gt;
+            <br />&lt;/script&gt; [/code]
+            <br />
+            <br />[yabbc][code]<script language="javascript">
+            <!--
+            alert("Hello YaBB 2!");
+            //-->
+            </script>[/code][/yabbc] 
+       </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/quote2.png" alt="Quote Button" /></span> Invoegen Citaat</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[quote]Hello YaBB 2[/quote]
+            <br />[yabbc][quote]Hello YaBB 2[/quote][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/edit.png" alt="Edit Button" /></span> Invoegen bewerken</th> 
+    </tr><tr> 
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[edit]Dit is bewerkt in YaBB 2[/edit]
+            <br />[yabbc][edit]Dit is bewerkt in YaBB 2[/edit][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/sup.png" alt="Superscript Button" /></span> Invoegen Superscript</th> 
+ </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>text [sup]voorbeeld[/sup]
+            <br />
+            <br />[yabbc]tekst [sup]voorbeeld[/sup][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/sub.png" alt="Subscript Button" /></span> Invoegen Subscript</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />Resulaatt:
+        </td>
+        <td>tekst [sub]voorbeeld[/sub]
+            <br />
+            <br />[yabbc]tekst [sub]voorbeeld[/sub][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/list.png" alt="List Button" /></span> Invoegen Lijst - Lijst Item</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>[list][*]item 1
+            <br />[*]item 2
+            <br />[*]item 3[/list]
+            <br />[yabbc][list][*]item 1
+            [*]item 2
+            [*]item 3[/list][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2">U kunt geordende lijsten maken door de letter "o" aan het begin van de tag list.</td> 
+   </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>[olist][*]item 1
+            <br />[*]item 2
+            <br />[*]item 3[/olist]
+            <br />[yabbc][olist][*]item 1
+            [*]item 2
+            [*]item 3[/olist][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2">U kunt 2 of 3 niveau lijsten maken door inbegrip van een lijst in een andere lijst.</td>
+    </tr><tr>
+        <td>Voorbeeld:
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>[list][*]item 1
+            <br />[*]item 2
+            <br />[list][*]subitem 1
+            <br />[*]subitem 2[/list]
+            <br />[*]item 3[/list]
+            <br />[yabbc][list][*]item 1
+            [*]item 2
+            [list][*]subitem 1
+            [*]subitem 2[/list][*]item 3[/list][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/me.png" alt="/me Button" /></span> /me</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>/me loves YaBB 2
+            <br />[yabbc]/me loves YaBB 2[/yabbc]
+        </td>
+    </tr><tr> 
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/move.png" alt="Move Button" /></span> Invoegen lichtkrant (Marquee)</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[move]tekst voorbeeld[/move]
+            <br />[yabbc][move]tekst voorbeeld[/move][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/timestamp.png" alt="Timestamp Button" /></span> Invoegen tijdstempel</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[timestamp=1121602762]
+            <br />[yabbc][timestamp=1121602762][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/noparse.png" alt="No Parse Button" /></span> Geen ontleding</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[noparse][table][tr][td]Dit tabel zal geen ontleding hebben[/td][/tr][/table][/noparse]
+            <br />[yabbc][noparse][table][tr][td]Dit tabel zal geen ontleding hebben[/td][/tr][/table][/noparse][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/bold.png" alt="Bold Button" /></span> Invoegen Vette Tekst</th> 
+ </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[b]tekst voorbeeld[/b]
+            <br />[yabbc][b]tekst voorbeeld[/b][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/italicize.png" alt="Italic Button" /></span> Invogen tekst cursief</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[i]tekst voorbeeld[/i]
+            <br />[yabbc][i]tekst voorbeeld[/i][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/underline.png" alt="Underline Button" /></span> Invoegen tekst onderstrepen</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[u]tekst voorbeeld[/u]
+            <br />[yabbc][u]tekst voorbeeld[/u][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/strike.png" alt="Strikethrough Button" /></span> Invoegen tekst doorstrepen</th> 
+   </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[s]tekst voorbeeld[/s]
+            <br />[yabbc][s]tekst voorbeeld[/s][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/highlight.png" alt="Highlight Button" /></span> Invoegen tekst markeren</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[highlight]tekst voorbeeld[/highlight]
+            <br />[yabbc][highlight]tekst voorbeeld[/highlight][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><img src="$imagesdir/face1.gif" alt="Font Face Selector" /> Wijzig Lettertype</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[font=Courier New]Courier New font[/font]
+            <br />[yabbc][font=Courier New]Courier New font[/font][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><img src="$imagesdir/size1.gif" alt="Size Selector" /> Wijzig Lettergrootte</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[size=14]14 point font[/size]
+            <br />[yabbc][size=14]14 point font[/size][/yabbc]</td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><img src="$imagesdir/palette_help.gif" alt="Color picker and the palette" /> Kies tekst kleur</th>
+    </tr><tr>
+        <td colspan="2">U kunt de snelle kleurkiezer gebruiken om een tekstkleur kiezen in depalet met 12 kant en klare kleur tags of het palet openen om een aangepaste kleur label maken.</td> 
+                </tr><tr>
+        <td>Syntax:
+            <br />Resultaat:
+        </td>
+        <td>[color=#ff0000]rood gekleurde tekst[/color]
+            <br />[yabbc][color=#ff0000]rood gekleurde tekst[/color][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/pre.png" alt="Preformatted Button" /></span> Vooraf opgemaakte tekst invoegen.</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>[pre] Dit is vooraf opgemaakte tekst [/pre]
+            <br />
+            <br />[yabbc][pre] Dit is vooraf opgemaakte tekst [/pre][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/left.png" alt="Left Align Button" /></span> Invoegen tekst Links Uitlijnen</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>[left]tekst
+            <br />voorbeeld[/left]
+            <br />
+            <br />[yabbc][left]tekst
+            voorbeeld[/left][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/center.png" alt="Center Align Button" /></span> Invoegen tekst centreren</th>
+    </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>[center]tekst
+            <br />voorbeeld[/center]
+            <br />
+            <br />[yabbc][center]tekst
+voorbeeld[/center][/yabbc]
+        </td>
+    </tr><tr>
+        <td colspan="2"><hr /></td>
+    </tr><tr>
+        <th colspan="2"><span class="ubbcbutton ubbcbuttonback"><img src="$yyhtml_root/UBBCbuttons/right.png" alt="Right Align Button" /></span> Invoegen tekst rechts uitlijnen</th> 
+        </tr><tr>
+        <td>Syntax:
+            <br />
+            <br />
+            <br />Resultaat:
+        </td>
+        <td>[right]tekst
+            <br />voorbeeld[/right]
+            <br />
+            <br />[yabbc][right]tekst
+voorbeeld[/right][/yabbc]
+        </td>
+    </tr>
+</table>
+</div>
+~; 
+#############################################
+
+1;            
+

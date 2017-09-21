@@ -1,0 +1,195 @@
+﻿###############################################################################
+# EventCal.lng                                                                #
+###############################################################################
+# Dutch/Nederlands - Translation by Pieszyce                                  #
+# Review and changes by Pieszyce and other members of the YaBB community      #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#             with assistance from the YaBB community.                        #
+# Mod created by XTC: http://www.yabbserver.com                               #
+#                and added to YaBB core in Version 2.5.4 /Version 3.0         #
+###############################################################################
+$dutcheventcallngver = 'YaBB 2.7.00 $Revision: 1888 $';
+
+@dutcheventcallngmods = ();
+if (@dutcheventcallngmods) {
+    $dutcheventcallngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+### Event Calendar ###
+
+%var_cal = (
+'calgo' => 'Ga',
+'calname' => 'Naam',
+'calmon_01' => 'Januari',
+'calmon_02' => 'Februari',
+'calmon_03' => 'Maart',
+'calmon_04' => 'April',
+'calmon_05' => 'Mei',
+'calmon_06' => 'Juni',
+'calmon_07' => 'Juli',
+'calmon_08' => 'Augustus',
+'calmon_09' => 'September',
+'calmon_10' => 'Oktober',
+'calmon_11' => 'November',
+'calmon_12' => 'December',
+'calday_1' => 'Ma',
+'calday_2' => 'Di',
+'calday_3' => 'Wo',
+'calday_4' => 'Don',
+'calday_5' => 'Vrij',
+'calday_6' => 'Zat',
+'calday_7' => 'Zon',
+'calday' => 'Dag',
+'calmonth' => 'Maand',
+'calyear' => 'Jaar',
+'caltitle' => qq~<a href="{yabb scripturl}?action=eventcal;calshow=1">Evenementen kalender</a>~,
+'yytitle' => 'Evenementen kalender',
+'calsubtitle' => 'Evenementen',
+'calevent' => 'Nieuw evenement:',
+'calbirthday' => 'Verjaardag',
+'calbirthday1' => 'Geen Verjaardag (en)',
+'calbirthdays' => 'Verjaardagen lijst',
+'calbirthdayinfo' => 'De Verjaardag lijst toont een lijst van leden verjaardagen (wanneer ingevoerd in hun profiel)<br />U kunt weergegeven verjaardagen op <i>Naam</i>, <i>Leeftijd</i>, <i>Sterrenteken</i> (wanneer getoond), of <i>Geboortedatum</i> sorteren.',
+'calbirthdaytoday' => 'Vandaag vieren Leden hun verjaardag',
+'calnobdlist' => 'De verjaardag lijst werd gedeactiveerd door de Admin.',
+'calbdaylist' => 'Toon verjaardagen leden',
+'calstarsign' => 'Dierenriem teken',
+'calage' => 'Leeftjd',
+'calbddate' => 'Geboortedatum',
+'Pisces' => qq~<img src="$imagesdir/pisces.png" alt="Vissen" class="zodiac" />~,
+'Virgo' => qq~<img src="$imagesdir/virgo.png" alt="Maagd" class="zodiac" />~,
+'Cancerian' => qq~<img src="$imagesdir/cancer.png" alt="Kreeft" class="zodiac" />~,
+'Leo' => qq~<img src="$imagesdir/leo.png" alt="Leeuw" class="zodiac" />~,
+'Sagittarius' => qq~<img src="$imagesdir/sagittarius.png" alt="Boogschutter" class="zodiac" />~,
+'Scorpio' => qq~<img src="$imagesdir/scorpio.png" alt="Schorpioen" class="zodiac" />~,
+'Capricorn' => qq~<img src="$imagesdir/capricorn.png" alt="Steenbok" class="zodiac" />~,
+'Taurus' => qq~<img src="$imagesdir/taurus.png" alt="Stier" class="zodiac" />~,
+'Libra' => qq~<img src="$imagesdir/libra.png" alt="Weegschaal" class="zodiac" />~,
+'Aquarius' => qq~<img src="$imagesdir/aquarius.png" alt="Waterman" class="zodiac" />~,
+'Aries' => qq~<img src="$imagesdir/aries.png" alt="Ram" class="zodiac" />~,
+'Gemini' => qq~<img src="$imagesdir/gemini.png" alt="Tweelingen" class="zodiac" />~,
+'calnoevent' => 'Er zijn geen evenementen gepland.',
+'calsubmit' => 'Ga naar:',
+'calview' => 'Bekijk',
+'calprivate' => 'Privé',
+'calmembers' => 'Alleen Leden',
+'calpublic' => 'Openbaar',
+'calclickinfo' => '(Toon evenement door op de datum te klikken)',
+'caldel' => 'Verwijder',
+'caldelalert' => 'Bent u zeker dat u dit evenement wil verwijderen?', # Inside JavaScript!
+'caledit' => 'Bewerk Evenement',
+'calsave' => 'Bewaar Evenement',
+'calshowmini' => 'Toon evenement(en) van deze dag',
+'calshowevent' => 'Toon evenement',
+'calmore' => 'LEES MEER',
+'calnoname' => 'Ledennaam-link uitschakelen',
+'caltoday' => 'Die van vandaag',
+'calcoming' => 'Aankomende',
+'caldays' => 'Dagen',
+'calis' => 'wordt',
+'calold' => 'jaar oud vandaag!',
+'date' => 'Datum',
+'onlyone' => 'Eenmalig Evenement',
+'weekly' => 'weekelijks',
+'monthly' => 'maandelijks',
+'yearly' => 'jaarlijks',
+'event_icon' => 'Evenement Pictogram',
+'eventinfo' => 'Evenement',
+'eventholiday' => 'Feestdag',
+'eventannounce' => 'Aankondiging',
+'eventnote' => 'Uitroepteken',
+'eventparty' => 'Party',
+'eventcelebration' => 'Viering',
+'eventsport' => 'Sport',
+'eventmedia' => 'Media (TV)',
+'eventmeeting' => 'Vergadering',
+'hidden' => '<i>Verborgen</i>',
+'verification_question_desc' => 'Beantwoord Alstublieft de verficatie vraag hierboven.',
+'verification_question_case' => 'Antwwoorden zijn hoofdlettergevoelig.',
+'bdayhide' => 'Is jarig vandaag.',
+'other' => '123 (Ander)',
+'guest' => 'Gast',
+'exmem' => 'Ex-Lid',
+'by' => 'Door:',
+'getaddevent' => 'Nieuw evenement toevoegen'
+);
+
+### Event Calendar YaBBC ###
+
+%var_calpost = (
+'getaddevent' => 'Een nieuwe gebeurtenis toevoegen',
+'event_send' => 'Gebeurtenis toevoegen',
+);
+
+### Event Calendar Settings ###
+
+%event_cal = (
+'1' => 'Evenement kalender instellingen',
+'3' => 'Toon evenementen kalender aan:',
+'4' => q~\'Evenementen Kalender\' Button in YaBB menu tonen:~,
+'5' => 'Verjaardagen in Kalender/Evenementen tonen voor:',
+'6' => 'Bepalen van de lengte van het karakter van elk evenement(en)?',
+'7' => 'Toon een \'LEES VERDER\' link voor elk ingevoegd evenement<br />(0 = deactivated)',
+'8' => 'Benadruk huidige datum met deze kleur in de minikalender',
+'9' => 'Schakel \'Evenementen-Scroll\' functie in',
+'10' => 'Erg handig als u veel evenementen heeft.',
+'11' => 'Uit',
+'12' => 'Auto-Scroll',
+'13' => 'Handmatige Scroll',
+'14' => 'Selecteer welke leden groepen gebeurtenissen mogen toevoegen/bewerken:',
+'15' => "Geen selectie maken staat alle Groepen, Gebruikers en Gasten toe om Evenementen toe te voegen/bewerken.<br /><br />$admin_txt{'14'}",
+'16' => 'Sta deze leden toe evenementen toe te voegen',
+'17' => 'Lijst meerdere gebruikers als \'gebruikersnaam1,gebruikersnaam2\'.',
+'18' => 'Mogen Leden \'Privé Evenementen\' toevoegen?',
+'19' => 'Gedectiveerd = alleen Administratoren kunnen \'Prive Evenementen\' toevoegen',
+'20' => '"evenementen" (evenementen-Scroll) op BoardIndex inschakelen?',
+'21' => 'Standaard evenemten-kalender instellingen',
+'22' => 'Evenementen instellingen',
+'23' => 'Toegang instellingen',
+'24' => 'Toon selectievakje "uitschakelen Gebruikersnaam link" voor:',
+'26' => 'Kalendar evenementen-pictogram instellingen',
+'27' => 'Afbeelding uitkiezen',
+'28' => 'Omschrijving',
+'29' => 'Afbeelding',
+'30' => 'Nieuwe "evenementen-Pictogrammen" hier toevoegen',
+'31' => 'Bewaar Evenementen Kalender instellingen',
+'32' => 'Bewaar Evenementen-Pictogram instellingen',
+'33' => 'Deze sectie staat u toe uw Kalender evenementen aan te passen met behulp van uw eigen evenementen pictogrammen.<br />Afbeeldingen zien er het best uit als ze niet groter zijn dan 25x25px.<br />Toegestane bestandstypen: png jpg jpeg gif<br />Max. bestandgrootte: 100KB',
+'34' => 'Lijst aankomende evenementen voor __ dagen volgend de evenementenkalender',
+'35' => '(0 = Alle evenementen voor lopende maand)',
+'36' => 'Eerste dag van de week (minikalender)?',
+'37' => '(niet-aangevinkt = maandag / aangevinkt = zondag)',
+'42' => 'Toon Leden Verjaardagenlijst aan:',
+'42a' => 'Sterrenbeelden in Verjaardaglijst weergeven?',
+'43' => 'Geen "Evenementen-Pictogrammen" in mini kalender tonen?',
+'44' => 'Gruppenfarbe bei Mitgliedsname-Links anzeigen?',
+'45' => 'Benötigt mehr Forum-Ressourcen.',
+'48' => '\'Geburtstagsliste\'-Button im YaBB-Menü anzeigen für',
+'49' => 'Geburtstagsliste-Einstellungen',
+'50' => 'Geburtstagsdatum anzeigen für',
+'52' => 'Oude evenementen verwijderen<br /><span class="small">Vink aan om evenementen ouder dan de huidige datum te verwijderen wanneer een nieuw evenement is toegevoegd.</span>',
+'54' => 'Bouw verjaardagslijst opnieuw op',
+'56' => 'Marquee',
+'57' => 'XHTML',
+'58' => 'YaBBC-Tags in de <i>tekst voorproef</i> uitschakelen?',
+'59' => 'Evenement pictogram toevoegen',
+'60' => 'Evenement pictogram verwijderen',
+'error_image' => 'Selecteer alstublieft een afbeelding voor het evenement-pictogram.',
+'error_desc' => 'Voer alstublieft een beschrijving in voor het evenementen pictogram.',
+'del' => 'Verwijder oude evenementen',
+'showtoday' => 'Gebruik "Vandaag", "Gisteren", en "Morgen" in evenementen en verjaardagen weergaven.',
+'44a' => q~Apply group colors when displaying member links in the Birthday List?~,
+'new' => q~If turning on 'Show Birthdays' or 'Show Member Birthdays List' you will need to run 'Rebuild Birthday List' below.~,  
+);
+
+1;
+

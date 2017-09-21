@@ -1,0 +1,64 @@
+###############################################################################
+# Smtp.lng (Smtp server text definitions)                                     #
+###############################################################################
+# German/Sie - Translation by Pyragony                                        #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by: The YaBB Development Team                                      #
+#              with assistance from the YaBB community.                       #
+###############################################################################
+
+$germansmtplngver = 'YaBB 2.7.00 $Revision: 1879 $';
+@germansmtplngmods = ();
+if (@germansmtplngmods) {
+    $germansmtplngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%smtp_txt = (
+'1' => q~SERVER Fehler: Kann {yabb smtpaddr} nicht finden~,
+'2' => q~SERVER Fehler: Kann keine Socketverbindung aufbauen~,
+'3' => q~SERVER Fehler: Kann keine Verbindung zu {yabb smtpaddr} herstellen an Port {yabb port}~,
+'4' => q~SYSTEM Fehler: Die Empfängeradresse ist leer~,
+'5' => q~Mail Server Kommunikationslog:~,
+'no_to' => q~Die 'An' variable (Empfänger Adresse) ist leer und wird im SMTP Protokoll gebraucht~,
+'no_from' => q~Die 'Von' variable (Absender Adresse) ist leer und wird im SMTP Protokoll gebraucht~,
+'211' => q~Systemstatus oder Antwort der Systemhilfe~,
+'214' => q~Hilfetext~,
+'220' => q~<domain> Service bereit~,
+'221' => q~<domain> Service schließt den Übertragungskanal~,
+'250' => q~Die angefragte Mailaktion ist beendet~,
+'251' => q~Benutzer ist nicht lokal, wird weitergeleitet an <forward-path>~,
+'354' => q~Maileingabe beginnen: beenden mit <CRLF>.<CRLF>~,
+'421' => q~<domain> Service nicht verfügbar~,
+'432' => q~Übertragung eines Passwortes erforderlich~,
+'450' => q~Angefragte Mailaktion nicht angenommen: Mailbox nicht erreichbar~,
+'451' => q~Angefragte Mailaktion abgebrochen: Fehler im lokalen Ablauf~,
+'452' => q~Angefragte Mailaktion nicht angenommen: Systemplatz nicht ausreichend~,
+'454' => q~Temporärer Authentifikationsfehler~,
+'500' => q~Syntaxfehler, Kommando unbekannt~,
+'501' => q~Ungültiger Mailempfänger. Relay erfordert SMTP AUTH~,
+'502' => q~Kommando nicht implementiert~,
+'503' => q~Ungültige Kommandosequenz~,
+'504' => q~Kommandoparameter oder Authentifikation nicht implementiert~,
+'530' => q~Authentifikation erforderlich~,
+'534' => q~Authentifikationsmechanismus ist zu schwach~,
+'538' => q~Verschlüsselung ist für die gewünschte Authentifikation erforderlich~,
+'535' => q~Authentifikation misslungen~,
+'550' => q~Gewünschte Aktion nicht angenommen: Mailbox oder Benutzer nicht erreichbar~,
+'551' => q~Benutzer ist nicht lokal: Bitte versuchen Sie <forward-path>~,
+'552' => q~Gewünschte Mailaktion abgebrochen: Überschreitung des vorhandenen Speichers~,
+'553' => q~Gewünschte Mailaktion nicht angenommen: Mailboxname unzulässig~,
+'554' => q~Transaktion misslungen~,
+'555' => q~Mitglieder~,
+);
+
+1;

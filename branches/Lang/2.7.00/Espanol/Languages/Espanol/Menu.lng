@@ -1,0 +1,130 @@
+###############################################################################
+# Menu.lng (Image text/images definitions)                                    #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2014 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$espanolmenulngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@espanolmenulngmods = ();
+if (@espanolmenulngmods) {
+    $espanolmenulngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; };
+
+if (!$language){$language = $lang;}
+
+%img_txt =(
+'2' => 'Admin',
+'27' => 'Ver Perfil',
+'31' => 'Borrar',
+'33' => 'Iniciar nuevo tema',
+'34' => 'Entrar',
+'34a' => 'Actualizar Sesión',
+'54' => 'Borrar',
+'55' => 'Borrar seleccion',
+'63' => 'Moderadores',
+'66' => 'Modificar',
+'69' => 'Email',
+'70' => 'Mis Favoritos',
+'71' => 'Añadir a Favoritos',
+'72' => 'Borrar de Favoritos',
+'79' => 'Editar Perfil',
+'97' => 'Registrarse',
+'102' => qq~<img src="$imagesdir/back_to_top.png" alt="Top" title="to Top" />~,
+'102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="Bottom" title="to Bottom" />~,
+'103' => 'Índice',
+'104' => 'Bloquear/Desbloquear',
+'105' => 'Último Mensaje',
+'108' => 'Salir',
+'119' => 'Ayuda',
+'121' => 'Borrar',
+'131' => 'Notificaciones',
+'131a' => 'Notificar respuestas',
+'131d' => 'Borrar Notificación de Tema',
+'132' => 'Mover',
+'144' => 'Mensaje Personal',
+'144a' => 'Personal Message',
+'145' => 'Citar',
+'145q' => 'Marcar y Citar',
+'146' => 'Responder',
+'182' => 'Buscar',
+'300' => 'Marcar los temas como leídos',
+'316' => 'Bandeja de entrada',
+'320' => 'Bandeja de salida',
+'321' => 'Mensaje nuevo',
+'323' => 'Preferencias',
+'331' => 'Miembros',
+'418' => 'Notificación',
+'452' => 'Marcar todos los mensajes como leídos',
+'465' => 'Imprimir',
+'465a' => 'Imprimir Mensaje',
+'467' => 'Perfil',
+'515' => 'WWW',
+'707' => 'Enviar',
+'781' => 'Engomar/Desengomar',
+'620' => 'Partir',
+'621' => 'Unir',
+'620a' => 'Fracciona este tema comenzando uno nuevo con este mensaje.',
+'621a' => 'Mover / Partir / Ensamblar',
+'622' => 'Ocultar',
+'623' => 'Colapsar',
+'624' => 'Expandir',
+'625' => 'Añadir a Favoritos',
+'626' => 'Borrar de Favoritos',
+'627' => 'Marcar como no leído',
+'mycenter' => 'Panel',
+'addbuddy' => 'Añadir a mi lista de amigos',
+'pmadmin' => 'MP al admin',
+'alertmod' => 'Alertar al Moderador sobre este mensaje',
+'alertmodtext' => 'Alerta Moderador',
+'forward' => 'Reenviar',
+'sendpm' => ' Mensaje nuevo',
+'sendbmess' => 'Enviar mensaje de difusión',
+'aim' => 'AIM',
+'facebook' => 'Facebook',
+'gtalk' => 'GTalk',
+'icq' => 'ICQ',
+'msn' => 'MSN',
+'myspace' => 'MySpace',
+'skype' => 'Skype/VoIP',
+'yim' => 'YIM',
+'twitter' => 'Twitter',
+'youtube' => 'YouTube',
+'birthdaylist' => 'Lista cumpleaños',
+'eventcal' => 'Calendario',
+'to_top' => 'Al inicio de la página',
+'no_text' => q~no text - ~, 
+);
+
+%img_polltxt = (
+'1' => 'Crear encuesta',
+'2' => 'Añadir encuesta',
+'20' => 'Abrir',
+'21' => 'Cerrar',
+'27' => 'Borrar',
+'33' => 'Ver votos',
+'33a' => 'Ver tema',
+'39' => 'Modificar',
+'43' => 'Borrar voto',
+'44' => 'Encuesta',
+'45' => 'Nueva Encuesta',
+'46' => 'Encuesta cerrada',
+);
+
+%img_imtxt = (
+'42' => 'Lista de amigos',
+'46' => 'Almacén',
+);
+
+require Sources::Menu;
+set_menu();
+
+1;

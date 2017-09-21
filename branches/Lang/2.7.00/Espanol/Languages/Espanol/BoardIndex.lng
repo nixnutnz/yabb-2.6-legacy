@@ -1,0 +1,118 @@
+###############################################################################
+# BoardIndex.lng (BoardIndex text definitions)                                #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$espanolboardindexlngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@espanolboardindexlngmods = ();
+if (@espanolboardindexlngmods) {
+    $espanolboardindexlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; };
+
+%boardindex_txt = (
+'18' => 'Índice',
+'20' => 'Nombre del Foro',
+'21' => 'Mensajes',
+'21l' => 'mensajes',
+'22' => 'Último mensaje',
+'34' => 'Entrar',
+'63' => 'Moderadores',
+'63a' => 'Grupos de moderadores',
+'64'  => 'Sub-Juntas',
+'65'  => 'Sub-Juntas en',
+'66'  => 'Sub-Junta',
+'67'  => 'Esta placa contiene mensajes nuevos.',
+'68'  => 'Este placa no tiene nuevos mensajes.',
+'69'  => 'of the',
+'70'  => 'sub-juntas contiene mensajes nuevos.',
+'71'  => 'sub-junta contiene mensajes nuevos.',
+'72'  => 'sub-junta no tiene nuevos mensajes.',
+'141' => 'Invitados',
+'142' => 'Miembros',
+'bviews' => 'Viendo',
+'143' => 'Buscadores',
+'158' => 'Usuarios conectados',
+'200' => 'Estadísticas del foro',
+'201' => 'Último usuario registrado',
+'235' => 'Último mensaje',
+'236' => 'Mensaje más reciente',
+'298' => 'Moderador',
+'298a' => 'Grupo de moderadores',
+'315' => '¿Olvidaste tu contraseña?',
+'316' => 'Bandeja de entrada',
+'320' => 'Bandeja de salida',
+'330' => 'Temas',
+'330l' => 'temas',
+'333' => 'Mensajes nuevos',
+'334' => 'No hay mensajes nuevos',
+'470' => 'N/A',
+'470a' => '<i>Ex-miembro</i>',
+'487' => 'Ya somos',
+'488' => 'usuarios registrados',
+'489' => 'Los usuarios han publicado',
+'490' => 'dentro de',
+'500' => 'Marcando todos los foros como leídos', # inside JavaScript!
+'500a' => 'Completado', # inside JavaScript!
+'500b' => 'Marcar todos los temas como leídos', # inside JavaScript!
+'524' => 'En',
+'525' => 'Por',
+'526' => 'Redirigidas Resultados',
+'643' => 'Encima',
+'685' => 'Centro de Información',
+'791' => 'Ver los',
+'792' => 'mensajes más recientes',
+'792a' => 'temas más recientes',
+'793' => 'de este foro.',
+'795' => 'Tienes',
+'796' => 'Mensajes Personales',
+'797' => 'Ver',
+'800' => 'La mayor cantidad de Usuarios conectados fueron',
+'801' => 'La mayor cantidad de Miembros conectados fueron',
+'802' => 'La mayor cantidad de Invitados conectados fueron',
+'803' => 'La mayor cantidad de Buscadores conectados fueron',
+'no_ip' => 'Ip no registrada',
+'guest_ip' => 'IPs invitados',
+'recenttopic' => '10 temas más recientes',
+);
+
+%boardindex_imtxt = (
+'11' => 'Tenías',
+'12' => 'Mensajes en tu',
+'14' => 'Mensajes nuevos:',
+'15' => '!\\n¿Quieres ver tus mensajes personales',
+'16' => 'Pero sólo',
+'18' => 'son permitidos!',
+'19' => 'Los mensajes antiguos', 
+'20' => 'se borran automáticamente!\n\n¿Quieres ver tus mensajes personales', #in javascript
+'21' => 'ahora?',
+'24' => 'de los cuales',
+'25' => 'es nuevo',
+'26' => 'son nuevos',
+'46' => 'Almacén',
+'47' => 'ellos',
+'48' => 'el mensaje',
+'50' => '¡Emitir Nuevos Mensajes Personales!',
+'51' => '\n¿Quieres ver tus mensajes personales?',
+'50a' => 'Nueva Alerta Mensajes:',
+'50g' => q~New Guest Personal Messages.~,
+'51g' => q~\nWould you like to view the Guest PM box~,
+);
+
+%boardindex_exptxt = (
+'1' => 'Expandir',
+'2' => 'Colapsar',
+'5' => 'Esta categoría contiene mensajes nuevos.',
+'6' => 'Esta categoría no contiene mensajes nuevos.',
+);
+
+1;
