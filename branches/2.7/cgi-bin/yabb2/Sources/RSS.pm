@@ -15,7 +15,7 @@
 use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
-use English '-no_match_vars';
+use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 our $rsspmver  = 'YaBB 2.7.00 $Revision$';
@@ -714,7 +714,7 @@ sub shellaccess {
 
     load_cookie();       # Load the user's cookie (or set to guest)
     load_usersettings(); # Load user settings
-    what_language();     # Figure out which language file we should be using! :D
+    our $language = what_language();     # Figure out which language file we should be using! :D
 
     get_forum_master();
     require Sources::Security;

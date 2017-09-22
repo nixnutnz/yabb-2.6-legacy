@@ -211,7 +211,7 @@ if ( -e "$vardir/Setup.lock" ) {
                             <td><input type="text" id="convvardir" name="convvardir" value="./Convert/Variables" size="50" /></td>
                         </tr><tr>
                             <td><label for="convhtml"><b>$conv2x_txt{'convhtml'}</b></label></td>
-                            <td><input type="text" id="convhtml" name="convhtml" value="" size="50"  onchange="setconvhtml()" /></td>
+                            <td><input type="text" id="convhtml" name="convhtml" value="" size="50" onchange="setconvhtml()" /></td>
                         </tr><tr>
                             <td><label for="convattachdir"><b>$conv2x_txt{'convattachdir'}</b></label></td>
                             <td><input type="text" id="convattachdir" name="convattachdir" value="" size="50" /></td>
@@ -277,7 +277,7 @@ INTRO
         $yyuname = q{};
 
         $convlang      = $FORM{'convertlang'}   || 0;
-        $convertdir    = $FORM{'convertdir'}    || q~Convert~;
+        $convertdir    = $FORM{'convertdir'}    || qq~$boarddir/Convert~;
         $convboardsdir = $FORM{'convboardsdir'} || qq~$convertdir/Boards~;
         $convmemberdir = $FORM{'convmemberdir'} || qq~$convertdir/Members~;
         $convdatadir   = $FORM{'convdatadir'}   || qq~$convertdir/Messages~;
@@ -294,7 +294,7 @@ INTRO
         }
 
         if ( !-e "$convmemberdir/memberlist.txt" ) {
-            setup_fatal_error( "Directory: $convmemberdir", 1 );
+            setup_fatal_error( "Directory: $convmemberdir/memberlist.txt", 1 );
         }
 
         if ( !-d $convdatadir ) {
@@ -346,9 +346,9 @@ EOF
           setup_fatal_error( "$maintext_23 Variables/ConvSettings.txt: ", 1 );
         print {$SETTING} $setfile or croak 'cannot print SETTING';
         close $SETTING or croak 'cannot close SETTING';
-        mkdir "$boarddir/tmp", 0755;
-        if ( !-d "$boarddir/tmp" ) {
-            setup_fatal_error( "Directory: $boarddir/tmp", 1 );
+        mkdir "$htmldir/tmp", 0755;
+        if ( !-d "$htmldir/tmp" ) {
+            setup_fatal_error( "Directory: $htmldir/tmp", 1 );
         }
         if ($convlang) {
             mkdir "$boarddir/ConvertLang", 0755;
@@ -882,7 +882,7 @@ $conv2x_txt{'4mess'}
           . $navlink5
           . $navlink6a;
         my $fixn = q{};
-        if ( -e "$boarddir/tmp/datacheck.txt" ) {
+        if ( -e "$htmldir/tmp/datacheck.txt" ) {
             $fixn = $conv2x_txt{'fixn'};
         }
         $convtext .= $fixn . $conv2x_txt{'conv1'};
@@ -1412,7 +1412,7 @@ sub getbadmem {
     foreach ( keys %memberinf ) {
         push @{ $memhash{ lc $_ } }, $_;
         if ( !${ $memberinf{$_} }[1] || ${ $memberinf{$_} }[1] eq q{} ) {
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'$_' -> 'no e-mail'\n"
               or croak 'cannot print BRDFIX';
@@ -1421,14 +1421,14 @@ sub getbadmem {
     }
     for my $key ( keys %memhash ) {
         if ( scalar @{ $memhash{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple members - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $memhash{$key} } ) {
                 $memfixl .= qq~$_<br />~;
-                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+                open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                 close $BRDFIX or croak 'cannot close BRDFIX';
@@ -1638,7 +1638,7 @@ sub fixcontrol {
         }
     }
     if ( $bdbrds ne q{} ) {
-        open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+        open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
           or croak 'cannot open BRDFIX';
         print {$BRDFIX} "Duplicate or non-imported boards\n$bdbrds"
           or croak 'cannot print BRDFIX';
@@ -1682,7 +1682,7 @@ sub fixcontrol {
                     ${$x}{'brdpassw'},      ${$x}{'brdrss'}
                 ];
                 if ( ${$x}{'pic'} ) {
-                    if ( $i eq 'admin' ) { $i = 'admin_fix'; }
+                    if ( $i eq 'admin' && ${$newcontrol{$i}}[0] ne q{} ) { $i = 'admin_fix'; }
                     $brdpix .= qq~$i|Forum default|${$x}{'pic'}\n~;
                 }
             }
@@ -1729,7 +1729,7 @@ sub fixcontrol {
                 ];
 
                 if ($pic) {
-                    if ( $oldboard eq 'admin' ) { $oldboard = 'admin_fix'; }
+                    if ( $oldboard eq 'admin'  && ${$newcontrol{$oldboard}}[0] ne q{} ) { $oldboard = 'admin_fix'; }
                     $brdpix .= qq~$oldboard|Forum default|$pic\n~;
                 }
             }
@@ -1737,6 +1737,9 @@ sub fixcontrol {
     }
     $newcontrol{'admin_fix'} = $newcontrol{'admin'};
     delete $newcontrol{'admin'};
+    if (${$newcontrol{'admin_fix'}}[0] eq q{} ) {
+        delete $newcontrol{'admin_fix'};
+    }
     our ( %totals, %newtotals );
     require "$boardsdir/forum.totals";
     for my $i ( keys %totals ) {
@@ -1746,6 +1749,9 @@ sub fixcontrol {
     }
     $newtotals{'admin_fix'} = $newtotals{'admin'};
     delete $newtotals{'admin'};
+    if (${$newtotals{'admin_fix'}}[0] eq q{} ) {
+        delete $newtotals{'admin_fix'};
+    }
     %totals = %newtotals;
     write_forum_totals();
 
@@ -1778,11 +1784,11 @@ sub fixcontrol {
     my $brdfixl  = q{};
     my %hash     = ();
     my $adminbrd = q{};
-    foreach ( keys %newcontrol ) {
-        push @{ $hash{ lc $_ } }, $_;
-        if ( $_ eq 'admin_fix' ) {
+    foreach my $fix ( keys %newcontrol ) {
+        push @{ $hash{ lc $fix } }, $fix;
+        if ( $fix eq 'admin_fix' && ${$newcontrol{$fix}}[0] ne q{} ) {
             $adminbrd = $conv2x_txt{'adminbrd'};
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'admin' -> 'admin_fix'\n"
               or croak 'cannot print BRDFIX';
@@ -1791,14 +1797,14 @@ sub fixcontrol {
     }
     for my $key ( keys %hash ) {
         if ( scalar @{ $hash{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple boards - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hash{$key} } ) {
                 $brdfixl .= qq~$_<br />~;
-                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+                open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                 close $BRDFIX or croak 'cannot close BRDFIX';
@@ -2940,7 +2946,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
     }
     if ( $yycopyin == 0 ) {
         $output =
-qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
     $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
@@ -3010,13 +3016,13 @@ sub checkattach {
     }
     for my $key ( keys %hashatt ) {
         if ( scalar @{ $hashatt{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple attachments - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hashatt{$key} } ) {
-                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+                open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                 close $BRDFIX or croak 'cannot close BRDFIX';
@@ -3025,14 +3031,14 @@ sub checkattach {
     }
     for my $key ( keys %hashlng ) {
         if ( scalar @{ $hashlng{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX}
               "'long file name attachments - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
             foreach ( @{ $hashlng{$key} } ) {
-                open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+                open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
                 print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
                   or croak 'cannot print BRDFIX';
@@ -3058,7 +3064,7 @@ sub checkattach {
     }
     for my $key ( keys %hashpmatt ) {
         if ( scalar @{ $hashpmatt{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple PMattachments - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
@@ -3066,7 +3072,7 @@ sub checkattach {
             foreach ( @{ $hashpmatt{$key} } ) {
                 if ($_) {
                     $chkpmatt1 .= qq~$_<br />~;
-                    open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+                    open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
                       or croak 'cannot open BRDFIX';
                     print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
                     close $BRDFIX or croak 'cannot close BRDFIX';
@@ -3077,7 +3083,7 @@ sub checkattach {
     my $chkpmatt2 = q{};
     for my $key ( keys %hashpmlng ) {
         if ( scalar @{ $hashpmlng{$key} } > 1 ) {
-            open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+            open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX}
               "'long file name PMattachments- possible data loss:'\n"
@@ -3086,7 +3092,7 @@ sub checkattach {
             foreach ( @{ $hashatt{$key} } ) {
                 if ($_) {
                     $chkpmatt2 .= qq~$_ : $hashpmatt{$_}<br />~;
-                    open my $BRDFIX, '>>', "$boarddir/tmp/datacheck.txt"
+                    open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
                       or croak 'cannot open BRDFIX';
                     print {$BRDFIX} "'$_' -> $hashatt{$_}\n"
                       or croak 'cannot print BRDFIX';

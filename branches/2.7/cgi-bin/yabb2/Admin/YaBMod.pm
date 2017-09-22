@@ -16,7 +16,7 @@
 use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
-use English '-no_match_vars';
+use English qw(-no_match_vars);
 use File::Copy;
 use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
 use utf8;

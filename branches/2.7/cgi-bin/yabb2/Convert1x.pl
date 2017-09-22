@@ -139,7 +139,7 @@ my $convseta       = q{};
 my $forumstarttext = q{};
 our $formsession = q{};
 my $maintext_23 = $conv1x_txt{'maintext_23'};
-my $tmpdir = qq~$boarddir/tmp~;
+my $tmpdir = qq~$htmldir/tmp~;
 
 #############################################
 # Conversion starts here                    #
@@ -307,9 +307,9 @@ EOF
           setup_fatal_error( "$maintext_23 Variables/ConvSettings.txt: ", 1 );
         print {$SETTING} $setfile or croak 'cannot print SETTING';
         close $SETTING or croak 'cannot close SETTING';
-        mkdir "$boarddir/tmp", 0755;
-        if ( !-d "$boarddir/tmp" ) {
-            setup_fatal_error( "Directory: $boarddir/tmp", 1 );
+        mkdir "$tmpdir", 0755;
+        if ( !-d "$tmpdir" ) {
+            setup_fatal_error( "Directory: $tmpdir", 1 );
         }
         if ($convlang) {
             mkdir "$boarddir/ConvertLang", 0755;
@@ -1158,7 +1158,7 @@ qq~The Forum Start date was set to $setforumstart but the first member was regis
           . $navlink6a;
 
         my $fixn = q{};
-        if ( -e "$boarddir/tmp/datacheck.txt" ) {
+        if ( -e "$tmpdir/datacheck.txt" ) {
             $fixn = $conv1x_txt{'fixn'};
         }
         $convtext .= $fixn . $conv1x_txt{'conv1'};
@@ -3442,7 +3442,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     }
     if ( $yycopyin == 0 ) {
         $output =
-qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
     $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;

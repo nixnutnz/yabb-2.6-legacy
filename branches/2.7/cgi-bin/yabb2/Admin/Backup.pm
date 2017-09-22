@@ -18,7 +18,7 @@
 use strict;
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
-use English '-no_match_vars';
+use English qw(-no_match_vars);
 use Module::Load;
 our $VERSION = '2.7.00';
 

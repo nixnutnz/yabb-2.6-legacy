@@ -24,7 +24,7 @@ $convert_box = qq~    <div class="bordercolor leftboxdiv" style="margin-top:.5em
                 <td class="titlebg"><b>$setup{'conv'}</b></td>
             </tr><tr>
                 <td class="windowbg2">
-                    <div class="pad-more">$setup{'conv2'}</div>
+                    <div class="pad-more">$setup{'conv2'} {yabb datacheck}</div>
                 </td>
             </tr>
         </table>

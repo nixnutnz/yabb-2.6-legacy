@@ -16,7 +16,7 @@ use strict;
 no strict qw(refs);
 use warnings;
 use CGI::Carp qw(fatalsToBrowser);
-use English '-no_match_vars';
+use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 our $boardindexpmver  = 'YaBB 2.7.00 $Revision$';

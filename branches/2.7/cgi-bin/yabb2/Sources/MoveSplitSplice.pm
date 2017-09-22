@@ -1152,7 +1152,7 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
     $yydebug = q{};
     if ( $debug == 1 || ( $debug == 2 && $iamadmin ) ) {
         require Sources::Debug;
-        debug();
+        $yydebug = debug();
         $yydebug =
 qq~\n- $#utdnewthread<br />\n- @utdnewthread<br />\n- ${$newthreadid}{'lastpostdate'}<br />\n- ${$newthreadid}{'lastposter'}<br />\n- \$enable_notifications == $enable_notifications<br />\n- \$attachments = $attachments<br />\n<a href="javascript:load_thread($newthreadid,$linkcount);">continue</a>\n$yydebug~;
     }

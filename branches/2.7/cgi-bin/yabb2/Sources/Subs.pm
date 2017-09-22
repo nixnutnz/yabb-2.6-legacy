@@ -105,7 +105,7 @@ our (
     $regdate,          $spam_hits_left_count,   $spam_wrd,
     $staff,            $tabsep,                 $templatejump,
     $testenv,          $thread_notify,          $tmpregpasswrd1,
-    $tmpregpasswrd2,   $use_lang,               $use_mobile,
+    $tmpregpasswrd2,   $use_mobile,
     $useboard,         $usedisplay,             $usehead,
     $useimages,        $usemessage,             $usemycenter,
     $user,             $username,               $userreg,
@@ -779,6 +779,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     our ( $yynewstitle, $yynews, );
     if ($enable_news) {
         my $newsfile = "$langdir/English/news.txt";
+        my $use_lang = $language ? $language : $lang;
         if ( -e "$langdir/$use_lang/news.txt" ) {
             $newsfile = "$langdir/$use_lang/news.txt";
         }
@@ -2384,6 +2385,9 @@ sub write_log {
 
     my $user_host = q{};
     if ($getreversedns) {
+        if ($user_ip eq '::1') {
+            $user_ip = '127.0.0.1';
+        }
         $user_host =
           ( gethostbyaddr pack( 'C4', split /[.]/xsm, $user_ip ), 2 )[0];
     }
@@ -2573,7 +2577,7 @@ sub dereferer {
 
 sub load_language {
     my ($what_to_load) = @_;
-    $use_lang = $language ? $language : $lang;
+    my $use_lang = $language ? $language : $lang;
     if ( -e "$langdir/$use_lang/$what_to_load.lng" ) {
         require "$langdir/$use_lang/$what_to_load.lng";
     }

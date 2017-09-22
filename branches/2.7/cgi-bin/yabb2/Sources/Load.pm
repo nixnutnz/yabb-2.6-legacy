@@ -45,7 +45,7 @@ our (
     $showusertext,     $showzodiac,           $ttsreverse,
     $ttsureverse,      $usertools,            $usertxtwrap,
     %grp_nopost,       %grp_post,             %grp_staff,
-    %templateset,
+    %templateset,      %lngs,
 );
 ## system ##
 our (
@@ -58,7 +58,7 @@ our (
     $username,         $yyexec,      $yyext,           $yysetlocation,
     %cat,              %FORM,        %format,          %format_unbold,
     %gmod_access2,     %img,         %ims,             %INFO,
-    %lngs,             %load_con,    %memberinfo,      %memberunfo,
+    %load_con,    %memberinfo,      %memberunfo,
     %moderators,       %mybuddie,    %tmpimg,          %user_pm_level,
     %useraccount,      %vars,        %yy_cookies,      %yy_udloaded,
     @categoryorder,    @censored,    @other_cookies,   $user

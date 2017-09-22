@@ -14,7 +14,7 @@
 ###############################################################################
 #use strict;
 use warnings;
-use English '-no_match_vars';
+use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 our $smtppmver  = 'YaBB 2.7.00 $Revision$';

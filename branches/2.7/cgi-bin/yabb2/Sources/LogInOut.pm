@@ -400,7 +400,7 @@ sub reminder2 {
     }
 
     $username = $user;
-    what_language();
+    $language = what_language();
     load_language('LogInOut');
     load_language('Email');
     undef $username;

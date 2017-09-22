@@ -17,7 +17,7 @@ no strict qw(refs);
 use warnings;
 no warnings qw(once);
 use CGI::Carp qw(fatalsToBrowser);
-use English '-no_match_vars';
+use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 our $registerpmver  = 'YaBB 2.7.00 $Revision$';

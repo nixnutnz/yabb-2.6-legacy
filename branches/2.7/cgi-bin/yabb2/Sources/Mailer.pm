@@ -17,7 +17,7 @@ use warnings;
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode encode);
-use English '-no_match_vars';
+use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 our $mailerpmver  = 'YaBB 2.7.00 $Revision$';

@@ -38,7 +38,7 @@ our (
     %versiontxt,       %setup,
 );
 ## paths ##
-our ( $adminurl, $boardurl, $convdir, $htmldir, $langdir, $memberdir, $vardir,
+our ( $adminurl, $boardurl, $convdir, $htmldir, $langdir, $memberdir, $vardir, $templatesdir,
 );
 ## settings ##
 our (
@@ -100,16 +100,22 @@ sub admin {
     $yymain =~ s/\Q{yabb images}\E/$adminimages/gxsm;
     $yymain =~ s/\Q{yabb yabb_dnloads}\E/$yabb_dnloads/gxsm;
 
-    if ( -d './Convert' ) {
+    if ( -d "$boarddir/Convert" ) {
         get_template( 'Convert', 'admin' );  
         $yymain .= $convert_box;
         my $getdata = q{};
-        if (-e './tmp/datacheck.txt') {
-            $getdata = $admintxt{'conv3'};
+        if (-e "$htmldir/tmp/datacheck.txt") {
+            $getdata .= $setup{'fixn'};
+        }
+        if (-e "$htmldir/tmp/fixusers.txt") {
+            $getdata .= $setup{'illmem1'};
+        }
+        if ( $getdata ne q{} ) {
+            $getdata = qq~<p>$getdata</p>~;
         }
         $yymain =~ s/\Q{yabb datacheck}\E/$getdata/xsm;
     }
-    if ( !-d './Convert' && -d './ConvertLang' ) {
+    if ( !-d "$boarddir/Convert" && -d "$boarddir/ConvertLang" ) {
         get_template( 'Convert', 'admin' );  
         $yymain .= $convertlang_box;
     }
@@ -1477,7 +1483,7 @@ sub deleteconverterfiles {
     my @convertdir = qw~Boards Members Messages Variables~;
 
     foreach my $cnvdir (@convertdir) {
-        $convdir = "./Convert/$cnvdir";
+        $convdir = "$boarddir/Convert/$cnvdir";
         if ( -d "$convdir" ) {
             opendir 'CNVDIR', $convdir
               || fatal_error( 'cannot_open_dir', "$convdir" );
@@ -1490,7 +1496,7 @@ sub deleteconverterfiles {
             rmdir "$convdir";
         }
     }
-    $convdir = './Convert';
+    $convdir = "$boarddir/Convert";
     if ( -d "$convdir" ) {
         opendir 'CNVDIR', $convdir
           || fatal_error( 'cannot_open_dir', "$convdir" );
@@ -1501,22 +1507,12 @@ sub deleteconverterfiles {
         }
         rmdir "$convdir";
     }
-    $convdir = './tmp';
-    if ( -d "$convdir" ) {
-        opendir 'CNVDIR', $convdir
-          || fatal_error( 'cannot_open_dir', "$convdir" );
-        my @convlist = readdir 'CNVDIR';
-        closedir 'CNVDIR';
-        foreach my $file (@convlist) {
-            unlink "$convdir/$file";
-        }
-        rmdir "$convdir";
-    }
-    if ( -e './Setup.pl' )        { unlink './Setup.pl'; }
-    if ( -e './Convert1x.pl' )    { unlink './Convert1x.pl'; }
-    if ( -e './Convert2x.pl' )    { unlink './Convert2x.pl'; }
-    if ( -e './BoardConvert.pl' ) { unlink './BoardConvert.pl'; }
-    if ( -e './ConvertLang.pl' )  { unlink './ConvertLang.pl'; }
+
+    if ( -e "$boarddir/Setup.pl" )        { unlink "$boarddir/Setup.pl"; }
+    if ( -e "$boarddir/Convert1x.pl" )    { unlink "$boarddir/Convert1x.pl"; }
+    if ( -e "$boarddir/Convert2x.pl" )    { unlink "$boarddir/Convert2x.pl"; }
+    if ( -e "$boarddir/BoardConvert.pl" ) { unlink "$boarddir/BoardConvert.pl"; }
+    if ( -e "$boarddir/ConvertLang.pl" )  { unlink "$boarddir/ConvertLang.pl"; }
     foreach my $lng ( keys %lngs ) {
         if ( -e "$langdir/$lng/Setup.lng" )  { unlink "$langdir/$lng/Setup.lng"; }
         if ( -e "$langdir/$lng/Convert.lng" )  { unlink "$langdir/$lng/Convert.lng"; }
@@ -1525,11 +1521,11 @@ sub deleteconverterfiles {
     if ( -e "$htmldir/Templates/Forum/setup.css" ) {
         unlink "$htmldir/Templates/Forum/setup.css";
     }
-    if ( -e './Variables/ConvSettings.txt' ) {
-        unlink './Variables/ConvSettings.txt';
+    if ( -e "$boarddir/Variables/ConvSettings.txt" ) {
+        unlink "$boarddir/Variables/ConvSettings.txt";
     }
-    if ( -e './Variables/ConvVar.txt' ) {
-        unlink './Variables/ConvVar.txt';
+    if ( -e "$boarddir/Variables/ConvVar.txt" ) {
+        unlink "$boarddir/Variables/ConvVar.txt";
     }
 
     $yymain .= qq~<b>$setup{'10'}</b>~;
@@ -1542,7 +1538,7 @@ sub deletelangconverterfiles {
     my @convertdir = qw~Boards Members Messages Variables~;
 
     for my $cnvdir (@convertdir) {
-        $convdir = "./ConvertLang/$cnvdir";
+        $convdir = "$boarddir/ConvertLang/$cnvdir";
         if ( -d "$convdir" ) {
             opendir 'CNVDIR', $convdir
               || fatal_error( 'cannot_open_dir', "$convdir" );
@@ -1555,7 +1551,7 @@ sub deletelangconverterfiles {
             rmdir "$convdir";
         }
     }
-    $convdir = './ConvertLang';
+    $convdir = "$boarddir/ConvertLang";
     if ( -d "$convdir" ) {
         opendir 'CNVDIR', $convdir
           || fatal_error( 'cannot_open_dir', "$convdir" );
@@ -1567,8 +1563,8 @@ sub deletelangconverterfiles {
         rmdir "$convdir";
     }
 
-    if ( -e './ConvertLang.pl' ) { unlink './ConvertLang.pl'; }
-    if ( -e './Templates/admin/Convert.template' )  { unlink './Templates/admin/Convert.template'; }
+    if ( -e "$boarddir/ConvertLang.pl" ) { unlink "$boarddir/ConvertLang.pl"; }
+    if ( -e "$templatesdir/admin/Convert.template" )  { unlink "$templatesdir/admin/Convert.template"; }
 
     $yymain .= qq~<b>$setup{'10a'}</b>~;
     $yytitle = $setup{'10a'};
