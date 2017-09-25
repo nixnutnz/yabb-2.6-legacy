@@ -1302,7 +1302,8 @@ sub draw_pmbox {
                     fopen( 'NFILE', '<', "$memberdir/$username.$pmfile_toopen" )
                       or croak "$croak{'open'} NFILE";
                     @dimmessages = <$NFILE>;
-                    foreach ( reverse @dimmessages ) {
+                    fclose('NFILE') or croak "$croak{'close'} NFILE";
+                    foreach ( reverse sort @dimmessages ) {
                         my (
                             $m_id, undef, undef,   undef, undef,
                             undef, undef, undef,   undef, undef,
@@ -1313,7 +1314,6 @@ sub draw_pmbox {
                             $INFO{'id'} = $m_id;
                         }
                     }
-                    fclose('NFILE') or croak "$croak{'close'} NFILE";
                 }
             }
             elsif ( $callerid == 6 ) {
@@ -3300,7 +3300,7 @@ qq~<input type="submit" name="imaction" value="$inmes_txt{'remove'}" class="butt
                     !$view_bmess
                     || ( $view_bmess && ( $iamadmin || $delete_button ) )
                 )
-                && !( $action eq 'imstorage' && $INFO{'viewfolder'} eq q{} )
+                && !( $action eq 'imstorage' && (!$INFO{'viewfolder'} || $INFO{'viewfolder'} eq q{} ) )
               )
             {
                 $mc_content_del = $my_delstore;

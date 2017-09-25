@@ -1835,9 +1835,9 @@ sub pagelinks_list {
             $i++;
         }
     }
-    my $max   = $#tempim + 1;
-    my $start = 0;
-    if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
+    my $max   = scalar @tempim;
+    our $start = 0;
+    if ( $INFO{'start'} && $INFO{'start'} =~ /all/xsm ) {
         $maxmessagedisplay = $max;
         $all               = 1;
         $allselected       = q~ selected="selected"~;
@@ -1875,7 +1875,7 @@ qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$displa
 qq~<a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagetext$viewfolderinfo"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a> $display_txt{'139'}: ~;
             if ( $startpage > 0 ) {
                 $pagetxtindex =
-qq~<a href="$scripturl?action=$action$bmesslink/0$viewfolderinfo"><span class="small">1</span></a>&nbsp;...&nbsp;~;
+qq~<a href="$scripturl?action=$action$bmesslink;start=0$viewfolderinfo"><span class="small">1</span></a>&nbsp;...&nbsp;~;
             }
             if ( $startpage == $maxmessagedisplay ) {
                 $pagetxtindex =
@@ -1908,7 +1908,7 @@ qq~<a href="$scripturl?action=$action$bmesslink;start=$lastptn$viewfolderinfo">$
 qq~<span class="pagedropindex_inner"><a href="$scripturl?pmaction=$action$bmesslink;start=$start;action=pmpagedrop$viewfolderinfo"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /></a></span>~;
             $pagedropindex2 = $pagedropindex1;
             $tstart         = $start;
-            if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
+            if ( $INFO{'start'} && $INFO{'start'} =~ m/all/xsm ) {
                 ( $tstart, $start ) = split /\-/xsm, $INFO{'start'};
             }
             my $d_indexpages = $pagenumb / $dropdisplaynum;
@@ -1958,7 +1958,7 @@ q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
             $pagedropindex2 .=
 q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
             my $tmpmaxmessagedisplay = $maxmessagedisplay;
-            if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
+            if ( $INFO{'start'} && $INFO{'start'} =~ m/all/xsm ) {
                 $maxmessagedisplay = $maxmessagedisplay * $dropdisplaynum;
             }
             my $prevpage = $start - $tmpmaxmessagedisplay;
@@ -2466,6 +2466,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
             $pm_attachment =~
               s/\Q<div class="small">\E/<div class="small attbox_b">/gxsm;
         }
+		$pm_showattach ||= q{};
         $my_attach = $show_my_attach;
         $my_attach =~ s/\Q{yabb pmAttachment}\E/$pm_attachment/xsm;
         $my_attach =~ s/\Q{yabb pmShowAttach}\E/$pm_showattach/xsm;
