@@ -155,6 +155,7 @@ $abbr_lang = 'en-us';
 '900pr' => q~Private~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
+'rsscode' => 'Go to Post to see Code',
 'freeuserspace' => q~Free Host space available:~,
 'freediskspace' => q~Free Disk space available:~,
 'redirect' => q~Redirect~,

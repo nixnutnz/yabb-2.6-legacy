@@ -1444,6 +1444,7 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                 if (  !$movedflag
                     || $staff )
                 {
+                    $vircurrentboard ||= q{};
                     if ($enable_quickreply) {
                         if ( $musername ne 'Guest' && $useraccount{$musername} ) {
                             $quote_mname = $useraccount{$musername};

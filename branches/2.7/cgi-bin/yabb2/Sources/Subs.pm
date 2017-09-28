@@ -2385,9 +2385,7 @@ sub write_log {
 
     my $user_host = q{};
     if ($getreversedns) {
-        if ($user_ip eq '::1') {
-            $user_ip = '127.0.0.1';
-        }
+        no warnings;
         $user_host =
           ( gethostbyaddr pack( 'C4', split /[.]/xsm, $user_ip ), 2 )[0];
     }
