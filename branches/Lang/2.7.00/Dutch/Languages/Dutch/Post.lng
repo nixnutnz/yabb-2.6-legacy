@@ -16,8 +16,6 @@
 $dutchpostlngver = 'YaBB 2.7.00 $Revision: 1888 $';
 
 @dutchpostlngmods = ();
-push @dutchpostlngmods, 'Off Topic Comment';
-push @dutchpostlngmods, 'Spoiler Tag';
 if (@dutchpostlngmods) {
     $dutchpostlngmods = 1;
 }
@@ -265,14 +263,6 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'casewarning_5' => 'tekens.</span><br />De tekens moeten getypt worden in dezelfde volgorde,<br />en ze zijn hoofdletter gevoelig.',
 );
 
-%spell_check = (
-'chck_spell' => 'Spelling controleren',
-'revert' => 'Terugkeren naar',
-'close' => 'Sluit',
-'rsm_edt' => 'hervat bewerking',
-'no_error_found' => 'Geen spelfouten gevonden',
-'no_suggestions' => 'Geen suggesties gevonden',
-);
 
 %return_to_txt = (
 '1' => 'Huidige topic',

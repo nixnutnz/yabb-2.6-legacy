@@ -1,0 +1,404 @@
+###############################################################################
+# Email.lng (E-mail templating and text declarations)                        #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+
+$russianxemaillngver = 'YaBB 2.7.00 $Revision: 1859 $';
+@russianxemaillngmods = ();
+if(@russianxemaillngmods){
+    $russianxemaillngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%yabbtagdesc = (
+# Constant tags
+'scripturl' => "URL Форума. Например: {yabb scripturl}",
+'adminurl' => "URL Центра Управления Форумом. Example: {yabb adminurl}",
+'mbname' => "Имя Форума. Например: {yabb mbname}",
+
+# New Member related
+'userip' => "IP-адрес Пользователя.",
+'useremail' => "E-mail адрес Пользователя.",
+
+# User-related
+'username' => "Логин (ID) Пользователя.",
+'displayname' => "Отображаемое Имя Пользователя.",
+'cryptusername' => "Логин (ID) Пользователя, преобразованный для использования в качестве URL.",
+'reviewer' => "Реальное имя Администратора/Координатора, рассматривавшего регистрационные данные.",
+
+# Topic/PM-related
+'sender' => "Отправитель Личного Сообщения.",
+'num' => "Номер Темы (для URL)",
+'start' => "Номер Сообщения в Теме (для URL)",
+'tmessage' => "Текст новую тему",
+'tauthor' => "Название Автор",
+
+# Registration/Password
+'activationcode' => "Код активации отправлен по указанному адресу E-mail.",
+'remindercode' => "Код отправлен в напоминании по E-mail.",
+'preregspan' => "Промежуток времени, в течение которого будет активна предварительная регистрация. Текущее значение: {yabb preregspan}",
+'reason', "Админ причиной решения, принятого на регистрирующий пользователя в реестре с режимом одобрения администратором",
+
+# Sending a topic
+'toname' => "Имя получателя Сообщения.",
+
+# PMs
+'sendto' => "Получатель этого ЛС.",
+'email' => "E-mail от пользователя.",
+'date' => "Дата отправки Личного Сообщения.",
+'subject' => "Заголовок для Личного Сообщения.",
+'message' => "Текст Личного Сообщения.",
+);
+
+# Pre registration subject lines
+%mailreg_txt=(
+'apr_result_activate' => "Информация об активации для",
+'apr_result_validate' => "Регистрация проверена для",
+'apr_result_info' => "Регистрационная информация для",
+'apr_result_wait' => "Ожидание регистрации для",
+'apr_result_reject' => "Регистрация отклонена для",
+'apr_result_approved' => "Регистрация одобрена для",
+'new_member_info' => "Регистрация Нового Участника!",
+);
+
+$yabbtags{'preregemail'} = qq~displayname preregspan cryptusername activationcode~;
+$emaildesc{'preregemail'} = qq~Регистрационная электронной почты, отправляется при использовании ссылку активации~;
+$preregemail = qq~<pre>Приветствуем Вас, {yabb displayname}!
+
+Вы отправили запрос на регистрацию в форуме {yabb mbname}.
+Для завершения регистрации Вам необходимо активировать Вашу учетную запись в течение {yabb preregspan} часов.
+
+Для этого пройдите по ссылке, приведенной ниже:
+
+<a href="{yabb scripturl}?action=activate&username={yabb cryptusername}&activationkey={yabb activationcode}">{yabb scripturl}?action=activate&username={yabb cryptusername}&activationkey={yabb activationcode}</a>
+
+Если ссылка не работает (или Вы используете AOL, или Ваша E-mail программа не может передать ссылку в браузер), скопируйте ссылку и вставьте ее в адресную строку Вашего браузера.
+
+С уважением,
+Администрация {yabb mbname}</pre>~;
+
+$yabbtags{'approveregemail'} = qq~username displayname~;
+$emaildesc{'approveregemail'} = qq~Письмо об ожидании одобрения. Пароль и код для регистрации не отсылаются~;
+$approveregemail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Ваша заявка на регистрацию аккаунта с ID: "{yabb username}" ожидает одобрения со стороны администрации форума {yabb mbname}.
+
+Это может занять некоторое время, поскольку администраторы форума тоже иногда спят, так что наберитесь терпения (обычно рассмотрение заявок осущетсвляется в течение 24 часов).
+Как только Ваша заявка будет рассмотрена, Вы будете немедленно извещены об этом.
+
+С уважением,
+Коллектив форума {yabb mbname}</pre>~;
+
+$yabbtags{'instantapprovedemail'} = qq~username displayname reviewer~;
+$emaildesc{'instantapprovedemail'} = qq~Рассмотрение и быстрое одобрение зявки. Пароль и код для регистрации не отсылаются~;
+$instantapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Поздравляем и добро пожаловать!
+
+Ваша заявка на участие в работе форума была незамедлительно рассмотрена {yabb reviewer} из штата администрации форума {yabb mbname}.
+
+Вы можете войти на форум, используя Ваше отображаемое имя - ({yabb displayname}), Ваш адрес электронной почты или логин участника форума ID - ({yabb username}).
+
+Вы можете изменить свой пароль после входа на форум на страницах редактирования своего Профиля в Вашем личном Кабинете. Для этого нажмите кнопку ПРОФИЛЬ на главном меню форума {yabb mbname} на его главной странице: {yabb scripturl}
+
+С наилучшими пожеланиями,
+Команда форума {yabb mbname}</pre>~;
+
+$yabbtags{'pwinstantapprovedemail'} = qq~username displayname reviewer password~;
+$emaildesc{'pwinstantapprovedemail'} = qq~Рассмотрение и быстрое одобрение зявки с отсылкой пароля~;
+$pwinstantapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Поздравляем и добро пожаловать!
+
+Ваша заявка на участие в работе форума была незамедлительно рассмотрена {yabb reviewer} из штата администрации форума {yabb mbname}.
+
+Вы можете войти на форум, используя Ваше отображаемое имя - ({yabb displayname}), Ваш адрес электронной почты или логин участника форума ID - ({yabb username}).
+Ваш действующий в настоящее время пароль: {yabb password}
+
+Вы можете изменить свой пароль после входа на форум на страницах редактирования своего Профиля в Вашем личном Кабинете. Для этого нажмите кнопку ПРОФИЛЬ на главном меню форума {yabb mbname} на его главной странице: {yabb scripturl}
+
+С наилучшими пожеланиями,
+Команда форума {yabb mbname}</pre>~;
+
+$yabbtags{'instantrejectedemail'} = qq~username displayname reviewer~;
+$emaildesc{'instantrejectedemail'} = qq~Рассмотрение и быстрое отклонение зявки. Пароль и код для регистрации не отсылаются~;
+$instantrejectedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Мы с сожалением информируем Вас о том, что Ваша заявка на участие в работе нашего форума была рассмотрена и отклонена {yabb reviewer} из штата администраци {yabb mbname}.
+Каких либо специальных соображений о причинах отказа не было дано, однако обычно для такого отказа служат неудовлетворительные или неолные данные, введенные Вами при заполнении заявки.
+
+Если Вы считаете, что все это одна большая ошибка и это не про Вас, то Вы можете подать заявку снова, используя для регистрации другие доверительные данные.
+
+Всего хорошего,
+Администрация форума {yabb mbname}</pre>~;
+
+$yabbtags{'reviewapprovedemail'} = qq~username displayname reviewer~;
+$emaildesc{'reviewapprovedemail'} = qq~Рассмотрение и одобрение зявки. Пароль и код для регистрации не отсылаются~;
+$reviewapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Поздравляем и добро пожаловать!
+
+Ваша заявка на участие в работе форума была рассмотрена {yabb reviewer} и было дано следующее заключение:
+
+{yabb reason}
+
+Вы можете войти на форум, используя Ваше отображаемое имя - ({yabb displayname}), Ваш адрес электронной почты или логин участника форума ID - ({yabb username}).
+
+Вы можете изменить свой пароль после входа на форум на страницах редактирования своего Профиля в Вашем личном Кабинете. Для этого нажмите кнопку ПРОФИЛЬ на главном меню форума {yabb mbname} на его главной странице: {yabb scripturl}
+
+С наилучшими пожеланиями,
+Команда форума {yabb mbname}</pre>~;
+
+$yabbtags{'pwreviewapprovedemail'} = qq~username displayname reviewer password~;
+$emaildesc{'pwreviewapprovedemail'} = qq~Рассмотрение и одобрение зявки. Отсылка пароля~;
+$pwreviewapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Поздравляем и добро пожаловать!
+
+Ваша заявка на участие в работе форума была рассмотрена {yabb reviewer} и было дано следующее заключение:
+
+{yabb reason}
+
+Вы можете войти на форум, используя Ваше отображаемое имя - ({yabb displayname}), Ваш адрес электронной почты или логин участника форума ID - ({yabb username}).
+Ваш действующий в настоящее время пароль: {yabb password}
+
+Вы можете изменить свой пароль после входа на форум на страницах редактирования своего Профиля в Вашем личном Кабинете. Для этого нажмите кнопку ПРОФИЛЬ на главном меню форума {yabb mbname} на его главной странице: {yabb scripturl}
+
+С наилучшими пожеланиями,
+Команда форума {yabb mbname}</pre>~;
+
+$yabbtags{'reviewrejectedemail'} = qq~username displayname reviewer reason~;
+$emaildesc{'reviewrejectedemail'} = qq~Рассмотрение и отклонение зявки. Пароль и код для регистрации не отсылаются~;
+$reviewrejectedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Мы с сожалением информируем Вас о том, что Ваша заявка на участие в работе нашего форума была рассмотрена и отклонена {yabb reviewer} из штата администраци {yabb mbname}.
+Основанием для такого решения {yabb reviewer} послужили следующие соображения:
+
+{yabb reason} 
+
+Если Вы считаете, что все это одна большая ошибка и это не про Вас, то Вы можете подать заявку снова, используя для регистрации другие доверительные данные.
+
+Всего хорошего,
+Администрация форума {yabb mbname}</pre>~;
+
+$yabbtags{'passwordregemail'} = qq~username password displayname~;
+$emaildesc{'passwordregemail'} = qq~Регистрационное письмо. Отсылка пользователю случайно сгенерированного пароля~;
+$passwordregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+
+Ваш Логин (ID): {yabb username}, Ваш пароль: {yabb password}.
+
+Вы можете войти на Форум используя Отображаемое Имя ({yabb displayname}), Ваш адрес E-mail, или Ваш Логин (ID) - ({yabb username}).
+
+Вы можете изменить Ваш пароль сразу после входа на Форум на страницах редактирования своего Профиля в Вашем личном Кабинете. Для этого надо воспользоваться кнопкой Профиль, которая находится ввеху страницы форума {yabb mbname}: {yabb scripturl}
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'welcomeregemail'} = qq~username password displayname~;
+$emaildesc{'welcomeregemail'} = qq~Регистрационное письмо в котором отсылается пароль или код предварительной регистрации~;
+$welcomeregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+
+Ваш Логин (ID): {yabb username}. Ваш Пароль: {yabb password}.
+
+Вы можете войти на Форум используя Отображаемое Имя ({yabb displayname}), Ваш адрес E-mail, или Ваш Логин (ID) ({yabb username}).
+
+Вы можете изменить Ваш пароль после успешного входа на Форум, на странице редактирования своего Профиля в Вашем личном Кабинете. Для этого надо воспользоваться кнопкой Профиль свеху страницы {yabb mbname}: {yabb scripturl}
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'activatedpassregemail'} = qq~username password displayname~;
+$emaildesc{'activatedpassregemail'} = qq~Результат активации регистрации. Отправка пароля~;
+$activatedpassregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+
+Ваш Логин (ID) {yabb username}, Ваш пароль {yabb password}.
+
+Вы можете войти на Форум, используя Ваше Отображаемое Имя: ({yabb displayname}), Ваш адрес E-mail, или Ваш Логин(ID): ({yabb username}).
+
+Вы можете изменить Ваш пароль после успешного входа на Форум, на странице редактирования своего Профиля в Вашем личном Кабинете. Для этого надо воспользоваться кнопкой Профиль ввеху страницы {yabb mbname}: {yabb scripturl}
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'activatedwelcomeregemail'} = qq~username password displayname~;
+$emaildesc{'activatedwelcomeregemail'} = qq~Результат активации регистрации (без отправки пароля)~;
+$activatedwelcomeregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+
+Ваш Логин (ID) {yabb username}.
+
+Вы можете войти на Форум, используя Ваше Отображаемое Имя ({yabb displayname}), Ваш адрес E-mail, или Ваш Логин (ID) ({yabb username}).
+
+Вы можете изменить Ваш пароль после успешного входа на Форум, на странице редактирования своего Профиля в Вашем личном Кабинете. Для этого надо воспользоваться кнопкой Профиль ввеху страницы {yabb mbname}: {yabb scripturl}
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'newmemberemail'} = qq~displayname username userip useremail~;
+$emaildesc{'newmemberemail'} = qq~Уведомление Администратору о регистрации нового Участника~;
+$newmemberemail = qq~<pre>Новый участник зарегистрирован в вашем форуме!
+
+Отображаемое имя: {yabb displayname}
+Логин: {yabb username}
+IP-адрес: {yabb userip}
+E-mail: {yabb useremail}
+
+Для проверки регистрационных данных и профиля нового участника войдите пожалуйста на форум и перейдите по ссылке, указанной ниже.
+{yabb adminurl}?action=view_reglog
+
+Если ссылка не работает (или Вы используете AOL или E-mail программу основанную на каком-либо веб сервисе), скопируйте ссылку и вставьте её в адресную строку вашего Браузера.
+
+Помните, что для проверки профиля нового участника Вы должны предварительно войти на Ваш Форум.
+
+С наилучшими пожеланиями,
+Команда {yabb mbname}</pre>~;
+
+$yabbtags{'passwordreminderemail'} = qq~displayname mbname remindercode cryptusername~;
+$emaildesc{'passwordreminderemail'} = qq~Напоминание пароля~;
+$passwordreminderemail = qq~<pre>Уважаемый {yabb displayname}.
+
+Это сообщение было создано форумом {yabb mbname} в ответ на действия его посетителя.
+Если Вы не нуждаетесь в восстановлении своего пароля - пожалуйста, проигнорируйте это сообщение.
+
+В противном случае, перейдите по этой ссылке:
+{yabb scripturl}?action=resetpass&ID={yabb remindercode}&user={yabb cryptusername}
+Вы получите новый пароль для входа на форум.
+
+С уважением,
+Команда {yabb mbname}<pre>~;
+
+$yabbtags{'boardnewtopicnotificationemail'} = qq~num subject~;
+$emaildesc{'boardnewtopicnotificationemail'} = qq~Письмо с уведомлением (Наблюдение за Разделом - новая Тема)~;
+$boardnewtopicnotificationemail = qq~<pre>Новая Тема, "{yabb subject}", создана в Разделе, за которым Вы наблюдаете.
+
+Вы можете просмотреть это Сообщение, перейдя по ссылке: {yabb scripturl}?num={yabb num}
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'boardnotificationemail'} = qq~num start subject~;
+$emaildesc{'boardnotificationemail'} = qq~Письмо с уведомлением (Наблюдение за Разделом - Ответ в существующей Теме)~;
+$boardnotificationemail = qq~<pre>Новое сообщение было оставлено в Разделе, за которым Вы наблюдаете: "{yabb subject}".
+
+Вы можете просмотреть это Сообщение, перейдя по ссылке: {yabb scripturl}?num={yabb num}/{yabb start}
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'topicnotificationemail'} = qq~num subject start~;
+$emaildesc{'topicnotificationemail'} = qq~Письмо с уведомлением (Наблюдение за Темой)~;
+$topicnotificationemail = qq~<pre>Новое сообщение оставлено в Теме, за которой Вы наблюдаете: "{yabb subject}".
+
+Вы можете просмотреть это Сообщение, перейдя по ссылке:
+{yabb scripturl}?num={yabb num}/{yabb start}
+
+Новых уведомлений Вам больше отправлено не будет, пока Вы не просмотрите эту Тему(Раздел).
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'profilenewpasswordemail'} = qq~displayname password~;
+$emaildesc{'profilenewpasswordemail'} = qq~Сообщение с новым паролем - смена старого пароля~;
+$profilenewpasswordemail = qq~<pre>Здравствуйте, {yabb displayname}.
+
+Ваш пароль был изменен. Ваш новый пароль: {yabb password}.
+
+Вы можете изменить свой пароль после входа на форум на страницах редактирования Вашего профиля в Вашем личном Кабинете.
+
+Всего наилучшего,
+{yabb mbname}<pre>~;
+
+$yabbtags{'sendtopicemail'} = qq~toname subject displayname num~;
+$emaildesc{'sendtopicemail'} = qq~Отправка Темы по E-mail~;
+$sendtopicemail = qq~<pre>Здравствуйте, {yabb toname}.
+
+Надеюсь, что Вас заинтересует сообщение "{yabb subject}", которое было оставлено на {yabb mbname}. Чтобы просмотреть полный текст сообщения, перейдите по ссылке, указанной ниже:
+{yabb scripturl}?num={yabb num}
+
+Всего наилучшего,
+{yabb mbname}</pre>~;
+
+$yabbtags{'privatemessagenotificationemail'} = qq~sender subject message~;
+$emaildesc{'privatemessagenotificationemail'} = qq~Извещение о получении Личного Сообщения~;
+$privatemessagenotificationemail = qq~<pre>{yabb sender} отправил Вам личное сообщение.
+
+Тема: {yabb subject}
+Сообщение:{yabb message}
+{yabb attachments}
+
+Это сообщение также находится в Вашем персональном ящике для сообщений на форуме {yabb mbname}\: <a href="{yabb scripturl}">{yabb scripturl}</a></pre>~;
+
+
+## for online alert pms. 
+%online_alert = (
+newnotify => "Получено новое личное сообщение!",
+replynotify => "Ответьте на сообщение!",
+);
+
+$yabbtags{'replyguestmail'} = qq~sender email sendto date subject message~;
+$emaildesc{'replyguestmail'} = qq~Ответ Администратора на письмо от Гостя форума~;
+$replyguestmail = qq~<pre>Уважаемый {yabb sender},
+
+
+
+С наилучшими пожеланиями,
+Команда форума {yabb mbname}
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+
+----------------------------------
+----- Оригинальное сообщение -----
+От: "{yabb sender}" <{yabb email}>
+Кому: "{yabb sendto}", <{yabb scripturl}>
+Получено: {yabb date}
+Тема: {yabb subject}
+
+{yabb message}
+</pre>~;
+
+
+$yabbtags{'deleteduseremail'} = q~displayname~;
+$emaildesc{'deleteduseremail'} = qq~Информационное письмо об удалении пользователя~;
+$deletedusersybject = qq~{yabb mbname} - Ваш аккаунт был удален~;
+$deleteduseremail = qq~<pre>Здравствуйте, {yabb displayname}!
+
+Ваша учетная запись на {yabb mbname} долгое время не использовалась и поэтому была удалена!
+Если Вы снова захотите принять участие в работе нашего форума, Вам надо будет зарегистрироваться заново.
+
+С уважением,
+Администрация {yabb mbname}
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+<pre>~;
+
+$yabbtags{'banneduseremail'} = q~displayname~;
+$emaildesc{'banneduseremail'} = q~The Banned User Notification E-mail~;
+$bannedusersybject = q~Your account banned on~;
+$banneduseremail = q~Hello, {yabb displayname}:
+
+You have been banned from {yabb mbname} {yabb ban_time} by {yabb banner}{yabb ban_reason}.
+
+Regards,
+The {yabb mbname} team
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+~;
+
+$yabbtags{'suspendeduseremail'} = q~displayname~;
+$emaildesc{'suspendeduseremail'} = q~The Suspended User Notification E-mail~;
+$suspendusersybject = q~Your account suspended on~;
+$suspendeduseremail = q~Hello, {yabb displayname}:
+
+Your account on {yabb mbname} has been suspended {yabb ban_time} by {yabb banner}{yabb ban_reason}.
+
+Regards,
+The {yabb mbname} team
+<a href="{yabb scripturl}">{yabb scripturl}</a>
+~;
+
+1;

@@ -1,0 +1,1 @@
+Two versions of the Russian Language files due to an issue with the English/Debug.lng - on *some* servers, the Russian version of Debug.lng is loaded when the selected language is English and debug is turned on. This does not happen when Russianx is used instead.

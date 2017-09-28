@@ -1,0 +1,82 @@
+###############################################################################
+# RefControl.lng (Referer Control text definitions)                           #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:        YaBB 2.7.00                                                 #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
+#     Локализация: Васильев Д.В. (http://www.mysopromat.ru)                   #
+#           $Date: 2009/04/22 03:04:56 $                                      #
+#   Copyright (c): Васильев Д.В. 2005                                         #
+###############################################################################
+
+$russianxrefcontrollngver = 'YaBB 2.7.00 $Revision: 1859 $';
+@russianxrefcontrollngmods = ();
+if(@russianxrefcontrollngmods){
+    $russianxrefcontrollngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%refer_settings = (
+'gen' => q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
+'refer_controls' => q~General~,
+'refer_mods' => q~Mods~,
+);
+
+%refexpl_txt = (
+'birthdaylist' => q~View Birthday List~,
+'eventcal' => q~View Event Calendar~,
+'get_cal_ssi' => q~Allow Calendar in other pages~,
+'display' => 'Отображение Сообщения в теме',
+'downloadfile' => 'Скачать вложенный файл',
+'help' => 'Показать страница Справочной системы форума',
+'login' => 'Экран ведения Журнала',
+'logout' => 'Закрытие Log файлов',
+'messageindex' => 'Отображение списка сообщений',
+'ml' => 'Отображение списка Участников',
+'mycenter' => 'Показать главную страницу Моего Центра',
+'recent' => 'отображение последних сообщений',
+'recenttopics' => 'Показать все последние сообщения',
+'register' => 'Вывод экрана Регистрации нового Участника',
+'reminder' => 'Вывод экрана \'Забыли Пароль\'',
+'RSSboard' => 'Отображение последних тем форума через ленту RSS',
+'RSSrecent' => 'Отображение последних тем форума в каждой категории через ленту RSS',
+'search' => 'Вывод экрана поиска',
+'viewdownloads' => 'Показать Загрузки',
+'viewprofile' => 'Показ Профиля Пользователя',
+'refer_controls' => q~General~,
+'refer_mods' => q~Mods~,
+);
+
+%refer_txt = (
+'birthdaylist' => q~View Birthday List~,
+'display' =>  q~Display Threads~,
+'downloadfile' =>  q~Download Attachment~,
+'eventcal' => q~View Event Calendar~,
+'get_cal_ssi' => q~Allow Calendar in other pages~,
+'help' =>  q~Show Help~,
+'login' =>  q~Log In screen~,
+'logout' =>  q~Log Out~,
+'messageindex' =>  q~Display Message index~,
+'ml' =>  q~Show Memberlist~,
+'mycenter' =>  q~MyCenter main page~,
+'recent' =>  q~Show recent posts~,
+'recenttopics' =>  q~Show recent topics~,
+'register' =>  q~Registration~,
+'reminder' =>  q~Password reset~,
+'RSSboard' =>  q~RSS Board~,
+'RSSrecent' =>  q~RSS Recent Topics~,
+'search' =>  q~Search Screen~,
+'viewdownloads' =>  q~View Downloads~,
+'viewprofile' =>  q~View a User Profile~,
+);
+
+## Mod Hook ##
+
+1;

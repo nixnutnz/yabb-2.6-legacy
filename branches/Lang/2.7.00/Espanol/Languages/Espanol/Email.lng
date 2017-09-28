@@ -11,10 +11,10 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$espanolerrorlngver = 'YaBB 2.7.00 $Revision: 1611 $';
-@espanolerrorlngmods = ();
-if (@espanolerrorlngmods) {
-    $espanolerrorlngmods = 1;
+$espanolemaillngver = 'YaBB 2.7.00 $Revision: 1611 $';
+@espanolemaillngmods = ();
+if (@espanolemaillngmods) {
+    $espanolemaillngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; };

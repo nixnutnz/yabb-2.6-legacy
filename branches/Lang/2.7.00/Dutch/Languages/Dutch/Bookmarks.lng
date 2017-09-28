@@ -16,7 +16,6 @@
 $dutchbookmarkslngver = 'YaBB 2.7.00 $Revision: 1888 $';
 
 @dutchbookmarkslngmods = ();
-push @dutchbookmarkslngmods, 'Advanced Timed Banning';
 if (@dutchbookmarkslngmods) {
     $dutchbookmarkslngmods = 1;
 }
