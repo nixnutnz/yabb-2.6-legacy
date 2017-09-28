@@ -155,6 +155,7 @@ $abbr_lang = 'nl-nl';
 '900pr' => 'Privé',
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'RSS Feed',
+'rsscode' => 'Ga naar Post om Code te zien',
 'freeuserspace' => 'Vrije schijfruimte beschikbaar:',
 'freediskspace' => 'Vrije schijfruimte:',
 'redirect' => 'Omleiden',

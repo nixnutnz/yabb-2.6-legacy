@@ -58,7 +58,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'bmgmods' => 'Global moderatoren',
 'bmfmods' => 'Forum moderatoren',
 'bmmods' => 'Alle board moderatoren / mod groepen',
-'pages' => 'Pagina\'s',
+'pages' => q~Pagina's~,
 'of' => 'van',
 'noentries' => 'Er zijn geen gegevens beschikbaar voor deze brief.',
 'other' => 'Ander',

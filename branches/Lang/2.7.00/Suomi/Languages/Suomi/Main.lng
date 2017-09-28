@@ -154,6 +154,7 @@ $abbr_lang = 'fi-fi';
 '900pr' => 'Yksityinen',
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'RSS-syöte',
+'rsscode' => 'Siirry kohtaan Koodi',
 'freeuserspace' => 'Käyttäjätilaa vapaana:',
 'freediskspace' => 'Levytilaa vapaana:',
 'redirect' => 'Uudelleenohjaus',

@@ -44,7 +44,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 );
 
 %display_txt = (
-'139' => 'Pagina\'s',
+'139' => q~Pagina's~,
 );
 
 %mc_menus = (

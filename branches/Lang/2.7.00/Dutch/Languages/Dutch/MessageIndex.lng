@@ -47,7 +47,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '110' => 'Reacties',
 '132' => 'Verplaats',
 '133' => 'Verplaats naar',
-'139' => 'Pagina\'s',
+'139' => q~Pagina's~,
 '162' => 'Weet u zeker dat u dit onderwerp wilt verwijderen?',
 '199' => 'Dubbelklik dit aankruisvak voor meer info over de functie.', # don't use " inside!
 '200' => 'Vink dit selectievakje aan om een Nieuwe Post op te nemen aan het eind van de topic . Dit bericht de info zal tonen van waar de discussie kwam en wie het verplaatste. Vink uit om te verplaatsen zonder dat een nieuwe Post wordt opgenomen.', # inside JavaScript!

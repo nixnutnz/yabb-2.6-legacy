@@ -33,7 +33,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '35' => 'Gebruikersnaam',
 '87' => 'Positie',
 '96' => 'Website',
-'139' => 'Pagina\s',
+'139' => q~Pagina's~,
 '233' => 'Registratie datum',
 '234' => 'Reg. Datum',
 '307' => 'e-mail',

@@ -34,7 +34,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '63a' => 'Moderator Groepen',
 '116' => 'Bijdrage beantwoorden',
 '118' => 'Topic',
-'139' => 'Pagina\'s',
+'139' => q~Pagina's~,
 '146' => 'Reageer',
 '146n' => 'Naam van lid in snelle antwoordvak toevoegen',
 '162' => 'Weet je zeker dat je dit Topic wilt verwijderen?',

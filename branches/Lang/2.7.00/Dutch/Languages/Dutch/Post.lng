@@ -16,8 +16,9 @@
 $dutchpostlngver = 'YaBB 2.7.00 $Revision: 1888 $';
 
 @dutchpostlngmods = ();
+push @dutchpostlngmods, 'Off Topic Comment';
+push @dutchpostlngmods, 'Spoiler Tag';
 if (@dutchpostlngmods) {
-    $dutchpostlngmods = 1;
     $dutchpostlngmods = 1;
 }
 $action ||= q{};

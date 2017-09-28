@@ -159,6 +159,7 @@ $abbr_lang = 'de-de';
 '900pr' => q~Privat~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
+'rsscode' => 'Gehen Sie zu Post, um Code zu sehen',
 'freeuserspace' => q~Kostenloser Host-Platz verfügbar:~,
 'freediskspace' => q~Kostenloser Disk-Platz verfügbar:~,
 'redirect' => q~Weiterleitung~,
