@@ -1,12 +1,12 @@
 /*--------------------------------------------------------*/
-/*           YaBB 2016                                    */
+/* YaBB 2017                                              */
 /*--------------------------------------------------------*/
-/*   Created by: YaBB http://www.yabbforum.com            */
+/* Created by: YaBB http://www.yabbforum.com              */
 /*--------------------------------------------------------*/
-/*  You may adapt elements of this CSS in your own        */
-/*  projects, but please give credit to yabbforum.com.    */
+/* You may adapt elements of this CSS in your own         */
+/* projects, but please give credit to yabbforum.com.     */
 /*--------------------------------------------------------*/
-/*  This is the css file for YaBB 2.7.00 default Template */
+/* This is the css file for YaBB 2.7.00 default Template  */
 /*--------------------------------------------------------*/
 /* $Revision: 1613 $                                      */
 
@@ -44,6 +44,7 @@ a:focus, input:focus, textarea:focus, select:focus { outline: 0 none; }
     padding-left:1%;
     display: table;
 }
+
 #header a { color:#2d2d2d; }
 
 #header .highlight a { color: #3b5998; }
@@ -258,7 +259,7 @@ table.fixed {
 
 .mainbottom a, .mainbottom span {
     font-weight: bold;
-    font-size: 10px;
+    font-size: 83%;
     color: #fff;
 }
 
@@ -268,7 +269,7 @@ table.fixed {
 }
 
 .tabmenuleft, .tabmenuright, .tabmenu {
-    height: 25px;
+    height: 2.25em;
     text-align: left;
     background-color: #2d2d2d;
     font-family: Arial, Sans-Serif;
@@ -287,6 +288,7 @@ table.fixed {
 
 .tabmenu li, .mctabmenu li {
     float: left;
+    font-size: 100%;
     font-weight: bold;
     list-style: none;
     margin-left: -1px;
@@ -309,7 +311,7 @@ table.fixed {
 
 .tabmenu span, .mctabmenu span {
     float: left;
-    height: 25px;
+    height: 2.25em;
     margin: 0;
     border: 0;
     padding: 0;
@@ -328,7 +330,7 @@ table.fixed {
 
 .tabmenu span a:hover, .mctabmenu span a:hover {
     color: #fff;
-    height: 25px;
+    height: 2.25em;
     font-weight: bold;
     text-decoration: none;
 }
@@ -339,7 +341,7 @@ table.fixed {
 }
 
 .rightbox {
-    height: 25px;
+    height: 2.25em;
     background-color: #2d2d2d;
     color: #bbb;
     text-align: center;
@@ -510,10 +512,10 @@ table.fixed {
 }
 
 .anchor{
-  display: block;
-  height: 27px;
-  margin-top: -27px;
-  visibility: hidden;
+    display: block;
+    height: 27px;
+    margin-top: -27px;
+    visibility: hidden;
 }
 
 .titlebg {
@@ -881,7 +883,6 @@ img#dragImg2 {
     cursor: pointer;
     float: left;
     font-size: 5px;
-    height: 9px;
     margin-bottom: 1px;
     margin-right: 1px;
     width: 10px;
@@ -929,7 +930,7 @@ div#bullets {
 }
 
 #fontface {
-   font-size: 75%;
+    font-size: 75%;
     margin-left: 1px;
     margin-right: 1px;
     margin-top: 2px;
@@ -985,7 +986,7 @@ input.chrwarn {
     background-color: #fefefe;
     border: 0;
     color: #304b58;
-    font-size: 11px;
+    font-size: 92%;
     font-style: normal;
     font-weight: 400;
     padding: 1px;
@@ -1042,7 +1043,7 @@ table.pad_10px td, .padd_10px { padding: 10px; }
 
 .h_80px { height:80px; }
 
-/*For the ajax rotating gif popup.  The width established below must match the width in ajax.js*/
+/*For the ajax rotating gif popup. The width established below must match the width in ajax.js*/
 #ImageAlert {
     visibility: hidden;
     position: fixed;
@@ -1680,7 +1681,7 @@ h4.help {
 }
 
 .decselector_sel {
-    font-size: 9px;
+    font-size: 75%;
     border: 2px inset;
 }
 
@@ -2056,12 +2057,12 @@ span.newlinks {
 }
 
 span.newlinks_c {
-color:#fff;
-font-size:8px;
-height:11px;
-display: inline-block;
-vertical-align:top;
-padding: 0 4px;
+    color:#fff;
+    font-size:8px;
+    height:11px;
+    display: inline-block;
+    vertical-align:top;
+    padding: 0 4px;
 }
 
 .important {

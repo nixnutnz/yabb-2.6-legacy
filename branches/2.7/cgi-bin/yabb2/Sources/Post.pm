@@ -2543,23 +2543,25 @@ s/<\/?([[:alpha]](?>[^\s>\/]*))(?>(?:(?>[^>"']+)|"[^"]*"|'[^']*')*)>//igsxm;
                         $topiclink =
 qq~$perm_domain/$symlink/$permdate/$currentboard/$thisthread~;
                     }
-                    sendmail(
-                        $curmail,
-                        "$notifysubjects{$curlang}{'136'}: $thissubject",
-                        template_email(
-                            $notifystrings{$curlang}{'boardnotificationemail'},
-                            {
-                                'subject'  => $thissubject,
-                                'num'      => $topiclink,
-                                'start'    => $page,
-                                'tauthor'  => $thisauthor,
-                                'tmessage' => $thismessage
-                            }
-                        ),
-                        q{},
-                        $notifycharset{$curlang}{'emailcharset'}
-                    );
-                    $mailsent{$curuser} = 1;
+                    if ( $thissubject && $topiclink && $page && $thisauthor && $thismessage ) {
+                        sendmail(
+                            $curmail,
+                            "$notifysubjects{$curlang}{'136'}: $thissubject",
+                            template_email(
+                                $notifystrings{$curlang}{'boardnotificationemail'},
+                                {
+                                    'subject'  => $thissubject,
+                                    'num'      => $topiclink,
+                                    'start'    => $page,
+                                    'tauthor'  => $thisauthor,
+                                    'tmessage' => $thismessage
+                                }
+                            ),
+                            q{},
+                            $notifycharset{$curlang}{'emailcharset'}
+                        );
+                        $mailsent{$curuser} = 1;
+                    }
                 }
                 undef %{ $uid . $curuser };
             }

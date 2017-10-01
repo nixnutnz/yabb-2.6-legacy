@@ -264,7 +264,7 @@ sub split_splice {
         $positionlist .= qq~<option value="begin">$sstxt{'32'}</option>\n~;
         $positionlist .= join q{}, @messages;
         if (   $FORM{'position'}
-            && $newthread == $FORM{'old_position_thread'} )
+            && $FORM{'old_position_thread'} && $newthread == $FORM{'old_position_thread'} )
         {
             $positionlist =~
               s/(value="$FORM{'position'}")/$1 selected="selected"/xsm;

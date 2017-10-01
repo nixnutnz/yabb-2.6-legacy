@@ -159,7 +159,7 @@ $catheader = qq~
             </tr>
         </table>
         <table {yabb colboardtable} class="bordercolor pad_4px cs_thin mar-bot">
-            <tr><td colspan="5" style="display:none">&nbsp;</td></tr>
+            <tr><td style="display:none">&nbsp;</td></tr>
             {yabb newmsg start}{yabb newmsg icon}{yabb newmsg}{yabb newmsg end}
         </table>
         <table {yabb boardtable} class="bordercolor pad_4px cs_thin mar-bot fixed">

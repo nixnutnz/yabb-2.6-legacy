@@ -70,6 +70,13 @@ $englishsetuplngver = 'YaBB 2.7.00 $Revision$';
     'bigerr' => q~One or more errors occurred while checking the system files. The problems must be solved before you can continue.~,
     'erryyim' => q~YaBB 2.7.00 Setup Error.~,
     'maintext_23' => q~Unable to open~,
+    'hasrun' =>'YaBB 2.7.00 Setup has already been run.',
+    'hasrun2' => q~<p>A Conversion Utility has already been run.<br />To run the Converter again, remove the file 'Variables/Convert.lock' and 'Variables/ConvLang.lock', if it exists, then re-visit this page.</p>~,
+    'hasrun3' => '<p>Setup has already been run.<br />To run Setup again, remove the file "Variables/Setup.lock" then re-visit this page.</p>',
+    'imp1' => 'Import 1x files',
+    'imp2' => 'Import 2x files',
+    'goto' => 'Go to your Forum',
+
 
     # copied from Admin.lng #
     '1' => q~Setup Module Check~,

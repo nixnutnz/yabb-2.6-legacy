@@ -99,7 +99,7 @@ $mycal_show_ssi = qq~{yabb cal_display_show}<tr>
     </tr>
 {yabb cal_allow}~;
 
-$mycal_dy_top = qq~<tr>
+$mycal_dy_top = qq~
     {yabb cal_out_d}
     {yabb cal_out_dy}
     {yabb cal_out_blnk}

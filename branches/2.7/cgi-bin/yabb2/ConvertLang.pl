@@ -40,7 +40,7 @@ our (
     $boardsdir,   $memberdir,       @minpack,          @minbrds,
     @mincats,     $datadir,         $lang2,            $yyposition,
     $time,        %setdone,         $language,         $lang,
-    $mylang,
+    $mylang,      $abbr_lang,
 );
 my (
     $navlink1,  $navlink2,  $navlink3,  $navlink5,  $navlink6, $navlink1a,
@@ -1563,6 +1563,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     our $output      = q{};
     our $yyboardname = $mbname;
     our $yytime      = timeformat( $date, 1 );
+    our $yyxml_lang = $abbr_lang || 'en';
     my $curline = q{};
     {
         no strict qw(refs);
@@ -1592,7 +1593,6 @@ qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyr
     }
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
     $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
-
     print_output_header();
     print_html_output_and_finish();
     exit;

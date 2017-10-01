@@ -405,10 +405,10 @@ sub autoconfig {
             </td>
         </tr><tr>
             <td class="windowbg2">
-                <div style="float: left; width: 80%; text-align: left; font-size: 11px;">$mylang{'abspath2'}</div>
-                <div style="float: left; width: 20%; text-align: right;"><input type="button" onclick="abspathfill('$support_env_path')" value="$mylang{'insert'}" style="font-size: 11px;" /></div>
+                <div style="float: left; width: 80%; text-align: left; font-size: .9em;">$mylang{'abspath2'}</div>
+                <div style="float: left; width: 20%; text-align: right;"><input type="button" onclick="abspathfill('$support_env_path')" value="$mylang{'insert'}" style="font-size: .9em;" /></div>
             </td>
-            <td class="windowbg2">$support_env_path</td>
+            <td class="windowbg2" style="font-size: .9em;">$support_env_path</td>
         </tr><tr>
             <td class="header" colspan="2">
                 <span style="color:#fefefe;">&nbsp;<b>$mylang{'change'}</b></span>
@@ -1888,15 +1888,16 @@ sub simpleoutput {
     <meta charset="utf-8">
     <title>YaBB 2.7.00 Setup</title>
     <style type="text/css">
-        html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; font-size:13px; background-color:#eee}
+        html, body {color:#000; font-family:Verdana, Helvetica, Arial, Sans-Serif; background-color:#eee}
         div#folderfind { margin:1em auto; padding:0 1em}
         #folderfind table {width:100%; background-color:#DDE3EB; margin:0 auto; border-collapse:collapse;}
         #folderfind td {text-align:left; padding:3px; border:thin #000 solid;}
-        #folderfind .txt_a {font-size:11px;}
+        #folderfind .txt_a {font-size:1.25em;}
         #folderfind .windowbg {background-color: $windowbg;}
         #folderfind .windowbg2 {background-color: $windowbg2;}
         #folderfind .header {background-color:$header;}
         #folderfind .catbg {background-color:$catbg; text-align:center; color:#fff; }
+        input {font-size:.9em};
     </style>
 <script type="text/javascript">
 function abspathfill(brddir) {
@@ -2020,26 +2021,25 @@ sub foundsetuplock {
     if ( $INFO{'lang'} ) {
         $mylang =
 qq~\n                    <input type="hidden" name="lang" value="$INFO{'lang'}" />~;
+        getlang($INFO{'lang'});
     }
     tempstarter();
     $scripturl = "$boardurl/YaBB.$yyext";
     my $conv  = q{};
     my $conv2 = q{};
     our $formsession = cloak("$mbname$username");
-    if ( -e "$vardir/Convert.lock" || -e 'Variables/ConvertLang.lock' ) {
-        $conv2 =
-qq~<p>A Conversion Utility has already been run.<br />To run the Converter again, remove the file '$vardir/Convert.lock' and '$vardir/ConvLang.lock', if it exists, then re-visit this page.</p>~;
-
+    if ( -e "Variables/Convert.lock" || -e 'Variables/ConvertLang.lock' ) {
+        $conv2 = $mylang{'hasrun2'};
     }
     else {
         $conv =
           qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <form action="Convert1x.$yyext" method="post" style="display: inline;">$mylang
-                    <input type="submit" value="Import 1x files" />
+                    <input type="submit" value="$mylang{'imp1'}" />
                 </form>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <form action="Convert2x.$yyext" method="post" style="display: inline;">$mylang
-                    <input type="submit" value="Import 2x files" />
+                    <input type="submit" value="$mylang{'imp2'}" />
                 </form>~;
     }
 
@@ -2047,9 +2047,7 @@ qq~<p>A Conversion Utility has already been run.<br />To run the Converter again
 <div class="bordercolor borderbox" style="width:800px">
     <table class="tabtitle">
         <tr>
-            <td style="padding-left:1%; text-shadow: 1px 1px 1px #2d2d2d;">
-                YaBB 2.7.00 Setup
-            </td>
+            <td style="padding-left:1%; text-shadow: 1px 1px 1px #2d2d2d;">$mylang{'yytitle'}</td>
         </tr>
     </table>
     <table>
@@ -2060,15 +2058,13 @@ qq~<p>A Conversion Utility has already been run.<br />To run the Converter again
                 <img src="$imagesdir/info.png" alt="" />
             </td>
             <td class="windowbg2" style="padding: 4px">
-                <p>Setup has already been run.
-                <br />
-                To run Setup again, remove the file "$vardir/Setup.lock" then re-visit this page.</p>
+                $mylang{'hasrun3'}
                 $conv2
             </td>
         </tr><tr>
             <td class="catbg center"  style="padding: 4px" colspan="2">
                 <form action="$boardurl/YaBB.$yyext" method="post" style="display: inline;">
-                    <input type="submit" value="Go to your Forum" />
+                    <input type="submit" value="$mylang{'goto'}" />
                 </form>
                 $conv
             </td>
@@ -2077,8 +2073,8 @@ qq~<p>A Conversion Utility has already been run.<br />To run the Converter again
 </div>
       ~;
 
-    $yyim    = 'YaBB 2.7.00 Setup has already been run.';
-    $yytitle = 'YaBB 2.7.00 Setup';
+    $yyim    = $mylang{'hasrun'};
+    $yytitle = $mylang{'yytitle'};
     template();
     return;
 }

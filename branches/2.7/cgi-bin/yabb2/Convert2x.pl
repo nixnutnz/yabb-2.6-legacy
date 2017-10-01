@@ -131,15 +131,16 @@ require Sources::Load;
 require Sources::DateTime;
 our %conv2x_txt;
 my $mygetlang = q{};
-if ( $INFO{'lang'} ) {
-    if (   -e "$langdir/$INFO{'lang'}/Convert.lng"
-        && -e "$langdir/$INFO{'lang'}/Main.lng" )
+if ( $INFO{'lang'} || $FORM{'lang'} ) {
+    my $mylang = $INFO{'lang'} || $FORM{'lang'};
+    if (   -e "$langdir/$mylang/Convert.lng"
+        && -e "$langdir/$mylang/Main.lng" )
     {
-        $lang = $language = $INFO{'lang'};
+        $lang = $language = $mylang;
         load_language('Main');
         load_language('Convert');
         $mygetlang =
-qq~                    <input type="hidden" id="mylang" name="mylang" value="$INFO{'lang'}" />~;
+qq~                    <input type="hidden" id="mylang" name="mylang" value="$mylang" />~;
     }
     elsif ( -e "$langdir/English/Convert.lng" ) {
         load_language('Convert');
