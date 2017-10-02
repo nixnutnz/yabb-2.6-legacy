@@ -60,7 +60,7 @@ our (
     $uploadurl,    $pmuploaddir, $pmuploadurl, $admindir,  $helpfile,
     $templatesdir, $facesdir,    $facesurl,    $modimgdir, $modimgurl,
     $yyhtml_root,  $no_brddir,   $no_memdir,   $no_mesdir, $no_vardir,
-    $imagesdir,    $langdir
+    $imagesdir,    $langdir,     $no_htmldir,
 );
 our (
     %FORM,                $username,        $uid,
@@ -373,9 +373,34 @@ sub autoconfig {
 
     my $fnd_boardurl  = $foundboardurl;
     my $fnd_boarddir  = q{.};
-    my $fnd_html_root = "$html_baseurl/$yabbfiles";
-    my $fnd_htmldir   = "$searchroot2/$yabbfiles";
-    $fnd_htmldir =~ s/\/\//\//gxsm;
+    my $fnd_html_root = q{};
+    my $fnd_htmldir   = q{};
+    if ( -d "$searchroot2/$yabbfiles" ) {
+        $fnd_htmldir   = "$searchroot2/$yabbfiles";
+        $fnd_htmldir =~ s/\/\//\//gxsm;
+        $fnd_html_root = "$html_baseurl/$yabbfiles";
+    }
+    else {
+        opendir HTMLDIR, $searchroot2;
+        my @contents = readdir HTMLDIR;
+        closedir HTMLDIR;
+        foreach my $name (@contents) {
+            if ( -d "$searchroot2/$name" ) {
+                opendir HTMLDIR, "$searchroot2/$name";
+                my @subcontents = readdir HTMLDIR;
+                closedir HTMLDIR;
+                foreach my $subname (@subcontents) {
+                    if ( lc($subname) eq lc($yabbfiles)
+                        && ( -d "$searchroot2/$name/$subname" ) )
+                    {
+                        $fnd_htmldir = "$searchroot2/$name/$subname";
+                        $fnd_htmldir =~ s/\/\//\//gxsm;
+                        $fnd_html_root = "$html_baseurl/$name/$subname";
+                    }
+                }
+            }
+        }
+    }
 
     if ( !$lastsaved ) {
         $boardurl    = $fnd_boardurl;
@@ -573,9 +598,9 @@ sub meminstall {
 sub varinstall {
     my $varsdir = $vardir;
     $no_vardir = 0;
-
     if ( !-d $varsdir ) { $no_vardir = 1; return 1; }
 }
+
 
 sub checkmodules {
     ($mylang) = @_;
@@ -2021,8 +2046,8 @@ sub foundsetuplock {
     if ( $INFO{'lang'} ) {
         $mylang =
 qq~\n                    <input type="hidden" name="lang" value="$INFO{'lang'}" />~;
-        getlang($INFO{'lang'});
     }
+    getlang($INFO{'lang'});
     tempstarter();
     $scripturl = "$boardurl/YaBB.$yyext";
     my $conv  = q{};
@@ -2111,10 +2136,6 @@ sub modules {
             $i = $mylang{'8'};
             my $e = $EVAL_ERROR;
 
-            # IE displays the @INC path in one line  :-(
-            # If you use IE and don't like what you see, remove the
-            # comment (#) in next line.
-            # $e =~ s/\//\\/g;
             $checker_output .= qq~<tr>
                     <td class="windowbg2"><span class="important">$module</span></td>
                     <td class="windowbg2">

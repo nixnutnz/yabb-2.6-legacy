@@ -29,8 +29,8 @@ $englishsetuplngver = 'YaBB 2.7.00 $Revision$';
     'change' => q~Change this form if changes are necessary.~,
     'prebrddir' => q~Main Script Directory:<br /><span style="font-size: 11px;">The server path to the board's folder (usually can be left as '.')</span>~,
     'prebrdurl' => q~Board URL:<br /><span style="font-size: 11px;">URL of your board's folder (without trailing '/')</span>~,
-    'prehtmldir' => q~HTML Root Directory:<br /><span style="font-size: 11px;">Base Path for all /html/css files and folders</span>~,
-    'prehtml_root' => q~HTML Root URL:<br /><span style="font-size: 11px;">Base URL for all /html/css files and folders</span>~,
+    'prehtmldir' => q~HTML Root Directory:<br /><span style="font-size: 11px;">Base Path for all /html/css files and folders - edit to match the path on <b>your</b> server</span>~,
+    'prehtml_root' => q~HTML Root URL:<br /><span style="font-size: 11px;">Base URL for all /html/css files and folders - edit to match the url on <b>your</b> server</span>~, 
     'save'    => q~Save Settings~,
     'yyim'    => q~You are running YaBB 2.7.00 Setup.~,
     'yytitle' => q~YaBB 2.7.00 Setup~,
@@ -76,7 +76,6 @@ $englishsetuplngver = 'YaBB 2.7.00 $Revision$';
     'imp1' => 'Import 1x files',
     'imp2' => 'Import 2x files',
     'goto' => 'Go to your Forum',
-
 
     # copied from Admin.lng #
     '1' => q~Setup Module Check~,

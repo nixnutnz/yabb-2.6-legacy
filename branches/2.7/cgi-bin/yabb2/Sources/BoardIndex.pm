@@ -901,9 +901,13 @@ qq~<img src="$imagesdir/$newload{'sub_brd_old'}" alt="$boardindex_txt{'334'}" ti
                             $tmp_sublinks = $subboard_links_ext;
                             my $bdd = q{};
                             my $my_bddescr =
-                              ${ $uid . $childbd }{'description'};
-                            my @bname = split /<br.*?>/xsm, $my_bddescr;
-                            $bname[0] = to_chars( $bname[0] );
+                              ${ $uid . $childbd }{'description'} || q{};
+                            my @bname = ();
+                            if ($my_bddescr ne q{} ) {
+                                @bname = split /<br.*?>/xsm, $my_bddescr;
+                                $bname[0] = to_chars( $bname[0] );
+                            }
+                            $bname[0] ||= q{};
                             my $brrdname =
 qq~$scripturl?action=showexternal;exboard=$childbd~;
                             $tmp_sublinks =~
