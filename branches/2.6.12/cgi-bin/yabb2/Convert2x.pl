@@ -1089,7 +1089,7 @@ sub FixControl {
             ${$x}{'mypic'} = q{};
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
 #            $cat, $board, $pic, $description, $mods, $modgroups, $topicperms,  $replyperms,   $pollperms, $zero, $membergroups, $ann, $rbin, $attperms, $minageperms, $maxageperms, $genderperms,  $canpost, $parent, $rules, $rulestitle, $rulesdesc, $rulescollapse, $brdpasswr, $brdpassw, $bdrss,
-			$newboard .=
+            $newboard .=
 qq~${$x}{'cat'}|$x|${$x}{'mypic'}|${$x}{'description'}|${$x}{'mods'}|${$x}{'modgroups'}|${$x}{'topicperms'}|${$x}{'replyperms'}|${$x}{'pollperms'}|${$x}{'zero'}|${$x}{'membergroups'}|${$x}{'ann'}|${$x}{'rbin'}|${$x}{'attperms'}|${$x}{'minageperms'}|${$x}{'maxageperms'}|${$x}{'genderperms'}|${$x}{'canpost'}|${$x}{'parent'}|${$x}{'rules'}|${$x}{'rulestitle'}|${$x}{'rulesdesc'}|${$x}{'rulescollapse'}|${$x}{'brdpasswr'}|${$x}{'brdpassw'}|${$x}{'brdrss'}|\n~;
             if ( ${$x}{'pic'} ) {
                 $brdpix .= qq~$x|default|${$x}{'pic'}\n~;
