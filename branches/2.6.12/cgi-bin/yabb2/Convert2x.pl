@@ -1328,7 +1328,7 @@ sub MoveMessages {
 # Variables Conversion ##
 sub MoveVariables {
     my @mvvar = (
-        'allowed.txt',             'attachments.txt',
+        'allowed.txt',
         'ban_log.txt',             'bots.hosts',
         'email_domain_filter.txt', 'eventcal.db',
         'eventcalbday.db',         'flood.txt',
@@ -1382,6 +1382,24 @@ qq~$eventline[0]|$eventline[1]|$eventline[2]|$eventline[3]||$eventline[4]|$event
                   or croak "cannot print $vardir/$varfl";
                 close $NEWVAR or croak 'cannot close NEWVAR';
             }
+
+        if ( -e "$convvardir/attachments.txt" ) {
+            open $OLDVAR, '<', "$convvardir/attachments.txt" or croak 'cannot open OLDVAR';
+            my @att = <$OLDVAR>;
+            close $OLDVAR or croak 'cannot close OLDVAR';
+            chomp @att;
+            my $newatt = q();
+            foreach my $line (@att) {
+                my @line = split /[|]/xsm, $line;
+                if ( $#line > 8 ) {
+                    $newatt .= qq~$line[0]|$line[1]|$line[2]|$line[5]|$line[6]|$line[7]|$line[8]|$line[9]|$line[10]\n~
+                }
+                else { $newatt .= $line . "\n"; }
+            }
+            open $NEWVAR, '>', "$vardir/attachments.txt" or croak 'cannot open attachments.db';
+            print {$NEWVAR} $newatt or croak "cannot print $vardir/attachments.txt";
+            close $NEWVAR or croak 'cannot close attachments.txt';
+    }
         }
     }
     Convert_Settings();

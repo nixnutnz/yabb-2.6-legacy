@@ -1126,7 +1126,7 @@ sub ext_admin_convert_fixgroupnames {
         if (   $groups[$j] ne 'Administrator'
             && $groups[$j] ne 'Global Moderator'
             && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
+            && $groups[$j] !~ m/^(?:No)?Post\{\d+}$/sm )
         {
 
             # find best matching usergroup
@@ -1179,7 +1179,7 @@ sub ext_admin_convert_fixgroupnames {
         if (   $groups[$j] ne 'Administrator'
             && $groups[$j] ne 'Global Moderator'
             && $groups[$j] ne 'Moderator'
-            && $groups[$j] !~ m/^(?:No)?Post{\d+}$/sm )
+            && $groups[$j] !~ m/^(?:No)?Post\{\d+}$/sm )
         {
 
             #delete $groups[$j];

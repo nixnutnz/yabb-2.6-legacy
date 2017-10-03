@@ -79,6 +79,8 @@ my $newbrds = qq{\@allboards = ('$allboards');\n};
 foreach my $cntboard (@mybrds) {
     $newbrds .= qq~\%{$cntboard} = (\n~;
     foreach (keys %{ $uid . $cntboard } ) {
+        ${ $uid . $cntboard }{$_} =~ s/'/\\'/gxsm;
+        ${ $uid . $cntboard }{$_} =~ s/~/\\~/gxsm;
         $newbrds .= qq{'$_' => q~${ $uid . $cntboard }{$_}~,\n};
     }
         $newbrds .= qq~);\n~;
@@ -144,7 +146,7 @@ sub adminlogin {
 
 sub adminlogin2 {
     if ( $FORM{'password'} eq q{} ) {
-        setup_fatal_error('Setup Error: You should fill in your password!');
+        setup_error('Setup Error: You should fill in your password!');
     }
 
     # No need to pass a form variable setup is only used by user: admin
@@ -155,11 +157,11 @@ sub adminlogin2 {
         my $spass = ${ $uid . $username }{'password'};
         $cryptpass = encode_password( $FORM{'password'} );
         if ( $spass ne $cryptpass && $spass ne $FORM{'password'} ) {
-            setup_fatal_error('Setup Error: Login Failed!');
+            setup_error('Setup Error: Login Failed!');
         }
     }
     else {
-        setup_fatal_error(
+        setup_error(
 qq~Setup Error: Could not find the admin data file in $memberdir! Please check your access rights.~
         );
     }
@@ -174,6 +176,11 @@ qq~Setup Error: Could not find the admin data file in $memberdir! Please check y
 ~;
 
     return SimpleOutput();
+}
+
+sub setup_error {
+    my ($screen) = @_;
+    return simpleoutput($screen);
 }
 
 1;

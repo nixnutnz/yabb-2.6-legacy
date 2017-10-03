@@ -215,17 +215,6 @@ sub RemoveOldAttachments {
       || fatal_error( 'cannot_open', "$uploaddir", 1 );
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
-
-    fopen( AML, "$vardir/attachments.txt" );
-    my @attachmentstxt = <AML>;
-    fclose(AML);
-
-    my ( %att, @line );
-    foreach (@attachmentstxt) {
-        @line = split /\|/xsm, $_;
-        $att{ $line[7] } = $line[0];
-    }
-
     my $info;
     if ( !@attachments ) {
         fopen( ATT, ">$vardir/attachments.txt" )
@@ -236,6 +225,12 @@ sub RemoveOldAttachments {
         $info = qq~<br /><i>$fatxt{'48'}.</i>~;
     }
     else {
+        fopen( AML, "$vardir/attachments.txt" );
+        foreach (@attachmentstxt) {
+            my @line = split /\|/xsm, $_;
+            $att{ $line[7] } = $line[0];
+        }
+
         if ( !exists $INFO{'next'} ) { unlink "$vardir/rem_old_attach.tmp"; }
 
         my %rem_attachments;
@@ -315,6 +310,10 @@ sub RemoveBigAttachments {
       || fatal_error( 'cannot_open', "$uploaddir", 1 );
     my @attachments = sort grep { /\w+$/xsm } readdir ATT;
     closedir ATT;
+    my %filelist = ();
+    foreach my $i (@attachments) {
+        $filelist{$i} = 1;
+    }
 
     fopen( FILE, "$vardir/attachments.txt" );
     @attachmentstxt = <FILE>;
@@ -323,7 +322,9 @@ sub RemoveBigAttachments {
     my ( %att, @line );
     foreach (@attachmentstxt) {
         @line = split /\|/xsm, $_;
-        $att{ $line[7] } = $line[0];
+        if ( $filelist{$line[7]} ) {
+            $att{ $line[7] } = $line[0];
+        }
     }
 
     my $info;

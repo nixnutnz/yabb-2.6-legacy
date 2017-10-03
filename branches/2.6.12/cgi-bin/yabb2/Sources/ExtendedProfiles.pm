@@ -209,7 +209,7 @@ sub ext_has_access {
                 {
                     if ( $group eq $usergroup ) { $access = 1; return $access; }
                 }
-                elsif ( $group =~ m/^NoPost{(\d+)}$/sm ) {
+                elsif ( $group =~ m/^NoPost\{(\d+)}$/sm ) {
 
                     # check if user is on a post-independent group
                     $groupid = $1;
@@ -230,7 +230,7 @@ sub ext_has_access {
                         }
                     }
                 }
-                elsif ( $group =~ m/^Post{(\d+)}$/sm ) {
+                elsif ( $group =~ m/^Post\{(\d+)}$/sm ) {
 
                     # check if user is in one of the post-depending groups...
                     $groupid = $1;
