@@ -97,10 +97,10 @@ sub split_splice {
         ( $message, undef ) = split_splice_move( $message, 1 );
         do_ubbc();
 
-        my $convertstr = $message;
+        our $convertstr = $message;
+        our $convertcut = 50;
         $convertstr =~ s/<(p|br|div).*?>/ /gxsm;
         $convertstr =~ s/<.*?>//gxsm;    # remove HTML-tags
-        my $convertcut = 50;
         count_chars();
         $message = $convertstr;
         if ($cliped) { $message .= ' ...'; }
@@ -207,8 +207,8 @@ sub split_splice {
         ( $message, undef ) = split_splice_move( $message, $threadid );
         do_ubbc();
 
-        my $convertstr = $message;
-        my $convertcut = 50;
+        our $convertstr = $message;
+        our $convertcut = 50;
         count_chars();
         $message = $convertstr;
         if ($cliped) { $message .= ' ...'; }
@@ -239,8 +239,8 @@ sub split_splice {
             ( $message, undef ) = split_splice_move( $message, 1 );
             do_ubbc();
 
-            my $convertstr = $message;
-            my $convertcut = 50;
+            our $convertstr = $message;
+            our $convertcut = 50;
             count_chars();
             $message = $convertstr;
             if ($cliped) { $message .= ' ...'; }
@@ -681,6 +681,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
           && $leavemess != 1 ? 0 : ${$curthreadid}{'views'};
     }
     else {
+        ${$newthreadid}{'views'} ||= 0; 
         ${$newthreadid}{'views'} +=
           int( ${$curthreadid}{'views'} / @curthread * @postnum );
     }
@@ -766,7 +767,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
     if ( $curboard eq $newboard && $FORM{'newthread'} eq 'new' ) {
         ( $msub, $mname, $memail, undef, $musername, $micon, undef ) =
           split /[|]/xsm, $utdnewthread[0], 7;
-        if ( $old_mstate !~ /0/ixsm ) { $old_mstate .= '0'; }
+        if ( $old_mstate !~ /x/ixsm ) { $old_mstate .= 'x'; }
         $yy_threadline =
 qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$old_mstate\n~;
         unshift @curmessindex, $yy_threadline;
@@ -823,7 +824,7 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
                 else { $old_mstate =~ s/a//gixsm; }
             }
 
-            if ( $old_mstate !~ /0/ixsm ) { $old_mstate .= '0'; }
+            if ( $old_mstate !~ /x/ixsm ) { $old_mstate .= 'x'; }
             $yy_threadline =
 qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'replies'}|$musername|$micon|$old_mstate\n~;
             unshift @newmessindex, $yy_threadline;

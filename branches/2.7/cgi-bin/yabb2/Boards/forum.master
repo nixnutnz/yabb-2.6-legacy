@@ -1,7 +1,7 @@
 $mloaded = 1;
 @categoryorder = qw(general staff);
 $cat{'staff'} = ['announcements', 'recycle'];
-$cat{'general'} = ['general'];
+$cat{'general'} = ['general', 'test'];
 $catinfo{'staff'} = ['Forum Staff', 'Administrator/Global Moderator', '1', '', '0'];
 $catinfo{'general'} = ['General Category', '', '1', '', '0'];
 $board{'announcements'} = ['Global Announcements', '', ''];
