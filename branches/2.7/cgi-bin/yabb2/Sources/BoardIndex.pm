@@ -403,9 +403,8 @@ sub board_index {
         if ( ${ $uid . $curboard }{'lastposttime'} eq $boardindex_txt{'470'} ) {
             ${ $uid . $curboard }{'lastposttime'} = 0;
         }
-        if (
-               !$lastthreadtime
-             ( ${ $uid . $curboard }{'lastposttime'} && ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime )
+        if ( 
+               !$lastthreadtime || ( ${ $uid . $curboard }{'lastposttime'} && ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime )
         )
         {
             (
