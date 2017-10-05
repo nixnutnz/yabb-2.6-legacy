@@ -464,15 +464,15 @@ sub member_index {
         while ( my ( $curmemb, $value ) = each %memberinf ) {
             my ( $curname, $curmail, $curposition, $curpostcnt ) = @{$value};
             if ( $memaction eq 'check_exist' ) {
-                if ( lc $user eq lc $curmemb && $mychk == 0 ) {
+                if ( lc $user eq lc $curmemb && (!$mychk || $mychk == 0) ) {
                     undef %memberinf;
                     $return = $curmemb;
                 }
-                elsif ( $curmail && lc $user eq lc $curmail && $mychk == 2 ) {
+                elsif ( $curmail && lc $user eq lc $curmail && $mychk && $mychk == 2 ) {
                     undef %memberinf;
                     $return = $curmail;
                 }
-                elsif ( lc $user eq lc $curname && $mychk == 1 ) {
+                elsif ( lc $user eq lc $curname && $mychk && $mychk == 1 ) {
                     undef %memberinf;
                     $return = $curname;
                 }

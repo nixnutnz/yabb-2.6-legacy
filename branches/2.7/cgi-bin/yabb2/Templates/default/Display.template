@@ -415,7 +415,7 @@ qq~<div style="margin: 5px auto 5px;"><b>{yabb display_txt_bookmarks}</b>: {yabb
 
 $visel_0 = q~<table class="pad_0"><tr>~;
 $visel_1a = q~<td class="droppages pages">~;
-$visel_1b = q~</td>~;
+$visel_1b = q~<\/td>~;
 $visel_2a = q~<td class="droppages pages">~;
 $visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
 $visel_4 = q~</tr></table>~;

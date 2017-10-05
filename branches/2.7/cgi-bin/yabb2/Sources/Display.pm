@@ -1455,11 +1455,12 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                             my $quotesmess = $postmessage;
                             while ( $quotesmess =~ s/\[quote\s (.*?)\]//xsm ) {
                                 my ( $tmpqauth, $tmpqlink, $tmpqdate ) =
-                                  split / /sm, $1;
+                                  split /[ ]/xsm, $1;
                                 my ( undef, $tmpqau ) = split /=/xsm, $tmpqauth;
                                 my ( undef, $tmpqli ) = split /=/xsm, $tmpqlink;
                                 my ( undef, $tmpqda ) = split /=/xsm, $tmpqdate;
-
+                                $tmpqli ||= q{};
+                                $tmpqda ||= q{};
                                 $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
                             }
                             $outblock =~

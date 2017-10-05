@@ -116,9 +116,10 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
             my $uploaddate   = timeformat( $uploaddate[9] );
             my @lasteditdate = stat "$boarddir/Mods/$line";
             my $lasteditdate = timeformat( $lasteditdate[9] );
-            $modinstall{$line} = timeformat( $modinstall{$line} );
+
             my $installdate = qq~<span class="small">$yabmtxt{'5'}</span>~;
             if ( $modinstall{$line} ) {
+                $modinstall{$line} = timeformat( $modinstall{$line} );
                 $installdate =
                   qq~<span class="small">$modinstall{$line}</span>~;
             }
@@ -224,7 +225,7 @@ sub yabm_modinfo {
     );
 
     #Get install date of Mods
-    get_mod_data('modinstall');
+    %modinstall = get_mod_data('modinstall');
 
     # status link install
     my $status  = qq~<span class="important">$yabmtxt{'5'}</span>~;
@@ -1743,6 +1744,7 @@ sub get_mod_data {
           or croak "$croak{'open'} get_install.data";
         my @data = <$MLOG>;
         fclose('MLOG') or croak "$croak{'close'} get_install.data";
+        chomp @data;
         for (@data) {
             chop;
             my ( $keys, $values ) = split /\t/xsm;
