@@ -18,8 +18,10 @@ $nn_avatar = 'nn.gif';
 load_language('Micon');
 no warnings qw(uninitialized);
 
+$smiledir = qq~$yyhtml_root/Smilies~;
+
 $imgdir = $imagesdir;
-if ( !-e "$htmldir/Templates/Forum/$useimages/poll_open.gif" ) {
+if ( !-e "$htmldir/Templates/Forum/$useimages/xx.gif" ) {
     $imgdir = $defaultimagesdir;
 }
 
@@ -30,16 +32,16 @@ if ( !-e "$htmldir/Templates/Forum/$useimages/poll_open.gif" ) {
 'xx' => qq~<img src="$imgdir/xx.gif" alt="" />~,
 'no_postcount' => qq~<img src="$imgdir/no_postcount.gif" alt="" />~,
 'exclamation' => qq~<img src="$imgdir/exclamation.png" alt="" />~,
-'thumbup' => qq~<img src="$imgdir/thumbup.gif" alt="" />~,
-'thumbdown' => qq~<img src="$imgdir/thumbdown.gif" alt="" />~,
+'thumbup' => qq~<img src="$smiledir/thumbup.gif" alt="" />~,
+'thumbdown' => qq~<img src="$smiledir/thumbdown.gif" alt="" />~,
 'question' => qq~<img src="$imgdir/question.png" alt="" />~,
 'lamp' => qq~<img src="$imgdir/lamp.gif" alt="" />~,
-'smiley' => qq~<img src="$imgdir/smiley.gif" alt="" />~,
-'angry' => qq~<img src="$imgdir/angry.gif" alt="" />~,
-'cheesy' => qq~<img src="$imgdir/cheesy.gif" alt="" />~,
-'grin' => qq~<img src="$imgdir/grin.gif" alt="" />~,
-'sad' => qq~<img src="$imgdir/sad.gif" alt="" />~,
-'wink' => qq~<img src="$imgdir/wink.gif" alt="" />~,
+'smiley' => qq~<img src="$smiledir/smiley.gif" alt="" />~,
+'angry' => qq~<img src="$smiledir/angry.gif" alt="" />~,
+'cheesy' => qq~<img src="$smiledir/cheesy.gif" alt="" />~,
+'grin' => qq~<img src="$smiledir/grin.gif" alt="" />~,
+'sad' => qq~<img src="$smiledir/sad.gif" alt="" />~,
+'wink' => qq~<img src="$smiledir/wink.gif" alt="" />~,
 'alert' => qq~<img src="$imgdir/alert.png" alt="" />~,
 'thread' => qq~<img src="$imgdir/thread.gif" alt="$messageindex_txt_m{'457'}" title="$messageindex_txt_m{'457'}" />~,
 'hide' => qq~<img src="$imgdir/hide.gif" alt="$messageindex_txt_m{'458'}" title="$messageindex_txt_m{'458'}" />~,
@@ -80,16 +82,16 @@ if ( !-e "$htmldir/Templates/Forum/$useimages/poll_open.gif" ) {
 'admin_move' => qq~$imgdir/admin_move.gif~,
 'admin_rem' => qq~$imgdir/admin_rem.gif~,
 'alert' => qq~$imgdir/alert.png~,
-'angry' => qq~$imgdir/angry.gif~,
+'angry' => qq~$smiledir/angry.gif~,
 'announcement' => qq~$imgdir/announcement.gif~,
 'announcementlock' => qq~$imgdir/announcementlock.gif~,
 'boardrss' => qq~$imgdir/boardrss.png~,
 'buddylist' => qq~$imgdir/buddylist.gif~,
-'cheesy' => qq~$imgdir/cheesy.gif~,
+'cheesy' => qq~$smiledir/cheesy.gif~,
 'confidential' => qq~$imgdir/confidential.gif~,
 'email' => qq~$imgdir/email.png~,
 'exclamation' => qq~$imgdir/exclamation.png~,
-'grin' => qq~$imgdir/grin.gif~,
+'grin' => qq~$smiledir/grin.gif~,
 'hide' => qq~$imgdir/hide.gif~,
 'hidelock' => qq~$imgdir/hidelock.gif~,
 'hidesticky' => qq~$imgdir/hidesticky.gif~,
@@ -106,18 +108,18 @@ if ( !-e "$htmldir/Templates/Forum/$useimages/poll_open.gif" ) {
 'poll_mod' => qq~$imgdir/poll_mod.gif~,
 'question' => qq~$imgdir/question.png~,
 'rss' => qq~$imgdir/rss.png~,
-'sad' => qq~$imgdir/sad.gif~,
-'smiley' => qq~$imgdir/smiley.gif~,
+'sad' => qq~$smiledir/sad.gif~,
+'smiley' => qq~$smiledir/smiley.gif~,
 'standard' => qq~$imgdir/standard.gif~,
 'sticky' => qq~$imgdir/sticky.gif~,
 'stickylock' => qq~$imgdir/stickylock.gif~,
 'tabsave' => qq~$imgdir/tabsave.gif~,
 'thread' => qq~$imgdir/thread.gif~,
-'thumbdown' => qq~$imgdir/thumbdown.gif~,
-'thumbup' => qq~$imgdir/thumbup.gif~,
+'thumbdown' => qq~$smiledir/thumbdown.gif~,
+'thumbup' => qq~$smiledir/thumbup.gif~,
 'urgent' => qq~$imgdir/exclamation.png~,
 'veryhotthread' => qq~$imgdir/veryhotthread.gif~,
-'wink' => qq~$imgdir/wink.gif~,
+'wink' => qq~$smiledir/wink.gif~,
 'www' => qq~$imgdir/www.png~,
 'xx' => qq~$imgdir/xx.gif~,
 );
