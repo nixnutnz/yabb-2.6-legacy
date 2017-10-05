@@ -444,7 +444,7 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
       qq~                <option value="other"$stara[8]>$amgtxt{'26'}</option>
             </select>
             &nbsp;
-            <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="file" name="otherstar" id="otherstar" size="35"$otherdisable /><input type="hidden" name="cur_otherstar" value="$pick" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('otherstar').value='';">X</span>
+            <label for="otherstar"><b>$amgtxt{'26'}</b></label> <input type="file" name="otherstar" id="otherstar"$otherdisable /><input type="hidden" name="cur_otherstar" value="$pick" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('otherstar').value='';">X</span>
             &nbsp;
             <img src="$starurl" id="starpic" alt="" />
         </td>

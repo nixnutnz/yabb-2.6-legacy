@@ -199,7 +199,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
           . qq~ /></td>
     <td class="windowbg2 center"><input type="text" name="scd[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[1]" /></td>
     <td class="windowbg2 center" style="white-space: nowrap;">
-        <input type="file" name="smimg[$smilieorder[$j]]" id="smimg[$smilieorder[$j]]" size="35" />
+        <input type="file" name="smimg[$smilieorder[$j]]" id="smimg[$smilieorder[$j]]" />
         <input type="hidden" name="cur_smimg[$smilieorder[$j]]" value="${$addedsmilies{$smilieorder[$j]}}[0]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$smilieorder[$j]]').value='';">X</span>
         <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Smilies/added//${$addedsmilies{$smilieorder[$j]}}[0]" target="_blank">${$addedsmilies{$smilieorder[$j]}}[0]</a></div>
     </td>
@@ -231,7 +231,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
   </tr><tr>
     <td class="windowbg2 center">&nbsp;</td>
     <td class="windowbg2 center"><input type="text" name="scd[$i]" /></td>
-    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
+    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$i]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" value="1" /></td>
     <td class="windowbg2 center" colspan="3">
@@ -245,7 +245,7 @@ qq~<a href="$adminurl?action=smiliemove;index=$smilieorder[$j];movedown=1"><img 
         $yymain .= qq~<tr id="add_smilies$i" style="display: none;">
     <td class="windowbg2 center">&nbsp;</td>
     <td class="windowbg2 center"><input type="text" name="scd[$i]" id="scd[$i]" /></td>
-    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
+    <td class="windowbg2 center" style="white-space: nowrap;"><input type="file" name="smimg[$i]" id="smimg[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('smimg[$i]').value='';">X</span></td>
     <td class="windowbg2 center"><input type="text" name="sdescr[$i]" id="sdescr[$i]" /></td>
     <td class="windowbg2 center"><input type="checkbox" name="smbox[$i]" id="smbox[$i]" value="1" /></td>
     <td class="windowbg2 center" colspan="3">

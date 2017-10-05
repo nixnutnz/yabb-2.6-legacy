@@ -330,7 +330,7 @@ sub board_index {
                     ${ $uid . $curboard }{'lastposttime'} = $lastmessage[3];
                     $lastposttime{$curboard} = timeformat( $lastmessage[3] );
                     $lastposttime{$curboard2} =
-                      timeformat( $lastmessage[3], 0, 0, 0, 1 );
+                      timeformat( $lastmessage[3] );
                     last;
                 }
             }
@@ -341,14 +341,14 @@ sub board_index {
               || !${ $uid . $curboard }{'lastposttime'} )
           ? $boardindex_txt{'470'}
           : ${ $uid . $curboard }{'lastposttime'};
-        if (   ${ $uid . $curboard }{'lastposttime'} ne 'N/A'
+        if (   ${ $uid . $curboard }{'lastposttime'} ne $boardindex_txt{'470'} 
             && ${ $uid . $curboard }{'lastposttime'} > 0 )
         {
             $lastposttime{$curboard} =
               timeformat( ${ $uid . $curboard }{'lastposttime'} );
             if ( !$curboard2 ) { $curboard2 = $curboard; }
             $lastposttime{$curboard2} =
-              timeformat( ${ $uid . $curboard }{'lastposttime'}, 0, 0, 0, 1 );
+              timeformat( ${ $uid . $curboard }{'lastposttime'} );
         }
         else { $lastposttime{$curboard} = $boardindex_txt{'470'}; }
 
@@ -400,16 +400,13 @@ sub board_index {
         }
 
         # determine the true last post on all the boards a user has access to
-        if ( ${ $uid . $curboard }{'lastposttime'} eq 'N/A' ) {
+        if ( ${ $uid . $curboard }{'lastposttime'} eq $boardindex_txt{'470'} ) {
             ${ $uid . $curboard }{'lastposttime'} = 0;
         }
         if (
-            (
-                !$lastthreadtime
-                || ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime
-            )
-            && $lastposttime{$curboard} ne $boardindex_txt{'470'}
-          )
+               !$lastthreadtime
+             ( ${ $uid . $curboard }{'lastposttime'} && ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime )
+        )
         {
             (
                 $lsdatetime, $lsposter, $lssub, $lspostid, $lsreply,
@@ -1784,9 +1781,10 @@ sub del_max_im {
 }
 
 sub redirect_externalshow {
-    my $exboard = $INFO{'exboard'} || $curboard;
+# needs better error catcher
+    my $exboard = $INFO{'exboard'} || $curboard || q{};
     my $excount = 0;
-    if ( -e "$boardsdir/$exboard.exhits" ) {
+    if ( $exboard && -e "$boardsdir/$exboard.exhits" ) {
         our ($COUNT);
         fopen( 'COUNT', '<', "$boardsdir/$exboard.exhits" )
           or croak "$croak{'open'} exhits";
@@ -1795,7 +1793,7 @@ sub redirect_externalshow {
     }
     chomp $excount;
 
-    if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' ) {
+    if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' && $exboard ) {
         my $link = ${$board{$exboard} }[0];
         if   ($excount) { $excount++; }
         else            { $excount = 1; }

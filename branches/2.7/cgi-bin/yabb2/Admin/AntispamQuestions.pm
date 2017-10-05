@@ -203,7 +203,7 @@ $show_questions
             <td><input type="checkbox" name="spam_case" id="spam_case" value="1" /></td>
         </tr><tr class="windowbg2 vtop bold">
             <td><label for="spam_image">$spam_question_txt{'image'} $spam_question_txt{'optional'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'image_desc'}</span></label></td>
-            <td><input type="file" name="spam_image" id="spam_image" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('spam_image').value='';">X</span></td>
+            <td><input type="file" name="spam_image" id="spam_image" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('spam_image').value='';">X</span></td>
         </tr>
     </table>
 </div>
@@ -338,7 +338,7 @@ qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$defaultimagesdir
         </tr />
         <tr class="windowbg2 vtop bold">
             <td><label for="spam_image">$spam_question_txt{'image'} $spam_question_txt{'optional'}:<br /><span class="small" style="font-weight: normal;">$spam_question_txt{'image_desc'}</span></label></td>
-            <td><input type="file" name="spam_image" id="spam_image" size="35" /><input type="hidden" name="cur_spam_image" value="$spam_image" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('spam_image').value='';">X</span>$spam_image_value</td>
+            <td><input type="file" name="spam_image" id="spam_image" /><input type="hidden" name="cur_spam_image" value="$spam_image" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('spam_image').value='';">X</span>$spam_image_value</td>
         </tr>
     </table>
 </div>

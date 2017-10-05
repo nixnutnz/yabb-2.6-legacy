@@ -151,7 +151,7 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
         <tr>
             <td colspan="2" class="titlebg"><img src="$admin_images/boardmod_icon.png" alt="" /> <b>$yabmtxt{'22'}</b></td>
         </tr><tr>
-            <td class="windowbg2 right" width="80%"><input type="file" name="upload_mod" id="upload_mod" size="35" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span></td>
+            <td class="windowbg2 right" width="80%"><input type="file" name="upload_mod" id="upload_mod" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span></td>
             <td class="windowbg2 center" width="20%"><input type="submit" value="$maintxt{'900s'}" class="button" /></td>
         </tr>
    </table>

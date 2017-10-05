@@ -52,9 +52,9 @@ our ( $yyadmin_alert, %totals, @repliers, );
 sub boardtotals {
     my ( $job, @updateboards ) = @_;
     if ( !@updateboards ) { @updateboards = @allboards; }
-    chomp @updateboards;
     my (@boardvars);
-    if (@updateboards) {
+    if ($updateboards[0]) {
+        chomp @updateboards;
         require "$boardsdir/forum.totals";
         my @brd_tags =
           qw(threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate);

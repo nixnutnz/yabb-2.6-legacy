@@ -542,7 +542,7 @@ sub attach {
               . qq~"><strong>$fatxt{'6'} $y:</strong></div>
             <div id="attform_b_$y" class="att_rgt~
               . ( $y > 1 ? q~_b~ : q{} ) . qq~">
-                <input type="file" name="file$y" id="file$y" size="50" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
+                <input type="file" name="file$y" id="file$y" onchange="selectNewattach($y);" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span><br />
                 <span style="font-size:xx-small">
                 <input type="hidden" id="w_filename$y" name="w_filename$y" value="$files[$y-1]" />
                 <select id="w_file$y" name="w_file$y" size="1">
@@ -559,7 +559,7 @@ sub attach {
               . qq~><strong>$fatxt{'6'} $y:</strong></div>
             <div id="attform_b_$y" class="att_rgt"~
               . ( $y > 1 ? q~ style="visibility:hidden; height:0px"~ : q{} )
-              . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span></div>~;
+              . qq~>\n             <input type="file" name="file$y" id="file$y" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span></div>~;
         }
     }
     if ( !$startcount ) { $startcount = 1; }

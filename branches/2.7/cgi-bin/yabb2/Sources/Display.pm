@@ -479,7 +479,7 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
     my $start          = 0;
     if ( $INFO{'start'} ) {
 
-        if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' && $showpageall != 0 ) {
+        if ( $INFO{'start'} =~ /all/xsm && $showpageall != 0 ) {
             $maxmessagedisplay = $max;
             $all               = 1;
             $allselected       = q~ selected="selected"~;

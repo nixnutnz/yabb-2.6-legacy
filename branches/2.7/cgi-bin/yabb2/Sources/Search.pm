@@ -363,6 +363,7 @@ sub plush_search2 {
     my $userkind = $FORM{'userkind'};
     my $userspec = $FORM{'userspec'};
 
+    $userkind ||= 0;
     if    ( $userkind eq 'starter' )    { $userkind = 1; }
     elsif ( $userkind eq 'poster' )     { $userkind = 2; }
     elsif ( $userkind eq 'noguests' )   { $userkind = 3; }

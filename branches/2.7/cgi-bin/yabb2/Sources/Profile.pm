@@ -965,7 +965,7 @@ qq~                <option value="$line"$checked>$name</option>\n~;
             $upload_useravatar
             ? q~<br />
             <br />
-            <input type="file" name="file_avatar" size="50" />~
+            <input type="file" name="file_avatar" />~
             : q{}
         );
 

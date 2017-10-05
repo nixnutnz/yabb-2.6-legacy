@@ -47,7 +47,7 @@ our (
     %subboard, %yy_cookies, @categoryorder,
 );
 ## template ##
-our ( $myrecent_mess, $myrecent, );
+our ( $myrecent_mess, $myrecent);
 ## our Mod Hook ##
 
 ## local ##
@@ -587,6 +587,9 @@ sub recursive_check {
         fopen( 'REC_BDTXT', '<', "$boardsdir/$curboard.txt" )
           or croak "$croak{'open'} $curboard.txt";
         my @buffer = <$REC_BDTXT>;
+        if ( !$display ) {
+            $display = scalar @buffer;
+        }
         fclose('REC_BDTXT') or croak "$croak{'close'} $curboard.txt";
         if ( !$display ) {
             $display = scalar @buffer;

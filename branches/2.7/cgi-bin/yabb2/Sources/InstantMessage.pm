@@ -796,7 +796,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
                         ? q~ style="visibility:hidden; height:0px"~
                         : q{}
                       )
-                      . qq~>\n             <input type="file" name="file$y" id="file$y" size="50" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span>~;
+                      . qq~>\n             <input type="file" name="file$y" id="file$y" /> <span class="cursor small bold" title="$fatxt{'81'}" onclick="document.getElementById('file$y').value='';">X</span>~;
                 }
                 $my_att_fa .= qq~\n            </div>\n~;
             }

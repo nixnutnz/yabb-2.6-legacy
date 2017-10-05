@@ -225,7 +225,7 @@ sub book_marks {
             <td><input type="text" name="bm_title" id="bm_title" size="35" /></td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="bm_image"><span style="font-weight: bold;">$bookmark_txt{'01'}:</span><br /><span class="small">$bookmark_txt{'19'}</span></label></td>
-            <td><input type="file" name="bm_image" id="bm_image" size="35" /></td>
+            <td><input type="file" name="bm_image" id="bm_image" /></td>
         </tr><tr class="windowbg2 vtop">
             <td><label for="bm_url"><span style="font-weight: bold;">$bookmark_txt{'14'}:</span><br /><span class="small">$bookmark_txt{'20'}</span></label></td>
             <td><input type="text" name="bm_url" id="bm_url" size="70" /></td>
@@ -351,7 +351,7 @@ sub edit_bookmark {
         </tr><tr class="windowbg2 vtop">
             <td><label for="bm_image"><span style="font-weight: bold;">$bookmark_txt{'01'}:</span><br /><span class="small">$bookmark_txt{'19'}</span></label></td>
             <td>
-                <input type="file" name="bm_image" id="bm_image" size="35" />
+                <input type="file" name="bm_image" id="bm_image" />
                 <input type="hidden" name="bm_cur_image" value="$bm_image" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('bm_image').value='';">X</span>
                 <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Bookmarks/$bm_image" target="_blank">$bm_image</a></div>
             </td>

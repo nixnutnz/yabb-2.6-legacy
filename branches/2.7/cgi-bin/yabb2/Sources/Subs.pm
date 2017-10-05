@@ -237,7 +237,7 @@ sub exit {
     my ($inexit)                = @_;
     my $OUTPUT_AUTOFLUSH        = 1;
     my $OUTPUT_RECORD_SEPARATOR = q{};
-    print q{} or croak 'null';
+    print q{}; # or croak 'null';
     if ($child_pid) { wait; }
     CORE::exit( $inexit || 0 );
     return;
@@ -297,8 +297,8 @@ sub print_html_output_and_finish {
         }
     }
     else {
-        $output =~ s/[^\x00-\xFF]//gxsm;
-        print $output or croak "$croak{'print'} output";
+        $output =~ s/[^\x00-\xff]//gxsm;
+        print $output; # or croak "$croak{'print'} output";
     }
     exit;
 }

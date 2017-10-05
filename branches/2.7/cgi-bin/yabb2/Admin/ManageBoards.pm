@@ -1054,7 +1054,7 @@ qq~               <div class="small bold"><input type="checkbox" name="$lbl" id=
                             <br />$admin_txt{'for_template'}: <select id="templt$i" name="templt$i">
                                 $drawndirs
                             </select>
-                            <br /><input type="file" name="pic$i" id="pic$i" size="35" /><input type="hidden" name="cur_pic$i" value="$brdpic_addr" />
+                            <br /><input type="file" name="pic$i" id="pic$i" /><input type="hidden" name="cur_pic$i" value="$brdpic_addr" />
                             <br /><span class="small">$admin_txt{'64b6'}</span>
                             <br /><input type="text" name="mypic$i" id="mypic$i" value="$myboardpic" size="50" maxlength="255"$brdpic /><span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('pic$i').value='';">X</span>$boardpic_value
                          </td>

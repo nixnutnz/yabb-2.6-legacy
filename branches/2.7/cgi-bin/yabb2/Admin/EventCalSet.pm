@@ -267,7 +267,7 @@ sub event_calset {
     foreach my $j ( sort keys %newcalicon ) {
         $yymain .= qq~<tr>
                     <td class="windowbg2 center" style="white-space:nowrap">
-                        <input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35"  />
+                        <input type="file" name="caliimg[$i]" id="caliimg[$i]"  />
                         <input type="hidden" name="cur_caliimg[$i]" value="${$newcalicon{$j}}[1]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span>
                         <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/EventIcons/${$newcalicon{$j}}[1]" target="_blank">${$newcalicon{$j}}[1]</a></div>
                     </td>
@@ -280,7 +280,7 @@ sub event_calset {
     }
     my $added_icons = $i;
     $yymain .= qq~<tr>
-                    <td class="windowbg2 center" style="white-space:nowrap"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
+                    <td class="windowbg2 center" style="white-space:nowrap"><input type="file" name="caliimg[$i]" id="caliimg[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
                     <td class="windowbg2 center"><input type="text" name="calidescr[$i]" /></td>
                     <td class="windowbg2 center" colspan="2">
                         <img src="$imagesdir/cat_expand.png" alt="$event_cal{'59'}" title="$event_cal{'59'}" class="cursor" style="visibility: visible;" id="add_icon$i" onclick="addIcons($add_icon);" />
@@ -291,7 +291,7 @@ sub event_calset {
         $i++;
         $add_icon++;
         $yymain .= qq~<tr id="add_icons$i" style="display: none;">
-                    <td class="windowbg2 center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" size="35" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
+                    <td class="windowbg2 center"><input type="file" name="caliimg[$i]" id="caliimg[$i]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span></td>
                     <td class="windowbg2 center"><input type="text" name="calidescr[$i]" id="calidescr[$i]" /></td>
                     <td class="windowbg2 center" colspan="2">
                         <img src="$imagesdir/cat_expand.png" alt="$event_cal{'59'}" title="$event_cal{'59'}" class="cursor" style="visibility: visible;" id="add_icon$i" onclick="addIcons($add_icon);" />

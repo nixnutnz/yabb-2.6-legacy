@@ -823,7 +823,7 @@ document.onload = updateTemplate();
                     <td class="catbg right">
                         <label for="newtemfiles"><b>$templ_txt{'modfolderup2'}</b></label>
                     </td><td class="catbg">
-                        <input type="file" name="newtemfiles" id="newtemfiles" size="35" />
+                        <input type="file" name="newtemfiles" id="newtemfiles" />
                     </td>
                 </tr><tr>
                     <td class="catbg center" colspan="2">

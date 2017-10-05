@@ -195,7 +195,7 @@ qq~<div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/Temp
             <td class="windowbg"><label for="catimage$i"><b>$admin_txt{'64b2'}:</b><br /><span class="small">$admin_txt{'64b3'}</span></label></td>
             <td class="windowbg2">
                 <div class="pad-more">
-                    <input type="file" name="catimage$i" id="catimage$i" size="35" />
+                    <input type="file" name="catimage$i" id="catimage$i" />
                     <input type="hidden" name="cur_catimage$i" value="$catimage" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('catimage$i').value='';">X</span>~
           . (
             $catimage

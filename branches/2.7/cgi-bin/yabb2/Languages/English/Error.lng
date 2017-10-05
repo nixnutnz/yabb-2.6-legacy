@@ -237,6 +237,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'double_count'           => q~You can not have two post dependent groups with the same post count.~,
 'no_groupname_change'    => q~You can not change the name of a post independent group.~,
 'invalid_value'          => q~You have entered an invalid value for this item: ~,
+'nofile'                 => q~No file has been selected for download~, 
 
 ## Permalinking ##
 'no_board_found'        => q~The board you referred to does not seem to exist (anymore).~,
