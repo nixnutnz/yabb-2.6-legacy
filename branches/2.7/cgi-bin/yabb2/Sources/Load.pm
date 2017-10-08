@@ -211,8 +211,8 @@ sub load_censor_list {
 
 sub load_usersettings {
     load_boardcontrol();
-    $iamguest = $username eq 'Guest' ? 1 : 0;
-    if ( $username ne 'Guest' ) {
+    $iamguest = ( !$username || $username eq 'Guest' ) ? 1 : 0;
+    if ( $username && $username ne 'Guest' ) {
         {
             no strict qw(refs);
             load_user($username);
@@ -221,7 +221,7 @@ sub load_usersettings {
                 format_username(q{});
                 update_cookie('delete');
                 $username = 'Guest';
-                $iamguest = '1';
+                $iamguest = 1;
                 $iamadmin = q{};
                 $iamgmod  = q{};
                 $iamfmod  = q{};
@@ -267,13 +267,13 @@ sub load_usersettings {
                 }
 
                 $iamadmin =
-                  ( ${ $uid . $username }{'position'} eq 'Administrator'
+                  ( $username && ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq 'Administrator'
                       && $sessionvalid == 1 ) ? 1 : 0;
                 $iamgmod =
-                  ( ${ $uid . $username }{'position'} eq 'Global Moderator'
+                  ( $username && ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq 'Global Moderator'
                       && $sessionvalid == 1 ) ? 1 : 0;
                 $iamfmod =
-                  ( ${ $uid . $username }{'position'} eq 'Mid Moderator'
+                  ( $username && ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq 'Mid Moderator'
                       && $sessionvalid == 1 ) ? 1 : 0;
                 if ( $sessionvalid == 1 ) {
                     ${ $uid . $username }{'session'} = $cursession;
@@ -292,7 +292,7 @@ sub load_usersettings {
     format_username(q{});
     update_cookie('delete');
     $username = 'Guest';
-    $iamguest = '1';
+    $iamguest = 1;
     $iamadmin = q{};
     $iamgmod  = q{};
     $iamfmod  = q{};
@@ -781,7 +781,7 @@ sub load_miniuser {
     }
 
 # The following puts some new 'has' variables in if this user is the user browsing the board
-    if ( $user eq $username ) {
+    if ( $username && $user eq $username ) {
         my (@myperms);
         if ($tempgroup) {
             @myperms = @{$tempgroup};
@@ -870,7 +870,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
                 $pollperms = 0;
                 $attachperms = 0;
                 if ( $atitle ne $memstat[0] ) {
-                    if ( $user eq $username && !$iamadmin ) {
+                    if ( $username && $user eq $username && !$iamadmin ) {
                         if ( $aviewperms == 1 )   { $viewperms   = 1; }
                         if ( $atopicperms == 1 )  { $topicperms  = 1; }
                         if ( $areplyperms == 1 )  { $replyperms  = 1; }
@@ -896,7 +896,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
     }
     $addmembergroup{$user} =~ s/<br\s\/>\Z//xsm;
 
-    if ( $username eq 'Guest' ) { $memberunfo{$user} = 'Guest'; }
+    if ( !$username || $username eq 'Guest' ) { $memberunfo{$user} = 'Guest'; }
     our (%topicstart);
     $topicstart{$user} = q{};
     our $viewnum = q{};
@@ -1056,7 +1056,6 @@ qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}
             }
         }
         else {
-
             $quicklinks .=
 qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
         }
@@ -1144,16 +1143,18 @@ sub make_tools {
 }
 
 sub load_cookie {
-    foreach ( split /;\s/xsm, $ENV{'HTTP_COOKIE'} ) {
-        s/%([[:alnum]][[:alnum]])/pack('C', hex($1))/egxsm;
-        my ( $cookie, $value ) = split /=/xsm;
-        $yy_cookies{$cookie} = $value;
-    }
-    $session_id ||= $cookiesession_name;
-    if ( $yy_cookies{$cookiepassword} ) {
-        $password      = $yy_cookies{$cookiepassword};
-        $username      = $yy_cookies{$cookieusername} || 'Guest';
-        $cookiesession = $yy_cookies{$session_id};
+    if ( $ENV{'HTTP_COOKIE'} ){
+        foreach ( split /;\s/xsm, $ENV{'HTTP_COOKIE'} ) {
+            s/%([[:alnum]][[:alnum]])/pack('C', hex($1))/egxsm;
+            my ( $cookie, $value ) = split /=/xsm;
+            $yy_cookies{$cookie} = $value;
+        }
+        $session_id ||= $cookiesession_name;
+        if ( $yy_cookies{$cookiepassword} ) {
+            $password      = $yy_cookies{$cookiepassword};
+            $username      = $yy_cookies{$cookieusername} || 'Guest';
+            $cookiesession = $yy_cookies{$session_id};
+        }
     }
     else {
         $password = q{};
@@ -1261,27 +1262,29 @@ sub update_cookie {
             if ( !$catid ) { next; }
             foreach my $curboard (@{$cat{$catid}}) {
                 chomp $curboard;
-                my $tsortcookie = "$cookietsort$curboard$username";
-                if ( $yy_cookies{$tsortcookie} ) {
-                    push @other_cookies,
-                      write_cookie(
-                        -name    => $tsortcookie,
-                        -value   => q{},
-                        -path    => q{/},
-                        -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
-                      );
-                    $yy_cookies{$tsortcookie} = q{};
-                }
-                my $cookiename = "$cookiepassword$curboard$username";
-                if ( $yy_cookies{$cookiename} ) {
-                    push @other_cookies,
-                      write_cookie(
-                        -name    => $cookiename,
-                        -value   => q{},
-                        -path    => q{/},
-                        -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
-                      );
-                    $yy_cookies{$cookiename} = q{};
+                if ($username) {
+                    my $tsortcookie = "$cookietsort$curboard$username";
+                    if ( $yy_cookies{$tsortcookie} ) {
+                        push @other_cookies,
+                          write_cookie(
+                            -name    => $tsortcookie,
+                            -value   => q{},
+                            -path    => q{/},
+                            -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
+                          );
+                        $yy_cookies{$tsortcookie} = q{};
+                        my $cookiename = "$cookiepassword$curboard$username";
+                        if ( $yy_cookies{$cookiename} ) {
+                            push @other_cookies,
+                              write_cookie(
+                            -name    => $cookiename,
+                            -value   => q{},
+                            -path    => q{/},
+                            -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
+                          );
+                            $yy_cookies{$cookiename} = q{};
+                        }
+                    }
                 }
             }
         }

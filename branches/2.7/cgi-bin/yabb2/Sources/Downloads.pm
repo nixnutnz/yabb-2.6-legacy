@@ -255,7 +255,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
                     $attach_gif{$ext} = "$imagesdir/$att_img{$ext}";
                 }
                 else {
-                    $attach_gif{$ext} = "$micon_bg{'paperclip'}";
+                    $attach_gif{$ext} = $micon_bg{'paperclip'};
                 }
             }
 
@@ -399,6 +399,7 @@ qq~<a href="$scripturl?action=viewdownloads;thread=$thread;newstart=$lastptn;sor
 
 sub download_filecounter {
     my $dfile = $INFO{'file'};
+    if (!$dfile) {fatal_error('nofile');}
 
     if ( $guest_media_disallowed && $iamguest ) {
         fatal_error( q{}, $maintxt{'40'} );

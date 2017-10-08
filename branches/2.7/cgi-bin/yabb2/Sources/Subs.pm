@@ -595,7 +595,7 @@ qq~&nbsp;<script type="text/javascript">\nWriteClock('yabbclock','$aa','$bb');\n
         $yyjavascripta .= q~
         var OurTime = ~
           . sprintf( '%d', ( $date + $toffs ) )
-          . qq~000;\nvar YaBBTime = new Date();\nvar TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
+          . qq~000;\n        var YaBBTime = new Date();\n        var TimeDif = YaBBTime.getTime() - (YaBBTime.getTimezoneOffset() * 60000) - OurTime - 1000; // - 1000 compromise to transmission time~;
     }
     $yytime .= $zone;
 
@@ -1050,6 +1050,10 @@ s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_r
         $fix_ext_size = $fix_img_size{'ext'}[0] || 0;
 
         $resize_js =~ s/,$//xsm;
+        my $imgdir = $imagesdir;
+        if ( !-e "$htmldir/Templates/Forum/$useimages/noimg.gif" ) {
+            $imgdir = $defaultimagesdir;
+        }
         $resize_js = qq~<script type="text/javascript">
     // resize image start
     var resize_time = 2;
@@ -1078,7 +1082,7 @@ s/"((avatar|avatarml|post|attach|signat|brd)_img_resize)"([^>]*>)/ check_image_r
     var fix_ext_size    = $fix_ext_size;
 ~;
 
-        $resize_js .= qq~noimgdir   = '$imagesdir';
+        $resize_js .= qq~noimgdir   = '$imgdir';
     noimgtitle = '$maintxt{'171'}';
 
     resize_images();
@@ -3050,7 +3054,7 @@ sub user_onlinestatus {
     if (
         exists $users_online{$user_tocheck}
         && ( ( !${ $uid . $user_tocheck }{'stealth'} || $iamadmin || $iamgmod )
-            && ( $ubanned[0] != 1 && $ubanned[1] != 1 ) )
+            && ( (!$ubanned[0] || $ubanned[0] != 1) && (!$ubanned[1] || $ubanned[1] != 1 )) )
       )
     {
         ${ $uid . $user_tocheck }{'offlinestatus'} = 'online';

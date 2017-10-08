@@ -36,7 +36,8 @@ our ( %boardindex_exptxt, %boardindex_imtxt, %boardindex_txt, %croak, %img,
 ## locations ##
 our (
     $boarddir,  $boardsdir, $datadir, $htmldir,     $imagesdir,
-    $memberdir, $scripturl, $vardir,  $yyhtml_root, $modimgurl
+    $memberdir, $scripturl, $vardir,  $yyhtml_root, $modimgurl,
+    $defaultimagesdir
 );
 ## settings ##
 our (
@@ -341,7 +342,7 @@ sub board_index {
               || !${ $uid . $curboard }{'lastposttime'} )
           ? $boardindex_txt{'470'}
           : ${ $uid . $curboard }{'lastposttime'};
-        if (   ${ $uid . $curboard }{'lastposttime'} ne $boardindex_txt{'470'} 
+        if (   ${ $uid . $curboard }{'lastposttime'} ne $boardindex_txt{'470'}
             && ${ $uid . $curboard }{'lastposttime'} > 0 )
         {
             $lastposttime{$curboard} =
@@ -403,7 +404,7 @@ sub board_index {
         if ( ${ $uid . $curboard }{'lastposttime'} eq $boardindex_txt{'470'} ) {
             ${ $uid . $curboard }{'lastposttime'} = 0;
         }
-        if ( 
+        if (
                !$lastthreadtime || ( ${ $uid . $curboard }{'lastposttime'} && ${ $uid . $curboard }{'lastposttime'} > $lastthreadtime )
         )
         {
@@ -472,8 +473,12 @@ sub board_index {
             $mnew                  = q{};
 
             if ($catallowcol) {
+                my $imgdir = $imagesdir;
+                if ( !-e "$htmldir/Templates/Forum/$useimages/$brd_dropdown" ) {
+                    $imgdir = $defaultimagesdir;
+                }
                 $collapse_link =
-qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','$catid','$imagesdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">~;
+qq~<a href="javascript:SendRequest('$scripturl?action=collapse_cat;cat=$catid','$catid','$imgdir','$boardindex_exptxt{'2'}','$boardindex_exptxt{'1'}')">~;
             }
 
 # loop through any collapsed boards to find new posts in it and change the image to match
@@ -1167,6 +1172,23 @@ s/\Q{yabb messagecount}\E/${$uid.$curboard}{'messagecount'}/gxsm;
     $fix_brd_img_size = isempty( $fix_brd_img_size, 0 );
     $template_catnames =~ s/,\Z//xsm;
     $template_boardnames =~ s/,\Z//xsm;
+    my @imgfix = ( $brd_dropdown, $brd_dropup, $sub_arrow_dn, $sub_arrow_up, $brd_loadbar);
+    foreach my $img (@imgfix) {
+        my $imga = $img . '.gif';
+        my $imgb = $img . '.png';
+        if ( -e "$htmldir/Templates/Forum/$useimages/$imgb" ) {
+            $img = qq~$yyhtml_root/Templates/Forum/$useimages/$imgb~;
+        }
+    elsif ( -e "$htmldir/Templates/Forum/$useimages/$imga" ) {
+        $img = qq~$yyhtml_root/Templates/Forum/$useimages/$imga~;
+    }
+    elsif ( -e "$htmldir/Templates/Forum/default/$imgb" ) {
+        $img = qq~$yyhtml_root/Templates/Forum/default/$imgb~;
+    }
+    else {
+        $img = qq~$yyhtml_root/Templates/Forum/default/$imga~;
+    }
+}
     $yymain .= qq~
 <script type="text/javascript">//<![CDATA[
     var catNames = [$template_catnames];
@@ -1174,11 +1196,11 @@ s/\Q{yabb messagecount}\E/${$uid.$curboard}{'messagecount'}/gxsm;
     var boardOpen = "";
     var subboardOpen = "";
     var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" alt="$boardindex_txt{'643'}" />';
-    var openbutton = "$imagesdir/$brd_dropdown";
-    var closebutton = "$imagesdir/$brd_dropup";
-    var opensubbutton = "$imagesdir/$sub_arrow_dn";
-    var closesubbutton = "$imagesdir/$sub_arrow_up";
-    var loadimg = "$imagesdir/$brd_loadbar";
+    var openbutton = "$imgfix[0]";
+    var closebutton = "$imgfix[1]";
+    var opensubbutton = "$imgfix[2]";
+    var closesubbutton = "$imgfix[3]";
+    var loadimg = "$imgfix[4]";
     var cachedBoards = new Object();
     var cachedSubBoards = new Object();
     var curboard = "";
@@ -1573,6 +1595,23 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$
         }
         elsif ($subboard_sel) {
             if ($brd_count) {
+    my @imgfix = ( $brd_dropdown, $brd_dropup, $brd_loadbar);
+    foreach my $img (@imgfix) {
+        my $imga = $img . '.gif';
+        my $imgb = $img . '.png';
+        if ( -e "$htmldir/Templates/Forum/$useimages/$imgb" ) {
+            $img = qq~$yyhtml_root/Templates/Forum/$useimages/$imgb~;
+        }
+    elsif ( -e "$htmldir/Templates/Forum/$useimages/$imga" ) {
+        $img = qq~$yyhtml_root/Templates/Forum/$useimages/$imga~;
+    }
+    elsif ( -e "$htmldir/Templates/Forum/default/$imgb" ) {
+        $img = qq~$yyhtml_root/Templates/Forum/default/$imgb~;
+    }
+    else {
+        $img = qq~$yyhtml_root/Templates/Forum/default/$imga~;
+    }
+}
                 $boardindex_template = qq~
                     <script type="text/javascript">//<![CDATA[
                         var catNames = [$template_catnames];
@@ -1580,9 +1619,9 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$
                         var boardOpen = "";
                         var subboardOpen = "";
                         var arrowup = '<img src="$imagesdir/$brd_arrowup" class="brd_arrow" alt="$boardindex_txt{'643'}" />';
-                        var openbutton = "$imagesdir/$brd_dropdown";
-                        var closebutton = "$imagesdir/$brd_dropup";
-                        var loadimg = "$imagesdir/$brd_loadbar";
+                        var openbutton = "$imgfix[0]";
+                        var closebutton = "$imgfix[1]";
+                        var loadimg = "$imgfix[2]";
                         var cachedBoards = new Object();
                         var cachedSubBoards = new Object();
                         var curboard = "";
@@ -1780,35 +1819,40 @@ sub del_max_im {
 }
 
 sub redirect_externalshow {
-# needs better error catcher
-    my $exboard = $INFO{'exboard'} || $curboard || q{};
-    my $excount = 0;
-    if ( $exboard && -e "$boardsdir/$exboard.exhits" ) {
-        our ($COUNT);
-        fopen( 'COUNT', '<', "$boardsdir/$exboard.exhits" )
-          or croak "$croak{'open'} exhits";
-        $excount = <$COUNT>;
-        fclose('COUNT') or croak "$croak{'close'} exhits";
-    }
-    chomp $excount;
-
-    if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' && $exboard ) {
-        my $link = ${$board{$exboard} }[0];
-        if   ($excount) { $excount++; }
-        else            { $excount = 1; }
-        our ($COUNT);
-        fopen( 'COUNT', '>', "$boardsdir/$exboard.exhits" )
-          or croak "$croak{'open'} exhits";
-        seek $COUNT, 0, 0;
-        print {$COUNT} $excount or croak "$croak{'print'} exhits";
-        fclose('COUNT')                   or croak "$croak{'close'} exhits";
-        print "Content-type: text/html\n" or croak "$croak{'print'} top";
-        print "Location: $link\n\n"       or croak "$croak{'print'} link";
-        exit;
+    if ( !$INFO{'exboard'} && !$curboard ) {
+        fatal_error('noextern');
     }
     else {
-        return $excount;
+        my $exboard = $INFO{'exboard'} || $curboard;
+        my $excount = 0;
+        if ( $exboard && -e "$boardsdir/$exboard.exhits" ) {
+            our ($COUNT);
+            fopen( 'COUNT', '<', "$boardsdir/$exboard.exhits" )
+              or croak "$croak{'open'} exhits";
+            $excount = <$COUNT>;
+            fclose('COUNT') or croak "$croak{'close'} exhits";
+        }
+        chomp $excount;
+
+        if ( $INFO{'action'} && $INFO{'action'} eq 'showexternal' && $exboard ) {
+            my $link = ${$board{$exboard} }[0];
+            if   ($excount) { $excount++; }
+            else            { $excount = 1; }
+            our ($COUNT);
+            fopen( 'COUNT', '>', "$boardsdir/$exboard.exhits" )
+              or croak "$croak{'open'} exhits";
+            seek $COUNT, 0, 0;
+            print {$COUNT} $excount or croak "$croak{'print'} exhits";
+            fclose('COUNT')                   or croak "$croak{'close'} exhits";
+            print "Content-type: text/html\n" or croak "$croak{'print'} top";
+            print "Location: $link\n\n"       or croak "$croak{'print'} link";
+            exit;
+        }
+        else {
+            return $excount;
+        }
     }
+    return;
 }
 
 sub find_latest_data {
@@ -2139,6 +2183,10 @@ qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><
     }
     my $col_vis = q{};
     my $exp_vis = q{};
+    my $imgdir = $imagesdir;
+    if ( $img{'expand'} !~ /$useimages/xsm ) {
+        $imgdir = $defaultimagesdir;
+    } 
     if ( !$INFO{'catselect'} ) {
         if ( !$colbutton ) { $col_vis = q{ style="display:none;"}; }
         if ( !${ $uid . $username }{'cathide'} ) {
@@ -2146,15 +2194,15 @@ qq~ <span class="newPM">$boardindex_imtxt{'24'} <a href="$scripturl?action=im"><
         }
 
         $expandlink =
-qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=1',1,'$imagesdir','$boardindex_exptxt{'2'}')">$img{'expand'}</a>$menusep</span>~;
+qq~<span id="expandall" $exp_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=1',1,'$imgdir','$boardindex_exptxt{'2'}')">$img{'expand'}</a>$menusep</span>~;
         $collapselink =
-qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imagesdir','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
+qq~<span id="collapseall" $col_vis><a href="javascript:Collapse_All('$scripturl?action=collapse_all;status=0',0,'$imgdir','$boardindex_exptxt{'1'}')">$img{'collapse'}</a>$menusep</span>~;
         $markalllink =
-qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imagesdir','0','1')">$img{'markallread'}</a>~;
+qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread','$imgdir','0','1')">$img{'markallread'}</a>~;
     }
     else {
         $markalllink =
-qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{'catselect'}','$imagesdir')">$img{'markallread'}</a>~;
+qq~<a href="javascript:MarkAllAsRead('$scripturl?action=markallasread;cat=$INFO{'catselect'}','$imgdir')">$img{'markallread'}</a>~;
         $collapselink = q{};
         $expandlink   = q{};
     }

@@ -336,14 +336,14 @@ sub banning {
         if ( !$iamguest || $action eq 'register2' ) {
 
             # EMAIL BANNING
-            if ( $ban_email =~ m/^$banned[1]/ixsm
+            if ( $ban_email && $ban_email =~ m/^$banned[1]/ixsm
                 && ( $tmb > $time || $banned[4] eq 'p' ) )
             {
                 write_banlog("$banned[1]($user_ip)");
             }
 
             # USERNAME BANNING
-            if ( $ban_user =~ m/^$banned[1]$/xsm
+            if ( $ban_user && $ban_user =~ m/^$banned[1]$/xsm
                 && ( $tmb > $time || $banned[4] eq 'p' ) )
             {
                 write_banlog("$banned[1]($user_ip)");

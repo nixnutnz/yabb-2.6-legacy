@@ -2428,7 +2428,7 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
                 $attach_gif{$ext} =
                   ( $ext && -e "$htmldir/Templates/Forum/$useimages/$ext.gif" )
                   ? "$imagesdir/$ext.gif"
-                  : "$micon_bg{'paperclip'}";
+                  : $micon_bg{'paperclip'};
             }
             my $filesize = -s "$pmuploaddir/$pm_attachfile";
             if ($filesize) {

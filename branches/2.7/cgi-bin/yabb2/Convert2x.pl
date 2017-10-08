@@ -2831,7 +2831,7 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=finish" style="color: 
             $getlang = qq~?lang=$myuselang~;
         }
         $navlink6a =
-qq~$tabsep<span class="selected"><a href="$boardurl/ConvertLang.$yyext?$getlang" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
+qq~$tabsep<span class="selected"><a href="$boardurl/ConvertLang.$yyext$getlang" style="color: #f33; padding:0" class="selected">$tabfill UTF-8 Converter $tabfill</a></span>$tabsep&nbsp;~;
     }
     $convdone = q~
             <div class="divvary_m">&nbsp;</div>

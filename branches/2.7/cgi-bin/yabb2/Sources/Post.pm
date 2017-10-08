@@ -51,7 +51,8 @@ our (
 our (
     $boardsdir, $datadir,     $htmldir,   $imagesdir,
     $langdir,   $memberdir,   $scripturl, $uploaddir,
-    $uploadurl, $yyhtml_root, $vardir,    $modimgurl
+    $uploadurl, $yyhtml_root, $vardir,    $modimgurl,
+    $defaultimagesdir
 );
 ## settings ##
 our (
@@ -746,7 +747,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" class="bottom cursor" alt=
         && $destination ne 'guestpm2' )
     {
         my $iconliveprev = q{};
-        if ($ismobile) {
+        if (!$ismobile) {
             $iconliveprev =
               q~         document.images.liveicons.src = icon_show;~;
         }
@@ -1031,7 +1032,7 @@ qq~<div class="small" style="float: right; width: 100%; text-align: right; margi
         my $livemip   = $display_txt{'511'};
 
         my $livemsgimg =
-          qq~<img src="$micon_bg{$icon}" id="liveicons" alt="" />~;
+          qq~<img src="$micon_bg{$icon}" id="liveicons" alt="$icon" />~;
         get_template('Post');
 
         $moddate = from_html($moddate);
@@ -2208,7 +2209,7 @@ qq~$newthreadid|$mreplies|$subject|$name|$currentboard|$filesizekb{$fixfile}|$da
         }
         if ($staff) {
             $mstate =
-              $currentboard eq $annboard ? "0a$thestatus" : "0$thestatus";
+              $currentboard eq $annboard ? "xa$thestatus" : "x$thestatus";
         }    # Leave the status as is if the user isn't allowed to change it
 
 # First load the current .ctb info but don't close the file before saving the changed data

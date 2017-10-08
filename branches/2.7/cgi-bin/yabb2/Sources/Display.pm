@@ -492,6 +492,7 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
               : $INFO{'start'};
         }
     }
+    if( $start =~ /\D/xsm) { $start=0; }
     $start = $start > $mreplies ? $mreplies : $start;
     $start =
       !$ttsreverse
@@ -1604,9 +1605,15 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         my $tool_sep = $usepost_tools ? '|||' : q{};
 
         $posthandelblock =~ s/\Q{yabb quote}\E/$template_quote$tool_sep/gxsm;
-        $posthandelblock =~ s/\Q{yabb modify}\E/$template_modify$tool_sep/gxsm;
+        if ( $iamguest ){
+            $posthandelblock =~ s/\Q{yabb modify}\E//gxsm;
+            $posthandelblock =~ s/\Q{yabb delete}\E//gxsm;
+        }
+        else {
+           $posthandelblock =~ s/\Q{yabb modify}\E/$template_modify$tool_sep/gxsm;
+           $posthandelblock =~ s/\Q{yabb delete}\E/$template_delete$tool_sep/gxsm;
+        }
         $posthandelblock =~ s/\Q{yabb split}\E/$template_split$tool_sep/gxsm;
-        $posthandelblock =~ s/\Q{yabb delete}\E/$template_delete$tool_sep/gxsm;
         $posthandelblock =~ s/\Q{yabb modalert}\E/$pm_alertbutton$tool_sep/gxsm;
         $posthandelblock =~
           s/\Q{yabb print_post}\E/$template_print_post$tool_sep/gxsm;
@@ -2217,22 +2224,23 @@ qq~<a href="$scripturl?$thevirboard$next">$display_txt{'767'}</a>~;
 
 sub set_gtalk {
     my $gtalkname = $INFO{'gtalkname'};
-    my $gtalkstyle =
+    if (!$gtalkname) { fatal_error('nogtalk'); }
+    else {
+        my $gtalkstyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
-    if ( !${ $uid . $gtalkname }{'password'} ) { load_user($gtalkname); }
-    $gtalkuser = ${ $uid . $gtalkname }{'gtalk'};
+        if ( !${ $uid . $gtalkname }{'password'} ) { load_user($gtalkname); }
+        $gtalkuser = ${ $uid . $gtalkname }{'gtalk'};
 
-    print qq~Content-type: text/html\n\n~
-      or croak "$croak{'print'} page content";
-    my $setgtalk = $gtalker;
-    $setgtalk =~ s/\Q{yabb xml_lang}\E/$abbr_lang/xsm;
-    $setgtalk =~ s/\Q{yabb mycharset}\E/$yymycharset/xsm;
-    $setgtalk =~ s/\Q{yabb style}\E/$gtalkstyle/xsm;
-    $setgtalk =~ s/\Q{yabb gname}\E/${ $uid . $gtalkname }{'realname'}/gxsm;
-    $setgtalk =~ s/\Q{yabb gtalkuser}\E/$gtalkuser/gxsm;
-    $setgtalk =~ s/\Q{yabb display_txt_google}\E/$display_txt{'google'}/gxsm;
-
-    print $setgtalk or croak "$croak{'print'} page";
+        my $setgtalk = $gtalker;
+        $setgtalk =~ s/\Q{yabb xml_lang}\E/$abbr_lang/xsm;
+        $setgtalk =~ s/\Q{yabb mycharset}\E/$yymycharset/xsm;
+        $setgtalk =~ s/\Q{yabb style}\E/$gtalkstyle/xsm;
+        $setgtalk =~ s/\Q{yabb gname}\E/${ $uid . $gtalkname }{'realname'}/gxsm;
+        $setgtalk =~ s/\Q{yabb gtalkuser}\E/$gtalkuser/gxsm;
+        $setgtalk =~ s/\Q{yabb display_txt_google}\E/$display_txt{'google'}/gxsm;
+        print qq~Content-type: text/html\n\n~ or croak "$croak{'print'} page content";
+        print $setgtalk or croak "$croak{'print'} page";
+    }
     return;
 }
 

@@ -532,6 +532,7 @@ sub rss_recent {
             no strict qw(refs);
             if ($message) {
                 ( $message, undef ) = split_splice_move( $message, $curnum );
+                $message =~ s/\[code\s*(.*?)\]\n*(.+?)\n*\[\/code\]/$maintxt{'rsscode'}/eigxsm;
                 if ($enable_ubbc) {
                     load_user($musername);
                     $displayname = ${ $uid . $musername }{'realname'};
@@ -580,6 +581,7 @@ sub rss_template {    # print RSS output
 #my $docs = "       <docs>http://$perm_domain</docs>\n" if $perm_domain;
 
     my $mainlink = $scripturl;
+    $yytitle ||= 'error';
     my $tit      = "$yytitle - $mbname";
     my $descr    = q{};
     if ( $INFO{'board'} ) {
@@ -649,6 +651,8 @@ sub rss_error {
     if ($v) { $v = "<br />$maintxt{'error_verbose'}: $OS_ERROR"; }
 
     if ($elenable) {
+        $l ||= q{};
+        $v ||= q{};
         fatal_error_logging("$ot$l$v");
     }
 

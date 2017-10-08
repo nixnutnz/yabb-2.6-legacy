@@ -35,7 +35,8 @@ our ( %chrwarn, %croak, %fatxt, %livepreview_txt, %maintxt, %npf_txt,
 our (
     $boardurl,  $defaultimagesdir, $imagesdir,
     $modimgurl, $scripturl,        $uploaddir,
-    $uploadurl, $yyhtml_root,      $vardir
+    $uploadurl, $yyhtml_root,      $vardir,
+    $htmldir
 );
 ## system/templates ##
 our (
@@ -45,7 +46,7 @@ our (
     $my_ajxcall, $nolinkallow, $post,          $quick_post,
     $replyguest, $speedpost,   $submittxt,     $uid,
     $username,   $yyext,       $yymain,        %FORM,
-    %INFO,
+    %INFO,       $useimages,
 );
 ## settings ##
 our (
@@ -875,6 +876,12 @@ function autoPreview() {
                 pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 pstHttp.send(parameters);~;
     }
+
+    my $imgdir = $imagesdir;
+    if ( !-e "$htmldir/Templates/Forum/$useimages/noimg.gif" ) {
+        $imgdir = $defaultimagesdir;
+    }
+
     $x .= qq~
     }
 }
@@ -882,7 +889,7 @@ function LivePrevImgResize() {
     var maxwidth = $fix_img_size{'post'}[1];
     var maxheight = $fix_img_size{'post'}[2];
     var fix_size = $fix_img_size{'post'}[0];
-    noimgdir   = '$imagesdir';
+    noimgdir   = '$imgdir';
     noimgtitle = '$maintxt{'171'}';
 
     var liveimg_resize_names = new Array ();

@@ -603,11 +603,13 @@ qq~<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=$lastpt
             }
             else {
                 $pagedropindex1 = q~<span class="pagedropindex">~;
+                $findmember ||= q{};
+                $letter ||= q{};
                 $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$INFO{'sort'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;
                 my $tstart = $start;
-                if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
+                if ( $INFO{'start'} && $INFO{'start'} =~ /all/xsm ) {
                     ( $tstart, $start ) = split /-/xsm, $INFO{'start'};
                 }
                 my $d_indexpages = $pagenumb / $dropdisplaynum;
@@ -659,7 +661,7 @@ q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
                 $pagedropindex2 .=
 q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
                 my $tmp_mem_perpage = $members_per_page;
-                if ( substr( $INFO{'start'}, 0, 3 ) eq 'all' ) {
+                if ( $INFO{'start'} &&  $INFO{'start'} =~ /all/xsm ) {
                     $members_per_page = $members_per_page * $dropdisplaynum;
                 }
                 my $prevpage = $start - $tmp_mem_perpage;

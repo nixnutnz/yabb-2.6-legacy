@@ -198,7 +198,7 @@ sub print_im {
                       && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
                   )
                   ? "$imagesdir/$att_img{$ext}"
-                  : "$micon_bg{'paperclip'}";
+                  : $micon_bg{'paperclip'};
             }
             my $filesize = -s "$pmuploaddir/$pm_attachfile";
             if ($filesize) {
