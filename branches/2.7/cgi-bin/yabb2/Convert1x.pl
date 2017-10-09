@@ -1143,8 +1143,9 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$initmail|$fir
         if ( $INFO{'tmp_firstforum'} > $INFO{'firstforum'} ) {
             my $setforumstart = timeformat( $INFO{'tmp_firstforum'} );
             my $firstmember   = timeformat( $INFO{'firstforum'} );
-            $forumstarttext =
-qq~The Forum Start date was set to $setforumstart but the first member was registered $firstmember. So we changed the Forum Start Date to $firstmember.~;
+            $forumstarttext = $conv1x_txt{'frmstart'};
+            $forumstarttext =~ s/{forumstart}/$forumstart/xsm;
+            $forumstarttext =~ s/{firstmember}/$firstmember/gxsm;
         }
         $formsession = cloak("$mbname$username");
         my $took = int( ( $INFO{'st'} + 60 ) / 60 );

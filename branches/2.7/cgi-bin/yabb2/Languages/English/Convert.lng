@@ -149,6 +149,7 @@ $englishconvertlngver = 'YaBB 2.7.00 $Revision$';
                 <br />
                 Also double check Member Groups, and, if you have lists of blocked IPs from your old forum, go to "The Guardian" and copy those lists into their equivalent text boxes.<br /><br />
                 You may now login to your forum. Enjoy using YaBB 2.7.00!</p>~,
+'frmstart' => q~The Forum Start date was set to {forumstart} but the first member was registered {firstmember}. So we changed the Forum Start Date to {firstmember}.~,
 );
 
 %convlang_txt = (

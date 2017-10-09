@@ -2571,8 +2571,9 @@ EOF
     my $tmp_first = stringtotime($forumstart);
     if ( $firstmem < $tmp_first ) {
         my $firstmember = timeformat( $tmp_first, 1, 0, 1 );
-        $forumstarttext =
-qq~The Forum Start date was set to $forumstart but the first member was registered $firstmember. So we changed the Forum Start Date to $firstmember.~;
+        $forumstarttext = $conv2x_txt{'frmstart'};
+        $forumstarttext =~ s/{forumstart}/$forumstart/xsm;
+        $forumstarttext =~ s/{firstmember}/$firstmember/gxsm;
         $forumstart = timeformat( $tmp_first, 1, 0, 1 );
     }
     our $settings_file_version = 'YaBB 2.7.00';
