@@ -35,7 +35,7 @@ our ( %admin_img, %admin_txt, %admintxt, %boardpass_txt, %croak, %exptxt,
 ## paths ##
 our (
     $adminurl,  $boardsdir,  $datadir, $htmldir,
-    $imagesdir, $upload_dir, $yyhtml_root,
+    $imagesdir, $upload_dir, $yyhtml_root, $defaultimagesdir,
 );
 ## settings ##
 our (
@@ -240,7 +240,7 @@ qq~<div style="float:right; margin-right: 10%"><img src="$yyhtml_root/Templates/
                                     if ( $style eq $tmplt[$x] ) {
                                         if ( $brdpic =~ /\//ixsm ) {
                                             $bicon .=
-qq~$style: <img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+qq~$style:<br /><img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
                                             $brdpicchk = 1;
                                         }
                                         else {
@@ -248,7 +248,7 @@ qq~$style: <img src="$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5
                                               @{ $templateset{$style} };
                                             $myimgfolder = $mytempst[1];
                                             $bicon .=
-qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+qq~$style:<br /><img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
                                             $brdpicchk = 1;
                                         }
                                         $tmpwidth2 = 80 - $indent;
@@ -259,21 +259,33 @@ qq~$style: <img src="$yyhtml_root/Templates/Forum/$myimgfolder/Boards/$brdpic" i
                         }
                     }
                     if ( !$brdpicchk ) {
-                        $bicon =
-qq~<img src="$imagesdir/boards.png" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                        foreach my $get (sort keys %templateset) {
+                            my $imgdir = $defaultimagesdir;
+                            if ( ${ $uid . $curboard }{'ann'} ) {
+                                if ( -e "$htmldir/Templates/Forum/${ $templateset{$get} }[1]/ann.png" ) {
+                                    $imgdir = "$yyhtml_root/Templates/Forum/${ $templateset{$get} }[1]";
+                                }
+                                $bicon  .= qq~$get:<br /><img src="$imgdir/ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" /><br />~;
+                                $tmpwidth2 = 90 - $indent;
+                                $tmpwidth3 = 5;
+                            }
+                            elsif ( ${ $uid . $curboard }{'rbin'} ) {
+                                if ( -e "$htmldir/Templates/Forum/${ $templateset{$get} }[1]/recycle.png" ) {
+                                    $imgdir = "$yyhtml_root/Templates/Forum/${ $templateset{$get} }[1]";
+                                }
+                                $bicon .= qq~$get:<br /><img src="$imgdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" /><br />~;
+                                $tmpwidth2 = 90 - $indent;
+                                $tmpwidth3 = 5;
+                            }
+                            else {
+                                if ( -e "$htmldir/Templates/Forum/${ $templateset{$get} }[1]/boards.png" ) {
+                                    $imgdir = "$yyhtml_root/Templates/Forum/${ $templateset{$get} }[1]";
+                                }
+                                $bicon .= qq~$get:<br /><img src="$imgdir/boards.png" id="brd_img_resize" alt="" style="margin-bottom:.5em" /><br />~;
+                            }
+                        }
                     }
-                    if ( ${ $uid . $curboard }{'ann'} ) {
-                        $bicon =
-qq~ <img src="$imagesdir/ann.png" alt="$admin_txt{'64g'}" title="$admin_txt{'64g'}" />~;
-                        $tmpwidth2 = 90 - $indent;
-                        $tmpwidth3 = 5;
-                    }
-                    if ( ${ $uid . $curboard }{'rbin'} ) {
-                        $bicon =
-qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{'64i'}" />~;
-                        $tmpwidth2 = 90 - $indent;
-                        $tmpwidth3 = 5;
-                    }
+                    my $biconlist = qq~<div style="height:100px; width:100px; overflow:auto">$bicon</div>~;
                     my $convertstr = $descr;
                     if ( $convertstr !~ /<.+?>/xsm )
                     {    # Don't cut it if there's HTML in it.
@@ -322,7 +334,7 @@ qq~ <img src="$imagesdir/recycle.png" alt="$admin_txt{'64i'}" title="$admin_txt{
 ~ . $reorder_subs . qq~
                             </div>
                         </td>
-                        <td class="windowbg2 center">$bicon</td>
+                        <td class="windowbg2 center">$biconlist</td>
                         <td class="titlebg center"><input type="checkbox" name="yitem_$curboard" value="1" /></td>
                     </tr><tr>
                         <td class="windowbg" colspan="3">$descr</td>

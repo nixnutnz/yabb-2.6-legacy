@@ -30,7 +30,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
 our ( %croak, %display_txt, %maintxt, %post_txt, );
 ## folders ##
-our ( $boardurl, $imagesdir, $memberdir, $scripturl, $yyhtml_root, $modimgdir );
+our ( $boardurl, $imagesdir, $memberdir, $scripturl, $yyhtml_root, $modimgdir,
+    $defaultimagesdir, $htmldir );
 ## settings ##
 our (
     $autolinkurls,  $guest_media_disallowed, $img_greybox,
@@ -41,7 +42,7 @@ our (
 our (
     $attachment, $curname,   $curnum,      $daytxt, $displayname,
     $iamguest,   $movedflag, $ns,          $uid,    $username,
-    $yyexec,     $yyext,     %useraccount, $date
+    $yyexec,     $yyext,     %useraccount, $date,   $usestyle,
 );
 ## templates ##
 our ( $showattach, $showattachhr, );
@@ -112,7 +113,9 @@ s/(\W|^)&gt;:-D/$1<img class="smil" data-rel="&gt;&#58;-D" src="$smiledir\/evil.
         if ( ${ $addedsmilies{ $smilieorder[$j] } }[0] =~ /\//ixsm ) {
             $tmpurl = ${ $addedsmilies{ $smilieorder[$j] } }[0];
         }
-        else { $tmpurl = qq~$smiledir/added/${$addedsmilies{$smilieorder[$j]}}[0]~; }
+        else {
+            $tmpurl = qq~$smiledir/added/${$addedsmilies{$smilieorder[$j]}}[0]~;
+        }
         my $tmpcode = ${ $addedsmilies{ $smilieorder[$j] } }[1];
         $tmpcode =~ s/&\x2336;/\$/gxsm;
         $tmpcode =~ s/&\x2364;/\@/gxsm;
@@ -322,8 +325,12 @@ s/\&\#91;highlight\&\#93;(.*?)\&\#91;\&\#47;highlight\&\#93;/<span class="highli
             $prselect = q{};
         }
         else {
+            my $imgdir = $imagesdir;
+            if ( !-e "$htmldir/Templates/Forum/$usestyle/codeselect.png" ) {
+                $imgdir = $defaultimagesdir;
+            }
             $prselect =
-qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imagesdir/codeselect.png" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
+qq~<a href="javascript:selectAllCode($codecnt)"><img src="$imgdir/codeselect.png" alt="$post_txt{'selectall'}" title="$post_txt{'selectall'}" /></a>~;
         }
 
         $code =
