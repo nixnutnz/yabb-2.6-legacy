@@ -73,6 +73,7 @@ $englishconvertlngver = 'YaBB 2.7.00 $Revision$';
 'alldn' => q~The conversion took <i>{took} minute(s)</i>.<br />~,
 'yyim' => q~You are running the YaBB 2.7.00 Importer/Converter.~,
 'goto' => q~Go to Convert Language~,
+'frmstart' => q~The Forum Start date was set to {forumstart} but the first member was registered {firstmember}. So we changed the Forum Start Date to {firstmember}.~,
 );
 
 %conv2x_txt = (
