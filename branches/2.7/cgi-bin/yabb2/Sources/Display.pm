@@ -211,8 +211,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         }
     }
 
-    # Get the "NEW"est Post for this user.
-    my $newestpost;
+    my $newestpost = q{};
     if (  !$iamguest
         && $max_log_days_old
         && ( $INFO{'start'} && $INFO{'start'} eq 'new' ) )
@@ -306,7 +305,7 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
 
     # Check to make sure this thread isn't locked.
     my (
-        $mnum,     $msubthread, undef, undef, undef,
+        $mnum,     $msubthread, undef, undef, $mdate,
         $mreplies, undef,       undef, $mstate
     ) = split /[|]/xsm, $yy_threadline;
     $mstate ||= q{};

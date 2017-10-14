@@ -1300,7 +1300,7 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 if ( $status != AZ_OK ) {
                     fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
                 }
-                my @srcfolders = ( 'Admin/', 'Admin/Mods/', 'Backups/', 'Boards/', 'Convert/', 'Help/', 'Languages/', 'Members/', 'Messages/', 'Mods/', 'Modules/', 'Modules/Archive/Tar/', 'Modules/Archive/Zip/', 'Modules/Digest/', 'Modules/Email/', 'Modules/Email/Date/', 'Modules/Mail/', 'Modules/MIME/', 'Sources/', 'Sources/Mods/', 'Templates/', 'Templates/default/', 'Templates/default/Mods/', 'Variables/' );
+                my @srcfolders = ( 'Admin/', 'Admin/Mods/', 'Backups/', 'Boards/', 'Convert/', 'Help/', 'Languages/', 'Members/', 'Messages/', 'Mods/', 'Modules/', 'Modules/Archive/Tar/', 'Modules/Archive/Zip/', 'Modules/Digest/', 'Modules/Email/', 'Modules/Email/Date/', 'Modules/Mail/', 'Modules/MIME/', 'Sources/', 'Sources/Mods/', 'Templates/', 'Templates/default/', 'Templates/default/Mods/', 'Variables/', 'Variables/Mods/' );
                 foreach my $lng (keys %lngs) {
                     if (-d "$langdir/$lng" ) {
                         push @srcfolders, "Languages/$lng/";

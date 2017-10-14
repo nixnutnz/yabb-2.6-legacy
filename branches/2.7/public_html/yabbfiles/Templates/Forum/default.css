@@ -207,6 +207,7 @@ table.fixed {
     font-family: Verdana, Arial, Sans-Serif;
     color: #eee;
     background: linear-gradient(#569dce, #3571b2);
+    background-image: -webkit-linear-gradient(#569dce, #3571b2);
 }
 
 .tabtitle-bottom {

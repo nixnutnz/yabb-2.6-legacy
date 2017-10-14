@@ -63,7 +63,7 @@ $mybdlist_viewmont2 = qq~
     {yabb cal_col}
     <tr>
         <td class="titlebg" colspan="{yabb cal_colspan}">
-            <div class="left" style="float:left; padding: 2px 0 1px 1%"><img class="bottom" src="$imagesdir/$cal_eventbd" alt="$var_cal{calbirthday}" /> <b>{yabb calmont}</b> ({yabb countmont}) {yabb page}</div>
+            <div class="left" style="float:left; padding: 2px 0 1px 1%"><img class="bottom" src="$imagesdir/$cal_eventbd" alt="$var_cal{calbirthday}" /> <b>{yabb calmont}</b> {yabb countmont} {yabb page}</div>
             <div class="right" style="float:right; padding: 2px 1% 1px 0">{yabb input_letters}</div>
             <div class="clear"></div>
         </td>

@@ -1742,7 +1742,6 @@ s/(.*[|])(0?)(.*)/ $1 . ($2 eq '0' ? "0a$3" : "a$3") /exsm;
         }
         my @permchks =
           qw( moderators moderatorgroups topicperms replyperms pollperms);
-        push @permchks, 'modtopicperms';
         foreach my $chk (@permchks) {
             $FORM{"$chk$i"} ||= q{};
             $FORM{"$chk$i"} =~ s/,\s*/\//gxsm;

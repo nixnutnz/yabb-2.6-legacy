@@ -186,8 +186,9 @@ sub rebuild_messageindex {
             ${$thread}{'threadstatus'} = $thread_status{$thread};
             message_totals( 'update', $thread );
 
-            my $mypushlst =
-qq~$lastpostdate|$thread|$firstinfo[0]|$firstinfo[1]|$firstinfo[2]|$lastinfo[3]|$#threaddata|$firstinfo[4]|$firstinfo[5]|$thread_status{$thread}\n~;
+            my @mypushlst = ( $lastpostdate, $thread, $firstinfo[0], $firstinfo[1], $firstinfo[2], $lastinfo[3], $#threaddata, $firstinfo[4], $firstinfo[5], $thread_status{$thread} );
+            my $mypushlst = join '|', @mypushlst;
+            $mypushlst .= "\n";
             push @{ $rebuildboards{$theboard} }, $mypushlst;
 
             if ( time() > $time_to_jump && ( $j + 1 ) < $totalthreads ) {

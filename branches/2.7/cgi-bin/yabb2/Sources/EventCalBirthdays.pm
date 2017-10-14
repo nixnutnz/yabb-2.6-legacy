@@ -169,12 +169,12 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
     # Begin Birthdaylist
 
     my $sortiert = $INFO{'sort'} || $FORM{'sort'};
+    my $vmonth = $INFO{'vmonth'} || $FORM{'vmonth'};
     my $letter = q{};
     if ( $INFO{'letter'} || $FORM{'letter'} ) {
         $letter = lc $INFO{'letter'} || lc $FORM{'letter'};
     }
     $letter = decode_utf8($letter);
-    my $vmonth = $INFO{'vmonth'} || $FORM{'vmonth'};
 
     # Begin Letter
 
@@ -273,7 +273,7 @@ qq~ <label for="selyear"><span class="small">&nbsp;$var_cal{'calyear'}</span></l
                 @string = ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age, $sternzeichen, $memrealname, $user_bdhide );
                 push @birthmembers1, [@string];
                 $calsplit ||= 0;
-                if ( $calsplit > 0 && $vmonth eq $mont[$user_bdmon] ) {
+                if ( $calsplit > 0 && $vmonth && $vmonth eq $mont[$user_bdmon] ) {
                     @string = ( $user_bdyear, $user_bdmon, $user_bdday, $user_bdname, $age, $sternzeichen, $memrealname, $user_bdhide );
                     push @birthmembers2, [@string];
                 }
@@ -364,20 +364,6 @@ $bd_today
     }
     my $bdmonthlinks = q{};
     my ($bdmonths);
-    if ( $calsplit > 0 && @birthmembers1 >= $calsplit ) {
-        foreach my $i ( 1 .. 12 ) {
-            if ( $countmont[$i] ) {
-                $bdmonthlinks .=
-qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont[$i]}</a> ~;
-            }
-            else {
-                $bdmonthlinks .=
-                  qq~| <span class="off-color">$var_cal{$calmont[$i]}</a> ~;
-            }
-        }
-        $bdmonths = $mybd_months;
-        $bdmonths =~ s/\Q{yabb bdmonthlink}\E/$bdmonthlinks/gxsm;
-    }
     my $mybdlist_alpha_a =
       qq~<a href="$boardurl/YaBB.pl?action=birthdaylist;sort=sortuser;letter=~;
     my $my_alpha_a = q{};
@@ -397,6 +383,23 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
     my $alpha = decode_utf8( $alpha[0] );
     my $omega = decode_utf8( $alpha[-1] );
 
+    if ( $calsplit > 0 && @birthmembers1 >= $calsplit ) {
+        foreach my $i ( 1 .. 12 ) {
+            if ( $countmont[$i] ) {
+                $bdmonthlinks .=
+qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont[$i]}</a> ~;
+            }
+            else {
+                $bdmonthlinks .=
+                  qq~| <span class="off-color">$var_cal{$calmont[$i]}</a> ~;
+            }
+        }
+        $bdmonths = $mybd_months;
+        $bdmonths =~ s/\Q{yabb bdmonthlink}\E/$bdmonthlinks/gxsm;
+        $my_alpha_a = q{};
+    }
+
+
     my (
         $datanum, $dnprpage,  $postdisplaynum, $max,
         $tmpa,    $startpage, $endpage,        $pageindex,
@@ -405,8 +408,9 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
     foreach my $j ( 1 .. 12 ) {
         if (   $calsplit > 0
             && @birthmembers1 >= $calsplit
-            && $vmonth eq $mont[$j] )
-        {
+            && $vmonth && $vmonth eq $mont[$j] )
+        {    
+            no strict qw(refs);
             $datanum = @birthmembers2;
             @birthmembers2 = sort { &{$sortiert}( $a, $b ); } @birthmembers2;
             my $b_sort = q{};
@@ -419,6 +423,7 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
                 $postdisplaynum = 8;
                 $max            = $datanum;
                 $tmpa           = 1;
+                $startpage = 0;
                 if ( $newstart >= ( ( $postdisplaynum - 1 ) * $dnprpage ) ) {
                     $startpage =
                       $newstart - ( ( $postdisplaynum - 1 ) * $dnprpage );
@@ -450,7 +455,7 @@ qq~<a href="$scripturl?action=$action;newstart=0;vmonth=$vmonth$b_sort" class="n
                 }
                 my $lastpn       = int( $datanum / $dnprpage ) + 1;
                 my $lastptn      = ( $lastpn - 1 ) * $dnprpage;
-                my $pageindexadd = q~...&nbsp;~;
+                my $pageindexadd = q{};
                 if ( $endpage < $max - ($dnprpage) ) {
                     $pageindexadd = q~...&nbsp;~;
                 }
@@ -459,7 +464,7 @@ qq~<a href="$scripturl?action=$action;newstart=0;vmonth=$vmonth$b_sort" class="n
 qq~<a href="$scripturl?action=$action;newstart=$lastptn;vmonth=$vmonth$b_sort">$lastpn</a>~;
                     $pgstart = $lastptn;
                 }
-                $pageindex .= $pageindexadd;
+                $pageindex .= $pageindexadd || q{};
 
                 $pageindex =
                   qq~ <span class="small">$var_cal{'139'}: $pageindex</span>~;
@@ -476,7 +481,7 @@ qq~<a href="$scripturl?action=$action;newstart=$lastptn;vmonth=$vmonth$b_sort">$
             $yyvmon =~ s/\Q{yabb cal_col}\E/$cal_col/gxsm;
             $yyvmon =~ s/\Q{yabb cal_col_star_sort}\E/$cal_col_star_sort/gxsm;
             $yyvmon =~ s/\Q{yabb calmont}\E/$var_cal{$calmont[$j]}/xsm;
-            $yyvmon =~ s/\Q{yabb countmont}\E/$countmont[$j]/xsm;
+            $yyvmon =~ s/\Q{yabb countmont}\E/($countmont[$j])/xsm;
             $yyvmon =~ s/\Q{yabb cal_info_header}\E/$cal_info_header/xsm;
             $yyvmon =~ s/\Q{yabb pagecall}\E/;newstart=$pgstart/gxsm;
             $yyvmon =~ s/\Q{yabb page}\E/$pageindex/gxsm;
@@ -558,7 +563,8 @@ qq~<a href="$scripturl?action=$action;newstart=$lastptn;vmonth=$vmonth$b_sort">$
             $yyvmon =~ s/\Q{yabb cal_col}\E/$cal_col/gxsm;
             $yyvmon =~ s/\Q{yabb cal_col_star_sort}\E/$cal_col_star_sort/gxsm;
             $yyvmon =~ s/\Q{yabb calmont}\E/$var_cal{$calmont[$j]}/xsm;
-            $yyvmon =~ s/\Q{yabb countmont}\E/$countmont[$j]/xsm;
+#            $yyvmon =~ s/\Q{yabb countmont}\E/$countmont[$j]/xsm;
+            $yyvmon =~ s/\Q{yabb countmont}\E//xsm;
             $yyvmon =~ s/\Q{yabb cal_info_header}\E/$cal_info_header/xsm;
             $yyvmon =~ s/\Q{yabb input_letters}\E//xsm;
             $montview = q{};

@@ -119,6 +119,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'exmem' => q~Ex-member~,
 'by' => q~By:~,
 'getaddevent' => q~Add a new Event~,
+'139' => q~Pages~,
 );
 
 ### Event Calendar YaBBC ###
