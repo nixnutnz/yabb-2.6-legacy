@@ -12,6 +12,11 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 $defaultmicondefver = 'YaBB 2.7.00 $Revision$';
+@defaultmicondefmods = ();
+if (@defaultmicondefmods) {
+    $defaultmicondefmods = 1;
+}
+
 $admin_images = "$yyhtml_root/Templates/Admin/default";
 $my_blank_avatar = 'blank.gif';
 $nn_avatar = 'nn.gif';

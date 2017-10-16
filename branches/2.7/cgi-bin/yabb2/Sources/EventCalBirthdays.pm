@@ -409,7 +409,7 @@ qq~| <a href="$scripturl?action=birthdaylist;vmonth=$mont[$i]">$var_cal{$calmont
         if (   $calsplit > 0
             && @birthmembers1 >= $calsplit
             && $vmonth && $vmonth eq $mont[$j] )
-        {    
+        {
             no strict qw(refs);
             $datanum = @birthmembers2;
             @birthmembers2 = sort { &{$sortiert}( $a, $b ); } @birthmembers2;

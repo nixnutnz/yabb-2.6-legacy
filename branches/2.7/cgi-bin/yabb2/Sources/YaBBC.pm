@@ -678,8 +678,17 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b><i>$maintxt{'97'}<
     $message =~ s/<\/li><ol>/<ol>/igxsm;
     $message =~ s/<ol><\/li>/<ol>/igxsm;
     $message =~ s/\[list\]/<ul>/igxsm;
-    $message =~
+    if ( $message =~ /\Q[list \E(.+?)\]/ixsm ) {
+        $message =~ /\Q[list \E(.+?)\]/ixsm;
+            if ( -e "$htmldir/Templates/Forum/$usestyle/$1.gif" ) {
+            $message =~
 s/\Q[list \E(.+?)\]/<ul style="list-style-image\: url($imagesdir\/$1\.gif)">/igxsm;
+        }
+        else {
+            $message =~
+s/\Q[list \E(.+?)\]/<ul style="list-style-image\: url($defaultimagesdir\/$1\.gif)">/igxsm;
+        }
+    }
     $message =~ s/\s*\[\/list\]/<\/li><\/ul>/igxsm;
     $message =~ s/<\/li><ul>/<ul>/igxsm;
     $message =~ s/<ul><\/li>/<ul>/igxsm;
