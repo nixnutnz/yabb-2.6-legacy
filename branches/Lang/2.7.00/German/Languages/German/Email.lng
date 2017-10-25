@@ -1,9 +1,9 @@
 ###############################################################################
-# Email.lng (E-mail templating and text declarations)                         #
+# Email.lng (Email templating and text declarations)                          #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -15,24 +15,25 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanemaillngver = 'YaBB 2.7.00 $Revision: 1879 $';
-$germanemaillngmods = 0;
-@germanemaillngmods = ();
+our $germanemaillngver = 'YaBB 2.7.00 $Revision: 1879 $';
+our $germanemaillngmods = 0;
+our @germanemaillngmods = ();
 if (@germanemaillngmods) {
     $germanemaillngmods = 1;
 }
+
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %yabbtagdesc = (
 # Constant tags
-'scripturl' => qq~Die URL zum YaBB Forum. Beispiel: {yabb scripturl}~,
-'adminurl' => qq~Die URL zum YaBB Admin-Center. Beispiel: {yabb adminurl}~,
+'scripturl' => q~Die URL zum YaBB Forum. Beispiel: {yabb scripturl}~,
+'adminurl' => q~Die URL zum YaBB Admin-Center. Beispiel: {yabb adminurl}~,
 'mbname' => q~Name des Forums. Beispiel: {yabb mbname}~,
 
 # New Member related
 'userip' => qq~Die IP-Adresse des Mitgliedes.~,
-'useremail' => qq~Die eMail Adresse des Mitgliedes.~,
+'useremail' => qq~Die eMail-Adresse des Mitgliedes.~,
 
 # User-related
 'username' => q~Die Benutzer-ID des Mitgliedes.~,
@@ -48,10 +49,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'tauthor' => q~Name des Autors~,
 
 # Registration/Password
-'activationcode' => q~Der Aktivierungslink in der Register eMail.~,
-'remindercode' => q~Der Passwort Link in der Erinnerungs eMail.~,
-'preregspan' => qq~Die Zeit die es dauert, bevor die Vorregistrierung abgelaufen ist. Derzeitige Wert: $preregspan~,
-'reason' => q~Grund für eine getroffene Admin-Entscheidung~,
+'activationcode' => q~Der Aktivierungslink in der Register-eMail.~,
+'remindercode' => q~Der Passwort-Link in der Erinnerungs-eMail.~,
+'preregspan' => q~Die Zeit die es dauert, bevor die Vorregistrierung abgelaufen ist. Derzeitige Wert: {yabb preregspan}~,
+'reason' => q~Grund für eine getroffene Adminentscheidung, die an einem registrierenden Benutzer gemacht wurde, im Modus 'Registrierung mit Admin-Genehmigung'~,
 
 # Sending a Topic
 'toname' => q~Der Name der Person, die ein Thema abonniert hat.~,
@@ -77,7 +78,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 $yabbtags{'preregemail'} = q~displayname preregspan cryptusername activationcode~;
 $emaildesc{'preregemail'} = q~Die Registrations-eMail, die bei der 'Option Vorregistrierung' versendet wird~;
-$preregemail = q~Willkommen, {yabb displayname}!
+$preregemail = q~Willkommen {yabb displayname},
 Dies ist der Aktivierungslink für Ihren Account.
 
 
@@ -94,8 +95,8 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'approveregemail'} = q~username displayname~;
-$emaildesc{'approveregemail'} = q~Die schwebende Zustimmungs eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
-$approveregemail = q~Hallo, {yabb displayname}!
+$emaildesc{'approveregemail'} = q~Die schwebende Zustimmungs-eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
+$approveregemail = q~Hallo {yabb displayname},
 
 Ihr Antrag auf Registrierung mit der Benutzer-ID: "{yabb username}" wird derzeit von {yabb mbname} geprüft und befindet sich im Genehmigungsverfahren durch die Administration.
 
@@ -106,8 +107,8 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'instantapprovedemail'} = q~username displayname reviewer~;
-$emaildesc{'instantapprovedemail'} = q~Die unmittelbare Zustimmungs eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
-$instantapprovedemail = q~Hallo, {yabb displayname}!
+$emaildesc{'instantapprovedemail'} = q~Die unmittelbare Zustimmungs-eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
+$instantapprovedemail = q~Hallo {yabb displayname},
 
 Glückwunsch und Willkommen.
 
@@ -115,14 +116,14 @@ Ihre Mitgliedschaftsantrag wurde vom {yabb reviewer} und von der {yabb mbname} A
 
 Sie können sich mit Ihrer eMail-Adresse oder Ihrer Benutzer-ID einloggen ({yabb username}).
 
-Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: {yabb scripturl} und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
+Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: <a href="{yabb scripturl}">{yabb scripturl}</a> und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
 
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'pwinstantapprovedemail'} = q~username displayname reviewer password~;
-$emaildesc{'pwinstantapprovedemail'} = q~Die unmittelbare Zustimmungs eMail wenn ein Passwort versendet wird~;
-$pwinstantapprovedemail = q~Hallo, {yabb displayname}!
+$emaildesc{'pwinstantapprovedemail'} = q~Die unmittelbare Zustimmungs-eMail wenn ein Passwort versendet wird~;
+$pwinstantapprovedemail = q~Hallo {yabb displayname},
 
 Glückwunsch und Willkommen.
 
@@ -131,14 +132,14 @@ Ihr Mitgliedschaftsantrag wurde vom {yabb reviewer} und von der {yabb mbname} Ad
 Sie können sich mit Ihrer eMail-Adresse oder Ihrer Benutzer-ID einloggen ({yabb username}).
 Ihr aktuelles Passwort lautet : {yabb password}
 
-Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: {yabb scripturl} und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
+Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: <a href="{yabb scripturl}">{yabb scripturl}</a> und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
 
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'instantrejectedemail'} = q~username displayname reviewer~;
-$emaildesc{'instantrejectedemail'} = q~Die unmittelbare Ablehnungs eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
-$instantrejectedemail = q~Hallo, {yabb displayname}!
+$emaildesc{'instantrejectedemail'} = q~Die unmittelbare Ablehnungs-eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
+$instantrejectedemail = q~Hallo {yabb displayname},
 
 Wir bedauern Ihnen mitteilen zu müssen, dass Ihre Mitgliedschaft vom {yabb reviewer} und von der {yabb mbname} Administration abgelehnt wurde.
 Es gibt keinen spezifischer Grund für die Ablehnung, aber am ehesten hat der Registrierungs-Grund nicht entsprochen.
@@ -149,8 +150,8 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'reviewapprovedemail'} = q~username displayname reviewer~;
-$emaildesc{'reviewapprovedemail'} = q~Die überprüfte Zustimmungs eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
-$reviewapprovedemail = q~Hallo, {yabb displayname}.
+$emaildesc{'reviewapprovedemail'} = q~Die überprüfte Zustimmungs-eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
+$reviewapprovedemail = q~Hallo {yabb displayname},
 
 Glückwunsch und Willkommen.
 
@@ -161,14 +162,14 @@ Der {yabb reviewer} gibt folgenden Grund für die Genehmigung an:
 
 Sie können sich mit Ihrer eMail-Adresse oder Ihrer Benutzer-ID einloggen ({yabb username}).
 
-Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: {yabb scripturl} und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
+Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: <a href="{yabb scripturl}">{yabb scripturl}</a> und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
 
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'pwreviewapprovedemail'} = q~username displayname reviewer password~;
-$emaildesc{'pwreviewapprovedemail'} = q~Die überprüfte Zustimmungs eMail wenn ein Passwort versendet wird~;
-$pwreviewapprovedemail = q~Hallo, {yabb displayname}.
+$emaildesc{'pwreviewapprovedemail'} = q~Die überprüfte Zustimmungs-eMail, wenn ein Passwort versendet wird~;
+$pwreviewapprovedemail = q~Hallo {yabb displayname},
 
 Glückwunsch und Willkommen.
 
@@ -186,8 +187,8 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'reviewrejectedemail'} = q~username displayname reviewer reason~;
-$emaildesc{'reviewrejectedemail'} = q~Die überprüfte Ablehnungs eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
-$reviewrejectedemail = q~Hallo, {yabb displayname}.
+$emaildesc{'reviewrejectedemail'} = q~Die überprüfte Ablehnungs-eMail wenn kein Aktivierungslink bzw. Passwort versendet wird~;
+$reviewrejectedemail = q~Hallo {yabb displayname},
 
 Wir bedauern Ihnen mitteilen zu müssen, dass Ihre Mitgliedschaft vom {yabb reviewer} und von der {yabb mbname} Administration überprüft und abgelehnt wurde.
 Der {yabb reviewer} gibt folgenden Grund für die Ablehnung an:
@@ -200,8 +201,8 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'passwordregemail'} = q~username password displayname~;
-$emaildesc{'passwordregemail'} = q~Die Register eMail die bei der 'Option Zufallspasswort' versendet wird~;
-$passwordregemail = q~Willkommen, {yabb displayname}.
+$emaildesc{'passwordregemail'} = q~Die Register-eMail die bei der 'Option Zufallspasswort' versendet wird~;
+$passwordregemail = q~Willkommen {yabb displayname},
 
 Ihre Benutzer-ID ist {yabb username}, und Ihr Passwort ist {yabb password}.
 
@@ -213,46 +214,46 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'welcomeregemail'} = q~username password displayname~;
-$emaildesc{'welcomeregemail'} = q~Die Register eMail wenn kein 'Passwort' bzw. keine 'Vorregistrierung' versendet wird~;
-$welcomeregemail = q~Willkommen, {yabb displayname}.
+$emaildesc{'welcomeregemail'} = q~Die Register-eMail, wenn kein 'Passwort' bzw. keine 'Vorregistrierung' versendet wird~;
+$welcomeregemail = q~Willkommen {yabb displayname},
 
 Ihre Benutzer ID ist {yabb username}, und Ihr Passwort ist {yabb password}.
 
 Sie können sich mit Ihrer eMail-Adresse oder Ihrer Benutzer-ID einloggen ({yabb username}).
 
-Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: {yabb scripturl} und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
+Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: <a href="{yabb scripturl}">{yabb scripturl}</a> und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
 
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'activatedpassregemail'} = q~username password displayname~;
-$emaildesc{'activatedpassregemail'} = q~Die Aktivierungs-Register eMail (Versendet das Passwort bei erfolgreicher Registrierung/Bestätigung)~;
-$activatedpassregemail = q~Willkommen, {yabb displayname}.
+$emaildesc{'activatedpassregemail'} = q~Die Aktivierungs-Register-eMail (Versendet das Passwort bei erfolgreicher Registrierung/Bestätigung)~;
+$activatedpassregemail = q~Willkommen {yabb displayname},
 
 Ihre Benutzer ID ist {yabb username}, und Ihr Passwort ist {yabb password}.
 
 Sie können sich mit Ihrer eMail-Adresse oder Ihrer Benutzer-ID einloggen ({yabb username}).
 
-Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: {yabb scripturl} und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
+Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: <a href="{yabb scripturl}">{yabb scripturl}</a> und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
 
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'activatedwelcomeregemail'} = q~username password displayname~;
-$emaildesc{'activatedwelcomeregemail'} = q~Die Aktivierungs-Register eMail (Wenn kein Passwort versendet wird)~;
-$activatedwelcomeregemail = q~Willkommen, {yabb displayname}.
+$emaildesc{'activatedwelcomeregemail'} = q~Die Aktivierungs-Register-eMail (Wenn kein Passwort versendet wird)~;
+$activatedwelcomeregemail = q~Willkommen {yabb displayname},
 
 Ihre Benutzer-ID ist {yabb username}, und Ihr Passwort ist {yabb password}.
 
 Sie können sich mit Ihrer eMail-Adresse oder Ihrer Benutzer-ID einloggen ({yabb username}).
 
-Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: {yabb scripturl} und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
+Sie können Ihr Passwort nach dem Einloggen ändern, indem Sie Ihr Kontrollzentrum aufrufen. Klicken Sie dazu zunächst auf den Tab an der Oberseite der {yabb mbname} Hauptseite: <a href="{yabb scripturl}">{yabb scripturl}</a> und anschließend auf den Punkt "Profil bearbeiten". (Sie müssen Ihr Benutzer-Passwort als Sicherheitsmaßnahme gegen unbefugten Zugriff eintragen).
 
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'newmemberemail'} = q~displayname username userip useremail~;
-$emaildesc{'newmemberemail'} = q~Die Administrator Benachrichtigungs eMail über ein neues Mitglied~;
+$emaildesc{'newmemberemail'} = q~Die Administrator-Benachrichtigungs-eMail über ein neues Mitglied~;
 $newmemberemail = q~Ein neues Mitglied hat sich in Ihrem Forum registriert.
 
 Der angezeigte Name lautet: {yabb displayname}
@@ -271,7 +272,7 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'passwordreminderemail'} = q~displayname mbname remindercode cryptusername~;
-$emaildesc{'passwordreminderemail'} = q~Die Passwort Erinnerungs eMail~;
+$emaildesc{'passwordreminderemail'} = q~Die Passwort-Erinnerungs-eMail~;
 $passwordreminderemail = q~Hallo {yabb displayname},
 
 Diese Anfrage stammt von einem Besucher von {yabb mbname}. Wenn Sie keine Anfrage zum zurücksetzen Ihres Passworts geschickt haben, dann können Sie diese eMail ignorieren.
@@ -283,22 +284,28 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'boardnewtopicnotificationemail'} = q~num subject tmessage tauthor~;
-$emaildesc{'boardnewtopicnotificationemail'} = q~Die Benachrichtigungs eMail (Forum-Level, Neues Thema)~;
-$boardnewtopicnotificationemail = q~Ein neues Thema, "{yabb subject}\~, wurde in einem Forum eröffnet von {yabb tauthor}, welches Sie überwachen lassen.
+$emaildesc{'boardnewtopicnotificationemail'} = q~Die Benachrichtigungs-eMail (Forum-Level, Neues Thema)~;
+$boardnewtopicnotificationemail = q~Ein neues Thema, "{yabb subject}", wurde in einem Forum eröffnet von {yabb tauthor}, welches Sie überwachen lassen.
 
 ########################################
+
 {yabb tmessage}
+
+
+
 
 ########################################
 
 Sie können es unter dieser Adresse ansehen: <a href="{yabb num}">{yabb num}</a>
 
+
+
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'boardnotificationemail'} = q~num start subject tmessage tauthor~;
-$emaildesc{'boardnotificationemail'} = q~Die Benachrichtigungs eMail (Forum-Level, Vorhandenes Thema)~;
-$boardnotificationemail = q~Eine Antwort, "{yabb subject}\~, wurde in einem Forum gepostet, welches Sie überwachen lassen.
+$emaildesc{'boardnotificationemail'} = q~Die Benachrichtigungs-eMail (Forum-Level, Vorhandenes Thema)~;
+$boardnotificationemail = q~Eine Antwort, "{yabb subject}", wurde in einem Forum gepostet, welches Sie überwachen lassen.
 
 ########################################
 
@@ -315,8 +322,8 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'topicnotificationemail'} = q~num subject start tmessage tauthor~;
-$emaildesc{'topicnotificationemail'} = q~Die Benachrichtigungs eMail (Beitrags-Level)~;
-$topicnotificationemail = q~Eine Antwort, "{yabb subject}\~, wurde in einem Thema gepostet von {yabb tauthor}, welches Sie überwachen lassen.
+$emaildesc{'topicnotificationemail'} = q~Die Benachrichtigungs-eMail (Beitrags-Level)~;
+$topicnotificationemail = q~Eine Antwort, "{yabb subject}", wurde in einem Thema gepostet von {yabb tauthor}, welches Sie überwachen lassen.
 
 ########################################
 
@@ -324,7 +331,7 @@ $topicnotificationemail = q~Eine Antwort, "{yabb subject}\~, wurde in einem Them
 
 ########################################
 
-Sie können es unter dieser Adresse ansehen: <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scripturl}?num={yabb num}/{yabb start}</a>
+Sie können es unter dieser Adresse ansehen: <a href="{yabb num}/{yabb start}">{yabb num}/{yabb start}</a>
 
 Es werden keine Mitteilungen mehr versandt, bis Sie das Thema wieder besuchen.
 
@@ -332,28 +339,31 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'profilenewpasswordemail'} = q~displayname password~;
-$emaildesc{'profilenewpasswordemail'} = q~Die Profil eMail, wenn ein vorhandenes Passwort geändert wurde~;
+$emaildesc{'profilenewpasswordemail'} = q~Die Profil-eMail, wenn ein vorhandenes Passwort geändert wurde~;
 $profilenewpasswordemail = q~Hallo {yabb displayname},
 
 Ihr Passwort wurde erfolgreich geändert. Es lautet nun {yabb password}.
 
-Das Passwort können Sie nach dem Einloggen in Ihrem Profil ändern.
+Sie können Ihr Passwort nach der Anmeldung ändern, indem Sie auf die Registerkarte 'Kontrollzentrum' oben auf der Hauptseite {yabb mbname} klicken: <a href="{yabb scripturl}"> {yabb scripturl} </a> Klicken Sie auf Profil, klicken Sie auf Profil bearbeiten (Sie müssen Ihr Passwort als Sicherheitsmaßnahme eingeben).
+
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
 $yabbtags{'sendtopicemail'} = q~toname subject displayname num~;
-$emaildesc{'sendtopicemail'} = q~Die Beitrag Empfehlen eMail~;
+$emaildesc{'sendtopicemail'} = q~Die Beitrag empfehlen eMail~;
 $sendtopicemail = q~Hallo {yabb toname},
-ich denke, dieses Thema könnte Sie interessieren, "{yabb subject}" , auf {yabb mbname}. Um es zu lesen, klicken Sie auf den folgenden Link:
+
+ich denke, dieses Thema könnte Sie interessieren, "{yabb subject}", auf {yabb mbname}. Um es zu lesen, klicken Sie auf den folgenden Link:
 
 <a href="{yabb num}">{yabb num}</a>
 
 Vielen Dank,
 {yabb displayname}~;
 
-$yabbtags{'privatemessagenotificationemail'} = q~date sender subject message~;
+$yabbtags{'privatemessagenotificationemail'} = q~sender subject message~;
 $emaildesc{'privatemessagenotificationemail'} = q~Die Benachrichtigungs eMail bei neuer Privat Nachricht~;
 $privatemessagenotificationemail = q~{yabb sender} hat Ihnen eine Privatnachricht geschickt.
+
 
 Betreff: {yabb subject}
 Nachricht: {yabb message}
@@ -367,14 +377,13 @@ newnotify => qq~Benachrichtigung bei neuem Beitrag.~,
 replynotify => qq~Benachrichtigung bei Antwort.~,
 );
 
-
-
-$yabbtags{'replyguestmail'} = q~'Absender-eMail' 'senden an' 'Datum' 'Betreff' 'Nachricht'~;
+$yabbtags{'replyguestmail'} = q~sender email sendto date subject message~;
 $emaildesc{'replyguestmail'} = q~Die Antwort von Gast-PN an Administrator-eMail~;
 $replyguestmail = q~Hallo {yabb sender},
 
 Mit freundlichem Gruß,
 Das {yabb mbname} Team
+
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 
 -----------------------------
@@ -390,7 +399,7 @@ Betreff: {yabb subject}
 $yabbtags{'deleteduseremail'} = q~displayname~;
 $emaildesc{'deleteduseremail'} = q~Die gelöschte Benutzer-Benachrichtigungs-eMail~;
 $deletedusersybject = q~Ihr Account wurde gelöscht bei~;
-$deleteduseremail = q~Hallo, {yabb displayname}.
+$deleteduseremail = q~Hallo {yabb displayname},
 
 Ihr Account bei {yabb mbname} ist nicht mehr aktiv und wurde gelöscht.
 
@@ -400,26 +409,26 @@ Das {yabb mbname} Team
 ~;
 
 $yabbtags{'banneduseremail'} = q~displayname~;
-$emaildesc{'banneduseremail'} = q~The Banned User Notification E-mail~;
-$bannedusersybject = q~Your account banned on~;
-$banneduseremail = q~Hello, {yabb displayname}:
+$emaildesc{'banneduseremail'} = q~Die Verbannungsnachricht per eMail~;
+$bannedusersybject = q~Ihr Account wurde verbannt bei~;
+$banneduseremail = q~Hallo {yabb displayname},
 
-You have been banned from {yabb mbname} {yabb ban_time} by {yabb banner}{yabb ban_reason}.
+Sie wurden verbannt bei {yabb mbname} {yabb ban_time} von {yabb banner}{yabb ban_reason}.
 
-Regards,
-The {yabb mbname} team
+Mit freundlichem Gruß,
+Das {yabb mbname} Team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
 $yabbtags{'suspendeduseremail'} = q~displayname~;
-$emaildesc{'suspendeduseremail'} = q~The Suspended User Notification E-mail~;
-$suspendusersybject = q~Your account suspended on~;
-$suspendeduseremail = q~Hello, {yabb displayname}:
+$emaildesc{'suspendeduseremail'} = q~Die Suspendierungsnachricht per eMail~;
+$suspendusersybject = q~Ihr Account wurde suspendiert bei~;
+$suspendeduseremail = q~Hallo {yabb displayname},
 
-Your account on {yabb mbname} has been suspended {yabb ban_time} by {yabb banner}{yabb ban_reason}.
+Sie wurden suspendiert bei {yabb mbname} {yabb ban_time} von {yabb banner}{yabb ban_reason}.
 
-Regards,
-The {yabb mbname} team
+Mit freundlichem Gruß,
+Das {yabb mbname} Team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 

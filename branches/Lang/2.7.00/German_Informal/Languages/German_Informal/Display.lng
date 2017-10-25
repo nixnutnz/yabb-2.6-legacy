@@ -12,13 +12,13 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informaldisplaylngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informaldisplaylngmods = ();
-if(@german_informaldisplaylngmods) {
+if (@german_informaldisplaylngmods) {
     $german_informaldisplaylngmods = 1;
 }
 $action ||= q{};
@@ -84,8 +84,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'rgt' => qq~&rsaquo;~,
 'upt' => q~&#710;~,
 'guest_message' => q~Besucher-Nachricht~,
-'guest_message_block' => q~Hallo Besucher,<br><br>sorry, aber Du hast die Menge an Themen, die Du berechtigt bist als Gast zu besichtigen, überschritten. Um möglichst viele Themen anzuzeigen wie Du möchtest und von vielen weiteren Features zu profitieren, warum <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrierst Du Dich nicht bei uns?</a>. Die Registration ist leicht und dauert nur ein paar Minuten.<br><br>Du bist bei uns bereits Mitglied, dann kannst Du Dich <a href="{yabb scripturl}?action=login" style="font-weight: bold;">hier einloggen</a> um diese Nachricht zu stoppen.<br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
-'guest_message_warn' => q~Hallo Besucher,<br><br>wie es aussieht, genießt Du das Lesen in unserem Forum. Also warum <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrierst Du Dich nicht bei uns,</a> um diese Nachricht zu stoppen und profitieren von den vielen weiteren Features? Die Registrierung ist einfach und dauert nur ein paar Minuten.<br><br>Wenn Du bereits Mitglied bei uns bist, dann <a href="{yabb scripturl}?action=login" style="font-weight: bold;">klicke hier zum einloggen.</a><br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
+'guest_message_block' => qq~Hallo Besucher,<br><br>sorry, aber Du hast die Menge an Themen, die Du berechtigt bist als Gast zu besichtigen, überschritten. Um möglichst viele Themen anzuzeigen wie Du möchtest und von vielen weiteren Features zu profitieren, warum <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrierst Du Dich nicht bei uns?</a>. Die Registration ist leicht und dauert nur ein paar Minuten.<br><br>Du bist bei uns bereits Mitglied, dann kannst Du Dich <a href="{yabb scripturl}?action=login" style="font-weight: bold;">hier einloggen</a> um diese Nachricht zu stoppen.<br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
+'guest_message_warn' => qq~Hallo Besucher,<br><br>wie es aussieht, genießt Du das Lesen in unserem Forum. Also warum <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrierst Du Dich nicht bei uns,</a> um diese Nachricht zu stoppen und profitieren von den vielen weiteren Features? Die Registrierung ist einfach und dauert nur ein paar Minuten.<br><br>Wenn Du bereits Mitglied bei uns bist, dann <a href="{yabb scripturl}?action=login" style="font-weight: bold;">klicke hier zum einloggen.</a><br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
 'bookmarks' => q~Bookmarks~, # Social Bookmarks
 'google' => q~Google Hangout~,
 'ipblock' => q~Blocke IP im Guardian~,

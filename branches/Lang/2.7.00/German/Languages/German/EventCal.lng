@@ -2,19 +2,17 @@
 #EventCal.lng                                                                 #
 #By XTC: http://www.yabbserver.com                                            #
 ###############################################################################
-#German/Sie - Translation by Pyragony                                         #
-#and other members of the YaBB community                                      #
-#review & changes by Pyragony (webmaster@yabbtest.de)                         #
+# German_Formal - Translation XTC                                             #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
-#YaBB: Yet another Bulletin Board                                             #
-#Open-Source Community Software for Webmasters                                #
-#Version:       YaBB 2.6.11                                                   #
-#Packaged:      2. Dezember 2014                                              #
-#Distributed by: http://www.yabbforum.com                                     #
-#=============================================================================#
-#Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.      #
-#Software by: The YaBB Development Team                                       #
-#             with assistance from the YaBB community.                        #
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germaneventcallngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -22,6 +20,7 @@ $germaneventcallngver = 'YaBB 2.7.00 $Revision: 1879 $';
 if (@germaneventcallngmods) {
     $germaneventcallngmods = 1;
 }
+
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
@@ -57,9 +56,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'calsubtitle' => q~Event(s)~,
 'calevent' => q~Neues Ereignis:~,
 'calbirthday' => q~Geburtstag~,
-'calbirthday1' => q~Keine Geburtstag(e)~,
+'calbirthday1' => q~Kein(e) Geburtstag(e)~,
 'calbirthdays' => q~Geburtstagsliste~,
-'calbirthdayinfo' => q~Die Geburtstagsliste zeigt alle eingetragenen Mitglieder-Geburtstage.<br />Sie können die Geburtstage nach <i>Name</i>, <i>Alter</i>, <i>Sternzeichen</i> (wenn angezeigt), oder nach <i>Geburtsdatum</i> sortieren.~,
+'calbirthdayinfo' => q~Die Geburtstagsliste zeigt alle eingetragenen Mitglieder-Geburtstage.<br />Sie können die Geburtstage nach <em>Name</em>, <em>Alter</em>, <em>Sternzeichen</em> (wenn angezeigt), oder nach <em>Geburtsdatum</em> sortieren.~,
 'calbirthdaytoday' => q~Heute haben folgende Mitglieder Geburtstag~,
 'calnobdlist' => q~Die Geburtstagsliste wurde vom Administrator deaktiviert.~,
 'calbdaylist' => q~Zeige Mitglieder-Geburtstage~,
@@ -122,6 +121,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'exmem' => q~Ex-Mitglied~,
 'by' => q~Von:~,
 'getaddevent' => q~Neuen Event hinzufügen~,
+'139' => q~Seiten~,
 );
 
 ## Event Kalender YaBBC ###
@@ -146,14 +146,14 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '11' => q~Aus~,
 '12' => q~Auto Scroll~,
 '13' => q~Manuel Scroll~,
-'14' => q~Welche Mitgliedergruppen dürfen Events hinzufügen?~,
-'15' => q~Keine Auswahl (Alle Mitglieder und Gäste)<br /><br />{yabb admin_txt14}~,
+'14' => q~Welche Mitgliedergruppen dürfen Events hinzufügen oder editieren?~,
+'15' => q~Wenn Sie keine Auswahl treffen, können alle Gruppen, Benutzer und Gäste Ereignisse hinzufügen/editieren.<br /><br />{yabb admin_txt14}~,
 '16' => q~Welche Mitglieder dürfen Events hinzufügen?~,
 '17' => q~Mehrere Mitglieder können mit 'username1,username2' angegeben werden (die Namen müssen die internen YaBB-Namen sein)~,
 '18' => q~Dürfen Mitglieder 'Privat Events' hinzufügen?~,
-'19' => q~Deaktiviert = nur der Administrator darf 'Privat Events' hinzufügen~,
+'19' => q~Deaktiviert = nur die Global-Moderatoren oder Administratoren dürfen 'Private Events' hinzufügen~,
 '20' => q~Events (Event-Scroll) im BoardIndex anzeigen?~,
-'21' => q~Standard Event-Kalender-Einstellungen~,
+'21' => q~Standardeinstellungen~,
 '22' => q~Eventeinstellungen~,
 '23' => q~Eventberechtigungen~,
 '24' => q~Zeige die Checkbox "Username-Link nicht anzeigen" für~,
@@ -166,7 +166,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '32' => q~Event-Icon-Einstellungen speichern~,
 '33' => q~In diesem Abschnitt können Sie Ihre Kalender Ereignisse bearbeiten, indem Sie Ihre eigenen Event-Icons anpassen.<br />Bilder sehen am besten aus, wenn sie nicht grösser sind als 25x25px.<br />Erlaubte Dateinamen sind: png jpg jpeg gif<br />Max. Dateigrösse: 100KB~,
 '34' => q~Angezeigte Event(s)-Tage im Board-Kalender-Index?~,
-'35' => q~(0 = Aktueller Monat)~,
+'35' => q~(0 = Alle Events für den aktuellen Monat)~,
 '36' => q~Erster Tag der Woche (Mini Kalender)?~,
 '37' => q~(nicht gewählt = Montag / gewählt = Sonntag)~,
 '42' => q~Zeige Mitglieder-Geburtstagsliste für?~,
@@ -174,7 +174,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '43' => q~Keine 'Event-Icons' im Mini Kalender anzeigen?~,
 '44' => q~Anwenden von Gruppenfarben beim Anzeigen von Mitgliederlinks?~,
 '44a' => q~Anwenden von Gruppenfarben beim Anzeigen von Mitgliederlinks in der Geburtstagsliste?~,
-'45' => q~Benötigt mehr Forum-Ressourcen.~,
+'45' => q~Durch Aktivieren dieser Option werden mehr Forenressourcen verwendet.~,
 '48' => q~'Geburtstagsliste'-Button im YaBB-Menü anzeigen für~,
 '49' => q~Geburtstagsliste-Einstellungen~,
 '50' => q~Geburtstagsdatum anzeigen für~,
@@ -182,14 +182,14 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '54' => q~Geburtstagsliste neuaufbauen~,
 '56' => q~Marquee~,
 '57' => q~XHTML~,
-'58' => q~YaBBC Tags im <i>Snack-Text</i> deaktivieren?~,
+'58' => q~YaBBC Tags im <em>Snack-Text</em> deaktivieren?~,
 '59' => q~Event-Icon hinzufügen~,
 '60' => q~Event-Icon entfernen~,
 'error_image' => q~Bitte wählen Sie ein Bild für den Event-Icon.~,
 'error_desc' => q~Bitte geben Sie eine Beschreibung für den Event-Icon ein.~,
 'del' => q~Lösche alte Events~,
 'showtoday' => q~Verwenden Sie "Heute", "Gestern" und "Morgen" in Veranstaltungs- und Geburtstagsanzeigen.~,
-'new' => q~Wenn Sie 'Geburtstage anzeigen' oder 'Geburtstagsliste anzeigen' aktivieren, müssen Sie die unten aufgeführte 'Wiederherstellen Geburtstagsliste' ausführen.~,  
+'new' => q~Wenn Sie 'Zeige Geburtstage' oder 'Zeige Mitglieder-Geburtstagsliste' angeben, müssen Sie unten 'Geburtstagsliste neuaufbauen' ausführen. ~,
 );
 
 1;

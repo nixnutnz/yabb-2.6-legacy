@@ -304,7 +304,6 @@ Du kannst es unter dieser Adresse ansehen: <a href="{yabb num}">{yabb num}</a>
 Mit freundlichem Gruß,
 Das {yabb mbname} Team~;
 
-
 $yabbtags{'boardnotificationemail'} = q~num start subject tmessage tauthor~;
 $emaildesc{'boardnotificationemail'} = q~Die Benachrichtigungs-eMail (Forum-Level, Vorhandenes Thema)~;
 $boardnotificationemail = q~Eine Antwort, "{yabb subject}", wurde in einem Forum gepostet, welches Du überwachen läßt.
@@ -387,6 +386,7 @@ Mit freundlichem Gruß,
 Das {yabb mbname} Team
 
 <a href="{yabb scripturl}">{yabb scripturl}</a>
+
 -----------------------------
 ----- Original Nachricht -----
 Von: "{yabb sender}" <{yabb email}>
@@ -403,6 +403,7 @@ $deletedusersybject = q~Dein Account wurde gelöscht bei~;
 $deleteduseremail = q~Hallo {yabb displayname},
 
 Dein Account bei {yabb mbname} ist nicht mehr aktiv und wurde gelöscht.
+
 Mit freundlichem Gruß,
 Das {yabb mbname} Team
 <a href="{yabb scripturl}">{yabb scripturl}</a>

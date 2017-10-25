@@ -1,9 +1,9 @@
 ###############################################################################
 # GModPrivileges.lng (Global Mod Access Privileges text definitions)          #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germangmodprivilegeslngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -28,7 +28,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '2' => q~Globalen Moderatoren den Zugriff auf das Admin-Center erlauben?~,
 '3' => q~Globalen Moderatoren das Ändern von Benutzerprofilen erlauben?~,
 '3a' => q~Globalen Moderatoren den Zugriff auf die Admin-Einstellungen in Benutzerprofilen erlauben?~,
-'4' => q~Wählen Sie, welche Aktionen Globale Moderatoren ausführen dürfen.~,
+'4' => q~Wählen Sie, welche Aktionen <em>(action= in den URL's)</em> Globale Moderatoren ausführen dürfen.~,
 'gmodmember_controls' => q~Mitgliederkontrolle~,
 'gmodforumsettings' => q~Forumkonfiguration~,
 'gmodmaintence_controls' => q~Wartungsmodus~,
@@ -140,7 +140,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'view_reglog' => q~Registrierungs-Protokoll~,
 'modlist' => q~Installierte Mods~,
 'backupsettings' => q~Backup-Center-Einstellungen~,
-'backup' => q~Backup Center~,
+'backup' => q~Backup-Center~,
 'emailbackup' => q~eMail-Backup~,
 );
 

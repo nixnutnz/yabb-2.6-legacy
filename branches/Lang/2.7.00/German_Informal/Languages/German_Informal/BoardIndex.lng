@@ -18,7 +18,7 @@
 
 $german_informalboardindexlngver = 'YaBB 2.7.00 $Revision: 1848 $';
 @german_informalboardindexlngmods = ();
-if(@german_informalboardindexlngmods) {
+if (@german_informalboardindexlngmods) {
     $german_informalboardindexlngmods = 1;
 }
 $action ||= q{};
@@ -86,7 +86,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '802' => q~Die größte Anzahl gleichzeitig anwesender Gäste war~,
 '803' => q~Die größte Anzahl gleichzeitig anwesender Suchmaschinen war~,
 'no_ip' => q~Keine IP gespeichert~,
-'guest_ip' => q~IP's von Gästen~,
+'guest_ip' => q~IP\'s von Gästen~,
 'recenttopic' => q~10 neueste Themen~,
 );
 

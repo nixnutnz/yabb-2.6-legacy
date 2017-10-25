@@ -12,13 +12,13 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informalmycenterlngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informalmycenterlngmods = ();
-if(@german_informalmycenterlngmods){
+if (@german_informalmycenterlngmods) {
     $german_informalmycenterlngmods = 1;
 }
 $action ||= q{};

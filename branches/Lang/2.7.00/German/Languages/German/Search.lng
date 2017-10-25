@@ -1,9 +1,9 @@
 ###############################################################################
 # Search.lng (Search text definitions)                                        #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germansearchlngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -46,7 +46,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '186' => q~Suche in Themen, die von diesem Mitglied begonnen wurden~,
 '187' => q~Suche nach Beirägen, die von diesem Mitglied geschrieben wurden~,
 '189' => q~In folgenden Foren suchen~,
-'190' => q~ Bitte halten Sie die [STRG]- oder Umschalttaste gedrückt, um mehrere zu selektieren.~,
+'190' => q~Bitte halten Sie die [STRG]- oder Umschalttaste gedrückt, um mehrere zu selektieren.~,
 '191' => q~Wieviele Ergebnisse anzeigen?~,
 '191a' => q~Nur ein Ergebnis pro Thema zeigen?~,
 '191b' => q~Maximal erlaubte Ergebnisse: {yabb maxsearchdisplay}~,

@@ -1,14 +1,19 @@
 ###############################################################################
 # AddModerators.lng                                                           #
 ###############################################################################
+# German_Formal - Translation by Pyragony                                     #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (info@anti-scam.de)                            #
+###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
+###############################################################################
 # Mod created by Carsten Dalgaard                                             #
 #               and added to YaBB core in Version 2.5.4                       #
 # Released: January 28, 2013, Copyright 2013 Carsten Dalgaard                 #
@@ -19,6 +24,7 @@ $germanaddmoderatorslngver = 'YaBB 2.7.00 $Revision: 1879 $';
 if (@germanaddmoderatorslngmods) {
     $germanaddmoderatorslngmods = 1;
 }
+$action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %addmod_txt = (

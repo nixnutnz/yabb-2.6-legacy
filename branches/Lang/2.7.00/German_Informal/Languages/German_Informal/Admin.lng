@@ -16,13 +16,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$german_informaladminlngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informaladminlngver = 'YaBB 2.7.00 $Revision: 1904 $';
 @german_informaladminlngmods = ();
 if (@german_informaladminlngmods) {
     $german_informaladminlngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' && $language ne 'German' ) { return 1; }
+if ( $action eq 'detailedversion' && $language ne 'German_Informal' ) { return 1; }
 
 @days = ('Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag');
 @months = ('Januar','Februar','März','April','Mai','Juni','July','August','September','Oktober','November','Dezember');
@@ -387,7 +387,7 @@ $abbr_lang = 'de-de';
 '605' => q~Benutzer wählen lassen, wie der eMail Versand erfolgen soll~,
 '617' => q~Bist Du sicher, dass Du diese(n) Punkt(e) löschen willst?~,
 '619' => q~Willkommensmail an Benutzer senden, wenn das Zufallspasswort nicht per eMail verschickt wird?~,
-'630' => q~Benutze 'Fake' File Truncation?<br /><span class="small">Diese Option sollte nur eingeschaltet werden, wenn Ihr Server folgenden Fehler meldet: 'truncate() not supported on this platform.'</span>~,
+'630' => q~Benutze 'Fake' File Truncation?<br /><span class="small">Diese Option sollte nur eingeschaltet werden, wenn Dein Server folgenden Fehler meldet: 'truncate() not supported on this platform.'</span>~,
 '632' => q~Gastzugang deaktivieren?~,
 '639' => q~Neues Passwort versenden, wenn ein Benutzer die eMail Adresse ändert?~,
 '645' => q~YaBB-Statistik~,
@@ -529,7 +529,7 @@ $abbr_lang = 'de-de';
 'findtime' => q~<em>find</em>: Zeitabstände, in denen das Linux shell Kommando \'find\' die Größe des unten eingegebenen Verzeichnisses überprüpft. Dieses und die folgenden zwei Felder werden funktionslos, wenn das Komando auf Deinem Server nicht verfügbar ist.<br />Setze den Wert auf 0, um eine andere Methode wie \'quota\' oder \'Freie Speicherplatzüberprüfung\' auswählen zu können.<br /><span class="small">Da dieses Komando eine sehr zeitintensive Arbeit sein kann, solltest Du den Wert entsprechend hoch setzen. Z. B. 300 (fünf Stunden) oder 1440 (ein Tag). Sobald der freie Speicherplatz nach jedem \'find\' bekannt ist, benötigt diese Methode sehr wenig Resourcen.</span>~,
 'findroot' => q~<em>find</em>: Pfad zu dem root Verzeichnis Deines user accounts auf einem multi user host system.<br /><span class="small">Der Pfad muss <b>vom system root bis zu Deinem user root</b> gehen. Beispiel:<br />/var/www/dein_domain_name/<br />/var/www/web1234/<br /><br />Du kannst auch den Pfad nur den Pfad zu Deinem Forum-Verzeichnis angeben und für dieses einen selbst vergebenen Maximalwert eingeben. \'find\' wird dann diesen Wert anstelle des Benutzerwertes verwenden. Beispiel:<br />/var/www/dein_domain_name/cgi-bin/yabb2/<br />/var/www/dein_domain_name/public_html/yabbfiles/Attachments/</span>~,
 'findmax' => q~<em>find</em>: Verfügbarer Platz in dem oben genannten Verzeichnis (in Megabytes).<br /><span class="small">Es sollte der selbe Wert sein, wie Dein Provider Dir zugeteilt hat.<br />Da \'find\' nur alle X Stunden oder ein Mal am Tag den verbrauchten Platz bemisst, solltest Du den Wert niedriger setzen, als der von Deinem Provider zugeteilte. Damit vermeidest Du es, in der Zwischenzeit durch unvorhergesehene Speicherbelastung, z. B. durch den upload großer Dateianhänge, an das vorgegebene Speicherlimit zu geraten.<br />Um \'find\' anzuschalten muss der Wert hier &gt; 0 sein. Wenn der belegte Speicherplatz in dem oben eingegebenen Verzeichnis größer als der hier angegebene Wert wird, wird das Forum in den Wartungsmodus gesetzt, um Datenverlust zu vermeiden.<br />Hinweis:<br />Nur Admins können das Forum betreten, wenn es im Wartungsmodus ist.<br />Falls Du Dich nicht mehr daran erinnerst: 1 GB = 1024 MB</span>~,
-'diskspacecheck' => q~Freie Speicherplatzüberprüfung einschalten?<br /><span class="small">Checkt den verfügbaren Speicherplatz auf der Festplatte auf Linux oder Windows Servern. Sei Dir bewußt, daß nicht unbedingt all dieser Speicherplatz von Dir verwendet werden kann. Es wird unter Umständen ein wesentlich höherer Wert angezeigt als Dein Provider Dir zugeteilt hat!<br />Wenn Dein verfügbarer Platz unter 100&thinsp;000 Bytes (100 KB) fällt, wird das Forum automatisch in den Wartungsmodus gesetzt um Datenverlust zu vermeiden.<br />Hinweis: Nur Admins können das Forum betreten wenn es im Wartungsmodus ist.</span>~,
+'diskspacecheck' => q~Freie Speicherplatzüberprüfung einschalten?<br /><span class="small">Checkt den verfügbaren Speicherplatz auf der Festplatte auf Linux oder Windows Servern. Sei Dir bewußt, daß nicht unbedingt all dieser Speicherplatz von Dir verwendet werden kann. Es wird unter Umständen ein wesentlich höherer Wert angezeigt als Dein Provider Dir zugeteilt hat.<br />Wenn Dein verfügbarer Platz unter 100&thinsp;000 Bytes (100 KB) fällt, wird das Forum automatisch in den Wartungsmodus gesetzt um Datenverlust zu vermeiden.<br />Hinweis: Nur Admins können das Forum betreten wenn es im Wartungsmodus ist.</span>~,
 'getreversedns' => q~Aktiviere Reverse DNS Lookup.~,
 'minlinkpost' => q~Mindestanzahl der Beiträge, ab der ein Mitglied Links und Bilder posten kann~,
 'minlinkpost_exp' => q~Dies verhindert Spambots, sofort nach der Registrierung SPAM-Postings zu schreiben.~,
@@ -609,7 +609,7 @@ $abbr_lang = 'de-de';
 'subbrd' => q~Unterforum~,
 'inbrd' => q~in Forum~,
 'incat' => q~in Kategorie~,
-'fixinstruct' => q~Wähle die <strong>falschen</strong> Foren aus. Möglicherweise mußt Du die Position der Boards in ihren Kategorien / Foren reorganisieren, wenn sie fertig sind.<br /><span class="important">Sei sehr vorsichtig mit Ihrer Auswahl, um sicherzustellen, dass Du nicht die Kopie der Boards entfernst, die Du behalten möchtest.</span>~,
+'fixinstruct' => q~Wähle die <strong>falschen</strong> Foren aus. Möglicherweise mußt Du die Position der Boards in ihren Kategorien / Foren reorganisieren, wenn sie fertig sind.<br /><span class="important">Sei sehr vorsichtig mit Deiner Auswahl, um sicherzustellen, dass Du nicht die Kopie der Boards entfernst, die Du behalten möchtest.</span>~,
 'usercp' => q~Kontrollzentrum~,
 'ppostperms' => q~Druck-Beitrag-Berechtigungen (Post)<br /><span class="small">Deaktiviere die Druckfunktion oder setze ihn auf "Alle Mitglieder", wenn Du mit dieser Funktion Spambotprobleme hast.</span>~,
 'ptopicperms' => q~Druck-Beitrag-Berechtigungen (Thread)<br /><span class="small">Deaktiviere die Druckfunktion oder setze ihn auf "Alle Mitglieder", wenn Du mit dieser Funktion Spambotprobleme hast.</span>~,
@@ -618,7 +618,7 @@ $abbr_lang = 'de-de';
 '10bak' => q~*.bak Dateien gelöscht~,
 
 ## email settings test ##
-'355b' => q~Überprüfe die Webmaster-eMail-Einstellungen~,
+'355b' => q~Überprüfe die gespeicherte Webmaster-eMail-Einstellungen~,
 'testemail' => q~Test eMail~,
 'testsubject' => q~YaBB eMail Einstellungstest~,
 'testmessage' => q~Hallo {yabb mbname} Webmaster,
@@ -1104,7 +1104,7 @@ Danke für die Benutzung von YaBB!~,
 '18' => q~Erweiterte Mitgliederübersicht im Admin-Center~,
 '19' => q~Bist Du sicher, dass Du an die gewählten Mitglieder eine eMail senden willst?~,
 '20' => q~Bist Du sicher, dass Du die gewählten Mitglieder löschen willst?~,
-'25' => q~"Zuletzt online vor X Tagen und XX:XX:XX Stunden." allen Mitgliedern anzeigen?<br /><span class="small">Wenn deaktiviert, können dies nur Administratoren und Global-Moderatoren im Linktitel der Benutzernamen lesen.</span>~,
+'25' => q~"Zuletzt online vor X Tagen und XX:XX:XX Stunden" allen Mitgliedern anzeigen?<br /><span class="small">Wenn deaktiviert, können dies nur Administratoren und Global-Moderatoren im Linktitel der Benutzernamen lesen.</span>~,
 '30' => q~Tage seit der Registrierung~,
 '31' => q~Beiträge~,
 '32' => q~Tage seit zuletzt Online~,
@@ -1183,8 +1183,8 @@ Danke für die Benutzung von YaBB!~,
 );
 
 %versiontxt = (
-'1' => q~Entweder Ihr Browser unterstützt JavaScript nicht oder Du mußt es aktivieren, damit der Versioncheck funktionieren kann.~,
-'2' => q~<span class="important">Eine neue, stabile Version ist verfügbar.</span></b><br />Wenn Du sie herunterladen willst ~,
+'1' => q~Entweder Dein Browser unterstützt JavaScript nicht oder Du mußt es aktivieren, damit der Versioncheck funktionieren kann.~,
+'2' => q~<span class="important">Eine neue, stabile Version ist verfügbar.</span><br />Wenn Du sie herunterladen willst ~,
 '3' => q~, öffne bitte <a href="{yabb yabb_dnloads}">{yabb yabb_dnloads}</a>.~,
 '4' => q~DEINE Version:~,
 '5' => q~Neueste STABILE Version:~,
@@ -1369,11 +1369,11 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 %domain_filter_txt = (
 '1' => q~Wer kann sich registrieren oder schreiben als Gast~,
 '2' => q~Destillierte eMail-Domaine~,
-'3' => q~Gebe die eMail-Domaine ein, die erlaubt werden sollen. Lasse das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
+'3' => q~Gebe die eMail-Domaine ein, die erlaubt werden soll(en). Lasse das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
 '4' => q~Erlaubte eMail-Domaine~,
 '5' => q~Erlaubte eMail-Domaine bearbeiten~,
 '6' => q~Blockierte eMail-Domaine~,
-'7' => q~Gebe die eMail-Domaine ein, die blockiert werden soll. Lasse das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
+'7' => q~Gebe die eMail-Domaine ein, die blockiert werden soll(en). Lasse das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
 '8' => q~Du kannst Dich nicht registrieren, als Gast schreiben oder die eMail-Adresse ändern, wenn sie von einer dieser Domaine stammt:~,
 );
 
@@ -1407,7 +1407,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Time::Local' => q~Genutzt zur Umwandlung von Zeitzeichenketten in Zeitstempel.<br />Ist dieses Modul nicht installiert, wird die Benchmark-Zeit nicht in vollen und hochauflösenden Sekunden angezeigt.~,
 'File::Find' => q~Genutzt zum Hochladen für Avatare und Dateianhänge.<br />Ist dieses Modul nicht installiert, die Funktion aber aktiviert, wirst Du eine Fehlermeldung erhalten, sobald Du versuchst, etwas hochzuladen.~,
 'CGI' => q~Genutzt zum Hochladen für Avatare und Dateianhänge.<br />Ist dieses Modul nicht installiert, dass Feature aber aktiviert, wirst Du eine Fehlermeldung erhalten sobald Du versuchst, etwas hochzuladen.~,
-'CGI2' => q~<strong>Ihre Version</strong>:~,
+'CGI2' => q~<strong>Deine Version</strong>:~,
 'Net::SMTP' => q~Genutzt zum eMail-Versand über SMTP.<br />Dieses Modul ist nur erforderlich, wenn Du Deine eMails über Net::SMTP versenden willst.~,
 'Net::SMTPS' => q~Genutzt zum eMail-Versand über SMTPS.<br />Dieses Modul ist nur erforderlich, wenn Du Deine eMails über Net::SMTPS versenden willst (in der Regel, wenn Du einen externen Mailserver wie Google Mail verwenden mußt). Wenn Du Deine eMails nicht über Net::SMTPS versenden willst, benötigst Du dieses Modul nicht.~,
 'Compress::Zlib' => q~Wird für die Backup-Funktion und die Browser-Komprimierung verwendet.<br />Dieses Modul wird nur benötigt, wenn Du keine anderen Backup-Methoden zur Verfügung hast(siehe <a href="{yabb adminurl}?action=backup">Backup-Funktion</a> für Details) und/oder wenn Du "GZip-Kompression verwenden" aktivieren möchtest. Ansonsten brauchst Du dieses Modul nicht.~,
@@ -1603,18 +1603,20 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 
 %setup = (
 '7' => q~Setup und Konverter-Backup-Dateien~,
-'7a' => q~Language Encoding Converter Back-up files~,
-'8' => q~Wenn Sie Ihr Forum getestet haben und sicher sind, dass alles korrekt konvertiert ist, dann können Sie die alten YaBB-Backup-Dateien im Convert-Ordner löschen, falls es existiert. (Dies löscht auch die Konvertierungsprogramme, damit sie nicht erneut ausgeführt werden.)~,
-'8a' => q~When you have confirmed that the Language encoding has converted correctly, you can the delete the ConvertLang folders.~,
-'9' => q~Alte Backup-Dateien, Setup und Konvertierungsdienstprogramme löschen?~,
-'9a' => q~Delete Language Conversion Back-up files~,
-'10' => q~Alte Backup-Dateien gelöscht~,
-'10a' => q~Language Conversion Back-up files deleted~,
+'7a' => q~Sprachcodierung Konverter-Backup-Dateien~,
+'8' => q~Wenn Du Dein Forum getestet hast und sicher bist, dass alles korrekt konvertiert ist, dann kannst Du die alten YaBB-Backup-Dateien im Convert-Ordner löschen, falls es existiert. (Dies löscht auch die Konvertierungsprogramme, damit sie nicht erneut ausgeführt werden.)~,
+'8a' => q~Wenn Du sicher bist, dass die Sprachcodierung korrekt konvertiert wurde, kannst Du den ConvertLang-Ordner löschen.~,
+'9' => q~Alte Sicherungsdateien, Setup und Konvertierungsdienstprogramme löschen?~,
+'9a' => q~Lösche sprachumgewandelte Sicherungsdateien~,
+'10' => q~Alte Sicherungsdateien gelöscht~,
+'10a' => q~Sprachumgewandelte Sicherungsdateien~,
 'conv' => q~Um 1x oder 2x Dateien zu konvertieren nach 2.7.00~,
-'conv2' => qq~<strong><a href="$boardurl/Setup.pl?lang=German_Informal">Gehen Sie zu Setup/Convert</a></strong>~,
+'conv2' => qq~<strong><a href="$boardurl/Setup.pl?lang=German_Informal">Gehe zu Setup/Convert</a></strong>~,
+'fixn' => qq~Das 2x Import-Dienstprogramm hat potenzielle Probleme mit den "importierten/konvertierten" Daten erkannt. Weitere Informationen findest Du unter <a href="$yyhtml_root/tmp/datacheck.txt" target="_new">datacheck.txt</a> für mehr Details.~,
+'illmem1' => qq~Mitglied(er) mit illegalen Benutzernamen wurden gefunden und in legale Namen umgewandelt.<br />Diese Informationen findest Du in der <i>$yyhtml_root/tmp/fixusers.txt</i> Datei.<br />~,
 );
 
-$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;
+$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.</span>~;
 $iFrameSupport = 'Sorry, um die letzten Neuigkeiten zu sehen, mußt Du einen Browser verwenden, der iframes unterstützt';
 $rna = 'Remote Server nicht verfügbar.';
 

@@ -12,20 +12,20 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informalrefcontrollngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informalrefcontrollngmods = ();
-if(@german_informalrefcontrollngmods){
+if (@german_informalrefcontrollngmods) {
     $german_informalrefcontrollngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %refer_settings = (
-'gen' => q~Wähle die Aktionen aus, <i>(action= in URLs)</i> die von außerhalb Deiner Domäne verknüpft werden kann~,
+'gen' => q~Wähle die Aktionen aus, <i>(action= in URLs)</i> die von außerhalb Deiner Domäne verknüpft werden können~,
 'refer_controls' => q~generell~,
 'refer_mods' => q~Modifikationen~,
 );
@@ -77,7 +77,5 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'viewdownloads' =>  q~Downloads zeigen~,
 'viewprofile' =>  q~Profile anzeigen~,
 );
-
-## Mod Hook ##
 
 1;

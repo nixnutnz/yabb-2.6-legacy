@@ -1,9 +1,9 @@
 ###############################################################################
 # Notify.lng (Notify text definitions)                                        #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germannotifylngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -29,7 +29,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '120' => q~von~,
 '121' => q~Zurücksetzen~,
 '122' => q~Sie werden benachrichtigt, wenn es Antworten auf die folgenden Beiträge gibt~,
-'123' => q~Aktivieren Sie das Kontrollkästchen, um die Benachrichtigung im Thema zu <strong><em>deaktivieren</em></strong>.~,
+'123' => q~Aktivieren Sie das Kontrollkästchen, um die Benachrichtigung für das Thema zu <strong><em>deaktivieren</em></strong>.~,
 '124' => q~Benachrichtigungen ändern~,
 '125' => q~Benachrichtigung~,
 '126' => q~Wünschen Sie eine Benachrichtigung, wenn jemand in diesem Forum antwortet?~,

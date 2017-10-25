@@ -1,7 +1,7 @@
 ###############################################################################
 # LogInOut.lng (LogInOut text definitions)                                    #
 ###############################################################################
-# German_Informal - Translation by Pyragony                                   #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
 # review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
@@ -12,13 +12,13 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informalloginoutlngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informalloginoutlngmods = ();
-if(@german_informalloginoutlngmods){
+if (@german_informalloginoutlngmods) {
     $german_informalloginoutlngmods = 1;
 }
 $action ||= q{};
@@ -46,7 +46,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'capslock' => q~Die Feststelltaste ist angeschaltet.~,
 'wrong_char' => q~Dieses Zeichen im Passwort ist ungültig~,
 'error_user_info' => q~Du mußt Deine Benutzer-ID oder eMail-Adresse eingeben.~,
-'no_user_info_exists' => q~Die Benutzer-ID oder eMail-Adresse die Du eingegeben hast, existiert nicht in diesem Forum.~,
+'no_user_info_exists' => q~Die Benutzer-ID oder eMail-Adresse, die Du eingegeben hast, existiert nicht in diesem Forum.~,
 'verification_question_desc' => q~Bitte beantworte die oben genannte Überprüfungsfrage.~,
 'verification_question_case' => q~Antworten sind Groß-und Kleinschreibung.~,
 'error_verification' => q~Der Verifizierungscode fehlt.~,

@@ -1,7 +1,7 @@
 ###############################################################################
 # Countries.lng (Counties - Timezone text definitions)                        #
 ###############################################################################
-# German_Formal - Translation by Pyragony                                     #
+# German_Informal - Translation by Pyragony                                   #
 # and other members of the YaBB community                                     #
 # review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
@@ -21,8 +21,6 @@ $german_informalcountrieslngver = 'YaBB 2.7.00 $Revision: 1874 $';
 if (@german_informalcountrieslngmods) {
     $german_informalcountrieslngmods = 1;
 }
-$action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; }
 
 #NOTE: DO NOT translate the left hand items.
 #This version corresponds with DateTime version 2.13.

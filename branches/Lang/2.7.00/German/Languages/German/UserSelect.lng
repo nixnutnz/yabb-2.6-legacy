@@ -1,9 +1,9 @@
 ###############################################################################
 # UserSelect.lng (UserSelect text definitions)                                #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germanuserselectlngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -26,10 +26,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
 %usersel_txt = (
 'addselected' => q~Gewählte hinzufügen~,
 'instruct' => q~Doppel-Klick auf ein Mitglied oder wählen Sie ein oder mehrere Mitglieder aus der Liste und klicken Sie auf den 'Gewählte hinzufügen' Button, um die von Ihnen ausgewählten Mitglieder der~,
-'instruct0' => q~Tragen Sie den ersten Buchstaben des neuen Moderators in das Feld oben ein, führen dann einen Doppel-Klick auf ein Mitglied oder wählen Sie ein oder mehrere Mitglieder aus der Liste und klicken Sie auf den 'Gewählte hinzufügen' Button, um die von Ihnen ausgewählten Mitglieder der~,
+'instruct0' => q~Tragen Sie den ersten Buchstaben des neuen Moderators in das Feld oben ein, führen Sie dann einen Doppel-Klick auf ein Mitglied oder wählen Sie ein oder mehrere Mitglieder aus der Liste und klicken Sie auf den 'Gewählte hinzufügen' Button, um die von Ihnen ausgewählten Mitglieder der~,
 'instruct1' => q~Doppel-Klick auf ein Mitglied oder wählen Sie ein Mitglied aus der Liste und klicken Sie auf den 'Gewählte hinzufügen' Button, um die von Ihnen ausgewählten Namen~,
 'instruct2' => q~Mitglied(er) nach Name oder eMail finden:~,
-'instruct3' => q~Im oberen Suchfeld können Sie ein Wildcard Zeichen (nur einen *) in Ihrer Suchzeichenkette benutzen.~,
+'instruct3' => q~<br />Im oberen Suchfeld können Sie ein Wildcard Zeichen (nur einen *) in Ihrer Suchzeichenkette benutzen.~,
 'instruct4' => q~Mitgliedergruppen auswählen~,
 'wildcardinfo' => q~* als Platzhalter möglich~,
 'searchresult' => q~Suchergebnis:~,

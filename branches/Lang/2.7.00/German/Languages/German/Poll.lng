@@ -1,9 +1,9 @@
 ###############################################################################
 # Poll.lng (Poll text definitions)                                            #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germanpolllngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -62,13 +62,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '55' => q~Wählen Sie diese Option, wenn die Ergebnisse versteckt bleiben sollen, bis die Umfrage geschlossen ist.~,
 '56' => q~Wählen Sie diese Option, wenn in Ihrer Umfrage mehrere Optionen gleichzeitig gewählt werden dürfen.~,
 '57' => q~Kommentar zur Umfrage~,
-'58' => q~Mehrfach-Wahl~,
+'58' => q~Mehrfachwahl~,
 '59' => q~Umfragekommentar~,
 '64' => q~Sie wählten am~,
 '65' => q~Ihre Entscheidung war~,
 '66' => q~Ihre Entscheidungen waren~,
 'showcased' => q~Derzeit angezeigte Übersichtsumfrage~,
-'setshowcased' => q~Als Übersichts-Umfrage?~,
+'setshowcased' => q~Als Übersichtsumfrage?~,
 'showcaserem' => q~Übersichtsumfrage entfernen?~,
 'confirm' => q~Sind Sie sicher, dass diese Umfrage auf der Startseite angezeigt werden soll?\\nEine andere Umfrage ist derzeit aktiv und wird angezeigt.~, # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
 );

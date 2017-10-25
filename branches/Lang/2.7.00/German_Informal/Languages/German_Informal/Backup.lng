@@ -16,9 +16,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$german_informalbackuplngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalbackuplngver = 'YaBB 2.7.00 $Revision: 1848 $';
 @german_informalbackuplngmods = ();
-if(@german_informalbackuplngmods) {
+if (@german_informalbackuplngmods) {
     $german_informalbackuplngmods = 1;
 }
 $action ||= q{};
@@ -36,7 +36,7 @@ if( ! $script_root ) {
 '3' => q~Wähle aus, welche Verzeichnisse gesichert werden sollen. <span style="color: red;"><strong>Hinweis:</strong></span> Die Backup Verzeichnisstruktur benutzt die aktuellen Pfade aus Paths.pm.~,
 '4' => q~YaBB-Verzeichnisse~,
 '5' => q~Alle aus-/abwählen~,
-'6' => q~Wenn Du alle Optionen auswählst, wird eine komplette Kopie Deines Forums erstellt (empfohlen).<br />Diese Sicherungsmethode kann aber insbesondere bei sehr großen Foren zu Problemen bei der Wiederherstellung kommen. In diesem Fall ist es besser, wenn Du separate Backups für jedes einzelne statische Verzeichnis und für die Verzeichnisse Boards, Members und Messages erstellst!~,
+'6' => q~Wenn Du alle Optionen auswählst, wird eine komplette Kopie Deines Forums erstellt (empfohlen).<br />Diese Sicherungsmethode kann aber insbesondere bei sehr großen Foren zu Problemen bei der Wiederherstellung kommen. In diesem Fall ist es besser, wenn Du separate Backups für jedes einzelne statische Verzeichnis und für die Verzeichnisse Boards, Members und Messages erstellst.~,
 'path1' => q~Pfad zu Tar and Zip:~,
 'path2' => q~Pfad zu gzip and bzip2 (setzt auch den Pfad zu gzip in Erweiterte Einstellungen):~,
 'path3' => q~Fülle die Felder <strong>nur</strong> aus, wenn YaBB nicht automatisch die Pfade zu Tar, Zip, gzip, and bzip2 findet. Ansonsten lasse die oben genannten Bereiche leer.~,
@@ -62,7 +62,7 @@ if( ! $script_root ) {
 '16' => q~<em>Backup:</em> Tar (mit Komprimierung) oder Zip nutzen die Standalone-UNIX-Utilities und sind die empfohlenen Backup Methoden. Archive:: Tar (mit Komprimierung) oder Archive:: Zip sollten nur verwendet werden, wenn die Tar / Zip Backup Methoden nicht verfügbar sind, da die Perl-Module langsamer als die Standalone-Utilities sind.<br /><br /><em>Komprimierung:</em> Wenn die Tar Backup Methode verwendet wird, wird dringend empfohlen, die Komprimierung in den Archiven klein zu halten. (Zip ist bereits komprimiert.) Bzip2 erstellt kleinere Archive als Gzip oder Zip, dauert dafür aber länger. Dies könnte ein Methode für langsame Servern mit großen Foren sein.<br /><br /><span class="important">Hinweis:</span> Einige Server unterstützen das Anlegen großer Backups nicht. In diesem Fall erhälst Du eine Fehlermeldung wie "Internal Server Error" oder möglicherweise auch eine leere Seite. Versuche dann eine alternative Backup und/oder Kompressions Methode. Hilft dies nicht, versuche für jedes YaBB Verzeichnis ein separates Backup anzulegen.~,
 '17' => q~Keine tar-Komprimierung~,
 '18' => q~(für die tar-Komprimierung)~,
-'19' => q~Ihre Sicherungen (Backups) werden abgelegt in diesem Verzeichnis:~,
+'19' => q~Deine Sicherungen (Backups) werden abgelegt in diesem Verzeichnis:~,
 '19a' => qq~Bitte den <b>kompletten Pfad</b> (e.g. $support_env_path/Backups) angeben, nicht ./Backups~,
 '19b' => q~Backup-Erinnerung~,
 '19c' => q~Benachrichtigen, wenn das letzte Backup älter ist als~,
@@ -79,6 +79,8 @@ if( ! $script_root ) {
 '24' => q~<span class="important">Während der Datensicherung wird das Forum automatisch in den Backupmodus gesetzt. Dies bedeutet, dass Dein Forum gesperrt ist, bis die Sicherung abgeschlossen ist.</span><br /><br /><span style="color:important;"><b>Hinweis:</b></span> Bei der Sicherung sehr grosser Foren kann es eine Weile dauern bis ein Seitenrefresh erfolgt - unter Umständen kann ein Zeitraum von bis zu 5 Minutern vergehen, bis eine Reaktion erfolgt. Sollte ein sog. Timeout vorliegen oder innerhalb von 5 Minuten nichts passieren, beachte den <span style="color:red;">Hinweis</span> oberhalb im Abschnitt \'Backup Methode\' bei grossen Foren.<br /><br />Nach dem Erstellen von mindestens einem kompletten Backup kannst Du wählen, ob nachfolgende Sicherungen ebenfalls komplett (alle Dateien in den Verzeichnissen die oberhalb ausgewählt sind) oder inkrementell (nur die Dateien, die sich seit der letzten Sicherung verändert haben) ausgeführt werden. Wenn Änderungen an einer der oben festgelegten Einstellungen vorgenommen und gespeichert werden, <i>muss</i> das nächste Backup ein komplett Backup sein. Bei inkrementellen Backups wird der Zeitintervall zur Bestimmung geänderter Dateien in <i>Sekunden</i> gemessen für Tar, Archive::Tar und Archive::Zip jedoch in <i>Tagen</i> für Zip.<br /><br /><span style="color:important;"><b>Hinweis:</b></span> Bevor Du Deine erste Sicherung durchführst, führe die <strong>Mitgliederliste neuaufbauen</strong> in den <strong>Wartungsfunktionen</strong> aus, um Sicherungsberechtigungen festzulegen.~,
 '25' => q~Start komplettes Backup - Alle Dateien in den ausgewählten Verzeichnissen~,
 '25a' => q~Start inkrementelles Backup - Nur Dateien die geändert/erstellt wurden seit~,
+
+# '26' => q{}, Not used
 
 # Text used for the actual backup output
 '27' => q~gesichert~,
@@ -108,14 +110,14 @@ if( ! $script_root ) {
 '44' => q~Konnte Verzeichnis nicht wechseln nach:~,
 '45' => q~Ungültige Backup-Datei.~,
 '46' => q~Kann nicht lesen von~,
-'47' => q~Bist Du sicher, dass Du löschen willst~,
+'47' => q~Bist Du sicher, dass Du löschen willst?~,
 '48' => q~? Diese Aktion kann nicht rückgängig gemacht werden.~,
 '49' => q~JA, dieses Backup jetzt löschen~,
 '50' => q~NEIN, dieses Backup nicht löschen~,
 '51' => q~Kann nicht löschen~,
 '52' => q~eMail~,
 '53' => q~LÖSCHEN~,
-'54' => q~Bist Du sicher, dass Du die eMail absenden möchtest~,
+'54' => q~Bist Du sicher, dass Du die eMail absenden möchtest?~,
 '55' => q~Die Größe der angehängten Datei beträgt~,
 '56' => q~Ja, Dateianhang verschicken an~,
 '57' => q~Nein, keinen Dateianhang, nur den eMail-Link versenden.~,
@@ -164,28 +166,28 @@ if( ! $script_root ) {
 'mailfrom' => q~"YaBB 2 Backup-Mailer" <{yabb webmaster_email}>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
 'mailsuccess' => q~eMail erfolgreich verschickt.~,
 'mailfail' => q~Beim Versand der eMail traten Fehler auf. Beachte die Fehlermeldung in der Informations-eMail, die Du erhalten wirst.~,
-'no_perm' => q~Sie haben keine Berechtigung, die obigen Einstellungen zu ändern.~,
+'no_perm' => q~Du hast keine Berechtigung, die obigen Einstellungen zu ändern.~,
 'no_dnload' => q~DOWNLOAD nicht erlaubt.~,
 'no_delete' => q~LÖSCHEN nicht erlaubt.~,
 '542' => q~Wenn in 5 Sekunden nichts passiert,~,
-'543' => q~Klicken Sie hier um fortzufahren.~,
+'543' => q~klicke hier um fortzufahren.~,
 # The actual messages are here.
 # Don't translate WORDS IN ALL CAPITALS from here to the end of the file
-'mailmessage1' => q~Hallo USERNAME!
+$backup_txt{'mailmessage1'} = q~Hallo USERNAME!
 
 Das Backup: "FILENAME" befindet sich im Anhang dieser eMail.
 
 Wenn nicht, klicke auf den LINK, um es manuell herunterzuladen.
 
 
-Danke, dass Du YaBB benutzt!~;
+Danke, dass Du YaBB benutzt!~,
 
 'mailmessage2' => q~Hallo USERNAME!
 
 Du kannst diesen Link LINK für den Download der Backup Datei FILENAME aufrufen.
 
 
-Danke, dass Du YaBB benutzt!~;
+Danke, dass Du YaBB benutzt!~,
 
 'mailmessage3' => q~Hallo USERNAME!
 
@@ -198,7 +200,7 @@ Die vom System in Bezug auf den fehlerhaften eMail-Versand festgestellten Inform
 
 Es ist erforderlich, dass das Modul MIME::Lite auf dem von Dir verwendeten Server installiert ist, um Backups per eMail zu erhalten. Möglicherweise betrifft dies auch noch weitere Module (Beachte die Information oberhalb). Frage den Server Administrator oder Deinen Internet-Service-Provider (ISP) ob es möglich ist, die für den eMail Versand benötigten Module auf dem Server zu installieren. Weitere Hilfe zum Installieren von Modulen findest Du hier: http://codex.yabbforum.com/YaBB.pl?num=1225217016
 
-Danke, dass Du YaBB benutzt!~;
+Danke, dass Du YaBB benutzt!~,
 );
 
 1;

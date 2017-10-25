@@ -1,9 +1,9 @@
 ###############################################################################
 # Menu.lng (Image text/images definitions)                                    #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germanmenulngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -106,7 +106,7 @@ if (!$language){$language = $lang;}
 'birthdaylist' => q~Geburtstagsliste~,
 'eventcal' => q~Kalender~,
 'to_top' => q~Zum Seitenanfang~,
-'no_text' => q~kein Text - ~,
+'no_text' => q~Kein Text - ~,
 );
 
 %img_polltxt = (

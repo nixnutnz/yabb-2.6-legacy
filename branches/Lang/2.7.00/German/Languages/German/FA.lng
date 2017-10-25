@@ -1,9 +1,9 @@
 ###############################################################################
 # FA.lng (File Attachment text definitions)                                   #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germanfalngver = 'YaBB 2.7.00 $Revision: 1885 $';
@@ -57,8 +57,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '17b' => q~Geben Sie die Mitglieder-Gruppen an, denen es erlaubt ist, PN-Anhänge hochzuladen:<br /><span class ="small">Wenn keine Mitgliedergruppe ausgewählt ist, werden alle Mitgliedergruppen aktiviert.<br />Verwenden Sie Strg oder Umschalt zum aktivieren / deaktivieren mehrerer Gruppen.</span>~,
 '18' => q~Dürfen Gäste Dateien anhängen?~,
 '19' => q~Kann nicht geöffnet werden:~,
-'20' => q~<= Dateiendung ist nicht erlaubt! Erlaubt ist nur die Verwendung folgender Dateiendungen:~,
-'20a' => q~<= Ungültiger Code in der Bild-Datei!~,
+'20' => q~&lt;= Dateiendung ist nicht erlaubt! Erlaubt ist nur die Verwendung folgender Dateiendungen:~,
+'20a' => q~&lt;= Ungültiger Code in der Bild-Datei!~,
 '21' => q~Die Datei~,
 '21b' => q~ist zu groß. Die maximal erlaubte Dateigröße in KB beträgt:~,
 '22' => q~Mit dieser Datei~,
@@ -82,15 +82,15 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '32' => q~Anhänge löschen, wenn älter als~,
 '32a' => q~PN-Anhänge löschen, wenn älter als~,
 '33' => q~Anhänge löschen, wenn größer als~,
-'33a' => q~PN-Anhänge löschen, wenn älter als~,
+'33a' => q~PN-Anhänge löschen, wenn größer als~,
 '34' => q~Anhänge löschen, wenn älter als _ Tage:~,
-'35' => q~Anhang löschen, wenn größer als~,
+'35' => q~Anhänge löschen, wenn größer als~,
 '35a' => q~PN-Anhänge löschen, wenn größer als~,
 '36' => q~Dateianhänge verwalten~,
 '37' => q~Dateianhänge verwalten : Log anzeigen~,
 '37a' => q~PN-Dateianhänge verwalten : Log anzeigen~,
 '38' => q~Das Anhangslog zeigt Ihnen Informationen über sämtliche Anhänge in Ihrem Forum. Sie können von hier aus Anhänge herunterladen, löschen oder direkt zu dem zugehörigen Beitrag springen. (Gehen Sie zu <a href="{yabb adminurl}?action=manageattachments">Dateianhänge verwalten</a>)~,
-'38a' => q~Das PN-Anhangslog zeigt Ihnen Informationen über sämtliche PN-Anhänge in Ihrem Forum. Sie können von hier aus PN-Anhänge in dieser Sektion herunterladen oder löschen.~,
+'38a' => q~Das PN-Anhangslog zeigt Ihnen Informationen über sämtliche PN-Anhänge in Ihrem Forum. Sie können von hier aus PN-Anhänge in dieser Sektion herunterladen oder löschen. (Gehe zu <a href="{yabb adminurl}?action=manageattachments">Dateianhänge verwalten</a>)~,
 '39' => q~Anhangslog~,
 '39a' => q~PN-Anhangslog~,
 '40' => q~Name des Anhangs~,
@@ -131,8 +131,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '61a' => q~... beendet.~,
 '61b' => q~Löschung nicht verwendeter Dateien~,
 '61c' => q~Löschung nicht verwendeter PN-Dateien~,
-'62' => q~Anhangslog Datei (attachments.txt) wurde neu aufgebaut.~,
-'62a' => q~PN-Anhangslog Datei (pm.attachments) wurde neu aufgebaut.~,
+'62' => q~Anhangslog Datei (attachments.db) wurde neu aufgebaut.~,
+'62a' => q~PN-Anhangslog Datei (pmattachments.db) wurde neu aufgebaut.~,
 '63' => q~Dateianhänge neuaufbauen~,
 '63a' => q~PN-Dateianhänge neu aufbauen~,
 '64' => q~Seiten~,
@@ -144,12 +144,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '80a' => q~Mehr Dateianhänge~,
 '80s' => q~Weniger Dateianhänge~,
 '81' => q~Datei entfernen~,
-'actf' => q~Files in Attachments folder~,
-'acts' => q~Total Size in Attachments folder~,
-'larg' => q~Largest File: ~,
-'old' => q~Oldest File: ~,
-'pactf' => q~Files in PMAttachments folder~,
-'pacts' => q~Total Size in PMAttachments folder~,
+'actf' => q~Dateien im Ordner für Anhänge~,
+'acts' => q~Gesamtgröße des Ordners für Anhänge~,
+'larg' => q~Größte Datei: ~,
+'old' => q~Älteste Datei: ~,
+'pactf' => q~Dateien im Ordner für PN-Anhänge~,
+'pacts' => q~Gesamtgröße des Ordners für PN-Anhänge~,
 );
 
 1;

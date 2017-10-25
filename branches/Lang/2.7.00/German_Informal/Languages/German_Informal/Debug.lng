@@ -12,17 +12,17 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informaldebuglngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informaldebuglngmods = ();
-if(@german_informaldebuglngmods){
+if (@german_informaldebuglngmods) {
     $german_informaldebuglngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' && $language ne 'German' ) { return 1; }
+if ( $action eq 'detailedversion' && $language ne 'German_Informal' ) { return 1; }
 
 %debug_txt = (
 'getpairs' => q~eingehende GET Paare~,
@@ -42,8 +42,8 @@ if ( $action eq 'detailedversion' && $language ne 'German' ) { return 1; }
 'browser' => q~Dein Browser-Agent~,
 'trace' => q~Debug-Parameter~,
 'check' => q~Dateiüberprüfung auf Öffnen/Schliessen~,
-'filehandles' => q~Dateihandlung/Dateien geöffnet~,
-'filehandleslegend' => q~öffnen des FILEHANDLE (Zeit) &nbsp; &nbsp; <em>MODUS</em>DateiPfadName &nbsp; &nbsp; schließen des FILEHANDLE (Zeit)<br />[Namensraum (package), SkriptPfadName, Zeile]~,
+'filehandles' => q~Filehandle/Dateien geöffnet~,
+'filehandleslegend' => q~Öffne FILEHANDLE (time) &nbsp; &nbsp; <em>MODE</em>filepathname &nbsp; &nbsp; Schließe FILEHANDLE (time)<br />[package, scriptpathname, line]~,
 'filesloaded' => q~Dateien geladen von~,
 'process_scalars' => q~Prozessskalare verarbeiten~,
 'process_num' => q~Prozessnummer dieses laufenden Prozesses~,

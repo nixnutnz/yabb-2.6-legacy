@@ -12,15 +12,16 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-
-$german_informalerrorlngver = 'YaBB 2.7.00 $Revision: 1874 $';
+no warnings;
+$german_informalerrorlngver = 'YaBB 2.7.00 $Revision: 1920 $';
 @german_informalerrorlngmods = ();
-if(@german_informalerrorlngmods) {
+if (@german_informalerrorlngmods) {
     $german_informalerrorlngmods = 1;
 }
+
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
@@ -55,7 +56,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'no_info'               => q~Keine Info spezifiziert in der Url~,
 'password_mismatch'     => q~Passwörter sind nicht identisch.~,
 'bad_credentials'       => q~Benutzer-ID / Passwort stimmen nicht. <br />Entweder existiert die Benutzer-ID nicht, oder Du hast ein falsches Passwort verwendet.~,
-'invalid_character'     => q~Ein ungültiges Zeichen ist im~,
+'invalid_character'     => q~Ein ungültiges Zeichen ist in der~,
 'invalid_email'         => q~Bitte gebe eine gültige eMail-Adresse an.~,
 'invalid_picture'       => q~Ungültige Eingabe für das Forenbild.~,
 'no_secret_answer'      => q~Du mußt eine Antwort zu der Frage angeben~,
@@ -68,7 +69,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'speed_alert'           => q~Dieses schnelle Posting wird als Spamming betrachtet, Du bist gewarnt!<br />Du hast nur noch <strong>{yabb spam_hits_left_count}</strong> weitere Versuch(e), danach wirst Du als Spammer gebannt.~,
 'tsc_alert'             => q~Eines der Formularfelder enthält Text der als SPAM betrachtet wird, Du bist gewarnt!<br />Du hast nur noch <strong>{yabb spam_hits_left_count}</strong> Versuch(e), danach wirst Du als Spammer gebannt.~,
 'speedpostban'          => q~Du bist momentan in diesem Forum durch mögliches Spammen verbannt!<br />Nach <strong>{yabb detention_left}</strong> Sekunde(n) wird Deine Verbannung automatisch aufgehoben.~,
-'truncation_error'      => q~Stelle bitte sicher, dass Du in Deiner Settings.pm 'fake truncation' eingeschaltet hast?<br />\$faketruncation = 1;<br />Could not truncate file~,
+'truncation_error'      => q~Stelle bitte sicher, dass Du in Deiner Settings.pm 'fake truncation' eingeschaltet hast?<br />$faketruncation = 1;<br />Could not truncate file~,
 'referer_violation'     => q~Die folgende Aktion ist von einer fremden Domain aus nicht zugänglich!<br /> Aktion ist: ~,
 'egg'                   => q~Selbstzerstörungsreihenfolge gestartet !!<br />~,
 'domain_not_allowed'    => q~Du kannst Dich nicht registrieren, als Gast schreiben oder die eMail Adresse ändern, wenn sie von einer dieser Domains stammt:~,
@@ -173,7 +174,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'password_is_userid'    => q~Aus Sicherheitsgründen kannst Du Deinen Benutzernamen nicht gleichzeitig als Passwort verwenden.~,
 'name_is_userid'        => q~Aus Sicherheitsgründen kannst Du Deinen angezeigten Name, nicht als Deinen Benutzernamen haben.~,
 'name_taken'            => q~Dieser Name wird schon von einem anderen Mitglied verwendet.~,
-'name_censored'         => q~Du hast ein oder mehrere zensierte Wörter bei Ihrem angezeigten Namen verwendet. Bitte gehe zurück und ändere Deinen angezeigten Namen. Das Wort oder die Wörter, die das Problem verursachten, sind:~,
+'name_censored'         => q~Du hast ein oder mehrere zensierte Wörter bei Deinem angezeigten Namen verwendet. Bitte gehe zurück und ändere Deinen angezeigten Namen. Das Wort oder die Wörter, die das Problem verursachten, sind:~,
 'name_too_long'         => q~Bitte kürze den gewählten Benutzernamen. Er ist zu lang.~,
 'invalid_birthdate'     => q~Ungültige Eingabe in einem oder mehreren der Geburtsdatum-Felder.~,
 'not_allowed_gender_edit'   => q~Du bist nicht berechtigt, Dein Geschlecht zu ändern.~,
@@ -241,7 +242,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'double_count'          => q~Du kannst keine zwei beitragsabhängige Gruppen mit der gleichen Beitragsanzahl erstellen.~,
 'no_groupname_change'   => q~Du kannst den Namen einer beitragsunabhängigen Gruppe nicht ändern.~,
 'invalid_value'         => q~Du hast einen ungültigen Wert für dieses Element eingetragen: ~,
-'nofolder' => q~Kein Template-Ordner-Name~,
+
 
 ## Permalinking ##
 'no_board_found'        => q~Das Forum, worauf Du Dich bezogst, scheint nicht (mehr) zu existieren.~,
@@ -255,6 +256,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## MemberGroups ##
 'newpostdep_gmod'      => q~Sorry, Global-Moderatoren können keine Benutzer ändern, die einer beitragsabhängigen Gruppe angehören, weil im Bereich der Wartungsfunktionen der Punkt->"Mitgliederliste neuaufbauen" durchlaufen werden muss. Diese Funktion steht nur im Wartungsmodus zur Verfügung, da sonst ein Login nicht möglich ist.~,
+
+'nofolder' => q~Kein Template-Ordner-Name~,
+'nofile'  => q~Es wurde keine Datei zum Download ausgewählt~,
+'nogtalk' => q~Google Hangout kann nicht geladen werden~,
+'noextern'=> q~Kein externes Board~,
 );
 
 1;

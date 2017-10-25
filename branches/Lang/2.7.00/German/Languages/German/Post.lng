@@ -1,9 +1,9 @@
 ###############################################################################
 # Post.lng (Post text definitions)                                            #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germanpostlngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -151,11 +151,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '604' => q~/me - Mein Name~,
 '646' => q~Mitglieder, die auf dieses Thema antworten~,
 '750' => q~Aktivieren, wenn Sie über Antworten auf dieses Thema benachrichtigt werden wollen.~,
-'751' => q~Erforderliche Informationen fehlen:~,
 '752' => q~Sie müssen das Empfängerfeld ausfüllen.~,
 '768' => q~Sind Sie sicher, dass Sie das Mitglied von der Liste entfernen möchten?~,
 '771' => q~Vorschau aktualisieren~,
 '772' => q~Gast~,
+'751' => q~Erforderliche Informationen fehlen:~,
 '801' => q~Fröhlich~,
 '802' => q~Böse~,
 '807' => q~(Der angezeigte Name des Benutzers wird nicht in der Live Vorschau dargestellt)~,
@@ -169,7 +169,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'alertmod' => q~Die Moderatoren des Forums über diesen Beitrag informieren~,
 'favorite' => q~Zu Ihren Favoriten hinzufügen~,
 'notfav' => q~Aktivieren, wenn Sie dieses Thema zu Ihren Favoriten hinzufügen wollen.~,
-'alreadyfav' => q~Sie haben bereits dieses Thema Ihren Favoriten hinzugefügt.~,
+'alreadyfav' => q~Sie haben bereits dieses Thema zu Ihren Favoriten hinzugefügt.~,
 'maximumfav' => q~Sie haben bereits die maximalen erlaubten Favorite Themen.~,
 'draftleave' => q~Aktivieren, wenn Sie diese Nachricht nach dem Senden im Ordner 'Entwürfe' behalten wollen~,
 'resizedescript' => q~Sie können die Größe des Textfeldes ändern, indem Sie die Ränder mit der Maus ziehen.~,

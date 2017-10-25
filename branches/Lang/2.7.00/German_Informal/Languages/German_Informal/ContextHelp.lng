@@ -1,7 +1,7 @@
 ###############################################################################
 # ContextHelp.lng                                                             #
 ###############################################################################
-# German_Formal - Translation by Pyragony                                     #
+# German_Informal - Translation by Pyragony                                   #
 # and other members of the YaBB community                                     #
 # review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
@@ -12,14 +12,14 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
 # for his contribution to the YaBB community                                  #
 ###############################################################################
 
-$german_informalcontexthelplngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalcontexthelplngver = 'YaBB 2.7.00 $Revision: 1848 $';
 @german_informalcontexthelplngmods = ();
 if (@german_informalcontexthelplngmods) {
     $german_informalcontexthelplngmods = 1;
@@ -30,8 +30,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ### Do not translate uppercase words in sharp brackets ([])
 
 %contextxt = (
-'clicktip' => q~Rechter Mausklick für Hilfe",
-'url' => q~Einfügen eines Links:<br /><br />Schreibe Deinen Link und markiere diesen: [SELECT]http://www.yabbforum.com[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url]http://www.yabbforum.com[/url]<hr />Füge einen Link mit \"Text\" hinzu:<br /><br />Schreibe den Link <u>und</u> den Text und markiere das danach: [SELECT]http://www.yabbforum.com YaBB Forum[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url=http://www.yabbforum.com]YaBB Forum[/url]<hr /><b>Ergebnis:</b> <br />Es wird entweder nur der Link angezeigt, oder wenn Du Link und Text eingegeben hast, nur der Text angezeigt. Beides kann man anklicken, es öffnet sich ein neues Fenster, in dem der angegebene Link geöffnet wird.~,
+'clicktip' => q~Rechter Mausklick für Hilfe~,
+'url' => q~Einfügen eines URL-Links:<br /><br />Schreibe einen Link und markiere diesen: [SELECT]http://www.yabbforum.com[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url]http://www.yabbforum.com[/url]<hr />Füge einen Link mit \"Text\" hinzu:<br /><br />Schreibe den Link <u>und</u> den Text und markiere das danach: [SELECT]http://www.yabbforum.com YaBB Forum[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [url=http://www.yabbforum.com]YaBB Forum[/url]<hr /><b>Ergebnis:</b> <br />Es wird entweder nur der Link angezeigt, oder wenn Du Link und Text eingegeben hast, nur der Text angezeigt. Beides kann man anklicken, es öffnet sich ein neues Fenster, in dem der angegebene Link geöffnet wird.~,
 'ftp' => q~Einfügen eines FTP-Links:<br /><br />Schreibe die FTP-Adresse und markiere diese: [SELECT]ftp://ftpdom[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [ftp]ftp://ftpdom[/ftp]~,
 'img' => q~Bild einfügen:<br /><br />Schreibe den Link zum Bild: [SELECT]http://imagedirectory/image.gif[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [img]http://imagedirectory/image.gif[/img]~,
 'email2' => q~Füge eine eMail-Adresse ein:<br /><br />Markiere die eMail-Adresse: [SELECT]myname\@domain.com[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [email]myname\@domain.com[/email]<hr />Einfügen eines Textes mit Link zum Mail:<br /><br />Schreibe eine Mailadresse <u>und</u> den Text: [SELECT]meinname\@domain.de Mail me[/SELECT]<br /><br />Klicke auf den \"[TITLE]\" -Button: [BUTTON]<br /><br /><b>YaBBC Code:</b> [email=myname\@domain.com]Mail me[/email]~,

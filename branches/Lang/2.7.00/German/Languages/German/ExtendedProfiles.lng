@@ -1,13 +1,13 @@
 ###############################################################################
 # ExtendedProfiles.lng                                                        #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -46,9 +46,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'reorder fields' => q~Felder ordnen~,
 'reorder_title' => q~Profilfelder ordnen~,
 'create_new_title' => q~Neues Profilfeld anlegen~,
-'admin_description' => q~Willkommen bei den erweiterten Profileinstellungen. Hier können Sie zusätzliche Profilfelder für Ihre Mitglieder hinzufügen, ändern, entfernen und neu ordnen. Sie sollten jedoch einige wichtige Punkte beachten:<br /><br />Bevor Sie anfangen, 'planlos' neue Felder anzulegen, überlege Sie sich genau, welche Felder Sie wirklich benötigen und erforderlich sind. Versuchen Sie nach Möglicheit spätere Änderungen zu vermeiden, weil Ihre Mitglieder ihre Benutzerprofile entsprechend diesen Änderungen auch jedes mal ändern müssen. Bedenken Sie auch, dass die Größe der Mitgliederprofile mit jedem neu angelegten Feld steigt.<br /><br />Außerdem sollten Sie sicherstellen, dass sich Ihr Board im <b>Wartungsmodus</b> befindet. Dadurch wird gewährleistet, dass keine Benutzer genau in dem Moment Ihr Profil verändern, in dem Sie neue Profil Felder hinzufügen oder ändern.~,
+'admin_description' => q~Willkommen bei den erweiterten Profileinstellungen. Hier können Sie zusätzliche Profilfelder für Ihre Mitglieder hinzufügen, ändern, entfernen und neu ordnen. Sie sollten jedoch einige wichtige Punkte beachten:<br /><br />Bevor Sie anfangen, 'planlos' neue Felder anzulegen, überlege Sie sich genau, welche Felder Sie wirklich benötigen und erforderlich sind. Versuchen Sie nach Möglicheit spätere Änderungen zu vermeiden, weil Ihre Mitglieder ihre Benutzerprofile entsprechend diesen Änderungen auch jedes mal ändern müssen. Bedenken Sie auch, dass die Größe der Mitgliederprofile mit jedem neu angelegten Feld steigt.<br /><br />Außerdem sollten Sie sicherstellen, dass sich Ihr Board im <strong>Wartungsmodus</strong> befindet. Dadurch wird gewährleistet, dass keine Benutzer genau in dem Moment ihr Profil verändern, in dem Sie neue Profil Felder hinzufügen oder ändern.~,
 'create_new_description' => q~Hier können Sie neue Profilfelder anlegen. Bevor Sie ein neues Feld anlegen, überlegen Sie welchen Feldnamen und welchen dazugehörigen Feldtyp Sie benötigen. Es ist zwar möglich Feldnamen -und typen später wieder zu ändern, aber es ist nicht ratsam. Nachdem Sie ein neues Feld angelegt haben, klicken Sie auf den Button 'Optionen', um die erweiterten Einstellungen für dieses Feld vorzunehmen. Der Feldname kann frei gewählt werden. Es gibt dabei keine Einschränkungen. Sie können auch HTML-Code verwenden.<br /><br />Der Vorgang 'Feld anlegen' zum Hinzufügen von neuen Profilfeldern kann unter Umständen einige Zeit in Anspruch nehmen, da die Profile sämtlicher Mitglieder geändert werden müssen.~,
-'edit_description' => q~Hier können Sie bereits bestehende Profilfelder ändern. Sie können ohne großen Aufwand die Funktionen und auch den Namen von bestehenden Feldern ändern. <b>Achtung</b>: Bevor Sie einen Feld Typ änderen, sollten Sie sich die folgenden Hinweise aufmerksam durchlesen:  <br /><br />Das ändern eines Auswahlfeldes in ein Dropdown Feld und anders herum ist kein Problem. Wenn Sie aber ein Auswahlfeld durch ein Textfeld ersetzen, müssen Sie beachten, das sich bereits vorhandene Informationen zu diesem Auswahlfeld in den Benutzerprofilen nicht ändern. Wenn also ein Benutzer in einem Auswahlfeld eine Auswahl getroffen hat und Sie dieses Feld nachträglich in ein Textfeld ändern, erhält der Benutzer nach ändern seines Profils in diesem Feld den Wert 0.<br />Um dies zu verhindern, ist es ratsam das betreffende Auswahlfeld erst zu löschen und dann ein neues Textfeld anzulegen.<br />Stellen Sie auf jeden Fall sicher, dass Sie die Optionen der neuen Felder ändern, damit die verschiedenen Felder auch die verschiedenen Funktionen erfüllen.<br /><br />Der Vorgang 'Löschen' zum Entfernen von zusätzlich hinzugefügten Profilfledern kann unter Umständen einige Zeit in Anspruch nehmen, da sämtliche Benutzerprofile geändert werden müssen.~,
+'edit_description' => q~Hier können Sie bereits bestehende Profilfelder ändern. Sie können ohne großen Aufwand die Funktionen und auch den Namen von bestehenden Feldern ändern. <strong>Achtung</strong>: Bevor Sie einen Feld Typ änderen, sollten Sie sich die folgenden Hinweise aufmerksam durchlesen:  <br /><br />Das ändern eines Auswahlfeldes in ein Dropdown Feld und anders herum ist kein Problem. Wenn Sie aber ein Auswahlfeld durch ein Textfeld ersetzen, müssen Sie beachten, das sich bereits vorhandene Informationen zu diesem Auswahlfeld in den Benutzerprofilen nicht ändern. Wenn also ein Benutzer in einem Auswahlfeld eine Auswahl getroffen hat und Sie dieses Feld nachträglich in ein Textfeld ändern, erhält der Benutzer nach ändern seines Profils in diesem Feld den Wert 0.<br />Um dies zu verhindern, ist es ratsam das betreffende Auswahlfeld erst zu löschen und dann ein neues Textfeld anzulegen.<br />Stellen Sie auf jeden Fall sicher, dass Sie die Optionen der neuen Felder ändern, damit die verschiedenen Felder auch die verschiedenen Funktionen erfüllen.<br /><br />Der Vorgang 'Löschen' zum Entfernen von zusätzlich hinzugefügten Profilfledern kann unter Umständen einige Zeit in Anspruch nehmen, da sämtliche Benutzerprofile geändert werden müssen.~,
 'no_additional_fields_set' => q~Keine zusätzlichen Felder setzen~,
 'active' => q~Aktiv~,
 'field_name' => q~Feldname~,
@@ -101,9 +101,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'm_users' => q~Mitgliederbeschränkung~,
 'm_groups' => q~Gruppenbeschränkung~,
 'editable_by_user' => q~Bearbeitungsoptionen festlegen~,
-'editable_by_user_description' => q~Hier können Sie festlegen, dass nur Administratoren diese Feldeinstellung ändern können. Ist diese Auswahl aktiv, wird das Feld für das Mitglied in der Option 'Profil bearbeiten' unsichtbar. Sie können auch wählen, an welcher Position das Feld im Profil angezeigt wird.~,
+'editable_by_user_description' => q~Hier können Sie festlegen, dass nur Administratoren diese Feldeinstellung ändern können. Ist diese Auswahl aktiv, wird das Feld für das Mitglied in der Option \'Profil bearbeiten\' unsichtbar. Sie können auch wählen, an welcher Position das Feld im Profil angezeigt wird.~,
 'limit_len' => q~Anzahl der zulässigen Zeichen begrenzen~,
-'limit_len_description' => q~Begrenzt die maximale zulässige Anzahl der Zeichen die in das Feld eingetragen werden dürfen. Trage Sie den Wert '0' ein oder lassen Sie das Feld leer, um das Limit zu deaktivieren. <b>Warnung</b>: Es wird empfohlen eine Limit zu setzen, da sonst die Profildateien BELIEBIG groß werden können.~,
+'limit_len_description' => q~Begrenzt die maximale zulässige Anzahl der Zeichen die in das Feld eingetragen werden dürfen. Trage Sie den Wert '0' ein oder lassen Sie das Feld leer, um das Limit zu deaktivieren. <strong>Warnung</strong>: Es wird empfohlen eine Limit zu setzen, da sonst die Profildateien BELIEBIG groß werden können.~,
 'width' => q~Breite des Feldes~,
 'width_description' => q~Breite des Eingabefeld festlegen. Lassen Sie es leer, um die Vorgabe des Browsers zu benutzen.~,
 'is_numeric' => q~Numerische Werte erzwingen~,
@@ -111,7 +111,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'default' => q~Vorgabe~,
 'default_description' => q~Dieser Wert wird gesetzt, wenn der Benutzer das Feld nicht ausgefüllt hat. Lassen Sie es leer, um Vorgaben für dieses Feld zu deaktivieren.~,
 'ubbc' => q~ UBBC erlauben~,
-'ubbc_description' => q~UBBC Code für dieses Feld aktivieren. <b>Warnung:</b> Dies bedeutet, dass <b>alle Tags</b> genutzt werden können!~,
+'ubbc_description' => q~UBBC Code für dieses Feld aktivieren. <strong>Warnung:</strong> Dies bedeutet, dass <strong>alle Tags</strong> genutzt werden können!~,
 'rows' => q~Zeilenlänge~,
 'rows_description' => q~Tragen Sie hier den Wert für die Zeilenbreite ein, die für die Textarea Box zugelassen sein soll. Lassen Sie das Feld leer, um die Vorgabe des Browsers zu benutzen.~,
 'cols' => q~Spaltenanzahl~,
@@ -132,14 +132,14 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'page_im' => q~Mitglied kann das Feld bearbeiten, zeige es in 'PN Einstellungen' Seite~,
 'converter_title' => q~Konvertiere alte erweiterte Profilfelder~,
 'convlock' => q~Erweiteter Profilkonverter~,
-'convlock_desc' => q~Der erweiterte Profilkonverter wurde bereits ausgeführt. Der Versuch, es noch einmal laufen zu lassen, kann zu Schäden an Ihren Dateien führen.<br /><br />Um den erweiterten Profilkonverter erneut auszuführen, enfernen Sie die Datei "Variables/Extended.lock," und besuchen Sie die Seite erneut.~,
-'converter_description' => q~Hier können Sie Ihre alten 'Erweiterte Profile' nach YaBB 2.7.0 konvertieren. Bevor Sie damit beginnen, sollten Sie sicherstellen, dass Ihre alten \'Members\' und \'Variables\' Verzeichnisse auf diesem Server sind. Setzen Sie anschließend die entsprechenden Pfade unten ein. Danach müssen Sie nur noch auf den \'Konvertiere jetzt\' Button klicken. <b>BEACHTEN Sie:</b> Starten Sie den Konverter erst, wenn Sie bereits die normalen Profile mit dem YaBB 2 Konverter umgewandelt haben. Dieser Konverter wird die alten .ext Dateien in das neue Y2 Format umwandeln und die alten <i>extended_profiles_fields.txt</i> und <i>extended_profiles_order.txt</i> Dateien ins neue Variables Verzeichnis kopieren.~,
+'convlock_desc' => q~Der erweiterte Profilkonverter wurde bereits ausgeführt. Der Versuch, es noch einmal laufen zu lassen, kann zu Schäden an Ihren Dateien führen.<br /><br />Um den erweiterten Profilkonverter erneut auszuführen, enfernen Sie die Datei "Variables/Extended.lock" und besuchen Sie die Seite erneut.~,
+'converter_description' => q~Hier können Sie Ihre alten 'Erweiterte Profile' nach YaBB 2.7.00 konvertieren. Bevor Sie damit beginnen, sollten Sie sicherstellen, dass Ihre alten 'Members' und 'Variables' Verzeichnisse auf diesem Server sind. Setzen Sie anschließend die entsprechenden Pfade unten ein. Danach müssen Sie nur noch auf den 'Konvertiere jetzt' Button klicken. <b>BEACHTE:</b> Starten Sie den Konverter erst, wenn Sie bereits die normalen Profile mit dem YaBB 2 Konverter umgewandelt haben. Dieser Konverter wird die alten .ext Dateien in das neue Y2 Format umwandeln und die alten <em>extended_profiles_fields.txt</em> und <em>extended_profiles_order.txt</em> Dateien ins neue Variables-Verzeichnis 'Settings.pm' kopieren.~,
 'converter_button' => q~Konvertiere jetzt~,
 'cannot_open_file' => q~Kann Datei nicht öffnen~,
 'invalid_extension' => q~Sie haben eine verbotene Dateiendung verwendet.~,
 'image' => q~Bild~,
-'image_width' => q~Breite~,
-'image_width_description' => q~Setzen Sie einen Wert, falls Sie die Breite des Bildes beschränken möchten. Lassen Sie dieses Feld leer, um die Breite nicht zu beschränken.~,
+'image_width' => q~Höhe und Breite~,
+'image_width_description' => q~Setzen Sie einen Wert, falls Sie die Breite des Bildes beschränken möchten, in der <a href="{yabb adminurl}?action=newsettings;page=advanced" />Erweiterte Einstellung</a> -> Bilder.~,
 'allowed_extensions' => q~Zugelassene Erweiterungen~,
 'allowed_extensions_description' => q~Lassen Sie nur bestimmte Dateiendungen zu, indem Sie eine Liste von Dateiendungen mit Leerzeichen getrennt eintragen, z.B. 'jpg jpeg gif png'. Lassen Sie dieses Feld leer, falls Sie keine Beschränkung setzen möchten.~,
 'converter_missing_vars' => q~Kann das angegebene 'Convert/Variables-Verzeichnis' nicht öffnen. Bitte stellen Sie sicher, dass Ihre Eingabe korrekt ist und die Rechte richtig gesetzt sind (CHMOD 755 für das Verzeichnis und CHMOD 644 für alle Dateien darin).~,

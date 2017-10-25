@@ -1,19 +1,19 @@
-##############################################################################
-# Profile.lng (Profile text definitions)                                     #
-##############################################################################
-# German/Sie - Translation by Pyragony                                       #
-# and other members of the YaBB community                                    #
-# review & changes by Pyragony (webmaster@yabbtest.de)                       #
-##############################################################################
-# YaBB: Yet another Bulletin Board                                           #
-# Open-Source Community Software for Webmasters                              #
-# Version:        YaBB 2.7.00                                                #
-# Distributed by: http://www.yabbforum.com                                   #
-# ========================================================================== #
-# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.    #
-# Software by:  The YaBB Development Team                                    #
-#               with assistance from the YaBB community.                     #
-##############################################################################
+###############################################################################
+# Profile.lng (Profile text definitions)                                      #
+###############################################################################
+# German_Formal - Translation by Pyragony                                     #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (info@anti-scam.de)                            #
+###############################################################################
+# YaBB: Yet another Bulletin Board                                            #
+# Open-Source Community Software for Webmasters                               #
+# Version:      YaBB 2.7.00                                                   #
+# Distributed by: http://www.yabbforum.com                                    #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+###############################################################################
 
 $germanprofilelngver = 'YaBB 2.7.00 $Revision: 1879 $';
 @germanprofilelngmods = ();
@@ -69,7 +69,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '234' => q~Grund für die Registrierung~,
 '238' => q~Männlich~,
 '239' => q~Weiblich~,
-'241' => q~Feld. Gültige Zeichen sind Buchstaben (A-Z,a-z), Zahlen (0-9), Leerzeichen und ( _ ! @ # $ % ^ & * ( ) + | ` \~ - = \ : ; ' " , . / ? [ ] { } )~,
+'241' => q{Feld. Gültige Zeichen sind Buchstaben (A-Z,a-z), Zahlen (0-9), Leerzeichen und ( _ ! @ # $ % ^ & * ( ) + | ` ~ - = \ : ; \' " , . / ? [ ] { } )},
 '241re' => q~Feld. Gültige Zeichen sind Buchstaben, Zahlen, Leerzeichen und ( [ ] # % + , - | . : = ? @ ^ _ )~,
 '241e' => q~Feld. Gültige Zeichen sind Buchstaben (A-Z,a-z), Zahlen (0-9), und ( + - . @ _ )~,
 '244' => q~Die von Ihnen gewählte Benutzer-ID enthält einen reservierten Namen. Bitte versuchen Sie es mit einer anderen Benutzer-ID. Reserviert ist: ~,
@@ -92,9 +92,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '470' => q~N/V~,
 '473' => q~Wenn Sie eine andere Grafik hochladen, kann es passieren, dass die zuvor verwendete Grafik weiterhin angezeigt wird. In diesem Fall rufen Sie die Seite erneut auf (Browserrefresh) oder klicken mit der rechten Maustaste auf die Grafik und wählen die Option zum Neuladen der Grafik.~,
 '474' => q~- Wählen Sie einen Bildnamen aus der Liste auf der rechten Seite.<br />~,
-'475' => q~- Oder tragen Sie die URL zu Ihrem eigenen Bild ein.<br />Die Adresse zu Ihrer eigenen Grafik muss im folgenden Format vorliegen bzw. eingetragen werden:<br /><i>http:&thinsp;//&thinsp;www.ihreseite.com&thinsp;/&thinsp;ihrbild.gif</i><br />Es ist nur die Verwendung der nachfolgenden Grafikformate erlaubt: <i>.gif</i>, <i>.png</i>, <i>.jpg</i> or <i>.jpeg</i>.~, # Benutze &thinsp; (kleine Lücke) oder es kann zu einer fehlerhaften Darstellung des Layout bei der Verwendung des IE und geringer Bildschirmauflösung kommen
-'476' => q~- Oder wählen Sie eine Grafikdatei zum Hochladen auf unseren Server.<br />Die Grafik muss im folgenden Format vorliegen: <i>.gif</i>, <i>.png</i>, <i>.jpg</i> oder <i>.jpeg</i><br />Die maximal erlaubte Dateigröße beträgt:~,
-'477' => q~<b>Hinweis: Das Größenverhältnis Ihrer Grafik kann unter Umständen angepasst werden.</b>~,
+'475' => q~- Oder tragen Sie die URL zu Ihrem eigenen Bild ein.<br />Die Adresse zu Ihrer eigenen Grafik muss im folgenden Format vorliegen bzw. eingetragen werden:<br /><em>http:&thinsp;//&thinsp;www.ihreseite.com&thinsp;/&thinsp;ihrbild.gif</em><br />Es ist nur die Verwendung der nachfolgenden Grafikformate erlaubt: <em>.gif</em>, <em>.png</em>, <em>.jpg</em> or <em>.jpeg</em>.~, # Benutze &thinsp; (kleine Lücke) oder es kann zu einer fehlerhaften Darstellung des Layout bei der Verwendung des IE und geringer Bildschirmauflösung kommen
+'476' => q~- Oder wählen Sie eine Grafikdatei zum Hochladen auf unseren Server.<br />Die Grafik muss im folgenden Format vorliegen: <em>.gif</em>, <em>.png</em>, <em>.jpg</em> oder <em>.jpeg</em><br />Die maximal erlaubte Dateigröße beträgt:~,
+'477' => q~<strong>Hinweis: Das Größenverhältnis Ihrer Grafik kann unter Umständen angepasst werden.</strong>~,
 '479' => q~Die Auswahl ändert das Format von Datum und Zeit im gesamten Forum.~,
 '480a' => q~Ich nutze mein eigenes Format von Datum und Zeit (im nächsten Feld angeben)~,
 '480' => q~01/31/01 um 13:15:17~,
@@ -129,7 +129,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '580' => q~Das ist Ihr YouTube-Mitgliedsname.~,
 '581' => q~http://www.youtube.com/~,
 '592' => q~Ihre persönliche Bild-URL oder Bildname.~,
-'598' => q~Das muss einbezogen werden, wenn Sie eine URL-ADRESSE unten angeben.~,
+'598' => q~Das muss einbezogen werden, wenn Sie eine URL-ADRESSE unten angeben haben.~,
 '599' => q~Das muss eine ganze URL-ADRESSE sein.~,
 '600' => q~Ihre ICQ-Nummer.~,
 '601' => q~Ihr AOL-Instant-Messenger-Nickname.~,
@@ -141,11 +141,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '664' => q~Max. {yabb max_siglen} Zeichen. Noch verfügbar: ~,
 '664a' => q~Max. {yabb max_awaylen} Zeichen. Noch verfügbar: ~,
 '679' => q~Die eMail-Adresse muss gültig sein.~,
-'681' => q~Bitte informieren Sie Adminstrator, das die \$facesdir Einstellungen korrigiert werden müssen.~,
+'681' => qq~Bitte informieren Sie den Adminstrator, das die \$facesdir Einstellungen korrigiert werden müssen.~,
 '686' => q~Online~,
 '687' => q~Offline~,
 '688' => q~Privatnachricht schicken an~,
-'698' => q~Dies ist Ihr Profil. Sie können außerhalb der 'benötigten Informationen' frei wählen, welche Angaben Sie machen wollen. Die Angaben werden an verschiedenen Stellen im '{yabb mbname} angezeigt.~,
+'698' => q~Dies ist Ihr Profil. Sie können außerhalb der 'benötigten Informationen' frei wählen, welche Angaben Sie machen wollen. Die Angaben werden an verschiedenen Stellen im {yabb mbname} angezeigt.~,
 '700' => q~Willkommen im~,
 '701' => q~Sie können ihn nach dem Einloggen in Ihrem Profil ändern, oder indem Sie nach den Einloggen folgende Seite aufsuchen:~,
 '721' => q~eMail verstecken?~,
@@ -159,7 +159,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '777' => q~den Benutzer~,
 '778' => q~aus dem Forum löschen?~,
 '810' => q~Sollen die Antworten zu einem Thema in umgekehrter Reihenfolge angezeigt werden?~,
-'811' => q~Wenn angekreuzt, wird die neueste Antworten zu dem Thema auf der ersten Seite ganz oben angezeigt. Wenn nicht, ist die älteste Antwort zuoberst und die neueste auf der letzten Seite unten.<br />Sie können diese Einstellung auch jederzeit ändern indem Sie auf der Seite des Themas den Titel des Themas anklicken.~,
+'811' => q~Wenn angekreuzt, wird die neueste Antwort zu dem Thema auf der ersten Seite ganz oben angezeigt. Wenn nicht, ist die älteste Antwort zuoberst und die neueste auf der letzten Seite unten.<br /><strong>Hinweis:</strong> Sie können diese Einstellung auch jederzeit ändern, indem Sie auf der Seite des Themas den Titel des Themas anklicken.~,
 '814' => q~Wählen Sie ein Template:~,
 '815' => q~(Wenn mehr als eine Option verfügbar ist)~,
 '817' => q~Wählen Sie eine Sprache:~,
@@ -169,8 +169,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '821' => q~Altes Passwort:~,
 '823' => q~MSN~,
 '824' => q~Ihre MSN-Messenger-Adresse.~,
-'825' => q~Google-Talk~,
-'826' => q~Ihre Google-Talk-Adresse.~,
+'825' => q~Google Hangout~,
+'826' => q~Ihre Google-Hangout-Adresse.~,
 '827' => q~Skype/VoIP~,
 '828' => q~Ihre Skype/VoIP-Adresse.~,
 '888' => q~Sie haben Ihr derzeitiges Passwort nicht eingetragen!~,
@@ -182,7 +182,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '894' => q~Tage seit der Registrierung~,
 '895' => q~Zum Speichern der Informationen müssen Sie Ihr aktuelles Passwort eingeben~,
 '896' => q~Nur ausfüllen, wenn Sie Ihr Passwort ändern wollen~,
-'897' => q~Ihr Profilsession ist abgelaufen.\nEs wurden keine Änderungen gespeichert!\nNach der Wiederanmeldung werden Sie zu der vorherigen Seite zurückgeschickt.~, # inside JS. Don't use " inside!
+'897' => q~Ihre Profilsession ist abgelaufen.\nEs wurden keine Änderungen gespeichert!\nNach der Wiederanmeldung werden Sie zu der vorherigen Seite zurückgeschickt.~, # inside JS. Don't use " inside!
 '898' => q~Profilsession abgelaufen.~,
 '899' => q~Bitte erneut Authentifizieren~,
 '900' => q~Passwort bestätigen~,
@@ -206,13 +206,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'ignorelistadd' => q~Klicken Sie hier, um Benutzer zur Ignorier-Liste auszuwählen oder hinzufügen~,
 'ignoreall' => q~Klicken Sie hier, um alle Privatnachrichten zu ignorieren~,
 'ignoreexplain' => q~Wenn Sie keine privaten Nachrichten von einzelnen oder allen Mitgliedern des Forums empfangen möchten (d.h. ignorieren), fügen Sie entweder die entsprechenden Mitgliedsnamen der Box hinzu, benutzen den Link oder markieren die Checkbox 'Alle'.<br />Bitte beachten Sie, dass private Nachrichten oder andere Mitteilungen vom Administrator und Global-Moderator NICHT blockiert werden.~,
-'showingemail'  => q~Ihre eMail-Adresse ist sichtbar~,
-'notshowingemail' => q~Ihre eMail-Adresse ist vor allen Mitgliedern versteckt und kann nur~,
-'notshowingemailend' => q~ gesehen werden.~,
-'showstatus'    => q~Wenn ich offline bin, zeigt meinen Status als~,
+'showingemail' => q~Ihre eMail-Adresse ist sichtbar~,
+'notshowingemail' => q~Ihre eMail-Adresse ist vor allen Mitgliedern versteckt~,
+'notshowingemailend' => q~.~,
+'showstatus' => q~Wenn ich offline bin, zeigt meinen Status als~,
 'statusexplain' => q~Erlaubt Ihnen, als 'Abwesend' oder 'Offline' zu erscheinen~,
 'onlinealert' => q~Beitrags -und Forenbenachrichtigungen~,
-'onlinealertexplain' => q~Wenn diese Option aktiviert ist, erhalten Sie eine zusätzliche Benachrichtigung über ein Pop-Up Fenster, dass Sie neue Foren -oder Beitragsbenachrichtigungen haben.~,
+'onlinealertexplain' => q~Wenn diese Option aktiviert ist, erhalten Sie eine zusätzliche Benachrichtigung über ein Pop-Up Fenster, dass Sie neue Foren- oder Beitragsbenachrichtigungen haben.~,
 'stealth' => q~Erlaube mir den Geist-Modus zu benutzen~,
 'stealthexplain' => q~Benutzen Sie diese Option, um sich unsichtbar anzumelden. Ihr angezeigter Name wird nicht in der 'Online' Übersicht aufgeführt und Ihr Status sowohl im Profil als auch in den Nachrichten Seiten ist 'Offline/Abwesend'~,
 'viewmess' => q~Nachrichten Text in einer Übersichtsliste der Persönlichen Nachrichten anzeigen~,
@@ -221,7 +221,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'asubj' => q~Betreff der 'Abwesenheit':~,
 'amess' => q~Nachricht der 'Abwesendheit':~,
 'awaydesc' => q~Senden Sie eine automatische 'Abwesenheit' Nachricht an andere Mitglieder: ~,
-'awaydescription' => q~Wenn Sie eine automatische 'Abwesenheit' Nachricht als Antwort auf eine PN versenden wollen, so können Sie hier den Text dafür eintragen. Jedes Mitglied erhält diese Nachricht einmal, wenn Sie eine PN während Ihrer Abwesenheit bekommen. Wenn Sie keine Benachrichtigung verschicken wollen, lassen Sie das Feld einfach leer.~,
+'awaydescription' => q~Wenn Sie eine automatische 'Abwesenheit' Nachricht als Antwort auf eine PN versenden wollen, so können Sie hier den Text dafür eintragen. Jedes Mitglied erhält diese Nachricht einmal, wenn sie eine PN während Ihrer Abwesenheit bekommen. Wenn Sie keine Benachrichtigung verschicken wollen, lassen Sie das Feld einfach leer.~,
 'isbuddy' => q~in meiner Freundesliste!~,
 'sid_expires_1' => q~Die Profilsitzung endet in~,
 'sid_expires_2' => q~Sekunden.~,
@@ -241,12 +241,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'p' => q~Dauerhaft~,
 'regdate' => q~Mitglied seit dem:~,
 'gender_edit_1' => q~Beachten Sie, dass Sie nach dem speichern Ihr Geschlecht nicht mehr ändern können.~,
-'gender_edit_2' => q~Beachten Sie, dass Sie nur Ihr Geschlecht ändern können.~,
+'gender_edit_2' => q~Beachten Sie, dass Ihr Geschlecht ändern können.~,
 'gender_edit_3' => q~Ihr Geschlecht kann nicht geändert werden.~,
 'dob_edit_1' => q~Beachten Sie, dass Sie nach dem speichern Ihr Geburtsdatum nicht mehr ändern können.~,
-'dob_edit_2' => q~Beachten Sie, dass Sie nur Ihr Geburtsdatum ändern können.~,
-'dob_edit_3' => q~mehr Zeit.~,
-'dob_edit_4' => q~mehr Zeiten.~,
+'dob_edit_2' => q~Beachten Sie, dass Sie Ihr Geburtsdatum ändern können.~,
+'dob_edit_3' => q~mal.~,
+'dob_edit_4' => q~mal.~,
 'dob_edit_5' => q~Zeit.~,
 'dob_edit_6' => q~Zeiten.~,
 'dob_edit_7' => q~Ihr Geburtsdatum kann nicht geändert werden.~,
@@ -258,7 +258,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'ban_cancel' => q~aufheben~,
 'ban_reason' => q~Grund der Verbannung <span class="small">(Optional)</span>~,
 'email_ban' => q~eMail an Mitglied in Bezug auf Verbot~,
-'ban_for' => q~für ein~,
+'ban_for' => q~für ein(e)(n)~,
 'fntsze' => q~Schriftgröße Ihrer Basisanzeige<br /><span class="small">(Für Beiträge, IMs und Kalenderereignisse)</span>~,
 );
 
@@ -305,7 +305,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '3' => q~Startseite des Forums~,
 '01' => q~Kehre zurück nach~,
 '02' => q~Wähle Sie aus, wohin Sie nach dem Schreiben zurückkehren möchten.~,
-'03' => q~Wählen Sie den Standard-Bereich aus, wohin Sie nach dem Schreiben zurückkehren möchten.<br /><b>Note:</b> Sie können diese Option zum Zeitpunkt eines Beitrages ändern.~,
+'03' => q~Wählen Sie den Standard-Bereich aus, wohin Sie nach dem Schreiben zurückkehren möchten.<br /><strong>Hinweis:</strong> Sie können diese Option zum Zeitpunkt eines Beitrages ändern.~,
 );
 
 %zodiac_txt = (   #YaBB Zodiac

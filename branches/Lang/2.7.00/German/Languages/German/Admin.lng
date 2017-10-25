@@ -1,13 +1,13 @@
 ###############################################################################
 # Admin.lng (Administrative text definitions)                                 #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -44,7 +44,7 @@ $abbr_lang = 'de-de';
 '14' => q~(Steuerungs- oder Apple-Taste gedrückt halten, um mehr als eine auszuwählen und zum Löschen)~,
 '15' => q~Sie benötigen mindestens eine "Beitragsunabhängige Mitgliedergruppe", bevor Sie Moderatorgruppen zuordnen können.~,
 '18' => q~Suchmaschinen-Identifizierungen bearbeiten~,
-'19' => q~Bitte eine Suchmaschine pro Zeile eintragen.<br />Format: <em>(partial) Domainname z.B. googlebot</em>|<em>Name wie er am Bildschirm dargestellt wird</em>.<br />Suchmaschinen mit verschiedenen Domainnamen aber dem selben angezeigten Namen werden unter diesem Namen zusammengezählt und nur ein mal angezeigt. Wenn Sie das nicht möchten, müssen Sie unterschiedliche Namen vergeben.q~,
+'19' => q~Bitte eine Suchmaschine pro Zeile eintragen.<br />Format: <em>(partial) Domainname z.B. googlebot</em>|<em>Name wie er am Bildschirm dargestellt wird</em>.<br />Suchmaschinen mit verschiedenen Domainnamen aber dem selben angezeigten Namen werden unter diesem Namen zusammengezählt und nur ein mal angezeigt. Wenn Sie das nicht möchten, müssen Sie unterschiedliche Namen vergeben.~,
 '21' => q~Beiträge~,
 '22' => q~Einfache Permalink-Umgebung erlauben?<br /><span class="small">Beiträge nur mit separaten Permalink.</span>~,
 '22a' => q~Volle Permalink-Umgebung erlauben?<br /><span class="small">Alle für Gäste zugängliche Sektionen verbinden sich als Permalink.</span>~,
@@ -54,12 +54,12 @@ $abbr_lang = 'de-de';
 '23b' => q~Permalink-Text für .htaccess: (Voll)~,
 '24' => q~Permalink-Einstellungen~,
 '25' => q~Permalink-Symlink URL-Teil (kein leading slash und mit trailing slash (z.B. articles/))~,
-'25a' => q~RSS-Permalink-Text für .htaccess:~,
 '26' => q~Dies ist ein Teil in der URL zwischen Ihrem Domainnamen und dem Permalink URL-Teil<br />(z.B. http://www.ihredomain.de/<strong>articles/</strong>news/dies-ist-der-titel)~,
 '25r' => q~RSS letzten Permalink Symlink URL Teil (Weglassen führender Schrägstriche und nachgestellter Schrägstriche (z.B. RSSrecent))~,
 '26r' => q~Dies ist der RSS letzter Permalink Symlink URL Teil<br />(z.B.: http://www.yourdomain.com/<strong>RSSrecent</strong>)~,
 '25b' => q~RSS-Feed-Permalink Symlink-URL-Teil (Weglassen führender Schrägstriche und nachgestellter Schrägstriche (z.B.: RSSboard))~,
 '26b' => q~Dies ist der RSS-Permalink/Symlink-URL-Teil<br />(z.B.: http://www.yourdomain.com/<strong>RSSboard</strong>)~,
+'25a' => q~RSS-Permalink-Text für .htaccess:~,
 '31' => q~Löschen~,
 '32' => q~Los~,
 '39' => q~Falsches Passwort~,
@@ -160,7 +160,7 @@ $abbr_lang = 'de-de';
 '164' => q~Nein~,
 '190' => q~Alle~,
 '193' => q~Zurück~,
-'208' => q~YaBB-Admin-Center~,
+'208' => q~Admin-Center~,
 '216' => q~Template bearbeiten~,
 '222' => q~Einstellungen für das Forum~,
 '223' => q~Erweiterte Einstellungen für das Forum~,
@@ -231,7 +231,7 @@ $abbr_lang = 'de-de';
 '371d' => q~Wähle die Forum-Zeit-Zone:<br /><span class="small">Wählen Sie das Land und die Stadt der bevorzugten Zeit-Zone.<br />Wenn die einzigen Auswahlmöglichkeiten UTC oder 'local' sind, dann haben Sie nicht die notwendigen Module, um die Land/Stadt Zeitzonen zu benutzen. In diesem Fall wählen Sie 'local' und setzen manuell Ihre Forenzeit-Voreinstellung, um den Zeitunterschied zwischen Forenzeit und UTC einzustellen, oder wähle UTC.</span>~,
 '371a' => q~Einschalten der Zeit-Zonen-Auswahl für Mitglieder:<br /><span class="small">Wenn das notwendigen Perl-Modul <strong>DateTime::TimeZone</strong> nicht installiert ist, können die Benutzer nur 'UTC' wählen. Wenn die Vorgabe der Forum-Zeit-Zone 'local' ist, haben Benutzer auch 'Vorgegebene-Forum-Zeiteinstellung' als eine Option.</span>~,
 'local' => q~local~,
-'371e' => q~Ermögliche Sommerzeit (DST) bei der Auswahl von'local' Forum-Zeit-Zone und Forum-Zeiteinstellung (oben).<br /><span class="small">Diese Einstellung geht davon aus, dass Ihr Hosting-Server in einer Zeitzone ist, die die gleichen Daten für die Sommerzeit verwendet, wie Sie sie für Ihr Forum wollen und ist eingestellt, um die lokale Zeit mit der Sommerzeit zu erkennen. Ansonsten wählen Sie UTC als Ihre Zeitzone oder stellen Sie manuell DST in Ihrer Zeitzone 'Voreinstellung der Forenzeit' ein</span>.~,
+'371e' => q~Ermögliche Sommerzeit (DST) bei der Auswahl von 'local' Forum-Zeit-Zone und Forum-Zeiteinstellung (oben).<br /><span class="small">Diese Einstellung geht davon aus, dass Ihr Hosting-Server in einer Zeitzone ist, die die gleichen Daten für die Sommerzeit verwendet, wie Sie sie für Ihr Forum wollen und ist eingestellt, um die lokale Zeit mit der Sommerzeit zu erkennen. Ansonsten wählen Sie UTC als Ihre Zeitzone oder stellen Sie manuell DST in Ihrer Zeitzone 'Voreinstellung der Forenzeit' ein</span>.~,
 '371f' => q~Voreinstellung der Forenzeit:<br /><span class="small">Stellen Sie den Unterschied zwischen der Forenzeit und UTC hier ein.</span>~,
 '371b' => q~Dynamische Uhr oben auf den Seiten aktivieren?~,
 '371c' => q~Korrektur der Serverzeit (in Sekunden +/-)~,
@@ -250,7 +250,7 @@ $abbr_lang = 'de-de';
 '384' => q~Benutzerbilder unter Beiträgen anzeigen?~,
 '385' => q~Benutzertexte unter Beiträgen anzeigen?~,
 '385a' => q~Standardtext für den Benutzer~,
-'385b' => q~User Text Wrap (number of characters per line for User Text below user avatar)~,
+'385b' => q~Textumbruch (Anzahl der Zeichen pro Zeile für Benutzertext unterhalb des Avatars)~,
 '386' => q~Geschlechtssymbol unter Beiträgen anzeigen?~,
 '386a' => q~Mitglieder erlauben, ihr Alter im Profil und Alter und Geburtsjahr im Kalender zu verbergen?~,
 '387' => q~News-Fader aktivieren?~,
@@ -375,7 +375,7 @@ $abbr_lang = 'de-de';
 '594' => q~Die Mitgliederliste (memberlist.txt) wurde neu aufgebaut und enthält~,
 '594a' => q~registrierte Mitglieder.~,
 '595' => q~Benutzer-Onlinelog zurücksetzen~,
-'596' => q~Das Benutzer-Onlinelog (Variables/log.txt) wurde zurückgesetzt.~,
+'596' => q~Das Benutzer-Onlinelog (Variables/user.log) wurde zurückgesetzt.~,
 '597' => q~Mitglieder-Historie neu aufbauen ~,
 '598' => q~Alle Mitglieder-Historie-Logs (.rlog) wurden neu aufgebaut.~,
 '600' => q~eMail-Einstellungen für den Versand von Foren-Themen~,
@@ -396,7 +396,7 @@ $abbr_lang = 'de-de';
 '659' => q~Neuester Beitrag:~,
 '665' => q~Foren insgesamt:~,
 '666' => q~Unterforen insgesamt:~,
-'670' => q~Eine Neuigkeit pro Zeile. YaBBC-Tags, wie [b], [i] und [u] sind ebenso wie Smileys erlaubt.~,
+'670' => q~Eine Neuigkeit pro Zeile. YaBBC-Tags, wie [b], [i] und [u] sind ebenso wie Smileys erlaubt.<br />Sprache:~,
 '677' => q~Hier können Sie Foren hinzufügen oder bearbeiten. Klicke auf den Button vor dem Kategorienamen und Sie können die Reihenfolge der Foren sortieren, wie sie in den Kategorien angezeigt werden sollen.~,
 '678' => q~Hier können Sie Ihre Kategorien bearbeiten. Klicken Sie auf den Button über den Titeln, um die Reihenfolge der Kategorien zu ändern. Klicken Sie auf den Button vor dem Kategorienamen und Sie können die Reihenfolge der Foren in dieser Kategorie ändern.~,
 '682' => q~Dies ist das Template Ihres YaBB-Forums. Sie können hier nach Belieben mit HTML Änderungen vornehmen. Das Aussehen Ihres Forums wird automatisch geändert, sobald Sie die Änderungen gespeichert haben.~,
@@ -416,7 +416,7 @@ $abbr_lang = 'de-de';
 '696a' => q~Scriptaufrufe~,
 '697' => q~Dies ist ein einfaches System, welches die LOG-Datei analysiert. Es gibt einen groben Überblick über Traffic, Browser und Betriebssysteme der {yabb mbname} Besucher. Die Zahlen in Klammern neben jedem Eintrag geben die Anzahl an, wie oft dieser Eintrag in der Log-Datei vorkommt.~,
 '698' => q~<br /><br />Die LOG-Datei ist im Moment auf {yabb click_logtime} Minuten eingestellt.~,
-'698a' => qq~<br /><br />Sie haben derzeit das Logsystem abgeschaltet.~,
+'698a' => q~<br /><br />Sie haben derzeit das Logsystem abgeschaltet. Um die Protokollierung einzuschalten, gehen Sie zu <a href={yabb adminurl}?action=newsettings;page=advanced">Erweiterte Einstellungen (Erweitert)</a>~,
 '699' => q~Reservierte Namen verhindern, dass Ihre Benutzer diese Namen als Benutzername oder als angezeigten Namen verwenden. Wählen Sie die gewünschten Optionen unten aus, bevor Sie die Einstellungen abspeichern.~,
 '702' => q~Beim Registrieren Zufallspasswort per eMail versenden?~,
 '710' => q~Passwort-Längenprüfung - Sicherheitscheck<br /><span class ="small">Hier können Sie festlegen, nach wieviel Zeichen die Sicherheitslinie in das nächsthöhere Level springt. Die Standardwerte für das jeweils nächsthöhere Level sind gesetzt auf <em>10,15,30,40</em> Zeichen. <font color="red">Tragen Sie hier nur Zahlen und Kommas ein oder es kann zu Problemen kommen.</font><br />Setzen Sie die Werte auf <em>-1,-1,-1,-1</em> zum Deaktivieren der Passwort-Längenprüfung. Dann wird lediglich angezeigt, ob das gewählte Passwort zu kurz oder Ok ist.</span>~,
@@ -529,7 +529,7 @@ $abbr_lang = 'de-de';
 'findroot' => q~<em>find</em>: Pfad zu dem root Verzeichnis Ihres user accounts auf einem multi user host system.<br /><span class="small">Der Pfad muss <b>vom system root bis zu Ihrem user root</b> gehen. Beispiel:<br />/var/www/ihr_domain_name/<br />/var/www/web1234/<br /><br />Sie können auch den Pfad nur den Pfad zu Ihrem Forum-Verzeichnis angeben und für dieses einen selbst vergebenen Maximalwert eingeben. \'find\' wird dann diesen Wert anstelle des Benutzerwertes verwenden. Beispiel:<br />/var/www/ihr_domain_name/cgi-bin/yabb2/<br />/var/www/ihr_domain_name/public_html/yabbfiles/Attachments/</span>~,
 'findmax' => q~<em>find</em>: Verfügbarer Platz in dem oben genannten Verzeichnis (in Megabytes).<br /><span class="small">Es sollte der selbe Wert sein, wie Ihr Provider Ihnen zugeteilt hat.<br />Da \'find\' nur alle X Stunden oder ein Mal am Tag den verbrauchten Platz bemisst, sollten Sie den Wert niedriger setzen, als der von Ihrem Provider zugeteilte. Damit vermeiden Sie es, in der Zwischenzeit durch unvorhergesehene Speicherbelastung, z. B. durch den upload großer Dateianhänge, an das vorgegebene Speicherlimit zu geraten.<br />Um \'find\' anzuschalten muss der Wert hier &gt; 0 sein. Wenn der belegte Speicherplatz in dem oben eingegebenen Verzeichnis größer als der hier angegebene Wert wird, wird das Forum in den Wartungsmodus gesetzt, um Datenverlust zu vermeiden.<br />Hinweis:<br />Nur Admins können das Forum betreten, wenn es im Wartungsmodus ist.<br />Falls Sie sich nicht mehr daran erinnern: 1 GB = 1024 MB</span>~,
 'diskspacecheck' => q~Freie Speicherplatzüberprüfung einschalten?<br /><span class="small">Checkt den verfügbaren Speicherplatz auf der Festplatte auf Linux oder Windows Servern. Seien Sie sich bewusst, daß nicht unbedingt all dieser Speicherplatz von Ihnen verwendet werden kann. Es wird unter Umständen ein wesentlich höherer Wert angezeigt als Ihr Provider Ihnen zugeteilt hat.<br />Wenn Ihr verfügbarer Platz unter 100&thinsp;000 Bytes (100 KB) fällt, wird das Forum automatisch in den Wartungsmodus gesetzt um Datenverlust zu vermeiden.<br />Hinweis: Nur Admins können das Forum betreten wenn es im Wartungsmodus ist.</span>~,
-'getreversedns' => q~Enable Reverse DNS Lookup.~,
+'getreversedns' => q~Aktivieren Sie Reverse DNS Lookup.~,
 'minlinkpost' => q~Mindestanzahl der Beiträge, ab der ein Mitglied Links und Bilder posten kann~,
 'minlinkpost_exp' => q~Dies verhindert Spambots, sofort nach der Registrierung SPAM-Postings zu schreiben.~,
 'minlinksig' => q~Mindestanzahl der Beiträge, ab der ein Mitglied Links und Bilder in Signaturen erstellen kann~,
@@ -594,9 +594,9 @@ $abbr_lang = 'de-de';
 'imp_email_check' => q~Aktivieren der verbesserten eMail-Prüfung?<br /><span class="small">Prüft, ob die eMail-Domaine vorhanden ist, ob der Benutzer auf dem angegebenen SMTP-Server bekannt ist, ob die SMTP-Server`s online und gültig sind und wenn die Benutzer Mailbox voll ist. Auch wird ein zweites eMail-Feld zur Prüfung eingefügt.<br />Note: Net::DNS muß auf Ihrem Server installiert sein.</span>~,
 'zodiac' => q~Sternzeichen im Profil anzeigen?~,
 'no_imp_email_check' => q~<br /><span class="important">Verbesserter eMail-Check nicht verfügbar. Benötigt Net::DNS</span>~,
-'error_spd' => q~ErrorLog-Geschwindigkeitsverbot. Minimale Anzahl von Sekunden zwischen mehreren Fehlerprotokollen von derselben IP-Adresse. <br /><span class="small">Verletzer werden durch .htaccess verboten, wenn erlaubt. Zur Deaktivierung auf '0' stellen</span>~,
+'error_spd'=> q~ErrorLog Geschwindigkeitsverbot. Mindestanzahl von Sekunden zwischen mehreren Fehlerprotokolleinträge von der gleichen IP-Adresse. <br /><span class="small">Zuwiderhandelnde werden verbannt durch .htaccess, wenn aktiviert. Setze '0' zum deaktivieren.</span>~,
 'profile_int'=> q~Umleiten von Gastklicks auf Mitgliederlinks zur Registrierungs- oder Loginseite. Deaktivieren Sie die Links für Gäste.~,
-'ban_res' => q~You may add a short reason for the ban by using a '|' symbol to separate the IP address, e-mail address, or user ID and the reason for banning.~,
+'ban_res' => q~Sie können eine Begründung für die Verbannung hinzufügen durch die Benutzung eines '|' Symboles, zur Trennung von IP-Adresse, eMail-Adresse, oder User ID und den Grund der Verbannung.~,
 'p_ban' => q~Dauerhaft~,
 'expired' => q~Abgelaufen~,
 'expireon' => q~Läuft aus am~,
@@ -608,15 +608,16 @@ $abbr_lang = 'de-de';
 'subbrd' => q~Unterforum~,
 'inbrd' => q~in Forum~,
 'incat' => q~in Kategorie~,
-'fixinstruct' => q~Select the <strong>incorrect</strong> board(s). You may need to reorganize the position of boards in their categories/boards when finished.<br /><span class="important">Be very careful with your selections to make sure you do not remove the copy of the board you want to keep.</span>~,
+'fixinstruct' => q~Wählen Sie die <strong>falschen</strong> Foren aus. Möglicherweise müssen Sie die Position der Boards in ihren Kategorien / Foren reorganisieren, wenn sie fertig sind.<br /><span class="important">Seien Sie sehr vorsichtig mit Ihrer Auswahl, um sicherzustellen, dass Sie nicht die Kopie der Boards entfernen, die Sie behalten möchten.</span>~,
 'usercp' => q~Kontrollzentrum~,
-'ppostperms' => q~Print Post Permissions<br /><span class="small">Disable Print Post or set it to "All Members" if you have spambot problems with this function.</span>~,
-'ptopicperms' => q~Print Thread Permissions<br /><span class="small">Disable Print Thread or set it to "All Members" if you have spambot problems with this function.</span>~,
-'813a' => 'Enable Style Switcher Dropdown Field?<br /><span class="small">If enabled, selected groups have the have the option to quickly select and change the forum layout, assuming other templates or css stylesheets are available.</span>',
-'813b' => 'Select the membergroups allowed to use the Style Switcher:</span>',
+'ppostperms' => q~Druck-Beitrag-Berechtigungen (Post)<br /><span class="small">Deaktivieren Sie die Druckfunktion oder setze ihn auf "Alle Mitglieder", wenn Sie mit dieser Funktion Spambotprobleme haben.</span>~,
+'ptopicperms' => q~Druck-Beitrag-Berechtigungen (Thread)<br /><span class="small">Deaktivieren Sie die Druckfunktion oder setze ihn auf "Alle Mitglieder", wenn Sie mit dieser Funktion Spambotprobleme haben.</span>~,
+'813a' => 'Style Switcher aktivieren?<br /><span class="small">Wenn diese Option aktiviert ist, haben ausgewählte Gruppen die Möglichkeit, schnell das Forum-Layout zu wählen und zu ändern, vorausgesetzt, dass andere Templates von CSS-Stylesheets verfügbar sind.</span>',
+'813b' => 'Welche Mitgliedergruppe darf den Style Switcher nutzen?:</span>',
+'10bak' => q~*.bak Dateien gelöscht~,
 
 ## email settings test ##
-'355b' => q~Überprüfen Sie die Webmaster-eMail-Einstellungen auf Speichern~,
+'355b' => q~Überprüfen Sie die gespeicherte Webmaster-eMail-Einstellungen~,
 'testemail' => q~Test eMail~,
 'testsubject' => q~YaBB eMail Einstellungstest~,
 'testmessage' => q~Hallo {yabb mbname} Webmaster,
@@ -625,7 +626,6 @@ dies ist ein Test Ihrer {yabb mbname} Forum's eMail-Einstellungen.
 
 Danke für die Benutzung von YaBB!~,
 'mailfrom' => q~"{yabb mbname} eMail Test" <{yabb webmaster_email}>~,
-
 );
 
 %detailed = (
@@ -637,9 +637,9 @@ Danke für die Benutzung von YaBB!~,
 'view' => q~Ansehen der {yabb fld} Dateien~,
 'hide' => q~Verstecken {yabb fld} Dateien~,
 'modded' => q~(Modded)~,
-'upped' => q~Hochgeladen oder geändert auf~,
 'nochng' => q~Keine Änderungen~,
 'chngfle' => q~Geändert auf~,
+'upped' => q~Hochgeladen / Geändert auf~,
 '494' => q~Ihre Version~,
 '495' => q~YaBB-Datei~,
 '496' => q~YaBB-Paket~,
@@ -730,7 +730,7 @@ Danke für die Benutzung von YaBB!~,
 
 %admintxt = (
 '1' => q~Willkommen in Ihrem '{yabb mbname}' Administrations-Center~,
-'2' => q~Dies ist Ihr 'YaBB-Administrations-Center'.<br /> Sie können hier die Einstellungen für Ihr Forum ändern, Templates bearbeiten und Wartungsarbeiten durchführen. <br /><br />Bitte lesen Sie die Anleitung, bevor Sie um Support bitten und seien Sie vorsichtig mit diesen Funktionen.<br />Antworten auf Ihre Fragen können Sie im Supportforum und im Bereich \'troubleshooting\' in der Anleitung finden.<br /><br />Vielen Dank, dass Sie Yet Another Bulletin Board (YaBB) benutzen.~,
+'2' => q~Dies ist Ihr 'YaBB-Administrations-Center'.<br /> Sie können hier die Einstellungen für Ihr Forum ändern, Templates bearbeiten und Wartungsarbeiten durchführen. <br /><br />Bitte lesen Sie die Anleitung, bevor Sie um Support bitten und seien Sie vorsichtig mit diesen Funktionen.<br />Antworten auf Ihre Fragen können Sie im Supportforum und im Bereich 'troubleshooting' in der Anleitung finden.<br /><br />Vielen Dank, dass Sie YaBB verwenden.~,
 '3' => q~Versionen-Information~,
 '4' => q~Was ist neu bei YaBB?~,
 '5' => q~Letzte Logins:~,
@@ -893,9 +893,9 @@ Danke für die Benutzung von YaBB!~,
 );
 
 %cutts = (
-'1' => q~Wie viele Beiträge in der Zusammenfassung?~,
+'1' => q~Maximale Anzahl von Beiträgen, die in einer Themenzusammenfassung angezeigt werden sollen:~,
 '2' => q~Angezeigt werden~,
-'3' => q~Beiträge. Klicke~,
+'3' => q~Beiträge. Klicken Sie~,
 '4' => q~hier~,
 '5' => q~um alle zu sehen~,
 '6' => q~um die gekürzte Version zu sehen~,
@@ -1008,7 +1008,7 @@ Danke für die Benutzung von YaBB!~,
 '30' => q~Zugehörige Mitglieder suchen~,
 '31' => q~Mitgliedergruppe auswählen~,
 '32' => q~Keine Mitglieder zu diesem Suchkriterium gefunden.~,
-'33' => q~<b>Sorry, Sie haben einen Fehler gemacht.</b><br /><br /><em><u>Fehlerinformation:</u><br /><br />Sie haben einer neuen Mitgliedergruppe eine höhere oder gleiche Beitragsgrenze erteilt als einer bereits existierenden Gruppe.<br />Das könnte bei der Anzeige dieser Benutzerinformationen zu einem Zusammenbruch des Forums führen.<br />Gehen Sie bitte zurück und korrigieren Sie diesen Fehler.</em>~,
+'33' => q~<b>Sorry, Sie haben einen Fehler gemacht.</b><br /><br /><em><u>Fehlerinformation:</u><br /><br />Sie haben einer neuen Mitgliedergruppe eine höhere oder gleiche Beitragsgrenze erteilt als einer bereits existierenden Gruppe.<br />Das könnte bei der Anzeige dieser Benutzerinformationen zu einem Zusammenbruch des Forums führen!<br />Gehen Sie bitte zurück und korrigieren Sie diesen Fehler.</em>~,
 '34' => q~Funktionen für Moderatoren:~,
 '35' => q~Derzeit gibt es keine beitragsunabhängigen Gruppen~,
 '36' => q~Derzeit gibt es keine beitragsabhängigen Gruppen~,
@@ -1094,7 +1094,7 @@ Danke für die Benutzung von YaBB!~,
 '9' => q~Zuletzt Online~,
 '10' => q~Letzter Beitrag~,
 '11' => q~Letzte PN~,
-'12' => q~Beitragsabhängige Mitgliedergruppen in der Mitgliederliste anzeigen?~,
+'12' => q~Beitragsabhängige Mitgliedergruppen in der Mitgliederliste des Admin-Centers anzeigen?~,
 '13' => q~Zeit (in Min.), bevor Benutzer aus dem Onlinelog gelöscht werden~,
 '14' => q~Nur eMail senden~,
 '15' => q~Mitglieder löschen~,
@@ -1143,22 +1143,22 @@ Danke für die Benutzung von YaBB!~,
 '35' => q~&nbsp;&nbsp;&nbsp; - Text der Nachricht:~,
 '36' => q~&nbsp;&nbsp;&nbsp; - Betreff der Nachricht:~,
 '46' => q~im Archiv~,
-'52' => q~Spamschutz - Prozent angeben<br /><span class="small">(Informationen dazu in der Anleitung)</span>~,
+'52' => q~Spamschutz - Prozent angeben:<br /><span class="small">Informationen dazu in der Administrator-Anleitung - <a href="{yabb scripturl}?action=help;section=admin#Spam_Protect_-_Enter_Percent">Spamschutz - Geben Sie die Prozentzahl ein</a> Info, 0 zum deaktivieren.</span>~,
 '75' => q~Zahl der Beiträge, bevor Privatnachrichten gesendet werden dürfen?~,
 '84' => q~im Posteingang~,
 '85' => q~in gesendete Nachrichten~,
 'draft' => q~im Entwurf~,
 'allowcc' => q~'Cc' Liste für Privatnachrichten erlauben?<br /><span class="small">('Cc' - Mitglied ist 'kopiert' und sieht alle anderen recs.)</span>~,
 'allowbcc' => q~'Bcc' Liste für Privatnachrichten erlauben?<br /><span class="small">('Bcc' - Mitglied ist 'kopiert', aber sieht andere recs nicht.)</span>~,
-'away' => q~Aktiviere den Status 'Abwesend' für Mitglieder, die nebenbei 'Online/Offline' arbeiten<br /><span class="small">Personal an Mitarbeiter - Nur das Forenpersonal kann den Status benutzen und diesen sehen.<br /> Mitarbeiter an alle Mitglieder - Nur das Forenpersonal kann den Status benutzen, aber alle Mitglieder können diesen sehen.<br /> Mitglieder - Alle Mitglieder können den Status benutzen und diesen sehen</span>~,
+'away' => q~Aktiviere den Status 'Abwesend' für Mitglieder, die nebenbei 'Online/Offline' arbeiten<br /><span class="small">Personal &tilde; Intern - Nur das Forenpersonal kann den Status benutzen und diesen sehen.<br /> Personal &tilde; alle Mitglieder - Nur das Forenpersonal kann den Status benutzen, aber alle Mitglieder können diesen sehen.<br /> Alle Mitglieder - Alle Mitglieder können den Status benutzen und diesen sehen</span>~,
 'extrastore' => q~Aktiviert zusätzlichen Archiv Ordner<br /><span class="small">(Ein-/Ausgang sind Standardwert für alle, 0 = Deaktivert, Erhöhung um maximal 25)</span>~,
 'NewNotificationAlert' => q~Infos über neue Foren- und Themenbenachrichtigungen oben auf jeder Seite einblenden, und die Verwendung eines Popup für diese neuen Benachrichtigungen auf der Übersicht-Seite erlauben (entsprechend der individuellen Einstellung des Mitglieds)?~,
 'enable_PMsearch' => q~Mitgliedern erlauben, ihre PN nach Betreff zu durchsuchen<br /><span class="small">(0 = Aus / 5 - 50 Wert zum Anzeigen der maximalen Ergebnisse setzen)</span>~,
 'enablePM' => q~Private Nachrichtenübermittlung aktivieren für~,
 '87' => q~Broadcast-Nachrichtenübermittlung aktivieren für~,
 '88' => q~Gästen das Senden von Privat-Nachrichten zum Administrator erlauben?~,
-'89' => q~'Moderator melden' Button im Thema aktivieren?<br /><span class="small">(Sendet eine Privat Nachricht an die Moderatoren eines Forums)</span>~,
-'90' => q~'Moderator melden' Button für Gäste anzeigen?~,
+'89' => q~'Moderator melden'-Button im Thema aktivieren?<br /><span class="small">(Sendet eine Privat Nachricht an die Moderatoren eines Forums)</span>~,
+'90' => q~'Moderator melden'-Button für Gäste anzeigen?~,
 '381' => q~Eine eMail-Benachrichtigung beim Eingang neuer PN erlauben?~,
 'pmspamchk' => qq~Erlauben Sie Mitgliedern mit weniger als {yabb numposts} Beiträgen, PN mit Anti-Spam-Maßnahmen zu senden.~,
 );
@@ -1182,7 +1182,7 @@ Danke für die Benutzung von YaBB!~,
 );
 
 %versiontxt = (
-'1' => q~Für den Versionscheck muss Javascript eingeschaltet sein.~,
+'1' => q~Entweder Ihr Browser unterstützt JavaScript nicht oder Sie müssen es aktivieren, damit der Versioncheck funktionieren kann.~,
 '2' => q~<span class="important">Eine neue, stabile Version ist verfügbar.</span><br />Wenn Sie sie herunterladen wollen ~,
 '3' => q~, öffnen Sie bitte <a href="{yabb yabb_dnloads}">{yabb yabb_dnloads}</a>.~,
 '4' => q~IHRE Version:~,
@@ -1193,7 +1193,7 @@ Danke für die Benutzung von YaBB!~,
 );
 
 %gztxt = (
-'1' => qq~Ausgabe-Komprimierung benutzen?<br /><span class="small">Die Ausgabe-Komprimierung reduziert das Übertragungsvolumen des Browsers.<br />Auswählbare Optionen stehen nur dann zur Verfügung, wenn Serverseitig einige unterstützt werden. Einstellung des Pfades zum Server Ihres gzip-Dienstrogrammes in der Rubrik <a href="{yabb adminurl}?action=backupsettings">Backup Utility</span>~,
+'1' => q~Ausgabe-Komprimierung benutzen?<br /><span class="small">Die Ausgabe-Komprimierung reduziert das Übertragungsvolumen des Browsers.<br />Auswählbare Optionen stehen nur dann zur Verfügung, wenn Serverseitig einige unterstützt werden. Einstellung des Pfades zum Server Ihres gzip-Dienstrogrammes in der Rubrik <a href="{yabb adminurl}?action=backupsettings">Backup Utility</span>~,
 '2' => q~Ausgabe immer komprimiert senden?<br /><span class="small">Wenn aktiviert = YaBB prüft nicht, ob der verwendete Browser eine Komprimierung unterstützt. Es wird immer komprimiert gesendet, wenn die Funktion oberhalb aktiviert ist.<br />Wenn deaktiviert = YaBB prüft, ob der verwendete Broswer eine Komprimierung zulässt und nutzt eine Komprimierung entsprechend den Browserfähigkeiten wenn oberhalb aktiviert.</span>~,
 '3' => q~Keine Ausgabe-Komprimierung~,
 '4' => q~Komprimierung mit GZip Programm~,
@@ -1258,13 +1258,13 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '21' => q~URL Einstellungen:~,
 '22' => q~Forum Style URL:~,
 '23' => q~Admin Style URL:~,
-'28' => q~HTML Root URL:~,
+'28' => q~HTML URL:~,
 '29' => q~Avatar URL:~,
 '30' => q~Smileys URL:~,
 '31' => q~Mod Images URL:~,
 '32' => q~Attachments URL:~,
 '32a' => q~PN Attachments URL:~,
-'33' => q~Absoluter Pfad zu Ihrem YaBB-Hauptverzeichnis:~,
+'33' => q~Absoluter Pfad zu Ihrem YaBB-Hauptverzeichnis (enthaltend YaBB.pl):~,
 '34' => q~Diese Information ist für Fehlerbehebungszwecke nützlich~,
 );
 
@@ -1278,7 +1278,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '7' => q~Liste von allen installierten Mods anzeigen~,
 '8' => q~Zur Zeit sind keine Mods installiert. Neue Mods gibt es bei~,
 '9' => q~BoardMod~,
-'19' => q~Hinzufügen/löschen von Mods~,
+'19' => q~Entfernen/Hinzufügen Mods~,
 '20' => q~YaBMods Admin Center~,
 );
 
@@ -1286,7 +1286,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '1' => q~SMTP Server Authentifizierung Typ auswählen<br /><span class="small">AUS bedeutet keine Authentifizierung erforderlich</span>~,
 '3' => q~SMTP Authentifizierung Benutzername~,
 '4' => q~SMTP Authentifizierung Passwort~,
-'5' => q~SMTP Hello domain<br /><span class="small">This is the domain your forum's IP address resolves to for DNS look-up.</span>~,
+'5' => q~SMTP Hallo Domain<br /><span class="small">Dies ist die IP-Adresse zur Domain Ihres Forums für DNS-Lookup.</span>~,
 'sendmail' => q~Unix/Linux/BSD Sendmail~,
 'smtp' => q~YaBB SMTP Engine~,
 'net' => q~Net::SMTP (Perl Module)~,
@@ -1337,7 +1337,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '1' => q~Um bei großen Datenmengen ein Server Time-Out zu vermeiden, wird der Übertragungsvorgang in mehrere Einzelschritte aufgeteilt.~,
 '2' => q~Bei Inaktivität von mehr als 5 Sekunden,~,
 '3' => q~klicke hier um fortzufahren~,
-'4' => q~Daten werden konvertiert - Bitte warten.~, # Used in Javascript -- please test if you are using special characters
+'4' => q~Daten werden konvertiert - Bitte warten.~, # Used in JavaScript -- please test if you are using special characters
 '5' => q{1 Schritt ~},
 '6' => q~Sekunden~,
 '7' => q~Laufzeit:~,
@@ -1347,10 +1347,10 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 '10a' => q~Restliche Mitglieder:~,
 '13' => q~Gefundene Themen:~,
 '14' => q~Restliche Themen: ~,
-'15' => q~Gefundene Forenbenachrichtigungen:~,
-'15a' => q~Restliche Forenbenachrichtigungen:~,
-'16' => q~Gefundene Themenbenachrichtigungen:~,
-'16a' => q~Restliche Themenbenachrichtigungen:~,
+'15' => q~Gefundene Mitglieder mit Forenbenachrichtigung:~,
+'15a' => q~Mitglieder mit Forenbenachrichtigung verbleibend:~,
+'16' => q~Mitglieder mit Themenbenachrichtigungen gefunden:~,
+'16a' => q~Mitglieder mit Themenbenachrichtigungen verbleibend:~,
 '20' => q~<b>Neuaufbau der Mitgliederliste nach Änderung in den "Mitglieder Gruppen".</b><br />~,
 '150a' => q~Foren- und Themenbenachrichtigungen wird neu aufgebaut~,
 '150b' => q~Alle Foren- und Themenbenachrichtigungen wurden neu aufgebaut.~,
@@ -1368,11 +1368,11 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 %domain_filter_txt = (
 '1' => q~Wer kann sich registrieren oder schreiben als Gast~,
 '2' => q~Destillierte eMail-Domaine~,
-'3' => q~Gebe die eMail-Domaine ein, die erlaubt werden sollen. Lasse das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
+'3' => q~Geben Sie die eMail-Domaine ein, die erlaubt werden soll(en). Lassen Sie das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
 '4' => q~Erlaubte eMail-Domaine~,
 '5' => q~Erlaubte eMail-Domaine bearbeiten~,
 '6' => q~Blockierte eMail-Domaine~,
-'7' => q~Geben Sie die eMail-Domaine ein, die blockiert werden soll. Lassen Sie das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
+'7' => q~Geben Sie die eMail-Domaine ein, die blockiert werden soll(en). Lassen Sie das Feld leer, um die Funktion abzuschalten. <br />Nur eine Domain pro Zeile. (z.B. yahoo.com)~,
 '8' => q~Sie können sich nicht registrieren, als Gast schreiben oder die eMail-Adresse ändern, wenn sie von einer dieser Domaine stammt:~,
 );
 
@@ -1405,32 +1405,32 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'Time::HiRes' => q~Genutzt für die Benchmark-Zeit, wenn der Debug-Modus aktiviert ist.<br />Ist dieses Modul nicht installiert, wird die Benchmark-Zeit nicht in vollen und hochauflösenden Sekunden angezeigt.~,
 'Time::Local' => q~Genutzt zur Umwandlung von Zeitzeichenketten in Zeitstempel.<br />Ist dieses Modul nicht installiert, wird die Benchmark-Zeit nicht in vollen und hochauflösenden Sekunden angezeigt.~,
 'File::Find' => q~Genutzt zum Hochladen für Avatare und Dateianhänge.<br />Ist dieses Modul nicht installiert, die Funktion aber aktiviert, werden Sie eine Fehlermeldung erhalten, sobald Sie versuchen, etwas hochzuladen.~,
-'CGI' => q~Genutzt zum Hochladen für Avatare und Dateianhänge.<br />Ist dieses Modul nicht installiert, dass Feature aber aktiviert, werden Sie eine Fehlermeldung erhalten sobald Sie versuchen etwas hochzuladen.~,
+'CGI' => q~Genutzt zum Hochladen für Avatare und Dateianhänge.<br />Ist dieses Modul nicht installiert, dass Feature aber aktiviert, werden Sie eine Fehlermeldung erhalten sobald Sie versuchen, etwas hochzuladen.~,
 'CGI2' => q~<strong>Ihre Version</strong>:~,
 'Net::SMTP' => q~Genutzt zum eMail-Versand über SMTP.<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails über Net::SMTP versenden wollen.~,
 'Net::SMTPS' => q~Genutzt zum eMail-Versand über SMTPS.<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails über Net::SMTPS versenden wollen (in der Regel, wenn Sie einen externen Mailserver wie Google Mail verwenden müssen). Wenn Sie Ihre eMails nicht über Net::SMTPS versenden wollen, benötigen Sie dieses Modul nicht.~,
-'Compress::Zlib' => q~Genutzt für die Backup-Funktion in Verbindung mit der Komprimierung des HTML-Code der von YaBB and den Browser gesendet wird.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (schauen Sie auf die Seite der Backup Funktion für weitere Details) und Sie eine "Use GZip-Compression?" möchten.~,
-'Compress::Bzip2' => q~Genutzt für die Backup-Funktion in Verbindung mit der Komprimierung des HTML-Code der von YaBB and den Browser gesendet wird.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (schauen Sie auf die Seite der Backup Funktion für weitere Details) und Sie eine "Use GZip-Compression?" möchten.~,
-'Archive::Tar' => q~Genutzt für die Backup-Funktion in Verbindung mit der Komprimierung des HTML-Code der von YaBB and den Browser gesendet wird.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (schauen Sie auf die Seite der Backup Funktion für weitere Details) und Sie eine "Use GZip-Compression?" möchten.~,
-'Archive::Zip' => q~Genutzt für die Backup-Funktion in Verbindung mit der Komprimierung des HTML-Code der von YaBB and den Browser gesendet wird.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (schauen Sie auf die Seite der Backup Funktion für weitere Details) und Sie eine "Use GZip-Compression?" möchten.~,
-'MIME::Lite' => q~Genutzt zum Versenden von Backups per eMail.<br />Dieses Modul ist nur erforderlich, wenn Sie ein Backup per eMail erhalten möchten und nicht den direkten Download über den Admin-Center wollen.~,
-'IO::Socket::INET' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
-'Digest::HMAC_MD5' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
-'Carp' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
-'bytes' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
+'Compress::Zlib' => q~Wird für die Backup-Funktion und die Browser-Komprimierung verwendet.<br />Dieses Modul wird nur benötigt, wenn Sie keine anderen Backup-Methoden zur Verfügung haben (siehe <a href="{yabb adminurl}?action=backup">Backup-Funktion</a> für Details) und/oder wenn Sie "GZip-Kompression verwenden" aktivieren möchten. Ansonsten brauchen Sie dieses Modul nicht.~,
+'Compress::Bzip2' => q~Wird für die Backup-Funktion verwendet.<br />Dieses Modul wird nur benötigt, wenn Sie keine anderen Backup-Methoden zur Verfügung haben (siehe <a href="{yabb adminurl}?action=backup">Backup-Funktion</a> für Details). Ansonsten brauchen Sie dieses Modul nicht.~,
+'Archive::Tar' => q~Wird für die Backup-Funktion verwendet.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (siehe <a href="{yabb adminurl}?action=backup">Backup-Funktion</a> für weitere Details). Ansonsten brauchen Sie dieses Modul nicht.~, 
+'Archive::Zip' => q~Wird für die Backup-Funktion verwendet.<br />Dieses Modul ist nur erforderlich, wenn keine andere Backup Methode zur Verfügung steht (siehe <a href="{yabb adminurl}?action=backup">Backup-Funktion</a> für weitere Details). Ansonsten brauchen Sie dieses Modul nicht.~,
+'MIME::Lite' => q~Genutzt zum Versenden von Backups per eMail.<br />Dieses Modul ist nur erforderlich, wenn Sie ein Backup per eMail erhalten möchten und nicht den direkten Download über das Admin-Center wollen. Ansonsten brauchen Sie dieses Modul nicht.~,
+'IO::Socket::INET' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie eMails die YaBB SMTP Engine versenden wollen.~,
+'Digest::HMAC_MD5' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie eMails die YaBB SMTP Engine versenden wollen.~,
+'Carp' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie eMails die YaBB SMTP Engine versenden wollen.~,
+'bytes' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie eMails die YaBB SMTP Engine versenden wollen.~,
 'integer' => q~Genutzt zum eMail-Versand über die "YaBB SMTP Engine".<br />Dieses Modul ist nur erforderlich, wenn Sie Ihre eMails die YaBB SMTP Engine versenden wollen.~,
-'DateTime' => q~Required by DateTime::TimeZone.<br />This module is needed if you want to have forum/user timezones set to anything other than UTC.~,
-'DateTime::TimeZone' => q~Wird verwendet, um Benutzer- und Forumzeitzone auszugleichen auf Basis der tatsächlichen Zeitzone des Benutzers.<br />Dieses Modul wird benötigt, wenn Forum und Mitglieder eine andere Zeitzone als UTC haben wollen/sollen.<br /><span class="Wichtig:">Dieses Modul muss aktuell gehalten werden, da es zeitkritische Daten der Zeitzonen enthält.~,
-'DateTime::TimeZone2' => q~<br /><span class="Wichtig:">Dieses Modul muss aktuell gehalten werden, da es zeitkritische Daten der Zeitzonen enthält. Prüfen Sie dies mit Ihrem Server-Betreiber, um dies sicherzustellen.</span><br /><b>Ihre Version</b>:~,
+'DateTime' => q~Benötigt von DateTime::TimeZone.<br />Dieses Modul wird benötigt, wenn Sie Foren / Mitglieder - Zeitzonen auf etwas anderes als UTC setzen möchten.~,
+'DateTime::TimeZone' => q~Wird verwendet, um Benutzer- und Forumzeitzone auszugleichen auf Basis der tatsächlichen Zeitzone des Benutzers.<br />Dieses Modul wird benötigt, wenn Forum und Mitglieder eine andere Zeitzone als UTC haben wollen/sollen.<br /><span class="important">Dieses Modul muss aktuell gehalten werden, da es zeitkritische Daten der Zeitzonen enthält.~,
+'DateTime::TimeZone2' => q~<br /><span class="important">Dieses Modul muss aktuell gehalten werden, da es zeitkritische Daten der Zeitzonen enthält. Prüfen Sie dies mit Ihrem Server-Betreiber, um dies sicherzustellen.</span><br /><b>Ihre Version</b>:~,
 'URI::Escape' => q~Wird von der Post / Nachrichtenvorschau-Funktion verwendet.<br />Dieses Modul ist erforderlich. Ohne diesem Modul wird die Vorschau-Funktion nicht funktionieren.~,
 'perlver' => q~Ihre Perl Version~,
 'Net::DNS' => q~Benutzt von der verbesserten eMail-Prüfung. Wenn dieses Modul nicht installiert ist, können Sie die verbesserte eMail-Prüfung nicht nutzen.~,
 'Mail::CheckUser' => q~Benutzt von der verbesserten eMail-Prüfung. Dieses Modul wird von YaBB installiert.~,
 'Module::Load' => q~Benötigt für erweitertes Backup.<br />Dieses Modul ist notwendig. Ohne diesem Modul funktionieren die Backupmethoden nicht.~,
 'server' => q~Ihr Server~,
-'LWP::Simple' => q~Used by YaBMod.<br />If this module is not installed, you will be unable to use YaBMod. Otherwise you do not need this module.~,
+'LWP::Simple' => q~Benötigt für YaBMod.<br />Wenn dieses Modul nicht installiert ist, können Sie YaBMod nicht verwenden. Ansonsten benötigen Sie dieses Modul nicht.~,
 'noserver' => q~Keine Serverinformation verfügbar.~,
-'mod_access_compat' => q~No Mod Access~,
+'mod_access_compat' => q~Kein Modzugriff~,
 );
 
 %settings_txt = (
@@ -1440,7 +1440,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 # News settings
 'news' => q~News Einstellungen~,
 'newsfader' => q~News-Fader Einstellungen~,
-'news_desc' => q~Here you can change your news settings and edit your news.~,
+'news_desc' => q~Hier können Sie Ihre Forum-Neuigkeiten ändern und diese bearbeiten.~,
 
 # Forum settings
 'generalforum' => q~Allgemein~,
@@ -1495,19 +1495,19 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'changeinpaths' => q~<span class="small">Der Verzeichnispfad kann unter Pfad Einstellungen bearbeitet werden.</span>~,
 'uploaddircorrect' => q~Das Verzeichnis für Dateianhänge existiert und hat korrekte Berechtigung?~,
 'pmuploaddircorrect' => q~Das Verzeichnis für PN-Dateianhänge existiert und hat korrekte Berechtigung?~,
-'freedisk' => q~Freie Speicherplatzüberprüfung<br /><span class="small">Sie können <u>eine</u> der folgenden drei Methoden auswählen.</span>~,
-'freedisk2' => q~Freie Speicherplatzüberprüfung-Option <span class="small"><b>Note</b>: Nicht alle Optionen sind auf dem Server verfügbar.</span>~,
+'freedisk' => q~Freie Speicherplatzüberprüfung<br /><span class="small">Sie können <span class="under">eine</span> der folgenden drei Methoden auswählen. <strong>Note:</strong> Nicht alle Optionen sind auf dem Server verfügbar.</span>~,
+'freedisk2' => q~Freie Speicherplatzüberprüfungsoption <span class="small"><strong>Note</strong>: Nicht alle Optionen sind auf dem Server verfügbar.</span>~,
 'checkspace' => q~Freier Speicherplatz~,
-'advhelp' => qq~ (Sehe <a href="{yabb scripturl}?action=help;section=admin#Advanced_Settings" target="_blank">Erweiterte Einstellungen</a>)~,
+'advhelp' => q~ (Siehe <a href="{yabb scripturl}?action=help;section=admin#Advanced_Settings" target="_blank">Erweiterte Einstellungen</a>)~,
 
-# Security settings
+# Security Settings
 'generalsec' => q~Allgemein~,
 'validimage' => q~Validierungsbild~,
 
 # Anti-Spam settings
 'generalspam' => q~Allgemeine Antispam-Kontrolle~,
 'speedban' => q~Schnelles Posting verhindern~,
-'spambot' => qq~Spambot Registrierungs-Abschreckungsmaßnahmen (Siehe auch: <a href="{yabb adminurl}?action=spam_questions">Anti-Spam-Fragen</a>) und <a href="{yabb adminurl}?action=newsettings;page=security">Sicherheits-Einstellungen</a>)~,
+'spambot' => q~Spambot-Registrierungs-Abschreckungsmaßnahmen (Siehe auch: <a href="{yabb adminurl}?action=spam_questions">Anti-Spam-Fragen</a>) und <a href="{yabb adminurl}?action=newsettings;page=security">Sicherheits-Einstellungen</a>)~,
 );
 
 #HoneyPot
@@ -1550,7 +1550,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 # RSS Settings
 %rss_txt = (
 '1' => q~RSS Feed deaktivieren?~,
-'2' => q~Maximale Anzahl von Themen in Feeds~,
+'2' => q~Maximale Anzahl von Themen in Feeds (<span class="small">Minimum ist 1. Setzen Sie diese auf 0, so ist der Standardwert 10.</span>)~,
 '3' => q~RSS Nachricht und Art der Sortierung~,
 '4' => q~Keine Nachricht (Sortiert nach der Zeit der letzten Antwort)~,
 '5' => q~Letzte Antwort zeigen? (Sortiert nach der Zeit der letzten Antwort)~,
@@ -1568,8 +1568,8 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 'fmodgmodadmin' => q~Forum-Moderatoren, Global-Moderatoren und Administratoren~,
 'gmodadmin' => q~Global-Moderatoren und Administratoren~,
 'admin' => q~Administratoren~,
-'staff' => q{Personal ~ Intern},
-'staffall' => q{Personal ~ Mitglieder},
+'staff' => q~Personal &tilde; Intern~,
+'staffall' => q~Personal &tilde; Mitglieder~,
 'allowbypass' => q~Wählen Sie die Mitarbeiter, die eine Sperre bei Beiträgen umgehen darf:~,
 );
 
@@ -1584,7 +1584,7 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 %boardpass_txt = (
 '900p' => q~Es ist ein ungültiges Zeichen im Passwortfeld. Gültige Zeichen und Buchstaben sind (a-z), Zahlen (0-9), und ( # + - . @ ^ _ )~,
 '900pw' => q~Passwort eingeben, auf um dieses Forum zugreifen zu können~,
-'900pwb' => q~<strong>Note</strong>: Einrichten eines Kennworts für einen externen Boardlink hat keine Auswirkungen.~,
+'900pwb' => q~<strong>Hinweis</strong>: Einrichten eines Kennworts für einen externen Boardlink hat keine Auswirkungen.~,
 '900pf' => q~Zum Betreten dieses Forums diese Option auswählen und das Passwort eingeben. Boardpasswort ist notwendig. ~,
 '900pt' => q~Passwort für dieses Forum wurde erfolgreich gesetzt.~,
 );
@@ -1602,21 +1602,21 @@ $maintxt {'dst'} = '<sup>*</sup>'; ## needed to show Today in registration log
 
 %setup = (
 '7' => q~Setup und Konverter-Backup-Dateien~,
-'7a' => q~Language Encoding Converter Back-up files~,
+'7a' => q~Sprachcodierung Konverter-Backup-Dateien~,
 '8' => q~Wenn Sie Ihr Forum getestet haben und sicher sind, dass alles korrekt konvertiert ist, dann können Sie die alten YaBB-Backup-Dateien im Convert-Ordner löschen, falls es existiert. (Dies löscht auch die Konvertierungsprogramme, damit sie nicht erneut ausgeführt werden.)~,
-'8a' => q~When you have confirmed that the Language encoding has converted correctly, you can the delete the ConvertLang folders.~,
-'9' => q~Alte Backup-Dateien, Setup und Konvertierungsdienstprogramme löschen?~,
-'9a' => q~Delete Language Conversion Back-up files~,
-'10' => q~Alte Backup-Dateien gelöscht~,
-'10a' => q~Language Conversion Back-up files deleted~,
+'8a' => q~Wenn Sie sicher sind, dass die Sprachcodierung korrekt konvertiert wurde, können Sie den ConvertLang-Ordner löschen.~,
+'9' => q~Alte Sicherungsdateien, Setup und Konvertierungsdienstprogramme löschen?~,
+'9a' => q~Lösche sprachumgewandelte Sicherungsdateien~,
+'10' => q~Alte Sicherungsdateien gelöscht~,
+'10a' => q~Sprachumgewandelte Sicherungsdateien~,
 'conv' => q~Um 1x oder 2x Dateien zu konvertieren nach 2.7.00~,
-'conv2' => qq~<strong><a href="$boardurl/Setup.pl?lang=German">Gehen Sie zu Setup/Convert</a></strong>~,
+'conv2' => qq~<strong><a href="$boardurl/Setup.pl?lang=German_Formal">Gehen Sie zu Setup/Convert</a></strong>~,
+'fixn' => qq~Das 2x Import-Dienstprogramm hat potenzielle Probleme mit den "importierten/konvertierten" Daten erkannt. Weitere Informationen finden Sie unter <a href="$yyhtml_root/tmp/datacheck.txt" target="_new">datacheck.txt</a> für mehr Details.~,
+'illmem1' => qq~Mitglied(er) mit illegalen Benutzernamen wurden gefunden und in legale Namen umgewandelt.<br />Diese Informationen finden Sie in der <i>$yyhtml_root/tmp/fixusers.txt</i> Datei.<br />~,
 );
 
-$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">.<br />\n<a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.</span>~;
-$iFrameSupport = q~Sorry, um die letzten Neuigkeiten zu sehen, müssen Sie einen Browser verwenden, der iframes unterstützt~;
-$rna = q~Remote Server nicht verfügbar.~;
-
-$admin_txt{'10bak'} = q~*.bak Dateien gelöscht~;
+$yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.</span>~;
+$iFrameSupport = 'Sorry, um die letzten Neuigkeiten zu sehen, müssen Sie einen Browser verwenden, der iframes unterstützt';
+$rna = 'Remote Server nicht verfügbar.';
 
 1;

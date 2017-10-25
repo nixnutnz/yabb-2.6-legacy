@@ -1,13 +1,13 @@
 ###############################################################################
 # Main.lng (General text definitions)                                         #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -35,10 +35,10 @@ $abbr_lang = 'de-de';
 %maintxt = (
 'w3c_lngcode' => q~de-de~,
 'error_description' => q~Systeminformation~,
-'error_location' => q~<b>Script</b>~,
-'error_line' => q~<b>Line</b>~,
-'error_subroutine' => q~<b>Subroutine</b>~,
-'error_verbose' => q~<b>Verbose</b>~,
+'error_location' => q~<strong>Script</strong>~,
+'error_line' => q~<strong>Linie</strong>~,
+'error_subroutine' => q~<strong>Unterroutine</strong>~,
+'error_verbose' => q~<strong>Ausführlich</strong>~,
 'board' => q~Forum~,
 'cat' => q~Kategorie~,
 '0' => q~PN senden an~,
@@ -68,7 +68,7 @@ $abbr_lang = 'de-de';
 '41' => q~(Sie müssen sich~,
 '42' => q~oder~,
 '42a' => q~um Multimediadateien oder Links zu sehen).~,
-'noaudio' => q~Ihr Browser unterstützt kein Audioelement.~,
+'noaudio' => q~Ihr Browser unterstützt keine Audioelemente.~,
 '60' => q~Online~,
 '61' => q~Offline~,
 '62' => q~Themen-Werkzeuge~,
@@ -131,7 +131,7 @@ $abbr_lang = 'de-de';
 '470' => q~N/V~,
 '470a' => q~<em>Ex-Mitglied</em>~,
 '525' => q~von~,
-'609' => q~Aus Sicherheitsgründen müssen Sie bei YaBB grundsätzlich absolute Pfade angeben. Das '../' (übergeordneter Ordner) Symbol ist ungültig. Bitte führen Sie Setup.pl erneut aus, und ändern Sie die Einstellung, um absolute Pfade anstelle des Symbols '../' zu verwenden.~,
+'609' => q~Aus Sicherheitsgründen müssen Sie bei YaBB grundsätzlich absolute Pfade angeben. Das '../' (übergeordneter Ordner) Symbol ist ungültig. Bitte führen Sie Setup.pl erneut aus und ändern Sie die Einstellung, um absolute Pfade anstelle des Symbols '../' zu verwenden.~,
 '633' => q~Warnung.~,
 '634' => q~Nur registrierte Mitglieder haben Zutritt zu diesem Forum.~,
 '635' => q~Bitte loggen Sie sich unten ein oder klicken Sie~,
@@ -145,8 +145,8 @@ $abbr_lang = 'de-de';
 '769' => q~Heute~,
 '769a'=> q~Gestern~,
 '769al'=> q~gestern~,
-'769b'=> q~Morgen~,
 '769l' => '', #lowercase date support - multi-language support.;
+'769b'=> q~Morgen~,
 '770' => '', #month suffix for January 1 - multi-language support.
 '770a' => '', #month suffix for 1. January - multi-language support.
 '773' => q~Wollen Sie die Seite jetzt drucken?~,
@@ -155,11 +155,11 @@ $abbr_lang = 'de-de';
 '900pw' => q~Geben Sie das Passwort ein für~,
 '900pd' => q~Forum-Zugriffspasswort~,
 '900pe' => q~Bitte geben Sie ein Passwort ein.~,
-'900pg' => q~Forum-Zugriffspasswort nur für Mitglieder. Bitte <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrieren Sie sich bei uns</a> oder <a href="{yabb scripturl}?action=login" style="font-weight: bold;">logen Sie sich ein.</a>.~,
+'900pg' => q~Forum-Zugriffspasswort nur für Mitglieder. Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">registrieren Sie sich bei uns</a> oder <a href="{yabb boardurl}?action=login" style="font-weight: bold;">loggen Sie sich ein.</a>.~,
 '900pr' => q~Privat~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
-'rsscode' => 'Gehen Sie zu Post, um Code zu sehen',
+'rsscode' => '***Gehen Sie zum Beitrag, um den Code zu sehen*** ',
 'freeuserspace' => q~Kostenloser Host-Platz verfügbar:~,
 'freediskspace' => q~Kostenloser Disk-Platz verfügbar:~,
 'redirect' => q~Weiterleitung~,
@@ -175,11 +175,11 @@ $abbr_lang = 'de-de';
 'maint' => q~Entfernen Sie diese Datei, wenn Ihr Board ohne Grund im Wartungsmodus ist.~,
 'printpage' => q~Drucke die Seite~,
 'members_only' => q~Nur Mitglieder können auf das Profil eines anderen Mitglieds zugreifen.~,
-'reg_please' => q~Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">registrieren Sie sich bei uns</a> oder <a href="{yabb boardurl}?action=login" style="font-weight: bold;">logen Sie sich ein.</a>.~,
+'reg_please' => q~Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">registrieren Sie sich bei uns</a> oder <a href="{yabb boardurl}?action=login" style="font-weight: bold;">loggen Sie sich ein.</a>.~,
 'regplease' => q~Bitte registrieren~,
-'banned' => q~Banned~,
-'backup' => q~Entfernen Sie diese Datei, wenn Ihr Forum ohne Grund in der Backup-Sperre ist.~,
-'tmpchange' => q~Template ändern:~,
+'banned' => q~Verband~,
+'backup' => 'Entfernen Sie diese Datei, wenn Ihr Board ohne Grund im Backup-Modus ist.',
+'tmpchange' => 'Wechsle Template:',
 );
 
 %load_txt = (
@@ -196,19 +196,19 @@ $abbr_lang = 'de-de';
 '471' => q~Nachricht~,
 '616' => q~Achtung, das Forum ist im <a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Wartungsmodus'</a>.~,
 '617' => q~Erinnerung: Das letzte Backup wurde erstellt am:~,
-'773' => qq~IP wurde nicht gefunden~,
+'773' => q~IP wurde nicht gefunden:~,
 '805' => q~Sie~,
-'806' => q~<b>können</b> hier:~,
-'807' => q~können hier <b>nicht</b>:~,
+'806' => q~<strong>können</strong>~,
+'807' => q~<strong>können nicht</strong>~,
 '808' => q~Themen lesen.~,
 '809' => q~Themen beantworten.~,
 '810' => q~Neue Themen beginnen.~,
 '811' => q~Umfragen starten.~,
 '812' => q~Die Zahl Ihrer Beiträge erhöhen.~,
 '813' => q~Dateien anhängen.~,
-'maint' => q~Maintenance~,
-'616c' => q~Achtung, das Forum ist im 'Wartungsmodus'!~,
-'tmod' => 'modify Topics in this Board',
+'maint' => 'Wartung',
+'616c' => q~Das Forum ist im Wartungsmodus!~,
+'tmod' => 'Modifiziere Themen in diesem Forum',
 );
 
 %load_imtxt = (
@@ -243,8 +243,8 @@ $abbr_lang = 'de-de';
 );
 
 %timelocktxt = (
-'02' => q~ Tag(en) zum Ändern der Beiträge gesetzt. Der Beitrag wird nicht geändert.~,
-'02a' => q~ Tag(en) zum Löschen der Beiträge gesetzt. Der Beitrag wird nicht gelöscht.~,
+'02' => q~ Tag(e) zum Ändern der Beiträge gesetzt. Der Beitrag wird nicht geändert.~,
+'02a' => q~ Tag(e) zum Löschen der Beiträge gesetzt. Der Beitrag wird nicht gelöscht.~,
 );
 
 %smiltxt = (
@@ -289,16 +289,16 @@ $abbr_lang = 'de-de';
 $forwardedpm = qq~Diese Alarmierung wurde als eMail weitergeleitet~;
 
 %reg_txt = (
-'reason' => q~Geben Sie bitte einen Grund für die Registrierung an~,
+'reason' => q~Geben Sie bitte einen <strong>ausführlichen</strong> Grund für die Registrierung an~,
 'reason_exp' => q~Die Information wird nur temporär für die Überprüfung verwendet. Sie wird nicht dauerhaft gespeichert.~,
-'admin_alert_start_one' => q~Es gibt <b>~,
-'admin_alert_start_more' => q~Es gibt <b>~,
-'admin_alert_one' => q~</b> Vorregistrierung~,
-'admin_alert_more' => q~</b> Vorregistrierungen~,
-'admin_alert_end' => q~ die auf Freischaltung wartet.~,
-'admin_alert_end_more' => q~ die auf Freischaltung warten.~,
-'admin_alert_act_one' => q~</b> vorregistriertes Mitglied, das~,
-'admin_alert_act_more' => q~</b> vorregistrierte Mitglieder, die~,
+'admin_alert_start_one' => q~Es gibt <strong>~,
+'admin_alert_start_more' => q~Es gibt <strong>~,
+'admin_alert_one' => q~</strong> Vorregistrierung~,
+'admin_alert_more' => q~</strong> Vorregistrierungen~,
+'admin_alert_end' => q~ die auf Freischaltung warten.~,
+'admin_alert_end_more' => q~ die auf Freischaltung warten.~, ## For languages that need a different end line on more than one user
+'admin_alert_act_one' => q~</strong> vorregistriertes Mitglied, das~,
+'admin_alert_act_more' => q~</strong> vorregistrierte Mitglieder, die~,
 'admin_alert_act_end' => q~ nicht validiert wurde.~,
 'admin_alert_act_end_more' => q~ nicht validiert wurden.~,
 'no_masterkey'=> q~<div class="editbg">Es wurde kein Masterkey in den Einstellungen für Sicherheit und Validierungsbild festgelegt.<br />Es wird ein Standartwert benutzt, der jedoch weniger sicher ist!!</div>~,
@@ -322,6 +322,6 @@ $forwardedpm = qq~Diese Alarmierung wurde als eMail weitergeleitet~;
 'smtps2' => q~SMTPS-Anmeldeinformationen konnten nicht authentifiziert werden. Geben Sie bitte die folgenden Informationen an: Admin-Center -> Forum-Konfiguration -> Erweiterte Einstellungen -> Registerkarte eMail. Geben Sie Ihren SMTP-Berechtigungsbenutzernamen, Ihr SMTP-Berechtigungskennwort und Ihren SMTP-Server ein.~,
 );
 
-$yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.~;
+$yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.~;
 
 1;

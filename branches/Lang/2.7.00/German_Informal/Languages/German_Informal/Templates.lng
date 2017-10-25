@@ -18,7 +18,7 @@
 
 $german_informaltemplateslngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informaltemplateslngmods = ();
-if(@german_informaltemplateslngmods){
+if (@german_informaltemplateslngmods) {
     $german_informaltemplateslngmods = 1;
 }
 $action ||= q{};
@@ -97,7 +97,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '67' => q~Kontrollzentrum~,
 '68' => q~News~,
 '69' => q~Hallo,~,
-'70' => q~Sie haben~,
+'70' => q~Du hast~,
 '71' => q~Nachrichten~,
 '72' => q~Test-Kategorie~,
 '73' => q~Test-Forum~,
@@ -126,16 +126,16 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'moveicon2' => q~Icon-Position (horizontal)~,
 'iconspace' => q~Icon-Text-Space~,
 'movetext' => q~Text-Position (vertical)~,
-'noedit' => q~Aus Sicherheitsgründen ist es nicht erlaubt, das default-Template oder den default-Stylesheet zu bearbeiten, mit Ausnahme durch direktes Bearbeiten des Quelltextes.<br />Um Änderungen in diesem Template vorzunehmen, speichern Sie Ihre Arbeit mit einem neuen Dateinamen und wählen Sie dann die neue Datei als Standard-Stylesheet. <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Template-Konfiguration</a>~,
+'noedit' => q~Aus Sicherheitsgründen ist es nicht erlaubt, das default-Template oder den default-Stylesheet zu bearbeiten, mit Ausnahme durch direktes Bearbeiten des Quelltextes.<br />Um Änderungen in diesem Template vorzunehmen, speichere Deine Arbeit mit einem neuen Dateinamen und wähle dann die neue Datei als Standard-Stylesheet. <a href="{yabb adminurl}?action=modskin">Template-Konfiguration</a>~,
 '10b' => q~<br /><span class="small"><strong>Hinweis</strong>: Das default-Template des Forums kann nicht gelöscht werden.</span>~,
-'521' => q~Wählen Sie Template-Menüstil~,
+'521' => q~Wähle Template-Menüstil~,
 '527' => q~Template-Post-Tools aktivieren?~,
 '528' => q~Template-Themen-Tools aktivieren?~,
 '1b' => q~<br /><span class="small"><strong>Hinweis</strong>: Das default-Template des Forums kann nicht gelöscht werden. Es kann auch nicht von diesem Bildschirm aus bearbeitet werden.</span>~,
 'ubbcbutton' => q~UBBC-Buttons~,
 'ubbcdescription' => q~Hier kannst Du die Hintergrundgrafik für die UBBC-Buttons auswählen.~,
-'edit_files' => q~Gehen Sie zu Template bearbeiten~,
-'configure' => q~Gehen Sie zu Template konfigurieren~,
+'edit_files' => q~Gehe zu Template bearbeiten~,
+'configure' => q~Gehe zu Template konfigurieren~,
 'mobile' => q~Ist dies eine mobile Vorlage? (Mobile Templates haben bestimmte Funktionen - wie Kontexthilfen und Vorschau - deaktiviert).~,
 'newlinks' => q~Neue Links zurück~,
 'newlinks_c' => q~Neue Links (Text)~,

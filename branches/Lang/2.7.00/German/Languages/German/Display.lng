@@ -1,9 +1,9 @@
 ###############################################################################
 # Display.lng (Display text definitions)                                      #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germandisplaylngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -87,11 +87,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'guest_message_warn' => qq~Hallo Besucher,<br><br>wie es aussieht, genießen sie das Lesen in unserem Forum. Also warum <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registrieren sie sich nicht bei uns,</a> um diese Nachricht zu stoppen und profitieren von den vielen weiteren Features? Die Registrierung ist einfach und dauert nur ein paar Minuten.<br><br>Wenn Sie bereits Mitglied bei uns sind, dann <a href="{yabb scripturl}?action=login" style="font-weight: bold;">klicken sie hier zum einloggen.</a><br><br>Vielen Dank!<br><br>Das {yabb mbname} Team~,
 'bookmarks' => q~Bookmarks~, # Social Bookmarks
 'google' => q~Google Hangout~,
-'725f' => q~Verbanne IP~,
 'ipblock' => q~Blocke IP im Guardian~,
-'ipblock2' => q~Blocke IP in .htaccess~,
-'ipblock_confirm' => q~Sind Sie sicher, dass Sie diese IP blockieren wollen?\n\n~,
-'ipban_confirm' => q~Sind Sie sicher, dass Sie diese IP verbannen wollen?\n\n~,
+'ipblock2' => q~Blocke IP in der .htaccess~,
+'ipblock_confirm' => q~Sind Sie sicher, dass Sie diese IP blockieren möchten?\n\n~,
+'ipban_confirm' => q~Sind Sie sicher, dass Sie diese IP verbannen möchten?\n\n~,
+'725f' => q~Verbanne IP~,
 );
 
 %zodiac_txt = (   #YaBB Zodiac

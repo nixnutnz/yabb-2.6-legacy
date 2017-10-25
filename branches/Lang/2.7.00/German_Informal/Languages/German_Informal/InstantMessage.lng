@@ -48,7 +48,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '317' => q~Datum~,
 '318' => q~Von~,
 '320' => q~Diese Nachricht nach dem Senden nicht im Ordner "Gesendete Nachrichten" speichern.~,
-'321' => q~Beachten Sie, dass Anhänge zusammen mit Nachrichten im Ordner "Gesendete Nachrichten" so gelöscht werden. Wenn Sie Dateien beifügen, gilt die obengenannte Auswahl nicht.~,
+'321' => q~Beachte, dass Anhänge zusammen mit Nachrichten im Ordner "Gesendete Nachrichten" so gelöscht werden. Wenn Du Dateien beifügst, gilt die obengenannte Auswahl nicht.~,
 'datesave' => q~Datum gespeichert~,
 'forward' => q~Nachricht weiterleiten~,
 'replymess' => q~Auf Nachricht antworten~,

@@ -16,9 +16,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$german_informalcreditslngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalcreditslngver = 'YaBB 2.7.00 $Revision: 1876 $';
 @german_informalcreditslngmods = ();
-if(@german_informalcreditslngmods){
+if (@german_informalcreditslngmods) {
     $german_informalcreditslngmods = 1;
 }
 
@@ -29,6 +29,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'yabb2' => q~&#x86 Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman~,
 'yabb252' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Inbegriffen Mods in YaBB 2.5.2 geschrieben von Derek Barnstorm, Carsten Dalgaard, und D.A. Rorabaugh.<br /><br />Gewidmet in Erinnerung an &#x86; Ron Hartendorp, AKA Spikecity. Er hat uns zu fr&uuml;h verlassen.~,
 'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Eingeschlossene Mods in YaBB 2.6 geschrieben von AstroPilot, Derek Barnstorm, Carsten Dalgaard, &#x86 Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh mit zus&auml;tzlichen Code und Mods aus dem YaBB 3.0 Entwicklungsteam. Wir w&auml;ren nirgends ohne die Beitr&auml;ge von Mod-Schriftstellern.<br />Und lasst uns nicht vergessen, die Bug-J&auml;ger und Fehler-Finder zu nennen, wo die Dinge nicht ganz richtig funktionieren. Danke Monni und Pyragony und alle anderen Bugj&auml;ger, die ihre Erkenntnisse gemeldet haben.~,
+'yabb270' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Eingeschlossene Mods in YaBB 2.7 geschrieben von AstroPilot, Derek Barnstorm, Carsten Dalgaard, &#x86 Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh.<br />Und danke an unsere ewigen Bug-J&auml;ger und Fehler-Finder, vor allem Monni und Pyragony und alle anderen Bug J&auml;ger, die ihre Ergebnisse berichten. Vielen Dank an Pyragony f&uuml;r die deutschen &Uuml;bersetzungen. F&uuml;r Fehler und Verbesserungen der deutschen &Uuml;bersetzungen wende Dich bitte an "info@anti-scam.de"~,
 'yabb' => q~Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko~,
 'Thanks' => q~Besonderer Dank an~,
 'yabbBeta' => q~und alle unsere Beta-Tester.~,

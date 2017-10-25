@@ -1,9 +1,13 @@
 ###############################################################################
 # Micon.lng (Image text/images definitions)                                   #
 ###############################################################################
+# German_Formal - Translation by Pyragony                                     #
+# and other members of the YaBB community                                     #
+# review & changes by Pyragony (info@anti-scam.de)                            #
+###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -33,7 +37,7 @@ if (!$language){$language = $lang;}
 
 %messageindex_txt_m = (
 '302' => q~Neu~,
-'303' => q~Gehe zum ersten ungelesenen Beitrag~,
+'303' => q~Gehen Sie zum ersten ungelesenen Beitrag~,
 '454' => q~Heisses Thema (Mehr als~,
 '454a' => q~Antworten)~,
 '455' => q~Sehr heißes Thema (Mehr als~,

@@ -1,9 +1,9 @@
 ###############################################################################
 # LogInOut.lng (LogInOut text definitions)                                    #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,8 +11,8 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $germanloginoutlngver = 'YaBB 2.7.00 $Revision: 1879 $';
@@ -31,7 +31,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '36' => q~Passwort~,
 '36b' => q~Passwort zurücksetzen~,
 '130' => qq~Mit freundlichen Gruß,\nDas {yabb mbname} Team~,
-'130a' => q~Diese Anfrage stammt von einem Besucher von {yabb mbname}. Wenn Sie keine Anfrage zum zurücksetzen Ihres Passworts geschickt haben, dann können Sie diese eMail ignorieren. Ansonsten klicken Sie hier um Ihr Passwort zurück zu setzen: ~,
+'130a' => q~Diese Anfrage stammt von einem Besucher von {yabb mbname}. Wenn Sie keine Anfrage zum zurücksetzen Ihres Passworts geschickt haben, dann können Sie diese eMail ignorieren. Ansonsten klicken Sie hier, um Ihr Passwort zurück zu setzen: ~,
 '192' => q~eMail erfolgreich versandt an:~,
 '193' => q~Zurück~,
 '194' => q~Erinnerung~,
@@ -39,13 +39,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '315' => q~Passwort vergessen?~,
 '339' => q~Senden~,
 '669' => q~Passwort vergessen~,
-'711' => q~Sehr geehrte(r)~,
-'753' => q~Wollen Sie sich registrieren?~,
+'711' => q~Sehr geehrte(r),~,
+'753' => q~wollen Sie sich registrieren?~,
 '837' => q~Die Benutzer-ID beachtet Groß-/und Kleinschreibung.~,
 'capslock' => q~Die Feststelltaste ist angeschaltet.~,
 'wrong_char' => q~Dieses Zeichen im Passwort ist ungültig~,
 'error_user_info' => q~Sie müssen Ihre Benutzer-ID oder eMail-Adresse eingeben.~,
-'no_user_info_exists' => q~Die Benutzer-ID oder eMail-Adresse, die Sie eingegeben haben, existieren nicht in diesem Forum.~,
+'no_user_info_exists' => q~Die Benutzer-ID oder eMail-Adresse, die Sie eingegeben haben, existiert nicht in diesem Forum.~,
 'verification_question_desc' => q~Bitte beantworten Sie die oben genannte Überprüfungsfrage.~,
 'verification_question_case' => q~Antworten sind Groß-und Kleinschreibung.~,
 'error_verification' => q~Der Verifizierungscode fehlt.~,

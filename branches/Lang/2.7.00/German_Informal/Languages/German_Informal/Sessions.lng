@@ -1,4 +1,4 @@
-###############################################################################
+﻿##############################################################################
 # Sessions.lng (Sessions text definitions)                                    #
 ###############################################################################
 # German_Informal - Translation by Pyragony                                   #
@@ -18,7 +18,7 @@
 
 $german_informalsessionslngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informalsessionslngmods = ();
-if(@german_informalsessionslngmods){
+if (@german_informalsessionslngmods) {
     $german_informalsessionslngmods = 1;
 }
 $action ||= q{};

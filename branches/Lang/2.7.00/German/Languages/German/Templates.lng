@@ -1,13 +1,13 @@
 ###############################################################################
 # Templates.lng                                                               #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
 # review & changes by Pyragony (webmaster@yabbtest.de)                        #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -24,10 +24,10 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %templ_txt = (
-'1' => q~Style Sheet~,
-'2' => q~Kopf / Header~,
-'3' => q~Forenindex~,
-'4' => q~Themen/Message-Index~,
+'1' => q~Template Style Sheet~,
+'2' => q~Template Kopf / Header~,
+'3' => q~Foren-Index~,
+'4' => q~Nachrichten-Index~,
 '5' => q~Beitrag anzeigen~,
 '5a' => q~Suchen~,
 '5b' => q~Kalender~,
@@ -45,7 +45,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '14' => q~Löschen~,
 '15' => q~Sind Sie sicher, dass Sie folgendes Template löschen wollen?~,
 '18' => q~Elemente~,
-'19' => q~Hier können Sie die Schrift, Rahmen- und Hintergrundfarben, sowie die Schriftarten und -größen von den wesentlichen Elementen Ihres Forums ändern.~,
+'19' => q~Hier können Sie die Schrift, Rahmen- und Hintergrundfarben, sowie die Schriftarten und -größen von den wesentlichen Elementen Ihres Forums ändern. <br /><strong>Hinweis</strong>: Wenn ein Elementattribut wie Schriftart keine Auswahlmöglichkeiten hat, wurde dieses Attribut nicht für dieses Element im Stylesheet gesetzt.~,
 '20' => q~Element~,
 '21' => q~Hintergrund~,
 '21g' => q~Hintergrund-Grad.~,
@@ -137,23 +137,23 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'configure' => q~Gehen Sie zu Template konfigurieren~,
 'mobile' => q~Ist dies eine mobile Vorlage? (Mobile Templates haben bestimmte Funktionen - wie Kontexthilfen und Vorschau - deaktiviert).~,
 'newlinks' => q~Neue Links zurück~,
-'newlinks_c' => q~New Links (Text)~,
+'newlinks_c' => q~Neue Links (Text)~,
 '521a' => q~Icon + Text~,
 '521b' => q~Nur Text~,
 '521c' => q~Nur Buttons~,
 'modfolder' => q~Erstellen Sie einen neuen Template-Ordner~,
-'modfoldername' => q~Name des neuen Template-Ordners~,
+'modfoldername' => q~Neuer Template-Ordner~,
 'modgfolder' => q~Erstellen Sie einen neuen Template-Grafik-Ordner~,
-'modgfoldername' => q~Name des neuen Template-Grafik-Ordners~,
+'modgfoldername' => q~Neuer Template-Grafik-Ordner~,
 'foldercreated' => q~erstellt~,
 'foldernotcreated' => q~<span class="important">nicht erstellt</span>~,
 'modfolderup' => q~Neue Template-Dateien hochladen~,
 'modgfolderup' => q~Neue Template-Grafik-Dateien hochladen~,
-'modfolderup2' => q~Wählen Sie Dateien zum Hochladen aus~,
-'modfolderfolder' => q~Wählen Sie den Ordner aus, in den Sie hochladen möchten~,
+'modfolderup2' => q~Wählen Sie die Dateien zum Hochladen aus~,
+'modfolderfolder' => q~Wählen Sie den Ordner zum Hochladen aus~,
 'newfolder' => q~Neuer Ordner~,
-'uploadedg' => q~Neue Grafikdatei-Uploads~,
-'uploaded' => q~Neue Templatedatei-Uploads~,
+'uploadedg' => q~Neue Grafik-Datei hochladen~,
+'uploaded' => q~Neue Template-Datei hochladen~,
 );
 
 1;

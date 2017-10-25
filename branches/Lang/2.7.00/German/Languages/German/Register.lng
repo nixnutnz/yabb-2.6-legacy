@@ -1,13 +1,13 @@
 ###############################################################################
 # Register.lng (Register text definitions)                                    #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -35,7 +35,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '81' => q~Passwort~,
 '82' => q~Passwort wiederholen~,
 '91' => q~Das Passwortfeld ist leer~,
-'95' => q~Mit der Registrierung sind Sie Mitglied im '<em>{yabb mbname}</em>' Forum,<br/> und haben Login-Zugriff auf <em>{yabb scripturl}</em>~,
+'95' => q~Mit der Registrierung sind Sie Mitglied im '<em>{yabb mbname}</em>' Forum<br/> und haben Login-Zugriff auf <em>{yabb scripturl}</em>~,
 '97' => q~Registrieren~,
 '97a' => q~Markierte Felder mit ~,
 '97b' => q~sind bei der Registrierung erforderlich.~,
@@ -68,10 +68,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '678' => q~Sorry~,
 '679' => q~Es muss eine gültige eMail-Adresse sein.~,
 '703' => q~Danke, dass Sie sich registriert haben. Sie werden gleich eine eMail mit Ihrem Passwort erhalten. Das Passwort können Sie nach dem Einloggen in Ihrem Profil ändern.~,
-'704' => q~<b>Sie können <a href="{yabb scripturl}?action=login">zur Anmeldung weitergehen</a>, sobald Sie Ihre eMail überprüft haben.</b>~,
+'704' => q~<strong>Sie können <a href="{yabb scripturl}?action=login">zur Anmeldung weitergehen</a>, sobald Sie Ihre eMail überprüft haben.</strong>~,
 '721' => q~eMail-Adresse verstecken?~,
 '730' => q~Die eMail-Adresse~,
-'731' => q~wird bereits von einem registrierten Mitglied verwendet. Falls hier ein Fehler vorliegt, können Sie sich auf der Loginseite über den Link 'Passwort vergessen' Ihr Passwort zuschicken lassen.~,
+'731' => q~wird bereits von einem registrierten Mitglied verwendet. Falls hier ein Fehler vorliegt, können Sie sich auf der Loginseite über den Link Passwort vergessen Ihr Passwort zurücksetzen.~,
 '764a' => q~Nutzungsbedingungen~,
 '765' => q~Treten Sie der Mitgliedergruppe~,
 '765a' => q~Ausgewählte Mitgliedergruppe~,
@@ -105,7 +105,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_numname' => q~Sie können keine Benutzer-ID erstellen, die nur aus Zahlen besteht.~,
 'error_usernameispass' => q~Aus Sicherheitsgründen können Sie Ihre Benutzer-ID oder Ihren angezeigten Namen nicht als Passwort verwenden.~,
 'error_realname' => q~Sie müssen einen Namen eintragen, der angezeigt wird.~,
-'error_name_cannot_be_userid' => q~Die Benutzer-ID und der angezeigte Name dürfen </b>nicht</b> identisch sein.~,
+'error_name_cannot_be_userid' => q~Die Benutzer-ID und der angezeigte Name dürfen <strong>nicht</strong> identisch sein.~,
 'error_email' => q~Sie müssen Ihre eMail Adresse eintragen.~,
 'error_birth_day' => q~Sie müssen Ihren Geburtstags TAG (TT) in dem Format mit zwei Zahlen zwischen 01 und 31 eintragen.~,
 'error_birth_month' => q~Sie müssen Ihren Geburtstags MONAT (MM) in dem Format mit zwei Zahlen zwischen 01 und 12 eintragen.~,
@@ -115,13 +115,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_pass2' => q~Ihr Passwort ist nicht identisch mit dem bestätigten Passwort.~,
 'error_verification' => q~Der Verifizierungs Code ist nicht vorhanden.~,
 'error_reason' => q~Sie müssen mindestens einen Grund für die Registrierung in unserem Forum angeben.~,
-'error_agree' => q~Sie müssen die \\"Nutzungsbedingungen\\" akzeptieren, bevor Sie sich registrieren können.~,
+'error_agree' => q~Sie müssen die \"Nutzungsbedingungen\" akzeptieren, bevor Sie sich registrieren können.~,
 'error_gender' => q~Sie müssen Ihr Geschlecht auswählen~,
 'error_verification_question' => q~Sie müssen die Überprüfungsfrage beantworten.~,
 'error_email2' => q~Überprüfen Sie Ihre eMail- Adresse~,
 'error_email3' => q~Ihre eMail-Adressen sind nicht identisch.~,
-'imsubject' => q~Hey Hey :)~,
-'imtext' => q~Welcome to my boards~,
+'imsubject' => q~Hallo,~,
+'imtext' => q~Willkommen im Forum~,
 );
 
 %pwstrengthmeter_txt = (
@@ -138,7 +138,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 %floodtxt = (
 '1' => q~Ihr Validierungscode ist~,
 '3' => q~Validierungscode~,
-'casewarning' => q~Geben Sie bitte den Text genau so ein,<br />wie auf dem Bild dargestellt wird.<br />Beachten Sie dabei bitte die Groß- und Kleinschreibung.~,
+'casewarning' => q~Geben Sie bitte den Text genau so ein,<br />wie er auf dem Bild dargestellt wird.<br />Beachten Sie dabei bitte die Groß- und Kleinschreibung.~,
 'casewarning_1' => q~Geben Sie bitte den Text genau so ein, wie auf dem Bild dargestellt,~,
 'casewarning_2' => q~<br /><span style="font-weight: bold;">ohne die ersten~,
 'casewarning_3' => q~<br /><span style="font-weight: bold;">ohne die letzten~,
@@ -169,7 +169,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '15a' => q~Registrierungs Protokoll zeigen~,
 '16' => q~Max. {yabb reg_reason_len} Zeichen. Noch verfügbar: ~,
 'approved' => q~Ihr Antrag ist genehmigt worden für~,
-'regreason' => q~Bitte teilen Sie uns Ihren Grund (bzw. mehrere Gründe) für die Registrierung in diesem Forum mit~,
+'regreason' => q~Bitte teilen Sie uns <strong>ausführlich</strong> Ihren Grund (bzw. mehrere Gründe) für die Registrierung in diesem Forum mit~,
 'reason_exp' => q~ Diese Information wird vom Forum-Personal verwendet, um Ihre Registrierung hier zu überprüfen.~,
 'action' => q~Aktion~,
 'del' => q~Sofort löschen~,

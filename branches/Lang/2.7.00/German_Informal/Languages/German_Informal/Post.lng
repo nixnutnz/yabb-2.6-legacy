@@ -12,13 +12,13 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informalpostlngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informalpostlngmods = ();
-if(@german_informalpostlngmods){
+if (@german_informalpostlngmods) {
     $german_informalpostlngmods = 1;
 }
 $action ||= q{};
@@ -51,7 +51,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '132' => q~Du hast bereits die Benachrichtigung für alle neuen Beiträge in diesem Forum aktiviert.~,
 '148' => q~Thema versenden~,
 '150' => q~Empfänger~,
-'165' => q~Zum Schreiben muss Du eingeloggt sein. Wenn Du noch keinen Account hast, registriere dich bitte.~,
+'165' => q~Zum Schreiben muss Du eingeloggt sein. Wenn Du noch keinen Account hast, registriere Dich bitte.~,
 '211' => q~Zuletzt geändert~,
 '223' => q~Sorry, Du musst registriert sein, um diese Funktion zu nutzen.~,
 '240' => q~Es befindet sich ein ungültiges Zeichen im~,
@@ -122,7 +122,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '451' => q~Zunge~,
 '468' => q~Zusammenfassung des Themas~,
 '470' => q~N/V~,
-'470a' => q~<i>Ex-Mitglied</i>~,
+'470a' => q~<em>Ex-Mitglied</em>~,
 '473' => q~Dieser Name wird schon von einem anderen Mitglied verwendet.~,
 '500' => q~Bitte gib eine gültige eMail Adresse ein.~,
 '507' => q~Fehler:~,
@@ -137,8 +137,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '536' => q~Dein Beitrag ist um~,
 '537' => q~Zeichen zu lang. Bitte kürze ihn.~,
 '568' => q~Bitte kürze die gewählte Benutzer-ID, sie ist zu lang~,
-
-##### Do no edit any of the words in all capitals!
+##### Do not edit any of the words in all capitals!
 '599' => q~<a class="message" href="QUOTELINK">Zitat von AUTOR</a> on DATE:<br /><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
 '599_d' => q~<a class="message" href="QUOTELINK">Zitat von AUTOR</a> DATE:<br /><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
 '600' => q~<a class="message" href="QUOTELINK">AUTHOR schrieb</a> on DATE:<br /><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
@@ -152,11 +151,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '604' => q~/me - Mein Name~,
 '646' => q~Mitglieder, die auf dieses Thema antworten~,
 '750' => q~Aktivieren, wenn Du über Antworten auf dieses Thema benachrichtigt werden willst.~,
-'751' => q~Erforderliche Informationen fehlen:~,
 '752' => q~Du musst das Empfängerfeld ausfüllen.~,
 '768' => q~Bist Du sicher, dass Du das Mitglied von der Liste entfernen möchtest?~,
 '771' => q~Vorschau aktualisieren~,
 '772' => q~Gast~,
+'751' => q~Erforderliche Informationen fehlen:~,
 '801' => q~Fröhlich~,
 '802' => q~Böse~,
 '807' => q~(Der angezeigte Name des Benutzers wird nicht in der Live Vorschau dargestellt)~,
@@ -170,7 +169,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'alertmod' => q~Die Moderatoren des Forums über diesen Beitrag informieren~,
 'favorite' => q~Zu Deinen Favoriten hinzufügen~,
 'notfav' => q~Aktivieren, wenn Du dieses Thema zu Deinen Favoriten hinzufügen willst.~,
-'alreadyfav' => q~Du hast bereits dieses Thema Ihren Favoriten hinzugefügt.~,
+'alreadyfav' => q~Du hast bereits dieses Thema zu Deinen Favoriten hinzugefügt.~,
 'maximumfav' => q~Du hast bereits die maximalen erlaubten Favorite Themen.~,
 'draftleave' => q~Aktivieren, wenn Du diese Nachricht nach dem Senden im Ordner \'Entwürfe\' behalten willst~,
 'resizedescript' => q~Du kannst die Größe des Textfeldes ändern, indem Du die Ränder mit der Maus ziehst.~,

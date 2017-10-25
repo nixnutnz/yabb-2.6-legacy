@@ -22,7 +22,7 @@
 
 $german_informallivepreviewlngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informallivepreviewlngmods = ();
-if(@german_informallivepreviewlngmods){
+if (@german_informallivepreviewlngmods) {
     $german_informallivepreviewlngmods = 1;
 }
 $action ||= q{};

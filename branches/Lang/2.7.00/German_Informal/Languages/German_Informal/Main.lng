@@ -16,14 +16,13 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$german_informalmainlngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalmainlngver = 'YaBB 2.7.00 $Revision: 1924 $';
 @german_informalmainlngmods = ();
 if (@german_informalmainlngmods) {
     $german_informalmainlngmods = 1;
 }
-
 $action ||= q{};
-if ( $action eq 'detailedversion' && $language ne 'German' ) { return 1; }
+if ( $action eq 'detailedversion' && $language ne 'German_Informal' ) { return 1; }
 
 $abbr_lang = 'de-de';
 
@@ -69,7 +68,7 @@ $abbr_lang = 'de-de';
 '41' => q~(Du mußt dich~,
 '42' => q~oder~,
 '42a' => q~um Multimediadateien oder Links zu sehen).~,
-'noaudio' => q~Ihr Browser unterstützt kein Audioelement.~,
+'noaudio' => q~Dein Browser unterstützt keine Audioelemente.~,
 '60' => q~Online~,
 '61' => q~Offline~,
 '62' => q~Themen-Werkzeuge~,
@@ -156,16 +155,16 @@ $abbr_lang = 'de-de';
 '900pw' => q~Gebe das Passwort ein für~,
 '900pd' => q~Forum-Zugriffspasswort~,
 '900pe' => q~Bitte gebe ein Passwort ein.~,
-'900pg' => q~Forum-Zugriffspasswort nur für Mitglieder. Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">registriere Dich bei uns</a> oder <a href="{yabb boardurl}?action=login" style="font-weight: bold;">loge Dich ein.</a>~,
+'900pg' => q~Forum-Zugriffspasswort nur für Mitglieder. Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">registriere Dich bei uns</a> oder <a href="{yabb boardurl}?action=login" style="font-weight: bold;">logge Dich ein.</a>~,
 '900pr' => q~Privat~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
-'rsscode' => 'Gehen Sie zu Post, um Code zu sehen',
+'rsscode' => '***Gehe zum Beitrag, um den Code zu sehen*** ',
 'freeuserspace' => q~Kostenloser Host-Platz verfügbar:~,
 'freediskspace' => q~Kostenloser Disk-Platz verfügbar:~,
 'redirect' => q~Weiterleitung~,
 'redirecttext' => q~Wenn Du diese Nachricht siehst, bedeutet das, dass die Weiterleitung nicht funktioniert.~,
-'redirectlink' => q~Klicken Sie hier~,
+'redirectlink' => q~Klicke hier~,
 'noscript' => q~JavaScript muss aktiviert sein, damit der volle Funktionsumfang des Forum genutzt werden kann.~,
 'go_to_board' => q~Gehe zum Board Index~,
 'searchimg' => q~Beiträge nicht mehr als~,
@@ -176,7 +175,7 @@ $abbr_lang = 'de-de';
 'maint' => q~Entferne diese Datei, wenn Dein Board ohne Grund im Wartungsmodus ist.~,
 'printpage' => q~Drucke die Seite~,
 'members_only' => q~Nur Mitglieder können auf das Profil eines anderen Mitglieds zugreifen.~,
-'reg_please' => q~Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">registriere Dich bei uns</a> oder <a href="{yabb boardurl}?action=login" style="font-weight: bold;">loge Dich ein.</a>~,
+'reg_please' => q~Bitte <a href="{yabb boardurl}?action=register" style="font-weight: bold;">registriere Dich bei uns</a> oder <a href="{yabb boardurl}?action=login" style="font-weight: bold;">logge Dich ein.</a>~,
 'regplease' => q~Bitte registrieren~,
 'banned' => q~Verband~,
 'backup' => 'Entferne diese Datei, wenn Dein Board ohne Grund im Backup-Modus ist.',
@@ -214,7 +213,7 @@ $abbr_lang = 'de-de';
 
 %load_imtxt = (
 '46' => q~Archiv~,
-'71' => q~Ausdruck von Ihrem~,
+'71' => q~Ausdruck von Deinem~,
 );
 
 %security_txt = (
@@ -236,7 +235,7 @@ $abbr_lang = 'de-de';
 '3' => q~(Die Kommandos sind der Variables/Referer.pm entnommen)~,
 '4' => q~Einstellungen speichern~,
 '6' => q~Externe Domain:~,
-'7' => q~Ihre Domain:~,
+'7' => q~Deine Domain:~,
 );
 
 %dereftxt = (
@@ -244,8 +243,8 @@ $abbr_lang = 'de-de';
 );
 
 %timelocktxt = (
-'02' => q~ Tag(en) zum Ändern der Beiträge gesetzt. Der Beitrag wird nicht geändert.~,
-'02a' => q~ Tag(en) zum Löschen der Beiträge gesetzt. Der Beitrag wird nicht gelöscht.~,
+'02' => q~ Tag(e) zum Ändern der Beiträge gesetzt. Der Beitrag wird nicht geändert.~,
+'02a' => q~ Tag(e) zum Löschen der Beiträge gesetzt. Der Beitrag wird nicht gelöscht.~,
 );
 
 %smiltxt = (
@@ -323,6 +322,6 @@ $forwardedpm = qq~Diese Alarmierung wurde als eMail weitergeleitet~;
 'smtps2' => q~SMTPS-Anmeldeinformationen konnten nicht authentifiziert werden. Gebe bitte die folgenden Informationen an: Admin-Center -> Forum-Konfiguration -> Erweiterte Einstellungen -> Registerkarte eMail. Gebe Deinen SMTP-Berechtigungsbenutzernamen, Dein SMTP-Berechtigungskennwort und Deinen SMTP-Server ein.~,
 );
 
-$yycopyright = qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.~;
+$yycopyright = qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle Rechte vorbehalten.~;
 
 1;

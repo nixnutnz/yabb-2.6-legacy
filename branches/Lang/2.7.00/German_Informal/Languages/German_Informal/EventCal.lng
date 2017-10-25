@@ -12,13 +12,13 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$german_informaleventcallngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informaleventcallngver = 'YaBB 2.7.00 $Revision: 1925 $';
 @german_informaleventcallngmods = ();
-if(@german_informaleventcallngmods){
+if (@german_informaleventcallngmods) {
     $german_informaleventcallngmods = 1;
 }
 $action ||= q{};
@@ -56,7 +56,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'calsubtitle' => q~Event(s)~,
 'calevent' => q~Neues Ereignis:~,
 'calbirthday' => q~Geburtstag~,
-'calbirthday1' => q~Keine Geburtstag(e)~,
+'calbirthday1' => q~Kein(e) Geburtstag(e)~,
 'calbirthdays' => q~Geburtstagsliste~,
 'calbirthdayinfo' => q~Die Geburtstagsliste zeigt alle eingetragenen Mitglieder-Geburtstage.<br />Du kannst die Geburtstage nach <em>Name</em>, <em>Alter</em>, <em>Sternzeichen</em> (wenn angezeigt), oder nach <em>Geburtsdatum</em> sortieren.~,
 'calbirthdaytoday' => q~Heute haben folgende Mitglieder Geburtstag~,
@@ -121,6 +121,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'exmem' => q~Ex-Mitglied~,
 'by' => q~Von:~,
 'getaddevent' => q~Neuen Event hinzufügen~,
+'139' => q~Seiten~,
 );
 
 ## Event Kalender YaBBC ###

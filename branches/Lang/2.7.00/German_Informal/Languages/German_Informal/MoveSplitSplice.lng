@@ -12,13 +12,13 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informalmovesplitsplicelngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informalmovesplitsplicelngmods = ();
-if(@german_informalmovesplitsplicelngmods){
+if (@german_informalmovesplitsplicelngmods) {
     $german_informalmovesplitsplicelngmods = 1;
 }
 $action ||= q{};
@@ -46,7 +46,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '17' => q~Wähle das Forum, in welches die gewählten Beiträge verschoben werden sollen. ~,
 '18' => q~Wähle das Thema, in welches die gewählten Beiträge verschoben werden sollen. ~,
 '19' => q~Wähle die Position, um die gewählten Beiträge zu verbinden.<br />Die Beiträge werden unterhalb der angezeigten Position gestellt.~,
-'20' => q~Wenn Du die ausgewählten Beiträge in ein neues Thema verschiebst, kannst Du hier eine neue Titelzeile festlegen.<br />Wenn Du nichts einträgst, wird die vorhandene Titelzeile des ersten Beiträge angezeigt.~,
+'20' => q~Wenn Du die ausgewählten Beiträge in ein neues Thema verschiebst, kannst Du hier eine neue Titelzeile festlegen.<br />Wenn Du nichts einträgst, wird die vorhandene Titelzeile der ersten Beiträge angezeigt.~,
 '21' => q~Re:~,
 '22' => q~Du musst mindestens eine Kategorie auswählen.~,
 '22a' => q~Du musst mindestens ein Forum auswählen.~,

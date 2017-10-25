@@ -1,13 +1,13 @@
 ###############################################################################
 # Backup.lng                                                                  #
 ###############################################################################
-# German/Sie - Translation by Pyragony                                        #
+# German_Formal - Translation by Pyragony                                     #
 # and other members of the YaBB community                                     #
-# review & changes by Pyragony (webmaster@yabbtest.de)                        #
+# review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:        YaBB 2.7.00                                                 #
+# Version:      YaBB 2.7.00                                                   #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -32,13 +32,13 @@ if( ! $script_root ) {
 %backup_txt = (
 '1' => q~YaBB Backup~,
 '2' => q~Sie haben Ihre Backup-Einstellungen noch nicht gespeichert. Dies ist jedoch zwingend notwendig, bevor Sie ein Backup durchführen können.~,
-'3' => q~Wählen Sie aus, welche Verzeichnisse gesichert werden sollen. <span style="color: red;"><b>Hinweis:</b></span> Die Backup Verzeichnisstruktur benutzt die aktuellen Pfade aus Paths.pm.~,
+'3' => q~Wählen Sie aus, welche Verzeichnisse gesichert werden sollen. <span style="color: red;"><strong>Hinweis:</strong></span> Die Backup Verzeichnisstruktur benutzt die aktuellen Pfade aus Paths.pm.~,
 '4' => q~YaBB-Verzeichnisse~,
 '5' => q~Alle aus-/abwählen~,
 '6' => q~Wenn Sie alle Optionen auswählen, wird eine komplette Kopie Ihres Forums erstellt (empfohlen).<br />Diese Sicherungsmethode kann aber insbesondere bei sehr großen Foren zu Problemen bei der Wiederherstellung kommen. In diesem Fall ist es besser, wenn Sie separate Backups für jedes einzelne statische Verzeichnis und für die Verzeichnisse Boards, Members und Messages erstellen.~,
 'path1' => q~Pfad zu Tar and Zip:~,
 'path2' => q~Pfad zu gzip and bzip2 (setzt auch den Pfad zu gzip in Erweiterte Einstellungen):~,
-'path3' => q~Füllen Sie die Felder <b>nur</b> aus, wenn YaBB nicht automatisch die Pfade zu Tar, Zip, gzip, and bzip2 findet. Ansonsten lassen Sie die oben genannten Bereiche leer.~,
+'path3' => q~Füllen Sie die Felder <strong>nur</strong> aus, wenn YaBB nicht automatisch die Pfade zu Tar, Zip, gzip, and bzip2 findet. Ansonsten lassen Sie die oben genannten Bereiche leer.~,
 
 # Begin description of directories
 # We don't translate directory names like Boards/.
@@ -58,11 +58,11 @@ if( ! $script_root ) {
 '15' => q~Backup und Kompressions Methode~,
 
 # Don't translate command names (such as /bin/tar) or 'tar'.
-'16' => q~<i>Backup:</i> Tar (mit Komprimierung) oder Zip nutzen die Standalone-UNIX-Utilities und sind die empfohlenen Backup Methoden. Archive:: Tar (mit Komprimierung) oder Archive:: Zip sollten nur verwendet werden, wenn die Tar / Zip Backup Methoden nicht verfügbar sind, da die Perl-Module langsamer als die Standalone-Utilities sind.<br /><br /><i>Komprimierung:</i> Wenn die Tar Backup Methode verwendet wird, wird dringend empfohlen, die Komprimierung in den Archiven klein zu halten. (Zip ist bereits komprimiert.) Bzip2 erstellt kleinere Archive als Gzip oder Zip, dauert dafür aber länger. Dies könnte ein Methode für langsame Servern mit großen Foren sein.<br /><br /><span style="color: red;"><b>Hinweis:</b></span> Einige Server unterstützen das Anlegen großer Backups nicht. In diesem Fall erhalten Sie eine Fehlermeldung wie "Internal Server Error" oder möglicherweise auch eine leere Seite. Versuchen Sie dann eine alternative Backup und/oder Kompressions Methode. Hilft dies nicht, versuchen Sie für jedes YaBB Verzeichnis ein separates Backup anzulegen.~,
+'16' => q~<em>Backup:</em> Tar (mit Komprimierung) oder Zip nutzen die Standalone-UNIX-Utilities und sind die empfohlenen Backup Methoden. Archive:: Tar (mit Komprimierung) oder Archive:: Zip sollten nur verwendet werden, wenn die Tar / Zip Backup Methoden nicht verfügbar sind, da die Perl-Module langsamer als die Standalone-Utilities sind.<br /><br /><em>Komprimierung:</em> Wenn die Tar Backup Methode verwendet wird, wird dringend empfohlen, die Komprimierung in den Archiven klein zu halten. (Zip ist bereits komprimiert.) Bzip2 erstellt kleinere Archive als Gzip oder Zip, dauert dafür aber länger. Dies könnte ein Methode für langsame Servern mit großen Foren sein.<br /><br /><span class="important">Hinweis:</span> Einige Server unterstützen das Anlegen großer Backups nicht. In diesem Fall erhalten Sie eine Fehlermeldung wie "Internal Server Error" oder möglicherweise auch eine leere Seite. Versuchen Sie dann eine alternative Backup und/oder Kompressions Methode. Hilft dies nicht, versuchen Sie für jedes YaBB Verzeichnis ein separates Backup anzulegen.~,
 '17' => q~Keine tar-Komprimierung~,
 '18' => q~(für die tar-Komprimierung)~,
 '19' => q~Ihre Sicherungen (Backups) werden abgelegt in diesem Verzeichnis:~,
-'19a' => q~Bitte den <b>kompletten Pfad</b> (e.g. $support_env_path/Backups) angeben, nicht ./Backups~,
+'19a' => qq~Bitte den <b>kompletten Pfad</b> (e.g. $support_env_path/Backups) angeben, nicht ./Backups~,
 '19b' => q~Backup-Erinnerung~,
 '19c' => q~Benachrichtigen, wenn das letzte Backup älter ist als~,
 '19d' => q~Tage. Tragen Sie 0 ein oder lasse das Feld leer, um die Benachrichtigung zu deaktivieren.~,
@@ -73,9 +73,9 @@ if( ! $script_root ) {
 
 # Begin run backup area
 '21' => q~Backup starten~,
-'22' => q~Benutzen Sie den Button <b>'Backup starten'</b>, um mit dem Backup zu beginnen. Es wird im Verzeichnis~,
+'22' => q~Benutzen Sie den Button <b>\'Backup starten\'</b>, um mit dem Backup zu beginnen. Es wird im Verzeichnis~,
 '23' => q~abgelegt.~,
-'24' => q~<span class="important">Während der Datensicherung wird das Forum automatisch in den Backupmodus gesetzt. Dies bedeutet, dass Ihr Forum gesperrt ist, bis die Sicherung abgeschlossen ist.</span><br /><br /><span style="color:important;"><b>Hinweis:</b></span> Bei der Sicherung sehr grosser Foren kann es eine Weile dauern bis ein Seitenrefresh erfolgt - unter Umständen kann ein Zeitraum von bis zu 5 Minutern vergehen, bis eine Reaktion erfolgt. Sollte ein sog. Timeout vorliegen oder innerhalb von 5 Minuten nichts passieren, beachte den <span style="color:red;">Hinweis</span> oberhalb im Abschnitt 'Backup Methode' bei grossen Foren.<br /><br />Nach dem Erstellen von mindestens einem kompletten Backup können Sie wählen, ob nachfolgende Sicherungen ebenfalls komplett (alle Dateien in den Verzeichnissen die oberhalb ausgewählt sind) oder inkrementell (nur die Dateien, die sich seit der letzten Sicherung verändert haben) ausgeführt werden. Wenn Änderungen an einer der oben festgelegten Einstellungen vorgenommen und gespeichert werden, <i>muss</i> das nächste Backup ein komplett Backup sein. Bei inkrementellen Backups wird der Zeitintervall zur Bestimmung geänderter Dateien in <i>Sekunden</i> gemessen für Tar, Archive::Tar und Archive::Zip jedoch in <i>Tagen</i> für Zip.~,
+'24' => q~<span class="important">Während der Datensicherung wird das Forum automatisch in den Backupmodus gesetzt. Dies bedeutet, dass Ihr Forum gesperrt ist, bis die Sicherung abgeschlossen ist.</span><br /><br /><span style="color:important;"><b>Hinweis:</b></span> Bei der Sicherung sehr grosser Foren kann es eine Weile dauern bis ein Seitenrefresh erfolgt - unter Umständen kann ein Zeitraum von bis zu 5 Minutern vergehen, bis eine Reaktion erfolgt. Sollte ein sog. Timeout vorliegen oder innerhalb von 5 Minuten nichts passieren, beachte den <span style="color:red;">Hinweis</span> oberhalb im Abschnitt \'Backup Methode\' bei grossen Foren.<br /><br />Nach dem Erstellen von mindestens einem kompletten Backup können Sie wählen, ob nachfolgende Sicherungen ebenfalls komplett (alle Dateien in den Verzeichnissen die oberhalb ausgewählt sind) oder inkrementell (nur die Dateien, die sich seit der letzten Sicherung verändert haben) ausgeführt werden. Wenn Änderungen an einer der oben festgelegten Einstellungen vorgenommen und gespeichert werden, <i>muss</i> das nächste Backup ein komplett Backup sein. Bei inkrementellen Backups wird der Zeitintervall zur Bestimmung geänderter Dateien in <i>Sekunden</i> gemessen für Tar, Archive::Tar und Archive::Zip jedoch in <i>Tagen</i> für Zip.<br /><br /><span style="color:important;"><b>Hinweis:</b></span> Bevor Sie Ihre erste Sicherung durchführen, führen Sie die <strong>Mitgliederliste neuaufbauen</strong> in den <strong>Wartungsfunktionen</strong> aus, um Sicherungsberechtigungen festzulegen.~,
 '25' => q~Start komplettes Backup - Alle Dateien in den ausgewählten Verzeichnissen~,
 '25a' => q~Start inkrementelles Backup - Nur Dateien die geändert/erstellt wurden seit~,
 
@@ -107,7 +107,7 @@ if( ! $script_root ) {
 '44' => q~Konnte Verzeichnis nicht wechseln nach:~,
 '45' => q~Ungültige Backup-Datei.~,
 '46' => q~Kann nicht lesen von~,
-'47' => q~Sind Sie sicher, dass Sie löschen wollen~,
+'47' => q~Sind Sie sicher, dass Sie löschen wollen?~,
 '48' => q~? Diese Aktion kann nicht rückgängig gemacht werden.~,
 '49' => q~JA, dieses Backup jetzt löschen~,
 '50' => q~NEIN, dieses Backup nicht löschen~,
@@ -137,11 +137,11 @@ if( ! $script_root ) {
 
 # Recover stuff
 '100' => q~Backup wiederherstellen~,
-'101' => q~<b>Es wird empfohlen, <b>NUR</b> die folgenden Verzeichnisse mit dieser Funktion wiederherzustellen:<br /><i>Boards</i>, <i>Members</i>, <i>Messages</i>, <i>Variables</i> und <i>yabbfiles/Attachments sowie yabbfiles/avatars/UserAvatars</i>.<br /><br />Aufgrund von Änderungen der Zugriffsrechte während der Wiederherstellung kann es sein, muss aber nicht, dass es zu Problemen im Datei Managment kommt. Daher stellen Sie alle anderen Dateien in der Form wieder her, dass Sie sie mittels FTP von Ihrem lokalen Rechner zurückübertragen, nachdem Sie die Backupdatei von der vorhergehenden Seite heruntergeladen haben.</b><br /><br />Sind Sie sicher, dass Sie das folgende Verzeichnis/die Verzeichnisse wiederherstellen möchten?~,
+'101' => q~<strong>Es wird empfohlen, <b>NUR</b> die folgenden Verzeichnisse mit dieser Funktion wiederherzustellen:<br /><em>Boards</em>, <em>Members</em>, <em>Messages</em>, <em>Variables</em> und <em>yabbfiles/Attachments sowie yabbfiles/avatars/UserAvatars</em>.<br /><br />Aufgrund von Änderungen der Zugriffsrechte während der Wiederherstellung kann es sein, muss aber nicht, dass es zu Problemen im Dateimanagement kommt. Daher stellen Sie alle anderen Dateien in der Form wieder her, dass Sie sie mittels FTP von Ihrem lokalen Rechner zurückübertragen, nachdem Sie die Backupdatei von der vorhergehenden Seite heruntergeladen haben.</strong><br /><br />Sind Sie sicher, dass Sie das folgende Verzeichnis/die Verzeichnisse wiederherstellen möchten?~,
 '102' => q~aus der Backup-Datei:~,
 '103' => q~vom~,
 '104' => q~Wenn ja, dann~,
-'105' => qq~Markieren Sie die Checkbox, um die Dateien in den originalen Verzeichnissen wiederherzustellen. Dadurch werden alle existierenden Dateien in diesen Verzeichnissen überschrieben und neue Dateien werden generiert, sofern sie vorher gelöscht wurden. Es werden aber keine Dateien gelöscht, die im Zeitraum zwischen dem Backup und dem jetzigen Zeitpunkt erstellt wurden. Auf Verzeichnisse die wiederhergestellt werden sollen, müssen vor der Wiederherstellung die richtigen Zugriffsrechte (chmod) X[2|3|6|7]X gesetzt werden. Das heisst, dass mindestens eine Schreibzugriffsberechtigung auf Gruppen vorhanden sein muss. Zum Beispiel: CHMOD 775 oder 765. Wenn Sie Ihre Verzeichnisse seit der Erstellung der letzten Backup Datei verschoben haben sollten, wird diese Methode fehlschlagen. In diesem Fall markieren Sie die Checkbox nicht.<br />Wenn Sie die Checkbox nicht markieren, werden die Dateien in einem neuen Verzeichnis mit der aktuellen Zeit als Dateinamen im Backup Verzeichnis gespeichert:<br /><tt>$backupdir/$date</tt> (Der neue, zuletzt genannte Verzeichnisname ist hier nur ein Beispiel).~,
+'105' => qq~Markieren Sie die Checkbox, um die Dateien in den originalen Verzeichnissen wiederherzustellen. Dadurch werden alle existierenden Dateien in diesen Verzeichnissen überschrieben und neue Dateien werden generiert, sofern sie vorher gelöscht wurden. Es werden aber keine Dateien gelöscht, die im Zeitraum zwischen dem Backup und dem jetzigen Zeitpunkt erstellt wurden. Auf Verzeichnisse die wiederhergestellt werden sollen, müssen vor der Wiederherstellung die richtigen Zugriffsrechte (CHMOD) X[2|3|6|7]X gesetzt werden. Das heisst, dass mindestens eine Schreibzugriffsberechtigung auf Gruppen vorhanden sein muss. Zum Beispiel: CHMOD 775 oder 765. Wenn Sie Ihre Verzeichnisse seit der Erstellung der letzten Backup Datei verschoben haben sollten, wird diese Methode fehlschlagen. In diesem Fall markieren Sie die Checkbox nicht.<br />Wenn Sie die Checkbox nicht markieren, werden die Dateien in einem neuen Verzeichnis mit der aktuellen Zeit als Dateinamen im Backup Verzeichnis gespeichert:<br /><tt>$backupdir/$date</tt> (Der neue, zuletzt genannte Verzeichnisname ist hier nur ein Beispiel).~,
 '106' => q~Sie müssen die Zugriffsrechte (CHMOD) für die folgenden wiederhergestellten Dateien in den folgenden Verzeichnissen setzen. Da die Dateien serverseitig wiederhergestellt werden, ist der Server auch der neue Besitzer der wiederhergestellten Dateien. Daher werden Sie auf einigen Servern nicht in der Lage sein, die Zugriffsrechte (CHMOD) im Nachhinein zu setzen.<br />Um zu verhindern, dass der Server Änderungen der Zugriffsrechte oder das Löschen Ihrer Dateien nicht zulässt, können die Zugriffsrechte (CHMOD) sowohl für die "Gruppe" als auch auch für den Besitzer nicht niedriger als 6 gesetzt werden.~,
 '107' => q~Dateien und Verzeichnisse~,
 '108' => q~Datei Zugriffsrechte<br />(CHMOD)<br />Besitzer|Gruppe|Alle~,
@@ -160,17 +160,17 @@ if( ! $script_root ) {
 
 # Begin eMail stuff.
 'mailsubject' => q~YaBB 2 Backup von {yabb mbname}~,
-'mailfrom' => q~"YaBB 2 Backup Mailer" <{yabb webmaster_email}>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
+'mailfrom' => q~"YaBB 2 Backup-Mailer" <{yabb webmaster_email}>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!
 'mailsuccess' => q~eMail erfolgreich verschickt.~,
 'mailfail' => q~Beim Versand der eMail traten Fehler auf. Beachten Sie die Fehlermeldung in der Informations-eMail, die Sie erhalten werden.~,
 'no_perm' => q~Sie haben keine Berechtigung, die obigen Einstellungen zu ändern.~,
 'no_dnload' => q~DOWNLOAD nicht erlaubt.~,
 'no_delete' => q~LÖSCHEN nicht erlaubt.~,
 '542' => q~Wenn in 5 Sekunden nichts passiert,~,
-'543' => q~Klicken Sie hier um fortzufahren.~,
+'543' => q~klicken Sie hier um fortzufahren.~,
 # The actual messages are here.
 # Don't translate WORDS IN ALL CAPITALS from here to the end of the file
-'mailmessage1' => q~Hallo USERNAME!
+$backup_txt{'mailmessage1'} = q~Hallo USERNAME!
 
 Das Backup: "FILENAME" befindet sich im Anhang dieser eMail.
 

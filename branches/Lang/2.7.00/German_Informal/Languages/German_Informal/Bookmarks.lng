@@ -16,9 +16,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$german_informalbookmarkslngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalbookmarkslngver = 'YaBB 2.7.00 $Revision: 1848 $';
 @german_informalbookmarkslngmods = ();
-if(@german_informalbookmarkslngmods){
+if (@german_informalbookmarkslngmods) {
     $german_informalbookmarkslngmods = 1;
 }
 $action ||= q{};
@@ -41,7 +41,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '17' => q~Abbruch~,
 '18' => q~- Das ist der Titel der Bookmark-Seite~,
 '19' => q~- Erlaubte Dateitypen: png jpg jpeg gif<br />- Max. Dateigrösse: 250KB~,
-'20' => q~- Das ist der Link zur Bookmark-Seite<br />- Verwenden Sie {url} URL für die Seite und {title} für den Seitentitel.~,
+'20' => q~- Das ist der Link zur Bookmark-Seite<br />- Verwende {url} URL für die Seite und {title} für den Seitentitel.~,
 '21' => q~- Dies ist die Reihenfolge, wie die Bookmarks angezeigt werden<br />- Niedrigere Nummern werden zuerst angezeigt.~,
 '22' => q~Maximale Zeichen im Betreff~,
 );

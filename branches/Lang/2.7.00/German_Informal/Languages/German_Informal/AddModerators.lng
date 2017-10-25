@@ -21,9 +21,9 @@
 ###############################################################################
 
 $german_informaladdmoderatorslngver = 'YaBB 2.7.00 $Revision: 1848 $';
-@german_informaladdmoderatorslngmods = ();
-if(@german_informaladdmoderatorslngmods) {
-    $german_informaladdmoderatorslngmods = 1;
+@german_informalformaladdmoderatorslngmods = ();
+if (@german_informalformaladdmoderatorslngmods) {
+    $german_informalformaladdmoderatorslngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }

@@ -12,13 +12,13 @@
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
 
 $german_informalfalngver = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_informalfalngmods = ();
-if(@german_informalfalngmods) {
+if (@german_informalfalngmods) {
     $german_informalfalngmods = 1;
 }
 $action ||= q{};
@@ -50,11 +50,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '13a' => q~Größenlimit des Verzeichnisses für PN-Dateianhänge:<br /><span class ="small">Setze den Wert 0 zum deativieren der Prüfung (nicht empfohlen).</span>~,
 '14' => q~Erlaubte Dateitypen für Anhänge (z.B.: 'jpg gif bmp')~,
 '14a' => q~Erlaubte Dateitypen für PN-Anhänge (z.B.: 'jpg gif bmp')~,
-'15' => q~Dateitypen prüfen? (ohne Prüfung werden alle Typen akzeptiert)<br /><span class ="small" style="color: red;">Es wird empfohlen, die Dateitypen Prüfung IMMER aktiviert zu haben! Wird diese Option deaktiviert, haben potenzielle Hacker die Möglichkeit, Dein Forum durch Einschleusen von schädlichem Script Code unbrauchbar zu machen!</span>~,
+'15' => q~Dateitypen prüfen? (ohne Prüfung werden alle Typen akzeptiert)<br /><span class="small" style="color:red;">Es wird empfohlen, die Dateitypen Prüfung IMMER aktiviert zu haben! Wird diese Option deaktiviert, haben potenzielle Hacker die Möglichkeit, Dein Forum durch Einschleusen von schädlichem Script Code unbrauchbar zu machen!</span>~,
 '16' => q~Angehängte Bilddateien unter dem Beitrag anzeigen?~,
 '16a' => q~Angehängte Bilddateien unter der PN anzeigen?~,
-'17' => q~<label for="allowattach">Erlaubte Anzahl von Dateianhängen in Beiträgen:<br /><span class ="small">Setze den Wert 0 zum deaktivieren von Dateianhängen.</span></label><div class ="small" style="color: red;"><label for="allowattach"><span class="under">Achtung:</span> Wenn Du die Möglichkeit zur Verfügung stellst, viele Dateianhänge hochzuladen, kann die Ladegeschwindigkeit des Forum beeinflusst werden. Berücksichtige bei der Festlegung dieser Einstellungen auch die Werte für das Größenlimit von Dateianhängen und den zur Verfügung stehenden Speicherplatz des Verzeichnisses für Dateianhänge.</label></div>~,
-'17a' => q~Anzahl von Dateianhängen in persönlichen Nachrichten erlaubt:<br /><span class ="small">Setze den Wert 0 zum deaktivieren von PN-Anhängen.<br /><span style="color: #FF0000;">Wenn Du die Möglichkeit zur Verfügung stellst, viele PN-Dateianhänge hochzuladen, kann die Ladegeschwindigkeit des Forum beeinflusst werden. Berücksichtige bei der Festlegung dieser Einstellungen auch die Werte für das Größenlimit von PN-Dateianhängen und den zur Verfügung stehenden Speicherplatz des Verzeichnisses für PN-Dateianhänge.</span></span>~,
+'17' => q~<label for="allowattach">Erlaubte Anzahl von Dateianhängen in Beiträgen:<br /><span class="small">Setze den Wert 0 zum deaktivieren von Dateianhängen.</span></label><div class ="small" style="color: red;"><label for="allowattach"><span class="under">Achtung:</span> Wenn Du die Möglichkeit zur Verfügung stellst, viele Dateianhänge hochzuladen, kann die Ladegeschwindigkeit des Forum beeinflusst werden. Berücksichtige bei der Festlegung dieser Einstellungen auch die Werte für das Größenlimit von Dateianhängen und den zur Verfügung stehenden Speicherplatz des Verzeichnisses für Dateianhänge.</label></div>~,
+'17a' => q~Anzahl von Dateianhängen in persönlichen Nachrichten erlaubt:<br /><span class="small">Setze den Wert 0 zum deaktivieren von PN-Anhängen.<br /><span style="color:red;">Wenn Du die Möglichkeit zur Verfügung stellst, viele PN-Dateianhänge hochzuladen, kann die Ladegeschwindigkeit des Forum beeinflusst werden. Berücksichtige bei der Festlegung dieser Einstellungen auch die Werte für das Größenlimit von PN-Dateianhängen und den zur Verfügung stehenden Speicherplatz des Verzeichnisses für PN-Dateianhänge.</span></span>~,
 '17b' => q~Gebe die Mitglieder-Gruppen an, denen es erlaubt ist, PN-Anhänge hochzuladen:<br /><span class ="small">Wenn keine Mitgliedergruppe ausgewählt ist, werden alle Mitgliedergruppen aktiviert.<br />Verwende Strg oder Umschalt zum aktivieren / deaktivieren mehrerer Gruppen.</span>~,
 '18' => q~Dürfen Gäste Dateien anhängen?~,
 '19' => q~Kann nicht geöffnet werden:~,
@@ -83,9 +83,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 '32' => q~Anhänge löschen, wenn älter als~,
 '32a' => q~PN-Anhänge löschen, wenn älter als~,
 '33' => q~Anhänge löschen, wenn größer als~,
-'33a' => q~PN-Anhänge löschen, wenn älter als~,
+'33a' => q~PN-Anhänge löschen, wenn größer als~,
 '34' => q~Anhänge löschen, wenn älter als _ Tage:~,
-'35' => q~Anhang löschen, wenn größer als~,
+'35' => q~Anhänge löschen, wenn größer als~,
 '35a' => q~PN-Anhänge löschen, wenn größer als~,
 '36' => q~Dateianhänge verwalten~,
 '37' => q~Dateianhänge verwalten : Log anzeigen~,
