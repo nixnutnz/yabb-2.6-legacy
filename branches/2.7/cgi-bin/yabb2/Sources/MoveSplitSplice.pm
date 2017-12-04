@@ -32,18 +32,21 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
 our ( %croak, %sstxt, );
 ## paths ##
-our ( $abbr_lang, $boardsdir, $datadir, $imagesdir, $scripturl, $uploaddir, );
+our (
+    $abbr_lang, $boardsdir, $datadir, $imagesdir,
+    $scripturl, $uploaddir, $vardir,
+);
 ## settings ##
 our ( $debug, $enable_notifications, $ttsreverse, $ttsureverse, $yymycharset, );
 ## system ##
 our (
-    $annboard,     $binboard,    $boardview,   $cliped,     $curnum,
-    $currentboard, $date,        $formsession, $iamadmin,   $iamfmod,
-    $iamgmod,      $iamguest,    $staff,       $uid,        $user_ip,
-    $username,     $yyaext,      $yydebug,     $yymain,     $yynavigation,
-    $yytitle,      %board,       %cat,         %catinfo,    %FORM,
-    %INFO,         %memberinf,   %memberinfo,  %moved_file, %subboard,
-    %thethread,    %useraccount, %yyuserlog,   @categoryorder,
+    $annboard,    $binboard,    $boardview,  $curnum,       $currentboard,
+    $date,        $formsession, $iamadmin,   $iamfmod,      $iamgmod,
+    $iamguest,    $staff,       $uid,        $user_ip,      $username,
+    $yyaext,      $yydebug,     $yymain,     $yynavigation, $yytitle,
+    %board,       %cat,         %catinfo,    %FORM,         %INFO,
+    %memberinf,   %memberinfo,  %moved_file, %subboard,     %thethread,
+    %useraccount, %yyuserlog,   @categoryorder,
 );
 ## template ##
 our ( $leavelist, $mymove_output_a, $mymove_output_b, $mymove_top, );
@@ -91,18 +94,16 @@ sub split_splice {
     }
     my @messages = @{ $thread_arrayref{$curthread} };
 
-    my ( $counter, $size1, $message );
     foreach my $counter ( 0 .. $#messages ) {
-        $message = ( split /[|]/xsm, $messages[$counter], 10 )[8];
+        my $message = ( split /[|]/xsm, $messages[$counter], 10 )[8];
         ( $message, undef ) = split_splice_move( $message, 1 );
-        do_ubbc();
+        $message = do_ubbc($message);
 
-        our $convertstr = $message;
-        our $convertcut = 50;
-        $convertstr =~ s/<(p|br|div).*?>/ /gxsm;
-        $convertstr =~ s/<.*?>//gxsm;    # remove HTML-tags
-        count_chars();
-        $message = $convertstr;
+        my $convertcut = 50;
+        my $cliped     = 0;
+        $message =~ s/<(p|br|div).*?>/ /gxsm;
+        $message =~ s/<.*?>//gxsm;    # remove HTML-tags
+        ( $message, $cliped ) = count_chars( $message, $convertcut );
         if ($cliped) { $message .= ' ...'; }
 
         $message = to_chars($message);
@@ -128,7 +129,7 @@ sub split_splice {
         ? qq~<option value="all" selected="selected">$sstxt{'26'}</option>\n~
         : qq~<option value="all">$sstxt{'26'}</option>\n~
     ) . join q{}, @messages;
-    $size1 = @messages + 1;
+    my $size1 = @messages + 1;
     $size1 = $size1 > 10 ? 10 : $size1;    # maximum size of multiselect field
 
     # List of options of what, if anything, to leave in place of the posts moved
@@ -143,7 +144,7 @@ sub split_splice {
     # Get categories and make the current one the default selection
     my $catlist = qq~<option value="cats" >$sstxt{'28'}</option>\n~;
     foreach (@categoryorder) {
-        my ( $catname, $catperms ) = @{$catinfo{$_}};
+        my ( $catname, $catperms ) = @{ $catinfo{$_} };
         next if !cat_access($catperms);
         $catlist .=
             qq~<option value="$_" ~
@@ -161,7 +162,7 @@ sub split_splice {
         foreach my $childbd (@x) {
             my $dash = q{};
             if ( $indent > 0 ) { $dash = q{-}; }
-            my ( $boardname, $boardperms, undef ) = @{$board{$childbd}};
+            my ( $boardname, $boardperms, undef ) = @{ $board{$childbd} };
             $boardname = to_chars($boardname);
             my $access = access_check( $childbd, q{}, $boardperms );
             next
@@ -181,13 +182,13 @@ sub split_splice {
               . qq~&nbsp;$boardname</option>\n~;
 
             if ( $subboard{$childbd} ) {
-                get_subboards( @{$subboard{$childbd}} );
+                get_subboards( @{ $subboard{$childbd} } );
             }
         }
         $indent -= 2;
         return;
     };
-    get_subboards( @{$cat{$newcat}} );
+    get_subboards( @{ $cat{$newcat} } );
 
     # Get threads and make the current one the default selection
     my ( $threadlist, $threadids, $positionlist );
@@ -198,19 +199,17 @@ sub split_splice {
     fclose('FILE') or croak "$croak{'close'} $newboard.txt";
 
     $threadlist = qq~<option value="new">$sstxt{'30'}</option>\n~;
-    my $threadid;
     foreach (@threads) {
-        ( $threadid, $message, undef ) = split /[|]/xsm, $_, 3;
+        my ( $threadid, $message, undef ) = split /[|]/xsm, $_, 3;
         next if $curthread eq $threadid;
         $threadids .= "$threadid,";
 
         ( $message, undef ) = split_splice_move( $message, $threadid );
-        do_ubbc();
+        $message = do_ubbc($message);
 
-        our $convertstr = $message;
-        our $convertcut = 50;
-        count_chars();
-        $message = $convertstr;
+        my $convertcut = 50;
+        my $cliped     = 0;
+        ( $message, $cliped ) = count_chars( $message, $convertcut );
         if ($cliped) { $message .= ' ...'; }
 
         $message = to_chars($message);
@@ -235,14 +234,13 @@ sub split_splice {
         @messages = @{ $thread_arrayref{$newthread} };
 
         foreach my $counter ( 0 .. $#messages ) {
-            $message = ( split /[|]/xsm, $messages[$counter], 10 )[8];
+            my $message = ( split /[|]/xsm, $messages[$counter], 10 )[8];
             ( $message, undef ) = split_splice_move( $message, 1 );
-            do_ubbc();
+            $message = do_ubbc($message);
 
-            our $convertstr = $message;
-            our $convertcut = 50;
-            count_chars();
-            $message = $convertstr;
+            my $convertcut = 50;
+            my $cliped     = 0;
+            ( $message, $cliped ) = count_chars( $message, $convertcut );
             if ($cliped) { $message .= ' ...'; }
 
             $message = to_chars($message);
@@ -264,7 +262,8 @@ sub split_splice {
         $positionlist .= qq~<option value="begin">$sstxt{'32'}</option>\n~;
         $positionlist .= join q{}, @messages;
         if (   $FORM{'position'}
-            && $FORM{'old_position_thread'} && $newthread == $FORM{'old_position_thread'} )
+            && $FORM{'old_position_thread'}
+            && $newthread == $FORM{'old_position_thread'} )
         {
             $positionlist =~
               s/(value="$FORM{'position'}")/$1 selected="selected"/xsm;
@@ -539,16 +538,15 @@ qq~$tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$usern
     else { @utdcurthread = @curthread; }
 
     if ($forcenewinfo) {
-        my ( $boardtitle, $tmpsub, $tmpmessage );
-        $boardtitle = ${$board{$curboard}}[0];
-        $tmpmessage = (
+        my $boardtitle = ${ $board{$curboard} }[0];
+        my $tmpmessage = (
             $#postnum == $#utdnewthread
             ? '[b][movedhere]'
             : '[b][postsmovedhere1] ' . @postnum . ' [postsmovedhere2]'
           )
           . " [i]$boardtitle\[/i] [move by] [i]${$uid.$username}{'realname'}\[/i].[/b]";
         $tmpmessage = from_chars($tmpmessage);
-        ( $tmpsub, undef, undef, undef, undef, undef, undef ) =
+        my ( $tmpsub, undef, undef, undef, undef, undef, undef ) =
           split /[|]/xsm, $utdnewthread[0], 7;
         splice @utdnewthread, ( $linkcount + @postnum ), 0,
 qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}|$date|$username|no_postcount||$user_ip|$tmpmessage||||\n~;
@@ -681,7 +679,7 @@ qq~$sstxt{'21'} $tmpsub|${$uid.$username}{'realname'}|${$uid.$username}{'email'}
           && $leavemess != 1 ? 0 : ${$curthreadid}{'views'};
     }
     else {
-        ${$newthreadid}{'views'} ||= 0; 
+        ${$newthreadid}{'views'} ||= 0;
         ${$newthreadid}{'views'} +=
           int( ${$curthreadid}{'views'} / @curthread * @postnum );
     }
@@ -809,7 +807,10 @@ qq~$newthreadid|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthrea
             # For: Mark boards as read
             foreach (@newmessindex) {
                 my $chk = ( split /[|]/xsm, $_, 6 )[4];
-                if ( $yyuserlog{$newboard} && $chk && $chk > $yyuserlog{$newboard} ) {
+                if (   $yyuserlog{$newboard}
+                    && $chk
+                    && $chk > $yyuserlog{$newboard} )
+                {
                     $boardlog = 0;
                 }
                 last if !$boardlog;
@@ -1036,7 +1037,7 @@ qq~$mnum|$msub|$mname|$memail|${$newthreadid}{'lastpostdate'}|${$newthreadid}{'r
     if ($attachments) {
         my ( @newattachments, %attachments );
         our ($ATM);
-        fopen( 'ATM', '<', 'Variables/attachments.db' )
+        fopen( 'ATM', '<', "$vardir/attachments.db" )
           or fatal_error( 'cannot_open', 'Variables/attachments.db', 1 );
         my @attach = <$ATM>;
         fclose('ATM') or croak "$croak{'close'} attachments.db";
@@ -1092,7 +1093,7 @@ qq~$newthreadid|$mreplies|$msub|$mname|$newboard|$asize|$mdate|$_|~
             $mreplies++;
         }
         our ($FATM);
-        fopen( 'FATM', '>', 'Variables/attachments.db' )
+        fopen( 'FATM', '>', "$vardir/attachments.db" )
           or fatal_error( 'cannot_open', 'Variables/attachments.db' );
         print {$FATM}
           sort { ( split /[|]/xsm, $a, 8 )[6] <=> ( split /[|]/xsm, $b, 8 )[6] }

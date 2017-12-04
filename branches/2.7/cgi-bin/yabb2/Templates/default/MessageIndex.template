@@ -12,7 +12,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 $defaultmessageindextemver = 'YaBB 2.7.00 $Revision$';
-@defaultmessageindexmods = ();
+@defaultmessageindexmods   = ();
 if (@defaultmessageindexmods) {
     $defaultmessageindexmods = 1;
 }
@@ -24,48 +24,48 @@ load_language('BoardIndex');
 # When thread tools is on $outside_threadtools will show buttons normally, while the handle list will show in the thread tools' dropdown
 # $outsidde_ttsep will act as a separator between the buttons outside thread tools.
 
-@outside_threadtools = ('{yabb new post button}', '{yabb new poll button}');
+@outside_threadtools = ( '{yabb new post button}', '{yabb new poll button}' );
 $outside_threadtools = join '', @outside_threadtools;
-$outside_ttsep = q~~;
-$my_ttsep = $menusep;
-
+$outside_ttsep       = q{};
+$my_ttsep            = $menusep;
 
 $topichandellist = qq~{yabb notify button}{yabb markall button}~;
-if($usethread_tools == 1) {
-    $threadhandelstyle = qq~ class="post_tools center" style="width:10em"~;
+if ( $usethread_tools == 1 ) {
+    $threadhandelstyle  = qq~ class="post_tools center" style="width:10em"~;
     $threadhandelstyle2 = qq~ class="post_tools center" style="width:10em"~;
 }
 else {
-    $threadhandelstyle = qq~ class="right"~;
+    $threadhandelstyle  = qq~ class="right"~;
     $threadhandelstyle2 = qq~ class="right"~;
 }
-$bdpic_ext = 'png';
-$brdpicwidth = ($max_brd_img_width || 50) + 20;
-$hoveron = 'tpon.gif';
-$hoveroff = 'tpoff.gif';
+$bdpic_ext      = 'png';
+$brdpicwidth    = ( $max_brd_img_width || 50 ) + 20;
+$hoveron        = 'tpon.gif';
+$hoveroff       = 'tpoff.gif';
 $brd_notify_img = 'notify.gif';
-$actionlock = 'actionslock.png';
+$actionlock     = 'actionslock.png';
 
 ## graphics Mod Hook ##
 
-if (!$messagelist) {
-    if (!$show_brd_descrip && $action ne 'favorites') {
+if ( !$messagelist ) {
+    if ( !$show_brd_descrip && $action ne 'favorites' ) {
         $messageindex_template .= qq~
-        <!-- Board Moderators start -->
+<!-- Board Moderators start -->
             <div class="navbarcontainer small">{yabb moderators}</div>
 <!-- Board Moderators end -->
 ~;
     }
     else {
-    if (${$uid.$currentboard}{'rules'} == 1) {
-        $messageindex_template .= qq~
+        if ( ${ $uid . $currentboard }{'rules'} ) {
+            $messageindex_template .= qq~
 <!-- Board Rules start -->
             <div class="tabtitle" style="margin-top: 1.5em; line-height:3em; vertical-align:bottom; padding-left:.5em">{yabb rulestitle}</div>
             <div class="windowbg" style="padding:.5em">{yabb rulesdescription}</div>
- <!-- Board Rules end -->
+<!-- Board Rules end -->
 ~;
-    }
-        $messageindex_template .= qq~<!-- Board Description start --><!-- Default Board Graphics courtesy of http://www.shapes4free.com/ -->
+        }
+        $messageindex_template .=
+qq~<!-- Board Description start --><!-- Default Board Graphics courtesy of http://www.shapes4free.com/ -->
             <table class="bordercolor pad_4px cs_thin" style="margin-bottom: 15px; margin-top: 15px;">
                 <colgroup>
                     <col style="width:${brdpicwidth}px" />
@@ -90,7 +90,7 @@ if (!$messagelist) {
     }
 }
 
-if ($action ne 'favorites') {
+if ( $action ne 'favorites' ) {
     $messageindex_template .= qq~
 <!-- Button Bar start -->
 {yabb modupdate}
@@ -142,7 +142,7 @@ $messageindex_template .= qq~
             </table>
 ~;
 
-if ($action ne 'favorites') {
+if ( $action ne 'favorites' ) {
     $messageindex_template .= qq~<!-- Button Bar start -->
             <table class="tabtitle-bottom">
                 <tr>
@@ -186,7 +186,7 @@ $messageindex_template .= $messagelist ? q{} : qq~
 ~;
 }
 
-if ($action eq 'favorites') {
+if ( $action eq 'favorites' ) {
     $messageindex_template .= qq~<!-- Icon and access info start -->
             <table class="pad_8px">
                 <colgroup>
@@ -214,11 +214,13 @@ $boarddescription = qq~
 
 # Column Header definition for multi admin        #
 
-$adminheader = qq~<td class="center" style="white-space: nowrap">{yabb admin}</td>~;
+$adminheader =
+  qq~<td class="center" style="white-space: nowrap">{yabb admin}</td>~;
 
 # Column definition for multi admin        #
 
-$admincolumn = qq~<td class="center" style="white-space: nowrap">{yabb admin}</td>~;
+$admincolumn =
+  qq~<td class="center" style="white-space: nowrap">{yabb admin}</td>~;
 
 # Sticky or global announcements header    #
 
@@ -243,7 +245,7 @@ $threadbar = qq~<tr class="{yabb altthdcolor}">
                             {yabb new}
                             {yabb poll}
                             {yabb subjectlink}
-                            <br /><span class="small">{yabb messageindex_527} {yabb starttime} {yabb messageindex_526} {yabb starter}{yabb pages}<br />{yabb permalink}</span>
+                            <br /><span class="small">{yabb messageindex_527} {yabb starttime} {yabb messageindex_526} {yabb starter} {yabb pages}<br />{yabb permalink}</span>
                         </div>
                         <div style="float: left; width: 5%; text-align: center;">{yabb attachmenticon}</div>
                     </td>
@@ -280,7 +282,8 @@ $brd_tmptempbar = qq~<tr>
                 <td class="windowbg2 center" colspan="{yabb colspan}"><br />{yabb messageindex_txt_841}<br /><br /></td>
             </tr>~;
 
-$msg_attach_win = qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread={yabb mnum}','_blank','width=818,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~;
+$msg_attach_win =
+qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread={yabb mnum}','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">~;
 
 # Board Notification                     #
 
@@ -346,17 +349,16 @@ $msg_listpages = qq~
 
 #pagedrop (in javascript)
 
-$visel_0 = q~<table class="pad_0"><tr>~;
+$visel_0  = q~<table class="pad_0"><tr>~;
 $visel_1a = q~<td class="titlebg pages">~;
 $visel_1b = q~</td>~;
 $visel_2a = q~<td class="droppages pages">~;
 $visel_3a = q~<td class="small" style="height: 14px; padding-left: 4px;">~;
-$visel_4 = q~</tr></table>~;
-
+$visel_4  = q~</tr></table>~;
 
 $boardpassw = qq~
 <div class="tabtitle center" style="line-height:3em; vertical-align:bottom; width: 80%; margin:0 auto">
-    <img src="$imagesdir/$actionlock" alt="" /> <b>$maintxt{'900pw'}: $boardname</b>
+    <img src="$imagesdir/$actionlock" alt="" /> <b>$maintxt{'900pw'}: {yabb boardname}</b>
 </div>
 <div class="windowbg center padd_4px" style="width: 80%; margin:0 auto">
     <form action="$scripturl?action=checkboardpw" method="post" name="brdpass" onsubmit="return CheckPassField();">
@@ -395,4 +397,5 @@ $boardpassw_g = qq~
     </tr>
 </table>
 <div class="center" style="margin-top: 1em;"><a href="javascript:history.go(-1)">$maintxt{'900b'}</a></div>~;
+
 1;

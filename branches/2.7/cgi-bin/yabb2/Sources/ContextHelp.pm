@@ -30,11 +30,13 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our ( $displayname, %contextxt, $ctmain, %post_txt );
+our ( %contextxt, %post_txt );
+
 ## our Mod Hook ##
 
 sub context_script {
-    my ($inp) = @_;
+    my ( $inp, $displayname ) = @_;
+    $displayname ||= q{};
     load_language('ContextHelp');
 
     my $contextlst = q{};
@@ -51,8 +53,7 @@ sub context_script {
     my $contextmain = qq~
 var contexthash = new Hash($contextlst);
 ~;
-    $displayname ||= q{};
-    $ctmain = qq~
+    my $ctmain = qq~
     <script type="text/javascript">
     $contextmain
     </script>
@@ -84,7 +85,7 @@ var contexthash = new Hash($contextlst);
     function showcontexthelp(conimage, contitle) {
         var conkey, contextimage, contexthelp = '';
         conkey = conimage.replace(/(.*)\\/(.*?)\\.(gif|png)/, "\$2");
-        if(conkey) contextimage = '<img src=' + conimage + ' alt=" ' + contitle + '" \/>';
+        if(conkey) contextimage = '<span class="ubbcbutton ubbcbuttonback"><img src="' + conimage + '" alt=" ' + contitle + '" \/><\/span>';
         else conkey = conimage;
         contexthelp = contexthash.getItem(conkey);
         if(contexthelp === '') return true;

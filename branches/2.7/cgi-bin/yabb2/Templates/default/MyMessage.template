@@ -213,15 +213,13 @@ $my_fa_att = qq~{yabb my_att_FA}
         </td>
     </tr>~;
 
-$my_fa_browse = qq~<tr>{yabb my_ispreview}
-        <td class="windowbg">{yabb my_isreply}
-        </td>
+$my_fa_browse = qq~<tr>
+        <td class="windowbg">{yabb my_isreply}</td>
     </tr><tr>
         <td class="catbg center" style="padding: 8px;">
-            {yabb hidestatus}
             {yabb sendBMessFlag}
             <input type="submit" name="{yabb post}" value="{yabb submittxt}" accesskey="s" tabindex="5" class="button" />{yabb my_spdpost}
-            {yabb my_draft} {yabb my_browser} {yabb my_savetable} {yabb my_chars}
+            {yabb my_draft} {yabb my_browser} {yabb my_savetable}
             </script> 
         </td>
     </tr>\n~;

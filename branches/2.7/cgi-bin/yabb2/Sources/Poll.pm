@@ -84,7 +84,7 @@ sub do_vote {
     ) = split /[|]/xsm, $poll_question, 14;
     my ($tmp_vote);
 
-    for my $i ( 0 .. $#poll_data ) {
+    foreach my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i], $slicecols[$i], $split[$i] ) =
           split /[|]/xsm, $poll_data[$i];
@@ -114,7 +114,7 @@ sub do_vote {
         @polled = <$FILE>;
         fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
 
-        for my $i ( 0 .. $#polled ) {
+        foreach my $i ( 0 .. $#polled ) {
             my ( $voters_ip, $voters_name, $voters_vote, $vote_time ) =
               split /[|]/xsm,
               $polled[$i];
@@ -137,7 +137,7 @@ sub do_vote {
                 && $voters_name eq 'Guest'
                 && lc $voters_ip eq lc $user_ip )
             {
-                for my $oldvote ( split /,/xsm, $voters_vote ) {
+                foreach my $oldvote ( split /,/xsm, $voters_vote ) {
                     $votes[$oldvote]--;
                 }
                 $polled[$i] = q{};
@@ -147,7 +147,7 @@ sub do_vote {
     }
 
     my $prnpoll = "$poll_question\n";
-    for my $i ( 0 .. $#poll_data ) {
+    foreach my $i ( 0 .. $#poll_data ) {
         $prnpoll .= "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n";
     }
     fopen( 'FILE', '>', "$datadir/$pollnum.poll" )
@@ -191,7 +191,7 @@ sub undo_vote {
     fclose('FILE') or croak "$croak{'close'} $pollnum.poll";
     my $poll_locked = ( split /[|]/xsm, $poll_question, 2 )[1];
 
-    for my $i ( 0 .. $#poll_data ) {
+    foreach my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i], $slicecols[$i], $split[$i] ) =
           split /[|]/xsm, $poll_data[$i];
@@ -204,13 +204,13 @@ sub undo_vote {
     my ($found);
     if ( $FORM{'multidel'} == 1 ) {
         is_admin();
-        for my $i ( 0 .. $#polled ) {
+        foreach my $i ( 0 .. $#polled ) {
             my ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
               split /[|]/xsm, $polled[$i];
             chomp $voters_vote;
             my $id = $FORM{"$voters_ip-$voters_name"};
             if ( $id && $id == 1 ) {
-                for my $oldvote ( split /,/xsm, $voters_vote ) {
+                foreach my $oldvote ( split /,/xsm, $voters_vote ) {
                     $votes[$oldvote]--;
                 }
                 $polled[$i] = q{};
@@ -221,13 +221,13 @@ sub undo_vote {
         if ($iamguest)  { fatal_error('not_allowed'); }
         if ($poll_lock) { fatal_error('locked_poll_no_delete'); }
         $found = 0;
-        for my $i ( 0 .. $#polled ) {
+        foreach my $i ( 0 .. $#polled ) {
             my ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
               split /[|]/xsm, $polled[$i];
             chomp $voters_vote;
             if ( $voters_name eq $username ) {
                 $found = 1;
-                for my $oldvote ( split /,/xsm, $voters_vote ) {
+                foreach my $oldvote ( split /,/xsm, $voters_vote ) {
                     $votes[$oldvote]--;
                 }
                 $polled[$i] = q{};
@@ -238,7 +238,7 @@ sub undo_vote {
     }
 
     my $prnpolln = $poll_question;
-    for my $i ( 0 .. $#poll_data ) {
+    foreach my $i ( 0 .. $#poll_data ) {
         $prnpolln .= "$votes[$i]|$options[$i]|$slicecols[$i]|$split[$i]\n";
     }
     fopen( 'FILE', '>', "$datadir/$pollnum.poll" )
@@ -319,7 +319,7 @@ sub votedetails {
     # Figure out the name of the category
     get_forum_master();
     $catinfo{$cat} ||= q{};
-    my ( $curcat, $catperms ) = @{$catinfo{$cat}};
+    my ( $curcat, $catperms ) = @{ $catinfo{$cat} };
     $curcat   ||= q{};
     $catperms ||= q{};
     our ($FILE);
@@ -350,24 +350,20 @@ sub votedetails {
     $poll_question = do_censor($poll_question);
     if ($ubbcpolls) {
         enable_yabbc();
-        $message = $poll_question;
-        do_ubbc();
-        $poll_question = $message;
+        $poll_question = do_ubbc($poll_question);
     }
     $poll_question = to_chars($poll_question);
 
     my $totalvotes = 0;
     my $maxvote    = 0;
-    for my $i ( 0 .. $#poll_data ) {
+    foreach my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i] ) = split /[|]/xsm, $poll_data[$i];
         $totalvotes += int $votes[$i];
         if ( int( $votes[$i] ) >= $maxvote ) { $maxvote = int $votes[$i]; }
         $options[$i] = do_censor( $options[$i] );
         if ($ubbcpolls) {
-            $message = $options[$i];
-            do_ubbc();
-            $options[$i] = $message;
+            $options[$i] = do_ubbc( $options[$i] );
         }
         $options[$i] = to_chars( $options[$i] );
     }
@@ -403,7 +399,7 @@ qq~<span class="small">&laquo; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_
         }
     }
     $boardname = to_chars($boardname);
-    $yytitle = $polltxt{'42'};
+    $yytitle   = $polltxt{'42'};
 
     my $template_home = qq~<a href="$scripturl">$mbname</a>~;
     my $template_cat  = qq~<a href="$scripturl?catselect=$curcat">$cat</a>~;
@@ -416,7 +412,7 @@ qq~<span class="small">&laquo; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_
 qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $curthreadurl~;
 
     my $my_ip = q{};
-    for my $entry (@polled) {
+    foreach my $entry (@polled) {
         chomp $entry;
         my $voted = q{};
         my ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
@@ -427,11 +423,9 @@ qq~&rsaquo; $template_cat &rsaquo; $template_board &rsaquo; $curthreadurl~;
             load_user($voters_name);
             $voters_name = profile_view($voters_name);
         }
-        for my $oldvote ( split /,/xsm, $voters_vote ) {
+        foreach my $oldvote ( split /,/xsm, $voters_vote ) {
             if ($ubbcpolls) {
-                $message = $options[$oldvote];
-                do_ubbc();
-                $options[$oldvote] = $message;
+                $options[$oldvote] = do_ubbc( $options[$oldvote] );
             }
             $options[$oldvote] = to_chars( $options[$oldvote] );
             $voted .= qq~$options[$oldvote]<br />~;
@@ -551,7 +545,7 @@ qq~&nbsp;/ <a href="$scripturl?action=scpoll;num=$pollnum" class="altlink">$poll
               or croak "$croak{'open'} $pollnum.polled";
             my @polled = <$FILE>;
             fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
-            for my $tmpline (@polled) {
+            foreach my $tmpline (@polled) {
                 my ( $voters_ip, $voters_name, $voters_vote, $vote_date ) =
                   split /[|]/xsm, $tmpline;
                 if (   $iamguest
@@ -590,7 +584,7 @@ qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate
     my $totalvotes = 0;
     my $maxvote    = 0;
     my $piearray   = q~[~;
-    for my $i ( 0 .. $#poll_data ) {
+    foreach my $i ( 0 .. $#poll_data ) {
         chomp $poll_data[$i];
         ( $votes[$i], $options[$i], $slicecolor[$i], $split[$i] ) =
           split /[|]/xsm, $poll_data[$i];
@@ -600,9 +594,7 @@ qq~<br /><span style="font-weight: bold;">$polltxt{'64'}:</span> $users_votedate
         $options[$i] =~ s/[\r\n]//gxsm;
         if ($ubbcpolls) {
             enable_yabbc();
-            $message = $options[$i];
-            do_ubbc();
-            $options[$i] = $message;
+            $options[$i] = do_ubbc( $options[$i] );
         }
         $options[$i] = to_chars( $options[$i] );
         $piearray .= qq~"$votes[$i]|$options[$i]|$slicecolor[$i]|$split[$i]", ~;
@@ -688,9 +680,7 @@ qq~<span class="small">&laquo; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_
     $poll_question = do_censor($poll_question);
     if ($ubbcpolls) {
         enable_yabbc();
-        $message = $poll_question;
-        do_ubbc();
-        $poll_question = $message;
+        $poll_question = do_ubbc($poll_question);
     }
     $poll_question = to_chars($poll_question);
 
@@ -703,15 +693,13 @@ qq~<span class="small">&laquo; $polltxt{'45'}: $poll_name $polltxt{'46'}: $poll_
                 require Sources::YaBBC;
             }
             $footer .= $users_votetext;
-            for my $i ( 0 .. $#users_vote ) {
+            foreach my $i ( 0 .. $#users_vote ) {
                 $optnum = $users_vote[$i];
 
                 # Censor the user answer.
                 $options[$optnum] = do_censor( $options[$optnum] );
                 if ($ubbcpolls) {
-                    $message = $options[$optnum];
-                    do_ubbc();
-                    $options[$optnum] = $message;
+                    $options[$optnum] = do_ubbc( $options[$optnum] );
                 }
                 $options[$optnum] = to_chars( $options[$optnum] );
                 $footer .= qq~$options[$optnum], ~;
@@ -804,7 +792,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
         </script>~;
             }
             else {
-                for my $i ( 0 .. $#options ) {
+                foreach my $i ( 0 .. $#options ) {
                     if ( !$options[$i] ) { next; }
 
                     # Display Poll Results
@@ -827,7 +815,7 @@ qq~$polltxt{'47'}<br /><span class="small">($polltxt{'48'})</span><br />~;
             }
         }
         else {
-            for my $i ( 0 .. $#options ) {
+            foreach my $i ( 0 .. $#options ) {
                 if ( !$options[$i] ) { next; }
 
                 # Display Poll Options
@@ -850,13 +838,11 @@ qq~<input type="radio" name="option" id="option$i" value="$i" style="margin: 0; 
     my $my_pollcomment = q{};
     if ($poll_comment) {
         $poll_comment = do_censor($poll_comment);
-        $message      = $poll_comment;
         if ($enable_ubbc) {
             enable_yabbc();
-            do_ubbc();
+            $poll_comment = do_ubbc($poll_comment);
         }
-        $poll_comment = $message;
-        $poll_comment = to_chars($poll_comment);
+        $poll_comment   = to_chars($poll_comment);
         $my_pollcomment = qq~
     <div style="width: 100%;"><br />$poll_comment</div>~;
     }
@@ -960,7 +946,7 @@ sub check_deletepoll {
           or croak "$croak{'open'} $pollnum.polled";
         my @chpolled = <$FILE>;
         fclose('FILE') or croak "$croak{'close'} $pollnum.polled";
-        for my $chvoter (@chpolled) {
+        foreach my $chvoter (@chpolled) {
             my ( undef, $chvotersname, undef, $chvotedate ) = split /[|]/xsm,
               $chvoter;
             if ( $chvotersname eq $username ) {

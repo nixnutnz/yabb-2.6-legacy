@@ -42,8 +42,8 @@ get_micon();
 get_template('Other');
 
 sub ip_lookup {
-    my $ip            = $INFO{'ip'};
-    my $lookuplink    = q{};
+    my $ip         = $INFO{'ip'};
+    my $lookuplink = q{};
 
     foreach my $i (@iplookup_url) {
         my $iplookup_name = $i;

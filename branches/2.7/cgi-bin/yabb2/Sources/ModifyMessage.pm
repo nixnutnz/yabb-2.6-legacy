@@ -42,16 +42,16 @@ our (
 );
 ## settings ##
 our (
-    $ad_max_messlen,     $allowattach,    $allowguestattach,
-    $banned_strings,     $checkext,       $cliped,
-    $dirlimit,           $limit,          $max_messlen,
-    $maxmessagedisplay,  $maxpc,          $maxpo,
-    $maxpq,              $min_post_speed, $minlinkpost,
-    $numpolloptions,     $overwrite,      $set_subject_maxlength,
-    $speedpostdetection, $string_on,      $tlnodelflag,
-    $tlnodeltime,        $tlnomodday,     $tlnomodflag,
-    $tlnomodtime,        $ttsreverse,     $use_guardian,
-    %grp_post,           @ext
+    $ad_max_messlen, $allowattach,           $allowguestattach,
+    $banned_strings, $checkext,              $dirlimit,
+    $limit,          $max_messlen,           $maxmessagedisplay,
+    $maxpc,          $maxpo,                 $maxpq,
+    $min_post_speed, $minlinkpost,           $numpolloptions,
+    $overwrite,      $set_subject_maxlength, $speedpostdetection,
+    $string_on,      $tlnodelflag,           $tlnodeltime,
+    $tlnomodday,     $tlnomodflag,           $tlnomodtime,
+    $ttsreverse,     $use_guardian,          %grp_post,
+    @ext
 );
 ## template ##
 our ($mypost_lastmod);
@@ -73,32 +73,33 @@ if ( $iamadmin || $iamgmod ) { $max_messlen = $ad_max_messlen; }
 
 ## local
 our (
-    $icon,    $mattach,       $mdate,     $memail,
-    $mename,  $message,       $mfn,       $micon,
-    $mip,     $mlm,           $mlmb,      $mmessage,
-    $mname,   $mns,           $mnum,      $mreplies,
-    $mstate,  $msub,          $musername, $pollthread,
-    $postid,  $postthread,    $reason,    $settofield,
-    $sub,     $thismusername, $threadid,  $tmpmdate,
-    @message, $submittxt,     $post,      $spam_hits_left_count,
+    $icon,          $mattach,    $mdate,
+    $memail,        $mename,     $message,
+    $mfn,           $micon,      $mip,
+    $mlm,           $mlmb,       $mmessage,
+    $mname,         $mns,        $mnum,
+    $mreplies,      $mstate,     $msub,
+    $musername,     $pollthread, $postthread,
+    $reason,        $settofield, $sub,
+    $thismusername, $tmpmdate,   @message,
+    $submittxt,     $post,       $spam_hits_left_count,
 );
 
 sub modify_message {
     if ($iamguest)        { fatal_error('members_only'); }
     if ( !$currentboard ) { fatal_error('no_access'); }
 
-    $threadid = $INFO{'thread'};
-    $postid   = $INFO{'message'};
+    our $threadid = $INFO{'thread'};
+    our $postid   = $INFO{'message'} || 0;
 
-    my ( $filetype_info, $filesize_info, $extensions );
-    $extensions = join q{ }, @ext;
+    my $extensions = join q{ }, @ext;
     $checkext ||= 0;
-    $filetype_info =
+    my $filetype_info =
       $checkext == 1
       ? qq~$fatxt{'2'} $extensions~
       : qq~$fatxt{'2'} $fatxt{'4'}~;
     $limit ||= 0;
-    $filesize_info =
+    my $filesize_info =
       $limit != 0 ? qq~$fatxt{'3'} $limit KB~ : qq~$fatxt{'3'} $fatxt{'5'}~;
 
     (
@@ -108,41 +109,8 @@ sub modify_message {
 
     $postthread = 2;
 
-    my $modtopic_chk = 0;
-    my $fixtime      = $tlnomodtime;
-    my $timeset      = 86400;
-    if ($tlnomodday) { $timeset = 60; }
-    {
-        no strict qw(refs);
-        if (   $tlnomodflag
-            && ${ $uid . $currentboard }{'modtopic'}
-            && ${ $uid . $currentboard }{'modtopic'} ne $tlnomodtime )
-        {
-            $fixtime = ${ $uid . $currentboard }{'modtopic'};
-            if (
-                (
-                    ${ $uid . $currentboard }{'modtopic'} == 0
-                    || $date < $mdate +
-                    ( ${ $uid . $currentboard }{'modtopic'} * $timeset )
-                )
-              )
-            {
-                $modtopic_chk = 1;
-            }
-        }
-    }
-    if ( $mstate =~ /l/ixsm ) {
-        my ($icanbypass);
-        if ($bypass_lock_perm) { $icanbypass = checkuser_lockbypass(); }
-        if ( !$icanbypass ) { fatal_error('topic_locked'); }
-    }
-    elsif (!$staff
-        && !$modtopic_chk
-        && $tlnomodflag
-        && $date > $mdate + ( $tlnomodtime * $timeset ) )
-    {
-        fatal_error( 'time_locked', "$fixtime$timelocktxt{'02'}" );
-    }
+    get_fixtime($currentboard);
+
     if ( $postid eq 'Poll' ) {
         if ( !-e "$datadir/$threadid.poll" ) { fatal_error('not_allowed'); }
 
@@ -159,7 +127,7 @@ sub modify_message {
             $vote_limit,    $pie_radius,  $pie_legends,  $poll_end
         ) = split /[|]/xsm, $poll_data[0];
         $poll_question = to_chars($poll_question);
-        $poll_comment = to_chars($poll_comment);
+        ( $poll_comment, undef ) = to_chars($poll_comment);
         our ( @votes, @options, @slicecolor, @split, );
 
         foreach my $i ( 1 .. $#poll_data ) {
@@ -225,8 +193,8 @@ sub modify_message {
     our $destination = 'modify2';
     $post = 'postmodify';
     require Sources::Post;
-    $yytitle = $post_txt{'66'};
-    $mename  = $mname;
+    $yytitle       = $post_txt{'66'};
+    $mename        = $mname;
     $thismusername = $musername;
     $tmpmdate      = $mdate;
     post_page();
@@ -247,8 +215,8 @@ sub modify_message2 {
 
     # the post is to be deleted...
     if ( $INFO{'d'} && $INFO{'d'} == 1 ) {
-        $threadid = $FORM{'thread'};
-        $postid   = $FORM{'id'};
+        my $threadid = $FORM{'thread'};
+        my $postid   = $FORM{'id'};
 
         if ( $postid eq 'Poll' ) {
 
@@ -320,8 +288,8 @@ sub modify_message2 {
         }
     }
 
-    $threadid   = $FORM{'threadid'};
-    $postid     = $FORM{'postid'};
+    my $threadid = $FORM{'threadid'};
+    my $postid   = $FORM{'postid'} || 0;
     $pollthread = $FORM{'pollthread'};
 
     if ($pollthread) {
@@ -359,10 +327,8 @@ sub modify_message2 {
 
         $poll_question = $FORM{'question'};
         $poll_question = from_chars($poll_question);
-        my $convertstr = $poll_question;
-        my $convertcut = $maxpq;
-        count_chars();
-        $poll_question = $convertstr;
+        my $cliped = 0;
+        ( $poll_question, $cliped ) = count_chars( $poll_question, $maxpq );
         if ($cliped) {
             fatal_error( 'error_occurred',
 "$post_polltxt{'40'} $post_polltxt{'34a'} $maxpq $post_polltxt{'34b'} $post_polltxt{'36'}"
@@ -390,10 +356,7 @@ sub modify_message2 {
         }
 
         $poll_comment = from_chars($poll_comment);
-        $convertstr = $poll_comment;
-        $convertcut = $maxpc;
-        count_chars();
-        $poll_comment = $convertstr;
+        ( $poll_comment, $cliped ) = count_chars( $poll_comment, $maxpc );
         if ($cliped) {
             fatal_error( 'error_occurred',
 "$post_polltxt{'57'} $post_polltxt{'34a'} $maxpc $post_polltxt{'34b'} $post_polltxt{'36'}"
@@ -430,10 +393,8 @@ qq~$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$gu
                 }
 
                 $FORM{"option$i"} = from_chars( $FORM{"option$i"} );
-                $convertstr = $FORM{"option$i"};
-                $convertcut = $maxpo;
-                count_chars();
-                $FORM{"option$i"} = $convertstr;
+                ( $FORM{"option$i"}, $cliped ) =
+                  count_chars( $FORM{"option$i"}, $maxpo );
                 if ($cliped) {
                     fatal_error( 'error_occurred',
 "$post_polltxt{'7'} $i $post_polltxt{'34a'} $maxpo $post_polltxt{'34b'} $post_polltxt{'36'}"
@@ -532,12 +493,11 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     my $subject = $FORM{'subject'};
     $message = $FORM{'message'};
     $icon    = $FORM{'icon'};
-    $icon = check_icon($icon);
+    $icon    = check_icon($icon);
     our $ns = $FORM{'ns'} || q{};
     my $notify = $FORM{'notify'};
     our $thestatus = $FORM{'topicstatus'} || q{};
     $thestatus =~ s/,\s//gxsm;
-    
 
     if ( $FORM{'reason'} ) {
         $reason  = $FORM{'reason'};
@@ -584,12 +544,10 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     undef $mess_len;
 
     $subject = from_chars($subject);
-    my $convertstr = $subject;
     $set_subject_maxlength ||= 50;
     my $convertcut =
       $set_subject_maxlength + ( $subject =~ /^Re:\s /xsm ? 4 : 0 );
-    count_chars();
-    $subject = $convertstr;
+    ( $subject, undef ) = count_chars( $subject, $convertcut );
     $subject = to_html($subject);
 
     $name = to_html($name);
@@ -882,7 +840,7 @@ qq~$threadid|$postid|$subject|$mname|$currentboard|$filesizekb|$date|$fixfile|0\
     truncate $ATM, 0;
     seek $ATM, 0, 0;
     print {$ATM}
-      sort { ( split /[|]/xsm, $a )[6] cmp ( split /[|]/xsm, $b )[6] }
+      sort { ( split /[|]/xsm, $a )[6] cmp( split /[|]/xsm, $b )[6] }
       @attachments
       or croak "$croak{'print'} ATM";
     fclose('ATM') or croak "$croak{'close'} ATM";
@@ -979,6 +937,7 @@ qq~$subject|$mname|$memail|$mdate|$musername|$icon|0|$useredit_ip|$message|$ns|$
 
 sub multi_del {    # deletes single- or multi-Posts
     no warnings qw(uninitialized);
+    no strict qw(refs);
     my $thread = $INFO{'thread'};
 
     if ( !ref $thread_arrayref{$thread} ) {
@@ -991,35 +950,15 @@ sub multi_del {    # deletes single- or multi-Posts
     my @messages = @{ $thread_arrayref{$thread} };
 
     # check all checkboxes, delete posts if checkbox is ticked
-    my $kill = 0;
+    my $kill   = 0;
+    my $postid = 0;
     foreach my $count ( reverse 0 .. $#messages ) {
         if ( $FORM{"del$count"} ne q{} ) {
             chomp $messages[$count];
             @message = split /[|]/xsm, $messages[$count];
             $musername = $message[4];
-
-            # Checks that the user is actually allowed to access multidel
-            {
-                no strict qw(refs);
-                if (
-                    (
-                        ${ $uid . $username }{'regtime'} > $message[3]
-                        && !$iamadmin
-                    )
-                    || (  !$staff
-                        && $musername ne $username )
-                    || !$sessionvalid
-                  )
-                {
-                    fatal_error('delete_not_allowed');
-                }
-            }
-            if (  !$staff
-                && $tlnodelflag
-                && $date > $message[3] + ( $tlnodeltime * 3600 * 24 ) )
-            {
-                fatal_error( 'time_locked', "$tlnodeltime$timelocktxt{'02a'}" );
-            }
+            my $deltime = $message[3];
+            check_delperm( $musername, $deltime );
 
             if ( $message[12] ) {    # _remove_ post attachments
                 require Admin::Attachments;
@@ -1031,54 +970,11 @@ sub multi_del {    # deletes single- or multi-Posts
 
             splice @messages, $count, 1;
             $kill++;
+
             if ( $kill == 1 ) { $postid = $count; }
 
             # decrease members post count if not in a zero post count board
-            my ($grp_after);
-            {
-                no strict qw(refs);
-                if (   !${ $uid . $currentboard }{'zero'}
-                    && $musername ne 'Guest'
-                    && $message[6] ne 'no_postcount' )
-                {
-                    if ( !${ $uid . $musername }{'password'} ) {
-                        load_user($musername);
-                    }
-                    if ( ${ $uid . $musername }{'postcount'} > 0 ) {
-                        ${ $uid . $musername }{'postcount'}--;
-                        user_account( $musername, 'update' );
-                    }
-                    if ( ${ $uid . $musername }{'position'} ) {
-                        $grp_after = ${ $uid . $musername }{'position'};
-                    }
-                    else {
-                        foreach my $postamount (
-                            reverse sort { $a <=> $b }
-                            keys %grp_post
-                          )
-                        {
-                            if ( ${ $uid . $musername }{'postcount'} >
-                                $postamount )
-                            {
-                                ( $grp_after, undef ) =
-                                  split /[|]/xsm, $grp_post{$postamount}, 2;
-                                last;
-                            }
-                        }
-                    }
-                    manage_memberinfo( 'update', $musername, q{}, q{},
-                        $grp_after, ${ $uid . $musername }{'postcount'} );
-
-                    my ( $md, $mu, $mdmu );
-                    foreach ( reverse @messages ) {
-                        ( undef, undef, undef, $md, $mu, undef ) =
-                          split /[|]/xsm,
-                          $_, 6;
-                        if ( $mu eq $musername ) { $mdmu = $md; last; }
-                    }
-                    recent_write( 'decr', $thread, $musername, $mdmu );
-                }
-            }
+            get_grp_after( $currentboard, $musername, $thread, \@messages );
         }
     }
 
@@ -1131,8 +1027,6 @@ sub multi_del {    # deletes single- or multi-Posts
         ${ $uid . $currentboard }{'messagecount'} -= $kill;
     }
 
-    # &boardtotals("update", ...) is done later in &board_setlast_info
-
     my $threadline = q{};
     our ($BOARDFILE);
     fopen( 'BOARDFILE', '+<', "$boardsdir/$currentboard.txt" )
@@ -1153,7 +1047,7 @@ sub multi_del {    # deletes single- or multi-Posts
     $newthreadline[7] = $firstmessage[5];    # icon of first message
     $newthreadline[4] = $lastmessage[3];     # date of last message
     {
-        no strict q(refs);
+        no strict qw(refs);
         $newthreadline[5] = ${$thread}{'replies'};    # reply number
     }
 
@@ -1197,6 +1091,114 @@ sub multi_del {    # deletes single- or multi-Posts
     $yysetlocation = qq~$scripturl?num=$thread/$start#$postid~;
 
     redirectexit();
+    return;
+}
+
+sub get_grp_after {
+    my ( $currentbrd, $musr, $thread, $messages ) = @_;
+    my @messages  = @{$messages};
+    my $grp_after = q{};
+    no strict q(refs);
+    if (   !${ $uid . $currentbrd }{'zero'}
+        && $musr ne 'Guest'
+        && $message[6] ne 'no_postcount' )
+    {
+        if ( !${ $uid . $musr }{'password'} ) {
+            load_user($musr);
+        }
+        if ( ${ $uid . $musr }{'postcount'} > 0 ) {
+            ${ $uid . $musr }{'postcount'}--;
+            user_account( $musr, 'update' );
+        }
+        if ( ${ $uid . $musr }{'position'} ) {
+            $grp_after = ${ $uid . $musr }{'position'};
+        }
+        else {
+            foreach my $postamount (
+                reverse sort { $a <=> $b }
+                keys %grp_post
+              )
+            {
+                if ( ${ $uid . $musr }{'postcount'} > $postamount ) {
+                    ( $grp_after, undef ) =
+                      split /[|]/xsm, $grp_post{$postamount}, 2;
+                    last;
+                }
+            }
+        }
+        manage_memberinfo( 'update', $musr, q{}, q{},
+            $grp_after, ${ $uid . $musr }{'postcount'} );
+
+        my ( $md, $mu, $mdmu );
+        foreach ( reverse @messages ) {
+            ( undef, undef, undef, $md, $mu, undef ) =
+              split /[|]/xsm,
+              $_, 6;
+            if ( $mu eq $musr ) { $mdmu = $md; last; }
+        }
+        recent_write( 'decr', $thread, $musr, $mdmu );
+    }
+    return;
+}
+
+sub check_delperm {
+    my ( $musr, $deltime ) = @_;
+    no strict qw(refs);
+
+    # Checks that the user is actually allowed to access multidel
+    if (
+        ( ${ $uid . $username }{'regtime'} > $deltime && !$iamadmin )
+        || (  !$staff
+            && $musr ne $username )
+        || !$sessionvalid
+      )
+    {
+        fatal_error('delete_not_allowed');
+    }
+    if (  !$staff
+        && $tlnodelflag
+        && $date > $deltime + ( $tlnodeltime * 3600 * 24 ) )
+    {
+        fatal_error( 'time_locked', "$tlnodeltime$timelocktxt{'02a'}" );
+    }
+    return;
+}
+
+sub get_fixtime {
+    my ($currbrd) = @_;
+    my $timeset = 86400;
+    if ($tlnomodday) { $timeset = 60; }
+    my $modtopic_chk = 0;
+    my $fixtime      = $tlnomodtime;
+    no strict qw(refs);
+    if (   $tlnomodflag
+        && ${ $uid . $currbrd }{'modtopic'}
+        && ${ $uid . $currbrd }{'modtopic'} ne $tlnomodtime )
+    {
+        $fixtime = ${ $uid . $currbrd }{'modtopic'};
+        if (
+            (
+                ${ $uid . $currbrd }{'modtopic'} == 0
+                || $date <
+                $mdate + ( ${ $uid . $currbrd }{'modtopic'} * $timeset )
+            )
+          )
+        {
+            $modtopic_chk = 1;
+        }
+    }
+    if ( $mstate =~ /l/ixsm ) {
+        my ($icanbypass);
+        if ($bypass_lock_perm) { $icanbypass = checkuser_lockbypass(); }
+        if ( !$icanbypass ) { fatal_error('topic_locked'); }
+    }
+    elsif (!$staff
+        && !$modtopic_chk
+        && $tlnomodflag
+        && $date > $mdate + ( $tlnomodtime * $timeset ) )
+    {
+        fatal_error( 'time_locked', "$fixtime$timelocktxt{'02'}" );
+    }
     return;
 }
 

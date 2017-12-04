@@ -31,14 +31,14 @@ if (@detailedversionpmmods) {
     $detailedversionpmmods = 1;
 }
 ##  languages ##
-our ( $rna, %admin_img, %croak, %load_txt, %versiontxt, %detailed);
+our ( $rna, %admin_img, %croak, %load_txt, %versiontxt, %detailed );
 ## paths ##
 our (
     $adminurl, $yyhtml_root,  $scripturl, $vardir,   $boarddir,
     $langdir,  $templatesdir, $helpfile,  $admindir, $sourcedir,
 );
 ## settings ##
-our ( $lastbackup, $maintenance, $rememberbackup, $yymycharset, %lngs);
+our ( $lastbackup, $maintenance, $rememberbackup, $yymycharset, %lngs );
 ## system ##
 our (
     $action,        $iamadmin, $yabbversion, $yyadmin_alert,
@@ -84,8 +84,8 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
         my @checksum = <$CHK>;
         fclose('CHK') or croak "$croak{'close'} checksum";
         chomp @checksum;
-        for (@checksum) {
-            my ( $key, $check ) = split /[|]/xsm;
+        foreach my $i (@checksum) {
+            my ( $key, $check ) = split /[|]/xsm, $i;
             my @keys = split /\//xsm, $key;
             $checksum{ $keys[-1] } = $check;
         }
@@ -131,8 +131,8 @@ qq~<br /><span style="font-size: 12px; background-color: #FFFF33;"><b>$load_txt{
     my $adminchkmatch      = q{};
     if ($adminindexmods) {
         my $adminmodslist = q{};
-        for ( sort @adminindexmods ) {
-            $adminmodslist .= qq~$_<br />~;
+        foreach my $i ( sort @adminindexmods ) {
+            $adminmodslist .= qq~$i<br />~;
         }
         $adminmodslist =~ s/<br\s \/>\Z//xsm;
         $adminindexmodcheck =
@@ -160,15 +160,15 @@ qq~<span class="small important"> <a href="#" onclick="showMods('adminindexmods'
     my $yabbmodcheck = q{};
     my $yabbmodslist = q{};
     if ($yabbmods) {
-        for ( sort @yabbmods ) {
-            $yabbmodslist .= qq~$_<br />~;
+        foreach my $i ( sort @yabbmods ) {
+            $yabbmodslist .= qq~$i<br />~;
         }
         $yabbmodslist =~ s/<br\s \/>\Z//xsm;
         $yabbmodcheck =
 qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); return false;">$detailed{'modded'}</a></span> <div id="yabbmods" style="position:fixed; border: thin #f00 solid; background-color: #ff0; padding:.5em; display:none" onmouseover="hideMods('yabbmods'); return false;" class="small">$yabbmodslist</div>~;
     }
     my $ageyabb = ( stat("$boarddir/$yyexec.$yyext")->mtime );
-    my ( $checkvery, $dateyabb, $yabbchkmatch ) = (q{}, q{}, q{});
+    my ( $checkvery, $dateyabb, $yabbchkmatch ) = ( q{}, q{}, q{} );
     if ( !$vercheck || $vercheck == 0 ) {
         if ( $lineyabb ne $checksum{"$yyexec.$yyext"} ) {
             $checkvery = 1;
@@ -216,8 +216,8 @@ qq~<span class="small important"> <a href="#" onclick="showMods('yabbmods'); ret
     my $dobackupmodslist = q{};
     if ($dobackupplmods) {
         my $dobackupplmodslist = q{};
-        for ( sort @dobackupplmods ) {
-            $dobackupmodslist .= qq~$_<br />~;
+        foreach my $i ( sort @dobackupplmods ) {
+            $dobackupmodslist .= qq~$i<br />~;
         }
         $dobackupmodslist =~ s/<br\s \/>\Z//xsm;
         $dobackupmodcheck =
@@ -251,7 +251,7 @@ qq~<span class="small important"> <a href="#" onclick="showMods('dobackupplmods'
       or croak "$croak{'open'} default.html";
     my @defaulthtmlver = <$DEFHTML>;
     fclose('DEFHTML') or croak "$croak{'close'} default.html";
-    for my $x (@defaulthtmlver) {
+    foreach my $x (@defaulthtmlver) {
         if ( $x =~ /\Q<!-- YaBB \E/xsm ) {
             $x =~
               s/<!-- YaBB (.*?) \$Revision: (.*?) \$ -->/YaBB $1 Build $2/igsm;
@@ -338,7 +338,7 @@ function hideMods(id) {
             </tr>~;
 
     my @langflds = sort keys %lngs;
-    for my $fld (@langflds) {
+    foreach my $fld (@langflds) {
         if ( -e "$langdir/$fld/version.txt" ) {
             open my $FILE, '<', "$langdir/$fld/version.txt"
               or croak "$croak{'open'} $langdir/$fld/version.txt";
@@ -366,7 +366,7 @@ function hideMods(id) {
             my @lfilesanddirsf = readdir LNGDIRF;
             closedir LNGDIRF;
             @lfilesanddirsf = sort @lfilesanddirsf;
-            for my $filein_dir (@lfilesanddirsf) {
+            foreach my $filein_dir (@lfilesanddirsf) {
                 chomp $filein_dir;
                 if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
                     $date = time;
@@ -380,16 +380,16 @@ function hideMods(id) {
                         ${$txtrevision} =~
                           s/\$Revision: (.*?) \$/Build $1/igxsm;
                     }
-                    else { ${$txtrevision} = 'No revision data';}
+                    else { ${$txtrevision} = 'No revision data'; }
                     my $modrevision = lc $filein_dir;
                     $modrevision =~ s/[.]lng/lngmods/igxsm;
                     $modrevision = $flda . $modrevision;
                     $modmatch    = mod_link($modrevision);
-                    open( my $DAT, '<', "$langdir/$fld/$filein_dir" )
+                    open my $DAT, '<', "$langdir/$fld/$filein_dir"
                       or croak "$croak{'open'} $filein_dir: $OS_ERROR";
                     binmode $DAT;
                     my $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                    close($DAT) or croak "$croak{'close'} $filein_dir";
+                    close $DAT or croak "$croak{'close'} $filein_dir";
                     my $chkmatch = q{};
 
                     my $age = ( stat("$langdir/$fld/$filein_dir")->mtime );
@@ -413,12 +413,12 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 </tr>~;
                 }
             }
-            if (-e "$langdir/$fld/Mods") {
+            if ( -e "$langdir/$fld/Mods" ) {
                 opendir LNGDIRM, "$langdir/$fld/Mods";
                 my @lfilesanddirsm = readdir LNGDIRM;
                 closedir LNGDIRM;
                 @lfilesanddirsm = sort @lfilesanddirsm;
-                for my $filein_dir (@lfilesanddirsm) {
+                foreach my $filein_dir (@lfilesanddirsm) {
                     chomp $filein_dir;
                     if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
                         require "$langdir/$fld/Mods/$filein_dir";
@@ -432,16 +432,17 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                               s/\$Revision: (.*?) \$/Build $1/igxsm;
                         }
                         else { ${$txtrevision} = q{}; }
-                        open( my $DAT, '<', "$langdir/$fld/Mods/$filein_dir" )
+                        open my $DAT, '<', "$langdir/$fld/Mods/$filein_dir"
                           or croak "$croak{'open'} Mods/$filein_dir: $OS_ERROR";
                         binmode $DAT;
                         my $linec = Digest::MD5->new->addfile($DAT)->hexdigest;
-                        close($DAT) or croak "$croak{'close'} Mods/$filein_dir";
+                        close $DAT or croak "$croak{'close'} Mods/$filein_dir";
 
-                        my $age = ( stat("$langdir/$fld/Mods/$filein_dir")->mtime );
-                        my $date = scalar localtime $age;
+                        my $age =
+                          ( stat("$langdir/$fld/Mods/$filein_dir")->mtime );
+                        $date = scalar localtime $age;
                         my $chkmatch =
-                          qq~<span class="small"> $detailed{'upped'} $date</span>~;
+qq~<span class="small"> $detailed{'upped'} $date</span>~;
                         $yymain .= qq~<tr>
                     <td class="windowbg2">Mods/$filein_dir</td>
                     <td class="windowbg2" style="position:static"><i>${$txtrevision}</i>$chkmatch</td>
@@ -451,14 +452,14 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
             }
 
             my @helps = qw(Admin Gmod Moderator User);
-            for my $area (@helps) {
+            foreach my $area (@helps) {
                 if ( -d "$helpfile/$fld/$area" ) {
                     opendir HELPDIRF, "$helpfile/$fld/$area"
                       or croak "$croak{'open'} $helpfile/$fld/$area";
                     my @helpdir = readdir HELPDIRF;
                     closedir HELPDIRF;
                     @helpdir = sort @helpdir;
-                    for my $helpin_dir (@helpdir) {
+                    foreach my $helpin_dir (@helpdir) {
                         chomp $helpin_dir;
                         if ( $helpin_dir =~ m/[.]help\Z/xsm ) {
                             $date = time;
@@ -466,15 +467,18 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                             my $txtrevision =
                               lc $fld . $area . '_' . $helpin_dir;
                             $txtrevision =~ s/[.]help/helpver/igxsm;
-                            ${$txtrevision} =~
-                              s/\$Revision: (.*?) \$/Build $1/igxsm;
-                            open( my $DAT, '<',
-                                "$helpfile/$fld/$area/$helpin_dir" )
+                            if ( ${$txtrevision} ) {
+                                ${$txtrevision} =~
+                                  s/\$Revision: (.*?) \$/Build $1/igxsm;
+                            }
+                            else { ${$txtrevision} = q{}; }
+                            open my $DAT, '<',
+                              "$helpfile/$fld/$area/$helpin_dir"
                               or croak "$croak{'open'} $helpin_dir: $OS_ERROR";
                             binmode $DAT;
                             my $linec =
                               Digest::MD5->new->addfile($DAT)->hexdigest;
-                            close($DAT) or croak "$croak{'close'} DAT";
+                            close $DAT or croak "$croak{'close'} DAT";
                             my $chkmatch = q{};
 
                             my $age = (
@@ -485,8 +489,8 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                             $date = scalar localtime $age;
                             if (
                                 (
-                                       $vercheck == 0
-                                    && ( !$checksum{$helpin_dir} || $linec ne $checksum{$helpin_dir} )
+                                    $vercheck == 0 && ( !$checksum{$helpin_dir}
+                                        || $linec ne $checksum{$helpin_dir} )
                                 )
                                 || ( $vercheck == 1 && $age > $ver_age )
                               )
@@ -535,7 +539,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     my @admin_dir = readdir DIR;
     closedir DIR;
     @admin_dir = sort @admin_dir;
-    for my $filein_dir (@admin_dir) {
+    foreach my $filein_dir (@admin_dir) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
             require "$admindir/$filein_dir";
@@ -602,7 +606,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     my @admin_dirm = readdir DIR;
     closedir DIR;
     @admin_dirm = sort @admin_dirm;
-    for my $filein_dir (@admin_dirm) {
+    foreach my $filein_dir (@admin_dirm) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
             require "$admindir/Mods/$filein_dir";
@@ -677,7 +681,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     my @source_dir = readdir DIR;
     closedir DIR;
     @source_dir = sort @source_dir;
-    for my $filein_dir (@source_dir) {
+    foreach my $filein_dir (@source_dir) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
             require "$sourcedir/$filein_dir";
@@ -742,7 +746,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     my @source_dirm = readdir DIR;
     closedir DIR;
     @source_dir = sort @source_dirm;
-    for my $filein_dir (@source_dirm) {
+    foreach my $filein_dir (@source_dirm) {
         chomp $filein_dir;
         if ( $filein_dir =~ m/[.]pl\Z/xsm ) {
             require "$sourcedir/Mods/$filein_dir";
@@ -797,7 +801,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
     my @temp_dir = readdir FDIR;
     closedir FDIR;
     my @templ_dir = ();
-    for my $fl (@temp_dir) {
+    foreach my $fl (@temp_dir) {
         if ( $fl !~ m/[.]/xsm ) {
             push @templ_dir, $fl;
         }
@@ -829,13 +833,13 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 <td class="windowbg2"><i>$defaulthtmlver</i>$defaultchkmatch</td>
             </tr>~;
 
-    for my $folderindir (@templ_dir) {
+    foreach my $folderindir (@templ_dir) {
         opendir DIR, "$templatesdir/$folderindir"
           or croak "$croak{'open'} $templatesdir/$folderindir: $OS_ERROR";
         my @template_dir = readdir DIR;
         closedir DIR;
         @template_dir = sort @template_dir;
-        for my $filein_dir (@template_dir) {
+        foreach my $filein_dir (@template_dir) {
             chomp $filein_dir;
             if ( $filein_dir =~ m/[.]template\Z/xsm ) {
                 require "$templatesdir/$folderindir/$filein_dir";
@@ -862,8 +866,13 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                 my $age =
                   ( stat("$templatesdir/$folderindir/$filein_dir")->mtime );
                 $date = scalar localtime $age;
-                if (   ( $vercheck == 0 && ($checksum{$filein_dir} && $linec ne $checksum{$filein_dir} ) )
-                    || ( $vercheck == 1 && $age > $ver_age ) )
+                if (
+                    (
+                        $vercheck == 0 && ( $checksum{$filein_dir}
+                            && $linec ne $checksum{$filein_dir} )
+                    )
+                    || ( $vercheck == 1 && $age > $ver_age )
+                  )
                 {
                     $chkmatch =
 qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
@@ -916,7 +925,7 @@ qq~<span class="small"> $detailed{'chngfle'} $date</span>~;
                   or croak "$croak{'open'} $folderindir.html";
                 my @mydefaulthtmlver = <$MDEFHTML>;
                 fclose('MDEFHTML') or croak "$croak{'close'} $folderindir.html";
-                for my $x (@mydefaulthtmlver) {
+                foreach my $x (@mydefaulthtmlver) {
                     if ( $x =~ /\Q<!-- YaBB \E/xsm ) {
                         $x =~
 s/<!--\s YaBB\s (.*?)\s \$Revision\:\s (.*?)\s \$\s -->/YaBB $1 Build $2/igxsm;
@@ -963,7 +972,7 @@ s/<!--\s YaBB\s (.*?)\s \$Revision\:\s (.*?)\s \$\s -->/YaBB $1 Build $2/igxsm;
                 my @template_dirm = readdir DIR;
                 closedir DIR;
                 @template_dirm = sort @template_dirm;
-                for my $filein_dir (@template_dirm) {
+                foreach my $filein_dir (@template_dirm) {
                     chomp $filein_dir;
                     if ( $filein_dir =~ m/[.]template\Z/xsm ) {
                         require "$templatesdir/$folderindir/Mods/$filein_dir";
@@ -1016,8 +1025,8 @@ sub mod_link {
     my $modmatch      = q{};
     if ( ${$modrevision} ) {
         my @mymodlist = sort @{$modrevision};
-        for (@mymodlist) {
-            $modslist .= qq~$_<br />~;
+        foreach my $i (@mymodlist) {
+            $modslist .= qq~$i<br />~;
         }
         $modslist =~ s/<br\s \/>\Z//xsm;
         $modmatch =

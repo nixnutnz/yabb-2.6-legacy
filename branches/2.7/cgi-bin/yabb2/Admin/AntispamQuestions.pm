@@ -298,7 +298,7 @@ sub spam_questionsedit {
     fclose('SPAMQUESTIONS')
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
 
-    for my $question (@spam_questions) {
+    foreach my $question (@spam_questions) {
         chomp $question;
         if ( $question =~ /$id/xsm ) {
             $question_edit = $question;
@@ -443,7 +443,7 @@ sub spam_questionsdelete {
       or croak "$croak{'close'} '$langdir/$questions_language/spam.questions'";
     my $spam_image_delete = q{};
 
-    for my $spam_image (@spam_questions) {
+    foreach my $spam_image (@spam_questions) {
         chomp $spam_image;
         if ( $spam_image =~ /$FORM{'spam_question_id'}/xsm ) {
             $spam_image_delete = $spam_image;

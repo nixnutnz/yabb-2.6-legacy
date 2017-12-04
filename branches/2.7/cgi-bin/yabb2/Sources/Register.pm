@@ -72,15 +72,15 @@ our (
 );
 ## system ##
 our (
-    $admin,       $cliped,      $date,            $emailcharset,
-    $extpagstyle, $flood_text,  $iamadmin,        $iamgmod,
-    $iamguest,    $invalemaila, $invalemailb,     $invalmailchar,
-    $invalpass,   $invalrname,  $invaluser,       $langopt,
-    $language,    $morelang,    $my_blank_avatar, $sessionid,
-    $showcheck,   $spam_image,  $spam_question,   $spam_question_id,
-    $uid,         $user_ip,     $username,        $year,
-    $yyhtml_root, $yymain,      $yynavigation,    $yysetlocation,
-    $yytitle,     %FORM,        %INFO,            %memberinf,
+    $admin,        $date,            $emailcharset,     $extpagstyle,
+    $flood_text,   $iamadmin,        $iamgmod,          $iamguest,
+    $invalemaila,  $invalemailb,     $invalmailchar,    $invalpass,
+    $invalrname,   $invaluser,       $langopt,          $language,
+    $morelang,     $my_blank_avatar, $sessionid,        $showcheck,
+    $spam_image,   $spam_question,   $spam_question_id, $uid,
+    $user_ip,      $username,        $yyhtml_root,      $yymain,
+    $yynavigation, $yysetlocation,   $yytitle,          %FORM,
+    %INFO,         %memberinf,
 );
 ## template ##
 our (
@@ -118,6 +118,8 @@ if ( $OSNAME =~ /Win/xsm ) {
 else {
     $regstyle = q{};
 }
+
+my $year = (gmtime)[5] + 1900;
 
 sub register {
     if ( $regtype == 0 && $iamguest ) { fatal_error('registration_disabled'); }
@@ -249,7 +251,7 @@ qq~<input type="text" maxlength="100" onchange="checkAvail('$scripturl',this.val
             $edit_agetxt =
               qq~<br /><span class="small">$register_txt{'birthday_c'}</span>~;
         }
-        timetostring($date);
+
         if ( $timeselected =~ /[145]/xsm ) {
             $yymain .=
                 $myregister_bdonreg
@@ -682,7 +684,7 @@ sub register2 {
     if ( $member{'email'} eq q{} ) {
         fatal_error( 'no_email', "($member{'regusername'})" );
     }
-    if ( -e ("$memberdir/$member{'regusername'}.vars") ) {
+    if ( -e "$memberdir/$member{'regusername'}.vars" ) {
         fatal_error( 'id_taken', "($member{'regusername'})" );
     }
     if ( $member{'passwrd1'} && $member{'regusername'} eq $member{'passwrd1'} )
@@ -722,7 +724,8 @@ sub register2 {
     $member{'regrealname'} = from_chars( $member{'regrealname'} );
     my $convertstr = $member{'regrealname'};
     my $convertcut = 30;
-    count_chars();
+    my $cliped     = 0;
+    ( $convertstr, $cliped ) = count_chars( $convertstr, $convertcut );
     $member{'regrealname'} = $convertstr;
     if ($cliped) {
         fatal_error( 'realname_to_long',
@@ -771,11 +774,8 @@ sub register2 {
     }
 
     if ( $regtype == 1 ) {
-        $convertstr = $member{'reason'};
-        $convertcut = $reg_reason_len;
-        count_chars();
-        $member{'reason'} = $convertstr;
-
+        ( $member{'reason'}, undef ) =
+          count_chars( $member{'reason'}, $reg_reason_len );
         $member{'reason'} = from_chars( $member{'reason'} );
         $member{'reason'} = to_html( $member{'reason'} );
         $member{'reason'} = to_chars( $member{'reason'} );
@@ -849,7 +849,7 @@ sub register2 {
       ? $member{'regrealname'}
       : lc $member{'regrealname'};
 
-    for my $reserved (@reserve) {
+    foreach my $reserved (@reserve) {
         chomp $reserved;
         my $reservecheck = $matchcase ? $reserved : lc $reserved;
         if ($matchuser) {
@@ -882,15 +882,15 @@ sub register2 {
     else                     { $new_template = q~Forum default~; }
 
     # check if user isn't already registered
-    if ( -e ("$memberdir/$member{'regusername'}.vars") ) {
+    if ( -e "$memberdir/$member{'regusername'}.vars" ) {
         fatal_error('id_taken');
     }
 
     # check if user isn't already in pre-registration
-    if ( -e ("$memberdir/$member{'regusername'}.pre") ) {
+    if ( -e "$memberdir/$member{'regusername'}.pre" ) {
         fatal_error('already_preregged');
     }
-    if ( -e ("$memberdir/$member{'regusername'}.wait") ) {
+    if ( -e "$memberdir/$member{'regusername'}.wait" ) {
         fatal_error('already_preregged');
     }
 
@@ -1016,18 +1016,18 @@ sub register2 {
         my ( @reglist, @x );
 
         # If a pre-registration list exists load it
-        if ( -e 'Variables/meminactive.db' ) {
+        if ( -e "$vardir/meminactive.db" ) {
             our ($INACT);
-            fopen( 'INACT', '<', 'Variables/meminactive.db' )
+            fopen( 'INACT', '<', "$vardir/meminactive.db" )
               or croak "$croak{'open'} meminactive";
             @reglist = <$INACT>;
             fclose('INACT') or croak "$croak{'close'} meminactive";
         }
 
         # If a approve-registration list exists load it too
-        if ( -e 'Variables/memapprove.db' ) {
+        if ( -e "$vardir/memapprove.db" ) {
             our ($APPROVE);
-            fopen( 'APPROVE', '<', 'Variables/memapprove.db' )
+            fopen( 'APPROVE', '<', "$vardir/memapprove.db" )
               or croak "$croak{'open'} memapprove";
             push @reglist, <$APPROVE>;
             fclose('APPROVE') or croak "$croak{'close'}memapprove";
@@ -1062,14 +1062,14 @@ sub register2 {
         my $regpass = $member{'passwrd1'};
 
         our ($INACT);
-        fopen( 'INACT', '>>', 'Variables/meminactive.db', 1 )
+        fopen( 'INACT', '>>', "$vardir/meminactive.db", 1 )
           or croak "$croak{'open'} meminactive";
         print {$INACT}
           "$date|$activationcode|$reguser|$regpass|$member{'email'}|$user_ip\n"
           or croak "$croak{'print'} INACT";
         fclose('INACT') or croak "$croak{'close'} meminactive";
         our ($REGLOG);
-        fopen( 'REGLOG', '>>', 'Variables/registration.log', 1 )
+        fopen( 'REGLOG', '>>', "$vardir/registration.log", 1 )
           or croak "$croak{'open'} reglog";
         print {$REGLOG} "$date|N|$member{'regusername'}||$user_ip\n"
           or croak "$croak{'print'} REGLOG";
@@ -1121,13 +1121,13 @@ sub register2 {
         if ($send_welcomeim) {
             my $messageid = $BASETIME . $PROCESS_ID;
             my $imsubject = $register_txt{'imsubject'};
-            my $imtext = $register_txt{'imtext'};
+            my $imtext    = $register_txt{'imtext'};
             if ( -e "$langdir/$language/welcome.txt" ) {
                 our ($WELL);
-                fopen( 'WELL', '<', "$langdir/$language/welcome.txt");
+                fopen( 'WELL', '<', "$langdir/$language/welcome.txt" );
                 my $txt = <$WELL>;
                 fclose('WELL');
-                ($imsubject, $imtext) = split /[|]/xsm, $txt;
+                ( $imsubject, $imtext ) = split /[|]/xsm, $txt;
                 chomp $imtext;
             }
             our ($IM);
@@ -1239,9 +1239,9 @@ sub user_activation {
 
     # If a pre-registration list exists load it
     my ( @reglist, @aprlist );
-    if ( -e 'Variables/meminactive.db' ) {
+    if ( -e "$vardir/meminactive.db" ) {
         our ($INACT);
-        fopen( 'INACT', '<', 'Variables/meminactive.db' )
+        fopen( 'INACT', '<', "$vardir/meminactive.db" )
           or croak "$croak{'open'} meminactive";
         @reglist = <$INACT>;
         fclose('INACT') or croak "$croak{'close'} meminactive";
@@ -1249,16 +1249,16 @@ sub user_activation {
     else {
         # add entry to registration log
         our ($REGLOG);
-        fopen( 'REGLOG', '>>', 'Variables/registration.log', 1 )
+        fopen( 'REGLOG', '>>', "$vardir/registration.log", 1 )
           or croak "$croak{'open'} REGLOG";
         print {$REGLOG} "$date|E|$reguser||$user_ip\n"
           or croak "$croak{'print'} 'REGLOG'";
         fclose('REGLOG') or croak "$croak{'close'} REGLOG";
         fatal_error('prereg_expired');
     }
-    if ( $regtype == 1 && -e 'Variables/memapprove.db' ) {
+    if ( $regtype == 1 && -e "$vardir/memapprove.db" ) {
         our ($APR);
-        fopen( 'APR', '<', 'Variables/memapprove.db' )
+        fopen( 'APR', '<', "$vardir/memapprove.db" )
           or croak "$croak{'open'} memapprove";
         @aprlist = <$APR>;
         fclose('APR') or croak "$croak{'open'} memapprove";
@@ -1277,7 +1277,7 @@ sub user_activation {
             my $templanguage = $language;
             if ( $activationkey ne $testkey ) {
                 our ($REGLOG);
-                fopen( 'REGLOG', '>>', 'Variables/registration.log', 1 )
+                fopen( 'REGLOG', '>>', "$vardir/registration.log", 1 )
                   or croak "$croak{'open'} REGLOG";
                 print {$REGLOG} "$date|E|$reguser||$user_ip\n"
                   or croak "$croak{'print'} REGLOG";
@@ -1296,7 +1296,7 @@ sub user_activation {
                 if   ( $iamadmin || $iamgmod ) { $actuser = $username; }
                 else                           { $actuser = $reguser; }
                 our ($REGLOG);
-                fopen( 'REGLOG', '>>', 'Variables/registration.log', 1 )
+                fopen( 'REGLOG', '>>', "$vardir/registration.log", 1 )
                   or croak "$croak{'open'} REGLOG";
                 print {$REGLOG} "$date|W|$reguser|$actuser|$user_ip\n"
                   or croak "$croak{'print'} REGLOG";
@@ -1348,7 +1348,7 @@ sub user_activation {
 
                 # add entry to registration log
                 our ($REGLOG);
-                fopen( 'REGLOG', '>>', 'Variables/registration.log', 1 )
+                fopen( 'REGLOG', '>>', "$vardir/registration.log", 1 )
                   or croak "$croak{'open'} REGLOG";
                 print {$REGLOG} "$date|A|$reguser|$actuser|$user_ip\n"
                   or croak "$croak{'print'} REGLOG";
@@ -1403,13 +1403,13 @@ sub user_activation {
             if ($send_welcomeim) {
                 my $messageid = $BASETIME . $PROCESS_ID;
                 my $imsubject = $register_txt{'imsubject'};
-                my $imtext = $register_txt{'imtext'};
-                if ( -e "$langdir/$language/welcome.txt") {
+                my $imtext    = $register_txt{'imtext'};
+                if ( -e "$langdir/$language/welcome.txt" ) {
                     our ($WELL);
-                    fopen( 'WELL', '<', "$langdir/$language/welcome.txt");
+                    fopen( 'WELL', '<', "$langdir/$language/welcome.txt" );
                     my $txt = <$WELL>;
                     fclose('WELL');
-                    ($imsubject, $imtext) = split /[|]/xsm, $txt;
+                    ( $imsubject, $imtext ) = split /[|]/xsm, $txt;
                     chomp $imtext;
                 }
                 our ($INBOX);
@@ -1449,7 +1449,7 @@ sub user_activation {
         # if changed write new inactive list
         my $prnchng = join q{}, @chnglist;
         our ($INACT);
-        fopen( 'INACT', '>', 'Variables/meminactive.db' )
+        fopen( 'INACT', '>', "$vardir/meminactive.db" )
           or croak "$croak{'open'} meminactive";
         print {$INACT} $prnchng or croak "$croak{'print'} meminactive";
         fclose('INACT') or croak "$croak{'open'} meminactive";
@@ -1458,7 +1458,7 @@ sub user_activation {
         if ( $regtype == 1 ) {
             my $prnapr = join q{}, @aprlist;
             our ($APR);
-            fopen( 'APR', '>', 'Variables/memapprove.db' )
+            fopen( 'APR', '>', "$vardir/memapprove.db" )
               or croak "$croak{'open'} memapprove";
             print {$APR} $prnapr or croak "$croak{'print'} APR";
             fclose('APR') or croak "$croak{'open'} memapprove";
@@ -1467,7 +1467,7 @@ sub user_activation {
     else {
         # add entry to registration log
         our ($REGLOG);
-        fopen( 'REGLOG', '>>', 'Variables/registration.log', 1 )
+        fopen( 'REGLOG', '>>', "$vardir/registration.log", 1 )
           or croak "$croak{'open'} REGLOG";
         print {$REGLOG} "$date|E|$reguser|$user_ip\n"
           or croak "$croak{'print'} REGLOG";

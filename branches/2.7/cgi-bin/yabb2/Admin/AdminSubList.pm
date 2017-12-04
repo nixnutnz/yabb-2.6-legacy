@@ -19,6 +19,7 @@ our $VERSION            = '2.7.00';
 our $adminsublistpmver  = 'YaBB 2.7.00 $Revision$';
 our @adminsublistpmmods = ();
 our $adminsublistpmmods = 0;
+
 if (@adminsublistpmmods) {
     $adminsublistpmmods = 1;
 }
@@ -191,7 +192,7 @@ our %director = (
     'yabmmodifymod'          => 'YaBMod.pm&yabm_modifymod',
     'yabmmodifymod2'         => 'YaBMod.pm&yabm_modifymod2',
     'yabmdeletemod'          => 'YaBMod.pm&yabm_deletemod',
-    'clean_bak'              => 'YaBMod.pm&clean_bak',     ## Clean up .bak files ##
+    'clean_bak'              => 'YaBMod.pm&clean_bak',
     'remsetup'               => 'Admin.pm&remsetup',
     'convdelete'             => 'Admin.pm&deleteconverterfiles',
     'convdeletelang'         => 'Admin.pm&deletelangconverterfiles',

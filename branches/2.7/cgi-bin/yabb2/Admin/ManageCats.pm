@@ -57,18 +57,18 @@ sub do_cats {
     if ( $FORM{'baction'} eq 'edit' ) { add_cats(@editcats); }
     elsif ( $FORM{'baction'} eq 'delme' ) {
         get_forum_master();
-        for my $catid (@editcats) {
+        foreach my $catid (@editcats) {
             ##Check if category has any boards, and if it does remove them.
             if ( $cat{$catid} ) {
                 require Admin::ManageBoards;
-                delete_boards( @{$cat{$catid}} );
+                delete_boards( @{ $cat{$catid} } );
             }
 
             delete $cat{$catid};
             delete $catinfo{$catid};
 
             my $x = 0;
-            for my $categoryid (@categoryorder) {
+            foreach my $categoryid (@categoryorder) {
                 if ( $catid eq $categoryid ) {
                     splice @categoryorder, $x, 1;
                     last;
@@ -120,7 +120,7 @@ sub add_cats {
     my (@bdlist);
 
     # Start Looping through and repeating the board adding wherever needed
-    for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
+    foreach my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
         if ( ( !$editcats[$i] || $editcats[$i] eq q{} )
             && $INFO{'action'} eq 'catscreen' )
         {
@@ -129,12 +129,13 @@ sub add_cats {
         $allow_checked = q{};
         if ( $INFO{'action'} eq 'catscreen' ) {
             $id = $editcats[$i];
-            for my $catid (@categoryorder) {
+            foreach my $catid (@categoryorder) {
                 if ( $id ne $catid ) { next; }
-                @bdlist = @{$cat{$catid}};
-                ( $curcatname, $catperms, $catallowcol, $catimage, $catrss ) = @{$catinfo{$catid}};
+                @bdlist = @{ $cat{$catid} };
+                ( $curcatname, $catperms, $catallowcol, $catimage, $catrss ) =
+                  @{ $catinfo{$catid} };
                 $curcatname = to_chars($curcatname);
-                $cattext = $curcatname;
+                $cattext    = $curcatname;
                 if ( !$catallowcol || $catallowcol eq '1' ) {
                     $allow_checked = 'checked="checked"';
                 }
@@ -239,7 +240,7 @@ sub add_cats2 {
     is_admin_or_gmod();
     get_forum_master();
 
-    for my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
+    foreach my $i ( 0 .. ( $FORM{'amount'} - 1 ) ) {
         if ( $FORM{"catimage$i"} ) {
             $FORM{"catimage$i"} = upload_file(
                 "catimage$i",       'Templates/Forum/default',
@@ -288,7 +289,10 @@ sub add_cats2 {
         $FORM{"catperms$i"} ||= q{};
         $FORM{"catperms$i"} =~ s/,\s/\//gxsm;
 
-        $catinfo{$id} = [ $cname, $FORM{"catperms$i"}, $FORM{"allowcol$i"}, $FORM{"catimage$i"}, $FORM{"catrss$i"} ];
+        $catinfo{$id} = [
+            $cname,              $FORM{"catperms$i"}, $FORM{"allowcol$i"},
+            $FORM{"catimage$i"}, $FORM{"catrss$i"}
+        ];
 
         $yymain .= qq~$admin_txt{'830'} <i>$id</i> $admin_txt{'48'}<br />~;
     }
@@ -310,9 +314,9 @@ sub reorder_cats {
         if ( $catcnt < 4 ) { $catcnt = 4; }
         $categorylist =
 qq~<select name="selectcats" id="selectcats" size="$catcnt" style="width: 190px;">~;
-        for my $category (@categoryorder) {
+        foreach my $category (@categoryorder) {
             chomp $category;
-            my $categoryname = ${$catinfo{$category}}[0];
+            my $categoryname = ${ $catinfo{$category} }[0];
             $categoryname = to_chars($categoryname);
             if ( $INFO{'thecat'} && $category eq $INFO{'thecat'} ) {
                 $categorylist .=
@@ -367,7 +371,7 @@ sub reorder_cats2 {
     my ($j);
     if ($moveitem) {
         if ( $FORM{'moveup'} ) {
-            for my $i ( 0 .. $#categoryorder ) {
+            foreach my $i ( 0 .. $#categoryorder ) {
                 if ( $categoryorder[$i] eq $moveitem && $i > 0 ) {
                     $j                 = $i - 1;
                     $categoryorder[$i] = $categoryorder[$j];
@@ -377,7 +381,7 @@ sub reorder_cats2 {
             }
         }
         elsif ( $FORM{'movedown'} ) {
-            for my $i ( 0 .. $#categoryorder ) {
+            foreach my $i ( 0 .. $#categoryorder ) {
                 if ( $categoryorder[$i] eq $moveitem && $i < $#categoryorder ) {
                     $j                 = $i + 1;
                     $categoryorder[$i] = $categoryorder[$j];

@@ -85,8 +85,8 @@ sub edit_member_groups {
     my @grps     = sort keys %grp_staff;
     my @memstats = ();
     my ( $thecolname, );
-    for (@grps) {
-        @memstats = @{ $grp_staff{$_} };
+    foreach my $i (@grps) {
+        @memstats = @{ $grp_staff{$i} };
         $memstats[4] =
           ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
         $yymain .= qq~
@@ -102,7 +102,7 @@ sub edit_member_groups {
             $yymain .= q~
             <td class="windowbg2 center">&nbsp;</td>~;
         }
-        my $mgrp = $_;
+        my $mgrp = $i;
         $mgrp =~ s/[ ]/%20/gxsm;
         $yymain .= qq~
             <td class="windowbg2 center">$memstats[4]</td>
@@ -166,9 +166,9 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         </tr>~;
 
     my $count = 0;
-    for (@nopostorder) {
-        if ( exists $grp_nopost{$_} ) {
-            @memstats = @{ $grp_nopost{$_} };
+    foreach my $i (@nopostorder) {
+        if ( exists $grp_nopost{$i} ) {
+            @memstats = @{ $grp_nopost{$i} };
             $memstats[4] =
               ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
             if ( !$memstats[10] || $memstats[10] == 0 ) {
@@ -200,8 +200,8 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
             }
 
             $yymain .= qq~
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=NP|$_">$admin_txt{'53'}</a></td>
-            <td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=NP|$_">$admin_txt{'54'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=NP|$i">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=NP|$i">$admin_txt{'54'}</a></td>
         </tr>~;
             $count++;
         }
@@ -240,8 +240,8 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         </tr>~;
 
     $count = 0;
-    for ( reverse sort { $a <=> $b } keys %grp_post ) {
-        @memstats = @{ $grp_post{$_} };
+    foreach my $i ( reverse sort { $a <=> $b } keys %grp_post ) {
+        @memstats = @{ $grp_post{$i} };
         $memstats[4] =
           ( $memstats[4] == 1 ) ? "$admin_txt{'164'}" : "$admin_txt{'163'}";
         if ( !$memstats[1] ) { $memstats[1] = 0; }
@@ -263,9 +263,9 @@ qq~ | <a href="$adminurl?action=reordergroup">$admintxt{'reordergroups'}</a>~;
         }
 
         $yymain .= qq~
-            <td class="windowbg2 center">$_</td>
-            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=P|$_">$admin_txt{'53'}</a></td>
-            <td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=P|$_">$admin_txt{'54'}</a></td>
+            <td class="windowbg2 center">$i</td>
+            <td class="windowbg2 center"><a href="$adminurl?action=editgroup;group=P|$i">$admin_txt{'53'}</a></td>
+            <td class="windowbg2 center"><a href="$adminurl?action=delgroup;group=P|$i">$admin_txt{'54'}</a></td>
         </tr>~;
         $count++;
     }
@@ -346,8 +346,8 @@ sub edit_add_group {
         $memstats[3] = q{};
         $posts       = q{};
         $noposts     = 1;
-        for ( sort { $a <=> $b } keys %grp_nopost ) {
-            $noposts = $_ + 1;
+        foreach my $i ( sort { $a <=> $b } keys %grp_nopost ) {
+            $noposts = $i + 1;
         }
     }
     my $stars = $memstats[1];
@@ -367,7 +367,7 @@ sub edit_add_group {
     my @stara = ();
     my $pick  = $memstats[2];
     my $stsel = 0;
-    for my $i ( 1 .. 7 ) {
+    foreach my $i ( 1 .. 7 ) {
         if ( $memstats[2] eq $starsgif[$i] ) {
             $stara[$i] = q{ selected="selected"};
             $stsel++;
@@ -433,7 +433,7 @@ sub edit_add_group {
         <td class="windowbg2">
             <select name="starsadmin" id="starsadmin" onchange="stars(this.value); showimage();">~;
     $stara[8] ||= q{};
-    for my $i ( 1 .. 7 ) {
+    foreach my $i ( 1 .. 7 ) {
         $starsgif[$i] ||= q{};
         $stara[$i]    ||= q{};
         $starstxt[$i] ||= q{};
@@ -493,7 +493,7 @@ qq~                <option value="$starsgif[$i]"$stara[$i]>$starstxt[$i]</option
     $post2   ||= q{};
     $noposts ||= q{};
     $element ||= q{};
-    if ( exists $grp_staff{ $INFO{'group'} } ){
+    if ( exists $grp_staff{ $INFO{'group'} } ) {
         $yymain .= qq~<tr>
         <td class="windowbg"><label for="viewpublic"><b>$amgtxt{'42'}</b> <br /><b>$amgtxt{'43'}</b></label></td>
         <td class="windowbg2">
@@ -710,21 +710,25 @@ sub edit_add_group2 {
         # Ignoring Administrative groups.
         if ($element) {
             if ( $type eq 'P' ) {
-                if ( !$posts || $element != $posts || !$postdepend || $postdepend eq 'No' ) {
+                if (  !$posts
+                    || $element != $posts
+                    || !$postdepend
+                    || $postdepend eq 'No' )
+                {
                     if ($iamgmod) { fatal_error('newpostdep_gmod'); }
 
                     delete $grp_post{$element};
                     $newpostdep = 1;
                     $noposts    = 1;
-                    foreach ( sort { $a <=> $b } keys %grp_nopost ) {
-                        $noposts = $_ + 1;
+                    foreach my $i ( sort { $a <=> $b } keys %grp_nopost ) {
+                        $noposts = $i + 1;
                     }
                 }
             }
             elsif ( $type eq 'NP' ) {
                 if ( $element != $noposts || $postdepend eq 'Yes' ) {
                     delete $grp_nopost{$element};
-                    for my $i ( 0 .. $#nopostorder ) {
+                    foreach my $i ( 0 .. $#nopostorder ) {
                         if ( $nopostorder[$i] == $element ) {
                             splice @nopostorder, $i, 1;
                             last;
@@ -751,7 +755,7 @@ sub edit_add_group2 {
     }
 
     # Check Post Independent
-    for my $key ( keys %grp_nopost ) {
+    foreach my $key ( keys %grp_nopost ) {
         $type ||= q{};
         if ( $type eq 'NP' && $key eq $element ) { next; }
         my ( $value, undef ) = @{ $grp_nopost{$key} };
@@ -762,7 +766,7 @@ sub edit_add_group2 {
     }
 
     # Check Post Dependent
-    for my $key ( keys %grp_post ) {
+    foreach my $key ( keys %grp_post ) {
         if ( $type && $type eq 'P' && $key eq $element ) { next; }
         my ( $value, undef ) = @{ $grp_post{$key} };
         my $lcvalue = lc $value;
@@ -777,9 +781,6 @@ sub edit_add_group2 {
 # First, using original variable, we check to see it's not a perma-group.
     ( $type, $element ) = split /[|]/xsm, $original;
     if ( !$element && $original ) {
-
-# We have a perma-group! $type is now equal to the perma group or key for the hash.
-# add in code to actually set the line.
         $grp_staff{$type} = [
             $name,       $FORM{'numstars'}, $star,   $color,
             $viewpublic, $view,             $topics, $reply,
@@ -787,10 +788,8 @@ sub edit_add_group2 {
         ];
     }
     else {
-
-        # post dependent group.
         if ( $postdepend && $postdepend eq 'Yes' ) {
-            for my $key ( keys %grp_post ) {
+            foreach my $key ( keys %grp_post ) {
                 if (
                     $posts == $key
                     && (   $FORM{'origin'} eq 'editgroup1'
@@ -804,14 +803,10 @@ sub edit_add_group2 {
             if ($iamgmod) { fatal_error('newpostdep_gmod'); }
 
             $grp_post{$posts} = [
-                $name,   $FORM{'numstars'}, $star,
-                $color,  0,                 $view,
-                $topics, $reply,            $polls,
-                $attach, $additional
+                $name, $FORM{'numstars'}, $star, $color, 0, $view,
+                $topics, $reply, $polls, $attach, $additional
             ];
             $newpostdep = 1;
-
-            # no post group
         }
         else {
             $grp_nopost{$noposts} = [
@@ -821,7 +816,7 @@ sub edit_add_group2 {
                 $attach, $additional
             ];
             my $isinorder;
-            for my $i ( 0 .. $#nopostorder ) {
+            foreach my $i ( 0 .. $#nopostorder ) {
                 if (   $grp_nopost{ $nopostorder[$i] }
                     && $nopostorder[$i] == $noposts )
                 {
@@ -867,8 +862,8 @@ sub delete_group {
     }
 
     my @new_nopostorder;
-    for (@nopostorder) {
-        if ( $grp_nopost{$_} ) { push @new_nopostorder, $_; }
+    foreach my $i (@nopostorder) {
+        if ( $grp_nopost{$i} ) { push @new_nopostorder, $i; }
     }
     @nopostorder = @new_nopostorder;
 
@@ -886,15 +881,15 @@ sub delete_group {
 sub reorder_groups {
     my $selsize  = 0;
     my $orderopt = q{};
-    for (@nopostorder) {
-        if ( $grp_nopost{$_} ) {
-            my ( $title, undef ) = @{ $grp_nopost{$_} };
-            if ( $_ eq $INFO{'thegroup'} ) {
+    foreach my $i (@nopostorder) {
+        if ( $grp_nopost{$i} ) {
+            my ( $title, undef ) = @{ $grp_nopost{$i} };
+            if ( $INFO{'thegroup'} && $i eq $INFO{'thegroup'} ) {
                 $orderopt .=
-                  qq~<option value="$_" selected="selected">$title</option>~;
+                  qq~<option value="$i" selected="selected">$title</option>~;
             }
             else {
-                $orderopt .= qq~<option value="$_">$title</option>~;
+                $orderopt .= qq~<option value="$i">$title</option>~;
             }
             $selsize++;
         }
@@ -926,8 +921,8 @@ sub reorder_groups {
             </td>
         </tr>~;
 
-    for (@nopostorder) {
-        my ( $title, $stars, $starpic, $color, undef ) = @{ $grp_nopost{$_} };
+    foreach my $i (@nopostorder) {
+        my ( $title, $stars, $starpic, $color, undef ) = @{ $grp_nopost{$i} };
         if ( !$stars ) { $stars = '0'; }
         $yymain .= q~<tr>
             <td class="windowbg2">~;
@@ -964,7 +959,7 @@ sub reorder_groups2 {
     my $moveitem = $FORM{'ordergroups'};
 
     if ($moveitem) {
-        for my $i ( 0 .. $#nopostorder ) {
+        foreach my $i ( 0 .. $#nopostorder ) {
             if (
                 $nopostorder[$i] == $moveitem
                 && (   ( $FORM{'moveup'} && $i > 0 && $i <= $#nopostorder )

@@ -32,7 +32,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ##  languages ##
 our ( %admin_img, %admin_txt, %croak, %settings_txt, );
 ## paths ##
-our ( $adminurl, $vardir, );
+our ($adminurl);
 ## settings ##
 our ( $enable_freespace_check, $findfile_maxsize, $findfile_root,
     $findfile_time, $hostusername, $yymycharset, );
@@ -110,7 +110,7 @@ sub checkspace {
         if ( !$enable_quota ) { $ds = ( split / +/sm, $disk_space[1], 2 )[0]; }
         $quota_select .=
           q~<br /><select name="enable_quota_value" id="enable_quota_value">~;
-        for my $i ( 2 .. $#quota ) {
+        foreach my $i ( 2 .. $#quota ) {
             $quota[$i] =~ s/^ +//sm;
             $quota[$i] =~ s/ +/&nbsp;&nbsp;/gsm;
             my $my_q_select =
@@ -257,7 +257,7 @@ sub chsettings {
   </div>
   <form action="$adminurl?action=checkspace_save" method="post" onsubmit="savealert()" accept-charset="$yymycharset">
 ~;
-    for my $tab (@settings) {
+    foreach my $tab (@settings) {
         $yymain .= qq~
     <div class="bordercolor rightboxdiv">
         <table class="section border-space pad-cell" style="margin-bottom:.5em" id="tab_$tab->{'id'}">
@@ -270,7 +270,7 @@ sub chsettings {
                 </td>
            </tr>~;
 
-        for my $item ( @{ $tab->{'items'} } ) {
+        foreach my $item ( @{ $tab->{'items'} } ) {
             if ( $item->{'header'} ) {
                 $yymain .= qq~<tr>
                 <td class="catbg" colspan="2">
@@ -302,7 +302,7 @@ sub chsettings {
 
             # Handle settings that require other settings
             if ( $item->{'depends_on'} && $item->{'name'} ) {
-                for my $require ( @{ $item->{'depends_on'} } ) {
+                foreach my $require ( @{ $item->{'depends_on'} } ) {
 
 # This is somewhat messy, but it works well.
 # We strip off the possible options: inverse, equal, and not equal
@@ -330,13 +330,13 @@ sub chsettings {
 
     my $dependicies = q{};
     my $onloadevents;
-    for my $ritem (@requireorder) {
+    foreach my $ritem (@requireorder) {
         $dependicies .= qq~
     function handleDependent_$ritem() {
         var isChecked = document.getElementsByName("$ritem")[0].checked;
         var itemValue = document.getElementsByName("$ritem")[0].value;\n~;
 
-        for my $require ( @{ $requirements{$ritem} } ) {
+        foreach my $require ( @{ $requirements{$ritem} } ) {
 
             # && or ||, ( and )
             my $and_or = $require =~ s/[)]//xsm ? ')' : q{};
@@ -402,7 +402,7 @@ qq~$C\!document.getElementsByName("$ritem")[0].checked$and_or ~;
         var elm = document.getElementsByName(eid)[0];\n~;
 
     # Loop through each item that depends on something else
-    for my $name ( keys %requirejs ) {
+    foreach my $name ( keys %requirejs ) {
         my $logic = $requirejs{$name};
         $logic =~ s/\s (&&|[|][|])\s $//xsm;
         $yymain .= qq~

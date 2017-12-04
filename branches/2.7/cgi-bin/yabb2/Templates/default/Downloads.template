@@ -55,11 +55,11 @@ $downloads_top = qq~<!DOCTYPE html>
 </head>
 <body class="littlebody" style="margin:0 auto">
     <div id="container">
-    <br />~;
+        <br />~;
 
 $downloads_bottom = q~
-<br />
-</div>
+        <br />
+    </div>
 </body>
 </html>~;
 

@@ -38,7 +38,9 @@ our (
     %versiontxt,       %setup,
 );
 ## paths ##
-our ( $adminurl, $boardurl, $convdir, $htmldir, $langdir, $memberdir, $vardir, $templatesdir,
+our (
+    $adminurl, $boardurl,  $convdir, $htmldir,
+    $langdir,  $memberdir, $vardir,  $templatesdir,
 );
 ## settings ##
 our (
@@ -49,22 +51,26 @@ our (
     $matchcase,             $matchname,      $matchuser,
     $matchword,             $maxdays,        $mbname,
     $name_cannot_be_userid, $send_welcomeim, $sendname,
-    $timeoffset,            $timeselected,   @reserve, %lngs,
+    $timeoffset,            $timeselected,   @reserve,
+    %lngs,
 );
 ## template ##
-our ( $front_page, $last_div, $my_admin_login, $versionchk, $yabb_update, $yabb_dnloads );
-our ($convert_box, $convertlang_box, $remsetup);
+our (
+    $front_page,  $last_div,        $my_admin_login,
+    $versionchk,  $yabb_update,     $yabb_dnloads,
+    $convert_box, $convertlang_box, $remsetup,
+);
 ## system ##
 our (
-    $action_area,   $cliped,        $date,        $formsession,
-    $iamadmin,      $iamgmod,       $invalemaila, $invalemailb,
-    $invalmailchar, $invalpass,     $invalrname,  $language,
-    $regdate,       $rna,           $scripturl,   $sessionid,
-    $uid,           $user,          $username,    $yabbversion,
-    $yyhtml_root,   $yymain,        $yymycharset, $yynavigation,
-    $yysetlocation, $yytitle,       $yyuname,     $boarddir,    %cat,
-    %catinfo,       %FORM,          %INFO,        %referallow,
-    %yy_cookies,    @categoryorder, @other_cookies,
+    $action_area, $date,          $formsession,  $iamadmin,
+    $iamgmod,     $invalemaila,   $invalemailb,  $invalmailchar,
+    $invalpass,   $invalrname,    $language,     $regdate,
+    $rna,         $scripturl,     $sessionid,    $uid,
+    $user,        $username,      $yabbversion,  $yyhtml_root,
+    $yymain,      $yymycharset,   $yynavigation, $yysetlocation,
+    $yytitle,     $yyuname,       $boarddir,     %cat,
+    %catinfo,     %FORM,          %INFO,         %referallow,
+    %yy_cookies,  @categoryorder, @other_cookies,
 );
 
 ## our Mod Hook ##
@@ -101,13 +107,13 @@ sub admin {
     $yymain =~ s/\Q{yabb yabb_dnloads}\E/$yabb_dnloads/gxsm;
 
     if ( -d "$boarddir/Convert" ) {
-        get_template( 'Convert', 'admin' );  
+        get_template( 'Convert', 'admin' );
         $yymain .= $convert_box;
         my $getdata = q{};
-        if (-e "$htmldir/tmp/datacheck.txt") {
+        if ( -e "$htmldir/tmp/datacheck.txt" ) {
             $getdata .= $setup{'fixn'};
         }
-        if (-e "$htmldir/tmp/fixusers.txt") {
+        if ( -e "$htmldir/tmp/fixusers.txt" ) {
             $getdata .= $setup{'illmem1'};
         }
         if ( $getdata ne q{} ) {
@@ -116,7 +122,7 @@ sub admin {
         $yymain =~ s/\Q{yabb datacheck}\E/$getdata/xsm;
     }
     if ( !-d "$boarddir/Convert" && -d "$boarddir/ConvertLang" ) {
-        get_template( 'Convert', 'admin' );  
+        get_template( 'Convert', 'admin' );
         $yymain .= $convertlang_box;
     }
 
@@ -138,7 +144,7 @@ sub getlastlogins {
     @adminlog = reverse sort @adminlog;
     my $loginadmin = q{};
     our (%useraccount);
-    for my $line (@adminlog) {
+    foreach my $line (@adminlog) {
         chomp $line;
         my @element = split /[|]/xsm, $line;
         {
@@ -178,11 +184,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
     $numcats = 0;
     get_forum_master();
     my (@loadboards);
-    for my $catid (@categoryorder) {
+    foreach my $catid (@categoryorder) {
         $numcats++;
-        my ( $catname, $catperms, $catallowcol ) = @{$catinfo{$catid}};
+        my ( $catname, $catperms, $catallowcol ) = @{ $catinfo{$catid} };
 
-        for my $curboard (@{$cat{$catid}}) {
+        foreach my $curboard ( @{ $cat{$catid} } ) {
             chomp $curboard;
             $numboards++;
             push @loadboards, $curboard;
@@ -190,7 +196,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$latestmember}">
     }
 
     boardtotals( 'load', @loadboards );
-    for my $curboard (@loadboards) {
+    foreach my $curboard (@loadboards) {
         {
             no strict qw(refs);
             $totalm += ${ $uid . $curboard }{'messagecount'};
@@ -290,8 +296,8 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
 # No need to check for board access here because only admins have access to this page
     get_forum_master();
     my (@goodboards);
-    for my $catid (@categoryorder) {
-        for my $curboard (@{$cat{$catid}}) {
+    foreach my $catid (@categoryorder) {
+        foreach my $curboard ( @{ $cat{$catid} } ) {
             push @goodboards, $curboard;
         }
     }
@@ -301,7 +307,7 @@ qq~&nbsp;(<a href="$adminurl?action=showclicks">$admin_txt{'693'}</a>)~;
     # &getlog; not used here !!?
     my ( %lastpostrealtime, %lastposttime, %lastposterguest );
     my ( $lsdatetime, $lsposter, $lssub, $lsreply, $lspostid );
-    for my $curboard (@goodboards) {
+    foreach my $curboard (@goodboards) {
         chomp $curboard;
         my $lastposttime = q{};
         {
@@ -430,7 +436,7 @@ sub showclicklog {
     fclose('LOG') or croak "$croak{'close'} clicklog.log";
     chomp @log;
     my ( @iplist, @to, @from, @info, @ip, %iplist, $key, $val, @newiplist );
-    for my $i ( 0 .. $#log ) {
+    foreach my $i ( 0 .. $#log ) {
         my @newlog = split /[|]/xsm, $log[$i];
         if ( $#newlog != 5 ) { next; }
         else {
@@ -443,7 +449,7 @@ sub showclicklog {
         }
     }
 
-    for my $i ( 0 .. $#iplist ) {
+    foreach my $i ( 0 .. $#iplist ) {
         $iplist{ $iplist[$i] }++;
     }
 
@@ -452,8 +458,8 @@ sub showclicklog {
         $newiplist[$i] = [ $key, $val ];
         $i++;
     }
-    for my $k ( 0 .. $#iplist ) {
-        for my $j ( 0 .. $#newiplist ) {
+    foreach my $k ( 0 .. $#iplist ) {
+        foreach my $j ( 0 .. $#newiplist ) {
             if ( $newiplist[$j]->[0] eq $iplist[$k] ) {
                 push @{ $newiplist[$j] }, $ip[$k], $iplist[$i];
             }
@@ -463,7 +469,7 @@ sub showclicklog {
     my $totalip     = @newiplist;
     my $useriplist  = q{};
     my $guestiplist = q{};
-    for my $i ( 0 .. $#newiplist ) {
+    foreach my $i ( 0 .. $#newiplist ) {
         my $lookup_ip =
           ($ip_lookup)
           ? qq~<a href="$scripturl?action=iplookup;ip=$newiplist[$i]->[2]">$newiplist[$i]->[2]</a>~
@@ -496,7 +502,7 @@ qq~$lookup_ip&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><b
         }
     }
     my ( @browser, @os, %browser, @newbrowser );
-    for my $curentry (@info) {
+    foreach my $curentry (@info) {
         if ( $curentry !~ /\s[(]Win/ixsm || $curentry !~ /\s[(]mac/xsm ) {
             $curentry =~ s/\s[(](compatible;\s)*/ - /igxsm;
         }
@@ -516,7 +522,7 @@ qq~$lookup_ip&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><b
         $i++;
     }
 
-    for my $i ( 0 .. $#browser ) {
+    foreach my $i ( 0 .. $#browser ) {
         if ( $browser[$i] ) { $browser{ $browser[$i] }++; }
     }
     $i = 0;
@@ -526,14 +532,14 @@ qq~$lookup_ip&nbsp;<span class="important">(<i>$newiplist[$i]->[1]</i>)</span><b
     }
     my $totalbrow   = @newbrowser;
     my $browserlist = q{};
-    for my $i ( 0 .. $#newbrowser ) {
+    foreach my $i ( 0 .. $#newbrowser ) {
         if ( $newbrowser[$i]->[0] =~ /\S+/xsm ) {
             $browserlist .=
 qq~$newbrowser[$i]->[0] &nbsp;<span class="important">(<i>$newbrowser[$i]->[1]</i>)</span><br />~;
         }
     }
     my ( %os, @newoslist, %to, @newtolist );
-    for my $i ( 0 .. $#os ) {
+    foreach my $i ( 0 .. $#os ) {
         if ( $os[$i] ) { $os{ $os[$i] }++; }
     }
     $i = 0;
@@ -543,28 +549,28 @@ qq~$newbrowser[$i]->[0] &nbsp;<span class="important">(<i>$newbrowser[$i]->[1]</
     }
     my $totalos = @newoslist;
     my $oslist  = q{};
-    for my $i ( 0 .. $#newoslist ) {
+    foreach my $i ( 0 .. $#newoslist ) {
         if ( $newoslist[$i]->[0] =~ /\S+/xsm ) {
             $oslist .=
 qq~$newoslist[$i]->[0] &nbsp;<span class="important">(<i>$newoslist[$i]->[1]</i>)</span><br />~;
         }
     }
 
-    for my $i ( 0 .. $#to ) { $to{ $to[$i] }++; }
+    foreach my $i ( 0 .. $#to ) { $to{ $to[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %to ) {
         $newtolist[$i] = [ $key, $val ];
         $i++;
     }
     my $scriptcalls = q{};
-    for my $i ( 0 .. $#newtolist ) {
+    foreach my $i ( 0 .. $#newtolist ) {
         if ( $newtolist[$i]->[0] =~ /\S+/xsm ) {
             $scriptcalls .=
 qq~<a href="$newtolist[$i]->[0]" target="_blank">$newtolist[$i]->[0]</a>&nbsp;<span class="important">(<i>$newtolist[$i]->[1]</i>)</span><br />~;
         }
     }
     my ( %from, @newfromlist );
-    for my $i ( 0 .. $#from ) { $from{ $from[$i] }++; }
+    foreach my $i ( 0 .. $#from ) { $from{ $from[$i] }++; }
     $i = 0;
     while ( ( $key, $val ) = each %from ) {
         $newfromlist[$i] = [ $key, $val ];
@@ -572,14 +578,14 @@ qq~<a href="$newtolist[$i]->[0]" target="_blank">$newtolist[$i]->[0]</a>&nbsp;<s
     }
     my $message   = q{};
     my $referlist = q{};
-    for my $i ( 0 .. $#newfromlist ) {
+    foreach my $i ( 0 .. $#newfromlist ) {
         if (   $newfromlist[$i]->[0] =~ /\S+/xsm
             && $newfromlist[$i]->[0] !~ m{$boardurl}ixsm )
         {
             $message =
 qq~<a href="$newfromlist[$i]->[0]" target="_blank">$newfromlist[$i]->[0]</a>~;
 
-            wrap2();
+            $message = wrap2($message);
             $referlist .=
 qq~$message&nbsp;<span class="important">(<i>$newfromlist[$i]->[1]</i>)</span><br />~;
         }
@@ -733,19 +739,20 @@ sub deleteoldmessages {
     our ( %board, %subboard );
     get_forum_master();
 
-    for my $catid (@categoryorder) {
-        my ( $catname, $catperms ) = @{$catinfo{$catid}};
-        for my $curboard (@{$cat{$catid}}) {
-            my ( $boardname, $boardperms, $boardview ) = @{$board{$curboard}};
+    foreach my $catid (@categoryorder) {
+        my ( $catname, $catperms ) = @{ $catinfo{$catid} };
+        foreach my $curboard ( @{ $cat{$catid} } ) {
+            my ( $boardname, $boardperms, $boardview ) = @{ $board{$curboard} };
             my $selectname = q{};
             if ( $boardname !~ m/[ht|f]tp[s ]{0,1}:\/\//xsm ) {
                 $selectname = $curboard . 'check';
                 $yymain .= qq~
                     <input type="checkbox" name="$selectname" id="$selectname" value="1" />&nbsp;<label for="$selectname">$boardname</label><br />~;
                 if ( $subboard{$curboard} ) {
-                    my @childboards = @{$subboard{$curboard}};
-                    for my $childbd (@childboards) {
-                        my ( $chldboardname, $chldboardperms, $chldboardview ) = @{$board{$childbd}};
+                    my @childboards = @{ $subboard{$curboard} };
+                    foreach my $childbd (@childboards) {
+                        my ( $chldboardname, $chldboardperms, $chldboardview )
+                          = @{ $board{$childbd} };
                         if ( $chldboardname !~ m/[ht|f]tp[s ]{0,1}:\/\//xsm ) {
                             $selectname = $childbd . 'check';
                             $yymain .= qq~
@@ -796,7 +803,7 @@ sub deletemultimembers {
     }
 
     our ($FILE);
-    fopen( 'FILE', '<', 'Variables/Memberlist.pm' )
+    fopen( 'FILE', '<', "$vardir/Memberlist.pm" )
       or croak "$croak{'open'} Memberlist";
     my @memnum = <$FILE>;
     close $FILE or croak "$croak{'open'} Memberlist";
@@ -807,7 +814,7 @@ sub deletemultimembers {
         $FORM{'emailtext'} =~ s/[|]/&verbar;/gxsm;
         $FORM{'emailtext'} =~ s/\r(?=\n*)//gxsm;
         $mailline =
-          qq~\$maillist{'$date'} = ['$FORM{'emailsubject'}', '$FORM{'emailtext'}', '$username'];~;
+qq~\$maillist{'$date'} = ['$FORM{'emailsubject'}', '$FORM{'emailtext'}', '$username'];~;
         $mailline =~ s/\r//gxsm;
         $mailline =~ s/\n/<br \/>/gxsm;
         require Admin::AdminSubs;
@@ -890,7 +897,7 @@ sub deletemultimembers {
     $language = $templanguage;
     $INFO{'sort'}     ||= q{};
     $INFO{'reversed'} ||= q{};
-    $INFO{'start'} ||= 0;
+    $INFO{'start'}    ||= 0;
     if ( $FORM{'button'} == 1 ) {
         $yysetlocation = qq~$adminurl?action=mailing;sort=$INFO{'sort'}~;
     }
@@ -1029,7 +1036,7 @@ sub showrefer {
       qq~<div class="windowbg padd-cell"><b>$refer_settings{$x[0]}</b></div>~;
     if ( $#x > 0 ) {
         $dismenu .= q~    <ul style="margin-top:0">~;
-        for my $i ( 1 .. $#x ) {
+        foreach my $i ( 1 .. $#x ) {
             if ( $x[$i] eq q{} ) { next; }
             my $key     = $x[$i];
             my $value   = $referallow{$key};
@@ -1188,7 +1195,8 @@ sub addmember2 {
     $member{'regrealname'} = from_chars( $member{'regrealname'} );
     my $convertstr = $member{'regrealname'};
     my $convertcut = 30;
-    count_chars();
+    my $cliped     = 0;
+    ( $convertstr, $cliped ) = count_chars( $convertstr, $convertcut );
     $member{'regrealname'} = $convertstr;
     if ($cliped) {
         fatal_error( 'realname_to_long',
@@ -1273,7 +1281,7 @@ sub addmember2 {
       ? $member{'regrealname'}
       : lc $member{'regrealname'};
 
-    for my $reserved (@reserve) {
+    foreach my $reserved (@reserve) {
         my $reservecheck = $matchcase ? $reserved : lc $reserved;
         if ($matchuser) {
             if ($matchword) {
@@ -1301,7 +1309,7 @@ sub addmember2 {
         }
     }
     my $chmem = $member{'username'} || q{};
-    if ( -e ("$memberdir/$chmem.vars") ) {
+    if ( -e "$memberdir/$chmem.vars" ) {
         fatal_error('id_taken');
     }
 
@@ -1311,7 +1319,7 @@ sub addmember2 {
         fopen( 'IM', '>', "$memberdir/$member{'regusername'}.msg", 1 )
           or croak "$croak{'open'} IM";
         $imsubject = $register_txt{'imsubject'};
-        $imtext = $register_txt{'imtext'};
+        $imtext    = $register_txt{'imtext'};
         print {$IM}
 "$messageid|$sendname|$member{'regusername'}|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
           or croak "$croak{'print'} IM";
@@ -1508,14 +1516,20 @@ sub deleteconverterfiles {
         rmdir "$convdir";
     }
 
-    if ( -e "$boarddir/Setup.pl" )        { unlink "$boarddir/Setup.pl"; }
-    if ( -e "$boarddir/Convert1x.pl" )    { unlink "$boarddir/Convert1x.pl"; }
-    if ( -e "$boarddir/Convert2x.pl" )    { unlink "$boarddir/Convert2x.pl"; }
-    if ( -e "$boarddir/BoardConvert.pl" ) { unlink "$boarddir/BoardConvert.pl"; }
-    if ( -e "$boarddir/ConvertLang.pl" )  { unlink "$boarddir/ConvertLang.pl"; }
+    if ( -e "$boarddir/Setup.pl" )     { unlink "$boarddir/Setup.pl"; }
+    if ( -e "$boarddir/Convert1x.pl" ) { unlink "$boarddir/Convert1x.pl"; }
+    if ( -e "$boarddir/Convert2x.pl" ) { unlink "$boarddir/Convert2x.pl"; }
+    if ( -e "$boarddir/BoardConvert.pl" ) {
+        unlink "$boarddir/BoardConvert.pl";
+    }
+    if ( -e "$boarddir/ConvertLang.pl" ) { unlink "$boarddir/ConvertLang.pl"; }
     foreach my $lng ( keys %lngs ) {
-        if ( -e "$langdir/$lng/Setup.lng" )  { unlink "$langdir/$lng/Setup.lng"; }
-        if ( -e "$langdir/$lng/Convert.lng" )  { unlink "$langdir/$lng/Convert.lng"; }
+        if ( -e "$langdir/$lng/Setup.lng" ) {
+            unlink "$langdir/$lng/Setup.lng";
+        }
+        if ( -e "$langdir/$lng/Convert.lng" ) {
+            unlink "$langdir/$lng/Convert.lng";
+        }
     }
 
     if ( -e "$htmldir/Templates/Forum/setup.css" ) {
@@ -1537,14 +1551,14 @@ sub deleteconverterfiles {
 sub deletelangconverterfiles {
     my @convertdir = qw~Boards Members Messages Variables~;
 
-    for my $cnvdir (@convertdir) {
+    foreach my $cnvdir (@convertdir) {
         $convdir = "$boarddir/ConvertLang/$cnvdir";
         if ( -d "$convdir" ) {
             opendir 'CNVDIR', $convdir
               || fatal_error( 'cannot_open_dir', "$convdir" );
             my @convlist = readdir 'CNVDIR';
             closedir 'CNVDIR';
-            for my $file (@convlist) {
+            foreach my $file (@convlist) {
                 unlink "$convdir/$file"
                   || fatal_error( 'cannot_open_dir', "$convdir/$file" );
             }
@@ -1557,14 +1571,16 @@ sub deletelangconverterfiles {
           || fatal_error( 'cannot_open_dir', "$convdir" );
         my @convlist = readdir 'CNVDIR';
         closedir 'CNVDIR';
-        for my $file (@convlist) {
+        foreach my $file (@convlist) {
             unlink "$convdir/$file";
         }
         rmdir "$convdir";
     }
 
     if ( -e "$boarddir/ConvertLang.pl" ) { unlink "$boarddir/ConvertLang.pl"; }
-    if ( -e "$templatesdir/admin/Convert.template" )  { unlink "$templatesdir/admin/Convert.template"; }
+    if ( -e "$templatesdir/admin/Convert.template" ) {
+        unlink "$templatesdir/admin/Convert.template";
+    }
 
     $yymain .= qq~<b>$setup{'10a'}</b>~;
     $yytitle = $setup{'10a'};

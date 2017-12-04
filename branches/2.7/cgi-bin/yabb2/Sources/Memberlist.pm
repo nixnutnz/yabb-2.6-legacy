@@ -112,10 +112,13 @@ sub ml {
         $barmax = $barmaxnumb;
     }
 
-    $INFO{'sort'} ||= $defaultml;  # Fix for Javascript disabled
+    $INFO{'sort'} ||= $defaultml;    # Fix for Javascript disabled
 
-    if ( $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
-        || $INFO{'sort'} eq 'username' ) )
+    if (
+        $INFO{'sort'}
+        && (   $INFO{'sort'} eq 'mlletter'
+            || $INFO{'sort'} eq 'username' )
+      )
     {
         foreach my $x ( 0 .. $#alpha ) {
             my $page     = $alpha[$x];
@@ -138,7 +141,7 @@ qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$lettercla
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_top();
     }
-    if ( $INFO{'sort'} && $INFO{'sort'} eq 'regdate') {
+    if ( $INFO{'sort'} && $INFO{'sort'} eq 'regdate' ) {
         $selchksel{'regdate'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_date();
@@ -148,8 +151,11 @@ qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$lettercla
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
         ml_position();
     }
-    if ( $INFO{'sort'} && ( $INFO{'sort'} eq 'mlletter'
-        || $INFO{'sort'} eq 'username' ) )
+    if (
+        $INFO{'sort'}
+        && (   $INFO{'sort'} eq 'mlletter'
+            || $INFO{'sort'} eq 'username' )
+      )
     {
         $selchksel{'user'} =
           [ qq~class="$header_class_selected"~, ' selected="selected"' ];
@@ -158,7 +164,8 @@ qq(  <a href="$scripturl?action=ml;sort=mlletter;letter=other" class="$lettercla
     if ( $INFO{'sort'} && $INFO{'sort'} eq 'memsearch' ) {
         find_members();
     }
-    if (   !$INFO{'sort'} || $INFO{'sort'} eq q{}
+    if (  !$INFO{'sort'}
+        || $INFO{'sort'} eq q{}
         || $INFO{'sort'} eq 'mlletter'
         || $INFO{'sort'} eq 'username' )
     {
@@ -181,10 +188,10 @@ sub ml_by_letter {
         my $memrealname = $listname;
         my $membername  = $namehash{$listname}[0];
         my $mememail    = $namehash{$listname}[1];
-        $memrealname = decode_utf8($memrealname);
-        my $alpha = decode_utf8( $alpha[0] );
-        my $omega = decode_utf8( $alpha[-1] );
+        my $alpha       = decode_utf8( $alpha[0] );
+        my $omega       = decode_utf8( $alpha[-1] );
         my $search_name = q{};
+        $memrealname = decode_utf8($memrealname);
         if ($letter) {
             $search_name = lc( substr $memrealname, 0, 1 );
             if ( $search_name eq lc $letter ) {
@@ -290,26 +297,26 @@ sub ml_position {
         $mempsts ||= 0;
         $mempsts = sprintf '%06d', ( 999_999 - $mempsts );
 
-        foreach ( keys %grp_staff ) {
-            if ( $memposition eq $_ ) {
-                if ( $_ eq 'Administrator' ) {
+        foreach my $i ( keys %grp_staff ) {
+            if ( $memposition eq $i ) {
+                if ( $i eq 'Administrator' ) {
                     $top_members{$membername} = "a$mempsts$memberrealname";
                     next MEMBERPOSITION;
                 }
-                elsif ( $_ eq 'Global Moderator' ) {
+                elsif ( $i eq 'Global Moderator' ) {
                     $top_members{$membername} = "b$mempsts$memberrealname";
                     next MEMBERPOSITION;
                 }
-                elsif ( $_ eq 'Mid Moderator' ) {
+                elsif ( $i eq 'Mid Moderator' ) {
                     $top_members{$membername} = "bc$mempsts$memberrealname";
                     next MEMBERPOSITION;
                 }
             }
         }
 
-        foreach ( keys %grp_nopost ) {
-            if ( $_ eq $memposition ) {
-                $memposition = sprintf '%06d', $nopostorder{$_};
+        foreach my $i ( keys %grp_nopost ) {
+            if ( $i eq $memposition ) {
+                $memposition = sprintf '%06d', $nopostorder{$i};
                 $top_members{$membername} =
                   "d$memposition$mempsts$memberrealname";
                 next MEMBERPOSITION;
@@ -468,13 +475,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$my_user
                     $lock = enc_email(
 qq~<img src="$micon_bg{'email'}" alt="$img_txt{'69'}" title="~
                           . (
-                            $iamadmin
+                              $iamadmin
                             ? $email
                             : $img_txt{'69'}
                           )
                           . q~" />~,
-                        $email,
-                        q{}, q{}
+                        $email, q{}, q{}
                     );
                 }
                 else {
@@ -521,10 +527,10 @@ sub build_index {
         # Build the page links list.
         my $indexdisplaynum = 3;
         my $dropdisplaynum  = 10;
-        my $postdisplaynum = 3;
-        my $startpage      = 0;
-        my $max            = $memcount;
-        my ( $findmember, );
+        my $postdisplaynum  = 3;
+        my $startpage       = 0;
+        my $max             = $memcount;
+        my $findmember      = q{};
         if ($searchstr) { $findmember = qq~;member=$searchstr~; }
 
         if ( $INFO{'start'} && $INFO{'start'} eq 'all' ) {
@@ -604,7 +610,7 @@ qq~<a href="$scripturl?action=ml;sort=$INFO{'sort'};letter=$letter;start=$lastpt
             else {
                 $pagedropindex1 = q~<span class="pagedropindex">~;
                 $findmember ||= q{};
-                $letter ||= q{};
+                $letter     ||= q{};
                 $pagedropindex1 .=
 qq~<span class="pagedropindex_inner"><a href="$scripturl?sort=$INFO{'sort'};letter=$letter;start=$start;action=memberpagetext$findmember"><img src="$index_togl{'index_togl'}" alt="$ml_txt{'19'}" title="$ml_txt{'19'}" /></a></span>~;
                 $pagedropindex2 = $pagedropindex1;
@@ -661,7 +667,7 @@ q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
                 $pagedropindex2 .=
 q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
                 my $tmp_mem_perpage = $members_per_page;
-                if ( $INFO{'start'} &&  $INFO{'start'} =~ /all/xsm ) {
+                if ( $INFO{'start'} && $INFO{'start'} =~ /all/xsm ) {
                     $members_per_page = $members_per_page * $dropdisplaynum;
                 }
                 my $prevpage = $start - $tmp_mem_perpage;

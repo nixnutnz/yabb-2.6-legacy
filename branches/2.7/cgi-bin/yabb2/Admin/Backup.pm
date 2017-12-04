@@ -135,7 +135,7 @@ sub backupsettings {
         </tr>~;
 
     my $label_id = 0;
-    for my $module (qw(Compress::Zlib Compress::Bzip2)) {
+    foreach my $module (qw(Compress::Zlib Compress::Bzip2)) {
         $methodchecklist{$module} ||= q{};
         $label_id++;
         $input =
@@ -170,7 +170,7 @@ qq~name="tarmodulecompress" id="label_$label_id" value="$module" $methodchecklis
             </td>
         </tr>~;
 
-    for my $command ( "$backupprogbin/gzip", "$backupprogbin/bzip2" ) {
+    foreach my $command ( "$backupprogbin/gzip", "$backupprogbin/bzip2" ) {
         $label_id++;
         $methodchecklist{$command} ||= q{};
         $input =
@@ -686,7 +686,7 @@ sub backupsettings2 {
           or croak 'Cannot open Settings';
         my @settings = <$SETTINGS>;
         close $SETTINGS or croak 'Cannot close Settings';
-        for my $i ( 0 .. $#settings ) {
+        foreach my $i ( 0 .. $#settings ) {
             if ( $settings[$i] =~ /\$rememberbackup\s=\s\d+;/xsm ) {
                 if ( !$rememberbackup ) { $rememberbackup = 0; }
                 $rememberbackup *= 86400;    # days in seconds
@@ -756,7 +756,7 @@ sub check_back_settings {
 
 sub print_backupsettings {
     my @newpaths;
-    for my $path (qw(src bo lan mem mes temp var html upld)) {
+    foreach my $path (qw(src bo lan mem mes temp var html upld)) {
         for (@backup_paths) {
             if ( $_ eq $path ) { push @newpaths, $path; last; }
         }
@@ -787,7 +787,7 @@ sub checkpath {
 
     $file =~ s/\A.*\///xsm;
 
-    for my $path (@envpaths) {
+    foreach my $path (@envpaths) {
         $path =~ s/\/\Z//xsm;
         if ( -e "$path/$file" ) { return "$path/$file"; }
     }
@@ -1124,7 +1124,7 @@ sub recoverbackup2 {
     }
 
     # Check what directories do/do not exist
-    for my $o ( split /\n/xsm, $output ) {
+    foreach my $o ( split /\n/xsm, $output ) {
         next if -d "/$o/";
         $o =~ /(.*\/)(.*)/xsm;
         $path = q{};
@@ -1154,7 +1154,7 @@ sub recoverbackup2 {
                 <br />
                 <pre>\n~;
 
-    for my $o ( split /\n/xsm, $output ) {
+    foreach my $o ( split /\n/xsm, $output ) {
         next if -d "/$o/";
         $CHMOD = q{};
         $o =~ /(.*\/)(.*)/xsm;

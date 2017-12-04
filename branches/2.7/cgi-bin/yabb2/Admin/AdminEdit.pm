@@ -67,8 +67,8 @@ sub editbots {
     our (%botname);
     require Variables::BotsHosts;
     my @line = sort keys %botname;
-    for (@line) {
-        $line .= qq~$_|$botname{$_}\n~;
+    foreach my $i (@line) {
+        $line .= qq~$i|$botname{$i}\n~;
     }
     $yymain .= qq~
 <form action="$adminurl?action=editbots2" method="post" enctype="application/x-www-form-urlencoded" accept-charset="$yymycharset">
@@ -113,13 +113,13 @@ sub editbots2 {
     my @mybots = split /[\n\r]+/xsm, $FORM{'bots'};
 
     my $newbots = qq~%botname = (\n~;
-    for ( sort @mybots ) {
-        my @newbots = split /[|]/xsm;
+    foreach my $i ( sort @mybots ) {
+        my @newbots = split /[|]/xsm, $i;
         $newbots .= qq~'$newbots[0]' => '$newbots[1]',\n~;
     }
     $newbots .= qq~);\n\n1;\n~;
     our ($BOTS);
-    fopen( 'BOTS', '>', 'Variables/BotsHosts.pm' )
+    fopen( 'BOTS', '>', "$vardir/BotsHosts.pm" )
       or croak "$croak{'open'} BOTS";
     print {$BOTS} $newbots or croak "$croak{'print'} BOTS";
     fclose('BOTS') or croak "$croak{'close'} BOTS";
@@ -131,9 +131,9 @@ sub editbots2 {
 
 sub set_censor {
     is_admin_or_gmod();
-    my ( $censorlanguage, $line );
+    my $censorlanguage = $lang;
+    my $line           = q{};
     if ( $FORM{'censorlanguage'} ) { $censorlanguage = $FORM{'censorlanguage'} }
-    else                           { $censorlanguage = $lang; }
     opendir LNGDIR, $langdir;
     my @langitems = readdir LNGDIR;
     closedir LNGDIR;
@@ -150,14 +150,17 @@ sub set_censor {
         }
     }
 
+    my @censored = ();
     our ($CENSOR);
-    fopen( 'CENSOR', '<', "$langdir/$censorlanguage/censor.txt" )
-      or croak "$croak{'open'} CENSOR";
-    my @censored = <$CENSOR>;
-    fclose('CENSOR') or croak "$croak{'close'} CENSOR";
-    foreach my $i (@censored) {
-        $i =~ tr/\r//d;
-        $i =~ tr/\n//d;
+    if ( -e "$langdir/$censorlanguage/censor.txt" ) {
+        fopen( 'CENSOR', '<', "$langdir/$censorlanguage/censor.txt" )
+          or croak "$croak{'open'} CENSOR";
+        @censored = <$CENSOR>;
+        fclose('CENSOR') or croak "$croak{'close'} CENSOR";
+        chomp @censored;
+        foreach my $i (@censored) {
+            $i =~ s/[\n\r]//gxsm;
+        }
     }
     $yymain .= qq~
 <div class="bordercolor rightboxdiv">
@@ -351,8 +354,12 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
     }
 
     my ( $fullagreement, $line );
+    my $get_agree = "$langdir/$agreementlanguage/agreement.txt";
+    if ( !-e $get_agree ) {
+        $get_agree = "$langdir/English/agreement.txt";
+    }
     our ($AGREE);
-    fopen( 'AGREE', '<', "$langdir/$agreementlanguage/agreement.txt" )
+    fopen( 'AGREE', '<', "$get_agree" )
       or croak "$croak{'open'} AGREE";
     while ( $line = <$AGREE> ) {
         $line =~ tr/[\r\n]//d;
@@ -480,7 +487,7 @@ sub gmod_settings {
     is_admin();
     load_language('GModPrivileges');
 
-    if ( !-e ("$vardir/Gmodset.pm") ) { gmod_settings2(); }
+    if ( !-e "$vardir/Gmodset.pm" ) { gmod_settings2(); }
     our (
         $gmod_newfile,        $allow_gmod_admin,
         $allow_gmod_aprofile, $allow_gmod_profile,
@@ -631,7 +638,7 @@ sub show_gmod {
     my $dismenu =
       qq~<div class="windowbg padd-cell"><b>$gmod_settings{$x[0]}</b></div>
     <ul style="margin-top:0">~;
-    for my $i ( 1 .. $#x ) {
+    foreach my $i ( 1 .. $#x ) {
         if ( $x[$i] eq q{} ) { next; }
         my $key   = $x[$i];
         my $value = $gmod_access{$key};
@@ -649,7 +656,7 @@ sub gmod_settings2 {
 
     my @pagelist = qw(main advanced news security antispam);
     my (@mynewsettings);
-    for my $i (@pagelist) {
+    foreach my $i (@pagelist) {
         if ( $FORM{$i} ) {
             push @mynewsettings, qq~'$i',~;
         }
@@ -659,6 +666,8 @@ sub gmod_settings2 {
     my $emailbackup  = q{};
     my $deletemulti  = q{};
     if ( $FORM{'allow_gmod_aprofile'} ) {
+        $FORM{'managepmattachments'} ||= {};
+        $FORM{'emailbackup'} ||= q{};
         $seepmattach =
           qq~managepmattachments => '$FORM{'managepmattachments'}',~;
         $emailbackup = qq~emailbackup => '$FORM{'emailbackup'}',~;
@@ -666,6 +675,7 @@ sub gmod_settings2 {
     if ( $FORM{'allow_gmod_aprofile'}
         || ( $FORM{'allow_gmod_profile'} && $self_del_user ) )
     {
+        $FORM{'deletemultimembers'} ||= q{};
         $deletemulti = qq~deletemultimembers => '$FORM{'deletemultimembers'}',~;
     }
     if ( $FORM{'deletemultimembers'} || $FORM{'addmember'} ) {
@@ -883,7 +893,7 @@ EOF
     }
 
     our ($MODACCESS);
-    fopen( 'MODACCESS', '>', 'Variables/Gmodset.pm' )
+    fopen( 'MODACCESS', '>', "$vardir/Gmodset.pm" )
       or croak "$croak{'open'} MODACCESS";
     print {$MODACCESS} $setfile or croak "$croak{'print'} MODACCESS";
     fclose('MODACCESS') or croak "$croak{'close'} MODACCESS";

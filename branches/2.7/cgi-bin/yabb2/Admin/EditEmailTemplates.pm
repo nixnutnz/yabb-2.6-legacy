@@ -33,9 +33,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 our ( %admin_img, %admin_txt, %admintxt, %croak, %emaildesc, %emaileditor,
     %yabbtagdesc, %yabbtags, );
 ## paths ##
-our ( $adminurl, $langdir, $vardir, %lngs );
+our ( $adminurl, $langdir, );
 ## settings ##
-our ($yymycharset);
+our ( $yymycharset, %lngs, );
 ## other ##
 our ( $action_area, $language, $yymain, $yysetlocation, $yytitle, %FORM, %INFO,
 );
@@ -69,12 +69,11 @@ sub editemailtemplates {
         opendir LNGDIR, $langdir;
         my @langitems = readdir LNGDIR;
         closedir LNGDIR;
-        for my $item ( sort { lc($a) cmp lc $b } @langitems ) {
+        foreach my $item ( sort { lc($a) cmp lc $b } @langitems ) {
             if (   -d "$langdir/$item"
                 && $item =~ m{\A[\w#%\-:+?\$&~,@\/]+\Z}xsm
                 && -e "$langdir/$item/Email.lng" )
             {
-                require "$langdir/Lang.lng";
                 my $displang = $lngs{$item};
                 $yymain .= qq~
                     <option value="$item">$displang</option>~;
@@ -94,9 +93,6 @@ sub editemailtemplates {
 </form>~;
     }
     elsif ( !$string ) {
-
-        # Select string
-
         $yymain .= qq~
 <form action="$adminurl?action=editemailtemplates" method="get" style="display: inline">
     <input type="hidden" name="action" value="editemailtemplates" />
@@ -115,7 +111,7 @@ sub editemailtemplates {
         load_language('Email');
         my @emaildescset =
           sort { $emaildesc{$a} cmp $emaildesc{$b} } keys %emaildesc;
-        for my $varname (@emaildescset) {
+        foreach my $varname (@emaildescset) {
             $yymain .= qq~
                     <option value="$varname">$emaildesc{$varname}</option>~;
         }
@@ -172,7 +168,7 @@ sub editemailtemplates {
                     <li>&#123;yabb mbname&#125; $yabbtagdesc{'mbname'}</li>~;
 
         # Find the list of usable YaBB tags
-        for my $yabbtag ( split /\s+/xsm, $yabbtags{$string} ) {
+        foreach my $yabbtag ( split /\s+/xsm, $yabbtags{$string} ) {
             if ( $yabbtag !~ /\w/xsm ) { next; }
             $yymain .= qq~
                     <li>&#123;yabb $yabbtag&#125; $yabbtagdesc{$yabbtag}</li>~;

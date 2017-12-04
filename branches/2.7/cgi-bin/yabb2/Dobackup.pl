@@ -23,8 +23,8 @@ use CGI qw(:standard);
 use Time::Local;
 use English '-no_match_vars';
 
-our $VERSION = '2.7.00';
-our $yabbversion    = 'YaBB 2.7.00';
+our $VERSION     = '2.7.00';
+our $yabbversion = 'YaBB 2.7.00';
 
 our $dobackupplver  = 'YaBB 2.7.00 $Revision$';
 our @dobackupplmods = ();
@@ -36,12 +36,19 @@ if (@dobackupplmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
-our (%croak, %backup_txt);
-our ($vardir, $memberdir, $boardurl, $htmldir, $langdir, $helpfile, $boardsdir,
-$yyhtml_root, $datadir, $backupdir );
-our ($cookieusername, $cookiepassword, @backup_paths, $backupmethod, $backupprogusr,
-$compressmethod, $backupprogbin, $bkmax_process_time, $mbname, $backuptime, $yymycharset);
-our ($support_env_path, $tarcreated, $backuptype, $curtime, $backupsettingsloaded, $tarball, $zipfile);
+our ( %croak, %backup_txt );
+our (
+    $vardir,   $memberdir, $boardurl,    $htmldir, $langdir,
+    $helpfile, $boardsdir, $yyhtml_root, $datadir, $backupdir
+);
+our (
+    $cookieusername, $cookiepassword,     @backup_paths,
+    $backupmethod,   $backupprogusr,      $compressmethod,
+    $backupprogbin,  $bkmax_process_time, $mbname,
+    $backuptime,     $yymycharset
+);
+our ( $support_env_path, $tarcreated, $backuptype, $curtime,
+    $backupsettingsloaded, $tarball, $zipfile );
 
 require Paths;
 
@@ -54,8 +61,8 @@ my $q               = CGI->new;
 my $id              = $q->param('myid');
 my $passwrd         = $q->param('passwrd');
 my $runbackup_again = $q->param('runbackup_again');
-my $backupnewest    = $q->param('backupnewest'); #FORM{'backupnewest}
-my $backupnewst     = $q->param('backupnewst'); #INFO{'backupnewest'}
+my $backupnewest    = $q->param('backupnewest');      #FORM{'backupnewest}
+my $backupnewst     = $q->param('backupnewst');       #INFO{'backupnewest'}
 my $mybackuptime    = $q->param('backuptime');
 my $mycurtime       = $q->param('curtime');
 my $loop1           = $q->param('loop1');
@@ -70,7 +77,7 @@ chomp @alist;
 require Variables::Settings;
 my $check = 0;
 my ( $username, $password ) = mycookie( $cookieusername, $cookiepassword );
-for my $i (@alist) {
+foreach my $i (@alist) {
     if ( $username eq $i && $username eq $id && $password eq $passwrd ) {
         $check = 1;
     }
@@ -81,9 +88,8 @@ load_language('Backup');
 my @ENVpaths = split /\:/xsm, $ENV{'PATH'};
 my $mcurtime = CORE::time;
 
-my ( undef, undef, undef, undef, undef, $anno, undef, undef, undef ) =
-  gmtime $mcurtime;
- my $yr =  1900 + $anno;
+my $anno = ( gmtime $mcurtime)[5];
+my $yr = 1900 + $anno;
 
 my $back_urlyabb = "$boardurl/YaBB.$yyext";
 if ( $check != 1 ) {
@@ -136,9 +142,9 @@ sub runbackup {
     my $time_to_jump = time + $bkmax_process_time;
     $curtime = $mycurtime || $mcurtime;
 
-    $backuptype ||= q{};
+    $backuptype   ||= q{};
     $backupnewest ||= $backupnewst;
-    if ( $backupnewest ) { $backuptype = 'n'; }
+    if ($backupnewest) { $backuptype = 'n'; }
     if ( $backupnewest && $backupmethod eq "$backupprogusr/zip" ) {
         my ( undef, undef, undef, $day, $mon, $year, undef, undef, undef ) =
           gmtime $backupnewest;
@@ -163,7 +169,7 @@ sub runbackup {
 
     %pathconvert = (
         'src' =>
-          "!$boarddir|$boarddir/Admin|$boarddir/Sources|$boarddir/Modules|$boarddir/Mods",
+"!$boarddir|$boarddir/Admin|$boarddir/Sources|$boarddir/Modules|$boarddir/Mods",
         'bo'   => $boardsdir,
         'lan'  => "$langdir|$helpfile",
         'mem'  => $memberdir,
@@ -184,7 +190,7 @@ sub runbackup {
         $i++;
         if ( !$loop1 || $i >= $loop1 ) {
             my $j = 0;
-            for my $path ( split /[|]/xsm, $pathconvert{$key} ) {
+            foreach my $path ( split /[|]/xsm, $pathconvert{$key} ) {
                 $j++;
                 if ( !$loop2 || $j > $loop2 ) {
                     $loop2 = 0;
@@ -214,7 +220,8 @@ sub runbackup {
  # due to the maintenance.lock file that is removed with &automaintenance('off')
     BackupMethodFinalize( $filedirs, 0 );
 
-    our $lastbackup = $curtime; # save the last backup time with the actual settings
+    our $lastbackup = $curtime;
+    # save the last backup time with the actual settings
     print_BackupSettings();
     backupdone();
     return;
@@ -268,10 +275,10 @@ $timelogp
 }
 
 sub runbackup_loop {
-    my ( $i, $j, $curtme, $backupnwst, $backuptime ) = @_;
+    my ( $i, $j, $curtme, $backupnwst, $backuptme ) = @_;
     my $page = qq~
     <p id="memcontinued">
-        $backup_txt{'542'} <a href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewest=$backupnwst;backuptime=$backuptime;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd" onclick="PleaseWait();">$backup_txt{'543'}</a>.<br />
+        $backup_txt{'542'} <a href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewest=$backupnwst;backuptime=$backuptme;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd" onclick="PleaseWait();">$backup_txt{'543'}</a>.<br />
         $backup_txt{'90'}
     </p>
 
@@ -286,7 +293,7 @@ sub runbackup_loop {
         function membtick() {
             if (stop != 1) {
                 PleaseWait();
-                location.href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewest=$backupnwst;backuptime=$backuptime;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd";
+                location.href="Dobackup.$yyext?loop1=$i;loop2=$j;curtime=$curtme;backupnewest=$backupnwst;backuptime=$backuptme;runbackup_again=$runbackup_again;myid=$id;passwrd=$passwrd";
             }
         }
 
@@ -305,7 +312,7 @@ sub check_backup_settings {
         if ( eval { require "$backupmethod()" } ) {
             "$backupmethod()"->import();
         }
-        else{
+        else {
             fatal_error( q{}, "$backup_txt{39} $backupmethod $backup_txt{41}" );
         }
     }
@@ -328,10 +335,10 @@ sub check_backup_settings {
     # If we are using Archive::Tar, check for the compression method.
     elsif ( $backupmethod eq 'Archive::Tar' && $compressmethod ne 'none' ) {
         if ( eval { require "$compressmethod()" } ) {
-                require "$compressmethod()";
-                "$compressmethod()"->import();
+            require "$compressmethod()";
+            "$compressmethod()"->import();
         }
-        else{
+        else {
             fatal_error( q{},
                 "$backup_txt{39} $compressmethod $backup_txt{41}" );
         }
@@ -440,20 +447,30 @@ sub BackupMethodInit {
 
     # Check module types and load them at runtime (not compilation)
     if ( $backupmethod eq 'Archive::Tar' ) {
-        if ( eval { require Archive::Tar } ) { # Everything is exported at once
-                require Archive::Tar;
-                Archive::Tar->import();
-            }
-        else{
+        if ( eval { require Archive::Tar } ) {  # Everything is exported at once
+            require Archive::Tar;
+            Archive::Tar->import();
+        }
+        else {
             fatal_error( q{}, "$backup_txt{28} Archive::Tar: $EVAL_ERROR" );
         }
         if ( $compressmethod eq 'Compress::Zlib' ) {    # Also using Zlib
-            if ( eval { require Compress::Zlib; 1 } ) { Compress::Zlib->import(); }# Zlib exports everything at once
-            else { fatal_error(q{},"$backup_txt{'28'} Compress::Zlib: $EVAL_ERROR"); }
+            if ( eval { require Compress::Zlib; 1 } ) {
+                Compress::Zlib->import();
+            }    # Zlib exports everything at once
+            else {
+                fatal_error( q{},
+                    "$backup_txt{'28'} Compress::Zlib: $EVAL_ERROR" );
+            }
         }
         elsif ( $compressmethod eq 'Compress::Bzip2' ) {
-            if ( eval { require Compress::Bzip2; 1 } ) { Compress::Bzip2->import(':utilities');}
-            else { fatal_error(q{}, "$backup_txt{'28'} Compress::Bzip2: $EVAL_ERROR"); }
+            if ( eval { require Compress::Bzip2; 1 } ) {
+                Compress::Bzip2->import(':utilities');
+            }
+            else {
+                fatal_error( q{},
+                    "$backup_txt{'28'} Compress::Bzip2: $EVAL_ERROR" );
+            }
         }
         else { $compressmethod = 'none'; }
 
@@ -472,9 +489,10 @@ sub BackupMethodInit {
             require Archive::Zip;
             Archive::Zip->import();
         }
-        else{
+        else {
             fatal_error( q{}, "$backup_txt{28} Archive::Zip: $EVAL_ERROR" );
         }
+
 # We need this for the loops, when preventing to run into browser/server timeout.
         $zipfile = Archive::Zip->new;
         if ( -e "$backupdir/backup$backuptype.$curtime.$filedirs.a.zip" ) {
@@ -571,10 +589,10 @@ sub CheckPath {
 }
 
 sub mycookie {
-    my ( $cookieusername, $cookiepassword ) = @_;
+    ( $cookieusername, $cookiepassword ) = @_;
     my ( %cookies, );
-    foreach ( split /; /sm, $ENV{'HTTP_COOKIE'} ) {
-        $_ =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
+    foreach my $i ( split /;\s/xsm, $ENV{'HTTP_COOKIE'} ) {
+        $i =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
         my ( $cookie, $value ) = split /=/xsm;
         $cookies{$cookie} = $value;
     }
@@ -604,7 +622,7 @@ sub backuplock {
 }
 
 sub template2 {
-    my($looper) = @_;
+    my ($looper) = @_;
     print qq~<!DOCTYPE html>
 <html lang='en-US'>
 <head>

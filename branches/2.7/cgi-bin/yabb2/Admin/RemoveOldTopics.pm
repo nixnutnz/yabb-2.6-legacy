@@ -70,7 +70,7 @@ sub remove_old_threads {
 
     my @boards = sort keys %board;
     my $inp = $INFO{'nextboard'} || 0;
-    for my $j ( $inp .. $#boards ) {
+    foreach my $j ( $inp .. $#boards ) {
         my $checkboard = $FORM{ $boards[$j] . 'check' }
           || $INFO{ $boards[$j] . 'check' };
         if ( $checkboard && $checkboard == 1 ) {
@@ -83,7 +83,7 @@ sub remove_old_threads {
             fclose('BOARDFILE') or croak "$croak{'close'} BOARDFILE";
 
             my $totalthreads = @threads;
-            my $boardname = ${$board{ $boards[$j] }}[0];
+            my $boardname    = ${ $board{ $boards[$j] } }[0];
             $yymain .=
 qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'6'})<br />~;
 
@@ -91,7 +91,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
 
             my @temparray_1 = ();
             my $tempcount   = 0;
-            for my $i ( 0 .. ( $totalthreads - 1 ) ) {
+            foreach my $i ( 0 .. ( $totalthreads - 1 ) ) {
                 my (
                     $num,  undef, undef, undef, $date1,
                     undef, undef, undef, $status
@@ -138,7 +138,7 @@ qq~<br />$removemess_txt{'3'} <b>$boardname</b> ($totalthreads $removemess_txt{'
 
                 if ( time() > $time_to_jump && ( $i + 1 ) < $totalthreads ) {
                     $i++;
-                    for my $x ( $i .. ( $totalthreads - 1 ) ) {
+                    foreach my $x ( $i .. ( $totalthreads - 1 ) ) {
                         ( undef, undef, undef, undef, $date1, undef ) =
                           split /[|]/xsm, $threads[$x], 6;
                         $date1 = sprintf '%010d', $date1;

@@ -28,11 +28,11 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ## languages ##
-our ( %croak, %fatxt, %inmes_txt, %load_imtxt, %maintxt, );
+our ( %croak, %fatxt, %inmes_txt, %load_imtxt, %maintxt, $yycopyright,);
 ## paths ##
 our (
     $datadir,     $htmldir,   $imagesdir, $memberdir, $pmuploaddir,
-    $pmuploadurl, $scripturl, $uploaddir, $uploadurl,
+    $pmuploadurl, $scripturl, $uploaddir, $uploadurl, $vardir,
 );
 ## settings ##
 our ( $amdisplaypics, $enable_ubbc, $mbname, $pm_display_pics, );
@@ -42,7 +42,7 @@ our (
     $myprint_im,   $mythread,   $showprinturl, $showurl,
     $staff,        $threadpost, $uid,          $useimages,
     $username,     %att_img,    %attach_gif,   %INFO,
-    %micon_bg,     %thread_arrayref,
+    %micon_bg,     %thread_arrayref, $yabbversion,
 );
 ## our Mod Hook ##
 
@@ -58,7 +58,6 @@ sub print_im {
         $pm_attachment, $pm_showattach, $storetitle, $to_title,
         $username_from, $username_to,
     );
-    our ( $message, $displayname, );
     my %caller = (
         '1' => [ "$username.msg",     "$inmes_txt{'inbox'}",   q{}, ],
         '2' => [ "$username.outbox",  "$inmes_txt{'outbox'}",  q{}, ],
@@ -84,7 +83,7 @@ sub print_im {
         $threadbccusers, $threadtitle,   $threaddate,
         $threadstatus,   $fold,          $threadattach
     );
-    for my $thread (@threads) {
+    foreach my $thread (@threads) {
         chomp $thread;
         if ( $thread =~ /$threadid/xsm ) {
             (
@@ -113,7 +112,7 @@ sub print_im {
         {
             no strict qw(refs);
             if ($threadtousers) {
-                for my $uname ( split /,/xsm, $threadtousers ) {
+                foreach my $uname ( split /,/xsm, $threadtousers ) {
                     load_user($uname);
                     $username_to .= (
                           ${ $uid . $uname }{'realname'}
@@ -129,7 +128,7 @@ sub print_im {
                 $to_title    = qq~$inmes_txt{'324'}:~;
             }
             if ($threadccusers) {
-                for my $uname ( split /,/xsm, $threadccusers ) {
+                foreach my $uname ( split /,/xsm, $threadccusers ) {
                     load_user($uname);
                     $username_cc .= (
                           ${ $uid . $uname }{'realname'}
@@ -145,7 +144,7 @@ sub print_im {
                 $to_title_cc = qq~$inmes_txt{'325'}:~;
             }
             if ($threadbccusers) {
-                for my $uname ( split /,/xsm, $threadbccusers ) {
+                foreach my $uname ( split /,/xsm, $threadbccusers ) {
                     if ( $uname eq $username ) {
                         load_user($uname);
                         $username_bcc =
@@ -251,7 +250,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
             if ( $threadstatus !~ /gr/xsm ) {
                 {
                     no strict qw(refs);
-                    for my $uname ( split /,/xsm, $threadtousers ) {
+                    foreach my $uname ( split /,/xsm, $threadtousers ) {
                         load_user($uname);
                         $username_to .= (
                               ${ $uid . $uname }{'realname'}
@@ -273,7 +272,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         }
         else {
             require Sources::InstantMessage;
-            for my $uname ( split /,/xsm, $threadtousers ) {
+            foreach my $uname ( split /,/xsm, $threadtousers ) {
                 $username_to .= links_to($uname);
             }
             $to_title = qq~$inmes_txt{'324'} $inmes_txt{'327'}:~;
@@ -281,7 +280,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         $username_to =~ s/,\s$//xsm;
         $username_to = qq~<b>$username_to</b><br />~;
         if ($threadccusers) {
-            for my $uname ( split /,/xsm, $threadccusers ) {
+            foreach my $uname ( split /,/xsm, $threadccusers ) {
                 load_user($uname);
                 $username_cc .= (
                       ${ $uid . $uname }{'realname'}
@@ -297,7 +296,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
             $to_title_cc = qq~$inmes_txt{'325'}:~;
         }
         if ($threadbccusers) {
-            for my $uname ( split /,/xsm, $threadbccusers ) {
+            foreach my $uname ( split /,/xsm, $threadbccusers ) {
                 load_user($uname);
                 $username_bcc .= (
                       ${ $uid . $uname }{'realname'}
@@ -316,7 +315,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
     elsif ( $INFO{'caller'} == 3 ) {
         if ( $threadstatus !~ /b/sm ) {
             if ( $threadstatus !~ /gr/sm ) {
-                for my $uname ( split /,/xsm, $threadtousers ) {
+                foreach my $uname ( split /,/xsm, $threadtousers ) {
                     load_user($uname);
                     $username_to .= (
                           ${ $uid . $uname }{'realname'}
@@ -335,7 +334,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
             }
             $to_title = qq~$inmes_txt{'324'}:~;
             if ( $threadccusers && $threadposter eq $username ) {
-                for my $uname ( split /,/xsm, $threadccusers ) {
+                foreach my $uname ( split /,/xsm, $threadccusers ) {
                     load_user($uname);
                     $username_cc .= (
                           ${ $uid . $uname }{'realname'}
@@ -351,7 +350,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
                 $to_title_cc = qq~$inmes_txt{'325'}:~;
             }
             if ( $threadbccusers && $threadposter eq $username ) {
-                for my $uname ( split /,/xsm, $threadbccusers ) {
+                foreach my $uname ( split /,/xsm, $threadbccusers ) {
                     load_user($uname);
                     $username_bcc .= (
                           ${ $uid . $uname }{'realname'}
@@ -368,7 +367,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
             }
         }
         else {
-            for my $uname ( split /,/xsm, $threadtousers ) {
+            foreach my $uname ( split /,/xsm, $threadtousers ) {
                 require Sources::InstantMessage;
                 $username_to .= links_to($uname);
             }
@@ -408,7 +407,7 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
     elsif ( $INFO{'caller'} == 5 && $threadstatus =~ /b/sm ) {
         if ($threadtousers) {
             require Sources::InstantMessage;    # Needed for To Member Groups
-            for my $uname ( split /,/xsm, $threadtousers ) {
+            foreach my $uname ( split /,/xsm, $threadtousers ) {
                 $username_to .= links_to($uname);
             }
             $username_to =~ s/,\s$//xsm;
@@ -428,18 +427,15 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         $username_from = qq~<b>$username_from</b><br />~;
         $from_title    = qq~$inmes_txt{'318'}:~;
     }
-    $message     = $threadpost;
-    $displayname = $threadposter;
-    if ($enable_ubbc) {
+    if ( $enable_ubbc && $threadpost !~ /#nosmileys/xsm ) {
         enable_yabbc();
-        do_ubbc();
+        $threadpost = do_ubbc( $threadpost, q{}, $threadposter );
     }
     my $showurla = q{};
     if ($showprinturl) {
         $showurla = $showurl;
     }
 
-    $threadpost = $message;
     our $output = $myprint_im;
     $output =~ s/\Q{yabb printtitle}\E/$mbname - $maintxt{'668'}/gxsm;
     $output =~ s/\Q{yabb showurl}\E/$showurla/gxsm;
@@ -470,10 +466,9 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
 }
 
 sub print_post {
-    my $num  = $INFO{'num'};
-    my $post = $INFO{'post'};
-    our ( $message, $displayname, );
-    my ($curcat);
+    my $num    = $INFO{'num'};
+    my $post   = $INFO{'post'};
+    my $curcat = q{};
 
     # Determine category
     {
@@ -482,7 +477,7 @@ sub print_post {
     }
     message_totals( 'load', $num );
 
-    my $ishidden;
+    my $ishidden = 0;
     {
         no strict qw(refs);
         if ( ${$num}{'threadstatus'} =~ /h/ixsm ) {
@@ -497,9 +492,8 @@ sub print_post {
     # Figure out the name of the category
     our ( %catinfo, %board, );
     get_forum_master();
-    my ( $cat, $catperms ) = @{$catinfo{$curcat}};
-
-    my ( $boardname, $boardperms, $boardview ) = @{$board{$currentboard}};
+    my ( $cat, $catperms ) = @{ $catinfo{$curcat} };
+    my ( $boardname, $boardperms, $boardview ) = @{ $board{$currentboard} };
 
     load_censor_list();
 
@@ -525,35 +519,19 @@ sub print_post {
 
     load_language('FA');
     my $printthread = q{};
-
-    # Split the threads up so we can print them.
-    my $postnum = 0;
-    for my $thread ( @{ $thread_arrayref{$num} } ) {
-        $postnum++;
-        my (
-            $threadtitle, $threadposter, undef, $threaddate,
-            undef,        undef,         undef, undef,
-            $threadpst,   undef,         undef, undef,
-            $attachments
-        ) = split /[|]/xsm, $thread;
-        if ( $post && $post ne $postnum ) {
-            (
+    if (@{ $thread_arrayref{$num} }[$post - 1] ) {
+            my (
                 $threadtitle, $threadposter, undef, $threaddate,
                 undef,        undef,         undef, undef,
-                $threadpost,  undef,         undef, undef,
+                $threadpst,   $ns,           undef, undef,
                 $attachments
-            ) = split /[|]/xsm, @{ $thread_arrayref{$num} }[$post];
-            last;
-        }
+            ) = split /[|]/xsm, @{ $thread_arrayref{$num} }[$post - 1];
         ( $threadtitle, undef ) = split_splice_move( $threadtitle, 0 );
         ( $threadpost,  undef ) = split_splice_move( $threadpst,   $num );
-        $message     = $threadpost;
-        $displayname = $threadposter;
-        if ($enable_ubbc) {
+        if ( $enable_ubbc && !$ns ) {
             enable_yabbc();
-            do_ubbc();
+            $threadpost = do_ubbc( $threadpost, q{}, $threadposter );
         }
-        $threadpost = $message;
         $threaddate = timeformat( $threaddate, 1 );
 
         my $myattach = q{};
@@ -565,14 +543,17 @@ sub print_post {
             if ( !%attach_count ) {
                 my ( $atfile, $atcount );
                 our ($ATM);
-                fopen( 'ATM', '<', 'Variables/attachments.db' )
+                fopen( 'ATM', '<', "$vardir/attachments.db" )
                   or croak "$croak{'open'} attachments";
                 while (<$ATM>) {
                     (
                         undef, undef, undef,   undef, undef,
                         undef, undef, $atfile, $atcount
                     ) = split /[|]/xsm;
+                    if ($atfile) {
+                        $atcount ||= 0;
                     $attach_count{$atfile} = $atcount;
+                    }
                 }
                 fclose('ATM') or croak "$croak{'close'} attachments";
                 if ( !%attach_count ) {
@@ -645,6 +626,196 @@ s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
         $printthread =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
     }
     our $output = $myprint;
+    my $year ||= (gmtime)[5] + 1900;
+    my $numa = qq~$num;post=$post~;
+    $output =~ s/\Q{yabb copyright}\E/$yycopyright/gxsm;
+    $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
+    $output =~ s/\Q{yabb version}\E/$yabbversion/gxsm;
+    $output =~ s/\Q{yabb year}\E/$year/gxsm;
+    $output =~ s/\Q{yabb num}\E/$numa/gxsm;
+    $output =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
+    $output =~ s/\Q{yabb boardname}\E/$boardname/gxsm;
+    $output =~ s/\Q{yabb messagetitle}\E/$messagetitle/gxsm;
+    $output =~ s/\Q{yabb startedby}\E/$startedby/gxsm;
+    $output =~ s/\Q{yabb startedon}\E/$startedon/gxsm;
+    $output =~ s/\Q{yabb pagetitle}\E/$mbname - $page_title/gxsm;
+    $output =~ s/\Q{yabb printthread}\E/$printthread/gxsm;
+    $output =~ s/\Q{yabb cat}\E/$cat/gxsm;
+
+    image_resize();
+
+    print_output_header();
+    print_html_output_and_finish();
+    return;
+}
+
+sub print_thread {
+    my $num  = $INFO{'num'};
+    our ( $message, $displayname, );
+    my ($curcat);
+
+    # Determine category
+    {
+        no strict qw(refs);
+        $curcat = ${ $uid . $currentboard }{'cat'};
+    }
+    message_totals( 'load', $num );
+
+    my $ishidden;
+    {
+        no strict qw(refs);
+        if ( ${$num}{'threadstatus'} =~ /h/ixsm ) {
+            $ishidden = 1;
+        }
+    }
+
+    if ( $ishidden && !$staff ) {
+        fatal_error('no_access');
+    }
+
+    # Figure out the name of the category
+    our ( %catinfo, %board, );
+    get_forum_master();
+    my ( $cat, $catperms ) = @{$catinfo{$curcat}};
+
+    my ( $boardname, $boardperms, $boardview ) = @{$board{$currentboard}};
+
+    load_censor_list();
+
+    # Lets open up the thread file itself
+    if ( !ref $thread_arrayref{$num} ) {
+        our ($THREADS);
+        fopen( 'THREADS', '<', "$datadir/$num.txt" ) || donoopen();
+        @{ $thread_arrayref{$num} } = <$THREADS>;
+        fclose('THREADS') or croak "$croak{'close'} $num.txt";
+    }
+    $cat =~ s/\n//gxsm;
+
+    my ( $messagetitle, $poster, undef, $dte, undef ) =
+      split /[|]/xsm, ${ $thread_arrayref{$num} }[0];
+
+    my $startedby = $poster;
+    my $startedon = timeformat( $dte, 1 );
+    $messagetitle = to_chars($messagetitle);
+    ( $messagetitle, undef ) = split_splice_move( $messagetitle, 0 );
+    my $page_title = $maintxt{'668'};
+
+    load_language('FA');
+    my $printthread = q{};
+
+    # Split the threads up so we can print them.
+    foreach my $thread ( @{ $thread_arrayref{$num} } ) {
+        my (
+            $threadtitle, $threadposter, undef, $threaddate,
+            undef,        undef,         undef, undef,
+            $threadpst,   $ns,           undef, undef,
+            $attachments
+        ) = split /[|]/xsm, $thread;
+        ( $threadtitle, undef ) = split_splice_move( $threadtitle, 0 );
+        ( $threadpost,  undef ) = split_splice_move( $threadpst,   $num );
+        if ( $enable_ubbc && !$ns ) {
+            enable_yabbc();
+            $threadpost = do_ubbc( $threadpost, q{}, $threadposter );
+        }
+        $threaddate = timeformat( $threaddate, 1 );
+
+        my $myattach = q{};
+        my (%attach_count);
+        chomp $attachments;
+        if ($attachments) {
+
+            # store all downloadcounts in variable
+            if ( !%attach_count ) {
+                my ( $atfile, $atcount );
+                our ($ATM);
+                fopen( 'ATM', '<', "$vardir/attachments.db" )
+                  or croak "$croak{'open'} attachments";
+                while (<$ATM>) {
+                    (
+                        undef, undef, undef,   undef, undef,
+                        undef, undef, $atfile, $atcount
+                    ) = split /[|]/xsm;
+                    if ($atfile) {
+                        $atcount ||= 0;
+                    $attach_count{$atfile} = $atcount;
+                    }
+                }
+                fclose('ATM') or croak "$croak{'close'} attachments";
+                if ( !%attach_count ) {
+                    $attach_count{'no_attachments'} = 1;
+                }
+            }
+
+            my $attachment = q{};
+            my $showattach = q{};
+            my ($ext);
+            my $imagecount = 0;
+            for ( split /,/xsm, $attachments ) {
+                if (/[.](.+?)$/xsm) {
+                    $ext = lc $1;
+                }
+                if ( !exists $attach_gif{$ext} ) {
+                    $attach_gif{$ext} =
+                      ( $ext
+                          && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
+                      )
+                      ? "$imagesdir/$att_img{$ext}"
+                      : "$micon_bg{'paperclip'}";
+                }
+                my $filesize = -s "$uploaddir/$_";
+                my $download_txt =
+                  ( $attach_count{$_} == 1 )
+                  ? $fatxt{'41b'}
+                  : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
+                if ($filesize) {
+                    if ( /[.](?:bmp|jpe|jpg|jpeg|gif|png)$/ixsm
+                        && $amdisplaypics == 1 )
+                    {
+                        $imagecount++;
+                        $showattach .=
+qq~<div class="small" style="float:left; margin:8px;"><img src="$attach_gif{$ext}" class="bottom" alt="" /> <span id="urlimagecount$imagecount" style="display:none">$scripturl?action=downloadfile;file=</span>$_ ( ~
+                          . int( $filesize / 1024 )
+                          . qq~ KB | $attach_count{$_} $download_txt )<br /><img src="$uploadurl/$_" name="attach_img_resize" alt="$_" id="imagecount$imagecount" title="$_" style="display:none" /></div>\n~;
+                    }
+                    else {
+                        $attachment .=
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $scripturl?action=downloadfile;file=$_ ( ~
+                          . int( $filesize / 1024 )
+                          . qq~ KB | $attach_count{$_} $download_txt )</div>~;
+                    }
+                }
+                else {
+                    $attachment .=
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
+                      . (
+                        exists $attach_count{$_}
+                        ? qq~ | $attach_count{$_} $download_txt ~
+                        : q{}
+                      ) . q~)</div>~;
+                }
+            }
+            if ( $showattach && $attachment ) {
+                $attachment =~
+s/\Q<div class="small">\E/<div class="small" style="margin:8px;">/gxsm;
+            }
+            $myattach .= qq~
+            <hr />
+            $attachment
+            $showattach~;
+        }
+        $printthread .= $mythread;
+        $printthread =~ s/\Q{yabb threadtitle}\E/$threadtitle/gxsm;
+        $printthread =~ s/\Q{yabb threadposter}\E/$threadposter/gxsm;
+        $printthread =~ s/\Q{yabb threaddate}\E/$threaddate/gxsm;
+        $printthread =~ s/\Q{yabb attach}\E/$myattach/gxsm;
+        $printthread =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
+    }
+    our $output = $myprint;
+    my $year ||= (gmtime)[5] + 1900;
+    $output =~ s/\Q{yabb copyright}\E/$yycopyright/gxsm;
+    $output =~ s/\Q{yabb mbname}\E/$mbname/gxsm;
+    $output =~ s/\Q{yabb version}\E/$yabbversion/gxsm;
+    $output =~ s/\Q{yabb year}\E/$year/gxsm;
     $output =~ s/\Q{yabb num}\E/$num/gxsm;
     $output =~ s/\Q{yabb threadpost}\E/$threadpost/gxsm;
     $output =~ s/\Q{yabb boardname}\E/$boardname/gxsm;

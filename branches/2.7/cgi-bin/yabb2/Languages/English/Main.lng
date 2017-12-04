@@ -156,6 +156,7 @@ $abbr_lang = 'en-us';
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
 'rsscode' => ' ***Go to Post to see Code*** ',
+'rss_nopost' => q~No Messages Found~,
 'freeuserspace' => q~Free Host space available:~,
 'freediskspace' => q~Free Disk space available:~,
 'redirect' => q~Redirect~,

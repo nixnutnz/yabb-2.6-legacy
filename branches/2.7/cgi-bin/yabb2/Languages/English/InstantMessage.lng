@@ -59,7 +59,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'bmallmembers' => q~All forum members~,
 'bmadmins' => q~Administrators~,
 'bmgmods' => q~Global moderators~,
-'bmymods' => q~Forum moderators~,
+'bmfmods' => q~Forum moderators~,
 'bmmods' => q~All board moderators / mod groups~,
 '470' => q~N/A~,
 '500' => q~Marking all Messages as read~, # inside JavaScript!

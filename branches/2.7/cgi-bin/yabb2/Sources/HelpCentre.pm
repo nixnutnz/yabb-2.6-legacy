@@ -26,6 +26,7 @@ if (@helpcentrepmmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
 ## languages ##
 our (%helptxt);
 ## paths ##
@@ -38,12 +39,10 @@ our (
 );
 ## system ##
 our (
-    $contents,      $help_area,   $help_body,    $iamadmin,
-    $iamfmod,       $iamgmod,     $ismod,        $language,
-    $menusep,       $section_nam, $section_name, $uid,
-    $use_menu_type, $username,    $yymain,       $yynavigation,
-    $yytitle,       %cat,         %INFO,         %memberinfo,
-    @categoryorder,
+    $iamadmin,      $iamfmod,  $iamgmod,      $iammod,
+    $language,      $menusep,  $section_name, $uid,
+    $use_menu_type, $username, $yymain,       $yynavigation,
+    $yytitle,       %INFO,
 );
 ## templates ##
 our (
@@ -68,88 +67,53 @@ undef $guest_media_disallowed;
 
 my @my_modimglist =
   qw( admin_rem admin_move_split_splice admin_lock hide admin_sticky admin_del );
-my $my_moding = q{};
-my $mymoding  = q{};
-foreach (@my_modimglist) {
-    my $modimg = set_image( $_, $use_menu_type );
+my $mymoding = q{};
+foreach my $i (@my_modimglist) {
+    my $modimg = set_image( $i, $use_menu_type );
     $mymoding .= qq~$menusep$modimg~;
 }
 $mymoding =~ s/\Q$menusep\E//ixsm;
 
 sub section_decide {
-    my ($boardlist);
-
-   # This bit decides what section we are in and sets the background accordingly
-   # Also sets the variables are used to open up the correct Help Directory
-    if ($usehelp_perms) {
-        $ismod = 0;
-        if ( !exists $memberinfo{$username} ) { load_user($username); }
-        foreach my $catid (@categoryorder) {
-            if ($ismod) { last; }
-            my @bdlist = @{$cat{$catid}};
-            {
-                no strict qw(refs);
-                foreach my $curboard (@bdlist) {
-                    if ($ismod) { last; }
-                    foreach my $curuser ( split /\//xsm,
-                        ${ $uid . $curboard }{'mods'} )
-                    {
-                        if ( $curuser eq $username ) { $ismod = 1; last; }
-                    }
-                    foreach ( split /\//xsm,
-                        ${ $uid . $curboard }{'modgroups'} )
-                    {
-                        if ( ${ $uid . $username }{'position'}
-                            && $_ eq ${ $uid . $username }{'position'} )
-                        {
-                            $ismod = 1;
-                            last;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    my $help_area = 'User';
     if ( $INFO{'section'} ) {
-        {
-            no strict qw(refs);
-            if ( $INFO{'section'} eq 'admin' ) {
-                if ( $usehelp_perms && !$iamadmin ) {
-                    fatal_error( 'no_access', 'HelpCentre->section_decide' );
-                }
-                ${ $INFO{'section'} . '_class' } = 'selected-bg';
-                $help_area = 'Admin';
+        if ( $INFO{'section'} eq 'admin' ) {
+            if ( $usehelp_perms && !$iamadmin ) {
+                fatal_error( 'no_access', 'HelpCentre->section_decide' );
             }
-            elsif ( $INFO{'section'} eq 'global_mod' ) {
-                if ( $usehelp_perms && !$iamgmod && !$iamadmin ) {
-                    fatal_error( 'no_access', 'HelpCentre->section_decide' );
-                }
-                ${ $INFO{'section'} . '_class' } = 'selected-bg';
-                $help_area = 'Gmod';
+            $admin_class = 'selected-bg';
+            $help_area   = 'Admin';
+        }
+        elsif ( $INFO{'section'} eq 'global_mod' ) {
+            if ( $usehelp_perms && !$iamgmod && !$iamadmin ) {
+                fatal_error( 'no_access', 'HelpCentre->section_decide' );
             }
-            elsif ( $INFO{'section'} eq 'moderator' ) {
-                if (   $usehelp_perms
-                    && !$ismod
-                    && !$iamgmod
-                    && !$iamadmin
-                    && !$iamfmod )
-                {
-                    fatal_error( 'no_access', 'HelpCentre->section_decide' );
-                }
-                ${ $INFO{'section'} . '_class' } = 'selected-bg';
-                $help_area = 'Moderator';
+            $global_mod_class = 'selected-bg';
+            $help_area        = 'Gmod';
+        }
+        elsif ( $INFO{'section'} eq 'moderator' ) {
+            if (   $usehelp_perms
+                && !$iammod
+                && !$iamgmod
+                && !$iamadmin
+                && !$iamfmod )
+            {
+                fatal_error( 'no_access', 'HelpCentre->section_decide' );
             }
-            else {
-                $userclass = 'selected-bg';
-                $help_area = 'User';
-            }
+            $moderator_class = 'selected-bg';
+            $help_area       = 'Moderator';
+        }
+        else {
+            $userclass = 'selected-bg';
+            $help_area = 'User';
         }
     }
     else {
         $userclass = 'selected-bg';
         $help_area = 'User';
     }
-    return;
+    return ( $admin_class, $global_mod_class, $moderator_class, $userclass,
+        $help_area );
 }
 
 sub section_print {
@@ -160,27 +124,18 @@ sub section_print {
     my $gmodhlp  = '&nbsp;';
     my $adminhlp = '&nbsp;';
     if ($usehelp_perms) {
-        if ( !$ismod && !$iamgmod && !$iamadmin && !$iamfmod ) { return }
-        if ( $ismod || $iamgmod || $iamadmin || $iamfmod ) {
+        if ( !$iammod && !$iamgmod && !$iamadmin && !$iamfmod ) { return; }
+        if ( $iammod || $iamgmod || $iamadmin || $iamfmod ) {
             $modhlp =
 qq~<a href="$scripturl?action=help;section=moderator">$helptxt{'4'}</a>~;
-        }
-        else {
-            $modhlp = '&nbsp;';
         }
         if ( $iamgmod || $iamadmin ) {
             $gmodhlp =
 qq~<a href="$scripturl?action=help;section=global_mod">$helptxt{'5'}</a>~;
         }
-        else {
-            $gmodhlp = '&nbsp;';
-        }
         if ($iamadmin) {
             $adminhlp =
 qq~<a href="$scripturl?action=help;section=admin">$helptxt{'6'}</a>~;
-        }
-        else {
-            $adminhlp = '&nbsp;';
         }
     }
     else {
@@ -206,23 +161,27 @@ qq~<a href="$scripturl?action=help;section=global_mod">$helptxt{'5'}</a>~;
         $userhlp = qq~<a href="$scriptperm">$helptxt{'3'}</a>~;
     }
 
-    $help_navbar =~ s/\Q{user menu}\E/$userhlp/gxsm;
-    $help_navbar =~ s/\Q{moderator menu}\E/$modhlp/gxsm;
-    $help_navbar =~ s/\Q{global mod menu}\E/$gmodhlp/gxsm;
-    $help_navbar =~ s/\Q{admin menu}\E/$adminhlp/gxsm;
-    $help_navbar =~ s/\Q{user class}\E/$userclass/gxsm;
-    $help_navbar =~ s/\Q{moderator class}\E/$moderator_class/gxsm;
-    $help_navbar =~ s/\Q{global mod class}\E/$global_mod_class/gxsm;
-    $help_navbar =~ s/\Q{admin class}\E/$admin_class/gxsm;
-    $yymain .= $help_navbar;
-    return $yymain;
+    my $help_navb = $help_navbar;
+    $help_navb =~ s/\Q{user menu}\E/$userhlp/gxsm;
+    $help_navb =~ s/\Q{moderator menu}\E/$modhlp/gxsm;
+    $help_navb =~ s/\Q{global mod menu}\E/$gmodhlp/gxsm;
+    $help_navb =~ s/\Q{admin menu}\E/$adminhlp/gxsm;
+    $help_navb =~ s/\Q{user class}\E/$userclass/gxsm;
+    $help_navb =~ s/\Q{moderator class}\E/$moderator_class/gxsm;
+    $help_navb =~ s/\Q{global mod class}\E/$global_mod_class/gxsm;
+    $help_navb =~ s/\Q{admin class}\E/$admin_class/gxsm;
+    return $help_navb;
 }
 
 sub get_helpfiles {
     if ( !$helptemplate_loaded ) {
         get_template('HelpCentre');
     }
-    section_decide();
+    my $help_area = 'User';
+    (
+        $admin_class, $global_mod_class, $moderator_class, $userclass,
+        $help_area
+    ) = section_decide();
 
     # This determines if the order file is present and if it is not
     # It creates a new one, in default alphabetical order
@@ -232,24 +191,25 @@ sub get_helpfiles {
         @helporderlist = @{ lc $help_area };
     }
     chomp @helporderlist;
-
-    foreach (@helporderlist) {
-        if ( -e "$helpfile/$language/$help_area/$_.help" ) {
-            require "$helpfile/$language/$help_area/$_.help";
+    my $contents  = q{};
+    my $help_body = q{};
+    foreach my $i (@helporderlist) {
+        if ( -e "$helpfile/$language/$help_area/$i.help" ) {
+            require "$helpfile/$language/$help_area/$i.help";
         }
-        elsif ( -e "$helpfile/English/$help_area/$_.help" ) {
-            require "$helpfile/English/$help_area/$_.help";
+        elsif ( -e "$helpfile/English/$help_area/$i.help" ) {
+            require "$helpfile/English/$help_area/$i.help";
         }
         else {
             next;
         }
 
-        main_help();
-        do_contents();
+        $help_body .= main_help();
+        $contents  .= do_contents();
     }
 
-    section_print();
-    content_container();
+    $yymain .= section_print();
+    $yymain .= content_container( $contents, $help_body );
 
     $yynavigation = qq~&rsaquo; $yytitle~;
     template();
@@ -257,17 +217,15 @@ sub get_helpfiles {
 }
 
 sub main_help {
-
-    my $tempparse = $body_header;
-    my $brd_id    = $mbname;
+    my $brd_id = $mbname;
     $brd_id =~ s/[ ]/_/gxsm;
     $section_name =~ s/\Q{yabb myboardname}\E/$brd_id/gxsm;
     $section_name =~ s/[ ]/_/gxsm;
-    $tempparse =~ s/\Q{yabb section_anchor}\E/$section_name/gxsm;
-    $section_nam = $section_name;
+    my $section_nam = $section_name;
     $section_nam =~ s/_/ /gxsm;
-    $tempparse =~ s/\Q{yabb section_name}\E/$section_nam/gxsm;
-    $help_body .= $tempparse;
+    my $help_body = $body_header;
+    $help_body =~ s/\Q{yabb section_anchor}\E/$section_name/gxsm;
+    $help_body =~ s/\Q{yabb section_name}\E/$section_nam/gxsm;
 
     my $i = 1;
     {
@@ -281,25 +239,24 @@ sub main_help {
                 next;
             }
 
-            $tempparse = $body_subheader;
-            $brd_id    = $mbname;
+            $help_body .= $body_subheader;
+            $brd_id = $mbname;
             $brd_id =~ s/[ ]/_/gxsm;
             my $section_anchor = ${"section_sub$i"};
             my $section_sub    = ${"section_sub$i"};
             $section_sub =~ s/_/ /gxsm;
             $section_anchor =~ s/\Q{yabb myboardname}\E/$brd_id/gxsm;
             $section_anchor =~ s/[ ]/_/gxsm;
-            $tempparse =~ s/\Q{yabb section_anchor}\E/$section_anchor/gxsm;
-            $tempparse =~ s/\Q{yabb section_sub}\E/$section_sub/gxsm;
-            $tempparse =~ s/\Q{yabb myboardname}\E/$mbname/gxsm;
-            $help_body .= $tempparse;
+            $help_body =~ s/\Q{yabb section_anchor}\E/$section_anchor/gxsm;
+            $help_body =~ s/\Q{yabb section_sub}\E/$section_sub/gxsm;
+            $help_body =~ s/\Q{yabb myboardname}\E/$mbname/gxsm;
 
             my $message     = ${"section_body$i"};
             my $displayname = ${ $uid . $username }{'realname'};
             enable_yabbc();
             $message =~
-s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; to_html($text); do_ubbc_to($text);/egxsm;
-            wrap2();
+s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; to_html($text); do_ubbc_to($text, q{}, $displayname);/egxsm;
+            $message = wrap2($message);
             my ($yyinlinestyle);
             if ( $section_anchor eq 'YaBBC_Reference' ) {
                 $yyinlinestyle .= qq~<style type="text/css">
@@ -312,13 +269,12 @@ s/\[yabbc\](.*?)\[\/yabbc\]/my($text) = $1; to_html($text); do_ubbc_to($text);/e
 </style>\n~;
             }
 
-            $tempparse = $body_item;
-            $tempparse =~ s/\Q{yabb item}\E/$message/gxsm;
-            $tempparse =~ s/\Q{yabb mymoding}\E/$mymoding/gxsm;
-            $tempparse =~ s/\Q{top_img}\E/$top_img/gxsm;
-            $tempparse =~ s/\Q{yabb helptxt643}\E/$helptxt{'643'}/gxsm;
-            $tempparse =~ s/\Q{yabb top_img}\E/$top_img/gxsm;
-            $help_body .= $tempparse;
+            $help_body .= $body_item;
+            $help_body =~ s/\Q{yabb item}\E/$message/gxsm;
+            $help_body =~ s/\Q{yabb mymoding}\E/$mymoding/gxsm;
+            $help_body =~ s/\Q{top_img}\E/$top_img/gxsm;
+            $help_body =~ s/\Q{yabb helptxt643}\E/$helptxt{'643'}/gxsm;
+            $help_body =~ s/\Q{yabb top_img}\E/$top_img/gxsm;
             $i++;
         }
     }
@@ -356,12 +312,12 @@ s/(&\x2391\;&\x2347\;.+?&\x2393\;)/<span class="important">$1<\/span>/igxsm;
 }
 
 sub content_container {
+    my ( $contents, $help_body ) = @_;
     $main_layout =~ s/\Q{yabb contents}\E/$contents/gxsm;
     $main_layout =~ s/\Q{yabb body}\E/$help_body/gxsm;
     $main_layout =~ s/\Q{yabb helptxt2}\E/$helptxt{'2'}/gxsm;
 
-    $yymain .= $main_layout;
-    return $yymain;
+    return $main_layout;
 }
 
 sub do_contents {
@@ -369,12 +325,12 @@ sub do_contents {
     my $brd_id    = $mbname;
     $brd_id =~ s/[ ]/_/gxsm;
     $section_name =~ s/\Q{yabb myboardname}\E/$brd_id/gxsm;
-    $tempparse =~ s/\Q{yabb section_anchor}\E/$section_name/gxsm;
-    $section_nam = $section_name;
+    my $section_nam = $section_name;
     $section_nam =~ s/_/ /gxsm;
+    $tempparse =~ s/\Q{yabb section_anchor}\E/$section_name/gxsm;
     $tempparse =~ s/\Q{yabb section_name}\E/$section_nam/gxsm;
     $tempparse =~ s/\Q{top_img}\E/$top_img/gxsm;
-    $contents .= $tempparse;
+    my $contents = $tempparse;
 
     $contents .= q~<ul class="help_ul">~;
     my $i = 1;

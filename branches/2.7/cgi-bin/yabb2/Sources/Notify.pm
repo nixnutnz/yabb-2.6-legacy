@@ -32,18 +32,18 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
 our ( %croak, %img_txt, %notify_txt, );
 ## paths ##
-our ( $boardsdir, $datadir, $imagesdir, $scripturl, );
+our ( $boardsdir, $datadir, $imagesdir, $scripturl, $vardir, );
 ## settings ##
 our ( $elenable, $max_log_days_old, );
 ## system ##
 our (
-    $boardblock,    $brd_notify,    $currentboard,      $date,
-    $iamguest,      $my_threadnote_end, $selecthtml,
-    $threadblock,   $uid,           $username,          $view,
-    $yymain,        $yynavigation,  $yysetlocation,     $yytitle,
-    %board,         %board_notify,  %cat,               %catinfo,
-    %FORM,          %format_unbold, %INFO,              %moved_file,
-    %subboard,      %useraccount,   %yyuserlog,         @categoryorder,
+    $boardblock,    $brd_notify,        $currentboard, $date,
+    $iamguest,      $my_threadnote_end, $selecthtml,   $threadblock,
+    $uid,           $username,          $view,         $yymain,
+    $yynavigation,  $yysetlocation,     $yytitle,      %board,
+    %board_notify,  %cat,               %catinfo,      %FORM,
+    %format_unbold, %INFO,              %moved_file,   %subboard,
+    %useraccount,   %yyuserlog,         @categoryorder,
 );
 ## templates ##
 our (
@@ -94,7 +94,7 @@ sub manageboardnotify {
         }
         elsif ( $todo eq 'update' ) {
             if ( exists $theboard{$user} ) {
-                my ( $memlang, $memtype, $memview ) = @{$theboard{$user}};
+                my ( $memlang, $memtype, $memview ) = @{ $theboard{$user} };
                 if ($userlang) { $memlang = $userlang; }
                 if ($notetype) { $memtype = $notetype; }
                 if ($noteview) { $memview = $noteview; }
@@ -130,7 +130,8 @@ sub manageboardnotify {
         if (%theboard) {
             my $printbrd = q{};
             foreach ( sort keys %theboard ) {
-                $printbrd .= "\$theboard{'$_'} = [ '${$theboard{$_}}[0]', ${$theboard{$_}}[1], ${$theboard{$_}}[2] ];\n";
+                $printbrd .=
+"\$theboard{'$_'} = [ '${$theboard{$_}}[0]', ${$theboard{$_}}[1], ${$theboard{$_}}[2] ];\n";
             }
             $printbrd .= "\n1;\n";
             our ($BOARDNOTE);
@@ -154,7 +155,7 @@ sub boardnotify {
     my $selected2 = q{};
     my $deloption = q{};
     my $my_delopt = q{};
-    my $boardname = ${$board{$currentboard}}[0];
+    my $boardname = ${ $board{$currentboard} }[0];
     $boardname = to_chars($boardname);
     manageboardnotify( 'load', $currentboard );
 
@@ -248,7 +249,7 @@ sub managethreadnotify {
     }
     elsif ( $todo eq 'update' ) {
         if ( exists $thethread{$user} ) {
-            my ( $memlang, $memtype, $memview ) = @{$thethread{$user}};
+            my ( $memlang, $memtype, $memview ) = @{ $thethread{$user} };
             if ($userlang) { $memlang = $userlang; }
             if ($notetype) { $memtype = $notetype; }
             if ($noteview) { $memview = $noteview; }
@@ -281,7 +282,8 @@ sub managethreadnotify {
         if (%thethread) {
             my $prnthread = q{};
             foreach ( sort keys %thethread ) {
-                $prnthread .= "\$thethread{'$_'} = [ '${$thethread{$_}}[0]', ${$thethread{$_}}[1], ${$thethread{$_}}[2] ];\n";
+                $prnthread .=
+"\$thethread{'$_'} = [ '${$thethread{$_}}[0]', ${$thethread{$_}}[1], ${$thethread{$_}}[2] ];\n";
             }
             $prnthread .= "\n1;\n";
             our ($THREADNOTE);
@@ -341,8 +343,8 @@ sub notify4 {
 }
 
 sub update_language {
-    my ( $user, $newlang ) = @_;
-    my ($bmaildir, $tmaildir) = get_mail_files();
+    my ( $user,     $newlang )  = @_;
+    my ( $bmaildir, $tmaildir ) = get_mail_files();
     my @bmaildir = @{$bmaildir};
     my @tmaildir = @{$tmaildir};
     foreach (@bmaildir) {
@@ -356,7 +358,7 @@ sub update_language {
 
 sub remove_notifications {
     my $user_s = shift;
-    my ($bmaildir, $tmaildir) = get_mail_files();
+    my ( $bmaildir, $tmaildir ) = get_mail_files();
     my @bmaildir = @{$bmaildir};
     my @tmaildir = @{$tmaildir};
     foreach (@bmaildir) {
@@ -378,7 +380,7 @@ sub get_mail_files {
       map  { ( split /[.]/xsm )[0] }
       grep { /[.]mail$/xsm } readdir THREADNOT;
     closedir THREADNOT;
-    return (\@bmaildir, \@tmaildir);
+    return ( \@bmaildir, \@tmaildir );
 }
 
 sub show_notifications {
@@ -412,8 +414,8 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
         foreach ( keys %{$board_notify} ) {   # boardname, boardnotifytype , new
             $num++;
             if ( $subboard{$_} ) {
-                my @brd = @{$subboard{$_}};
-                for my $i (@brd) {
+                my @brd = @{ $subboard{$_} };
+                foreach my $i (@brd) {
                     if ( ${ $uid . $i }{'lastposttime'} eq 'N/A' ) {
                         ${ $uid . $i }{'lastposttime'} = 0;
                     }
@@ -459,7 +461,8 @@ qq~<img src="$imagesdir/$brdimg_old" alt="$notify_txt{'334'}" title="$notify_txt
             $boardblock .= $my_boardblock;
             $boardblock =~ s/\Q{yabb brd}\E/$_/gxsm;
             $boardblock =~ s/\Q{yabb new}\E/$new/gxsm;
-            $boardblock =~ s/\Q{yabb brdnote0}\E/${${$board_notify}{$_}}[0]/gxsm;
+            $boardblock =~
+              s/\Q{yabb brdnote0}\E/${${$board_notify}{$_}}[0]/gxsm;
             $boardblock =~ s/\Q{yabb selected1}\E/$selected1/gxsm;
             $boardblock =~ s/\Q{yabb selected2}\E/$selected2/gxsm;
             $boardblock =~ s/\Q{yabb notify_txt132}\E/$notify_txt{'132'}/gxsm;
@@ -559,8 +562,14 @@ sub notification_alert {
     my @tmaildir = ();
     {
         no strict qw(refs);
-        if ( ${ $uid . $username }{'board_notifications'} ) { @bmaildir = split /,/xsm, ${ $uid . $username }{'board_notifications'}; }
-        if ( ${ $uid . $username }{'thread_notifications'}) { @tmaildir = split /,/xsm, ${ $uid . $username }{'thread_notifications'};}
+        if ( ${ $uid . $username }{'board_notifications'} ) {
+            @bmaildir = split /,/xsm,
+              ${ $uid . $username }{'board_notifications'};
+        }
+        if ( ${ $uid . $username }{'thread_notifications'} ) {
+            @tmaildir = split /,/xsm,
+              ${ $uid . $username }{'thread_notifications'};
+        }
 
         # needed for $new - icon (on/off/new)
         my @noloadboard =
@@ -572,7 +581,7 @@ sub notification_alert {
     getlog();    # sub in Subs.pm, for $yyuserlog{$myboard}
 
     ## run through boards list
-    for my $myboard (@bmaildir) {    # board name from file name
+    foreach my $myboard (@bmaildir) {    # board name from file name
         if ( !-e "$boardsdir/$myboard.txt" )
         {                            # remove from user board_notifications
             manageboardnotify( 'delete', $myboard, $username );
@@ -581,12 +590,11 @@ sub notification_alert {
 
         ## load in hash of name / detail for board
         manageboardnotify( 'load', $myboard );
-
         {
             no strict qw(refs);
             if ( exists $theboard{$username} ) {
                 ## grab board name
-                my $boardname = ${$board{$myboard}}[0];
+                my $boardname = ${ $board{$myboard} }[0];
                 $board_notify{$myboard} = [
                     $boardname,
                     ${ $theboard{$username} }[1],
@@ -622,11 +630,11 @@ sub notification_alert {
     ## load board names
     get_forum_master();    # for $board{...}
 
-    for my $mythread (@tmaildir) {    # number of next thread
+    foreach my $mythread (@tmaildir) {    # number of next thread
             # see if thread exists and search for it if moved
         if ( !-e "$datadir/$mythread.txt" ) {
             managethreadnotify( 'delete', $mythread, $username );
-            if ( eval { require Variables::Movedthreads; 1 } ) {
+            if ( -e "$vardir/Movedthreads.pm" ) {
                 next
                   if !exists $moved_file{$mythread} || !$moved_file{$mythread};
                 my $newthread;
@@ -660,102 +668,28 @@ sub notification_alert {
                 $boardname_link, $lastpostdate,  $parentboard_link
             );
             if ( $action eq 'shownotify' ) {
-                if ( !${ ${ 'notify' . $boardid . $mythread } }[0] ) {
-                    my ( $messageid, $messagesubject );
-                    our ($BOARDTXT);
-                    fopen( 'BOARDTXT', '<', "$boardsdir/$boardid.txt" )
-                      or fatal_error( 'cannot_open', "$boardsdir/$boardid.txt",
-                        1 );
-                    while ( my $brd = <$BOARDTXT> ) {
-                        (
-                            $messageid, $messagesubject, $mname, undef, undef,
-                            undef, $musername, undef
-                        ) = split /[|]/xsm, $brd, 8;
-                        ${ 'notify' . $boardid . $messageid } =
-                          [ $messagesubject, $mname, $musername ];
-                    }
-                    fclose('BOARDTXT') or croak "$croak{'close'} $boardid.txt";
-                }
-                $msub      = ${ ${ 'notify' . $boardid . $mythread } }[0];
-                $mname     = ${ ${ 'notify' . $boardid . $mythread } }[1];
-                $musername = ${ ${ 'notify' . $boardid . $mythread } }[2];
-
-                $msub = to_chars($msub);
-                ( $msub, undef ) = split_splice_move( $msub, 0 );
-                $msub = do_censor($msub);    # censor subject text !
+                ( $msub, $mname, $musername ) =
+                  get_show_not( $boardid, $mythread );
 
                 ## run through the categories until we hit the match for category name
-                my ( $catname, $thiscatid, $catid, $parent, $parent_name );
-                my $boardname = ${$board{$boardid}}[0];
-
-                # grab boardname from list
-                $parentboard_link = q{};
-              CHECKPARENT:
-                for my $par ( keys %subboard ) {
-                    for ( @{$subboard{$par}}) {
-                        ## find the match, grab data and jump out
-                        if ( $_ eq $boardid ) {
-                            $parent = $par;
-                            $parent_name = ${$board{$parent}}[0];
-                            $parentboard_link =
-qq~<a href="$scripturl?board=$parent">$parent_name</a>~;
-                            last CHECKPARENT;
-                        }
-                    }
-                }
-              CHECKBOARDNAME:
-                for my $catid (@categoryorder) {
-                    for ( @{$cat{$catid}} ) {
-                        ## find the match, grab data and jump out
-                        if ( $_ eq $boardid || $_ eq $parent ) {
-                            $catname = ${$catinfo{$catid}}[0];
-                            $thiscatid = $catid;
-                            last CHECKBOARDNAME;
-                        }
-                    }
-                }
-                $catname_link =
-                  qq~<a href="$scripturl?catselect=$thiscatid">$catname</a>~;
+                my ($boardname) = ${ $board{$boardid} }[0];
                 $boardname_link =
                   qq~<a href="$scripturl?board=$boardid">$boardname</a>~;
 
-                ## build view profile link, if real name exists
-                load_user($musername);    # load poster
-                if ( ${ $uid . $musername }{'realname'} ) {
-                    $username_link =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
-                }
-                elsif ($mname) {
-                    $username_link = $mname;
-                }
-                else {
-                    $username_link = $musername;
-                }
+                my ( $parentboard_lnk, $parent ) = get_checkparent($boardid);
+                $parentboard_link = $parentboard_lnk;
+
+                my ( $catname, $thiscatid ) =
+                  get_checkboard( $boardid, $parent );
+                $catname_link =
+                  qq~<a href="$scripturl?catselect=$thiscatid">$catname</a>~;
+
+                $username_link = get_userlnk( $musername, $mname );
 
                 ## format last post for output
                 $lastpostdate = timeformat( ${$mythread}{'lastpostdate'} );
             }
-
-            if ($max_log_days_old) {
-
-               # Decide if thread should have the "NEW" indicator next to it.
-               # Do this by reading the user's log for last read time on thread,
-               # and compare to the last post time on the thread.
-                $yyuserlog{$mythread}        ||= 0;
-                $yyuserlog{"$boardid--mark"} ||= 0;
-                ${$mythread}{'lastpostdate'} ||= 0;
-                my $dlp  = int $yyuserlog{$mythread};
-                my $dlpb = int $yyuserlog{"$boardid--mark"};
-                $dlp = $dlp > $dlpb ? $dlp : $dlpb;
-                if (   $yyuserlog{"$mythread--unread"}
-                    || ( !$dlp && ${$mythread}{'lastpostdate'} > $dmax )
-                    || ( $dlp > $dmax && $dlp < ${$mythread}{'lastpostdate'} ) )
-                {
-                    $new =
-qq~<img src="$imagesdir/$brdimg_new" alt="$notify_txt{'335'}" title="$notify_txt{'335'}"/>~;
-                }
-            }
-
+            $new = get_new_not( $mythread, $boardid );
             $thread_notify{$mythread} = [
                 $mythread,      $msub,         $new,
                 $username_link, $catname_link, $boardname_link,
@@ -765,6 +699,105 @@ qq~<img src="$imagesdir/$brdimg_new" alt="$notify_txt{'335'}" title="$notify_txt
     }
 
     return ( \%board_notify, \%thread_notify );
+}
+
+sub get_checkparent {
+    my ($boardid) = @_;
+    my $parlink   = q{};
+    my $parent    = q{};
+    foreach my $par ( keys %subboard ) {
+        for ( @{ $subboard{$par} } ) {
+            if ( $_ eq $boardid ) {
+                $parent = $par;
+                my $parent_name = ${ $board{$parent} }[0];
+                $parlink =
+                  qq~<a href="$scripturl?board=$parent">$parent_name</a>~;
+                last;
+            }
+        }
+    }
+    return ( $parlink, $parent );
+}
+
+sub get_checkboard {
+    my ( $boardid, $parent ) = @_;
+    my ( $catname, $thiscatid ) = ( q{}, q{} );
+    foreach my $catid (@categoryorder) {
+        for ( @{ $cat{$catid} } ) {
+            if ( $_ eq $boardid || $_ eq $parent ) {
+                $catname   = ${ $catinfo{$catid} }[0];
+                $thiscatid = $catid;
+                last;
+            }
+        }
+    }
+    return ( $catname, $thiscatid );
+}
+
+sub get_userlnk {
+    my ( $usr, $mname ) = @_;
+    my $link = q{};
+    load_user($usr);    # load poster
+    if ( ${ $uid . $usr }{'realname'} ) {
+        $link =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$format_unbold{$usr}</a>~;
+    }
+    elsif ($mname) {
+        $link = $mname;
+    }
+    else {
+        $link = $usr;
+    }
+    return $link;
+}
+
+sub get_new_not {
+    my ( $mythread, $boardid ) = @_;
+    my $new = q{};
+    if ($max_log_days_old) {
+        $yyuserlog{$mythread}        ||= 0;
+        $yyuserlog{"$boardid--mark"} ||= 0;
+        ${$mythread}{'lastpostdate'} ||= 0;
+        my $dlp  = int $yyuserlog{$mythread};
+        my $dlpb = int $yyuserlog{"$boardid--mark"};
+        $dlp = $dlp > $dlpb ? $dlp : $dlpb;
+        if (   $yyuserlog{"$mythread--unread"}
+            || ( !$dlp && ${$mythread}{'lastpostdate'} > $dmax )
+            || ( $dlp > $dmax && $dlp < ${$mythread}{'lastpostdate'} ) )
+        {
+            $new =
+qq~<img src="$imagesdir/$brdimg_new" alt="$notify_txt{'335'}" title="$notify_txt{'335'}"/>~;
+        }
+    }
+    return $new;
+}
+
+sub get_show_not {
+    my ( $boardid, $mythread ) = @_;
+    my ( $mname, $msub, $musername );
+    if ( !${ ${ 'notify' . $boardid . $mythread } }[0] ) {
+        my ( $messageid, $messagesubject );
+        our ($BOARDTXT);
+        fopen( 'BOARDTXT', '<', "$boardsdir/$boardid.txt" )
+          or fatal_error( 'cannot_open', "$boardsdir/$boardid.txt", 1 );
+        while ( my $brd = <$BOARDTXT> ) {
+            (
+                $messageid, $messagesubject, $mname, undef, undef,
+                undef, $musername, undef
+            ) = split /[|]/xsm, $brd, 8;
+            ${ 'notify' . $boardid . $messageid } =
+              [ $messagesubject, $mname, $musername ];
+        }
+        fclose('BOARDTXT') or croak "$croak{'close'} $boardid.txt";
+    }
+    $msub      = ${ ${ 'notify' . $boardid . $mythread } }[0];
+    $mname     = ${ ${ 'notify' . $boardid . $mythread } }[1];
+    $musername = ${ ${ 'notify' . $boardid . $mythread } }[2];
+
+    $msub = to_chars($msub);
+    ( $msub, undef ) = split_splice_move( $msub, 0 );
+    $msub = do_censor($msub);
+    return ( $msub, $mname, $musername );
 }
 
 1;

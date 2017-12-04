@@ -27,11 +27,11 @@ if (@favoritespmmods) {
 our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
+
 ##languages##
-our ( %croak, %favicon, %img, %img_txt, %messageindex_txt, %micon, %micon_bg,
-    %pidtxt, );
+our ( %croak, %img, %img_txt, %messageindex_txt, %micon, %micon_bg, %pidtxt, );
 ##paths ##
-our ( $boardsdir, $datadir, $imagesdir, $memberdir, $scripturl, );
+our ( $boardsdir, $datadir, $imagesdir, $memberdir, $scripturl, $vardir, );
 ## settings ##
 our (
     $accept_permalink,  $hot_topic,   $max_log_days_old, $maxfavs,
@@ -63,17 +63,12 @@ sub favorites {
 
     my $start = $INFO{'start'} || 0;
     $start = int $start;
-    my (
-        @threads, $counter, $pages, $mnum,     $msub,
-        $mname,   $memail,  $mdate, $mreplies, $musername,
-        $micon,   $mstate,  $dlp
-    );
     my $treplies = 0;
 
 # grab all relevant info on the favorite thread for this user and check access to them
     if ( !$maxfavs ) { $maxfavs = 10; }
     my @favboards;
-    if ( eval { require Variables::Movedthreads } ) {
+    if ( -e "$vardir/Movedthreads.pm" ) {
         require Variables::Movedthreads;
     }
     {
@@ -81,79 +76,20 @@ sub favorites {
         foreach
           my $myfav ( split /,/xsm, ${ $uid . $username }{'favorites'} || q{} )
         {
-
-            # see if thread exists and search for it if moved
-            if ( exists $moved_file{$myfav} ) {
-                my @moved = ($myfav);
-                while ( exists $moved_file{$myfav} ) {
-                    $myfav = $moved_file{$myfav};
-                    unshift @moved, $myfav;
-                }
-                foreach (@moved) {
-                    $myfav = $_;
-                    if ( $myfav ne $moved[-1] ) {
-                        if ( -e "$datadir/$myfav.ctb" ) {
-                            rem_fav( $moved[-1], 'nonexist' );
-                            add_fav( $myfav, 0, 1 );
-                            last;
-                        }
-                    }
-                    elsif ( !-e "$datadir/$myfav.ctb" ) {
-                        rem_fav( $myfav, 'nonexist' );
-                        $myfav = 0;
-                    }
-                }
-                next if !$myfav;
-            }
-            elsif ( !-e "$datadir/$myfav.ctb" ) {
-                rem_fav( $myfav, 'nonexist' );
-                next;
-            }
-            message_totals( 'load', $myfav );
-            my $favoboard = ${$myfav}{'board'};
-            push @favboards, "$favoboard|$myfav";
+            @favboards = get_myfav_brd( $myfav, \@favboards );
         }
     }
 
-    foreach ( sort @favboards ) {
-        my ( $loadboard, $loadfav ) = split /[|]/xsm;
-        {
-            no strict qw(refs);
-            if ( !${ $uid . $loadboard }{'board'} ) {
-                boardtotals( 'load', $loadboard );
-            }
-        }
-
-        next
-          if !$iamadmin
-          && access_check( $loadboard, q{}, ${$board{$loadboard}}[1] ) ne 'granted';
-        {
-            no strict qw(refs);
-            next
-              if !$iamadmin
-              && !cat_access( ${$catinfo{ ${ $uid . $loadboard }{'cat'} }}[1] );
-        }
-
-        our ($BRDTXT);
-        fopen( 'BRDTXT', '<', "$boardsdir/$loadboard.txt" )
-          or fatal_error( 'cannot_open', "$boardsdir/$loadboard.txt", 1 );
-        while ( my $brd = <$BRDTXT> ) {
-            if ( ( split /[|]/xsm, $brd, 2 )[0] eq $loadfav ) {
-                push @threads, $brd;
-            }
-        }
-        fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
-    }
-    chomp @threads;
-    my $curfav = @threads;
+    my @threads = get_fav_threads(@favboards);
+    my $curfav  = @threads;
 
     load_censor_list();
 
     my %attachments;
-    my $att_length = -s 'Variables/attachments.db';
-    if ( ( -s 'Variables/attachments.db' ) > 5 ) {
+    my $att_length = -s "$vardir/attachments.db";
+    if ( ( -s "$vardir/attachments.db" ) > 5 ) {
         our ($ATM);
-        fopen( 'ATM', '<', 'Variables/attachments.db' )
+        fopen( 'ATM', '<', "$vardir/attachments.db" )
           or croak "$croak{'open'} ATM";
         while (<$ATM>) {
             $attachments{ ( split /[|]/xsm, $_, 2 )[0] }++;
@@ -165,16 +101,16 @@ sub favorites {
     my $colspan = 7;
 
     # Begin printing the message index for current board.
-    $counter = $start;
-    my $mcount = 0;
+    my $counter = $start;
+    my $mcount  = 0;
     getlog();
     my $dmax = $date - ( $max_log_days_old * 86400 );
     my $tmptempbar = q{};
-    foreach (@threads) {
-        (
-            $mnum,     $msub,      $mname, $memail, $mdate,
+    foreach my $t (@threads) {
+        my (
+            $mnum,     $msub,      $mname, undef, $mdate,
             $mreplies, $musername, $micon, $mstate
-        ) = split /[|]/xsm;
+        ) = split /[|]/xsm, $t;
 
         # Set thread class depending on locked status and number of replies.
         if ( !$mnum ) { next; }
@@ -190,270 +126,34 @@ sub favorites {
         }
         my $permdate = permtimer($mnum);
         $permlinkboard ||= q{};
-        my $message_permalink =
-qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
 
-        my $threadclass = 'thread';
-        if ( !$mstate ) { $threadclass = 'thread'; }
-        else {
-            if    ( $mstate =~ /h/ixsm ) { $threadclass = 'hide'; }
-            elsif ( $mstate =~ /l/ixsm ) { $threadclass = 'locked'; }
-            elsif ( $mreplies >= $very_hot_topic ) {
-                $threadclass = 'veryhotthread';
-            }
-            elsif ( $mreplies >= $hot_topic ) { $threadclass = 'hotthread'; }
-            {
-                no strict qw(refs);
-                if (   $threadclass eq 'hide'
-                    && $mstate =~ /s/ixsm
-                    && $mstate !~ /l/ixsm )
-                {
-                    $threadclass = 'hidesticky';
-                }
-                elsif ($threadclass eq 'hide'
-                    && $mstate =~ /l/ixsm
-                    && $mstate !~ /s/ixsm )
-                {
-                    $threadclass = 'hidelock';
-                }
-                elsif ($threadclass eq 'hide'
-                    && $mstate =~ /s/ixsm
-                    && $mstate =~ /l/ixsm )
-                {
-                    $threadclass = 'hidestickylock';
-                }
-                elsif ($threadclass eq 'locked'
-                    && $mstate =~ /s/ixsm
-                    && $mstate !~ /h/ixsm )
-                {
-                    $threadclass = 'stickylock';
-                }
-                elsif ( $mstate =~ /s/ixsm && $mstate !~ /h/ixsm ) {
-                    $threadclass = 'sticky';
-                }
-                elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ /h/ixsm ) {
-                    $threadclass =
-                      $threadclass eq 'locked'
-                      ? 'announcementlock'
-                      : 'announcement';
-                }
-            }
+        my $message_permalink = q{};
+        if ($accept_permalink) {
+            $message_permalink =
+qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
         }
 
         my ( undef, $moved_flag ) = split_splice_move( $msub, $mnum );
-        my $new = q{};
-        if ( !$iamguest && $max_log_days_old ) {
-            $currentboard ||= q{};
+        my $threadclass = get_fav_thrdcls( $mstate, $mreplies, $mnum );
 
-            # Decide if thread should have the "NEW" indicator next to it.
-            # Do this by reading the user's log for last read time on thread,
-            # and compare to the last post time on the thread.
-            if (
-                !$yyuserlog{"$currentboard--mark"}
-                || (   $yyuserlog{$mnum}
-                    && $yyuserlog{"$currentboard--mark"}
-                    && int( $yyuserlog{$mnum} ) >
-                    int $yyuserlog{"$currentboard--mark"} )
-              )
-            {
-                $dlp = int $yyuserlog{$mnum};
-            }
-            else { $dlp = int $yyuserlog{"$currentboard--mark"}; }
+        my ( $new, $dlp ) =
+          get_fav_new( $currentboard, $mnum, $mdate, $moved_flag, $dmax );
+        if ($moved_flag) { $new = q{}; $threadclass = 'locked_moved'; }
 
-            if (   $yyuserlog{"$mnum--unread"}
-                || ( !$dlp && $mdate > $dmax )
-                || ( $dlp > $dmax && $dlp < $mdate ) )
-            {
-                {
-                    no strict qw(refs);
-                    if ( ${$mnum}{'board'} eq $annboard ) {
-                        $new =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new">$micon{'new'}</a>~;
-                    }
-                    else {
-                        $new =
-qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
-                    }
-                }
-            }
-            else {
-                $new = q{};
-            }
-        }
-        if ($moved_flag) { $new = q{}; }
+        my ( $micn, $mpoll ) = get_fav_poll( $micon, $mnum, $mdate, $dlp );
+        $micon = $micn;
 
-        $micon = $micon{$micon};
-        my $mpoll = q{};
-        if ( -e "$datadir/$mnum.poll" ) {
-            $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
-            our ($POLL);
-            fopen( 'POLL', '<', "$datadir/$mnum.poll" )
-              or croak "$croak{'open'} POLL";
-            my @poll = <$POLL>;
-            fclose('POLL') or croak "$croak{'close'} POLL";
-            my (
-                $poll_question, $poll_locked, $poll_uname,   $poll_name,
-                $poll_email,    $poll_date,   $guest_vote,   $hide_results,
-                $multi_vote,    $poll_mod,    $poll_modname, $poll_comment,
-                $vote_limit,    $pie_radius,  $pie_legends,  $poll_end
-            ) = split /[|]/xsm, $poll[0];
-            chomp $poll_end;
-            if ( $poll_end && !$poll_locked && $poll_end < $date ) {
-                $poll_locked = 1;
-                $poll_end    = q{};
-                $poll[0] =
-"$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
-                my $prnpoll = join q{}, @poll;
-                fopen( 'POLL', '>', "$datadir/$mnum.poll" )
-                  or croak "$croak{'open'} POLL";
-                print {$POLL} $prnpoll or croak "$croak{'print'} POLL";
-                fclose('POLL') or croak "$croak{'close'} POLL";
-            }
-            $micon = $img{'pollicon'};
-            if ($poll_locked) { $micon = $img{'polliconclosed'}; }
-            elsif ( $max_log_days_old && $mdate > $dmax ) {
-                if ( $dlp < $createpoll_date ) {
-                    $micon = $img{'polliconnew'};
-                }
-                else {
-                    our ($POLLED);
-                    fopen( 'POLLED', '<', "$datadir/$mnum.polled" )
-                      or croak "$croak{'open'} POLLED";
-                    my $polled = <$POLLED>;
-                    fclose('POLLED') or croak "$croak{'close'} POLLED";
-                    if ( $dlp < ( split /[|]/xsm, $polled )[3] ) {
-                        $micon = $img{'polliconnew'};
-                    }
-                }
-            }
-        }
-
-        # Load the current nickname of the account name of the thread starter.
-        if ( $musername ne 'Guest' ) {
-            load_user($musername);
-            {
-                no strict qw(refs);
-                if ( ${ $uid . $musername }{'realname'} ) {
-                    $mname =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
-                }
-                else {
-                    $mname .= qq~ ($messageindex_txt{'470a'})~;
-                }
-            }
-        }
+        $mname = get_fav_starter( $mdate, $musername );
 
         ( $msub, undef ) = split_splice_move( $msub, 0 );
-
-        # Censor the subject of the thread.
         $msub = do_censor($msub);
         $msub = to_chars($msub);
 
-        # Build the page links list.
-        $pages = q{};
-        my $pagesall = q{};
-        my $endpage  = q{};
-        my ( $tmpa, $tmpb );
-        if ($showpageall) {
-            $pagesall =
-              qq~<a href="$scripturl?num=$mnum/all-0">$pidtxt{'01'}</a>~;
-        }
-        $maxmessagedisplay ||= 10;
-        if ( int( ( $mreplies + 1 ) / $maxmessagedisplay ) > 6 ) {
-            $pages =
-                qq~ <a href="$scripturl?num=$mnum/~
-              . ( !$ttsreverse ? '0#0' : "$mreplies#$mreplies" )
-              . q~">1</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$maxmessagedisplay#$maxmessagedisplay"
-                : ( $mreplies - $maxmessagedisplay ) . q{#}
-                  . ( $mreplies - $maxmessagedisplay )
-              ) . q~">2</a>~;
-            $endpage = int( $mreplies / $maxmessagedisplay ) + 1;
-            my $i = ( $endpage - 1 ) * $maxmessagedisplay;
-            my $j = $i - $maxmessagedisplay;
-            my $k = $endpage - 1;
-            $tmpa = $endpage - 2;
-            $tmpb = $j - $maxmessagedisplay;
-            $pages .=
-qq~ <a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$tmpb#$tmpb"
-                : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
-              ) . qq~">$tmpa</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$j#$j"
-                : ( $mreplies - $j ) . q{#} . ( $mreplies - $j )
-              ) . qq~">$k</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$i#$i"
-                : ( $mreplies - $i ) . q{#} . ( $mreplies - $i )
-              ) . qq~">$endpage</a>~;
-            $pages =
-qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
-
-        }
-        elsif ( $mreplies + 1 > $maxmessagedisplay ) {
-            $tmpa = 1;
-            foreach my $tmpb ( 0 .. $mreplies ) {
-                if ( $tmpb % $maxmessagedisplay == 0 ) {
-                    $pages .=
-                        qq~<a href="$scripturl?num=$mnum/~
-                      . ( !$ttsreverse ? "$tmpb#$tmpb" : ( $mreplies - $tmpb ) )
-                      . qq~">$tmpa</a>\n~;
-                    ++$tmpa;
-                }
-            }
-            $pages =~ s/\n\Z//xsm;
-            $pages =
-qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages &raquo;</span>~;
-        }
-
-        my ( $views, $lastposter );
-        {
-            no strict qw(refs);
-            $views      = ${$mnum}{'views'};
-            $lastposter = ${$mnum}{'lastposter'};
-        }
-        if ( $lastposter =~ m{\AGuest-(.*)}xsm ) {
-            $lastposter = $1;
-        }
-        elsif ( $lastposter !~ m{Guest}xsm
-            && !( -e "$memberdir/$lastposter.vars" ) )
-        {
-            $lastposter = $messageindex_txt{'470a'};
-        }
-        else {
-            if (
-                (
-                       $lastposter ne $messageindex_txt{'470'}
-                    && $lastposter ne $messageindex_txt{'470a'}
-                )
-                || !-e "$memberdir/$lastposter.vars"
-              )
-            {
-                load_user($lastposter);
-                {
-                    no strict qw(refs);
-                    if ( ${ $uid . $lastposter }{'realname'} ) {
-                        $lastposter =
-qq~<a href="$scripturl?action=viewprofile;username=$lastposter">$format_unbold{$lastposter}</a>~;
-                    }
-                }
-            }
-        }
-        my $lastpostername = $lastposter || $messageindex_txt{'470'};
+        my ( $lastpostername, $views ) = get_fav_lastposter($mnum);
         $views = $views ? $views - 1 : 0;
+        $views = number_format($views);
+        my $pages = get_fav_pages( $mnum, $mreplies );
 
-# Check if the thread contains attachments and create a paper-clip icon if it does
         my $temp_attachment =
           $attachments{$mnum}
           ? qq~<a href="javascript:void(window.open('$scripturl?action=viewdownloads;thread=$mnum','_blank','width=800,height=650,scrollbars=yes'))"><img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} ~
@@ -485,8 +185,7 @@ qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a>~;
         my $lastpostlink =
 qq~<a href="$scripturl?num=$mnum/$mreplies#$mreplies">$img{'lastpost'}$mydate</a>~;
         my $fmreplies = number_format($mreplies);
-        $views = number_format($views);
-        my $tempbar = $threadbar;
+        my $tempbar   = $threadbar;
         if ($moved_flag) { $tempbar = $threadbarmoved; }
 
         my $adminbar =
@@ -494,13 +193,12 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         my $admincol = $admincolumn;
         $admincol =~ s/\Q{yabb admin}\E/$adminbar/gxsm;
 
-        $favicon{$mnum} ||= q{};
         $tempbar =~ s/\Q{yabb admin column}\E/$admincol/gxsm;
         $tempbar =~ s/\Q{yabb threadpic}\E/$threadpic/gxsm;
         $tempbar =~ s/\Q{yabb icon}\E/$micon/gxsm;
         $tempbar =~ s/\Q{yabb new}\E/$new/gxsm;
         $tempbar =~ s/\Q{yabb poll}\E/$mpoll/gxsm;
-        $tempbar =~ s/\Q{yabb favorite}\E/$favicon{$mnum}/gxsm;
+        $tempbar =~ s/\Q{yabb favorite}\E//gxsm;
         $tempbar =~ s/\Q{yabb subjectlink}\E/$msublink/gxsm;
         $tempbar =~ s/\Q{yabb attachmenticon}\E/$temp_attachment/gxsm;
         $tempbar =~ s/\Q{yabb pages}\E/$pages/gxsm;
@@ -512,13 +210,8 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
         $tempbar =~ s/\Q{yabb my_favs_527}\E/$my_favs{'527'}/gxsm;
         $tempbar =~ s/\Q{yabb my_favs_526}\E/$my_favs{'526'}/gxsm;
         $tempbar =~ s/\Q{yabb my_favs_525}\E/$my_favs{'525'}/gxsm;
+        $tempbar =~ s/\Q{yabb permalink}\E/$message_permalink/gxsm;
 
-        if ( $accept_permalink == 1 ) {
-            $tempbar =~ s/\Q{yabb permalink}\E/$message_permalink/gxsm;
-        }
-        else {
-            $tempbar =~ s/\Q{yabb permalink}\E//gxsm;
-        }
 ## Tempbar Mod Hook ##
 ## End Tempbar Mod Hook ##
         $tmptempbar .= $tempbar;
@@ -556,7 +249,7 @@ qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~
 
     $currentboard ||= q{};
     my $formstart =
-qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multiremfav" method="post" style="display: inline">~;
+qq~<form name="multiremfav" action="$scripturl?action=multiremfav" method="post" style="display: inline">~;
     $INFO{'start'} ||= q{};
     my $formend =
       qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
@@ -577,6 +270,7 @@ qq~<form name="multiremfav" action="$scripturl?board=$currentboard;action=multir
 
     $favorites_template =~ s/\Q{yabb home}\E//gxsm;
     $favorites_template =~ s/\Q{yabb category}\E//gxsm;
+    $favorites_template =~ s/\Q{yabb pages}\E//gxsm;
 
     $yynavigation =
 qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'}</a> &rsaquo; $img_txt{'70'}~;
@@ -632,7 +326,6 @@ qq~ <img src="$imagesdir/$my_favbrds" alt="$img_txt{'70'}" title="$img_txt{'70'}
         function ListPages(tid) { window.open('$scripturl?action=pages;num='+tid, '', 'menubar=no,toolbar=no,top=50,left=50,scrollbars=yes,resizable=no,width=400,height=300'); }
 </script>
     ~;
-
     $yytitle = $img_txt{'70'};
     return;
 }
@@ -672,7 +365,9 @@ sub add_fav {
 sub multi_rem_fav {
     my $count = 0;
     while ( $maxfavs >= $count ) {
-        rem_fav( $FORM{"admin$count"} );
+        if ( $FORM{"admin$count"} ) {
+            rem_fav( $FORM{"admin$count"} );
+        }
         $count++;
     }
     $yysetlocation = qq~$scripturl?action=favorites~;
@@ -683,15 +378,14 @@ sub multi_rem_fav {
 sub rem_fav {
     my @x    = @_;
     my $favo = $INFO{'fav'} || $x[0];
-    my $goto = $INFO{'start'} || $x[1];
-    if ( !$goto ) { $goto = 0; }
+    my $goto = $INFO{'start'} || $x[1] || 0;
 
     my @newfav;
     {
         no strict qw(refs);
         if ( ${ $uid . $username }{'favorites'} ) {
-            foreach ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
-                if ( $favo && $favo ne $_ ) { push @newfav, $_; }
+            foreach my $i ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
+                if ( $favo && $favo ne $i ) { push @newfav, $i; }
             }
 
             ${ $uid . $username }{'favorites'} = join q{,}, undupe(@newfav);
@@ -745,8 +439,8 @@ qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=addfav;fav=$favo;sta
     }
     else { $nofav = 2; }
 
-    foreach (@oldfav) {
-        if ( $favo eq $_ ) {
+    foreach my $i (@oldfav) {
+        if ( $favo eq $i ) {
             $button =
 qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=remfav;fav=$favo;start=$goto','$imagesdir')" id="favlink">$img{'remfav'}</a>~;
             $nofav = 0;
@@ -785,14 +479,351 @@ qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=addfav;fav=$favo;sta
     }
     else { $nofav = 2; }
 
-    foreach (@oldfav) {
-        if ( $favo eq $_ ) {
+    foreach my $i (@oldfav) {
+        if ( $favo eq $i ) {
             $button =
 qq~$menusep<a href="javascript:AddRemFav('$scripturl?action=remfav;fav=$favo;start=$goto','$imagesdir')" id="favlink2">$img{'remfav'}</a>~;
             $nofav = 0;
         }
     }
     return ( !$postcheck ? $button : $nofav );
+}
+
+sub get_myfav_brd {
+    my ( $myfav, $favboards ) = @_;
+    my @favboards = @{$favboards};
+    if ( exists $moved_file{$myfav} ) {
+        my @moved = ($myfav);
+        while ( exists $moved_file{$myfav} ) {
+            $myfav = $moved_file{$myfav};
+            unshift @moved, $myfav;
+        }
+        foreach my $i (@moved) {
+            $myfav = $i;
+            if ( $myfav ne $moved[-1] ) {
+                if ( -e "$datadir/$myfav.ctb" ) {
+                    rem_fav( $moved[-1], 'nonexist' );
+                    add_fav( $myfav, 0, 1 );
+                    last;
+                }
+            }
+            elsif ( !-e "$datadir/$myfav.ctb" ) {
+                rem_fav( $myfav, 'nonexist' );
+                $myfav = 0;
+            }
+        }
+        next if !$myfav;
+    }
+    elsif ( !-e "$datadir/$myfav.ctb" ) {
+        rem_fav( $myfav, 'nonexist' );
+        next;
+    }
+    message_totals( 'load', $myfav );
+    {
+        no strict qw(refs);
+        my $favoboard = ${$myfav}{'board'};
+        push @favboards, "$favoboard|$myfav";
+    }
+    return @favboards;
+}
+
+sub get_fav_new {
+    my ( $currentbrd, $mnum, $mdate, $moved_flag, $dmax ) = @_;
+    my $new = q{};
+    my $dlp = 0;
+    $currentbrd ||= q{};
+    if (
+        !$yyuserlog{"$currentbrd--mark"}
+        || (   $yyuserlog{$mnum}
+            && $yyuserlog{"$currentbrd--mark"}
+            && int( $yyuserlog{$mnum} ) > int $yyuserlog{"$currentbrd--mark"} )
+      )
+    {
+        $dlp = int $yyuserlog{$mnum};
+    }
+    else { $dlp = int $yyuserlog{"$currentbrd--mark"}; }
+
+    if (   $yyuserlog{"$mnum--unread"}
+        || ( !$dlp && $mdate > $dmax )
+        || ( $dlp > $dmax && $dlp < $mdate ) )
+    {
+        {
+            no strict qw(refs);
+            if ( ${$mnum}{'board'} eq $annboard ) {
+                $new =
+qq~<a href="$scripturl?virboard=$currentbrd;num=$mnum/new">$micon{'new'}</a>~;
+            }
+            else {
+                $new = qq~<a href="$scripturl?num=$mnum/new">$micon{'new'}</a>~;
+            }
+        }
+    }
+    else {
+        $new = q{};
+    }
+    return ( $new, $dlp );
+}
+
+sub get_fav_poll {
+    my ( $micn, $mnum, $mdate, $dlp ) = @_;
+    my $micon = $micon{$micn};
+    my $mpoll = q{};
+    if ( -e "$datadir/$mnum.poll" ) {
+        $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
+        our ($POLL);
+        fopen( 'POLL', '<', "$datadir/$mnum.poll" )
+          or croak "$croak{'close'} POLL";
+        my @poll = <$POLL>;
+        fclose('POLL') or croak "$croak{'close'} POLL";
+        $micon = get_fav_poll_icon( \@poll, $mnum, $mdate, $dlp );
+    }
+    return ( $micon, $mpoll );
+}
+
+sub get_fav_poll_icon {
+    my ( $poll, $mnum, $mdate, $dlp ) = @_;
+    my @poll = @{$poll};
+    my (
+        undef, $poll_locked, undef, undef, undef, $poll_date,
+        undef, undef,        undef, undef, undef, undef,
+        undef, undef,        undef, $poll_end
+    ) = split /[|]/xsm, $poll[0];
+    chomp $poll_end;
+    if ( $poll_end && !$poll_locked && $poll_end < $date ) {
+        $poll_locked = 1;
+    }
+
+    my $micon = $micon{'pollicon'};
+    if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
+    elsif ( !$iamguest
+        && $max_log_days_old
+        && $mdate > $date - ( $max_log_days_old * 86400 ) )
+    {
+        if ( $dlp < $poll_date ) {
+            $micon = $micon{'polliconnew'};
+        }
+        else {
+            if ( -e "$datadir/$mnum.polled" ) {
+                our ($POLLED);
+                fopen( 'POLLED', '<', "$datadir/$mnum.polled" )
+                  or croak "$croak{'open'} POLLED";
+                my $polled = <$POLLED>;
+                fclose('POLLED') or croak "$croak{'close'} POLLED";
+                my ( undef, undef, undef, $vote_date, undef ) =
+                  split /[|]/xsm, $polled;
+                if ( $dlp < $vote_date ) {
+                    $micon = $micon{'polliconnew'};
+                }
+            }
+        }
+    }
+    return $micon;
+}
+
+sub get_fav_thrdcls {
+    my ( $mstate, $mreplies, $mnum ) = @_;
+    my $threadclass = 'thread';
+    no strict qw(refs);
+    if ( !$mstate ) { $threadclass = 'thread'; }
+    else {
+        if    ( $mstate =~ /h/ixsm ) { $threadclass = 'hide'; }
+        elsif ( $mstate =~ /l/ixsm ) { $threadclass = 'locked'; }
+        elsif ( $mreplies >= $very_hot_topic ) {
+            $threadclass = 'veryhotthread';
+        }
+        elsif ( $mreplies >= $hot_topic ) { $threadclass = 'hotthread'; }
+        if ( $threadclass eq 'hide' ) {
+            if ( $mstate =~ /s/ixsm && $mstate !~ /l/ixsm ) {
+                $threadclass = 'hidesticky';
+            }
+            elsif ( $mstate =~ /l/ixsm && $mstate !~ /s/ixsm ) {
+                $threadclass = 'hidelock';
+            }
+            elsif ($mstate =~ /s/ixsm
+                && $mstate =~ /l/ixsm )
+            {
+                $threadclass = 'hidestickylock';
+            }
+        }
+        elsif ($threadclass eq 'locked'
+            && $mstate =~ /s/ixsm
+            && $mstate !~ /h/ixsm )
+        {
+            $threadclass = 'stickylock';
+        }
+        elsif ( $mstate =~ m/s/ixsm && $mstate !~ m/h/ixsm ) {
+            $threadclass = 'sticky';
+        }
+        elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ m/h/ixsm ) {
+            $threadclass =
+              $threadclass eq 'locked'
+              ? 'announcementlock'
+              : 'announcement';
+        }
+    }
+    return $threadclass;
+}
+
+sub get_fav_lastposter {
+    my ($mnum) = @_;
+    no strict qw(refs);
+    my $views      = ${$mnum}{'views'};
+    my $lastposter = ${$mnum}{'lastposter'};
+    if ( $lastposter =~ m{\AGuest-(.*)}xsm ) {
+        $lastposter = $1;
+    }
+    elsif ( $lastposter !~ m{Guest}xsm
+        && !( -e "$memberdir/$lastposter.vars" ) )
+    {
+        $lastposter = $messageindex_txt{'470a'};
+    }
+    else {
+        if (
+            (
+                   $lastposter ne $messageindex_txt{'470'}
+                && $lastposter ne $messageindex_txt{'470a'}
+            )
+            || !-e "$memberdir/$lastposter.vars"
+          )
+        {
+            load_user($lastposter);
+            {
+                no strict qw(refs);
+                if ( ${ $uid . $lastposter }{'realname'} ) {
+                    $lastposter =
+qq~<a href="$scripturl?action=viewprofile;username=$lastposter">$format_unbold{$lastposter}</a>~;
+                }
+            }
+        }
+    }
+    my $lastpostername = $lastposter || $messageindex_txt{'470'};
+    return ( $lastpostername, $views );
+}
+
+sub get_fav_starter {
+    my ( $mdate, $musername ) = @_;
+    my $mname = q{};
+    if ( $musername ne 'Guest' ) {
+        load_user($musername);
+        {
+            no strict qw(refs);
+            if ( ${ $uid . $musername }{'realname'} ) {
+                $mname =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$musername}">$format_unbold{$musername}</a>~;
+            }
+            else {
+                $mname .= qq~ ($messageindex_txt{'470a'})~;
+            }
+        }
+    }
+    return $mname;
+}
+
+sub get_fav_threads {
+    my (@favboards) = @_;
+    my @threads;
+    foreach my $t ( sort @favboards ) {
+        my ( $loadboard, $loadfav ) = split /[|]/xsm, $t;
+        {
+            no strict qw(refs);
+            if ( !${ $uid . $loadboard }{'board'} ) {
+                boardtotals( 'load', $loadboard );
+            }
+        }
+        next
+          if !$iamadmin
+          && access_check( $loadboard, q{}, ${ $board{$loadboard} }[1] ) ne
+          'granted';
+        {
+            no strict qw(refs);
+            next
+              if !$iamadmin
+              && !cat_access(
+                ${ $catinfo{ ${ $uid . $loadboard }{'cat'} } }[1] );
+        }
+
+        our ($BRDTXT);
+        fopen( 'BRDTXT', '<', "$boardsdir/$loadboard.txt" )
+          or fatal_error( 'cannot_open', "$boardsdir/$loadboard.txt", 1 );
+        while ( my $brd = <$BRDTXT> ) {
+            if ( ( split /[|]/xsm, $brd, 2 )[0] eq $loadfav ) {
+                push @threads, $brd;
+            }
+        }
+        fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
+    }
+    chomp @threads;
+    return @threads;
+}
+
+sub get_fav_pages {
+    my ( $mnum, $mreplies ) = @_;
+    my $pages    = q{};
+    my $pagesall = q{};
+    my $endpage  = q{};
+    my ( $tmpa, $tmpb );
+    if ($showpageall) {
+        $pagesall = qq~<a href="$scripturl?num=$mnum/all-0">$pidtxt{'01'}</a>~;
+    }
+    $maxmessagedisplay ||= 10;
+    if ( int( ( $mreplies + 1 ) / $maxmessagedisplay ) > 6 ) {
+        $pages =
+            qq~ <a href="$scripturl?num=$mnum/~
+          . ( !$ttsreverse ? '0#0' : "$mreplies#$mreplies" )
+          . q~">1</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$maxmessagedisplay#$maxmessagedisplay"
+            : ( $mreplies - $maxmessagedisplay ) . q{#}
+              . ( $mreplies - $maxmessagedisplay )
+          ) . q~">2</a>~;
+        $endpage = int( $mreplies / $maxmessagedisplay ) + 1;
+        my $i = ( $endpage - 1 ) * $maxmessagedisplay;
+        my $j = $i - $maxmessagedisplay;
+        my $k = $endpage - 1;
+        $tmpa = $endpage - 2;
+        $tmpb = $j - $maxmessagedisplay;
+        $pages .=
+qq~ <a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$tmpb#$tmpb"
+            : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
+          ) . qq~">$tmpa</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$j#$j"
+            : ( $mreplies - $j ) . q{#} . ( $mreplies - $j )
+          ) . qq~">$k</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$i#$i"
+            : ( $mreplies - $i ) . q{#} . ( $mreplies - $i )
+          ) . qq~">$endpage</a>~;
+        $pages =
+qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
+
+    }
+    elsif ( $mreplies + 1 > $maxmessagedisplay ) {
+        $tmpa = 1;
+        foreach my $tmpb ( 0 .. $mreplies ) {
+            if ( $tmpb % $maxmessagedisplay == 0 ) {
+                $pages .=
+                    qq~<a href="$scripturl?num=$mnum/~
+                  . ( !$ttsreverse ? "$tmpb#$tmpb" : ( $mreplies - $tmpb ) )
+                  . qq~">$tmpa</a>\n~;
+                ++$tmpa;
+            }
+        }
+        $pages =~ s/\n\Z//xsm;
+        $pages =
+qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages &raquo;</span>~;
+    }
+    return $pages;
 }
 
 1;

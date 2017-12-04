@@ -62,7 +62,7 @@ require Variables::Settings;
 my $check = 0;
 if ( !$job ) {
     ( $username, $password ) = bakcookie( $cookieusername, $cookiepassword );
-    for my $i (@alist) {
+    foreach my $i (@alist) {
         if ( $username eq $i ) {
             my ( $myid, $pssword ) = get_user($username);
             if ( $pssword eq $password ) {
@@ -75,7 +75,7 @@ if ( !$job ) {
 }
 
 elsif ( $job == 2 ) {
-    for my $j (@alist) {
+    foreach my $j (@alist) {
         if ( $id eq $j ) {
             my $cryptpass = encode_password($passwrd);
             my ( $myid, $pssword ) = get_user($id);
@@ -98,7 +98,7 @@ my $login         = q{};
 print "Content-type: text/html\n\n" or croak 'cannot print line1';
 
 if ( $check == 1 ) {
-    $timelog  = $time - $ver_age;
+    $timelog = $time - $ver_age;
     my $myhrstxt = q{};
     my $mymintxt = q{};
     my $mysectxt = q{};
@@ -160,7 +160,7 @@ print $page or croak 'Oops - no page here';
 sub bakcookie {
     my ( $cookieusrname, $cookiepasswrd ) = @_;
     my ( %cookies, );
-    foreach ( split /; /sm, $ENV{'HTTP_COOKIE'} ) {
+    foreach ( split /;\s/xsm, $ENV{'HTTP_COOKIE'} ) {
         s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
         my ( $cookie, $value ) = split /=/xsm;
         $cookies{$cookie} = $value;
@@ -188,7 +188,7 @@ sub get_user {
     my ($muser) = @_;
     our (%vars);
     require "$memberdir/$muser.vars";
-    my %map = %vars;
+    %map = %vars;
     return ( $map{'realname'}, $map{'password'} );
 }
 

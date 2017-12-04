@@ -646,7 +646,7 @@ $conv2x_txt{'3brds'}
 
         $yytabmenu = $navlink1 . $navlink2 . $navlink3a . $navlink5 . $navlink6;
 
-        my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
+        my $bwidth   = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
         my $starttme = $time_to_jump - $INFO{'starttime'};
         my $took     = int( ( $INFO{'st'} + 60 ) / 60 );
 
@@ -717,12 +717,7 @@ $conv2x_txt{'4brds'}
         }
         movemessages();
 
-        $yytabmenu =
-            $navlink1
-          . $navlink2
-          . $navlink3
-          . $navlink5a
-          . $navlink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5a . $navlink6;
 
         my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         $INFO{'st'} ||= 0;
@@ -795,8 +790,7 @@ $conv2x_txt{'3mess'}
           ? int( $INFO{'tcount'} / $INFO{'totmess'} * 100 )
           : 0;
 
-        $yytabmenu =
-          $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6;
         my $took = int( ( $INFO{'st'} + 60 ) / 60 );
         my $starttme = $time_to_jump - $INFO{'starttime'};
         $yymain = qq~
@@ -876,12 +870,7 @@ $conv2x_txt{'4mess'}
         $formsession = cloak("$mbname$username");
         my $took = int( ( $INFO{'st'} + 60 ) / 60 );
 
-        $yytabmenu =
-            $navlink1
-          . $navlink2
-          . $navlink3
-          . $navlink5
-          . $navlink6a;
+        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink5 . $navlink6a;
         my $fixn = q{};
         if ( -e "$htmldir/tmp/datacheck.txt" ) {
             $fixn = $conv2x_txt{'fixn'};
@@ -1036,10 +1025,10 @@ sub convertmembers {
     my @memlist = <$MEMDIR>;
     close $MEMDIR or croak 'cannot close MEMDIR';
     my $memlist = q{};
-    for (@memlist) {
-        $_ =~ s/[\n\r]//gxsm;
-        chomp $_;
-        my @nml = split /\t/xsm, $_;
+    foreach my $i (@memlist) {
+        $i =~ s/[\n\r]//gxsm;
+        chomp $i;
+        my @nml = split /\t/xsm, $i;
         $memlist .= "\$memberlist{'$nml[0]'} = '$nml[1]';\n";
     }
     open my $MEMDIRLST, '>', "$vardir/Memberlist.pm"
@@ -1053,8 +1042,8 @@ sub convertmembers {
     close $MEMINFO or croak 'cannot close MEMINFO';
     chomp @meminfo;
     my $meminfo = q{};
-    for (@meminfo) {
-        my @nml     = split /\t/xsm,  $_;
+    foreach my $i (@meminfo) {
+        my @nml     = split /\t/xsm,  $i;
         my @varinfo = split /[|]/xsm, $nml[1];
         my $val = join q~','~, @varinfo;
         $meminfo .= qq~\$memberinf{'$nml[0]'} = \['$val'\];\n~;
@@ -1087,7 +1076,7 @@ sub convertmembers {
           or
           setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.approve: ",
             1 );
-        my @approve = <$BMEMDIRA>;
+        @approve = <$BMEMDIRA>;
         close $BMEMDIRA or croak 'cannot close BMEMDIRA';
         chomp @approve;
         my $approve = join "\n", @approve;
@@ -1101,7 +1090,7 @@ sub convertmembers {
           "$convmemberdir/memberlist.inactive"
           or setup_fatal_error(
             "$maintext_23 $convmemberdir/memberlist.inactive: ", 1 );
-        my @inactive = <$BMEMDIRIN>;
+        @inactive = <$BMEMDIRIN>;
         close $BMEMDIRIN or croak 'cannot close BMEMDIRIN';
         chomp @inactive;
         my $inactive = join "\n", @inactive;
@@ -1143,22 +1132,22 @@ sub convertmembers {
     our %memberlist;
     require "$vardir/Memberlist.pm";
     my @getmem = sort keys %memberlist;
-    for (@approve) {
+    foreach my $i (@approve) {
         my ( undef, undef, $regmember, undef, undef ) =
-          split /[|]/xsm, $_;
+          split /[|]/xsm, $i;
         push @getmem, $regmember;
     }
-    for (@inactive) {
+    foreach my $i (@inactive) {
         my ( undef, undef, $regmember, undef, undef ) =
-          split /[|]/xsm, $_;
+          split /[|]/xsm, $i;
         push @getmem, $regmember;
     }
     my @xtn = qw(msg imstore log outbox rlog imdraft);
     my @xta = qw(vars pre wait);
-    for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#getmem ) {
+    foreach my $i ( ( $INFO{'mstart1'} || 0 ) .. $#getmem ) {
         my $user = $getmem[$i];
 
-        for my $userext (@xta) {
+        foreach my $userext (@xta) {
             if ( -e "$convmemberdir/$user.$userext" ) {
                 open my $LOADUSER, '<',
                   "$convmemberdir/$user.$userext"
@@ -1169,8 +1158,8 @@ sub convertmembers {
                 close $LOADUSER
                   or croak "cannot close $convmemberdir/$user.$userext";
                 my @tags = ();
-                foreach (@settings) {
-                    if ( $_ =~ /'(.*?)',"(.*?)"/xsm ) {
+                foreach my $i (@settings) {
+                    if ( $i =~ /'(.*?)',"(.*?)"/xsm ) {
                         ${ $uid . $user }{$1} = $2;
                         push @tags, $1;
                     }
@@ -1181,7 +1170,7 @@ sub convertmembers {
                 }
                 my $newvars =
                   qq~### User variables for ID: $user ###\n\n%vars = (\n~;
-                for my $cnt ( 0 .. $#tags ) {
+                foreach my $cnt ( 0 .. $#tags ) {
                     if ( $tags[$cnt] ne 'password' ) {
                         ${ $uid . $user }{ $tags[$cnt] } =~ s/~/\\~/gxsm;
                     }
@@ -1212,7 +1201,7 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                 close $UPDTUSER
                   or croak "cannot close $memberdir/$user.$userext";
             }
-            for my $cnt (@xtn) {
+            foreach my $cnt (@xtn) {
                 if ( -e "$convmemberdir/$user.$cnt" ) {
                     open my $FILEUSER, '<',
                       "$convmemberdir/$user.$cnt"
@@ -1241,8 +1230,8 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                 close $FILEUSER or croak 'cannot close FILEUSER';
 
                 if ( $ims[0] =~ /\x23\x23\x23/xsm ) {
-                    for (@ims) {
-                        if ( $_ =~ /'(.*?)',"(.*?)"/xsm ) { ${$user}{$1} = $2; }
+                    foreach my $i (@ims) {
+                        if ( $i =~ /'(.*?)',"(.*?)"/xsm ) { ${$user}{$1} = $2; }
                     }
                 }
                 else {
@@ -1258,7 +1247,7 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                         close $USERMSG or croak 'cannot close USERMSG';
 
   # test the data for version. 16 elements in new format, no more than 8 in old.
-                        for my $message (@messages) {
+                        foreach my $message (@messages) {
 
                  # If the message is flagged as u(nopened), add to the new count
                             if ( ( split /[|]/xsm, $message )[12] =~ /u/xsm ) {
@@ -1305,7 +1294,7 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                         close $STOREMESS or croak 'cannot close STOREMESS';
                         if (@imstore) {
                             my ( $storeupdated, $storemessline ) = ( 0, 0 );
-                            for my $message (@imstore) {
+                            foreach my $message (@imstore) {
                                 my @messline = split /[|]/xsm, $message;
                                 ## look through list for folder name
                                 if ( $messline[13] eq q{} )
@@ -1343,9 +1332,9 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                     }
                     ## run through the messages and count against the folder name
                     my @storefoldersCount;
-                    for my $y ( 0 .. $#currstorefolders ) {
+                    foreach my $y ( 0 .. $#currstorefolders ) {
                         $storefoldersCount[$y] = 0;
-                        for my $x ( 0 .. $#imstore ) {
+                        foreach my $x ( 0 .. $#imstore ) {
                             if ( ( split /[|]/xsm, $imstore[$x] )[13] eq
                                 $currstorefolders[$y] )
                             {
@@ -1367,7 +1356,7 @@ qq~'$tags[$cnt]' => q\~${$uid.$user}{$tags[$cnt]}\~,\n~;
                   qw(PMmnum PMimnewcount PMmoutnum PMstorenum PMdraftnum PMfolders PMfoldersCount PMbcRead);
                 my $updateims =
                   qq~### UserIMS YaBB 2.7.00 Version $user ###\n\n%ims = (\n~;
-                for my $cnt ( 0 .. $#imstag ) {
+                foreach my $cnt ( 0 .. $#imstag ) {
                     $updateims .=
                       qq~'$imstag[$cnt]' => "${$user}{$imstag[$cnt]}",\n~;
                 }
@@ -1410,28 +1399,28 @@ sub getbadmem {
     my $memfixl = q{};
     our %memberinf;
     require "$vardir/Memberinfo.pm";
-    foreach ( keys %memberinf ) {
-        push @{ $memhash{ lc $_ } }, $_;
-        if ( !${ $memberinf{$_} }[1] || ${ $memberinf{$_} }[1] eq q{} ) {
+    foreach my $key ( keys %memberinf ) {
+        push @{ $memhash{ lc $key } }, $key;
+        if ( !${ $memberinf{$key} }[1] || ${ $memberinf{$key} }[1] eq q{} ) {
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
-            print {$BRDFIX} "'$_' -> 'no e-mail'\n"
+            print {$BRDFIX} "'$key' -> 'no e-mail'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
         }
     }
-    for my $key ( keys %memhash ) {
+    foreach my $key ( keys %memhash ) {
         if ( scalar @{ $memhash{$key} } > 1 ) {
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
             print {$BRDFIX} "'multiple members - possible data loss:'\n"
               or croak 'cannot print BRDFIX';
             close $BRDFIX or croak 'cannot close BRDFIX';
-            foreach ( @{ $memhash{$key} } ) {
-                $memfixl .= qq~$_<br />~;
+            foreach my $i ( @{ $memhash{$key} } ) {
+                $memfixl .= qq~$i<br />~;
                 open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
                   or croak 'cannot open BRDFIX';
-                print {$BRDFIX} "'$_'\n" or croak 'cannot print BRDFIX';
+                print {$BRDFIX} "'$i'\n" or croak 'cannot print BRDFIX';
                 close $BRDFIX or croak 'cannot close BRDFIX';
             }
         }
@@ -1444,7 +1433,7 @@ sub getbadmem {
 # Board + Category Conversion ##
 
 sub moveboards {
-    our ( @categoryorder, %cat, %catinfo, %board, %subboard );
+    our ( @categoryorder, %cat );
     require "$convboardsdir/forum.master";
     my $newforum = qq~\$mloaded = 1;\n~;
     my @catorder = undupe(@categoryorder);
@@ -1498,7 +1487,7 @@ sub moveboards {
     open my $FTOTALS, '<', "$convboardsdir/forum.totals"
       or setup_fatal_error( "$maintext_23 $convboardsdir/forum.totals: ", 1 );
     my @ftotals = <$FTOTALS>;
-    close $FTOTALS;
+    close $FTOTALS or croak "cannot close $convboardsdir/forum.totals";
     chomp @ftotals;
     my %totals = ();
     foreach my $cnt (@ftotals) {
@@ -1532,8 +1521,8 @@ sub moveboards {
     my @brdtype   = qw(txt mail exhits);
     push @boards, @subboards;
 
-    for my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
-        for my $ext (@brdtype) {
+    foreach my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
+        foreach my $ext (@brdtype) {
             if ( $boards[$i] eq 'admin_fix' ) { $boards[$i] = 'admin'; }
             if ( -e "$convboardsdir/$boards[$i].$ext" ) {
                 open my $BOARDFILE, '<',
@@ -1568,7 +1557,7 @@ qq~\$theboard{'$key'} = [ '$memlang', $memtype, $memview ];\n~;
                         my @fix = split /[|]/xsm;
                         $fix[8] =~ s/0/x/gxsm;
                         $fix[8] ||= 'x';
-                        my $fix = join '|', @fix;
+                        my $fix = join q{|}, @fix;
                         push @fixer, $fix;
                     }
                     my $newbrd = join qq{\n}, @fixer;
@@ -1613,7 +1602,7 @@ sub fixcontrol {
         }
     }
     my $bdbrds = q{};
-    our ( %cat, %board, %subboard );
+    our (%cat);
     require "$boardsdir/forum.master";
     my @newbrds = ();
     while ( my ( $key, $value ) = each %cat ) {
@@ -1661,7 +1650,7 @@ sub fixcontrol {
     push @newbrds, 'admin';
     if ( -e qq~$convvardir/boardconv.txt~ ) {
         require qq~$convvardir/boardconv.txt~;
-        for my $i (@newbrds) {
+        foreach my $i (@newbrds) {
             my $x = $i;
             ${$x}{'mypic'} = q{};
             if ( ${$x}{'pic'} ) { ${$x}{'mypic'} = 'y'; }
@@ -1683,7 +1672,9 @@ sub fixcontrol {
                     ${$x}{'brdpassw'},      ${$x}{'brdrss'}
                 ];
                 if ( ${$x}{'pic'} ) {
-                    if ( $i eq 'admin' && ${$newcontrol{$i}}[0] ne q{} ) { $i = 'admin_fix'; }
+                    if ( $i eq 'admin' && ${ $newcontrol{$i} }[0] ne q{} ) {
+                        $i = 'admin_fix';
+                    }
                     $brdpix .= qq~$i|Forum default|${$x}{'pic'}\n~;
                 }
             }
@@ -1730,7 +1721,11 @@ sub fixcontrol {
                 ];
 
                 if ($pic) {
-                    if ( $oldboard eq 'admin'  && ${$newcontrol{$oldboard}}[0] ne q{} ) { $oldboard = 'admin_fix'; }
+                    if ( $oldboard eq 'admin'
+                        && ${ $newcontrol{$oldboard} }[0] ne q{} )
+                    {
+                        $oldboard = 'admin_fix';
+                    }
                     $brdpix .= qq~$oldboard|Forum default|$pic\n~;
                 }
             }
@@ -1738,19 +1733,19 @@ sub fixcontrol {
     }
     $newcontrol{'admin_fix'} = $newcontrol{'admin'};
     delete $newcontrol{'admin'};
-    if (${$newcontrol{'admin_fix'}}[0] eq q{} ) {
+    if ( ${ $newcontrol{'admin_fix'} }[0] eq q{} ) {
         delete $newcontrol{'admin_fix'};
     }
     our ( %totals, %newtotals );
     require "$boardsdir/forum.totals";
-    for my $i ( keys %totals ) {
+    foreach my $i ( keys %totals ) {
         if ( exists $winbrds{$i} || $i eq 'admin' ) {
             $newtotals{$i} = $totals{$i};
         }
     }
     $newtotals{'admin_fix'} = $newtotals{'admin'};
     delete $newtotals{'admin'};
-    if (${$newtotals{'admin_fix'}}[0] eq q{} ) {
+    if ( ${ $newtotals{'admin_fix'} }[0] eq q{} ) {
         delete $newtotals{'admin_fix'};
     }
     %totals = %newtotals;
@@ -1787,7 +1782,7 @@ sub fixcontrol {
     my $adminbrd = q{};
     foreach my $fix ( keys %newcontrol ) {
         push @{ $hash{ lc $fix } }, $fix;
-        if ( $fix eq 'admin_fix' && ${$newcontrol{$fix}}[0] ne q{} ) {
+        if ( $fix eq 'admin_fix' && ${ $newcontrol{$fix} }[0] ne q{} ) {
             $adminbrd = $conv2x_txt{'adminbrd'};
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
@@ -1796,7 +1791,7 @@ sub fixcontrol {
             close $BRDFIX or croak 'cannot close BRDFIX';
         }
     }
-    for my $key ( keys %hash ) {
+    foreach my $key ( keys %hash ) {
         if ( scalar @{ $hash{$key} } > 1 ) {
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
@@ -1853,17 +1848,17 @@ sub fixnopost {
             {
                 my $grptitle = ${ $grp_nopost{$i} }[0];
 
-                for my $key ( keys %catinfo ) {
+                foreach my $key ( keys %catinfo ) {
                     my ( $catname, $catperms, $catcol ) = @{ $catinfo{$key} };
                     my @newperm = ();
-                    for my $theperm ( split /,\s/xsm, $catperms ) {
+                    foreach my $theperm ( split /,\s/xsm, $catperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
                         push @newperm, $theperm;
                     }
                     my $newperm = join q~/~, @newperm;
                     $catinfo{$key} = [ $catname, $newperm, $catcol ];
                 }
-                for my $key ( keys %board ) {
+                foreach my $key ( keys %board ) {
                     my ( $boardname, $boardperms, $boardshow ) =
                       @{ $board{$key} };
                     my @newperm = ();
@@ -1875,28 +1870,28 @@ sub fixnopost {
                     $board{$key} = [ $boardname, $newperm, $boardshow ];
                 }
                 my @newmodgroups = ();
-                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[4] ) {
+                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[4] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newmodgroups, $theperm;
                 }
                 my $newmodgroups = join q~/~, @newmodgroups;
 
                 my @newtopicperms = ();
-                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[5] ) {
+                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[5] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newtopicperms, $theperm;
                 }
                 my $newtopicperms = join q~/~, @newtopicperms;
 
                 my @newreplyperms = ();
-                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[6] ) {
+                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[6] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newreplyperms, $theperm;
                 }
                 my $newreplyperms = join q~/~, @newreplyperms;
 
                 my @newpollperms = ();
-                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[7] ) {
+                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[7] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newpollperms, $theperm;
                 }
@@ -1949,7 +1944,7 @@ sub movemessages {
 
     my $totalbdr  = @boards;
     my @threadext = qw(mail poll polled);
-    for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
+    foreach my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
         my $boardname = $boards[$next_board];
         if ( $boardname eq 'admin' ) {
             $boardname = 'admin_fix';
@@ -1961,7 +1956,7 @@ sub movemessages {
         chomp @brdmessageline;
         my $totalmess = @brdmessageline;
 
-        for my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
+        foreach my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
             my @thread = split /[|]/xsm, $brdmessageline[$tops];
             my $thread = $thread[0];
             if (   -e "$convdatadir/$thread.txt"
@@ -1994,8 +1989,8 @@ sub movemessages {
 
                 my @repliers;
                 if ( $ctb[0] =~ /###/xsm ) {
-                    for (@ctb) {
-                        if ( $_ =~ /^'(.*?)',"(.*?)"/xsm ) {
+                    foreach my $i (@ctb) {
+                        if ( $i =~ /^'(.*?)',"(.*?)"/xsm ) {
                             ${$thread}{$1} = $2;
                         }
                     }
@@ -2003,19 +1998,19 @@ sub movemessages {
                 }
                 else {    # old format
                     chomp @ctb;
-                    for my $cnt ( 0 .. 6 ) {
+                    foreach my $cnt ( 0 .. 6 ) {
                         ${$thread}{ $tag[$cnt] } = $ctb[$cnt];
                     }
                     @repliers = ();
-                    for my $repcnt ( 7 .. $#ctb ) {
+                    foreach my $repcnt ( 7 .. $#ctb ) {
                         push @repliers, $ctb[$repcnt];
                     }
                 }
-                my $msgdat = ctbtime( ${$thread}{'lastpostdate'} );
+                my $msgdat = ctbtime();
                 my $newctb =
 qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
-                for (@tag) {
-                    $newctb .= qq~$_ => "${$thread}{$_}",\n~;
+                foreach my $i (@tag) {
+                    $newctb .= qq~$i => "${$thread}{$i}",\n~;
                 }
                 $newctb .= qq~);\n\n1;\n~;
                 open my $UPDATE_CTB, '>', "$datadir/$thread.ctb"
@@ -2024,7 +2019,7 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
                   or croak "$croak{'print'} UPDATE_CTB";
                 close $UPDATE_CTB or croak 'cannot close UPDATE_CTB';
 
-                for my $ext (@threadext) {
+                foreach my $ext (@threadext) {
                     if ( -e "$convdatadir/$thread.$ext" ) {
                         open $MSGFILE, '<',
                           "$convdatadir/$thread.$ext"
@@ -2048,11 +2043,11 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
                                 $thethread{$key} = $value;
                             }
                             my $prnthread = q{};
-                            foreach ( keys %thethread ) {
+                            foreach my $key ( keys %thethread ) {
                                 my ( $memlang, $memtype, $memview ) =
-                                  split /[|]/xsm, $thethread{$_};
+                                  split /[|]/xsm, $thethread{$key};
                                 $prnthread .=
-"\$thethread{'$_'} = [ '$memlang', $memtype, $memview ];\n";
+"\$thethread{'$key'} = [ '$memlang', $memtype, $memview ];\n";
                             }
                             $prnthread .= "\n1;\n";
                             open $MSGFILE, '>',
@@ -2099,7 +2094,7 @@ qq~### ThreadID: $thread, LastModified: $msgdat ###\n\n%$thread = (\n~;
 sub movevariables {
     my @mvvar = ( 'Movedthreads.pm', 'registration.log', );
     my @oldvar = ();
-    for my $varfl (@mvvar) {
+    foreach my $varfl (@mvvar) {
         open my $OLDVAR, '<', "$convvardir/$varfl"
           or croak 'cannot open OLDVAR';
         @oldvar = <$OLDVAR>;
@@ -2239,8 +2234,8 @@ EOF
     close $OLDVAR or croak 'cannot close OLDVAR';
     chomp @mybots;
     my $newbots = qq~%botname = (\n~;
-    for ( sort @mybots ) {
-        my @newbots = split /[|]/xsm, $_;
+    foreach my $i ( sort @mybots ) {
+        my @newbots = split /[|]/xsm, $i;
         $newbots .= qq~'$newbots[0]' => '$newbots[1]',\n~;
     }
     $newbots .= qq~);\n\n1;\n~;
@@ -2284,7 +2279,7 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
     if ( -e "$convvardir/eventcal.db" ) {
         open $OLDVAR, '<', "$convvardir/eventcal.db"
           or croak 'cannot open OLDVAR';
-        my @oldvar = <$OLDVAR>;
+        @oldvar = <$OLDVAR>;
         close $OLDVAR or croak 'cannot close OLDVAR';
         chomp @oldvar;
         my (
@@ -2295,7 +2290,7 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
         my $nsa = q{};
         my %event;
 
-        for my $eventline (@oldvar) {
+        foreach my $eventline (@oldvar) {
             my @eventline = split /[|]/xsm, $eventline;
             if ( scalar(@eventline) < 9 ) {
                 (
@@ -2324,9 +2319,9 @@ qq~\$calbday{'$user_bdname'} = ['$user_bdyear', '$user_bdmon', '$user_bdday', '$
             ];
         }
         my $prncal = q{};
-        foreach ( keys %event ) {
-            my $event = join q{', '}, @{ $event{$_} };
-            $prncal .= qq~\$event{'$_'} = ['$event'];\n~;
+        foreach my $key ( keys %event ) {
+            my $event = join q{', '}, @{ $event{$key} };
+            $prncal .= qq~\$event{'$key'} = ['$event'];\n~;
         }
         $prncal .= qq~\n1;\n~;
         open my $FILE, '>', "$vardir/Eventcal.pm"
@@ -2353,13 +2348,12 @@ sub convert_settings {
     }
     my $mypl = 0;
     if ( $setset == 1 ) {
-        require Time::gmtime;
         my $time = time;
         require $setfile;
         if ($ip_banlist) {
             my @i_ban = ( split /,/xsm, $ip_banlist );
             chomp @i_ban;
-            for my $j (@i_ban) {
+            foreach my $j (@i_ban) {
                 open my $BAN, '>>', "$vardir/banlist.txt"
                   or croak 'cannot open BAN';
                 print {$BAN} qq~I|$j|$time|import|p\n~
@@ -2370,7 +2364,7 @@ sub convert_settings {
         if ($email_banlist) {
             my @e_ban = ( split /,/xsm, $email_banlist );
             chomp @e_ban;
-            for my $j (@e_ban) {
+            foreach my $j (@e_ban) {
                 open my $BAN, '>>', "$vardir/banlist.txt"
                   or croak 'cannot open BAN';
                 print {$BAN} qq~E|$j|$time|import|p\n~
@@ -2381,7 +2375,7 @@ sub convert_settings {
         if ($user_banlist) {
             my @u_ban = ( split /,/xsm, $user_banlist );
             chomp @u_ban;
-            for my $j (@u_ban) {
+            foreach my $j (@u_ban) {
                 open my $BAN, '>>', "$vardir/banlist.txt"
                   or croak 'cannot open BAN';
                 print {$BAN} qq~U|$j|$time|import|p\n~
@@ -2502,8 +2496,8 @@ sub convert_settings {
         my @iplook = <$OLDVAR>;
         close $OLDVAR or croak 'cannot close OLDVAR';
         chomp @iplook;
-        for (@iplook) {
-            my ( $iplookup_name, $iplookup_url ) = split /[|]/xsm, $_;
+        foreach my $i (@iplook) {
+            my ( $iplookup_name, $iplookup_url ) = split /[|]/xsm, $i;
             $iplookup .= join q{}, qq~'$iplookup_name' => "$iplookup_url",\n~;
         }
     }
@@ -2587,6 +2581,19 @@ EOF
     our $cal_admax_messlen = isempty( $AdMaxCalMessLen,  300 );
     our $show_event_cal    = isempty( $Show_EventCal,    0 );
     our $event_todaycolor  = isempty( $Event_TodayColor, '#ff0000' );
+    our $gzcomp = 0;
+    our $fontsizemin = int( ( $fontsizemin * 100 ) / 12 );
+    our $fontsizemax = int( ( $fontsizemax * 100 ) / 12 );
+    our $ip_lookup = isempty( $ipLookup, 1 );
+    our $maxdays          = $mymaxdays         || 365;
+    our $maxdaysattach    = $mymaxdaysattach   || 0;
+    our $pm_maxdaysattach = $mypmMaxDaysAttach || 0;
+    our $maxsizeattach    = $mymaxsizeattach   || 0;
+    our $pm_maxsizeattach = $mypmMaxSizeAttach || 0;
+    our $backupdir        = q{};
+    our $backupprogbin    = q{};
+    our $backupmethod     = q{};
+    our $compressmethod   = 'none';
     $fix_avatar_img_size   = isempty( $fix_avatar_img_size,   0 );
     $max_avatar_width      = isempty( $max_avatar_width,      65 );
     $max_avatar_height     = isempty( $max_avatar_height,     65 );
@@ -2599,7 +2606,6 @@ EOF
     $enabletz              = isempty( $enabletz,              0 );
     $default_tz            = isempty( $default_tz,            'UTC' );
     $screenlogin           = isempty( $screenlogin,           1 );
-    our $gzcomp = 0;
     $ip_banlist           = q{};
     $email_banlist        = q{};
     $user_banlist         = q{};
@@ -2609,22 +2615,11 @@ EOF
     $show_online_ip_admin = isempty( $show_online_ip_admin, 1 );
     $show_online_ip_gmod  = isempty( $show_online_ip_gmod, 1 );
     $show_online_ip_fmod  = isempty( $show_online_ip_fmod, 1 );
-    our $fontsizemin = int( ($fontsizemin * 100) / 12);                                 # Minimum Allowed Font height in pixels
-    our $fontsizemax = int( ($fontsizemax * 100) / 12);                                 # Maximum Allowed Font height in pixels
-    our $ip_lookup = isempty( $ipLookup, 1 );
     $bm_subcut = isempty( $bm_subcut, 50 );
-    our $maxdays          = $mymaxdays         || 365;
-    our $maxdaysattach    = $mymaxdaysattach   || 0;
-    our $pm_maxdaysattach = $mypmMaxDaysAttach || 0;
-    our $maxsizeattach    = $mymaxsizeattach   || 0;
-    our $pm_maxsizeattach = $mypmMaxSizeAttach || 0;
-    our $backupdir        = q{};
-    our $backupprogbin    = q{};
-    our $backupmethod     = q{};
-    our $compressmethod   = 'none';
+
     my @adv =
       qw( home help search ml admin revalidatesession login register guestpm mycenter logout eventcal birthdaylist );
-    $settings{'advanced_tabs'} = @adv;
+    $settings{'advanced_tabs'} = [@adv];
     our %templateset = (
         'Forum default' => [
             'default', 'default', 'default', 'default', 'default', 'default',
@@ -2931,7 +2926,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
 
     $yyuname = q{};
     my ($yycopyin);
-    for my $i ( 0 .. $#yytemplate ) {
+    foreach my $i ( 0 .. $#yytemplate ) {
         my $curline = $yytemplate[$i];
         if ( !$yycopyin && $curline =~ m/\Q{yabb copyright}\E/xsm ) {
             $yycopyin = 1;
@@ -2948,7 +2943,7 @@ qq~$months[$newmonth] $newday, $newyear $maintxt{'107'} $newhour:$newminute~;
     }
     if ( $yycopyin == 0 ) {
         $output =
-qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
     $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
@@ -3016,7 +3011,7 @@ sub checkattach {
             push @{ $hashlng{$chkfile} }, length $chkfile;
         }
     }
-    for my $key ( keys %hashatt ) {
+    foreach my $key ( keys %hashatt ) {
         if ( scalar @{ $hashatt{$key} } > 1 ) {
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
@@ -3031,7 +3026,7 @@ sub checkattach {
             }
         }
     }
-    for my $key ( keys %hashlng ) {
+    foreach my $key ( keys %hashlng ) {
         if ( scalar @{ $hashlng{$key} } > 1 ) {
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
@@ -3064,7 +3059,7 @@ sub checkattach {
             push @{ $hashpmlng{$chkfile} }, length $chkfile;
         }
     }
-    for my $key ( keys %hashpmatt ) {
+    foreach my $key ( keys %hashpmatt ) {
         if ( scalar @{ $hashpmatt{$key} } > 1 ) {
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
@@ -3083,7 +3078,7 @@ sub checkattach {
         }
     }
     my $chkpmatt2 = q{};
-    for my $key ( keys %hashpmlng ) {
+    foreach my $key ( keys %hashpmlng ) {
         if ( scalar @{ $hashpmlng{$key} } > 1 ) {
             open my $BRDFIX, '>>', "$htmldir/tmp/datacheck.txt"
               or croak 'cannot open BRDFIX';
@@ -3227,13 +3222,14 @@ sub getattfiles {
 <h1>$conv2x_txt{'atttitle'}</h1>
 <p>~ or croak 'cannot print top';
     my $j = int( $#files / $lim );
-    for my $k ( 0 .. $j ) {
+    foreach my $k ( 0 .. $j ) {
         print qq~Batch $k<br />\n~ or croak 'cannot print line';
         my $l = $k * $lim;
-        for my $i ( $l .. ( $l + $lim ) ) {
+        foreach my $i ( $l .. ( $l + $lim ) ) {
             if ( $files[$i] && -e "$convattachdir/$files[$i]" ) {
                 copy "$convattachdir/$files[$i]", "$uploaddir/$files[$i]";
-                print "$files[$i] $conv2x_txt{'done'}<br />\n";
+                print "$files[$i] $conv2x_txt{'done'}<br />\n"
+                  or croak 'cannot print line';
             }
         }
     }
@@ -3276,13 +3272,14 @@ sub getpmattfiles {
 <h1>$conv2x_txt{'pmtitle'}</h1>
 <p>~ or croak 'cannot print top';
     my $j = int( $#files / $lim );
-    for my $k ( 0 .. $j ) {
+    foreach my $k ( 0 .. $j ) {
         print qq~Batch $k<br />\n~ or croak 'cannot print line';
         my $l = $k * $lim;
-        for my $i ( $l .. ( $l + $lim ) ) {
+        foreach my $i ( $l .. ( $l + $lim ) ) {
             if ( -e "$convpmattachdir/$files[$i]" ) {
                 copy "$convpmattachdir/$files[$i]", "$pmuploaddir/$files[$i]";
-                print "$files[$i] $conv2x_txt{'done'}<br />\n";
+                print "$files[$i] $conv2x_txt{'done'}<br />\n"
+                  or croak 'cannot print line';
             }
         }
     }
@@ -3308,6 +3305,7 @@ sub getlang {
         }
     }
     else { load_language('Convert'); }
+    return;
 }
 
 1;

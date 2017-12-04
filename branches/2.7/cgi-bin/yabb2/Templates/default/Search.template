@@ -59,10 +59,10 @@ $mysearch_template3 = qq~
             </div>
             <div style="padding: 4px 0;">
             <select name="userkind" id="userkind">
-                <option value="any">$search_txt{'577'}</option>
+                <option value="any" selected="selected">$search_txt{'577'}</option>
                 <option value="starter">$search_txt{'186'}</option>
                 <option id="poster" value="poster">$search_txt{'187'}</option>
-                <option id="noguests" value="noguests" selected="selected">$search_txt{'346'}</option>
+                <option id="noguests" value="noguests">$search_txt{'346'}</option>
                 <option value="onlyguests">$search_txt{'572'}</option>
             </select>
             </div> ~;

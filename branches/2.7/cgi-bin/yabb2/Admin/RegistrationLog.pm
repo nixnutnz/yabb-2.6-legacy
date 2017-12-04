@@ -31,12 +31,12 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ##  languages ##
 our (
-    $admin_reason,           $emailcharset,          $imsubject,
-    $imtext,                 $instantapprovedemail,  $instantrejectedemail,
-    $pwinstantapprovedemail, $pwreviewapprovedemail, $reviewapprovedemail,
-    $reviewrejectedemail,    $send_welcomeim,        %actkey,
-    %admin_img,              %admin_txt,             %croak,
-    %mailreg_txt,            %prereg_txt,            %register_txt,
+    $admin_reason,         $emailcharset,           $instantapprovedemail,
+    $instantrejectedemail, $pwinstantapprovedemail, $pwreviewapprovedemail,
+    $reviewapprovedemail,  $reviewrejectedemail,    $send_welcomeim,
+    %actkey,               %admin_img,              %admin_txt,
+    %croak,                %mailreg_txt,            %prereg_txt,
+    %register_txt,
 );
 ## paths ##
 our ( $adminurl, $memberdir, $scripturl, $vardir, $yyhtml_root, $langdir );
@@ -76,23 +76,23 @@ sub view_reglog {
         @logentries = reverse @logentries;
 
         our ($FILE);
-        fopen( 'FILE', '<', 'Variables/Memberlist.pm' )
+        fopen( 'FILE', '<', "$vardir/Memberlist.pm" )
           or croak "$croak{'open'} FILE";
         @memberlist = <$FILE>;
         fclose('FILE') or croak "$croak{'close'} FILE";
 
         # If a pre-registration list exists load it
-        if ( -e 'Variables/meminactive.db' ) {
+        if ( -e "$vardir/meminactive.db" ) {
             our ($INACT);
-            fopen( 'INACT', '<', 'Variables/meminactive.db' )
+            fopen( 'INACT', '<', "$vardir/meminactive.db" )
               or croak "$croak{'open'} INACT";
             @reglist = <$INACT>;
             fclose('INACT') or croak "$croak{'close'} INACT";
         }
 
         # grab pre regged user activationkey for admin activation
-        for (@reglist) {
-            my ( undef, $actcode, $regmember, undef ) = split /[|]/xsm, $_, 4;
+        foreach my $i (@reglist) {
+            my ( undef, $actcode, $regmember, undef ) = split /[|]/xsm, $i, 4;
             $actkey{$regmember} = $actcode;
         }
     }
@@ -127,7 +127,7 @@ qq~<a href="$adminurl?action=$action;newstart=0" class="norm">1</a>&nbsp;...&nbs
             $pageindex =
 qq~<a href="$adminurl?action=$action;newstart=0" class="norm">1</a>&nbsp;~;
         }
-        for my $counter ( $startpage .. ( $endpage - 1 ) ) {
+        foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
             if ( $counter % 25 == 0 ) {
                 $pageindex .=
                   $newstart == $counter
@@ -160,7 +160,7 @@ qq~<a href="$adminurl?action=$action;newstart=$lastptn">$lastpn</a>~;
         @logentries = splice @logentries, $newstart, 25;
     }
     my $loglist = q{};
-    for my $logentry (@logentries) {
+    foreach my $logentry (@logentries) {
         chomp $logentry;
         my ( $logtime, $status, $userid, $actid, $ipadd ) =
           split /[|]/xsm, $logentry;
@@ -300,7 +300,7 @@ qq~- <a href="$adminurl?action=ipban_err;ban=$ipadd;lev=p;return=view_reglog">$a
 sub check_member {
     my ($inp) = @_;
     my $is_member = 0;
-    for my $lstmember (@memberlist) {
+    foreach my $lstmember (@memberlist) {
         chomp $lstmember;
         my ( $listmember, undef ) = split /\t/xsm, $lstmember, 2;
         if ( $inp eq $listmember ) {
@@ -320,19 +320,19 @@ sub clean_reglog {
     my @reglist = <$REG>;
     fclose('REG') or croak "$croak{'close'} REG";
     ## depending on registration type only leave uncompleted entries in the log for completion and remove the failed or completed ones ##
-    for (@reglist) {
-        my ( undef, $regstatus, $reguser, undef ) = split /[|]/xsm;
+    foreach my $i (@reglist) {
+        my ( undef, $regstatus, $reguser, undef ) = split /[|]/xsm, $i;
         if (   ( $regtype == 1 || $regtype == 2 )
             && $regstatus eq 'N'
             && -e "$memberdir/$reguser.pre" )
         {
-            push @outlist, $_;
+            push @outlist, $i;
         }
         if (   $regtype == 1
             && $regstatus eq 'W'
             && -e "$memberdir/$reguser.wait" )
         {
-            push @outlist, $_;
+            push @outlist, $i;
         }
     }
     fopen( 'REG', '>', "$vardir/registration.log", 1 )
@@ -353,15 +353,15 @@ sub kill_registration {
     if ($do_scramble_id) { $deluser = decloak($deluser); }
 
     our ($INFILE);
-    fopen( 'INFILE', '<', 'Variables/meminactive.db' )
+    fopen( 'INFILE', '<', "$vardir/meminactive.db" )
       or croak "$croak{'open'} INFILE";
     my @actlist = <$INFILE>;
     fclose('INFILE') or croak "$croak{'close'} INFILE";
 
     # check if user is in pre-registration and check activation key
     my (@outlist);
-    for (@actlist) {
-        my ( $regtime, undef, $regmember, undef ) = split /[|]/xsm, $_, 4;
+    foreach my $i (@actlist) {
+        my ( $regtime, undef, $regmember, undef ) = split /[|]/xsm, $i, 4;
         if ( $deluser eq $regmember ) {
             $changed = 1;
             unlink "$memberdir/$regmember.pre";
@@ -378,14 +378,14 @@ sub kill_registration {
 
             # update non activate user list
             # write valid registration to the list again
-            push @outlist, $_;
+            push @outlist, $i;
         }
     }
     if ($changed) {
 
         # re-open inactive list for update if changed
         our ($OUTFILE);
-        fopen( 'OUTFILE', '>', 'Variables/meminactive.db', 1 )
+        fopen( 'OUTFILE', '>', "$vardir/meminactive.db", 1 )
           or croak "$croak{'open'} OUTFILE";
         print {$OUTFILE} @outlist or croak "$croak{'print'} OUTFILE";
         fclose('OUTFILE') or croak "$croak{'close'} OUTFILE";
@@ -582,9 +582,9 @@ sub reject_registration {
 
     if ($do_scramble_id) { $deluser = decloak($deluser); }
     my (@aprlist);
-    if ( -e 'Variables/memapprove.db' && $regtype == 1 ) {
+    if ( -e "$vardir/memapprove.db" && $regtype == 1 ) {
         our ($APR);
-        fopen( 'APR', '<', 'Variables/memapprove.db' )
+        fopen( 'APR', '<', "$vardir/memapprove.db" )
           or croak "$croak{'open'} APR";
         @aprlist = <$APR>;
         fclose('APR') or croak "$croak{'close'} APR";
@@ -645,16 +645,16 @@ sub reject_registration {
         ## remove the registration data for the rejected user ##
         unlink "$memberdir/$deluser.wait";
         my (@aprchnglist);
-        for (@aprlist) {
-            my ( undef, undef, $regmember, undef ) = split /[|]/xsm, $_, 4;
+        foreach my $i (@aprlist) {
+            my ( undef, undef, $regmember, undef ) = split /[|]/xsm, $i, 4;
             if ( $regmember ne $deluser ) {
-                push @aprchnglist, $_;
+                push @aprchnglist, $i;
             }
         }
 
         # update approval user list
         our ($APR);
-        fopen( 'APR', '>', 'Variables/memapprove.db' )
+        fopen( 'APR', '>', "$vardir/memapprove.db" )
           or croak "$croak{'open'} APR";
         print {$APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose('APR') or croak "$croak{'close'} APR";
@@ -683,8 +683,8 @@ sub approve_registration {
     ## load the list with waiting approvals ##
     my @aprlist;
     our ($APR);
-    if ( -e 'Variables/memapprove.db' ) {
-        fopen( 'APR', '<', 'Variables/memapprove.db' )
+    if ( -e "$vardir/memapprove.db" ) {
+        fopen( 'APR', '<', "$vardir/memapprove.db" )
           or croak "$croak{'open'} APR";
         @aprlist = <$APR>;
         fclose('APR') or croak "$croak{'close'} APR";
@@ -692,10 +692,10 @@ sub approve_registration {
 
     my (@aprchnglist);
     my ( $foundmember, $foundpassword );
-    for (@aprlist) {
+    foreach my $i (@aprlist) {
         my ( undef, undef, $regmember, $regpassword ) = split /[|]/xsm;
         if ( $regmember ne $apruser ) {
-            push @aprchnglist, $_;
+            push @aprchnglist, $i;
         }
         else {
             $foundmember   = $regmember;
@@ -724,7 +724,8 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         ## user is approved, so let him/her in ##
         rename "$memberdir/$apruser.wait", "$memberdir/$apruser.vars";
         member_index( 'add', $apruser );
-        { no strict qw(refs);
+        {
+            no strict qw(refs);
             if ( ${ $uid . $apruser }{'bday'}
                 && ( $show_event_birthdays || $birthday_list_show ) )
             {
@@ -733,7 +734,7 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         }
 
         # update approval user list
-        fopen( 'APR', '>', 'Variables/memapprove.db' )
+        fopen( 'APR', '>', "$vardir/memapprove.db" )
           or croak "$croak{'open'} APR";
         print {$APR} @aprchnglist or croak "$croak{'print'} APR";
         fclose('APR') or croak "$croak{'close'} APR";
@@ -828,21 +829,21 @@ qq~<span class="important"><b>$prereg_txt{'email_taken'} <i>${$uid.$apruser}{'em
         if ($send_welcomeim) {
             my $messageid = $BASETIME . $PROCESS_ID;
             my $imsubject = $register_txt{'imsubject'};
-            my $imtext = $register_txt{'imtext'};
+            my $imtext    = $register_txt{'imtext'};
             if ( -e "$langdir/$language/welcome.txt" ) {
                 our ($WELL);
-                fopen( 'WELL', '<', "$langdir/$language/welcome.txt");
+                fopen( 'WELL', '<', "$langdir/$language/welcome.txt" );
                 my $txt = <$WELL>;
                 fclose('WELL');
-                ($imsubject, $imtext) = split /[|]/xsm, $txt;
+                ( $imsubject, $imtext ) = split /[|]/xsm, $txt;
                 chomp $imtext;
             }
+            my $newpost =
+"$messageid|$sendname|$apruser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n";
             our ($INBOX);
             fopen( 'INBOX', '>', "$memberdir/$apruser.msg" )
               or croak "$croak{'open'} INBOX";
-            print {$INBOX}
-"$messageid|$sendname|$apruser|||$imsubject|$date|$imtext|$messageid|0|$ENV{'REMOTE_ADDR'}|s|u||\n"
-              or croak "$croak{'print'} INBOX";
+            print {$INBOX} $newpost or croak "$croak{'print'} INBOX";
             fclose('INBOX') or croak "$croak{'close'} INBOX";
         }
     }

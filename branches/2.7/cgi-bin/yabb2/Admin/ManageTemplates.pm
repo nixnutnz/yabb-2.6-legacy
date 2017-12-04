@@ -82,8 +82,6 @@ load_language('Admin');
 load_language('Templates');
 load_language('Menu');
 
-require Admin::AdminSubs;
-
 sub modify_template {
     is_admin_or_gmod();
     my @tempnames =
@@ -99,7 +97,7 @@ sub modify_template {
     my $templs = q{};
     my (@templates);
 
-    for my $file (@temptemplates) {
+    foreach my $file (@temptemplates) {
         if ( -e "$templatesdir/$file/$file.html" ) {
             push @templates, $file;
         }
@@ -108,7 +106,7 @@ sub modify_template {
         }
     }
 
-    for my $name ( sort @templates ) {
+    foreach my $name ( sort @templates ) {
         my $selected = q{};
         my ($cmp_templatefile);
         if ( -e "$templatesdir/$name/$name.html" ) {
@@ -130,7 +128,7 @@ qq~<option value="$cmp_templatefile"$selected>$cmp_templatefile</option>\n~;
             $selected = q{};
         }
 
-        for my $tmp (@tempnames) {
+        foreach my $tmp (@tempnames) {
             my $tmpnm = lc $tmp;
             {
                 no strict qw(refs);
@@ -153,7 +151,7 @@ qq~<option value="$name/$ext.template"$selected>$name/$ext</option>\n~;
       or croak "$croak{'open'} TMPL";
     $line = do { local $INPUT_RECORD_SEPARATOR = undef; <$TMPL> };
     fclose('TMPL') or croak "$croak{'close'} TMPL";
-    for my $x ( 0 .. ( length($line) - 1 ) ) {
+    foreach my $x ( 0 .. ( length($line) - 1 ) ) {
         $fulltemplate .=
           q{&#} . sprintf( q{%03d}, ord substr $line, $x, 1 ) . q{;};
     }
@@ -239,7 +237,7 @@ sub modify_skin {
 
     my $templatesel = q{};
     my $akttemplate = $thistemplate;
-    for my $curtemplate (
+    foreach my $curtemplate (
         sort { $templateset{$a} cmp $templateset{$b} }
         keys %templateset
       )
@@ -326,7 +324,7 @@ sub modify_skin {
     my $selected = q{};
     my $viewcss  = q{};
     my $viewimg  = q{};
-    for my $file ( sort @styles ) {
+    foreach my $file ( sort @styles ) {
 
         if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
             my ( $name, $exta, $bak ) = split /[.]/xsm, $file;
@@ -367,7 +365,7 @@ sub modify_skin {
     closedir TMPLDIR;
 
     my (@templates);
-    for my $tmpfile (@temptemplates) {
+    foreach my $tmpfile (@temptemplates) {
         if ( -d "$templatesdir/$tmpfile" ) {
             push @templates, $tmpfile;
         }
@@ -384,12 +382,12 @@ sub modify_skin {
     my $fulltemplate      = q{};
     my ( $viewhead, $viewboard, $viewmessage, $viewdisplay, $viewmycenter );
 
-    for my $name ( sort @templates ) {
+    foreach my $name ( sort @templates ) {
         opendir TMPLSDIR, "$templatesdir/$name";
         my @templatefiles = readdir TMPLSDIR;
         closedir TMPLSDIR;
 
-        for my $file (@templatefiles) {
+        foreach my $file (@templatefiles) {
             if ( $file eq 'index.html' ) { next; }
             my $thefile = qq~$name/$file~;
             my ( $section, $extb ) = split /[.]/xsm, $file;
@@ -573,7 +571,7 @@ s/\Q<a href="http:\/\/validator.w3.org\/feed\/" target="_blank">\E.+?<\/a>//gxsm
     $fulltemplate =~
 s/\Q<a href="http:\/\/jigsaw.w3.org\/css-validator\/" target="_blank">\E.+?(?:<\/a>)//gxsm;
     $fulltemplate =~ s/[\r\n]//gxsm;
-    to_temphtml($fulltemplate);
+    $fulltemplate = to_html($fulltemplate);
 
     $yymain .= qq~
 <form action="$adminurl?action=modskin2" name="selskin" method="post" style="display: inline;" accept-charset="$yymycharset">
@@ -747,7 +745,7 @@ document.onload = updateTemplate();
     closedir TMPLDIR;
     my $newtempls = q{};
 
-    for my $name ( sort @newtemplates ) {
+    foreach my $name ( sort @newtemplates ) {
         if (   $name ne q{.}
             && $name ne q{..}
             && $name !~ m/[.]/xsm
@@ -809,7 +807,7 @@ document.onload = updateTemplate();
     closedir TMPLGDIR;
     my $newgtempls = q{};
 
-    for my $name ( sort @newtemplates ) {
+    foreach my $name ( sort @newtemplates ) {
         if ( $name !~ m/[.]/xsm ) {
             $newgtempls .=
               qq~                         <option value="$name">$name</option>
@@ -956,7 +954,7 @@ sub board_templ {
         $themostbotsdate, $themostuser,      $themostmemb,
         $themostguest,    $themostbots,
     );
-    if ( -e ("$vardir/mostlog.log") ) {
+    if ( -e "$vardir/mostlog.log" ) {
         our ($MOSTUSERS);
         fopen( 'MOSTUSERS', '<', "$vardir/mostlog.log" )
           or croak "$croak{'open'} MOSTUSERS";
@@ -1010,7 +1008,7 @@ qq~<div class="small" style="float: left; width: 49%;"><span style="color: $colo
         $grpcolors .=
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
     }
-    for my $nopostamount ( sort { $a <=> $b } keys %grp_nopost ) {
+    foreach my $nopostamount ( sort { $a <=> $b } keys %grp_nopost ) {
         ( $title, undef, undef, $color, $noshow ) =
           @{ $grp_nopost{$nopostamount} };
         if ( $color && $noshow != 1 ) {
@@ -1018,7 +1016,7 @@ qq~<div class="small" style="float: left; width: 49%;"><span style="color: $colo
 qq~<div class="small" style="float: left; width: 49%;"><span style="color: $color;"><b>lllll</b></span> $title</div>~;
         }
     }
-    for my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
+    foreach my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
         ( $title, undef, undef, $color, $noshow ) = @{ $grp_post{$postamount} };
         if ( $color && $noshow != 1 ) {
             $grpcolors .=
@@ -1072,7 +1070,7 @@ qq~$boardindex_txt{'791'} <select style="font-size: 7pt;"><option>--</option><op
       qq~ <img src="$imagesdir/boards.png" alt="$tempcurboard" />~;
 
     $boardviewers ||= q{};
-    for my $i ( 1 .. 2 ) {
+    foreach my $i ( 1 .. 2 ) {
         my $templateblock = $boardblock;
         $templateblock =~ s/\Q{yabb new}\E/$tempnew/gxsm;
         $templateblock =~
@@ -1472,7 +1470,7 @@ qq~<img src="$facesurl/elmerfudd.gif" alt="" style="max-width: 50px; max-height:
     my ($tempoutblock);
     my $postcol = 4;
     my $online  = qq~<span class="useronline">$maintxt{'60'}</span>~;
-    for my $i ( 0 .. 1 ) {
+    foreach my $i ( 0 .. 1 ) {
         my $outblock        = $messageblock;
         my $posthandelblock = $posthandellist;
         my $contactblock    = $contactlist;
@@ -1910,9 +1908,9 @@ sub upload_file2 {
         $spam_hits_left_count, $fixext );
     my $myfiledir = $file_directory;
     if ($loc) {
-        $file_directory = qq~./Templates/$file_directory~;
+        $file_directory = "$templatesdir/$file_directory";
     }
-    else { $file_directory = qq~$htmldir/Templates/Forum/$file_directory~; }
+    else { $file_directory = "$htmldir/Templates/Forum/$file_directory"; }
 
     load_language('FA');
     require Sources::SpamCheck;
@@ -1924,8 +1922,8 @@ sub upload_file2 {
         if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
             my %translist = loadtranlist();
             @uploadtranlist = keys %translist;
-            for (@uploadtranlist) {
-                $fixfile =~ s/$_/$translist{$_}/gxsm;
+            foreach my $i (@uploadtranlist) {
+                $fixfile =~ s/$i/$translist{$i}/gxsm;
             }
             $fixfile =~ s/[^\w+\-.:]/_/gxsm;
         }
@@ -1950,10 +1948,10 @@ sub upload_file2 {
         }
         if ( $use_guardian && $string_on ) {
             my @bannedstrings = split /[|]/xsm, $banned_strings;
-            for (@bannedstrings) {
-                chomp;
-                if ( $fixname =~ m/$_/ixsm ) {
-                    fatal_error( 'attach_name_blocked', "($_)" );
+            foreach my $i (@bannedstrings) {
+                chomp $i;
+                if ( $fixname =~ m/$i/ixsm ) {
+                    fatal_error( 'attach_name_blocked', "($i)" );
                 }
             }
         }
@@ -1968,7 +1966,7 @@ sub upload_file2 {
         $fixfile = check_existence( $file_directory, $fixfile );
 
         my $match = 0;
-        for my $ext ( split /[|]/xsm, $file_extensions ) {
+        foreach my $ext ( split /[|]/xsm, $file_extensions ) {
             if ( grep { /$ext$/ixsm } $fixfile ) {
                 $match = 1;
                 last;

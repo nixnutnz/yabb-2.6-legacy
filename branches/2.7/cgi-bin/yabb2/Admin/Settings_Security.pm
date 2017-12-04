@@ -65,9 +65,9 @@ if ($regcheck) {
     require Sources::Decoder;
     validation_code();
 }
-$showcheck ||= q{};
+$showcheck           ||= q{};
 $captcha_start_chars ||= 0;
-$captcha_end_chars ||= 0;
+$captcha_end_chars   ||= 0;
 
 # List of settings
 our @settings = (
@@ -317,8 +317,8 @@ qq~<select name="randomizer" id="randomizer" size="1"> <option value="0"${issele
     sub save_settings {
         my %settings = @_;
         my $newset   = q{};
-        my @iplist  = ();
-        for my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
+        my @iplist   = ();
+        foreach my $iplookup_url ( split /\s+/xsm, $settings{'iplookup_urls'} ) {
             if (   $iplookup_url =~ /:\/\//xsm
                 && $iplookup_url !~ /http(?:s|):\/\//xsm )
             {

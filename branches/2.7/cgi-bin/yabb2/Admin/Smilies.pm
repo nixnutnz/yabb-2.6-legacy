@@ -398,8 +398,7 @@ sub add_smilies {
             foreach my $i (@smilieorder) {
                 if ( $i ne $temp_a ) { push @neworder, $i }
             }
-            unlink
-"$htmldir/Smilies/added/$FORM{\"cur_smimg[$temp_a]\"}";
+            unlink "$htmldir/Smilies/added/$FORM{\"cur_smimg[$temp_a]\"}";
         }
         ++$temp_a;
     }

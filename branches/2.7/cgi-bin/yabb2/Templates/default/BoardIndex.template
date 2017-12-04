@@ -23,17 +23,17 @@ $boardhandellist = qq~
 ~;
 $bdpic_ext = 'png';
 ## for the default announcement, recycle, subboard and regular board markers ##
-$brd_dropdown = 'dropdown.png';
-$brd_dropup = 'dropup.png';
+$brd_dropdown = 'dropdown';
+$brd_dropup = 'dropup';
 $brd_arrowup = 'arrowup.gif';
-$brd_loadbar = 'loadbar.gif';
+$brd_loadbar = 'loadbar';
 $brd_info = 'info.png';
 $brd_online = 'online.png';
 $brd_fadeleftdropdown = 'fadeleftdropdown.gif';
 $brd_faderightdropdown = 'faderightdropdown.gif';
 $brd_closebutton = 'closebutton.png';
-$sub_arrow_dn = 'sub_arrow.png';
-$sub_arrow_up = 'sub_arrow_up.png';
+$sub_arrow_dn = 'sub_arrow';
+$sub_arrow_up = 'sub_arrow_up';
 $extern = 'extern.png';
 $sub_extern = 'extern_sub.png';
 $tabfill = q~~;

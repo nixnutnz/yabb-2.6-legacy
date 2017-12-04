@@ -39,12 +39,15 @@ our (
 );
 ## system ##
 our (
-    $flood_text,       $iamadmin,  $iamgmod,      $iamguest,
-    $invaluser,        $language,  $mbname,       $scripturl,
-    $sessionvalid,     $showcheck, $spam_image,   $spam_question,
-    $spam_question_id, $uid,       $user,         $user_ip,
-    $username,         $yymain,    $yynavigation, $yysetlocation,
-    $yytitle,          %FORM,      %INFO,
+    $flood_text,         $iamadmin,      $iamgmod,
+    $iamguest,           $invaluser,     $language,
+    $mbname,             $scripturl,     $sessionvalid,
+    $showcheck,          $spam_image,    $spam_question,
+    $spam_question_id,   $uid,           $user,
+    $user_ip,            $username,      $yymain,
+    $yynavigation,       $yysetlocation, $yytitle,
+    %FORM,               %INFO,          $shared_login_text,
+    $shared_login_title, %pass,
 );
 ## template ##
 our (
@@ -55,9 +58,6 @@ our (
     $passwordreminderemail,
 );
 ## our Mod Hook ##
-
-## local ##
-our ( $shared_login_text, $shared_login_title, %pass, );
 
 if ($regcheck) { require Sources::Decoder; }
 load_language('LogInOut');
@@ -93,23 +93,11 @@ sub login2 {
 
     ## Check if login ID is not an email address ##
     if ( !-e "$memberdir/$username.vars" ) {
-        my $test_id = member_index( 'who_is', "$FORM{'username'}" );
+        my $test_id = member_index( 'who_is', $FORM{'username'} );
         if ($test_id) { $username = $test_id; }
     }
 
-    if ( -e "$memberdir/$username.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
-        fatal_error('not_activated');
-    }
-    elsif ( -e "$memberdir/$username.wait" && $regtype == 1 ) {
-        fatal_error('prereg_wait');
-    }
-    elsif ( !-e "$memberdir/$username.vars" ) {
-        fatal_error('bad_credentials');
-    }
-
-    if ( -e "$memberdir/$username.pre" && -e "$memberdir/$username.vars" ) {
-        unlink "$memberdir/$username.pre";
-    }
+    do_ext_test($username);
 
     # Need to do this to get correct case of user ID,
     # for case insensitive systems. Can cause weird issues otherwise
@@ -130,7 +118,7 @@ sub login2 {
         if ( -e "$memberdir/$username.vars" ) {
             load_user($username);
             my $spass     = ${ $uid . $username }{'password'};
-            my $cryptpass = encode_password($FORM{'passwrd'});
+            my $cryptpass = encode_password( $FORM{'passwrd'} );
 
             # convert non encrypted password to MD5 encrypted one
             if ( $spass eq $FORM{'passwrd'} && $spass ne $cryptpass ) {
@@ -201,22 +189,8 @@ sub login2 {
 
     # rebuild the Members/$username.ims file on login
     write_log();
-
-    if ( $FORM{'sredir'} ) {
-        $FORM{'sredir'} =~ s/\~/\=/gxsm;
-        $FORM{'sredir'} =~ s/x3B/;/gxsm;
-        $FORM{'sredir'} =~ s/search2/search/gxsm;
-        $FORM{'sredir'} = qq~?$FORM{'sredir'}~;
-        if ( $FORM{'sredir'} =~
-            /action=(register|login2|reminder|reminder2)/xsm )
-        {
-            $FORM{'sredir'} = q{};
-        }
-    }
-    else {
-        $FORM{'sredir'} = q{};
-    }
-    $yysetlocation = qq~$scripturl$FORM{'sredir'}~;
+    my $sredir = eval_sredir( $FORM{'sredir'} );
+    $yysetlocation = qq~$scripturl$sredir~;
     redirectexit();
     return;
 }
@@ -526,6 +500,41 @@ sub in_maintenance {
     $yymain .= shared_login();
     $yytitle = $maintxt{'155'};
     template();
+    return;
+}
+
+sub eval_sredir {
+    my $sredir = $FORM{'sredir'} || q{};
+    if ($sredir) {
+        $sredir =~ s/\~/\=/gxsm;
+        $sredir =~ s/x3B/;/gxsm;
+        $sredir =~ s/search2/search/gxsm;
+        $sredir = q~?~ . $sredir;
+        if ( $sredir =~ /action=(register|login2|reminder|reminder2)/xsm ) {
+            $sredir = q{};
+        }
+    }
+    else {
+        $sredir = q{};
+    }
+    return $sredir;
+}
+
+sub do_ext_test {
+    my ($usr) = @_;
+    if ( -e "$memberdir/$usr.pre" && ( $regtype == 1 || $regtype == 2 ) ) {
+        fatal_error('not_activated');
+    }
+    elsif ( -e "$memberdir/$usr.wait" && $regtype == 1 ) {
+        fatal_error('prereg_wait');
+    }
+    elsif ( !-e "$memberdir/$usr.vars" ) {
+        fatal_error('bad_credentials');
+    }
+
+    if ( -e "$memberdir/$usr.pre" && -e "$memberdir/$usr.vars" ) {
+        unlink "$memberdir/$usr.pre";
+    }
     return;
 }
 

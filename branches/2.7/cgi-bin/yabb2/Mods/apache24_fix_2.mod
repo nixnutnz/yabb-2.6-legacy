@@ -170,11 +170,11 @@ Require all granted~;
 </replace>
 
 <search for>
-                    $prhta .= "Deny from $_\n";
+                    $prhta .= "Deny from $ln\n";
 </search for>
 
 <replace>
-                    $prhta .= "Require not ip $_\n";
+                    $prhta .= "Require not ip $ln\n";
 </replace>
 
 <edit file>
@@ -211,11 +211,11 @@ Require all granted~;
 </replace>
 
 <search for>
-                $prhta .= "Deny from $_\n";
+                $prhta .= "Deny from $ln\n";
 </search for>
 
 <replace>
-                $prhta .= "Require not ip $_\n";
+                $prhta .= "Require not ip $ln\n";
 </replace>
 
 <edit file>

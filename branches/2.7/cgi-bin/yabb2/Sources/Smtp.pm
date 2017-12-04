@@ -296,7 +296,7 @@ sub decode_smtp64 {
 
     my $uustr = q{};
     my $l     = length($str) - 60;
-    for my $i ( 0 .. $l ) {
+    foreach my $i ( 0 .. $l ) {
         if ( $i % 60 == 0 ) {
             $uustr .= 'M' . substr $str, $i, 60;
         }

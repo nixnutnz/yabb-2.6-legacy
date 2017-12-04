@@ -120,12 +120,13 @@ opendir LNGDIR, $langdir;
 my @lfilesanddirs = readdir LNGDIR;
 closedir LNGDIR;
 our %lngs = ();
-for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
     if ( -e "$langdir/$fld/Main.lng" && -e "$langdir/$fld/$fld.txt" ) {
-        open my $LANG, '<', "$langdir/$fld/$fld.txt" or croak 'cannot load Lang.txt.';
+        open my $LANG, '<', "$langdir/$fld/$fld.txt"
+          or croak 'cannot load Lang.txt.';
         my $displang = <$LANG>;
         close $LANG or croak "cannot close $fld.txt.";
-        $lngs{$fld}  = $displang;
+        $lngs{$fld} = $displang;
     }
 }
 
@@ -212,18 +213,17 @@ sub adminlogin {
     my $license = do { local $INPUT_RECORD_SEPARATOR = undef; <$LICENSE>; };
     close $LICENSE or croak 'cannot close License';
     opendir LNGDIR, $langdir;
-    my @lfilesanddirs = readdir LNGDIR;
+    @lfilesanddirs = readdir LNGDIR;
     closedir LNGDIR;
     my $drawnldirs = q{};
-    for my $x ( sort keys %lngs ) {
+    foreach my $x ( sort keys %lngs ) {
         my $sel = q{};
-        if ($lngs{$x} eq 'English') {$sel = ' selected="selected"';}
-        $drawnldirs .=
-qq~<option value="$x"$sel>$lngs{$x}</option>~;
+        if ( $lngs{$x} eq 'English' ) { $sel = ' selected="selected"'; }
+        $drawnldirs .= qq~<option value="$x"$sel>$lngs{$x}</option>~;
     }
 
     my $getlangs =
-          qq~\n<br />Select your language:<br /><select name="getlang" size="2">
+      qq~\n<br />Select your language:<br /><select name="getlang" size="2">
 $drawnldirs
 </select>
 ~;
@@ -249,7 +249,7 @@ $getlangs
 }
 
 sub adminlogin2 {
-    getlang($FORM{'getlang'});
+    getlang( $FORM{'getlang'} );
     if ( !$FORM{'password'} ) {
         setup_fatal_error( $mylang{'logerr2'} );
     }
@@ -376,7 +376,7 @@ sub autoconfig {
     my $fnd_html_root = q{};
     my $fnd_htmldir   = q{};
     if ( -d "$searchroot2/$yabbfiles" ) {
-        $fnd_htmldir   = "$searchroot2/$yabbfiles";
+        $fnd_htmldir = "$searchroot2/$yabbfiles";
         $fnd_htmldir =~ s/\/\//\//gxsm;
         $fnd_html_root = "$html_baseurl/$yabbfiles";
     }
@@ -601,7 +601,6 @@ sub varinstall {
     if ( !-d $varsdir ) { $no_vardir = 1; return 1; }
 }
 
-
 sub checkmodules {
     ($mylang) = @_;
     my $mlang = $INFO{'getlang'} || $mylang;
@@ -731,8 +730,7 @@ sub setinstall {
 
 sub setinstall2 {
     getlang($mylang);
-    my ( $forumstart, $forumnumberformat, $timeselected, $masterkey,
-        $max_siglen );
+    my ( $forumstart, $forumnumberformat, $timeselected, $masterkey );
     if ( $action eq 'checkmodules' || $action eq 'setinstall2' ) {
         $mbname = $FORM{'mbname'} || 'My Perl YaBB Forum';
         $mbname =~ s/\x22/\x27/gxsm;
@@ -1395,8 +1393,12 @@ ext => [0, 0, 0],
 # Banning Settings Time bans                                                  #
 ###############################################################################
 
-\@timeban = qw( d w m p );
-\@bandays = ( 1, 7, 30, 365 );
+%timeban = (
+    'd' => 1,
+    'w' => 7,
+    'm' => 30,
+    'p' => 365,
+);
 
 ###############################################################################
 # Backup Settings                                                             #
@@ -1507,7 +1509,7 @@ sub checkinstall {
         $brd_created .= q~forum.totals, ~;
         our %totals;
         require "$boardsdir/forum.totals";
-        for my $brdname ( keys %totals ) {
+        foreach my $brdname ( keys %totals ) {
             if ( !-e "$boardsdir/$brdname.txt" ) {
                 $brd_missing .= qq~$brdname.txt, ~;
             }
@@ -1539,7 +1541,7 @@ qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$webmaster_email|$firstm
     close $FIRSTMS or croak "cannot close $datadir/$firstmstime.txt";
 
     require Sources::DateTime;
-    my $msgdat  = ctbtime($firstmstime);
+    my $msgdat  = ctbtime();
     my $frstctb = qq~### ThreadID: $firstmstime, LastModified: $msgdat  ###
 %$firstmstime = (
 'board' => 'general',
@@ -1584,7 +1586,7 @@ qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$webmaster_ema
     our (%totals);
     require "$boardsdir/forum.totals";
 
-    for my $brdname ( keys %totals ) {
+    foreach my $brdname ( keys %totals ) {
         my ( undef, undef, undef, undef, $msgname, undef ) =
           @{ $totals{$brdname} };
         next if !$msgname;
@@ -1980,7 +1982,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     our $yyuname     = q{};
 
     our $yycopyin = 0;
-    for my $i ( 0 .. $#yytemplate ) {
+    foreach my $i ( 0 .. $#yytemplate ) {
         our $curline = $yytemplate[$i];
         if ( !$yycopyin && $curline =~ m/\Q{yabb copyright}\E/xsm ) {
             $yycopyin = 1;
@@ -2004,7 +2006,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     }
     if ( $yycopyin == 0 ) {
         $output =
-qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     print $output or croak 'cannot print output';
     exit;
@@ -2047,13 +2049,13 @@ sub foundsetuplock {
         $mylang =
 qq~\n                    <input type="hidden" name="lang" value="$INFO{'lang'}" />~;
     }
-    getlang($INFO{'lang'});
+    getlang( $INFO{'lang'} );
     tempstarter();
     $scripturl = "$boardurl/YaBB.$yyext";
     my $conv  = q{};
     my $conv2 = q{};
     our $formsession = cloak("$mbname$username");
-    if ( -e "Variables/Convert.lock" || -e 'Variables/ConvertLang.lock' ) {
+    if ( -e "$vardir/Convert.lock" || -e "$vardir/ConvertLang.lock" ) {
         $conv2 = $mylang{'hasrun2'};
     }
     else {
@@ -2114,7 +2116,7 @@ sub modules {
     my $checker_output = q{};
     my ($i);
 
-    for my $module (@modules) {
+    foreach my $module (@modules) {
         $dont_continue_setup = q{};
         if ( eval { load($module); 1 } ) {
             if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {
@@ -2203,7 +2205,9 @@ sub getlang {
        # Catches deep recursion problems
        # We can simply return to the error routine once we add the needed string
         if ( $use_lang eq 'Error' ) {
-            setup_fatal_error( 'cannot_open_language - Cannot find required language file. Please inform the administrator about this problem.');
+            setup_fatal_error(
+'cannot_open_language - Cannot find required language file. Please inform the administrator about this problem.'
+            );
             return;
         }
         setup_fatal_error( 'cannot_open_language', "$use_lang/Setup.lng" );

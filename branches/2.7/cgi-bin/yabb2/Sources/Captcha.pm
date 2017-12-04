@@ -1285,8 +1285,8 @@ sub captcha {
     $LINE_HEIGHT = $CHAR_HEIGHT * $DOT_HEIGHT;
     @lines       = split /\n/xsm, $msg;
     $len         = 0;
-    foreach (@lines) {
-        if ( length $_ > $len ) { $len = length $_; }
+    foreach my $i (@lines) {
+        if ( length $i > $len ) { $len = length $i; }
     }
     $w = $len * $CHAR_WIDTH * $DOT_WIDTH;
     $h = @lines * $LINE_HEIGHT;
@@ -1378,7 +1378,7 @@ sub captcha {
     my $img = q{};
     my ( $x, $di );
     my $range = 10;
-    for my $y ( 0 .. ( $h - 1 ) ) {
+    foreach my $y ( 0 .. ( $h - 1 ) ) {
         my $cy =
           int( $y / $DOT_HEIGHT ) % $CHAR_HEIGHT;    # y coord in character dots
         my $dy = $y % $DOT_HEIGHT;
@@ -1407,7 +1407,7 @@ sub captcha {
                 $di = ( $d eq 'X' ) ? $dot : $nodot;
             }
             $di = substr $di, $dy * ( $DOT_WIDTH + $nl ) + $nl, $DOT_WIDTH;
-            for my $i ( 0 .. ( ( length $di ) - 1 ) ) {
+            foreach my $i ( 0 .. ( ( length $di ) - 1 ) ) {
                 $c = ord substr $di, $i, 1;
                 if ( $randomizer > 0 ) {
                     my ( $rc1, $rc2 );

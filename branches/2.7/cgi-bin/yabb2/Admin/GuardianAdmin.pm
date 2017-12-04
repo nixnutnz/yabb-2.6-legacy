@@ -430,7 +430,7 @@ sub gr_update_htaccess {
 # header to determine only who has access to the main script, not the admin script
     my $htheader = q~<Files YaBB*>~;
     my $htfooter = q~</Files>~;
-    my $start = 0;
+    my $start    = 0;
     foreach my $chk (@htlines) {
         chomp $chk;
         if ( $chk eq $htheader ) { $start = 1; }
@@ -443,15 +443,15 @@ sub gr_update_htaccess {
         }
     }
     if ( $act eq 'save' ) {
-        my $prhta =
-          '# Last modified by The Guardian: ' . ctbtime( $date, 1 ) . " #\n\n";
+        my $erdate = ctbtime();
+        my $prhta  = '# Last modified by The Guardian: ' . $erdate . " #\n\n";
         $prhta .= join q{}, @htout;
         if (@values) {
             $prhta .= "\n$htheader\n";
-            for (@values) {
-                chomp;
-                if ( $_ && $_ ne q{} ) {
-                    $prhta .= "Deny from $_\n";
+            foreach my $ln (@values) {
+                if ($ln) {
+                    chomp $ln;
+                    $prhta .= "Deny from $ln\n";
                 }
             }
             $prhta .= "$htfooter\n";

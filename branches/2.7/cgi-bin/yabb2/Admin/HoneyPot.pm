@@ -49,7 +49,7 @@ sub honeypot {
     my @lfilesanddirs = readdir LNGDIR;
     closedir LNGDIR;
     my $drawnldirs = q{};
-    for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+    foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
         if ( -e "$langdir/$fld/Main.lng" ) {
             my $displang = $fld;
             $displang =~ s/(.+?)\_(.+?)$/$1 ($2)/gixsm;
@@ -79,7 +79,7 @@ qq~<option value="$fld" selected="selected">$displang</option>~;
                     <td><b>$honeypot{'deletes'}</b></td>
                 </tr>~;
 
-        for my $hon_labels ( sort { $a cmp $b } @honey_label ) {
+        foreach my $hon_labels ( sort { $a cmp $b } @honey_label ) {
             chomp $hon_labels;
             $show_hon_labels .= qq~<tr class="windowbg2">
                     <td>$hon_labels</td>
@@ -195,7 +195,7 @@ sub honeypot_edit {
     my @h_labels = <$HONEYPOT>;
     fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
     my $aa = 0;
-    for my $id (@h_labels) {
+    foreach my $id (@h_labels) {
         chomp $id;
         if ( $id eq $h_label ) {
             last;
@@ -256,7 +256,7 @@ sub honeypot_edit2 {
 
     my $aa       = 0;
     my $newhoney = q{};
-    for my $i (@h_labels) {
+    foreach my $i (@h_labels) {
         chomp $i;
         if ( $aa == $line ) {
             $newhoney = "$h_label\n";
@@ -287,7 +287,7 @@ sub honeypot_delete {
     my @h_labels = <$HONEYPOT>;
     fclose('HONEYPOT') or croak "$croak{'close'} HONEYPOT";
     my $prhbl = q{};
-    for my $i (@h_labels) {
+    foreach my $i (@h_labels) {
         chomp $i;
         if ( $h_label eq $i ) {
             $prhbl .= q{};

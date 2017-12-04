@@ -40,9 +40,9 @@ our (
 );
 ## system ##
 our (
-    $attachment, $curname,   $curnum,      $daytxt, $displayname,
-    $iamguest,   $movedflag, $ns,          $uid,    $username,
-    $yyexec,     $yyext,     %useraccount, $date,   $usestyle,
+    $attachment, $curname,     $curnum, $daytxt,   $iamguest,
+    $movedflag,  $ns,          $uid,    $username, $yyexec,
+    $yyext,      %useraccount, $date,   $usestyle,
 );
 ## templates ##
 our ( $showattach, $showattachhr, );
@@ -51,13 +51,11 @@ our ( $showattach, $showattachhr, );
 load_language('Post');
 
 our $yy_yabbloaded = 1;
-## local ##
-our ($message);
 
 sub make_smileys {
     my ($inp) = @_;
     $inp ||= q{};
-    $message = join q{}, $inp;
+    my $message = join q{}, $inp;
     my $i = 0;
     my @html_tags;
     while ( $message =~ s/(<.+?>)/[HTML$i]/xsm ) { push @html_tags, $1; $i++; }
@@ -193,8 +191,9 @@ sub quotemsg {
                 $fqauthor = ${ $uid . $qauthor }{'realname'};
             }
         }
+        $fqauthor ||= 'the author';
         $qmessage =~
-s/\/me\s+(.*?)(\n|\Z)(.*?)/<i><span class="my_me">* $fqauthor<\/span> $1<\/i>$2$3/igxsm;
+s/\/me\s+(.*?)(\n|\Z)(.*?)/<i><span class="my_me">* $fqauthor <\/span> $1<\/i>$2$3/igxsm;
     }
 
     # next 2 lines: for display names in Quotes in LivePreview
@@ -438,7 +437,9 @@ qq~<a href="$url" data-rel="gb_image[nice_pics]" title="$parameter{'alt'}">~;
 
 #greybox image bug fixed;
 sub do_ubbc {
-    my ($image_type) = @_;
+    my ( $message, $image_type, $displayname ) = @_;
+    $image_type  ||= q{};
+    $displayname ||= q{};
     $ycsscounter = 2;
     if ( $ns || ( $message && $message =~ s/\x23nosmileys//ixsgm ) ) {
         return $message;
@@ -614,7 +615,8 @@ qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1
     while ( $message =~ s/\[edit\]\n*(.*?)\n*\[\/edit\]/editsmsg($1)/eigxsm ) {
         ;
     }
-    $displayname ||= q{};
+    $displayname ||= 'The author';
+    $message =~ s/\/me&nbsp;/\/me /igxsm;
     $message =~
       s/\/me\s+(.*)/<span class="my_me">* $displayname<\/span> $1/igxsm;
 
@@ -628,8 +630,6 @@ qq~<b>$post_txt{'603'}: </b><br /><div class="editbg" style="overflow: auto;">$1
           )
         {
         }
-
-        # convert old flash tags to media tags
         while (
             $message =~ s/\[media\]\n*(.*?)\n*\[\/media\]/myembed($1)/eigxsm )
         {
@@ -680,7 +680,7 @@ qq~<i> $maintxt{'42'} <a href="$scripturl?action=register"><b><i>$maintxt{'97'}<
     $message =~ s/\[list\]/<ul>/igxsm;
     if ( $message =~ /\Q[list \E(.+?)\]/ixsm ) {
         $message =~ /\Q[list \E(.+?)\]/ixsm;
-            if ( -e "$htmldir/Templates/Forum/$usestyle/$1.gif" ) {
+        if ( -e "$htmldir/Templates/Forum/$usestyle/$1.gif" ) {
             $message =~
 s/\Q[list \E(.+?)\]/<ul style="list-style-image\: url($imagesdir\/$1\.gif)">/igxsm;
         }
@@ -762,12 +762,9 @@ s/<\/tr>((?:(?!<tr>|<\/tr>|<td>|<\/td>|<table>|<\/table>).)*)<\/table>/<\/tr><\/
 sub do_ubbc_to {
 
     # Does UBBC to $_[0] using do_ubbc and keeps $message the same
-    ($message) = @_;
-    my $messagecopy = $message;
-    do_ubbc();
-    my $returnthis = $message;
-    $message = $messagecopy;
-    return $returnthis;
+    my ( $mess, undef, $displayname ) = @_;
+    $mess = do_ubbc( $mess, q{}, $displayname );
+    return $mess;
 }
 
 1;

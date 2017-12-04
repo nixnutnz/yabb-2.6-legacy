@@ -66,21 +66,22 @@ sub add_moderators {
         my $modsel = q{};
         {
             no strict qw(refs);
-            for my $board (@x) {
+            foreach my $board (@x) {
                 my $dash = q{};
                 if ( $indent > 2 ) { $dash = q{-}; }
-                my ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
+                my ( $boardname, $boardperms, $boardview ) =
+                  @{ $board{$board} };
                 if (   ${ $uid . $board }{'ann'}
                     || ${ $uid . $board }{'rbin'}
                     || $boardname =~ m{https?://}xsm )
                 {
                     next;
                 }
-                $boardname = to_chars($boardname);
+                $boardname  = to_chars($boardname);
                 $moderators = ${ $uid . $board }{'mods'};
                 my @boardmoderators = split /\//xsm, $moderators || q{};
                 $modsel = q{};
-                for my $this_mod (@boardmoderators) {
+                foreach my $this_mod (@boardmoderators) {
                     if ( $this_mod eq $user ) {
                         $modsel = q~ selected="selected"~;
                     }
@@ -91,19 +92,19 @@ sub add_moderators {
                   . ( $dash x ( $indent / 2 ) )
                   . qq~$boardname</option>\n~;
                 if ( $subboard{$board} ) {
-                    get_subboards( @{$subboard{$board}} );
+                    get_subboards( @{ $subboard{$board} } );
                 }
             }
             $indent -= 2;
         }
     };
 
-    for my $catid (@categoryorder) {
-        my $catname = ${$catinfo{$catid}}[0];
+    foreach my $catid (@categoryorder) {
+        my $catname = ${ $catinfo{$catid} }[0];
         $catname = to_chars($catname);
         $addbdmod .= qq~<option disabled="disabled">$catname</option>\n~;
         $indent = -2;
-        get_subboards(@{$cat{$catid}});
+        get_subboards( @{ $cat{$catid} } );
     }
     $show_profile .= $myshowprofile;
     $show_profile =~ s/\Q{yabb addbdmod}\E/$addbdmod/xsm;
@@ -125,17 +126,17 @@ sub add_moderators2 {
     chomp @modbd;
     require "$boardsdir/forum.control";
 
-    for my $boardline ( keys %control ) {
+    foreach my $boardline ( keys %control ) {
         my @bdmodlist = split /\//xsm, ${ $control{$boardline} }[3];
         chomp @bdmodlist;
         ${ $control{$boardline} }[3] = q{};
         my $bdi = 0;
-        foreach (@bdmodlist) {
-            if ( $_ eq $user ) { splice @bdmodlist, $bdi, 1; last; }
+        foreach my $i (@bdmodlist) {
+            if ( $i eq $user ) { splice @bdmodlist, $bdi, 1; last; }
             $bdi++;
         }
-        foreach (@modbd) {
-            if ( $_ eq $boardline ) { push @bdmodlist, $user; last; }
+        foreach my $i (@modbd) {
+            if ( $i eq $boardline ) { push @bdmodlist, $user; last; }
         }
         ${ $control{$boardline} }[3] = join q{/}, @bdmodlist;
     }
@@ -221,7 +222,7 @@ function copy_option(to_select) {
     my $modmbr    = q{};
     my ($this_modname);
     my @thisboardmoderators = split /\//xsm, $moderators;
-    for my $this_mod (@thisboardmoderators) {
+    foreach my $this_mod (@thisboardmoderators) {
         load_user($this_mod);
         {
             no strict qw(refs);
@@ -248,11 +249,11 @@ qq~                <option value="$this_mod" selected="selected">$this_modname</
 
     my $modgrpcnt = 0;
     my $modgrp    = q{};
-    for (@nopostorder) {
-        my @groupinfo = @{ $grp_nopost{$_} };
-        $modgrp .= qq~<option value="$_"~;
+    foreach my $i (@nopostorder) {
+        my @groupinfo = @{ $grp_nopost{$i} };
+        $modgrp .= qq~<option value="$i"~;
         for ( split /\//xsm, $moderatorgroups ) {
-            my ( $lineinfo, undef ) = @{ $grp_nopost{$_} };
+            my ( $lineinfo, undef ) = @{ $grp_nopost{$i} };
             if ( $lineinfo eq $groupinfo[0] ) {
                 $modgrp .= q~ selected="selected" ~;
             }
@@ -281,8 +282,8 @@ sub mod_search2 {
     $FORM{'moderatorgroups'} ||= q{};
     $FORM{'moderatorgroups'} =~ s/,\s+/\//xsm;
     if ($do_scramble_id) {
-        for (@mods) {
-            $_ = decloak($_);
+        foreach my $i (@mods) {
+            $i = decloak($i);
         }
     }
     require "$boardsdir/forum.control";

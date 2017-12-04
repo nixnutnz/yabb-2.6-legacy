@@ -31,73 +31,67 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## languages ##
 our (
-    $abbr_lang,                       $emailcharset,
-    $privatemessagenotificationemail, %croak,
-    %error_txt,                       %fatxt,
-    %guest_reply,                     %im_message_status,
-    %img,                             %index_togl,
-    %inmes_imtxt,                     %inmes_txt,
-    %maintxt,                         %micon,
-    %micon_bg,                        %newload,
-    %notify_txt,                      %pidtxt,
-    %pmiconlist,                      %post_smiltxt,
-    %post_txt,                        @months,
+    $emailcharset,      $privatemessagenotificationemail,
+    %croak,             %error_txt,
+    %fatxt,             %guest_reply,
+    %im_message_status, %img,
+    %index_togl,        %inmes_imtxt,
+    %inmes_txt,         %maintxt,
+    %micon,             %micon_bg,
+    %newload,           %notify_txt,
+    %pidtxt,            %pmiconlist,
+    %post_smiltxt,      %post_txt,
+    @months,
 );
 ## paths ##
 our (
-    $htmldir,     $imagesdir,   $langdir,   $memberdir, $pm_attachurl,
-    $pmuploaddir, $pmuploadurl, $scripturl, $yyhtml_root,
+    $htmldir,     $imagesdir,   $langdir,   $memberdir,   $pm_attachurl,
+    $pmuploaddir, $pmuploadurl, $scripturl, $yyhtml_root, $vardir,
 );
 ## settings ##
 our (
-    $ad_max_messlen,       $ad_max_pm_messlen,  $allow_attach_im,
-    $banned_strings,       $do_scramble_id,     $enable_bm_level,
-    $enable_notifications, $enable_spell_check, $enable_ubbc,
-    $fontsizemax,          $fontsizemin,        $gpvalid_en,
-    $img_greybox,          $imspam,             $ip_lookup,
-    $max_messlen,          $max_pm_messlen,     $maxmessagedisplay,
-    $numposts,             $pm_attach_groups,   $pm_checkext,
-    $pm_dirlimit,          $pm_display_pics,    $pm_enable_bcc,
-    $pm_enable_cc,         $pm_file_limit,      $pm_file_overwrite,
-    $pm_spam_chk,          $post_speed_count,   $set_subject_maxlength,
-    $showadded,            $showpageall,        $showsmdir,
-    $showyabbcbutt,        $smiliestyle,        $spam_questions_case,
-    $spam_questions_gp,    $speedpostdetection, $string_on,
-    $timeselected,         $use_guardian,       $use_htaccess, $winheight,
-    $winwidth,             %addedsmilies,       %grp_nopost,
+    $ad_max_messlen,       $ad_max_pm_messlen,     $allow_attach_im,
+    $banned_strings,       $do_scramble_id,        $enable_bm_level,
+    $enable_notifications, $enable_ubbc,           $fontsizemax,
+    $fontsizemin,          $gpvalid_en,            $img_greybox,
+    $imspam,               $ip_lookup,             $max_messlen,
+    $max_pm_messlen,       $maxmessagedisplay,     $numposts,
+    $pm_attach_groups,     $pm_checkext,           $pm_dirlimit,
+    $pm_display_pics,      $pm_enable_bcc,         $pm_enable_cc,
+    $pm_file_limit,        $pm_file_overwrite,     $pm_spam_chk,
+    $post_speed_count,     $set_subject_maxlength, $showadded,
+    $showpageall,          $showsmdir,             $showyabbcbutt,
+    $smiliestyle,          $spam_questions_case,   $spam_questions_gp,
+    $speedpostdetection,   $string_on,             $timeselected,
+    $use_guardian,         $use_htaccess,          $winheight,
+    $winwidth,             %addedsmilies,          %grp_nopost,
     @pm_attachext,         @smilieorder,
 );
 ## system ##
 our (
-    $callerid,         $cgi_query,       $checkspam,
-    $cliped,           $countmulti,      $date,
-    $draft,            $edittext,        $error,
-    $flood_text,       $guest_email,     $guest_name,
-    $hidestatus,       $iamadmin,        $iamfmod,
-    $iamgmod,          $iamguest,        $icon,
-    $is_bm_mess,       $is_preview,      $js_im,
-    $language,         $mattach,         $mc_globalformstart,
-    $memb_adinfo,      $mename,          $menusep,
-    $mfrom,            $msubject,        $mto,
-    $my_chars,         $my_ispreview,    $my_send,
-    $my_tosend,        $normalquot,      $nscheck,
-    $onchange_text2,   $pm_attachext,    $post,
-    $postid,           $replyguest,      $send_bm_mess,
-    $send_email,       $send_pm,         $show_my_sig,
-    $showcheck,        $signature,       $simpelcode,
-    $simpelquot,       $spam_image,      $spam_question,
-    $spam_question_id, $staff,           $subittxt,
-    $submittxt,        $subtitle,        $template_names,
-    $thestatus,        $threadid,        $tmpmtext,
-    $uid,              $use_menu_type,   $use_mobile,
-    $useimages,        $userdefaultlang, $useremail,
-    $username,         $verification,    $verification_question,
-    $yyinlinestyle,    $yysetlocation,   %FORM,
-    %format_unbold,    %gmod_access2,    %grps,
-    %INFO,             %memberlist,      %messlst,
-    %useraccount,      @allto,           @dimmessages,
-    @filelist,         @messages,        @multiple,
-    $cloaked_author,
+    $callerid,              $cgi_query,          $checkspam,
+    $countmulti,            $date,               $draft,
+    $error,                 $flood_text,         $guest_email,
+    $guest_name,            $iamadmin,           $iamfmod,
+    $iamgmod,               $iamguest,           $icon,
+    $is_preview,            $js_im,              $language,
+    $mattach,               $mc_globalformstart, $memb_adinfo,
+    $mename,                $menusep,            $mfrom,
+    $msubject,              $mto,                $my_send,
+    $my_tosend,             $nscheck,            $onchange_text2,
+    $pm_attachext,          $post,               $postid,
+    $replyguest,            $send_bm_mess,       $send_email,
+    $send_pm,               $show_my_sig,        $showcheck,
+    $signature,             $spam_image,         $spam_question,
+    $spam_question_id,      $staff,              $submittxt,
+    $subtitle,              $thestatus,          $threadid,
+    $uid,                   $use_menu_type,      $use_mobile,
+    $useimages,             $useremail,          $username,
+    $verification_question, $yysetlocation,      %FORM,
+    %format_unbold,         %gmod_access2,       %grps,
+    %INFO,                  %memberlist,         %messlst,
+    %useraccount,           @allto,              @dimmessages,
+    @filelist,              @messages,           @multiple,
 );
 ## templates ##
 our (
@@ -114,6 +108,7 @@ our (
     $visel_1b,          $visel_2a,        $visel_3a,
     $visel_4,
 );
+
 ## our Mod Hook ##
 
 require Sources::PostBox;
@@ -137,7 +132,6 @@ if (   ( $action eq 'imsend' || $action eq 'imsend2' )
 if ( $iamadmin || $iamgmod ) { $max_messlen = $ad_max_messlen; }
 
 ## local ##
-my ( $displayname, @nouser, $mods, $allid, $nextid, $previd, );
 our ( $message, $imsend );
 
 ## create the send IM section of the screen
@@ -148,13 +142,7 @@ sub build_imsend {
     our $mctitle = $inmes_txt{'775'};
     if ($send_bm_mess) { $mctitle = $inmes_txt{'775a'}; }
     ## check for a draft being opened
-    my (
-        $dmessageid,   $dmusername,     $userto,
-        $usernamecc,   $usernamebcc,    $subject,
-        $dmdate,       $dmpmessageid,   $dmreplyno,
-        $dmips,        $dmessagestatus, $dmessageflags,
-        $dstorefolder, $dmessageattachment
-    );
+    my ( $userto, $usernamecc, $usernamebcc, $subject, $dmessagestatus, );
 
     if ( $INFO{'caller'} && $INFO{'caller'} == 4 && $INFO{'id'} ) {
         if ( !-e "$memberdir/$username.imdraft" ) {
@@ -171,11 +159,11 @@ sub build_imsend {
             my ( $checkid, undef ) = split /[|]/xsm, $draftmess, 2;
             if ( $checkid eq $INFO{'id'} ) {
                 (
-                    $dmessageid,    $dmusername,   $userto,
-                    $usernamecc,    $usernamebcc,  $subject,
-                    $dmdate,        $message,      $dmpmessageid,
-                    $dmreplyno,     $dmips,        $dmessagestatus,
-                    $dmessageflags, $dstorefolder, $dmessageattachment
+                    undef,       undef,        $userto,
+                    $usernamecc, $usernamebcc, $subject,
+                    undef,       $message,     undef,
+                    undef,       undef,        $dmessagestatus,
+                    undef,       undef,        undef
                 ) = split /[|]/xsm, $draftmess;
                 $flagfound = 1;
                 last;
@@ -235,13 +223,9 @@ sub build_imsend {
     }
 
     if ( !$replyguest ) {
-        if ($is_preview) { $post_txt{'507'} = $post_txt{'771'}; }
-        $normalquot = $post_txt{'599'};
-        $simpelquot = $post_txt{'601'};
-        $simpelcode = $post_txt{'602'};
-        $edittext   = $post_txt{'603'};
-        if ( !$fontsizemax ) { $fontsizemax = 72; }
-        if ( !$fontsizemin ) { $fontsizemin = 6; }
+        if ($is_preview)     { $post_txt{'507'} = $post_txt{'771'}; }
+        if ( !$fontsizemax ) { $fontsizemax     = 600; }
+        if ( !$fontsizemin ) { $fontsizemin     = 55; }
 
         # this defines what the top area of the post box will look like:
         ## if this is a reply , load the 'from' name off the message
@@ -269,23 +253,14 @@ sub build_imsend {
     $subject = do_censor($subject);
     $subject = to_html($subject);
 
+    my $displayname = ${ $uid . $username }{'realname'};
     if ( $action eq 'modify' || $action eq 'modify2' ) {
         $displayname = $mename;
     }
-    else {
-        $displayname = ${ $uid . $username }{'realname'};
-    }
+
     require Sources::ContextHelp;
-    context_script('post');
-    our $ctmain = context_script();
-    $template_names ||= q{};
-    $mc_globalformstart .= qq~
-    $ctmain
-    <script type="text/javascript">
-    var displayNames = new Object();
-    $template_names
-    </script>
-    ~;
+    my $ctmain = context_script( 'post', $displayname );
+    $mc_globalformstart .= $ctmain;
     my $my_gimsend  = q{};
     my $my_tosend_a = q{};
 
@@ -386,72 +361,10 @@ qq~<div id="bnttoto" class="windowbg2 bnttoto"><a href="javascript:void(0);" onc
         <select name="toshow" id="toshow" multiple="multiple" size="6" class="width_100" ondblclick="removeUser(this);">\n~;
         my $toname = $INFO{'forward'} ? q{} : $INFO{'to'};
         if ( !$send_bm_mess ) {
-            if ($toname) {
-                load_user($toname);
-                if ( ${ $uid . $toname }{'realname'} ) {
-                    $im_winop .=
-qq~<option selected="selected" value="$useraccount{$toname}">${ $uid . $toname }{'realname'}</option>\n~;
-                }
-                if ( $INFO{'mid'} ) {
-                    foreach my $moreuser ( split /,/xsm, $INFO{'mid'} ) {
-                        if ( $moreuser ne $username ) {
-                            load_user($moreuser);
-                            $im_winop .=
-qq~<option selected="selected" value="$moreuser">${$uid.$moreuser}{'realname'}</option>\n~;
-                        }
-                    }
-                }
-            }
-            if ( $FORM{'toshow'} ) {
-                foreach my $touser ( split /,/xsm, $FORM{'toshow'} ) {
-                    load_user($touser);
-                    $im_winop .=
-qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
-                }
-            }
-            if ($userto) {
-                foreach my $touser ( split /,/xsm, $userto ) {
-                    load_user($touser);
-                    $im_winop .=
-qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
-                }
-            }
+            $im_winop .= get_toname( $toname, $userto );
         }
         else {
-            $FORM{'toshow'} = $mto || $FORM{'toshow'};
-            if ( $FORM{'toshow'} ) {
-                foreach my $touser ( split /,/xsm, $FORM{'toshow'} ) {
-                    if ( $touser eq 'all' ) {
-                        $im_winop .=
-qq~<option selected="selected" value="all">$inmes_txt{'bmallmembers'}</option>\n~;
-                    }
-                    elsif ( $touser eq 'admins' ) {
-                        $im_winop .=
-qq~<option selected="selected" value="admins">$inmes_txt{'bmadmins'}</option>\n~;
-                    }
-                    elsif ( $touser eq 'gmods' ) {
-                        $im_winop .=
-qq~<option selected="selected" value="gmods">$inmes_txt{'bmgmods'}</option>\n~;
-                    }
-                    elsif ( $touser eq 'fmods' ) {
-                        $im_winop .=
-qq~<option selected="selected" value="fmods">$inmes_txt{'bmfmods'}</option>\n~;
-                    }
-                    elsif ( $touser eq 'mods' ) {
-                        $im_winop .=
-qq~<option selected="selected" value="mods">$inmes_txt{'bmmods'}</option>\n~;
-                    }
-                    else {
-                        foreach ( keys %grp_nopost ) {
-                            my ( $title, undef ) = @{ $grp_nopost{$_} };
-                            if ( $touser eq $_ ) {
-                                $im_winop .=
-qq~<option selected="selected" value="$_">$title</option>\n~;
-                            }
-                        }
-                    }
-                }
-            }
+            $im_winop .= get_togrp();
         }
 
         $im_winop .=
@@ -461,7 +374,7 @@ q~            </select><input type="hidden" name="immulti" value="yes" />
 
         $js_and_input = q~
         <script type="text/javascript">
-        // this function forces all users listed on IM mult to be selected for processing
+        // this function forces all users listed on IM multi to be selected for processing
         function selectNames() {
             var oList = document.getElementById('toshow');
             for (var i = 0; i < oList.options.length; i++) { oList.options[i].selected = true; }
@@ -613,6 +526,7 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
         }
     }
 
+    my $tmpmtext = q{};
     if ($replyguest) {
         $tmpmtext = qq~<b>$post_txt{'72'}:</b> ~;
     }
@@ -635,7 +549,7 @@ s/\Q{yabb im_message_status_pmicon}\E/$im_message_status{$pmicon}/gxsm;
                 }
                 else {
                     $tmpurl =
-                      qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
+qq~$yyhtml_root/Smilies/added/${$addedsmilies{$smilieorder[$i]}}[0]~;
                 }
                 $moresmilieslist .=
 qq~             <img src="$tmpurl" alt="${$addedsmilies{$smilieorder[$i]}}[2]" onclick="javascript: MoreSmilies($i);" class="bottom cursor" />${$addedsmilies{$smilieorder[$i]}}[3]\n~;
@@ -715,7 +629,7 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
           ? qq~$fatxt{'3'} $pm_file_limit KB~
           : qq~$fatxt{'3'} $fatxt{'5'}~;
         $FORM{'oldattach'} = decloak( $FORM{'oldattach'} );
-        $mattach = $mattach || $FORM{'oldattach'};
+        $mattach = $mattach || $FORM{'oldattach'} || q{};
         chomp $mattach;
         foreach my $sender_file ( split /,/xsm, $mattach ) {
             chomp $sender_file;
@@ -751,15 +665,18 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
                                $action eq 'imsend2'
                             || $INFO{'forward'}
                             || $FORM{'draftid'}
-                            || $INFO{'caller'} == 4
+                            || ( $INFO{'caller'} && $INFO{'caller'} == 4 )
                         )
                         && !$FORM{'reply'}
                     )
-                    && $files[ $y - 1 ] ne q{}
-                    && -e "$pmuploaddir/$files[$y-1]"
+                    && (   $files[ $y - 1 ]
+                        && $files[ $y - 1 ] ne q{}
+                        && -e "$pmuploaddir/$files[$y-1]" )
                   )
                 {
-                    if ( $FORM{'draftid'} || $INFO{'caller'} == 4 ) {
+                    if ( $FORM{'draftid'}
+                        || ( $INFO{'caller'} && $INFO{'caller'} == 4 ) )
+                    {
                         $fatxt{'6d'} = $fatxt{'6f'};
                         $fatxt{'6e'} = $fatxt{'6c'};
                     }
@@ -861,13 +778,9 @@ qq~             <img src="$yyhtml_root/Smilies/$line" alt="$name" onclick="javas
     my $verification_field          = q{};
     my $verification_question_field = q{};
 
-    if ( !$nscheck ) {
-        $nscheck = q{};
-    }
-    else { $nscheck = ' checked="checked"'; }
     if ( !$replyguest ) {
         $my_isreply .= qq~
-            <input type="checkbox" name="ns" id="ns" value="NS"$nscheck onchange="autoPreview();" /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
+            <input type="checkbox" name="ns" id="ns" value="NS"${ischecked($nscheck)} onchange="autoPreview();" /> <label for="ns"><span class="small">$post_txt{'277'}</span></label><br />~;
         if (   !$staff
             && ${ $uid . $username }{'postcount'} < $numposts
             && $pm_spam_chk == 1 )
@@ -924,6 +837,7 @@ s/\Q{yabb verification_question_field}\E/$verification_question_field/xsm;
 
     #these are the buttons to submit
     my $send_bmessflag = q{};
+    my $is_bm_mess     = $FORM{'isBMess'};
     if ( $send_bm_mess || $is_bm_mess ) {
         $send_bmessflag =
           q~<input type="hidden" name="isBMess" id="isBMess" value="yes" />~;
@@ -952,7 +866,7 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
             }
             else {
                 $tmpurl =
-                  qq~$yyhtml_root/Smilies/added/${ $addedsmilies{ $smilieorder[$i] } }[0]~;
+qq~$yyhtml_root/Smilies/added/${ $addedsmilies{ $smilieorder[$i] } }[0]~;
             }
             $smilie_url_array .= qq~"$tmpurl", ~;
             $tmpcode = ${ $addedsmilies{ $smilieorder[$i] } }[1];
@@ -984,11 +898,9 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
       qq~<script src="$yyhtml_root/ajax.js" type="text/javascript"></script>
         <script type="text/javascript">
 ~;
-    our $my_ajxcall = q{};
     my $my_savetable = q{};
     if ( !$replyguest ) {
-        $my_ajxcall = 'ajximmessage';
-        $my_savetable .= my_liveprev();
+        $my_savetable .= my_liveprev('ajximmessage');
         $my_savetable .= qq~
             $js_im
             function showtpstatus() {
@@ -1006,24 +918,14 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
 ~;
     }
 
+    $displayname = ${ $uid . $username }{'realname'};
     if ( $action eq 'modify' || $action eq 'modify2' ) {
         $displayname = $mename;
-    }
-    else {
-        $displayname = ${ $uid . $username }{'realname'};
     }
 
     get_template('Display');
 
-    my $jsmonths = q{};
-    foreach (@months) { $jsmonths .= qq~'$_',~; }
-    $jsmonths =~ s/,\Z//xsm;
-    my $jstimeselected = ${ $uid . $username }{'timeselect'} || $timeselected;
-
     $imsend = $imsend_send;
-    $my_ispreview ||= q{};
-    $hidestatus   ||= q{};
-    $my_chars     ||= q{};
     $imsend .= $my_imsend_jsin;
     $imsend .= $my_ubbc_yes;
     $imsend .= $my_postbox;
@@ -1036,17 +938,14 @@ qq~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="$draft" id="$d
     $imsend =~ s/\Q{yabb onchangeText}\E/$onchangetext/xsm;
     $imsend =~ s/\Q{yabb postbox2}\E/$postbox2/xsm;
     $imsend =~ s/\Q{yabb postbox3}\E/$postbox3/xsm;
-    $imsend =~ s/\Q{yabb my_ispreview}\E/$my_ispreview/xsm;
     $imsend =~ s/\Q{yabb my_isreply}\E/$my_isreply/xsm;
     $imsend =~ s/\Q{yabb post}\E/$post/xsm;
-    $imsend =~ s/\Q{yabb hidestatus}\E/$hidestatus/xsm;
     $imsend =~ s/\Q{yabb submittxt}\E/$submittxt/xsm;
     $imsend =~ s/\Q{yabb sendBMessFlag}\E/$send_bmessflag/xsm;
     $imsend =~ s/\Q{yabb my_spdpost}\E/$my_spdpost/xsm;
     $imsend =~ s/\Q{yabb my_draft}\E/$my_draft/xsm;
     $imsend =~ s/\Q{yabb my_browser}\E/$my_browser/xsm;
     $imsend =~ s/\Q{yabb my_savetable}\E/$my_savetable/xsm;
-    $imsend =~ s/\Q{yabb my_chars}\E/$my_chars/xsm;
     ##########  end post code
     return $imsend;
 }
@@ -1060,11 +959,9 @@ sub imsend_message {
     ##  sorry - no guests
     if ($iamguest) { fatal_error('im_members_only'); }
 
-    my (
-        $igname,  $messageid, $subject, $ignored,
-        $memnums, $file,      $fixfile, %filesizekb,
-    );
-    $is_bm_mess = $FORM{'isBMess'};
+    my ( $igname, $messageid, $subject,
+        $memnums, $file, $fixfile, %filesizekb, );
+    my $is_bm_mess = $FORM{'isBMess'};
 
     # set size of messagebox and text
     ${ $uid . $username }{'postlayout'} =
@@ -1102,15 +999,13 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     $message =~ s/\t/ \&nbsp; \&nbsp; \&nbsp;/gxsm;
 
     # Check Length
-    my $convertstr = $subject;
-    my $convertcut =
+    my $convertcuta =
       $set_subject_maxlength + ( $subject =~ /^Re:\s/xsm ? 4 : 0 );
-    count_chars();
-    $subject = $convertstr;
+    ( $subject, undef ) = count_chars( $subject, $convertcuta );
 
-    $convertstr = $message;
-    $convertcut = $max_messlen;
-    count_chars();
+    my $cliped     = 0;
+    my $convertstr = $message;
+    ( $convertstr, $cliped ) = count_chars( $convertstr, $max_messlen );
     if ($cliped) {
         $error =
             "$inmes_txt{'536'} "
@@ -1154,219 +1049,16 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     my $allow_groups = group_perms( $allow_attach_im, $pm_attach_groups );
     my @logfilelist;
     if ( $allow_attach_im && $allow_groups ) {
-        foreach my $y ( 1 .. $allow_attach_im ) {
-            if ($cgi_query) { $file = $cgi_query->upload("file$y"); }
-            if ($file) {
-                $fixfile = $file;
-                $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
-
-             # replace all inappropriate characters from lists in Language files
-                if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
-                    my %translist      = loadtranlist();
-                    my @uploadtranlist = keys %translist;
-                    foreach (@uploadtranlist) {
-                        $fixfile =~ s/$_/$translist{$_}/gxsm;
-                    }
-                    $fixfile =~ s/[^\w+\-.:]/_/gxsm;
-                }
-                my $fixname = lc $fixfile;
-                my $fixext  = q{};
-                if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
-                    $fixext = $2;
-                }
-                ( my $fixchck = $fixname ) =~ s/_//gxsm;
-                if ( $fixchck eq q{} ) {
-                    fatal_error( 'rename', "$fixfile" );
-                }
-                my $spamdetected         = spamcheck($fixname);
-                my $spam_hits_left_count = 0;
-                if ( !$staff ) {
-                    if ( $spamdetected == 1 ) {
-                        ${ $uid . $username }{'spamcount'}++;
-                        ${ $uid . $username }{'spamtime'} = $date;
-                        user_account( $username, 'update' );
-                        $spam_hits_left_count = $post_speed_count -
-                          ${ $uid . $username }{'spamcount'};
-                        foreach (@filelist) { unlink "$pmuploaddir/$_"; }
-                        fatal_error('tsc_alert');
-                    }
-                }
-                if ( $use_guardian && $string_on ) {
-                    my @bannedstrings = split /[|]/xsm, $banned_strings;
-                    foreach (@bannedstrings) {
-                        chomp;
-                        if ( $fixname =~ m/$_/ixsm ) {
-                            fatal_error( 'attach_name_blocked', "($_)" );
-                        }
-                    }
-                }
-                $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
-                $fixname =~ s/[.]{2}(?!tar$)/_/gxsm;
-                $fixfile = qq~$fixname$fixext~;
-                if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) {
-                    fatal_error('attach_file_blocked');
-                }
-
-                if ( !$pm_file_overwrite ) {
-                    $fixfile = check_existence( $pmuploaddir, $fixfile );
-                }
-                elsif ( $pm_file_overwrite == 2 && -e "$pmuploaddir/$fixfile" )
-                {
-                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
-                    fatal_error('file_overwrite');
-                }
-
-                my $match = 0;
-                if ( !$pm_checkext ) { $match = 1; }
-                else {
-                    foreach my $ext (@pm_attachext) {
-                        if ( grep { /$ext$/ixsm } $fixfile ) {
-                            $match = 1;
-                            last;
-                        }
-                    }
-                }
-                if ($match) {
-                    if ( $allow_attach_im == 0 ) {
-                        foreach (@filelist) { unlink "$pmuploaddir/$_"; }
-                        fatal_error('no_perm_att');
-                    }
-                }
-                else {
-                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
-                    fatal_error( q{}, "$fixfile $fatxt{'20'} $pm_attachext" );
-                }
-
-                my ( $size, $buffer, $filesize, $file_buffer );
-                while ( $size = read $file, $buffer, 512 ) {
-                    $filesize += $size;
-                    $file_buffer .= $buffer;
-                }
-                $pm_file_limit ||= 0;
-                if (   $pm_file_limit > 0
-                    && $filesize > ( 1024 * $pm_file_limit ) )
-                {
-                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
-                    fatal_error( q{},
-                            "$fatxt{'21'} $fixfile ("
-                          . int( $filesize / 1024 )
-                          . " KB) $fatxt{'21b'} "
-                          . $pm_file_limit );
-                }
-                $pm_dirlimit ||= 0;
-                if ( $pm_dirlimit > 0 ) {
-                    my $dirsize = dirsize($pmuploaddir);
-                    if ( $filesize > ( ( 1024 * $pm_dirlimit ) - $dirsize ) ) {
-                        foreach (@filelist) { unlink "$pmuploaddir/$_"; }
-                        fatal_error(
-                            q{},
-                            "$fatxt{'22'} $fixfile ("
-                              . (
-                                int( $filesize / 1024 ) -
-                                  $pm_dirlimit +
-                                  int( $dirsize / 1024 )
-                              )
-                              . " KB) $fatxt{'22b'}"
-                        );
-                    }
-                }
-
- # create a new file on the server using the formatted ( new instance ) filename
-                our ($NEWFILE);
-                if ( fopen( 'NEWFILE', '>', "$pmuploaddir/$fixfile" ) ) {
-                    binmode $NEWFILE;
-
-                   # needed for operating systems (OS) Windows, ignored by Linux
-                    print {$NEWFILE} $file_buffer
-                      or croak "$croak{'print'} NEWFILE"; # write new file on HD
-                    fclose('NEWFILE') or croak "$croak{'close'} NEWFILE";
-                }
-                else
-                { # return the server's error message if the new file could not be created
-                    foreach (@filelist) { unlink "$pmuploaddir/$_"; }
-                    fatal_error( 'file_not_open', "$pmuploaddir" );
-                }
-
-     # check if file has actually been uploaded, by checking the file has a size
-                $filesizekb{$fixfile} = -s "$pmuploaddir/$fixfile";
-                if ( !$filesizekb{$fixfile} ) {
-                    foreach (qw("@filelist" $fixfile)) {
-                        unlink "$pmuploaddir/$_";
-                    }
-                    fatal_error( 'file_not_uploaded', $fixfile );
-                }
-                $filesizekb{$fixfile} = int( $filesizekb{$fixfile} / 1024 );
-
-                if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
-                    my $okatt = 1;
-                    if ( $fixfile =~ /gif$/ixsm ) {
-                        our ($ATTFILE);
-                        fopen( 'ATTFILE', '<', "$pmuploaddir/$fixfile" )
-                          or croak "$croak{'open'} ATTFILE";
-                        read $ATTFILE, my $header, 10;
-                        my ( $giftest, undef, undef, undef, undef, undef ) =
-                          unpack 'a3a3C4', $header;
-                        fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
-                        if ( $giftest ne 'GIF' ) { $okatt = 0; }
-                    }
-                    our ($ATTFILE);
-                    fopen( 'ATTFILE', '<', "$pmuploaddir/$fixfile" )
-                      or croak "$croak{'open'} ATTFILE";
-                    while ( read $ATTFILE, $buffer, 1024 ) {
-                        if ( $buffer =~ /<(?:html|script|body)/igxsm ) {
-                            $okatt = 0;
-                            last;
-                        }
-                    }
-                    fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
-                    if ( !$okatt )
-                    {    # delete the file as it contains illegal code
-                        foreach (qw("@filelist" $fixfile)) {
-                            unlink "$pmuploaddir/$_";
-                        }
-                        fatal_error( 'file_not_uploaded',
-                            "$fixfile $fatxt{'20a'}" );
-                    }
-                }
-
-                my $log_fixfile = $fixfile;
-                push @logfilelist, $log_fixfile;
-                $fixfile .= q{~} . $username;
-                push @filelist, $fixfile;
-
-            }
-            my $pm_attachuser = q{};
-            if ( $FORM{"w_filename$y"} && $FORM{"w_file$y"} eq 'attachold' ) {
-                $pm_attachuser = decloak( $FORM{"w_fileuser$y"} );
-                $FORM{"w_filename$y"} .= q{~} . $pm_attachuser;
-                push @filelist, $FORM{"w_filename$y"};
-            }
-        }
-
-        # Create the list of files
-        $fixfile = join q{,}, @filelist;
-        my $log_fixfile = join q{,}, @logfilelist;
-        if (@filelist) {
-            our ($PMATTACHLOG);
-            fopen( 'PMATTACHLOG', '>>', 'Variables/pmattachments.db' )
-              or fatal_error( 'cannot_open', 'Variables/pmattachments.db' );
-            foreach my $log_fixfile (@logfilelist) {
-                print {$PMATTACHLOG}
-qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'realname'}|$username\n~
-                  or croak "$croak{'print'} PMATTACHLOG";
-            }
-            fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
-        }
+        ( @filelist, @logfilelist ) = get_filelist();
     }
 
     # go through each member in list
     # add to each msg (inbox) but only one to outbox
 
-    my $actlang = $language;
+    my $ignored = 0;
+    my @nouser  = ();
     if ( !$FORM{'draft'} && !$is_bm_mess && !$replyguest ) {
-        my $addnr = 0;
         foreach my $user_to (@allto) {
-            $addnr++;
             chomp $user_to;
             my ( $status, $user_to ) = split /:/xsm, $user_to;
             $ignored = 0;
@@ -1377,68 +1069,21 @@ qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'re
             # Check Ignore-List, unless sender is FA
             load_user($user_to);
             if ( !$is_bm_mess ) {
-                if (   ${ $uid . $user_to }{'im_ignorelist'}
-                    && !$iamadmin
-                    && !$iamgmod )
-                {
-
-                    # Build Ignore-List
-                    my @ignore =
-                      split /[|]/xsm, ${ $uid . $user_to }{'im_ignorelist'};
-
-                    # If User is on Recipient's Ignore-List, show Error Message
-                    foreach my $igname (@ignore) {
-
-   # adds ignored user's name to array which error list will be built from later
-                        chomp $igname;
-                        if ( $igname eq $username ) {
-                            push @nouser, $user_to;
-                            $ignored = 1;
-                        }
-                        if ( $igname eq q{*} ) {
-                            push @nouser,
-                              "$inmes_txt{'761'} $user_to $inmes_txt{'762'};";
-                            $ignored = 1;
-                        }
-                    }
-                }
+                my ( $nouser, $ignore ) = get_ignore( \@nouser, $user_to );
+                @nouser  = @{$nouser};
+                $ignored = $ignore;
             }
             ## check and see if 1) username is marked 'away' 2) they left a message 3) you have not already had an auto-reply
-            my $send_autoreply = 1;
-            if (   ${ $uid . $user_to }{'offlinestatus'}
-                && ${ $uid . $user_to }{'offlinestatus'} eq 'away'
-                && ${ $uid . $user_to }{'awayreply'}
-                && ${ $uid . $user_to }{'awaysubj'} )
-            {
-                if ( !${ $uid . $user_to }{'awayreplysent'} ) {
-                    ${ $uid . $user_to }{'awayreplysent'} = $username;
-                    user_account( $user_to, 'update' );
-                }
-                else {
-                    foreach my $reply_listname ( split /,/xsm,
-                        ${ $uid . $user_to }{'awayreplysent'} )
-                    {
-                        if ( $reply_listname eq $username ) {
-                            $send_autoreply = 0;
-                            last;
-                        }
-                    }
-                    if ($send_autoreply) {
-                        ${ $uid . $user_to }{'awayreplysent'} .= qq~,$username~;
-                        user_account( $user_to, 'update' );
-                    }
-                }
-            }
-            else { $send_autoreply = 0; }
+            my $send_autoreply = get_auto_reply($user_to);
 
-            if ( !-e ("$memberdir/$user_to.vars") ) {
+            if ( !-e "$memberdir/$user_to.vars" ) {
 
    # adds invalid user's name to array which error list will be built from later
                 push @nouser, $user_to;
                 $ignored = 1;
             }
             if ( !$ignored ) {
-                $mods = q{};
+                my $mods    = q{};
                 my @messhsh = get_imlist();
                 if ( $#messhsh > 14 ) {
                     foreach my $i ( 15 .. $#messhsh ) {
@@ -1496,52 +1141,7 @@ qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'re
                     && $enable_notifications
                     && $enable_notifications > 1 )
                 {
-                    require Sources::Mailer;
-                    $language = ${ $uid . $user_to }{'language'};
-                    load_language('Email');
-                    load_language('Notify');
-                    load_censor_list();
-                    $useremail = ${ $uid . $user_to }{'email'};
-                    $useremail =~ s/[\r\n]//gxsm;
-                    if ( $useremail ne q{} ) {
-                        $msubject = $subject ? $subject : $inmes_txt{'767'};
-                        my $fromname = ${ $uid . $username }{'realname'};
-                        $msubject = from_html($msubject);
-                        $msubject = to_chars($msubject);
-                        $msubject = do_censor($msubject);
-                        my $chmessage = $message;
-                        $chmessage = from_html($chmessage);
-                        $chmessage = to_chars($chmessage);
-                        $chmessage = do_censor($chmessage);
-                        $chmessage = regex_4($chmessage);
-
-                        $pm_attachurl = q{};
-                        my $mailattach = q{};
-                        if ( $fixfile ne q{} ) {
-                            foreach ( split /,/xsm, $fixfile ) {
-                                my ( $pm_attachfile, undef ) = split /~/xsm;
-                                $pm_attachurl .=
-                                  qq~$pmuploadurl/$pm_attachfile\n~;
-                            }
-                            my $pm_attachtxt = qq~\n$fatxt{'80'}:\n~;
-                            $mailattach = $pm_attachtxt . $pm_attachurl;
-                        }
-                        sendmail(
-                            $useremail,
-                            qq~$notify_txt{'145'} $fromname ($msubject)~,
-                            template_email(
-                                $privatemessagenotificationemail,
-                                {
-                                    'sender'      => $fromname,
-                                    'subject'     => $msubject,
-                                    'message'     => $chmessage,
-                                    'attachments' => $mailattach
-                                }
-                            ),
-                            q{},
-                            $emailcharset
-                        );
-                    }
+                    send_notification( $user_to, $subject, $fixfile );
                 }
             }    #end add PM to outbox
         }    #end for loop
@@ -1565,7 +1165,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
           or croak "$croak{'open'} broadcast.messages";
         my @inmessages = <$INBOX>;
         fclose('INBOX') or croak "$croak{'close'} broadcast.messages";
-        $mods = q{};
+        my $mods    = q{};
         my @messhsh = get_imlist();
         if ( $#messhsh > 14 ) {
             foreach my $i ( 15 .. $#messhsh ) {
@@ -1630,12 +1230,11 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
         sendmail( $FORM{'guestemail'}, $msubject, $chmessage,
             ${ $uid . $username }{'email'} );
     }
-
+    my $mods = q{};
     if (  !$FORM{'dontstoreinoutbox'}
         || $FORM{'draft'}
         || ( $FORM{'dontstoreinoutbox'} && $fixfile ne q{} ) )
     {
-        $mods = q{};
         my @messhsh = get_imlist();
         if ( $#messhsh > 14 ) {
             foreach my $i ( 15 .. $#messhsh ) {
@@ -1744,6 +1343,7 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$baduser}">$form
 sub proc_imrecs {
     $FORM{'toshow'} ||= q{};
     $FORM{'toshow'} =~ s/\s//gxsm;
+    my $is_bm_mess = $FORM{'isBMess'};
     if ( !$is_bm_mess ) {
         $countmulti = 0;
         @multiple = split /,/xsm, $FORM{'toshow'};
@@ -1808,8 +1408,7 @@ sub pagelinks_list {
     $maxmessagedisplay ||= 10;
     my $userthreadpage =
       ( split /[|]/xsm, ${ $uid . $username }{'pageindex'} )[3];
-    my ( $pagetxtindex, $pagedropindex1, $pagedropindex2, $all, $allselected,
-        $bmesslink );
+    my ( $pagetxtindex, $pagedropindex1, $pagedropindex2, $all, $bmesslink );
     my $postdisplaynum = 3;     # max number of pages to display
     my $dropdisplaynum = 10;
     my $startpage      = 0;
@@ -1835,8 +1434,9 @@ sub pagelinks_list {
             $i++;
         }
     }
-    my $max   = scalar @tempim;
-    our $start = 0;
+    my $max         = scalar @tempim;
+    my $start       = 0;
+    my $allselected = q{};
     if ( $INFO{'start'} && $INFO{'start'} =~ /all/xsm ) {
         $maxmessagedisplay = $max;
         $all               = 1;
@@ -1857,18 +1457,18 @@ sub pagelinks_list {
         $endpage = $start + ( $postdisplaynum * $maxmessagedisplay );
     }
     else { $endpage = $max; }
-    my $lastpn  = int( $#tempim / $maxmessagedisplay ) + 1;
-    my $lastptn = ( $lastpn - 1 ) * $maxmessagedisplay;
+    my $lastpn      = int( $#tempim / $maxmessagedisplay ) + 1;
+    my $lastptn     = ( $lastpn - 1 ) * $maxmessagedisplay;
+    my $tstart      = q{};
+    my $pagejsindex = q{};
     our $pageindex1 =
 qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$display_txt{'19'}" title="$display_txt{'19'}" /> $display_txt{'139'}: $pagenumb</span>~;
     our $pagetxtindexst = q{};
     our $pageindexadd   = q{};
     our $pageindex2     = q{};
-    my $tstart         = q{};
-    my $pagejsindex    = q{};
 
     if ( $pagenumb > 1 || $all ) {
-        if ( $userthreadpage == 1 ) {
+        if ( $userthreadpage && $userthreadpage == 1 ) {
             $pagetxtindexst = q~<span class="small pgindex">~;
             $bmesslink ||= q{};
             $pagetxtindexst .=
@@ -2081,9 +1681,9 @@ sub doshow_im {
         ( $prev_messid, undef ) = split /[|]/xsm, $dimmessages[$messcount];
     }
     ## wrap the URL in
-    $previd = q{};
-    $nextid = q{};
-    $allid  = q{};
+    my $previd = q{};
+    my $nextid = q{};
+    my $allid  = q{};
     if ( $INFO{'id'} > 0 && $prev_messid ) {
         $previd =
 qq~&laquo; <a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=$prev_messid">$inmes_imtxt{'40'}</a>~;
@@ -2148,7 +1748,8 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=0">$inmes_txt{'19
         }
 
         if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
-            ( $guest_name, $guest_email ) = split /[ ]/xsm, $messlst{'musername'};
+            ( $guest_name, $guest_email ) = split /[ ]/xsm,
+              $messlst{'musername'};
             $guest_name =~ s/%20/ /gxsm;
             $usernamelinkfrom =
               qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
@@ -2183,20 +1784,10 @@ qq~<a href="$scripturl?action=imshow;caller=$INFO{'caller'};id=0">$inmes_txt{'19
 
         if ( $messlst{'mstatus'} !~ /b/xsm ) {
             if ( $messlst{'mstatus'} !~ /gr/xsm ) {
-                foreach my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
-                    load_validuserdisplay($uname);
-                    $usernamelinkto .= (
-                        ${ $uid . $uname }{'realname'}
-                        ? create_userdisplay_line($uname)
-                        : (
-                              $uname ? qq~$uname ($maintxt{'470a'})~
-                            : $maintxt{'470a'}
-                        )
-                    ) . q{, };
-                }
+                $usernamelinkto .= get_userlinkto_a();
             }
             else {
-                ( $guest_name, $guest_email ) = split / /sm,
+                ( $guest_name, $guest_email ) = split /[ ]/xsm,
                   $messlst{'mtousers'};
                 $guest_name =~ s/%20/ /gxsm;
                 $usernamelinkto =
@@ -2305,7 +1896,8 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
         $usernamelinkto =~ s/,\s$//xsm;
 
         if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
-            ( $guest_name, $guest_email ) = split /[ ]/xsm, $messlst{'musername'};
+            ( $guest_name, $guest_email ) = split /[ ]/xsm,
+              $messlst{'musername'};
             $guest_name =~ s/%20/ /gxsm;
             $usernamelinkfrom =
               qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
@@ -2358,22 +1950,28 @@ qq~$guest_name (<a href="mailto:$guest_email">$guest_email</a>)~;
         $from_title = qq~$inmes_txt{'318'}:~;
     }
 
-    $pm_nav = build_pm_navigator();
+    $pm_nav = build_pm_navigator( $allid, $nextid, $previd );
 
     $messlst{'msub'} = to_chars( $messlst{'msub'} );
     $messlst{'msub'} = do_censor( $messlst{'msub'} );
 
     $message = $messlst{'immessage'};
-    wrap();
-    if ($enable_ubbc) {
+    $message = wrap($message);
+    if ( $enable_ubbc && !$nscheck ) {
         enable_yabbc();
-        do_ubbc();
+        my $displayname = ${ $uid . $messlst{'musername'} }{'realname'};
+        if ( $messlst{'mstatus'} eq 'g' || $messlst{'mstatus'} eq 'ga' ) {
+            ( $guest_name, $guest_email ) = split /[ ]/xsm,
+              $messlst{'musername'};
+            $guest_name =~ s/%20/ /gxsm;
+            $displayname = $guest_name;
+        }
+        $message = do_ubbc( $message, q{}, $displayname );
     }
-    wrap2();
+    $message = wrap2($message);
     $message = to_chars($message);
     $message = do_censor($message);
 
-    my $avstyle  = q{};
     my $my_title = q{};
     my $my_sig   = q{};
     if ($from_title) {
@@ -2466,7 +2064,7 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
             $pm_attachment =~
               s/\Q<div class="small">\E/<div class="small attbox_b">/gxsm;
         }
-		$pm_showattach ||= q{};
+        $pm_showattach ||= q{};
         $my_attach = $show_my_attach;
         $my_attach =~ s/\Q{yabb pmAttachment}\E/$pm_attachment/xsm;
         $my_attach =~ s/\Q{yabb pmShowAttach}\E/$pm_showattach/xsm;
@@ -2479,18 +2077,20 @@ qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $pm
     my $imip = q{};
     if ( $iamadmin || $iamgmod && $gmod_access2{'ipban2'} ) {
         my $ip_block = q{};
-        my $ip_ban = q{};
-        if ( $messlst{'mstatus'} eq 'ga' || $messlst{'mstatus'} eq 'g') {
+        my $ip_ban   = q{};
+        if ( $messlst{'mstatus'} eq 'ga' || $messlst{'mstatus'} eq 'g' ) {
             our %display_txt;
             load_language('Display');
-                if ( $messlst{'imip'} ne '127.0.0.1' && $messlst{'imip'} ne '::1' ) {
-                    if ( $use_guardian && $use_htaccess ) {
-                    $ip_block = qq~<a href="$scripturl?action=guardian_blck;ip=$messlst{'imip'};" onclick="return confirm('$display_txt{'ipblock_confirm'}$messlst{'imip'}');">$display_txt{'ipblock'}</a> - ~;
-                    }
-                    $ip_ban =
-qq~<a href="$scripturl?action=ipban_gip;ban=$messlst{'imip'};lev=p;" onclick="return confirm('$display_txt{'ipban_confirm'}$messlst{'imip'}');">$display_txt{'725f'}</a> - ~;
+            if ( $messlst{'imip'} ne '127.0.0.1' && $messlst{'imip'} ne '::1' )
+            {
+                if ( $use_guardian && $use_htaccess ) {
+                    $ip_block =
+qq~<a href="$scripturl?action=guardian_blck;ip=$messlst{'imip'};" onclick="return confirm('$display_txt{'ipblock_confirm'}$messlst{'imip'}');">$display_txt{'ipblock'}</a> - ~;
                 }
+                $ip_ban =
+qq~<a href="$scripturl?action=ipban_gip;ban=$messlst{'imip'};lev=p;" onclick="return confirm('$display_txt{'ipban_confirm'}$messlst{'imip'}');">$display_txt{'725f'}</a> - ~;
             }
+        }
         $imip = $ip_block . $ip_ban . $lookup_ip;
     }
     else { $imip = $inmes_txt{'511'}; }
@@ -2517,7 +2117,7 @@ qq~<a href="$scripturl?action=ipban_gip;ban=$messlst{'imip'};lev=p;" onclick="re
 qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'};replyguest=1;id=$messlst{'messageid'}">$img{'reply_ims'}</a>~;
         }
         else {
-            if ( $messlst{'mtousers'} ) {
+            if ( $messlst{'mtousers'} && $INFO{'caller'} != 5 ) {
                 my $ii = 0;
                 foreach my $tuname ( split /,/xsm, $messlst{'mtousers'} ) {
                     if ( $tuname ne $username ) {
@@ -2602,7 +2202,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
         'g'  => 'guestpm',
     );
     my $messiconname = 'standard';
-    if ( $messlst{'mstatus'} =~ /(c|u|a|gr|g)/xsm ) {
+    if ( $messlst{'mstatus'} =~ /(gr|[cuag])/xsm ) {
         $messiconname = $mypmicon{$1};
     }
     if ( $messlst{'mstatus'} ne 'ga' && $messlst{'mstatus'} ne 'g' ) {
@@ -2642,6 +2242,7 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
 
 ## build the links for single PM display
 sub build_pm_navigator {
+    my ( $allid, $nextid, $previd ) = @_;
     my $pm_nav = q{};
     if ( $previd ne q{} ) { $pm_nav = $previd; }
     if ( $allid ne q{} && $previd ne q{} ) { $pm_nav .= qq~ | $allid~; }
@@ -2655,7 +2256,8 @@ sub doshowims {
     my $tempdate;
     %messlst = ();
     my $message_count = 0;
-    if ( $INFO{'id'} && !$INFO{'replyguest'} ) {
+    if ( !$INFO{'id'} || $INFO{'replyguest'} ) { return; }
+    elsif ( $INFO{'id'} && !$INFO{'replyguest'} ) {
         my $message_foundflag = 0;
         foreach my $messge (@messages) {
             my $tmnum = ( split /[|]/xsm, $messge )[0];
@@ -2667,21 +2269,18 @@ sub doshowims {
         %messlst  = get_imhash( $messages[$message_count] );
         $tempdate = timeformat( $messlst{'mdate'} );
     }
-    else {
-        return;
-    }
 
     $messlst{'msub'} = to_chars( $messlst{'msub'} );
     $messlst{'msub'} = do_censor( $messlst{'msub'} );
 
-    wrap();
-    if ($enable_ubbc) {
-        $message = $messlst{'immessage'};
+    $messlst{'immessage'} = wrap( $messlst{'immessage'} );
+    if ( $enable_ubbc && !$nscheck ) {
         enable_yabbc();
-        do_ubbc();
-        $messlst{'immessage'} = $message;
+        my $displayname = ${ $uid . $messlst{'musername'} }{'realname'};
+        $messlst{'immessage'} =
+          do_ubbc( $messlst{'immessage'}, q{}, $displayname );
     }
-    wrap2();
+    $messlst{'immessage'} = wrap2( $messlst{'immessage'} );
     $messlst{'immessage'} = to_chars( $messlst{'immessage'} );
     $messlst{'immessage'} = do_censor( $messlst{'immessage'} );
 
@@ -2726,6 +2325,410 @@ sub links_to {
         $usernamelinkto = qq~<b>$title</b>~ . q{, };
     }
     return $usernamelinkto;
+}
+
+sub get_toname {
+    my ( $toname, $userto ) = @_;
+    my $im_winop = q{};
+    if ($toname) {
+        load_user($toname);
+        if ( ${ $uid . $toname }{'realname'} ) {
+            $im_winop .=
+qq~<option selected="selected" value="$useraccount{$toname}">${ $uid . $toname }{'realname'}</option>\n~;
+        }
+        if ( $INFO{'mid'} ) {
+            foreach my $moreuser ( split /,/xsm, $INFO{'mid'} ) {
+                if ( $moreuser ne $username ) {
+                    load_user($moreuser);
+                    $im_winop .=
+qq~<option selected="selected" value="$moreuser">${$uid.$moreuser}{'realname'}</option>\n~;
+                }
+            }
+        }
+    }
+    if ( $FORM{'toshow'} ) {
+        foreach my $touser ( split /,/xsm, $FORM{'toshow'} ) {
+            load_user($touser);
+            $im_winop .=
+qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
+        }
+    }
+    if ($userto) {
+        foreach my $touser ( split /,/xsm, $userto ) {
+            load_user($touser);
+            $im_winop .=
+qq~<option selected="selected" value="$useraccount{$touser}">${$uid.$touser}{'realname'}</option>\n~;
+        }
+    }
+    return $im_winop;
+}
+
+sub get_togrp {
+    my $im_winop = q{};
+    $FORM{'toshow'} = $mto || $FORM{'toshow'};
+    if ( $FORM{'toshow'} ) {
+        my @inopord = qw(all admins gmods fmods mods);
+        my %touser  = (
+            'all' =>
+qq~<option selected="selected" value="all">$inmes_txt{'bmallmembers'}</option>\n~,
+            'admins' =>
+qq~<option selected="selected" value="admins">$inmes_txt{'bmadmins'}</option>\n~,
+            'gmods' =>
+qq~<option selected="selected" value="gmods">$inmes_txt{'bmgmods'}</option>\n~,
+            'fmods' =>
+qq~<option selected="selected" value="fmods">$inmes_txt{'bmfmods'}</option>\n~,
+            'mods' =>
+qq~<option selected="selected" value="mods">$inmes_txt{'bmmods'}</option>\n~,
+        );
+        foreach my $touser ( split /,/xsm, $FORM{'toshow'} ) {
+            foreach my $i (@inopord) {
+                if ( $touser eq $i ) {
+                    $im_winop .= $touser{$i};
+                }
+            }
+            foreach my $i ( keys %grp_nopost ) {
+                my ( $title, undef ) = @{ $grp_nopost{$i} };
+                if ( $touser eq $i ) {
+                    $im_winop .=
+qq~<option selected="selected" value="$i">$title</option>\n~;
+                }
+            }
+        }
+    }
+    return $im_winop;
+}
+
+sub get_userlinkto_a {
+    my $usernamelinkto = q{};
+    foreach my $uname ( split /,/xsm, $messlst{'mtousers'} ) {
+        load_validuserdisplay($uname);
+        if ( ${ $uid . $uname }{'realname'} ) {
+            $usernamelinkto .= create_userdisplay_line($uname);
+            my $im_opened =
+              check_ims( $uname, $messlst{'messageid'}, 'messageopened' );
+            load_user($uname);
+            if (
+                !$im_opened
+                && (  !${ $uid . $uname }{'notify_me'}
+                    || ${ $uid . $uname }{'notify_me'} < 2
+                    || $enable_notifications < 2 )
+              )
+            {
+                $usernamelinkto .=
+qq~ <span class="small">(<a href="$scripturl?action=imcb;rid=$messlst{'messageid'};receiver=$useraccount{$uname}" onclick="return confirm('$inmes_imtxt{'73'}')">$inmes_imtxt{'83'}</a>)</span>~;
+            }
+        }
+        elsif ($uname) {
+            $usernamelinkto .= qq~$uname ($maintxt{'470a'})~;
+        }
+        else { $usernamelinkto .= $maintxt{'470a'}; }
+        $usernamelinkto .= ', ';
+    }
+    return $usernamelinkto;
+}
+
+sub get_ignore {
+    my ( $nouser, $user_to ) = @_;
+    my @nouser  = @{$nouser};
+    my $ignored = 0;
+    if (   ${ $uid . $user_to }{'im_ignorelist'}
+        && !$iamadmin
+        && !$iamgmod )
+    {
+
+        # Build Ignore-List
+        my @ignore =
+          split /[|]/xsm, ${ $uid . $user_to }{'im_ignorelist'};
+
+        # If User is on Recipient's Ignore-List, show Error Message
+        foreach my $igname (@ignore) {
+
+   # adds ignored user's name to array which error list will be built from later
+            chomp $igname;
+            if ( $igname eq $username ) {
+                push @nouser, $user_to;
+                $ignored = 1;
+            }
+            if ( $igname eq q{*} ) {
+                push @nouser, "$inmes_txt{'761'} $user_to $inmes_txt{'762'};";
+                $ignored = 1;
+            }
+        }
+    }
+    return ( \@nouser, $ignored );
+}
+
+sub get_auto_reply {
+    my ($user_to) = @_;
+    my $send_autoreply = 1;
+    if (   ${ $uid . $user_to }{'offlinestatus'}
+        && ${ $uid . $user_to }{'offlinestatus'} eq 'away'
+        && ${ $uid . $user_to }{'awayreply'}
+        && ${ $uid . $user_to }{'awaysubj'} )
+    {
+        if ( !${ $uid . $user_to }{'awayreplysent'} ) {
+            ${ $uid . $user_to }{'awayreplysent'} = $username;
+            user_account( $user_to, 'update' );
+        }
+        else {
+            foreach my $reply_listname ( split /,/xsm,
+                ${ $uid . $user_to }{'awayreplysent'} )
+            {
+                if ( $reply_listname eq $username ) {
+                    $send_autoreply = 0;
+                    last;
+                }
+            }
+            if ($send_autoreply) {
+                ${ $uid . $user_to }{'awayreplysent'} .= qq~,$username~;
+                user_account( $user_to, 'update' );
+            }
+        }
+    }
+    else { $send_autoreply = 0; }
+    return $send_autoreply;
+}
+
+sub get_filelist {
+    my ( $file, @logfilelist, %filesizekb );
+    foreach my $y ( 1 .. $allow_attach_im ) {
+        if ($cgi_query) { $file = $cgi_query->upload("file$y"); }
+        if ($file) {
+            my $fixfile = $file;
+            $fixfile =~ s/.+\\([^\\]+)$|.+\/([^\/]+)$/$1/xsm;
+
+            # replace all inappropriate characters from lists in Language files
+            if ( $fixfile =~ /[^\w+\-.:]/xsm ) {
+                my %translist      = loadtranlist();
+                my @uploadtranlist = keys %translist;
+                foreach my $i (@uploadtranlist) {
+                    $fixfile =~ s/$i/$translist{$i}/gxsm;
+                }
+                $fixfile =~ s/[^\w+\-.:]/_/gxsm;
+            }
+            my $fixname = lc $fixfile;
+            my $fixext  = q{};
+            if ( $fixname =~ s/(.+)([.].+?)$/$1/xsm ) {
+                $fixext = $2;
+            }
+            ( my $fixchck = $fixname ) =~ s/_//gxsm;
+            if ( $fixchck eq q{} ) {
+                fatal_error( 'rename', "$fixfile" );
+            }
+            my $spamdetected         = spamcheck($fixname);
+            my $spam_hits_left_count = 0;
+            if ( !$staff ) {
+                if ( $spamdetected == 1 ) {
+                    ${ $uid . $username }{'spamcount'}++;
+                    ${ $uid . $username }{'spamtime'} = $date;
+                    user_account( $username, 'update' );
+                    $spam_hits_left_count =
+                      $post_speed_count - ${ $uid . $username }{'spamcount'};
+                    foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                    fatal_error('tsc_alert');
+                }
+            }
+            if ( $use_guardian && $string_on ) {
+                my @bannedstrings = split /[|]/xsm, $banned_strings;
+                foreach my $i (@bannedstrings) {
+                    chomp;
+                    if ( $fixname =~ m/$i/ixsm ) {
+                        fatal_error( 'attach_name_blocked', "($i)" );
+                    }
+                }
+            }
+            $fixext =~ s/[.](pl|pm|cgi|php)/._$1/ixsm;
+            $fixname =~ s/[.]{2}(?!tar$)/_/gxsm;
+            $fixfile = qq~$fixname$fixext~;
+            if ( $fixfile eq 'index.html' || $fixfile eq '.htaccess' ) {
+                fatal_error('attach_file_blocked');
+            }
+
+            if ( !$pm_file_overwrite ) {
+                $fixfile = check_existence( $pmuploaddir, $fixfile );
+            }
+            elsif ( $pm_file_overwrite == 2 && -e "$pmuploaddir/$fixfile" ) {
+                foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                fatal_error('file_overwrite');
+            }
+
+            my $match = 0;
+            if ( !$pm_checkext ) { $match = 1; }
+            else {
+                foreach my $ext (@pm_attachext) {
+                    if ( grep { /$ext$/ixsm } $fixfile ) {
+                        $match = 1;
+                        last;
+                    }
+                }
+            }
+            if ($match) {
+                if ( $allow_attach_im == 0 ) {
+                    foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                    fatal_error('no_perm_att');
+                }
+            }
+            else {
+                foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                fatal_error( q{}, "$fixfile $fatxt{'20'} $pm_attachext" );
+            }
+
+            my ( $size, $buffer, $filesize, $file_buffer );
+            while ( $size = read $file, $buffer, 512 ) {
+                $filesize += $size;
+                $file_buffer .= $buffer;
+            }
+            $pm_file_limit ||= 0;
+            if (   $pm_file_limit > 0
+                && $filesize > ( 1024 * $pm_file_limit ) )
+            {
+                foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                fatal_error( q{},
+                        "$fatxt{'21'} $fixfile ("
+                      . int( $filesize / 1024 )
+                      . " KB) $fatxt{'21b'} "
+                      . $pm_file_limit );
+            }
+            $pm_dirlimit ||= 0;
+            if ( $pm_dirlimit > 0 ) {
+                my $dirsize = dirsize($pmuploaddir);
+                if ( $filesize > ( ( 1024 * $pm_dirlimit ) - $dirsize ) ) {
+                    foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                    fatal_error(
+                        q{},
+                        "$fatxt{'22'} $fixfile ("
+                          . (
+                            int( $filesize / 1024 ) -
+                              $pm_dirlimit +
+                              int( $dirsize / 1024 )
+                          )
+                          . " KB) $fatxt{'22b'}"
+                    );
+                }
+            }
+
+ # create a new file on the server using the formatted ( new instance ) filename
+            our ($NEWFILE);
+            if ( fopen( 'NEWFILE', '>', "$pmuploaddir/$fixfile" ) ) {
+                binmode $NEWFILE;
+
+                # needed for operating systems (OS) Windows, ignored by Linux
+                print {$NEWFILE} $file_buffer
+                  or croak "$croak{'print'} NEWFILE";    # write new file on HD
+                fclose('NEWFILE') or croak "$croak{'close'} NEWFILE";
+            }
+            else
+            { # return the server's error message if the new file could not be created
+                foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                fatal_error( 'file_not_open', "$pmuploaddir" );
+            }
+
+     # check if file has actually been uploaded, by checking the file has a size
+            $filesizekb{$fixfile} = -s "$pmuploaddir/$fixfile";
+            if ( !$filesizekb{$fixfile} ) {
+                foreach my $i (qw("@filelist" $fixfile)) {
+                    unlink "$pmuploaddir/$i";
+                }
+                fatal_error( 'file_not_uploaded', $fixfile );
+            }
+            $filesizekb{$fixfile} = int( $filesizekb{$fixfile} / 1024 );
+
+            if ( $fixfile =~ /[.](?:jpg|gif|png|jpeg)$/ixsm ) {
+                my $okatt = 1;
+                if ( $fixfile =~ /gif$/ixsm ) {
+                    our ($ATTFILE);
+                    fopen( 'ATTFILE', '<', "$pmuploaddir/$fixfile" )
+                      or croak "$croak{'open'} ATTFILE";
+                    read $ATTFILE, my $header, 10;
+                    my ( $giftest, undef, undef, undef, undef, undef ) =
+                      unpack 'a3a3C4', $header;
+                    fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
+                    if ( $giftest ne 'GIF' ) { $okatt = 0; }
+                }
+                our ($ATTFILE);
+                fopen( 'ATTFILE', '<', "$pmuploaddir/$fixfile" )
+                  or croak "$croak{'open'} ATTFILE";
+                while ( read $ATTFILE, $buffer, 1024 ) {
+                    if ( $buffer =~ /<(?:html|script|body)/igxsm ) {
+                        $okatt = 0;
+                        last;
+                    }
+                }
+                fclose('ATTFILE') or croak "$croak{'close'} ATTFILE";
+                if ( !$okatt ) {   # delete the file as it contains illegal code
+                    foreach my $i (qw("@filelist" $fixfile)) {
+                        unlink "$pmuploaddir/$i";
+                    }
+                    fatal_error( 'file_not_uploaded',
+                        "$fixfile $fatxt{'20a'}" );
+                }
+            }
+
+            my $log_fixfile = $fixfile;
+            push @logfilelist, $log_fixfile;
+            $fixfile .= q{~} . $username;
+            push @filelist, $fixfile;
+
+        }
+        my $pm_attachuser = q{};
+        if ( $FORM{"w_filename$y"} && $FORM{"w_file$y"} eq 'attachold' ) {
+            $pm_attachuser = decloak( $FORM{"w_fileuser$y"} );
+            $FORM{"w_filename$y"} .= q{~} . $pm_attachuser;
+            push @filelist, $FORM{"w_filename$y"};
+        }
+    }
+    return ( @filelist, @logfilelist );
+}
+
+sub send_notification {
+    my ( $user_to, $subject, $fixfile ) = @_;
+    require Sources::Mailer;
+    $language = ${ $uid . $user_to }{'language'};
+    load_language('Email');
+    load_language('Notify');
+    load_censor_list();
+    $useremail = ${ $uid . $user_to }{'email'};
+    $useremail =~ s/[\r\n]//gxsm;
+
+    if ( $useremail ne q{} ) {
+        $msubject = $subject ? $subject : $inmes_txt{'767'};
+        my $fromname = ${ $uid . $username }{'realname'};
+        $msubject = from_html($msubject);
+        $msubject = to_chars($msubject);
+        $msubject = do_censor($msubject);
+        my $chmessage = $message;
+        $chmessage = from_html($chmessage);
+        $chmessage = to_chars($chmessage);
+        $chmessage = do_censor($chmessage);
+        $chmessage = regex_4($chmessage);
+
+        $pm_attachurl = q{};
+        my $mailattach = q{};
+        if ( $fixfile ne q{} ) {
+            foreach ( split /,/xsm, $fixfile ) {
+                my ( $pm_attachfile, undef ) = split /~/xsm;
+                $pm_attachurl .= qq~$pmuploadurl/$pm_attachfile\n~;
+            }
+            my $pm_attachtxt = qq~\n$fatxt{'80'}:\n~;
+            $mailattach = $pm_attachtxt . $pm_attachurl;
+        }
+        sendmail(
+            $useremail,
+            qq~$notify_txt{'145'} $fromname ($msubject)~,
+            template_email(
+                $privatemessagenotificationemail,
+                {
+                    'sender'      => $fromname,
+                    'subject'     => $msubject,
+                    'message'     => $chmessage,
+                    'attachments' => $mailattach
+                }
+            ),
+            q{},
+            $emailcharset
+        );
+    }
+    return;
 }
 
 1;

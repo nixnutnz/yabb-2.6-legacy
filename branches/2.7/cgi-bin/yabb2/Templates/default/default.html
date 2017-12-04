@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="{yabb xml_lang}">
 <head>
-    <meta charset="{yabb mycharset}">
+    <meta charset="utf-8" />
 <!-- YaBB 2.7.00 $Revision$ -->
     <title>{yabb title}</title>
     <meta name="description" content="Web Forum: {yabb title}" />
     {yabb style}
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="{yabb html_root}/element.js"></script>
-    <![endif]-->
     <script type="text/javascript" src="{yabb html_root}/YaBB.js"></script>
     <script type="text/javascript">
     {yabb javascripta}
@@ -38,7 +35,7 @@
             <div class="logor"><a href="http://www.yabbforum.com"><img src="{yabb images}/yabblogo_27.png" alt="YaBB - Yet another Bulletin Board" title="YaBB - Yet another Bulletin Board" /></a></div>
             </div>
         </header>
-        <nav id="fixmenu" class="tabmenu" style="position: relative; width:100%; z-index: 10; top: 0;">
+        <nav id="fixmenu" class="tabmenu" style="position: -webkit-sticky; position: -moz-sticky; position: -ms-sticky; position: -o-sticky; position: sticky; top: 0px; margin-top: 0px; z-index:100">
             {yabb tabmenu}
                     <div class="navmenu" id="navmen" style="display: none;">
                         <img src="{yabb images}/back_to_top.png" id="navtotop" alt="{yabb fixtop}" title="{yabb fixtop}" onclick="toTop(0)" class="cursor" style="margin-top:5px;" />
@@ -67,32 +64,6 @@
         <br /><br />
     </div>
 </div>
-<script type="text/javascript">
-// Many thanks to Carsten for the fixmenu code.
-
-function fixMenu() {
-    if(document.body.scrollTop) var bdelement = document.body.scrollTop;
-    else bdelement = document.documentElement.scrollTop;
-    if(bdelement > 135) {
-        document.getElementById("fixmenu").style.position = 'fixed';
-        document.getElementById("fixmenu").style.top = 0 + 'px';
-        document.getElementById("fixmenu").style.zIndex = 5;
-        document.getElementById("fixmenu").style.width = '92%';
-        document.getElementById("navmen").style.display = 'block';
-        document.getElementById("brcrumb").style.marginTop = 30 + 'px';
-    }
-    else {
-        document.getElementById("fixmenu").style.position = 'relative';
-        document.getElementById("fixmenu").style.width = '100%';
-        document.getElementById("navmen").style.display = 'none';
-        document.getElementById("brcrumb").style.marginTop = 0 + 'px';
-    }
-}
-if (screen.width > 1024) {
-    onscroll = fixMenu;
-}
-
-</script>
 {yabb syntax_js}
 {yabb grayscript}
 <script type="text/javascript" src="{yabb html_root}/ajax.js"></script>

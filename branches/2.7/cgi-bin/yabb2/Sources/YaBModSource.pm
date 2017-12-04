@@ -30,8 +30,6 @@ our (
     %croak,     %FORM,     %memberunfo,
 );
 
-require Admin::AdminSubs;
-
 sub yabmodsource {
     my $editdir  = $boarddir;
     my $pickfile = $FORM{'filename'};
@@ -50,7 +48,7 @@ sub yabmodsource {
             $line =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
             $line =~ s/\&nbsp;/ /igxsm;
             $line =~ s/[\r\n]//gxsm;
-            to_temphtml($line);
+            $line = to_html($line);
             $html .= qq~$line\n~;
         }
         fclose('TMPL') or croak "$croak{'close'} '$file'";

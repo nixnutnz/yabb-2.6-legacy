@@ -32,18 +32,12 @@ our ( %admin_txt, %maintxt, %timetxt, @days_short, @days, @months, @months_m, );
 ## settings ##
 our ( $default_tz, $enabletz, $forumnumberformat, $timeoffset, $timeselected, );
 ## system ##
-our (
-    $date,         $dstoffset, $forum_default,
-    $forumdefault, $iamguest,  $mytimeselected,
-    $uid,          $use_rfc,   $username,
-);
+our ( $date, $dstoffset, $iamguest, $uid, $use_rfc, $username, );
 
 load_language('Main');
 
 my @days_rfc   = qw( Sun Mon Tue Wed Thu Fri Sat );
 my @months_rfc = qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec );
-my ( $daytxt, $mday, $newshortyear );
-our ( $year, $mon_num, $saveyear );
 
 sub calcdtdiff {    # Input: $date1 $date2
     my ( $date1, $date2 ) = @_;
@@ -107,19 +101,18 @@ sub timetostring {
         $toffs = toffs($thedate);
     }
     my $newtime = $thedate + $toffs;
-    my ( $sec, $min, $hour, $mon, $wday, $yday );
-    ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, undef ) =
+    my ( $sec, $min, $hour, $mday, $mon, $yr, $wday, $yday, undef ) =
       gmtime $newtime;
     $sec  = sprintf '%02d', $sec;
     $min  = sprintf '%02d', $min;
     $hour = sprintf '%02d', $hour;
     $mday = sprintf '%02d', $mday;
-    $mon_num  = $mon + 1;
-    $mon_num  = sprintf '%02d', $mon_num;
-    $year     = 1900 + $year;
-    $saveyear = ( $year % 100 );
+    $mon  += 1;
+    $mon  = sprintf '%02d', $mon;
+    $yr += 1900;
+    my $saveyear = ( $yr % 100 );
     $saveyear = sprintf '%02d', $saveyear;
-    our $output = "$mon_num/$mday/$saveyear $maintxt{'107'} $hour\:$min\:$sec";
+    my $output = "$mon/$mday/$saveyear $maintxt{'107'} $hour\:$min\:$sec";
     return $output;
 }
 
@@ -193,12 +186,12 @@ sub timeformat {
     my ( $oldformat, $dontusetoday, $userfc, $forum_deflt, $lower ) = @_;
 
     # use forum default time and format
+    my $mytimeselected = $timeselected;
     {
         no strict qw(refs);
-        $mytimeselected =
-          ( $forum_deflt || !${ $uid . $username }{'timeselect'} )
-          ? $timeselected
-          : ${ $uid . $username }{'timeselect'};
+        if ( ${ $uid . $username }{'timeselect'} ) {
+            $mytimeselected = ${ $uid . $username }{'timeselect'};
+        }
     }
     if ($oldformat) {
         chomp $oldformat;
@@ -235,8 +228,8 @@ sub timeformat {
     }
 
     my $longday = $days[$newweekday];
-    $newmonth     = sprintf '%02d', $newmonth;
-    $newshortyear = ( $newyear % 100 );
+    $newmonth = sprintf '%02d', $newmonth;
+    my $newshortyear = ( $newyear % 100 );
     $newshortyear = sprintf '%02d', $newshortyear;
     if ( $mytimeselected && $mytimeselected != 4 && $mytimeselected != 8 ) {
         $newday = sprintf '%02d', $newday;
@@ -247,10 +240,10 @@ sub timeformat {
 
     my $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
-    my ( undef, undef, undef, undef, undef, $yy, undef, $yd, undef ) =
-      gmtime( $date + $toffs );
+    my ( $yy, $yd ) =
+      ( gmtime( $date + $toffs ) )[ 5, 7 ];
     $yy += 1900;
-    $daytxt = undef;    # must be a global variable
+    our $daytxt = q{};
     if ( !$dontusetoday ) {
         if ( $yd == $newyearday && $yy == $newyear ) {
 
@@ -280,20 +273,27 @@ sub timeformat {
     if ( !$maintxt{'107'} ) { $maintxt{'107'} = $admin_txt{'107'}; }
     my @timform = (
         q{},
-        time_1( $daytxt, $newday, $newmonth, $newyear, $newtime ),
-        time_2( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_1(
+            $daytxt, $newday, $newmonth, $newyear, $newtime, $newshortyear
+        ),
+        time_2(
+            $daytxt, $newday, $newmonth, $newyear, $newtime, $newshortyear
+        ),
         time_3( $daytxt, $newday, $newmonth, $newyear, $newtime ),
         time_4(
             $daytxt,  $newday,    $newmonth, $newyear,
             $newhour, $newminute, $lower
         ),
-        time_5( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_5(
+            $daytxt,  $newday,    $newmonth, $newyear,
+            $newhour, $newminute, $newshortyear
+        ),
         time_6( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
         q{},
         time_8( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
     );
-    our ($newformat);
-    for my $i ( 1 .. 8 ) {
+    my $newformat = q{};
+    foreach my $i ( 1 .. 8 ) {
         if ( $mytimeselected && $mytimeselected == $i ) {
             $newformat = $timform[$i];
         }
@@ -303,20 +303,19 @@ sub timeformat {
 
 sub timeformatcal {
     my ( $mynewtime, $usetoday ) = @_;
-
-    # use forum default time and format
-    {
-        no strict qw(refs);
-        $mytimeselected =
-          ( $forum_default || !${ $uid . $username }{'timeselect'} )
-          ? $timeselected
-          : ${ $uid . $username }{'timeselect'};
-    }
     chomp $mynewtime;
     return if !$mynewtime;
 
+    # use forum default time and format
+    my $mytimeselected = $timeselected;
+    {
+        no strict qw(refs);
+        if ( ${ $uid . $username }{'timeselect'} ) {
+            $mytimeselected = ${ $uid . $username }{'timeselect'};
+        }
+    }
+
     # find out what timezone is to be used.
-    my $toffs = 0;
     my (
         $newsecond, $newminute,  $newhour,    $newday, $newmonth,
         $newyear,   $newweekday, $newyearday, $newoff
@@ -331,17 +330,14 @@ sub timeformatcal {
     if ( $newweekday < 6 ) { $newweek = $newweek + 1; }
     $newweek = sprintf '%02d', $newweek;
 
-    my ($shortday);
+    my $shortday = $days_short[$newweekday];
     if ($use_rfc) {
         $shortday = $days_rfc[$newweekday];
     }
-    else {
-        $shortday = $days_short[$newweekday];
-    }
 
     my $longday = $days[$newweekday];
-    $newmonth     = sprintf '%02d', $newmonth;
-    $newshortyear = ( $newyear % 100 );
+    $newmonth = sprintf '%02d', $newmonth;
+    my $newshortyear = ( $newyear % 100 );
     $newshortyear = sprintf '%02d', $newshortyear;
     if ( $mytimeselected != 4 && $mytimeselected != 8 ) {
         $newday = sprintf '%02d', $newday;
@@ -352,15 +348,15 @@ sub timeformatcal {
 
     my $newtime = $newhour . q{:} . $newminute . q{:} . $newsecond;
 
+    my $toffs = 0;
     if ($enabletz) {
         $toffs = toffs($date);
     }
-    my ( undef, undef, undef, undef, undef, $yy, undef, $yd, undef ) =
-      gmtime( $date + $toffs );
+    my ( $yy, $yd ) = ( gmtime( $date + $toffs ) )[ 5, 7 ];
     $yy += 1900;
-    $daytxt = undef;    # must be a global variable
+    our $daytxt = q{};
     my $myleap = q{};
-    if ( $usetoday && $usetoday == 1 ) {
+    if ($usetoday) {
         $myleap = is_leap($yy);
         if ( $yd == $newyearday && $yy == $newyear ) {
 
@@ -397,17 +393,24 @@ sub timeformatcal {
     if ( !$maintxt{'107'} ) { $maintxt{'107'} = $admin_txt{'107'}; }
     my @timform = (
         q{},
-        time_1( $daytxt, $newday, $newmonth, $newyear, $newtime ),
-        time_2( $daytxt, $newday, $newmonth, $newyear, $newtime ),
+        time_1(
+            $daytxt, $newday, $newmonth, $newyear, $newtime, $newshortyear
+        ),
+        time_2(
+            $daytxt, $newday, $newmonth, $newyear, $newtime, $newshortyear
+        ),
         time_3( $daytxt, $newday, $newmonth, $newyear, $newtime ),
         time_4( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
-        time_5( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
+        time_5(
+            $daytxt,  $newday,    $newmonth, $newyear,
+            $newhour, $newminute, $newshortyear
+        ),
         time_6( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
         q{},
         time_8( $daytxt, $newday, $newmonth, $newyear, $newhour, $newminute ),
     );
-    our ($newformat);
-    for my $i ( 1 .. 8 ) {
+    my $newformat = q{};
+    foreach my $i ( 1 .. 8 ) {
         if ( $mytimeselected == $i ) {
             $newformat = $timform[$i];
         }
@@ -419,14 +422,16 @@ sub timeformatcal {
 sub calc_age {
     my ( $user, $act ) = @_;
 
-    timetostring($date);
-    my ( $usermonth, $userday, $useryear );
-    our ( $umonth, $uday, $uyear, $isbday, $age );
-
+    my $toffs = toffs($date);
+    my ( $mday, $mon_num, $year ) = ( gmtime( $date + $toffs ) )[ 3, 4, 5 ];
+    $year += 1900;
+    my ( $umonth, $uday, $uyear );
+    my $age    = q{};
+    my $isbday = q{};
     {
         no strict qw(refs);
         if ( ${ $uid . $user }{'bday'} ) {
-            ( $usermonth, $userday, $useryear ) =
+            my ( $usermonth, $userday, $useryear ) =
               split /\//xsm, ${ $uid . $user }{'bday'};
 
             if ( $act eq 'calc' ) {
@@ -459,25 +464,26 @@ sub calc_age {
             $isbday = q{};
         }
     }
-    return;
+    my @bday = ( $umonth, $uday, $uyear, $isbday, $age );
+    return @bday;
 }
 
 sub number_format {
     my ($inp) = @_;
     my ( $decimal, $fraction ) = split /[.]/xsm, $inp;
-    my $tmpforumformat = $forumnumberformat || 1;
-    my ($numberformat);
+    my $numberformat = $forumnumberformat || 1;
     {
         no strict qw(refs);
-        $numberformat =
-          ${ $uid . $username }{'numberformat'} || $tmpforumformat;
+        if ( ${ $uid . $username }{'numberformat'} ) {
+            $numberformat = ${ $uid . $username }{'numberformat'};
+        }
     }
     my @septor =
       ( [ q{}, q{}, q{,}, q{.}, q{ }, ], [ q{.}, q{,}, q{.}, q{,}, q{,}, ], );
-    my ( $separator, $decimalpt, $dra, $drb );
-    for my $i ( 0 .. 4 ) {
-        $dra = $septor[0]->[$i];
-        $drb = $septor[1]->[$i];
+    my ( $separator, $decimalpt ) = ( q{}, q{} );
+    foreach my $i ( 0 .. 4 ) {
+        my $dra = $septor[0]->[$i];
+        my $drb = $septor[1]->[$i];
         if ( $numberformat == ( $i + 1 ) ) {
             $separator = $dra;
             $decimalpt = $drb;
@@ -497,8 +503,10 @@ sub number_format {
 }
 
 sub time_1 {
-    my ( $dytxt, $newday, $newmonth, $newyear, $newtime ) = @_;
-    our $newformat =
+    my @myargs = @_;
+    my ( $dytxt, $newday, $newmonth, $newyear, $newtime, $newshortyear ) =
+      @myargs;
+    my $newformat =
       $dytxt
       ? qq~$dytxt $maintxt{'107'} $newtime~
       : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newtime~;
@@ -508,8 +516,9 @@ sub time_1 {
 
 sub time_2 {
     my @myargs = @_;
-    my ( $dytxt, $newday, $newmonth, $newyear, $newtime ) = @myargs;
-    our $newformat =
+    my ( $dytxt, $newday, $newmonth, $newyear, $newtime, $newshortyear ) =
+      @myargs;
+    my $newformat =
       $dytxt
       ? qq~$dytxt $maintxt{'107'} $newtime~
       : qq~$newday.$newmonth.$newshortyear $maintxt{'107'} $newtime~;
@@ -519,7 +528,7 @@ sub time_2 {
 
 sub time_3 {
     my ( $dytxt, $newday, $newmonth, $newyear, $newtime ) = @_;
-    our $newformat =
+    my $newformat =
       $dytxt
       ? qq~$dytxt $maintxt{'107'} $newtime~
       : qq~$newday.$newmonth.$newyear $maintxt{'107'} $newtime~;
@@ -545,13 +554,13 @@ sub time_4 {
         $newday2 = $timetxt{'4'};
     }
     else {
-        for my $i ( 1 .. 3 ) {
+        foreach my $i ( 1 .. 3 ) {
             if ( $newday % 10 == $i ) {
                 $newday2 = $timetxt{$i};
             }
         }
     }
-    our $newformat =
+    my $newformat =
       $dytxt
       ? qq~$dytxt $maintxt{'107'} $newhour2:$newminute$ampm~
       : qq~$newmonth2$maintxt{'770'} $newday$newday2, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
@@ -561,15 +570,17 @@ sub time_4 {
 
 sub time_5 {
     my @myargs = @_;
-    my ( $dytxt, $newday, $newmonth, $newyear, $newhour, $newminute ) = @myargs;
+    my ( $dytxt, $newday, $newmonth, $newyear, $newhour, $newminute,
+        $newshortyear )
+      = @myargs;
     my $ampm = $newhour > 11 ? 'pm' : 'am';
     my $newhour2 = $newhour % 12 || 12;
-    our $newformat =
+    my $newformat =
       $dytxt
       ? qq~$dytxt $maintxt{'107'} $newhour2:$newminute$ampm~
       : qq~$newmonth/$newday/$newshortyear $maintxt{'107'} $newhour2:$newminute$ampm~;
 
-    return ($newformat);
+    return $newformat;
 }
 
 sub time_6 {
@@ -580,7 +591,7 @@ sub time_6 {
     if    ($use_rfc)  { $newmonth2 = $months_rfc[ $newmonth - 1 ]; }
     elsif (@months_m) { $newmonth2 = $months_m[ $newmonth - 1 ]; }
     else              { $newmonth2 = $months[ $newmonth - 1 ]; }
-    our $newformat =
+    my $newformat =
       $dytxt
       ? qq~$dytxt $maintxt{'107'} $newhour:$newminute~
       : qq~$newday. $newmonth2$maintxt{'770a'} $newyear $maintxt{'107'} $newhour:$newminute~;
@@ -604,13 +615,13 @@ sub time_8 {
         $newday2 = $timetxt{'4'};
     }
     else {
-        for my $i ( 1 .. 3 ) {
+        foreach my $i ( 1 .. 3 ) {
             if ( $newday % 10 == $i ) {
                 $newday2 = $timetxt{$i};
             }
         }
     }
-    our $newformat =
+    my $newformat =
       $dytxt
       ? qq~$dytxt $maintxt{'107'} $newhour2:$newminute$ampm~
       : qq~$newday$newday2 $newmonth2$maintxt{'770a'}, $newyear $maintxt{'107'} $newhour2:$newminute$ampm~;
@@ -620,8 +631,10 @@ sub time_8 {
 
 sub dtonly {
     my ($newformat) = @_;
-    our ($dateonly);
-    if ( $newformat && $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
+    my $dateonly = $newformat;
+    if (   $newformat
+        && $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm )
+    {
         $dateonly = $1;
     }
 
@@ -630,11 +643,12 @@ sub dtonly {
 
 sub tmonly {
     my ($newformat) = @_;
-    our ($timeonly);
-    if ( $newformat && $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm ) {
+    my $timeonly = q{};
+    if (   $newformat
+        && $newformat =~ m/\A(.*?)\s*$maintxt{'107'}\s*(.*?)\Z/ixsm )
+    {
         $timeonly = $2;
     }
-
     return $timeonly;
 }
 
@@ -651,10 +665,21 @@ sub bdayno_year {
         '3' => [ q{.}, q{/} ],
         '6' => [ q{ }, q{} ],
     );
+    my $mytimeselected = $timeselected;
+    {
+        no strict qw(refs);
+        if ( ${ $uid . $username }{'timeselect'} ) {
+            $mytimeselected = ${ $uid . $username }{'timeselect'};
+        }
+    }
     if ($newformat) {
-        my (@date_noyear) = split /${$timesel{$mytimeselected}}[0]/xsm, $newformat;
+        my (@date_noyear) = split /${$timesel{$mytimeselected}}[0]/xsm,
+          $newformat;
         if ( $mytimeselected != 4 && $mytimeselected != 8 ) {
-            $date_noyear =  $date_noyear[0] . ${ $timesel{$mytimeselected} }[1] . $date_noyear[1];
+            $date_noyear =
+                $date_noyear[0]
+              . ${ $timesel{$mytimeselected} }[1]
+              . $date_noyear[1];
         }
         else { $date_noyear = $date_noyear[0]; }
     }
@@ -663,7 +688,7 @@ sub bdayno_year {
 }
 
 sub is_leap {
-    ($year) = @_;
+    my ($year) = @_;
     return 0 if $year % 4;
     return 1 if $year % 100;
     return 0 if $year % 400;
@@ -681,8 +706,8 @@ sub ctbtime {
     $newhour   = sprintf '%02d', $newhour;
     $newminute = sprintf '%02d', $newminute;
     $newsecond = sprintf '%02d', $newsecond;
-    my $newmin = $newhour . q{:} . $newminute . q{:} . $newsecond;
-    our $newtime = qq~$shortday, $newday $shortmon $newyear $newmin UTC~;
+    my $newmin  = $newhour . q{:} . $newminute . q{:} . $newsecond;
+    my $newtime = qq~$shortday, $newday $shortmon $newyear $newmin UTC~;
 
     return $newtime;
 }

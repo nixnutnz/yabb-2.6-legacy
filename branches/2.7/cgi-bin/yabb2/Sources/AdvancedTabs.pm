@@ -161,8 +161,8 @@ sub add_new_tab2 {
                 require "$langdir/$lngdir/tabtext.txt";
             }
             my $pnttxt = q{};
-            foreach ( keys %tabtxt ) {
-                $pnttxt .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
+            foreach my $i ( keys %tabtxt ) {
+                $pnttxt .= "\$tabtxt{'$i'} = '$tabtxt{$i}';\n";
             }
             $pnttxt .= "\$tabtxt{'$tabaction'} = '$tabtext';\n";
             $pnttxt .= "1;\n";
@@ -178,8 +178,8 @@ sub add_new_tab2 {
             push @new_tabs_order,
 qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
         }
-        foreach (@advanced_tabs) {
-            push @new_tabs_order, $_;
+        foreach my $i (@advanced_tabs) {
+            push @new_tabs_order, $i;
             if (/^$tabafter[|]?/xsm) {
                 push @new_tabs_order,
 qq~$tabaction|$taburl|$tmpisaction|$tmpusernamereq|$tabview|$tabwin|$exttaburl~;
@@ -205,9 +205,9 @@ sub edit_tab {
     my @tablist =
       qw(home help search ml eventcal birthdaylist admin revalidatesession login register guestpm mycenter logout);
 ## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
-    foreach (@tablist) {
-        $edittab{$_} =
-          qq~<span class="tabstyle">$tabfill$texttab{$_}$tabfill</span>~;
+    foreach my $i (@tablist) {
+        $edittab{$i} =
+          qq~<span class="tabstyle">$tabfill$texttab{$i}$tabfill</span>~;
     }
 
     my $selsize   = 0;
@@ -295,11 +295,11 @@ sub edit_tab2 {
         $tosave =~ s/%26/&/gxsm;
         $tosavetxt = $FORM{$tosave};
         $tosavetxt = to_html($tosavetxt);
-        $tab_lang = $language ? $language : $lang;
+        $tab_lang  = $language ? $language : $lang;
         require "$langdir/$tab_lang/tabtext.txt";
         my $pnttxt = q{};
-        foreach ( keys %tabtxt ) {
-            $pnttxt .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
+        foreach my $i ( keys %tabtxt ) {
+            $pnttxt .= "\$tabtxt{'$i'} = '$tabtxt{$i}';\n";
         }
         $pnttxt .= "1;\n";
         open my $TABTXT, '>', "$langdir/$tab_lang/tabtext.txt"
@@ -371,8 +371,8 @@ sub delete_tab {
             require "$langdir/$lngdir/tabtext.txt";
             delete $tabtxt{$todelete};
             my $pnttxt = q{};
-            foreach ( keys %tabtxt ) {
-                $pnttxt .= "\$tabtxt{'$_'} = '$tabtxt{$_}';\n";
+            foreach my $i ( keys %tabtxt ) {
+                $pnttxt .= "\$tabtxt{'$i'} = '$tabtxt{$i}';\n";
             }
             $pnttxt .= "1;\n";
             open my $TABTXT, '>', "$langdir/$lngdir/tabtext.txt"
@@ -411,7 +411,7 @@ sub get_texttab {
     $texttab{'logout'}            = $img_txt{'108'};
 
     if ( !$tab_lang ) { get_tabtxt(); }
-    foreach ( keys %tabtxt ) { $texttab{$_} = $tabtxt{$_}; }
+    foreach my $i ( keys %tabtxt ) { $texttab{$i} = $tabtxt{$i}; }
     return;
 }
 

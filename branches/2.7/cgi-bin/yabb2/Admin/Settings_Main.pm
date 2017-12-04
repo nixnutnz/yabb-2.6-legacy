@@ -71,73 +71,73 @@ our (
     $enable_notifications,    $enable_pm_search,
     $enable_quickjump,        $enable_quickpost,
     $enable_quickreply,       $enable_quoteuser,
-    $enable_stealth,
-    $enable_storefolders,     $enable_ubbc,
-    $enableguestquicksearch,  $enableguestsearch,
-    $enabletopichover,        $enabletz,
-    $extendedprofiles,        $fmodview,
-    $fontsizemax,             $fontsizemin,
-    $forumnumberformat,       $forumstart,
-    $gender_on_reg,           $gmodview,
-    $group_stars_ml,          $guest_media_disallowed,
-    $guest_view_limit,        $guest_view_limit_block,
-    $guestaccess,             $hide_signat_for_guests,
-    $hot_topic,               $imp_email_check,
-    $imspam,                  $imsubject,
-    $imtext,                  $max_awaylen,
-    $max_messlen,             $max_pm_messlen,
-    $max_siglen,              $maxadminlog,
-    $maxdisplay,              $maxfavs,
-    $maxmessagedisplay,       $maxpc,
-    $maxpo,                   $maxpq,
-    $maxsearchdisplay,        $mbname,
-    $mdadmin,                 $mdfmod,
-    $mdglobal,                $mdmod,
-    $mgadvsearch,             $mgqcksearch,
-    $ml_allowed,              $modview,
-    $name_cannot_be_userid,   $nestedquotes,
-    $new_notification_alert,  $nomailspammer,
-    $numdraft,                $numibox,
-    $numobox,                 $numpolloptions,
-    $numposts,                $numstore,
-    $parseflash,              $pm_enable_bcc,
-    $pm_enable_cc,            $pm_level,
-    $pm_spam_chk,             $ppostperms,
-    $preregspan,              $profile_int,
-    $profilebutton,           $ptopicperms,
-    $pwstrengthmeter_common,  $pwstrengthmeter_minchar,
-    $pwstrengthmeter_scores,  $qckage,
-    $qcksearchtype,           $quick_quotelength,
-    $quoteuser_color,         $reg_agree,
-    $reg_reason_len,          $regtype,
-    $removenormalsmilies,     $screenlogin,
-    $self_del_user,           $send_welcomeim,
-    $sendname,                $set_subject_maxlength,
-    $show_brd_descrip,        $show_recentbar,
-    $showage,                 $showallgroups,
-    $showgenderimage,         $showimageinquote,
-    $showlatestmember,        $showmodify,
-    $showpageall,             $showregdate,
-    $showtopicrepliers,       $showtopicviewers,
-    $showuserage,             $showuserpic,
-    $showuserpicml,           $showusertext,
-    $showyabbcbutt,           $showzodiac,
-    $staff_reason,            $temp_switcher_allowed,
-    $templ_switcher,          $timecorrection,
-    $timeoffset,              $timeselected,
-    $tllastmodflag,           $tllastmodtime,
-    $tlnodelflag,             $tlnodeltime,
-    $tlnomodday,              $tlnomodflag,
-    $tlnomodtime,             $top_posters,
-    $tsreverse,               $ttsreverse,
-    $ttsureverse,             $ubbcpolls,
-    $upload_avatargroup,      $upload_useravatar,
-    $user_hide_attach_img,    $user_hide_avatars,
-    $user_hide_img,           $user_hide_signat,
-    $user_hide_smilies_row,   $user_hide_user_text,
-    $user_reason,             $useraddpoll,
-    $usertools,               $usertxtwrap,
-    $very_hot_topic,          %templateset, %lngs
+    $enable_stealth,          $enable_storefolders,
+    $enable_ubbc,             $enableguestquicksearch,
+    $enableguestsearch,       $enabletopichover,
+    $enabletz,                $extendedprofiles,
+    $fmodview,                $fontsizemax,
+    $fontsizemin,             $forumnumberformat,
+    $forumstart,              $gender_on_reg,
+    $gmodview,                $group_stars_ml,
+    $guest_media_disallowed,  $guest_view_limit,
+    $guest_view_limit_block,  $guestaccess,
+    $hide_signat_for_guests,  $hot_topic,
+    $imp_email_check,         $imspam,
+    $imsubject,               $imtext,
+    $max_awaylen,             $max_messlen,
+    $max_pm_messlen,          $max_siglen,
+    $maxadminlog,             $maxdisplay,
+    $maxfavs,                 $maxmessagedisplay,
+    $maxpc,                   $maxpo,
+    $maxpq,                   $maxsearchdisplay,
+    $mbname,                  $mdadmin,
+    $mdfmod,                  $mdglobal,
+    $mdmod,                   $mgadvsearch,
+    $mgqcksearch,             $ml_allowed,
+    $modview,                 $name_cannot_be_userid,
+    $nestedquotes,            $new_notification_alert,
+    $nomailspammer,           $numdraft,
+    $numibox,                 $numobox,
+    $numpolloptions,          $numposts,
+    $numstore,                $parseflash,
+    $pm_enable_bcc,           $pm_enable_cc,
+    $pm_level,                $pm_spam_chk,
+    $ppostperms,              $preregspan,
+    $profile_int,             $profilebutton,
+    $ptopicperms,             $pwstrengthmeter_common,
+    $pwstrengthmeter_minchar, $pwstrengthmeter_scores,
+    $qckage,                  $qcksearchtype,
+    $quick_quotelength,       $quoteuser_color,
+    $reg_agree,               $reg_reason_len,
+    $regtype,                 $removenormalsmilies,
+    $screenlogin,             $self_del_user,
+    $send_welcomeim,          $sendname,
+    $set_subject_maxlength,   $show_brd_descrip,
+    $show_recentbar,          $showage,
+    $showallgroups,           $showgenderimage,
+    $showimageinquote,        $showlatestmember,
+    $showmodify,              $showpageall,
+    $showregdate,             $showtopicrepliers,
+    $showtopicviewers,        $showuserage,
+    $showuserpic,             $showuserpicml,
+    $showusertext,            $showyabbcbutt,
+    $showzodiac,              $staff_reason,
+    $temp_switcher_allowed,   $templ_switcher,
+    $timecorrection,          $timeoffset,
+    $timeselected,            $tllastmodflag,
+    $tllastmodtime,           $tlnodelflag,
+    $tlnodeltime,             $tlnomodday,
+    $tlnomodflag,             $tlnomodtime,
+    $top_posters,             $tsreverse,
+    $ttsreverse,              $ttsureverse,
+    $ubbcpolls,               $upload_avatargroup,
+    $upload_useravatar,       $user_hide_attach_img,
+    $user_hide_avatars,       $user_hide_img,
+    $user_hide_signat,        $user_hide_smilies_row,
+    $user_hide_user_text,     $user_reason,
+    $useraddpoll,             $usertools,
+    $usertxtwrap,             $very_hot_topic,
+    %templateset,             %lngs
 );
 ## system ##
 our ( $date, $dstoffset, $lang, $modulLWP, $modulCrypt, $modulHTTP, %FORM,
@@ -219,7 +219,7 @@ else { $all_date = qq~$sel_day $sel_month $sel_year~; }
 
 my $sel_hour = qq~
 <select name="forumstart_hour">\n~;
-for my $i ( 0 .. 23 ) {
+foreach my $i ( 0 .. 23 ) {
     my $hour_val = sprintf '%02d', $i;
     $sel_hour .=
 qq~<option value="$hour_val" ${isselected($forumstart_hour == $i)}>$hour_val</option>\n~;
@@ -228,7 +228,7 @@ $sel_hour .= qq~</select>\n~;
 
 my $sel_minute = qq~
 <select name="forumstart_minute">\n~;
-for my $i ( 0 .. 59 ) {
+foreach my $i ( 0 .. 59 ) {
     my $minute_val = sprintf '%02d', $i;
     $sel_minute .=
 qq~<option value="$minute_val" ${isselected($forumstart_minute == $i)}>$minute_val</option>\n~;
@@ -262,7 +262,7 @@ if (
       sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} }
       keys %countrytime_txt;
 
-    for my $i (@mycntry) {
+    foreach my $i (@mycntry) {
         $tz_select .=
 qq~<option value="$i" ${isselected($i eq $mytz)}>$countrytime_txt{$i}</option>~;
     }
@@ -275,7 +275,7 @@ qq~<option value="local" ${isselected('local' eq $mytz)}>$admin_txt{'local'}</op
 q~<select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~
       . ( $usertimeoffset[0] < 0 ? ' selected="selected"' : q{} )
       . q~>-</option></select> <select name="usertimehour">~;
-    for my $i ( 0 .. 14 ) {
+    foreach my $i ( 0 .. 14 ) {
         $i = sprintf '%02d', $i;
         $timeoffsetselect .= qq~<option value="$i"~
           . (
@@ -285,7 +285,7 @@ q~<select name="usertimesign" id="usertimesign"><option value="">+</option><opti
           ) . qq~>$i</option>~;
     }
     $timeoffsetselect .= q~</select> : <select name="usertimemin">~;
-    for my $i ( 0 .. 59 ) {
+    foreach my $i ( 0 .. 59 ) {
         my $j = $i / 60;
         $j = ( split /[.]/xsm, $j )[1] || 0;
         $timeoffsetselect .=
@@ -306,16 +306,17 @@ opendir LNGDIR, $langdir;
 my @lfilesanddirs = readdir LNGDIR;
 closedir LNGDIR;
 my $drawnldirs = q{};
-for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
     if ( -e "$langdir/$fld/Main.lng" ) {
-        if ($fld eq 'English' && !exists $lngs{$fld} ) {
-        $drawnldirs .=
-qq~<option value="$fld" selected="selected">English</option>~;}
+        if ( $fld eq 'English' && !exists $lngs{$fld} ) {
+            $drawnldirs .=
+              qq~<option value="$fld" selected="selected">English</option>~;
+        }
         else {
-            my $displang = $lngs{$fld} || q{Missing Language};
-            if ($displang eq q{Missing Language}) {
+            my $displang = $lngs{$fld} || 'Missing Language';
+            if ( $displang eq 'Missing Language' ) {
                 $drawnldirs .=
-qq~<option disabled="disabled">$displang</option>~;
+                  qq~<option disabled="disabled">$displang</option>~;
             }
             else {
                 $drawnldirs .=
@@ -340,7 +341,7 @@ else {
 
 # Template selector
 my $drawndirs = q{};
-for my $curtemplate (
+foreach my $curtemplate (
     sort { $templateset{$a} cmp $templateset{$b} }
     keys %templateset
   )
@@ -2155,37 +2156,38 @@ qq~<input type="checkbox" name="enable_guest_alert" id="enable_guest_alert" valu
 
 {
     no strict qw(refs);
-    for ( reverse sort keys %lngs ) {
-        ${$_ . 'lbl_a'} = q{};
-        ${$_ . 'lbl_b'} = q{};
-        if ( -e "$langdir/$_/welcome.txt" ) {
+    foreach my $i ( reverse sort keys %lngs ) {
+        ${ $i . 'lbl_a' } = q{};
+        ${ $i . 'lbl_b' } = q{};
+        if ( -e "$langdir/$i/welcome.txt" ) {
             our ($WELL);
-            fopen( 'WELL', '<', "$langdir/$_/welcome.txt" )
+            fopen( 'WELL', '<', "$langdir/$i/welcome.txt" )
               or croak "$croak{'open'} WELL";
-            ${ $_ . '_welcome' } = <$WELL>;
+            ${ $i . '_welcome' } = <$WELL>;
             fclose('WELL') or croak "$croak{'close'} WELL";
-            ( ${$_ . 'lbl_a'}, ${$_ . 'lbl_b'} ) = split /[|]/xsm, ${ $_ . '_welcome' };
+            ( ${ $i . 'lbl_a' }, ${ $i . 'lbl_b' } ) = split /[|]/xsm,
+              ${ $i . '_welcome' };
         }
-        my $lbl_imsub = $_ . '_welcome_subject';
-        my $lbl_imtxt = $_ . '_welcome_txt';
+        my $lbl_imsub = $i . '_welcome_subject';
+        my $lbl_imtxt = $i . '_welcome_txt';
 
         splice @{ $settings[5]{'items'} }, 8, 0,
           {
             description =>
-              qq~<label for="$lbl_imsub">$imtxt{'36'} - $_</label>~,
+              qq~<label for="$lbl_imsub">$imtxt{'36'} - $i</label>~,
             input_html =>
-qq~<textarea cols="30" rows="1" name="$lbl_imsub" id="$lbl_imsub" style="width: 98%">${$_ . 'lbl_a'}</textarea>~,
-            name     => "$lbl_imsub",
-            validate => 'fulltext,null',
+qq~<textarea cols="30" rows="1" name="$lbl_imsub" id="$lbl_imsub" style="width: 98%">${$i . 'lbl_a'}</textarea>~,
+            name       => "$lbl_imsub",
+            validate   => 'fulltext,null',
             depends_on => [ 'pm_level!=0', 'send_welcomeim' ],
           },
           {
             description =>
-              qq~<label for="$lbl_imsub">$imtxt{'35'} - $_</label>~,
+              qq~<label for="$lbl_imsub">$imtxt{'35'} - $i</label>~,
             input_html =>
-qq~<textarea cols="30" rows="2" name="$lbl_imtxt" id="$lbl_imtxt" style="width: 98%">${$_ . 'lbl_b'}</textarea>~,
-            name     => "$lbl_imtxt",
-            validate => 'fulltext,null',
+qq~<textarea cols="30" rows="2" name="$lbl_imtxt" id="$lbl_imtxt" style="width: 98%">${$i . 'lbl_b'}</textarea>~,
+            name       => "$lbl_imtxt",
+            validate   => 'fulltext,null',
             depends_on => [ 'pm_level!=0', 'send_welcomeim' ],
           };
     }
@@ -2199,11 +2201,11 @@ qq~<textarea cols="30" rows="2" name="$lbl_imtxt" id="$lbl_imtxt" style="width: 
         my %settings = @_;
 
         # Validate forum_start stuff
-        for (
+        foreach my $i (
             qw(forumstart_month forumstart_day forumstart_year forumstart_hour forumstart_minute forumstart_secund)
           )
         {
-            $FORM{$_} =~ s/\D//gxsm;
+            $FORM{$i} =~ s/\D//gxsm;
         }
         $forumstart_month  = $FORM{'forumstart_month'};
         $forumstart_day    = $FORM{'forumstart_day'};
@@ -2260,8 +2262,8 @@ qq~$forumstart_month/$forumstart_day/$forumstart_year $maintxt{'107'} $forumstar
 
         # Fix guestaccess
         $settings{'guestaccess'} = !$settings{'guestaccess'} || 0;
-        for ( keys %lngs ) {
-            my $lbl = $_ . '_welcome_txt';
+        foreach my $i ( keys %lngs ) {
+            my $lbl = $i . '_welcome_txt';
             $settings{$lbl} =~ s/\r(?=\n*)//gxsm;
             $settings{$lbl} =~ s/\n/<br \/>/gxsm;
         }

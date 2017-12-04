@@ -35,7 +35,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
 ## paths ##
-our ( $htmldir, $modimgurl, $scripturl, $yyhtml_root, );
+our ( $htmldir, $modimgurl, $scripturl, $yyhtml_root, $templatesdir, );
 ## settings ##
 ## system/template ##
 our (
@@ -48,10 +48,10 @@ get_micon();
 
 sub set_menu {
     my ($menu_def);
-    if ( -e ("Templates/$usestyle/Menu.def") ) {
-        $menu_def = qq~Templates/$usestyle/Menu.def~;
+    if ( -e "$templatesdir/$usestyle/Menu.def" ) {
+        $menu_def = "$templatesdir/$usestyle/Menu.def";
     }
-    else { $menu_def = q~Templates/default/Menu.def~; }
+    else { $menu_def = "$templatesdir/default/Menu.def"; }
 
     require $menu_def;
 
@@ -76,8 +76,7 @@ sub set_menu {
         }
         else {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-            if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext")
-              )
+            if ( !-e "$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext" )
             {
                 $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
             }
@@ -129,10 +128,10 @@ qq~<img src="$button_imgurl/$button_icon.$imgext" alt="$buttonins" title="$butto
 sub set_image {
     my ( $img_name, $use_menu_t ) = @_;
     my ($menu_def);
-    if ( -e ("Templates/$usestyle/Menu.def") ) {
-        $menu_def = qq~Templates/$usestyle/Menu.def~;
+    if ( -e "$templatesdir/$usestyle/Menu.def" ) {
+        $menu_def = "$templatesdir/$usestyle/Menu.def";
     }
-    else { $menu_def = q~Templates/default/Menu.def~; }
+    else { $menu_def = "$templatesdir/default/Menu.def"; }
     require $menu_def;
 
     my (
@@ -155,7 +154,7 @@ sub set_image {
     }
     else {
         $button_imgurl = qq~$yyhtml_root/Templates/Forum/$usestyle~;
-        if ( !-e ("$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext") ) {
+        if ( !-e "$htmldir/Templates/Forum/$usestyle/$button_icon.$imgext" ) {
             $button_imgurl = qq~$yyhtml_root/Templates/Forum/default~;
         }
     }

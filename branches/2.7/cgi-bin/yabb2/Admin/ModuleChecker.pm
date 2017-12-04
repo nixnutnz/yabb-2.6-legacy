@@ -44,7 +44,7 @@ my @modules =
 my $checker_output = q{};
 my ($i);
 
-for my $module (@modules) {
+foreach my $module (@modules) {
     $dont_continue_setup = q{};
     if ( eval { load($module); 1 } ) {
         if ( $module eq 'DateTime::TimeZone' || $module eq 'CGI' ) {

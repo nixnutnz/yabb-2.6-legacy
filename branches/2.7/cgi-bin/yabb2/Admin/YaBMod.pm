@@ -37,15 +37,16 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ##  languages ##
 our ( %admin_txt, %croak, %maintxt, %yabmtxt, %mod_list );
 ## paths ##
-our ( $adminurl, $boarddir, $htmldir, $imagesdir, $scripturl, $yyhtml_root, $sourcedir, $admindir, $vardir, $helpfile, $templatesdir, $langdir );
-## settings ##
-our ( $mbname, $settings_file_version, $yymycharset, %lngs);
-## other ##
 our (
-    $action_area, $date,   $formsession,
-    $username,    $yymain, $yysetlocation,
-    $yytitle,     %FORM,   %INFO,
+    $adminurl,  $boarddir,    $htmldir,      $imagesdir,
+    $scripturl, $yyhtml_root, $sourcedir,    $admindir,
+    $vardir,    $helpfile,    $templatesdir, $langdir
 );
+## settings ##
+our ( $mbname, $settings_file_version, $yymycharset, %lngs );
+## other ##
+our ( $action_area, $formsession, $username, $yymain, $yysetlocation,
+    $yytitle, %FORM, %INFO, );
 
 my $admin_images = "$yyhtml_root/Templates/Admin/default";
 
@@ -73,7 +74,7 @@ sub yabm_modlist {
         @mods = <$FILE>;
         fclose('FILE') or croak "$croak{'close'} install.log";
         $umod = 0;
-        for my $i ( 0 .. $#mods ) {
+        foreach my $i ( 0 .. $#mods ) {
             $mods[$i] =~ s/\A[^\\\/]+[\\\/]//xsm;
             $umod++;
         }
@@ -101,7 +102,7 @@ sub yabm_modlist {
 ~;
 
     %modinstall = get_mod_data('modinstall');
-    for my $line (@contents) {
+    foreach my $line (@contents) {
         my ($status);
         if ( $line =~ m/[.]mod\Z/xsm ) {
             if ( linepos( \@mods, $line ) != -1 ) {
@@ -243,7 +244,7 @@ sub yabm_modinfo {
         @mods = <$FILE>;
         close $FILE or croak "$croak{'close'} install.log";
 
-        for my $mod_file (@mods) {
+        foreach my $mod_file (@mods) {
             chomp $mod_file;
             my ( undef, $the_file, ) = split /\\/xsm, $mod_file;
             if ( $the_file eq $file ) {
@@ -306,7 +307,7 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
     close $FILE or croak "$croak{'close'} FILE";
 
     $modhomepage ||= q{};
-    $modid ||= q{};
+    $modid       ||= q{};
     $yymain .= qq~
    <div class="bordercolor rightboxdiv">
    <table class="border-space pad-cell" style="margin-bottom: .5em;">
@@ -356,12 +357,12 @@ qq~$adminurl?action=yabmuninstallmod;installtest=1;file=$file~;
     our ($TMPL);
     fopen( 'TMPL', '<', "$boarddir/Mods/$file" )
       or croak "$croak{'open'} '$boarddir/Mods/$file'";
+
     while ( my $line = <$TMPL> ) {
         $line =~ s/\Q &nbsp; &nbsp; &nbsp;\E/\t/igxsm;
         $line =~ s/\&nbsp;/ /igxsm;
         $line =~ s/[\r\n]//gxsm;
-        require Admin::AdminSubs;
-        to_temphtml($line);
+        $line = to_html($line);
         $html .= qq~$line\n~;
     }
     fclose('TMPL') or croak "$croak{'close'} TMPL";
@@ -672,9 +673,9 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
           or install_error(
             "$yabmtxt{'no_open'} '$boarddir/Mods/Log/install.log'<br />",
             "$file", $installtest );
-        for (@mods) {
+        foreach my $i (@mods) {
             chomp;
-            print {$IN} "$settings_file_version\\$_\n"
+            print {$IN} "$settings_file_version\\$i\n"
               or croak 'cannot print settings';
         }
         fclose('IN') or croak "$croak{'close'} IN";
@@ -963,7 +964,7 @@ qq~<br />$yabmtxt{'41'} $modeditfilename<br />$yabmtxt{'42'} $modeditfilename $y
                     );
 
                     if ($addoffset) {    # Add before/Add after
-                        for my $k ( 0 .. $#modaddstr ) {
+                        foreach my $k ( 0 .. $#modaddstr ) {
                             $modeditfile[ $searchfound + $addoffset + $k ] =~
                               tr/\r//d;
                             $modaddstr[$k] =~ tr/\r//d;
@@ -1019,9 +1020,9 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
           or install_error(
             "$yabmtxt{'no_open'} '$boarddir/Mods/Log/install.log'<br />",
             "$file", $installtest );
-        for (@mods) {
-            chomp;
-            print {$IN} "$settings_file_version\\$_\n"
+        foreach my $i (@mods) {
+            chomp $i;
+            print {$IN} "$settings_file_version\\$i\n"
               or croak 'cannot print settings';
         }
         fclose('IN') or croak "$croak{'close'} IN";
@@ -1088,7 +1089,7 @@ sub linepos {
     my @ar  = @{$tar};
     my $car = scalar @ar;
 
-    for my $i ( 0 .. ( $car - 1 ) ) {
+    foreach my $i ( 0 .. ( $car - 1 ) ) {
         if ( $ar[$i] eq $sub ) {
             return $i;
         }
@@ -1128,7 +1129,8 @@ sub yabm_uploadmod {
     }
 
     # Upload <form> install from Directory
-    if ( !$FORM{'upload_mod'} || $FORM{'upload_mod'} eq q{}
+    if (  !$FORM{'upload_mod'}
+        || $FORM{'upload_mod'} eq q{}
         && ( $FORM{'use_dir'} == 1 || $INFO{'use_dir'} == 1 ) )
     {
 
@@ -1136,7 +1138,7 @@ sub yabm_uploadmod {
         my @files = grep { /^.*([.]mod$|^.*[.]zip$)/ixsm } readdir DIR;
         closedir DIR;
 
-        for my $uname (@files) {
+        foreach my $uname (@files) {
             my $file_size = -s "$htmldir/YaBMod/temp/$uname";
             if ( !$file_size ) {
                 unlink "$htmldir/YaBMod/temp/$uname";
@@ -1151,7 +1153,10 @@ sub yabm_uploadmod {
     }
 
     # Upload <form> install from URL
-    if ( (!$FORM{'upload_mod'} || $FORM{'upload_mod'} eq q{} ) && $FORM{'use_url'} && $FORM{'use_url'} == 1 ) {
+    if (   ( !$FORM{'upload_mod'} || $FORM{'upload_mod'} eq q{} )
+        && $FORM{'use_url'}
+        && $FORM{'use_url'} == 1 )
+    {
         my $mod_url = $FORM{'upload_mod_url'};
 
         # This we use for the YaBB intern Download Counter Links
@@ -1159,7 +1164,7 @@ sub yabm_uploadmod {
         if   ( $mod_url =~ m/;/xsm ) { @pairs = split /;/xsm, $mod_url; }
         else                         { @pairs = split /&/xsm, $mod_url; }
         my (%MOD);
-        for my $pair (@pairs) {
+        foreach my $pair (@pairs) {
             ( $name, $value ) = split /=/xsm, $pair;
             $name =~ tr/+/ /;
             $name =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
@@ -1246,7 +1251,7 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
         $anhang = 1;
     }
 
-    if ( -e ("$boarddir/Mods/$upload_modfile") ) {
+    if ( -e "$boarddir/Mods/$upload_modfile" ) {
         fatal_error( 'attach_file_blocked',
             "<br /><b>$upload_modfile</b><br />$yabmtxt{'26'}<br /><br />", 1 );
     }
@@ -1266,7 +1271,7 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
             $boardmod_main, $boardmod_main1, $html_main,
             $html_main1,    $system_main,    $system_main1
         );
-        for my $files_name ( $zip->memberNames() ) {
+        foreach my $files_name ( $zip->memberNames() ) {
 
             $html_main    = q{};
             $html_main1   = q{};
@@ -1282,10 +1287,35 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 if ( $status != AZ_OK ) {
                     fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
                 }
-                my @htmlfold = ('Attachments/', 'avatar/', 'avatar/UserAvatars/', 'Bookmarks/', 'Buttoms/', 'EventIcons/', 'googiespell/', 'greybox/', 'ModImages/', 'PMAttachments/', 'shjs/', 'shjs/styles/', 'Smilies/', 'Smilies/added', 'Templates/', 'Templates/Admin/', 'Templates/Admin/default/', 'Templates/Forum/', 'Templates/Forum/default/', 'Templates/Forum/default/Boards/', 'UBBCbuttons/');
+                my @htmlfold = (
+                    'Attachments/',
+                    'avatar/',
+                    'avatar/UserAvatars/',
+                    'Bookmarks/',
+                    'Buttoms/',
+                    'EventIcons/',
+                    'googiespell/',
+                    'greybox/',
+                    'ModImages/',
+                    'PMAttachments/',
+                    'shjs/',
+                    'shjs/styles/',
+                    'Smilies/',
+                    'Smilies/added',
+                    'Templates/',
+                    'Templates/Admin/',
+                    'Templates/Admin/default/',
+                    'Templates/Forum/',
+                    'Templates/Forum/default/',
+                    'Templates/Forum/default/Boards/',
+                    'UBBCbuttons/',
+                );
 ## html mod hook ##
                 my %htmlhash = map { $_, 1 } @htmlfold;
-                if( $files_name_html && $files_name_html ne q{} && !exists $htmlhash{ $files_name_html } ){
+                if (   $files_name_html
+                    && $files_name_html ne q{}
+                    && !exists $htmlhash{$files_name_html} )
+                {
                     push @uninstall, qq~html|$files_name_html\n~;
                 }
                 $html_main1 .= qq~$files_name_html<br />~;
@@ -1300,19 +1330,36 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
                 if ( $status != AZ_OK ) {
                     fatal_error( 'cannot_open', " <b>$zip_name</b>!", 1 );
                 }
-                my @srcfolders = ( 'Admin/', 'Admin/Mods/', 'Backups/', 'Boards/', 'Convert/', 'Help/', 'Languages/', 'Members/', 'Messages/', 'Mods/', 'Modules/', 'Modules/Archive/Tar/', 'Modules/Archive/Zip/', 'Modules/Digest/', 'Modules/Email/', 'Modules/Email/Date/', 'Modules/Mail/', 'Modules/MIME/', 'Sources/', 'Sources/Mods/', 'Templates/', 'Templates/default/', 'Templates/default/Mods/', 'Variables/', 'Variables/Mods/' );
-                foreach my $lng (keys %lngs) {
-                    if (-d "$langdir/$lng" ) {
+                my @srcfolders = (
+                    'Admin/',                  'Admin/Mods/',
+                    'Backups/',                'Boards/',
+                    'Convert/',                'Help/',
+                    'Languages/',              'Members/',
+                    'Messages/',               'Mods/',
+                    'Modules/',                'Modules/Archive/Tar/',
+                    'Modules/Archive/Zip/',    'Modules/Digest/',
+                    'Modules/Email/',          'Modules/Email/Date/',
+                    'Modules/Mail/',           'Modules/MIME/',
+                    'Sources/',                'Sources/Mods/',
+                    'Templates/',              'Templates/default/',
+                    'Templates/default/Mods/', 'Variables/',
+                    'Variables/Mods/',
+                );
+                foreach my $lng ( keys %lngs ) {
+                    if ( -d "$langdir/$lng" ) {
                         push @srcfolders, "Languages/$lng/";
                         push @srcfolders, "Languages/$lng/Mods/";
                     }
-                    if (-d "$helpfile/$lng" ) {
+                    if ( -d "$helpfile/$lng" ) {
                         push @srcfolders, "Help/$lng/";
                     }
                 }
 ## src mod hook ##
                 my %srchash = map { $_, 1 } @srcfolders;
-                if( $files_name_cgi && $files_name_cgi ne q{} && !exists $srchash{ $files_name_cgi } ){
+                if (   $files_name_cgi
+                    && $files_name_cgi ne q{}
+                    && !exists $srchash{$files_name_cgi} )
+                {
                     push @uninstall, qq~cgi|$files_name_cgi\n~;
                 }
 
@@ -1402,7 +1449,7 @@ sub yabm_modifymod {
 
     my $templs = q{};
     my (@templates);
-    for my $file (@temptemplates) {
+    foreach my $file (@temptemplates) {
         if ( -e "$modfilesdir/$file" ) {
             push @templates, $file;
         }
@@ -1411,7 +1458,7 @@ sub yabm_modifymod {
         }
     }
     my ( $selected, $cmp_templatefile );
-    for my $name ( sort @templates ) {
+    foreach my $name ( sort @templates ) {
         $selected = q{};
         if ( -e "$modfilesdir/$name" ) {
             $cmp_templatefile = $name;
@@ -1433,7 +1480,7 @@ qq~<option value="$cmp_templatefile"$selected>$cmp_templatefile</option>\n~;
     # print edit file list
     my $the_edit_file = q{};
     my $edit_file     = q{};
-    for my $i ( 0 .. $#modfile ) {
+    foreach my $i ( 0 .. $#modfile ) {
         my ( $filename, $file_name );
         if ( $modfile[$i] =~ /^<edit\s file>/ixsm ) {
             $modeditfilename = $modfile[ $i + 1 ];
@@ -1451,7 +1498,7 @@ qq~<option value="$modeditfilename">$editdir$file_name</option>\n~;
     $line = join q{}, @modfile;
     $line = decode_utf8($line);
 
-    for my $x ( 0 .. ( length($line) - 1 ) ) {
+    foreach my $x ( 0 .. ( length($line) - 1 ) ) {
         $fulltemplate .=
           q{&#} . sprintf( '%03d', ord( ( substr $line, $x, 1 ) ) ) . q{;};
     }
@@ -1584,7 +1631,7 @@ sub yabm_deletemod {
 
     # split files folders modfiles
     my ( @uninstallfile, @uninstalldir, @uninstallmod );
-    for my $mod_files (@uninstall) {
+    foreach my $mod_files (@uninstall) {
         chomp $mod_files;
         my ( $tmp_dir, $tmp_phat, ) = split /[|]/xsm, $mod_files;
         if ( $tmp_dir eq 'html' ) {
@@ -1617,7 +1664,7 @@ sub yabm_deletemod {
     if (@uninstallfile) {
         $yymain .= qq~<b>$yabmtxt{'51'}</b><br />~;
 
-        for my $file_files (@uninstallfile) {
+        foreach my $file_files (@uninstallfile) {
             chomp $file_files;
             my ( $fi_dir, $fi_path, ) = split /[|]/xsm, $file_files;
             if ( $fi_dir eq 'html' ) {
@@ -1637,7 +1684,7 @@ sub yabm_deletemod {
     if (@uninstalldir) {
         $yymain .= qq~<b>$yabmtxt{'52'}</b><br />~;
 
-        for my $dir_files (@uninstalldir) {
+        foreach my $dir_files (@uninstalldir) {
             chomp $dir_files;
             my ( $di_dir, $di_path, ) = split /[|]/xsm, $dir_files;
             $di_path =~ s/\/\z//xsm;    # remove the last "/"
@@ -1658,7 +1705,7 @@ sub yabm_deletemod {
     if (@uninstallmod) {
         $yymain .= qq~<b>$yabmtxt{'53'}</b><br />~;
 
-        for my $mod_files (@uninstallmod) {
+        foreach my $mod_files (@uninstallmod) {
             chomp $mod_files;
             my ( $mo_dir, $mo_path, ) = split /[|]/xsm, $mod_files;
             unlink("$modfilesdir/$mo_path")
@@ -1702,7 +1749,7 @@ sub install_error {
     my $recall = qq~<br />$yabmtxt{'recall'}<br />~;
 
     # if error ... recall all Backup files
-    for my $file_files (@recallfiles) {
+    foreach my $file_files (@recallfiles) {
         chomp $file_files;
         if ( !$test ) {
             copy "$boarddir/$file_files.bak", "$boarddir/$file_files";
@@ -1772,6 +1819,7 @@ sub update_mod_data {
         fclose('FILE') or croak "$croak{'close'} installdata";
     }
     else {
+        my $date = time;
         our ($FILE);
         fopen( 'FILE', '>>', "$boarddir/Mods/Log/get_install.data" )
           or croak "$croak{'open'} installdata";
@@ -1782,23 +1830,28 @@ sub update_mod_data {
 }
 
 sub clean_bak {
-    my @folders = ( $boarddir, $sourcedir, $admindir, $vardir, $helpfile, "$templatesdir/default" );
+    my @folders = (
+        $boarddir, $sourcedir, $admindir, $vardir, $helpfile,
+        "$templatesdir/default",
+    );
     foreach my $key (%lngs) {
         push @folders, "$langdir/$key";
     }
     foreach my $folder (@folders) {
-        opendir 'CNVDIR', $folder
-          || fatal_error( 'cannot_open_dir', "$folder" );
-        my @convlist = readdir 'CNVDIR';
-        closedir 'CNVDIR';
-        foreach my $file (@convlist) {
-            if ($file =~ m/\.(?:tdy|bak)$/xsm) {
-                unlink "$folder/$file";
+        if ( -d $folder ) {
+            opendir 'CNVDIR', $folder
+              || fatal_error( 'cannot_open_dir', "$folder" );
+            my @convlist = readdir 'CNVDIR';
+            closedir 'CNVDIR';
+            foreach my $file (@convlist) {
+                if ( $file =~ m/\.(?:tdy|bak)$/xsm ) {
+                    unlink "$folder/$file";
+                }
             }
         }
     }
     $yymain .= qq~<b>$admin_txt{'10bak'}</b>~;
-    our $yytitle = $admin_txt{'10bak'};
+    $yytitle = $admin_txt{'10bak'};
     admintemplate();
     return;
 }

@@ -18,6 +18,7 @@
 ###############################################################################
 use strict;
 no strict qw(refs);
+
 #use warnings;
 no warnings qw(uninitialized once redefine);
 use CGI::Carp qw(fatalsToBrowser);
@@ -82,32 +83,33 @@ my $mygetlang = q{};
 if ( -e "$langdir/$uselang/Convert.lng" && -e "$langdir/$uselang/Main.lng" ) {
     load_language('Main');
     load_language('Convert');
-     $mygetlang = qq~                    <input type="hidden" id="mylang" name="mylang" value="$uselang" />~;
+    $mygetlang =
+qq~                    <input type="hidden" id="mylang" name="mylang" value="$uselang" />~;
 }
 elsif ( -e "$langdir/English/Convert.lng" ) {
     load_language('Convert');
 }
 
 my $convertlang = "$boarddir/ConvertLang";
-our $convvardir = "$boarddir/ConvertLang/Variables";
-our $convdatadir = "$boarddir/ConvertLang/Messages";
+our $convvardir    = "$boarddir/ConvertLang/Variables";
+our $convdatadir   = "$boarddir/ConvertLang/Messages";
 our $convboardsdir = "$boarddir/ConvertLang/Boards";
 our $convmemberdir = "$boarddir/ConvertLang/Members";
 
 my $thisscript = $ENV{'SCRIPT_NAME'};
 my $yyext      = 'pl';
-our $yyexec    = 'YaBB';
+our $yyexec      = 'YaBB';
 our $yabbversion = 'YaBB 2.7.00';
 if ( -e ('YaBB.cgi') ) { $yyext = 'cgi'; }
 my $getlang = q{};
-if ($uselang ne 'English') {
+if ( $uselang ne 'English' ) {
     $getlang = qq~;lang=$uselang~;
 }
 my $set_cgi = "ConvertLang.$yyext";
 if ($boardurl) { $set_cgi = "$boardurl/ConvertLang.$yyext"; }
 my $scripturl = "$boardurl/$yyexec.$yyext";
 
-my $lang1        = 'ISO-8859-1';
+my $lang1 = 'ISO-8859-1';
 
 # Make sure the module path is present
 push @INC, "$boarddir/Modules";
@@ -166,10 +168,11 @@ if ( -e 'Variables/Setup.lock' ) {
     tabmenushow();
 
     if ( !$action ) {
-        $yytabmenu = $navlink1 . $navlink2 . $navlink3 . $navlink4 . $navlink5 . $navlink6;
+        $yytabmenu =
+          $navlink1 . $navlink2 . $navlink3 . $navlink4 . $navlink5 . $navlink6;
 
         my $langtxt = q{};
-        if ( $upfrom ) {
+        if ($upfrom) {
             $langtxt = << "TXT";
                     <p>$convlang_txt{'start1'}
                         <br /><b>$convlang_txt{'start1a'}</b>
@@ -339,7 +342,7 @@ START
         prepareconv();
     }
     elsif ( $action eq 'members' ) {
-        require 'Variables/LangSettings.txt';
+        require "$vardir/LangSettings.txt";
         getlang($mylang);
 
         $yytabmenu =
@@ -350,21 +353,26 @@ START
           . $navlink5
           . $navlink6;
 
-        my $memchk = 0;
+        my $memchk  = 0;
         my $memnumn = 0;
-        if (-e 'Variables/ConvVar.txt') {
+        if ( -e "$vardir/ConvVar.txt" ) {
             require 'Variables/ConvVar.txt';
             if ( exists $setdone{'mem'} ) {
                 $memchk = 1;
                 opendir my $MBDIR, "$memberdir";
-                my @memlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-                readdir $MBDIR;
+                my @memlistn = grep {
+                         $_ ne q{.}
+                      && $_ ne q{..}
+                      && $_ ne 'index.html'
+                      && $_ ne '.htaccess'
+                } readdir $MBDIR;
                 closedir $MBDIR;
                 $memnumn = scalar @memlistn;
             }
         }
 
-        my $memdone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
+        my $memdone =
+qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=members','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
         my $mymore = qq~        </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
@@ -374,7 +382,8 @@ START
             </td>~;
 
         if ($memchk) {
-            $memdone = qq~ <span class="important">$memnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=cats$getlang">Boards</a></strong>~;
+            $memdone =
+qq~ <span class="important">$memnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=cats$getlang">Boards</a></strong>~;
             $mymore = q{};
         }
 
@@ -403,7 +412,7 @@ MEMBERS
 
     elsif ( $action eq 'cats' ) {
         require 'Variables/LangSettings.txt';
-		getlang($mylang);
+        getlang($mylang);
         $yytabmenu =
             $navlink1
           . $navlink2
@@ -412,20 +421,25 @@ MEMBERS
           . $navlink5
           . $navlink6;
 
-        my $brdchk = 0;
+        my $brdchk  = 0;
         my $brdnumn = 0;
-        if (-e 'Variables/ConvVar.txt') {
+        if ( -e "$vardir/ConvVar.txt" ) {
             require 'Variables/ConvVar.txt';
             if ( $setdone{'brd'} ) {
                 $brdchk = 1;
                 opendir my $MBDIR, "$boardsdir";
-                my @bdlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-                readdir $MBDIR;
+                my @bdlistn = grep {
+                         $_ ne q{.}
+                      && $_ ne q{..}
+                      && $_ ne 'index.html'
+                      && $_ ne '.htaccess'
+                } readdir $MBDIR;
                 closedir $MBDIR;
                 $brdnumn = scalar @bdlistn;
             }
         }
-        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
+        my $brddone =
+qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=boards','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
         my $mymore = qq~        </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
@@ -434,7 +448,8 @@ MEMBERS
                  <p>$convlang_txt{'brds4'}</p>
             </td>~;
         if ($brdchk) {
-            $brddone = qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=messages">Messages</a></strong>~;
+            $brddone =
+qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=messages">Messages</a></strong>~;
             $mymore = q{};
         }
         my $catstext = << "CATS";
@@ -475,19 +490,24 @@ CATS
 
         my $messchk = 0;
         my $brdnumn = 0;
-        if (-e 'Variables/ConvVar.txt') {
+        if ( -e "$vardir/ConvVar.txt" ) {
             require 'Variables/ConvVar.txt';
             if ( exists $setdone{'mess'} ) {
                 $messchk = 1;
                 opendir my $MBDIR, "$datadir";
-                my @bdlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-                readdir $MBDIR;
+                my @bdlistn = grep {
+                         $_ ne q{.}
+                      && $_ ne q{..}
+                      && $_ ne 'index.html'
+                      && $_ ne '.htaccess'
+                } readdir $MBDIR;
                 closedir $MBDIR;
                 $brdnumn = scalar @bdlistn;
             }
         }
 
-        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
+        my $brddone =
+qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=messages','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
         my $mymore = qq~        </tr><tr>
             <td class="windowbg center">
                 <img src="$imagesdir/info.png" alt="" />
@@ -496,7 +516,8 @@ CATS
                  <p>$convlang_txt{'mess3'}</p>
             </td>~;
         if ($messchk) {
-            $brddone = qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=variables">Variables</a></strong>~;
+            $brddone =
+qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=variables">Variables</a></strong>~;
             $mymore = q{};
         }
         my $messtext = << "MESS";
@@ -537,22 +558,28 @@ MESS
           . $navlink5a
           . $navlink6;
 
-        my $varchk = 0;
+        my $varchk  = 0;
         my $brdnumn = 0;
-        if (-e 'Variables/ConvVar.txt') {
+        if ( -e "$vardir/ConvVar.txt" ) {
             require 'Variables/ConvVar.txt';
             if ( exists $setdone{'var'} ) {
                 $varchk = 1;
                 opendir my $VDIR, "$vardir";
-                my @bdlistn = grep { $_ ne q{.} && $_ ne q{..} && $_ ne 'index.html' && $_ ne '.htaccess' }
-                readdir $VDIR;
+                my @bdlistn = grep {
+                         $_ ne q{.}
+                      && $_ ne q{..}
+                      && $_ ne 'index.html'
+                      && $_ ne '.htaccess'
+                } readdir $VDIR;
                 closedir $VDIR;
                 $brdnumn = scalar @bdlistn;
             }
         }
-        my $brddone = qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=variables','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
+        my $brddone =
+qq{<a href="javascript:void(window.open('$set_cgi?action=convert;section=variables','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))">$convlang_txt{'stconv'}</a>};
         if ($varchk) {
-            $brddone = qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=cleanup">Finish</a></strong>~;
+            $brddone =
+qq~ <span class="important">$brdnumn $convlang_txt{'next'} <strong><a href="$set_cgi?action=cleanup">Finish</a></strong>~;
         }
 
         my $varstext = <<"VARS";
@@ -699,6 +726,8 @@ sub prepareconv {
 # Member Conversion ##
 
 sub convertmembers {
+    require 'Variables/LangSettings.txt';
+    getlang($mylang);
     our (%memberlist);
     my %minmems = ();
     require "$convvardir/Memberlist.pm";
@@ -715,7 +744,7 @@ sub convertmembers {
         }
     }
     else {
-        for my $j (@mlst) {
+        foreach my $j (@mlst) {
             $minmems{$j} = 0;
         }
     }
@@ -755,7 +784,7 @@ sub convertmembers {
     require "$convvardir/Memberinfo.pm";
     my @memfile = keys %memberinf;
     my $langua  = 'ISO-8859-1';
-    for my $user (@memfile) {
+    foreach my $user (@memfile) {
         if ( $minmems{$user} == 1 ) {
             $langua = 'CP1251';
         }
@@ -779,19 +808,21 @@ sub convertmembers {
       or setup_fatal_error( "$maintext_23 Variables/Memberinfo.pm:", 1 );
     print {$NMEMFILE} $meminfo or croak 'cannot print NMEMFILE';
     close $NMEMFILE or croak "cannot close $NMEMFILE";
-    print qq~/Variables/Memberinfo.pm $convlang_txt{'done'}<br />~ or croak 'cannot print line';
+    print qq~/Variables/Memberinfo.pm $convlang_txt{'done'}<br />~
+      or croak 'cannot print line';
     copy "$convvardir/Memberlist.pm", "$vardir/Memberlist.pm";
-    print qq~/Variables/Memberlist.pm $convlang_txt{'done'}<br />~ or croak 'cannot print line';
+    print qq~/Variables/Memberlist.pm $convlang_txt{'done'}<br />~
+      or croak 'cannot print line';
 
     my @xtn = qw(vars msg ims imstore outbox imdraft pre wait);
     my @xta = qw(log rlog lst);
     if ( $#memlist > $buff ) {
         my $j = int( $#memlist / $buff );
-        for my $k ( 0 .. $j ) {
+        foreach my $k ( 0 .. $j ) {
             print qq~Batch $k<br />\n~ or croak 'cannot print line';
             my $l = $k * $buff;
-            for my $i ( $l .. ( $l + $buff ) ) {
-                for my $cnt (@xtn) {
+            foreach my $i ( $l .. ( $l + $buff ) ) {
+                foreach my $cnt (@xtn) {
                     if ( -e "$convertlang/Members/$memlist[$i].$cnt" ) {
                         open my $FILEUSER, '<',
                           "$convertlang/Members/$memlist[$i].$cnt"
@@ -817,22 +848,25 @@ sub convertmembers {
                         print {$FILEUSERB} $fileuser
                           or croak "cannot print $FILEUSERB";
                         close $FILEUSERB or croak "cannot close $FILEUSERB";
-                        if ($cnt eq 'vars') {
-                            print qq~/Members/$memlist[$i].$cnt $convlang_txt{'done'}<br />\n~ or croak 'cannot print line';
+                        if ( $cnt eq 'vars' ) {
+                            print
+qq~/Members/$memlist[$i].$cnt $convlang_txt{'done'}<br />\n~
+                              or croak 'cannot print line';
                         }
                     }
                 }
-                for my $cnt (@xta) {
+                foreach my $cnt (@xta) {
                     if ( -e "$convmemberdir/$memlist[$i].$cnt" ) {
-                        copy "$convmemberdir/$memlist[$i].$cnt", "$memberdir/$memlist[$i].$cnt";
+                        copy "$convmemberdir/$memlist[$i].$cnt",
+                          "$memberdir/$memlist[$i].$cnt";
                     }
                 }
             }
         }
     }
     else {
-        for my $i ( 0 .. $#memlist ) {
-            for my $cnt (@xtn) {
+        foreach my $i ( 0 .. $#memlist ) {
+            foreach my $cnt (@xtn) {
                 if ( -e "$convertlang/Members/$memlist[$i].$cnt" ) {
                     open my $FILEUSER, '<',
                       "$convertlang/Members/$memlist[$i].$cnt"
@@ -855,15 +889,17 @@ sub convertmembers {
                     print {$FILEUSERB} $fileuser
                       or croak "cannot print $FILEUSERB";
                     close $FILEUSERB or croak "cannot close $FILEUSERB";
-                    if ($cnt eq 'vars') {
-                        print qq~/Members/$memlist[$i].$cnt $convlang_txt{'done'}<br />\n~
-                      or croak 'cannot print line';
+                    if ( $cnt eq 'vars' ) {
+                        print
+qq~/Members/$memlist[$i].$cnt $convlang_txt{'done'}<br />\n~
+                          or croak 'cannot print line';
                     }
                 }
             }
-            for my $cnt (@xta) {
+            foreach my $cnt (@xta) {
                 if ( -e "$convmemberdir/$memlist[$i].$cnt" ) {
-                    copy "$convmemberdir/$memlist[$i].$cnt", "$memberdir/$memlist[$i].$cnt";
+                    copy "$convmemberdir/$memlist[$i].$cnt",
+                      "$memberdir/$memlist[$i].$cnt";
                 }
             }
         }
@@ -874,7 +910,8 @@ sub convertmembers {
 </body>
 </html>~ or croak 'cannot print line';
     open my $VARCH, '>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
-    print {$VARCH} "\$setdone{'mem'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    print {$VARCH} "\$setdone{'mem'} = 1;\n"
+      or croak 'cannot print Variables/ConvVar.txt';
     close $VARCH or croak 'cannot close ConvVar';
     exit;
 }
@@ -885,6 +922,7 @@ sub convertmembers {
 
 sub convertboards {
     require 'Variables/LangSettings.txt';
+    getlang($mylang);
     our ( @categoryorder, %cat, %catinfo );
     require "$convertlang/Boards/forum.master";
     my @boards    = sort keys %board;
@@ -991,13 +1029,13 @@ sub convertboards {
 
         foreach my $cnt ( keys %totals ) {
             $brdtot{$cnt} = [ 0, ${ $totals{$cnt} }[6] ];
-            for my $line (@minbrds) {
+            foreach my $line (@minbrds) {
                 if ( $cnt eq $line ) {
                     $brdtot{$cnt} = [ 1, ${ $totals{$cnt} }[6] ];
                 }
             }
         }
-        for my $i ( keys %brdtot ) {
+        foreach my $i ( keys %brdtot ) {
             my $linga2 = $lang1;
             my ( $isling, $brdtotline2 ) = @{ $brdtot{$i} };
             if ( $isling == 1 ) {
@@ -1030,13 +1068,13 @@ sub convertboards {
 
         foreach my $cnt ( keys %control ) {
             $brdcon{$cnt} = [ 0, ${ $control{$cnt} }[2] ];
-            for my $line (@minbrds) {
+            foreach my $line (@minbrds) {
                 if ( $cnt eq $line ) {
                     $brdcon{$cnt} = [ 1, ${ $control{$cnt} }[2] ];
                 }
             }
         }
-        for my $i ( keys %brdcon ) {
+        foreach my $i ( keys %brdcon ) {
             my $linga2 = $lang1;
             my ( $isling, $brdconline2 ) = @{ $brdcon{$i} };
             if ( $isling == 1 ) {
@@ -1058,11 +1096,12 @@ sub convertboards {
             push @boardcontrol, $newline;
         }
         write_forum_control();
-        print qq~/Boards/forum.control $convlang_txt{'done'}</p>~ or croak 'cannot print line';
+        print qq~/Boards/forum.control $convlang_txt{'done'}</p>~
+          or croak 'cannot print line';
     }
     else {
         my @brdlst = ( 'forum.master', 'forum.totals', 'forum.control', );
-        for my $newbrd (@brdlst) {
+        foreach my $newbrd (@brdlst) {
             open my $OLDBRD, '<', "$convertlang/Boards/$newbrd"
               or croak 'cannot open OLDBRD';
             my $brdinfo =
@@ -1077,24 +1116,25 @@ sub convertboards {
               or croak 'cannot close NEWBRD';
             print {$NEWBRD} "$brdinfo\n" or croak 'cannot print NEWBRD';
             close $NEWBRD or croak 'cannot close NEWBRD';
-            print qq~/Boards/$newbrd $convlang_txt{'done'}<br />\n~ or croak 'cannot print line';
+            print qq~/Boards/$newbrd $convlang_txt{'done'}<br />\n~
+              or croak 'cannot print line';
         }
         print q~</p>~ or croak 'cannot print line';
     }
-    if (-e "$convertlang/Boards/brdpics.db") {
+    if ( -e "$convertlang/Boards/brdpics.db" ) {
         copy "$convertlang/Boards/brdpics.db", "$boardsdir/brdpics.db";
     }
     my @brdext = qw(txt);
     my @brdexx = qw(mail exhits);
 
-    my $lingua  = $lang1;
+    my $lingua = $lang1;
     if ( $#boards > $buff ) {
         my $j = int( $#boards / $buff );
-        for my $k ( 0 .. $j ) {
+        foreach my $k ( 0 .. $j ) {
             print qq~Batch $k<br />~ or croak 'cannot print line';
             my $l = $k * 500;
-            for my $i ( $l .. ( $l + $duff ) ) {
-                for my $ext (@brdext) {
+            foreach my $i ( $l .. ( $l + $duff ) ) {
+                foreach my $ext (@brdext) {
                     if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
                         for (@minbrds) {
                             if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
@@ -1122,21 +1162,23 @@ sub convertboards {
                         print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
                         close $NEWBRD
                           or croak 'cannot open NEWBRD';
-                        print qq~/Boards/$boards[$i].$ext $convlang_txt{'done'}<br />\n~
+                        print
+qq~/Boards/$boards[$i].$ext $convlang_txt{'done'}<br />\n~
                           or croak 'cannot print line';
                     }
                 }
-                for my $ext (@brdexx) {
+                foreach my $ext (@brdexx) {
                     if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
-                        copy "$convertlang/Boards/$boards[$i].$ext", "$boardsdir/$boards[$i].$ext";
+                        copy "$convertlang/Boards/$boards[$i].$ext",
+                          "$boardsdir/$boards[$i].$ext";
                     }
                 }
             }
         }
     }
     else {
-        for my $i ( 0 .. $#boards ) {
-            for my $ext (@brdext) {
+        foreach my $i ( 0 .. $#boards ) {
+            foreach my $ext (@brdext) {
                 if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
                     for (@minbrds) {
                         if ( $boards[$i] eq $_ ) { $lingua = $lang2; }
@@ -1160,13 +1202,15 @@ sub convertboards {
                     print {$NEWBRD} $brdinfo or croak 'cannot print NEWBRD';
                     close $NEWBRD
                       or croak 'cannot open NEWBRD';
-                    print qq~/Boards/$boards[$i].$ext $convlang_txt{'done'}<br />\n~
+                    print
+                      qq~/Boards/$boards[$i].$ext $convlang_txt{'done'}<br />\n~
                       or croak 'cannot print line';
                 }
             }
-            for my $ext (@brdexx) {
+            foreach my $ext (@brdexx) {
                 if ( -e "$convertlang/Boards/$boards[$i].$ext" ) {
-                    copy "$convertlang/Boards/$boards[$i].$ext", "$boardsdir/$boards[$i].$ext";
+                    copy "$convertlang/Boards/$boards[$i].$ext",
+                      "$boardsdir/$boards[$i].$ext";
                 }
             }
         }
@@ -1176,8 +1220,10 @@ sub convertboards {
 <button type="button" onclick="window.open('', '_self', ''); window.close();">$convlang_txt{'clse'}</button>
 </body>
 </html>~ or croak 'cannot print line';
-    open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
-    print {$VARCH} "\$setdone{'brd'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    open my $VARCH, '>>', "$vardir/ConvVar.txt"
+      or croak 'cannot open ConvVar';
+    print {$VARCH} "\$setdone{'brd'} = 1;\n"
+      or croak 'cannot print Variables/ConvVar.txt';
     close $VARCH or croak 'cannot close ConvVar';
 
     exit;
@@ -1188,13 +1234,15 @@ sub convertboards {
 # Messages Conversion ##
 
 sub convertmessages {
+    require 'Variables/LangSettings.txt';
+    getlang($mylang);
     require "$boardsdir/forum.master";
     my @boards    = sort keys %board;
     my @subboards = sort keys %subboard;
     push @boards, @subboards;
-    my $totalbdr  = @boards;
-    my @thrext = qw(txt poll);
-    my @threxx = qw(ctb mail polled);
+    my $totalbdr = @boards;
+    my @thrext   = qw(txt poll);
+    my @threxx   = qw(ctb mail polled);
     print_output_header();
     print qq~<!DOCTYPE html>
 <html lang="utf-8">
@@ -1209,11 +1257,13 @@ sub convertmessages {
 <body>
 <h1>$convlang_txt{'lmess'}</h1>
 <p>~ or croak 'cannot print line';
-    for my $next_board ( 0 .. $totalbdr ) {
+
+    foreach my $next_board ( 0 .. $totalbdr ) {
         my $lingua    = $lang1;
         my $boardname = $boards[$next_board];
         if ($boardname) {
-            print qq~<br />Board: $boardname<br />\n~ or croak 'cannot print line';
+            print qq~<br />Board: $boardname<br />\n~
+              or croak 'cannot print line';
         }
         if ( -e "$boardsdir/$boardname.txt" ) {
             open my $BRDFILE, '<', "$boardsdir/$boardname.txt"
@@ -1229,13 +1279,13 @@ sub convertmessages {
             }
             if ( $totalmess > $duff ) {
                 my $j = int( $totalmess / $duff );
-                for my $k ( 0 .. $j ) {
+                foreach my $k ( 0 .. $j ) {
                     print qq~Batch $k<br />\n~ or croak 'cannot print line';
                     my $l = $k * 100;
-                    for my $tops ( $l .. ( $l + $duff ) ) {
+                    foreach my $tops ( $l .. ( $l + $duff ) ) {
                         my @thread = split /[|]/xsm, $brdmessageline[$tops];
                         my $thread = $thread[0];
-                        for my $ext (@thrext) {
+                        foreach my $ext (@thrext) {
                             if ( -e "$convertlang/Messages/$thread.$ext" ) {
                                 open my $MSGFILE, '<',
                                   "$convertlang/Messages/$thread.$ext"
@@ -1262,23 +1312,25 @@ sub convertmessages {
                                   or croak "cannot print $datadir/$thread.$ext";
                                 close $NMSGFILE
                                   or croak 'cannot close NMSGFILE';
-                                print qq~/Messages/$thread.$ext $convlang_txt{'done'}<br />\n~
+                                print
+qq~/Messages/$thread.$ext $convlang_txt{'done'}<br />\n~
                                   or croak 'cannot print line';
                             }
                         }
-                        for my $ext (@threxx) {
+                        foreach my $ext (@threxx) {
                             if ( -e "$convertlang/Messages/$thread.$ext" ) {
-                                copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
+                                copy "$convertlang/Messages/$thread.$ext",
+                                  "$datadir/$thread.$ext";
                             }
                         }
                     }
                 }
             }
             else {
-                for my $tops ( 0 .. $totalmess ) {
+                foreach my $tops ( 0 .. $totalmess ) {
                     my @thread = split /[|]/xsm, $brdmessageline[$tops];
                     my $thread = $thread[0];
-                    for my $ext (@thrext) {
+                    foreach my $ext (@thrext) {
                         if ( -e "$convertlang/Messages/$thread.$ext" ) {
                             open my $MSGFILE, '<',
                               "$convertlang/Messages/$thread.$ext"
@@ -1305,13 +1357,15 @@ sub convertmessages {
                             print {$NMSGFILE} $messagelines
                               or croak "cannot print $datadir/$thread.$ext";
                             close $NMSGFILE or croak 'cannot close NMSGFILE';
-                            print qq~/Messages/$thread.$ext $convlang_txt{'done'}<br />\n~
+                            print
+qq~/Messages/$thread.$ext $convlang_txt{'done'}<br />\n~
                               or croak 'cannot print line';
                         }
                     }
-                    for my $ext (@threxx) {
+                    foreach my $ext (@threxx) {
                         if ( -e "$convertlang/Messages/$thread.$ext" ) {
-                            copy "$convertlang/Messages/$thread.$ext", "$datadir/$thread.$ext";
+                            copy "$convertlang/Messages/$thread.$ext",
+                              "$datadir/$thread.$ext";
                         }
                     }
                 }
@@ -1323,8 +1377,10 @@ sub convertmessages {
 <button type="button" onclick="window.open('', '_self', ''); window.close();">$convlang_txt{'clse'}</button>
 </body>
 </html>~ or croak 'cannot print line';
-    open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
-    print {$VARCH} "\$setdone{'mess'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    open my $VARCH, '>>', "$vardir/ConvVar.txt"
+      or croak 'cannot open ConvVar';
+    print {$VARCH} "\$setdone{'mess'} = 1;\n"
+      or croak 'cannot print Variables/ConvVar.txt';
     close $VARCH or croak 'cannot close ConvVar';
     exit;
 }
@@ -1335,9 +1391,10 @@ sub convertmessages {
 
 sub convertvariables {
     require q~Variables/LangSettings.txt~;
+    getlang($mylang);
     my @varlist = ();
     opendir my $VDIR, "$convertlang/Variables";
-    while (my $file = readdir $VDIR ) {
+    while ( my $file = readdir $VDIR ) {
         next if ( $file =~ m/^\./ || $file eq 'index.html' );
         push @varlist, $file;
     }
@@ -1358,25 +1415,26 @@ sub convertvariables {
 <p>~ or croak 'cannot print line';
 
     foreach my $file (@varlist) {
-            if (   $file ne 'LangSettings.txt'
-                && $file ne 'Memberinfo.pm'
-                && $file ne 'Memberlist.pm' )
-            {
-                open my $OLDVAR, '<', "$convertlang/Variables/$file"
-                  or croak 'cannot close OLDVAR';
-                my $oldvar =
-                  do { local $INPUT_RECORD_SEPARATOR = undef; <$OLDVAR> };
-                close $OLDVAR or croak 'cannot close OLDVAR';
-                if ( $lang1 eq 'ISO-8859-1' ) {
-                    $oldvar = ansi($oldvar);
-                }
-                $oldvar = encode( 'utf8', decode( $lang1, $oldvar ) );
-                open my $NEWVAR, '>', "Variables/$file"
-                  or croak 'cannot open NEWVAR';
-                print {$NEWVAR} $oldvar
-                  or croak "cannot print Variables/$file";
-                close $NEWVAR or croak 'cannot close NEWVAR';
-                print "Variables/$file $convlang_txt{'done'}<br />\n" or croak 'cannot print line';
+        if (   $file ne 'LangSettings.txt'
+            && $file ne 'Memberinfo.pm'
+            && $file ne 'Memberlist.pm' )
+        {
+            open my $OLDVAR, '<', "$convertlang/Variables/$file"
+              or croak 'cannot close OLDVAR';
+            my $oldvar =
+              do { local $INPUT_RECORD_SEPARATOR = undef; <$OLDVAR> };
+            close $OLDVAR or croak 'cannot close OLDVAR';
+            if ( $lang1 eq 'ISO-8859-1' ) {
+                $oldvar = ansi($oldvar);
+            }
+            $oldvar = encode( 'utf8', decode( $lang1, $oldvar ) );
+            open my $NEWVAR, '>', "$vardir/$file"
+              or croak 'cannot open NEWVAR';
+            print {$NEWVAR} $oldvar
+              or croak "cannot print Variables/$file";
+            close $NEWVAR or croak 'cannot close NEWVAR';
+            print "Variables/$file $convlang_txt{'done'}<br />\n"
+              or croak 'cannot print line';
         }
     }
     print qq~</p>
@@ -1385,8 +1443,10 @@ sub convertvariables {
 </body>
 </html>~ or croak 'cannot print line';
 
-    open my $VARCH, '>>', 'Variables/ConvVar.txt' or croak 'cannot open ConvVar';
-    print {$VARCH} "\$setdone{'var'} = 1;\n" or croak "cannot print Variables/ConvVar.txt";
+    open my $VARCH, '>>', "$vardir/ConvVar.txt"
+      or croak 'cannot open ConvVar';
+    print {$VARCH} "\$setdone{'var'} = 1;\n"
+      or croak 'cannot print Variables/ConvVar.txt';
     close $VARCH or croak 'cannot close ConvVar';
     exit;
 }
@@ -1409,7 +1469,7 @@ qq~This is a lockfile for the ConvertLang Utility.\nIt prevents it being run aga
 sub foundconvertlanglock {
     tempstarter();
     require Sources::TabMenu;
-    my $fixa = q{};
+    my $fixa  = q{};
     my $fixa2 = $convlang_txt{'fixa'};
 
     $formsession = cloak("$mbname$username");
@@ -1563,12 +1623,12 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     our $output      = q{};
     our $yyboardname = $mbname;
     our $yytime      = timeformat( $date, 1 );
-    our $yyxml_lang = $abbr_lang || 'en';
+    our $yyxml_lang  = $abbr_lang || 'en';
     my $curline = q{};
     {
         no strict qw(refs);
         $yyuname = q{};
-        for my $i ( 0 .. $#yytemplate ) {
+        foreach my $i ( 0 .. $#yytemplate ) {
             $curline .= $yytemplate[$i];
             if ( !$yycopyin
                 && ( $curline =~ m/\Q{yabb copyright}\E/xsm ) )
@@ -1589,7 +1649,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     }
     if ( $yycopyin == 0 ) {
         $output =
-qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &\x23123;yabb copyright&\x23125; must be in the template.<br />Please notify this forum&\x2339;s administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
     $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;

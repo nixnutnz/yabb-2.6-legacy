@@ -64,7 +64,7 @@ sub spamcheck {
         }
     }
     our ( $is_spam, $spamword );
-    for my $spamrule (@spamlines) {
+    foreach my $spamrule (@spamlines) {
         chomp $spamrule;
         $is_spam = 0;
         ( $spamword, $spamlimit, $spamtype ) = @{$spamrule};

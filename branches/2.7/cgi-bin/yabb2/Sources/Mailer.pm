@@ -53,7 +53,7 @@ sub sendmail {
 
     # Do a from_html here for $to, and for $mbname
     # Just in case has special chars like & in addresses
-    $ato = from_html($ato);
+    $ato    = from_html($ato);
     $mbname = from_html($mbname);
 
 # Change commas to HTML entity - ToHTML doesn't catch this
@@ -139,7 +139,7 @@ sub sendmail {
                   encode( 'MIME-Header', decode( 'UTF-8', $subject ) );
                 my $mail_body = qq~<pre $pre>$message</pre>~;
                 $smtp->mail($afrom);
-                for ( split /,\s/xsm, $ato ) { $smtp->to($_); }
+                foreach my $i ( split /,\s/xsm, $ato ) { $smtp->to($i); }
                 $smtp->data();
                 $smtp->datasend("To: $toheader\r\n");
                 $smtp->datasend("From: $fromheader\r\n");
@@ -189,7 +189,7 @@ End of Message\n\n";
 #  Hello, $username! The answer is 42!
 sub template_email {
     my ( $message, $info ) = @_;
-    for my $key ( keys %{$info} ) {
+    foreach my $key ( keys %{$info} ) {
         $message =~ s/\Q{yabb \E$key}/$info->{$key}/gxsm;
     }
     $message =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;

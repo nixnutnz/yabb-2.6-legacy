@@ -50,7 +50,7 @@ sub set_status {
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @boardfile = <$BOARDFILE>;
     fclose('BOARDFILE') or croak "$croak{'close'} $currentboard.txt";
-    for my $line ( 0 .. $#boardfile ) {
+    foreach my $line ( 0 .. $#boardfile ) {
         if ( $boardfile[$line] =~ m/\A$threadid[|]/xsm ) {
             my (
                 $mnum,     $msub,      $mname, $memail, $mdate,

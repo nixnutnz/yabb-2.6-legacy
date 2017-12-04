@@ -23,7 +23,7 @@ use English qw(-no_match_vars);
 our $VERSION = '2.7.00';
 
 ### Version Info ###
-our $yabbversion    = 'YaBB 2.7.00';
+our $yabbversion     = 'YaBB 2.7.00';
 our $adminindexplver = 'YaBB 2.7.00 $Revision$';
 
 our @adminindexmods = ();
@@ -51,13 +51,15 @@ our (
 );
 ## system ##
 our (
-    $action_area,   $allow_gmod_admin, $date,
-    $iamadmin,      $iamgmod,          $iamguest,     $max_process_time,
-    $randaction,    $sessionvalid,     $started_ul,   $uid,
-    $useimages,     $user_ip,          $username,     $yyadmin_alert,
-    $yydebug,       $yyext,            $yyjavascript, $yymain,
-    $yysetlocation, $yytitle,          %director,     %gmod_access,
-    %INFO,          %mod_list,         $yyiis,        $year,
+    $action_area,      $allow_gmod_admin, $date,
+    $iamadmin,         $iamgmod,          $iamguest,
+    $max_process_time, $randaction,       $sessionvalid,
+    $started_ul,       $uid,              $useimages,
+    $user_ip,          $username,         $yyadmin_alert,
+    $yydebug,          $yyext,            $yyjavascript,
+    $yymain,           $yysetlocation,    $yytitle,
+    %director,         %gmod_access,      %INFO,
+    %mod_list,         $yyiis,            $year,
 );
 ## template ##
 our ( $admin_template, $header, $leftmenu, $leftmenubottom, $leftmenutop,
@@ -451,7 +453,7 @@ s/img src\=\&quot;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . admimgloc2($1) .
       . $leftmenubottom
       . $topnav
       . $mainbody;
-      $output =~ s/\Q{yabb adminurl}\E/$adminurl/gxsm;
+    $output =~ s/\Q{yabb adminurl}\E/$adminurl/gxsm;
     image_resize();
     $output =~ s/\Q{yabb mbname}/$mbname/gxsm;
     $output =~ s/\Q{yabb year}/$year/gxsm;
@@ -463,23 +465,25 @@ s/img src\=\&quot;$imagesdir\/(.+?)\&quot;/"img src\=\&quot;" . admimgloc2($1) .
 sub trackadminlogins {
     my @adminlog;
     if ( -e "$vardir/adminlog.log" ) {
-        open my $ADMINLOG, '<', "$vardir/adminlog.log";
+        open my $ADMINLOG, '<', "$vardir/adminlog.log"
+          or croak "cannot open $vardir/adminlog.log";
         @adminlog = <$ADMINLOG>;
-        close $ADMINLOG;
+        close $ADMINLOG or croak "cannot close $vardir/adminlog.log";
         @adminlog = reverse sort @adminlog;
     }
     $maxadminlog = $maxadminlog || 5;
-    open my $ADMINLOG, '>', "$vardir/adminlog.log";
+    open my $ADMINLOG, '>', "$vardir/adminlog.log"
+      or croak "cannot open $vardir/adminlog.log";
     print {$ADMINLOG} qq~$date|$username|$user_ip\n~
       or croak 'cannot print ADMINLOG';
-    for my $i ( 0 .. ( $maxadminlog - 2 ) ) {
+    foreach my $i ( 0 .. ( $maxadminlog - 2 ) ) {
         if ( $adminlog[$i] ) {
             chomp $adminlog[$i];
             print {$ADMINLOG} qq~$adminlog[$i]\n~
               or croak 'cannot print ADMINLOG';
         }
     }
-    close $ADMINLOG;
+    close $ADMINLOG or croak "cannot close $vardir/adminlog.log";
     return;
 }
 

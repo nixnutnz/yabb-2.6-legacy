@@ -73,7 +73,7 @@ sub convcontrol {
     close $FORUMCONTROL or croak 'cannot close forum.control';
     chomp @boardcontrols;
     my @allboards = ();
-    for my $boardline (@boardcontrols) {
+    foreach my $boardline (@boardcontrols) {
         $boardline =~ s/[\r\n]//gxsm;    # Built in chomp
         my ( undef, $cntboard ) = split /[|]/xsm, $boardline;
         ## create a global boards array
@@ -87,7 +87,7 @@ sub convcontrol {
     my $newbrds   = qq{\@allboards = qw($allboards);\n};
     my $nid       = $uid;
     $newbrds .= qq~\$nid = '$nid';\n~;
-    for my $cntboard (@mybrds) {
+    foreach my $cntboard (@mybrds) {
         no strict qw(refs);
         $newbrds .= qq~\%{'$cntboard'} = (\n~;
         foreach my $key ( keys %{ $nid . $cntboard } ) {
@@ -101,21 +101,22 @@ sub convcontrol {
     }
     $newbrds .= qq~\n1;\n~;
     $newbrds =~ s/-/FIX/gxsm;
-    my $brdfix = q{};
+    my $brdfix  = q{};
     my $brdfixl = q{};
-    my %hash = ();
-    foreach (@mybrds) {
-        push @{$hash{lc $_}}, $_;
+    my %hash    = ();
+    foreach my $i (@mybrds) {
+        push @{ $hash{ lc $i } }, $i;
     }
-    for my $key (keys %hash) {
-        if ( scalar @{$hash{$key}} > 1 ) {
-            foreach (@{$hash{$key}}) {
+    foreach my $key ( keys %hash ) {
+        if ( scalar @{ $hash{$key} } > 1 ) {
+            foreach ( @{ $hash{$key} } ) {
                 $brdfixl .= qq~$_<br />~;
             }
         }
     }
     if ( $brdfixl ne q{} ) {
-        $brdfix = qq~<br />There appear to be multiple Boards with the same name when converted to lowercase. These boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
+        $brdfix =
+qq~<br />There appear to be multiple Boards with the same name when converted to lowercase. These boards may not convert properly if moved to a Windows server:<br />$brdfixl~;
     }
 
     open my $BOARDCONV, '>', "$vardir/boardconv.txt"

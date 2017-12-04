@@ -138,7 +138,6 @@ sub event_calset {
                     <td class="windowbg2">
                         <select name="scroll_events" id="scroll_events" size="1">
                         <option value="0"${isselected($scroll_events==0)}>$userlevel_txt{'none'}</option>
-                        <option value="1"${isselected($scroll_events==1)}>$event_cal{'12'} ($event_cal{'56'})</option>
                         <option value="3"${isselected($scroll_events==3)}>$event_cal{'12'} ($event_cal{'57'})</option>
                         <option value="2"${isselected($scroll_events==2)}>$event_cal{'13'}</option>
                         </select>
@@ -267,7 +266,7 @@ sub event_calset {
     foreach my $j ( sort keys %newcalicon ) {
         $yymain .= qq~<tr>
                     <td class="windowbg2 center" style="white-space:nowrap">
-                        <input type="file" name="caliimg[$i]" id="caliimg[$i]"  />
+                        <input type="file" name="caliimg[$i]" id="caliimg[$i]" />
                         <input type="hidden" name="cur_caliimg[$i]" value="${$newcalicon{$j}}[1]" /> <span class="cursor small bold" title="$admin_txt{'remove_file'}" onclick="document.getElementById('caliimg[$i]').value='';">X</span>
                         <div class="small bold">$admin_txt{'current_img'}: <a href="$yyhtml_root/EventIcons/${$newcalicon{$j}}[1]" target="_blank">${$newcalicon{$j}}[1]</a></div>
                     </td>
@@ -357,11 +356,11 @@ sub event_calset2 {
     is_admin_or_gmod();
 
     if ( $FORM{'rebuiltbd'} && $FORM{'rebuiltbd'} eq $event_cal{'54'} ) {
-        unlink 'Variables/Eventcalbday.pm';
+        unlink "$vardir/Eventcalbday.pm";
         our (%memberlist);
         require Variables::Memberlist;
         my @birthmembers = keys %memberlist;
-        my $bdlist = q{};
+        my $bdlist       = q{};
         while (@birthmembers) {
             my $user_xy = pop @birthmembers;
             chomp $user_xy;
@@ -386,7 +385,7 @@ qq~\$calbday{'$user_xy'} = ['$user_year', '$user_month', '$user_day', '$user_hid
         }
         $bdlist .= qq~\n1;\n~;
         our ($FILE);
-        fopen( 'FILE', '>', 'Variables/Eventcalbday.pm' )
+        fopen( 'FILE', '>', "$vardir/Eventcalbday.pm" )
           or croak "$croak{'open'} Eventcalbday";
         print {$FILE} $bdlist or croak "$croak{'print'} Eventcalbday";
         fclose('FILE') or croak "$croak{'close'} Eventcalbday";
@@ -557,8 +556,7 @@ sub eventcal_save {
 
 sub admin_del_old_events {
     my $caltoday = 1;
-    my ( undef, undef, undef, $mday, $mon, $year, undef, undef, undef ) =
-      gmtime $date;
+    my ( $mday, $mon, $year ) = ( gmtime($date) )[ 3, 4, 5 ];
     $year += 1900;
     $mon++;
     $caltoday = $year . sprintf( '%02d', $mon ) . sprintf '%02d', $mday;
@@ -577,7 +575,7 @@ sub admin_del_old_events {
     }
     $prncal .= qq~\n1;\n~;
     our ($EVENTFILE);
-    fopen( 'EVENTFILE', '>', 'Variables/Eventcal.pm' )
+    fopen( 'EVENTFILE', '>', "$vardir/Eventcal.pm" )
       or croak "$croak{'open'} Eventcal";
     print {$EVENTFILE} $prncal or croak "$croak{'print'} Eventcal";
     fclose('EVENTFILE') or croak "$croak{'close'} Eventcal";

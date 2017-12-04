@@ -45,12 +45,14 @@ sub debug {
         my $yytimeclock  = q{};
         my $time_running = time - $START_TIME;
         if ( $time_running == int $time_running ) {
-            $yytimeclock = "$debug_txt{'nohires'} Time::Hires $debug_txt{'nomodule'}<br />";
+            $yytimeclock =
+              "$debug_txt{'nohires'} Time::Hires $debug_txt{'nomodule'}<br />";
         }
         else {
             $time_running = sprintf '%.4f', $time_running;
         }
-        $yytimeclock .= "$debug_txt{'pagespeed'} $time_running $debug_txt{'loaded'}.";
+        $yytimeclock .=
+          "$debug_txt{'pagespeed'} $time_running $debug_txt{'loaded'}.";
 
         if ( $debug == 3 ) {
             $yydebug =
@@ -76,8 +78,8 @@ qq~<br /><div class="small debug"><span class="under">$debug_txt{'debugging'}</s
 <span class="under">$debug_txt{'check'}:</span><br />$yyfileactions<br /><br />
 <span class="under">$debug_txt{'filehandles'}:</span><br />$debug_txt{'filehandleslegend'}<br /><br />$openfiles<br /><span class="under">$debug_txt{'filesloaded'}:<span class="tt">require</span></span>~;
 
-            for ( sort keys %INC ) {
-                if ( $_ && $INC{$_} ) { $yydebug .= qq~<br />$_ => $INC{$_}~; }
+            foreach my $i ( sort keys %INC ) {
+                if ( $i && $INC{$i} ) { $yydebug .= qq~<br />$i => $INC{$i}~; }
             }
 
             $yydebug .= q~<br /><br /><br />

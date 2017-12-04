@@ -96,7 +96,7 @@ sub admin_ml {
         || $INFO{'sort'}
         && ( $INFO{'sort'} eq 'mlletter' || $INFO{'sort'} eq 'username' ) )
     {
-        for my $x ( 0 .. $#alpha ) {
+        foreach my $x ( 0 .. $#alpha ) {
             my $page     = lc $alpha[$x];
             my $showpage = $alpha[$x];
             $letterlinks .=
@@ -184,12 +184,12 @@ sub viewmlbyletter {
     my $j = 0;
     manage_memberinfo('load');
     my ( %namehash, @to_show );
-    for my $i ( keys %memberinf ) {
+    foreach my $i ( keys %memberinf ) {
         my @inf = @{ $memberinf{$i} };
         $namehash{ $inf[0] } = [ $i, $inf[1] ];
     }
     my @namehash = sort { lc $a cmp lc $b } keys %namehash;
-    for my $listname (@namehash) {
+    foreach my $listname (@namehash) {
         my $memrealname = $listname;
         my $membername  = $namehash{$listname}[0];
         my $mememail    = $namehash{$listname}[1];
@@ -319,8 +319,8 @@ sub viewmlposition {
             }
         }
         if ( !$sortgroups ) {
-            foreach ( sort { $a <=> $b } keys %grp_nopost ) {
-                if ( $memposition && $memposition eq $_ ) {
+            foreach my $i ( sort { $a <=> $b } keys %grp_nopost ) {
+                if ( $memposition && $memposition eq $i ) {
                     $sortgroups = "ddd.$memposition.$pstsort.$memberrealname";
                 }
             }
@@ -517,27 +517,27 @@ qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~;
             }
             elsif ( ${ $uid . $user }{'position'} ne q{} ) {
                 $tempgroups = 0;
-                foreach ( keys %grp_staff ) {
-                    if ( ${ $uid . $user }{'position'} eq $_ ) {
+                foreach my $i( keys %grp_staff ) {
+                    if ( ${ $uid . $user }{'position'} eq $i ) {
                         (
                             $memberinfo, $stars,      $starpic,
                             $color,      $noshow,     $viewperms,
                             $topicperms, $replyperms, $pollperms,
                             $attachperms
-                        ) = @{ $grp_staff{$_} };
+                        ) = @{ $grp_staff{$i} };
                         $tempgroups = 1;
                         last;
                     }
                 }
                 if ( !$tempgroups ) {
-                    foreach ( sort { $a <=> $b } keys %grp_nopost ) {
-                        if ( ${ $uid . $user }{'position'} eq $_ ) {
+                    foreach my $i( sort { $a <=> $b } keys %grp_nopost ) {
+                        if ( ${ $uid . $user }{'position'} eq $i ) {
                             (
                                 $memberinfo, $stars,      $starpic,
                                 $color,      $noshow,     $viewperms,
                                 $topicperms, $replyperms, $pollperms,
                                 $attachperms
-                            ) = @{ $grp_nopost{$_} };
+                            ) = @{ $grp_nopost{$i} };
                             $tempgroups = 1;
                             last;
                         }
@@ -552,21 +552,25 @@ qq~<img src="$imagesdir/bar.gif" width="$barwidth" height="10" alt="" />~;
         $yymain .= qq~<tr>
         <td class="windowbg">$link{$user}</td>~;
         my $addel = q~&nbsp;~;
-        if (
-            $user eq 'admin'
-            || (
-                $iamgmod
-                && ( ${ $uid . $user }{'position'} eq 'Administrator'
-                    || $gmod_access{'deletemultimembers'} ne 'on' )
-            )
-          )
         {
-            $addel = q~&nbsp;~;
-        }
-        else {
-            $addel =
+            no strict qw(refs);
+            $user =~ s/\x{a0}/ /igxsm;
+            if (
+                $user eq 'admin'
+                || (
+                    $iamgmod
+                    && ( ( ${ $uid . $user }{'position'} && ${ $uid . $user }{'position'} eq 'Administrator' )
+                        || $gmod_access{'deletemultimembers'} ne 'on' )
+                )
+              )
+            {
+                $addel = q~&nbsp;~;
+            }
+            else {
+                $addel =
 qq~<input type="checkbox" name="member$numshown" value="$user" class="windowbg" style="border: 0; vertical-align: middle;" />~;
-            $actualnum++;
+                $actualnum++;
+            }
         }
 
         $yymain .= qq~
@@ -699,7 +703,7 @@ qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="de
                     $pagedropindex2 .=
 qq~<span style="float: left; height: 21px; margin: 0;"><select size="1" name="decselector2" id="decselector2" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
                 }
-                for my $i ( 0 .. ( $indexpages - 1 ) ) {
+                foreach my $i ( 0 .. ( $indexpages - 1 ) ) {
                     $indexpage  = ( $i * $dropdisplaynum ) * $membersperpage;
                     $indexstart = ( $i * $dropdisplaynum ) + 1;
                     $indexend   = $indexstart + ( $dropdisplaynum - 1 );
@@ -889,11 +893,10 @@ sub viewbuildpages {
             </tr>);
     }
 
-    my $selbox = q{};
-    my ($sel_box);
+    my $sel_box = q{};
     $checking_all ||= q{};
     if ( $iamadmin
-        || ( $iamgmod && $gmod_access{'deletemultimembers'} eq 'on' ) )
+        || ( $iamgmod && $gmod_access{'deletemultimembers'} && $gmod_access{'deletemultimembers'} eq 'on' ) )
     {
         $sel_box = qq~
             <table class="bordercolor borderstyle border-space pad-cell" style="margin-bottom: .5em;">

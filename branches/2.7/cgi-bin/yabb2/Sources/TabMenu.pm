@@ -92,7 +92,7 @@ sub main_menu {
 ## DO NOT MOD THIS SECTION Mod tabs should be added using Add Tab ##
     $action = $INFO{'action'} || q{};
     my $tmpaction = q{};
-    if ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }    
+    if ( $INFO{'board'} || $INFO{'num'} ) { $tmpaction = q{}; }
     elsif ( $action && $iamadmin ) {
         if ( $action eq 'addtab' ) {
             require Sources::AdvancedTabs;
@@ -104,7 +104,7 @@ sub main_menu {
         }
     }
     elsif ( $action && !$INFO{'board'} && !$INFO{'num'} ) {
-         $tmpaction = $acting{$action} || $action;
+        $tmpaction = $acting{$action} || $action;
     }
     else { $tmpaction = 'home'; }
 
@@ -209,7 +209,7 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
         my @gsttabs = qw( home register help search );
 
         my $scriptperm = qq~$perm_domain/$symlink/~;
-        for my $gtab ( keys %tab ) {
+        foreach my $gtab ( keys %tab ) {
             for (@gsttabs) {
                 if ( $gtab eq $_ ) {
                     if ( $_ eq 'home' ) {
@@ -224,7 +224,7 @@ qq~$tabhtml_l"$scripturl?action=logout" title="$img_txt{'108'}">$img_txt{'108'}<
 
     # Advanced Tabs starts here
     my $tab_url = q{};
-    for my $i ( 0 .. $#advanced_tabs ) {
+    foreach my $i ( 0 .. $#advanced_tabs ) {
         if ( $advanced_tabs[$i] =~ /[|]/xsm ) {
             my (
                 $tab_key,    $tmptab_url, $isaction, $username_req,

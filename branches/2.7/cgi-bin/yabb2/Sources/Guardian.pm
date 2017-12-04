@@ -67,17 +67,17 @@ sub guard {
 
     my @white_list = split /[|]/xsm, $whitelist;
     my $whitelisted = 0;
-    for (@white_list) {
-        chomp;
+    foreach my $i (@white_list) {
+        chomp $i;
         if (
             (
-                   $proxy0 =~ m/$_/xsm
-                || $proxy1 =~ m/$_/xsm
-                || $proxy2 =~ m/$_/xsm
-                || $proxy3 =~ m/$_/xsm
-                || $username eq $_
+                   $proxy0 =~ m/$i/xsm
+                || $proxy1 =~ m/$i/xsm
+                || $proxy2 =~ m/$i/xsm
+                || $proxy3 =~ m/$i/xsm
+                || $username eq $i
             )
-            && $_ ne q{}
+            && $i ne q{}
           )
         {
             $whitelisted = 1;
@@ -146,9 +146,9 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
     if ($referer_on) {
         my @refererlist = split /[|]/xsm, lc $banned_referers;
         my $streferer = lc get_referer();
-        for (@refererlist) {
+        foreach my $i (@refererlist) {
             chomp;
-            if ( $streferer =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $streferer =~ m/$i/xsm && $i ne q{} ) {
                 load_language('Guardian');
                 $abuse_time = timeformat( $date, 1, 'rfc', 1 );
                 if ($referer_notify) {
@@ -191,9 +191,9 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
     if ($harvester_on) {
         my @harvesterlist = split /[|]/xsm, lc $banned_harvesters;
         my $agent = lc get_user_agent();
-        for (@harvesterlist) {
+        foreach my $i (@harvesterlist) {
             chomp;
-            if ( $agent =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $agent =~ m/$i/xsm && $i ne q{} ) {
                 if ($harvester_notify) {
                     load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
@@ -236,9 +236,9 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
     if ($request_on) {
         my @requestlist = split /[|]/xsm, lc $banned_requests;
         my $method = lc get_request_method();
-        for (@requestlist) {
+        foreach my $i (@requestlist) {
             chomp;
-            if ( $method =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $method =~ m/$i/xsm && $i ne q{} ) {
                 if ($request_notify) {
                     load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
@@ -282,14 +282,14 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
         require Sources::SubList;
         my $temp_query = lc $querystring;
         my @stringlist = split /[|]/xsm, lc $banned_strings;
-        for (@stringlist) {
+        foreach my $i (@stringlist) {
             chomp;
-            for my $testkey ( keys %director )
+            foreach my $testkey ( keys %director )
             { ## strip off all existing command strings from the temporary query ##
                 chomp $testkey;
                 $temp_query =~ s/$testkey//gxsm;
             }
-            if ( $temp_query =~ m/$_/xsm && $_ ne q{} ) {
+            if ( $temp_query =~ m/$i/xsm && $i ne q{} ) {
                 if ($string_notify) {
                     load_language('Guardian');
                     $abuse_time = timeformat( $date, 1, 'rfc', 1 );
@@ -309,7 +309,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
                         $not_body .=
                           qq~$guardian_txt{'htaccess_added'}: $user_ip,\n~;
                     }
-                    $not_body .= qq~$guardian_txt{'abuse_string'}: $_\n~;
+                    $not_body .= qq~$guardian_txt{'abuse_string'}: $i\n~;
                     $not_body .=
                       qq~$guardian_txt{'abuse_environment'}: $querystring\n\n~;
                     $not_body .= qq~$mbname, $guardian_txt{'main'}~;
@@ -325,7 +325,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
                 {
                     update_htaccess( 'add', $user_ip );
                 }
-                fatal_error( 'string_reason', "($_)" );
+                fatal_error( 'string_reason', "($i)" );
             }
         }
     }
@@ -692,7 +692,7 @@ sub update_htaccess {
     my ( $act, $value ) = @_;
     my ( @denies, @htout, @htlines );
     if ( !$act ) { return 0; }
-    if ( -e '.htaccess') {
+    if ( -e '.htaccess' ) {
         our ($HTA);
         fopen( 'HTA', '<', '.htaccess' ) or croak "$croak{'open'} .htaccess";
         @htlines = <$HTA>;
@@ -702,8 +702,8 @@ sub update_htaccess {
 # header to determine only who has access to the main script, not the admin script
     my $htheader = q~<Files YaBB*>~;
     my $htfooter = q~</Files>~;
-    my $start = 0;
-    for my $chk (@htlines) {
+    my $start    = 0;
+    foreach my $chk (@htlines) {
         chomp $chk;
         if ( $chk eq $htheader ) { $start = 1; }
         if ( $start == 0 && $chk !~ m/\x23/xsm && $chk ne q{} ) {
@@ -715,14 +715,14 @@ sub update_htaccess {
         }
     }
     if ( $use_htaccess && $act eq 'add' ) {
-        my $prhta =
-          '# Last modified by The Guardian: ' . ctbtime( $date, 1 ) . " #\n\n";
+        my $erdate = ctbtime();
+        my $prhta  = '# Last modified by The Guardian: ' . $erdate . " #\n\n";
         $prhta .= join q{}, @htout;
         if ($value) {
             $prhta .= "\n$htheader\n";
             push @denies, $value;
-            for (@denies) {
-                $prhta .= "Deny from $_\n";
+            foreach my $ln (@denies) {
+                $prhta .= "Deny from $ln\n";
             }
             $prhta .= "$htfooter\n";
         }
@@ -742,9 +742,9 @@ sub guardian_blck {
         update_htaccess( 'add', $block_ip );
 
         my $return = q{action=mycenter};
-        if ($INFO{'return'} && $INFO{'return'} !~ /\D/xsm ) {
-			$return = qq~num=$INFO{'return'}~;
-		}
+        if ( $INFO{'return'} && $INFO{'return'} !~ /\D/xsm ) {
+            $return = qq~num=$INFO{'return'}~;
+        }
         our $yysetlocation = qq~$scripturl?$return~;
         redirectexit();
     }

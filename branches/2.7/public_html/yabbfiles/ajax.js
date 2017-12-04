@@ -644,7 +644,7 @@ function LetterChange(text) {
 function SendLetter(letter) {
     GetXmlHttpObject();
     if (xmlHttp == null) { alert("AJAX not supported."); return; }
-    document.getElementById("load").src = imageurl + "/mozilla_blu.gif";
+    document.getElementById("load").src = imageurl + "/Rotate.gif";
     xmlHttp.onreadystatechange=Response;
     xmlHttp.open("GET", scripturl + "?action=qsearch2;letter=" + letter, true);
     xmlHttp.send(null);
@@ -652,7 +652,7 @@ function SendLetter(letter) {
 
 function Response() {
     if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete") {
-        document.getElementById("load").src = imageurl + "/mozilla_gray.gif";
+        document.getElementById("load").src = imageurl + "/Rotate.gif";
         var results = new Array();
         document.getElementById("response").innerHTML = xmlHttp.responseText;
         list[first] = new Array();

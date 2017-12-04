@@ -31,7 +31,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ##  languages ##
 our ( %admin_img, %admin_txt, %mod_list );
 ## other ##
-our ( $action_area, $yymain, $yytitle, $adminurl);
+our ( $action_area, $yymain, $yytitle, $adminurl );
 
 load_language('Admin');
 
@@ -78,7 +78,7 @@ sub list_mods {
 
     my $full_description = q{};
     my $mod_text_list    = q{};
-    for my $modification (@installed_mods) {
+    foreach my $modification (@installed_mods) {
         chomp $modification;
         my ( $mod_anchor, $mod_author, $mod_desc, $mod_version, $mod_date ) =
           split /[|]/xsm, $modification;

@@ -81,7 +81,9 @@ sub session_reval2 {
     $FORM{'cookieneverexp'} = 1;
     {
         no strict qw(refs);
-        if ( $FORM{'sesanswer'} eq q{} ) { fatal_error('no_secret_answer'); }
+        if ( !$FORM{'sesanswer'} || $FORM{'sesanswer'} eq q{} ) {
+            fatal_error('no_secret_answer');
+        }
 
         if (  !${ $uid . $username }{'sesquest'}
             || ${ $uid . $username }{'sesquest'} eq 'password' )
@@ -100,7 +102,7 @@ sub session_reval2 {
     }
     {
         no strict qw(refs);
-        if ( $answer ne $question ) {
+        if ( !$answer || !$question || $answer ne $question ) {
             update_cookie('delete');
 
             $username = 'Guest';

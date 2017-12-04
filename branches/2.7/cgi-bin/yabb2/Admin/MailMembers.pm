@@ -78,8 +78,8 @@ sub mailing {
                     </tr><tr>
                         <td>
 ~;
-    my $grpselect;
-    my $groupcnt = 0;
+    my $grpselect = q{};
+    my $groupcnt  = 0;
     foreach ( sort { $a cmp $b } keys %grp_staff ) {
         if ( $_ ne 'Moderator' ) {
             my ( $title, undef ) = @{ $grp_staff{$_} };
@@ -175,17 +175,17 @@ sub mailing {
 <div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:145px">
     ~;
         my $rname = q{};
-        if ( -e ("$vardir/maillist.dat") ) {
+        if ( -e "$vardir/maillist.dat" ) {
             our (%maillist);
-            require "$vardir/maillist.dat";
+            require 'Variables/maillist.dat';
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
             <colgroup>
                 <col span="4" style="width:auto" />
             </colgroup>
 ~;
-            foreach my $otime (reverse sort keys %maillist) {
-                my ( $osubject, $otext, $osender ) = @{$maillist{$otime}};
+            foreach my $otime ( reverse sort keys %maillist ) {
+                my ( $osubject, $otext, $osender ) = @{ $maillist{$otime} };
                 load_user($osender);
                 my $thetime = timeformat($otime);
 
@@ -272,7 +272,7 @@ sub mailing2 {
         $FORM{'emailtext'} =~ s/[|]/&\x23124;/gxsm;
         $FORM{'emailtext'} =~ s/\r//gxsm;
         $mailline =
-          qq~\$maillist{'$date'} = ['$FORM{'emailsubject'}', '$FORM{'emailtext'}', '$username'];~;
+qq~\$maillist{'$date'} = ['$FORM{'emailsubject'}', '$FORM{'emailtext'}', '$username'];~;
         $mailline =~ s/\r//gxsm;
         $mailline =~ s/\n/<br \/>/gxsm;
         require Admin::AdminSubs;
@@ -283,7 +283,7 @@ sub mailing2 {
     manage_memberinfo('load');
     my $i = 0;
     my ( $emailsubject, $emailtext );
-    for my $user ( keys %memberinf ) {
+    foreach my $user ( keys %memberinf ) {
         my ( $memrealname, $mememail, $memposition, $memposts, $memaddgrp ) =
           @{ $memberinf{$user} };
         $memrealname = from_html($memrealname);
@@ -298,10 +298,10 @@ sub mailing2 {
         }
 
         my $mailit = 0;
-        for my $element (@mailgroups) {
+        foreach my $element (@mailgroups) {
             chomp $element;
             if ( $element eq $memposition ) { $mailit = 1; }
-            for my $memberaddgroups ( split /,\s/xsm, $memaddgrp ) {
+            foreach my $memberaddgroups ( split /,\s/xsm, $memaddgrp ) {
                 chomp $memberaddgroups;
                 if ( $element eq $memberaddgroups ) { $mailit = 1; last; }
             }
@@ -346,7 +346,7 @@ sub mailing3 {
     fclose('FILE') or croak "$croak{'close'} yabbaddress";
     print qq~Content-disposition: inline; filename=yabbaddress.csv\n\n~
       or croak "$croak{'print'} yabbaddress";
-    for my $curadd (@addlist) {
+    foreach my $curadd (@addlist) {
         chomp $curadd;
         print qq~$curadd\n~ or croak "$croak{'print'} yabbaddress";
     }
@@ -414,7 +414,7 @@ sub mailing_members {
             if (   ( $FORM{'sortform'} && $FORM{'sortform'} eq 'position' )
                 || ( $INFO{'sort'} && $INFO{'sort'} eq 'position' ) )
             {
-                for my $key ( keys %grp_staff ) {
+                foreach my $key ( keys %grp_staff ) {
                     if ( $memposition eq $key ) {
                         if ( $key eq 'Administrator' ) {
                             $sortgroups = "aaa.$pstsort.$memberrealname";
@@ -480,7 +480,7 @@ qq~<input type="checkbox" name="member$actualnum" value="$user" class="windowbg"
                 ( $memberinfo, undef ) = @{ $grp_staff{'Mid Moderator'} };
             }
             else {
-                for my $key ( sort { $a <=> $b } keys %grp_nopost ) {
+                foreach my $key ( sort { $a <=> $b } keys %grp_nopost ) {
                     if ( $key eq $memberinfo ) {
                         ( $memberinfo, undef ) = @{ $grp_nopost{$key} };
                     }
@@ -607,9 +607,9 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
     </div>
     <div class="windowbg2 border" style="float: left; width: 50%; margin: 1%; overflow: auto; height:115px">
     ~;
-        if ( -e ("$vardir/maillist.dat") ) {
+        if ( -e "$vardir/maillist.dat" ) {
             our (%maillist);
-            require "$vardir/maillist.dat";
+            require 'Variables/maillist.dat';
             $yymain .= q~
         <table class="windowbg2 pad-cell" style="width: 98%">
             <colgroup>
@@ -617,8 +617,8 @@ qq~<a href="$scripturl?action=viewprofile;username=$cloakusername"><b>$memrealna
             </colgroup>
         ~;
             my $rname = q{};
-            foreach my $otime (reverse sort keys %maillist) {
-                my ( $osubject, $otext, $osender ) = @{$maillist{$otime}};
+            foreach my $otime ( reverse sort keys %maillist ) {
+                my ( $osubject, $otext, $osender ) = @{ $maillist{$otime} };
                 load_user($osender);
                 my $thetime = timeformat($otime);
 
@@ -734,23 +734,24 @@ function showMailmemb(thesubject, thetext, thetime) {
 }
 
 sub to_js {
-    $_[0] =~ s/;/&\x23059;/gxsm;
-    $_[0] =~ s/\!/&\x2333;/gxsm;
-    $_[0] =~ s/[(]/&\x2340;/gxsm;
-    $_[0] =~ s/[)]/&\x2341;/gxsm;
-    $_[0] =~ s/\-/&\x2345;/gxsm;
-    $_[0] =~ s/[.]/&\x2346;/gxsm;
-    $_[0] =~ s/\:/&\x2358;/gxsm;
-    $_[0] =~ s/[?]/&\x2363;/gxsm;
-    $_[0] =~ s/\[/&\x2391;/gxsm;
-    $_[0] =~ s/\\/&\x2392;&\x2392;/gxsm;
-    $_[0] =~ s/\]/&\x2393;/gxsm;
-    $_[0] =~ s/\^/&\x2394;/gxsm;
-    $_[0] =~ s/\x22/&\x2334;/gxsm;
-    $_[0] =~ s/\x27/&\x2396;/gxsm;
-    $_[0] =~ s/\</&\x2360;/gxsm;
-    $_[0] =~ s/\>/&\x2362;/gxsm;
-    return;
+    my @x = @_;
+    $x[0] =~ s/;/&\x23059;/gxsm;
+    $x[0] =~ s/\!/&\x2333;/gxsm;
+    $x[0] =~ s/[(]/&\x2340;/gxsm;
+    $x[0] =~ s/[)]/&\x2341;/gxsm;
+    $x[0] =~ s/\-/&\x2345;/gxsm;
+    $x[0] =~ s/[.]/&\x2346;/gxsm;
+    $x[0] =~ s/\:/&\x2358;/gxsm;
+    $x[0] =~ s/[?]/&\x2363;/gxsm;
+    $x[0] =~ s/\[/&\x2391;/gxsm;
+    $x[0] =~ s/\\/&\x2392;&\x2392;/gxsm;
+    $x[0] =~ s/\]/&\x2393;/gxsm;
+    $x[0] =~ s/\^/&\x2394;/gxsm;
+    $x[0] =~ s/\x22/&\x2334;/gxsm;
+    $x[0] =~ s/\x27/&\x2396;/gxsm;
+    $x[0] =~ s/\</&\x2360;/gxsm;
+    $x[0] =~ s/\>/&\x2362;/gxsm;
+    return $x[0];
 }
 
 1;

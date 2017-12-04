@@ -15,6 +15,7 @@
 use strict;
 no strict qw(refs);
 use warnings;
+no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);
 use utf8;
 use Encode qw(decode_utf8 encode_utf8);
@@ -33,7 +34,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## language ##
 our ( %croak, %pidtxt, %register_txt, %usersel_txt, @alpha );
 ## locations ##
-our ( $memberdir, $scripturl, $imagesdir );
+our ( $memberdir, $scripturl, $imagesdir, $htmldir, $defaultimagesdir, );
 ## settings ##
 our (
     $do_scramble_id, $matchcase,   $matchname,     $matchuser,
@@ -47,7 +48,7 @@ our (
     $iamguest,        $ml_index_left, $ml_index_left0, $ml_index_right,
     $ml_index_right0, $staff,         $uid,            $username,
     $yymain,          $yytitle,       $yytrace,        %FORM,
-    %INFO,            %memberinf,     %user_pm_level,
+    %INFO,            %memberinf,     %user_pm_level,  $useimages,
 );
 ## templates ##
 our (
@@ -75,6 +76,11 @@ my (
     $start,        $pageindex,    $pageindexjs, $instruct_start,
     $instruct_end, $recent_exist, @recent_users
 );
+
+my $imgdir = $imagesdir;
+    if ( !-e "$htmldir/Templates/Forum/$useimages/noimg.gif" ) {
+   $imgdir = $defaultimagesdir;
+}
 
 sub find_mem {
     if ( -e "$memberdir/$username.usctmp" ) {
@@ -128,29 +134,50 @@ sub member_list {
     $INFO{'sort'}   ||= q{};
     $INFO{'letter'} ||= q{};
     $start          ||= q{};
-    if ( $to_id =~ /toshow/sm ) {
-        $page_title     = $usersel_txt{'pmpagetitle'};
-        $instruct_start = $usersel_txt{'instruct'};
-        $instruct_end   = $usersel_txt{'reciepientlist'};
-        my $ccsel  = q{};
-        my $bccsel = q{};
-        my $tosel  = q{};
-        if    ( $to_id eq 'toshowcc' )  { $ccsel  = q~ checked="checked"~; }
-        elsif ( $to_id eq 'toshowbcc' ) { $bccsel = q~ checked="checked"~; }
-        else                            { $tosel  = q~ checked="checked"~; }
+    my %to_id = (
+        'moderators' => [
+            $usersel_txt{'modpagetitle'}, $usersel_txt{'instruct'},
+            $usersel_txt{'moderatorlist'}
+        ],
+        'ignore' => [
+            $usersel_txt{'ignorepagetitle'}, $usersel_txt{'instruct'},
+            $usersel_txt{'ignorelist'}
+        ],
+        'userspec' => [
+            $usersel_txt{'searchpagetitle'}, $usersel_txt{'instruct1'},
+            $usersel_txt{'searchlist'}
+        ],
+        'buddylist' => [
+            $usersel_txt{'buddypagetitle'}, $usersel_txt{'instruct'},
+            $usersel_txt{'buddylist'}
+        ],
+        'groups' => [
+            $usersel_txt{'grouppagetitle'}, $usersel_txt{'instruct'},
+            $usersel_txt{'groups'}
+        ],
+        'toshow' => [
+            $usersel_txt{'pmpagetitle'}, $usersel_txt{'instruct'},
+            $usersel_txt{'reciepientlist'}
+        ],
+    );
+
+    if ( $to_id =~ /toshow/xsm ) {
+        $page_title     = ${ $to_id{'toshow'} }[0];
+        $instruct_start = ${ $to_id{'toshow'} }[1];
+        $instruct_end   = ${ $to_id{'toshow'} }[2];
 
         if ( $pm_enable_cc || $pm_enable_bcc ) {
             $my_radio_to = qq~
-            <label for="toshow" class="small">$usersel_txt{'pmto'}</label><input type="radio" name="selreciepients" id="toshow" value="toshow" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshow;start=$start;letter=$INFO{'letter'}';"$tosel />
+            <label for="toshow" class="small">$usersel_txt{'pmto'}</label><input type="radio" name="selreciepients" id="toshow" value="toshow" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshow;start=$start;letter=$INFO{'letter'}';"${ischecked($to_id ne 'toshowcc' && $to_id ne 'toshowbcc')} />
             ~;
             if ($pm_enable_cc) {
                 $my_radio_cc = qq~
-                <label for="toshowcc" class="small">$usersel_txt{'pmcc'}</label><input type="radio" name="selreciepients" id="toshowcc" value="toshowcc" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowcc;start=$start;letter=$INFO{'letter'}';"$ccsel />
+                <label for="toshowcc" class="small">$usersel_txt{'pmcc'}</label><input type="radio" name="selreciepients" id="toshowcc" value="toshowcc" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowcc;start=$start;letter=$INFO{'letter'}';"${ischecked($to_id eq 'toshowcc')} />
                 ~;
             }
             if ($pm_enable_bcc) {
                 $my_radio_bcc = qq~
-                <label for="toshowpmbcc" class="small">$usersel_txt{'pmbcc'}</label><input type="radio" name="selreciepients" id="toshowpmbcc" value="toshowbcc" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowbcc;start=$start;letter=$INFO{'letter'}';"$bccsel />
+                <label for="toshowpmbcc" class="small">$usersel_txt{'pmbcc'}</label><input type="radio" name="selreciepients" id="toshowpmbcc" value="toshowbcc" class="windowbg" onclick="location.href='$scripturl?action=imlist;sort=$INFO{'sort'};toid=toshowbcc;start=$start;letter=$INFO{'letter'}';"${ischecked($to_id eq 'toshowbcc')} />
                 ~;
             }
             $radiobuttons = $my_bcc_radio;
@@ -159,35 +186,20 @@ sub member_list {
             $radiobuttons =~ s/\Q{yabb my_radio_bcc}\E/$my_radio_bcc/xsm;
         }
     }
-    if ( $to_id =~ /moderators\d/xsm ) {
-        $page_title     = qq~$usersel_txt{'modpagetitle'}~;
-        $instruct_start = qq~$usersel_txt{'instruct'}~;
-        $instruct_end   = qq~$usersel_txt{'moderatorlist'}~;
+
+    foreach my $key ( keys %to_id ) {
+        if ( $to_id =~ /$key/xsm && $to_id !~ /toshow/xsm ) {
+            $page_title     = ${ $to_id{$key} }[0];
+            $instruct_start = ${ $to_id{$key} }[1];
+            $instruct_end   = ${ $to_id{$key} }[2];
+            last;
+        }
     }
-    if ( $to_id =~ /ignore/sm ) {
-        $page_title     = qq~$usersel_txt{'ignorepagetitle'}~;
-        $instruct_start = qq~$usersel_txt{'instruct'}~;
-        $instruct_end   = qq~$usersel_txt{'ignorelist'}~;
-    }
-    if ( $to_id =~ /userspec/sm ) {
-        $page_title     = qq~$usersel_txt{'searchpagetitle'}~;
-        $instruct_start = qq~$usersel_txt{'instruct1'}~;
-        $instruct_end   = qq~$usersel_txt{'searchlist'}~;
-    }
-    if ( $to_id =~ /buddylist/sm ) {
-        $page_title     = qq~$usersel_txt{'buddypagetitle'}~;
-        $instruct_start = qq~$usersel_txt{'instruct'}~;
-        $instruct_end   = qq~$usersel_txt{'buddylist'}~;
-    }
-    if ( $to_id =~ /groups/sm ) {
-        $page_title     = qq~$usersel_txt{'grouppagetitle'}~;
-        $instruct_start = qq~$usersel_txt{'instruct'}~;
-        $instruct_end   = qq~$usersel_txt{'groups'}~;
-    }
+
     my $page     = q{};
     my $showpage = q{};
     $letterlinks = q{};
-    for my $x ( 0 .. $#alpha ) {
+    foreach my $x ( 0 .. $#alpha ) {
         $page     = lc $alpha[$x];
         $showpage = $alpha[$x];
         if ( $INFO{'letter'} && $page eq $INFO{'letter'} ) {
@@ -236,9 +248,9 @@ qq~<div class="letterlinks_d"><a href="$scripturl?action=imlist;sort=$INFO{'sort
         $recent_exist = 0;
         if ( $INFO{'sort'} eq 'recentpm' ) { $INFO{'sort'} = 'username'; }
     }
-    my ( $memrealname, $mememail, );
+    my ( $memrealname, $mememail );
     if ( $INFO{'sort'} eq 'recentpm' ) {
-        for my $recentname (@recent_users) {
+        foreach my $recentname (@recent_users) {
             if ( !${ $uid . $recentname }{'password'} ) {
                 load_user($recentname);
             }
@@ -250,15 +262,15 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
     }
     elsif ( $INFO{'sort'} eq 'pmsearch' ) {
         if ( !-e "$memberdir/$username.usctmp" ) {
-            manage_memberinfo('load');
+            require Variables::Memberinfo;
             my $prnusctmp = q{};
-            for my $membername (
-                sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
+            foreach my $membername (
+                sort { lc ${ $memberinf{$a} }[0] cmp lc ${ $memberinf{$b} }[0] }
                 keys %memberinf
               )
             {
-                $memrealname = $memberinf{$membername}[0];
-                $mememail    = $memberinf{$membername}[1];
+                $memrealname = ${ $memberinf{$membername} }[0];
+                $mememail    = ${ $memberinf{$membername} }[1];
                 ## do not find own name - unless for search or board mods!
                 if ( $to_id !~ /moderators\d/xsm && $to_id !~ /userspec/xsm ) {
                     if (
@@ -313,7 +325,7 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
 
     }
     elsif ( $INFO{'sort'} eq 'mlletter' || $INFO{'sort'} eq 'username' ) {
-        manage_memberinfo('load');
+        require Variables::Memberinfo;
     }
     if ( $INFO{'sort'} eq 'recentpm' ) {
         $sel_recent = q~class="windowbg recentpm"~;
@@ -341,8 +353,8 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
         )
       )
     {
-        for my $membername (
-            sort { lc $memberinf{$a}[0] cmp lc $memberinf{$b}[0] }
+        foreach my $membername (
+            sort { lc ${ $memberinf{$a} }[0] cmp lc ${ $memberinf{$b} }[0] }
             keys %memberinf
           )
         {
@@ -360,8 +372,8 @@ qq~${$uid.$recentname}{'realname'}|${$uid.$recentname}{'email'}~;
                     next if $user_pm_level{$membername} != 4;
                 }
             }
-            $memrealname = $memberinf{$membername}[0];
-            $mememail    = $memberinf{$membername}[1];
+            $memrealname = ${ $memberinf{$membername} }[0];
+            $mememail    = ${ $memberinf{$membername} }[1];
 
             $letter      = decode_utf8($letter);
             $memrealname = decode_utf8($memrealname);
@@ -579,7 +591,7 @@ qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$lett
                     $pagetxtindex =
 qq~<a href="$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter"><span class="small">1</span></a>&nbsp;~;
                 }
-                for my $counter ( $startpage .. ( $endpage - 1 ) ) {
+                foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
                     if ( $counter % $members_perpage == 0 ) {
                         $letter ||= q{};
                         $pagetxtindex .=
@@ -622,7 +634,7 @@ qq~<div class="decselector"><select size="1" name="decselector" id="decselector"
                     $indexpage,  $indexstart, $indexend,
                     $indxoption, $pagejsindex
                 );
-                for my $i ( 0 .. ( $indexpages - 1 ) ) {
+                foreach my $i ( 0 .. ( $indexpages - 1 ) ) {
                     $indexpage  = ( $i * $dropdisplaynum ) * $members_perpage;
                     $indexstart = ( $i * $dropdisplaynum ) + 1;
                     $indexend   = $indexstart + ( $dropdisplaynum - 1 );
@@ -654,25 +666,25 @@ q~<div id="ViewIndex" class="droppageindex pages" style="visibility: hidden; pad
                 my $prevpage = $start - $tmp_memberperpg;
                 my $nextpage = $start + $members_perpage;
                 my $pagedropindexpvbl =
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$imgdir/$ml_index_left0" height="14" width="13" alt="" />~;
                 my $pagedropindexnxbl =
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$imgdir/$ml_index_right0" height="14" width="13" alt="" />~;
                 my ( $pagedropindexpv, $pagedropindexnx );
                 if ( $start < $members_perpage ) {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left0" height="14" width="13" alt="" />~;
+qq~<img src="$imgdir/$ml_index_left0" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexpv .=
-qq~<img src="$imagesdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=0\\'" />~;
+qq~<img src="$imgdir/$ml_index_left" height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$prevpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=0\\'" />~;
                 }
                 if ( $nextpage > $lastptn ) {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right0" height="14" width="13" alt="" />~;
+qq~<img src="$imgdir/$ml_index_right0" height="14" width="13" alt="" />~;
                 }
                 else {
                     $pagedropindexnx .=
-qq~<img src="$imagesdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn\\'" />~;
+qq~<img src="$imgdir/$ml_index_right" height="14" width="13" alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" onclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$nextpage\\'" ondblclick="location.href=\\'$scripturl?action=imlist;sort=$INFO{'sort'};toid=$to_id;letter=$letter;start=$lastptn\\'" />~;
                 }
                 $pageindex = qq~$pagedropindex</div>~;
 
@@ -875,7 +887,7 @@ qq~<br />loadrecentpms from ($pack, $file, $line)<br />=========================
     }
     if ( !@usermessages ) { return; }
     @recent_users = ();
-    for my $usermessage (@usermessages) {
+    foreach my $usermessage (@usermessages) {
         ## split down to all strings of names
         my (
             $messid,      $from_name, $to_names, $tocc_names,
@@ -889,21 +901,21 @@ qq~<br />loadrecentpms from ($pack, $file, $line)<br />=========================
             push @recent_users, $from_name;
         }
         if ($to_names) {
-            for my $list_item ( split /,/xsm, $to_names ) {
+            foreach my $list_item ( split /,/xsm, $to_names ) {
                 if ( $list_item ne $username ) {
                     push @recent_users, $list_item;
                 }
             }
         }
         if ($tocc_names) {
-            for my $list_item ( split /,/xsm, $tocc_names ) {
+            foreach my $list_item ( split /,/xsm, $tocc_names ) {
                 if ( $list_item ne $username ) {
                     push @recent_users, $list_item;
                 }
             }
         }
         if ($tobcc_names) {
-            for my $list_item ( split /,/xsm, $tobcc_names ) {
+            foreach my $list_item ( split /,/xsm, $tobcc_names ) {
                 if ( $list_item ne $username ) {
                     push @recent_users, $list_item;
                 }
@@ -938,15 +950,15 @@ sub quick_search {
 
 sub doquicksearch {
     if ( !$iamadmin && !$iamgmod ) { fatal_error('no_access'); }
-    manage_memberinfo('load');
+    require Variables::Memberinfo;
     my @matches = ();
     my $match   = q{};
-    for my $membername (
-        sort { lc $memberinf{$a} cmp lc $memberinf{$b} }
+    foreach my $membername (
+        sort { lc ${ $memberinf{$a} }[0] cmp lc ${ $memberinf{$b} }[0] }
         keys %memberinf
       )
     {
-        my $realname = $memberinf{$membername}[0];
+        my $realname = ${ $memberinf{$membername} }[0];
         $realname = decode_utf8($realname);
         $letter   = decode_utf8( $INFO{'letter'} );
         if ( $letter =~ m/[^\w\x80-\xFF\[\]()#%+,\-|.:=?@\^]/gxsm ) {
@@ -1000,7 +1012,7 @@ sub checkuser_avail {
         }
 
         if ($matchname) {
-            for my $reserved (@reserve) {
+            foreach my $reserved (@reserve) {
                 chomp $reserved;
                 $reservecheck = $matchcase ? $reserved : lc $reserved;
                 if ($matchword) {
@@ -1029,7 +1041,7 @@ sub checkuser_avail {
             $taken = 'true';
         }
         if ($matchuser) {
-            for my $reserved (@reserve) {
+            foreach my $reserved (@reserve) {
                 chomp $reserved;
                 $reservecheck = $matchcase ? $reserved : lc $reserved;
                 if ($matchword) {
@@ -1050,15 +1062,15 @@ sub checkuser_avail {
 
     if ( $taken eq 'false' ) {
         $avail =
-qq~<img src="$imagesdir/check.png">&nbsp;&nbsp;<span style="color:#00dd00">$type$register_txt{'114'}</span>~;
+qq~<img src="$imgdir/check.png">&nbsp;&nbsp;<span style="color:#00dd00">$type$register_txt{'114'}</span>~;
     }
     elsif ( $taken eq 'true' ) {
         $avail =
-qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type$register_txt{'113'}</span>~;
+qq~<img src="$imgdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type$register_txt{'113'}</span>~;
     }
     else {
         $avail =
-qq~<img src="$imagesdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type$register_txt{'115'}</span>~;
+qq~<img src="$imgdir/cross.png">&nbsp;&nbsp;<span style="color:#dd0000">$type$register_txt{'115'}</span>~;
     }
 
     print

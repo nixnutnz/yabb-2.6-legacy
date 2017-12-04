@@ -61,7 +61,7 @@ sub error_log {
     my (@tmplist);
     my $date_ref = 0;
 
-    for my $i ( 0 .. $#errors ) {
+    foreach my $i ( 0 .. $#errors ) {
         my @tmp_array = split /[|]/xsm, $errors[$i];
         if (   $tmp_array[0] eq q{}
             || $tmp_array[0] =~ /\D/igxsm
@@ -510,12 +510,12 @@ sub er_update_htaccess {
         return @denies;
     }
     elsif ( $act eq 'save' ) {
-        my $prhta =
-          '# Last modified by YaBB: ' . ctbtime( $date, 1 ) . " #\n\n";
+        my $erdate = ctbtime();
+        my $prhta  = '# Last modified by YaBB: ' . $erdate . " #\n\n";
         $prhta .= join q{}, @htout;
         if (@values) {
             $prhta .= "\n$htheader\n";
-            for my $ln (@values) {
+            foreach my $ln (@values) {
                 if ($ln) {
                     chomp $ln;
                     $prhta .= "Deny from $ln\n";

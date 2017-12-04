@@ -492,7 +492,7 @@ $myprint = qq~<!DOCTYPE html>
 <table class="pad_10px" style="width:96%">
     <tr>
         <td class="center" style="font-family: arial, sans-serif; font-size: 10px;">
-            $yycopyright
+            {yabb copyright}
         </td>
     </tr>
 </table>

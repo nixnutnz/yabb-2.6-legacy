@@ -31,7 +31,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ##  languages ##
 our ( %admin_img, %admin_txt, %admintxt, %croak, %helptxt, %lngs, );
 ## paths ##
-our ( $adminurl, $helpfile, $langdir, $vardir );
+our ( $adminurl, $helpfile, $langdir );
 ## settings ##
 our ( $lang, $usehelp_perms, $yymycharset, );
 ## system ##
@@ -228,7 +228,7 @@ qq~<form action="$adminurl?action=helpsettings2" method="post" style="display: i
     my @lfilesanddirs = readdir HELPDIR;
     closedir HELPDIR;
 
-    for my $item ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+    foreach my $item ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
         if ( -d "$helpfile/$item"
             && $item =~ m{\A[\w#%\-:+?\$&~,@\/]+\Z}xsm )
         {
@@ -265,12 +265,12 @@ sub set_orderfile {
     my $neworder = $FORM{'order'};
     my @oldorder = split /\n/xsm, $oldorder;
     my @neworder = split /\n/xsm, $neworder;
-    for (@oldorder) {
-        s/[\r\n]//gxsm;
-        $verify_hash{$_}++;
+    foreach my $i (@oldorder) {
+        $i =~ s/[\r\n]//gxsm;
+        $verify_hash{$i}++;
     }
     my $theorder = q{};
-    for my $order (@neworder) {
+    foreach my $order (@neworder) {
         $order =~ s/[\r\n]//gxsm;
         if ( $order eq q{} ) { next; }
         if ( !exists $verify_hash{$order} ) { next; }
@@ -280,12 +280,12 @@ sub set_orderfile {
     my $prhlp = q{};
     {
         no strict qw(refs);
-        for (@helps) {
-            if ( $_ eq $help_area ) {
-                $prhlp .= qq~\@$_ = qw($theorder);\n~;
+        foreach my $i (@helps) {
+            if ( $i eq $help_area ) {
+                $prhlp .= qq~\@$i = qw($theorder);\n~;
             }
             else {
-                $prhlp .= qq~\@$_ = qw(@{$_});\n~;
+                $prhlp .= qq~\@$i = qw(@{$i});\n~;
             }
         }
     }
@@ -311,7 +311,7 @@ sub edithelp {
     opendir HELPDIR, "$helpfile/$help_language/Admin";
     my @contents = readdir HELPDIR;
     closedir HELPDIR;
-    for my $line ( sort { uc($a) cmp uc $b } @contents ) {
+    foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
         my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
         my $select = q{};
@@ -322,7 +322,7 @@ sub edithelp {
     }
     our ( @admin, @gmod, @moderator, @user );
     require qq~$helpfile/$help_language/HelpOrder.pm~;
-    for my $line (@admin) {
+    foreach my $line (@admin) {
         chomp $line;
         $adminlist .= "$line\n";
     }
@@ -332,7 +332,7 @@ sub edithelp {
     opendir HELPDIR, "$helpfile/$help_language/Gmod";
     @contents = readdir HELPDIR;
     closedir HELPDIR;
-    for my $line ( sort { uc($a) cmp uc $b } @contents ) {
+    foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
         my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
         my $select = q{};
@@ -341,7 +341,7 @@ sub edithelp {
         $gmod_lst  .= qq~$name\n~;
         $gmodcount++;
     }
-    for my $line (@gmod) {
+    foreach my $line (@gmod) {
         chomp $line;
         $gmodlist .= "$line\n";
     }
@@ -351,7 +351,7 @@ sub edithelp {
     opendir HELPDIR, "$helpfile/$help_language/Moderator";
     @contents = readdir HELPDIR;
     closedir HELPDIR;
-    for my $line ( sort { uc($a) cmp uc $b } @contents ) {
+    foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
         my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
         my $select = q{};
@@ -360,7 +360,7 @@ sub edithelp {
         $moderator_lst  .= qq~$name\n~;
         $modcount++;
     }
-    for my $line (@moderator) {
+    foreach my $line (@moderator) {
         chomp $line;
         $moderatorlist .= "$line\n";
     }
@@ -370,7 +370,7 @@ sub edithelp {
     opendir HELPDIR, "$helpfile/$help_language/User";
     @contents = readdir HELPDIR;
     closedir HELPDIR;
-    for my $line ( sort { uc($a) cmp uc $b } @contents ) {
+    foreach my $line ( sort { uc($a) cmp uc $b } @contents ) {
         my ( $name, $extension ) = split /[.]/xsm, $line;
         if ( $extension !~ /help/ism ) { next; }
         my $select = q{};
@@ -379,7 +379,7 @@ sub edithelp {
         $user_lst  .= qq~$name\n~;
         $usercount++;
     }
-    for my $line (@user) {
+    foreach my $line (@user) {
         chomp $line;
         $userlist .= qq~$line\n~;
     }

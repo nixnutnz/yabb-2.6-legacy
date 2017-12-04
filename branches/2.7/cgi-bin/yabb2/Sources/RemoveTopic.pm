@@ -56,7 +56,7 @@ sub remove_thread {
       or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
     my @buffer = <$BOARDFILE>;
     fclose('BOARDFILE') or croak "$croak{'close'} $currentboard.txt";
-    for my $i ( 0 .. $#buffer ) {
+    foreach my $i ( 0 .. $#buffer ) {
         if ( $buffer[$i] =~ m{\A$thread[|]}xsm ) {
             $threadline = $buffer[$i];
             $buffer[$i] = q{};
@@ -80,7 +80,9 @@ sub remove_thread {
             }
 
             boardtotals( 'load', $currentboard );
-            if ( ( split /[|]/xsm, $threadline )[8] && ( split /[|]/xsm, $threadline )[8] !~ /m/xsm ) {
+            if (   ( split /[|]/xsm, $threadline )[8]
+                && ( split /[|]/xsm, $threadline )[8] !~ /m/xsm )
+            {
                 ${ $uid . $currentboard }{'threadcount'}--;
                 ${ $uid . $currentboard }{'messagecount'} -=
                   @{ $thread_arrayref{$thread} };
@@ -194,56 +196,47 @@ sub multi {
 
     my $count = 1;
     while ( $mess_loop >= $count ) {
-        my ( $lock, $stick, $move, $delete, $ref, $hide );
+        my %getlock = (
+            'lock'   => 0,
+            'stick'  => 0,
+            'move'   => 0,
+            'delete' => 0,
+            'hide'   => 0,
+        );
 
         if ( !$FORM{'multiaction'} ) {
-            $lock   = $FORM{"lockadmin$count"};
-            $stick  = $FORM{"stickadmin$count"};
-            $move   = $FORM{"moveadmin$count"};
-            $delete = $FORM{"deleteadmin$count"};
-            $hide   = $FORM{"hideadmin$count"};
+            $getlock{'lock'}   = $FORM{"lockadmin$count"};
+            $getlock{'stick'}  = $FORM{"stickadmin$count"};
+            $getlock{'move'}   = $FORM{"moveadmin$count"};
+            $getlock{'delete'} = $FORM{"deleteadmin$count"};
+            $getlock{'$hide'}  = $FORM{"hideadmin$count"};
         }
-        elsif ( $FORM{'multiaction'} eq 'lock' ) {
-            $lock = $FORM{"admin$count"};
+        elsif ( $FORM{'multiaction'} =~ /[lock|stick|move|delete|hide]/xsm ) {
+            $getlock{ $FORM{'multiaction'} } = $FORM{"admin$count"};
         }
-        elsif ( $FORM{'multiaction'} eq 'stick' ) {
-            $stick = $FORM{"admin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'move' ) {
-            $move = $FORM{"admin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'delete' ) {
-            $delete = $FORM{"admin$count"};
-        }
-        elsif ( $FORM{'multiaction'} eq 'hide' ) {
-            $hide = $FORM{"admin$count"};
-        }
-
+        my $ref = qq~$scripturl?board=$currentboard~;
         if ( $FORM{'ref'} && $FORM{'ref'} eq 'favorites' ) {
             $ref = qq~$scripturl?action=favorites~;
         }
-        else {
-            $ref = qq~$scripturl?board=$currentboard~;
-        }
 
-        if ($lock) {
+        if ( $getlock{'lock'} ) {
             $INFO{'moveit'} = 1;
-            $INFO{'thread'} = $lock;
+            $INFO{'thread'} = $getlock{'lock'};
             $INFO{'action'} = 'lock';
             $INFO{'ref'}    = $ref;
             set_status();
         }
-        if ($stick) {
+        if ( $getlock{'stick'} ) {
             $INFO{'moveit'} = 1;
-            $INFO{'thread'} = $stick;
+            $INFO{'thread'} = $getlock{'stick'};
             $INFO{'action'} = 'sticky';
             $INFO{'ref'}    = $ref;
             set_status();
         }
-        if ($move) {
+        if ( $getlock{'move'} ) {
             $INFO{'moveit'}   = 1;
             $INFO{'board'}    = $currentboard;
-            $INFO{'thread'}   = $move;
+            $INFO{'thread'}   = $getlock{'move'};
             $INFO{'oldposts'} = 'all';
             $INFO{'leave'}    = 0;
             $INFO{'newinfo'} ||= $FORM{'newinfo'};
@@ -254,13 +247,14 @@ sub multi {
                 split_splice_2();
             }
         }
-        if ($hide) {
+        if ( $getlock{'hide'} ) {
             $INFO{'moveit'} = 1;
             $INFO{'action'} = 'hide';
-            $INFO{'thread'} = $hide;
+            $INFO{'thread'} = $getlock{'hide'};
             set_status();
         }
-        if ($delete) {
+        if ( $getlock{'delete'} ) {
+            my $delete = $getlock{'delete'};
             if ( !$currentboard ) {
                 message_totals( 'load', $delete );
                 $currentboard = ${$delete}{'board'};

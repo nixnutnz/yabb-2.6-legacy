@@ -43,54 +43,34 @@ our (
     $yyaext,           $yyexec,       $yyext,     $yysetlocation,
     %gmod_access,      %INFO,         %memberinf, %memberlist,
     %vars,             @allboards,    @chararray, %updatethread,
+    $yyadmin_alert,    @repliers,
 );
 ## our Mod Hook ##
-
-## local ##
-our ( $yyadmin_alert, %totals, @repliers, );
 
 sub boardtotals {
     my ( $job, @updateboards ) = @_;
     if ( !@updateboards ) { @updateboards = @allboards; }
     my (@boardvars);
-    if ($updateboards[0]) {
+    if ( $updateboards[0] ) {
+        no strict qw(refs);
         chomp @updateboards;
+        our %totals;
         require "$boardsdir/forum.totals";
         my @brd_tags =
           qw(threadcount messagecount lastposttime lastposter lastpostid lastreply lastsubject lasticon lasttopicstate);
         if ( $job eq 'load' ) {
-            {
-                no strict qw(refs);
-                for my $updateboard (@updateboards) {
-                    if ($updateboard) {
-                        @boardvars = @{ $totals{$updateboard} };
-                        for my $i ( 0 .. $#brd_tags ) {
-                            ${ $uid . $updateboard }{ $brd_tags[$i] } =
-                            $boardvars[$i];
-                        }
+            foreach my $updateboard (@updateboards) {
+                if ($updateboard) {
+                    @boardvars = @{ $totals{$updateboard} };
+                    foreach my $i ( 0 .. $#brd_tags ) {
+                        ${ $uid . $updateboard }{ $brd_tags[$i] } =
+                          $boardvars[$i];
                     }
                 }
             }
         }
         elsif ( $job eq 'update' ) {
-            {
-                no strict qw(refs);
-                for my $updateboard (@updateboards) {
-                    if ($totals{$updateboard}) {
-                        @boardvars = @{ $totals{$updateboard} };
-                        chomp @boardvars;
-                        for my $i ( 0 .. $#brd_tags ) {
-                            if (
-                                exists( ${ $uid . $updateboard }{ $brd_tags[$i] } )
-                            )
-                            {
-                            ${ $totals{$updateboard} }[$i] =
-                              ${ $uid . $updateboard }{ $brd_tags[$i] };
-                            }
-                        }
-                    }
-                }
-            }
+            do_updatebrds( \@updateboards, \%totals, \@brd_tags );
             write_forum_totals();
         }
         elsif ( $job eq 'delete' ) {
@@ -121,7 +101,7 @@ sub boardcount_totals {
     chomp @threads;
     my $threadcount  = @threads;
     my $messagecount = $threadcount;
-    for my $i ( 0 .. $#threads ) {
+    foreach my $i ( 0 .. $#threads ) {
         my @threadline = split /[|]/xsm, $threads[$i];
         if ( $threadline[8] && $threadline[8] =~ /m/xsm ) {
             $threadcount--;
@@ -157,7 +137,8 @@ sub board_setlast_info {
                 if ( -e "$datadir/$lastthreadid.txt" ) {
                     fopen( 'FILE', '<', "$datadir/$lastthreadid.txt" )
                       or
-                      fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt", 1 );
+                      fatal_error( 'cannot_open', "$datadir/$lastthreadid.txt",
+                        1 );
                     @lastthreadmessages = <$FILE>;
                     fclose('FILE') or croak "$croak{'close'} FILE";
                     @lastmessage = split /[|]/xsm, $lastthreadmessages[-1];
@@ -203,46 +184,19 @@ sub message_totals {
     my ( $job, $updatethread ) = @_;
     if ( !$updatethread ) { return; }
     chomp $updatethread;
-
-    if ( $job eq 'update' ) {
-        {
-            no strict qw(refs);
-            if ( !${$updatethread}{'board'} )
-            {    ## load if the variable is not already filled
-                message_totals( 'load', $updatethread );
-            }
+    my %job_list = (
+        'update'  => \&job_update,
+        'load'    => \&job_load,
+        'incview' => \&job_incview,
+        'incpost' => \&job_incpost,
+        'decpost' => \&job_decpost,
+    );
+    if ( $job && $job_list{$job} ) {
+        if ( $job eq 'load' ) {
+            @repliers = $job_list{$job}($updatethread);
         }
-    }
-    elsif ( $job eq 'load' ) {
-        {
-            no strict qw(refs);
-            if ( ${$updatethread}{'board'} ) {
-                return;
-            }    ## skip load if the variable is already filled
-            if ( -e "$datadir/$updatethread.ctb" ) {
-                require "$datadir/$updatethread.ctb";
-                @repliers = split /,/xsm, ${$updatethread}{'repliers'};
-            }
-        }
-        return;
-
-    }
-    elsif ( $job eq 'incview' ) {
-        {
-            no strict qw(refs);
-            ${$updatethread}{'views'}++;
-        }
-    }
-    elsif ( $job eq 'incpost' ) {
-        {
-            no strict qw(refs);
-            ${$updatethread}{'replies'}++;
-        }
-    }
-    elsif ( $job eq 'decpost' ) {
-        {
-            no strict qw(refs);
-            ${$updatethread}{'replies'}--;
+        else {
+            $job_list{$job}($updatethread);
         }
     }
     elsif ( $job eq 'recover' ) {
@@ -268,18 +222,21 @@ sub message_totals {
             our ($MSG);
             if ( -e "$datadir/$updatethread.txt" ) {
                 fopen( 'MSG', '<', "$datadir/$updatethread.txt" )
-                  or fatal_error( 'cannot_open', "$datadir/$updatethread.txt", 1 );
+                  or
+                  fatal_error( 'cannot_open', "$datadir/$updatethread.txt", 1 );
                 my @threaddata = <$MSG>;
                 fclose('MSG') or croak "$croak{'close'} MSG";
                 my @lastinfo = split /[|]/xsm, $threaddata[-1];
                 my $lastpostdate = sprintf '%010d', $lastinfo[3];
                 my $lastposter =
-                  $lastinfo[4] eq 'Guest' ? qq~Guest-$lastinfo[1]~ : $lastinfo[4];
+                  $lastinfo[4] eq 'Guest'
+                  ? qq~Guest-$lastinfo[1]~
+                  : $lastinfo[4];
 
-            # rewrite/create a correct thread.ctb
-                ${$updatethread}{'replies'}      = $#threaddata;
-                ${$updatethread}{'views'}        = ${$updatethread}{'views'} || 0;
-                ${$updatethread}{'lastposter'}   = $lastposter;
+                # rewrite/create a correct thread.ctb
+                ${$updatethread}{'replies'}    = $#threaddata;
+                ${$updatethread}{'views'}      = ${$updatethread}{'views'} || 0;
+                ${$updatethread}{'lastposter'} = $lastposter;
                 ${$updatethread}{'lastpostdate'} = $lastpostdate;
                 ${$updatethread}{'threadstatus'} = $threadstatus;
             }
@@ -308,14 +265,12 @@ sub message_totals {
 sub user_account {
     my ( $user, $action, $pars ) = @_;
     no warnings qw(uninitialized);
-    {
-        no strict qw(refs);
-        return if !${ $uid . $user }{'password'};
-    }
-    my ($userext);
-    if ( $action && $action eq 'update' ) {
-        {
-            no strict qw(refs);
+    no strict qw(refs);
+    return if !${ $uid . $user }{'password'};
+
+    my $userext = 'vars';
+    if ($action) {
+        if ( $action eq 'update' ) {
             if ($pars) {
                 for ( split /[+]/xsm, $pars ) { ${ $uid . $user }{$_} = $date; }
             }
@@ -330,25 +285,23 @@ sub user_account {
                 ${ $uid . $user }{'banned'} = '0|0';
             }
         }
-    }
-    elsif ( $action && $action eq 'preregister' ) {
-        $userext = 'pre';
-    }
-    elsif ( $action && $action eq 'register' ) {
-        $userext = 'vars';
-        no strict qw(refs);
-        if ( ${ $uid . $user }{'bday'}
-            && ( $show_event_birthdays || $birthday_list_show ) )
-        {
-            eventcalbday( $user, ${ $uid . $user }{'bday'}, 1 );
+        elsif ( $action eq 'preregister' ) {
+            $userext = 'pre';
+        }
+        elsif ( $action eq 'register' ) {
+            $userext = 'vars';
+            if ( ${ $uid . $user }{'bday'}
+                && ( $show_event_birthdays || $birthday_list_show ) )
+            {
+                eventcalbday( $user, ${ $uid . $user }{'bday'}, 1 );
+            }
+        }
+        elsif ( $action eq 'delete' ) {
+            unlink "$memberdir/$user.vars";
+            unlink "$memberdir/$user.lst";
+            return;
         }
     }
-    elsif ( $action && $action eq 'delete' ) {
-        unlink "$memberdir/$user.vars";
-        unlink "$memberdir/$user.lst";
-        return;
-    }
-    else { $userext = 'vars'; }
 
     # using sequential tag writing as hashes do not sort the way we like them to
     my @var_tags =
@@ -363,49 +316,24 @@ sub user_account {
     my $fix = 0;
     if ( -e "$memberdir/$user.$userext" ) {
         require "$memberdir/$user.$userext";
-        {
-            no strict qw(refs);
-            for my $i ( 0 .. $#var_tags ) {
-                if ( $vars{ $var_tags[$i] } ne
-                    ${ $uid . $user }{ $var_tags[$i] } )
-                {
-                    $fix = 1;
-                    last;
-                }
+        foreach my $i ( 0 .. $#var_tags ) {
+            if ( $vars{ $var_tags[$i] } ne ${ $uid . $user }{ $var_tags[$i] } )
+            {
+                $fix = 1;
+                last;
             }
         }
     }
     if ( $fix == 1 || !-e "$memberdir/$user.$userext" ) {
-        my $newvars = qq~### User variables for ID: $user ###\n\n%vars = (\n~;
-        {
-            no strict qw(refs);
-            for my $i ( 0 .. $#var_tags ) {
-                if ( ${ $uid . $user }{ $var_tags[$i] } ) {
-                    if ( $var_tags[$i] ne 'password' ) {
-                        ${ $uid . $user }{$var_tags[$i]} =~ s/~/\\~/gxsm;
-                    }
-                    $newvars .=
-qq~'$var_tags[$i]' => q\~${ $uid . $user }{$var_tags[$i]}\~,\n~;
-                }
-            }
-        }
-        $newvars .= qq~);\n\n1;\n~;
-        our ($UPDATEUSER);
-        fopen( 'UPDATEUSER', '>', "$memberdir/$user.$userext" )
-          or fatal_error( 'cannot_open', "$memberdir/$user.$userext", 1 );
-        print {$UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
-        fclose('UPDATEUSER') or croak "$croak{'close'} UPDATEUSER";
+        print_vars( $user, $userext, \@var_tags );
     }
-    {
-        no strict qw(refs);
-        ${ $uid . $user }{'lastonline'} ||= q{};
-        our ($UPDTUSER);
-        fopen( 'UPDTUSER', '>', "$memberdir/$user.lst" )
-          or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
-        print {$UPDTUSER} ${ $uid . $user }{'lastonline'}
-          or croak "$croak{'print'} UPDTUSER";
-        fclose('UPDTUSER') or croak "$croak{'close'} UPDTUSER";
-    }
+    ${ $uid . $user }{'lastonline'} ||= q{};
+    our ($UPDTUSER);
+    fopen( 'UPDTUSER', '>', "$memberdir/$user.lst" )
+      or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
+    print {$UPDTUSER} ${ $uid . $user }{'lastonline'}
+      or croak "$croak{'print'} UPDTUSER";
+    fclose('UPDTUSER') or croak "$croak{'close'} UPDTUSER";
     return;
 }
 
@@ -435,7 +363,7 @@ sub member_index {
         );
 
         our ($TTL);
-        fopen( 'TTL', '<', 'Variables/memttl.db' )
+        fopen( 'TTL', '<', "$vardir/memttl.db" )
           or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         my $buffer = <$TTL>;
         fclose('TTL') or croak "$croak{'close'} TTL";
@@ -443,7 +371,7 @@ sub member_index {
         my ( $membershiptotal, undef ) = split /[|]/xsm, $buffer;
         $membershiptotal++;
 
-        fopen( 'TTL', '>', 'Variables/memttl.db' )
+        fopen( 'TTL', '>', "$vardir/memttl.db" )
           or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
         print {$TTL} qq~$membershiptotal|$user~ or croak "$croak{'print'} TTL";
         fclose('TTL') or croak "$croak{'close'} TTL";
@@ -460,34 +388,7 @@ sub member_index {
     }
     elsif ( ( $memaction eq 'check_exist' || $memaction eq 'who_is' ) && $user )
     {
-        manage_memberinfo('load');
-        while ( my ( $curmemb, $value ) = each %memberinf ) {
-            my ( $curname, $curmail, $curposition, $curpostcnt ) = @{$value};
-            if ( $memaction eq 'check_exist' ) {
-                if ( lc $user eq lc $curmemb && (!$mychk || $mychk == 0) ) {
-                    undef %memberinf;
-                    $return = $curmemb;
-                }
-                elsif ( $curmail && lc $user eq lc $curmail && $mychk && $mychk == 2 ) {
-                    undef %memberinf;
-                    $return = $curmail;
-                }
-                elsif ( lc $user eq lc $curname && $mychk && $mychk == 1 ) {
-                    undef %memberinf;
-                    $return = $curname;
-                }
-            }
-            elsif (
-                $memaction eq 'who_is'
-                && (   lc $user eq lc $curmemb
-                    || lc $user eq lc $curmail
-                    || ( $screenlogin && lc $user eq lc $curname ) )
-              )
-            {
-                undef %memberinf;
-                $return = $curmemb;
-            }
-        }
+        $return = get_curmemb( $user, $memaction, $mychk );
     }
 
     return $return;
@@ -496,7 +397,7 @@ sub member_index {
 sub member_postgroup {
     my ($userpostcnt) = @_;
     my $grtitle = q{};
-    for my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
+    foreach my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
         if ( $userpostcnt >= $postamount ) {
             ( $grtitle, undef ) = @{ $grp_post{$postamount} };
             last;
@@ -518,7 +419,7 @@ sub membership_count_total {
     undef @nkey;
 
     our ($MEMTTL);
-    fopen( 'MEMTTL', '>', 'Variables/memttl.db' )
+    fopen( 'MEMTTL', '>', "$vardir/memttl.db" )
       or fatal_error( 'cannot_open', 'Variables/memttl.db', 1 );
     print {$MEMTTL} qq~$membertotal|$latestmember~
       or croak "$croak{'print'} MEMTTL";
@@ -592,7 +493,7 @@ sub activation_check {
     my ( $changed, $regtime, $regmember );
     my $timespan = $preregspan * 3600;
     our ($INACT);
-    fopen( 'INACT', '<', 'Variables/meminactive.db' )
+    fopen( 'INACT', '<', "$vardir/meminactive.db" )
       or croak "$croak{'open'} meminactive";
     my @actlist = <$INACT>;
     fclose('INACT') or croak "$croak{'close'} INACT";
@@ -624,7 +525,7 @@ sub activation_check {
 
         # re-open inactive list for update if changed
         my $prnout = join q{}, @outlist;
-        fopen( 'INACT', '>', 'Variables/meminactive.db', 1 )
+        fopen( 'INACT', '>', "$vardir/meminactive.db", 1 )
           or croak "$croak{'open'} INACT";
         print {$INACT} $prnout or croak "$croak{'print'} INACT";
         fclose('INACT') or croak "$croak{'close'} INACT";
@@ -638,7 +539,7 @@ sub arraysort {
 
     my ( $sortfield, $delimiter, $reverse, @in ) = @_;
     my ( @out, @sortkey, %newline, $n );
-    for my $oldline (@in) {
+    foreach my $oldline (@in) {
         my @sk = split /$delimiter/xsm, $oldline;
         $sk[$sortfield] =
           "$sk[$sortfield]-$n";  ## make sure that identical keys are avoided ##
@@ -666,7 +567,7 @@ sub keygen {
     @chararray =
       qw(0 1 2 3 4 5 6 7 8 9 a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
     my $randid;
-    for my $i ( 0 .. ( $length - 1 ) ) {
+    foreach my $i ( 0 .. ( $length - 1 ) ) {
         $randid .= $chararray[ int rand 61 ];
     }
     if    ( $type eq 'U' ) { return uc $randid; }
@@ -677,7 +578,7 @@ sub keygen {
 sub eventcalbday {
     my ( $bduser, $bday, $hideage ) = @_;
     our (%calbday);
-    if ( -e 'Variables/Eventcalbday.pm' ) {
+    if ( -e "$vardir/Eventcalbday.pm" ) {
         require Variables::Eventcalbday;
     }
     my ( $user_montha, $user_daya, $user_yeara ) = split /\//xsm, $bday;
@@ -701,7 +602,7 @@ qq~\$calbday{'$_'} = ['${$calbday{$_}}[0]', '${$calbday{$_}}[1]', '${$calbday{$_
     }
     $prnx .= qq~1;\n~;
     our ($FILE);
-    fopen( 'FILE', '>', 'Variables/Eventcalbday.pm' )
+    fopen( 'FILE', '>', "$vardir/Eventcalbday.pm" )
       or croak "$croak{'open'} birthday";
     print {$FILE} $prnx or croak "$croak{'print'} birthday";
     fclose('FILE') or croak "$croak{'close'} birthday";
@@ -767,6 +668,133 @@ sub rearrange_sticky {
     }
     $yysetlocation = qq~$scripturl?board=$currentboard;~;
     redirectexit();
+    return;
+}
+
+sub job_update {
+    my ($updatethread) = @_;
+    no strict qw(refs);
+    if ( !${$updatethread}{'board'} )
+    {    ## load if the variable is not already filled
+        message_totals( 'load', $updatethread );
+    }
+    return;
+}
+
+sub job_load {
+    my ($updatethread) = @_;
+    no strict qw(refs);
+    if ( ${$updatethread}{'board'} ) {
+        return;
+    }    ## skip load if the variable is already filled
+    if ( -e "$datadir/$updatethread.ctb" ) {
+        require "$datadir/$updatethread.ctb";
+        @repliers = split /,/xsm, ${$updatethread}{'repliers'};
+        return @repliers;
+    }
+    return;
+}
+
+sub job_incview {
+    my ($updatethread) = @_;
+    no strict qw(refs);
+    ${$updatethread}{'views'}++;
+    return;
+}
+
+sub job_incpost {
+    my ($updatethread) = @_;
+    no strict qw(refs);
+    ${$updatethread}{'replies'}++;
+    return;
+}
+
+sub job_decpost {
+    my ($updatethread) = @_;
+    no strict qw(refs);
+    ${$updatethread}{'replies'}--;
+    return;
+}
+
+sub do_updatebrds {
+    my ( $updateboards, $totals, $brd_tags ) = @_;
+    my @updateboards = @{$updateboards};
+    my %totals       = %{$totals};
+    my @brd_tags     = @{$brd_tags};
+    no strict qw(refs);
+    foreach my $updateboard (@updateboards) {
+        if ( $totals{$updateboard} ) {
+            my @boardvars = @{ $totals{$updateboard} };
+            chomp @boardvars;
+            foreach my $i ( 0 .. $#brd_tags ) {
+                if ( exists( ${ $uid . $updateboard }{ $brd_tags[$i] } ) ) {
+                    ${ $totals{$updateboard} }[$i] =
+                      ${ $uid . $updateboard }{ $brd_tags[$i] };
+                }
+            }
+        }
+    }
+    return;
+}
+
+sub get_curmemb {
+    my ( $usr, $memaction, $mychk ) = @_;
+    my $return = q{};
+    manage_memberinfo('load');
+    while ( my ( $curmemb, $value ) = each %memberinf ) {
+        my ( $curname, $curmail, $curposition, $curpostcnt ) = @{$value};
+        if ( $memaction eq 'check_exist' ) {
+            if ( lc $usr eq lc $curmemb && ( !$mychk || $mychk == 0 ) ) {
+                undef %memberinf;
+                $return = $curmemb;
+            }
+            elsif ($curmail
+                && lc $usr eq lc $curmail
+                && $mychk
+                && $mychk == 2 )
+            {
+                undef %memberinf;
+                $return = $curmail;
+            }
+            elsif ( lc $usr eq lc $curname && $mychk && $mychk == 1 ) {
+                undef %memberinf;
+                $return = $curname;
+            }
+        }
+        elsif (
+            $memaction eq 'who_is'
+            && (   ( $curmemb && lc $usr eq lc $curmemb )
+                || ( $curmail && lc $usr eq lc $curmail )
+                || ( $screenlogin && lc $usr eq lc $curname ) )
+          )
+        {
+            undef %memberinf;
+            $return = $curmemb;
+        }
+    }
+    return $return;
+}
+
+sub print_vars {
+    my ( $usr, $userext, $var_tags ) = @_;
+    my @var_tags = @{$var_tags};
+    no strict qw(refs);
+    my $newvars = qq~### User variables for ID: $usr ###\n\n%vars = (\n~;
+    foreach my $i ( 0 .. $#var_tags ) {
+        if ( ${ $uid . $usr }{ $var_tags[$i] } ) {
+            if ( $var_tags[$i] ne 'password' ) {
+                ${ $uid . $usr }{ $var_tags[$i] } =~ s/~/\\~/gxsm;
+            }
+            $newvars .=
+              qq~'$var_tags[$i]' => q\~${ $uid . $usr }{$var_tags[$i]}\~,\n~;
+        }
+    }
+    $newvars .= qq~);\n\n1;\n~;
+    our ($UPDATEUSER);
+    fopen( 'UPDATEUSER', '>', "$memberdir/$usr.$userext" )
+      or fatal_error( 'cannot_open', "$memberdir/$usr.$userext", 1 );
+    print {$UPDATEUSER} $newvars or croak "$croak{'print'} UPDATEUSER";
+    fclose('UPDATEUSER') or croak "$croak{'close'} UPDATEUSER";
     return;
 }
 

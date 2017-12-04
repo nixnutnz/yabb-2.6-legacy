@@ -1191,7 +1191,7 @@ Thanks for using YaBB!~,
 );
 
 %gztxt = (
-'1' => q~Use Output Compression?<br /><span class="small">Output Compression reduces the bandwidth used in communicating with a user's browser.<br />Option(s) are only available if the server supports them. You can set the path to your server's gzip utility in <a href="{yabb adminurl}?action=backupsettings">Backup Utility</a></span>~,
+'1' => q~Use Output Compression?<br /><span class="small">Output Compression reduces the bandwidth used in communicating with a user's browser.<br />Option(s) are only available if the server supports them. You can set the path to your server's gzip utility in <a href="{yabb adminurl}?action=backup">Backup Utility</a></span>~,
 '2' => q~Send Output always compressed?<br /><span class="small">Checked = YaBB does not check if the browser supports Compression, and always compresses output. ** This could render your forum unusable for older browsers. **<br />Not Checked = YaBB checks if browser supports Compression and uses Compression (if selected above) only when supported by the browser.</span>~,
 '3' => q~No Output Compression~,
 '4' => q~Compression with external GZip Program~,

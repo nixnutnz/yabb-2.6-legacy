@@ -28,24 +28,23 @@ our $VERSION = '2.7.00';
 our $convert1xplver = 'YaBB 2.7.00 $Revision$';
 our $yabbversion    = 'YaBB 2.7.00';
 our (
-    %INFO,                %FORM,            $action,
-    $yymain,              $yytabmenu,       $yyim,
-    $iamadmin,            $iamgmod,         $iamguest,
-    $username,            $password,        $yyuname,
-    $yysetlocation,       $yytitle,         $mbname,
-    $uid,                 %maintxt,
-    $useimages,           $yymenu,          $yyposition,
-    $yyimages,            $yydefaultimages, $defaultimagesdir,
-    $yystyle,             $usestyle,        $usehead,
-    $yytemplate,          $yyboardname,     $yytime,
-    $yycopyin,            $webmaster_email,
-    $timeselected,        $cookietsort,     $enable_notifications,
-    $enable_notification, $gmodview,        $mdglobal,
-    @allboards,
-    %board,               %fixed_users,     %cat,
-    %catinfo,             %grp_staff,       %grp_post,
-    %grp_nopost,          %control,         %memberlist,
-    %memberinf,           @memlist,         $forumstart
+    %INFO,                 %FORM,                $action,
+    $yymain,               $yytabmenu,           $yyim,
+    $iamadmin,             $iamgmod,             $iamguest,
+    $username,             $password,            $yyuname,
+    $yysetlocation,        $yytitle,             $mbname,
+    $uid,                  %maintxt,             $useimages,
+    $yymenu,               $yyposition,          $yyimages,
+    $yydefaultimages,      $defaultimagesdir,    $yystyle,
+    $usestyle,             $usehead,             $yytemplate,
+    $yyboardname,          $yytime,              $yycopyin,
+    $webmaster_email,      $timeselected,        $cookietsort,
+    $enable_notifications, $enable_notification, $gmodview,
+    $mdglobal,             @allboards,           %board,
+    %fixed_users,          %cat,                 %catinfo,
+    %grp_staff,            %grp_post,            %grp_nopost,
+    %control,              %memberlist,          %memberinf,
+    @memlist,              $forumstart
 );
 
 our (
@@ -58,8 +57,7 @@ our (
 my (
     $navlink1,  $navlink2,  $navlink3,  $navlink4,  $navlink5,
     $navlink6,  $navlink1a, $navlink2a, $navlink3a, $navlink4a,
-    $navlink5a, $navlink6a, $intro,     $brdfix,    $memfix,
-    $convdone,  $convnotdone
+    $navlink5a, $navlink6a, $intro,     $convdone,  $convnotdone
 );
 
 our (
@@ -137,9 +135,9 @@ my $convtext       = q{};
 my $convset        = q{};
 my $convseta       = q{};
 my $forumstarttext = q{};
+my $maintext_23    = $conv1x_txt{'maintext_23'};
+my $tmpdir         = qq~$htmldir/tmp~;
 our $formsession = q{};
-my $maintext_23 = $conv1x_txt{'maintext_23'};
-my $tmpdir = qq~$htmldir/tmp~;
 
 #############################################
 # Conversion starts here                    #
@@ -148,21 +146,21 @@ my $px = 'px';
 
 if ( -e 'Variables/Setup.lock' ) {
     if ( -e 'Variables/Convert.lock' || -e 'Variables/ConvertLang.lock' ) {
-         foundconvlock();
+        foundconvlock();
 
         my %fixed_users = ();
         if ( -e "$tmpdir/fixusers.txt" ) {
             open '<', my $FIXUSER, "$tmpdir/fixusers.txt"
-            or setup_fatal_error( "$maintext_23 $tmpdir/fixusers.txt: ", 1 );
+              or setup_fatal_error( "$maintext_23 $tmpdir/fixusers.txt: ", 1 );
             my @fixed = <$FIXUSER>;
             close $FIXUSER or croak 'cannot close fixusers.txt';
-            for (@fixed) {
+            foreach my $i (@fixed) {
                 my ( $user, $fixedname, undef, $displayedname, undef ) =
-                split /[|]/xsm, $_;
+                  split /[|]/xsm, $i;
                 @{ $fixed_users{$user} } = ( $fixedname, $displayedname );
             }
-         }
-     }
+        }
+    }
 
     tempstarter();
     tabmenushow();
@@ -265,7 +263,7 @@ INTRO
         $convdatadir   = $FORM{'convdatadir'}   || qq~$convertdir/Messages~;
         $convvardir    = $FORM{'convvardir'}    || qq~$convertdir/Variables~;
         $convattachdir = $FORM{'convattachdir'} || q{};
-        $myuselang       = $FORM{'mylang'}          || q{};
+        $myuselang     = $FORM{'mylang'}        || q{};
 
         if ( !-d $convboardsdir ) {
             setup_fatal_error( "Directory: $convboardsdir", 1 );
@@ -467,15 +465,14 @@ MEMBERS1
 
         if ( -e "$tmpdir/fixusers.txt" ) {
             open my $FIXUSER, '<', "$tmpdir/fixusers.txt"
-              || setup_fatal_error( "$maintext_23 $tmpdir/fixusers.txt: ",
-                1 );
+              || setup_fatal_error( "$maintext_23 $tmpdir/fixusers.txt: ", 1 );
             my @fixed = <$FIXUSER>;
             close $FIXUSER or croak 'cannot close FIXUSER';
             chomp @fixed;
-            for my $set (@fixed) {
+            foreach my $set (@fixed) {
                 $set =~ s/[\r\n]//gxsm;
             }
-            $yymain .= q~
+            $yymain .= qq~
     <br />
     <div class="bordercolor borderbox" style="margin-top:.5em">
     <table class="cs_thin pad_4px">
@@ -489,7 +486,7 @@ MEMBERS1
             <td class="catbg center">$conv1x_txt{'illmem6'}</td>
         </tr>~;
 
-            for my $userfixed (@fixed) {
+            foreach my $userfixed (@fixed) {
                 my ( $inname, $fxname, $rgdate, $dspname, $tmail ) =
                   split /[|]/xsm, $userfixed;
                 $yymain .= qq~<tr>
@@ -672,7 +669,7 @@ $conv1x_txt{'3brds'}
         $yytabmenu =
           $navlink1 . $navlink2 . $navlink3 . $navlink4 . $navlink5 . $navlink6;
 
-        my $bwidth = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
+        my $bwidth   = int( $INFO{'bstart'} / $INFO{'btotal'} * 100 );
         my $starttme = $time_to_jump - $INFO{'starttime'};
         my $took     = int( ( $INFO{'st'} + 60 ) / 60 );
 
@@ -1056,9 +1053,9 @@ $conv1x_txt{'4date'}
         getlang($myuselang);
 
         if ($convlang) {
-            $vardir = "$boarddir/ConvertLang/Variables";
+            $vardir    = "$boarddir/ConvertLang/Variables";
             $boardsdir = "$boarddir/ConvertLang/Boards";
-            $datadir = "$boarddir/ConvertLang/Messages";
+            $datadir   = "$boarddir/ConvertLang/Messages";
         }
         require "$boardsdir/forum.master";
 
@@ -1095,18 +1092,15 @@ $conv1x_txt{'4date'}
                 'xx', 'x'
             ];
             write_forum_totals();
-
+            my $initmail = 'webmaster@mysite.com';
+            my $first =
+qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$initmail|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~;
             open my $FIRSTMS, '>', "$datadir/$firstmstime.txt"
               or croak 'cannot open FIRSTMS';
-            my $initmail = 'webmaster@mysite.com';
-            print {$FIRSTMS}
-qq~Welcome to your New YaBB 2.7.00 Forum!|Administrator|$initmail|$firstmstime|admin|xx|0|127.0.0.1|Welcome to your new YaBB 2.7.00 forum.<br /><br />The YaBB team would like to thank you for choosing Yet another Bulletin Board for your forum needs. We pride ourselves on the cost (FREE), the features, and the security. Visit http://www.yabbforum.com to view the latest development information, read YaBB news, and participate in community discussions.<br /><br />Make sure you login to your new forum as an administrator and visit the Admin Center. From there, you can maintain your forum. You'll want to look at all of the settings, membergroups, categories/boards, and security options to make sure they are set properly according to your needs.||||\n~
-              or croak 'cannot print FIRSTMS';
+            print {$FIRSTMS} $first or croak 'cannot print FIRSTMS';
             close $FIRSTMS or croak 'cannot close FIRSTMS';
-            my $msgdat = ctbtime($firstmstime);
-            open my $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
-              or croak 'cannot open FIRSTMSC';
-            print {$FIRSTMSC}
+            my $msgdat = ctbtime();
+            my $firstctb =
 qq~### ThreadID: $firstmstime, LastModified: $msgdat  ### \n\n%$firstmstime = (\n
 'board' => "general",
 'replies' => "0",
@@ -1115,13 +1109,16 @@ qq~### ThreadID: $firstmstime, LastModified: $msgdat  ### \n\n%$firstmstime = (\
 'lastpostdate' => "$firstmstime",
 'threadstatus' => "x",
 'repliers' => "$firstmstime|admin|0",
-);\n\n1;\n~ or croak 'cannot print FIRSTMSC';
+);\n\n1;\n~;
+            open my $FIRSTMSC, '>', "$datadir/$firstmstime.ctb"
+              or croak 'cannot open FIRSTMSC';
+            print {$FIRSTMSC} $firstctb or croak 'cannot print FIRSTMSC';
             close $FIRSTMSC or croak 'cannot close FIRSTMSC';
+            my $firstbrd =
+qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$initmail|$firstmstime|0|admin|xx|x\n~;
             open my $FIRSTBRD, '>>', "$boardsdir/general.txt"
               or croak 'cannot open FIRSTBRD';
-            print {$FIRSTBRD}
-qq~$firstmstime|Welcome to your New YaBB 2.7 Forum!|Administrator|$initmail|$firstmstime|0|admin|xx|x\n~
-              or croak 'cannot print FIRSTBRD';
+            print {$FIRSTBRD} $firstbrd or croak 'cannot print FIRSTBRD';
             close $FIRSTBRD or croak 'cannot close FIRSTBRD';
 
             $yysetlocation =
@@ -1366,7 +1363,7 @@ $convset
             setTimeout("membtick()",2000);
       </script>
 ~;
-    $yymain =~ s/\Q{max_process_time}\E/$max_process_time/gxsm;
+        $yymain =~ s/\Q{max_process_time}\E/$max_process_time/gxsm;
     }
     $yyim    = $conv1x_txt{'yyim'};
     $yytitle = $conv1x_txt{'title'};
@@ -1432,11 +1429,11 @@ sub convertmembers1 {
     }
     open my $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt: ", 1 );
-    my @memlist = <$MEMDIR>;
+    @memlist = <$MEMDIR>;
     close $MEMDIR or croak 'cannot close MEMDIR';
     chomp @memlist;
 
-    for my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) {
+    foreach my $i ( ( $INFO{'mstart1'} || 0 ) .. $#memlist ) {
         my $uname = $memlist[$i];
         chomp $uname;
 
@@ -1470,9 +1467,9 @@ sub convertmembers1 {
           || setup_fatal_error( "$maintext_23 $vardir/fixusers.txt: ", 1 );
         my @fixed = <$FIXUSER>;
         close $FIXUSER or croak 'cannot close FIXUSER';
-        foreach (@fixed) {
+        foreach my $i (@fixed) {
             my ( $user, $fixedname, undef, $displayedname, undef ) =
-              split /[|]/xsm, $_;
+              split /[|]/xsm, $i;
             @{ $fixed_users{$user} } = ( $fixedname, $displayedname );
         }
     }
@@ -1495,7 +1492,7 @@ sub illegaluser {
     my @settings = <$LOADOLDUSER>;
     close $LOADOLDUSER or croak 'cannot close LOADOLDUSER';
     chomp @settings;
-    for my $set (@settings) {
+    foreach my $set (@settings) {
         $set = s/[\r\n]//gxsm;
     }
     chomp @settings;
@@ -1610,11 +1607,11 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
     );
     if ( -e "$convmemberdir/$fixeduser.ext" ) {
         open my $EXT_FILE, '<', "$convmemberdir/$fixeduser.ext"
-          || setup_fatal_error( "cannot open $convmemberdir/$fixeduser.ext: ",
-            1 );
+          or
+          setup_fatal_error( "cannot open $convmemberdir/$fixeduser.ext: ", 1 );
         my @ext_profile = <$EXT_FILE>;
-        close $EXT_FILE;
-        for my $set (@ext_profile) {
+        close $EXT_FILE or croak "cannot close $convmemberdir/$fixeduser.ext";
+        foreach my $set (@ext_profile) {
             $set =~ s/[\r\n]//gxsm;
         }
         chomp @ext_profile;
@@ -1644,7 +1641,7 @@ sub myupdateuser {
       || setup_fatal_error( "$maintext_23 $convmemberdir/$user.dat: ", 1 );
     my @settings = <$LOADOLDUSER>;
     close $LOADOLDUSER or croak 'cannot close LOADUSER';
-    for my $set (@settings) {
+    foreach my $set (@settings) {
         $set =~ s/[\r\n]//gxsm;
     }
     chomp @settings;
@@ -1717,43 +1714,43 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
     shift @location;
 
     %{ $uid . $user } = (
-        'password' => "$settings[0]",
-        'realname' => "$settings[1]",
-        'email'    => "$settings[2]",
-        'webtitle' => "$settings[3]",
+        'password' => $settings[0],
+        'realname' => $settings[1],
+        'email'    => $settings[2],
+        'webtitle' => $settings[3],
         'weburl'   => (
             ( $settings[4] && $settings[4] !~ m{\Ahttps?://}xsm )
             ? 'http://'
             : q{}
           )
           . $settings[4],
-        'signature'     => "$settings[5]",
-        'postcount'     => "$settings[6]",
-        'position'      => "$settings[7]",
-        'icq'           => "$settings[8]",
-        'aim'           => "$settings[9]",
-        'yim'           => "$settings[10]",
-        'gender'        => "$settings[11]",
-        'usertext'      => "$settings[12]",
-        'userpic'       => "$settings[13]",
-        'regdate'       => "$settings[14]",
-        'regtime'       => "$regitime",
+        'signature'     => $settings[5],
+        'postcount'     => $settings[6],
+        'position'      => $settings[7],
+        'icq'           => $settings[8],
+        'aim'           => $settings[9],
+        'yim'           => $settings[10],
+        'gender'        => $settings[11],
+        'usertext'      => $settings[12],
+        'userpic'       => $settings[13],
+        'regdate'       => $settings[14],
+        'regtime'       => $regitime,
         'location'      => join( ', ', grep { $_ } @location ),
-        'bday'          => "$settings[16]",
-        'timeselect'    => "$settings[17]",
+        'bday'          => $settings[16],
+        'timeselect'    => $settings[17],
         'user_tz'       => 'UTC',
         'hidemail'      => ( $settings[19] ? 1 : 0 ),
-        'gtalk'         => "$settings[32]",
-        'template'      => "$new_template",
-        'language'      => "$language",
-        'lastonline'    => "$lastonline",
-        'lastpost'      => "$lastpost",
-        'lastim'        => "$lastim",
-        'im_ignorelist' => "$pmignorelist",
-        'notify_me'     => "$pmnotify",
+        'gtalk'         => $settings[32],
+        'template'      => $new_template,
+        'language'      => $language,
+        'lastonline'    => $lastonline,
+        'lastpost'      => $lastpost,
+        'lastim'        => $lastim,
+        'im_ignorelist' => $pmignorelist,
+        'notify_me'     => $pmnotify,
         'im_popup'      => ( $pmpopup ? 1 : 0 ),
         'im_imspop'     => ( $pmspop ? 1 : 0 ),
-        'cathide'       => "$settings[30]",
+        'cathide'       => $settings[30],
         'postlayout'    => "$settings[31]|0",
         'pageindex'     => '1|1|1',
         'lastips'       => "$c_ip_one|$c_ip_two|$c_ip_three",
@@ -1762,7 +1759,7 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
         open my $EXT_FILE, '<', "$convmemberdir/$user.ext"
           || setup_fatal_error( "$maintext_23 $convmemberdir/$user.ext: ", 1 );
         my @ext_profile = <$EXT_FILE>;
-        close $EXT_FILE;
+        close $EXT_FILE or croak "cannot close $convmemberdir/$user.ext";
         chomp @ext_profile;
         foreach my $i ( 0 .. $#ext_profile ) {
             ${ $uid . $user }{ 'ext_' . $i } = $ext_profile[$i];
@@ -1773,11 +1770,11 @@ s/\[size=([+-]?\d)\](.*?)\[\/size\]/ '\[size=' . conv_size($1) . "\]$2\[\/size\]
         open my $OUT_FILE, '<', "$convmemberdir/$user.outbox"
           || setup_fatal_error( "$maintext_23 $convmemberdir/$user.ext: ", 1 );
         my @outbox = <$OUT_FILE>;
-        close $OUT_FILE;
+        close $OUT_FILE or croak 'cannot close outbox';
         chomp @outbox;
-        foreach (@outbox) {
-            ( undef, undef, $lastim ) = split /[|]/xsm, $_;
-            my $lastim =~
+        foreach my $i (@outbox) {
+            ( undef, undef, $lastim ) = split /[|]/xsm, $i;
+            $lastim =~
 s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eixsm;
             push @lastim, $lastim;
         }
@@ -1823,17 +1820,17 @@ sub groupconvert {
         }
         $i++;
     }
-    for my $key ( keys %grp_staff ) {
+    foreach my $key ( keys %grp_staff ) {
         my $value = $grp_staff{$key};
         $value =~ s/\x27/&\x2339;/gxsm;
         $grp_staff{$key} = $value;
     }
-    for my $key ( keys %grp_nopost ) {
+    foreach my $key ( keys %grp_nopost ) {
         my $value = $grp_nopost{$key};
         $value =~ s/\x27/&\x2339;/gxsm;
         $grp_nopost{$key} = $value;
     }
-    for my $key ( keys %grp_post ) {
+    foreach my $key ( keys %grp_post ) {
         my $value = $grp_post{$key};
         $value =~ s/\x27/&\x2339;/gxsm;
         $grp_post{$key} = $value;
@@ -1849,7 +1846,7 @@ sub memgrpconvert {
       || setup_fatal_error( "$maintext_23 $convvardir/membergroups.txt: ", 1 );
     my @memgrp = <$MEMGRP>;
     close $MEMGRP or croak 'cannot close MEMGRP';
-    for my $set (@memgrp) {
+    foreach my $set (@memgrp) {
         $set =~ s/[\r\n]//gxsm;
     }
     chomp @memgrp;
@@ -1880,11 +1877,11 @@ sub memgrpconvert {
 sub convertmembers2 {
     open my $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       || setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt: ", 1 );
-    my @memlist = <$MEMDIR>;
+    @memlist = <$MEMDIR>;
     close $MEMDIR or croak 'cannot close MEMDIR';
     chomp @memlist;
 
-    for my $i ( ( $INFO{'mstart2'} || 0 ) .. $#memlist ) {
+    foreach my $i ( ( $INFO{'mstart2'} || 0 ) .. $#memlist ) {
         $memlist[$i] =~ s/[\r\n]//xsm;
         my $user = $memlist[$i];
         chomp $user;
@@ -1895,7 +1892,7 @@ sub convertmembers2 {
           exists $fixed_users{$user} ? ${ $fixed_users{$user} }[0] : $user;
 
         my @xtn = qw(msg ims imstore log outbox);
-        for my $cnt ( 0 .. $#xtn ) {
+        foreach my $cnt ( 0 .. $#xtn ) {
             if ( -e "$convmemberdir/$user.$xtn[$cnt]" ) {
                 open my $FILEUSER, '<',
                   "$convmemberdir/$user.$xtn[$cnt]"
@@ -1907,16 +1904,16 @@ sub convertmembers2 {
                 if ( $cnt == 0 || $cnt == 2 || $cnt == 4 )
                 {    # msg || imstore || outbox
                     chomp @divfiles;
-                    for my $i ( 0 .. $#divfiles ) {
+                    foreach my $i ( 0 .. $#divfiles ) {
                         if ( $cnt == 2 ) {    # imstore
-                            my ( $name, $subject, $date, $message, $id, $ip,
+                            my ( $name, $subject, $dte, $message, $id, $ip,
                                 $read_flag, $folder )
                               = split /[|]/xsm, $divfiles[$i];
                             $name =
                               exists $fixed_users{$name}
                               ? ${ $fixed_users{$name} }[0]
                               : $name;
-                            $date =~
+                            $dte =~
 s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eixsm;
                             $message =~ s/<br.*?>/<br \/>/igxsm;
                             if ( $folder eq 'outbox' ) {
@@ -1924,28 +1921,28 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$
                                 if    ( !$read_flag )     { $read_flag = 'u'; }
                                 elsif ( $read_flag == 1 ) { $read_flag = 'r'; }
                                 $divfiles[$i] =
-"$id|$newuser|$name|||$subject|$date|$message|$id|0|$ip|s|$read_flag|$folder|\n";
+"$id|$newuser|$name|||$subject|$dte|$message|$id|0|$ip|s|$read_flag|$folder|\n";
                             }
                             elsif ( $folder eq 'inbox' ) {
                                 $folder = 'in';
                                 if    ( $read_flag == 1 ) { $read_flag = 'u'; }
                                 elsif ( $read_flag == 2 ) { $read_flag = 'r'; }
                                 $divfiles[$i] =
-"$id|$name|$newuser|||$subject|$date|$message|$id|0|$ip|s|$read_flag|$folder|\n";
+"$id|$name|$newuser|||$subject|$dte|$message|$id|0|$ip|s|$read_flag|$folder|\n";
                             }
                         }
                         else {    # msg || outbox
-                            my ( $name, $subject, $date, $message, $id, $ip,
+                            my ( $name, $subject, $dte, $message, $id, $ip,
                                 $read_flag )
                               = split /[|]/xsm, $divfiles[$i];
                             $name =
                               exists $fixed_users{$name}
                               ? ${ $fixed_users{$name} }[0]
                               : $name;
-                            $date =~
+                            $dte =~
 s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$1 at $2")/eixsm;
                             $message =~ s/<br.*?>/<br \/>/igxsm;
-                            if ( $id < 101 || $id eq q{} ) { $id = $date; }
+                            if ( $id < 101 || $id eq q{} ) { $id = $dte; }
                             if ( $cnt == 0 ) {    # msg
                                 if ( $read_flag == 1 ) {
                                     $read_flag = 'u';
@@ -1954,7 +1951,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$
                                     $read_flag = 'r';
                                 }                 # r(eplied)
                                 $divfiles[$i] =
-"$id|$name|$newuser|||$subject|$date|$message|$id|0|$ip|s|$read_flag||\n";
+"$id|$name|$newuser|||$subject|$dte|$message|$id|0|$ip|s|$read_flag||\n";
                             }
                             else {                # outbox
                                 if ( !$read_flag ) {
@@ -1964,7 +1961,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/conv_stringtotime("$
                                     $read_flag = 's';
                                 }                 # s(tandard)
                                 $divfiles[$i] =
-"$id|$newuser|$name|||$subject|$date|$message|$id|0|$ip|s|$read_flag||\n";
+"$id|$newuser|$name|||$subject|$dte|$message|$id|0|$ip|s|$read_flag||\n";
                             }
                         }
                     }
@@ -2002,17 +1999,17 @@ sub getcats {
       || setup_fatal_error( "$maintext_23 $convvardir/cat.txt: ", 1 );
     my @categoryorder = <$VDIR>;
     close $VDIR or croak 'cannot close VDIR';
-    for my $set (@categoryorder) {
+    foreach my $set (@categoryorder) {
         $set =~ s/[\r\n]//gxsm;
     }
     chomp @categoryorder;
 
-    for my $fcat (@categoryorder) {
+    foreach my $fcat (@categoryorder) {
         open my $VCAT, '<', "$convboardsdir/$fcat.cat"
           || setup_fatal_error( "$maintext_23 $convboardsdir/$fcat.cat: ", 1 );
         my @catdata = <$VCAT>;
         close $VCAT or croak 'cannot close VCAT';
-        for my $set (@catdata) {
+        foreach my $set (@catdata) {
             $set =~ s/[\r\n]//gxsm;
         }
         chomp @catdata;
@@ -2020,14 +2017,14 @@ sub getcats {
         $catinfo{$fcat} = [ $catdata[0], $catdata[1], 1 ];
 
         my @catboards = ();
-        for my $cnt ( 2 .. $#catdata ) {
+        foreach my $cnt ( 2 .. $#catdata ) {
             if ( $catdata[$cnt] ) { push @catboards, $catdata[$cnt]; }
         }
         push @allboards, @catboards;
         $cat{$fcat} = \@catboards;
     }
     my ( %view_groups, %showprivboards );
-    for my $fboard (@allboards) {
+    foreach my $fboard (@allboards) {
         if ( -e "$convboardsdir/$fboard.dat" ) {
             open my $VBRD, '<',
               "$convboardsdir/$fboard.dat"
@@ -2035,7 +2032,7 @@ sub getcats {
                 1 );
             my @bdata = <$VBRD>;
             close $VBRD or croak 'cannot close VBRD';
-            for my $set (@bdata) {
+            foreach my $set (@bdata) {
                 $set =~ s/[\r\n]//gxsm;
             }
             chomp $bdata[0];
@@ -2071,7 +2068,7 @@ sub getcats {
     if ( !exists $cat{'general'} ) {
         push @categoryorder, 'general';
         $cat{'general'} = ['general'];
-        $catinfo{'general'} = [ 'General Category', '', 0 ];
+        $catinfo{'general'} = [ 'General Category', q{}, 0 ];
     }
     else {
         my @temp;
@@ -2082,13 +2079,13 @@ sub getcats {
         $cat{'general'} = [@temp];
     }
     if ( !exists $board{'recycle'} ) {
-        $board{'recycle'} = [ 'Recycle Bin', '', '' ];
+        $board{'recycle'} = [ 'Recycle Bin', q{}, q{} ];
     }
     if ( !exists $board{'announcements'} ) {
-        $board{'announcements'} = [ 'Global Announcements', '', '' ];
+        $board{'announcements'} = [ 'Global Announcements', q{}, q{} ];
     }
     if ( !exists $board{'general'} ) {
-        $board{'general'} = [ 'General Board', '', 1 ];
+        $board{'general'} = [ 'General Board', q{}, 1 ];
     }
 
     my $temparray = q{};
@@ -2139,7 +2136,7 @@ $temparray
 
 sub createcontrol {
     require "$boardsdir/forum.master";
-    for my $foundboard ( keys %board ) {
+    foreach my $foundboard ( keys %board ) {
 
         # get category
         if ( -e "$convboardsdir/$foundboard.ctb" ) {
@@ -2147,7 +2144,7 @@ sub createcontrol {
               or croak "cannot open $convboardsdir/$foundboard.ctb";
             my @category = <$CINFO>;
             close $CINFO or croak "cannot close $convboardsdir/$foundboard.ctb";
-            for my $set (@category) {
+            foreach my $set (@category) {
                 $set =~ s/[\r\n]//gxsm;
             }
             chomp $category[0];
@@ -2158,7 +2155,7 @@ sub createcontrol {
               or croak 'cannot open BINFO';
             my @boardinfo = <$BINFO>;
             close $BINFO or croak 'cannot close BINFO';
-            for my $set (@boardinfo) {
+            foreach my $set (@boardinfo) {
                 $set =~ s/[\r\n]//gxsm;
             }
             chomp @boardinfo;
@@ -2326,20 +2323,20 @@ sub convertboards {
 
     my @boards = sort keys %board;
 
-    for my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
+    foreach my $i ( ( $INFO{'bstart'} || 0 ) .. $#boards ) {
         open my $BOARDFILE, '<',
           "$convboardsdir/$boards[$i].txt"
           || setup_fatal_error( "$maintext_23 $convboardsdir/$boards[$i].txt: ",
             1 );
         my @boardfile = <$BOARDFILE>;
         close $BOARDFILE or croak "cannot close $convboardsdir/$boards[$i].txt";
-        for my $set (@boardfile) {
+        foreach my $set (@boardfile) {
             $set =~ s/[\r\n]//gxsm;
         }
         chomp @boardfile;
 
         my @temparray = ();
-        for my $j ( ( $INFO{'bfstart'} || 0 ) .. $#boardfile ) {
+        foreach my $j ( ( $INFO{'bfstart'} || 0 ) .. $#boardfile ) {
             my $line = $boardfile[$j];
             $line =~ s/[\r\n]//gxsm;
             chomp $line;
@@ -2349,7 +2346,7 @@ sub convertboards {
                 $mreplies, $musername, $micon, $mstate
             ) = split /[|]/xsm, $line;
             $mstate =~ s/0/x/gxsm;
-			$mstate ||= 'x';
+            $mstate ||= 'x';
 
             next
               if (!-e "$convdatadir/$mnum.txt"
@@ -2376,7 +2373,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
                   || setup_fatal_error(
                     "$maintext_23 $boardsdir/$boards[$i].txt: ", 1 );
                 my @fixer = ();
-                for my $set (@temparray) {
+                foreach my $set (@temparray) {
                     $set =~ s/[\r\n]//gxsm;
                 }
                 my $newbrd = join qq{\n}, @temparray;
@@ -2421,7 +2418,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2})/&conv_stringtotime("
 
 sub convertmessages {
     get_forum_master();
-    my $ctbtime = ctbtime($date);
+    my $ctbtime = ctbtime();
     my %stickies;
 
     if ( open my $DATADIR, '<', "$convboardsdir/sticky.stk" ) {
@@ -2434,7 +2431,7 @@ sub convertmessages {
     my @boards = sort keys %board;
 
     my $totalbdr = @boards;
-    for my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
+    foreach my $next_board ( ( $INFO{'count'} || 0 ) .. ( $totalbdr - 1 ) ) {
         my $boardname = $boards[$next_board];
 
         open my $BRDFILE, '<', "$boardsdir/$boardname.txt"
@@ -2444,7 +2441,7 @@ sub convertmessages {
 
         my %newreply  = ();
         my $totalmess = @brdmessageline;
-        for my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
+        foreach my $tops ( ( $INFO{'tcount'} || 0 ) .. ( $totalmess - 1 ) ) {
             my ( $thread, undef, undef, undef, undef, $replies, undef ) =
               split /[|]/xsm, $brdmessageline[$tops], 7;
             if ( -e "$convdatadir/$thread.txt" ) {
@@ -2461,7 +2458,7 @@ sub convertmessages {
                 my $musername = q{};
                 my @temparray = ();
                 no strict qw(refs);
-                for my $msgline (@messagelines) {
+                foreach my $msgline (@messagelines) {
                     my (
                         $subject,  $nme,  $email,    $mdate,
                         $msername, $icon, $dummy,    $user_ip,
@@ -2527,7 +2524,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
                 my @msg = split /[|]/xsm, $temparray[-1];
 
 #               ($subject|$name|$email|$mdate|$musername|$icon|$dummy|$user_ip|$message|$ns|$editdate|$editby|$attachment)
-                my $msgdat = ctbtime( $msg[3] );
+                my $msgdat = ctbtime();
                 my $newctb = <<"NEW";
 ### ThreadID: $thread, LastModified: $msgdat ###
 
@@ -2624,11 +2621,17 @@ NEW
 sub quotefix {
     my ( $qauthor, $qlink, $qdate, $qmessage ) = @_;
     my $quote = q{};
-    if ( $qauthor eq q{} || $qlink eq q{} || $qdate eq q{} ) {
+    if (  !$qauthor
+        || $qauthor eq q{}
+        || !$qlink
+        || $qlink eq q{}
+        || !$qdate
+        || $qdate eq q{} )
+    {
         $quote = "\[quote\]$qmessage\[/quote\]";
     }
     else {
-        my $qdate = conv_stringtotime($qdate);
+        $qdate = conv_stringtotime($qdate);
         my ( undef, $threadlink, $start ) = split /;/xsm, $qlink;
         my ( undef, $num ) = split /=/xsm, $threadlink;
         ( undef, $start ) = split /=/xsm, $start;
@@ -2653,10 +2656,10 @@ sub conv_size {
 sub writerecentlog {
     my ( $start, $total, $messageref ) = @_;
 
-    for my $t ( $start .. ( $total - 1 ) ) {
+    foreach my $t ( $start .. ( $total - 1 ) ) {
         no strict qw(refs);
         my ( $thread, undef ) = split /[|]/xsm, ${$messageref}[$t], 2;
-        for my $user ( keys %{ $uid . $thread } ) {
+        foreach my $user ( keys %{ $uid . $thread } ) {
             open my $RLOG, '>>', "$memberdir/$user.rlog"
               || setup_fatal_error( "$maintext_23 $memberdir/$user.rlog: ", 1 );
             print {$RLOG}
@@ -2682,7 +2685,7 @@ sub converttimetostring {
         closedir DATADIR;
 
         my $totalpolls = @polls;
-        for my $i ( ( $INFO{'pollfile'} || 0 ) .. ( $totalpolls - 1 ) ) {
+        foreach my $i ( ( $INFO{'pollfile'} || 0 ) .. ( $totalpolls - 1 ) ) {
             my $file = $polls[$i];
             open my $POLLFILE, '<', "$convdatadir/$file"
               || setup_fatal_error( "$maintext_23 $convdatadir/$file: ", 1 );
@@ -2732,7 +2735,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
         closedir DATADIR;
 
         my $totalpolled = @polled;
-        for my $i ( ( $INFO{'polledfile'} || 0 ) .. ( $totalpolled - 1 ) ) {
+        foreach my $i ( ( $INFO{'polledfile'} || 0 ) .. ( $totalpolled - 1 ) ) {
             my $file = $polled[$i];
             open my $POLLEDFILE, '<', "$convdatadir/$file"
               || setup_fatal_error( "$maintext_23 $convdatadir/$file: ", 1 );
@@ -2741,7 +2744,7 @@ s/(\d{1,2}\/\d{1,2}\/\d{2,4}).*?(\d{1,2}\:\d{1,2}\:\d{1,2}).*/&conv_stringtotime
             chomp @polledfile;
 
             my @temparray = ();
-            for my $line (@polledfile) {
+            foreach my $line (@polledfile) {
                 my ( $dummy1, $pollername, $dummy3, $pdate ) =
                   split /[|]/xsm, $line;
                 $pollername =
@@ -2784,7 +2787,7 @@ sub myrecounttotals {
     my @boards = sort keys %board;
 
     my $totalboards = @boards;
-    for my $j ( ( $INFO{'my_re_tot'} || 0 ) .. ( $totalboards - 1 ) ) {
+    foreach my $j ( ( $INFO{'my_re_tot'} || 0 ) .. ( $totalboards - 1 ) ) {
         no strict qw(refs);
         my $cntboard = $boards[$j];
         next if !$cntboard;
@@ -2797,7 +2800,7 @@ sub myrecounttotals {
         my $threadcount  = @threads;
         my $messagecount = $threadcount;
         if ($threadcount) {
-            for my $i ( 0 .. $#threads ) {
+            foreach my $i ( 0 .. $#threads ) {
                 $messagecount += ( split /[|]/xsm, $threads[$i] )[5];
             }
         }
@@ -2829,12 +2832,12 @@ sub mymemberindex {
 
     open my $MEMDIR, '<', "$convmemberdir/memberlist.txt"
       or setup_fatal_error( "$maintext_23 $convmemberdir/memberlist.txt:", 1 );
-    my @memlist = <$MEMDIR>;
+    @memlist = <$MEMDIR>;
     close $MEMDIR or croak 'cannot close FILE';
     chomp @memlist;
     my $memlist = q{};
-    for (@memlist) {
-        my @nml = split /\t/xsm, $_;
+    foreach my $i (@memlist) {
+        my @nml = split /\t/xsm, $i;
         $memlist .= "\$memberlist{'$nml[0]'} = '$nml[1]';\n";
     }
     $memlist .= qq~1;\n~;
@@ -2859,7 +2862,7 @@ sub mymemberindex {
     closedir MEMBERS;
 
     my $totalmemb = @members;
-    for my $j ( ( $INFO{'memb_index'} || 0 ) .. ( $totalmemb - 1 ) ) {
+    foreach my $j ( ( $INFO{'memb_index'} || 0 ) .. ( $totalmemb - 1 ) ) {
         no strict qw(refs);
         my $member = $members[$j];
         $member =~ s/[.]vars$//gxsm;
@@ -2871,7 +2874,7 @@ sub mymemberindex {
         if ( $member eq 'admin' ) {
             ${ $uid . $member }{'postcount'} = 1;
         }
-        for ( keys %recent ) {
+        foreach ( keys %recent ) {
             ${ $uid . $member }{'postcount'} += ${ $recent{$_} }[0];
         }
 
@@ -2884,7 +2887,7 @@ sub mymemberindex {
         }
 
         if ( ${ $uid . $member }{'position'} ) {
-            for my $key ( keys %grp_nopost ) {
+            foreach my $key ( keys %grp_nopost ) {
                 my ( $NoPostname, undef ) = @{ $grp_nopost{$key} };
                 if ( ${ $uid . $member }{'position'} eq $NoPostname ) {
                     ${ $uid . $member }{'position'} = $key;
@@ -2899,9 +2902,10 @@ sub mymemberindex {
 
         if ( ${ $uid . $member }{'addgroups'} ) {
             my $newaddigrp = q{};
-            for my $addigrp ( split /, ?/sm, ${ $uid . $member }{'addgroups'} )
+            foreach
+              my $addigrp ( split /,[ ]?/xsm, ${ $uid . $member }{'addgroups'} )
             {
-                for my $key ( keys %grp_nopost ) {
+                foreach my $key ( keys %grp_nopost ) {
                     my ( $NoPostname, undef ) = @{ $grp_nopost{$key} };
                     if ( $addigrp eq $NoPostname ) {
                         $addigrp = $key;
@@ -2963,7 +2967,7 @@ sub mymemberindex {
 sub mymemberpostgroup {
     my ($userpostcnt) = @_;
     my $grtitle = q{};
-    for my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
+    foreach my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
         if ( $userpostcnt >= $postamount ) {
             $grtitle = ${ $grp_post{$postamount} }[0];
             last;
@@ -2976,7 +2980,7 @@ sub mymailnotify {
     if ($convlang) {
         $memberdir = "$boarddir/ConvertLang/Members";
         $vardir    = "$boarddir/ConvertLang/Variables";
-        $datadir    = "$boarddir/ConvertLang/Messages";
+        $datadir   = "$boarddir/ConvertLang/Messages";
     }
     require Sources::Notify;
     require "$vardir/Memberinfo.pm";
@@ -2987,7 +2991,7 @@ sub mymailnotify {
     closedir DIRECTORY;
 
     my $totalfiles = @files;
-    for my $j ( ( $INFO{'my_mail_n'} || 0 ) .. ( $totalfiles - 1 ) ) {
+    foreach my $j ( ( $INFO{'my_mail_n'} || 0 ) .. ( $totalfiles - 1 ) ) {
         my $filename = ( split /[.]/xsm, $files[$j], 2 )[0];
 
         open my $MAILFILE, '<', "$convdatadir/$filename.mail"
@@ -2997,7 +3001,7 @@ sub mymailnotify {
         close $MAILFILE or croak 'cannot close MAILFILE';
         chomp @mailaddresses;
 
-        for my $mailaddress (@mailaddresses) {
+        foreach my $mailaddress (@mailaddresses) {
             while ( my ( $curuser, $value ) = each %memberinf ) {
                 if ( $mailaddress eq ${$value}[1] ) {
                     managethreadnotify( 'add', $filename, $curuser,
@@ -3038,17 +3042,17 @@ sub fixnopost {
             for $i ( ( $INFO{'fix_nopost'} || 1 ) .. ( $totalnoposts - 1 ) ) {
                 my $grptitle = ${ $grp_nopost{$i} }[0];
 
-                for my $key ( keys %catinfo ) {
+                foreach my $key ( keys %catinfo ) {
                     my ( $catname, $catperms, $catcol ) = @{ $catinfo{$key} };
                     my @newperm = ();
-                    for my $theperm ( split /\//xsm, $catperms ) {
+                    foreach my $theperm ( split /\//xsm, $catperms ) {
                         if ( $theperm eq $grptitle ) { $theperm = $i; }
                         push @newperm, $theperm;
                     }
                     my $newperm = join q~/~, @newperm;
                     $catinfo{$key} = [ $catname, $newperm, $catcol ];
                 }
-                for my $key ( keys %board ) {
+                foreach my $key ( keys %board ) {
                     my ( $boardname, $boardperms, $boardshow ) =
                       @{ $board{$key} };
                     my @theperm = ();
@@ -3064,7 +3068,7 @@ sub fixnopost {
                 my $newtopicperms = q{};
 
                 my @newreplyperms = ();
-                for my $theperm ( split /\//xsm, ${ $control{$cnt} }[5] ) {
+                foreach my $theperm ( split /\//xsm, ${ $control{$cnt} }[5] ) {
                     if ( $theperm eq $grptitle ) { $theperm = $i; }
                     push @newreplyperms, $theperm;
                 }
@@ -3286,6 +3290,7 @@ qq~$tabsep<span class="selected"><a href="$set_cgi?action=dates;st=$INFO{'st'}" 
 qq~$tabsep<span class="selected"><a href="$set_cgi?action=cleanup;st=$INFO{'st'}" style="color: #f00;" class="selected" onClick="PleaseWait();">$tabfill Clean Up $tabfill</a></span>~;
     $navlink6a =
 qq~$tabsep<span class="selected"><a href="$boardurl/YaBB.$yyext?action=login" style="color: #f00;" class="selected">$tabfill Login $tabfill</a></span>$tabsep&nbsp;~;
+
     if ($convlang) {
         my $getlang = q{};
         if ($myuselang) {
@@ -3421,10 +3426,10 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
 
     my $output = q{};
     $yyboardname = $mbname;
-    $yytime = timeformat( $date, 1 );
-    $yyuname = q{};
+    $yytime      = timeformat( $date, 1 );
+    $yyuname     = q{};
 
-    for my $i ( 0 .. $#yytemplate ) {
+    foreach my $i ( 0 .. $#yytemplate ) {
         my $curline = $yytemplate[$i];
         if ( !$yycopyin && $curline =~ m/\Q{yabb copyright}\E/xsm ) {
             $yycopyin = 1;
@@ -3443,7 +3448,7 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/default.css" type="
     }
     if ( $yycopyin == 0 ) {
         $output =
-qq~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
+q~<h1 style="text-align:center"><b>Sorry, the copyright tag &lbrace;yabb copyright&rbrace; must be in the template.<br />Please notify this forum's administrator that this site is using an ILLEGAL copy of YaBB!</b></h1>~;
     }
     $output =~ s/\Q{yabb url}\E/$scripturl/gxsm;
     $output =~ s/\Q{yabb scripturl}\E/$scripturl/gxsm;
@@ -3486,7 +3491,7 @@ s/(.+;)[ \t]+(#.+$)/ $1 . substr($filler,(length $1 < 50 ? length $1 : 49)) . $2
 
 sub setinstall2 {
     if ($convlang) {
-        $vardir    = "$boarddir/ConvertLang/Variables";
+        $vardir = "$boarddir/ConvertLang/Variables";
     }
     my $ret     = 0;
     my $oldname = q{};
@@ -3592,7 +3597,7 @@ sub ext_admin_convert_fixgroupnames {
       ( shift, 0 );
 
     @groups = split /\s*\,\s*/xsm, $input;
-    for my $j ( 0 .. $#groups ) {
+    foreach my $j ( 0 .. $#groups ) {
 
         # if groupname is in old format
         if (   $groups[$j] ne 'Administrator'
@@ -3602,7 +3607,7 @@ sub ext_admin_convert_fixgroupnames {
         {
 
             # find best matching usergroup
-            for my $groupid ( sort { $a <=> $b } keys %grp_nopost ) {
+            foreach my $groupid ( sort { $a <=> $b } keys %grp_nopost ) {
                 if ( $groups[$j] eq ${ $grp_nopost{$groupid} }[0] ) {
                     $groups[$j] = "grp_nopost{$groupid}";
 
@@ -3619,7 +3624,7 @@ sub ext_admin_convert_fixgroupnames {
                 }
             }
             if ( $done == 1 ) { $done = 0; next; }
-            for my $groupid ( reverse sort { $a <=> $b } keys %grp_post ) {
+            foreach my $groupid ( reverse sort { $a <=> $b } keys %grp_post ) {
                 if ( $groups[$j] eq ${ $grp_post{$groupid} }[0] ) {
                     $groups[$j] = "grp_post{$groupid}";
 
@@ -3665,8 +3670,8 @@ sub ext_settings {
       or setup_fatal_error( 'cannot_open',
         "$convvardir/extended_profiles_order.txt" );
     @ext_prof_order = <$CONVERTER>;
-    close $CONVERTER;
-    for my $set (@ext_prof_order) {
+    close $CONVERTER or croak 'cannot close extended convert';
+    foreach my $set (@ext_prof_order) {
         $set =~ s/[\r\n]//gxsm;
     }
     chomp @ext_prof_order;
@@ -3676,14 +3681,14 @@ sub ext_settings {
       or setup_fatal_error( 'cannot_open',
         "$convvardir/extended_profiles_fields.txt" );
     my @old_prof_fields = <$CONVERTERF>;
-    close $CONVERTERF;
-    for my $set (@old_prof_fields) {
+    close $CONVERTERF or croak 'cannot close extended convert';
+    foreach my $set (@old_prof_fields) {
         $set =~ s/[\r\n]//gxsm;
     }
     chomp @old_prof_fields;
 
     #check if used membergroups still exist + convert to YaBB new format
-    for my $i ( 0 .. $#old_prof_fields ) {
+    foreach my $i ( 0 .. $#old_prof_fields ) {
         my @field = split /[|]/xsm, $old_prof_fields[$i];
         $field[8]  = ext_admin_convert_fixgroupnames( $field[8] );
         $field[11] = ext_admin_convert_fixgroupnames( $field[11] );
@@ -3702,10 +3707,8 @@ sub manage_memberinfob {
     my ( $todo, $usr, $userdisp, $usermail, $usergrp, $usercnt, $useraddgrp ) =
       @myargs;
     my $update = q{};
-    my @adminlst;
     ## pull hash of member name + other data
-    if ( $todo eq 'save' )
-    {
+    if ( $todo eq 'save' ) {
         foreach my $i ( sort keys %memberinf ) {
             my $val = join q~','~, @{ $memberinf{$i} };
             $update .= qq~\$memberinf{'$i'} = \['$val'\];\n~;
@@ -3734,6 +3737,7 @@ sub getlang {
         }
     }
     else { load_language('Convert'); }
+    return;
 }
 
 1;

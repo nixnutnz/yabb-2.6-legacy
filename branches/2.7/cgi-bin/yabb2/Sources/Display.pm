@@ -80,31 +80,31 @@ our (
 );
 ## system ##
 our (
-    $annboard,        $boardperms,      $bot_name,
-    $cliped,          $cookieview,      $currentboard,
-    $date,            $gtalker,         $gtalkuser,
-    $iamadmin,        $iamfmod,         $iamgmod,
-    $iamguest,        $iammod,          $mdadmin,
-    $mdfmod,          $mdglobal,        $mdmod,
-    $menusep,         $messageclass,    $msgcontrol,
-    $nextlink,        $prevlink,        $selecthtml,
-    $sendtopicmail,   $sessionvalid,    $showusertext,
-    $staff,           $staff_reason,    $tabsep,
-    $uid,             $urlname,         $use_menu_type,
-    $useimages,       $usepost_tools,   $user_ip,
-    $user_reason,     $username,        $usestyle,
-    $usethread_tools, $vircurrentboard, $yy_setcookies,
-    $yy_setcookies1,  $yy_threadline,   $yyjavascript,
-    $yymain,          $yynavigation,    $yysetlocation,
-    $yytitle,         %addmembergroup,  %board,
-    %catinfo,         %FORM,            %gmod_access2,
-    %grp_nopost,      %INFO,            %link,
-    %memberinfo,      %memberstar,      %moderatorgroups,
-    %moderators,      %moved_file,      %mybuddie,
-    %subboard,        %thread_arrayref, %topicstart,
-    %user_pm_level,   %useraccount,     %usernames_life_quote,
-    %yy_cookies,      %yy_udloaded,     %yyuserlog,
-    @logentries,      @repliers,        %memberunfo,
+    $annboard,        $boardperms,           $bot_name,
+    $cookieview,      $currentboard,         $date,
+    $gtalker,         $gtalkuser,            $iamadmin,
+    $iamfmod,         $iamgmod,              $iamguest,
+    $iammod,          $mdadmin,              $mdfmod,
+    $mdglobal,        $mdmod,                $menusep,
+    $messageclass,    $msgcontrol,           $nextlink,
+    $prevlink,        $selecthtml,           $sendtopicmail,
+    $sessionvalid,    $showusertext,         $staff,
+    $staff_reason,    $tabsep,               $uid,
+    $urlname,         $use_menu_type,        $useimages,
+    $usepost_tools,   $user_ip,              $user_reason,
+    $username,        $usestyle,             $usethread_tools,
+    $vircurrentboard, $yy_setcookies,        $yy_setcookies1,
+    $yy_threadline,   $yyjavascript,         $yymain,
+    $yynavigation,    $yysetlocation,        $yytitle,
+    %addmembergroup,  %board,                %catinfo,
+    %FORM,            %gmod_access2,         %grp_nopost,
+    %INFO,            %link,                 %memberinfo,
+    %memberstar,      %moderatorgroups,      %moderators,
+    %moved_file,      %mybuddie,             %subboard,
+    %thread_arrayref, %topicstart,           %user_pm_level,
+    %useraccount,     %usernames_life_quote, %yy_cookies,
+    %yy_udloaded,     %yyuserlog,            @logentries,
+    @repliers,        %memberunfo,           $quick_post,
 );
 ## templates ##
 our (
@@ -126,9 +126,8 @@ get_template('Display');
 get_gmod();
 
 ## local ##
-my ( $permbrd, $permcat );
-our ($quick_post);
-
+my $permbrd = q{};
+my $permcat = q{};
 if ($accept_permafull) {
     $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
     $permcat = qq~$perm_domain/$symlink/~ . 'cat_';
@@ -146,11 +145,11 @@ sub display_thread {
         my $user_host =
           ( gethostbyaddr pack( 'C4', split /[.]/xsm, $user_ip ), 2 )[0];
         our (%botname);
-        if ( -e 'Variables/BotsHosts.pm' ) {
+        if ( -e "$vardir/BotsHosts.pm" ) {
             require Variables::BotsHosts;
             my @botlist = keys %botname;
-            foreach (@botlist) {
-                if ( $botname{$_} && $user_host =~ /$botname{$_}/ixsm ) {
+            foreach my $i (@botlist) {
+                if ( $botname{$i} && $user_host =~ /$botname{$i}/ixsm ) {
                     $iambot = 1;
                     last;
                 }
@@ -224,9 +223,10 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         my $mnum = $INFO{'num'};
         my $dlp  = 0;
         if (
-            $yyuserlog{$mnum}
-            && ( !$yyuserlog{"$currentboard--mark"}
-                || int( $yyuserlog{$mnum} ) >
+            !$yyuserlog{"$currentboard--mark"}
+            || (   $yyuserlog{$mnum}
+                && $yyuserlog{"$currentboard--mark"}
+                && int( $yyuserlog{$mnum} ) >
                 int $yyuserlog{"$currentboard--mark"} )
           )
         {
@@ -287,20 +287,19 @@ s/\Q{yabb display_txt_guest_message_warn}\E/$display_txt{'guest_message_warn'}/x
         $vircurrentboard = $INFO{'virboard'} || q{};
         $vircurcat = ${ $uid . $vircurrentboard }{'cat'};
         if ($vircurcat) {
-            $vircat = ${$catinfo{$vircurcat}}[0];
+            $vircat = ${ $catinfo{$vircurcat} }[0];
             $vircat = to_chars($vircat);
         }
         if ($vircurrentboard) {
-            $virboardname =  ${$board{$vircurrentboard}}[0];
+            $virboardname = ${ $board{$vircurrentboard} }[0];
             $virboardname = to_chars($virboardname);
         }
     }
 
-    my ( $cat, $catperms ) = @{$catinfo{$curcat}};
+    my ( $cat, $catperms ) = @{ $catinfo{$curcat} };
     $cat = to_chars($cat);
 
-    my ( $boardname, $boardview ) = @{$board{$currentboard}};
-
+    my ( $boardname, $boardview ) = @{ $board{$currentboard} };
     $boardname = to_chars($boardname);
 
     # Check to make sure this thread isn't locked.
@@ -491,7 +490,7 @@ qq~<a href="$tmplink" onclick="return confirm('$display_txt{'posttolocked'}');">
               : $INFO{'start'};
         }
     }
-    if( $start =~ /\D/xsm) { $start=0; }
+    if ( $start =~ /\D/xsm ) { $start = 0; }
     $start = $start > $mreplies ? $mreplies : $start;
     $start =
       !$ttsreverse
@@ -764,14 +763,14 @@ qq~$menusep<a href="javascript:Notify('$scripturl?action=notify2;num=$viewnum/~
     message_totals( 'load', $viewnum );
     if ( $username ne 'Guest' ) {
         my ( %viewer, @tmprepliers, $isrep );
-        foreach (@logentries)
+        foreach my $i (@logentries)
         {    # @logentries already loaded in YaBB.pl => &write_log;
-            $viewer{ ( split /[|]/xsm, $_, 2 )[0] } = 1;
+            $viewer{ ( split /[|]/xsm, $i, 2 )[0] } = 1;
         }
 
         my $j = 0;
-        foreach (@repliers) {
-            my ( $reptime, $repuser, $isreplying ) = split /[|]/xsm;
+        foreach my $x (@repliers) {
+            my ( $reptime, $repuser, $isreplying ) = split /[|]/xsm, $x;
             next if $date - $reptime > 600 || !exists $viewer{$repuser};
             if ( $repuser eq $username ) {
                 $tmprepliers[$j] = qq~$date|$repuser|0~;
@@ -919,11 +918,11 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
 
     # Skip the posts in this thread until we reach $start.
     if ( !$ttsreverse ) {
-        foreach ( @{ $thread_arrayref{$viewnum} } ) {
+        foreach my $i ( @{ $thread_arrayref{$viewnum} } ) {
             if (    $counter >= $start
                 and $counter < ( $start + $maxmessagedisplay ) )
             {
-                push @messages, $_;
+                push @messages, $i;
             }
             $counter++;
         }
@@ -931,11 +930,11 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
 
     }
     else {
-        foreach ( @{ $thread_arrayref{$viewnum} } ) {
+        foreach my $i ( @{ $thread_arrayref{$viewnum} } ) {
             if (    $counter > ( $mreplies - $start - $maxmessagedisplay )
-                and $counter <= ( $mreplies - $start ) )
+                 && $counter <= ( $mreplies - $start ) )
             {
-                push @messages, $_;
+                push @messages, $i;
             }
             $counter++;
         }
@@ -981,7 +980,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
 
         my $css = $cssvalues[ ( $counter % $cssnum ) ];
         my (
-            $msub,  $mname,   $memail, $mdate,       $musername,
+            $msub,  $mname,   $memail, $mdte,        $musername,
             $micon, $mattach, $mip,    $postmessage, $ns,
             $mlm,   $mlmb,    $mfn
         ) = split /[|]/xsm;
@@ -989,14 +988,14 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
         # If the user isn't a guest, load their info.
         if (   $musername ne 'Guest'
             && !$yy_udloaded{$musername}
-            && -e ("$memberdir/$musername.vars") )
+            && -e "$memberdir/$musername.vars" )
         {
             my $tmpns = $ns;
             $ns = q{};
             load_user_display($musername);
             $ns = $tmpns;
         }
-        my $messagedate      = $mdate;
+        my $messagedate      = $mdte;
         my $registrationdate = $date;
         if ( ${ $uid . $musername }{'regtime'} ) {
             $registrationdate = ${ $uid . $musername }{'regtime'};
@@ -1024,13 +1023,16 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                         undef, undef, undef,   undef, undef,
                         undef, undef, $atfile, $atcount
                     ) = split /[|]/xsm;
-                    $attach_count{$atfile} = $atcount;
+                    if ($atfile) {
+                        $atcount ||= 0;
+                        $attach_count{$atfile} = $atcount;
+                    }
                 }
                 fclose('ATM') or croak "$croak{'open'} attach";
                 if ( !%attach_count ) { $attach_count{'no_attachments'} = 1; }
             }
             my ($ext);
-            foreach ( split /,/xsm, $mfn ) {
+            foreach my $i ( split /,/xsm, $mfn ) {
                 if (/[.](.+?)$/xsm) {
                     $ext = lc $1;
                 }
@@ -1040,14 +1042,14 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                           && -e "$htmldir/Templates/Forum/$useimages/$att_img{$ext}"
                       )
                       ? "$imagesdir/$att_img{$ext}"
-                      : "$micon_bg{'paperclip'}";
+                      : $micon_bg{'paperclip'};
                 }
-                my $filesize = -s "$uploaddir/$_";
-                $urlname = $_;
+                my $filesize = -s "$uploaddir/$i";
+                $urlname = $i;
                 $urlname =~ s/([[:^alnum]])/sprintf('%%%02X', ord($1))/egxsm;
-                $attach_count{$_} ||= 0;
+                $attach_count{$i} ||= 0;
                 my $download_txt =
-                  ( $attach_count{$_} == 1 )
+                  ( $attach_count{$i} == 1 )
                   ? $fatxt{'41b'}
                   : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
                 if ($filesize) {
@@ -1055,33 +1057,33 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                         && $amdisplaypics == 1 )
                     {
                         $showattach .=
-qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> ( ~
+qq~<div class="small attbox"><a href="$scripturl?action=downloadfile;file=$urlname" target="_blank"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $i</a> ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | $attach_count{$_} $download_txt )<br />~
+                          . qq~ KB | $attach_count{$i} $download_txt )<br />~
                           . (
                             $img_greybox
                             ? (
                                 $img_greybox == 2
-                                ? qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_imageset[nice_pics]" title="$_">~
-                                : qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_image[nice_pics]" title="$_">~
+                                ? qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_imageset[nice_pics]" title="$i">~
+                                : qq~<a href="$scripturl?action=downloadfile;file=$urlname" data-rel="gb_image[nice_pics]" title="$i">~
                               )
                             : qq~<a href="$scripturl?action=downloadfile;file=$urlname" target="_blank">~
                           )
-                          . qq~<img src="$uploadurl/$_" name="attach_img_resize" alt="$_" title="$_" style="display:none" /></a></div>\n~;
+                          . qq~<img src="$uploadurl/$i" name="attach_img_resize" alt="$i" title="$i" style="display:none" /></a></div>\n~;
                     }
                     else {
                         $attachment .=
-qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $_</a> ( ~
+qq~<div class="small"><a href="$scripturl?action=downloadfile;file=$urlname"><img src="$attach_gif{$ext}" class="bottom" alt="" /> $i</a> ( ~
                           . int( $filesize / 1024 )
-                          . qq~ KB | $attach_count{$_} $download_txt )</div>~;
+                          . qq~ KB | $attach_count{$i} $download_txt )</div>~;
                     }
                 }
                 else {
                     $attachment .=
-qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $_ ($fatxt{'1'}~
+qq~<div class="small"><img src="$attach_gif{$ext}" class="bottom" alt="" />  $i ($fatxt{'1'}~
                       . (
-                        exists $attach_count{$_}
-                        ? qq~ | $attach_count{$_} $download_txt ~
+                        exists $attach_count{$i}
+                        ? qq~ | $attach_count{$i} $download_txt ~
                         : q{}
                       ) . q~)</div>~;
                 }
@@ -1139,11 +1141,12 @@ qq~ <a href="$scripturl?action=iplookup;ip=$mip_three">$mip_three</a>~;
             || $iamgmod && $gmod_access2{'ipban2'} )
         {
             my $ip_block = q{};
-            my $ip_ban = q{};
-            if ( $musername eq 'Guest') {
+            my $ip_ban   = q{};
+            if ( $musername eq 'Guest' ) {
                 if ( $mip_one ne '127.0.0.1' && $mip_one ne '::1' ) {
                     if ( $use_guardian && $use_htaccess ) {
-                       $ip_block = qq~<a href="$scripturl?action=guardian_blck;ip=$mip_one;return=$mnum" onclick="return confirm('$display_txt{'ipblock_confirm'}$mip_one');">$display_txt{'ipblock'}</a> - ~;
+                        $ip_block =
+qq~<a href="$scripturl?action=guardian_blck;ip=$mip_one;return=$mnum" onclick="return confirm('$display_txt{'ipblock_confirm'}$mip_one');">$display_txt{'ipblock'}</a> - ~;
                     }
                     $ip_ban =
 qq~<a href="$scripturl?action=ipban_gip;ban=$mip_one;lev=p;return=$mnum" onclick="return confirm('$display_txt{'ipban_confirm'}$mip_one');">$display_txt{'725f'}</a> - ~;
@@ -1167,7 +1170,12 @@ qq~                 $menusep<a href="$scripturl?action=modalert;num=$viewnum;tit
         }
 
         ## is member a buddy of mine?
-        if ( $enable_buddylist && !$iamguest && $musername ne 'Guest' && $musername ne $username && $useraccount{$musername} ) {
+        if (   $enable_buddylist
+            && !$iamguest
+            && $musername ne 'Guest'
+            && $musername ne $username
+            && $useraccount{$musername} )
+        {
             $isbuddy =
 qq~<br /><img src="$micon_bg{'buddylist'}" alt="$display_txt{'isbuddy'}" title="$display_txt{'isbuddy'}" /> <br />$display_txt{'isbuddy'}~;
             $addbuddylink =
@@ -1175,11 +1183,12 @@ qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$m
         }
 
         # user is current / admin / gmod
-        my ( $exmem, $displayname, $cryptmail );
+        my ( $exmem, $cryptmail );
         my $usernamelink = q{};
         my $addbuddy     = q{};
         my $buddyad      = q{};
         my $memailad     = q{};
+        my $displayname  = q{};
         if (
             (
                 ${ $uid . $musername }{'regdate'}
@@ -1190,6 +1199,7 @@ qq~$menusep<a href="$scripturl?num=$viewnum;action=addbuddy;name=$useraccount{$m
                 || ${ $uid . $musername }{'position'} eq 'Global Moderator' )
           )
         {
+
             if ( !$iamguest && $musername ne $username ) {
                 ## check whether user is a buddy
                 if   ( $mybuddie{$musername} ) { $buddyad  = $isbuddy; }
@@ -1237,7 +1247,8 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
                 && $showuserage
                 && ( !$showage || !${ $uid . $musername }{'hideage'} ) )
             {
-                my $age = calc_age( $musername, 'calc' ) || q{};
+                my @age = calc_age( $musername, 'calc' );
+                my $age = $age[4] || q{};
                 $template_age = qq~$display_txt{'age'}: $age<br />~;
             }
             my $dr_regdate = q{};
@@ -1341,8 +1352,9 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
             $cryptmail    = scramble( $memail, $musername );
         }
         if ( $useraccount{$musername} ) {
-            $usernames_life_quote{ $useraccount{$musername} } =
-              $displayname;    # for display names in Quotes in LivePreview
+            $usernames_life_quote{ $useraccount{$musername} } = $displayname;
+
+            # for display names in Quotes in LivePreview
         }
 
         # Insert 2
@@ -1409,14 +1421,14 @@ qq~$display_txt{'21'}: <a href="$scripturl?action=usersrecentposts;username=$use
         }
         $msub = do_censor($msub);
 
-        our $message = do_censor($postmessage);
-        wrap();
+        my $message = do_censor($postmessage);
+        $message = wrap($message);
         ( $message, $movedflag ) = split_splice_move( $message, $viewnum );
-        if ($enable_ubbc) {
+        if ( $enable_ubbc && !$ns ) {
             enable_yabbc();
-            do_ubbc();
+            $message = do_ubbc( $message, q{}, $displayname );
         }
-        wrap2();
+        $message = wrap2($message);
         $message = to_chars($message);
         my $template_modify = q{};
         if ($icanbypass) {
@@ -1445,59 +1457,9 @@ qq~<a href="javascript:void(AddText('[color=$quoteuser_color]@[/color] [b]$quote
                     || $staff )
                 {
                     $vircurrentboard ||= q{};
-                    if ($enable_quickreply) {
-                        if ( $musername ne 'Guest' && $useraccount{$musername} ) {
-                            $quote_mname = $useraccount{$musername};
-                            $quote_mname =~ s/\x27/\\\x27/gxsm;
-                        }
-                        my $quoteinfo = q{};
-                        if ($enable_markquote) {
-                            my $quotesmess = $postmessage;
-                            while ( $quotesmess =~ s/\[quote\s (.*?)\]//xsm ) {
-                                my ( $tmpqauth, $tmpqlink, $tmpqdate ) =
-                                  split /[ ]/xsm, $1;
-                                my ( undef, $tmpqau ) = split /=/xsm, $tmpqauth;
-                                my ( undef, $tmpqli ) = split /=/xsm, $tmpqlink;
-                                my ( undef, $tmpqda ) = split /=/xsm, $tmpqdate;
-                                $tmpqli ||= q{};
-                                $tmpqda ||= q{};
-                                $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
-                            }
-                            $outblock =~
-s/(<div)(\Q class="$messageclass getcounter">\E)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
-
-                            $template_quote =
-qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;
-                        }
-                        else {
-                            $template_quote = q{};
-                        }
-                        if ($enable_quickjump) {
-                            if ( length($postmessage) <= $quick_quotelength ) {
-                                my $quickmessage = $postmessage;
-                                if ( !$nestedquotes ) {
-                                    $quickmessage =~
-s/(<(br|p).*?>){0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\](<(br|p).*?>){0,1}/<br \/>/igxsm;
-                                }
-                                $quickmessage =~ s/<(br|p).*?>/\\r\\n/igxsm;
-                                $quickmessage =~ s/\x27/\\\x27/gxsm;
-                                $template_quote .=
-qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,'$quickmessage'))">$img{'quote'}</a>~;
-                            }
-                            else {
-                                $template_quote .=
-qq~$menusep<a href="javascript:void(quick_quote_confirm('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply'))">$img{'quote'}</a>~;
-                            }
-                        }
-                        else {
-                            $template_quote .=
-qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
-                        }
-                    }
-                    else {
-                        $template_quote =
-qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
-                    }
+                    ( $outblock, $template_quote ) =
+                      get_quote( $musername, $postmessage, $outblock, $counter,
+                        $viewnum, $mdate );
                 }
             }
             my $timeset = 86400;
@@ -1583,7 +1545,7 @@ qq~<input type="checkbox" class="$css" style="border: 0px; visibility: hidden; d
 
         $micon = $micon{$micon} || $micon{'xx'};
         my $msgimg =
-qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon</a>~;
+          qq~<a href="$scripturl?num=$viewnum/$counter#$counter">$micon</a>~;
         my $ipimg = qq~<img src="$micon_bg{'ip'}" alt="" />~;
         if ($accept_permafull) {
             $msgimg =
@@ -1604,13 +1566,15 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         my $tool_sep = $usepost_tools ? '|||' : q{};
 
         $posthandelblock =~ s/\Q{yabb quote}\E/$template_quote$tool_sep/gxsm;
-        if ( $iamguest ){
+        if ($iamguest) {
             $posthandelblock =~ s/\Q{yabb modify}\E//gxsm;
             $posthandelblock =~ s/\Q{yabb delete}\E//gxsm;
         }
         else {
-           $posthandelblock =~ s/\Q{yabb modify}\E/$template_modify$tool_sep/gxsm;
-           $posthandelblock =~ s/\Q{yabb delete}\E/$template_delete$tool_sep/gxsm;
+            $posthandelblock =~
+              s/\Q{yabb modify}\E/$template_modify$tool_sep/gxsm;
+            $posthandelblock =~
+              s/\Q{yabb delete}\E/$template_delete$tool_sep/gxsm;
         }
         $posthandelblock =~ s/\Q{yabb split}\E/$template_split$tool_sep/gxsm;
         $posthandelblock =~ s/\Q{yabb modalert}\E/$pm_alertbutton$tool_sep/gxsm;
@@ -1625,11 +1589,10 @@ qq~<a href="$perm_domain/$symlink/$permdate/$currentboard/$viewnum#$counter">$mi
         );
         my @postout = ();
         my $psepcn  = 0;
-        foreach (@psetmenusep) {
-
-            if ($_) {
-                if   ( !$usepost_tools ) { $postout[$psepcn] = "$_$menusep"; }
-                else                     { $postout[$psepcn] = "$menusep$_"; }
+        foreach my $i (@psetmenusep) {
+            if ($i) {
+                if   ( !$usepost_tools ) { $postout[$psepcn] = "$i$menusep"; }
+                else                     { $postout[$psepcn] = "$menusep$i"; }
             }
             else { $postout[$psepcn] = q{} }
             $psepcn++;
@@ -1829,8 +1792,8 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
     my ( $board_bookmarks, $show_bookmarks );
     if ( $en_bookmarks && $bm_boards ) {
         $board_bookmarks = 0;
-        foreach ( split /,\s/xsm, $bm_boards ) {
-            if ( $_ eq $currentboard ) { $board_bookmarks = 1; }
+        foreach my $i ( split /,\s/xsm, $bm_boards ) {
+            if ( $i eq $currentboard ) { $board_bookmarks = 1; }
         }
     }
     else {
@@ -1846,10 +1809,8 @@ qq~$menusep<a href="javascript:document.multidel.submit();" onclick="return conf
             my ( $bm_order, $bm_title, $bm_image, $bm_url ) =
               @{ $bookmarks{$bookmark} };
             my $bm_subject = $msubthread;
-            my $convertstr = $bm_subject;
-            my $convertcut = $bm_subcut;
-            count_chars();
-            $bm_subject = $convertstr;
+            my $cliped     = 0;
+            ( $bm_subject, $cliped ) = count_chars( $bm_subject, $bm_subcut );
             if ($cliped) { $bm_subject .= '...'; }
             $bm_subject =~ s/([[:^alnum]])/sprintf('%%%02X', ord($1))/egxsm;
             $bm_url =~ s/{url}/$scripturl?num=$mnum/gxsm;
@@ -1882,7 +1843,7 @@ qq~$tabsep <a href="$scripturl">&laquo; $img_txt{'103'}</a> $tabsep $navback $ta
     my $boardtree   = q{};
     my $parentboard = $currentboard;
     while ($parentboard) {
-        my $pboardname = ${$board{$parentboard}}[0];
+        my $pboardname = ${ $board{$parentboard} }[0];
         $pboardname = to_chars($pboardname);
         my $pboardlink = $pboardname;
         if (   $parentboard eq 'announcements'
@@ -1925,7 +1886,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
       : $msubthread;
 
     my $tool_sep = $usethread_tools ? '|||' : q{};
-    $template_favorite ||= q{};
+    $template_favorite  ||= q{};
     $template_favorite2 ||= q{};
 
     $threadhandellist =~ s/\Q{yabb markunread}\E/$mark_unread$tool_sep/gxsm;
@@ -1955,11 +1916,10 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a">$pboardna
     );
     my @threadout = ();
     my $sepcn     = 0;
-    foreach (@threadin) {
-
-        if ($_) {
-            if   ( !$usethread_tools ) { $threadout[$sepcn] = "$_$menusep"; }
-            else                       { $threadout[$sepcn] = "$menusep$_"; }
+    foreach my $i (@threadin) {
+        if ($i) {
+            if   ( !$usethread_tools ) { $threadout[$sepcn] = "$i$menusep"; }
+            else                       { $threadout[$sepcn] = "$menusep$i"; }
         }
         else { $threadout[$sepcn] = q{}; }
         $sepcn++;
@@ -2223,7 +2183,7 @@ qq~<a href="$scripturl?$thevirboard$next">$display_txt{'767'}</a>~;
 
 sub set_gtalk {
     my $gtalkname = $INFO{'gtalkname'};
-    if (!$gtalkname) { fatal_error('nogtalk'); }
+    if ( !$gtalkname ) { fatal_error('nogtalk'); }
     else {
         my $gtalkstyle =
 qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
@@ -2236,8 +2196,10 @@ qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type
         $setgtalk =~ s/\Q{yabb style}\E/$gtalkstyle/xsm;
         $setgtalk =~ s/\Q{yabb gname}\E/${ $uid . $gtalkname }{'realname'}/gxsm;
         $setgtalk =~ s/\Q{yabb gtalkuser}\E/$gtalkuser/gxsm;
-        $setgtalk =~ s/\Q{yabb display_txt_google}\E/$display_txt{'google'}/gxsm;
-        print qq~Content-type: text/html\n\n~ or croak "$croak{'print'} page content";
+        $setgtalk =~
+          s/\Q{yabb display_txt_google}\E/$display_txt{'google'}/gxsm;
+        print qq~Content-type: text/html\n\n~
+          or croak "$croak{'print'} page content";
         print $setgtalk or croak "$croak{'print'} page";
     }
     return;
@@ -2267,9 +2229,66 @@ sub undumplog {    # Used to mark a thread as unread
     getlog();
 
     if ( $yyuserlog{ $INFO{'thread'} } ) { dumplog("$INFO{'thread'}--unread"); }
-
     redirectinternal();
     return;
+}
+
+sub get_quote {
+    my @args = @_;
+    my ( $musername, $postmessage, $outblock, $counter, $viewnum, $mdate ) =
+      @args;
+    my $template_quote = q{};
+    my $quote_mname    = q{};
+    if ($enable_quickreply) {
+        if ( $musername ne 'Guest' && $useraccount{$musername} ) {
+            $quote_mname = $useraccount{$musername};
+            $quote_mname =~ s/\x27/\\\x27/gxsm;
+        }
+        my $quoteinfo = q{};
+        if ($enable_markquote) {
+            my $quotesmess = $postmessage;
+            while ( $quotesmess =~ s/\[quote\s (.*?)\]//xsm ) {
+                my ( $tmpqauth, $tmpqlink, $tmpqdate ) =
+                  split /[ ]/xsm, $1;
+                my ( undef, $tmpqau ) = split /=/xsm, $tmpqauth;
+                my ( undef, $tmpqli ) = split /=/xsm, $tmpqlink;
+                my ( undef, $tmpqda ) = split /=/xsm, $tmpqdate;
+                $tmpqli ||= q{};
+                $tmpqda ||= q{};
+                $quoteinfo .= qq~$tmpqau-$tmpqli-$tmpqda|~;
+            }
+            $outblock =~
+s/(<div)(\Q class="$messageclass getcounter">\E)/$1 id="mq$counter" onmouseup="get_selection($counter, '$quoteinfo');"$2/ixsm;
+
+            $template_quote =
+qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,''))">$img{'mquote'}</a>~;
+        }
+        else {
+            $template_quote = q{};
+        }
+        if ($enable_quickjump) {
+            if ( length($postmessage) <= $quick_quotelength ) {
+                my $quickmessage = $postmessage;
+                if ( !$nestedquotes ) {
+                    $quickmessage =~
+s/(<(br|p).*?>){0,1}\[quote([^\]]*)\](.*?)\[\/quote([^\]]*)\](<(br|p).*?>){0,1}/<br \/>/igxsm;
+                }
+                $quickmessage =~ s/<(br|p).*?>/\\r\\n/igxsm;
+                $quickmessage =~ s/\x27/\\\x27/gxsm;
+                $template_quote .=
+qq~$menusep<a href="javascript:void(quoteSelection('$quote_mname',$viewnum,$counter,$mdate,'$quickmessage'))">$img{'quote'}</a>~;
+            }
+            else {
+                $template_quote .=
+qq~$menusep<a href="javascript:void(quick_quote_confirm('$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply'))">$img{'quote'}</a>~;
+            }
+        }
+        else {
+            $template_quote .=
+qq~$menusep<a href="$scripturl?action=post;num=$viewnum;virboard=$vircurrentboard;quote=$counter;title=PostReply">$img{'quote'}</a>~;
+        }
+    }
+    return ( $outblock, $template_quote );
 }
 
 1;

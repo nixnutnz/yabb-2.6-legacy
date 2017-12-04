@@ -39,7 +39,7 @@ sub color_picker {
 
     if ( $INFO{'palnr'} && $iamadmin ) {
         my @new_pal;
-        for my $i ( 0 .. $#pallist ) {
+        foreach my $i ( 0 .. $#pallist ) {
             if ( $i == ( $INFO{'palnr'} - 1 ) && $INFO{'palcolor'} ) {
                 push @new_pal, "#$INFO{'palcolor'}";
             }

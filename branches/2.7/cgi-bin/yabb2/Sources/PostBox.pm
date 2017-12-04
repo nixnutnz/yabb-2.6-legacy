@@ -33,33 +33,55 @@ our ( %chrwarn, %croak, %fatxt, %livepreview_txt, %maintxt, %npf_txt,
     %post_txt, %spell_check, );
 ## paths ##
 our (
-    $boardurl,  $defaultimagesdir, $imagesdir,
-    $modimgurl, $scripturl,        $uploaddir,
-    $uploadurl, $yyhtml_root,      $vardir,
-    $htmldir
+    $boardurl,  $defaultimagesdir, $imagesdir, $modimgurl,
+    $scripturl, $uploaddir,        $uploadurl, $yyhtml_root,
+    $vardir,    $htmldir
 );
 ## system/templates ##
 our (
-    $iamadmin,   $cat_col,     $cat_exp,       $col_row,
-    $date,       $displayname, $filesize_info, $filetype_info,
-    $iamguest,   $message,     $mfn,           $moresmilieslist,
-    $my_ajxcall, $nolinkallow, $post,          $quick_post,
-    $replyguest, $speedpost,   $submittxt,     $uid,
-    $username,   $yyext,       $yymain,        %FORM,
-    %INFO,       $useimages,
+    $iamadmin,        $cat_col,       $cat_exp,  $date,
+    $filesize_info,   $filetype_info, $iamguest, $message,
+    $moresmilieslist, $replyguest,    $uid,      $useimages,
+    $username,        $yyext,         $yymain,   %FORM,
+    %INFO,
 );
 ## settings ##
 our (
-    $allowattach,       $checkallcaps, $fontsizemax, $fontsizemin,
-    $gpvalid_en,        $img_greybox,  $max_messlen, $min_post_speed,
-    $spam_questions_gp, %fix_img_size, @pallist,     $minlinkpost,
+    $allowattach, $fontsizemax,  $fontsizemin,    $gpvalid_en,
+    $img_greybox, $max_messlen,  $min_post_speed, $spam_questions_gp,
+    $minlinkpost, %fix_img_size, @pallist,
 );
 ## our Mod Hook ##
 
-## local ##
-my ( $jsdragwpos, $jsdraghpos, $textsize, %smiley_bar, );
-
 get_micon();
+
+my $pheight  = 130;
+my $pwidth   = 448;
+my $textsize = 100;
+my $col_row  = 0;
+{
+    no strict qw(refs);
+    if ( ${ $uid . $username }{'postlayout'} ) {
+        ( $pheight, $pwidth, $textsize, $col_row ) =
+          split /[|]/xsm, ${ $uid . $username }{'postlayout'};
+    }
+}
+
+if ( $textsize < 60 )  { $textsize = 60; }
+if ( $textsize > 160 ) { $textsize = 160; }
+if ( $pheight > 400 )  { $pheight  = 400; }
+if ( $pheight < 130 )  { $pheight  = 130; }
+if ( $pwidth > 600 )   { $pwidth   = 600; }
+if ( $pwidth < 468 )   { $pwidth   = 468; }
+my $mtextsize  = $textsize . q{%};
+my $mheight    = $pheight . 'px';
+my $mwidth     = $pwidth . 'px';
+my $dheight    = ( $pheight + 12 ) . 'px';
+my $dwidth     = ( $pwidth + 12 ) . 'px';
+my $jsdragwpos = $pwidth - 480;
+my $dragwpos   = ( $pwidth - 480 ) . 'px';
+my $jsdraghpos = $pheight - 130;
+my $draghpos   = ( $pheight - 130 ) . 'px';
 
 #InstantMessage.pm and Post.pl use the same code for the posting box - why have two copies? #
 
@@ -212,41 +234,11 @@ $fntopts
 }
 
 sub postbox2 {
-    my ( $pheight, $pwidth );
-    {
-        no strict qw(refs);
-        if ( !${ $uid . $username }{'postlayout'} ) {
-            $pheight  = 130;
-            $pwidth   = 448;
-            $textsize = 100;
-        }
-        else {
-            ( $pheight, $pwidth, $textsize, $col_row ) =
-              split /[|]/xsm, ${ $uid . $username }{'postlayout'};
-        }
-    }
-    $pheight  ||= 130;
-    $pwidth   ||= 448;
-    $textsize ||= 100;
-    $col_row ||= 0;
-    if ( $textsize < 60 ) { $textsize = 60; }
-    if ( $textsize > 160 ) { $textsize = 160; }
-    if ( $pheight > 400 )  { $pheight  = 400; }
-    if ( $pheight < 130 )  { $pheight  = 130; }
-    if ( $pwidth > 600 )   { $pwidth   = 600; }
-    if ( $pwidth < 468 )   { $pwidth   = 468; }
-    my $mtextsize = $textsize . q{%};
-    my $mheight   = $pheight . 'px';
-    my $mwidth    = $pwidth . 'px';
-    my $dheight   = ( $pheight + 12 ) . 'px';
-    my $dwidth    = ( $pwidth + 12 ) . 'px';
-    $jsdragwpos = $pwidth - 480;
-    my $dragwpos = ( $pwidth - 480 ) . 'px';
-    $jsdraghpos = $pheight - 130;
-    my $draghpos = ( $pheight - 130 ) . 'px';
-    $message ||= q{};
+    my ($postthread) = @_;
+    $postthread ||= 0;
+    if ( $postthread == 2 )       { $message = q{}; }
     if ( $INFO{'edit_cal_even'} ) { $message = q~{yabb calevent}~; }
-
+    $message ||= q{};
     my $autoprev =
 q~onclick="storeCaret(this);" onkeyup="storeCaret(this); autoPreview()" onchange="storeCaret(this);"~;
 ## Mod Hook no autoprev ##
@@ -421,7 +413,7 @@ sub postbox3 {
     #// Collapse/Expand additional features
     #//var col_row = $col_row;
     my @noneedrow = qw(imsend eventcal);
-    my $needrow = 1;
+    my $needrow   = 1;
     foreach (@noneedrow) {
         if ( $action eq $_ ) {
             $needrow = 0;
@@ -429,6 +421,7 @@ sub postbox3 {
         }
     }
     if ( $needrow == 1 ) {
+        $col_row ||= 0;
         $box .= qq~
     var col_row = $col_row;
 
@@ -471,9 +464,8 @@ sub postbox3 {
     return $box;
 }
 
-
 sub smilies_list {
-    %smiley_bar = (
+    my %smiley_bar = (
         'a' => "smiley.gif|smiley()|$post_txt{'287'}",
         'b' => "wink.gif|wink()|$post_txt{'292'}",
         'c' => "cheesy.gif|cheesy()|$post_txt{'289'}",
@@ -507,7 +499,7 @@ qq~<img src='$yyhtml_root/Smilies/$img' onclick='$click' $hand alt='$alt' title=
 sub attach {
 
     # File Attachment's Browse Box Code
-    $mfn = $mfn || $FORM{'oldattach'} || q{};
+    my $mfn = $FORM{'oldattach'} || q{};
     my @files = split /,/xsm, $mfn;
 
     $yymain .= qq~
@@ -615,10 +607,10 @@ sub attach {
 }
 
 sub speedpost {
-    ( $submittxt, $post ) = @_;
+    my ( $submittxt, $post ) = @_;
     $submittxt ||= q{};
     $post      ||= q{};
-    $speedpost = qq~
+    my $speedpost = qq~
             var postdelay = $min_post_speed*1000;
             document.postmodify.$post.value = '$post_txt{"delay"}';
             document.postmodify.$post.disabled = true;
@@ -636,6 +628,7 @@ sub speedpost {
 }
 
 sub my_check_prev {
+    my ( $checkallcaps, $nolinkallow, $post ) = @_;
     $checkallcaps ||= 0;
     $nolinkallow  ||= q{};
     $post         ||= q{};
@@ -706,6 +699,7 @@ sub my_check_prev {
 }
 
 sub my_liveprev {
+    my ($my_ajxcall) = @_;
     my $x =
       qq~var noalert = true, gralert = false, rdalert = false, clalert = false;
 var cntsec = 0;
@@ -845,8 +839,12 @@ function autoPreview() {
     var namevalue = "";
     ~;
     }
+    my $displayname = q{};
+    {
+        no strict qw(refs);
+        $displayname = ${ $uid . $username }{'realname'} || 'Guest';
+    }
     if ( $my_ajxcall eq 'ajxmessage' ) {
-        $displayname ||= q{};
         $x .= qq~
     var tmusername = encodeURIComponent('$displayname');
     sessvalue = encodeURIComponent(document.postmodify.formsession.value);
@@ -869,9 +867,10 @@ function autoPreview() {
     pstHttp.send(parameters);~;
     }
     elsif ( $my_ajxcall eq 'ajximmessage' ) {
-        $x .= q~
+        $x .= qq~
+                var tmusername = encodeURIComponent('$displayname');
                 var iconvalue = encodeURIComponent(document.getElementById("iconholder").value);
-                var parameters = "message="+messvalue+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue+"&isprev="+isprev;
+                var parameters = "message="+messvalue+"&musername="+tmusername+"&icon="+iconvalue+"&subject="+subjvalue+"&nschecked="+nscheck+"&formsession="+sessvalue+"&isprev="+isprev;
                 pstHttp.open("POST", url, true);
                 pstHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 pstHttp.send(parameters);~;

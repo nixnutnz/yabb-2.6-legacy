@@ -28,21 +28,11 @@ our ($action);
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-our ( $adminurl, $yysetlocation, %croak, %FORM, %INFO, $boarddir, $sourcedir, $admindir, $vardir, $langdir, $helpfile, $templatesdir, $yymain, %admintxt );
-
-sub to_temphtml {
-    ( $_[0] ) = @_;
-    $_[0] =~ s/&/&amp;/gxsm;
-    $_[0] =~ s/[}]/\&\x23125;/gxsm;
-    $_[0] =~ s/[{]/\&\x23123;/gxsm;
-    $_[0] =~ s/[|]/&\x23124;/gxsm;
-    $_[0] =~ s/>/&gt;/gxsm;
-    $_[0] =~ s/</&lt;/gxsm;
-    $_[0] =~ s/[ ]{3}/&nbsp; &nbsp;/gxsm;
-    $_[0] =~ s/[ ]{2}/&nbsp; /gxsm;
-    $_[0] =~ s/\x22/&quot;/gxsm;
-    return $_[0];
-}
+our (
+    $adminurl, $yysetlocation, %croak,    %FORM,   %INFO,
+    $boarddir, $sourcedir,     $admindir, $vardir, $langdir,
+    $helpfile, $templatesdir,  $yymain,   %admintxt
+);
 
 sub mail_list {
     my ($mailline) = @_;
@@ -50,25 +40,25 @@ sub mail_list {
     my $delmailline = $INFO{'delmail'} || 0;
     my $prnmail = q{};
     if ($mailline) {
-                $prnmail = qq~$mailline\n~;
+        $prnmail = qq~$mailline\n~;
     }
-    if ( -e ('Variables/maillist.dat') ) {
+    if ( -e "$vardir/maillist.dat" ) {
         our (%maillist);
-        require "Variables/maillist.dat";
+        require 'Variables/maillist.dat';
 
-        if ( $delmailline ) {
+        if ($delmailline) {
             delete $maillist{$delmailline};
         }
-        foreach my $otime (keys %maillist) {
-            my ( $osubject, $otext, $osender ) = @{$maillist{$otime}};
+        foreach my $otime ( keys %maillist ) {
+            my ( $osubject, $otext, $osender ) = @{ $maillist{$otime} };
             $prnmail .=
-          qq~\$maillist{'$otime'} = ['$osubject', '$otext', '$osender'];\n~;
+              qq~\$maillist{'$otime'} = ['$osubject', '$otext', '$osender'];\n~;
         }
     }
     $prnmail .= qq~\n1;\n~;
     our ($FILE);
-    fopen( 'FILE', '>', 'Variables/maillist.dat' )
-          or croak "$croak{'open'} maillist.dat";
+    fopen( 'FILE', '>', "$vardir/maillist.dat" )
+      or croak "$croak{'open'} maillist.dat";
     print {$FILE} $prnmail or croak "$croak{'print'} FILE";
     fclose('FILE') or croak "$croak{'close'} maillist.dat";
 

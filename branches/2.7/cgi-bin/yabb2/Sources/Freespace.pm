@@ -13,6 +13,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 use strict;
+
 #use warnings;
 no warnings qw(uninitialized);
 use CGI::Carp qw(fatalsToBrowser);

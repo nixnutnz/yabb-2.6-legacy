@@ -49,27 +49,29 @@ our (
 );
 ## system ##
 our (
-    $action,           $adminscreen, $cookiesession,   $date,
-    $defaultimagesdir, $extpagstyle, $guest_lang,      $iamadmin,
-    $iamfmod,          $iamgmod,     $iamguest,        $iammod,
-    $language,         $menusep,     $my_blank_avatar, $password,
-    $pathval,          $session_id,  $sessionvalid,    $staff,
-    $topicstarter,     $uid,         $use_menu_type,   $user_ip,
-    $username,         $yyexec,      $yyext,           $yysetlocation,
-    %cat,              %FORM,        %format,          %format_unbold,
-    %gmod_access2,     %img,         %ims,             %INFO,
-    %load_con,    %memberinfo,      %memberunfo,
-    %moderators,       %mybuddie,    %tmpimg,          %user_pm_level,
-    %useraccount,      %vars,        %yy_cookies,      %yy_udloaded,
-    @categoryorder,    @censored,    @other_cookies,   $user
+    $action,           $adminscreen,   $cookiesession,   $date,
+    $defaultimagesdir, $extpagstyle,   $guest_lang,      $iamadmin,
+    $iamfmod,          $iamgmod,       $iamguest,        $iammod,
+    $language,         $menusep,       $my_blank_avatar, $password,
+    $pathval,          $session_id,    $sessionvalid,    $staff,
+    $topicstarter,     $uid,           $use_menu_type,   $user_ip,
+    $username,         $yyexec,        $yyext,           $yysetlocation,
+    %cat,              %FORM,          %format,          %format_unbold,
+    %gmod_access2,     %img,           %ims,             %INFO,
+    %load_con,         %memberinfo,    %memberunfo,      %moderators,
+    %mybuddie,         %tmpimg,        %user_pm_level,   %useraccount,
+    %vars,             %yy_cookies,    %yy_udloaded,     @categoryorder,
+    @censored,         @other_cookies, $user
 );
 ## local ##
-our ( @allboards, %control, $yyim, $yyuname, %board, %thread_arrayref );
+our ( @allboards, $yyim, $yyuname, %thread_arrayref );
+
 ## our Mod Hook ##
 
 sub load_boardcontrol {
     our $binboard = q{};
     our $annboard = q{};
+    our %control;
     require "$boardsdir/forum.control";
     @allboards = keys %control;
     my @brdlist =
@@ -91,7 +93,7 @@ sub load_boardcontrol {
             foreach my $i ( 0 .. $#brdlist ) {
                 ${ $uid . $boardline }{ $brdlist[$i] } = $boardline[$i];
             }
-            if ( $boardline[9] ) { $annboard = $boardline; }
+            if ( $boardline[9] )  { $annboard = $boardline; }
             if ( $boardline[10] ) { $binboard = $boardline; }
         }
     }
@@ -99,57 +101,52 @@ sub load_boardcontrol {
 }
 
 sub load_pms {
-    return
-      if ( $iamguest
-        || $pm_level == 0
-        || ( $maintenance   && !$iamadmin )
-        || ( $pm_level == 2 && ( !$staff ) )
-        || ( $pm_level == 4 && ( !$iamadmin && !$iamgmod && !$iamfmod ) )
-        || ( $pm_level == 3 && ( !$iamadmin && !$iamgmod ) ) );
-    {
-        no strict qw(refs);
-        if ( !exists ${$username}{'PMmnum'} ) {
-            build_ims( $username, 'load' );
-        }
+    no strict qw(refs);
+    my $getperms = get_pm_perms();
+    if ( !$getperms ) { return; }
 
-        my ( $imnewtext, );
-        if ( ${$username}{'PMimnewcount'} && ${$username}{'PMimnewcount'} == 1 )
-        {
-            $imnewtext =
+    if ( !exists ${$username}{'PMmnum'} ) {
+        build_ims( $username, 'load' );
+    }
+
+    my $imnewtext = q{};
+    if ( ${$username}{'PMimnewcount'} && ${$username}{'PMimnewcount'} == 1 ) {
+        $imnewtext =
 qq~<a href="$scripturl?action=imshow;caller=1;id=-1">1 $load_txt{'155'}</a>~;
-        }
-        elsif ( !${$username}{'PMimnewcount'} ) {
-            $imnewtext = $load_txt{'nonew'};
-        }
-        else {
-            $imnewtext =
-qq~<a href="$scripturl?action=imshow;caller=1;id=-1">${$username}{'PMimnewcount'} $load_txt{'154'}</a>~;
-        }
+    }
+    elsif ( !${$username}{'PMimnewcount'} ) {
+        $imnewtext = $load_txt{'nonew'};
+    }
+    else {
+        $imnewtext =
+qq~<a href="$scripturl?action=imshow;caller=1;id=-1">${ $username }{'PMimnewcount'} $load_txt{'154'}</a>~;
+    }
 
-        if ( ${$username}{'PMmnum'} && ${$username}{'PMmnum'} == 1 ) {
-            if (   ${$username}{'PMimnewcount'}
-                && ${$username}{'PMimnewcount'} == 1 )
-            {
-                $yyim =
+    if ( ${$username}{'PMmnum'} && ${$username}{'PMmnum'} == 1 ) {
+        if (   ${$username}{'PMimnewcount'}
+            && ${$username}{'PMimnewcount'} == 1 )
+        {
+            $yyim =
 qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'155b'}</a>~;
-            }
-            else {
-                $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'471'}</a>, $imnewtext~;
-            }
-        }
-        elsif ( !${$username}{'PMmnum'} && !${$username}{'PMimnewcount'} ) {
-            $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">0 $load_txt{'153'}</a>~;
-        }
-        elsif ( ${$username}{'PMimnewcount'} && ${$username}{'PMmnum'} == ${$username}{'PMimnewcount'} ) {
-            $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'154b'}</a>~;
         }
         else {
             $yyim =
-qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>, $imnewtext~;
+qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'471'}</a>, $imnewtext~;
         }
+    }
+    elsif ( !${$username}{'PMmnum'} && !${$username}{'PMimnewcount'} ) {
+        $yyim =
+qq~$load_txt{'152'} <a href="$scripturl?action=im">0 $load_txt{'153'}</a>~;
+    }
+    elsif (${$username}{'PMimnewcount'}
+        && ${$username}{'PMmnum'} == ${$username}{'PMimnewcount'} )
+    {
+        $yyim =
+qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'154b'}</a>~;
+    }
+    else {
+        $yyim =
+qq~$load_txt{'152'} <a href="$scripturl?action=im">${$username}{'PMmnum'} $load_txt{'153'}</a>, $imnewtext~;
     }
 
     if ( !$user_ip && $iamadmin ) {
@@ -201,6 +198,7 @@ sub load_censor_list {
                     ( $tmpa, $tmpb ) = split /=/xsm, $buffer;
                     $tmpc = 1;
                 }
+                chomp $tmpb;
                 push @censored, [ $tmpa, $tmpb, $tmpc ];
             }
             fclose('CENSOR') or croak "$croak{'close'} CENSOR";
@@ -234,11 +232,15 @@ sub load_usersettings {
                 || ${ $uid . $username }{'position'} eq 'Administrator' )
             {
                 $iammod = is_moderator($username);
-                if (   ${ $uid . $username }{'position'}
-                    && ( ${ $uid . $username }{'position'} eq 'Administrator'
-                    || ${ $uid . $username }{'position'} eq 'Global Moderator'
-                    || ${ $uid . $username }{'position'} eq 'Mid Moderator')
-                    || $iammod )
+                if (
+                    ${ $uid . $username }{'position'}
+                    && (   ${ $uid . $username }{'position'} eq 'Administrator'
+                        || ${ $uid . $username }{'position'} eq
+                        'Global Moderator'
+                        || ${ $uid . $username }{'position'} eq
+                        'Mid Moderator' )
+                    || $iammod
+                  )
                 {
                     $staff = 1;
                 }
@@ -248,8 +250,10 @@ sub load_usersettings {
                 if ( $sessions && $staff ) {
                     $cursession = encode_password($user_ip);
                     chomp $cursession;
-                    if (   $cursession && ${ $uid . $username }{'session'} ne $cursession
-                        || $cookiesession && ${ $uid . $username }{'session'} ne $cookiesession )
+                    if ( $cursession
+                        && ${ $uid . $username }{'session'} ne $cursession
+                        || $cookiesession
+                        && ${ $uid . $username }{'session'} ne $cookiesession )
                     {
                         $sessionvalid = 0;
                     }
@@ -267,18 +271,25 @@ sub load_usersettings {
                 }
 
                 $iamadmin =
-                  ( $username && ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq 'Administrator'
+                  (      $username
+                      && ${ $uid . $username }{'position'}
+                      && ${ $uid . $username }{'position'} eq 'Administrator'
                       && $sessionvalid == 1 ) ? 1 : 0;
                 $iamgmod =
-                  ( $username && ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq 'Global Moderator'
+                  (      $username
+                      && ${ $uid . $username }{'position'}
+                      && ${ $uid . $username }{'position'} eq 'Global Moderator'
                       && $sessionvalid == 1 ) ? 1 : 0;
                 $iamfmod =
-                  ( $username && ${ $uid . $username }{'position'} && ${ $uid . $username }{'position'} eq 'Mid Moderator'
+                  (      $username
+                      && ${ $uid . $username }{'position'}
+                      && ${ $uid . $username }{'position'} eq 'Mid Moderator'
                       && $sessionvalid == 1 ) ? 1 : 0;
                 if ( $sessionvalid == 1 ) {
                     ${ $uid . $username }{'session'} = $cursession;
                 }
-                calc_age( $username, 'calc' );
+                my @age = calc_age( $username, 'calc' );
+                our $age = $age[4];
 
                 # Set the order how Topic summaries are displayed
                 if ( !$adminscreen && $ttsureverse ) {
@@ -304,90 +315,68 @@ sub load_usersettings {
 }
 
 sub format_username {
-    my ($user) = @_;
-    return if $useraccount{$user};
-    $useraccount{$user} = $do_scramble_id ? cloak($user) : $user;
+    my ($usr) = @_;
+    return if $useraccount{$usr};
+    $useraccount{$usr} = $do_scramble_id ? cloak($usr) : $usr;
     return;
 }
 
 sub load_user {
-    my ( $user, $userextension ) = @_;
-    if ($userextension) {
-        chomp $userextension;
-    }
-    return 0 if !$user || $user eq 'Guest';
-    {
-        no strict qw(refs);
-        if ( exists ${ $uid . $user }{'realname'} ) { return 1; }
-    }
-
+    my ( $usr, $userextension ) = @_;
+    no strict qw(refs);
+    if ( !$usr || $usr eq 'Guest' ) { return 0; }
+    if ( exists ${ $uid . $usr }{'realname'} ) { return 1; }
     if ( !$userextension ) { $userextension = 'vars'; }
+    else                   { chomp $userextension; }
+
     if (   $regtype
         && ( $regtype == 1 || $regtype == 2 )
-        && -e "$memberdir/$user.pre" )
+        && -e "$memberdir/$usr.pre" )
     {
         $userextension = 'pre';
     }
-    elsif ( $regtype && $regtype == 1 && -e "$memberdir/$user.wait" ) {
+    elsif ( $regtype && $regtype == 1 && -e "$memberdir/$usr.wait" ) {
         $userextension = 'wait';
     }
-    if ( -e "$memberdir/$user.$userextension" ) {
-        if ( $username && $user ne $username ) {
-            require "$memberdir/$user.$userextension";
-            our ($LOADUSER);
-            fopen( 'LOADUSER', '<', "$memberdir/$user.lst" )
-              or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
-            my $mylastonline = <$LOADUSER>;
-            fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
-            {
-                no strict qw(refs);
-                %{ $uid . $user } = %vars;
-                ${ $uid . $user }{'lastonline'} = $mylastonline || q{};
-            }
+    if ( -e "$memberdir/$usr.$userextension" ) {
+        require "$memberdir/$usr.$userextension";
+        our ($LOADUSER);
+        fopen( 'LOADUSER', '<', "$memberdir/$usr.lst" )
+          or fatal_error( 'cannot_open', "$memberdir/$usr.lst", 1 );
+        my $mylastonline = <$LOADUSER>;
+        fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
+        if ( $username && $usr ne $username ) {
+            %{ $uid . $usr } = %vars;
+            ${ $uid . $usr }{'lastonline'} = $mylastonline || q{};
         }
         else {
-            require "$memberdir/$user.$userextension";
-            our ($LOADUSER);
-            fopen( 'LOADUSER', '<', "$memberdir/$user.lst" )
-              or fatal_error( 'cannot_open', "$memberdir/$user.lst", 1 );
-            my $mylastonline = <$LOADUSER>;
-            fclose('LOADUSER') or croak "$croak{'open'} LOADUSER";
             my @settings = keys %vars;
-            {
-                no strict qw(refs);
-                %{ $uid . $user } = %vars;
-                ${ $uid . $user }{'lastonline'} = $mylastonline || q{};
-                if ( !exists $lngs{ ${ $uid . $user }{'language'} } ) {
-                    ${ $uid . $user }{'language'} = 'English';
-                }
+            %{ $uid . $usr } = %vars;
+            ${ $uid . $usr }{'lastonline'} = $mylastonline || q{};
+            if ( !exists $lngs{ ${ $uid . $usr }{'language'} } ) {
+                ${ $uid . $usr }{'language'} = 'English';
             }
             if ( scalar @settings != 0 ) {
+                if (   $INFO{'action'}
+                    && $INFO{'action'} ne 'login2'
+                    && !${ $uid . $usr }{'stealth'} )
                 {
-                    no strict qw(refs);
-                    if (   $INFO{'action'}
-                        && $INFO{'action'} ne 'login2'
-                        && !${ $uid . $user }{'stealth'} )
-                    {
-                        fopen( 'LOADUSER', '>', "$memberdir/$user.lst" )
-                          or fatal_error( 'cannot_open', "$memberdir/$user.lst",
-                            1 );
-                        print {$LOADUSER} $date
-                          or croak "$croak{'print'} LOADUSER";
-                        fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
-                    }
+                    fopen( 'LOADUSER', '>', "$memberdir/$usr.lst" )
+                      or fatal_error( 'cannot_open', "$memberdir/$usr.lst", 1 );
+                    print {$LOADUSER} $date
+                      or croak "$croak{'print'} LOADUSER";
+                    fclose('LOADUSER') or croak "$croak{'close'} LOADUSER";
                 }
             }
             else {
-                fatal_error( 'missingvars', "$memberdir/$user.$userextension",
+                fatal_error( 'missingvars', "$memberdir/$usr.$userextension",
                     1 );
             }
         }
-        {
-            no strict qw(refs);
-            ${ $uid . $user }{'realname'} = to_chars( ${ $uid . $user }{'realname'} );
-        }
-        format_username($user);
-        load_miniuser($user);
+        ${ $uid . $usr }{'realname'} =
+          to_chars( ${ $uid . $usr }{'realname'} );
+        format_username($usr);
+        load_miniuser($usr);
 
         return 1;
     }
@@ -396,7 +385,7 @@ sub load_user {
 }
 
 sub is_moderator {
-    my ( $user, $brd ) = @_;
+    my ( $usr, $brd ) = @_;
     my @checkboards;
     if   ($brd) { @checkboards = ($brd); }
     else        { @checkboards = @allboards; }
@@ -405,20 +394,21 @@ sub is_moderator {
         {
             no strict qw(refs);
             foreach ( split /\//xsm, ${ $uid . $_ }{'mods'} || q{} ) {
-                if ( $_ && $_ eq $user ) { return 1; }
+                if ( $_ && $_ eq $usr ) { return 1; }
             }
 
             # check if user is member of a moderatorgroup
-            foreach my $testline ( split /\//xsm, ${ $uid . $_ }{'modgroups'} || q{} )
+            foreach
+              my $testline ( split /\//xsm, ${ $uid . $_ }{'modgroups'} || q{} )
             {
-                if ( ${ $uid . $user }{'position'} && $testline
-                    && $testline eq ${ $uid . $user }{'position'} )
+                if (   ${ $uid . $usr }{'position'}
+                    && $testline
+                    && $testline eq ${ $uid . $usr }{'position'} )
                 {
                     return 1;
                 }
 
-                foreach ( split /,/xsm, ${ $uid . $user }{'addgroups'} || q{} )
-                {
+                foreach ( split /,/xsm, ${ $uid . $usr }{'addgroups'} || q{} ) {
                     if ( $testline && $testline eq $_ ) { return 1; }
                 }
             }
@@ -428,17 +418,18 @@ sub is_moderator {
 }
 
 sub is_moderator_b {
-    my ($user) = @_;
+    my ($usr) = @_;
     my $mybrds = q{ };
 
     foreach my $i (@allboards) {
         {
             no strict qw(refs);
             foreach ( split /\//xsm, ${ $uid . $i }{'mods'} || q{} ) {
-                if ( $_ && $_ eq $user ) {
+                if ( $_ && $_ eq $usr ) {
+                    our %board;
                     get_forum_master();
-                    if (${$board{$i}}[0]) {
-                        my $boardname = ${$board{$i}}[0];
+                    if ( ${ $board{$i} }[0] ) {
+                        my $boardname = ${ $board{$i} }[0];
                         $mybrds .= qq~$boardname<br />~;
                         return 1;
                     }
@@ -453,6 +444,7 @@ sub is_moderator_b {
 sub kill_moderator {
     my ($killmod) = @_;
     my @boardcontrol = ();
+    our %control;
     require "$boardsdir/forum.control";
 
     {
@@ -477,6 +469,7 @@ sub kill_moderator {
 sub kill_moderator_group {
     my ($killmod) = @_;
     my @boardcontrol = ();
+    our %control;
     require "$boardsdir/forum.control";
 
     {
@@ -494,14 +487,14 @@ sub kill_moderator_group {
 }
 
 sub load_user_display {
-    my ($user) = @_;
+    my ($usr) = @_;
     {
         no strict qw(refs);
-        if ( exists ${ $uid . $user }{'password'} ) {
-            if ( $yy_udloaded{$user} ) { return 1; }
+        if ( exists ${ $uid . $usr }{'password'} ) {
+            if ( $yy_udloaded{$usr} ) { return 1; }
         }
         else {
-            load_user($user);
+            load_user($usr);
         }
     }
     load_censor_list();
@@ -509,49 +502,51 @@ sub load_user_display {
     if ( !$minlinkweb ) { $minlinkweb = 0; }
     {
         no strict qw(refs);
-        ${ $uid . $user }{'weburl'} =
+        ${ $uid . $usr }{'weburl'} =
           (
-            ${ $uid . $user }{'weburl'}
-              && ( ${ $uid . $user }{'postcount'} >= $minlinkweb
-                || ${ $uid . $user }{'position'} && ( ${ $uid . $user }{'position'} eq 'Administrator'
-                || ${ $uid . $user }{'position'} eq 'Mid Moderator'
-                || ${ $uid . $user }{'position'} eq 'Global Moderator' ) )
+            ${ $uid . $usr }{'weburl'}
+              && (
+                   ${ $uid . $usr }{'postcount'} >= $minlinkweb
+                || ${ $uid . $usr }{'position'}
+                && (   ${ $uid . $usr }{'position'} eq 'Administrator'
+                    || ${ $uid . $usr }{'position'} eq 'Mid Moderator'
+                    || ${ $uid . $usr }{'position'} eq 'Global Moderator' )
+              )
           )
-          ? qq~<a href="${ $uid . $user }{'weburl'}" target="_blank">~
+          ? qq~<a href="${ $uid . $usr }{'weburl'}" target="_blank">~
           . ( $sm ? $img{'website_sm'} : $img{'website'} ) . '</a>'
           : q{};
 
-        our $displayname = ${ $uid . $user }{'realname'};
-        our ($message);
-        if ( ${ $uid . $user }{'signature'} ) {
-            $message = ${ $uid . $user }{'signature'};
-
+        my $displayname = ${ $uid . $usr }{'realname'};
+        if ( ${ $uid . $usr }{'signature'} ) {
             if ($enable_ubbc) {
                 enable_yabbc();
-                do_ubbc(1);
+                ${ $uid . $usr }{'signature'} =
+                  do_ubbc( ${ $uid . $usr }{'signature'}, 1, $displayname );
             }
 
-            $message = to_chars($message);
-
-            ${ $uid . $user }{'signature'} = do_censor($message);
+            ${ $uid . $usr }{'signature'} =
+              to_chars( ${ $uid . $usr }{'signature'} );
+            ${ $uid . $usr }{'signature'} =
+              do_censor( ${ $uid . $usr }{'signature'} );
 
             # use height like code boxes do. Set to 200px at > 15 newlines
-            if ( 15 < ${ $uid . $user }{'signature'} =~ /<br.*?>|<tr>/gxsm ) {
-                ${ $uid . $user }{'signature'} =
-qq~<div class="load_sig">${ $uid . $user }{'signature'}</div>~;
+            if ( 15 < ${ $uid . $usr }{'signature'} =~ /<br.*?>|<tr>/gxsm ) {
+                ${ $uid . $usr }{'signature'} =
+                  qq~<div class="load_sig">${ $uid . $usr }{'signature'}</div>~;
             }
             else {
-                ${ $uid . $user }{'signature'} =
-qq~<div class="load_sig_b">${ $uid . $user }{'signature'}</div>~;
+                ${ $uid . $usr }{'signature'} =
+qq~<div class="load_sig_b">${ $uid . $usr }{'signature'}</div>~;
             }
         }
     }
 
-    our $thegtalkuser = $user;
+    our $thegtalkuser = $usr;
     our ($thegtalkname);
     {
         no strict qw(refs);
-        $thegtalkname = ${ $uid . $user }{'realname'};
+        $thegtalkname = ${ $uid . $usr }{'realname'};
     }
 
     get_micon();
@@ -566,110 +561,110 @@ qq~<div class="load_sig_b">${ $uid . $user }{'signature'}</div>~;
     my $twitterimg  = set_image( 'twitter',  $use_menu_type );
     my $youtubeimg  = set_image( 'youtube',  $use_menu_type );
     my %icqad;
-    $icqad{$user} =
-      $icqad{$user}
-      ? qq~<a href="http://web.icq.com/${ $uid . $user }{'icq'}" target="_blank">$load_con{'icqadd'}</a>~
+    $icqad{$usr} =
+      $icqad{$usr}
+      ? qq~<a href="http://web.icq.com/${ $uid . $usr }{'icq'}" target="_blank">$load_con{'icqadd'}</a>~
       : q{};
-    $icqad{$user} =~ s/\Q{yabb usericq}\E/${ $uid . $user }{'icq'}/gxsm;
+    $icqad{$usr} =~ s/\Q{yabb usericq}\E/${ $uid . $usr }{'icq'}/gxsm;
 
     {
         no strict qw(refs);
-        ${ $uid . $user }{'icq'} =
-          ${ $uid . $user }{'icq'}
-          ? qq~<a href="http://web.icq.com/${ $uid . $user }{'icq'}" title="${ $uid . $user }{'icq'}" target="_blank">$icqimg</a>~
+        ${ $uid . $usr }{'icq'} =
+          ${ $uid . $usr }{'icq'}
+          ? qq~<a href="http://web.icq.com/${ $uid . $usr }{'icq'}" title="${ $uid . $usr }{'icq'}" target="_blank">$icqimg</a>~
           : q{};
 
-        ${ $uid . $user }{'aim'} =
-          ${ $uid . $user }{'aim'}
-          ? qq~<a href="aim:goim?screenname=${ $uid . $user }{'aim'}&#38;message=Hi.+Are+you+there?">$aimimg</a>~
+        ${ $uid . $usr }{'aim'} =
+          ${ $uid . $usr }{'aim'}
+          ? qq~<a href="aim:goim?screenname=${ $uid . $usr }{'aim'}&#38;message=Hi.+Are+you+there?">$aimimg</a>~
           : q{};
 
-        ${ $uid . $user }{'skype'} =
-          ${ $uid . $user }{'skype'}
-          ? qq~<a href="javascript:void(window.open('callto://${ $uid . $user }{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$skypeimg</a>~
+        ${ $uid . $usr }{'skype'} =
+          ${ $uid . $usr }{'skype'}
+          ? qq~<a href="javascript:void(window.open('callto://${ $uid . $usr }{'skype'}','skype','height=80,width=340,menubar=no,toolbar=no,scrollbars=no'))">$skypeimg</a>~
           : q{};
 
-        ${ $uid . $user }{'myspace'} =
-          ${ $uid . $user }{'myspace'}
-          ? qq~<a href="http://www.myspace.com/${ $uid . $user }{'myspace'}" target="_blank">$myspaceimg</a>~
+        ${ $uid . $usr }{'myspace'} =
+          ${ $uid . $usr }{'myspace'}
+          ? qq~<a href="http://www.myspace.com/${ $uid . $usr }{'myspace'}" target="_blank">$myspaceimg</a>~
           : q{};
 
-        ${ $uid . $user }{'facebook'} =
-          ${ $uid . $user }{'facebook'}
+        ${ $uid . $usr }{'facebook'} =
+          ${ $uid . $usr }{'facebook'}
           ? q~<a href="http://www.facebook.com/~
           . (
-            ${ $uid . $user }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
-          . qq~${ $uid . $user }{'facebook'}" target="_blank">$facebookimg</a>~
+            ${ $uid . $usr }{'facebook'} !~ /\D/xsm ? 'profile.php?id=' : q{} )
+          . qq~${ $uid . $usr }{'facebook'}" target="_blank">$facebookimg</a>~
           : q{};
 
-        ${ $uid . $user }{'twitter'} =
-          ${ $uid . $user }{'twitter'}
-          ? qq~<a href="http://twitter.com/${ $uid . $user }{'twitter'}" target="_blank">$twitterimg</a>~
+        ${ $uid . $usr }{'twitter'} =
+          ${ $uid . $usr }{'twitter'}
+          ? qq~<a href="http://twitter.com/${ $uid . $usr }{'twitter'}" target="_blank">$twitterimg</a>~
           : q{};
 
-        ${ $uid . $user }{'youtube'} =
-          ${ $uid . $user }{'youtube'}
-          ? qq~<a href="http://www.youtube.com/${ $uid . $user }{'youtube'}" target="_blank">$youtubeimg</a>~
+        ${ $uid . $usr }{'youtube'} =
+          ${ $uid . $usr }{'youtube'}
+          ? qq~<a href="http://www.youtube.com/${ $uid . $usr }{'youtube'}" target="_blank">$youtubeimg</a>~
           : q{};
 
-        ${ $uid . $user }{'gtalk'} =
-          ${ $uid . $user }{'gtalk'} ? $gtalkimg : q{};
+        ${ $uid . $usr }{'gtalk'} =
+          ${ $uid . $usr }{'gtalk'} ? $gtalkimg : q{};
+
         my %yimon;
-        $yimon{$user} =
-          $yimon{$user}
-          ? qq~<img src="http://opi.yahoo.com/online?u=${ $uid . $user }{'yim'}&#38;m=g&#38;t=0" alt="" />~
+        $yimon{$usr} =
+          $yimon{$usr}
+          ? qq~<img src="http://opi.yahoo.com/online?u=${ $uid . $usr }{'yim'}&#38;m=g&#38;t=0" alt="" />~
           : q{};
 
-        ${ $uid . $user }{'yim'} =
-          ${ $uid . $user }{'yim'}
-          ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${ $uid . $user }{'yim'}" target="_blank">$yimimg</a>~
+        ${ $uid . $usr }{'yim'} =
+          ${ $uid . $usr }{'yim'}
+          ? qq~<a href="http://edit.yahoo.com/config/send_webmesg?.target=${ $uid . $usr }{'yim'}" target="_blank">$yimimg</a>~
           : q{};
     }
     {
         no strict qw(refs);
         my $gender_title = q{};
-        if ( $showgenderimage && ${ $uid . $user }{'gender'} ) {
-            ${ $uid . $user }{'gender'} =
-              ${ $uid . $user }{'gender'} =~ m/Female/ixsm ? 'female' : 'male';
-            $gender_title = ${ $uid . $user }{'gender'};
-            ${ $uid . $user }{'gender'} =
-              ${ $uid . $user }{'gender'}
+        if ( $showgenderimage && ${ $uid . $usr }{'gender'} ) {
+            ${ $uid . $usr }{'gender'} =
+              ${ $uid . $usr }{'gender'} =~ m/Female/ixsm ? 'female' : 'male';
+            $gender_title = ${ $uid . $usr }{'gender'};
+            ${ $uid . $usr }{'gender'} =
+              ${ $uid . $usr }{'gender'}
               ? qq~$load_txt{'231'}: $load_con{'gender'}<br />~
               : q{};
-            ${ $uid . $user }{'gender'} =~
-              s/\Q{yabb gender}\E/$gender_title/xsm;
-            ${ $uid . $user }{'gender'} =~
+            ${ $uid . $usr }{'gender'} =~ s/\Q{yabb gender}\E/$gender_title/xsm;
+            ${ $uid . $usr }{'gender'} =~
               s/\Q{yabb genderTitle}\E/$load_txt{$gender_title}/gxsm;
         }
         else {
-            ${ $uid . $user }{'gender'} = q{};
+            ${ $uid . $usr }{'gender'} = q{};
         }
     }
     {
         no strict qw(refs);
-        if ( $showzodiac && ${ $uid . $user }{'bday'} ) {
+        if ( $showzodiac && ${ $uid . $usr }{'bday'} ) {
             require Sources::EventCalBirthdays;
-            my ( $user_bdmon, $user_bdday, undef ) = split /\//xsm,
-              ${ $uid . $user }{'bday'};
-            my $zodiac = starsign( $user_bdday, $user_bdmon );
-            ${ $uid . $user }{'zodiac'} =
+            my ( $usr_bdmon, $usr_bdday, undef ) = split /\//xsm,
+              ${ $uid . $usr }{'bday'};
+            my $zodiac = starsign( $usr_bdday, $usr_bdmon );
+            ${ $uid . $usr }{'zodiac'} =
 qq~<span style="vertical-align: middle;">$zodiac_txt{'sign'}:</span> $zodiac<br />~;
         }
         else {
-            ${ $uid . $user }{'zodiac'} = q{};
+            ${ $uid . $usr }{'zodiac'} = q{};
         }
     }
 
     {
         no strict qw(refs);
-        if ( $showusertext && ${ $uid . $user }{'usertext'} )
+        if ( $showusertext && ${ $uid . $usr }{'usertext'} )
         {    # Censor the usertext and wrap it
-            ${ $uid . $user }{'usertext'} =
-              wrap_chars( do_censor( ${ $uid . $user }{'usertext'} ),
+            ${ $uid . $usr }{'usertext'} =
+              wrap_chars( do_censor( ${ $uid . $usr }{'usertext'} ),
                 $usertxtwrap );
         }
         else {
-            ${ $uid . $user }{'usertext'} = q{};
+            ${ $uid . $usr }{'usertext'} = q{};
         }
     }
 
@@ -678,47 +673,47 @@ qq~<span style="vertical-align: middle;">$zodiac_txt{'sign'}:</span> $zodiac<br 
 
         # Create the userpic / avatar html
         if ( $showuserpic && $allowpics ) {
-            ${ $uid . $user }{'userpic'} ||= $my_blank_avatar;
-            ${ $uid . $user }{'userpic'} = q~<img src="~
+            ${ $uid . $usr }{'userpic'} ||= $my_blank_avatar;
+            ${ $uid . $usr }{'userpic'} = q~<img src="~
               . (
-                  ${ $uid . $user }{'userpic'} =~ m{\A[\s\n]*https?://}ixsm
-                ? ${ $uid . $user }{'userpic'}
+                  ${ $uid . $usr }{'userpic'} =~ m{\A[\s\n]*https?://}ixsm
+                ? ${ $uid . $usr }{'userpic'}
                 : ( $default_avatar
-                      && ${ $uid . $user }{'userpic'} eq $my_blank_avatar )
+                      && ${ $uid . $usr }{'userpic'} eq $my_blank_avatar )
                 ? "$imagesdir/$default_userpic"
-                : "$facesurl/${ $uid . $user }{'userpic'}"
+                : "$facesurl/${ $uid . $usr }{'userpic'}"
               ) . q~" id="avatar_img_resize" alt="" style="display:none" />~;
             if ( !$iamguest ) {
-                ${ $uid . $user }{'userpic'} =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">${ $uid . $user }{'userpic'}</a>~;
+                ${ $uid . $usr }{'userpic'} =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">${ $uid . $usr }{'userpic'}</a>~;
             }
-            ${ $uid . $user }{'userpic'} .= q~<br />~;
+            ${ $uid . $usr }{'userpic'} .= q~<br />~;
         }
         else {
-            ${ $uid . $user }{'userpic'} = q~<br />~;
+            ${ $uid . $usr }{'userpic'} = q~<br />~;
         }
     }
 
-    load_miniuser($user);
+    load_miniuser($usr);
 
-    $yy_udloaded{$user} = 1;
+    $yy_udloaded{$usr} = 1;
     return 1;
 }
 
 sub load_miniuser {
-    my ($user) = @_;
-    my $load   = q{};
-    my $key    = q{};
-    my $g      = 0;
-    my $dg     = 0;
-    my $bold   = 0;
+    my ($usr) = @_;
+    my $load  = q{};
+    my $key   = q{};
+    my $g     = 0;
+    my $dg    = 0;
+    my $bold  = 0;
     my ( $temptitle, $tempgroup, $tempgroupcheck );
     {
         no strict qw(refs);
-        $tempgroupcheck = ${ $uid . $user }{'position'} || q{};
+        $tempgroupcheck = ${ $uid . $usr }{'position'} || q{};
     }
 
-    my @memstat        = ();
+    my @memstat = ();
     our %addmembergroup = ();
 
     if ( $tempgroupcheck && $grp_staff{$tempgroupcheck} ) {
@@ -732,33 +727,33 @@ sub load_miniuser {
         $temptitle = $memstat[0];
         $tempgroup = $grp_staff{$tempgroupcheck};
         if ( $memstat[4] == 0 ) { $bold = 1; }
-        $memberunfo{$user} = $tempgroupcheck;
+        $memberunfo{$usr} = $tempgroupcheck;
     }
-    elsif ( $moderators{$user} ) {
-        @memstat           = @{ $grp_staff{'Moderator'} };
-        $temptitle         = $memstat[0];
-        $tempgroup         = $grp_staff{'Moderator'};
-        $memberunfo{$user} = $tempgroupcheck;
+    elsif ( $moderators{$usr} ) {
+        @memstat          = @{ $grp_staff{'Moderator'} };
+        $temptitle        = $memstat[0];
+        $tempgroup        = $grp_staff{'Moderator'};
+        $memberunfo{$usr} = $tempgroupcheck;
     }
     elsif ( $tempgroupcheck && $grp_nopost{$tempgroupcheck} ) {
-        @memstat           = @{ $grp_nopost{$tempgroupcheck} };
-        $temptitle         = $memstat[0];
-        $tempgroup         = $grp_nopost{$tempgroupcheck};
-        $memberunfo{$user} = $tempgroupcheck;
+        @memstat          = @{ $grp_nopost{$tempgroupcheck} };
+        $temptitle        = $memstat[0];
+        $tempgroup        = $grp_nopost{$tempgroupcheck};
+        $memberunfo{$usr} = $tempgroupcheck;
     }
     {
         no strict qw(refs);
-        ${ $uid . $user }{'postcount'} ||= 0;
+        ${ $uid . $usr }{'postcount'} ||= 0;
         if ( !$tempgroup ) {
             foreach my $postamount ( reverse sort { $a <=> $b } keys %grp_post )
             {
-                if ( ${ $uid . $user }{'postcount'} >= $postamount ) {
+                if ( ${ $uid . $usr }{'postcount'} >= $postamount ) {
                     @memstat   = @{ $grp_post{$postamount} };
                     $tempgroup = $grp_post{$postamount};
                     last;
                 }
             }
-            $memberunfo{$user} = $memstat[0];
+            $memberunfo{$usr} = $memstat[0];
         }
     }
 
@@ -767,7 +762,7 @@ sub load_miniuser {
         foreach my $postamount ( reverse sort { $a <=> $b } keys %grp_post ) {
             {
                 no strict qw(refs);
-                if ( ${ $uid . $user }{'postcount'} > $postamount ) {
+                if ( ${ $uid . $usr }{'postcount'} > $postamount ) {
                     @memstat = @{ $grp_post{$postamount} };
                     last;
                 }
@@ -781,7 +776,7 @@ sub load_miniuser {
     }
 
 # The following puts some new 'has' variables in if this user is the user browsing the board
-    if ( $username && $user eq $username ) {
+    if ( $username && $usr eq $username ) {
         my (@myperms);
         if ($tempgroup) {
             @myperms = @{$tempgroup};
@@ -791,116 +786,77 @@ sub load_miniuser {
         }
         {
             no strict qw(refs);
-            ${ $uid . $user }{'perms'} =
+            ${ $uid . $usr }{'perms'} =
 "$myperms[5]|$myperms[6]|$myperms[7]|$myperms[8]|$myperms[9]|$myperms[10]";
         }
     }
-    our ($userlink);
+    my $userlink = q{};
     {
         no strict qw(refs);
-        $userlink = ${ $uid . $user }{'realname'} || $user;
+        $userlink = ${ $uid . $usr }{'realname'} || $usr;
     }
     $userlink = qq~<b>$userlink</b>~;
-    if   ( !$scripturl ) { $scripturl         = qq~$boardurl/$yyexec.$yyext~; }
-    if   ( $bold != 1 )  { $memberinfo{$user} = $memstat[0]; }
-    else                 { $memberinfo{$user} = qq~<b>$memstat[0]</b>~; }
+    if   ( !$scripturl ) { $scripturl        = qq~$boardurl/$yyexec.$yyext~; }
+    if   ( $bold != 1 )  { $memberinfo{$usr} = $memstat[0]; }
+    else                 { $memberinfo{$usr} = qq~<b>$memstat[0]</b>~; }
     our ( %link, %col_title );
     if ( $memstat[3] && !$iamguest ) {
-        $link{$user} =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}" style="color:$memstat[3];">$userlink</a>~;
-        $format{$user} = qq~<span style="color: $memstat[3];">$userlink</span>~;
+        $link{$usr} =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}" style="color:$memstat[3];">$userlink</a>~;
+        $format{$usr} = qq~<span style="color: $memstat[3];">$userlink</span>~;
         {
             no strict qw(refs);
-            $format_unbold{$user} =
-qq~<span style="color: $memstat[3];">${ $uid . $user }{'realname'}</span>~;
+            $format_unbold{$usr} =
+qq~<span style="color: $memstat[3];">${ $uid . $usr }{'realname'}</span>~;
         }
-        $col_title{$user} =
-          qq~<span style="color: $memstat[3];">$memberinfo{$user}</span>~;
+        $col_title{$usr} =
+          qq~<span style="color: $memstat[3];">$memberinfo{$usr}</span>~;
     }
     elsif ($iamguest) {
         if ( $memstat[3] ) {
-            $link{$user} =
+            $link{$usr} =
 qq~<span style="color:$memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
-            $format{$user} =
+            $format{$usr} =
 qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
             {
                 no strict qw(refs);
-                $format_unbold{$user} =
-qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">${ $uid . $user }{'realname'}</span>~;
+                $format_unbold{$usr} =
+qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">${ $uid . $usr }{'realname'}</span>~;
             }
-            $col_title{$user} =
-qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$memberinfo{$user}</span>~;
+            $col_title{$usr} =
+qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$memberinfo{$usr}</span>~;
         }
         else {
-            $link{$user} =
+            $link{$usr} =
               qq~<span title="$maintxt{'members_only'}">$userlink</span>~;
-            $format{$user} = $userlink;
+            $format{$usr} = $userlink;
             {
                 no strict qw(refs);
-                $format_unbold{$user} = ${ $uid . $user }{'realname'};
+                $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
             }
-            $col_title{$user} = $memberinfo{$user};
+            $col_title{$usr} = $memberinfo{$usr};
         }
     }
     else {
-        $link{$user} =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlink</a>~;
-        $format{$user} = $userlink;
+        $link{$usr} =
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$userlink</a>~;
+        $format{$usr} = $userlink;
         {
             no strict qw(refs);
-            $format_unbold{$user} = ${ $uid . $user }{'realname'};
+            $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
         }
-        $col_title{$user} = $memberinfo{$user};
+        $col_title{$usr} = $memberinfo{$usr};
     }
-    $addmembergroup{$user} = q~<br />~;
-    my ( $viewperms, $topicperms, $replyperms, $pollperms, $attachperms, );
-    {
-        no strict qw(refs);
-        if (${ $uid . $user }{'addgroups'}) {
-            foreach my $addgrptitle ( split /,/xsm, ${ $uid . $user }{'addgroups'} )
-            {
-                 my (
-                    $atitle,     undef,       undef,        undef,
-                    $anoshow,    $aviewperms, $atopicperms, $areplyperms,
-                    $apollperms, $aattachperms
-                ) = @{ $grp_nopost{$addgrptitle} };
-                $viewperms = 0;
-                $topicperms = 0;
-                $replyperms = 0;
-                $pollperms = 0;
-                $attachperms = 0;
-                if ( $atitle ne $memstat[0] ) {
-                    if ( $username && $user eq $username && !$iamadmin ) {
-                        if ( $aviewperms == 1 )   { $viewperms   = 1; }
-                        if ( $atopicperms == 1 )  { $topicperms  = 1; }
-                        if ( $areplyperms == 1 )  { $replyperms  = 1; }
-                        if ( $apollperms == 1 )   { $pollperms   = 1; }
-                        if ( $aattachperms == 1 ) { $attachperms = 1; }
-                        ${ $uid . $user }{'perms'} =
-"$viewperms|$topicperms|$replyperms|$pollperms|$attachperms";
-                    }
-                    if (
-                        $anoshow
-                        && ( $iamadmin
-                            || ( $iamgmod && $gmod_access2{'profileAdmin'} ) )
-                      )
-                    {
-                        $addmembergroup{$user} .= qq~($atitle)<br />~;
-                    }
-                    elsif ( !$anoshow ) {
-                        $addmembergroup{$user} .= qq~$atitle<br />~;
-                    }
-                }
-            }
-        }
-    }
-    $addmembergroup{$user} =~ s/<br\s\/>\Z//xsm;
+    $addmembergroup{$usr} = q~<br />~;
+    %addmembergroup = get_brd_perms( $usr, \@memstat, \%addmembergroup );
 
-    if ( !$username || $username eq 'Guest' ) { $memberunfo{$user} = 'Guest'; }
+    $addmembergroup{$usr} =~ s/<br\s\/>\Z//xsm;
+
+    if ( !$username || $username eq 'Guest' ) { $memberunfo{$usr} = 'Guest'; }
     our (%topicstart);
-    $topicstart{$user} = q{};
+    $topicstart{$usr} = q{};
     our $viewnum = q{};
-    if ( $INFO{'num'} || $FORM{'threadid'} && $user eq $username ) {
+    if ( ( $INFO{'num'} || $FORM{'threadid'} ) && $usr eq $username ) {
         if ( $INFO{'num'} ) {
             $viewnum = $INFO{'num'};
         }
@@ -927,12 +883,12 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
             }
         }
 
-        if ( $user eq $topicstarter ) { $topicstart{$user} = 'Topic Starter'; }
+        if ( $usr eq $topicstarter ) { $topicstart{$usr} = 'Topic Starter'; }
     }
     my (%memberaddgroup);
     {
         no strict qw(refs);
-        $memberaddgroup{$user} = ${ $uid . $user }{'addgroups'};
+        $memberaddgroup{$usr} = ${ $uid . $usr }{'addgroups'};
     }
 
     my $starnum        = $memstat[1];
@@ -944,21 +900,22 @@ qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$userlin
     while ( $starnum-- > 0 ) {
         $memberstartemp .= qq~<img src="$starpic" alt="*" />~;
     }
-    $memberstar{$user} = $memberstartemp ? "$memberstartemp<br />" : q{};
+    $memberstar{$usr} = $memberstartemp ? "$memberstartemp<br />" : q{};
     return;
 }
 
 sub quick_links {
-    my ( $user, $online ) = @_;
+    my ( $usr, $online ) = @_;
     if ($iamguest) {
-        return ( $online ? $format_unbold{$user} : $format{$user} );
+        return ( $online ? $format_unbold{$usr} : $format{$usr} );
     }
     my $lastnline = q{};
     if ( $iamadmin || $iamgmod || $lastonlineinlink ) {
         {
             no strict qw(refs);
-            if ( ${ $uid . $user }{'lastonline'} ) {
-                $lastnline = abs( $date - ${ $uid . $user }{'lastonline'} );
+            if ( ${ $uid . $usr }{'lastonline'} ) {
+                my $tme = $date - ${ $uid . $usr }{'lastonline'};
+                $lastnline = abs $tme;
                 my $days  = int( $lastnline / 86400 );
                 my $hours = sprintf '%02d',
                   int( ( $lastnline - ( $days * 86400 ) ) / 3600 );
@@ -998,7 +955,7 @@ sub quick_links {
     my $qlcount = 0;
     if ($usertools) {
         $qlcount++;
-        my $modcol = is_moderator_b($user);
+        my $modcol = is_moderator_b($usr);
         if ( $modcol == 1 ) {
             @memstats = @{ $grp_staff{'Moderator'} };
         }
@@ -1010,65 +967,65 @@ sub quick_links {
         }
 
         $quicklinks = qq~<div style="position:relative;$display">
-            <ul id="$useraccount{$user}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$user}$qlcount')" onmouseout="TimeClose('$useraccount{$user}$qlcount')">
+            <ul id="$useraccount{$usr}$qlcount" class="QuickLinks" onmouseover="keepLinks('$useraccount{$usr}$qlcount')" onmouseout="TimeClose('$useraccount{$usr}$qlcount')">
                 <li>~
-          . user_onlinestatus($user) . qq~</li>\n~;
-        if ( $user ne $username ) {
+          . user_onlinestatus($usr) . qq~</li>\n~;
+        if ( $usr ne $username ) {
             {
                 no strict qw(refs);
                 $quicklinks .=
-qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'2'} ${ $uid . $user }{'realname'}$maintxt{'3'}</a></li>\n~;
+qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$maintxt{'2'} ${ $uid . $usr }{'realname'}$maintxt{'3'}</a></li>\n~;
             }
-            checkuserpm_level($user);
+            checkuserpm_level($usr);
             if (
                    $pm_level == 1
-                || ( $pm_level == 2 && $user_pm_level{$user} > 1 && $staff )
+                || ( $pm_level == 2 && $user_pm_level{$usr} > 1 && $staff )
                 || (   $pm_level == 3
-                    && $user_pm_level{$user} == 4
+                    && $user_pm_level{$usr} == 4
                     && ( $iamadmin || $iamgmod || $iamfmod ) )
                 || (   $pm_level == 4
-                    && $user_pm_level{$user} == 3
+                    && $user_pm_level{$usr} == 3
                     && ( $iamadmin || $iamgmod ) )
               )
             {
                 {
                     no strict qw(refs);
                     $quicklinks .=
-qq~             <li><a href="$scripturl?action=imsend;to=$useraccount{$user}">$maintxt{'0'} ${ $uid . $user }{'realname'}</a></li>\n~;
+qq~             <li><a href="$scripturl?action=imsend;to=$useraccount{$usr}">$maintxt{'0'} ${ $uid . $usr }{'realname'}</a></li>\n~;
                 }
             }
             {
                 no strict qw(refs);
-                if ( !${ $uid . $user }{'hidemail'} || $iamadmin ) {
+                if ( !${ $uid . $usr }{'hidemail'} || $iamadmin ) {
                     $quicklinks .= '                <li>'
                       . enc_email(
-                        "$maintxt{'1'} ${ $uid . $user }{'realname'}",
-                        ${ $uid . $user }{'email'},
+                        "$maintxt{'1'} ${ $uid . $usr }{'realname'}",
+                        ${ $uid . $usr }{'email'},
                         q{}, q{}, 1
                       ) . "</li>\n";
                 }
 
                 if ( !%mybuddie ) { load_mybuddy(); }
-                if ( $enable_buddylist && !$mybuddie{$user} ) {
+                if ( $enable_buddylist && !$mybuddie{$usr} ) {
                     $quicklinks .=
-qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$user}">$maintxt{'4'} ${ $uid . $user }{'realname'} $maintxt{'5'}</a></li>\n~;
+qq~             <li><a href="$scripturl?action=addbuddy;name=$useraccount{$usr}">$maintxt{'4'} ${ $uid . $usr }{'realname'} $maintxt{'5'}</a></li>\n~;
                 }
             }
         }
         else {
             $quicklinks .=
-qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$user}">$maintxt{'6'}</a></li>\n~;
+qq~             <li><a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$maintxt{'6'}</a></li>\n~;
         }
         $quicklinks .=
-qq~         </ul><a href="javascript:quickLinks('$useraccount{$user}$qlcount')"$lastnline>~;
-        $quicklinks .= $online ? $format_unbold{$user} : $format{$user};
+qq~         </ul><a href="javascript:quickLinks('$useraccount{$usr}$qlcount')"$lastnline>~;
+        $quicklinks .= $online ? $format_unbold{$usr} : $format{$usr};
         $quicklinks .= q~</a></div>~;
     }
     else {
-        if ( $format{$user} ) {
+        if ( $format{$usr} ) {
             $quicklinks =
-qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$user}"$lastnline>~
-              . ( $online ? $format_unbold{$user} : $format{$user} ) . q~</a>~;
+qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}"$lastnline>~
+              . ( $online ? $format_unbold{$usr} : $format{$usr} ) . q~</a>~;
         }
         else { $quicklinks = q{}; }
     }
@@ -1143,7 +1100,7 @@ sub make_tools {
 }
 
 sub load_cookie {
-    if ( $ENV{'HTTP_COOKIE'} ){
+    if ( $ENV{'HTTP_COOKIE'} ) {
         foreach ( split /;\s/xsm, $ENV{'HTTP_COOKIE'} ) {
             s/%([[:alnum]][[:alnum]])/pack('C', hex($1))/egxsm;
             my ( $cookie, $value ) = split /=/xsm;
@@ -1198,7 +1155,7 @@ sub load_cookie {
 
 sub update_cookie {
     my @myargs = @_;
-    my ( $what, $user, $passw, $sessionval, $pathvl, $expire ) = @myargs;
+    my ( $what, $usr, $passw, $sessionval, $pathvl, $expire ) = @myargs;
     my ($expiration);
     our ( $yy_setcookies1, $yy_setcookies2, $yy_setcookies3 );
     my $valid = 0;
@@ -1228,7 +1185,7 @@ sub update_cookie {
         }
         $yy_setcookies1 = write_cookie(
             -name    => $cookieusername,
-            -value   => $user,
+            -value   => $usr,
             -path    => $pathvl,
             -expires => $expiration
         );
@@ -1257,98 +1214,64 @@ sub update_cookie {
               );
             $yy_cookies{$admincookie} = q{};
         }
-
-        foreach my $catid (@categoryorder) {
-            if ( !$catid ) { next; }
-            foreach my $curboard (@{$cat{$catid}}) {
-                chomp $curboard;
-                if ($username) {
-                    my $tsortcookie = "$cookietsort$curboard$username";
-                    if ( $yy_cookies{$tsortcookie} ) {
-                        push @other_cookies,
-                          write_cookie(
-                            -name    => $tsortcookie,
-                            -value   => q{},
-                            -path    => q{/},
-                            -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
-                          );
-                        $yy_cookies{$tsortcookie} = q{};
-                        my $cookiename = "$cookiepassword$curboard$username";
-                        if ( $yy_cookies{$cookiename} ) {
-                            push @other_cookies,
-                              write_cookie(
-                            -name    => $cookiename,
-                            -value   => q{},
-                            -path    => q{/},
-                            -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
-                          );
-                            $yy_cookies{$cookiename} = q{};
-                        }
-                    }
-                }
-            }
-        }
+        set_board_cookie($username);
     }
     return;
 }
 
 sub what_template {
+    no strict qw(refs);
     my $found = 0;
     our ($yy_setcookies1);
     our $template = 'Forum default';
-    while ( my ( $curtemplate, $value ) = each %templateset ) {
-        if ( $curtemplate eq $default_template ) {
-            $template = $curtemplate;
-            $found    = 1;
-        }
+    if ( $templateset{$default_template} ) {
+        $template = $default_template;
+        $found    = 1;
     }
     if ( !$found ) { $template = 'Forum default'; }
+    if (   ${ $uid . $username }{'template'}
+        || $yy_cookies{'yabb2template'}
+        || $FORM{'template'} )
     {
-        no strict qw(refs);
-        if (   ${ $uid . $username }{'template'}
-            || $yy_cookies{'yabb2template'}
-            || $FORM{'template'} )
-        {
-            while ( my ( $curtemplate, $value ) = each %templateset ) {
-                if (   $FORM{'template'}
-                    && $curtemplate eq $FORM{'template'} )
-                {
-                    if ( $sessionvalid && !$iamguest ) {
+        while ( my ( $curtemplate, $value ) = each %templateset ) {
+            if (   $FORM{'template'}
+                && $curtemplate eq $FORM{'template'} )
+            {
+                if ( $sessionvalid && !$iamguest ) {
 
-                        ${ $uid . $username }{'template'} =
-                          $FORM{'template'};
-                        user_account( $username, 'update' );
+                    ${ $uid . $username }{'template'} =
+                      $FORM{'template'};
+                    user_account( $username, 'update' );
+                }
+                else {
+                    if ( !$pathval || $pathval eq q{} ) {
+                        $pathval = q~/~;
                     }
-                    else {
-                        if ( !$pathval || $pathval eq q{} ) {
-                            $pathval = q~/~;
-                        }
-                        $yy_setcookies1 = write_cookie(
-                            -name    => 'yabb2template',
-                            -value   => $FORM{'template'},
-                            -path    => $pathval,
-                            -expires => 'Sunday, 17-Jan-2038 00:00:00 GMT'
-                        );
-                    }
-                    my $redir =
-                        $FORM{'redir'} ? "?$FORM{'redir'}"
-                      : $iamguest      ? q{?}
-                      :                  q{};
-                    $redir =~ s/search2/search/gxsm;
-                    $yysetlocation = qq~$scripturl$redir~;
-                    redirectexit();
+                    $yy_setcookies1 = write_cookie(
+                        -name    => 'yabb2template',
+                        -value   => $FORM{'template'},
+                        -path    => $pathval,
+                        -expires => 'Sunday, 17-Jan-2038 00:00:00 GMT'
+                    );
                 }
-                elsif ($iamguest
-                    && $yy_cookies{'yabb2template'}
-                    && $curtemplate eq $yy_cookies{'yabb2template'} )
-                {
-                    $template = $curtemplate;
-                }
-                elsif ( ${ $uid . $username }{'template'}
-                    && $curtemplate eq ${ $uid . $username }{'template'} )
-                {
-                    $template = $curtemplate;
-                }
+                my $redir =
+                    $FORM{'redir'} ? "?$FORM{'redir'}"
+                  : $iamguest      ? q{?}
+                  :                  q{};
+                $redir =~ s/search2/search/gxsm;
+                $yysetlocation = qq~$scripturl$redir~;
+                redirectexit();
+            }
+            elsif ($iamguest
+                && $yy_cookies{'yabb2template'}
+                && $curtemplate eq $yy_cookies{'yabb2template'} )
+            {
+                $template = $curtemplate;
+            }
+            elsif ( ${ $uid . $username }{'template'}
+                && $curtemplate eq ${ $uid . $username }{'template'} )
+            {
+                $template = $curtemplate;
             }
         }
     }
@@ -1442,6 +1365,7 @@ sub build_ims {
 
         foreach my $message (@messages) {
             my $chk = ( split /[|]/xsm, $message )[12] || q{};
+
             # If the message is flagged as u(nopened), add to the new count
             if ( $chk =~ /u/xsm ) { $inunr++; }
         }
@@ -1590,14 +1514,9 @@ sub load_ims {
     return;
 }
 
-sub load_broadcastmessages {    #check broadcast messages
-    return
-      if ( $iamguest
-        || $pm_level == 0
-        || ( $maintenance   && !$iamadmin )
-        || ( $pm_level == 2 && ( !$staff ) )
-        || ( $pm_level == 3 && ( !$iamadmin && !$iamgmod ) )
-        || ( $pm_level == 4 && ( !$iamadmin && !$iamgmod && !$iamfmod ) ) );
+sub load_broadcastmessages {
+    my $getperms = get_pm_perms();
+    if ( !$getperms ) { return; }
 
     my $builduser = shift;
     our $bc_newmessage = 0;
@@ -1647,14 +1566,9 @@ sub load_broadcastmessages {    #check broadcast messages
     return;
 }
 
-sub load_guestmessages {    #check guest messages
-    return
-      if ( $iamguest
-        || $pm_level == 0
-        || ( $maintenance   && !$iamadmin )
-        || ( $pm_level == 2 && ( !$staff ) )
-        || ( $pm_level == 3 && ( !$iamadmin && !$iamgmod ) )
-        || ( $pm_level == 4 && ( !$iamadmin && !$iamgmod && !$iamfmod ) ) );
+sub load_guestmessages {
+    my $getperms = get_pm_perms();
+    if ( !$getperms ) { return; }
 
     my $builduser = shift;
     our $g_newmessage = 0;
@@ -1665,7 +1579,6 @@ sub load_guestmessages {    #check guest messages
     {
         no strict qw(refs);
         if ( -e "$memberdir/guest.messages" ) {
-
             foreach ( split /,/xsm, ${$builduser}{'PMgRead'} || q{} ) {
                 $pm_g_read{$_} = 1;
             }
@@ -1703,6 +1616,102 @@ sub load_guestmessages {    #check guest messages
         }
     }
     return;
+}
+
+sub get_pm_perms {
+    my $get_perms = 1;
+    if (   $iamguest
+        || $pm_level == 0
+        || ( $maintenance   && !$iamadmin )
+        || ( $pm_level == 2 && ( !$staff ) )
+        || ( $pm_level == 4 && ( !$iamadmin && !$iamgmod && !$iamfmod ) )
+        || ( $pm_level == 3 && ( !$iamadmin && !$iamgmod ) ) )
+    {
+        $get_perms = 0;
+    }
+    return $get_perms;
+}
+
+sub set_board_cookie {
+    my ($usr) = @_;
+    foreach my $catid (@categoryorder) {
+        if ( !$catid ) { next; }
+        foreach my $curboard ( @{ $cat{$catid} } ) {
+            chomp $curboard;
+            if ($username) {
+                my $tsortcookie = "$cookietsort$curboard$usr";
+                if ( $yy_cookies{$tsortcookie} ) {
+                    push @other_cookies,
+                      write_cookie(
+                        -name    => $tsortcookie,
+                        -value   => q{},
+                        -path    => q{/},
+                        -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
+                      );
+                    $yy_cookies{$tsortcookie} = q{};
+                    my $cookiename = "$cookiepassword$curboard$usr";
+                    if ( $yy_cookies{$cookiename} ) {
+                        push @other_cookies,
+                          write_cookie(
+                            -name    => $cookiename,
+                            -value   => q{},
+                            -path    => q{/},
+                            -expires => 'Thursday, 01-Jan-1970 00:00:00 GMT'
+                          );
+                        $yy_cookies{$cookiename} = q{};
+                    }
+                }
+            }
+        }
+    }
+    return;
+}
+
+sub get_brd_perms {
+    my ( $usr, $memstat, $addmembergroup ) = @_;
+    my @memstat        = @{$memstat};
+    my %addmembergroup = %{$addmembergroup};
+    my ( $viewperms, $topicperms, $replyperms, $pollperms, $attachperms ) =
+      ( 0, 0, 0, 0, 0 );
+    no strict qw(refs);
+    if ( ${ $uid . $usr }{'addgroups'} ) {
+        foreach my $addgrptitle ( split /,/xsm, ${ $uid . $usr }{'addgroups'} )
+        {
+            my (
+                $atitle,     undef,       undef,        undef,
+                $anoshow,    $aviewperms, $atopicperms, $areplyperms,
+                $apollperms, $aattachperms
+            ) = @{ $grp_nopost{$addgrptitle} };
+            $viewperms   = 0;
+            $topicperms  = 0;
+            $replyperms  = 0;
+            $pollperms   = 0;
+            $attachperms = 0;
+            if ( $atitle ne $memstat[0] ) {
+                if ( $username && $usr eq $username && !$iamadmin ) {
+                    if ( $aviewperms == 1 )   { $viewperms   = 1; }
+                    if ( $atopicperms == 1 )  { $topicperms  = 1; }
+                    if ( $areplyperms == 1 )  { $replyperms  = 1; }
+                    if ( $apollperms == 1 )   { $pollperms   = 1; }
+                    if ( $aattachperms == 1 ) { $attachperms = 1; }
+                    ${ $uid . $usr }{'perms'} =
+"$viewperms|$topicperms|$replyperms|$pollperms|$attachperms";
+                }
+                if (
+                    $anoshow
+                    && ( $iamadmin
+                        || ( $iamgmod && $gmod_access2{'profileAdmin'} ) )
+                  )
+                {
+                    $addmembergroup{$usr} .= qq~($atitle)<br />~;
+                }
+                elsif ( !$anoshow ) {
+                    $addmembergroup{$usr} .= qq~$atitle<br />~;
+                }
+            }
+        }
+    }
+    return %addmembergroup;
 }
 
 1;

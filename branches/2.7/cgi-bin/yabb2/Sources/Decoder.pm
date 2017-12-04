@@ -40,7 +40,7 @@ sub scramble {
 
     # creating a codekey based on userid
     my $carrier = q{};
-    for my $n ( 0 .. length $user ) {
+    foreach my $n ( 0 .. length $user ) {
         my $ascii = substr $user, $n, 1;
         $ascii = ord $ascii;
         $carrier .= $ascii;
@@ -48,7 +48,7 @@ sub scramble {
     while ( length($carrier) < length $input ) { $carrier .= $carrier; }
     $carrier = substr $carrier, 0, length $input;
     my $scramble = encode_password( rand 100 );
-    for my $n ( 0 .. 9 ) {
+    foreach my $n ( 0 .. 9 ) {
         $scramble .= encode_password($scramble);
     }
     $scramble =~ s/\//y/gxsm;
@@ -58,7 +58,7 @@ sub scramble {
 
     # making a mess of the input
     my $lastvalue = 3;
-    for my $n ( 0 .. length $input ) {
+    foreach my $n ( 0 .. length $input ) {
         my $str = ( substr $carrier, $n, 1 ) || 0;
         my $value = $str + $lastvalue + 1;
         $lastvalue = $value;
@@ -79,7 +79,7 @@ sub descramble {
 
     # creating a codekey based on userid
     my $carrier = q{};
-    for my $n ( 0 .. ( length($user) - 1 ) ) {
+    foreach my $n ( 0 .. ( length($user) - 1 ) ) {
         my $ascii = substr $user, $n, 1;
         $ascii = ord $ascii;
         $carrier .= $ascii;
@@ -94,7 +94,7 @@ sub descramble {
     my $descramble = q{};
 
     # getting code length from encrypted input
-    for my $n ( 0 .. ( $orglength - 66 ) ) {
+    foreach my $n ( 0 .. ( $orglength - 66 ) ) {
         my $value = ( substr $carrier, $n, 1 ) + $lastvalue + 1;
         $lastvalue = $value;
         $descramble .= substr $input, $value, 1;
@@ -124,8 +124,8 @@ sub validation_check {
 sub validation_code {
 
     # set the max length of the shown verification code
-    my $first_charslen = 0,
-    my $last_charslen = 0;
+    my $first_charslen = 0;
+    my $last_charslen  = 0;
     if ($captcha_start_chars) { $first_charslen = $captcha_start_chars; }
     if ($captcha_end_chars)   { $last_charslen  = $captcha_end_chars; }
     if ( $captcha_start_chars || $captcha_end_chars ) {
@@ -168,12 +168,8 @@ sub testcaptcha {
 
 sub convert {
     require Sources::Captcha;
-#    my $start_chars = q{};
-#    my $end_chars   = q{};
-#    if ($captcha_start_chars) { $start_chars = $captcha_start_chars; }
-#    if ($captcha_end_chars)   { $end_chars   = $captcha_end_chars; }
     my $captcha = testcaptcha( $INFO{$randaction} );
-    captcha( $captcha );
+    captcha($captcha);
     return;
 }
 

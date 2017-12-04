@@ -29,8 +29,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 ##  languages ##
-our ( %admin_img, %croak, %img_txt, %maintxt, %post_txt,
-    %templ_txt, );
+our ( %admin_img, %croak, %img_txt, %maintxt, %post_txt, %templ_txt, );
 ## paths ##
 our ( $adminurl, $defaultimagesdir, $htmldir, $imagesdir, $scripturl,
     $yyhtml_root, );
@@ -47,8 +46,6 @@ our (
 load_language('Admin');
 load_language('Templates');
 load_language('Menu');
-
-require Admin::AdminSubs;
 
 my $adminimages = "$yyhtml_root/Templates/Admin/default";
 
@@ -74,7 +71,7 @@ sub modify_style {
     closedir TMPLDIR;
 
     my $forumcss = qq~<option value="" disabled="disabled">--</option>\n~;
-    for my $file ( sort @styles ) {
+    foreach my $file ( sort @styles ) {
         my ( $name, $ext ) = split /[.]/xsm, $file;
         my $selected = q{};
         if ( $ext && $ext eq 'css' ) {
@@ -89,7 +86,7 @@ sub modify_style {
     my @astyles = readdir TMPLDIR;
     closedir TMPLDIR;
     my $admincss = qq~<option value="" disabled="disabled">--</option>\n~;
-    for my $file ( sort @astyles ) {
+    foreach my $file ( sort @astyles ) {
         my ( $name, $ext ) = split /[.]/xsm, $file;
         my $selected = q{};
         if ( $ext && $ext eq 'css' ) {
@@ -229,7 +226,7 @@ sub modify_css {
     my $forumcss = q{};
     my $imgdirs  = q{};
     my $viewcss  = q{};
-    for my $file ( sort @styles ) {
+    foreach my $file ( sort @styles ) {
         if ( $file ne 'calscroller.css' && $file ne 'setup.css' ) {
             my ( $name, $ext ) = split /[.]/xsm, $file;
             my $selected = q{};
@@ -248,7 +245,7 @@ sub modify_css {
       or fatal_error( 'cannot_open', "$htmldir/Templates/Forum/$cssfile" );
     my @thecss = <$CSS>;
     fclose('CSS') or croak "$croak{'close'} CSS";
-    for my $style_sgl (@thecss) {
+    foreach my $style_sgl (@thecss) {
         $style_sgl =~ s/[\r\n]//gxsm;
         $style_sgl =~ s/\A\s*//xsm;
         $style_sgl =~ s/\s*\Z//xsm;
@@ -278,7 +275,7 @@ sub modify_css {
 
     my $gen_fontsize =
 q~              <select name="cssfntsize" id="cssfntsize" style="vertical-align: middle;" onchange="previewFont()">~;
-    for my $i ( 83, 92, 100, 108, 112, 120 ) {
+    foreach my $i ( 83, 92, 100, 108, 112, 120 ) {
         $gen_fontsize .= qq~                <option value="$i">$i%</option>~;
     }
     $gen_fontsize .= q~
@@ -293,7 +290,7 @@ q~              <select name="cssfntface" id="cssfntface" style="vertical-align:
                 </select>~;
     my $gen_borderweigth =
 q~              <select name="borderweigth" id="borderweigth" style="vertical-align: middle;" onchange="previewBorder()">~;
-    for my $i ( 0 .. 5 ) {
+    foreach my $i ( 0 .. 5 ) {
         $gen_borderweigth .= qq~<option value="$i">$i</option>~;
     }
     $gen_borderweigth .= q~
@@ -567,7 +564,7 @@ qq~                 <option value='$quotestyle'>$templ_txt{'37'}</option>\n~;
         $message = qq~\[quote\]$templ_txt{'53'}\[/quote\]~;
         if ($enable_ubbc) {
             enable_yabbc();
-            do_ubbc();
+            $message = do_ubbc($message);
         }
         $aquote = $message;
     }
@@ -580,7 +577,7 @@ qq~                 <option value='$codestyle'>$templ_txt{'38'}</option>\n~;
         $message = qq~\[code\]$templ_txt{'54'}\[/code\]~;
         if ($enable_ubbc) {
             enable_yabbc();
-            do_ubbc();
+            $message = do_ubbc($message);
         }
         $acode = $message;
     }
@@ -593,7 +590,7 @@ qq~                   <option value='$editbgstyle'>$templ_txt{'24'}</option>\n~;
         $message = qq~\[edit\]$templ_txt{'55'}\[/edit\]~;
         if ($enable_ubbc) {
             enable_yabbc();
-            do_ubbc();
+            $message = do_ubbc($message);
         }
         $aedit = $message;
     }
@@ -606,7 +603,7 @@ qq~                   <option value='$highlightstyle'>$templ_txt{'39'}</option>\
         $message = qq~\[highlight\]$templ_txt{'56'}\[/highlight\]~;
         if ($enable_ubbc) {
             enable_yabbc();
-            do_ubbc();
+            $message = do_ubbc($message);
         }
         $ahighlight = $message;
     }
@@ -734,7 +731,7 @@ qq~                   <option value='$highlightstyle'>$templ_txt{'39'}</option>\
     my $optbuttons = q{};
     my $x          = 1;
     my ( $bleft, $bright );
-    for my $line ( sort @contents ) {
+    foreach my $line ( sort @contents ) {
         my ( $name,    $extension ) = split /[.]/xsm, $line;
         my ( $tmpname, $tmpside )   = split /\_/xsm,  $name;
         my $checked = q{};
@@ -920,22 +917,22 @@ q~height: 22px; width: 23px; border: 0; margin: 0 1px 1px 0; background-position
     my ($ubbccol);
     my $uchecked = q{};
 
-    for (@backlist) {
+    foreach my $i (@backlist) {
         $ubbccol = int( @backlist / 2 );
         if ( $y - 1 == $ubbccol ) {
             $ubbcbuttonlist .=
               '</div><div style="float:left; padding: 0 20px 0 0">';
         }
         my $ubbcbuttonback =
-          qq~background-image: url($yyhtml_root/UBBCbuttons/$_);~;
+          qq~background-image: url($yyhtml_root/UBBCbuttons/$i);~;
         $ubbcbuttonlist .=
           qq~<span style="$ubbcbutton$ubbcbuttonback">&nbsp;</span> ~;
-        if ( $_ eq $ubbcbg ) {
+        if ( $i eq $ubbcbg ) {
             $uchecked = ' checked="checked"';
         }
         else { $uchecked = q{}; }
         $ubbcbuttonlist .=
-qq~<input type="radio" name="ubbcselbutton" id="ubbcselbutton$y" value="$_"$uchecked onclick="updateUBBC(this.value);" /> <label for="ubbcselbutton$y" style="vertical-align: top;"><b>$_</b></label><br /><br />~;
+qq~<input type="radio" name="ubbcselbutton" id="ubbcselbutton$y" value="$i"$uchecked onclick="updateUBBC(this.value);" /> <label for="ubbcselbutton$y" style="vertical-align: top;"><b>$i</b></label><br /><br />~;
         $y++;
     }
     $yymain .=
@@ -943,11 +940,11 @@ qq~<br /><input type="hidden" id="ubbcbuttonbg" name="ubbcbuttonbg" value="$ubbc
     </tr>~;
 
     my $viewstylestart =
-q~<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{yabb xml_lang}" lang="{yabb xml_lang}">
+q~<!DOCTYPE html>
+<html lang="{yabb xml_lang}">
 <head>
 <title>Test Styles</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
 ~;
     my ( $tabsep, $tabfill, $tabtime, );
     my $viewstyle = q~
@@ -1109,7 +1106,7 @@ q~style="height: 20px; border: 0; margin: 0; padding: 0; text-align: left; text-
     );
     my $boxlist = q{};
 
-    for my $i ( sort keys %textdecor ) {
+    foreach my $i ( sort keys %textdecor ) {
         my ( $img, $alt ) = split /[|]/xsm, $textdecor{$i};
         $boxlist .=
 qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$img' $hand alt='$alt' title='$alt' /></span>\n~;
@@ -1182,23 +1179,22 @@ qq~<span class="ubbcbutton ubbcbuttonback"><img src='$yyhtml_root/UBBCbuttons/$i
     $viewstylestart =~ s/\s+$//gxsm;
     $viewstylestart =~ s/[\r\n]//gxsm;
     $viewstylestart =~ s/\Q{yabb xml_lang}\E/$abbr_lang/gxsm;
-    to_temphtml($viewstylestart);
+    $viewstylestart = to_html($viewstylestart);
+
     $stylestr =~ s/^\s+//gxsm;
     $stylestr =~ s/\s+$//gxsm;
     $stylestr =~ s/[\r\n]//gxsm;
     $stylestr =~ s/\Q{yabb xml_lang}\E/$abbr_lang/gxsm;
-    to_temphtml($stylestr);
+    $stylestr = to_html($stylestr);
+
     $viewstyle =~ s/^\s+//gxsm;
     $viewstyle =~ s/\s+$//gxsm;
     $viewstyle =~ s/[\r\n]//gxsm;
     $viewstyle =~ s/\Q{yabb xml_lang}\E/$abbr_lang/gxsm;
-    to_temphtml($viewstyle);
-    my $savecss = q{};
+    $viewstyle = to_html($viewstyle);
 
-    if ( $viewcss eq 'default' ) {
-        $savecss = q{};
-    }
-    else {
+    my $savecss = q{};
+    if ( $viewcss ne 'default' ) {
         $savecss = $viewcss;
     }
 
@@ -1806,7 +1802,7 @@ sub modify_css2 {
         fopen( 'TMPCSS', '>', "$htmldir/Templates/Forum/$style_name.css" )
           or fatal_error( 'cannot_open',
             "$htmldir/Templates/Forum/$style_name.css", 1 );
-        for my $style_sgl (@style_arr) {
+        foreach my $style_sgl (@style_arr) {
             $style_sgl =~ s/\A\s+?//gxsm;
             if ( $style_sgl =~ m{;+\Z}xsm ) { $style_sgl = qq~    $style_sgl~; }
             $style_sgl =~ s/$yyhtml_root\/Templates\/Forum/[.]/gxsm;

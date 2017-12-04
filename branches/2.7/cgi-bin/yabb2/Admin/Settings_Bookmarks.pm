@@ -63,7 +63,8 @@ sub book_marks {
                 my $dash = q{-};
                 if ( $indent > 2 ) { $dash = q{-}; }
 
-                my ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
+                my ( $boardname, $boardperms, $boardview ) =
+                  @{ $board{$board} };
 
                 if (   ${ $uid . $board }{'rbin'}
                     || ${ $uid . $board }{'ann'}
@@ -84,7 +85,7 @@ sub book_marks {
                   . ( $dash x ( $indent / 2 ) )
                   . qq~$boardname</option>\n~;
                 if ( $subboard{$board} ) {
-                    get_subboards( @{$subboard{$board}} );
+                    get_subboards( @{ $subboard{$board} } );
                 }
             }
             $indent -= 2;
@@ -92,13 +93,13 @@ sub book_marks {
     };
 
     foreach my $catid (@categoryorder) {
-        my $catname = ${$catinfo{$catid}}[0];
+        my $catname = ${ $catinfo{$catid} }[0];
         $catname = to_chars($catname);
         $board_list .= qq~<option disabled="disabled">$catname</option>\n~;
         {
             no strict qw(refs);
-            foreach my $board (@{$cat{$catid}}) {
-                my $boardname = ${$board{$board}}[0];
+            foreach my $board ( @{ $cat{$catid} } ) {
+                my $boardname = ${ $board{$board} }[0];
 
                 if (   ${ $uid . $board }{'ann'}
                     || ${ $uid . $board }{'rbin'}
@@ -112,7 +113,7 @@ sub book_marks {
             }
         }
         $indent = -2;
-        get_subboards(@{$cat{$catid}});
+        get_subboards( @{ $cat{$catid} } );
     }
     my @bookmarks = keys %bookmarks;
     my $total_bookmarks = @bookmarks || 0;

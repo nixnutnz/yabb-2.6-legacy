@@ -34,68 +34,68 @@ our (
     $yymycharset,                  $codemaxchars,
     $fadertext,                    %color,
     $faderbackground,              %templateset,
-    $iplookup_url, $iplookup_list,                %iplookup,
-    $ext_prof_order,               @ext_prof_order,
-    $ext_prof_fields,              @ext_prof_fields,
-    $adomains,                     @adomains,
-    $bdomains,                     @bdomains,
-    $reserve,                      @reserve,
-    $spamrules,                    @spamrules,
-    $usertxtwrap,                  %grp_staff,
-    %grp_nopost,                   %grp_post,
-    $nopostorder,                  @nopostorder,
-    $pallist,                      @pallist,
-    $enable_notifications,         $enable_notifications_n,
-    $enable_notifications_pm,      @advanced_tabs,
-    $detachblock,                  $removenormalsmilies,
-    %addedsmilies,                 $smilieorder,
-    @smilieorder,                  $bookmarks,
-    @bookmarks,                    $bkmax_process_time,
-    @backup_paths,                 %newcalicon,
-    @ext,                          @pm_attachext,
-    %afix_img_size,                %fix_img_size,
-    $smtp_server,                  $yabbversion,
-    $maintenance,                  $rememberbackup,
-    $guestaccess,                  $mbname,
-    $forumstart,                   $cookie_length,
-    $cookieusername,               $cookiepassword,
-    $cookiesession_name,           $cookietsort,
-    $cookieview,                   $cookieviewtime,
-    $regtype,                      $reg_agree,
-    $screenlogin,                  $imp_email_check,
-    $reg_reason_len,               $preregspan,
-    $pwstrengthmeter_scores,       $pwstrengthmeter_common,
-    $pwstrengthmeter_minchar,      $emailpassword,
-    $emailnewpass,                 $emailwelcome,
-    $name_cannot_be_userid,        $birthday_on_reg,
-    $gender_on_reg,                $nomailspammer,
-    $lang,                         $default_template,
-    $templ_switcher,               $temp_switcher_allowed,
-    $mailprog,                     $smtp_auth_required,
-    $authuser,                     $authpass,
-    $helloserv,                    $mailtype,
-    $usehelp_perms,                $matchword,
-    $matchcase,                    $matchuser,
-    $matchname,                    $profilebutton,
-    $usertools,                    $allow_hide_email,
-    $user_hide_avatars,            $user_hide_user_text,
-    $user_hide_img,                $user_hide_signat,
-    $user_hide_attach,             $user_hide_smilies,
-    $edit_genderlimit,             $edit_agelimit,
-    $enable_buddylist,             $addmemgroup_enabled,
-    $showlatestmember,             $user_hide_attach_img,
-    $user_hide_smilies_row,        $shownewsfader,
-    $show_recentbar,               $showmodify,
-    $show_brd_descrip,             $showuserpic,
-    $showusertext,                 $showtopicviewers,
-    $showtopicrepliers,            $hide_signat_for_guests,
-    $showgenderimage,              $showzodiac,
-    $showuserage,                  $showage,
-    $showregdate,                  $showyabbcbutt,
-    $nestedquotes,                 $parseflash,
-    $enableclicklog,               $showimageinquote,
-    $enabletopichover,             $staff_reason,
-    $user_reason,
+    $iplookup_url,                 $iplookup_list,
+    %iplookup,                     $ext_prof_order,
+    @ext_prof_order,               $ext_prof_fields,
+    @ext_prof_fields,              $adomains,
+    @adomains,                     $bdomains,
+    @bdomains,                     $reserve,
+    @reserve,                      $spamrules,
+    @spamrules,                    $usertxtwrap,
+    %grp_staff,                    %grp_nopost,
+    %grp_post,                     $nopostorder,
+    @nopostorder,                  $pallist,
+    @pallist,                      $enable_notifications,
+    $enable_notifications_n,       $enable_notifications_pm,
+    @advanced_tabs,                $detachblock,
+    $removenormalsmilies,          %addedsmilies,
+    $smilieorder,                  @smilieorder,
+    $bookmarks,                    @bookmarks,
+    $bkmax_process_time,           @backup_paths,
+    %newcalicon,                   @ext,
+    @pm_attachext,                 %afix_img_size,
+    %fix_img_size,                 $smtp_server,
+    $yabbversion,                  $maintenance,
+    $rememberbackup,               $guestaccess,
+    $mbname,                       $forumstart,
+    $cookie_length,                $cookieusername,
+    $cookiepassword,               $cookiesession_name,
+    $cookietsort,                  $cookieview,
+    $cookieviewtime,               $regtype,
+    $reg_agree,                    $screenlogin,
+    $imp_email_check,              $reg_reason_len,
+    $preregspan,                   $pwstrengthmeter_scores,
+    $pwstrengthmeter_common,       $pwstrengthmeter_minchar,
+    $emailpassword,                $emailnewpass,
+    $emailwelcome,                 $name_cannot_be_userid,
+    $birthday_on_reg,              $gender_on_reg,
+    $nomailspammer,                $lang,
+    $default_template,             $templ_switcher,
+    $temp_switcher_allowed,        $mailprog,
+    $smtp_auth_required,           $authuser,
+    $authpass,                     $helloserv,
+    $mailtype,                     $usehelp_perms,
+    $matchword,                    $matchcase,
+    $matchuser,                    $matchname,
+    $profilebutton,                $usertools,
+    $allow_hide_email,             $user_hide_avatars,
+    $user_hide_user_text,          $user_hide_img,
+    $user_hide_signat,             $user_hide_attach,
+    $user_hide_smilies,            $edit_genderlimit,
+    $edit_agelimit,                $enable_buddylist,
+    $addmemgroup_enabled,          $showlatestmember,
+    $user_hide_attach_img,         $user_hide_smilies_row,
+    $shownewsfader,                $show_recentbar,
+    $showmodify,                   $show_brd_descrip,
+    $showuserpic,                  $showusertext,
+    $showtopicviewers,             $showtopicrepliers,
+    $hide_signat_for_guests,       $showgenderimage,
+    $showzodiac,                   $showuserage,
+    $showage,                      $showregdate,
+    $showyabbcbutt,                $nestedquotes,
+    $parseflash,                   $enableclicklog,
+    $showimageinquote,             $enabletopichover,
+    $staff_reason,                 $user_reason,
     $enable_ubbc,                  $enable_news,
     $allowpics,                    $upload_useravatar,
     $upload_avatargroup,           $avatar_limit,
@@ -573,8 +573,8 @@ sub settings2 {
     is_admin_or_gmod();
 
     # Load/Verify the settings
-    for my $tab (@settings) {
-        for my $item ( @{ $tab->{'items'} } ) {
+    foreach my $tab (@settings) {
+        foreach my $item ( @{ $tab->{'items'} } ) {
 
             # Get the value
             my $name = $item->{'name'} || next;    # Skip non-items
@@ -637,27 +637,29 @@ sub save_settings_to {
     foreach my $key ( keys %settings ) {
         ${$key} = delete $settings{$key};
     }
-    for ( keys %lngs ) {
-        if ( ${ $_ . '_maintenancetext' } ) {
+    foreach my $i ( keys %lngs ) {
+        if ( ${ $i . '_maintenancetext' } ) {
             our ($MAINT);
-            fopen( 'MAINT', '>', "$langdir/$_/maintenancetext.txt" )
+            fopen( 'MAINT', '>', "$langdir/$i/maintenancetext.txt" )
               or croak "$croak{'open'} MAINT";
-            print {$MAINT} ${ $_ . '_maintenancetext' }
+            print {$MAINT} ${ $i . '_maintenancetext' }
               or croak "$croak{'print'} MAINT";
             fclose('MAINT') or croak "$croak{'close'} MAINT";
         }
-        if ( ${ $_ . '_news' } ) {
+        if ( ${ $i . '_news' } ) {
             our ($NEWS);
-            fopen( 'NEWS', '>', "$langdir/$_/news.txt" )
-              or fatal_error( 'cannot_open', "$langdir/$_/news.txt", 1 );
-            print {$NEWS} ${ $_ . '_news' } or croak "$croak{'print'} NEWS";
+            fopen( 'NEWS', '>', "$langdir/$i/news.txt" )
+              or fatal_error( 'cannot_open', "$langdir/$i/news.txt", 1 );
+            print {$NEWS} ${ $i . '_news' } or croak "$croak{'print'} NEWS";
             fclose('NEWS') or croak "$croak{'close'} NEWS";
         }
-        if ( ${ $_ . '_welcome_subject'} && ${ $_ . '_welcome_txt' } ) {
+        if ( ${ $i . '_welcome_subject' } && ${ $i . '_welcome_txt' } ) {
             our ($WELL);
-            fopen( 'WELL', '>', "$langdir/$_/welcome.txt" )
-              or fatal_error( 'cannot_open', "$langdir/$_/welcome.txt", 1 );
-            print {$WELL} qq~${ $_ . '_welcome_subject'}|${ $_ . '_welcome_txt' }\n~ or croak "$croak{'print'} WELL";
+            fopen( 'WELL', '>', "$langdir/$i/welcome.txt" )
+              or fatal_error( 'cannot_open', "$langdir/$i/welcome.txt", 1 );
+            print {$WELL}
+              qq~${ $i . '_welcome_subject'}|${ $i . '_welcome_txt' }\n~
+              or croak "$croak{'print'} WELL";
             fclose('WELL') or croak "$croak{'close'} WELL";
         }
     }
@@ -710,25 +712,25 @@ sub save_settings_to {
         $usertxtwrap ||= 20;
 
         my $member_groups = "# Static Member Groups\n";
-        foreach ( keys %grp_staff ) {
-            ${ $grp_staff{$_} }[3]  ||= q{};
-            ${ $grp_staff{$_} }[10] ||= 0;
+        foreach my $i ( keys %grp_staff ) {
+            ${ $grp_staff{$i} }[3]  ||= q{};
+            ${ $grp_staff{$i} }[10] ||= 0;
             $member_groups .=
-qq~\$grp_staff{'$_'} = \[ '${$grp_staff{$_}}[0]', '${$grp_staff{$_}}[1]', '${$grp_staff{$_}}[2]', '${$grp_staff{$_}}[3]', ${$grp_staff{$_}}[4], ${$grp_staff{$_}}[5], ${$grp_staff{$_}}[6], ${$grp_staff{$_}}[7], ${$grp_staff{$_}}[8], ${$grp_staff{$_}}[9], ${$grp_staff{$_}}[10] \];\n~;
+qq~\$grp_staff{'$i'} = \[ '${$grp_staff{$i}}[0]', '${$grp_staff{$i}}[1]', '${$grp_staff{$i}}[2]', '${$grp_staff{$i}}[3]', ${$grp_staff{$i}}[4], ${$grp_staff{$i}}[5], ${$grp_staff{$i}}[6], ${$grp_staff{$i}}[7], ${$grp_staff{$i}}[8], ${$grp_staff{$i}}[9], ${$grp_staff{$i}}[10] \];\n~;
         }
         $member_groups .= "\n# Post independent Member Groups\n";
-        foreach ( keys %grp_nopost ) {
-            ${ $grp_nopost{$_} }[3]  ||= q{};
-            ${ $grp_nopost{$_} }[10] ||= 0;
+        foreach my $i ( keys %grp_nopost ) {
+            ${ $grp_nopost{$i} }[3]  ||= q{};
+            ${ $grp_nopost{$i} }[10] ||= 0;
             $member_groups .=
-qq~\$grp_nopost{'$_'} = \[ '${$grp_nopost{$_}}[0]', '${$grp_nopost{$_}}[1]', '${$grp_nopost{$_}}[2]', '${$grp_nopost{$_}}[3]', ${$grp_nopost{$_}}[4], ${$grp_nopost{$_}}[5], ${$grp_nopost{$_}}[6], ${$grp_nopost{$_}}[7], ${$grp_nopost{$_}}[8], ${$grp_nopost{$_}}[9], ${$grp_nopost{$_}}[10] \];\n~;
+qq~\$grp_nopost{'$i'} = \[ '${$grp_nopost{$i}}[0]', '${$grp_nopost{$i}}[1]', '${$grp_nopost{$i}}[2]', '${$grp_nopost{$i}}[3]', ${$grp_nopost{$i}}[4], ${$grp_nopost{$i}}[5], ${$grp_nopost{$i}}[6], ${$grp_nopost{$i}}[7], ${$grp_nopost{$i}}[8], ${$grp_nopost{$i}}[9], ${$grp_nopost{$i}}[10] \];\n~;
         }
         $member_groups .= "\n# Post dependent Member Groups\n";
-        foreach ( keys %grp_post ) {
-            ${ $grp_post{$_} }[3]  ||= q{};
-            ${ $grp_post{$_} }[10] ||= 0;
+        foreach my $i ( keys %grp_post ) {
+            ${ $grp_post{$i} }[3]  ||= q{};
+            ${ $grp_post{$i} }[10] ||= 0;
             $member_groups .=
-qq~\$grp_post{'$_'} = \[ '${$grp_post{$_}}[0]', '${$grp_post{$_}}[1]', '${$grp_post{$_}}[2]', '${$grp_post{$_}}[3]', ${$grp_post{$_}}[4], ${$grp_post{$_}}[5], ${$grp_post{$_}}[6], ${$grp_post{$_}}[7], ${$grp_post{$_}}[8], ${$grp_post{$_}}[9], ${$grp_post{$_}}[10] \];\n~;
+qq~\$grp_post{'$i'} = \[ '${$grp_post{$i}}[0]', '${$grp_post{$i}}[1]', '${$grp_post{$i}}[2]', '${$grp_post{$i}}[3]', ${$grp_post{$i}}[4], ${$grp_post{$i}}[5], ${$grp_post{$i}}[6], ${$grp_post{$i}}[7], ${$grp_post{$i}}[8], ${$grp_post{$i}}[9], ${$grp_post{$i}}[10] \];\n~;
         }
 
         if (@pallist) { $pallist = q{'} . join( q{','}, @pallist ) . q{'}; }
@@ -754,10 +756,10 @@ qq~\$grp_post{'$_'} = \[ '${$grp_post{$_}}[0]', '${$grp_post{$_}}[1]', '${$grp_p
         my %modlinks = ();
         my %modadd   = ();
 ## Modlinks MOD hook ##
-        for my $i ( keys %modlinks ) {
+        foreach my $i ( keys %modlinks ) {
             if ( $modlinks{$i} > 0 ) {
                 my $fond = 0;
-                for my $ad (@advanced_tabs) {
+                foreach my $ad (@advanced_tabs) {
                     if ( $ad =~ /[|]/xsm ) {
                         my ( $tab_key, undef, undef ) = split /[|]/xsm, $ad, 2;
                         if ( $tab_key eq $i ) {
@@ -770,7 +772,7 @@ qq~\$grp_post{'$_'} = \[ '${$grp_post{$_}}[0]', '${$grp_post{$_}}[1]', '${$grp_p
             }
             else {
                 my @new_tabs_order;
-                for my $ad (@advanced_tabs) {
+                foreach my $ad (@advanced_tabs) {
                     if ( $ad !~ /^$i[|]?/xsm ) { push @new_tabs_order, $ad; }
                 }
                 @advanced_tabs = @new_tabs_order;
@@ -782,16 +784,16 @@ qq~\$grp_post{'$_'} = \[ '${$grp_post{$_}}[0]', '${$grp_post{$_}}[1]', '${$grp_p
         $detachblock         ||= q{};
         $removenormalsmilies ||= q{};
         my $addedsmilies = q{};
-        foreach ( keys %addedsmilies ) {
+        foreach my $i ( keys %addedsmilies ) {
             $addedsmilies .=
-qq~\$addedsmilies{'$_'} = \[ '${$addedsmilies{$_}}[0]', '${$addedsmilies{$_}}[1]', '${$addedsmilies{$_}}[2]', '${$addedsmilies{$_}}[3]' \];\n~;
+qq~\$addedsmilies{'$i'} = \[ '${$addedsmilies{$i}}[0]', '${$addedsmilies{$i}}[1]', '${$addedsmilies{$i}}[2]', '${$addedsmilies{$i}}[3]' \];\n~;
         }
         $smilieorder = join q{ }, @smilieorder;
 
         $bookmarks = q{};
-        foreach ( keys %bookmarks ) {
+        foreach my $i( keys %bookmarks ) {
             $bookmarks .=
-qq~\$bookmarks{'$_'} = \[ '${$bookmarks{$_}}[0]', '${$bookmarks{$_}}[1]', '${$bookmarks{$_}}[2]', '${$bookmarks{$_}}[3]' \];\n~;
+qq~\$bookmarks{'$i'} = \[ '${$bookmarks{$i}}[0]', '${$bookmarks{$i}}[1]', '${$bookmarks{$i}}[2]', '${$bookmarks{$i}}[3]' \];\n~;
         }
 
         $bkmax_process_time ||= 5;
@@ -800,20 +802,21 @@ qq~\$bookmarks{'$_'} = \[ '${$bookmarks{$_}}[0]', '${$bookmarks{$_}}[1]', '${$bo
         $nopostorder = join q{ }, @nopostorder;
         my $cal_icon   = q{};
         my $newcalicon = q{};
-        foreach ( keys %newcalicon ) {
+        foreach my $i ( keys %newcalicon ) {
             $newcalicon .=
-qq~\$newcalicon{'$_'} = \[ '${$newcalicon{$_}}[0]', '${$newcalicon{$_}}[1]' \];\n~;
+qq~\$newcalicon{'$i'} = \[ '${$newcalicon{$i}}[0]', '${$newcalicon{$i}}[1]' \];\n~;
         }
         my $extensions   = q{'} . join( q{', '}, @ext ) . q{'};
         my $pm_attachext = q{'} . join( q{', '}, @pm_attachext ) . q{'};
-# %lng hash out of Languages
+
         opendir LNGDIR, $langdir;
         my @lfilesanddirs = readdir LNGDIR;
         closedir LNGDIR;
         my $mylangs = q{};
-        for my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
+        foreach my $fld ( sort { lc($a) cmp lc $b } @lfilesanddirs ) {
             if ( -e "$langdir/$fld/Main.lng" && -e "$langdir/$fld/$fld.txt" ) {
-                open my $LANG, '<', "$langdir/$fld/$fld.txt" or croak "cannot load $fld.txt";
+                open my $LANG, '<', "$langdir/$fld/$fld.txt"
+                  or croak "cannot load $fld.txt";
                 my $displang = <$LANG>;
                 close $LANG or croak 'cannot close Lang.txt.';
                 chomp $displang;
@@ -1417,8 +1420,12 @@ $addedsmilies
 # Banning Settings Time bans                                                  #
 ###############################################################################
 
-\@timeban = qw( d w m p );
-\@bandays = ( 1, 7, 30, 365 );
+%timeban = (
+    'd' => 1,
+    'w' => 7,
+    'm' => 30,
+    'p' => 365,
+);
 
 ###############################################################################
 # Backup Settings                                                             #

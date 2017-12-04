@@ -31,12 +31,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
 our (
-    %addmod_txt,       %boardindex_exptxt,      %croak,
-    %favicon,          %index_togl,             %load_txt,
-    %maintxt,          %messageindex_stickygrp, %messageindex_tp,
-    %messageindex_txt, %micon,                  %micon_bg,
-    %newload,          %notify_txt,             %pidtxt,
-    %tmpimg
+    %addmod_txt,             %boardindex_exptxt, %croak,
+    %index_togl,             %load_txt,          %maintxt,
+    %messageindex_stickygrp, %messageindex_tp,   %messageindex_txt,
+    %micon,                  %micon_bg,          %newload,
+    %notify_txt,             %pidtxt,            %tmpimg
 );
 ## locations ##
 our (
@@ -59,19 +58,19 @@ our (
 );
 ## system ##
 our (
-    $annboard,        $bdescrip,        $boardperms,       $createpoll_date,
-    $currentboard,    $date,            $formsession,      $iamadmin,
-    $iamfmod,         $iamgmod,         $iamguest,         $iammod,
-    $mdrop_postpopup, $menusep,         $mindex_postpopup, $newload,
-    $quick_post,      $rssperm,         $sessionvalid,     $staff,
-    $stkyshowed,      $template,        $uid,              $use_menu_type,
-    $useimages,       $usermessagepage, $username,         $usethread_tools,
-    $yy_yabbloaded,   $yyinlinestyle,   $yyjavascript,     $yymain,
-    $yynavback,       $yynavigation,    $yytitle,          %board,
-    %cat,             %catinfo,         %FORM,             %img,
-    %img_txt,         %INFO,            %memberinf,        %moderatorgroups,
-    %moderators,      %subboard,        %user_info,        %yy_cookies,
-    %yyuserlog,       @categoryorder,   @other_cookies
+    $annboard,     $bdescrip,         $boardperms,    $currentboard,
+    $date,         $formsession,      $iamadmin,      $iamfmod,
+    $iamgmod,      $iamguest,         $iammod,        $mdrop_postpopup,
+    $menusep,      $mindex_postpopup, $newload,       $quick_post,
+    $rssperm,      $sessionvalid,     $staff,         $stkyshowed,
+    $template,     $uid,              $use_menu_type, $useimages,
+    $username,     $usethread_tools,  $yy_yabbloaded, $yyinlinestyle,
+    $yyjavascript, $yymain,           $yynavback,     $yynavigation,
+    $yytitle,      %board,            %cat,           %catinfo,
+    %FORM,         %img,              %img_txt,       %INFO,
+    %memberinf,    %moderatorgroups,  %moderators,    %subboard,
+    %user_info,    %yy_cookies,       %yyuserlog,     @categoryorder,
+    @other_cookies
 );
 ## templates ##
 our (
@@ -85,15 +84,13 @@ our (
     $visel_2a,            $visel_3a,              $visel_4,
 );
 
-## local ##
-my ( $permbrd, $permcat, $tsort, );
-our ( $default_or_ajax, );
 ## our Mod Hook ##
 
 get_micon();
 load_language('MessageIndex');
 load_language('Notify');
 
+my $tsort = q{};
 if ( !$INFO{'tsort'} ) {
     my $tsortcookie = "$cookietsort$currentboard$username";
     $tsort = $yy_cookies{$tsortcookie} || q{};
@@ -113,6 +110,8 @@ else {
       );
 }
 
+my $permbrd = q{};
+my $permcat = q{};
 if ($accept_permafull) {
     $permbrd = qq~$perm_domain/$symlink/~ . 'brd_';
     $permcat = qq~$perm_domain/$symlink/~ . 'cat_';
@@ -142,47 +141,7 @@ sub message_index {
 
     # Build a list of the board's moderators. We don't need this if it's ajax.
     if ( !$messagelist ) {
-        if ( keys %moderators > 0 ) {
-            if ( keys %moderators == 1 ) {
-                $showmods = qq~($messageindex_txt{'298'}: ~;
-            }
-            else { $showmods = qq~($messageindex_txt{'63'}: ~; }
-
-            my %sortmd = reverse %moderators;
-            my @sortmd = sort keys %sortmd;
-            foreach my $i (@sortmd) {
-                format_username( $sortmd{$i} );
-                $showmods .= quick_links( $sortmd{$i}, 1 ) . q{, };
-            }
-            $showmods =~ s/,\s$/)/xsm;
-        }
-        if ( keys %moderatorgroups > 0 ) {
-            if ( keys %moderatorgroups == 1 ) {
-                $showmodgroups = qq~($messageindex_txt{'298a'}: ~;
-            }
-            else { $showmodgroups = qq~($messageindex_txt{'63a'}: ~; }
-
-            my ( $tmpmodgrp, $thismodgrp );
-            while ( $_ = each %moderatorgroups ) {
-                $tmpmodgrp = $moderatorgroups{$_};
-                ( $thismodgrp, undef ) = @{ $grp_nopost{$tmpmodgrp} };
-                $showmodgroups .= qq~$thismodgrp, ~;
-            }
-            $showmodgroups =~ s/,\s$/)/xsm;
-        }
-        if ( $showmodgroups && $showmods ) {
-            $showmods .= q~ - ~;
-        }
-        if ( ${ $uid . $currentboard }{'brdpasswr'} ) {
-            my $cookiename = "$cookiepassword$currentboard$username";
-            my $crypass    = ${ $uid . $currentboard }{'brdpassw'};
-            if ($iamguest) {
-                boardpassw_g();
-            }
-            elsif ( !$staff && $yy_cookies{$cookiename} ne $crypass ) {
-                boardpassw();
-            }
-        }
+        ( $showmodgroups, $showmods ) = get_mess_mods();
     }
 
     # Thread Tools
@@ -215,156 +174,39 @@ sub message_index {
 
     # Determine what category we are in.
     my $catid = ${ $uid . $currentboard }{'cat'};
-    my $cat = ${$catinfo{$catid}}[0];
+    my $cat   = ${ $catinfo{$catid} }[0];
     $cat = to_chars($cat);
 
-    our ($BRDTXT);
-    fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
-      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
-    our @threadlist = <$BRDTXT>;
-    fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
-    my $sort_subject =
-qq~<a href="$scripturl?board=$currentboard;tsort=d" rel="nofollow">$messageindex_txt{'70'}</a>~;
-    my $sort_starter =
-qq~<a href="$scripturl?board=$currentboard;tsort=f" rel="nofollow">$messageindex_txt{'109'}</a>~;
-    my $sort_answer =
-qq~<a href="$scripturl?board=$currentboard;tsort=h" rel="nofollow">$messageindex_txt{'110'}</a>~;
-    my $sort_lastpostim =
-qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a>~;
+    my (
+        $sort_subject,    $sort_starter, $sort_answer,
+        $sort_lastpostim, $threadlist
+    ) = get_mess_sort($currentboard);
 
-    my %starter;
-    my @temp_list = @threadlist;
-
-    local *starter = sub {
-        if ( exists $user_info{ $_[0] } ) { return $user_info{ $_[0] }; }
-        if ( !exists $memberinf{ $_[0] } ) {
-            return lc $_[1][2];
-        }
-        $user_info{ $_[0] } =
-          lc $memberinf{ $_[0] }[0];
-    };
-
-    if ($tsort) {
-        if ( $tsort eq 'b' ) {
-            $sort_lastpostim =
-qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_first'}~;
-            @threadlist = reverse sort {
-                 (split /[|]/xsm, $a )[4] <=>
-                   (split /[|]/xsm, $b )[4]
-            } @temp_list;
-        }
-        elsif ( $tsort eq 'c' ) {
-            $sort_subject =
-qq~<a href="$scripturl?board=$currentboard;tsort=d" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_up'}~;
-            @threadlist = reverse sort {
-                lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
-                  lc( ( split /[|]/xsm, $b, 3 )[1] )
-            } @temp_list;
-        }
-        elsif ( $tsort eq 'd' ) {
-            $sort_subject =
-qq~<a href="$scripturl?board=$currentboard;tsort=c" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_down'}~;
-            @threadlist = sort {
-                lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
-                  lc( ( split /[|]/xsm, $b, 3 )[1] )
-            } @temp_list;
-        }
-        elsif ( $tsort eq 'e' ) {
-            manage_memberinfo('load');
-            $sort_starter =
-qq~<a href="$scripturl?board=$currentboard;tsort=f" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_up'}~;
-            @threadlist = reverse sort {
-                starter( ( split /[|]/xsm, $a, 8 )[6], $a )
-                  cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
-            } @temp_list;
-            undef %memberinf;
-        }
-        elsif ( $tsort eq 'f' ) {
-            manage_memberinfo('load');
-            $sort_starter =
-qq~<a href="$scripturl?board=$currentboard;tsort=e" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_down'}~;
-            @threadlist = sort {
-                starter( ( split /[|]/xsm, $a, 8 )[6], $a )
-                  cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
-            } @temp_list;
-            undef %memberinf;
-        }
-        elsif ( $tsort eq 'g' ) {
-            $sort_answer =
-qq~<a href="$scripturl?board=$currentboard;tsort=h" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_up'}~;
-            @threadlist =
-              reverse
-              sort {
-                ( split /[|]/xsm, $a, 7 )[5] <=> ( split /[|]/xsm, $b, 7 )[5]
-              } @temp_list;
-        }
-        elsif ( $tsort eq 'h' ) {
-            $sort_answer =
-qq~<a href="$scripturl?board=$currentboard;tsort=g" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_down'}~;
-            @threadlist =
-              sort {
-                ( split /[|]/xsm, $a, 7 )[5] <=> ( split /[|]/xsm, $b, 7 )[5]
-              } @temp_list;
-        }
-        else {
-            $sort_lastpostim =
-qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
-            @threadlist = sort {
-                ( split /[|]/xsm, $a )[4] <=>
-                  ( split /[|]/xsm, $b )[4]
-            } @temp_list;
-        }
-    }
-    else {
-        $sort_lastpostim =
-qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
-        @threadlist = sort {
-            ( split /[|]/xsm, $a )[4] <=>
-              ( split /[|]/xsm, $b )[4]
-        } @temp_list;
-    }
-    undef @temp_list;
-    undef %starter;
-
-    my $countsticky = 0;
-    my $threadcount = 0;
-    my @nostickythreadlist;
-    foreach my $threadlist (@threadlist) {
-        my $threadstatus = ( split /[|]/xsm, $threadlist )[8];
-        if ( $threadstatus =~ /h/ixsm && !$staff ) {
-            next;
-        }
-        if ( $threadstatus =~ /s/ixsm ) {
-            push @threads, $threadlist;
-            $countsticky++;
-        }
-        else {
-            $nostickythreadlist[$threadcount] = $threadlist;
-            $threadcount++;
-        }
-    }
-    undef @threadlist;
+    my ( $countsticky, $threadcount, $nostickythreadlist, $threads ) =
+      get_mess_stkylist( $threadlist, \@threads );
+    my @nostickythreadlist = @{$nostickythreadlist};
+    @threads = @{$threads};
 
     $threadcount = $threadcount + $countsticky + $numanns;
     my $maxindex =
       ( $INFO{'view'} && $INFO{'view'} eq 'all' ) ? $threadcount : $maxdisplay;
 
     # Construct the page links for this board.
+    my $usermessagepage = 0;
     if ( !$iamguest ) {
         ( $usermessagepage, undef, undef, undef ) =
           split /[|]/xsm, ${ $uid . $username }{'pageindex'};
     }
     my ( $pagetxtindex, $pagedropindex1, $pagedropindex2, $all, $allselected,
         $start, $endpage );
-    my $indexdisplaynum = 3;              # max number of pages to display
+    my $indexdisplaynum = 3;    # max number of pages to display
     my $dropdisplaynum  = 10;
     my $startpage       = 0;
-    my $max             = $threadcount;
     if (   $INFO{'start'}
-        && substr( $INFO{'start'}, 0, 3 ) eq 'all'
+        && $INFO{'start'} =~ /all/xsm
         && $showpageall != 0 )
     {
-        $maxindex    = $max;
+        $maxindex    = $threadcount;
         $all         = 1;
         $allselected = q~ selected="selected"~;
         $start       = 0;
@@ -394,214 +236,23 @@ qq~<span class="small pgindex"><img src="$index_togl{'index_togl'}" alt="$messag
     my $pageindexjs = q{};
     if ( $pagenumb > 1 || $all ) {
         if ( $usermessagepage == 1 || $iamguest ) {
-            $pagetxtindexst = q~<span class="small pgindex">~;
-            if ( !$iamguest ) {
-                $pagetxtindexst .=
-qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagedrop"><img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a> $messageindex_txt{'139'}: ~;
-            }
-            else {
-                $pagetxtindexst .=
-qq~<img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'139'}" title="$messageindex_txt{'139'}" /> $messageindex_txt{'139'}: ~;
-            }
-            if ( $startpage > 0 ) {
-                if ($messagelist) {
-                    $pagetxtindex =
-qq~<a href="$scripturl?board=$currentboard/0">1</a>&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
-                }
-                if ( $startpage == $maxindex ) {
-                    $pagetxtindex =
-qq~<a href="$scripturl?board=$currentboard/0"><span class="small">1</span></a>&nbsp;~;
-                }
-            }
-            foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
-                if ( $counter % $maxindex == 0 ) {
-                    if ($messagelist) {
-                        $pagetxtindex .=
-                          $start == $counter
-                          ? qq~[$tmpa]&nbsp;~
-                          : qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/$counter;messagelist=1','$yyhtml_root','$currentboard', 1)"><span class="small">$tmpa</span></a>&nbsp;~;
-                    }
-                    else {
-                        $pagetxtindex .=
-                          $start == $counter
-                          ? qq~[$tmpa]&nbsp;~
-                          : qq~<a href="$scripturl?board=$currentboard/$counter"><span class="small">$tmpa</span></a>&nbsp;~;
-                    }
-                    $tmpa++;
-                }
-            }
-            my $pageindexadd = q{};
-            if ( $endpage < $threadcount - $maxindex ) {
-                $pageindexadd .=
-qq~<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
-            }
-            if ( $endpage != $threadcount ) {
-                $pageindexadd .=
-qq~<a href="$scripturl?board=$currentboard/$lastptn"><span class="small">$lastpn</span></a>~;
-            }
-
-            $pagetxtindex .= $pageindexadd;
-            $pageindex1 = qq~$pagetxtindexst $pagetxtindex</span>~;
+            $pageindex1 = get_mess_page1(
+                $messagelist, $start,       $startpage,
+                $maxindex,    $threadcount, $endpage,
+                $tmpa,        $lastptn,     $lastpn
+            );
             $pageindex2 = $pageindex1;
         }
         else {
-            $pagedropindex1 = q~<span class="pagedropindex">~;
-            $pagedropindex1 .=
-qq~<span class="pagedropindex_inner"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
-            $pagedropindex2 = $pagedropindex1;
-            $tstart         = $start;
-
-#if (substr($INFO{'start'}, 0, 3) eq 'all') { ($tstart, $start) = split(/\-/, $INFO{'start'}); }
-            my $indexpages   = q{};
-            my $d_indexpages = $pagenumb / $dropdisplaynum;
-            my $i_indexpages = int( $pagenumb / $dropdisplaynum );
-            if ( $d_indexpages > $i_indexpages ) {
-                $indexpages = int( $pagenumb / $dropdisplaynum ) + 1;
-            }
-            else { $indexpages = int( $pagenumb / $dropdisplaynum ) }
-            my $selectedindex = int( ( $start / $maxindex ) / $dropdisplaynum );
-
-            if ( $pagenumb > $dropdisplaynum ) {
-                $pagedropindex1 .=
-qq~<span class="decselector"><select size="1" name="decselector1" id="decselector1" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
-                $pagedropindex2 .=
-qq~<span class="decselector"><select size="1" name="decselector2" id="decselector2" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
-            }
-            my $pagejsindex = q{};
-            foreach my $i ( 0 .. ( $indexpages - 1 ) ) {
-                my $indexpage = ( $i * $dropdisplaynum ) * $maxindex;
-
-                my $indexstart = ( $i * $dropdisplaynum ) + 1;
-                my $indexend = $indexstart + ( $dropdisplaynum - 1 );
-                if ( $indexend > $pagenumb ) { $indexend = $pagenumb; }
-                my $indxoption = qq~$indexstart-$indexend~;
-                if ( $indexstart == $indexend ) {
-                    $indxoption = $indexstart;
-                }
-                my $selected = q{};
-                if ( $i == $selectedindex ) {
-                    $selected = q~ selected="selected"~;
-                    $pagejsindex =
-                      qq~$indexstart|$indexend|$maxindex|$indexpage~;
-                }
-                if ( $pagenumb > $dropdisplaynum ) {
-                    $pagedropindex1 .=
-qq~<option value="$indexstart|$indexend|$maxindex|$indexpage"$selected>$indxoption</option>\n~;
-                    $pagedropindex2 .=
-qq~<option value="$indexstart|$indexend|$maxindex|$indexpage"$selected>$indxoption</option>\n~;
-                }
-            }
-            if ( $pagenumb > $dropdisplaynum ) {
-                $pagedropindex1 .= qq~</select>\n</span>~;
-                $pagedropindex2 .= qq~</select>\n</span>~;
-            }
-            $pagedropindex1 .=
-q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
-            $pagedropindex2 .=
-q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
-            my $tmpmaxindex = $maxindex;
-
-#if (substr($INFO{'start'}, 0, 3) eq 'all') { $maxindex = $maxindex * $dropdisplaynum; }
-            my $prevpage        = $start - $tmpmaxindex;
-            my $nextpage        = $start + $maxindex;
-            my $pagedropindexpv = q{};
-            my $pagedropindexnx = q{};
-            my $pagedropindexpvbl =
-qq~<img src="$index_togl{'index_left0'}" height="14" width="13"  alt="" />~;
-            my $pagedropindexnxbl =
-qq~<img src="$index_togl{'index_right0'}" height="14" width="13"  alt="" />~;
-            if ( $start < $maxindex ) {
-                $pagedropindexpv .=
-qq~<img src="$index_togl{'index_left0'}" height="14" width="13"  alt="" />~;
-            }
-            else {
-                $pagedropindexpv .=
-qq~<img src="$index_togl{'index_left'}"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" ~;
-                if ($messagelist) {
-                    $pagedropindexpv .=
-qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$prevpage;messagelist=1\\',\\'$yyhtml_root\\', \\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/0;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
-                }
-                else {
-                    $pagedropindexpv .=
-qq~onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/0\\'" />~;
-                }
-            }
-            if ( $nextpage > $lastptn ) {
-                $pagedropindexnx .=
-qq~<img src="$index_togl{'index_right0'}" height="14" width="13" class="vtop" alt="" />~;
-            }
-            else {
-                $pagedropindexnx .=
-qq~<img src="$index_togl{'index_right'}" height="14" width="13"  alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" ~;
-                if ($messagelist) {
-                    $pagedropindexnx .=
-qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$nextpage;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/$lastptn;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
-                }
-                else {
-                    $pagedropindexnx .=
-qq~onclick="location.href=\\'$scripturl?board=$currentboard/$nextpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/$lastptn\\'" />~;
-                }
-            }
-
-            # make select box have links for ajax vs default url
-            if ($messagelist) {
-                $default_or_ajax =
-qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)~;
-            }
-            else {
-                $default_or_ajax =
-                  qq~$scripturl?board=$currentboard/' + pagstart + '~;
-            }
-            $pageindex1 = qq~$pagedropindex1</span>~;
-            $pageindex2 = qq~$pagedropindex2</span>~;
-
-            $pageindexjs = qq~
-<script id="RunSelDec" type="text/javascript">
-    function SelDec(decparam, visel) {
-        splitparam = decparam.split("|");
-        var vistart = parseInt(splitparam[0]);
-        var viend = parseInt(splitparam[1]);
-        var maxpag = parseInt(splitparam[2]);
-        var pagstart = parseInt(splitparam[3]);
-        //var allpagstart = parseInt(splitparam[3]);
-        if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
-        var pagedropindex = '$visel_0';
-        for(i=vistart; i<=viend; i++) {
-            if (visel == pagstart) pagedropindex += '$visel_1a<b>' + i + '</b>$visel_1b';
-            else pagedropindex += '$visel_2a<a href="$scripturl?board=$currentboard/' + pagstart + '">' + i + '</a>$visel_1b';
-            pagstart += maxpag;
-        }
-        ~;
-            if ($showpageall) {
-                $pageindexjs .= qq~
-            if (vistart != viend) {
-                if(visel == 'all') pagedropindex += '$visel_1a<b>$pidtxt{'01'}</b></td>';
-                else pagedropindex += '$visel_2a<a href="$scripturl?board=$currentboard/all">$pidtxt{'01'}</a>$visel_1b';
-            }
-            ~;
-            }
-            $pageindexjs .= qq~
-        if(visel != 'xx') pagedropindex += '$visel_3a$pagedropindexpv$pagedropindexnx$visel_1b';
-        else pagedropindex += '$visel_3a$pagedropindexpvbl$pagedropindexnxbl$visel_1b';
-        pagedropindex += '$visel_4';
-        document.getElementById("ViewIndex1").innerHTML=pagedropindex;
-        document.getElementById("ViewIndex1").style.visibility = "visible";
-        document.getElementById("ViewIndex2").innerHTML=pagedropindex;
-        document.getElementById("ViewIndex2").style.visibility = "visible";
-        ~;
-            if ( $pagenumb > $dropdisplaynum ) {
-                $pageindexjs .= q~
-        document.getElementById("decselector1").value = decparam;
-        document.getElementById("decselector2").value = decparam;
-        ~;
-            }
-            $pageindexjs .= qq~
-    }
-    var pagejsindex = "$pagejsindex";
-    var tstart = "$tstart";
-    document.onload = SelDec(pagejsindex, tstart);
-</script>
-~;
+            $pagedropindex1 =
+qq~<span class="pagedropindex"><span class="pagedropindex_inner"><a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagetext"><img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a></span>~;
+            $tstart = $start;
+            (
+                $pageindex1,     $pageindex2, $pageindexjs,
+                $pagedropindex1, $pagedropindex2
+              )
+              = get_mess_page2( $messagelist, $pagenumb, $dropdisplaynum,
+                $start, $maxindex, $lastptn, $tstart, $pagedropindex1 );
         }
     }
 
@@ -613,9 +264,9 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     chomp @threads;
 
     my %attachments;
-    if ( ( -s 'Variables/attachments.db' ) > 5 ) {
+    if ( ( -s "$vardir/attachments.db" ) > 5 ) {
         our ($ATM);
-        fopen( 'ATM', '<', 'Variables/attachments.db' )
+        fopen( 'ATM', '<', "$vardir/attachments.db" )
           or croak "$croak{'open'} attachments";
         while (<$ATM>) {
             $attachments{ ( split /[|]/xsm, $_, 2 )[0] }++;
@@ -626,73 +277,22 @@ qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';mes
     load_censor_list();
 
     # check the Multi-admin setting
-    my $multiview = 0;
-    if ($staff) {
-        if (   ( $iamadmin && $adminview == 3 )
-            || ( $iamgmod && $gmodview == 3 )
-            || ( $iamfmod && $fmodview == 3 )
-            || ( $iammod  && $modview == 3 ) )
-        {
-            $multiview = 3;
-        }
-        elsif (( $iamadmin && $adminview == 2 )
-            || ( $iamgmod && $gmodview == 2 )
-            || ( $iamfmod && $fmodview == 2 )
-            || ( $iammod  && $modview == 2 ) )
-        {
-            $multiview = 2;
-        }
-        elsif (( $iamadmin && $adminview == 1 )
-            || ( $iamgmod && $gmodview == 1 )
-            || ( $iamfmod && $fmodview == 1 )
-            || ( $iammod  && $modview == 1 ) )
-        {
-            $multiview = 1;
-        }
-    }
+    my ( $multiview, $multiviewscr, $curboardname, $colspan, $adminlink ) =
+      get_mess_multi1();
+    $yymain .= $multiviewscr;
+    $adminheader =~ s/\Q{yabb admin}\E/$adminlink/gxsm;
 
     # Print the header and board info.
-    my $boardname = ${$board{$currentboard}}[0];
-    my $curboardname = $boardname;
-    $curboardname = to_chars($curboardname);
-    if ( $multiview == 1 ) {
-        $yymain .= qq~<script type="text/javascript">
-function NoPost(op) {
-    if (document.getElementById("toboard").options[op].className == "nopost") {
-        alert("$messageindex_txt{'nopost'}");
-        document.getElementById("toboard").selectedIndex = 0;
-    }
-}
-</script>
-~;
-    }
-
-    if ( $multiview >= 2 ) {
-        my $modul = $currentboard eq $annboard ? 4 : 5;
-        $yymain .=
-qq~<script src="$yyhtml_root/MessageIndex.js" type="text/javascript"></script>
-<script type="text/javascript">
-function NoPost(op) {
-    if (document.getElementById("toboard").options[op].className == "nopost") {
-        alert("$messageindex_txt{'nopost'}");
-        document.getElementById("toboard").selectedIndex = 0;
-    }
-}
-</script>
-\n~;
-    }
-
     my $homelink = qq~<a href="$scripturl">$mbname</a>~;
     my $catlink  = qq~<a href="$scripturl?catselect=$catid">$cat</a>~;
     my $boardlink =
 qq~<a href="$scripturl?board=$currentboard" class="a"><b>$curboardname</b></a>~;
-    my $modslink = $showmods;
 
     my $boardtree   = q{};
     my $parentboard = $currentboard;
     my $pboardname  = q{};
     while ($parentboard) {
-        $pboardname = ${$board{$parentboard}}[0];
+        $pboardname = ${ $board{$parentboard} }[0];
         $pboardname = to_chars($pboardname);
 
         if ( ${ $uid . $parentboard }{'canpost'}
@@ -716,92 +316,9 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><b>$pboar
         $boardtree =~ s/$scripturl[?]board\=/$permbrd/xsm;
     }
 
-    # check how many col's must be spanned
-    my $colspan = 6;
-    if ( $multiview > 0 ) {
-        $colspan = 7;
-    }
-
-    my $markalllink  = q{};
-    my $notify_board = q{};
-    if ( !$iamguest ) {
-        my $brdid        = q{};
-        my $mthreadslang = q{};
-        if ($messagelist) {
-            $mthreadslang = 1;
-            $brdid        = q{new_} . $INFO{'board'};
-        }
-        $markalllink =
-qq~$menusep<a href="javascript:MarkAllAsRead('$scripturl?board=$INFO{'board'};action=markasread','$imagesdir','$mthreadslang','$brdid')">$img{'markboardread'}</a>~;
-
-        $notify_board =
-qq~$menusep<a href="$scripturl?action=boardnotify;board=$INFO{'board'}">$img{'notify'}</a>~;
-    }
-
-    my $postlink = q{};
-    if ( access_check( $currentboard, 1 ) eq 'granted' ) {
-
-# when Quick-Post and Quick-Jump: focus message first, then the subject to have a better display
-        if ($messagelist) {
-            if ($mdrop_postpopup) {
-                $postlink =
-qq~$menusep<a href="javascript:void(0)" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
-            }
-            else {
-                $postlink =
-qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic">$img{'newthread'}</a>~;
-            }
-        }
-        else {
-            if ($mindex_postpopup) {
-                $postlink =
-qq~$menusep<a href="javascript:void(0)" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
-            }
-            else {
-                $postlink = qq~$menusep<a href="~
-                  . (
-                    $enable_quickpost && $enable_quickjump
-                    ? 'javascript:document.postmodify.message.focus();document.postmodify.subject.focus();'
-                    : qq~$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic~
-                  ) . qq~">$img{'newthread'}</a>~;
-            }
-        }
-    }
-    my $polllink = q{};
-    if ( access_check( $currentboard, 3 ) eq 'granted' ) {
-        $polllink =
-qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=CreatePoll">$img{'createpoll'}</a>~;
-    }
-
-    my $adminlink = q{};
-    if ( $multiview == 3 ) {
-        if ( $currentboard eq $annboard ) {
-            $adminlink =
-qq~<img src="$micon_bg{'announcementlock'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
-        }
-        else {
-            $adminlink =
-qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$micon_bg{'sticky'}" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" /><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
-        }
-        $adminheader =~ s/\Q{yabb admin}\E/$adminlink/gxsm;
-    }
-    elsif (
-        (
-               ( $iamadmin && $adminview != 0 )
-            || ( $iamgmod && $gmodview != 0 )
-            || ( $iamfmod && $fmodview != 0 )
-            || (   $iammod
-                && $modview != 0
-                && !$iamadmin
-                && !$iamgmod
-                && !$iamfmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
-        $adminlink = $messageindex_txt{'2'};
-        $adminheader =~ s/\Q{yabb admin}\E/$adminlink/gxsm;
-    }
+    my ( $markalllink, $notify_board ) = get_mess_mark($messagelist);
+    my ( $postlink, $polllink ) =
+      get_mess_postlink( $currentboard, $messagelist );
 
     # check to display moderator column
     my $tmpstickyheader;
@@ -814,6 +331,7 @@ s/\Q{yabb messageindex_stickygrp_1}\E/$messageindex_stickygrp{'1'}/gxsm;
     }
 
     # load Favorites in a hash
+    my %favicon;
     if ( ${ $uid . $username }{'favorites'} ) {
         foreach ( split /,/xsm, ${ $uid . $username }{'favorites'} ) {
             $favicon{$_} = 1;
@@ -829,11 +347,11 @@ s/\Q{yabb messageindex_stickygrp_1}\E/$messageindex_stickygrp{'1'}/gxsm;
     my $dmax       = $date - ( $max_log_days_old * 86400 );
     my $tmptempbar = q{};
     my $mcount     = 0;
-    foreach (@threads) {
+    foreach my $t (@threads) {
         my (
             $mnum,     $msub,      $mname, $memail, $mdate,
             $mreplies, $musername, $micon, $mstate
-        ) = split /[|]/xsm;
+        ) = split /[|]/xsm, $t;
 
         my ( $moved_subject, $moved_flag ) = split_splice_move( $msub, $mnum );
 
@@ -849,315 +367,21 @@ s/\Q{yabb messageindex_stickygrp_1}\E/$messageindex_stickygrp{'1'}/gxsm;
             message_totals( 'recover', $mnum );
         }
 
-        my $permlinkboard =
-          ${$mnum}{'board'} eq $annboard ? $annboard : $currentboard;
-        my $permdate = permtimer($mnum);
-        my $message_permalink =
-qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
-        if ($accept_permafull) {
-            $message_permalink =
-qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$msub</a>~;
-        }
-
-        my $threadclass = 'thread';
-        if ( !$mstate ) { $threadclass = 'thread'; }
-        else {
-            if    ( $mstate =~ /h/ixsm ) { $threadclass = 'hide'; }
-            elsif ( $mstate =~ /l/ixsm ) { $threadclass = 'locked'; }
-            elsif ( $mreplies >= $very_hot_topic ) {
-                $threadclass = 'veryhotthread';
-            }
-            elsif ( $mreplies >= $hot_topic ) { $threadclass = 'hotthread'; }
-            if (   $threadclass eq 'hide'
-                && $mstate =~ /s/ixsm
-                && $mstate !~ /l/ixsm )
-            {
-                $threadclass = 'hidesticky';
-            }
-            elsif ($threadclass eq 'hide'
-                && $mstate =~ /l/ixsm
-                && $mstate !~ /s/ixsm )
-            {
-                $threadclass = 'hidelock';
-            }
-            elsif ($threadclass eq 'hide'
-                && $mstate =~ /s/ixsm
-                && $mstate =~ /l/ixsm )
-            {
-                $threadclass = 'hidestickylock';
-            }
-            elsif ($threadclass eq 'locked'
-                && $mstate =~ /s/ixsm
-                && $mstate !~ /h/ixsm )
-            {
-                $threadclass = 'stickylock';
-            }
-            elsif ( $mstate =~ m/s/ixsm && $mstate !~ m/h/ixsm ) {
-                $threadclass = 'sticky';
-            }
-            elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ m/h/ixsm ) {
-                $threadclass =
-                  $threadclass eq 'locked'
-                  ? 'announcementlock'
-                  : 'announcement';
-            }
-        }
-        ### Start Sticky Shimmy Shuffle mod
-        my $stickdir = q{};
-        if ($staff) {
-            if (   $threadclass eq 'sticky'
-                || $threadclass eq 'stickylock'
-                || $threadclass eq 'hidesticky'
-                || $threadclass eq 'hidestickylock' )
-            {
-                $stickdir =
-qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up" title="$messageindex_txt{'move_up'}"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down" title="$messageindex_txt{'move_down'}"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
-            }
-            elsif (
-                (
-                       $threadclass eq 'announcement'
-                    || $threadclass eq 'announcementlock'
-                    || ${$mnum}{'board'} eq $annboard && $mstate =~ /h/ixsm
-                )
-                && ( $iamadmin || $iamgmod )
-              )
-            {
-                $stickdir =
-qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=up;oldboard=$currentboard;" title="$messageindex_txt{'move_up'}"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=down;oldboard=$currentboard;" title="$messageindex_txt{'move_down'}"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
-            }
-        }
-        ### End Sticky Shimmy Shuffle Mod
-
+        my $threadclass = get_mess_thrdcls( $mstate, $mreplies, $mnum );
         if ($moved_flag) { $threadclass = 'locked_moved'; }
 
-        my $new = q{};
-        my $dlp = q{};
-        if ( !$iamguest && $max_log_days_old ) {
+        my $stickdir = get_mess_sticky( $threadclass, $mnum, $mstate );
+        my ( $new, $dlp ) =
+          get_mess_new( $currentboard, $mnum, $mdate, $moved_flag, $dmax );
+        my $pages = get_mess_pages( $mnum, $mreplies, $endpage, $tmpa );
+        my $views           = ${$mnum}{'views'} ? ${$mnum}{'views'} - 1 : 0;
+        my $lastpostername  = get_mess_lastposter($mnum);
+        my $temp_attachment = get_mess_att( $mnum, \%attachments );
 
-            # Decide if thread should have the "NEW" indicator next to it.
-            # Do this by reading the user's log for last read time on thread,
-            # and compare to the last post time on the thread.
-            if (
-                !$yyuserlog{"$currentboard--mark"}
-                || (   $yyuserlog{$mnum}
-                    && $yyuserlog{"$currentboard--mark"}
-                    && int( $yyuserlog{$mnum} ) >
-                    int $yyuserlog{"$currentboard--mark"} )
-              )
-            {
-                $dlp = int $yyuserlog{$mnum};
-            }
-            else { $dlp = int $yyuserlog{"$currentboard--mark"}; }
-            $mdate ||= $mnum;
-            if (
-                !$moved_flag
-                && (   $yyuserlog{"$mnum--unread"}
-                    || ( !$dlp && $mdate > $dmax )
-                    || ( $dlp > $dmax && $dlp < $mdate ) )
-              )
-            {
-                if ( ${$mnum}{'board'} eq $annboard ) {
-                    $new =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum/new#new">$newload{'new_mess'}</a>~;
-                }
-                else {
-                    $new =
-qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
-                }
-            }
-            else {
-                $new = q{};
-            }
-        }
+        $mname = get_mess_starter( $mdate, $musername );
 
-        $micon = $micon{$micon};
-        my $mpoll = q{};
-        if ( -e "$datadir/$mnum.poll" ) {
-            $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
-            our ($POLL);
-            fopen( 'POLL', '<', "$datadir/$mnum.poll" )
-              or croak "$croak{'close'} POLL";
-            my @poll = <$POLL>;
-            fclose('POLL') or croak "$croak{'close'} POLL";
-            my (
-                $poll_question, $poll_locked, $poll_uname,   $poll_name,
-                $poll_email,    $poll_date,   $guest_vote,   $hide_results,
-                $multi_vote,    $poll_mod,    $poll_modname, $poll_comment,
-                $vote_limit,    $pie_radius,  $pie_legends,  $poll_end
-            ) = split /[|]/xsm, $poll[0];
-            chomp $poll_end;
-            if ( $poll_end && !$poll_locked && $poll_end < $date ) {
-                $poll_locked = 1;
-                $poll_end    = q{};
-                $poll[0] =
-"$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
-                my $prnpoll = join q{}, @poll;
-                fopen( 'POLL', '>', "$datadir/$mnum.poll" )
-                  or croak "$croak{'open'} POLL";
-                print {$POLL} $prnpoll or croak "$croak{'print'} POLL";
-                fclose('POLL') or croak "$croak{'close'} POLL";
-            }
-
-            $micon = $micon{'pollicon'};
-            if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
-            elsif ( !$iamguest
-                && $max_log_days_old
-                && $mdate > $date - ( $max_log_days_old * 86400 ) )
-            {
-                if ( $dlp < $createpoll_date ) {
-                    $micon = $micon{'polliconnew'};
-                }
-                else {
-                    if ( -e "$datadir/$mnum.polled" ) {
-                        our ($POLLED);
-                        fopen( 'POLLED', '<', "$datadir/$mnum.polled" )
-                          or croak "$croak{'open'} POLLED";
-                        my $polled = <$POLLED>;
-                        fclose('POLLED') or croak "$croak{'close'} POLLED";
-                        my ( undef, undef, undef, $vote_date, undef ) =
-                          split /[|]/xsm, $polled;
-                        if ( $dlp < $vote_date ) {
-                            $micon = $micon{'polliconnew'};
-                        }
-                    }
-                }
-            }
-        }
-
-        # Load the current nickname of the account name of the thread starter.
-        if ( $musername ne 'Guest' ) {
-            load_user($musername);
-            $mdate ||= 0;
-
-            # See if they are an ex-member.
-            if (
-                (
-                    ${ $uid . $musername }{'regdate'}
-                    && $mdate > ${ $uid . $musername }{'regtime'}
-                )
-                || ${ $uid . $musername }{'position'} eq 'Administrator'
-                || ${ $uid . $musername }{'position'} eq 'Global Moderator'
-              )
-            {
-                $mname = profile_view($musername);
-            }
-            else {
-                $mname .= qq~ ($messageindex_txt{'470a'})~;
-            }
-        }
-        else {
-            $mname .= " ($maintxt{'28'})";
-        }
-
-        # Build the page links list.
-        my $pagesall = q{};
-        my $pages    = q{};
-        if ($showpageall) {
-            $pagesall =
-              qq~<a href="$scripturl?num=$mnum/all">$pidtxt{'01'}</a>~;
-        }
-        $maxmessagedisplay ||= 10;
-        if ( int( ( $mreplies + 1 ) / $maxmessagedisplay ) > 6 ) {
-            $pages =
-                qq~ <a href="$scripturl?num=$mnum/~
-              . ( !$ttsreverse ? '0#0' : "$mreplies#$mreplies" )
-              . q~">1</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$maxmessagedisplay#$maxmessagedisplay"
-                : ( $mreplies - $maxmessagedisplay ) . q{#}
-                  . ( $mreplies - $maxmessagedisplay )
-              ) . q~">2</a>~;
-
-            $endpage = int( $mreplies / $maxmessagedisplay ) + 1;
-            my $i = ( $endpage - 1 ) * $maxmessagedisplay;
-            my $j = $i - $maxmessagedisplay;
-            my $k = $endpage - 1;
-            $tmpa = $endpage - 2;
-            my $tmpb = $j - $maxmessagedisplay;
-            $pages .=
-qq~ <a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$tmpb#$tmpb"
-                : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
-              ) . qq~">$tmpa</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$j#$j"
-                : ( $mreplies - $j ) . q{#} . ( $mreplies - $j )
-              ) . qq~">$k</a>~;
-            $pages .= qq~ <a href="$scripturl?num=$mnum/~
-              . (
-                !$ttsreverse
-                ? "$i#$i"
-                : ( $mreplies - $i ) . q{#} . ( $mreplies - $i )
-              ) . qq~">$endpage</a>~;
-            $pages =
-qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
-        }
-        elsif ( $mreplies + 1 > $maxmessagedisplay ) {
-            $tmpa = 1;
-            foreach my $tmpb ( 0 .. $mreplies ) {
-                if ( $tmpb % $maxmessagedisplay == 0 ) {
-                    $pages .= qq~<a href="$scripturl?num=$mnum/~
-                      . (
-                        !$ttsreverse
-                        ? "$tmpb#$tmpb"
-                        : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
-                      ) . qq~">$tmpa</a>\n~;
-                    ++$tmpa;
-                }
-            }
-            $pages =~ s/\n\Z//xsm;
-            $pages =
-qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
-        }
-
-        # build number of views
-        my $views = ${$mnum}{'views'} ? ${$mnum}{'views'} - 1 : 0;
-        my $lastposter = ${$mnum}{'lastposter'};
-        if ( $lastposter =~ m{\AGuest-(.*)}xsm ) {
-            $lastposter = $1 . " ($maintxt{'28'})";
-        }
-        else {
-            load_user($lastposter);
-            if ( !${$mnum}{'lastpostdate'} || ${$mnum}{'lastpostdate'} eq q{} )
-            {
-                ${$mnum}{'lastpostdate'} = $mnum;
-            }
-            if (
-                (
-                       ${ $uid . $lastposter }{'regtime'}
-                    && ${$mnum}{'lastpostdate'} >
-                    ${ $uid . $lastposter }{'regtime'}
-                )
-                || ${ $uid . $lastposter }{'position'}
-                && (   ${ $uid . $lastposter }{'position'} eq 'Administrator'
-                    || ${ $uid . $lastposter }{'position'} eq
-                    'Global Moderator' )
-              )
-            {
-                $lastposter = profile_view($lastposter);
-            }
-            else {
-
-            # Need to load thread to see lastposters DISPLAYname if is Ex-Member
-                our ($EXMEMBERTHREAD);
-                fopen( 'EXMEMBERTHREAD', '<', "$datadir/$mnum.txt" )
-                  or fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
-                my @x = <$EXMEMBERTHREAD>;
-                fclose('EXMEMBERTHREAD')
-                  or croak "$croak{'close'} EXMEMBERTHREAD";
-                $lastposter =
-                  ( split /[|]/xsm, $x[-1], 3 )[1]
-                  . " - $messageindex_txt{'470a'}";
-            }
-        }
-        my $lastpostername = $lastposter || $messageindex_txt{'470'};
+        my ( $micn, $mpoll ) = get_mess_poll( $micon, $mnum, $mdate, $dlp );
+        $micon = $micn;
 
         if (   ( $stkynum && ( $counter >= $stkynum ) )
             && ( !$stkyshowed || $stkyshowed < 1 ) )
@@ -1168,259 +392,25 @@ s/\Q{yabb messageindex_stickygrp_2}\E/$messageindex_stickygrp{'2'}/gxsm;
             $tmptempbar .= $nonstickyheader;
             $stkyshowed = 1;
         }
-
-# Check if the thread contains attachments and create a paper-clip icon if it does
-        my $temp_attachment = q{};
-        if ( $attachments{$mnum} ) {
-            my $alt =
-                $attachments{$mnum} == 1
-              ? $messageindex_txt{'5'}
-              : $messageindex_txt{'4'};
-            $temp_attachment =
-              $attachments{$mnum}
-              ? (
-                ( $guest_media_disallowed && $iamguest )
-                ? qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
-                : $msg_attach_win
-                  . qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" /></a>~
-              )
-              : q{};
-            $temp_attachment =~ s/\Q{yabb mnum}\E/$mnum/xsm;
-        }
-
         $mcount++;
 
         # Print the thread info.
-        my $mydate   = timeformat($mdate);
-        my $adminbar = q{};
-        my $admincol = q{};
-        if (
-            (
-                   ( $iamadmin && $adminview == 3 )
-                || ( $iamgmod && $gmodview == 3 )
-                || ( $iamfmod && $fmodview == 3 )
-                || (   $iammod
-                    && $modview == 3
-                    && !$iamadmin
-                    && !$iamgmod
-                    && !$iamfmod )
-            )
-            && $sessionvalid == 1
-          )
-        {
-            if ( $currentboard eq $annboard ) {
-                $adminbar = qq~
-        <input type="checkbox" name="lockadmin$mcount" class="windowbg" value="$mnum" />
-        <input type="checkbox" name="hideadmin$mcount" class="windowbg" value="$mnum" />
-        <input type="checkbox" name="moveadmin$mcount" class="windowbg" value="$mnum" />
-        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" value="$mnum" />
-        ~;
-            }
-            elsif ( $counter < $numanns ) {
-                $adminbar = q~&nbsp;~;
-            }
-            else {
-                $adminbar = qq~
-        <input type="checkbox" name="lockadmin$mcount" class="windowbg" value="$mnum" />
-        <input type="checkbox" name="stickadmin$mcount" class="windowbg" value="$mnum" />
-        <input type="checkbox" name="hideadmin$mcount" class="windowbg" value="$mnum" />
-        <input type="checkbox" name="moveadmin$mcount" class="windowbg" value="$mnum" />
-        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" value="$mnum" />
-        ~;
-            }
-            $admincol = $admincolumn;
-            $admincol =~ s/\Q{yabb admin}\E/$adminbar/gxsm;
-        }
-        elsif (
-            (
-                   ( $iamadmin && $adminview == 2 )
-                || ( $iamgmod && $gmodview == 2 )
-                || ( $iamfmod && $fmodview == 2 )
-                || (   $iammod
-                    && $modview == 2
-                    && !$iamadmin
-                    && !$iamgmod
-                    && !$iamfmod )
-            )
-            && $sessionvalid == 1
-          )
-        {
-            if ( $currentboard ne $annboard && $counter < $numanns ) {
-                $adminbar = q~&nbsp;~;
-            }
-            else {
-                $adminbar =
-qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~;
-            }
-            $admincol = $admincolumn;
-            $admincol =~ s/\Q{yabb admin}\E/$adminbar/gxsm;
-        }
-        elsif (
-            (
-                   ( $iamadmin && $adminview == 1 )
-                || ( $iamgmod && $gmodview == 1 )
-                || ( $iamfmod && $fmodview == 1 )
-                || (   $iammod
-                    && $modview == 1
-                    && !$iamadmin
-                    && !$iamgmod
-                    && !$iamfmod )
-            )
-            && $sessionvalid == 1
-          )
-        {
-            if ( $currentboard eq $annboard ) {
-                $adminbar = qq~
-        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'announcementlock'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
-        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
-        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
-        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
-        ~;
-            }
-            elsif ( $counter < $numanns ) {
-                $adminbar = q~&nbsp;~;
-            }
-            else {
-                $adminbar = qq~
-        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
-        <a href="$scripturl?action=sticky;thread=$mnum"><img src="$micon_bg{'sticky'}" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}"  /></a>&nbsp;
-        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
-        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
-        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
-~;
-            }
-            $admincol = $admincolumn;
-            $admincol =~ s/\Q{yabb admin}\E/$adminbar/gxsm;
-        }
+        my $mydate = timeformat($mdate);
+        my $admincol = get_mess_admincol( $mcount, $mnum, $counter, $numanns );
 
-        $msub = do_censor($msub);
-        $msub = to_chars($msub);
-        my $msublink = q{};
-        if ( !$moved_flag ) {
-            if (   $enabletopichover
-                && !$messagelist
-                && ( ${ $uid . $username }{'topicpreview'} || $iamguest ) )
-            {
-                our ($MNUM);
-                fopen( 'MNUM', '<', "$datadir/$mnum.txt" )
-                  or croak "$croak{'open'} $mnum.txt";
-                my $thetopic = <$MNUM>;
-                fclose('MNUM') or croak "$croak{'close'} MNUM";
-                my $themessage    = ( split /[|]/xsm, $thetopic )[8];
-                my $clip          = 0;
-                my $msglength     = 200;
-                my $testlength    = 0;
-                my $pretextlength = 0;
-                $themessage = from_html($themessage);
-                $themessage =~
-s/\[img\].*?\[\/img\]/[b][$messageindex_tp{'image_tp'}][\/b]/igxsm;
-                $themessage =~
-s/\[media].*?\[\/media]/[b][$messageindex_tp{'media_tp'}][\/b]/igxsm;
-                $themessage =~
-                  s/\[code(.*?)].*?\[\/code]/[b][XCODE$1][\/b]/igxsm;
-                $themessage =~ s/<br.*?>/<br \/>/igxsm;
-                $themessage =~ s/(<br.*?>\s?<br.*?>)/<br \/>/igxsm;
-                $themessage =~ s/^<br.*?>//igxsm;
-                my $lgtagtxtrem = q{};
-
-                local *fixtags = sub {
-                    my ( $tmpmessage, $pretext, $pretag, $tagtext, $posttag ) =
-                      @_;
-                    my $testmessage = $tmpmessage;
-                    $testmessage =~ s/\[.*?\]//gxsm;
-                    $testmessage =~ s/\<.*?\>//gxsm;
-                    $testlength    = length $testmessage;
-                    $pretextlength = length $pretext;
-                    $pretext =~ s/\[(.*?\])/|$1/gxsm;
-                    $pretag =~ s/\[/|/xsm;
-                    $tagtext =~ s/\[(.*?\])/|$1/gxsm;
-                    $posttag =~ s/\[/|/xsm;
-
-                    if ( $pretextlength > $msglength ) {
-                        return $pretext;
-                    }
-                    if ( $testlength > $msglength ) {
-                        $clip        = 1;
-                        $lgtagtxtrem = ( $msglength - $pretextlength ) - 3;
-                        my $tagtextrem = substr $tagtext, 0, $lgtagtxtrem;
-                        $msglength += ( length($tmpmessage) - $testlength );
-                        return
-                            $pretext
-                          . $pretag
-                          . $tagtextrem . '...'
-                          . $posttag;
-                    }
-                    $msglength += ( length($tmpmessage) - $testlength );
-                    return $pretext . $pretag . $tagtext . $posttag;
-                };
-
-                while ($testlength < $msglength
-                    && $themessage =~
-s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eigxsm
-                  )
-                {
-                }
-                $themessage =~ s/[|](.*?\])/[$1/gxsm;
-                $themessage = substr $themessage, 0, $msglength;
-                if ( length($themessage) > ( $msglength - 1 ) && !$clip ) {
-                    $themessage .= '...';
-                }
-                our $message = $themessage;
-                my $displayname = ${ $uid . $musername }{'realname'};
-                wrap();
-                if ($enable_ubbc) {
-                    if ( !$yy_yabbloaded ) { require Sources::YaBBC; }
-                    do_ubbc();
-                }
-                wrap2();
-                $themessage = $message;
-                $message    = q{};
-                $themessage = to_chars($themessage);
-                $themessage =~ s/XCODE/$messageindex_tp{'code_tp'}/gxsm;
-
-                $themessage = do_censor($themessage);
-                my $topicsum =
-qq~<div class="windowbg2 topic-hover" id="$mnum">$themessage</div>~;
-
-                $msublink = q{};
-                if ( ${$mnum}{'board'} eq $annboard ) {
-                    $msublink =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float: right; font-size: xx-small;">$stickdir</div>~;
-                }
-                else {
-                    $msublink =
-qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float:right; font-size:xx-small">$stickdir</div>~;
-                }
-            }
-            else {
-                if ( ${$mnum}{'board'} eq $annboard ) {
-                    $msublink =
-qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
-                }
-                else {
-                    $msublink =
-qq~<a href="$scripturl?num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
-                }
-            }
-        }
-        elsif ( $moved_flag < 100 ) {
-            split_splice_move( $msub, 0 );
-            $msublink =
-              qq~$msub<br /><span class="small">$moved_subject</span>~;
-        }
-        else {
-            $msub =~ /^(Re:\s)?\[m.*?\]:\s'(.*)'/xsm;
-
-            $msublink =
-qq~$maintxt{'758'}: '<a href="$scripturl?num=$moved_flag">$2</a>'<br /><span class="small">$moved_subject</span>~;
-        }
-
+        $msub   = do_censor($msub);
+        $msub   = to_chars($msub);
         $mydate = timeformat($mdate);
+        my $msublink =
+          get_mess_msublink( $mnum, $musername, $msub, $stickdir, $messagelist,
+            $moved_flag, $moved_subject );
         my $thicon = $micon{$threadclass};
         my $tempbar = $moved_flag ? $threadbarmoved : $threadbar;
-        if ($accept_permafull) {
-            $msublink = $message_permalink;
-        }
+        my ( $message_permalink, $msublnk ) =
+          get_mess_permlink( $mnum, $msub, $msublink );
+        $msublink = $msublnk;
+
+        $tempbar =~ s/\Q{yabb permalink}\E/$message_permalink/gxsm;
         $tempbar =~ s/\Q{yabb admin column}\E/$admincol/gxsm;
         $tempbar =~ s/\Q{yabb threadpic}\E/$thicon/gxsm;
         $tempbar =~ s/\Q{yabb icon}\E/$micon/gxsm;
@@ -1432,7 +422,8 @@ s/\Q{yabb favorite}\E/ ($favicon{$mnum} ? qq~$micon{'addfav'}~ : q{}) /egxsm;
         $tempbar =~ s/\Q{yabb attachmenticon}\E/$temp_attachment/gxsm;
         $tempbar =~ s/\Q{yabb pages}\E/$pages/gxsm;
         $tempbar =~ s/\Q{yabb starter}\E/$mname/gxsm;
-        $tempbar =~ s/\Q{yabb starttime}\E/ timeformat($mnum,0,0,0,1)/egxsm;
+        $tempbar =~
+          s/\Q{yabb starttime}\E/ timeformat( $mnum, 0 ,0 ,0 ,1 )/egxsm;
         $tempbar =~ s/\Q{yabb replies}\E/ number_format($mreplies) /egxsm;
         $tempbar =~ s/\Q{yabb views}\E/ number_format($views) /egxsm;
         $tempbar =~
@@ -1445,12 +436,6 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
 ## Tempbar Mod Hook ##
 ## End Tempbar Mod Hook ##
 
-        if ( $accept_permalink == 1 && !$accept_permafull ) {
-            $tempbar =~ s/\Q{yabb permalink}\E/$message_permalink/gxsm;
-        }
-        else {
-            $tempbar =~ s/\Q{yabb permalink}\E//gxsm;
-        }
         $tmptempbar .= $tempbar;
         $counter++;
     }
@@ -1463,154 +448,12 @@ s/\Q{yabb lastpostlink}\E/<a href="$scripturl?num=$mnum\/$mreplies#$mreplies">$i
           s/\Q{yabb messageindex_txt_841}\E/$messageindex_txt{'841'}/xsm;
     }
 
-    $multiview = 0;
-    my $tmptempfooter;
-    if (
-        (
-               ( $iamadmin && $adminview == 3 )
-            || ( $iamgmod && $gmodview == 3 )
-            || ( $iamfmod && $fmodview == 3 )
-            || (   $iammod
-                && $modview == 3
-                && !$iamadmin
-                && !$iamgmod
-                && !$iamfmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
-        $multiview = 3;
-    }
-    elsif (
-        (
-               ( $iamadmin && $adminview == 2 )
-            || ( $iamgmod && $gmodview == 2 )
-            || ( $iamfmod && $fmodview == 2 )
-            || (   $iammod
-                && $modview == 2
-                && !$iamadmin
-                && !$iamgmod
-                && !$iamfmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
-        $multiview = 2;
-    }
-    my $tempfooter      = q{};
-    my $adminselector   = q{};
-    my $adminselectorb  = q{};
-    my $adminselectorc  = q{};
-    my $admincheckboxes = q{};
-    if ( $multiview >= 2 ) {
-        my $boardlist = moveto();
-        if ( $multiview eq '3' ) {
-            $tempfooter    = $subfooterbar;
-            $adminselector = qq~
-                <label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex)">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
-            ~;
-            if ( $currentboard eq $annboard ) {
-                $admincheckboxes = qq~
-                <input type="checkbox" name="lockall" value="" class="titlebg" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
-                <input type="checkbox" name="hideall" value="" class="titlebg" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
-                <input type="checkbox" name="moveall" value="" class="titlebg" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
-                <input type="checkbox" name="deleteall" value="" class="titlebg" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
-                <input type="hidden" name="fromboard" value="$currentboard" />
-            ~;
-            }
-            else {
-                $admincheckboxes = qq~
-                <input type="checkbox" name="lockall" value="" class="titlebg" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
-                <input type="checkbox" name="stickall" value="" class="titlebg" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
-                <input type="checkbox" name="hideall" value="" class="titlebg" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
-                <input type="checkbox" name="moveall" value="" class="titlebg" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
-                <input type="checkbox" name="deleteall" value="" class="titlebg" onclick="if (this.checked) checkAll(5); else uncheckAll(5);" />
-                <input type="hidden" name="fromboard" value="$currentboard" />
-            ~;
-            }
-            $tempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
-            $tempfooter =~ s/\Q{yabb admin selectorb\E//gxsm;
-            $tempfooter =~ s/\Q{yabb admin selectorc}\E//gxsm;
-            $tempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
-        }
-        elsif ( $multiview eq '2' ) {
-            $tempfooter = $subfooterbar;
-            if ( $currentboard eq $annboard ) {
-                $adminselector = qq~
-                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
-                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
-                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />~;
-                $adminselectorb = qq~
-                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[3].checked=true;">$boardlist</select>~;
-                $adminselectorc =
-qq~<input type="hidden" name="fromboard" value="$currentboard" />
-                <input type="submit" value="$messageindex_txt{'462'}" class="button" />
-            ~;
-            }
-            else {
-                $adminselector = qq~
-                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
-                <input type="radio" name="multiaction" id="multiactionstick" value="stick" class="titlebg" /> <label for="multiactionstick">$messageindex_txt{'781'}</label>
-                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
-                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
-                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />~;
-                $adminselectorb = qq~
-                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[4].checked=true;">$boardlist</select>~;
-                $adminselectorc = qq~
-                <input type="hidden" name="fromboard" value="$currentboard" />
-                <input type="submit" value="$messageindex_txt{'462'}" class="button" />
-            ~;
-            }
-            $admincheckboxes = q~
-                <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
-            ~;
-            $tempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
-            $tempfooter =~ s/\Q{yabb admin selectorb}\E/$adminselectorb/gxsm;
-            $tempfooter =~ s/\Q{yabb admin selectorc}\E/$adminselectorc/gxsm;
-            $tempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
-        }
-        $tmptempfooter = $subfooterbar;
-        $tmptempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
-        $tmptempfooter =~ s/\Q{yabb admin selectorb}\E/$adminselectorb/gxsm;
-        $tmptempfooter =~ s/\Q{yabb admin selectorc}\E/$adminselectorc/gxsm;
-        $tmptempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
-        $tmptempfooter =~
-          s/\Q{yabb messageindex_txt_737}\E/$messageindex_txt{'737'}/gxsm;
-    }
-    my $yabbicons      = q{};
-    my $yabbadminicons = q{};
-    if ( !$messagelist ) {
-        $yabbicons = qq~
-    $micon{'thread'} $messageindex_txt{'457'}<br />
-    $micon{'sticky'} $messageindex_txt{'779'}<br />
-    $micon{'locked'} $messageindex_txt{'456'}<br />
-    $micon{'stickylock'} $messageindex_txt{'780'}<br />
-    $micon{'locked_moved'} $messageindex_txt{'845'}<br />
-~;
-        if ( ($staff)
-            && $sessionvalid == 1 )
-        {
-            $yabbadminicons = qq~
-    $micon{'hide'} $messageindex_txt{'458'}<br />
-    $micon{'hidesticky'} $messageindex_txt{'459'}<br />
-    $micon{'hidelock'} $messageindex_txt{'460'}<br />
-    $micon{'hidestickylock'} $messageindex_txt{'461'}<br />~;
-        }
-        $yabbadminicons .= qq~
-    $micon{'announcement'} $messageindex_txt{'779a'}<br />
-    $micon{'announcementlock'} $messageindex_txt{'779b'}<br />
-    $micon{'hotthread'} $messageindex_txt{'454'} $hot_topic $messageindex_txt{'454a'}<br />
-    $micon{'veryhotthread'} $messageindex_txt{'455'} $very_hot_topic $messageindex_txt{'454a'}<br />
-~;
-        $yabbadminicons =~ s/\Q{yabb veryhotthread}\E/$very_hot_topic/gxsm;
-        $yabbadminicons =~ s/\Q{yabb hottopic}\E/$hot_topic/gxsm;
-        load_access();
-    }
+    my ( $tmptempfooter, $tempfooter )     = get_mess_tmpfooter();
+    my ( $yabbicons,     $yabbadminicons ) = get_mess_icons($messagelist);
 
     #template it
     $messageindex_template =~ s/\Q{yabb board}\E/$boardlink/gxsm;
-    my $template_mods = qq~$modslink$showmodgroups~;
+    my $template_mods = qq~$showmods$showmodgroups~;
     if ($iamadmin) {
         require Sources::AddModerators;
         mod_search();
@@ -1618,21 +461,9 @@ qq~<input type="hidden" name="fromboard" value="$currentboard" />
 qq~<br /><a href="javascript:void(0);" onclick="ModSettings()"><span class="small">$addmod_txt{'modsearch'}</span></a>~;
     }
 
-    my ( $rss_link, $rss_text );
-    if ( !$rss_disabled ) {
-        $rss_link =
-qq~<a href="$scripturl?action=RSSboard;board=$currentboard" target="_blank"><img src="$micon_bg{'rss'}"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
-        $rss_text =
-qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
-        if ( $rssperm || $accept_permafull ) {
-            $rss_link =
-qq~<a href="$perm_domain/$rsssymboards/$currentboard" target="_blank"><img src="$micon_bg{'rss'}"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
-            $rss_text =
-qq~<a href="$perm_domain/$rsssymboards/$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
-        }
-    }
-    my $yyrssfeed = $rss_text;
-    our $yyrss = $rss_link;
+    my ( $rss_link, $rss_text ) = get_mess_rss($currentboard);
+    our $yyrssfeed = $rss_text;
+    our $yyrss     = $rss_link;
     $messageindex_template =~ s/\Q{yabb rssfeed}\E/$rss_text/gxsm;
     $messageindex_template =~ s/\Q{yabb rss}\E/$rss_link/gxsm;
 
@@ -1640,22 +471,19 @@ qq~<a href="$perm_domain/$rsssymboards/$INFO{'board'}" target="_blank">$messagei
     $messageindex_template =~ s/\Q{yabb category}\E/$catlink/gxsm;
     $messageindex_template =~ s/\Q{yabb board}\E/$boardlink/gxsm;
     $messageindex_template =~ s/\Q{yabb moderators}\E/$template_mods/gxsm;
+
     my $enab_topicprev = q{};
     if ($enabletopichover) {
         if ( !$iamguest && !$INFO{'messagelist'} ) {
+            $enab_topicprev =
+qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;todo=enable"><img src="$imagesdir/$hoveron" alt="$messageindex_tp{'enabletp'}" title="$messageindex_tp{'enabletp'}" /><br /></a>~;
             if ( ${ $uid . $username }{'topicpreview'} ) {
                 $enab_topicprev =
 qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;todo=disable"><img src="$imagesdir/$hoveroff" alt="$messageindex_tp{'disabletp'}" title="$messageindex_tp{'disabletp'}" /><br /></a>~;
             }
-            else {
-                $enab_topicprev =
-qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;todo=enable"><img src="$imagesdir/$hoveron" alt="$messageindex_tp{'enabletp'}" title="$messageindex_tp{'enabletp'}" /><br /></a>~;
-            }
         }
     }
-    else {
-        $enab_topicprev = q{};
-    }
+
     $messageindex_template =~ s/\Q{yabb topicpreview}\E/$enab_topicprev/gxsm;
     $messageindex_template =~ s/\Q{yabb sortsubject}\E/$sort_subject/gxsm;
     $messageindex_template =~ s/\Q{yabb sortstarter}\E/$sort_starter/gxsm;
@@ -1678,40 +506,7 @@ qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=topicpreview;tod
         }
     }
 
-    my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
-    if ( -e "$boardsdir/brdpics.db" ) {
-        our ($BRDPIC);
-        fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
-          or croak "$croak{'open'} brdpics.db";
-        my @brdpics = <$BRDPIC>;
-        fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
-        chomp @brdpics;
-        foreach (@brdpics) {
-            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm;
-            if ( $brdnm eq $currentboard && $template eq $style ) {
-                if ( $brdpic =~ /\//ixsm ) {
-                    $bdpic = $brdpic;
-                }
-                elsif (
-                    -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" )
-                {
-                    $bdpic = qq~$imagesdir/Boards/$brdpic~;
-                }
-            }
-        }
-    }
-    else { $bdpic = qq~$imagesdir/boards.$bdpic_ext~; }
-
-    if ( ${ $uid . $currentboard }{'ann'} ) {
-        $bdpic = qq~$imagesdir/ann.$bdpic_ext~;
-    }
-    if ( ${ $uid . $currentboard }{'rbin'} ) {
-        $bdpic = qq~$imagesdir/recycle.$bdpic_ext~;
-    }
-
-    $bdpic =
-qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resize" /> ~;
-
+    my $bdpic = get_mess_bdpic( $currentboard, $curboardname );
     $messageindex_template =~ s/\Q{yabb bdpicture}\E/$bdpic/gxsm;
     my $tmpthreadcount =
       number_format( ${ $uid . $currentboard }{'threadcount'} );
@@ -1722,72 +517,9 @@ qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resi
     $messageindex_template =~ s/\Q{yabb new_load}\E/$newload/gxsm;
 
     $messageindex_template =~ s/\Q{yabb colspan}\E/$colspan/gxsm;
-    my $tmpruletxt = q{};
-    my $rulestitle = q{};
     ### Board Rules Start ###
-    if ( ${ $uid . $currentboard }{'rules'} == 1 ) {
-        ${ $uid . $currentboard }{'rulestitle'} = to_chars( ${ $uid . $currentboard }{'rulestitle'} );
-        ${ $uid . $currentboard }{'rulesdesc'} = to_chars( ${ $uid . $currentboard }{'rulesdesc'} );
-        $tmpruletxt = qq~${$uid.$currentboard}{'rulesdesc'}~;
-
-        if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} ) {
-            my $tmprulelgt = length( ${ $uid . $currentboard }{'rulesdesc'} );
-            $rulestitle =
-qq~<img src="$imagesdir/$newload{'brd_col'}" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
-            my @collbdrules =
-              split /[|]/xsm, ${ $uid . $username }{'collapsebdrules'};
-            foreach my $i ( 0 .. $#collbdrules ) {
-                my ( $rulebd, $rulelgt ) = split /,/xsm, $collbdrules[$i];
-                if ( $rulebd eq $currentboard && $rulelgt == $tmprulelgt ) {
-                    $tmpruletxt = qq~$messageindex_txt{'collruletext'}~;
-                    $rulestitle =
-qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
-                }
-            }
-        }
-
-        $rulestitle .= qq~&nbsp;${$uid.$currentboard}{'rulestitle'}~;
-        my $rulesdesc = qq~<div id="bdruledesc">$tmpruletxt</div>~;
-
-        my $mycat_col = q{};
-        my $mycat_exp = q{};
-        if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} ) {
-            $mycat_col = $newload{'brd_col'};
-            $mycat_exp = $newload{'brd_exp'};
-            $rulesdesc .= qq~
-            <textarea id="actruletxt" name="actruletxt" rows="1" cols="1" style="display: none;">${$uid.$currentboard}{'rulesdesc'}</textarea>
-            <input type="hidden" id="tmpruletxt" value="$messageindex_txt{'collruletext'}" />
-            <script type="text/javascript">
-            function collapseBDrule(rulelgt) {
-                var tmpruletxt = document.getElementById('tmpruletxt').value;
-                var actruletxt = document.getElementById('actruletxt').value;
-                if (document.getElementById("bdruledesc").innerHTML == tmpruletxt) linkdesclg = 1;
-                else linkdesclg = rulelgt;
-                var thisboard = "$currentboard";
-                var doexpand = "$boardindex_exptxt{'1'}";
-                var docollaps = "$boardindex_exptxt{'2'}";
-                if (document.getElementById("bdruledesc").innerHTML == tmpruletxt) {
-                    document.getElementById("bdruledesc").innerHTML = actruletxt;
-                    document.getElementById('bdrulecollapse').src = "$imagesdir/$mycat_col";
-                    document.getElementById('bdrulecollapse').alt = docollaps;
-                    document.getElementById('bdrulecollapse').title = docollaps;
-                }
-                else {
-                    document.getElementById("bdruledesc").innerHTML = tmpruletxt;
-                    document.getElementById('bdrulecollapse').src="$imagesdir/$mycat_exp";
-                    document.getElementById('bdrulecollapse').alt = doexpand;
-                    document.getElementById('bdrulecollapse').title = doexpand;
-                }
-                var url = '$scripturl?action=bdrulecoll&rulebd=' + thisboard + '&rulelg=' + linkdesclg;
-                GetXmlHttpObject();
-                if (xmlHttp === null) return;
-                xmlHttp.open("GET",url,true);
-                xmlHttp.send(null);
-            }
-            </script>
-            ~;
-        }
-
+    if ( ${ $uid . $currentboard }{'rules'} ) {
+        my ( $rulestitle, $rulesdesc ) = get_mess_rules($currentboard);
         $messageindex_template =~ s/\Q{yabb rulestitle}\E/$rulestitle/gxsm;
         $messageindex_template =~ s/\Q{yabb rulesdescription}\E/$rulesdesc/gxsm;
     }
@@ -1857,37 +589,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
       s/\Q{yabb topichandellist2}\E/$topichandellist2/gxsm;
     $messageindex_template =~ s/\Q{yabb pageindex top}\E/$pageindex1/gxsm;
     $messageindex_template =~ s/\Q{yabb pageindex bottom}\E/$pageindex2/gxsm;
-
-    if (
-        (
-               ( $iamadmin && $adminview == 3 )
-            || ( $iamgmod && $gmodview == 3 )
-            || ( $iamfmod && $fmodview == 3 )
-            || (   $iammod
-                && $modview == 3
-                && !$iamadmin
-                && !$iamgmod
-                && !$iamfmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
-        $messageindex_template =~ s/\Q{yabb admin column}\E/$adminheader/gxsm;
-    }
-    elsif (
-        (
-               ( $iamadmin && $adminview != 0 )
-            || ( $iamgmod && $gmodview != 0 )
-            || ( $iamfmod && $fmodview != 0 )
-            || (   $iammod
-                && $modview != 0
-                && !$iamadmin
-                && !$iamgmod
-                && !$iamfmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
+    if ($multiview) {
         $messageindex_template =~ s/\Q{yabb admin column}\E/$adminheader/gxsm;
     }
     else {
@@ -1896,20 +598,7 @@ qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardinde
 
     my $formstart = q{};
     my $formend   = q{};
-    if (
-        (
-               ( $iamadmin && $adminview >= 2 )
-            || ( $iamgmod && $gmodview >= 2 )
-            || ( $iamfmod && $fmodview >= 2 )
-            || (   $iammod
-                && $modview >= 2
-                && !$iamadmin
-                && !$iamgmod
-                && !$iamfmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
+    if ( $multiview >= 2 ) {
         if ( !$messagelist ) {
             $formstart =
 qq~<form name="multiadmin" action="$scripturl?board=$currentboard;action=multiadmin" method="post" style="display: inline">~;
@@ -1930,6 +619,7 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
         $messageindex_template =~ s/\Q{yabb modupdate}\E//gxsm;
         $messageindex_template =~ s/\Q{yabb modupdateend}\E//gxsm;
     }
+
     if ($tmpstickyheader) {
         $messageindex_template =~
           s/\Q{yabb stickyblock}\E/$tmpstickyheader/gxsm;
@@ -1938,6 +628,7 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
         $messageindex_template =~ s/\Q{yabb stickyblock}\E//gxsm;
     }
     $messageindex_template =~ s/\Q{yabb threadblock}\E/$tmptempbar/gxsm;
+
     if ($tmptempfooter) {
         $messageindex_template =~ s/\Q{yabb adminfooter}\E/$tmptempfooter/gxsm;
     }
@@ -1978,24 +669,9 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
     </script>
     ~;
 
-    if (
-        (
-               ( $iamadmin && $adminview >= 2 )
-            || ( $iamgmod && $gmodview >= 2 )
-            || ( $iamfmod && $fmodview >= 2 )
-            || (   $iammod
-                && $modview >= 2
-                && !$iamadmin
-                && !$iamgmod
-                && !$iamfmod )
-        )
-        && $sessionvalid == 1
-      )
-    {
+    if ( $multiview >= 2 ) {
         my $modul = $currentboard eq $annboard ? 4 : 5;
-
-        if ( $sessionvalid == 1 ) {
-            $yymain .= qq~
+        $yymain .= qq~
 <script type="text/javascript">
     function checkAll(j) {
         for (var i = 0; i < document.multiadmin.elements.length; i++) {
@@ -2010,7 +686,6 @@ qq~<input type="hidden" name="allpost" value="$INFO{'start'}" /></form>~;
         }
     }
 </script>\n~;
-        }
     }
 
     $yyjavascript .=
@@ -2108,6 +783,7 @@ sub mark_read {    # Mark all threads in this board as read.
 }
 
 sub list_pages {
+## popup list ##
     my ( $pcount, $maxvalue, $tlink, $jcode );
     my $pages = q{};
     if ( $INFO{'num'} ) {
@@ -2145,7 +821,7 @@ sub list_pages {
     $output =~ s/\Q{yabb jcode}\E/$jcode/xsm;
     $output =~ s/\Q{yabb pages}\E/$pages/xsm;
     $output =~ s/\Q{yabb messageindex_139}\E/$messageindex_txt{'139'}/gxsm;
-    $output =~ s/\Q{yabb messageindex_18\E/$messageindex_txt{'18'}/gxsm;
+    $output =~ s/\Q{yabb messageindex_18}\E/$messageindex_txt{'18'}/gxsm;
     $output =~ s/\Q{yabb messageindex_903}\E/$messageindex_txt{'903'}/gxsm;
 
     print_html_output_and_finish();
@@ -2168,8 +844,8 @@ sub message_pageindex {
 
 sub moveto {
     my (
-        $boardlist, $catid,  $board,   $boardname, $boardview,
-        $brdlist,   @bdlist, $catname, $catperms,  $access
+        $boardlist, $catid,   $board,    $boardname,
+        $boardview, $catname, $catperms, $access
     );
     get_forum_master();
     my $indent   = 0;
@@ -2182,7 +858,7 @@ sub moveto {
             my $dash = q{};
             if ( $indent > 0 ) { $dash = q{-}; }
 
-            ( $boardname, $boardperms, $boardview ) = @{$board{$board}};
+            ( $boardname, $boardperms, $boardview ) = @{ $board{$board} };
             $boardname = to_chars($boardname);
             $access = access_check( $board, q{}, $boardperms );
             if ( !$iamadmin && $access ne 'granted' ) { next; }
@@ -2201,7 +877,7 @@ sub moveto {
                   . qq~$boardname</option>\n~;
             }
             if ( $subboard{$board} ) {
-                move_subboards( @{$subboard{$board}} );
+                move_subboards( @{ $subboard{$board} } );
             }
         }
         $indent -= 2;
@@ -2209,14 +885,14 @@ sub moveto {
 
     foreach my $catid (@categoryorder) {
         if ( !$cat{$catid} ) { next; }
-        ( $catname, $catperms ) = @{$catinfo{$catid}};
+        ( $catname, $catperms ) = @{ $catinfo{$catid} };
 
-        $access = cat_access($catperms);
-        if ( !$access ) { next; }
+        my $cat_access = cat_access($catperms);
+        if ( !$cat_access ) { next; }
         $catname = to_chars($catname);
         $boardlist .= qq~<optgroup label="$catname">~;
         $indent = -2;
-        move_subboards(@{$cat{$catid}});
+        move_subboards( @{ $cat{$catid} } );
         $boardlist .= q~</optgroup>~;
     }
     return $boardlist;
@@ -2303,6 +979,1364 @@ sub set_topicpreview {
     user_account( $username, 'update' );
     message_index();
     return;
+}
+
+sub get_mess_mods {
+    my $showmods      = q{};
+    my $showmodgroups = q{};
+    if ( keys %moderators > 0 ) {
+        if ( keys %moderators == 1 ) {
+            $showmods = qq~($messageindex_txt{'298'}: ~;
+        }
+        else { $showmods = qq~($messageindex_txt{'63'}: ~; }
+        my %sortmd = reverse %moderators;
+        my @sortmd = sort keys %sortmd;
+        foreach my $i (@sortmd) {
+            format_username( $sortmd{$i} );
+            $showmods .= quick_links( $sortmd{$i}, 1 ) . q{, };
+        }
+        $showmods =~ s/,\s$/)/xsm;
+    }
+    if ( keys %moderatorgroups > 0 ) {
+        if ( keys %moderatorgroups == 1 ) {
+            $showmodgroups = qq~($messageindex_txt{'298a'}: ~;
+        }
+        else { $showmodgroups = qq~($messageindex_txt{'63a'}: ~; }
+
+        my ( $tmpmodgrp, $thismodgrp );
+        while ( $_ = each %moderatorgroups ) {
+            $tmpmodgrp = $moderatorgroups{$_};
+            ( $thismodgrp, undef ) = @{ $grp_nopost{$tmpmodgrp} };
+            $showmodgroups .= qq~$thismodgrp, ~;
+        }
+        $showmodgroups =~ s/,\s$/)/xsm;
+    }
+    if ( $showmodgroups && $showmods ) {
+        $showmods .= q~ - ~;
+    }
+    if ( ${ $uid . $currentboard }{'brdpasswr'} ) {
+        my $cookiename = "$cookiepassword$currentboard$username";
+        my $crypass    = ${ $uid . $currentboard }{'brdpassw'};
+        if ($iamguest) {
+            boardpassw_g();
+        }
+        elsif ( !$staff && $yy_cookies{$cookiename} ne $crypass ) {
+            my $boardname = ${ $board{$currentboard} }[0];
+            boardpassw($boardname);
+        }
+    }
+    return ( $showmodgroups, $showmods );
+}
+
+sub get_poll_icon {
+    my ( $poll, $mnum, $mdate, $dlp ) = @_;
+    my @poll = @{$poll};
+    my (
+        $poll_question, $poll_locked, $poll_uname,   $poll_name,
+        $poll_email,    $poll_date,   $guest_vote,   $hide_results,
+        $multi_vote,    $poll_mod,    $poll_modname, $poll_comment,
+        $vote_limit,    $pie_radius,  $pie_legends,  $poll_end
+    ) = split /[|]/xsm, $poll[0];
+    chomp $poll_end;
+    if ( $poll_end && !$poll_locked && $poll_end < $date ) {
+        $poll_locked = 1;
+        $poll_end    = q{};
+        $poll[0] =
+"$poll_question|$poll_locked|$poll_uname|$poll_name|$poll_email|$poll_date|$guest_vote|$hide_results|$multi_vote|$poll_mod|$poll_modname|$poll_comment|$vote_limit|$pie_radius|$pie_legends|$poll_end\n";
+        my $prnpoll = join q{}, @poll;
+        our ($POLL);
+        fopen( 'POLL', '>', "$datadir/$mnum.poll" )
+          or croak "$croak{'open'} POLL";
+        print {$POLL} $prnpoll or croak "$croak{'print'} POLL";
+        fclose('POLL') or croak "$croak{'close'} POLL";
+    }
+
+    my $micon = $micon{'pollicon'};
+    if ($poll_locked) { $micon = $micon{'polliconclosed'}; }
+    elsif ( !$iamguest
+        && $max_log_days_old
+        && $mdate > $date - ( $max_log_days_old * 86400 ) )
+    {
+        if ( $dlp < $poll_date ) {
+            $micon = $micon{'polliconnew'};
+        }
+        else {
+            if ( -e "$datadir/$mnum.polled" ) {
+                our ($POLLED);
+                fopen( 'POLLED', '<', "$datadir/$mnum.polled" )
+                  or croak "$croak{'open'} POLLED";
+                my $polled = <$POLLED>;
+                fclose('POLLED') or croak "$croak{'close'} POLLED";
+                my ( undef, undef, undef, $vote_date, undef ) =
+                  split /[|]/xsm, $polled;
+                if ( $dlp < $vote_date ) {
+                    $micon = $micon{'polliconnew'};
+                }
+            }
+        }
+    }
+    return $micon;
+}
+
+sub get_mess_top1 {
+    my ( $mnum, $musername, $msub, $stickdir ) = @_;
+    our ($MNUM);
+    fopen( 'MNUM', '<', "$datadir/$mnum.txt" )
+      or croak "$croak{'open'} $mnum.txt";
+    my $thetopic = <$MNUM>;
+    fclose('MNUM') or croak "$croak{'close'} MNUM";
+    my $themessage = ( split /[|]/xsm, $thetopic )[8];
+    my $ns         = ( split /[|]/xsm, $thetopic )[9];
+    my $clip       = 0;
+    my $msglength  = 200;
+    my $testlength = 0;
+    my $pretextlength = 0;
+    $themessage = from_html($themessage);
+    $themessage =~
+      s/\[img\].*?\[\/img\]/[b][$messageindex_tp{'image_tp'}][\/b]/igxsm;
+    $themessage =~
+      s/\[media].*?\[\/media]/[b][$messageindex_tp{'media_tp'}][\/b]/igxsm;
+    $themessage =~ s/\[code(.*?)].*?\[\/code]/[b][XCODE$1][\/b]/igxsm;
+    $themessage =~ s/<br.*?>/<br \/>/igxsm;
+    $themessage =~ s/(<br.*?>\s?<br.*?>)/<br \/>/igxsm;
+    $themessage =~ s/^<br.*?>//igxsm;
+    my $lgtagtxtrem = q{};
+
+    local *fixtags = sub {
+        my ( $tmpmessage, $pretext, $pretag, $tagtext, $posttag ) = @_;
+        my $testmessage = $tmpmessage;
+        $testmessage =~ s/\[.*?\]//gxsm;
+        $testmessage =~ s/\<.*?\>//gxsm;
+        $testlength    = length $testmessage;
+        $pretextlength = length $pretext;
+        $pretext =~ s/\[(.*?\])/|$1/gxsm;
+        $pretag =~ s/\[/|/xsm;
+        $tagtext =~ s/\[(.*?\])/|$1/gxsm;
+        $posttag =~ s/\[/|/xsm;
+
+        if ( $pretextlength > $msglength ) {
+            return $pretext;
+        }
+        if ( $testlength > $msglength ) {
+            $clip        = 1;
+            $lgtagtxtrem = ( $msglength - $pretextlength ) - 3;
+            my $tagtextrem = substr $tagtext, 0, $lgtagtxtrem;
+            $msglength += ( length($tmpmessage) - $testlength );
+            return $pretext . $pretag . $tagtextrem . '...' . $posttag;
+        }
+        $msglength += ( length($tmpmessage) - $testlength );
+        return $pretext . $pretag . $tagtext . $posttag;
+    };
+
+    while ($testlength < $msglength
+        && $themessage =~
+s/^((.*?)(\[(\w+?)[\s|\=]*(.*?)\])(.*?)(\[\/\4\]))/ fixtags($1,$2,$3,$6,$7) /eigxsm
+      )
+    {
+    }
+    $themessage =~ s/[|](.*?\])/[$1/gxsm;
+    $themessage = substr $themessage, 0, $msglength;
+    if ( length($themessage) > ( $msglength - 1 ) && !$clip ) {
+        $themessage .= '...';
+    }
+    my $displayname = ${ $uid . $musername }{'realname'};
+    $themessage = wrap($themessage);
+    if ( $enable_ubbc && !$ns ) {
+        enable_yabbc();
+        $themessage = do_ubbc( $themessage, q{}, $displayname );
+    }
+    $themessage = wrap2($themessage);
+    $themessage = to_chars($themessage);
+    $themessage =~ s/XCODE/$messageindex_tp{'code_tp'}/gxsm;
+
+    $themessage = do_censor($themessage);
+    my $topicsum =
+      qq~<div class="windowbg2 topic-hover" id="$mnum">$themessage</div>~;
+
+    my $msublink = q{};
+    if ( ${$mnum}{'board'} eq $annboard ) {
+        $msublink =
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float: right; font-size: xx-small;">$stickdir</div>~;
+    }
+    else {
+        $msublink =
+qq~<a href="$scripturl?num=$mnum" onmouseover="topicSum(event, '$mnum')" onmouseout="hidetopicSum('$mnum')" onclick="hidetopicSum('$mnum')">$msub</a>$topicsum<div style="float:right; font-size:xx-small">$stickdir</div>~;
+    }
+    return $msublink;
+}
+
+sub get_mess_rules {
+    ($currentboard) = @_;
+    ${ $uid . $currentboard }{'rulestitle'} =
+      to_chars( ${ $uid . $currentboard }{'rulestitle'} );
+    ${ $uid . $currentboard }{'rulesdesc'} =
+      to_chars( ${ $uid . $currentboard }{'rulesdesc'} );
+
+    my $tmpruletxt = qq~${$uid.$currentboard}{'rulesdesc'}~;
+    my $rulestitle = q{};
+
+    if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} ) {
+        my $tmprulelgt = length( ${ $uid . $currentboard }{'rulesdesc'} );
+        $rulestitle =
+qq~<img src="$imagesdir/$newload{'brd_col'}" id="bdrulecollapse" alt="$boardindex_exptxt{'2'}" title="$boardindex_exptxt{'2'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
+        my @collbdrules =
+          split /[|]/xsm, ${ $uid . $username }{'collapsebdrules'};
+        foreach my $i ( 0 .. $#collbdrules ) {
+            my ( $rulebd, $rulelgt ) = split /,/xsm, $collbdrules[$i];
+            if ( $rulebd eq $currentboard && $rulelgt == $tmprulelgt ) {
+                $tmpruletxt = qq~$messageindex_txt{'collruletext'}~;
+                $rulestitle =
+qq~<img src="$imagesdir/$newload{'brd_exp'}" id="bdrulecollapse" alt="$boardindex_exptxt{'1'}" title="$boardindex_exptxt{'1'}" class="cursor" onclick="collapseBDrule($tmprulelgt);" />~;
+            }
+        }
+    }
+
+    $rulestitle .= qq~&nbsp;${$uid.$currentboard}{'rulestitle'}~;
+    my $rulesdesc = qq~<div id="bdruledesc">$tmpruletxt</div>~;
+
+    my $mycat_col = q{};
+    my $mycat_exp = q{};
+    if ( !$iamguest && ${ $uid . $currentboard }{'rulescollapse'} ) {
+        $mycat_col = $newload{'brd_col'};
+        $mycat_exp = $newload{'brd_exp'};
+        $rulesdesc .= qq~
+            <textarea id="actruletxt" name="actruletxt" rows="1" cols="1" style="display: none;">${$uid.$currentboard}{'rulesdesc'}</textarea>
+            <input type="hidden" id="tmpruletxt" value="$messageindex_txt{'collruletext'}" />
+            <script type="text/javascript">
+            function collapseBDrule(rulelgt) {
+                var tmpruletxt = document.getElementById('tmpruletxt').value;
+                var actruletxt = document.getElementById('actruletxt').value;
+                if (document.getElementById("bdruledesc").innerHTML == tmpruletxt) linkdesclg = 1;
+                else linkdesclg = rulelgt;
+                var thisboard = "$currentboard";
+                var doexpand = "$boardindex_exptxt{'1'}";
+                var docollaps = "$boardindex_exptxt{'2'}";
+                if (document.getElementById("bdruledesc").innerHTML == tmpruletxt) {
+                    document.getElementById("bdruledesc").innerHTML = actruletxt;
+                    document.getElementById('bdrulecollapse').src = "$imagesdir/$mycat_col";
+                    document.getElementById('bdrulecollapse').alt = docollaps;
+                    document.getElementById('bdrulecollapse').title = docollaps;
+                }
+                else {
+                    document.getElementById("bdruledesc").innerHTML = tmpruletxt;
+                    document.getElementById('bdrulecollapse').src="$imagesdir/$mycat_exp";
+                    document.getElementById('bdrulecollapse').alt = doexpand;
+                    document.getElementById('bdrulecollapse').title = doexpand;
+                }
+                var url = '$scripturl?action=bdrulecoll&rulebd=' + thisboard + '&rulelg=' + linkdesclg;
+                GetXmlHttpObject();
+                if (xmlHttp === null) return;
+                xmlHttp.open("GET",url,true);
+                xmlHttp.send(null);
+            }
+            </script>
+            ~;
+    }
+    return ( $rulestitle, $rulesdesc );
+}
+
+sub get_mess_sort {
+    ($currentboard) = @_;
+
+    our ($BRDTXT);
+    fopen( 'BRDTXT', '<', "$boardsdir/$currentboard.txt" )
+      or fatal_error( 'cannot_open', "$boardsdir/$currentboard.txt", 1 );
+    our @threadlist = <$BRDTXT>;
+    fclose('BRDTXT') or croak "$croak{'close'} BRDTXT";
+    my %starter;
+    my @temp_list = @threadlist;
+
+    local *starter = sub {
+        if ( exists $user_info{ $_[0] } ) { return $user_info{ $_[0] }; }
+        if ( !exists $memberinf{ $_[0] } ) {
+            return lc $_[1][2];
+        }
+        $user_info{ $_[0] } =
+          lc $memberinf{ $_[0] }[0];
+    };
+
+    my $sort_subject =
+qq~<a href="$scripturl?board=$currentboard;tsort=d" rel="nofollow">$messageindex_txt{'70'}</a>~;
+    my $sort_starter =
+qq~<a href="$scripturl?board=$currentboard;tsort=f" rel="nofollow">$messageindex_txt{'109'}</a>~;
+    my $sort_answer =
+qq~<a href="$scripturl?board=$currentboard;tsort=h" rel="nofollow">$messageindex_txt{'110'}</a>~;
+    my $sort_lastpostim =
+qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a>~;
+
+    if ($tsort) {
+        if ( $tsort eq 'b' ) {
+            $sort_lastpostim =
+qq~<a href="$scripturl?board=$currentboard;tsort=a" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_first'}~;
+            @threadlist =
+              reverse
+              sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+              @temp_list;
+        }
+        elsif ( $tsort =~ /[cd]/xsm ) {
+            if ( $tsort eq 'c' ) {
+                $sort_subject =
+qq~<a href="$scripturl?board=$currentboard;tsort=d" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_up'}~;
+                @threadlist = reverse sort {
+                    lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
+                      lc( ( split /[|]/xsm, $b, 3 )[1] )
+                } @temp_list;
+            }
+            else {
+                $sort_subject =
+qq~<a href="$scripturl?board=$currentboard;tsort=c" rel="nofollow">$messageindex_txt{'70'}</a> $micon{'sort_down'}~;
+                @threadlist = sort {
+                    lc(   ( split /[|]/xsm, $a, 3 )[1] ) cmp
+                      lc( ( split /[|]/xsm, $b, 3 )[1] )
+                } @temp_list;
+            }
+        }
+        elsif ( $tsort =~ /[ef]/xsm ) {
+            if ( $tsort eq 'e' ) {
+                manage_memberinfo('load');
+                $sort_starter =
+qq~<a href="$scripturl?board=$currentboard;tsort=f" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_up'}~;
+                @threadlist = reverse sort {
+                    starter( ( split /[|]/xsm, $a, 8 )[6], $a )
+                      cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
+                } @temp_list;
+                undef %memberinf;
+            }
+            else {
+                manage_memberinfo('load');
+                $sort_starter =
+qq~<a href="$scripturl?board=$currentboard;tsort=e" rel="nofollow">$messageindex_txt{'109'}</a> $micon{'sort_down'}~;
+                @threadlist = sort {
+                    starter( ( split /[|]/xsm, $a, 8 )[6], $a )
+                      cmp starter( ( split /[|]/xsm, $b, 8 )[6], $b )
+                } @temp_list;
+                undef %memberinf;
+            }
+        }
+        elsif ( $tsort =~ /[gh]/xsm ) {
+            if ( $tsort eq 'g' ) {
+                $sort_answer =
+qq~<a href="$scripturl?board=$currentboard;tsort=h" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_up'}~;
+                @threadlist =
+                  reverse
+                  sort {
+                    ( split /[|]/xsm, $a, 7 )[5]
+                      <=> ( split /[|]/xsm, $b, 7 )[5]
+                  } @temp_list;
+            }
+            else {
+                $sort_answer =
+qq~<a href="$scripturl?board=$currentboard;tsort=g" rel="nofollow">$messageindex_txt{'110'}</a> $micon{'sort_down'}~;
+                @threadlist =
+                  sort {
+                    ( split /[|]/xsm, $a, 7 )[5]
+                      <=> ( split /[|]/xsm, $b, 7 )[5]
+                  } @temp_list;
+            }
+        }
+        else {
+            $sort_lastpostim =
+qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
+            @threadlist =
+              sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+              @temp_list;
+        }
+    }
+    else {
+        $sort_lastpostim =
+qq~<a href="$scripturl?board=$currentboard;tsort=b" rel="nofollow">$messageindex_txt{'22'}</a> $micon{'sort_up'}~;
+        @threadlist =
+          sort { ( split /[|]/xsm, $a )[4] <=> ( split /[|]/xsm, $b )[4] }
+          @temp_list;
+    }
+    undef @temp_list;
+    undef %starter;
+    return (
+        $sort_subject,    $sort_starter, $sort_answer,
+        $sort_lastpostim, \@threadlist
+    );
+}
+
+sub get_mess_page1 {
+    my @args = @_;
+    my (
+        $messagelist, $start, $startpage, $maxindex, $threadcount,
+        $endpage,     $tmpa,  $lastptn,   $lastpn
+    ) = @args;
+    my $pagetxtindexst = q~<span class="small pgindex">~;
+    my $pagetxtindex   = q{};
+    if ( !$iamguest ) {
+        $pagetxtindexst .=
+qq~<a href="$scripturl?board=$INFO{'board'};start=$start;action=messagepagedrop"><img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'19'}" title="$messageindex_txt{'19'}" /></a> $messageindex_txt{'139'}: ~;
+    }
+    else {
+        $pagetxtindexst .=
+qq~<img src="$index_togl{'index_togl'}"  alt="$messageindex_txt{'139'}" title="$messageindex_txt{'139'}" /> $messageindex_txt{'139'}: ~;
+    }
+    if ( $startpage > 0 ) {
+        if ($messagelist) {
+            $pagetxtindex =
+qq~<a href="$scripturl?board=$currentboard/0">1</a>&nbsp;<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
+        }
+        if ( $startpage == $maxindex ) {
+            $pagetxtindex =
+qq~<a href="$scripturl?board=$currentboard/0"><span class="small">1</span></a>&nbsp;~;
+        }
+    }
+    foreach my $counter ( $startpage .. ( $endpage - 1 ) ) {
+        if ( $counter % $maxindex == 0 ) {
+            if ($messagelist) {
+                $pagetxtindex .=
+                  $start == $counter
+                  ? qq~[$tmpa]&nbsp;~
+                  : qq~<a href="javascript:MessageList('$scripturl?board=$currentboard/$counter;messagelist=1','$yyhtml_root','$currentboard', 1)"><span class="small">$tmpa</span></a>&nbsp;~;
+            }
+            else {
+                $pagetxtindex .=
+                  $start == $counter
+                  ? qq~[$tmpa]&nbsp;~
+                  : qq~<a href="$scripturl?board=$currentboard/$counter"><span class="small">$tmpa</span></a>&nbsp;~;
+            }
+            $tmpa++;
+        }
+    }
+    my $pageindexadd = q{};
+    if ( $endpage < $threadcount - $maxindex ) {
+        $pageindexadd .=
+qq~<a href='javascript: void(0);' onclick='ListPages2("$currentboard","$threadcount");'>...</a>&nbsp;~;
+    }
+    if ( $endpage != $threadcount ) {
+        $pageindexadd .=
+qq~<a href="$scripturl?board=$currentboard/$lastptn"><span class="small">$lastpn</span></a>~;
+    }
+
+    $pagetxtindex .= $pageindexadd;
+    my $pageindex1 = qq~$pagetxtindexst $pagetxtindex</span>~;
+    return $pageindex1;
+}
+
+sub get_mess_page2 {
+    my @args = @_;
+    my ( $messagelist, $pagenumb, $dropdisplaynum, $start, $maxindex, $lastptn,
+        $tstart, $pagedropindex1 )
+      = @args;
+    my $indexpages   = q{};
+    my $pageindex1   = q{};
+    my $pageindex2   = q{};
+    my $pageindexjs  = q{};
+    my $d_indexpages = $pagenumb / $dropdisplaynum;
+    my $i_indexpages = int( $pagenumb / $dropdisplaynum );
+    if ( $d_indexpages > $i_indexpages ) {
+        $indexpages = int( $pagenumb / $dropdisplaynum ) + 1;
+    }
+    else { $indexpages = int( $pagenumb / $dropdisplaynum ) }
+    my $selectedindex = int( ( $start / $maxindex ) / $dropdisplaynum );
+    my $pagedropindex2 = $pagedropindex1;
+    if ( $pagenumb > $dropdisplaynum ) {
+        $pagedropindex1 .=
+qq~<span class="decselector"><select size="1" name="decselector1" id="decselector1" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+        $pagedropindex2 .=
+qq~<span class="decselector"><select size="1" name="decselector2" id="decselector2" class="decselector_sel" onchange="if(this.options[this.selectedIndex].value) SelDec(this.options[this.selectedIndex].value, 'xx')">\n~;
+    }
+    my $pagejsindex = q{};
+    foreach my $i ( 0 .. ( $indexpages - 1 ) ) {
+        my $indexpage = ( $i * $dropdisplaynum ) * $maxindex;
+
+        my $indexstart = ( $i * $dropdisplaynum ) + 1;
+        my $indexend = $indexstart + ( $dropdisplaynum - 1 );
+        if ( $indexend > $pagenumb ) { $indexend = $pagenumb; }
+        my $indxoption = qq~$indexstart-$indexend~;
+        if ( $indexstart == $indexend ) {
+            $indxoption = $indexstart;
+        }
+        my $selected = q{};
+        if ( $i == $selectedindex ) {
+            $selected    = q~ selected="selected"~;
+            $pagejsindex = qq~$indexstart|$indexend|$maxindex|$indexpage~;
+        }
+        if ( $pagenumb > $dropdisplaynum ) {
+            $pagedropindex1 .=
+qq~<option value="$indexstart|$indexend|$maxindex|$indexpage"$selected>$indxoption</option>\n~;
+            $pagedropindex2 .=
+qq~<option value="$indexstart|$indexend|$maxindex|$indexpage"$selected>$indxoption</option>\n~;
+        }
+    }
+    if ( $pagenumb > $dropdisplaynum ) {
+        $pagedropindex1 .= qq~</select>\n</span>~;
+        $pagedropindex2 .= qq~</select>\n</span>~;
+    }
+    $pagedropindex1 .=
+q~<span id="ViewIndex1" class="droppageindex viewindex_hid">&nbsp;</span>~;
+    $pagedropindex2 .=
+q~<span id="ViewIndex2" class="droppageindex viewindex_hid">&nbsp;</span>~;
+    my $tmpmaxindex = $maxindex;
+
+    my $prevpage        = $start - $tmpmaxindex;
+    my $nextpage        = $start + $maxindex;
+    my $pagedropindexpv = q{};
+    my $pagedropindexnx = q{};
+    my $pagedropindexpvbl =
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13"  alt="" />~;
+    my $pagedropindexnxbl =
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13"  alt="" />~;
+
+    if ( $start < $maxindex ) {
+        $pagedropindexpv .=
+qq~<img src="$index_togl{'index_left0'}" height="14" width="13"  alt="" />~;
+    }
+    else {
+        $pagedropindexpv .=
+qq~<img src="$index_togl{'index_left'}"  height="14" width="13" alt="$pidtxt{'02'}" title="$pidtxt{'02'}" class="cursor" ~;
+        if ($messagelist) {
+            $pagedropindexpv .=
+qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$prevpage;messagelist=1\\',\\'$yyhtml_root\\', \\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/0;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
+        }
+        else {
+            $pagedropindexpv .=
+qq~onclick="location.href=\\'$scripturl?board=$currentboard/$prevpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/0\\'" />~;
+        }
+    }
+    if ( $nextpage > $lastptn ) {
+        $pagedropindexnx .=
+qq~<img src="$index_togl{'index_right0'}" height="14" width="13" class="vtop" alt="" />~;
+    }
+    else {
+        $pagedropindexnx .=
+qq~<img src="$index_togl{'index_right'}" height="14" width="13"  alt="$pidtxt{'03'}" title="$pidtxt{'03'}" class="cursor" ~;
+        if ($messagelist) {
+            $pagedropindexnx .=
+qq~onclick="MessageList(\\'$scripturl?board=$currentboard/$nextpage;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" ondblclick="MessageList(\\'$scripturl?board=$currentboard/$lastptn;messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)" />~;
+        }
+        else {
+            $pagedropindexnx .=
+qq~onclick="location.href=\\'$scripturl?board=$currentboard/$nextpage\\'" ondblclick="location.href=\\'$scripturl?board=$currentboard/$lastptn\\'" />~;
+        }
+    }
+
+    # make select box have links for ajax vs default url
+    our $default_or_ajax = qq~$scripturl?board=$currentboard/' + pagstart + '~;
+    if ($messagelist) {
+        $default_or_ajax =
+qq~javascript:MessageList(\\'$scripturl?board=$currentboard/' + pagstart + ';messagelist=1\\', \\'$yyhtml_root\\',\\'$currentboard\\', 1)~;
+    }
+    $pageindex1 = qq~$pagedropindex1</span>~;
+    $pageindex2 = qq~$pagedropindex2</span>~;
+
+    $pageindexjs = qq~
+<script id="RunSelDec" type="text/javascript">
+    function SelDec(decparam, visel) {
+        splitparam = decparam.split("|");
+        var vistart = parseInt(splitparam[0]);
+        var viend = parseInt(splitparam[1]);
+        var maxpag = parseInt(splitparam[2]);
+        var pagstart = parseInt(splitparam[3]);
+        //var allpagstart = parseInt(splitparam[3]);
+        if (visel == 'xx' && decparam == '$pagejsindex') visel = '$tstart';
+        var pagedropindex = '$visel_0';
+        for(i=vistart; i<=viend; i++) {
+            if (visel == pagstart) pagedropindex += '$visel_1a<b>' + i + '</b>$visel_1b';
+            else pagedropindex += '$visel_2a<a href="$scripturl?board=$currentboard/' + pagstart + '">' + i + '</a>$visel_1b';
+            pagstart += maxpag;
+        }
+        ~;
+    if ($showpageall) {
+        $pageindexjs .= qq~
+            if (vistart != viend) {
+                if(visel == 'all') pagedropindex += '$visel_1a<b>$pidtxt{'01'}</b></td>';
+                else pagedropindex += '$visel_2a<a href="$scripturl?board=$currentboard/all">$pidtxt{'01'}</a>$visel_1b';
+            }
+            ~;
+    }
+    $pageindexjs .= qq~
+        if(visel != 'xx') pagedropindex += '$visel_3a$pagedropindexpv$pagedropindexnx$visel_1b';
+        else pagedropindex += '$visel_3a$pagedropindexpvbl$pagedropindexnxbl$visel_1b';
+        pagedropindex += '$visel_4';
+        document.getElementById("ViewIndex1").innerHTML=pagedropindex;
+        document.getElementById("ViewIndex1").style.visibility = "visible";
+        document.getElementById("ViewIndex2").innerHTML=pagedropindex;
+        document.getElementById("ViewIndex2").style.visibility = "visible";
+        ~;
+    if ( $pagenumb > $dropdisplaynum ) {
+        $pageindexjs .= q~
+        document.getElementById("decselector1").value = decparam;
+        document.getElementById("decselector2").value = decparam;
+        ~;
+    }
+    $pageindexjs .= qq~
+    }
+    var pagejsindex = "$pagejsindex";
+    var tstart = "$tstart";
+    document.onload = SelDec(pagejsindex, tstart);
+</script>
+~;
+    return (
+        $pageindex1,     $pageindex2, $pageindexjs,
+        $pagedropindex1, $pagedropindex1
+    );
+}
+
+sub get_mess_multi1 {
+    my $multiview    = get_mess_collevl();
+    my $boardname    = ${ $board{$currentboard} }[0];
+    my $curboardname = $boardname;
+    $curboardname = to_chars($curboardname);
+    my $multiviewscr = q{};
+    if ( $multiview == 1 ) {
+        $multiviewscr .= qq~<script type="text/javascript">
+function NoPost(op) {
+    if (document.getElementById("toboard").options[op].className == "nopost") {
+        alert("$messageindex_txt{'nopost'}");
+        document.getElementById("toboard").selectedIndex = 0;
+    }
+}
+</script>
+~;
+    }
+
+    if ( $multiview >= 2 ) {
+        $multiviewscr .=
+qq~<script src="$yyhtml_root/MessageIndex.js" type="text/javascript"></script>
+<script type="text/javascript">
+function NoPost(op) {
+    if (document.getElementById("toboard").options[op].className == "nopost") {
+        alert("$messageindex_txt{'nopost'}");
+        document.getElementById("toboard").selectedIndex = 0;
+    }
+}
+</script>
+\n~;
+    }
+    my $colspan = 6;
+    if ( $multiview > 0 ) {
+        $colspan = 7;
+    }
+    my $adminlink = get_mess_multi2($multiview);
+    return ( $multiview, $multiviewscr, $curboardname, $colspan, $adminlink );
+}
+
+sub get_mess_multi2 {
+    my ($multiview) = @_;
+    my $adminlink = q{};
+    if ( $multiview == 3 ) {
+        if ( $currentboard eq $annboard ) {
+            $adminlink =
+qq~<img src="$micon_bg{'announcementlock'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
+        }
+        else {
+            $adminlink =
+qq~<img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}" /><img src="$micon_bg{'sticky'}" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}" /><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}" /><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}" /><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}" />~;
+        }
+    }
+    elsif ( $multiview != 0 ) {
+        $adminlink = $messageindex_txt{'2'};
+    }
+    return $adminlink;
+}
+
+sub get_mess_postlink {
+    my ( $crboard, $messagelist ) = @_;
+    my $postlink = q{};
+    if ( access_check( $crboard, 1 ) eq 'granted' ) {
+        if ($messagelist) {
+            if ($mdrop_postpopup) {
+                $postlink =
+qq~$menusep<a href="javascript:void(0)" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
+            }
+            else {
+                $postlink =
+qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic">$img{'newthread'}</a>~;
+            }
+        }
+        else {
+            if ($mindex_postpopup) {
+                $postlink =
+qq~$menusep<a href="javascript:void(0)" onclick="PostPage('$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic','$INFO{'board'}')">$img{'newthread'}</a>~;
+            }
+            else {
+                $postlink = qq~$menusep<a href="~
+                  . (
+                    $enable_quickpost && $enable_quickjump
+                    ? 'javascript:document.postmodify.message.focus();document.postmodify.subject.focus();'
+                    : qq~$scripturl?board=$INFO{'board'};action=post;title=StartNewTopic~
+                  ) . qq~">$img{'newthread'}</a>~;
+            }
+        }
+    }
+    my $polllink = q{};
+    if ( access_check( $currentboard, 3 ) eq 'granted' ) {
+        $polllink =
+qq~$menusep<a href="$scripturl?board=$INFO{'board'};action=post;title=CreatePoll">$img{'createpoll'}</a>~;
+    }
+    return ( $postlink, $polllink );
+}
+
+sub get_mess_thrdcls {
+    my ( $mstate, $mreplies, $mnum ) = @_;
+    my $threadclass = 'thread';
+    if ( !$mstate ) { $threadclass = 'thread'; }
+    else {
+        if    ( $mstate =~ /h/ixsm ) { $threadclass = 'hide'; }
+        elsif ( $mstate =~ /l/ixsm ) { $threadclass = 'locked'; }
+        elsif ( $mreplies >= $very_hot_topic ) {
+            $threadclass = 'veryhotthread';
+        }
+        elsif ( $mreplies >= $hot_topic ) { $threadclass = 'hotthread'; }
+        if ( $threadclass eq 'hide' ) {
+            if ( $mstate =~ /s/ixsm && $mstate !~ /l/ixsm ) {
+                $threadclass = 'hidesticky';
+            }
+            elsif ( $mstate =~ /l/ixsm && $mstate !~ /s/ixsm ) {
+                $threadclass = 'hidelock';
+            }
+            elsif ($mstate =~ /s/ixsm
+                && $mstate =~ /l/ixsm )
+            {
+                $threadclass = 'hidestickylock';
+            }
+        }
+        elsif ($threadclass eq 'locked'
+            && $mstate =~ /s/ixsm
+            && $mstate !~ /h/ixsm )
+        {
+            $threadclass = 'stickylock';
+        }
+        elsif ( $mstate =~ m/s/ixsm && $mstate !~ m/h/ixsm ) {
+            $threadclass = 'sticky';
+        }
+        elsif ( ${$mnum}{'board'} eq $annboard && $mstate !~ m/h/ixsm ) {
+            $threadclass =
+              $threadclass eq 'locked'
+              ? 'announcementlock'
+              : 'announcement';
+        }
+    }
+    return $threadclass;
+}
+
+sub get_mess_sticky {
+    my ( $threadclass, $mnum, $mstate ) = @_;
+    my $stickdir = q{};
+    if ($staff) {
+        if (   $threadclass eq 'sticky'
+            || $threadclass eq 'stickylock'
+            || $threadclass eq 'hidesticky'
+            || $threadclass eq 'hidestickylock' )
+        {
+            $stickdir =
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=up" title="$messageindex_txt{'move_up'}"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$currentboard;num=$mnum;direction=down" title="$messageindex_txt{'move_down'}"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
+        }
+        elsif (
+            (
+                   $threadclass eq 'announcement'
+                || $threadclass eq 'announcementlock'
+                || ${$mnum}{'board'} eq $annboard && $mstate =~ /h/ixsm
+            )
+            && ( $iamadmin || $iamgmod )
+          )
+        {
+            $stickdir =
+qq~&nbsp;&nbsp;<a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=up;oldboard=$currentboard;" title="$messageindex_txt{'move_up'}"><span class="sticky_stick"><b>&uarr;</b></span></a><a href="$scripturl?action=rearrsticky;board=$annboard;num=$mnum;direction=down;oldboard=$currentboard;" title="$messageindex_txt{'move_down'}"><span class="sticky_stick"><b>&darr;</b></span> </a>~;
+        }
+    }
+    return $stickdir;
+}
+
+sub get_mess_new {
+    my ( $currentbrd, $mnum, $mdate, $moved_flag, $dmax ) = @_;
+    my $new = q{};
+    my $dlp = 0;
+    if ( !$iamguest && $max_log_days_old ) {
+
+        # Decide if thread should have the "NEW" indicator next to it.
+        # Do this by reading the user's log for last read time on thread,
+        # and compare to the last post time on the thread.
+        if (
+            !$yyuserlog{"$currentbrd--mark"}
+            || (   $yyuserlog{$mnum}
+                && $yyuserlog{"$currentbrd--mark"}
+                && int( $yyuserlog{$mnum} ) >
+                int $yyuserlog{"$currentbrd--mark"} )
+          )
+        {
+            $dlp = int $yyuserlog{$mnum};
+        }
+        else { $dlp = int $yyuserlog{"$currentbrd--mark"}; }
+        $mdate ||= $mnum;
+        if (
+            !$moved_flag
+            && (   $yyuserlog{"$mnum--unread"}
+                || ( !$dlp && $mdate > $dmax )
+                || ( $dlp > $dmax && $dlp < $mdate ) )
+          )
+        {
+            if ( ${$mnum}{'board'} eq $annboard ) {
+                $new =
+qq~<a href="$scripturl?virboard=$currentbrd;num=$mnum/new#new">$newload{'new_mess'}</a>~;
+            }
+            else {
+                $new =
+qq~<a href="$scripturl?num=$mnum/new#new">$newload{'new_mess'}</a>~;
+            }
+        }
+        else {
+            $new = q{};
+        }
+    }
+    return ( $new, $dlp );
+}
+
+sub get_mess_starter {
+    my ( $mdate, $musername ) = @_;
+    my $mname = q{};
+    if ( $musername ne 'Guest' ) {
+        load_user($musername);
+        $mdate ||= 0;
+
+        if (
+            (
+                ${ $uid . $musername }{'regdate'}
+                && $mdate > ${ $uid . $musername }{'regtime'}
+            )
+            || ${ $uid . $musername }{'position'} eq 'Administrator'
+            || ${ $uid . $musername }{'position'} eq 'Global Moderator'
+          )
+        {
+            $mname = profile_view($musername);
+        }
+        else {
+            $mname .= qq~ ($messageindex_txt{'470a'})~;
+        }
+    }
+    else {
+        $mname .= " ($maintxt{'28'})";
+    }
+    return $mname;
+}
+
+sub get_mess_lastposter {
+    my ($mnum) = @_;
+    my $lastposter = ${$mnum}{'lastposter'};
+    if ( $lastposter =~ m{\AGuest-(.*)}xsm ) {
+        $lastposter = $1 . " ($maintxt{'28'})";
+    }
+    else {
+        load_user($lastposter);
+        if ( !${$mnum}{'lastpostdate'} || ${$mnum}{'lastpostdate'} eq q{} ) {
+            ${$mnum}{'lastpostdate'} = $mnum;
+        }
+        if (
+            (
+                   ${ $uid . $lastposter }{'regtime'}
+                && ${$mnum}{'lastpostdate'} > ${ $uid . $lastposter }{'regtime'}
+            )
+            || ${ $uid . $lastposter }{'position'}
+            && (   ${ $uid . $lastposter }{'position'} eq 'Administrator'
+                || ${ $uid . $lastposter }{'position'} eq 'Global Moderator' )
+          )
+        {
+            $lastposter = profile_view($lastposter);
+        }
+        else {
+
+            # Need to load thread to see lastposters DISPLAYname if is Ex-Member
+            our ($EXMEMBERTHREAD);
+            fopen( 'EXMEMBERTHREAD', '<', "$datadir/$mnum.txt" )
+              or fatal_error( 'cannot_open', "$datadir/$mnum.txt", 1 );
+            my @x = <$EXMEMBERTHREAD>;
+            fclose('EXMEMBERTHREAD')
+              or croak "$croak{'close'} EXMEMBERTHREAD";
+            $lastposter =
+              ( split /[|]/xsm, $x[-1], 3 )[1] . " - $messageindex_txt{'470a'}";
+        }
+    }
+
+    my $lastpostername = $lastposter || $messageindex_txt{'470'};
+    return $lastpostername;
+}
+
+sub get_mess_att {
+    my ( $mnum, $attachments ) = @_;
+    my %attachments     = %{$attachments};
+    my $temp_attachment = q{};
+    if ( $attachments{$mnum} ) {
+        my $alt =
+            $attachments{$mnum} == 1
+          ? $messageindex_txt{'5'}
+          : $messageindex_txt{'4'};
+        $temp_attachment =
+          $attachments{$mnum}
+          ? (
+            ( $guest_media_disallowed && $iamguest )
+            ? qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" />~
+            : $msg_attach_win
+              . qq~<img src="$micon_bg{'paperclip'}" alt="$messageindex_txt{'3'} $attachments{$mnum} $alt" title="$messageindex_txt{'3'} $attachments{$mnum} $alt" /></a>~
+          )
+          : q{};
+        $temp_attachment =~ s/\Q{yabb mnum}\E/$mnum/xsm;
+    }
+    return $temp_attachment;
+}
+
+sub get_mess_permlink {
+    my ( $mnum, $msub, $msublink ) = @_;
+    my $permlinkboard =
+      ${$mnum}{'board'} eq $annboard ? $annboard : $currentboard;
+    my $permdate          = permtimer($mnum);
+    my $message_permalink = q{};
+    if ($accept_permafull) {
+        $message_permalink =
+qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$msub</a>~;
+        $msublink = $message_permalink;
+        if ($accept_permalink) {
+            $message_permalink = q{};
+        }
+        else {
+            $message_permalink =
+qq~<a href="$perm_domain/$symlink/$permdate/$permlinkboard/$mnum">$messageindex_txt{'10'}</a>~;
+        }
+    }
+    return ( $message_permalink, $msublink );
+}
+
+sub get_mess_admincol {
+    my ( $mcount, $mnum, $counter, $numanns ) = @_;
+    my $adminbar  = q{};
+    my $admincol  = q{};
+    my $multiview = get_mess_collevl();
+    if ( $multiview == 3 ) {
+        $adminbar = qq~
+        <input type="checkbox" name="lockadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="stickadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="hideadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="moveadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" value="$mnum" />
+        ~;
+        if ( $currentboard eq $annboard ) {
+            $adminbar = qq~
+        <input type="checkbox" name="lockadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="hideadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="moveadmin$mcount" class="windowbg" value="$mnum" />
+        <input type="checkbox" name="deleteadmin$mcount" class="windowbg" value="$mnum" />
+        ~;
+        }
+        elsif ( $counter < $numanns ) {
+            $adminbar = q~&nbsp;~;
+        }
+    }
+    elsif ( $multiview == 2 ) {
+        if ( $currentboard ne $annboard && $counter < $numanns ) {
+            $adminbar = q~&nbsp;~;
+        }
+        else {
+            $adminbar =
+qq~<input type="checkbox" name="admin$mcount" class="windowbg" value="$mnum" />~;
+        }
+    }
+    elsif ( $multiview == 1 ) {
+        if ( $currentboard eq $annboard ) {
+            $adminbar = qq~
+        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'announcementlock'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
+        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
+        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
+        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
+        ~;
+        }
+        elsif ( $counter < $numanns ) {
+            $adminbar = q~&nbsp;~;
+        }
+        else {
+            $adminbar = qq~
+        <a href="$scripturl?action=lock;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'locked'}" alt="$messageindex_txt{'104'}" title="$messageindex_txt{'104'}"  /></a>&nbsp;
+        <a href="$scripturl?action=sticky;thread=$mnum"><img src="$micon_bg{'sticky'}" alt="$messageindex_txt{'781'}" title="$messageindex_txt{'781'}"  /></a>&nbsp;
+        <a href="$scripturl?action=hide;thread=$mnum;tomessageindex=1"><img src="$micon_bg{'hide'}" alt="$messageindex_txt{'844'}" title="$messageindex_txt{'844'}"  /></a>&nbsp;
+        <a href="javascript:void(window.open('$scripturl?action=split_splice;board=$currentboard;thread=$mnum;oldposts=all;leave=0;newcat=${$uid.$currentboard}{'cat'};newboard=$currentboard;position=end','_blank','width=800,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,top=150,left=150'))"><img src="$micon_bg{'admin_move'}" alt="$messageindex_txt{'132'}" title="$messageindex_txt{'132'}"  /></a>&nbsp;
+        <a href="$scripturl?action=removethread;thread=$mnum" onclick="return confirm('$messageindex_txt{'162'}')"><img src="$micon_bg{'admin_rem'}" alt="$messageindex_txt{'54'}" title="$messageindex_txt{'54'}"  /></a>
+~;
+        }
+    }
+    if ($multiview) {
+        $admincol = $admincolumn;
+        $admincol =~ s/\Q{yabb admin}\E/$adminbar/gxsm;
+    }
+    return $admincol;
+}
+
+sub get_mess_collevl {
+    my $collevl = 0;
+    if ( $sessionvalid == 1 ) {
+        my $ismod = 0;
+        if (   $iammod
+            && !$iamadmin
+            && !$iamgmod
+            && !$iamfmod )
+        {
+            $ismod = 1;
+        }
+        if (   ( $iamadmin && $adminview == 3 )
+            || ( $iamgmod && $gmodview == 3 )
+            || ( $iamfmod && $fmodview == 3 )
+            || ( $ismod   && $modview == 3 ) )
+        {
+            $collevl = 3;
+        }
+        elsif (( $iamadmin && $adminview == 2 )
+            || ( $iamgmod && $gmodview == 2 )
+            || ( $iamfmod && $fmodview == 2 )
+            || ( $ismod   && $modview == 2 ) )
+        {
+            $collevl = 2;
+        }
+        elsif (( $iamadmin && $adminview == 1 )
+            || ( $iamgmod && $gmodview == 1 )
+            || ( $iamfmod && $fmodview == 1 )
+            || ( $ismod   && $modview == 1 ) )
+        {
+            $collevl = 1;
+        }
+    }
+    return $collevl;
+}
+
+sub get_mess_msublink {
+    my @args = @_;
+    my ( $mnum, $musername, $msub, $stickdir, $messagelist, $moved_flag,
+        $moved_subject )
+      = @args;
+    my $msublink = q{};
+    if ( !$moved_flag ) {
+        if (   $enabletopichover
+            && !$messagelist
+            && ( ${ $uid . $username }{'topicpreview'} || $iamguest ) )
+        {
+            $msublink = get_mess_top1( $mnum, $musername, $msub, $stickdir );
+        }
+        else {
+            $msublink =
+qq~<a href="$scripturl?num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
+            if ( ${$mnum}{'board'} eq $annboard ) {
+                $msublink =
+qq~<a href="$scripturl?virboard=$currentboard;num=$mnum">$msub</a><div style="float:right; font-size:xx-small">$stickdir</div>~;
+            }
+        }
+    }
+    elsif ( $moved_flag < 100 ) {
+        split_splice_move( $msub, 0 );
+        $msublink = qq~$msub<br /><span class="small">$moved_subject</span>~;
+    }
+    else {
+        $msub =~ /^(Re:\s)?\[m.*?\]:\s'(.*)'/xsm;
+        $msublink =
+qq~$maintxt{'758'}: '<a href="$scripturl?num=$moved_flag">$2</a>'<br /><span class="small">$moved_subject</span>~;
+    }
+    return $msublink;
+}
+
+sub get_mess_tmpfooter {
+    my $tmptempfooter   = q{};
+    my $tempfooter      = q{};
+    my $adminselector   = q{};
+    my $adminselectorb  = q{};
+    my $adminselectorc  = q{};
+    my $admincheckboxes = q{};
+    my $multiview       = get_mess_collevl();
+    if ( $multiview >= 2 ) {
+        my $boardlist = moveto();
+        if ( $multiview == 3 ) {
+            $tempfooter    = $subfooterbar;
+            $adminselector = qq~
+                <label for="toboard">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" /> <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex)">$boardlist</select><input type="submit" value="$messageindex_txt{'462'}" class="button" />
+            ~;
+            if ( $currentboard eq $annboard ) {
+                $admincheckboxes = qq~
+                <input type="checkbox" name="lockall" value="" class="titlebg" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
+                <input type="checkbox" name="hideall" value="" class="titlebg" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
+                <input type="checkbox" name="moveall" value="" class="titlebg" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
+                <input type="checkbox" name="deleteall" value="" class="titlebg" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
+                <input type="hidden" name="fromboard" value="$currentboard" />
+            ~;
+            }
+            else {
+                $admincheckboxes = qq~
+                <input type="checkbox" name="lockall" value="" class="titlebg" onclick="if (this.checked) checkAll(1); else uncheckAll(1);" />
+                <input type="checkbox" name="stickall" value="" class="titlebg" onclick="if (this.checked) checkAll(2); else uncheckAll(2);" />
+                <input type="checkbox" name="hideall" value="" class="titlebg" onclick="if (this.checked) checkAll(3); else uncheckAll(3);" />
+                <input type="checkbox" name="moveall" value="" class="titlebg" onclick="if (this.checked) checkAll(4); else uncheckAll(4);" />
+                <input type="checkbox" name="deleteall" value="" class="titlebg" onclick="if (this.checked) checkAll(5); else uncheckAll(5);" />
+                <input type="hidden" name="fromboard" value="$currentboard" />
+            ~;
+            }
+            $tempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorb\E//gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorc}\E//gxsm;
+            $tempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
+        }
+        elsif ( $multiview == 2 ) {
+            $tempfooter = $subfooterbar;
+            if ( $currentboard eq $annboard ) {
+                $adminselector = qq~
+                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
+                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
+                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
+                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />~;
+                $adminselectorb = qq~
+                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[3].checked=true;">$boardlist</select>~;
+                $adminselectorc =
+qq~<input type="hidden" name="fromboard" value="$currentboard" />
+                <input type="submit" value="$messageindex_txt{'462'}" class="button" />
+            ~;
+            }
+            else {
+                $adminselector = qq~
+                <input type="radio" name="multiaction" id="multiactionlock" value="lock" class="titlebg" /> <label for="multiactionlock">$messageindex_txt{'104'}</label>
+                <input type="radio" name="multiaction" id="multiactionstick" value="stick" class="titlebg" /> <label for="multiactionstick">$messageindex_txt{'781'}</label>
+                <input type="radio" name="multiaction" id="multiactionhide" value="hide" class="titlebg" /> <label for="multiactionhide">$messageindex_txt{'844'}</label>
+                <input type="radio" name="multiaction" id="multiactiondelete" value="delete" class="titlebg" /> <label for="multiactiondelete">$messageindex_txt{'31'}</label>
+                <input type="radio" name="multiaction" id="multiactionmove" value="move" class="titlebg" /> <label for="multiactionmove">$messageindex_txt{'133'}</label>: <input type="checkbox" name="newinfo" value="1" title="$messageindex_txt{199}" class="titlebg" ondblclick="alert('$messageindex_txt{200}')" />~;
+                $adminselectorb = qq~
+                <select name="toboard" id="toboard" onchange="NoPost(this.selectedIndex); document.multiadmin.multiaction[4].checked=true;">$boardlist</select>~;
+                $adminselectorc = qq~
+                <input type="hidden" name="fromboard" value="$currentboard" />
+                <input type="submit" value="$messageindex_txt{'462'}" class="button" />
+            ~;
+            }
+            $admincheckboxes = q~
+                <input type="checkbox" name="checkall" id="checkall" value="" class="titlebg" onclick="if (this.checked) checkAll(0); else uncheckAll(0);" />
+            ~;
+            $tempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorb}\E/$adminselectorb/gxsm;
+            $tempfooter =~ s/\Q{yabb admin selectorc}\E/$adminselectorc/gxsm;
+            $tempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
+        }
+        $tmptempfooter = $subfooterbar;
+        $tmptempfooter =~ s/\Q{yabb admin selector}\E/$adminselector/gxsm;
+        $tmptempfooter =~ s/\Q{yabb admin selectorb}\E/$adminselectorb/gxsm;
+        $tmptempfooter =~ s/\Q{yabb admin selectorc}\E/$adminselectorc/gxsm;
+        $tmptempfooter =~ s/\Q{yabb admin checkboxes}\E/$admincheckboxes/gxsm;
+        $tmptempfooter =~
+          s/\Q{yabb messageindex_txt_737}\E/$messageindex_txt{'737'}/gxsm;
+    }
+    return ( $tmptempfooter, $tempfooter );
+}
+
+sub get_mess_icons {
+    my ($messagelist)  = q{};
+    my $yabbicons      = q{};
+    my $yabbadminicons = q{};
+    if ( !$messagelist ) {
+        $yabbicons = qq~
+    $micon{'thread'} $messageindex_txt{'457'}<br />
+    $micon{'sticky'} $messageindex_txt{'779'}<br />
+    $micon{'locked'} $messageindex_txt{'456'}<br />
+    $micon{'stickylock'} $messageindex_txt{'780'}<br />
+    $micon{'locked_moved'} $messageindex_txt{'845'}<br />
+~;
+        if ( ($staff)
+            && $sessionvalid == 1 )
+        {
+            $yabbadminicons = qq~
+    $micon{'hide'} $messageindex_txt{'458'}<br />
+    $micon{'hidesticky'} $messageindex_txt{'459'}<br />
+    $micon{'hidelock'} $messageindex_txt{'460'}<br />
+    $micon{'hidestickylock'} $messageindex_txt{'461'}<br />~;
+        }
+        $yabbadminicons .= qq~
+    $micon{'announcement'} $messageindex_txt{'779a'}<br />
+    $micon{'announcementlock'} $messageindex_txt{'779b'}<br />
+    $micon{'hotthread'} $messageindex_txt{'454'} $hot_topic $messageindex_txt{'454a'}<br />
+    $micon{'veryhotthread'} $messageindex_txt{'455'} $very_hot_topic $messageindex_txt{'454a'}<br />
+~;
+        $yabbadminicons =~ s/\Q{yabb veryhotthread}\E/$very_hot_topic/gxsm;
+        $yabbadminicons =~ s/\Q{yabb hottopic}\E/$hot_topic/gxsm;
+        load_access();
+    }
+    return ( $yabbicons, $yabbadminicons );
+}
+
+sub get_mess_stkylist {
+    my ( $threadlst, $threads ) = @_;
+    my @threadlist         = @{$threadlst};
+    my @threads            = @{$threads};
+    my $countsticky        = 0;
+    my $threadcount        = 0;
+    my @nostickythreadlist = ();
+    foreach my $threadlist (@threadlist) {
+        my $threadstatus = ( split /[|]/xsm, $threadlist )[8];
+        if ( $threadstatus =~ /h/ixsm && !$staff ) {
+            next;
+        }
+        if ( $threadstatus =~ /s/ixsm ) {
+            push @threads, $threadlist;
+            $countsticky++;
+        }
+        else {
+            $nostickythreadlist[$threadcount] = $threadlist;
+            $threadcount++;
+        }
+    }
+    undef @threadlist;
+    return ( $countsticky, $threadcount, \@nostickythreadlist, \@threads );
+}
+
+sub get_mess_rss {
+    ($currentboard) = @_;
+    my ( $rss_link, $rss_text );
+    if ( !$rss_disabled ) {
+        $rss_link =
+qq~<a href="$scripturl?action=RSSboard;board=$currentboard" target="_blank"><img src="$micon_bg{'rss'}"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+        $rss_text =
+qq~<a href="$scripturl?action=RSSboard;board=$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
+        if ( $rssperm || $accept_permafull ) {
+            $rss_link =
+qq~<a href="$perm_domain/$rsssymboards/$currentboard" target="_blank"><img src="$micon_bg{'rss'}"  alt="$maintxt{'rssfeed'}" title="$maintxt{'rssfeed'}" /></a>~;
+            $rss_text =
+qq~<a href="$perm_domain/$rsssymboards/$INFO{'board'}" target="_blank">$messageindex_txt{843}</a>~;
+        }
+    }
+    return ( $rss_link, $rss_text );
+}
+
+sub get_mess_mark {
+    my ($messagelist) = @_;
+    my $markalllink   = q{};
+    my $notify_board  = q{};
+    if ( !$iamguest ) {
+        my $brdid        = q{};
+        my $mthreadslang = q{};
+        if ($messagelist) {
+            $mthreadslang = 1;
+            $brdid        = q{new_} . $INFO{'board'};
+        }
+        $markalllink =
+qq~$menusep<a href="javascript:MarkAllAsRead('$scripturl?board=$INFO{'board'};action=markasread','$imagesdir','$mthreadslang','$brdid')">$img{'markboardread'}</a>~;
+
+        $notify_board =
+qq~$menusep<a href="$scripturl?action=boardnotify;board=$INFO{'board'}">$img{'notify'}</a>~;
+    }
+    return ( $markalllink, $notify_board );
+}
+
+sub get_mess_poll {
+    my ( $micn, $mnum, $mdate, $dlp ) = @_;
+    my $micon = $micon{$micn};
+    my $mpoll = q{};
+    if ( -e "$datadir/$mnum.poll" ) {
+        $mpoll = qq~<b>$messageindex_txt{'15'}: </b>~;
+        our ($POLL);
+        fopen( 'POLL', '<', "$datadir/$mnum.poll" )
+          or croak "$croak{'close'} POLL";
+        my @poll = <$POLL>;
+        fclose('POLL') or croak "$croak{'close'} POLL";
+        $micon = get_poll_icon( \@poll, $mnum, $mdate, $dlp );
+    }
+    return ( $micon, $mpoll );
+}
+
+sub get_mess_bdpic {
+    my ( $crrentboard, $curboardname ) = @_;
+    my $bdpic = qq~$imagesdir/boards.$bdpic_ext~;
+    if ( -e "$boardsdir/brdpics.db" ) {
+        our ($BRDPIC);
+        fopen( 'BRDPIC', '<', "$boardsdir/brdpics.db" )
+          or croak "$croak{'open'} brdpics.db";
+        my @brdpics = <$BRDPIC>;
+        fclose('BRDPIC') or croak "$croak{'close'} BRDPIC";
+        chomp @brdpics;
+        foreach (@brdpics) {
+            my ( $brdnm, $style, $brdpic ) = split /[|]/xsm;
+            if ( $brdnm eq $crrentboard && $template eq $style ) {
+                if ( $brdpic =~ /\//ixsm ) {
+                    $bdpic = $brdpic;
+                }
+                elsif (
+                    -e "$htmldir/Templates/Forum/$useimages/Boards/$brdpic" )
+                {
+                    $bdpic = qq~$imagesdir/Boards/$brdpic~;
+                }
+            }
+        }
+    }
+    else { $bdpic = qq~$imagesdir/boards.$bdpic_ext~; }
+
+    if ( ${ $uid . $crrentboard }{'ann'} ) {
+        $bdpic = qq~$imagesdir/ann.$bdpic_ext~;
+    }
+    if ( ${ $uid . $crrentboard }{'rbin'} ) {
+        $bdpic = qq~$imagesdir/recycle.$bdpic_ext~;
+    }
+
+    $bdpic =
+qq~ <img src="$bdpic" alt="$curboardname" title="$curboardname" id="brd_img_resize" /> ~;
+    return $bdpic;
+}
+
+sub get_mess_pages {
+    my ( $mnum, $mreplies, $endpage, $tmpa ) = @_;
+    my $pagesall = q{};
+    my $pages    = q{};
+    if ($showpageall) {
+        $pagesall = qq~<a href="$scripturl?num=$mnum/all">$pidtxt{'01'}</a>~;
+    }
+    $maxmessagedisplay ||= 10;
+    if ( int( ( $mreplies + 1 ) / $maxmessagedisplay ) > 6 ) {
+        $pages =
+            qq~ <a href="$scripturl?num=$mnum/~
+          . ( !$ttsreverse ? '0#0' : "$mreplies#$mreplies" )
+          . q~">1</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$maxmessagedisplay#$maxmessagedisplay"
+            : ( $mreplies - $maxmessagedisplay ) . q{#}
+              . ( $mreplies - $maxmessagedisplay )
+          ) . q~">2</a>~;
+
+        $endpage = int( $mreplies / $maxmessagedisplay ) + 1;
+        my $i = ( $endpage - 1 ) * $maxmessagedisplay;
+        my $j = $i - $maxmessagedisplay;
+        my $k = $endpage - 1;
+        $tmpa = $endpage - 2;
+        my $tmpb = $j - $maxmessagedisplay;
+        $pages .=
+qq~ <a href="javascript:void(0);" onclick="ListPages($mnum);">...</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$tmpb#$tmpb"
+            : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
+          ) . qq~">$tmpa</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$j#$j"
+            : ( $mreplies - $j ) . q{#} . ( $mreplies - $j )
+          ) . qq~">$k</a>~;
+        $pages .= qq~ <a href="$scripturl?num=$mnum/~
+          . (
+            !$ttsreverse
+            ? "$i#$i"
+            : ( $mreplies - $i ) . q{#} . ( $mreplies - $i )
+          ) . qq~">$endpage</a>~;
+        $pages =
+qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
+    }
+    elsif ( $mreplies + 1 > $maxmessagedisplay ) {
+        $tmpa = 1;
+        foreach my $tmpb ( 0 .. $mreplies ) {
+            if ( $tmpb % $maxmessagedisplay == 0 ) {
+                $pages .= qq~<a href="$scripturl?num=$mnum/~
+                  . (
+                    !$ttsreverse
+                    ? "$tmpb#$tmpb"
+                    : ( $mreplies - $tmpb ) . q{#} . ( $mreplies - $tmpb )
+                  ) . qq~">$tmpa</a>\n~;
+                ++$tmpa;
+            }
+        }
+        $pages =~ s/\n\Z//xsm;
+        $pages =
+qq~<br /><span class="small">&laquo; $messageindex_txt{'139'} $pages $pagesall &raquo;</span>~;
+    }
+    return $pages;
 }
 
 1;
