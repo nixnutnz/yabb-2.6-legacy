@@ -593,7 +593,7 @@ sub mycookie {
     my ( %cookies, );
     foreach my $i ( split /;\s/xsm, $ENV{'HTTP_COOKIE'} ) {
         $i =~ s/%([a-fA-F\d][a-fA-F\d])/pack('C', hex($1))/egxsm;
-        my ( $cookie, $value ) = split /=/xsm;
+        my ( $cookie, $value ) = split /=/xsm, $i;
         $cookies{$cookie} = $value;
     }
     if ( $cookies{$cookiepassword} ) {
