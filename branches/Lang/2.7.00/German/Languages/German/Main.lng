@@ -160,6 +160,7 @@ $abbr_lang = 'de-de';
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~RSS Feed~,
 'rsscode' => '***Gehen Sie zum Beitrag, um den Code zu sehen*** ',
+'rss_nopost' => q~Keine Nachrichten gefunden~,
 'freeuserspace' => q~Kostenloser Host-Platz verfügbar:~,
 'freediskspace' => q~Kostenloser Disk-Platz verfügbar:~,
 'redirect' => q~Weiterleitung~,

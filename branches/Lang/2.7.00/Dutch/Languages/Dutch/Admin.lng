@@ -1192,7 +1192,7 @@ Danku voor het gebruik van Yabb!~,
 );
 
 %gztxt = (
-'1' => qq~Output compressie gebruiken?<br /><span class="small">Uitvoer compressie vermindert de bandbreedte die wordt gebruikt bij het communiceren met een browser. Optie(s) zijn alleen beschikbaar als de server dit ondersteunt. U kunt het pad naar uw server gzip hulpprogramma instellen in <a href="{yabb adminurl}?action=backupsettings">Backup Utility</a></span>~,
+'1' => qq~Output compressie gebruiken?<br /><span class="small">Uitvoer compressie vermindert de bandbreedte die wordt gebruikt bij het communiceren met een browser. Optie(s) zijn alleen beschikbaar als de server dit ondersteunt. U kunt het pad naar uw server gzip hulpprogramma instellen in <a href="{yabb adminurl}?action=backup">Backup Utility</a></span>~,
 '2' => q~Output altijd gecomprimeerd versturen?<br /><span class="small">Geactiveerd = YaBB controleert niet, of de gebruikte browser compressie ondersteunt, en compresseert altijd de output. ** Dit kan uw forum onbruikbaar maken voor oudere browsers. ** <br />Niet aangevinkt = YaBB controleert of browser compressie ondersteunt en wordt compressie (als geselecteerd boven) alleen gebruikt als het door de browser wordt ondersteund.</span>~,
 '3' => q~Geen Output Compressie~,
 '4' => q~Compressie met extern GZip Programma~,

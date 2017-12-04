@@ -155,6 +155,7 @@ $abbr_lang = 'fi-fi';
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'RSS-syöte',
 'rsscode' => 'Siirry kohtaan Koodi',
+'rss_nopost' => q~Suosikkeja ei löytynyt'~,
 'freeuserspace' => 'Käyttäjätilaa vapaana:',
 'freediskspace' => 'Levytilaa vapaana:',
 'redirect' => 'Uudelleenohjaus',

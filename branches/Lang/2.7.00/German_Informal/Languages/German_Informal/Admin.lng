@@ -1194,7 +1194,7 @@ Danke für die Benutzung von YaBB!~,
 );
 
 %gztxt = (
-'1' => q~Ausgabe-Komprimierung benutzen?<br /><span class="small">Die Ausgabe-Komprimierung reduziert das Übertragungsvolumen des Browsers.<br />Auswählbare Optionen stehen nur dann zur Verfügung, wenn Serverseitig einige unterstützt werden. Einstellung des Pfades zum Server Deines gzip-Dienstrogrammes in der Rubrik <a href="{yabb adminurl}?action=backupsettings">Backup Utility</span>~,
+'1' => q~Ausgabe-Komprimierung benutzen?<br /><span class="small">Die Ausgabe-Komprimierung reduziert das Übertragungsvolumen des Browsers.<br />Auswählbare Optionen stehen nur dann zur Verfügung, wenn Serverseitig einige unterstützt werden. Einstellung des Pfades zum Server Deines gzip-Dienstrogrammes in der Rubrik <a href="{yabb adminurl}?action=backup">Backup Utility</span>~,
 '2' => q~Ausgabe immer komprimiert senden?<br /><span class="small">Wenn aktiviert = YaBB prüft nicht, ob der verwendete Browser eine Komprimierung unterstützt. Es wird immer komprimiert gesendet, wenn die Funktion oberhalb aktiviert ist.<br />Wenn deaktiviert = YaBB prüft, ob der verwendete Broswer eine Komprimierung zulässt und nutzt eine Komprimierung entsprechend den Browserfähigkeiten wenn oberhalb aktiviert.</span>~,
 '3' => q~Keine Ausgabe-Komprimierung~,
 '4' => q~Komprimierung mit GZip Programm~,

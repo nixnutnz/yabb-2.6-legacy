@@ -155,6 +155,7 @@ $abbr_lang = 'es-es';
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'RSS',
 'rsscode' => 'Ir a la publicación para ver el código',
+'rss_nopost' => q~No se han encontrado mensajesd~,
 'freeuserspace' => 'Espacio de Hospedaje disponible:',
 'freediskspace' => 'Espacio Libre en Disco disponible:',
 'redirect' => 'Redireccionar',

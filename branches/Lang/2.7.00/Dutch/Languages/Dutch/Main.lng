@@ -156,6 +156,7 @@ $abbr_lang = 'nl-nl';
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'RSS Feed',
 'rsscode' => 'Ga naar Post om Code te zien',
+'rss_nopost' => q~Geen Berichten gevonden~,
 'freeuserspace' => 'Vrije schijfruimte beschikbaar:',
 'freediskspace' => 'Vrije schijfruimte:',
 'redirect' => 'Omleiden',
