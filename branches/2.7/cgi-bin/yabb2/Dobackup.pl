@@ -169,7 +169,7 @@ sub runbackup {
 
     %pathconvert = (
         'src' =>
-"!$boarddir|$boarddir/Admin|$boarddir/Sources|$boarddir/Modules|$boarddir/Mods",
+"!$boarddir|$boarddir/Admin|$boarddir/Sources|$boarddir/Modules|$boarddir/Mods|$htmldir/YaBMod",
         'bo'   => $boardsdir,
         'lan'  => "$langdir|$helpfile",
         'mem'  => $memberdir,
@@ -177,7 +177,7 @@ sub runbackup {
         'temp' => "$boarddir/Templates|$htmldir/Templates",
         'var'  => $vardir,
         'html' =>
-"!$htmldir|$htmldir/Bookmarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/googiespell|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies",
+"!$htmldir|$htmldir/Bookmarks|$htmldir/Buttons|$htmldir/EventIcons|$htmldir/greybox|$htmldir/ModImages|$htmldir/shjs|$htmldir/Smilies|$htmldir/UBBCbuttons",
         'upld' =>
           "$htmldir/Attachments|$htmldir/PMAttachments|$htmldir/avatars",
     );

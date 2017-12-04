@@ -674,7 +674,7 @@ qq~<b>$yabmtxt{'45'} $j</b> ($searchfound) $yabmtxt{'46'}<br>~;
             "$yabmtxt{'no_open'} '$boarddir/Mods/Log/install.log'<br />",
             "$file", $installtest );
         foreach my $i (@mods) {
-            chomp;
+            chomp $i;
             print {$IN} "$settings_file_version\\$i\n"
               or croak 'cannot print settings';
         }
