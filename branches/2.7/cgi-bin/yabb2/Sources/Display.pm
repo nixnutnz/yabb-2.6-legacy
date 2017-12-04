@@ -1033,7 +1033,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
             }
             my ($ext);
             foreach my $i ( split /,/xsm, $mfn ) {
-                if (/[.](.+?)$/xsm) {
+                if ( $i =~ /[.](.+?)$/xsm) {
                     $ext = lc $1;
                 }
                 if ( !exists $attach_gif{$ext} ) {
@@ -1053,7 +1053,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
                   ? $fatxt{'41b'}
                   : isempty( $fatxt{'41c'}, $fatxt{'41a'} );
                 if ($filesize) {
-                    if ( /[.](?:bmp|jpe|jpg|jpeg|gif|png)$/ixsm
+                    if ( $i =~ /[.](?:bmp|jpe|jpg|jpeg|gif|png)$/ixsm
                         && $amdisplaypics == 1 )
                     {
                         $showattach .=
