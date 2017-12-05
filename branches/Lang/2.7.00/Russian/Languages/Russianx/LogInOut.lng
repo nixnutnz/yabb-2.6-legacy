@@ -13,6 +13,7 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
 $russianxloginoutlngver = 'YaBB 2.7.00 $Revision$';
 @russianxloginoutlngmods = ();
