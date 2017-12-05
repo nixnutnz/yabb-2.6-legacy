@@ -13,14 +13,15 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1928 ##
 
-$russianxmainlngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxmainlngver = 'YaBB 2.7.00 $Revision$';
 @russianxmainlngmods = ();
 if(@russianxmainlngmods){
     $russianxmainlngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' && $language ne 'Russian' ) { return 1; }
+if ( $action eq 'detailedversion' && $language ne 'Russianx' ) { return 1; }
 
 $yycharset= 'UTF-8';
 $abbr_lang = 'ru';
@@ -156,7 +157,7 @@ $abbr_lang = 'ru';
 '900pr' => 'Private',
 'dst' => '<sup>*</sup>',
 'rssfeed' => 'Просмотр RSS',
-'rsscode' => 'Перейти к сообщению, чтобы увидеть код',
+'rsscode' => ' ***Перейти к сообщению, чтобы увидеть код*** ',
 'rss_nopost' => q~Сообщений не найдено~,
 'freeuserspace' => 'Доступное свободное пространство на хосте:',
 'freediskspace' => 'Доступное свободное пространство на диске:',
@@ -301,7 +302,7 @@ $forwardedpm = qq~Это предупреждение было послано п
 'admin_alert_act_one' => '</b> предварительно зарегистрировавшийся участник, который',
 'admin_alert_act_more' => '</b> предварительно зарегистрировавшиеся участники, которые',
 'admin_alert_act_end' => ' все еще не проверен.',
-'admin_alert_act_end_more' => ' все еще не проверены.', ## For languages that need a different end line on more then one user
+'admin_alert_act_end_more' => ' все еще не проверены.', ## For languages that need a different end line on more than one user
 'no_masterkey'=> '<div class="editbg">Мастер ключ не был установлен в секции Настроек Безопасности Центра Управления<br />Сейчас используется настройки по умолчанию которые гарантируют минимальную безопасность форума!!</div>',
 );
 
@@ -320,7 +321,7 @@ $forwardedpm = qq~Это предупреждение было послано п
 %mailer = (
 'smtp' => qq~Unable to create Net::SMTP object. Server: '$smtp_server'\n\n~,
 'smtps1' => qq~Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n~,
-'smtps2' => q~Could not authenticate SMTPS credentials. Please provide credientials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
+'smtps2' => q~Could not authenticate SMTPS credentials. Please provide credentials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
 );
 
 $yycopyright = q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.~;

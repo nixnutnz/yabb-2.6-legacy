@@ -13,8 +13,9 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
-$russianxdisplaylngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxdisplaylngver = 'YaBB 2.7.00 $Revision$';
 @russianxdisplaylngmods = ();
 if(@russianxdisplaylngmods){
     $russianxdisplaylngmods = 1;

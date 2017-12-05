@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
-$russianguardianlngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianguardianlngver = 'YaBB 2.7.00 $Revision$';
 @russianguardianlngmods = ();
 if(@russianguardianlngmods){
     $russianguardianlngmods = 1;

@@ -14,8 +14,9 @@
 #           $Date: 2009/04/22 03:04:56 $                                      #
 #   Copyright (c): Васильев Д.В. 2005                                         #
 ###############################################################################
+##  Based on English Rev 1874 ##
 
-$russianxrefcontrollngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxrefcontrollngver = 'YaBB 2.7.00 $Revision$';
 @russianxrefcontrollngmods = ();
 if(@russianxrefcontrollngmods){
     $russianxrefcontrollngmods = 1;
@@ -76,7 +77,5 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'viewdownloads' =>  q~View Downloads~,
 'viewprofile' =>  q~View a User Profile~,
 );
-
-## Mod Hook ##
 
 1;

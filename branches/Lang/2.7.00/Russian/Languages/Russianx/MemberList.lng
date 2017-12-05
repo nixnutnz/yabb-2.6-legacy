@@ -13,8 +13,9 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
-$russianxmemberlistlngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxmemberlistlngver = 'YaBB 2.7.00 $Revision$';
 @russianxmemberlistlngmods = ();
 if(@russianxmemberlistlngmods){
     $russianxmemberlistlngmods = 1;

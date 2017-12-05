@@ -14,8 +14,9 @@
 #           $Date: 2009/04/22 03:04:56 $                                      #
 #   Copyright (c): Васильев Д.В. 2005                                         #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
-$russianxpolllngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxpolllngver = 'YaBB 2.7.00 $Revision$';
 @russianxpolllngmods = ();
 if(@russianxpolllngmods){
     $russianxpolllngmods = 1;
@@ -70,7 +71,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'showcased' => 'Опрос отображается на Главной странице',
 'setshowcased' => 'Поместить опрос на Главную страницу?',
 'showcaserem' => 'Убрать Опрос с Главной страницы?',
-'confirm' => 'Вы уверены, что хотите показывать этот Опрос на Главной странице форума?\\nДругой опрос уже отображается на Главной странице!', # Test before changing! It's inside a javascript. Do not use " or ' inside parenteses.
+'confirm' => 'Вы уверены, что хотите показывать этот Опрос на Главной странице форума?\\nДругой опрос уже отображается на Главной странице!', # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
 );
 
 1;

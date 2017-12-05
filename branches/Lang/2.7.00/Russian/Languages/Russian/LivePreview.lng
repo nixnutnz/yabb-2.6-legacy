@@ -13,8 +13,9 @@
 #                and added to YaBB core in Version 2.5.4                      #
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
 ###############################################################################
+##  Based on English Rev 1848 ##
 
-$russianlivepreviewlngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianlivepreviewlngver = 'YaBB 2.7.00 $Revision$';
 @russianlivepreviewlngmods = ();
 if(@russianlivepreviewlngmods){
     $russianlivepreviewlngmods = 1;

@@ -14,7 +14,7 @@
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
 
-$russianxloginoutlngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxloginoutlngver = 'YaBB 2.7.00 $Revision$';
 @russianxloginoutlngmods = ();
 if(@russianxloginoutlngmods){
     $russianxloginoutlngmods = 1;

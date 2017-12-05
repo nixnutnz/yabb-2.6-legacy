@@ -14,8 +14,9 @@
 #           $Date: 2009/04/22 03:04:56 $                                      #
 #   Copyright (c): Васильев Д.В. 2005                                         #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
-$russianxtabmenulngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxtabmenulngver = 'YaBB 2.7.00 $Revision$';
 @russianxtabmenulngmods = ();
 if(@russianxtabmenulngmods){
     $russianxtabmenulngmods = 1;

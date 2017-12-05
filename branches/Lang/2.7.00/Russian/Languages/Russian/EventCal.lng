@@ -15,8 +15,9 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1925 ##
 
-$russianeventcallngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianeventcallngver = 'YaBB 2.7.00 $Revision$';
 @russianeventcallngmods = ();
 if(@russianeventcallngmods){
     $russianeventcallngmods = 1;
@@ -121,6 +122,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'exmem' => 'Ex-member',
 'by' => 'От:',
 'getaddevent' => 'Добавить новое Событие',
+'139' => 'Pages',
 );
 
 ### Event Calendar YaBBC ###

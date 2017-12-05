@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1876 ##
 
-$russiancreditslngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russiancreditslngver = 'YaBB 2.7.00 $Revision$';
 @russiancreditslngmods = ();
 if(@russiancreditslngmods){
     $russiancreditslngmods = 1;
@@ -23,6 +24,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'yabb2' => 'Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman',
 'yabb252' => 'Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />Dedicated to the memory of Ron Hartendorp, AKA Spikecity. He left us too soon.',
 'yabb260' => 'Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Included Mods in YaBB 2.6 written by AstroPilot, Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh with additional code and Mods from the YaBB 3.0 Development Team. We would be nowhere without the contributions of Mod-writers.',
+'yabb270' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Included Mods in YaBB 2.7 written by AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh.<br />And thanks go out to our ever vigilant the bug hunters and mistake finders, especially Monni and Pyragony and all the other bug hunters who reported their findings.~,
 'yabb' => 'Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko',
 'Thanks' => 'Special thanks to',
 'yabbBeta' => 'and all of our beta testers.',

@@ -10,8 +10,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1928 ##
 
-$russianadminlngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianadminlngver = 'YaBB 2.7.00 $Revision$';
 @russianadminlngmods = ();
 if(@russianadminlngmods){
     $russianadminlngmods = 1;
@@ -424,9 +425,9 @@ $abbr_lang = 'ru';
 '725' => 'Блокировка по адресу E-mail: (пример: badguy\@somewhere.com) - один адрес на строку',
 '725b' => 'Нажмите на адрес E-mail чтобы удалить его из списка.',
 '725a' => 'Блокировка по Имени: (пример: super_dude13) - одно имя на строку',
-'725c' => 'Klicken Sie auf den Usernamen, um die Verbannung aufzuheben',
-'725d' => 'Bereinige Banliste',
-'725e' => 'Bereinigt',
+'725c' => q~Click on the User ID to remove from list~,
+'725d' => q~Clean Ban List~,
+'725e' => q~Clean~,
 '725f' => 'Ссылать IP',
 '725g' => 'Remove expired ban times from Ban List',
 '726' => 'Совпадение всего имени. Если не отмечено, будет произведен поиск зарезервированных слов и внутри имени.',
@@ -464,9 +465,9 @@ $abbr_lang = 'ru';
 '750' => 'Предельный размер папки с Аватарами:<br /><span class ="small">Установите 0 для отмены проверки (не рекомендуется).</span>',
 '751' => 'Разрешать участникам спрятать аватары в вкладах?',
 '752' => 'Разрешать участникам спрятать текст участников в вкладах?',
-'753' => 'Benutzern erlauben, angehдngte Bilder in Threads zu verstecken?',
-'754' => 'Benutzern erlauben, Signaturen in Themen verbergen?',
-'755' => 'Erlaube es dem Benutzer, die Smilie-Reihe unter den Nachrichten-Eingabebereich zu verstecken?',
+'753' => q~Allow users to hide attached images in threads?~,
+'754' => q~Allow users to hide signatures in threads?~,
+'755' => q~Allow users to hide the Smiley-row below the Post/Reply area?~,
 '756' => 'Allow users to hide images in threads?',
 '764' => 'Редактировать Пользовательское Соглашение',
 '765' => 'Эта форма позволяет править файл &quot;agreement.txt&quot; с текстом, который показывается пользователям при регистрации. Часть HTML тегов работает.',
@@ -1608,6 +1609,8 @@ $maintxt {'dst'} = "<sup>*</sup>"; ## needed to show Today in registration log
 '10a' => q~Language Conversion Back-up files deleted~,
 'conv' => 'To convert 1x or 2x files to 2.6.0',
 'conv2' => qq~<b><a href="$boardurl/Setup.pl?lang=Russian">Go to Setup/Convert</a></b>~,
+'fixn' => qq~The 2x Import Utility detected potential problems with the imported/converted data. See <a href="$yyhtml_root/tmp/datacheck.txt" target="_new">datacheck.txt</a> for more details.<br />~,
+'illmem1' => qq~Member(s) with illegal username(s) were found and converted to legal name(s).<br />See <i>$yyhtml_root/tmp/fixusers.txt</i> file.<br />~,
 );
 
 $yycopyright = q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">YaBB Forum Software</a> &copy; 2000-{yabb year}. All Rights Reserved.</span>~;

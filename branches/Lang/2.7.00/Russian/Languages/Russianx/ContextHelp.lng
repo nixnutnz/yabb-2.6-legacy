@@ -16,8 +16,9 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
-$russianxcontexthelplngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxcontexthelplngver = 'YaBB 2.7.00 $Revision$';
 @russianxcontexthelplngmods = ();
 if(@russianxcontexthelplngmods){
     $russianxcontexthelplngmods = 1;

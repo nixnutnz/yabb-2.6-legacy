@@ -13,8 +13,9 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1928 ##
 
-$russianinstantmessagelngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianinstantmessagelngver = 'YaBB 2.7.00 $Revision$';
 @russianinstantmessagelngmods = ();
 if(@russianinstantmessagelngmods){
     $russianinstantmessagelngmods = 1;
@@ -60,7 +61,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'bmallmembers' => 'Все модераторы форума',
 'bmadmins' => 'Администраторы',
 'bmgmods' => 'Координаторы',
-'bmymods' => 'Модераторы',
+'bmfmods' => 'Модераторы',
 'bmmods' => 'Все модераторы форума/группы модераторов',
 '470' => 'N/A',
 '500' => 'Пометить ВСЕ как прочитанное', # inside JavaScript!

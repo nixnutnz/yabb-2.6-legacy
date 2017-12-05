@@ -13,8 +13,9 @@
 #                                                                             #
 # translated by Elexio (elexio@yandex.ru)                                     #
 ###############################################################################
+##  Based on English Rev 1920 ##
 
-$russianxerrorlngver = 'YaBB 2.7.00 $Revision: 1859 $';
+$russianxerrorlngver = 'YaBB 2.7.00 $Revision$';
 @russianxerrorlngmods = ();
 if(@russianxerrorlngmods){
     $russianxerrorlngmods = 1;
@@ -27,7 +28,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'error_occurred'        => "Обнаружена Ошибка!",
 'untrapped'             => "Неожиданная ошибка",
 'cannot_open'           => "Невозможно открыть",
-'bad_data'             => q~File with bad data~,
+'bad data'             => q~File with bad data~,
 'cannot_open_dir'       => "Невозможно открыть папку",
 'cannot_open_language'  => "Не могу обнаружить необходимый файл перевода. Пожалуйста, сообщите Администратору о данной проблеме.",
 'cannot_delete'         => "Невозможно удалить",
@@ -255,7 +256,9 @@ if ( $action eq 'detailedversion' ) { return 1; }
 'rename'   => q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
 'nofolder' => q~No Template Folder Name~,
 'suspend'  => q~Suspension Notification.~,
-
+'nofile'  => q~No file has been selected for download~,
+'nogtalk' => q~Cannot load Google Hangout~,
+'noextern'=> q~No external board~,
 );
 
 1;
