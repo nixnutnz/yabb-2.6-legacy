@@ -934,6 +934,7 @@ s/\Q{yabb messagecount}\E/${ $uid . $crboard }{'messagecount'}/gxsm;
         $sub_arrow_up, $brd_loadbar,
     );
     foreach my $img (@imgfix) {
+        ( $img, undef ) = split /[.]/xsm, $img;
         my $imga = $img . '.gif';
         my $imgb = $img . '.png';
         if ( -e "$htmldir/Templates/Forum/$useimages/$imgb" ) {
@@ -1356,6 +1357,7 @@ qq~<a href="$scripturl?boardselect=$parentboard;subboards=1" class="a"><strong>$
             if ($brd_count) {
                 @imgfix = ( $brd_dropdown, $brd_dropup, $brd_loadbar );
                 foreach my $img (@imgfix) {
+                    ( $img, undef ) = split /[.]/xsm, $img;
                     my $imga = $img . '.gif';
                     my $imgb = $img . '.png';
                     if ( -e "$htmldir/Templates/Forum/$useimages/$imgb" ) {

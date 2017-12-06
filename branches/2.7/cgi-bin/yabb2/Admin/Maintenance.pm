@@ -77,9 +77,9 @@ sub rebuild_messageindex {
         my @blist = grep { /[.]tmp$/xsm } readdir BOARDSDIR;
         closedir BOARDSDIR;
 
-        foreach my $x (@blist) { unlink "$boardsdir/$x"; }
+        for (@blist) { unlink "$boardsdir/$_"; }
 
-        foreach my $x ( keys %board ) { push @{ $rebuildboards{$x} }, q{}; }
+        for ( keys %board ) { push @{ $rebuildboards{$_} }, q{}; }
 
         automaintenance('on');
     }
@@ -95,11 +95,11 @@ sub rebuild_messageindex {
             my @temparray = <$OLDBOARD>;
             close $OLDBOARD or croak "$croak{'close'} OLDBOARD";
             chomp @temparray;
-            foreach my $x (@temparray) {
+            for (@temparray) {
                 my (
                     $mnum, undef, undef, undef, undef,
                     undef, undef, undef, $mstate
-                ) = split /[|]/xsm, $x;
+                ) = split /[|]/xsm;
                 $thread_status{$mnum} = $mstate ? $mstate : '0';
                 $thread_boards{$mnum} = $oldboard;
             }
@@ -198,10 +198,10 @@ sub rebuild_messageindex {
             push @{ $rebuildboards{$theboard} }, $mypushlst;
 
             if ( time() > $time_to_jump && ( $j + 1 ) < $totalthreads ) {
-                foreach my $x ( keys %rebuildboards ) {
-                    open my $REBBOARD, '>>', "$boardsdir/$x.tmp"
-                      or fatal_error( 'cannot_open', "$boardsdir/$x.tmp", 1 );
-                    print {$REBBOARD} @{ $rebuildboards{$x} }
+                foreach ( keys %rebuildboards ) {
+                    open my $REBBOARD, '>>', "$boardsdir/$_.tmp"
+                      or fatal_error( 'cannot_open', "$boardsdir/$_.tmp", 1 );
+                    print {$REBBOARD} @{ $rebuildboards{$_} }
                       or croak "$croak{'print'} REBBOARD";
                     close $REBBOARD or croak "$croak{'close'} REBBOARD";
                 }
@@ -213,10 +213,10 @@ sub rebuild_messageindex {
             }
         }
 
-        foreach my $x ( keys %rebuildboards ) {
-            open my $REBBOARD, '>>', "$boardsdir/$x.tmp"
-              or fatal_error( 'cannot_open', "$boardsdir/$x.tmp", 1 );
-            print {$REBBOARD} @{ $rebuildboards{$x} }
+        for ( keys %rebuildboards ) {
+            open my $REBBOARD, '>>', "$boardsdir/$_.tmp"
+              or fatal_error( 'cannot_open', "$boardsdir/$_.tmp", 1 );
+            print {$REBBOARD} @{ $rebuildboards{$_} }
               or croak "$croak{'print'} REBBOARD";
             close $REBBOARD or croak "$croak{'close'} REBBOARD";
         }
@@ -242,8 +242,8 @@ sub rebuild_messageindex {
             my @tempboard = <$FILETXT>;
             close $FILETXT or croak "$croak{'close'} FILETXT";
             chomp @tempboard;
-            foreach my $x (@tempboard) {
-                $x =~ s/^.*?[|]//xsm;
+            for (@tempboard) {
+                s/^.*?[|]//xsm;
             }
             @tempboard =
               reverse
@@ -267,7 +267,7 @@ sub rebuild_messageindex {
 
     if ( $INFO{'rebuild'} < 3 ) { rebuild_messageindex_text( 3, 0, 0 ); }
 
-    foreach my $x ( keys %board ) { boardcount_totals($x); }
+    foreach ( keys %board ) { boardcount_totals($_); }
 
     # remove from Movedthreads.pm only if it is the final thread
     # then look backwards to delete the other entries in
@@ -277,14 +277,14 @@ sub rebuild_messageindex {
         my $save_moved;
         local *moved_loop = sub {
             my $th = shift;
-            foreach my $x ( keys %moved_file ) {
-                if (   exists $moved_file{$x}
-                    && $moved_file{$x} == $th
+            foreach ( keys %moved_file ) {
+                if (   exists $moved_file{$_}
+                    && $moved_file{$_} == $th
                     && !-e "$datadir/$th.txt" )
                 {
-                    delete $moved_file{$x};
+                    delete $moved_file{$_};
                     $save_moved = 1;
-                    moved_loop($x);
+                    moved_loop($_);
                 }
             }
         };
@@ -334,8 +334,8 @@ sub rebuild_messageindex {
             @myline1 = split /[|]/xsm, $ftotals[0];
             $msgtot  = 0;
             $msgts   = $myline1[8];
-            foreach my $x (@ftotals) {
-                my @totalsvars = split /[|]/xsm, $x;
+            for (@ftotals) {
+                my @totalsvars = split /[|]/xsm;
                 $msgtot += $totalsvars[5] + 1;
             }
             open my $TOTALSN, '<', "$datadir/$myline1[0].txt"
@@ -518,7 +518,7 @@ sub admin_board_recount {
 
     # Get the board list from the forum.master file
     get_forum_master();
-    foreach my $x ( keys %board ) { boardcount_totals($x); }
+    for ( keys %board ) { boardcount_totals($_); }
 
     $yymain .= qq~<b>$admin_txt{'503'}</b>~;
     automaintenance('off');
@@ -584,9 +584,9 @@ sub rebuild_memlist {
           or croak "$txt{'230'} ($memberdir) :: $OS_ERROR";
         my @vars = grep { /[.]vars$/xsm } readdir MEMBERS;
         closedir MEMBERS;
-        foreach my $x (@vars) {
-           $x =~ s/[.]vars$//xsm;
-            push @contents, "$x\n";
+        foreach (@vars) {
+            s/[.]vars$//xsm;
+            push @contents, "$_\n";
         }
 
         $start_time = $begin_time;
@@ -613,9 +613,9 @@ sub rebuild_memlist {
         $savesettings = 0;
         @grpexist     = ();
         if ( ${ $uid . $member }{'addgroups'} ) {
-            foreach my $x ( split /,\s?/xsm, ${ $uid . $member }{'addgroups'} ) {
-                if ( !$grp_nopost{$x} ) { $savesettings = 1; }
-                else                    { push @grpexist, $x; }
+            for ( split /,\s?/xsm, ${ $uid . $member }{'addgroups'} ) {
+                if ( !$grp_nopost{$_} ) { $savesettings = 1; }
+                else                    { push @grpexist, $_; }
             }
         }
         if ($savesettings) {
@@ -672,7 +672,7 @@ sub rebuild_memlist {
 
     $update = q{};
     foreach my $i ( keys %memberlist ) {
-        my @values = map { defined $i ? $i : q{} } @{ $newmemberinf{$i} };
+        my @values = map { defined $_ ? $_ : q{} } @{ $newmemberinf{$i} };
         my $val = join q~','~, @values;
         $update .= qq~\$memberinf{'$i'} = \['$val'\];\n~;
     }
@@ -696,12 +696,12 @@ sub rebuild_memlist {
         require "$memberdir/memberlist.txt.rebuild";
 
         my $newlist = q{};
-        foreach my $x (
+        for (
             sort { $memberlist{$a} <=> $memberlist{$b} }
             keys %memberlist
           )
         {
-            $newlist .= "\$memberlist{'$x'} = '$memberlist{$x}';\n";
+            $newlist .= "\$memberlist{'$_'} = '$memberlist{$_}';\n";
         }
         open my $MEMBERLIST, '>', "$memberdir/memberlist.txt.rebuild"
           or
@@ -848,17 +848,17 @@ sub rebuild_memhistory {
           or croak "$txt{'230'} ($memberdir) :: $OS_ERROR";
         @contents = grep { /[.]rlog$/xsm } readdir MEMBERS;
         closedir MEMBERS;
-        foreach my $x (@contents) {
-            unlink "$memberdir/$x";
+        for (@contents) {
+            unlink "$memberdir/$_";
         }
 
         # Get and store the thread list
         opendir TXT, $datadir;
         @contents = grep { /^\d+[.]txt$/xsm } readdir TXT;
         closedir TXT;
-        foreach my $x (@contents) {
-            $x =~ s/[.]txt$//xsm;
-            $x = "$x\n";
+        for (@contents) {
+            s/[.]txt$//xsm;
+            $_ = "$_\n";
         }
 
         $start_time = $begin_time;
@@ -882,8 +882,8 @@ sub rebuild_memhistory {
 
         my %dates = ();
         my %posts = ();
-        foreach my $i (@topic) {
-            ( undef, undef, undef, $mdate, $user, undef ) = split /[|]/xsm, $i,
+        for (@topic) {
+            ( undef, undef, undef, $mdate, $user, undef ) = split /[|]/xsm, $_,
               6;
             if ( $user ne 'Guest' ) {
                 $posts{$user}++;
@@ -1128,13 +1128,13 @@ sub rebuild_notifications {
                 my $boardnot = 'not loaded';
                 my %bb       = ();
                 if ( %{ $uid . $u } ) {
-                    foreach my $x ( split /,/xsm,
+                    for ( split /,/xsm,
                         ${ $uid . $u }{'board_notifications'} || q{} )
                     {
-                        $bb{$x} = 1;
+                        $bb{$_} = 1;
                     }
-                    foreach my $x ( @{ $brdmail{$u} } ) {
-                        $bb{$x} = 1;
+                    for ( @{ $brdmail{$u} } ) {
+                        $bb{$_} = 1;
                     }
                     $realname = ${ $uid . $u }{'realname'};
                     ${ $uid . $u }{'board_notifications'} = join q{,}, keys %bb;
@@ -1170,13 +1170,13 @@ sub rebuild_notifications {
                 my $threadnot = 'not loaded';
                 my %t         = ();
                 if ( %{ $uid . $u } ) {
-                    foreach my $x ( split /,/xsm,
+                    for ( split /,/xsm,
                         ${ $uid . $u }{'thread_notifications'} || q{} )
                     {
-                        $t{$x} = 1;
+                        $t{$_} = 1;
                     }
-                    foreach my $x ( @{ $thrmail{$u} } ) {
-                        $t{$x} = 1;
+                    for ( @{ $thrmail{$u} } ) {
+                        $t{$_} = 1;
                     }
                     $realname = ${ $uid . $u }{'realname'};
                     ${ $uid . $u }{'thread_notifications'} = join q{,}, keys %t;
@@ -1209,22 +1209,22 @@ sub rebuild_notifications {
                 my %t  = ();
                 if ( %{ $uid . $u } ) {
                     if ( ${ $uid . $u }{'board_notifications'} ) {
-                        foreach my $x ( split /,/xsm,
+                        for ( split /,/xsm,
                             ${ $uid . $u }{'board_notifications'} )
                         {
-                            if ( -e "$boardsdir/$x.mail" ) {
-                                require "$boardsdir/$x.mail";
-                                if ( exists $theboard{$u} ) { $bb{$x} = 1; }
+                            if ( -e "$boardsdir/$_.mail" ) {
+                                require "$boardsdir/$_.mail";
+                                if ( exists $theboard{$u} ) { $bb{$_} = 1; }
                             }
                         }
                     }
                     if ( ${ $uid . $u }{'thread_notifications'} ) {
-                        foreach my $x ( split /,/xsm,
+                        for ( split /,/xsm,
                             ${ $uid . $u }{'thread_notifications'} )
                         {
-                            if ( -e "$datadir/$x.mail" ) {
-                                require "$datadir/$x.mail";
-                                if ( exists $thethread{$u} ) { $t{$x} = 1; }
+                            if ( -e "$datadir/$_.mail" ) {
+                                require "$datadir/$_.mail";
+                                if ( exists $thethread{$u} ) { $t{$_} = 1; }
                             }
                         }
                     }
