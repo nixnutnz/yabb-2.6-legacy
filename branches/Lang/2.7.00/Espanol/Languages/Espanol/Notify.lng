@@ -10,49 +10,54 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolnotifylngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolnotifylngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolnotifylngmods = ();
 if (@espanolnotifylngmods) {
     $espanolnotifylngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; };
+if ( $action eq 'detailedversion' ) { return 1; }
 
 %notify_txt = (
-'118' => 'Notificación de Tema',
-'119' => '¡No hay temas marcados para notificación!',
-'120' => 'por',
-'121' => 'Restaurar',
-'122' => 'Serás notificado por email de las respuestas en los siguientes temas.',
-'123' => 'Marcar para <b><i>desactivar</i></b> la Notificación de este tema',
-'124' => 'Actualizar Notificaciones',
-'125' => 'Notificar',
-'126' => 'Recibir por email notificaciones de las respuestas de este Tablón.',
-'127' => 'Respuesta al Tema',
-'132' => 'Sólo Temas Nuevos',
-'133' => 'Todos los Mensajes nuevos',
-'134' => 'Borrar',
-'135' => 'Tablón',
-'136' => 'Notificación de Tablón',
-'137' => 'Cambia o borra las Notificaciones del Tablón.',
-'138' => 'Cambiar',
-'139' => '¡No hay tablones marcados para notificación!',
-'140' => 'Tema',
-'144' => 'Marcar todos',
-'145' => 'Nuevo Mensaje Personal',
-'200' => 'Tienes',
-'201' => 'nuevos',
-'202' => 'y',
-'203' => '¿Quieres ver tus Notificaciones?',
-'205' => 'Notificaciones del Foro',
-'206' => 'Notificaciones de Tema',
-'333' => 'Nuevos Mensajes',
-'334' => 'Sin Nuevos Mensajes',
-'335' => 'Nuevos',
-'lastpost' => 'último mensaje',
-'lft' => "&lsaquo;",
-'rgt' => "&rsaquo;",
+    '118' => q~Notificación de Tema~,
+    '119' => q~¡No hay temas marcados para notificación!~,
+    '120' => q~por~,
+    '121' => q~Restaurar~,
+    '122' =>
+      q~Serás notificado por email de las respuestas en los siguientes temas.~,
+    '123' =>
+      q~Marcar para <b><i>desactivar</i></b> la Notificación de este tema~,
+    '124' => q~Actualizar Notificaciones~,
+    '125' => q~Notificar~,
+    '126' =>
+      q~Recibir por email notificaciones de las respuestas de este Tablón.~,
+    '127'      => q~Respuesta al Tema~,
+    '132'      => q~Sólo Temas Nuevos~,
+    '133'      => q~Todos los Mensajes nuevos~,
+    '134'      => q~Borrar~,
+    '135'      => q~Tablón~,
+    '136'      => q~Notificación de Tablón~,
+    '137'      => q~Cambia o borra las Notificaciones del Tablón.~,
+    '138'      => q~Cambiar~,
+    '139'      => q~¡No hay tablones marcados para notificación!~,
+    '140'      => q~Tema~,
+    '144'      => q~Marcar todos~,
+    '145'      => q~Nuevo Mensaje Personal~,
+    '200'      => q~Tienes~,
+    '201'      => q~nuevos~,
+    '202'      => q~y~,
+    '203'      => q~¿Quieres ver tus Notificaciones?~,
+    '205'      => q~Notificaciones del Foro~,
+    '206'      => q~Notificaciones de Tema~,
+    '333'      => q~Nuevos Mensajes~,
+    '334'      => q~Sin Nuevos Mensajes~,
+    '335'      => q~Nuevos~,
+    'lastpost' => q~último mensaje~,
+    'lft'      => q~&lsaquo;~,
+    'rgt'      => q~&rsaquo;~,
 );
 
 1;

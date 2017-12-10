@@ -10,244 +10,376 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1920 ##
+our $VERSION = '2.7.00';
 
-$espanolerrorlngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolerrorlngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolerrorlngmods = ();
 if (@espanolerrorlngmods) {
     $espanolerrorlngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; };
+if ( $action eq 'detailedversion' ) { return 1; }
 
 %error_txt = (
 ## General Errors ##
-'error_occurred' => "¡Ha ocurrido un error!",
-'untrapped' => "Untrapped Error",
-'cannot_open' => "Imposible abrir",
-'cannot_open_dir' => "No se puede abrir el directorio",
-'cannot_open_language' => "No se encuentra el fichero de idioma requerido. Por favor, informa al administrador de este problema.",
-'cannot_delete' => "Imposible borrar",
-'not_completed' => "Ha ocurrido un error y esta acción no puede ser completada. Disculpa los inconvenientes.",
-'not_logged_in' => "Para realizar esta acción debes estar conectado. Si no tienes una cuenta todavía, por favor regístrate.",
-'logged_in_already' => "Usted está en el sistema ya con el ID de usuario: ",
-'no_access' => "No tienes permitido acceder a esta sección.",
-'not_found' => "La información a la que estás intentando acceder no está disponible para tí.",
-'not_allowed' => "No tienes permitido realizar esta acción",
-'only_numbers_allowed' => "Esta campo sólo acepta números de 0 a 9",
-'user_not_exist' => "El usuario no existe",
-'members_only' => "Lo sentimos, este servicio está disponible sólo para usuarios registrados",
-'email_no_access' => "Lo sentimos, no se te permite acceder a la dirección de correo electrónico de estos usuarios.",
-'no_subject' => "El campo Asunto está vacío. Por favor, escribe algo en él.",
-'no_message' => "El cuerpo del mensaje está vacío. Por favor, escribe algo en él.",
-'no_recipient' => "El campo del destinatario está vacío. Introduce un destinatario.",
-'no_email' => "El campo de correo electrónico está vacío. Por favor, introduce una dirección.",
-'no_name' => "El campo Nombre está vacío. Por favor, escribe algo en él.",
-'no_ip' => "IP no encontrada",
-'no_username' => "El campo de Usuario está vacío.",
-'no_password' => "El campo de Contraseña está vacío",
-'no_action' => "No se ha especificado ninguna acción pero",
-'no_info' => "No hay información especificada en la url",
-'password_mismatch' => "¡Las contraseñas no coinciden!",
-'bad_credentials' => "Error de Nombre de usuario / Contraseña. <br />El Nombre de usuario que has especificado no existe o has introducido una contraseña errónea.",
-'invalid_character' => "Hay un caracter inválido detectado en",
-'invalid_email' => "Por favor, introduce una dirección de correo electrónico válida.",
-'invalid_picture' => "Imagen no válida.",
-'no_secret_answer' => "Necesitar responder a la pregunta",
-'no_verification_code' => "El código de Verificación está vacío. Introdúcelo, por favor.",
-'wrong_verification_code' => "El código de Verificación no es el mismo que el de la imagen, por favor, vuelve atrás, recargg (pulsa F5 en la mayoría de las veces) y reintenta.",
-'invalid_verification_code' => "Verification code contains invalid characters. Only a-z and 0-9 are valid",
-'form_spoofing' => "<b>¡¡ATENCION!!</b> Form Spoofing detectado desde la IP:",
-'post_flooding' => "El último mensaje requerido desde su IP fue menos que",
-'denial_of_service' => "El último mensaje requerido lanzó un mensaje de error: ",
-'speed_alert' => "¡Publicar mensajes a esta velocidad es considerado spamming, estás advertido!<br />Sólo se te permite <b>{yabb spam_hits_left_count}</b> intento(s) más después de lo cual ¡serás expulsado por spammer!",
-'tsc_alert' => "Uno de los campos del formulario contiene texto el cual está considerado como SPAM, ¡Estás advertido!<br />Sólo se te permite <b>{yabb spam_hits_left_count}</b> intento(s) más después de lo cual ¡serás expulsado por spammer!",
-'speedpostban' => "¡Se te ha prohibido publicar debido a que has realizado spamming!<br />Después de <b>{yabb detention_left}</b> segundo(s) se te levantará automáticamente la prohibición.",
-'truncation_error' => "Por favor, asegúrate de que tienes la opción 'fake truncation' activada en tu fichero Settings.pm.<br />\$faketruncation = 1;<br />No se puede truncar el fichero",
-'referer_violation' => "¡¡Esta acción no está permitida desde un dominio externo!! <br />La acción es: ",
-'egg' => "¡¡Activada secuencia de auto destrucción!!<br />",
-'domain_not_allowed' => "No puedes registrarte, publicar como invitado o cambiar tu dirección de correo electrónico de uno del dominio",
-'module_missing' => "No se ha(n) instalado en este servidor el/los Módulo(s) o funcionalidad(es) requeridas.",
-'low_diskspace' => "El especio en disco duro disponible es bajo. El foro se ha puesto en modo de mantenimiento para evitar la corrupción de ficheros. Por favor, ¡¡informa al administrador de este error!!",
-'invalid_key' => "¡Clave maestra inválida!<br />¡Debe ser una cadena de texto de entre 8 y 23 caracteres!",
-'corrupt_member_file' => "EL fichero de datos de miembros está corrupto. Por favor ¡informa al administrador de este error!",
-'wrong_pass'           => 'La contraseña introducida no es correcta',
-'no_admin_passwrd'     => "Es necesario rellenar la contraseña de administrador correcta para entrar en el Centro de administración.",
-'default_password'     => qq~Usted todavía está utilizando la contraseña por defecto de configuración YaBB. Por favor, ingrese a su <a href="$scripturl?action=myprofile;username=$username;sid=$mysid"> Perfil de usuario </a> y cambiar la contraseña a algo más seguro.~,
-'missingvars'          => 'Algo malo ha sucedido. Por favor informe al administrador de este foro de lo que estaba haciendo cuando se produjo el error.',
+    'error_occurred'  => q~¡Ha ocurrido un error!~,
+    'untrapped'       => q~Untrapped Error~,
+    'cannot_open'     => q~Imposible abrir~,
+    'bad data'        => q~File with bad data~,
+    'cannot_open_dir' => q~No se puede abrir el directorio~,
+    'cannot_open_language' =>
+q~No se encuentra el fichero de idioma requerido. Por favor, informa al administrador de este problema.~,
+    'cannot_delete' => q~Imposible borrar~,
+    'not_completed' =>
+q~Ha ocurrido un error y esta acción no puede ser completada. Disculpa los inconvenientes.~,
+    'not_logged_in' =>
+q~Para realizar esta acción debes estar conectado. Si no tienes una cuenta todavía, por favor regístrate.~,
+    'logged_in_already' =>
+      q~Usted está en el sistema ya con el ID de usuario: ~,
+    'no_access' => q~No tienes permitido acceder a esta sección.~,
+    'not_found' =>
+q~La información a la que estás intentando acceder no está disponible para tí.~,
+    'not_allowed'          => q~No tienes permitido realizar esta acción~,
+    'only_numbers_allowed' => q~Esta campo sólo acepta números de 0 a 9~,
+    'user_not_exist'       => q~El usuario no existe~,
+    'members_only' =>
+q~Lo sentimos, este servicio está disponible sólo para usuarios registrados~,
+    'email_no_access' =>
+q~Lo sentimos, no se te permite acceder a la dirección de correo electrónico de estos usuarios.~,
+    'no_subject' =>
+      q~El campo Asunto está vacío. Por favor, escribe algo en él.~,
+    'no_message' =>
+      q~El cuerpo del mensaje está vacío. Por favor, escribe algo en él.~,
+    'no_recipient' =>
+      q~El campo del destinatario está vacío. Introduce un destinatario.~,
+    'no_email' =>
+q~El campo de correo electrónico está vacío. Por favor, introduce una dirección.~,
+    'no_name' => q~El campo Nombre está vacío. Por favor, escribe algo en él.~,
+    'no_ip'   => q~IP no encontrada~,
+    'no_username'       => q~El campo de Usuario está vacío.~,
+    'no_password'       => q~El campo de Contraseña está vacío~,
+    'no_action'         => q~No se ha especificado ninguna acción pero~,
+    'no_info'           => q~No hay información especificada en la url~,
+    'password_mismatch' => q~¡Las contraseñas no coinciden!~,
+    'bad_credentials' =>
+q~Error de Nombre de usuario / Contraseña. <br />El Nombre de usuario que has especificado no existe o has introducido una contraseña errónea.~,
+    'invalid_character' => q~Hay un caracter inválido detectado en~,
+    'invalid_email' =>
+      q~Por favor, introduce una dirección de correo electrónico válida.~,
+    'invalid_picture'  => q~Imagen no válida.~,
+    'no_secret_answer' => q~Necesitar responder a la pregunta~,
+    'no_verification_code' =>
+      q~El código de Verificación está vacío. Introdúcelo, por favor.~,
+    'wrong_verification_code' =>
+q~El código de Verificación no es el mismo que el de la imagen, por favor, vuelve atrás, recargg (pulsa F5 en la mayoría de las veces) y reintenta.~,
+    'invalid_verification_code' =>
+q~Verification code contains invalid characters. Only a-z and 0-9 are valid~,
+    'form_spoofing' =>
+      q~<b>¡¡ATENCION!!</b> Form Spoofing detectado desde la IP:~,
+    'post_flooding' => q~El último mensaje requerido desde su IP fue menos que~,
+    'denial_of_service' =>
+      q~El último mensaje requerido lanzó un mensaje de error: ~,
+    'speed_alert' =>
+q~¡Publicar mensajes a esta velocidad es considerado spamming, estás advertido!<br />Sólo se te permite <b>{yabb spam_hits_left_count}</b> intento(s) más después de lo cual ¡serás expulsado por spammer!~,
+    'tsc_alert' =>
+q~Uno de los campos del formulario contiene texto el cual está considerado como SPAM, ¡Estás advertido!<br />Sólo se te permite <b>{yabb spam_hits_left_count}</b> intento(s) más después de lo cual ¡serás expulsado por spammer!~,
+    'speedpostban' =>
+q~¡Se te ha prohibido publicar debido a que has realizado spamming!<br />Después de <b>{yabb detention_left}</b> segundo(s) se te levantará automáticamente la prohibición.~,
+    'truncation_error' =>
+q~Por favor, asegúrate de que tienes la opción 'fake truncation' activada en tu fichero Settings.pm.<br />\$faketruncation = 1;<br />No se puede truncar el fichero~,
+    'referer_violation' =>
+q~¡¡Esta acción no está permitida desde un dominio externo!! <br />La acción es: ~,
+    'egg' => q~¡¡Activada secuencia de auto destrucción!!<br />~,
+    'domain_not_allowed' =>
+q~No puedes registrarte, publicar como invitado o cambiar tu dirección de correo electrónico de uno del dominio~,
+    'module_missing' =>
+q~No se ha(n) instalado en este servidor el/los Módulo(s) o funcionalidad(es) requeridas.~,
+    'low_diskspace' =>
+q~El especio en disco duro disponible es bajo. El foro se ha puesto en modo de mantenimiento para evitar la corrupción de ficheros. Por favor, ¡¡informa al administrador de este error!!~,
+    'invalid_key' =>
+q~¡Clave maestra inválida!<br />¡Debe ser una cadena de texto de entre 8 y 23 caracteres!~,
+    'corrupt_member_file' =>
+q~EL fichero de datos de miembros está corrupto. Por favor ¡informa al administrador de este error!~,
+    'wrong_pass' => q~La contraseña introducida no es correcta~,
+    'no_admin_passwrd' =>
+q~Es necesario rellenar la contraseña de administrador correcta para entrar en el Centro de administración.~,
+    'default_password' =>
+q~Usted todavía está utilizando la contraseña por defecto de configuración YaBB. Por favor, ingrese a su <a href="$scripturl?action=myprofile;username=$username;sid=$mysid"> Perfil de usuario </a> y cambiar la contraseña a algo más seguro.~,
+    'missingvars' =>
+q~Algo malo ha sucedido. Por favor informe al administrador de este foro de lo que estaba haciendo cuando se produjo el error.~,
 
 ## BoardIndex ##
-'collapse_no_member' => " ¡Debes ser un miembro registrado para usar las opciones de colapsar/expandir categorías!",
-'collapse_invalid_state' => "El estado que has especificado es inválido. Por favor,vuelve atrás e inténtalo de nuevo.",
-'collapse_no_usercat' => " Fichero de categoría de usuario no encontrado - por favor, intentanta refrescando el índice del foro (vuelve atrás y pulsa F5).\n Si aún así te aparece este mensaje, por favor informa al administrador.",
+    'collapse_no_member' =>
+q~ ¡Debes ser un miembro registrado para usar las opciones de colapsar/expandir categorías!~,
+    'collapse_invalid_state' =>
+q~El estado que has especificado es inválido. Por favor,vuelve atrás e inténtalo de nuevo.~,
+    'collapse_no_usercat' =>
+q~ Fichero de categoría de usuario no encontrado - por favor, intentanta refrescando el índice del foro (vuelve atrás y pulsa F5).\n Si aún así te aparece este mensaje, por favor informa al administrador.~,
 
 ## Guardian ##
-'proxy_reason' => "¡El acceso al Proxy de este foro está prohibido!",
-'referer_reason' => "El acceso al foro desde la url actual está prohibido",
-'harvester_reason' => "¡Esta cosechadora tiene el acceso denegado al foro!",
-'request_reason' => "¡El método de petición que has intentado usar no está permitido!",
-'string_reason' => "¡Tu url contiene palabras no permitidas aquí!",
-'clike_reason' => "¡Es inútil intentar piratear este foro con CLIKE ya que no funciona con MySQL!",
-'union_reason' => "¡Es inútil intentar piratear este foro con UNION ya que no funciona con MySQL!",
-'script_reason' => "¡Has intentado usar secuencias de comando en la url o el formulario de entrada, lo cual no está permitido!",
+    'proxy_reason'   => q~¡El acceso al Proxy de este foro está prohibido!~,
+    'referer_reason' => q~El acceso al foro desde la url actual está prohibido~,
+    'harvester_reason' =>
+      q~¡Esta cosechadora tiene el acceso denegado al foro!~,
+    'request_reason' =>
+      q~¡El método de petición que has intentado usar no está permitido!~,
+    'string_reason' => q~¡Tu url contiene palabras no permitidas aquí!~,
+    'clike_reason' =>
+q~¡Es inútil intentar piratear este foro con CLIKE ya que no funciona con MySQL!~,
+    'union_reason' =>
+q~¡Es inútil intentar piratear este foro con UNION ya que no funciona con MySQL!~,
+    'script_reason' =>
+q~¡Has intentado usar secuencias de comando en la url o el formulario de entrada, lo cual no está permitido!~,
 
 ## InstantMessage ##
-'im_deleted' => "El mensaje ya ha sido leído por el destinatario, por lo tanto ¡no se puede recuperar!",
-'im_deleted_multi' => "Por lo menos uno de los destinatarios ya ha leído el mensaje, por lo tanto ¡no se puede recuperar!",
-'im_members_only' => "Los Mensajes Personales son sólo para los miembros registrados",
-'im_low_postcount' => "¡Sólo se te permite mandar Mensajes Peronales si has alcanzado los {yabb numposts} mensajes!",
-'im_spam_alert' => "Estás intentado mandar un mensaje privado a demasiados destinatarios a la vez. Esto se puede interpretar como un posible SPAM.",
-'im_bad_users' => "El/los siguente(s) usuario(s) no pueden recibir mensajes.<br />El/los nombre(s) de usuario(s) es inválido o bien está(n) en tu lista de usuarios ignorados: ",
-'cannot_find_draftmess' => "El borrador del mensaje no se puede encontrar.",
-'im_folder_exists' => "Ya existe una carpeta con este nombre.",
+    'im_deleted' =>
+q~El mensaje ya ha sido leído por el destinatario, por lo tanto ¡no se puede recuperar!~,
+    'im_deleted_multi' =>
+q~Por lo menos uno de los destinatarios ya ha leído el mensaje, por lo tanto ¡no se puede recuperar!~,
+    'im_members_only' =>
+      q~Los Mensajes Personales son sólo para los miembros registrados~,
+    'im_low_postcount' =>
+q~¡Sólo se te permite mandar Mensajes Peronales si has alcanzado los {yabb numposts} mensajes!~,
+    'im_spam_alert' =>
+q~Estás intentado mandar un mensaje privado a demasiados destinatarios a la vez. Esto se puede interpretar como un posible SPAM.~,
+    'im_bad_users' =>
+q~El/los siguente(s) usuario(s) no pueden recibir mensajes.<br />El/los nombre(s) de usuario(s) es inválido o bien está(n) en tu lista de usuarios ignorados: ~,
+    'cannot_find_draftmess' =>
+      q~El borrador del mensaje no se puede encontrar.~,
+    'im_folder_exists' => q~Ya existe una carpeta con este nombre.~,
 
 ## LogInOut ##
-'not_activated' => "Tu cuenta no está activada aún<br />Por favor actívala pulsando sobre el enlace que habrás recibido por email.",
-'time_out' => "¡No has activado tu cuenta dentro de las últimas {yabb preregspan} horas!<br />Como resultado, se ha borrado tu pre-registro<br />Por favor, regístrate de nuevo",
-'wrong_code' => "¡Tu código de activación es incorrecto!",
-'admin_login_only' => "Sólo el administrador puede entrar en el foro en este momento por estar en Modo de Mantenimiento.<br />Por favor, intenta entrar más tarde. ¡Gracias!",
-'wrong_id' => "Tu nombre de usuario es inválido. Por favor, inténtalo de nuevo.",
+    'not_activated' =>
+q~Tu cuenta no está activada aún<br />Por favor actívala pulsando sobre el enlace que habrás recibido por email.~,
+    'time_out' =>
+q~¡No has activado tu cuenta dentro de las últimas {yabb preregspan} horas!<br />Como resultado, se ha borrado tu pre-registro<br />Por favor, regístrate de nuevo~,
+    'wrong_code' => q~¡Tu código de activación es incorrecto!~,
+    'admin_login_only' =>
+q~Sólo el administrador puede entrar en el foro en este momento por estar en Modo de Mantenimiento.<br />Por favor, intenta entrar más tarde. ¡Gracias!~,
+    'wrong_id' =>
+      q~Tu nombre de usuario es inválido. Por favor, inténtalo de nuevo.~,
 
 ## Mailer ##
-'net_fatal' => "Net::SMTP fatal error",
-'smtp_error' => "SMTP Error",
-'smtp_unavail' => "SMTP la conexión no ha podido ser establecida",
+    'net_fatal'    => q~Net::SMTP fatal error~,
+    'smtp_error'   => q~SMTP Error~,
+    'smtp_unavail' => q~SMTP la conexión no ha podido ser establecida~,
 
 ## Post/ModifyMessage/Poll ##
-'topic_locked' => "Este tema está bloqueado y no se te permite publicar o modificar mensajes.",
-'time_locked' => "El Foro de Administración tiene fijado un límite de ",
-'change_not_allowed' => "No se te permite cambiar este mensaje",
-'delete_not_allowed' => "¡No se te permite borrar este mensaje!",
-'split_splice_not_allowed' => "No se te permite partir o ensamblar este tema; debes ser un moderador o administrador para hacerlo.",
-'no_perm_post' => "No tienes permiso para publicar nuevos temas en este foro",
-'no_perm_reply' => "No tienes permito para responder los temas de este foro",
-'no_perm_poll' => "No tienes permiso para publicar encuestas en este foro",
-'no_perm_att' => "No tienes permiso para publicar archivos adjuntos en este foro",
-'no_board_slash' => "El campo del foro no acepta / en la cadena de consulta",
-'no_cat_slash' => "El campo de la categoría no acepta / en la cadena de consulta",
-'no_board_backslash' => "El campo del foro no acepta \\ en la cadena de consulta",
-'no_cat_backslash' => "El campo de categoría no acepta \\ en la cadena de consulta",
-'no_board_topic' => "Este tema no existe.",
-'bad_postnumber' => "Num de mensaje ERRONEO",
-'file_overwrite' => "Todavía existe un fichero en el servidor con ese nombre. Por favor, renombra tu fichero antes de adjuntarlo.",
-'file_not_open' => "No se puede abrir un nuevo fichero en el servidor, comprueba la ruta y los chmods",
-'invalid_format' => "Formato de fichero inválido. Los ficheros válidos son",
-'file_too_big' => "Adjunto demasiado grande en aprox. ",
-'dir_full' => "Este adjunto hace que el directorio de adjuntos exceda su capacidad máxima por aprox. ",
-'file_not_uploaded' => "No se puede subir el fichero",
-'useless_post' => "¡Sólo espacios y saltos de línea no se consideran una contribución útil!",
-'no_question' => "Por favor, publica una encuesta.",
-'no_options' => "Por favor, publica al menos dos opciones en la encuesta.",
-'poll_not_found' => "No se encuentra la encuesta",
-'no_vote_option' => "Por favor, antes de votar selecciona una opción",
-'locked_poll_no_delete' => "La encuesta está bloqueada por lo que tu respuesta no puede ser borrada",
-'locked_poll_no_count' => "La encuesta está cerrada por lo que tu voto no puede ser contabilizado",
-'ip_guest_used' => "Un invitado ya ha usado esta dirección IP para registrar su voto",
-'ip_member_used' => "Un invitado ya ha usado esta dirección IP para registrar su voto",
-'voted_already' => "Ya has votado en esta encuesta",
-'guest_taken' => "El nombre de usuario o la dirección de correo electrónico ya es usado por otro miembro.<br />El nombre o el email conflictivo es: ",
-'quote_too_long' => "El mensaje que has intentado citar es demasiado largo. por favor, redúcelo.",
-'no_links_allowed' => "Lo sentimos, pero no se te permite publicar mensajes conteniendo enlaces activos a otras páginas o a imágenes antes de que hayas publicado {yabb minlinkpost} mensajes normales.",
-'no_glinks_allowed'    => q~Sorry, guests are not allowed to post messages containing active links to websites or images.~,
-'no_siglinks_allowed'  => "Lo sentimos, no se te permite crear una firma que contiene enlaces activos a páginas web o imágenes antes de haber publicado {yabb minlinksig} mensajes normales.",
-'attach_name_blocked'  => "Su nombre del archivo adjunto contiene una palabra que no está permitido en este foro.",
-'attach_file_blocked'  => "Lo sentimos, no puedes subir un archivo adjunto con el nombre de archivo.",
-'rename'               => q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
+    'topic_locked' =>
+q~Este tema está bloqueado y no se te permite publicar o modificar mensajes.~,
+    'time_locked' => q~El Foro de Administración tiene fijado un límite de ~,
+    'change_not_allowed' => q~No se te permite cambiar este mensaje~,
+    'delete_not_allowed' => q~¡No se te permite borrar este mensaje!~,
+    'split_splice_not_allowed' =>
+q~No se te permite partir o ensamblar este tema; debes ser un moderador o administrador para hacerlo.~,
+    'no_perm_post' =>
+      q~No tienes permiso para publicar nuevos temas en este foro~,
+    'no_perm_reply' =>
+      q~No tienes permito para responder los temas de este foro~,
+    'no_perm_poll' => q~No tienes permiso para publicar encuestas en este foro~,
+    'no_perm_att' =>
+      q~No tienes permiso para publicar archivos adjuntos en este foro~,
+    'no_board_slash' =>
+      q~El campo del foro no acepta / en la cadena de consulta~,
+    'no_cat_slash' =>
+      q~El campo de la categoría no acepta / en la cadena de consulta~,
+    'no_board_backslash' =>
+      q~El campo del foro no acepta \\ en la cadena de consulta~,
+    'no_cat_backslash' =>
+      q~El campo de categoría no acepta \\ en la cadena de consulta~,
+    'no_board_topic' => q~Este tema no existe.~,
+    'bad_postnumber' => q~Num de mensaje ERRONEO~,
+    'file_overwrite' =>
+q~Todavía existe un fichero en el servidor con ese nombre. Por favor, renombra tu fichero antes de adjuntarlo.~,
+    'file_not_open' =>
+q~No se puede abrir un nuevo fichero en el servidor, comprueba la ruta y los chmods~,
+    'invalid_format' =>
+      q~Formato de fichero inválido. Los ficheros válidos son~,
+    'file_too_big' => q~Adjunto demasiado grande en aprox. ~,
+    'dir_full' =>
+q~Este adjunto hace que el directorio de adjuntos exceda su capacidad máxima por aprox. ~,
+    'file_not_uploaded' => q~No se puede subir el fichero~,
+    'useless_post' =>
+q~¡Sólo espacios y saltos de línea no se consideran una contribución útil!~,
+    'no_question' => q~Por favor, publica una encuesta.~,
+    'no_options' => q~Por favor, publica al menos dos opciones en la encuesta.~,
+    'poll_not_found' => q~No se encuentra la encuesta~,
+    'no_vote_option' => q~Por favor, antes de votar selecciona una opción~,
+    'locked_poll_no_delete' =>
+q~La encuesta está bloqueada por lo que tu respuesta no puede ser borrada~,
+    'locked_poll_no_count' =>
+      q~La encuesta está cerrada por lo que tu voto no puede ser contabilizado~,
+    'ip_guest_used' =>
+      q~Un invitado ya ha usado esta dirección IP para registrar su voto~,
+    'ip_member_used' =>
+      q~Un invitado ya ha usado esta dirección IP para registrar su voto~,
+    'voted_already' => q~Ya has votado en esta encuesta~,
+    'guest_taken' =>
+q~El nombre de usuario o la dirección de correo electrónico ya es usado por otro miembro.<br />El nombre o el email conflictivo es: ~,
+    'quote_too_long' =>
+q~El mensaje que has intentado citar es demasiado largo. por favor, redúcelo.~,
+    'no_links_allowed' =>
+q~Lo sentimos, pero no se te permite publicar mensajes conteniendo enlaces activos a otras páginas o a imágenes antes de que hayas publicado {yabb minlinkpost} mensajes normales.~,
+    'no_glinks_allowed' =>
+q~Sorry, guests are not allowed to post messages containing active links to websites or images.~,
+    'no_siglinks_allowed' =>
+q~Lo sentimos, no se te permite crear una firma que contiene enlaces activos a páginas web o imágenes antes de haber publicado {yabb minlinksig} mensajes normales.~,
+    'attach_name_blocked' =>
+q~Su nombre del archivo adjunto contiene una palabra que no está permitido en este foro.~,
+    'attach_file_blocked' =>
+q~Lo sentimos, no puedes subir un archivo adjunto con el nombre de archivo.~,
+    'rename' =>
+q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
 
 ## MoveTopic ##
-'move_not_allowed' => "No se te permite mover temas...",
+    'move_not_allowed' => q~No se te permite mover temas...~,
 
 ## Profile ##
-'invalid_password' => "Contraseña inválida.<br /> Has introducido una contraseña incorrecta.",
-'no_user_slash' => "El campo de identificación de usuario no acepta / en la cadena de consulta",
-'no_user_backslash' => "El campo de identificación de usuario no acepta \\ en la cadena de consulta",
-'not_allowed_profile_change' => "No estás autorizado a cambiar el perfil de esta persona.",
-'no_profile_exists' => "El usuario cuyo perfil estás intentando ver no existe.",
-'current_password_wrong' => "Tu contraseña actual es incorrecta.",
-'no_admin_password' => "Necesitas introducir la contraseña correcta de administración para realizar cambios en este perfil.",
-'password_is_userid' => "Por razones de seguridad, tu contraseña no puede ser la misma que tu nombre de usuario.",
-'name_is_userid' => "Por razones de seguridad, es aconsejable que el nombre a mostrar en el foro no sea el mismo que el nombre de usuario.",
-'name_taken' => "Este nombre para mostrar en el foro ya está siendo usado por otro miembro.",
-'name_censored' => "Has usado una o más palabras censuradas en tu nombre a mostrar en el foro. Por favor, vuelve atrás y cámbialo. La palabra o palabras que han causado el problema son:",
-'name_too_long' => "Por favor, reduce tu nombre a mostrar en el foro. Es demasiado largo.",
-'invalid_birthdate' => "Entrada inválida en uno o más campos de la Fecha de Nacimiento.",
-'id_reserved' => "¡El nombre de usuario que estás intentado registrar contiene un nombre reservado! Por favor, inténtalo con otro. Nombre reservado: ",
-'name_reserved' => "¡El nombre a mostrar en el foro que estás intentando registrar contiene un nombre reservado! Por favor, inténtalo con otro. Nombre a mostrar en el foro reservado: ",
-'cannot_kill_admin' => "Como medida de seguridad, no puedes borrar la cuenta con el nombre de usuario 'admin.'",
-'email_taken' => "La siguiente dirección de correo electrónico ya está siendo usada por otro usuario registrado. Si crees que es un error, por favor ve a la página de entrada y usa la opción de recordar contraseña con esta dirección.",
-'invalid_template' => "No es un nombre de plantilla válido.",
-'invalid_language' => "No es un nombre de idioma válido.",
-'invalid_time_offset' => "La diferencia horaria debe ser +/- y numérica.",
-'invalid_postcount' => "La casilla 'número de mensajes' sólo puede contener dígitos.",
-'cannot_regroup_admin' => "El Administrador con el nombre de usuario 'admin' no puede ser movido a un grupo de miembros diferente.",
-'session_time_out' => "Tiempo de Sesión de Perfil agotado.",
-'not_allowed_gender_edit'   => "No se le permite editar su género.",
-'not_allowed_birthdate_change'  => "No se le permite cambiar su fecha de nacimiento.",
+    'invalid_password' =>
+      q~Contraseña inválida.<br /> Has introducido una contraseña incorrecta.~,
+    'no_user_slash' =>
+q~El campo de identificación de usuario no acepta / en la cadena de consulta~,
+    'no_user_backslash' =>
+q~El campo de identificación de usuario no acepta \\ en la cadena de consulta~,
+    'not_allowed_profile_change' =>
+      q~No estás autorizado a cambiar el perfil de esta persona.~,
+    'no_profile_exists' =>
+      q~El usuario cuyo perfil estás intentando ver no existe.~,
+    'current_password_wrong' => q~Tu contraseña actual es incorrecta.~,
+    'no_admin_password' =>
+q~Necesitas introducir la contraseña correcta de administración para realizar cambios en este perfil.~,
+    'password_is_userid' =>
+q~Por razones de seguridad, tu contraseña no puede ser la misma que tu nombre de usuario.~,
+    'name_is_userid' =>
+q~Por razones de seguridad, es aconsejable que el nombre a mostrar en el foro no sea el mismo que el nombre de usuario.~,
+    'name_taken' =>
+q~Este nombre para mostrar en el foro ya está siendo usado por otro miembro.~,
+    'name_censored' =>
+q~Has usado una o más palabras censuradas en tu nombre a mostrar en el foro. Por favor, vuelve atrás y cámbialo. La palabra o palabras que han causado el problema son:~,
+    'name_too_long' =>
+      q~Por favor, reduce tu nombre a mostrar en el foro. Es demasiado largo.~,
+    'invalid_birthdate' =>
+      q~Entrada inválida en uno o más campos de la Fecha de Nacimiento.~,
+    'id_reserved' =>
+q~¡El nombre de usuario que estás intentado registrar contiene un nombre reservado! Por favor, inténtalo con otro. Nombre reservado: ~,
+    'name_reserved' =>
+q~¡El nombre a mostrar en el foro que estás intentando registrar contiene un nombre reservado! Por favor, inténtalo con otro. Nombre a mostrar en el foro reservado: ~,
+    'cannot_kill_admin' =>
+q~Como medida de seguridad, no puedes borrar la cuenta con el nombre de usuario 'admin.'~,
+    'email_taken' =>
+q~La siguiente dirección de correo electrónico ya está siendo usada por otro usuario registrado. Si crees que es un error, por favor ve a la página de entrada y usa la opción de recordar contraseña con esta dirección.~,
+    'invalid_template'    => q~No es un nombre de plantilla válido.~,
+    'invalid_language'    => q~No es un nombre de idioma válido.~,
+    'invalid_time_offset' => q~La diferencia horaria debe ser +/- y numérica.~,
+    'invalid_postcount' =>
+      q~La casilla 'número de mensajes' sólo puede contener dígitos.~,
+    'cannot_regroup_admin' =>
+q~El Administrador con el nombre de usuario 'admin' no puede ser movido a un grupo de miembros diferente.~,
+    'session_time_out'        => q~Tiempo de Sesión de Perfil agotado.~,
+    'not_allowed_gender_edit' => q~No se le permite editar su género.~,
+    'not_allowed_birthdate_change' =>
+      q~No se le permite cambiar su fecha de nacimiento.~,
 
 ## Register ##
-'email_mismatch'       => "Las direcciones de correo electrónico no coinciden.",
-'registration_disabled' => "La función de registro ha sido desactivada en este foro.",
-'no_registration_logged_in' => "No te puedes registrar mientras estás conectado.",
-'banned' => "Notificación de expulsión.",
-'suspend' => q~Suspension Notification.~,
-'system_prohibited_id' => "Nombre de usuario prohibido por el sistema",
-'id_alfa_only' => "El nombre de usuario sólo puede contener letras y números (ejemplo: yabber10)",
-'id_taken' => "El nombre de usuario que estás intentado registrar ya existe.",
-'id_to_long' => "Por favor, reduce tu nombre de usuario. Es demasiado largo.",
-'realname_to_long' => "Por favor, reduce tu nombre a mostrar en el foro. Es demasiado largo.",
-'email_to_long' => "Por favor, reduce tu correo electrónico. Es demasiado largo.",
-'already_preregged' => "¡Este usuario ya está pre-registrado!",
-'email_already_preregged' => "¡Este correo electrónico ya está pre-registrado!",
-'already_activated' => "¡Este usuario ya ha sido activado!",
-'prereg_expired' => "El usuario no se pre-registró o el periodo de tiempo permitido de {yabb preregspan} horas a expirado.",
-'prereg_wait'          => "Su cuenta de usuario no ha sido aprobado todavía. Por favor sea paciente.",
-'no_regagree' => "No te puedes registrar a menos que aceptes las normas de registro.",
-'no_reg_reason' => "Sin dar una razón para solicitar la adhesión no podemos procesar tu solicitud.",
-'no_verification_question'    => "No has respondido a la pregunta de verificación. Por favor, regrese y vuelva a intentarlo.",
-'wrong_verification_question' => "La pregunta de verificación que está mal. Por favor, regrese y vuelva a intentarlo.",
-'censor1'               => "El nombre de usuario que ha elegido tiene una palabra que está prohibido en este foro:",
-'censor2'               => "La dirección de correo que ha elegido tiene una palabra que está prohibido en este foro:",
-'censor3'               => "El nombre de usuario que ha elegido tiene una palabra que está prohibido en este foro:",
-'bad_bot'              => "Oops - we don't serve your kind here.",
+    'email_mismatch' => q~Las direcciones de correo electrónico no coinciden.~,
+    'registration_disabled' =>
+      q~La función de registro ha sido desactivada en este foro.~,
+    'no_registration_logged_in' =>
+      q~No te puedes registrar mientras estás conectado.~,
+    'banned'               => q~Notificación de expulsión.~,
+    'suspend'              => q~Suspension Notification.~,
+    'system_prohibited_id' => q~Nombre de usuario prohibido por el sistema~,
+    'id_alfa_only' =>
+q~El nombre de usuario sólo puede contener letras y números (ejemplo: yabber10)~,
+    'id_taken' =>
+      q~El nombre de usuario que estás intentado registrar ya existe.~,
+    'id_to_long' =>
+      q~Por favor, reduce tu nombre de usuario. Es demasiado largo.~,
+    'realname_to_long' =>
+      q~Por favor, reduce tu nombre a mostrar en el foro. Es demasiado largo.~,
+    'email_to_long' =>
+      q~Por favor, reduce tu correo electrónico. Es demasiado largo.~,
+    'already_preregged' => q~¡Este usuario ya está pre-registrado!~,
+    'email_already_preregged' =>
+      q~¡Este correo electrónico ya está pre-registrado!~,
+    'already_activated' => q~¡Este usuario ya ha sido activado!~,
+    'prereg_expired' =>
+q~El usuario no se pre-registró o el periodo de tiempo permitido de {yabb preregspan} horas a expirado.~,
+    'prereg_wait' =>
+q~Su cuenta de usuario no ha sido aprobado todavía. Por favor sea paciente.~,
+    'no_regagree' =>
+      q~No te puedes registrar a menos que aceptes las normas de registro.~,
+    'no_reg_reason' =>
+q~Sin dar una razón para solicitar la adhesión no podemos procesar tu solicitud.~,
+    'no_verification_question' =>
+q~No has respondido a la pregunta de verificación. Por favor, regrese y vuelva a intentarlo.~,
+    'wrong_verification_question' =>
+q~La pregunta de verificación que está mal. Por favor, regrese y vuelva a intentarlo.~,
+    'censor1' =>
+q~El nombre de usuario que ha elegido tiene una palabra que está prohibido en este foro:~,
+    'censor2' =>
+q~La dirección de correo que ha elegido tiene una palabra que está prohibido en este foro:~,
+    'censor3' =>
+q~El nombre de usuario que ha elegido tiene una palabra que está prohibido en este foro:~,
+    'bad_bot' => q~Oops - we don't serve your kind here.~,
 
 ## Search ##
-'search_disabled' => "La opción de búsqueda ha sido desactivada.",
-'result_too_high' => "El número de resultados solicitado es mayor al número máximo permitido por el sistema",
-'no_search' => "¡Debes especificar una cadena de búsqueda!",
-'no_search_slashes' => "El campo de búsqueda no acepta / o \\ en la cadena de búsqueda",
+    'search_disabled' => q~La opción de búsqueda ha sido desactivada.~,
+    'result_too_high' =>
+q~El número de resultados solicitado es mayor al número máximo permitido por el sistema~,
+    'no_search' => q~¡Debes especificar una cadena de búsqueda!~,
+    'no_search_slashes' =>
+      q~El campo de búsqueda no acepta / o \\ en la cadena de búsqueda~,
 
 ## SendTopic ##
-'no_board_send' => "El foro no se encuentra en la consulta.",
-'no_topic_send' => "El tema no se encuentra en la consulta.",
-'sendname_too_long' => "Por favor, reduce tu nombre. Es demasiado largo.",
+    'no_board_send'     => q~El foro no se encuentra en la consulta.~,
+    'no_topic_send'     => q~El tema no se encuentra en la consulta.~,
+    'sendname_too_long' => q~Por favor, reduce tu nombre. Es demasiado largo.~,
 
 ## Admin Stuff ##
-'announcement_defined' => "El foro sólo puede tener una sección llamada Anuncios Globales",
-'recycle_bin_defined' => "El foro sólo puede tener una sección llamada Papelera de Reciclaje",
-'board_defined' => "Ya existe una sección con este ID",
-'cat_defined' => "Ya existe una categoría con este ID",
-'no_delete_default' => "Por razones de seguridad no te está permitido borrar o cambiar la plantilla 'default' (defecto).",
-'invalid_template' => "¡No es un nombre de plantilla válido!",
-'no_group_name' => "Por favor, introduce un nombre",
-'no_post_number' => "Por favor, introduce un número",
-'invalid_post_number' => "Cantidad de post inválida",
-'double_group' => "No puedes tener dos grupos de miembros con el mismo nombre:",
-'double_count' => "No puedes tener dos mensajes de grupos dependientes con el mismo contador de mensajes.",
-'no_groupname_change' => "No puedes cambiar el nombre de un mensaje de grupo independiente.",
-'invalid_value' => "Has introducido un valor no válido para este artículo: ", # NEW
+    'announcement_defined' =>
+      q~El foro sólo puede tener una sección llamada Anuncios Globales~,
+    'recycle_bin_defined' =>
+      q~El foro sólo puede tener una sección llamada Papelera de Reciclaje~,
+    'board_defined'  => q~Ya existe una sección con este ID~,
+    'no_board_admin' => q~You cannot use 'admin' as a board ID.~,
+    'cat_defined'    => q~Ya existe una categoría con este ID~,
+    'no_delete_default' =>
+q~Por razones de seguridad no te está permitido borrar o cambiar la plantilla 'default' (defecto).~,
+    'invalid_template'    => q~¡No es un nombre de plantilla válido!~,
+    'no_group_name'       => q~Por favor, introduce un nombre~,
+    'no_post_number'      => q~Por favor, introduce un número~,
+    'invalid_post_number' => q~Cantidad de post inválida~,
+    'double_group' =>
+      q~No puedes tener dos grupos de miembros con el mismo nombre:~,
+    'double_count' =>
+q~No puedes tener dos mensajes de grupos dependientes con el mismo contador de mensajes.~,
+    'no_groupname_change' =>
+      q~No puedes cambiar el nombre de un mensaje de grupo independiente.~,
+    'invalid_value' =>
+      q~Has introducido un valor no válido para este artículo: ~,    # NEW
 
 ## Permalinking ##
-'no_board_found' => "La sección a la que te refieres parece no existir (más).",
-'no_topic_found' => "El tema al que te refieres parece no existir (más).",
+    'no_board_found' =>
+      q~La sección a la que te refieres parece no existir (más).~,
+    'no_topic_found' => q~El tema al que te refieres parece no existir (más).~,
 
 ## buddy list ##
-'self_buddy' => "No te puedes añadir tú mismo a tu lista de amigos - ¡no seas egomaniaco!",
+    'self_buddy' =>
+q~No te puedes añadir tú mismo a tu lista de amigos - ¡no seas egomaniaco!~,
 
 ## advanced tabs ##
-'tabext' => '¡Ya existe una etiqueta parala misma sección o con el mismo nombre!',
+    'tabext' =>
+      q~¡Ya existe una etiqueta parala misma sección o con el mismo nombre!~,
 
 ## MemberGroups ##
-'newpostdep_gmod' => 'Lo sentimos, Los Moderadores Globales no pueden modificar usuarios dependientes de mensajes porque la opción de mantenimiento->"Reconstruir Lista de Miembros" debe ser ejecutada después y esa función está sólo disponible en el Modo Mantenimiento, así que va a denegar tu acceso.',
-'nofolder' => q~No Template Folder Name~,
+    'newpostdep_gmod' =>
+q~Lo sentimos, Los Moderadores Globales no pueden modificar usuarios dependientes de mensajes porque la opción de mantenimiento->"Reconstruir Lista de Miembros" debe ser ejecutada después y esa función está sólo disponible en el Modo Mantenimiento, así que va a denegar tu acceso.~,
+    'nofolder' => q~No Template Folder Name~,
+    'nofile'   => q~No file has been selected for download~,
+    'nogtalk'  => q~Cannot load Google Hangout~,
+    'noextern' => q~No external board~,
 );
 
 1;

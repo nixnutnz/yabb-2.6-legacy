@@ -1,0 +1,63 @@
+###############################################################################
+# Debug.lng (Définition des textes de débugages)                              #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_cadebuglngver  = 'YaBB 2.7.00 $Revision$';
+@french_cadebuglngmods = ();
+if (@french_cadebuglngmods) {
+    $french_cadebuglngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' && $language ne 'Français' ) { return 1; }
+
+%debug_txt = (
+    'getpairs'     => q~Paires GET entrantes~,
+    'postpairs'    => q~paires POST entrantes~,
+    'name'         => q~nom~,
+    'value'        => q~valeur~,
+    'opened'       => q~Ouvert~,
+    'closed'       => q~fichier et fermé~,
+    'equal'        => q~fichier. (devrait être des nombres égaux)~,
+    'nohires'      => q~Votre serveur n'a probablement pas~,
+    'nomodule'     => q~installé ou ne supporte pas le module local pour~,
+    'pagespeed'    => q~Page complétée en~,
+    'loaded'       => q~secondes~,
+    'debugging'    => q~Informations de débogage~,
+    'benchmarking' => q~analyse de performance~,
+    'ipaddress'    => q~Votre adresse IP est~,
+    'browser'      => q~Votre agent de navigation~,
+    'trace'        => q~traceur de débogage~,
+    'check'        => q~File Check à l'ouverture/fermeture~,
+    'filehandles'  => q~Gestionaire de fichier/Fichiers ouverts~,
+    'filehandleslegend' =>
+q~ouvert FILEHANDLE (time) &nbsp; &nbsp; <em>MODE</em>filepathname &nbsp; &nbsp; fermé FILEHANDLE (time)<br />[package, scriptpathname, line]~,
+    'filesloaded'         => q~Fichiers chargés par~,
+    'process_scalars'     => q~Processus scalaires~,
+    'process_num'         => q~Traiter le nombre de processus en cours~,
+    'process_file'        => q~Fichier exécuté dans ce processus~,
+    'process_time'        => q~Heure de début du processus~,
+    'process_interpreter' => q~Interpréteur de ce processus~,
+    'perl_version'        => q~Version Perl~,
+    'server_load'         => q~Utilisation CPU~,
+    'server_load_ago'     => q~Charge moyenne du serveur~,
+    'minute'              => q~minutes~,
+    'supported'           => q~Non supporté~,
+);
+
+1;

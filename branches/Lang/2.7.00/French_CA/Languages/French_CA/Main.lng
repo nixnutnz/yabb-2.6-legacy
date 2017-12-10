@@ -1,0 +1,363 @@
+###############################################################################
+# Main.lng (Définition générale des textes)                                   #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_camainlngver  = 'YaBB 2.7.00 $Revision$';
+@french_camainlngmods = ();
+if (@french_camainlngmods) {
+    $french_camainlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' && $language ne 'English' ) { return 1; }
+
+$abbr_lang = 'fr-ca';
+
+$maintenancetext =
+q~Nous sommes présentement en train d'effectuer une mise à jour de notre forum. S'il vous plaît revenez plus tard!~;
+
+@days     = qw(Dimanche Lundi Mardi Mercredi Jeudi Vendredi Samedi);
+@months   = qw(Jan Fév Mar Avr Mai Jun Jul Aug Sep Oct Nov Déc);
+@months_m = qw(Jan Fév Mar Avr Mai Jun Jul Aug Sep Oct Nov Déc)
+  ;    #list for lower case months if needed.
+@days_short = qw(Dim Lun Mar Mer Jeu Ven Sam);                        # for smtp
+@alpha      = qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
+
+%maintxt = (
+    'w3c_lngcode'       => q~fr-ca~,
+    'error_description' => q~Information système~,
+    'error_location'    => q~<strong>Script</strong>~,
+    'error_line'        => q~<strong>Ligne</strong>~,
+    'error_subroutine'  => q~<strong>Souroutine</strong>~,
+    'error_verbose'     => q~<strong>Verbose</strong>~,
+    'board'             => q~Forum~,
+    'cat'               => q~Catégorie~,
+    '0'                 => q~Envoyer MP à~,
+    '1'                 => q~Envoyer courriel à~,
+    '2'                 => q~Voir~,
+    '3'                 => q~Profiles~,
+    '4'                 => q~Ajouter~,
+    '5'                 => q~à la liste d'amis~,
+    '6'                 => q~Voir mon profile~,
+    '10'                => q~Dernière connexion~,
+    '11'                => q~jours et~,
+    '12'                => q~heure~,
+    '13'                => q~Ne s'est pas identifié depuis son enregistrement~,
+    '22'                => q~Dernière publication~,
+    '23'                => q~Impossible d'ouvrir~,
+    '23a'               => q~. Ce fichier a été effacé.~,
+    '27'                => q~Voir le profile~,
+    '28'                => q~Invité~,
+    '30'                => q~le~,
+    '30a'               => q~à écrit le~,
+    '30b' => q{},    #placeholder for non-English strings needed in that spot
+    '31' => q~Citation~,
+    '32' => q~Aller~,
+    '34' => q~Connexion~,
+    '35' => q~Vous pouvez vous connecter au bas de cette page.~,
+    '40a' =>
+q~La visualisation de fichiers multimédias n'est pas disponible sur les fils RSS.~,
+    '41'      => q~(Vous devez~,
+    '42'      => q~ou~,
+    '42a'     => q~pour voir les fichiers multimédias et les liens)~,
+    'noaudio' => q~Votre navigateur de supporte pas les éléments audio.~,
+    '60'      => q~En ligne~,
+    '61'      => q~Hors ligne~,
+    '62'      => q~Outils de sujet~,
+    '63'      => q~Outils de publication~,
+    '64'      => q~Il n'y a aucune action à effectuer.~,
+    'away'    => q~Absent~,
+    '70'      => q~Sujet~,
+    '97'      => q~S'enregistrer~,
+    '102'     => q~Nouvelles~,
+    '107'     => q~au~,
+    '109'     => q~Débuté par~,
+    '114'     => q~Connexion de l'administration~,
+    '125'     => q~Avis~,
+    '126'     => q~Voulez-vous être avisé si quelqu'un répond à ce sujet?~,
+    '132'     => q~Déplacer~,
+    '133'     => q~Déplacer vers~,
+    '155'     => q~Mode maintenance~,
+    '156'     => q~Notre forum est actuellement en mode maintenance.~,
+    '157' =>
+q~Notre forum est actuellement en mode maintenance. Veuillez réessayer plus tard. Merci.~,
+    '160'  => q~Ce~,
+    '160a' => q~Sujet~,
+    '160b' => q~a été déplacé vers~,
+    '160c' => q~Le contenu de ce sujet a été déplacé vers~,
+    '160d' => q~ce sujet~,
+    '160e' => q~Les réponses hors sujet ont été déplacées vers~,
+    '160f' => q~.~,
+    '161'  => q~Ce sujet a été déplacé ici de~,
+    '161a' => q~Le dernier~,
+    '161b' => q~Les messages ont été déplacés ici de~,
+    '163'  => q~Oui~,
+    '164'  => q~Non~,
+    '170'  => q~Désolé, aucune correspondance n'a été trouvée~,
+    '171' =>
+      q~Aucune image trouvée en 30 secondes. Abandon.~,    # Inside JavaScript!
+    '193'     => q~Retour~,
+    '195'     => q~Message débuté par~,
+    '196'     => q~Titre~,
+    '197'     => q~Publié par~,
+    '199'     => q~Publication non trouvée~,
+    '213'     => q~Derniers messages des utilisateurs~,
+    '214'     => q~Messages récents~,
+    '214b'    => q~Sujet les plus récents~,
+    '215'     => q~Sujets récents~,
+    '236'     => q~Retour~,
+    '237'     => q~aller à l'index du forum.~,
+    '247m'    => q~Bonjour~,
+    '247a'    => q~Bonne après-midi~,
+    '247e'    => q~Bonsoir~,
+    '247bday' => q~Bonne fête~,
+    '248'     => q~Bienvenue,~,
+    '249'     => q~S'il vous plaît~,
+    '316'     => q~Boîte de réception~,
+    '317'     => q~Date~,
+    '318'     => q~De~,
+    '320'     => q~Envoyé de~,
+    '324'     => q~À~,
+    '377'     => q~ou~,
+    '409' =>
+q~La dernière requête en provenance de votre adresse IP était inférieure à~,
+    '410' =>
+q~il y a quelques secondes, et a été bloqué pour éviter de surcharger le forum. Merci d'essayer plus tard.~,
+    '418'  => q~Notification~,
+    '470'  => q~N/A~,
+    '470a' => q~<em>Ex Membre</em>~,
+    '525'  => q~par~,
+    '609' =>
+q~Pour des raisons de sécurité, YaBB vous demande de toujours utiliser des chemins absolus. Le symbole '../' (répertoire parent) est illégal. Veuillez exécuter à nouveau Setup.pl et modifier le paramètre pour utiliser les chemins absolus au lieu du symbole '../'.~,
+    '633' => q~Avertissement~,
+    '634' =>
+      q~Seuls les membres enregistrés sont autorisés à accéder à ce forum.~,
+    '635'   => q~Veuillez-vous connecter ci-dessous ou cliquez~,
+    '636'   => q~-ici-~,
+    '637'   => q~Enregistrer un compte avec {yabb mbname}.~,
+    '668'   => q~Imprimer la Page~,
+    '668a'  => q~Imprimer le message~,
+    '669a'  => q~Cacher l'images~,
+    '669b'  => q~Afficher l'images~,
+    '758'   => q~Déplacé~,
+    '769'   => q~Aujourd'hui~,
+    '769a'  => q~Hier~,
+    '769al' => q~hier~,
+    '769l' => q{},        #lowercase date support - multi-language support.;
+    '769b' => q~Demain~,
+    '770'  => q{},        #month suffix for January 1 - multi-language support.
+    '770a' => q{},        #month suffix for 1. January - multi-language support.
+    '773'   => q~Voulez-vous imprimer cette page maintenant?~,
+    '900b'  => q~Arrière~,
+    '900s'  => q~Soumettre~,
+    '900pw' => q~Entrez le mot de passe pour~,
+    '900pd' => q~Panneau d'accès Mot de passe~,
+    '900pe' => q~Veuillez entrer un mot de passe.~,
+    '900pg' =>
+q~Panneau d'accès Mot de passe sont pour les membres seulement. S'il vous plaît <a href="{yabb boardurl}?action=register" style="font-weight:bold;">créer un compte avec nous</a> ou <a href="{yabb boardurl}?action=login" style="font-weight:bold;">identifier-vous</a>.~,
+    '900pr'         => q~Privé~,
+    'dst'           => q~<sup>*</sup>~,
+    'rssfeed'       => q~Flux RSS~,
+    'rsscode'       => q~***Aller à la publication pour voir le Code***~,
+    'rss_nopost'    => q~Aucun message trouvé~,
+    'freeuserspace' => q~Espace hôte disponible:~,
+    'freediskspace' => q~Espace disque disponible:~,
+    'redirect'      => q~Redirection~,
+    'redirecttext' =>
+q~Si vous voyez ce message, cela signifie que la redirection n'a pas fonctionné.~,
+    'redirectlink' => q~Cliquer ici~,
+    'noscript' =>
+q~Vous devez activer JavaScript pour obtenir toutes les fonctionnalités de ce forum.~,
+    'go_to_board' => q~Aller à l'index du forum~,
+    'searchimg'   => q~Messages moins de~,
+    'searchimg2'  => q~jours~,
+    'searchimg3'  => q~Toute les publications~,
+    'collapse'    => q~Réduire~,
+    'UTC'         => q~(UTC)~,
+    'maint' =>
+      q~Retirez ce fichier si votre forum est en maintenance sans raison.~,
+    'printpage' => q~Imprimer cette page~,
+    'members_only' =>
+      q~Seul les membres peuvent voir le profil d'un autre membre.~,
+    'reg_please' =>
+q~S'il vous plaît veuillez <a href="{yabb boardurl}?action=register" style="font-weight:bold;">enregistrer un compte avec nous</a> ou <a href="{yabb boardurl}?action=login" style="font-weight:bold;">vous identifier</a>.~,
+    'regplease' => q~S'il vous plait veuillez-vous enregistrer~,
+    'banned'    => q~Bannis~,
+    'backup' =>
+      q~Retirer ce fichier si votre forum est verrouillé sans raison.~,
+    'tmpchange' => q~Changer de modèle:~,
+);
+
+%load_txt = (
+    '152'    => q~vous avez~,
+    '153'    => q~messages~,
+    '154'    => q~sont nouveau.~,
+    '154b'   => q~nouveau message.~,
+    '155'    => q~est nouveau.~,
+    '155b'   => q~nouveau message.~,
+    'nonew'  => q~et aucun nouveau message.~,
+    '231'    => q~Genre~,
+    'female' => q~Femme~,
+    'male'   => q~Homme~,
+    '471'    => q~message~,
+    '616' =>
+q~Rappelez-vous, ce forum est en <a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight:bold;">'Mode Maintenance'</a>.~,
+    '617'   => q~Rappelez-vous, la dernière sauvegarde a été effectuée le:~,
+    '773'   => q~IP introuvable~,
+    '805'   => q~Vous~,
+    '806'   => q~<strong>pouvez</strong>~,
+    '807'   => q~<strong>ne pouvez pas</strong>~,
+    '808'   => q~voir les sujets dans ce forum.~,
+    '809'   => q~répondre aux sujets de ce forum~,
+    '810'   => q~commencer de nouveaux sujets sur ce forum~,
+    '811'   => q~commencer les sondages sur ce forum~,
+    '812'   => q~publier sur votre publication sur ce forum.~,
+    '813'   => q~publier des attachements sur ce forum.~,
+    'maint' => q~Entretien~,
+    '616c'  => q~Ce forum est en mode maintenance!~,
+    'tmod'  => q~modifier les sujets de ce forum~,
+);
+
+%load_imtxt = (
+    '46' => q~Espace de rangement~,
+    '71' => q~Imprimé depuis votre~,
+);
+
+%security_txt = (
+    '430'        => q~, vous avez été bannis de ce forum~,
+    '678'        => q~Désolé~,
+    'ban_warn_a' => q~Vous avez été banni de l'utilisation de ce forum~,
+    'ban_warn_s' => q~Votre compte sur ce forum a été suspendu~,
+    'ban_warn_b' => q~pour~,
+    'ban_warn_c' => q~par~,
+    'ban_perm'   => q~en permanence~,
+    'ban_permt'  => q~jusqu'à~,
+    'banned'     => q~Notification d'interdiction.~,
+    'suspend'    => q~Notification de suspension.~,
+);
+
+%reftxt = (
+    '1' => q~Sécurité du référent~,
+    '2' =>
+q~Sélectionnez les actions du forum autorisées depuis l'extérieur de votre domaine~,
+    '3' => q~(Ces commandes sont dérivées de Variables/Referer.pm)~,
+    '4' => q~Sauvegarder la configuration~,
+    '6' => q~Domaine référant:~,
+    '7' => q~Votre domaine:~,
+);
+
+%dereftxt = ( '1' => q~Vous êtes redirigé .... un instant s'il vous plaît.~, );
+
+%timelocktxt = (
+    '02' =>
+q~ jour (s) pour modifier les messages. Ce message ne peut pas être modifié.~,
+    '02a' =>
+q~ jour (s) pour supprimer les messages. Ce message ne peut pas être supprimé.~,
+);
+
+%smiltxt = (
+    '1' => q~Plus de smileys~,
+    '21' =>
+      q~Cliquez sur le smiley que vous souhaitez insérer dans votre message:~,
+);
+
+%timetxt = (
+    '1' => q~<sup>er</sup>~,
+    '2' => q~<sup>ièm</sup>~,
+    '3' => q~<sup>ièm</sup>~,
+    '4' => q~<sup>ièm</sup>~,
+);
+
+%pidtxt = (
+    '01' => q~toutes~,
+    '02' =>
+q~Cliquez pour la page précédente - double-cliquez pour la première page.~,
+    '03' =>
+      q~Cliquez pour la page suivante - double-cliquez pour la dernière page.~,
+);
+
+##  jump menu
+%jumpto_txt = (
+    'to'   => q~Saut de forum &raquo;~,
+    'mess' => q~ &raquo; mes messages~,
+    'fav'  => q~ &raquo; mes favoris~,
+    'note' => q~ &raquo; mes notifications~,
+);
+
+## guest language selector
+%guest_txt = (
+    'sellanguage'    => q~Choisissez une langue~,
+    'changelanguage' => q~Changer la langue~,
+);
+
+## recent lists
+%recent_txt = (
+    'recenttopic' => q~ &raquo; 10 sujets les plus récents~,
+    'recentposts' => q~ &raquo; 10 message les plus récents~,
+);
+
+## pm to e-mail forward
+$forwardedpm = q~Cette alerte a été transmise par courriel~;
+
+%reg_txt = (
+    'reason' =>
+q~Veuillez indiquer les raisons pour lesquelles vous souhaitez vous inscrire à ce forum~,
+    'reason_exp' =>
+q~Ces informations ne seront pas sauvegardées, mais seront uniquement utilisées pour évaluer votre candidature.~,
+    'admin_alert_start_one'  => q~Il y a <strong>~,
+    'admin_alert_start_more' => q~Il y a <strong>~,
+    'admin_alert_one'        => q~</strong> inscrit validé~,
+    'admin_alert_more'       => q~</strong> inscrits validés~,
+    'admin_alert_end'        => q~ En attente d'approbation.~,
+    'admin_alert_end_more'   => q~ en attente d'approbation.~
+    ,    ## For languages that need a different end line on more than one user
+    'admin_alert_act_one'      => q~</strong> Membre préenregistré qui est~,
+    'admin_alert_act_more'     => q~</strong> Membre préenregistré qui sont~,
+    'admin_alert_act_end'      => q~ pas encore validé.~,
+    'admin_alert_act_end_more' => q~ pas encore validé.~
+    ,    ## For languages that need a different end line on more than one user
+    'no_masterkey' =>
+q~<div class="editbg">Aucune touche principale n'a été définie dans la section Paramètres de sécurité / Image de validation du Centre d'administration<br />Utilisant maintenant la valeur par défaut moins sûre</div>~,
+);
+
+%lookup_txt = (
+    '01'       => q~Chercher~,
+    '02'       => q~sur un serveur Whois:~,
+    'iplookup' => q~IP Lookup~,
+);
+
+%croak = (
+    'open'  => q~Ne peut ouvrir~,
+    'close' => q~Ne peut fermer~,
+    'print' => q~Ne peut imprimer~,
+);
+
+%mailer = (
+    'smtp' =>
+      qq ~Impossible de créer l'objet Net::SMTP. Serveur: '$smtp_server' \n\n~,
+    'smtps1' =>
+qq ~Impossible de créer l'objet Net::SMTPS. Serveur: '$smtp_server', port '$port' \n\n~,
+    'smtps2' =>
+q~Impossible d'authentifier les informations d'identification SMTPS. Veuillez fournir les identifiant de connexion: Admin Center -> Configuration du forum -> Paramètres avancés -> onglet Courriel, veuillez définir votre nom d'utilisateur SMTP, votre mot de passe d'autorisation SMTP et le type d'autorisation du serveur SMTP pour votre serveur SMTP.~,
+);
+
+timetostring($date);
+$yycopyright =
+qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Propulsé par <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">Logiciel de forum YaBB</a> &copy; 2000-{yabb year}. Tous droits réservé.~;
+
+1;

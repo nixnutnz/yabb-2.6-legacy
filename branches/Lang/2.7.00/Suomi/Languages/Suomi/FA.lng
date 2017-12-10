@@ -10,142 +10,163 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1867 ##
+our $VERSION = '2.7.00';
 
-$suomifalngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomifalngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomifalngmods = ();
-if(@suomifalngmods){
+if (@suomifalngmods) {
     $suomifalngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %fatxt = (
-'1' => 'Liite poistettu',
-'2' => 'Sallitut tiedostomuodot:',
-'3' => 'Suurin sallittu liitteen koko:',
-'4' => 'Kaikki tiedostomuodot.',
-'5' => 'Ei rajoitusta.',
-'6' => 'Liite',
-'6a' => 'Säilytä vanha liite',
-'6b' => 'Liitä uusi liite', 
-'6c' => 'Poista liite',
-'6d' => 'Uudelleenlähetä tiedosto',
-'6e' => 'Älä uudelleenlähetä tiedostoa',
-'6f' => 'Säilytä tiedosto',
-'7' => 'HUOM: Jos viestissäsi oli liite, on se valittava uudestaan turvallisuussyistä.', 
-'7a' => 'HUOM: Jos viestissäsi oli liite, on se valittava uudestaan turvallisuussyistä.',
-'9' => 'Liitetoiminnot',
-'10' => 'Liitehakemisto',
-'10a' => 'Yksityisviestien Liitehakemisto',
-'11' => 'Liitteiden URL',
-'11a' => 'Yksityisviestien Liitteiden URL',
-'12' => 'Tiedostokoon rajoitus kullekin liitteelle:<br /><span class ="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa) tai jotain järjellistä, esim. 500 KB.</span>', #File Size Limit for each Attachment:<br /><span class ="small">Set to 0 to disable checking (not recommended) or to a reasonably high value, such as 500 KB.</span>
-'12a' => 'Tiedostokoon rajoitus kullekin yksityisviestin liitteelle:<br /><span class ="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa) tai jotain järjellistä, esim. 500 KB.</span>',
-'13' => 'Liitetiedostohakemiston koko:<br /><span class ="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa).</span>', #Attachment Directory Size Limit:<br /><span class ="small">Set to 0 to disable checking (not recommended).</span>
-'13a' => 'Yksityisviestien Liitetiedostohakemiston koko:<br /><span class ="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa).</span>',
-'14' => 'Sallitut tiedostomuodot liitteille (esim: \'jpg gif bmp\')', #Allowed File Extensions for Attachments (ex: \'jpg gif bmp\')
-'14a' => 'Sallitut tiedostomuodot yksityisviestien liitteille (esim. &#39;jpg gif bmp&#39;)',
-'15' => 'Salli tiedostomuodon tarkistus? (Poiskytkeminen sallii kaikki tiedostomuodot)<br /><span class ="small" style="color: red;">On suositeltavaa että pidät tarkistuksen AINA päällä. Poiskytkeminen saattaa mahdollistaa haitallisen koodin ajamisen!</span>', #Enable File Extension Check? (Turn off to allow all file types)It is recommended you ALWAYS keep this Extension Check turned on. Disabling this may allow hackers to run scripts which can harm your forum!,
-'16' => 'Näytä kuvaliitteet viesteissä?', #'Display Picture Attachments in Posts?'
-'16a' => 'Näytä kuvaliitteet yksityisviesteissä?',
-'17' => 'Liitetiedostojen lukumäärä viesteissä:<br /><span class ="small">Aseta 0 estääksesi liitteet.</span><div class ="small" style="color: red;"><u>Caution:</u> Liian monien liitteiden salliminen voi hidastaa foorumia. Kun säädät tätä, pidä mielessä myös asetukset maksimitiedostokoosta ja liitetiedostohakemiston koko.</div>', #'Number of file attachments allowed in Posts:Set to 0 to disable file attachments. Allowing too many attachments can cause your forum to load slowly. When setting this, also take into consideration your settings for maximum attachment file size and maximum allowed attachment storage space.'
-'17a' => 'Liitetiedostojen lukumäärä yksityisviesteissä:<br /><span class ="small">Aseta 0 estääksesi liitteet.<br /><span class="important">Kun säädät tätä, pidä mielessä myös asetukset maksimitiedostokoosta ja liitetiedostohakemiston koko.</span></span>',
-'17b' => 'Määritä käyttäjäryhmät, jotka voivat liittää liitetiedostoja yksityisviesteihin:<br /><span class ="small">Jos käyttäjäryhmiä ei ole valittuna, kaikki käyttäjäryhmät sallitaan.<br />Käytä Ctrl- tai Shift-näppäimiä valitaksesi/poistaaksesi valinnan useammalta käyttäjäryhmältä.</span>',
-'18' => 'Salli Vieraiden liittää tiedostoja viesteihinsä?', #'Allow Guests to upload Attachments?'
-'19' => 'Ei pysty avaamaan', #'Could not open'
-'20' => '<= Tiedostomuoto ei ole sallittu! Sallittuja ovat seuraavat tiedostomuodot:', #'<= File extension not allowed! Allowed are only the following file extensions:'
-'20a' => '&lt;= Kielletty koodi kuvatiedoston sisällä.', 
-'21' => 'Tiedosto', #'The file'
-'21b' => 'on liian suuri. Suurin sallittu koko on kilotavuissa:', #'is too large. The maximum allowed filesize is in KB:'
-'22' => 'Tämän tiedoston kanssa', #'With this file'
-'22b' => 'ylität suurimman sallitun liitetiedostohakemiston koon.', #'you exceeds the maximum allowed upload-directory volume.'
-'23' => 'Ylärajaa liitetiedostohakemiston koolle ei ole asetettu.', #'No max directory size for Attachments currently set.'
-'23a' => 'Ylärajaa yksityisviestien liitetiedostohakemiston koolle ei ole asetettu.',
-'24' => 'Ylläpidä liitetiedostoja', #'Administrate File Attachments'
-'25' => 'Täältä pystyt hallinnoimaan viestien liitteitä. Voit poistaa liitteitä koon tai päivämäärän mukaan. Liitteisiin liittyvät tilastot näet alla.', #'From here you can administrate the files on your system that have been attached to messages in your YaBB. You can delete Attachments by size and date from your system. Statistics on Attachments are also displayed below.'
-'26' => 'Liitteiden tilastot', #'File Attachment Stats'
-'27' => 'Yhteensä', #'Total'
-'28' => 'Liitteitä yhteensä:', #'Total Attachments:'
-'28a' => 'Yksityisviestien liitteitä yhteensä:',
-'29' => 'Liitetiedostohakemiston koko:', #'Total Size of Attachment Directory:'
-'29a' => 'Yksityisviestien liitetiedostohakemiston koko:',
-'30' => 'Tilaa jäljellä hakemistossa:', #'Total Space Available in Attachments Directory:'
-'30a' => 'Tilaa jäljellä hakemistossa:',
-'31' => 'Liitteiden toiminnot', #'File Attachment Options'
-'31a' => 'Tarkastele liitetiedostolokia', #'View Attachment Log'
-'31b' => 'Yksityisviestien liitteiden toiminnot',
-'31c' => 'Tarkastele yksityisviestien liitetiedostolokia',
-'32' => 'Poista liitteet, jotka ovat vanhempia kuin', #'Remove Attachments older than'
-'32a' => 'Poista yksityisviestien liitteet, jotka ovat vanhempia kuin',
-'33' => 'Poista liitteet, jotka ovat suurempia kuin', #'Remove Attachments larger than'
-'33a' => 'Poista yksityisviestien liitteet, jotka ovat suurempia kuin',
-'34' => 'Poista liitteet, jotka ovat vanhempia kuin (päivää):', #'Remove Attachments older than number of days:'
-'35' => 'Poista liitteet, jotka ovat suurempia kuin', #'Remove Attachment larger than'
-'35a' => 'Poista yksityisviestien liitteet, jotka ovat suurempia kuin',
-'36' => 'Hallinnoi liitteitä', #'Administrate File Attachments'
-'37' => 'Hallinnoi liitteitä : Katso lokia', #'Administrate File Attachments : View Log'
-'37a' => 'Hallinnoi yksityisviestien liitteitä : Katso lokia',
-'38' => 'Liitetiedostoloki näyttää tietoja foorumin liitteistä. Voit ladata ja poistaa liitteitä, tai mennä viestiketjuun johon ne on liitetty.', #'The Attachment Log displays info about every Attachment on your forum. You can download Attachments from this section, delete Attachments, or jump to the thread where the Attachment is posted.'
-'38a' => 'Yksityisviestien liitetiedostoloki näyttää tietoja foorumin liiteistä. Voit ladata ja poistaa liitteitä.',
-'39' => 'Liitetiedostoloki', #'Attachment Log'
-'39a' => 'Yksityisviestien liitetiedostoloki',
-'40' => 'Liitteen nimi', #'Attachment Name'
-'40a' => 'Tyyppi', #'Type'
-'41' => 'Tiedostokoko', #'File Size'
-'41a' => 'Lataukset', #'Downloads'
-'41b' => 'lataus',
-'41c' => 'latausta',
-'42' => 'Käyttäjältä', #'Posted By'
-'42a' => 'Liittänyt', #'Attached By'
-'43' => 'Päivämäärä', #'Date'
-'44' => 'Viestin otsikko', #'Post Subject'
-'45' => 'Poista', #'Delete'
-'46' => 'Haluatko varmasti poistaa kaikki liitteet?', #'Are you sure you want to delete all Attachments?'
-'46a' => 'Haluatko varmasti poistaa kaikki valitut liitteet?', #'Are you sure you want to delete the checked Attachment(s)?'
-'47' => 'Palvelimen tyyppi', #'Webserver Type'
-'48' => 'Tällä hetkellä liitteitä ei ole', #'There are currently no Attachments uploaded'
-'48a' => 'Tällä hetkellä yksityisviestien liitteitä ei ole.',
-'49' => 'Ei oikeutta liittää tiedostoa.', #'Illegal attempt to attach a file.'
-'49a' => 'lataukset', #'downloads'
-'49b' => 'Tiedosto', #'File'
-'49c' => 'ei ole olemassa!', #'does not exist!'
-'49d' => 'Latausloki', #'Download log'
-'49e' => 'IP',
-'50' => 'Standardi',
-'51' => 'Unix/Linux/BSD',
-'52' => 'Windows',
-'53' => 'Tiedoston uudelleen nimeäminen/ylikirjoittaminen', #'File Rename/Overwrite'
-'54o' => 'Korvaa vanha', #'Overwrite existing'
-'54r' => 'uudelleen nimeä automaattisesti', #'Auto Rename'
-'54n' => 'Hylkää tiedosto', #'Do not upload file'
-'55' => 'Nykyiset viestien liitteet',
-'55a' => 'Nykyiset yksityisviestien liitteet',
-'56' => 'Liitettä ei löydy!!', #'Attachment Path not found!!'
-'57' => 'Liitetiedostot', #'File Attachments'
-'58' => 'päiviä', #'days'
-'61' => ' Poistetaan haamuilevat liitetiedostot', #' Now remove ghost attachments files'
-'61a' => '... valmis.', #... complete.
-'61b' => 'poistetut haamutiedostot', #'Deleted ghost file'
-'61c' => 'Poistetaan haamuilevat yksityisviestien liitteet',
-'62' => 'Liitetiedostoloki (attachments.txt) on rakennettu uudelleen', #'Attachments log file (attachments.txt) has been rebuilt'
-'62a' => 'Yksityisviestien liitetiedostoloki (pm.attachments) on rakennettu uudelleen',
-'63' => 'Uudelleenrakenna liitteet', #'Rebuild Attachments'
-'63a' => 'Uudelleenrakenna yksityisviestien liitteet',
-'64' => 'Sivuja', #'Pages'
-'70' => 'Katso viestiketjua', #'View Thread'
-'71' => 'Sulje ikkuna', #'Close Window'
-'75' => 'Tämä liitetiedostoloki näyttää tietoja kaikista liitteistä ketjussa jonka otsikko on', #'This Attachment Log displays info about every Attachment in the Thread with the Subject'
-'76' => 'Voit ladata liitteitä täältä,<br />mennä viestiin jossa liitteet on tai<br />viestiketjun alkuun.', #'You can download Attachments from here,<br />go to the Post where the file is attached or<br />go to the top of the Thread.'
-'80' => 'Liitteet', #'Attachments'
-'80a' => 'Enemmän liitteitä', #'More Attachments'
-'80s' => 'Vähemmän liitteitä', #'Less Attachments'
-'81' => 'Poista tiedosto',
-'actf' => q~Files in Attachments folder~,
-'acts' => q~Total Size in Attachments folder~,
-'larg' => q~Largest File: ~,
-'old' => q~Oldest File: ~,
-'pactf' => q~Files in PMAttachments folder~,
-'pacts' => q~Total Size in PMAttachments folder~,
+    '1'  => q~Liite poistettu~,
+    '2'  => q~Sallitut tiedostomuodot:~,
+    '3'  => q~Suurin sallittu liitteen koko:~,
+    '4'  => q~Kaikki tiedostomuodot.~,
+    '5'  => q~Ei rajoitusta.~,
+    '6'  => q~Liite~,
+    '6a' => q~Säilytä vanha liite~,
+    '6b' => q~Liitä uusi liite~,
+    '6c' => q~Poista liite~,
+    '6d' => q~Uudelleenlähetä tiedosto~,
+    '6e' => q~Älä uudelleenlähetä tiedostoa~,
+    '6f' => q~Säilytä tiedosto~,
+    '7' =>
+q~HUOM: Jos viestissäsi oli liite, on se valittava uudestaan turvallisuussyistä.~,
+    '7a' =>
+q~HUOM: Jos viestissäsi oli liite, on se valittava uudestaan turvallisuussyistä.~,
+    '9'   => q~Liitetoiminnot~,
+    '10'  => q~Liitehakemisto~,
+    '10a' => q~Yksityisviestien Liitehakemisto~,
+    '11'  => q~Liitteiden URL~,
+    '11a' => q~Yksityisviestien Liitteiden URL~,
+    '12' =>
+q~Tiedostokoon rajoitus kullekin liitteelle:<br /><span class="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa) tai jotain järjellistä, esim. 500 KB.</span>~,
+    '12a' =>
+q~Tiedostokoon rajoitus kullekin yksityisviestin liitteelle:<br /><span class ="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa) tai jotain järjellistä, esim. 500 KB.</span>~,
+    '13' =>
+q~Liitetiedostohakemiston koko:<br /><span class ="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa).</span>~,
+    '13a' =>
+q~Yksityisviestien Liitetiedostohakemiston koko:<br /><span class ="small">Aseta 0 poistaaksesi rajoituksen (ei suositeltavaa).</span>~,
+    '14' => q~Sallitut tiedostomuodot liitteille (esim: \'jpg gif bmp\')~,
+    '14a' =>
+q~Sallitut tiedostomuodot yksityisviestien liitteille (esim. &#39;jpg gif bmp&#39;)~,
+    '15' =>
+q~Salli tiedostomuodon tarkistus? (Poiskytkeminen sallii kaikki tiedostomuodot)<br /><span class ="small" style="color: red;">On suositeltavaa että pidät tarkistuksen AINA päällä. Poiskytkeminen saattaa mahdollistaa haitallisen koodin ajamisen!</span>~,
+    '16'  => q~Näytä kuvaliitteet viesteissä?~,
+    '16a' => q~Näytä kuvaliitteet yksityisviesteissä?~,
+    '17' =>
+q~Liitetiedostojen lukumäärä viesteissä:<br /><span class ="small">Aseta 0 estääksesi liitteet.</span><div class ="small" style="color: red;"><u>Caution:</u> Liian monien liitteiden salliminen voi hidastaa foorumia. Kun säädät tätä, pidä mielessä myös asetukset maksimitiedostokoosta ja liitetiedostohakemiston koko.</div>~,
+    '17a' =>
+q~Liitetiedostojen lukumäärä yksityisviesteissä:<br /><span class ="small">Aseta 0 estääksesi liitteet.<br /><span class="important">Kun säädät tätä, pidä mielessä myös asetukset maksimitiedostokoosta ja liitetiedostohakemiston koko.</span></span>~,
+    '17b' =>
+q~Määritä käyttäjäryhmät, jotka voivat liittää liitetiedostoja yksityisviesteihin:<br /><span class ="small">Jos käyttäjäryhmiä ei ole valittuna, kaikki käyttäjäryhmät sallitaan.<br />Käytä Ctrl- tai Shift-näppäimiä valitaksesi/poistaaksesi valinnan useammalta käyttäjäryhmältä.</span>~,
+    '18' => q~Salli Vieraiden liittää tiedostoja viesteihinsä?~,
+    '19' => q~Ei pysty avaamaan~,
+    '20' =>
+q~<= Tiedostomuoto ei ole sallittu! Sallittuja ovat seuraavat tiedostomuodot:~,
+    '20a' => q~&lt;= Kielletty koodi kuvatiedoston sisällä.~,
+    '21'  => q~Tiedosto~,
+    '21b' => q~on liian suuri. Suurin sallittu koko on kilotavuissa:~,
+    '22'  => q~Tämän tiedoston kanssa~,
+    '22b' => q~ylität suurimman sallitun liitetiedostohakemiston koon.~,
+    '23'  => q~Ylärajaa liitetiedostohakemiston koolle ei ole asetettu.~,
+    '23a' =>
+q~Ylärajaa yksityisviestien liitetiedostohakemiston koolle ei ole asetettu.~,
+    '24' => q~Ylläpidä liitetiedostoja~,
+    '25' =>
+q~Täältä pystyt hallinnoimaan viestien liitteitä. Voit poistaa liitteitä koon tai päivämäärän mukaan. Liitteisiin liittyvät tilastot näet alla.~,
+    '26'  => q~Liitteiden tilastot~,
+    '27'  => q~Yhteensä~,
+    '28'  => q~Liitteitä yhteensä:~,
+    '28a' => q~Yksityisviestien liitteitä yhteensä:~,
+    '29'  => q~Liitetiedostohakemiston koko:~,
+    '29a' => q~Yksityisviestien liitetiedostohakemiston koko:~,
+    '30'  => q~Tilaa jäljellä hakemistossa:~,
+    '30a' => q~Tilaa jäljellä hakemistossa:~,
+    '31'  => q~Liitteiden toiminnot~,
+    '31a' => q~Tarkastele liitetiedostolokia~,
+    '31b' => q~Yksityisviestien liitteiden toiminnot~,
+    '31c' => q~Tarkastele yksityisviestien liitetiedostolokia~,
+    '32'  => q~Poista liitteet, jotka ovat vanhempia kuin~,
+    '32a' => q~Poista yksityisviestien liitteet, jotka ovat vanhempia kuin~,
+    '33'  => q~Poista liitteet, jotka ovat suurempia kuin~,
+    '33a' => q~Poista yksityisviestien liitteet, jotka ovat suurempia kuin~,
+    '34'  => q~Poista liitteet, jotka ovat vanhempia kuin (päivää):~,
+    '35'  => q~Poista liitteet, jotka ovat suurempia kuin~,
+    '35a' => q~Poista yksityisviestien liitteet, jotka ovat suurempia kuin~,
+    '36'  => q~Hallinnoi liitteitä~,
+    '37'  => q~Hallinnoi liitteitä : Katso lokia~,
+    '37a' => q~Hallinnoi yksityisviestien liitteitä : Katso lokia~,
+    '38' =>
+q~Liitetiedostoloki näyttää tietoja foorumin liitteistä. Voit ladata ja poistaa liitteitä, tai mennä viestiketjuun johon ne on liitetty.~,
+    '38a' =>
+q~Yksityisviestien liitetiedostoloki näyttää tietoja foorumin liiteistä. Voit ladata ja poistaa liitteitä.~,
+    '39'  => q~Liitetiedostoloki~,
+    '39a' => q~Yksityisviestien liitetiedostoloki~,
+    '40'  => q~Liitteen nimi~,
+    '40a' => q~Tyyppi~,
+    '41'  => q~Tiedostokoko~,
+    '41a' => q~Lataukset~,
+    '41b' => q~lataus~,
+    '41c' => q~latausta~,
+    '42'  => q~Käyttäjältä~,
+    '42a' => q~Liittänyt~,
+    '43'  => q~Päivämäärä~,
+    '44'  => q~Viestin otsikko~,
+    '45'  => q~Poista~,
+    '46'  => q~Haluatko varmasti poistaa kaikki liitteet?~,
+    '46a' => q~Haluatko varmasti poistaa kaikki valitut liitteet?~,
+    '47'  => q~Palvelimen tyyppi~,
+    '48'  => q~Tällä hetkellä liitteitä ei ole~,
+    '48a' => q~Tällä hetkellä yksityisviestien liitteitä ei ole.~,
+    '49'  => q~Ei oikeutta liittää tiedostoa.~,
+    '49a' => q~lataukset~,
+    '49b' => q~Tiedosto~,
+    '49c' => q~ei ole olemassa!~,
+    '49d' => q~Latausloki~,
+    '49e' => q~IP~,
+    '50'  => q~Standardi~,
+    '51'  => q~Unix/Linux/BSD~,
+    '52'  => q~Windows~,
+    '53'  => q~Tiedoston uudelleen nimeäminen/ylikirjoittaminen~,
+    '54o' => q~Korvaa vanha~,
+    '54r' => q~uudelleen nimeä automaattisesti~,
+    '54n' => q~Hylkää tiedosto~,
+    '55'  => q~Nykyiset viestien liitteet~,
+    '55a' => q~Nykyiset yksityisviestien liitteet~,
+    '56'  => q~Liitettä ei löydy!!~,
+    '57'  => q~Liitetiedostot~,
+    '58'  => q~päiviä~,
+    '61'  => q~ Poistetaan haamuilevat liitetiedostot~,
+    '61a' => q~... valmis.~,
+    '61b' => q~poistetut haamutiedostot~,
+    '61c' => q~Poistetaan haamuilevat yksityisviestien liitteet~,
+    '62'  => q~Liitetiedostoloki (attachments.txt) on rakennettu uudelleen~,
+    '62a' =>
+q~Yksityisviestien liitetiedostoloki (pm.attachments) on rakennettu uudelleen~,
+    '63'  => q~Uudelleenrakenna liitteet~,
+    '63a' => q~Uudelleenrakenna yksityisviestien liitteet~,
+    '64'  => q~Sivuja~,
+    '70'  => q~Katso viestiketjua~,
+    '71'  => q~Sulje ikkuna~,
+    '75' =>
+q~Tämä liitetiedostoloki näyttää tietoja kaikista liitteistä ketjussa jonka otsikko on~,
+    '76' =>
+q~Voit ladata liitteitä täältä,<br />mennä viestiin jossa liitteet on tai<br />viestiketjun alkuun.~,
+    '80'    => q~Liitteet~,
+    '80a'   => q~Enemmän liitteitä~,
+    '80s'   => q~Vähemmän liitteitä~,
+    '81'    => q~Poista tiedosto~,
+    'actf'  => q~Files in Attachments folder~,
+    'acts'  => q~Total Size in Attachments folder~,
+    'larg'  => q~Largest File: ~,
+    'old'   => q~Oldest File: ~,
+    'pactf' => q~Files in PMAttachments folder~,
+    'pacts' => q~Total Size in PMAttachments folder~,
 );
 
 1;

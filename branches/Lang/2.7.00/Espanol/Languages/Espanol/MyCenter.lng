@@ -10,70 +10,69 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolmycenterlngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolmycenterlngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolmycenterlngmods = ();
 if (@espanolmycenterlngmods) {
     $espanolmycenterlngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; };
+if ( $action eq 'detailedversion' ) { return 1; }
 
 ## LEAVE USERLABEL intact. Move within the string for correct language syntax!
 
 %mycenter_txt = (
-'welcometxt' => "USERLABEL Panel de Control",
-'buddylisttitle' => 'Tus Amigos',
-'buddylistnone' => 'Tu Lista de Amigos está vacía',
-'buddydeleted' => 'Este amigo fue borrado. ¡Su nombre ya no está disponible',
-'hiddenemail' => 'Oculto E-mail',
-'currentsettings' => 'Tus Configuraciones actuales:',
-'onoffstatus' => 'Estado de Conectado/Desconectado:', 
-'onoffstatuson' => 'Conectado/Desconectado',
-'onoffstatusaway' => 'Ausente',
-'view' => 'Ver',
-'stealth' => 'Oculto:',
-'stealth_off' => 'Modo Oculto Off',
-'stealth_on' => 'Modo Oculto On',
-'posts' => 'Mensajes',
-'location' => 'Location', 
-'mylastposts' => 'Ver mis últimos 5 mensajes', 
+    'welcometxt'     => q~USERLABEL Panel de Control~,
+    'buddylisttitle' => q~Tus Amigos~,
+    'buddylistnone'  => q~Tu Lista de Amigos está vacía~,
+    'buddydeleted' =>
+      q~Este amigo fue borrado. ¡Su nombre ya no está disponible~,
+    'hiddenemail'     => q~Oculto E-mail~,
+    'currentsettings' => q~Tus Configuraciones actuales:~,
+    'onoffstatus'     => q~Estado de Conectado/Desconectado:~,
+    'onoffstatuson'   => q~Conectado/Desconectado~,
+    'onoffstatusaway' => q~Ausente~,
+    'view'            => q~Ver~,
+    'stealth'         => q~Oculto:~,
+    'stealth_off'     => q~Modo Oculto Off~,
+    'stealth_on'      => q~Modo Oculto On~,
+    'posts'           => q~Mensajes~,
+    'location'        => q~Location~,
+    'mylastposts'     => q~Ver mis últimos 5 mensajes~,
 );
 
-%display_txt = (
-'139' => 'Páginas',
-);
+%display_txt = ( '139' => q~Páginas~, );
 
 %mc_menus = (
-'messages' => 'Mensajes',
-'profile' => 'Perfil',
-'posts' => 'Notificaciones',
+    'messages' => q~Mensajes~,
+    'profile'  => q~Perfil~,
+    'posts'    => q~Notificaciones~,
 );
 
 %pm_search = (
-'all' => 'todos',
-'justthis' => 'sólo en esta carpeta',
-'byuser' => 'por Nombre de Usuario',
-'desc' => 'Buscar en mis Mensajes Personales',
-'search' => 'Search',
+    'all'      => q~todos~,
+    'justthis' => q~sólo en esta carpeta~,
+    'byuser'   => q~por Nombre de Usuario~,
+    'desc'     => q~Buscar en mis Mensajes Personales~,
+    'search'   => q~Search~,
 );
 
-%mc_folders = (
-'foldername' => 'Nombre de Carpeta',
-);
+%mc_folders = ( 'foldername' => q~Nombre de Carpeta~, );
 
 %my_favs = (
-'70' => 'Sujeto',
-'109' => 'Iniciado por',
-'110' => 'Respuestas',
-'301' => 'Vistas',
-'330' => 'Temas',
-'21' => 'Mensajes',
-'22' => 'Ultima publicación',
-'525' => 'por',
-'526' => 'por',
-'527' => 'Iniciado',
-'737' => 'Marque todas las',
+    '70'  => q~Sujeto~,
+    '109' => q~Iniciado por~,
+    '110' => q~Respuestas~,
+    '301' => q~Vistas~,
+    '330' => q~Temas~,
+    '21'  => q~Mensajes~,
+    '22'  => q~Ultima publicación~,
+    '525' => q~por~,
+    '526' => q~por~,
+    '527' => q~Iniciado~,
+    '737' => q~Marque todas las~,
 );
 
 1;

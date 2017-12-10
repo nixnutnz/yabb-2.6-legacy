@@ -10,88 +10,96 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomidisplaylngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomidisplaylngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomidisplaylngmods = ();
-if(@suomidisplaylngmods){
+if (@suomidisplaylngmods) {
     $suomidisplaylngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %display_txt = (
-'10' => 'Pysyväislinkki tähän aiheeseen',
-'19' => 'Sivunvalintanappi',
-'21' => 'Viestejä',
-'24' => '(NoEi aihetta)',
-'28' => 'Vieras',
-'29' => 'Kirjoittaja',
-'30' => 'lähetetty',
-'63' => 'Moderaattorit',
-'63a' => 'Moderaattoriryhmät',
-'116' => 'Vastaus',
-'118' => 'Aihe',
-'139' => 'Sivu',
-'146' => 'Vastaus',
-'146n' => 'Liitä käyttäjänimi pikavastauslaatikkoon',
-'162' => 'haluatko varmasti poistaa tämän aiheen?',
-'rempost' => 'Haluatko varmasti poistaa tämän viestin?',
-'211' => 'Viimeksi muokattu',
-'211a' => 'Syy',
-'298' => 'Moderaattori',
-'298a' => 'Moderaattoriryhmä',
-'470' => 'Ei tiedossa',
-'470a' => '<i>Ex-jäsen</i>',
-'511' => 'IP kirjattu',
-'525' => 'Kirjoittaja',
-'526' => 'Lisätään suosikki',
-'527' => 'Poistetaan suosikki',
-'528' => 'Valmis',
-'529' => 'Lisätään muistutus',
-'530' => 'Poistetaan muistutus',
-'641' => 'Luettu',
-'642' => 'kertaa',
-'643' => 'Sivun alkuun',
-'644' => 'Jäsentä lukemassa tätä aihetta',
-'645' => 'vastaamassa',
-'646' => 'Jäsentä vastaamassa tähän aiheeseen',
-'739' => 'Haluatko varmasti poistaa tämän viestin?',
-'739a' => 'Poista tämä viesti',
-'766' => 'Ei aihetta',
-'767' => 'Seuraava aihe',
-'768' => 'Edellinen aihe',
-'769' => 'Flash:n sijainti',
-'888' => 'Selataan aihetta',
-'999' => 'Aluetiedoitus',
-'posttolocked' => 'Varoitus: Olet kirjoittamassa viestiä lukittuun viestiketjuun! Paina [OK] hyväksyäksesi tai [Cancel] palataksesi viestiketjuun.',
-'modifyinlocked' => 'Varoitus: Olet muokkaamassa lukittua viestiketjua! Paina [OK] hyväksyäksesi tai [Cancel] palataksesi viestiketjuun.',
-'isbuddy' => 'On jo kaverilistallani!',
-'split_confirm' => 'Haluatko varmasti jakaa viestit?',
-'alertmod_confirm' => 'Haluatko varmasti varoittaa moderaattoria tästä viestistä?',
-'reverse' => 'Paina tästä jos haluat muuttaa aiheiden esitysjärjestystä.',
-'sendtopicemail' => 'Paina [OK] jos haluat lähettää sähköpostia omalla sähköpostiohjelmallasi. Muutoin käytetään foorumin omaa ohjelmaa.',
-'location' => 'Sijainti', 
-'age' => 'Ikä',
-'regdate' => 'Liittynyt: ', 
-'mylastposts' => 'Näytä 5 viimeistä viestiäni',
-'lastposts' => 'Näytä 5 viimeistä viestiä käyttäjältä',
-'lft' => "&lsaquo;",
-'rgt' => "&rsaquo;",
-'upt' => '&#710;',
-'guest_message' => 'Vierasviesti', 
-'guest_message_block' => qq~Terve vieras,<br><br>Anteeksi, mutta sinä olet ylittänyt rajan aiheille, joita sinä voit katsella vieraana. Katsellaaksesi niin monta aihetta kuin haluat ja hyötyäksesi monista muista toiminnoista, miten olisi jos <a href="$scripturl?action=register" style="font-weight: bold;">rekisteröityisit</a>. Rekisteröityminen on helppoa ja vie vain muutaman minuutin.<br><br>Jos sinulla on jo käyttäjätili, voit <a href="$scripturl?action=login" style="font-weight: bold;">kirjautua täältä</a> jotta et enää näe tätä viestiä.<br><br>Kiittäen,<br><br>$mbname-tiimi~,
-'guest_message_warn' => qq~Terve vieras,<br><br>Näyttää siltä, että nautit foorumimme lukemisesta, joten voisit <a href="$scripturl?action=register" style="font-weight: bold;">rekisteröityä</a> jotta et näkisi enää tätä viestiä ja hyötyisit monista muista toiminnoista. Rekisteröityminen on helppoa ja vie vain muutaman minuutin.<br><br>Jos olet jo rekisteröitynyt, voit <a href="$scripturl?action=login" style="font-weight: bold;">napautta tästä kirjautuaksesti.</a><br><br>Kiitos,<br><br>$mbname-tiimi~, 
-'bookmarks' => 'Kirjanmerkit', # Social Bookmarks
-'google' => 'Google Hangout',
-'ipblock' => q~Block IP in Guardian~,
-'ipblock2' => q~Block IP in .htaccess~,
-'ipblock_confirm' => q~Are you sure you want to block this IP?\n\n~,
-'ipban_confirm' => q~Are you sure you want to ban this IP?\n\n~,
-'725f' => q~Ban IP~,
+    '10'      => q~Pysyväislinkki tähän aiheeseen~,
+    '19'      => q~Sivunvalintanappi~,
+    '21'      => q~Viestejä~,
+    '24'      => q~(NoEi aihetta)~,
+    '28'      => q~Vieras~,
+    '29'      => q~Kirjoittaja~,
+    '30'      => q~lähetetty~,
+    '63'      => q~Moderaattorit~,
+    '63a'     => q~Moderaattoriryhmät~,
+    '116'     => q~Vastaus~,
+    '118'     => q~Aihe~,
+    '139'     => q~Sivu~,
+    '146'     => q~Vastaus~,
+    '146n'    => q~Liitä käyttäjänimi pikavastauslaatikkoon~,
+    '162'     => q~haluatko varmasti poistaa tämän aiheen?~,
+    'rempost' => q~Haluatko varmasti poistaa tämän viestin?~,
+    '211'     => q~Viimeksi muokattu~,
+    '211a'    => q~Syy~,
+    '298'     => q~Moderaattori~,
+    '298a'    => q~Moderaattoriryhmä~,
+    '470'     => q~Ei tiedossa~,
+    '470a'    => q~<i>Ex-jäsen</i>~,
+    '511'     => q~IP kirjattu~,
+    '525'     => q~Kirjoittaja~,
+    '526'     => q~Lisätään suosikki~,
+    '527'     => q~Poistetaan suosikki~,
+    '528'     => q~Valmis~,
+    '529'     => q~Lisätään muistutus~,
+    '530'     => q~Poistetaan muistutus~,
+    '641'     => q~Luettu~,
+    '642'     => q~kertaa~,
+    '643'     => q~Sivun alkuun~,
+    '644'     => q~Jäsentä lukemassa tätä aihetta~,
+    '645'     => q~vastaamassa~,
+    '646'     => q~Jäsentä vastaamassa tähän aiheeseen~,
+    '739'     => q~Haluatko varmasti poistaa tämän viestin?~,
+    '739a'    => q~Poista tämä viesti~,
+    '766'     => q~Ei aihetta~,
+    '767'     => q~Seuraava aihe~,
+    '768'     => q~Edellinen aihe~,
+    '769'     => q~Flash:n sijainti~,
+    '888'     => q~Selataan aihetta~,
+    '999'     => q~Aluetiedoitus~,
+    'posttolocked' =>
+q~Varoitus: Olet kirjoittamassa viestiä lukittuun viestiketjuun! Paina [OK] hyväksyäksesi tai [Cancel] palataksesi viestiketjuun.~,
+    'modifyinlocked' =>
+q~Varoitus: Olet muokkaamassa lukittua viestiketjua! Paina [OK] hyväksyäksesi tai [Cancel] palataksesi viestiketjuun.~,
+    'isbuddy'       => q~On jo kaverilistallani!~,
+    'split_confirm' => q~Haluatko varmasti jakaa viestit?~,
+    'alertmod_confirm' =>
+      q~Haluatko varmasti varoittaa moderaattoria tästä viestistä?~,
+    'reverse' => q~Paina tästä jos haluat muuttaa aiheiden esitysjärjestystä.~,
+    'sendtopicemail' =>
+q~Paina [OK] jos haluat lähettää sähköpostia omalla sähköpostiohjelmallasi. Muutoin käytetään foorumin omaa ohjelmaa.~,
+    'location'      => q~Sijainti~,
+    'age'           => q~Ikä~,
+    'regdate'       => q~Liittynyt: ~,
+    'mylastposts'   => q~Näytä 5 viimeistä viestiäni~,
+    'lastposts'     => q~Näytä 5 viimeistä viestiä käyttäjältä~,
+    'lft'           => q~&lsaquo;~,
+    'rgt'           => q~&rsaquo;~,
+    'upt'           => q~&#710;~,
+    'guest_message' => q~Vierasviesti~,
+    'guest_message_block' =>
+q~Terve vieras,<br><br>Anteeksi, mutta sinä olet ylittänyt rajan aiheille, joita sinä voit katsella vieraana. Katsellaaksesi niin monta aihetta kuin haluat ja hyötyäksesi monista muista toiminnoista, miten olisi jos <a href="{yabb scripturl}?action=register" style="font-weight: bold;">rekisteröityisit</a>. Rekisteröityminen on helppoa ja vie vain muutaman minuutin.<br><br>Jos sinulla on jo käyttäjätili, voit <a href="{yabb scripturl}?action=login" style="font-weight: bold;">kirjautua täältä</a> jotta et enää näe tätä viestiä.<br><br>Kiittäen,<br><br>{yabb mbname}-tiimi~,
+    'guest_message_warn' =>
+q~Terve vieras,<br><br>Näyttää siltä, että nautit foorumimme lukemisesta, joten voisit <a href="{yabb scripturl}?action=register" style="font-weight: bold;">rekisteröityä</a> jotta et näkisi enää tätä viestiä ja hyötyisit monista muista toiminnoista. Rekisteröityminen on helppoa ja vie vain muutaman minuutin.<br><br>Jos olet jo rekisteröitynyt, voit <a href="{yabb scripturl}?action=login" style="font-weight: bold;">napautta tästä kirjautuaksesti.</a><br><br>Kiitos,<br><br>{yabb mbname}-tiimi~,
+    'bookmarks' => q~Kirjanmerkit~,            # Social Bookmarks
+    'google'    => q~Google Hangout~,
+    'ipblock'   => q~Block IP in Guardian~,
+    'ipblock2'  => q~Block IP in .htaccess~,
+    'ipblock_confirm' => q~Are you sure you want to block this IP?\n\n~,
+    'ipban_confirm'   => q~Are you sure you want to ban this IP?\n\n~,
+    '725f'            => q~Ban IP~,
 );
 
-%zodiac_txt = (   #YaBB Zodiac
-'sign' => 'Horoskooppi',
+%zodiac_txt = (                                #YaBB Zodiac
+    'sign' => q~Horoskooppi~,
 );
 
 1;

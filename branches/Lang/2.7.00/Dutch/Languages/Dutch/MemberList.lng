@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # MemberList.lng (Member List text definitions)                               #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchmemberlistlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchmemberlistlngver  = 'YaBB 2.7.00 $Revision: 1933 $';
 @dutchmemberlistlngmods = ();
 if (@dutchmemberlistlngmods) {
     $dutchmemberlistlngmods = 1;
@@ -23,33 +25,34 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %ml_txt = (
-'1' => 'Gesorteerd op:',
-'2' => 'GA!',
-'3' => 'Bekijk de',
-'4' => 'Leden geordend op',
-'19' => 'Pagina Index In-/uitklappen',
-'21' => 'Berichten',
-'34' => 'Avatar',
-'35' => 'Gebruikersnaam',
-'87' => 'Positie',
-'96' => 'Website',
-'139' => q~Pagina's~,
-'233' => 'Registratie datum',
-'234' => 'Reg. Datum',
-'307' => 'e-mail',
-'308' => 'verborgen E-mail adres',
-'309' => 'van',
-'312' => 'Toon leden geordend op alfabet',
-'313' => 'Bekijk de',
-'314' => 'Leden geordend naar het aantal bijdragen',
-'331' => 'Leden',
-'759' => 'Kies alsjeblieft een letter.',
-'760' => 'Er zijn geen leden die met deze letter beginnen.',
-'800' => 'Andere',
-'801' => 'Zoek op Naam onder E-mail',
-'802' => 'Sorry - geen resultaten gevonden voor',
-'dr_warning' => '* Account ouder dan forum - Verifieer alstublieft start datum Forum:',
-'dr_warnurl' => 'Hier',
+    '1'   => q~Gesorteerd op:~,
+    '2'   => q~GA!~,
+    '3'   => q~Bekijk de~,
+    '4'   => q~Leden geordend op~,
+    '19'  => q~Pagina Index In-/uitklappen~,
+    '21'  => q~Berichten~,
+    '34'  => q~Avatar~,
+    '35'  => q~Gebruikersnaam~,
+    '87'  => q~Positie~,
+    '96'  => q~Website~,
+    '139' => q~Pagina's~,
+    '233' => q~Registratie datum~,
+    '234' => q~Reg. Datum~,
+    '307' => q~e-mail~,
+    '308' => q~verborgen E-mail adres~,
+    '309' => q~van~,
+    '312' => q~Toon leden geordend op alfabet~,
+    '313' => q~Bekijk de~,
+    '314' => q~Leden geordend naar het aantal bijdragen~,
+    '331' => q~Leden~,
+    '759' => q~Kies alsjeblieft een letter.~,
+    '760' => q~Er zijn geen leden die met deze letter beginnen.~,
+    '800' => q~Andere~,
+    '801' => q~Zoek op Naam onder E-mail~,
+    '802' => q~Sorry - geen resultaten gevonden voor~,
+    'dr_warning' =>
+      q~* Account ouder dan forum - Verifieer alstublieft start datum Forum:~,
+    'dr_warnurl' => q~Hier~,
 );
 
 1;

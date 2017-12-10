@@ -10,58 +10,69 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolmovesplitsplicelngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolmovesplitsplicelngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolmovesplitsplicelngmods = ();
 if (@espanolmovesplitsplicelngmods) {
     $espanolmovesplitsplicelngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; };
+if ( $action eq 'detailedversion' ) { return 1; }
 
-%sstxt=(
-'1' => 'Mover, Partir y Ensamblar',
-'2' => 'Partir Mensajes',
-'3' => 'Mensajes',
-'4' => 'Dejar',
-'5' => 'Ensamblar a',
-'6' => 'Categoría',
-'7' => 'Foro',
-'8' => 'Tema',
-'9' => 'Nuevo Título de Tema',
-'10' => 'Posición',
-'11' => "'Movido/Ensamblado a...' Info",
-'12' => 'Dejar los Mensajes originales',
-'13' => 'No dejar nada',
-'14' => 'Seleccionar qué mensajes mover del tema actual:',
-'14a' => 'Pulsa las teclas SHIFT o CTRL mientras pulsas para seleccionar múltiples mensajes.',
-'15' => 'Elije qué dejar en lugar del mensaje, siempre y cuando quieras dejar algo.<br />Si quieres mover &raquo;&raquo; Todos los Mensajes &laquo;&laquo;, se dejará un aviso.',
-'15a' => 'Inserta un nuevo Mensaje detrás del Mensaje movido, conteniendo la información de dónde viene y quién lo ha movido.',
-'16' => 'Selecciona la categoría a la que se moverán los Mensajes seleccionados.',
-'17' => 'Selecciona el foro al que se moverán los Mensajes seleccionados.',
-'18' => 'Selecciona el Título al que se moverán los mensajes seleccionados.',
-'19' => 'Selecciona la posición en la que se ensamblarán los mensajes seleccionados.<br />Los mensajes se colocarán debajo de la posición indicada.',
-'20' => 'Introduce el título del nuevo tema aquí.<br />Deja esta casilla en blanco si quieres usar el título del primer mensaje seleccionado.',
-'21' => 'Re:',
-'22' => 'Debes designar una Categoría.',
-'22a' => 'Debes designar un Foro.',
-'22b' => 'Debes designar un',
-'23' => 'mensaje para mover.',
-'24' => 'Enviar',
-'25' => 'Resetear',
-'26' => '&raquo;&raquo; Todos los Mensajes &laquo;&laquo;',
-'27' => 'Esta tarjeta no puede ser publicado y no hay envíos se debe mover en ella.',
-'28' => '&raquo;&raquo; Categorías &laquo;&laquo;',
-'29' => '&raquo;&raquo; Foros &laquo;&laquo;',
-'30' => '&raquo;&raquo; Tema Nuevo &laquo;&laquo;',
-'31' => '&raquo;&raquo; Fin del Tema &laquo;&laquo;',
-'32' => '&raquo;&raquo; Principio del Tema &laquo;&laquo;',
+%sstxt = (
+    '1'  => q~Mover, Partir y Ensamblar~,
+    '2'  => q~Partir Mensajes~,
+    '3'  => q~Mensajes~,
+    '4'  => q~Dejar~,
+    '5'  => q~Ensamblar a~,
+    '6'  => q~Categoría~,
+    '7'  => q~Foro~,
+    '8'  => q~Tema~,
+    '9'  => q~Nuevo Título de Tema~,
+    '10' => q~Posición~,
+    '11' => q~'Movido/Ensamblado a...' Info~,
+    '12' => q~Dejar los Mensajes originales~,
+    '13' => q~No dejar nada~,
+    '14' => q~Seleccionar qué mensajes mover del tema actual:~,
+    '14a' =>
+q~Pulsa las teclas SHIFT o CTRL mientras pulsas para seleccionar múltiples mensajes.~,
+    '15' =>
+q~Elije qué dejar en lugar del mensaje, siempre y cuando quieras dejar algo.<br />Si quieres mover &raquo;&raquo; Todos los Mensajes &laquo;&laquo;, se dejará un aviso.~,
+    '15a' =>
+q~Inserta un nuevo Mensaje detrás del Mensaje movido, conteniendo la información de dónde viene y quién lo ha movido.~,
+    '16' =>
+q~Selecciona la categoría a la que se moverán los Mensajes seleccionados.~,
+    '17' => q~Selecciona el foro al que se moverán los Mensajes seleccionados.~,
+    '18' =>
+      q~Selecciona el Título al que se moverán los mensajes seleccionados.~,
+    '19' =>
+q~Selecciona la posición en la que se ensamblarán los mensajes seleccionados.<br />Los mensajes se colocarán debajo de la posición indicada.~,
+    '20' =>
+q~Introduce el título del nuevo tema aquí.<br />Deja esta casilla en blanco si quieres usar el título del primer mensaje seleccionado.~,
+    '21'  => q~Re:~,
+    '22'  => q~Debes designar una Categoría.~,
+    '22a' => q~Debes designar un Foro.~,
+    '22b' => q~Debes designar un~,
+    '23'  => q~mensaje para mover.~,
+    '24'  => q~Enviar~,
+    '25'  => q~Resetear~,
+    '26'  => q~&raquo;&raquo; Todos los Mensajes &laquo;&laquo;~,
+    '27' =>
+q~Esta tarjeta no puede ser publicado y no hay envíos se debe mover en ella.~,
+    '28' => q~&raquo;&raquo; Categorías &laquo;&laquo;~,
+    '29' => q~&raquo;&raquo; Foros &laquo;&laquo;~,
+    '30' => q~&raquo;&raquo; Tema Nuevo &laquo;&laquo;~,
+    '31' => q~&raquo;&raquo; Fin del Tema &laquo;&laquo;~,
+    '32' => q~&raquo;&raquo; Principio del Tema &laquo;&laquo;~,
 
-'40' => 'Responder',
-'41' => 'Iniciar Tema',
+    '40' => q~Responder~,
+    '41' => q~Iniciar Tema~,
 
-'50' => 'Por favor, vuelve atrás y recarga esa página primero, o no te será posible Enviar.',
-'51' => 'No está permitido ensamblar dos Encuestas.',
+    '50' =>
+q~Por favor, vuelve atrás y recarga esa página primero, o no te será posible Enviar.~,
+    '51' => q~No está permitido ensamblar dos Encuestas.~,
 );
 
 1;

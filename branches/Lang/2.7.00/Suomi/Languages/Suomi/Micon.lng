@@ -10,112 +10,110 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomimiconlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomimiconlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomimiconlngmods = ();
-if(@suomimiconlngmods){
+if (@suomimiconlngmods) {
     $suomimiconlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if (!$language){$language = $lang;}
+if ( !$language ) { $language = $lang; }
 
-%img_txt_m =(
-'70' => 'Omat suosikit',
-);
+%img_txt_m = ( '70' => q~Omat suosikit~, );
 
 %img_polltxt_m = (
-'44' => 'Äänestys',
-'45' => 'Uusi äänestys',
-'46' => 'Äänestys suljettu',
+    '44' => q~Äänestys~,
+    '45' => q~Uusi äänestys~,
+    '46' => q~Äänestys suljettu~,
 );
 
 %messageindex_txt_m = (
-'302' => 'Uusi',
-'303' => 'Siirry ensimmäiseen lukemattomaan viestiin',
-'454' => 'Kuuma aihe (Enemmän kuin',
-'454a' => 'vastausta)',
-'455' => 'Erittäin kuuma aihe (Enemmän kuin',
-'456' => 'Lukittu aihe',
-'457' => 'Normaali aihe',
-'458' => 'Piilotettu aihe',
-'459' => 'Piilotettu tärkeä aihe',
-'460' => 'Piilotettu lukittu aihe',
-'461' => 'Piilotettu tärkeä lukittu aihe',
-'779' => 'Tärkeä aihe',
-'779a' => 'Yleisilmoitus',
-'779b' => 'Lukittu yleisilmoitus',
-'780' => 'Tärkeä lukittu aihe',
-'781' => 'Tärkeä',
-'845' => 'Siirretty aihe',
+    '302'  => q~Uusi~,
+    '303'  => q~Siirry ensimmäiseen lukemattomaan viestiin~,
+    '454'  => q~Kuuma aihe (Enemmän kuin~,
+    '454a' => q~vastausta)~,
+    '455'  => q~Erittäin kuuma aihe (Enemmän kuin~,
+    '456'  => q~Lukittu aihe~,
+    '457'  => q~Normaali aihe~,
+    '458'  => q~Piilotettu aihe~,
+    '459'  => q~Piilotettu tärkeä aihe~,
+    '460'  => q~Piilotettu lukittu aihe~,
+    '461'  => q~Piilotettu tärkeä lukittu aihe~,
+    '779'  => q~Tärkeä aihe~,
+    '779a' => q~Yleisilmoitus~,
+    '779b' => q~Lukittu yleisilmoitus~,
+    '780'  => q~Tärkeä lukittu aihe~,
+    '781'  => q~Tärkeä~,
+    '845'  => q~Siirretty aihe~,
 );
 
 %messageindex_sort_m = (
-'sort_az' => "Lajittele (A-Z)",
-'sort_za' => "Lajittele (Z-A)",
-'sort_min' => "Lajittele (vähiten vastauksia)",
-'sort_max' => "Lajittele (eniten vastauksia)",
-'sort_last' => "Lajittele (uusin vastaus)",
-'sort_first' => "Lajittele (vanhin vastaus)",
+    'sort_az'    => q~Lajittele (A-Z)~,
+    'sort_za'    => q~Lajittele (Z-A)~,
+    'sort_min'   => q~Lajittele (vähiten vastauksia)~,
+    'sort_max'   => q~Lajittele (eniten vastauksia)~,
+    'sort_last'  => q~Lajittele (uusin vastaus)~,
+    'sort_first' => q~Lajittele (vanhin vastaus)~,
 );
 
 %im_message_status_m = (
-'confidential' => 'Salainen',
-'urgent' => 'Kiireinen!',
-'standard' => 'Normaali',
-'alertmod' => 'Varoita moderaattoria!',
-'guestpm' => 'Yksityisviesti vieraalta',
-'guestpmreply' => 'Vastaa vieraalta saatuun yksityisviestiin',
-'imopen' => q~PM opened~,
+    'confidential' => q~Salainen~,
+    'urgent'       => q~Kiireinen!~,
+    'standard'     => q~Normaali~,
+    'alertmod'     => q~Varoita moderaattoria!~,
+    'guestpm'      => q~Yksityisviesti vieraalta~,
+    'guestpmreply' => q~Vastaa vieraalta saatuun yksityisviestiin~,
+    'imopen'       => q~PM opened~,
 );
 
 %tabmenu_txt_m = (
-'edittab' => 'Muokkaa välilehteä',
-'tabdel' => 'Poista tämä välilehti',
-'savetab' => 'Tallenna teksti',
-'newtab' => 'Lisää välilehti',
+    'edittab' => q~Muokkaa välilehteä~,
+    'tabdel'  => q~Poista tämä välilehti~,
+    'savetab' => q~Tallenna teksti~,
+    'newtab'  => q~Lisää välilehti~,
 );
 
-%maintxt_m = (
-'900pd' => 'Salasanasuojattu alue',
-);
+%maintxt_m = ( '900pd' => q~Salasanasuojattu alue~, );
 
 %var_cal_m = (
-'calbirthday' => 'Syntymäpäivä',
-'calprivate' => 'Yksityinen',
-'caldel' => 'Poista',
-'caledit' => 'Muokkaa tapahtumaa',
-'calsave' => 'Tallenna tapahtuma',
-'getaddevent' => 'Lisää uusi tapahtuma',
-'eventinfo' => 'Tapahtuma',
-'eventannounce' => 'Ilmoitus',
-'eventholiday' => 'Juhlapäivä',
-'eventnote' => 'Huomautus',
-'eventparty' => 'Juhla',
-'eventcelebration' => 'Juhlinta',
-'eventsport' => 'Urheilu',
-'eventmedia' => 'Media (TV)',
-'eventmeeting' => 'Tapaaminen',
+    'calbirthday'      => q~Syntymäpäivä~,
+    'calprivate'       => q~Yksityinen~,
+    'caldel'           => q~Poista~,
+    'caledit'          => q~Muokkaa tapahtumaa~,
+    'calsave'          => q~Tallenna tapahtuma~,
+    'getaddevent'      => q~Lisää uusi tapahtuma~,
+    'eventinfo'        => q~Tapahtuma~,
+    'eventannounce'    => q~Ilmoitus~,
+    'eventholiday'     => q~Juhlapäivä~,
+    'eventnote'        => q~Huomautus~,
+    'eventparty'       => q~Juhla~,
+    'eventcelebration' => q~Juhlinta~,
+    'eventsport'       => q~Urheilu~,
+    'eventmedia'       => q~Media (TV)~,
+    'eventmeeting'     => q~Tapaaminen~,
 );
 
 %mess_icon_txt = (
-'281' => 'Standardi',
-'282' => 'Peukalo ylös',
-'283' => 'Peukalo alas',
-'284' => 'Huutomerkki',
-'285' => 'Kysymysmerkki',
-'286' => 'Lamppu',
-'287' => 'Hymiö',
-'288' => 'Vihainen',
-'289' => 'Kliseinen',
-'290' => 'Naurava',
-'291' => 'Surullinen',
-'292' => 'Silmänisku',
-'293' => 'Virnistys',
-'294' => 'Järkyttynyt',
-'295' => 'Mahtava',
-'296' => 'Täh',
+    '281' => q~Standardi~,
+    '282' => q~Peukalo ylös~,
+    '283' => q~Peukalo alas~,
+    '284' => q~Huutomerkki~,
+    '285' => q~Kysymysmerkki~,
+    '286' => q~Lamppu~,
+    '287' => q~Hymiö~,
+    '288' => q~Vihainen~,
+    '289' => q~Kliseinen~,
+    '290' => q~Naurava~,
+    '291' => q~Surullinen~,
+    '292' => q~Silmänisku~,
+    '293' => q~Virnistys~,
+    '294' => q~Järkyttynyt~,
+    '295' => q~Mahtava~,
+    '296' => q~Täh~,
 );
 
 1;

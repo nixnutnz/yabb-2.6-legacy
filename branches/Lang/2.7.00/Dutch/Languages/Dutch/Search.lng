@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # Search.lng (Search text definitions)                                        #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchsearchlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchsearchlngver  = 'YaBB 2.7.00 $Revision: 1848 $';
 @dutchsearchlngmods = ();
 if (@dutchsearchlngmods) {
     $dutchsearchlngmods = 1;
@@ -23,74 +25,77 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %search_txt = (
-'1' => 'Deze post werd gemaakt in de laatste...',
-'2' => 'week',
-'3' => 'maand',
-'4' => 'drie maanden',
-'5' => 'jaar',
-'6' => '(alle posts)',
-'30' => 'aan',
-'70' => 'Onderwerp',
-'72' => 'Boodschap',
-'73' => 'IP Adres',
-'105' => 'Post',
-'107' => 'bij',
-'109' => 'Gestart door',
-'166' => 'Zoek Resultaten',
-'167' => 'Einde van resultaten',
-'170' => 'Sorry, er werden geen resultaten gevonden',
-'171' => 'Ga terug naar zoekmasker.',
-'182' => 'Zoek',
-'183' => 'Zoekparameters vastleggen',
-'186' => 'Zoek topics gestart door iemand',
-'187' => 'Zoek topics gepost door iemand',
-'189' => 'Kies de borden om in te zoeken',
-'190' => 'Druk op de Ctrl toets en houd deze ingedrukt of de <br /> Apple toets om meer dan een te selecteren.',
-'191' => 'Weergeven hoeveel resultaten?',
-'191a' => 'Geef slechts één resultaat per draadje weer?',
-'191b' => "Maximum toegestaan: {yabb maxsearchdisplay}",
-'191x' => "Het is u toegestaan max. {yabb maxsearchdisplay} resultaten in te stellen voor weergave. Wijzig alstublieft uw waarde.",
-'236' => 'Terug',
-'237' => 'naar de forum index.',
-'343' => 'Vergelijk alle woorden',
-'344' => 'Vergelijk enige woorden',
-'345' => 'Vergelijk als zin',
-'345a' => 'Vergelijk bepaalde woorden',
-'346' => 'Zoek -Allen- Alleen leden',
-'525' => 'door',
-'572' => 'Zoek -Allen- alleen gasten',
-'573' => 'Velden om te zoeken',
-'574' => 'Leeftijd sinds laatste post',
-'575' => 'Min',
-'576' => 'Max',
-'577' => 'Elke poster',
-'578' => 'uren',
-'579' => 'dagen',
-'582' => 'Zoek voor',
-'583' => 'Op lid naam',
-'737' => 'Check allen',
-'pmfrom' => 'Van', ## new
-'pmto' => 'Naar',
-'pmcc' => 'CC',
-'pmbcc' => 'BCC',
-'pmgroup' => 'Groep',
-'searchme' => 'zoek eigen posts',
-'casesensitiv' => 'Hoofdletter gevoelig',
-'searchyabbtags' => 'Zoek ook binnen YaBBCode-tags <span class="small">(haken als dit [...]. Kost veel meer tijd.)</span>',
+    '1'   => q~Deze post werd gemaakt in de laatste...~,
+    '2'   => q~week~,
+    '3'   => q~maand~,
+    '4'   => q~drie maanden~,
+    '5'   => q~jaar~,
+    '6'   => q~(alle posts)~,
+    '30'  => q~aan~,
+    '70'  => q~Onderwerp~,
+    '72'  => q~Boodschap~,
+    '73'  => q~IP Adres~,
+    '105' => q~Post~,
+    '107' => q~bij~,
+    '109' => q~Gestart door~,
+    '166' => q~Zoek Resultaten~,
+    '167' => q~Einde van resultaten~,
+    '170' => q~Sorry, er werden geen resultaten gevonden~,
+    '171' => q~Ga terug naar zoekmasker.~,
+    '182' => q~Zoek~,
+    '183' => q~Zoekparameters vastleggen~,
+    '186' => q~Zoek topics gestart door iemand~,
+    '187' => q~Zoek topics gepost door iemand~,
+    '189' => q~Kies de borden om in te zoeken~,
+    '190' =>
+q~Druk op de Ctrl toets en houd deze ingedrukt of de <br /> Apple toets om meer dan een te selecteren.~,
+    '191'  => q~Weergeven hoeveel resultaten?~,
+    '191a' => q~Geef slechts één resultaat per draadje weer?~,
+    '191b' => q~Maximum toegestaan: {yabb maxsearchdisplay}~,
+    '191x' =>
+q~Het is u toegestaan max. {yabb maxsearchdisplay} resultaten in te stellen voor weergave. Wijzig alstublieft uw waarde.~,
+    '236'          => q~Terug~,
+    '237'          => q~naar de forum index.~,
+    '343'          => q~Vergelijk alle woorden~,
+    '344'          => q~Vergelijk enige woorden~,
+    '345'          => q~Vergelijk als zin~,
+    '345a'         => q~Vergelijk bepaalde woorden~,
+    '346'          => q~Zoek -Allen- Alleen leden~,
+    '525'          => q~door~,
+    '572'          => q~Zoek -Allen- alleen gasten~,
+    '573'          => q~Velden om te zoeken~,
+    '574'          => q~Leeftijd sinds laatste post~,
+    '575'          => q~Min~,
+    '576'          => q~Max~,
+    '577'          => q~Elke poster~,
+    '578'          => q~uren~,
+    '579'          => q~dagen~,
+    '582'          => q~Zoek voor~,
+    '583'          => q~Op lid naam~,
+    '737'          => q~Check allen~,
+    'pmfrom'       => q~Van~,                           ## new
+    'pmto'         => q~Naar~,
+    'pmcc'         => q~CC~,
+    'pmbcc'        => q~BCC~,
+    'pmgroup'      => q~Groep~,
+    'searchme'     => q~zoek eigen posts~,
+    'casesensitiv' => q~Hoofdletter gevoelig~,
+    'searchyabbtags' =>
+q~Zoek ook binnen YaBBCode-tags <span class="small">(haken als dit [...]. Kost veel meer tijd.)</span>~,
 );
 
 %pmboxes_txt = (
-'in' => 'In',
-'inbox' => 'Inbox',
-'out' => 'Uit',
-'outbox' => 'Verzonden berichten',
-'store' => 'Opslaan in map',
+    'in'     => q~In~,
+    'inbox'  => q~Inbox~,
+    'out'    => q~Uit~,
+    'outbox' => q~Verzonden berichten~,
+    'store'  => q~Opslaan in map~,
 );
 
 %searchselector_txt = (
-'select' => 'Selecteren',
-'remove' => 'Verwijder',
-'removeconfirm' => 'Bent u zeker dat u lid naam wilt verwijderen?',
+    'select'        => q~Selecteren~,
+    'remove'        => q~Verwijder~,
+    'removeconfirm' => q~Bent u zeker dat u lid naam wilt verwijderen?~,
 );
 
 1;

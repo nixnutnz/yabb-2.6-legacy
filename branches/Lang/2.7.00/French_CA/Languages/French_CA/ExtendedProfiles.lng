@@ -1,0 +1,177 @@
+###############################################################################
+# ExtendedProfiles.lng  (Définition des textes extension du profile)          #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_caextendedprofileslngver  = 'YaBB 2.7.00 $Revision$';
+@french_caextendedprofileslngmods = ();
+if (@french_caextendedprofileslngmods) {
+    $french_caextendedprofileslngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%lang_ext = (
+    'true'                  => q~Oui~,
+    'false'                 => q~Non~,
+    'max_chars1'            => q~Max.~,
+    'max_chars2'            => q~, caractères restant:~,
+    'field_not_existing1'   => q~Champ~,
+    'field_not_existing2'   => q~ n'existe pas~,
+    'not_allowed_to_modify' => q~Vous n'êtes pas autorisé à modifier ce champ~,
+    'invalid_char'          => q~Caractère invalide utilisé~,
+    'too_long'              => q~La valeur est trop longue~,
+    'not_numeric'           => q~La valeur n'est pas numérique~,
+    'too_small'             => q~La valeur est trop petite~,
+    'too_big'               => q~La valeur est trop grande~,
+    'option_does_not_exist' => q~L'option n'existe pas~,
+    'invalid_year'      => q~Format d'année incorrect Veuillez utiliser AAAA~,
+    'required'          => q~Ce champ est obligatoire.~,
+    'cannot_write_file' => q~Impossible d'écrire le fichier~,
+    'Profiles_Controls' => q~Profils étendus~,
+    'edit_title'        => q~Modifier les champs de profil existants~,
+    'edit_existing_fields' => q~modifier les champs existants~,
+    'reorder fields'       => q~réorganiser les champs~,
+    'reorder_title'        => q~Réorganiser les champs du profil~,
+    'create_new_title'     => q~Créer un nouveau champ du profil~,
+    'admin_description' =>
+q~Bienvenue dans les contrôles d'administration des profils étendus. Vous pouvez ici ajouter, modifier, supprimer et réorganiser des champs de profil supplémentaires pour vos membres. Mais avant de commencer, vous devriez savoir quelques choses:<br /><br />Avant de commencer à ajouter des champs de manière extravagante, assurez-vous de penser aux champs que vous voulez vraiment avoir. Essayez d'éviter les changements tardifs et importants, car vos membres devront peut-être modifier leurs profils en fonction de ces changements à chaque fois qu'ils sont faits. Notez également que plus vous ajoutez de champs, plus vos profils seront gros.<br /><br />Enfin, assurez-vous que votre forum est en mode <strong>maintenance</strong> avant d'ajouter ou de supprimer des champs pour éviter que les utilisateurs changent leur profil pendant que les changements sont faits.~,
+    'create_new_description' =>
+q~Ici vous pouvez créer de nouveaux champs de profil. Avant de créer un champ, assurez-vous du type que vous voulez. Bien qu'il soit possible de changer le type par la suite, ce n'est pas recommandé. Après avoir créé un nouveau champ, assurez-vous de passer à l'écran des options pour des paramètres plus avancés. Le nom du champ peut être choisi librement, il n'y a pas de limitations. Vous pouvez même utiliser html.<br /><br />L'utilisation du bouton 'Créer un profil' peut prendre du temps car il doit parcourir tous les fichiers de profil.~,
+    'edit_description' =>
+q~Appliquez des modifications aux champs de profil existants ici. Vous pouvez changer l'état actif et le nom sans trop vous inquiéter. Mais <strong>avant de modifier le type de champ</strong>, vous devriez savoir ce qui suit:<br /><br />Changer le type de champ des radiobuttons aux listes déroulantes et inversement n'est pas un problème. Toutefois, si vous par exemple transformez un champ de bouton radio en zone de texte, vous devez considérer que cette modification n'affecte pas les données que les utilisateurs ont peut-être déjà entrées dans leurs profils. Donc, si un utilisateur a choisi la première option et que vous la convertissez en zone de texte, il aura un 0 dans ce champ jusqu'à ce qu'il change son profil.<br />Pour effacer tout ce que l'utilisateur avait dans ce champ, vous devriez plutôt supprimer le champ entier et que d'ajouter un nouveau. C'est la seule façon d'effacer le contenu d'un champ spécifique.<br />Assurez-vous également de changer les options de ce champ puisque différents types peuvent avoir différentes options disponibles.<br /><br />L'utilisation du bouton 'Supprimer' peut prendre un certain temps car il doit passer par tous les fichiers de profil.~,
+    'no_additional_fields_set' => q~pas de champs supplémentaires définis~,
+    'active'                   => q~Actif~,
+    'field_name'               => q~Nom du champ~,
+    'field_type'               => q~Type de champ~,
+    'actions'                  => q~Actions~,
+    'text'                     => q~Textbox (une seule ligne)~,
+    'text_multi'               => q~Textarea (plusieurs lignes)~,
+    'select'                   => q~Liste déroulante (sélection unique)~,
+    'radiobuttons'             => q~Bouton radio~,
+    'checkbox'                 => q~Case à cocher~,
+    'date'                     => q~Date~,
+    'email'                    => q~Courriel~,
+    'url'                      => q~Url~,
+    'spacer'                   => q~Espaceur~,
+    'apply'                    => q~Appliquer~,
+    'options'                  => q~Options~,
+    'delete'                   => q~Supprimer~,
+    'create_field'             => q~Créer le champ~,
+    'reorder_description' =>
+q~Réorganiser les champs par copier-coller les noms de champs dans la case à gauche. Lorsque vous avez terminé, cliquez sur le bouton "Réorganiser" ci-dessous.~,
+    'reorder'          => q~Réorganiser~,
+    'fields_reordered' => q~Les champs de profil ont été réorganisés.~,
+    'go_back'          => q~Retour~,
+    'to'               => q~à~,
+    'field_created'    => q~Le champ Profil a été créé.~,
+    'field_changed'    => q~Le champ de profil a été changé.~,
+    'options_title'    => q~Options du champ~,
+    'options_description' =>
+q~Changez les paramètres du champ ici. Notez que certains paramètres peuvent être dépendants du type et uniquement disponibles pour certains champs.~,
+    'change_these_settings' => q~changer ces paramètres~,
+    'comment'               => q~Commentaire~,
+    'comment_description' =>
+q~Cela sera affiché sur la page de modification du profil sous le nom du champ. Vous pouvez utiliser du html ici.~,
+    'Save'            => q~Sauvegarder~,
+    'required_on_reg' => q~Requis lors de l'inscription~,
+    'required_on_reg_description' =>
+q~Si vous rendez ce champ requis, il sera affiché sur la page d'inscription. S'il est réglé sur 'optionnel', il ne sera affiché que sur la page de profil d'édition.~,
+    'req0' => q~optionnel~,
+    'req1' => q~requis~,
+    'req2' => q~pas obligatoire mais affiché sur l'enregistrement quand même~,
+    'visible_in_viewprofile' => q~Visible dans Voir profil~,
+    'visible_in_viewprofile_description' =>
+q~Vérifiez si vous voulez que ce champ soit affiché sur la page de visionnement de profil. Vous pouvez le limiter à certains utilisateurs et / ou groupes en entrant des noms dans les champs sur la droite. Séparer par une virgule si vous en avez plusieurs. Exemple: nom d'utilisateur1, nom d'utilisateur2. Laissez les champs vides si vous voulez que l'information soit visible pour tous.~,
+    'v_users'          => q~limiter aux utilisateurs~,
+    'v_groups'         => q~limiter aux groupes~,
+    'visible_in_posts' => q~Visible dans les messages~,
+    'visible_in_posts_description' =>
+q~Cochez si vous voulez que ce champ soit affiché dans les publication, juste sous les informations de l'auteur. Vous pouvez le limiter à certains utilisateurs et/ou groupes en entrant des noms dans les champs sur la droite. Séparer par une virgule si vous en avez plusieurs. Exemple: nom d'utilisateur1, nom d'utilisateur2. Laissez les champs vides si vous voulez que l'information soit visible pour tous.~,
+    'visible_in_posts_popup' => q~Visible dans les messages (comme pop-up)~,
+    'visible_in_posts_popup_description' =>
+q~Cochez si vous voulez que ce champ soit affiché dans la fenêtre de publication sous forme de fenêtre pop-up, juste sous le nom de l'auteur. Vous pouvez le limiter à certains utilisateurs et / ou groupes en entrant des noms dans les champs sur la droite. Séparer par une virgule si vous en avez plusieurs. Exemple: nom d'utilisateur1, nom d'utilisateur2. Laissez les champs vides si vous voulez que l'information soit visible pour tous.~,
+    'p_users'               => q~limité aux utilisateurs~,
+    'p_groups'              => q~limité aux groupes~,
+    'display_fieldname'     => q~afficher le nom du champ~,
+    'visible_in_memberlist' => q~Visible dans la liste des membres~,
+    'visible_in_memberlist_description' =>
+q~Vérifiez si vous voulez que ce champ soit affiché dans la liste des membres. Vous pouvez le limiter à certains utilisateurs et/ou groupes en entrant des noms dans les champs sur la droite. Séparer par une virgule si vous en avez plusieurs. Exemple: nom d'utilisateur1, nom d'utilisateur2. Laissez les champs vides si vous voulez que l'information soit visible pour tous.~,
+    'm_users'          => q~limité aux utilisateurs~,
+    'm_groups'         => q~limité aux groupes~,
+    'editable_by_user' => q~Modifiable par l'utilisateur~,
+    'editable_by_user_description' =>
+q~Ici vous pouvez choisir si seul l'administrateur devrait être capable de changer ce paramètre. Dans ce cas, il deviendra invisible pour l'utilisateur dans l'édition du profile. Vous pouvez également choisir sur quelle page de profil afficher ce paramètre.~,
+    'limit_len' => q~Longueur limite~,
+    'limit_len_description' =>
+q~Limite le nombre maximal de caractères. Réglez sur 0 ou laissez vide pour désactiver la limite. <strong>Avertissement</strong>: il est recommandé de définir une limite. Sinon vous risquer d'avoir des fichiers de profil TRES gros.~,
+    'width' => q~Largeur d'affichage~,
+    'width_description' =>
+q~Ceci contrôle le paramètre "largeur" de la boîte de saisie. Laissez vide pour utiliser la valeur par défaut du navigateur.~,
+    'is_numeric' => q~La valeur doit être numérique~,
+    'is_numeric_description' =>
+      q~Utilisez ceci pour forcer les gens à entrer une valeur numérique~,
+    'default' => q~Valeur par défaut~,
+    'default_description' =>
+q~Cette valeur sera définie si l'utilisateur n'a pas rempli ce champ. Laissez vide pour désactiver les valeurs par défaut pour ce champ.~,
+    'ubbc' => q~Autoriser UBBC~,
+    'ubbc_description' =>
+q~Active le code UBBC pour ce champ. <strong>Avertissement:</ strong> cela signifie un accès complet à toutes les balises.~,
+    'rows' => q~Rows~,
+    'rows_description' =>
+q~Ceci contrôle le paramètre "rows" du champ de type "textarea". Laissez vide pour utiliser la valeur par défaut du navigateur.~,
+    'cols' => q~Cols~,
+    'cols_description' =>
+q~Ceci contrôle le réglage "cols" du champ de type "textarea". Laissez vide pour utiliser la valeur par défaut du navigateur.~,
+    's_options' => q~Options~,
+    's_options_description' =>
+q~Ce seront les options sélectionnables. Écrire une option par ligne. Les premières options seront par défaut. Vous pouvez utiliser du html ici.~,
+    'visible_in_editprofile' => q~Visible dans l'édition du profile~,
+    'visible_in_editprofile_description' =>
+q~Le séparateur de mots devrait-il être visible dans l'édition du profile?~,
+    'hr_or_br' => q~Type de séparateur de mots~,
+    'hr_or_br_description' =>
+q~Sélectionnez si ;e séparateur de mots doit être affiché comme &lt;hr&gt; ou &lt;br&gt;~,
+    'hr'                    => q~&lt;hr&gt;~,
+    'br'                    => q~&lt;br&gt;~,
+    'change_these_settings' => q~changer ces paramètres~,
+    'page_admin' =>
+q~Seul l'administrateur peut modifier, afficher sur la page 'Éditer Admin'~,
+    'page_edit' =>
+q~L'utilisateur peut le modifier, afficher sur la page 'Modifier le profil'~,
+    'page_contact' =>
+q~L'utilisateur peut le modifier, afficher sur la page "Informations de contact"~,
+    'page_options' =>
+      q~L'utilisateur peut le modifier, afficher sur la page 'Options'~,
+    'page_im' =>
+      q~L'utilisateur peut le modifier, afficher sur la page 'Préférences IM'~,
+    'cannot_open_file'  => q~Impossible d'ouvrir le fichier~,
+    'invalid_extension' => q~Votre image a une extension interdite.~,
+    'image'             => q~Image~,
+    'image_width'       => q~Hauteur et Largeur~,
+    'image_width_description' =>
+q~Définir la largeur de l'image de profil étendue dans <a href="{yabb adminurl}?action=newsettings;page=advanced" />Paramètres avancés</a> -> Images.~,
+    'allowed_extensions' => q~Extensions permises~,
+    'allowed_extensions_description' =>
+q~Limitez ce champ à des extensions de fichiers spécifiques en entrant une liste d'extensions séparées par des espaces. Par exemple. 'jpg jpeg gif png bmp'. Laissez vide pour désactiver la limite.~,
+    'radiounselect' => q~Aucun sélectionné~,
+    'radiounselect_description' =>
+q~Cochez cette case si vous ne voulez pas que le premier bouton radio soit sélectionné par défaut.~,
+);
+
+1;

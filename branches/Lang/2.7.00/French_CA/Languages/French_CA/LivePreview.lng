@@ -1,0 +1,51 @@
+###############################################################################
+# LivePreview.lng (Définition des textes prévisionnement)                     #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# Mod créés par Carsten Dalgaard                                              #
+#               et ajouté au coeur YaBB dans la Version 2.5.4                 #
+# Publié        : 11 Mai 2013, Copyright 2013 Carsten Dalgaard                #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_calivepreviewlngver  = 'YaBB 2.7.00 $Revision$';
+@french_calivepreviewlngmods = ();
+if (@french_calivepreviewlngmods) {
+    $french_calivepreviewlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%livepreview_txt = (
+    'info_missing' => q~Informations manquantes ou incorrectes:~,
+    'name_empty'   => q~Le champ "Nom" est vide.~,
+    'long_name'    => q~S'il vous plaît raccourcir votre nom. il est trop long~,
+    'mail_empty'   => q~Le champ "Courriel" est vide~,
+    'valid_mail'   => q~S'il vous plaît, entrez une adresse courriel valide.~,
+    'veri_code'    => q~Le champ "Vérification" est vide~,
+    'veri_quest'   => q~Le champ "Vérification" est vide~,
+    'subj_empty'   => q~Le champ "Sujet" est vide~,
+    'mess_empty'   => q~Le champ "Message" est vide~,
+    'subj_allcaps' =>
+q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Sujet". C'est contre les règles du forum.~,
+    'mess_allcaps' =>
+q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Message". C'est contre les règles du forum.~,
+    'pm_recipient' => q~Vous devez remplir le champ "Destinataire".~,
+    'no_links' =>
+q~Les invités ne sont pas autorisés à inclure des liens tant qu’ils n’ont pas ajouté {yabb minlinkpost} publications.~,
+);
+
+1;

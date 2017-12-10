@@ -1,0 +1,111 @@
+###############################################################################
+# Display.lng (Définition des textes dáffichage)                              #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_cadisplaylngver  = 'YaBB 2.7.00 $Revision$';
+@french_cadisplaylngmods = ();
+if (@french_cadisplaylngmods) {
+    $french_cadisplaylngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%display_txt = (
+    '10'      => q~Permalien pour cet article~,
+    '19'      => q~Index de page~,
+    '21'      => q~Publications~,
+    '24'      => q~(Pas de sujet)~,
+    '28'      => q~Client~,
+    '29'      => q~Auteur~,
+    '30'      => q~sur~,
+    '63'      => q~Modérateurs~,
+    '63a'     => q~Groupes de modérateurs~,
+    '116'     => q~Publier une réponse~,
+    '118'     => q~Sujet~,
+    '139'     => q~Pages~,
+    '146'     => q~Répondre~,
+    '146n'    => q~Coller le nom du membre dans la boîte de réponse rapide~,
+    '162'     => q~Êtes-vous sûr de vouloir supprimer ce sujet?~,
+    'rempost' => q~Êtes-vous sûr de vouloir supprimer cette publication?~,
+    '211'     => q~Dernière édition~,
+    '211a'    => q~Raison~,
+    '298'     => q~Modérateur~,
+    '298a'    => q~Groupe modérateur~,
+    '470'     => q~N/A~,
+    '470a'    => q~<em>Ancien membre</em>~,
+    '511'     => q~IP connecté~,
+    '525'     => q~par~,
+    '526'     => q~Ajouter un favori~,
+    '527'     => q~Supprimer un favori~,
+    '528'     => q~Achevée~,
+    '529'     => q~Ajouter une notification~,
+    '530'     => q~Supprimer une notification~,
+    '641'     => q~Lire~,
+    '642'     => q~fois~,
+    '643'     => q~Retour en haut~,
+    '644'     => q~Membres qui regardent ce sujet~,
+    '645'     => q~Répondre~,
+    '646'     => q~Membres répondant à ce sujet~,
+    '739'     => q~Êtes-vous sur de vouloir supprimer cette annonce?~,
+    '739a'    => q~Supprimer cette publication~,
+    '766'     => q~Pas de sujet~,
+    '767'     => q~Sujet suivant~,
+    '768'     => q~Sujet précédent~,
+    '769'     => q~Emplacement Flash~,
+    '888'     => q~Sujet de navigation~,
+    '999'     => q~Annonce du forum~,
+    'posttolocked' =>
+q~Avertissement: Vous êtes sur le point de publier sur un message verrouillé. Cliquez sur [OK] pour confirmer ou sur [Annuler] pour revenir au message.~,
+    'modifyinlocked' =>
+q~Avertissement: Vous êtes sur le point de modifier un message verrouillé. Cliquez sur [OK] pour confirmer ou sur [Annuler] pour revenir au message.~,
+    'isbuddy'       => q~Dans ma liste d'amis.~,
+    'split_confirm' => q~Êtes-vous sûr de vouloir partager ce sujet?~,
+    'alertmod_confirm' =>
+q~Êtes-vous sûr de vouloir alerter le modérateur à propos de cet article?~,
+    'reverse' => q~Cliquez ici si vous voulez changer l'ordre des sujets.~,
+    'sendtopicemail' =>
+q~Cliquez sur [OK] si vous souhaitez envoyer le courriel via votre programme de messagerie, sinon le programme de messagerie du forum sera utilisé.~
+    ,    #Dans les JavaScript!
+    'location'      => q~Emplacement~,
+    'age'           => q~Âge~,
+    'regdate'       => q~Rejoint:~,
+    'mylastposts'   => q~Voir mes 5 derniers messages~,
+    'lastposts'     => q~Voir les 5 derniers messages de~,
+    'lft'           => q~&lsaquo;~,
+    'rgt'           => q~&rsaquo;~,
+    'upt'           => q~&#710;~,
+    'guest_message' => q~Message d'invité~,
+    'guest_message_block' =>
+q~Bonjour invité,<br /><br />Désolé, mais vous avez dépassé le nombre de sujets que vous êtes autorisé à voir en tant qu'invité. Pour afficher autant de sujets que vous le souhaitez et pour bénéficier de nombreuses autres fonctionnalités, pourquoi ne pas <a href="{yabb scripturl}?action=register" style="font-weight:bold;">créer un compte chez nous</a>.L'inscription est facile et ne vous prendra que quelques minutes.<br /><br />Si vous avez déjà un compte chez nous, alors vous pouvez <a href="{yabb scripturl}?action=login" style="font-weight:bold;">connectez-vous ici</a> pour ne plus voir ce message.<br /><br />Merci,<br /><br />L'équipe {yabb mbname}~,
+    'guest_message_warn' =>
+q~Bonjour, Invité,<br /><br />Il semble que vous aimiez lire notre forum, alors pourquoi ne pas <a href="{yabb scripturl}?action=register" style="font-weight:bold;">vous inscrire avec nous</a> afin de ne plus voir ce message et bénéficier de nombreuses autres fonctionnalités. L'inscription est facile et ne vous prendra que quelques minutes.<br /><br />Si vous avez déjà un compte chez nous, alors <a href="{yabb scripturl}?action=login" style="font-weight:bold;">cliquez ici pour vous identifier.</a><br /><br />Merci,<br /><br />L'équipe {yabb mbname}~,
+    'bookmarks' => q~Signets~,                     # Social Bookmarks
+    'google'    => q~Google Hangout~,
+    'ipblock'   => q~Bloquer IP dans Guardian~,
+    'ipblock2'  => q~Bloquer IP dans .htaccess~,
+    'ipblock_confirm' => q~Êtes-vous sûr de vouloir bloquer cet IP?\n\n~,
+    'ipban_confirm'   => q~Êtes-vous sûr de vouloir banir cet IP?\n\n~,
+    '725f'            => q~Banir IP~,
+);
+
+%zodiac_txt = (                                    #YaBB Zodiac
+    'sign' => q~Signe Zodiaque~,
+);
+
+1;

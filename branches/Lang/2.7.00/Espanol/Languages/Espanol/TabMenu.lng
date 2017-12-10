@@ -10,8 +10,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanoltabmenulngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanoltabmenulngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanoltabmenulngmods = ();
 if (@espanoltabmenulngmods) {
     $espanoltabmenulngmods = 1;
@@ -19,33 +21,37 @@ if (@espanoltabmenulngmods) {
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-%tabmenu_txt=(
-'texterr' => '¡¡El campo de Texto está vacío!!',
-'tabext' => '¡¡Ya existe una etiqueta para la misma acción o con el mismo nombre!!',
-'tabfront' => 'Frente',
-'taburl' => 'URL',
-'tabwin' => 'Nueva ventana',
-'edittab' => 'Editar etiquetas',
-'tabdel' => 'Borrar esta etiqueta',
-'viewgm' => 'Mod.Global +',
-'viewadm' => 'Admin',
-'tabtext' => 'Texto',
-'taberr' => 'Información requerida perdida:',
-'addtab' => 'Añadir',
-'savetab' => 'Grabar Texto',
-'reordertab' => 'Reordenar etiquetas:',
-'tableft' => '&lt;',
-'tabright' => '&gt;',
-'edittext1' => 'Encima puedes ver las etiquetas y la manera en la que aparecerán si todas fueran visibles a la vez. Si has añadido una o más etiquetas ahora tienes la opción de editar el texto directamente dentro de la etiqueta y después pulsar el',
-'edittext2' => 'icono para grabar el nuevo texto o puedes borrar la etiqueta pulsando en el',
-'edittext3' => 'icono.',
-'reordertext' => 'En la parte derecha tienes una lista de todas tus etiquetas permitiéndote cambiar el orden de aparición en el menú de etiquetas. Selecciona la etiqueta que quieres mover y pulsa en el botón "&lt;" o "&gt;" para mover la etiqueta en la dirección deseada.',
-'urlerr' => '¡¡El campo de URL está vacío!!',
-'viewmem' => 'Miembros +',
-'viewall' => 'Invitados +',
-'newtab' => 'Añadir etiqueta',
-'tabinsert' => 'Añadir después',
-'tabview' => 'Visible para',
+%tabmenu_txt = (
+    'texterr' => q~¡¡El campo de Texto está vacío!!~,
+    'tabext' =>
+      q~¡¡Ya existe una etiqueta para la misma acción o con el mismo nombre!!~,
+    'tabfront'   => q~Frente~,
+    'taburl'     => q~URL~,
+    'tabwin'     => q~Nueva ventana~,
+    'edittab'    => q~Editar etiquetas~,
+    'tabdel'     => q~Borrar esta etiqueta~,
+    'viewgm'     => q~Mod.Global +~,
+    'viewadm'    => q~Admin~,
+    'tabtext'    => q~Texto~,
+    'taberr'     => q~Información requerida perdida:~,
+    'addtab'     => q~Añadir~,
+    'savetab'    => q~Grabar Texto~,
+    'reordertab' => q~Reordenar etiquetas:~,
+    'tableft'    => q~&lt;~,
+    'tabright'   => q~&gt;~,
+    'edittext1' =>
+q~Encima puedes ver las etiquetas y la manera en la que aparecerán si todas fueran visibles a la vez. Si has añadido una o más etiquetas ahora tienes la opción de editar el texto directamente dentro de la etiqueta y después pulsar el~,
+    'edittext2' =>
+q~icono para grabar el nuevo texto o puedes borrar la etiqueta pulsando en el~,
+    'edittext3' => q~icono.~,
+    'reordertext' =>
+q~En la parte derecha tienes una lista de todas tus etiquetas permitiéndote cambiar el orden de aparición en el menú de etiquetas. Selecciona la etiqueta que quieres mover y pulsa en el botón "&lt;" o "&gt;" para mover la etiqueta en la dirección deseada.~,
+    'urlerr'    => q~¡¡El campo de URL está vacío!!~,
+    'viewmem'   => q~Miembros +~,
+    'viewall'   => q~Invitados +~,
+    'newtab'    => q~Añadir etiqueta~,
+    'tabinsert' => q~Añadir después~,
+    'tabview'   => q~Visible para~,
 );
 
 1;

@@ -1,0 +1,41 @@
+###############################################################################
+# Credits.lng (Crédit généraux YaBB)                                          #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_cacreditslngver = 'YaBB 2.7.00 $Revision$';
+@french_cacreditslngmods = ();
+if (@french_cacreditslngmods) {
+    $french_cacreditslngmods = 1;
+}
+$action ||= q{};
+if ($action eq 'detailedversion') { return 1; }
+
+%credits_txt = (
+'yabb2' => q~Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman~,
+'yabb252' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Mods inclus dans  YaBB 2.5.2 &Eacute;cris par Derek Barnstorm, Carsten Dalgaard, et D.A. Rorabaugh.<br /><br />D&eacute;di&eacute; &agrave; la m&eacute;moire de Ron Hartendorp, AKA Spikecity. Il nous a quitt&eacute; trop tôt.~,
+'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Mods inclus dans YaBB 2.6 &Eacute;cris par AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh avec du code suppl&eacute;mentaire et Mods de la YaBB 3.0 &Eacute;quipe de d&eacute;veloppement. Nous serions nulle part sans les contributions de ceux qui &eacute;crivent les mod <br/>Et n&#39;oublions pas les chasseurs de Bug et d&#39;erreurs pour montrer o&ugrave; les choses ne fonctionnent pas bien. Merci Monni et Pyragony et tous les autres chasseurs de Bug qui ont rapport&eacute; leurs d&eacute;couvertes.<br/>Un merci sp&eacute;cial &agrave; Alain Beaudoin pour la traduction en Fran&ccedil;ais de la version 2.6.11<br/>Pour des erreurs et des am&eacute;liorations aux traductions fran&ccedil;aise s&#39;il vous plaît contacter "info@alainbeaudoin.com"~,
+'yabb270' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Mods inclus dans YaBB 2.7 &Eacute;cris par AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh.<br />Et merci &agrave; nos vigilants toujours vigilants les chasseurs de Bug et les chercheurs d&#39;erreurs, en particulier Monni et Pyragony et tous les autres chasseurs de Bug qui ont rapport&eacute; leurs conclusions. Merci &eacute;galement &agrave; Pyragony pour les traductions allemandes. Pour des erreurs et des am&eacute;liorations aux traductions allemandes s&#39;il vous plaît contacter "info@anti-scam.de"<br/>Un merci sp&eacute;cial &agrave; Alain Beaudoin pour la traduction en Fran&ccedil;ais de la version 2.7.00<br/>Pour des erreurs et des am&eacute;liorations aux traductions fran&ccedil;aise s&#39;il vous plaît contacter "info@alainbeaudoin.com"~,
+'yabb' => q~Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko~,
+'Thanks' => q~Un merci sp&eacute;cial &agrave;~,
+'yabbBeta' => q~et tous nos bêta-testeurs.~,
+'yabb2Credits' => q~L&#39;&eacute;quipe de soutien, notre fondateur intr&eacute;pide: Zef Hemel et tous ceux qui ont contribu&eacute; &agrave; YaBB au cours de ces 12 derni&egrave;res ann&eacute;es!~,
+'noBytesHarmed' => q~Aucun bit ou octet n&#39;a &eacute;t&eacute; bless&eacute; lors de la cr&eacute;ation de YaBB~,
+);
+
+1;

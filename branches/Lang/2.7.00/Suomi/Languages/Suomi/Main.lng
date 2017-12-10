@@ -10,10 +10,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1928 ##
+our $VERSION = '2.7.00';
 
-$suomimainlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomimainlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomimainlngmods = ();
-if(@suomimainlngmods){
+if (@suomimainlngmods) {
     $suomimainlngmods = 1;
 }
 $action ||= q{};
@@ -21,303 +23,325 @@ if ( $action eq 'detailedversion' && $language ne 'Suomi' ) { return 1; }
 
 $abbr_lang = 'fi-fi';
 
-@days = ('Sunnuntai','Maanantai','Tiistai','Keskiviikko','Torstai','Perjantai','Lauantai');
-@months = ('Tammikuu','Helmikuu','Maaliskuu','Huhtikuu','Toukokuu','Kesäkuu','Heinäkuu','Elokuu','Syyskuu','Lokakuu','Marraskuu','Joulukuu');
-@months_m = ('tammikuu','helmikuu','maaliskuu','huhtikuu','toukokuu','kesäkuu','heinäkuu','elokuu','syyskuu','lokakuu','marraskuu','joulukuu'); #list for lower case months if needed.
-@days_short = ('Su','Ma','Ti','Ke','To','Pe','La'); # for smtp
-@alpha = qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
+@days = qw(Sunnuntai Maanantai Tiistai Keskiviikko Torstai Perjantai Lauantai);
+@months =
+  qw(Tammikuu Helmikuu Maaliskuu Huhtikuu Toukokuu Kesäkuu Heinäkuu Elokuu Syyskuu Lokakuu Marraskuu Joulukuu);
+@months_m =
+  qw(tammikuu helmikuu maaliskuu huhtikuu toukokuu kesäkuu heinäkuu elokuu syyskuu lokakuu marraskuu joulukuu);
+#list for lower case months if needed.
+@days_short = qw(Su Ma Ti Ke To Pe La);                               # for smtp
+@alpha      = qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
 
 %maintxt = (
-'w3c_lngcode' => 'fi-fi',
-'error_description' => 'Järjestelmän tietoja',
-'error_location' => '<b>Skripti</b>',
-'error_line' => '<b>Rivi</b>',
-'error_subroutine' => '<b>Alirutiini</b>',
-'error_verbose' => '<b>Selitys</b>',
-'board' => 'Alue',
-'cat' => 'Kategoria',
-'0' => 'Lähetä yksityisviesti',
-'1' => 'Lähetä sähköposti',
-'2' => 'Katso',
-'3' => ':n profiili',
-'4' => 'Lisää',
-'5' => 'kaverilistalle',
-'6' => 'Näytä oma profiili',
-'10' => 'Viimeksi kirjautuneena',
-'11' => 'päivää ja',
-'12' => 'tuntia',
-'13' => 'Ei ole kirjautunut rekisteröinnin jälkeen',
-'22' => 'Viimeisin viesti',
-'23' => 'Ei voi avata',
-'23a' => q~. This file may have been deleted.~,
-'27' => 'Näytä profiili',
-'28' => 'Vieras',
-'30' => '', #'on',
-'30a' => 'kirjoitti',
-'30b' => 'kpl',
-'31' => 'Lainaa',
-'32' => 'Suorita',
-'34' => 'kirjaudu',
-'35' => 'Voit kirjautua tämän sivun alalaidasta!',
-'40a' => 'Multimediatiedostojen katselu ei ole mahdollista RSS-syötteissä!!',
-'41' => 'Sinun täytyy',
-'42' => 'tai',
-'42a' => 'katsoaksesi mediatiedostoja ja linkkejä)',
-'noaudio' => q~Your browser does not support the audio element.~,
-'60' => 'Paikalla',
-'61' => 'Poissa',
-'62' => 'Aihetyökalut',
-'63' => 'Viestityökalut',
-'64' => 'Ei ole suoritettavia toimintoja.',
-'away' => 'Poissa',
-'70' => 'Aihe',
-'97' => 'Rekisteröidy',
-'102' => 'Uutiset',
-'107' => 'klo',
-'109' => 'Keskustelun aloitti',
-'114' => 'Ylläpidon kirjautuminen',
-'125' => 'Ilmoita',
-'126' => 'Haluatko ilmoituksen kun joku vastaa tähän aiheeseen?',
-'132' => 'Siirrä aihe',
-'133' => 'Siirrä kohteeseen',
-'155' => 'Huoltotila',
-'156' => 'Foorumiamme huolletaan tällä hetkellä!',
-'157' => 'Foorumiamme huolletaan tällä hetkellä. Yritä myöhemmin uudelleen. Kiitos!',
-'160' => 'Tämä',
-'160a' => 'aihe',
-'160b' => 'on siirretty. Uusi sijainti on',
-'160c' => 'Viestiketjun sisältö on siirretty',
-'160d' => 'tähän ketjuun',
-'160e' => 'Keskustelun aiheeseen irrelevantit viestit ovat siirretty osioon',
-'160f' => '.',
-'161' => 'Tämä aihe on siirretty tähän',
-'161a' => 'Viimeinen',
-'161b' => 'Viestin on siirretty tähän',
-'163' => 'Kyllä',
-'164' => 'Ei',
-'170' => 'Haku ei tuottanut tuloksia',
-'171' => 'Kuvaa ei löydetty 30 sekunnin sisällä! Lopetettiin!', # Inside JavaScript!
-'193' => 'Takaisin',
-'195' => 'Aiheen aloittaja',
-'196' => 'Aihe',
-'197' => 'Kirjoittaja',
-'199' => 'Viestiä ei löydy',
-'213' => 'Käyttäjän viimeisin viesti',
-'214' => 'Viimeisimmät viestit',
-'214b' => 'Viimeisimmät aiheet',
-'215' => 'Viimeisimmät aiheet',
-'236' => 'Palaa',
-'237' => 'alueen etusivulle.',
-'247m' => 'Hyvää huomenta',
-'247a' => 'Hyvää päivää',
-'247e' => 'Hyvää iltaa',
-'247bday' => 'Paljon onnea',
-'248' => 'Tervetuloa,',
-'249' => 'Ole hyvä ja',
-'316' => 'Saapuneet',
-'317' => 'Päiväys',
-'318' => 'Lähettäjä',
-'320' => 'Lähteneet',
-'324' => 'Vastaanottaja',
-'377' => 'tai',
-'409' => 'Viimeisin viesti käyttämästäsi IP-osoitteesta tuli alle',
-'410' => 'sekuntia sitten. Yritä myöhemmin uudelleen!',
-'418' => 'Ilmoitus',
-'470' => 'Ei tiedossa',
-'470a' => '<i>Ex-jäsen</i>',
-'525' => 'siirtäjänä',
-'609' => 'Turvallisuussyistä YaBB vaatii, että käytät absoluuttisia polkumäärityksiä. \'../\'-merkintää (yläkansio) ei sallita. Aja Setup.pl käyttämään absoluuttisia polkumäärityksiä \'../\'-merkintöjen sijaan.',
-'633' => 'Varoitus!',
-'634' => 'Vain rekisteröityneet jäsenet voivat käyttää tätä foorumia.',
-'635' => 'Kirjaudu sisään alla ja paina',
-'636' => '-tästä-',
-'637' => "rekisteröidäksesi uuden tunnuksen $mbname foorumiin.",
-'668' => 'Tulosta sivu',
-'668a' => 'Tulosta viesti',
-'669a' => 'Piilota kuvat',
-'669b' => 'Näytä kuvat',
-'758' => 'Siirretty',
-'769' => 'Tänään',
-'769a'=> 'Eilen',
-'769b'=> 'Huomenna',
-'769l' => 'tänään',
-'769al' => 'eilen',
-'770' => 'n',
-'770a' => 'ta',
-'773' => 'Haluatko tulostaa tämän sivun nyt?',
-'900b' => 'Takaisin',
-'900s' => 'Lähetä',
-'900pw' => 'Anna salasana',
-'900pd' => 'Salasanasuojattu alue',
-'900pe' => 'Ole hyvä ja anna salasana.',
-'900pg' => qq~Salasanasuojatut alueet ovat vain jäsenille. Ole hyvä ja <a href="$scripturl?action=register" style="font-weight: bold;">rekisteröidy</a> tai <a href="$scripturl?action=login" style="font-weight: bold;">kirjaudu</a>.~,
-'900pr' => 'Yksityinen',
-'dst' => '<sup>*</sup>',
-'rssfeed' => 'RSS-syöte',
-'rsscode' => 'Siirry kohtaan Koodi',
-'rss_nopost' => q~Suosikkeja ei löytynyt'~,
-'freeuserspace' => 'Käyttäjätilaa vapaana:',
-'freediskspace' => 'Levytilaa vapaana:',
-'redirect' => 'Uudelleenohjaus',
-'redirecttext' => 'Jos näet tämän viestin uudelleenohjaus ei toiminut.',
-'redirectlink' => 'Paina tästä',
-'noscript' => 'Foorumi vaati JavaScript-tuen toimiakseen kunnolla!',
-'go_to_board' => 'Mene alueen indeksiin',
-'searchimg' => 'Viestit ei vanhempia kuin',
-'searchimg2' => 'päivää', #'days old',
-'searchimg3' => 'Kaikki viestit',
-'collapse' => 'kutista',
-'UTC' => '(UTC)',
-'maint' => 'Poista tämä tiedosto, jos foorumi on huoltotilassa ilman syytä.',
-'members_only' => q~Only members can access another member's profile.~,
-'reg_please' => q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
-'printpage' => 'Tulosta tämä sivu',
-'regplease' => q~Please Register~,
-'banned' => q~Banned~,
-'backup' => 'Remove this file if your board is in backup-lock for no reason.',
-'tmpchange' => 'Change Template:',
+    'w3c_lngcode'       => q~fi-fi~,
+    'error_description' => q~Järjestelmän tietoja~,
+    'error_location'    => q~<b>Skripti</b>~,
+    'error_line'        => q~<b>Rivi</b>~,
+    'error_subroutine'  => q~<b>Alirutiini</b>~,
+    'error_verbose'     => q~<b>Selitys</b>~,
+    'board'             => q~Alue~,
+    'cat'               => q~Kategoria~,
+    '0'                 => q~Lähetä yksityisviesti~,
+    '1'                 => q~Lähetä sähköposti~,
+    '2'                 => q~Katso~,
+    '3'                 => q~:n profiili~,
+    '4'                 => q~Lisää~,
+    '5'                 => q~kaverilistalle~,
+    '6'                 => q~Näytä oma profiili~,
+    '10'                => q~Viimeksi kirjautuneena~,
+    '11'                => q~päivää ja~,
+    '12'                => q~tuntia~,
+    '13'                => q~Ei ole kirjautunut rekisteröinnin jälkeen~,
+    '22'                => q~Viimeisin viesti~,
+    '23'                => q~Ei voi avata~,
+    '23a'               => q~. This file may have been deleted.~,
+    '27'                => q~Näytä profiili~,
+    '28'                => q~Vieras~,
+    '30'                => q{},                                           #'on~,
+    '30a'               => q~kirjoitti~,
+    '30b'               => q~kpl~,
+    '31'                => q~Lainaa~,
+    '32'                => q~Suorita~,
+    '34'                => q~kirjaudu~,
+    '35'                => q~Voit kirjautua tämän sivun alalaidasta!~,
+    '40a' =>
+      q~Multimediatiedostojen katselu ei ole mahdollista RSS-syötteissä!!~,
+    '41'      => q~Sinun täytyy~,
+    '42'      => q~tai~,
+    '42a'     => q~katsoaksesi mediatiedostoja ja linkkejä)~,
+    'noaudio' => q~Your browser does not support the audio element.~,
+    '60'      => q~Paikalla~,
+    '61'      => q~Poissa~,
+    '62'      => q~Aihetyökalut~,
+    '63'      => q~Viestityökalut~,
+    '64'      => q~Ei ole suoritettavia toimintoja.~,
+    'away'    => q~Poissa~,
+    '70'      => q~Aihe~,
+    '97'      => q~Rekisteröidy~,
+    '102'     => q~Uutiset~,
+    '107'     => q~klo~,
+    '109'     => q~Keskustelun aloitti~,
+    '114'     => q~Ylläpidon kirjautuminen~,
+    '125'     => q~Ilmoita~,
+    '126'     => q~Haluatko ilmoituksen kun joku vastaa tähän aiheeseen?~,
+    '132'     => q~Siirrä aihe~,
+    '133'     => q~Siirrä kohteeseen~,
+    '155'     => q~Huoltotila~,
+    '156'     => q~Foorumiamme huolletaan tällä hetkellä!~,
+    '157' =>
+q~Foorumiamme huolletaan tällä hetkellä. Yritä myöhemmin uudelleen. Kiitos!~,
+    '160'  => q~Tämä~,
+    '160a' => q~aihe~,
+    '160b' => q~on siirretty. Uusi sijainti on~,
+    '160c' => q~Viestiketjun sisältö on siirretty~,
+    '160d' => q~tähän ketjuun~,
+    '160e' =>
+      q~Keskustelun aiheeseen irrelevantit viestit ovat siirretty osioon~,
+    '160f' => q~.~,
+    '161'  => q~Tämä aihe on siirretty tähän~,
+    '161a' => q~Viimeinen~,
+    '161b' => q~Viestin on siirretty tähän~,
+    '163'  => q~Kyllä~,
+    '164'  => q~Ei~,
+    '170'  => q~Haku ei tuottanut tuloksia~,
+    '171'  => q~Kuvaa ei löydetty 30 sekunnin sisällä! Lopetettiin!~
+    ,    # Inside JavaScript!
+    '193'     => q~Takaisin~,
+    '195'     => q~Aiheen aloittaja~,
+    '196'     => q~Aihe~,
+    '197'     => q~Kirjoittaja~,
+    '199'     => q~Viestiä ei löydy~,
+    '213'     => q~Käyttäjän viimeisin viesti~,
+    '214'     => q~Viimeisimmät viestit~,
+    '214b'    => q~Viimeisimmät aiheet~,
+    '215'     => q~Viimeisimmät aiheet~,
+    '236'     => q~Palaa~,
+    '237'     => q~alueen etusivulle.~,
+    '247m'    => q~Hyvää huomenta~,
+    '247a'    => q~Hyvää päivää~,
+    '247e'    => q~Hyvää iltaa~,
+    '247bday' => q~Paljon onnea~,
+    '248'     => q~Tervetuloa,~,
+    '249'     => q~Ole hyvä ja~,
+    '316'     => q~Saapuneet~,
+    '317'     => q~Päiväys~,
+    '318'     => q~Lähettäjä~,
+    '320'     => q~Lähteneet~,
+    '324'     => q~Vastaanottaja~,
+    '377'     => q~tai~,
+    '409'     => q~Viimeisin viesti käyttämästäsi IP-osoitteesta tuli alle~,
+    '410'     => q~sekuntia sitten. Yritä myöhemmin uudelleen!~,
+    '418'     => q~Ilmoitus~,
+    '470'     => q~Ei tiedossa~,
+    '470a'    => q~<i>Ex-jäsen</i>~,
+    '525'     => q~siirtäjänä~,
+    '609' =>
+q~Turvallisuussyistä YaBB vaatii, että käytät absoluuttisia polkumäärityksiä. '../'-merkintää (yläkansio) ei sallita. Aja Setup.pl käyttämään absoluuttisia polkumäärityksiä '../'-merkintöjen sijaan.~,
+    '633'   => q~Varoitus!~,
+    '634'   => q~Vain rekisteröityneet jäsenet voivat käyttää tätä foorumia.~,
+    '635'   => q~Kirjaudu sisään alla ja paina~,
+    '636'   => q~-tästä-~,
+    '637'   => q~rekisteröidäksesi uuden tunnuksen {yabb mbname} foorumiin.~,
+    '668'   => q~Tulosta sivu~,
+    '668a'  => q~Tulosta viesti~,
+    '669a'  => q~Piilota kuvat~,
+    '669b'  => q~Näytä kuvat~,
+    '758'   => q~Siirretty~,
+    '769'   => q~Tänään~,
+    '769a'  => q~Eilen~,
+    '769b'  => q~Huomenna~,
+    '769l'  => q~tänään~,
+    '769al' => q~eilen~,
+    '770'   => q~n~,
+    '770a'  => q~ta~,
+    '773'   => q~Haluatko tulostaa tämän sivun nyt?~,
+    '900b'  => q~Takaisin~,
+    '900s'  => q~Lähetä~,
+    '900pw' => q~Anna salasana~,
+    '900pd' => q~Salasanasuojattu alue~,
+    '900pe' => q~Ole hyvä ja anna salasana.~,
+    '900pg' =>
+qq~Salasanasuojatut alueet ovat vain jäsenille. Ole hyvä ja <a href="$scripturl?action=register" style="font-weight: bold;">rekisteröidy</a> tai <a href="$scripturl?action=login" style="font-weight: bold;">kirjaudu</a>.~,
+    '900pr'         => q~Yksityinen~,
+    'dst'           => q~<sup>*</sup>~,
+    'rssfeed'       => q~RSS-syöte~,
+    'rsscode'       => q~Siirry kohtaan Koodi~,
+    'rss_nopost'    => q~Suosikkeja ei löytynyt'~,
+    'freeuserspace' => q~Käyttäjätilaa vapaana:~,
+    'freediskspace' => q~Levytilaa vapaana:~,
+    'redirect'      => q~Uudelleenohjaus~,
+    'redirecttext'  => q~Jos näet tämän viestin uudelleenohjaus ei toiminut.~,
+    'redirectlink'  => q~Paina tästä~,
+    'noscript'      => q~Foorumi vaati JavaScript-tuen toimiakseen kunnolla!~,
+    'go_to_board'   => q~Mene alueen indeksiin~,
+    'searchimg'     => q~Viestit ei vanhempia kuin~,
+    'searchimg2'    => q~päivää', #'days old~,
+    'searchimg3'    => q~Kaikki viestit~,
+    'collapse'      => q~kutista~,
+    'UTC'           => q~(UTC)~,
+    'maint' =>
+      q~Poista tämä tiedosto, jos foorumi on huoltotilassa ilman syytä.~,
+    'members_only' => q~Only members can access another member's profile.~,
+    'reg_please' =>
+q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
+    'printpage' => q~Tulosta tämä sivu~,
+    'regplease' => q~Please Register~,
+    'banned'    => q~Banned~,
+    'backup' =>
+      q~Remove this file if your board is in backup-lock for no reason.~,
+    'tmpchange' => q~Change Template:~,
 );
 
 %load_txt = (
-'152' => 'sinulla on',
-'153' => 'viestiä',
-'154' => 'on uusia',
-'154b' => 'uutta viestiä',
-'155' => 'on uusi',
-'155b' => 'uusi viesti',
-'nonew' => 'eikä yhtään uutta viestiä.',
-'231' => 'Sukupuoli',
-'female' => 'Nainen',
-'male' => 'Mies', 
-'471' => 'viesti',
-'616' => qq~Muistutus: Tämä foorumi on <a href="<a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance"" style="font-weight: bold;">'Huoltotilassa'</a>.~,
-'617' => 'Muistutus: Viimeisin varmuuskopio on tehty:',
-'773' => q~IP not found~,
-'805' => 'Sinä',
-'806' => '<b>voit</b>',
-'807' => '<b>et voi</b>',
-'808' => 'katsoa tämän alueen viestejä.',
-'809' => 'vastata tällä alueella.',
-'810' => 'aloittaa uusia aiheita tällä alueella.',
-'811' => 'aloittaa uusia äänestyksiä tällä alueella.',
-'812' => 'lähettää viestejä jotka vaikuttavat henk.koht. kokonaisviestimäärään.',
-'813' => 'liittää tiedostoja tällä alueella.',
-'maint' => 'Maintenance',
-'616c' => q~This forum is in Maintenance Mode!~,
-'tmod' => 'modify Topics in this Board',
+    '152'    => q~sinulla on~,
+    '153'    => q~viestiä~,
+    '154'    => q~on uusia~,
+    '154b'   => q~uutta viestiä~,
+    '155'    => q~on uusi~,
+    '155b'   => q~uusi viesti~,
+    'nonew'  => q~eikä yhtään uutta viestiä.~,
+    '231'    => q~Sukupuoli~,
+    'female' => q~Nainen~,
+    'male'   => q~Mies~,
+    '471'    => q~viesti~,
+    '616' =>
+q~Muistutus: Tämä foorumi on <a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance"" style="font-weight: bold;">'Huoltotilassa'</a>.~,
+    '617' => q~Muistutus: Viimeisin varmuuskopio on tehty:~,
+    '773' => q~IP not found~,
+    '805' => q~Sinä~,
+    '806' => q~<b>voit</b>~,
+    '807' => q~<b>et voi</b>~,
+    '808' => q~katsoa tämän alueen viestejä.~,
+    '809' => q~vastata tällä alueella.~,
+    '810' => q~aloittaa uusia aiheita tällä alueella.~,
+    '811' => q~aloittaa uusia äänestyksiä tällä alueella.~,
+    '812' =>
+      q~lähettää viestejä jotka vaikuttavat henk.koht. kokonaisviestimäärään.~,
+    '813'   => q~liittää tiedostoja tällä alueella.~,
+    'maint' => q~Maintenance~,
+    '616c'  => q~This forum is in Maintenance Mode!~,
+    'tmod'  => q~modify Topics in this Board~,
 );
 
 %load_imtxt = (
-'46' => 'Varasto',
-'71' => 'Tulostettu',
+    '46' => q~Varasto~,
+    '71' => q~Tulostettu~,
 );
 
 %security_txt = (
-'430' => ', sinulta on pääsy estetty tälle foorumille',
-'678' => 'Pahoittelemme',
-'ban_warn_a' => q~You have been banned from using this forum ~,
-'ban_warn_s' => q~Your account on this forum has been suspended ~,
-'ban_warn_b' => q~ for ~,
-'ban_warn_c' => q~by~,
-'ban_perm' => q~permanently~,
-'ban_permt' => q~until~,
-'banned' => q~Banning Notification.~,
-'suspend' => q~Suspension Notification.~,
+    '430'        => q~, sinulta on pääsy estetty tälle foorumille~,
+    '678'        => q~Pahoittelemme~,
+    'ban_warn_a' => q~You have been banned from using this forum ~,
+    'ban_warn_s' => q~Your account on this forum has been suspended ~,
+    'ban_warn_b' => q~ for ~,
+    'ban_warn_c' => q~by~,
+    'ban_perm'   => q~permanently~,
+    'ban_permt'  => q~until~,
+    'banned'     => q~Banning Notification.~,
+    'suspend'    => q~Suspension Notification.~,
 );
 
-%reftxt=(
-'1' => 'Lähdesivuturva',
-'2' => 'Valitse toiminnot jotka sallitaan domainisi ulkopuolelta',
-'3' => "(komennot tulevat automaattisesti tiedostosta $sourcedir/SubList.pm)",
-'4' => 'Tallenna',
-'6' => 'Lähdedomain:',
-'7' => 'Sinun domainisi:'
+%reftxt = (
+    '1' => q~Lähdesivuturva~,
+    '2' => q~Valitse toiminnot jotka sallitaan domainisi ulkopuolelta~,
+    '3' =>
+      q~(komennot tulevat automaattisesti tiedostosta Variables/Referer.pm)~,
+    '4' => q~Tallenna~,
+    '6' => q~Lähdedomain:~,
+    '7' => q~Sinun domainisi:~,
 );
 
-%dereftxt =(
-'1' => 'Sinua ohjataan eteenpäin.... Odota hetki ole hyvä!',
-);
+%dereftxt = ( '1' => q~Sinua ohjataan eteenpäin.... Odota hetki ole hyvä!~, );
 
-%timelocktxt=(
-'02' => ' päivä(ä) viestin muokkaamiseksi. Tätä viestiä ei voi muuttaa.',
-'02a' => ' päivä(ä) viestin poistamiseksi. Tätä viestiä ei poistaa.',
+%timelocktxt = (
+    '02'  => q~ päivä(ä) viestin muokkaamiseksi. Tätä viestiä ei voi muuttaa.~,
+    '02a' => q~ päivä(ä) viestin poistamiseksi. Tätä viestiä ei poistaa.~,
 );
 
 %smiltxt = (
-'1' => 'Lisää hymiöitä',
-'21' => 'Klikkaa hymiötä jonka haluat lisätä viestiisi:'
+    '1'  => q~Lisää hymiöitä~,
+    '21' => q~Klikkaa hymiötä jonka haluat lisätä viestiisi:~,
 );
 
 %timetxt = (
-'1' => '.',
-'2' => '.',
-'3' => '.',
-'4' => '.',
+    '1' => q~ . ~,
+    '2' => q~.~,
+    '3' => q~.~,
+    '4' => q~.~,
 );
 
 %pidtxt = (
-'01' => 'kaikki',
-'02' => 'Napsauta edelliselle sivulle - kaksoisnapsauta siirtyäksesi alkuun.',
-'03' => 'Napsauta seuraavalle sivulle - kaksoisnapsauta siirtyäksesi loppuun.'
+    '01' => q~kaikki~,
+    '02' =>
+      q~Napsauta edelliselle sivulle - kaksoisnapsauta siirtyäksesi alkuun.~,
+    '03' =>
+      q~Napsauta seuraavalle sivulle - kaksoisnapsauta siirtyäksesi loppuun.~,
 );
 
 ##  jump menu
 %jumpto_txt = (
-'to' => 'Foorumihyppy &raquo;',
-'mess' => ' &raquo; omat viestit',
-'fav' => ' &raquo; suosikit',
-'note' => ' &raquo; ilmoitukset',
+    'to'   => q~Foorumihyppy &raquo;~,
+    'mess' => q~ &raquo; omat viestit~,
+    'fav'  => q~ &raquo; suosikit~,
+    'note' => q~ &raquo; ilmoitukset~,
 );
 
 ## guest language selector
-%guest_txt =(
-'sellanguage' => 'Valitse kieli',
-'changelanguage' => 'Vaihda kieli',
+%guest_txt = (
+    'sellanguage'    => q~Valitse kieli~,
+    'changelanguage' => q~Vaihda kieli~,
 );
 
 ## recent lists
 %recent_txt = (
-'recenttopic' => ' &raquo; 10 viimeisintä aihetta',
-'recentposts' => ' &raquo; 10 viimeisintä viestiä',
+    'recenttopic' => q~ &raquo; 10 viimeisintä aihetta~,
+    'recentposts' => q~ &raquo; 10 viimeisintä viestiä~,
 );
 
 ## pm to e-mail forward
-$forwardedpm = qq~Tämä varoitus lähetettiin edelleen sähköpostina~;
+$forwardedpm = q~Tämä varoitus lähetettiin edelleen sähköpostina~;
 
 %reg_txt = (
-'reason' => 'Miksi haet jäsenyyttä tälle foorumille?',
-'reason_exp' => 'Tätä tietoa ei tallenneta, mutta käytetään hakemuksesi arvioinnissa.',
-'admin_alert_start_one' => '<b>', #There is
-'admin_alert_start_more' => '<b>', #There are
-'admin_alert_one' => '</b> vahvistettu rekisteröityjä',
-'admin_alert_more' => '</b> vahvistettua rekisteröityjää',
-'admin_alert_end' => ' odottaa hyväksyntää',
-'admin_alert_end_more' => ' odottaa hyväksyntää', ## For languages that need a different end line on more than one user
-'admin_alert_act_one' => '</b> esirekisteröitynyt käyttäjä jota',
-'admin_alert_act_more' => '</b> esirekisteröitynyttä käyttäjää joita',
-'admin_alert_act_end' => ' ei vielä ole vahvistettu',
-'admin_alert_act_end_more' => ' ei vielä ole vahvistettu', ## For languages that need a different end line on more than one user
-'no_masterkey'=> '<div class="editbg">Yleisavainta ei asetettu Ylläpidon Turvallisuusasetuksista/Varmennuskuva-osiosta<br />Nyt käytössä huomattavasti epävarmempi oletusarvo!!!</div>',
+    'reason' => q~Miksi haet jäsenyyttä tälle foorumille?~,
+    'reason_exp' =>
+      q~Tätä tietoa ei tallenneta, mutta käytetään hakemuksesi arvioinnissa.~,
+    'admin_alert_start_one'  => q~<b>~,
+    'admin_alert_start_more' => q~<b>~,
+    'admin_alert_one'        => q~</b> vahvistettu rekisteröityjä~,
+    'admin_alert_more'       => q~</b> vahvistettua rekisteröityjää~,
+    'admin_alert_end'        => q~ odottaa hyväksyntää~,
+    'admin_alert_end_more'   => q~ odottaa hyväksyntää~
+    ,    ## For languages that need a different end line on more than one user
+    'admin_alert_act_one'      => q~</b> esirekisteröitynyt käyttäjä jota~,
+    'admin_alert_act_more'     => q~</b> esirekisteröitynyttä käyttäjää joita~,
+    'admin_alert_act_end'      => q~ ei vielä ole vahvistettu~,
+    'admin_alert_act_end_more' => q~ ei vielä ole vahvistettu~
+    ,    ## For languages that need a different end line on more than one user
+    'no_masterkey' =>
+q~<div class="editbg">Yleisavainta ei asetettu Ylläpidon Turvallisuusasetuksista/Varmennuskuva-osiosta<br />Nyt käytössä huomattavasti epävarmempi oletusarvo!!!</div>~,
 );
 
 %lookup_txt = (
-'01' => 'hae',
-'02' => 'Whois-palvelimelta:',
-'iplookup' => 'IP-haku',
+    '01'       => q~hae~,
+    '02'       => q~Whois-palvelimelta:~,
+    'iplookup' => q~IP-haku~,
 );
 
 %croak = (
-'open' => 'Ei voi avata',
-'close' => 'Ei voi sulkea',
-'print' => 'Ei voi tulostaa',
+    'open'  => q~Ei voi avata~,
+    'close' => q~Ei voi sulkea~,
+    'print' => q~Ei voi tulostaa~,
 );
 
 %mailer = (
-'smtp' => qq~Unable to create Net::SMTP object. Server: '$smtp_server'\n\n~,
-'smtps1' => qq~Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n~,
-'smtps2' => q~Could not authenticate SMTPS credentials. Please provide credientials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
+    'smtp' => qq~Unable to create Net::SMTP object. Server: '$smtp_server'\n\n~,
+    'smtps1' =>
+qq~Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n~,
+    'smtps2' =>
+q~Could not authenticate SMTPS credentials. Please provide credentials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
 );
 
-$yycopyright = qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Kaikki oikeudet pidätetään.~;
+$yycopyright =
+q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Powered by <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Kaikki oikeudet pidätetään.~;
 
 1;

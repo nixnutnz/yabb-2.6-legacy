@@ -1,0 +1,128 @@
+###############################################################################
+# MessageIndex.lng (Définition des texte index des messages)                  #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_camessageindexlngver  = 'YaBB 2.7.00 $Revision$';
+@french_camessageindexlngmods = ();
+if (@french_camessageindexlngmods) {
+    $french_camessageindexlngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%messageindex_txt = (
+    '2'   => q~Admin~,
+    '3'   => q~Ce sujet contient~,
+    '4'   => q~pièces jointes~,
+    '5'   => q~pièce jointe~,
+    '10'  => q~Permalien pour cet article~,
+    '15'  => q~Sondage~,
+    '18'  => q~Index~,
+    '19'  => q~Indicateur de page index~,
+    '22'  => q~Dernière publication~,
+    '31'  => q~Retirer~,
+    '54'  => q~Retirer~,
+    '63'  => q~Modérateurs~,
+    '63a' => q~Groupe modérateurs~,
+    '70'  => q~Sujet~,
+    '71'  => q~Icône de message~,
+    '75'  => q~Ceci est la sélection de vos fils favoris.~,
+    '76'  => q~Est maintenant retenu~,
+    '77'  => q~de~,
+    '78'  => q~Nombre maximum de fils favoris autorisés~,
+    '104' => q~Verrouiller/Déverrouiller~,
+    '109' => q~Démarré par~,
+    '110' => q~Réponses~,
+    '132' => q~Déplacer~,
+    '133' => q~Déplacer vers~,
+    '139' => q~Pages~,
+    '162' => q~Êtes-vous sûr de vouloir supprimer ce sujet?~,
+    '199' =>
+      q~Double-cliquez sur cette case pour plus d'informations sur sa fonction.~
+    ,    # don't use " inside!
+    '200' =>
+q~Cochez cette case pour inclure un nouveau message à la fin du sujet à déplacer. Ce message montrera l'information d'où provient le fil et qui l'a déplacé. Décochez-la pour déplacer inclure un nouveau message.~
+    ,    #Dans les JavaScript!
+    '251'  => q~Sauter au forum~,
+    '298'  => q~Modérateur~,
+    '298a' => q~Groupe modérateur~,
+    '301'  => q~Voir~,
+    '302'  => q~Nouveau~,
+    '303'  => q~Aller au premier message non lu~,
+    '454'  => q~Sujet brûlant (Plus de~,
+    '454a' => q~Réponses)~,
+    '455'  => q~Sujet très brûlant (Plus de~,
+    '456'  => q~Sujet verrouillé~,
+    '457'  => q~Sujet normal~,
+    '458'  => q~Sujet caché~,
+    '459'  => q~Sujet caché épinglé~,
+    '460'  => q~Sujet verrouillé caché~,
+    '461'  => q~Sujet épinglé caché verrouillé~,
+    '462'  => q~Aller!~,
+    '470'  => q~N/A~,
+    '470a' => q~<em>Ex Membre</em>~,
+    '500'  => q~Marquer tous les sujets comme lus~,    #Dans les JavaScript!
+    '500a' => q~Complété~,                             #Dans les JavaScript!
+    '525'  => q~Par~,
+    '526'  => q~par~,
+    '527'  => q~Démarré~,
+    '737'  => q~Tour cocher~,
+    '779'  => q~Sujet épinglé~,
+    '779a' => q~Annonce globale~,
+    '779b' => q~Annonce globale verrouillée~,
+    '780'  => q~Sujet épinglé verrouillé~,
+    '781'  => q~Épinglé~,
+    '837'  => q~Permissions du forum~,
+    '840'  => q~Aucun favori trouvé~,
+    '841'  => q~Aucun message trouvé~,
+    '842'  => q~Supprimer les favoris sélectionnés~,
+    '843'  => q~Flux RSS pour ce forum~,
+    '844'  => q~Cacher~,
+    '845'  => q~Sujet déplacé~,
+    '903'  => q~Fermer la fenêtre~,
+    'collruletext' => q~Règles réduites du forum~,
+    'nopost' =>
+q~Ce forum ne peut pas être publié et aucun message ne peut y être déplacé.~,
+    'move_up'   => q~Déplacer en haut~,
+    'move_down' => q~Déplacer en bas~,
+);
+
+%messageindex_sort = (
+    'sort_az'    => q~Trier (A-Z)~,
+    'sort_za'    => q~Trier (Z-A)~,
+    'sort_min'   => q~Trier (réponse min)~,
+    'sort_max'   => q~Trier (réponse max)~,
+    'sort_last'  => q~Trier (nouvelle réponse)~,
+    'sort_first' => q~Trier (vielle réponse)~,
+);
+
+%messageindex_stickygrp = (
+    '1' => q~Sujet important~,
+    '2' => q~Forum important~,
+);
+
+%messageindex_tp = (
+    'enabletp'  => q~Activer la prévisualisation de sujet~,
+    'disabletp' => q~Désactiver la prévisualisation de sujet~,
+    'code_tp'   => q~CODE~,
+    'image_tp'  => q~IMAGE~,
+    'media_tp'  => q~MEDIA~,
+);
+
+1;

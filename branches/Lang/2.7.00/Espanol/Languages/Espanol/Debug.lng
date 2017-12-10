@@ -10,46 +10,49 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanoldebuglngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanoldebuglngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanoldebuglngmods = ();
 if (@espanoldebuglngmods) {
     $espanoldebuglngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' && $language ne 'Espanol' ) { return 1; };
+if ( $action eq 'detailedversion' && $language ne 'Espanol' ) { return 1; }
 
 %debug_txt = (
-'getpairs' => 'pares GET de entrada',
-'postpairs' => 'pares POST de entrada',
-'name' => 'nombre',
-'value' => 'valor',
-'opened' => 'Abierto',
-'closed' => 'archivos y Cerrado ',
-'equal' => 'archivos. (debe ser el mismo número)',
-'nohires' => 'Tu servidor probablemente no tiene',
-'nomodule' => 'instalado o no soporta el módulo para esto',
-'pagespeed' => 'Completado dentro de',
-'loaded' => 'segundos, Cargando ',
-'debugging' => 'Información de depuración',
-'benchmarking' => 'benchmarking (comparativa)',
-'ipaddress' => 'Tu dirección IP es',
-'browser' => 'Tu \'Browser Agent\':',
-'trace' => 'indicador de depuración (debug tracer)',
-'check' => 'Comprobar fichero al Abrir/Cerrar',
-'filehandles' => 'Filehandle/Archivos Abiertos:',
-'filehandleslegend' => 'FILEHANDLE abierto (tiempo) &nbsp; &nbsp; <i>MODO</i>nombrederutadearchivo &nbsp; &nbsp; FILEHANDLE cerrado (tiempo)<br />[package, scriptpathname, line]',
-'filesloaded' => 'Archivos cargados por',
-'process_scalars' => q~Process scalars~,
-'process_num' => q~Process number of this ongoing process~,
-'process_file' => q~Performed file in this process~,
-'process_time' => q~Process start time~,
-'process_interpreter' => q~Interpreter of this process~,
-'perl_version' => q~Perl Version~,
-'server_load' => q~CPU usage~,
-'server_load_ago' => q~Average server load ago~,
-'minute' => q~minutes~,
-'supported' => q~Not supported~,
+    'getpairs'     => q~pares GET de entrada~,
+    'postpairs'    => q~pares POST de entrada~,
+    'name'         => q~nombre~,
+    'value'        => q~valor~,
+    'opened'       => q~Abierto~,
+    'closed'       => q~archivos y Cerrado ~,
+    'equal'        => q~archivos. (debe ser el mismo número)~,
+    'nohires'      => q~Tu servidor probablemente no tiene~,
+    'nomodule'     => q~instalado o no soporta el módulo para esto~,
+    'pagespeed'    => q~Completado dentro de~,
+    'loaded'       => q~segundos, Cargando ~,
+    'debugging'    => q~Información de depuración~,
+    'benchmarking' => q~benchmarking (comparativa)~,
+    'ipaddress'    => q~Tu dirección IP es~,
+    'browser'      => q~Tu \'Browser Agent\':~,
+    'trace'        => q~indicador de depuración (debug tracer)~,
+    'check'        => q~Comprobar fichero al Abrir/Cerrar~,
+    'filehandles'  => q~Filehandle/Archivos Abiertos:~,
+    'filehandleslegend' =>
+q~FILEHANDLE abierto (tiempo) &nbsp; &nbsp; <i>MODO</i>nombrederutadearchivo &nbsp; &nbsp; FILEHANDLE cerrado (tiempo)<br />[package, scriptpathname, line]~,
+    'filesloaded'         => q~Archivos cargados por~,
+    'process_scalars'     => q~Process scalars~,
+    'process_num'         => q~Process number of this ongoing process~,
+    'process_file'        => q~Performed file in this process~,
+    'process_time'        => q~Process start time~,
+    'process_interpreter' => q~Interpreter of this process~,
+    'perl_version'        => q~Perl Version~,
+    'server_load'         => q~CPU usage~,
+    'server_load_ago'     => q~Average server load ago~,
+    'minute'              => q~minutes~,
+    'supported'           => q~Not supported~,
 );
 
 1;

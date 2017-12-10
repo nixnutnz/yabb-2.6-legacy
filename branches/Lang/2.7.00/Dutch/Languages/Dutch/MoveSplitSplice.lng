@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # MoveSplitSplice.lng (Move, Split and Splice text definitions)               #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchmovesplitsplicelngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchmovesplitsplicelngver  = 'YaBB 2.7.00 $Revision: 1848 $';
 @dutchmovesplitsplicelngmods = ();
 if (@dutchmovesplitsplicelngmods) {
     $dutchmovesplitsplicelngmods = 1;
@@ -22,49 +24,60 @@ if (@dutchmovesplitsplicelngmods) {
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-%sstxt=(
-'1' => 'Verplaatsen, splitsen &amp; verbinden',
-'2' => 'Bijdrage Splitsen',
-'3' => 'Bijdrage',
-'4' => 'Behouden',
-'5' => 'Verbinden met',
-'6' => 'Categorie',
-'7' => 'Board',
-'8' => 'Topic',
-'9' => 'Titel nieuwe Topic invoeren',
-'10' => 'Positie',
-'11' => "'Verplaatst/Verbonden met...' Info",
-'12' => 'Ooorspronkelijke bijdrage behouden',
-'13' => 'Geen indicatie',
-'14' => 'Selecteer hier welke berichten verplaatst of verbonden moeten worden:',
-'14a' => 'Houdt de toets SHIFT of CTRL ingedrukt terwijl u klikt om meerdere berichten te selecteren.',
-'15' => 'Kies wat er in plaats van de bijdrage achtergelaten moet worden.<br />Als u wilt verplaatsen &raquo;&raquo; Alle Bijdragen &laquo;&laquo;, wordt in ieder geval een notitie achtergelaten.',
-'15a' => 'Een nieuwe Bijdrage achter de verplaatste bijdrage, bevat de info van waar ze kwamen en wie hen verplaatste.',
-'16' => 'Selecteer naar welke categorie de geselecteerde bijdrage verplaatst moeten worden.',
-'17' => 'Selecteer naar welk board de geselecteerde bijdrage verplaatst moeten worden.',
-'18' => 'Selecteer naar welke Topic de geselecteerde bijdragen verplaatst moeten worden.',
-'19' => 'Selecteer de positie, om de geselecteerde bijdrage te verbinden.<br />De Bijdragen worden geplaatst onder de aangegeven positie.',
-'20' => 'Voer het onderwerp van de nieuwe topic hier in.<br />Laat dit vak leeg als u het onderwerp wilt gebruiken van de eerste geselecteerde bijdrage.',
-'21' => 'Re:',
-'22' => 'U moet een categorie aanwijzen.',
-'22a' => 'U moet minstens een board aanwijzen.',
-'22b' => 'U moet minstens een',
-'23' => 'Bijdrage uitkiezen om te kunnen verplaatsen.',
-'24' => 'Uitvoeren',
-'25' => 'Terugzetten',
-'26' => '&raquo;&raquo; Alle Bijdragen &laquo;&laquo;',
-'27' => 'In dit board kan niet gepost worden en er zouden geen bijdragen naar verplaatst moeten worden.',
-'28' => '&raquo;&raquo; Categoriën &laquo;&laquo;',
-'29' => '&raquo;&raquo; Boards &laquo;&laquo;',
-'30' => '&raquo;&raquo; Nieuwe Topic &laquo;&laquo;',
-'31' => '&raquo;&raquo; Topic Einde &laquo;&laquo;',
-'32' => '&raquo;&raquo; Topic Begin &laquo;&laquo;',
+%sstxt = (
+    '1'  => q~Verplaatsen, splitsen &amp; verbinden~,
+    '2'  => q~Bijdrage Splitsen~,
+    '3'  => q~Bijdrage~,
+    '4'  => q~Behouden~,
+    '5'  => q~Verbinden met~,
+    '6'  => q~Categorie~,
+    '7'  => q~Board~,
+    '8'  => q~Topic~,
+    '9'  => q~Titel nieuwe Topic invoeren~,
+    '10' => q~Positie~,
+    '11' => q~'Verplaatst/Verbonden met...' Info~,
+    '12' => q~Ooorspronkelijke bijdrage behouden~,
+    '13' => q~Geen indicatie~,
+    '14' =>
+      q~Selecteer hier welke berichten verplaatst of verbonden moeten worden:~,
+    '14a' =>
+q~Houdt de toets SHIFT of CTRL ingedrukt terwijl u klikt om meerdere berichten te selecteren.~,
+    '15' =>
+q~Kies wat er in plaats van de bijdrage achtergelaten moet worden.<br />Als u wilt verplaatsen &raquo;&raquo; Alle Bijdragen &laquo;&laquo;, wordt in ieder geval een notitie achtergelaten.~,
+    '15a' =>
+q~Een nieuwe Bijdrage achter de verplaatste bijdrage, bevat de info van waar ze kwamen en wie hen verplaatste.~,
+    '16' =>
+q~Selecteer naar welke categorie de geselecteerde bijdrage verplaatst moeten worden.~,
+    '17' =>
+q~Selecteer naar welk board de geselecteerde bijdrage verplaatst moeten worden.~,
+    '18' =>
+q~Selecteer naar welke Topic de geselecteerde bijdragen verplaatst moeten worden.~,
+    '19' =>
+q~Selecteer de positie, om de geselecteerde bijdrage te verbinden.<br />De Bijdragen worden geplaatst onder de aangegeven positie.~,
+    '20' =>
+q~Voer het onderwerp van de nieuwe topic hier in.<br />Laat dit vak leeg als u het onderwerp wilt gebruiken van de eerste geselecteerde bijdrage.~,
+    '21'  => q~Re:~,
+    '22'  => q~U moet een categorie aanwijzen.~,
+    '22a' => q~U moet minstens een board aanwijzen.~,
+    '22b' => q~U moet minstens een~,
+    '23'  => q~Bijdrage uitkiezen om te kunnen verplaatsen.~,
+    '24'  => q~Uitvoeren~,
+    '25'  => q~Terugzetten~,
+    '26'  => q~&raquo;&raquo; Alle Bijdragen &laquo;&laquo;~,
+    '27' =>
+q~In dit board kan niet gepost worden en er zouden geen bijdragen naar verplaatst moeten worden.~,
+    '28' => q~&raquo;&raquo; Categoriën &laquo;&laquo;~,
+    '29' => q~&raquo;&raquo; Boards &laquo;&laquo;~,
+    '30' => q~&raquo;&raquo; Nieuwe Topic &laquo;&laquo;~,
+    '31' => q~&raquo;&raquo; Topic Einde &laquo;&laquo;~,
+    '32' => q~&raquo;&raquo; Topic Begin &laquo;&laquo;~,
 
-'40' => 'Reageer',
-'41' => 'Topic Start',
+    '40' => q~Reageer~,
+    '41' => q~Topic Start~,
 
-'50' => 'Ga terug en herlaad deze pagina eerst, of u bent niet in staat uit te voeren.',
-'51' => 'Het is niet toegestaan twee Peilingen te verbinden.',
+    '50' =>
+q~Ga terug en herlaad deze pagina eerst, of u bent niet in staat uit te voeren.~,
+    '51' => q~Het is niet toegestaan twee Peilingen te verbinden.~,
 );
 
 1;

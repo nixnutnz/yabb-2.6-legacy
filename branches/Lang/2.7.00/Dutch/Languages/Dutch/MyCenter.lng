@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # MyCenter.lng (My Center text definitions)                                   #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchmycenterlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchmycenterlngver  = 'YaBB 2.7.00 $Revision: 1848 $';
 @dutchmycenterlngmods = ();
 if (@dutchmycenterlngmods) {
     $dutchmycenterlngmods = 1;
@@ -25,58 +27,55 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## LEAVE USERLABEL intact. Move within the string for correct language syntax!
 
 %mycenter_txt = (
-'welcometxt' => "USERLABEL\'s Gebruikers Centrum",
-'buddylisttitle' => 'Uw Vrienden',
-'buddylistnone' => 'Uw vriendenlijst is leeg',
-'buddydeleted' => 'Deze vriend is verwijdert. De naam is niet langer beschikbaar.',
-'hiddenemail' => 'Verborgen E-mail adres',
-'currentsettings' => 'Uw huidige instellingen:',
-'onoffstatus' => 'Online/Offline Status:',
-'onoffstatuson' => 'Online/Offline',
-'onoffstatusaway' => 'Afwezig',
-'view' => 'Overzicht',
-'stealth' => 'Beschutte mode:',
-'stealth_off' => 'Beschutte mode Uit',
-'stealth_on' => 'Beschutte mode Aan',
-'posts' => 'Posts',
-'location' => 'Locatie',
-'mylastposts' => 'Bekijk mijn 5 laatste bijdragen',
+    'welcometxt'     => q~USERLABEL's Gebruikers Centrum~,
+    'buddylisttitle' => q~Uw Vrienden~,
+    'buddylistnone'  => q~Uw vriendenlijst is leeg~,
+    'buddydeleted' =>
+      q~Deze vriend is verwijdert. De naam is niet langer beschikbaar.~,
+    'hiddenemail'     => q~Verborgen E-mail adres~,
+    'currentsettings' => q~Uw huidige instellingen:~,
+    'onoffstatus'     => q~Online/Offline Status:~,
+    'onoffstatuson'   => q~Online/Offline~,
+    'onoffstatusaway' => q~Afwezig~,
+    'view'            => q~Overzicht~,
+    'stealth'         => q~Beschutte mode:~,
+    'stealth_off'     => q~Beschutte mode Uit~,
+    'stealth_on'      => q~Beschutte mode Aan~,
+    'posts'           => q~Posts~,
+    'location'        => q~Locatie~,
+    'mylastposts'     => q~Bekijk mijn 5 laatste bijdragen~,
 );
 
-%display_txt = (
-'139' => q~Pagina's~,
-);
+%display_txt = ( '139' => q~Pagina's~, );
 
 %mc_menus = (
-'messages' => 'Berichten',
-'profile' => 'Profiel',
-'posts' => 'Posts',
+    'messages' => q~Berichten~,
+    'profile'  => q~Profiel~,
+    'posts'    => q~Posts~,
 );
 
 %pm_search = (
-'all' => 'Alles',
-'justthis' => 'Alleen deze map',
-'byuser' => 'op Schermnaam',
-'desc' => 'Mijn PB\'s doorzoeken naar',
-'search' => 'Zoek',
+    'all'      => q~Alles~,
+    'justthis' => q~Alleen deze map~,
+    'byuser'   => q~op Schermnaam~,
+    'desc'     => q~Mijn PB's doorzoeken naar~,
+    'search'   => q~Zoek~,
 );
 
-%mc_folders = (
-'foldername' => 'Map naam',
-);
+%mc_folders = ( 'foldername' => q~Map naam~, );
 
 %my_favs = (
-'70' => 'Onderwerp',
-'109' => 'Gestart door',
-'110' => 'Antwoorden',
-'301' => 'Oproepen',
-'330' => 'Topics',
-'21' => 'Posts',
-'22' => 'Laatste Post',
-'525' => 'Door',
-'526' => 'door',
-'527' => 'gestart',
-'737' => 'Allen Controleren',
+    '70'  => q~Onderwerp~,
+    '109' => q~Gestart door~,
+    '110' => q~Antwoorden~,
+    '301' => q~Oproepen~,
+    '330' => q~Topics~,
+    '21'  => q~Posts~,
+    '22'  => q~Laatste Post~,
+    '525' => q~Door~,
+    '526' => q~door~,
+    '527' => q~gestart~,
+    '737' => q~Allen Controleren~,
 );
 
 1;

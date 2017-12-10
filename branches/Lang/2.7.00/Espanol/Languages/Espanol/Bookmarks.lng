@@ -10,36 +10,42 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolbookmarkslngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolbookmarkslngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolbookmarkslngmods = ();
 if (@espanolbookmarkslngmods) {
     $espanolbookmarkslngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; };
+if ( $action eq 'detailedversion' ) { return 1; }
 
 %bookmark_txt = (
-'01' => 'Imagen',
-'02' => 'Título',
-'03' => 'Orden',
-'05' => '¿Seguro que quieres borrar este Marcador?',
-'08' => 'En este momento hay Marcadores sociales.',
-'09' => 'Marcadores sociales Configuración',
-'10' => 'Habilitar Marcadores sociales?',
-'11' => 'Seleccione las Juntas que se mostrará Marcadores en:<br /><span class="small">- Si no se seleccionan tablas a continuación se activará todas las placas<br />- Usar Ctrl, Shift o Apple para seleccionar / anule la selección de tablas.</span>',
-'12' => 'Marcadores sociales',
-'13' => 'Añadir un nuevo Marcador',
-'14' => 'URL',
-'15' => 'Añadir Marcador',
-'16' => 'Editar marcador',
-'17' => 'cancelar',
-'18' => '- Este es el título de la página marcador.',
-'19' => '- Animales tipos de archivo: png gif jpg jpeg <br /> - Max. tamaño de archivo: 250KB',
-'20' => '- Este es el enlace al sitio marcador <br /> -. Uso {url} para la URL de la página y {title} por el título de la página.',
-'21' => '- Este es el orden que se mostrarán los marcadores en <br /> -. Los números más bajos se mostrarán en primer lugar.',
-'22' => 'Caracteres máximos en tema',
+    '01' => q~Imagen~,
+    '02' => q~Título~,
+    '03' => q~Orden~,
+    '05' => q~¿Seguro que quieres borrar este Marcador?~,
+    '08' => q~En este momento hay Marcadores sociales.~,
+    '09' => q~Marcadores sociales Configuración~,
+    '10' => q~Habilitar Marcadores sociales?~,
+    '11' =>
+q~Seleccione las Juntas que se mostrará Marcadores en:<br /><span class="small">- Si no se seleccionan tablas a continuación se activará todas las placas<br />- Usar Ctrl, Shift o Apple para seleccionar / anule la selección de tablas.</span>~,
+    '12' => q~Marcadores sociales~,
+    '13' => q~Añadir un nuevo Marcador~,
+    '14' => q~URL~,
+    '15' => q~Añadir Marcador~,
+    '16' => q~Editar marcador~,
+    '17' => q~cancelar~,
+    '18' => q~- Este es el título de la página marcador.~,
+    '19' =>
+q~- Animales tipos de archivo: png gif jpg jpeg <br /> - Max. tamaño de archivo: 250KB~,
+    '20' =>
+q~- Este es el enlace al sitio marcador <br /> -. Uso {url} para la URL de la página y {title} por el título de la página.~,
+    '21' =>
+q~- Este es el orden que se mostrarán los marcadores en <br /> -. Los números más bajos se mostrarán en primer lugar.~,
+    '22' => q~Caracteres máximos en tema~,
 );
 
 1;
- 
+

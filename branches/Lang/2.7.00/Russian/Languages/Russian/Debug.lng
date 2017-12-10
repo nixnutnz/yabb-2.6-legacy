@@ -11,46 +11,48 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$russiandebuglngver = 'YaBB 2.7.00 $Revision$';
+$russiandebuglngver  = 'YaBB 2.7.00 $Revision$';
 @russiandebuglngmods = ();
-if(@russiandebuglngmods){
+if (@russiandebuglngmods) {
     $russiandebuglngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'Russian' ) { return 1; }
 
 %debug_txt = (
-'getpairs' => 'Входящие GET пары',
-'postpairs' => 'Входящие POST пары',
-'name' => 'Имя',
-'value' => 'Значение',
-'opened' => 'Было открыто',
-'closed' => 'файлов и закрыто ',
-'equal' => 'файлов. (должно быть равное число файлов)',
-'nohires' => 'Вероятно Ваш сервер не имеет установленного ',
-'nomodule' => 'или не поддерживает данный локальный модуль.',
-'pagespeed' => 'Страница сгенерирована за',
-'loaded' => 'секунд',
-'debugging' => 'Отладочная информация',
-'benchmarking' => 'Скоростные показатели',
-'ipaddress' => 'Ваш IP адрес:',
-'browser' => 'Ваш браузер:',
-'trace' => 'проверка взаимосвязей',
-'check' => 'Проверка файлов на Открытие/Закрытие',
-'filehandles' => 'Открытые файлы:',
-'filehandleslegend' => 'открыт FILEHANDLE (time) &nbsp; &nbsp; <i>MODE</i> filepathname &nbsp; &nbsp; закрыт FILEHANDLE (time)<br />[package, scriptpathname, line]',
-'filesloaded' => 'Файл загружен за',
-'process_scalars' => q~Process scalars~,
-'process_num' => q~Process number of this ongoing process~,
-'process_file' => q~Performed file in this process~,
-'process_time' => q~Process start time~,
-'process_interpreter' => q~Interpreter of this process~,
-'perl_version' => q~Perl Version~,
-'server_load' => q~CPU usage~,
-'server_load_ago' => q~Average server load ago~,
-'minute' => q~minutes~,
-'supported' => q~Not supported~,
+    'getpairs'     => q~Входящие GET пары~,
+    'postpairs'    => q~Входящие POST пары~,
+    'name'         => q~Имя~,
+    'value'        => q~Значение~,
+    'opened'       => q~Было открыто~,
+    'closed'       => q~файлов и закрыто ~,
+    'equal'        => q~файлов. (должно быть равное число файлов)~,
+    'nohires'      => q~Вероятно Ваш сервер не имеет установленного ~,
+    'nomodule'     => q~или не поддерживает данный локальный модуль.~,
+    'pagespeed'    => q~Страница сгенерирована за~,
+    'loaded'       => q~секунд~,
+    'debugging'    => q~Отладочная информация~,
+    'benchmarking' => q~Скоростные показатели~,
+    'ipaddress'    => q~Ваш IP адрес:~,
+    'browser'      => q~Ваш браузер:~,
+    'trace'        => q~проверка взаимосвязей~,
+    'check'        => q~Проверка файлов на Открытие/Закрытие~,
+    'filehandles'  => q~Открытые файлы:~,
+    'filehandleslegend' =>
+q~открыт FILEHANDLE (time) &nbsp; &nbsp; <i>MODE</i> filepathname &nbsp; &nbsp; закрыт FILEHANDLE (time)<br />[package, scriptpathname, line]~,
+    'filesloaded'         => q~Файл загружен за~,
+    'process_scalars'     => q~Process scalars~,
+    'process_num'         => q~Process number of this ongoing process~,
+    'process_file'        => q~Performed file in this process~,
+    'process_time'        => q~Process start time~,
+    'process_interpreter' => q~Interpreter of this process~,
+    'perl_version'        => q~Perl Version~,
+    'server_load'         => q~CPU usage~,
+    'server_load_ago'     => q~Average server load ago~,
+    'minute'              => q~minutes~,
+    'supported'           => q~Not supported~,
 );
 
 1;

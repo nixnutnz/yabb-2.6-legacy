@@ -11,31 +11,36 @@
 #               with assistance from the YaBB community.                      #
 # Mod created by Carsten Dalgaard                                             #
 #                and added to YaBB core in Version 2.5.4                      #
-# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomilivepreviewlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomilivepreviewlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomilivepreviewlngmods = ();
-if(@suomilivepreviewlngmods){
+if (@suomilivepreviewlngmods) {
     $suomilivepreviewlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %livepreview_txt = (
-'info_missing' => 'Puuttuva tai väärä tieto:',
-'name_empty' => 'Nimi-kenttää ei ole täytetty.',
-'long_name' => 'Ole hyvä ja lyhennä nimeäsi. Se on liian pitkä',
-'mail_empty' => 'Sähköpostikenttää ei ole täytetty.',
-'valid_mail' => 'Ole hyvä ja kirjoita kelvollinen sähköpostiosoite.',
-'veri_code' => 'Tarkistus-kenttää ei ole täytetty.',
-'veri_quest' => 'Tarkistuskysymys-kentää ei ole täytetty.',
-'subj_empty' => 'Aihe-kenttää ei ole täytetty.',
-'mess_empty' => 'Viesti-kenttä on tyhjä.',
-'subj_allcaps' => 'Näyttää siltä, että yrität kirjoittaa ISOILLA KIRJAIMILLA Aihe-kentässä. Tämä on kielletty foorumin säännöissä.',
-'mess_allcaps' => 'Näyttää siltä, että yrität kirjoittaa ISOILLA KIRJAIMILLA Viesti-kentässä. Tämä on kielletty foorumin säännöissä.',
-'pm_recipient' => 'Sinun täytyy täyttää Vastaanottaja-kenttä.',
-'no_links'     => "Sinä et voi käyttää linkkejä, ennen kuin olet kirjoittanut $minlinkpost viestiä.",
+    'info_missing' => q~Puuttuva tai väärä tieto:~,
+    'name_empty'   => q~Nimi-kenttää ei ole täytetty.~,
+    'long_name'    => q~Ole hyvä ja lyhennä nimeäsi. Se on liian pitkä~,
+    'mail_empty'   => q~Sähköpostikenttää ei ole täytetty.~,
+    'valid_mail'   => q~Ole hyvä ja kirjoita kelvollinen sähköpostiosoite.~,
+    'veri_code'    => q~Tarkistus-kenttää ei ole täytetty.~,
+    'veri_quest'   => q~Tarkistuskysymys-kentää ei ole täytetty.~,
+    'subj_empty'   => q~Aihe-kenttää ei ole täytetty.~,
+    'mess_empty'   => q~Viesti-kenttä on tyhjä.~,
+    'subj_allcaps' =>
+q~Näyttää siltä, että yrität kirjoittaa ISOILLA KIRJAIMILLA Aihe-kentässä. Tämä on kielletty foorumin säännöissä.~,
+    'mess_allcaps' =>
+q~Näyttää siltä, että yrität kirjoittaa ISOILLA KIRJAIMILLA Viesti-kentässä. Tämä on kielletty foorumin säännöissä.~,
+    'pm_recipient' => q~Sinun täytyy täyttää Vastaanottaja-kenttä.~,
+    'no_links' =>
+q~Sinä et voi käyttää linkkejä, ennen kuin olet kirjoittanut {yabb minlinkpost} viestiä.~,
 );
 
 1;

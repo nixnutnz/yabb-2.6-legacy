@@ -10,24 +10,34 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1876 ##
+our $VERSION = '2.7.00';
 
-$suomicreditslngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomicreditslngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomicreditslngmods = ();
-if(@suomicreditslngmods){
+if (@suomicreditslngmods) {
     $suomicreditslngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %credits_txt = (
-'yabb2' => 'Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman',
-'yabb252' => 'Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />Omistettu Ron Hartendorpin, eli Spikecity:n muistolle. Hän jätti meidät aivan liian aikaisin.',
-'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />YaBB 2.6:n mukana olevat modaukset kirjoitti AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, ja D.A. Rorabaugh, mukana myös lisää koodia ja modauksia YaBB 3.0-kehitystiimiltä. Emme olisi missään ilman modausten kirjoittajien panosta.<br />Eikä myöskään unohdeta buginmetsästäjiä ja erehdystenlöytäjiä, jotka osoittivat missä asiat eivät toimineet ihan oikein. Kiitokset Monni:lle ja Pyragony:lle ja kaikille muille buginmetsästäjille, jotka ilmoittivat löydöksistään.~,
-'yabb' => 'Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko',
-'Thanks' => 'Erikoiskiitokset',
-'yabbBeta' => 'ja kaikille betatestaajillemme.',
-'yabb2Credits' => 'tukitiimille, meidän pelottomalle perustajallemme, Zef Hemel, ja kaikille, jotka ovat auttaneet YaBB:in tekemisessä viimeisen 12 vuoden aikana!',
-'noBytesHarmed' => 'Yhtään bittiä tai tavua ei vahingoitettu YaBB:n kehittämisen aikana!',
+    'yabb2' =>
+q~Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman~,
+    'yabb252' =>
+q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Included Mods in YaBB 2.5.2 written by Derek Barnstorm, Carsten Dalgaard, and D.A. Rorabaugh.<br /><br />Omistettu Ron Hartendorpin, eli Spikecity:n muistolle. Hän jätti meidät aivan liian aikaisin.~,
+    'yabb260' =>
+q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />YaBB 2.6:n mukana olevat modaukset kirjoitti AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, ja D.A. Rorabaugh, mukana myös lisää koodia ja modauksia YaBB 3.0-kehitystiimiltä. Emme olisi missään ilman modausten kirjoittajien panosta.<br />Eikä myöskään unohdeta buginmetsästäjiä ja erehdystenlöytäjiä, jotka osoittivat missä asiat eivät toimineet ihan oikein. Kiitokset Monni:lle ja Pyragony:lle ja kaikille muille buginmetsästäjille, jotka ilmoittivat löydöksistään.~,
+    'yabb270' =>
+q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Included Mods in YaBB 2.7 written by AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh.<br />And thanks go out to our ever vigilant the bug hunters and mistake finders, especially Monni and Pyragony and all the other bug hunters who reported their findings.~,
+    'yabb' =>
+q~Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko~,
+    'Thanks'   => q~Erikoiskiitokset~,
+    'yabbBeta' => q~ja kaikille betatestaajillemme.~,
+    'yabb2Credits' =>
+q~tukitiimille, meidän pelottomalle perustajallemme, Zef Hemel, ja kaikille, jotka ovat auttaneet YaBB:in tekemisessä viimeisen 12 vuoden aikana!~,
+    'noBytesHarmed' =>
+      q~Yhtään bittiä tai tavua ei vahingoitettu YaBB:n kehittämisen aikana!~,
 );
 
 1;

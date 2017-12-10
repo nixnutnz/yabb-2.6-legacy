@@ -7,8 +7,7 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
-# Packaged:     11. September 2017                                            #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
@@ -18,6 +17,7 @@
 # Many thanks to Carsten Dalgaard (http://www.carsten-dalgaard.dk/)           #
 # for his contribution to the YaBB community                                  #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
 $german_informalcontexthelplngver = 'YaBB 2.7.00 $Revision: 1848 $';
 @german_informalcontexthelplngmods = ();

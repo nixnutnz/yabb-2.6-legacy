@@ -10,8 +10,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolsessionslngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolsessionslngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolsessionslngmods = ();
 if (@espanolsessionslngmods) {
     $espanolsessionslngmods = 1;
@@ -20,29 +22,34 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %session_txt = (
-'1' => 'Activar ID\'s de sesión',
-'2' => 'Esto proteje las funciones administrativas en una sesión más segura basada en la dirección IP',
-'3' => "Tu sesión se ha cerrado debido a que has entrado al foro desde una IP distinta ({yabb sessip})",
-'4' => 'Para certificar quien eres, contesta a la siguiente pregunta',
-'6' => 'No has podido certificar quién eres y tu sesión terminará',
-'8' => 'Selecciona tu pregunta de revalidación de sesión',
-'9' => 'Para certificar quién eres y revalidar una sesión, selecciona una pregunta y provee una respuesta.',
-'9a' => 'Si seleccionas \'Usar mi Contraseña\' debes dejar el campo vacío.',
-'10' => 'No has provisto de una respuesta<br />la forma de revalidar una sesión será tu contraseña.',
+    '1' => q~Activar ID\'s de sesión~,
+    '2' =>
+q~Esto proteje las funciones administrativas en una sesión más segura basada en la dirección IP~,
+    '3' =>
+q~Tu sesión se ha cerrado debido a que has entrado al foro desde una IP distinta ({yabb sessip})~,
+    '4' => q~Para certificar quien eres, contesta a la siguiente pregunta~,
+    '6' => q~No has podido certificar quién eres y tu sesión terminará~,
+    '8' => q~Selecciona tu pregunta de revalidación de sesión~,
+    '9' =>
+q~Para certificar quién eres y revalidar una sesión, selecciona una pregunta y provee una respuesta.~,
+    '9a' =>
+      q~Si seleccionas \'Usar mi Contraseña\' debes dejar el campo vacío.~,
+    '10' =>
+q~No has provisto de una respuesta<br />la forma de revalidar una sesión será tu contraseña.~,
 );
 
 %sesquest_txt = (
-'password' => 'Usar mi Contraseña',
-'1' => 'Mi animal favorito es un',
-'2' => 'El nombre de mi mascota es',
-'3' => 'Mi número de teléfono es',
-'4' => 'Mi fecha de nacimiento es',
-'5' => 'Mi mejor amigo se llama',
-'6' => 'Estoy enamorado/a de',
-'7' => 'La persona que más odio es',
-'8' => 'Mi código postal es',
-'9' => 'Mi deporte favorito es',
-'10' => 'Mi bebida favorita es',
+    'password' => q~Usar mi Contraseña~,
+    '1'        => q~Mi animal favorito es un~,
+    '2'        => q~El nombre de mi mascota es~,
+    '3'        => q~Mi número de teléfono es~,
+    '4'        => q~Mi fecha de nacimiento es~,
+    '5'        => q~Mi mejor amigo se llama~,
+    '6'        => q~Estoy enamorado/a de~,
+    '7'        => q~La persona que más odio es~,
+    '8'        => q~Mi código postal es~,
+    '9'        => q~Mi deporte favorito es~,
+    '10'       => q~Mi bebida favorita es~,
 );
 
 1;

@@ -11,8 +11,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$russianmiconlngver = 'YaBB 2.7.00 $Revision$';
+$russianmiconlngver  = 'YaBB 2.7.00 $Revision$';
 @russianmiconlngmods = ();
 if (@russianmiconlngmods) {
     $russianmmiconlngmods = 1;
@@ -20,103 +21,99 @@ if (@russianmiconlngmods) {
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-if (!$language){$language = $lang;}
+if ( !$language ) { $language = $lang; }
 
-%img_txt_m =(
-'70' => 'Мои любимые',
-);
+%img_txt_m = ( '70' => q~Мои любимые~, );
 
 %img_polltxt_m = (
-'44' => 'Голосование',
-'45' => 'Новое голосование',
-'46' => 'Опрос закрыт',
+    '44' => q~Голосование~,
+    '45' => q~Новое голосование~,
+    '46' => q~Опрос закрыт~,
 );
 
 %messageindex_txt_m = (
-'302' => 'новый',
-'303' => 'Перейти к первому непрочитанному сообщению',
-'454' => 'Горячая тема (более',
-'454a' => 'ответов)',
-'455' => 'Очень популярная тема (более',
-'456' => 'Закрытая тема',
-'457' => 'Обычная тема',
-'458' => 'Скрытая тема',
-'459' => 'Скрытая Важная тема',
-'460' => 'Скрытые Закрытая тема',
-'461' => 'Скрытая Важная Закрытая тема',
-'779' => 'Важная тема',
-'779a' => 'Глобальный Объявление',
-'779b' => 'Закрытая Глобальный Объявление',
-'780' => 'Важная Закрытая тема',
-'781' => 'Sticky',
-'845' => 'Тема перемещена',
+    '302'  => q~новый~,
+    '303'  => q~Перейти к первому непрочитанному сообщению~,
+    '454'  => q~Горячая тема (более~,
+    '454a' => q~ответов)~,
+    '455'  => q~Очень популярная тема (более~,
+    '456'  => q~Закрытая тема~,
+    '457'  => q~Обычная тема~,
+    '458'  => q~Скрытая тема~,
+    '459'  => q~Скрытая Важная тема~,
+    '460'  => q~Скрытые Закрытая тема~,
+    '461'  => q~Скрытая Важная Закрытая тема~,
+    '779'  => q~Важная тема~,
+    '779a' => q~Глобальный Объявление~,
+    '779b' => q~Закрытая Глобальный Объявление~,
+    '780'  => q~Важная Закрытая тема~,
+    '781'  => q~Sticky~,
+    '845'  => q~Тема перемещена~,
 );
 
 %messageindex_sort_m = (
-'sort_az' => "Sort (A-Z)",
-'sort_za' => "Sort (Z-A)",
-'sort_min' => "Sort (min answer)",
-'sort_max' => "Sort (max answer)",
-'sort_last' => "Sort (new answer)",
-'sort_first' => "Sort (old answer)",
+    'sort_az'    => q~Sort (A-Z)~,
+    'sort_za'    => q~Sort (Z-A)~,
+    'sort_min'   => q~Sort (min answer)~,
+    'sort_max'   => q~Sort (max answer)~,
+    'sort_last'  => q~Sort (new answer)~,
+    'sort_first' => q~Sort (old answer)~,
 );
 
 %im_message_status_m = (
-'confidential' => 'конфиденциальная',
-'urgent' => 'Срочно!',
-'standard' => 'стандарт',
-'alertmod' => 'Предупреждение Модератор.',
-'guestpm' => 'PM от Гость',
-'guestpmreply' => 'Ответить на PM от Гость',
-'imopen' => q~PM opened~,
+    'confidential' => q~конфиденциальная~,
+    'urgent'       => q~Срочно!~,
+    'standard'     => q~стандарт~,
+    'alertmod'     => q~Предупреждение Модератор.~,
+    'guestpm'      => q~PM от Гость~,
+    'guestpmreply' => q~Ответить на PM от Гость~,
+    'imopen'       => q~PM opened~,
 );
 
 %tabmenu_txt_m = (
-'edittab' => 'Edit tabs',
-'tabdel' => 'Delete this tab',
-'savetab' => 'Save Text',
-'newtab' => 'Add a tab',
+    'edittab' => q~Edit tabs~,
+    'tabdel'  => q~Delete this tab~,
+    'savetab' => q~Save Text~,
+    'newtab'  => q~Add a tab~,
 );
 
-%maintxt_m = (
-'900pd' => 'Пароль доступа Совет',
-);
+%maintxt_m = ( '900pd' => q~Пароль доступа Совет~, );
 
 %var_cal_m = (
-'calbirthday' => 'день рождения',
-'calprivate' => 'Private',
-'caldel' => 'Delete',
-'caledit' => 'Edit Event',
-'calsave' => 'Save Event',
-'getaddevent' => 'Add a new Event',
-'eventinfo' => 'Event',
-'eventannounce' => 'Announcement',
-'eventholiday' => 'Holiday',
-'eventnote' => 'Exclamation',
-'eventparty' => 'Party',
-'eventcelebration' => 'Celebration',
-'eventsport' => 'Sport',
-'eventmedia' => 'Media (TV)',
-'eventmeeting' => 'Meeting',
+    'calbirthday'      => q~день рождения~,
+    'calprivate'       => q~Private~,
+    'caldel'           => q~Delete~,
+    'caledit'          => q~Edit Event~,
+    'calsave'          => q~Save Event~,
+    'getaddevent'      => q~Add a new Event~,
+    'eventinfo'        => q~Event~,
+    'eventannounce'    => q~Announcement~,
+    'eventholiday'     => q~Holiday~,
+    'eventnote'        => q~Exclamation~,
+    'eventparty'       => q~Party~,
+    'eventcelebration' => q~Celebration~,
+    'eventsport'       => q~Sport~,
+    'eventmedia'       => q~Media (TV)~,
+    'eventmeeting'     => q~Meeting~,
 );
 
 %mess_icon_txt = (
-'281' => 'Standard',
-'282' => 'Thumbs Up',
-'283' => 'Thumbs Down',
-'284' => 'Exclamation Point',
-'285' => 'Question Mark',
-'286' => 'Lamp',
-'287' => 'Smiley',
-'288' => 'Angry',
-'289' => 'Cheesy',
-'290' => 'Laugh',
-'291' => 'Sad',
-'292' => 'Wink',
-'293' => 'Grin',
-'294' => 'Shocked',
-'295' => 'Cool',
-'296' => 'Huh',
+    '281' => q~Standard~,
+    '282' => q~Thumbs Up~,
+    '283' => q~Thumbs Down~,
+    '284' => q~Exclamation Point~,
+    '285' => q~Question Mark~,
+    '286' => q~Lamp~,
+    '287' => q~Smiley~,
+    '288' => q~Angry~,
+    '289' => q~Cheesy~,
+    '290' => q~Laugh~,
+    '291' => q~Sad~,
+    '292' => q~Wink~,
+    '293' => q~Grin~,
+    '294' => q~Shocked~,
+    '295' => q~Cool~,
+    '296' => q~Huh~,
 );
 
 1;

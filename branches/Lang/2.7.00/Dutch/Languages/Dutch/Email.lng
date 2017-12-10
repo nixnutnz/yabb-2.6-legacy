@@ -1,5 +1,5 @@
-﻿###############################################################################
-# Email.lng (Email templating and text declarations)                          #
+###############################################################################
+# Email.lng (E-mail templating and text declarations)                         #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
 # Review and changes by Pieszyce and other members of the YaBB community      #
@@ -13,8 +13,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchemaillngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchemaillngver  = 'YaBB 2.7.00 $Revision: 1933 $';
+$dutchemaillngmods = 0;
 @dutchemaillngmods = ();
 if (@dutchemaillngmods) {
     $dutchemaillngmods = 1;
@@ -23,59 +26,67 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %yabbtagdesc = (
-# Constant tags
-'scripturl' => "De URL naar YaBB Forum. Voorbeeld: {yabb scripturl}",
-'adminurl' => "De URL naar YaBB Admin Centrum. Voorbeeld: {yabb adminurl}",
-'mbname' => "De naam van dit forum. Voorbeeld: {yabb mbname}",
 
-# New Member related
-'userip' => "Het IP-adres van het lid.",
-'useremail' => "De e-mail van het lid.",
+    # Constant tags
+    'scripturl' => q~De URL naar YaBB Forum. Voorbeeld: {yabb scripturl}~,
+    'adminurl' => q~De URL naar YaBB Admin Centrum. Voorbeeld: {yabb adminurl}~,
+    'mbname'   => q~De naam van dit forum. Voorbeeld: {yabb mbname}~,
 
-# User-related
-'username' => "Het Gebruikers ID van de Gebruiker.",
-'displayname' => "De schermnaam van de Gebuiker.",
-'cryptusername' => "Het Gebruikers ID van deze gebruiker, gecodeerd voor gebruik in een URL.",
-'reviewer' => "De echte naam van de admin/gmod, die de registraties bekijkt.",
+    # New Member related
+    'userip'    => q~Het IP-adres van het lid.~,
+    'useremail' => q~De e-mail van het lid.~,
 
-# Topic/PM-related
-'sender' => "De naam van de afzender van de PM.",
-'num' => "Het nummer van de Topic (voor URL doeleinden)",
-'start' => "Het nummer van de Post in de Topic (voor URL doeleinden)",
-'tmessage' => "Tekst van de nieuwe Topic",
-'tauthor' => "Naam van de Auteur",
+    # User-related
+    'username'    => q~Het Gebruikers ID van de Gebruiker.~,
+    'displayname' => q~De schermnaam van de Gebuiker.~,
+    'cryptusername' =>
+q~Het Gebruikers ID van deze gebruiker, gecodeerd voor gebruik in een URL.~,
+    'reviewer' =>
+      q~De echte naam van de admin/gmod, die de registraties bekijkt.~,
 
-# Registration/Password
-'activationcode' => "De activatiecode verzonden in een registratie email.",
-'remindercode' => "De wachtwoord link verzonden in een herinnering e-mail.",
-'preregspan' => "De tijd die is toegestaan voordat een pre-registratie verloopt. Huidige waarde: {yabb preregspan}",
-'reason' => "Admin redenen achter een beslissing die genomen is tijdens de beoordeling van een registratie met admin goedkeuring",
+    # Topic/PM-related
+    'sender'   => q~De naam van de afzender van de PM.~,
+    'num'      => q~Het nummer van de Topic (voor URL doeleinden)~,
+    'start'    => q~Het nummer van de Post in de Topic (voor URL doeleinden)~,
+    'tmessage' => q~Tekst van de nieuwe Topic~,
+    'tauthor'  => q~Naam van de Auteur~,
 
-# Sending a Topic
-'toname' => "De naam van degene die een Topic ontvangt.",
+    # Registration/Password
+    'activationcode' => q~De activatiecode verzonden in een registratie email.~,
+    'remindercode' =>
+      q~De wachtwoord link verzonden in een herinnering e-mail.~,
+    'preregspan' =>
+q~De tijd die is toegestaan voordat een pre-registratie verloopt. Huidige waarde: {yabb preregspan}~,
+    'reason' =>
+q~Admin redenen achter een beslissing die genomen is tijdens de beoordeling van een registratie met admin goedkeuring~,
 
-# PMs
-'sendto' => "Ontvanger van deze PM.",
-'email' => "E-mail van het lid.",
-'date' => "De datum dat de PM verzonden werd.",
-'subject' => "Het onderwerp van de post of PM.",
-'message' => "De tekst van de PM.",
+    # Sending a Topic
+    'toname' => q~De naam van degene die een Topic ontvangt.~,
+
+    # PMs
+    'sendto'  => q~Ontvanger van deze PM.~,
+    'email'   => q~E-mail van het lid.~,
+    'date'    => q~De datum dat de PM verzonden werd.~,
+    'subject' => q~Het onderwerp van de post of PM.~,
+    'message' => q~De tekst van de PM.~,
 );
 
 # Pre registration subject lines
-%mailreg_txt=(
-'apr_result_activate' => "Activerings informatie voor",
-'apr_result_validate' => "Registratie gevalideerd voor",
-'apr_result_info' => "Registratie informatie voor",
-'apr_result_wait' => "Registratie in behandeling voor",
-'apr_result_reject' => "Registratie geweigerd voor",
-'apr_result_approved' => "Registratie goedgekeurd voor",
-'new_member_info' => "Een Nieuw lid heeft zich geregistreerd.",
+%mailreg_txt = (
+    'apr_result_activate' => q~Activerings informatie voor~,
+    'apr_result_validate' => q~Registratie gevalideerd voor~,
+    'apr_result_info'     => q~Registratie informatie voor~,
+    'apr_result_wait'     => q~Registratie in behandeling voor~,
+    'apr_result_reject'   => q~Registratie geweigerd voor~,
+    'apr_result_approved' => q~Registratie goedgekeurd voor~,
+    'new_member_info'     => q~Een Nieuw lid heeft zich geregistreerd.~,
 );
 
-$yabbtags{'preregemail'} = qq~displayname preregspan cryptusername activationcode~;
-$emaildesc{'preregemail'} = qq~De registratie email welke verzonden wordt wanneer gebruik gemaakt wordt van Activering link~;
-$preregemail = qq~Welkom, {yabb displayname}!
+$yabbtags{'preregemail'} =
+  q~displayname preregspan cryptusername activationcode~;
+$emaildesc{'preregemail'} =
+q~De registratie email welke verzonden wordt wanneer gebruik gemaakt wordt van Activering link~;
+$preregemail = q~Welkom, {yabb displayname}!
 Dit is de activeringscode van uw account .
 
 U heeft succesvol een pre-registratie gemaakt op het {yabb mbname}.
@@ -90,9 +101,10 @@ Als de link niet werkt (of als u AOL gebruikt of een op een browser gebaseerd e-
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'approveregemail'} = qq~username displayname~;
-$emaildesc{'approveregemail'} = qq~De afwachting van een goedkeuring E-mail, als er géén wachtwoord of pre-registratie code wordt meegestuurd~;
-$approveregemail = qq~Hallo, {yabb displayname}!
+$yabbtags{'approveregemail'} = q~username displayname~;
+$emaildesc{'approveregemail'} =
+q~De afwachting van een goedkeuring E-mail, als er géén wachtwoord of pre-registratie code wordt meegestuurd~;
+$approveregemail = q~Hallo, {yabb displayname}!
 
 Uw aanvraag met aanmeldings-ID: "{yabb username}" is in behandeling bij het {yabb mbname} team.
 
@@ -102,9 +114,10 @@ Zodra uw aanvraag is verwerkt ontvangt u daarover bericht.
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'instantapprovedemail'} = qq~username displayname reviewer~;
-$emaildesc{'instantapprovedemail'} = qq~De directe goedkeurings mail als er géén wachtwoord of pre-reg code word meegestuurd~;
-$instantapprovedemail = qq~Witam/Welkom, {yabb displayname}!
+$yabbtags{'instantapprovedemail'} = q~username displayname reviewer~;
+$emaildesc{'instantapprovedemail'} =
+q~De directe goedkeurings mail als er géén wachtwoord of pre-reg code word meegestuurd~;
+$instantapprovedemail = q~Witam/Welkom, {yabb displayname}!
 
 Gefeliciteerd en welkom.
 
@@ -118,9 +131,10 @@ U kunt nu nadat u bent ingelogd uw wachtwoord veranderen in het Gebruikerscentru
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'pwinstantapprovedemail'} = qq~username displayname reviewer password~;
-$emaildesc{'pwinstantapprovedemail'} = qq~De Instant goedkeuring E-mail wanneer een wachtwoord verzonden wordt~;
-$pwinstantapprovedemail = qq~Geachte, {yabb displayname}!
+$yabbtags{'pwinstantapprovedemail'} = q~username displayname reviewer password~;
+$emaildesc{'pwinstantapprovedemail'} =
+  q~De Instant goedkeuring E-mail wanneer een wachtwoord verzonden wordt~;
+$pwinstantapprovedemail = q~Geachte, {yabb displayname}!
 
 Gefeliciteerd en welkom.
 
@@ -134,9 +148,10 @@ U kunt nu nadat u heeft ingelogd uw wachtwoord veranderen in het Gebruikerscentr
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'instantrejectedemail'} = qq~username displayname reviewer~;
-$emaildesc{'instantrejectedemail'} = qq~De directe afwijzings mail als er géén wachtwoord of pre-reg code word meegestuurd~;
-$instantrejectedemail = qq~Geachte, {yabb displayname}!
+$yabbtags{'instantrejectedemail'} = q~username displayname reviewer~;
+$emaildesc{'instantrejectedemail'} =
+q~De directe afwijzings mail als er géén wachtwoord of pre-reg code word meegestuurd~;
+$instantrejectedemail = q~Geachte, {yabb displayname}!
 
 We betreuren het u te informeren, dat uw aanvraag is geweigerd door {yabb reviewer} van het {yabb mbname} team.
 Er is geen specifieke reden gegeven voor de weigering, maar waarschijnlijk hebben uw registratie gegevens of uw opgegeven redenen geresulteerd in dit besluit.
@@ -146,9 +161,10 @@ Als u denkt dat dit een vergissing is, bent u natuurlijk vrij opnieuw een aanvra
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'reviewapprovedemail'} = qq~username displayname reviewer~;
-$emaildesc{'reviewapprovedemail'} = qq~De beoordeelde goedkeurings mail als er géén wachtwoord of prereg code word meegestuurd~;
-$reviewapprovedemail = qq~Hallo, {yabb displayname}!
+$yabbtags{'reviewapprovedemail'} = q~username displayname reviewer~;
+$emaildesc{'reviewapprovedemail'} =
+q~De beoordeelde goedkeurings mail als er géén wachtwoord of prereg code word meegestuurd~;
+$reviewapprovedemail = q~Hallo, {yabb displayname}!
 
 Gefeliciteerd en Welkom.
 
@@ -164,9 +180,10 @@ U kunt uw wachtwoord veranderen na inloggen op de profiel pagina. Klik op de pro
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'pwreviewapprovedemail'} = qq~username displayname reviewer password~;
-$emaildesc{'pwreviewapprovedemail'} = qq~De directe goedkeuring als er een wachtwoord word meegestuurd~;
-$pwreviewapprovedemail = qq~Hallo, {yabb displayname}!
+$yabbtags{'pwreviewapprovedemail'} = q~username displayname reviewer password~;
+$emaildesc{'pwreviewapprovedemail'} =
+  q~De directe goedkeuring als er een wachtwoord word meegestuurd~;
+$pwreviewapprovedemail = q~Hallo, {yabb displayname}!
 
 Gefeliciteerd en Welkom.
 
@@ -183,9 +200,10 @@ U kunt uw wachtwoord veranderen na inloggen op de profiel pagina. Klik op de pro
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'reviewrejectedemail'} = qq~username displayname reviewer reason~;
-$emaildesc{'reviewrejectedemail'} = qq~De directe afwijzings mail als er géén wachtwoord of prereg code word meegestuurd~;
-$reviewrejectedemail = qq~Geachte, {yabb displayname}!
+$yabbtags{'reviewrejectedemail'} = q~username displayname reviewer reason~;
+$emaildesc{'reviewrejectedemail'} =
+q~De directe afwijzings mail als er géén wachtwoord of prereg code word meegestuurd~;
+$reviewrejectedemail = q~Geachte, {yabb displayname}!
 
 Met spijt delen wij u mede dat uw aanvraag is geweigerd door {yabb reviewer} van het {yabb mbname} team.
 De volgende reden werd gegeven door {yabb reviewer}:
@@ -197,9 +215,10 @@ Mocht u denken dat dit een vergissing is, bent u natuurlijk vrij opnieuw een aan
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'passwordregemail'} = qq~username password displayname~;
-$emaildesc{'passwordregemail'} = qq~De registratie email welke verzonden wordt bij gebruik van een willekeurig wachtwoord~;
-$passwordregemail = qq~Welkom, {yabb displayname}!
+$yabbtags{'passwordregemail'} = q~username password displayname~;
+$emaildesc{'passwordregemail'} =
+q~De registratie email welke verzonden wordt bij gebruik van een willekeurig wachtwoord~;
+$passwordregemail = q~Welkom, {yabb displayname}!
 
 Uw gebruikersnaam is {yabb username}, en uw wachtwoord is {yabb password}.
 
@@ -210,9 +229,10 @@ U kunt uw wachtwoord wijzigen nadat u bent ingelogd, door naar uw profielpagina 
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'welcomeregemail'} = qq~username password displayname~;
-$emaildesc{'welcomeregemail'} = qq~De registratie E-mail wanneer geen wachtwoord of activatie link wordt verzonden~;
-$welcomeregemail = qq~Welkom, {yabb displayname}!
+$yabbtags{'welcomeregemail'} = q~username password displayname~;
+$emaildesc{'welcomeregemail'} =
+q~De registratie E-mail wanneer geen wachtwoord of activatie link wordt verzonden~;
+$welcomeregemail = q~Welkom, {yabb displayname}!
 
 Uw gebruikersnaam is {yabb username}, en uw wachtwoord is {yabb password}.
 
@@ -223,9 +243,10 @@ U kunt uw wachtwoord wijzigen nadat u bent ingelogd, door naar u profielpagina t
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'activatedpassregemail'} = qq~username password displayname~;
-$emaildesc{'activatedpassregemail'} = qq~De registratie activeringsmail bevestiging (stuurt een wachtwoord)~;
-$activatedpassregemail = qq~Welkom, {yabb displayname}!
+$yabbtags{'activatedpassregemail'} = q~username password displayname~;
+$emaildesc{'activatedpassregemail'} =
+  q~De registratie activeringsmail bevestiging (stuurt een wachtwoord)~;
+$activatedpassregemail = q~Welkom, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
 
@@ -236,9 +257,10 @@ U kunt uw wachtwoord wijzigen nadat u bent ingelogd, door naar uw profielpagina 
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'activatedwelcomeregemail'} = qq~username password displayname~;
-$emaildesc{'activatedwelcomeregemail'} = qq~De registratie activeringsmail bevestiging (stuurt geen wachtwoord)~;
-$activatedwelcomeregemail = qq~Welkom, {yabb displayname}!
+$yabbtags{'activatedwelcomeregemail'} = q~username password displayname~;
+$emaildesc{'activatedwelcomeregemail'} =
+  q~De registratie activeringsmail bevestiging (stuurt geen wachtwoord)~;
+$activatedwelcomeregemail = q~Welkom, {yabb displayname}!
 
 Uw gebruiker ID is {yabb username}, en uw wachtwoord is {yabb password}.
 
@@ -249,9 +271,9 @@ U kunt uw wachtwoord veranderen wanneer u ingelogd bent door te klikken op de Ge
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'newmemberemail'} = qq~displayname username userip useremail~;
-$emaildesc{'newmemberemail'} = qq~De nieuw lid Admin  notificatie e-mail~;
-$newmemberemail = qq~Een nieuw lid heeft zich geregistreerd in uw forum.
+$yabbtags{'newmemberemail'}  = q~displayname username userip useremail~;
+$emaildesc{'newmemberemail'} = q~De nieuw lid Admin  notificatie e-mail~;
+$newmemberemail = q~Een nieuw lid heeft zich geregistreerd in uw forum.
 
 Schermnaam: {yabb displayname}
 Gebruiker ID: {yabb username}
@@ -268,9 +290,10 @@ Om het profiel van het nieuwe lid te controleren log in op uw Forum.
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'passwordreminderemail'} = qq~displayname mbname remindercode cryptusername~;
-$emaildesc{'passwordreminderemail'} = qq~De wachtwoord Reset E-mail~;
-$passwordreminderemail = qq~Geachte {yabb displayname},
+$yabbtags{'passwordreminderemail'} =
+  q~displayname mbname remindercode cryptusername~;
+$emaildesc{'passwordreminderemail'} = q~De wachtwoord Reset E-mail~;
+$passwordreminderemail = q~Geachte {yabb displayname},
 
 Een vraag werd gesteld door een bezoeker op {yabb mbname} om uw wachtwoord te resetten. Als u geen verzoek indiende om uw wachtwoord te resetten, negeer dan alstublieft deze e-mail.
 
@@ -280,9 +303,11 @@ Wanneer de link niet werkt (of als u AOL of een browser-gebaseerd e-mail program
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'boardnewtopicnotificationemail'} = qq~num subject tmessage tauthor~;
-$emaildesc{'boardnewtopicnotificationemail'} = qq~De notificatie e-mail (Board-Niveau, Nieuwe Topic)~;
-$boardnewtopicnotificationemail = qq~Een nieuwe topic, "{yabb subject}", is gepost door {yabb tauthor} naar een board wat u aan het bekijken bent.
+$yabbtags{'boardnewtopicnotificationemail'} = q~num subject tmessage tauthor~;
+$emaildesc{'boardnewtopicnotificationemail'} =
+  q~De notificatie e-mail (Board-Niveau, Nieuwe Topic)~;
+$boardnewtopicnotificationemail =
+q~Een nieuwe topic, "{yabb subject}", is gepost door {yabb tauthor} naar een board wat u aan het bekijken bent.
 
 ########################################
 
@@ -295,9 +320,11 @@ Bekijk het op <a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={ya
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'boardnotificationemail'} = qq~num start subject tmessage tauthor~;
-$emaildesc{'boardnotificationemail'} = qq~De notificatie e-mail (Board-Niveau, Bestaande Topic)~;
-$boardnotificationemail = qq~Een reactie, "{yabb subject}", is gepost door {yabb tauthor} naar een board wat u aan het bekijken bent.
+$yabbtags{'boardnotificationemail'} = q~num start subject tmessage tauthor~;
+$emaildesc{'boardnotificationemail'} =
+  q~De notificatie e-mail (Board-Niveau, Bestaande Topic)~;
+$boardnotificationemail =
+q~Een reactie, "{yabb subject}", is gepost door {yabb tauthor} naar een board wat u aan het bekijken bent.
 
 ########################################
 
@@ -310,9 +337,10 @@ Bekijk het op <a href="{yabb scripturl}?num={yabb num}/{yabb start}">{yabb scrip
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'topicnotificationemail'} = qq~num subject start tmessage tauthor~;
-$emaildesc{'topicnotificationemail'} = qq~De Notificatie E-mail (Topic-Niveau)~;
-$topicnotificationemail = qq~Een reactie, "{yabb subject}", his gepost door {yabb tauthor} naar een topic dat u aan het bekijken bent.
+$yabbtags{'topicnotificationemail'}  = q~num subject start tmessage tauthor~;
+$emaildesc{'topicnotificationemail'} = q~De Notificatie E-mail (Topic-Niveau)~;
+$topicnotificationemail =
+q~Een reactie, "{yabb subject}", his gepost door {yabb tauthor} naar een topic dat u aan het bekijken bent.
 
 ########################################
 
@@ -327,9 +355,10 @@ Er zullen geen notificaties meer verzonden worden totdat u het topic opnieuw bez
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'profilenewpasswordemail'} = qq~displayname password~;
-$emaildesc{'profilenewpasswordemail'} = qq~De Profiel E-mail voor het verzenden  van een nieuw wachtwoord als de bestaande verandert is~;
-$profilenewpasswordemail = qq~Geachte {yabb displayname},
+$yabbtags{'profilenewpasswordemail'} = q~displayname password~;
+$emaildesc{'profilenewpasswordemail'} =
+q~De Profiel E-mail voor het verzenden  van een nieuw wachtwoord als de bestaande verandert is~;
+$profilenewpasswordemail = q~Geachte {yabb displayname},
 
 Uw wachtwoord is verandert, het is nu {yabb password}.
 
@@ -338,9 +367,9 @@ U kunt uw wachtwoord veranderen wanneer u ingelogd bent door te klikken op de Ge
 Met vriendelijke groet,
 Het {yabb mbname} team~;
 
-$yabbtags{'sendtopicemail'} = qq~toname subject displayname num~;
-$emaildesc{'sendtopicemail'} = qq~De e-mail voor het versturen van een topic~;
-$sendtopicemail = qq~Geachte {yabb toname},
+$yabbtags{'sendtopicemail'}  = q~toname subject displayname num~;
+$emaildesc{'sendtopicemail'} = q~De e-mail voor het versturen van een topic~;
+$sendtopicemail              = q~Geachte {yabb toname},
 Ik wial de volgende topic controleren, "{yabb subject}", op {yabb mbname}. Om te bekijken, klik alstublieft op de link beneden:
 
 <a href="{yabb scripturl}?num={yabb num}">{yabb scripturl}?num={yabb num}</a>
@@ -348,9 +377,11 @@ Ik wial de volgende topic controleren, "{yabb subject}", op {yabb mbname}. Om te
 Bedankt,
 {yabb displayname}~;
 
-$yabbtags{'privatemessagenotificationemail'} = qq~sender subject message~;
-$emaildesc{'privatemessagenotificationemail'} = qq~De Persoonijke berichten E-mail~;
-$privatemessagenotificationemail = qq~{yabb sender} heeft u een persoonlijk bericht gestuurd.
+$yabbtags{'privatemessagenotificationemail'} = q~sender subject message~;
+$emaildesc{'privatemessagenotificationemail'} =
+  q~De Persoonijke berichten E-mail~;
+$privatemessagenotificationemail =
+  q~{yabb sender} heeft u een persoonlijk bericht gestuurd.
 
 Onderwerp: {yabb subject}
 Bericht: {yabb message}
@@ -360,15 +391,13 @@ Dit bericht is ook in uw persoonlijk berichten inbox op {yabb mbname}\: <a href=
 
 ## for online alert pms.
 %online_alert = (
-newnotify => "Nieuwe post waarschuwing.",
-replynotify => "Antwoord waarschuwing.",
+    newnotify   => q~Nieuwe post waarschuwing.~,
+    replynotify => q~Antwoord waarschuwing.~,
 );
 
-
-
-$yabbtags{'replyguestmail'} = qq~sender email sendto date subject message~;
-$emaildesc{'replyguestmail'} = qq~De antwoord gast PM naar Admin E-mail~;
-$replyguestmail = qq~Geachte {yabb sender},
+$yabbtags{'replyguestmail'}  = q~sender email sendto date subject message~;
+$emaildesc{'replyguestmail'} = q~De antwoord gast PM naar Admin E-mail~;
+$replyguestmail              = q~Geachte {yabb sender},
 
 Met vriendelijke groet,
 Het {yabb mbname} team
@@ -384,11 +413,10 @@ Subject: {yabb subject}
 {yabb message}
 ~;
 
-
-$yabbtags{'deleteduseremail'} = q~screen name~;
+$yabbtags{'deleteduseremail'}  = q~screen name~;
 $emaildesc{'deleteduseremail'} = q~De verwijderde gebruiker notificatie E-mail~;
-$deletedusersybject = q~Uw account is verwijderd op~;
-$deleteduseremail = q~Geachte, {yabb displayname}!
+$deletedusersybject            = q~Uw account is verwijderd op~;
+$deleteduseremail              = q~Geachte, {yabb displayname}!
 
 Uw account op {yabb mbname} is niet langer active en is verwijderd.
 
@@ -397,10 +425,10 @@ Het {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'banneduseremail'} = q~scherm naam~;
+$yabbtags{'banneduseremail'}  = q~scherm naam~;
 $emaildesc{'banneduseremail'} = q~De verbannen gebruiker Notificatie email~;
-$bannedusersybject = q~Uw account verbannen op~;
-$banneduseremail = q~Hallo, {yabb displayname}:
+$bannedusersybject            = q~Uw account verbannen op~;
+$banneduseremail              = q~Hallo, {yabb displayname}:
 
 U bent verbannen van {yabb mbname} {yabb ban_time} door {yabb banner}{yabb ban_reason}.
 
@@ -409,10 +437,10 @@ Het {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'suspendeduseremail'} = q~scherm naam~;
+$yabbtags{'suspendeduseremail'}  = q~scherm naam~;
 $emaildesc{'suspendeduseremail'} = q~De verbannen gebruiker Notificatie email~;
-$suspendusersybject = q~Uw account is geschorst op~;
-$suspendeduseremail = q~Hallo, {yabb displayname}:
+$suspendusersybject              = q~Uw account is geschorst op~;
+$suspendeduseremail              = q~Hallo, {yabb displayname}:
 
 Uw account op {yabb mbname} is geschorst {yabb ban_time} door {yabb banner}{yabb ban_reason}.
 
@@ -420,4 +448,5 @@ Met vriendelijke groet,
 Het {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
+
 1;

@@ -10,84 +10,89 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomisearchlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomisearchlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomisearchlngmods = ();
-if(@suomisearchlngmods){
+if (@suomisearchlngmods) {
     $suomisearchlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %search_txt = (
-'1' => 'Viestin lähettämisestä on kulunut korkeintaan',
-'2' => 'viikko',
-'3' => 'kuukausi',
-'4' => 'kolme kuukautta',
-'5' => 'vuosi',
-'6' => '(kaikki viestit)',
-'30' => 'aika',
-'70' => 'Aihe',
-'72' => 'Viesti',
-'73' => 'IP-osoite',
-'105' => 'Kirjoittaja:',
-'107' => '',
-'109' => 'Keskustelun aloitti',
-'166' => 'Haun tulokset',
-'167' => 'Tulosten loppu',
-'170' => 'Haku ei tuottanut tuloksia.',
-'171' => 'Takaisin hakuun.',
-'182' => 'Hae',
-'183' => 'Aseta hakuparametrit',
-'186' => 'Hae annetun käyttäjän aloittamista aiheista',
-'187' => 'Hae annetun käyttäjän lähettämistä aiheista',
-'189' => 'Valitse hakualueet',
-'190' => 'Pidä [ctrl]- tai [cmd]-näppäin alhaalla valitaksesi useamman kuin yhden.',
-'191' => 'Kuinka monta tulosta näytetään?',
-'191a' => 'Näytä vain yksi viesti per aihe?',
-'191b' => "Suurin sallittu: $maxsearchdisplay",
-'191x' => "Voit asettaa korkeintaan $maxsearchdisplay tulosta näytettäväksi. Vaihda arvoa!",
-'236' => 'Palaa',
-'237' => 'alueen etusivule.',
-'343' => 'Etsi kaikkia sanoja',
-'344' => 'Etsi yksittäisiä sanoja',
-'345' => 'Etsi lause',
-'345a' => 'Etsi sanan osia',
-'346' => 'Etsi vain -Kaikki- Jäsenet',
-'525' => '',
-'572' => 'Etsi vain -Kaikki- Vieraat',
-'573' => 'Hakukentät',
-'574' => 'Aika viimeisestä viestistä',
-'575' => 'Vähintään',
-'576' => 'Enintään',
-'577' => 'Kuka tahansa',
-'578' => 'tuntia',
-'579' => 'päivää',
-'582' => 'Etsi',
-'583' => 'Käyttäjältä',
-'737' => 'Valitse kaikki',
-'pmfrom' => 'Lähettäjä', ## new
-'pmto' => 'Vastaanottaja',
-'pmcc' => 'CC',
-'pmbcc' => 'BCC',
-'pmgroup' => 'Ryhmä',
-'searchme' => 'Etsi omia viestejä',
-'casesensitiv' => 'Merkkikoon huomioiva',
-'searchyabbtags' => 'Etsi myös YaBBCode-tagien sisältä <span class="small">(Hakasulkeiden sisältä [...]. Vie enemmän aikaa!)</span>',
+    '1'   => q~Viestin lähettämisestä on kulunut korkeintaan~,
+    '2'   => q~viikko~,
+    '3'   => q~kuukausi~,
+    '4'   => q~kolme kuukautta~,
+    '5'   => q~vuosi~,
+    '6'   => q~(kaikki viestit)~,
+    '30'  => q~aika~,
+    '70'  => q~Aihe~,
+    '72'  => q~Viesti~,
+    '73'  => q~IP-osoite~,
+    '105' => q~Kirjoittaja:~,
+    '107' => q~~,
+    '109' => q~Keskustelun aloitti~,
+    '166' => q~Haun tulokset~,
+    '167' => q~Tulosten loppu~,
+    '170' => q~Haku ei tuottanut tuloksia.~,
+    '171' => q~Takaisin hakuun.~,
+    '182' => q~Hae~,
+    '183' => q~Aseta hakuparametrit~,
+    '186' => q~Hae annetun käyttäjän aloittamista aiheista~,
+    '187' => q~Hae annetun käyttäjän lähettämistä aiheista~,
+    '189' => q~Valitse hakualueet~,
+    '190' =>
+q~Pidä [ctrl]- tai [cmd]-näppäin alhaalla valitaksesi useamman kuin yhden.~,
+    '191'  => q~Kuinka monta tulosta näytetään?~,
+    '191a' => q~Näytä vain yksi viesti per aihe?~,
+    '191b' => q~Suurin sallittu: {yabb maxsearchdisplay}~,
+    '191x' =>
+q~Voit asettaa korkeintaan {yabb maxsearchdisplay} tulosta näytettäväksi. Vaihda arvoa!~,
+    '236'          => q~Palaa~,
+    '237'          => q~alueen etusivule.~,
+    '343'          => q~Etsi kaikkia sanoja~,
+    '344'          => q~Etsi yksittäisiä sanoja~,
+    '345'          => q~Etsi lause~,
+    '345a'         => q~Etsi sanan osia~,
+    '346'          => q~Etsi vain -Kaikki- Jäsenet~,
+    '525'          => q~~,
+    '572'          => q~Etsi vain -Kaikki- Vieraat~,
+    '573'          => q~Hakukentät~,
+    '574'          => q~Aika viimeisestä viestistä~,
+    '575'          => q~Vähintään~,
+    '576'          => q~Enintään~,
+    '577'          => q~Kuka tahansa~,
+    '578'          => q~tuntia~,
+    '579'          => q~päivää~,
+    '582'          => q~Etsi~,
+    '583'          => q~Käyttäjältä~,
+    '737'          => q~Valitse kaikki~,
+    'pmfrom'       => q~Lähettäjä~,
+    'pmto'         => q~Vastaanottaja~,
+    'pmcc'         => q~CC~,
+    'pmbcc'        => q~BCC~,
+    'pmgroup'      => q~Ryhmä~,
+    'searchme'     => q~Etsi omia viestejä~,
+    'casesensitiv' => q~Merkkikoon huomioiva~,
+    'searchyabbtags' =>
+q~Etsi myös YaBBCode-tagien sisältä <span class="small">(Hakasulkeiden sisältä [...]. Vie enemmän aikaa!)</span>~,
 );
 
 %pmboxes_txt = (
-'in' => 'Sisään ',
-'inbox' => 'Saapuneet',
-'out' => 'Ulos',
-'outbox' => 'Lähetetyt',
-'store' => 'Tallenna kansioon',
+    'in'     => q~Sisään ~,
+    'inbox'  => q~Saapuneet~,
+    'out'    => q~Ulos~,
+    'outbox' => q~Lähetetyt~,
+    'store'  => q~Tallenna kansioon~,
 );
 
 %searchselector_txt = (
-'select' => 'Valitse',
-'remove' => 'Poista',
-'removeconfirm' => 'Oletko varma, että haluat poistaa käyttäjän?',
+    'select'        => q~Valitse~,
+    'remove'        => q~Poista~,
+    'removeconfirm' => q~Oletko varma, että haluat poistaa käyttäjän?~,
 );
 
 1;

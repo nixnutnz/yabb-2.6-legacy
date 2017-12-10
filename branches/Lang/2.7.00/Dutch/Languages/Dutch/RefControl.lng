@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # RefControl.lng (Referer Control text definitions)                           #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by: The YaBB Development Team                                      #
 #              with assistance from the YaBB community.                       #
 ###############################################################################
-$dutchrefcontrollngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1874 ##
+our $VERSION = '2.7.00';
 
+$dutchrefcontrollngver  = 'YaBB 2.7.00 $Revision: 1874 $';
 @dutchrefcontrollngmods = ();
 if (@dutchrefcontrollngmods) {
     $dutchrefcontrollngmods = 1;
@@ -23,59 +25,60 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %refer_settings = (
-'gen' => q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
-'refer_controls' => q~General~,
-'refer_mods' => q~Mods~,
+    'gen' =>
+q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
+    'refer_controls' => q~General~,
+    'refer_mods'     => q~Mods~,
 );
 
 %refexpl_txt = (
-'birthdaylist' => q~View Birthday List~,
-'eventcal' => q~View Event Calendar~,
-'get_cal_ssi' => q~Allow Calendar in other pages~,
-'display' => 'Een bericht weergeven in een discussie',
-'downloadfile' => 'Download een Bijlage',
-'help' => 'Toon Helppagina forum',
-'login' => 'Login beginscherm oproepen',
-'logout' => 'Uitloggen',
-'messageindex' => 'Toon berichten index',
-'ml' => 'Toon Ledenlijst',
-'mycenter' => 'Hoofdpagina in Mijn Centrum tonen',
-'recent' => 'Nieuwste posts tonen',
-'recenttopics' => 'Alle meest recente topics tonen',
-'register' => 'Registreringsforumlier tonen',
-'reminder' => q~ 'Mijn wachtwoord vergeten' formulier tonen~,
-'RSSboard' => 'De meest recente onderwerpen op een board als een RSS-feed bekijken',
-'RSSrecent' => 'De laatste topics van een hele forum of categorie als een RSS-feed bekijken',
-'search' => 'Zoekfunctie oproepen',
-'viewdownloads' => 'Downloads tonen',
-'viewprofile' => 'Gebruikersprofiel tonen',
-'refer_controls' => q~General~,
-'refer_mods' => q~Mods~,
+    'birthdaylist' => q~View Birthday List~,
+    'display'      => q~Een bericht weergeven in een discussie~,
+    'downloadfile' => q~Download een Bijlage~,
+    'eventcal'     => q~View Event Calendar~,
+    'get_cal_ssi'  => q~Allow Calendar in other pages~,
+    'help'         => q~Toon Helppagina forum~,
+    'login'        => q~Login beginscherm oproepen~,
+    'logout'       => q~Uitloggen~,
+    'messageindex' => q~Toon berichten index~,
+    'ml'           => q~Toon Ledenlijst~,
+    'mycenter'     => q~Hoofdpagina in Mijn Centrum tonen~,
+    'recent'       => q~Nieuwste posts tonen~,
+    'recenttopics' => q~Alle meest recente topics tonen~,
+    'register'     => q~Registreringsforumlier tonen~,
+    'reminder'     => q~ 'Mijn wachtwoord vergeten' formulier tonen~,
+    'RSSboard' =>
+      q~De meest recente onderwerpen op een board als een RSS-feed bekijken~,
+    'RSSrecent' =>
+q~De laatste topics van een hele forum of categorie als een RSS-feed bekijken~,
+    'search'         => q~Zoekfunctie oproepen~,
+    'viewdownloads'  => q~Downloads tonen~,
+    'viewprofile'    => q~Gebruikersprofiel tonen~,
+    'refer_controls' => q~General~,
+    'refer_mods'     => q~Mods~,
 );
 
 %refer_txt = (
-'birthdaylist' => q~View Birthday List~,
-'display' =>  q~Display Threads~,
-'downloadfile' =>  q~Download Attachment~,
-'eventcal' => q~View Event Calendar~,
-'get_cal_ssi' => q~Allow Calendar in other pages~,
-'help' =>  q~Show Help~,
-'login' =>  q~Log In screen~,
-'logout' =>  q~Log Out~,
-'messageindex' =>  q~Display Message index~,
-'ml' =>  q~Show Memberlist~,
-'mycenter' =>  q~MyCenter main page~,
-'recent' =>  q~Show recent posts~,
-'recenttopics' =>  q~Show recent topics~,
-'register' =>  q~Registration~,
-'reminder' =>  q~Password reset~,
-'RSSboard' =>  q~RSS Board~,
-'RSSrecent' =>  q~RSS Recent Topics~,
-'search' =>  q~Search Screen~,
-'viewdownloads' =>  q~View Downloads~,
-'viewprofile' =>  q~View a User Profile~,
+    'birthdaylist'  => q~View Birthday List~,
+    'display'       => q~Display Threads~,
+    'downloadfile'  => q~Download Attachment~,
+    'eventcal'      => q~View Event Calendar~,
+    'get_cal_ssi'   => q~Allow Calendar in other pages~,
+    'help'          => q~Show Help~,
+    'login'         => q~Log In screen~,
+    'logout'        => q~Log Out~,
+    'messageindex'  => q~Display Message index~,
+    'ml'            => q~Show Memberlist~,
+    'mycenter'      => q~MyCenter main page~,
+    'recent'        => q~Show recent posts~,
+    'recenttopics'  => q~Show recent topics~,
+    'register'      => q~Registration~,
+    'reminder'      => q~Password reset~,
+    'RSSboard'      => q~RSS Board~,
+    'RSSrecent'     => q~RSS Recent Topics~,
+    'search'        => q~Search Screen~,
+    'viewdownloads' => q~View Downloads~,
+    'viewprofile'   => q~View a User Profile~,
 );
-
-## Mod Hook ##
 
 1;

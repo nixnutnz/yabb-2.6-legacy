@@ -1,6 +1,8 @@
 ###############################################################################
 # MyCenter.lng (My Center text definitions)                                   #
 ###############################################################################
+#     Локализация: Васильев Д.В. (http://www.mysopromat.ru)                   #
+###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
@@ -10,15 +12,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-#     Локализация: Васильев Д.В. (http://www.mysopromat.ru)                   #
-#           $Date: 2009/04/22 03:04:56 $                                      #
-#   Copyright (c): Васильев Д.В. 2005                                         #
-###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$russianmycenterlngver = 'YaBB 2.7.00 $Revision$';
+$russianmycenterlngver  = 'YaBB 2.7.00 $Revision$';
 @russianmycenterlngmods = ();
-if(@russianmycenterlngmods){
+if (@russianmycenterlngmods) {
     $russianmycenterlngmods = 1;
 }
 $action ||= q{};
@@ -27,59 +26,55 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## LEAVE USERLABEL intact. Move within the string for correct language syntax!
 
 %mycenter_txt = (
-'welcometxt' => 'USERLABEL: Панель Управления',
-'buddylisttitle' => 'Ваши друзья',
-'buddylistnone' => 'Список Ваших друзей пуст',
-'buddydeleted' => 'Этот Друг был удален. Это имя более недоступно на форуме!',
-'hiddenemail' => 'Скрытый E-mail',
-'currentsettings' => 'Текущие настройки:',
-'onoffstatus' => 'Статус работы с форумом:', 
-'onoffstatuson' => 'На форуме/Вне форума',
-'onoffstatusaway' => 'Отлучился',
-'view' => 'просмотр',
-'stealth' => 'Скрытый режим:',
-'stealth_off' => 'Режим скрытности отключен',
-'stealth_on' => 'Режим скрытности включен',
-'posts' => 'Сообщения',
-'location' => 'Местонахождение', 
-'mylastposts' => 'Просмотреть мои последние 5 сообщений', 
+    'welcometxt'     => q~USERLABEL: Панель Управления~,
+    'buddylisttitle' => q~Ваши друзья~,
+    'buddylistnone'  => q~Список Ваших друзей пуст~,
+    'buddydeleted' =>
+      q~Этот Друг был удален. Это имя более недоступно на форуме!~,
+    'hiddenemail'     => q~Скрытый E-mail~,
+    'currentsettings' => q~Текущие настройки:~,
+    'onoffstatus'     => q~Статус работы с форумом:~,
+    'onoffstatuson'   => q~На форуме/Вне форума~,
+    'onoffstatusaway' => q~Отлучился~,
+    'view'            => q~просмотр~,
+    'stealth'         => q~Скрытый режим:~,
+    'stealth_off'     => q~Режим скрытности отключен~,
+    'stealth_on'      => q~Режим скрытности включен~,
+    'posts'           => q~Сообщения~,
+    'location'        => q~Местонахождение~,
+    'mylastposts'     => q~Просмотреть мои последние 5 сообщений~,
 );
 
-%display_txt = (
-'139' => 'Страницы',
-
-);
+%display_txt = ( '139' => q~Страницы~, );
 
 %mc_menus = (
-'messages' => 'Почта',
-'profile' => 'Профиль',
-'posts' => 'Личное',
+    'messages' => q~Почта~,
+    'profile'  => q~Профиль~,
+    'posts'    => q~Личное~,
 );
 
 %pm_search = (
-'all' => 'все',
-'justthis' => 'в текущей папке',
-'byuser' => 'по имени Пользователя',
-'desc' => 'Поиск моих ЛС',
-'search' => 'Поиск',
+    'all'      => q~все~,
+    'justthis' => q~в текущей папке~,
+    'byuser'   => q~по имени Пользователя~,
+    'desc'     => q~Поиск моих ЛС~,
+    'search'   => q~Поиск~,
 );
 
-%mc_folders = (
-'foldername' => 'Имя папки',
-);
+%mc_folders = ( 'foldername' => q~Имя папки~, );
 
 %my_favs = (
-'70' => 'Название',
-'109' => 'Автор',
-'110' => 'Ответов',
-'301' => 'Просмотров',
-'330' => 'Тем',
-'21' => 'Сообщений',
-'22' => 'Последнее сообщение',
-'525' => 'От',
-'526' => '', # by
-'527' => 'Автор:',
-'737' => 'Выбрать все',
+    '70'  => q~Название~,
+    '109' => q~Автор~,
+    '110' => q~Ответов~,
+    '301' => q~Просмотров~,
+    '330' => q~Тем~,
+    '21'  => q~Сообщений~,
+    '22'  => q~Последнее сообщение~,
+    '525' => q~От~,
+    '526' => q{},                      # by
+    '527' => q~Автор:~,
+    '737' => q~Выбрать все~,
 );
 
 1;

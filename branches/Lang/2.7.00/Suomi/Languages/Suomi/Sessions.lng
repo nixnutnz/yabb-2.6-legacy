@@ -10,39 +10,47 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomisessionslngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomisessionslngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomisessionslngmods = ();
-if(@suomisessionslngmods){
+if (@suomisessionslngmods) {
     $suomisessionslngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %session_txt = (
-'1' => 'Aktivoi istuntotunnisteet?',
-'2' => 'Tämä suojaa ylläpitotoimintoja koostuen kolmiosaisesta avaimesta, joka perustuu käyttäjän IP-osoitteeseen',
-'3' => "Istuntosi on vanhentunut, sillä olet kirjautunut sisään eri IP-osoitteesta ($user_ip)",
-'4' => 'Varmistaaksesi henkilöllisyytesi vastaa kysymykseen, jonka olet asettanut omassa profiilissasi',
-'6' => 'Varmistus epäonnistui ja sinut on kirjattu ulos',
-'8' => 'Valitse istunnon varmistuskysymys',
-'9' => 'Varmista henkilöllisyytesi valitsemalla kysymys ja antamalla siihen oikea vastaus',
-'9a' => 'Jos haluat käyttää salasanaasi varmistuksessa, jätä kenttä tyhjäksi.',
-'10' => 'Et valinnut istunnon vahvistuskysymystä profiilissasi<br />joten varmistus tapahtuu salasanan avulla.',
+    '1' => q~Aktivoi istuntotunnisteet?~,
+    '2' =>
+q~Tämä suojaa ylläpitotoimintoja koostuen kolmiosaisesta avaimesta, joka perustuu käyttäjän IP-osoitteeseen~,
+    '3' =>
+q~Istuntosi on vanhentunut, sillä olet kirjautunut sisään eri IP-osoitteesta ({yabb sessip})~,
+    '4' =>
+q~Varmistaaksesi henkilöllisyytesi vastaa kysymykseen, jonka olet asettanut omassa profiilissasi~,
+    '6' => q~Varmistus epäonnistui ja sinut on kirjattu ulos~,
+    '8' => q~Valitse istunnon varmistuskysymys~,
+    '9' =>
+q~Varmista henkilöllisyytesi valitsemalla kysymys ja antamalla siihen oikea vastaus~,
+    '9a' =>
+      q~Jos haluat käyttää salasanaasi varmistuksessa, jätä kenttä tyhjäksi.~,
+    '10' =>
+q~Et valinnut istunnon vahvistuskysymystä profiilissasi<br />joten varmistus tapahtuu salasanan avulla.~,
 );
 
 %sesquest_txt = (
-'password' => 'Käytä salasanaani varmistuksessa',
-'1' => 'Suosikkieläimeni on',
-'2' => 'Lemmikkieläimeni nimi on',
-'3' => 'Puhelinnumeroni on',
-'4' => 'Syntymäpäiväni on',
-'5' => 'Paras ystäväni on',
-'6' => 'Rakastan',
-'7' => 'Henkilö, jota vihaan eniten',
-'8' => 'Postinumeroni on',
-'9' => 'Suosikkiurheilulajini on',
-'10' => 'Suosikkijuomani on',
+    'password' => q~Käytä salasanaani varmistuksessa~,
+    '1'        => q~Suosikkieläimeni on~,
+    '2'        => q~Lemmikkieläimeni nimi on~,
+    '3'        => q~Puhelinnumeroni on~,
+    '4'        => q~Syntymäpäiväni on~,
+    '5'        => q~Paras ystäväni on~,
+    '6'        => q~Rakastan~,
+    '7'        => q~Henkilö, jota vihaan eniten~,
+    '8'        => q~Postinumeroni on~,
+    '9'        => q~Suosikkiurheilulajini on~,
+    '10'       => q~Suosikkijuomani on~,
 );
 
 1;

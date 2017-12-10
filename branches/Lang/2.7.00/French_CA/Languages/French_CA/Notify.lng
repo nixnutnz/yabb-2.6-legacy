@@ -1,0 +1,66 @@
+###############################################################################
+# Notify.lng (Définition des textes de notifications)                         #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_canotifylngver  = 'YaBB 2.7.00 $Revision$';
+@french_canotifylngmods = ();
+if (@french_canotifylngmods) {
+    $french_canotifylngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%notify_txt = (
+    '118' => q~Notification de sujet~,
+    '119' => q~Il n'y a pas de sujet marqué d'une notification.~,
+    '120' => q~par~,
+    '121' => q~Réinitialiser~,
+    '122' => q~Vous serez avertis des réponses pour les sujets suivants.~,
+    '123' =>
+q~Cochez la case pour <strong><em>désactiver</em></strong> la notification sur le sujet.~,
+    '124'      => q~Mettre à jour les notifications~,
+    '125'      => q~Notifier~,
+    '126'      => q~Recevoir une notification sur les réponses à ce forum~,
+    '127'      => q~Réponse du sujet~,
+    '132'      => q~Nouveau sujet seulement~,
+    '133'      => q~Toutes les nouvelles publications~,
+    '134'      => q~Retirer~,
+    '135'      => q~Forum~,
+    '136'      => q~Notice de forum~,
+    '137'      => q~Changer ou retirer les notices de ce forum.~,
+    '138'      => q~Changer~,
+    '139'      => q~Il n'y a pas de forums avec notification marqué.~,
+    '140'      => q~Sujet~,
+    '144'      => q~Tous cocher~,
+    '145'      => q~Nouveau message personnel de~,
+    '200'      => q~Vous avez~,
+    '201'      => q~nouveau~,
+    '202'      => q~et~,
+    '203'      => q~Voulez-vous voir vos notifications?~,
+    '205'      => q~Notices de forum~,
+    '206'      => q~Notice de sujet~,
+    '333'      => q~Nouvelles publications~,
+    '334'      => q~Aucune nouvelle publication~,
+    '335'      => q~Nouvelle~,
+    'lastpost' => q~Dernière publication~,
+    'lft'      => q~&lsaquo;~,
+    'rgt'      => q~&rsaquo;~,
+);
+
+1;

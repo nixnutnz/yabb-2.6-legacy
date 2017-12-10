@@ -1,0 +1,88 @@
+###############################################################################
+# RefControl.lng (Définition des textes contrôle de référeur)                 #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_carefcontrollngver  = 'YaBB 2.7.00 $Revision$';
+@french_carefcontrollngmods = ();
+if (@french_carefcontrollngmods) {
+    $french_carefcontrollngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%refer_settings = (
+    'gen' =>
+q~Sélectionner quelle action <em>(action=dans l'URLs)</em> peut être liée à l'extérieur de votre domaine~,
+    'refer_controls' => q~Général~,
+    'refer_mods'     => q~Mods~,
+);
+
+%refexpl_txt = (
+    'birthdaylist' => q~Voir la liste des anniversaires~,
+    'display'      => q~Afficher un message dans un fil~,
+    'downloadfile' => q~Télécharger un fichier de pièce jointe~,
+    'eventcal'     => q~Voir le calendrier des événements~,
+    'get_cal_ssi'  => q~Autoriser les calendriers dans les autres pages~,
+    'help'         => q~Afficher la page d'aide du forum~,
+    'login'        => q~Écran d'entrée de connexion~,
+    'logout'       => q~Déconnexion~,
+    'messageindex' => q~Afficher l'index des messages~,
+    'ml'           => q~Afficher la liste des membres~,
+    'mycenter'     => q~Afficher la page principale dans Mon Centre~,
+    'recent'       => q~Afficher les messages récents~,
+    'recenttopics' => q~Afficher tous les sujets les plus récemment publiés~,
+    'register' =>
+      q~Entrer l'écran de saisie de l'enregistrement d'un nouvel utilisateur~,
+    'reminder' => q~Entrez dans l'écran "oublié mon mot de passe"~,
+    'RSSboard' => q~Voir les sujets récents sur un forum via le flux RSS~,
+    'RSSrecent' =>
+q~Voir les sujets récents sur l'ensemble du forum ou une catégorie à travers le flux RSS~,
+    'search'         => q~Entrer dans l'écran de recherche~,
+    'viewdownloads'  => q~Voir les téléchargements~,
+    'viewprofile'    => q~Afficher un profil d'utilisateur~,
+    'refer_controls' => q~Général~,
+    'refer_mods'     => q~Mods~,
+);
+
+%refer_txt = (
+    'birthdaylist'  => q~Voir la liste des anniversaires~,
+    'display'       => q~Afficher les fils~,
+    'downloadfile'  => q~Télécharger la pièce jointe~,
+    'eventcal'      => q~Afficher le calendrier des événements~,
+    'get_cal_ssi'   => q~Autoriser le calendrier dans les autres pages~,
+    'help'          => q~Afficher l'aide~,
+    'login'         => q~Écran de connexion~,
+    'logout'        => q~Déconnexion~,
+    'messageindex'  => q~Afficher l'index des messages~,
+    'ml'            => q~Afficher la liste des membres~,
+    'mycenter'      => q~page principale de Mon Centre~,
+    'recent'        => q~Afficher les messages récents~,
+    'recenttopics'  => q~Afficher les sujets récents~,
+    'register'      => q~Enregistrement~,
+    'reminder'      => q~Réinitialisation du mot de passe~,
+    'RSSboard'      => q~Flux RSS Forum~,
+    'RSSrecent'     => q~Flux RSS Sujets récents~,
+    'search'        => q~Écran de recherche~,
+    'viewdownloads' => q~Voir les téléchargements~,
+    'viewprofile'   => q~Afficher un profil utilisateur~,
+);
+
+## Mod Hook ##
+
+1;

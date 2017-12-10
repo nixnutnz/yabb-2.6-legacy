@@ -10,8 +10,10 @@
 # Software by: The YaBB Development Team                                      #
 #              with assistance from the YaBB community.                       #
 ###############################################################################
+##  Based on English Rev 1874 ##
+our $VERSION = '2.7.00';
 
-$espanolrefcontrollngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolrefcontrollngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolrefcontrollngmods = ();
 if (@espanolrefcontrollngmods) {
     $espanolrefcontrollngmods = 1;
@@ -20,59 +22,60 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %refer_settings = (
-'gen' => q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
-'refer_controls' => q~General~,
-'refer_mods' => q~Mods~,
+    'gen' =>
+q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
+    'refer_controls' => q~General~,
+    'refer_mods'     => q~Mods~,
 );
 
 %refexpl_txt = (
-'birthdaylist' => q~View Birthday List~,
-'display' => 'Mostrar un mensaje en un tema',
-'downloadfile' => 'Bajar un Fichero Adjunto',
-'eventcal' => q~View Event Calendar~,
-'get_cal_ssi' => q~Allow Calendar in other pages~,
-'help' => 'Mostrar la Página de Ayuda del foro',
-'login' => 'Ventana de Entrada',
-'logout' => 'Salir',
-'messageindex' => 'Mostrar mensaje del índice',
-'ml' => 'Show Memberlist',
-'mycenter' => 'Mostrar página principal en Mi Centro',
-'recent' => 'Show recent posts',
-'recenttopics' => 'Mostrar todos los temas publicados más recientes',
-'register' => 'Entrar en la pantalla de entrada de Registro de Nuevo Usuario',
-'reminder' => 'Entrar en la pantalla de entrada de "Olvidé mi Contraseña"',
-'RSSboard' => 'Ver temas recientes de un foro a través de RSS feed',
-'RSSrecent' => 'Ver temas recientes de todo el foro o de una categoría a través de RSS feed',
-'search' => 'Entrar en la pantalla de búsqueda',
-'viewdownloads' => 'Ver Archivos Bajados (Downloads)',
-'viewprofile' => 'Ver Perfil de Usuario',
-'refer_controls' => q~General~,
-'refer_mods' => q~Mods~,
+    'birthdaylist' => q~View Birthday List~,
+    'display'      => q~Mostrar un mensaje en un tema~,
+    'downloadfile' => q~Bajar un Fichero Adjunto~,
+    'eventcal'     => q~View Event Calendar~,
+    'get_cal_ssi'  => q~Allow Calendar in other pages~,
+    'help'         => q~Mostrar la Página de Ayuda del foro~,
+    'login'        => q~Ventana de Entrada~,
+    'logout'       => q~Salir~,
+    'messageindex' => q~Mostrar mensaje del índice~,
+    'ml'           => q~Show Memberlist~,
+    'mycenter'     => q~Mostrar página principal en Mi Centro~,
+    'recent'       => q~Show recent posts~,
+    'recenttopics' => q~Mostrar todos los temas publicados más recientes~,
+    'register' =>
+      q~Entrar en la pantalla de entrada de Registro de Nuevo Usuario~,
+    'reminder' => q~Entrar en la pantalla de entrada de "Olvidé mi Contraseña"~,
+    'RSSboard' => q~Ver temas recientes de un foro a través de RSS feed~,
+    'RSSrecent' =>
+q~Ver temas recientes de todo el foro o de una categoría a través de RSS feed~,
+    'search'         => q~Entrar en la pantalla de búsqueda~,
+    'viewdownloads'  => q~Ver Archivos Bajados (Downloads)~,
+    'viewprofile'    => q~Ver Perfil de Usuario~,
+    'refer_controls' => q~General~,
+    'refer_mods'     => q~Mods~,
 );
 
 %refer_txt = (
-'birthdaylist' => q~View Birthday List~,
-'display' =>  q~Display Threads~,
-'downloadfile' =>  q~Download Attachment~,
-'eventcal' => q~View Event Calendar~,
-'get_cal_ssi' => q~Allow Calendar in other pages~,
-'help' =>  q~Show Help~,
-'login' =>  q~Log In screen~,
-'logout' =>  q~Log Out~,
-'messageindex' =>  q~Display Message index~,
-'ml' =>  q~Show Memberlist~,
-'mycenter' =>  q~MyCenter main page~,
-'recent' =>  q~Show recent posts~,
-'recenttopics' =>  q~Show recent topics~,
-'register' =>  q~Registration~,
-'reminder' =>  q~Password reset~,
-'RSSboard' =>  q~RSS Board~,
-'RSSrecent' =>  q~RSS Recent Topics~,
-'search' =>  q~Search Screen~,
-'viewdownloads' =>  q~View Downloads~,
-'viewprofile' =>  q~View a User Profile~,
+    'birthdaylist'  => q~View Birthday List~,
+    'display'       => q~Display Threads~,
+    'downloadfile'  => q~Download Attachment~,
+    'eventcal'      => q~View Event Calendar~,
+    'get_cal_ssi'   => q~Allow Calendar in other pages~,
+    'help'          => q~Show Help~,
+    'login'         => q~Log In screen~,
+    'logout'        => q~Log Out~,
+    'messageindex'  => q~Display Message index~,
+    'ml'            => q~Show Memberlist~,
+    'mycenter'      => q~MyCenter main page~,
+    'recent'        => q~Show recent posts~,
+    'recenttopics'  => q~Show recent topics~,
+    'register'      => q~Registration~,
+    'reminder'      => q~Password reset~,
+    'RSSboard'      => q~RSS Board~,
+    'RSSrecent'     => q~RSS Recent Topics~,
+    'search'        => q~Search Screen~,
+    'viewdownloads' => q~View Downloads~,
+    'viewprofile'   => q~View a User Profile~,
 );
-
-## Mod Hook ##
 
 1;

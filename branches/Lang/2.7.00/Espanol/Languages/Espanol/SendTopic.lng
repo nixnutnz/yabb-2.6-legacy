@@ -10,8 +10,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolsendtopiclngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolsendtopiclngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolsendtopiclngmods = ();
 if (@espanolsendtopiclngmods) {
     $espanolsendtopiclngmods = 1;
@@ -20,35 +22,44 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %sendtopic_txt = (
-'118' => 'Tema',
-'241' => '!',
-'318' => 'De',
-'335' => 'Tu nombre',
-'336' => 'Tu dirección email',
-'339' => 'Enviar',
-'707' => '¡Enviar Tema',
-'708' => 'a un amigo!',
-'717' => 'Nombre del Destinatario',
-'718' => 'E-mail del Destinatario',
-'error_sender_name' => 'Usted debe insertar su nombre.',
-'error_sender_email' => 'Debe insertar su dirección de e-mail.',
-'error_recipient_name' => 'Debe insertar el nombre del destinatario.',
-'error_recipient_email' => 'Debe insertar el correo electrónico del destinatario.',
-'error_verification' => 'El código de verificación no se encuentra.', 
-'verification_question_desc' => 'Por favor, responda la pregunta de verificación de arriba.',
-'verification_question_case' => 'Las respuestas están entre mayúsculas y minúsculas.',
-'error_verification_question' => 'Usted debe responder a la pregunta de verificación.',
+    '118'                  => q~Tema~,
+    '241'                  => q~!~,
+    '318'                  => q~De~,
+    '335'                  => q~Tu nombre~,
+    '336'                  => q~Tu dirección email~,
+    '339'                  => q~Enviar~,
+    '707'                  => q~¡Enviar Tema~,
+    '708'                  => q~a un amigo!~,
+    '717'                  => q~Nombre del Destinatario~,
+    '718'                  => q~E-mail del Destinatario~,
+    'error_sender_name'    => q~Usted debe insertar su nombre.~,
+    'error_sender_email'   => q~Debe insertar su dirección de e-mail.~,
+    'error_recipient_name' => q~Debe insertar el nombre del destinatario.~,
+    'error_recipient_email' =>
+      q~Debe insertar el correo electrónico del destinatario.~,
+    'error_verification' => q~El código de verificación no se encuentra.~,
+    'verification_question_desc' =>
+      q~Por favor, responda la pregunta de verificación de arriba.~,
+    'verification_question_case' =>
+      q~Las respuestas están entre mayúsculas y minúsculas.~,
+    'error_verification_question' =>
+      q~Usted debe responder a la pregunta de verificación.~,
 );
 
-%floodtxt=(
-'1' => 'Tu código de verificación es',
-'3' => 'Código de verificación',
-'casewarning' => 'Teclealo exactamente como aparece en la imagen. En el mismo orden y ten encuenta que mayúsculas y minúsculas son distintas.',
-'casewarning_1' => 'Por favor escriba los caracteres exactamente como aparecen en la imagen,',
-'casewarning_2' => '<br /><span style="font-weight: bold;">sin que los primeros',
-'casewarning_3' => '<br /><span style="font-weight: bold;">sin los últimos',
-'casewarning_4' => 'y los últimos',
-'casewarning_5' => 'caracteres.</span><br />Los personajes deben ser escritos en el mismo orden,<br />y son mayúsculas y minúsculas.',
+%floodtxt = (
+    '1' => q~Tu código de verificación es~,
+    '3' => q~Código de verificación~,
+    'casewarning' =>
+q~Teclealo exactamente como aparece en la imagen. En el mismo orden y ten encuenta que mayúsculas y minúsculas son distintas.~,
+    'casewarning_1' =>
+q~Por favor escriba los caracteres exactamente como aparecen en la imagen,~,
+    'casewarning_2' =>
+      q~<br /><span style="font-weight: bold;">sin que los primeros~,
+    'casewarning_3' =>
+      q~<br /><span style="font-weight: bold;">sin los últimos~,
+    'casewarning_4' => q~y los últimos~,
+    'casewarning_5' =>
+q~caracteres.</span><br />Los personajes deben ser escritos en el mismo orden,<br />y son mayúsculas y minúsculas.~,
 );
 
 1;

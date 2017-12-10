@@ -1,0 +1,87 @@
+###############################################################################
+# Poll.lng (Définition des texte de sondages)                                 #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_capolllngver  = 'YaBB 2.7.00 $Revision$';
+@french_capolllngmods = ();
+if (@french_capolllngmods) {
+    $french_capolllngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%polltxt = (
+    '4'  => q~Question de sondage~,
+    '6'  => q~Question~,
+    '7'  => q~Option~,
+    '15' => q~Sondage~,
+    '16' => q~Question~,
+    '17' => q~Votes Total~,
+    '18' => q~Soumettre votre vote~,
+    '19' => q~Voir les résultats~,
+    '20' => q~Ouvert~,
+    '21' => q~Fermé~,
+    '22' => q~*** Ce sondage est maintenant fermé ***~,
+    '23' => q~Détail du sondage:~,
+    '24' => q~Votes~,
+    '25' => q~Personne n'a voté pour cette option.~,
+    '26' => q~Cacher les résultats:~,
+    '27' => q~Retirer~,
+    '30' => q~Adresse IP~,
+    '31' => q~Date du vote~,
+    '32' => q~Permettre aux invités de voter:~,
+    '33' => q~Voir les votes~,
+    '35' => q~Nom~,
+    '39' => q~Modifier~,
+    '40' => q~La question du sondage~,
+    '41' =>
+q~Il y avait un caractère illégal dans votre question de sondage. Veuillez réessayer.~,
+    '42'  => q~Détails du sondage~,
+    '43'  => q~Retirer le vote~,
+    '44'  => q~Êtes-vous sûr de vouloir supprimer ce sondage?~,
+    '45'  => q~Créé par~,
+    '45a' => q~Modifié par~,
+    '46'  => q~le~,
+    '47'  => q~Merci d'avoir voté pour ce sondage.~,
+    '48' =>
+q~Les résultats resteront cependant cachés jusqu'à ce que tous les votes aient été comptés.~,
+    '49' => q~Retirer les votes~,
+    '53' =>
+q~*** Personne d'autre ne peut voir ces résultats avant la fermeture du scrutin ***~,
+    '54' =>
+q~Cochez cette case si vous voulez que les invités puissent voter dans ce sondage.~,
+    '55' =>
+q~Cochez cette case si vous ne souhaitez pas que les résultats de ce sondage s'affichent avant la fermeture du vote.~,
+    '56' =>
+q~Cochez cette case si vous souhaitez autoriser les utilisateurs à voter pour plusieurs options.~,
+    '57'           => q~Le commentaire du sondage~,
+    '58'           => q~Choix multiple~,
+    '59'           => q~Commentaire du sondage~,
+    '64'           => q~Votre vote était sur~,
+    '65'           => q~Votre choix de vote était~,
+    '66'           => q~Vos choix de vote étaient~,
+    'showcased'    => q~Actuellement affiché~,
+    'setshowcased' => q~Afficher le sondage?~,
+    'showcaserem'  => q~Ne plus Afficher le sondage?~,
+    'confirm' =>
+q~Êtes-vous sûr de vouloir afficher ce sondage?\\nUn autre sondage est déjà affiché.~
+    ,    # A tester dans un javascript il n'y a pas de " ou '
+);
+
+1;

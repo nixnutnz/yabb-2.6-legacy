@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # Main.lng (General text definitions)                                         #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchmainlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1928 ##
+our $VERSION = '2.7.00';
 
+$dutchmainlngver  = 'YaBB 2.7.00 $Revision: 1933 $';
 @dutchmainlngmods = ();
 if (@dutchmainlngmods) {
     $dutchmainlngmods = 1;
@@ -22,307 +24,327 @@ if (@dutchmainlngmods) {
 $action ||= q{};
 if ( $action eq 'detailedversion' && $language ne 'Dutch' ) { return 1; }
 
-$abbr_lang = 'nl-nl'; 
+$abbr_lang = 'nl-nl';
 
-@days = ('Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag');
-@months = ('Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec');
-@months_m = ('Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'); #list for lower case months if needed.
-@days_short = ('Zon','Maa','Din','Woe','Don','Vrij','Zat'); # for smtp
-@alpha = qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
+@days     = qw(Zondag Maandag Dinsdag Woensdag Donderdag Vrijdag Zaterdag);
+@months   = qw(Jan Feb Mar Apr Mei Jun Jul Aug Sep Okt Nov Dec);
+@months_m = qw(Jan Feb Mar Apr Mei Jun Jul Aug Sep Okt Nov Dec);
+@days_short = qw(Zon Maa Din Woe Don Vrij Zat);                       # for smtp
+@alpha      = qw(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z);
 
 %maintxt = (
-'w3c_lngcode' => 'nl-nl',
-'error_description' => 'Systeem informatie',
-'error_location' => '<b>Script</b>',
-'error_line' => '<b>Regel</b>',
-'error_subroutine' => '<b>Subprogramma</b>',
-'error_verbose' => '<b>Verbose</b>',
-'board' => 'Board',
-'cat' => 'Categorie',
-'0' => 'Stuur PM naar',
-'1' => 'Stuur E-mail naar',
-'2' => 'Kijk',
-'3' => '\'s Profiel bekijken',
-'4' => 'toevoegen',
-'5' => 'aan Vriendenlijst',
-'6' => 'Bekijk mijn Profiel',
-'10' => 'Laatste keer aanwezig',
-'11' => 'dagen en',
-'12' => 'uren geleden',
-'13' => 'Heeft niet ingelogd sinds registratie',
-'22' => 'Laatste bijdrage',
-'23' => 'Niet in staat open te maken',
-'27' => 'Bekijk Profiel',
-'28' => 'Gast',
-'30' => 'aan',
-'30a' => 'schreef op',
-'30b' => q{}, #placeholder for non-English strings needed in that spot
-'31' => 'Citaat',
-'32' => 'Ga',
-'34' => 'Log in',
-'35' => 'Je kunt inloggen aan de bodem van deze pagina.',
-'40a' => 'Multimedia File bekijken is niet voorhanden in RSS Feeds.',
-'41' => '(Je moet',
-'42' => 'of anders',
-'42a' => 'om mediabestanden en koppelingen te bekijken).',
-'60' => 'Online',
-'61' => 'Offline',
-'62' => 'Onderwerp gereedschap',
-'63' => 'Post gereedschap',
-'64' => 'Er zijn geen acties uit te voeren.',
-'away' => 'Afwezig',
-'70' => 'Onderwerp',
-'97' => 'Registreer',
-'102' => 'Nieuws',
-'107' => 'bij',
-'109' => 'Gestart door',
-'114' => 'Administratie Log in',
-'125' => 'Verwittigen',
-'126' => 'Wilt u per e-mail een verwittiging ontvangen als iemand reageert op dit topic?',
-'132' => 'Verplaats',
-'133' => 'Verplaats naar',
-'155' => 'Onderhoudsmodus',
-'156' => 'Het forum is momenteel in onderhoud!',
-'157' => 'Het forum is momenteel in onderhoud. Probeer het later weer eens. Dank u wel.',
-'160' => 'Dit',
-'160a' => 'Onderwerp',
-'160b' => 'is verplaatst naar',
-'160c' => 'De inhoud van dit onderwerp is verplaatst naar',
-'160d' => 'dit Onderwerp',
-'160e' => 'Off topic reacties zijn verplaatst naar',
-'160f' => '.',
-'161' => 'Dit onderwerp werd hier verplaatst van',
-'161a' => 'De laatste',
-'161b' => 'Berichten werden hier vandaan verplaatst',
-'163' => 'Ja',
-'164' => 'Nee',
-'170' => 'Sorry, er werden geen resultaten gevonden',
-'171' => 'Geen afbeelding gevonden in 30 seconde. opgegeven.', # Inside JavaScript!
-'193' => 'Terug',
-'195' => 'Bericht gestart door',
-'196' => 'Titel',
-'197' => 'Bijdrage van',
-'199' => 'Bijdrage niet gevonden',
-'213' => 'Gebruikers laatste berichten',
-'214' => 'Recente berichten',
-'214b' => 'meest Recente Onderwerpen',
-'215' => 'Recente Onderwerpen',
-'236' => 'Terug',
-'237' => 'Naar de index van het forum.',
-'247m' => 'Goede Morgen',
-'247a' => 'Goede Middag',
-'247e' => 'Goede Avond',
-'247bday' => 'Gefeliciteerd met uw verjaardag',
-'248' => 'Welkom,',
-'249' => 'Alstublieft',
-'316' => 'Inbox',
-'317' => 'Datum',
-'318' => 'Van',
-'320' => 'Verzend box',
-'324' => 'Naar',
-'377' => 'of',
-'409' => 'De laatste POST-aanvraag uit uw IP was minder dan',
-'410' => 'seconden geleden, en was geblokkeerd om overlading van het forum te voorkomen. Probeer alstublieft later opnieuw.',
-'418' => 'Kennisgeving',
-'470' => 'N/A',
-'470a' => '<i>Ex Lid</i>',
-'525' => 'door',
-'609' => q~Om reden van veiligheid, YaBB vraagt u gebruik alstublieft altijd absolute paden. Het \'../\' (bovenliggende map) symbool is illegaal. Alstublieft draai Setup.pl opnieuw en modificeer de instellingen om absolute paden te gebruiken in plaats van het \'../\' symbool.~,
-'633' => 'Waarschuwing.',
-'634' => 'Alleen geregistreede leden is het toegestaan dit forum te betreden.',
-'635' => 'Log alstublieft beneden in of klik',
-'636' => '-hier-',
-'637' => "registreer een account met {yabb mbname}.",
-'668' => 'Pagina printen',
-'668a' => 'Bericht printen',
-'669a' => 'Verberg Afbeeldingen',
-'669b' => 'Toon Afbeeldingen',
-'758' => 'Verplaatst',
-'769' => 'Vandaag',
-'769a'=> 'Gisteren',
-'769al'=> 'gisteren',
-'769l' => '', #lowercase date support - multi-language support.;
-'769b'=> 'Morgen',
-'770' => '', #month suffix for January 1 - multi-language support.
-'770a' => '', #month suffix for 1. January - multi-language support.
-'773' => 'Wilt u deze pagina nu printen?',
-'900b' => 'Terug',
-'900s' => 'Verzend',
-'900pw' => 'Wachtwoord voor',
-'900pd' => 'Wachtwoord toegang forum',
-'900pe' => 'Alstublieft vul uw wachtwoord in.',
-'900pg' => qq~Wachtwoord toegang forums is alleen voor leden. Alstublieft <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registreer een account bij ons</a> of <a href="{yabb scripturl}?action=login" style="font-weight: bold;">log in</a>.~,
-'900pr' => 'Privé',
-'dst' => '<sup>*</sup>',
-'rssfeed' => 'RSS Feed',
-'rsscode' => 'Ga naar Post om Code te zien',
-'rss_nopost' => q~Geen Berichten gevonden~,
-'freeuserspace' => 'Vrije schijfruimte beschikbaar:',
-'freediskspace' => 'Vrije schijfruimte:',
-'redirect' => 'Omleiden',
-'redirecttext' => 'Als u dit bericht ziet, betekent het dat de  omleiding niet werkte.',
-'redirectlink' => 'Klik hier',
-'noscript' => 'U moet JavaScript activeren om volledige functionaliteit voor dit forum te krijgen.',
-'go_to_board' => 'Ga naar de Forum Index',
-'searchimg' => 'Posts niet meer dan',
-'searchimg2' => 'dagen oud',
-'searchimg3' => 'Alle Berichten',
-'collapse' => 'samenvouwen',
-'UTC' => '(UTC)',
-'maint' => 'Verwijder dit bestand als je forum om geen enkele reden in onderhoud is.',
-'printpage' => 'Print deze pagina page',
-'banned' => 'Verbannen',
-'23a' => q~. This file may have been deleted.~,
-'members_only' => q~Only members can access another member's profile.~,
-'reg_please' => q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
-'regplease' => q~Please Register~,
-'banned' => q~Banned~,
-'backup' => 'Remove this file if your board is in backup-lock for no reason.',
-'tmpchange' => 'Change Template:',
-'noaudio' => q~Your browser does not support the audio element.~,
+    'w3c_lngcode'       => q~nl-nl~,
+    'error_description' => q~Systeem informatie~,
+    'error_location'    => q~<b>Script</b>~,
+    'error_line'        => q~<b>Regel</b>~,
+    'error_subroutine'  => q~<b>Subprogramma</b>~,
+    'error_verbose'     => q~<b>Verbose</b>~,
+    'board'             => q~Board~,
+    'cat'               => q~Categorie~,
+    '0'                 => q~Stuur PM naar~,
+    '1'                 => q~Stuur E-mail naar~,
+    '2'                 => q~Kijk~,
+    '3'                 => q~\'s Profiel bekijken~,
+    '4'                 => q~toevoegen~,
+    '5'                 => q~aan Vriendenlijst~,
+    '6'                 => q~Bekijk mijn Profiel~,
+    '10'                => q~Laatste keer aanwezig~,
+    '11'                => q~dagen en~,
+    '12'                => q~uren geleden~,
+    '13'                => q~Heeft niet ingelogd sinds registratie~,
+    '22'                => q~Laatste bijdrage~,
+    '23'                => q~Niet in staat open te maken~,
+    '27'                => q~Bekijk Profiel~,
+    '28'                => q~Gast~,
+    '30'                => q~aan~,
+    '30a'               => q~schreef op~,
+    '30b' => q{},       #placeholder for non-English strings needed in that spot
+    '31'  => q~Citaat~,
+    '32'  => q~Ga~,
+    '34'  => q~Log in~,
+    '35'   => q~Je kunt inloggen aan de bodem van deze pagina.~,
+    '40a'  => q~Multimedia File bekijken is niet voorhanden in RSS Feeds.~,
+    '41'   => q~(Je moet~,
+    '42'   => q~of anders~,
+    '42a'  => q~om mediabestanden en koppelingen te bekijken).~,
+    '60'   => q~Online~,
+    '61'   => q~Offline~,
+    '62'   => q~Onderwerp gereedschap~,
+    '63'   => q~Post gereedschap~,
+    '64'   => q~Er zijn geen acties uit te voeren.~,
+    'away' => q~Afwezig~,
+    '70'   => q~Onderwerp~,
+    '97'   => q~Registreer~,
+    '102'  => q~Nieuws~,
+    '107'  => q~bij~,
+    '109'  => q~Gestart door~,
+    '114'  => q~Administratie Log in~,
+    '125'  => q~Verwittigen~,
+    '126' =>
+q~Wilt u per e-mail een verwittiging ontvangen als iemand reageert op dit topic?~,
+    '132' => q~Verplaats~,
+    '133' => q~Verplaats naar~,
+    '155' => q~Onderhoudsmodus~,
+    '156' => q~Het forum is momenteel in onderhoud!~,
+    '157' =>
+q~Het forum is momenteel in onderhoud. Probeer het later weer eens. Dank u wel.~,
+    '160'  => q~Dit~,
+    '160a' => q~Onderwerp~,
+    '160b' => q~is verplaatst naar~,
+    '160c' => q~De inhoud van dit onderwerp is verplaatst naar~,
+    '160d' => q~dit Onderwerp~,
+    '160e' => q~Off topic reacties zijn verplaatst naar~,
+    '160f' => q~.~,
+    '161'  => q~Dit onderwerp werd hier verplaatst van~,
+    '161a' => q~De laatste~,
+    '161b' => q~Berichten werden hier vandaan verplaatst~,
+    '163'  => q~Ja~,
+    '164'  => q~Nee~,
+    '170'  => q~Sorry, er werden geen resultaten gevonden~,
+    '171'  => q~Geen afbeelding gevonden in 30 seconde. opgegeven.~
+    ,    # Inside JavaScript!
+    '193'     => q~Terug~,
+    '195'     => q~Bericht gestart door~,
+    '196'     => q~Titel~,
+    '197'     => q~Bijdrage van~,
+    '199'     => q~Bijdrage niet gevonden~,
+    '213'     => q~Gebruikers laatste berichten~,
+    '214'     => q~Recente berichten~,
+    '214b'    => q~meest Recente Onderwerpen~,
+    '215'     => q~Recente Onderwerpen~,
+    '236'     => q~Terug~,
+    '237'     => q~Naar de index van het forum.~,
+    '247m'    => q~Goede Morgen~,
+    '247a'    => q~Goede Middag~,
+    '247e'    => q~Goede Avond~,
+    '247bday' => q~Gefeliciteerd met uw verjaardag~,
+    '248'     => q~Welkom,~,
+    '249'     => q~Alstublieft~,
+    '316'     => q~Inbox~,
+    '317'     => q~Datum~,
+    '318'     => q~Van~,
+    '320'     => q~Verzend box~,
+    '324'     => q~Naar~,
+    '377'     => q~of~,
+    '409'     => q~De laatste POST-aanvraag uit uw IP was minder dan~,
+    '410' =>
+q~seconden geleden, en was geblokkeerd om overlading van het forum te voorkomen. Probeer alstublieft later opnieuw.~,
+    '418'  => q~Kennisgeving~,
+    '470'  => q~N/A~,
+    '470a' => q~<i>Ex Lid</i>~,
+    '525'  => q~door~,
+    '609' =>
+q~Om reden van veiligheid, YaBB vraagt u gebruik alstublieft altijd absolute paden. Het \'../\' (bovenliggende map) symbool is illegaal. Alstublieft draai Setup.pl opnieuw en modificeer de instellingen om absolute paden te gebruiken in plaats van het \'../\' symbool.~,
+    '633' => q~Waarschuwing.~,
+    '634' =>
+      q~Alleen geregistreede leden is het toegestaan dit forum te betreden.~,
+    '635'   => q~Log alstublieft beneden in of klik~,
+    '636'   => q~-hier-~,
+    '637'   => q~registreer een account met {yabb mbname}.~,
+    '668'   => q~Pagina printen~,
+    '668a'  => q~Bericht printen~,
+    '669a'  => q~Verberg Afbeeldingen~,
+    '669b'  => q~Toon Afbeeldingen~,
+    '758'   => q~Verplaatst~,
+    '769'   => q~Vandaag~,
+    '769a'  => q~Gisteren~,
+    '769al' => q~gisteren~,
+    '769l' => q{},        #lowercase date support - multi-language support.;
+    '769b' => q~Morgen~,
+    '770'  => q{},        #month suffix for January 1 - multi-language support.
+    '770a' => q{},        #month suffix for 1. January - multi-language support.
+    '773'   => q~Wilt u deze pagina nu printen?~,
+    '900b'  => q~Terug~,
+    '900s'  => q~Verzend~,
+    '900pw' => q~Wachtwoord voor~,
+    '900pd' => q~Wachtwoord toegang forum~,
+    '900pe' => q~Alstublieft vul uw wachtwoord in.~,
+    '900pg' =>
+q~Wachtwoord toegang forums is alleen voor leden. Alstublieft <a href="{yabb scripturl}?action=register" style="font-weight: bold;">registreer een account bij ons</a> of <a href="{yabb scripturl}?action=login" style="font-weight: bold;">log in</a>.~,
+    '900pr'         => q~Privé~,
+    'dst'           => q~<sup>*</sup>~,
+    'rssfeed'       => q~RSS Feed~,
+    'rsscode'       => q~Ga naar Post om Code te zien~,
+    'rss_nopost'    => q~Geen Berichten gevonden~,
+    'freeuserspace' => q~Vrije schijfruimte beschikbaar:~,
+    'freediskspace' => q~Vrije schijfruimte:~,
+    'redirect'      => q~Omleiden~,
+    'redirecttext' =>
+      q~Als u dit bericht ziet, betekent het dat de  omleiding niet werkte.~,
+    'redirectlink' => q~Klik hier~,
+    'noscript' =>
+q~U moet JavaScript activeren om volledige functionaliteit voor dit forum te krijgen.~,
+    'go_to_board' => q~Ga naar de Forum Index~,
+    'searchimg'   => q~Posts niet meer dan~,
+    'searchimg2'  => q~dagen oud~,
+    'searchimg3'  => q~Alle Berichten~,
+    'collapse'    => q~samenvouwen~,
+    'UTC'         => q~(UTC)~,
+    'maint' =>
+q~Verwijder dit bestand als je forum om geen enkele reden in onderhoud is.~,
+    'printpage'    => q~Print deze pagina page~,
+    'banned'       => q~Verbannen~,
+    '23a'          => q~. This file may have been deleted.~,
+    'members_only' => q~Only members can access another member's profile.~,
+    'reg_please' =>
+q~Please <a href="{yabb boardurl}?action=register" style="font-weight: bold;">register an account with us</a> or <a href="{yabb boardurl}?action=login" style="font-weight: bold;">login</a>.~,
+    'regplease' => q~Please Register~,
+    'banned'    => q~Banned~,
+    'backup' =>
+      q~Remove this file if your board is in backup-lock for no reason.~,
+    'tmpchange' => q~Change Template:~,
+    'noaudio'   => q~Your browser does not support the audio element.~,
 );
 
 %load_txt = (
-'152' => 'u heeft',
-'153' => 'bericht',
-'154' => 'zijn nieuw.',
-'154b' => 'nieuwe berichten.',
-'155' => 'is nieuw.',
-'155b' => 'nieuw bericht.',
-'nonew' => 'en geen nieuwe berichten.',
-'231' => 'Geslacht',
-'female' => 'Vrouw',
-'male' => 'Man',
-'471' => 'bericht',
-'616' => qq~Vergeet niet, dit forum is in <a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Onderhoud Modus'</a>.~,
-'617' => 'Vergeet niet, laatste Backup werd gedaan op:',
-'773' => "IP niet gevonden",
-'805' => 'U',
-'806' => '<b>kan</b>',
-'807' => '<b>kunt geen</b>',
-'808' => 'onderwerpen in dit forum bekijken.',
-'809' => 'post antwoorden op onderwerpen in dit forum.',
-'810' => 'start nieuwe Onderwerpen in dit forum.',
-'811' => 'start Peilingen in dit forum.',
-'812' => 'het aantal van uw berichten verhogen.',
-'813' => 'Bijlagen toevoegen in dit forum.',
-'maint' => 'Maintenance',
-'616c' => q~This forum is in Maintenance Mode!~,
-'tmod' => 'modify Topics in this Board',
+    '152'    => q~u heeft~,
+    '153'    => q~bericht~,
+    '154'    => q~zijn nieuw.~,
+    '154b'   => q~nieuwe berichten.~,
+    '155'    => q~is nieuw.~,
+    '155b'   => q~nieuw bericht.~,
+    'nonew'  => q~en geen nieuwe berichten.~,
+    '231'    => q~Geslacht~,
+    'female' => q~Vrouw~,
+    'male'   => q~Man~,
+    '471'    => q~bericht~,
+    '616' =>
+q~Vergeet niet, dit forum is in <a href="{yabb adminurl}?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight: bold;">'Onderhoud Modus'</a>.~,
+    '617'   => q~Vergeet niet, laatste Backup werd gedaan op:~,
+    '773'   => q~IP niet gevonden~,
+    '805'   => q~U~,
+    '806'   => q~<b>kan</b>~,
+    '807'   => q~<b>kunt geen</b>~,
+    '808'   => q~onderwerpen in dit forum bekijken.~,
+    '809'   => q~post antwoorden op onderwerpen in dit forum.~,
+    '810'   => q~start nieuwe Onderwerpen in dit forum.~,
+    '811'   => q~start Peilingen in dit forum.~,
+    '812'   => q~het aantal van uw berichten verhogen.~,
+    '813'   => q~Bijlagen toevoegen in dit forum.~,
+    'maint' => q~Maintenance~,
+    '616c'  => q~This forum is in Maintenance Mode!~,
+    'tmod'  => q~modify Topics in this Board~,
 );
 
 %load_imtxt = (
-'46' => 'Opslag',
-'71' => 'Afgedrukt van uw',
+    '46' => q~Opslag~,
+    '71' => q~Afgedrukt van uw~,
 );
 
 %security_txt = (
-'430' => ', u bent gebanned van het gebruik van dit forum',
-'678' => 'Sorry',
-'ban_warn_a' => q~U bent verbannen van het gebruik van dit forum ~,
-'ban_warn_s' => q~Uw account op dit forum is geschorst ~,
-'ban_warn_b' => q~ voor ~,
-'ban_warn_c' => q~door~,
-'ban_perm' => q~permanent~,
-'ban_permt' => q~tot~,
-'banned' => 'Ban Notificatie.',
-'suspend' => 'Schorsing kennisgeving.',
+    '430'        => q~, u bent gebanned van het gebruik van dit forum~,
+    '678'        => q~Sorry~,
+    'ban_warn_a' => q~U bent verbannen van het gebruik van dit forum ~,
+    'ban_warn_s' => q~Uw account op dit forum is geschorst ~,
+    'ban_warn_b' => q~ voor ~,
+    'ban_warn_c' => q~door~,
+    'ban_perm'   => q~permanent~,
+    'ban_permt'  => q~tot~,
+    'banned'     => q~Ban Notificatie.~,
+    'suspend'    => q~Schorsing kennisgeving.~,
 );
 
-%reftxt=(
-'1' => 'Refereer beveiliging',
-'2' => 'Selecteer Board acties die zijn toegestaan van buiten uw domein',
-'3' => "(Deze opdrachten zijn afgeleid van  Variables/Referer.pm)",
-'4' => 'Sla instellingen op',
-'6' => 'Extern Domein:',
-'7' => 'Uw Domein:',
+%reftxt = (
+    '1' => q~Refereer beveiliging~,
+    '2' => q~Selecteer Board acties die zijn toegestaan van buiten uw domein~,
+    '3' => q~(Deze opdrachten zijn afgeleid van Variables/Referer.pm)~,
+    '4' => q~Sla instellingen op~,
+    '6' => q~Extern Domein:~,
+    '7' => q~Uw Domein:~,
 );
 
-%dereftxt =(
-'1' => 'U bent omgeleid.... één moment alstublieft.',
-);
+%dereftxt = ( '1' => q~U bent omgeleid.... één moment alstublieft.~, );
 
-%timelocktxt=(
-'02' => ' dagen om berichten te bewerken. Dit bericht kan niet gewijzigd worden.',
-'02a' => ' dagen om berichten te verwijderen. Dit bericht kan niet verwijdert worden.',
+%timelocktxt = (
+    '02' =>
+q~ dagen om berichten te bewerken. Dit bericht kan niet gewijzigd worden.~,
+    '02a' =>
+q~ dagen om berichten te verwijderen. Dit bericht kan niet verwijdert worden.~,
 );
 
 %smiltxt = (
-'1' => 'Meer Smilies',
-'21' => 'Klik op de Smiley die u wenst in te voegen in uw bericht:',
+    '1'  => q~Meer Smilies~,
+    '21' => q~Klik op de Smiley die u wenst in te voegen in uw bericht:~,
 );
 
 %timetxt = (
-'1' => '<sup>ste</sup>',
-'2' => '<sup>de</sup>',
-'3' => '<sup>de</sup>',
-'4' => '<sup>de</sup>',
+    '1' => q~<sup>ste</sup>~,
+    '2' => q~<sup>de</sup>~,
+    '3' => q~<sup>de</sup>~,
+    '4' => q~<sup>de</sup>~,
 );
 
 %pidtxt = (
-'01' => 'allen',
-'02' => 'Klik voor vorige pagina - dubbel klikken voor eerste pagina.',
-'03' => 'Klik voor volgende pagina - dubbel klik voor laatste pagina.',
+    '01' => q~allen~,
+    '02' => q~Klik voor vorige pagina - dubbel klikken voor eerste pagina.~,
+    '03' => q~Klik voor volgende pagina - dubbel klik voor laatste pagina.~,
 );
 
 ##  jump menu
 %jumpto_txt = (
-'to' => 'Forum Jump &raquo;',
-'mess' => ' &raquo; mijn Berichten',
-'fav' => ' &raquo; mijn Favorieten',
-'note' => ' &raquo; mijn Notificaties',
+    'to'   => q~Forum Jump &raquo;~,
+    'mess' => q~ &raquo; mijn Berichten~,
+    'fav'  => q~ &raquo; mijn Favorieten~,
+    'note' => q~ &raquo; mijn Notificaties~,
 );
 
 ## guest language selector
 %guest_txt = (
-'sellanguage' => 'Taal kiezen',
-'changelanguage' => 'Taal veranderen',
+    'sellanguage'    => q~Taal kiezen~,
+    'changelanguage' => q~Taal veranderen~,
 );
 
 ## recent lists
 %recent_txt = (
-'recenttopic' => ' &raquo; 10 meest recente Onderwerpen',
-'recentposts' => ' &raquo; 10 meest recente Berichten',
+    'recenttopic' => q~ &raquo; 10 meest recente Onderwerpen~,
+    'recentposts' => q~ &raquo; 10 meest recente Berichten~,
 );
 
 ## pm to e-mail forward
-$forwardedpm = qq~Deze waarschuwing werd doorgestuurd als e-mail~;
+$forwardedpm = q~Deze waarschuwing werd doorgestuurd als e-mail~;
 
 %reg_txt = (
-'reason' => 'Gelieve uw reden(en) aan te geven voor uw interesse voor registratie op dit forum',
-'reason_exp' => 'Deze informatie wordt niet langdurig opgeslagen, maar wordt alleen gebruikt voor het evalueren van uw applicatie.',
-'admin_alert_start_one' => 'Daar is <b>',
-'admin_alert_start_more' => 'Daar zijn <b>',
-'admin_alert_one' => '</b> gevalideerde Registrant',
-'admin_alert_more' => '</b> gevalideerde Registranten',
-'admin_alert_end' => ' in afwachting van goedkeuring.',
-'admin_alert_end_more' => ' in afwachting van goedkeuring.', ## For languages that need a different end line on more than one user
-'admin_alert_act_one' => '</b> Pre-geregistreerd lid dat',
-'admin_alert_act_more' => '</b> Pre-geregistreerde leden dat zijn',
-'admin_alert_act_end' => ' nog niet gevalideerd.',
-'admin_alert_act_end_more' => ' nog niet gevalideerd.', ## For languages that need a different end line on more than one user
-'no_masterkey'=> '<div class="editbg">Geen Hoofdsleutel is ingesteld in de beveiligingsinstellingen/Validatie Image Sectie van het Admin Center<br />Nu met behulp van standaardwaarde die minder veilig is!!</div>',
+    'reason' =>
+q~Gelieve uw reden(en) aan te geven voor uw interesse voor registratie op dit forum~,
+    'reason_exp' =>
+q~Deze informatie wordt niet langdurig opgeslagen, maar wordt alleen gebruikt voor het evalueren van uw applicatie.~,
+    'admin_alert_start_one'  => q~Daar is <b>~,
+    'admin_alert_start_more' => q~Daar zijn <b>~,
+    'admin_alert_one'        => q~</b> gevalideerde Registrant~,
+    'admin_alert_more'       => q~</b> gevalideerde Registranten~,
+    'admin_alert_end'        => q~ in afwachting van goedkeuring.~,
+    'admin_alert_end_more'   => q~ in afwachting van goedkeuring.~
+    ,    ## For languages that need a different end line on more than one user
+    'admin_alert_act_one'      => q~</b> Pre-geregistreerd lid dat~,
+    'admin_alert_act_more'     => q~</b> Pre-geregistreerde leden dat zijn~,
+    'admin_alert_act_end'      => q~ nog niet gevalideerd.~,
+    'admin_alert_act_end_more' => q~ nog niet gevalideerd.~
+    ,    ## For languages that need a different end line on more than one user
+    'no_masterkey' =>
+q~<div class="editbg">Geen Hoofdsleutel is ingesteld in de beveiligingsinstellingen/Validatie Image Sectie van het Admin Center<br />Nu met behulp van standaardwaarde die minder veilig is!!</div>~,
 );
 
 %lookup_txt = (
-'01' => 'Opzoeken',
-'02' => 'op een whois server:',
-'iplookup' => 'IP Opzoeken',
+    '01'       => q~Opzoeken~,
+    '02'       => q~op een whois server:~,
+    'iplookup' => q~IP Opzoeken~,
 );
 
 %croak = (
-'open' => 'Kan niet openen',
-'close' => 'Kan niet sluiten',
-'print' => 'Kan niet printen',
+    'open'  => q~Kan niet openen~,
+    'close' => q~Kan niet sluiten~,
+    'print' => q~Kan niet printen~,
 );
 
 %mailer = (
-'smtp' => qq~Unable to create Net::SMTP object. Server: '$smtp_server'\n\n~,
-'smtps1' => qq~Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n~,
-'smtps2' => q~Could not authenticate SMTPS credentials. Please provide credientials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
+    'smtp' => qq~Unable to create Net::SMTP object. Server: '$smtp_server'\n\n~,
+    'smtps1' =>
+qq~Unable to create Net::SMTPS object. Server: '$smtp_server', port '$port'\n\n~,
+    'smtps2' =>
+q~Could not authenticate SMTPS credentials. Please provide credentials: Admin Center -> Forum Configuration -> Advanced Settings -> tab Email, please set your SMTP Authorization Username, SMTP Authorization Password, and SMTP Server Authorization Type for your SMTP server.~,
 );
 
-timetostring($date);
-$yycopyright = qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Mogelijk gemaakt door <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle rechten voorbehouden.~;
+$yycopyright =
+qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Mogelijk gemaakt door <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle rechten voorbehouden.~;
 
 1;

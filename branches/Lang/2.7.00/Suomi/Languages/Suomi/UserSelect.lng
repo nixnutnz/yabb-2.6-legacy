@@ -10,58 +10,64 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomiuserselectlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomiuserselectlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomiuserselectlngmods = ();
-if(@suomiuserselectlngmods){
+if (@suomiuserselectlngmods) {
     $suomiuserselectlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %usersel_txt = (
-'addselected' => 'Lisää valitut',
-'instruct' => 'Kaksoisklikkaa nimeä valitaksesi yhden tai useamman nimen listalta ja sen jälkeen "Lisää valitut"-nappia lisätäksesi ',
-'instruct0' => 'Kirjoita ensimmäiset merkit uudesta moderaattorista ylempään kenttään, ja kaksoisklikkaa nimeä tai valikoi useampia nimiä luettelosta ja klikkaa "Lisää valitut"-nappia lisätäksesi',
-'instruct1' => 'Kaksoisklikkaa nimeä tai valitse nimi listalta ja sen jälkeen "Lisää valitut"-nappia lisätäksesi henkilön hakukenttään',
-'instruct2' => 'Etsi jäsen nimen tai sähköpostiosoitteen perusteella:',
-'instruct3' => 'Ylläolevassa hakupalkissa voit käyttää asteriskia (*) missä tahansa kohtaa hakuasi.',
-'instruct4' => 'Valitse jäsenryhmiä',
-'wildcardinfo' => 'Käytä * villikorttina',
-'searchresult' => 'Hakutulos:',
-'nofound' => 'Valitettavasti ei löytynyt hakuasi vastaavia tuloksia',
-'pmpagetitle' => 'Valitse yksityisviestin saajat',
-'grouppagetitle' => 'Valitse yleisviestin vastaanottajaryhmät',
-'modpagetitle' => 'Valitse moderaattorit',
-'buddypagetitle' => 'Valitse kaverisi',
-'ignorepagetitle' => 'Valitse ignoroitavat käyttäjät',
-'searchpagetitle' => 'Valitse haettava käyttäjä',
-'pageclose' => 'Sulje',
-'recentlist' => 'Viimeiset-lista',
-'alllist' => 'Jäsenlista',
-'gobutton' => 'Mene',
-'reciepientlist' => 'Saajalista',
-'moderatorlist' => 'Moderaattorilista',
-'buddylist' => 'Kaverilista',
-'groups' => 'Jäsenryhmät',
-'ignorelist' => 'Yksityisviestien ignore-lista',
-'searchlist' => '', #Search by User field
-'pmto' => 'Vastaanottaja',
-'pmcc' => 'Cc',
-'pmbcc' => 'Bcc',
-'allsearch' => 'Kaikki',
-'bmallmembers' => 'Kaikki foorumin jäsenet',
-'bmadmins' => 'Ylläpitäjät',
-'bmgmods' => 'Yleismoderaattorit',
-'bmfmods' => 'Foorumin moderaattorit',
-'bmmods' => 'Kaikki alueen moderaattorit / moderaattoriryhmät',
-'pages' => 'Sivuja',
-'of' => '',
-'noentries' => 'Tähän kirjeeseen ei ole merkintöjä saatavilla.',
-'other' => 'Muuta',
-'noresults' => 'Ei tuloksia',
-'qsearch' => 'Hae jäseniä',
-'illegal' => q~Invalid character~,
+    'addselected' => q~Lisää valitut~,
+    'instruct' =>
+q~Kaksoisklikkaa nimeä valitaksesi yhden tai useamman nimen listalta ja sen jälkeen "Lisää valitut"-nappia lisätäksesi ~,
+    'instruct0' =>
+q~Kirjoita ensimmäiset merkit uudesta moderaattorista ylempään kenttään, ja kaksoisklikkaa nimeä tai valikoi useampia nimiä luettelosta ja klikkaa "Lisää valitut"-nappia lisätäksesi~,
+    'instruct1' =>
+q~Kaksoisklikkaa nimeä tai valitse nimi listalta ja sen jälkeen "Lisää valitut"-nappia lisätäksesi henkilön hakukenttään~,
+    'instruct2' => q~Etsi jäsen nimen tai sähköpostiosoitteen perusteella:~,
+    'instruct3' =>
+q~Ylläolevassa hakupalkissa voit käyttää asteriskia (*) missä tahansa kohtaa hakuasi.~,
+    'instruct4'    => q~Valitse jäsenryhmiä~,
+    'wildcardinfo' => q~Käytä * villikorttina~,
+    'searchresult' => q~Hakutulos:~,
+    'nofound'      => q~Valitettavasti ei löytynyt hakuasi vastaavia tuloksia~,
+    'pmpagetitle'  => q~Valitse yksityisviestin saajat~,
+    'grouppagetitle'  => q~Valitse yleisviestin vastaanottajaryhmät~,
+    'modpagetitle'    => q~Valitse moderaattorit~,
+    'buddypagetitle'  => q~Valitse kaverisi~,
+    'ignorepagetitle' => q~Valitse ignoroitavat käyttäjät~,
+    'searchpagetitle' => q~Valitse haettava käyttäjä~,
+    'pageclose'       => q~Sulje~,
+    'recentlist'      => q~Viimeiset-lista~,
+    'alllist'         => q~Jäsenlista~,
+    'gobutton'        => q~Mene~,
+    'reciepientlist'  => q~Saajalista~,
+    'moderatorlist'   => q~Moderaattorilista~,
+    'buddylist'       => q~Kaverilista~,
+    'groups'          => q~Jäsenryhmät~,
+    'ignorelist'      => q~Yksityisviestien ignore-lista~,
+    'searchlist'   => q{},                          #Search by User field
+    'pmto'         => q~Vastaanottaja~,
+    'pmcc'         => q~Cc~,
+    'pmbcc'        => q~Bcc~,
+    'allsearch'    => q~Kaikki~,
+    'bmallmembers' => q~Kaikki foorumin jäsenet~,
+    'bmadmins'     => q~Ylläpitäjät~,
+    'bmgmods'      => q~Yleismoderaattorit~,
+    'bmfmods'      => q~Foorumin moderaattorit~,
+    'bmmods'    => q~Kaikki alueen moderaattorit / moderaattoriryhmät~,
+    'pages'     => q~Sivuja~,
+    'of'        => q{},
+    'noentries' => q~Tähän kirjeeseen ei ole merkintöjä saatavilla.~,
+    'other'     => q~Muuta~,
+    'noresults' => q~Ei tuloksia~,
+    'qsearch'   => q~Hae jäseniä~,
+    'illegal'   => q~Invalid character~,
 );
 
 1;

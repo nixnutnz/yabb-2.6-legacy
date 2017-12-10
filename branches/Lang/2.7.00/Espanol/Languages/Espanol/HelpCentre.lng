@@ -10,32 +10,35 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolhelpcentrelngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolhelpcentrelngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolhelpcentrelngmods = ();
 if (@espanolhelpcentrelngmods) {
     $espanolhelpcentrelngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; };
+if ( $action eq 'detailedversion' ) { return 1; }
 
 %helptxt = (
-'1' => 'Sección de Ayuda',
-'2' => 'Contenidos',
-'3' => 'Ayuda al usuario',
-'4' => 'Ayuda al moderador',
-'5' => 'Ayuda al moderador global',
-'6' => 'Ayuda al administrador',
-'7' => 'Editar entradas del centro de ayuda',
-'7c' => q~Choose Help Language~,
-'7d' => q~Edit Help Center Entries~,
-'8' => '¡Hecho!',
-'9' => 'Usar los Permisos',
-'10' => 'Aquí es donde puedes editar, borrar o reordenar las secciones de ayuda mostradas a los usuarios en la ayuda. En los archivos de la izquierda puedes ver las secciones de ayuda disponibles. Puedes marcar y editar o añadir a los archivos de la derecha haciendo click en la flecha para hacerlas visibles en el sistema de ayuda.',
-'643' => 'Volver arriba',
-'769' => 'Ubicación de Flash',
-'7a' => '    Sección Título',
-'7b' => 'Subsección Título',
+    '1'  => q~Sección de Ayuda~,
+    '2'  => q~Contenidos~,
+    '3'  => q~Ayuda al usuario~,
+    '4'  => q~Ayuda al moderador~,
+    '5'  => q~Ayuda al moderador global~,
+    '6'  => q~Ayuda al administrador~,
+    '7'  => q~Editar entradas del centro de ayuda~,
+    '7a' => q~    Sección Título~,
+    '7b' => q~Subsección Título~,
+    '7c' => q~Choose Help Language~,
+    '7d' => q~Edit Help Center Entries~,
+    '8'  => q~¡Hecho!~,
+    '9'  => q~Usar los Permisos~,
+    '10' =>
+q~Aquí es donde puedes editar, borrar o reordenar las secciones de ayuda mostradas a los usuarios en la ayuda. En los archivos de la izquierda puedes ver las secciones de ayuda disponibles. Puedes marcar y editar o añadir a los archivos de la derecha haciendo click en la flecha para hacerlas visibles en el sistema de ayuda.~,
+    '643' => q~Volver arriba~,
+    '769' => q~Ubicación de Flash~,
 );
 
 1;

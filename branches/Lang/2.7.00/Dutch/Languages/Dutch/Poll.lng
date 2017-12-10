@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # Poll.lng (Poll text definitions)                                            #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by: The YaBB Development Team                                      #
 #              with assistance from the YaBB community.                       #
 ###############################################################################
-$dutchpolllngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchpolllngver  = 'YaBB 2.7.00 $Revision: 1848 $';
 @dutchpolllngmods = ();
 if (@dutchpolllngmods) {
     $dutchpolllngmods = 1;
@@ -23,53 +25,60 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %polltxt = (
-'4' => 'Stelling',
-'6' => 'Vraag',
-'7' => 'Antwoord Optie',
-'15' => 'Peiling',
-'16' => 'Vraag',
-'17' => 'Totaal aantal stemmen',
-'18' => 'Voeg uw stem toe',
-'19' => 'Resultaten tonen',
-'20' => 'Openen',
-'21' => 'Sluiten',
-'22' => '** Deze peiling is nu gesloten **',
-'23' => 'Details van peiling:',
-'24' => 'Stemmen',
-'25' => 'Niemand heeft voor deze optie gestemd.',
-'26' => 'Resultaten verbergen:',
-'27' => 'Verwijder',
-'30' => 'IP Adres',
-'31' => 'Stem Datum',
-'32' => 'Activeer stemrecht voor gasten:',
-'33' => 'Resultaat bekijken',
-'35' => 'Naam',
-'39' => 'Aanpassen',
-'40' => 'De stelling',
-'41' => 'Er bevind zich een niet toegestaan teken in uw stelling. Probeer het alstublieft opnieuw.',
-'42' => 'Peiling Details',
-'43' => 'Verwijder stem',
-'44' => 'Weet u zeker dat u deze peiling wilt wissen?',
-'45' => 'Gemaakt door',
-'45a' => 'Laatst gewijzigd door',
-'46' => 'op',
-'47' => 'Dank u voor uw bijdrage in deze peiling.',
-'48' => 'De resultaten blijven verborgen totdat de peiling gesloten is en alle stemmen geteld zijn.',
-'49' => 'Verwijder stemmen',
-'53' => '** Niemand buiten u kan de resultaten zien tot de peiling gesloten is **',
-'54' => 'Vink aan als gasten mogen stemmen in deze peiling.',
-'55' => 'Vink aan als u niet wilt dat de resultaten worden getoond voordat de peiling gesloten is.',
-'56' => 'Vink aan als je wilt dat gebruikers op meer dan 1 optie mogen stemmen.',
-'57' => 'Commentaar op de Peiling',
-'58' => 'Meervoudige Keus',
-'59' => 'Peiling Commentaar',
-'64' => 'U stemde op',
-'65' => 'Uw stemkeuze was',
-'66' => 'Uw stemkeuzes waren',
-'showcased' => 'Wordt momenteel getoond',
-'setshowcased' => 'Peiling tonen?',
-'showcaserem' => 'Verwijder peiling uit Vitrine?',
-'confirm' => 'Weet u zeker dat u deze peiling wilt presenteren?\\nEen andere peiling wordt reeds gepresenteerd.', # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
+    '4'  => q~Stelling~,
+    '6'  => q~Vraag~,
+    '7'  => q~Antwoord Optie~,
+    '15' => q~Peiling~,
+    '16' => q~Vraag~,
+    '17' => q~Totaal aantal stemmen~,
+    '18' => q~Voeg uw stem toe~,
+    '19' => q~Resultaten tonen~,
+    '20' => q~Openen~,
+    '21' => q~Sluiten~,
+    '22' => q~** Deze peiling is nu gesloten **~,
+    '23' => q~Details van peiling:~,
+    '24' => q~Stemmen~,
+    '25' => q~Niemand heeft voor deze optie gestemd.~,
+    '26' => q~Resultaten verbergen:~,
+    '27' => q~Verwijder~,
+    '30' => q~IP Adres~,
+    '31' => q~Stem Datum~,
+    '32' => q~Activeer stemrecht voor gasten:~,
+    '33' => q~Resultaat bekijken~,
+    '35' => q~Naam~,
+    '39' => q~Aanpassen~,
+    '40' => q~De stelling~,
+    '41' =>
+q~Er bevind zich een niet toegestaan teken in uw stelling. Probeer het alstublieft opnieuw.~,
+    '42'  => q~Peiling Details~,
+    '43'  => q~Verwijder stem~,
+    '44'  => q~Weet u zeker dat u deze peiling wilt wissen?~,
+    '45'  => q~Gemaakt door~,
+    '45a' => q~Laatst gewijzigd door~,
+    '46'  => q~op~,
+    '47'  => q~Dank u voor uw bijdrage in deze peiling.~,
+    '48' =>
+q~De resultaten blijven verborgen totdat de peiling gesloten is en alle stemmen geteld zijn.~,
+    '49' => q~Verwijder stemmen~,
+    '53' =>
+q~** Niemand buiten u kan de resultaten zien tot de peiling gesloten is **~,
+    '54' => q~Vink aan als gasten mogen stemmen in deze peiling.~,
+    '55' =>
+q~Vink aan als u niet wilt dat de resultaten worden getoond voordat de peiling gesloten is.~,
+    '56' =>
+      q~Vink aan als je wilt dat gebruikers op meer dan 1 optie mogen stemmen.~,
+    '57'           => q~Commentaar op de Peiling~,
+    '58'           => q~Meervoudige Keus~,
+    '59'           => q~Peiling Commentaar~,
+    '64'           => q~U stemde op~,
+    '65'           => q~Uw stemkeuze was~,
+    '66'           => q~Uw stemkeuzes waren~,
+    'showcased'    => q~Wordt momenteel getoond~,
+    'setshowcased' => q~Peiling tonen?~,
+    'showcaserem'  => q~Verwijder peiling uit Vitrine?~,
+    'confirm' =>
+q~Weet u zeker dat u deze peiling wilt presenteren?\\nEen andere peiling wordt reeds gepresenteerd.~,
+# Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
 );
 
 1;

@@ -10,70 +10,69 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomimycenterlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomimycenterlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomimycenterlngmods = ();
-if(@suomimycenterlngmods){
+if (@suomimycenterlngmods) {
     $suomimycenterlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-## LEAVE USERLABEL intact. Move within the string for correct language syntax!
+## Leave USERLABEL intact. Move within the string for correct language syntax!
 
 %mycenter_txt = (
-'welcometxt' => "Käyttäjän USERLABEL Hallintapaneeli",
-'buddylisttitle' => 'Kaverisi',
-'buddylistnone' => 'Kaverilistasi on tyhjä',
-'buddydeleted' => 'Tämä kaveri on poistettu. Nimeä ei ole enää saatavilla!',
-'hiddenemail' => 'Piiloitettu sähköpostiosoite',
-'currentsettings' => 'Nykyiset asetuksesi:',
-'onoffstatus' => 'Online/Offline-tila:', 
-'onoffstatuson' => 'Online/Offline',
-'onoffstatusaway' => 'Poissa',
-'view' => 'Katso',
-'stealth' => 'Stealth:',
-'stealth_off' => 'Stealth-asetus pois',
-'stealth_on' => 'Stealth-asetus päällä',
-'posts' => 'Viestit',
-'location' => 'Sijainti', 
-'mylastposts' => 'Näytä 5 viimeisintä viestiäni',
+    'welcometxt'     => q~Käyttäjän USERLABEL Hallintapaneeli~,
+    'buddylisttitle' => q~Kaverisi~,
+    'buddylistnone'  => q~Kaverilistasi on tyhjä~,
+    'buddydeleted' =>
+      q~Tämä kaveri on poistettu. Nimeä ei ole enää saatavilla!~,
+    'hiddenemail'     => q~Piiloitettu sähköpostiosoite~,
+    'currentsettings' => q~Nykyiset asetuksesi:~,
+    'onoffstatus'     => q~Online/Offline-tila:~,
+    'onoffstatuson'   => q~Online/Offline~,
+    'onoffstatusaway' => q~Poissa~,
+    'view'            => q~Katso~,
+    'stealth'         => q~Stealth:~,
+    'stealth_off'     => q~Stealth-asetus pois~,
+    'stealth_on'      => q~Stealth-asetus päällä~,
+    'posts'           => q~Viestit~,
+    'location'        => q~Sijainti~,
+    'mylastposts'     => q~Näytä 5 viimeisintä viestiäni~,
 );
 
-%display_txt = (
-'139' => 'Sivut',
-);
+%display_txt = ( '139' => q~Sivut~, );
 
 %mc_menus = (
-'messages' => 'Viestit',
-'profile' => 'Profiili',
-'posts' => 'Ilmoitukset',
+    'messages' => q~Viestit~,
+    'profile'  => q~Profiili~,
+    'posts'    => q~Ilmoitukset~,
 );
 
 %pm_search = (
-'all' => 'kaikki',
-'justthis' => 'ainoastaan tämä hakemisto',
-'byuser' => 'käyttäjänimellä',
-'desc' => 'Etsi yksityisviestejäni',
-'search' => 'Etsi',
+    'all'      => q~kaikki~,
+    'justthis' => q~ainoastaan tämä hakemisto~,
+    'byuser'   => q~käyttäjänimellä~,
+    'desc'     => q~Etsi yksityisviestejäni~,
+    'search'   => q~Etsi~,
 );
 
-%mc_folders = (
-'foldername' => 'Hakemiston nimi',
-);
+%mc_folders = ( 'foldername' => q~Hakemiston nimi~, );
 
 %my_favs = (
-'70' => 'Aihe',
-'109' => 'Aloittaja',
-'110' => 'Vastauksia',
-'301' => 'Näyttöjä',
-'330' => 'Aiheita',
-'21' => 'Viestejä',
-'22' => 'Viimeisin viesti',
-'525' => 'Kirjoittaja',
-'526' => '', #'by',
-'527' => 'Aiheen aloitti',
-'737' => 'Valitse kaikki',
+    '70'  => q~Aihe~,
+    '109' => q~Aloittaja~,
+    '110' => q~Vastauksia~,
+    '301' => q~Näyttöjä~,
+    '330' => q~Aiheita~,
+    '21'  => q~Viestejä~,
+    '22'  => q~Viimeisin viesti~,
+    '525' => q~Kirjoittaja~,
+    '526' => q{},                   #'by',
+    '527' => q~Aiheen aloitti~,
+    '737' => q~Valitse kaikki~,
 );
 
 1;

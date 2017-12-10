@@ -10,58 +10,70 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomiloginoutlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomiloginoutlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomiloginoutlngmods = ();
-if(@suomiloginoutlngmods){
+if (@suomiloginoutlngmods) {
     $suomiloginoutlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %loginout_txt = (
-'34' => 'Kirjaudu',
-'35' => 'Käyttäjätunnus tai sähköpostiosoite',
-'35a' => 'käyttäjätunnus- tai sähköpostiosoitekentässä.',
-'35b' => 'Käyttäjätunnus, näyttönimi tai sähköpostiosoite',
-'36' => 'Salasana',
-'36b' => 'Salasanan nollaus',
-'130' => "Terveisin, $mbname ylläpito",
-'130a' => "Tämä muistutus pyydettiin foorumilta $mbname. Mikäli et pyytänyt salasanasi nollausta poista tämä viesti. Muussa tapauksessa siirry tänne nollataksesi salasanasi: ",
-'192' => 'Sähköposti on lähetetty osoitteeseen',
-'193' => 'Takaisin',
-'194' => 'muistutus',
-'241' => 'kentässä!',
-'315' => 'Unohtuiko salasana?',
-'339' => 'Lähetä',
-'669' => 'Salasanamuistutin',
-'711' => 'Hyvä',
-'753' => 'Tarvitseeko rekisteröityä?',
-'837' => 'Käyttäjätunnuksesi on merkkikoon huomioiva.',
-'capslock' => 'Caps lock on päällä.',
-'wrong_char' => 'Tämä merkki salasanassa ei kelpaa',
-'error_user_info' => 'Sinun täytyy täyttää käyttäjänimi tai sähköpostiosoite.',
-'no_user_info_exists' => 'Käyttäjänimi tai sähköpostiosoite, jonka annoit, ei ole olemassa tällä foorumilla.', 
-'verification_question_desc' => 'Ole hyvä ja vastaa ylläolevaan tarkistuskysymykseen.',
-'verification_question_case' => 'Vastauksissa kirjainkoolla on merkitystä.',
-'error_verification' => 'Tarkistuskoodi puuttuu.',
-'error_verification_question' => 'Sinun täytyy vastata tarkistuskysymykseen.',
-'keeps' => 'Pidä minut kirjautuneena',
+    '34'  => q~Kirjaudu~,
+    '35'  => q~Käyttäjätunnus tai sähköpostiosoite~,
+    '35a' => q~käyttäjätunnus- tai sähköpostiosoitekentässä.~,
+    '35b' => q~Käyttäjätunnus, näyttönimi tai sähköpostiosoite~,
+    '36'  => q~Salasana~,
+    '36b' => q~Salasanan nollaus~,
+    '130' => q~Terveisin, {yabb mbname} ylläpito~,
+    '130a' =>
+q~Tämä muistutus pyydettiin foorumilta {yabb mbname}. Mikäli et pyytänyt salasanasi nollausta poista tämä viesti. Muussa tapauksessa siirry tänne nollataksesi salasanasi: ~,
+    '192'        => q~Sähköposti on lähetetty osoitteeseen~,
+    '193'        => q~Takaisin~,
+    '194'        => q~muistutus~,
+    '241'        => q~kentässä!~,
+    '315'        => q~Unohtuiko salasana?~,
+    '339'        => q~Lähetä~,
+    '669'        => q~Salasanamuistutin~,
+    '711'        => q~Hyvä~,
+    '753'        => q~Tarvitseeko rekisteröityä?~,
+    '837'        => q~Käyttäjätunnuksesi on merkkikoon huomioiva.~,
+    'capslock'   => q~Caps lock on päällä.~,
+    'wrong_char' => q~Tämä merkki salasanassa ei kelpaa~,
+    'error_user_info' =>
+      q~Sinun täytyy täyttää käyttäjänimi tai sähköpostiosoite.~,
+    'no_user_info_exists' =>
+q~Käyttäjänimi tai sähköpostiosoite, jonka annoit, ei ole olemassa tällä foorumilla.~,
+    'verification_question_desc' =>
+      q~Ole hyvä ja vastaa ylläolevaan tarkistuskysymykseen.~,
+    'verification_question_case' =>
+      q~Vastauksissa kirjainkoolla on merkitystä.~,
+    'error_verification' => q~Tarkistuskoodi puuttuu.~,
+    'error_verification_question' =>
+      q~Sinun täytyy vastata tarkistuskysymykseen.~,
+    'keeps' => q~Pidä minut kirjautuneena~,
 );
 
-%floodtxt=(
-'1' => 'Varmistuskoodisi on',
-'3' => 'Varmistuskoodi',
-'casewarning' => 'Ole hyvä ja kirjoita täsmälleen sama teksti kuin kuvassa. Kirjainkoolla on merkitystä.',
-'casewarning_1' => 'Ole hyvä ja kirjoita täsmälleen sama teksti kuin kuvassa,',
-'casewarning_2' => '<br /><span style="font-weight: bold;">ilman ensimmäistä',
-'casewarning_3' => '<br /><span style="font-weight: bold;">ilman viimeistä',
-'casewarning_4' => 'ja viimeistä',
-'casewarning_5' => 'merkkiä.</span><br />Merkit täytyy kirjoittaa samassa järjestyksessä,<br />ja kirjainkoolla on merkitystä.',
+%floodtxt = (
+    '1' => q~Varmistuskoodisi on~,
+    '3' => q~Varmistuskoodi~,
+    'casewarning' =>
+q~Ole hyvä ja kirjoita täsmälleen sama teksti kuin kuvassa. Kirjainkoolla on merkitystä.~,
+    'casewarning_1' =>
+      q~Ole hyvä ja kirjoita täsmälleen sama teksti kuin kuvassa,~,
+    'casewarning_2' =>
+      q~<br /><span style="font-weight: bold;">ilman ensimmäistä~,
+    'casewarning_3' =>
+      q~<br /><span style="font-weight: bold;">ilman viimeistä~,
+    'casewarning_4' => q~ja viimeistä~,
+    'casewarning_5' =>
+q~merkkiä.</span><br />Merkit täytyy kirjoittaa samassa järjestyksessä,<br />ja kirjainkoolla on merkitystä.~,
 );
 
-%prereg_txt=(
-'5' => 'Käyttäjätunnuksesi on nyt aktivoitu ja voit kirjautua sisään!',
-);
+%prereg_txt =
+  ( '5' => q~Käyttäjätunnuksesi on nyt aktivoitu ja voit kirjautua sisään!~, );
 
 1;

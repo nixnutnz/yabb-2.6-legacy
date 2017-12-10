@@ -1,5 +1,5 @@
 ###############################################################################
-# Email.lng (E-mail templating and text declarations)                        #
+# Email.lng (E-mail templating and text declarations)                         #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
@@ -11,69 +11,77 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$russianemaillngver = 'YaBB 2.7.00 $Revision$';
+$russianemaillngver  = 'YaBB 2.7.00 $Revision$';
 @russianemaillngmods = ();
-if(@russianemaillngmods){
+if (@russianemaillngmods) {
     $russianemaillngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %yabbtagdesc = (
-# Constant tags
-'scripturl' => "URL Форума. Например: {yabb scripturl}",
-'adminurl' => "URL Центра Управления Форумом. Example: {yabb adminurl}",
-'mbname' => "Имя Форума. Например: {yabb mbname}",
 
-# New Member related
-'userip' => "IP-адрес Пользователя.",
-'useremail' => "E-mail адрес Пользователя.",
+    # Constant tags
+    'scripturl' => q~URL Форума. Например: {yabb scripturl}~,
+    'adminurl'  => q~URL Центра Управления Форумом. Example: {yabb adminurl}~,
+    'mbname'    => q~Имя Форума. Например: {yabb mbname}~,
 
-# User-related
-'username' => "Логин (ID) Пользователя.",
-'displayname' => "Отображаемое Имя Пользователя.",
-'cryptusername' => "Логин (ID) Пользователя, преобразованный для использования в качестве URL.",
-'reviewer' => "Реальное имя Администратора/Координатора, рассматривавшего регистрационные данные.",
+    # New Member related
+    'userip'    => q~IP-адрес Пользователя.~,
+    'useremail' => q~E-mail адрес Пользователя.~,
 
-# Topic/PM-related
-'sender' => "Отправитель Личного Сообщения.",
-'num' => "Номер Темы (для URL)",
-'start' => "Номер Сообщения в Теме (для URL)",
-'tmessage' => "Текст новую тему",
-'tauthor' => "Название Автор",
+    # User-related
+    'username'    => q~Логин (ID) Пользователя.~,
+    'displayname' => q~Отображаемое Имя Пользователя.~,
+    'cryptusername' =>
+q~Логин (ID) Пользователя, преобразованный для использования в качестве URL.~,
+    'reviewer' =>
+q~Реальное имя Администратора/Координатора, рассматривавшего регистрационные данные.~,
 
-# Registration/Password
-'activationcode' => "Код активации отправлен по указанному адресу E-mail.",
-'remindercode' => "Код отправлен в напоминании по E-mail.",
-'preregspan' => "Промежуток времени, в течение которого будет активна предварительная регистрация. Текущее значение: {yabb preregspan}",
-'reason', "Админ причиной решения, принятого на регистрирующий пользователя в реестре с режимом одобрения администратором",
+    # Topic/PM-related
+    'sender'   => q~Отправитель Личного Сообщения.~,
+    'num'      => q~Номер Темы (для URL)~,
+    'start'    => q~Номер Сообщения в Теме (для URL)~,
+    'tmessage' => q~Текст новую тему~,
+    'tauthor'  => q~Название Автор~,
 
-# Sending a topic
-'toname' => "Имя получателя Сообщения.",
+    # Registration/Password
+    'activationcode' => q~Код активации отправлен по указанному адресу E-mail.~,
+    'remindercode'   => q~Код отправлен в напоминании по E-mail.~,
+    'preregspan' =>
+q~Промежуток времени, в течение которого будет активна предварительная регистрация. Текущее значение: {yabb preregspan}~,
+    'reason' =>
+q~Админ причиной решения, принятого на регистрирующий пользователя в реестре с режимом одобрения администратором~,
 
-# PMs
-'sendto' => "Получатель этого ЛС.",
-'email' => "E-mail от пользователя.",
-'date' => "Дата отправки Личного Сообщения.",
-'subject' => "Заголовок для Личного Сообщения.",
-'message' => "Текст Личного Сообщения.",
+    # Sending a topic
+    'toname' => q~Имя получателя Сообщения.~,
+
+    # PMs
+    'sendto'  => q~Получатель этого ЛС.~,
+    'email'   => q~E-mail от пользователя.~,
+    'date'    => q~Дата отправки Личного Сообщения.~,
+    'subject' => q~Заголовок для Личного Сообщения.~,
+    'message' => q~Текст Личного Сообщения.~,
 );
 
 # Pre registration subject lines
-%mailreg_txt=(
-'apr_result_activate' => "Информация об активации для",
-'apr_result_validate' => "Регистрация проверена для",
-'apr_result_info' => "Регистрационная информация для",
-'apr_result_wait' => "Ожидание регистрации для",
-'apr_result_reject' => "Регистрация отклонена для",
-'apr_result_approved' => "Регистрация одобрена для",
-'new_member_info' => "Регистрация Нового Участника!",
+%mailreg_txt = (
+    'apr_result_activate' => q~Информация об активации для~,
+    'apr_result_validate' => q~Регистрация проверена для~,
+    'apr_result_info'     => q~Регистрационная информация для~,
+    'apr_result_wait'     => q~Ожидание регистрации для~,
+    'apr_result_reject'   => q~Регистрация отклонена для~,
+    'apr_result_approved' => q~Регистрация одобрена для~,
+    'new_member_info'     => q~Регистрация Нового Участника!~,
 );
 
-$yabbtags{'preregemail'} = qq~displayname preregspan cryptusername activationcode~;
-$emaildesc{'preregemail'} = qq~Регистрационная электронной почты, отправляется при использовании ссылку активации~;
-$preregemail = qq~<pre>Приветствуем Вас, {yabb displayname}!
+$yabbtags{'preregemail'} =
+  q~displayname preregspan cryptusername activationcode~;
+$emaildesc{'preregemail'} =
+q~Регистрационная электронной почты, отправляется при использовании ссылку активации~;
+$preregemail = q~<pre>Приветствуем Вас, {yabb displayname}!
 
 Вы отправили запрос на регистрацию в форуме {yabb mbname}.
 Для завершения регистрации Вам необходимо активировать Вашу учетную запись в течение {yabb preregspan} часов.
@@ -87,9 +95,10 @@ $preregemail = qq~<pre>Приветствуем Вас, {yabb displayname}!
 С уважением,
 Администрация {yabb mbname}</pre>~;
 
-$yabbtags{'approveregemail'} = qq~username displayname~;
-$emaildesc{'approveregemail'} = qq~Письмо об ожидании одобрения. Пароль и код для регистрации не отсылаются~;
-$approveregemail = qq~<pre>Здравствуйте, {yabb displayname}!
+$yabbtags{'approveregemail'} = q~username displayname~;
+$emaildesc{'approveregemail'} =
+  q~Письмо об ожидании одобрения. Пароль и код для регистрации не отсылаются~;
+$approveregemail = q~<pre>Здравствуйте, {yabb displayname}!
 
 Ваша заявка на регистрацию аккаунта с ID: "{yabb username}" ожидает одобрения со стороны администрации форума {yabb mbname}.
 
@@ -99,9 +108,10 @@ $approveregemail = qq~<pre>Здравствуйте, {yabb displayname}!
 С уважением,
 Коллектив форума {yabb mbname}</pre>~;
 
-$yabbtags{'instantapprovedemail'} = qq~username displayname reviewer~;
-$emaildesc{'instantapprovedemail'} = qq~Рассмотрение и быстрое одобрение зявки. Пароль и код для регистрации не отсылаются~;
-$instantapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+$yabbtags{'instantapprovedemail'} = q~username displayname reviewer~;
+$emaildesc{'instantapprovedemail'} =
+q~Рассмотрение и быстрое одобрение зявки. Пароль и код для регистрации не отсылаются~;
+$instantapprovedemail = q~<pre>Здравствуйте, {yabb displayname}!
 
 Поздравляем и добро пожаловать!
 
@@ -114,9 +124,10 @@ $instantapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
 С наилучшими пожеланиями,
 Команда форума {yabb mbname}</pre>~;
 
-$yabbtags{'pwinstantapprovedemail'} = qq~username displayname reviewer password~;
-$emaildesc{'pwinstantapprovedemail'} = qq~Рассмотрение и быстрое одобрение зявки с отсылкой пароля~;
-$pwinstantapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+$yabbtags{'pwinstantapprovedemail'} = q~username displayname reviewer password~;
+$emaildesc{'pwinstantapprovedemail'} =
+  q~Рассмотрение и быстрое одобрение зявки с отсылкой пароля~;
+$pwinstantapprovedemail = q~<pre>Здравствуйте, {yabb displayname}!
 
 Поздравляем и добро пожаловать!
 
@@ -130,9 +141,10 @@ $pwinstantapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
 С наилучшими пожеланиями,
 Команда форума {yabb mbname}</pre>~;
 
-$yabbtags{'instantrejectedemail'} = qq~username displayname reviewer~;
-$emaildesc{'instantrejectedemail'} = qq~Рассмотрение и быстрое отклонение зявки. Пароль и код для регистрации не отсылаются~;
-$instantrejectedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+$yabbtags{'instantrejectedemail'} = q~username displayname reviewer~;
+$emaildesc{'instantrejectedemail'} =
+q~Рассмотрение и быстрое отклонение зявки. Пароль и код для регистрации не отсылаются~;
+$instantrejectedemail = q~<pre>Здравствуйте, {yabb displayname}!
 
 Мы с сожалением информируем Вас о том, что Ваша заявка на участие в работе нашего форума была рассмотрена и отклонена {yabb reviewer} из штата администраци {yabb mbname}.
 Каких либо специальных соображений о причинах отказа не было дано, однако обычно для такого отказа служат неудовлетворительные или неолные данные, введенные Вами при заполнении заявки.
@@ -142,9 +154,10 @@ $instantrejectedemail = qq~<pre>Здравствуйте, {yabb displayname}!
 Всего хорошего,
 Администрация форума {yabb mbname}</pre>~;
 
-$yabbtags{'reviewapprovedemail'} = qq~username displayname reviewer~;
-$emaildesc{'reviewapprovedemail'} = qq~Рассмотрение и одобрение зявки. Пароль и код для регистрации не отсылаются~;
-$reviewapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+$yabbtags{'reviewapprovedemail'} = q~username displayname reviewer~;
+$emaildesc{'reviewapprovedemail'} =
+  q~Рассмотрение и одобрение зявки. Пароль и код для регистрации не отсылаются~;
+$reviewapprovedemail = q~<pre>Здравствуйте, {yabb displayname}!
 
 Поздравляем и добро пожаловать!
 
@@ -159,9 +172,10 @@ $reviewapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
 С наилучшими пожеланиями,
 Команда форума {yabb mbname}</pre>~;
 
-$yabbtags{'pwreviewapprovedemail'} = qq~username displayname reviewer password~;
-$emaildesc{'pwreviewapprovedemail'} = qq~Рассмотрение и одобрение зявки. Отсылка пароля~;
-$pwreviewapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+$yabbtags{'pwreviewapprovedemail'} = q~username displayname reviewer password~;
+$emaildesc{'pwreviewapprovedemail'} =
+  q~Рассмотрение и одобрение зявки. Отсылка пароля~;
+$pwreviewapprovedemail = q~<pre>Здравствуйте, {yabb displayname}!
 
 Поздравляем и добро пожаловать!
 
@@ -177,9 +191,10 @@ $pwreviewapprovedemail = qq~<pre>Здравствуйте, {yabb displayname}!
 С наилучшими пожеланиями,
 Команда форума {yabb mbname}</pre>~;
 
-$yabbtags{'reviewrejectedemail'} = qq~username displayname reviewer reason~;
-$emaildesc{'reviewrejectedemail'} = qq~Рассмотрение и отклонение зявки. Пароль и код для регистрации не отсылаются~;
-$reviewrejectedemail = qq~<pre>Здравствуйте, {yabb displayname}!
+$yabbtags{'reviewrejectedemail'} = q~username displayname reviewer reason~;
+$emaildesc{'reviewrejectedemail'} =
+q~Рассмотрение и отклонение зявки. Пароль и код для регистрации не отсылаются~;
+$reviewrejectedemail = q~<pre>Здравствуйте, {yabb displayname}!
 
 Мы с сожалением информируем Вас о том, что Ваша заявка на участие в работе нашего форума была рассмотрена и отклонена {yabb reviewer} из штата администраци {yabb mbname}.
 Основанием для такого решения {yabb reviewer} послужили следующие соображения:
@@ -191,9 +206,10 @@ $reviewrejectedemail = qq~<pre>Здравствуйте, {yabb displayname}!
 Всего хорошего,
 Администрация форума {yabb mbname}</pre>~;
 
-$yabbtags{'passwordregemail'} = qq~username password displayname~;
-$emaildesc{'passwordregemail'} = qq~Регистрационное письмо. Отсылка пользователю случайно сгенерированного пароля~;
-$passwordregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+$yabbtags{'passwordregemail'} = q~username password displayname~;
+$emaildesc{'passwordregemail'} =
+q~Регистрационное письмо. Отсылка пользователю случайно сгенерированного пароля~;
+$passwordregemail = q~<pre>Добро пожаловать, {yabb displayname}!
 
 Ваш Логин (ID): {yabb username}, Ваш пароль: {yabb password}.
 
@@ -204,9 +220,10 @@ $passwordregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'welcomeregemail'} = qq~username password displayname~;
-$emaildesc{'welcomeregemail'} = qq~Регистрационное письмо в котором отсылается пароль или код предварительной регистрации~;
-$welcomeregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+$yabbtags{'welcomeregemail'} = q~username password displayname~;
+$emaildesc{'welcomeregemail'} =
+q~Регистрационное письмо в котором отсылается пароль или код предварительной регистрации~;
+$welcomeregemail = q~<pre>Добро пожаловать, {yabb displayname}!
 
 Ваш Логин (ID): {yabb username}. Ваш Пароль: {yabb password}.
 
@@ -217,9 +234,10 @@ $welcomeregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'activatedpassregemail'} = qq~username password displayname~;
-$emaildesc{'activatedpassregemail'} = qq~Результат активации регистрации. Отправка пароля~;
-$activatedpassregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+$yabbtags{'activatedpassregemail'} = q~username password displayname~;
+$emaildesc{'activatedpassregemail'} =
+  q~Результат активации регистрации. Отправка пароля~;
+$activatedpassregemail = q~<pre>Добро пожаловать, {yabb displayname}!
 
 Ваш Логин (ID) {yabb username}, Ваш пароль {yabb password}.
 
@@ -230,9 +248,10 @@ $activatedpassregemail = qq~<pre>Добро пожаловать, {yabb displayn
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'activatedwelcomeregemail'} = qq~username password displayname~;
-$emaildesc{'activatedwelcomeregemail'} = qq~Результат активации регистрации (без отправки пароля)~;
-$activatedwelcomeregemail = qq~<pre>Добро пожаловать, {yabb displayname}!
+$yabbtags{'activatedwelcomeregemail'} = q~username password displayname~;
+$emaildesc{'activatedwelcomeregemail'} =
+  q~Результат активации регистрации (без отправки пароля)~;
+$activatedwelcomeregemail = q~<pre>Добро пожаловать, {yabb displayname}!
 
 Ваш Логин (ID) {yabb username}.
 
@@ -243,9 +262,10 @@ $activatedwelcomeregemail = qq~<pre>Добро пожаловать, {yabb displ
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'newmemberemail'} = qq~displayname username userip useremail~;
-$emaildesc{'newmemberemail'} = qq~Уведомление Администратору о регистрации нового Участника~;
-$newmemberemail = qq~<pre>Новый участник зарегистрирован в вашем форуме!
+$yabbtags{'newmemberemail'} = q~displayname username userip useremail~;
+$emaildesc{'newmemberemail'} =
+  q~Уведомление Администратору о регистрации нового Участника~;
+$newmemberemail = q~<pre>Новый участник зарегистрирован в вашем форуме!
 
 Отображаемое имя: {yabb displayname}
 Логин: {yabb username}
@@ -262,9 +282,10 @@ E-mail: {yabb useremail}
 С наилучшими пожеланиями,
 Команда {yabb mbname}</pre>~;
 
-$yabbtags{'passwordreminderemail'} = qq~displayname mbname remindercode cryptusername~;
-$emaildesc{'passwordreminderemail'} = qq~Напоминание пароля~;
-$passwordreminderemail = qq~<pre>Уважаемый {yabb displayname}.
+$yabbtags{'passwordreminderemail'} =
+  q~displayname mbname remindercode cryptusername~;
+$emaildesc{'passwordreminderemail'} = q~Напоминание пароля~;
+$passwordreminderemail = q~<pre>Уважаемый {yabb displayname}.
 
 Это сообщение было создано форумом {yabb mbname} в ответ на действия его посетителя.
 Если Вы не нуждаетесь в восстановлении своего пароля - пожалуйста, проигнорируйте это сообщение.
@@ -276,27 +297,33 @@ $passwordreminderemail = qq~<pre>Уважаемый {yabb displayname}.
 С уважением,
 Команда {yabb mbname}<pre>~;
 
-$yabbtags{'boardnewtopicnotificationemail'} = qq~num subject~;
-$emaildesc{'boardnewtopicnotificationemail'} = qq~Письмо с уведомлением (Наблюдение за Разделом - новая Тема)~;
-$boardnewtopicnotificationemail = qq~<pre>Новая Тема, "{yabb subject}", создана в Разделе, за которым Вы наблюдаете.
+$yabbtags{'boardnewtopicnotificationemail'} = q~num subject~;
+$emaildesc{'boardnewtopicnotificationemail'} =
+  q~Письмо с уведомлением (Наблюдение за Разделом - новая Тема)~;
+$boardnewtopicnotificationemail =
+q~<pre>Новая Тема, "{yabb subject}", создана в Разделе, за которым Вы наблюдаете.
 
 Вы можете просмотреть это Сообщение, перейдя по ссылке: {yabb scripturl}?num={yabb num}
 
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'boardnotificationemail'} = qq~num start subject~;
-$emaildesc{'boardnotificationemail'} = qq~Письмо с уведомлением (Наблюдение за Разделом - Ответ в существующей Теме)~;
-$boardnotificationemail = qq~<pre>Новое сообщение было оставлено в Разделе, за которым Вы наблюдаете: "{yabb subject}".
+$yabbtags{'boardnotificationemail'} = q~num start subject~;
+$emaildesc{'boardnotificationemail'} =
+  q~Письмо с уведомлением (Наблюдение за Разделом - Ответ в существующей Теме)~;
+$boardnotificationemail =
+q~<pre>Новое сообщение было оставлено в Разделе, за которым Вы наблюдаете: "{yabb subject}".
 
 Вы можете просмотреть это Сообщение, перейдя по ссылке: {yabb scripturl}?num={yabb num}/{yabb start}
 
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'topicnotificationemail'} = qq~num subject start~;
-$emaildesc{'topicnotificationemail'} = qq~Письмо с уведомлением (Наблюдение за Темой)~;
-$topicnotificationemail = qq~<pre>Новое сообщение оставлено в Теме, за которой Вы наблюдаете: "{yabb subject}".
+$yabbtags{'topicnotificationemail'} = q~num subject start~;
+$emaildesc{'topicnotificationemail'} =
+  q~Письмо с уведомлением (Наблюдение за Темой)~;
+$topicnotificationemail =
+q~<pre>Новое сообщение оставлено в Теме, за которой Вы наблюдаете: "{yabb subject}".
 
 Вы можете просмотреть это Сообщение, перейдя по ссылке:
 {yabb scripturl}?num={yabb num}/{yabb start}
@@ -306,9 +333,10 @@ $topicnotificationemail = qq~<pre>Новое сообщение оставлен
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'profilenewpasswordemail'} = qq~displayname password~;
-$emaildesc{'profilenewpasswordemail'} = qq~Сообщение с новым паролем - смена старого пароля~;
-$profilenewpasswordemail = qq~<pre>Здравствуйте, {yabb displayname}.
+$yabbtags{'profilenewpasswordemail'} = q~displayname password~;
+$emaildesc{'profilenewpasswordemail'} =
+  q~Сообщение с новым паролем - смена старого пароля~;
+$profilenewpasswordemail = q~<pre>Здравствуйте, {yabb displayname}.
 
 Ваш пароль был изменен. Ваш новый пароль: {yabb password}.
 
@@ -317,9 +345,9 @@ $profilenewpasswordemail = qq~<pre>Здравствуйте, {yabb displayname}.
 Всего наилучшего,
 {yabb mbname}<pre>~;
 
-$yabbtags{'sendtopicemail'} = qq~toname subject displayname num~;
-$emaildesc{'sendtopicemail'} = qq~Отправка Темы по E-mail~;
-$sendtopicemail = qq~<pre>Здравствуйте, {yabb toname}.
+$yabbtags{'sendtopicemail'}  = q~toname subject displayname num~;
+$emaildesc{'sendtopicemail'} = q~Отправка Темы по E-mail~;
+$sendtopicemail              = q~<pre>Здравствуйте, {yabb toname}.
 
 Надеюсь, что Вас заинтересует сообщение "{yabb subject}", которое было оставлено на {yabb mbname}. Чтобы просмотреть полный текст сообщения, перейдите по ссылке, указанной ниже:
 {yabb scripturl}?num={yabb num}
@@ -327,9 +355,11 @@ $sendtopicemail = qq~<pre>Здравствуйте, {yabb toname}.
 Всего наилучшего,
 {yabb mbname}</pre>~;
 
-$yabbtags{'privatemessagenotificationemail'} = qq~sender subject message~;
-$emaildesc{'privatemessagenotificationemail'} = qq~Извещение о получении Личного Сообщения~;
-$privatemessagenotificationemail = qq~<pre>{yabb sender} отправил Вам личное сообщение.
+$yabbtags{'privatemessagenotificationemail'} = q~sender subject message~;
+$emaildesc{'privatemessagenotificationemail'} =
+  q~Извещение о получении Личного Сообщения~;
+$privatemessagenotificationemail =
+  q~<pre>{yabb sender} отправил Вам личное сообщение.
 
 Тема: {yabb subject}
 Сообщение:{yabb message}
@@ -337,16 +367,16 @@ $privatemessagenotificationemail = qq~<pre>{yabb sender} отправил Вам
 
 Это сообщение также находится в Вашем персональном ящике для сообщений на форуме {yabb mbname}\: <a href="{yabb scripturl}">{yabb scripturl}</a></pre>~;
 
-
-## for online alert pms. 
+## for online alert pms.
 %online_alert = (
-newnotify => "Получено новое личное сообщение!",
-replynotify => "Ответьте на сообщение!",
+    newnotify   => q~Получено новое личное сообщение!~,
+    replynotify => q~Ответьте на сообщение!~,
 );
 
-$yabbtags{'replyguestmail'} = qq~sender email sendto date subject message~;
-$emaildesc{'replyguestmail'} = qq~Ответ Администратора на письмо от Гостя форума~;
-$replyguestmail = qq~<pre>Уважаемый {yabb sender},
+$yabbtags{'replyguestmail'} = q~sender email sendto date subject message~;
+$emaildesc{'replyguestmail'} =
+  q~Ответ Администратора на письмо от Гостя форума~;
+$replyguestmail = q~<pre>Уважаемый {yabb sender},
 
 
 
@@ -364,11 +394,11 @@ $replyguestmail = qq~<pre>Уважаемый {yabb sender},
 {yabb message}
 </pre>~;
 
-
 $yabbtags{'deleteduseremail'} = q~displayname~;
-$emaildesc{'deleteduseremail'} = qq~Информационное письмо об удалении пользователя~;
-$deletedusersybject = qq~{yabb mbname} - Ваш аккаунт был удален~;
-$deleteduseremail = qq~<pre>Здравствуйте, {yabb displayname}!
+$emaildesc{'deleteduseremail'} =
+  q~Информационное письмо об удалении пользователя~;
+$deletedusersybject = q~{yabb mbname} - Ваш аккаунт был удален~;
+$deleteduseremail   = q~<pre>Здравствуйте, {yabb displayname}!
 
 Ваша учетная запись на {yabb mbname} долгое время не использовалась и поэтому была удалена!
 Если Вы снова захотите принять участие в работе нашего форума, Вам надо будет зарегистрироваться заново.
@@ -378,10 +408,10 @@ $deleteduseremail = qq~<pre>Здравствуйте, {yabb displayname}!
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 <pre>~;
 
-$yabbtags{'banneduseremail'} = q~displayname~;
+$yabbtags{'banneduseremail'}  = q~displayname~;
 $emaildesc{'banneduseremail'} = q~The Banned User Notification E-mail~;
-$bannedusersybject = q~Your account banned on~;
-$banneduseremail = q~Hello, {yabb displayname}:
+$bannedusersybject            = q~Your account banned on~;
+$banneduseremail              = q~Hello, {yabb displayname}:
 
 You have been banned from {yabb mbname} {yabb ban_time} by {yabb banner}{yabb ban_reason}.
 
@@ -390,10 +420,10 @@ The {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'suspendeduseremail'} = q~displayname~;
+$yabbtags{'suspendeduseremail'}  = q~displayname~;
 $emaildesc{'suspendeduseremail'} = q~The Suspended User Notification E-mail~;
-$suspendusersybject = q~Your account suspended on~;
-$suspendeduseremail = q~Hello, {yabb displayname}:
+$suspendusersybject              = q~Your account suspended on~;
+$suspendeduseremail              = q~Hello, {yabb displayname}:
 
 Your account on {yabb mbname} has been suspended {yabb ban_time} by {yabb banner}{yabb ban_reason}.
 

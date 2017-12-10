@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # UserSelect.lng (UserSelect text definitions)                                #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchuserselectlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchuserselectlngver  = 'YaBB 2.7.00 $Revision: 1848 $';
 @dutchuserselectlngmods = ();
 if (@dutchuserselectlngmods) {
     $dutchuserselectlngmods = 1;
@@ -23,48 +25,52 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %usersel_txt = (
-'addselected' => 'Voeg selectie toe',
-'instruct' => 'Dubbelklik op een naam of selecteer een of meer namen in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de',
-'instruct0' => 'Typ de eerste tekens van de nieuwe moderator in het bovenste formulierveld, dubbelklik vervolgens op de naam of selecteer een of meer namen in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de',
-'instruct1' => 'Dubbelklik op een naam of selecteer een naam in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de',
-'instruct2' => 'Zoek lid op naam of email:',
-'instruct3' => 'In het bovenste zoekvak  kunt u een jokerteken gebruiken (alleen een *) in uw zoekreeks.',
-'instruct4' => 'Selecteer Leden Groepen',
-'wildcardinfo' => 'Gebruik * voor jokerteken',
-'searchresult' => 'Zoek Resultaat:',
-'nofound' => 'Sorry - geen resultaten gevonden voor',
-'pmpagetitle' => 'Selecteer PM geadresseerden',
-'grouppagetitle' => 'Selecter BC Geadresseerden Groepen',
-'modpagetitle' => 'Selecteer Moderatoren',
-'buddypagetitle' => 'Selecteer uw vrienden',
-'ignorepagetitle' => 'Selecteer leden om te negeren',
-'searchpagetitle' => 'Selecteer lid om naar te zoeken',
-'pageclose' => 'Sluiten',
-'recentlist' => 'Recente Lijst',
-'alllist' => 'Leden Lijst',
-'gobutton' => 'Ga',
-'reciepientlist' => 'Lijst met geadresseerden',
-'moderatorlist' => 'Moderator Lijst',
-'buddylist' => 'Vrienden Lijst',
-'groups' => 'Leden Groepen',
-'ignorelist' => 'PM Negeer lijst',
-'searchlist' => 'Zoek met de Gebruikersveld',
-'pmto' => 'Naar',
-'pmcc' => 'Cc',
-'pmbcc' => 'Bcc',
-'allsearch' => 'Allen',
-'bmallmembers' => 'Alle forum leden',
-'bmadmins' => 'Beheerders',
-'bmgmods' => 'Global moderatoren',
-'bmfmods' => 'Forum moderatoren',
-'bmmods' => 'Alle board moderatoren / mod groepen',
-'pages' => q~Pagina's~,
-'of' => 'van',
-'noentries' => 'Er zijn geen gegevens beschikbaar voor deze brief.',
-'other' => 'Ander',
-'noresults' => 'Geen Resultaten',
-'qsearch' => 'Zoek Leden',
-'illegal' => q~Invalid character~,
+    'addselected' => q~Voeg selectie toe~,
+    'instruct' =>
+q~Dubbelklik op een naam of selecteer een of meer namen in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de~,
+    'instruct0' =>
+q~Typ de eerste tekens van de nieuwe moderator in het bovenste formulierveld, dubbelklik vervolgens op de naam of selecteer een of meer namen in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de~,
+    'instruct1' =>
+q~Dubbelklik op een naam of selecteer een naam in de lijst en klik op de "Voeg selectie toe" button om toe te voegen aan de~,
+    'instruct2' => q~Zoek lid op naam of email:~,
+    'instruct3' =>
+q~In het bovenste zoekvak  kunt u een jokerteken gebruiken (alleen een *) in uw zoekreeks.~,
+    'instruct4'       => q~Selecteer Leden Groepen~,
+    'wildcardinfo'    => q~Gebruik * voor jokerteken~,
+    'searchresult'    => q~Zoek Resultaat:~,
+    'nofound'         => q~Sorry - geen resultaten gevonden voor~,
+    'pmpagetitle'     => q~Selecteer PM geadresseerden~,
+    'grouppagetitle'  => q~Selecter BC Geadresseerden Groepen~,
+    'modpagetitle'    => q~Selecteer Moderatoren~,
+    'buddypagetitle'  => q~Selecteer uw vrienden~,
+    'ignorepagetitle' => q~Selecteer leden om te negeren~,
+    'searchpagetitle' => q~Selecteer lid om naar te zoeken~,
+    'pageclose'       => q~Sluiten~,
+    'recentlist'      => q~Recente Lijst~,
+    'alllist'         => q~Leden Lijst~,
+    'gobutton'        => q~Ga~,
+    'reciepientlist'  => q~Lijst met geadresseerden~,
+    'moderatorlist'   => q~Moderator Lijst~,
+    'buddylist'       => q~Vrienden Lijst~,
+    'groups'          => q~Leden Groepen~,
+    'ignorelist'      => q~PM Negeer lijst~,
+    'searchlist'      => q~Zoek met de Gebruikersveld~,
+    'pmto'            => q~Naar~,
+    'pmcc'            => q~Cc~,
+    'pmbcc'           => q~Bcc~,
+    'allsearch'       => q~Allen~,
+    'bmallmembers'    => q~Alle forum leden~,
+    'bmadmins'        => q~Beheerders~,
+    'bmgmods'         => q~Global moderatoren~,
+    'bmfmods'         => q~Forum moderatoren~,
+    'bmmods'          => q~Alle board moderatoren / mod groepen~,
+    'pages'           => q~Pagina's~,
+    'of'              => q~van~,
+    'noentries'       => q~Er zijn geen gegevens beschikbaar voor deze brief.~,
+    'other'           => q~Ander~,
+    'noresults'       => q~Geen Resultaten~,
+    'qsearch'         => q~Zoek Leden~,
+    'illegal'         => q~Invalid character~,
 );
 
 1;

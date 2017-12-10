@@ -10,107 +10,114 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomimessageindexlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomimessageindexlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomimessageindexlngmods = ();
-if(@suomimessageindexlngmods){
+if (@suomimessageindexlngmods) {
     $suomimessageindexlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %messageindex_txt = (
-'2' => 'Ylläpito',
-'3' => 'Tässä aiheessa on',
-'4' => 'liitettä',
-'5' => 'liite',
-'10' => 'Pysyväislinkki aiheeseen',
-'15' => 'Äänestys',
-'18' => 'Etusivu',
-'19' => 'Sivunvalintanappi',
-'22' => 'Viimeisin viesti',
-'31' => 'Poista',
-'54' => 'Poista',
-'63' => 'Moderaattorit',
-'63a' => 'Moderaattoriryhmät',
-'70' => 'Aihe',
-'71' => 'Viestikuvake',
-'75' => 'Täällä näet valitsemasi suosikkiaiheet.',
-'76' => 'Sinulla on tällä hetkellä',
-'77' => 'suosikkia',
-'78' => 'sallituista.',
-'104' => 'Lukitse/Avaa',
-'109' => 'Aloittaja',
-'110' => 'Vastauksia',
-'132' => 'Siirrä aihe',
-'133' => 'Siirrä kohteeseen',
-'139' => 'Sivu',
-'162' => 'Haluatko varmasti poistaa tämän aiheen?',
-'199' => 'Kaksoisnapsauta valintaruutua saadaksesi lisää tietoa sen toiminnasta.', # don't use " inside!
-'200' => 'Paina [OK] lisätäksesi uuden viestin siirrettävään aiheeseen. Viestissä kerrotaan mistä aihe siirrettiin ja kuka sen siirsi. \\nPaina [Cancel] siirtääksesi aiheen ilman uutta viestiä.\\n\\nPaina [Hae!] kun palaat siirtoon.', # inside JavaScript! Screen = ikkunaan?
-'251' => 'Foorumihyppy',
-'298' => 'Moderaattori',
-'298a' => 'Moderointiriryhmä',
-'301' => 'Näyttöjä',
-'302' => 'Uusi',
-'303' => 'Siirry ensimmäiseen lukemattomaan viestiin',
-'454' => 'Kuuma aihe (Enemmän kuin',
-'454a' => 'vastausta)',
-'455' => 'Erittäin kuuma aihe (Enemmän kuin',
-'456' => 'Lukittu aihe',
-'457' => 'Normaali aihe',
-'458' => 'Piilotettu aihe',
-'459' => 'Piilotettu tärkeä aihe',
-'460' => 'Piilotettu lukittu aihe',
-'461' => 'Piilotettu tärkeä lukittu aihe',
-'462' => 'Hae!',
-'470' => 'Ei tiedossa',
-'470a' => '<i>Ex-jäsen</i>',
-'500' => 'Merkitse kaikki aiheet luetuiksi', # inside JavaScript!
-'500a' => 'Valmis', # inside JavaScript!
-'525' => 'Kirjoittaja',
-'526' => 'käyttäjä',
-'527' => 'Aiheen aloitti',
-'737' => 'Valitse kaikki',
-'779' => 'Tärkeä aihe',
-'779a' => 'Yleisilmoitus',
-'779b' => 'Lukittu yleisilmoitus',
-'780' => 'Tärkeä lukittu aihe',
-'781' => 'Tärkeä',
-'837' => 'Käyttöoikeudet',
-'840' => 'Suosikkeja ei löytynyt',
-'841' => 'Viestejä ei löytynyt',
-'842' => 'Poista valitut suosikit',
-'843' => 'RSS-syöte tälle alueelle',
-'844' => 'Piilota',
-'845' => 'Siirretty aihe',
-'903' => 'Sulje ikkuna',
-'collruletext' => 'Alueen säännöt kutistettu',
-'nopost' => 'Tähän alueeseen ei voi kirjoitta, eikä siihen voi siirtää viestejä.',
-'move_up' => 'Siirrä ylös',
-'move_down' => 'Siirrä alas', 
+    '2'   => q~Ylläpito~,
+    '3'   => q~Tässä aiheessa on~,
+    '4'   => q~liitettä~,
+    '5'   => q~liite~,
+    '10'  => q~Pysyväislinkki aiheeseen~,
+    '15'  => q~Äänestys~,
+    '18'  => q~Etusivu~,
+    '19'  => q~Sivunvalintanappi~,
+    '22'  => q~Viimeisin viesti~,
+    '31'  => q~Poista~,
+    '54'  => q~Poista~,
+    '63'  => q~Moderaattorit~,
+    '63a' => q~Moderaattoriryhmät~,
+    '70'  => q~Aihe~,
+    '71'  => q~Viestikuvake~,
+    '75'  => q~Täällä näet valitsemasi suosikkiaiheet.~,
+    '76'  => q~Sinulla on tällä hetkellä~,
+    '77'  => q~suosikkia~,
+    '78'  => q~sallituista.~,
+    '104' => q~Lukitse/Avaa~,
+    '109' => q~Aloittaja~,
+    '110' => q~Vastauksia~,
+    '132' => q~Siirrä aihe~,
+    '133' => q~Siirrä kohteeseen~,
+    '139' => q~Sivu~,
+    '162' => q~Haluatko varmasti poistaa tämän aiheen?~,
+    '199' =>
+      q~Kaksoisnapsauta valintaruutua saadaksesi lisää tietoa sen toiminnasta.~
+    ,    # don't use " inside!
+    '200' =>
+q~Paina [OK] lisätäksesi uuden viestin siirrettävään aiheeseen. Viestissä kerrotaan mistä aihe siirrettiin ja kuka sen siirsi. \\nPaina [Cancel] siirtääksesi aiheen ilman uutta viestiä.\\n\\nPaina [Hae!] kun palaat siirtoon.~
+    ,    # inside JavaScript! Screen = ikkunaan?
+    '251'  => q~Foorumihyppy~,
+    '298'  => q~Moderaattori~,
+    '298a' => q~Moderointiriryhmä~,
+    '301'  => q~Näyttöjä~,
+    '302'  => q~Uusi~,
+    '303'  => q~Siirry ensimmäiseen lukemattomaan viestiin~,
+    '454'  => q~Kuuma aihe (Enemmän kuin~,
+    '454a' => q~vastausta)~,
+    '455'  => q~Erittäin kuuma aihe (Enemmän kuin~,
+    '456'  => q~Lukittu aihe~,
+    '457'  => q~Normaali aihe~,
+    '458'  => q~Piilotettu aihe~,
+    '459'  => q~Piilotettu tärkeä aihe~,
+    '460'  => q~Piilotettu lukittu aihe~,
+    '461'  => q~Piilotettu tärkeä lukittu aihe~,
+    '462'  => q~Hae!~,
+    '470'  => q~Ei tiedossa~,
+    '470a' => q~<i>Ex-jäsen</i>~,
+    '500'  => q~Merkitse kaikki aiheet luetuiksi~,          # inside JavaScript!
+    '500a' => q~Valmis~,                                    # inside JavaScript!
+    '525'  => q~Kirjoittaja~,
+    '526'  => q~käyttäjä~,
+    '527'  => q~Aiheen aloitti~,
+    '737'  => q~Valitse kaikki~,
+    '779'  => q~Tärkeä aihe~,
+    '779a' => q~Yleisilmoitus~,
+    '779b' => q~Lukittu yleisilmoitus~,
+    '780'  => q~Tärkeä lukittu aihe~,
+    '781'  => q~Tärkeä~,
+    '837'  => q~Käyttöoikeudet~,
+    '840'  => q~Suosikkeja ei löytynyt~,
+    '841'  => q~Viestejä ei löytynyt~,
+    '842'  => q~Poista valitut suosikit~,
+    '843'  => q~RSS-syöte tälle alueelle~,
+    '844'  => q~Piilota~,
+    '845'  => q~Siirretty aihe~,
+    '903'  => q~Sulje ikkuna~,
+    'collruletext' => q~Alueen säännöt kutistettu~,
+    'nopost' =>
+      q~Tähän alueeseen ei voi kirjoitta, eikä siihen voi siirtää viestejä.~,
+    'move_up'   => q~Siirrä ylös~,
+    'move_down' => q~Siirrä alas~,
 );
 
 %messageindex_sort = (
-'sort_az' => "Lajittele (A-Z)",
-'sort_za' => "Lajittele (Z-A)",
-'sort_min' => "Lajittele (vähiten vastauksia)",
-'sort_max' => "Lajittele (eniten vastauksia)",
-'sort_last' => "Lajittele (uusin vastaus)",
-'sort_first' => "Lajittele (vanhin vastaus)",
+    'sort_az'    => q~Lajittele (A-Z)~,
+    'sort_za'    => q~Lajittele (Z-A)~,
+    'sort_min'   => q~Lajittele (vähiten vastauksia)~,
+    'sort_max'   => q~Lajittele (eniten vastauksia)~,
+    'sort_last'  => q~Lajittele (uusin vastaus)~,
+    'sort_first' => q~ajittele (vanhin vastaus)~,
 );
 
 %messageindex_stickygrp = (
-'1' => 'Tärkeät aiheet',
-'2' => 'Muut aiheet',
+    '1' => q~Tärkeät aiheet~,
+    '2' => q~Muut aiheet~,
 );
 
 %messageindex_tp = (
-'enabletp' => 'Ota käyttöön aiheen esikatselu',
-'disabletp' => 'Ota pois käytöstä aiheen esikatselu',
-'code_tp' => 'CODE',
-'image_tp' => 'IMAGE',
-'media_tp' => 'MEDIA',
+    'enabletp'  => q~Ota käyttöön aiheen esikatselu~,
+    'disabletp' => q~Ota pois käytöstä aiheen esikatselu~,
+    'code_tp'   => q~CODE~,
+    'image_tp'  => q~IMAGE~,
+    'media_tp'  => q~MEDIA~,
 );
 
 1;

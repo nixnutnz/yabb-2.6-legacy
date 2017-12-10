@@ -10,43 +10,46 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomimemberlistlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomimemberlistlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomimemberlistlngmods = ();
-if(@suomimemberlistlngmods){
+if (@suomimemberlistlngmods) {
     $suomimemberlistlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %ml_txt = (
-'1' => 'Järjestys:',
-'2' => 'Etsi!',
-'3' => 'Katsot',
-'4' => 'Jäsenten',
-'19' => 'Vaihda sivun indeksiä',
-'21' => 'Viestit',
-'34' => 'Avatar',
-'35' => 'Nimi',
-'87' => 'Asema',
-'96' => 'Kotisivu',
-'139' => 'Sivuja',
-'233' => 'Rekisteröitymispäivämäärä',
-'234' => 'Rekisteröitymispäivä',
-'307' => 'sähköposti',
-'308' => 'Piiloitettu sähköposti',
-'309' => '/',
-'312' => 'Katsot jäseniä nimen perusteella',
-'313' => '',
-'314' => 'Katsot jäseniä viestien lukumäärän perusteella',
-'331' => 'Jäsenet',
-'759' => 'Valitse kirjain.',
-'760' => 'Tälle kirjaimelle ei ole merkintöjä.',
-'800' => 'Muut',
-'801' => 'Etsi jäsen',
-'802' => 'Valitettavasti ei yhtään osumaa haulle',
-'dr_warning' => '* Tili vanhempi kuin foorumi - ole hyvä ja tarkista foorumin aloituspäivämäärä:',
-'dr_warnurl' => 'täällä',
+    '1'   => q~Järjestys:~,
+    '2'   => q~Etsi!~,
+    '3'   => q~Katsot~,
+    '4'   => q~Jäsenten~,
+    '19'  => q~Vaihda sivun indeksiä~,
+    '21'  => q~Viestit~,
+    '34'  => q~Avatar~,
+    '35'  => q~Nimi~,
+    '87'  => q~Asema~,
+    '96'  => q~Kotisivu~,
+    '139' => q~Sivuja~,
+    '233' => q~Rekisteröitymispäivämäärä~,
+    '234' => q~Rekisteröitymispäivä~,
+    '307' => q~sähköposti~,
+    '308' => q~Piiloitettu sähköposti~,
+    '309' => q{/},
+    '312' => q~Katsot jäseniä nimen perusteella~,
+    '313' => q{},
+    '314' => q~Katsot jäseniä viestien lukumäärän perusteella~,
+    '331' => q~Jäsenet~,
+    '759' => q~Valitse kirjain.~,
+    '760' => q~Tälle kirjaimelle ei ole merkintöjä.~,
+    '800' => q~Muut~,
+    '801' => q~Etsi jäsen~,
+    '802' => q~Valitettavasti ei yhtään osumaa haulle~,
+    'dr_warning' =>
+q~* Tili vanhempi kuin foorumi - ole hyvä ja tarkista foorumin aloituspäivämäärä:~,
+    'dr_warnurl' => q~täällä~,
 );
 
 1;

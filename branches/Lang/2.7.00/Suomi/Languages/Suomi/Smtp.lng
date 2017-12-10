@@ -10,51 +10,60 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomismtplngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomismtplngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomismtplngmods = ();
-if(@suomismtplngmods){
+if (@suomismtplngmods) {
     $suomismtplngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %smtp_txt = (
-'1' => "PALVELINVIRHE: $smtpaddr ei löydetty!",
-'2' => 'PALVELINVIRHE: Socket yhteyttä ei voitu luoda !',
-'3' => "PALVELINVIRHE: Ei voitu yhdistää osoitteeseen $smtpaddr portissa $port !",
-'4' => 'PALVELINVIRHE: Vastaanottaja- kenttä on tyhjä !',
-'5' => 'Postipalvelimen yhteysloki:',
-'no_to' => '\'To\' muuttuja (vastaanottajan osoite) on tyhjä, mutta sitä tarvitaan SMTP protokollassa',
-'no_from' => '\'From\' muuttuja (lähettäjän osoite) on tyhjä, mutta sitä tarvitaan SMTP protokollassa',
-'211' => 'Järjestelmän tila tai ohjevastaus',
-'214' => 'Ohjeviesti',
-'220' => '<domain> Yhteys käyttövalmiina',
-'221' => '<domain> Yhteys sulkee tiedonsiirtokanavaa',
-'250' => 'Haluttu postitoiminto suoritettu',
-'251' => 'Käyttäjä ei paikallinen: lähetetään eteenpäin <forward-path>',
-'354' => 'Aloita viestin syöttö: lopeta <CRLF>.<CRLF>',
-'421' => '<domain> Yhteys ei saatavilla',
-'432' => 'Yhteyssalasana vaadittu',
-'450' => 'Haluttua postitoiminto ei suoritettu: postilaatikko ei saatavilla',
-'451' => 'Haluttu toiminto peruttu: paikallinen virhe käsittelyssä',
-'452' => 'Haluttua toimintoa ei suoritettu: järjestelmässä ei tarpeeksi tilaa',
-'454' => 'Väliaikainen autentikoinnin epäonnistuminen',
-'500' => 'Syntaksivirhe, komentoa ei tunneta',
-'501' => 'Vastaanottajatieto ei kelpaa. Rele vaatii SMTP AUTH',
-'502' => 'Komentoa ei toteutettu',
-'503' => 'Väärä komentosarja',
-'504' => 'Komentoparametria tai autentikointia ei toteutettu',
-'530' => 'Autentikointi vaadittu',
-'534' => 'Autentikointimekanismi on liian heikko',
-'538' => 'Salaus vaadittu haluttuun autentikointimekanismiin',
-'535' => 'Autentikointi epäonnistui',
-'550' => 'Haluttua toimintoa ei suoritettu: postilaatikko tai käyttäjä ei ole saatavilla',
-'551' => 'Käyttäjä ei ole paikallinen: Ole hyvä ja yritä <forward-path>',
-'552' => 'Haluttu postitoiminto peruttu: Postitilin koon ylitys',
-'553' => 'Haluttua toimintoa ei suoritettu: postitilin nimi ei ole sallittu',
-'554' => 'Tapahtuma epäonnistui',
-'555' => 'Jäsen',
+    '1' => q~PALVELINVIRHE: {yabb smtpaddr} ei löydetty!~,
+    '2' => q~PALVELINVIRHE: Socket yhteyttä ei voitu luoda !~,
+    '3' =>
+q~PALVELINVIRHE: Ei voitu yhdistää osoitteeseen {yabb smtpaddr} portissa {yabb port} !~,
+    '4' => q~PALVELINVIRHE: Vastaanottaja- kenttä on tyhjä !~,
+    '5' => q~Postipalvelimen yhteysloki:~,
+    'no_to' =>
+q~'To' muuttuja (vastaanottajan osoite) on tyhjä, mutta sitä tarvitaan SMTP protokollassa~,
+    'no_from' =>
+q~'From' muuttuja (lähettäjän osoite) on tyhjä, mutta sitä tarvitaan SMTP protokollassa~,
+    '211' => q~Järjestelmän tila tai ohjevastaus~,
+    '214' => q~Ohjeviesti~,
+    '220' => q~<domain> Yhteys käyttövalmiina~,
+    '221' => q~<domain> Yhteys sulkee tiedonsiirtokanavaa~,
+    '250' => q~Haluttu postitoiminto suoritettu~,
+    '251' => q~Käyttäjä ei paikallinen: lähetetään eteenpäin <forward-path>~,
+    '354' => q~Aloita viestin syöttö: lopeta <CRLF>.<CRLF>~,
+    '421' => q~<domain> Yhteys ei saatavilla~,
+    '432' => q~Yhteyssalasana vaadittu~,
+    '450' =>
+      q~Haluttua postitoiminto ei suoritettu: postilaatikko ei saatavilla~,
+    '451' => q~Haluttu toiminto peruttu: paikallinen virhe käsittelyssä~,
+    '452' =>
+      q~Haluttua toimintoa ei suoritettu: järjestelmässä ei tarpeeksi tilaa~,
+    '454' => q~Väliaikainen autentikoinnin epäonnistuminen~,
+    '500' => q~Syntaksivirhe, komentoa ei tunneta~,
+    '501' => q~Vastaanottajatieto ei kelpaa. Rele vaatii SMTP AUTH~,
+    '502' => q~Komentoa ei toteutettu~,
+    '503' => q~Väärä komentosarja~,
+    '504' => q~Komentoparametria tai autentikointia ei toteutettu~,
+    '530' => q~Autentikointi vaadittu~,
+    '534' => q~Autentikointimekanismi on liian heikko~,
+    '538' => q~Salaus vaadittu haluttuun autentikointimekanismiin~,
+    '535' => q~Autentikointi epäonnistui~,
+    '550' =>
+q~Haluttua toimintoa ei suoritettu: postilaatikko tai käyttäjä ei ole saatavilla~,
+    '551' => q~Käyttäjä ei ole paikallinen: Ole hyvä ja yritä <forward-path>~,
+    '552' => q~Haluttu postitoiminto peruttu: Postitilin koon ylitys~,
+    '553' =>
+      q~Haluttua toimintoa ei suoritettu: postitilin nimi ei ole sallittu~,
+    '554' => q~Tapahtuma epäonnistui~,
+    '555' => q~Jäsen~,
 );
 
 1;

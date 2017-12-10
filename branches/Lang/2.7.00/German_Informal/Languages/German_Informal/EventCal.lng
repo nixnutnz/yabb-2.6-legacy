@@ -1,20 +1,22 @@
 ###############################################################################
-#EventCal.lng                                                                 #
-#By XTC: http://www.yabbserver.com                                            #
+# EventCal.lng                                                                #
 ###############################################################################
 # German_Informal - Translation by XTC                                        #
 # review & changes by Pyragony (info@anti-scam.de)                            #
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
-# Packaged:     11. September 2017                                            #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+# Mod created by XTC: http://www.yabbserver.com                               #
+#                and added to YaBB core in Version 2.5.4 /Version 3.0         #
+###############################################################################
+##  Based on English Rev 1925 ##
 
 $german_informaleventcallngver = 'YaBB 2.7.00 $Revision: 1925 $';
 @german_informaleventcallngmods = ();

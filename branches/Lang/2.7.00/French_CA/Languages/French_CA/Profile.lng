@@ -1,0 +1,386 @@
+###############################################################################
+# Profile.lng (Définition des textes de profiles)                             #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_caprofilelngver  = 'YaBB 2.7.00 $Revision$';
+@french_caprofilelngmods = ();
+if (@french_caprofilelngmods) {
+    $french_caprofilelngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%profile_txt = (
+    '2' => q~Admin~,
+    '8' =>
+q~Pour des raisons de sécurité, il est déconseillé d'avoir votre pseudonyme identique à votre identifiant d'utilisateur.~,
+    '21'            => q~Des publications~,
+    '30'            => q~sur~,
+    '34'            => q~S'identifier~,
+    '35'            => q~Identifiant d'utilisateur~,
+    '36'            => q~Mot de passe~,
+    '66'            => q~Modifier~,
+    '68'            => q~Pseudonyme~,
+    '68a'           => q~Prénom~,
+    '68b'           => q~Statut~,
+    '69'            => q~Courriel~,
+    '69a'           => q~MP~,                          # Message personnel
+    '79'            => q~Éditer le profil~,
+    'editmyprofile' => q~Modifier le profil~,
+    '80' =>
+q~<div class="message" style="background-color:white; padding:3px; overflow:auto; color:red; font-weight:bold;">Félicitations, votre mot de passe a été réinitialisé. Pour la sécurité de votre compte, veuillez choisir un nouveau mot de passe et mettre à jour cette page de profil dans les 10 prochaines minutes.</div>~,
+    '81'  => q~Choisir un nouveau mot de passe~,
+    '82'  => q~Vérifier le nouveau mot de passe~,
+    '83'  => q~Titre du site Web~,
+    '84'  => q~URL de site web~,
+    '85'  => q~Signature~,
+    '87'  => q~Position~,
+    '87a' => q~Groupes de membres~,
+    '87b' =>
+q~Ici, vous pouvez ajouter le membre à des groupes de membres supplémentaires. Maintenez la touche Ctrl ou (touche Pomme sur Mac) enfoncé et cliquez pour sélectionner d'autres groupes.~,
+    '87c' =>
+q~Les modérateurs du forum sont assignés dans le centre d'administration -> Commandes de forum -> Forum.~,
+    '88'  => q~Sauvegarder les modifications~,
+    '89'  => q~Supprimer l'utilisateur~,
+    '91'  => q~Champ de mot de passe vide~,
+    '92'  => q~Voir le profil~,
+    '92u' => q~Voir le profil de l'utilisateur~,
+    '96'  => q~Site Internet~,
+    '107' => q~à~,
+    '113' => q~est~,
+    '144' => q~Message personnel~,
+    '163' => q~Oui~,
+    '164' => q~Non~,
+    '227' => q~Emplacement~,
+    '228' => q~Texte personnel~,
+    '229' => q~Avatar~,
+    '231' => q~Le genre~,
+    '232' => q~Image/Texte~,
+    '233' => q~Date d'inscription~,
+    '234' => q~Raison de l'enregistrement~,
+    '238' => q~Mâle~,
+    '239' => q~Femelle~,
+    '241' =>
+q{champ. Les caractères valides sont les lettres (AZ, az), les nombres (0-9), les espaces et (_ ! @ # $ % ^ & * () + | ` ~ - = \ : ; ' " , . / ? [ ] { })},
+    '241re' =>
+q~champ. Les caractères valides sont les lettres, les nombres, les espaces et ([ ] # % + , - | . : = ? @ ^ _)~,
+    '241e' =>
+q~champ. Les caractères valides sont les lettres (A-Z,a-z), les nombres (0-9), et (+ - . @ _)~,
+    '244' =>
+q~L'Identifiant que vous avez essayé d'enregistrer contient un nom réservé. Veuillez essayer un autre identifiant d'utilisateur. Nom réservé:~,
+    '245' => q~Inscription réussi~,
+    '323' => q~Préférences~,
+    '325' => q~Ignorer la liste~,
+    '326' => q~M'informer des nouvelles notifications par courriel~,
+    '327' => q~Prévenez-moi des nouveaux MP par courriel~,
+    '371' => q~Fuseau horaire~,
+    '372' =>
+q~<span class="small">Choisissez la zone et la ville correspondant à votre fuseau horaire.</span>~,
+    '372a' => q~Utiliser le décalage horaire du forum~,
+    '373'  => q~Votre temps affiché~,
+    '420'  => q~Âge~,
+    '422'  => q~(pas de photo)~,
+    '458'  => q~Derniers messages faits par~,
+    '459'  => q~Information additionnelle~,
+    '460'  => q~Montrer la dernière~,
+    '461'  => q~publications faites par~,
+    '462'  => q~ALLER!~,
+    '470'  => q~N/A~,
+    '473' =>
+q~Si vous téléchargez une autre image, il se peut que la même image soit affichée. Dans ce cas, rechargez cette page ou faites un clic droit sur l'image et sélectionnez pour recharger l'image.~,
+    '474' =>
+      q~- Sélectionnez un nom d'image dans la liste sur le côté droit.<br />~,
+    '475' =>
+q~- Ou entrez l'URL de votre propre image.<br />L'URL web de votre propre image doit être sous la forme suivante:<br /><em>http:&thinsp;//&thinsp;www.mapage.com&thinsp;/&thinsp;monimage.gif</em><br />Votre image doit être dans le format <em>.gif </em>, <em>.png </em>, <em>.jpg </em> ou <em>.jpeg </em>.~
+    , # utiliser &thinsp;(petit espace) ou votre mise en page peut foirer dans IE et basse résolution du moniteur
+    '476' =>
+q~- Ou sélectionnez un fichier image à télécharger sur notre serveur.<br />L'image doit avoir le format suivant:<em>.gif</em>, <em>.png</em>, <em>.jpg</em> ou <em>.jpeg </em><br />La taille de fichier maximale autorisée est:~,
+    '477' => q~<strong>Note: Vos images peuvent être redimensionnées.</strong>~,
+    '479' =>
+q~Cette sélection fera apparaître les dates sur tout le forum dans ce format.~,
+    '480a' => q~Utiliser mon propre format d'heure (réglé ci-dessous)~,
+    '480'  => q~01/01/01 à 13:15:17~,
+    '481'  => q~31.01.01 à 13:15:17~,
+    '482'  => q~31.01.2001 à 13:15:17~,
+    '483'  => q~Le 12 janvier 2001 à 13h15~,
+    '483a' => q~Le 12 janvier 2001 à 13h15~,
+    '484'  => q~01/01/01 à 13h1~,
+    '485'  => q~31. Jan 2001 à 13:15~,
+    '486'  => q~Format de l'heure~,
+    '486a' => q~Ou format de temps personnalisé~,
+    '513'  => q~ICQ~,
+    '519'  => q~Activer le changement automatique de l'heure d'été?~,
+    '520'  => q~Activer l'horloge dynamique en haut de la page?~,
+    '521'  => q~Non disponible si vous avez écrit votre propre format d'heure.~,
+    '563'  => q~Date de naissance~,
+    '563a' => q~Masquer l'âge et l'année de naissance?~,
+    '563b' => q~(Champs obligatoires)~,
+    '564'  => q~Mois (MM)~,
+    '565'  => q~Jour (JJ)~,
+    '566'  => q~Année (AAAA)~,
+    '570'  => q~Mon espace~,
+    '571'  => q~Ceci est votre URL MySpace.~,
+    '572'  => q~http://myspace.com/~,
+    '573'  => q~Facebook~,
+    '574' =>
+q~Ceci est votre numéro d'identification de profil Facebook ou votre nom d'utilisateur.~,
+    '575' => q~http://facebook.com/~,
+    '576' => q~Twitter~,
+    '577' => q~Ceci est votre nom d'utilisateur Twitter.~,
+    '578' => q~http://twitter.com/~,
+    '579' => q~Youtube~,
+    '580' => q~Ceci est votre nom d'utilisateur YouTube.~,
+    '581' => q~http://www.youtube.com/~,
+    '592' => q~Votre nom d'utilisateur ou nom d'utilisateur personnel.~,
+    '598' => q~Ceci doit être inclus si vous spécifiez une URL ci-dessous.~,
+    '599' => q~Ceci doit être une URL complète.~,
+    '600' => q~Ceci est votre numéro ICQ.~,
+    '601' => q~Ceci est votre surnom AOL Instant Messenger.~,
+    '602' => q~Ceci est votre surnom Yahoo Instant Messenger.~,
+    '603' => q~AIM~,
+    '604' => q~YIM~,
+    '606' =>
+q~Les signatures sont affichées au bas de chaque message ou message personnel. Le code YaBBC peut être utilisé (ex: <strong>[img]http:&thinsp;//&thinsp;www.mapage.com&thinsp;/&thinsp;monimage.gif[/img]</strong>) pour afficher une image dans votre signature .~
+    , # utiliser &thinsp; (petit espace) ou votre mise en page peut foiré dans IE et basse résolution du moniteur~,
+    '638' =>
+q~Vous avez changé votre adresse courriel. Vous recevrez un nouveau mot de passe par courriel.~,
+    '664'  => q~Caractères Max {yabb max_siglen}, Caractères restants:~,
+    '664a' => q~Caractères Max {yabb max_awaylen}, Caractères restants:~,
+    '679'  => q~Ce doit être une adresse courriel valide.~,
+    '681' =>
+q~Veuillez informer l'administrateur de ce forum que le paramètre \$facesdir doit être corrigé immédiatement.~,
+    '686' => q~en ligne~,
+    '687' => q~hors ligne~,
+    '688' => q~Cliquez pour envoyer un message personnel à~,
+    '698' =>
+q~Ceci est votre profil. Vous pouvez choisir les informations autres que la section requise à remplir. Cette information sera affichée à divers endroits dans {yabb mbname}.~,
+    '700' => q~Bienvenue à~,
+    '701' =>
+q~Vous pouvez le modifier après vous être connecté en allant sur la page de profil ou en visitant cette page après vous être connecté:~,
+    '721' => q~Masquer le courriel du public?~,
+    '722' => q~caché~,
+    '733' => q~Votre mot de passe a été changé. C'est maintenant~,
+    '734' => q~et votre identifiant d'utilisateur est~,
+    '755' => q~Cet utilisateur a 0 messages.~,
+    '757' =>
+q~Votre texte d'utilisateur est trop long. Il doit être inférieur à 51 caractères.~,
+    '775' => q~Voulez-vous vraiment supprimer~,
+    '776' => q~votre profil~,
+    '777' => q~l'utilisateur~,
+    '778' => q~du forum?~,
+    '810' =>
+      q~Voulez-vous inverser l'ordre affiché des messages dans le sujet?~,
+    '811' =>
+q~Si cette case est cochée, les messages affichent la publication la plus récente en premier et la plus ancienne en dernier. Si cette case n'est pas cochée, la publication la plus ancienne est affichée en premier et la moins récente en dernier.<br /><strong>Note:</strong> vous pouvez modifier cette option en cliquant sur le nom du sujet sur la page du sujet.~,
+    '814' => q~Quel modèle aimeriez-vous utiliser?~,
+    '815' => q~(Si plus d'un est disponible)~,
+    '817' => q~Quelle langue aimeriez-vous utiliser?~,
+    '818' => q~Options~,
+    '819' => q~Informations de contact~,
+    '820' => q~Éditer Admin~,
+    '821' => q~Mot de passe actuel:~,
+    '823' => q~MSN~,
+    '824' => q~Ceci est votre adresse MSN Instant Messenger.~,
+    '825' => q~Google Hangout~,
+    '826' => q~Ceci est votre adresse Google Hangout.~,
+    '827' => q~Skype / VoIP~,
+    '828' => q~Ceci est votre adresse Skype ou VoIP.~,
+    '888' => q~Vous avez oublié d'entrer votre mot de passe actuel.~,
+    '889' => q~Cliquez pour envoyer un courriel à~,
+    '890' =>
+q~Vous avez utilisé un ou plusieurs mots censurés dans votre pseudo. Veuillez revenir en arrière et changer votre pseudonyme. Le mot ou les mots qui ont causé le problème sont:~,
+    '891' =>
+q~Le nom que vous avez choisi est déjà utilisé par un autre membre. Veuillez revenir en arrière et sélectionner un autre pseudonyme.~,
+    '892' => q~% de tous les messages du forum~,
+    '893' => q~Publication(s) par jour~,
+    '894' => q~Jours d'adhésion~,
+    '895' =>
+q~Vous devez entrer votre mot de passe actuel pour apporter des modifications~,
+    '896' =>
+      q~Remplissez seulement ceci si vous voulez changer votre mot de passe~,
+    '897' =>
+q~Votre session de profil a expiré.\nAucun changement n'a été enregistré.\nAprès la réauthentification, vous serez redirigé vers la page précédente.~
+    ,    # Dans JS. Ne pas utiliser "à l'intérieur!
+    '898'  => q~Session de profil expiré.~,
+    '899'  => q~Veuillez ré-authentifier~,
+    '900'  => q~Confirmez le mot de passe~,
+    '901'  => q~S'il vous plaît confirmer votre mot de passe~,
+    '902'  => q~Identifiant d'utilisateur~,
+    '903'  => q~Annuler le pseudonyme~,
+    '903a' => q~Êtes-vous sûr de vouloir annuler le pseudonyme?\n\n~,
+    '904'  => q~Annuler cette adresse courriel~,
+    '904a' => q~Êtes-vous sûr de vouloir annuler cette adresse courriel? \n\n~,
+    '905'  => q~Annuler cette adresse IP~,
+    '905a' => q~Êtes-vous sûr de vouloir annuler cette adresse IP?\n\n~,
+    '906'  => q~Interdire cet Identifiant~,
+    '906a' => q~Êtes-vous sûr de vouloir interdire cet Identifiant?\n\n~,
+    '907'  => q~Interdire cette adresse courriel~,
+    '907a' => q~Êtes-vous sûr de vouloir interdire cette adresse courriel?\n\n~,
+    '908'  => q~Interdire cette adresse IP~,
+    '908a' => q~Êtes-vous sûr de vouloir interdire cette adresse IP?\n\n~,
+    '909'  => q~Dernières adresses IP~,
+    '910'  => q~Rejoindre le groupe de membre~,
+    '910a' =>
+q~Ici, vous pouvez vous ajouter à d'autres groupes de membres. Maintenez la touche Ctrl ou (touche Pomme sur Mac) enfoncé et cliquez pour sélectionner d'autres groupes (si disponible).~,
+    'ignorelistadd' =>
+q~Cliquez ici pour sélectionner ou ajouter des utilisateurs à Ignorer la liste~,
+    'ignoreall' => q~Cochez cette option pour ignorer tous les MP~,
+    'ignoreexplain' =>
+q~Si vous ne souhaitez PAS recevoir (c'est-à-dire ignorer) les MP de certains ou de tous les autres membres du forum, ajoutez leurs noms de membres à la boîte en utilisant le lien ou cochez la case pour bloquer tous les MP. :</strong> Cela ne bloquera pas les MP ou les messages de diffusion qui vous seront envoyés depuis le forum Admin et GMod.~,
+    'showingemail' => q~Votre adresse courriel est visible.~,
+    'notshowingemail' =>
+      q~Votre adresse courriel est cachée à tous les membres sauf~,
+    'notshowingemailend' => q~.~,
+    'showstatus' =>
+      q~Lorsque je suis hors ligne, affichez mon statut en tant que~,
+    'statusexplain' =>
+      q~Vous permet d'apparaître comme "Absent" ou "Hors ligne"~,
+    'onlinealert' => q~Notifications de publication et de forum~,
+    'onlinealertexplain' =>
+q~Si vous cochez cette case, vous verrez une alerte contextuelle supplémentaire lorsque vous consultez l'index du forum si vous avez <em>Nouveau</em> forum ou notification courriel.~,
+    'stealth' => q~Permettez-moi d'exécuter le mode furtif~,
+    'stealthexplain' =>
+q~Utilisez ceci pour vous connecter secrètement. Votre pseudo ne s'affichera pas dans la liste "En ligne" et votre statut dans les pages Profil et Message s'affichera "Désactivé"~,
+    'viewmess' =>
+      q~Afficher le texte du message dans la liste des messages personnels?~,
+    'viewmessexplain' =>
+q~Activer l'affichage de la première ligne du texte du message dans les vues de liste. Désactiver pour afficher uniquement l'expéditeur / destinataire et la date etc.~,
+    'view'  => q~Voir~,
+    'asubj' => q~Sujet d'absence:~,
+    'amess' => q~Message d'absence:~,
+    'awaydesc' =>
+q~Pour envoyer une réponse automatique d'absence au MP des autres membres:~,
+    'awaydescription' =>
+q~ajoutez un sujet et un message une réponse automatique d'absence ici. Chaque Membre recevra ce message qu'une seule fois s'il vous envoit un MP pendant que vous êtes "absent".<br />Pour désactiver, laissez vide.~,
+    'isbuddy'        => q~dans ma liste d'amis.~,
+    'sid_expires_1'  => q~Votre session de profil expire dans~,
+    'sid_expires_2'  => q~secondes~,
+    'sid_expires_3'  => q~seconde.~,
+    'sid_expires_4'  => q~minute et~,
+    'sid_expires_5'  => q~minutes et~,
+    'usernumbformat' => q~Sélectionnez votre format numérique~,
+    'capslock'       => q~Le verrouillage des majuscules est activé.~,
+    'wrong_char'     => q~Ce caractère dans le mot de passe est invalide~,
+    'day'            => q~Journée~,
+    'week'           => q~La semaine~,
+    'month'          => q~Mois~,
+    'perm'           => q~Permanent~,
+    'd'              => q~Journée~,
+    'w'              => q~La semaine~,
+    'm'              => q~Mois~,
+    'p'              => q~Permanent~,
+    'regdate'        => q~Rejoint:~,
+    'gender_edit_1' =>
+q~Notez que vous ne pouvez pas modifier votre genre après qu'il a été entré.~,
+    'gender_edit_2' => q~Notez que vous ne pouvez éditer que votre genre~,
+    'gender_edit_3' => q~Votre genre ne peut pas être modifié.~,
+    'dob_edit_1' =>
+q~Notez que vous ne pouvez pas changer votre date de naissance après qu'elle a été entrée.~,
+    'dob_edit_2' =>
+      q~Notez que vous ne pouvez modifier que votre date de naissance~,
+    'dob_edit_3'      => q~plus de temps.~,
+    'dob_edit_4'      => q~plus de fois.~,
+    'dob_edit_5'      => q~temps.~,
+    'dob_edit_6'      => q~fois.~,
+    'dob_edit_7'      => q~Votre date de naissance ne peut pas être éditée.~,
+    'pass_reminder_1' => q~Rappel de mot de passe~,
+    'pass_reminder_2' => q~Envoyer~,
+    'pass_reminder_3' =>
+      q~Êtes-vous sûr de vouloir envoyer un rappel de mot de passe~,
+    'ban_page'   => q~Bannir~,
+    'ban_enter'  => q~Bannis~,
+    'ban_cancel' => q~Annuler~,
+    'ban_reason' =>
+      q~Raison du bannissement <span class="small">(Facultatif)</span>~,
+    'email_ban' =>
+      q~Envoyer un courriel à l'utilisateur au sujet du bannissement~,
+    'ban_for' => q~pour un~,
+    'fntsze' =>
+q~Taille de votre police d'affichage de base<br /><span class="small">(Pour les messages, les messages instantanés et les événements de calendrier)</span>~,
+);
+
+%mycenter_profile_txt = (
+    'siddescript' =>
+q~Pour des raisons de sécurité, vous devez confirmer votre mot de passe pour accéder aux paramètres.~,
+    'timeoutdescript' =>
+      q~La session de profil a expiré. Veuillez ré-authentifier.~,
+);
+
+%profile_display_options = (
+    'hide_avatars'    => q~Masquer les avatars des membres dans les fils?~,
+    'hide_user_text'  => q~Masquer le texte du membre dans les fils?~,
+    'hide_img'        => q~Masquer les images dans les fils?~,
+    'hide_attach_img' => q~Masquer les images attachées dans les fils?~,
+    'hide_signat'     => q~Masquer les signatures des membres dans les fils?~,
+    'hide_smilies_row' =>
+      q~Masquer la rangé de Smiley sous la zone de publication/réponse?~,
+);
+
+%profile_imtxt = (
+    '05' => q~Activer la fenêtre contextuelle du message personnel?~,
+    '38' => q~Préférences de message personnel~,
+    '53' => q~Fenêtre contextuelle MP montre les MP dans une nouvelle fenêtre?~,
+    '56' => q~MP~,
+);
+
+%profile_amv_txt = (
+    '9'            => q~Dernière connexion~,
+    '10'           => q~Dernier commentaire~,
+    '11'           => q~Dernier MP~,
+    'mylastonline' => q~Vous étiez en ligne pour la dernière fois~,
+    'mylastpost'   => q~Votre dernier message était~,
+    'mylastpm'     => q~Votre dernier MP était~,
+);
+
+%profile_buddy_list = (
+    'buddylist' => q~Liste d'amis~,
+    'explain' =>
+q~Ceci est votre liste d'amis<br />Ici, vous pouvez supprimer et ajouter des noms.<br />Double-cliquez sur un nom à supprimer de votre liste d'amis~,
+    'add' => q~Cliquez ici pour ajouter des noms à votre liste de contacts~,
+    'removealert' =>
+      q~Êtes-vous sûr de vouloir supprimer le membre de la liste?~,
+);
+
+%return_to_txt = (
+    '1'  => q~Fil actuel~,
+    '2'  => q~Forum actuel~,
+    '3'  => q~Index du forum~,
+    '01' => q~Retourner à~,
+    '02' => q~Sélectionnez où vous souhaitez retourner après avoir posté.~,
+    '03' =>
+q~Sélectionnez la zone par défaut à laquelle vous souhaitez revenir après avoir créé un post.<br /><strong>Note:</strong> Vous pouvez modifier cette option au moment de la publication.~,
+);
+
+%zodiac_txt = (    #YaBB Zodiac
+    'sign'        => q~Signe du zodiaque~,
+    'Aquarius'    => q~Verseau~,
+    'Aries'       => q~Bélier~,
+    'Libra'       => q~Balance~,
+    'Gemini'      => q~Gémeaux~,
+    'Leo'         => q~Lion~,
+    'Sagittarius' => q~Sagittaire~,
+    'Virgo'       => q~Vierge~,
+    'Cancerian'   => q~Cancer~,
+    'Capricorn'   => q~Capricorne~,
+    'Scorpio'     => q~Scorpion~,
+    'Pisces'      => q~Poissons~,
+    'Taurus'      => q~Taureau~,
+);
+
+1;

@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # TabMenu.lng (TabMenu text definitions)                                      #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchtabmenulngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$durchtabmenulngver    = 'YaBB 2.7.00 $Revision: 1848 $';
 @dutchtemplateslngmods = ();
 if (@dutchtemplateslngmods) {
     $dutchtemplateslngmods = 1;
@@ -22,33 +24,38 @@ if (@dutchtemplateslngmods) {
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-%tabmenu_txt=(
-'texterr' => 'Het tekstveld is leeg.',
-'tabext' => 'Een tabblad voor dezelfde actie of met dezelfde naam bestaat al.',
-'tabfront' => 'Front',
-'taburl' => 'URL',
-'tabwin' => 'Nieuw venster',
-'edittab' => 'Tabbladen Bewerken',
-'tabdel' => 'Verwijder dit tabblad',
-'viewgm' => 'GMod +',
-'viewadm' => 'Admin',
-'tabtext' => 'Tekst',
-'taberr' => 'Vereiste informatie ontbreekt:',
-'addtab' => 'Toevoegen',
-'savetab' => 'Sla tekst op',
-'reordertab' => 'Herschik Tabbladen:',
-'tableft' => '&lt;',
-'tabright' => '&gt;',
-'edittext1' => 'Hierboven ziet u de tabbladen op de manier waarop zij zouden verschijnen als ze allemaal op een bepaald moment zichtbaar waren. Als u een of meer tabbladen hebt toegevoegd hebt u nu de optie voor het bewerken van de zichtbare tekst direct binnen het tabblad en klik vervolgens op de',
-'edittext2' => 'pictogram om de nieuwe tekst op te slaan of u kunt het tabblad verwijderen door te klikken op de',
-'edittext3' => 'pictogram. Opmerking dat u <b>URLs niet kunt bewerken</b>.',
-'reordertext' => 'Aan de rechterkant is er een lijst van al uw tabs die u toe staat de volgorde waarin ze worden weergegeven in het tabblad-menu te wijzigen. Selecteer het tabblad dat u wilt verplaatsen en klik op de "&lt;" of "&gt;" button om het tabblad in de gewenste richting te verplaatsen.',
-'urlerr' => 'Het URL veld is leeg.',
-'viewmem' => 'Leden +',
-'viewall' => 'Gasten +',
-'newtab' => 'Voeg een tabblad toe',
-'tabinsert' => 'Voeg toe na',
-'tabview' => 'Zichtbaar voor',
+%tabmenu_txt = (
+    'texterr' => q~Het tekstveld is leeg.~,
+    'tabext' =>
+      q~Een tabblad voor dezelfde actie of met dezelfde naam bestaat al.~,
+    'tabfront'   => q~Front~,
+    'taburl'     => q~URL~,
+    'tabwin'     => q~Nieuw venster~,
+    'edittab'    => q~Tabbladen Bewerken~,
+    'tabdel'     => q~Verwijder dit tabblad~,
+    'viewgm'     => q~GMod +~,
+    'viewadm'    => q~Admin~,
+    'tabtext'    => q~Tekst~,
+    'taberr'     => q~Vereiste informatie ontbreekt:~,
+    'addtab'     => q~Toevoegen~,
+    'savetab'    => q~Sla tekst op~,
+    'reordertab' => q~Herschik Tabbladen:~,
+    'tableft'    => q~&lt;~,
+    'tabright'   => q~&gt;~,
+    'edittext1' =>
+q~Hierboven ziet u de tabbladen op de manier waarop zij zouden verschijnen als ze allemaal op een bepaald moment zichtbaar waren. Als u een of meer tabbladen hebt toegevoegd hebt u nu de optie voor het bewerken van de zichtbare tekst direct binnen het tabblad en klik vervolgens op de~,
+    'edittext2' =>
+q~pictogram om de nieuwe tekst op te slaan of u kunt het tabblad verwijderen door te klikken op de~,
+    'edittext3' =>
+      q~pictogram. Opmerking dat u <b>URLs niet kunt bewerken</b>.~,
+    'reordertext' =>
+q~Aan de rechterkant is er een lijst van al uw tabs die u toe staat de volgorde waarin ze worden weergegeven in het tabblad-menu te wijzigen. Selecteer het tabblad dat u wilt verplaatsen en klik op de "&lt;" of "&gt;" button om het tabblad in de gewenste richting te verplaatsen.~,
+    'urlerr'    => q~Het URL veld is leeg.~,
+    'viewmem'   => q~Leden +~,
+    'viewall'   => q~Gasten +~,
+    'newtab'    => q~Voeg een tabblad toe~,
+    'tabinsert' => q~Voeg toe na~,
+    'tabview'   => q~Zichtbaar voor~,
 );
 
 1;

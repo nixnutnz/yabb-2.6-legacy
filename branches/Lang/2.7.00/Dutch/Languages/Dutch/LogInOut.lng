@@ -1,4 +1,4 @@
-﻿###############################################################################
+###############################################################################
 # LogInOut.lng (LogInOut text definitions)                                    #
 ###############################################################################
 # Dutch/Nederlands - Translation by Pieszyce                                  #
@@ -6,15 +6,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
-# Software by: The YaBB Development Team                                      #
-#              with assistance from the YaBB community.                       #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
 ###############################################################################
-$dutchloginoutlngver = 'YaBB 2.7.00 $Revision: 1888 $';
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
+$dutchloginoutlngver  = 'YaBB 2.7.00 $Revision: 1933 $';
 @dutchloginoutlngmods = ();
 if (@dutchloginoutlngmods) {
     $dutchloginoutlngmods = 1;
@@ -23,48 +25,58 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %loginout_txt = (
-'34' => 'Inloggen',
-'35' => 'Gebruikersnaam of e-mailadres',
-'35a' => 'Gebruikersnaam of e-mailadres veld.',
-'35b' => 'Gebruikersnaam, Schermnaam of e-mail adres',
-'36' => 'Wachtwoord',
-'36b' => 'Reset Wachtwoord',
-'130' => "Met vriendelijke groet,\nHet {yabb mbname} team",
-'130a' => "Een wachtwoord reset was gevraagd door een bezoeker op {yabb mbname}. Als u geen verzoek heeft ingediend om uw wachtwoord te resetten, Negeer dan alstublieft deze mail, anders klik hier om uw wachtwoord te resetten: ",
-'192' => 'E-mail succesvol verzonden naar:',
-'193' => 'Terug',
-'194' => 'vraag',
-'241' => 'veld.',
-'315' => 'Wachtwoord vergeten?',
-'339' => 'Verzenden',
-'669' => 'Vergeten wachtwoord',
-'711' => 'Geachte',
-'753' => 'Nodig te registreren?',
-'837' => 'Uw gebruikersnaam is hoofdletter gevoelig.',
-'capslock' => 'Caps-lock is geactiveerd.',
-'wrong_char' => 'Dit teken in het wachtwoord is ongeldig',
-'error_user_info' => 'U moet uw gebruikersnaam of e-mailadres invoegen.',
-'no_user_info_exists' => 'De gebruikersnaam of e-mailadres dat u heeft opgegeven bestaat niet op dit forum.',
-'verification_question_desc' => 'Beantwoord alstublieft de bovenstaande verificatie vraag.',
-'verification_question_case' => 'Antwoorden zijn hoofdletter gevoelig.',
-'error_verification' => 'De verificatiecode ontbreekt.',
-'error_verification_question' => 'U moet de verificatie vraag beantwoorden.',
-'keeps' => 'Ik wil ingelogd blijven',
+    '34'  => q~Inloggen~,
+    '35'  => q~Gebruikersnaam of e-mailadres~,
+    '35a' => q~Gebruikersnaam of e-mailadres veld.~,
+    '35b' => q~Gebruikersnaam, Schermnaam of e-mail adres~,
+    '36'  => q~Wachtwoord~,
+    '36b' => q~Reset Wachtwoord~,
+    '130' => q~Met vriendelijke groet,\nHet {yabb mbname} team~,
+    '130a' =>
+q~Een wachtwoord reset was gevraagd door een bezoeker op {yabb mbname}. Als u geen verzoek heeft ingediend om uw wachtwoord te resetten, Negeer dan alstublieft deze mail, anders klik hier om uw wachtwoord te resetten: ~,
+    '192'             => q~E-mail succesvol verzonden naar:~,
+    '193'             => q~Terug~,
+    '194'             => q~vraag~,
+    '241'             => q~veld.~,
+    '315'             => q~Wachtwoord vergeten?~,
+    '339'             => q~Verzenden~,
+    '669'             => q~Vergeten wachtwoord~,
+    '711'             => q~Geachte~,
+    '753'             => q~Nodig te registreren?~,
+    '837'             => q~Uw gebruikersnaam is hoofdletter gevoelig.~,
+    'capslock'        => q~Caps-lock is geactiveerd.~,
+    'wrong_char'      => q~Dit teken in het wachtwoord is ongeldig~,
+    'error_user_info' => q~U moet uw gebruikersnaam of e-mailadres invoegen.~,
+    'no_user_info_exists' =>
+q~De gebruikersnaam of e-mailadres dat u heeft opgegeven bestaat niet op dit forum.~,
+    'verification_question_desc' =>
+      q~Beantwoord alstublieft de bovenstaande verificatie vraag.~,
+    'verification_question_case' => q~Antwoorden zijn hoofdletter gevoelig.~,
+    'error_verification'         => q~De verificatiecode ontbreekt.~,
+    'error_verification_question' =>
+      q~U moet de verificatie vraag beantwoorden.~,
+    'keeps' => q~Ik wil ingelogd blijven~,
 );
 
-%floodtxt=(
-'1' => 'Uw Verificatie Code is',
-'3' => 'Verificatie Code',
-'casewarning' => 'Typ de tekens die worden weergegeven in de afbeelding. De tekens moeten in dezelfde volgorde getypt worden, en ze zijn hoofdlettergevoelig.',
-'casewarning_1' => 'Typ de tekens alstublieft precies zoals ze worden weergegeven in de afbeelding,',
-'casewarning_2' => '<br /><span style="font-weight: bold;">zonder de eerste',
-'casewarning_3' => '<br /><span style="font-weight: bold;">zonder de laatste',
-'casewarning_4' => 'en laatste',
-'casewarning_5' => 'Tekens.</span><br />De tekens moeten in dezelfde volgorde getypt worden,<br />en ze zijn hoofdlettergevoelig.',
+%floodtxt = (
+    '1' => q~Uw Verificatie Code is~,
+    '3' => q~Verificatie Code~,
+    'casewarning' =>
+q~Typ de tekens die worden weergegeven in de afbeelding. De tekens moeten in dezelfde volgorde getypt worden, en ze zijn hoofdlettergevoelig.~,
+    'casewarning_1' =>
+q~Typ de tekens alstublieft precies zoals ze worden weergegeven in de afbeelding,~,
+    'casewarning_2' =>
+      q~<br /><span style="font-weight: bold;">zonder de eerste~,
+    'casewarning_3' =>
+      q~<br /><span style="font-weight: bold;">zonder de laatste~,
+    'casewarning_4' => q~en laatste~,
+    'casewarning_5' =>
+q~Tekens.</span><br />De tekens moeten in dezelfde volgorde getypt worden,<br />en ze zijn hoofdlettergevoelig.~,
 );
 
-%prereg_txt=(
-'5' => 'Uw account is geactiveerd. U kunt nu inloggen met uw gebruikersnaam en wachtwoord.',
-);
+%prereg_txt =
+  ( '5' =>
+q~Uw account is geactiveerd. U kunt nu inloggen met uw gebruikersnaam en wachtwoord.~,
+  );
 
 1;

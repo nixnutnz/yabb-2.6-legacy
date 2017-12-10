@@ -14,6 +14,7 @@
 # Released: January 28, 2013, Copyright 2013 Carsten Dalgaard                 #
 ###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
 $russianxaddmoderatorslngver = 'YaBB 2.7.00 $Revision$';
 @russianxaddmoderatorslngmods = ();
@@ -24,18 +25,20 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %addmod_txt = (
-'addmod_title' => q~Moderator~,
-'addmod_text' => q~Here you can assign the member as Moderator to any/all boards. Hold down Ctrl or Shift key (Apple key on Mac) and click to select more boards.~,
-'addmod_all' => q~Select all.~,
-'addmod_save' => q~Save~,
-'remove' => q~Are you sure you want to remove the member from the list?~,
-'modpagetitle' => q~Select Moderators~,
-'instructions' => q~Double-click to remove a name from the list~,
-'modsearch' => q~Add/Delete Moderators~,
-'addselected' => q~Add Selected~,
-'pageclose' => q~Close~,
-'instruct' => q~Type the first few characters of the new moderator's name, then select one or more names in the list and click on "Add Selected".~,
-'noresults' => q~No Results~,
+    'addmod_title' => q~Moderator~,
+    'addmod_text' =>
+q~Here you can assign the member as Moderator to any/all boards. Hold down Ctrl or Shift key (Apple key on Mac) and click to select more boards.~,
+    'addmod_all'  => q~Select all.~,
+    'addmod_save' => q~Save~,
+    'remove' => q~Are you sure you want to remove the member from the list?~,
+    'modpagetitle' => q~Select Moderators~,
+    'instructions' => q~Double-click to remove a name from the list~,
+    'modsearch'    => q~Add/Delete Moderators~,
+    'addselected'  => q~Add Selected~,
+    'pageclose'    => q~Close~,
+    'instruct' =>
+q~Type the first few characters of the new moderator's name, then select one or more names in the list and click on "Add Selected".~,
+    'noresults' => q~No Results~,
 );
 
 1;

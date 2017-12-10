@@ -10,69 +10,70 @@
 # Software by: The YaBB Development Team                                      #
 #              with assistance from the YaBB community.                       #
 ###############################################################################
+##  Based on English Rev 1874 ##
+our $VERSION = '2.7.00';
 
-$suomirefcontrollngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomirefcontrollngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomirefcontrollngmods = ();
-if(@suomirefcontrollngmods){
+if (@suomirefcontrollngmods) {
     $suomirefcontrollngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %refer_settings = (
-'gen' => q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
-'refer_controls' => q~General~,
-'refer_mods' => q~Mods~,
+    'gen' =>
+q~Select which actions <i>(action= in URLs)</i> can be linked to from outside your domain~,
+    'refer_controls' => q~General~,
+    'refer_mods'     => q~Mods~,
 );
 
 %refexpl_txt = (
-'display' => 'Näytä viesti tietyssä aiheessa',
-'downloadfile' => 'Lata liitetiedosto',
-'help' => 'Näytä foorumin ohjesivut',
-'login' => 'Kirjautumisruutu',
-'logout' => 'Kirjaudu ulos',
-'messageindex' => 'Näytä aihealueen etusivu',
-'ml' => 'Näytä käyttäjälista',
-'mycenter' => 'Näytä pääsivu Hallintapaneelissa',
-'recent' => 'Näytä viimeisimmät viestit',
-'recenttopics' => 'Näytä kaikki viimeisimmät viestini',
-'register' => 'Rekisteröitymisnäyttö',
-'reminder' => 'Siirry \'Unohdin salasanani\' näyttöön',
-'RSSboard' => 'Lue viimeisimmät alueen aiheet RSS-syötteen kautta',
-'RSSrecent' => 'Lue koko foorumin viimeisimmät aiheet RSS-syötteen kautta',
-'search' => 'Haku',
-'viewdownloads' => 'Näytä lataukset',
-'viewprofile' => 'Näytä käyttäjän profiili',
-'birthdaylist' => q~View Birthday List~,
-'eventcal' => q~View Event Calendar~,
-'get_cal_ssi' => q~Allow Calendar in other pages~,
-'refer_controls' => q~General~,
-'refer_mods' => q~Mods~,
+    'display'      => q~Näytä viesti tietyssä aiheessa~,
+    'downloadfile' => q~Lata liitetiedosto~,
+    'help'         => q~Näytä foorumin ohjesivut~,
+    'login'        => q~Kirjautumisruutu~,
+    'logout'       => q~Kirjaudu ulos~,
+    'messageindex' => q~Näytä aihealueen etusivu~,
+    'ml'           => q~Näytä käyttäjälista~,
+    'mycenter'     => q~Näytä pääsivu Hallintapaneelissa~,
+    'recent'       => q~Näytä viimeisimmät viestit~,
+    'recenttopics' => q~Näytä kaikki viimeisimmät viestini~,
+    'register'     => q~Rekisteröitymisnäyttö~,
+    'reminder'     => q~Siirry 'Unohdin salasanani' näyttöön~,
+    'RSSboard'     => q~Lue viimeisimmät alueen aiheet RSS-syötteen kautta~,
+    'RSSrecent' => q~Lue koko foorumin viimeisimmät aiheet RSS-syötteen kautta~,
+    'search'    => q~Haku~,
+    'viewdownloads'  => q~Näytä lataukset~,
+    'viewprofile'    => q~Näytä käyttäjän profiili~,
+    'birthdaylist'   => q~View Birthday List~,
+    'eventcal'       => q~View Event Calendar~,
+    'get_cal_ssi'    => q~Allow Calendar in other pages~,
+    'refer_controls' => q~General~,
+    'refer_mods'     => q~Mods~,
 );
 
 %refer_txt = (
-'birthdaylist' => q~View Birthday List~,
-'display' =>  q~Display Threads~,
-'downloadfile' =>  q~Download Attachment~,
-'eventcal' => q~View Event Calendar~,
-'get_cal_ssi' => q~Allow Calendar in other pages~,
-'help' =>  q~Show Help~,
-'login' =>  q~Log In screen~,
-'logout' =>  q~Log Out~,
-'messageindex' =>  q~Display Message index~,
-'ml' =>  q~Show Memberlist~,
-'mycenter' =>  q~MyCenter main page~,
-'recent' =>  q~Show recent posts~,
-'recenttopics' =>  q~Show recent topics~,
-'register' =>  q~Registration~,
-'reminder' =>  q~Password reset~,
-'RSSboard' =>  q~RSS Board~,
-'RSSrecent' =>  q~RSS Recent Topics~,
-'search' =>  q~Search Screen~,
-'viewdownloads' =>  q~View Downloads~,
-'viewprofile' =>  q~View a User Profile~,
+    'birthdaylist'  => q~View Birthday List~,
+    'display'       => q~Display Threads~,
+    'downloadfile'  => q~Download Attachment~,
+    'eventcal'      => q~View Event Calendar~,
+    'get_cal_ssi'   => q~Allow Calendar in other pages~,
+    'help'          => q~Show Help~,
+    'login'         => q~Log In screen~,
+    'logout'        => q~Log Out~,
+    'messageindex'  => q~Display Message index~,
+    'ml'            => q~Show Memberlist~,
+    'mycenter'      => q~MyCenter main page~,
+    'recent'        => q~Show recent posts~,
+    'recenttopics'  => q~Show recent topics~,
+    'register'      => q~Registration~,
+    'reminder'      => q~Password reset~,
+    'RSSboard'      => q~RSS Board~,
+    'RSSrecent'     => q~RSS Recent Topics~,
+    'search'        => q~Search Screen~,
+    'viewdownloads' => q~View Downloads~,
+    'viewprofile'   => q~View a User Profile~,
 );
-
-## Mod Hook ##
 
 1;

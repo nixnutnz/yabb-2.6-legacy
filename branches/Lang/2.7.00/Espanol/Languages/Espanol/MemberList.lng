@@ -10,43 +10,46 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolmemberlistlngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolmemberlistlngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolmemberlistlngmods = ();
 if (@espanolmemberlistlngmods) {
     $espanolmemberlistlngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' ) { return 1; };
+if ( $action eq 'detailedversion' ) { return 1; }
 
 %ml_txt = (
-'1' => 'Ordenar por:',
-'2' => '¡IR!',
-'3' => 'Viendo el',
-'4' => 'Miembros Por',
-'19' => 'Índice de Páginas (Si/No)',
-'21' => 'Mensajes',
-'34' => 'Avatar',
-'35' => 'Nombre',
-'87' => 'Posición',
-'96' => 'Sitio Web',
-'139' => 'Páginas',
-'233' => 'Fecha de Registro',
-'234' => 'Fecha Reg.',
-'307' => 'correo electrónico',
-'308' => 'Hidden E-mail',
-'309' => 'de',
-'312' => 'Viendo Miembros por letra',
-'313' => 'Viendo el',
-'314' => 'Miembros por número de mensajes',
-'331' => 'Miembros',
-'759' => 'Selecciona la letra.',
-'760' => 'No hay entras para esta letra.',
-'800' => 'Otros',
-'801' => 'Buscar Miembro',
-'802' => 'Lo sentimos - no se han encontrado resultados para',
-'dr_warning' => '* Cuenta mayores de Foro - por favor verificar Foro Fecha de Inicio:',
-'dr_warnurl' => 'aquí',
+    '1'   => q~Ordenar por:~,
+    '2'   => q~¡IR!~,
+    '3'   => q~Viendo el~,
+    '4'   => q~Miembros Por~,
+    '19'  => q~Índice de Páginas (Si/No)~,
+    '21'  => q~Mensajes~,
+    '34'  => q~Avatar~,
+    '35'  => q~Nombre~,
+    '87'  => q~Posición~,
+    '96'  => q~Sitio Web~,
+    '139' => q~Páginas~,
+    '233' => q~Fecha de Registro~,
+    '234' => q~Fecha Reg.~,
+    '307' => q~correo electrónico~,
+    '308' => q~Hidden E-mail~,
+    '309' => q~de~,
+    '312' => q~Viendo Miembros por letra~,
+    '313' => q~Viendo el~,
+    '314' => q~Miembros por número de mensajes~,
+    '331' => q~Miembros~,
+    '759' => q~Selecciona la letra.~,
+    '760' => q~No hay entras para esta letra.~,
+    '800' => q~Otros~,
+    '801' => q~Buscar Miembro~,
+    '802' => q~Lo sentimos - no se han encontrado resultados para~,
+    'dr_warning' =>
+      q~* Cuenta mayores de Foro - por favor verificar Foro Fecha de Inicio:~,
+    'dr_warnurl' => q~aquí~,
 );
 
 1;

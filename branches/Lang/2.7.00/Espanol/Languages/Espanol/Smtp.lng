@@ -10,8 +10,10 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$espanolsmtplngver = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolsmtplngver  = 'YaBB 2.7.00 $Revision: 1611 $';
 @espanolsmtplngmods = ();
 if (@espanolsmtplngmods) {
     $espanolsmtplngmods = 1;
@@ -20,41 +22,52 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %smtp_txt = (
-'1' => 'SERVER ERROR: No encuentro {yabb smtpaddr!',
-'2' => 'SERVER ERROR: No se puede abrir la conexión (socket)',
-'3' => 'SERVER ERROR: No se puede conectar a {yabb smtpaddr en el puerto {yabb port}',
-'4' => 'SYSTEM ERROR: La variable Para está vacía',
-'5' => 'Registro de la comunicación del servidor de correo electrónico:',
-'no_to' => 'La variable \'To\' (dirección email destino) está vacía y es necesaria para el protocolo SMTP',
-'no_from' => 'La variable  \'From\' (dirección email de remitente) y es necesaria para el protocolo SMTP',
-'211' => 'Estado del sistema o respuesta del sistema de ayuda',
-'214' => 'Mensaje de ayuda',
-'220' => '<domain> Servicio listo',
-'221' => '<domain> Servicio cerrando canal de transmisión',
-'250' => 'Acción requerida de mail ok, completada',
-'251' => 'Usuario no local: será redirigido a <forward-path>',
-'354' => 'Iniciar entrada de correo electrónico: terminar con <CRLF>.<CRLF>',
-'421' => '<domain> Servicio no disponible',
-'432' => 'Se necesita una transición contraseña',
-'450' => 'Acción de correo solicitada no realizada: buzón de correo no disponible',
-'451' => 'Acción requerida abortada: error local de proceso',
-'452' => 'Acción requerida no realizada: sistema de almacenamiento insuficiente',
-'454' => 'Fallo de autenticación temporal',
-'500' => 'Error de sintaxis, comando no reconocido',
-'501' => 'Destinatario de correo electrónico no válido. Retransmisión requiere SMTP AUTH',
-'502' => 'Comando no implementado',
-'503' => 'Secuencia de comandos incorrecta',
-'504' => 'Parámetro de comando o tipo de autorización no aplicado',
-'530' => 'Se requiere Autenticación',
-'534' => 'Mecanismo de Autenticación es demasiado débil',
-'538' => 'Encriptación requerida por el mecanismo de autenticación requerido',
-'535' => 'Fallo de Autenticación',
-'550' => 'Acción requerida no realizada: buzón de correo o usuario no disponibles',
-'551' => 'Usuario no local: por favor, intenta <forward-path>',
-'552' => 'Acción de correo requerida abortada: espacio de almacenamiento asignado superado',
-'553' => 'Acción requerida no realizada: nombre del buzón de correo no permitido',
-'554' => 'Fallo de Transacción',
-'555' => 'Miembro',
+    '1' => q~SERVER ERROR: No encuentro {yabb smtpaddr!~,
+    '2' => q~SERVER ERROR: No se puede abrir la conexión (socket)~,
+    '3' =>
+q~SERVER ERROR: No se puede conectar a {yabb smtpaddr en el puerto {yabb port}~,
+    '4' => q~SYSTEM ERROR: La variable Para está vacía~,
+    '5' => q~Registro de la comunicación del servidor de correo electrónico:~,
+    'no_to' =>
+q~La variable 'To' (dirección email destino) está vacía y es necesaria para el protocolo SMTP~,
+    'no_from' =>
+q~La variable  'From' (dirección email de remitente) y es necesaria para el protocolo SMTP~,
+    '211' => q~Estado del sistema o respuesta del sistema de ayuda~,
+    '214' => q~Mensaje de ayuda~,
+    '220' => q~<domain> Servicio listo~,
+    '221' => q~<domain> Servicio cerrando canal de transmisión~,
+    '250' => q~Acción requerida de mail ok, completada~,
+    '251' => q~Usuario no local: será redirigido a <forward-path>~,
+    '354' =>
+      q~Iniciar entrada de correo electrónico: terminar con <CRLF>.<CRLF>~,
+    '421' => q~<domain> Servicio no disponible~,
+    '432' => q~Se necesita una transición contraseña~,
+    '450' =>
+q~Acción de correo solicitada no realizada: buzón de correo no disponible~,
+    '451' => q~Acción requerida abortada: error local de proceso~,
+    '452' =>
+      q~Acción requerida no realizada: sistema de almacenamiento insuficiente~,
+    '454' => q~Fallo de autenticación temporal~,
+    '500' => q~Error de sintaxis, comando no reconocido~,
+    '501' =>
+q~Destinatario de correo electrónico no válido. Retransmisión requiere SMTP AUTH~,
+    '502' => q~Comando no implementado~,
+    '503' => q~Secuencia de comandos incorrecta~,
+    '504' => q~Parámetro de comando o tipo de autorización no aplicado~,
+    '530' => q~Se requiere Autenticación~,
+    '534' => q~Mecanismo de Autenticación es demasiado débil~,
+    '538' =>
+      q~Encriptación requerida por el mecanismo de autenticación requerido~,
+    '535' => q~Fallo de Autenticación~,
+    '550' =>
+q~Acción requerida no realizada: buzón de correo o usuario no disponibles~,
+    '551' => q~Usuario no local: por favor, intenta <forward-path>~,
+    '552' =>
+q~Acción de correo requerida abortada: espacio de almacenamiento asignado superado~,
+    '553' =>
+      q~Acción requerida no realizada: nombre del buzón de correo no permitido~,
+    '554' => q~Fallo de Transacción~,
+    '555' => q~Miembro~,
 );
 
 1;

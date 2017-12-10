@@ -10,171 +10,196 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$suomibackuplngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomibackuplngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomibackuplngmods = ();
-if(@suomibackuplngmods){
+if (@suomibackuplngmods) {
     $suomibackuplngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 $script_root = $ENV{'SCRIPT_FILENAME'};
-if( ! $script_root ) {
+if ( !$script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
-($support_env_path = $script_root) =~ s~/\w+\.pl~~;
+( $support_env_path = $script_root ) =~ s/\/\w+[.][pl|cgi]//xsm;
 
 %backup_txt = (
-'1' => 'YaBB varmuuskopio',
-'2' => 'Et ole tallentanut varmuuskopiointiasetuksiasi! Sinun tulee tehdä tämä ennen kuin voit varmuuskopioida foorumiasi.',
-'3' => 'Valitse varmuuskopioitavat hakemistot. Huomio: YaBB-hakemistojen sijainti tarkistetaan Paths.pl-tiedostosta.',
-'4' => 'YaBB-hakemistot',
-'5' => 'Valitse/Poista valinta kaikista',
-'6' => 'Jos valitset kaikki, koko foorumisi varmuuskopioidaan (suositus).<br />Tämä voi aiheuttaa palautusongelmia todella suurilla foorumeilla. Tällöin on järkevämpää varmuuskopioida kaikki enemmän tai vähemmän staattiset (muuttumattomat) hakemistot erikseen ja Boards-, Members- ja Messages-hakemistot erikseen!',
-'path1' => 'Tar- ja Zip-ohjelmien polku:',
-'path2' => 'gzip- ja bzip2-ohjelmien polku (asettaa myös polun gzip-ohjelmalle Laajennetuissa asetuksissa):',
-'path3' => 'Täytä polut <b>vain</b> jos YaBB ei automaattisesti löydä Tar-, Zip-, gzip-, ja bzip2-ohjelmia. Muuten jätä ylläolevat kohdat tyhjiksi.',
+    '1' => q~YaBB varmuuskopio~,
+    '2' =>
+q~Et ole tallentanut varmuuskopiointiasetuksiasi! Sinun tulee tehdä tämä ennen kuin voit varmuuskopioida foorumiasi.~,
+    '3' =>
+q~Valitse varmuuskopioitavat hakemistot. Huomio: YaBB-hakemistojen sijainti tarkistetaan Paths.pl-tiedostosta.~,
+    '4' => q~YaBB-hakemistot~,
+    '5' => q~Valitse/Poista valinta kaikista~,
+    '6' =>
+q~Jos valitset kaikki, koko foorumisi varmuuskopioidaan (suositus).<br />Tämä voi aiheuttaa palautusongelmia todella suurilla foorumeilla. Tällöin on järkevämpää varmuuskopioida kaikki enemmän tai vähemmän staattiset (muuttumattomat) hakemistot erikseen ja Boards-, Members- ja Messages-hakemistot erikseen!~,
+    'path1' => q~Tar- ja Zip-ohjelmien polku:~,
+    'path2' =>
+q~gzip- ja bzip2-ohjelmien polku (asettaa myös polun gzip-ohjelmalle Laajennetuissa asetuksissa):~,
+    'path3' =>
+q~Täytä polut <b>vain</b> jos YaBB ei automaattisesti löydä Tar-, Zip-, gzip-, ja bzip2-ohjelmia. Muuten jätä ylläolevat kohdat tyhjiksi.~,
 
-# Begin description of directories
-# We don't translate directory names like Boards/.
-'7' => '(sisältää kategorioiden ja aihealueiden järjestyksen)',
-'8' => '(sisältää kaikki viestit ja aiheet)',
-'9' => '(sisältää kaikki jäsenprofiilit)',
-'10' => 'ja tyylitiedostot', # This one comes right after "Templates/ "
-'10a' => '(sisältää kaikki tyylipohjatiedostot paitsi kuvat)',
-'11' => '(sisältää kaiken YaBB:ssä kaytettään tekstin)',
-'12' => '(sisältää kaikki YaBB:n asetukset)',
-'and' => 'ja', # Odd name, yes, but could be useful in more then one place
-'13' => 'ja muu lähdekoodi (sisältää YaBB:n lähdekoodin)',
-'14' => '(sisältää foorumin kuvat ja tyylitiedostot poislukien seuraavalla rivillä eritellyt hakemistot)',
-'14a' => '(sisältää kaikki käyttäjien lataamat tiedostot)',
+    # Begin description of directories
+    # We don't translate directory names like Boards/.
+    '7'   => q~(sisältää kategorioiden ja aihealueiden järjestyksen)~,
+    '8'   => q~(sisältää kaikki viestit ja aiheet)~,
+    '9'   => q~(sisältää kaikki jäsenprofiilit)~,
+    '10'  => q~ja tyylitiedostot', # This one comes right after "Templates/"~,
+    '10a' => q~(sisältää kaikki tyylipohjatiedostot paitsi kuvat)~,
+    '11'  => q~(sisältää kaiken YaBB:ssä kaytettään tekstin)~,
+    '12'  => q~(sisältää kaikki YaBB:n asetukset)~,
+    'and' => q~ja~,  # Odd name, yes, but could be useful in more then one place
+    '13' => q~ja muu lähdekoodi (sisältää YaBB:n lähdekoodin)~,
+    '14' =>
+q~(sisältää foorumin kuvat ja tyylitiedostot poislukien seuraavalla rivillä eritellyt hakemistot)~,
+    '14a' => q~(sisältää kaikki käyttäjien lataamat tiedostot)~,
 
-# Begin the backup method selection
-'15' => 'Varmuuskopiointitapa',
+    # Begin the backup method selection
+    '15' => q~Varmuuskopiointitapa~,
 
-# Don't translate command names (such as /bin/tar) or 'tar'.
-'16' => 'Ensimmäisen vaihtoehdon tulisi olla Tar (pakkauksella) tai Zip.<br />Käytä Archive::Tar (Compress::Zlib tai Compress::Bzip2 kanssa) tai Archive::Zip -varmuuskopiointia viimeisenä vaihtoehtona.<br />bzip2 tai Bzip2 tekee pienimmät varmuuskopiot mutta vie eniten aikaa.<br /><span style="color: red;"><b>Huomio:</b><br /></span> Jotkin palvelimet eivät tue suuria varmuuskopioita. Tällöin saat virheilmoituksen kuten "Internal server error" tai pelkän tyhjän sivun. Yritä silloin jotain toista varmuuskopiotapaa. Jos tämä ei auta vähennä varmuuskopioitavien YaBB-hakemistojen määrää.',
-'17' => 'Ei tar-pakkausta',
-'18' => '(Tar-pakkaukselle)',
-'19' => 'Varmuuskopiohakemisto',
-'19a' => 'Koko polku, ei pelkästään ./Backups',
-'19b' => 'Muistuta minua varmuuskopioista',
-'19c' => 'Muistuta minua kun viimeisin varmuuskopio on vanhempi kuin',
-'19d' => 'päivää. Laita 0 tai jätä tyhjäksi poistaaksesi muistutuksen käytöstä.',
-'19e' => q~Max Process Time~,
-'19f' => q~Max Process Time is currently set for~,
-'19g' => q~seconds - adjust this up or down to prevent server timeouts~,
-'20' => 'Tallenna asetukset',
+    # Don't translate command names (such as /bin/tar) or 'tar'.
+    '16' =>
+q~Ensimmäisen vaihtoehdon tulisi olla Tar (pakkauksella) tai Zip.<br />Käytä Archive::Tar (Compress::Zlib tai Compress::Bzip2 kanssa) tai Archive::Zip -varmuuskopiointia viimeisenä vaihtoehtona.<br />bzip2 tai Bzip2 tekee pienimmät varmuuskopiot mutta vie eniten aikaa.<br /><span style="color: red;"><b>Huomio:</b><br /></span> Jotkin palvelimet eivät tue suuria varmuuskopioita. Tällöin saat virheilmoituksen kuten "Internal server error" tai pelkän tyhjän sivun. Yritä silloin jotain toista varmuuskopiotapaa. Jos tämä ei auta vähennä varmuuskopioitavien YaBB-hakemistojen määrää.~,
+    '17'  => q~Ei tar-pakkausta~,
+    '18'  => q~(Tar-pakkaukselle)~,
+    '19'  => q~Varmuuskopiohakemisto~,
+    '19a' => q~Koko polku, ei pelkästään ./Backups~,
+    '19b' => q~Muistuta minua varmuuskopioista~,
+    '19c' => q~Muistuta minua kun viimeisin varmuuskopio on vanhempi kuin~,
+    '19d' =>
+      q~päivää. Laita 0 tai jätä tyhjäksi poistaaksesi muistutuksen käytöstä.~,
+    '19e' => q~Max Process Time~,
+    '19f' => q~Max Process Time is currently set for~,
+    '19g' => q~seconds - adjust this up or down to prevent server timeouts~,
+    '20'  => q~Tallenna asetukset~,
 
-# Begin run backup area
-'21' => 'Varmuuskopioi',
-'22' => 'Paina alapuolella olevaa nappia varmuuskopoiodaksesi foorumin. Varmuuskopio ilmestyy',
-'23' => '-hakemistoon, joka on asetettu yllä.',
-'24' => 'Varmuuskopioinnin aikana foorumi asetettaan huoltotilaan.<br /><br />Jos varmuuskopioit erittäin suurta foorumia, voi mennä aikaa ennen kuin foorumi vastaa! Odota ainakin viisi minuuttia! Jos mitään ei tapahdu lue huomio varmuuskopiotapojen kohdalta.<br /><br />Ensimmäisen varmuuskopion jälkeen voit valita varmuuskopioitavaksi vain muuttuneet tiedostot. Varmuuskopioasetuksia muuttaessasi joudut aina ajamaan täyden varmuuskopion ensin. Aika viimeisimmästä varmuuskopiosta tarkistetaan <i>sekunneissa</i> Tar, Archive::Tar ja Archive::Zip -tapauksissa ja <i>päivissä</i> Zip-tapauksessa.',
-'25' => 'Varmuuskopioi',
-'25a' => 'Varmuuskopioi vain uudemmat tiedostot kuin',
+    # Begin run backup area
+    '21' => q~Varmuuskopioi~,
+    '22' =>
+q~Paina alapuolella olevaa nappia varmuuskopoiodaksesi foorumin. Varmuuskopio ilmestyy~,
+    '23' => q~-hakemistoon, joka on asetettu yllä.~,
+    '24' =>
+q~Varmuuskopioinnin aikana foorumi asetettaan huoltotilaan.<br /><br />Jos varmuuskopioit erittäin suurta foorumia, voi mennä aikaa ennen kuin foorumi vastaa! Odota ainakin viisi minuuttia! Jos mitään ei tapahdu lue huomio varmuuskopiotapojen kohdalta.<br /><br />Ensimmäisen varmuuskopion jälkeen voit valita varmuuskopioitavaksi vain muuttuneet tiedostot. Varmuuskopioasetuksia muuttaessasi joudut aina ajamaan täyden varmuuskopion ensin. Aika viimeisimmästä varmuuskopiosta tarkistetaan <i>sekunneissa</i> Tar, Archive::Tar ja Archive::Zip -tapauksissa ja <i>päivissä</i> Zip-tapauksessa.~,
+    '25'  => q~Varmuuskopioi~,
+    '25a' => q~Varmuuskopioi vain uudemmat tiedostot kuin~,
 
-# Not used
-# '26' => '', Not used
+    # Not used
+    # '26' => q{}, Not used
 
-# Text used for the actual backup output
-'27' => 'Varmuuskopioitu',
+    # Text used for the actual backup output
+    '27' => q~Varmuuskopioitu~,
 
-# Text used in the support subroutines
-'28' => 'Moduulia ei voitu ladata',
-'29' => 'Varmuuskopiotapaa ei voitu testata',
-'30' => 'Pakkaustapaa ei löytynyt',
-'31' => 'ei voida käyttää',
-'32' => 'Virhekoodi:',
+    # Text used in the support subroutines
+    '28' => q~Moduulia ei voitu ladata~,
+    '29' => q~Varmuuskopiotapaa ei voitu testata~,
+    '30' => q~Pakkaustapaa ei löytynyt~,
+    '31' => q~ei voida käyttää~,
+    '32' => q~Virhekoodi:~,
 
-# Text used for timing the backup
-'33' => 'Varmuuskopio vei: ',
-'34' => 'sekuntia',
+    # Text used for timing the backup
+    '33' => q~Varmuuskopio vei: ~,
+    '34' => q~sekuntia~,
 
-# Begin manage backups area
-'35' => 'Hallitse varmuuskopioita',
-'36' => 'Varmuuskopiohakemisto',
-'37' => 'Voit:<ul><li>Ladata varmuuskopion (LATAA)</li><li>Lähettää varmuuskopion sähköpostilla',
-'37a' => ' (EMAIL)</li><li>Varmuuskopioida uudelleen samoilla asetuksilla (VARMUUSKOPIOI)</li><li>Varmuuskopioida vai muuttuneet samoilla asetuksilla(UUDEMMAT)</li><li>Palauttaa varmuuskopion mikäli tuettu(PALAUTA)</li><li>Poistaa varmuuskopion(POISTA)</li></ul>',
-'38' => 'Ei varmuuskopioita',
+    # Begin manage backups area
+    '35' => q~Hallitse varmuuskopioita~,
+    '36' => q~Varmuuskopiohakemisto~,
+    '37' =>
+q~Voit:<ul><li>Ladata varmuuskopion (LATAA)</li><li>Lähettää varmuuskopion sähköpostilla~,
+    '37a' =>
+q~ (EMAIL)</li><li>Varmuuskopioida uudelleen samoilla asetuksilla (VARMUUSKOPIOI)</li><li>Varmuuskopioida vai muuttuneet samoilla asetuksilla(UUDEMMAT)</li><li>Palauttaa varmuuskopion mikäli tuettu(PALAUTA)</li><li>Poistaa varmuuskopion(POISTA)</li></ul>~,
+    '38' => q~Ei varmuuskopioita~,
 
-'39' => 'Moduulia',
-'40' => 'Komentoa',
-'41' => 'ei ole tarjolla tällä palvelimella.',
-'42' => 'Ei voida kirjoittaa',
-'43' => 'Tarkista oikeudet ja polku.',
+    '39' => q~Moduulia~,
+    '40' => q~Komentoa~,
+    '41' => q~ei ole tarjolla tällä palvelimella.~,
+    '42' => q~Ei voida kirjoittaa~,
+    '43' => q~Tarkista oikeudet ja polku.~,
 
-'44' => 'Ei voitu vaihtaa hakemistoa',
-'45' => 'Epäkelpo varmuuskopiotiedosto!',
-'46' => 'Ei voida lukea',
-'47' => 'Haluatko varmasti poistaa',
-'48' => '? Tätä toimintoa ei voida kumota.',
-'49' => 'Kyllä, olen varma',
-'50' => 'En, älä poista',
-'51' => 'Ei voida poistaa',
-'52' => 'EMAIL',
-'53' => 'POISTA',
-'54' => 'Haluatko varmasti lähettää tämän sähköpostilla',
-'55' => 'Liitetiedoston koko on',
-'56' => 'Kyllä, lähetä liitetiedosto',
-'57' => 'Ei, älä lähetä liitettä, lähetä vain linkki tiedostoon.',
-'58' => 'Ei, älä lähetä. Lataa se nyt.',
-'59' => 'Ei, älä lähetä. Palaa YaBB varmuuskopioihin.',
-'60' => 'LATAA',
-'61' => 'VARMUUSKOPIOI',
-'62' => 'UUDEMMAT',
-'62a' => 'UUD',
-'63' => 'PALAUTA',
+    '44'  => q~Ei voitu vaihtaa hakemistoa~,
+    '45'  => q~Epäkelpo varmuuskopiotiedosto!~,
+    '46'  => q~Ei voida lukea~,
+    '47'  => q~Haluatko varmasti poistaa~,
+    '48'  => q~? Tätä toimintoa ei voida kumota.~,
+    '49'  => q~Kyllä, olen varma~,
+    '50'  => q~En, älä poista~,
+    '51'  => q~Ei voida poistaa~,
+    '52'  => q~EMAIL~,
+    '53'  => q~POISTA~,
+    '54'  => q~Haluatko varmasti lähettää tämän sähköpostilla~,
+    '55'  => q~Liitetiedoston koko on~,
+    '56'  => q~Kyllä, lähetä liitetiedosto~,
+    '57'  => q~Ei, älä lähetä liitettä, lähetä vain linkki tiedostoon.~,
+    '58'  => q~Ei, älä lähetä. Lataa se nyt.~,
+    '59'  => q~Ei, älä lähetä. Palaa YaBB varmuuskopioihin.~,
+    '60'  => q~LATAA~,
+    '61'  => q~VARMUUSKOPIOI~,
+    '62'  => q~UUDEMMAT~,
+    '62a' => q~UUD~,
+    '63'  => q~PALAUTA~,
 
-'70' => 'Tallennuspäivä',
-'71' => 'Koko',
-'72' => 'Varmuuskopion sisältö (tallennetut hakemistot)',
-'73' => 'Muoto',
-'74' => 'Toiminnot',
+    '70' => q~Tallennuspäivä~,
+    '71' => q~Koko~,
+    '72' => q~Varmuuskopion sisältö (tallennetut hakemistot)~,
+    '73' => q~Muoto~,
+    '74' => q~Toiminnot~,
 
-# Loop stuff to prevent running into server time out
-'90' => q~Jos haluat <a href="javascript:stoptick();">KESKEYTTÄÄ varmuuskopioinnin paina tästä</a>.~,
-'91' => 'Varmuuskopioi - odota!<br />Jos haluat keskeyttää If you want to stop, paina KESKEYTÄ ennen kuin tämä viesti ilmestyy seuraavan kerran.',
+    # Loop stuff to prevent running into server time out
+    '90' =>
+q~Jos haluat <a href="javascript:stoptick();">KESKEYTTÄÄ varmuuskopioinnin paina tästä</a>.~,
+    '91' =>
+q~Varmuuskopioi - odota!<br />Jos haluat keskeyttää If you want to stop, paina KESKEYTÄ ennen kuin tämä viesti ilmestyy seuraavan kerran.~,
 
-# Recover stuff
-'100' => 'Palauta varmuuskopio',
-'101' => '<b>Suosittelemme, että palautat VAIN nämä kansiot palautustoiminnolla:<br /><i>Boards</i>, <i>Members</i>, <i>Messages</i>, <i>Variables</i> ja <i>yabbfiles/Attachments ja yabbfiles/avatars/UserAvatars</i>.<br /><br />Johtuen omistusoikeuksen muutoksesta palautuksen aikana voit (ei täydy!) ajautua tiedostonhallintaongelmiin! Siksi palauta kaikki muut tiedostot lataamalla ne omalta koneeltasi FTP:llä, sen jälkeen kun olet ladannut Varmuuskopiotiedoston viimeiseltä sivulta.</b><br /><br />Oletko varma, että haluat palauttaa seuraavat kansiot?',
-'102' => 'palautustiedostolla:',
-'103' => 'from',
-'104' => 'Kyllä',
-'105' => "Valitse tämä palauttaaksesi tiedostot alkuperäisiin kansioihin. Tämä ylikirjoittaa kaikki olemassaolevat tiedostot näissä kansioissa ja luo poistetut tiedostot uudestaan. Mutta se ei poista tiedostoja, jotka luotiin varmuuskopioinnin jälkeen. Kansiot, jotka haluat palauttaa täytyy asettaa CHMOD X[2|3|6|7]X ennen palautusta! Tämä tarkoittaa, että niillä täytyy olla vähintään 'Group'-kirjoitusoikeus. Esimerkiksi: CHMOD 775 tai 765. Jos olet siirtänyt kansioita varmuuskopioinnin jälkeen, tämä tapa yleensä epäonnistuu. Siinä tapauksessa jätä valitsematta tämä laatikko.<br />Jos jätät valitsematta, tiedostot tallennetaan uuteen kansioon, jonka nimenä on aikaleima Backup-kansiossa:<br /><tt>$backupdir/$date</tt> (uusi viimeinen kansion nimi on vain esimerkki).",
-'106' => 'Sinun täytyy asettaa CHMOD palautetuille tiedostoille seuraavissa kansioissa. Koska palvelin palauttaa tiedostot, palvelin on palautettujen tiedostojen uusi omistaja. Siksi joillain palvelimilla et voi myöhemmin muuttaa CHMOD:ia.<br />Estääksesi sen, että palvelin ei salli muuttaa tai edes poistaa tiedostojasi, "Group"-oikeudet eivät voi olla alle 6. Omistajan oikeuksia ei myöskään saa asettaa alle arvon 6.',
-'107' => 'Hakemistot',
-'108' => 'Oikeudet<br />(CHMOD)<br />Owner|Group|All',
-'110' => 'Tätä oikeutta ei voi asettaa alle', # Used in JavaScript!
-'111' => 'Tätä oikeutta ei voi asettaa liian korkealle. Suurin sallittu on 7.', # Used in JavaScript!
-'112' => 'Vain numerot ovat sallittuja!', # Used in JavaScript!
-'114' => '(kaikki tiedostot)',
-'115' => 'Kaikki',
-'116' => 'tiedostot',
-'120' => 'Jos uusia kansioita luodaan, aseta ne',
-'125' => 'Ei, palaa Varmuuskopionnin etusivulle',
-'126' => 'Palauta nyt',
-'130' => '<b><u>Tuloste:</u><br /><br />Jos CHMOD:in asetus onnistui näet sen ensimmäisestä merkistä. Jos se on <i>1</i> toiminto onnistui, jos se on <i>0</i> se epäonnistui.</b><br />Jos se epäonnistui, syy on yleensä se, että kansion<i>Group</i>-kirjoitusoikeus puuttuu.',
-'131' => '<b>Nyt tarkista CHMOD:it uudestaan FTP-ohjelmalla, varmuuden vuoksi &nbsp; ;-)</b>',
-'132' => 'Takaisin YaBB varmuuskopiokeskuksen etusivulle',
+    # Recover stuff
+    '100' => q~Palauta varmuuskopio~,
+    '101' =>
+q~<b>Suosittelemme, että palautat VAIN nämä kansiot palautustoiminnolla:<br /><i>Boards</i>, <i>Members</i>, <i>Messages</i>, <i>Variables</i> ja <i>yabbfiles/Attachments ja yabbfiles/avatars/UserAvatars</i>.<br /><br />Johtuen omistusoikeuksen muutoksesta palautuksen aikana voit (ei täydy!) ajautua tiedostonhallintaongelmiin! Siksi palauta kaikki muut tiedostot lataamalla ne omalta koneeltasi FTP:llä, sen jälkeen kun olet ladannut Varmuuskopiotiedoston viimeiseltä sivulta.</b><br /><br />Oletko varma, että haluat palauttaa seuraavat kansiot?~,
+    '102' => q~palautustiedostolla:~,
+    '103' => q~from~,
+    '104' => q~Kyllä~,
+    '105' =>
+qq~Valitse tämä palauttaaksesi tiedostot alkuperäisiin kansioihin. Tämä ylikirjoittaa kaikki olemassaolevat tiedostot näissä kansioissa ja luo poistetut tiedostot uudestaan. Mutta se ei poista tiedostoja, jotka luotiin varmuuskopioinnin jälkeen. Kansiot, jotka haluat palauttaa täytyy asettaa CHMOD X[2|3|6|7]X ennen palautusta! Tämä tarkoittaa, että niillä täytyy olla vähintään 'Group'-kirjoitusoikeus. Esimerkiksi: CHMOD 775 tai 765. Jos olet siirtänyt kansioita varmuuskopioinnin jälkeen, tämä tapa yleensä epäonnistuu. Siinä tapauksessa jätä valitsematta tämä laatikko.<br />Jos jätät valitsematta, tiedostot tallennetaan uuteen kansioon, jonka nimenä on aikaleima Backup-kansiossa:<br /><tt>$backupdir/$date</tt> (uusi viimeinen kansion nimi on vain esimerkki).~,
+    '106' =>
+q~Sinun täytyy asettaa CHMOD palautetuille tiedostoille seuraavissa kansioissa. Koska palvelin palauttaa tiedostot, palvelin on palautettujen tiedostojen uusi omistaja. Siksi joillain palvelimilla et voi myöhemmin muuttaa CHMOD:ia.<br />Estääksesi sen, että palvelin ei salli muuttaa tai edes poistaa tiedostojasi, "Group"-oikeudet eivät voi olla alle 6. Omistajan oikeuksia ei myöskään saa asettaa alle arvon 6.~,
+    '107' => q~Hakemistot~,
+    '108' => q~Oikeudet<br />(CHMOD)<br />Owner|Group|All~,
+    '110' => q~Tätä oikeutta ei voi asettaa alle~,         # Used in JavaScript!
+    '111' =>
+      q~Tätä oikeutta ei voi asettaa liian korkealle. Suurin sallittu on 7.~
+    ,                                                      # Used in JavaScript!
+    '112' => q~Vain numerot ovat sallittuja!~,             # Used in JavaScript!
+    '114' => q~(kaikki tiedostot)~,
+    '115' => q~Kaikki~,
+    '116' => q~tiedostot~,
+    '120' => q~Jos uusia kansioita luodaan, aseta ne~,
+    '125' => q~Ei, palaa Varmuuskopionnin etusivulle~,
+    '126' => q~Palauta nyt~,
+    '130' =>
+q~<b><u>Tuloste:</u><br /><br />Jos CHMOD:in asetus onnistui näet sen ensimmäisestä merkistä. Jos se on <i>1</i> toiminto onnistui, jos se on <i>0</i> se epäonnistui.</b><br />Jos se epäonnistui, syy on yleensä se, että kansion<i>Group</i>-kirjoitusoikeus puuttuu.~,
+    '131' =>
+q~<b>Nyt tarkista CHMOD:it uudestaan FTP-ohjelmalla, varmuuden vuoksi &nbsp; ;-)</b>~,
+    '132' => q~Takaisin YaBB varmuuskopiokeskuksen etusivulle~,
 
-# Begin e-mail stuff.
-'mailsubject' => "YaBB 2 varmuuskopio $mbname",
-'mailfrom' => qq~"YaBB 2 varmuuskopion postitus" <$webmaster_email>~, # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!!!
-'mailsuccess' => 'Sähköpostin lähetys onnistui!',
-'mailfail' => 'Sähköpostin lähetys epäonnistui! Tarkista virheviesti sähköpostista, jonka saat.',
-'no_perm' => q~You do not have permission to change the above settings.~,
-'no_dnload' => q~DOWNLOAD not permitted.~,
-'no_delete' => q~DELETE not permitted.~,
-'542' => q~If nothing happens in 5 seconds~,
-'543' => q~click here to continue~,
+    # Begin e-mail stuff.
+    'mailsubject' => q~YaBB 2 varmuuskopio {yabb mbname}~,
+    'mailfrom'    => q~"YaBB 2 varmuuskopion postitus" <{yabb webmaster_email}>~
+    ,    # do NOT modify anything left and right from *YaBB 2 Backup Mailer*!!!
+    'mailsuccess' => q~Sähköpostin lähetys onnistui!~,
+    'mailfail' =>
+q~Sähköpostin lähetys epäonnistui! Tarkista virheviesti sähköpostista, jonka saat.~,
+    'no_perm'   => q~You do not have permission to change the above settings.~,
+    'no_dnload' => q~DOWNLOAD not permitted.~,
+    'no_delete' => q~DELETE not permitted.~,
+    '542'       => q~If nothing happens in 5 seconds~,
+    '543'       => q~click here to continue~,
 );
 
 # The actual messages are here.
 # Don't translate WORDS IN ALL CAPITALS from here to the end of the file
-$backup_txt{'mailmessage1'} = qq~Hei USERNAME!
+$backup_txt{'mailmessage1'} = q~Hei USERNAME!
 
 Varmuuskopio nimeltä FILENAME pitäisi olla tämän viestin liitteenä.
 
@@ -183,14 +208,14 @@ Jos liitettä ei ole, lataa tiedosto manuaalisesti tästä: LINK
 
 Kiitos, että käytät YaBB:tä!~;
 
-$backup_txt{'mailmessage2'} = qq~Hei USERNAME!
+$backup_txt{'mailmessage2'} = q~Hei USERNAME!
 
 Voit ladata varmuuskopion FILENAME osoitteesta LINK .
 
 
 Kiitos, että käytät YaBB:tä!~;
 
-$backup_txt{'mailmessage3'} = qq~Hei USERNAME!
+$backup_txt{'mailmessage3'} = q~Hei USERNAME!
 
 Liitetiedoston lähettäminen sähköpostissa epäonnistui.
 

@@ -1,6 +1,8 @@
 ###############################################################################
 # SendTopic.lng (SendTopic text definitions)                                  #
 ###############################################################################
+#     Локализация: Васильев Д.В. (http://www.mysopromat.ru)                   #
+###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
 # Version:        YaBB 2.7.00                                                 #
@@ -9,53 +11,52 @@
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
-# Sponsored by: Xnull Internet Media, Inc. - http://www.ximinc.com            #
-#               Your source for web hosting, web design, and domains.         #
-###############################################################################
-#     Локализация: Васильев Д.В. (http://www.mysopromat.ru)                   #
-#           $Date: 2009/04/22 03:04:56 $                                      #
-#   Copyright (c): Васильев Д.В. 2005                                         #
 ###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$russiansendtopiclngver = 'YaBB 2.7.00 $Revision$';
+$russiansendtopiclngver  = 'YaBB 2.7.00 $Revision$';
 @russiansendtopiclngmods = ();
-if(@russiansendtopiclngmods){
+if (@russiansendtopiclngmods) {
     $russiansendtopiclngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %sendtopic_txt = (
-'118' => 'Тема',
-'241' => 'поле!',
-'318' => 'От',
-'335' => 'Ваше имя',
-'336' => 'Ваш E-mail адрес',
-'339' => 'Отправить',
-'707' => 'Отправить Тему',
-'708' => 'другу!',
-'717' => 'Имя получателя',
-'718' => 'E-mail адрес получателя',
-'error_sender_name' => 'Вы должны вставить ваше имя.',
-'error_sender_email' => 'Вы должны вставить свой e-mail почты.',
-'error_recipient_name' => 'Вы должны вставить имя получателя.',
-'error_recipient_email' => 'Вы должны вставить письмо получателя.',
-'error_verification' => 'Код подтверждения отсутствует.', 
-'verification_question_desc' => 'Пожалуйста, ответьте на вопрос выше проверки.',
-'verification_question_case' => 'Ответы чувствительны к регистру.',
-'error_verification_question' => 'Вы должны ответить на вопрос проверки.',
+    '118'                   => q~Тема~,
+    '241'                   => q~поле!~,
+    '318'                   => q~От~,
+    '335'                   => q~Ваше имя~,
+    '336'                   => q~Ваш E-mail адрес~,
+    '339'                   => q~Отправить~,
+    '707'                   => q~Отправить Тему~,
+    '708'                   => q~другу!~,
+    '717'                   => q~Имя получателя~,
+    '718'                   => q~E-mail адрес получателя~,
+    'error_sender_name'     => q~Вы должны вставить ваше имя.~,
+    'error_sender_email'    => q~Вы должны вставить свой e-mail почты.~,
+    'error_recipient_name'  => q~Вы должны вставить имя получателя.~,
+    'error_recipient_email' => q~Вы должны вставить письмо получателя.~,
+    'error_verification'    => q~Код подтверждения отсутствует.~,
+    'verification_question_desc' =>
+      q~Пожалуйста, ответьте на вопрос выше проверки.~,
+    'verification_question_case'  => q~Ответы чувствительны к регистру.~,
+    'error_verification_question' => q~Вы должны ответить на вопрос проверки.~,
 );
 
-%floodtxt=(
-'1' => 'Верификационный код',
-'3' => 'Введите код верификации',
-'casewarning' => 'Пожалуйста, убедитесь, что текст соответствует строке на изображении. Символы должны быть напечатаны в том же порядке с учетом регистра.',
-'casewarning_1' => 'Пожалуйста, введите символы, точно так, как они появляются на изображении,',
-'casewarning_2' => '<br /><span style="font-weight: bold;">без первого',
-'casewarning_3' => '<br /><span style="font-weight: bold;">без прошлого',
-'casewarning_4' => 'а в прошлом',
-'casewarning_5' => 'символы.</span><br />Символы должны быть напечатаны в том же порядке,<br />и они чувствительны к регистру.',
+%floodtxt = (
+    '1' => q~Верификационный код~,
+    '3' => q~Введите код верификации~,
+    'casewarning' =>
+q~Пожалуйста, убедитесь, что текст соответствует строке на изображении. Символы должны быть напечатаны в том же порядке с учетом регистра.~,
+    'casewarning_1' =>
+q~Пожалуйста, введите символы, точно так, как они появляются на изображении,~,
+    'casewarning_2' => q~<br /><span style="font-weight: bold;">без первого~,
+    'casewarning_3' => q~<br /><span style="font-weight: bold;">без прошлого~,
+    'casewarning_4' => q~а в прошлом~,
+    'casewarning_5' =>
+q~символы.</span><br />Символы должны быть напечатаны в том же порядке,<br />и они чувствительны к регистру.~,
 );
 
 1;

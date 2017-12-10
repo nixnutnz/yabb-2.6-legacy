@@ -10,10 +10,12 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1920 ##
+our $VERSION = '2.7.00';
 
-$suomierrorlngver = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomierrorlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
 @suomierrorlngmods = ();
-if(@suomierrorlngmods){
+if (@suomierrorlngmods) {
     $suomierrorlngmods = 1;
 }
 $action ||= q{};
@@ -21,235 +23,330 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 %error_txt = (
 ## General Errors ##
-'error_occurred' => 'Tapahtui virhe!',
-'untrapped' => 'Selvittämätön virhe',
-'cannot_open' => 'Ei voi avata',
-'bad_data'    => q~File with bad data~,
-'cannot_open_dir' => 'Ei voi avata hakemistoa',
-'cannot_open_language' => 'Tarvittavaa kielitiedostoa ei löydy. Ota yhteys ylläpitäjään.',
-'cannot_delete' => 'Ei voi poistaa',
-'not_completed' => 'Tapahtui virhe eikä toimintoa voi suorittaa loppuun. Pahoittelemme.',
-'not_logged_in' => 'Suorittaaksesi tämän toiminnon, on sinun oltava kirjautuneena. Mikäli sinulla ei ole käyttäjätunnusta, rekisteröidy.',
-'logged_in_already'    => "Olet jo kirjautunut käyttäjätunnuksella: ",
-'no_access' => 'Käyttöoikeus puuttuu.',
-'not_found'            => 'Tavoittelemaasi tietoa ei löydy.',
-'not_allowed' => 'Et voi suorittaa tätä toimintoa',
-'only_numbers_allowed' => 'Tähän kenttään voi syöttää ainoastaan numeroita',
-'user_not_exist' => 'Käyttäjää ei ole.',
-'members_only' => 'Pahoittelemme, vain rekisteröityneillä käyttäjillä on tarvittava käyttöoikeus!',
-'email_no_access' => 'Tavoittelemasi sähköposti on käyttöoikeuksiesi ulkopuolella!',
-'no_subject' => 'Viestisi tarvitsee otsikon.',
-'no_message' => 'Viestisi on tyhjä.',
-'no_recipient' => 'Vastaanottajaa ei ole määritetty.',
-'no_email' => 'Sähköpostiosoitetta ei ole määritetty.',
-'no_name' => 'Nimi- kenttä on tyhjä.',
-'no_ip' => "IP-osoitetta ei löytynyt, muuta {yabb user_ip}",
-'no_username' => 'Käyttäjätunnusta ei ole määritetty.',
-'no_password' => 'Salasanakenttä on tyhjä',
-'no_action' => 'Toimintoa ei määritetty mutta',
-'no_info' => 'Kyseinen osoite on tyhjä',
-'password_mismatch' => 'Salasanat eivät täsmää!',
-'bad_credentials'  => 'Käyttäjätunnus ja salasana eivät täsmää<br />Joko antamasi käyttäjätunnus tai salasana on väärä.',
-'invalid_character'  => 'Epäkelpo merkki havaittu',
-'invalid_email'  => 'Anna oikea sähköpostiosoite.',
-'invalid_picture'  => 'Aihealueen kuvakekenttä sisältää väärää tietoa.',
-'no_secret_answer'  => 'Sinun on annettava kysymykseen sopiva vastaus.',
-'no_verification_code' => 'Varmistuskoodia ei syötetty.',
-'wrong_verification_code' => 'Syöttämäsi varmistuskoodi ei täsmää kuvan kanssa. Ole hyvä ja palaa takaisin ja päivitä näkymä (F5 useimmilla selaimilla) ja yritä uudelleen.',
-'invalid_verification_code' => 'Varmistuskoodi sisältää kiellettyä merkkejä. Vain kirjaimet a-z ja numerot 0-9 ovat sallittuja.',
-'form_spoofing'  => '<b>VAROITUS!!</b> Lomakkeen väärennysyritys havaittu IP-osoitteesta:',
-'post_flooding'  => 'Viimeisimmän POST komennon käyttö tuli IP-osoitteestasi aiemmin kuin',
-'denial_of_service' => 'Viimeisin POST komento aiheutti virheen: ',
-'speed_alert' => "Varoitus, näin nopea viestien lähettäminen tulkitaan roskaviestien lähettämiseksi!<br />Sinulla on <b>{yabb spam_hits_left_count}</b> lähetysyritystä jäljellä, joiden jälkeen foorumin käyttö estetään sinulta!",
-'tsc_alert' => "Varoitus, jokin käyttämäsi lomakkeen kentiestä sisältää roskaviestiksi tulkittavaa tekstiä!<br />Sinulla on <b>{yabb spam_hits_left_count}</b> lähetysyritystä jäljellä, joiden jälkeen foorumin käyttö estetään sinulta!",
-'speedpostban' => "Viestin lähettäminen on toistaiseksi estetty sinulta!<br />Esto poistuu seuraavan ajan kuluessa <b>{yabb detention_left}</b> sekuntia!",
-'truncation_error'  => 'Varmista että "Tiedoston katkaisu" on käytössä foorumisi asetuksissa.<br />\$faketruncation = 1;<br />Tiedostoa ei voitu katkaista.',
-'referer_violation'  => 'Pyydettyä toimintoa ei voi suorittaa foorumin domainin ulkopuolelta! <br />Toiminto oli: ',
-'egg' => 'Itsetuhon ajastus käynnistetty!<br />',
-'domain_not_allowed'  => 'Käyttämäsi domain ei ole sallittu rekisteröitymiseen, vieraana viestin lähettämiseen eikä sitä voi käyttää myöhemmin profiilissa:',
-'module_missing' => 'Tarvittava moduuli tai ominaisuus ei ole palvelimella saatavilla!',
-'low_diskspace' => "Tarvittava levytila on alle {yabb low_disk_alert} bytes. Foorumi siirtyi automaattisesti huoltotilaan jotta sen tiedostot säilyisivät. Ole hyvä ja ilmoita ylläpitäjälle asiasta.!",
-'invalid_key' => 'Avain ei toimi!<br />Sen tulee olla merkkijono, jossa on merkkejä 8-24 kpl!',
-'wrong_pass'            => 'Syöttämäsi salasana ei ole oikea',
-'corrupt_member_file' => 'Jäsentietotiedosto on korruptoitunut. Ole yhteydessä ylläpitäjään tästä virheestä!',
-'no_admin_passwrd'    => "Sinun täytyy täyttää oikea ylläpitäjän salasana päästääksesi ylläpitokeskukseen.",
-'default_password'    => qq~Käytät vielä YaBB-asennuksen oletussalasanaa. Ole hyvä ja kirjaudu <a href="$scripturl?action=myprofile;username=$username">Käyttäjäprofiiliin</a> ja muuta salasanasi turvallisemmaksi.~,
-'missingvars'         => 'Jotain pahaa tapahtui. Ota yhteys foorumin ylläpitoon ja kerro mitä olit tekemässä kun tämä virhe tapahtui.',
+    'error_occurred'  => q~Tapahtui virhe!~,
+    'untrapped'       => q~Selvittämätön virhe~,
+    'cannot_open'     => q~Ei voi avata~,
+    'bad data'        => q~File with bad data~,
+    'cannot_open_dir' => q~Ei voi avata hakemistoa~,
+    'cannot_open_language' =>
+      q~Tarvittavaa kielitiedostoa ei löydy. Ota yhteys ylläpitäjään.~,
+    'cannot_delete' => q~Ei voi poistaa~,
+    'not_completed' =>
+      q~Tapahtui virhe eikä toimintoa voi suorittaa loppuun. Pahoittelemme.~,
+    'not_logged_in' =>
+q~Suorittaaksesi tämän toiminnon, on sinun oltava kirjautuneena. Mikäli sinulla ei ole käyttäjätunnusta, rekisteröidy.~,
+    'logged_in_already' => q~Olet jo kirjautunut käyttäjätunnuksella: ~,
+    'no_access'         => q~Käyttöoikeus puuttuu.~,
+    'not_found'         => q~Tavoittelemaasi tietoa ei löydy.~,
+    'not_allowed'       => q~Et voi suorittaa tätä toimintoa~,
+    'only_numbers_allowed' =>
+      q~Tähän kenttään voi syöttää ainoastaan numeroita~,
+    'user_not_exist' => q~Käyttäjää ei ole.~,
+    'members_only' =>
+q~Pahoittelemme, vain rekisteröityneillä käyttäjillä on tarvittava käyttöoikeus!~,
+    'email_no_access' =>
+      q~Tavoittelemasi sähköposti on käyttöoikeuksiesi ulkopuolella!~,
+    'no_subject'        => q~Viestisi tarvitsee otsikon.~,
+    'no_message'        => q~Viestisi on tyhjä.~,
+    'no_recipient'      => q~Vastaanottajaa ei ole määritetty.~,
+    'no_email'          => q~Sähköpostiosoitetta ei ole määritetty.~,
+    'no_name'           => q~Nimi- kenttä on tyhjä.~,
+    'no_ip'             => q~IP-osoitetta ei löytynyt, muuta {yabb user_ip}~,
+    'no_username'       => q~Käyttäjätunnusta ei ole määritetty.~,
+    'no_password'       => q~Salasanakenttä on tyhjä~,
+    'no_action'         => q~Toimintoa ei määritetty mutta~,
+    'no_info'           => q~Kyseinen osoite on tyhjä~,
+    'password_mismatch' => q~Salasanat eivät täsmää!~,
+    'bad_credentials' =>
+q~Käyttäjätunnus ja salasana eivät täsmää<br />Joko antamasi käyttäjätunnus tai salasana on väärä.~,
+    'invalid_character' => q~Epäkelpo merkki havaittu~,
+    'invalid_email'     => q~Anna oikea sähköpostiosoite.~,
+    'invalid_picture'   => q~Aihealueen kuvakekenttä sisältää väärää tietoa.~,
+    'no_secret_answer'  => q~Sinun on annettava kysymykseen sopiva vastaus.~,
+    'no_verification_code' => q~Varmistuskoodia ei syötetty.~,
+    'wrong_verification_code' =>
+q~Syöttämäsi varmistuskoodi ei täsmää kuvan kanssa. Ole hyvä ja palaa takaisin ja päivitä näkymä (F5 useimmilla selaimilla) ja yritä uudelleen.~,
+    'invalid_verification_code' =>
+q~Varmistuskoodi sisältää kiellettyä merkkejä. Vain kirjaimet a-z ja numerot 0-9 ovat sallittuja.~,
+    'form_spoofing' =>
+      q~<b>VAROITUS!!</b> Lomakkeen väärennysyritys havaittu IP-osoitteesta:~,
+    'post_flooding' =>
+      q~Viimeisimmän POST komennon käyttö tuli IP-osoitteestasi aiemmin kuin~,
+    'denial_of_service' => q~Viimeisin POST komento aiheutti virheen: ~,
+    'speed_alert' =>
+q~Varoitus, näin nopea viestien lähettäminen tulkitaan roskaviestien lähettämiseksi!<br />Sinulla on <b>{yabb spam_hits_left_count}</b> lähetysyritystä jäljellä, joiden jälkeen foorumin käyttö estetään sinulta!~,
+    'tsc_alert' =>
+q~Varoitus, jokin käyttämäsi lomakkeen kentiestä sisältää roskaviestiksi tulkittavaa tekstiä!<br />Sinulla on <b>{yabb spam_hits_left_count}</b> lähetysyritystä jäljellä, joiden jälkeen foorumin käyttö estetään sinulta!~,
+    'speedpostban' =>
+q~Viestin lähettäminen on toistaiseksi estetty sinulta!<br />Esto poistuu seuraavan ajan kuluessa <b>{yabb detention_left}</b> sekuntia!~,
+    'truncation_error' =>
+q~Varmista että "Tiedoston katkaisu" on käytössä foorumisi asetuksissa.<br />\$faketruncation = 1;<br />Tiedostoa ei voitu katkaista.~,
+    'referer_violation' =>
+q~Pyydettyä toimintoa ei voi suorittaa foorumin domainin ulkopuolelta! <br />Toiminto oli: ~,
+    'egg' => q~Itsetuhon ajastus käynnistetty!<br />~,
+    'domain_not_allowed' =>
+q~Käyttämäsi domain ei ole sallittu rekisteröitymiseen, vieraana viestin lähettämiseen eikä sitä voi käyttää myöhemmin profiilissa:~,
+    'module_missing' =>
+      q~Tarvittava moduuli tai ominaisuus ei ole palvelimella saatavilla!~,
+    'low_diskspace' =>
+q~Tarvittava levytila on alle {yabb low_disk_alert} bytes. Foorumi siirtyi automaattisesti huoltotilaan jotta sen tiedostot säilyisivät. Ole hyvä ja ilmoita ylläpitäjälle asiasta.!~,
+    'invalid_key' =>
+q~Avain ei toimi!<br />Sen tulee olla merkkijono, jossa on merkkejä 8-24 kpl!~,
+    'wrong_pass' => q~Syöttämäsi salasana ei ole oikea~,
+    'corrupt_member_file' =>
+q~Jäsentietotiedosto on korruptoitunut. Ole yhteydessä ylläpitäjään tästä virheestä!~,
+    'no_admin_passwrd' =>
+q~Sinun täytyy täyttää oikea ylläpitäjän salasana päästääksesi ylläpitokeskukseen.~,
+    'default_password' =>
+qq~Käytät vielä YaBB-asennuksen oletussalasanaa. Ole hyvä ja kirjaudu <a href="$scripturl?action=myprofile;username=$username">Käyttäjäprofiiliin</a> ja muuta salasanasi turvallisemmaksi.~,
+    'missingvars' =>
+q~Jotain pahaa tapahtui. Ota yhteys foorumin ylläpitoon ja kerro mitä olit tekemässä kun tämä virhe tapahtui.~,
 
 ## BoardIndex ##
-'collapse_no_member' => 'Voidaksesi käyttää kategorian supistus- tai laajennustoimintoa, sinun tulee olla kirjautuneena sisään!',
-'collapse_invalid_state' => 'Antamasi tapahtuma on väärä, ole hyvä ja palaa takaisin yrittääksesi uudelleen.',
-'collapse_no_usercat' => 'Käyttäjän omaa kategoria- tiedostoa ei löydy. Ole hyvä ja palaa takaisin yrittääksesi uudelleen päivittämällä näkymä.<br/>Mikäli saat tämän virheilmoituksen uudelleen, ota yhteyttä ylläpitäjään.',
+    'collapse_no_member' =>
+q~Voidaksesi käyttää kategorian supistus- tai laajennustoimintoa, sinun tulee olla kirjautuneena sisään!~,
+    'collapse_invalid_state' =>
+q~Antamasi tapahtuma on väärä, ole hyvä ja palaa takaisin yrittääksesi uudelleen.~,
+    'collapse_no_usercat' =>
+q~Käyttäjän omaa kategoria- tiedostoa ei löydy. Ole hyvä ja palaa takaisin yrittääksesi uudelleen päivittämällä näkymä.<br/>Mikäli saat tämän virheilmoituksen uudelleen, ota yhteyttä ylläpitäjään.~,
 
 ## Guardian ##
-'proxy_reason' => 'Yhteydenotto foorumiin välityspalvelimen kautta kielletty!',
-'referer_reason' => 'Pääsy foorumille äskeisestä osoitteesta on estetty!',
-'harvester_reason' => 'Tältä kerääjältä on foorumille pääsy kielletty!',
-'request_reason' => 'Haluamasi Request Methodin käyttö ei ole sallittua!',
-'string_reason' => 'Käyttämäsi osoite sisältää kiellettyjä sanoja!',
-'clike_reason' => 'CLIKEn käyttäminen on turhaa, koska foorumi ei käytä MySQL:ää!',
-'union_reason' => 'UNIONin käyttäminen on turhaa, koska foorumi ei käytä MySQL:ää!',
-'script_reason' => 'Käyttämässäsi URLissa tai lomakkeessa havaittiin skriptin osa, tämä on kiellettyä!',
+    'proxy_reason' =>
+      q~Yhteydenotto foorumiin välityspalvelimen kautta kielletty!~,
+    'referer_reason' => q~Pääsy foorumille äskeisestä osoitteesta on estetty!~,
+    'harvester_reason' => q~Tältä kerääjältä on foorumille pääsy kielletty!~,
+    'request_reason' => q~Haluamasi Request Methodin käyttö ei ole sallittua!~,
+    'string_reason'  => q~Käyttämäsi osoite sisältää kiellettyjä sanoja!~,
+    'clike_reason' =>
+      q~CLIKEn käyttäminen on turhaa, koska foorumi ei käytä MySQL:ää!~,
+    'union_reason' =>
+      q~UNIONin käyttäminen on turhaa, koska foorumi ei käytä MySQL:ää!~,
+    'script_reason' =>
+q~Käyttämässäsi URLissa tai lomakkeessa havaittiin skriptin osa, tämä on kiellettyä!~,
 
 ## InstantMessage ##
-'im_deleted' => 'Vastaanottaja on jo lukenut viestin eikä sitä poistettu!',
-'im_deleted_multi' => 'Vähintään yksi vastaanottaja on jo lukenut viestin joten sitä ei poistettu!',
-'im_members_only' => 'Yksityisviestien käyttö on tarkoitettu rekisteröityneille käyttäjille',
-'im_low_postcount' => 'Yksityisviestien käyttäminen on sallittu vasta kun foorumin viestiesi määrä on suurempi kuin {yabb numposts}!',
-'im_spam_alert' => 'Et voi lähettää viestiä noin monelle käyttäjälle yhtäaikaa. Se voidaan tulkita roskaviestien lähettämiseksi.',
-'im_bad_users' => 'Viestin lähettäminen kaikille vastaanottajille ei onnistunut.<br />Antamasi käyttäjätunnus on joko virheellinen tai he ovat estäneet viestien lähettämisen sinulta: ',
-'cannot_find_draftmess' => 'Luonnosta ei löydy.',
-'im_folder_exists' => 'Tämän niminen hakemisto on jo olemassa.',
+    'im_deleted' => q~Vastaanottaja on jo lukenut viestin eikä sitä poistettu!~,
+    'im_deleted_multi' =>
+q~Vähintään yksi vastaanottaja on jo lukenut viestin joten sitä ei poistettu!~,
+    'im_members_only' =>
+      q~Yksityisviestien käyttö on tarkoitettu rekisteröityneille käyttäjille~,
+    'im_low_postcount' =>
+q~Yksityisviestien käyttäminen on sallittu vasta kun foorumin viestiesi määrä on suurempi kuin {yabb numposts}!~,
+    'im_spam_alert' =>
+q~Et voi lähettää viestiä noin monelle käyttäjälle yhtäaikaa. Se voidaan tulkita roskaviestien lähettämiseksi.~,
+    'im_bad_users' =>
+q~Viestin lähettäminen kaikille vastaanottajille ei onnistunut.<br />Antamasi käyttäjätunnus on joko virheellinen tai he ovat estäneet viestien lähettämisen sinulta: ~,
+    'cannot_find_draftmess' => q~Luonnosta ei löydy.~,
+    'im_folder_exists'      => q~Tämän niminen hakemisto on jo olemassa.~,
 
 ## LogInOut ##
-'not_activated'         => 'Tunnustasi ei ole vielä aktivoitu<br />Ole hyvä ja aktivoi se napsauttamalla linkkiä, joka löytyy saamastasi sähköpostista!',
-'time_out'          => "Et aktivoinut tunnustasi {yabb preregspan} tunnin kuluessa!<br />Ennakkorekisteröintisi on näin ollen epäonnistunut!<br />Ole hyvä ja yritä uudelleen!",
-'wrong_code'            => 'Aktivointitunnisteesi on väärä!',
-'admin_login_only'      => 'Vain ylläpitäjä voi lisätä käyttäjiä, koska foorumimme on huoltotilassa.<br />Ole hyvä ja yritä myöhemmin uudelleen. Kiitos!',
-'wrong_id'          => 'Väärä tunnus, ole hyvä ja yritä uudelleen.',
+    'not_activated' =>
+q~Tunnustasi ei ole vielä aktivoitu<br />Ole hyvä ja aktivoi se napsauttamalla linkkiä, joka löytyy saamastasi sähköpostista!~,
+    'time_out' =>
+q~Et aktivoinut tunnustasi {yabb preregspan} tunnin kuluessa!<br />Ennakkorekisteröintisi on näin ollen epäonnistunut!<br />Ole hyvä ja yritä uudelleen!~,
+    'wrong_code' => q~Aktivointitunnisteesi on väärä!~,
+    'admin_login_only' =>
+q~Vain ylläpitäjä voi lisätä käyttäjiä, koska foorumimme on huoltotilassa.<br />Ole hyvä ja yritä myöhemmin uudelleen. Kiitos!~,
+    'wrong_id' => q~Väärä tunnus, ole hyvä ja yritä uudelleen.~,
 
 ## Mailer ##
-'net_fatal'             => 'Vakava Net::SMTP virhe',
-'smtp_error'            => 'SMTP virhe',
-'smtp_unavail'          => 'SMTP yhteyttä ei voida muodostaa',
+    'net_fatal'    => q~Vakava Net::SMTP virhe~,
+    'smtp_error'   => q~SMTP virhe~,
+    'smtp_unavail' => q~SMTP yhteyttä ei voida muodostaa~,
 
 ## Post/ModifyMessage/Poll ##
-'topic_locked'          => 'Tämä aihe on lukittu etkä voi muokata tai lisätä viestejä.',
-'time_locked'           => 'Foorumin ylläpitäjä on asettanut tämän aikarajan ',
-'change_not_allowed'        => 'Et voi muokata tätä viestiä',
-'delete_not_allowed'        => 'Et voi poistaa tätä viestiä!',
-'split_splice_not_allowed'  => 'Et voi jakaa tai liittää tätä viestiä. Vain ylläpitäjä tai valvoja voi tehdä sen.',
-'no_perm_post'          => 'Et voi lisätä viestejä tälle alueelle',
-'no_perm_reply'         => 'Et voi vastata viesteihin tällä alueella',
-'no_perm_poll'          => 'Et voi lisätä äänestyksiä tällä alueella',
-'no_perm_att'           => 'Et voi liittää tiedostoja viesteihn tällä alueella',
-'no_board_slash'        => '/ merkin käyttö ei ole mahdollista',
-'no_cat_slash'          => '/ merkin käyttö ei ole mahdollista',
-'no_board_backslash'        => '\ merkin käyttö ei ole mahdollista',
-'no_cat_backslash'      => '\ merkin käyttö ei ole mahdollista',
-'no_board_topic'        => 'Tätä aihetta ei ole tällä alueella.',
-'bad_postnumber'        => 'Virheellinen viestin tunnistenumero',
-'file_overwrite'        => 'Tällä nimellä oleva tiedosto löytyy jo. Ole hyvä ja nimeä tiedostosi uudelleen.',
-'file_not_open'         => 'Ei voi avata uutta tiedostoa, ole hyvä ja tarkista että sinulla on oikeat polut ja CHMODit.',
-'invalid_format'        => 'Virheellinen tiedostomuoto. Sallittuja ovat',
-'file_too_big'          => 'Liitteesi on liian suuri. Ylitys on noin ',
-'dir_full'          => 'Tämä liite aiheuttaa liitehakemiston maksimikoon ylittymisen noin ',
-'file_not_uploaded'         => 'Tiedostoa ei voi ladata',
-'useless_post'          => 'Pelkkien välilyöntien ja rivinvaihtojen käyttäminen viestissä ei ole mahdollista!',
-'no_question'           => 'Ole hyvä ja lisää äänestyksesi kysymys.',
-'no_options'            => 'Anna vähintään kaksi vastausvaihtoehtoa.',
-'poll_not_found'        => 'Äänestystä ei löytynyt.',
-'no_vote_option'        => 'Unohdit valita vastausvaihtoehdon!',
-'locked_poll_no_delete'     => 'Äänestys on lukittu, ääntäsi ei voi poistaa.',
-'locked_poll_no_count'      => 'Äänestys on lukittu, ääntäsi ei lasketa mukaan tuloksiin.',
-'ip_guest_used'         => 'Tästä IP-osoitteesta on jo osallistuttu tähän äänestykseen.',
-'ip_member_used'        => 'Tästä IP-osoitteesta on jo osallistuttu tähän äänestykseen',
-'voted_already'         => 'Olet jo osallistunut tähän äänestykseen',
-'guest_taken'           => 'Käyttäjätunnus tai sähköpostiosoite on jo käytössä.<br />Kyseessä oleva tunnus tai sähköpostiosoite on: ',
-'quote_too_long'        => 'Viesti jota yritit tallentaa, on liian pitkä. Ole hyvä ja lyhennä sitä.',
-'no_links_allowed'      => "Pahoittelemme, mutta et voi tallentaa viestejä joissa on linkkejä tai kuvia ennen kuin kokonaisviestimääräsi on vähintään {yabb minlinkpost}.",
-'no_glinks_allowed'    => q~Sorry, guests are not allowed to post messages containing active links to websites or images.~,
-'no_siglinks_allowed'  => "Pahoittelemme, mutta et voi luoda allekirjoitusta, jossa on linkkejä sivustoihin tai kuvia ennen kuin kokonaisviestimääräsi on vähintään {yabb minlinksig}.",
-'attach_name_blocked'         => "Liitteesi nimi sisältää sanan, jota ei sallita tällä foorumilla.",
-'attach_file_blocked'         => "Pahoittelemme, et voi lähettää liitettä tällä nimellä.",
-'rename'               => q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
+    'topic_locked' =>
+      q~Tämä aihe on lukittu etkä voi muokata tai lisätä viestejä.~,
+    'time_locked' => q~Foorumin ylläpitäjä on asettanut tämän aikarajan ~,
+    'change_not_allowed' => q~Et voi muokata tätä viestiä~,
+    'delete_not_allowed' => q~Et voi poistaa tätä viestiä!~,
+    'split_splice_not_allowed' =>
+q~Et voi jakaa tai liittää tätä viestiä. Vain ylläpitäjä tai valvoja voi tehdä sen.~,
+    'no_perm_post'   => q~Et voi lisätä viestejä tälle alueelle~,
+    'no_perm_reply'  => q~Et voi vastata viesteihin tällä alueella~,
+    'no_perm_poll'   => q~Et voi lisätä äänestyksiä tällä alueella~,
+    'no_perm_att'    => q~Et voi liittää tiedostoja viesteihn tällä alueella~,
+    'no_board_slash' => q~/ merkin käyttö ei ole mahdollista~,
+    'no_cat_slash'   => q~/ merkin käyttö ei ole mahdollista~,
+    'no_board_backslash' => q~\ merkin käyttö ei ole mahdollista~,
+    'no_cat_backslash'   => q~\ merkin käyttö ei ole mahdollista~,
+    'no_board_topic'     => q~Tätä aihetta ei ole tällä alueella.~,
+    'bad_postnumber'     => q~Virheellinen viestin tunnistenumero~,
+    'file_overwrite' =>
+q~Tällä nimellä oleva tiedosto löytyy jo. Ole hyvä ja nimeä tiedostosi uudelleen.~,
+    'file_not_open' =>
+q~Ei voi avata uutta tiedostoa, ole hyvä ja tarkista että sinulla on oikeat polut ja CHMODit.~,
+    'invalid_format' => q~Virheellinen tiedostomuoto. Sallittuja ovat~,
+    'file_too_big'   => q~Liitteesi on liian suuri. Ylitys on noin ~,
+    'dir_full' =>
+      q~Tämä liite aiheuttaa liitehakemiston maksimikoon ylittymisen noin ~,
+    'file_not_uploaded' => q~Tiedostoa ei voi ladata~,
+    'useless_post' =>
+q~Pelkkien välilyöntien ja rivinvaihtojen käyttäminen viestissä ei ole mahdollista!~,
+    'no_question'           => q~Ole hyvä ja lisää äänestyksesi kysymys.~,
+    'no_options'            => q~Anna vähintään kaksi vastausvaihtoehtoa.~,
+    'poll_not_found'        => q~Äänestystä ei löytynyt.~,
+    'no_vote_option'        => q~Unohdit valita vastausvaihtoehdon!~,
+    'locked_poll_no_delete' => q~Äänestys on lukittu, ääntäsi ei voi poistaa.~,
+    'locked_poll_no_count' =>
+      q~Äänestys on lukittu, ääntäsi ei lasketa mukaan tuloksiin.~,
+    'ip_guest_used' =>
+      q~Tästä IP-osoitteesta on jo osallistuttu tähän äänestykseen.~,
+    'ip_member_used' =>
+      q~Tästä IP-osoitteesta on jo osallistuttu tähän äänestykseen~,
+    'voted_already' => q~Olet jo osallistunut tähän äänestykseen~,
+    'guest_taken' =>
+q~Käyttäjätunnus tai sähköpostiosoite on jo käytössä.<br />Kyseessä oleva tunnus tai sähköpostiosoite on: ~,
+    'quote_too_long' =>
+q~Viesti jota yritit tallentaa, on liian pitkä. Ole hyvä ja lyhennä sitä.~,
+    'no_links_allowed' =>
+q~Pahoittelemme, mutta et voi tallentaa viestejä joissa on linkkejä tai kuvia ennen kuin kokonaisviestimääräsi on vähintään {yabb minlinkpost}.~,
+    'no_glinks_allowed' =>
+q~Sorry, guests are not allowed to post messages containing active links to websites or images.~,
+    'no_siglinks_allowed' =>
+q~Pahoittelemme, mutta et voi luoda allekirjoitusta, jossa on linkkejä sivustoihin tai kuvia ennen kuin kokonaisviestimääräsi on vähintään {yabb minlinksig}.~,
+    'attach_name_blocked' =>
+      q~Liitteesi nimi sisältää sanan, jota ei sallita tällä foorumilla.~,
+    'attach_file_blocked' =>
+      q~Pahoittelemme, et voi lähettää liitettä tällä nimellä.~,
+    'rename' =>
+q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
 
 ## MoveTopic ##
-'move_not_allowed'      => 'Et voi siirtää aiheita.',
+    'move_not_allowed' => q~Et voi siirtää aiheita.~,
 
 ## Profile ##
-'invalid_password'      => 'Virheellinen salasana.<br />Annoit väärän salasanan.',
-'no_user_slash'         => '/ merkin käyttö ei ole mahdollista käyttäjätunnuksessa',
-'no_user_backslash'         => '\\ merkin käyttö ei ole mahdollista käyttäjätunnuksessa',
-'not_allowed_profile_change'    => 'Et voi muuttaa tämän käyttäjän profiilia.',
-'no_profile_exists'         => 'Etsimääsi profiilia ei löydy!',
-'current_password_wrong'    => 'Antamasi salasana on väärä',
-'no_admin_password'         => 'Anna ylläpitäjän salasana muuttaaksesi tätä profiilia.',
-'password_is_userid'        => 'Turvallisuussyistä et voi käyttäää käyttäjätunnustasi salasanana.',
-'name_is_userid'        => 'Turvallisuussyistä näyttönimen ja käyttäjätunnuksen ei kannata olla samat.',
-'name_taken'            => 'Tämä näyttönimi on jo käytössä.',
-'name_censored'         => 'Yritit käyttää jotakin kielletyistä sanoista näyttönimessäsi. Ole hyvä ja palaa takaisin muuttaaksesi sitä. Ongelman aiheuttanut sana (tai sanat):',
-'name_too_long'         => 'Ole hyvä ja lyhennä näyttönimeäsi. Se on liian pitkä.',
-'invalid_birthdate'         => 'Jokin syntymäpäiväkenttien syötteistä on virheellinen.',
-'not_allowed_gender_edit'   => "Et voi muokata sukupuoltasi.",
-'not_allowed_birthdate_change'  => "Et voi muokata syntymäpäivääsi.",
-'id_reserved'           => "Käyttäjätunnus jota yritit rekisteröidä, sisältää varatun nimen. Ole hyvä ja yritä uudelleen. Varattu tunnus on: ",
-'name_reserved'     => "Valitsemasi näyttönimi sisältää varatun nimen. Ole hyvä ja yritä uudelleen. Varattu nimi on: ",
-'cannot_kill_admin'         => q~Turvallisuussyistä et voi poistaa 'admin' tunnusta.~,
-'email_taken'           => "Seuraava sähköpostiosoite on jo käytössä! Jos tämä on mielestäsi virhe, ole hyvä ja palaa kirjautumissivulle ja käytä salasanan palautinta samalla osoitteella.",
-'invalid_template'      => "Tämä ei ole oikea sivupohjan nimi.",
-'invalid_language'      => "Tämä ei ole oikea kieli.",
-'invalid_time_offset'       => "Aikaeron täytyy olla välillä -23.5 ja 23.5!",
-'invalid_postcount'         => q~'Viestien määrä' kenttä voi sisältää vain numeroita.~,
-'cannot_regroup_admin'      => q~Ylläpitäjää, jonka tunnus on 'admin', ei voi siirtää toiseen käyttäjäryhmään!~,
-'session_time_out'      => "Profiilin istunnon aikakatkaisu.",
+    'invalid_password' =>
+      q~Virheellinen salasana.<br />Annoit väärän salasanan.~,
+    'no_user_slash' =>
+      q~/ merkin käyttö ei ole mahdollista käyttäjätunnuksessa~,
+    'no_user_backslash' =>
+      q~\\ merkin käyttö ei ole mahdollista käyttäjätunnuksessa~,
+    'not_allowed_profile_change' =>
+      q~Et voi muuttaa tämän käyttäjän profiilia.~,
+    'no_profile_exists'      => q~Etsimääsi profiilia ei löydy!~,
+    'current_password_wrong' => q~Antamasi salasana on väärä~,
+    'no_admin_password' =>
+      q~Anna ylläpitäjän salasana muuttaaksesi tätä profiilia.~,
+    'password_is_userid' =>
+      q~Turvallisuussyistä et voi käyttäää käyttäjätunnustasi salasanana.~,
+    'name_is_userid' =>
+q~Turvallisuussyistä näyttönimen ja käyttäjätunnuksen ei kannata olla samat.~,
+    'name_taken' => q~Tämä näyttönimi on jo käytössä.~,
+    'name_censored' =>
+q~Yritit käyttää jotakin kielletyistä sanoista näyttönimessäsi. Ole hyvä ja palaa takaisin muuttaaksesi sitä. Ongelman aiheuttanut sana (tai sanat):~,
+    'name_too_long' => q~Ole hyvä ja lyhennä näyttönimeäsi. Se on liian pitkä.~,
+    'invalid_birthdate' =>
+      q~Jokin syntymäpäiväkenttien syötteistä on virheellinen.~,
+    'not_allowed_gender_edit'      => q~Et voi muokata sukupuoltasi.~,
+    'not_allowed_birthdate_change' => q~Et voi muokata syntymäpäivääsi.~,
+    'id_reserved' =>
+q~Käyttäjätunnus jota yritit rekisteröidä, sisältää varatun nimen. Ole hyvä ja yritä uudelleen. Varattu tunnus on: ~,
+    'name_reserved' =>
+q~Valitsemasi näyttönimi sisältää varatun nimen. Ole hyvä ja yritä uudelleen. Varattu nimi on: ~,
+    'cannot_kill_admin' =>
+      q~Turvallisuussyistä et voi poistaa 'admin' tunnusta.~,
+    'email_taken' =>
+q~Seuraava sähköpostiosoite on jo käytössä! Jos tämä on mielestäsi virhe, ole hyvä ja palaa kirjautumissivulle ja käytä salasanan palautinta samalla osoitteella.~,
+    'invalid_template'    => q~Tämä ei ole oikea sivupohjan nimi.~,
+    'invalid_language'    => q~Tämä ei ole oikea kieli.~,
+    'invalid_time_offset' => q~Aikaeron täytyy olla välillä -23.5 ja 23.5!~,
+    'invalid_postcount' =>
+      q~'Viestien määrä' kenttä voi sisältää vain numeroita.~,
+    'cannot_regroup_admin' =>
+q~Ylläpitäjää, jonka tunnus on 'admin', ei voi siirtää toiseen käyttäjäryhmään!~,
+    'session_time_out' => q~Profiilin istunnon aikakatkaisu.~,
 
 ## Register ##
-'email_mismatch'       => "Sähköpostiosoitteet eivät täsmää.",
-'registration_disabled'     => "Rekisteröityminen ei ole tällä hetkellä mahdollista tällä foorumilla.",
-'no_registration_logged_in' => "Et voi rekisteröidä uutta tunnusta ollessani jo kirjautuneena sisään.",
-'banned'            => "Foorumin käyttöeston ilmoitus.",
-'suspend' => q~Suspension Notification.~,
-'system_prohibited_id'      => "Järjestelmä ei hyväksy käyttäjätunnusta",
-'id_alfa_only'          => "Käyttäjätunnus voi sisältää vain numeroita ja kirjaimia (esim: yabber69)",
-'id_taken'          => "Haluamasi käyttäjätunnus on varattu.",
-'id_to_long'            => "Käyttäjätunnus on liian pitkä.",
-'realname_to_long'      => "Käyttäjänimi on liian pitkä.",
-'email_to_long'         => "Sähköpostiosoite on liian pitkä.",
-'already_preregged'         => "Tämä käyttäjä on jo ennakkorekisteröity!",
-'email_already_preregged'   => "Tämä sähköpostiosoite on jo ennakkorekisteröity!",
-'already_activated'         => "Tämä käyttäjätunnus on jo aktivoitu!",
-'prereg_expired'        => "Tätä tunnusta ei ole ennakkorekisteröity tai aktivoinnin aikaraja ({yabb preregspan} hours) kului umpeen!",
-'prereg_wait'          => "Käyttäjätunnustasi ei ole vielä hyväksytty. Ole kärsivällinen.",
-'no_regagree'           => "Rekisteröityminen edellyttää käyttöehtojen hyväksymistä.",
-'no_reg_reason'         => "Et voi rekisteröityä antamatta syytä miksi tunnuksesi tulisi hyväksyä.",
-'no_verification_question'    => "Et vastannut tarkistuskysymykseen. Ole hyvä ja palaa takaisin ja yritä uudelleen.",
-'wrong_verification_question' => "Tarkistuskysymys on väärin. Ole hyvä ja palaa takaisin ja yritä uudelleen.",
-'censor1'               => "Valitsemasi käyttäjätunnus sisältää sanan, joka on kielletty tällä foorumilla:",
-'censor2'               => "Valitsemasi sähköpostiosoite sisältää sanan, joka on kielletty tällä foorumilla:",
-'censor3'               => "Valitsemasi näyttönimi sisältää sanan, joka on kielletty tällä foorumilla:",
-'bad_bot'              => "Hupsista - emme palvele sinun kaltaisia täällä.",
+    'email_mismatch' => q~Sähköpostiosoitteet eivät täsmää.~,
+    'registration_disabled' =>
+      q~Rekisteröityminen ei ole tällä hetkellä mahdollista tällä foorumilla.~,
+    'no_registration_logged_in' =>
+      q~Et voi rekisteröidä uutta tunnusta ollessani jo kirjautuneena sisään.~,
+    'banned'               => q~Foorumin käyttöeston ilmoitus.~,
+    'suspend'              => q~Suspension Notification.~,
+    'system_prohibited_id' => q~Järjestelmä ei hyväksy käyttäjätunnusta~,
+    'id_alfa_only' =>
+q~Käyttäjätunnus voi sisältää vain numeroita ja kirjaimia (esim: yabber69)~,
+    'id_taken'          => q~Haluamasi käyttäjätunnus on varattu.~,
+    'id_to_long'        => q~Käyttäjätunnus on liian pitkä.~,
+    'realname_to_long'  => q~Käyttäjänimi on liian pitkä.~,
+    'email_to_long'     => q~Sähköpostiosoite on liian pitkä.~,
+    'already_preregged' => q~Tämä käyttäjä on jo ennakkorekisteröity!~,
+    'email_already_preregged' =>
+      q~Tämä sähköpostiosoite on jo ennakkorekisteröity!~,
+    'already_activated' => q~Tämä käyttäjätunnus on jo aktivoitu!~,
+    'prereg_expired' =>
+q~Tätä tunnusta ei ole ennakkorekisteröity tai aktivoinnin aikaraja ({yabb preregspan} hours) kului umpeen!~,
+    'prereg_wait' =>
+      q~Käyttäjätunnustasi ei ole vielä hyväksytty. Ole kärsivällinen.~,
+    'no_regagree' =>
+      q~Rekisteröityminen edellyttää käyttöehtojen hyväksymistä.~,
+    'no_reg_reason' =>
+      q~Et voi rekisteröityä antamatta syytä miksi tunnuksesi tulisi hyväksyä.~,
+    'no_verification_question' =>
+q~Et vastannut tarkistuskysymykseen. Ole hyvä ja palaa takaisin ja yritä uudelleen.~,
+    'wrong_verification_question' =>
+q~Tarkistuskysymys on väärin. Ole hyvä ja palaa takaisin ja yritä uudelleen.~,
+    'censor1' =>
+q~Valitsemasi käyttäjätunnus sisältää sanan, joka on kielletty tällä foorumilla:~,
+    'censor2' =>
+q~Valitsemasi sähköpostiosoite sisältää sanan, joka on kielletty tällä foorumilla:~,
+    'censor3' =>
+q~Valitsemasi näyttönimi sisältää sanan, joka on kielletty tällä foorumilla:~,
+    'bad_bot' => q~Hupsista - emme palvele sinun kaltaisia täällä.~,
 
 ## Search ##
-'search_disabled'       => "Haku-toiminto ei ole nyt käytössä",
-'result_too_high'       => "Haluttu tulosten määrä on suurempi kuin järjestelmän hyväksymä enimmäismäärä.",
-'no_search'             => "Määrittele hakuehto!",
-'no_search_slashes'         => "Hakuehdoissa ei voi olla / tai \\ merkkejä",
+    'search_disabled' => q~Haku-toiminto ei ole nyt käytössä~,
+    'result_too_high' =>
+q~Haluttu tulosten määrä on suurempi kuin järjestelmän hyväksymä enimmäismäärä.~,
+    'no_search'         => q~Määrittele hakuehto!~,
+    'no_search_slashes' => q~Hakuehdoissa ei voi olla / tai \\ merkkejä~,
 
 ## SendTopic ##
-'no_board_send'         => "Aihealue puuttuu.",
-'no_topic_send'         => "Aihe puuttuu.",
-'sendname_too_long'         => "Lyhennä nimeäsi, se on liian pitkä.",
+    'no_board_send'     => q~Aihealue puuttuu.~,
+    'no_topic_send'     => q~Aihe puuttuu.~,
+    'sendname_too_long' => q~Lyhennä nimeäsi, se on liian pitkä.~,
 
 ## Admin Stuff ##
-'announcement_defined'  => "Vain yksi aihealue voi olla nimetty yleisiä ilmoituksia varten.",
-'recycle_bin_defined'   => "Vain yksi aihealue voi olla nimetty roskakoriksi.",
-'board_defined'         => "Aihealue jolla on tämä tunnus on jo olemassa.",
-'no_board_admin'        => q~You cannot use 'admin' as a board ID.~,
-'cat_defined'           => "Kategoria jolla on tämä tunnus on jo olemassa.",
-'no_delete_default'     => "Turvallisuussyistä et voi muuttaa tai poistaa oletussivupohjaa.",
-'invalid_template'      => "Virheellinen sivupohjan nimi!",
-'no_group_name'         => "Anna nimi",
-'no_post_number'        => "Anna luku",
-'invalid_post_number'       => "Virheellinen viestimäärä",
-'double_group'          => "Käyttäjäryhmillä ei voi olla samaa nimeä.",
-'double_count'          => "Kahdella viestimääristä riippuvaisella ryhmällä ei voi olla samaa viestirajaa.",
-'no_groupname_change'       => "Et voi muuttaa viestimäärästä riippumattoman ryhmän nimeä.",
-'invalid_value'         => "Virheellinen arvo/syöte: ", # NEW
+    'announcement_defined' =>
+      q~Vain yksi aihealue voi olla nimetty yleisiä ilmoituksia varten.~,
+    'recycle_bin_defined' =>
+      q~Vain yksi aihealue voi olla nimetty roskakoriksi.~,
+    'board_defined'  => q~Aihealue jolla on tämä tunnus on jo olemassa.~,
+    'no_board_admin' => q~You cannot use 'admin' as a board ID.~,
+    'cat_defined'    => q~Kategoria jolla on tämä tunnus on jo olemassa.~,
+    'no_delete_default' =>
+      q~Turvallisuussyistä et voi muuttaa tai poistaa oletussivupohjaa.~,
+    'invalid_template'    => q~Virheellinen sivupohjan nimi!~,
+    'no_group_name'       => q~Anna nimi~,
+    'no_post_number'      => q~Anna luku~,
+    'invalid_post_number' => q~Virheellinen viestimäärä~,
+    'double_group'        => q~Käyttäjäryhmillä ei voi olla samaa nimeä.~,
+    'double_count' =>
+q~Kahdella viestimääristä riippuvaisella ryhmällä ei voi olla samaa viestirajaa.~,
+    'no_groupname_change' =>
+      q~Et voi muuttaa viestimäärästä riippumattoman ryhmän nimeä.~,
+    'invalid_value' => q~Virheellinen arvo/syöte: ~,    # NEW
 
 ## Permalinking ##
-'no_board_found'        => "Aihealuetta johon viittasit ei ole olemassa.",
-'no_topic_found'        => "Aihetta johon viittasit ei ole olemassa.",
+    'no_board_found' => q~Aihealuetta johon viittasit ei ole olemassa.~,
+    'no_topic_found' => q~Aihetta johon viittasit ei ole olemassa.~,
 
 ## buddy list ##
-'self_buddy'            => "Et voi lisätä itseäsi omaan kaverilistaasi!",
+    'self_buddy' => q~Et voi lisätä itseäsi omaan kaverilistaasi!~,
 
 ## advanced tabs ##
-'tabext'            => 'Samalla nimellä tai toiminnolla on jo olemassa välilehti!!',
+    'tabext' => q~Samalla nimellä tai toiminnolla on jo olemassa välilehti!!~,
 
 ## MemberGroups ##
-'newpostdep_gmod'       => 'Yleisvalvoja ei voi muuttaa postiriippuvaisia käyttäjiä, koska muutos vaatii jäsenlistan uudelleenrakentamisen. Uudelleenrakennus voidaan tehdä vain huoltotilassa jolloin vain ylläpitäjällä on mahdollisuus kirjautua sisään',
-'nofolder' => q~No Template Folder Name~,
+    'newpostdep_gmod' =>
+q~Yleisvalvoja ei voi muuttaa postiriippuvaisia käyttäjiä, koska muutos vaatii jäsenlistan uudelleenrakentamisen. Uudelleenrakennus voidaan tehdä vain huoltotilassa jolloin vain ylläpitäjällä on mahdollisuus kirjautua sisään~,
+    'nofolder' => q~No Template Folder Name~,
+    'nofile'   => q~No file has been selected for download~,
+    'noextern' => q~No external board~,
+    'section'  => q~No section has been selected~,
+    'nogtalk'  => q~Cannot load Google Hangout~,
 );
 
 1;

@@ -1,0 +1,231 @@
+###############################################################################
+# EventCal.lng  (Définition des texte pour Calandrier et événements)          #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# Mod créé par XTC: http://www.yabbserver.com                                 #
+#                et ajouté au coeur de YaBB dans la Version 2.5.4/Version 3.0 #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_caeventcallngver  = 'YaBB 2.7.00 $Revision$';
+@french_caeventcallngmods = ();
+if (@french_caeventcallngmods) {
+    $french_caeventcallngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+### Event Calendar ###
+
+%var_cal = (
+    'calgo'     => q~Go~,
+    'calname'   => q~Nom~,
+    'calmon_01' => q~janvier~,
+    'calmon_02' => q~février~,
+    'calmon_03' => q~mars~,
+    'calmon_04' => q~avril~,
+    'calmon_05' => q~mai~,
+    'calmon_06' => q~juin~,
+    'calmon_07' => q~juillet~,
+    'calmon_08' => q~août~,
+    'calmon_09' => q~septembre~,
+    'calmon_10' => q~octobre~,
+    'calmon_11' => q~novembre~,
+    'calmon_12' => q~décembre~,
+    'calday_1'  => q~Lun~,
+    'calday_2'  => q~Mar~,
+    'calday_3'  => q~Mer~,
+    'calday_4'  => q~Jeu~,
+    'calday_5'  => q~Ven~,
+    'calday_6'  => q~Sam~,
+    'calday_7'  => q~Dim~,
+    'calday'    => q~Jour~,
+    'calmonth'  => q~Mois~,
+    'calyear'   => q~Année~,
+    'caltitle' =>
+q~<a href="{yabb scripturl}?action=eventcal;calshow=1">Calendrier des événements</a>~,
+    'yytitle'      => q~Calendrier des événements~,
+    'calsubtitle'  => q~Événement(s)~,
+    'calevent'     => q~Nouvel événement:~,
+    'calbirthday'  => q~Anniversaire~,
+    'calbirthday1' => q~Aucun anniversaire(s)~,
+    'calbirthdays' => q~Liste d'anniversaire~,
+    'calbirthdayinfo' =>
+q~La liste des anniversaires affiche une liste des anniversaires des membres (s'ils sont inscrits dans leurs profils)<br />Vous pouvez trier les anniversaires affichés par <em>Nom</em>, <em>Age</em>, <em>Signe astrologique</em>(si montré), ou <em>Date d'anniversaire</em>.~,
+    'calbirthdaytoday' => q~Membres célébrant leur anniversaire aujourd'hui~,
+    'calnobdlist' =>
+      q~Liste des anniversaires a été désactivée par l'administrateur.~,
+    'calbdaylist' => q~Afficher les anniversaires des membres~,
+    'calstarsign' => q~Signe zodiaque~,
+    'calage'      => q~Age~,
+    'calbddate'   => q~Date d'anniversaire~,
+    'Pisces' =>
+      qq~<img src="$imagesdir/pisces.png" alt="Poissons" class="zodiac" />~,
+    'Virgo' =>
+      qq~<img src="$imagesdir/virgo.png" alt="Vierge" class="zodiac" />~,
+    'Cancerian' =>
+      qq~<img src="$imagesdir/cancer.png" alt="Cancer" class="zodiac" />~,
+    'Leo' => qq~<img src="$imagesdir/leo.png" alt="Lion" class="zodiac" />~,
+    'Sagittarius' =>
+qq~<img src="$imagesdir/sagittarius.png" alt="Sagittaire" class="zodiac" />~,
+    'Scorpio' =>
+      qq~<img src="$imagesdir/scorpio.png" alt="Scorpion" class="zodiac" />~,
+    'Capricorn' =>
+qq~<img src="$imagesdir/capricorn.png" alt="Capricorne" class="zodiac" />~,
+    'Taurus' =>
+      qq~<img src="$imagesdir/taurus.png" alt="Taureau" class="zodiac" />~,
+    'Libra' =>
+      qq~<img src="$imagesdir/libra.png" alt="Balance" class="zodiac" />~,
+    'Aquarius' =>
+      qq~<img src="$imagesdir/aquarius.png" alt="Verseau" class="zodiac" />~,
+    'Aries' =>
+      qq~<img src="$imagesdir/aries.png" alt="Bélier" class="zodiac" />~,
+    'Gemini' =>
+      qq~<img src="$imagesdir/gemini.png" alt="Gémeaux" class="zodiac" />~,
+    'calnoevent'   => q~Il n'y a aucun événement prévu.~,
+    'calsubmit'    => q~Aller à:~,
+    'calview'      => q~Voir~,
+    'calprivate'   => q~Privé~,
+    'calmembers'   => q~Membres seulement~,
+    'calpublic'    => q~Publique~,
+    'calclickinfo' => q~(Afficher l'événement en cliquant sur une date)~,
+    'caldel'       => q~Supprimer~,
+    'caldelalert' =>
+      q~Êtes-vous sûr de vouloir retirer cet événement?~,   # Inside JavaScript!
+    'caledit'          => q~Éditer l'événement~,
+    'calsave'          => q~Sauvegarder l'événement~,
+    'calshowmini'      => q~Afficher l'(es) événement(s) du jour~,
+    'calshowevent'     => q~Afficher l'événement~,
+    'calmore'          => q~VOIR PLUS~,
+    'calnoname'        => q~Désactiver le nom du membre~,
+    'caltoday'         => q~Celui d'aujourd'hui~,
+    'calcoming'        => q~à venir~,
+    'caldays'          => q~Jours~,
+    'calis'            => q~est~,
+    'calold'           => q~an(s) (vieux de) !~,
+    'date'             => q~Date~,
+    'onlyone'          => q~Événement unique~,
+    'weekly'           => q~hebdomadaire~,
+    'monthly'          => q~mensuel~,
+    'yearly'           => q~annuel~,
+    'event_icon'       => q~Icône d'événement~,
+    'eventinfo'        => q~Événement~,
+    'eventholiday'     => q~Congé~,
+    'eventannounce'    => q~Annonce~,
+    'eventnote'        => q~Exclamation~,
+    'eventparty'       => q~Party~,
+    'eventcelebration' => q~Célébration~,
+    'eventsport'       => q~Sport~,
+    'eventmedia'       => q~Media (TV)~,
+    'eventmeeting'     => q~Réunion~,
+    'hidden'           => q~<em>Caché</em>~,
+    'verification_question_desc' =>
+      q~Veuillez répondre à la question de vérification ci-dessus.~,
+    'verification_question_case' => q~Les réponses sont sensibles à la case.~,
+    'bdayhide'                   => q~a un anniversaire aujourd'hui.~,
+    'other'                      => q~123 (Autre)~,
+    'guest'                      => q~Invité~,
+    'exmem'                      => q~Ex-membre~,
+    'by'                         => q~Par:~,
+    'getaddevent'                => q~Ajouter un nouvel événement~,
+    '139'                        => q~Pages~,
+);
+
+### Event Calendar YaBBC ###
+
+%var_calpost = (
+    'getaddevent' => q~Ajouter un nouvel événement~,
+    'event_send'  => q~Ajouter événement~,
+);
+
+### Event Calendar Settings ###
+
+%event_cal = (
+    '1' => q~Paramètres du calendrier des événements~,
+    '3' => q~Afficher le calendrier des événements à:~,
+    '4' => q~Afficher bouton Calendrier des événements sur le menu YaBB à:~,
+    '5' => q~Afficher les anniversaires dans le calendrier/événements à:~,
+    '6' => q~Déterminer la longueur des caractères de chaque événement (s)?~,
+    '7' =>
+q~Affiche un lien "LIRE PLUS" vers l'évènement affiché<br />(0 = désactivé)~,
+    '8' =>
+q~Mettre en évidence la date du jour avec cette couleur dans le mini calendrier~,
+    '9'  => q~Activer la fonction "Défilement d'événement"~,
+    '10' => q~Très utile si vous avez beaucoup d'événements.~,
+    '11' => q~Désactivé~,
+    '12' => q~Défilement automatique~,
+    '13' => q~Défilement manuel~,
+    '14' =>
+q~Sélectionnez les groupes de membres autorisés à ajouter/modifier des événements:~,
+    '15' =>
+q~NE RIEN sélectionner permet à tous les groupes, utilisateurs et invités d'ajouter/modifier des événements.<br /><br />{yabb admin_txt14}~,
+    '16' => q~Permettre à ces membres d'ajouter des événements~,
+    '17' => q~Lister plusieurs membres en tant que "pseudonyme1, pseudonyme2".~,
+    '18' => q~Autoriser les membres à ajouter des "Événements privés"?~,
+    '19' =>
+q~Si cette option n'est pas cochée, seuls les modérateurs globaux et les administrateurs pourront ajouter des "événements privés"~,
+    '20' =>
+q~Activer "afficher événement" (défilement événement) sur l'index du forum?~,
+    '21' => q~Paramètres standard~,
+    '22' => q~Paramètres de l'événement~,
+    '23' => q~Paramètres d'accès~,
+    '24' => q~Afficher la boîte de sélection "Désactiver le pseudonyme" à:~,
+    '26' => q~Paramètres de l'icône calendrier des événements~,
+    '27' => q~Sélectionnez une image~,
+    '28' => q~Description~,
+    '29' => q~Image~,
+    '30' => q~Ajouter un nouvel icônes d'événements ici~,
+    '31' => q~Enregistrer les paramètres du calendrier des événements~,
+    '32' => q~Enregistrer les paramètres de l'icône d'événement~,
+    '33' =>
+q~Cette section vous permet de personnaliser vos événements de calendrier en utilisant vos propres icônes d'événements.<br />Les images semblent meilleures lorsqu'elle ne dépassant pas 25x25px.<br />Types de fichiers autorisés: png jpg jpeg gif<br />Taille max. du fichier:100KB~,
+    '34' =>
+q~Liste des événements à venir pour __ jours à côté du calendrier des événements~,
+    '35'  => q~(0 = Tous les événements du mois en cours)~,
+    '36'  => q~Premier jour de la semaine (mini calendrier)?~,
+    '37'  => q~(non coché = Lundi / coché = Dimanche)~,
+    '42'  => q~Afficher la liste des anniversaires de membre à:~,
+    '42a' => q~Afficher les signes zodiaque dans la liste d'anniversaire?~,
+    '43'  => q~Ne Pas afficher les icônes d'événement dans le mini calendrier?~,
+    '44' =>
+q~Appliquer les couleurs du groupe lors de l'affichage des liens membres?~,
+    '44a' =>
+q~Appliquer les couleurs du groupe lors de l'affichage des liens membres dans la liste d'anniversaire?~,
+    '45' => q~Cocher cette option utilisera plus de ressources de forum.~,
+    '48' =>
+      q~Afficher le bouton "Liste des anniversaires" dans le menu YaBB à:~,
+    '49' => q~Paramètres de la liste d'anniversaire~,
+    '50' => q~Afficher les dates de naissance à:~,
+    '52' =>
+q~Supprimer les anciens événements<br /><span class="small">Cochez cette case pour supprimer les événements antérieurs à la date actuelle lors de l'ajout d'un nouvel événement.</span>~,
+    '54' => q~Reconstruire la liste des anniversaires~,
+    '56' => q~Texte défilant~,
+    '57' => q~XHTML~,
+    '58' => q~Désactiver les balises YaBBC dans le texte de prévisualisation?~,
+    '59' => q~Ajouter une icône d'événement~,
+    '60' => q~Supprimer l'icône d'événement~,
+    'error_image' =>
+      q~Veuillez sélectionner une image pour l'icône d'événement.~,
+    'error_desc' => q~Veuillez entrer une description de l'icône d'événement.~,
+    'del'        => q~Supprimer les anciens événements~,
+    'showtoday' =>
+q~Utilisez "Aujourd'hui", "Hier" et "Demain" dans les affichages d'événements et d'anniversaires.~,
+    'new' =>
+q~Si activé, "Afficher anniversaire" ou "Voir la liste des anniversaires des membres" vous devrez exécuter "Reconstruire la liste des membres" ci-dessous.~,
+);
+
+1;
+

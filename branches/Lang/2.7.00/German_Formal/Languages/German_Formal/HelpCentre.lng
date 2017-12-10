@@ -7,16 +7,17 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
-# Packaged:     11. September 2017                                            #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$german_formalhelpcentrelngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_formalhelpcentrelngver  = 'YaBB 2.7.00 $Revision: 1874 $';
 @german_formalhelpcentrelngmods = ();
 if (@german_formalhelpcentrelngmods) {
     $german_formalhelpcentrelngmods = 1;
@@ -25,22 +26,23 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %helptxt = (
-'1' => q~Hilfebereich~,
-'2' => q~Inhalte~,
-'3' => q~Hilfe für Benutzer~,
-'4' => q~Hilfe für Moderatoren~,
-'5' => q~Hilfe für Global-Moderatoren~,
-'6' => q~Hilfe für den Administrator~,
-'7' => q~Hilfecenter bearbeiten~,
-'7c' => q~Wählen Sie die Sprache für das Hilfe-Center~,
-'7d' => q~Editieren Sie Hilfe-Centereinträge~,
-'8' => q~erledigt.~,
-'9' => q~Hilfe benutzerspezifisch anzeigen (Benutzergruppe beachten)~,
-'10' => q~Hier können Sie die Hilfedateien verwalten, die Ihren Benutzern unter dem Menüpunkt Hilfe angezeigt werden. In den Feldern auf der linken Seite sehen Sie die verfügbaren Hilfebereiche. Sie können sie markieren und bearbeiten, oder zu den Feldern auf der rechten Seite hinzufügen, indem Sie sie markieren und auf den Pfeil klicken. Sie werden dann im Hilfebereich sichtbar.~,
-'643' => q~Zurück zum Anfang~,
-'769' => q~Flashlocation~,
-'7a' => q~     Bereichstitel~,
-'7b' => q~Unterbereichstitel~,
+    '1'  => q~Hilfebereich~,
+    '2'  => q~Inhalte~,
+    '3'  => q~Hilfe für Benutzer~,
+    '4'  => q~Hilfe für Moderatoren~,
+    '5'  => q~Hilfe für Global-Moderatoren~,
+    '6'  => q~Hilfe für den Administrator~,
+    '7'  => q~Hilfecenter bearbeiten~,
+    '7c' => q~Wählen Sie die Sprache für das Hilfe-Center~,
+    '7d' => q~Editieren Sie Hilfe-Centereinträge~,
+    '8'  => q~erledigt.~,
+    '9'  => q~Hilfe benutzerspezifisch anzeigen (Benutzergruppe beachten)~,
+    '10' =>
+q~Hier können Sie die Hilfedateien verwalten, die Ihren Benutzern unter dem Menüpunkt Hilfe angezeigt werden. In den Feldern auf der linken Seite sehen Sie die verfügbaren Hilfebereiche. Sie können sie markieren und bearbeiten, oder zu den Feldern auf der rechten Seite hinzufügen, indem Sie sie markieren und auf den Pfeil klicken. Sie werden dann im Hilfebereich sichtbar.~,
+    '643' => q~Zurück zum Anfang~,
+    '769' => q~Flashlocation~,
+    '7a'  => q~     Bereichstitel~,
+    '7b'  => q~Unterbereichstitel~,
 );
 
 1;

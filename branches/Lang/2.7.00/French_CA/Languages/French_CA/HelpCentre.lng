@@ -1,0 +1,49 @@
+###############################################################################
+# HelpCentre.lng (Chaine de texte du centre d'aide)                           #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.7.00                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 8 Décembre, 2017                                           #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
+
+$french_cahelpcentrelngver  = 'YaBB 2.7.00 $Revision$';
+@french_cahelpcentrelngmods = ();
+if (@french_cahelpcentrelngmods) {
+    $french_cahelpcentrelngmods = 1;
+}
+$action ||= q{};
+if ( $action eq 'detailedversion' ) { return 1; }
+
+%helptxt = (
+    '1'  => q~Section d'aide~,
+    '2'  => q~Contenu~,
+    '3'  => q~Aide utilisateur~,
+    '4'  => q~Aide modérateur~,
+    '5'  => q~Aide modérateur global~,
+    '6'  => q~Aide administrateur~,
+    '7'  => q~Paramètres du centre d'aide~,
+    '7c' => q~Choisissez la langue de l'aide~,
+    '7d' => q~Éditer les entrées du centre d'aide~,
+    '8'  => q~Complété.~,
+    '9'  => q~Utiliser les autorisations~,
+    '10' =>
+q~C'est ici que vous modifiez, ajoutez, supprimez ou réorganisez les sections d'aide affichées aux utilisateurs dans le système d'aide. Dans les champs de gauche, vous voyez les sections d'aide disponibles. Vous pouvez les marquer et les modifier ou les ajouter aux champs de droite en les marquant et en cliquant sur la flèche pour les rendre visibles dans le système d'aide.~,
+    '643' => q~Retour en haut~,
+    '769' => q~Emplacement Flash~,
+    '7a'  => q~    Section Titre~,
+    '7b'  => q~Sous-section Titre~,
+);
+
+1;

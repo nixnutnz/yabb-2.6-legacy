@@ -7,14 +7,14 @@
 ###############################################################################
 # YaBB: Yet another Bulletin Board                                            #
 # Open-Source Community Software for Webmasters                               #
-# Version:      YaBB 2.7.00                                                   #
-# Packaged:     11. September 2017                                            #
+# Version:        YaBB 2.7.00                                                 #
 # Distributed by: http://www.yabbforum.com                                    #
 # =========================================================================== #
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+##  Based on English Rev 1848 ##
 
 $german_informalbackuplngver = 'YaBB 2.7.00 $Revision: 1848 $';
 @german_informalbackuplngmods = ();
@@ -28,7 +28,7 @@ $script_root = $ENV{'SCRIPT_FILENAME'};
 if( ! $script_root ) {
     $script_root = $ENV{'PATH_TRANSLATED'};
 }
-($support_env_path = $script_root) =~ s~/\w+\.pl~~;
+( $support_env_path = $script_root ) =~ s/\/\w+[.][pl|cgi]//xsm;
 
 %backup_txt = (
 '1' => q~YaBB Backup~,
