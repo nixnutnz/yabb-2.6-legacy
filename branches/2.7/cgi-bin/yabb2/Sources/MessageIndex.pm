@@ -212,8 +212,8 @@ sub message_index {
         $start       = 0;
     }
     else { $start = $INFO{'start'} || 0; }
-    if ( $start > $threadcount - 1 ) { $start = $threadcount - 1; }
-    elsif ( $start < 0 ) { $start = 0; }
+    if ( $start =~ /\D/xsm || $start < 0 ) { $start = 0; }
+    elsif ( $start > $threadcount - 1 ) { $start = $threadcount - 1; }
     $start = int( $start / $maxindex ) * $maxindex;
     my $tmpa = 1;
     my $pagenumb = int( ( $threadcount - 1 ) / $maxindex ) + 1;

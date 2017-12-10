@@ -11,8 +11,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishmessageindexlngver = 'YaBB 2.7.00 $Revision$';
+$englishmessageindexlngver  = 'YaBB 2.7.00 $Revision$';
 @englishmessageindexlngmods = ();
 if (@englishmessageindexlngmods) {
     $englishmessageindexlngmods = 1;
@@ -21,97 +22,101 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %messageindex_txt = (
-'2' => q~Admin~,
-'3' => q~This topic contains~,
-'4' => q~attachments~,
-'5' => q~attachment~,
-'10' => q~Permalink for this article~,
-'15' => q~Poll~,
-'18' => q~Index~,
-'19' => q~Page Index Toggle~,
-'22' => q~Last Post~,
-'31' => q~Remove~,
-'54' => q~Remove~,
-'63' => q~Moderators~,
-'63a' => q~Moderator Groups~,
-'70' => q~Subject~,
-'71' => q~Message icon~,
-'75' => q~This is your Favorites thread selection.~,
-'76' => q~It now holds~,
-'77' => q~of~,
-'78' => q~maximum allowed Favorite threads.~,
-'104' => q~Lock/Unlock~,
-'109' => q~Started By~,
-'110' => q~Replies~,
-'132' => q~Move~,
-'133' => q~Move to~,
-'139' => q~Pages~,
-'162' => q~Are you sure you want to remove this topic?~,
-'199' => q~Double click this checkbox for more info about its function.~, # don't use " inside!
-'200' => q~Check this box to include a New Post at the end of the Topic being Moved. This Post will show the info from where the Thread came and who moved it. Uncheck it to Move without a New Post included.~, # inside JavaScript!
-'251' => q~Forum Jump~,
-'298' => q~Moderator~,
-'298a' => q~Moderator Group~,
-'301' => q~Views~,
-'302' => q~New~,
-'303' => q~Go to first unread post~,
-'454' => q~Hot Topic (More than~,
-'454a' => q~Replies)~,
-'455' => q~Very Hot Topic (More than~,
-'456' => q~Locked Topic~,
-'457' => q~Normal Topic~,
-'458' => q~Hidden Topic~,
-'459' => q~Hidden Sticky Topic~,
-'460' => q~Hidden Locked Topic~,
-'461' => q~Hidden Sticky Locked Topic~,
-'462' => q~GO!~,
-'470' => q~N/A~,
-'470a' => q~<em>Ex Member</em>~,
-'500' => q~Marking all Topics as Read~, # inside JavaScript!
-'500a' => q~Complete~, # inside JavaScript!
-'525' => q~By~,
-'526' => q~by~,
-'527' => q~Started~,
-'737' => q~Check all~,
-'779' => q~Sticky Topic~,
-'779a' => q~Global Announcement~,
-'779b' => q~Locked Global Announcement~,
-'780' => q~Sticky Locked Topic~,
-'781' => q~Sticky~,
-'837' => q~Forum Permissions~,
-'840' => q~No Favorites Found~,
-'841' => q~No Messages Found~,
-'842' => q~Remove Selected Favorites~,
-'843' => q~RSS feed for this board~,
-'844' => q~Hide~,
-'845' => q~Moved Topic~,
-'903' => q~Close Window~,
-'collruletext' => q~Board Rules Collapsed~,
-'nopost' => q~This board cannot be posted in and no posts can be moved into it.~,
-'move_up' => q~Move Up~,
-'move_down' => q~Move Down~,
+    '2'   => q~Admin~,
+    '3'   => q~This topic contains~,
+    '4'   => q~attachments~,
+    '5'   => q~attachment~,
+    '10'  => q~Permalink for this article~,
+    '15'  => q~Poll~,
+    '18'  => q~Index~,
+    '19'  => q~Page Index Toggle~,
+    '22'  => q~Last Post~,
+    '31'  => q~Remove~,
+    '54'  => q~Remove~,
+    '63'  => q~Moderators~,
+    '63a' => q~Moderator Groups~,
+    '70'  => q~Subject~,
+    '71'  => q~Message icon~,
+    '75'  => q~This is your Favorites thread selection.~,
+    '76'  => q~It now holds~,
+    '77'  => q~of~,
+    '78'  => q~maximum allowed Favorite threads.~,
+    '104' => q~Lock/Unlock~,
+    '109' => q~Started By~,
+    '110' => q~Replies~,
+    '132' => q~Move~,
+    '133' => q~Move to~,
+    '139' => q~Pages~,
+    '162' => q~Are you sure you want to remove this topic?~,
+    '199' => q~Double click this checkbox for more info about its function.~
+    ,    # don't use " inside!
+    '200' =>
+q~Check this box to include a New Post at the end of the Topic being Moved. This Post will show the info from where the Thread came and who moved it. Uncheck it to Move without a New Post included.~
+    ,    # inside JavaScript!
+    '251'          => q~Forum Jump~,
+    '298'          => q~Moderator~,
+    '298a'         => q~Moderator Group~,
+    '301'          => q~Views~,
+    '302'          => q~New~,
+    '303'          => q~Go to first unread post~,
+    '454'          => q~Hot Topic (More than~,
+    '454a'         => q~Replies)~,
+    '455'          => q~Very Hot Topic (More than~,
+    '456'          => q~Locked Topic~,
+    '457'          => q~Normal Topic~,
+    '458'          => q~Hidden Topic~,
+    '459'          => q~Hidden Sticky Topic~,
+    '460'          => q~Hidden Locked Topic~,
+    '461'          => q~Hidden Sticky Locked Topic~,
+    '462'          => q~GO!~,
+    '470'          => q~N/A~,
+    '470a'         => q~<em>Ex Member</em>~,
+    '500'          => q~Marking all Topics as Read~,    # inside JavaScript!
+    '500a'         => q~Complete~,                      # inside JavaScript!
+    '525'          => q~By~,
+    '526'          => q~by~,
+    '527'          => q~Started~,
+    '737'          => q~Check all~,
+    '779'          => q~Sticky Topic~,
+    '779a'         => q~Global Announcement~,
+    '779b'         => q~Locked Global Announcement~,
+    '780'          => q~Sticky Locked Topic~,
+    '781'          => q~Sticky~,
+    '837'          => q~Forum Permissions~,
+    '840'          => q~No Favorites Found~,
+    '841'          => q~No Messages Found~,
+    '842'          => q~Remove Selected Favorites~,
+    '843'          => q~RSS feed for this board~,
+    '844'          => q~Hide~,
+    '845'          => q~Moved Topic~,
+    '903'          => q~Close Window~,
+    'collruletext' => q~Board Rules Collapsed~,
+    'nopost' =>
+      q~This board cannot be posted in and no posts can be moved into it.~,
+    'move_up'   => q~Move Up~,
+    'move_down' => q~Move Down~,
 );
 
 %messageindex_sort = (
-'sort_az' => q~Sort (A-Z)~,
-'sort_za' => q~Sort (Z-A)~,
-'sort_min' => q~Sort (min answer)~,
-'sort_max' => q~Sort (max answer)~,
-'sort_last' => q~Sort (new answer)~,
-'sort_first' => q~Sort (old answer)~,
+    'sort_az'    => q~Sort (A-Z)~,
+    'sort_za'    => q~Sort (Z-A)~,
+    'sort_min'   => q~Sort (min answer)~,
+    'sort_max'   => q~Sort (max answer)~,
+    'sort_last'  => q~Sort (new answer)~,
+    'sort_first' => q~Sort (old answer)~,
 );
 
 %messageindex_stickygrp = (
-'1' => q~Important Topics~,
-'2' => q~Board Topics~,
+    '1' => q~Important Topics~,
+    '2' => q~Board Topics~,
 );
 
 %messageindex_tp = (
-'enabletp' => q~Enable Topic Preview~,
-'disabletp' => q~Disable Topic Preview~,
-'code_tp' => q~CODE~,
-'image_tp' => q~IMAGE~,
-'media_tp' => q~MEDIA~,
+    'enabletp'  => q~Enable Topic Preview~,
+    'disabletp' => q~Disable Topic Preview~,
+    'code_tp'   => q~CODE~,
+    'image_tp'  => q~IMAGE~,
+    'media_tp'  => q~MEDIA~,
 );
 
 1;

@@ -11,58 +11,63 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishuserselectlngver = 'YaBB 2.7.00 $Revision$';
+$englishuserselectlngver  = 'YaBB 2.7.00 $Revision$';
 @englishuserselectlngmods = ();
-if(@englishuserselectlngmods){
+if (@englishuserselectlngmods) {
     $englishuserselectlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %usersel_txt = (
-'addselected' => q~Add Selected~,
-'instruct' => q~Double click on a name or select one or more names in the list and click on the "Add Selected" button to add to the~,
-'instruct0' => q~Type the first characters of the new moderator in the upper form field, then double click on the name or select one or more names in the list and click on the "Add Selected" button to add to the~,
-'instruct1' => q~Double click on a name or select a name in the list and click on the "Add Selected" button to add to the~,
-'instruct2' => q~Find member by Name or e-mail:~,
-'instruct3' => q~<br />In the search box at the top you can use a wild-card character (only one *) anywhere in your search string.~,
-'instruct4' => q~Select Member Groups~,
-'wildcardinfo' => q~Use * for wild-card~,
-'searchresult' => q~Search Result:~,
-'nofound' => q~Sorry - no matches found for~,
-'pmpagetitle' => q~Select PM Recipients~,
-'grouppagetitle' => q~Select BC Recipient Groups~,
-'modpagetitle' => q~Select Moderators~,
-'buddypagetitle' => q~Select your buddies~,
-'ignorepagetitle' => q~Select members to Ignore~,
-'searchpagetitle' => q~Select member to search for~,
-'pageclose' => q~Close~,
-'recentlist' => q~Recent List~,
-'alllist' => q~Member List~,
-'gobutton' => q~Go~,
-'reciepientlist' => q~Recipient List~,
-'moderatorlist' => q~Moderator List~,
-'buddylist' => q~Buddy List~,
-'groups' => q~Member Groups~,
-'ignorelist' => q~PM Ignore List~,
-'searchlist' => q~Search by User field~,
-'pmto' => q~To~,
-'pmcc' => q~Cc~,
-'pmbcc' => q~Bcc~,
-'allsearch' => q~All~,
-'bmallmembers' => q~All forum members~,
-'bmadmins' => q~Administrators~,
-'bmgmods' => q~Global moderators~,
-'bmfmods' => q~Forum moderators~,
-'bmmods' => q~All board moderators / mod groups~,
-'pages' => q~Pages~,
-'of' => q~of~,
-'noentries' => q~There are no entries available for this letter.~,
-'other' => q~Other~,
-'noresults' => q~No Results~,
-'qsearch' => q~Search Members~,
-'illegal' => q~Invalid character~,
+    'addselected' => q~Add Selected~,
+    'instruct' =>
+q~Double click on a name or select one or more names in the list and click on the "Add Selected" button to add to the~,
+    'instruct0' =>
+q~Type the first characters of the new moderator in the upper form field, then double click on the name or select one or more names in the list and click on the "Add Selected" button to add to the~,
+    'instruct1' =>
+q~Double click on a name or select a name in the list and click on the "Add Selected" button to add to the~,
+    'instruct2' => q~Find member by Name or e-mail:~,
+    'instruct3' =>
+q~<br />In the search box at the top you can use a wild-card character (only one *) anywhere in your search string.~,
+    'instruct4'       => q~Select Member Groups~,
+    'wildcardinfo'    => q~Use * for wild-card~,
+    'searchresult'    => q~Search Result:~,
+    'nofound'         => q~Sorry - no matches found for~,
+    'pmpagetitle'     => q~Select PM Recipients~,
+    'grouppagetitle'  => q~Select BC Recipient Groups~,
+    'modpagetitle'    => q~Select Moderators~,
+    'buddypagetitle'  => q~Select your buddies~,
+    'ignorepagetitle' => q~Select members to Ignore~,
+    'searchpagetitle' => q~Select member to search for~,
+    'pageclose'       => q~Close~,
+    'recentlist'      => q~Recent List~,
+    'alllist'         => q~Member List~,
+    'gobutton'        => q~Go~,
+    'reciepientlist'  => q~Recipient List~,
+    'moderatorlist'   => q~Moderator List~,
+    'buddylist'       => q~Buddy List~,
+    'groups'          => q~Member Groups~,
+    'ignorelist'      => q~PM Ignore List~,
+    'searchlist'      => q~Search by User field~,
+    'pmto'            => q~To~,
+    'pmcc'            => q~Cc~,
+    'pmbcc'           => q~Bcc~,
+    'allsearch'       => q~All~,
+    'bmallmembers'    => q~All forum members~,
+    'bmadmins'        => q~Administrators~,
+    'bmgmods'         => q~Global moderators~,
+    'bmfmods'         => q~Forum moderators~,
+    'bmmods'          => q~All board moderators / mod groups~,
+    'pages'           => q~Pages~,
+    'of'              => q~of~,
+    'noentries'       => q~There are no entries available for this letter.~,
+    'other'           => q~Other~,
+    'noresults'       => q~No Results~,
+    'qsearch'         => q~Search Members~,
+    'illegal'         => q~Invalid character~,
 );
 
 1;

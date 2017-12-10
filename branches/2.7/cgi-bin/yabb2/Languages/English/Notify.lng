@@ -11,49 +11,51 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishnotifylngver = 'YaBB 2.7.00 $Revision$';
+$englishnotifylngver  = 'YaBB 2.7.00 $Revision$';
 @englishnotifylngmods = ();
-if(@englishnotifylngmods){
+if (@englishnotifylngmods) {
     $englishnotifylngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %notify_txt = (
-'118' => q~Topic Notification~,
-'119' => q~There are no topics with Notification marked.~,
-'120' => q~by~,
-'121' => q~Reset~,
-'122' => q~You are notified on replies in the following topics.~,
-'123' => q~Activate checkbox to <strong><em>deactivate</em></strong> Notification on the Topic.~,
-'124' => q~Update Notifications~,
-'125' => q~Notify~,
-'126' => q~Receive Notification on replies to this board.~,
-'127' => q~Topic reply~,
-'132' => q~New Topics Only~,
-'133' => q~All New Posts~,
-'134' => q~Remove~,
-'135' => q~Board~,
-'136' => q~Board Notification~,
-'137' => q~Change or remove notification for this board.~,
-'138' => q~Change~,
-'139' => q~There are no boards with Notification marked.~,
-'140' => q~Topic~,
-'144' => q~Check all~,
-'145' => q~New personal message from~,
-'200' => q~You have~,
-'201' => q~new~,
-'202' => q~and~,
-'203' => q~Do you want to view your Notifications?~,
-'205' => q~Board Notifications~,
-'206' => q~Topic Notifications~,
-'333' => q~New Posts~,
-'334' => q~No New Posts~,
-'335' => q~New~,
-'lastpost' => q~last post~,
-'lft' => qq~&lsaquo;~,
-'rgt' => qq~&rsaquo;~,
+    '118' => q~Topic Notification~,
+    '119' => q~There are no topics with Notification marked.~,
+    '120' => q~by~,
+    '121' => q~Reset~,
+    '122' => q~You are notified on replies in the following topics.~,
+    '123' =>
+q~Activate checkbox to <strong><em>deactivate</em></strong> Notification on the Topic.~,
+    '124'      => q~Update Notifications~,
+    '125'      => q~Notify~,
+    '126'      => q~Receive Notification on replies to this board.~,
+    '127'      => q~Topic reply~,
+    '132'      => q~New Topics Only~,
+    '133'      => q~All New Posts~,
+    '134'      => q~Remove~,
+    '135'      => q~Board~,
+    '136'      => q~Board Notification~,
+    '137'      => q~Change or remove notification for this board.~,
+    '138'      => q~Change~,
+    '139'      => q~There are no boards with Notification marked.~,
+    '140'      => q~Topic~,
+    '144'      => q~Check all~,
+    '145'      => q~New personal message from~,
+    '200'      => q~You have~,
+    '201'      => q~new~,
+    '202'      => q~and~,
+    '203'      => q~Do you want to view your Notifications?~,
+    '205'      => q~Board Notifications~,
+    '206'      => q~Topic Notifications~,
+    '333'      => q~New Posts~,
+    '334'      => q~No New Posts~,
+    '335'      => q~New~,
+    'lastpost' => q~last post~,
+    'lft'      => q~&lsaquo;~,
+    'rgt'      => q~&rsaquo;~,
 );
 
 1;

@@ -11,8 +11,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishguardianlngver = 'YaBB 2.7.00 $Revision$';
+$englishguardianlngver  = 'YaBB 2.7.00 $Revision$';
 @englishguardianlngmods = ();
 if (@englishguardianlngmods) {
     $englishguardianlngmods = 1;
@@ -21,60 +22,71 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %guardian_txt = (
-'main' => q~The Guardian&trade;~,
-'admin' => q~The Guardian&trade; Administrator~,
-'setup' => q~The Guardian&trade; Setup~,
-'title' => q~Welcome to "The Guardian&trade;", Your Gatekeeper against intruders.~,
-'description' => q~With "The Guardian&trade;" you can block intruders on various levels, resulting in a better security and less chance of hacking.~,
-'notify' => q~Do you want an e-mail notification on any detected attempts?~,
-'general' => q~Global and Server Settings~,
-'use_guardian' => q~Use The Guardian&trade; to protect your board?~,
-'use_htaccess' => q~Activate .htaccess to add IP blocks on server level?~,
-'use_htaccess_support' => q~<span class="small"><em>(Only works if your server supports .htaccess files.)</em></span>~,
-'htaccess_support' => q~<span class="small"><em>(Only works if your server supports it and "Activate .htaccess to add IP blocks on server level?" from first item above is enabled.)</em></span>~,
-'htaccess_add' => q~Auto add abusing IP addresses to .htaccess?~,
-'htaccess_added' => q~Auto added abusing IP address to .htaccess file. (You can remove it from the list manually from the Guardian Admin)~,
-'proxy' => q~Proxy Blocking~,
-'referer' => q~Referrer Blocking~,
-'harvester' => q~Harvester Blocking~,
-'request' => q~Request Method Blocking~,
-'string' => q~Environment String Blocking~,
-'clike' => q~CLIKE Blocking~,
-'union' => q~UNION Blocking~,
-'script' => q~Scripting Blocking~,
-'proxy_on' => q~Deny access through proxy servers?~,
-'referer_on' => q~Activate referrer blocking?~,
-'harvester_on' => q~Activate harvester blocking?~,
-'request_on' => q~Activate Request Method blocking?~,
-'string_on' => q~Activate 'bad words' in url environment blocking?~,
-'clike_on' => q~Activate CLIKE blocking (only MySQL)?~,
-'union_on' => q~Activate UNION blocking (only MySQL)?~,
-'script_on' => q~Activate scripting blocking?~,
-'proxy_abuse' => q~Proxy Access~,
-'referer_abuse' => q~Referrer~,
-'harvester_abuse' => q~Harvester~,
-'request_abuse' => q~Request Method~,
-'string_abuse' => q~Url Bad String~,
-'clike_abuse' => q~CLIKE~,
-'union_abuse' => q~UNION~,
-'script_abuse' => q~Scripting~,
-'abuse' => q~Abuse Detected~,
-'abuse_user' => q~Abusing user ID~,
-'abuse_ip' => q~Abuse detected from IP~,
-'abuse_referer' => q~Blocked referrer~,
-'abuse_string' => q~Blocked word~,
-'abuse_environment' => q~Environment string~,
-'abuse_form_environment' => q~Blocked script in form data~,
-'abuse_url_environment' => q~Blocked script in url data~,
-'abuse_harvester' => q~Blocked Harvester~,
-'abuse_request' => q~Blocked Request Method~,
-'white_list' => q~Enter IP's, user id or proxy identifier strings you want to pass through (whitelist)?<br /><em>(whole or partial, one per line)</em>~,
-'referer_list' => q~Enter referrer url's you want blocked?<br /><em>(whole or partial url, one per line)</em>~,
-'harvester_list' => q~Enter harvester agent strings you want blocked?<br /><em>(whole or partial agent string, one per line)</em>~,
-'request_list' => q~Enter Request Methods you want blocked?<br /><em>(whole or partial method string, one per line)</em><br /><br /><strong><span class="under">ATTENTION!</span><br />NEVER BLOCK POST and GET!<br />It will render your board useless.</strong>~,
-'string_list' => q~Enter 'bad words' you want blocked?<br /><em>(whole or partial string, one per line)</em>~,
-'htaccess_list' => q~Enter IP addresses or (partial) domain names you want blocked on server level?<br /><em>(* wild-cards allowed, one per line)</em>~,
-'save' => q~Save Guardian Changes~,
+    'main'  => q~The Guardian&trade;~,
+    'admin' => q~The Guardian&trade; Administrator~,
+    'setup' => q~The Guardian&trade; Setup~,
+    'title' =>
+      q~Welcome to "The Guardian&trade;", Your Gatekeeper against intruders.~,
+    'description' =>
+q~With "The Guardian&trade;" you can block intruders on various levels, resulting in a better security and less chance of hacking.~,
+    'notify' => q~Do you want an e-mail notification on any detected attempts?~,
+    'general'      => q~Global and Server Settings~,
+    'use_guardian' => q~Use The Guardian&trade; to protect your board?~,
+    'use_htaccess' => q~Activate .htaccess to add IP blocks on server level?~,
+    'use_htaccess_support' =>
+q~<span class="small"><em>(Only works if your server supports .htaccess files.)</em></span>~,
+    'htaccess_support' =>
+q~<span class="small"><em>(Only works if your server supports it and "Activate .htaccess to add IP blocks on server level?" from first item above is enabled.)</em></span>~,
+    'htaccess_add' => q~Auto add abusing IP addresses to .htaccess?~,
+    'htaccess_added' =>
+q~Auto added abusing IP address to .htaccess file. (You can remove it from the list manually from the Guardian Admin)~,
+    'proxy'             => q~Proxy Blocking~,
+    'referer'           => q~Referrer Blocking~,
+    'harvester'         => q~Harvester Blocking~,
+    'request'           => q~Request Method Blocking~,
+    'string'            => q~Environment String Blocking~,
+    'clike'             => q~CLIKE Blocking~,
+    'union'             => q~UNION Blocking~,
+    'script'            => q~Scripting Blocking~,
+    'proxy_on'          => q~Deny access through proxy servers?~,
+    'referer_on'        => q~Activate referrer blocking?~,
+    'harvester_on'      => q~Activate harvester blocking?~,
+    'request_on'        => q~Activate Request Method blocking?~,
+    'string_on'         => q~Activate 'bad words' in url environment blocking?~,
+    'clike_on'          => q~Activate CLIKE blocking (only MySQL)?~,
+    'union_on'          => q~Activate UNION blocking (only MySQL)?~,
+    'script_on'         => q~Activate scripting blocking?~,
+    'proxy_abuse'       => q~Proxy Access~,
+    'referer_abuse'     => q~Referrer~,
+    'harvester_abuse'   => q~Harvester~,
+    'request_abuse'     => q~Request Method~,
+    'string_abuse'      => q~Url Bad String~,
+    'clike_abuse'       => q~CLIKE~,
+    'union_abuse'       => q~UNION~,
+    'script_abuse'      => q~Scripting~,
+    'abuse'             => q~Abuse Detected~,
+    'abuse_user'        => q~Abusing user ID~,
+    'abuse_ip'          => q~Abuse detected from IP~,
+    'abuse_referer'     => q~Blocked referrer~,
+    'abuse_string'      => q~Blocked word~,
+    'abuse_environment' => q~Environment string~,
+    'abuse_form_environment' => q~Blocked script in form data~,
+    'abuse_url_environment'  => q~Blocked script in url data~,
+    'abuse_harvester'        => q~Blocked Harvester~,
+    'abuse_request'          => q~Blocked Request Method~,
+    'white_list' =>
+q~Enter IP's, user id or proxy identifier strings you want to pass through (whitelist)?<br /><em>(whole or partial, one per line)</em>~,
+    'referer_list' =>
+q~Enter referrer url's you want blocked?<br /><em>(whole or partial url, one per line)</em>~,
+    'harvester_list' =>
+q~Enter harvester agent strings you want blocked?<br /><em>(whole or partial agent string, one per line)</em>~,
+    'request_list' =>
+q~Enter Request Methods you want blocked?<br /><em>(whole or partial method string, one per line)</em><br /><br /><strong><span class="under">ATTENTION!</span><br />NEVER BLOCK POST and GET!<br />It will render your board useless.</strong>~,
+    'string_list' =>
+q~Enter 'bad words' you want blocked?<br /><em>(whole or partial string, one per line)</em>~,
+    'htaccess_list' =>
+q~Enter IP addresses or (partial) domain names you want blocked on server level?<br /><em>(* wild-cards allowed, one per line)</em>~,
+    'save' => q~Save Guardian Changes~,
 );
 
 1;

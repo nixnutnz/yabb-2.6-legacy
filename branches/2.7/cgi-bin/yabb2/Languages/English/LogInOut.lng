@@ -11,58 +11,69 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishloginoutlngver = 'YaBB 2.7.00 $Revision$';
+$englishloginoutlngver  = 'YaBB 2.7.00 $Revision$';
 @englishloginoutlngmods = ();
-if(@englishloginoutlngmods){
+if (@englishloginoutlngmods) {
     $englishloginoutlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %loginout_txt = (
-'34' => q~Login~,
-'35' => q~User ID or e-mail address~,
-'35a' => q~User ID or e-mail address field.~,
-'35b' => q~User ID, Screen Name or e-mail address~,
-'36' => q~Password~,
-'36b' => q~Password Reset~,
-'130' => qq~Regards,\nThe {yabb mbname} team~,
-'130a' => q~A Password reset was requested by a visitor at {yabb mbname}. If you did not submit a request to reset your password, then please ignore this e-mail, otherwise go here to reset your password: ~,
-'192' => q~E-mail successfully sent to:~,
-'193' => q~Back~,
-'194' => q~request~,
-'241' => q~field.~,
-'315' => q~Forgot Password?~,
-'339' => q~Send~,
-'669' => q~Forgot Password~,
-'711' => q~Dear~,
-'753' => q~Need to register?~,
-'837' => q~Your user ID is case sensitive.~,
-'capslock' => q~Caps lock is activated.~,
-'wrong_char' => q~This character in the Password is invalid~,
-'error_user_info' => q~You must insert your User ID or e-mail address.~,
-'no_user_info_exists' => q~The User ID or e-mail address which you entered does not exist on this forum.~,
-'verification_question_desc' => q~Please answer the above verification question.~,
-'verification_question_case' => q~Answers are case-sensitive.~,
-'error_verification' => q~The verification code is missing.~,
-'error_verification_question' => q~You must answer the verification question.~,
-'keeps' => q~Keep me logged in~,
+    '34'  => q~Login~,
+    '35'  => q~User ID or e-mail address~,
+    '35a' => q~User ID or e-mail address field.~,
+    '35b' => q~User ID, Screen Name or e-mail address~,
+    '36'  => q~Password~,
+    '36b' => q~Password Reset~,
+    '130' => qq~Regards,\nThe {yabb mbname} team~,
+    '130a' =>
+q~A Password reset was requested by a visitor at {yabb mbname}. If you did not submit a request to reset your password, then please ignore this e-mail, otherwise go here to reset your password: ~,
+    '192'             => q~E-mail successfully sent to:~,
+    '193'             => q~Back~,
+    '194'             => q~request~,
+    '241'             => q~field.~,
+    '315'             => q~Forgot Password?~,
+    '339'             => q~Send~,
+    '669'             => q~Forgot Password~,
+    '711'             => q~Dear~,
+    '753'             => q~Need to register?~,
+    '837'             => q~Your user ID is case sensitive.~,
+    'capslock'        => q~Caps lock is activated.~,
+    'wrong_char'      => q~This character in the Password is invalid~,
+    'error_user_info' => q~You must insert your User ID or e-mail address.~,
+    'no_user_info_exists' =>
+q~The User ID or e-mail address which you entered does not exist on this forum.~,
+    'verification_question_desc' =>
+      q~Please answer the above verification question.~,
+    'verification_question_case' => q~Answers are case-sensitive.~,
+    'error_verification'         => q~The verification code is missing.~,
+    'error_verification_question' =>
+      q~You must answer the verification question.~,
+    'keeps' => q~Keep me logged in~,
 );
 
-%floodtxt=(
-'1' => q~Your Verification Code is~,
-'3' => q~Verification Code~,
-'casewarning' => q~Please type the characters that appear in the image. The characters must be typed in the same order, and they are case-sensitive.~,
-'casewarning_1' => q~Please type the characters exactly as they appear in the image,~,
-'casewarning_2' => q~<br /><span style="font-weight: bold;">without the first~,
-'casewarning_3' => q~<br /><span style="font-weight: bold;">without the last~,
-'casewarning_4' => q~and last~,
-'casewarning_5' => q~characters.</span><br />The characters must be typed in the same order,<br />and they are case-sensitive.~,
+%floodtxt = (
+    '1' => q~Your Verification Code is~,
+    '3' => q~Verification Code~,
+    'casewarning' =>
+q~Please type the characters that appear in the image. The characters must be typed in the same order, and they are case-sensitive.~,
+    'casewarning_1' =>
+      q~Please type the characters exactly as they appear in the image,~,
+    'casewarning_2' =>
+      q~<br /><span style="font-weight: bold;">without the first~,
+    'casewarning_3' =>
+      q~<br /><span style="font-weight: bold;">without the last~,
+    'casewarning_4' => q~and last~,
+    'casewarning_5' =>
+q~characters.</span><br />The characters must be typed in the same order,<br />and they are case-sensitive.~,
 );
 
-%prereg_txt=(
-'5' => q~Your account is activated. You can now log in using your user id and password.~,
-);
+%prereg_txt =
+  ( '5' =>
+q~Your account is activated. You can now log in using your user id and password.~,
+  );
 
 1;

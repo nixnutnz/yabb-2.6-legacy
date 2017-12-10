@@ -185,7 +185,7 @@ sub multi {
     my $mess_loop;
     {
         no strict qw(refs);
-        if ( $FORM{'allpost'} =~ m/all/ixsm ) {
+        if ( $FORM{'allpost'} && $FORM{'allpost'} =~ m/all/ixsm ) {
             boardtotals( 'load', $currentboard );
             $mess_loop = ${ $uid . $currentboard }{'threadcount'};
         }

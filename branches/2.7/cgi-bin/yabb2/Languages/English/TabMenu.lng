@@ -11,42 +11,47 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishtabmenulngver = 'YaBB 2.7.00 $Revision$';
+$englishtabmenulngver  = 'YaBB 2.7.00 $Revision$';
 @englishtabmenulngmods = ();
-if(@englishtabmenulngmods){
+if (@englishtabmenulngmods) {
     $englishtabmenulngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
-%tabmenu_txt=(
-'texterr' => q~The Text field is empty.~,
-'tabext' => q~A tab for the same action or with the same name already exists.~,
-'tabfront' => q~Front~,
-'taburl' => q~URL~,
-'tabwin' => q~New window~,
-'edittab' => q~Edit tabs~,
-'tabdel' => q~Delete this tab~,
-'viewgm' => q~GMod +~,
-'viewadm' => q~Admin~,
-'tabtext' => q~Text~,
-'taberr' => q~Required information missing:~,
-'addtab' => q~Add~,
-'savetab' => q~Save Text~,
-'reordertab' => q~Reorder Tabs:~,
-'tableft' => q~&lt;~,
-'tabright' => q~&gt;~,
-'edittext1' => q~Above you see the tabs the way they would appear if they were all visible at one time. If you have added one or more tabs you now have the option to edit the visible text directly inside the tab and then click the~,
-'edittext2' => q~icon to save the new text or you can delete the tab by clicking on the~,
-'edittext3' => q~icon. Note that you <strong>cannot edit URLs</strong>.~,
-'reordertext' => q~On the right hand side there is a list of all your tabs allowing you to change the order they appear in the tab menu. Select the tab you want to move and click on the "&lt;" or "&gt;" button to move the tab in the desired direction.~,
-'urlerr' => q~The URL field is empty.~,
-'viewmem' => q~Members +~,
-'viewall' => q~Guests +~,
-'newtab' => q~Add a tab~,
-'tabinsert' => q~Add after~,
-'tabview' => q~Visible to~,
+%tabmenu_txt = (
+    'texterr' => q~The Text field is empty.~,
+    'tabext' =>
+      q~A tab for the same action or with the same name already exists.~,
+    'tabfront'   => q~Front~,
+    'taburl'     => q~URL~,
+    'tabwin'     => q~New window~,
+    'edittab'    => q~Edit tabs~,
+    'tabdel'     => q~Delete this tab~,
+    'viewgm'     => q~GMod +~,
+    'viewadm'    => q~Admin~,
+    'tabtext'    => q~Text~,
+    'taberr'     => q~Required information missing:~,
+    'addtab'     => q~Add~,
+    'savetab'    => q~Save Text~,
+    'reordertab' => q~Reorder Tabs:~,
+    'tableft'    => q~&lt;~,
+    'tabright'   => q~&gt;~,
+    'edittext1' =>
+q~Above you see the tabs the way they would appear if they were all visible at one time. If you have added one or more tabs you now have the option to edit the visible text directly inside the tab and then click the~,
+    'edittext2' =>
+      q~icon to save the new text or you can delete the tab by clicking on the~,
+    'edittext3' => q~icon. Note that you <strong>cannot edit URLs</strong>.~,
+    'reordertext' =>
+q~On the right hand side there is a list of all your tabs allowing you to change the order they appear in the tab menu. Select the tab you want to move and click on the "&lt;" or "&gt;" button to move the tab in the desired direction.~,
+    'urlerr'    => q~The URL field is empty.~,
+    'viewmem'   => q~Members +~,
+    'viewall'   => q~Guests +~,
+    'newtab'    => q~Add a tab~,
+    'tabinsert' => q~Add after~,
+    'tabview'   => q~Visible to~,
 );
 
 1;

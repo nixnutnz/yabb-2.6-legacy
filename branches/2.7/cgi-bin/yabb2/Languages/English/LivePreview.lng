@@ -10,33 +10,38 @@
 # Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
+###############################################################################
 # Mod created by Carsten Dalgaard                                             #
 #                and added to YaBB core in Version 2.5.4                      #
-# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
+# Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishlivepreviewlngver = 'YaBB 2.7.00 $Revision$';
+$englishlivepreviewlngver  = 'YaBB 2.7.00 $Revision$';
 @englishlivepreviewlngmods = ();
-if(@englishlivepreviewlngmods){
+if (@englishlivepreviewlngmods) {
     $englishlivepreviewlngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %livepreview_txt = (
-'info_missing' => q~Missing or Incorrect Information:~,
-'name_empty' => q~The Name field is not filled out.~,
-'long_name' => q~Please shorten your name. It is too long~,
-'mail_empty' => q~The E-mail field is not filled out.~,
-'valid_mail' => q~Please enter a valid E-mail address.~,
-'veri_code' => q~The Verification field is not filled out.~,
-'veri_quest' => q~The Verification Question field is not filled out.~,
-'subj_empty' => q~The Subject field is not filled out.~,
-'mess_empty' => q~The Message field is empty.~,
-'subj_allcaps' => q~It appears that you are trying to write using ALL CAPS in the Subject field. This is against forum rules.~,
-'mess_allcaps' => q~It appears that you are trying to write using ALL CAPS in the Message field. This is against forum rules.~,
-'pm_recipient' => q~You must fill in the recipient field.~,
-'no_links'     => q~Guests are not allowed to include links. Members are not allowed to include links until they have created {yabb minlinkpost} posts.~,
+    'info_missing' => q~Missing or Incorrect Information:~,
+    'name_empty'   => q~The Name field is not filled out.~,
+    'long_name'    => q~Please shorten your name. It is too long~,
+    'mail_empty'   => q~The E-mail field is not filled out.~,
+    'valid_mail'   => q~Please enter a valid E-mail address.~,
+    'veri_code'    => q~The Verification field is not filled out.~,
+    'veri_quest'   => q~The Verification Question field is not filled out.~,
+    'subj_empty'   => q~The Subject field is not filled out.~,
+    'mess_empty'   => q~The Message field is empty.~,
+    'subj_allcaps' =>
+q~It appears that you are trying to write using ALL CAPS in the Subject field. This is against forum rules.~,
+    'mess_allcaps' =>
+q~It appears that you are trying to write using ALL CAPS in the Message field. This is against forum rules.~,
+    'pm_recipient' => q~You must fill in the recipient field.~,
+    'no_links' =>
+q~Guests are not allowed to include links. Members are not allowed to include links until they have created {yabb minlinkpost} posts.~,
 );
 
 1;

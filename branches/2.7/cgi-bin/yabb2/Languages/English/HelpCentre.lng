@@ -11,32 +11,34 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishhelpcentrelngver = 'YaBB 2.7.00 $Revision$';
+$englishhelpcentrelngver  = 'YaBB 2.7.00 $Revision$';
 @englishhelpcentrelngmods = ();
-if(@englishhelpcentrelngmods){
+if (@englishhelpcentrelngmods) {
     $englishhelpcentrelngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %helptxt = (
-'1' => q~Help Section~,
-'2' => q~Contents~,
-'3' => q~User Help~,
-'4' => q~Moderator Help~,
-'5' => q~Global Moderator Help~,
-'6' => q~Administrator Help~,
-'7' => q~Help Center Settings~,
-'7c' => q~Choose Help Language~,
-'7d' => q~Edit Help Center Entries~,
-'8' => q~Done.~,
-'9' => q~Use Permissions~,
-'10' => q~This is where you edit, add, remove or re-order the help sections shown to the users in the help system. In the left-hand fields you see the available help sections. You can mark and edit them or add them to the right-hand fields by marking and clicking the arrow to make them visible in the help system.~,
-'643' => q~Back to top~,
-'769' => q~Flash location~,
-'7a' => q~    Section Title~,
-'7b' => q~Sub-section Title~,
+    '1'  => q~Help Section~,
+    '2'  => q~Contents~,
+    '3'  => q~User Help~,
+    '4'  => q~Moderator Help~,
+    '5'  => q~Global Moderator Help~,
+    '6'  => q~Administrator Help~,
+    '7'  => q~Help Center Settings~,
+    '7c' => q~Choose Help Language~,
+    '7d' => q~Edit Help Center Entries~,
+    '8'  => q~Done.~,
+    '9'  => q~Use Permissions~,
+    '10' =>
+q~This is where you edit, add, remove or re-order the help sections shown to the users in the help system. In the left-hand fields you see the available help sections. You can mark and edit them or add them to the right-hand fields by marking and clicking the arrow to make them visible in the help system.~,
+    '643' => q~Back to top~,
+    '769' => q~Flash location~,
+    '7a'  => q~    Section Title~,
+    '7b'  => q~Sub-section Title~,
 );
 
 1;

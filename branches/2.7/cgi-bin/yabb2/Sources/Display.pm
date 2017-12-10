@@ -1033,7 +1033,7 @@ qq~$menusep<a href="javascript:void(window.open('$scripturl?action=printthread;n
             }
             my ($ext);
             foreach my $i ( split /,/xsm, $mfn ) {
-                if ( $i =~ /[.](.+?)$/xsm) {
+                if ( $i =~ /[.](.+?)$/xsm ) {
                     $ext = lc $1;
                 }
                 if ( !exists $attach_gif{$ext} ) {
@@ -2185,11 +2185,11 @@ sub set_gtalk {
     my $gtalkname = $INFO{'gtalkname'};
     if ( !$gtalkname ) { fatal_error('nogtalk'); }
     else {
-        my $gtalkstyle =
-qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
         if ( !${ $uid . $gtalkname }{'password'} ) { load_user($gtalkname); }
         $gtalkuser = ${ $uid . $gtalkname }{'gtalk'};
-
+        if ( !$gtalkuser ) { fatal_error('nogtalk'); }
+        my $gtalkstyle =
+qq~<link rel="stylesheet" href="$yyhtml_root/Templates/Forum/$usestyle.css" type="text/css" />\n~;
         my $setgtalk = $gtalker;
         $setgtalk =~ s/\Q{yabb xml_lang}\E/$abbr_lang/xsm;
         $setgtalk =~ s/\Q{yabb mycharset}\E/$yymycharset/xsm;

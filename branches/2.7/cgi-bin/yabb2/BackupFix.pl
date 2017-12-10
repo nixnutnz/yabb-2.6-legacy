@@ -37,7 +37,7 @@ if ( !-e 'Variables/backup.lock' ) {
     exit;
 }
 
-open my $ALIST, '<', 'Variables/adminlst.db' or croak 'cannot find adminlist';
+open my $ALIST, '<', "$vardir/adminlst.db" or croak 'cannot find adminlist';
 my @alist = <$ALIST>;
 close $ALIST or croak 'cannot close adminlist';
 chomp @alist;

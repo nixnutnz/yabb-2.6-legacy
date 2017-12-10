@@ -624,6 +624,9 @@ qq~<img src="$imagesdir/$catimage" alt="" id="brd_id_$imgid" onload="resize_brd_
                 my ( $showmds, $showmodgroups ) =
                   getbrdmods( $username, $crboard );
                 $showmods .= $showmds;
+                if ( $showmodgroups && $showmods ) {
+                    $showmods .= q~<br />~;
+                }
 
                 my $new  = q{};
                 my $new2 = q{};
@@ -2301,9 +2304,6 @@ sub getbrdmods {
     $showmodgroups =~ s/,\s$//xsm;
     if ( !$showmodgroups && !$showmods ) {
         $showmodgroups = q{};
-    }
-    if ( $showmodgroups && $showmods ) {
-        $showmods .= q~<br />~;
     }
     return ( $showmods, $showmodgroups );
 }

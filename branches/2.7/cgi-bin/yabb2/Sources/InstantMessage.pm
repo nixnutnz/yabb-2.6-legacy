@@ -1435,7 +1435,7 @@ sub pagelinks_list {
         }
     }
     my $max         = scalar @tempim;
-    my $start       = 0;
+    our $start       = 0;
     my $allselected = q{};
     if ( $INFO{'start'} && $INFO{'start'} =~ /all/xsm ) {
         $maxmessagedisplay = $max;
@@ -2139,9 +2139,13 @@ qq~<a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mrep
                 $showim_link .= q{};
             }
             else {
+                my $touseract = q{};
+                if (${ $uid . $messlst{'musername'} }{'realname'} ) {
+                    $touseract = qq~;to=$useraccount{$messlst{'musername'}}~;
+                }
                 $showim_link .= qq~
-            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}$mymid">$img{'quote'}</a>$menusep
-            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};reply=$messlst{'mreplyno'};to=$useraccount{$messlst{'musername'}};id=$messlst{'messageid'}$mymid">$img{'reply_ims'}</a>$menusep~;
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};quote=$messlst{'mreplyno'}$touseract;id=$messlst{'messageid'}$mymid">$img{'quote'}</a>$menusep
+            <a href="$scripturl?action=imsend;caller=$INFO{'caller'};reply=$messlst{'mreplyno'}$touseract;id=$messlst{'messageid'}$mymid">$img{'reply_ims'}</a>$menusep~;
             }
         }
     }

@@ -11,39 +11,46 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishsessionslngver = 'YaBB 2.7.00 $Revision$';
+$englishsessionslngver  = 'YaBB 2.7.00 $Revision$';
 @englishsessionslngmods = ();
-if(@englishsessionslngmods){
+if (@englishsessionslngmods) {
     $englishsessionslngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %session_txt = (
-'1' => q~Activate Session ID's?~,
-'2' => q~This protects the Administrative Functions by using a three part Session Key based on IP address.~,
-'3' => q~Your Session has expired as you entered the forum from a different IP address ({yabb sessip}).~,
-'4' => q~To check your credentials answer the following question with the answer you entered in your profile.~,
-'6' => q~You failed to validate your credentials and are logged out.~,
-'8' => q~Select your Session Revalidation Question here~,
-'9' => q~To check your credentials select a question and provide an answer to re-validate your session.~,
-'9a' => q~If you select your password as validation you can leave the field empty.~,
-'10' => q~You did not select a Session Question in your profile so you must use your password to verify your credentials.~,
+    '1' => q~Activate Session ID's?~,
+    '2' =>
+q~This protects the Administrative Functions by using a three part Session Key based on IP address.~,
+    '3' =>
+q~Your Session has expired as you entered the forum from a different IP address ({yabb sessip}).~,
+    '4' =>
+q~To check your credentials answer the following question with the answer you entered in your profile.~,
+    '6' => q~You failed to validate your credentials and are logged out.~,
+    '8' => q~Select your Session Revalidation Question here~,
+    '9' =>
+q~To check your credentials select a question and provide an answer to re-validate your session.~,
+    '9a' =>
+q~If you select your password as validation you can leave the field empty.~,
+    '10' =>
+q~You did not select a Session Question in your profile so you must use your password to verify your credentials.~,
 );
 
 %sesquest_txt = (
-'password' => q~Use my password as validation~,
-'1' => q~My favorite animal is a~,
-'2' => q~The name of my favorite pet is~,
-'3' => q~My phone number is~,
-'4' => q~My birth-date is~,
-'5' => q~My best friend is~,
-'6' => q~I'm in love with~,
-'7' => q~The person I hate most is~,
-'8' => q~My Zip code is~,
-'9' => q~My favorite sport is~,
-'10' => q~My favorite drink is~,
+    'password' => q~Use my password as validation~,
+    '1'        => q~My favorite animal is a~,
+    '2'        => q~The name of my favorite pet is~,
+    '3'        => q~My phone number is~,
+    '4'        => q~My birth-date is~,
+    '5'        => q~My best friend is~,
+    '6'        => q~I'm in love with~,
+    '7'        => q~The person I hate most is~,
+    '8'        => q~My Zip code is~,
+    '9'        => q~My favorite sport is~,
+    '10'       => q~My favorite drink is~,
 );
 
 1;

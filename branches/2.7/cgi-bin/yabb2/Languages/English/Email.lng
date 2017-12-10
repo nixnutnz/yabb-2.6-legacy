@@ -11,8 +11,9 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-our $englishemaillngver = 'YaBB 2.7.00 $Revision$';
+our $englishemaillngver  = 'YaBB 2.7.00 $Revision$';
 our $englishemaillngmods = 0;
 our @englishemaillngmods = ();
 if (@englishemaillngmods) {
@@ -22,58 +23,63 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %yabbtagdesc = (
-# Constant tags
-'scripturl' => q~The URL to YaBB. Example: {yabb scripturl}~,
-'adminurl' => q~The URL to YaBB Admin Center. Example: {yabb adminurl}~,
-'mbname' => q~This forum's name. Example: {yabb mbname}~,
 
-# New Member related
-'userip' => qq~The IP-address of the User.~,
-'useremail' => qq~The e-mail of the User.~,
+    # Constant tags
+    'scripturl' => q~The URL to YaBB. Example: {yabb scripturl}~,
+    'adminurl'  => q~The URL to YaBB Admin Center. Example: {yabb adminurl}~,
+    'mbname'    => q~This forum's name. Example: {yabb mbname}~,
 
-# User-related
-'username' => q~The User ID of the User.~,
-'displayname' => q~The screen name of the User.~,
-'cryptusername' => q~The user ID of the User, cloaked for use in a URL.~,
-'reviewer' => q~The real name of the Admin/GMod, reviewing registrations.~,
+    # New Member related
+    'userip'    => q~The IP-address of the User.~,
+    'useremail' => q~The e-mail of the User.~,
 
-# Topic/PM-related
-'sender' => q~The sender of the PM.~,
-'num' => q~The number of the Topic (for URL purposes)~,
-'start' => q~The number of the Post in the Topic (for URL purposes)~,
-'tmessage' => q~Text of the new Topic~,
-'tauthor' => q~Name of the Author~,
+    # User-related
+    'username'      => q~The User ID of the User.~,
+    'displayname'   => q~The screen name of the User.~,
+    'cryptusername' => q~The user ID of the User, cloaked for use in a URL.~,
+    'reviewer' => q~The real name of the Admin/GMod, reviewing registrations.~,
 
-# Registration/Password
-'activationcode' => q~The Activation Link sent in a Register e-mail.~,
-'remindercode' => q~The Password Link sent in a Reminder e-mail.~,
-'preregspan' => q~The time allowed before the Pre-Registration expires. Current value: {yabb preregspan}~,
-'reason' => q~Admin reason behind a decision made on a registering User while in 'register with Admin Approval' mode~,
+    # Topic/PM-related
+    'sender'   => q~The sender of the PM.~,
+    'num'      => q~The number of the Topic (for URL purposes)~,
+    'start'    => q~The number of the Post in the Topic (for URL purposes)~,
+    'tmessage' => q~Text of the new Topic~,
+    'tauthor'  => q~Name of the Author~,
 
-# Sending a Topic
-'toname' => q~The name of the person receiving a Topic.~,
+    # Registration/Password
+    'activationcode' => q~The Activation Link sent in a Register e-mail.~,
+    'remindercode'   => q~The Password Link sent in a Reminder e-mail.~,
+    'preregspan' =>
+q~The time allowed before the Pre-Registration expires. Current value: {yabb preregspan}~,
+    'reason' =>
+q~Admin reason behind a decision made on a registering User while in 'register with Admin Approval' mode~,
 
-# PMs
-'sendto' => q~Recipient of this PM.~,
-'email' => q~E-mail from User.~,
-'date' => q~The date the PM was sent.~,
-'subject' => q~The subject of the Post or PM.~,
-'message' => q~The text of the PM.~,
+    # Sending a Topic
+    'toname' => q~The name of the person receiving a Topic.~,
+
+    # PMs
+    'sendto'  => q~Recipient of this PM.~,
+    'email'   => q~E-mail from User.~,
+    'date'    => q~The date the PM was sent.~,
+    'subject' => q~The subject of the Post or PM.~,
+    'message' => q~The text of the PM.~,
 );
 
 # Pre registration subject lines
-%mailreg_txt=(
-'apr_result_activate' => q~Activation information for~,
-'apr_result_validate' => q~Registration validated for~,
-'apr_result_info' => q~Registration information for~,
-'apr_result_wait' => q~Registration pending for~,
-'apr_result_reject' => q~Registration rejected for~,
-'apr_result_approved' => q~Registration approved for~,
-'new_member_info' => q~New Member Registration.~,
+%mailreg_txt = (
+    'apr_result_activate' => q~Activation information for~,
+    'apr_result_validate' => q~Registration validated for~,
+    'apr_result_info'     => q~Registration information for~,
+    'apr_result_wait'     => q~Registration pending for~,
+    'apr_result_reject'   => q~Registration rejected for~,
+    'apr_result_approved' => q~Registration approved for~,
+    'new_member_info'     => q~New Member Registration.~,
 );
 
-$yabbtags{'preregemail'} = q~displayname preregspan cryptusername activationcode~;
-$emaildesc{'preregemail'} = q~The Registration E-mail that is sent out when using Activation link~;
+$yabbtags{'preregemail'} =
+  q~displayname preregspan cryptusername activationcode~;
+$emaildesc{'preregemail'} =
+  q~The Registration E-mail that is sent out when using Activation link~;
 $preregemail = q~Welcome, {yabb displayname}!
 Here is your account validation link.
 
@@ -90,7 +96,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'approveregemail'} = q~username displayname~;
-$emaildesc{'approveregemail'} = q~The Pending Approval E-mail when not sending a password or Activation link~;
+$emaildesc{'approveregemail'} =
+  q~The Pending Approval E-mail when not sending a password or Activation link~;
 $approveregemail = q~Hello, {yabb displayname}!
 
 Your application with login ID: "{yabb username}" is pending approval of the {yabb mbname} administration.
@@ -102,7 +109,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'instantapprovedemail'} = q~username displayname reviewer~;
-$emaildesc{'instantapprovedemail'} = q~The Instant Approval E-mail when not sending a password or Activation link~;
+$emaildesc{'instantapprovedemail'} =
+  q~The Instant Approval E-mail when not sending a password or Activation link~;
 $instantapprovedemail = q~Hello, {yabb displayname}!
 
 Congratulations and welcome.
@@ -117,7 +125,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'pwinstantapprovedemail'} = q~username displayname reviewer password~;
-$emaildesc{'pwinstantapprovedemail'} = q~The Instant Approval E-mail when sending a password~;
+$emaildesc{'pwinstantapprovedemail'} =
+  q~The Instant Approval E-mail when sending a password~;
 $pwinstantapprovedemail = q~Hello, {yabb displayname}!
 
 Congratulations and welcome.
@@ -133,7 +142,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'instantrejectedemail'} = q~username displayname reviewer~;
-$emaildesc{'instantrejectedemail'} = q~The Instant Decline E-mail when not sending a password or Activation link~;
+$emaildesc{'instantrejectedemail'} =
+  q~The Instant Decline E-mail when not sending a password or Activation link~;
 $instantrejectedemail = q~Hello, {yabb displayname}!
 
 We regret to inform you that your membership application has been instantly rejected by {yabb reviewer} from the {yabb mbname} administration.
@@ -145,7 +155,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'reviewapprovedemail'} = q~username displayname reviewer~;
-$emaildesc{'reviewapprovedemail'} = q~The Reviewed Approval E-mail when not sending a password or Activation link~;
+$emaildesc{'reviewapprovedemail'} =
+q~The Reviewed Approval E-mail when not sending a password or Activation link~;
 $reviewapprovedemail = q~Hello, {yabb displayname}!
 
 Congratulations and welcome.
@@ -163,7 +174,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'pwreviewapprovedemail'} = q~username displayname reviewer password~;
-$emaildesc{'pwreviewapprovedemail'} = q~The Reviewed Approval E-mail when sending a password~;
+$emaildesc{'pwreviewapprovedemail'} =
+  q~The Reviewed Approval E-mail when sending a password~;
 $pwreviewapprovedemail = q~Hello, {yabb displayname}!
 
 Congratulations and welcome.
@@ -182,7 +194,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'reviewrejectedemail'} = q~username displayname reviewer reason~;
-$emaildesc{'reviewrejectedemail'} = q~The Reviewed Decline E-mail when not sending a password or Activation link~;
+$emaildesc{'reviewrejectedemail'} =
+  q~The Reviewed Decline E-mail when not sending a password or Activation link~;
 $reviewrejectedemail = q~Hello, {yabb displayname}!
 
 We regret to inform you that your membership application has been reviewed and rejected by {yabb reviewer} from the {yabb mbname} administration.
@@ -196,7 +209,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'passwordregemail'} = q~username password displayname~;
-$emaildesc{'passwordregemail'} = q~The Registration E-mail when giving the user a random password~;
+$emaildesc{'passwordregemail'} =
+  q~The Registration E-mail when giving the user a random password~;
 $passwordregemail = q~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
@@ -209,7 +223,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'welcomeregemail'} = q~username password displayname~;
-$emaildesc{'welcomeregemail'} = q~The Registration E-mail when not sending a password or Activation link~;
+$emaildesc{'welcomeregemail'} =
+  q~The Registration E-mail when not sending a password or Activation link~;
 $welcomeregemail = q~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
@@ -222,7 +237,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'activatedpassregemail'} = q~username password displayname~;
-$emaildesc{'activatedpassregemail'} = q~The Registration Activation Result E-mail (sending a password)~;
+$emaildesc{'activatedpassregemail'} =
+  q~The Registration Activation Result E-mail (sending a password)~;
 $activatedpassregemail = q~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
@@ -235,7 +251,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'activatedwelcomeregemail'} = q~username password displayname~;
-$emaildesc{'activatedwelcomeregemail'} = q~The Registration Activation Result E-mail (not sending a password)~;
+$emaildesc{'activatedwelcomeregemail'} =
+  q~The Registration Activation Result E-mail (not sending a password)~;
 $activatedwelcomeregemail = q~Welcome, {yabb displayname}!
 
 Your user ID is {yabb username}, and your password is {yabb password}.
@@ -247,9 +264,9 @@ You may change your password after you login by clicking on the User CP tab at t
 Regards,
 The {yabb mbname} team~;
 
-$yabbtags{'newmemberemail'} = q~displayname username userip useremail~;
+$yabbtags{'newmemberemail'}  = q~displayname username userip useremail~;
 $emaildesc{'newmemberemail'} = q~The New Member Admin Notification E-mail~;
-$newmemberemail = q~A new member has registered in your forum.
+$newmemberemail              = q~A new member has registered in your forum.
 
 Screen Name: {yabb displayname}
 User ID: {yabb username}
@@ -266,7 +283,8 @@ To examine the profile of the new member please log in to your Forum.
 Regards,
 The {yabb mbname} team~;
 
-$yabbtags{'passwordreminderemail'} = q~displayname mbname remindercode cryptusername~;
+$yabbtags{'passwordreminderemail'} =
+  q~displayname mbname remindercode cryptusername~;
 $emaildesc{'passwordreminderemail'} = q~The Password Reset E-mail~;
 $passwordreminderemail = q~Dear {yabb displayname},
 
@@ -279,8 +297,10 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'boardnewtopicnotificationemail'} = q~num subject tmessage tauthor~;
-$emaildesc{'boardnewtopicnotificationemail'} = q~The Notification E-mail (Board-Level, New Topic)~;
-$boardnewtopicnotificationemail = q~A new topic, "{yabb subject}", has been posted from {yabb tauthor} to a board you are watching.
+$emaildesc{'boardnewtopicnotificationemail'} =
+  q~The Notification E-mail (Board-Level, New Topic)~;
+$boardnewtopicnotificationemail =
+q~A new topic, "{yabb subject}", has been posted from {yabb tauthor} to a board you are watching.
 
 ########################################
 
@@ -294,8 +314,10 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'boardnotificationemail'} = q~num start subject tmessage tauthor~;
-$emaildesc{'boardnotificationemail'} = q~The Notification E-mail (Board-Level, Existing Topic)~;
-$boardnotificationemail = q~A reply, "{yabb subject}", has been posted from {yabb tauthor} to a board you are watching.
+$emaildesc{'boardnotificationemail'} =
+  q~The Notification E-mail (Board-Level, Existing Topic)~;
+$boardnotificationemail =
+q~A reply, "{yabb subject}", has been posted from {yabb tauthor} to a board you are watching.
 
 ########################################
 
@@ -308,9 +330,10 @@ View it at <a href="{yabb num}/{yabb start}">{yabb num}/{yabb start}</a>
 Regards,
 The {yabb mbname} team~;
 
-$yabbtags{'topicnotificationemail'} = q~num subject start tmessage tauthor~;
+$yabbtags{'topicnotificationemail'}  = q~num subject start tmessage tauthor~;
 $emaildesc{'topicnotificationemail'} = q~The Notification E-mail (Topic-Level)~;
-$topicnotificationemail = q~A reply, "{yabb subject}", has been posted by {yabb tauthor} to a topic you are watching.
+$topicnotificationemail =
+q~A reply, "{yabb subject}", has been posted by {yabb tauthor} to a topic you are watching.
 
 ########################################
 
@@ -326,7 +349,8 @@ Regards,
 The {yabb mbname} team~;
 
 $yabbtags{'profilenewpasswordemail'} = q~displayname password~;
-$emaildesc{'profilenewpasswordemail'} = q~The Profile E-mail for sending a new password when the existing one is changed~;
+$emaildesc{'profilenewpasswordemail'} =
+q~The Profile E-mail for sending a new password when the existing one is changed~;
 $profilenewpasswordemail = q~Dear {yabb displayname},
 
 Your password has been changed. It is now {yabb password}.
@@ -336,9 +360,9 @@ You may change your password after you login by clicking on the User CP tab at t
 Regards,
 The {yabb mbname} team~;
 
-$yabbtags{'sendtopicemail'} = q~toname subject displayname num~;
+$yabbtags{'sendtopicemail'}  = q~toname subject displayname num~;
 $emaildesc{'sendtopicemail'} = q~The E-mail for sending a Topic~;
-$sendtopicemail = q~Dear {yabb toname},
+$sendtopicemail              = q~Dear {yabb toname},
 I want you to check out the following topic, "{yabb subject}", on {yabb mbname}. To view it, please click the link below:
 
 <a href="{yabb num}">{yabb num}</a>
@@ -347,8 +371,10 @@ Thanks,
 {yabb displayname}~;
 
 $yabbtags{'privatemessagenotificationemail'} = q~sender subject message~;
-$emaildesc{'privatemessagenotificationemail'} = q~The Personal Message Notification E-mail~;
-$privatemessagenotificationemail = q~{yabb sender} has sent you a personal message.
+$emaildesc{'privatemessagenotificationemail'} =
+  q~The Personal Message Notification E-mail~;
+$privatemessagenotificationemail =
+  q~{yabb sender} has sent you a personal message.
 
 Subject: {yabb subject}
 Message: {yabb message}
@@ -358,13 +384,13 @@ This message is also in your personal message inbox at {yabb mbname}\: <a href="
 
 ## for online alert pms.
 %online_alert = (
-newnotify => qq~New post alert.~,
-replynotify => qq~Reply alert.~,
+    newnotify   => q~New post alert.~,
+    replynotify => q~Reply alert.~,
 );
 
-$yabbtags{'replyguestmail'} = q~sender email sendto date subject message~;
+$yabbtags{'replyguestmail'}  = q~sender email sendto date subject message~;
 $emaildesc{'replyguestmail'} = q~The Reply Guest PM to Admin E-mail~;
-$replyguestmail = q~Dear {yabb sender},
+$replyguestmail              = q~Dear {yabb sender},
 
 Regards,
 The {yabb mbname} team
@@ -380,10 +406,10 @@ Subject: {yabb subject}
 {yabb message}
 ~;
 
-$yabbtags{'deleteduseremail'} = q~displayname~;
+$yabbtags{'deleteduseremail'}  = q~displayname~;
 $emaildesc{'deleteduseremail'} = q~The Deleted User Notification E-mail~;
-$deletedusersybject = q~Your account deleted on~;
-$deleteduseremail = q~Hello, {yabb displayname}!
+$deletedusersybject            = q~Your account deleted on~;
+$deleteduseremail              = q~Hello, {yabb displayname}!
 
 Your account on {yabb mbname} is no longer active and has been deleted.
 
@@ -392,10 +418,10 @@ The {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'banneduseremail'} = q~displayname~;
+$yabbtags{'banneduseremail'}  = q~displayname~;
 $emaildesc{'banneduseremail'} = q~The Banned User Notification E-mail~;
-$bannedusersybject = q~Your account banned on~;
-$banneduseremail = q~Hello, {yabb displayname}:
+$bannedusersybject            = q~Your account banned on~;
+$banneduseremail              = q~Hello, {yabb displayname}:
 
 You have been banned from {yabb mbname} {yabb ban_time} by {yabb banner}{yabb ban_reason}.
 
@@ -404,10 +430,10 @@ The {yabb mbname} team
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'suspendeduseremail'} = q~displayname~;
+$yabbtags{'suspendeduseremail'}  = q~displayname~;
 $emaildesc{'suspendeduseremail'} = q~The Suspended User Notification E-mail~;
-$suspendusersybject = q~Your account suspended on~;
-$suspendeduseremail = q~Hello, {yabb displayname}:
+$suspendusersybject              = q~Your account suspended on~;
+$suspendeduseremail              = q~Hello, {yabb displayname}:
 
 Your account on {yabb mbname} has been suspended {yabb ban_time} by {yabb banner}{yabb ban_reason}.
 

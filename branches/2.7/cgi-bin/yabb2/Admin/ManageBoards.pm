@@ -1855,7 +1855,7 @@ sub reorder_boards {
             get_subboards2(@chk);
 
             $catboardlist_js .= qq~
-                catboardlist['$category'] = '$catboardlist{$category}';
+                catboardlist['$category'] = "$catboardlist{$category}";
             ~;
         }
     }

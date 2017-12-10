@@ -371,7 +371,7 @@ sub plush_search2 {
     elsif ( $searchtype eq 'asphrase' )  { $searchtype = 3; }
     elsif ( $searchtype eq 'aspartial' ) { $searchtype = 4; }
     else                                 { $searchtype = 1; }
-    my $search = $FORM{'search'};
+    my $search = $FORM{'search'} || q{};
     $search = from_chars($search);
     $search =~ s/\A\s+//xsm;
     $search =~ s/\s+\Z//xsm;

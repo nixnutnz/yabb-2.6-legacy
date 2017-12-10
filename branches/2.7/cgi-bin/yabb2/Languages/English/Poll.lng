@@ -11,63 +11,71 @@
 # Software by: The YaBB Development Team                                      #
 #              with assistance from the YaBB community.                       #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishpolllngver = 'YaBB 2.7.00 $Revision$';
+$englishpolllngver  = 'YaBB 2.7.00 $Revision$';
 @englishpolllngmods = ();
-if(@englishpolllngmods){
+if (@englishpolllngmods) {
     $englishpolllngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %polltxt = (
-'4' => q~Poll Question~,
-'6' => q~Question~,
-'7' => q~Option~,
-'15' => q~Poll~,
-'16' => q~Question~,
-'17' => q~Total votes~,
-'18' => q~Submit Vote~,
-'19' => q~View Results~,
-'20' => q~Open~,
-'21' => q~Close~,
-'22' => q~*** This poll has now closed ***~,
-'23' => q~Details for Poll:~,
-'24' => q~Votes~,
-'25' => q~Nobody voted for this option.~,
-'26' => q~Hide results:~,
-'27' => q~Remove~,
-'30' => q~IP Address~,
-'31' => q~Date Voted~,
-'32' => q~Enable Guest Voting:~,
-'33' => q~View Votes~,
-'35' => q~Name~,
-'39' => q~Modify~,
-'40' => q~The poll question~,
-'41' => q~There was an illegal character in your poll question. Please try again.~,
-'42' => q~Poll Details~,
-'43' => q~Remove Vote~,
-'44' => q~Are you sure you want to delete this poll?~,
-'45' => q~Created by~,
-'45a' => q~Last Modified by~,
-'46' => q~on~,
-'47' => q~Thank you for voting in this poll.~,
-'48' => q~The results however will remain hidden until all the votes have been counted.~,
-'49' => q~Remove Votes~,
-'53' => q~*** No-one else can see these results until the poll is closed ***~,
-'54' => q~Check this if you want guests to be able to vote in this poll.~,
-'55' => q~Check this if you do not want the results of this poll shown until voting has been closed.~,
-'56' => q~Check this if you want to allow users to vote for more than one option.~,
-'57' => q~The poll comment~,
-'58' => q~Multiple Choice~,
-'59' => q~Poll Comment~,
-'64' => q~Your vote was on~,
-'65' => q~Your vote choice was~,
-'66' => q~Your vote choices were~,
-'showcased' => q~Currently Being Showcased~,
-'setshowcased' => q~Set Poll Showcased?~,
-'showcaserem' => q~Remove Poll from Showcase?~,
-'confirm' => q~Are you sure you want to Showcase this Poll?\\nAnother Poll is already Showcased.~, # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
+    '4'  => q~Poll Question~,
+    '6'  => q~Question~,
+    '7'  => q~Option~,
+    '15' => q~Poll~,
+    '16' => q~Question~,
+    '17' => q~Total votes~,
+    '18' => q~Submit Vote~,
+    '19' => q~View Results~,
+    '20' => q~Open~,
+    '21' => q~Close~,
+    '22' => q~*** This poll has now closed ***~,
+    '23' => q~Details for Poll:~,
+    '24' => q~Votes~,
+    '25' => q~Nobody voted for this option.~,
+    '26' => q~Hide results:~,
+    '27' => q~Remove~,
+    '30' => q~IP Address~,
+    '31' => q~Date Voted~,
+    '32' => q~Enable Guest Voting:~,
+    '33' => q~View Votes~,
+    '35' => q~Name~,
+    '39' => q~Modify~,
+    '40' => q~The poll question~,
+    '41' =>
+q~There was an illegal character in your poll question. Please try again.~,
+    '42'  => q~Poll Details~,
+    '43'  => q~Remove Vote~,
+    '44'  => q~Are you sure you want to delete this poll?~,
+    '45'  => q~Created by~,
+    '45a' => q~Last Modified by~,
+    '46'  => q~on~,
+    '47'  => q~Thank you for voting in this poll.~,
+    '48' =>
+q~The results however will remain hidden until all the votes have been counted.~,
+    '49' => q~Remove Votes~,
+    '53' =>
+      q~*** No-one else can see these results until the poll is closed ***~,
+    '54' => q~Check this if you want guests to be able to vote in this poll.~,
+    '55' =>
+q~Check this if you do not want the results of this poll shown until voting has been closed.~,
+    '56' =>
+q~Check this if you want to allow users to vote for more than one option.~,
+    '57'           => q~The poll comment~,
+    '58'           => q~Multiple Choice~,
+    '59'           => q~Poll Comment~,
+    '64'           => q~Your vote was on~,
+    '65'           => q~Your vote choice was~,
+    '66'           => q~Your vote choices were~,
+    'showcased'    => q~Currently Being Showcased~,
+    'setshowcased' => q~Set Poll Showcased?~,
+    'showcaserem'  => q~Remove Poll from Showcase?~,
+    'confirm' =>
+q~Are you sure you want to Showcase this Poll?\\nAnother Poll is already Showcased.~,
+# Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
 );
 
 1;

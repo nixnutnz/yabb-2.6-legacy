@@ -11,10 +11,11 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
+our $VERSION = '2.7.00';
 
-$englishmycenterlngver = 'YaBB 2.7.00 $Revision$';
+$englishmycenterlngver  = 'YaBB 2.7.00 $Revision$';
 @englishmycenterlngmods = ();
-if(@englishmycenterlngmods){
+if (@englishmycenterlngmods) {
     $englishmycenterlngmods = 1;
 }
 $action ||= q{};
@@ -23,58 +24,55 @@ if ( $action eq 'detailedversion' ) { return 1; }
 ## LEAVE USERLABEL intact. Move within the string for correct language syntax!
 
 %mycenter_txt = (
-'welcometxt' => q~USERLABEL's Control Panel~,
-'buddylisttitle' => q~Your Buddies~,
-'buddylistnone' => q~Your Buddy List is empty~,
-'buddydeleted' => q~This Buddy was deleted. The name is no longer available.~,
-'hiddenemail' => q~Hidden E-mail~,
-'currentsettings' => q~Your current Settings:~,
-'onoffstatus' => q~Online/Offline Status:~,
-'onoffstatuson' => q~Online/Offline~,
-'onoffstatusaway' => q~Away~,
-'view' => q~View~,
-'stealth' => q~Stealth:~,
-'stealth_off' => q~Stealth Mode Off~,
-'stealth_on' => q~Stealth Mode On~,
-'posts' => q~Posts~,
-'location' => q~Location~,
-'mylastposts' => q~View my last 5 posts~,
+    'welcometxt'     => q~USERLABEL's Control Panel~,
+    'buddylisttitle' => q~Your Buddies~,
+    'buddylistnone'  => q~Your Buddy List is empty~,
+    'buddydeleted' =>
+      q~This Buddy was deleted. The name is no longer available.~,
+    'hiddenemail'     => q~Hidden E-mail~,
+    'currentsettings' => q~Your current Settings:~,
+    'onoffstatus'     => q~Online/Offline Status:~,
+    'onoffstatuson'   => q~Online/Offline~,
+    'onoffstatusaway' => q~Away~,
+    'view'            => q~View~,
+    'stealth'         => q~Stealth:~,
+    'stealth_off'     => q~Stealth Mode Off~,
+    'stealth_on'      => q~Stealth Mode On~,
+    'posts'           => q~Posts~,
+    'location'        => q~Location~,
+    'mylastposts'     => q~View my last 5 posts~,
 );
 
-%display_txt = (
-'139' => q~Pages~,
-);
+%display_txt = ( '139' => q~Pages~, );
 
 %mc_menus = (
-'messages' => q~Messages~,
-'profile' => q~Profile~,
-'posts' => q~Posts~,
+    'messages' => q~Messages~,
+    'profile'  => q~Profile~,
+    'posts'    => q~Posts~,
 );
 
 %pm_search = (
-'all' => q~All~,
-'justthis' => q~This folder only~,
-'byuser' => q~by Screen Name~,
-'desc' => q~Search my PMs~,
-'search' => q~Search~,
+    'all'      => q~All~,
+    'justthis' => q~This folder only~,
+    'byuser'   => q~by Screen Name~,
+    'desc'     => q~Search my PMs~,
+    'search'   => q~Search~,
 );
 
-%mc_folders = (
-'foldername' => q~Folder Name~,
-);
+%mc_folders = ( 'foldername' => q~Folder Name~, );
 
 %my_favs = (
-'70' => q~Subject~,
-'109' => q~Started By~,
-'110' => q~Replies~,
-'301' => q~Views~,
-'330' => q~Topics~,
-'21' => q~Posts~,
-'22' => q~Last Post~,
-'525' => q~By~,
-'526' => q~by~,
-'527' => q~Started~,
-'737' => q~Check all~,
+    '70'  => q~Subject~,
+    '109' => q~Started By~,
+    '110' => q~Replies~,
+    '301' => q~Views~,
+    '330' => q~Topics~,
+    '21'  => q~Posts~,
+    '22'  => q~Last Post~,
+    '525' => q~By~,
+    '526' => q~by~,
+    '527' => q~Started~,
+    '737' => q~Check all~,
 );
 
 1;
