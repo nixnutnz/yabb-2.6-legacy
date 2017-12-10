@@ -147,7 +147,7 @@ qq~$guardian_txt{'abuse_ip'}: (REMOTE_ADDR)->$proxy0, (X_IP_CLIENT)->$proxy1, (H
         my @refererlist = split /[|]/xsm, lc $banned_referers;
         my $streferer = lc get_referer();
         foreach my $i (@refererlist) {
-            chomp;
+            chomp $i;
             if ( $streferer =~ m/$i/xsm && $i ne q{} ) {
                 load_language('Guardian');
                 $abuse_time = timeformat( $date, 1, 'rfc', 1 );
@@ -192,7 +192,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
         my @harvesterlist = split /[|]/xsm, lc $banned_harvesters;
         my $agent = lc get_user_agent();
         foreach my $i (@harvesterlist) {
-            chomp;
+            chomp $i;
             if ( $agent =~ m/$i/xsm && $i ne q{} ) {
                 if ($harvester_notify) {
                     load_language('Guardian');
@@ -237,7 +237,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
         my @requestlist = split /[|]/xsm, lc $banned_requests;
         my $method = lc get_request_method();
         foreach my $i (@requestlist) {
-            chomp;
+            chomp $i;
             if ( $method =~ m/$i/xsm && $i ne q{} ) {
                 if ($request_notify) {
                     load_language('Guardian');
@@ -283,7 +283,7 @@ qq~$guardian_txt{'abuse_user'}: $username -> (${ $uid . $username }{'realname'})
         my $temp_query = lc $querystring;
         my @stringlist = split /[|]/xsm, lc $banned_strings;
         foreach my $i (@stringlist) {
-            chomp;
+            chomp $i;
             foreach my $testkey ( keys %director )
             { ## strip off all existing command strings from the temporary query ##
                 chomp $testkey;

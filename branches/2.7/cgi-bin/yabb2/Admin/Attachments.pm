@@ -1138,9 +1138,9 @@ sub remove_ghostattach {
 sub remove_attachments
 {    # remove single or multiple attachments stored in a hash-reference
     my $count = 0;
-    my $threadhashref =
-      shift; # usage: ${$ThreadHashref}{'threadnum'} = 'filename1|filename2|...'
-        # all attachments of thread are included if filname is undefined (undef)
+    my $threadhashref = shift;
+# usage: ${$ThreadHashref}{'threadnum'} = 'filename1|filename2|...'
+# all attachments of thread are included if filname is undefined (undef)
 
     if ( !%{$threadhashref} ) { return $count; }
 
@@ -1157,7 +1157,9 @@ sub remove_attachments
     foreach (@attachments) {
         ( undef, undef, undef, undef, undef, undef, undef, $afilename, undef )
           = split /[|]/xsm;
-        $del_filename{$afilename}++;
+        if ($afilename) {
+            $del_filename{$afilename}++;
+        }
     }
     foreach my $i ( 0 .. $#attachments ) {
         (

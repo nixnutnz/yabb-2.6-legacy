@@ -446,7 +446,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
         redirectexit();
     }
 
-    if ( !ref $thread_arrayref{$threadid} ) {
+    if ( $threadid && !ref $thread_arrayref{$threadid} ) {
         our ($FILE);
         fopen( 'FILE', '<', "$datadir/$threadid.txt" )
           or fatal_error( 'cannot_open', "$datadir/$threadid.txt", 1 );
@@ -455,7 +455,7 @@ qq~$votes|$FORM{"option$i"}|$FORM{"slicecol$i"}|$FORM{"split$i"}\n~;
     }
 
     # Make sure the user is allowed to edit this post.
-    if ( $postid >= 0 && $postid < @{ $thread_arrayref{$threadid} } ) {
+    if ( $threadid && $postid >= 0 && $postid < @{ $thread_arrayref{$threadid} } ) {
         {
             no strict qw(refs);
             (

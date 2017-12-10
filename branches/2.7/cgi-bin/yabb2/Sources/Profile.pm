@@ -2592,11 +2592,11 @@ sub edit_avatar {
     if ( $allowpics && $upload_useravatar && $upload_avatargroup ) {
         $upload_useravatar = 0;
         foreach my $av_gr ( split /,\s/xsm, $upload_avatargroup ) {
-            if ( $av_gr eq ${ $uid . $user }{'position'} ) {
+            if ( ${ $uid . $user }{'position'} && $av_gr eq ${ $uid . $user }{'position'} ) {
                 $upload_useravatar = 1;
                 last;
             }
-            for ( split /,/xsm, ${ $uid . $user }{'addgroups'} ) {
+            for ( split /,/xsm, ${ $uid . $user }{'addgroups'} || q{} ) {
                 if ( $av_gr eq $_ ) { $upload_useravatar = 1; last; }
             }
         }
@@ -3043,11 +3043,11 @@ sub get_avatar {
     if ( $allowpics && $upload_useravatar && $upload_avatargroup ) {
         $upload_useravatar = 0;
         foreach my $av_gr ( split /,\s/xsm, $upload_avatargroup ) {
-            if ( $av_gr eq ${ $uid . $user }{'position'} ) {
+            if ( ${ $uid . $user }{'position'} && $av_gr eq ${ $uid . $user }{'position'} ) {
                 $upload_useravatar = 1;
                 last;
             }
-            for ( split /,/xsm, ${ $uid . $user }{'addgroups'} ) {
+            for ( split /,/xsm, ${ $uid . $user }{'addgroups'} || q{} ) {
                 if ( $av_gr eq $_ ) { $upload_useravatar = 1; last; }
             }
         }
