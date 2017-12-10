@@ -17,7 +17,7 @@
 ##  Based on English Rev 1920 ##
 
 no warnings;
-$german_informalerrorlngver = 'YaBB 2.7.00 $Revision: 1920 $';
+$german_informalerrorlngver = 'YaBB 2.7.00 $Revision$';
 @german_informalerrorlngmods = ();
 if (@german_informalerrorlngmods) {
     $german_informalerrorlngmods = 1;

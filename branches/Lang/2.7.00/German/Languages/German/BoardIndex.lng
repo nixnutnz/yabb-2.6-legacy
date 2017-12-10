@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanboardindexlngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanboardindexlngver = 'YaBB 2.7.00 $Revision$';
 @germanboardindexlngmods = ();
 if (@germanboardindexlngmods) {
     $germanboardindexlngmods = 1;

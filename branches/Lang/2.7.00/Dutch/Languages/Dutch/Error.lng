@@ -17,7 +17,7 @@
 our $VERSION = '2.7.00';
 
 no warnings;
-$dutcherrorlngver  = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutcherrorlngver  = 'YaBB 2.7.00 $Revision$';
 @dutcherrorlngmods = ();
 if (@dutcherrorlngmods) {
     $dutcherrorlngmods = 1;

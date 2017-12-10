@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$suomitemplateslngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomitemplateslngver  = 'YaBB 2.7.00 $Revision$';
 @suomitemplateslngmods = ();
 if (@suomitemplateslngmods) {
     $suomitemplateslngmods = 1;

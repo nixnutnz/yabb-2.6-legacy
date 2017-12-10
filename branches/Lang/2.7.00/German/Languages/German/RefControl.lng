@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanrefcontrollngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanrefcontrollngver = 'YaBB 2.7.00 $Revision$';
 @germanrefcontrollngmods = ();
 if (@germanrefcontrollngmods) {
     $germanrefcontrollngmods = 1;

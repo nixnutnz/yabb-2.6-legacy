@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$suomibookmarkslngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomibookmarkslngver  = 'YaBB 2.7.00 $Revision$';
 @suomibookmarkslngmods = ();
 if (@suomibookmarkslngmods) {
     $suomibookmarkslngmods = 1;

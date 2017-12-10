@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalsendtopiclngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalsendtopiclngver = 'YaBB 2.7.00 $Revision$';
 @german_informalsendtopiclngmods = ();
 if (@german_informalsendtopiclngmods) {
     $german_informalsendtopiclngmods = 1;

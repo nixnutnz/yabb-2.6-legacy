@@ -17,7 +17,7 @@
 ##  Based on English Rev 1928 ##
 our $VERSION = '2.7.00';
 
-$german_formalinstantmessagelngver  = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_formalinstantmessagelngver  = 'YaBB 2.7.00 $Revision$';
 @german_formalinstantmessagelngmods = ();
 if (@german_formalinstantmessagelngmods) {
     $german_formalinstantmessagelngmods = 1;

@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germancreditslngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germancreditslngver = 'YaBB 2.7.00 $Revision$';
 @germancreditslngmods = ();
 if (@germancreditslngmods) {
     $germancreditslngmods = 1;

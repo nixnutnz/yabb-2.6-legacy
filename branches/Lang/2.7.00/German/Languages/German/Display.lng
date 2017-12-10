@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germandisplaylngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germandisplaylngver = 'YaBB 2.7.00 $Revision$';
 @germandisplaylngmods = ();
 if (@germandisplaylngmods) {
     $germandisplaylngmods = 1;

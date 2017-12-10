@@ -17,7 +17,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$german_formalsendtopiclngver  = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_formalsendtopiclngver  = 'YaBB 2.7.00 $Revision$';
 @german_formalsendtopiclngmods = ();
 if (@german_formalsendtopiclngmods) {
     $german_formalsendtopiclngmods = 1;

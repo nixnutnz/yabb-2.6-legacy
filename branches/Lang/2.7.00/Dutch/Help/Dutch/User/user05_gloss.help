@@ -1,4 +1,4 @@
-$dutchuser_user05_glosshelpver = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutchuser_user05_glosshelpver = 'YaBB 2.7.00 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 $section_name = "YaBB_Terminologie";
 

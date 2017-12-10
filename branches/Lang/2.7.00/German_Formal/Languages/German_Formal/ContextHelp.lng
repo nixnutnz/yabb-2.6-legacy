@@ -20,7 +20,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$german_formalcontexthelplngver  = 'YaBB 2.7.00 $Revision: 1848 $';
+$german_formalcontexthelplngver  = 'YaBB 2.7.00 $Revision$';
 @german_formalcontexthelplngmods = ();
 if (@german_formalcontexthelplngmods) {
     $german_formalcontexthelplngmods = 1;

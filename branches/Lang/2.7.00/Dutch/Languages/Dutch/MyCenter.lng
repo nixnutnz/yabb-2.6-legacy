@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchmycenterlngver  = 'YaBB 2.7.00 $Revision: 1848 $';
+$dutchmycenterlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchmycenterlngmods = ();
 if (@dutchmycenterlngmods) {
     $dutchmycenterlngmods = 1;

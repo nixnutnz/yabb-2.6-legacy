@@ -19,7 +19,7 @@
 ##  Based on English Rev 1925 ##
 our $VERSION = '2.7.00';
 
-$dutcheventcallngver  = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutcheventcallngver  = 'YaBB 2.7.00 $Revision$';
 @dutcheventcallngmods = ();
 if (@dutcheventcallngmods) {
     $dutcheventcallngmods = 1;

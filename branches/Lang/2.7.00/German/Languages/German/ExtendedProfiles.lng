@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanextendedprofileslngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanextendedprofileslngver = 'YaBB 2.7.00 $Revision$';
 @germanextendedprofileslngmods = ();
 if (@germanextendedprofileslngmods) {
     $germanextendedprofileslngmods = 1;

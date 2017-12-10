@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanmycenterlngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanmycenterlngver = 'YaBB 2.7.00 $Revision$';
 @germanmycenterlngmods = ();
 if (@germanmycenterlngmods) {
     $germanmycenterlngmods = 1;

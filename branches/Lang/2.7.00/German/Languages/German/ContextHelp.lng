@@ -18,7 +18,7 @@
 # for his contribution to the YaBB community                                  #
 ###############################################################################
 
-$germancontexthelplngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germancontexthelplngver = 'YaBB 2.7.00 $Revision$';
 @germancontexthelplngmods = ();
 if (@germancontexthelplngmods) {
     $germancontexthelplngmods = 1;

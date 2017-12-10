@@ -11,7 +11,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germansetuplngver = 'YaBB 2.7.00 $Revision: 1882 $';
+$germansetuplngver = 'YaBB 2.7.00 $Revision$';
 
 %mylang     = (
     'loggedin' => q~Sie sind angemeldet als <i>{realname}</i>.<br />Klicken Sie auf 'Setup fortsetzen', um fortzufahren.~,

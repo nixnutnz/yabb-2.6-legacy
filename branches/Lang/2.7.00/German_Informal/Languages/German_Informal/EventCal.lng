@@ -18,7 +18,7 @@
 ###############################################################################
 ##  Based on English Rev 1925 ##
 
-$german_informaleventcallngver = 'YaBB 2.7.00 $Revision: 1925 $';
+$german_informaleventcallngver = 'YaBB 2.7.00 $Revision$';
 @german_informaleventcallngmods = ();
 if (@german_informaleventcallngmods) {
     $german_informaleventcallngmods = 1;

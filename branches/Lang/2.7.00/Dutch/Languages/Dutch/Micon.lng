@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchmiconlngver  = 'YaBB 2.7.00 $Revision: 1933 $';
+$dutchmiconlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchmiconlngmods = ();
 if (@dutchmiconlngmods) {
     $dutchmiconlngmods = 1;

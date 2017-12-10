@@ -17,7 +17,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$german_formalmemberlistlngver  = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_formalmemberlistlngver  = 'YaBB 2.7.00 $Revision$';
 @german_formalmemberlistlngmods = ();
 if (@german_formalmemberlistlngmods) {
     $german_formalmemberlistlngmods = 1;

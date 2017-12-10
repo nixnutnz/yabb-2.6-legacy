@@ -19,7 +19,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchcontexthelplngver  = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutchcontexthelplngver  = 'YaBB 2.7.00 $Revision$';
 @dutchcontexthelplngmods = ();
 if (@dutchcontexthelplngmods) {
     $dutchcontexthelplngmods = 1;

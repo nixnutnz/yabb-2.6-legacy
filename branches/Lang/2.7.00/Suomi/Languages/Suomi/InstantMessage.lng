@@ -13,7 +13,7 @@
 ##  Based on English Rev 1928 ##
 our $VERSION = '2.7.00';
 
-$suomiinstantmessagelngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomiinstantmessagelngver  = 'YaBB 2.7.00 $Revision$';
 @suomiinstantmessagelngmods = ();
 if (@suomiinstantmessagelngmods) {
     $suomiinstantmessagelngmods = 1;

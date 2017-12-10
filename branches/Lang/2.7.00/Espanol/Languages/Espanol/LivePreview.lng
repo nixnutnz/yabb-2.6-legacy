@@ -17,7 +17,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$espanollivepreviewlngver  = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanollivepreviewlngver  = 'YaBB 2.7.00 $Revision$';
 @espanollivepreviewlngmods = ();
 if (@espanollivepreviewlngmods) {
     $espanollivepreviewlngmods = 1;

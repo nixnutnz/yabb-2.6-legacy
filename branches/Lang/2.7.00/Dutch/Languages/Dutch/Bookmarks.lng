@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchbookmarkslngver  = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutchbookmarkslngver  = 'YaBB 2.7.00 $Revision$';
 @dutchbookmarkslngmods = ();
 if (@dutchbookmarkslngmods) {
     $dutchbookmarkslngmods = 1;

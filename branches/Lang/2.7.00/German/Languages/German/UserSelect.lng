@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanuserselectlngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanuserselectlngver = 'YaBB 2.7.00 $Revision$';
 @germanuserselectlngmods = ();
 if (@germanuserselectlngmods) {
     $germanuserselectlngmods = 1;

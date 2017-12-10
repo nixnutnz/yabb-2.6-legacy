@@ -21,7 +21,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$german_formallivepreviewlngver  = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_formallivepreviewlngver  = 'YaBB 2.7.00 $Revision$';
 @german_formallivepreviewlngmods = ();
 if (@german_formallivepreviewlngmods) {
     $german_formallivepreviewlngmods = 1;

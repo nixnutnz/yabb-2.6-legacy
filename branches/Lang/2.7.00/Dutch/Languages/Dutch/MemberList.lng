@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchmemberlistlngver  = 'YaBB 2.7.00 $Revision: 1933 $';
+$dutchmemberlistlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchmemberlistlngmods = ();
 if (@dutchmemberlistlngmods) {
     $dutchmemberlistlngmods = 1;

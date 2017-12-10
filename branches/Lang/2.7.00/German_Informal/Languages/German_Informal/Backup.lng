@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalbackuplngver = 'YaBB 2.7.00 $Revision: 1848 $';
+$german_informalbackuplngver = 'YaBB 2.7.00 $Revision$';
 @german_informalbackuplngmods = ();
 if (@german_informalbackuplngmods) {
     $german_informalbackuplngmods = 1;

@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1924 ##
 
-$german_informalconvertlngver = 'YaBB 2.7.00 $Revision: 1924 $';
+$german_informalconvertlngver = 'YaBB 2.7.00 $Revision$';
 
 %conv1x_txt = (
 'title' => q~YaBB 2.7.00 Importeur / Konverter~,

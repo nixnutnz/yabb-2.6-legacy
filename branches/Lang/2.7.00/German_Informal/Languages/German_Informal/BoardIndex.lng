@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalboardindexlngver = 'YaBB 2.7.00 $Revision: 1848 $';
+$german_informalboardindexlngver = 'YaBB 2.7.00 $Revision$';
 @german_informalboardindexlngmods = ();
 if (@german_informalboardindexlngmods) {
     $german_informalboardindexlngmods = 1;

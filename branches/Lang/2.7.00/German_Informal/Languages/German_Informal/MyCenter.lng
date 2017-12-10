@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalmycenterlngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalmycenterlngver = 'YaBB 2.7.00 $Revision$';
 @german_informalmycenterlngmods = ();
 if (@german_informalmycenterlngmods) {
     $german_informalmycenterlngmods = 1;

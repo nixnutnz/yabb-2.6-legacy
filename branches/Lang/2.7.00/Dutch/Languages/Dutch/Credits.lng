@@ -16,7 +16,7 @@
 ##  Based on English Rev 1876 ##
 our $VERSION = '2.7.00';
 
-$dutchcreditslngver  = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutchcreditslngver  = 'YaBB 2.7.00 $Revision$';
 @dutchcreditslngmods = ();
 if (@dutchcreditslngmods) {
     $dutchcreditslngmods = 1;

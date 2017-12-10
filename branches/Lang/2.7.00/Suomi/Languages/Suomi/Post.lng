@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$suomipostlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomipostlngver  = 'YaBB 2.7.00 $Revision$';
 @suomipostlngmods = ();
 if (@suomipostlngmods) {
     $suomipostlngmods = 1;

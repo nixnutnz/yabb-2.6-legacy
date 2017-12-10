@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-our $german_informalemaillngver = 'YaBB 2.7.00 $Revision: 1874 $';
+our $german_informalemaillngver = 'YaBB 2.7.00 $Revision$';
 our $german_informalemaillngmods = 0;
 our @german_informalemaillngmods = ();
 if (@german_informalemaillngmods) {

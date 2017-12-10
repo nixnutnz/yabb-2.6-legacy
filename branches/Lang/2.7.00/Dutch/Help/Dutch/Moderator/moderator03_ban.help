@@ -1,4 +1,4 @@
-$dutchmoderator_moderator03_banhelpver = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutchmoderator_moderator03_banhelpver = 'YaBB 2.7.00 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 $section_name = "Forum_Moderator_en_Ban_Functies";
 

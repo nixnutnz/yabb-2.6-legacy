@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germantemplateslngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germantemplateslngver = 'YaBB 2.7.00 $Revision$';
 @germantemplateslngmods = ();
 if (@germantemplateslngmods) {
     $germantemplateslngmods = 1;

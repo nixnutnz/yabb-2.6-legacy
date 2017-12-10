@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanbackuplngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanbackuplngver = 'YaBB 2.7.00 $Revision$';
 @germanbackuplngmods = ();
 if (@germanbackuplngmods) {
     $germanbackuplngmods = 1;

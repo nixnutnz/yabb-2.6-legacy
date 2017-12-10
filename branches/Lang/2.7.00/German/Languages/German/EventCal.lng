@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germaneventcallngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germaneventcallngver = 'YaBB 2.7.00 $Revision$';
 @germaneventcallngmods = ();
 if (@germaneventcallngmods) {
     $germaneventcallngmods = 1;

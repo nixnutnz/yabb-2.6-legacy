@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1928 ##
 
-$german_informaladminlngver = 'YaBB 2.7.00 $Revision: 1904 $';
+$german_informaladminlngver = 'YaBB 2.7.00 $Revision$';
 @german_informaladminlngmods = ();
 if (@german_informaladminlngmods) {
     $german_informaladminlngmods = 1;

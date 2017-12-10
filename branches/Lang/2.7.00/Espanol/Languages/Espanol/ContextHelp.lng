@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$espanolcontexthelplngver  = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolcontexthelplngver  = 'YaBB 2.7.00 $Revision$';
 @espanolcontexthelplngmods = ();
 if (@espanolcontexthelplngmods) {
     $espanolcontexthelplngmods = 1;

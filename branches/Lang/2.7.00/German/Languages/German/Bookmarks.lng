@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanbookmarkslngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanbookmarkslngver = 'YaBB 2.7.00 $Revision$';
 @germanbookmarkslngmods = ();
 if (@germanbookmarkslngmods) {
     $germanbookmarkslngmods = 1;

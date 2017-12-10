@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1867 ##
 
-$german_informalfalngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalfalngver = 'YaBB 2.7.00 $Revision$';
 @german_informalfalngmods = ();
 if (@german_informalfalngmods) {
     $german_informalfalngmods = 1;

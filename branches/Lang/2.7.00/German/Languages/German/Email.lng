@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-our $germanemaillngver = 'YaBB 2.7.00 $Revision: 1879 $';
+our $germanemaillngver = 'YaBB 2.7.00 $Revision$';
 our $germanemaillngmods = 0;
 our @germanemaillngmods = ();
 if (@germanemaillngmods) {

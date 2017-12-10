@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalnotifylngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalnotifylngver = 'YaBB 2.7.00 $Revision$';
 @german_informalnotifylngmods = ();
 if (@german_informalnotifylngmods) {
     $german_informalnotifylngmods = 1;

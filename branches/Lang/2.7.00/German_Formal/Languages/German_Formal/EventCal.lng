@@ -19,7 +19,7 @@
 ##  Based on English Rev 1925 ##
 our $VERSION = '2.7.00';
 
-$german_formaleventcallngver  = 'YaBB 2.7.00 $Revision: 1925 $';
+$german_formaleventcallngver  = 'YaBB 2.7.00 $Revision$';
 @german_formaleventcallngmods = ();
 if (@german_formaleventcallngmods) {
     $german_formaleventcallngmods = 1;

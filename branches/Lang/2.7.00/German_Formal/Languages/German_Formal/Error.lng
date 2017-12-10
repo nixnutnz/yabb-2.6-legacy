@@ -18,7 +18,7 @@
 our $VERSION = '2.7.00';
 
 no warnings;
-$german_formalerrorlngver  = 'YaBB 2.7.00 $Revision: 1920 $';
+$german_formalerrorlngver  = 'YaBB 2.7.00 $Revision$';
 @german_formalerrorlngmods = ();
 if (@german_formalerrorlngmods) {
     $german_formalerrorlngmods = 1;

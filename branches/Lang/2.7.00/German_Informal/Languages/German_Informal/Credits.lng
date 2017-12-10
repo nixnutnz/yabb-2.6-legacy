@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1876 ##
 
-$german_informalcreditslngver = 'YaBB 2.7.00 $Revision: 1876 $';
+$german_informalcreditslngver = 'YaBB 2.7.00 $Revision$';
 @german_informalcreditslngmods = ();
 if (@german_informalcreditslngmods) {
     $german_informalcreditslngmods = 1;

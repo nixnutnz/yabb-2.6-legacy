@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$suomigmodprivilegeslngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomigmodprivilegeslngver  = 'YaBB 2.7.00 $Revision$';
 @suomigmodprivilegeslngmods = ();
 if (@suomigmodprivilegeslngmods) {
     $suomigmodprivilegeslngmods = 1;

@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$suomilivepreviewlngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomilivepreviewlngver  = 'YaBB 2.7.00 $Revision$';
 @suomilivepreviewlngmods = ();
 if (@suomilivepreviewlngmods) {
     $suomilivepreviewlngmods = 1;

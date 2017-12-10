@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1928 ##
 
-$german_informalinstantmessagelngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalinstantmessagelngver = 'YaBB 2.7.00 $Revision$';
 @german_informalinstantmessagelngmods = ();
 if (@german_informalinstantmessagelngmods) {
     $german_informalinstantmessagelngmods = 1;

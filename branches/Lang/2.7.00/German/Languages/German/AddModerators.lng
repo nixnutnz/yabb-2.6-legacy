@@ -19,7 +19,7 @@
 # Released: January 28, 2013, Copyright 2013 Carsten Dalgaard                 #
 ###############################################################################
 
-$germanaddmoderatorslngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanaddmoderatorslngver = 'YaBB 2.7.00 $Revision$';
 @germanaddmoderatorslngmods = ();
 if (@germanaddmoderatorslngmods) {
     $germanaddmoderatorslngmods = 1;

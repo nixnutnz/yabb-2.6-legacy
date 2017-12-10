@@ -17,7 +17,7 @@
 ##  Based on English Rev 1876 ##
 our $VERSION = '2.7.00';
 
-$german_formalcreditslngver = 'YaBB 2.7.00 $Revision: 1876 $';
+$german_formalcreditslngver = 'YaBB 2.7.00 $Revision$';
 @german_formalcreditslngmods = ();
 if (@german_formalcreditslngmods) {
     $german_formalcreditslngmods = 1;

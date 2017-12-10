@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germannotifylngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germannotifylngver = 'YaBB 2.7.00 $Revision$';
 @germannotifylngmods = ();
 if (@germannotifylngmods) {
     $germannotifylngmods = 1;

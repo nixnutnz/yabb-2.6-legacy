@@ -19,7 +19,7 @@
 # Released: May 11, 2013, Copyright 2013 Carsten Dalgaard                     # 
 ###############################################################################
 
-$germanlivepreviewlngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanlivepreviewlngver = 'YaBB 2.7.00 $Revision$';
 @germanlivepreviewlngmods = ();
 if (@germanlivepreviewlngmods) {
     $germanlivepreviewlngmods = 1;

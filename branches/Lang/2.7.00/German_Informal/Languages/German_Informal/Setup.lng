@@ -12,7 +12,7 @@
 ###############################################################################
 ##  Based on English Rev 1911 ##
 
-$german_informalsetuplngver = 'YaBB 2.7.00 $Revision: 1911 $';
+$german_informalsetuplngver = 'YaBB 2.7.00 $Revision$';
 
 %mylang     = (
     'loggedin' => q~Du bist angemeldet als <i>{realname}</i>.<br />Klicke auf 'Setup fortsetzen', um fortzufahren.~,

@@ -16,7 +16,7 @@
 ###############################################################################
 
 no warnings;
-$germanerrorlngver = 'YaBB 2.7.00 $Revision: 1885 $';
+$germanerrorlngver = 'YaBB 2.7.00 $Revision$';
 @germanerrorlngmods = ();
 if (@germanerrorlngmods) {
     $germanerrorlngmods = 1;

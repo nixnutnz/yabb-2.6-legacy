@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$suomiaddmoderatorslngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomiaddmoderatorslngver  = 'YaBB 2.7.00 $Revision$';
 @suomiaddmoderatorslngmods = ();
 if (@suomiaddmoderatorslngmods) {
     $suomiaddmoderatorslngmods = 1;

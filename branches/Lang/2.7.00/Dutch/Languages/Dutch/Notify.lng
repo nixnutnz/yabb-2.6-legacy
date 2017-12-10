@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchnotifylngver  = 'YaBB 2.7.00 $Revision: 1848 $';
+$dutchnotifylngver  = 'YaBB 2.7.00 $Revision$';
 @dutchnotifylngmods = ();
 if (@dutchnotfylngmods) {
     $dutchnotifylngmods = 1;

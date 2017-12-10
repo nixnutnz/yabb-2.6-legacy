@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalmenulngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalmenulngver = 'YaBB 2.7.00 $Revision$';
 @german_informalmenulngmods = ();
 if (@german_informalmenulngmods) {
     $german_informalmenulngmods = 1;

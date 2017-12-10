@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$espanolyabmodlngver  = 'YaBB 2.7.00 $Revision: 1815 $';
+$espanolyabmodlngver  = 'YaBB 2.7.00 $Revision$';
 @espanolyabmodlngmods = ();
 if (@espanolyabmodlngmods) {
     $espanolyabmodlngmods = 1;

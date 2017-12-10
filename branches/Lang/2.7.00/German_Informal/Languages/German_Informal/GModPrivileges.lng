@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalgmodprivilegeslngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalgmodprivilegeslngver = 'YaBB 2.7.00 $Revision$';
 @german_informalgmodprivilegeslngmods = ();
 if (@german_informalgmodprivilegeslngmods) {
     $german_informalgmodprivilegeslngmods = 1;

@@ -21,7 +21,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$german_formaladdmoderatorslngver  = 'YaBB 2.7.00 $Revision: 1848 $';
+$german_formaladdmoderatorslngver  = 'YaBB 2.7.00 $Revision$';
 @german_formaladdmoderatorslngmods = ();
 if (@german_formaladdmoderatorslngmods) {
     $german_formaladdmoderatorslngmods = 1;

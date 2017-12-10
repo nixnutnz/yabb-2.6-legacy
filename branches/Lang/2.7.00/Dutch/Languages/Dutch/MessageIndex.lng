@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchmessageindexlngver  = 'YaBB 2.7.00 $Revision: 1933 $';
+$dutchmessageindexlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchmessageindexlngmods = ();
 if (@dutchmessageindexlngmods) {
     $dutchmessageindexlngmods = 1;

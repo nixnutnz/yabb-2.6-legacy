@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanprofilelngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanprofilelngver = 'YaBB 2.7.00 $Revision$';
 @germanprofilelngmods = ();
 if (@germanprofilelngmods) {
     $germanprofilelngmods = 1;

@@ -13,7 +13,7 @@
 ##  Based on English Rev 1911 ##
 our $VERSION = '2.7.00';
 
-$dutchsetuplngver = 'YaBB 2.7.00 $Revision: 1882 $';
+$dutchsetuplngver = 'YaBB 2.7.00 $Revision$';
 
 %mylang = (
     'loggedin' =>

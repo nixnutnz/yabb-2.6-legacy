@@ -16,7 +16,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanconvertlngver = 'YaBB 2.7.00 $Revision: 1882 $';
+$germanconvertlngver = 'YaBB 2.7.00 $Revision$';
 
 %conv1x_txt = (
 'title' => q~YaBB 2.7.00 Importeur / Konverter~,

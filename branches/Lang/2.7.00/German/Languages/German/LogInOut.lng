@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanloginoutlngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanloginoutlngver = 'YaBB 2.7.00 $Revision$';
 @germanloginoutlngmods = ();
 if (@germanloginoutlngmods) {
     $germanloginoutlngmods = 1;

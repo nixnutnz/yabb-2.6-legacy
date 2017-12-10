@@ -13,7 +13,7 @@
 ##  Based on English Rev 1874 ##
 our $VERSION = '2.7.00';
 
-$suomirefcontrollngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomirefcontrollngver  = 'YaBB 2.7.00 $Revision$';
 @suomirefcontrollngmods = ();
 if (@suomirefcontrollngmods) {
     $suomirefcontrollngmods = 1;

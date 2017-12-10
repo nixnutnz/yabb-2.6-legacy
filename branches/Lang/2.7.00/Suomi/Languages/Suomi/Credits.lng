@@ -13,7 +13,7 @@
 ##  Based on English Rev 1876 ##
 our $VERSION = '2.7.00';
 
-$suomicreditslngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomicreditslngver  = 'YaBB 2.7.00 $Revision$';
 @suomicreditslngmods = ();
 if (@suomicreditslngmods) {
     $suomicreditslngmods = 1;

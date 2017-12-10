@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1874 ##
 
-$german_informalrefcontrollngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalrefcontrollngver = 'YaBB 2.7.00 $Revision$';
 @german_informalrefcontrollngmods = ();
 if (@german_informalrefcontrollngmods) {
     $german_informalrefcontrollngmods = 1;

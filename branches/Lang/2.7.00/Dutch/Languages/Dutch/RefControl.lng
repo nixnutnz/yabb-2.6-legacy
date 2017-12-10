@@ -16,7 +16,7 @@
 ##  Based on English Rev 1874 ##
 our $VERSION = '2.7.00';
 
-$dutchrefcontrollngver  = 'YaBB 2.7.00 $Revision: 1874 $';
+$dutchrefcontrollngver  = 'YaBB 2.7.00 $Revision$';
 @dutchrefcontrollngmods = ();
 if (@dutchrefcontrollngmods) {
     $dutchrefcontrollngmods = 1;

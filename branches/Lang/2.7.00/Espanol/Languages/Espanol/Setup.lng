@@ -13,7 +13,7 @@
 ##  Based on English Rev 1911 ##
 our $VERSION = '2.7.00';
 
-$espanolsetuplngver = 'YaBB 2.7.00 $Revision: 1882 $';
+$espanolsetuplngver = 'YaBB 2.7.00 $Revision$';
 
 %mylang = (
     'loggedin' =>

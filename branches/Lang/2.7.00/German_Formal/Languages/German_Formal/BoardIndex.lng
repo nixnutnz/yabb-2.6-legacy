@@ -17,7 +17,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$german_formalboardindexlngver  = 'YaBB 2.7.00 $Revision: 1848 $';
+$german_formalboardindexlngver  = 'YaBB 2.7.00 $Revision$';
 @german_formalboardindexlngmods = ();
 if (@german_formalboardindexlngmods) {
     $german_formalboardindexlngmods = 1;

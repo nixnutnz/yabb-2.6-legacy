@@ -16,7 +16,7 @@
 ##  Based on English Rev 1925 ##
 our $VERSION = '2.7.00';
 
-$suomieventcallngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomieventcallngver  = 'YaBB 2.7.00 $Revision$';
 @suomieventcallngmods = ();
 if (@suomieventcallngmods) {
     $suomieventcallngmods = 1;

@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$espanolpolllngver  = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolpolllngver  = 'YaBB 2.7.00 $Revision$';
 @espanolpolllngmods = ();
 if (@espanolpolllngmods) {
     $espanolpolllngmods = 1;

@@ -16,7 +16,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchextendedprofileslngver  = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutchextendedprofileslngver  = 'YaBB 2.7.00 $Revision$';
 @dutchextendedprofileslngmods = ();
 if (@dutchextendedprofileslngmods) {
     $dutchextendedprofileslngmods = 1;

@@ -1,4 +1,4 @@
-$dutchmoderator_moderator01_threadshelpver = 'YaBB 2.7.00 $Revision: 1888 $';
+$dutchmoderator_moderator01_threadshelpver = 'YaBB 2.7.00 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 $section_name = "Topic_Functies";
 

@@ -16,7 +16,7 @@
 ##  Based on English Rev 1925 ##
 our $VERSION = '2.7.00';
 
-$espanoleventcallngver  = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanoleventcallngver  = 'YaBB 2.7.00 $Revision$';
 @espanoleventcallngmods = ();
 if (@espanoleventcallngmods) {
     $espanoleventcallngmods = 1;

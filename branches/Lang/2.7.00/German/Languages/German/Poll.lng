@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanpolllngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanpolllngver = 'YaBB 2.7.00 $Revision$';
 @germanpolllngmods = ();
 if (@germanpolllngmods) {
     $germanpolllngmods = 1;

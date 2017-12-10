@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$suomisendtopiclngver  = 'YaBB 2.7.00 $Revision: 1890 $';
+$suomisendtopiclngver  = 'YaBB 2.7.00 $Revision$';
 @suomisendtopiclngmods = ();
 if (@suomisendtopiclngmods) {
     $suomisendtopiclngmods = 1;

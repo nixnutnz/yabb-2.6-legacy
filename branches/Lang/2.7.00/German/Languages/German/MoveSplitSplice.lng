@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germanmovesplitsplicelngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germanmovesplitsplicelngver = 'YaBB 2.7.00 $Revision$';
 @germanmovesplitsplicelngmods = ();
 if (@germanmovesplitsplicelngmods) {
     $germanmovesplitsplicelngmods = 1;

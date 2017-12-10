@@ -20,7 +20,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$dutchlivepreviewlngver  = 'YaBB 2.7.00 $Revision: 1933 $';
+$dutchlivepreviewlngver  = 'YaBB 2.7.00 $Revision$';
 @dutchlivepreviewlngmods = ();
 if (@dutchlivepreviewlngmods) {
     $dutchlivepreviewlngmods = 1;

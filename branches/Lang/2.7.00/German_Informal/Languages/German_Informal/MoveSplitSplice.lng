@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalmovesplitsplicelngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalmovesplitsplicelngver = 'YaBB 2.7.00 $Revision$';
 @german_informalmovesplitsplicelngmods = ();
 if (@german_informalmovesplitsplicelngmods) {
     $german_informalmovesplitsplicelngmods = 1;

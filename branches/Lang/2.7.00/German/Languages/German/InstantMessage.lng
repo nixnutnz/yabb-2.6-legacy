@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germaninstantmessagelngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germaninstantmessagelngver = 'YaBB 2.7.00 $Revision$';
 @germaninstantmessagelngmods = ();
 if (@germaninstantmessagelngmods) {
     $germaninstantmessagelngmods = 1;

@@ -1,4 +1,4 @@
-﻿$germanmoderator_moderator01_threadshelpver = 'YaBB 2.7.00 $Revision: 1879 $';
+﻿$germanmoderator_moderator01_threadshelpver = 'YaBB 2.7.00 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 $section_name = "Thema_Funktionen";
 

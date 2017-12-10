@@ -16,7 +16,7 @@
 ###############################################################################
 ##  Based on English Rev 1848 ##
 
-$german_informalcountrieslngver = 'YaBB 2.7.00 $Revision: 1874 $';
+$german_informalcountrieslngver = 'YaBB 2.7.00 $Revision$';
 @german_informalcountrieslngmods = ();
 if (@german_informalcountrieslngmods) {
     $german_informalcountrieslngmods = 1;

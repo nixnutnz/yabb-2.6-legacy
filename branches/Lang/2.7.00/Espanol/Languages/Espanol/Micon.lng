@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$espanolmiconlngver  = 'YaBB 2.7.00 $Revision: 1611 $';
+$espanolmiconlngver  = 'YaBB 2.7.00 $Revision$';
 @espanolmiconlngmods = ();
 if (@espanolmiconlngmods) {
     $espanolmiconlngmods = 1;

@@ -15,7 +15,7 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 
-$germangmodprivilegeslngver = 'YaBB 2.7.00 $Revision: 1879 $';
+$germangmodprivilegeslngver = 'YaBB 2.7.00 $Revision$';
 @germangmodprivilegeslngmods = ();
 if (@germangmodprivilegeslngmods) {
     $germangmodprivilegeslngmods = 1;

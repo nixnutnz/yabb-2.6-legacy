@@ -1,4 +1,4 @@
-﻿$germangmod_gmod03_banhelpver = 'YaBB 2.7.00 $Revision: 1879 $';
+﻿$germangmod_gmod03_banhelpver = 'YaBB 2.7.00 $Revision$';
 if ( $action eq 'detailedversion' ) { return 1; }
 $section_name = "Verbannungsfunktionen";
 
