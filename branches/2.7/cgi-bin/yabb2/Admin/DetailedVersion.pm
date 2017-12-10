@@ -24,7 +24,7 @@ use File::stat;
 use Digest::MD5;
 our $VERSION = '2.7.00';
 
-our $detailedversionpmver  = 'YaBB 2.7.00 $Revision: 1783 $';
+our $detailedversionpmver  = 'YaBB 2.7.00 $Revision: 1928 $';
 our @detailedversionpmmods = ();
 our $detailedversionpmmods = 0;
 if (@detailedversionpmmods) {

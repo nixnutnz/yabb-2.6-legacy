@@ -129,7 +129,7 @@ q~Split this topic starting with this message as the first message in a new topi
     '46' => q~Storage~,
 );
 
-#require Sources::Menu;
-#set_menu();
+require Sources::Menu;
+set_menu();
 
 1;
