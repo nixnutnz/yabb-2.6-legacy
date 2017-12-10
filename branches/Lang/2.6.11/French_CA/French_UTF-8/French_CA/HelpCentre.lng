@@ -1,0 +1,38 @@
+###############################################################################
+# HelpCentre.lng (Chaine de texte du centre d'aide)                           #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$helpcentrelngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%helptxt = (
+'1' => q~Section d'aide~,
+'2' => q~Contenu~,
+'3' => q~Aide utilisateur~,
+'4' => q~Aide modérateur~,
+'5' => q~Aide modérateur global~,
+'6' => q~Aide Administrateur~,
+'7' => q~Paramêtres du centre d'aide~,
+'8' => q~Complété.~,
+'9' => q~Utiliser les autorisations~,
+'10' => q~C'est ici que vous modifiez, ajoutez, supprimez ou réorganisez les sections d'aide affichées aux utilisateurs dans le système d'aide. Dans les champs de gauche, vous voyez les sections d'aide disponibles. Vous pouvez les marquer et les modifier ou les ajouter aux champs de droite en les marquant et en cliquant sur la flèche pour les rendre visibles dans le système d'aide.~,
+'643' => q~Retour au sommet~,
+'769' => q~Emplacement Flash~,
+'7a' => q~    Section Titre~,
+'7b' => q~Sous-section Titre~,
+);
+
+1;

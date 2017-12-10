@@ -1,0 +1,40 @@
+###############################################################################
+# LivePreview.lng (Définition des textes prévisionement)                      #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - All Rights Reserved.     #
+# Software by:  The YaBB Development Team                                     #
+#               with assistance from the YaBB community.                      #
+# Mod créés par Carsten Dalgaard                                              #
+#               et ajouté au coeur YaBB dans la Version 2.5.4                 #
+# Publié        : 11 Mai 2013, Copyright 2013 Carsten Dalgaard                # 
+# =========================================================================== #
+# Version:      : YaBB 2.6.11 fr-ca.1002                                      #
+# Modifié par   : Alain Beaudoin                                              #
+# Modifié le    : 1 Décembre 2017                                             #
+# Distribué par : http://www.alainbeaudoin.com                                #
+###############################################################################
+
+$livepreviewlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%livepreview_txt = (
+'info_missing' => q~Informations manquantes ou incorrectes:~,
+'name_empty' => q~Le champ Nom n'est pas rempli.~,
+'long_name' => q~S'il vous plaît raccourcir votre nom. il est trop long~,
+'mail_empty' => q~Le champ Courriel n'est pas rempli.~,
+'valid_mail' => q~S'il vous plaît, entrez une adresse courriel valide.~,
+'veri_code' => q~Le champ Vérification n'est pas rempli.~,
+'veri_quest' => q~Le champ Vérification n'est pas rempli.~,
+'subj_empty' => q~Le champ Sujet n'est pas rempli.~,
+'mess_empty' => q~Le champ Message n'est pas rempli.~,
+'subj_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ Subject. C'est contre les règles du forum.~,
+'mess_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ Message. C'est contre les règles du forum.~,
+'pm_recipient' => q~Vous devez remplir le champ destinataire.~,
+'no_links' => q~Les invités ne sont pas autorisés à inclure des liens tant qu'il n'ont pas ajouté $minlinkpost.~,
+);
+
+1;

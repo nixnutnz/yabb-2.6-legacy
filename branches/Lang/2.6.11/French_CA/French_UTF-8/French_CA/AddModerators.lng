@@ -1,0 +1,39 @@
+###############################################################################
+# AddModerators.lng (Définition des textes ajout modérateur)                  #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# Mod créé par Carsten Dalgaard                                               #
+#                  et ajouté au coeur de YaBB dans la Version 2.5.4           #
+# Publié         : 28 Janvier, 2013, Copyright 2013 Carsten Dalgaard          #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$addmoderatorslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%addmod_txt = (
+'addmod_title' => q~Modérateur~,
+'addmod_text' => q~Ici, vous pouvez assigner le membre en tant que modérateur à n'importe quel forums. Maintenez la touche Ctrl ou (touche Pomme sur Mac) enfoncée et cliquez pour sélectionner plus de forums.~,
+'addmod_all' => q~Tous sélectioner.~,
+'addmod_save' => q~Sauvegarder~,
+'remove' => q~Voulez-vous vraiment supprimer le membre de la liste?~,
+'modpagetitle' => q~Sélectioner les modérateurs~,
+'instructions' => q~Double-cliquez pour supprimer un nom de la liste~,
+'modsearch' => q~Ajouter/Supprimer modérateurs~,
+'addselected' => q~Ajout sélectioné~,
+'pageclose' => q~Fermer~,
+'instruct' => q~Entrez les premiers caractères du nom du nouveau modérateur, puis sélectionnez un ou plusieurs noms dans la liste et cliquez sur "Ajouter la sélection".~,
+'noresults' => q~Aucun résultats~,
+);
+
+1;

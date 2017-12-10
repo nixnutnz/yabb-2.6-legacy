@@ -1,0 +1,115 @@
+###############################################################################
+# BoardIndex.lng (Définition des textes index du forum)                       #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$boardindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%boardindex_txt = (
+'18' => q~Index~,
+'20' => q~Nom du forum~,
+'21' => q~Publications~,
+'21l' => q~publications~,
+'22' => q~Dernière publication~,
+'34' => q~Connexion~,
+'63' => q~Moderateurs~,
+'63a' => q~Groupe de modérateur~,
+'64' => q~Sous forum~,
+'65' => q~Sous forum dans~,
+'66' => q~Sous forum~,
+'67' => q~Ce forum contient de nouvelle publications.~,
+'68' => q~Ce forum ne contient pas de nouvelle publications.~,
+'69' => q~su le~,
+'70' => q~le sous forum contient de nouvelle publications.~,
+'71' => q~les sous forum contienent de nouvelle publications.~,
+'72' => q~le sous forum ne contient pas de nouvelle publications.~,
+'141' => q~Invités~,
+'142' => q~Membres~,
+'bviews' => q~Visionant~,
+'143' => q~Moteurs de recherches~,
+'158' => q~Utilisateurs en ligne~,
+'200' => q~Statistique du forum~,
+'201' => q~Le membre le plus récent est~,
+'235' => q~Dernière publication~,
+'236' => q~La publication la plus récente est~,
+'298' => q~Moderateu~,
+'298a' => q~Groupe de modérateur~,
+'315' => q~Mot de passe oublié?~,
+'316' => q~Boîte de réception~,
+'320' => q~Envoyé~,
+'330' => q~Sujets~,
+'330l' => q~sujets~,
+'333' => q~Nouvelles publications~,
+'334' => q~Aucune nouvelle publications~,
+'470' => q~N/A~,
+'470a' => q~<em>Ex-Membre</em>~,
+'487' => q~Il y a un total de~,
+'488' => q~membres enregistrés~,
+'489' => q~Le forum contient un total de~,
+'490' => q~avec~,
+'500' => q~Marquer tous les messages comme lus~, # inside JavaScript!
+'500a' => q~Achevée~, # inside JavaScript!
+'500b' => q~Marquer tous les sujets comme lus~, # inside JavaScript!
+'524' => q~Dans~,
+'525' => q~Par~,
+'526' => q~Hits redirigés~,
+'643' => q~Haut~,
+'685' => q~Centre d'information~,
+'791' => q~Voir le/la~,
+'792' => q~publication(s) plus récente(s)~,
+'792a' => q~sujet(s) le(s) plus récent(s)~,
+'793' => q~sur le forum.~,
+'795' => q~Vous avez~,
+'796' => q~Message personnel (MP)~,
+'797' => q~Voir~,
+'800' => q~Le plus grand nombre d'utilisateurs en ligne était de~,
+'801' => q~Le plus grand nombre de membres en ligne était de~,
+'802' => q~Le plus grand nombre de visiteur en ligne était de~,
+'803' => q~Le plus grand nombre de moteur de recherche en ligne était de~,
+'no_ip' => q~Aucune adresse IP connectée~,
+'guest_ip' => q~Adresse IP des invités~,
+'recenttopic' => q~10 sujets les plus récents~,
+);
+
+%boardindex_imtxt = (
+'11' => q~Vous aviez~,
+'12' => q~messages dans vos MP~,
+'14' => q~Nouveaux messages:~,
+'15' => q~\nVoulez-vous afficher votre boîte de réception MP?~,
+'16' => q~qui a dépassé la limite de stockage de~,
+'18' => q~messages~,
+'19' => q~Les plus vieux~,
+'20' => q~messages ont été supprimés automatiquement.\n\nVoulez-vous voir vos MP~,
+'21' => q~maintenant?~,
+'24' => q~dont~,
+'25' => q~est nouveau~,
+'26' => q~sont nouveaux~,
+'46' => q~Espace de stockage~,
+'47' => q~leur~,
+'48' => q~le message~,
+'50' => q~Nouveaux messages de diffusion personnels.~,
+'51' => q~\nVoulez-vous voir la boîte de diffusion des MP~,
+'50a' => q~Nouveaux messages d'alerte:~,
+);
+
+%boardindex_exptxt = (
+'1' => q~Développer~,
+'2' => q~Réduire~,
+'5' => q~Cette catégorie contient <strong>nouvelles</strong> publications.~,
+'6' => q~Cette catégorie ne contient aucune nouvelles publications.~,
+);
+
+1;

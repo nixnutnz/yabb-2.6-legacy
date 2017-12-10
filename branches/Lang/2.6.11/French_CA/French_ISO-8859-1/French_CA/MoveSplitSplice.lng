@@ -1,0 +1,66 @@
+###############################################################################
+# MoveSplitSplice.lng (Définition de déplacement, cinder, regrouper)          #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$movesplitsplicelngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%sstxt=(
+'1' => q~Déplacer, Cinder et Fusioner~,
+'2' => q~Cinder des forums~,
+'3' => q~Forum~,
+'4' => q~Laisser~,
+'5' => q~Cinder vers~,
+'6' => q~Categorie~,
+'7' => q~Forum~,
+'8' => q~Sujet~,
+'9' => q~Nouveau Sujet~,
+'10' => q~Position~,
+'11' => q~'Déplacé/Cindé vers...' Info~,
+'12' => q~Laisser les publications originales~,
+'13' => q~Ne rien laisser~,
+'14' => q~Sélectionnez les publications à déplacer dans le sujet actuel:~,
+'14a' => q~Maintenez les touches SHIFT ou CTRL enfoncées tout en cliquant pour sélectionner plusieurs publications.~,
+'15' => q~Choisissez ce qu'il faut laisser à la place de la publication, s'il y en a. <br/>Si vous voulez déplacer &raquo; &raquo; Tous les messages &laquo; &laquo;, un avis sera laissé quand même.~,
+'15a' => q~Insérez un nouveau message derrière les messages déplacés, contenant les informations d'où ils sont venus et qui les a déplacés.~,
+'16' => q~Sélectionnez la catégorie dans laquelle déplacer les publications sélectionnées.~,
+'17' => q~Sélectionnez le forum dans lequel placer les publications sélectionnées.~,
+'18' => q~Sélectionnez le sujet sur lequel placer les publications sélectionnées.~,
+'19' => q~Sélectionnez la position pour cinder les publication sélectionnés. <br/>Les messages seront placés en dessous de la position indiquée.~,
+'20' => q~Entrez le nouveau sujet ici. <br/>Laissez cette case vide si vous voulez utiliser le sujet de la première publication sélectionnée.~,
+'21' => q~Re:~,
+'22' => q~Vous devez désigner une catégorie.~,
+'22a' => q~Vous devez désigner un forum.~,
+'22b' => q~Vous devez désigner une~,
+'23' => q~publication a déplacer.~,
+'24' => q~Soumettre~,
+'25' => q~Réinitialiser~,
+'26' => q~&raquo;&raquo; Toutes les publications &laquo;&laquo;~,
+'27' => q~Ce forum ne peut pas être publié et aucun message ne doit y être déplacé.~,
+'28' => q~&raquo;&raquo; Catégories &laquo;&laquo;~,
+'29' => q~&raquo;&raquo; Forum &laquo;&laquo;~,
+'30' => q~&raquo;&raquo; Nouveau sujet &laquo;&laquo;~,
+'31' => q~&raquo;&raquo; Fin du sujet &laquo;&laquo;~,
+'32' => q~&raquo;&raquo; Début du sujet &laquo;&laquo;~,
+
+'40' => q~Repondre~,
+'41' => q~Sujet débute~,
+
+'50' => q~Veuillez revenir en arrière et recharger cette page en premier ou vous ne pourrez pas soumettre.~,
+'51' => q~Il n'est pas permis de cinder deux sondages.~,
+);
+
+1;

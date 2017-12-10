@@ -1,0 +1,92 @@
+###############################################################################
+# Search.lng (Définition de textes de recherches)                             #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$searchlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%search_txt = (
+'1' => q~Ce message a été fait dans le/la dernier(e)...~,
+'2' => q~semaine~,
+'3' => q~mois~,
+'4' => q~trois mois~,
+'5' => q~année~,
+'6' => q~(Tous les messages)~,
+'30' => q~sur~,
+'70' => q~Sujet~,
+'72' => q~Message~,
+'73' => q~Adresse IP~,
+'105' => q~Publier~,
+'107' => q~à~,
+'109' => q~Débuté par~,
+'166' => q~Résultats de la recherche~,
+'167' => q~Fin des résultats~,
+'170' => q~Désolé, aucune correspondance n'a été trouvée~,
+'171' => q~Retournez à la recherche ici.~,
+'182' => q~Chercher~,
+'183' => q~Définir les paramètres de recherche~,
+'186' => q~Rechercher des sujets commencés par quelqu'un~,
+'187' => q~Rechercher des sujets postés par quelqu'un~,
+'189' => q~Choisissez le(s) forum(s) à rechercher~,
+'190' => q~Appuyez sur la touche Ctrl ou (touche Pomme sur Mac) et maintenez-la enfoncée pour en sélectionner plusieurs.~,
+'191' => q~Afficher combien de résultats?~,
+'191a' => q~Afficher un seul résultat par fil?~,
+'191b' => q~Maximum autorisé: $maxsearchdisplay~,
+'191x' => q~Vous êtes autorisé à modifier la valeur max. $maxsearchdisplay de résultats à afficher. Veuillez modifier votre valeur.~,
+'236' => q~Retour~,
+'237' => q~à l'index du forum.~,
+'343' => q~Correspond à tous les mots~,
+'344' => q~Correspond à n'importe quel mots~,
+'345' => q~Correspond à la phrase~,
+'345a' => q~Correspondre aux mots partiels~,
+'346' => q~Rechercher -Tous- les membres seulement~,
+'525' => q~par~,
+'572' => q~Rechercher -Tous- les invités seulement~,
+'573' => q~Champs à rechercher~,
+'574' => q~Temps depuis la dernière publication~,
+'575' => q~Min~,
+'576' => q~Max~,
+'577' => q~Afficher toutes~,
+'578' => q~heures~,
+'579' => q~journées~,
+'582' => q~Rechercher~,
+'583' => q~Par nom de membre~,
+'737' => q~Vérifie tout~,
+'pmfrom' => q~De~, ## nouveau
+'pmto' => q~À~,
+'pmcc' => q~CC~,
+'pmbcc' => q~BCC~,
+'pmgroup' => q~Groupe~,
+'searchme' => q~Rechercher ses propres messages~,
+'casesensitiv' => q~Sensible aux majuscules et minuscules~,
+'searchyabbtags' => q~Cherchez aussi dans les balises YaBB <span class="small"> (les parenthèses comme ceci [...] prennnent beaucoup plus de temps.)</span>~,
+);
+
+%pmboxes_txt = (
+'in' => q~Dans~,
+'inbox' => q~Boîte de réception~,
+'out' => q~Hors~,
+'outbox' => q~Envoyée~,
+'store' => q~Conserver dans le dossier~,
+);
+
+%searchselector_txt = (
+'select' => q~Sélectionner~,
+'remove' => q~Retirer~,
+'removeconfirm' => q~Êtes-vous sûr de vouloir supprimer le nom du membre?~,
+);
+
+1;

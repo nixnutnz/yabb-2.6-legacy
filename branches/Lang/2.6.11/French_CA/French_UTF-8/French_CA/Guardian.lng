@@ -1,0 +1,78 @@
+###############################################################################
+# Guardian.lng (Définition des textes Guardian)                               #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$guardianlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%guardian_txt = (
+'main' => q~The Guardian&trade;~,
+'admin' => q~Administrateur The Guardian&trade;~,
+'setup' => q~Configuration The Guardian&trade;~,
+'title' => q~Bienvenu au "The Guardian&trade;", Votre portier contre les intrus.~,
+'description' => q~Avec "The Guardian&trade;" vous pouvez bloquer les intrus à différents niveaux, ce qui améliore la sécurité et diminue les risques de piratage.~,
+'notify' => q~Désirez-vous une notification par courriel sur les tentatives détectées?~,
+'general' => q~Paramètres globaux et de serveur~,
+'use_guardian' => q~Utiliser The Guardian&trade; pour protéger votre forum?~,
+'use_htaccess' => q~Activer .htaccess pour ajouter des blocs IP au niveau du serveur?~,
+'use_htaccess_support' => q~<span class="small"><em>(Fonctionne uniquement si votre serveur prend en charge les fichiers .htaccess.)</em></span>~,
+'htaccess_support' => q~<span class="small"><em>(Fonctionne uniquement si votre serveur prend en charge les fichiers .htaccess et est activé afin d'ajouter des blocs d'adresse IP au niveau du serveur? à partir du premier élément ci-dessus activé.)</em></span>~,
+'htaccess_add' => q~Ajouter automatiquement les adresses IP abusives à .htaccess?~,
+'htaccess_added' => q~Ajouter automatiquement les adresses IP abusives à .htaccess file. (Vous pouvez le retirer manuellement à partir de l'Admin Guardian)~,
+'proxy' => q~Blocage de proxy~,
+'referer' => q~Blocage de référent~,
+'harvester' => q~Blocage de Harvester~,
+'request' => q~Blocage Méthode de requete~,
+'string' => q~Blocage de Chaîne d'environnement~,
+'clike' => q~Blocage de CLIKE~,
+'union' => q~Blocage de UNION~,
+'script' => q~Blocage de Scripting~,
+'proxy_on' => q~Refuser l'accès par serveur proxy?~,
+'referer_on' => q~Activer le blocage de référent?~,
+'harvester_on' => q~Activer le blocage harvester?~,
+'request_on' => q~Activer le blocage Request Method?~,
+'string_on' => q~Activer le blocage "bad words" dans url d'environment?~,
+'clike_on' => q~Activer le blocage CLIKE (uniquement MySQL)?~,
+'union_on' => q~Activer le blocage UNION (uniquement MySQL)?~,
+'script_on' => q~Activer le blocage scripting?~,
+'proxy_abuse' => q~Accès Proxy~,
+'referer_abuse' => q~Référent~,
+'harvester_abuse' => q~Harvester~,
+'request_abuse' => q~Méthode de requête~,
+'string_abuse' => q~Url Bad String~,
+'clike_abuse' => q~CLIKE~,
+'union_abuse' => q~UNION~,
+'script_abuse' => q~Scripts~,
+'abuse' => q~Abus détecté~,
+'abuse_user' => q~Identifiant utilisateur abusant~,
+'abuse_ip' => q~Abus détecté à partir de l'IP~,
+'abuse_referer' => q~Référent bloqué~,
+'abuse_string' => q~Mot Bloqué~,
+'abuse_environment' => q~Chaîne d'environnement~,
+'abuse_form_environment' => q~Script bloqué dans les données de formulaire~,
+'abuse_url_environment' => q~Script bloqué dans les données de l'URL~,
+'abuse_harvester' => q~Harvester Bloqué~,
+'abuse_request' => q~Méthode de requête Bloqué~,
+'white_list' => q~Entrez l'adresses IP des ID utilisateur ou identifiant de proxy que vous voulez passer (liste blanche)? <br/><em> (entier ou partiel, un par ligne)</em>~,
+'referer_list' => q~Entrez l'URL des référent "Referer" que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
+'harvester_list' => q~Entrez les chaînes d'agent de collecte "Harvester" que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
+'request_list' => q~Entrer les méthodes de requête "request method" que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em><br /><br /><strong><span class="under">ATTENTION!</span><br />NE JAMAIS BLOQUER POST et GET!<br />Cela rendra votre forum inutilisable.</strong>~,
+'string_list' => q~Entrez les 'bad words' que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
+'htaccess_list' => q~Entrez les adresses IP ou les noms de domaine (partiels) que vous voulez bloquer au niveau du serveur?<br /><em>(* wild-cards autorisé, un par ligne)</em>~,
+'save' => q~Sauvegarder les changements Guardian~,
+);
+
+1;

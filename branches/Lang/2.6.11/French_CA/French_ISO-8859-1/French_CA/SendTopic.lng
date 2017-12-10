@@ -1,0 +1,53 @@
+###############################################################################
+# SendTopic.lng (Définition des textes envois sujet)                          #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$sendtopiclngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%sendtopic_txt = (
+'118' => q~Sujet~,
+'241' => q~champ.~,
+'318' => q~De~,
+'335' => q~Votre nom~,
+'336' => q~Votre adresse courriel~,
+'339' => q~Envoyer~,
+'707' => q~Envoyer le sujet~,
+'708' => q~à un ami.~,
+'717' => q~Nom du destinataire~,
+'718' => q~Adresse courriel du destinataire~,
+'error_sender_name' => q~Vous devez insérer votre nom.~,
+'error_sender_email' => q~Vous devez insérer votre adresse courriel.~,
+'error_recipient_name' => q~Vous devez insérer le nom du destinataire.~,
+'error_recipient_email' => q~Vous devez insérer l'adresse courriel du destinataire.~,
+'error_verification' => q~Le code de vérification est manquant.~,
+'verification_question_desc' => q~Veuillez répondre à la question de vérification ci-dessus.~,
+'verification_question_case' => q~Les réponses sont sensibles à la casse.~,
+'error_verification_question' => q~Vous devez répondre à la question de vérification.~,
+);
+
+%floodtxt = (
+'1' => q~Votre code de vérification est~,
+'3' => q~Code de vérification~,
+'casewarning' => q~Veuillez taper les caractères qui apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et sont sensibles à la casse.~,
+'casewarning_1' => q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
+'casewarning_2' => q~<br/><span style="font-weight:bold">sans le premier~,
+'casewarning_3' => q~<br/><span style="font-weight:bold">sans le dernier~,
+'casewarning_4' => q~et dernier~,
+'casewarning_5' => q~caractères.</span><br />Les caractères doivent être entrés dans le même ordre,<br />et sont sensibles à la casse.~,
+);
+
+1;

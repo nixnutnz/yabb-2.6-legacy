@@ -1,0 +1,127 @@
+###############################################################################
+# Templates.lng (Définition des textes pour template "Modèle")                #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$templateslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%templ_txt = (
+'1' => q~Feuille de style du modèle~,
+'2' => q~En-tête du modèle~,
+'3' => q~Index du forum~,
+'4' => q~Index des messages~,
+'5' => q~Affichage des publication~,
+'5a' => q~Chercher~,
+'5b' => q~Calendrier~,
+'5c' => q~Affectation~,
+'5d' => q~Profil~,
+'5e' => q~Liste des membres~,
+'6' => q~Configuration du modèle~,
+'7' => q~Ici, vous pouvez combiner des éléments provenant de différents jeux de modèle et prévisualiser le résultat.~,
+'8' => q~Images du modèle~,
+'9' => q~Aperçu~,
+'10' => q~Modèles~,
+'11' => q~Configuration~,
+'12' => q~Enregistrer sous~,
+'13' => q~Sauvegarder~,
+'14' => q~Effacer~,
+'15' => q~Etes-vous sûr que vous voulez supprimer~,
+'18' => q~Éléments~,
+'19' => q~Ici, vous pouvez changer les couleurs de l'arrière-plan, les bordures et le texte ainsi que la famille de police et la taille du texte pour les principaux éléments de votre forum.<br /><strong>Note</strong>:si un attribut d'élément tel qu'une police n'a pas de choix disponible, cet attribut n'a pas été défini pour cet élément dans la feuille de style.~,
+'20' => q~Élément~,
+'21' => q~Fond.~,
+'22' => q~Police de caractère~,
+'23' => q~Bordure~,
+'24' => q~Modifier~,
+'25' => q~Corps~,
+'26' => q~Récipient~,
+'26b' => q~En-tête~,
+'26c' => q~Lien d'en-tête~,
+'27' => q~Séparateur~,
+'28' => q~Couleur de la bordure~,
+'29' => q~Règle horizontale~,
+'30' => q~Barre de titre (.titlebg)~,
+'30a' => q~Lien de la barre de titre (.titlebg a)~,
+'31' => q~Barre de catégorie (.catbg)~,
+'31a' => q~Lien de barre de catégorie (.catbg a)~,
+'32' => q~Fenêtre 1 (.windowbg)~,
+'33' => q~Fenêtre 2 (.windowbg2)~,
+'34' => q~Champ de texte/bouton~,
+'34a' => q~Champ de texte (input)~,
+'34b' => q~Bouton (input)~,
+'35' => q~Zone de texte (Textarea)~,
+'36' => q~Sélectionner une boîte (select)~,
+'37' => q~Citation~,
+'38' => q~Code~,
+'39' => q~Surligner~,
+'40' => q~C'est~,
+'41' => q~Couleur~,
+'42' => q~Police de caractère~,
+'43' => q~Solide~,
+'44' => q~Pointillé~,
+'45' => q~Pointé~,
+'46' => q~Double~,
+'47' => q~Rainure~,
+'48' => q~Crête~,
+'49' => q~Encart~,
+'50' => q~Début~,
+'51' => q~Modifier la feuille de style~,
+'52' => q~Modifier le modèle~,
+'53' => q~Ceci est une citation~,
+'54' => q~Ceci est le code~,
+'55' => q~Ceci est Edit~,
+'56' => q~Ceci est la mise en évidence~,
+'64' => q~Contenant (#container)~,
+'65' => q~Texte des message (.message)~,
+'66' => q~Liens des messages (.message a)~,
+'67' => q~CP utilisateur~,
+'68' => q~Nouvelles~,
+'69' => q~Bonjour,~,
+'70' => q~vous avez~,
+'71' => q~messages~,
+'72' => q~Catégorie de test~,
+'73' => q~Forum de test~,
+'74' => q~Noms de mod~,
+'74a' => q~Groupes de Mod~,
+'75' => q~Sujet de test~,
+'76' => q~Sujet du sujet~,
+'77' => q~Modèle test de forum~,
+'78' => q~Template_Test_Board~,
+'79' => q~Ceci est la description du forum~,
+'80' => q~Lien vers le dernier sujet~,
+'81' => q~Lien de nom de catégorie~,
+'82' => q~Lien vers le dernier message~,
+'83' => q~Ceci est le lien du sujet~,
+'84' => q~Ceci est votre message de Nouvelles (si les nouvelles sont activées)~,
+'tabtitle' => q~Titre de l'index du forum (.tabtitle)~,
+'tabtitlea' => q~Lien du titre de l'index du forum (.tabtitle a)~,
+'tabtitle_txt'=> q~Texte du titre de l'index du forum (.tabtitle-text)~,
+'userinfo' => q~Publier les informations de l'utilisateur~,
+'tabmenu' => q~menu onglet~,
+'forum' => q~Forum~,
+'admincenter' => q~Centre d'administration~,
+'buttontext' => q~Boutons CSS~,
+'buttondescription' => q~Ici vous pouvez changer la position de l'icône et du texte à l'intérieur des boutons et les graphiques d'arrière-plan pour les boutons.~,
+'moveicon1' => q~Position de l'icône (verticale)~,
+'moveicon2' => q~Position de l'icône (horizontale)~,
+'iconspace' => q~Icon-Espace texte~,
+'movetext' => q~Position du texte (verticale)~,
+'noedit' => q~Vous n'êtes pas autorisé à modifier la feuille de style par défaut sauf en éditant directement la source.<br />Pour effectuer des modifications à partir de cet écran: enregistrez votre travail dans un nouveau nom de fichier. Vous pouvez ensuite choisir cette feuille de style comme feuille de style pour l'habillage par défaut à partir de l'écran <a href="$boardurl/AdminIndex.$yyaext?action=modskin">Configuration du modèle</a>.~,
+'edit_files' => q~Aller à Modifier les fichiers modèles~,
+'configure' => q~Aller à Configurer les modèles~,
+);
+
+1;

@@ -1,0 +1,78 @@
+###############################################################################
+# GModPrivileges.lng (Définition des textes, Moderateur globaux)              #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$gmodprivilegeslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%gmod_settings=(
+'1' => q~Privilèges d'accès des modérateurs globaux~,
+'2' => q~Autoriser les modérateurs globaux à accéder au centre d'administration?~,
+'3' => q~Autoriser les modérateurs globaux à modifier les profils utilisateur?~,
+'3a' => q~Autoriser les modérateurs globaux à modifier les droits d'administration pour les profils utilisateur?~,
+'4' => q~Sélectionnez les actions que les modérateur globaux sont authorisé~,
+);
+
+%gmodprivexpl_txt = (
+'ext_admin' => q~Autoriser à modifier les profils étendus~,
+'main' => q~Autoriser l'édition des préférences et paramètres du forum~,
+'advanced' => q~Autoriser la modification des paramètres avancés~,
+'editbots' => q~Autoriser l'édition des identifiants du moteur de recherche~,
+'news' => q~Autoriser l'édition des nouvelles du forum~,
+'smilies' => q~Autoriser l'ajout de plus de smiley~,
+'setcensor' => q~Autoriser la définition des mots censurés~,
+'modagreement' => q~Autoriser la modification du contrat d'enregistrement~,
+'eventcal_set' => q~Autoriser l'édition du calendrier des événements~,
+'bookmarks' => q~Autoriser à modifier les signets sociaux~, 
+'referer_control' => q~Autoriser la modification de la sécurité du référent~,
+'security' => q~Autoriser la modification des paramètres de sécurité~,
+'setup_guardian' => q~Autoriser l'édition des paramètres The Gardian&trade;~,
+'antispam' => q~Autoriser la modification des paramètres anti-spam~,
+'spam_questions' => q~Autoriser la modification des questions anti-spam~,
+'honeypot' => q~Autoriser l'édition de Honeypot~, 
+'managecats' => q~Autoriser à gérer les catégories~,
+'manageboards' => q~Autoriser à gérer les forum~,
+'helpadmin' => q~Autoriser la modification des entrées du centre d'aide~,
+'editemailtemplates' => q~Autoriser la modification des modèles de messages courriel~,
+'addmember' => q~Autoriser à voir et ajouter des membres~,
+'viewmembers' => q~Autoriser à voir les membres~,
+'deletemultimembers' => q~Autoriser l'affichage et la suppression des membres~,
+'modmemgr' => q~Autoriser la modification des groupes de membres~,
+'mailing' => q~Autoriser à envoyer un courriel au membres/groupes de membres~,
+'ipban' => q~Autoriser la modification de la liste d'interdiction~,
+'setreserve' => q~Autoriser la définition des noms réservés~,
+'modskin' => q~Autoriser la modification de la configuration du modèle~,
+'modcss' => q~Autoriser à modifier la feuille de style~,
+'modtemp' => q~Autoriser à modifier les modèles~,
+'clean_log' => q~Autoriser le nettoyage du journal des utilisateurs en ligne~,
+'boardrecount' => q~Autoriser le comptage des totaux du forum~,
+'rebuildmesindex' => q~Autoriser la reconstruction de l'index des messages~,
+'membershiprecount' => q~Autoriser le recomptage d'adhésion~,
+'rebuildmemhist' => q~Autoriser à reconstruire l'historique des membres~,
+'rebuildmemlist' => q~Autoriser la reconstruction de la liste des membres~,
+'rebuildnotifications' => q~Autoriser la reconstruction des fichiers de notifications~,
+'deleteoldthreads' => q~Autoriser la suppression des anciens messages~,
+'manageattachments' => q~Autoriser l'administration des pièces jointes~,
+'detailedversion' => q~Autoriser la consultation de la version détaillée~,
+'stats' => q~Autoriser l'affichage des statistiques du forum~,
+'showclicks' => q~Autoriser à afficher le journal d'accès au forum~,
+'errorlog' => q~Autoriser à voir le journal des erreurs~,
+'view_reglog' => q~Autoriser à consulter le journal d'enregistrement, approuver ou rejeter les membres préenregistrés~,
+'modlist' => q~Autoriser à voir tous les mods installés~,
+'backupsettings' => q~Autoriser l'accès au centre de sauvegarde~,
+);
+
+1;

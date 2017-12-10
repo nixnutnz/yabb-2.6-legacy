@@ -1,0 +1,59 @@
+###############################################################################
+# Smtp.lng (Définition des textes serveur Smtp)                               #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$smtplngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%smtp_txt = (
+'1' => qq~ERREUR SERVEUR: Impossible de trouver $smtpaddr~,
+'2' => q~ERREUR SERVEUR: Impossible d'ouvrir une connexion socket~,
+'3' => qq~ERREUR SERVEUR: Impossible de se connecter à $smtpaddr sur le port $port~,
+'4' => q~ERREUR SYSTÈME: L'adresse "To" est vide~,
+'5' => q~Journal de communication du serveur de messagerie:~,
+'no_to' => q~La variable "To" (adresse du destinataire) est vide et est nécessaire dans le protocole SMTP~,
+'no_from' => q~La variable "From" (adresse de l'expéditeur) est vide et est nécessaire dans le protocole SMTP~,
+'211' => q~État du système ou réponse d'aide du système~,
+'214' => q~Message d'aide~,
+'220' => q~<domaine> Service prêt~,
+'221' => q~<domaine> Canal de transmission de fermeture de service~,
+'250' => q~Action de courrier demandée okay, complété~,
+'251' => q~Utilisateur non local:transmettra à <forward-path>~,
+'354' => q~Débutez l'entrée courriel: Terninez avec <CRLF>.<CRLF>~,
+'421' => q~<domaine>Service non disponible~,
+'432' => q~Une transition de mot de passe est nécessaire~,
+'450' => q~Action de courrier demandée non effectuée:boîte aux lettres non disponible~,
+'451' => q~Action demandée annulée: erreur locale dans le traitement~,
+'452' => q~Action requise non effectuée:stockage insuffisant du système~,
+'454' => q~Échec d'authentification temporaire~,
+'500' => q~Erreur de syntaxe, commande non reconnue~,
+'501' => q~Destinataire de courrier non valide. Le relais nécessite SMTP AUTH~,
+'502' => q~Commande non implémentée~,
+'503' => q~Mauvaise séquence de commandes~,
+'504' => q~Paramètre de commande ou type d'autorisation non implémenté~,
+'530' => q~Authentification requise~,
+'534' => q~Le mécanisme d'authentification est trop faible~,
+'538' => q~Cryptage requis pour le mécanisme d'authentification demandé~,
+'535' => q~Authentification a chouée~,
+'550' => q~Action demandée non effwectué:boîte aux lettres ou utilisateur not disponible~,
+'551' => q~Utilisateur non local: essayez <forward-path>~,
+'552' => q~Action de courrier demandée abandonnée: dépassement de l'allocation de stockage~,
+'553' => q~Action requise non effectuée:nom de la boîte aux lettres non autorisé~,
+'554' => q~La transaction a échoué~,
+'555' => q~Membre~,
+);
+
+1;

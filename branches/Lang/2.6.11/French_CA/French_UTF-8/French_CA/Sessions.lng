@@ -1,0 +1,47 @@
+###############################################################################
+# Sessions.lng (Définition des textes de sessions)                            #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$sessionslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%session_txt = (
+'1' => q~Activer l'ID de session?~,
+'2' => q~Cela protège les fonctions administratives en utilisant une clé de session en trois parties basée sur l'adresse IP.~,
+'3' => q~Votre session a expiré lorsque vous êtes entré dans le forum à partir d'une adresse IP différente ($user_ip).~,
+'4' => q~Pour vérifier vos informations d'identification, répondez à la question suivante avec la réponse que vous avez saisie dans votre profil.~,
+'6' => q~Vous n'avez pas validé vos informations d'identification et vous êtes déconnecté.~,
+'8' => q~Sélectionnez votre question de revalidation de session ici~,
+'9' => q~Pour vérifier vos informations d'identification, sélectionnez une question et fournissez une réponse pour re-valider votre session.~,
+'9a' => q~Si vous sélectionnez votre mot de passe comme validation, vous pouvez laisser le champ vide.~,
+'10' => q~Vous n'avez pas sélectionné de question de session dans votre profil, vous devez donc utiliser votre mot de passe pour vérifier vos informations d'identification.~,
+);
+
+%sesquest_txt = (
+'password' => q~Utiliser mon mot de passe comme validation~,
+'1' => q~Mon animal préféré est un~,
+'2' => q~Le nom de mon animal favori est~,
+'3' => q~Mon numéro de téléphone est~,
+'4' => q~Ma date de naissance est~,
+'5' => q~Mon meilleur ami est~,
+'6' => q~Je suis amoureux de~,
+'7' => q~La personne que je déteste le plus est~,
+'8' => q~Mon code postal est~,
+'9' => q~Mon sport préféré est~,
+'10' => q~Ma boisson préférée est~,
+);
+
+1;

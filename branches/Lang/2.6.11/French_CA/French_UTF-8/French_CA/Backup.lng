@@ -1,0 +1,194 @@
+###############################################################################
+# Backup.lng   (Définition des textes des sauvegardes)                        #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$backuplngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+$script_root = $ENV{'SCRIPT_FILENAME'};
+if(! $script_root) {
+    $script_root = $ENV{'PATH_TRANSLATED'};
+}
+($support_env_path = $script_root) =~ s~/\w+\.pl~~;
+
+%backup_txt = (
+'1' => q~Sauvegarde YaBB~,
+'2' => q~Vous n'avez pas encore enregistré vos paramètres de sauvegarde. Vous devez choisir et enregistrer vos paramètres avant de pouvoir sauvegarder votre forum.~,
+'3' => q~Choisissez les répertoires à sauvegarder. Note: les routines de sauvegarde utilisent les chemins de répertoire de Forum Configuration - &gt; Paramètres de chemin; assurez-vous que ceux-ci sont corrects.~,
+'4' => q~Répertoires à sauvegarder~,
+'5' => q~Cochez / décochez tout~,
+'6' => q~Si vous sélectionnez chaque répertoire, vous aurez une copie complète de votre forum. C'est le paramètre recommandé pour la plupart des forums.<br />Cependant, pour les <em>très</em> gros forums, une sauvegarde complète peut entraîner des problèmes de récupération (par exemple des délais d'attente). Pour de tels forums, il peut être préférable de créer une seule sauvegarde des répertoires de pages "statiques" (qui changent très peu) et de séparer les sauvegardes pour chacun des répertoires des forums, Membres et Messages.~,
+'path1' => q~Chemin vers le tar et zip:~,
+'path2' => q~Chemin d'accès à gzip et bzip2 (définit également le chemin de gzip dans les paramètres avancés):~,
+'path3' => q~Remplissez les chemins <strong>seulement</strong> si YaBB ne trouve pas automatiquement Tar, Zip, gzip et bzip2. Sinon, laissez les espaces ci-dessus vides.~,
+
+# Début de la description des répertoires
+# Nous ne traduisons pas les noms de répertoires tels que Boards /.
+'7' => q~-- (contient des informations et les index des catégories et forums)~,
+'8' => q~-- (contient tous les fils de discussion/sujets incluant les messages)~,
+'9' => q~-- (contient les profils des membres, les journaux des membres et les messages personnels)~,
+'10' => q~et feuilles de styles~, # Celui-ci vient juste après "Modèle"
+'10a' => q~-- (contient tous les fichiers modèle (Templates) et les images)~,
+'11' => q~-- (contient tous les fichiers de texte et de support utilisés par YaBB)~,
+'12' => q~-- (contient les paramètres, préférences et les journaux du forum)~,
+'and' => q~et~, # Nom étrange, oui, mais pourrait être utile à plus d'un endroit
+'13' => q~plus tout autre code source - (contient le code source YaBB au complet)~,
+'14' => q~-- (contient les images et les feuilles de style pour tous les modèles, mais <em> exclut </em> les répertoires de téléchargement d'utilisateurs de pièces jointes et d'avatars [voir la ligne suivante])~,
+'14a' => q~-- (contient des fichiers téléchargés: fichiers joints et avatars~, # Début de la sélection de la méthode de sauvegarde
+'15' => q~Méthodes de sauvegarde et de compression~,
+
+# Ne pas traduire les noms de commande (tel /bin/tar) ou 'tar'.
+'16' => q~<em>Sauvegarde:</em> Tar (avec compression) ou Zip, utiliser les utilitaires UNIX autonomes, sont les choix recommandés. Archive::Tar (avec compression) ou Archive::Zip devrait être utilisé seulement si Tar/Zip ne sont pas disponible, car les modules Perl sont plus lents que les utilitaires autonomes<br /><br /><em>Compression:</em> Si vous utiliser la compression Tar, est fortement recommandé afin de garder les tailles d'archives petites. (Zip est déjà compressé.)  Bzip2 fait des archives plus petites que Gzip ou Zip, mais prend plus de temps; Cela peut être un problème pour les serveurs lents avec de gros forums.<br /><br /><span class="important">Note:</span> Certains serveurs ne prennent pas en charge les fichiers de sauvegarde volumineux. Si vous voyez un message d'erreur comme "Erreur interne du serveur" ou même une page vierge, essayez une autre méthode de sauvegarde et/ou de compression. Si cela échoue toujours, essayez de créer plusieurs sauvegardes plus petites en sauvegardant séparément moins de répertoires (cochez ci-dessus).<br /><span class="important">Note:</span>: Tar peut ne pas enregistrer les fichiers dans le dossier 'racine' yabb2 ou yabbfiles. Dans ce cas, si vous avez besoin d'archiver <em>tous</em> les fichiers ou si vous avez besoin de préparer d'une archive/sauvegarde pour le déplacement de votre forum, utilisez plutôt Zip ou Archive::Tar~,
+'17' => q~Aucune compression Tar~,
+'18' => q~(pour compression Tar)~,
+'19' => q~Répertoire de destination des archives (pour contenir les fichiers de sauvegarde)~,
+'19a' => qq~Utilisez le chemin complet (ex. $support_env_path/Backups), chemin non complet (ex. ./Backups)~,
+'19b' => q~Rappel de sauvegarde~,
+'19c' => q~Afficher une alerte si aucune sauvegarde n'a été effectuée dans~,
+'19d' => q~jours. entrez zero ou laissez vide pour désactiver le rappel.~,
+'20' => q~Sauvegarder la configuration~,
+
+# Begin run backup area
+'21' => q~Exécuter la sauvegarde~,
+'22' => q~Cliquez sur le bouton ci-dessous pour lancer une sauvegarde. Les sauvegardes sont stockées dans le répertoire de destination des archives (~,
+'23' => q~), configuré plus haut.~,
+'24' => q~<span class="important">Pendant la sauvegarde, votre forum sera automatiquement mis en mode sauvegarde. Cela signifie que votre forum est verrouillé jusqu'à la fin de la sauvegarde.<br /><br /><strong>Note:</strong></span>Pour les sauvegardes de très grands forums, la mise à jour de la page peut prendre un certain temps - Préparez-vous à attendre au moins 5 minutes. Si vous rencontrez un délai d'attente ou si rien ne se produit au bout de 5 minutes, tenez compte de la <span class="important">NOTE</span> ci-dessus dans "Méthode de sauvegarde" concernant les fichiers de sauvegarde volumineux.<br /><br />une sauvegarde régulière, vous pouvez choisir si les sauvegardes suivantes sont complètes (tous les fichiers dans les répertoires cochés ci-dessus) ou incrémentielles (uniquement les fichiers qui ont été modifiés depuis la dernière sauvegarde). Si vous modifiez (et enregistrez) l'un des paramètres ci-dessus, la sauvegarde suivante <em>doit</em> être une sauvegarde complète. Pour les sauvegardes incrémentielles, l'intervalle de temps pour déterminer les fichiers modifiés est mesuré dans <em>secondes</em> pour Tar, Archive::Tar et Archive::Zip mais en <em>jours</em> pour Zip.<br/><span class="important"><strong>NOTE</strong></span>: avant votre première sauvegarde, exécutez la commande reconstruire la liste de membre pour définir les autorisations de sauvegarde.~,
+'25' => q~Exécuter la sauvegarde complète - Tous les fichiers dans les répertoires sélectionés~,
+'25a' => q~Exécuter la sauvegarde incrémentielle - Seul les fichier modifié/crée depuis~,
+
+# Non utilisé
+# '26' => q{}, Non utilisé
+
+# Texte utilisé pour la sortie réelle de sauvegarde
+'27' => q~Sauvegardé~,
+
+# Texte utilisé dans les sous-programmes de support
+'28' => q~Ne peut charger le module~,
+'29' => q~Impossible te tester la méthode de sauvegarde~,
+'30' => q~impossible de trouver la méthode de compression~,
+'31' => q~Ne peut être utilisé~,
+'32' => q~Code d'erreur:~,
+
+# Text used for timing the backup
+'33' => q~La sauvegarde a pris~,
+'34' => q~secondes~,
+
+# Begin manage backups area
+'35' => q~Gérer les sauvegardes~,
+'36' => q~Sauvegardes disponibles dans~,
+'37' => q~Pour chaque sauvegarde disponible, vous pouvez: <ul><li>TÉLÉCHARGER le fichier archive</li><li>Envoyé par courriel le fichier d'archive à~,
+'37a' => q~</li><li>Effectuez une autre sauvegarde (complète) avec des paramètres identiques</li><li>Effectuez une sauvegarde INCREMENTALE avec des paramètres identiques (uniquement pour les fichiers modifiés depuis la sauvegarde)</li><li>RECUPÉRER une sauvegarder sur le forum en direct, si supporté</li><li>SUPPRIMER la sauvegarde</li></ul>~,
+'38' => q~Aucune sauvegarde trouvée~,
+
+'39' => q~Le module~,
+'40' => q~La commande~,
+'41' => q~n'est pas disponible sur ce serveur.~,
+'42' => q~Ne peux pas écrire~,
+'43' => q~Vérifiez vos permissions et vos chemins.~,
+
+'44' => q~Impossible de changer de répertoire~,
+'45' => q~Fichier de sauvegarde non valide.~,
+'46' => q~Ne peux pas lire~,
+'47' => q~Etes-vous sûr que vous voulez supprimer~,
+'48' => q~? Cette action ne peut pas être inversée.~,
+'49' => q~Oui, je suis sûr~,
+'50' => q~Non, ne le supprimez pas~,
+'51' => q~Ne peux pas supprimer~,
+'52' => q~COURRIEL~,
+'53' => q~EFFACER~,
+'54' => q~Êtes-vous sûr de vouloir envoyer ce courriel~,
+'55' => q~La taille de l'attachement sera~,
+'56' => q~Oui, envoyez la pièce jointe à~,
+'57' => q~Non, ne pas inclure la pièce jointe, m'envoyer le lien par courriel.~,
+'58' => q~Non, n'envoyez pas le courrier. Télécharger l'archive à la place.~,
+'59' => q~Non, n'envoyez pas le courrier. Retournez à la sauvegarde de YaBB.~,
+'60' => q~TÉLÉCHARGER~,
+'61' => q~SAUVEGARDER~,
+'62' => q~INCRÉMENTALE~,
+'62a' => q~INC~,
+'63' => q~RÉCUPÉRER~,
+
+'70' => q~Enregistrer la date~,
+'71' => q~Taille~,
+'72' => q~Contenu de la sauvegarde (répertoires enregistrés)~,
+'73' => q~Type~,
+'74' => q~Les fonctions~,
+
+# Truc de Boucle pour éviter de tomber dans le temps d'arrêt du serveur
+'90' => q~<a href="javascript:stoptick();">Cliquer ici pour ARRÊTER la sauvegarde</a>.~,
+'91' => q~Sauvegarde en cours - S'il vous plaît, attendre.<br />Si vous voulez arrêter, cliquez sur ARRÊTER avant que le message rouge apparaisse à nouveau sur la page suivante.~,
+
+# truc pour Récupérer 
+'100' => q~Récupérer une sauvegarde~,
+'101' => q~<strong>La fonction de récupération automatique est recommandée UNIQUEMENT pour les répertoires suivants: <em>Forum</em>, <em>Membres</em>, <em>Messages</em>, <em>Variables</em>, et <em>yabbfiles/Attachments and yabbfiles/avatars/UserAvatars</em>.<br /><br />Les fichiers récupérés peuvent ne pas avoir de propriété ou les autorisations appropriées, et vous pouvez donc rencontrer des problèmes d'accès aux fichiers. Si cela se produit, vous devez récupérer tous les autres fichiers en téléchargeant le fichier d'archive de la page précédente, puis en téléchargeant les fichiers sauvegardés via FTP à partir de votre ordinateur.</strong><br /><br />Etes-vous sûr de vouloir récupérer le(s) répertoire(s) suivant(s)?~,
+'102' => q~à partir du fichier archive:~,
+'103' => q~à partir de~,
+'104' => q~Si oui, alors~,
+'105' => qq~les fichiers de l'archive seront restaurés directement dans leurs répertoires originaux (en direct). Cela écrase les fichiers existants dans ces répertoires et restaure les fichiers supprimés, si nécessaire. Cependant, les fichiers créés après la date de sauvegarde (qui ne font donc pas partie de l'archive) ne seront pas supprimés ou modifiés. Les répertoires que vous souhaitez récupérer doivent être définis sur CHMOD X [2|3|6|7] X avant la récupération, c'est-à-dire qu'ils doivent avoir au moins les droits d'écriture \"groupe\". Exemples: CHMOD 775 ou 765. Si vous avez déplacé des répertoires de leurs emplacements précédents depuis la création de cette archive de sauvegarde, cette méthode échouera probablement - si c'est le cas, laissez cette case décochée.<br />Si non cochée, les fichiers récupérés de l'archive sera stocké dans un nouveau répertoire \"récupéré\" dans votre répertoire de destination des archives, avec l'horodatage actuel ajouté; par exemple:<br /><tt>$backupdir/recovered_$date</tt>  -- (l'horodatage est simplement un exemple)~,
+'106' => q~Vous devez définir les autorisations pour les fichiers récupérés dans les répertoires suivants. Selon la configuration de votre serveur, les fichiers récupérés peuvent appartenir à l'utilisateur du démon du serveur. Si tel est le cas, vous ne pourrez peut-être pas modifier les autorisations par la suite. Pour vous assurer que vous pouvez modifier et / ou supprimer vos fichiers après la récupération, les autorisations «groupe» doivent être 6 ou 7; n'utilisez pas un nombre inférieur. Les autorisations des propriétaires doivent également être 6 ou 7.<br /><br />Si vous n'êtes pas certain de ce qui précède, n'utilisez pas cette fonction de récupération automatique, mais téléchargez manuellement le fichier d'archive (à partir de la page précédente) et restaurer les fichiers via FTP depuis votre ordinateur.~,
+'107' => q~Fichiers et répertoires~,
+'108' => q~Permissions<br />(CHMOD)<br />Propriétaire|Groupe|Tous~,
+'110' => q~Cette permission ne peut être définie ci-dessous~, # Utilisé en JavaScript!
+'111' => q~Cette permission ne peut pas être supérieure à 7.~, # Utilisé en JavaScript!
+'112' => q~Seuls les nombres sont autorisés.~, # Utilisé en JavaScript!
+'114' => q~(tous les fichiers)~,
+'115' => q~Tous~,
+'116' => q~fichiers~,
+'120' => q~Si de nouveaux répertoires sont créés, définissez-les sur~,
+'125' => q~Non, retournez à la page de sauvegarde de YaBB~,
+'126' => q~Oui, je suis prêt - Récupérer maintenant.~,
+'130' => q~<strong><span class="under">Sortie:</span><br /><br />Si le CHMOD a réussi, le premier caractère seras <em>1</em>; si c'est <em>0</em>, le CHMOD a échoué.</strong><br />Si le CHMOD a échoué, le problème le plus commun est qu'un ou plusieurs répertoires n'ont pas été définis pour <em>groupe</em> permission d'écriture.~,
+'131' => q~<strong>Maintenant, vérifiez à nouveau les CHMOD avec votre programme FTP, juste pour être sûr &nbsp; ;-)</strong>~,
+'132' => q~Retour à la page principale de Sauvegarde YaBB~,
+
+# Begin e-mail stuff.
+'mailsubject' => q~Sauvegarde YaBB 2 de $mbname~,
+'mailfrom' => q~"Courriel de sauvegarde YaBB 2" <$webmaster_email>~, # ne rien modifiez à gauche et à droite de *Courriel de sauvegarde YaBB 2*!
+'mailsuccess' => q~Courriel envoyé avec succès.~,
+'mailfail' => q~L'envois du courriel a échoué. Voir le message d'erreur dans le courriel d'informations que vous recevrez.~,
+# Les messages réels sont ici.
+# Ne pas traduire les MOTS TOUT EN MAJUSCULE d'ici à la fin du fichier
+'mailmessage1' => q~Bonjour USERNAME!
+
+La sauvegarde FILENAME devrait être jointe à ce message.
+
+Sinon, vous pouvez visiter LINK pour le télécharger manuellement.
+
+
+Merci d'utiliser YaBB!~,
+
+'mailmessage2' => q~Bonjour USERNAME!
+
+Vvous pouvez visiter LINK pour télécharger la Sauvegarde FILENAME.
+
+
+Merci d'utiliser YaBB!~,
+
+'mailmessage3' => q~Bonjour USERNAME!
+
+L'envoi par courriel de la sauvegarde a échoué.
+
+Mais, vous pouvez visiter LINK pour télécharger manuellement la sauvegarde FILENAME.
+
+Le système a fourni les informations suivantes relatives à l'erreur d'envoi:
+"SYSTEMINFO"
+
+Vous devez avoir installé MIME::Lite sur votre serveur afin de recevoir par courriel la sauvegarde. vous pouvez également avoir besoin d'autres modules (voir les informations ci-dessus). Demandez à votre administrateur de serveur d'installer le(s) module(s) sur votre serveur. Vous pouvez trouver plus d'aide sur l'installation des modules sur: http://codex.yabbforum.com/YaBB.pl?num=1225217016
+
+Merci d'utiliser YaBB!~,
+);
+
+1;

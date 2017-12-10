@@ -1,0 +1,50 @@
+###############################################################################
+# TabMenu.lng (Définition des texte des onglet menu)                          #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$tabmenulngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%tabmenu_txt=(
+'texterr' => q~Le champs texte est vide.~,
+'tabext' => q~Un onglet pour la même action ou avec le même nom existe déjà.~,
+'tabfront' => q~Devant~,
+'taburl' => q~URL~,
+'tabwin' => q~Nouvelle fenêtre~,
+'edittab' => q~Éditer onglet~,
+'tabdel' => q~Supprimer cet onglet~,
+'viewgm' => q~GMod +~,
+'viewadm' => q~Admin~,
+'tabtext' => q~Text~,
+'taberr' => q~Informations requises manquantes:~,
+'addtab' => q~Ajouter~,
+'savetab' => q~Sauvegarder texte~,
+'reordertab' => q~Réorganiser les onglets:~,
+'tableft' => q~&lt;~,
+'tabright' => q~&gt;~,
+'edittext1' => q~Au-dessus, vous voyez les onglets comme ils apparaîtraient s'ils étaient tous visibles en même temps. Si vous avez ajouté un ou plusieurs onglets, vous avez maintenant la possibilité de modifier le texte visible directement dans l'onglet, puis cliquez sur l'~,
+'edittext2' => q~icône pour enregistrer le nouveau texte ou vous pouvez supprimer l'onglet en cliquant sur le~,
+'edittext3' => q~icône. Notez que vous <strong>ne pouvez pas modifier les URL</strong>.~,
+'reordertext' => q~Sur le côté droit il y a une liste de tous vos onglets vous permettant de changer l'ordre dans lequel ils apparaissent dans le menu de l'onglet. Sélectionnez l'onglet que vous voulez déplacer et cliquez sur "&lt;" ou "&gt;" bouton pour déplacer la languette dans la direction souhaitée.~,
+'urlerr' => q~Le champ URL est vide.~,
+'viewmem' => q~Membres +~,
+'viewall' => q~Invités +~,
+'newtab' => q~Ajouter un onglet~,
+'tabinsert' => q~Ajouter après~,
+'tabview' => q~Visible par~,
+);
+
+1;

@@ -1,0 +1,51 @@
+###############################################################################
+# MemberList.lng (Définition des textes liste de membre)                      #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$memberlistlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%ml_txt = (
+'1' => q~Trier par:~,
+'2' => q~Aller!~,
+'3' => q~Visionement de~,
+'4' => q~Membres par~,
+'19' => q~Bascule Page Index~,
+'21' => q~Publications~,
+'34' => q~Avatar~,
+'35' => q~Nom~,
+'87' => q~Position~,
+'96' => q~SiteWeb~,
+'139' => q~Pages~,
+'233' => q~Date Enregistré~,
+'234' => q~Enr. Date~,
+'307' => q~courriel~,
+'308' => q~Courriel caché~,
+'309' => q~de~,
+'312' => q~Visionement des membres par lettre~,
+'313' => q~Visionement de~,
+'314' => q~Membres par nombre de publications~,
+'331' => q~Membres~,
+'759' => q~Veuillez sélectionner une lettre.~,
+'760' => q~Il n'y a pas d'entrées disponibles pour cette lettre.~,
+'800' => q~Autre~,
+'801' => q~Rechercher par nom ou courriel~,
+'802' => q~Désolé - aucun résultat trouvé pour~,
+'dr_warning' => q~* Compte plus ancien que Forum - veuillez vérifier la date de début du forum:~,
+'dr_warnurl' => q~Ici~,
+);
+
+1;

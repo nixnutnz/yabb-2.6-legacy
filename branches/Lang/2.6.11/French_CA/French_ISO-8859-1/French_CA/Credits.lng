@@ -1,0 +1,33 @@
+###############################################################################
+# Credits.lng (Cédit généraux YaBB)                                           #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$creditslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%credits_txt = (
+'yabb2' => q~Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman~,
+'yabb252' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Mods inclus dans  YaBB 2.5.2 Écris par Derek Barnstorm, Carsten Dalgaard, et D.A. Rorabaugh.<br /><br />Dédié à la mémoire de Ron Hartendorp, AKA Spikecity. Il nous a quitté trop tôt.~,
+'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Mods inclus dans YaBB 2.6 Écris par AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh avec du code supplémentaire et Mods de la YaBB 3.0 Équipe de développement. Nous serions nulle part sans les contributions de ceux qui écrivent les mod <br/>Et n&#39;oublions pas les chasseurs de Bug et d&#39;erreurs pour montrer où les choses ne fonctionnent pas bien. Merci Monni et Pyragony et tous les autres chasseurs de Bug qui ont rapporté leurs découvertes.<br/>Un merci spécial à Alain Beaudoin pour la traduction en Français de la version 2.6.12<br/>Pour des erreurs et des améliorations aux traductions francaise s&#39;il vous plaît contacter "info@alainbeaudoin.com"~,
+
+'yabb' => q~Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko~,
+'Thanks' => q~Un merci spécial à~,
+'yabbBeta' => q~et tous nos bêta-testeurs.~,
+'yabb2Credits' => q~L&#39;équipe de soutien, notre fondateur intrépide: Zef Hemel et tous ceux qui ont contribué à YaBB au cours de ces 12 dernières années!~,
+'noBytesHarmed' => q~Aucun bit ou octet n&#39;a été blessé lors de la création de YaBB~,
+);
+
+1;

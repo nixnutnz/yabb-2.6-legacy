@@ -1,0 +1,249 @@
+###############################################################################
+# Error.lng (Définitions de texte d'erreur)                                   #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1.1                                      #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%error_txt = (
+## General Errors ##
+'error_occurred' => q~Une erreur est survenue.~,
+'untrapped' => q~Erreur non interceptée~,
+'cannot_open' => q~Incapable d'ouvrir~,
+'cannot_open_dir' => q~Impossible d'ouvrir le répertoire~,
+'cannot_open_language' => q~Impossible de trouver le fichier de langue requis. Veuillez informer l'administrateur de ce problème.~,
+'cannot_delete' => q~Impossible de supprimer~,
+'not_completed' => q~Une erreur est survenue et cette action n'a pu être complétée, désolé pour le désagrément.~,
+'not_logged_in' => q~Pour effectuer cette action, vous devez être connecté. Si vous n'avez pas encore de compte, veuillez vous enregistrer.~,
+'logged_in_already' => q~Vous êtes déjà connecté avec l'Identifiant:~,
+'no_access' => q~Vous n'êtes pas autorisé à accéder à cette section.~,
+'not_found' => q~L'information que vous essayez d'accéder n'est pas disponible pour vous.~,
+'not_allowed' => q~Vous n'êtes pas autorisé à effectuer cette action~,
+'only_numbers_allowed' => q~Ce champ accepte uniquement les nombres de 0 à 9~,
+'user_not_exist' => q~L'utilisateur n'existe pas~,
+'members_only' => q~Désolé, ce service est réservé aux membres inscrits.~,
+'email_no_access' => q~Désolé, vous n'êtes pas autorisé à accéder à l'adresse courriel de cet utilisateur.~,
+'no_subject' => q~Le champ Objet n'a pas été remplis, il est obligatoire.~,
+'no_message' => q~Le corps du message ou du message n'a pas été rempli, il est obligatoire.~,
+'no_recipient' => q~Le champ Destinataire n'a pas été remplis.~,
+'no_email' => q~Le champ courriel n'a pas été remplis, il est obligatoire.~,
+'no_name' => q~Le champ Nom n'a pas été remplis, il est obligatoire.~,
+'no_ip' => qq~Adresse IP introuvable~,
+'no_username' => q~Le champ "User ID" n'a pas été remplis, il est obligatoire.~,
+'no_password' => q~Le champ Mot de passe est vide~,
+'no_action' => q~Aucune action spécifiée.~,
+'no_info' => q~Aucune information spécifiée dans l'URL~,
+'password_mismatch' => q~Les mots de passe ne sont pas identiques.~,
+'bad_credentials' => q~Identifiant/Mot de passe ne correspondent pas.<br />L'Identifiant que vous avez spécifié n'existe pas ou vous avez entré un mot de passe incorrect.~,
+'invalid_character' => q~Il y a un caractère non valide détecté dans le~,
+'invalid_email' => q~S'il vous plaît, mettez une adresse courriel valide.~,
+'invalid_picture' => q~Saisin d'image de forum erronée.~,
+'no_secret_answer' => q~Vous devez entrez une réponse à la question posée~,
+'no_verification_code' => q~Le code de vérification n'a pas été rempli, il est obligatoire.~,
+'wrong_verification_code' => q~Le code de vérification n'est pas le même que l'image présentée à l'écran, revenez en arrière, actualisez (appuyez sur F5 sur la plupart des navigateurs) et réessayez.~,
+'invalid_verification_code' => q~Le code de vérification contient des caractères non valides, seuls les caractères a-z et 0-9 sont valides~,
+'form_spoofing' => q~<strong>ALERTE</strong>Contrefacon de formulaire détecté provenant de l'adresse IP:~,
+'post_flooding' => q~La dernière requête POST de votre adresse IP était inférieure à~,
+'denial_of_service' => q~La dernière requête POST a créé un message d'erreur:~,
+'speed_alert' => q~Publier ceci rapidement est considéré comme du spam.<br />Vous êtes seulement autorisé à <strong>$spam_hits_left_count</strong>tentatives de plus, après quoi vous serez banni en tant que spammeur.~,
+
+'tsc_alert' => q~L'un des champs de formulaire contient du texte considéré comme spam.<br />Vous n'êtes autorisé à <strong>$spam_hits_left_count</strong> plus de tentatives après lesquelles vous serez banni en tant que spammeur.~,
+'speedpostban' => q~Vous êtes actuellement banni de la publication en raison d'un possible spamming.<br />Après <strong>$detention_left</strong> seconde(s) votre interdiction sera automatiquement levée.~,
+'truncation_error' => q~Assurez-vous que la 'fausse troncature' est activée dans votre fichier Settings.pm.<br />\$faketruncation = 1;<br />Impossible de tronquer le fichier~,
+'referer_violation' => q~Cette action n'est pas autorisée depuis un domaine extérieur.<br />L'action est:~,
+'egg' => q~Séquence d'autodestruction commencée!<br />~,
+'domain_not_allowed' => q~Vous ne pouvez pas vous inscrire, publier en tant qu'invité ou changer votre adresse courriel à une adresse du domaine~,
+'module_missing' => q~Module (s) ou fonctionnalité (s) nécessaire (s) sur ce serveur.~,
+'low_diskspace' => q~Le disque / hostspace disponible est bas Le forum a été mis en maintenance pour éviter la corruption de fichiers Veuillez informer l'administrateur de cette erreur.~,
+'invalid_key' => q~La clé principale est invalide.<br />Cela devrait être une chaîne de texte entre 8 et 24 caractères.~,
+'wrong_pass' => q~Le mot de passe que vous avez entré est incorrect~,
+'corrupt_member_file' => q~Le fichier de données du membre est corrompu. Veuillez informer l'administrateur de cette erreur.~,
+'no_admin_passwrd' => q~Vous devez entrer le mot de passe administrateur correct pour entrer dans le Centre d'administration.~,
+'default_password' => qq~ Vous utilisez toujours le mot de passe par défaut YaBB Setup. Veuillez vous connecter à votre <a href="$scripturl?action=myprofile;username=$username;sid=$mysid"> profil utilisateur</a> et changer votre mot de passe pour quelque chose de plus sécurisé.~,
+'missingvars' => q~Quelque chose de mal est arrivé. Veuillez informer l'administrateur de ce forum de ce que vous étiez en train de faire lorsque cette erreur s'est produite.~,
+
+## BoardIndex ##
+'collapse_no_member' => q~Vous devez être membre pour utiliser les catégories réductibles / extensibles.~,
+'collapse_invalid_state' => q~L'état que vous avez spécifié n'était pas valide. Veuillez revenir en arrière et réessayer~,
+'collapse_no_usercat' => qq~Fichier de catégorie d'utilisateur introuvable - essayez d'actualiser l'index du forum (à l'époque F5). \ n Si vous recevez à nouveau ce message, veuillez en informer un administrateur.~,
+
+## Guardian ##
+'proxy_reason' => q~L'accès par proxy à ce forum est refusé.~,
+'referer_reason' => q~L'accès au forum depuis l'URL actuelle est interdit.~,
+'harvester_reason' => q~Cet intercepteur se voit refuser l'accès au forum.~,
+'request_reason' => q~La méthode de requête que vous avez essayé d'utiliser n'est pas autorisée ici.~,
+'string_reason' => q~Votre URL contient des mots non autorisés ici.~,
+'clike_reason' => q~Il est inutile d'essayer CLIKE de pirater ce site car il ne fonctionne pas MySQL.~,
+'union_reason' => q~Il est inutile d'essayer UNION de pirater ce site car il ne fonctionne pas MySQL.~,
+'script_reason' => q~Vous avez essayé d'utiliser des scripts dans l'URL ou l'entrée de formulaire, ce qui n'est pas autorisé.~,
+
+## InstantMessage ##
+'im_deleted' => q~Le message a déjà été lu par le destinataire, il n'a donc pas été rappelé.~,
+'im_deleted_multi' => q~Au moins un des destinataires a déjà lu le message, donc aucun message n'a été rappelé.~,
+'im_members_only' => q~La messagerie personnelle est réservée aux membres~,
+'im_low_postcount' => q~Vous n'êtes autorisé à envoyer des messages personnels que si vous avez atteint un nombre de messages de {yabb numposts}.~,
+'im_spam_alert' => q~Vous essayez d'envoyer un message personnel à un trop grand nombre d'utilisateurs à la fois, ce qui est interprété comme du spamming possible.~,
+'im_bad_users' => q~Le (s) membre (s) suivant (s) n'a (ont) pas pu être envoyé (s).<br />Le (s) nom (s) membre (s) est (sont) invalide (s) ou ignoré (s):~,
+'cannot_find_draftmess' => q~Le brouillon du message est introuvable.~,
+'im_folder_exists' => q~Un dossier avec ce nom existe déjà.~,
+
+## LogInOut ##
+'not_activated' => q~Votre compte n'est pas encore activé<br />Veuillez l'activer en cliquant sur le lien dans le courriel que vous avez reçu.~,
+'time_out' => q~Vous n'avez pas activé votre compte dans les $preregspan heures.<br />Par conséquent, votre pré-inscription a été supprimée.<br />Veuillez vous réinscrire.~,
+'wrong_code' => q~Votre code d'activation est erroné.~,
+'admin_login_only' => q~Seul l'administrateur peut se connecter pour le moment, car notre forum est en mode maintenance.<br />Veuillez réessayer plus tard Merci.~,
+'wrong_id' => q~L'identifiant que vous avez envoyé n'est pas valide. Veuillez réessayer.~,
+
+## Mailer ##
+'net_fatal' => q~Net::SMTP fatal error~,
+'smtp_error' => q~Erreur SMTP~,
+'smtp_unavail' => q~La connexion SMTP n'a pas pu être établie~,
+
+## Post/ModifyMessage/Poll ##
+'topic_locked' => q~Ce sujet est verrouillé, et vous n'êtes pas autorisé à créer ou modifier des publications.~,
+'time_locked' => q~L'administrateur a fixé un délai de~,
+'change_not_allowed' => q~Vous n'êtes pas autorisé à modifier ce post~,
+'delete_not_allowed' => q~Vous n'êtes pas autorisé à supprimer cet article.~,
+'split_splice_not_allowed' => q~Vous n'êtes pas autorisé à scinder ou scinder ce sujet, vous devez être un membre du personnel pour le faire.~,
+'no_perm_post' => q~Vous n'êtes pas autorisé à publier de nouveaux sujets dans ce forum~,
+'no_perm_reply' => q~Vous n'avez pas la permission de répondre aux sujets de ce forum~,
+'no_perm_poll' => q~Vous n'êtes pas autorisé à publier des sondages dans ce forum~,
+'no_perm_att' => q~Vous n'êtes pas autorisé à publier des pièces jointes dans ce forum~,
+'no_board_slash' => q~Le champ du forum n'accepte pas / dans la chaîne de requête~,
+'no_cat_slash' => q~Le champ de catégorie n'accepte pas / dans la chaîne de requête~,
+'no_board_backslash' => q~Le champ du forum n'accepte pas \\ dans la chaîne de requête~,
+'no_cat_backslash' => q~Le champ catégorie n'accepte pas \\ dans la chaîne de requête~,
+'no_board_topic' => q~Ce sujet n'existe pas sur ce forum.~,
+'bad_postnumber' => q~BAD post num~,
+'file_overwrite' => q~Un fichier sur le serveur existe déjà avec ce nom. Veuillez renommer votre fichier avant de le joindre.~,
+'file_not_open' => q~Impossible d'ouvrir un nouveau fichier sur le serveur, vérifiez les chemins et les chmods~,
+'invalid_format' => q~Format de fichier invalide Les fichiers valides sont~,
+'file_too_big' => q~La pièce jointe est trop grosse d'environ.~,
+'dir_full' => q~Cette pièce jointe provoque le dépassement de sa capacité maximale du répertoire des pièces jointes~,
+'file_not_uploaded' => q~Impossible de télécharger le fichier~,
+'useless_post' => q~Seuls les espaces et les retours à la ligne ne sont pas considérés comme une contribution utile.~,
+'no_question' => q~Veuillez fournir une question de sondage.~,
+'no_options' => q~Veuillez fournir au moins 2 options d'interrogation.~,
+'poll_not_found' => q~Le sondage n'a pas pu être trouvé~,
+'no_vote_option' => q~Veuillez sélectionner une option pour voter avant de voter.~,
+'locked_poll_no_delete' => q~Ce sondage est verrouillé pour que votre vote ne puisse pas être supprimé~,
+'locked_poll_no_count' => q~Ce sondage est verrouillé pour que votre vote ne puisse pas être compté~,
+'ip_guest_used' => q~Un invité a déjà utilisé cette adresse IP pour enregistrer son vote~,
+'ip_member_used' => q~Un membre a déjà utilisé cette adresse IP pour enregistrer son vote~,
+'voted_already' => q~Vous avez déjà voté dans ce sondage~,
+'guest_taken' => q~L'identifiant ou l'adresse courriel donnée est déjà prise par un membre.<br />Identifiant ou adresse courriel en conflit:~,
+'quote_too_long' => q~Le texte que vous avez essayé de citer est trop long, merci de le raccourcir.~,
+'no_links_allowed' => q~Désolé, vous n'êtes pas autorisé à publier des messages contenant des liens actifs vers des sites ou des images avant que vous ayez posté des messages $minlinkpost normal.~,
+'no_siglinks_allowed' => q~Désolé, vous n'êtes pas autorisé à créer une signature contenant des liens actifs vers des sites Web ou des images avant que vous ayez posté $minlinksig messages normaux.~,
+'attach_name_blocked' => q~Le nom de votre pièce jointe contient un mot qui n'est pas autorisé sur ce forum.~,
+'attach_file_blocked' => q~Désolé, vous ne pouvez pas télécharger une pièce jointe avec ce nom de fichier.~,
+
+## MoveTopic ##
+'move_not_allowed' => q~Vous n'êtes pas autorisé à déplacer des sujets ...~,
+
+## Profile ##
+'invalid_password' => q~Mot de passe invalide.<br />Vous avez entré un mot de passe incorrect.~,
+'no_user_slash' => q~Le champ identifiant n'accepte pas / dans la chaîne de requête~,
+'no_user_backslash' => q~Le champ identifiant n'accepte pas \\ dans la chaîne de requête~,
+'not_allowed_profile_change' => q~Vous n'êtes pas autorisé à modifier le profil de cette personne.~,
+'no_profile_exists' => q~L'utilisateur dont vous essayez d'afficher le profil n'existe pas.~,
+'current_password_wrong' => q~Votre mot de passe actuel est incorrect~,
+'no_admin_password' => q~Vous devez entrer le mot de passe administrateur correct pour apporter des modifications à ce profil.~,
+'password_is_userid' => q~Pour des raisons de sécurité, vous ne pouvez pas utiliser votre identifiant comme mot de passe.~,
+'name_is_userid' => q~Pour des raisons de sécurité, il n'est pas autorisé d'avoir un nom d'écran identique à celui de l'utilisateur.~,
+'name_taken' => q~Ce pseudonyme est déjà utilisé par un autre membre.~,
+'name_censored' => q~Vous avez utilisé un ou plusieurs mots censurés dans votre pseudo, revenez en arrière et changez votre pseudo, le ou les mots qui ont causé le problème sont:~,
+'name_too_long' => q~Veuillez raccourcir votre pseudo, il est trop long.~,
+'invalid_birthdate' => q~Saisie invalide dans un ou plusieurs des champs Date de naissance.~,
+'not_allowed_gender_edit' => q~Vous n'êtes pas autorisé à modifier votre genre.~,
+'not_allowed_birthdate_change' => q~Vous n'êtes pas autorisé à changer votre date de naissance.~,
+'id_reserved' => q~L'identifiant que vous avez essayé d'enregistrer contient un mot réservé. Veuillez essayer un autre identifiant.~,
+'name_reserved' => q~Le pseudonyme que vous avez essayé d'enregistrer contient un mot réservé. Veuillez essayer un autre pseudonyne~,
+'cannot_kill_admin' => q~Par mesure de sécurité, vous ne pouvez pas supprimer le compte avec l'identifiant:~,
+'email_taken' => q~L'adresse courriel suivante est déjà utilisée par un membre enregistré Si vous pensez qu'il s'agit d'une erreur, allez sur la page de connexion et utilisez le rappel de mot de passe avec cette adresse.~,
+'invalid_template' => q~Ce n'est pas un nom de modèle valide.~,
+'invalid_language' => q~Ce n'est pas un nom de langue valide.~,
+'invalid_time_offset' => q~Le décalage temporel doit être +/- et numérique.~,
+'invalid_postcount' => q~La boîte 'nombre de messages' ne peut contenir que des chiffres.~,
+'cannot_regroup_admin' => q~L'administrateur avec l'identifiant "admin" ne peut pas être défini sur un autre groupe de membres.~,
+'session_time_out' => q~La session de profil a expiré.~,
+
+## Register ##
+'email_mismatch' => q~Les adresses courriel ne correspondent pas.~,
+'registration_disabled' => q~La fonction d'inscription a été désactivée sur ce forum.~,
+'no_registration_logged_in' => q~Vous ne pouvez pas vous enregistrer en étant connecté.~,
+'banned' => q~Notice de bannissement.~,
+'system_prohibited_id' => q~Identifiant interdit par le système~,
+'id_alfa_only' => q~L'identifiant utilisateur ne peut contenir que des chiffres et des lettres (exemple: yabber69)~,
+'id_taken' => q~L'identifiant que vous avez essayé d'enregistrer existe déjà.~,
+'id_to_long' => q~Veuillez raccourcir votre pseudo, il est trop long.~,
+'realname_to_long' => q~Veuillez raccourcir votre pseudo, il est trop long.~,
+'email_to_long' => q~Veuillez raccourcir votre courriel, il est trop long.~,
+'already_preregged' => q~Cet utilisateur est déjà préenregistré.~,
+'email_already_preregged' => q~Cet courriel est déjà pré-enregistré.~,
+'already_activated' => q~Cet utilisateur a déjà été activé.~,
+'prereg_expired' => q~Cet utilisateur n'a pas été pré-enregistré ou la durée autorisée de $preregspan heures a expiré.~,
+'prereg_wait' => q~Votre compte utilisateur n'a pas encore été approuvé, soyez patient.~,
+'no_regagree' => q~Vous ne pouvez pas vous enregistrer sauf si vous acceptez le contrat d'enregistrement.~,
+'no_reg_reason' => q~Sans donner de raison de faire une demande d'adhésion, nous ne pouvons pas traiter votre demande.~,
+'no_verification_question' => q~Vous n'avez pas répondu à la question de vérification. Veuillez revenir en arrière et réessayer.~,
+'wrong_verification_question' => q~La réponse à la question de vérification est erroné. Veuillez revenir en arrière et réessayer.~,
+'censor1' => q~Le nom d'utilisateur que vous avez choisi a un mot qui est banni sur ce forum:~,
+'censor2' => q~L'adresse courriel que vous avez choisi a un mot qui est banni sur ce forum:~,
+'censor3' => q~Le pseudo que vous avez choisi a un mot qui est banni sur ce forum:~,
+'bad_bot' => q~Oups - nous ne servons pas votre genre ici.~,
+
+## Search ##
+'search_disabled' => q~L'option de recherche a été désactivée~,
+'result_too_high' => q~Le nombre de résultats demandé est supérieur au nombre maximum autorisé par le système~,
+'no_search' => q~Veuillez spécifier une chaîne de recherche.~,
+'no_search_slashes' => q~Le champ de recherche n'accepte pas / ou \\ dans la chaîne de requête~,
+
+## SendTopic ##
+'no_board_send' => q~Le forum est absent de la requête.~,
+'no_topic_send' => q~Le sujet est manquant dans la requête.~,
+'sendname_too_long' => q~Veuillez raccourcir votre nom, il est trop long.~,
+
+## Admin Stuff ##
+'announcement_defined' => q~Le forum ne peut avoir qu'un seul forum définie comme un forum d'annonce globale~,
+'recycle_bin_defined' => q~Le forum ne peut avoir qu'un seul forum définie comme une corbeille~,
+'board_defined' => q~Un forum avec cet ID existe déjà~,
+'cat_defined' => q~Une catégorie avec cet identifiant existe déjà~,
+'no_delete_default' => q~Pour des raisons de sécurité, vous n'êtes pas autorisé à supprimer ou modifier le "modèle par défaut". Vous pouvez utiliser le modèle par défaut en éditant la source. Mais assurez-vous d'avoir fait une copie auparavant.~,
+'invalid_template' => q~Nom de modèle non valide.~,
+'no_group_name' => q~Veuillez entrer un nom~,
+'no_post_number' => q~Veuillez entrer un nombre~,
+'invalid_post_number' => q~Nombre de publication non valide~,
+'double_group' => q~Vous ne pouvez pas avoir deux groupes de membres portant le même nom:~,
+'double_count' => q~Vous ne pouvez pas avoir deux groupes post-indépendant avec le même nombre de publication.~,
+'no_groupname_change' => q~Vous ne pouvez pas changer le nom d'un groupe post-indépendant.~,
+'invalid_value' => q~Vous avez entré une valeur invalide pour cet item:~,
+
+## Permalinking ##
+'no_board_found' => q~Le forum dont vous avez mentionné ne semble plus exister.~,
+'no_topic_found' => q~Le sujet que vous avez mentionné ne semble plus exister.~,
+
+## buddy list ##
+'self_buddy' => q~Vous ne pouvez pas vous ajouter à votre propre liste d'amis - êtes-vous égomaniaque!~,
+
+## advanced tabs ##
+'tabext' => q~Un onglet pour la même action ou avec le même nom existe déjà.~,
+
+## MemberGroups ##
+'newpostdep_gmod' => q~Désolé, les Mods globaux ne peuvent pas modifier les utilisateurs post-dépendants car la Maintenance -> "Reconstruire la liste des membres" doit être exécutée après et cette fonction n'est disponible qu'en mode Maintenance, donc elle refuserait votre connexion.~,
+);
+
+1;

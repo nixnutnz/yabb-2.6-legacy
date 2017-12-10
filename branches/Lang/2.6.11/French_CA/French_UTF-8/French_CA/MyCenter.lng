@@ -1,0 +1,78 @@
+###############################################################################
+# MyCenter.lng (Définition des teste de mon centre)                           #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$mycenterlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+## LEAVE USERLABEL intact. Move within the string for correct language syntax!
+
+%mycenter_txt = (
+'welcometxt' => q~Paneau de contrôle de USERLABEL~,
+'buddylisttitle' => q~Vos amis~,
+'buddylistnone' => q~Votre liste d'amis est vide~,
+'buddydeleted' => q~Cet amis a été supprimé, Le nom n'est plus disponible.~,
+'hiddenemail' => q~Courriel caché~,
+'currentsettings' => q~Vos paramètres actuels:~,
+'onoffstatus' => q~Statut en ligne/hors ligne:~, 
+'onoffstatuson' => q~En ligne/Hors ligne~,
+'onoffstatusaway' => q~Absent~,
+'view' => q~Voir~,
+'stealth' => q~Furtif:~,
+'stealth_off' => q~Mode Furtif désactivé~,
+'stealth_on' => q~Mode Furtif activé~,
+'posts' => q~Publications~,
+'location' => q~Location~, 
+'mylastposts' => q~Voir mes 5 dernières publications~, 
+);
+
+%display_txt = (
+'139' => q~Pages~,
+);
+
+%mc_menus = (
+'messages' => q~Messages~,
+'profile' => q~Profile~,
+'posts' => q~Publications~,
+);
+
+%pm_search = (
+'all' => q~All~,
+'justthis' => q~Ce dossier seulement~,
+'byuser' => q~par pseudonyme~,
+'desc' => q~Rechercher mes MP~,
+'search' => q~Rechercher~,
+);
+
+%mc_folders = (
+'foldername' => q~Non du dossier~,
+);
+
+%my_favs = (
+'70' => q~Suject~,
+'109' => q~Démaré par~,
+'110' => q~Réponses~,
+'301' => q~Visionement~,
+'330' => q~Sujets~,
+'21' => q~Publications~,
+'22' => q~Dernière publication~,
+'525' => q~Par~,
+'526' => q~par~,
+'527' => q~Démaré~,
+'737' => q~Tout voir~,
+);
+
+1;

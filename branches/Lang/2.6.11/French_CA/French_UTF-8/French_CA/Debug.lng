@@ -1,0 +1,44 @@
+###############################################################################
+# Debug.lng (Définition des textes de débugages)                              #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$debuglngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%debug_txt = (
+'getpairs' => q~Paires GET entrantes~,
+'postpairs' => q~paires POST entrantes~,
+'name' => q~nom~,
+'value' => q~valeur~,
+'opened' => q~Ouvert~,
+'closed' => q~fichier et fermé~,
+'equal' => q~fichier. (devrait être des nombres égaux)~,
+'nohires' => q~Votre serveur n&#39;a probablement pas~,
+'nomodule' => q~installé ou ne supporte pas le module local pour~,
+'pagespeed' => q~Page complétée en~,
+'loaded' => q~secondes~,
+'debugging' => q~Informations de débogage~,
+'benchmarking' => q~benchmarking~,
+'ipaddress' => q~Votre adresse IP est~,
+'browser' => q~Votre agent de navigation~,
+'trace' => q~traceur de débogage~,
+'check' => q~File Check à l&#39;ouverture/fermeture~,
+'filehandles' => q~Gestionaire de fichier / Fichiers ouverts~,
+'filehandleslegend' => q~opened FILEHANDLE (time) &nbsp; &nbsp; <em>MODE</em>filepathname &nbsp; &nbsp; closed FILEHANDLE (time)<br />[package, scriptpathname, line]~,
+'filesloaded' => q~Fichiers chargés par~,
+);
+
+1;

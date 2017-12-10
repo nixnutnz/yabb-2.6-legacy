@@ -1,0 +1,128 @@
+###############################################################################
+# Menu.lng (Définition des textes menus)                                      #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$menulngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+if (!$language){$language = $lang;}
+
+%img_txt =(
+'2' => q~Admin~,
+'27' => q~Voir profile~,
+'31' => q~Retirer~,
+'33' => q~Débuter un nouveau sujet~,
+'34' => q~Connexion~,
+'34a' => q~Mettre à jour la session~,
+'54' => q~Retirer~,
+'55' => q~Retirer la sélection~,
+'63' => q~Modérateurs~,
+'66' => q~Modifier~,
+'69' => q~Courriel~,
+'70' => q~Mes favoris~,
+'71' => q~Ajouter au favoris~,
+'72' => q~Retirer des favoris~,
+'79' => q~Éditer profile~,
+'97' => q~S'enregistrer~,
+'102' => qq~<img src="$imagesdir/back_to_top.png" alt="Haut" title="Haut" />~,
+'102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="Bas" title="Bas" />~,
+'103' => q~Index du forum~,
+'104' => q~Verrouiller/Déverrouiller~,
+'105' => q~Dernière publication~,
+'108' => q~Déconnexion~,
+'119' => q~Aide~,
+'121' => q~Retirer~,
+'131' => q~Notifier les réponses~,
+'131a' => q~Ajouter un sujet de notice~,
+'131d' => q~Suprimer un sujet de notice~,
+'132' => q~Déplacer~,
+'144' => q~MP~,
+'144a' => q~Message Personel~,
+'145' => q~Citation~,
+'145q' => q~Marque &amp; Citation~,
+'146' => q~Répondre~,
+'182' => q~Chercher~,
+'300' => q~Marquer le sujet comme lus~,
+'316' => q~Boîte de réception~,
+'320' => q~Envoyé~,
+'321' => q~Nouveau Message~,
+'323' => q~Préférences~,
+'331' => q~Membres~,
+'418' => q~Notification~,
+'452' => q~Marquer toutes les publications comme lues~,
+'465' => q~Imprimer~,
+'465a' => q~Imprimer la publication~,
+'467' => q~Profile~,
+'515' => q~WWW~,
+'707' => q~Envoyer sujet~,
+'781' => q~Épinglé~,
+'620' => q~Cinder~,
+'621' => q~Déplacer, Cinder et Fusioner~,
+'620a' => q~Cinder ce sujet en commençant par ce message en tant que premier message d'un nouveau sujet, suivi des autres messages jusqu'au dernier message~,
+'621a' => q~Ouvrir la fenêtre pour déplacer, cinder ou fusioner des sujets~,
+'622' => q~Cacher~,
+'623' => q~Réduire~,
+'624' => q~Développer~,
+'625' => q~Ajouter à mes favoris~,
+'626' => q~Retirer de mes favoris~,
+'627' => q~Marquer comme non lu~,
+'mycenter' => qq~PC Utilisateur~,
+'addbuddy' => q~Ajouter à ma liste d'amis~,
+'pmadmin' => q~Envoyer un message aux administrateurs~,
+'alertmod' => q~Aviser les modérateurs à propos de ce message~,
+'alertmodtext' => q~Signaler un message~,
+'forward' => q~Transférer~,
+'sendpm' => q~Envoyer message~,
+'sendbmess' => q~Envoyer un message de diffusion~,
+'aim' => q~AIM~,
+'facebook' => q~Facebook~,
+'gtalk' => q~GTalk~,
+'icq' => q~ICQ~,
+'msn' => q~MSN~,
+'myspace' => q~MySpace~,
+'skype' => q~Skype/VoIP~,
+'yim' => q~YIM~,
+'twitter' => q~Twitter~,
+'youtube' => q~YouTube~,
+'birthdaylist' => q~Liste d'anniversaire~,
+'eventcal' => q~Calendrier~,
+'to_top' => q~Au haut de la page~, 
+);
+
+%img_polltxt = (
+'1' => q~Créer un sondage~,
+'2' => q~Ajouter un sondage~,
+'20' => q~Ouvert~,
+'21' => q~Fermer~,
+'27' => q~Retirer~,
+'33' => q~Voir les votes~,
+'33a' => q~Voir les sujets~,
+'39' => q~Modifier~,
+'43' => q~Retirer un vote~,
+'44' => q~Sondage~,
+'45' => q~Nouveau sondage~,
+'46' => q~Sondage fermé~,
+);
+
+%img_imtxt = (
+'42' => q~Liste d'amis~,
+'46' => q~Espace de rangement~,
+);
+
+#require Sources::Menu;
+#set_menu();
+
+1;

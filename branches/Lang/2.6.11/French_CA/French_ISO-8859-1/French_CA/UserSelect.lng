@@ -1,0 +1,65 @@
+###############################################################################
+# UserSelect.lng (Définition des sélection utilisateurs)                      #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$userselectlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%usersel_txt = (
+'addselected' => q~Ajouter une sélection~,
+'instruct' => q~Double-cliquez sur un nom ou sélectionnez un ou plusieurs noms dans la liste et cliquez sur le bouton "Ajouter une sélection" pour l'ajouter au~,
+'instruct0' => q~Entrez les premiers caractères du nouveau modérateur dans le champ de formulaire supérieur, puis double-cliquez sur le nom ou sélectionnez un ou plusieurs noms dans la liste et cliquez sur le bouton "Ajouter une sélection" pour l'ajouter au~,
+'instruct1' => q~Double-cliquez sur un nom ou sélectionnez un nom dans la liste et cliquez sur le bouton "Ajouter une sélection" pour l'ajouter au~,
+'instruct2' => q~Rechercher un membre par nom ou par courriel:~,
+'instruct3' => q~<br />Dans la boîte de recherche en haut, vous pouvez utiliser un caractère générique (un seul *) n'importe où dans votre chaîne de recherche.~,
+'instruct4' => q~Sélectionner les groupes de membres~,
+'wildcardinfo' => q~Utilisez * comme wild-card~,
+'searchresult' => q~Résultat de la recherche:~,
+'nofound' => q~Désolé - aucun résultat trouvé pour~,
+'pmpagetitle' => q~Sélectionner les destinataires de MP~,
+'grouppagetitle' => q~Sélectionner le groupe de destinataires BC~,
+'modpagetitle' => q~Sélectionner les modérateurs~,
+'buddypagetitle' => q~Sélectionner vos amis~,
+'ignorepagetitle' => q~Sélectionner les membres à ignorer~,
+'searchpagetitle' => q~Sélectionner le membres pour la recherche~,
+'pageclose' => q~Fermer~,
+'recentlist' => q~Liste récente~,
+'alllist' => q~Liste de membres~,
+'gobutton' => q~Aller~,
+'reciepientlist' => q~Liste des récipiendaires~,
+'moderatorlist' => q~Liste des modérateurs~,
+'buddylist' => q~Liste d'amis~,
+'groups' => q~Groupe de membres~,
+'ignorelist' => q~Liste des MP ignorés~,
+'searchlist' => q~Rechercher par champs utilisateur~,
+'pmto' => q~A~,
+'pmcc' => q~Cc~,
+'pmbcc' => q~Bcc~,
+'allsearch' => q~Tous~,
+'bmallmembers' => q~Tous les membres du forum~,
+'bmadmins' => q~Administrateurs~,
+'bmgmods' => q~Modérateurs globaux~,
+'bmfmods' => q~Modérateur de Forum~,
+'bmmods' => q~Tous les modérateurs/Groupe de modérateurs~,
+'pages' => q~Pages~,
+'of' => q~de~,
+'noentries' => q~Il n'y a pas d'entrées disponibles pour cette lettre.~,
+'other' => q~Autre~,
+'noresults' => q~Aucun résultats~,
+'qsearch' => q~Rechercher les membres~,
+);
+
+1;

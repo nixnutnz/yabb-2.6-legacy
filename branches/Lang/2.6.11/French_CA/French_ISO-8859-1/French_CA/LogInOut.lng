@@ -1,0 +1,66 @@
+###############################################################################
+# LogInOut.lng (Définition des textes de conection)                           #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$loginoutlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+%loginout_txt = (
+'34' => q~Connexion~,
+'35' => q~Identifiant ou adresse courriel~,
+'35a' => q~Champ Identifiant ou adresse courriel.~,
+'35b' => q~Identifiant, Utilisateur ou adresse courriel~,
+'36' => q~Mot de passe~,
+'36b' => q~Réinitialiser le mot de passe~,
+'130' => qq~Cordialement,\nl'équipe $mbname~,
+'130a' => q~Une réinitialisation du mot de passe a été demandée par un visiteur à $mbname. Si vous n'avez pas soumis de demande de réinitialisation de votre mot de passe, veuillez ignorer cet e-mail, sinon cliquez ici pour réinitialiser votre mot de passe~,
+'192' => q~Courriel envoyé avec succès à:~,
+'193' => q~Retour~,
+'194' => q~demande~,
+'241' => q~champ.~,
+'315' => q~Oublié mot de passe?~,
+'339' => q~Envoyer~,
+'669' => q~Oublié mot de passe~,
+'711' => q~Cher~,
+'753' => q~Besoin de vous inscrire?~,
+'837' => q~Votre Identifiant est sensible à la casse.~,
+'capslock' => q~Le verrouillage des majuscules est activé.~,
+'wrong_char' => q~Ce caractère dans le mot de passe n'est pas valide~,
+'error_user_info' => q~Vous devez insérer votre Identifiant ou votre adresse courriel~,
+'no_user_info_exists' => q~L'identifiant ou l'adresse courriel que vous avez entré n'existe pas sur ce forum.~, 
+'verification_question_desc' => q~Veuillez répondre à la question de vérification ci-dessus.~,
+'verification_question_case' => q~Les réponses sont sensibles à la casse.~,
+'error_verification' => q~Le code de vérification est manquant.~,
+'error_verification_question' => q~Vous devez répondre à la question de vérification.~,
+'keeps' => q~Rester connecté~,
+);
+
+%floodtxt=(
+'1' => q~Votre code de vérification est~,
+'3' => q~Code de vérification~,
+'casewarning' => q~Veuillez entrer les caractères qui apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et ils sont sensibles à la casse.~,
+'casewarning_1' => q~Veuillez entrer les caractères exactement tels qu'ils apparaissent dans l'image,~,
+'casewarning_2' => q~<br /><span style="font-weight:bold;">sans le premier~,
+'casewarning_3' => q~<br /><span style="font-weight:bold;">sans le dernier~,
+'casewarning_4' => q~et dernier~,
+'casewarning_5' => q~caractères.</span><br />Les caractères doivent être entré dans le même ordre,<br />et ils sont sensibles à la casse..~,
+);
+
+%prereg_txt=(
+'5' => q~Votre compte est activé. Vous pouvez maintenant vous connecter en utilisant votre identifiant et votre mot de passe~,
+);
+
+1;

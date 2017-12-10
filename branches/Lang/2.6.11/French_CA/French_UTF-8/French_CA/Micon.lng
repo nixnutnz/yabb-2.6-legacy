@@ -1,0 +1,120 @@
+###############################################################################
+# Micon.lng (Définition des images/textes)                                     #
+###############################################################################
+# YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
+# Logiciel communautaire open-source pour les webmestres                      #
+# Version        : YaBB 2.6.11                                                #
+# Distribué par  : http://www.yabbforum.com                                   #
+# =========================================================================== #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
+# Logiciel par   : L'équipe de développement de YaBB                          #
+#                  avec l'assistance de la communauté YaBB                    #
+# =========================================================================== #
+# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Traduite par   : Alain Beaudoin                                             #
+# Modifié le     : 1 Décembre 2017                                            #
+# Distribué par  : http://www.alainbeaudoin.com                               #
+###############################################################################
+
+$miconlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+
+if (!$language){$language = $lang;}
+
+%img_txt_m =(
+'70' => q~Mes favoris~,
+);
+
+%img_polltxt_m = (
+'44' => q~Sondage~,
+'45' => q~Nouveau sondage~,
+'46' => q~Sondage fermé~,
+);
+
+%messageindex_txt_m = (
+'302' => q~Nouveau~,
+'303' => q~Aller au premier message non lu~,
+'454' => q~Sujet brûlant (Plus de~,
+'454a' => q~réponses)~,
+'455' => q~Sujet très brûlant (Plus de~,
+'456' => q~Sujet verrouillé~,
+'457' => q~Sujet normal~,
+'458' => q~Sujet caché~,
+'459' => q~Sujet épinglé caché~,
+'460' => q~Sujet verrouillé caché~,
+'461' => q~Sujet épinglé verrouillé caché~,
+'779' => q~Sujet épinglé~,
+'779a' => q~Annonce globale~,
+'779b' => q~Annonce globale verrouillée~,
+'780' => q~Sujet épinglé verrouillé~,
+'781' => q~Épinglé~,
+'845' => q~Sujet déplacé~,
+);
+
+%messageindex_sort_m = (
+'sort_az' => q~Trier (A-Z)~,
+'sort_za' => q~Trier (Z-A)~,
+'sort_min' => q~Trier (réponse min)~,
+'sort_max' => q~Trier (réponse max)~,
+'sort_last' => q~Trier (nouvelle réponse)~,
+'sort_first' => q~Trier (vielle réponse)~,
+);
+
+%im_message_status_m = (
+'confidential' => q~Confidentiel~,
+'urgent' => q~Urgent!~,
+'standard' => q~Standard~,
+'alertmod' => q~Alerter le modérateur.~,
+'guestpm' => q~MP d'un invité~,
+'guestpmreply' => q~réponder à un MP d'un invité~,
+);
+
+%tabmenu_txt_m = (
+'edittab' => q~éditer les onglets~,
+'tabdel' => q~Supprimer cet onglet~,
+'savetab' => q~Sauvegarder texte~,
+'newtab' => q~Ajouter un onglet~,
+);
+
+%maintxt_m = (
+'900pd' => q~Panneau d'accès Mot de passe~,
+);
+
+%var_cal_m = (
+'calbirthday' => q~anniversaire~,
+'calprivate' => q~Privé~,
+'caldel' => q~Supprimer~,
+'caledit' => q~Modifier l'événement~,
+'calsave' => q~Sauvegarder l'événement~,
+'getaddevent' => q~Ajouiter un événement~,
+'eventinfo' => q~Événement~,
+'eventannounce' => q~Annonce~,
+'eventholiday' => q~Congé~,
+'eventnote' => q~Exclamation~,
+'eventparty' => q~Party~,
+'eventcelebration' => q~Celébration~,
+'eventsport' => q~Sport~,
+'eventmedia' => q~Media (TV)~,
+'eventmeeting' => q~Rencontre~,
+);
+
+%mess_icon_txt = (
+'281' => q~Standard~,
+'282' => q~Pouces vers le haut~,
+'283' => q~Pouces vers le bas~,
+'284' => q~Point d'exclamation~,
+'285' => q~Point d'intérogation~,
+'286' => q~Lampe~,
+'287' => q~Smiley~,
+'288' => q~En colère~,
+'289' => q~Ringard~,
+'290' => q~Rire~,
+'291' => q~Triste~,
+'292' => q~Clin d'oeil~,
+'293' => q~sourire~,
+'294' => q~Choqué~,
+'295' => q~Cool~,
+'296' => q~Huh~,
+);
+
+1;
+
