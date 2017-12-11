@@ -135,7 +135,7 @@ q~Scinder ce sujet en commençant par ce message en tant que premier message d'u
     '46' => q~Espace de rangement~,
 );
 
-#require Sources::Menu;
-#set_menu();
+require Sources::Menu;
+set_menu();
 
 1;

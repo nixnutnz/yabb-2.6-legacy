@@ -819,7 +819,7 @@ q~<span class="important"><a href="{yabb adminurl}?action=fixboarddupes">Correct
     'incat'     => q~dans la catégorie~,
     'fixinstruct' =>
 q~Sélectionnez le(s) forum(s) <strong>erroné</strong>. Vous devrez peut-être réorganiser la position des forums dans leurs catégories/forum lorsque vous aurez terminé.<br /><span class="important">Soyez très prudent avec vos sélections pour vous assurer de ne pas enlever la copie du forum que vous voulez garder.</span>~,
-    'usercp' => q~PC de l'UTILISATEUR,~,
+    'usercp' => q~PC de l'UTILISATEUR~,
     'ppostperms' =>
 q~Imprimez les autorisations de publication<br /><span class="small"> Désactivez Imprimer publication ou définissez-le sur "Tous les membres" si vous avez des problèmes de spambot avec cette fonction.</span>~,
     'ptopicperms' =>
@@ -1989,14 +1989,13 @@ q~Supprimer les anciens fichiers de sauvegarde, l'installation et les utilitaire
     '10a' => q~Fichiers de sauvegarde du convertisseur de langue supprimés~,
     'conv' => q~Pour convertir des fichiers 1x ou 2x en 2.7.00~,
     'conv2' =>
-q~<strong><a href="{yabb scripturl}/Setup.pl">Aller à Configuration/Convertir</a></strong>~,
+qq~<strong><a href="$boardurl/Setup.pl?lang=French_CA">Aller à Configuration/Convertir</a></strong>~,
     'fixn' =>
 qq ~L'utilitaire d'importation 2x a détecté des problèmes potentiels avec les données importées/converties. Voir <a href="$yyhtml_root/tmp/datacheck.txt" target="_new">datacheck.txt</a> pour plus de détails.<br />~,
     'illmem1' =>
 qq~Des membres avec des noms d'utilisateur illégaux ont été trouvés et convertis en noms légaux.<br />Voir le fichier <em>$yyhtml_root/tmp/fixusers.txt</em>~,
 );
 
-timetostring($date);
 $yycopyright =
 q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Propulsé par</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">Lociciel de forum YaBB</a> &copy; 2000-{yabb year}. Tous droit réservés.</span>~;
 $iFrameSupport =

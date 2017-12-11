@@ -1508,8 +1508,8 @@ $maintxt{'dst'}  = '<sup>*</sup>';   ## needed to show Today in registration log
     '8' =>
       q~Tällä hetkellä modeja ei ole asennettu. Voit hankkia modeja linkistä~,
     '9'  => q~BoardMod~,
-    '19' => q~Mod Images Dir:~,
-    '20' => q~Attachments Dir:~,
+    '19' => q~Add/Remove mods~,
+    '20' => q~YaBMods Admin Center~,
 );
 
 %smtp_txt = (
@@ -1915,7 +1915,7 @@ qq~Member(s) with illegal username(s) were found and converted to legal name(s).
 );
 
 $yycopyright =
-qq~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb scripturl}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">!<br />\n<a href="http://www.yabbforum.com">YaBB</a> &copy; 2000-{yabb year}. Kaikki oikeudet pidätetään.</span>~;
+q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Powered by</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span style="font-size: 10px">!<br />\n<a href="http://www.yabbforum.com">YaBB</a> &copy; 2000-{yabb year}. Kaikki oikeudet pidätetään.</span>~;
 $iFrameSupport =
 q~Valitamme, mutta nähdäksesi uutiset, on sinun käytettävä selainta joka tukee iFramen käyttöä~;
 $rna = q~Yhteyttä etäpalvelimelle ei ole!~;
