@@ -15,9 +15,9 @@
 ##  Based on English Rev 1874 ##
 our $VERSION = '2.7.00';
 
-$russianxrefcontrollngver = 'YaBB 2.7.00 $Revision$';
+$russianxrefcontrollngver  = 'YaBB 2.7.00 $Revision$';
 @russianxrefcontrollngmods = ();
-if(@russianxrefcontrollngmods){
+if (@russianxrefcontrollngmods) {
     $russianxrefcontrollngmods = 1;
 }
 $action ||= q{};

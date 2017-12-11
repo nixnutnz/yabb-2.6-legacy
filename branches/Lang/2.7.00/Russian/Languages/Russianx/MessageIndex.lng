@@ -15,9 +15,9 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxmessageindexlngver = 'YaBB 2.7.00 $Revision$';
+$russianxmessageindexlngver  = 'YaBB 2.7.00 $Revision$';
 @russianxmessageindexlngmods = ();
-if(@russianxmessageindexlngmods){
+if (@russianxmessageindexlngmods) {
     $russianxmessageindexlngmods = 1;
 }
 $action ||= q{};

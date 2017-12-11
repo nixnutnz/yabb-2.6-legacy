@@ -15,9 +15,9 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxprofilelngver = 'YaBB 2.7.00 $Revision$';
+$russianxprofilelngver  = 'YaBB 2.7.00 $Revision$';
 @russianxprofilelngmods = ();
-if(@russianxprofilelngmods){
+if (@russianxprofilelngmods) {
     $russianxprofilelngmods = 1;
 }
 $action ||= q{};

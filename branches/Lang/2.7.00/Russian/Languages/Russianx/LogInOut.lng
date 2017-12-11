@@ -15,7 +15,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxloginoutlngver = 'YaBB 2.7.00 $Revision$';
+$russianxloginoutlngver  = 'YaBB 2.7.00 $Revision$';
 @russianxloginoutlngmods = ();
 if(@russianxloginoutlngmods){
     $russianxloginoutlngmods = 1;

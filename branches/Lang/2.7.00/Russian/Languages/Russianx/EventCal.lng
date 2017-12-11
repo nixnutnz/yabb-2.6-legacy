@@ -18,9 +18,9 @@
 ##  Based on English Rev 1925 ##
 our $VERSION = '2.7.00';
 
-$russianxeventcallngver = 'YaBB 2.7.00 $Revision$';
+$russianxeventcallngver  = 'YaBB 2.7.00 $Revision$';
 @russianxeventcallngmods = ();
-if(@russianxeventcallngmods){
+if (@russianxeventcallngmods) {
     $russianxeventcallngmods = 1;
 }
 $action ||= q{};

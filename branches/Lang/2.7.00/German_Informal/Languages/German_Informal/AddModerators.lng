@@ -19,28 +19,33 @@
 # Released: January 28, 2013, Copyright 2013 Carsten Dalgaard                 #
 ###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$german_informaladdmoderatorslngver = 'YaBB 2.7.00 $Revision$';
-@german_informalformaladdmoderatorslngmods = ();
-if (@german_informalformaladdmoderatorslngmods) {
-    $german_informalformaladdmoderatorslngmods = 1;
+$german_informaladdmoderatorslngver  = 'YaBB 2.7.00 $Revision$';
+@german_informaladdmoderatorslngmods = ();
+if (@german_informaladdmoderatorslngmods) {
+    $german_informaladdmoderatorslngmods = 1;
 }
 $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %addmod_txt = (
-'addmod_title' => q~Moderator~,
-'addmod_text' => q~Hier kannst Du das Mitglied als Moderator zuweisen. Halte die Strg- oder Shift-Taste (Apple-Taste auf dem Mac) und klicke, um mehr Foren zu wählen.~,
-'addmod_all' => q~Alle auswählen.~,
-'addmod_save' => q~Speichern~,
-'remove' => q~Bist Du sicher, dass Du das Mitglied von der Liste entfernen möchtest?~,
-'modpagetitle' => q~Wähle Moderatoren~,
-'instructions' => q~Doppelklicke auf einen Namen, um ihn aus der Liste zu entfernen.~,
-'modsearch' => q~Hinzufügen/Enfernen von Moderatoren~,
-'addselected' => q~Auswahl hinzufügen~,
-'pageclose' => q~Schließen~,
-'instruct' => q~Gebe die ersten Zeichen des neuen Moderators ein, dann wähle einen oder mehrere Namen in der Liste und klicke auf "Auswahl hinzufügen".~,
-'noresults' => q~Keine Ergebnisse~,
+    'addmod_title' => q~Moderator~,
+    'addmod_text' =>
+q~Hier kannst Du das Mitglied als Moderator zuweisen. Halte die Strg- oder Shift-Taste (Apple-Taste auf dem Mac) und klicke, um mehr Foren zu wählen.~,
+    'addmod_all'  => q~Alle auswählen.~,
+    'addmod_save' => q~Speichern~,
+    'remove' =>
+      q~Bist Du sicher, dass Du das Mitglied von der Liste entfernen möchtest?~,
+    'modpagetitle' => q~Wähle Moderatoren~,
+    'instructions' =>
+      q~Doppelklicke auf einen Namen, um ihn aus der Liste zu entfernen.~,
+    'modsearch'   => q~Hinzufügen/Enfernen von Moderatoren~,
+    'addselected' => q~Auswahl hinzufügen~,
+    'pageclose'   => q~Schließen~,
+    'instruct' =>
+q~Gebe die ersten Zeichen des neuen Moderators ein, dann wähle einen oder mehrere Namen in der Liste und klicke auf "Auswahl hinzufügen".~,
+    'noresults' => q~Keine Ergebnisse~,
 );
 
 1;

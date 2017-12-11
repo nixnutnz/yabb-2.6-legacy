@@ -13,7 +13,7 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxyabmodlngver = 'YaBB 2.7.00 $Revision$';
+$russianxyabmodlngver  = 'YaBB 2.7.00 $Revision$';
 @russianxyabmodlngmods = ();
 if (@russianxyabmodlngmods) {
     $russianxyabmodlngmods = 1;

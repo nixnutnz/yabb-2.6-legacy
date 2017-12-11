@@ -15,9 +15,9 @@
 ##  Based on English Rev 1920 ##
 our $VERSION = '2.7.00';
 
-$russianxerrorlngver = 'YaBB 2.7.00 $Revision$';
+$russianxerrorlngver  = 'YaBB 2.7.00 $Revision$';
 @russianxerrorlngmods = ();
-if(@russianxerrorlngmods){
+if (@russianxerrorlngmods) {
     $russianxerrorlngmods = 1;
 }
 $action ||= q{};

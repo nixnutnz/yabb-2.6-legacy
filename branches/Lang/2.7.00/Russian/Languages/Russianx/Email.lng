@@ -13,9 +13,9 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxemaillngver = 'YaBB 2.7.00 $Revision$';
+$russianxemaillngver  = 'YaBB 2.7.00 $Revision$';
 @russianxemaillngmods = ();
-if(@russianxemaillngmods){
+if (@russianxemaillngmods) {
     $russianxemaillngmods = 1;
 }
 $action ||= q{};

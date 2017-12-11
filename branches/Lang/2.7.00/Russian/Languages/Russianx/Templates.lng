@@ -15,9 +15,9 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxtemplateslngver = 'YaBB 2.7.00 $Revision$';
+$russianxtemplateslngver  = 'YaBB 2.7.00 $Revision$';
 @russianxtemplateslngmods = ();
-if(@russianxtemplateslngmods){
+if (@russianxtemplateslngmods) {
     $russianxtemplateslngmods = 1;
 }
 $action ||= q{};

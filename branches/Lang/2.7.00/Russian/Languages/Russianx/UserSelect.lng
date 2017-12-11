@@ -15,9 +15,9 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxuserselectlngver = 'YaBB 2.7.00 $Revision$';
+$russianxuserselectlngver  = 'YaBB 2.7.00 $Revision$';
 @russianxuserselectlngmods = ();
-if(@russianxuserselectlngmods){
+if (@russianxuserselectlngmods) {
     $russianxuserselectlngmods = 1;
 }
 $action ||= q{};

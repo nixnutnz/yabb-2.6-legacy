@@ -13,9 +13,9 @@
 ##  Based on English Rev 1928 ##
 our $VERSION = '2.7.00';
 
-$russianxadminlngver = 'YaBB 2.7.00 $Revision$';
+$russianxadminlngver  = 'YaBB 2.7.00 $Revision$';
 @russianxadminlngmods = ();
-if(@russianxadminlngmods){
+if (@russianxadminlngmods) {
     $russianxadminlngmods = 1;
 }
 $action ||= q{};

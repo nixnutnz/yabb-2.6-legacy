@@ -15,9 +15,9 @@
 ##  Based on English Rev 1928 ##
 our $VERSION = '2.7.00';
 
-$russianxinstantmessagelngver = 'YaBB 2.7.00 $Revision$';
+$russianxinstantmessagelngver  = 'YaBB 2.7.00 $Revision$';
 @russianxinstantmessagelngmods = ();
-if(@russianxinstantmessagelngmods){
+if (@russianxinstantmessagelngmods) {
     $russianxinstantmessagelngmods = 1;
 }
 $action ||= q{};

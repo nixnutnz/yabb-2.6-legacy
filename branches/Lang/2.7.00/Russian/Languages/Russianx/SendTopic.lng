@@ -15,9 +15,9 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxsendtopiclngver = 'YaBB 2.7.00 $Revision$';
+$russianxsendtopiclngver  = 'YaBB 2.7.00 $Revision$';
 @russianxsendtopiclngmods = ();
-if(@russianxsendtopiclngmods){
+if (@russianxsendtopiclngmods) {
     $russianxsendtopiclngmods = 1;
 }
 $action ||= q{};

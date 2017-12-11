@@ -15,8 +15,9 @@
 #               with assistance from the YaBB community.                      #
 ###############################################################################
 ##  Based on English Rev 1848 ##
+our $VERSION = '2.7.00';
 
-$german_informalloginoutlngver = 'YaBB 2.7.00 $Revision$';
+$german_informalloginoutlngver  = 'YaBB 2.7.00 $Revision$';
 @german_informalloginoutlngmods = ();
 if (@german_informalloginoutlngmods) {
     $german_informalloginoutlngmods = 1;
@@ -25,48 +26,59 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %loginout_txt = (
-'34' => q~Einloggen~,
-'35' => q~Benutzer-ID oder eMail-Adresse~,
-'35a' => q~Benutzer-ID oder eMail-Adressenfeld.~,
-'35b' => q~Benutzer-ID, angezeigter Name oder eMail-Adresse~,
-'36' => q~Passwort~,
-'36b' => q~Passwort zurücksetzen~,
-'130' => qq~Mit freundlichen Gruß,\nDas {yabb mbname} Team~,
-'130a' => q~Diese Anfrage stammt von einem Besucher von {yabb mbname}. Wenn Du keine Anfrage zum zurücksetzen Deines Passworts geschickt hast, dann kannst Du diese eMail ignorieren. Ansonsten klicke hier, um Dein Passwort zurück zu setzen: ~,
-'192' => q~eMail erfolgreich versandt an:~,
-'193' => q~Zurück~,
-'194' => q~Erinnerung~,
-'241' => q~Feld.~,
-'315' => q~Passwort vergessen?~,
-'339' => q~Senden~,
-'669' => q~Passwort vergessen~,
-'711' => q~Hallo,~,
-'753' => q~willst Du dich registrieren?~,
-'837' => q~Die Benutzer-ID beachtet Groß-/und Kleinschreibung.~,
-'capslock' => q~Die Feststelltaste ist angeschaltet.~,
-'wrong_char' => q~Dieses Zeichen im Passwort ist ungültig~,
-'error_user_info' => q~Du mußt Deine Benutzer-ID oder eMail-Adresse eingeben.~,
-'no_user_info_exists' => q~Die Benutzer-ID oder eMail-Adresse, die Du eingegeben hast, existiert nicht in diesem Forum.~,
-'verification_question_desc' => q~Bitte beantworte die oben genannte Überprüfungsfrage.~,
-'verification_question_case' => q~Antworten sind Groß-und Kleinschreibung.~,
-'error_verification' => q~Der Verifizierungscode fehlt.~,
-'error_verification_question' => q~Du mußt die Verifizierungsfrage beantworten.~,
-'keeps' => q~Angemeldet bleiben~,
+    '34'  => q~Einloggen~,
+    '35'  => q~Benutzer-ID oder eMail-Adresse~,
+    '35a' => q~Benutzer-ID oder eMail-Adressenfeld.~,
+    '35b' => q~Benutzer-ID, angezeigter Name oder eMail-Adresse~,
+    '36'  => q~Passwort~,
+    '36b' => q~Passwort zurücksetzen~,
+    '130' => qq~Mit freundlichen Gruß,\nDas {yabb mbname} Team~,
+    '130a' =>
+q~Diese Anfrage stammt von einem Besucher von {yabb mbname}. Wenn Du keine Anfrage zum zurücksetzen Deines Passworts geschickt hast, dann kannst Du diese eMail ignorieren. Ansonsten klicke hier, um Dein Passwort zurück zu setzen: ~,
+    '192'        => q~eMail erfolgreich versandt an:~,
+    '193'        => q~Zurück~,
+    '194'        => q~Erinnerung~,
+    '241'        => q~Feld.~,
+    '315'        => q~Passwort vergessen?~,
+    '339'        => q~Senden~,
+    '669'        => q~Passwort vergessen~,
+    '711'        => q~Hallo,~,
+    '753'        => q~willst Du dich registrieren?~,
+    '837'        => q~Die Benutzer-ID beachtet Groß-/und Kleinschreibung.~,
+    'capslock'   => q~Die Feststelltaste ist angeschaltet.~,
+    'wrong_char' => q~Dieses Zeichen im Passwort ist ungültig~,
+    'error_user_info' =>
+      q~Du mußt Deine Benutzer-ID oder eMail-Adresse eingeben.~,
+    'no_user_info_exists' =>
+q~Die Benutzer-ID oder eMail-Adresse, die Du eingegeben hast, existiert nicht in diesem Forum.~,
+    'verification_question_desc' =>
+      q~Bitte beantworte die oben genannte Überprüfungsfrage.~,
+    'verification_question_case' => q~Antworten sind Groß-und Kleinschreibung.~,
+    'error_verification'         => q~Der Verifizierungscode fehlt.~,
+    'error_verification_question' =>
+      q~Du mußt die Verifizierungsfrage beantworten.~,
+    'keeps' => q~Angemeldet bleiben~,
 );
 
 %floodtxt = (
-'1' => q~Dein Validierungscode ist~,
-'3' => q~Validierungscode~,
-'casewarning' => q~Gebe bitte den Text genau so ein, wie auf dem Bild dargestellt. Beachte dabei bitte die Groß- und Kleinschreibung.~,
-'casewarning_1' => q~Gebe bitte den Text genau so ein, wie auf dem Bild dargestellt,~,
-'casewarning_2' => q~<br /><span style="font-weight: bold;">ohne die ersten~,
-'casewarning_3' => q~<br /><span style="font-weight: bold;">ohne die letzten~,
-'casewarning_4' => q~und letzte~,
-'casewarning_5' => q~Zeichen.</span><br />Die Zeichen müssen in der gleichen Reihenfolge eingegeben werden,<br />und sie sind Groß-und Kleinschreibung.~,
+    '1' => q~Dein Validierungscode ist~,
+    '3' => q~Validierungscode~,
+    'casewarning' =>
+q~Gebe bitte den Text genau so ein, wie auf dem Bild dargestellt. Beachte dabei bitte die Groß- und Kleinschreibung.~,
+    'casewarning_1' =>
+      q~Gebe bitte den Text genau so ein, wie auf dem Bild dargestellt,~,
+    'casewarning_2' =>
+      q~<br /><span style="font-weight: bold;">ohne die ersten~,
+    'casewarning_3' =>
+      q~<br /><span style="font-weight: bold;">ohne die letzten~,
+    'casewarning_4' => q~und letzte~,
+    'casewarning_5' =>
+q~Zeichen.</span><br />Die Zeichen müssen in der gleichen Reihenfolge eingegeben werden,<br />und sie sind Groß-und Kleinschreibung.~,
 );
 
-%prereg_txt=(
-'5' => q~Dein Account ist aktiviert. Du kannst dich jetzt mit Deiner Benutzer-ID und Deinem Passwort einloggen.~,
-);
+%prereg_txt =
+  ( '5' =>
+q~Dein Account ist aktiviert. Du kannst dich jetzt mit Deiner Benutzer-ID und Deinem Passwort einloggen.~,
+  );
 
 1;

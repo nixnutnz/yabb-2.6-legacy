@@ -15,9 +15,9 @@
 ##  Based on English Rev 1848 ##
 our $VERSION = '2.7.00';
 
-$russianxmovesplitsplicelngver = 'YaBB 2.7.00 $Revision$';
+$russianxmovesplitsplicelngver  = 'YaBB 2.7.00 $Revision$';
 @russianxmovesplitsplicelngmods = ();
-if(@russianxmovesplitsplicelngmods){
+if (@russianxmovesplitsplicelngmods) {
     $russianxmovesplitsplicelngmods = 1;
 }
 $action ||= q{};
