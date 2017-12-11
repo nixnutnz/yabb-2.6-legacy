@@ -293,8 +293,9 @@ sub board_index {
         else { $lastposttime{$crboard} = $boardindex_txt{'470'}; }
 
         $lastpostrealtime{$crboard} =
-          ( ${ $uid . $crboard }{'lastposttime'} eq 'N/A'
-              || !${ $uid . $crboard }{'lastposttime'} )
+          ( !${ $uid . $crboard }{'lastposttime'} 
+          || ${ $uid . $crboard }{'lastposttime'} eq 'N/A' 
+          || ${ $uid . $crboard }{'lastposttime'} eq  $boardindex_txt{'470'} )
           ? 0
           : ${ $uid . $crboard }{'lastposttime'};
 

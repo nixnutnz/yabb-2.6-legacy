@@ -189,6 +189,7 @@ sub load_censor_list {
               or croak "$croak{'open'} CENSOR";
             while ( my $buffer = <$CENSOR> ) {
                 $buffer =~ s/\r(?=\n*)//gxsm;
+                chomp $buffer;
                 my ( $tmpa, $tmpb, $tmpc );
                 if ( $buffer =~ m/\~/xsm ) {
                     ( $tmpa, $tmpb ) = split /\~/xsm, $buffer;
@@ -198,7 +199,6 @@ sub load_censor_list {
                     ( $tmpa, $tmpb ) = split /=/xsm, $buffer;
                     $tmpc = 1;
                 }
-                chomp $tmpb;
                 push @censored, [ $tmpa, $tmpb, $tmpc ];
             }
             fclose('CENSOR') or croak "$croak{'close'} CENSOR";

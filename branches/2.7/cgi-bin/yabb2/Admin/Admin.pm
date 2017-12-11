@@ -1442,6 +1442,8 @@ sub admincheck {
             $yyuname = ${ $uid . $username }{'realname'};
         }
         template();
+        $yymain =~ s/\Q{yabb mbname}\E/$mbname/xsm;
+        $yymain =~ s/\Q{yabb scripturl}\E/$scripturl/xsm;
     }
     return;
 }
