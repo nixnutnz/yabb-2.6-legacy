@@ -110,7 +110,6 @@ sub attachments {
             fatal_error( 'bad data', "attachments.db line $i", 1 );
         }
         $attachment_space += $space;
-        $attachment_space = number_format($attachment_space);
     }
 
     my $attachment_space2 = 0;
@@ -125,10 +124,11 @@ sub attachments {
         my ( $file, $value ) = split /\t/xsm,  $i;
         my ( $size, $age )   = split /[|]/xsm, $value;
         $attachment_space2 += $size;
-        $attachment_space2 = number_format($attachment_space2);
         push @sizechk, $size;
         push @agechk,  $age;
     }
+    $attachment_space2 = number_format($attachment_space2);
+
     my $biggest = 0;
     @sizechk = reverse sort { $a <=> $b } @sizechk;
     if ( $sizechk[0] && $sizechk[0] > 0 ) {
@@ -151,6 +151,7 @@ sub attachments {
         $remaining_space =
           number_format( ( $dirlimit - $attachment_space ) ) . ' KB';
     }
+    $attachment_space = number_format($attachment_space);
 
     our ($PMATTACHLOG);
     fopen( 'PMATTACHLOG', '<', "$vardir/pmattachments.db" )
@@ -197,7 +198,6 @@ sub attachments {
     foreach (@pm_attachments) {
         my $pmspace = ( split /[|]/xsm, $_, 4 )[2];
         $pm_attachmentspace += $pmspace;
-        $pm_attachmentspace = number_format($pm_attachmentspace);
     }
     my $pm_attachment_space2 = 0;
     open $CHK, '<', "$vardir/pmattfilechk.txt"
@@ -212,10 +212,11 @@ sub attachments {
         my ( $file, $value ) = split /\t/xsm,  $i;
         my ( $size, $age )   = split /[|]/xsm, $value;
         $pm_attachment_space2 += $size;
-        $pm_attachment_space2 = number_format($pm_attachment_space2);
         push @pmsizechk, $size;
         push @pmagechk,  $age;
     }
+    $pm_attachment_space2 = number_format($pm_attachment_space2);
+
     my $pmbiggest = 0;
     @pmsizechk = reverse sort { $a <=> $b } @pmsizechk;
     if ( $pmsizechk[0] && $pmsizechk[0] > 0 ) {
@@ -238,6 +239,7 @@ sub attachments {
         $pm_remainingspace =
           number_format( ( $pm_dirlimit - $pm_attachmentspace ) ) . ' KB';
     }
+    $pm_attachmentspace = number_format($pm_attachmentspace);
 
     my $totalattachnum    = scalar @attachments;
     my $totalattachnum2   = scalar @attachfile;
