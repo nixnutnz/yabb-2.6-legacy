@@ -35,10 +35,10 @@ our ( $adminurl, $boardurl, $vardir, $scripturl, $yyhtml_root, );
 our ( $ip_lookup, $use_guardian, $use_htaccess, $yymycharset );
 ## other ##
 our (
-    $action_area, $date,  $OS_ERROR, $yyaext,
-    $yyexec,      $yyext, $yymain,   $yysetlocation,
-    $yytitle,     %FORM,  %INFO,     %useraccount,
-    %userprofile,
+    $action_area, $date,     $OS_ERROR, $yyaext,
+    $yyexec,      $yyext,    $yymain,   $yysetlocation,
+    $yytitle,     %FORM,     %INFO,     %useraccount,
+    %userprofile, $iamadmin, $iamgmod,  %gmod_access2,
 );
 
 load_language('Admin');
@@ -245,13 +245,30 @@ function uncheckAll() {
         $tmp_date = timeformat($tmp_date);
         load_user($tmp_user);
         my $ip_block  = q{};
-        my $lookup_ip = qq{$tmp_userip};
-        my $ip_ban    = q{};
-        if ( $tmp_userip ne '127.0.0.1' && $tmp_userip ne '::1' ) {
-            $ip_block =
-              ( $use_guardian && $use_htaccess )
-              ? qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~
-              : qq~<br /><a href="$adminurl?action=blockip;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock2'}</a>~;
+        my $lookup_ip = $tmp_userip;
+        if ( $tmp_user eq 'admin' ) { $lookup_ip = q{}; }
+        my $ip_ban = q{};
+        if (   $tmp_userip ne '127.0.0.1'
+            && $tmp_userip ne '::1'
+            && $tmp_user ne 'admin' )
+        {
+
+            if (
+                   $use_guardian
+                && $use_htaccess
+                && ( $iamadmin
+                    || ( $iamgmod && $gmod_access2{'setup_guardian2'} ) )
+              )
+            {
+                $ip_block =
+qq~<br /><a href="$adminurl?action=guardian_block;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock'}</a>~;
+            }
+            elsif ( $iamadmin
+                || ( $iamgmod && $gmod_access2{'blockip'} eq 'on' ) )
+            {
+                $ip_block =
+qq~<br /><a href="$adminurl?action=blockip;ip=$tmp_userip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$tmp_userip');">$admin_txt{'ipblock2'}</a>~;
+            }
 
             $lookup_ip =
               ($ip_lookup)
@@ -341,10 +358,22 @@ $print_errorlog
         my $lookup_ip = $memip;
         my $ip_ban    = q{};
         if ( $memip ne '127.0.0.1' && $memip ne '::1' ) {
-            $ip_block =
-              ( $use_guardian && $use_htaccess )
-              ? qq~ / <a href="$adminurl?action=guardian_block;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock'}</a>~
-              : qq~ / <a href="$adminurl?action=blockip;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock2'}</a>~;
+            if (
+                   $use_guardian
+                && $use_htaccess
+                && ( $iamadmin
+                    || ( $iamgmod && $gmod_access2{'setup_guardian2'} ) )
+              )
+            {
+                $ip_block =
+qq~ / <a href="$adminurl?action=guardian_block;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock'}</a>~;
+            }
+            elsif ( $iamadmin
+                || ( $iamgmod && $gmod_access2{'blockip'} eq 'on' ) )
+            {
+                $ip_block =
+qq~ / <a href="$adminurl?action=blockip;ip=$memip;return=errorlog" onclick="return confirm('$admin_txt{'ipblock_confirm'}$memip');">$admin_txt{'ipblock2'}</a>~;
+            }
 
             $lookup_ip =
               ($ip_lookup)

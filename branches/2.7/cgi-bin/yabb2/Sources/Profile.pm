@@ -31,14 +31,14 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ## language ##
 our (
-    %countrytime_txt,         %croak,           %display_txt,
-    %fatxt,                   %img,             %img_txt,
-    %lngs,                    %maintxt,         %micon_bg,
-    %mycenter_profile_txt,    %profile_amv_txt, %profile_buddy_list,
-    %profile_display_options, %profile_imtxt,   %profile_txt,
-    %register_txt,            %return_to_txt,   %sesquest_txt,
-    %session_txt,             %zodiac_txt,      @months,
-    @uploadtranlist,          $abbr_lang,
+    %croak,           %display_txt,        %fatxt,
+    %img,             %img_txt,            %lngs,
+    %maintxt,         %micon_bg,           %mycenter_profile_txt,
+    %profile_amv_txt, %profile_buddy_list, %profile_display_options,
+    %profile_imtxt,   %profile_txt,        %register_txt,
+    %return_to_txt,   %sesquest_txt,       %session_txt,
+    %zodiac_txt,      @months,             @uploadtranlist,
+    $abbr_lang,
 );
 ## paths ##
 our (
@@ -728,20 +728,38 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
             eval {
                 require DateTime;
                 require DateTime::TimeZone;
+                require Locale::Country;
             }
           )
         {
             DateTime->import();
             DateTime::TimeZone->import();
-            load_language('Countries');
-            my $mytz = ${ $uid . $user }{'user_tz'} || $default_tz;
+            Locale::Country->import();
+            my $mytz            = ${ $uid . $user }{'user_tz'} || $default_tz;
+            my %countrytime_txt = ();
+            my @newmycntry      = DateTime::TimeZone->countries();
+            foreach my $country_code (@newmycntry) {
+                my @local = DateTime::TimeZone->names_in_country($country_code);
+                my $country = code2country($country_code) || uc $country_code;
+                foreach my $i (@local) {
+                    if ( $i =~ /\//xsm ) {
+                        my @clist = split /\//xsm, $i;
+                        my $counttime = $clist[1];
+                        if ( $clist[2] ) {
+                            $counttime = qq~$clist[1], $clist[2]~;
+                        }
+                        $counttime =~ s/_/ /gxsm;
+                        $countrytime_txt{$i} = qq~$country - $counttime~;
+                        next;
+                    }
+                }
+            }
             my @mycntry =
               sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} }
               keys %countrytime_txt;
             $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
             $user_tz_select .=
               qq~<option value="UTC"${isselected($mytz eq 'UTC')}>UTC</option>~;
-
             foreach my $i (@mycntry) {
                 $user_tz_select .=
 qq~<option value="$i"${isselected($mytz eq $i)}>$countrytime_txt{$i}</option>~;
@@ -2592,7 +2610,9 @@ sub edit_avatar {
     if ( $allowpics && $upload_useravatar && $upload_avatargroup ) {
         $upload_useravatar = 0;
         foreach my $av_gr ( split /,\s/xsm, $upload_avatargroup ) {
-            if ( ${ $uid . $user }{'position'} && $av_gr eq ${ $uid . $user }{'position'} ) {
+            if ( ${ $uid . $user }{'position'}
+                && $av_gr eq ${ $uid . $user }{'position'} )
+            {
                 $upload_useravatar = 1;
                 last;
             }
@@ -3043,7 +3063,9 @@ sub get_avatar {
     if ( $allowpics && $upload_useravatar && $upload_avatargroup ) {
         $upload_useravatar = 0;
         foreach my $av_gr ( split /,\s/xsm, $upload_avatargroup ) {
-            if ( ${ $uid . $user }{'position'} && $av_gr eq ${ $uid . $user }{'position'} ) {
+            if ( ${ $uid . $user }{'position'}
+                && $av_gr eq ${ $uid . $user }{'position'} )
+            {
                 $upload_useravatar = 1;
                 last;
             }
@@ -3445,8 +3467,7 @@ sub chk_profile_bday {
     $member{'hideage'} ||= q{};
     ${ $uid . $user }{'hideage'} ||= q{};
     if (
-        $member{'bday'}
-        && (  !${ $uid . $user }{'bday'}
+        $member{'bday'} && ( !${ $uid . $user }{'bday'}
             || ${ $uid . $user }{'bday'}
             && ${ $uid . $user }{'bday'} ne $member{'bday'} )
         || ${ $uid . $user }{'hideage'} ne $member{'hideage'}
@@ -4058,10 +4079,33 @@ s/\Q{yabb profile_txtpass_reminder_3}\E/$profile_txt{'pass_reminder_3'}/xsm;
 sub get_profile_ban {
     my $my_banning = q{};
     my $is_banned  = q{};
-    if (   ( $iamadmin || $iamgmod || $iamfmod )
-        && !$view
+    if (
+          !$view
         && $user ne $username
-        && $user ne 'admin' )
+        && $user ne 'admin'
+        && (
+            $iamadmin
+            || (
+                $iamgmod
+                && (
+                    !${ $uid . $user }{'position'}
+                    || (   ${ $uid . $user }{'position'}
+                        && ${ $uid . $user }{'position'} ne 'Administrator'
+                        && ${ $uid . $user }{'position'} ne 'Global Moderator' )
+                )
+            )
+            || (
+                $iamfmod
+                && (
+                    !${ $uid . $user }{'position'}
+                    || (   ${ $uid . $user }{'position'}
+                        && ${ $uid . $user }{'position'} ne 'Administrator'
+                        && ${ $uid . $user }{'position'} ne 'Global Moderator'
+                        && ${ $uid . $user }{'position'} ne 'Mid Moderator' )
+                )
+            )
+        )
+      )
     {
         require Sources::Security;
         $is_banned = check_banlist( ${ $uid . $user }{'email'}, q{}, $user );

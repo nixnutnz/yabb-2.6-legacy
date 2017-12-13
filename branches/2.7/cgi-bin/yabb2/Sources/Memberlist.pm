@@ -64,13 +64,15 @@ our (
 ## our Mod Hook ##
 
 if ( $iamguest && $ml_allowed ) { fatal_error('no_access'); }
-if ( $ml_allowed == 2 && !$staff ) {
-    fatal_error('no_access');
-}
-if (   ( $ml_allowed == 3 && !$iamadmin && !$iamgmod )
-    || ( $ml_allowed == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
-{
-    fatal_error('no_access');
+elsif ( !$iamguest && $ml_allowed ) {
+    if ( $ml_allowed == 2 && !$staff ) {
+        fatal_error('no_access');
+    }
+    elsif (   ( $ml_allowed == 3 && !$iamadmin && !$iamgmod )
+        || ( $ml_allowed == 4 && !$iamadmin && !$iamgmod && !$iamfmod ) )
+    {
+        fatal_error('no_access');
+    }
 }
 
 load_language('MemberList');

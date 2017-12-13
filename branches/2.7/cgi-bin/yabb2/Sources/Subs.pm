@@ -3630,11 +3630,13 @@ sub profile_view {
     my ($puser) = @_;
     my $pname = q{};
     if ($iamguest) {
-        $pname =
-qq~<span title="$maintxt{'members_only'}">$format_unbold{$puser}</span>~;
         if ($profile_int) {
             $pname =
 qq~<a href="$scripturl?action=link_profileview">$format_unbold{$puser}</a>~;
+        }
+        else {
+            $pname =
+qq~<span title="$maintxt{'members_only'}">$format_unbold{$puser}</span>~;
         }
     }
     else {

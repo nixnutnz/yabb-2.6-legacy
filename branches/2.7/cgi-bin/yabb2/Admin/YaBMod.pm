@@ -1187,6 +1187,7 @@ sub yabm_uploadmod {
         #if ( !$use_wget ) {
         if ( eval { require LWP::Simple } ) {
             require LWP::Simple;
+            LWP::Simple->import();
         }
         else {
             fatal_error( q{}, 'No LWP::Simple', 1 );

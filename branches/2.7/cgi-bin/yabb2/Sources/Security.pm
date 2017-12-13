@@ -141,7 +141,7 @@ sub is_admin_or_gmod {
     my $page = q{};
     if ( $iamgmod && $action ) {
         require Variables::Gmodset;
-        $page = $INFO{'page'};
+        $page = $INFO{'page'} || q{};
         my @pages  = @{ $gmod_access2{'newsettings'} };
         my @pagesb = @{ $gmod_access2{'newsettings2'} };
         if (

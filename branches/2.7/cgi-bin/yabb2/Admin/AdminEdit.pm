@@ -539,7 +539,7 @@ sub gmod_settings {
         'gmodsecurity_settings',     'referer_control',
         'newsettings;page=security', 'setup_guardian',
         'newsettings;page=antispam', 'spam_questions',
-        'honeypot',
+        'honeypot', 'blockip',
     );
     my @gmodforum_controls =
       qw(gmodforum_controls managecats manageboards helpadmin editemailtemplates);
@@ -678,14 +678,12 @@ sub gmod_settings2 {
         $FORM{'deletemultimembers'} ||= q{};
         $deletemulti = qq~deletemultimembers => '$FORM{'deletemultimembers'}',~;
     }
-    if ( $FORM{'deletemultimembers'} || $FORM{'addmember'} ) {
+    if ( $FORM{'deletemultimembers'} || $FORM{'addmember'} || $FORM{'manageattachments'} ) {
         $FORM{'viewmembers'} = 'on';
     }
-    if ( $FORM{'manageattachments'} ) {
-        $FORM{'viewmembers'} = 'on';
-    }
-    if ( $FORM{'ipban'} ) {
-        $FORM{'ipban2'} = 'on';
+
+    if ( $FORM{'blockip'} || $FORM{'setup_guardian'} ) {
+        $FORM{'blockip'} = 'on';
     }
 
     my $setfile = q{};
@@ -733,6 +731,7 @@ $deletemulti
 'mailing' => '$FORM{'mailing'}',
 'ipban' => '$FORM{'ipban'}',
 'ipban2' => '$FORM{'ipban'}',
+'blockip' => '$FORM{'blockip'}',
 'ban_clean' => '$FORM{'ipban'}',
 'setreserve' => '$FORM{'setreserve'}',
 
@@ -803,6 +802,9 @@ removepmoldattachments => '$FORM{'managepmattachments'}',
 removepmbigattachments => '$FORM{'managepmattachments'}',
 rebuildpmattach => '$FORM{'managepmattachments'}',
 remghostpmattach => '$FORM{'managepmattachments'}',
+setup_guardian2 => '$FORM{'setup_guardian'}',
+ipban_err => '$FORM{'errorlog'}',
+blockip => '$FORM{'blockip'}',
 
 profile => '$FORM{'allow_gmod_profile'}',
 profile2 => '$FORM{'allow_gmod_profile'}',

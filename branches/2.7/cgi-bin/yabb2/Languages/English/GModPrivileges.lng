@@ -89,6 +89,7 @@ q~Allow to View Registration Log, approve or reject preregistered Members~,
     'backupsettings' => q~Allow access to the Backup Center~,
     'backup'         => q~Allow access to the Backup Center~,
     'emailbackup'    => q~Allow to e-mail backup to webmaster~,
+    'blockip'        => q~Allow to block IP addresses from error log~,
 );
 
 %gmodpriv_txt = (
@@ -141,6 +142,7 @@ q~Allow to View Registration Log, approve or reject preregistered Members~,
     'backupsettings'       => q~Backup Center~,
     'backup'               => q~Backup Center~,
     'emailbackup'          => q~E-mail Backup~,
+    'blockip'              => q~Block IP addresses~,
 );
 
 1;
