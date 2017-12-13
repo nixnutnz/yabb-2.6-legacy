@@ -568,7 +568,7 @@ sub build_index {
           . qq~><img src="$index_togl{'index_togl'}" alt="" /> $ml_txt{'139'}: $pagenumb</span>~;
         if ( $pagenumb > 1 || $all ) {
 
-            if ( $usermemberpage == 1 || $iamguest ) {
+            if ( $usermemberpage && $usermemberpage == 1 || $iamguest ) {
                 $pagetxtindexst = q~<span ~ . $pgindex_class . q~>~;
                 if ( !$iamguest ) {
                     $letter     ||= q{};

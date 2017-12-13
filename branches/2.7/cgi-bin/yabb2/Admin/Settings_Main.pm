@@ -31,11 +31,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 ##  languages ##
 our (
-    %admin_txt,       %admintxt,    %amgtxt,        %amv_txt,
-    %countrytime_txt, %croak,       %cutts,         %imtxt,
-    %maintxt,         %matxt,       %mdintxt,       %polltxt,
-    %prereg_txt,      %qrb_txt,     %register_txt,  %rtype_text,
-    %settings_txt,    %timelocktxt, %userlevel_txt, @months,
+    %admin_txt,   %admintxt,      %amgtxt,     %amv_txt,
+    %croak,       %cutts,         %imtxt,      %maintxt,
+    %matxt,       %mdintxt,       %polltxt,    %prereg_txt,
+    %qrb_txt,     %register_txt,  %rtype_text, %settings_txt,
+    %timelocktxt, %userlevel_txt, @months,
 );
 ## paths ##
 our (
@@ -195,7 +195,7 @@ foreach my $i ( 0 .. 11 ) {
     my $z = $i + 1;
     my $month_val = sprintf '%02d', $z;
     $sel_month .=
-qq~<option value="$month_val" ${isselected($forumstart_month == $z)}>$months[$i]</option>\n~;
+qq~<option value="$month_val"${isselected($forumstart_month == $z)}>$months[$i]</option>\n~;
 }
 $sel_month .= qq~</select>\n~;
 
@@ -207,7 +207,7 @@ foreach my $i ( 90 .. 120 ) {
     else              { $z = $i - 100; $year_pre = q~20~; }
     my $year_val = sprintf '%02d', $z;
     $sel_year .=
-qq~<option value="$year_val" ${isselected($forumstart_year == $z)}>$year_pre$year_val</option>\n~;
+qq~<option value="$year_val"${isselected($forumstart_year == $z)}>$year_pre$year_val</option>\n~;
 }
 $sel_year .= qq~</select>\n~;
 
@@ -222,7 +222,7 @@ my $sel_hour = qq~
 foreach my $i ( 0 .. 23 ) {
     my $hour_val = sprintf '%02d', $i;
     $sel_hour .=
-qq~<option value="$hour_val" ${isselected($forumstart_hour == $i)}>$hour_val</option>\n~;
+qq~<option value="$hour_val"${isselected($forumstart_hour == $i)}>$hour_val</option>\n~;
 }
 $sel_hour .= qq~</select>\n~;
 
@@ -242,7 +242,7 @@ my $all_time = qq~$sel_hour $sel_minute $sel_secund~;
 # End time
 
 my $mytz      = $default_tz;
-my $tz_select = q~<select name="default_tz" id="default_tz">~;
+my $tz_select = qq~<select name="default_tz" id="default_tz">\n~;
 $tz_select .=
   qq~<option value="UTC" ${isselected('UTC' eq $mytz)}>UTC</option>~;
 my $timeoffsetselect = q{};
@@ -252,12 +252,32 @@ if (
     eval {
         require DateTime;
         require DateTime::TimeZone;
+        require Locale::Country;
     }
   )
 {
     DateTime->import();
     DateTime::TimeZone->import();
-    load_language('Countries');
+    Locale::Country->import();
+    my %countrytime_txt = ();
+    my @newmycntry      = DateTime::TimeZone->countries();
+    $countrytime_txt{'UTC'} = 'UTC';
+    foreach my $country_code (@newmycntry) {
+        my @local = DateTime::TimeZone->names_in_country($country_code);
+        my $country = code2country($country_code) || uc $country_code;
+        foreach my $i (@local) {
+            if ( $i =~ /\//xsm ) {
+                my @clist = split /\//xsm, $i;
+                my $counttime = $clist[1];
+                if ( $clist[2] ) {
+                    $counttime = qq~$clist[1], $clist[2]~;
+                }
+                $counttime =~ s/_/ /gxsm;
+                $countrytime_txt{$i} = qq~$country - $counttime~;
+                next;
+            }
+        }
+    }
     my @mycntry =
       sort { $countrytime_txt{$a} cmp $countrytime_txt{$b} }
       keys %countrytime_txt;
@@ -269,7 +289,7 @@ qq~<option value="$i" ${isselected($i eq $mytz)}>$countrytime_txt{$i}</option>~;
 }
 else {
     $tz_select .=
-qq~<option value="local" ${isselected('local' eq $mytz)}>$admin_txt{'local'}</option>~;
+qq~<option value="local"${isselected('local' eq $mytz)}>$admin_txt{'local'}</option>~;
     my @usertimeoffset = split /[.]/xsm, $timeoffset;
     $timeoffsetselect =
 q~<select name="usertimesign" id="usertimesign"><option value="">+</option><option value="-"~
@@ -360,7 +380,7 @@ if ( $enable_pm_search > 50 )  { $enable_pm_search      = 50; }
 if ( $enable_pm_search < 5 )   { $enable_pm_search      = 5; }
 if ( !$set_subject_maxlength ) { $set_subject_maxlength = 50; }
 if ( !$reg_reason_len )        { $reg_reason_len        = 200; }
-if ( !$ml_allowed )            { $ml_allowed            = 1; }
+if ( !$ml_allowed )            { $ml_allowed            = 0; }
 if ( !$default_userpic )       { $default_userpic       = 'nn.gif'; }
 $enable_mc_away ||= 0;
 
