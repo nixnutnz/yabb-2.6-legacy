@@ -741,6 +741,7 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
             foreach my $country_code (@newmycntry) {
                 my @local = DateTime::TimeZone->names_in_country($country_code);
                 my $country = code2country($country_code) || uc $country_code;
+                if ( $country eq 'UK' ) { $country = 'Great Britain'; }
                 foreach my $i (@local) {
                     if ( $i =~ /\//xsm ) {
                         my @clist = split /\//xsm, $i;
@@ -759,10 +760,10 @@ qq~&rsaquo; <a href="$scripturl?action=mycenter" class="nav">$img_txt{'mycenter'
               keys %countrytime_txt;
             $user_tz_select = q~<br /><select name="user_tz" id="user_tz">~;
             $user_tz_select .=
-              qq~<option value="UTC"${isselected($mytz eq 'UTC')}>UTC</option>~;
+              qq~<option value="UTC"${isselected($mytz eq 'UTC')}>UTC</option>\n~;
             foreach my $i (@mycntry) {
                 $user_tz_select .=
-qq~<option value="$i"${isselected($mytz eq $i)}>$countrytime_txt{$i}</option>~;
+qq~<option value="$i"${isselected($mytz eq $i)}>$countrytime_txt{$i}</option>\n~;
             }
             $user_tz_select .= q~</select>~;
         }

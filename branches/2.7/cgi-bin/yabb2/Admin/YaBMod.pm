@@ -167,8 +167,13 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
         <tr>
             <td colspan="2" class="titlebg"><img src="$admin_images/boardmod_icon.png" alt="" /> <b>$yabmtxt{'59'}</b></td>
         </tr><tr>
-            <td class="windowbg2 right" width="80%"><input type="text" name="upload_mod_dir" id="upload_mod_dir" value="$htmldir/YaBMod/temp" size="70" readonly="readonly" /> <input type="hidden" name="use_dir" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span></td>
-            <td class="windowbg2 center" width="20%"><input type="submit" value="$maintxt{'900s'}" class="button" /></td>
+            <td class="windowbg2 right" width="80%">
+				<input type="text" name="upload_mod_dir" id="upload_mod_dir" value="$htmldir/YaBMod/temp" size="70" readonly="readonly" />
+				<input type="hidden" name="use_dir" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span>
+            </td>
+            <td class="windowbg2 center" width="20%">
+                <input type="submit" value="$maintxt{'900s'}" class="button" />
+            </td>
         </tr>
    </table>
    </div>
@@ -182,7 +187,10 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
         <tr>
             <td colspan="2" class="titlebg"><img src="$admin_images/boardmod_icon.png" alt="" /> <b>$yabmtxt{'60'}</b></td>
         </tr><tr>
-            <td class="windowbg2 right" width="80%"><input type="text" name="upload_mod_url" id="upload_mod_url" value="http://" size="70" /> <input type="hidden" name="use_url" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span></td>
+            <td class="windowbg2 right" width="80%">
+				<input type="text" name="upload_mod_url" id="upload_mod_url" value="http://" size="70" />
+				<input type="hidden" name="use_url" value="1" /> <span class="small" style="padding-right:60px">$yabmtxt{'25'}</span>
+            </td>
             <td class="windowbg2 center" width="20%"><input type="submit" value="$maintxt{'900s'}" class="button" /></td>
         </tr>
    </table>
@@ -1131,7 +1139,7 @@ sub yabm_uploadmod {
     # Upload <form> install from Directory
     if (  !$FORM{'upload_mod'}
         || $FORM{'upload_mod'} eq q{}
-        && ( $FORM{'use_dir'} == 1 || $INFO{'use_dir'} == 1 ) )
+        && ( $FORM{'use_dir'} || $INFO{'use_dir'} ) )
     {
 
         opendir DIR, "$htmldir/YaBMod/temp";
@@ -1246,7 +1254,7 @@ qq~$yabmtxt{'65'}  <b>$mod_name.$mod_extension</b>! $yabmtxt{'66'} $yabmtxt{'68'
 
     # Upload file function
     my ( $anhang, @uninstall );
-    if ( $FORM{'upload_mod'} && $FORM{'upload_mod'} ne q{} ) {
+    if ( $FORM{'upload_mod'} ) {
         $FORM{'upload_mod'} =
           upload_file( 'upload_mod', 'YaBMod/temp', 'mod/zip', '2000', '0' );
         $anhang = 1;

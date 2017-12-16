@@ -244,7 +244,7 @@ my $all_time = qq~$sel_hour $sel_minute $sel_secund~;
 my $mytz      = $default_tz;
 my $tz_select = qq~<select name="default_tz" id="default_tz">\n~;
 $tz_select .=
-  qq~<option value="UTC" ${isselected('UTC' eq $mytz)}>UTC</option>~;
+  qq~<option value="UTC"${isselected('UTC' eq $mytz)}>UTC</option>\n~;
 my $timeoffsetselect = q{};
 my $dstoffsetinput   = q{};
 my $dstoffsetlabel   = q{};
@@ -261,10 +261,10 @@ if (
     Locale::Country->import();
     my %countrytime_txt = ();
     my @newmycntry      = DateTime::TimeZone->countries();
-    $countrytime_txt{'UTC'} = 'UTC';
     foreach my $country_code (@newmycntry) {
         my @local = DateTime::TimeZone->names_in_country($country_code);
         my $country = code2country($country_code) || uc $country_code;
+        if ( $country eq 'UK' ) { $country = 'Great Britain'; }
         foreach my $i (@local) {
             if ( $i =~ /\//xsm ) {
                 my @clist = split /\//xsm, $i;
@@ -284,7 +284,7 @@ if (
 
     foreach my $i (@mycntry) {
         $tz_select .=
-qq~<option value="$i" ${isselected($i eq $mytz)}>$countrytime_txt{$i}</option>~;
+qq~<option value="$i"${isselected($i eq $mytz)}>$countrytime_txt{$i}</option>\n~;
     }
 }
 else {
@@ -459,8 +459,8 @@ qq~<input type="checkbox" name="templ_switcher" id="templ_switcher" value="1"${i
 qq~<label for="temp_switcher_allowed">$admin_txt{'813b'}</label>~,
                 input_html => qq~
             <select name="temp_switcher_allowed" id="temp_switcher_allowed">
-            <option value="0" ${isselected($temp_switcher_allowed == 0)}>$userlevel_txt{'all'}</option>
-            <option value="1" ${isselected($temp_switcher_allowed == 1)}>$userlevel_txt{'members'}</option>
+            <option value="0"${isselected($temp_switcher_allowed == 0)}>$userlevel_txt{'all'}</option>
+            <option value="1"${isselected($temp_switcher_allowed == 1)}>$userlevel_txt{'members'}</option>
             </select>~,
                 name     => 'temp_switcher_allowed',
                 validate => 'number',
@@ -477,11 +477,11 @@ qq~<label for="temp_switcher_allowed">$admin_txt{'813b'}</label>~,
 qq~<label for="forumnumberformat">$admin_txt{'forumnumbformat'}</label>~,
                 input_html => qq~
 <select name="forumnumberformat" id="forumnumberformat" size="1">
-  <option value="1" ${isselected($forumnumberformat == 1)}>10987.65</option>
-  <option value="2" ${isselected($forumnumberformat == 2)}>10987,65</option>
-  <option value="3" ${isselected($forumnumberformat == 3)}>10,987.65</option>
-  <option value="4" ${isselected($forumnumberformat == 4)}>10.987,65</option>
-  <option value="5" ${isselected($forumnumberformat == 5)}>10 987,65</option>
+  <option value="1"${isselected($forumnumberformat == 1)}>10987.65</option>
+  <option value="2"${isselected($forumnumberformat == 2)}>10987,65</option>
+  <option value="3"${isselected($forumnumberformat == 3)}>10,987.65</option>
+  <option value="4"${isselected($forumnumberformat == 4)}>10.987,65</option>
+  <option value="5"${isselected($forumnumberformat == 5)}>10 987,65</option>
 </select>~,
                 name     => 'forumnumberformat',
                 validate => 'number',
@@ -491,13 +491,13 @@ qq~<label for="forumnumberformat">$admin_txt{'forumnumbformat'}</label>~,
                   qq~<label for="timeselected">$admin_txt{'587'}</label>~,
                 input_html => qq~
 <select name="timeselected" id="timeselected" size="1">
-  <option value="1" ${isselected($timeselected == 1)}>$admin_txt{'480'}</option>
-  <option value="5" ${isselected($timeselected == 5)}>$admin_txt{'484'}</option>
-  <option value="4" ${isselected($timeselected == 4)}>$admin_txt{'483'}</option>
-  <option value="8" ${isselected($timeselected == 8)}>$admin_txt{'483a'}</option>
-  <option value="2" ${isselected($timeselected == 2)}>$admin_txt{'481'}</option>
-  <option value="3" ${isselected($timeselected == 3)}>$admin_txt{'482'}</option>
-  <option value="6" ${isselected($timeselected == 6)}>$admin_txt{'485'}</option>
+  <option value="1"${isselected($timeselected == 1)}>$admin_txt{'480'}</option>
+  <option value="5"${isselected($timeselected == 5)}>$admin_txt{'484'}</option>
+  <option value="4"${isselected($timeselected == 4)}>$admin_txt{'483'}</option>
+  <option value="8"${isselected($timeselected == 8)}>$admin_txt{'483a'}</option>
+  <option value="2"${isselected($timeselected == 2)}>$admin_txt{'481'}</option>
+  <option value="3"${isselected($timeselected == 3)}>$admin_txt{'482'}</option>
+  <option value="6"${isselected($timeselected == 6)}>$admin_txt{'485'}</option>
 </select>~,
                 name     => 'timeselected',
                 validate => 'number',

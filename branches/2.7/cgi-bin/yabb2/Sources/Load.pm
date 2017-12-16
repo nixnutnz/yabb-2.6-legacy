@@ -45,7 +45,7 @@ our (
     $showusertext,     $showzodiac,           $ttsreverse,
     $ttsureverse,      $usertools,            $usertxtwrap,
     %grp_nopost,       %grp_post,             %grp_staff,
-    %templateset,      %lngs,
+    %templateset,      %lngs,                 $profile_int,
 );
 ## system ##
 our (
@@ -813,38 +813,33 @@ qq~<span style="color: $memstat[3];">${ $uid . $usr }{'realname'}</span>~;
           qq~<span style="color: $memstat[3];">$memberinfo{$usr}</span>~;
     }
     elsif ($iamguest) {
+        no strict qw(refs);
         if ( $memstat[3] ) {
+            if ($profile_int) { $userlink = qq~<a href="$scripturl?action=link_profileview" style="color:$memstat[3];">$userlink</a>~;}
             $link{$usr} =
 qq~<span style="color:$memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
             $format{$usr} =
 qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
-            {
-                no strict qw(refs);
-                $format_unbold{$usr} =
-qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">${ $uid . $usr }{'realname'}</span>~;
-            }
+            $format_unbold{$usr} =
+qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$userlink</span>~;
             $col_title{$usr} =
 qq~<span style="color: $memstat[3];" title="$maintxt{'members_only'}">$memberinfo{$usr}</span>~;
         }
         else {
+            if ($profile_int) { $userlink = qq~<a href="$scripturl?action=link_profileview">$userlink</a>~;}
             $link{$usr} =
               qq~<span title="$maintxt{'members_only'}">$userlink</span>~;
             $format{$usr} = $userlink;
-            {
-                no strict qw(refs);
-                $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
-            }
+            $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
             $col_title{$usr} = $memberinfo{$usr};
         }
     }
     else {
+        no strict qw(refs);
         $link{$usr} =
 qq~<a href="$scripturl?action=viewprofile;username=$useraccount{$usr}">$userlink</a>~;
         $format{$usr} = $userlink;
-        {
-            no strict qw(refs);
-            $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
-        }
+        $format_unbold{$usr} = ${ $uid . $usr }{'realname'};
         $col_title{$usr} = $memberinfo{$usr};
     }
     $addmembergroup{$usr} = q~<br />~;
