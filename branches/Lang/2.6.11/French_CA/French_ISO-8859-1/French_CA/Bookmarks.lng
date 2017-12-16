@@ -10,23 +10,23 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$bookmarkslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$bookmarkslngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %bookmark_txt = (
 '01' => q~Image~,
 '02' => q~Titre~,
 '03' => q~Ordre~,
-'05' => q~Êtes vous sûr de vouloir supprimer ce marque-page?~,
+'05' => q~Êtes vous sûr de vouloir supprimer ce signet?~,
 '08' => q~Il n'y a actuellement aucun signet social.~,
 '09' => q~Paramètres de signet social~,
 '10' => q~Activer les signets?~,
-'11' => q~Sélectionnez les forum dans lesquelles les signets seront affichés: <br/><span class="small"> - Si aucun forum n'est sélectionnée, tous les forums seront activées.<br/> - Utilisez la touche Ctrl ou (touche Pomme sur Mac) pour sélectionner/désélectionner les forums.</span>~,
+'11' => q~Sélectionnez les forums dans lesquelles les signets seront affichés: <br/><span class="small"> - Si aucun forum n'est sélectionnée, tous les forums seront activés.<br/> - Utilisez la touche Ctrl ou (touche Pomme sur Mac) pour sélectionner/désélectionner les forums.</span>~,
 '12' => q~Signet social~,
 '13' => q~Ajouter un signet~,
 '14' => q~URL~,

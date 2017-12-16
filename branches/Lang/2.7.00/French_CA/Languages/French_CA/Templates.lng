@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -38,8 +38,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '5d' => q~Profil~,
     '5e' => q~Liste des membres~,
     '6'  => q~Configuration du modèle~,
-    '7' =>
-q~Ici, vous pouvez combiner des éléments provenant de différents jeux de modèle et pré visualiser le résultat.~,
+    '7'  => q~Ici, vous pouvez combiner des éléments provenant de différents jeux de modèle et pré visualiser le résultat.~,
     '8'  => q~Images du modèle~,
     '9'  => q~Aperçu~,
     '10' => q~Modèles~,
@@ -49,8 +48,7 @@ q~Ici, vous pouvez combiner des éléments provenant de différents jeux de mod�
     '14' => q~Effacer~,
     '15' => q~Êtes-vous sûr que vous voulez supprimer~,
     '18' => q~Éléments~,
-    '19' =>
-q~Ici, vous pouvez changer les couleurs de l'arrière-plan, les bordures et le texte ainsi que la famille de police et la taille du texte pour les principaux éléments de votre forum.<br /><strong>Note</strong>:si un attribut d'élément tel qu'une police n'a pas de choix disponible, cet attribut n'a pas été défini pour cet élément dans la feuille de style.~,
+    '19' => q~Ici, vous pouvez changer les couleurs de l'arrière-plan, les bordures et le texte ainsi que la famille de police et la taille du texte pour les principaux éléments de votre forum.<br /><strong>Note</strong>:si un attribut d'élément tel qu'une police n'a pas de choix disponible, cet attribut n'a pas été défini pour cet élément dans la feuille de style.~,
     '20'  => q~Élément~,
     '21'  => q~Fond.~,
     '21g' => q~Fond graduel~,
@@ -116,8 +114,7 @@ q~Ici, vous pouvez changer les couleurs de l'arrière-plan, les bordures et le t
     '81'  => q~Lien de nom de catégorie~,
     '82'  => q~Lien vers le dernier message~,
     '83'  => q~Ceci est le lien du sujet~,
-    '84' =>
-      q~Ceci est votre message de Nouvelles (si les nouvelles sont activées)~,
+    '84'  => q~Ceci est votre message de Nouvelles (si les nouvelles sont activées)~,
     'tabtitle'     => q~Titre de l'index du forum (.tabtitle)~,
     'tabtitlea'    => q~Lien du titre de l'index du forum (.tabtitle a)~,
     'tabtitle_txt' => q~Texte du titre de l'index du forum (.tabtitle-text)~,
@@ -126,28 +123,22 @@ q~Ici, vous pouvez changer les couleurs de l'arrière-plan, les bordures et le t
     'forum'        => q~Forum~,
     'admincenter'  => q~Centre d'administration~,
     'buttontext'   => q~Boutons CSS~,
-    'buttondescription' =>
-q~Ici vous pouvez changer la position de l'icône et du texte à l'intérieur des boutons et les graphiques d'arrière-plan pour les boutons.~,
+    'buttondescription' => q~Ici vous pouvez changer la position de l'icône et du texte à l'intérieur des boutons et les graphiques d'arrière-plan pour les boutons.~,
     'moveicon1' => q~Position de l'icône (verticale)~,
     'moveicon2' => q~Position de l'icône (horizontale)~,
     'iconspace' => q~Icon-Espace texte~,
     'movetext'  => q~Position du texte (verticale)~,
-    'noedit' =>
-q~Vous n'êtes pas autorisé à modifier la feuille de style par défaut sauf en éditant directement la source.<br />Pour effectuer des modifications à partir de cet écran: enregistrez votre travail dans un nouveau nom de fichier. Vous pouvez ensuite choisir cette feuille de style comme feuille de style pour l'habillage par défaut à partir de l'écran <a href="{yabb adminurl}?action=modskin">Configuration du modèle</a>.~,
-    '10b' =>
-q~<br /><span class="small"><strong>Note</strong>: Le modèle par défaut du Forum ne peut pas être supprimé.</span>~,
+    'noedit' => q~Vous n'êtes pas autorisé à modifier la feuille de style par défaut sauf en éditant directement la source.<br />Pour effectuer des modifications à partir de cet écran: enregistrez votre travail dans un nouveau nom de fichier. Vous pouvez ensuite choisir cette feuille de style comme feuille de style pour l'habillage par défaut à partir de l'écran <a href="{yabb adminurl}?action=modskin">Configuration du modèle</a>.~,
+    '10b' => q~<br /><span class="small"><strong>Note</strong>: Le modèle par défaut du Forum ne peut pas être supprimé.</span>~,
     '521' => q~Sélectionnez le style de menu modèle~,
     '527' => q~Activer les outils de publication de modèles?~,
     '528' => q~Activer les outils de thème de modèle?~,
-    '1b' =>
-q~<br /><span class="small"><strong>Note</strong>:La feuille de style par défaut du Forum ne peut pas être supprimée. Il ne peut pas non plus être édité à partir de cet écran.</span>~,
+    '1b' => q~<br /><span class="small"><strong>Note</strong>:La feuille de style par défaut du Forum ne peut pas être supprimée. Il ne peut pas non plus être édité à partir de cet écran.</span>~,
     'ubbcbutton' => q~Boutons UBBC~,
-    'ubbcdescription' =>
-q~Ici vous pouvez choisir le graphique d'arrière-plan pour les boutons UBBC.~,
+    'ubbcdescription' => q~Ici vous pouvez choisir le graphique d'arrière-plan pour les boutons UBBC.~,
     'edit_files' => q~Aller à Modifier les fichiers modèles~,
     'configure'  => q~Aller à Configurer les modèles~,
-    'mobile' =>
-q~Est-ce un modèle mobile? (Les modèles mobiles ont certaines fonctions - telles que le contexte aide et aperçu - désactivé.)~,
+    'mobile' => q~Est-ce un modèle mobile? (Les modèles mobiles ont certaines fonctions - telles que le contexte aide et aperçu - désactivé.)~,
     'newlinks'         => q~Nouveaux liens retour~,
     'newlinks_c'       => q~Nouveau texte de liens~,
     '521a'             => q~Icône + Texte~,

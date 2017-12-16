@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -46,16 +46,14 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '171' => q~Retournez à la recherche ici.~,
     '182' => q~Chercher~,
     '183' => q~Définir les paramètres de recherche~,
-    '186' => q~Rechercher des sujets débuté par quelqu'un~,
-    '187' => q~Rechercher des sujets postés par quelqu'un~,
+    '186' => q~Rechercher des sujets débutés par quelqu'un~,
+    '187' => q~Rechercher des sujets publiés par quelqu'un~,
     '189' => q~Choisissez le(s) forum(s) à rechercher~,
-    '190' =>
-q~Appuyez sur la touche Ctrl ou (touche Pomme sur Mac) et maintenez-la enfoncée pour en sélectionner plusieurs.~,
+    '190' => q~Appuyez sur la touche Ctrl ou (touche Pomme sur Mac) et maintenez-la enfoncée pour en sélectionner plusieurs.~,
     '191'  => q~Afficher le nombre de résultats?~,
     '191a' => q~Afficher un seul résultat par fil de message?~,
     '191b' => q~Maximum autorisé: {yabb maxsearchdisplay}~,
-    '191x' =>
-q~Vous êtes autorisé à modifier le nombre maximum {yabb maxsearchdisplay} de résultats à afficher. Veuillez modifier votre valeur.~,
+    '191x' => q~Vous êtes autorisé à modifier un nombre maximum de {yabb maxsearchdisplay} résultats à afficher. Veuillez modifier votre valeur.~,
     '236'          => q~Retour~,
     '237'          => q~à l'index du forum.~,
     '343'          => q~Correspond à tous les mots~,
@@ -82,8 +80,7 @@ q~Vous êtes autorisé à modifier le nombre maximum {yabb maxsearchdisplay} de 
     'pmgroup'      => q~Groupe~,
     'searchme'     => q~Rechercher ses propres messages~,
     'casesensitiv' => q~Sensible aux majuscules et minuscules~,
-    'searchyabbtags' =>
-q~Cherchez aussi dans les balises YaBB <span class="small"> (les parenthèses comme ceci [...] prennnent beaucoup plus de temps.)</span>~,
+    'searchyabbtags' => q~Cherchez aussi dans les balises YaBB <span class="small"> (les parenthèses comme ceci [...] prennnent beaucoup plus de temps.)</span>~,
 );
 
 %pmboxes_txt = (

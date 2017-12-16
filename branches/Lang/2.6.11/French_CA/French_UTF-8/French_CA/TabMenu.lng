@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -28,7 +28,7 @@ $tabmenulngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'tabdel' => q~Supprimer cet onglet~,
 'viewgm' => q~GMod +~,
 'viewadm' => q~Admin~,
-'tabtext' => q~Text~,
+'tabtext' => q~Texte~,
 'taberr' => q~Informations requises manquantes:~,
 'addtab' => q~Ajouter~,
 'savetab' => q~Sauvegarder texte~,

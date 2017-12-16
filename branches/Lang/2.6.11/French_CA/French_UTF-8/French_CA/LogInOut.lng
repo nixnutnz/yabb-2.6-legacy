@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -22,11 +22,11 @@ $loginoutlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '34' => q~Connexion~,
 '35' => q~Identifiant ou adresse courriel~,
 '35a' => q~Champ Identifiant ou adresse courriel.~,
-'35b' => q~Identifiant, Utilisateur ou adresse courriel~,
+'35b' => q~Identifiant, Pseudonyme ou adresse courriel~,
 '36' => q~Mot de passe~,
 '36b' => q~Réinitialiser le mot de passe~,
 '130' => qq~Cordialement,\nl'équipe $mbname~,
-'130a' => q~Une réinitialisation du mot de passe a été demandée par un visiteur à $mbname. Si vous n'avez pas soumis de demande de réinitialisation de votre mot de passe, veuillez ignorer cet e-mail, sinon cliquez ici pour réinitialiser votre mot de passe~,
+'130a' => q~Une réinitialisation du mot de passe a été demandée par un visiteur à $mbname. Si vous n'avez pas soumis de demande de réinitialisation de votre mot de passe, veuillez ignorer ce courriel, sinon cliquez ici pour réinitialiser votre mot de passe~,
 '192' => q~Courriel envoyé avec succès à:~,
 '193' => q~Retour~,
 '194' => q~demande~,

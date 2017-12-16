@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$displaylngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$displaylngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %display_txt = (
 '10' => q~Permalien pour cet article~,
@@ -52,9 +52,9 @@ $displaylngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '642' => q~fois~,
 '643' => q~Retour en haut~,
 '644' => q~Membres qui regardent ce sujet~,
-'645' => q~répondre~,
+'645' => q~Répondre~,
 '646' => q~Membres répondant à ce sujet~,
-'739' => q~Etes-vous sur de vouloir supprimer cette annonce?~,
+'739' => q~Êtes-vous sur de vouloir supprimer cette annonce?~,
 '739a' => q~Supprimer cette publication~,
 '766' => q~Pas de sujet~,
 '767' => q~Sujet suivant~,
@@ -68,7 +68,7 @@ $displaylngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'split_confirm' => q~Êtes-vous sûr de vouloir partager ce sujet?~,
 'alertmod_confirm' => q~Êtes-vous sûr de vouloir alerter le modérateur à propos de cet article?~,
 'reverse' => q~Cliquez ici si vous voulez changer l'ordre des sujets.~,
-'sendtopicemail' => q~Cliquez sur [OK] si vous souhaitez envoyer le courriel via votre programme de messagerie, sinon le programme de messagerie du forum sera utilisé.~, ## dans javascript
+'sendtopicemail' => q~Cliquez sur [OK] si vous souhaitez envoyer le courriel via votre programme de messagerie, sinon le programme de messagerie du forum sera utilisé.~, #Dans les JavaScript!
 'location' => q~Emplacement~,
 'age' => q~Âge~,
 'regdate' => q~Rejoint:~,

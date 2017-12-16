@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1.1                                      #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$errorlngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %error_txt = (
 ## General Errors ##
@@ -27,7 +27,7 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'cannot_open_language' => q~Impossible de trouver le fichier de langue requis. Veuillez informer l'administrateur de ce problème.~,
 'cannot_delete' => q~Impossible de supprimer~,
 'not_completed' => q~Une erreur est survenue et cette action n'a pu être complétée, désolé pour le désagrément.~,
-'not_logged_in' => q~Pour effectuer cette action, vous devez être connecté. Si vous n'avez pas encore de compte, veuillez vous enregistrer.~,
+'not_logged_in' => q~Pour effectuer cette action, vous devez être connecté. Si vous n'avez pas encore de compte, veuillez-vous enregistrer.~,
 'logged_in_already' => q~Vous êtes déjà connecté avec l'Identifiant:~,
 'no_access' => q~Vous n'êtes pas autorisé à accéder à cette section.~,
 'not_found' => q~L'information que vous essayez d'accéder n'est pas disponible pour vous.~,
@@ -49,20 +49,20 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'password_mismatch' => q~Les mots de passe ne sont pas identiques.~,
 'bad_credentials' => q~Identifiant/Mot de passe ne correspondent pas.<br />L'Identifiant que vous avez spécifié n'existe pas ou vous avez entré un mot de passe incorrect.~,
 'invalid_character' => q~Il y a un caractère non valide détecté dans le~,
-'invalid_email' => q~S'il vous plaît, mettez une adresse courriel valide.~,
-'invalid_picture' => q~Saisin d'image de forum erronée.~,
-'no_secret_answer' => q~Vous devez entrez une réponse à la question posée~,
+'invalid_email' => q~S'il vous plaît, veuillez entrer une adresse courriel valide.~,
+'invalid_picture' => q~Saisie d'image de forum erronéee.~,
+'no_secret_answer' => q~Vous devez entrer une réponse à la question posée.~,
 'no_verification_code' => q~Le code de vérification n'a pas été rempli, il est obligatoire.~,
 'wrong_verification_code' => q~Le code de vérification n'est pas le même que l'image présentée à l'écran, revenez en arrière, actualisez (appuyez sur F5 sur la plupart des navigateurs) et réessayez.~,
 'invalid_verification_code' => q~Le code de vérification contient des caractères non valides, seuls les caractères a-z et 0-9 sont valides~,
-'form_spoofing' => q~<strong>ALERTE</strong>Contrefacon de formulaire détecté provenant de l'adresse IP:~,
+'form_spoofing' => q~<strong>ALERTE</strong>Contrefaçon de formulaire détecté provenant de l'adresse IP:~,
 'post_flooding' => q~La dernière requête POST de votre adresse IP était inférieure à~,
 'denial_of_service' => q~La dernière requête POST a créé un message d'erreur:~,
-'speed_alert' => q~Publier ceci rapidement est considéré comme du spam.<br />Vous êtes seulement autorisé à <strong>$spam_hits_left_count</strong>tentatives de plus, après quoi vous serez banni en tant que spammeur.~,
+'speed_alert' => q~Publier trop rapidement est considéré comme du spam.<br />Vous êtes autorisé à seulement <strong>$spam_hits_left_count</strong>tentatives supplémentaires, après quoi vous serez banni en tant que spammeur.~,
 
-'tsc_alert' => q~L'un des champs de formulaire contient du texte considéré comme spam.<br />Vous n'êtes autorisé à <strong>$spam_hits_left_count</strong> plus de tentatives après lesquelles vous serez banni en tant que spammeur.~,
-'speedpostban' => q~Vous êtes actuellement banni de la publication en raison d'un possible spamming.<br />Après <strong>$detention_left</strong> seconde(s) votre interdiction sera automatiquement levée.~,
-'truncation_error' => q~Assurez-vous que la 'fausse troncature' est activée dans votre fichier Settings.pm.<br />\$faketruncation = 1;<br />Impossible de tronquer le fichier~,
+'tsc_alert' => q~L'un des champs de formulaire contient du texte considéré comme spam.<br />Vous n'êtes autorisé à <strong>$spam_hits_left_count</strong> tentatives supplémentaires, après quoi vous serez banni en tant que spammeur.~,
+'speedpostban' => q~Vous êtes actuellement banni de la publication en raison d'un possible spam.<br />Après <strong>$detention_left</strong> seconde(s) votre interdiction sera automatiquement levée.~,
+'truncation_error' => q~Assurez-vous que la "fausse troncation" est activée dans votre fichier Settings.pm.<br />\$faketruncation = 1;<br />Impossible de tronquer le fichier~,
 'referer_violation' => q~Cette action n'est pas autorisée depuis un domaine extérieur.<br />L'action est:~,
 'egg' => q~Séquence d'autodestruction commencée!<br />~,
 'domain_not_allowed' => q~Vous ne pouvez pas vous inscrire, publier en tant qu'invité ou changer votre adresse courriel à une adresse du domaine~,
@@ -72,7 +72,7 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'wrong_pass' => q~Le mot de passe que vous avez entré est incorrect~,
 'corrupt_member_file' => q~Le fichier de données du membre est corrompu. Veuillez informer l'administrateur de cette erreur.~,
 'no_admin_passwrd' => q~Vous devez entrer le mot de passe administrateur correct pour entrer dans le Centre d'administration.~,
-'default_password' => qq~ Vous utilisez toujours le mot de passe par défaut YaBB Setup. Veuillez vous connecter à votre <a href="$scripturl?action=myprofile;username=$username;sid=$mysid"> profil utilisateur</a> et changer votre mot de passe pour quelque chose de plus sécurisé.~,
+'default_password' => qq~ Vous utilisez toujours le mot de passe par défaut de YaBB. Veuillez-vous connecter à votre <a href="$scripturl?action=myprofile;username=$username;sid=$mysid"> profil utilisateur</a> et changer votre mot de passe pour quelque chose de plus sécuritaire.~,
 'missingvars' => q~Quelque chose de mal est arrivé. Veuillez informer l'administrateur de ce forum de ce que vous étiez en train de faire lorsque cette erreur s'est produite.~,
 
 ## BoardIndex ##
@@ -103,7 +103,7 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 ## LogInOut ##
 'not_activated' => q~Votre compte n'est pas encore activé<br />Veuillez l'activer en cliquant sur le lien dans le courriel que vous avez reçu.~,
 'time_out' => q~Vous n'avez pas activé votre compte dans les $preregspan heures.<br />Par conséquent, votre pré-inscription a été supprimée.<br />Veuillez vous réinscrire.~,
-'wrong_code' => q~Votre code d'activation est erroné.~,
+'wrong_code' => q~Votre code d'activation est erronée.~,
 'admin_login_only' => q~Seul l'administrateur peut se connecter pour le moment, car notre forum est en mode maintenance.<br />Veuillez réessayer plus tard Merci.~,
 'wrong_id' => q~L'identifiant que vous avez envoyé n'est pas valide. Veuillez réessayer.~,
 
@@ -117,7 +117,7 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'time_locked' => q~L'administrateur a fixé un délai de~,
 'change_not_allowed' => q~Vous n'êtes pas autorisé à modifier ce post~,
 'delete_not_allowed' => q~Vous n'êtes pas autorisé à supprimer cet article.~,
-'split_splice_not_allowed' => q~Vous n'êtes pas autorisé à scinder ou scinder ce sujet, vous devez être un membre du personnel pour le faire.~,
+'split_splice_not_allowed' => q~Vous n'êtes pas autorisé à scinder ou fusioner ce sujet, vous devez être un membre du Staff pour le faire.~,
 'no_perm_post' => q~Vous n'êtes pas autorisé à publier de nouveaux sujets dans ce forum~,
 'no_perm_reply' => q~Vous n'avez pas la permission de répondre aux sujets de ce forum~,
 'no_perm_poll' => q~Vous n'êtes pas autorisé à publier des sondages dans ce forum~,
@@ -146,7 +146,7 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'voted_already' => q~Vous avez déjà voté dans ce sondage~,
 'guest_taken' => q~L'identifiant ou l'adresse courriel donnée est déjà prise par un membre.<br />Identifiant ou adresse courriel en conflit:~,
 'quote_too_long' => q~Le texte que vous avez essayé de citer est trop long, merci de le raccourcir.~,
-'no_links_allowed' => q~Désolé, vous n'êtes pas autorisé à publier des messages contenant des liens actifs vers des sites ou des images avant que vous ayez posté des messages $minlinkpost normal.~,
+'no_links_allowed' => q~Désolé, vous n'êtes pas autorisé à publier des messages contenant des liens actifs vers des sites ou des images avant que vous ayez posté des messages $minlinkpost normaux.~,
 'no_siglinks_allowed' => q~Désolé, vous n'êtes pas autorisé à créer une signature contenant des liens actifs vers des sites Web ou des images avant que vous ayez posté $minlinksig messages normaux.~,
 'attach_name_blocked' => q~Le nom de votre pièce jointe contient un mot qui n'est pas autorisé sur ce forum.~,
 'attach_file_blocked' => q~Désolé, vous ne pouvez pas télécharger une pièce jointe avec ce nom de fichier.~,
@@ -171,18 +171,18 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'not_allowed_gender_edit' => q~Vous n'êtes pas autorisé à modifier votre genre.~,
 'not_allowed_birthdate_change' => q~Vous n'êtes pas autorisé à changer votre date de naissance.~,
 'id_reserved' => q~L'identifiant que vous avez essayé d'enregistrer contient un mot réservé. Veuillez essayer un autre identifiant.~,
-'name_reserved' => q~Le pseudonyme que vous avez essayé d'enregistrer contient un mot réservé. Veuillez essayer un autre pseudonyne~,
+'name_reserved' => q~Le pseudonyme que vous essayez d'enregistrer contient un mot réservé. Veuillez essayer un autre pseudonyme~,
 'cannot_kill_admin' => q~Par mesure de sécurité, vous ne pouvez pas supprimer le compte avec l'identifiant:~,
 'email_taken' => q~L'adresse courriel suivante est déjà utilisée par un membre enregistré Si vous pensez qu'il s'agit d'une erreur, allez sur la page de connexion et utilisez le rappel de mot de passe avec cette adresse.~,
 'invalid_template' => q~Ce n'est pas un nom de modèle valide.~,
 'invalid_language' => q~Ce n'est pas un nom de langue valide.~,
 'invalid_time_offset' => q~Le décalage temporel doit être +/- et numérique.~,
-'invalid_postcount' => q~La boîte 'nombre de messages' ne peut contenir que des chiffres.~,
+'invalid_postcount' => q~La boîte "nombre de messages" ne peut contenir que des chiffres.~,
 'cannot_regroup_admin' => q~L'administrateur avec l'identifiant "admin" ne peut pas être défini sur un autre groupe de membres.~,
 'session_time_out' => q~La session de profil a expiré.~,
 
 ## Register ##
-'email_mismatch' => q~Les adresses courriel ne correspondent pas.~,
+'email_mismatch' => q~Les adresses courriels ne correspondent pas.~,
 'registration_disabled' => q~La fonction d'inscription a été désactivée sur ce forum.~,
 'no_registration_logged_in' => q~Vous ne pouvez pas vous enregistrer en étant connecté.~,
 'banned' => q~Notice de bannissement.~,
@@ -191,19 +191,19 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'id_taken' => q~L'identifiant que vous avez essayé d'enregistrer existe déjà.~,
 'id_to_long' => q~Veuillez raccourcir votre pseudo, il est trop long.~,
 'realname_to_long' => q~Veuillez raccourcir votre pseudo, il est trop long.~,
-'email_to_long' => q~Veuillez raccourcir votre courriel, il est trop long.~,
+'email_to_long' => q~Veuillez raccourcir votre adresse courriel, elle est trop longue.~,
 'already_preregged' => q~Cet utilisateur est déjà préenregistré.~,
-'email_already_preregged' => q~Cet courriel est déjà pré-enregistré.~,
+'email_already_preregged' => q~Cette adresse courriel est déjà préenregistré.~,
 'already_activated' => q~Cet utilisateur a déjà été activé.~,
-'prereg_expired' => q~Cet utilisateur n'a pas été pré-enregistré ou la durée autorisée de $preregspan heures a expiré.~,
+'prereg_expired' => q~Cet utilisateur n'a pas été préenregistré ou la durée autorisée de $preregspan heures a expiré.~,
 'prereg_wait' => q~Votre compte utilisateur n'a pas encore été approuvé, soyez patient.~,
 'no_regagree' => q~Vous ne pouvez pas vous enregistrer sauf si vous acceptez le contrat d'enregistrement.~,
 'no_reg_reason' => q~Sans donner de raison de faire une demande d'adhésion, nous ne pouvons pas traiter votre demande.~,
 'no_verification_question' => q~Vous n'avez pas répondu à la question de vérification. Veuillez revenir en arrière et réessayer.~,
-'wrong_verification_question' => q~La réponse à la question de vérification est erroné. Veuillez revenir en arrière et réessayer.~,
+'wrong_verification_question' => q~La réponse à la question de vérification est erronée. Veuillez revenir en arrière et réessayer.~,
 'censor1' => q~Le nom d'utilisateur que vous avez choisi a un mot qui est banni sur ce forum:~,
-'censor2' => q~L'adresse courriel que vous avez choisi a un mot qui est banni sur ce forum:~,
-'censor3' => q~Le pseudo que vous avez choisi a un mot qui est banni sur ce forum:~,
+'censor2' => q~L'adresse courriel que vous avez choisi contient un mot qui est banni sur ce forum:~,
+'censor3' => q~Le pseudo que vous avez choisi contient un mot qui est banni sur ce forum:~,
 'bad_bot' => q~Oups - nous ne servons pas votre genre ici.~,
 
 ## Search ##
@@ -218,8 +218,8 @@ $errorlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'sendname_too_long' => q~Veuillez raccourcir votre nom, il est trop long.~,
 
 ## Admin Stuff ##
-'announcement_defined' => q~Le forum ne peut avoir qu'un seul forum définie comme un forum d'annonce globale~,
-'recycle_bin_defined' => q~Le forum ne peut avoir qu'un seul forum définie comme une corbeille~,
+'announcement_defined' => q~Le forum ne peut avoir qu'un seul forum défini comme un forum d'annonce globale.~,
+'recycle_bin_defined' => q~Le forum ne peut avoir qu'un seul forum définie comme corbeille.~,
 'board_defined' => q~Un forum avec cet ID existe déjà~,
 'cat_defined' => q~Une catégorie avec cet identifiant existe déjà~,
 'no_delete_default' => q~Pour des raisons de sécurité, vous n'êtes pas autorisé à supprimer ou modifier le "modèle par défaut". Vous pouvez utiliser le modèle par défaut en éditant la source. Mais assurez-vous d'avoir fait une copie auparavant.~,

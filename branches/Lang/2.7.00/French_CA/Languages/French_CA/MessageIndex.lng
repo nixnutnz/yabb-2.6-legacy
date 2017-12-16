@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -53,12 +53,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '133' => q~Déplacer vers~,
     '139' => q~Pages~,
     '162' => q~Êtes-vous sûr de vouloir supprimer ce sujet?~,
-    '199' =>
-      q~Double-cliquez sur cette case pour plus d'informations sur sa fonction.~
-    ,    # don't use " inside!
-    '200' =>
-q~Cochez cette case pour inclure un nouveau message à la fin du sujet à déplacer. Ce message montrera l'information d'où provient le fil et qui l'a déplacé. Décochez-la pour déplacer inclure un nouveau message.~
-    ,    #Dans les JavaScript!
+    '199' => q~Double-cliquez sur cette case pour plus d'informations sur sa fonction.~,      # don't use " inside!
+    '200' => q~Cochez cette case pour inclure un nouveau message à la fin du sujet à déplacer. Ce message montrera l'information d'où provient le fil et qui l'a déplacé. Décochez-la pour déplacer inclure un nouveau message.~,      #Dans les JavaScript!
     '251'  => q~Sauter au forum~,
     '298'  => q~Modérateur~,
     '298a' => q~Groupe modérateur~,
@@ -82,7 +78,7 @@ q~Cochez cette case pour inclure un nouveau message à la fin du sujet à dépla
     '525'  => q~Par~,
     '526'  => q~par~,
     '527'  => q~Démarré~,
-    '737'  => q~Tour cocher~,
+'737' => q~Tout cocher~,
     '779'  => q~Sujet épinglé~,
     '779a' => q~Annonce globale~,
     '779b' => q~Annonce globale verrouillée~,
@@ -97,8 +93,7 @@ q~Cochez cette case pour inclure un nouveau message à la fin du sujet à dépla
     '845'  => q~Sujet déplacé~,
     '903'  => q~Fermer la fenêtre~,
     'collruletext' => q~Règles réduites du forum~,
-    'nopost' =>
-q~Ce forum ne peut pas être publié et aucun message ne peut y être déplacé.~,
+    'nopost' => q~Ce forum ne peut pas être publié et aucun message ne peut y être déplacé.~,
     'move_up'   => q~Déplacer en haut~,
     'move_down' => q~Déplacer en bas~,
 );

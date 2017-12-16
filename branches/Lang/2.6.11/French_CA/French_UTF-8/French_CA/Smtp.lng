@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -30,14 +30,14 @@ $smtplngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '214' => q~Message d'aide~,
 '220' => q~<domaine> Service prêt~,
 '221' => q~<domaine> Canal de transmission de fermeture de service~,
-'250' => q~Action de courrier demandée okay, complété~,
-'251' => q~Utilisateur non local:transmettra à <forward-path>~,
+'250' => q~Action de courrier demandée correcte et complété~,
+'251' => q~Utilisateur non local: Seras transféré a <forward-path>~,
 '354' => q~Débutez l'entrée courriel: Terninez avec <CRLF>.<CRLF>~,
 '421' => q~<domaine>Service non disponible~,
 '432' => q~Une transition de mot de passe est nécessaire~,
-'450' => q~Action de courrier demandée non effectuée:boîte aux lettres non disponible~,
-'451' => q~Action demandée annulée: erreur locale dans le traitement~,
-'452' => q~Action requise non effectuée:stockage insuffisant du système~,
+'450' => q~Action de courrier demandée effectuée: Boîte aux lettres non disponible~,
+'451' => q~Action demandée annulée: Erreur locale dans le traitement~,
+'452' => q~Action requise non effectuée: Stockage insuffisant du système~,
 '454' => q~Échec d'authentification temporaire~,
 '500' => q~Erreur de syntaxe, commande non reconnue~,
 '501' => q~Destinataire de courrier non valide. Le relais nécessite SMTP AUTH~,
@@ -47,11 +47,11 @@ $smtplngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '530' => q~Authentification requise~,
 '534' => q~Le mécanisme d'authentification est trop faible~,
 '538' => q~Cryptage requis pour le mécanisme d'authentification demandé~,
-'535' => q~Authentification a chouée~,
-'550' => q~Action demandée non effwectué:boîte aux lettres ou utilisateur not disponible~,
-'551' => q~Utilisateur non local: essayez <forward-path>~,
-'552' => q~Action de courrier demandée abandonnée: dépassement de l'allocation de stockage~,
-'553' => q~Action requise non effectuée:nom de la boîte aux lettres non autorisé~,
+'535' => q~Authentification a échouée~,
+'550' => q~Action demandée non effectué: Boîte aux lettres ou utilisateur non disponible~,
+'551' => q~Utilisateur non local: Essayez <forward-path>~,
+'552' => q~Action de courrier demandée abandonnée: Dépassement de l'allocation de stockage~,
+'553' => q~Action requise non effectuée: Nom de la boîte aux lettres non autorisé~,
 '554' => q~La transaction a échoué~,
 '555' => q~Membre~,
 );

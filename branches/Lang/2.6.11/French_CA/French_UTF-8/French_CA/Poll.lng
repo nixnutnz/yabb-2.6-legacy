@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$polllngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$polllngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %polltxt = (
 '4' => q~Question de sondage~,
@@ -25,7 +25,7 @@ $polllngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '15' => q~Sondage~,
 '16' => q~Question~,
 '17' => q~Votes Total~,
-'18' => q~Soumetre votre vote~,
+'18' => q~Soumettre votre vote~,
 '19' => q~Voir les résultats~,
 '20' => q~Ouvert~,
 '21' => q~Fermé~,
@@ -37,7 +37,7 @@ $polllngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '27' => q~Retirer~,
 '30' => q~Adresse IP~,
 '31' => q~Date du vote~,
-'32' => q~Permetre les votes des invités:~,
+'32' => q~Permettre aux invités de voter:~,
 '33' => q~Voir les votes~,
 '35' => q~Nom~,
 '39' => q~Modifier~,
@@ -65,7 +65,7 @@ $polllngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'showcased' => q~Actuellement affiché~,
 'setshowcased' => q~Afficher le sondage?~,
 'showcaserem' => q~Ne plus Afficher le sondage?~,
-'confirm' => q~Êtes-vous sûr de vouloir afficher ce sondage?\\nUn autre sondage est déjà affiché.~, # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
+'confirm' => q~Êtes-vous sûr de vouloir afficher ce sondage?\\nUn autre sondage est déjà affiché.~, # A tester dans un javascript il n'y a pas de " ou '
 );
 
 1;

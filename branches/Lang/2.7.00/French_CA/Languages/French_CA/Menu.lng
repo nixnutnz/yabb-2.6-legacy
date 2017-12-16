@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -45,10 +45,8 @@ if ( !$language ) { $language = $lang; }
     '72'  => q~Retirer des favoris~,
     '79'  => q~Éditer profile~,
     '97'  => q~S'enregistrer~,
-    '102' =>
-      qq~<img src="$imagesdir/back_to_top.png" alt="Haut" title="Haut" />~,
-    '102b' =>
-      qq~<img src="$imagesdir/back_to_bot.png" alt="Bas" title="Bas" />~,
+    '102' => qq~<img src="$imagesdir/back_to_top.png" alt="Haut" title="Haut" />~,
+    '102b' => qq~<img src="$imagesdir/back_to_bot.png" alt="Bas" title="Bas" />~,
     '103'  => q~Index du forum~,
     '104'  => q~Verrouiller/Déverrouiller~,
     '105'  => q~Dernière publication~,
@@ -81,10 +79,8 @@ if ( !$language ) { $language = $lang; }
     '781'  => q~Épinglé~,
     '620'  => q~Scinder~,
     '621'  => q~Déplacer, Scinder et Fusionner~,
-    '620a' =>
-q~Scinder ce sujet en commençant par ce message en tant que premier message d'un nouveau sujet, suivi des autres messages jusqu'au dernier message~,
-    '621a' =>
-      q~Ouvrir la fenêtre pour déplacer, scinder ou fusionner des sujets~,
+    '620a' => q~Scinder ce sujet en commençant par ce message en tant que premier message d'un nouveau sujet, suivi des autres messages jusqu'au dernier message~,
+    '621a' =>       q~Ouvrir la fenêtre pour déplacer, scinder ou fusionner des sujets~,
     '622'          => q~Cacher~,
     '623'          => q~Réduire~,
     '624'          => q~Développer~,

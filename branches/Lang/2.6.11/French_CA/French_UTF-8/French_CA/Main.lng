@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -45,7 +45,7 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 '4' => q~Ajouter~,
 '5' => q~à la liste d'amis~,
 '6' => q~Voir mon profile~,
-'10' => q~Dernière connection~,
+'10' => q~Dernière connexion~,
 '11' => q~jours et~,
 '12' => q~heure~,
 '13' => q~Ne s'est pas identifié depuis son enregistrement~,
@@ -60,7 +60,7 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 '32' => q~Aller~,
 '34' => q~Connexion~,
 '35' => q~Vous pouvez vous connecter au bas de cette page.~,
-'40a' => q~La visualisation de fichiers multimédias nd'est pas disponible sur les fils RSS.~,
+'40a' => q~La visualisation de fichiers multimédias n'est pas disponible sur les fils RSS.~,
 '41' => q~(Vous devez~,
 '42' => q~ou~,
 '42a' => q~pour voir les fichiers multimédias et les liens)~,
@@ -70,7 +70,7 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 '63' => q~Outils de publication~,
 '64' => q~Il n'y a aucune action à effectuer.~,
 'away' => q~Absent~,
-'70' => q~Suject~,
+'70' => q~Sujet~,
 '97' => q~S'enregistrer~,
 '102' => q~Nouvelles~,
 '107' => q~au~,
@@ -82,7 +82,7 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 '133' => q~Déplacer vers~,
 '155' => q~Mode maintenance~,
 '156' => q~Notre forum est actuellement en mode maintenance.~,
-'157' => q~Notre forum est actuellement en mode maintenance. Veuillez réessayer plus tard. merci.~,
+'157' => q~Notre forum est actuellement en mode maintenance. Veuillez réessayer plus tard. Merci.~,
 '160' => q~Ce~,
 '160a' => q~Sujet~,
 '160b' => q~a été déplacé vers~,
@@ -109,7 +109,7 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 '236' => q~Retour~,
 '237' => q~aller à l'index du forum.~,
 '247m' => q~Bonjour~,
-'247a' => q~Bonne après midi~,
+'247a' => q~Bonne après-midi~,
 '247e' => q~Bonsoir~,
 '247bday' => q~Bonne fête~,
 '248' => q~Bienvenue,~,
@@ -126,12 +126,12 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 '470' => q~N/A~,
 '470a' => q~<em>Ex Membre</em>~,
 '525' => q~par~,
-'609' => q~Pour des raisons de sécurité, YaBB vous demande de toujours utiliser des chemins absolus. Le symbole '../' (répertoire parent) est illégal. Veuillez réexécuter Setup.pl et modifier le paramètre pour utiliser les chemins absolus au lieu du symbole '../'.~,
+'609' => q~Pour des raisons de sécurité, YaBB vous demande de toujours utiliser des chemins absolus. Le symbole "../" (répertoire parent) est illégal. Veuillez exécuter à nouveau Setup.pl et modifier le paramètre pour utiliser les chemins absolus au lieu du symbole "../".~,
 '633' => q~Avertissement~,
 '634' => q~Seuls les membres enregistrés sont autorisés à accéder à ce forum.~,
-'635' => q~Veuillez vous connecter ci-dessous ou cliquez~,
+'635' => q~Veuillez-vous connecter ci-dessous ou cliquez~,
 '636' => q~-ici-~,
-'637' => q~enregistrer un compte avec $mbname.~,
+'637' => q~Enregistrer un compte avec $mbname.~,
 '668' => q~Imprimer la Page~,
 '668a' => q~Imprimer le message~,
 '669a' => q~Cacher l'images~,
@@ -150,7 +150,7 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 '900pw' => q~Entrez le mot de passe pour~,
 '900pd' => q~Panneau d'accès Mot de passe~,
 '900pe' => q~Veuillez entrer un mot de passe.~,
-'900pg' => q~Panneau d'accès Mot de passe sont pour les membres seulement. S'il vous plaît <a href="$scripturl?action=register" style="font-weight:bold;">créer un compte avec nous</a> ou <a href="$scripturl?action=login" style="font-weight:bold;">identifier-vous</a>.~,
+'900pg' => q~Panneau d'accès Mot de passe sont pour les membres seulement. S'il vous plaît <a href="$scripturl?action=register" style="font-weight:bold;">créer un compte avec nous</a> ou <a href="$scripturl?action=login" style="font-weight:bold;">identifiez-vous</a>.~,
 '900pr' => q~Privé~,
 'dst' => q~<sup>*</sup>~,
 'rssfeed' => q~Flux RSS~,
@@ -182,9 +182,9 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 'female' => q~Femme~,
 'male' => q~Homme~, 
 '471' => q~message~,
-'616' => q~Rappelez-vous, ce forum est en <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight:bold;">'Mode Maintenance'</a>.~,
-'616a' => qq~Rappelez-vous, ce forum est en <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight:bold;">'Mode Maintenance'</a>.~,
-'617' => q~Rappelez-vous, la dernière sauvegarde a été effectuée le:~,
+'616' => qq~Rappel: Ce forum est en <a href="$boardurl/AdminIndex.$yyaext?action=admincheck;username=USER;action2=newsettings;page=maintenance" style="font-weight:bold;">"Mode Maintenance"</a>.~,
+'616a' => qq~Rappel: Ce forum est en <a href="$boardurl/AdminIndex.$yyaext?action=newsettings;page=maintenance" style="font-weight:bold;">"Mode Maintenance"</a>.~,
+'617' => q~Rappel: La dernière sauvegarde a été effectuée le:~,
 '773' => q~IP introuvable~,
 '805' => q~Vous~,
 '806' => q~<strong>pouvez</strong>~,
@@ -203,7 +203,7 @@ $maintenancetext = "Nous sommes présentement en train d'effectuer une mise à j
 );
 
 %security_txt = (
-'430' => q~, vous avez été banis de ce forum~,
+'430' => q~, vous avez été bannis de ce forum~,
 '678' => q~Désolé~,
 );
 
@@ -275,8 +275,8 @@ $forwardedpm = qq~Cette alerte a été transmise par courriel~;
 'admin_alert_more' => q~</strong> inscrits validés~,
 'admin_alert_end' => q~ En attente d'approbation.~,
 'admin_alert_end_more' => q~ en attente d'approbation.~, ## For languages that need a different end line on more than one user
-'admin_alert_act_one' => q~</strong> Membre pré-inscrit qui est~,
-'admin_alert_act_more' => q~</strong> Membre pré-inscrit qui sont~,
+'admin_alert_act_one' => q~</strong> Membre préenregistré qui est~,
+'admin_alert_act_more' => q~</strong> Membres préenregistrés qui sont~,
 'admin_alert_act_end' => q~ pas encore validé.~,
 'admin_alert_act_end_more' => q~ pas encore validé.~, ## For languages that need a different end line on more than one user
 'no_masterkey' => q~<div class="editbg">Aucune touche principale n'a été définie dans la section Paramètres de sécurité / Image de validation du Centre d'administration<br />Utilisant maintenant la valeur par défaut moins sûre</div>~,
@@ -295,9 +295,9 @@ $forwardedpm = qq~Cette alerte a été transmise par courriel~;
 );
 
 %mailer = (
-'smtp' => qq ~Impossible de créer l'objet Net::SMTP. Serveur: '$smtp_server' \n\n~,
-'smtps1' => qq ~Impossible de créer l'objet Net::SMTPS. Serveur: '$smtp_server', port '$port' \n\n~,
-'smtps2' => q~Impossible d'authentifier les informations d'identification SMTPS. Veuillez fournir des credientials: Admin Center -> Configuration du forum -> Paramètres avancés -> onglet Email, veuillez définir votre nom d'utilisateur SMTP, votre mot de passe d'autorisation SMTP et le type d'autorisation du serveur SMTP pour votre serveur SMTP.~,
+'smtp' => qq ~Impossible de créer l'objet Net::SMTP. Serveur: "$smtp_server" \n\n~,
+'smtps1' => qq ~Impossible de créer l'objet Net::SMTPS. Serveur: "$smtp_server", port "$port" \n\n~,
+'smtps2' => q~Impossible d'authentifier les informations d'identification SMTPS. Veuillez fournir les identifiant de connexion: Admin Center -> Configuration du forum -> Paramètres avancés -> onglet Courriel, veuillez définir votre nom d'utilisateur SMTP, votre mot de passe d'autorisation SMTP et le type d'autorisation du serveur SMTP pour votre serveur SMTP.~,
 );
 
 timetostring($date);

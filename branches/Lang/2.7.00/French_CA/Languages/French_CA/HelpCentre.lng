@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -38,8 +38,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '7d' => q~Éditer les entrées du centre d'aide~,
     '8'  => q~Complété.~,
     '9'  => q~Utiliser les autorisations~,
-    '10' =>
-q~C'est ici que vous modifiez, ajoutez, supprimez ou réorganisez les sections d'aide affichées aux utilisateurs dans le système d'aide. Dans les champs de gauche, vous voyez les sections d'aide disponibles. Vous pouvez les marquer et les modifier ou les ajouter aux champs de droite en les marquant et en cliquant sur la flèche pour les rendre visibles dans le système d'aide.~,
+    '10' => q~C'est ici que vous modifiez, ajoutez, supprimez ou réorganisez les sections d'aide affichées aux utilisateurs dans le système d'aide. Dans les champs de gauche, vous voyez les sections d'aide disponibles. Vous pouvez les marquer et les modifier ou les ajouter aux champs de droite en les marquant et en cliquant sur la flèche pour les rendre visibles dans le système d'aide.~,
     '643' => q~Retour en haut~,
     '769' => q~Emplacement Flash~,
     '7a'  => q~    Section Titre~,

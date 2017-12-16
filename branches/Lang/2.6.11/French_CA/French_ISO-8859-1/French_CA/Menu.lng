@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -47,15 +47,15 @@ if (!$language){$language = $lang;}
 '121' => q~Retirer~,
 '131' => q~Notifier les réponses~,
 '131a' => q~Ajouter un sujet de notice~,
-'131d' => q~Suprimer un sujet de notice~,
+'131d' => q~Supprimer un sujet de notice~,
 '132' => q~Déplacer~,
 '144' => q~MP~,
-'144a' => q~Message Personel~,
+'144a' => q~Message Personnel~,
 '145' => q~Citation~,
 '145q' => q~Marque &amp; Citation~,
 '146' => q~Répondre~,
 '182' => q~Chercher~,
-'300' => q~Marquer le sujet comme lus~,
+'300' => q~Marquer le sujet comme lu~,
 '316' => q~Boîte de réception~,
 '320' => q~Envoyé~,
 '321' => q~Nouveau Message~,
@@ -69,10 +69,10 @@ if (!$language){$language = $lang;}
 '515' => q~WWW~,
 '707' => q~Envoyer sujet~,
 '781' => q~Épinglé~,
-'620' => q~Cinder~,
-'621' => q~Déplacer, Cinder et Fusioner~,
-'620a' => q~Cinder ce sujet en commençant par ce message en tant que premier message d'un nouveau sujet, suivi des autres messages jusqu'au dernier message~,
-'621a' => q~Ouvrir la fenêtre pour déplacer, cinder ou fusioner des sujets~,
+'620' => q~Scinder~,
+'621' => q~Déplacer, Scinder et Fusionner~,
+'620a' => q~Scinder ce sujet en commençant par ce message en tant que premier message d'un nouveau sujet, suivi des autres messages jusqu'au dernier message~,
+'621a' => q~Ouvrir la fenêtre pour déplacer, scinder ou fusionner des sujets~,
 '622' => q~Cacher~,
 '623' => q~Réduire~,
 '624' => q~Développer~,
@@ -122,7 +122,7 @@ if (!$language){$language = $lang;}
 '46' => q~Espace de rangement~,
 );
 
-#require Sources::Menu;
-#set_menu();
+require Sources::Menu;
+set_menu();
 
 1;

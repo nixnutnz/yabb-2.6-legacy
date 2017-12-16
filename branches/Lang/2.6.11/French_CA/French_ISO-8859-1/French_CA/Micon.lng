@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -65,11 +65,11 @@ if (!$language){$language = $lang;}
 'standard' => q~Standard~,
 'alertmod' => q~Alerter le modérateur.~,
 'guestpm' => q~MP d'un invité~,
-'guestpmreply' => q~réponder à un MP d'un invité~,
+'guestpmreply' => q~Répondre à un MP d'invité~,
 );
 
 %tabmenu_txt_m = (
-'edittab' => q~éditer les onglets~,
+'edittab' => q~Éditer les onglets~,
 'tabdel' => q~Supprimer cet onglet~,
 'savetab' => q~Sauvegarder texte~,
 'newtab' => q~Ajouter un onglet~,
@@ -80,18 +80,18 @@ if (!$language){$language = $lang;}
 );
 
 %var_cal_m = (
-'calbirthday' => q~anniversaire~,
+'calbirthday' => q~Anniversaire~,
 'calprivate' => q~Privé~,
 'caldel' => q~Supprimer~,
 'caledit' => q~Modifier l'événement~,
 'calsave' => q~Sauvegarder l'événement~,
-'getaddevent' => q~Ajouiter un événement~,
+'getaddevent' => q~Ajouter un événement~,
 'eventinfo' => q~Événement~,
 'eventannounce' => q~Annonce~,
 'eventholiday' => q~Congé~,
 'eventnote' => q~Exclamation~,
 'eventparty' => q~Party~,
-'eventcelebration' => q~Celébration~,
+'eventcelebration' => q~Célébration~,
 'eventsport' => q~Sport~,
 'eventmedia' => q~Media (TV)~,
 'eventmeeting' => q~Rencontre~,
@@ -102,7 +102,7 @@ if (!$language){$language = $lang;}
 '282' => q~Pouces vers le haut~,
 '283' => q~Pouces vers le bas~,
 '284' => q~Point d'exclamation~,
-'285' => q~Point d'intérogation~,
+'285' => q~Point d'interrogation~,
 '286' => q~Lampe~,
 '287' => q~Smiley~,
 '288' => q~En colère~,
@@ -110,10 +110,10 @@ if (!$language){$language = $lang;}
 '290' => q~Rire~,
 '291' => q~Triste~,
 '292' => q~Clin d'oeil~,
-'293' => q~sourire~,
+'293' => q~Sourire~,
 '294' => q~Choqué~,
 '295' => q~Cool~,
-'296' => q~Huh~,
+'296' => q~Heu~,
 );
 
 1;

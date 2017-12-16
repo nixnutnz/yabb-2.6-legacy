@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$profilelngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %profile_txt = (
 '2' => q~Admin~,
@@ -32,7 +32,7 @@ $profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '68b' => q~Statut~,
 '69' => q~Courriel~,
 '69a' => q~MP~, # Message personnel
-'79' => q~Editer le profil~,
+'79' => q~Éditer le profil~,
 'editmyprofile' => q~Modifier le profil~,
 '80' => q~<div class="message" style="background-color:white; padding:3px; overflow:auto; color:red; font-weight:bold;">Félicitations, votre mot de passe a été réinitialisé. Pour la sécurité de votre compte, veuillez choisir un nouveau mot de passe et mettre à jour cette page de profil dans les 10 prochaines minutes.</div>~,
 '81' => q~Choisir un nouveau mot de passe~,
@@ -87,7 +87,7 @@ $profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '470' => q~N/A~,
 '473' => q~Si vous téléchargez une autre image, il se peut que la même image soit affichée. Dans ce cas, rechargez cette page ou faites un clic droit sur l'image et sélectionnez pour recharger l'image.~,
 '474' => q~- Sélectionnez un nom d'image dans la liste sur le côté droit.<br />~,
-'475' => q~- Ou entrez l'URL de votre propre image.<br />L'URL web de votre propre image doit être sous la forme suivante:<br /><em>http:&thinsp;//&thinsp;www.mapage.com&thinsp;/&thinsp;monimage.gif</em><br />Votre image doit être dans le format <em>.gif </em>, <em>.png </em>, <em>.jpg </em> ou <em>.jpeg </em>.~, # utiliser &thinsp;(petit espace) ou votre mise en page peut foiré dans IE et basse résolution du moniteur
+'475' => q~- Ou entrez l'URL de votre propre image.<br />L'URL web de votre propre image doit être sous la forme suivante:<br /><em>http:&thinsp;//&thinsp;www.mapage.com&thinsp;/&thinsp;monimage.gif</em><br />Votre image doit être dans le format <em>.gif </em>, <em>.png </em>, <em>.jpg </em> ou <em>.jpeg </em>.~, # utiliser &thinsp;(petit espace) ou votre mise en page peut foirer dans IE et basse résolution du moniteur
 '476' => q~- Ou sélectionnez un fichier image à télécharger sur notre serveur.<br />L'image doit avoir le format suivant:<em>.gif</em>, <em>.png</em>, <em>.jpg</em> ou <em>.jpeg </em><br />La taille de fichier maximale autorisée est:~,
 '477' => q~<strong>Note: Vos images peuvent être redimensionnées.</strong>~,
 '479' => q~Cette sélection fera apparaître les dates sur tout le forum dans ce format.~,
@@ -140,7 +140,7 @@ $profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '686' => q~en ligne~,
 '687' => q~hors ligne~,
 '688' => q~Cliquez pour envoyer un message personnel à~,
-'698' => q~Ceci est votre profil.Vous pouvez choisir les informations autres que la section requise à remplir,.Cette information sera affichée à divers endroits dans $mbname.~,
+'698' => q~Ceci est votre profil. Vous pouvez choisir les informations autres que la section requise à remplir. Cette information sera affichée à divers endroits dans $mbname.~,
 '700' => q~Bienvenue à~,
 '701' => q~Vous pouvez le modifier après vous être connecté en allant sur la page de profil ou en visitant cette page après vous être connecté:~,
 '721' => q~Masquer le courriel du public?~,
@@ -154,7 +154,7 @@ $profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '777' => q~l'utilisateur~,
 '778' => q~du forum?~,
 '810' => q~Voulez-vous inverser l'ordre affiché des messages dans le sujet?~,
-'811' => q~Si cette case est cochée, les messages affichent la publication la plus récente en premier et la plus ancienne en dernier. Si cette case n'est pas cochée, la publication la plus ancienne est affichée en premier et la moin récente en dernier.<br /><strong>Note:</strong> vous pouvez modifier cette option en cliquant sur le nom du sujet sur la page du sujet.~,
+'811' => q~Si cette case est cochée, les messages affichent la publication la plus récente en premier et la plus ancienne en dernier. Si cette case n'est pas cochée, la publication la plus ancienne est affichée en premier et la moins récente en dernier.<br /><strong>Note:</strong> vous pouvez modifier cette option en cliquant sur le nom du sujet sur la page du sujet.~,
 '814' => q~Quel modèle aimeriez-vous utiliser?~,
 '815' => q~(Si plus d'un est disponible)~,
 '817' => q~Quelle langue aimeriez-vous utiliser?~,
@@ -177,7 +177,7 @@ $profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '894' => q~Jours d'adhésion~,
 '895' => q~Vous devez entrer votre mot de passe actuel pour apporter des modifications~,
 '896' => q~Remplissez seulement ceci si vous voulez changer votre mot de passe~,
-'897' => q~Votre session de profil a expiré.\nAucun changement n'a été enregistré.\nAprès la ré-authentification, vous serez redirigé vers la page précédente.~, # Dans JS. Ne pas utiliser "à l'intérieur!
+'897' => q~Votre session de profil a expiré.\nAucun changement n'a été enregistré.\nAprès la réauthentification, vous serez redirigé vers la page précédente.~, # Dans JS. Ne pas utiliser "à l'intérieur!
 '898' => q~Session de profil expiré.~,
 '899' => q~Veuillez ré-authentifier~,
 '900' => q~Confirmez le mot de passe~,
@@ -191,8 +191,8 @@ $profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '905a' => q~Êtes-vous sûr de vouloir annuler cette adresse IP?\n\n~,
 '906' => q~Interdire cet Identifiant~,
 '906a' => q~Êtes-vous sûr de vouloir interdire cet Identifiant?\n\n~,
-'907' => q~Interdire cette adresse e-mail~,
-'907a' => q~Êtes-vous sûr de vouloir interdire cette adresse e-mail?\n\n~,
+'907' => q~Interdire cette adresse courriel~,
+'907a' => q~Êtes-vous sûr de vouloir interdire cette adresse courriel?\n\n~,
 '908' => q~Interdire cette adresse IP~,
 '908a' => q~Êtes-vous sûr de vouloir interdire cette adresse IP?\n\n~,
 '909' => q~Dernières adresses IP~,
@@ -296,7 +296,7 @@ $profilelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 );
 
 %zodiac_txt = (#YaBB Zodiac
-'sign' => q~Signe du zodiaque sign~,
+'sign' => q~Signe du zodiaque~,
 'Aquarius' => q~Verseau~,
 'Aries' => q~Bélier~,
 'Libra' => q~Balance~,

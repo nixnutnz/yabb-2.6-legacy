@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -40,28 +40,22 @@ if ( $action eq 'detailedversion' ) { return 1; }
     'error_sender_name'    => q~Vous devez insérer votre nom.~,
     'error_sender_email'   => q~Vous devez insérer votre adresse courriel.~,
     'error_recipient_name' => q~Vous devez insérer le nom du destinataire.~,
-    'error_recipient_email' =>
-      q~Vous devez insérer l'adresse courriel du destinataire.~,
+    'error_recipient_email' => q~Vous devez insérer l'adresse courriel du destinataire.~,
     'error_verification' => q~Le code de vérification est manquant.~,
-    'verification_question_desc' =>
-      q~Veuillez répondre à la question de vérification ci-dessus.~,
+    'verification_question_desc' => q~Veuillez répondre à la question de vérification ci-dessus.~,
     'verification_question_case' => q~Les réponses sont sensibles à la casse.~,
-    'error_verification_question' =>
-      q~Vous devez répondre à la question de vérification.~,
+    'error_verification_question' => q~Vous devez répondre à la question de vérification.~,
 );
 
 %floodtxt = (
     '1' => q~Votre code de vérification est~,
     '3' => q~Code de vérification~,
-    'casewarning' =>
-q~Veuillez taper les caractères tel qu'il apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et sont sensibles à la casse.~,
-    'casewarning_1' =>
-q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
+    'casewarning'   => q~Veuillez entrer les caractères tel qu'il apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et sont sensibles à la casse.~,
+    'casewarning_1' => q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
     'casewarning_2' => q~<br/><span style="font-weight:bold">sans le premier~,
     'casewarning_3' => q~<br/><span style="font-weight:bold">sans le dernier~,
     'casewarning_4' => q~et dernier~,
-    'casewarning_5' =>
-q~caractères.</span><br />Les caractères doivent être entrés dans le même ordre,<br />et sont sensibles à la casse.~,
+    'casewarning_5' => q~caractères.</span><br />Les caractères doivent être entrés dans le même ordre,<br />et sont sensibles à la casse.~,
 );
 
 1;

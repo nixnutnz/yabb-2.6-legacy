@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -24,9 +24,9 @@ $userselectlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'instruct0' => q~Entrez les premiers caractères du nouveau modérateur dans le champ de formulaire supérieur, puis double-cliquez sur le nom ou sélectionnez un ou plusieurs noms dans la liste et cliquez sur le bouton "Ajouter une sélection" pour l'ajouter au~,
 'instruct1' => q~Double-cliquez sur un nom ou sélectionnez un nom dans la liste et cliquez sur le bouton "Ajouter une sélection" pour l'ajouter au~,
 'instruct2' => q~Rechercher un membre par nom ou par courriel:~,
-'instruct3' => q~<br />Dans la boîte de recherche en haut, vous pouvez utiliser un caractère générique (un seul *) n'importe où dans votre chaîne de recherche.~,
+'instruct3' => q~<br />Dans la boîte de recherche en haut, vous pouvez utiliser un caractère de remplacement (un seul *) n'importe où dans votre chaîne de recherche.~,
 'instruct4' => q~Sélectionner les groupes de membres~,
-'wildcardinfo' => q~Utilisez * comme wild-card~,
+'wildcardinfo' => q~Utilisez * comme caractère de remplacement~,
 'searchresult' => q~Résultat de la recherche:~,
 'nofound' => q~Désolé - aucun résultat trouvé pour~,
 'pmpagetitle' => q~Sélectionner les destinataires de MP~,
@@ -34,16 +34,16 @@ $userselectlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'modpagetitle' => q~Sélectionner les modérateurs~,
 'buddypagetitle' => q~Sélectionner vos amis~,
 'ignorepagetitle' => q~Sélectionner les membres à ignorer~,
-'searchpagetitle' => q~Sélectionner le membres pour la recherche~,
+'searchpagetitle' => q~Sélectionner les membres pour la recherche~,
 'pageclose' => q~Fermer~,
 'recentlist' => q~Liste récente~,
 'alllist' => q~Liste de membres~,
 'gobutton' => q~Aller~,
-'reciepientlist' => q~Liste des récipiendaires~,
+'reciepientlist' => q~Liste des destinataires~,
 'moderatorlist' => q~Liste des modérateurs~,
-'buddylist' => q~Liste d'amis~,
+'buddylist' => q~Liste d'ami(e)s~,
 'groups' => q~Groupe de membres~,
-'ignorelist' => q~Liste des MP ignorés~,
+'ignorelist' => q~Liste des MPs ignorés~,
 'searchlist' => q~Rechercher par champs utilisateur~,
 'pmto' => q~A~,
 'pmcc' => q~Cc~,

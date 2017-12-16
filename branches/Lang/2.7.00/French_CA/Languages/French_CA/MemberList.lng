@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.7.00 fr-ca. Révision 1002                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -52,8 +52,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '800' => q~Autre~,
     '801' => q~Rechercher par nom ou courriel~,
     '802' => q~Désolé - aucun résultat trouvé pour~,
-    'dr_warning' =>
-q~* Compte plus ancien que le forum - veuillez vérifier la date de début du forum:~,
+    'dr_warning' => q~* Compte plus ancien que le forum - veuillez vérifier la date de début du forum:~,
     'dr_warnurl' => q~Ici~,
 );
 

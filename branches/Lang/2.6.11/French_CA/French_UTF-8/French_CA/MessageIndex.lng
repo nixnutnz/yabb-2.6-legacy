@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -23,7 +23,7 @@ $messageindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '3' => q~Ce sujet contient~,
 '4' => q~pièces jointes~,
 '5' => q~pièce jointe~,
-'10' => q~Permalink pour cet article~,
+'10' => q~Permalien pour cet article~,
 '15' => q~Sondage~,
 '18' => q~Index~,
 '19' => q~Indicateur de page index~,
@@ -32,21 +32,21 @@ $messageindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '54' => q~Retirer~,
 '63' => q~Modérateurs~,
 '63a' => q~Groupe modérateurs~,
-'70' => q~Suject~,
+'70' => q~Sujet~,
 '71' => q~Icône de message~,
 '75' => q~Ceci est la sélection de vos fils favoris.~,
 '76' => q~Est maintenant retenu~,
 '77' => q~de~,
 '78' => q~Nombre maximum de fils favoris autorisés~,
 '104' => q~Verrouiller/Déverrouiller~,
-'109' => q~Démaré par~,
+'109' => q~Démarré par~,
 '110' => q~Réponses~,
 '132' => q~Déplacer~,
 '133' => q~Déplacer vers~,
 '139' => q~Pages~,
 '162' => q~Êtes-vous sûr de vouloir supprimer ce sujet?~,
 '199' => q~Double-cliquez sur cette case pour plus d'informations sur sa fonction.~, # don't use " inside!
-'200' => q~Cochez cette case pour inclure un nouveau message à la fin du sujet à déplacer. Ce message montrera l'information d'où provient le fil et qui l'a déplacé. Décochez-la pour déplacer inclure un nouveau message.~, # inside JavaScript!
+'200' => q~Cochez cette case pour inclure un nouveau message à la fin du sujet à déplacer. Ce message montrera l'information d'où provient le fil et qui l'a déplacé. Décochez-la pour déplacer inclure un nouveau message.~, #Dans les JavaScript!
 '251' => q~Sauter au forum~,
 '298' => q~Modérateur~,
 '298a' => q~Groupe modérateur~,
@@ -65,12 +65,12 @@ $messageindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '462' => q~Aller!~,
 '470' => q~N/A~,
 '470a' => q~<em>Ex Membre</em>~,
-'500' => q~Marquer tous les sujets comme lus~, # inside JavaScript!
-'500a' => q~Complété~, # inside JavaScript!
+'500' => q~Marquer tous les sujets comme lus~, #Dans les JavaScript!
+'500a' => q~Complété~, #Dans les JavaScript!
 '525' => q~Par~,
 '526' => q~par~,
-'527' => q~Démaré~,
-'737' => q~Tou cocher~,
+'527' => q~Démarré~,
+'737' => q~Tout cocher~,
 '779' => q~Sujet épinglé~,
 '779a' => q~Annonce globale~,
 '779b' => q~Annonce globale verrouillée~,

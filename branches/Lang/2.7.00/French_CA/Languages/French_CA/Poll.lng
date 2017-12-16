@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -50,8 +50,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '35' => q~Nom~,
     '39' => q~Modifier~,
     '40' => q~La question du sondage~,
-    '41' =>
-q~Il y avait un caractère illégal dans votre question de sondage. Veuillez réessayer.~,
+    '41' => q~Il y avait un caractère illégal dans votre question de sondage. Veuillez réessayer.~,
     '42'  => q~Détails du sondage~,
     '43'  => q~Retirer le vote~,
     '44'  => q~Êtes-vous sûr de vouloir supprimer ce sondage?~,
@@ -59,17 +58,12 @@ q~Il y avait un caractère illégal dans votre question de sondage. Veuillez ré
     '45a' => q~Modifié par~,
     '46'  => q~le~,
     '47'  => q~Merci d'avoir voté pour ce sondage.~,
-    '48' =>
-q~Les résultats resteront cependant cachés jusqu'à ce que tous les votes aient été comptés.~,
+    '48' => q~Les résultats resteront cependant cachés jusqu'à ce que tous les votes aient été comptés.~,
     '49' => q~Retirer les votes~,
-    '53' =>
-q~*** Personne d'autre ne peut voir ces résultats avant la fermeture du scrutin ***~,
-    '54' =>
-q~Cochez cette case si vous voulez que les invités puissent voter dans ce sondage.~,
-    '55' =>
-q~Cochez cette case si vous ne souhaitez pas que les résultats de ce sondage s'affichent avant la fermeture du vote.~,
-    '56' =>
-q~Cochez cette case si vous souhaitez autoriser les utilisateurs à voter pour plusieurs options.~,
+    '53' => q~*** Personne d'autre ne peut voir ces résultats avant la fermeture du scrutin ***~,
+    '54' => q~Cochez cette case si vous voulez que les invités puissent voter dans ce sondage.~,
+    '55' => q~Cochez cette case si vous ne souhaitez pas que les résultats de ce sondage s'affichent avant la fermeture du vote.~,
+    '56' => q~Cochez cette case si vous souhaitez autoriser les utilisateurs à voter pour plusieurs options.~,
     '57'           => q~Le commentaire du sondage~,
     '58'           => q~Choix multiple~,
     '59'           => q~Commentaire du sondage~,
@@ -79,9 +73,7 @@ q~Cochez cette case si vous souhaitez autoriser les utilisateurs à voter pour p
     'showcased'    => q~Actuellement affiché~,
     'setshowcased' => q~Afficher le sondage?~,
     'showcaserem'  => q~Ne plus Afficher le sondage?~,
-    'confirm' =>
-q~Êtes-vous sûr de vouloir afficher ce sondage?\\nUn autre sondage est déjà affiché.~
-    ,    # A tester dans un javascript il n'y a pas de " ou '
+    'confirm' => q~Êtes-vous sûr de vouloir afficher ce sondage?\\nUn autre sondage est déjà affiché.~,        # A tester dans un javascript il n'y a pas de " ou '
 );
 
 1;

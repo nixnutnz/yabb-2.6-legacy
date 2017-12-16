@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -30,25 +30,16 @@ if ( $action eq 'detailedversion' ) { return 1; }
     'main'  => q~The Guardian&trade;~,
     'admin' => q~Administrateur The Guardian&trade;~,
     'setup' => q~Configuration The Guardian&trade;~,
-    'title' =>
-      q~Bienvenue dans "The Guardian&trade;", Votre portier contre les intrus.~,
-    'description' =>
-q~Avec "The Guardian&trade;" vous pouvez bloquer les intrus à différents niveaux, ce qui améliore la sécurité et diminue les risques de piratage.~,
-    'notify' =>
-q~Désirez-vous une notification par courriel sur les tentatives détectées?~,
+    'title' => q~Bienvenue dans "The Guardian&trade;", Votre portier contre les intrus.~,
+    'description' => q~Avec "The Guardian&trade;" vous pouvez bloquer les intrus à différents niveaux, ce qui améliore la sécurité et diminue les risques de piratage.~,
+    'notify' => q~Désirez-vous une notification par courriel sur les tentatives détectées?~,
     'general' => q~Paramètres globaux et de serveur~,
-    'use_guardian' =>
-      q~Utiliser The Guardian&trade; pour protéger votre forum?~,
-    'use_htaccess' =>
-      q~Activer .htaccess pour ajouter des blocs IP au niveau du serveur?~,
-    'use_htaccess_support' =>
-q~<span class="small"><em>(Fonctionne uniquement si votre serveur prend en charge les fichiers .htaccess.)</em></span>~,
-    'htaccess_support' =>
-q~<span class="small"><em>(Fonctionne uniquement si votre serveur prend en charge les fichiers .htaccess et est activé afin d'ajouter des blocs d'adresse IP au niveau du serveur? à partir du premier élément ci-dessus activé.)</em></span>~,
-    'htaccess_add' =>
-      q~Ajouter automatiquement les adresses IP abusives à .htaccess?~,
-    'htaccess_added' =>
-q~Ajouter automatiquement les adresses IP abusives à .htaccess file. (Vous pouvez le retirer manuellement à partir de l'Admin Guardian)~,
+    'use_guardian' => q~Utiliser The Guardian&trade; pour protéger votre forum?~,
+    'use_htaccess' => q~Activer .htaccess pour ajouter des blocs IP au niveau du serveur?~,
+    'use_htaccess_support' => q~<span class="small"><em>(Fonctionne uniquement si votre serveur prend en charge les fichiers .htaccess.)</em></span>~,
+    'htaccess_support' => q~<span class="small"><em>(Fonctionne uniquement si votre serveur prend en charge les fichiers .htaccess et est activé afin d'ajouter des blocs d'adresse IP au niveau du serveur? à partir du premier élément ci-dessus activé.)</em></span>~,
+    'htaccess_add' => q~Ajouter automatiquement les adresses IP abusives à .htaccess?~,
+    'htaccess_added' => q~Ajouter automatiquement les adresses IP abusives à .htaccess file. (Vous pouvez le retirer manuellement à partir de l'Admin Guardian)~,
     'proxy'         => q~Blocage de proxy~,
     'referer'       => q~Blocage de référent (Referer)~,
     'harvester'     => q~Blocage de collecteur (Harvester)~,
@@ -80,21 +71,15 @@ q~Ajouter automatiquement les adresses IP abusives à .htaccess file. (Vous pouv
     'abuse_string'           => q~Mot Bloqué~,
     'abuse_environment'      => q~Chaîne d'environnement~,
     'abuse_form_environment' => q~Script bloqué dans les formulaires~,
-    'abuse_url_environment'  => q~Script bloqué dans les URL~,
+    'abuse_url_environment'  => q~Script bloqué dans les URLs~,
     'abuse_harvester'        => q~Collecteur Bloqué~,
     'abuse_request'          => q~Méthode de requête Bloqué~,
-    'white_list' =>
-q~Entrez l'adresses IP des ID utilisateur ou identifiant de proxy que vous voulez passer (liste blanche)? <br/><em> (entier ou partiel, un par ligne)</em>~,
-    'referer_list' =>
-q~Entrez l'URL des référent (Referer) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
-    'harvester_list' =>
-q~Entrez les chaînes d'agent collecteur (Harvester) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
-    'request_list' =>
-q~Entrer les méthodes de requête (request method) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em><br /><br /><strong><span class="under">ATTENTION!</span><br />NE JAMAIS BLOQUER POST et GET!<br />Cela rendra votre forum inutilisable.</strong>~,
-    'string_list' =>
-q~Entrez les mots interdits (bad words) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
-    'htaccess_list' =>
-q~Entrez les adresses IP ou les noms de domaine "partiels" que vous voulez bloquer au niveau du serveur?<br /><em>(le caractère de remplacement * est autorisé, un par ligne)</em>~,
+    'white_list' => q~Entrez l'adresses IP des ID utilisateur ou identifiant de proxy que vous voulez passer (liste blanche)? <br/><em> (entier ou partiel, un par ligne)</em>~,
+    'referer_list' => q~Entrez l'URL des référent (Referer) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
+    'harvester_list' => q~Entrez les chaînes d'agent collecteur (Harvester) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
+    'request_list' => q~Entrer les méthodes de requête (request method) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em><br /><br /><strong><span class="under">ATTENTION!</span><br />NE JAMAIS BLOQUER POST et GET!<br />Cela rendra votre forum inutilisable.</strong>~,
+    'string_list' => q~Entrez les mots interdits (bad words) que vous voulez bloquer?<br /><em>(entier ou partiel, un par ligne)</em>~,
+    'htaccess_list' => q~Entrez les adresses IP ou les noms de domaine "partiels" que vous voulez bloquer au niveau du serveur?<br /><em>(le caractère de remplacement * est autorisé, un par ligne)</em>~,
     'save' => q~Sauvegarder les changements du Guardian~,
 );
 

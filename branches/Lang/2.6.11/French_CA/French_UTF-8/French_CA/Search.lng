@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$searchlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$searchlngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %search_txt = (
 '1' => q~Ce message a été fait dans le/la dernier(e)...~,
@@ -29,7 +29,7 @@ $searchlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '70' => q~Sujet~,
 '72' => q~Message~,
 '73' => q~Adresse IP~,
-'105' => q~Publier~,
+'105' => q~Publié~,
 '107' => q~à~,
 '109' => q~Débuté par~,
 '166' => q~Résultats de la recherche~,
@@ -38,14 +38,14 @@ $searchlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '171' => q~Retournez à la recherche ici.~,
 '182' => q~Chercher~,
 '183' => q~Définir les paramètres de recherche~,
-'186' => q~Rechercher des sujets commencés par quelqu'un~,
-'187' => q~Rechercher des sujets postés par quelqu'un~,
+'186' => q~Rechercher des sujets débutés par quelqu'un~,
+'187' => q~Rechercher des sujets publiés par quelqu'un~,
 '189' => q~Choisissez le(s) forum(s) à rechercher~,
 '190' => q~Appuyez sur la touche Ctrl ou (touche Pomme sur Mac) et maintenez-la enfoncée pour en sélectionner plusieurs.~,
-'191' => q~Afficher combien de résultats?~,
-'191a' => q~Afficher un seul résultat par fil?~,
+'191' => q~Afficher le nombre de résultats?~,
+'191a' => q~Afficher un seul résultat par fil de message?~,
 '191b' => q~Maximum autorisé: $maxsearchdisplay~,
-'191x' => q~Vous êtes autorisé à modifier la valeur max. $maxsearchdisplay de résultats à afficher. Veuillez modifier votre valeur.~,
+'191x' => q~Vous êtes autorisé à modifier un nombre maximum de $maxsearchdisplay résultats à afficher. Veuillez modifier votre valeur.~,
 '236' => q~Retour~,
 '237' => q~à l'index du forum.~,
 '343' => q~Correspond à tous les mots~,

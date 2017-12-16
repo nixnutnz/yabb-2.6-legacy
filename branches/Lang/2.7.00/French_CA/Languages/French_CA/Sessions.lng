@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -28,21 +28,14 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
 %session_txt = (
     '1' => q~Activer l'ID de session?~,
-    '2' =>
-q~Cela protège les fonctions administratives en utilisant une clé de session en trois parties basée sur l'adresse IP.~,
-    '3' =>
-q~Votre session a expiré lorsque vous êtes entré dans le forum à partir d'une adresse IP différente ({yabb sessip}).~,
-    '4' =>
-q~Pour vérifier vos informations d'identification, répondez à la question suivante avec la réponse que vous avez saisie dans votre profil.~,
-    '6' =>
-q~Vous n'avez pas validé vos informations d'identification et vous êtes déconnecté.~,
+    '2' => q~Cela protège les fonctions administratives en utilisant une clé de session en trois parties basée sur l'adresse IP.~,
+    '3' => q~Votre session a expiré lorsque vous êtes entré dans le forum à partir d'une adresse IP différente ({yabb sessip}).~,
+    '4' => q~Pour vérifier vos informations d'identification, répondez à la question suivante avec la réponse que vous avez saisie dans votre profil.~,
+    '6' => q~Vous n'avez pas validé vos informations d'identification et vous êtes déconnecté.~,
     '8' => q~Sélectionnez votre question de revalidation de session ici~,
-    '9' =>
-q~Pour vérifier vos informations d'identification, sélectionnez une question et fournissez une réponse pour revalider votre session.~,
-    '9a' =>
-q~Si vous sélectionnez votre mot de passe comme validation, vous pouvez laisser le champ vide.~,
-    '10' =>
-q~Vous n'avez pas sélectionné de question de session dans votre profil, vous devez donc utiliser votre mot de passe pour vérifier vos informations d'identification.~,
+    '9' => q~Pour vérifier vos informations d'identification, sélectionnez une question et fournissez une réponse pour re-valider votre session.~,
+    '9a' => q~Si vous sélectionnez votre mot de passe comme validation, vous pouvez laisser le champ vide.~,
+    '10' => q~Vous n'avez pas sélectionné de question de session dans votre profil, vous devez donc utiliser votre mot de passe pour vérifier vos informations d'identification.~,
 );
 
 %sesquest_txt = (

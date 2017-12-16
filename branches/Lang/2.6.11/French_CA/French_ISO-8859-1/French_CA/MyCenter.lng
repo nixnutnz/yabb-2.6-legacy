@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -21,10 +21,10 @@ $mycenterlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 ## LEAVE USERLABEL intact. Move within the string for correct language syntax!
 
 %mycenter_txt = (
-'welcometxt' => q~Paneau de contrôle de USERLABEL~,
-'buddylisttitle' => q~Vos amis~,
-'buddylistnone' => q~Votre liste d'amis est vide~,
-'buddydeleted' => q~Cet amis a été supprimé, Le nom n'est plus disponible.~,
+'welcometxt' => q~Panneau de contrôle de USERLABEL~,
+'buddylisttitle' => q~Vos ami(e)s~,
+'buddylistnone' => q~Votre liste d'ami(e)s est vide~,
+'buddydeleted' => q~Cet ami(e) a été supprimé(e), Le nom n'est plus disponible.~,
 'hiddenemail' => q~Courriel caché~,
 'currentsettings' => q~Vos paramètres actuels:~,
 'onoffstatus' => q~Statut en ligne/hors ligne:~, 
@@ -62,16 +62,16 @@ $mycenterlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 );
 
 %my_favs = (
-'70' => q~Suject~,
-'109' => q~Démaré par~,
+'70' => q~Sujet~,
+'109' => q~Démarré par~,
 '110' => q~Réponses~,
-'301' => q~Visionement~,
+'301' => q~Visionnement~,
 '330' => q~Sujets~,
 '21' => q~Publications~,
 '22' => q~Dernière publication~,
 '525' => q~Par~,
 '526' => q~par~,
-'527' => q~Démaré~,
+'527' => q~Démarré~,
 '737' => q~Tout voir~,
 );
 

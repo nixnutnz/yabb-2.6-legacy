@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -39,55 +39,37 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '6d' => q~Transférer le fichier~,
     '6e' => q~Ne pas transférer le fichier~,
     '6f' => q~Garder le fichier~,
-    '7' =>
-q~Note: Si vous avez une pièce jointe dans votre message, pour des raisons de sécurité, vous devrez sélectionner à nouveau la pièce jointe dans la boîte du navigateur.~,
-    '7a' =>
-q~Note: Si vous aviez une pièce jointe dans votre message, pour des raisons de sécurité, vous devrez sélectionner à nouveau la pièce jointe dans la boîte du navigateur.~,
+    '7' => q~Note: Si vous avez une pièce jointe dans votre message, pour des raisons de sécurité, vous devrez sélectionner à nouveau la pièce jointe dans la boîte du navigateur.~,
+    '7a' => q~Note: Si vous aviez une pièce jointe dans votre message, pour des raisons de sécurité, vous devrez sélectionner à nouveau la pièce jointe dans la boîte du navigateur.~,
     '9'   => q~Fonctions d'attachement~,
     '10'  => q~Répertoire des pièces jointes~,
     '10a' => q~Répertoire de pièces jointes des MPs~,
     '11'  => q~URL des pièces jointes~,
-    '11a' => q~URL des pièces jointes MP~,
-    '12' =>
-q~Limite de taille de fichier pour chaque pièce jointe:<br /><span class="small">Mettre à 0 pour désactiver la vérification (non recommandée) ou à une valeur raisonnablement élevée, par exemple 500 Ko.</span>~,
-    '12a' =>
-q~Limite de taille de fichier pour chaque pièce jointe PM:<br /><span class="small">Mettre à 0 pour désactiver la vérification (non recommandée) ou à une valeur raisonnablement élevée, par exemple 500 Ko.</span>~,
-    '13' =>
-q~Limite de taille du répertoire de pièces jointes:<br /><span class="small">Mettre à 0 pour désactiver la vérification (non recommandé).</span>~,
-    '13a' =>
-q~Limite de taille du répertoire de pièces jointes PM:<br /><span class="small"> Mettre à 0 pour désactiver la vérification (non recommandé).</span>~,
-    '14' =>
-q~Extensions de fichier autorisées pour les pièces jointes (ex: 'jpg gif bmp')~,
-    '14a' =>
-q~Extensions de fichier autorisées pour les pièces jointes MP (ex: 'jpg gif bmp')~,
-    '15' =>
-q~Activer la vérification de l'extension de fichier? (Désactiver pour autoriser tous les types de fichiers)<br /><span class="small important">Il est recommandé de TOUJOURS laisser la vérification de l'extension activée. Cette désactivation peut permettre aux pirates d'exécuter des scripts susceptibles de nuire à votre forum.</span>~,
+    '11a' => q~URL des pièces jointes MPs~,
+    '12' => q~Limite de taille de fichier pour chaque pièce jointe:<br /><span class="small">Mettre à 0 pour désactiver la vérification (non recommandée) ou à une valeur raisonnablement élevée, par exemple 500 Ko.</span>~,
+    '12a' => q~Limite de taille de fichier pour chaque pièce jointe MP:<br /><span class="small">Mettre à 0 pour désactiver la vérification (non recommandée) ou à une valeur raisonnablement élevée, par exemple 500 Ko.</span>~,
+    '13' => q~Limite de taille du répertoire de pièces jointes:<br /><span class="small">Mettre à 0 pour désactiver la vérification (non recommandé).</span>~,
+    '13a' => q~Limite de taille du répertoire de pièces jointes MPs:<br /><span class="small"> Mettre à 0 pour désactiver la vérification (non recommandé).</span>~,
+    '14' => q~Extensions de fichier autorisées pour les pièces jointes (ex: "jpg gif bmp")~,
+    '14a' => q~Extensions de fichier autorisées pour les pièces jointes MPs (ex: "jpg gif bmp")~,
+    '15' => q~Activer la vérification de l'extension de fichier? (Désactiver pour autoriser tous les types de fichiers)<br /><span class="small important">Il est recommandé de TOUJOURS laisser la vérification de l'extension activée. Cette désactivation peut permettre aux pirates d'exécuter des scripts susceptibles de nuire à votre forum.</span>~,
     '16'  => q~Afficher les pièces jointes d'image dans les messages?~,
     '16a' => q~Afficher les pièces jointes d'image dans les MP?~,
-    '17' =>
-q~<label for="allowattach">Nombre de pièces jointes autorisées dans les publications:<br /><span class="small">Mettre à 0 pour désactiver les pièces jointes.</span></label><div class="small important"><label for="allowattach"><span class="under">Attention:</span>Autoriser trop de pièces jointes peut entraîner le chargement lent de votre forum. Lors de la configuration, tenez également compte de vos paramètres pour la taille maximale du fichier joint et l'espace de stockage maximal autorisé pour les pièces jointes.</label></div>~,
-    '17a' =>
-q~Nombre de pièces jointes autorisées dans les messages personnels:<br /><span class="small"> Mettre à 0 pour désactiver les pièces jointes dans les messages personnels.<br /><span class="important">Lors de la configuration, prenez en compte vos paramètres pour la taille maximale du fichier joint et l'espace de stockage maximal autorisé pour les pièces jointes.</span></span>~,
-    '17b' =>
-q~Spécifiez les groupes de membres autorisés à télécharger des pièces jointes MP:<br /><span class="small">Si aucun groupe de membres n'est sélectionné, tous les groupes de membres sont activés.<br />Utilisez Ctrl ou Maj pour sélectionner/désélectionner plusieurs groupes.</span>~,
+    '17' => q~<label for="allowattach">Nombre de pièces jointes autorisées dans les publications:<br /><span class="small">Mettre à 0 pour désactiver les pièces jointes.</span></label><div class="small important"><label for="allowattach"><span class="under">Attention:</span>Autoriser trop de pièces jointes peut entraîner le chargement lent de votre forum. Lors de la configuration, tenez également compte de vos paramètres pour la taille maximale du fichier joint et l'espace de stockage maximal autorisé pour les pièces jointes.</label></div>~,
+    '17a' => q~Nombre de pièces jointes autorisées dans les messages personnels:<br /><span class="small"> Mettre à 0 pour désactiver les pièces jointes dans les messages personnels.<br /><span class="important">Lors de la configuration, prenez en compte vos paramètres pour la taille maximale du fichier joint et l'espace de stockage maximal autorisé pour les pièces jointes.</span></span>~,
+    '17b' => q~Spécifiez les groupes de membres autorisés à télécharger des pièces jointes MPs:<br /><span class="small">Si aucun groupe de membres n'est sélectionné, tous les groupes de membres sont activés.<br />Utilisez Ctrl ou Maj pour sélectionner/désélectionner plusieurs groupes.</span>~,
     '18' => q~Autoriser les invités à télécharger des pièces jointes?~,
     '19' => q~Impossible d'ouvrir~,
-    '20' =>
-q~&lt;= Extension de fichier non autorisée. Les extensions de fichiers autorisées sont:~,
+    '20' => q~&lt;= Extension de fichier non autorisée. Les extensions de fichiers autorisées sont:~,
     '20a' => q~&lt;= Code illégal à l'intérieur du fichier image.~,
     '21'  => q~Le fichier~,
-    '21b' =>
-      q~est trop grand. La taille de fichier maximale autorisée (en Ko) est:~,
+    '21b' => q~est trop grand. La taille de fichier maximale autorisée (en Ko) est:~,
     '22' => q~Avec le fichier~,
-    '22b' =>
-q~vous dépassez le volume de répertoire de téléchargement maximum autorisé.~,
-    '23' =>
-q~Aucune taille de répertoire maximale pour les pièces jointes actuellement définies.~,
-    '23a' =>
-q~Aucune taille de répertoire maximale pour les pièces jointes MP actuellement définies.~,
+    '22b' => q~vous dépassez le volume de répertoire de téléchargement maximum autorisé.~,
+    '23' => q~Aucune taille de répertoire maximale pour les pièces jointes actuellement définies.~,
+    '23a' => q~Aucune taille de répertoire maximale pour les pièces jointes MPs actuellement définies.~,
     '24' => q~Administrer les pièces jointes~,
-    '25' =>
-q~De là, vous pouvez administrer les fichiers sur votre système qui ont été joints à des messages et des messages personnels dans votre forum. Vous pouvez supprimer les pièces jointes par taille et date de votre système, et les statistiques sur les pièces jointes sont également affichées ci-dessous.~,
+    '25' => q~De là, vous pouvez administrer les fichiers sur votre système qui ont été joints à des messages et des messages personnels dans votre forum. Vous pouvez supprimer les pièces jointes par taille et date de votre système, et les statistiques sur les pièces jointes sont également affichées ci-dessous.~,
     '26'  => q~Statistiques de pièces jointes~,
     '27'  => q~Totaux~,
     '28'  => q~Total des pièces jointes:~,
@@ -95,26 +77,23 @@ q~De là, vous pouvez administrer les fichiers sur votre système qui ont été 
     '29'  => q~Taille totale du répertoire de pièces jointes:~,
     '29a' => q~Taille totale du répertoire des pièces jointes MPs:~,
     '30'  => q~Espace total disponible dans le répertoire des pièces jointes:~,
-    '30a' =>
-      q~Espace total disponible dans le répertoire des pièces jointes MPs:~,
+    '30a' => q~Espace total disponible dans le répertoire des pièces jointes MPs:~,
     '31'  => q~Options des pièces jointes des publications~,
     '31a' => q~Afficher le journal des pièces jointes~,
-    '31b' => q~Options des pièces jointes MP~,
+    '31b' => q~Options des pièces jointes MPs~,
     '31c' => q~Afficher le journal des pièces jointes MPs~,
     '32'  => q~Supprimer les pièces jointes antérieures à~,
-    '32a' => q~Supprimer les pièces jointes MP antérieures à~,
+    '32a' => q~Supprimer les pièces jointes MPs antérieures à~,
     '33'  => q~Supprimer les pièces jointes plus grandes que~,
-    '33a' => q~Supprimer les pièces jointes MP plus grandes que~,
+    '33a' => q~Supprimer les pièces jointes MPs plus grandes que~,
     '34'  => q~Supprimer les pièces jointes antérieures au nombre de jours:~,
     '35'  => q~Supprimer les pièces jointes plus grandes que~,
     '35a' => q~Retirer les pièces jointes MPs plus grandes que~,
     '36'  => q~Administrer les pièces jointes~,
     '37'  => q~Administrer les pièces jointes: Afficher le journal~,
-    '37a' => q~Administrer les pièces jointes MP: Afficher le journal~,
-    '38' =>
-q~Le journal des pièces jointes affiche des informations sur chaque pièce jointe de votre forum. Vous pouvez télécharger des pièces jointes à partir de cette section, supprimer des pièces jointes ou accéder au fil de discussion où la pièce jointe est publiée. (Allez à <a href="{yabb adminurl}?action=manageattachments">Administrer les pièces jointes</a>)~,
-    '38a' =>
-q~Le journal des pièces jointes PM affiche des informations sur chaque pièce jointe PM sur votre forum. Vous pouvez télécharger et supprimer les pièces jointes MP de cette section.(Aller à <a href="{yabb adminurl}?action=manageattachments">Gèrer les pièces jointes</a>)~,
+    '37a' => q~Administrer les pièces jointes MPs: Afficher le journal~,
+    '38' => q~Le journal des pièces jointes affiche des informations sur chaque pièce jointe de votre forum. Vous pouvez télécharger des pièces jointes à partir de cette section, supprimer des pièces jointes ou accéder au fil de discussion où la pièce jointe est publiée. (Allez à <a href="{yabb adminurl}?action=manageattachments">Administrer les pièces jointes</a>)~,
+    '38a' => q~Le journal des pièces jointes MPs affiche des informations sur chaque pièce jointe MP sur votre forum. Vous pouvez télécharger et supprimer les pièces jointes MPs de cette section.(Aller à <a href="{yabb adminurl}?action=manageattachments">Gèrer les pièces jointes</a>)~,
     '39'  => q~Journal des pièces jointes~,
     '39a' => q~Journal des pièces jointes MPs~,
     '40'  => q~Nom de la pièces jointes~,
@@ -129,8 +108,7 @@ q~Le journal des pièces jointes PM affiche des informations sur chaque pièce j
     '44'  => q~Publier sujet~,
     '45'  => q~Supprimer~,
     '46' => q~Êtes-vous sûr de vouloir supprimer toutes les pièces jointes?~,
-    '46a' =>
-      q~Êtes-vous sûr de vouloir supprimer les pièces jointes vérifiées?~,
+    '46a' => q~Êtes-vous sûr de vouloir supprimer les pièces jointes vérifiées?~,
     '47'  => q~Type de serveur Web~,
     '48'  => q~Il n'y a actuellement aucune pièce jointe téléchargée~,
     '48a' => q~Il n'y a actuellement aucune pièce jointe MP téléchargée.~,
@@ -148,7 +126,7 @@ q~Le journal des pièces jointes PM affiche des informations sur chaque pièce j
     '54r' => q~Renommage automatique~,
     '54n' => q~Ne pas télécharger le fichier~,
     '55'  => q~Pièces jointes actuelles~,
-    '55a' => q~Pièces jointes MP actuelles~,
+    '55a' => q~pièces jointes MPs actuelles~,
     '56'  => q~Chemin de l'attachement non trouvé.~,
     '57'  => q~Pièces jointes~,
     '58'  => q~journées~,
@@ -156,19 +134,15 @@ q~Le journal des pièces jointes PM affiche des informations sur chaque pièce j
     '61a' => q~... achevée.~,
     '61b' => q~Fichier fantôme supprimé~,
     '61c' => q~Suppression des fichiers de pièces jointes fantômes~,
-    '62' =>
-q~Le fichier journal des pièces jointes (attachments.db) a été reconstruit~,
-    '62a' =>
-q~Le fichier journal des pièces jointes MPs (pmattachments.db) a été reconstruit~,
+    '62' => q~Le fichier journal des pièces jointes (attachments.db) a été reconstruit~,
+    '62a' => q~Le fichier journal des pièces jointes MPs (pmattachments.db) a été reconstruit~,
     '63'  => q~Reconstruire les pièces jointes~,
     '63a' => q~Reconstruire les pièces jointes MPs~,
     '64'  => q~Pages~,
     '70'  => q~Voir le fil~,
     '71'  => q~Fermer la fenêtre~,
-    '75' =>
-q~Ce journal des pièces jointes affiche des informations sur chaque pièce jointe du sujet avec le sujet~,
-    '76' =>
-q~Vous pouvez télécharger les pièces jointes à partir d'ici,<br />aller à la publication où le fichier est joint ou<br />aller en haut du fil.~,
+    '75' => q~Ce journal des pièces jointes affiche des informations sur chaque pièce jointe du sujet avec le sujet~,
+    '76' => q~Vous pouvez télécharger les pièces jointes à partir d'ici,<br />aller à la publication où le fichier est joint ou<br />aller en haut du fil.~,
     '80'    => q~Pièces jointes~,
     '80a'   => q~Plus de pièces jointes~,
     '80s'   => q~Moins de pièces jointes~,

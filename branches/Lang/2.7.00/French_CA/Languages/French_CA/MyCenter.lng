@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -32,8 +32,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     'welcometxt'     => q~Panneau de contrôle de USERLABEL~,
     'buddylisttitle' => q~Vos ami(e)s~,
     'buddylistnone'  => q~Votre liste d'ami(e)s est vide~,
-    'buddydeleted' =>
-      q~Cet ami(e) a été supprimé(e), Le nom n'est plus disponible.~,
+    'buddydeleted'   => q~Cet ami(e) a été supprimé(e), Le nom n'est plus disponible.~,
     'hiddenemail'     => q~Courriel caché~,
     'currentsettings' => q~Vos paramètres actuels:~,
     'onoffstatus'     => q~Statut en ligne/hors ligne:~,

@@ -12,7 +12,7 @@
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
@@ -21,7 +21,7 @@ $memberlistlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 %ml_txt = (
 '1' => q~Trier par:~,
 '2' => q~Aller!~,
-'3' => q~Visionement de~,
+'3' => q~Visionnement de~,
 '4' => q~Membres par~,
 '19' => q~Bascule Page Index~,
 '21' => q~Publications~,
@@ -31,12 +31,12 @@ $memberlistlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '96' => q~SiteWeb~,
 '139' => q~Pages~,
 '233' => q~Date Enregistré~,
-'234' => q~Enr. Date~,
+'234' => q~Date Enr.~,
 '307' => q~courriel~,
 '308' => q~Courriel caché~,
 '309' => q~de~,
-'312' => q~Visionement des membres par lettre~,
-'313' => q~Visionement de~,
+'312' => q~Visionnement des membres par lettre~,
+'313' => q~Visionnement de~,
 '314' => q~Membres par nombre de publications~,
 '331' => q~Membres~,
 '759' => q~Veuillez sélectionner une lettre.~,
@@ -44,7 +44,7 @@ $memberlistlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '800' => q~Autre~,
 '801' => q~Rechercher par nom ou courriel~,
 '802' => q~Désolé - aucun résultat trouvé pour~,
-'dr_warning' => q~* Compte plus ancien que Forum - veuillez vérifier la date de début du forum:~,
+'dr_warning' => q~* Compte plus ancien que le forum - veuillez vérifier la date de début du forum:~,
 'dr_warnurl' => q~Ici~,
 );
 

@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$emaillngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$emaillngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 
 %yabbtagdesc = (
@@ -39,12 +39,12 @@ $emaillngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'sender' => q~L'expéditeur du MP.~,
 'num'=> q~Le nombre de sujet (à des fin d'URL)~,
 'start'=> q~Le nombre de publication dans le sujet (à des fin d'URL)~,
-'tmessage' => q~Teste du Nouveau sujet~,
+'tmessage' =>  q~Texte du Nouveau sujet~,
 'tauthor'=> q~Nom de l'auteur~,
 
 # Registration/Password
-'activationcode' => q~Le lien d'activation envoyé dans un courriel d'inscription.~,
-'remindercode' => q~Le lien Mot de passe envoyé dans un courriel de rappel.~,
+'activationcode' => q~Lien d'activation envoyé dans un courriel d'inscription.~,
+'remindercode' => q~Lien du Mot de passe envoyé dans un courriel de rappel.~,
 'preregspan' => q~Le délai accordé avant l'expiration du pré-enregistrement. Valeur actuelle: $preregspan~,
 'reason' => q~Raison de l'administrateur à l'origine d'une décision prise sur un utilisateur qui s'enregistre alors qu'il était en "mode d'approbation administrateur"~,
 
@@ -52,7 +52,7 @@ $emaillngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'toname' => q~Le nom de la personne recevant le sujet.~,
 
 # PMs
-'sendto' => q~Récipiendaire du MP.~,
+'sendto' => q~Destinataire du MP.~,
 'email'=> q~Courriel de l'utilisateur.~,
 'date' => q~Date à laquelle le MP a été envoyé~,
 'subject'=> q~Sujet de la dernière publication ou MP.~,

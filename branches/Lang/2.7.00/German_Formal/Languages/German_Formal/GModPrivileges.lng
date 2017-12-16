@@ -14,7 +14,7 @@
 # Software by:  The YaBB Development Team                                     #
 #               with assistance from the YaBB community.                      #
 ###############################################################################
-##  Based on English Rev 1848 ##
+##  Based on English Rev 1950 ##
 our $VERSION = '2.7.00';
 
 $german_formalgmodprivilegeslngver  = 'YaBB 2.7.00 $Revision$';
@@ -95,6 +95,7 @@ q~Wählen Sie, welche Aktionen <em>(action= in den URL's)</em> Globale Moderator
     'backupsettings' => q~Erlaube Zugriff auf die Backup-Center-Einstellungen~,
     'backup'         => q~Erlaube Zugriff auf das Backup-Center~,
     'emailbackup'    => q~Erlaube eMail-Sicherung an Webmaster~,
+    'blockip'        => q~Allow to block IP addresses from error log~,
 );
 
 %gmodpriv_txt = (
@@ -147,6 +148,7 @@ q~Wählen Sie, welche Aktionen <em>(action= in den URL's)</em> Globale Moderator
     'backupsettings'       => q~Backup-Center-Einstellungen~,
     'backup'               => q~Backup-Center~,
     'emailbackup'          => q~eMail-Backup~,
+    'blockip'              => q~Block IP addresses~,
 );
 
 1;

@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -35,49 +35,33 @@ $abbr_lang = 'fr-ca';
     '2' => q~dans~,
     '3' => q~Ajouter/éditer Catégories~,
     '4' => q~Garder épinglé?~,
-    '5' =>
-q~Vous devez sélectionner quelque chose à éditer ou à supprimer. Veuillez réessayer.~,
-    '6'  => q~Envoyer un courriel au membres~,
+    '5' => q~Vous devez sélectionner quelque chose à éditer ou à supprimer. Veuillez réessayer.~,
+'6' => q~Envoyer un courriel aux membres~,
     '7'  => q~Éditer les nouvelles du forum~,
     '8'  => q~Éditer les groupes de membres~,
     '9'  => q~Voir tous les membres~,
     '10' => q~Sauvegarder~,
-    '11' =>
-q~Ici vous pouvez ajouter et éditer des groupes de membre.<br /><span class="small">Note: les groupes de membres sans les couleurs de texte attribuées n'apparaîtront pas dans la liste des groupes de l'index du forum.</span>~,
-    '12' =>
-q~Groupes de membres du Staff (ces groupes ne peuvent pas être supprimés)~,
+    '11' => q~Ici vous pouvez ajouter et éditer des groupes de membre.<br /><span class="small">Note: les groupes de membres sans les couleurs de texte attribuées n'apparaîtront pas dans la liste des groupes de l'index du forum.</span>~,
+    '12' => q~Groupes de membres du Staff (ces groupes ne peuvent pas être supprimés)~,
     '13' => q~Groupes de modérateurs~,
-    '14' =>
-q~(Maintenez la touche Ctrl ou (touche Pomme sur Mac) enfoncée pour sélectionner ou désélectionner plusieurs entrées)~,
-    '15' =>
-q~Vous devez avoir au moins un "groupe de membres indépendant" avant de pouvoir attribuer des groupes de modérateurs.~,
+    '14' => q~(Maintenez la touche Ctrl ou (touche Pomme sur Mac) enfoncée pour sélectionner ou désélectionner plusieurs entrées)~,
+    '15' => q~Vous devez avoir au moins un "groupe de membres indépendant" avant de pouvoir attribuer des groupes de modérateurs.~,
     '18' => q~Modifier les identifiants de moteur de recherche~,
-    '19' =>
-q~Veuillez placer une entrée dans le moteur de recherche par ligne. Format:<br /><em>nom de domaine (partiel) e.g. googlebot </em>|<em>Nom tel qu'il apparaît à l'écran</em><br />Les moteurs ayant le même nom d'affichage seront comptés ensemble, quel que soit le nom de domaine. Si vous souhaitez que chaque domaine soit compté séparément, vous devez leur attribuer des noms d'affichage différents.~,
+    '19' => q~Veuillez placer une entrée dans le moteur de recherche par ligne. Format:<br /><em>nom de domaine (partiel) e.g. googlebot </em>|<em>Nom tel qu'il apparaît à l'écran</em><br />Les moteurs ayant le même nom d'affichage seront comptés ensemble, quel que soit le nom de domaine. Si vous souhaitez que chaque domaine soit compté séparément, vous devez leur attribuer des noms d'affichage différents.~,
     '21' => q~Posts~,
-    '22' =>
-q~Autoriser les environnements permalien simple?<span class="small">Publier les messages uniquement avec un lien permanent séparé.</span>~,
-    '22a' =>
-q~Permettre les environnements premaliens Complet?<br /><span class="small">Tous les liens de accessibles aux visiteurs comme permaliens.</span>~,
-    '22r' =>
-q~Autoriser les environnements permalien RSS?<br /><span class="small">Liens vers le flux RSS comme permaliens.</span>~,
-    '23' =>
-q~Domaine permalien<br /><span class="small">(incluez 'http://') Note: ceci est aussi le domaine pour votre permalien RSS(ci-dessous)</span>~,
+    '22' => q~Autoriser les environnements permalien simple?<span class="small">Publier les messages uniquement avec un lien permanent séparé.</span>~,
+    '22a' => q~Permettre les environnements premaliens Complet?<br /><span class="small">Tous les liens de accessibles aux visiteurs comme permaliens.</span>~,
+    '22r' => q~Autoriser les environnements permalien RSS?<br /><span class="small">Liens vers le flux RSS comme permaliens.</span>~,
+'23' => q~Domaine permalien<br /><span class="small">(incluez "http://") Note: ceci est aussi le domaine pour votre permalien RSS(ci-dessous)</span>~,
     '23a' => q~Texte permalien pour .htaccess: (Simple)~,
     '23b' => q~Texte permalien pour .htaccess: (Complet)~,
     '24'  => q~Configuration des liens permaliens~,
-    '25' =>
-q~URL du lien symbolique (omettre la barre oblique devant et après (par exemple, articles))~,
-    '26' =>
-q~Ceci est la partie de l'URL qui se trouve entre votre nom de domaine et la partie URL du lien symbolique permalien (par exemple http://www.votredomaine.com/<strong>articles/</strong>nouvelles/ceci-est-le-titre)~,
-    '25r' =>
-q~Partie du lien symbolique de l'URL du permaliens RSSrecent (omettre la barre oblique devant et après (par exemple RSSrecent))~,
-    '26r' =>
-q~Ceci est la partie de l'URL du lien symbolique permaliens RSSrecent<br />(par exemple http://www.votredomaine.com/<strong>RSSrecent</strong>)~,
-    '25b' =>
-q~Partie du lien symbolique de l'URL du permaliens RSSboard (omettre la barre oblique devant et après (par exemple RSSboard))~,
-    '26b' =>
-q~Ceci est la partie de l'URL du lien symbolique permaliens RSSboard<br />(par exemple http://www.votredomaine.com/<strong>RSSboard</strong>)~,
+    '25' => q~URL du lien symbolique (omettre la barre oblique devant et après (par exemple, articles))~,
+    '26' => q~Ceci est la partie de l'URL qui se trouve entre votre nom de domaine et la partie URL du lien symbolique permalien (par exemple http://www.votredomaine.com/<strong>articles/</strong>nouvelles/ceci-est-le-titre)~,
+    '25r' => q~Partie du l ien symbolique de l'URL du permaliens RSSrecent (omettre la barre oblique devant et après (par exemple RSSrecent))~,
+    '26r' => q~Ceci est la partie de l'URL du lien symbolique permaliens RSSrecent<br />(par exemple http://www.votredomaine.com/<strong>RSSrecent</strong>)~,
+    '25b' => q~Partie du lien symbolique de l'URL du permaliens RSSboard (omettre la barre oblique devant et après (par exemple RSSboard))~,
+    '26b' => q~Ceci est la partie de l'URL du lien symbolique permaliens RSSboard<br />(par exemple http://www.votredomaine.com/<strong>RSSboard</strong>)~,
     '25a' => q~Lien permanent RSS pour .htaccess:~,
     '31'  => q~Enlever~,
     '32'  => q~Aller~,
@@ -96,52 +80,40 @@ q~Ceci est la partie de l'URL du lien symbolique permaliens RSSboard<br />(par e
     '53'  => q~Éditer~,
     '54'  => q~enlever~,
     '55'  => q~Forum supprimé avec succès Id:~,
-    '57' =>
-q~Modifiez les informations, paramètres et autorisations de votre forum ici.~,
+    '57' => q~Modifiez les informations, paramètres et autorisations de votre forum ici.~,
     '58'  => q~Forum~,
     '59'  => q~Information requise~,
     '60'  => q~(Cela doit être rempli complètement)~,
     '61'  => q~Id du Forum:~,
     '61a' => q~Id de la catégorie:~,
-    '61b' =>
-q~<span class="small">entrez n'importe quel nom alphanumérique sans espaces</span>~,
+    '61b' => q~<span class="small">entrez n'importe quel nom alphanumérique sans espaces</span>~,
     '62' => q~Description~,
-    '62a' =>
-q~Si cela doit être un lien de forum externe, la première ligne de la description doit être le titre du nom du lien, ou si vous utilisez une image comme lien, la première ligne doit utiliser la balise HTML &lt;img&gt;. Exemple. &lt;img src="http://votresite.com/votre_image.jpg" alt="Le titre de votre image" &gt;~,
+    '62a' => q~Si cela doit être un lien de forum externe, la première ligne de la description doit être le titre du nom du lien, ou si vous utilisez une image comme lien, la première ligne doit utiliser la balise HTML &lt;img&gt;. Exemple. &lt;img src="http://votresite.com/votre_image.jpg" alt="Le titre de votre image" &gt;~,
     '63'  => q~Modérateur~,
     '63d' => q~Modérateur du forum~,
     '63a' => q~Copier~,
     '63b' => q~Coller~,
     '63c' => q~Coller tous~,
     '64'  => q~Paramètres optionnels / avancés:~,
-    '64a' =>
-q~(Ceux-ci n'ont pas besoin d'être remplis complètement et peuvent n'avoir aucun effet s'il s'agit d'un forum Externe)~,
+    '64a' => q~(Ceux-ci n'ont pas besoin d'être remplis complètement et peuvent n'avoir aucun effet s'il s'agit d'un forum Externe)~,
     '64b'  => q~Image du forum~,
     '64b2' => q~Image de la catégorie~,
-    '64b3' =>
-q~Types de fichiers autorisés: png jpg jpeg gif<br />Taille maximum du fichier:250Ko~,
-    '64b4' =>
-q~Supprimer l'image du forum<br />Note: Retirez l'ancienne photo avant d'en télécharger une nouvelle.~,
+    '64b3' => q~Types de fichiers autorisés: png jpg jpeg gif<br />Taille maximum du fichier:250Ko~,
+    '64b4' => q~Supprimer l'image du forum<br />Note: Retirez l'ancienne photo avant d'en télécharger une nouvelle.~,
     '64b5' => q~Supprimer l'image de la catégorie~,
     '64b6' => q~Ou entrez l'URL pour l'image du forum.~,
     '64c'  => q~Mettre à zéro le compteur de forum?~,
-    '64d' =>
-q~Si cette case est cochée, les publications de ce forum ne contribueront pas au nombre de publications d'un utilisateur.~,
+    '64d' => q~Si cette case est cochée, les publications de ce forum ne contribueront pas au nombre de publications d'un utilisateur.~,
     '64e' => q~Montrer à tous?~,
-    '64f' =>
-q~Si cochée, le forum sera visible par tous ceux qui peuvent voir l'index du forum, même s'ils ne sont pas autorisés à accéder au forum lui-même.<br />S'il s'agit d'un forum de liaison externe, Les autorisations de groupe des rubriques sont définies ci-dessous.~,
+    '64f' => q~Si cochée, le forum sera visible par tous ceux qui peuvent voir l'index du forum, même s'ils ne sont pas autorisés à accéder au forum lui-même.<br />S'il s'agit d'un forum de liaison externe, Les autorisations de groupe des rubriques sont définies ci-dessous.~,
     '64g' => q~Annonces globales?~,
-    '64h' =>
-q~Si cette case est cochée, les sujets de ce forum sont affichés en tant que "Rubriques importantes" en haut de l'index des messages de tous les autres forums. Seuls les administrateurs et les modérateurs globaux (si autorisés) peuvent poster dans ce forum; toutes les autorisations pour les autres groupes sont ignorées. Le forum lui-même sera visible dans l'index du forum uniquement pour les administrateurs et les modérateurs globaux (si autorisé).~,
+    '64h' => q~Si cette case est cochée, les sujets de ce forum sont affichés en tant que "Rubriques importantes" en haut de l'index des messages de tous les autres forums. Seuls les administrateurs et les modérateurs globaux (si autorisés) peuvent poster dans ce forum; toutes les autorisations pour les autres groupes sont ignorées. Le forum lui-même sera visible dans l'index du forum uniquement pour les administrateurs et les modérateurs globaux (si autorisé).~,
     '64i' => q~Corbeille?~,
-    '64j' =>
-q~Si coché, ce forum est une corbeille pour les sujets supprimés par les modérateurs du forum et, si activé dans les paramètres du forum - &gt; Modérateurs de forum, modérateurs globaux et administrateurs.~,
+    '64j' => q~Si coché, ce forum est une corbeille pour les sujets supprimés par les modérateurs du forum et, si activé dans les paramètres du forum - &gt; Modérateurs de forum, modérateurs globaux et administrateurs.~,
     '64k' => q~Autoriser les pièces jointes?~,
-    '64l' =>
-q~Si cette case est cochée, les utilisateurs peuvent joindre des fichiers aux messages qu'ils publient dans ce forum. (Voir Paramètres avancés - &gt; Pièces jointes pour modifier les préférences de pièce jointe à l'échelle du forum.)~,
+    '64l' => q~Si cette case est cochée, les utilisateurs peuvent joindre des fichiers aux messages qu'ils publient dans ce forum. (Voir Paramètres avancés - &gt; Pièces jointes pour modifier les préférences de pièce jointe à l'échelle du forum.)~,
     '64m' => q~Définir l'âge maximum d'affichage après affichage~,
-    '64n' =>
-q~Pour afficher uniquement les messages plus récents que XXX jours, entrez cette valeur ici.<br />Entrez 0 (zéro) pour aucune restriction.<br /><strong>Note: la valeur par défaut pour le nouveau forum est 0</strong>~,
+    '64n' => q~Pour afficher uniquement les messages plus récents que XXX jours, entrez cette valeur ici.<br />Entrez 0 (zéro) pour aucune restriction.<br /><strong>Note: la valeur par défaut pour le nouveau forum est 0</strong>~,
     '65'  => q~Permissions de groupe~,
     '65a' => q~(Affichage/Visualisation des permissions)~,
     '65b' => q~Autorisé à démarrer les sujets~,
@@ -152,29 +124,23 @@ q~Pour afficher uniquement les messages plus récents que XXX jours, entrez cett
     '66'  => q~Cliquez ici pour voir la section~,
     '67'  => q~Paramètres de maintenance~,
     '68'  => q~Nom~,
-    '68a' =>
-q~S'il s'agit d'un lien externe, le nom doit être au format "http: //lienduforum.com"~,
+    '68a' => q~S'il s'agit d'un lien externe, le nom doit être au format "http: //lienduforum.com"~,
     '70' => q~Sujet~,
     '72' => q~Message~,
     '87' => q~Groupe principal~,
     '89' => q~Activer la protection et bannissement "publication rapide"?~,
     '90' => q~Vitesse d'affichage autorisée (en secondes)~,
     '91' => q~Limite d'abus de spam (filtrage et publication rapide)~,
-    '91a' =>
-      q~Nombre de fois après quoi l'utilisateur est interdit de publier.~,
+    '91a' => q~Nombre de fois après quoi l'utilisateur est interdit de publier.~,
     '92' => q~Délai d'interdiction de publication (en secondes)~,
-    '93' =>
-      q~C'est le délai minimum avant la levée d'une interdiction de spamming~,
+    '93' => q~C'est le délai minimum avant la levée d'une interdiction de spamming~,
     '94'  => q~Total~,
-    '95'  => q~Âge minimum pour accéder à ce forum~,
-    '95a' => q~Âge maximum pour accéder à ce forum~,
-    '96' =>
-      q~ans. <em>(Laissez vide pour aucune restriction d'âge minimum)</em>~,
-    '96a' =>
-      q~ans. <em>(Laissez vide pour aucune restriction d'âge maximum)</em>~,
+'95' => q~Age minimum pour accéder à ce forum~,
+'95a' => q~Age maximum pour accéder à ce forum~,
+    '96' => q~ans. <em>(Laissez vide pour aucune restriction d'âge minimum)</em>~,
+    '96a' => q~ans. <em>(Laissez vide pour aucune restriction d'âge maximum)</em>~,
     '97' => q~Sexe (s) autorisé (s) à accéder à ce forum~,
-    '98' =>
-q~("Tous" signifie que tout le monde, même ceux qui n'ont pas de sexe choisi, peut accéder; "Les deux" signifie que seuls ceux qui ont choisi un genre peuvent y accéder.)~,
+    '98' => q~("Tous" signifie que tout le monde, même ceux qui n'ont pas de sexe choisi, peut accéder; "Les deux" signifie que seuls ceux qui ont choisi un genre peuvent y accéder.)~,
     '99'   => q~Tous~,
     '99M'  => q~Homme~,
     '99F'  => q~Femme~,
@@ -185,15 +151,13 @@ q~("Tous" signifie que tout le monde, même ceux qui n'ont pas de sexe choisi, p
     '106'  => q~Une erreur est survenue.~,
     '107'  => q~a~,
     '110'  => q~Crypter les identifiants?~,
-    '111' =>
-      q~Ceci obscurcira toute référence lisible à l'identifiant d'un membre.~,
+    '111' => q~Ceci obscurcira toute référence lisible à l'identifiant d'un membre.~,
     '122' => q~jours~,
     '123' => q~RETIRÉ~,
     '124' => q~Supprimer les messages plus anciens que~,
     '130' => qq~Cordialement,\nL'équipe {yabb mbname}~,
     '135' => q~Définir les mots censurés~,
-    '136' =>
-q{Un mot ou une phrase par ligne dans le formulaire:<br />penis=p**is ou penis~p**is<br /><br /><span class="small">Utilisation = si vous voulez censurer des mots entiers seulement, ou ~ si vous voulez censurer des mots qui font partis d'un ensemble de mots</span>},
+    '136' => q{Un mot ou une phrase par ligne dans le formulaire:<br />penis=p**is ou penis~p**is<br /><br /><span class="small">Utilisation = si vous voulez censurer des mots entiers seulement, ou ~ si vous voulez censurer des mots qui font partis d'un ensemble de mots</span>},
     '139' => q~Pages~,
     '163' => q~Oui~,
     '164' => q~Non~,
@@ -209,8 +173,7 @@ q{Un mot ou une phrase par ligne dans le formulaire:<br />penis=p**is ou penis~p
     '241' => q~champ.~,
     '246' => q~Aucun~,
     '247' => q~Peut publier?~,
-    '247a' =>
-q~Si ce forum contient des forum enfants, cette option activera la publication dans ce forum parent. Sinon, le forum servira de dossier contenant les sous-forums.~,
+    '247a' => q~Si ce forum contient des forum enfants, cette option activera la publication dans ce forum parent. Sinon, le forum servira de dossier contenant les sous-forums.~,
     '248'  => q~Forum enfants~,
     '249'  => q~Forum parents~,
     '250'  => q~Ajouter un sous-forum~,
@@ -239,25 +202,20 @@ q~Si ce forum contient des forum enfants, cette option activera la publication d
     '340e' => q~IP~,
     '341'  => q~Définir les noms réservés~,
     '342'  => q~Un mot par ligne.~,
-    '347' =>
-q~Cette page vous permet de changer tous les paramètres de votre forum YaBB. Soyez très prudent avec ces paramètres, car ils peuvent rendre votre forum YaBB non fonctionnel. Il est également possible que certains paramètres soient disponibles pour les invités ou les nouveaux membres.~,
+    '347' => q~Cette page vous permet de changer tous les paramètres de votre forum YaBB. Soyez très prudent avec ces paramètres, car ils peuvent rendre votre forum YaBB non fonctionnel. Il est également possible que certains paramètres soient disponibles pour les invités ou les nouveaux membres.~,
     '348' => q~Définir le mode de maintenance?~,
-    '348Text' =>
-q~Texte "Mode de maintenance" défini par l'utilisateur<br /><span class="small">(Laissez vide pour le message par défaut)</span>~,
-    '348lang' =>
-q~Langue pour le texte "Mode de maintenance" défini par l'utilisateur<br /><span class="small">(langue de l'utilisateur courant)</span>~,
+    '348Text' => q~Texte "Mode de maintenance" défini par l'utilisateur<br /><span class="small">(Laissez vide pour le message par défaut)</span>~,
+    '348lang' => q~Langue pour le texte "Mode de maintenance" défini par l'utilisateur<br /><span class="small">(langue de l'utilisateur courant)</span>~,
     '350'  => q~Nom du forum~,
     '350a' => q~Date de début du forum~,
-    '350Text' =>
-q~Utilisez le format date/heure du 01/31/99 à 01:01:01 (mm/jj/aa à hh: mm: ss).~,
+    '350Text' => q~Utilisez le format date/heure du 01/31/99 à 01:01:01 (mm/jj/aa à hh: mm: ss).~,
     '351'  => q~URL du forum~,
     '352'  => q~Nom du cookie - Identifiant~,
     '353'  => q~Nom du cookie - Mot de passe~,
     '353a' => q~Nom du cookie - Session~,
     '353b' => q~Préfixe de cookie - Tri de l'indes des messages~,
     '353e' => q~Nom du cookie - Limite de messages des invités~,
-    '353f' =>
-q~Temps du cookie - Délais d'expiration des messages des invités (en minutes - 525600 équivaut à environ 1 an).~,
+    '353f' => q~Temps du cookie - Délais d'expiration des messages des invités (en minutes - 525600 équivaut à environ 1 an).~,
     '354' => q~Emplacement du programme Sendmail~,
     '355' => q~Adresse courriel du webmestre~,
     '356' => q~Annuaire YaBB~,
@@ -270,48 +228,36 @@ q~Temps du cookie - Délais d'expiration des messages des invités (en minutes -
     '363' => q~Répertoire de modèles~,
     '364' => q~Fichier d'aide~,
     '366' => q~Paramètres pour le courriel de notification d'un nouveau membre~,
-    '367' =>
-q~Courriel de notification pour un nouveau membre?<br /><span class="small">Si coché, une notification concernant l'enregistrement d'un nouveau membre sera envoyée à l'adresse courriel ci-dessous.</span>~,
-    '368' =>
-q~Adresse courriel de notification:<br /><span class='small'>Si elle est vide, le courriel sera envoyé à: {yabb webmaster_email}</span>~,
+    '367' => q~Courriel de notification pour un nouveau membre?<br /><span class="small">Si coché, une notification concernant l'enregistrement d'un nouveau membre sera envoyée à l'adresse courriel ci-dessous.</span>~,
+    '368' => q~Adresse courriel de notification:<br /><span class='small'>Si elle est vide, le courriel sera envoyé à: {yabb webmaster_email}</span>~,
     '371' => q~Heure actuelle du forum~,
-    '371d' =>
-q~Sélectionnez le fuseau horaire du forum:<br /><span class="small">Choisissez le pays et la ville qui représente votre fuseau horaire préféré par défaut.<br />Si les seuls choix sont "UTC" et "local", vous n'avez pas les modules nécessaires pour utiliser les fuseaux horaires basés sur le pays/la ville. Dans ce cas, utilisez "local" et définissez manuellement votre décalage horaire pour définir la différence de temps de votre forum par rapport à l'heure UTC ou choisissez UTC.</span>~,
-    '371a' =>
-q~Activer le choix du fuseau horaire pour les utilisateurs:<br /><span class="small">Si le module Perl <strong>DateTime :: TimeZone</strong> nécessaire n'est pas installé, les utilisateurs ne seront pas capable de choisir 'UTC'. Si le fuseau horaire par défaut du forum est "local", les utilisateurs disposeront également du "décalage horaire par défaut du forum".</span>~,
+    '371d' => q~Sélectionnez le fuseau horaire du forum:<br /><span class="small">Choisissez le pays et la ville qui représente votre fuseau horaire préféré par défaut.<br />Si les seuls choix sont "UTC" et "local", vous n'avez pas les modules nécessaires pour utiliser les fuseaux horaires basés sur le pays/la ville. Dans ce cas, utilisez "local" et définissez manuellement votre décalage horaire pour définir la différence de temps de votre forum par rapport à l'heure UTC ou choisissez UTC.</span>~,
+'371a' => q~Activer le choix du fuseau horaire pour les utilisateurs:<br /><span class="small">Si le module Perl <strong>DateTime :: TimeZone</strong> nécessaire n'est pas installé, les utilisateurs ne seront pas capable de choisir "UTC". Si le fuseau horaire par défaut du forum est "local", les utilisateurs disposeront également du "décalage horaire par défaut du forum".</span>~,
     'local' => q~local~,
-    '371e' =>
-q~Activez DST en utilisant le fuseau horaire du forum 'local' et le décalage horaire du forum (ci-dessus).<br /><span class="small">Ce paramètre suppose que votre serveur d'hébergement est dans un fuseau horaire utilisant le Les mêmes dates pour l'heure d'été que vous voulez pour votre forum et est configuré pour reconnaître son heure locale avec DST. Sinon, choisissez UTC comme fuseau horaire ou ajustez manuellement l'heure d'été dans votre fuseau horaire à l'aide de l'option "Définir le décalage horaire du forum".</span>~,
-    '371f' =>
-q~Définir le décalage horaire du forum:<br /><span class="small">Ajustez la différence de temps de votre forum de l'UTC ici.</span>~,
+'371e' => q~Activez DST en utilisant le fuseau horaire du forum "local" et le décalage horaire du forum (ci-dessus).<br /><span class="small">Ce paramètre suppose que votre serveur d'hébergement est dans un fuseau horaire utilisant le Les mêmes dates pour l'heure d'été que vous voulez pour votre forum et est configuré pour reconnaître son heure locale avec DST. Sinon, choisissez UTC comme fuseau horaire ou ajustez manuellement l'heure d'été dans votre fuseau horaire à l'aide de l'option "Définir le décalage horaire du forum".</span>~,
+    '371f' => q~Définir le décalage horaire du forum:<br /><span class="small">Ajustez la différence de temps de votre forum de l'UTC ici.</span>~,
     '371b' => q~Activer l'horloge dynamique en haut de la page?~,
     '371c' => q~Correction du temps serveur (en secondes +/-)~,
     '372'  => q~Nombre de meilleurs publieurs pour la liste des membres~,
     '373'  => q~Nombre de membres affichés par page dans la liste des membres~,
-    '374' =>
-      q~Nombre maximal de sujets affichés par page dans l'index des messages~,
+    '374' =>       q~Nombre maximal de sujets affichés par page dans l'index des messages~,
     '375' => q~Nombre maximum de messages affichés par page d'un sujet~,
-    '376' =>
-q~Nombre de jours pour qu'une publication ne s'affiche plus en tant que "nouvelle" dans l'affichage du forum ou Message.~,
+    '376' => q~Nombre de jours pour qu'une publication ne s'affiche plus en tant que "nouvelle" dans l'affichage du forum ou Message.~,
     '378'  => q~Activer le code du forum?~,
     '378a' => q~Activer les citations dans les forums?~,
     '379'  => q~Activer les nouvelles?~,
     '380'  => q~Activer les publications des invités?~,
-    '381' =>
-q~Autoriser les utilisateurs à activer les notifications par courriel pour les forums/discussions listés dans "Mes notifications" lorsqu'un nouveau message est publié?~,
+    '381' => q~Autoriser les utilisateurs à activer les notifications par courriel pour les forums/discussions listés dans "Mes notifications" lorsqu'un nouveau message est publié?~,
     '382'  => q~Afficher l'index du dernier membre sur le forum?~,
     '383'  => q~Afficher la date de modification sur les messages modifiés?~,
     '384'  => q~Afficher l'avatar de l'utilisateur dans la vue des messages?~,
     '385'  => q~Afficher le texte de l'utilisateur dans la vue des messages?~,
     '385a' => q~Texte utilisateur par défaut (sous l'avatar de l'utilisateur)~,
-    '385b' =>
-q~Enveloppe de texte utilisateur (nombre de caractères par ligne pour le texte utilisateur sous l'avatar de l'utilisateur)~,
+    '385b' => q~Enveloppe de texte utilisateur (nombre de caractères par ligne pour le texte utilisateur sous l'avatar de l'utilisateur)~,
     '386' => q~Afficher l'image de genre dans la vue des messages?~,
-    '386a' =>
-q~Autoriser l'utilisateur à masquer l'âge dans le profil et le message Afficher et masquer l'âge et l'année de naissance dans le calendrier?~,
+    '386a' => q~Autoriser l'utilisateur à masquer l'âge dans le profil et le message Afficher et masquer l'âge et l'année de naissance dans le calendrier?~,
     '387' => q~Activer l'atténuateur de nouvelles?~,
-    '388' =>
-      q~Millisecondes de délai entre les messages dans le fader de nouvelles~,
+    '388' => q~Millisecondes de délai entre les messages dans le fader de nouvelles~,
     '389'  => q~Couleur du texte du curseur de News~,
     '389a' => q~Couleur d'arrière-plan du nouveau curseur~,
     '391'  => q~Utiliser le verrouillage de fichier?~,
@@ -319,52 +265,35 @@ q~Autoriser l'utilisateur à masquer l'âge dans le profil et le message Affiche
     '393'  => q~Verrouiller UN~,
     '394'  => q~Montrer Qui regarde le sujet maintenant?~,
     '395'  => q~Montrer Qui répond à un sujet?~,
-    '396' =>
-q~<span class="small">Administrateurs, modérateurs globaux, modérateurs de forum et modérateurs de forum uniquement.</span>~,
+    '396' => q~<span class="small">Administrateurs, modérateurs globaux, modérateurs de forum et modérateurs de forum uniquement.</span>~,
     '401' => q~Aucun verrouillage de fichier~,
     '402' => q~Verrouillage de fichier Unix/Linux et Win/NT~,
     '404' => q~Envoyer des courriels en utilisant~,
-    '407' =>
-q~Serveur SMTP<br /><span class="small">Pour Net::SMTP ou Net::SMTPS, spécifiez le numéro de port avec ":&lt;portnumber&gt;" à la fin. Exemple: smtp.gmail.com<em>:587</em></span>~,
-    '408' =>
-q~Temps minimum entre deux soumissions de la même adresse IP (en secondes)~,
-    '409' =>
-q~Masquer les signatures des invités?<br /><span class="small">Si cette case est cochée, seuls les membres enregistrés peuvent voir les signatures.</span>~,
+    '407' => q~Serveur SMTP<br /><span class="small">Pour Net::SMTP ou Net::SMTPS, spécifiez le numéro de port avec ":&lt;portnumber&gt;" à la fin. Exemple: smtp.gmail.com<em>:587</em></span>~,
+    '408' => q~Temps minimum entre deux soumissions de la même adresse IP (en secondes)~,
+    '409' => q~Masquer les signatures des invités?<br /><span class="small">Si cette case est cochée, seuls les membres enregistrés peuvent voir les signatures.</span>~,
     '410' => q~NFSLock File-Locking (Unix uniquement)~,
     '425' => q~Votre version/Version actuelle~,
-    '432' =>
-q~Durée de vie par défaut des cookies de connexion.<br /><span class="small">Si cochée, la durée de vie par défaut est 'forever', sinon les cookies de connexion expireront lorsque l'utilisateur fermera son navigateur./span>~,
-    '432b' =>
-q~Autoriser les membres à se connecter avec leur pseudo ainsi que leur identifiant ou leur adresse courriel?~,
+    '432' => q~Durée de vie par défaut des cookies de connexion.<br /><span class="small">Si cochée, la durée de vie par défaut est 'forever', sinon les cookies de connexion expireront lorsque l'utilisateur fermera son navigateur./span>~,
+    '432b' => q~Autoriser les membres à se connecter avec leur pseudo ainsi que leur identifiant ou leur adresse courriel?~,
     '462' => q~Aller!~,
     '470' => q~N/A~,
-    '471' =>
-q~Smart Image Resize<br />(redimensionne l'affichage de l'image aux valeurs suivantes si l'image les dépasse)~,
+    '471' => q~Smart Image Resize<br />(redimensionne l'affichage de l'image aux valeurs suivantes si l'image les dépasse)~,
     '472' => q~Largeur d'affichage de l'image avatar (0 = pas de limite)~,
     '473' => q~Hauteur de l'image de l'avatar (0 = pas de limite)~,
-    '473x' =>
-q~Désactiver la fonction Smart Image Resize pour Avatars?<br /><span class="small">Si cette case est cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement définie. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
-    '473a' =>
-q~Avatar dans la largeur d'affichage de l'image de la liste des membres (0 = aucun ensemble de limites)~,
-    '473b' =>
-q~Avatar dans la hauteur d'affichage de l'image de la liste des membres (0 = aucun ensemble de limites)~,
-    '473c' =>
-q~Désactiver la fonction Smart Image Resize pour les Avatars dans la liste des membres?<br /><span class="small">Si cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement au-dessus. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
+    '473x' => q~Désactiver la fonction Smart Image Resize pour Avatars?<br /><span class="small">Si cette case est cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement définie. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
+    '473a' => q~Avatar dans la largeur d'affichage de l'image de la liste des membres (0 = aucun ensemble de limites)~,
+    '473b' => q~Avatar dans la hauteur d'affichage de l'image de la liste des membres (0 = aucun ensemble de limites)~,
+    '473c' => q~Désactiver la fonction Smart Image Resize pour les Avatars dans la liste des membres?<br /><span class="small">Si cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement au-dessus. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
     '474' => q~Afficher la largeur d'affichage de l'image (0 = pas de limite)~,
     '475' => q~Afficher la hauteur d'affichage de l'image (0 = pas de limite)~,
-    '475x' =>
-q~Désactiver la fonction Smart Image Resize (Redimensionnement intelligent d'image) dans les publications?<br /><span class="small">Si cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement définie. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
+    '475x' => q~Désactiver la fonction Smart Image Resize (Redimensionnement intelligent d'image) dans les publications?<br /><span class="small">Si cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement définie. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
     '476' => q~Largeur de l'image de la signature (0 = pas de limite)~,
-    '477' =>
-      q~Hauteur d'affichage de l'image de la signature (0 = aucune limite)~,
-    '477x' =>
-q~Désactiver la fonction Redimensionner Smart Image dans Signatures?<br /><span class="small">Si cette case est cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement définie. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
-    '478' =>
-      q~Largeur d'affichage de l'image d'attachement (0 = pas de limite)~,
-    '479' =>
-      q~Hauteur d'affichage de l'image d'attachement (0 = aucune limite)~,
-    '479x' =>
-q~Désactiver la fonction Smart Image Resize pour les pièces jointes?<br /><span class="small">Si cochée, la fonctionnalité de redimensionnement intelligent de l'image est désactivée et la taille de l'image est définie exactement aux valeurs ci-dessus. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
+    '477' => q~Hauteur d'affichage de l'image de la signature (0 = aucune limite)~,
+    '477x' => q~Désactiver la fonction Redimensionner Smart Image dans Signatures?<br /><span class="small">Si cette case est cochée, la fonction Smart Image Resize (Redimensionnement intelligent d'image) est désactivée et la taille de l'image est exactement définie. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
+    '478' => q~Largeur d'affichage de l'image d'attachement (0 = pas de limite)~,
+    '479' => q~Hauteur d'affichage de l'image d'attachement (0 = aucune limite)~,
+    '479x' => q~Désactiver la fonction Smart Image Resize pour les pièces jointes?<br /><span class="small">Si cochée, la fonctionnalité de redimensionnement intelligent de l'image est désactivée et la taille de l'image est définie exactement aux valeurs ci-dessus. Cela</em>peut déformer les images. Si l'une des valeurs est 0, l'image est mise à l'échelle proportionnellement à l'autre valeur. Si les deux sont 0, l'image est affichée à sa taille d'origine sans aucun redimensionnement.</span>~,
     'brd_pic_w' => q~Largeur de l'image du forum (0=pas de limite)~,
     'brd_pic_h' => q~Hauteur de l'image du affichée forum (0=pas de limite)~,
     'brd_pic' =>
@@ -819,7 +748,7 @@ q~<span class="important"><a href="{yabb adminurl}?action=fixboarddupes">Correct
     'incat'     => q~dans la catégorie~,
     'fixinstruct' =>
 q~Sélectionnez le(s) forum(s) <strong>erroné</strong>. Vous devrez peut-être réorganiser la position des forums dans leurs catégories/forum lorsque vous aurez terminé.<br /><span class="important">Soyez très prudent avec vos sélections pour vous assurer de ne pas enlever la copie du forum que vous voulez garder.</span>~,
-    'usercp' => q~PC de l'UTILISATEUR~,
+    'usercp' => q~PC de l'UTILISATEUR,~,
     'ppostperms' =>
 q~Imprimez les autorisations de publication<br /><span class="small"> Désactivez Imprimer publication ou définissez-le sur "Tous les membres" si vous avez des problèmes de spambot avec cette fonction.</span>~,
     'ptopicperms' =>
@@ -1989,13 +1918,14 @@ q~Supprimer les anciens fichiers de sauvegarde, l'installation et les utilitaire
     '10a' => q~Fichiers de sauvegarde du convertisseur de langue supprimés~,
     'conv' => q~Pour convertir des fichiers 1x ou 2x en 2.7.00~,
     'conv2' =>
-qq~<strong><a href="$boardurl/Setup.pl?lang=French_CA">Aller à Configuration/Convertir</a></strong>~,
+q~<strong><a href="{yabb scripturl}/Setup.pl">Aller à Configuration/Convertir</a></strong>~,
     'fixn' =>
 qq ~L'utilitaire d'importation 2x a détecté des problèmes potentiels avec les données importées/converties. Voir <a href="$yyhtml_root/tmp/datacheck.txt" target="_new">datacheck.txt</a> pour plus de détails.<br />~,
     'illmem1' =>
 qq~Des membres avec des noms d'utilisateur illégaux ont été trouvés et convertis en noms légaux.<br />Voir le fichier <em>$yyhtml_root/tmp/fixusers.txt</em>~,
 );
 
+timetostring($date);
 $yycopyright =
 q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Propulsé par</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">Lociciel de forum YaBB</a> &copy; 2000-{yabb year}. Tous droit réservés.</span>~;
 $iFrameSupport =

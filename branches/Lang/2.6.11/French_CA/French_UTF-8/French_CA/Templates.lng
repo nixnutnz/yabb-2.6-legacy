@@ -10,20 +10,20 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$templateslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$templateslngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %templ_txt = (
 '1' => q~Feuille de style du modèle~,
 '2' => q~En-tête du modèle~,
 '3' => q~Index du forum~,
 '4' => q~Index des messages~,
-'5' => q~Affichage des publication~,
+'5' => q~Affichage des publications~,
 '5a' => q~Chercher~,
 '5b' => q~Calendrier~,
 '5c' => q~Affectation~,
@@ -38,7 +38,7 @@ $templateslngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '12' => q~Enregistrer sous~,
 '13' => q~Sauvegarder~,
 '14' => q~Effacer~,
-'15' => q~Etes-vous sûr que vous voulez supprimer~,
+'15' => q~Êtes-vous sûr que vous voulez supprimer~,
 '18' => q~Éléments~,
 '19' => q~Ici, vous pouvez changer les couleurs de l'arrière-plan, les bordures et le texte ainsi que la famille de police et la taille du texte pour les principaux éléments de votre forum.<br /><strong>Note</strong>:si un attribut d'élément tel qu'une police n'a pas de choix disponible, cet attribut n'a pas été défini pour cet élément dans la feuille de style.~,
 '20' => q~Élément~,

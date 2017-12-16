@@ -1,49 +1,49 @@
 ###############################################################################
-# TabMenu.lng (Définition des texte des onglet menu)                          #
+# TabMenu.lng (DÃ©finition des texte des onglet menu)                          #
 ###############################################################################
 # YaBB           : Yet another Bulletin Board   Encore un autre babillard     #
 # Logiciel communautaire open-source pour les webmestres                      #
 # Version        : YaBB 2.6.11                                                #
-# Distribué par  : http://www.yabbforum.com                                   #
+# DistribuÃ© par  : http://www.yabbforum.com                                   #
 # =========================================================================== #
-# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits réservés.    #
-# Logiciel par   : L'équipe de développement de YaBB                          #
-#                  avec l'assistance de la communauté YaBB                    #
+# Copyright (c) 2000-2017 YaBB (www.yabbforum.com) - Tous droits rÃ©servÃ©s.    #
+# Logiciel par   : L'Ã©quipe de dÃ©veloppement de YaBB                          #
+#                  avec l'assistance de la communautÃ© YaBB                    #
 # =========================================================================== #
 # Version:       : YaBB 2.6.11 fr-ca.1002                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
-# Distribué par  : http://www.alainbeaudoin.com                               #
+# ModifiÃ© le     : 11 DÃ©cembre 2017                                           #
+# DistribuÃ© par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
 $tabmenulngver = 'YaBB 2.6.11 $Revision: 1002 $';
 
 %tabmenu_txt=(
 'texterr' => q~Le champs texte est vide.~,
-'tabext' => q~Un onglet pour la même action ou avec le même nom existe déjà.~,
+'tabext' => q~Un onglet pour la mÃªme action ou avec le mÃªme nom existe dÃ©jÃ .~,
 'tabfront' => q~Devant~,
 'taburl' => q~URL~,
-'tabwin' => q~Nouvelle fenêtre~,
-'edittab' => q~Éditer onglet~,
+'tabwin' => q~Nouvelle fenÃªtre~,
+'edittab' => q~Ã‰diter onglet~,
 'tabdel' => q~Supprimer cet onglet~,
 'viewgm' => q~GMod +~,
 'viewadm' => q~Admin~,
-'tabtext' => q~Text~,
+'tabtext' => q~Texte~,
 'taberr' => q~Informations requises manquantes:~,
 'addtab' => q~Ajouter~,
 'savetab' => q~Sauvegarder texte~,
-'reordertab' => q~Réorganiser les onglets:~,
+'reordertab' => q~RÃ©organiser les onglets:~,
 'tableft' => q~&lt;~,
 'tabright' => q~&gt;~,
-'edittext1' => q~Au-dessus, vous voyez les onglets comme ils apparaîtraient s'ils étaient tous visibles en même temps. Si vous avez ajouté un ou plusieurs onglets, vous avez maintenant la possibilité de modifier le texte visible directement dans l'onglet, puis cliquez sur l'~,
-'edittext2' => q~icône pour enregistrer le nouveau texte ou vous pouvez supprimer l'onglet en cliquant sur le~,
-'edittext3' => q~icône. Notez que vous <strong>ne pouvez pas modifier les URL</strong>.~,
-'reordertext' => q~Sur le côté droit il y a une liste de tous vos onglets vous permettant de changer l'ordre dans lequel ils apparaissent dans le menu de l'onglet. Sélectionnez l'onglet que vous voulez déplacer et cliquez sur "&lt;" ou "&gt;" bouton pour déplacer la languette dans la direction souhaitée.~,
+'edittext1' => q~Au-dessus, vous voyez les onglets comme ils apparaÃ®traient s'ils Ã©taient tous visibles en mÃªme temps. Si vous avez ajoutÃ© un ou plusieurs onglets, vous avez maintenant la possibilitÃ© de modifier le texte visible directement dans l'onglet, puis cliquez sur l'~,
+'edittext2' => q~icÃ´ne pour enregistrer le nouveau texte ou vous pouvez supprimer l'onglet en cliquant sur le~,
+'edittext3' => q~icÃ´ne. Notez que vous <strong>ne pouvez pas modifier les URL</strong>.~,
+'reordertext' => q~Sur le cÃ´tÃ© droit il y a une liste de tous vos onglets vous permettant de changer l'ordre dans lequel ils apparaissent dans le menu de l'onglet. SÃ©lectionnez l'onglet que vous voulez dÃ©placer et cliquez sur "&lt;" ou "&gt;" bouton pour dÃ©placer la languette dans la direction souhaitÃ©e.~,
 'urlerr' => q~Le champ URL est vide.~,
 'viewmem' => q~Membres +~,
-'viewall' => q~Invités +~,
+'viewall' => q~InvitÃ©s +~,
 'newtab' => q~Ajouter un onglet~,
-'tabinsert' => q~Ajouter après~,
+'tabinsert' => q~Ajouter aprÃ¨s~,
 'tabview' => q~Visible par~,
 );
 

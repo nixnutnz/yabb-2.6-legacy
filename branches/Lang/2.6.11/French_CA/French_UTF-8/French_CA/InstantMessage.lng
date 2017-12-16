@@ -10,19 +10,19 @@
 # Logiciel par : L'équipe de développement de YaBB                            #
 # avec l'assistance de la communauté YaBB                                     #
 # =========================================================================== #
-# Version: : YaBB 2.6.11 fr-ca.1002                                           #
+# Version: : YaBB 2.6.11 fr-ca.1005                                           #
 # Traduite par : Alain Beaudoin                                               #
-# Modifié le : 1 Décembre 2017                                                #
+# Modifié le : 11 Décembre 2017                                               #
 # Distribué par : http://www.alainbeaudoin.com                                #
 ###############################################################################
 
-$instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$instantmessagelngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %inmes_txt = (
 '21' => q~Publication~,
 '30' => q~le~,
 'remove' => q~Retirer~,
-'70' => q~Suject~,
+'70' => q~Sujet~,
 '118' => q~Sujet~,
 '143' => q~Index des message MP~,
 '144' => q~Message personnel~,
@@ -38,7 +38,7 @@ $instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'outbox' => q~Envoyé~,
 'draft' => q~Brouillons~,
 'storage' => q~Stockage~,
-'folder' => q~dossier~,
+'folder' => q~Dossier~,
 '317' => q~Date~,
 '318' => q~Expéditeur~,
 '320' => q~Ne pas stocker une copie de ce message dans la boîte Envoyé après l'envoi~,
@@ -60,8 +60,8 @@ $instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'bmymods' => q~Modérateur de forum~,
 'bmmods' => q~Tous les modérateurs de forum / groupes~,
 '470' => q~N/A~,
-'500' => q~Marquer tous les messages comme lus~, # inside JavaScript!
-'500a' => q~Complété~, # inside JavaScript!
+'500' => q~Marquer tous les messages comme lus~, # Dans JavaScript!
+'500a' => q~Complété~, #Dans les JavaScript!
 '507' => q~Aperçu~,
 '511' => q~IP connecté~,
 'preview' => q~Aperçu du texte~,
@@ -79,19 +79,19 @@ $instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '767' => q~(Aucun sujet)~,
 '770' => q~Êtes-vous sûr de vouloir supprimer ce PM?~,
 '770a'=> q~\n\nVeuillez noter que tous les fichiers que vous avez joints à ce message seront également supprimés.~,
-'770b'=> q~\n\nnVeuillez noter que tous les fichiers que vous avez attachés aux messages sélectionnés seront également supprimés~,
+'770b'=> q~\n\nVeuillez noter que tous les fichiers que vous avez attachés aux messages sélectionnés seront également supprimés~,
 'delmultipms' => q~Êtes-vous sûr de vouloir supprimer ces MPs?~,
 '773' => q~Envoyer~,
 '774' => q~Stocker~,
 '775' => q~Nouveau message~,
-'775a' => q~Nouveau message de dissusion~,
+'775a' => q~Nouveau message de discusion~,
 'storeor' => q~ou~,
 'storein' => q~dans~,
-'777' => q~REMOVE message(s)~, #do not remove or translate any CAPITAL text
-'status' => q~Statur du message~,
+'777' => q~REMOVE message(s)~, #ne pas enlever ou traduire ce qui est en MAJUSCULE
+'status' => q~Statut du message~,
 'addfolder' => q~Ajouter~,
 'foldererror' => q~champ,~,
-'messages' => q~Mes messages personels~,
+'messages' => q~Mes messages personnels~,
 'center' => q~Mon centre~,
 'profile' => q~Mon profile~,
 'favs' => q~Mes favoris~,
@@ -99,16 +99,16 @@ $instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'viewprofile' => q~Voir mon profile~,
 'viewnotify' => q~Voir mes notifications~,
 'viewfavs' => q~Voir mes favoris~,
-'viewrecentposts' => q~Voir mes dernière~,
+'viewrecentposts' => q~Voir mes dernières~,
 'viewrecentposts2' => q~publications~,
 'goviewrecent' => q~Aller!~,
-'broadcast' => q~Message de dissusion~,
+'broadcast' => q~Message de discusion~,
 'alert' => q~Message d'alerte~,
 'new' => q~nouveau~,
 'delete' => q~Supprimer~,
 'clickto1' => q~Cliquez ici pour sélectionner~,
 'clickto2' => q{}, # utilisé pour d'autre langue
-'torecepients' => q~récipient(s)~,
+'torecepients' => q~destinataire(s)~,
 'togroups' => q~groupe(s)~,
 'usercp' => q~Utilisateur CP~, 
 'attach_1' => q~Ce message contient~,
@@ -134,17 +134,17 @@ $instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '61' => q~Hors ligne~,
 '67' => q~Utilisation~,
 '69' => q~Citation détachée~,
-'73' => q~Voulez-vous vraiment supprimer ce message du ou des récepteurs MP?~,
+'73' => q~Voulez-vous vraiment supprimer ce message des récepteurs de MP?~,
 '83' => q~Rappel~,
 '84' => q~Code détaché~,
-'callallback' => q~Tout rappeller~,
+'callallback' => q~Tout rappeler~,
 'outread' => q~Ce message a été ouvert par le destinataire,~,
 'callback' => q~Ce message a été rappelé et donc pas vu par le destinataire.~,
 'outmulticallback' => q~Ce message a été rappelé et donc pas vu par les destinataires.~,
 'outsomemulticallback' => q~Ce message a été rappelé de certains destinataires, donc il a été vu par certains et pas par d'autres.~,
 'outnotread' => q~Ce message n'a pas encore été ouvert par le destinataire.~,
 'inread' => q~Vous avez ouvert ce message~,
-'innotread' => q~Vous nn'avez pas encore ouvert ce message~,
+'innotread' => q~Vous n'avez pas encore ouvert ce message~,
 'outmultinotread' => q~Ce message n'a encore été ouvert par aucun destinataire.~,
 'outmultiread' => q~Ce message a été ouvert par les destinataires.~,
 'outmultisomeread' => q~Ce message a été ouvert par un ou plusieurs destinataires.~,
@@ -165,7 +165,7 @@ $instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 ##  names for default storage folders
 %im_folders_txt = (
 'in' => q~Entrée~,
-'out' => q~Sorti~,
+'out' => q~Sortie~,
 );
 
 ## sorted views
@@ -186,7 +186,7 @@ $instantmessagelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'from' => q~De~,
 'to' => q~A~,
 'sent' => q~Envoyé~,
-'subject' => q~Suject~,
+'subject' => q~Sujet~,
 );
 
 %grps = (

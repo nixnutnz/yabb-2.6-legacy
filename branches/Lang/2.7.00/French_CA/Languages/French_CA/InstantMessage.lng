@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -38,8 +38,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '146'      => q~Réponse~,
     '147'      => q~Transfert~,
     'sendmess' => q~Envoyer message~,
-    'im_low_postcount' =>
-q~Vous ne pouvez que lire les messages personnels jusqu'à ce que vous ayez atteint le nombre de {yabb numposts} publications.~,
+    'im_low_postcount' => q~Vous ne pouvez que lire les messages personnels jusqu'à ce que vous ayez atteint le nombre de {yabb numposts} publications.~,
     'sendbroadmess' => q~Envoyer message de diffusion~,
     '151'           => q~Aucun message...~,
     '190'           => q~Tous~,
@@ -50,18 +49,14 @@ q~Vous ne pouvez que lire les messages personnels jusqu'à ce que vous ayez atte
     'folder'        => q~Dossier~,
     '317'           => q~Date~,
     '318'           => q~Expéditeur~,
-    '320' =>
-q~Ne pas stocker une copie de ce message dans la boîte Envoyé après l'envoi~,
-    '321' =>
-q~Notez que les pièces jointes sont supprimées avec les messages dans votre boîte Envoyés, donc si vous joignez des fichiers, l'option ci-dessus ne s'applique pas.~,
+    '320' => q~Ne pas stocker une copie de ce message dans la boîte Envoyé après l'envoi~,
+    '321' => q~Notez que les pièces jointes sont supprimées avec les messages dans votre boîte Envoyés, donc si vous joignez des fichiers, l'option ci-dessus ne s'applique pas.~,
     'datesave'  => q~Date enregistré~,
     'forward'   => q~Transférer message~,
     'replymess' => q~Répondre au message~,
     'error'     => q~Erreur~,
-    'selectrecent' =>
-q~sélectionnez ou ajoutez des MPs récents<br />double-cliquez pour copier à "to"~,
-    'selectgroups' =>
-q~sélectionnez ou ajoutez des groupes de membres:<br />double-cliquez pour copier à "to"~,
+    'selectrecent' => q~sélectionnez ou ajoutez des MPs récents<br />double-cliquez pour copier à "to"~,
+    'selectgroups' => q~sélectionnez ou ajoutez des groupes de membres:<br />double-cliquez pour copier à "to"~,
     'allmembers'   => q~tous les membres~,
     '324'          => q~À~,
     '325'          => q~CC~,
@@ -91,10 +86,8 @@ q~sélectionnez ou ajoutez des groupes de membres:<br />double-cliquez pour copi
     '766' => q~L'utilisateur n'existe pas~,
     '767' => q~(Aucun sujet)~,
     '770' => q~Êtes-vous sûr de vouloir supprimer ce PM?~,
-    '770a' =>
-q~\n\nVeuillez noter que tous les fichiers que vous avez joints à ce message seront également supprimés.~,
-    '770b' =>
-q~\n\nVeuillez noter que tous les fichiers que vous avez attachés aux messages sélectionnés seront également supprimés~,
+    '770a' => q~\n\nVeuillez noter que tous les fichiers que vous avez joints à ce message seront également supprimés.~,
+    '770b' => q~\n\nVeuillez noter que tous les fichiers que vous avez attachés aux messages sélectionnés seront également supprimés~,
     'delmultipms' => q~Êtes-vous sûr de vouloir supprimer ces MPs?~,
     '773'         => q~Envoyer~,
     '774'         => q~Stocker~,
@@ -102,8 +95,7 @@ q~\n\nVeuillez noter que tous les fichiers que vous avez attachés aux messages 
     '775a'        => q~Nouveau message de discusion~,
     'storeor'     => q~ou~,
     'storein'     => q~dans~,
-    '777' =>
-      q~REMOVE message(s)~,  #ne pas enlever ou traduire ce qui est en MAJUSCULE
+    '777'         => q~REMOVE message(s)~,  #ne pas enlever ou traduire ce qui est en MAJUSCULE
     'status'           => q~Statut du message~,
     'addfolder'        => q~Ajouter~,
     'foldererror'      => q~champ,~,
@@ -156,21 +148,15 @@ q~\n\nVeuillez noter que tous les fichiers que vous avez attachés aux messages 
     '84' => q~Code détaché~,
     'callallback' => q~Tout rappeler~,
     'outread'     => q~Ce message a été ouvert par le destinataire,~,
-    'callback' =>
-      q~Ce message a été rappelé et donc pas vu par le destinataire.~,
-    'outmulticallback' =>
-      q~Ce message a été rappelé et donc pas vu par les destinataires.~,
-    'outsomemulticallback' =>
-q~Ce message a été rappelé de certains destinataires, donc il a été vu par certains et pas par d'autres.~,
-    'outnotread' =>
-      q~Ce message n'a pas encore été ouvert par le destinataire.~,
+    'callback' => q~Ce message a été rappelé et donc pas vu par le destinataire.~,
+    'outmulticallback' => q~Ce message a été rappelé et donc pas vu par les destinataires.~,
+    'outsomemulticallback' => q~Ce message a été rappelé de certains destinataires, donc il a été vu par certains et pas par d'autres.~,
+    'outnotread' => q~Ce message n'a pas encore été ouvert par le destinataire.~,
     'inread'    => q~Vous avez ouvert ce message~,
     'innotread' => q~Vous n'avez pas encore ouvert ce message~,
-    'outmultinotread' =>
-      q~Ce message n'a encore été ouvert par aucun destinataire.~,
+    'outmultinotread' => q~Ce message n'a encore été ouvert par aucun destinataire.~,
     'outmultiread' => q~Ce message a été ouvert par les destinataires.~,
-    'outmultisomeread' =>
-      q~Ce message a été ouvert par un ou plusieurs destinataires.~,
+    'outmultisomeread' => q~Ce message a été ouvert par un ou plusieurs destinataires.~,
     'multicallback'  => q~Ouvrir le message à rappeler~,
     'newstorefolder' => q~Ajouter un nouveau dossier de stockage~,
 );
@@ -204,8 +190,7 @@ q~Ce message a été rappelé de certains destinataires, donc il a été vu par 
 );
 
 %guest_reply = (
-    'guesttext' =>
-q~Cette fonction vous permettra de répondre au message de l'invité. Il sera envoyé à son adresse courriel. Merci de ne pas utiliser de smileys ou de code BB, car ils ne seront pas traités.~,
+    'guesttext' => q~Cette fonction vous permettra de répondre au message de l'invité. Il sera envoyé à son adresse courriel. Merci de ne pas utiliser de smileys ou de code BB, car ils ne seront pas traités.~,
     'origmess' => q~----- Message original -----~,
     'from'     => q~De~,
     'to'       => q~A~,

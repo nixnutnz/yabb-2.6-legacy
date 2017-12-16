@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -27,8 +27,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %register_txt = (
-    '4' =>
-q~Pour des raisons de sécurité, il n'est pas conseillé d'avoir votre pseudonyme égale à votre identifiant de connexion.~,
+    '4' => q~Pour des raisons de sécurité, il n'est pas conseillé d'avoir votre pseudonyme égale à votre identifiant de connexion.~,
     '23' => q~Impossible d'ouvrir~,
     '34' => q~S'identifier~,
     '35' => q~Identifiant d'utilisateur~,
@@ -39,8 +38,7 @@ q~Pour des raisons de sécurité, il n'est pas conseillé d'avoir votre pseudony
     '81' => q~Mot de passe~,
     '82' => q~Vérifier le mot de passe~,
     '91' => q~Champ de mot de passe vide~,
-    '95' =>
-q~En vous inscrivant, vous devenez membre du forum &quot;<em>{yabb mbname}</em>&quot;,<br/>avec un accès de connexion uniquement à <em>{yabb scripturl}</em>~,
+    '95' => q~En vous inscrivant, vous devenez membre du forum &quot;<em>{yabb mbname}</em>&quot;,<br/>avec un accès de connexion uniquement à <em>{yabb scripturl}</em>~,
     '97'  => q~S'enregistrer~,
     '97a' => q~Champs marqués~,
     '97b' => q~requis à l'enregistrement.~,
@@ -55,109 +53,76 @@ q~En vous inscrivant, vous devenez membre du forum &quot;<em>{yabb mbname}</em>&
     '115' => q~ est réservé.~,
     '209' => q~J'aime YaBB 2.6.00!~,
     '213' => q~Les mots de passe ne sont pas les mêmes.~,
-    '241' =>
-q{champ. Les caractères valides sont les lettres(A-Z, a-z), les nombres (0-9), les espaces et (_ ! @ # $ % ^ & * () + | ` ~ - = \ : ; ' " , . / ? [ ] { })},
-    '241r' =>
-q~champ. Les caractères valides sont les lettres(A-Z, a-z), les nombres (0-9), les espaces et (+ - . @ _)~,
-    '241re' =>
-q~champ. Les caractères valides sont les lettres, les nombres, les espaces et ([ ] # % + , - | . : = ? @ ^ _)~,
-    '241e' =>
-q~champ. Les caractères valides sont les lettres (A-Z, a-z), les nombres (0-9), et (+ - _ . @)~,
-    '241ea' =>
-q~<br />Les caractères valides sont les lettres (A-Z, a-z), les nombres (0-9), et (+ - _ . @)~,
+    '241' => q{champ. Les caractères valides sont les lettres(A-Z, a-z), les nombres (0-9), les espaces et (_ ! @ # $ % ^ & * () + | ` ~ - = \ : ; ' " , . / ? [ ] { })},
+    '241r' => q~champ. Les caractères valides sont les lettres(A-Z, a-z), les nombres (0-9), les espaces et (+ - . @ _)~,
+    '241re' => q~champ. Les caractères valides sont les lettres, les nombres, les espaces et ([ ] # % + , - | . : = ? @ ^ _)~,
+    '241e' => q~champ. Les caractères valides sont les lettres (A-Z, a-z), les nombres (0-9), et (+ - _ . @)~,
+    '241ea' => q~<br />Les caractères valides sont les lettres (A-Z, a-z), les nombres (0-9), et (+ - _ . @)~,
     '241n' => q~ne peut pas être tous des nombres.~,
     '241a' => q~champ.~,
     '245'  => q~Inscription réussi~,
     '430'  => q~, vous êtes interdit d'utiliser ce forum~,
     '431'  => q~Succès! Vous êtes maintenant membre du Forum.~,
     '517'  => q~Information requise~,
-    '520' =>
-q~Utilisé uniquement à des fins d'identification et de connexion.<br />Veuillez ne pas utiliser que des numéros.~,
-    '521' =>
-q~Pour des raisons de sécurité, il est interdit d'avoir votre pseudonyme identique à votre identifiant d'utilisateur.<br />Il est également conseillé de ne pas choisir un pseudonyme ressemblant à votre identifiant d'utilisateur.~,
+    '520' => q~Utilisé uniquement à des fins d'identification et de connexion.<br />Veuillez ne pas utiliser que des numéros.~,
+    '521' => q~Pour des raisons de sécurité, il est interdit d'avoir votre pseudonyme identique à votre identifiant d'utilisateur.<br />Il est également conseillé de ne pas choisir un pseudonyme ressemblant à votre identifiant d'utilisateur.~,
     '585' => q~Je suis d'accord~,
     '586' => q~Je ne suis pas d'accord~,
     '678' => q~Désolé~,
     '679' => q~Doit être une adresse courriel valide.~,
-    '703' =>
-q~Merci de votre inscription. Vous recevrez bientôt un courriel avec votre mot de passe. Vous pouvez changer le mot de passe après vous être connecté pour la première fois.~,
-    '704' =>
-q~<strong>Vous pouvez <a href="{yabb scripturl}?action=login">procéder à la connexion</a> une fois que vous aurez vérifié votre adresse courriel.</strong>~,
+    '703' => q~Merci de votre inscription. Vous recevrez bientôt un courriel avec votre mot de passe. Vous pouvez changer le mot de passe après vous être connecté pour la première fois.~,
+    '704' => q~<strong>Vous pouvez <a href="{yabb scripturl}?action=login">procéder à la connexion</a> une fois que vous aurez vérifié votre adresse courriel.</strong>~,
     '721' => q~Masquer le courriel au public?~,
     '730' => q~L'adresse courriel~,
-    '731' =>
-q~est déjà utilisé par un membre enregistré. Si vous pensez qu'il s'agit d'une erreur, accédez à la page de connexion et utilisez la réinitialisation du mot de passe.~,
+    '731' => q~est déjà utilisé par un membre enregistré. Si vous pensez qu'il s'agit d'une erreur, accédez à la page de connexion et utilisez la réinitialisation du mot de passe.~,
     '764a' => q~Accord de l'utilisateur~,
     '765'  => q~Rejoindre le groupe de membres~,
     '765a' => q~Groupe de membres choisi~,
     '765b' => q~Aucun groupe choisis~,
-    '766' =>
-      q~Vous ne pouvez rejoindre un groupe membre que lors de l'inscription.~,
-    '767' =>
-q~Vous pouvez également rejoindre un groupe de membres après l'inscription à partir de votre page Modifier le profil.~,
-    '767a' =>
-q~Maintenez la touche Ctrl ou (touche Pomme sur Mac) enfoncé et cliquez pour sélectionner plus de groupes.~,
-    '768' =>
-q~Exiger que les membres utilisent un pseudonyme différent de leur identifiant (connexion)?~,
-    '770' =>
-      q~Demander la date de naissance des membres lors de l'inscription?~,
+    '766' => q~Vous ne pouvez rejoindre un groupe membre que lors de l'inscription.~,
+    '767' => q~Vous pouvez également rejoindre un groupe de membres après l'inscription à partir de votre page Modifier le profil.~,
+    '767a' => q~Maintenez la touche Ctrl ou (touche Pomme sur Mac) enfoncé et cliquez pour sélectionner plus de groupes.~,
+    '768' => q~Exiger que les membres utilisent un pseudonyme différent de leur identifiant (connexion)?~,
+    '770' => q~Demander la date de naissance des membres lors de l'inscription?~,
     '771'      => q~Ne demandez pas~,
     '772'      => q~Optionnel~,
     '773'      => q~Champs obligatoires~,
     'birthday' => q~Anniversaire~,
-    'birthday_a' =>
-q~(<label for="birth_month">MM</label>/<label for="birth_day">JJ</label>/<label for="birth_year">AAAA</label>)~,
-    'birthday_b' =>
-q~(<label for="birth_day">JJ</label>/<label for="birth_month">MM</label>/<label for="birth_year">AAAA</label>)~,
-    'birthday_c' =>
-q~Notez que vous ne pouvez pas changer votre anniversaire après qu'elle ait été entrée.~,
+    'birthday_a' => q~(<label for="birth_month">MM</label>/<label for="birth_day">JJ</label>/<label for="birth_year">AAAA</label>)~,
+    'birthday_b' => q~(<label for="birth_day">JJ</label>/<label for="birth_month">MM</label>/<label for="birth_year">AAAA</label>)~,
+    'birthday_c' => q~Notez que vous ne pouvez pas changer votre anniversaire après qu'elle ait été entrée.~,
     'gender'         => q~Le genre~,
     'gender_male'    => q~Mâle~,
     'gender_female'  => q~Femelle~,
     'gender_reg'     => q~Demander le genre du membre lors de l'inscription?~,
     'gender_reg_req' => q~Requis~,
-    'gender_edit' =>
-q~Notez que vous ne pouvez pas modifier votre genre après qu'il a été entré.~,
+    'gender_edit' => q~Notez que vous ne pouvez pas modifier votre genre après qu'il a été entré.~,
     'capslock'   => q~Le verrouillage des majuscules est activé.~,
     'wrong_char' => q~Ce caractère dans le mot de passe est non valide~,
-    'error_min_reg_time' =>
-q~Votre inscription a été bloquée pour des raisons de sécurité. Veuillez revenir en arrière et réessayer.~,
-    'verification_question_desc' =>
-      q~Veuillez répondre à la question de vérification ci-dessus.~,
+    'error_min_reg_time' => q~Votre inscription a été bloquée pour des raisons de sécurité. Veuillez revenir en arrière et réessayer.~,
+    'verification_question_desc' => q~Veuillez répondre à la question de vérification ci-dessus.~,
     'verification_question_case' => q~Les réponses sont sensibles à la casse.~,
 
     # the following error_ variables are inside JavaScript!
     'error_username' => q~Vous devez insérer un identifiant d'utilisateur.~,
-    'error_numname' =>
-      q~Vous ne pouvez pas créer un Identifiant avec uniquement des numéros.~,
-    'error_usernameispass' =>
-q~Pour des raisons de sécurité, vous ne pouvez pas utiliser votre Identifiant ou votre pseudonyme comme mot de passe.~,
+    'error_numname' => q~Vous ne pouvez pas créer un Identifiant avec uniquement des numéros.~,
+    'error_usernameispass' => q~Pour des raisons de sécurité, vous ne pouvez pas utiliser votre Identifiant ou votre pseudonyme comme mot de passe.~,
     'error_realname' => q~Vous devez insérer un pseudonyme.~,
-    'error_name_cannot_be_userid' =>
-      q~L'Identifiant et le pseudonyme doivent être différents.~,
+    'error_name_cannot_be_userid' => q~L'Identifiant et le pseudonyme doivent être différents.~,
     'error_email' => q~Vous devez insérer votre adresse courriel.~,
-    'error_birth_day' =>
-q~Vous devez insérer votre jour d'anniversaire (JJ) avec deux chiffres entre 01 et 31.~,
-    'error_birth_month' =>
-q~Vous devez insérer votre mois d'anniversaire (MM) avec deux chiffres entre 01 et 12.~,
-    'error_birth_year' =>
-q~Vous devez insérer votre année d'anniversaire (YYYY) avec quatre chiffres.~,
-    'error_birth_year_real' =>
-      q~Votre année d'anniversaire n'est pas réaliste.~,
+    'error_birth_day' => q~Vous devez insérer votre jour d'anniversaire (JJ) avec deux chiffres entre 01 et 31.~,
+    'error_birth_month' => q~Vous devez insérer votre mois d'anniversaire (MM) avec deux chiffres entre 01 et 12.~,
+    'error_birth_year' => q~Vous devez insérer votre année d'anniversaire (YYYY) avec quatre chiffres.~,
+    'error_birth_year_real' => q~Votre année d'anniversaire n'est pas réaliste.~,
     'error_pass1' => q~Vous devez insérer un mot de passe et le confirmer.~,
-    'error_pass2' =>
-      q~Votre mot de passe n'est différent du mot de passe de confirmation.~,
+    'error_pass2' => q~Votre mot de passe n'est différent du mot de passe de confirmation.~,
     'error_verification' => q~Le code de vérification est manquant.~,
-    'error_reason' =>
-      q~Vous devez indiquer le (s) motif (s) d'inscription sur notre forum.~,
-    'error_agree' =>
-q~Vous devez accepter le \"Contrat d'utilisation\" avant de pouvoir vous enregistrer.~,
+    'error_reason' => q~Vous devez indiquer le (s) motif (s) d'inscription sur notre forum.~,
+    'error_agree' => q~Vous devez accepter le \"Contrat d'utilisation\" avant de pouvoir vous enregistrer.~,
     'error_gender' => q~Vous devez sélectionner votre genre.~,
-    'error_verification_question' =>
-      q~Vous devez répondre à la question de vérification.~,
+    'error_verification_question' => q~Vous devez répondre à la question de vérification.~,
     'error_email2' => q~Vous devez vérifier votre adresse courriel.~,
-    'error_email3' =>
-      q~Votre courriel n'est pas identique au courriel de confirmation.~,
+    'error_email3' => q~Votre courriel n'est pas identique au courriel de confirmation.~,
     'imsubject' => q~Hé Hé :)~,
     'imtext'    => q~Bienvenue sur mon forum~,
 );
@@ -176,54 +141,39 @@ q~Vous devez accepter le \"Contrat d'utilisation\" avant de pouvoir vous enregis
 %floodtxt = (
     '1' => q~Votre code de vérification est~,
     '3' => q~Code de vérification~,
-    'casewarning' =>
-q~S'il vous plaît entrez les caractères qui apparaissent dans l'image.<br />Les caractères doivent être entrés dans le même ordre,<br />et ils sont sensibles à la casse.~,
-    'casewarning_1' =>
-q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
+    'casewarning' => q~S'il vous plaît entrez les caractères qui apparaissent dans l'image.<br />Les caractères doivent être entrés dans le même ordre,<br />et ils sont sensibles à la casse.~,
+    'casewarning_1' => q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
     'casewarning_2' => q~<br /><span style="font-weight:bold">sans le premier~,
     'casewarning_3' => q~<br /><span style="font-weight:bold">sans le dernier~,
     'casewarning_4' => q~et dernier~,
-    'casewarning_5' =>
-q~caractères.</span><br />Les caractères doivent être entrés dans le même ordre,<br />et ils sont sensibles à la casse.~,
+    'casewarning_5' => q~caractères.</span><br />Les caractères doivent être entrés dans le même ordre,<br />et ils sont sensibles à la casse.~,
 );
 
 %prereg_txt = (
-    '1' =>
-q~Votre compte n'est pas encore validé.<br />Veuillez le valider dans les {yabb preregspan} heures en cliquant sur le lien dans le courriel que vous avez reçu.~,
-    '1a' => q~Pré-inscription terminée~,
-    '1b' =>
-      q~Validation du courrier électronique terminée, en attente d'approbation~,
+    '1' => q~Votre compte n'est pas encore validé.<br />Veuillez le valider dans les {yabb preregspan} heures en cliquant sur le lien dans le courriel que vous avez reçu.~,
+'1a' => q~pré-enregistrement terminée~,
+    '1b' => q~Validation du courrier électronique terminée, en attente d'approbation~,
     '2' => q~Voici le code de validation de votre compte~,
-    '3' =>
-q~Vous avez été préenregistré avec succès à {yabb mbname}.\nVeuillez valider votre compte dans les {yabb preregspan} heures.~,
-    '4' =>
-q~Veuillez cliquer sur le lien ci-dessous pour activer votre compte utilisateur~,
+    '3' => q~Vous avez été préenregistré avec succès à {yabb mbname}.\nVeuillez valider votre compte dans les {yabb preregspan} heures.~,
+    '4' => q~Veuillez cliquer sur le lien ci-dessous pour activer votre compte utilisateur~,
     '5'  => q~Votre compte est validé~,
     '5a' => q~et vous pouvez maintenant vous connecter~,
     '5b' => q~.~,
-    '6' =>
-q~Vous n'avez pas validé votre compte dans un délai de {yabb preregspan}.<br />Votre pré-inscription a donc été supprimée.<br />Veuillez-vous enregistrer à nouveau.~,
-    '7' => q~Utiliser la pré-inscription et la validation du compte~,
-    '8' => q~Afficher la pré-inscription et le journal de validation du compte~,
-    '9' =>
-      q~Nettoyage de la pré-inscription et du journal de validation du compte~,
+'6' => q~Vous n'avez pas validé votre compte dans un délai de {yabb preregspan}.<br />Votre pré-enregistrement a donc été supprimée.<br />Veuillez-vous enregistrer à nouveau.~,
+'7' => q~Utiliser la pré-enregistrement et la validation du compte~,
+'8' => q~Afficher la pré-enregistrement et le journal de validation du compte~,
+'9' => q~Nettoyage de la pré-enregistrement et du journal de validation du compte~,
     '10' => q~Votre code d'activation est erroné.~,
-    '11' =>
-q~Temps maximum pour que les utilisateurs activent leur compte (en heures)~,
+    '11' => q~Temps maximum pour que les utilisateurs activent leur compte (en heures)~,
     '12' => q~Supprimer l'utilisateur préenregistré~,
-    '13' =>
-q~Votre compte n'est pas encore approuvé par l'administration.<br />Dès que votre demande aura été examinée, vous recevrez une confirmation par courriel de l'état de votre demande~,
-    '14' =>
-q~Cet utilisateur n'a pas été préenregistré ou la période de validation autorisée de {yabb preregspan} heures est expiré.~,
-    '15' =>
-q~La durée de validation autorisée de {yabb preregspan} heures est expiré.~,
+    '13' => q~Votre compte n'est pas encore approuvé par l'administration.<br />Dès que votre demande aura été examinée, vous recevrez une confirmation par courriel de l'état de votre demande~,
+    '14' => q~Cet utilisateur n'a pas été préenregistré ou la période de validation autorisée de {yabb preregspan} heures est expiré.~,
+    '15' => q~La durée de validation autorisée de {yabb preregspan} heures est expiré.~,
     '15a'      => q~Afficher le journal d'enregistrement~,
     '16'       => q~Caractères Max {yabb reg_reason_len}: Caractères restants:~,
     'approved' => q~Votre demande a été approuvée pour~,
-    'regreason' =>
-q~Merci de nous indiquer votre(vos) raison(s) de vous inscrire sur notre forum~,
-    'reason_exp' =>
-q~Cette information est utilisée par le Staff du forum pour évaluer votre demande~,
+    'regreason' => q~Merci de nous indiquer votre(vos) raison(s) de vous inscrire sur notre forum~,
+    'reason_exp' => q~Cette information est utilisée par le Staff du forum pour évaluer votre demande~,
     'action'            => q~Action~,
     'del'               => q~Effacement instantané~,
     'reject'            => q~Rejet instantané~,
@@ -240,8 +190,7 @@ q~Cette information est utilisée par le Staff du forum pour évaluer votre dema
     'apr_ip'            => q~Provenant de l'adresse IP~,
     'apr_reason'        => q~Motif de l'enregistrement~,
     'apr_admin_reason_title' => q~Commentaire du Staff~,
-    'apr_admin_reason' =>
-      q~Éventuellement donner un commentaire sur votre décision~,
+    'apr_admin_reason' => q~Éventuellement donner un commentaire sur votre décision~,
     'apr_admin_approve'  => q~Approuver l'adhésion~,
     'apr_admin_reject'   => q~Rejeter l'adhésion~,
     'apr_admin_validate' => q~Valider le compte~,
@@ -249,8 +198,7 @@ q~Cette information est utilisée par le Staff du forum pour évaluer votre dema
     '17'                 => q~Date et heure~,
     '18'                 => q~Statut~,
     '19'                 => q~Identifiant utilisateur préenregistré~,
-    '20' =>
-q~Ceci est le fichier journal (Si la préinscription avec enregistrement par courriel et approbation admin est sélectionné) pour la pré-inscription des utilisateurs.<br />Les pré-enregistrements non activés peuvent être supprimés, rejetés, visualisés, approuvés ou activés.~,
+'20' => q~Ceci est le fichier journal (Si la préinscription avec enregistrement par courriel et approbation admin est sélectionné) pour la pré-enregistrement des utilisateurs.<br />Les pré-enregistrements non activés peuvent être supprimés, rejetés, visualisés, approuvés ou activés.~,
     'N'  => q~Non validé~,
     'A'  => q~Validé~,
     'T'  => q~Délais supprimé~,
@@ -260,8 +208,7 @@ q~Ceci est le fichier journal (Si la préinscription avec enregistrement par cou
     'AA' => q~Approuvé~,
     'W'  => q~En attente d'approbation après validation~,
     'LD' => q~Aucune entrée de journal présente~,
-    'email_taken' =>
-      q~L'adresse courriel suivante est déjà utilisée par un membre~,
+    'email_taken' => q~L'adresse courriel suivante est déjà utilisée par un membre~,
 );
 
 %fruittxt = (
@@ -283,10 +230,8 @@ q~Ceci est le fichier journal (Si la préinscription avec enregistrement par cou
     '3' => q~Expiration du délai s'est produit pendant les vérifications DNS.~,
     '4' => q~L'utilisateur est inconnu sur le serveur SMTP.~,
     '5' => q~Expiration du délai s'est produit pendant les vérifications SMTP.~,
-    '6' =>
-q~Tous les serveurs SMTP pour le domaine de messagerie ont été trouvés inaccessibles lors des contrôles SMTP.~,
-    '7' =>
-q~La boîte aux lettres est temporairement saturée mais probablement un nom d'utilisateur valide.~,
+    '6' => q~Tous les serveurs SMTP pour le domaine de messagerie ont été trouvés inaccessibles lors des contrôles SMTP.~,
+    '7' => q~La boîte aux lettres est temporairement saturée mais probablement un nom d'utilisateur valide.~,
 );
 
 1;

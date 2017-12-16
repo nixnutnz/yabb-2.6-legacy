@@ -13,9 +13,9 @@
 #               et ajouté au coeur YaBB dans la Version 2.5.4                 #
 # Publié        : 11 Mai 2013, Copyright 2013 Carsten Dalgaard                #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -39,13 +39,10 @@ if ( $action eq 'detailedversion' ) { return 1; }
     'veri_quest'   => q~Le champ "Vérification" est vide~,
     'subj_empty'   => q~Le champ "Sujet" est vide~,
     'mess_empty'   => q~Le champ "Message" est vide~,
-    'subj_allcaps' =>
-q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Sujet". C'est contre les règles du forum.~,
-    'mess_allcaps' =>
-q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Message". C'est contre les règles du forum.~,
+    'subj_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Sujet". C'est contre les règles du forum.~,
+    'mess_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Message". C'est contre les règles du forum.~,
     'pm_recipient' => q~Vous devez remplir le champ "Destinataire".~,
-    'no_links' =>
-q~Les invités ne sont pas autorisés à inclure des liens tant qu’ils n’ont pas ajouté {yabb minlinkpost} publications.~,
+    'no_links'     => q~Les invités ne sont pas autorisés à inclure des liens tant qu’ils n’ont pas ajouté {yabb minlinkpost} publications.~,
 );
 
 1;

@@ -10,16 +10,16 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$refcontrollngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$refcontrollngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %refer_settings = (
-'gen' => q~Sélectioner quel action <em>(action=dans l'URLs)</em> peut être lié à l'extérieur de votre domaine~,
+'gen' => q~Sélectionner quelle action <em>(action=dans l'URLs)</em> peut être liée à l'extérieur de votre domaine~,
 'refer_controls' => q~Général~,
 'refer_mods' => q~Mods~,
 );
@@ -65,7 +65,7 @@ $refcontrollngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'jump' => q~Utiliser la liste de sauts~,
 'lock' => q~Verrouiller un sujet~,
 'lockpoll' => q~Verrouiller un sondage~,
-'login' => q~Ecran d'entrée de connexion~,
+'login' => q~Écran d'entrée de connexion~,
 'login2' => q~Traiter les informations d'identification~,
 'logout' => q~Déconnexion~,
 'mailto' => q~Envoyer un courriel à un utilisateur~,
@@ -139,7 +139,7 @@ $refcontrollngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'register' => q~Entrer l'écran de saisie de l'enregistrement d'un nouvel utilisateur~,
 'register2' => q~Traiter et sauvegarder le nouvel enregistrement de l'utilisateur~,
 'remfav' => q~Supprimer un favori~,
-'reminder' => q~Entrez dans ld'écran "oublié mon mot de passe"~,
+'reminder' => q~Entrez dans l'écran "oublié mon mot de passe"~,
 'reminder2' => q~Traiter et exécuter les demandes "J'ai oublié mon mot de passe"~,
 'removethread' => q~Supprimer un fil~,
 'reordertab' => q~Modifier l'ordre des onglets dans la barre de menus~,
@@ -178,11 +178,11 @@ $refcontrollngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'eventcal' => q~Afficher le calendrier des événements~,
 'get_cal_ssi' => q~Autoriser le calendrier dans les autres pages~,
 'help' => q~Afficher l'aide~,
-'login' => q~Ecran de connexion~,
+'login' => q~Écran de connexion~,
 'logout' => q~Déconnexion~,
 'messageindex' => q~Afficher l'index des messages~,
 'ml' => q~Afficher la liste des membres~,
-'mycenter' => q~page principale de MyCenter~,
+'mycenter' => q~page principale de Mon Centre~,
 'recent' => q~Afficher les messages récents~,
 'recenttopics' => q~Afficher les sujets récents~,
 'register' => q~Enregistrement~,

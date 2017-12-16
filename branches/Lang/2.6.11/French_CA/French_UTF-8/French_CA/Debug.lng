@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$debuglngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$debuglngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %debug_txt = (
 'getpairs' => q~Paires GET entrantes~,
@@ -26,18 +26,18 @@ $debuglngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'opened' => q~Ouvert~,
 'closed' => q~fichier et fermé~,
 'equal' => q~fichier. (devrait être des nombres égaux)~,
-'nohires' => q~Votre serveur n&#39;a probablement pas~,
+'nohires' => q~Votre serveur n'a probablement pas~,
 'nomodule' => q~installé ou ne supporte pas le module local pour~,
 'pagespeed' => q~Page complétée en~,
 'loaded' => q~secondes~,
 'debugging' => q~Informations de débogage~,
-'benchmarking' => q~benchmarking~,
+'benchmarking' => q~analyse de performance~,
 'ipaddress' => q~Votre adresse IP est~,
 'browser' => q~Votre agent de navigation~,
 'trace' => q~traceur de débogage~,
-'check' => q~File Check à l&#39;ouverture/fermeture~,
+'check' => q~File Check à l'ouverture/fermeture~,
 'filehandles' => q~Gestionaire de fichier / Fichiers ouverts~,
-'filehandleslegend' => q~opened FILEHANDLE (time) &nbsp; &nbsp; <em>MODE</em>filepathname &nbsp; &nbsp; closed FILEHANDLE (time)<br />[package, scriptpathname, line]~,
+'filehandleslegend' => q~ouvert FILEHANDLE (time) &nbsp; &nbsp; <em>MODE</em>filepathname &nbsp; &nbsp; fermé FILEHANDLE (time)<br />[package, scriptpathname, line]~,
 'filesloaded' => q~Fichiers chargés par~,
 );
 

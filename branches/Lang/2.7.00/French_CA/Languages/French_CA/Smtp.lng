@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -29,14 +29,11 @@ if ( $action eq 'detailedversion' ) { return 1; }
 %smtp_txt = (
     '1' => q~ERREUR SERVEUR: Impossible de trouver {yabb smtpaddr}~,
     '2' => q~ERREUR SERVEUR: Impossible d'ouvrir une connexion socket~,
-    '3' =>
-q~ERREUR SERVEUR: Impossible de se connecter à {yabb smtpaddr} sur le port {yabb port}~,
+    '3' => q~ERREUR SERVEUR: Impossible de se connecter à {yabb smtpaddr} sur le port {yabb port}~,
     '4' => q~ERREUR SYSTÈME: L'adresse "To" est vide~,
     '5' => q~Journal de communication du serveur de messagerie:~,
-    'no_to' =>
-q~La variable "To" (adresse du destinataire) est vide et est nécessaire dans le protocole SMTP~,
-    'no_from' =>
-q~La variable "From" (adresse de l'expéditeur) est vide et est nécessaire dans le protocole SMTP~,
+    'no_to' => q~La variable "To" (adresse du destinataire) est vide et est nécessaire dans le protocole SMTP~,
+    'no_from' => q~La variable "From" (adresse de l'expéditeur) est vide et est nécessaire dans le protocole SMTP~,
     '211' => q~État du système ou réponse d'aide du système~,
     '214' => q~Message d'aide~,
     '220' => q~<domaine> Service prêt~,
@@ -46,14 +43,12 @@ q~La variable "From" (adresse de l'expéditeur) est vide et est nécessaire dans
     '354' => q~Débutez l'entrée courriel:Terninez avec <CRLF>.<CRLF>~,
     '421' => q~<domaine>Service non disponible~,
     '432' => q~Une transition de mot de passe est nécessaire~,
-    '450' =>
-q~Action de courrier demandée effectuée: Boîte aux lettres non disponible~,
+    '450' => q~Action de courrier demandée effectuée: Boîte aux lettres non disponible~,
     '451' => q~Action demandée annulée: Erreur locale dans le traitement~,
     '452' => q~Action requise non effectuée: Stockage insuffisant du système~,
     '454' => q~Échec d'authentification temporaire~,
     '500' => q~Erreur de syntaxe, commande non reconnue~,
-    '501' =>
-      q~Destinataire de courrier non valide. Le relais nécessite SMTP AUTH~,
+    '501' => q~Destinataire de courrier non valide. Le relais nécessite SMTP AUTH~,
     '502' => q~Commande non implémentée~,
     '503' => q~Mauvaise séquence de commandes~,
     '504' => q~Paramètre de commande ou type d'autorisation non implémenté~,
@@ -61,13 +56,10 @@ q~Action de courrier demandée effectuée: Boîte aux lettres non disponible~,
     '534' => q~Le mécanisme d'authentification est trop faible~,
     '538' => q~Cryptage requis pour le mécanisme d'authentification demandé~,
     '535' => q~Authentification a échouée~,
-    '550' =>
-q~Action demandée non effectué: Boîte aux lettres ou utilisateur non disponible~,
+    '550' => q~Action demandée non effectué: Boîte aux lettres ou utilisateur non disponible~,
     '551' => q~Utilisateur non local: Essayez <forward-path>~,
-    '552' =>
-q~Action de courrier demandée abandonnée: Dépassement de l'allocation de stockage~,
-    '553' =>
-      q~Action requise non effectuée: Nom de la boîte aux lettres non autorisé~,
+    '552' => q~Action de courrier demandée abandonnée: Dépassement de l'allocation de stockage~,
+    '553' => q~Action requise non effectuée: Nom de la boîte aux lettres non autorisé~,
     '554' => q~La transaction a échoué~,
     '555' => q~Membre~,
 );

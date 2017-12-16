@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -31,8 +31,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
 
     # Constant tags
     'scripturl' => q~L'Url de YaBB Exemple: {yabb scripturl}~,
-    'adminurl' =>
-      q~L'Url de centre admin de YaBB Admin Center. Exemple: {yabb adminurl}~,
+    'adminurl' => q~L'Url de centre admin de YaBB Admin Center. Exemple: {yabb adminurl}~,
     'mbname' => q~Le nom de ce forum. Exemple: {yabb mbname}~,
 
     # New Member related
@@ -42,10 +41,8 @@ if ( $action eq 'detailedversion' ) { return 1; }
     # User-related
     'username'    => q~L'Id de l'utilisateur.~,
     'displayname' => q~Le nom de l'utilisateur.~,
-    'cryptusername' =>
-      q~L'Id de l'utilisateur, masqué à utiliser dans une URL.~,
-    'reviewer' =>
-q~Le vrai nom de l'administrateur/modérateur qui révise les enregistrements.~,
+    'cryptusername' => q~L'Id de l'utilisateur, masqué à utiliser dans une URL.~,
+    'reviewer' => q~Le vrai nom de l'administrateur/modérateur qui révise les enregistrements.~,
 
     # Topic/PM-related
     'sender'   => q~L'expéditeur du MP.~,
@@ -55,14 +52,10 @@ q~Le vrai nom de l'administrateur/modérateur qui révise les enregistrements.~,
     'tauthor'  => q~Nom de l'auteur~,
 
     # Registration/Password
-    'activationcode' =>
-      q~Lien d'activation envoyé dans un courriel d'inscription.~,
-    'remindercode' =>
-      q~Lien du Mot de passe envoyé dans un courriel de rappel.~,
-    'preregspan' =>
-q~Le délai accordé avant l'expiration du pré-enregistrement. Valeur actuelle: {yabb preregspan}~,
-    'reason' =>
-q~Raison de l'administrateur à l'origine d'une décision prise sur un utilisateur qui s'enregistre alors qu'il était en "mode d'approbation administrateur"~,
+    'activationcode' => q~Lien d'activation envoyé dans un courriel d'inscription.~,
+    'remindercode' => q~Lien du Mot de passe envoyé dans un courriel de rappel.~,
+    'preregspan' => q~Le délai accordé avant l'expiration du pré-enregistrement. Valeur actuelle: {yabb preregspan}~,
+    'reason' => q~Raison de l'administrateur à l'origine d'une décision prise sur un utilisateur qui s'enregistre alors qu'il était en "mode d'approbation administrateur"~,
 
     # Sending a Topic
     'toname' => q~Le nom de la personne recevant le sujet.~,
@@ -86,10 +79,8 @@ q~Raison de l'administrateur à l'origine d'une décision prise sur un utilisate
     'new_member_info'     => q~Enregistrement de nouveaux membres~,
 );
 
-$yabbtags{'preregemail'} =
-  q~displayname preregspan cryptusername activationcode~;
-$emaildesc{'preregemail'} =
-  q~Courriel d'inscription envoyé lors de l'utilisation du lien d'activation~;
+$yabbtags{'preregemail'}  = q~displayname preregspan cryptusername activationcode~;
+$emaildesc{'preregemail'} = q~Courriel d'inscription envoyé lors de l'utilisation du lien d'activation~;
 $preregemail = q~Bienvenue, {yabb displayname}!
 Voici le lien de validation de votre compte.
 
@@ -105,9 +96,8 @@ Si le lien ne fonctionne pas (ou si vous utilisez AOL ou un programme de message
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'approveregemail'} = q~username displayname~;
-$emaildesc{'approveregemail'} =
-q~Courriel d'approbation en attente lors de l'envoi d'un mot de passe ou d'un lien d'activation~;
+$yabbtags{'approveregemail'}  = q~username displayname~;
+$emaildesc{'approveregemail'} = q~Courriel d'approbation en attente lors de l'envoi d'un mot de passe ou d'un lien d'activation~;
 $approveregemail = q~Bonjour, {yabb displayname}!
 
 Votre application avec l'ID de connexion "{yabb username}" est en attente d'approbation de l'administration de {yabb mbname}.
@@ -118,9 +108,8 @@ Vous serez averti dès que votre demande sera examinée, .
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'instantapprovedemail'} = q~username displayname reviewer~;
-$emaildesc{'instantapprovedemail'} =
-q~Courriel d'approbation instantanée lorsque vous n'envoyez pas de mot de passe ou de lien d'activation~;
+$yabbtags{'instantapprovedemail'}  = q~username displayname reviewer~;
+$emaildesc{'instantapprovedemail'} = q~Courriel d'approbation instantanée lorsque vous n'envoyez pas de mot de passe ou de lien d'activation~;
 $instantapprovedemail = q~Bonjour, {yabb displayname}!
 
 Félicitations et bienvenue.
@@ -134,9 +123,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'pwinstantapprovedemail'} = q~username displayname reviewer password~;
-$emaildesc{'pwinstantapprovedemail'} =
-  q~Courriel d'approbation instantanée lors de l'envoi d'un mot de passe~;
+$yabbtags{'pwinstantapprovedemail'}  = q~username displayname reviewer password~;
+$emaildesc{'pwinstantapprovedemail'} = q~Courriel d'approbation instantanée lors de l'envoi d'un mot de passe~;
 $pwinstantapprovedemail = q~Bonjour, {yabb displayname}!
 
 Félicitations et bienvenue.
@@ -150,9 +138,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'instantrejectedemail'} = q~username displayname reviewer~;
-$emaildesc{'instantrejectedemail'} =
-q~Courriel de refus instantané lors de l'envoi d'un mot de passe ou d'un lien d'activation~;
+$yabbtags{'instantrejectedemail'}  = q~username displayname reviewer~;
+$emaildesc{'instantrejectedemail'} = q~Courriel de refus instantané lors de l'envoi d'un mot de passe ou d'un lien d'activation~;
 $instantrejectedemail = q~Bonjour, {yabb displayname}!
 
 Nous regrettons de vous informer que votre demande d'adhésion a été immédiatement rejetée par {yabb reviewer} administrateur de {yabb mbname}.
@@ -163,9 +150,8 @@ Si vous pensez qu'il s'agit d'une erreur, vous êtes libre de demander de nouvea
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'reviewapprovedemail'} = q~username displayname reviewer~;
-$emaildesc{'reviewapprovedemail'} =
-q~Courriel d'approbation lors de l'envoi d'un mot de passe ou d'un lien d'activation~;
+$yabbtags{'reviewapprovedemail'}  = q~username displayname reviewer~;
+$emaildesc{'reviewapprovedemail'} = q~Courriel d'approbation lors de l'envoi d'un mot de passe ou d'un lien d'activation~;
 $reviewapprovedemail = q~Bonjour, {yabb displayname}!
 
 Félicitations et bienvenue.
@@ -182,9 +168,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'pwreviewapprovedemail'} = q~username displayname reviewer password~;
-$emaildesc{'pwreviewapprovedemail'} =
-  q~Courriel d'approbation lors de l'envoi d'un mot de passe~;
+$yabbtags{'pwreviewapprovedemail'}  = q~username displayname reviewer password~;
+$emaildesc{'pwreviewapprovedemail'} = q~Courriel d'approbation lors de l'envoi d'un mot de passe~;
 $pwreviewapprovedemail = q~Bonjour, {yabb displayname}!
 
 Félicitations et bienvenue.
@@ -202,9 +187,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'reviewrejectedemail'} = q~username displayname reviewer reason~;
-$emaildesc{'reviewrejectedemail'} =
-q~Courriel de refus de révision lorsque vous n'envoyez pas de mot de passe ou de lien d'activation~;
+$yabbtags{'reviewrejectedemail'}  = q~username displayname reviewer reason~;
+$emaildesc{'reviewrejectedemail'} = q~Courriel de refus de révision lorsque vous n'envoyez pas de mot de passe ou de lien d'activation~;
 $reviewrejectedemail = q~Bonjour, {yabb displayname}!
 
 Nous regrettons de vous informer que votre demande d'adhésion a été immédiatement rejetée par {yabb reviewer} administrateur de {yabb mbname}.
@@ -217,9 +201,8 @@ Si vous pensez qu'il s'agit d'une erreur, vous êtes libre de demander de nouvea
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'passwordregemail'} = q~username password displayname~;
-$emaildesc{'passwordregemail'} =
-q~Courriel d'inscription lorsque vous donnez un mot de passe aléatoire à l'utilisateur~;
+$yabbtags{'passwordregemail'}  = q~username password displayname~;
+$emaildesc{'passwordregemail'} = q~Courriel d'inscription lorsque vous donnez un mot de passe aléatoire à l'utilisateur~;
 $passwordregemail = q~Bienvenue, {yabb displayname}!
 
 Votre IdUtilisateur est {yabb username}, et votre mot de passe est {yabb password}.
@@ -231,9 +214,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'welcomeregemail'} = q~username password displayname~;
-$emaildesc{'welcomeregemail'} =
-q~Courriel d'inscription lorsque vous ne donnez pas de mot de passe aléatoire à l'utilisateur~;
+$yabbtags{'welcomeregemail'}  = q~username password displayname~;
+$emaildesc{'welcomeregemail'} = q~Courriel d'inscription lorsque vous ne donnez pas de mot de passe aléatoire à l'utilisateur~;
 $welcomeregemail = q~Bienvenue, {yabb displayname}!
 
 Votre Idutilisateur est {yabb username}, et votre mot de passe est {yabb password}. 
@@ -245,9 +227,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'activatedpassregemail'} = q~username password displayname~;
-$emaildesc{'activatedpassregemail'} =
-q~Courriel du résultat de l'activation de l'enregistrement (envoi d'un mot de passe)~;
+$yabbtags{'activatedpassregemail'}  = q~username password displayname~;
+$emaildesc{'activatedpassregemail'} = q~Courriel du résultat de l'activation de l'enregistrement (envoi d'un mot de passe)~;
 $activatedpassregemail = q~Bienvenue, {yabb displayname}!
 
 Votre Idutilisateur est {yabb username}, et votre mot de passe est {yabb password}. 
@@ -259,9 +240,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'activatedwelcomeregemail'} = q~username password displayname~;
-$emaildesc{'activatedwelcomeregemail'} =
-q~Courriel du résultat de l'activation de l'enregistrement (sans d'envoi de mot de passe)~;
+$yabbtags{'activatedwelcomeregemail'}  = q~username password displayname~;
+$emaildesc{'activatedwelcomeregemail'} = q~Courriel du résultat de l'activation de l'enregistrement (sans d'envoi de mot de passe)~;
 $activatedwelcomeregemail = q~Bienvenue, {yabb displayname}!
 
 Votre Idutilisateur est {yabb username}, et votre mot de passe est {yabb password}. 
@@ -273,9 +253,8 @@ Vous pouvez changer votre mot de passe après vous être connecté en cliquant s
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'newmemberemail'} = q~displayname username userip useremail~;
-$emaildesc{'newmemberemail'} =
-  q~Notice de nouveau membre à l'admin par courriel~;
+$yabbtags{'newmemberemail'}  = q~displayname username userip useremail~;
+$emaildesc{'newmemberemail'} = q~Notice de nouveau membre à l'admin par courriel~;
 $newmemberemail = q~Un nouveau membre s'est inscrit sur votre forum.
 
 Pseudonyme: {yabb displayname}
@@ -292,10 +271,8 @@ Pour examiner le profil du nouveau membre, connectez-vous à votre forum.
 Cordialement,
 L'équipe {yabb mbname}~;
 
-$yabbtags{'passwordreminderemail'} =
-  q~displayname mbname remindercode cryptusername~;
-$emaildesc{'passwordreminderemail'} =
-  q~Courriel de réinitialisation du mot de passe~;
+$yabbtags{'passwordreminderemail'} = q~displayname mbname remindercode cryptusername~;
+$emaildesc{'passwordreminderemail'} = q~Courriel de réinitialisation du mot de passe~;
 $passwordreminderemail = q~Cher {yabb displayname},
 
 Une demande a été faite par un visiteur à {yabb mbname} pour réinitialiser votre mot de passe. Si vous n'avez pas soumis de demande de réinitialisation de votre mot de passe, veuillez ignorer ce courriel.
@@ -307,10 +284,8 @@ Cordialement,
 L'équipe {yabb mbname}~;
 
 $yabbtags{'boardnewtopicnotificationemail'} = q~num subject tmessage tauthor~;
-$emaildesc{'boardnewtopicnotificationemail'} =
-  q~Courriel de notification (au niveau du forum, nouveau sujet)~;
-$boardnewtopicnotificationemail =
-q~Un nouveau sujet, "{yabb subject}", a été publié par {yabb tauthor} sur un forum que vous suivez.
+$emaildesc{'boardnewtopicnotificationemail'} = q~Courriel de notification (au niveau du forum, nouveau sujet)~;
+$boardnewtopicnotificationemail = q~Un nouveau sujet, "{yabb subject}", a été publié par {yabb tauthor} sur un forum que vous suivez.
 
 ########################################
 
@@ -324,10 +299,8 @@ Cordialement,
 L'équipe {yabb mbname}~;
 
 $yabbtags{'boardnotificationemail'} = q~num start subject tmessage tauthor~;
-$emaildesc{'boardnotificationemail'} =
-  q~Courriel de notification (au niveau du forum, sujet existant)~;
-$boardnotificationemail =
-q~Une réponse, "{yabb subject}", a été publiée par {yabb tauthor} sur un forum que vous suivez.
+$emaildesc{'boardnotificationemail'} = q~Courriel de notification (au niveau du forum, sujet existant)~;
+$boardnotificationemail = q~Une réponse, "{yabb subject}", a été publiée par {yabb tauthor} sur un forum que vous suivez.
 
 ########################################
 
@@ -342,8 +315,7 @@ L'équipe {yabb mbname}~;
 
 $yabbtags{'topicnotificationemail'}  = q~num subject start tmessage tauthor~;
 $emaildesc{'topicnotificationemail'} = q~Courriel de notice (Forum)~;
-$topicnotificationemail =
-q~une réponse, "{yabb subject}", a été publiée par {yabb tauthor} sur un sujet que vous suivez.
+$topicnotificationemail = q~une réponse, "{yabb subject}", a été publiée par {yabb tauthor} sur un sujet que vous suivez.
 
 ########################################
 
@@ -359,8 +331,7 @@ Cordialement,
 L'équipe {yabb mbname}~;
 
 $yabbtags{'profilenewpasswordemail'} = q~displayname password~;
-$emaildesc{'profilenewpasswordemail'} =
-q~Le profil courriel pour l'envoi d'un nouveau mot de passe lorsque celui existe et est est changé~;
+$emaildesc{'profilenewpasswordemail'} = q~Le profil courriel pour l'envoi d'un nouveau mot de passe lorsque celui existe et est est changé~;
 $profilenewpasswordemail = q~Cher {yabb displayname},
 
 Votre mot de passe a été changé, il est maintenant {yabb password}.
@@ -381,10 +352,8 @@ Merci,
 {yabb displayname}~;
 
 $yabbtags{'privatemessagenotificationemail'} = q~sender subject message~;
-$emaildesc{'privatemessagenotificationemail'} =
-  q~Courriel de notification de message personnel~;
-$privatemessagenotificationemail =
-  q~{yabb sender} vous a envoyé un message personnel.
+$emaildesc{'privatemessagenotificationemail'} = q~Courriel de notification de message personnel~;
+$privatemessagenotificationemail = q~{yabb sender} vous a envoyé un message personnel.
 
 Sujet: {yabb subject}
 Message: {yabb message}
@@ -416,9 +385,8 @@ Sujet: {yabb subject}
 {yabb message}
 ~;
 
-$yabbtags{'deleteduseremail'} = q~displayname~;
-$emaildesc{'deleteduseremail'} =
-  q~Courriel de notification d'utilisateur supprimé~;
+$yabbtags{'deleteduseremail'}  = q~displayname~;
+$emaildesc{'deleteduseremail'} = q~Courriel de notification d'utilisateur supprimé~;
 $deletedusersybject = q~Votre compte a été supprimé de~;
 $deleteduseremail   = q~Bonjour, {yabb displayname}!
 
@@ -429,9 +397,8 @@ L'équipe {yabb mbname}
 <a href="{yabb scripturl}">{yabb scripturl}</a>
 ~;
 
-$yabbtags{'banneduseremail'} = q~displayname~;
-$emaildesc{'banneduseremail'} =
-  q~Courriel de notification d'utilisateur bannis~;
+$yabbtags{'banneduseremail'}  = q~displayname~;
+$emaildesc{'banneduseremail'} = q~Courriel de notification d'utilisateur bannis~;
 $bannedusersybject = q~Votre compte a été bannis le~;
 $banneduseremail   = q~Bonjour, {yabb displayname}:
 
@@ -443,8 +410,7 @@ L'équipe {yabb mbname}
 ~;
 
 $yabbtags{'suspendeduseremail'} = q~displayname~;
-$emaildesc{'suspendeduseremail'} =
-  q~Courriel de notification d'utilisateur suspendu~;
+$emaildesc{'suspendeduseremail'} = q~Courriel de notification d'utilisateur suspendu~;
 $suspendusersybject = q~Votre compte a été suspendu le~;
 $suspendeduseremail = q~Bonjour, {yabb displayname}:
 

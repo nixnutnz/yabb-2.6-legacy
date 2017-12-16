@@ -12,19 +12,19 @@
 # Mod créé par XTC: http://www.yabbserver.com                                 #
 #                et ajouté au coeur de YaBB dans la Version 2.5.4/Version 3.0 #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$eventcallngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$eventcallngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 ### Event Calendar ###
 
 %var_cal = (
 'calgo' => q~Go~,
-'calname' => q~Name~,
+'calname' => q~Nom~,
 'calmon_01' => q~janvier~,
 'calmon_02' => q~février~,
 'calmon_03' => q~mars~,
@@ -73,7 +73,7 @@ $eventcallngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'Aquarius' => qq~<img src="$imagesdir/aquarius.png" alt="Verseau" class="zodiac" />~,
 'Aries' => qq~<img src="$imagesdir/aries.png" alt="Bélier" class="zodiac" />~,
 'Gemini' => qq~<img src="$imagesdir/gemini.png" alt="Gémeaux" class="zodiac" />~,
-'calnoevent' => q~Il n'y a aucun événements prévus.~,
+'calnoevent' => q~Il n'y a aucun événement prévu.~,
 'calsubmit' => q~Aller à:~,
 'calview' => q~Voir~,
 'calprivate' => q~Privé~,
@@ -81,7 +81,7 @@ $eventcallngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'calpublic' => q~Publique~,
 'calclickinfo' => q~(Afficher l'événement en cliquant sur une date)~,
 'caldel' => q~Supprimer~,
-'caldelalert' => q~Étes-vous sûr de vouloir retirer cet événement?~, # Inside JavaScript!
+'caldelalert' => q~Êtes-vous sûr de vouloir retirer cet événement?~, # Inside JavaScript!
 'caledit' => q~Éditer l'événement~,
 'calsave' => q~Sauvegarder l'événement~,
 'calshowmini' => q~Afficher l'(es) événement(s) du jour~,
@@ -110,7 +110,7 @@ $eventcallngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'eventmeeting' => q~Réunion~,
 'hidden' => q~<em>Caché</em>~,
 'verification_question_desc' => q~Veuillez répondre à la question de vérification ci-dessus.~,
-'verification_question_case' => q~Les réponses sont sensible à la case.~,
+'verification_question_case' => q~Les réponses sont sensibles à la case.~,
 'bdayhide' => q~a un anniversaire aujourd'hui.~,
 'other' => q~123 (Autre)~,
 'guest' => q~Invité~,
@@ -146,7 +146,7 @@ $eventcallngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '16' => q~Permettre à ces membres d'ajouter des événements~,
 '17' => q~Lister plusieurs membres en tant que "pseudonyme1, pseudonyme2".~,
 '18' => q~Autoriser les membres à ajouter des "Événements privés"?~,
-'19' => q~Si cette option n'est pas cochée, seuls les modérateurs globaux et les administrateurs pouront ajouter des "événements privés"~,
+'19' => q~Si cette option n'est pas cochée, seuls les modérateurs globaux et les administrateurs pourront ajouter des "événements privés"~,
 '20' => q~Activer "afficher événement" (défilement événement) sur l'index du forum?~,
 '21' => q~Paramètres standard~,
 '22' => q~Paramètres de l'événement~,
@@ -174,7 +174,7 @@ $eventcallngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '50' => q~Afficher les dates de naissance à:~,
 '52' => q~Supprimer les anciens événements<br /><span class="small">Cochez cette case pour supprimer les événements antérieurs à la date actuelle lors de l'ajout d'un nouvel événement.</span>~,
 '54' => q~Reconstruire la liste des anniversaires~,
-'56' => q~Marquee~,
+'56' => q~Texte défilant~,
 '57' => q~XHTML~,
 '58' => q~Désactiver les balises YaBBC dans le texte de prévisualisation?~,
 '59' => q~Ajouter une icône d'événement~,

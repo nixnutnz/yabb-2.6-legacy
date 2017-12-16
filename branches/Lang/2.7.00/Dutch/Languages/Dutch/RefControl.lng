@@ -13,7 +13,7 @@
 # Software by: The YaBB Development Team                                      #
 #              with assistance from the YaBB community.                       #
 ###############################################################################
-##  Based on English Rev 1874 ##
+##  Based on English Rev 1950 ##
 our $VERSION = '2.7.00';
 
 $dutchrefcontrollngver  = 'YaBB 2.7.00 $Revision$';

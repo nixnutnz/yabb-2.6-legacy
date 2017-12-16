@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -34,8 +34,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '08' => q~Il n'y a actuellement aucun signet social.~,
     '09' => q~Paramètres de signet social~,
     '10' => q~Activer les signets?~,
-    '11' =>
-q~Sélectionnez les forums dans lesquelles les signets seront affichés: <br/><span class="small"> - Si aucun forum n'est sélectionnée, tous les forums seront activés.<br/> - Utilisez la touche Ctrl ou (touche Pomme sur Mac) pour sélectionner/désélectionner les forums.</span>~,
+    '11' => q~Sélectionnez les forums dans lesquelles les signets seront affichés: <br/><span class="small"> - Si aucun forum n'est sélectionnée, tous les forums seront activés.<br/> - Utilisez la touche Ctrl ou (touche Pomme sur Mac) pour sélectionner/désélectionner les forums.</span>~,
     '12' => q~Signet social~,
     '13' => q~Ajouter un signet~,
     '14' => q~URL~,
@@ -43,12 +42,9 @@ q~Sélectionnez les forums dans lesquelles les signets seront affichés: <br/><s
     '16' => q~Éditer un signet~,
     '17' => q~Annuler~,
     '18' => q~- Ceci est le titre du site de signet.~,
-    '19' =>
-q~- Types de fichiers autorisés: png jpg jpeg gif<br/>- Taille max du fichier: 250KB~,
-    '20' =>
-q~- Ceci est le lien vers le site du signet.<br/>- Utilisez {url} pour l'URL de la page et {title} pour le titre de la page.~,
-    '21' =>
-q~- Ceci est l'ordre dans lequel les signets seront affichés. <br/>- Les nombres les plus bas seront affichés en premier.~,
+    '19' => q~- Types de fichiers autorisés: png jpg jpeg gif<br/>- Taille max du fichier: 250KB~,
+    '20' => q~- Ceci est le lien vers le site du signet.<br/>- Utilisez {url} pour l'URL de la page et {title} pour le titre de la page.~,
+    '21' => q~- Ceci est l'ordre dans lequel les signets seront affichés. <br/>- Les nombres les plus bas seront affichés en premier.~,
     '22' => q~Nombre maximum de caractères dans le sujet~,
 );
 

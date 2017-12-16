@@ -10,24 +10,24 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$creditslngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$creditslngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %credits_txt = (
 'yabb2' => q~Ron Hartendorp, Andrew Aitken, Carsten Dalgaard, Ryan Farrington, Zoltan Kovacs, Tim Ceuppens, Shoeb Omar, Torsten Mrotz, Brian Schaefer, Juvenall Wilson, Corey Chapman, Christer Jenson, Adrian Kreher, Steve Brereton, Jeffrey Man, Boris Tjuvanov, Detlef Pilzecker, Calvin Goodman~,
-'yabb252' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Mods inclus dans  YaBB 2.5.2 Écris par Derek Barnstorm, Carsten Dalgaard, et D.A. Rorabaugh.<br /><br />Dédié à la mémoire de Ron Hartendorp, AKA Spikecity. Il nous a quitté trop tôt.~,
-'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Mods inclus dans YaBB 2.6 Écris par AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh avec du code supplémentaire et Mods de la YaBB 3.0 Équipe de développement. Nous serions nulle part sans les contributions de ceux qui écrivent les mod <br/>Et n&#39;oublions pas les chasseurs de Bug et d&#39;erreurs pour montrer où les choses ne fonctionnent pas bien. Merci Monni et Pyragony et tous les autres chasseurs de Bug qui ont rapporté leurs découvertes.<br/>Un merci spécial à Alain Beaudoin pour la traduction en Français de la version 2.6.12<br/>Pour des erreurs et des améliorations aux traductions francaise s&#39;il vous plaît contacter "info@alainbeaudoin.com"~,
+'yabb252' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, D.A. Rorabaugh.<br />Mods inclus dans  YaBB 2.5.2 &Eacute;cris par Derek Barnstorm, Carsten Dalgaard, et D.A. Rorabaugh.<br /><br />D&eacute;di&eacute; &agrave; la m&eacute;moire de Ron Hartendorp, AKA Spikecity. Il nous a quitt&eacute; trop tôt.~,
+'yabb260' => q~Jon Baker, Derek Barnstorm, Carsten Dalgaard, John G.D. McCabe, George Nakos, D.A. Rorabaugh.<br />Mods inclus dans YaBB 2.6 &Eacute;cris par AstroPilot, Derek Barnstorm, Carsten Dalgaard, Ron Hartendorp, Thomas M&uuml;ller, and D.A. Rorabaugh avec du code suppl&eacute;mentaire et Mods de la YaBB 3.0 &Eacute;quipe de d&eacute;veloppement. Nous serions nulle part sans les contributions de ceux qui &eacute;crivent les mod <br/>Et n&#39;oublions pas les chasseurs de Bug et d&#39;erreurs pour montrer o&ugrave; les choses ne fonctionnent pas bien. Merci Monni et Pyragony et tous les autres chasseurs de Bug qui ont rapport&eacute; leurs d&eacute;couvertes.<br/>Un merci sp&eacute;cial &agrave; Alain Beaudoin pour la traduction en Fran&ccedil;ais de la version 2.6.11<br/>Pour des erreurs et des am&eacute;liorations aux traductions fran&ccedil;aise s&#39;il vous plaît contacter "info@alainbeaudoin.com"~,
 
 'yabb' => q~Dave Baughman, Bjoern Berg, Corey Chapman, Peter Crouch, ejdmoo, Dave G, Christian Land, Jeff Lewis, Gunther Meyer, Darya Misse, Parham Mofidi, AstroPilot, Torsten Mrotz, Carey P, Popeye, Michael Prager, Matt Siegman, Jay Silverman, StarSaber, Marco van Veelen, Myhailo Danylenko~,
-'Thanks' => q~Un merci spécial à~,
+'Thanks' => q~Un merci sp&eacute;cial &agrave;~,
 'yabbBeta' => q~et tous nos bêta-testeurs.~,
-'yabb2Credits' => q~L&#39;équipe de soutien, notre fondateur intrépide: Zef Hemel et tous ceux qui ont contribué à YaBB au cours de ces 12 dernières années!~,
-'noBytesHarmed' => q~Aucun bit ou octet n&#39;a été blessé lors de la création de YaBB~,
+'yabb2Credits' => q~L&#39;&eacute;quipe de soutien, notre fondateur intr&eacute;pide: Zef Hemel et tous ceux qui ont contribu&eacute; &agrave; YaBB au cours de ces 12 derni&egrave;res ann&eacute;es!~,
+'noBytesHarmed' => q~Aucun bit ou octet n&#39;a &eacute;t&eacute; bless&eacute; lors de la cr&eacute;ation de YaBB~,
 );
 
 1;

@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -21,54 +21,39 @@ our $VERSION = '2.7.00';
 $french_casetuplngver = 'YaBB 2.7.00 $Revision$';
 
 %mylang = (
-    'loggedin' =>
-q~Vous êtes maintenant conecté comme, <em>{realname}</em>.<br />Cliquer 'Continuer' pour continuer avec l'installation.~,
-    'logerr' =>
-q~Erreur d'installation: Impossible de trouver le fichier de données d'administration dans {memberdir}. Veuillez vérifier vos droits d'accès.~,
+'loggedin'=> q~Vous êtes maintenant conecté comme, <em>{realname}</em>.<br />Cliquer "Continuer" pour continuer avec l'installation.~,
+    'logerr' => q~Erreur d'installation: Impossible de trouver le fichier de données d'administration dans {memberdir}. Veuillez vérifier vos droits d'accès.~,
     'logerr1' => q~Une erreur s'est produite!~,
-    'logerr2' =>
-      q~Erreur d'installation: Vous devez entrer votre mot de passe!~,
+    'logerr2' => q~Erreur d'installation: Vous devez entrer votre mot de passe!~,
     'logerr3' => q~Erreur d'installation: Échec de la connexion!~,
     'cont'    => q~Continuer la configuration~,
     'cont2'   => q~Continuer~,
     'back'    => q~Retour~,
     'insert'  => q~Insérer~,
-    'noright' =>
-q~Erreur d'installation: Vous n'avez aucun droit d'accès à cette fonction. Seul l'utilisateur "admin" a ce droit, s'il est connecté.~,
+    'noright' => q~Erreur d'installation: Vous n'avez aucun droit d'accès à cette fonction. Seul l'utilisateur "admin" a ce droit, s'il est connecté.~,
     'abspath' => q~Chemin absolu vers le répertoire de script principal~,
-    'abspath2' =>
-q~Ne cliquez que sur le bouton d'insertion si votre serveur a besoin du chemin absolu vers le script principal YaBB~,
+    'abspath2' => q~Ne cliquez que sur le bouton d'insertion si votre serveur a besoin du chemin absolu vers le script principal YaBB~,
     'change' => q~Changez ce formulaire si des changements sont nécessaires.~,
-    'prebrddir' =>
-q~Répertoire de script principal: <span style="font-size: 11px;">Le chemin du serveur vers le dossier de la carte (peut généralement être laissé comme '.')</span>~,
-    'prebrdurl' =>
-q~URL du forum: <span style="font-size: 11px;">URL du dossier de votre forum (sans "/")</span>,~,
-    'prehtmldir' =>
-q~Répertoire racine HTML: <span style="font-size: 11px;">Chemin de base pour tous les fichiers et dossiers /html/css - éditer pour correspondre au chemin sur <strong>votre</ strong> serveur</span>~,
-    'prehtml_root' =>
-q~URL de la racine HTML: <span style="font-size: 11px;">URL de base pour tous les fichiers et dossiers /html/css - éditer pour correspondre à l'URL sur <strong>votre</ strong> serveur</span>~,
+'prebrddir'=> q~Répertoire de script principal: <span style="font-size: 11px;">Le chemin du serveur vers le dossier du forum (peut généralement être laissé comme ".")</span>~,
+    'prebrdurl' => q~URL du forum: <span style="font-size: 11px;">URL du dossier de votre forum (sans "/")</span>,~,
+    'prehtmldir' => q~Répertoire racine HTML: <span style="font-size: 11px;">Chemin de base pour tous les fichiers et dossiers /html/css - éditer pour correspondre au chemin sur <strong>votre</ strong> serveur</span>~,
+    'prehtml_root' => q~URL de la racine HTML: <span style="font-size: 11px;">URL de base pour tous les fichiers et dossiers /html/css - éditer pour correspondre à l'URL sur <strong>votre</ strong> serveur</span>~,
     'save'    => q~Enregistrer les paramètres~,
     'yyim'    => q~Vous exécutez l'installation de YaBB 2.7.00.~,
     'yytitle' => q~Configuration YaBB 2.7.00~,
     '107'     => q~sur~,
     'sysset'  => q~Configuration du système ~,
-    'sysset2' =>
-q~Ici vous pouvez définir quelques-uns des paramètres par défaut pour votre nouveau forum YaBB 2.7.00.<br /> Après avoir terminé la procédure d'installation, vous devez vous connecter à votre forum et aller à votre "Centre d'administration" - &gt; "Paramètres du forum" où vous pouvez modifier ceci ainsi que d'autres paramètres.~,
+    'sysset2' => q~Ici vous pouvez définir quelques-uns des paramètres par défaut pour votre nouveau forum YaBB 2.7.00.<br /> Après avoir terminé la procédure d'installation, vous devez vous connecter à votre forum et aller à votre "Centre d'administration" - &gt; "Paramètres du forum" où vous pouvez modifier ceci ainsi que d'autres paramètres.~,
     'morlang' => q{},
     'sysset3' => q~Nom du forum de message~,
     'sysset4' => q~Adresse courriel du Webmestre~,
     'sysset5' => q~Format de l'heure par défaut~,
-    'sysset6' =>
-q~Heure du forum: (Votre heure actuelle UTC affiché). Le fuseau horaire du forum peut être modifié dans le centre d'administration.~,
+    'sysset6' => q~Heure du forum: (Votre heure actuelle UTC affiché). Le fuseau horaire du forum peut être modifié dans le centre d'administration.~,
     'sysset7' => q~Format des nombres par défaut~,
-    'yycopyright' =>
-q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Propulsé par <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">Logiciel de forum YaBB</a> &copy; 2000-{yabb year}. Tous droits réservés.~,
-    'white' =>
-q~Si cette page est sur un fond blanc, revenez en arrière et vérifiez vos paramètres de chemin d'accès - l'URL de yabbfiles est mal configurée ou yabbfiles/Templates/Forum/default.css est manquant.~,
-    'nogo' =>
-q~Désolé, vous ne pouvez pas continuer tant que vous n'avez pas installé au moins le module "Digest::MD5".~,
-    'yesgo' =>
-q~Vous pouvez toujours voir les informations ci-dessus sur la page de démarrage de votre Centre d'administration.<br />Par conséquent, vous pouvez continuer maintenant et installer les modules manquants plus tard si vous en avez vraiment besoin.<br /><br />~,
+    'yycopyright' => q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Propulsé par <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">Logiciel de forum YaBB</a> &copy; 2000-{yabb year}. Tous droits réservés.~,
+    'white' => q~Si cette page est sur un fond blanc, revenez en arrière et vérifiez vos paramètres de chemin d'accès - l'URL de yabbfiles est mal configurée ou yabbfiles/Templates/Forum/default.css est manquant.~,
+    'nogo' => q~Désolé, vous ne pouvez pas continuer tant que vous n'avez pas installé au moins le module "Digest::MD5".~,
+    'yesgo' => q~Vous pouvez toujours voir les informations ci-dessus sur la page de démarrage de votre Centre d'administration.<br />Par conséquent, vous pouvez continuer maintenant et installer les modules manquants plus tard si vous en avez vraiment besoin.<br /><br />~,
     'set2_a'  => q~Vérification des fichiers système~,
     'missing' => q~Manquant:~,
     'inst'    => q~Installé:~,
@@ -80,96 +65,62 @@ q~Vous pouvez toujours voir les informations ci-dessus sur la page de démarrage
     'memgd1'  => q~Dossier /Members vérifié avec succès.~,
     'meserr1' => q~Un problème est survenu dans le dossier /Messages.~,
     'meserr2' => q~Aucun dossier /Messages disponible.~,
-    'mesgd1' =>
-      q~Vérifié avec succès le dossier /Messages Vérifié avec succès.~,
+    'mesgd1'  => q~Vérifié avec succès le dossier /Messages Vérifié avec succès.~,
     'varerr1' => q~Un problème est survenu dans le dossier /Variables.~,
     'varerr2' => q~Aucun dossier /Variables disponible.~,
     'vargd1'  => q~Dossier /Variables vérifié avec succès.~,
     'seterr'  => q~Un problème est survenu lors de la création de Settings.pm.~,
     'setgd1'  => q~Vous avez vérifié avec succès Settings.pm.~,
-    'setgd2' =>
-q~Cliquez sur "Continuer" et allez dans votre <em>Centre d'administration" - Paramètres du forum</em> pour définir les options de votre forum YaBB 2.7.00.~,
-    'noerr1' =>
-q~Si vous envisagez d'importer/mettre à jour un ancien forum YaBB, installez des modules linguistiques supplémentaires et d'autres Mods avant de procéder à la mise à niveau. 2.7 Les packs de langues peuvent être téléchargés depuis <a href="https://sourceforge.net/p/yabb/svn/HEAD/tree/branches/Lang/2.7.00/">YaBB Languages</a> - choisissez votre langue, téléchargez le fichier zip, puis téléchargez les nouveaux fichiers de langue et d'aide (s'ils sont disponibles) dans leurs dossiers appropriés (dossiers de langue ou d'aide).~,
-    'noerr2' =>
-q~Vous pouvez accéder aux utilitaires de conversion 1x et 2x via le centre d'administration.~,
-    'bigerr' =>
-q~Une ou plusieurs erreurs se sont produites lors de la vérification des fichiers système. Les problèmes doivent être résolus avant de pouvoir continuer.~,
+    'setgd2' => q~Cliquez sur "Continuer" et allez dans votre <em>Centre d'administration" - Paramètres du forum</em> pour définir les options de votre forum YaBB 2.7.00.~,
+    'noerr1' => q~Si vous envisagez d'importer/mettre à jour un ancien forum YaBB, installez des modules linguistiques supplémentaires et d'autres Mods avant de procéder à la mise à niveau. 2.7 Les packs de langues peuvent être téléchargés depuis <a href="https://sourceforge.net/p/yabb/svn/HEAD/tree/branches/Lang/2.7.00/">YaBB Languages</a> - choisissez votre langue, téléchargez le fichier zip, puis téléchargez les nouveaux fichiers de langue et d'aide (s'ils sont disponibles) dans leurs dossiers appropriés (dossiers de langue ou d'aide).~,
+    'noerr2' => q~Vous pouvez accéder aux utilitaires de conversion 1x et 2x via le centre d'administration.~,
+    'bigerr' => q~Une ou plusieurs erreurs se sont produites lors de la vérification des fichiers système. Les problèmes doivent être résolus avant de pouvoir continuer.~,
     'erryyim'     => q~YaBB 2.7.00 Erreur d'installation.~,
     'maintext_23' => q~Impossible d'ouvrir~,
     'hasrun' => q~L'utilitaire de configuration YaBB 2.7.00 a déjà été exécuté~,
-    'hasrun2' =>
-q~<p>Un utilitaire de conversion a déjà été exécuté<br />Pour redémarrer le convertisseur, s'il existe, supprimez les fichiers 'Variables/Convert.lock' et 'Variables/ConvLang.lock', puis revenez sur cette page.</p>~,
-    'hasrun3' =>
-q~<p>L'utilitaire de configuration a déjà été exécuté.<br />Pour redémarrer la configuration, supprimez le fichier "Variables/Setup.lock" puis revenez sur cette page.</p>~,
+'hasrun2'=> q~<p>Un utilitaire de conversion a déjà été exécuté<br />Pour redémarrer le convertisseur, s'il existe, supprimez les fichiers "Variables/Convert.lock" et "Variables/ConvLang.lock", puis revenez sur cette page.</p>~,
+    'hasrun3' => q~<p>L'utilitaire de configuration a déjà été exécuté.<br />Pour redémarrer la configuration, supprimez le fichier "Variables/Setup.lock" puis revenez sur cette page.</p>~,
     'imp1' => q~Importer fichiers 1x~,
     'imp2' => q~Importer fichiers 2x~,
     'goto' => q~Aller à votre forum~,
 
     # copied from Admin.lng #
     '1' => q~Vérification du module d'installation~,
-    '2' =>
-q~Vérifie si tous les modules Perl utilisés par YaBB sont correctement installés.~,
+    '2' => q~Vérifie si tous les modules Perl utilisés par YaBB sont correctement installés.~,
     '3' => q~Nom du module~,
     '4' => q~Info~,
     '5' => q~Informations fournies par le système:~,
     '6' => q~Installé~,
     '7' => q~Certains modules ne sont pas installés sur votre serveur.~,
-    '8' =>
-q~<strong>Si vous en avez vraiment besoin (lisez les infos), votre premier choix devrait être de demander à votre hébergeur d'installer les modules nécessaires pour vous.</strong><br /><br />Si vous hébergez votre propre serveur, ou si votre hébergeur n'installera pas le module pour vous, voir <a href="http://www.yabbforum.com/cgi-bin/codex/YaBB.pl?num=1225217016" target="_ blank" ><strong>ce message dans le <em>Codex YaBB</ em> pour obtenir de l'aide</strong></a>.</strong>~,
-    'Digest::MD5' =>
-q~Utilisé pour le chiffrement de mot de passe. <br />Ce module est essentiel. Sans cela, YaBB ne fonctionnera pas.~,
-    'Time::HiRes' =>
-q~Utilisé pour le temps d'étalonage si le débogage est activé.<br />Si ce module n'est pas installé, le temps d'analyse sera affiché en secondes entières et pas en secondes haute résolution. Sinon, vous n'avez pas besoin de ce module.~,
-    'Time::Local' =>
-q~Utilisé pour convertir les chaînes de temps en horodatages.<br />Ce module est essentiel. Sans cela, YaBB ne fonctionnera pas toujours.~,
-    'File::Find' =>
-q~Utilisé pour le téléchargement des avatars et des pièces jointes.<br />Si ce module n'est pas installé et que ces fonctions sont activées, vous recevrez un message d'erreur lorsque vous essaierez de télécharger. Sinon, vous n'avez pas besoin de ce module.~,
-    'CGI' =>
-q~Utilisé pour le téléchargement et le diagnostic des avatars et des pièces jointes.~,
+    '8' => q~<strong>Si vous en avez vraiment besoin (lisez les infos), votre premier choix devrait être de demander à votre hébergeur d'installer les modules nécessaires pour vous.</strong><br /><br />Si vous hébergez votre propre serveur, ou si votre hébergeur n'installera pas le module pour vous, voir <a href="http://www.yabbforum.com/cgi-bin/codex/YaBB.pl?num=1225217016" target="_ blank" ><strong>ce message dans le <em>Codex YaBB</ em> pour obtenir de l'aide</strong></a>.</strong>~,
+    'Digest::MD5' => q~Utilisé pour le chiffrement de mot de passe. <br />Ce module est essentiel. Sans cela, YaBB ne fonctionnera pas.~,
+    'Time::HiRes' => q~Utilisé pour le temps d'étalonage si le débogage est activé.<br />Si ce module n'est pas installé, le temps d'analyse sera affiché en secondes entières et pas en secondes haute résolution. Sinon, vous n'avez pas besoin de ce module.~,
+    'Time::Local' => q~Utilisé pour convertir les chaînes de temps en horodatages.<br />Ce module est essentiel. Sans cela, YaBB ne fonctionnera pas toujours.~,
+    'File::Find' => q~Utilisé pour le téléchargement des avatars et des pièces jointes.<br />Si ce module n'est pas installé et que ces fonctions sont activées, vous recevrez un message d'erreur lorsque vous essaierez de télécharger. Sinon, vous n'avez pas besoin de ce module.~,
+    'CGI' => q~Utilisé pour le téléchargement et le diagnostic des avatars et des pièces jointes.~,
     'CGI2' => q~<strong>Votre version </strong>:~,
-    'Net::SMTP' =>
-q~Utilisé pour envoyer des courriels via SMTP.<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via Net::SMTP. Sinon, vous n'avez pas besoin de ce module.<br /><strong> Votre version </strong>:~,
-    'Net::SMTPS' =>
-q~Utilisé pour envoyer des courriels via SMTPS.<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via Net::SMTPS (généralement si vous devez utiliser un serveur de messagerie externe tel que Gmail). Sinon, vous n'avez pas besoin de ce module.~,
-    'Compress::Zlib' =>
-q~Utilisé pour la fonction de sauvegarde et la compression de sortie du navigateur.<br />Ce module n'est nécessaire que si aucune autre méthode de sauvegarde n'est disponible (voir la <a href="{yabb adminurl}?action=backup"> fonctionnalité de sauvegarde</a> pour plus de détails) et/ou si vous voulez activer "Utiliser Compression-GZip?". Sinon, vous n'avez pas besoin de ce module.~,
-    'Compress::Bzip2' =>
-q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles. Sinon, vous n'avez pas besoin de ce module.~,
-    'Archive::Tar' =>
-q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles. Sinon, vous n'avez pas besoin de ce module.~,
-    'Archive::Zip' =>
-q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles. Sinon, vous n'avez pas besoin de ce module.~,
-    'MIME::Lite' =>
-q~Utilisé pour envoyer des sauvegardes jointes à un courriel.<br />Ce module n'est nécessaire que si vous souhaitez obtenir le fichier de sauvegarde par courriel et non par téléchargement direct à partir du centre d'administration. Sinon, vous n'avez pas besoin de ce module.~,
-    'IO::Socket::INET' =>
-q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
-    'Digest::HMAC_MD5' =>
-q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
-    'Carp' =>
-q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine" et afficher des avertissements sérieux sur le serveur.~,
-    'bytes' =>
-q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
-    'integer' =>
-q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
-    'DateTime' =>
-q~Requis par DateTime :: TimeZone.<br />Ce module est nécessaire si vous voulez que les fuseaux horaires du forum/utilisateur soient configurés sur autre chose que l'UTC.~,
-    'DateTime::TimeZone' =>
-q~Utilisé pour obtenir les décalages de fuseau horaire de l'utilisateur et du forum en fonction du fuseau horaire réel de l'utilisateur.<br />Ce module est nécessaire si vous voulez que les fuseaux horaires du forum/utilisateur soient configurés sur autre chose que l'UTC.<br /><span class="important">Ce module doit être tenu à jour car il contient des données de fuseau horaire sensibles au temps.</span>~,
-    'DateTime::TimeZone2' =>
-q~<br /> <span class = "important"> Ce module doit être tenu à jour car il contient des données de fuseau horaire sensibles au temps. Vérifiez avec votre hôte serveur pour vous assurer que ce module est maintenu à jour.</span><br /><strong>Votre version</strong>:~,
-    'URI::Escape' =>
-q~Utilisé par la fonction Post / Message Preview.<br />Ce module est essentiel. Sans cela, la fonction Aperçu ne fonctionnera pas.~,
+    'Net::SMTP' => q~Utilisé pour envoyer des courriels via SMTP.<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via Net::SMTP. Sinon, vous n'avez pas besoin de ce module.<br /><strong> Votre version </strong>:~,
+    'Net::SMTPS' => q~Utilisé pour envoyer des courriels via SMTPS.<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via Net::SMTPS (généralement si vous devez utiliser un serveur de messagerie externe tel que Gmail). Sinon, vous n'avez pas besoin de ce module.~,
+    'Compress::Zlib' => q~Utilisé pour la fonction de sauvegarde et la compression de sortie du navigateur.<br />Ce module n'est nécessaire que si aucune autre méthode de sauvegarde n'est disponible (voir la <a href="{yabb adminurl}?action=backup"> fonctionnalité de sauvegarde</a> pour plus de détails) et/ou si vous voulez activer "Utiliser Compression-GZip?". Sinon, vous n'avez pas besoin de ce module.~,
+    'Compress::Bzip2' =>q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles. Sinon, vous n'avez pas besoin de ce module.~,
+    'Archive::Tar' => q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles. Sinon, vous n'avez pas besoin de ce module.~,
+    'Archive::Zip' => q~Utilisé pour la fonction de sauvegarde.<br />Ce module n'est nécessaire que si vous n'avez pas d'autres méthodes de sauvegarde disponibles. Sinon, vous n'avez pas besoin de ce module.~,
+    'MIME::Lite' => q~Utilisé pour envoyer des sauvegardes jointes à un courriel.<br />Ce module n'est nécessaire que si vous souhaitez obtenir le fichier de sauvegarde par courriel et non par téléchargement direct à partir du centre d'administration. Sinon, vous n'avez pas besoin de ce module.~,
+    'IO::Socket::INET' => q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
+    'Digest::HMAC_MD5' => q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
+    'Carp' => q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine" et afficher des avertissements sérieux sur le serveur.~,
+    'bytes' => q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
+    'integer' => q~Utilisé pour envoyer des courriels via "YaBB SMTP Engine".<br />Ce module n'est nécessaire que si vous voulez envoyer vos courriel via le moteur "YaBB SMTP". Sinon, vous n'avez pas besoin de ce module.~,
+    'DateTime' => q~Requis par DateTime :: TimeZone.<br />Ce module est nécessaire si vous voulez que les fuseaux horaires du forum/utilisateur soient configurés sur autre chose que l'UTC.~,
+    'DateTime::TimeZone' => q~Utilisé pour obtenir les décalages de fuseau horaire de l'utilisateur et du forum en fonction du fuseau horaire réel de l'utilisateur.<br />Ce module est nécessaire si vous voulez que les fuseaux horaires du forum/utilisateur soient configurés sur autre chose que l'UTC.<br /><span class="important">Ce module doit être tenu à jour car il contient des données de fuseau horaire sensibles au temps.</span>~,
+    'DateTime::TimeZone2' => q~<br /> <span class = "important"> Ce module doit être tenu à jour car il contient des données de fuseau horaire sensibles au temps. Vérifiez avec votre hôte serveur pour vous assurer que ce module est maintenu à jour.</span><br /><strong>Votre version</strong>:~,
+    'URI::Escape' => q~Utilisé par la fonction Post / Message Preview.<br />Ce module est essentiel. Sans cela, la fonction Aperçu ne fonctionnera pas.~,
     'perlver' => q~Votre version de Perl~,
-    'Net::DNS' =>
-q~Utilisé par le vérificateur de courrier électronique amélioré. Si ce module n'est pas installé, vous ne pouvez pas activer le vérificateur de courrier électronique amélioré.~,
-    'Mail::CheckUser' =>
-q~Utilisé par le vérificateur de courrier électronique amélioré. Ce module devrait avoir été installé avec YaBB.~,
-    'Module::Load' =>
-q~Utilisé par la sauvegarde avancée.<br />Ce module est essentiel. Sans cela, les fonctions de sauvegarde ne fonctionneront pas.~,
+    'Net::DNS' => q~Utilisé par le vérificateur de courrier électronique amélioré. Si ce module n'est pas installé, vous ne pouvez pas activer le vérificateur de courrier électronique amélioré.~,
+    'Mail::CheckUser' => q~Utilisé par le vérificateur de courrier électronique amélioré. Ce module devrait avoir été installé avec YaBB.~,
+    'Module::Load' => q~Utilisé par la sauvegarde avancée.<br />Ce module est essentiel. Sans cela, les fonctions de sauvegarde ne fonctionneront pas.~,
     'server' => q~Votre serveur~,
-    'LWP::Simple' =>
-q~Utilisé par YaBMod.<br />Si ce module n'est pas installé, vous ne pourrez pas utiliser YaBMod. Sinon, vous n'avez pas besoin de ce module.~,
+    'LWP::Simple' => q~Utilisé par YaBMod.<br />Si ce module n'est pas installé, vous ne pourrez pas utiliser YaBMod. Sinon, vous n'avez pas besoin de ce module.~,
     'noserver'          => q~Aucune information sur le serveur disponible~,
     'mod_access_compat' => q~Aucun accès aux Mods~,
 

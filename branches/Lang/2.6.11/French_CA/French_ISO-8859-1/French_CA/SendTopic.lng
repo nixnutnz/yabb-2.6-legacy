@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$sendtopiclngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$sendtopiclngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %sendtopic_txt = (
 '118' => q~Sujet~,
@@ -42,7 +42,7 @@ $sendtopiclngver = 'YaBB 2.6.11 $Revision: 1002 $';
 %floodtxt = (
 '1' => q~Votre code de vérification est~,
 '3' => q~Code de vérification~,
-'casewarning' => q~Veuillez taper les caractères qui apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et sont sensibles à la casse.~,
+'casewarning' => q~Veuillez entrer les caractères tel qu'il apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et sont sensibles à la casse.~,
 'casewarning_1' => q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
 'casewarning_2' => q~<br/><span style="font-weight:bold">sans le premier~,
 'casewarning_3' => q~<br/><span style="font-weight:bold">sans le dernier~,

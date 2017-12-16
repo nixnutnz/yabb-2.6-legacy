@@ -10,13 +10,13 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$boardindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$boardindexlngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %boardindex_txt = (
 '18' => q~Index~,
@@ -25,7 +25,7 @@ $boardindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '21l' => q~publications~,
 '22' => q~Dernière publication~,
 '34' => q~Connexion~,
-'63' => q~Moderateurs~,
+'63' => q~Modérateurs~,
 '63a' => q~Groupe de modérateur~,
 '64' => q~Sous forum~,
 '65' => q~Sous forum dans~,
@@ -34,18 +34,18 @@ $boardindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '68' => q~Ce forum ne contient pas de nouvelle publications.~,
 '69' => q~su le~,
 '70' => q~le sous forum contient de nouvelle publications.~,
-'71' => q~les sous forum contienent de nouvelle publications.~,
+'71' => q~les sous forum contiennent de nouvelle publications.~,
 '72' => q~le sous forum ne contient pas de nouvelle publications.~,
 '141' => q~Invités~,
 '142' => q~Membres~,
-'bviews' => q~Visionant~,
+'bviews' => q~Visionnant~,
 '143' => q~Moteurs de recherches~,
 '158' => q~Utilisateurs en ligne~,
 '200' => q~Statistique du forum~,
 '201' => q~Le membre le plus récent est~,
 '235' => q~Dernière publication~,
 '236' => q~La publication la plus récente est~,
-'298' => q~Moderateu~,
+'298' => q~Modérateur~,
 '298a' => q~Groupe de modérateur~,
 '315' => q~Mot de passe oublié?~,
 '316' => q~Boîte de réception~,
@@ -53,22 +53,22 @@ $boardindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '330' => q~Sujets~,
 '330l' => q~sujets~,
 '333' => q~Nouvelles publications~,
-'334' => q~Aucune nouvelle publications~,
+'334' => q~Aucune nouvelle publication~,
 '470' => q~N/A~,
 '470a' => q~<em>Ex-Membre</em>~,
 '487' => q~Il y a un total de~,
 '488' => q~membres enregistrés~,
 '489' => q~Le forum contient un total de~,
 '490' => q~avec~,
-'500' => q~Marquer tous les messages comme lus~, # inside JavaScript!
-'500a' => q~Achevée~, # inside JavaScript!
-'500b' => q~Marquer tous les sujets comme lus~, # inside JavaScript!
+'500' => q~Marquer tous les messages comme lus~, #Dans les JavaScript!
+'500a' => q~Achevée~, #Dans les JavaScript!
+'500b' => q~Marquer tous les sujets comme lus~, #Dans les JavaScript!
 '524' => q~Dans~,
 '525' => q~Par~,
 '526' => q~Hits redirigés~,
 '643' => q~Haut~,
 '685' => q~Centre d'information~,
-'791' => q~Voir le/la~,
+'791' => q~Voir le(s) ~,
 '792' => q~publication(s) plus récente(s)~,
 '792a' => q~sujet(s) le(s) plus récent(s)~,
 '793' => q~sur le forum.~,
@@ -101,7 +101,7 @@ $boardindexlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '47' => q~leur~,
 '48' => q~le message~,
 '50' => q~Nouveaux messages de diffusion personnels.~,
-'51' => q~\nVoulez-vous voir la boîte de diffusion des MP~,
+'51' => q~\nVoulez-vous voir la boîte de diffusion des MPs~,
 '50a' => q~Nouveaux messages d'alerte:~,
 );
 

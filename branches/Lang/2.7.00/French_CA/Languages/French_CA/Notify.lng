@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -32,8 +32,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '120' => q~par~,
     '121' => q~Réinitialiser~,
     '122' => q~Vous serez avertis des réponses pour les sujets suivants.~,
-    '123' =>
-q~Cochez la case pour <strong><em>désactiver</em></strong> la notification sur le sujet.~,
+    '123' => q~Cochez la case pour <strong><em>désactiver</em></strong> la notification sur le sujet.~,
     '124'      => q~Mettre à jour les notifications~,
     '125'      => q~Notifier~,
     '126'      => q~Recevoir une notification sur les réponses à ce forum~,

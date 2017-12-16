@@ -10,26 +10,26 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$movesplitsplicelngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$movesplitsplicelngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %sstxt=(
-'1' => q~Déplacer, Cinder et Fusioner~,
-'2' => q~Cinder des forums~,
+'1' => q~Déplacer, Scinder et Fusionner~,
+'2' => q~Scinder des forums~,
 '3' => q~Forum~,
 '4' => q~Laisser~,
-'5' => q~Cinder vers~,
-'6' => q~Categorie~,
+'5' => q~Scinder vers~,
+'6' => q~Catégorie~,
 '7' => q~Forum~,
 '8' => q~Sujet~,
 '9' => q~Nouveau Sujet~,
 '10' => q~Position~,
-'11' => q~'Déplacé/Cindé vers...' Info~,
+'11' => q~'Déplacé/scindé vers...' Info~,
 '12' => q~Laisser les publications originales~,
 '13' => q~Ne rien laisser~,
 '14' => q~Sélectionnez les publications à déplacer dans le sujet actuel:~,
@@ -38,8 +38,8 @@ $movesplitsplicelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '15a' => q~Insérez un nouveau message derrière les messages déplacés, contenant les informations d'où ils sont venus et qui les a déplacés.~,
 '16' => q~Sélectionnez la catégorie dans laquelle déplacer les publications sélectionnées.~,
 '17' => q~Sélectionnez le forum dans lequel placer les publications sélectionnées.~,
-'18' => q~Sélectionnez le sujet sur lequel placer les publications sélectionnées.~,
-'19' => q~Sélectionnez la position pour cinder les publication sélectionnés. <br/>Les messages seront placés en dessous de la position indiquée.~,
+'18' => q~Sélectionnez le sujet dans lequel placer les publications sélectionnées.~,
+'19' => q~Sélectionnez la position pour scinder les publications sélectionnées. <br/>Les messages seront placés en dessous de la position indiquée.~,
 '20' => q~Entrez le nouveau sujet ici. <br/>Laissez cette case vide si vous voulez utiliser le sujet de la première publication sélectionnée.~,
 '21' => q~Re:~,
 '22' => q~Vous devez désigner une catégorie.~,
@@ -56,11 +56,11 @@ $movesplitsplicelngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '31' => q~&raquo;&raquo; Fin du sujet &laquo;&laquo;~,
 '32' => q~&raquo;&raquo; Début du sujet &laquo;&laquo;~,
 
-'40' => q~Repondre~,
+'40' => q~Répondre~,
 '41' => q~Sujet débute~,
 
 '50' => q~Veuillez revenir en arrière et recharger cette page en premier ou vous ne pourrez pas soumettre.~,
-'51' => q~Il n'est pas permis de cinder deux sondages.~,
+'51' => q~Il n'est pas permis de scinder deux sondages.~,
 );
 
 1;

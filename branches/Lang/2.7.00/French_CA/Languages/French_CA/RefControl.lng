@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -27,8 +27,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %refer_settings = (
-    'gen' =>
-q~Sélectionner quelle action <em>(action=dans l'URLs)</em> peut être liée à l'extérieur de votre domaine~,
+    'gen' => q~Sélectionner quelle action <em>(action=dans l'URLs)</em> peut être liée à l'extérieur de votre domaine~,
     'refer_controls' => q~Général~,
     'refer_mods'     => q~Mods~,
 );
@@ -47,12 +46,10 @@ q~Sélectionner quelle action <em>(action=dans l'URLs)</em> peut être liée à 
     'mycenter'     => q~Afficher la page principale dans Mon Centre~,
     'recent'       => q~Afficher les messages récents~,
     'recenttopics' => q~Afficher tous les sujets les plus récemment publiés~,
-    'register' =>
-      q~Entrer l'écran de saisie de l'enregistrement d'un nouvel utilisateur~,
+    'register' => q~Entrer l'écran de saisie de l'enregistrement d'un nouvel utilisateur~,
     'reminder' => q~Entrez dans l'écran "oublié mon mot de passe"~,
     'RSSboard' => q~Voir les sujets récents sur un forum via le flux RSS~,
-    'RSSrecent' =>
-q~Voir les sujets récents sur l'ensemble du forum ou une catégorie à travers le flux RSS~,
+    'RSSrecent' => q~Voir les sujets récents sur l'ensemble du forum ou une catégorie à travers le flux RSS~,
     'search'         => q~Entrer dans l'écran de recherche~,
     'viewdownloads'  => q~Voir les téléchargements~,
     'viewprofile'    => q~Afficher un profil d'utilisateur~,

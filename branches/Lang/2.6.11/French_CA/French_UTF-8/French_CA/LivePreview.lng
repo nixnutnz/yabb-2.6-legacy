@@ -15,7 +15,7 @@
 # =========================================================================== #
 # Version:      : YaBB 2.6.11 fr-ca.1002                                      #
 # Modifié par   : Alain Beaudoin                                              #
-# Modifié le    : 1 Décembre 2017                                             #
+# Modifié le    : 11 Décembre 2017                                            #
 # Distribué par : http://www.alainbeaudoin.com                                #
 ###############################################################################
 
@@ -23,18 +23,18 @@ $livepreviewlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 
 %livepreview_txt = (
 'info_missing' => q~Informations manquantes ou incorrectes:~,
-'name_empty' => q~Le champ Nom n'est pas rempli.~,
+'name_empty' => q~Le champ "Nom" est vide.~,
 'long_name' => q~S'il vous plaît raccourcir votre nom. il est trop long~,
-'mail_empty' => q~Le champ Courriel n'est pas rempli.~,
+'mail_empty' => q~Le champ "Courriel" est vide~,
 'valid_mail' => q~S'il vous plaît, entrez une adresse courriel valide.~,
-'veri_code' => q~Le champ Vérification n'est pas rempli.~,
-'veri_quest' => q~Le champ Vérification n'est pas rempli.~,
-'subj_empty' => q~Le champ Sujet n'est pas rempli.~,
-'mess_empty' => q~Le champ Message n'est pas rempli.~,
-'subj_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ Subject. C'est contre les règles du forum.~,
-'mess_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ Message. C'est contre les règles du forum.~,
-'pm_recipient' => q~Vous devez remplir le champ destinataire.~,
-'no_links' => q~Les invités ne sont pas autorisés à inclure des liens tant qu'il n'ont pas ajouté $minlinkpost.~,
+'veri_code' => q~Le champ "Vérification" est vide~,
+'veri_quest' => q~Le champ "Vérification" est vide~,
+'subj_empty' => q~Le champ "Sujet" est vide~,
+'mess_empty' => q~Le champ "Message" est vide~,
+'subj_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Sujet". C'est contre les règles du forum.~,
+'mess_allcaps' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules dans le champ "Message". C'est contre les règles du forum.~,
+'pm_recipient' => q~Vous devez remplir le champ "Destinataire".~,
+'no_links' => q~Les invités ne sont pas autorisés à inclure des liens tant qu’ils n’ont pas ajouté $minlinkpost publications.~,
 );
 
 1;

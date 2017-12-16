@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -70,18 +70,13 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '769'     => q~Emplacement Flash~,
     '888'     => q~Sujet de navigation~,
     '999'     => q~Annonce du forum~,
-    'posttolocked' =>
-q~Avertissement: Vous êtes sur le point de publier sur un message verrouillé. Cliquez sur [OK] pour confirmer ou sur [Annuler] pour revenir au message.~,
-    'modifyinlocked' =>
-q~Avertissement: Vous êtes sur le point de modifier un message verrouillé. Cliquez sur [OK] pour confirmer ou sur [Annuler] pour revenir au message.~,
+    'posttolocked' => q~Avertissement: Vous êtes sur le point de publier sur un message verrouillé. Cliquez sur [OK] pour confirmer ou sur [Annuler] pour revenir au message.~,
+    'modifyinlocked' => q~Avertissement: Vous êtes sur le point de modifier un message verrouillé. Cliquez sur [OK] pour confirmer ou sur [Annuler] pour revenir au message.~,
     'isbuddy'       => q~Dans ma liste d'amis.~,
     'split_confirm' => q~Êtes-vous sûr de vouloir partager ce sujet?~,
-    'alertmod_confirm' =>
-q~Êtes-vous sûr de vouloir alerter le modérateur à propos de cet article?~,
+    'alertmod_confirm' => q~Êtes-vous sûr de vouloir alerter le modérateur à propos de cet article?~,
     'reverse' => q~Cliquez ici si vous voulez changer l'ordre des sujets.~,
-    'sendtopicemail' =>
-q~Cliquez sur [OK] si vous souhaitez envoyer le courriel via votre programme de messagerie, sinon le programme de messagerie du forum sera utilisé.~
-    ,    #Dans les JavaScript!
+    'sendtopicemail' => q~Cliquez sur [OK] si vous souhaitez envoyer le courriel via votre programme de messagerie, sinon le programme de messagerie du forum sera utilisé.~,        #Dans les JavaScript!
     'location'      => q~Emplacement~,
     'age'           => q~Âge~,
     'regdate'       => q~Rejoint:~,
@@ -91,10 +86,8 @@ q~Cliquez sur [OK] si vous souhaitez envoyer le courriel via votre programme de 
     'rgt'           => q~&rsaquo;~,
     'upt'           => q~&#710;~,
     'guest_message' => q~Message d'invité~,
-    'guest_message_block' =>
-q~Bonjour invité,<br /><br />Désolé, mais vous avez dépassé le nombre de sujets que vous êtes autorisé à voir en tant qu'invité. Pour afficher autant de sujets que vous le souhaitez et pour bénéficier de nombreuses autres fonctionnalités, pourquoi ne pas <a href="{yabb scripturl}?action=register" style="font-weight:bold;">créer un compte chez nous</a>.L'inscription est facile et ne vous prendra que quelques minutes.<br /><br />Si vous avez déjà un compte chez nous, alors vous pouvez <a href="{yabb scripturl}?action=login" style="font-weight:bold;">connectez-vous ici</a> pour ne plus voir ce message.<br /><br />Merci,<br /><br />L'équipe {yabb mbname}~,
-    'guest_message_warn' =>
-q~Bonjour, Invité,<br /><br />Il semble que vous aimiez lire notre forum, alors pourquoi ne pas <a href="{yabb scripturl}?action=register" style="font-weight:bold;">vous inscrire avec nous</a> afin de ne plus voir ce message et bénéficier de nombreuses autres fonctionnalités. L'inscription est facile et ne vous prendra que quelques minutes.<br /><br />Si vous avez déjà un compte chez nous, alors <a href="{yabb scripturl}?action=login" style="font-weight:bold;">cliquez ici pour vous identifier.</a><br /><br />Merci,<br /><br />L'équipe {yabb mbname}~,
+    'guest_message_block' => q~Bonjour invité,<br /><br />Désolé, mais vous avez dépassé le nombre de sujets que vous êtes autorisé à voir en tant qu'invité. Pour afficher autant de sujets que vous le souhaitez et pour bénéficier de nombreuses autres fonctionnalités, pourquoi ne pas <a href="{yabb scripturl}?action=register" style="font-weight:bold;">créer un compte chez nous</a>.L'inscription est facile et ne vous prendra que quelques minutes.<br /><br />Si vous avez déjà un compte chez nous, alors vous pouvez <a href="{yabb scripturl}?action=login" style="font-weight:bold;">connectez-vous ici</a> pour ne plus voir ce message.<br /><br />Merci,<br /><br />L'équipe {yabb mbname}~,
+    'guest_message_warn' => q~Bonjour, Invité,<br /><br />Il semble que vous aimiez lire notre forum, alors pourquoi ne pas <a href="{yabb scripturl}?action=register" style="font-weight:bold;">vous inscrire avec nous</a> afin de ne plus voir ce message et bénéficier de nombreuses autres fonctionnalités. L'inscription est facile et ne vous prendra que quelques minutes.<br /><br />Si vous avez déjà un compte chez nous, alors <a href="{yabb scripturl}?action=login" style="font-weight:bold;">cliquez ici pour vous identifier.</a><br /><br />Merci,<br /><br />L'équipe {yabb mbname}~,
     'bookmarks' => q~Signets~,                     # Social Bookmarks
     'google'    => q~Google Hangout~,
     'ipblock'   => q~Bloquer IP dans Guardian~,

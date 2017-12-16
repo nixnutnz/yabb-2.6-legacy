@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -76,7 +76,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '526'  => q~Hits redirigés~,
     '643'  => q~Haut~,
     '685'  => q~Centre d'information~,
-    '791'  => q~Voir le/la~,
+    '791'  => q~Voir le(s) ~,
     '792'  => q~publication(s) plus récente(s)~,
     '792a' => q~sujet(s) le(s) plus récent(s)~,
     '793'  => q~sur le forum.~,
@@ -100,8 +100,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '16' => q~qui a dépassé la limite de stockage de~,
     '18' => q~messages~,
     '19' => q~Les plus vieux~,
-    '20' =>
-      q~messages ont été supprimés automatiquement.\n\nVoulez-vous voir vos MP~,
+    '20' => q~messages ont été supprimés automatiquement.\n\nVoulez-vous voir vos MP~,
     '21'  => q~maintenant?~,
     '24'  => q~dont~,
     '25'  => q~est nouveau~,

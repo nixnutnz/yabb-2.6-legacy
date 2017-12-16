@@ -10,20 +10,20 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$notifylngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$notifylngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %notify_txt = (
 '118' => q~Notification de sujet~,
-'119' => q~Il n'y a pas de sujet avec notification marqué.~,
+'119' => q~Il n'y a pas de sujet marqué d'une notification.~,
 '120' => q~par~,
 '121' => q~Réinitialiser~,
-'122' => q~Vous êtes averti des réponses pour les sujets suivants.~,
+'122' => q~Vous serez avertis des réponses pour les sujets suivants.~,
 '123' => q~Cochez la case pour <strong><em>désactiver</em></strong> la notification sur le sujet.~,
 '124' => q~Mettre à jour les notifications~,
 '125' => q~Notifier~,
@@ -34,12 +34,12 @@ $notifylngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '134' => q~Retirer~,
 '135' => q~Forum~,
 '136' => q~Notice de forum~,
-'137' => q~Changer ou retirer les nocice de ce forum.~,
+'137' => q~Changer ou retirer les notices de ce forum.~,
 '138' => q~Changer~,
 '139' => q~Il n'y a pas de forums avec notification marqué.~,
 '140' => q~Sujet~,
 '144' => q~Tous cocher~,
-'145' => q~Nouveau message personel de~,
+'145' => q~Nouveau message personnel de~,
 '200' => q~Vous avez~,
 '201' => q~nouveau~,
 '202' => q~et~,
@@ -47,9 +47,9 @@ $notifylngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '205' => q~Notices de forum~,
 '206' => q~Notice de sujet~,
 '333' => q~Nouvelles publications~,
-'334' => q~Aucune nouvelles publications~,
+'334' => q~Aucune nouvelle publication~,
 '335' => q~Nouvelle~,
-'lastpost' => q~dernière publication~,
+'lastpost' => q~Dernière publication~,
 'lft' => qq~&lsaquo;~,
 'rgt' => qq~&rsaquo;~,
 '75' => q~Ceci est votre sélection de notification de forum.~,

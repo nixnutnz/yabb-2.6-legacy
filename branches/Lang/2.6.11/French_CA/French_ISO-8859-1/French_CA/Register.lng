@@ -10,17 +10,17 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.6.11 fr-ca.1002                                     #
+# Version:       : YaBB 2.6.11 fr-ca.1005                                     #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 1 Décembre 2017                                            #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 
-$registerlngver = 'YaBB 2.6.11 $Revision: 1002 $';
+$registerlngver = 'YaBB 2.6.11 $Revision: 1005 $';
 
 %register_txt = (
 '4' => q~Pour des raisons de sécurité, il n'est pas conseillé d'avoir votre pseudonyme égale à votre identifiant de connexion.~,
-'23' => q~Inpossible d'ouvrir~,
+'23' => q~Impossible d'ouvrir~,
 '34' => q~S'identifier~,
 '35' => q~Identifiant d'utilisateur~,
 '36' => q~Mot de passe~,
@@ -33,7 +33,7 @@ $registerlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '95' => q~En vous inscrivant, vous devenez membre du forum &quot;<em>$mbname</em>&quot;,<br/>avec un accès de connexion uniquement à <em>$boardurl/$yyexec.$yyext</em>~,
 '97' => q~S'enregistrer~,
 '97a' => q~Champs marqués~,
-'97b' => q~requis à ld'enregistrement.~,
+'97b' => q~requis à l'enregistrement.~,
 '98' => q~Identifiant d'utilisateur~,
 '98a' => q~Pseudonyme~,
 '101' => q~Sélectionnez la langue à utiliser:~,
@@ -140,21 +140,21 @@ $registerlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 
 %prereg_txt = (
 '1' => q~Votre compte n'est pas encore validé.<br />Veuillez le valider dans les $preregspan heures en cliquant sur le lien dans le courriel que vous avez reçu.~,
-'1a' => q~Pré-inscription terminée~,
+'1a' => q~pré-enregistrement terminée~,
 '1b' => q~Validation du courrier électronique terminée, en attente d'approbation~,
 '2' => q~Voici le code de validation de votre compte~,
-'3' => q~Vous avez été préinscrit avec succès à $mbname.\nVeuillez valider votre compte dans les $preregspan heures.~,
+'3' => q~Vous avez été préenregistré avec succès à $mbname.\nVeuillez valider votre compte dans les $preregspan heures.~,
 '4' => q~Veuillez cliquer sur le lien ci-dessous pour activer votre compte utilisateur~,
 '5' => q~Votre compte est validé~,
 '5a' => q~et vous pouvez maintenant vous connecter~,
 '5b' => q~.~,
-'6' => q~Vous n'avez pas validé votre compte dans un délai de $preregspan.<br />Votre pré-inscription a donc été supprimée.<br />Veuillez vous enregistrer à nouveau.~,
-'7' => q~Utiliser la pré-inscription et la validation du compte~,
-'8' => q~Afficher la pré-inscription et le journal de validation du compte~,
-'9' => q~Nettoyage de la pré-inscription et du journal de validation du compte~,
+'6' => q~Vous n'avez pas validé votre compte dans un délai de $preregspan.<br />Votre pré-enregistrement a donc été supprimée.<br />Veuillez-vous enregistrer à nouveau.~,
+'7' => q~Utiliser la pré-enregistrement et la validation du compte~,
+'8' => q~Afficher la pré-enregistrement et le journal de validation du compte~,
+'9' => q~Nettoyage de la pré-enregistrement et du journal de validation du compte~,
 '10' => q~Votre code d'activation est erroné.~,
 '11' => q~Temps maximum pour que les utilisateurs activent leur compte (en heures)~,
-'12' => q~Supprimer l'utilisateur pré-inscrit~,
+'12' => q~Supprimer l'utilisateur préenregistré~,
 '13' => q~Votre compte n'est pas encore approuvé par l'administration.<br />Dès que votre demande aura été examinée, vous recevrez une confirmation par courriel de l'état de votre demande~,
 '14' => q~Cet utilisateur n'a pas été préenregistré ou la période de validation autorisée de $preregspan heures est expiré.~,
 '15' => q~La durée de validation autorisée de $preregspan heures est expiré.~,
@@ -162,7 +162,7 @@ $registerlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '16' => q~Caractères Max $RegReasonSymbols. Caractères restants:~,
 'approved' => q~Votre demande a été approuvée pour~,
 'regreason' => q~Merci de nous indiquer votre(vos) raison(s) de vous inscrire sur notre forum~,
-'reason_exp' => q~Cette information est utilisée par le personnel du forum pour évaluer votre demande~,
+'reason_exp' => q~Cette information est utilisée par le Staff du forum pour évaluer votre demande~,
 'action' => q~Action~,
 'del' => q~Effacement instantané~,
 'reject' => q~Rejet instantané~,
@@ -178,8 +178,8 @@ $registerlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 'apr_language' => q~Langue choisie~,
 'apr_ip' => q~Provenant de l'adresse IP~,
 'apr_reason' => q~Motif de l'enregistrement~,
-'apr_admin_reason_title' => q~Commentaire du personnel~,
-'apr_admin_reason' => q~Eventuellement donner un commentaire sur votre décision~,
+'apr_admin_reason_title' => q~Commentaire du Staff~,
+'apr_admin_reason' => q~Éventuellement donner un commentaire sur votre décision~,
 'apr_admin_approve' => q~Approuver l'adhésion~,
 'apr_admin_reject' => q~Rejeter l'adhésion~,
 'apr_admin_validate' => q~Valider le compte~,
@@ -187,10 +187,10 @@ $registerlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '17' => q~Date et heure~,
 '18' => q~Statut~,
 '19' => q~Identifiant utilisateur préenregistré~,
-'20' => q~Ceci est le fichier journal (Si la préinscription avec enregistrement par courriel,et approbation admin est sélectionné) pour la pré-inscription des utilisateurs.<br />Les pré-enregistrements non activés peuvent être supprimés, rejetés, visualisés, approuvés ou activés.~,
+'20' => q~Ceci est le fichier journal (Si la préinscription avec enregistrement par courriel et approbation admin est sélectionné) pour la pré-enregistrement des utilisateurs.<br />Les pré-enregistrements non activés peuvent être supprimés, rejetés, visualisés, approuvés ou activés.~,
 'N' => q~Non validé~,
 'A' => q~Validé~,
-'T' => q~Delais supprimé~,
+'T' => q~Délais supprimé~,
 'E' => q~Erreur de clé d'activation~,
 'D' => q~Supprimé~,
 'AR' => q~Rejeté~,
@@ -216,9 +216,9 @@ $registerlngver = 'YaBB 2.6.11 $Revision: 1002 $';
 '0' => q~Vérifiez est réussi.~,
 '1' => q~Mauvaise syntaxe de l'adresse courriel.~,
 '2' => q~Le domaine MAIL mentionné dans l'adresse courriel est inconnu.~,
-'3' => q~Expiration du délais s'est produit pendant les vérifications DNS.~,
+'3' => q~Expiration du délai s'est produit pendant les vérifications DNS.~,
 '4' => q~L'utilisateur est inconnu sur le serveur SMTP.~,
-'5' => q~Expiration du délais s'est produit pendant les vérifications SMTP.~,
+'5' => q~Expiration du délai s'est produit pendant les vérifications SMTP.~,
 '6' => q~Tous les serveurs SMTP pour le domaine de messagerie ont été trouvés inaccessibles lors des contrôles SMTP.~,
 '7' => q~La boîte aux lettres est temporairement saturée mais probablement un nom d'utilisateur valide.~,
 );

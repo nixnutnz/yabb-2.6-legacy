@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -45,25 +45,20 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '76'  => q~Le champ Courriel n'a pas été rempli. il est requis.~,
     '77'  => q~Le champ Sujet n'a pas été rempli. il est requis.~,
     '78'  => q~Le champ Message n'a pas été rempli. il est requis.~,
-    '79' =>
-q~Il semble que vous essayez d'écrire en utilisant que des majuscules.\nC'est contre les règles du forum.~,
+    '79' => q~Il semble que vous essayez d'écrire en utilisant que des majuscules.\nC'est contre les règles du forum.~,
     '105' => q~Publier le message~,
     '127' => q~Répondre au sujet~,
     '128' => q~Une réponse~,
     '131' => q~Notifier lorsque l'on répond~,
-    '132' =>
-q~Vous avez déjà défini une notification pour tous les nouveaux messages de ce forum.~,
+    '132' => q~Vous avez déjà défini une notification pour tous les nouveaux messages de ce forum.~,
     '148' => q~Envoyer le message~,
     '150' => q~au(x) destinataire(s)~,
-    '165' =>
-q~Pour poster, vous devez être connecté. Si vous n'avez pas encore de compte, veuillez-vous inscrire.~,
+'165' => q~Pour publier, vous devez être connecté. Si vous n'avez pas encore de compte, veuillez-vous inscrire.~,
     '211' => q~Dernière édition~,
-    '223' =>
-q~Désolé, vous devez vous enregistrer avant d'utiliser cette fonctionnalité.~,
+    '223' => q~Désolé, vous devez vous enregistrer avant d'utiliser cette fonctionnalité.~,
     '240' => q~Il y a un caractère non valide dans le~,
     '241' => q~champ.~,
-    '244' =>
-q~L'Identifiant que vous avez essayé d'enregistrer contient un nom réservé. Veuillez essayer un autre identifiant d'utilisateur. Nom réservé:~,
+    '244' => q~L'Identifiant que vous avez essayé d'enregistrer contient un nom réservé. Veuillez essayer un autre identifiant d'utilisateur. Nom réservé:~,
     '245' => q~Insérer un horodatage~,
     '246' => q~Surligner~,
     '252' => q~Ajouter une balise YaBBC~,
@@ -91,8 +86,7 @@ q~L'Identifiant que vous avez essayé d'enregistrer contient un nom réservé. V
     '274' => q~Marron~,
     '275' => q~Vert lime~,
     '276' => q~Désactiver UBBC et Smileys~,
-    '277' =>
-q~Cochez cette case si vous souhaitez désactiver l'analyse des balises et des smileys UBBC.~,
+    '277' => q~Cochez cette case si vous souhaitez désactiver l'analyse des balises et des smileys UBBC.~,
     '279'  => q~Publié par~,
     '280'  => q~Publié sur~,
     '281'  => q~Standard~,
@@ -132,7 +126,7 @@ q~Cochez cette case si vous souhaitez désactiver l'analyse des balises et des s
     '470'  => q~N/A~,
     '470a' => q~<em>Ex Membre</em>~,
     '473'  => q~Ce nom est déjà utilisé par un autre membre.~,
-    '500'  => q~S'il vous plaît, mettez une adresse courriel valide.~,
+'500' => q~S'il vous plaît, entrez une adresse courriel valide.~,
     '507'  => q~Erreur:~,
     '526'  => q~Embarrassé~,
     '527'  => q~Lèvres scellées~,
@@ -146,27 +140,19 @@ q~Cochez cette case si vous souhaitez désactiver l'analyse des balises et des s
     '537'  => q~caractères, Veuillez raccourcir votre message.~,
     '568'  => q~Veuillez raccourcir votre nom. il est trop long~,
 ##### Do no edit any of the words in all capitals!
-    '599' =>
-q~<a class="message" href="QUOTELINK">Citation de AUTHOR</a> le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
-    '599_d' =>
-q~<a class="message" href="QUOTELINK">Citation de AUTHOR</a> DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
-    '600' =>
-q~<a class="message" href="QUOTELINK">AUTHOR a écris</a> le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
-    '600_d' =>
-q~<a class="message" href="QUOTELINK">AUTHOR a écris</a> DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
-    '600a' =>
-q~<a class="message" href="AUTHOR2">AUTHOR</a> a écris le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
-    '600a_d' =>
-q~<a class="message" href="AUTHOR2">AUTHOR</a> a écris le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
-    '601' =>
-q~<strong>Citation:</strong><br/><div class="quote" style="width: 90%; overflow: auto">QUOTE</div>~,
+    '599' => q~<a class="message" href="QUOTELINK">Citation de AUTHOR</a> le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
+    '599_d' => q~<a class="message" href="QUOTELINK">Citation de AUTHOR</a> DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
+    '600' => q~<a class="message" href="QUOTELINK">AUTHOR a écris</a> le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
+    '600_d' => q~<a class="message" href="QUOTELINK">AUTHOR a écris</a> DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
+    '600a' => q~<a class="message" href="AUTHOR2">AUTHOR</a> a écris le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
+    '600a_d' => q~<a class="message" href="AUTHOR2">AUTHOR</a> a écris le DATE:<br/><div class="quote" id="QID" style="width: 90%; overflow: auto;">QUOTE</div>QEND~,
+    '601' => q~<strong>Citation:</strong><br/><div class="quote" style="width: 90%; overflow: auto">QUOTE</div>~,
     '602' => q~<div class="codebox">Code XLANGX<div>XSELECTX</div></div>CODE~,
     'selectall' => q~Select All~,
     '603'       => q~Édité~,
     '604'       => q~/moi - mon nom~,
     '646'       => q~Membres répondant à ce sujet~,
-    '750' =>
-q~Cochez cette case si vous souhaitez être informé des réponses à ce sujet.~,
+    '750' => q~Cochez cette case si vous souhaitez être informé des réponses à ce sujet.~,
     '752'   => q~Vous devez remplir le champ destinataire.~,
     '768'   => q~Êtes-vous sûr de vouloir supprimer ce membre de la liste?~,
     '771'   => q~Rafraîchir la page~,
@@ -182,24 +168,17 @@ q~Cochez cette case si vous souhaitez être informé des réponses à ce sujet.~
     'yabbc'         => q~Ajouter balise YaBBC~,
     'name'          => q~Nom~,
     'email'         => q~Courriel~,
-    'alertmod' =>
-q~Envoyer une alerte au modérateur du forum à propos de cette publication~,
+    'alertmod' => q~Envoyer une alerte au modérateur du forum à propos de cette publication~,
     'favorite' => q~Ajouter à vos favoris~,
-    'notfav' =>
-      q~Cochez cette case si vous souhaitez ajouter ce sujet à vos favoris~,
+    'notfav' => q~Cochez cette case si vous souhaitez ajouter ce sujet à vos favoris~,
     'alreadyfav' => q~Vous avez déjà ajouté ce sujet à vos favoris.~,
     'maximumfav' => q~Vous avez déjà le maximum de sujets favoris autorisés.~,
-    'draftleave' =>
-q~Cochez cette case si vous laissez ce message dans le dossier Brouillons après l'envoi~,
-    'resizedescript' =>
-q~Vous pouvez redimensionner la zone de texte en faisant glisser la bordure droite ou inférieure.~,
+    'draftleave' => q~Cochez cette case si vous laissez ce message dans le dossier Brouillons après l'envoi~,
+    'resizedescript' => q~Vous pouvez redimensionner la zone de texte en faisant glisser la bordure droite ou inférieure.~,
     'textsize' => q~Taille du texte:~,
-    'alertquote' =>
-      q~Pour utiliser les citations, marquer le texte de cet utilisateur.~,
-    'quote_confirm' =>
-q~Si vous voulez citer cette contribution et que vous cliquez sur OK, vos enregistrements dans la zone de texte de réponse ci-dessous seront perdus. Si vous ne le souhaitez pas, cliquez sur Annuler, puis copiez vos enregistrements avant de cliquer sur OK la prochaine fois. Ensuite, vous pouvez insérer à nouveau vos enregistrements sur la page suivante.~,
-    'verification_question_desc' =>
-      q~Veuillez répondre à la question de vérification ci-dessus.~,
+    'alertquote' => q~Pour utiliser les citations, marquer le texte de cet utilisateur.~,
+    'quote_confirm' => q~Si vous voulez citer cette contribution et que vous cliquez sur OK, vos enregistrements dans la zone de texte de réponse ci-dessous seront perdus. Si vous ne le souhaitez pas, cliquez sur Annuler, puis copiez vos enregistrements avant de cliquer sur OK la prochaine fois. Ensuite, vous pouvez insérer à nouveau vos enregistrements sur la page suivante.~,
+    'verification_question_desc' => q~Veuillez répondre à la question de vérification ci-dessus.~,
     'verification_question_case' => q~Les réponses sont sensibles à la casse.~,
     'noparse'                    => q~Pas d'analyse~,
     'palette'                    => q~Changer la couleur du texte~,
@@ -214,8 +193,7 @@ q~Si vous voulez citer cette contribution et que vous cliquez sur OK, vos enregi
     '05'      => q~<strong>Police de caractère/Taille</strong>~,
     'default' => q~Défaut~,
     'ordered' => q~Trié~,
-    'features_text' =>
-      q~Réduire / développer des fonctionnalités supplémentaires~,
+    'features_text' => q~Réduire / développer des fonctionnalités supplémentaires~,
     'collapse_features' => q~Réduire les fonctionnalités supplémentaires~,
     'expand_features'   => q~Développer des fonctionnalités supplémentaires~,
 );
@@ -237,13 +215,11 @@ q~Si vous voulez citer cette contribution et que vous cliquez sur OK, vos enregi
     '15' => q~Sondage~,
     '26' => q~Cacher les résultats:~,
     '30' => q~Afficher le sondage:~,
-    '30a' =>
-q~Cochez cette case si vous voulez que ce sondage soit affiché en haut de tout index de forum.~,
+    '30a' => q~Cochez cette case si vous voulez que ce sondage soit affiché en haut de tout index de forum.~,
     '31'  => q~Fin automatique dans:~,
     '31a' => q~jours et~,
     '31b' => q~minutes.~,
-    '31c' =>
-      q~Laissez le champ vide si vous ne voulez pas le configurer maintenant~,
+    '31c' => q~Laissez le champ vide si vous ne voulez pas le configurer maintenant~,
     '32'  => q~Activer le vote des invités:~,
     '34a' => q~était plus long que le maximum~,
     '34b' => q~caractères.~,
@@ -251,20 +227,15 @@ q~Cochez cette case si vous voulez que ce sondage soit affiché en haut de tout 
     '37'  => q~Veuillez fournir une question de sondage.~,
     '38'  => q~Veuillez fournir au moins 2 options de sondage.~,
     '40'  => q~La question du sondage~,
-    '54' =>
-q~Cochez cette case si vous voulez que les invités puissent voter dans ce sondage.~,
-    '55' =>
-q~Cochez cette case si vous ne voulez pas que les résultats de ce sondage soient affichés avant la fermeture du vote.~,
-    '56' =>
-q~Cochez cette case si vous voulez autoriser les utilisateurs à voter pour plus d'une option.~,
+    '54' => q~Cochez cette case si vous voulez que les invités puissent voter dans ce sondage.~,
+    '55' => q~Cochez cette case si vous ne voulez pas que les résultats de ce sondage soient affichés avant la fermeture du vote.~,
+    '56' => q~Cochez cette case si vous voulez autoriser les utilisateurs à voter pour plus d'une option.~,
     '57' => q~Le commentaire du sondage~,
     '58' => q~Choix multiple~,
     '59' => q~Commentaire de sondage~,
     '60' => q~Délai pour la suppression du vote:~,
-    '61' =>
-q~Temps en minutes les utilisateurs sont autorisés à supprimer leur vote (0 pour désactiver la suppression).~,
-    '62' =>
-      q~Le champ de limite de temps ne doit contenir que des chiffres (0-9).~,
+    '61' => q~Temps en minutes les utilisateurs sont autorisés à supprimer leur vote (0 pour désactiver la suppression).~,
+    '62' => q~Le champ de limite de temps ne doit contenir que des chiffres (0-9).~,
     '100'             => q~Ce sondage se termine automatiquement en~,
     '100a'            => q~jours~,
     '100b'            => q~heures~,
@@ -275,11 +246,9 @@ q~Temps en minutes les utilisateurs sont autorisés à supprimer leur vote (0 po
     'pieslicecolor'   => q~Couleur~,
     'pieslicesplit'   => q~Split Pie~,
     'pieradius'       => q~Rayon en camembert:~,
-    'pieradius_descr' =>
-      q~Doit être une valeur entre 100 et 200 (par défaut 100)~,
+    'pieradius_descr' => q~Doit être une valeur entre 100 et 200 (par défaut 100)~,
     'pielegends' => q~Utiliser les légendes pour les diagrammes circulaires~,
-    'pielegends_descr' =>
-q~Cochez cette case pour utiliser les légendes au lieu des libellés à côté de chaque tranche de secteur.~,
+    'pielegends_descr' => q~Cochez cette case pour utiliser les légendes au lieu des libellés à côté de chaque tranche de secteur.~,
 );
 
 %post_smiltxt = (
@@ -290,17 +259,12 @@ q~Cochez cette case pour utiliser les légendes au lieu des libellés à côté 
 %floodtxt = (
     '1' => q~Votre code de vérification est~,
     '3' => q~Code de vérification~,
-    'casewarning' =>
-q~Veuillez entrer les caractères qui apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et ils sont sensibles à la casse.~,
-    'casewarning_1' =>
-q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
-    'casewarning_2' =>
-      q~<br/><span style = "font-weight:bold" ">sans le premier~,
-    'casewarning_3' =>
-      q~<br/><span style = "font-weight:bold" ">sans le dernier~,
+    'casewarning' => q~Veuillez entrer les caractères qui apparaissent dans l'image. Les caractères doivent être entrés dans le même ordre et ils sont sensibles à la casse.~,
+    'casewarning_1' => q~S'il vous plaît entrez les caractères exactement comme ils apparaissent dans l'image,~,
+    'casewarning_2' => q~<br/><span style = "font-weight:bold" ">sans le premier~,
+    'casewarning_3' => q~<br/><span style = "font-weight:bold" ">sans le dernier~,
     'casewarning_4' => q~et dernier~,
-    'casewarning_5' =>
-q~caractères.</span><br/>Les caractères doivent être entrés dans le même ordre,<br/> et ils sont sensibles à la casse.~,
+    'casewarning_5' => q~caractères.</span><br/>Les caractères doivent être entrés dans le même ordre,<br/> et ils sont sensibles à la casse.~,
 );
 
 %spell_check = (
@@ -318,8 +282,7 @@ q~caractères.</span><br/>Les caractères doivent être entrés dans le même or
     '3'  => q~Index du forum~,
     '01' => q~Retourner à~,
     '02' => q~Sélectionnez où vous souhaitez retourner après avoir publié.~,
-    '03' =>
-q~Sélectionnez la zone par défaut à laquelle vous souhaitez revenir après avoir créé une publication.<br/><strong>Note:</strong> Vous pouvez modifier cette option au moment de la publication.~,
+    '03' => q~Sélectionnez la zone par défaut à laquelle vous souhaitez revenir après avoir créé une publication.<br/><strong>Note:</strong> Vous pouvez modifier cette option au moment de la publication.~,
 );
 
 1;

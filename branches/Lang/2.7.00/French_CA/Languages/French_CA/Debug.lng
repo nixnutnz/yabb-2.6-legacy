@@ -10,9 +10,9 @@
 # Logiciel par   : L'équipe de développement de YaBB                          #
 #                  avec l'assistance de la communauté YaBB                    #
 # =========================================================================== #
-# Version:       : YaBB 2.7.00 fr-ca. Révision 1004                           #
+# Version:       : YaBB 2.7.00 fr-ca. Révision 1005                           #
 # Traduite par   : Alain Beaudoin                                             #
-# Modifié le     : 8 Décembre, 2017                                           #
+# Modifié le     : 11 Décembre 2017                                           #
 # Distribué par  : http://www.alainbeaudoin.com                               #
 ###############################################################################
 ##  Based on English Rev 1848 ##
@@ -24,7 +24,7 @@ if (@french_cadebuglngmods) {
     $french_cadebuglngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' && $language ne 'Français' ) { return 1; }
+if ( $action eq 'detailedversion' && $language ne 'French_CA' ) { return 1; }
 
 %debug_txt = (
     'getpairs'     => q~Paires GET entrantes~,
@@ -45,8 +45,7 @@ if ( $action eq 'detailedversion' && $language ne 'Français' ) { return 1; }
     'trace'        => q~traceur de débogage~,
     'check'        => q~File Check à l'ouverture/fermeture~,
     'filehandles'  => q~Gestionaire de fichier/Fichiers ouverts~,
-    'filehandleslegend' =>
-q~ouvert FILEHANDLE (time) &nbsp; &nbsp; <em>MODE</em>filepathname &nbsp; &nbsp; fermé FILEHANDLE (time)<br />[package, scriptpathname, line]~,
+    'filehandleslegend' => q~ouvert FILEHANDLE (time) &nbsp; &nbsp; <em>MODE</em>filepathname &nbsp; &nbsp; fermé FILEHANDLE (time)<br />[package, scriptpathname, line]~,
     'filesloaded'         => q~Fichiers chargés par~,
     'process_scalars'     => q~Processus scalaires~,
     'process_num'         => q~Traiter le nombre de processus en cours~,
