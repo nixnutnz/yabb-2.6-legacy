@@ -24,7 +24,7 @@ if (@french_caadminlngmods) {
     $french_caadminlngmods = 1;
 }
 $action ||= q{};
-if ( $action eq 'detailedversion' && $language ne 'francais' ) { return 1; }
+if ( $action eq 'detailedversion' && $language ne 'French_CA' ) { return 1; }
 
 @days   = qw(Dimanche Lundi Mardi Mercredi Jeudi Vendredi Samedi);
 @months = qw(Jan Fév Mar Avr Mai Jun Jul Aug Sep Oct Nov Déc);
@@ -135,8 +135,8 @@ $abbr_lang = 'fr-ca';
     '92' => q~Délai d'interdiction de publication (en secondes)~,
     '93' => q~C'est le délai minimum avant la levée d'une interdiction de spamming~,
     '94'  => q~Total~,
-'95' => q~Age minimum pour accéder à ce forum~,
-'95a' => q~Age maximum pour accéder à ce forum~,
+    '95' => q~Age minimum pour accéder à ce forum~,
+    '95a' => q~Age maximum pour accéder à ce forum~,
     '96' => q~ans. <em>(Laissez vide pour aucune restriction d'âge minimum)</em>~,
     '96a' => q~ans. <em>(Laissez vide pour aucune restriction d'âge maximum)</em>~,
     '97' => q~Sexe (s) autorisé (s) à accéder à ce forum~,
@@ -232,9 +232,9 @@ $abbr_lang = 'fr-ca';
     '368' => q~Adresse courriel de notification:<br /><span class='small'>Si elle est vide, le courriel sera envoyé à: {yabb webmaster_email}</span>~,
     '371' => q~Heure actuelle du forum~,
     '371d' => q~Sélectionnez le fuseau horaire du forum:<br /><span class="small">Choisissez le pays et la ville qui représente votre fuseau horaire préféré par défaut.<br />Si les seuls choix sont "UTC" et "local", vous n'avez pas les modules nécessaires pour utiliser les fuseaux horaires basés sur le pays/la ville. Dans ce cas, utilisez "local" et définissez manuellement votre décalage horaire pour définir la différence de temps de votre forum par rapport à l'heure UTC ou choisissez UTC.</span>~,
-'371a' => q~Activer le choix du fuseau horaire pour les utilisateurs:<br /><span class="small">Si le module Perl <strong>DateTime :: TimeZone</strong> nécessaire n'est pas installé, les utilisateurs ne seront pas capable de choisir "UTC". Si le fuseau horaire par défaut du forum est "local", les utilisateurs disposeront également du "décalage horaire par défaut du forum".</span>~,
+    '371a' => q~Activer le choix du fuseau horaire pour les utilisateurs:<br /><span class="small">Si le module Perl <strong>DateTime :: TimeZone</strong> nécessaire n'est pas installé, les utilisateurs ne seront pas capable de choisir "UTC". Si le fuseau horaire par défaut du forum est "local", les utilisateurs disposeront également du "décalage horaire par défaut du forum".</span>~,
     'local' => q~local~,
-'371e' => q~Activez DST en utilisant le fuseau horaire du forum "local" et le décalage horaire du forum (ci-dessus).<br /><span class="small">Ce paramètre suppose que votre serveur d'hébergement est dans un fuseau horaire utilisant le Les mêmes dates pour l'heure d'été que vous voulez pour votre forum et est configuré pour reconnaître son heure locale avec DST. Sinon, choisissez UTC comme fuseau horaire ou ajustez manuellement l'heure d'été dans votre fuseau horaire à l'aide de l'option "Définir le décalage horaire du forum".</span>~,
+    '371e' => q~Activez DST en utilisant le fuseau horaire du forum "local" et le décalage horaire du forum (ci-dessus).<br /><span class="small">Ce paramètre suppose que votre serveur d'hébergement est dans un fuseau horaire utilisant le Les mêmes dates pour l'heure d'été que vous voulez pour votre forum et est configuré pour reconnaître son heure locale avec DST. Sinon, choisissez UTC comme fuseau horaire ou ajustez manuellement l'heure d'été dans votre fuseau horaire à l'aide de l'option "Définir le décalage horaire du forum".</span>~,
     '371f' => q~Définir le décalage horaire du forum:<br /><span class="small">Ajustez la différence de temps de votre forum de l'UTC ici.</span>~,
     '371b' => q~Activer l'horloge dynamique en haut de la page?~,
     '371c' => q~Correction du temps serveur (en secondes +/-)~,
@@ -1918,14 +1918,13 @@ q~Supprimer les anciens fichiers de sauvegarde, l'installation et les utilitaire
     '10a' => q~Fichiers de sauvegarde du convertisseur de langue supprimés~,
     'conv' => q~Pour convertir des fichiers 1x ou 2x en 2.7.00~,
     'conv2' =>
-q~<strong><a href="{yabb scripturl}/Setup.pl">Aller à Configuration/Convertir</a></strong>~,
+qq~<strong><a href="$boardurl/Setup.pl?lang=French_CA">Aller à Configuration/Convertir</a></strong>~,
     'fixn' =>
 qq ~L'utilitaire d'importation 2x a détecté des problèmes potentiels avec les données importées/converties. Voir <a href="$yyhtml_root/tmp/datacheck.txt" target="_new">datacheck.txt</a> pour plus de détails.<br />~,
     'illmem1' =>
 qq~Des membres avec des noms d'utilisateur illégaux ont été trouvés et convertis en noms légaux.<br />Voir le fichier <em>$yyhtml_root/tmp/fixusers.txt</em>~,
 );
 
-timetostring($date);
 $yycopyright =
 q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span></a> &#187; <span style="font-size: 10px">Propulsé par</span> <a href="http://www.yabbforum.com"><span style="font-size: 10px">{yabb version}</span></a><span class="small">.<br /><a href="http://www.yabbforum.com">Lociciel de forum YaBB</a> &copy; 2000-{yabb year}. Tous droit réservés.</span>~;
 $iFrameSupport =

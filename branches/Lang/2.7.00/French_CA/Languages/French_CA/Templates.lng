@@ -159,6 +159,4 @@ if ( $action eq 'detailedversion' ) { return 1; }
     'uploaded'         => q~Nouveaux téléchargements de fichiers de modèles~,
 );
 
-#$templ_txt{'tabtitle_txt'} = 'Texte du titre de l'index du forum (.tabtitle-text)';
-
 1;

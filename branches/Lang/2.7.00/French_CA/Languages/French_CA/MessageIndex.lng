@@ -78,7 +78,7 @@ if ( $action eq 'detailedversion' ) { return 1; }
     '525'  => q~Par~,
     '526'  => q~par~,
     '527'  => q~Démarré~,
-'737' => q~Tout cocher~,
+    '737'  => q~Tout cocher~,
     '779'  => q~Sujet épinglé~,
     '779a' => q~Annonce globale~,
     '779b' => q~Annonce globale verrouillée~,

@@ -1,4 +1,4 @@
-$dutchuser_user00_agreementhelpver = '';
+$dutchuser_user00_agreementhelpver = 'YaBB 2.7.00 $Revision$';
 if ( modagreement2 eq 'detailedversion' ) { return 1; }
 $section_name = "User_Agreement";
 

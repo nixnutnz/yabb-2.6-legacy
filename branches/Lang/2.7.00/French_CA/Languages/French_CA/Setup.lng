@@ -21,7 +21,7 @@ our $VERSION = '2.7.00';
 $french_casetuplngver = 'YaBB 2.7.00 $Revision$';
 
 %mylang = (
-'loggedin'=> q~Vous êtes maintenant conecté comme, <em>{realname}</em>.<br />Cliquer "Continuer" pour continuer avec l'installation.~,
+    'loggedin'=> q~Vous êtes maintenant conecté comme, <em>{realname}</em>.<br />Cliquer "Continuer" pour continuer avec l'installation.~,
     'logerr' => q~Erreur d'installation: Impossible de trouver le fichier de données d'administration dans {memberdir}. Veuillez vérifier vos droits d'accès.~,
     'logerr1' => q~Une erreur s'est produite!~,
     'logerr2' => q~Erreur d'installation: Vous devez entrer votre mot de passe!~,
@@ -34,7 +34,7 @@ $french_casetuplngver = 'YaBB 2.7.00 $Revision$';
     'abspath' => q~Chemin absolu vers le répertoire de script principal~,
     'abspath2' => q~Ne cliquez que sur le bouton d'insertion si votre serveur a besoin du chemin absolu vers le script principal YaBB~,
     'change' => q~Changez ce formulaire si des changements sont nécessaires.~,
-'prebrddir'=> q~Répertoire de script principal: <span style="font-size: 11px;">Le chemin du serveur vers le dossier du forum (peut généralement être laissé comme ".")</span>~,
+    'prebrddir'=> q~Répertoire de script principal: <span style="font-size: 11px;">Le chemin du serveur vers le dossier du forum (peut généralement être laissé comme ".")</span>~,
     'prebrdurl' => q~URL du forum: <span style="font-size: 11px;">URL du dossier de votre forum (sans "/")</span>,~,
     'prehtmldir' => q~Répertoire racine HTML: <span style="font-size: 11px;">Chemin de base pour tous les fichiers et dossiers /html/css - éditer pour correspondre au chemin sur <strong>votre</ strong> serveur</span>~,
     'prehtml_root' => q~URL de la racine HTML: <span style="font-size: 11px;">URL de base pour tous les fichiers et dossiers /html/css - éditer pour correspondre à l'URL sur <strong>votre</ strong> serveur</span>~,
@@ -78,7 +78,7 @@ $french_casetuplngver = 'YaBB 2.7.00 $Revision$';
     'erryyim'     => q~YaBB 2.7.00 Erreur d'installation.~,
     'maintext_23' => q~Impossible d'ouvrir~,
     'hasrun' => q~L'utilitaire de configuration YaBB 2.7.00 a déjà été exécuté~,
-'hasrun2'=> q~<p>Un utilitaire de conversion a déjà été exécuté<br />Pour redémarrer le convertisseur, s'il existe, supprimez les fichiers "Variables/Convert.lock" et "Variables/ConvLang.lock", puis revenez sur cette page.</p>~,
+    'hasrun2'=> q~<p>Un utilitaire de conversion a déjà été exécuté<br />Pour redémarrer le convertisseur, s'il existe, supprimez les fichiers "Variables/Convert.lock" et "Variables/ConvLang.lock", puis revenez sur cette page.</p>~,
     'hasrun3' => q~<p>L'utilitaire de configuration a déjà été exécuté.<br />Pour redémarrer la configuration, supprimez le fichier "Variables/Setup.lock" puis revenez sur cette page.</p>~,
     'imp1' => q~Importer fichiers 1x~,
     'imp2' => q~Importer fichiers 2x~,
