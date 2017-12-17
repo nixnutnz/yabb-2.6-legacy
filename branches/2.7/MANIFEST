@@ -1,5 +1,5 @@
 MANIFEST
-checksum.txt   - 68301 bytes - updated Sat Dec 16 03:58:46 2017
+checksum.txt   - 68301 bytes - updated Sun Dec 17 06:59:07 2017
 readmeFIRST.txt   - 1941 bytes - updated Wed Oct 26 10:06:21 2016
 VERSION.txt   - 37 bytes - updated Wed Oct 26 10:07:08 2016
 cgi-bin/checksum.pl   - 3916 bytes - updated Sun Jan  3 10:59:40 2016
@@ -17,7 +17,8 @@ cgi-bin/yabb2/index.html   - 182 bytes - updated Fri Aug  5 05:40:34 2016
 cgi-bin/yabb2/license.txt   - 18673 bytes - updated Fri Mar  3 12:02:48 2017
 cgi-bin/yabb2/Paths.pm   - 920 bytes - updated Thu Oct  6 13:52:02 2016
 cgi-bin/yabb2/Setup.pl   - 107777 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
-cgi-bin/yabb2/YaBB.pl   - 8327 bytes - updated Thu Jun  1 05:30:58 2017 'YaBB 2.7.00 Build 1848';
+cgi-bin/yabb2/YaBB.pl   - 8327 bytes - updated Sun Dec 17 06:58:00 2017 'YaBB 2.7.00 Build 1957';
+cgi-bin/yabb2/YaBB.pl.bak   - 8327 bytes - updated Thu Jun  1 05:30:58 2017 'YaBB 2.7.00 Build 1957'; - CHECK
 public_html/yabbfiles/ajax.js   - 27794 bytes - updated Mon Dec  4 06:43:29 2017
 public_html/yabbfiles/AJS.js   - 41906 bytes - updated Sat Aug 24 16:09:44 2013
 public_html/yabbfiles/AJS_fx.js   - 3329 bytes - updated Sat Aug 24 16:09:44 2013
@@ -45,11 +46,13 @@ cgi-bin/yabb2/Admin/AdminEdit.pm   - 47465 bytes - updated Wed Dec 13 08:11:14 2
 cgi-bin/yabb2/Admin/AdminSubList.pm   - 12385 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/AdminSubs.pm   - 4048 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/AntispamQuestions.pm   - 20726 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
-cgi-bin/yabb2/Admin/Attachments.pm   - 69818 bytes - updated Mon Dec 11 07:32:26 2017 'YaBB 2.7.00 Build 1948';
+cgi-bin/yabb2/Admin/Attachments.pm   - 70023 bytes - updated Sun Dec 17 06:57:59 2017 'YaBB 2.7.00 Build 1957';
+cgi-bin/yabb2/Admin/Attachments.pm.bak   - 69818 bytes - updated Mon Dec 11 07:32:26 2017 'YaBB 2.7.00 Build 1957'; - CHECK
 cgi-bin/yabb2/Admin/Backup.pm   - 48952 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/Ban.pm   - 17436 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/Checkspace.pm   - 18052 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
-cgi-bin/yabb2/Admin/DetailedVersion.pm   - 46833 bytes - updated Sun Dec 10 08:26:55 2017 'YaBB 2.7.00 Build 1928';
+cgi-bin/yabb2/Admin/DetailedVersion.pm   - 48595 bytes - updated Sat Dec 16 15:50:08 2017 'YaBB 2.7.00 Build 1928';
+cgi-bin/yabb2/Admin/DetailedVersion.pm.bak   - 47687 bytes - updated Sat Dec 16 06:32:26 2017 'YaBB 2.7.00 Build 1928'; - CHECK
 cgi-bin/yabb2/Admin/EditEmailTemplates.pm   - 8517 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/EditHelpCentre.pm   - 24427 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/ErrorLog.pm   - 20439 bytes - updated Wed Dec 13 08:11:14 2017 'YaBB 2.7.00 Build 1950';
@@ -58,7 +61,8 @@ cgi-bin/yabb2/Admin/GuardianAdmin.pm   - 21764 bytes - updated Sun Dec 10 09:50:
 cgi-bin/yabb2/Admin/HoneyPot.pm   - 12385 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/index.html   - 188 bytes - updated Tue Jul 30 12:07:53 2013
 cgi-bin/yabb2/Admin/MailMembers.pm   - 29345 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
-cgi-bin/yabb2/Admin/Maintenance.pm   - 48804 bytes - updated Tue Dec  5 16:36:28 2017 'YaBB 2.7.00 Build 1936';
+cgi-bin/yabb2/Admin/Maintenance.pm   - 48990 bytes - updated Sun Dec 17 06:58:00 2017 'YaBB 2.7.00 Build 1957';
+cgi-bin/yabb2/Admin/Maintenance.pm.bak   - 48990 bytes - updated Sat Dec 16 15:49:47 2017 'YaBB 2.7.00 Build 1957'; - CHECK
 cgi-bin/yabb2/Admin/ManageBoards.pm   - 100451 bytes - updated Sun Dec 10 08:16:01 2017 'YaBB 2.7.00 Build 1938';
 cgi-bin/yabb2/Admin/ManageCats.pm   - 15491 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/ManageStyles.pm   - 91062 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
@@ -79,7 +83,8 @@ cgi-bin/yabb2/Admin/Settings_News.pm   - 6032 bytes - updated Fri Sep 22 08:35:4
 cgi-bin/yabb2/Admin/Settings_Security.pm   - 16633 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/Smilies.pm   - 21174 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
 cgi-bin/yabb2/Admin/ViewMembers.pm   - 47985 bytes - updated Mon Dec  4 06:43:28 2017 'YaBB 2.7.00 Build 1928';
-cgi-bin/yabb2/Admin/YaBMod.pm   - 72811 bytes - updated Fri Dec 15 18:09:28 2017 'YaBB 2.7.00 Build 1952';
+cgi-bin/yabb2/Admin/YaBMod.pm   - 72819 bytes - updated Sun Dec 17 06:58:00 2017 'YaBB 2.7.00 Build 1957';
+cgi-bin/yabb2/Admin/YaBMod.pm.bak   - 72811 bytes - updated Fri Dec 15 18:09:28 2017 'YaBB 2.7.00 Build 1957'; - CHECK
 cgi-bin/yabb2/Backups/.htaccess   - 114 bytes - updated Sun Jan  3 10:40:00 2016
 cgi-bin/yabb2/Boards/.htaccess   - 114 bytes - updated Sun Jan  3 10:40:16 2016
 cgi-bin/yabb2/Boards/announcements.txt   - 0 bytes - updated Wed Jan 30 14:11:35 2013
