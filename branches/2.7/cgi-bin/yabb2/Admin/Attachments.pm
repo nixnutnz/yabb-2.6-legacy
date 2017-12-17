@@ -102,14 +102,16 @@ sub attachments {
     my $attachment_space = 0;
     foreach my $i ( 0 .. $#attachments ) {
         my @check = split /[|]/xsm, $attachments[$i];
-        if ( scalar @check != 9 ) {
+        if ( @check && scalar @check != 9  ) {
             fatal_error( 'bad data', "attachments.db bad line $i", 1 );
         }
-        my $space = $check[5];
-        if ( $space =~ /\D/xsm || $space eq q{} ) {
-            fatal_error( 'bad data', "attachments.db line $i", 1 );
+        if (@check) {
+            my $space = $check[5];
+            if ( $space =~ /\D/xsm || $space eq q{} ) {
+                fatal_error( 'bad data', "attachments.db line $i", 1 );
+            }
+            $attachment_space += $space;
         }
-        $attachment_space += $space;
     }
 
     my $attachment_space2 = 0;
@@ -962,17 +964,21 @@ sub fullrebuild_attachents {
         our ($ATM);
         fopen( 'ATM', '<', "$vardir/attachments.db" )
           or croak "$croak{'open'} ATM";
-        while (<$ATM>) {
-            my (
-                undef, undef, undef,   undef, undef,
-                undef, undef, $atfile, $atcount
-            ) = split /[|]/xsm;
-            chomp $atcount;
-            if ( exists $winups{$atfile} ) {
-                $attachments{$atfile} = $atcount;
+        my @attlist = <$ATM>;
+        fclose('ATM') or croak "$croak{'close'} ATM";
+        chomp @attlist;
+        foreach my $i (@attlist) {
+            if ($i) {
+                my (
+                    undef, undef, undef,   undef, undef,
+                    undef, undef, $atfile, $atcount
+                ) = split /[|]/xsm, $i;
+                chomp $atcount;
+                if ( exists $winups{$atfile} ) {
+                    $attachments{$atfile} = $atcount;
+                }
             }
         }
-        fclose('ATM') or croak "$croak{'close'} ATM";
     }
 
     # Get the topic list.

@@ -130,7 +130,7 @@ sub rebuild_messageindex {
             }
 
             my (@repliers);
-            if ( !-e "$datadir/$thread.ctb" ) {
+            if ( !-e "$datadir/$thread.ctb" || ( -s "$datadir/$thread.ctb" ) < 5 ) {
                 ${$thread}{'board'} = q{};
             }
             else {
@@ -1062,7 +1062,7 @@ sub rebuild_notifications {
         my ( $bmaildir, $tmaildir ) = get_mail_files();
         my @bmaildir = reverse sort @{$bmaildir};
         foreach my $myboard (@bmaildir) {
-            if ( -e "$boardsdir/$myboard.mail" ) {
+            if ( -e "$boardsdir/$myboard.mail" && ( -s "$boardsdir/$myboard.mail" ) > 5 ) {
                 require "$boardsdir/$myboard.mail";
                 my @temp = sort keys %theboard;
                 undef %theboard;
@@ -1081,7 +1081,7 @@ sub rebuild_notifications {
         }
         my @tmaildir = reverse sort @{$tmaildir};
         foreach my $mythread (@tmaildir) {
-            if ( -e "$datadir/$mythread.mail" ) {
+            if ( -e "$datadir/$mythread.mail" && ( -s "$datadir/$mythread.mail" ) > 5 ) {
                 require "$datadir/$mythread.mail";
                 my @temp = sort keys %thethread;
                 undef %thethread;
@@ -1212,7 +1212,7 @@ sub rebuild_notifications {
                         for ( split /,/xsm,
                             ${ $uid . $u }{'board_notifications'} )
                         {
-                            if ( -e "$boardsdir/$_.mail" ) {
+                            if ( -e "$boardsdir/$_.mail" && ( -s "$boardsdir/$_.mail" ) > 5 ) {
                                 require "$boardsdir/$_.mail";
                                 if ( exists $theboard{$u} ) { $bb{$_} = 1; }
                             }
@@ -1222,7 +1222,7 @@ sub rebuild_notifications {
                         for ( split /,/xsm,
                             ${ $uid . $u }{'thread_notifications'} )
                         {
-                            if ( -e "$datadir/$_.mail" ) {
+                            if ( -e "$datadir/$_.mail" && ( -s "$datadir/$_.mail" ) > 5 ) {
                                 require "$datadir/$_.mail";
                                 if ( exists $thethread{$u} ) { $t{$_} = 1; }
                             }

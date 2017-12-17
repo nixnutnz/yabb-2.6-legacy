@@ -223,7 +223,7 @@ sub yymain {
     if (   $iamguest
         && !$guestaccess
         && $action !~
-/^[login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction]2?$/xsm
+/^(login|register|reminder|validate|activate|resetpass|guestpm|checkavail|$randaction)2?$/xsm
       )
     {
         kickguest();

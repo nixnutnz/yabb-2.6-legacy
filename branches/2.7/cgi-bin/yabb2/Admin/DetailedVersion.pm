@@ -365,7 +365,28 @@ function hideMods(id) {
             opendir LNGDIRF, "$langdir/$fld";
             my @lfilesanddirsf = readdir LNGDIRF;
             closedir LNGDIRF;
+            my %newcheck = ();
             @lfilesanddirsf = sort @lfilesanddirsf;
+            my $nvercheck = 1;
+            if ( $fld ne 'English' && -e "$langdir/$fld/checksum.txt" ) {
+                %newcheck = ();
+                our ($CHK);
+                fopen( 'CHK', '<', "$langdir/$fld/checksum.txt" )
+                  or croak "$croak{'open'} checksum";
+                my @checksum = <$CHK>;
+                fclose('CHK') or croak "$croak{'close'} checksum";
+                chomp @checksum;
+                foreach my $i (@checksum) {
+                   my ( $key, $check ) = split /[|]/xsm, $i;
+                   my @keys = split /\//xsm, $key;
+                   $newcheck{ $keys[-1] } = $check;
+                }
+                $nvercheck = 0;
+            }
+            elsif ( $fld eq 'English' && -e "$vardir/checksum.txt" ) {
+                %newcheck = %checksum;
+                $nvercheck = 0;
+            }
             foreach my $filein_dir (@lfilesanddirsf) {
                 chomp $filein_dir;
                 if ( $filein_dir =~ m/[.]lng\Z/xsm ) {
@@ -397,11 +418,10 @@ function hideMods(id) {
                     $date    = scalar localtime $age;
                     if (
                         (
-                              !$vercheck
-                            || $vercheck == 0
-                            && $linec ne $checksum{$filein_dir}
+                            $nvercheck == 0
+                            && $newcheck{$filein_dir} && $linec ne $newcheck{$filein_dir}
                         )
-                        || ( $vercheck == 1 && $age > $ver_age )
+                        || ( $nvercheck == 1 && $age > $ver_age )
                       )
                     {
                         $chkmatch =
@@ -452,6 +472,26 @@ qq~<span class="small"> $detailed{'upped'} $date</span>~;
             }
 
             my @helps = qw(Admin Gmod Moderator User);
+            my $hvercheck = 1;
+            if ( $fld ne 'English' && -e "$helpfile/$fld/helpchecksum.txt" ) {
+                %newcheck = ();
+                our ($CHK);
+                fopen( 'CHK', '<', "$helpfile/$fld/helpchecksum.txt" )
+                  or croak "$croak{'open'} checksum";
+                my @checksum = <$CHK>;
+                fclose('CHK') or croak "$croak{'close'} checksum";
+                chomp @checksum;
+                foreach my $i (@checksum) {
+                   my ( $key, $check ) = split /[|]/xsm, $i;
+                   my @keys = split /\//xsm, $key;
+                   $newcheck{ $keys[-1] } = $check;
+                }
+                $hvercheck = 0;
+            }
+            elsif ( $fld eq 'English' && -e "$vardir/checksum.txt" ) {
+                %newcheck = %checksum;
+                $hvercheck = 0;
+            }
             foreach my $area (@helps) {
                 if ( -d "$helpfile/$fld/$area" ) {
                     opendir HELPDIRF, "$helpfile/$fld/$area"
@@ -489,10 +529,10 @@ qq~<span class="small"> $detailed{'upped'} $date</span>~;
                             $date = scalar localtime $age;
                             if (
                                 (
-                                    $vercheck == 0 && ( !$checksum{$helpin_dir}
-                                        || $linec ne $checksum{$helpin_dir} )
+                                    $hvercheck == 0
+                                    && $newcheck{$helpin_dir} && $linec ne $newcheck{$helpin_dir}
                                 )
-                                || ( $vercheck == 1 && $age > $ver_age )
+                                || ( $hvercheck == 1 && $age > $ver_age )
                               )
                             {
                                 $chkmatch =

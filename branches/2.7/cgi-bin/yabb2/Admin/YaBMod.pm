@@ -162,8 +162,8 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
     # Get Mod file from Directory
     $yymain .= qq~
 <form action="$adminurl?action=yabmuploadmod" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
-   <div class="bordercolor rightboxdiv">
-   <table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td colspan="2" class="titlebg"><img src="$admin_images/boardmod_icon.png" alt="" /> <b>$yabmtxt{'59'}</b></td>
         </tr><tr>
@@ -175,15 +175,15 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
                 <input type="submit" value="$maintxt{'900s'}" class="button" />
             </td>
         </tr>
-   </table>
-   </div>
+    </table>
+    </div>
 </form>~;
 
     # Get Mod file from URL
     $yymain .= qq~
 <form action="$adminurl?action=yabmuploadmod" method="post" enctype="multipart/form-data" accept-charset="$yymycharset">
-   <div class="bordercolor rightboxdiv">
-   <table class="border-space pad-cell" style="margin-bottom: .5em;">
+    <div class="bordercolor rightboxdiv">
+    <table class="border-space pad-cell" style="margin-bottom: .5em;">
         <tr>
             <td colspan="2" class="titlebg"><img src="$admin_images/boardmod_icon.png" alt="" /> <b>$yabmtxt{'60'}</b></td>
         </tr><tr>
@@ -193,8 +193,8 @@ qq~<img src="$imagesdir/off.png" alt="$yabmtxt{'5'}" title="$yabmtxt{'5'}" />~;
             </td>
             <td class="windowbg2 center" width="20%"><input type="submit" value="$maintxt{'900s'}" class="button" /></td>
         </tr>
-   </table>
-   </div>
+    </table>
+    </div>
 </form>~;
 
     $yymain .= qq~
