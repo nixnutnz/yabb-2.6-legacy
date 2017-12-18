@@ -3322,7 +3322,7 @@ sub chk_match {
     }
     else {
         foreach (@filelist) { unlink "$uploaddir/$_"; }
-        my $show_ext = join q{}, @ext;
+        my $show_ext = join q{, }, @ext;
         fatal_error( q{}, "$fixfile $fatxt{'20'} $show_ext" );
     }
     return;

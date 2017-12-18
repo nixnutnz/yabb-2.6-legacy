@@ -1046,10 +1046,11 @@ qq~$FORM{'messageheight'}|$FORM{'messagewidth'}|$FORM{'txtsize'}|$FORM{'col_row'
     # Create unique Message ID
     $messageid = getnewid();
     $allow_attach_im ||= 0;
+    $fixfile = q{};
     my $allow_groups = group_perms( $allow_attach_im, $pm_attach_groups );
     my @logfilelist;
     if ( $allow_attach_im && $allow_groups ) {
-        ( @filelist, @logfilelist ) = get_filelist();
+        $fixfile = get_filelist($messageid);
     }
 
     # go through each member in list
@@ -2494,6 +2495,7 @@ sub get_auto_reply {
 }
 
 sub get_filelist {
+    my ($messageid) = @_;
     my ( $file, @logfilelist, %filesizekb );
     foreach my $y ( 1 .. $allow_attach_im ) {
         if ($cgi_query) { $file = $cgi_query->upload("file$y"); }
@@ -2535,7 +2537,7 @@ sub get_filelist {
             if ( $use_guardian && $string_on ) {
                 my @bannedstrings = split /[|]/xsm, $banned_strings;
                 foreach my $i (@bannedstrings) {
-                    chomp;
+                    chomp $i;
                     if ( $fixname =~ m/$i/ixsm ) {
                         fatal_error( 'attach_name_blocked', "($i)" );
                     }
@@ -2574,6 +2576,7 @@ sub get_filelist {
             }
             else {
                 foreach my $i (@filelist) { unlink "$pmuploaddir/$i"; }
+                my $pm_attachext = join q{, }, @pm_attachext;
                 fatal_error( q{}, "$fixfile $fatxt{'20'} $pm_attachext" );
             }
 
@@ -2681,7 +2684,20 @@ sub get_filelist {
             push @filelist, $FORM{"w_filename$y"};
         }
     }
-    return ( @filelist, @logfilelist );
+    my $fixfile = join q{,}, @filelist;
+    my $log_fixfile = join q{,}, @logfilelist;
+    if (@filelist) {
+        our ($PMATTACHLOG);
+        fopen( 'PMATTACHLOG', '>>', 'Variables/pmattachments.db' )
+          or fatal_error( 'cannot_open', 'Variables/pmattachments.db' );
+        foreach my $log_fixfile (@logfilelist) {
+            print {$PMATTACHLOG}
+qq~$messageid|$date|$filesizekb{$log_fixfile}|$log_fixfile|${$uid.$username}{'realname'}|$username\n~
+              or croak "$croak{'print'} PMATTACHLOG";
+        }
+        fclose('PMATTACHLOG') or croak "$croak{'close'} PMATTACHLOG";
+    }
+    return $fixfile;
 }
 
 sub send_notification {

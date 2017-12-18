@@ -751,7 +751,7 @@ qq~<br />$notify_txt{'200'} <a href="$scripturl?action=shownotify">$noti_text</a
     our $yysearchbox = q{};
     $qckage ||= 0;
     our $yysrch_no = ' style="display:none"';
-    if ( !$iamguest || $guestaccess != 0 ) {
+    if ( !$iamguest || $guestaccess ) {
         if ( $maxsearchdisplay > -1 && $qcksearchaccess eq 'granted' ) {
             my $blurb =
               qq~$maintxt{'searchimg'} $qckage $maintxt{'searchimg2'}~;
@@ -3863,7 +3863,8 @@ sub check_file {
 
     if ( !$match ) {
         unlink "$file_directory/$fixfile";
-        fatal_error( q{}, "$fixfile $fatxt{'20'} $file_extensions" );
+        my $show_ext = join q{, }, @ext;
+        fatal_error( q{}, "$fixfile $fatxt{'20'} $show_ext" );
     }
     return;
 }
