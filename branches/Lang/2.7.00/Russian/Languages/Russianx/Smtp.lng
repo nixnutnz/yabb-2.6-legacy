@@ -24,10 +24,10 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %smtp_txt = (
-    '1' => qq~SERVER ERROR: Не могу найти $smtpaddr !~,
+    '1' => qq~SERVER ERROR: Не могу найти {yabb smtpaddr} !~,
     '2' => q~SERVER ERROR: Невозможно осуществить соединение !~,
     '3' =>
-      qq~SERVER ERROR: Невозможно подключиться к $smtpaddr на порт $port !~,
+      q~SERVER ERROR: Невозможно подключиться к {yabb smtpaddr} на порт {yabb port}!~,
     '4' => q~SYSTEM ERROR: Адрес Получателя пустой !~,
     '5' => q~Журнал работы Сервера Почты:~,
     'no_to' =>

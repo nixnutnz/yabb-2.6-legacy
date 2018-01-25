@@ -799,6 +799,7 @@ Thanks for using YaBB!~,
     'ban_res' =>
 q~You may add a short reason for the ban by using a '|' symbol to separate the IP address, e-mail address, or user ID and the reason for banning.~,
     '10bak' => q~*.bak files deleted~,
+    'UTC' => q~(UTC)~,
 );
 
 %detailed = (
@@ -1594,8 +1595,8 @@ q~<b>Внимание!</b> Эти изменения не могут быть о
 q~Чтобы предотвратить блокировку выполнения скрипта по тайм-ауту сервера, этот процесс разбит на несколько шагов.~,
     '2' => q~Если ничего не происходит в течении 5 секунд~,
     '3' => q~нажмите ЗДЕСЬ для продолжения~,
-    '4' => q~Обработка - пожалуйста подождите!~
-    ,    # Used in Javascript -- please test if you are using special characters
+    '4' => q~Обработка - пожалуйста подождите!~,
+# Used in Javascript -- please test if you are using special characters
     '5'   => q~1 шаг \~~,
     '6'   => q~секунд~,
     '7'   => q~Время выполнения:~,

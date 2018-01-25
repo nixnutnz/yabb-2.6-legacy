@@ -758,6 +758,7 @@ q~Activer le champ déroulant changement de style?<br /><span class="small">Si a
     '813b' =>
 q~Sélectionnez les groupes de membres autorisés à utiliser le changement de style:</span>~,
     '10bak' => q~*.bak fichiers supprimés~,
+    'UTC' => q~(UTC)~,
 
 ## Paramètres de messagerie test ##
     '355b' => q~Test les paramètres du courriel du webmestre sur sauvegarde~,

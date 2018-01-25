@@ -72,8 +72,8 @@ q~Valitse tämä jos haluat antaa mahdollisuuden valita useamman kuin yhden vaih
     'setshowcased' => q~Nosta äänestys etusivulle?~,
     'showcaserem'  => q~Poista äänestys etusivulta?~,
     'confirm' =>
-q~Haluatko varmasti nostaa tämän äänestyksen etusivulle?\\nToinen äänestys on jo etusivulla!~
-    , # Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
+q~Haluatko varmasti nostaa tämän äänestyksen etusivulle?\\nToinen äänestys on jo etusivulla!~,
+# Test before changing! It's inside a javascript. Do not use " or ' inside parentheses.
 );
 
 1;

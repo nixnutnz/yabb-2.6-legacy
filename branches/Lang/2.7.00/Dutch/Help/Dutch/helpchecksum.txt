@@ -19,7 +19,7 @@ Help/Dutch/Moderator/moderator01_threads.help|89c507bebfe9f1aba9a260dbd52da247
 Help/Dutch/Moderator/moderator02_posts.help|d7277743f0add9e0828e4b3254ff9427
 Help/Dutch/Moderator/moderator03_ban.help|60803b968cdee74c9284a42c08bd9660
 Help/Dutch/User/001.help|de408721c2fd3b376127654d7ee3def8
-Help/Dutch/User/user00_agreement.help|c26baec9aa6468fd83c049e5a90dd9ca
+Help/Dutch/User/user00_agreement.help|572737bd41c489178e0b972f5c180d1b
 Help/Dutch/User/user01_begin.help|e7d8f2044e36f0c0ab6ef6a18c911682
 Help/Dutch/User/user02_profile.help|53bfc597ac8673bc8551c7a5293d51fb
 Help/Dutch/User/user03_posting.help|3ddf50afd65b50c839f31af9b0c3d568

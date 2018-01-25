@@ -773,6 +773,7 @@ q~Enable Style Switcher Dropdown Field?<br /><span class="small">If enabled, sel
     '813b' =>
       q~Select the membergroups allowed to use the Style Switcher:</span>~,
     '10bak' => q~*.bak files deleted~,
+    'UTC' => q~(UTC)~,
 
 ## email settings test ##
     '355b'        => q~Test webmaster e-mail settings on Save~,

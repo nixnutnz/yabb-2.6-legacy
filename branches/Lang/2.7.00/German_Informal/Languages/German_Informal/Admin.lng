@@ -803,6 +803,7 @@ q~Style Switcher aktivieren?<br /><span class="small">Wenn diese Option aktivier
     '813b' =>
       q~Welche Mitgliedergruppe darf den Style Switcher nutzen?:</span>~,
     '10bak' => q~*.bak Dateien gelöscht~,
+    'UTC' => q~(UTC)~,
 
 ## email settings test ##
     '355b'      => q~Überprüfe die gespeicherte Webmaster-eMail-Einstellungen~,

@@ -354,7 +354,7 @@ q~Profiilin aikakatkaisu. Ole hyvä ja varmista henkilöllisyytesi uudelleen.~,
 q~Valitse oletusalue, johon haluat palata kun olet kirjoittanut viestin.<br /><b>Huomio:</b> Voit vaihtaa tämän valinnan kirjoittaessasi.~,
 );
 
-%zodiac_txt = (    #YaBB Zodiac
+%zodiac_txt = (
     'sign'        => q~Horoskooppi~,
     'Aquarius'    => q~Vesimies~,
     'Aries'       => q~Oinas~,

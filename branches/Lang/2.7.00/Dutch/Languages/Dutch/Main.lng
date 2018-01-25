@@ -280,7 +280,6 @@ q~ dagen om berichten te verwijderen. Dit bericht kan niet verwijdert worden.~,
     '03' => q~Klik voor volgende pagina - dubbel klik voor laatste pagina.~,
 );
 
-##  jump menu
 %jumpto_txt = (
     'to'   => q~Forum Jump &raquo;~,
     'mess' => q~ &raquo; mijn Berichten~,
@@ -345,6 +344,6 @@ q~Could not authenticate SMTPS credentials. Please provide credentials: Admin Ce
 );
 
 $yycopyright =
-qq~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Mogelijk gemaakt door <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br />\n<a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle rechten voorbehouden.~;
+q~<a href="{yabb scripturl}">{yabb mbname}</a> &#187; Mogelijk gemaakt door <a href="http://www.yabbforum.com" target="_blank">{yabb version}</a>!<br /><a href="http://www.yabbforum.com" target="_blank">YaBB Forum Software</a> &copy; 2000-{yabb year}. Alle rechten voorbehouden.~;
 
 1;

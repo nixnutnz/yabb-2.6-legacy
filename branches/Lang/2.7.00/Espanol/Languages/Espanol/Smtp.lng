@@ -22,7 +22,7 @@ $action ||= q{};
 if ( $action eq 'detailedversion' ) { return 1; }
 
 %smtp_txt = (
-    '1' => q~SERVER ERROR: No encuentro {yabb smtpaddr!~,
+    '1' => q~SERVER ERROR: No encuentro {yabb smtpaddr}!~,
     '2' => q~SERVER ERROR: No se puede abrir la conexión (socket)~,
     '3' =>
 q~SERVER ERROR: No se puede conectar a {yabb smtpaddr en el puerto {yabb port}~,

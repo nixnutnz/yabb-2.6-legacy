@@ -278,7 +278,6 @@ q~Muistutus: Tämä foorumi on <a href="{yabb adminurl}?action=admincheck;userna
       q~Napsauta seuraavalle sivulle - kaksoisnapsauta siirtyäksesi loppuun.~,
 );
 
-##  jump menu
 %jumpto_txt = (
     'to'   => q~Foorumihyppy &raquo;~,
     'mess' => q~ &raquo; omat viestit~,

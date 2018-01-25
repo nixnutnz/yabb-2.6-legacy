@@ -360,7 +360,7 @@ q~Seleccione el lugar donde te gustaría volver después de la publicación.~,
 q~Seleccione el área por defecto que le gustaría volver a después de hacer una entrada <br /> <b> Nota: </b> Usted puede cambiar esta opción en el momento de su publicación.~,
 );
 
-%zodiac_txt = (    #YaBB Zodiac
+%zodiac_txt = (
     'sign'        => q~signo del zodiaco~,
     'Aquarius'    => q~Acuario~,
     'Aries'       => q~Aries~,

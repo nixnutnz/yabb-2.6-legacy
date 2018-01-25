@@ -800,6 +800,7 @@ q~This is the RSSboard Permalink Symlink URL part<br />(e.g. http://www.yourdoma
     '501a' =>
 q~Here you can set Maintenance Mode and create/change your custom Maintenance Notice.~,
 
+    'UTC' => q~(UTC)~,
 ## email settings test ##
     '355b'        => q~Test webmaster email instellingen en sla op~,
     'testemail'   => q~Test email~,
@@ -1962,5 +1963,6 @@ q~<a href="{yabb scripturl}"><span style="font-size: 10px">{yabb mbname}</span><
 $iFrameSupport =
 q~Sorry, om het laatste nieuws te zien, moet u een browser gebruiken die iframes ondersteund~;
 $rna = q~Externe Server niet beschikbaar.~;
+
 
 1;

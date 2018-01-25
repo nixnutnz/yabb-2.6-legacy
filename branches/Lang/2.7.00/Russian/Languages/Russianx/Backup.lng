@@ -193,27 +193,28 @@ q~Sending e-mail failed. See the error message in the info e-mail you will recei
     'no_delete' => q~DELETE not permitted.~,
     '542'       => q~If nothing happens in 5 seconds~,
     '543'       => q~click here to continue~,
+);
 
     # The actual messages are here.
     # Don't translate WORDS IN ALL CAPITALS from here to the end of the file
-    'mailmessage1' => q~Доброго времени суток, USERNAME
+$backup_txt{'mailmessage1'} = q~Доброго времени суток, USERNAME
 
 Резервная копия данных форума FILENAME должна быть прикреплена к этому письму.
 
 Если это не так, посетите следующую ссылку, чтобы загрузить файл вручную:
 LINK
 
-Спасибо за использование форума на движке YaBB!
-~,
+Спасибо за использование форума на движке YaBB!~;
 
-    'mailmessage2' => q~
+$backup_txt{'mailmessage2'} = q~
 Приветствую Вас, USERNAME
 
 Посетите следующую ссылку, чтобы загрузить файл FILENAME с резервной копией данных форума вручную:
 LINK.
 
-Спасибо за использование форума на движке YaBB!~,
-    'mailmessage3' => q~Hi USERNAME!
+Спасибо за использование форума на движке YaBB!~;
+
+$backup_txt{'mailmessage3'} = q~Hi USERNAME!
 
 Sending the e-mail with the attached backup failed.
 
@@ -224,7 +225,6 @@ The system provided the following info related to the sending error:
 
 You must have MIME::Lite installed on your server to get backups by e-mail; you may also need other modules (see the info above). Ask your server administrator to install the module(s) on your server.  You can find further help on installing modules at: http://codex.yabbforum.com/YaBB.pl?num=1225217016
 
-Thanks for using YaBB!~,
-);
+Thanks for using YaBB!~;
 
 1;

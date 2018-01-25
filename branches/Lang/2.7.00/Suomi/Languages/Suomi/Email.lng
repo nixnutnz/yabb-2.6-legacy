@@ -395,7 +395,7 @@ Terveisin,
 
 $yabbtags{'privatemessagenotificationemail'} = q~sender subject message~;
 $emaildesc{'privatemessagenotificationemail'} =
-  q~The Private Message Notification Email~;
+  q~The Personal Message Notification Email~;
 $privatemessagenotificationemail =
   q~{yabb sender} lähetti sinulle yksityisviestin.
 

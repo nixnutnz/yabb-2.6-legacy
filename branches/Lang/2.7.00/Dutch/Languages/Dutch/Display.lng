@@ -102,8 +102,6 @@ q~Hallo Gast,<br><br>Het ziet er naar uit dat u ervan geniet ons forum te lezen,
     '725f'            => q~Ban IP~,
 );
 
-%zodiac_txt = (                                #YaBB Dierenriem
-    'sign' => q~Dierenriem teken~,
-);
+%zodiac_txt = ( 'sign' => q~Dierenriem teken~, );
 
 1;

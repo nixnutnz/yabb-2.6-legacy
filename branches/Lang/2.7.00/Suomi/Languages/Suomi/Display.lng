@@ -98,8 +98,6 @@ q~Terve vieras,<br><br>Näyttää siltä, että nautit foorumimme lukemisesta, j
     '725f'            => q~Ban IP~,
 );
 
-%zodiac_txt = (                                #YaBB Zodiac
-    'sign' => q~Horoskooppi~,
-);
+%zodiac_txt = ( 'sign' => q~Horoskooppi~, );
 
 1;

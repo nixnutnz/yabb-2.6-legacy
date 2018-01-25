@@ -367,7 +367,6 @@ q~Вы не можете добавить сами себя в список св
 ## MemberGroups ##
     'newpostdep_gmod' =>
 q~Извините, Координаторы не могут модифицировать Postdependent users, который требует запуска "Rebuild Memberlist", который может быть запущен только в режиме Техобслуживания, в котором блокируется логины !~,
-
     'rename' =>
 q~Sorry but this file needs to be renamed with ASCII characters before it can be uploaded.~,
     'nofolder' => q~No Template Folder Name~,

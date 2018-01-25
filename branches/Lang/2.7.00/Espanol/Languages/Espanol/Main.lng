@@ -276,7 +276,6 @@ q~ día(s) para modificar mensajes.  Este mensaje no puede ser modificado.~,
     '03' => q~Click para página siguiente - doble click para la última.~,
 );
 
-##  jump menu
 %jumpto_txt = (
     'to'   => q~Ir a &raquo;~,
     'mess' => q~ &raquo; mis mensajes~,

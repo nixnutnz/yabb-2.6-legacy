@@ -99,8 +99,6 @@ q~Hola Invitado, <BR> Parece que usted está disfrutando de la lectura de nuestr
     '725f'            => q~Ban IP~,
 );
 
-%zodiac_txt = (                                #YaBB Zodiac
-    'sign' => q~signo del zodiaco~,
-);
+%zodiac_txt = ( 'sign' => q~signo del zodiaco~, );
 
 1;

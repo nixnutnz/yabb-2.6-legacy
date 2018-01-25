@@ -1,6 +1,6 @@
 checksum.txt
 Languages/German_Informal/AddModerators.lng|145cfcb29576b8c3501247e5cc53a60f
-Languages/German_Informal/Admin.lng|3fa2b178a12f3db1a145947a1c27d271
+Languages/German_Informal/Admin.lng|a83628c07b0cca117bd1a0a1910565d3
 Languages/German_Informal/Backup.lng|e98da440ada705b5ca5468297b829e7a
 Languages/German_Informal/BoardIndex.lng|81e0064ab371b7c8cae11b8f24089a8a
 Languages/German_Informal/Bookmarks.lng|8fafb8f8cea08ad6dea1964064cbd47c
